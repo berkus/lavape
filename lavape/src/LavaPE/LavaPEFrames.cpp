@@ -1667,7 +1667,7 @@ void CLavaMainFrame::whatNext_clicked()
 void CLavaMainFrame::howTo_clicked() 
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  QString fileName=ExeDir+"/../doc/html/howto/HowToContents.htm";
+  QString fileName=ExeDir+"/../doc/html/howTo/HowToContents.htm";
 	QString path("");
 	QStringList args;
 
