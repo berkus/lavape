@@ -1702,13 +1702,13 @@ bool ExceptionCallStack(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-
+/*
 bool ExceptionDecFunc(CheckData& ckd, LavaVariablePtr stack)
 {
- /* if (*(stack[SFH]+LSH))
+  if (*(stack[SFH]+LSH))
     DFC(*(LavaVariablePtr)(stack[SFH]+LSH));
   if (*(stack[SFH]+LSH+1))
-    DFC(*(LavaVariablePtr)(stack[SFH]+LSH+1));*/
+    DFC(*(LavaVariablePtr)(stack[SFH]+LSH+1));
   return true;
 }
 
@@ -1723,6 +1723,7 @@ bool ExceptionEq(CheckData& ckd, LavaVariablePtr stack)
   }
   return true;
 }
+*/
 
 //Callback
 bool CallbackExec(CheckData& /*ckd*/, LavaVariablePtr /*stack*/)
@@ -1922,10 +1923,10 @@ void MakeStdAdapter()
 
   ExceptionAdapter[0] = 0;
   ExceptionAdapter[1] = 0;
-  ExceptionAdapter[2] = ExceptionEq;//DefaultEq;
+  ExceptionAdapter[2] = DefaultEq; //ExceptionEq;
   ExceptionAdapter[3] = 0;
   ExceptionAdapter[4] = 0;
-  ExceptionAdapter[5] = ExceptionDecFunc;
+  ExceptionAdapter[5] = 0; //ExceptionDecFunc;
   ExceptionAdapter[6] = 0;
   ExceptionAdapter[LAH] = LastException;
   ExceptionAdapter[LAH+1] = DropException;
