@@ -552,7 +552,7 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
   if (decl2->TypeFlags.Contains(substitutable))
     ctxFlags2 = SET(multiContext,-1);
   ckd.errorCode = &ERR_IncompatibleType;
-  if (ctxFlags2.Contains(undefContext))
+  if (ctxFlags2.Contains(undefContext) && context1.oContext)
     return false;
   if (ctxFlags1.Contains(multiContext) && !ctxFlags2.Contains(multiContext))
     return false;
