@@ -535,12 +535,10 @@ enum TTableUpdate {
            onMove,
            onConstrCopy,
            onTypeID,
-		   onSearch,
+		       onSearch,
            onSelect,
-		   onSetSynOID,
-           onSetBrkPnt,
-           onSetRunToPnt
-           };
+		       onSetSynOID,
+           onGetAddress};
 
   struct CSecTabBase {
     virtual void Destroy() {}
@@ -895,7 +893,6 @@ enum StopReason {  Stop_BreakPoint,
                    Stop_NextOp,
                    Stop_StepInto,
                    Stop_StepOut,
-                   Stop_FunctionCall,
                    Stop_Exception
                    };
 
@@ -922,10 +919,12 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
     };
 
     struct ProgPoint {          //LavaPE to Lava
+      ProgPoint() {Skipped = false; SynObj=0;FuncDoc=0;}
       int SynObjID;       // point id
       TDeclType ExecType; // in exec type
       TID FuncID;         // of function
       bool Activate;
+      bool Skipped;
       SynObjectBase-- *SynObj;
       DString-- FuncDocName;
       DString-- FuncDocDir;
@@ -937,7 +936,10 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
       int ActStackLevel;
       CHAINANY <StackData> StackChain;
       CHAINX /*DDItemData*/ ObjectChain;
-      DbgStopData() {ActStackLevel=0;}
+      CHAINX /*DDItemData*/ ParamChain;
+      CSecTabBase-- *** CalleeStack;
+      LavaDECL-- * CalleeFunc;
+      DbgStopData() {ActStackLevel=0; CalleeStack =0; CalleeFunc =0;}
     };
 
     struct DbgContData { //from LavaPE to Lava
@@ -959,6 +961,7 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
             NESTEDANY0 <DDItemData> ObjData; //Lava to LavaPE
         | Dbg_MemberDataRq:
             NESTED <ChObjRq> ObjNr;           //LavaPE to Lava
+            bool fromParams;
         | Dbg_StackRq:
             int CallStackLevel;               //LavaPE to Lava
         | Dbg_Continue:
@@ -977,7 +980,7 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
           ObjData.ptr = obj; 
          }
 
-        DbgMessage(DbgCommand com, ChObjRq* oRq) {Command = com; ObjNr.ptr = oRq;}
+        DbgMessage(DbgCommand com) {Command = com;}
         DbgMessage() {}
 
         void Destroy() {

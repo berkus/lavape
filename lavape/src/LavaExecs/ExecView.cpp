@@ -119,6 +119,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 { 
   initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
 	active = false;
+  makeSelectionVisible = false;
   sv = new MyScrollView(this);
   sv->setFocusPolicy(QWidget::StrongFocus);
   sv->setResizePolicy(QScrollView::AutoOneFit);
@@ -492,9 +493,6 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
   BreakPointList bpl;
   BreakPointList::iterator it;
 
-  inDebugStop=false;
-  inBreakPoint=false;
-
 	if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
 		return;
   p = pt;
@@ -530,11 +528,10 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
     if (currentToken == debugStopToken || currentToken == callerStopToken) {
       inDebugStop = true;
       p->setBackgroundMode(Qt::OpaqueMode);
-      if (stopReason == Stop_StepOut)
+      if (innermostStop && (stopReason == Stop_StepOut || stopReason == Stop_Exception))
         p->setBackgroundColor(QColor(180,180,255));
       else
         p->setBackgroundColor(QColor(255,255,0));
-//        p->setBackgroundColor(QColor(150,255,150));
     }
     if (currentToken->data.synObject->workFlags.Contains(isBrkPnt)
     && (currentToken->data.flags.Contains(primToken)
@@ -558,9 +555,12 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
       p->setBackgroundMode(Qt::OpaqueMode);
       p->setBackgroundColor(black);
     }
+
     DrawToken(text,currentToken,inSelection);
+
     if (inBreakPoint)
       bpl.append(breakPointY);
+
     if (inDebugStop) {
       inDebugStop = false;
       if (inSelection)
@@ -606,26 +606,30 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
   p->setBrush(QColor(210,210,210));
   p->setPen(myPen);
   p->drawRect(0,0,15,contentsHeight>=viewport()->height()?contentsHeight:viewport()->height());
-//  delete fm;
-//	fm = new QFontMetrics(fontMetrics());
+
   for ( it = bpl.begin(); it != bpl.end(); ++it )
    p->drawPixmap(0,*it+(fm->ascent()>14?fm->ascent()-14:0),*breakPoint);
+
   if (debugStopToken)
     p->drawPixmap(0,debugStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStop);
   if (callerStopToken)
     p->drawPixmap(0,callerStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStopGreen);
 
   viewport()->setUpdatesEnabled(true);
-  if (debugStopToken && execView->autoScroll) {
+
+  if (execView->makeSelectionVisible) {
+    execView->makeSelectionVisible = false;
+    if (execView->autoScroll) {
+      ensureVisible(execView->selStartPos->data.rect.left(),execView->selStartPos->data.rect.top(),50,50);
+      execView->autoScroll = false;
+    }
+  }
+  else if (debugStopToken && execView->autoScroll) {
     ensureVisible(debugStopToken->data.rect.left(),debugStopToken->data.rect.top(),50,50);  
     execView->autoScroll = false;
   }
   else if (callerStopToken && execView->autoScroll) {
     ensureVisible(callerStopToken->data.rect.left(),callerStopToken->data.rect.top(),50,50);  
-    execView->autoScroll = false;
-  }
-  else if (execView->autoScroll) {
-    ensureVisible(execView->selEndPos->data.rect.left(),execView->selEndPos->data.rect.top(),50,50);
     execView->autoScroll = false;
   }
   delete fm;
@@ -798,6 +802,10 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     text->ckd.undoRedo = undoRedo;
 
     Check();
+    sData.execView = this;
+    sData.doc = myDoc;
+    sData.nextFreeID = 0;
+    sData.execDECL = myDECL;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSetSynOID, 0,0, (address)&sData);
     RedrawExec(text->selectAt);
     selfVar->oldFormParms = (FormParms*)selfVar->formParms.ptr;
@@ -805,7 +813,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     toBeDrawn = 0;
     multipleUpdates = false;
     externalHint = false;
-    if (hint->com == CPECommand_OpenExecView)
+    if (hint && hint->com == CPECommand_OpenExecView)
       delete hint;
   }
 }
@@ -829,298 +837,369 @@ void CExecView::OnChar(QKeyEvent *e)
 	ctrlPressed = (state & Qt::ControlButton);
   SynObject *currentSynObj, *parent/*, *ocl*/;
 
-  switch (key) {
+  if (LBaseData->debugOn)
+    switch (key) {
+    case Qt::Key_Tab:
+      if (state & Qt::ShiftButton) // Shift key down ==> BACKTAB
+        text->newSelection = text->FindPrecedingPlaceholder();
+      else // TAB
+        text->newSelection = text->FindNextPlaceholder();
+      Select();
+      break;
+    case Qt::Key_Up:
+      currentSynObj = text->currentSynObj;
+      parent = currentSynObj->parentObject;
+      if (parent && parent->primaryToken == ObjRef_T
+      && ((ObjReference*)parent)->refIDs.first == ((ObjReference*)parent)->refIDs.last) {
+        currentSynObj = parent;
+        parent = currentSynObj->parentObject;
+      }
+    case Qt::Key_Down:
+      if (text->currentSynObj->primaryToken == parameter_T)
+        currentSynObj = (SynObject*)((Parameter*)text->currentSynObj)->parameter.ptr;
+      else
+        currentSynObj = text->currentSynObj;
 
-  case Qt::Key_A:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnAnd();
-    break;
-  case Qt::Key_C:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnCopy();
-    break;
-  case Qt::Key_D:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->ReadOnlyContext() != roClause)
-      OnDeclare();
-    break;
-  case Qt::Key_E:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnExists();
-    break;
-  case Qt::Key_F:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnForeach();
-    break;
-  case Qt::Key_I:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnIf();
-    break;
-  case Qt::Key_L:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnSelect();
-    break;
-  case Qt::Key_N:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnCreateObject();
-    break;
-  case Qt::Key_O:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnOr();
-    break;
-  case Qt::Key_Q:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnQueryItf();
-    break;
-  case Qt::Key_R:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnCall();
-    break;
-  case Qt::Key_S:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->ReadOnlyContext() != roClause)
-      OnAssign();
-    break;
-  case Qt::Key_T:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnTypeSwitch();
-    break;
-  case Qt::Key_W:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnSwitch();
-    break;
-  case Qt::Key_X:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnFunctionCall();
-    break;
+      if (currentSynObj->type == VarPH_T
+      || currentSynObj->primaryToken == Exp_T
+      || currentSynObj->IsConstant()) {
+        if (GetDocument()->changeNothing)
+          return;
+        text->currentSynObj = currentSynObj;
+        if (text->currentSynObj->primaryToken != enumConst_T
+        && text->currentSynObj->primaryToken != Boolean_T
+        && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
+        && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
+          doubleClick = true;
+        Select();
+        doubleClick = false;
+      }
+      else if (text->currentSelection->data.token == Comment_T) {
+        if (GetDocument()->changeNothing)
+          return;
+        doubleClick = true;
+        clicked = true;
+        Select();
+      }
+      else if (!IsPH(currentSynObj)
+      && currentSynObj->primaryToken != TDOD_T
+      && currentSynObj->primaryToken != FuncRef_T
+      && currentSynObj->primaryToken != TypeRef_T
+      && currentSynObj->primaryToken != CrtblRef_T) {
+        text->currentSynObj = currentSynObj;
+        Select(FirstChild());
+      }
+      break;
+    case Qt::Key_Left:
+      Select(LeftSibling());
+      break;
+    case Qt::Key_Right:
+      Select(RightSibling());
+      break;
+      if (EnableInsert()) {
+        OnInsert();
+        if (text->currentSelection->data.token == VarPH_T
+			  || text->currentSelection->data.token == Exp_T) {
+          doubleClick = true;
+          Select();
+          doubleClick = false;
+        }
+      }
+      else if (text->currentSynObj->IsStatement())
+        OnAnd();
+      break;
+    case Qt::Key_F1:
+	    ((wxMainFrame*)wxTheApp->mainWidget())->helpContents();
+      break;
+    case Qt::Key_Escape:
+      break;
+    default:
+      ;
+    }
+  else
+    switch (key) {
 
-  case Qt::Key_Equal:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnEq();
-    break;
-  case Qt::Key_Asterisk:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnMult();
-    break;
-  case Qt::Key_Plus:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnPlus();
-    break;
-  case Qt::Key_Minus:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnPlusMinus();
-    break;
-  case Qt::Key_Slash:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnDivide();
-    break;
-  case Qt::Key_Question:
-    if (!Taboo() && (text->currentSynObj->StatementSelected(text->currentSelection)
-    || (text->currentSynObj->ExpressionSelected(text->currentSelection) && text->currentSynObj->BoolAdmissibleOnly(text->ckd))))
-      OnEvaluate();
-    break;
-  case Qt::Key_0:
-    if (!Taboo()
-    && ((text->currentSynObj->ExpressionSelected(text->currentSelection)
-         && text->currentSynObj->NullAdmissible(text->ckd))
-        || text->currentSynObj->IsOutputParam()))
-      OnNull();
-    break;
-  case Qt::Key_Percent:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnModulus();
-    break;
-  case Qt::Key_Ampersand:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnBitAnd();
-    break;
-  case Qt::Key_At:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnHandle();
-    break;
-  case Qt::Key_NumberSign:
-    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnNe();
-    else if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnOrd();
-    break;
-  case Qt::Key_Exclam:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnInvert();
-    else if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnNot();
-    break;
-  case Qt::Key_1:
-    if (ctrlPressed) {
-      CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
-      if (bar->LeftCombo)
-        bar->LeftCombo->popup();
-    }
-    break;
-  case Qt::Key_2:
-    if (ctrlPressed) {
-      CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
-      if (bar->RightCombo)
-        bar->RightCombo->popup();
-    }
-    break;
-  case Qt::Key_3:
-    if (ctrlPressed) {
-      CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
-      if (bar->EnumsEnable) {
-        bar->TrackEnum(); 
-      }
-      else {
-        if (bar->RightCombo && bar->ThirdCombo)
-          bar->ThirdCombo->popup();
-      }
-    }
-    break;
-  case '\xe2':
-    if (altPressed) 
-      if (shiftPressed) {
-        if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-          OnGe();
-      }
-      else if (ctrlPressed) {
-        if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-          OnBitOr();
-      }
-      else {
-        if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-          OnLe();
-      }
-    else
+    case Qt::Key_A:
       if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-        if (shiftPressed)
-          OnGt();
-        else
-          OnLt();
-    break;
-  case Qt::Key_Delete: // 0x2e DEL key
-  case Qt::Key_Backspace: // 0x08 BACKSPACE key
+        OnAnd();
+      break;
+    case Qt::Key_C:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnCopy();
+      break;
+    case Qt::Key_D:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+      && text->currentSynObj->ReadOnlyContext() != roClause)
+        OnDeclare();
+      break;
+    case Qt::Key_E:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnExists();
+      break;
+    case Qt::Key_F:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnForeach();
+      break;
+    case Qt::Key_I:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnIf();
+      break;
+    case Qt::Key_L:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnSelect();
+      break;
+    case Qt::Key_N:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnCreateObject();
+      break;
+    case Qt::Key_O:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnOr();
+      break;
+    case Qt::Key_Q:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnQueryItf();
+      break;
+    case Qt::Key_R:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnCall();
+      break;
+    case Qt::Key_S:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+      && text->currentSynObj->ReadOnlyContext() != roClause)
+        OnAssign();
+      break;
+    case Qt::Key_T:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnTypeSwitch();
+      break;
+    case Qt::Key_W:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnSwitch();
+      break;
+    case Qt::Key_X:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnFunctionCall();
+      break;
 
-    if (GetDocument()->changeNothing)
-      return;
-    if ((Ignorable() && !inIgnore)
-    && !(inBaseInits
-         && text->currentSynObj->primaryToken == FuncRef_T
-         && text->currentSynObj->parentObject->parentObject->primaryToken == initializing_T))
-      return;
-    if (!text->currentSynObj->parentObject->parentObject
-    && text->currentSynObj->IsPlaceHolder())
-      return;
-/*
-    if (IsDeletablePrimary()
-    || text->currentSelection->data.OptionalClauseToken(ocl)
-    || text->currentSelection->data.token == Comment_T
-    || (text->currentSynObj->IsFuncInvocation()
-        && text->currentSynObj->parentObject->primaryToken != new_T
-        && text->currentSynObj->parentObject->primaryToken != callback_T)
-    || text->currentSynObj->IsPlaceHolder()) {*/
+    case Qt::Key_Equal:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnEq();
+      break;
+    case Qt::Key_Asterisk:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnMult();
+      break;
+    case Qt::Key_Plus:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnPlus();
+      break;
+    case Qt::Key_Minus:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnPlusMinus();
+      break;
+    case Qt::Key_Slash:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnDivide();
+      break;
+    case Qt::Key_Question:
+      if (!Taboo() && (text->currentSynObj->StatementSelected(text->currentSelection)
+      || (text->currentSynObj->ExpressionSelected(text->currentSelection) && text->currentSynObj->BoolAdmissibleOnly(text->ckd))))
+        OnEvaluate();
+      break;
+    case Qt::Key_0:
+      if (!Taboo()
+      && ((text->currentSynObj->ExpressionSelected(text->currentSelection)
+           && text->currentSynObj->NullAdmissible(text->ckd))
+          || text->currentSynObj->IsOutputParam()))
+        OnNull();
+      break;
+    case Qt::Key_Percent:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnModulus();
+      break;
+    case Qt::Key_Ampersand:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnBitAnd();
+      break;
+    case Qt::Key_At:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnHandle();
+      break;
+    case Qt::Key_NumberSign:
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnNe();
+      else if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnOrd();
+      break;
+    case Qt::Key_Exclam:
+      if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+        OnInvert();
+      else if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        OnNot();
+      break;
+    case Qt::Key_1:
+      if (ctrlPressed) {
+        CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
+        if (bar->LeftCombo)
+          bar->LeftCombo->popup();
+      }
+      break;
+    case Qt::Key_2:
+      if (ctrlPressed) {
+        CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
+        if (bar->RightCombo)
+          bar->RightCombo->popup();
+      }
+      break;
+    case Qt::Key_3:
+      if (ctrlPressed) {
+        CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
+        if (bar->EnumsEnable) {
+          bar->TrackEnum(); 
+        }
+        else {
+          if (bar->RightCombo && bar->ThirdCombo)
+            bar->ThirdCombo->popup();
+        }
+      }
+      break;
+    case '\xe2':
+      if (altPressed) 
+        if (shiftPressed) {
+          if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+            OnGe();
+        }
+        else if (ctrlPressed) {
+          if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+            OnBitOr();
+        }
+        else {
+          if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+            OnLe();
+        }
+      else
+        if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+          if (shiftPressed)
+            OnGt();
+          else
+            OnLt();
+      break;
+    case Qt::Key_Delete: // 0x2e DEL key
+    case Qt::Key_Backspace: // 0x08 BACKSPACE key
+
+      if (GetDocument()->changeNothing)
+        return;
+      if ((Ignorable() && !inIgnore)
+      && !(inBaseInits
+           && text->currentSynObj->primaryToken == FuncRef_T
+           && text->currentSynObj->parentObject->parentObject->primaryToken == initializing_T))
+        return;
+      if (!text->currentSynObj->parentObject->parentObject
+      && text->currentSynObj->IsPlaceHolder())
+        return;
       editCut = false;
       OnDelete();
-//    }
-    return;
-  case Qt::Key_Tab:
-    if (state & Qt::ShiftButton) // Shift key down ==> BACKTAB
-      text->newSelection = text->FindPrecedingPlaceholder();
-    else // TAB
-      text->newSelection = text->FindNextPlaceholder();
-    Select();
-    break;
-  case Qt::Key_Up:
-    currentSynObj = text->currentSynObj;
-    parent = currentSynObj->parentObject;
-    if (parent && parent->primaryToken == ObjRef_T
-    && ((ObjReference*)parent)->refIDs.first == ((ObjReference*)parent)->refIDs.last) {
-      currentSynObj = parent;
-      parent = currentSynObj->parentObject;
-    }
-
-    if (parent
-    && parent->primaryToken == parameter_T) {
-      currentSynObj = parent;
-      parent = currentSynObj->parentObject;
-    }
-    Select(parent);
-    break;
-  case Qt::Key_Down:
-    if (text->currentSynObj->primaryToken == parameter_T)
-      currentSynObj = (SynObject*)((Parameter*)text->currentSynObj)->parameter.ptr;
-    else
-      currentSynObj = text->currentSynObj;
-
-    if (currentSynObj->type == VarPH_T
-    || currentSynObj->primaryToken == Exp_T
-    || currentSynObj->IsConstant()) {
-      if (GetDocument()->changeNothing)
-        return;
-      text->currentSynObj = currentSynObj;
-      if (text->currentSynObj->primaryToken != enumConst_T
-      && text->currentSynObj->primaryToken != Boolean_T
-      && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
-      && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
-        doubleClick = true;
+      return;
+    case Qt::Key_Tab:
+      if (state & Qt::ShiftButton) // Shift key down ==> BACKTAB
+        text->newSelection = text->FindPrecedingPlaceholder();
+      else // TAB
+        text->newSelection = text->FindNextPlaceholder();
       Select();
-      doubleClick = false;
-    }
-    else if (text->currentSelection->data.token == Comment_T) {
-      if (GetDocument()->changeNothing)
-        return;
-      doubleClick = true;
-      clicked = true;
-      Select();
-    }
-    else if (!IsPH(currentSynObj)
-    && currentSynObj->primaryToken != TDOD_T
-    && currentSynObj->primaryToken != FuncRef_T
-    && currentSynObj->primaryToken != TypeRef_T
-    && currentSynObj->primaryToken != CrtblRef_T) {
-      text->currentSynObj = currentSynObj;
-      Select(FirstChild());
-    }
-    break;
-  case Qt::Key_Left:
-    Select(LeftSibling());
-    break;
-  case Qt::Key_Right:
-    Select(RightSibling());
-    break;
-    if (EnableInsert()) {
-      OnInsert();
-      if (text->currentSelection->data.token == VarPH_T
-			|| text->currentSelection->data.token == Exp_T) {
-        doubleClick = true;
-        Select();
-        doubleClick = false;
-      }
-    }
-    else if (text->currentSynObj->IsStatement())
-      OnAnd();
-    break;
-  case Qt::Key_F1:
-	  ((wxMainFrame*)wxTheApp->mainWidget())->helpContents();
-    break;
-  case Qt::Key_Return:
-    if (GetDocument()->changeNothing)
       break;
-    if (EnableInsert()) {
-      OnInsert();
-      if (text->currentSelection->data.token == VarPH_T) {
-        doubleClick = true;
+    case Qt::Key_Up:
+      currentSynObj = text->currentSynObj;
+      parent = currentSynObj->parentObject;
+      if (parent && parent->primaryToken == ObjRef_T
+      && ((ObjReference*)parent)->refIDs.first == ((ObjReference*)parent)->refIDs.last) {
+        currentSynObj = parent;
+        parent = currentSynObj->parentObject;
+      }
+
+      if (parent
+      && parent->primaryToken == parameter_T) {
+        currentSynObj = parent;
+        parent = currentSynObj->parentObject;
+      }
+      Select(parent);
+      break;
+    case Qt::Key_Down:
+      if (text->currentSynObj->primaryToken == parameter_T)
+        currentSynObj = (SynObject*)((Parameter*)text->currentSynObj)->parameter.ptr;
+      else
+        currentSynObj = text->currentSynObj;
+
+      if (currentSynObj->type == VarPH_T
+      || currentSynObj->primaryToken == Exp_T
+      || currentSynObj->IsConstant()) {
+        if (GetDocument()->changeNothing)
+          return;
+        text->currentSynObj = currentSynObj;
+        if (text->currentSynObj->primaryToken != enumConst_T
+        && text->currentSynObj->primaryToken != Boolean_T
+        && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
+        && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
+          doubleClick = true;
         Select();
         doubleClick = false;
       }
+      else if (text->currentSelection->data.token == Comment_T) {
+        if (GetDocument()->changeNothing)
+          return;
+        doubleClick = true;
+        clicked = true;
+        Select();
+      }
+      else if (!IsPH(currentSynObj)
+      && currentSynObj->primaryToken != TDOD_T
+      && currentSynObj->primaryToken != FuncRef_T
+      && currentSynObj->primaryToken != TypeRef_T
+      && currentSynObj->primaryToken != CrtblRef_T) {
+        text->currentSynObj = currentSynObj;
+        Select(FirstChild());
+      }
+      break;
+    case Qt::Key_Left:
+      Select(LeftSibling());
+      break;
+    case Qt::Key_Right:
+      Select(RightSibling());
+      break;
+      if (EnableInsert()) {
+        OnInsert();
+        if (text->currentSelection->data.token == VarPH_T
+			  || text->currentSelection->data.token == Exp_T) {
+          doubleClick = true;
+          Select();
+          doubleClick = false;
+        }
+      }
+      else if (text->currentSynObj->IsStatement())
+        OnAnd();
+      break;
+    case Qt::Key_F1:
+	    ((wxMainFrame*)wxTheApp->mainWidget())->helpContents();
+      break;
+    case Qt::Key_Return:
+      if (GetDocument()->changeNothing)
+        break;
+      if (EnableInsert()) {
+        OnInsert();
+        if (text->currentSelection->data.token == VarPH_T) {
+          doubleClick = true;
+          Select();
+          doubleClick = false;
+        }
+      }
+      else if (text->currentSynObj->IsStatement())
+        OnAnd();
+      break;
+    case Qt::Key_Escape:
+      break;
+    default:
+      ;
     }
-    else if (text->currentSynObj->IsStatement())
-      OnAnd();
-    break;
-  case Qt::Key_Escape:
-    break;
-  default:
-    ;
-  }
 }
 
 void MyScrollView::contentsMousePressEvent (QMouseEvent *e) {
@@ -1152,7 +1231,8 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
   clicked = true;
   if (EditOK()) {
     text->NewSel(&pos);
-    if (text->newSelection == text->currentSelection
+    if (!LBaseData->debugOn
+    &&text->newSelection == text->currentSelection
     && (text->currentSelection->data.synObject->primaryToken == VarPH_T
         || (text->currentSelection->data.synObject->primaryToken == Exp_T
             && !text->currentSelection->data.synObject->BoolAdmissibleOnly(text->ckd)
@@ -1175,6 +1255,8 @@ void CExecView::OnLButtonDblClk(QMouseEvent *e)
 {
   // TODO: Add your message handler code here and/or call default
   
+  if (LBaseData->debugOn) return;
+
   doubleClick = true;
   OnLButtonDown(e);
   doubleClick = false;
@@ -1237,6 +1319,7 @@ void CExecView::Select (SynObject *selObj)
 	// important: text->Select first
 
   autoScroll = true;
+  makeSelectionVisible = true;
 
   ObjComboUpdate ocUpd(this);
   ocUpd.CheckLocalScope(text->ckd,text->currentSynObj);
@@ -4658,12 +4741,11 @@ void CExecView::OnNextError()
     if (!((currToken->data.flags.Contains(primToken)
           && currToken->data.synObject->lastError)
          || text->currentSynObj->IsPlaceHolder())
-    || myDoc->ErrorBarVisible())
+    || myDoc->ErrorPageVisible())
       currToken = (CHETokenNode*)currToken->successor;
     else {
       nextError = true;
       Select(currToken->data.synObject);
-//			sv->viewport()->update();
       return;
     }
 
@@ -4709,7 +4791,7 @@ void CExecView::OnPrevError()
     currToken = (CHETokenNode*)text->currentSelection;
     if (!(currToken->data.flags.Contains(primToken)
           && currToken->data.synObject->lastError)
-    || myDoc->ErrorBarVisible())
+    || myDoc->ErrorPageVisible())
       currToken = (CHETokenNode*)currToken->predecessor;
     else {
       nextError = true;
@@ -6469,7 +6551,7 @@ void CExecView::DbgBreakpoint() {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
   for (cheBreak = (CHEProgPoint*)LBaseData->ContData->BrkPnts.first;
-       cheBreak && (cheBreak->data.SynObj != stopObj);
+       cheBreak && (cheBreak->data.SynObjID != stopObj->synObjectID);
        cheBreak = (CHEProgPoint*)cheBreak->successor);
   if (cheBreak) {
     if (stopObj->workFlags.Contains(isBrkPnt))
@@ -6477,13 +6559,10 @@ void CExecView::DbgBreakpoint() {
     else
       stopObj->workFlags.INCL(isBrkPnt);
     cheBreak->data.Activate = stopObj->workFlags.Contains(isBrkPnt);
-    //stopObj->workFlags.EXCL(isBrkPnt);
-    //LBaseData->ContData->BrkPnts.Delete(cheBreak);
-    sv->viewport()->update();
   }
   else {
     cheBreak = new CHEProgPoint;;
-    cheBreak->data.SynObj = stopObj; 
+//    cheBreak->data.SynObj = stopObj; 
     cheBreak->data.SynObjID = stopObj->synObjectID;
     cheBreak->data.ExecType = myDECL->DeclType;
     cheBreak->data.FuncDoc = (address)GetDocument();
@@ -6496,8 +6575,8 @@ void CExecView::DbgBreakpoint() {
       stopObj->workFlags.INCL(isBrkPnt);
     cheBreak->data.Activate = stopObj->workFlags.Contains(isBrkPnt);
     LBaseData->ContData->BrkPnts.Append(cheBreak);
-    sv->viewport()->update();
   }
+  sv->viewport()->update();
 }
 
 void CExecView::DbgRunToSel() {
@@ -6516,10 +6595,10 @@ void CExecView::DbgRunToSel() {
   pp->FuncID.nINCL = LBaseData->debugThread->myDoc->IDTable.GetINCL(pp->FuncDocName,pp->FuncDocDir);
   if (pp->FuncID.nINCL < 0) {
     LBaseData->ContData->RunToPnt.Destroy();
-    QMessageBox::critical(this,qApp->name(),"This run-to-selection is not part of the debuged lava program",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this,qApp->name(),"This run-to-selection is not part of the debugged lava program",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return;
   }
-  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
+  DbgMessage* mess = new DbgMessage(Dbg_Continue);
   QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
@@ -6561,6 +6640,10 @@ void CExecView::OnUpdateDbgBreakpoint(wxAction* action)
 {
   action->setEnabled(!Taboo(true)
     && text->currentSynObj->IsExecutable()
+    && !text->currentSynObj->IsPlaceHolder()
+    && !text->currentSynObj->IsConstant()
+    && !(text->currentSynObj->primaryToken == declare_T)
+    && !(text->currentSynObj->primaryToken == Semicolon_T)
     && (LBaseData->enableBreakpoints || !LBaseData->debugOn));
 }
 

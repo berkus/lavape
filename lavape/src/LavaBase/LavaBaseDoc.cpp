@@ -35,6 +35,12 @@
 #include "qstring.h"
 #include "qdir.h"
 
+
+DebugStep nextDebugStep=noStep;
+
+unsigned stepOutStackDepth, currentStackDepth;
+
+
 #ifndef WIN32
 jmp_buf contOnHWexception;
 CHWException hwException(0,0);
@@ -1628,6 +1634,8 @@ void AbsPathName(DString& fn, const DString& dirName)
 LavaDECL* CLavaBaseDoc::GetExecDECL(LavaDECL* parentDecl,TDeclType type, bool makeIt, bool makeExec)
 {
   LavaDECL *cDECL = 0;
+  if (!parentDecl)
+    return 0;
   CHE *afterChe = (CHE*)parentDecl->NestedDecls.last;
   if (afterChe) {
     cDECL = (LavaDECL*)afterChe->data;

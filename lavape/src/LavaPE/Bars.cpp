@@ -44,8 +44,8 @@
 //
 
 
-COutputBar::COutputBar(QWidget *parent)
-: QTabWidget(parent, "OutputBar")
+CUtilityView::CUtilityView(QWidget *parent)
+: QTabWidget(parent, "UtilityView")
 {
 	QString emptyString;
 	
@@ -63,17 +63,22 @@ COutputBar::COutputBar(QWidget *parent)
   ErrorPage->setReadOnly(true);
   DebugPage = new QSplitter(this);
   DebugPage->setOrientation(Qt::Horizontal);
-  VarView = new VarListView(DebugPage, this);
+  VarView = new VarListView(DebugPage, this, false);
+  ParamView = new VarListView(DebugPage, this, true);
   StackView = new StackListView(DebugPage, this);
   QValueList<int> list = DebugPage->sizes();
   QValueList<int>::Iterator it = list.begin();
   int totalW = *it;
   ++it;
   totalW += *it;
-  it = list.begin();
-  *it = totalW/4 * 3;
   ++it;
-  *it = totalW/4;
+  totalW += *it;
+  it = list.begin();
+  *it = totalW/5 * 2;
+  ++it;
+  *it = totalW/5 * 2;
+  ++it;
+  *it = totalW/5;
   DebugPage->setSizes(list);
   QIconSet icoFind = QIconSet(QPixmap((const char**)PX_findtab));
   QIconSet icoErr = QIconSet(QPixmap((const char**)PX_errtab));
@@ -95,20 +100,21 @@ COutputBar::COutputBar(QWidget *parent)
   CommentEmpty = true;
   firstDebug = true;
   stopDoc = 0;
+  itemToOpen = 0;
 }
 
-COutputBar::~COutputBar()
+CUtilityView::~CUtilityView()
 {
 }
 
 
-void COutputBar::ResetError()
+void CUtilityView::ResetError()
 {
   ErrorPage->clear();
   ErrorEmpty = true;
 }
 
-void COutputBar::SetErrorOnBar(LavaDECL* decl)
+void CUtilityView::SetErrorOnUtil(LavaDECL* decl)
 {
   QString cstrA;
   setError(decl->DECLError1, &cstrA);
@@ -117,7 +123,7 @@ void COutputBar::SetErrorOnBar(LavaDECL* decl)
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
 }
 
-void COutputBar::SetErrorOnBar(const CHAINX& ErrChain)
+void CUtilityView::SetErrorOnUtil(const CHAINX& ErrChain)
 {
   QString cstrA;
   setError(ErrChain, &cstrA);
@@ -125,7 +131,7 @@ void COutputBar::SetErrorOnBar(const CHAINX& ErrChain)
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
 }
 
-void COutputBar::setError(const CHAINX& ErrChain, QString* cstrA)
+void CUtilityView::setError(const CHAINX& ErrChain, QString* cstrA)
 {
   QString cstr;
   CHE* che = (CHE*)ErrChain.first;
@@ -142,7 +148,7 @@ void COutputBar::setError(const CHAINX& ErrChain, QString* cstrA)
   }
 }
 
-void COutputBar::SetComment(const DString& text, bool toStatebar)
+void CUtilityView::SetComment(const DString& text, bool toStatebar)
 {
   if (text.l) {
     CommentPage->setText(text.c);
@@ -157,14 +163,14 @@ void COutputBar::SetComment(const DString& text, bool toStatebar)
   CommentEmpty = !text.l;
 }
 
-void COutputBar::SetFindText(const DString& text, CFindData* data)
+void CUtilityView::SetFindText(const DString& text, CFindData* data)
 {
   CTreeItem *item = new CTreeItem(text.c, FindPage, (CTreeItem*)FindPage->currentItem());
   FindPage->setCurrentItem(item);
   item->setItemData((TItemData*)data);
 }
 
-void COutputBar::OnDblclk(QListViewItem* item)
+void CUtilityView::OnDblclk(QListViewItem* item)
 {
   CFindData *data;
   TID tid;
@@ -196,6 +202,7 @@ void COutputBar::OnDblclk(QListViewItem* item)
           sData.synObjectID = data->refCase;
           doc->OpenExecView(execDecl);
           sData.execView = wxDocManager::GetDocumentManager()->GetActiveView();
+          sData.finished = false;
           ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)execDecl, onSelect, 0,0, (address)&sData);
         }
       }
@@ -204,7 +211,7 @@ void COutputBar::OnDblclk(QListViewItem* item)
 }
 
 
-void COutputBar::DeleteAllFindItems()
+void CUtilityView::DeleteAllFindItems()
 {
   CTreeItem* item;
   CFindData * itd;
@@ -218,7 +225,7 @@ void COutputBar::DeleteAllFindItems()
   FindPage->clear();
 }
 
-void COutputBar::SetTab(BarTabs tab)
+void CUtilityView::SetTab(UtilityTabs tab)
 {
 
   setCurrentPage((int)tab);
@@ -228,38 +235,38 @@ void COutputBar::SetTab(BarTabs tab)
     resize(sz.width(), h);
     firstDebug = false;
   }
-  if (((CLavaMainFrame*)wxTheApp->m_appWindow)->OutputBarHidden) {
+  if (((CLavaMainFrame*)wxTheApp->m_appWindow)->UtilitiesHidden) {
     show();
-    ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastBarState = -1;
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastUtilitiesState = -1;
   }
   else
-    ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastBarState = (int)ActTab;
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->OutputBarHidden = false;
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastUtilitiesState = (int)ActTab;
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->UtilitiesHidden = false;
 }
 
 
-void COutputBar::OnTabChange(QWidget* curPage)
+void CUtilityView::OnTabChange(QWidget* curPage)
 {
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastBarState = (int)ActTab;
-  ActTab = (BarTabs)currentPageIndex();
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastUtilitiesState = (int)ActTab;
+  ActTab = (UtilityTabs)currentPageIndex();
   if (ActTab == tabFind) {
     FindPage->show();
     setUpdatesEnabled(true);
   }
 }
 
-void COutputBar::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
+void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
 {
   CLavaBaseView *view=0;
 
   if (dbgReceived && dbgReceived->newReceived) {
     switch (dbgReceived->newReceived->Command) {
     case Dbg_MemberData:
-      if (VarView->itemToOpen) {
-        VarView->itemToOpen->makeChildren(((DDItemData*)dbgReceived->newReceived->ObjData.ptr)->Children);
-        VarView->itemToOpen->setOpen(true);
-        VarView->setSelected(VarView->itemToOpen, true);
-        VarView->itemToOpen = 0;
+      if (itemToOpen) {
+        itemToOpen->makeChildren(((DDItemData*)dbgReceived->newReceived->ObjData.ptr)->Children);
+        itemToOpen->setOpen(true);
+        itemToOpen->myView->setSelected(itemToOpen, true);
+        itemToOpen = 0;
       }
       break;
     case Dbg_StopData: 
@@ -268,7 +275,8 @@ void COutputBar::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
         removeExecStackPos((DbgStopData*)dbgReceived->lastReceived->DbgData.ptr, doc);
     case Dbg_Stack: 
       showExecStackPos((DbgStopData*)dbgReceived->newReceived->DbgData.ptr, doc);
-      VarView->makeItems((DbgStopData*)dbgReceived->newReceived->DbgData.ptr);
+      VarView->makeItems(((DbgStopData*)dbgReceived->newReceived->DbgData.ptr)->ObjectChain);
+      ParamView->makeItems(((DbgStopData*)dbgReceived->newReceived->DbgData.ptr)->ParamChain);
       break;
     default:;
     }
@@ -280,29 +288,24 @@ void COutputBar::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
       delete dbgReceived->lastReceived;
       dbgReceived->lastReceived = 0;
     }
-    /*
-    if (stopDoc) {
-      POSITION pos = stopDoc->GetFirstViewPos();
-      while (pos) {
-        view = (CLavaBaseView*)stopDoc->GetNextView(pos);
-        if (view->inherits("CExecView")) { // && (((CExecView*)view)->myDECL == stopExecDECL)) {
-          ((CExecView*)view)->sv->debugStopToken = 0;
-          ((CExecView*)view)->sv->viewport()->repaint();
-          //pos = 0;
-        }
-      }
-    }
-    */
     StackView->allDrawn = false;
     while (VarView->firstChild())
       delete VarView->firstChild();
+    while (ParamView->firstChild())
+      delete ParamView->firstChild();
     while (StackView->firstChild())
       delete StackView->firstChild();
+    VarView->setColumnWidth(0, VarView->width0);
+    VarView->setColumnWidth(1, VarView->width1);
+    VarView->setColumnWidth(2, VarView->width2);
+    ParamView->setColumnWidth(0, ParamView->width0);
+    ParamView->setColumnWidth(1, ParamView->width1);
+    ParamView->setColumnWidth(2, ParamView->width2);
   }
 
 }
 
-void COutputBar::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
+void CUtilityView::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
 {
   CHEStackData *cheData;
   LavaDECL *funcDecl;
@@ -358,7 +361,7 @@ void COutputBar::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
   }//while
 }
 
-void COutputBar::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
+void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
 {
   CHEStackData *cheData, *cheDataAct = (CHEStackData*)data->StackChain.GetNth(data->ActStackLevel+1);
   LavaDECL *funcDecl;
@@ -423,8 +426,10 @@ void COutputBar::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
                 sData.innermostStop = true;
               else
                 sData.innermostStop = false;
+              sData.finished = false;
               ((SynObjectBase*)stopExecDECL->Exec.ptr)->MakeTable((address)&stopDoc->IDTable, 0, (SynObjectBase*)stopExecDECL, onSelect, 0,0, (address)&sData);
               ((CExecView*)sData.execView)->sv->viewport()->update();
+              ((CExecView*)sData.execView)->sv->innermostStop = sData.innermostStop;
             }
             else 
               if (((CExecView*)sData.execView)->sv->callerStopToken) {
@@ -452,6 +457,7 @@ VarItem::VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListV
   :QListViewItem(parent, afterItem) 
 {
   myView = view;
+  setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
@@ -468,6 +474,7 @@ VarItem::VarItem(VarItem* parent, DDItemData* data, VarListView* view)
   :QListViewItem(parent) 
 {
   myView = view;
+  setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
@@ -483,6 +490,7 @@ VarItem::VarItem(VarItem* parent, DDItemData* data, VarListView* view)
 VarItem::VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data)
   :QListViewItem(parent, afterItem) 
 {
+  setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
@@ -499,6 +507,7 @@ VarItem::VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data)
 VarItem::VarItem(VarListView* parent, DDItemData* data)
   :QListViewItem(parent) 
 {
+  setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
@@ -551,8 +560,10 @@ void VarItem::setOpen(bool O)
     if (!childrenDrawn) {
       rqs = new ChObjRq;
       makeNrs(rqs);
-      myView->itemToOpen = this;
-      mess = new DbgMessage(Dbg_MemberDataRq,rqs);
+      myView->myUtilityView->itemToOpen = this;
+      mess = new DbgMessage(Dbg_MemberDataRq);
+      mess->ObjNr.ptr = rqs;
+      mess->fromParams = myView->myUtilityView->ParamView == myView;
       QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
       return;
     }
@@ -569,32 +580,42 @@ void VarItem::makeNrs(ChObjRq *rqs)
     ((VarItem*)parent())->makeNrs(rqs);
 }
 
-VarListView::VarListView(QWidget *parent, COutputBar* bar)
+VarListView::VarListView(QWidget *parent, CUtilityView* bar, bool forParams)
 :QListView(parent, "VarListView")
 {
   QString label;
 
-  myBar = bar;
-  itemToOpen = 0;
+  myUtilityView = bar;
+//  itemToOpen = 0;
   setRootIsDecorated(true);
   setFocusPolicy(QWidget::StrongFocus);
   setSorting(-1);
-  addColumn("varName (static type [/ runtime type])");
-  addColumn("Address");
-  addColumn("Value");
+  if (forParams)
+    addColumn("func.params. (type[/RT type])");
+  else
+    addColumn("variables (type[/RT type])");
+  addColumn("address");
+  addColumn("value");
   //setRootIsDecorated(true);
   header()->show();
+  setShowToolTips(true);
   setSelectionMode(QListView::Single);
+  width0 = columnWidth(0);
+  width1 = columnWidth(1);
+  width2 = columnWidth(2);
 }
 
-void VarListView::makeItems(DbgStopData* data)
+void VarListView::makeItems(const CHAINX& objChain) //DbgStopData* data)
 {
   CHE* chData;
   VarItem* item=0;
   int cc=0;
   while (firstChild())
     delete firstChild();
-  for (chData = (CHE*)data->ObjectChain.first; chData; chData = (CHE*)chData->successor) {
+  setColumnWidth(0, width0);
+  setColumnWidth(1, width1);
+  setColumnWidth(2, width2);
+  for (chData = (CHE*)objChain.first; chData; chData = (CHE*)chData->successor) {
     if (item) 
       item = new VarItem(this, item, (DDItemData*)chData->data);
     else
@@ -602,32 +623,39 @@ void VarListView::makeItems(DbgStopData* data)
     item->itemCount = cc;
     cc++;
   }
-  myBar->SetTab(tabDebug);
+  myUtilityView->SetTab(tabDebug);
 }
 
 
-StackListView::StackListView(QWidget *parent, COutputBar* bar)
+StackListView::StackListView(QWidget *parent, CUtilityView* bar)
 :QListView(parent, "StackListView")
 {
   QString label, emptyString;
 
-  myBar = bar;
+  myUtilityView = bar;
   lastSelected = 0;
   addColumn(emptyString);
   setRootIsDecorated(false);
   header()->hide();
   setFocusPolicy(QWidget::StrongFocus);
   setSorting(-1);
+  setShowToolTips(true);
   setSelectionMode(QListView::Single);
   allDrawn = false;
+  connect(this,SIGNAL(clicked(QListViewItem*)), SLOT(itemClicked(QListViewItem*)));
   connect(this,SIGNAL(selectionChanged()), SLOT(selChanged()));
+}
+
+void StackListView::itemClicked(QListViewItem *item)
+{
+  selChanged();
 }
 
 void StackListView::selChanged()
 {
   lastSelected = (CTreeItem*)currentItem();
   if (allDrawn) {
-    DbgMessage* mess = new DbgMessage(Dbg_StackRq,0);
+    DbgMessage* mess = new DbgMessage(Dbg_StackRq);
     mess->CallStackLevel = lastSelected->itemCount;
     QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
@@ -656,17 +684,25 @@ void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
           label = label + "function)";
           break;
         case Require:
-          label = label + "require)";
+          if (funcDecl->ParentDECL->DeclType == Interface)
+            label = label + "require)";
+          else
+            label = label + "impl. require)";
           break;
         case Ensure:
-          label = label + "ensure)";
+          if (funcDecl->ParentDECL->DeclType == Interface)
+            label = label + "ensure)";
+          else
+            label = label + "impl. ensure)";
           break;
         default:;
         }
         break;
       case Interface:
-      case Impl:
         label = label + "invariant)";
+        break;
+      case Impl:
+        label = label + "impl. invariant)";
         break;
       case Initiator:
         label = label + "initiator)";

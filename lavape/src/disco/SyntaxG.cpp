@@ -814,6 +814,7 @@ void CDPProgPoint (PutGetFlag pgf, ASN1* cid, address varAddr,
     CDPTDeclType(pgf,cid,(address)&vp->ExecType);
     CDPTID(pgf,cid,(address)&vp->FuncID);
     CDPpp.CVTbool(pgf,cid,vp->Activate);
+    CDPpp.CVTbool(pgf,cid,vp->Skipped);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPProgPoint
 
@@ -833,6 +834,7 @@ void CDPDbgStopData (PutGetFlag pgf, ASN1* cid, address varAddr,
     CDPpp.CVTint(pgf,cid,vp->ActStackLevel);
     vp->StackChain.CDP(pgf,cid,CDPStackData,NewCHEStackData);
     vp->ObjectChain.CDP(pgf,cid);
+    vp->ParamChain.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPDbgStopData
 
@@ -894,6 +896,7 @@ void CDPDbgMessage (PutGetFlag pgf, ASN1* cid, address varAddr,
       break;
     case Dbg_MemberDataRq:
       vp->ObjNr.CDP(pgf,cid,CDPChObjRq);
+      CDPpp.CVTbool(pgf,cid,vp->fromParams);
       break;
     case Dbg_StackRq:
       CDPpp.CVTint(pgf,cid,vp->CallStackLevel);

@@ -1401,17 +1401,17 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
       if (synObj == synObjOrig)
         break;
       ckd.inQuant = (synObj->primaryToken != declare_T);
-      for ( chp = (CHE*)((QuantStmOrExp*)synObj)->quantifiers.first;
+      for ( chp = (CHE*)((QuantStmOrExp*)synObj)->quantifiers.last;
             chp;
-            chp = (CHE*)chp->successor) {
+            chp = (CHE*)chp->predecessor) {
         quant = (Quantifier*)chp->data;
         if (quant == stopQuant) {
           stopQuant = 0;
           break;
         }
-        for ( varPtr = (CHE*)quant->quantVars.first;
+        for ( varPtr = (CHE*)quant->quantVars.last;
               varPtr;
-              varPtr = (CHE*)varPtr->successor) {
+              varPtr = (CHE*)varPtr->predecessor) {
           if (((SynObject*)varPtr->data)->primaryToken == VarName_T) {
             varName = (VarName*)varPtr->data;
             if (quant->elemType.ptr) {
@@ -1898,6 +1898,7 @@ bool SelfVar::Check (CheckData &ckd)
     concernExecs = true;
   else if (concernExecs) {
     concernExecs = false;
+    checked = true;
     return ((SynObject*)execName.ptr)->Check(ckd);
   }
 #endif
@@ -2041,6 +2042,7 @@ bool SelfVar::Check (CheckData &ckd)
 #endif
 
   ((RefTable*)ckd.refTable)->EndOfExec();
+  checked = true;
   EXIT
 }
 

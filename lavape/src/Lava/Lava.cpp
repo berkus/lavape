@@ -72,7 +72,7 @@ int main( int argc, char ** argv ) {
 	CLavaApp ap(argc,argv);
   QString componentPath;
 
-  //DebugBreak();
+//  DebugBreak();
   if (sock_init())
     qDebug("sock_init failed");
 

@@ -41,11 +41,15 @@ public:
   bool startedFromLava;
   void clearBrkPnts();
   void adjustBrkPnts();
-  void removeBrkPoints(CLavaBaseDoc* closedDoc);
+  void adjustBrkPnts(CHAINANY* brkPntsChain);
+  void cleanBrkPoints(CLavaBaseDoc* closedDoc);
   void restoreBrkPoints(CLavaBaseDoc* openedDoc);
+  virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc);
+  virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc);
   ~CLavaPEDebugThread() {reset(true);}
 
 protected:
+  void checkBrkPnts0();
   void checkBrkPnts1();
   void checkBrkPnts2();
   void reset(bool final);

@@ -66,7 +66,7 @@ public:
   virtual void SetExecItemImage(LavaDECL* /*execDECL*/, bool /*empty*/, bool /*hasErrors*/) {}
   void MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bool skipServices = false); //with: with B_Object and B_Service
   bool Step(CLavaPEHint* hint, LavaDECL* parDECL, CHE*& relElem);
-  CLavaPEHint* InsDelDECL(CLavaPEHint* hint, bool undo, bool redo/*, CHE *elRemoved*/);
+  CLavaPEHint* InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, bool& localMove);
   void ChangeDECL(CLavaPEHint* hint, bool undo);
   void UndoDelSyntax(CLavaPEHint* hint);
   virtual void DelSyntax(CHESimpleSyntax* delSyn);
@@ -79,10 +79,10 @@ public:
   virtual CHE* SetExecChe(LavaDECL* parentDecl,LavaDECL* execDecl) {return 0;}
   virtual bool OpenExecView(LavaDECL* execDECL) {return false;}
   virtual void OnCloseLastExecView() {}
-  virtual void SetExecBarText(CSearchData& /*sData*/) {}
+  virtual void SetExecFindText(CSearchData& /*sData*/) {}
   virtual void SetPEError(const CHAINX& /*ErrChain*/, bool /*andShow*/) {}
   virtual void ResetError() {}
-  virtual bool ErrorBarVisible() {return false;}
+  virtual bool ErrorPageVisible() {return false;}
   virtual void OnShowError() {}
   virtual wxDocument* FindOpenDoc(const QString& /*fn*/) {return 0;}
   virtual void UpdateMoveInDocs(const DString& /*clipDoc*/) {}

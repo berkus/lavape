@@ -12,20 +12,28 @@
   </head>
   <body>
   <h2 align="center">&quot;Query interface&quot; for a component object</h2>
-  <p>Use the <font color="#0000FF"><b>attach</b> </font>expression to make an 
+  <p>First use the <font color="#0000FF"><b>attach</b> </font>expression to make an 
   existing <a href="../Components.htm">component 
   object</a> accessible through one of its component object interfaces.</p>
-  <p>For instance</p>
+  <p>For example</p>
   <blockquote>
     <pre><font color="#0000FF"><b>declare</b></font>
-  I1 itf1;
+  DOM itf1;
+  I2 itf2
 <font color="#0000FF"><b>do</b></font>
   <font color="#0000FF"><b>set</b></font> itf1 <font color="#0000FF"><b>&lt;==</b></font> <font color="#0000FF"><b>attach</b></font> HTTP,
-               <font color="#0000FF"><b>interface</b></font> I1,
+               <font color="#0000FF"><b>interface</b></font> DOM,
                <font color="#0000FF"><b>url</b></font> &quot;<a href="http://lavape.sourceforge.net">http://lavape.sourceforge.net</a>&quot;;
-<font color="#0000FF"><b>#declare</b></font></pre>
+  ...
+
+  <font color="#0000FF"><b>set</b></font> itf2 = <font color="#0000FF"><b>interface</b></font> I2 <font color="#0000FF"><b>of</b></font> itf1<font color="#0000FF"><b>
+#declare</b></font></pre>
   </blockquote>
   <p>could be used to access the <font color="#FF0000"><i><b>Lava</b></i></font> home page through a &quot;Document Object 
   Model&quot; interface (not yet implemented).</p>
+  <p>Thereafter you can use the &quot;query interface&quot; expression &quot;<b>interface</b>
+  <font color="#FF0000">&lt;type&gt;</font> <font color="#0000FF"><b>of</b></font>
+  <font color="#FF0000">&lt;expr&gt;</font>&quot; to make another interface accessible that 
+  is also supported by this component object.</p>
   </body>
 </html>

@@ -154,6 +154,7 @@ MyListView::MyListView(CTreeView* view)
   setFocusPolicy(QWidget::StrongFocus);
   viewport()->setAcceptDrops(true);
   setDragAutoScroll(true);
+  setShowToolTips(true);
 }
 
 void MyListView::setCurAndSel(QListViewItem* item, bool singleSel)

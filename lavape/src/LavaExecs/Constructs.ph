@@ -473,7 +473,7 @@ public:
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored){}
   void SetError(CheckData &ckd,QString *error,char *textParam=0);
   void SetRTError(CheckData &ckd,QString *error,LavaVariablePtr stackFrame,const char *textParam=0);
-  QString DebugStop(CheckData &ckd,LavaVariablePtr stack,QString excMsg,StopReason sr);
+  QString DebugStop(CheckData &ckd,LavaVariablePtr stack,QString excMsg,StopReason sr,LavaVariablePtr calleeStack,LavaDECL *calleeFunc);
   QString LocationOfConstruct ();
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) { decl = 0; cat = unknownCategory; }
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
@@ -1334,6 +1334,8 @@ struct TDODV : public TDOD {
   TDODV(bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QString(QObject::tr("<p>This is a <a href=\"../ObjectLifeCycle.htm\">variable</a> reference</p>")); }
 };
 
 class ExpressionV : public Expression {
@@ -1373,7 +1375,7 @@ public:
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QString(QObject::tr("<p>This is a local variable</p>")); }
+    return QString(QObject::tr("<p>This is a <a href=\"Declare.htm\">local variable</a></p>")); }
 };
 
 class FormParmV : public FormParm {

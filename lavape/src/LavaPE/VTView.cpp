@@ -708,7 +708,7 @@ bool CVTView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
 void CVTView::SetVTError(CTreeItem* item)
 {
   DString str0;
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetComment(str0, true);
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetComment(str0, true);
   if (item  && (item != GetListView()->firstChild())) {
     CVTItemData * itd = (CVTItemData*)item->getItemData();
     if (itd && ((itd->type == TNodeType_VT)
@@ -716,11 +716,11 @@ void CVTView::SetVTError(CTreeItem* item)
          && itd->VTEl_Tree.Ambgs.first) {
       CHAINX ErrChain;
       new CLavaError(&ErrChain, &ERR_AmbgInVT);
-      ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetErrorOnBar(ErrChain);
+      ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetErrorOnUtil(ErrChain);
     }
   }
   else 
-    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->ResetError();
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->ResetError();
 }
 
 bool CVTView::AddToExChain(CTreeItem* itemOver)
@@ -861,7 +861,29 @@ VTWhatsThis::VTWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
 
 
 QString VTWhatsThis::text(const QPoint &point) {
-  QListViewItem item=listView->itemAt(point);
-  //return execView->text->currentSynObj->whatsThisText();
-  return QString(QObject::tr("\"What's this?\" help not yet available for this declaration item"));
+  CTreeItem *item=(CTreeItem*)listView->itemAt(point);
+  CVTItemData *itd=(CVTItemData*)item->getItemData();
+  LavaDECL *decl;
+
+  listView->setCurAndSel(item);
+
+  if (itd)
+    switch (itd->type) {
+    case TNodeType_Class:
+      decl = ((CLavaBaseDoc*)listView->lavaView->GetDocument())->IDTable.GetDECL(itd->VTEl_Tree.VTClss);
+      if (decl->DeclType == Package)
+        return QString(QObject::tr("<p>This is a <a href=\"../Packages.htm#packages\">package</a></p>"));
+      else
+        return QString(QObject::tr("<p>This is the <a href=\"../SepItfImpl.htm\">interface</a> of a <b><i><font color=red>Lava</font></i></b> class</p>"));
+    case TNodeType_VT:
+      return QString(QObject::tr("<p>This is a <a href=\"../PatternsFrameworks.htm#VT\">virtual type</a></p>"));
+    case TNodeType_Feature:
+      decl = ((CLavaBaseDoc*)listView->lavaView->GetDocument())->IDTable.GetDECL(itd->VTEl_Tree.VTEl);
+      if (decl->DeclType == Function)
+        return QString(QObject::tr("<p>This is a member function of a <b><i><font color=red>Lava</font></i></b> <a href=\"../SepItfImpl.htm\">class</a></p>"));
+      else if (decl->DeclType == Attr)
+        return QString(QObject::tr("<p>This is a member <a href=\"../ObjectLifeCycle.htm\">variable</a> of a <b><i><font color=red>Lava</font></i></b> <a href=\"../SepItfImpl.htm\">class</a></p>"));
+      break;
+    }
+  return QString(QObject::tr("<p>No specific help available for this tree node</p>"));
 }

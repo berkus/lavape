@@ -120,8 +120,8 @@
 				<keyword ref="html/SepItfImpl.htm#classnotion">class notion</keyword>
 				<keyword ref="html/SepItfImpl.htm">COM</keyword>
 				<keyword ref="html/SepItfImpl.htm">CORBA</keyword>
-				<keyword ref="html/SepItfImpl.htm#objectcreation">creation of objects</keyword>
-				<keyword ref="html/SepItfImpl.htm#objectcreation">object creation</keyword>
+				<keyword ref="html/SepItfImpl.htm#objectCreation">creation of objects</keyword>
+				<keyword ref="html/SepItfImpl.htm#objectCreation">object creation</keyword>
 				<keyword ref="html/SepItfImpl.htm#infohiding">information hiding principle</keyword>
 				<keyword ref="html/SepItfImpl.htm">inheritance</keyword>
 				<keyword ref="html/SepItfImpl.htm#virtualBaseClasses">virtual base classes</keyword>
@@ -179,14 +179,14 @@
 			<section ref="html/ReadOnly.htm" title="Read-only Lava constructs and functions">
 			 	<keyword ref="html/ReadOnly.htm">read-only in general</keyword>
 			</section>
-			<section ref="html/StagesSample.htm" title="Stages in the life of Lava objects">
-				<keyword ref="html/StagesSample.htm#initializer">constructor</keyword>
-				<keyword ref="html/StagesSample.htm#creation">object</keyword>
-				<keyword ref="html/StagesSample.htm#creation">new</keyword>
-				<keyword ref="html/StagesSample.htm">life-time</keyword>
+			<section ref="html/ObjectLifeCycle.htm" title="Stages in the life of Lava objects">
+				<keyword ref="html/ObjectLifeCycle.htm#initializer">constructor</keyword>
+				<keyword ref="html/ObjectLifeCycle.htm#creation">object</keyword>
+				<keyword ref="html/ObjectLifeCycle.htm#creation">new</keyword>
+				<keyword ref="html/ObjectLifeCycle.htm">life-time</keyword>
 			</section>
 			<section ref="html/IniChecks.htm" title="Comprehensive initialization checks">
-				<keyword ref="html/StagesSample.htm">initialization checks</keyword>
+				<keyword ref="html/ObjectLifeCycle.htm">initialization checks</keyword>
 			</section>
 			<section ref="html/PointersRefCounts.htm" title="Pointers, reference counts, storage management">
 				<keyword ref="html/PointersRefCounts.htm">application-level pointers</keyword>
@@ -215,7 +215,9 @@
 				<keyword ref="html/Transactions.htm">synchronization</keyword>
 				<keyword ref="html/Transactions.htm">threads</keyword>
 				<keyword ref="html/Transactions.htm">multi-threading</keyword>
-				<keyword ref="html/Transactions.htm#synch">monitors</keyword>
+				<keyword ref="html/Transactions.htm#mutualExclusion">mutual exclusion</keyword>
+				<keyword ref="html/Transactions.htm#producerConsumer">consumer/producer</keyword>
+				<keyword ref="html/Transactions.htm#producerConsumer">producer/consumer</keyword>
 			</section>
 			<section ref="html/Callbacks.htm" title="The Lava callback concept">
 				<keyword ref="html/Callbacks.htm">callbacks</keyword>
@@ -239,12 +241,12 @@
 			<keyword ref="html/LavaBySamples.htm">learning lava by samples</keyword>
 			<section ref="html/HelloWorldSample.htm" title="&quot;Hello World&quot;"/>
 			<section ref="html/FormSample.htm" title="Forms-oriented user interface"/>
-			<section ref="html/StagesSample.htm" title="Stages in the life of Lava objects">
-				<keyword ref="html/StagesSample.htm">assignment</keyword>
-				<keyword ref="html/StagesSample.htm">objects, creation</keyword>
-				<keyword ref="html/StagesSample.htm">creation of objects</keyword>
-				<keyword ref="html/StagesSample.htm">declarations</keyword>
-				<keyword ref="html/StagesSample.htm#initializer">initializer</keyword>
+			<section ref="html/ObjectLifeCycle.htm" title="Stages in the life of Lava objects">
+				<keyword ref="html/ObjectLifeCycle.htm">assignment</keyword>
+				<keyword ref="html/ObjectLifeCycle.htm#creation">object creation</keyword>
+				<keyword ref="html/ObjectLifeCycle.htm">creation of objects</keyword>
+				<keyword ref="html/ObjectLifeCycle.htm">declarations</keyword>
+				<keyword ref="html/ObjectLifeCycle.htm#initializer">initializer</keyword>
 			</section>
 			<section ref="html/StateValueSample.htm" title="State and value objects"/>
 			<section ref="html/ItfImplSample.htm" title="Interfaces and implementations"/>
@@ -300,6 +302,9 @@
 				<keyword ref="html/EditExec.htm">exec</keyword>
 				<keyword ref="html/EditExec.htm">placeholder</keyword>
 				<keyword ref="html/EditExec.htm#constraint">invariant</keyword>
+				<keyword ref="html/EditExec.htm#arithExpr">arithmetic expressions</keyword>
+				<keyword ref="html/EditExec.htm#arithExpr">nested arithmetic expressions</keyword>
+				<keyword ref="html/EditExec.htm#arithExpr">parentheses in arithmetic expressions</keyword>
 			</section>
 			<section ref="html/EditForm.htm" title="Editing form specifications">
 				<keyword ref="html/EditForm.htm">forms, automatic generation</keyword>

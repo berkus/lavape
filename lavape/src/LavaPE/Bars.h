@@ -21,22 +21,24 @@
 #include "qsplitter.h"
 
 
-enum BarTabs { /*tabBuild,*/ tabComment, tabError, tabFind, tabDebug };
+enum UtilityTabs { /*tabBuild,*/ tabComment, tabError, tabFind, tabDebug };
 
-class COutputBar;
+class CUtilityView;
 
 class StackListView: public QListView
 {
 public:
-  StackListView(QWidget *parent, COutputBar* bar);
+  StackListView(QWidget *parent, CUtilityView* util);
   ~StackListView() {}
   void makeItems(DbgStopData* data, CLavaBaseDoc* doc);
-  COutputBar* myBar;
+  CUtilityView* myUtilityView;
   CTreeItem* lastSelected;
   bool allDrawn;
 
 public slots:
   void selChanged();
+  void itemClicked(QListViewItem *item);
+
 private:
   Q_OBJECT
 
@@ -47,11 +49,11 @@ class VarItem;
 class VarListView: public QListView
 {
 public:
-  VarListView(QWidget *parent, COutputBar* bar);
+  VarListView(QWidget *parent, CUtilityView* util, bool forParams);
   ~VarListView() {}
-  void makeItems(DbgStopData* data);
-  COutputBar* myBar;
-  VarItem *itemToOpen;
+  void makeItems(const CHAINX& objChain);
+  CUtilityView* myUtilityView;
+  int width0, width1, width2;
 private:
   Q_OBJECT
 
@@ -78,31 +80,33 @@ public:
 };
 
 
-class COutputBar : public QTabWidget //CSizeDlgBar
+class CUtilityView : public QTabWidget //CSizeDlgBar
 {
 public:
-  COutputBar(QWidget *parent);
-  ~COutputBar();
+  CUtilityView(QWidget *parent);
+  ~CUtilityView();
 
-  BarTabs ActTab;
+  UtilityTabs ActTab;
   QString IdlMsg;
   bool ErrorEmpty;
   bool CommentEmpty;
   void DeleteAllFindItems();
   void ResetError();
-  void SetErrorOnBar(LavaDECL* decl);
-  void SetErrorOnBar(const CHAINX& ErrChain);
+  void SetErrorOnUtil(LavaDECL* decl);
+  void SetErrorOnUtil(const CHAINX& ErrChain);
   void setError(const CHAINX& ErrChain, QString * strA);
   void SetComment(const DString& str, bool toStatebar = false);
   void SetFindText(const DString& text, CFindData* data);
-  void SetTab(BarTabs tab);
+  void SetTab(UtilityTabs tab);
   void setDebugData(DbgMessages* message, CLavaBaseDoc* doc);
   void showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc);
   void removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc);
-  //void ChangeTab(BarTabs actTab);
+  //void ChangeTab(UtilityTabs actTab);
   VarListView* VarView;
+  VarListView* ParamView;
   StackListView* StackView;
   CLavaBaseDoc* stopDoc;
+  VarItem *itemToOpen;
 
 protected:
   QListView* FindPage;

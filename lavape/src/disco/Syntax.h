@@ -555,12 +555,10 @@ enum TTableUpdate {
            onMove,
            onConstrCopy,
            onTypeID,
-		   onSearch,
+		       onSearch,
            onSelect,
-		   onSetSynOID,
-           onSetBrkPnt,
-           onSetRunToPnt
-           };
+		       onSetSynOID,
+           onGetAddress};
 
   struct CSecTabBase {
     virtual void Destroy() {}
@@ -1194,7 +1192,6 @@ enum StopReason {
   Stop_NextOp,
   Stop_StepInto,
   Stop_StepOut,
-  Stop_FunctionCall,
   Stop_Exception};
 
 extern DISCO_DLL void CDPStopReason (PutGetFlag pgf, ASN1* cid, address varAddr,
@@ -1279,16 +1276,22 @@ extern DISCO_DLL ChainAnyElem* NewCHEStackData ();
 struct DISCO_DLL ProgPoint : public DObject  {
   DECLARE_DYNAMIC_CLASS(ProgPoint)
 
+
+  ProgPoint()
+  {
+    Skipped=false;
+    SynObj=0;
+    FuncDoc=0;
+  }
   int SynObjID;
   TDeclType ExecType;
   TID FuncID;
   bool Activate;
+  bool Skipped;
   SynObjectBase *SynObj;
   DString FuncDocName;
   DString FuncDocDir;
   address FuncDoc;
-
-  ProgPoint () {}
 
   virtual void CopyData (AnyType *from) {
     *this = *(ProgPoint*)from;
@@ -1357,10 +1360,15 @@ struct DISCO_DLL DbgStopData : public DObject  {
   int ActStackLevel;
   CHAINANY/*StackData*/ StackChain;
   CHAINX ObjectChain;
+  CHAINX ParamChain;
+  CSecTabBase ***CalleeStack;
+  LavaDECL *CalleeFunc;
 
   DbgStopData()
   {
     ActStackLevel=0;
+    CalleeStack=0;
+    CalleeFunc=0;
   }
 
   virtual void CopyData (AnyType *from) {
@@ -1454,6 +1462,7 @@ struct DISCO_DLL DbgMessage : public DObject  {
 
   //  | Dbg_MemberDataRq:
           NSTChObjRq ObjNr;
+          bool fromParams;
 
   //  | Dbg_StackRq:
           int CallStackLevel;
@@ -1476,10 +1485,9 @@ struct DISCO_DLL DbgMessage : public DObject  {
     ObjData.ptr=obj;
   }
 
-  DbgMessage(DbgCommand com,ChObjRq *oRq)
+  DbgMessage(DbgCommand com)
   {
     Command=com;
-    ObjNr.ptr=oRq;
   }
 
   DbgMessage()

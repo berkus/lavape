@@ -157,9 +157,7 @@ void wxApp::SetAppName(const QString& name) {
 
 void wxApp::onGuiThreadAwake() {
 	// make sure that UpdateUI is invoked only once between two wait states
-//	qDebug("onGuiThreadAwake");
   inUpdateUI = false;
-//  idleTimer->start(0,true);
 }
 
 static bool cmdLineEvaluated=false;
@@ -168,7 +166,6 @@ void wxApp::onIdle()
 {
 	// make sure that UpdateUI is invoked only once between two wait states
 	if (!inUpdateUI) {
-//	  qDebug("onIdle, postEvent");
 //    inUpdateUI = true;
 		QApplication::postEvent(this,new QCustomEvent(IDU_Idle,0));
 	}
@@ -176,7 +173,6 @@ void wxApp::onIdle()
 
 void wxApp::customEvent(QCustomEvent *e)
 {
-//  qDebug("customEvent called");
 	if (e->type() == IDU_Idle)
 	  	onUpdateUI();
 }
@@ -191,7 +187,6 @@ void wxApp::onUpdateUI()
 		return;
 		
 	inUpdateUI = true;
-//  qDebug("onUpdateUI called");
 
   for (act = actionList.first(); act; act = actionList.next())
     act->enable = false;

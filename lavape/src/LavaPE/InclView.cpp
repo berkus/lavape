@@ -386,8 +386,8 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
     CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
     if (bActivate) {
       frame->newIncludeAction->setEnabled(!GetDocument()->changeNothing);
-      frame->m_OutputBar->SetComment(str0, true);
-      frame->m_OutputBar->ResetError(); 
+      frame->m_UtilityView->SetComment(str0, true);
+      frame->m_UtilityView->ResetError(); 
       if (!GetListView()->hasFocus())
         GetListView()->setFocus();
       GetListView()->currentItem()->repaint();
@@ -411,7 +411,10 @@ InclWhatsThis::InclWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
 
 
 QString InclWhatsThis::text(const QPoint &point) {
-  QListViewItem item=listView->itemAt(point);
-  //return execView->text->currentSynObj->whatsThisText();
-  return QString(QObject::tr("\"What's this?\" help not yet available for this declaration item"));
+  CTreeItem *item=(CTreeItem*)listView->itemAt(point);
+
+  if (item == listView->firstChild())
+    return QString(QObject::tr("This is the current <b><i><font color=red>Lava</font></i></b> file; it may <a href=\"../Packages.htm#include\">include</a> other <b><i><font color=red>Lava</font></i></b> files"));
+  else
+    return QString(QObject::tr("This is an <a href=\"../Packages.htm#include\">included</a> <b><i><font color=red>Lava</font></i></b> file"));
 }

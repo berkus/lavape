@@ -261,7 +261,7 @@ bool CPEBaseDoc::Step(CLavaPEHint* hint, LavaDECL* parDECL, CHE*& relElem)
 
 
 
-CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo/*, CHE *elRemoved*/)
+CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, bool& localMove)
 {
   CLavaPEHint  *newHint, *viewHint = hint;
   CHE *cheElDef, *relElem, *cheHint, *elRemoved, *cheExec, *cheNext;
@@ -272,7 +272,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo/*, C
   TID id;
   SynFlags firstlast;
   CPECommand com;
-  bool localMove = false;
+  localMove = false;
   int d8=-1;
 
   if (undo) {
@@ -725,7 +725,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
   TDECLComment* ptr;
   DString inclFile, clipDoc, oldTopName, oldUsedName;
   SynFlags firstLast;
-  bool move, inclDel=false, bb, otherDocs = true;
+  bool move, localMove = false, inclDel=false, bb, otherDocs = true;
 
   if (undo) {
     hint = UndoMem.UndoFromMem(pos);
@@ -780,7 +780,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
     case CPECommand_Insert:
     case CPECommand_Move:
     case CPECommand_Delete:
-      viewHint = InsDelDECL(hint, undo, redo/*, prodRemoved, elRemoved*/);
+      viewHint = InsDelDECL(hint, undo, redo, localMove);
       break;
     case CPECommand_Exclude:
       newINCL =((CHESimpleSyntax*)hint->CommandData1)->data.nINCL;
@@ -893,7 +893,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
       }
     Modify (UndoMem.DocModified() || modified); 
   }//while
-  if (move)
+  if (move && !localMove)
     UpdateMoveInDocs(clipDoc);
   else
     if (otherDocs && (undo || redo || firstLast.Contains(lastHint))) {
@@ -904,6 +904,8 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
     IDTable.ChangeTab.Destroy();
   IDTable.DragINCL = 0;
   IDTable.DropINCL = 0;
+  if (localMove)
+    LBaseData->debugThread->checkAndSetBrkPnts(this);
   if (m_savedYet && LBaseData->m_saveEveryChange)
     wxDocManager::GetDocumentManager()->OnFileSave();
   return true;

@@ -41,6 +41,7 @@
   #include "commdlg.h"
 #endif
 
+
 /*
   LavaPE Commands for operation  | Commanddata and meaning in the direction
                                |  Views to Document               |  Document to View| Undo queue
@@ -363,7 +364,13 @@ public:
 class LAVABASE_DLL  CLavaBaseData : public QObject
 {
 public:
-  CLavaBaseData() :QObject(0, "LavaBaseData") {newNum = 0; declareButton = 0; ContData = 0; debugOn = false;}
+  CLavaBaseData() :QObject(0, "LavaBaseData") {
+    newNum = 0;
+    declareButton = 0;
+    ContData = 0;
+    debugOn = false;
+    tempBrkPoint = 0;}
+
   void Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate);
   ~CLavaBaseData();
 
@@ -378,6 +385,7 @@ public:
   CMultiUndoMem MultiUndoMem;
   CPEBaseBrowse *Browser;
   CBaseExecUpdate *ExecUpdate;
+  SynObjectBase *tempBrkPoint;
   QSize ptMaxSize;
   QString lastFileOpen;
   QString WndPane;
@@ -517,6 +525,7 @@ public:
     nextFreeID = 0;
     synObj = 0;
     debugStop = false;
+    finished = false;
   }
 
   //DString fileName;
@@ -529,9 +538,8 @@ public:
   DString constructNesting;
   wxDocument *doc;
   CFindData findRefs;
-  bool debugStop;
+  bool debugStop,innermostStop, finished;
   StopReason stopReason;
-  bool innermostStop;
 };
 
 

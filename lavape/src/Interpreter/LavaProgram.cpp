@@ -313,6 +313,9 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
       ckdl.inINCL = execDECL->inINCL;
       try {
         ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+        sData.doc = ckdl.document;
+        sData.nextFreeID = 0;
+        sData.finished = false;
         ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
       }
       catch(CUserException) {
@@ -335,6 +338,9 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
       ckdl.inINCL = execDECL->inINCL;
       try {
         ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+        sData.doc = ckdl.document;
+        sData.nextFreeID = 0;
+        sData.finished = false;
         ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
       }
       catch(CUserException) {
@@ -457,6 +463,9 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
         implDECL->WorkFlags.INCL(runTimeOK);
         try {
           ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+          sData.doc = ckdl.document;
+          sData.nextFreeID = 0;
+          sData.finished = false;
           ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
         }
         catch(CUserException) {
@@ -493,6 +502,9 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
             try {
               ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
               sData.nextFreeID = 0;
+              sData.doc = ckdl.document;
+              sData.nextFreeID = 0;
+              sData.finished = false;
               ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
             }
             catch(CUserException) {
@@ -2231,6 +2243,9 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
         ckd.myDECL = topDECL;
         ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
         sData.nextFreeID = 0;
+        sData.doc = ckd.document;
+        sData.nextFreeID = 0;
+        sData.finished = false;
         ((SynObject*)topDECL->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
         if (!ok) {
           critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
@@ -2379,7 +2394,7 @@ bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr newStackFrame[SFH+3];
   newStackFrame[0] = stack[0];
   newStackFrame[1] = stack[1];
-  newStackFrame[2] = stack[2];
+  newStackFrame[2] = (LavaObjectPtr)((unsigned)stack[2] & ~2);
   newStackFrame[SFH] = stack[SFH];
   newStackFrame[SFH+1] = stack[SFH+1];
   newStackFrame[SFH+2] = 0;

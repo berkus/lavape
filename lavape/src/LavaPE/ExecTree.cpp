@@ -1566,6 +1566,8 @@ void CExecChecks::ExecExec(LavaDECL ** pelDef, int level)
     ckd.document = Doc;
     ckd.myDECL = *pelDef; 
     ((SynObject*)(*pelDef)->Exec.ptr)->Check(ckd);
+    sData.doc = Doc;
+    sData.execDECL = *pelDef;
     ((SynObject*)(*pelDef)->Exec.ptr)->MakeTable((address)&Doc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
     Doc->nErrors += ckd.nErrors;
     Doc->nPlaceholders += ckd.nPlaceholders;

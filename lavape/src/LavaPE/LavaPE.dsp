@@ -81,8 +81,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\wxqDocView\Debug\wxqDocView.lib ..\LavaGUI\Debug\LavaGUI.lib ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaExecs\Debug\LavaExecs.lib ..\SFLsockets\Debug\SFLsockets.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept /libpath:"../wxqDocView/Debug" /libpath:"$(QTDIR)/lib"
-# SUBTRACT LINK32 /nodefaultlib
+# ADD LINK32 ..\wxqDocView\Debug\wxqDocView.lib ..\LavaGUI\Debug\LavaGUI.lib ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaExecs\Debug\LavaExecs.lib ..\SFLsockets\Debug\SFLsockets.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /pdbtype:sept /libpath:"../wxqDocView/Debug" /libpath:"$(QTDIR)/lib"
+# SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
 
@@ -1117,10 +1117,6 @@ SOURCE=.\res\alias.bmp
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\appli.rc
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\basicat1.bmp
 # End Source File
 # Begin Source File
@@ -1253,7 +1249,14 @@ SOURCE=.\res\lavafile.bmp
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\LavaPE.rc2
+SOURCE=.\res\LavaPE.rc
+
+!IF  "$(CFG)" == "LavaPE - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "LavaPE - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

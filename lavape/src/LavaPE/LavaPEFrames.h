@@ -54,10 +54,10 @@ public:
 
   bool OnCreate();
 	virtual void UpdateUI();
-  COutputBar  * m_OutputBar;
-  bool OutputBarHidden;
-  int LastBarState; //-1:hidden, else: ActTab of m_OutputBar
-  void ShowBarTab(BarTabs tab);
+  CUtilityView  * m_UtilityView;
+  bool UtilitiesHidden;
+  int LastUtilitiesState; //-1:hidden, else: ActTab of m_UtilityView
+//  void ShowUtilitiesTab(UtilityTabs tab);
   void fillKwdToolbar(QToolBar *tb);
   void fillHelpToolbar(QToolBar *tb);
   void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
@@ -73,7 +73,7 @@ public:
 private:
 	int	lastTile;
 
-  void OnUpdateBarhammer(wxAction* action);
+  void OnUpdateshowUtil(wxAction* action);
 //  void OnUpdateViewToolbar1(wxAction* action);
 //  void OnUpdateViewToolbar2(wxAction* action);
 //  void OnUpdateViewToolbar4(wxAction* action);

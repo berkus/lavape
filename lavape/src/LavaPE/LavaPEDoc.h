@@ -48,7 +48,7 @@ public:
   void ConcernForms(CLavaPEHint* hint);
   void ConcernImpls(CLavaPEHint* hint, LavaDECL* ppDECL, bool undo=false);
   void DownFind(LavaDECL* inDecl, CFindData& fw); //const DString& absFileNameconst, const TID& refTid, const DString& enumID, const CFindWhat& fw);
-  virtual bool ErrorBarVisible();
+  virtual bool ErrorPageVisible();
   virtual void ExecViewPrivToPub(LavaDECL* func, int delID);
   void SetCom8();
   wxDocument* FindOpenDoc(const DString& fn);
@@ -87,7 +87,7 @@ public:
   virtual void ResetError();
   void ResetVElems(LavaDECL *decl);
 
-  virtual void SetExecBarText(CSearchData& sData);
+  virtual void SetExecFindText(CSearchData& sData);
   virtual CHE* SetExecChe(LavaDECL* parentDecl,LavaDECL* execDecl);
   virtual void SetExecItemImage(LavaDECL* execDECL, bool empty, bool hasErrors);
   void SetFindText(LavaDECL* inDecl, CFindData& fw);

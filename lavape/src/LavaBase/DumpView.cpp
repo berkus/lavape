@@ -221,7 +221,7 @@ void DDMakeClass::makeChildren()
               || secClassDECL != myDoc->DECLTab[B_Chain]
                 && secClassDECL != myDoc->DECLTab[B_Object]) {
               sectionPtr = myObject - myObject[0][0].sectionOffset + myObject[0][iSect].sectionOffset;
-              label = "(" + QString(secClassDECL->FullName.c) + ")";
+              label = "(" + QString(secClassDECL->FullName.c);
               if (secClassDECL->TypeFlags.Contains(isNative)) {
                 funcAdapter = GetAdapterTable(ckd, secClassDECL, myObject[0][0].classDECL);
                 if (funcAdapter && funcAdapter[adapterPos_DD]) {//section has DD function
@@ -404,6 +404,7 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLava
   withChildren = DD->hasChildren();
   setExpandable(withChildren);
   setHeight(16);
+  setMultiLinesEnabled(true);
   setText(0,DD->getValue0(varName));
   setText(1, DD->getValue1());
   setText(2, DD->getValue2());
@@ -428,6 +429,7 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObj
   withChildren = DD->hasChildren();
   setExpandable(withChildren);
   setHeight(16);
+  setMultiLinesEnabled(true);
   setText(0, DD->getValue0(varName));
   setText(1, DD->getValue1());
   setText(2, DD->getValue2());
@@ -452,6 +454,7 @@ DumpItem::DumpItem (DDMakeClass* dd, DumpListView* parent, CLavaBaseDoc* doc, La
   withChildren = DD->hasChildren();
   setExpandable(withChildren);
   setHeight(16);
+  setMultiLinesEnabled(true);
   varName = varName + "   ";
   setText(0,varName);
   setText(1, DD->getValue1());
@@ -503,11 +506,12 @@ DumpListView::DumpListView(QWidget *parent,CLavaBaseDoc* doc, LavaObjectPtr obje
   setFocusPolicy(QWidget::StrongFocus);
   setSorting(-1);
   addColumn("varName (static type [/ runtime type])");
-  addColumn("Address");
-  addColumn("Value");
+  addColumn("address");
+  addColumn("value");
   setRootIsDecorated(true);
   header()->show();
   setSelectionMode(QListView::Single);
+  setShowToolTips(true);
   if (myObject && myObject[0]) {
     myObject = myObject - myObject[0][0].sectionOffset; 
     label = varName + "   (" + QString(myObject[0][0].classDECL->FullName.c) + ")";
@@ -537,6 +541,8 @@ DebugItem::DebugItem(DDMakeClass* dd, DebugItem* parent, CLavaBaseDoc* doc, Lava
   childrenDrawn = false;
   withChildren = DD->hasChildren();
   HasChildren = withChildren;
+  if (!DD->myObject && parent)
+    varName = varName + ")";
   Column0 = DString(DD->getValue0(varName));
   Column1 = DString(DD->getValue1());
   Column2 = DString(DD->getValue2());

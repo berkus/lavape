@@ -76,7 +76,7 @@ public:
        clicked, escapePressed, active, forcePrimTokenSelect, deletePending,
        inIgnore, inExecHeader, inFormParms, inBaseInits,
        inParameter, inForeach, externalHint, execReplaced, nextError,
-       destroying, autoScroll, errMsgUpdated, initialUpdateDone;
+       destroying, autoScroll, makeSelectionVisible, errMsgUpdated, initialUpdateDone;
   TToken editToken;
   SelfVar *selfVar;
   CHAINX plhChain;
@@ -142,10 +142,10 @@ public:
   SynObject *RightSibling ();
   SynObject * AdjacentSynObj (SynObject *currentSynObj, CHETokenNode *nextTokenNode);
 
-// tool buttons:
   void DbgBreakpoint();
   void DbgRunToSel();
 
+// tool buttons:
   void OnBitAnd();
   void OnBitOr();
   void OnBitXor();
@@ -367,7 +367,7 @@ public:
 //  QFontMetrics *fm;
 	QPainter *p;
   QPixmap *debugStop, *debugStopGreen, *breakPoint;
-  bool inDebugStop, inBreakPoint;
+  bool inDebugStop, inBreakPoint, innermostStop;
   CHETokenNode *debugStopToken;
   CHETokenNode *callerStopToken;
   StopReason stopReason;

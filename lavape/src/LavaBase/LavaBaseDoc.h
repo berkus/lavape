@@ -25,6 +25,7 @@
 #endif
 
 
+
 struct CheckData;
 
 
@@ -377,6 +378,7 @@ struct LAVABASE_DLL CheckData {
     refTable = 0;
     currentStackLevel = 0;
     stackFrameSize = 0;
+    stackFrame[0] = stackFrame[1] = stackFrame[2] = 0;
     nPlaceholders = 0;
     nErrors = 0;
     errorCode = 0;
@@ -393,7 +395,7 @@ struct LAVABASE_DLL CheckData {
   CLavaBaseDoc *document;
   LavaDECL *myDECL, *selfTypeDECL;
   CVAttrDesc *attrDesc;
-  LavaObjectPtr lastException;
+  LavaObjectPtr lastException, stackFrame[3];
   QString callStack;
   SynObjectBase /*SelfVar*/ *selfVar, /*SuccStatement*/*succeed;
   CContext lpc;          //vorher *execIC, *execOC
@@ -667,5 +669,21 @@ extern LAVABASE_DLL void ToggleObjectCat(LavaObjectPtr obj);
 extern LAVABASE_DLL jmp_buf contOnHWexception;
 extern LAVABASE_DLL CHWException hwException;
 #endif
+
+enum DebugStep {
+  nextStm,
+  nextFunc,
+  stepInto,
+  stepOut,
+  noStep};
+
+enum StackFlag {
+  inAttachedAssertion,
+  bptEncountered};
+
+extern LAVABASE_DLL DebugStep nextDebugStep;
+
+extern LAVABASE_DLL unsigned stepOutStackDepth;
+extern LAVABASE_DLL unsigned currentStackDepth;
 
 #endif

@@ -82,7 +82,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\Interpreter\Debug\Interpreter.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaGUI\Debug\LavaGUI.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /out:"../LavaPE/Debug/Lava.exe"
+# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\Interpreter\Debug\Interpreter.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaGUI\Debug\LavaGUI.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"../LavaPE/Debug/Lava.exe"
+# SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
 
@@ -96,10 +97,6 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE=.\Lava.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Lava.rc
 # End Source File
 # Begin Source File
 
@@ -199,7 +196,7 @@ SOURCE=.\res\Lava.ico
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\Lava.rc2
+SOURCE=.\res\Lava.rc
 # End Source File
 # Begin Source File
 

@@ -4,7 +4,7 @@ export LAVADIR
 all: lavadir dirs links build
 lavadir:
   echo setting LAVADIR=$(LAVADIR)
-SUBPRO=lavape/src/disco lavape/src/wxqDocView lavape/src/LavaBase lavape/src/LavaPE_UI lavape/src/LavaExecs lavape/src/LavaGUI lavape/src/LavaPE lavape/src/Lava_UI lavape/src/Interpreter lavape/src/Lava
+SUBPRO=lavape/src/disco lavape/src/wxqDocView lavape/src/LavaBase lavape/src/LavaPE_UI lavape/src/LavaExecs lavape/src/LavaGUI lavape/src/LavaPE lavape/src/Lava_UI lavape/src/Interpreter lavape/src/Lava lavape/src/LavaStream
 include src/common.mk
 #
 dirs:

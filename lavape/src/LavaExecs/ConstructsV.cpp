@@ -702,20 +702,20 @@ void Draw (MultipleOp *self,CProgTextBase &t,address where,CHAINX *chxp,bool ign
     synObj = (SynObject*)opdPtr->data;
     if (pred) {
       if (self->primaryToken == Semicolon_T) {
-        t.Insert(self->primaryToken,true);
+        t.Insert(self->primaryToken,isFirst);
         t.NewLine();
       }
       else
         if (((SynObject*)((CHE*)self->operands.first)->data)->type == Stm_T) {
           t.Blank();
-          t.Insert(self->primaryToken,true);
+          t.Insert(self->primaryToken,isFirst);
 					t.NewLine();
         }
         else {
           t.Blank();
           if (self->primaryToken != Plus_T
           || synObj->primaryToken != Minus_T) {
-            t.Insert(self->primaryToken,true);
+            t.Insert(self->primaryToken,isFirst);
             t.Blank();
           }
           else if (!self->primaryTokenNode)

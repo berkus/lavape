@@ -49,21 +49,16 @@
 #endif
 
 #define CHECKIMPL(FUNCDECL) \
-  classDecl = FUNCDECL->ParentDECL; \
+  if (FUNCDECL->DeclType == Function) \
+    classDecl = FUNCDECL->ParentDECL; \
+  else \
+    classDecl = FUNCDECL; \
   if (classDecl->DeclType == Impl) \
     classDecl = myDoc->IDTable.GetDECL(((CHETID*)classDecl->Supports.first)->data, classDecl->inINCL); \
   if (classDecl->DeclType == Interface) \
     myDoc->CheckImpl(ckd, classDecl); 
 
 
-
-
-bool debugStep=false,
-  debugStepFunc=false,
-  debugStepInto=false,
-  debugStepOut=false;
-
-LavaVariablePtr stepOutStack, currentStack;
 
 CLavaDebugThread::CLavaDebugThread() {
   dbgStopData=0; 
@@ -171,6 +166,7 @@ void CLavaDebugThread::run() {
     (*pContDebugEvent)++;  //DebugThread wait until ExecuteLava has finished initialisation
   else {
     varAction->run();
+    addCalleeParams();
     mSend.SetSendData(Dbg_StopData, dbgStopData);
     CDPDbgMessage(PUT, put_cid, (address)&mSend);
     put_cid->flush();
@@ -187,12 +183,18 @@ void CLavaDebugThread::run() {
         break;
       case Dbg_StackRq:
         dbgStopData->ObjectChain.Destroy();
+        dbgStopData->ParamChain.Destroy();
         dbgStopData->ActStackLevel = mReceive.CallStackLevel;
         varAction->run();
+        if (!dbgStopData->ActStackLevel)
+          addCalleeParams();
         mSend.SetSendData(Dbg_Stack, dbgStopData);
         break;
       case Dbg_MemberDataRq:
-        oid = DebugItem::openObj((CHE*)dbgStopData->ObjectChain.first, (CHEint*)mReceive.ObjNr.ptr->first);
+        if (mReceive.fromParams)
+          oid = DebugItem::openObj((CHE*)dbgStopData->ParamChain.first, (CHEint*)mReceive.ObjNr.ptr->first);
+        else
+          oid = DebugItem::openObj((CHE*)dbgStopData->ObjectChain.first, (CHEint*)mReceive.ObjNr.ptr->first);
         mSend.SetSendData(oid);
         mReceive.ObjNr.Destroy();
         break;
@@ -201,13 +203,12 @@ void CLavaDebugThread::run() {
           setBrkPnts();
           if (dbgStopData) {
             dbgStopData->ActStackLevel = 0;  //reset dbgStopData
+            dbgStopData->CalleeStack = 0;
             dbgStopData->StackChain.Destroy();
             dbgStopData->ObjectChain.Destroy();
+            dbgStopData->ParamChain.Destroy();
           }
         }
-//        qApp->mainWidget()->setActiveWindow();
-//        qApp->mainWidget()->raise();
-//         qDebug("Dbg_Continue, available=%d",pContExecEvent->available());
         (*pContExecEvent)--;    //continue ExecuteLava
         (*pContDebugEvent)++;  //DebugThread wait for next stop with new dbgStopData
         if (!varAction) {
@@ -216,6 +217,7 @@ void CLavaDebugThread::run() {
         }
         if (dbgStopData->StackChain.first) {      
           varAction->run();
+          addCalleeParams();
           mSend.SetSendData(Dbg_StopData, dbgStopData);
         }
         else 
@@ -256,7 +258,7 @@ void CLavaDebugThread::run() {
 
 void CLavaDebugThread::setBrkPnts()
 {
-  CHEProgPoint *chePP, *chePPnew;
+  CHEProgPoint *chePP, *chePPnew, *rmPP;
   LavaDECL *funcDecl, *execDecl, *classDecl;
   CSearchData sData;
   CheckData ckd;
@@ -271,27 +273,45 @@ void CLavaDebugThread::setBrkPnts()
         ((SynObject*)chePP->data.SynObj)->workFlags.EXCL(isBrkPnt);
       brkPnts.Destroy();
     }
-    for (chePPnew = (CHEProgPoint*)((DbgContData*)mReceive.ContData.ptr)->BrkPnts.first;
-         chePPnew; chePPnew = (CHEProgPoint*)chePPnew->successor) {
-      if (chePPnew->data.Activate) {
+    chePPnew = (CHEProgPoint*)((DbgContData*)mReceive.ContData.ptr)->BrkPnts.first;
+    while(chePPnew) {
+      if (chePPnew->data.Activate && !chePPnew->data.Skipped) {
         funcDecl = myDoc->IDTable.GetDECL(chePPnew->data.FuncID);
         execDecl = myDoc->GetExecDECL(funcDecl, chePPnew->data.ExecType, false,false);
         if (execDecl) {
           CHECKIMPL(funcDecl)
           sData.synObjectID = chePPnew->data.SynObjID;
           sData.doc = myDoc;
-          ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)execDecl, onSetBrkPnt, 0,0, (address)&sData);
+          sData.nextFreeID = 0;
+          sData.finished = false;
+          ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
+          ((SynObject*)sData.synObj)->workFlags.INCL(isBrkPnt);
           chePPnew->data.SynObj = sData.synObj;
+          chePPnew = (CHEProgPoint*)chePPnew->successor;
+        }
+        else {
+          rmPP = chePPnew;
+          chePPnew = (CHEProgPoint*)rmPP->successor;
+          ((DbgContData*)mReceive.ContData.ptr)->BrkPnts.Remove(rmPP->predecessor);
         }
       }
       else {
-        chePP = (CHEProgPoint*)brkPnts.first;
-        while (chePP && ((chePP->data.SynObjID != chePPnew->data.SynObjID)
-          || (chePP->data.FuncID != chePPnew->data.FuncID)))
-          chePP = (CHEProgPoint*)chePP->successor;
-        if (chePP) {
-          ((SynObject*)chePP->data.SynObj)->workFlags.EXCL(isBrkPnt);
-          brkPnts.Remove(chePP->predecessor);
+        if (chePPnew->data.Skipped) {
+          rmPP = chePPnew;
+          chePPnew = (CHEProgPoint*)rmPP->successor;
+          ((DbgContData*)mReceive.ContData.ptr)->BrkPnts.Remove(rmPP->predecessor);
+        }
+        else {
+          chePP = (CHEProgPoint*)brkPnts.first;
+          while (chePP && ((chePP->data.SynObjID != chePPnew->data.SynObjID)
+            || (chePP->data.FuncID != chePPnew->data.FuncID)
+            || (chePP->data.ExecType != chePPnew->data.ExecType)))
+            chePP = (CHEProgPoint*)chePP->successor;
+          if (chePP) {
+            ((SynObject*)chePP->data.SynObj)->workFlags.EXCL(isBrkPnt);
+            brkPnts.Remove(chePP->predecessor);
+          }
+          chePPnew = (CHEProgPoint*)chePPnew->successor;
         }
       }
     }
@@ -309,30 +329,86 @@ void CLavaDebugThread::setBrkPnts()
         CHECKIMPL(funcDecl)
         sData.synObjectID = ((DbgContData*)mReceive.ContData.ptr)->RunToPnt.ptr->SynObjID;
         sData.doc = myDoc;
-        ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)execDecl, onSetRunToPnt, 0,0, (address)&sData);
+        sData.nextFreeID = 0;
+        sData.finished = false;
+        ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
+        LBaseData->tempBrkPoint = sData.synObj;
+        ((SynObject*)sData.synObj)->workFlags.INCL(isTempPoint);
+        nextDebugStep = noStep;
       }
     }
     else if (actContType == dbg_Step)
-      debugStep = true;
+      nextDebugStep = nextStm;
     else if (actContType == dbg_StepFunc)
-      debugStepFunc = true;
+      nextDebugStep = nextFunc;
     else if (actContType == dbg_StepInto)
-      debugStepInto = true;
+      nextDebugStep = stepInto;
     else if (actContType == dbg_StepOut) {
-      debugStepOut = true;
-      stepOutStack = currentStack;
+      nextDebugStep = stepOut;
+      stepOutStackDepth = currentStackDepth;
     }
   }
-  else
+  else {
     actContType = dbg_Cont;
+    nextDebugStep = noStep;
+  }
 
 }
 
-bool LocalDebugVar::Action(CheckData &ckd, VarName *vn, TID&)
+void CLavaDebugThread::addCalleeParams()
 {
+  if (!dbgStopData->CalleeStack || !dbgStopData->CalleeFunc)
+    return;
+
+  CHE *cheItem, *cheIO;
+  DebugItem *item;
+  QString label;
+  int highPos, ii, stpos = SFH+1;
+
+  if (dbgStopData->stopReason == Stop_NextFunc
+  || dbgStopData->stopReason == Stop_NextOp) 
+    highPos = dbgStopData->CalleeFunc->nInput;
+  else if (dbgStopData->stopReason == Stop_StepOut
+  || dbgStopData->stopReason == Stop_Exception) {
+    highPos =dbgStopData->CalleeFunc->nInput + dbgStopData->CalleeFunc->nOutput;
+  }
+  else
+    return;
+
+  if (dbgStopData->CalleeFunc->DeclType == Function) {
+    if (!dbgStopData->CalleeFunc->TypeFlags.Contains(isStatic)) {
+      label = QString(dbgStopData->CalleeFunc->FullName.c);
+      label += "::self";
+      if (dbgStopData->CalleeStack[SFH])
+        label = label + QString(" (") + QString(((LavaObjectPtr)dbgStopData->CalleeStack[SFH])[0]->classDECL->FullName.c);
+      item = new DebugItem(new DDMakeClass, 0, myDoc, (LavaObjectPtr)dbgStopData->CalleeStack[SFH], label, false, false, false);
+      cheItem = new CHE(item);
+      dbgStopData->ParamChain.Append(cheItem);
+    }
+    cheIO = (CHE*)dbgStopData->CalleeFunc->NestedDecls.first;
+    for (ii = highPos; ii; ii--) {
+      label = ((LavaDECL*)cheIO->data)->FullName.c;
+      if (dbgStopData->CalleeStack[stpos])
+        label = label + QString(" (") + QString(((LavaObjectPtr)dbgStopData->CalleeStack[stpos])[0]->classDECL->FullName.c);
+      item = new DebugItem(new DDMakeClass, 0, myDoc, (LavaObjectPtr)dbgStopData->CalleeStack[stpos], label, false, false, false);
+      cheItem = new CHE(item);
+      dbgStopData->ParamChain.Append(cheItem);
+      stpos++;
+      cheIO = (CHE*)cheIO->successor;
+    }
+  }
+}
+
+bool LocalDebugVar::Action(CheckData &ckd, VarName *vn, TID& typeID)
+{
+  LavaDECL *typeDecl;
   QString label = QString(vn->varName.c);
   if (cheAct->data.Stack[vn->stackPos])
     label = label + QString(" (") + QString(((LavaObjectPtr)cheAct->data.Stack[vn->stackPos])[0]->classDECL->FullName.c);
+  else {
+    typeDecl = doc->IDTable.GetDECL(typeID);
+    label = label + QString(" (") + QString(typeDecl->FullName.c) + QString(")");
+  }
   DebugItem* item = new DebugItem(new DDMakeClass, 0, doc, (LavaObjectPtr)cheAct->data.Stack[vn->stackPos], label, false, false, false);
   CHE* che = new CHE(item);
   dbgStopData->ObjectChain.Prepend(che);
@@ -343,7 +419,7 @@ void LocalDebugVar::run()
 {
   CheckData ckd;
   LavaDECL *func;
-  CHE *cheIO, *cheItem, *afterElem = (CHE*)dbgStopData->ObjectChain.first;
+  CHE *cheIO, *cheItem, *afterElem;
   DebugItem *item;
   int ii, stpos = SFH+1;
   QString label;
@@ -354,6 +430,10 @@ void LocalDebugVar::run()
   if (cheAct->data.ExecType == ExecDef) {
     func = doc->IDTable.GetDECL(cheAct->data.FuncID);
     if (func->DeclType == Function) {
+      if (func->TypeFlags.Contains(isStatic))
+        afterElem = 0;
+      else
+        afterElem = (CHE*)dbgStopData->ObjectChain.first;
       cheIO = (CHE*)func->NestedDecls.first;
       for (ii = func->nInput + func->nOutput; ii; ii--) {
         label = ((LavaDECL*)cheIO->data)->FullName.c;
@@ -365,6 +445,35 @@ void LocalDebugVar::run()
         afterElem = cheItem;
         stpos++;
         cheIO = (CHE*)cheIO->successor;
+      }
+      if (dbgStopData->ActStackLevel > 0) {
+        cheAct = (CHEStackData*)cheAct->predecessor;
+        if (cheAct->data.ExecType == ExecDef) {
+          func = doc->IDTable.GetDECL(cheAct->data.FuncID);
+          if (func->DeclType == Function) {
+            if (!func->TypeFlags.Contains(isStatic)) {
+              label = QString(func->FullName.c);
+              label += "::self";
+              if (cheAct->data.Stack[SFH])
+                label = label + QString(" (") + QString(((LavaObjectPtr)cheAct->data.Stack[SFH])[0]->classDECL->FullName.c);
+              item = new DebugItem(new DDMakeClass, 0, doc, (LavaObjectPtr)cheAct->data.Stack[SFH], label, false, false, false);
+              cheItem = new CHE(item);
+              dbgStopData->ParamChain.Append(cheItem);
+            }
+            stpos = SFH+1;
+            cheIO = (CHE*)func->NestedDecls.first;
+            for (ii = func->nInput; ii; ii--) {
+              label = ((LavaDECL*)cheIO->data)->FullName.c;
+              if (cheAct->data.Stack[stpos])
+                label = label + QString(" (") + QString(((LavaObjectPtr)cheAct->data.Stack[stpos])[0]->classDECL->FullName.c);
+              item = new DebugItem(new DDMakeClass, 0, doc, (LavaObjectPtr)cheAct->data.Stack[stpos], label, false, false, false);
+              cheItem = new CHE(item);
+              dbgStopData->ParamChain.Append(cheItem);
+              stpos++;
+              cheIO = (CHE*)cheIO->successor;
+            }
+          }
+        }
       }
     }
   }

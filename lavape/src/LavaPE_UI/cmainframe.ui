@@ -102,7 +102,7 @@
         <separator/>
         <action name="setTreeFontAction"/>
         <action name="SetFormFontsAction"/>
-        <item text="Set form fonts" name="popupMenu_65" accel="">
+        <item text="Set form font" name="popupMenu_65" accel="">
             <action name="setFormTextFontAction"/>
             <action name="setFormLabelFontAction"/>
             <action name="setFormButtonFontAction"/>
@@ -172,20 +172,11 @@
     </toolbar>
     <toolbar dock="2">
         <property name="name">
-            <cstring>ToolbarDbg</cstring>
+            <cstring>HelpToolbar</cstring>
         </property>
         <property name="label">
-            <string>Debug toolbar</string>
+            <string>Help toolbar</string>
         </property>
-        <action name="DbgAction"/>
-        <action name="DbgStepNextAct"/>
-        <action name="DbgStepNextFunctionAct"/>
-        <action name="DbgStepintoAct"/>
-        <action name="DbgStepoutAct"/>
-        <action name="DbgRunToSelAct"/>
-        <action name="DbgBreakpointAct"/>
-        <action name="DbgClearBreakpointsAct"/>
-        <action name="DbgStopAction"/>
     </toolbar>
     <toolbar dock="2">
         <property name="name">
@@ -240,11 +231,20 @@
     </toolbar>
     <toolbar dock="2">
         <property name="name">
-            <cstring>HelpToolbar</cstring>
+            <cstring>ToolbarDbg</cstring>
         </property>
         <property name="label">
-            <string>Help toolbar</string>
+            <string>Debug toolbar</string>
         </property>
+        <action name="DbgAction"/>
+        <action name="DbgStepNextAct"/>
+        <action name="DbgStepNextFunctionAct"/>
+        <action name="DbgStepintoAct"/>
+        <action name="DbgStepoutAct"/>
+        <action name="DbgRunToSelAct"/>
+        <action name="DbgBreakpointAct"/>
+        <action name="DbgClearBreakpointsAct"/>
+        <action name="DbgStopAction"/>
     </toolbar>
     <toolbar dock="2">
         <property name="name">
@@ -324,6 +324,9 @@
         <property name="menuText">
             <string>&amp;New Lava file</string>
         </property>
+        <property name="whatsThis">
+            <string>Create a new Lava file</string>
+        </property>
         <property name="accel">
             <string>Ctrl+N</string>
         </property>
@@ -340,6 +343,9 @@
         </property>
         <property name="menuText">
             <string>&amp;Open...</string>
+        </property>
+        <property name="whatsThis">
+            <string>Open an existing Lava file</string>
         </property>
         <property name="accel">
             <string>Ctrl+O</string>
@@ -358,6 +364,9 @@
         <property name="menuText">
             <string>&amp;Save</string>
         </property>
+        <property name="whatsThis">
+            <string>Save the current Lava file</string>
+        </property>
         <property name="accel">
             <string>Ctrl+S</string>
         </property>
@@ -372,6 +381,9 @@
         <property name="menuText">
             <string>Save &amp;As...</string>
         </property>
+        <property name="whatsThis">
+            <string>Save the current Lava file and assign a new name to it</string>
+        </property>
         <property name="accel">
             <string></string>
         </property>
@@ -385,6 +397,9 @@
         </property>
         <property name="menuText">
             <string>E&amp;xit</string>
+        </property>
+        <property name="whatsThis">
+            <string>Terminate LavaPE</string>
         </property>
         <property name="accel">
             <string></string>
@@ -403,6 +418,9 @@
         <property name="menuText">
             <string>&amp;Undo</string>
         </property>
+        <property name="whatsThis">
+            <string>Undo last edit operation</string>
+        </property>
         <property name="accel">
             <string>Ctrl+Z</string>
         </property>
@@ -419,6 +437,9 @@
         </property>
         <property name="menuText">
             <string>&amp;Redo</string>
+        </property>
+        <property name="whatsThis">
+            <string>Redo last edit operation</string>
         </property>
         <property name="accel">
             <string>Ctrl+Y</string>
@@ -486,6 +507,9 @@
         <property name="menuText">
             <string>&amp;Paste</string>
         </property>
+        <property name="whatsThis">
+            <string>Paste from the clipboard</string>
+        </property>
         <property name="accel">
             <string>Ctrl+V</string>
         </property>
@@ -509,6 +533,9 @@
         <property name="toolTip">
             <string>Find references</string>
         </property>
+        <property name="whatsThis">
+            <string>Find all references to a given Lava entity</string>
+        </property>
         <property name="accel">
             <string>Ctrl+F</string>
         </property>
@@ -523,6 +550,12 @@
         <property name="menuText">
             <string>&amp;Help topics</string>
         </property>
+        <property name="statusTip">
+            <string>Help topics</string>
+        </property>
+        <property name="whatsThis">
+            <string>Help topics</string>
+        </property>
         <property name="accel">
             <string></string>
         </property>
@@ -535,6 +568,9 @@
             <string>Help index</string>
         </property>
         <property name="menuText">
+            <string>Help index</string>
+        </property>
+        <property name="whatsThis">
             <string>Help index</string>
         </property>
         <property name="accel">
@@ -552,6 +588,9 @@
             <string>&amp;About LavaPE...</string>
         </property>
         <property name="toolTip">
+            <string>About LavaPE...</string>
+        </property>
+        <property name="whatsThis">
             <string>About LavaPE...</string>
         </property>
         <property name="accel">
@@ -574,6 +613,9 @@
         <property name="toolTip">
             <string>Tile horizontal</string>
         </property>
+        <property name="whatsThis">
+            <string>Tile horizontal</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -591,6 +633,9 @@
         <property name="toolTip">
             <string>Tile Vertical</string>
         </property>
+        <property name="whatsThis">
+            <string>Tile Vertical</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -605,6 +650,9 @@
         <property name="menuText">
             <string>Cascade</string>
         </property>
+        <property name="toolTip">
+            <string>Cascade windows</string>
+        </property>
         <property name="whatsThis">
             <string>Cascade windows</string>
         </property>
@@ -617,10 +665,10 @@
             <iconset>image12</iconset>
         </property>
         <property name="text">
-            <string>New component</string>
+            <string>New component...</string>
         </property>
         <property name="menuText">
-            <string>New component</string>
+            <string>New component...</string>
         </property>
     </action>
     <action>
@@ -636,6 +684,9 @@
         <property name="menuText">
             <string>Save all</string>
         </property>
+        <property name="whatsThis">
+            <string>Save all open Lava files</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -646,6 +697,9 @@
         </property>
         <property name="menuText">
             <string>Close</string>
+        </property>
+        <property name="whatsThis">
+            <string>Close current Lava file</string>
         </property>
     </action>
     <action>
@@ -662,7 +716,13 @@
             <string>File toolbar</string>
         </property>
         <property name="menuText">
-            <string>File toolbar</string>
+            <string>Show file toolbar</string>
+        </property>
+        <property name="toolTip">
+            <string>Show file toolbar</string>
+        </property>
+        <property name="whatsThis">
+            <string>Show file toolbar</string>
         </property>
     </action>
     <action>
@@ -679,7 +739,13 @@
             <string>Tree oper. toolbar</string>
         </property>
         <property name="menuText">
-            <string>Tree oper. toolbar</string>
+            <string>Show tree oper. toolbar</string>
+        </property>
+        <property name="toolTip">
+            <string>Show tree oper. toolbar</string>
+        </property>
+        <property name="whatsThis">
+            <string>Show tree oper. toolbar</string>
         </property>
     </action>
     <action>
@@ -696,7 +762,16 @@
             <string>Declaration toolbar</string>
         </property>
         <property name="menuText">
-            <string>Declaration toolbar</string>
+            <string>Declaration toolbaShow d</string>
+        </property>
+        <property name="toolTip">
+            <string>Show declaration toolbar</string>
+        </property>
+        <property name="statusTip">
+            <string>Show declaration toolbar</string>
+        </property>
+        <property name="whatsThis">
+            <string>Show declaration toolbar</string>
         </property>
     </action>
     <action>
@@ -713,7 +788,13 @@
             <string>Details toolbar</string>
         </property>
         <property name="menuText">
-            <string>Details toolbar</string>
+            <string>Show details toolbar</string>
+        </property>
+        <property name="toolTip">
+            <string>Show details toolbar</string>
+        </property>
+        <property name="whatsThis">
+            <string>Show details toolbar</string>
         </property>
     </action>
     <action>
@@ -730,6 +811,9 @@
             <string>Expand subtree</string>
         </property>
         <property name="menuText">
+            <string>Expand subtree</string>
+        </property>
+        <property name="whatsThis">
             <string>Expand subtree</string>
         </property>
     </action>
@@ -850,6 +934,12 @@
         <property name="menuText">
             <string>Next comment</string>
         </property>
+        <property name="toolTip">
+            <string>Go to next comment</string>
+        </property>
+        <property name="whatsThis">
+            <string>Go to next comment</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -865,6 +955,9 @@
             <string>Preceding comment</string>
         </property>
         <property name="menuText">
+            <string>Preceding comment</string>
+        </property>
+        <property name="whatsThis">
             <string>Preceding comment</string>
         </property>
     </action>
@@ -884,6 +977,12 @@
         <property name="menuText">
             <string>Next error</string>
         </property>
+        <property name="toolTip">
+            <string>Go to next error</string>
+        </property>
+        <property name="whatsThis">
+            <string>Go to next error</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -899,6 +998,9 @@
             <string>Preceding error</string>
         </property>
         <property name="menuText">
+            <string>Preceding error</string>
+        </property>
+        <property name="whatsThis">
             <string>Preceding error</string>
         </property>
     </action>
@@ -925,7 +1027,7 @@
             <string>Check the entire Lava file, including all contained execs.</string>
         </property>
         <property name="whatsThis">
-            <string>&lt;b&gt;Check&lt;/b&gt; the entire Lava file, including all contained execs.</string>
+            <string>Check the entire Lava file, including all contained execs.</string>
         </property>
     </action>
     <action>
@@ -964,6 +1066,9 @@
         <property name="toolTip">
             <string>Check and run Lava program</string>
         </property>
+        <property name="whatsThis">
+            <string>Check and run Lava program</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -982,7 +1087,7 @@
             <string>Include...</string>
         </property>
         <property name="toolTip">
-            <string>Include</string>
+            <string>Include..</string>
         </property>
     </action>
     <action>
@@ -1002,7 +1107,7 @@
             <string>New package...</string>
         </property>
         <property name="toolTip">
-            <string>New package</string>
+            <string>New package...</string>
         </property>
     </action>
     <action>
@@ -1022,7 +1127,7 @@
             <string>New main program...</string>
         </property>
         <property name="toolTip">
-            <string>New main program</string>
+            <string>New main program...</string>
         </property>
     </action>
     <action>
@@ -1042,7 +1147,7 @@
             <string>New interface...</string>
         </property>
         <property name="toolTip">
-            <string>New interface</string>
+            <string>New interface...</string>
         </property>
     </action>
     <action>
@@ -1062,7 +1167,7 @@
             <string>New implementation...</string>
         </property>
         <property name="toolTip">
-            <string>New implementation</string>
+            <string>New implementation...</string>
         </property>
     </action>
     <action>
@@ -1082,7 +1187,7 @@
             <string>New component object spec. ...</string>
         </property>
         <property name="toolTip">
-            <string>New component object spec.</string>
+            <string>New component object spec. ...</string>
         </property>
     </action>
     <action>
@@ -1102,7 +1207,7 @@
             <string>New component object impl. ...</string>
         </property>
         <property name="toolTip">
-            <string>New component object impl.</string>
+            <string>New component object impl. ...</string>
         </property>
     </action>
     <action>
@@ -1142,7 +1247,7 @@
             <string>New enumeration...</string>
         </property>
         <property name="toolTip">
-            <string>New enumeration</string>
+            <string>New enumeration...</string>
         </property>
     </action>
     <action>
@@ -1182,7 +1287,7 @@
             <string>New member function...</string>
         </property>
         <property name="toolTip">
-            <string>New member function</string>
+            <string>New member function...</string>
         </property>
     </action>
     <action>
@@ -1202,7 +1307,7 @@
             <string>New member variable...</string>
         </property>
         <property name="toolTip">
-            <string>New member variable</string>
+            <string>New member variable...</string>
         </property>
     </action>
     <action>
@@ -1222,7 +1327,7 @@
             <string>New enumerated item...</string>
         </property>
         <property name="toolTip">
-            <string>New enumerated item</string>
+            <string>New enumerated item...</string>
         </property>
     </action>
     <action>
@@ -1239,6 +1344,9 @@
             <string>Edit selected item</string>
         </property>
         <property name="menuText">
+            <string>Edit selected item</string>
+        </property>
+        <property name="whatsThis">
             <string>Edit selected item</string>
         </property>
         <property name="accel">
@@ -1281,6 +1389,9 @@
         <property name="menuText">
             <string>Go to declaration</string>
         </property>
+        <property name="whatsThis">
+            <string>Go to the declaration of the selected Lava entity</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1298,6 +1409,9 @@
         <property name="menuText">
             <string>Go to implementation</string>
         </property>
+        <property name="whatsThis">
+            <string>Go to the implementation of the current Lava entity</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1314,6 +1428,9 @@
         </property>
         <property name="menuText">
             <string>Return to reference</string>
+        </property>
+        <property name="whatsThis">
+            <string>Return to reference (after a "Go to declaration)"</string>
         </property>
     </action>
     <action>
@@ -1335,6 +1452,9 @@
         <property name="toolTip">
             <string>Find decl. by name...</string>
         </property>
+        <property name="whatsThis">
+            <string>Find a declaratin by name...</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1350,6 +1470,9 @@
             <string>Show overridables</string>
         </property>
         <property name="menuText">
+            <string>Show overridables</string>
+        </property>
+        <property name="whatsThis">
             <string>Show overridables</string>
         </property>
     </action>
@@ -1369,6 +1492,9 @@
         <property name="menuText">
             <string>Override</string>
         </property>
+        <property name="whatsThis">
+            <string>Override the feature (member variable or function) selected in the override view</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1386,6 +1512,9 @@
         <property name="menuText">
             <string>Open form view</string>
         </property>
+        <property name="whatsThis">
+            <string>Open form view</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1401,7 +1530,13 @@
             <string>Insert text</string>
         </property>
         <property name="menuText">
-            <string>Insert text</string>
+            <string>Insert a comment between fields of a form</string>
+        </property>
+        <property name="toolTip">
+            <string>Insert a comment between fields of a form</string>
+        </property>
+        <property name="whatsThis">
+            <string>Insert a comment between fields of a form</string>
         </property>
     </action>
     <action>
@@ -1412,6 +1547,9 @@
             <string>Import component</string>
         </property>
         <property name="menuText">
+            <string>Import component</string>
+        </property>
+        <property name="whatsThis">
             <string>Import component</string>
         </property>
     </action>
@@ -1425,6 +1563,9 @@
         <property name="menuText">
             <string>Generate linked HTML files</string>
         </property>
+        <property name="whatsThis">
+            <string>Generate linked HTML files from the current Lava file</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1435,6 +1576,9 @@
         </property>
         <property name="menuText">
             <string>Generate single HTML file</string>
+        </property>
+        <property name="whatsThis">
+            <string>Generate single HTML file from the current Lava file</string>
         </property>
     </action>
     <action>
@@ -1465,6 +1609,9 @@
             <string>Frequently asked questions</string>
         </property>
         <property name="menuText">
+            <string>Frequently asked questions</string>
+        </property>
+        <property name="whatsThis">
             <string>Frequently asked questions</string>
         </property>
     </action>
@@ -1501,6 +1648,9 @@
         <property name="menuText">
             <string>Toggle category</string>
         </property>
+        <property name="whatsThis">
+            <string>Toggle category</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1518,6 +1668,9 @@
         <property name="menuText">
             <string>Optional local variable</string>
         </property>
+        <property name="whatsThis">
+            <string>Optional local variable: may assume the value "null"</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1533,6 +1686,9 @@
             <string>Toggle substitutable type</string>
         </property>
         <property name="menuText">
+            <string>Toggle substitutable type</string>
+        </property>
+        <property name="whatsThis">
             <string>Toggle substitutable type</string>
         </property>
     </action>
@@ -1552,6 +1708,9 @@
         <property name="menuText">
             <string>Insert before</string>
         </property>
+        <property name="whatsThis">
+            <string>If depressed, insert new items before the selected item, else after the selected item</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1565,6 +1724,9 @@
         </property>
         <property name="menuText">
             <string>Insert</string>
+        </property>
+        <property name="whatsThis">
+            <string>Insert an empty construct (with placeholders) of the same type as the selected construct</string>
         </property>
     </action>
     <action>
@@ -1600,6 +1762,9 @@
         <property name="menuText">
             <string>Toggle input arrows</string>
         </property>
+        <property name="whatsThis">
+            <string>Toggle input arrows</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1633,6 +1798,9 @@
         </property>
         <property name="menuText">
             <string>Put on a new line</string>
+        </property>
+        <property name="whatsThis">
+            <string>Put the selected sub-construct on a new line</string>
         </property>
     </action>
     <action>
@@ -1674,6 +1842,9 @@
         <property name="menuText">
             <string>Show/hide comments</string>
         </property>
+        <property name="whatsThis">
+            <string>Show/hide comments</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1686,6 +1857,9 @@
             <string>Less than</string>
         </property>
         <property name="menuText">
+            <string>Less than</string>
+        </property>
+        <property name="whatsThis">
             <string>Less than</string>
         </property>
     </action>
@@ -1703,7 +1877,13 @@
             <string>Exec switches toolbar</string>
         </property>
         <property name="menuText">
-            <string>Exec switches toolbar</string>
+            <string>Show exec switches toolbar</string>
+        </property>
+        <property name="toolTip">
+            <string>Show exec switches toolbar</string>
+        </property>
+        <property name="whatsThis">
+            <string>Show exec switches toolbar</string>
         </property>
     </action>
     <action>
@@ -1717,6 +1897,9 @@
             <string>Less than or equal</string>
         </property>
         <property name="menuText">
+            <string>Less than or equal</string>
+        </property>
+        <property name="whatsThis">
             <string>Less than or equal</string>
         </property>
     </action>
@@ -1733,6 +1916,9 @@
         <property name="menuText">
             <string>Equal</string>
         </property>
+        <property name="whatsThis">
+            <string>Compare two objects</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1745,6 +1931,9 @@
             <string>Not equal</string>
         </property>
         <property name="menuText">
+            <string>Not equal</string>
+        </property>
+        <property name="whatsThis">
             <string>Not equal</string>
         </property>
     </action>
@@ -1761,6 +1950,9 @@
         <property name="menuText">
             <string>Greater or equal</string>
         </property>
+        <property name="whatsThis">
+            <string>Greater or equal</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1773,6 +1965,9 @@
             <string>Greater than</string>
         </property>
         <property name="menuText">
+            <string>Greater than</string>
+        </property>
+        <property name="whatsThis">
             <string>Greater than</string>
         </property>
     </action>
@@ -1789,6 +1984,9 @@
         <property name="menuText">
             <string>Virtual function call</string>
         </property>
+        <property name="whatsThis">
+            <string>Virtual function call</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1801,6 +1999,9 @@
             <string>Static function call</string>
         </property>
         <property name="menuText">
+            <string>Static function call</string>
+        </property>
+        <property name="whatsThis">
             <string>Static function call</string>
         </property>
     </action>
@@ -1817,6 +2018,12 @@
         <property name="menuText">
             <string>True</string>
         </property>
+        <property name="toolTip">
+            <string>Insert Boolean "true" constant</string>
+        </property>
+        <property name="whatsThis">
+            <string>Insert Boolean "true" constant</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1830,6 +2037,12 @@
         </property>
         <property name="menuText">
             <string>False</string>
+        </property>
+        <property name="toolTip">
+            <string>Insert Boolean "false" constant</string>
+        </property>
+        <property name="whatsThis">
+            <string>Insert Boolean "false" constant</string>
         </property>
     </action>
     <action>
@@ -1845,6 +2058,9 @@
         <property name="menuText">
             <string>Evaluate stm/expr</string>
         </property>
+        <property name="whatsThis">
+            <string>Evaluate stm/expr: stm? is an expression, expr? is a statement</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1857,6 +2073,9 @@
             <string>Nothing / null / nil</string>
         </property>
         <property name="menuText">
+            <string>Nothing / null / nil</string>
+        </property>
+        <property name="whatsThis">
             <string>Nothing / null / nil</string>
         </property>
     </action>
@@ -1873,6 +2092,9 @@
         <property name="menuText">
             <string>Interval / array element</string>
         </property>
+        <property name="whatsThis">
+            <string>Denotes intervals or array elements</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1885,6 +2107,9 @@
             <string>Toggle sign</string>
         </property>
         <property name="menuText">
+            <string>Toggle sign</string>
+        </property>
+        <property name="whatsThis">
             <string>Toggle sign</string>
         </property>
     </action>
@@ -1900,6 +2125,9 @@
         </property>
         <property name="menuText">
             <string>Addition</string>
+        </property>
+        <property name="toolTip">
+            <string>Integer and floating point addition</string>
         </property>
         <property name="whatsThis">
             <string>Integer and floating point addition</string>
@@ -1918,6 +2146,12 @@
         <property name="menuText">
             <string>Multiplication</string>
         </property>
+        <property name="toolTip">
+            <string>Integer and floating point multiplication</string>
+        </property>
+        <property name="whatsThis">
+            <string>Integer and floating point multiplication</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1931,6 +2165,9 @@
         </property>
         <property name="menuText">
             <string>Divide</string>
+        </property>
+        <property name="toolTip">
+            <string>Integer and floating point division</string>
         </property>
         <property name="whatsThis">
             <string>Integer and floating point division</string>
@@ -1949,6 +2186,9 @@
         <property name="menuText">
             <string>Modulus</string>
         </property>
+        <property name="whatsThis">
+            <string>Modulus</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1961,6 +2201,9 @@
             <string>Left shift</string>
         </property>
         <property name="menuText">
+            <string>Left shift</string>
+        </property>
+        <property name="whatsThis">
             <string>Left shift</string>
         </property>
     </action>
@@ -1977,6 +2220,9 @@
         <property name="menuText">
             <string>Right shift</string>
         </property>
+        <property name="whatsThis">
+            <string>Right shift</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1990,6 +2236,9 @@
         </property>
         <property name="menuText">
             <string>Bitwise "and"</string>
+        </property>
+        <property name="toolTip">
+            <string>Bitwise "and" operation</string>
         </property>
         <property name="whatsThis">
             <string>Bitwise "and" operation</string>
@@ -2007,6 +2256,9 @@
         </property>
         <property name="menuText">
             <string>Bitwise "or"</string>
+        </property>
+        <property name="toolTip">
+            <string>Bitwise "or" operation</string>
         </property>
         <property name="whatsThis">
             <string>Bitwise "or" operation</string>
@@ -2037,10 +2289,13 @@
             <iconset>image84</iconset>
         </property>
         <property name="text">
-            <string>Not / invert bits</string>
+            <string>Invert bits</string>
         </property>
         <property name="menuText">
-            <string>Not / invert bits</string>
+            <string>Invert bits</string>
+        </property>
+        <property name="whatsThis">
+            <string>Invert bits</string>
         </property>
     </action>
     <action>
@@ -2054,6 +2309,9 @@
             <string>Handle of a set element</string>
         </property>
         <property name="menuText">
+            <string>Handle of a set element</string>
+        </property>
+        <property name="whatsThis">
             <string>Handle of a set element</string>
         </property>
     </action>
@@ -2070,6 +2328,9 @@
         <property name="menuText">
             <string>Ordinal of enum. item</string>
         </property>
+        <property name="whatsThis">
+            <string>Ordinal of an enumeration item</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -2085,7 +2346,13 @@
             <string>Exec oper. toolbar</string>
         </property>
         <property name="menuText">
-            <string>Exec oper. toolbar</string>
+            <string>Show exec oper. toolbar</string>
+        </property>
+        <property name="toolTip">
+            <string>Show exec oper. toolbar</string>
+        </property>
+        <property name="whatsThis">
+            <string>Show exec oper. toolbar</string>
         </property>
     </action>
     <action>
@@ -2102,7 +2369,13 @@
             <string>Keyword toolbar</string>
         </property>
         <property name="menuText">
-            <string>Keyword toolbar</string>
+            <string>Show keyword toolbar</string>
+        </property>
+        <property name="toolTip">
+            <string>Show keyword toolbar</string>
+        </property>
+        <property name="whatsThis">
+            <string>Show keyword toolbar</string>
         </property>
     </action>
     <action>
@@ -2115,6 +2388,12 @@
         <property name="menuText">
             <string>Set tree font...</string>
         </property>
+        <property name="toolTip">
+            <string>Set tree font...</string>
+        </property>
+        <property name="whatsThis">
+            <string>Set tree font...</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -2124,6 +2403,12 @@
             <string>Set exec font</string>
         </property>
         <property name="menuText">
+            <string>Set exec font...</string>
+        </property>
+        <property name="toolTip">
+            <string>Set exec font...</string>
+        </property>
+        <property name="whatsThis">
             <string>Set exec font...</string>
         </property>
     </action>
@@ -2143,6 +2428,9 @@
         <property name="menuText">
             <string>Show utility window</string>
         </property>
+        <property name="whatsThis">
+            <string>Show utility window</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -2152,6 +2440,9 @@
             <string>Learning Lava by samples</string>
         </property>
         <property name="menuText">
+            <string>Learning Lava by samples</string>
+        </property>
+        <property name="whatsThis">
             <string>Learning Lava by samples</string>
         </property>
     </action>
@@ -2166,10 +2457,13 @@
             <iconset>image88</iconset>
         </property>
         <property name="text">
-            <string>Insert optional</string>
+            <string>Insert optional item</string>
         </property>
         <property name="menuText">
-            <string>Insert optional</string>
+            <string>Insert optional item</string>
+        </property>
+        <property name="whatsThis">
+            <string>Insert optional item</string>
         </property>
     </action>
     <action>
@@ -2183,13 +2477,16 @@
             <iconset>image89</iconset>
         </property>
         <property name="text">
-            <string>Delete optional</string>
+            <string>Delete optional item</string>
         </property>
         <property name="menuText">
-            <string>Delete optional</string>
+            <string>Delete optional item</string>
+        </property>
+        <property name="toolTip">
+            <string>Delete optional item</string>
         </property>
         <property name="whatsThis">
-            <string>Delete optional</string>
+            <string>Delete optional item</string>
         </property>
     </action>
     <action>
@@ -2202,16 +2499,28 @@
         <property name="menuText">
             <string>Set global font...</string>
         </property>
+        <property name="toolTip">
+            <string>Set global font...</string>
+        </property>
+        <property name="whatsThis">
+            <string>Set global font...</string>
+        </property>
     </action>
     <action>
         <property name="name">
             <cstring>SetFormFontsAction</cstring>
         </property>
         <property name="text">
-            <string>Set form fonts</string>
+            <string>Set form font</string>
         </property>
         <property name="menuText">
-            <string>Set form fonts</string>
+            <string>Set form font</string>
+        </property>
+        <property name="toolTip">
+            <string>Set form font...</string>
+        </property>
+        <property name="whatsThis">
+            <string>Set form font...</string>
         </property>
     </action>
     <action>
@@ -2222,7 +2531,13 @@
             <string>Form text font</string>
         </property>
         <property name="menuText">
-            <string>Form text font...</string>
+            <string>Set form text font...</string>
+        </property>
+        <property name="toolTip">
+            <string>Set form text font...</string>
+        </property>
+        <property name="whatsThis">
+            <string>Set form text font...</string>
         </property>
     </action>
     <action>
@@ -2230,10 +2545,16 @@
             <cstring>setFormLabelFontAction</cstring>
         </property>
         <property name="text">
-            <string>Form label font</string>
+            <string>Set form label font</string>
         </property>
         <property name="menuText">
-            <string>Form label font...</string>
+            <string>Set form label font...</string>
+        </property>
+        <property name="toolTip">
+            <string>Set form label font...</string>
+        </property>
+        <property name="whatsThis">
+            <string>Set form label font...</string>
         </property>
     </action>
     <action>
@@ -2244,6 +2565,12 @@
             <string>Form button font</string>
         </property>
         <property name="menuText">
+            <string>Form button font...</string>
+        </property>
+        <property name="toolTip">
+            <string>Form button font...</string>
+        </property>
+        <property name="whatsThis">
             <string>Form button font...</string>
         </property>
     </action>
@@ -2261,7 +2588,13 @@
             <string>Help toolbar</string>
         </property>
         <property name="menuText">
-            <string>Help toolbar</string>
+            <string>Show help toolbar</string>
+        </property>
+        <property name="toolTip">
+            <string>Show help toolbar</string>
+        </property>
+        <property name="whatsThis">
+            <string>Show help toolbar</string>
         </property>
     </action>
     <action>
@@ -2275,6 +2608,9 @@
             <string>How to ...</string>
         </property>
         <property name="toolTip">
+            <string>How to accomplish various tasks</string>
+        </property>
+        <property name="whatsThis">
             <string>How to accomplish various tasks</string>
         </property>
     </action>
@@ -2297,6 +2633,9 @@
         <property name="statusTip">
             <string>Save every change immediately, provided the file has already been saved once</string>
         </property>
+        <property name="whatsThis">
+            <string>Save every change immediately, provided the file has already been saved once</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -2315,6 +2654,9 @@
             <string>Make GUI-service for selected interface</string>
         </property>
         <property name="toolTip">
+            <string>Make GUI-service for selected interface</string>
+        </property>
+        <property name="whatsThis">
             <string>Make GUI-service for selected interface</string>
         </property>
     </action>
@@ -2337,6 +2679,9 @@
         <property name="toolTip">
             <string>Start/continue debugging</string>
         </property>
+        <property name="whatsThis">
+            <string>Start/continue debugging</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -2357,6 +2702,9 @@
         <property name="toolTip">
             <string>Set/reset breakpoint</string>
         </property>
+        <property name="whatsThis">
+            <string>Set/reset breakpoint</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -2372,6 +2720,9 @@
             <string>Clear all breakpoints</string>
         </property>
         <property name="menuText">
+            <string>Clear all breakpoints</string>
+        </property>
+        <property name="whatsThis">
             <string>Clear all breakpoints</string>
         </property>
     </action>
@@ -2392,7 +2743,10 @@
             <string>Stop at next statement</string>
         </property>
         <property name="toolTip">
-            <string>Stop at next statement</string>
+            <string>Step into next function</string>
+        </property>
+        <property name="whatsThis">
+            <string>Step into next function</string>
         </property>
     </action>
     <action>
@@ -2412,6 +2766,9 @@
             <string>Step into next function</string>
         </property>
         <property name="toolTip">
+            <string>Step into next function</string>
+        </property>
+        <property name="whatsThis">
             <string>Step into next function</string>
         </property>
     </action>
@@ -2434,6 +2791,9 @@
         <property name="toolTip">
             <string>Step out of innermost function</string>
         </property>
+        <property name="whatsThis">
+            <string>Step out of innermost function</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -2452,6 +2812,9 @@
             <string>Stop at selection</string>
         </property>
         <property name="toolTip">
+            <string>Stop at selection</string>
+        </property>
+        <property name="whatsThis">
             <string>Stop at selection</string>
         </property>
     </action>
@@ -2474,6 +2837,9 @@
         <property name="toolTip">
             <string>Stop debugging</string>
         </property>
+        <property name="whatsThis">
+            <string>Stop debugging</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -2489,10 +2855,13 @@
             <string>StopAtNextFunc</string>
         </property>
         <property name="menuText">
-            <string>Stop at next function/operator/constant</string>
+            <string>Stop at next function/operator</string>
         </property>
         <property name="toolTip">
-            <string>Stop at next function/operator/constant</string>
+            <string>Stop at next function/operator</string>
+        </property>
+        <property name="whatsThis">
+            <string>Stop at next function/operator</string>
         </property>
     </action>
 </actions>

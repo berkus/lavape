@@ -793,13 +793,15 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_ObjectsCtrl->show();
         if (!VisibleList[v_Objects])
           m_ObjectsCtrl->setCurrentItem(0);
-        m_ObjectsCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_ObjectsCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_ComboObjects;
         if (what == objEnumCombo) {
           m_EnumsCtrl->show();
           if (!VisibleList[v_Enums])
             m_EnumsCtrl->setCurrentItem(0);
-          m_EnumsCtrl->setEnabled(true);
+          if (!LBaseData->debugOn)
+            m_EnumsCtrl->setEnabled(true);
           RightCombo = m_ComboBarDlg->IDC_ComboEnums;
           m_ButtonEnum->show();
           EnumsShow = true;
@@ -818,7 +820,8 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_SetObjectsCtrl->show();
         if (!VisibleList[v_SetObjects])
           m_SetObjectsCtrl->setCurrentItem(0);
-        m_SetObjectsCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_SetObjectsCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_ComboSetObjects;
         m_EnumsCtrl->hide();
         m_EnumsCtrl->setCurrentItem(0);
@@ -831,12 +834,14 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_SetObjectsCtrl->show();
         if (!VisibleList[v_SetObjects])
           m_SetObjectsCtrl->setCurrentItem(0);
-        m_SetObjectsCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_SetObjectsCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_ComboSetObjects;
         m_EnumsCtrl->show();
         if (!VisibleList[v_Enums])
           m_EnumsCtrl->setCurrentItem(0);
-        m_EnumsCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_EnumsCtrl->setEnabled(true);
         RightCombo = m_ComboBarDlg->IDC_ComboEnums;
         m_ButtonEnum->hide();
         EnumsShow = false;
@@ -845,66 +850,76 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_TypesCtrl->show();
         if (!VisibleList[v_Types])
           m_TypesCtrl->setCurrentItem(0);
-        m_TypesCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_TypesCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_ComboTypes;
         m_BasicTypesCtrl->show();
         if (!VisibleList[v_BasicTypes])
           m_BasicTypesCtrl->setCurrentItem(0);
-        m_BasicTypesCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_BasicTypesCtrl->setEnabled(true);
         RightCombo = m_ComboBarDlg->IDC_BasicTypes;
         break;
       case setTypeCombo:
         m_SetTypesCtrl->show();
         if (!VisibleList[v_SetTypes])
           m_SetTypesCtrl->setCurrentItem(0);
-        m_SetTypesCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_SetTypesCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_ComboSetTypes;
         break;
       case callbackCombo:
         m_CallbackCtrl->show();
         if (!VisibleList[v_Callback])
           m_CallbackCtrl->setCurrentItem(0);
-        m_CallbackCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_CallbackCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_COMBOCallback;
         break;
       case newCombo:
         m_NewCtrl->show();
         if (!VisibleList[v_New])
           m_NewCtrl->setCurrentItem(0);
-        m_NewCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_NewCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_ComboNew;
         break;
       case newAndCObjCombo:
         m_NewCtrl->show();
         if (!VisibleList[v_New])
           m_NewCtrl->setCurrentItem(0);
-        m_NewCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_NewCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_ComboNew;
         m_SNewCtrl->show();
         if (!VisibleList[v_SNew])
           m_SNewCtrl->setCurrentItem(0);
-        m_SNewCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_SNewCtrl->setEnabled(true);
         RightCombo = m_ComboBarDlg->IDC_ComboSNew;
         break;
       case attachCombo:
         m_AttachCtrl->show();
         if (!VisibleList[v_Attach])
           m_AttachCtrl->setCurrentItem(0);
-        m_AttachCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_AttachCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_ComboAttach;
         break;
       case coiCombo:
         m_CompoObjIntCtrl->show();
         if (VisibleList[v_CompoObjInt])
           m_CompoObjIntCtrl->setCurrentItem(0);
-        m_CompoObjIntCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_CompoObjIntCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_CompoInterf;
         break;
       case callCombo:
         m_CallIntCtrl->show();
         if (!VisibleList[v_CallInt])
           m_CallIntCtrl->setCurrentItem(0);
-        m_CallIntCtrl->setEnabled(true);
+        if (!LBaseData->debugOn)
+          m_CallIntCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_COMBOCall;
         break;
       default: ;
@@ -1140,7 +1155,8 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
     m_CompaObjectsCtrl->setCurrentItem(0);
     if (showObjs) {
 //      m_CompaObjectsCtrl->SetDroppedWidth(maxW+6);
-      m_CompaObjectsCtrl->setEnabled(true);
+      if (!LBaseData->debugOn)
+        m_CompaObjectsCtrl->setEnabled(true);
       LeftCombo = m_ComboBarDlg->IDC_ComboCompObjects;
     }
     else 
@@ -1151,18 +1167,21 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
       m_EnumsCtrl->show();
       m_EnumsCtrl->setEnabled(false);
       m_ButtonEnum->show();
-      m_ButtonEnum->setEnabled(true);
+      if (!LBaseData->debugOn)
+        m_ButtonEnum->setEnabled(true);
     }
 		else if (showEnumCombo) {
 			EnumsShow = true;
 			m_EnumsCtrl->show();
 			if (!VisibleList[v_Enums])
 				m_EnumsCtrl->setCurrentItem(0);
-			m_EnumsCtrl->setEnabled(true);
+      if (!LBaseData->debugOn)
+			  m_EnumsCtrl->setEnabled(true);
 			RightCombo = m_ComboBarDlg->IDC_ComboEnums;
 			m_ButtonEnum->show();
 			if (m_EnumsCtrl->currentItem()) {
-				m_ButtonEnum->setEnabled(true);
+        if (!LBaseData->debugOn)
+				  m_ButtonEnum->setEnabled(true);
 				EnumsEnable = true;
 			}
 		}
@@ -1234,7 +1253,8 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
     m_CompaTypesCtrl->show();
     m_CompaTypesCtrl->setCurrentItem(0);
     //m_CompaTypesCtrl->SetDroppedWidth(maxW+6);
-    m_CompaTypesCtrl->setEnabled(true);
+    if (!LBaseData->debugOn)
+      m_CompaTypesCtrl->setEnabled(true);
     LeftCombo = m_ComboBarDlg->IDC_CompaTypes;
   }
   else 
@@ -1243,7 +1263,8 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
     m_CompaBTypesCtrl->show();
     m_CompaBTypesCtrl->setCurrentItem(0);
     //m_CompaBTypesCtrl->SetDroppedWidth(maxBW+6);
-    m_CompaBTypesCtrl->setEnabled(true);
+    if (!LBaseData->debugOn)
+      m_CompaBTypesCtrl->setEnabled(true);
     RightCombo = m_ComboBarDlg->IDC_CompaBTypes;
   }
   else 
@@ -1294,7 +1315,8 @@ void CComboBar::ShowSubObjects(LavaDECL* decl, const CContext &context)
     SetCombos(true, true);
     m_SubObjectsCtrl->show();
     m_SubObjectsCtrl->setCurrentItem(0);
-    m_SubObjectsCtrl->setEnabled(true);
+    if (!LBaseData->debugOn)
+      m_SubObjectsCtrl->setEnabled(true);
     LeftCombo = m_ComboBarDlg->IDC_ComboSubObjects;
   }
 }
@@ -1328,7 +1350,8 @@ void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface
   SortCombo(m_BaseInisCtrl);
   m_BaseInisCtrl->show();
   m_BaseInisCtrl->setCurrentItem(0);
-  m_BaseInisCtrl->setEnabled(true);
+  if (!LBaseData->debugOn)
+    m_BaseInisCtrl->setEnabled(true);
   LeftCombo = m_ComboBarDlg->IDC_ComboBaseInis;
   lastCombo = invalidateLast;
 }
@@ -1436,7 +1459,8 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDe
   SortCombo(m_VFuncsCtrl);
   m_VFuncsCtrl->show();
   m_VFuncsCtrl->setCurrentItem(0);
-  m_VFuncsCtrl->setEnabled(true);
+  if (!LBaseData->debugOn)
+    m_VFuncsCtrl->setEnabled(true);
   m_NewFunc = m_ComboBarDlg->IDC_NewFunc;
   m_NewPFunc = m_ComboBarDlg->IDC_NewPFunc;
   m_NewFunc->show();
@@ -1458,7 +1482,8 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDe
   if (eventDescDecl || !withStatic)
     m_ClassFuncsCtrl->setEnabled(false);
   else {
-    m_ClassFuncsCtrl->setEnabled(true);
+    if (!LBaseData->debugOn)
+      m_ClassFuncsCtrl->setEnabled(true);
     RightCombo = m_ComboBarDlg->IDC_ComboClassFuncs;
   }
   lastCombo = invalidateLast;
@@ -1470,13 +1495,15 @@ void CComboBar::ShowStaticFuncs(CheckData &ckd)
   onShowStatic = true;
   m_TypesCtrl->show();
 //  if (!VisibleList[v_Types])
-    m_TypesCtrl->setCurrentItem(0);
-  m_TypesCtrl->setEnabled(true);
+  m_TypesCtrl->setCurrentItem(0);
+  if (!LBaseData->debugOn)
+    m_TypesCtrl->setEnabled(true);
   LeftCombo = m_ComboBarDlg->IDC_ComboTypes;
   m_BasicTypesCtrl->show();
 //  if (!VisibleList[v_Types])
-    m_BasicTypesCtrl->setCurrentItem(0);
-  m_BasicTypesCtrl->setEnabled(true);
+  m_BasicTypesCtrl->setCurrentItem(0);
+  if (!LBaseData->debugOn)
+    m_BasicTypesCtrl->setEnabled(true);
   RightCombo = m_ComboBarDlg->IDC_BasicTypes;
   m_StaticFuncsCtrl->show();
 //  if (!VisibleList[v_StaticFuncs])
@@ -1521,7 +1548,8 @@ void CComboBar::showIFFuncs()
   m_TypesCtrl->show();
   m_BasicTypesCtrl->show();
   m_StaticFuncsCtrl->setCurrentItem(0);
-  m_StaticFuncsCtrl->setEnabled(true);
+  if (!LBaseData->debugOn)
+    m_StaticFuncsCtrl->setEnabled(true);
   RightCombo = m_ComboBarDlg->IDC_BasicTypes;
   ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
   lastCombo = invalidateLast;

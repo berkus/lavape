@@ -82,7 +82,7 @@ CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
 
 	makeStyle(LBaseData->m_style);
 
-  m_OutputBar = 0;
+  m_UtilityView = 0;
 	lastTile = 0;
   QPopupMenu *style = new QPopupMenu(this);
   style->setCheckable( TRUE );
@@ -233,7 +233,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
 CLavaMainFrame::~CLavaMainFrame()
 {
-  //delete m_OutputBar;
+  //delete m_UtilityView;
 }
 
 bool CLavaMainFrame::OnCreate()
@@ -258,9 +258,9 @@ bool CLavaMainFrame::OnCreate()
   QSplitter* split = new QSplitter(m_CentralWidget);
   split->setOrientation(Qt::Vertical);
   CreateWorkspace(split);
-  m_OutputBar = new COutputBar(split);
+  m_UtilityView = new CUtilityView(split);
   LoadFileHistory();
-  m_OutputBar->hide();
+  m_UtilityView->hide();
   HelpToolbar->setOffset(100000);
   Toolbar_3->setNewLine(true);
   Toolbar_5->hide();
@@ -268,7 +268,7 @@ bool CLavaMainFrame::OnCreate()
   Toolbar_5->hide();
   Toolbar_6->hide();
   Toolbar_7->hide();
-  OutputBarHidden = true;
+  UtilitiesHidden = true;
 
 	completelyCreated = true;
 	
@@ -277,7 +277,7 @@ bool CLavaMainFrame::OnCreate()
 
 void CLavaMainFrame::UpdateUI()
 {
-  OnUpdateBarhammer(showUtilWindowAction);
+  OnUpdateshowUtil(showUtilWindowAction);
   saveEveryChangeAction->setOn(LBaseData->m_saveEveryChange);  
   viewTB1Action->setOn(Toolbar_1->isVisible());  
   viewTB2Action->setOn(Toolbar_2->isVisible());
@@ -869,7 +869,7 @@ void CLavaMainFrame::override()
 void CLavaMainFrame::DbgStart()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->running()) {
-    DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
+    DbgMessage* mess = new DbgMessage(Dbg_Continue);
     QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
   else {
@@ -899,7 +899,7 @@ void CLavaMainFrame::DbgStepNext()
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_Step;
-  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
+  DbgMessage* mess = new DbgMessage(Dbg_Continue);
   QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
@@ -908,7 +908,7 @@ void CLavaMainFrame::DbgStepNextFunction()
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_StepFunc;
-  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
+  DbgMessage* mess = new DbgMessage(Dbg_Continue);
   QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
@@ -917,7 +917,7 @@ void CLavaMainFrame::DbgStepinto()
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_StepInto;
-  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
+  DbgMessage* mess = new DbgMessage(Dbg_Continue);
   QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
@@ -926,14 +926,14 @@ void CLavaMainFrame::DbgStepout()
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_StepOut;
-  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
+  DbgMessage* mess = new DbgMessage(Dbg_Continue);
   QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::DbgStop()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->interpreterWaits) {
-    DbgMessage* mess = new DbgMessage(Dbg_Exit,0);
+    DbgMessage* mess = new DbgMessage(Dbg_Exit);
     QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
   else 
@@ -1521,41 +1521,43 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
 
 void CLavaMainFrame::showUtilWindow() 
 {
-  if (OutputBarHidden) {
-    if ((m_OutputBar->ActTab == tabError) && !m_OutputBar->CommentEmpty && m_OutputBar->ErrorEmpty )
-      m_OutputBar->SetTab(tabComment);
-    else if ((m_OutputBar->ActTab == tabComment) && m_OutputBar->CommentEmpty && !m_OutputBar->ErrorEmpty)
-      m_OutputBar->SetTab(tabError);
-    m_OutputBar->show();
-    LastBarState = -1;
+  if (UtilitiesHidden) {
+    if ((m_UtilityView->ActTab == tabError) && !m_UtilityView->CommentEmpty && m_UtilityView->ErrorEmpty )
+      m_UtilityView->SetTab(tabComment);
+    else if ((m_UtilityView->ActTab == tabComment) && m_UtilityView->CommentEmpty && !m_UtilityView->ErrorEmpty)
+      m_UtilityView->SetTab(tabError);
+    m_UtilityView->show();
+    LastUtilitiesState = -1;
   }
   else {
-    m_OutputBar->hide();
-    LastBarState = (int)m_OutputBar->ActTab;
+    m_UtilityView->hide();
+    LastUtilitiesState = (int)m_UtilityView->ActTab;
   }
-  OutputBarHidden = !OutputBarHidden;
+  UtilitiesHidden = !UtilitiesHidden;
 }
 
-void CLavaMainFrame::OnUpdateBarhammer(wxAction* action) 
+void CLavaMainFrame::OnUpdateshowUtil(wxAction* action) 
 {
-  action->setOn(!OutputBarHidden);
+  action->setOn(!UtilitiesHidden);
 }
 
-void CLavaMainFrame::ShowBarTab(BarTabs tab)
+/*
+void CLavaMainFrame::ShowUtilitiesTab(UtilityTabs tab)
 {
-  if (OutputBarHidden || (((COutputBar*)m_OutputBar)->ActTab != tab)) 
-    ;//m_OutputBar->SetTab(tab);
+  if (UtilitiesHidden || (((CUtilityView*)m_UtilityView)->ActTab != tab)) 
+    ;//m_UtilityView->SetTab(tab);
   else {
-    if ((LastBarState < 0) || (((COutputBar*)m_OutputBar)->ActTab == tab)) {
-      m_OutputBar->hide();
-      OutputBarHidden = TRUE;
+    if ((LastUtilitiesState < 0) || (((CUtilityView*)m_UtilityView)->ActTab == tab)) {
+      m_UtilityView->hide();
+      UtilitiesHidden = TRUE;
     }
     else 
-     ;// m_OutputBar->SetTab((BarTabs)LastBarState);
-    LastBarState = (int)tab;
+     ;// m_UtilityView->SetTab((UtilityTabs)LastUtilitiesState);
+    LastUtilitiesState = (int)tab;
   }
 //  RecalcLayout();
 }
+*/
 
 void CLavaMainFrame::saveEveryChange(bool on) 
 {
@@ -1643,7 +1645,7 @@ void CLavaMainFrame::viewTB7()
 void CLavaMainFrame::whatNext_clicked() 
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  QString fileName=ExeDir+"/../doc/html/whatnext/GlobalWhatNext.htm";
+  QString fileName=ExeDir+"/../doc/html/whatNext/GlobalWhatNext.htm";
 	QString path("");
 	QStringList args;
 

@@ -43,7 +43,8 @@ public:
   CEventEx *pContExecEvent;
 
 	static CLavaThread *currentThread();
-
+  virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc) {return false;}
+  virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc) {}
 	void run();
 }; 
 

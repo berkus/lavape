@@ -276,7 +276,7 @@ bool CLavaPEApp::event(QEvent *e)
 {
   
   if (e->type() == IDU_LavaDebug) {
-    ((CLavaMainFrame*)m_appWindow)->m_OutputBar->setDebugData((DbgMessages*)((QCustomEvent*)e)->data(), debugThread.myDoc);
+    ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((QCustomEvent*)e)->data(), debugThread.myDoc);
     LBaseData.enableBreakpoints = true;
     if (((QCustomEvent*)e)->data()) {
       ((CMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
@@ -1137,7 +1137,7 @@ void CLavaPEBrowse::makeDefaultMenu(LavaDECL* decl)
 }//makeDefaultMenu
 
 
-bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool calledFromBar, DString* enumID, bool openExec)
+bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool sendMess, DString* enumID, bool openExec)
 {
   CLavaPEDoc *doc;
   LavaDECL *declsel = 0, *formDECL = 0;
@@ -1208,7 +1208,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool c
             if (formDECL) {
               ((CLavaPEView*)view)->OnShowSpecialView(FormDef);
               if (declsel->DeclType != FormDef)
-                GotoDECL(fromDoc, decl, id, calledFromBar, enumID);
+                GotoDECL(fromDoc, decl, id, sendMess, enumID);
             }
             else {
               ((CLavaPEView*)view)->ExpandItem(item);
@@ -1220,8 +1220,8 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool c
         return true;
       }
       else {
-        if (calledFromBar)
-          QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        if (sendMess)
+          QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         else
           QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         return false;
@@ -1229,8 +1229,8 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool c
     }
   }
   else {
-    if (calledFromBar)
-      QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    if (sendMess)
+      QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     else
       QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
@@ -1263,8 +1263,8 @@ bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& f
     }
     delete box;
   }
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->DeleteAllFindItems();
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetTab(tabFind);
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->DeleteAllFindItems();
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetTab(tabFind);
   if (!fw.index) {
     if (!decl || (fw.FWhere == findInThisView))
       return true;

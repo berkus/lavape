@@ -37,19 +37,24 @@
   whereInParent = where; \
   containingChain = chxp; \
   if (update == onSetSynOID) synObjectID = ++((CSearchData*)searchData)->nextFreeID; \
-  if (((update == onSetBrkPnt) || (update == onSetRunToPnt)) \
-    && (synObjectID == ((CSearchData*)searchData)->synObjectID)) { \
-    if (update == onSetBrkPnt) { \
-      workFlags.INCL(isBrkPnt); \
-      ((CSearchData*)searchData)->synObj = this; \
-    } \
-    else \
-      workFlags.INCL(isTempPoint); \
+  if (update == onGetAddress \
+  && synObjectID == ((CSearchData*)searchData)->synObjectID) { \
+    ((CSearchData*)searchData)->synObj = this; \
+    ((CSearchData*)searchData)->finished = true;\
     return; \
   } 
 #else
 #define ENTRY \
-  if (update == onSetSynOID) synObjectID = ++((CSearchData*)searchData)->nextFreeID; \
+  unsigned oldSynObjectID; \
+  if (update == onSetSynOID) { \
+    oldSynObjectID = synObjectID; \
+    synObjectID = ++((CSearchData*)searchData)->nextFreeID; \
+    if (workFlags.Contains(isBrkPnt)) \
+      if (!LBaseData->debugThread->checkExecBrkPnts(oldSynObjectID,synObjectID,\
+      ((CSearchData*)searchData)->execDECL->ParentDECL->OwnID,\
+      ((CSearchData*)searchData)->execDECL->DeclType,\
+      (CLavaBaseDoc*)((CSearchData*)searchData)->doc))\
+        workFlags.EXCL(isBrkPnt); }\
   else if (update == onSelect) { \
     if (synObjectID == ((CSearchData*)searchData)->synObjectID) { \
       if (((CSearchData*)searchData)->debugStop) { \
@@ -61,7 +66,10 @@
             ((CExecView*)((CSearchData*)searchData)->execView)->sv->debugStopToken = primaryTokenNode; \
         else \
           if (primaryToken == assignFS_T) \
-            ((CExecView*)((CSearchData*)searchData)->execView)->sv->callerStopToken = startToken; \
+            if (startToken) \
+              ((CExecView*)((CSearchData*)searchData)->execView)->sv->callerStopToken = startToken; \
+            else /*new with hidden dft ini call */ \
+              ((CExecView*)((CSearchData*)searchData)->execView)->sv->callerStopToken = parentObject->primaryTokenNode; \
           else \
             ((CExecView*)((CSearchData*)searchData)->execView)->sv->callerStopToken = primaryTokenNode; \
         ((CExecView*)((CSearchData*)searchData)->execView)->autoScroll = true; \
@@ -69,24 +77,29 @@
       } \
       else \
         ((CExecView*)((CSearchData*)searchData)->execView)->Select(this); \
+      ((CSearchData*)searchData)->finished = true; \
       return; \
     } \
   } \
-  else if ((update == onSetBrkPnt) \
-  && (synObjectID == ((CSearchData*)searchData)->synObjectID)) { \
-    workFlags.INCL(isBrkPnt); \
-    ((CSearchData*)searchData)->synObj = this; \
+  else if (update == onGetAddress) {\
+    synObjectID = ++((CSearchData*)searchData)->nextFreeID; \
+    if (synObjectID == ((CSearchData*)searchData)->synObjectID) { \
+      ((CSearchData*)searchData)->synObj = this;\
+      ((CSearchData*)searchData)->finished = true;\
+      return; }\
   } \
   parentObject = (SynObject*)parent; \
   whereInParent = where; \
   containingChain = chxp;
 #endif
-//      ((CExecView*)((CSearchData*)searchData)->execView)->Select(this); 
-//  if (update == onSearch) synObjectID = ++((CSearchData*)searchData)->nextFreeID; 
 
-#define MTBL(WHERE) ((SynObject*)WHERE)->MakeTable(table,inINCL,(SynObjectBase*)this,update,(address)&WHERE,0,searchData)
+#define MTBL(WHERE) \
+    {((SynObject*)WHERE)->MakeTable(table,inINCL,(SynObjectBase*)this,update,(address)&WHERE,0,searchData);\
+    if (searchData && ((CSearchData*)searchData)->finished) return;}
 
-#define MTBLCHE(CHEP,CHXP) ((SynObject*)CHEP->data)->MakeTable(table,inINCL,(SynObjectBase*)this,update,(address)CHEP,CHXP,searchData)
+#define MTBLCHE(CHEP,CHXP) \
+    {((SynObject*)CHEP->data)->MakeTable(table,inINCL,(SynObjectBase*)this,update,(address)CHEP,CHXP,searchData);\
+    if (searchData && ((CSearchData*)searchData)->finished) return;}
 
 
 static int inINCL;
@@ -106,7 +119,7 @@ void EnumConst::MakeTable (address table,int,SynObjectBase *parent,TTableUpdate 
     && Id == ((CSearchData*)searchData)->findRefs.enumID) {
       ((CSearchData*)searchData)->synObjectID = synObjectID;
       ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
-      ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecBarText(*(CSearchData*)searchData);
+      ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
     }
     break;
   case onCopy:
@@ -175,7 +188,7 @@ void Reference::MakeTable (address table,int,SynObjectBase *parent,TTableUpdate 
     && ((CSearchData*)searchData)->findRefs.enumID.l == 0) {
       ((CSearchData*)searchData)->synObjectID = synObjectID;
       ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
-      ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecBarText(*(CSearchData*)searchData);
+      ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
     }
     break;
 #endif
@@ -195,7 +208,7 @@ void TDOD::MakeTable (address,int,SynObjectBase *parent,TTableUpdate update,addr
     && accessTypeOK(((CSearchData*)searchData)->findRefs.FindRefFlags)) {
       ((CSearchData*)searchData)->synObjectID = synObjectID;
       ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
-      ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecBarText(*(CSearchData*)searchData);
+      ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
     }
     break;
 #endif
@@ -280,14 +293,17 @@ void SelfVar::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
 
   execDECL = (LavaDECL*)parent;
 
-  if (update == onSearch && inINCL && !checked) {
-    MakeTable(table,inINCL,parent,onAddID,(address)this,0,(address)&sData);
+  if (!checked
+  && ((update == onSearch && inINCL)
+      || update == onGetAddress
+      || update == onSetSynOID)) {
+    if (update == onSearch)
+      MakeTable(table,inINCL,parent,onAddID,(address)this,0,(address)&sData);
     CheckData ckd;
     ckd.myDECL = execDECL; 
     ckd.inINCL = inINCL;
     ckd.document = (CLavaBaseDoc*)((CSearchData*)searchData)->doc;
-    Check(ckd); // only to insert identifiers of references
-    checked = true;
+    Check(ckd); // only to insert identifiers of references and formal parameters
   }
 
   if (update != onCopy) // since execName is recalculated below on onNewID
@@ -458,7 +474,7 @@ void VarName::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
       if (varID == ((CSearchData*)searchData)->findRefs.refTid) {
         ((CSearchData*)searchData)->synObjectID = synObjectID;
         ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
-        ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecBarText(*(CSearchData*)searchData);
+        ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
       }
     }
     else { //  search symbol by name
@@ -468,7 +484,7 @@ void VarName::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
             ((CSearchData*)searchData)->findRefs.FindRefFlags.Contains(wholeWord))) {
         ((CSearchData*)searchData)->synObjectID = synObjectID;
         ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
-        ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecBarText(*(CSearchData*)searchData);
+        ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
       }
     }
     break;
@@ -668,10 +684,8 @@ void AttachObject::MakeTable (address table,int inINCL,SynObjectBase *parent,TTa
   ENTRY
   if (objType.ptr)
     MTBL (objType.ptr);
-  if (itf.ptr) // if: because of Run/NewExpression
+  if (itf.ptr) // itf: because of Run/NewExpression
     MTBL (itf.ptr);
-/*  if (orgunit.ptr)
-    MTBL (orgunit.ptr);*/
   if (url.ptr)
     MTBL (url.ptr);
 }

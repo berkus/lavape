@@ -1110,7 +1110,6 @@ void CLavaPEView::DrawTree(LavaDECL ** pDECL, bool inUndoRedo, bool finalUpdate,
     DeleteItemData();
     //delete GetListView()->firstChild();
     CleanListView();
-//    qDebug("+++delete GetListView()->firstChild()");
     ItemSel = 0;
     SelItem = 0;
     SelType = NoDef;
@@ -1120,6 +1119,8 @@ void CLavaPEView::DrawTree(LavaDECL ** pDECL, bool inUndoRedo, bool finalUpdate,
   CExecTree* execTree = new CExecTree(this, !inUndoRedo, finalUpdate, checkLevel);
   execTree->Travers->FillOut = (pDECL == 0);
   execTree->Travers->DownTree(pDECL,0,str);
+  //if (drawTree)
+  //  ((CLavaPEApp*)wxTheApp)->debugThread.checkAndSetBrkPnts(GetDocument());
   drawTree = false;
   GetDocument()->UpdateNo++;
   delete execTree;
@@ -1145,8 +1146,6 @@ void CLavaPEView::DrawTree(LavaDECL ** pDECL, bool inUndoRedo, bool finalUpdate,
         }
       }
     }
-
-//    qDebug("+++listview redraw finished");
 
     if (drawn) {
       GetListView()->setCurAndSel(SelItem);
@@ -3042,9 +3041,9 @@ void CLavaPEView::OnNextEC(CTreeItem* itemStart, bool onErr)
   if (!itemStart)
     return;
   CTreeItem* item2 = itemStart;
-  if (((CLavaMainFrame*)wxTheApp->m_appWindow)->OutputBarHidden
-      || onErr && (((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->ActTab != tabError)
-      || !onErr && (((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->ActTab != tabComment))
+  if (((CLavaMainFrame*)wxTheApp->m_appWindow)->UtilitiesHidden
+      || onErr && (((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->ActTab != tabError)
+      || !onErr && (((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->ActTab != tabComment))
     if (PutEC(item2, onErr))
       return;
   
@@ -3494,14 +3493,14 @@ bool CLavaPEView::PutEC(CTreeItem* item, bool onErr)
         GetListView()->ensureItemVisible(item);
         GetListView()->setCurAndSel(item);
         CheckAutoCorr(errDECL);
-        ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetErrorOnBar(errDECL);
-        ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetTab(tabError);
+        ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetErrorOnUtil(errDECL);
+        ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetTab(tabError);
         return true;
       }
       else
         if (!onErr && errDECL->DECLComment.ptr) {
-          ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetComment(errDECL->DECLComment.ptr->Comment, !errDECL->DECLError1.first && !errDECL->DECLError2.first);
-          ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetTab(tabComment);
+          ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetComment(errDECL->DECLComment.ptr->Comment, !errDECL->DECLError1.first && !errDECL->DECLError2.first);
+          ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetTab(tabComment);
           GetListView()->setCurAndSel(item);
           GetListView()->ensureItemVisible(item);
           return true;
@@ -3763,7 +3762,10 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
         if (implEl) {
           clipImplEl = NewCHE(NewLavaDECL());
           *((LavaDECL*)clipImplEl->data) = *((LavaDECL*)implEl->data);
-          implDECL->NestedDecls.Append(clipImplEl);
+          if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+            implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, clipImplEl);
+          else
+            implDECL->NestedDecls.Append(clipImplEl);
           if ((clipElDECL->DeclType == Attr) && clipElDECL->TypeFlags.Contains(hasSetGet)) {
             for (implEl = (CHE*)implEl->successor;
                  implEl
@@ -3773,6 +3775,9 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
             if (implEl) {
               clipImplEl = NewCHE(NewLavaDECL());
               *((LavaDECL*)clipImplEl->data) = *((LavaDECL*)implEl->data);
+            if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+              implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, clipImplEl);
+            else
               implDECL->NestedDecls.Append(clipImplEl);
             }
           }
@@ -4111,7 +4116,7 @@ void CLavaPEView::SetErrAndCom(CTreeItem* item)
   bool hasC;
   LavaDECL *decl = 0; 
   DString str0;
-  COutputBar* bar = ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar;
+  CUtilityView* bar = ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView;
 
   if (item) {
     CMainItemData* data = (CMainItemData*)item->getItemData();
@@ -4142,8 +4147,8 @@ void CLavaPEView::SetErrAndCom(CTreeItem* item)
       else 
         bar->SetComment(str0, !decl->DECLError1.first && !decl->DECLError2.first);
       CheckAutoCorr(decl);
-      bar->SetErrorOnBar(decl);
-      if (!((CLavaMainFrame*)wxTheApp->m_appWindow)->OutputBarHidden) {
+      bar->SetErrorOnUtil(decl);
+      if (!((CLavaMainFrame*)wxTheApp->m_appWindow)->UtilitiesHidden) {
         if ((bar->ActTab == tabError) && decl->DECLComment.ptr && bar->ErrorEmpty )
           bar->SetTab(tabComment);
         else if ((bar->ActTab == tabComment) && !decl->DECLComment.ptr && !bar->ErrorEmpty)
@@ -4356,7 +4361,12 @@ bool CLavaPEView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
 
 void CLavaPEView::whatNext() 
 {
-  QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("\"What next?\" help not yet available for the declaration view"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  QWhatsThis::display(QString(QObject::tr("<p>You may <b>delete</b> this item"
+    " (DEL key or scissors button),<br>or you may <b>insert</b> another item after this one"
+    " (click any enabled button on the declaration toolbar),"
+    "<br>or you may <b>view/edit the properties</b> of this item (spectacles button),"
+    "<br><a href=\"../whatNext/DeclViewWhatNext.htm\">or...</a></p>")),
+      GetListView()->viewport()->mapToGlobal(GetListView()->itemRect(GetListView()->currentItem()).topLeft())+QPoint(200,20),GetListView());
 }
 
 //Toolbutton handler--------------------------------------------------------
@@ -5293,7 +5303,7 @@ QString TreeWhatsThis::text(const QPoint &point) {
       if (itemDECL->TypeFlags.Contains(isInitializer))
         return QString(QObject::tr("<p>This is an <a href=\"../ObjectLifeCycle.htm#initializer\">initializer</a> of the above <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
       else
-        return QString(QObject::tr("<p>This is a <a href=\"..//dialogs/FunctionBox.htm\">member function</a> of the above <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
+        return QString(QObject::tr("<p>This is a <a href=\"MemberFunctions.htm\">member function</a> of the above <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
     case Attr:
       return QString(QObject::tr("<p>This is a <a href=\"..//dialogs/MemVarBox.htm\">member variable</a> of a <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
     case IAttr:

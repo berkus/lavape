@@ -451,6 +451,8 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
   LavaVariablePtr newStackFrame;
   bool ok=true;
   int fsize, fsizeBytes;
+  unsigned myNativeStackDepth = currentStackDepth;
+  DebugStep oldDebugStep=nextDebugStep;
 
   if (!object)
     return true;
@@ -467,16 +469,20 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
 #else
 		newStackFrame = new LavaObjectPtr[fsize];
 #endif
-    newStackFrame[0] = 0;
-    newStackFrame[1] = 0;
-    newStackFrame[2] = 0;
+    newStackFrame[0] = ckd.stackFrame[0];
+    newStackFrame[1] = ckd.stackFrame[1];
+    newStackFrame[2] = (LavaObjectPtr)((unsigned)ckd.stackFrame[2] & ~2);
     newStackFrame[SFH] = object;
 
+    if (nextDebugStep == nextStm || nextDebugStep == nextFunc)
+      nextDebugStep = noStep;
     if (fDesc->isNative)
       ok = (*fDesc->funcPtr)(ckd, newStackFrame);
     else
       ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame);
-
+    
+    if (!((unsigned)newStackFrame[2] & 2))
+      nextDebugStep = oldDebugStep;
 #ifdef WIN32
     __asm {
       add esp, fsizeBytes
@@ -485,6 +491,7 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
 #else
 	  delete [] newStackFrame;
 #endif
+    currentStackDepth = myNativeStackDepth;
     if (!ok)
       ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
   }

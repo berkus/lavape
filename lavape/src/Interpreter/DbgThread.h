@@ -15,13 +15,6 @@
 #include "sflsock.h"
 
 
-extern bool debugStep;
-extern bool debugStepFunc;
-extern bool debugStepInto;
-extern bool debugStepOut;
-extern LavaVariablePtr stepOutStack, currentStack;
-
-
 class LocalDebugVar : public VarAction {
 public:
   LocalDebugVar(DbgStopData* data, CLavaBaseDoc* d)
@@ -54,6 +47,7 @@ public:
 protected:
 	void run();
   void setBrkPnts();
+  void addCalleeParams();
 }; 
 
 #endif

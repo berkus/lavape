@@ -527,7 +527,10 @@ void CProgText::Select (SynObject *selObj) {
 
   if (selObj) {
     ((CExecView*)ckd.execView)->selStartPos = selObj->startToken;
-    ((CExecView*)ckd.execView)->selEndPos = selObj->endToken;
+    if (selObj->type == implementation_T)
+      ((CExecView*)ckd.execView)->selEndPos = selObj->startToken;
+    else
+      ((CExecView*)ckd.execView)->selEndPos = selObj->endToken;
   }
   else if (currentSelection->data.OptionalClauseToken(optClause)) {
     ((CExecView*)ckd.execView)->selStartPos = select;

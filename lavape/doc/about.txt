@@ -1,4 +1,4 @@
-LavaPE 0.7
+LavaPE 0.8.3
 
 The unusual programming environment
 of the object-oriented Lava language
@@ -21,11 +21,14 @@ language features:
   * multiple inheritance of interfaces,
 
   * support of design pattern realization
-    by parameterized families of classes,
+    by parameterized families of classes
+    ("virtual types"),
 
   * which also renders type casts superfluous,
 
   * dynamically attached software components
+
+  * "Design by Contract" (TM of ISE Eiffel)
     
 
-Lava home page: http://www.sit.fhg.de/Lava/
+Lava home page: http://lavape.sourceforge.net

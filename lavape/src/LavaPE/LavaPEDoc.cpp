@@ -806,7 +806,10 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         implElDecl->WorkFlags.EXCL(selAfter);
         implElDecl->SecondTFlags.EXCL(overrides);
         cheImplEl = NewCHE(implElDecl);
-        implDECL->NestedDecls.Append(cheImplEl);
+        if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+          implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, cheImplEl);
+        else
+          implDECL->NestedDecls.Append(cheImplEl);
         GetExecDECL(implElDecl,ExecDef);
         implElDecl->ParentDECL = implDECL;
         if (checkLevel > CHLV_inUpdateLow) {
@@ -1597,7 +1600,7 @@ void CLavaPEDoc::DownFind(LavaDECL* decl, CFindData& fw)
             }
             else {
               
-              fDecl = IDTable.GetDECL(decl->RefID);
+              fDecl = IDTable.GetDECL(decl->RefID, decl->inINCL);
               if (fDecl->DeclType == FormDef) {
                 fDecl = IDTable.GetDECL(((CHETID*)fDecl->ParentDECL->Supports.first)->data,fDecl->inINCL);
                 if (TID(fDecl->OwnID, fDecl->inINCL) == fw.refTid) {
@@ -1651,6 +1654,7 @@ void CLavaPEDoc::DownFind(LavaDECL* decl, CFindData& fw)
           sData.execDECL = (LavaDECL*)inCheEl->data;
           sData.doc = this;
           sData.findRefs = fw;
+          sData.finished = false;
           ((SynObjectBase*)((LavaDECL*)inCheEl->data)->Exec.ptr)->MakeTable((address)&IDTable, ((LavaDECL*)inCheEl->data)->inINCL, (SynObjectBase*)inCheEl->data, onSearch, 0,0, (address)&sData);
         }
       }
@@ -1659,10 +1663,10 @@ void CLavaPEDoc::DownFind(LavaDECL* decl, CFindData& fw)
   }
 }
 
-bool CLavaPEDoc::ErrorBarVisible()
+bool CLavaPEDoc::ErrorPageVisible()
 {
-  return  !((CLavaMainFrame*)wxTheApp->m_appWindow)->OutputBarHidden
-          && (((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->ActTab == tabError);
+  return  !((CLavaMainFrame*)wxTheApp->m_appWindow)->UtilitiesHidden
+          && (((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->ActTab == tabError);
 }
 
 void CLavaPEDoc::SetCom8()
@@ -1755,7 +1759,7 @@ void CLavaPEDoc::FindReferences(DString& allNames, CFindData& fw)
 TID CLavaPEDoc::FindUIReference(LavaDECL* decl, CFindData& fw) 
 {
   TID secondID;
-  LavaDECL* fDecl = IDTable.GetDECL(decl->RefID);
+  LavaDECL* fDecl = IDTable.GetDECL(decl->RefID, decl->inINCL);
   if (fDecl->DeclType == FormDef) {
     if (TID(fDecl->ParentDECL->OwnID, fDecl->inINCL) == fw.refTid) 
       return decl->RefID;
@@ -2327,7 +2331,7 @@ void CLavaPEDoc::MakeIniFunc(LavaDECL* ifDECL)
   fdecl->FullName = ifDECL->FullName + fdecl->LocalName;
   fdecl->TypeFlags += SET(isInitializer, defaultInitializer,isConst,-1);
   CHE* che = NewCHE(fdecl);
-  ifDECL->NestedDecls.Append(che);
+  ifDECL->NestedDecls.Prepend(che);
 }
 
 
@@ -2688,7 +2692,10 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
       newimplElDecl = MakeOneSetGet(isPropGet, implDECL, ifaceElDecl, checkLevel);
       if (newimplElDecl) {
         cheImplEl = NewCHE(newimplElDecl);
-        implDECL->NestedDecls.Append(cheImplEl);
+        if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+          implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, cheImplEl);
+        else
+          implDECL->NestedDecls.Append(cheImplEl);
         if (checkLevel > CHLV_inUpdateLow) {
           IDTable.NewID((LavaDECL**)&cheImplEl->data);
           newimplElDecl->ParentDECL = implDECL;
@@ -2701,7 +2708,10 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
       newimplElDecl = MakeOneSetGet(isPropSet, implDECL, ifaceElDecl, checkLevel);
       if (newimplElDecl) {
         cheImplEl = NewCHE(newimplElDecl);
-        implDECL->NestedDecls.Append(cheImplEl);
+        if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+          implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, cheImplEl);
+        else
+          implDECL->NestedDecls.Append(cheImplEl);
         newimplElDecl->ParentDECL = implDECL;
         if (checkLevel > CHLV_inUpdateLow) {
           UpdateNo++;
@@ -2952,21 +2962,20 @@ bool CLavaPEDoc::OnCloseDocument()
 {
   if (!((wxApp*)qApp)->appExit ) {
     if (debugOn && ((CLavaPEApp*)wxTheApp)->debugThread.running()) {
-      //((CLavaPEApp*)wxTheApp)->debugThread.clearBrkPnts();
-      ((CLavaPEApp*)wxTheApp)->debugThread.removeBrkPoints(this);
+      ((CLavaPEApp*)wxTheApp)->debugThread.cleanBrkPoints(this);
       if (((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived) 
-        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived->DbgData.ptr, this);
+        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived->DbgData.ptr, this);
       if (((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived) 
-        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived->DbgData.ptr, this);
+        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived->DbgData.ptr, this);
       close_socket(((CLavaPEApp*)wxTheApp)->debugThread.workSocket);
-      ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->setDebugData(0, this);
+      ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->setDebugData(0, this);
       ((CLavaPEApp*)wxTheApp)->debugThread.myDoc = 0;
       (*((CLavaPEApp*)wxTheApp)->debugThread.pContExecEvent)--;
     }
     else
-      ((CLavaPEApp*)wxTheApp)->debugThread.removeBrkPoints(this);
-    if (((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->stopDoc == this)
-      ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->stopDoc = 0;
+      ((CLavaPEApp*)wxTheApp)->debugThread.cleanBrkPoints(this);
+    if (((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->stopDoc == this)
+      ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->stopDoc = 0;
   }
   return CPEBaseDoc::OnCloseDocument();
 }
@@ -3269,7 +3278,7 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
   if (active)
     execChild = view->GetParentFrame();
   else {
-    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = new CLavaPEHint(CPECommand_OpenExecView, this, (const unsigned long)3, (DWORD) eDECL, (DWORD)MainView, (DWORD)wxTheApp->m_appWindow->statusBar(), (DWORD)((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar, 0); // (DWORD) pdecl);
+    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = new CLavaPEHint(CPECommand_OpenExecView, this, (const unsigned long)3, (DWORD) eDECL, (DWORD)MainView, (DWORD)wxTheApp->m_appWindow->statusBar(), (DWORD)((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, 0); // (DWORD) pdecl);
     execChild = ((CLavaPEApp*)wxTheApp)->pExecTemplate->CreateChildFrame(this);
     active = (execChild !=0);
     execChild->InitialUpdate();
@@ -3373,8 +3382,8 @@ bool CLavaPEDoc::OpenWizardView(CLavaBaseView* formView, LavaDECL** pdecl/*, uns
 void CLavaPEDoc::ResetError()
 {
   DString str0;
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetComment(str0, true);
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->ResetError(); 
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetComment(str0, true);
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->ResetError(); 
 }
 
 
@@ -3387,7 +3396,7 @@ void CLavaPEDoc::ResetVElems(LavaDECL *classDECL)
 }
 
 
-void CLavaPEDoc::SetExecBarText(CSearchData& sData)
+void CLavaPEDoc::SetExecFindText(CSearchData& sData)
 {
   if (!sData.findRefs.fname.l) {
     sData.findRefs.fname = IDTable.IDTab[0]->FileName;
@@ -3395,16 +3404,17 @@ void CLavaPEDoc::SetExecBarText(CSearchData& sData)
   }
   DString barText = sData.findRefs.fname + DString(":  ");
   barText += sData.execDECL->ParentDECL->FullName;
-  barText += DString(", ");
+  //barText += DString(", ");
   if (sData.execDECL->DeclType == ExecDef)
-    if (sData.execDECL->ParentDECL->DeclType == Function)
-      barText += DString("Exec:   ");
+    if ((sData.execDECL->ParentDECL->DeclType == Function)
+      || (sData.execDECL->ParentDECL->DeclType == Initiator))
+      barText += DString(":   ");
     else
-      barText += DString("Invariant: ");
+      barText += DString(", Invariant: ");
   else if (sData.execDECL->DeclType == Ensure)
-    barText += DString("Ensure:   ");
+    barText += DString(", Ensure:   ");
   else 
-    barText += DString("Require:   ");
+    barText += DString(", Require:   ");
       
   barText += sData.constructNesting;
   //CFindData* data = new CFindData(1, sData.fileName, sData.execDECL->OwnID, sData.synObjectID, sData.refID);
@@ -3419,7 +3429,7 @@ void CLavaPEDoc::SetExecBarText(CSearchData& sData)
 //  data->refTid = sData.refID;
   data->refCase = sData.synObjectID;
   data->nID = sData.execDECL->ParentDECL->OwnID;
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetFindText(barText, data);
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetFindText(barText, data);
 }
 
 
@@ -3583,7 +3593,7 @@ void CLavaPEDoc::SetFindText(LavaDECL* inDecl, CFindData& fw)//const DString& ab
     break;
   default: ;
   }
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetFindText(barText, data);
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetFindText(barText, data);
 }
 
 void CLavaPEDoc::SetLastHints(bool fromDragDrop, bool otherDocs)
@@ -3692,15 +3702,15 @@ void CLavaPEDoc::SetNameText(LavaDECL* inDecl, CFindData& fw)//const DString& ab
     CFindData* data = new CFindData;
     *data = fw;
     data->nID = inDecl->OwnID;
-    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetFindText(barText, data);
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetFindText(barText, data);
   }
 }
 
 void CLavaPEDoc::SetPEError(const CHAINX& ErrChain, bool andShow)
 {
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetErrorOnBar(ErrChain);
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetErrorOnUtil(ErrChain);
   if (andShow) {
-    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetTab(tabError);
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetTab(tabError);
     //((CLavaMainFrame*)wxTheApp->m_appWindow)->RecalcLayout();
   }
 }

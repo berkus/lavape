@@ -37,7 +37,7 @@
       the function or initiator is executed within a thread of its own. <b>Autonomous
     </b>execution of a function means that, in addition to being executed concurrently, the function does not
       return output parameters or throw exceptions (using the <b>
-    <font color="#0000FF">fail</font></b> statement) to its caller. Member
+    <font color="#0000FF"><a href="whatsThis/FailSucceed.htm">fail</a></font></b> statement) to its caller. Member
       functions are executed in synchronous mode by default. Initiators have no
     output parameters and cannot throw exceptions.</P>
     
@@ -49,7 +49,7 @@
       threads would then be created only if this pool is empty (not yet
       implemented!). </P>
     
-    <H3>Mutual-exclusion synchronization using transactions</H3>
+    <H3><a name="mutualExclusion"></a>Mutual-exclusion synchronization using transactions</H3>
     
     <P>Irrespective of their execution mode, functions and initiators may be
       declared to be <B>transactions</B>. The purpose of transactions is to
@@ -183,16 +183,17 @@
       asynchronous service requests. In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>,
       a subsequent read access to such output parameters blocks the caller until
       the asynchronous method has returned. For simplicity concurrently 
-    executing methods are always &quot;autonomous&quot; in Lava, i.e., they 
+    executing methods are always &quot;autonomous&quot; in <font color="#FF0000">
+    <i><b>Lava</b></i></font>, i.e., they 
     don't throw exceptions to the caller. (Otherwise the caller would possibly 
     have to wait yet since the method could still throw an exception.</P>
     
-    <H3><A NAME="producerConsumer"></A>Waiting for <I>new property values</I>
+    <H3><A NAME="producerConsumer"></A>Waiting for <I><font color="#FF0000">new</font> property values</I>
     to be assigned by concurrently executing methods</H3>
     
-    <P>This is the typical symmetric producer/consumer relationship between
+    <P>This is the typical symmetric <b>producer/consumer</b> relationship between
       concurrent threads. In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>,
-      this is handled by special &quot;consumable&quot; member variables
+      this is handled by special <a href="dialogs/MemVarBox.htm#consumable">&quot;consumable&quot; member variables</a>
       (properties) of <A HREF="TwoObjectCategories.htm">services</A>. Such an
       object is &quot;consumed&quot; by every read access. Readers are blocked
       until a writer has assigned a new value to this property. Writers are
