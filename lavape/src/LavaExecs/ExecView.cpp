@@ -528,7 +528,7 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
     if (currentToken == debugStopToken || currentToken == callerStopToken) {
       inDebugStop = true;
       p->setBackgroundMode(Qt::OpaqueMode);
-      if (innermostStop && (stopReason == Stop_StepOut || stopReason == Stop_Exception))
+      if (innermostStop && (stopReason == Stop_StepOut))
         p->setBackgroundColor(QColor(180,180,255));
       else
         p->setBackgroundColor(QColor(255,255,0));

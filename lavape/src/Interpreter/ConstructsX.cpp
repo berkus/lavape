@@ -63,13 +63,20 @@
   catch (CHWException ex) {\
     ckd.selfVar = mySelfVar;\
     RESULT = false;\
+    if (IsFuncInvocation()) \
+      CKD.callStack = ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
   catch (CRuntimeException ex) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    /*CKD.callStack = DebugStop(CKD,stackFrame,ex.message);*/\
+    if (IsFuncInvocation()) \
+      CKD.callStack = ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
@@ -77,7 +84,7 @@
   __asm {\
     sub esp, fSizeBytes}\
   }\
-  if (LBaseData->debugOn) {\
+  if (LBaseData->debugOn && !caught) {\
     if (nextDebugStep == noStep) {\
       stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
       if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
@@ -119,18 +126,24 @@
   catch (CHWException ex) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    /*CKD.callStack = DebugStop(CKD,stackFrame,ex.message);*/\
+    if (IsFuncInvocation()) \
+      CKD.callStack = ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
   catch (CRuntimeException ex) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    /*CKD.callStack = DebugStop(CKD,stackFrame,ex.message);*/\
+    if (IsFuncInvocation()) \
+      CKD.callStack = ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
-  if (LBaseData->debugOn) {\
+  if (LBaseData->debugOn && !caught) {\
     if (nextDebugStep == noStep) {\
       stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
       if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
@@ -244,7 +257,10 @@
   catch (CHWException ex) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    CKD.callStack = DebugStop(CKD,stackFrame,ex.message);\
+    if (IsFuncInvocation()) \
+      CKD.callStack = ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
@@ -254,14 +270,20 @@
     CHWException exHW(SIGFPE,&si); \
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    /*CKD.callStack = DebugStop(CKD,stackFrame,exHW.message);*/\
+    if (IsFuncInvocation()) \
+      CKD.callStack = ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (exHW.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
   catch (CRuntimeException ex) {\
     ckd.selfVar = mySelfVar;\
     RESULT = false;\
-    /*CKD.callStack = DebugStop(CKD,stackFrame,ex.message);*/\
+    if (IsFuncInvocation()) \
+      CKD.callStack = ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
