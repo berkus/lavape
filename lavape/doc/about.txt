@@ -1,4 +1,4 @@
-LavaPE 0.8.3
+LavaPE 0.8.4
 
 The unusual programming environment
 of the object-oriented Lava language
