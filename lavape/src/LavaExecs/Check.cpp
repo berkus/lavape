@@ -1144,11 +1144,15 @@ bool SynObject::Check (CheckData &ckd)
 {
   ENTRY
 #ifdef INTERPRETER
-  SetError(ckd,&ERR_Placeholder);
+  if (primaryToken != Event_T)
+    SetError(ckd,&ERR_Placeholder);
 #endif
   if (!flags.Contains(isDisabled))
     ckd.nPlaceholders++;
-  ERROREXIT
+  if (primaryToken == Event_T)
+    EXIT
+  else
+    ERROREXIT
 }
 
 bool MultipleOp::IsOptional (CheckData &ckd) {
@@ -4351,7 +4355,15 @@ bool FuncStatement::Check (CheckData &ckd)
 }
 
 void Callback::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
+  LavaDECL *setDecl;
+  
   ((SynObject*)callbackType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
+  TID tidCallback=TID(ckd.document->IDTable.BasicTypesID[B_Callback],ckd.document->isStd?0:1);
+  TID tidSet=TID(ckd.document->IDTable.BasicTypesID[B_Set],ckd.document->isStd?0:1);
+  setDecl = ckd.document->IDTable.GetDECL(tidSet);
+  decl = ckd.document->GetFinalMVType(
+    (LavaDECL*)((CHE*)setDecl->NestedDecls.first)->data,ckd.tempCtx,cat,&ckd);
+    
 #ifdef INTERPRETER
   finalType = ckd.document->GetType(decl);
 #endif
@@ -4382,7 +4394,7 @@ bool Callback::Check (CheckData &ckd)
 
   if (!((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder()) {
     funcDecl = ckd.document->IDTable.GetDECL(((Reference*)((FuncStatement*)callback.ptr)->function.ptr)->refID,ckd.inINCL);
-    ckd.document->IDTable.GetParamID(cbTypeDecl->ParentDECL,tid,isEventDesc); // eventDesc
+    ckd.document->IDTable.GetParamID(cbTypeDecl,tid,isEventDesc); // eventDesc
     ckd.tempCtx = ckd.lpc;
     paramDecl = ckd.document->GetFinalMVType(tid,0,ckd.tempCtx,cat,&ckd);
     if (rc = noCallbackFunction(ckd,funcDecl,paramDecl,ckd.tempCtx,((FuncStatement*)callback.ptr)->callCtx)) {
@@ -4395,7 +4407,7 @@ bool Callback::Check (CheckData &ckd)
   evSpecDecl = ckd.document->GetType(evSpecDecl);
   if (!evSpecDecl)
     ok = false;
-  ckd.document->IDTable.GetParamID(cbTypeDecl->ParentDECL,tid,isEventSpec); // eventSpec
+  ckd.document->IDTable.GetParamID(cbTypeDecl,tid,isEventSpec); // eventSpec
   ckd.tempCtx = ckd.lpc;
   paramDecl = ckd.document->GetFinalMTypeAndContext(tid,0,ckd.tempCtx,&ckd);
   if (evSpecDecl && paramDecl != evSpecDecl) {
@@ -4660,6 +4672,7 @@ bool SwitchStatement::Check (CheckData &ckd)
   ((RefTable*)ckd.refTable)->NewBranchStm(branchStm,precedingBranch);
 
   ((Expression*)caseExpression.ptr)->Check(ckd);
+  CContext swCtx = ckd.tempCtx;
 
   for (chp = (CHE*)branches.first;
        chp;
@@ -4667,6 +4680,7 @@ bool SwitchStatement::Check (CheckData &ckd)
     if (chp != (CHE*)branches.first)
       ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
     opd = (SynObject*)chp->data;
+    ckd.tempCtx = swCtx;
     ok &= opd->Check(ckd);
   }
   if (elsePart.ptr) {

@@ -213,27 +213,33 @@ void FormParmsV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored)
   if (inputs.first) {
     t.Insert(inputs_T);
     t.Insert(Colon_T);
+    NLincIndent(t);
     for (chp = (CHE*)inputs.first; chp; chp = (CHE*)chp->successor) {
       t.Blank();
       DRAWCHE(chp,&inputs);
-      if (chp->successor)
+      if (chp->successor) {
         t.Insert(Comma_T);
+        t.NewLine();
+      }
     }
   }
 
   if (outputs.first) {
     if (inputs.first) {
-      t.NewLine();
+      NLdecIndent(t);
       t.Insert(outputs_T);
     }
     else
       t.Insert(outputs_T,true);
     t.Insert(Colon_T);
+    NLincIndent(t);
     for (chp = (CHE*)outputs.first; chp; chp = (CHE*)chp->successor) {
       t.Blank();
       DRAWCHE(chp,&outputs);
-      if (chp->successor)
+      if (chp->successor) {
         t.Insert(Comma_T);
+        t.NewLine();
+      }
     }
   }
 
@@ -2433,10 +2439,10 @@ void CallbackV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) 
 
   t.Insert(primaryToken,true);
   t.Blank();
-  t.Insert(of_T);
+  t.Insert(from_T);
   t.Blank();
-  t.Insert(type_T);
-  t.Blank();
+//  t.Insert(type_T);
+//  t.Blank();
   DRAW(callbackType.ptr);
   t.Insert(Colon_T);
   NLincIndent(t);
