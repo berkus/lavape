@@ -1,0 +1,314 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "Interpreter"=.\Interpreter\Interpreter.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name LavaBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wxqDocView
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaGUI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Lava_UI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaExecs
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Lava"=.\Lava\Lava.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name LavaBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaGUI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Interpreter
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Lava_UI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wxqDocView
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaStream
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SFLsockets
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Precompiler
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaExecs
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "LavaBase"=.\LavaBase\LavaBase.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name wxqDocView
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SFLsockets
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "LavaExecs"=.\LavaExecs\LavaExecs.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wxqDocView
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaPE_UI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Precompiler
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "LavaGUI"=.\LavaGUI\LavaGUI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name wxqDocView
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaBase
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "LavaPE"=.\LavaPE\LavaPE.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name LavaBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wxqDocView
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaPE_UI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaGUI
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Precompiler
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaExecs
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SFLsockets
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "LavaPE_UI"=.\LavaPE_UI\LavaPE_UI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LavaStream"=.\LavaStream\LavaStream.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaBase
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Lava_UI"=.\Lava_UI\Lava_UI.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name LavaBase
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wxqDocView
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Precompiler"=.\Precompiler\Precompiler.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "SFLsockets"=.\SFLsockets\SFLsockets.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Shortcut"=.\Shortcut\Shortcut.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "disco"=.\disco\disco.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name SFLsockets
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "wxqDocView"=.\wxqDocView\wxqDocView.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name disco
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+
