@@ -626,7 +626,9 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   actDecl = ckd.document->GetType(actTypeDecl);
   formDecl = (LavaDECL*)formParm->data;
   ckd.document->MemberTypeContext(formDecl, callContext,&ckd);
+  callContext = callCtx;
   formTypeDecl = ckd.document->GetFinalMVType(formDecl->RefID,formDecl->inINCL,callContext,formCat,&ckd);
+  callContext = callCtx;
   if (formCat == unknownCategory
   && formDecl->TypeFlags.Contains(trueObjCat))
     if (formDecl->TypeFlags.Contains(stateObject))
