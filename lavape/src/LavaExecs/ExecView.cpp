@@ -199,7 +199,7 @@ void CExecView::OnInitialUpdate()
   insertBefore = false;
   forcePrimTokenSelect = false;
   clicked = false;
-  //checked = false;
+  escapePressed = false;
   doubleClick = false;
   multHint = 0;
   editCtl = 0;
@@ -995,6 +995,8 @@ void CExecView::OnChar(QKeyEvent *e)
     }
     else if (text->currentSynObj->IsStatement())
       OnAnd();
+    break;
+  case Qt::Key_Escape:
     break;
   default:
     ;
@@ -3697,7 +3699,7 @@ bool CExecView::EditOK()
       editCtl->hide();
       editCtlVisible = false;
       sv->setFocus();
-      if (clicked || !editCtl->edited())
+      if (escapePressed || !editCtl->edited())
         return true;
       editCtl->setEdited(false);
       str = editCtl->text();

@@ -687,7 +687,7 @@ void CConstrUpdate::DeleteHint(CLavaPEHint *hint) {
 }
 
 
-void CConstrUpdate::MakeExec(CPEBaseDoc*, LavaDECL *myDECL) {
+void CConstrUpdate::MakeExec(LavaDECL *myDECL) {
   SelfVarV *selfVar;
   LavaDECL *decl, *declName;
   SynObject *body, *execName;

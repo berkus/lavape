@@ -1213,7 +1213,7 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
   LavaObjectPtr handle, multiObj, elemObj, newStackFrame[3];
   LavaVariablePtr elDataVarPtr;
   CHEFormNode* chainNode, *newFNode;
-  int arrayLen, ii, iterations;
+  int arrayLen, ii, iterations=0;
 
   resultFNode->data.Atomic = false;
   if (FormDecl->TypeFlags.Contains(isPlaceholder)) {

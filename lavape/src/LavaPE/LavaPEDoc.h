@@ -36,7 +36,6 @@ public:
   DString GetIOLabel(TAnnotation *anno);
 
   bool openFView(LavaDECL** pdecl);
-  virtual LavaDECL* GetConstrDECL(LavaDECL* parentDecl,TDeclType type,bool makeDecl=true,bool makeExec=true);
   virtual CHE* GetConstrChe(LavaDECL* parentDecl,TDeclType type,bool makeIt=true);
   virtual CHE* SetConstrChe(LavaDECL* parentDecl,LavaDECL* execDecl);
   virtual bool OpenCView(LavaDECL* constrdecl);

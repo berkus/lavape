@@ -15,7 +15,7 @@ extern bool multipleUpdates;
 
 class LAVAEXECS_DLL CConstrUpdate : public CBaseConstrUpdate {
 public:
-  void MakeExec(CPEBaseDoc *myDoc, LavaDECL *myDECL);
+  void MakeExec(LavaDECL *myDECL);
 
   bool ChangeConstraint(CLavaPEHint* hint, wxDocument* doc, bool undo);
   void DeleteHint(CLavaPEHint *hint);

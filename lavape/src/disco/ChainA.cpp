@@ -247,3 +247,18 @@ void ChainAny0::Destroy()
   first = 0;
   last = 0;
 }
+
+
+void CHE0::CopyData (ChainAnyElem *c)
+
+{
+  if (!((CHE0*)c)->data) {
+    delete data;
+    data = 0;
+  }
+  else {
+    if (data)
+      delete data;
+    data = (DObject*)((CHE0*)c)->data->Clone();
+  }
+}

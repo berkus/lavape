@@ -658,7 +658,8 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
   ActItem->setRenameEnabled(0, labelEditEnable);
   bool enableDrag = !elDef->TypeFlags.Contains(thisComponent)
                     && !elDef->TypeFlags.Contains(thisCompoForm);
-  ActItem->setDragEnabled(enableDrag);
+  if (viewTree->drawTree && FinalUpdate)
+    ActItem->setDragEnabled(enableDrag);
   //ActItem->setDropEnabled(enableDrag);
   if (elDef->WorkFlags.Contains(selAfter)) {
     viewTree->SelItem = ActItem;
@@ -1030,10 +1031,12 @@ void CExecTree::ExecEnumItem(CHEEnumSelId * enumsel, int level)
   ActItem->setRenameEnabled(0, true);
   ActItem->setItemData( itd);
   ActItem->setDragEnabled(true);
-  if (enumsel->data.selItem) {
-    viewTree->GetListView()->setCurAndSel(ActItem);
-    viewTree->SelItem = ActItem; 
-    enumsel->data.selItem = false;
+  if (viewTree->drawTree && FinalUpdate) {
+    if (enumsel->data.selItem) {
+      viewTree->GetListView()->setCurAndSel(ActItem);
+      viewTree->SelItem = ActItem; 
+      enumsel->data.selItem = false;
+    }
   }
 }
 

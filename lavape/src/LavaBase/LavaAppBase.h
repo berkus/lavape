@@ -140,6 +140,7 @@
 #define IDU_LavaPE_SyncForm (QEvent::Type)(QEvent::User+7)
 #define IDU_LavaPE_SetLastHint (QEvent::Type)(QEvent::User+8)
 #define IDU_OpenObject (QEvent::Type)(QEvent::User+9)
+#define IDU_LavaPE_OnDrop (QEvent::Type)(QEvent::User+10)
 
 enum CPECommand {
   CPECommand_OpenFormView, 
@@ -335,6 +336,7 @@ private:
 class LAVABASE_DLL CBaseConstrUpdate
 {
 public:
+  virtual void MakeExec(LavaDECL *myDECL){};
   virtual bool ChangeConstraint(CLavaPEHint* , wxDocument* , bool /*undo*/) {return FALSE;}
   virtual void DeleteHint(CLavaPEHint* ) {}
 };

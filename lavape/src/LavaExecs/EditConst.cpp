@@ -86,6 +86,10 @@ void MiniEdit::keyPressEvent (QKeyEvent *ev)
 
   switch (ev->key()) {
   case Qt::Key_Escape:
+    conView->escapePressed = true;
+    conView->EditOK();
+    conView->escapePressed = false;
+    break;
   case Qt::Key_Up:
   case Qt::Key_Return:
     returnPressed = true;

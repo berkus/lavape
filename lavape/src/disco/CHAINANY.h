@@ -81,22 +81,18 @@ public:
   DObject *data;
   
   CHE () {
-    successor = 0;
-    predecessor = 0;
     data =0;
   }
   
   CHE (AnyType *p) {
-    successor = 0;
-    predecessor = 0;
     data = (DObject*)p;
   }
-  
-  virtual ~CHE () { delete data; data = 0; }
     
   virtual void CopyData (ChainAnyElem *);
 
   CHE (CHE *c) { data = 0; CopyData(c); }
+  
+  virtual ~CHE () { delete data; data = 0; }
 
   virtual ChainAnyElem* Clone () { return new CHE(this); }
 

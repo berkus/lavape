@@ -1379,6 +1379,10 @@ void ASN1::GETboolean (bool& b)
     wrongElem = false;
   contentsBuffer.Reset(100);
   GetContents(contentsBuffer,empty);
+  if ((unsigned char)contentsBuffer[0] == '\0')
+    b = false;
+  else
+    b = true;
   if (HeaderTrace) {
     if ((unsigned char)contentsBuffer[0] != '\0')
       qDebug("::: ASN1.GetBOOLEAN: true");

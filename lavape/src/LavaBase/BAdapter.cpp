@@ -64,12 +64,12 @@ TAdapterFunc* StdAdapterTab [Identifier];
 //LavaDECL* DECLTab [Identifier];
 
 static TAdapterFunc ObjectAdapter[LAH + 7];
-static TAdapterFunc BitsetAdapter[LAH + 6];
-static TAdapterFunc BoolAdapter[LAH + 4];
-static TAdapterFunc CharAdapter[LAH ];
+static TAdapterFunc BitsetAdapter[LAH + 7];
+static TAdapterFunc BoolAdapter[LAH + 5];
+static TAdapterFunc CharAdapter[LAH + 1];
 static TAdapterFunc IntAdapter[LAH + 10];
-static TAdapterFunc FloatAdapter[LAH + 8];
-static TAdapterFunc DoubleAdapter[LAH + 8];
+static TAdapterFunc FloatAdapter[LAH + 9];
+static TAdapterFunc DoubleAdapter[LAH + 9];
 static TAdapterFunc StringAdapter[LAH + 3];
 static TAdapterFunc EnumAdapter[LAH +4];
 static TAdapterFunc SetAdapter[LAH + 6];
@@ -208,6 +208,15 @@ bool BsetRShift(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+
+bool BsetString(CheckData& ckd, LavaVariablePtr stack)
+{
+  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
+  QString str = QString("%1").arg(*(ulong*)(stack[0]+LSH), sizeof(unsigned) * 8,2);
+  new(stack[1]+LSH) QString(str);
+  return true;
+}
+
 bool BoolEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   return *(bool*)(stack[0]+LSH) == *(bool*)(stack[1]+LSH);
@@ -254,6 +263,17 @@ bool BoolNot(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+bool BoolString(CheckData& ckd, LavaVariablePtr stack)
+{
+  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
+  QString str;
+  if (*(bool*)(stack[0]+LSH))
+    str = QString("true");
+  else
+    str = QString("false");
+  new(stack[1]+LSH) QString(str);
+  return true;
+}
 
 
 bool CharEq(CheckData& /*ckd*/, LavaVariablePtr stack)
@@ -270,6 +290,15 @@ bool CharLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
     ((ASN1tofromAr*)stack[1])->PUTchar(*(char*)(stack[0]+LSH));
   else
     ((ASN1tofromAr*)stack[1])->GETchar(*(char*)(stack[0]+LSH));
+  return true;
+}
+
+bool CharString(CheckData& ckd, LavaVariablePtr stack)
+{
+  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
+  QString str;
+  str = *(char*)(stack[0]+LSH);
+  new(stack[1]+LSH) QString(str);
   return true;
 }
 
@@ -434,6 +463,16 @@ bool FloatDiv(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+bool FloatString(CheckData& ckd, LavaVariablePtr stack)
+{
+  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
+  QString str = QString("%1").arg(*(float*)(stack[0]+LSH), 0,'f');
+  //QString str;
+  //QTextStream ts( &str, IO_WriteOnly );
+  //ts << *(float*)(stack[0]+LSH);
+  new(stack[1]+LSH) QString(str);
+  return true;
+}
 
 //Double adapter functions
 
@@ -503,6 +542,16 @@ bool DoubleDiv(CheckData& ckd, LavaVariablePtr stack)
   register double dbl = *(double*)(stack[0]+LSH) / *(double*)(stack[1]+LSH);
   OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Double], false)
   *(double*)(stack[2]+LSH) = dbl;
+  return true;
+}
+
+bool DoubleString(CheckData& ckd, LavaVariablePtr stack)
+{
+  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
+  QString str = QString("%1").arg(*(double*)(stack[0]+LSH), 0,'f');
+  //QTextStream ts( &str, IO_WriteOnly );
+  //ts << *(double*)(stack[0]+LSH);
+  new(stack[1]+LSH) QString(str);
   return true;
 }
 
@@ -1611,6 +1660,7 @@ void MakeStdAdapter()
   BitsetAdapter[LAH+3] = BsetOnesComplement;
   BitsetAdapter[LAH+4] = BsetLShift;
   BitsetAdapter[LAH+5] = BsetRShift;
+  BitsetAdapter[LAH+6] = BsetString;
 
   BoolAdapter[0] = (TAdapterFunc)1;
   BoolAdapter[1] = 0;
@@ -1622,6 +1672,7 @@ void MakeStdAdapter()
   BoolAdapter[LAH+1] = BoolInclOr;
   BoolAdapter[LAH+2] = BoolExclOr;
   BoolAdapter[LAH+3] = BoolNot;
+  BoolAdapter[LAH+4] = BoolString;
 
   CharAdapter[0] = (TAdapterFunc)1;
   CharAdapter[1] = 0;
@@ -1629,6 +1680,7 @@ void MakeStdAdapter()
   CharAdapter[3] = CharLavaIO;
   CharAdapter[4] = 0;
   CharAdapter[5] = 0;
+  CharAdapter[LAH] = CharString;
 
   IntAdapter[0] = (TAdapterFunc)1;
   IntAdapter[1] = 0;
@@ -1661,6 +1713,7 @@ void MakeStdAdapter()
   FloatAdapter[LAH+5] = FloatPlus;
   FloatAdapter[LAH+6] = FloatMulti;
   FloatAdapter[LAH+7] = FloatDiv;
+  FloatAdapter[LAH+8] = FloatString;
 
   DoubleAdapter[0] = (TAdapterFunc)2;
   DoubleAdapter[1] = 0;
@@ -1676,6 +1729,7 @@ void MakeStdAdapter()
   DoubleAdapter[LAH+5] = DoublePlus;
   DoubleAdapter[LAH+6] = DoubleMulti;
   DoubleAdapter[LAH+7] = DoubleDiv;
+  DoubleAdapter[LAH+8] = DoubleString;
 
   StringAdapter[0] = (TAdapterFunc)((sizeof(QString)+3)/4);
   StringAdapter[1] = StringCopy;

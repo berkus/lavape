@@ -208,6 +208,7 @@ public:
     wxView *GetFirstView() const;
     POSITION GetFirstViewPos();
     wxView* GetNextView(POSITION& pos);
+    void ViewPosRelease(POSITION pos);
 
     virtual void UpdateAllViews(wxView *sender = (wxView *) NULL, unsigned param = 0, QObject *hint = (QObject *) NULL);
 
@@ -440,6 +441,7 @@ public:
 
     POSITION GetFirstDocPos();
     wxDocument* GetNextDoc(POSITION& pos);
+    void DocPosRelease(POSITION pos);
     wxDocument* FindOpenDocument(const QString& path);//all links resolved
 
     // Make a default document name

@@ -105,7 +105,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   bool ok;
   QSettings settings(QSettings::Native);
 
-  LBaseData.stdUpdate = 0; 
+  LBaseData.stdUpdate = 1; 
   //stop here and set stdUpdate = 1 to allow updates in std.lava
 
   Browser.LastBrowseContext = 0;
@@ -702,7 +702,7 @@ void CLavaPEApp::OnUpdatePopcontext(wxAction* action)
 
 void CLavaPEApp::OnUpdateSaveAll(wxAction* action) 
 {
-  action->setEnabled(wxDocManager::GetDocumentManager()->GetFirstDocPos());
+  action->setEnabled(wxDocManager::GetDocumentManager()->GetOpenDocCount());
 }
 
 
@@ -1096,6 +1096,8 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool c
                || ((CLavaPEView*)view)->myInclView && formDECL
                || !declsel->isInSubTree(((CLavaPEView*)view)->myDECL));
            view = (CLavaBaseView*)doc->GetNextView(pos));
+      doc->ViewPosRelease(pos);
+
       if ( !view->inherits("CLavaPEView")
             || !((CLavaPEView*)view)->myInclView && !formDECL
             || ((CLavaPEView*)view)->myInclView && formDECL
@@ -1301,6 +1303,7 @@ bool CLavaPEBrowse::FindImpl(wxDocument* fromDoc, LavaDECL* decl, wxDocument*& i
             else
               implDoc = doc;
             p_implDecl = (LavaDECL**)((CLavaPEDoc*)implDoc)->IDTable.GetVar(TID(toID.nID, 0), type);
+            mana->DocPosRelease(pos);
             return true;
           }
         }//cheSyn
@@ -1400,6 +1403,7 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
           }
           else 
             implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID);
+          mana->DocPosRelease(pos);
           return true;
         }
       }

@@ -175,6 +175,10 @@ bool CLavaPEView::event(QEvent *ev)
     GetDocument()->SetLastHint();
     return true;
   }
+  else if (ev->type() == IDU_LavaPE_OnDrop) {
+    DoDrop(((QCustomEvent*)ev)->data());
+    return true;
+  }
   else
 		return wxView::event(ev);
 }
@@ -190,8 +194,8 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
   InitFinished = false;
   ItemSel = 0;
   DataSel = 0;
-  ParItemSel = 0;
-  ParDataSel = 0;
+//  ParItemSel = 0;
+//  ParDataSel = 0;
   lastCurrent = 0;
   m_nIDClipFormat = "QLavaTreeView";
   CollectDECL = 0;
@@ -202,6 +206,7 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
   inSync = false;
   Clipdata = 0;
   clipboard_lava_notEmpty = false;
+  DropPosted = false;
 
   if (!GetDocument()->MainView) 
     GetDocument()->MainView = this;
@@ -238,59 +243,141 @@ void CLavaPEView::UpdateUI()
   frame->prevCommentAction->setEnabled(true);
   frame->nextErrorAction->setEnabled(true);
   frame->prevErrorAction->setEnabled(true);
+  ItemSel = (CTreeItem*)GetListView()->currentItem();
+  if (ItemSel) {
+    DataSel = (CMainItemData*)ItemSel->getItemData();
+    if (DataSel) {
+      if (DataSel->type == TIType_DECL) {
+        if (ItemSel != GetListView()->firstChild()) {
+          ItemSel = (CTreeItem*)ItemSel->parent();
+          DataSel = (CMainItemData*)ItemSel->getItemData();
+        }
+      }
+      if (ItemSel != GetListView()->firstChild()) {
+        GroupType = DataSel->type;
+        ItemSel = (CTreeItem*)ItemSel->parent();
+        DataSel = (CMainItemData*)ItemSel->getItemData();
+        if (DataSel) 
+          DefTypeSel = (*(LavaDECL**)DataSel->synEl)->DeclType;
+        else 
+          ItemSel = 0;
+      }
+      else
+        ItemSel = 0;
+    }
+    else
+      ItemSel = 0;
+  }
+  else
+    ItemSel = 0;
 
-  OnUpdateEditCopy(frame->editCopyAction);
-  OnUpdateEditCut(frame->editCutAction);
-  OnUpdateEditCut(frame->deleteAction);
-  OnUpdateEditPaste(frame->editPasteAction);
+  if (ItemSel) {
+    ItemSel = (CTreeItem*)GetListView()->currentItem();
+    DataSel = (CMainItemData*)ItemSel->getItemData();
+    OnUpdateEditCopy(frame->editCopyAction);
+    OnUpdateEditCut(frame->editCutAction);
+    OnUpdateEditCut(frame->deleteAction);
+    OnUpdateEditPaste(frame->editPasteAction);
+    OnUpdateComment(frame->editCommentAction);
+    OnUpdateGotodef(frame->gotoDeclAction);
+	  OnUpdateGotoImpl(frame->gotoImplAction);
+	  OnUpdateFindreferences(frame->findRefsAction);
+    if (myInclView) {
+      OnUpdateNewenum(frame->newEnumAction);
+      OnUpdateNewfunction(frame->newFuncAction);
+      OnUpdateNewinitiator(frame->newInitiatorAction);
+      OnUpdateNewmember(frame->newMemVarAction);
+      OnUpdateNewNamespace(frame->newPackageAction);
+      OnUpdateNewclassimpl(frame->newImplAction);
+      OnUpdateCSpec(frame->newCOspecAction);
+      OnUpdateComponent(frame->newCOimplAction);
+      OnUpdateNewVirtualType(frame->newVTAction);
+      OnUpdateNewclassintf(frame->new_InterfaceAction);
+      OnUpdateNewset(frame->newSetAction);
+	    OnUpdateNewEnumItem(frame->newEnumItemAction);
 
-  OnUpdateNewenum(frame->newEnumAction);
-  OnUpdateNewfunction(frame->newFuncAction);
-  OnUpdateNewinitiator(frame->newInitiatorAction);
-  OnUpdateNewmember(frame->newMemVarAction);
-  OnUpdateNewNamespace(frame->newPackageAction);
-  OnUpdateNewclassimpl(frame->newImplAction);
-  OnUpdateCSpec(frame->newCOspecAction);
-  OnUpdateComponent(frame->newCOimplAction);
-  OnUpdateNewVirtualType(frame->newVTAction);
-  OnUpdateNewclassintf(frame->new_InterfaceAction);
-  OnUpdateNewset(frame->newSetAction);
-	OnUpdateNewEnumItem(frame->newEnumItemAction);
+      OnUpdateShowformview(frame->openFormViewAction);
+      OnUpdateOverride(frame->showOverridablesAction);
+      OnUpdateShowOptionals(frame->showOptsAction);
+      OnUpdateEditSel(frame->editSelItemAction);
 
-  OnUpdateShowformview(frame->openFormViewAction);
-  OnUpdateOverride(frame->showOverridablesAction);
-  OnUpdateShowOptionals(frame->showOptsAction);
-  OnUpdateComment(frame->editCommentAction);
-  OnUpdateEditSel(frame->editSelItemAction);
-  OnUpdateLitStr(frame->insertTextAction);
-  OnUpdateGotodef(frame->gotoDeclAction);
-	OnUpdateGotoImpl(frame->gotoImplAction);
-	OnUpdateFindreferences(frame->findRefsAction);
+      frame->insertTextAction->setEnabled(false);
+    }
+    else {//form
+      OnUpdateLitStr(frame->insertTextAction);
+
+      frame->newEnumAction->setEnabled(false);
+      frame->newFuncAction->setEnabled(false);
+      frame->newInitiatorAction->setEnabled(false);
+      frame->newMemVarAction->setEnabled(false);
+      frame->newPackageAction->setEnabled(false);
+      frame->newImplAction->setEnabled(false);
+      frame->newCOspecAction->setEnabled(false);
+      frame->newCOimplAction->setEnabled(false);
+      frame->newVTAction->setEnabled(false);
+      frame->new_InterfaceAction->setEnabled(false);
+      frame->newSetAction->setEnabled(false);
+	    frame->newEnumItemAction->setEnabled(false);
+      frame->openFormViewAction->setEnabled(false);
+      frame->showOverridablesAction->setEnabled(false);
+      frame->showOptsAction->setEnabled(false);
+      frame->editSelItemAction->setEnabled(false);
+    }
+  }
+  else {
+    frame->editCopyAction->setEnabled(false);
+    frame->editCutAction->setEnabled(false);
+    frame->deleteAction->setEnabled(false);
+    frame->editPasteAction->setEnabled(false);
+
+    frame->newEnumAction->setEnabled(false);
+    frame->newFuncAction->setEnabled(false);
+    frame->newInitiatorAction->setEnabled(false);
+    frame->newMemVarAction->setEnabled(false);
+    frame->newPackageAction->setEnabled(false);
+    frame->newImplAction->setEnabled(false);
+    frame->newCOspecAction->setEnabled(false);
+    frame->newCOimplAction->setEnabled(false);
+    frame->newVTAction->setEnabled(false);
+    frame->new_InterfaceAction->setEnabled(false);
+    frame->newSetAction->setEnabled(false);
+	  frame->newEnumItemAction->setEnabled(false);
+
+    frame->insertTextAction->setEnabled(false);
+    frame->openFormViewAction->setEnabled(false);
+    frame->showOverridablesAction->setEnabled(false);
+    frame->showOptsAction->setEnabled(false);
+    frame->editCommentAction->setEnabled(false);
+    frame->editSelItemAction->setEnabled(false);
+    frame->gotoDeclAction->setEnabled(false);
+	  frame->gotoImplAction->setEnabled(false);
+	  frame->findRefsAction->setEnabled(false);
+  }
 }
 
 
 void CLavaPEView::DisableActions()
 {
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
-  frame->editPasteAction->setEnabled(false);
-  frame->openFormViewAction->setEnabled(false);
-  frame->gotoDeclAction->setEnabled(false);
-  frame->editCopyAction->setEnabled(false);
-  frame->showOverridablesAction->setEnabled(false);
   frame->newEnumAction->setEnabled(false);
   frame->newFuncAction->setEnabled(false);
   frame->newInitiatorAction->setEnabled(false);
   frame->newMemVarAction->setEnabled(false);
   frame->newPackageAction->setEnabled(false);
   frame->newImplAction->setEnabled(false);
-  frame->editCutAction->setEnabled(false);
-  frame->editCommentAction->setEnabled(false);
   frame->newCOspecAction->setEnabled(false);
   frame->newCOimplAction->setEnabled(false);
-  frame->editSelItemAction->setEnabled(false);
   frame->newVTAction->setEnabled(false);
   frame->new_InterfaceAction->setEnabled(false);
   frame->newSetAction->setEnabled(false);
+  frame->editCutAction->setEnabled(false);
+  frame->editCommentAction->setEnabled(false);
+  frame->editSelItemAction->setEnabled(false);
+  frame->editPasteAction->setEnabled(false);
+  frame->openFormViewAction->setEnabled(false);
+  frame->gotoDeclAction->setEnabled(false);
+  frame->editCopyAction->setEnabled(false);
+  frame->showOverridablesAction->setEnabled(false);
   frame->insertTextAction->setEnabled(false);
 	frame->newEnumItemAction->setEnabled(false);
 	frame->gotoImplAction->setEnabled(false);
@@ -433,55 +520,6 @@ QPixmap* CLavaPEView::GetPixmap(bool isParent, bool isAttr, TDeclType deftype, c
   return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[26];
 }
 
-/*
-bool CLavaPEView::OnCreate()//LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) 
-{
-  //if (CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext)) {
-    if (!GetDocument()->MainView) 
-      GetDocument()->MainView = this;
-    /*
-    if (LBaseData->m_lfDefTreeFont.lfHeight != 0)
-      SetFont(&LBaseData->m_TreeFont);
-    m_dropTarget.Register(this);
-    PopupMenu.CreatePopupMenu();
-    PopupMenu.AppendMenu(MF_STRING, ID_EDIT_CUT, "Cut");
-//    bitmap.LoadBitmap(IDB_MenuTest); //0
-    PopupMenu.CheckMenuItem(0, MF_BYPOSITION | MF_CHECKED);
-    PopupMenu.SetMenuItemBitmaps( 0, MF_BYPOSITION, 0, &bitmap);
-    PopupMenu.CheckMenuItem(0, MF_BYPOSITION | MF_CHECKED);
-    PopupMenu.AppendMenu(MF_STRING, ID_EDIT_COPY, "Copy");
-    PopupMenu.AppendMenu(MF_STRING, ID_EDIT_PASTE, "Paste");
-    PopupMenu.AppendMenu(MF_STRING, ID_DELETE, "Delete");
-    PopupMenu.AppendMenu(MF_SEPARATOR, 0, "");
-    PopupMenu.AppendMenu(MF_SEPARATOR, 0, "");
-    PopupMenu.AppendMenu(MF_STRING, ID_ExpandAll, "Expand subtree");
-    PopupMenu.AppendMenu(MF_STRING, ID_CollapsAll, "Collaps subtree");
-    PopupMenu.AppendMenu(MF_STRING, ID_SHOW_OPTIONALS, "Show/hide optionals");
-    PopupMenu.AppendMenu(MF_SEPARATOR, 0, "");
-    PopupMenu.AppendMenu(MF_STRING, ID_COMMENT, "Add/edit comment");
-    PopupMenu.AppendMenu(MF_STRING, ID_EDIT_SEL, "Show/edit item details");
-    PopupMenu.AppendMenu(MF_SEPARATOR, 0, "");
-    PopupMenu.AppendMenu(MF_STRING, ID_GOTODEF, "Go to declaration");
-    PopupMenu.AppendMenu(MF_SEPARATOR, 0, "");
-    PopupMenu.AppendMenu(MF_STRING, ID_GOTOIMPL, "Go to implememtation");
-    PopupMenu.AppendMenu(MF_SEPARATOR, 0, "");
-    PopupMenu.AppendMenu(MF_STRING, ID_Override, "Show virtual table view");
-    PopupMenu.AppendMenu(MF_STRING, ID_SHOWFORMVIEW, "Show form view");
-//    PopupMenu.AppendMenu(MF_STRING, ID_DefaultForm, "Make default form");
-
-    return true;
-  }
-  else
-    return false;
-}
-
-bool CLavaPEView::PreCreateWindow(CREATESTRUCT& cs)
-{
-  cs.style = cs.style | TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | TVS_EDITLABELS;
-  return CTreeView::PreCreateWindow(cs);
-}
-*/
-
 
 void CLavaPEView::OnInitialUpdate()
 {
@@ -543,18 +581,7 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
   updateTree = !lastUpdate;
   CLavaPEDoc* pDoc = GetDocument();
   if (pHint && hint->FirstLast.Contains(firstHint) && !foreignHint) {
-//    CTreeItem* firstVisible = GetListView()->GetFirstVisibleItem();
     VisibleDECL = 0;
-//    SelEnumSel = 0;
-    /*
-    if (firstVisible) {
-      CMainItemData* visData = (CMainItemData*)GetItemData(firstVisible);
-      if (visData->type == TIType_CHEEnumSel) {
-        firstVisible = (CTreeItem*)firstVisible->parent();
-        firstVisible = (CTreeItem*)firstVisible->parent();
-      }
-      VisibleDECL = *(LavaDECL**)((CMainItemData*)GetItemData(firstVisible))->synEl;
-    }*/
     if (!pDoc || !pDoc->mySynDef)
       return;
     if (pHint) {
@@ -1517,31 +1544,6 @@ void CLavaPEView::ExpandTree(CTreeItem* top)
   }
 }
 
-/*
-bool CLavaPEView::EditNames(CTreeItem* top)
-{
-  CTreeItem* item;
-  CMainItemData* itd;
-  item = (CTreeItem*)top->firstChild();//GetListView()->GetChildItem(top);
-  CEdit* Ed;
-  while (item) {
-    itd = (CMainItemData*)item->getItemData();
-    if ((itd->type == TIType_DECL) && (*(LavaDECL**)itd->synEl)->SecondTFlags.Contains(editName)) {
-      GetListView()->setSelected(item, true);
-      GetListView()->ensureItemVisible(item);
-      QMessageBox::critical(this, qApp->name(),IDP_NameInUse,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-      Ed = GetListView()->EditLabel(item);
-      Ed->SetFocus();
-      Ed->SetSel(0, -1);
-      return true;
-    }
-    if (EditNames(item))
-      return true;
-    item = (CTreeItem*)item->nextSibling();
-  }
-  return false;
-}
-*/
 
 void CLavaPEView::OnCollapsAll() 
 {
@@ -1663,9 +1665,11 @@ bool CLavaPEView::IsChildNodeOf(CTreeItem* hitemChild, CTreeItem* hitemSuspected
 QDragObject*  CLavaPEView::OnBegindrag()
 {
   CMainItemData *ddrag;
+  CMainItemData clipdata;
 
   if (GetDocument()->changeNothing)
     return 0;
+  DropPosted = 0;
   m_hitemDrop = 0;
   m_hitemDrag = (CTreeItem*)GetListView()->currentItem();
   ddrag = (CMainItemData*)m_hitemDrag->getItemData();
@@ -1702,27 +1706,28 @@ QDragObject*  CLavaPEView::OnBegindrag()
 
 	QByteArray ba;
   QDataStream ar(ba,IO_WriteOnly);
-  Clipdata  = new CMainItemData(ddrag->type, 0);
-  Clipdata->synEl = (unsigned long) NewLavaDECL();  //the Clipdata synEl is LavaDECL*
-  Clipdata->ClipTree = &GetDocument()->mySynDef->SynDefTree;
-  *(LavaDECL*)Clipdata->synEl = *declDrag;
-  Clipdata->docPathName = new DString(GetDocument()->GetAbsSynFileName());
-  Clipdata->Serialize(ar);
+  //Clipdata  = new CMainItemData(ddrag->type, 0);
+  clipdata.type = ddrag->type;
+  clipdata.synEl = (unsigned long) NewLavaDECL();  //the Clipdata synEl is LavaDECL*
+  clipdata.ClipTree = &GetDocument()->mySynDef->SynDefTree;
+  *(LavaDECL*)clipdata.synEl = *declDrag;
+  clipdata.docPathName = new DString(GetDocument()->GetAbsSynFileName());
+  clipdata.Serialize(ar);
   dragSource = new LavaSource(GetListView());
   dragSource->setEncodedData(ba);
   GetDocument()->DragView = this;
   DragDoc = GetDocument();
   dragSource->drag();
-  m_hitemDrag = 0;
-  if (m_hitemDrop)
-    GetListView()->setSelected(m_hitemDrop, false);
-  m_hitemDrop = 0;
-  GetDocument()->DragView = 0;
-  if (CollectDECL)
-    DeleteDragChain();
-  if (Clipdata) {
-    delete Clipdata;
-    Clipdata = 0;
+  if (clipdata.synEl)
+    delete (LavaDECL*)clipdata.synEl;
+  //if (m_hitemDrop)
+  //  GetListView()->setSelected(m_hitemDrop, false);
+  if (!DropPosted) {
+    m_hitemDrag = 0;
+    m_hitemDrop = 0;
+    GetDocument()->DragView = 0;
+    if (CollectDECL)
+      DeleteDragChain();
   }
   return 0;
 }
@@ -1738,8 +1743,10 @@ void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
   if (ev->provides(m_nIDClipFormat)) {
     QByteArray ba = ev->encodedData(m_nIDClipFormat);
 		QDataStream ar(ba,IO_ReadOnly);
-    if (Clipdata)
+    if (Clipdata) {
+      Clipdata->Destroy();
       delete Clipdata;
+    }
     Clipdata = new CMainItemData;
     Clipdata->Serialize(ar);
     if ((((LavaDECL*)Clipdata->synEl)->DeclType == DragFeature)
@@ -1752,8 +1759,6 @@ void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
       else {
         DragDoc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(Clipdata->docPathName->c);
         if (DragDoc) {
-          //lowRelName = *Clipdata->docPathName;
-          //RelPathName(lowRelName, dropDoc->IDTable.DocDir);
           cheSyn = (CHESimpleSyntax*)dropDoc->mySynDef->SynDefTree.first;
           if (cheSyn) {
             cheSyn = (CHESimpleSyntax*)cheSyn->successor; //is DragDoc included?
@@ -1763,8 +1768,6 @@ void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
             if (cheSyn) 
               DragINCL = cheSyn->data.nINCL;
           }
-          //lowRelName = dropAbsName;
-          //RelPathName(lowRelName, DragDoc->IDTable.DocDir);
           cheSyn = (CHESimpleSyntax*)DragDoc->mySynDef->SynDefTree.first;
           if (cheSyn) {
             cheSyn = (CHESimpleSyntax*)cheSyn->successor; //is DropDoc included?
@@ -1785,8 +1788,8 @@ void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
 
 void CLavaPEView::OnDragLeave(QDragLeaveEvent* ev) 
 {
-  if (m_hitemDrop)
-    GetListView()->setSelected(m_hitemDrop, false);
+  //if (m_hitemDrop)
+  //  GetListView()->setSelected(m_hitemDrop, false);
   m_hitemDrop = 0;
   if (Clipdata) {
     Clipdata->Destroy();
@@ -1814,8 +1817,8 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
         DString fn = GetDocument()->GetAbsSynFileName();
         if (fn == *Clipdata->docPathName) {
           dragView = (CLavaPEView*)GetDocument()->DragView;
-          if ((dragView == this)
-             && ((m_hitemDrag == m_hitemDrop)
+          if ((dragView == this) &&
+              ((m_hitemDrag == m_hitemDrop)
                 || (m_hitemDrag == (CTreeItem*)GetListView()->firstChild())
                 || IsChildNodeOf(m_hitemDrop, m_hitemDrag)
                 || (CollectPos == 1) && (m_hitemDrop == m_hitemDrag->parent())
@@ -1923,8 +1926,30 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
 
 void CLavaPEView::OnDrop(QDropEvent* ev) 
 {
+  if (ev->provides(m_nIDClipFormat)) {
+    m_hitemDrop = (CTreeItem*)GetListView()->itemAt(GetListView()->contentsToViewport(ev->pos()));
+    if (m_hitemDrop) {
+      //GetListView()->setSelected(m_hitemDrop, false);
+      //QDropData *ddata = new QDropData(m_hitemDrop, ev->action());
+      DropPosted = true;
+      DragDoc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(Clipdata->docPathName->c);
+      if (DragDoc && (DragDoc != GetDocument()))
+        ((CLavaPEView*)DragDoc->MainView)->DropPosted = true;
+      QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_OnDrop, (void*)ev->action()));
+    }
+    else {
+      if (Clipdata) {
+        Clipdata->Destroy();
+        delete Clipdata;
+      }
+    }
+  }
+}
+
+void CLavaPEView::DoDrop(void* act)
+{
   CTreeItem *itemDragParent, *itemDropP;
-  CLavaPEView* dragView = 0;
+  //CLavaPEView* dragView = 0;
   bool canDrag = false, canDrop, hasDragged = false, mdh = false;
   LavaDECL *declClip, *dragParent = 0, *dropDECL;
   TDeclType clipDefType;
@@ -1938,19 +1963,17 @@ void CLavaPEView::OnDrop(QDropEvent* ev)
   CLavaPEHint* hint=0, *delHint=0;
   CPECommand com;
   int pos;
-  
-  if (ev->provides(m_nIDClipFormat)) {
-    m_hitemDrop = (CTreeItem*)GetListView()->itemAt(GetListView()->contentsToViewport(ev->pos()));
-    if (m_hitemDrop) {
-      GetListView()->setSelected(m_hitemDrop, false);
+  QDropEvent::Action action = (QDropEvent::Action)(int)act;
+
       declClip =  (LavaDECL*)Clipdata->synEl;
       clipDefType = declClip->DeclType;
       fn = GetDocument()->GetAbsSynFileName();
       canDrag = (fn == *Clipdata->docPathName);
       if (canDrag) {
-        dragView = (CLavaPEView*)GetDocument()->DragView;
-        itemDragParent = (CTreeItem*)dragView->m_hitemDrag->parent();
-        if ((this == dragView) && ((m_hitemDrop == m_hitemDrag) 
+        //dragView = (CLavaPEView*)GetDocument()->DragView;
+        itemDragParent = (CTreeItem*)/*dragView->*/m_hitemDrag->parent();
+        if (//(this == dragView) &&
+          ((m_hitemDrop == m_hitemDrag) 
           || (CollectPos == 1) && (m_hitemDrop == itemDragParent)
           || (m_hitemDrop == GetPrevSiblingItem(m_hitemDrag) ))) {
           m_hitemDrop = 0;
@@ -1959,7 +1982,7 @@ void CLavaPEView::OnDrop(QDropEvent* ev)
             DeleteDragChain();
           return;
         }
-        dragParent = *dragView->pDeclDragP;
+        dragParent = /**dragView->*/*pDeclDragP;
       }
       else
         if (!canDrag)
@@ -1996,14 +2019,14 @@ void CLavaPEView::OnDrop(QDropEvent* ev)
         }
       }
       else {
-        if (ev->action() == QDropEvent::Move)
+        if (action == QDropEvent::Move)
           canDrop = DoRefac(dropDECL, mdh, vtHints);
       }
 
       if (canDrag && canDrop) {
-        if (dragView->CollectDECL) {
-          if (dragView->CollectDECL->DeclType == DragEnum) {
-            hint = ChangeEnum(CollectDECL, m_hitemDrop, ev->action() == QDropEvent::Move, true);
+        if (/*dragView->*/CollectDECL) {
+          if (/*dragView->*/CollectDECL->DeclType == DragEnum) {
+            hint = ChangeEnum(CollectDECL, m_hitemDrop, action == QDropEvent::Move, true);
             GetDocument()->hasHint = true;
             Clipdata->docPathName = 0;
             m_hitemDrag = 0;
@@ -2020,18 +2043,18 @@ void CLavaPEView::OnDrop(QDropEvent* ev)
             return;
           }
           else {
-            if (ev->action() == QDropEvent::Move) {
+            if (action == QDropEvent::Move) {
               d4 = ((CMainItemData*)itemDragParent->getItemData())->synEl;
               if (GetDocument()->hasHint)
                 d4 = GetDocument()->IDTable.GetVar(TID((*(LavaDECL**)d4)->OwnID,0),idType);
-              if (dragView->CollectDECL->FullName.l)
-                str2 = new DString(dragView->CollectDECL->FullName);
+              if (/*dragView->*/CollectDECL->FullName.l)
+                str2 = new DString(/*dragView->*/CollectDECL->FullName);
               else
                 str2 = 0;
               FIRSTLAST(GetDocument(), firstlast);
               if (mdh)
                 firstlast.INCL(multiDocHint);
-              hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), firstlast, (DWORD)dragView->CollectDECL, (DWORD)str2, (DWORD)dragView->CollectPos, d4, (DWORD)dropDECL->ParentDECL);
+              hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), firstlast, (DWORD)/*dragView->*/CollectDECL, (DWORD)str2, (DWORD)/*dragView->*/CollectPos, d4, (DWORD)dropDECL->ParentDECL);
               GetDocument()->UpdateDoc(this, false, hint);
               drawTree = true;
               DrawTree(p_myDECL, false, false);
@@ -2086,14 +2109,14 @@ void CLavaPEView::OnDrop(QDropEvent* ev)
             str2 = 0;
             declClip->FullName.Reset(0);
           }
-          if (ev->action() == QDropEvent::Move)
+          if (action == QDropEvent::Move)
             com = CPECommand_Move;
           else
             com = CPECommand_Insert;
           DWORD d6 = 0;
           if (!canDrag || mdh) 
             d6 = (DWORD)Clipdata->ClipTree;
-          if (!canDrag && (ev->action() == QDropEvent::Move) || mdh) {
+          if (!canDrag && (action == QDropEvent::Move) || mdh) {
             firstlast.INCL(multiDocHint);
             if (RefacCase == noRefac)
               ((CLavaPEApp*)wxTheApp)->LBaseData.MultiUndoMem.StartMultiDocUpdate();
@@ -2102,10 +2125,11 @@ void CLavaPEView::OnDrop(QDropEvent* ev)
           hint = new CLavaPEHint(com, GetDocument(), firstlast, (DWORD)declClip, (DWORD)str2, (DWORD)pos, d4, (DWORD)dragParent,
                                 d6, (DWORD)Clipdata->docPathName);
           delHint = hint;
+          Clipdata->ClipTree = 0;
         }
         Clipdata->docPathName = 0;
-        if (dragView)
-          dragView->m_hitemDrag = 0;
+        if (canDrag)
+          m_hitemDrag = 0;
         m_hitemDrop = 0;
         GetDocument()->UpdateDoc(this, false, hint);
         while(vtHints) {
@@ -2129,27 +2153,37 @@ void CLavaPEView::OnDrop(QDropEvent* ev)
           else
             GetDocument()->ConcernImpls(hint, 0);
         GetDocument()->ConcernExecs(hint);
-        GetDocument()->SetLastHints(true, (ev->action() == QDropEvent::Move) || !hasDragged
+        GetDocument()->SetLastHints(true, (action == QDropEvent::Move) || !hasDragged
                               || (RefacCase != privToPublic) && (RefacCase != noRefac));
         if (delHint)
           delete delHint;
       }//canDrop
-    }
-  }
+//--    }
+//--  }
   ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = false;
-  if (dragView)
-    dragView->m_hitemDrag = 0;
-  if (m_hitemDrop)
-    GetListView()->setSelected(m_hitemDrop, false);
+  if (canDrag)
+    /*dragView->*/m_hitemDrag = 0;
+  //if (m_hitemDrop)
+  //  GetListView()->setSelected(m_hitemDrop, false);
   m_hitemDrop = 0;
+  if (DragDoc && (DragDoc != GetDocument())) {
+    ((CLavaPEView*)DragDoc->MainView)->m_hitemDrag = 0;
+    DragDoc->DragView = 0;
+    if (((CLavaPEView*)DragDoc->MainView)->CollectDECL)
+      ((CLavaPEView*)DragDoc->MainView)->DeleteDragChain();
+
+  }
   if (!canDrop) {
     if (CollectDECL)
       DeleteDragChain();
-    if (Clipdata)
-      Clipdata->Destroy();
   }
-  delete Clipdata;
+  if (Clipdata) {
+    Clipdata->Destroy();
+    delete Clipdata;
+  }
   Clipdata = 0;
+  DropPosted = false;
+  ((CLavaPEView*)DragDoc->MainView)->DropPosted = false;
 }
 
 
@@ -2988,8 +3022,7 @@ void CLavaPEView::OnNewEnumItem()
 void CLavaPEView::OnUpdateNewEnumItem(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-      (ItemSel != 0)
-        && ( (GroupType == TIType_EnumItems) || (GroupType == TIType_CHEEnumSel))); 
+       ( (GroupType == TIType_EnumItems) || (GroupType == TIType_CHEEnumSel))); 
 	
 }
 
@@ -3144,6 +3177,8 @@ void CLavaPEView::OnEditPaste()
         }
         hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, (DWORD)declClip, (DWORD)str2, pos, d4, 0, (DWORD)clipdata.ClipTree, (DWORD)clipdata.docPathName);
         GetDocument()->UpdateDoc(this, false, hint);
+        clipdata.synEl = 0;
+        clipdata.ClipTree = 0;
         if (myInclView) {
           GetDocument()->ConcernForms(hint);
           if (d4) 
@@ -3154,6 +3189,7 @@ void CLavaPEView::OnEditPaste()
         }
         GetDocument()->SetLastHint();
       }
+      clipdata.Destroy();
       clipdata.docPathName = 0;
     }
   }
@@ -3161,52 +3197,26 @@ void CLavaPEView::OnEditPaste()
 
 void CLavaPEView::OnUpdateEditPaste(wxAction* action) 
 {
-  bool enable = false;
-  if ((GetDocument()->changeNothing))
-    enable = false;
-  else {
-    CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-    if (item) {
-      enable = clipboard_lava_notEmpty; //wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat);
-		  if (enable) //{
-        //QByteArray ar = ((LavaSource*)wxTheApp->clipboard()->data(QClipboard::Clipboard))->encodedData(m_nIDClipFormat);
-        //CMainItemData clipdata;
-        //SynFlags treeflags, secondtflags;
-        //TDeclType deftype= clipdata.Spick(ar, treeflags, secondtflags);
-        enable = (CanPaste(defTypeSpicked, treeflagsSpicked, secondtflagsSpicked, item) != TIType_NoType);
-      //}
-    }
+  bool enable = !GetDocument()->changeNothing;
+  if (enable) {
+    enable = clipboard_lava_notEmpty; 
+		if (enable) 
+      enable = (CanPaste(defTypeSpicked, treeflagsSpicked, secondtflagsSpicked, ItemSel) != TIType_NoType);
   }
   action->setEnabled(enable);
-  /*
-  if (bEnable)
-    PopupMenu.EnableMenuItem(ID_EDIT_PASTE, MF_ENABLED | MF_BYCOMMAND); 
-  else
-    PopupMenu.EnableMenuItem(ID_EDIT_PASTE, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 
-  */
 }
 
 
 void CLavaPEView::OnUpdateEditSel(wxAction* action) 
 {
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
   bool enable = false;
-  if (myInclView && item) {
-    CMainItemData *itd = (CMainItemData*)item->getItemData();
-    enable = (itd->type == TIType_DECL)
-//             || (itd->type == TIType_CHEEnumSel)
-//             || (itd->type == TIType_EnumItems)
-             || (itd->type == TIType_Require)
-             || (itd->type == TIType_Ensure)
-             || (itd->type == TIType_Constraint);
+  if (myInclView) {
+    enable = (DataSel->type == TIType_DECL)
+             || (DataSel->type == TIType_Require)
+             || (DataSel->type == TIType_Ensure)
+             || (DataSel->type == TIType_Constraint);
   }
   action->setEnabled(enable);
-  /*
-  if (enable)
-    PopupMenu.EnableMenuItem(ID_EDIT_SEL, MF_ENABLED | MF_BYCOMMAND); 
-  else
-    PopupMenu.EnableMenuItem(ID_EDIT_SEL, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 
-  */
 }
 
 void CLavaPEView::OnEditSel() 
@@ -3839,22 +3849,11 @@ void CLavaPEView::OnUpdateShowformview(wxAction* action)
   bool enable = false;
   if (!myInclView) 
     enable = false;
-  else {
-    CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-    if (item) {
-      CMainItemData* data = (CMainItemData*)item->getItemData();
-      enable = (data->type == TIType_DECL) 
-                   && ((*(LavaDECL**)data->synEl)->DeclType == /*S*/Impl)
-                   && (*(LavaDECL**)data->synEl)->TypeFlags.Contains(isGUI);
-    }
-  }
-  action->setEnabled(enable);
-  /*
-  if (enable) 
-    PopupMenu.EnableMenuItem(ID_SHOWFORMVIEW, MF_ENABLED | MF_BYCOMMAND); 
   else 
-    PopupMenu.EnableMenuItem(ID_SHOWFORMVIEW, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
-    */
+    enable = (DataSel->type == TIType_DECL) 
+                 && ((*(LavaDECL**)DataSel->synEl)->DeclType == Impl)
+                 && (*(LavaDECL**)DataSel->synEl)->TypeFlags.Contains(isGUI);
+  action->setEnabled(enable);
 }
 
 
@@ -3886,7 +3885,7 @@ void CLavaPEView::OnShowSpecialView(TDeclType exprType)
     hasView = GetDocument()->OpenCView(GetDocument()->GetConstrDECL(*(LavaDECL**)itd->synEl,exprType));
   else {
     if ((itd->type == TIType_DECL) 
-        && (((*(LavaDECL**)itd->synEl)->DeclType == /*S*/Impl)
+        && (((*(LavaDECL**)itd->synEl)->DeclType == Impl)
        && (*(LavaDECL**)itd->synEl)->TypeFlags.Contains(isGUI)
           || ((*(LavaDECL**)itd->synEl)->DeclType == FormDef)))
         hasView = GetDocument()->openFView((LavaDECL**)itd->synEl);
@@ -3956,23 +3955,8 @@ void CLavaPEView::Gotodef(CTreeItem* item)
 
 void CLavaPEView::OnUpdateGotodef(wxAction* action) 
 {
-  bool canBrowse = false;
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  if (item) {
-    CMainItemData * itd = (CMainItemData*)item->getItemData();
-    canBrowse = ( /*(itd->type == TIType_Require)
-                 || (itd->type == TIType_Ensure)
-                 || (itd->type == TIType_Constraint)
-                 ||*/ (itd->type == TIType_DECL)
-                 && ((CLavaPEApp*)wxTheApp)->Browser.CanBrowse(*(LavaDECL**)itd->synEl));
-  }
-  action->setEnabled(canBrowse);  
-  /*
-  if (canBrowse)
-    PopupMenu.EnableMenuItem(ID_GOTODEF, MF_ENABLED | MF_BYCOMMAND); 
-  else
-    PopupMenu.EnableMenuItem(ID_GOTODEF, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 
-    */
+  action->setEnabled((DataSel->type == TIType_DECL)
+               && ((CLavaPEApp*)wxTheApp)->Browser.CanBrowse(*(LavaDECL**)DataSel->synEl));  
 }
 
 
@@ -4041,30 +4025,20 @@ void CLavaPEView::OnUpdateGotoImpl(wxAction* action)
 {
   bool canBrowse = false;
   LavaDECL* DECL;
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  if (item) {
-    CMainItemData * itd = (CMainItemData*)item->getItemData();
-    if (itd->type == TIType_DECL
-    || itd->type == TIType_Constraint
-    || itd->type == TIType_Ensure
-    || itd->type == TIType_Require) {
-      DECL = *(LavaDECL**)itd->synEl;
-      canBrowse = (DECL->DeclType == Interface)
-        || (DECL->DeclType == Function)
-        || (DECL->DeclType == CompObjSpec)
-        || (DECL->DeclType == Initiator)
-        || (DECL->DeclType == Impl) && (itd->type == TIType_Constraint)
-        || (DECL->DeclType == Attr) && (DECL->ParentDECL->DeclType == Interface)
-             && DECL->TypeFlags.Contains(hasSetGet);
+  if (DataSel->type == TIType_DECL
+  || DataSel->type == TIType_Constraint
+  || DataSel->type == TIType_Ensure
+  || DataSel->type == TIType_Require) {
+    DECL = *(LavaDECL**)DataSel->synEl;
+    canBrowse = (DECL->DeclType == Interface)
+      || (DECL->DeclType == Function)
+      || (DECL->DeclType == CompObjSpec)
+      || (DECL->DeclType == Initiator)
+      || (DECL->DeclType == Impl) && (DataSel->type == TIType_Constraint)
+      || (DECL->DeclType == Attr) && (DECL->ParentDECL->DeclType == Interface)
+           && DECL->TypeFlags.Contains(hasSetGet);
     }
-  }
   action->setEnabled(canBrowse);  
-  /*
-  if (canBrowse)
-    PopupMenu.EnableMenuItem(ID_GOTOIMPL, MF_ENABLED | MF_BYCOMMAND); 
-  else
-    PopupMenu.EnableMenuItem(ID_GOTOIMPL, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 
-    */
 }
 
 
@@ -4092,28 +4066,7 @@ void CLavaPEView::OnFindReferences()
 
 void CLavaPEView::OnUpdateFindreferences(wxAction* action) 
 {
-  bool canBrowse = false;
-  CMainItemData * itd;
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  if (item) {
-    itd = (CMainItemData*)item->getItemData();
-    canBrowse = (itd->type == TIType_DECL) || (itd->type == TIType_CHEEnumSel);
-    /*
-    if (itd->type == TIType_DECL) {
-      DECL = *(LavaDECL**)itd->synEl;
-      canBrowse = (DECL->DeclType == Interface)
-        || (DECL->DeclType == Function)
-        || (DECL->DeclType == Attr) && DECL->TypeFlags.Contains(hasSetGet);
-    }
-    */
-  }
-  action->setEnabled(canBrowse); 
-  /*
-  if (canBrowse)
-    PopupMenu.EnableMenuItem(ID_FINDREFERENCES, MF_ENABLED | MF_BYCOMMAND); 
-  else
-    PopupMenu.EnableMenuItem(ID_FINDREFERENCES, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 	
-    */
+  action->setEnabled((DataSel->type == TIType_DECL) || (DataSel->type == TIType_CHEEnumSel)); 
 }
 
 
@@ -4135,75 +4088,6 @@ void CLavaPEView::DeleteItemData(CTreeItem* parent)
 }
 
 
-/*
-void CLavaPEView::OnDefaultForm() 
-{
-  DString *str2, newFName, newLName;
-  CLavaPEHint *hint;
-  DWORD d4;
-  int pos;
-  LavaDECL * parDECL, *decl, *exDECL;
-  CTreeItem *item, *par;
-  CMainItemData *data, *pdata;
-
-  item = (CTreeItem*)GetListView()->currentItem();
-  data = (CMainItemData*)item->getItemData();
-  newLName = DString("F__") + (*(LavaDECL**)data->synEl)->LocalName;
-  par = (CTreeItem*)item->parent();
-  pdata = (CMainItemData*)par->getItemData();
-  parDECL = *(LavaDECL**)pdata->synEl;
-  if (parDECL->FullName.l)
-    newFName = parDECL->FullName + ddppkt + newLName;
-  else 
-    newFName = newLName;
-  exDECL = GetDocument()->FindInSupports(newLName, 0, parDECL);
-  if (exDECL) {
-    QMessageBox::critical(this, qApp->name(),IDP_DefaultFormName2,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-    return;
-  }
-  decl = NewLavaDECL();
-  *decl = **(LavaDECL**)data->synEl;
-  decl->DeclType = FormDef;
-  decl->RefID = TID((*(LavaDECL**)data->synEl)->OwnID, 0);
-  decl->FullName = newFName;
-  decl->LocalName = newLName;
-  if (((CLavaPEApp*)wxTheApp)->Browser.HasDefaultForm(decl, *(LavaDECL**)data->synEl, GetDocument()->mySynDef) > 0) {
-    pos = GetPos(0, item);
-    d4 = pdata->synEl;
-    if ((*(LavaDECL**)pdata->synEl)->FullName.l) {
-      str2 = new DString((*(LavaDECL**)pdata->synEl)->FullName);
-    }
-    else {
-      str2 = 0;
-    }
-    hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)3, (DWORD) decl, (DWORD)str2, (DWORD)pos, d4);
-    GetDocument()->UndoMem.AddToMem(hint);
-    GetDocument()->UpdateDoc(this, false, hint);
-  }
-  else {
-    delete decl;
-    QMessageBox::critical(this, qApp->name(),IDP_NoDefaultForm,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-    return;
-  }
-}
-
-void CLavaPEView::OnUpdateDefaultForm(wxAction* action) 
-{
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  bool enable = false;
-  if (item) {
-    CMainItemData* data = (CMainItemData*)item->getItemData();
-    enable = (data->type == TIType_DECL) 
-              && ( (*(LavaDECL**)data->synEl)->DeclType == Interface);
-  }
-  pCmdUI->Enable(enable);
-  if (enable)
-    PopupMenu.EnableMenuItem(ID_DefaultForm, MF_ENABLED | MF_BYCOMMAND); 
-  else
-    PopupMenu.EnableMenuItem(ID_DefaultForm, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 
-}
-*/
-
 void CLavaPEView::destroy() 
 {
   DisableActions();
@@ -4221,108 +4105,31 @@ void CLavaPEView::destroy()
 
 void CLavaPEView::OnUpdateEditCopy(wxAction* action) 
 {
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  CMainItemData* data;
   LavaDECL *decl = 0;
-  if (item != 0) {
-    data = (CMainItemData*)item->getItemData();
-    if (data && (data->type == TIType_DECL))
-      decl = *(LavaDECL**)data->synEl;
-  }
-  bool enable = (myInclView && (item != 0)
+  if (DataSel && (DataSel->type == TIType_DECL))
+    decl = *(LavaDECL**)DataSel->synEl;
+  bool enable = (myInclView
        && (decl && !decl->TypeFlags.Contains(thisComponent)
                 && !decl->TypeFlags.Contains(thisCompoForm)
-           || (data->type == TIType_CHEEnumSel))
+           || (DataSel->type == TIType_CHEEnumSel))
            || decl && (decl->DeclType == FormText));
   action->setEnabled(enable);
-  /*
-  if (enable)
-    PopupMenu.EnableMenuItem(ID_EDIT_COPY, MF_ENABLED | MF_BYCOMMAND); 
-  else
-    PopupMenu.EnableMenuItem(ID_EDIT_COPY, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 
-    */
 }
 
 void CLavaPEView::OnUpdateEditCut(wxAction* action) 
 {
-  bool enable = false;
-  if ((GetDocument()->changeNothing))
-    enable = false;
-  else {
-    CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-    CMainItemData* data;
-    if (item != 0) {
-      data = (CMainItemData*)item->getItemData();
-      if (data  && (data->type == TIType_DECL)) 
-        enable = EnableDelete(*(LavaDECL**)data->synEl)
-                  && (myInclView 
-                    || ((*(LavaDECL**)data->synEl)->DeclType == FormText)) ;
-      else
-        enable = data && (data->type == TIType_CHEEnumSel) && myInclView;
-    }
-  }
-  action->setEnabled(enable);
-  /*
+  bool enable = !GetDocument()->changeNothing;
   if (enable) {
-    PopupMenu.EnableMenuItem(ID_EDIT_CUT, MF_ENABLED | MF_BYCOMMAND); 
-    PopupMenu.EnableMenuItem(ID_DELETE, MF_ENABLED | MF_BYCOMMAND); 
+    if (DataSel  && (DataSel->type == TIType_DECL)) 
+      enable = EnableDelete(*(LavaDECL**)DataSel->synEl)
+                && (myInclView 
+                  || ((*(LavaDECL**)DataSel->synEl)->DeclType == FormText)) ;
+    else
+      enable = DataSel && (DataSel->type == TIType_CHEEnumSel) && myInclView;
   }
-  else {
-    PopupMenu.EnableMenuItem(ID_EDIT_CUT, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 
-    PopupMenu.EnableMenuItem(ID_DELETE, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 
-  }
-  */
-}
-
-/*
-void CLavaPEView::OnShowPattern() 
-{
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  if (item) {
-    CMainItemData* itd = (CMainItemData*)item->getItemData();
-    if (itd &&  (itd->type == TIType_DECL)
-      && ((*(LavaDECL**)itd->synEl)->DeclType == VirtualType)) {
-      LavaDECL *paramDECL = *(LavaDECL**)itd->synEl;
-//      if (CollectDECL) 
-//        delete CollectDECL;
-//      CollectDECL = NewLavaDECL();
-//      GetDocument()->CollectPattern(paramDECL, CollectDECL);
-      GetDocument()->CollectPattern(paramDECL, 0);
-      CTreeItem* pitem = (CTreeItem*)item->parent();
-      pitem = (CTreeItem*)pitem->parent();
-      CTreeItem* citem = (CTreeItem*)GetNextItem(pitem, true);
-      while (citem) {
-        item = (CTreeItem*)citem->firstChild();
-        while (item) {
-          itd = (CMainItemData*)item->getItemData();
-          if ((*(LavaDECL**)itd->synEl)->WorkFlags.Contains(checkmark))
-            ;//SetAllStates(item, nState, nStateMask, true);
-          item = (CTreeItem*)item->nextSibling();
-        }
-        citem->setOpen(true);
-        SetTreeFlags(citem, true);
-        citem =(CTreeItem*) citem->nextSibling();
-      }
-      paramDECL->ParentDECL->ResetCheckmarks();
-    }
-  }
-}
-
-
-void CLavaPEView::OnUpdateShowPattern(wxAction* action) 
-{
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  bool enable;
-  if (item) {
-    CMainItemData* itd = (CMainItemData*)item->getItemData();
-    enable = itd &&  (itd->type == TIType_DECL)
-                 && ((*(LavaDECL**)itd->synEl)->DeclType == VirtualType);
-  }
-  else
-    enable = false;
   action->setEnabled(enable);
 }
-*/
+
 
 void CLavaPEView::OnShowOverridables() 
 {
@@ -4343,73 +4150,53 @@ void CLavaPEView::OnShowOverridables()
 
 void CLavaPEView::OnUpdateOverride(wxAction* action) 
 {
-  bool enable = false;
-  if ((GetDocument()->changeNothing))
-    enable = false;
-  else {
-    CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-    enable = item != 0;
+  bool enable = !GetDocument()->changeNothing;
+  if ( enable) {
+    enable = (DataSel->type == TIType_DECL);
     if (enable) {
-      CMainItemData* itd = (CMainItemData*)item->getItemData();
-      enable = (itd->type == TIType_DECL);
-      if (enable) {
-        LavaDECL* decl = *(LavaDECL**)itd->synEl;
-        enable = ((decl->DeclType == Interface)
-              || (decl->DeclType == Package) && decl->LocalName.l && decl->Supports.first);
-      }
+      LavaDECL* decl = *(LavaDECL**)DataSel->synEl;
+      enable = ((decl->DeclType == Interface)
+            || (decl->DeclType == Package) && decl->LocalName.l && decl->Supports.first);
     }
   }
   action->setEnabled(enable);
-  /*
-  if (ena)
-    PopupMenu.EnableMenuItem(ID_Override, MF_ENABLED | MF_BYCOMMAND); 
-  else
-    PopupMenu.EnableMenuItem(ID_Override, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND);
-    */
-
 }
 
 void CLavaPEView::OnUpdateNewVirtualType(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0) && (GroupType == TIType_VTypes) && (ContainTab[DefTypeSel] [ VirtualType] != 0)); 
+    (GroupType == TIType_VTypes) && (ContainTab[DefTypeSel] [ VirtualType] != 0)); 
 }
 
 
 void CLavaPEView::OnUpdateNewclassintf(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0) && (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
+    (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
 }
 
 void CLavaPEView::OnUpdateNewenum(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0) && (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
+    (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
 }
 
-/*
-void CLavaPEView::OnUpdateNewform(wxAction* action) 
-{
-  action->setEnabled((ItemSel != 0) && (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ FormDef] != 0)); 
-}
-*/
+
 void CLavaPEView::OnUpdateNewfunction(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0) && (GroupType == TIType_Features) && (ContainTab[DefTypeSel] [ Function] != 0));
+     (GroupType == TIType_Features) && (ContainTab[DefTypeSel] [ Function] != 0));
 }
 
 void CLavaPEView::OnUpdateNewinitiator(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0) && (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Initiator] != 0));
+    (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Initiator] != 0));
 }
 
 void CLavaPEView::OnUpdateNewmember(wxAction* action) 
 {
-  action->setEnabled( (!GetDocument()->changeNothing) &&
-    (ItemSel != 0) 
+  action->setEnabled( (!GetDocument()->changeNothing) 
                  && ( (GroupType == TIType_Features)
                       && ( (ContainTab[DefTypeSel] [ Attr]  != 0) 
                          || (*(LavaDECL**)DataSel->synEl)->SecondTFlags.Contains(funcImpl))
@@ -4424,31 +4211,31 @@ void CLavaPEView::OnUpdateNewmember(wxAction* action)
 void CLavaPEView::OnUpdateNewNamespace(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0) && (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Package] != 0));
+    (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Package] != 0));
 }
 
 void CLavaPEView::OnUpdateNewclassimpl(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0) && (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Impl] != 0));
+    (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Impl] != 0));
 }
 
 void CLavaPEView::OnUpdateNewset(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0) && (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
+    (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
 }
 
 void CLavaPEView::OnUpdateCSpec(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0)  && (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ CompObjSpec] != 0));
+     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ CompObjSpec] != 0));
 }
 
 void CLavaPEView::OnUpdateComponent(wxAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
-    (ItemSel != 0)  && (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ CompObj] != 0));
+     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ CompObj] != 0));
 }
 
 void CLavaPEView::SetErrAndCom(CTreeItem* item)
@@ -4629,13 +4416,13 @@ bool CLavaPEView::AddToDragChain(CTreeItem* itemDrag, bool vkControl, bool sameC
             cheIO = (CHE*)itemDECL->NestedDecls.first;
             while (cheIO && canComponent) {
               refDECL = GetDocument()->IDTable.GetDECL(((LavaDECL*)((CHE*)cheIO)->data)->RefID);
-              canComponent = refDECL && ((refDECL->DeclType != /*S*/Interface) || refDECL->TypeFlags.Contains(isComponent));
+              canComponent = refDECL && ((refDECL->DeclType != Interface) || refDECL->TypeFlags.Contains(isComponent));
               cheIO = (CHE*)cheIO->successor;
             }
           }
           else {
             refDECL = GetDocument()->IDTable.GetDECL(itemDECL->RefID);
-            canComponent = refDECL && ((refDECL->DeclType != /*S*/Interface) || refDECL->TypeFlags.Contains(isComponent));
+            canComponent = refDECL && ((refDECL->DeclType != Interface) || refDECL->TypeFlags.Contains(isComponent));
           }
         }
         if (canComponent)
@@ -4698,40 +4485,6 @@ void CLavaPEView::DeleteDragChain()
   }
 }
 
-/*
-void CLavaPEView::SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask, bool inPattern)
-{
-  if (inPattern) {
-    CMainItemData* itd = (CMainItemData*)GetItemData(item1);
-    if (itd && (itd->type == TIType_DECL) && (*(LavaDECL**)itd->synEl)->WorkFlags.Contains(checkmark))  
-      ;//GetListView()->SetItemState(item1, nState, nStateMask);
-  }
-  else
-    ;//GetListView()->SetItemState(item1, nState, nStateMask);
-  CTreeItem* item = (CTreeItem*)GetNextItem(item1, true);
-  while(item) {
-    SetAllStates(item, nState, nStateMask, inPattern);
-    item = (CTreeItem*)item->nextSibling();
-  }
-}
-
-
-void CLavaPEView::OnLButtonDown(UINT nFlags, CPoint point) 
-{ 
-  if (CollectDECL && (GetAsyncKeyState(VK_SHIFT) < 0)) {
-    CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-    CTreeItem* itemDrag = GetListView()->HitTest(point, &nFlags);
-    if (item != itemDrag) {
-      while (item && (item != itemDrag)) {
-        item = (CTreeItem*)item->nextSibling();
-      }
-      if (!item)
-        DeleteDragChain();
-    }
-  }
-  CTreeView::OnLButtonDown(nFlags, point);
-}
-*/
 
 void CLavaPEView::OnSelchanged()  
 {
@@ -4788,7 +4541,7 @@ void CLavaPEView::OnSelchanged()
   }
   if (m_hitemDrop)
     return;
-  ParItemSel = 0;
+//  ParItemSel = 0;
   ItemSel = (CTreeItem*)selItem; 
   if (ItemSel) {
     if (myVTView)
@@ -4823,12 +4576,6 @@ void CLavaPEView::OnSelchanged()
             if (!((CVTView*)myVTView)->activeInt)
               ((CVTView*)myVTView)->activeInt = (*(LavaDECL**)DataSel->synEl)->isInSubTree(((CVTView*)myVTView)->myDECL);
             DefTypeSel = (*(LavaDECL**)DataSel->synEl)->DeclType;
-            if (ItemSel != GetListView()->firstChild()) {
-              ParItemSel = (CTreeItem*)ItemSel->parent();
-              ParItemSel = (CTreeItem*)ParItemSel->parent();
-              if (ParItemSel)
-                ParDataSel = (CMainItemData*)ParItemSel->getItemData();
-            }
           }
           else 
             ItemSel = 0;
@@ -4927,53 +4674,15 @@ void CLavaPEView::OnShowOptionals()
 
 void CLavaPEView::OnUpdateShowOptionals(wxAction* action) 
 {
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  if (item) {
-    CMainItemData* data = (CMainItemData*)item->getItemData();
-    if (data->type == TIType_DECL) 
-      if ((*(LavaDECL**)data->synEl)->TreeFlags.Contains(hasEmptyOpt)
-         && (!myInclView || (*(LavaDECL**)data->synEl)->DeclType != FormDef)) {
-        action->setOn(true);
-/*        if (pCmdUI->m_pOther)
-          ((CToolBar*)pCmdUI->m_pOther)->GetToolBarCtrl().PressButton(ID_SHOW_OPTIONALS, true);*/
-        return;
-      }
-  }
-  action->setOn(false);
-  /*if (pCmdUI->m_pOther)
-    ((CToolBar*)pCmdUI->m_pOther)->GetToolBarCtrl().PressButton(ID_SHOW_OPTIONALS, false);*/
-}
-
-
-/*
-void CLavaPEView::OnChoosefont() 
-{
-   LOGFONT lf;
-   if (((CLavaPEApp*)wxTheApp)->LBaseData.m_lfDefTreeFont.lfHeight == 0) {
-     CFont* pFont = GetFont();
-     if (pFont != NULL)
-       pFont->GetObject(sizeof(LOGFONT), &lf);
-     else
-       ::GetObject(GetStockObject(SYSTEM_FONT), sizeof(LOGFONT), &lf);
-   }
-   else
-     lf = ((CLavaPEApp*)wxTheApp)->LBaseData.m_lfDefTreeFont;
-  CFontDialog dlg(&lf, CF_SCREENFONTS|CF_INITTOLOGFONTSTRUCT);
-  if (dlg.DoModal() == IDOK) {
-    // switch to new font.
-    ((CLavaPEApp*)wxTheApp)->LBaseData.m_TreeFont.DeleteObject();
-    if (((CLavaPEApp*)wxTheApp)->LBaseData.m_TreeFont.CreateFontIndirect(&lf)) {
-      SetFont(&((CLavaPEApp*)wxTheApp)->LBaseData.m_TreeFont);
-      if (myInclView)  
-        myInclView->SetFont(&((CLavaPEApp*)wxTheApp)->LBaseData.m_TreeFont);
-      if (myVTView)  
-        myVTView->SetFont(&((CLavaPEApp*)wxTheApp)->LBaseData.m_TreeFont);
-      ((CLavaPEApp*)wxTheApp)->LBaseData.m_lfDefTreeFont = lf;
-      wxTheApp->m_appWindow->m_OutputBar->ChangeFont();
+  if (DataSel->type == TIType_DECL) 
+    if ((*(LavaDECL**)DataSel->synEl)->TreeFlags.Contains(hasEmptyOpt)
+       && (!myInclView || (*(LavaDECL**)DataSel->synEl)->DeclType != FormDef)) {
+      action->setOn(true);
+      return;
     }
-  } 
+  action->setOn(false);
 }
-*/
+
 
 void CLavaPEView::OnComment() 
 {
@@ -5058,39 +4767,26 @@ void CLavaPEView::OnComment()
 void CLavaPEView::OnUpdateComment(wxAction* action) 
 {
   LavaDECL* decl;
-  bool enable = false;
-  if ((GetDocument()->changeNothing))
-    enable = false;
-  else {
-    CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
+  bool enable = !GetDocument()->changeNothing;
+  if (enable) {
     TDECLComment* ptrComment;
-
-    if (item) {
-      CMainItemData* data = (CMainItemData*)item->getItemData();
-      if (data->type == TIType_DECL) {
+    if (DataSel->type == TIType_DECL) {
+      enable = true;
+      ptrComment = (*(LavaDECL**)DataSel->synEl)->DECLComment.ptr;
+      if (ptrComment)
+        ((CLavaMainFrame*)wxTheApp->m_appWindow)->statusBar()->message(ptrComment->Comment.c);
+    }
+    else {
+      if (DataSel->type == TIType_CHEEnumSel)
         enable = true;
-        ptrComment = (*(LavaDECL**)data->synEl)->DECLComment.ptr;
-        if (ptrComment)
-          ((CLavaMainFrame*)wxTheApp->m_appWindow)->statusBar()->message(ptrComment->Comment.c);
-      }
-      else {
-        if (data->type == TIType_CHEEnumSel)
-          enable = true;
-        else 
-          if ((data->type == TIType_Require) || (data->type == TIType_Ensure) || (data->type == TIType_Constraint)) {
-            decl = GetConstrDECL(item);
-            enable = decl && decl->Exec.ptr;
-          }
-      }
+      else 
+        if ((DataSel->type == TIType_Require) || (DataSel->type == TIType_Ensure) || (DataSel->type == TIType_Constraint)) {
+          decl = GetConstrDECL(ItemSel);
+          enable = decl && decl->Exec.ptr;
+        }
     }
   }
   action->setEnabled(enable);
-  /*
-  if (enable)
-    PopupMenu.EnableMenuItem(ID_COMMENT, MF_ENABLED | MF_BYCOMMAND); 
-  else
-    PopupMenu.EnableMenuItem(ID_COMMENT, MF_DISABLED | MF_GRAYED | MF_BYCOMMAND); 
-    */
 }
 
 void CLavaPEView::startRename(CTreeItem *item)
@@ -5454,33 +5150,12 @@ void CLavaPEView::OnUpdateLitStr(wxAction* action)
   action->setEnabled(!myInclView && (GetListView()->currentItem() != GetListView()->firstChild()));
 }
 
-/*
-void CLavaPEView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
-{
-  if (nChar == VK_RETURN)
-    OnVkreturn();
-  else  if (nChar == VK_DELETE)
-    OnDelete();
-  else
-    CTreeView::OnKeyDown(nChar, nRepCnt, nFlags);
-}*/
-
-
 
 void CLavaPEView::resizeEvent (QResizeEvent * e)
 {
   CTreeView::resizeEvent(e);
 }
 
-/*
-LRESULT CLavaPEView::OnAutoCorr(WPARAM wparam, LPARAM lparam)
-{
-  LavaDECL* decl = GetDocument()->IDTable.GetDECL(0, wparam, 0);
-  if (decl)
-    GetDocument()->AutoCorr(decl);
-  return 0;
-}
-*/
 
 void CLavaPEView::CheckAutoCorr(LavaDECL* decl)
 {

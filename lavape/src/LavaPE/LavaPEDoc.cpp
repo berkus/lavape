@@ -41,6 +41,7 @@
 #include "qpixmapcache.h"
 #include "qfileinfo.h"
 #include "qprocess.h"
+#include "qptrlist.h"
 
 
 CLavaPEDoc::CLavaPEDoc()
@@ -166,6 +167,7 @@ bool CLavaPEDoc::OpenCView(LavaDECL* cDECL)
     view = (CLavaBaseView*)GetNextView(pos);
     activ = view->inherits("CExecView") && (((CExecView*)view)->myDECL == cDECL);
   }
+  ViewPosRelease(pos);
   if (activ)
     execChild = view->GetParentFrame();
   else {
@@ -256,6 +258,7 @@ bool CLavaPEDoc::openFView(LavaDECL** pdecl)
     activ = !view->inherits("CTreeView") && !view->inherits("CExecView")
          && (((CLavaPEView*)((CFormFrame*)view->GetParentFrame())->viewR)->myDECL == *pdecl);
   }
+  ViewPosRelease(pos);
   if (activ) 
     formChild = view->GetParentFrame();
   else {
@@ -288,6 +291,7 @@ bool CLavaPEDoc::openVTView(LavaDECL** pdecl, unsigned long autoUpdate)
     view = (CLavaBaseView*)GetNextView(pos);
     activ = view->inherits("CVTView") && (((CVTView*)view)->myDECL == *pdecl);
   }
+  ViewPosRelease(pos);
   if (activ) {
     if (!autoUpdate)
       ((CTreeFrame*)view->GetParentFrame())->CalcSplitters(true); //make it visible
@@ -306,7 +310,7 @@ bool CLavaPEDoc::openVTView(LavaDECL** pdecl, unsigned long autoUpdate)
 
 bool CLavaPEDoc::openWizardView(CLavaBaseView* formView, LavaDECL** pdecl/*, unsigned long autoUpdate*/)
 { 
-  POSITION pos = GetFirstViewPos();
+//  POSITION pos = GetFirstViewPos();
   CLavaBaseView* view;
   bool activ=FALSE; 
   //CRect rr;
@@ -436,60 +440,6 @@ DString CLavaPEDoc::GetIOLabel(TAnnotation *anno)
 }
 
 
-LavaDECL* CLavaPEDoc::GetConstrDECL(LavaDECL* parentDecl,TDeclType type, bool makeIt, bool makeExec)
-{
-  LavaDECL *cDECL = 0;
-  CHE *afterChe = (CHE*)parentDecl->NestedDecls.last;
-  if (afterChe) {
-    cDECL = (LavaDECL*)afterChe->data;
-    if (cDECL->DeclType != type) {
-      if ((cDECL->DeclType == ExecDef)
-        || (cDECL->DeclType == Ensure) && (type == Require)) {
-        afterChe = (CHE*)afterChe->predecessor; 
-        if (afterChe) {
-          cDECL = (LavaDECL*)afterChe->data;
-          if (cDECL->DeclType != type) {
-            if (cDECL->DeclType == Ensure) {
-              afterChe = (CHE*)afterChe->predecessor; 
-              if (afterChe) {
-                cDECL = (LavaDECL*)afterChe->data;
-                if (cDECL->DeclType != type)
-                  cDECL = 0;
-              }
-              else
-                cDECL = 0;
-            }
-            else
-              cDECL = 0;
-          }//else ok
-        }
-        else
-          cDECL = 0;
-      }
-      else
-        cDECL = 0;
-    }//else ok
-  }
-  if (!makeIt)
-    return cDECL;
-  if (!cDECL) {
-    cDECL = NewLavaDECL();
-    cDECL->DeclType = type;
-    cDECL->DeclDescType = ExecDesc;
-    cDECL->FullName = parentDecl->FullName;
-    cDECL->ParentDECL = parentDecl;
-    CHE* che = NewCHE(cDECL);
-    parentDecl->NestedDecls.Insert(afterChe, che);
-    if (makeExec) {
-      ((CLavaPEApp*)wxTheApp)->ConstrUpdate.MakeExec(this, cDECL);
-      if (parentDecl->OwnID != -1)
-        ((SynObjectBase*)cDECL->Exec.ptr)->MakeTable((address)&IDTable, parentDecl->inINCL, (SynObjectBase*)cDECL, onNewID);
-    }
-  }
-  return cDECL;
-}
-
-
 CHE* CLavaPEDoc::GetConstrChe(LavaDECL* parentDecl,TDeclType type, bool makeIt)
 {
   LavaDECL *cDECL = 0;
@@ -533,7 +483,7 @@ CHE* CLavaPEDoc::GetConstrChe(LavaDECL* parentDecl,TDeclType type, bool makeIt)
       cDECL->ParentDECL = parentDecl;
       che = NewCHE(cDECL);
       parentDecl->NestedDecls.Insert(afterChe, che);
-      ((CLavaPEApp*)wxTheApp)->ConstrUpdate.MakeExec(this, cDECL);
+      ((CLavaPEApp*)wxTheApp)->ConstrUpdate.MakeExec(cDECL);
       if (parentDecl->OwnID != -1)
         ((SynObjectBase*)cDECL->Exec.ptr)->MakeTable((address)&IDTable, parentDecl->inINCL, (SynObjectBase*)cDECL, onNewID);
       return che;
@@ -859,7 +809,7 @@ bool CLavaPEDoc::MakeFormVT(LavaDECL *decl, CheckData* )
   decl->VElems.UpdateNo = UpdateNo+1;
   ResetVElems(decl);
   LavaDECL **PbaseFDECL, *guibaseDECL, *classDECL;
-  bool ok;
+  bool ok=true;
   CHETID* cheID;
   CHETVElem *El, *Elbase;
   CheckForm(decl, CHLV_inUpdateLow);
@@ -2665,10 +2615,12 @@ wxDocument* CLavaPEDoc::FindOpenDoc(const DString& fn)
   while (pos) {
     doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
     if (doc != this) {
-     absName  = doc->IDTable.IDTab[0]->FileName;
-     AbsPathName(absName, doc->IDTable.DocDir);
-     if (SameFile(absName, fn))
+      absName  = doc->IDTable.IDTab[0]->FileName;
+      AbsPathName(absName, doc->IDTable.DocDir);
+      if (SameFile(absName, fn)) {
+        mana->DocPosRelease(pos);
         return doc;
+      }
     }
   }
   return 0;
@@ -2889,7 +2841,6 @@ void CLavaPEDoc::UpdateOtherDocs(wxDocument* skipOther, DString& inclFile, int n
 }
 
 
-//void CLavaPEDoc::FindReferences(const TID id, DString& allNames, const DString& enumID, const CFindData& fw)
 void CLavaPEDoc::FindReferences(DString& allNames, CFindData& fw)
 {
   unsigned pos, pp;

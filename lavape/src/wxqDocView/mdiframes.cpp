@@ -72,6 +72,12 @@ bool wxMainFrame::OnCreate()
   return true;
 }
 
+wxMainFrame::~wxMainFrame()
+{
+  wxTheApp->deletingMainFrame = true;
+  delete m_childFrameHistory;
+}
+
 QWorkspace* wxMainFrame::CreateWorkspace(QWidget* parent)
 {
   m_workspace = new QWorkspace(parent);

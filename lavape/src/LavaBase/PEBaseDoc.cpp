@@ -1039,7 +1039,6 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   isyntax->FreeID = IDTable.IDTab[0]->freeID;
   isyntax->FreeINCL = IDTable.freeINCL;
   if (!SynIO.WriteSynDef(fn.c, isyntax)) {
-    //QMessageBox();//"Lava file could not be opened for writing", MB_OK+MB_ICONINFORMATION);
     QMessageBox::critical(qApp->mainWidget(),qApp->name(),"Lava file couldn't be opened for writing",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
@@ -1088,6 +1087,7 @@ void CPEBaseDoc::OnDestroyMainView(CLavaBaseView* mview)
       //SaveModified();
       delete tview->GetParentFrame();
       //tview->GetParentFrame()->DestroyWindow();
+      ViewPosRelease(pos);
       pos = GetFirstViewPos();
     }
  }

@@ -20,6 +20,7 @@
 #include "qfont.h"
 #include "qwidget.h"
 #include "wx_obj.h"
+#include "qpixmap.h"
 
 #define RELEASE  0
 
@@ -929,7 +930,8 @@ $TYPE {
     CSecTabBase** HandleObjPtr;   //LavaObjectPtr
     CHAINANY<FormNode> SubTree;
   FormNode () { ResultVarPtr = 0; HandleObjPtr = 0; EnumField = 0;
-                ownLFont=mainFont; ownTFont=mainFont; Pixmap = 0;}
+                ownLFont=mainFont; ownTFont=mainFont; Pixmap = 0; ColorBValid = false; ColorFValid = false;}
+  ~FormNode();
   unsigned GetLengthField();
   unsigned GetLengthDecPoint();
 };

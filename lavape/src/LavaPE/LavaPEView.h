@@ -14,6 +14,7 @@
 #include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"
+#include "qevent.h"
 #include "qstring.h"
 #include "qclipboard.h"
 #include "qdragobject.h"
@@ -66,7 +67,7 @@ private:
 
 class CMainItemData : public TItemData {
 public:
-  CMainItemData() { docPathName = 0; ClipTree = 0;}
+  CMainItemData() { docPathName = 0; synEl = 0; ClipTree = 0;}
   CMainItemData(TIType tt, unsigned long synel, bool exp = false)
        {type = tt; synEl = synel; toExpand = exp; docPathName = 0; ClipTree = 0;}
   TIType type;
@@ -82,6 +83,7 @@ public:
   ~CMainItemData();
 };
 
+
 class CLavaPEView : public CTreeView
 {
 public:
@@ -89,6 +91,8 @@ public:
   VIEWFACTORY(CLavaPEView)
   CLavaPEDoc* GetDocument();
   virtual ~CLavaPEView();
+  void DoDrop(void* act);
+  bool DropPosted;
   virtual void UpdateUI();
   void DisableActions();
   virtual void OnInitialUpdate(); // called first time after construct
@@ -97,18 +101,13 @@ public:
 
   QPixmap* GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const SynFlags flag=(const unsigned long)0);
 
-  //CImageList  *m_pimagelist;
-  //CBitmap bitmap;
-  //CMenu PopupMenu;
   CTreeItem* lastCurrent;
-  CTreeItem* ItemSel; //
-  CTreeItem* ParItemSel;
-  CMainItemData* DataSel;
-  CMainItemData* ParDataSel;
-  TDeclType DefTypeSel;
+  CTreeItem* ItemSel;     //used in OnUpdate...
+  CMainItemData* DataSel; //used in OnUpdate...
+  TDeclType DefTypeSel;   //used in OnUpdate...
+  TIType GroupType;       //used in OnUpdate...
   CTreeItem* SelItem; //item that should be selected
   TDeclType SelType;
-  TIType GroupType;
   LavaDECL* VisibleDECL;
   bool InitFinished;
   bool updateTree;

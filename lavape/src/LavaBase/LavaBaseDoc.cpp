@@ -1631,3 +1631,56 @@ void AbsPathName(DString& fn, const DString& dirName)
   }
 }
 
+
+LavaDECL* CLavaBaseDoc::GetConstrDECL(LavaDECL* parentDecl,TDeclType type, bool makeIt, bool makeExec)
+{
+  LavaDECL *cDECL = 0;
+  CHE *afterChe = (CHE*)parentDecl->NestedDecls.last;
+  if (afterChe) {
+    cDECL = (LavaDECL*)afterChe->data;
+    if (cDECL->DeclType != type) {
+      if ((cDECL->DeclType == ExecDef)
+        || (cDECL->DeclType == Ensure) && (type == Require)) {
+        afterChe = (CHE*)afterChe->predecessor; 
+        if (afterChe) {
+          cDECL = (LavaDECL*)afterChe->data;
+          if (cDECL->DeclType != type) {
+            if (cDECL->DeclType == Ensure) {
+              afterChe = (CHE*)afterChe->predecessor; 
+              if (afterChe) {
+                cDECL = (LavaDECL*)afterChe->data;
+                if (cDECL->DeclType != type)
+                  cDECL = 0;
+              }
+              else
+                cDECL = 0;
+            }
+            else
+              cDECL = 0;
+          }//else ok
+        }
+        else
+          cDECL = 0;
+      }
+      else
+        cDECL = 0;
+    }//else ok
+  }
+  if (!makeIt)
+    return cDECL;
+  if (!cDECL) {
+    cDECL = NewLavaDECL();
+    cDECL->DeclType = type;
+    cDECL->DeclDescType = ExecDesc;
+    cDECL->FullName = parentDecl->FullName;
+    cDECL->ParentDECL = parentDecl;
+    CHE* che = NewCHE(cDECL);
+    parentDecl->NestedDecls.Insert(afterChe, che);
+    if (makeExec) {
+      LBaseData->ConstrUpdate->MakeExec(cDECL);
+      if (parentDecl->OwnID != -1)
+        ((SynObjectBase*)cDECL->Exec.ptr)->MakeTable((address)&IDTable, parentDecl->inINCL, (SynObjectBase*)cDECL, onNewID);
+    }
+  }
+  return cDECL;
+}

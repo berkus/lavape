@@ -179,6 +179,7 @@ public:
   virtual bool CheckForm(CheckData& ckd, LavaDECL* /*formDECL*/, int checkLevel = 0) {return false;}
   virtual bool MakeFormVT(LavaDECL* , CheckData* pckd) {return false;}
   virtual bool MakeVElems(LavaDECL* , CheckData* pckd) {return false;}
+  virtual LavaDECL* GetConstrDECL(LavaDECL* parentDecl,TDeclType type,bool makeDecl=true,bool makeExec=true);
 //  virtual bool IsOuterParam(paramDECL, typeDECL) {return false;}
 
   virtual void LavaError(CheckData& /*ckd*/, bool /*setEx*/, LavaDECL*, QString* /*nresourceID*/, LavaDECL* /*refDECL = 0*/) {}

@@ -24,6 +24,7 @@
 #include "LavaThread.h"
 #include "LavaBaseStringInit.h"
 #include "LavaProgram.h"
+#include "qmap.h"
 #include "qstring.h"
 #include <stdlib.h>
 #include <errno.h>
@@ -301,20 +302,46 @@ void SynObject::SetRTError(CheckData &ckd,QString *errorCode,LavaVariablePtr sta
 }
 
 
-
 bool SelfVarX::Execute (CheckData &ckd, LavaVariablePtr stackFrame) {
   int oldStackLevel=ckd.currentStackLevel, secN;
+  unsigned iOldExpr=0;
   bool ok;
   CHE *baseInit;
-  LavaObjectPtr callObj;
+  LavaObjectPtr callObj, obj=0;
   LavaVariablePtr newStackFrame;
   CVFuncDesc *fDesc;
   unsigned frameSize, inINCL=ckd.inINCL;
   BaseInit* baseInitDat;
   SynObjectBase *mySelfVar=this;
+  CRuntimeException *ex;
+  OldExpression *oep;
 
   ckd.currentStackLevel = nParams;
   ckd.selfVar = this;
+
+  for (oep = oldExpressions.first();
+       oep;
+       oep = oldExpressions.next()) {
+    oep->iOldExpr = iOldExpr;
+    obj = ((SynObject*)oep->paramExpr.ptr)->Evaluate(ckd,stackFrame);
+    if (ckd.exceptionThrown)
+      return false;
+    stackFrame[(stackFrameSize>>2)-iOldExpr-1] = 0;
+    ex = CopyObject(ckd,&obj,&stackFrame[(stackFrameSize>>2)-iOldExpr-1],((SynFlags*)(obj+1))->Contains(stateObjFlag),obj[0][0].classDECL);
+    ckd.selfVar = mySelfVar;
+    ok = !ex && !ckd.exceptionThrown;
+    if (ex) {
+      ex->message = ex->message + CallStack(ckd,stackFrame);
+      if (ex->SetLavaException(ckd)) 
+        delete ex;
+    }
+    if (obj)
+      DFC(obj);
+    if (!ok)
+      return false;
+    ((SynFlags*)(stackFrame[(stackFrameSize>>2)-iOldExpr-1]+1))->INCL(finished);
+    iOldExpr++;
+  }
 
   for (baseInit = (CHE*)baseInitCalls.first;
        baseInit;
@@ -485,7 +512,7 @@ bool FailStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame) {
 }
 
 LavaObjectPtr OldExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame) {
-  return (LavaObjectPtr)-1;;
+  return stackFrame[(((SelfVar*)ckd.selfVar)->stackFrameSize>>2)-iOldExpr-1];
 }
 
 LavaObjectPtr UnaryOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame) {
@@ -1785,7 +1812,7 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame)
 
 BoolConstX::~BoolConstX () {
   if (value)
-    delete (value-LOH);
+    delete [] (value-LOH);
 }
 
 LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame)
@@ -1819,7 +1846,7 @@ EnumConstX::~EnumConstX () {
   if (value) {
     newStackFrame[0] = enumBaseObj+1; // +1 since the QString value follows after the int value
     StringDecFunc(ckd,newStackFrame);
-    delete (value-LOH);
+    delete [] (value-LOH);
   }
 }
 

@@ -42,10 +42,10 @@
 #include "qstring.h"
 #include "qmessagebox.h"
 #include "qpainter.h"
+#include "qptrlist.h"
 #include "LavaBaseDoc.h"
 #include "SynIDTable.h"
 #include "wx_obj.h"
-//#include "StdAfx.h"
 
 #ifdef WIN32
 #ifdef LAVAEXECS_EXPORT
@@ -111,6 +111,12 @@ enum VarRefContext {
 class SynObject;
 class ObjReference;
 class VarName;
+class OldExpression;
+
+typedef QPtrList<OldExpression> OldExprChain;
+
+typedef QPtrList<LavaDECL> AssertionChain;
+
 
 
 class VarAction : public AnyType  {
@@ -1052,7 +1058,10 @@ class SelfVar : public VarName {
   CHAINX baseInitCalls;
   NESTEDANY/*Expression*/ body;
   FormParms *oldFormParms;
-  LavaDECL *execDECL, *selfType;
+  LavaDECL *execDECL, *requireDECL, *ensureDECL, *selfType;
+  OldExprChain oldExpressions;
+  AssertionChain requireChain;
+  AssertionChain ensureChain;
   unsigned nParams, nInputs, nOutputs, stackFrameSize, inINCL;
   bool concernExecs, checked;
   CContext selfCtx;
@@ -1076,6 +1085,7 @@ class SelfVar : public VarName {
   bool OutputCheck(CheckData &ckd);
   virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+  virtual void BuildAssertionChains(CheckData &ckd);
 
   virtual void CopyData (AnyType *from) {
     *this = *(SelfVar*)from;
@@ -1254,6 +1264,7 @@ class OldExpression : public Expression {
 
   public:
   NESTEDANY/*Expression*/ paramExpr;
+  unsigned iOldExpr;
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);

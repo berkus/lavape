@@ -307,6 +307,11 @@ void TAnnotation::DelAnnoEx(AnnoExType type)
     AnnoEx.Remove(ex->predecessor);
 }
 
+FormNode::~FormNode()
+{
+  if (Pixmap)
+    delete Pixmap;
+}
 
 unsigned FormNode::GetLengthField()
 {

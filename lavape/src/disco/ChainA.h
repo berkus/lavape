@@ -5,6 +5,7 @@
 #ifndef __ChainAnyCLASS
 #define __ChainAnyCLASS
 
+#include "AnyType.h"
 #include "SYSTEM.h"
 
 
@@ -20,6 +21,28 @@ public:
   virtual ChainAnyElem* Clone ()=0;
   
   virtual void CopyData (ChainAnyElem *)=0;
+};
+
+class DISCO_DLL CHE0 : public ChainAnyElem {
+public:
+  DObject *data;
+  
+  CHE0 () {
+    data =0;
+  }
+  
+  CHE0 (AnyType *p) {
+    data = (DObject*)p;
+  }
+    
+  virtual void CopyData (ChainAnyElem *);
+
+  CHE0 (CHE0 *c) { data = 0; CopyData(c); }
+  
+  virtual ~CHE0 () {}
+
+  virtual ChainAnyElem* Clone () { return new CHE0(this); }
+
 };
 
 

@@ -140,7 +140,8 @@ wxApp::~wxApp() {
 
   settings.beginGroup(GetSettingsPath());
   m_docManager->FileHistorySave(settings);
-//  delete settings;
+  delete m_docManager;
+  delete mainWidget();
 }
 
 void wxApp::SetVendorName(const QString& name) {
@@ -349,8 +350,10 @@ wxView* wxDocument::GetNextView(POSITION& pos)
   if (view) {
     if (iter->current())
       pos = (POSITION)iter;
-    else
+    else {
+      delete iter;
       pos = 0;
+    }
   }
   else {
     delete iter;
@@ -359,6 +362,14 @@ wxView* wxDocument::GetNextView(POSITION& pos)
   return view;
 }
 
+void wxDocument::ViewPosRelease(POSITION pos)
+{
+  if (pos) {
+    QPtrListIterator<wxView>* iter = (QPtrListIterator<wxView>*)pos;
+    delete iter;
+  }
+
+}
 
 bool wxDocument::OnNewDocument()
 {
@@ -1086,14 +1097,25 @@ wxDocument* wxDocManager::GetNextDoc(POSITION& pos)
     ++(*iter);
     if (iter->current())
       pos = (POSITION)iter;
-    else
+    else {
+      delete iter;
       pos = 0;
+    }
   }
   else {
     delete iter;
     pos = 0;
   }
   return doc;
+}
+
+void wxDocManager::DocPosRelease(POSITION pos)
+{
+  if (pos) {
+    QPtrListIterator<wxDocument>* iter = (QPtrListIterator<wxDocument>*)pos;
+    delete iter;
+  }
+
 }
 
 wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
@@ -2077,7 +2099,7 @@ wxHistory::~wxHistory()
     int i;
     for (i = 0; i < m_historyN; i++)
         delete m_history[i];
-    delete m_history;
+    delete [] m_history;
 
 }
 
@@ -2127,6 +2149,7 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
     {
         if (m_history[i] && (*m_history[i] == *item)) {
             SetFirstInHistory(i);
+						delete item;
             return;
         }
     }

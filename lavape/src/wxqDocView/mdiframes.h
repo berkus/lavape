@@ -43,11 +43,10 @@ class WXDLLEXPORT wxMainFrame: public QMainWindow
     //friend class WXDLLEXPORT wxMDIChildFrame;
 public:
   wxMainFrame( QWidget* parent, const char* name, WFlags fl);
+  virtual ~wxMainFrame();
 
   virtual bool OnCreate();
   virtual void UpdateUI() {}
-
-  virtual ~wxMainFrame(){ wxTheApp->deletingMainFrame = true; /*((wxApp*)qApp)->m_appWindow = 0;*/}
 
 //  wxMDIChildFrame *GetActiveChild() const;
 

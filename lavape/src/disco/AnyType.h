@@ -1,9 +1,9 @@
+#ifndef __AnyType
+#define __AnyType
+
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-#ifndef __AnyType
-#define __AnyType
 
 
 #include "wx_obj.h"

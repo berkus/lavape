@@ -1276,7 +1276,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   currentFilter = "*." + currentFilter;
   fd->setSelectedFilter(currentFilter);
   fd->setSelection(startFileName);
-  fd->setMode( QFileDialog::ExistingFile );
+  fd->setMode( QFileDialog::ExistingFiles );
   fd->setViewMode( QFileDialog::List );
   fd->setFilter(filter);
   if (fd->exec() == QDialog::Accepted ) {

@@ -73,7 +73,6 @@ public:
   void OnDestroyMainView(CLavaBaseView* mview);
   bool Undo(bool redo = FALSE);
   virtual bool OnSaveModified();
-  virtual LavaDECL* GetConstrDECL(LavaDECL* parentDecl,TDeclType type,bool makeDecl=true,bool makeExec=true) {return 0;}
   virtual CHE* GetConstrChe(LavaDECL* parentDecl,TDeclType type,bool makeIt=true) {return 0;}
   virtual CHE* SetConstrChe(LavaDECL* parentDecl,LavaDECL* execDecl) {return 0;}
   virtual bool OpenCView(LavaDECL* execDECL) {return false;}

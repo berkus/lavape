@@ -20,6 +20,7 @@
 #include "qfont.h"
 #include "qwidget.h"
 #include "wx_obj.h"
+#include "qpixmap.h"
 
 #define RELEASE  0
 
@@ -519,7 +520,6 @@ enum IterFlag {
 
 extern DISCO_DLL void CDPIterFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
                                    bool baseCDP=false);
-
 
 
 
@@ -1173,7 +1173,6 @@ struct DISCO_DLL SynObjectBase : public DObject  {
 
 
 
-
 /*************************************************************************/
 /* Concrete syntactic objects: */
 
@@ -1260,7 +1259,11 @@ struct DISCO_DLL FormNode : public AnyType  {
     ownLFont=mainFont;
     ownTFont=mainFont;
     Pixmap=0;
+    ColorBValid=false;
+    ColorFValid=false;
   }
+
+  ~FormNode();
   unsigned GetLengthField();
   unsigned GetLengthDecPoint();
 
@@ -1280,7 +1283,6 @@ struct DISCO_DLL CHEFormNode : ChainAnyElem {
 };
 
 extern DISCO_DLL ChainAnyElem* NewCHEFormNode ();
-
 
 extern DISCO_DLL LavaDECL *NewLavaDECL();
 extern DISCO_DLL bool RemoveErrCode(CHAINX* errors, QString* ids);

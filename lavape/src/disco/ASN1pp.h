@@ -22,8 +22,7 @@
 #include "SYSTEM.h"
 #include "ASN1.h"
 #include "DString.h"
-//#include "UNIX.h"
-#include "ChainA.h"
+//#include "ChainA.h"
 
 
 
@@ -65,6 +64,7 @@ typedef void (*SignatureProc)(ASN1*,address);
    X.409 format; ADDRESS identifies the program variable which
    contains or is to receive the object */
 
+class ChainAnyElem;
 typedef ChainAnyElem* (*ChainAllocationProc)();
 
 typedef DString TOIDstring;

@@ -1190,15 +1190,22 @@ bool CLavaProgram::AddVBase(CheckData& ckd, LavaDECL* decl, LavaDECL* conDECL )
 
 bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
 {
+  //use of classDECL->VElems.UpdateNo:
+  //   = 0, before MakeVElems,
+  //   = 1, check complete,
+  //   = -1, in calculation of VT, prevents circle calls of MakeVElems in erroneous lava programs
+  //   = -2, in checks after calculation of VT,
+
   if (!classDECL || (classDECL->DeclType == VirtualType))
     return false;
   if (classDECL->WorkFlags.Contains(runTimeOK))  //=CheckImpl, MakeVElems, MakeSectionTable ok
     return true;
-  if (classDECL->VElems.UpdateNo < 0) 
+  if (classDECL->VElems.UpdateNo == -1) 
     return false;  //prevents circle calls of MakeVElems
-  if (classDECL->VElems.UpdateNo > 0)
+  if (classDECL->VElems.UpdateNo == 1)
     return true;
-  classDECL->VElems.UpdateNo = -1;
+  if (classDECL->VElems.UpdateNo == -2)
+    return true;
 
   CHETID *cheID, *cheIDA;
   LavaDECL *baseDECL = 0, *ElDECL;
@@ -1208,7 +1215,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
   QString *errID;
   CHE* cheDecl;
   TID declID = TID(-1,0);
-
+  classDECL->VElems.UpdateNo = -1;
   for (cheID = (CHETID*)classDECL->Supports.first; cheID; cheID = (CHETID*)cheID->successor) {//!
     baseDECL = IDTable.GetFinalBasicType(cheID->data, classDECL->inINCL, classDECL);
     if (!baseDECL) {
@@ -1376,6 +1383,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
   }
   //now make checks that uses virtual table
 
+  classDECL->VElems.UpdateNo = -2;
   for (cheID = (CHETID*)classDECL->Supports.first; cheID; cheID = (CHETID*)cheID->successor) {//!
     baseDECL = IDTable.GetDECL(cheID->data, classDECL->inINCL);
     if (errID = ExtensionAllowed(classDECL, baseDECL, pckd)) {

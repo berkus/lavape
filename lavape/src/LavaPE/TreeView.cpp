@@ -36,6 +36,7 @@
 #include "qheader.h"
 #include "TreeView.h"
 #include "Resource.h"
+#include "qpixmap.h"
 #include "qpixmapcache.h"
 #include "LavaPE.h"
 
@@ -135,6 +136,8 @@ void CTreeItem::SetItemMask(QPixmap* pixMask) {
   mPix->fill();
   bitBlt (mPix, 0, 0, nPix, 0, 0, 16, pixMask->height(), Qt::CopyROP, true);
   bitBlt (mPix, 16, 0, pixMask, 16, 0, 5, pixMask->height(), Qt::CopyROP, true);
+  if (delPix) 
+    delete nPix;
   nPix = mPix;
   delPix = true;
 }
@@ -145,6 +148,8 @@ void CTreeItem::SetItemMask(QPixmap* pixMask) {
 MyListView::MyListView(CTreeView* view)
 :QListView(view, "MyListView")
 {
+  withShift = false;
+  withControl = false;
   lavaView = view;
   setFocusPolicy(QWidget::StrongFocus);
   viewport()->setAcceptDrops(true);
