@@ -44,8 +44,6 @@
 #include "qassistantclient.h"
 
 
-static QAssistantClient *qacl=0;
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CAttrBox dialog
@@ -100,6 +98,12 @@ ValOnInit CAttrBox::OnInitDialog()
   CExecAllDefs * execAllPatt=0;
   TypeFlags = myDECL->ParentDECL->TypeFlags;
   bool catErr;
+
+  if (myDoc->changeNothing) {
+    IDOK18->setEnabled(false);
+    IDOK18->setDefault( false );
+    IDCANCEL18->setDefault( true );
+  }
   if (onNew) {
     TypeFlags.INCL(constituent);
     myDECL->TypeFlags.INCL(constituent);
@@ -573,6 +577,11 @@ ValOnInit CCompSpecBox::OnInitDialog()
   CHEEnumSelId* enumsel;
   CListItem *item;
 
+  if (myDoc->changeNothing) {
+    PushButton_IDOK13->setEnabled(false);
+    PushButton_IDOK13->setDefault( false );
+    m_CANCEL13->setDefault( true );
+  }
   m_ExtTypes->setCurrentItem(0);
   if (!onNew) {
     valNewName = QString(myDECL->LocalName.c);
@@ -1019,6 +1028,11 @@ ValOnInit CEnumBox::OnInitDialog()
   CHETID* cheID;
   CListItem *item;
 
+  if (myDoc->changeNothing) {
+    PushButton_IDOK5->setEnabled(false);
+    PushButton_IDOK5->setDefault( false );
+    m_CANCEL5->setDefault( true );
+  }
   if (onNew) {
     myDECL->DeclDescType = EnumType;
     cheID = new CHETID;
@@ -1280,6 +1294,12 @@ ValOnInit CFuncBox::OnInitDialog()
   LavaDECL *decl,  *baseDECL, *output;
   CHETID *ncheS, *cheS;
   CListItem *listItem;
+
+  if (myDoc->changeNothing) {
+    PushButton_IDOK11->setEnabled(false);
+    PushButton_IDOK11->setDefault( false );
+    m_CANCEL11->setDefault( true );
+  }
 
   if (!second) {
     CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes1, 0, 0,myDECL->ParentDECL, OrigDECL, Function, typeflag);
@@ -1879,6 +1899,12 @@ ValOnInit CImplBox::OnInitDialog()
   TID id;
   bool ex=false;
 
+  if (myDoc->changeNothing) {
+    PushButton_IDOK7->setEnabled(false);
+    PushButton_IDOK7->setDefault( false );
+    PushButton_IDCANCEL7->setDefault( true );
+  }
+
   if (!onNew) {
     LavaDECL* decl;
     CHETID *cheS = (CHETID*)myDECL->Supports.first; //implements
@@ -2006,6 +2032,7 @@ CIncludeBox::CIncludeBox(CLavaPEDoc* myDoc, CHESimpleSyntax* newChe, CHESimpleSy
   NewChe = newChe;
   OldChe = oldChe;
   MyDoc = myDoc;
+  PushButton_IDOK15->setEnabled(!myDoc->changeNothing);
   if (NewChe->data.LocalTopName.l)
     valUseAs = QString(NewChe->data.LocalTopName.c);
   DString fn = NewChe->data.UsersName; 
@@ -2091,12 +2118,18 @@ void CInitBox::UpdateData(bool getData)
 
 ValOnInit CInitBox::OnInitDialog() 
 {
+
+  if (myDoc->changeNothing) {
+    PushButton_IDOK14->setEnabled(false);
+    PushButton_IDOK14->setDefault( false );
+    PushButton_IDCANCEL14->setDefault( true );
+  }
   if (!onNew) 
     valNewName = QString(myDECL->LocalName.c);
 
   if (onNew) {
     m_Transaction1->setChecked(false);
-    m_const->setChecked(true);
+    m_const->setChecked(false);
     valSynch = 0;
   }
   else {
@@ -2226,6 +2259,12 @@ ValOnInit CInterfaceBox::OnInitDialog()
 
 
 //  GetDlgItem(IDC_StatIDLabel)->SetWindowText("CLSID of implementation DLL");
+
+  if (myDoc->changeNothing) {
+    PushButton_IDOK9->setEnabled(false);
+    PushButton_IDOK9->setDefault( false );
+    m_CANCEL9->setDefault( true );
+  }
   if (onNew) {
     myDoc->IDTable.GetPattern(myDECL, context);
     m_IsGUI->setEnabled(!context.oContext);
@@ -2722,6 +2761,12 @@ ValOnInit CIOBox::OnInitDialog()
   bool catErr, callBox;
   DString dstr;
 
+  if (myDoc->changeNothing) {
+    PushButton_IDOK18->setEnabled(false);
+    PushButton_IDOK18->setDefault( false );
+    PushButton_IDCANCEL18->setDefault( true );
+  }
+
   TypeFlags = myDECL->ParentDECL->ParentDECL->TypeFlags;
   if (onNew) {
     m_ValueObject1->setChecked(true);
@@ -3028,6 +3073,12 @@ ValOnInit CNamespaceBox::OnInitDialog()
   LavaDECL* decl;
   CListItem *item;
 
+  if (myDoc->changeNothing) {
+    PushButton_IDOK10->setEnabled(false);
+    PushButton_IDOK10->setDefault( false );
+    mANCEL10->setDefault( true );
+  }
+
   if (!onNew && myDECL->LocalName.l) {
     valNewName = QString(myDECL->LocalName.c);
     if (myDECL->TypeFlags.Contains(isProtected))
@@ -3136,6 +3187,12 @@ void CSetBox::UpdateData(bool getData)
 ValOnInit CSetBox::OnInitDialog() 
 {
   SynFlags typeflag;
+
+  if (myDoc->changeNothing) {
+    PushButton_IDOK3->setEnabled(false);
+    PushButton_IDOK3->setDefault( false );
+    PushButton_IDCANCEL3->setDefault( true );
+  }
   CExecAllDefs * execAllPatt = new CExecAllDefs(myDoc, m_ExTypes, 0, 0,myDECL->ParentDECL, OrigDECL,  Attr, typeflag);
   myDoc->MakeBasicBox(m_BasicTypes, NoDef, false);
   delete execAllPatt;
@@ -3253,6 +3310,11 @@ ValOnInit CVTypeBox::OnInitDialog()
   DString dstr;
   CHETID* che;
 
+  if (myDoc->changeNothing) {
+    PushButton_IDOK16->setEnabled(false);
+    PushButton_IDOK16->setDefault( false );
+    PushButton_IDCANCEL16->setDefault( true );
+  }
   if (second) {
     ResetComboItems(m_NamedTypes);
     ResetComboItems(m_BasicTypes);

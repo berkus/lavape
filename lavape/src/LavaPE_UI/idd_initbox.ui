@@ -117,9 +117,6 @@
                     <property name="text">
                         <string>Read-only</string>
                     </property>
-                    <property name="checked">
-                        <bool>true</bool>
-                    </property>
                 </widget>
                 <widget class="QCheckBox">
                     <property name="name">

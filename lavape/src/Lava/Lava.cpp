@@ -181,7 +181,9 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   QString driveLetter = QString(ExeDir[0].upper());
   ExeDir.replace(0,1,driveLetter);
 #endif
-  StdLava = ExeDir + "/std.lava";
+  StdLavaLog = ExeDir + "/std.lava";
+  QFileInfo qf = QFileInfo(StdLavaLog);
+	StdLava = ResolveLinks(qf);
   Tokens_INIT();
 }
 
@@ -500,8 +502,6 @@ void CLavaApp::OnChooseGlobalFont()
   }
 }
 
-
-static QAssistantClient *qacl=0;
 
 void CLavaApp::HtmlHelp()
 {

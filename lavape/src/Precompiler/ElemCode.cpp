@@ -233,13 +233,21 @@ void codeAtom (TreeNodePtr node)
   
   switch (node->Atom) {
   case IdentifierA:
-  case CharConst:
   case IntConst:
   case OctalConst:
   case HexConst:
   case FloatConst:
-  case StringConst:
     codeVariable(node->StringBufferPos);
+    break;
+  case StringConst:
+    code("\"");
+    codeVariable(node->StringBufferPos);
+    code("\"");
+    break;
+  case CharConst:
+    code("'");
+    codeVariable(node->StringBufferPos);
+    code("'");
     break;
 
   default:

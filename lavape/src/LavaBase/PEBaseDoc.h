@@ -51,6 +51,7 @@ public:
   int UpdateNo;
   bool asked;
   bool isReadOnly;
+  bool changeNothing;
   CLavaBaseView *MainView;
   CLavaBaseView* DragView;
 
@@ -99,6 +100,9 @@ class LAVABASE_DLL CLavaBaseView : public wxView
 public:
 //  VIEWFACTORY(CLavaBaseView)
   CLavaBaseView(QWidget *parent,wxDocument *doc, const char*  name): wxView(parent,doc,name) {}
+  virtual void whatNext();
+  virtual void howTo();
+
   virtual void OnEditCut() {}
   virtual void OnEditCopy(){}
   virtual void OnEditPaste(){}

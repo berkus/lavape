@@ -31,6 +31,9 @@
 #include "qstring.h"
 #include "qfileinfo.h"
 #include "qpushbutton.h"
+#include "qtoolbutton.h"
+#include "qassistantclient.h"
+#include "qwhatsthis.h"
 
 
 #ifdef WIN32
@@ -331,7 +334,7 @@ public:
 class LAVABASE_DLL  CLavaBaseData : public QObject
 {
 public:
-  CLavaBaseData() :QObject(0, "LavaBaseData") {newNum = 0;}
+  CLavaBaseData() :QObject(0, "LavaBaseData") {newNum = 0; declareButton = 0; }
   void Init(CPEBaseBrowse *browser, CBaseConstrUpdate *constrUpdate);
   ~CLavaBaseData();
 
@@ -350,6 +353,7 @@ public:
   QString ldocFileExt;
   QString lcomFileExt;
   int newNum;
+  int stdUpdate;
 
   QFont m_ExecFont;
   QFont m_FormFont;
@@ -437,7 +441,11 @@ public:
     *tryButton, *succeedButton, *failButton, *runButton,
     *setButton, *newButton, *cloneButton,
     *copyButton, *attachButton, *qryItfButton,
-    *scaleButton, *itemButton, *callbackButton;
+    *scaleButton, *itemButton, *callbackButton,
+
+    *whatNextButton, *howToButton;
+
+  QToolButton *myWhatsThisButton;
 
   char* BasicNames[30];
   DString OperatorNames [OP_high];
@@ -522,6 +530,18 @@ public:
 	int button0, button1, button2, result;
 };
 
+class LAVABASE_DLL WhatsThis : public QObject, public QWhatsThis
+{
+public:
+  WhatsThis(char *text,QWidget *w);
+
+  bool clicked(const QString & href);
+  QString text(const QPoint&);
+
+private:
+  QString whatsThisText;
+};
+
 extern LAVABASE_DLL int critical(QWidget *parent, const QString &caption,
 			 const QString& text,
 			 int button0, int button1=0, int button2=0);
@@ -533,5 +553,7 @@ extern LAVABASE_DLL int information(QWidget *parent, const QString &caption,
 extern LAVABASE_DLL int question(QWidget *parent, const QString &caption,
 			 const QString& text,
 			 int button0, int button1, int button2=0);
+
+extern LAVABASE_DLL QAssistantClient *qacl;
 
 #endif

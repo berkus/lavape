@@ -190,6 +190,7 @@ extern  LAVABASE_DLL DString pktsl;
 extern  LAVABASE_DLL DString pktpktsl;
 extern  LAVABASE_DLL DString pktpktbsl;
 extern  LAVABASE_DLL QString StdLava;
+extern  LAVABASE_DLL QString StdLavaLog;
 extern  LAVABASE_DLL QString ExeDir;
 extern  LAVABASE_DLL QString RegDir;
 extern  LAVABASE_DLL QString ComponentLinkDir;

@@ -118,4 +118,14 @@ private:
 
 };
 
+class TreeWhatsThis : public WhatsThis
+{
+public:
+  TreeWhatsThis(CTreeView *tv);
+
+  QString text(const QPoint&);
+private:
+  CTreeView *treeView;
+};
+
 #endif

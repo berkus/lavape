@@ -48,8 +48,6 @@ public slots:
   virtual void cascade();
 
 private:
-  QFont appFont;
-
   Q_OBJECT
 };
 

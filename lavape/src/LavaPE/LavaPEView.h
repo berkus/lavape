@@ -143,6 +143,7 @@ public:
   void CheckAutoCorr(LavaDECL* decl);
   void GenHTML(LavaDECL *pnode,TDeclType &category, bool &firstChild);
   void OnGenHtmlI();
+  void whatNext();
 
   //Document update actions----------------------------------------
 

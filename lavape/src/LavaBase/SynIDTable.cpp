@@ -1929,6 +1929,7 @@ DString pktpktbsl;
 DString pktsl;
 DString pktpktsl;
 QString StdLava;
+QString StdLavaLog;
 QString ComponentLinkDir;
 QString ExeDir;
 

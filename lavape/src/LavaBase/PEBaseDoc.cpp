@@ -69,6 +69,7 @@ CPEBaseDoc::CPEBaseDoc()
   asked = false;
   UpdateNo = 1;
   Redraw = false;
+  changeNothing = false;
 }
 
 CPEBaseDoc::~CPEBaseDoc()
@@ -143,7 +144,7 @@ int CPEBaseDoc::ReadSynDef(DString& fn, SynDef* &sntx, ASN1*)
     ((CHESimpleSyntax*)sntx->SynDefTree.first)->data.SyntaxName = DString("std.lava");
   else {
     if (sntx->SynDefTree.first->successor) {
-      stdName = DString(StdLava);
+      stdName = DString(StdLavaLog);
       RelPathName(stdName, docDir);
       ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.SyntaxName = stdName;
       ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.UsersName = stdName;
@@ -1162,3 +1163,13 @@ static HRESULT CreateShortCut (LPCSTR pszShortcutFile, LPSTR pszLink)
   return hres;
 } 
 */
+
+void CLavaBaseView::whatNext()
+{
+  QMessageBox::critical(qApp->mainWidget(),qApp->name(),"\"What next\" help not yet available for this selection",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+}
+
+void CLavaBaseView::howTo()
+{
+  QMessageBox::critical(qApp->mainWidget(),qApp->name(),"\"How to\" help not yet available for this view type",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+}

@@ -43,30 +43,19 @@ public:
   int LastBarState; //-1:hidden, else: ActTab of m_OutputBar
   void ShowBarTab(BarTabs tab);
   void fillKwdToolbar(QToolBar *tb);
-  void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0);
+  void fillHelpToolbar(QToolBar *tb);
+  void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
+  void newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
 	void customEvent(QCustomEvent *ev);
-/*
-  QPushButton 
-    *declareButton, *existsButton, *foreachButton,
-    *selectButton, *elInSetButton, *ifButton,
-    *ifxButton, *switchButton, *typeSwitchButton,
-    *andButton, *orButton,
-    *xorButton, *notButton, *assertButton,
-    *tryButton, *succeedButton, *failButton, *runButton,
-    *setButton, *newButton, *cloneButton,
-    *copyButton, *attachButton, *qryItfButton,
-    *scaleButton, *itemButton, *callbackButton;
-*/
 
 private:
 	int	lastTile;
-  QFont appFont;
 
   void OnUpdateBarhammer(wxAction* action);
-  void OnUpdateViewToolbar1(wxAction* action);
-  void OnUpdateViewToolbar2(wxAction* action);
-  void OnUpdateViewToolbar4(wxAction* action);
-  void OnUpdateViewToolbar3(wxAction* action);
+//  void OnUpdateViewToolbar1(wxAction* action);
+//  void OnUpdateViewToolbar2(wxAction* action);
+//  void OnUpdateViewToolbar4(wxAction* action);
+//  void OnUpdateViewToolbar3(wxAction* action);
 //	bool event(QEvent *ev);
 
 public slots:
@@ -97,6 +86,9 @@ public slots:
     virtual void viewTB2();
     virtual void viewTB3();
     virtual void viewTB4();
+    virtual void viewHelpTB();
+    virtual void whatNext_clicked();
+    virtual void howTo_clicked();
     virtual void showUtilWindow();
     virtual void expandSubtree();
     virtual void collapseSubtree();
@@ -279,6 +271,7 @@ public:
 private:
     Q_OBJECT;
 };
+
 
 #define DOCVIEW_CUT     1
 #define DOCVIEW_ABOUT   2

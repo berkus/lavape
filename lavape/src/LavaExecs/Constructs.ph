@@ -30,6 +30,7 @@ $INCLUDE "Syntax.ph"
 #include "qwidget.h"
 #include "qscrollview.h"
 #include "qstring.h"
+#include "qmessagebox.h"
 #include "qpainter.h"
 #include "LavaBaseDoc.h"
 #include "SynIDTable.h"
@@ -402,7 +403,10 @@ public:
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
   virtual LavaObjectPtr Evaluate(CheckData  &ckd, LavaVariablePtr stackFrame);
   virtual bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame, CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet=0) { return false;};
-
+  virtual void whatNext() {
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),QObject::tr("\"What next\" help not yet available for this construct"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton); }
+  virtual QString whatsThisText() {
+    return QString(QObject::tr("<p>\"What's this\" help not yet available for this construct</p>")); }
 };
 
 
@@ -1131,6 +1135,8 @@ public:
 class Declare : public QuantStmOrExp {
 public:
   virtual bool IsDeclare () { return true; }
+  virtual QString whatsThisText() {
+   return "<p><a href=\"Declare.htm\">Declare</a> local variables</p>"; };
 };
 
 class Exists : public QuantStmOrExp {

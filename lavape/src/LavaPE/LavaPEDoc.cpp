@@ -75,7 +75,7 @@ bool CLavaPEDoc::OnNewDocument()
 bool CLavaPEDoc::OnEmptyDoc(const DString& Name)
 {
   bool bb;
-  DString stdLava=DString(StdLava);
+  DString stdLava=DString(StdLavaLog);
 
   mySynDef = new SynDef;
   SynIO.InitSyntax(mySynDef, Name);
@@ -105,7 +105,7 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
 {
 //  AfxDebugBreak();
   bool errEx;
-  DString str0, newTopName, *toINCL = 0, fn = DString(filename);
+  DString str0, str, newTopName, *toINCL = 0, fn = DString(filename);
   int readResult;
 
   //LBaseData->lastFileOpen = QString(fn.c);
@@ -114,6 +114,13 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
   readResult = ReadSynDef(fn, mySynDef);
   if (readResult < 0) 
     mySynDef = 0;
+  if (mySynDef->SynDefTree.first == mySynDef->SynDefTree.last) {
+    if (!isStd) {
+      str = DString("File '") + fn + " is not a valid lava file";
+      critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok,0,0);
+    }
+    changeNothing = !isStd || !LBaseData->stdUpdate;
+  }
   isReadOnly = readResult > 0;
   Modify(false);
   isObject = (((CLavaPEApp*)wxTheApp)->pLComTemplate == GetDocumentTemplate());
@@ -129,7 +136,6 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
     //delete ch;
   }
   else {
-    DString str;
     if (readResult < 0) {
       str = DString("Cannot read file '") + fn + DString(", corrupt lava program syntax");
       str += "\n  ";
@@ -3098,7 +3104,7 @@ void CLavaPEDoc::SetNameText(LavaDECL* inDecl, CFindData& fw)//const DString& ab
       putIt = true;
       break;
     case Initiator:
-      barText += DString("Initiator ");
+      barText += DString("Main program ");
       putIt = true;
       break;
     case Package:

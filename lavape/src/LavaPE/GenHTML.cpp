@@ -934,7 +934,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     code(">\n");
     PutComment(pnode0,false,true);
     code(pnode->LocalName.c);
-    code(" := <B>initiator</B>");
+    code(" := <B>main program</B>");
     PutComment(pnode0,true,true);
     PutComment(pnode0,true,false);
     if (chp) {

@@ -58,7 +58,6 @@ void CInclView::DisableActions()
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   frame->editSelItemAction->setEnabled(false);
   frame->newIncludeAction->setEnabled(false);
-  frame->newIncludeAction->setEnabled(false);
 }
 
 
@@ -188,6 +187,8 @@ void CInclView::OnDelete()
 {
   int in;
   QString errStr;
+  if (GetDocument()->changeNothing)
+    return;
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
   if (item && (item != GetListView()->firstChild())) {
     CHESimpleSyntax* cheSyn = (CHESimpleSyntax*)item->getItemData();
@@ -246,7 +247,8 @@ void CInclView::customEvent(QCustomEvent *ev)
 void CInclView::OnUpdateDelete(wxAction* action) 
 {
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  action->setEnabled(item && (item != GetListView()->firstChild()));
+  action->setEnabled((!GetDocument()->changeNothing) &&
+                     item && (item != GetListView()->firstChild()));
 //                 && !((CHESimpleSyntax*) item->getItemData())->data.Inherited);
 }
 
@@ -382,7 +384,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
   if (GetDocument()->mySynDef) {
     CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
     if (bActivate) {
-      frame->newIncludeAction->setEnabled(true);
+      frame->newIncludeAction->setEnabled(!GetDocument()->changeNothing);
       frame->m_OutputBar->SetComment(str0, true);
       frame->m_OutputBar->ResetError(); 
       if (!GetListView()->hasFocus())

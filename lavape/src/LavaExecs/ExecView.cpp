@@ -44,6 +44,7 @@
 #include "PEBaseDoc.h"
 #include "ConstrFrame.h"
 #include "qtextedit.h"
+#include "qassistantclient.h"
 #include "LavaBaseStringInit.h"
 //#include "LavaPEFrames.h"
 #include "Resource.h"
@@ -131,11 +132,11 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   redCtl->setBackgroundColor(white);
   text = new CProgText;
   sv->text = text;
-  sv->execView = this;
 	m_ComboBar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
   destroying = false;
   Base = 0;
   myDoc = 0;
+  new ExecWhatsThis(this);
 }
 
 bool CExecView::OnCreate() 
@@ -857,6 +858,9 @@ void CExecView::OnChar(QKeyEvent *e)
 */
   case Qt::Key_Delete: // 0x2e DEL key
   case Qt::Key_Backspace: // 0x08 BACKSPACE key
+
+    if (GetDocument()->changeNothing)
+      return;
     if ((Ignorable() && !inIgnore)
     && !(inBaseInits
          && text->currentSynObj->primaryToken == FuncRef_T
@@ -909,6 +913,8 @@ void CExecView::OnChar(QKeyEvent *e)
     if (currentSynObj->type == VarPH_T
     || currentSynObj->primaryToken == Exp_T
     || currentSynObj->IsConstant()) {
+      if (GetDocument()->changeNothing)
+        return;
       text->currentSynObj = currentSynObj;
       if (text->currentSynObj->primaryToken != enumConst_T
       && text->currentSynObj->primaryToken != Boolean_T
@@ -919,6 +925,8 @@ void CExecView::OnChar(QKeyEvent *e)
       doubleClick = false;
     }
     else if (text->currentSelection->data.token == Comment_T) {
+      if (GetDocument()->changeNothing)
+        return;
       doubleClick = true;
       clicked = true;
       Select();
@@ -954,6 +962,8 @@ void CExecView::OnChar(QKeyEvent *e)
 	  ((wxMainFrame*)wxTheApp->mainWidget())->helpContents();
     break;
   case Qt::Key_Return:
+    if (GetDocument()->changeNothing)
+      break;
     if (EnableInsert()) {
       OnInsert();
       if (text->currentSelection->data.token == VarPH_T) {
@@ -980,6 +990,10 @@ void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
   if (e->button() != Qt::LeftButton)
     return;
   execView->OnLButtonDblClk(e);
+}
+
+MyScrollView::MyScrollView (QWidget *parent) : QScrollView(parent) {
+  execView = (CExecView*)parent;
 }
 
 void CExecView::OnLButtonDown(QMouseEvent *e) 
@@ -2107,7 +2121,9 @@ bool CExecView::Ignorable () {
 }
 
 bool CExecView::Taboo () {
-  if ((inExecHeader || inFormParms || inBaseInits || !text->currentSynObj->parentObject)
+  if (GetDocument()->changeNothing)
+    return true;
+  else if ((inExecHeader || inFormParms || inBaseInits || !text->currentSynObj->parentObject)
   && !inParameter)
     return true;
   else if (text->currentSynObj->parentObject
@@ -2254,6 +2270,9 @@ void CExecView::OnDelete ()
   AttachObject *attachStm;
 
   if (!EditOK()) return;
+
+  if (GetDocument()->changeNothing)
+    return;
 
 	text->currentSynObjID = 0;
 
@@ -5189,6 +5208,10 @@ void CExecView::DisableActions()
   LBaseData->additionActionPtr->setEnabled(false);
 	LBaseData->ordActionPtr->setEnabled(false);
 
+  CExecView::DisableKwdButtons();
+}
+
+void CExecView::DisableKwdButtons() {
   LBaseData->declareButton->setEnabled(false);
   LBaseData->existsButton->setEnabled(false);
   LBaseData->foreachButton->setEnabled(false);
@@ -5282,6 +5305,9 @@ void CExecView::OnUpdateEditSel(wxAction* action)
 
 bool CExecView::EnableCut() 
 {
+  if (GetDocument()->changeNothing)
+    return false;
+
   if ((Ignorable() && !inIgnore)
   && !(inBaseInits
        && text->currentSynObj->primaryToken == FuncRef_T
@@ -5498,6 +5524,11 @@ void CExecView::OnUpdateToggleCategory(wxAction* action)
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
 
+  if (GetDocument()->changeNothing) {
+    action->setEnabled(false);
+    return;
+  }
+
   action->setEnabled(ToggleCatEnabled());
   action->setOn(text->currentSynObj->flags.Contains(isVariable));
 }
@@ -5659,6 +5690,11 @@ void CExecView::OnUpdateIgnore(wxAction* action)
   SynObject *synObj=text->currentSynObj;
   CHAINX *chx=synObj->containingChain;
 
+  if (GetDocument()->changeNothing) {
+    action->setEnabled(false);
+    return;
+  }
+
   if ((Ignorable() && !inIgnore)
   || synObj->IsPlaceHolder()
   || !synObj->IsStatement()) {
@@ -5702,6 +5738,11 @@ void CExecView::OnUpdateNewLine(wxAction* action)
   SynObject *parent;
   bool inFormParm=false;
 
+  if (GetDocument()->changeNothing) {
+    action->setEnabled(false);
+    return;
+  }
+
   if (text->currentSynObj->flags.Contains(inExecHdr)) {
     action->setEnabled(false);
     return;
@@ -5744,6 +5785,11 @@ void CExecView::OnUpdateToggleArrows(wxAction* action)
 {
   // TODO: Add your command update UI handler code here
 
+  if (GetDocument()->changeNothing) {
+    action->setEnabled(false);
+    return;
+  }
+
   action->setEnabled(true);
   action->setOn(!myDECL->TreeFlags.Contains(leftArrows));
 }
@@ -5776,6 +5822,9 @@ void CExecView::OnUpdateEditCopy(wxAction* action)
 
 bool CExecView::EnablePaste() 
 {
+  if (GetDocument()->changeNothing)
+    return false;
+
   if ((Ignorable() && !inIgnore)
   || !clipBoardObject
   || clipBoardDoc != myDoc)
@@ -5924,7 +5973,7 @@ void CExecView::OnUpdateIn(QPushButton *pb)
 
 bool CExecView::EnableInsert()
 {
-  if (Ignorable() || !text->currentSynObj->parentObject)
+  if (Ignorable() || !text->currentSynObj->parentObject || GetDocument()->changeNothing)
     return false;
 
   return (
@@ -6082,6 +6131,11 @@ void CExecView::OnUpdateNe(wxAction* action)
 void CExecView::OnUpdateShowComments(wxAction* action) 
 {
   // TODO: Add your command update UI handler code here
+
+  if (GetDocument()->changeNothing) {
+    action->setEnabled(false);
+    return;
+  }
   
   action->setEnabled(true);
   action->setOn(text->showComments);
@@ -6145,6 +6199,11 @@ void CExecView::OnUpdateShowOptionals(wxAction* action)
   
   SynObject *lookAt = text->currentSynObj;
   Quantifier *quantPtr;
+
+  if (GetDocument()->changeNothing) {
+    action->setEnabled(false);
+    return;
+  }
 
   if (Ignorable()) {
     action->setEnabled(false);
@@ -6260,3 +6319,31 @@ bool ObjComboUpdate::Action (CheckData &ckd, VarName *varName, TID &tid) {
   return false;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//What next? help:
+
+
+void CExecView::whatNext() 
+{
+  text->currentSynObj->whatNext();
+}
+
+
+ExecWhatsThis::ExecWhatsThis(CExecView *ev) : WhatsThis(0,ev->sv) {
+  execView = ev;
+}
+
+
+QString ExecWhatsThis::text(const QPoint &point) {
+  int xc, yc;
+
+  execView->sv->viewportToContents(point.x(),point.y(),xc,yc);
+  QPoint pc = QPoint(xc-2,yc-2); // -2 seems to be necessary, don't know why
+  execView->text->NewSel(&pc);
+  if (execView->text->newSelection) {
+    wxDocManager::GetDocumentManager()->SetActiveView(execView,true);
+    execView->Select();
+    return execView->text->currentSynObj->whatsThisText();
+  }
+  return QString::null;
+}

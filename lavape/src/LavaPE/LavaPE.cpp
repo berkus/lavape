@@ -103,6 +103,9 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 {
   bool ok;
 
+  LBaseData.stdUpdate = 0; 
+  //stop here and set stdUpdate = 1 to allow updates in std.lava
+
   Browser.LastBrowseContext = 0;
   LBaseData.Init(&Browser, &ConstrUpdate);
   SynIO.INIT();
@@ -248,7 +251,9 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   QString driveLetter = QString(ExeDir[0].upper());
   ExeDir.replace(0,1,driveLetter);
 #endif
-  StdLava = ExeDir + "/std.lava";
+  StdLavaLog = ExeDir + "/std.lava";
+  QFileInfo qf = QFileInfo(StdLavaLog);
+	StdLava = ResolveLinks(qf);
   Tokens_INIT();
 }
 
@@ -530,8 +535,6 @@ void CLavaPEApp::OnChooseGlobalFont()
   QFont lf;
   bool ok;
 
-  lf = LBaseData.m_GlobalFont;
-
   lf = QFontDialog::getFont(&ok,LBaseData.m_GlobalFont,m_appWindow);
   if (ok) {
     LBaseData.m_GlobalFont = lf;
@@ -571,7 +574,6 @@ wxDocument* CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
   return wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
 }
 
-static QAssistantClient *qacl=0;
 
 void CLavaPEApp::HtmlHelp()
 {

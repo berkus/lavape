@@ -226,7 +226,7 @@ int CLavaBaseDoc::ReadSynDef(DString& fn, SynDef* &sntx, ASN1* cid)
     if (sntx->SynDefTree.first->successor) {
       //stdName = ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.SyntaxName;
       //if (!SameFile(stdName, docDir, DString(StdLava))) {
-        stdName = DString(StdLava);
+        stdName = DString(StdLavaLog);
         RelPathName(stdName, docDir);
         ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.SyntaxName = stdName;
         ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.UsersName = stdName;
@@ -278,6 +278,12 @@ CHESimpleSyntax* CLavaBaseDoc::IncludeSyntax(DString& fn, bool& isNew, int hint)
         str = DString("File '") + fn + "' not found";
         critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok,0,0);
       }
+      return 0;
+    }
+    if (hint && (isyntax->SynDefTree.first == isyntax->SynDefTree.last)) {
+      str = DString("File '") + fn + " is not a valid lava file";
+      critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok,0,0);
+      SynIO.DeleteSynDef(isyntax);
       return 0;
     }
     DString docDir = fn;

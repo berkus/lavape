@@ -691,3 +691,21 @@ void CMainFrame::setFormButtonFont()
 {
 
 }
+
+
+void CMainFrame::viewHelpTB()
+{
+
+}
+
+
+void CMainFrame::whatNext_clicked()
+{
+
+}
+
+
+void CMainFrame::howTo_clicked()
+{
+
+}

@@ -84,32 +84,19 @@ public:
   CHETokenNode *selStartPos, *selEndPos;
 
 public:
-
-// Overrides
-  // ClassWizard generated virtual function overrides
-  // {{AFX_VIRTUAL(CExecView)
-  public:
-
   virtual void OnInitialUpdate();
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
-/*  
-  virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo = NULL);
-  protected:
-  virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-  virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-  virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
-  virtual void OnPrint(CDC* pDC, CPrintInfo* pInfo);
 
-  //}}AFX_VIRTUAL
-*/
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
   void DisableActions();
+  static void DisableKwdButtons();
   bool EditOK();
   void Select (SynObject *selObj=0);
   void SetSelectAt (CLavaPEHint *hint);
   void Check ();
   void Redraw (SynObject *newObject);
   void RedrawExec (SynObject *selectAt=0);
+  virtual void whatNext();
 
   void OnInsertEnum (QString &refName, TID &refTID, unsigned pos);
   void OnInsertObjRef (QString &refName, TDODC &refTIDs, bool append);
@@ -344,10 +331,10 @@ struct Format {
   QFont font;
 };
 
+
 class MyScrollView : public QScrollView {
 public:
-  MyScrollView::MyScrollView (QWidget *parent) : QScrollView(parent){
-  }
+  MyScrollView::MyScrollView (QWidget *parent);
 
 	int calcIndent(CHETokenNode *currentToken);
 
@@ -398,6 +385,17 @@ protected:
   void focusOutEvent(QFocusEvent *ev);
 
 };
+
+class ExecWhatsThis : public WhatsThis
+{
+public:
+  ExecWhatsThis(CExecView *ev);
+
+  QString text(const QPoint&);
+private:
+  CExecView *execView;
+};
+
 
 extern LAVAEXECS_DLL QToolBar* makeToolbar(wxMainFrame* pMainFrame);
 extern LAVAEXECS_DLL QToolBar* makeExecSwitches(wxMainFrame* pMainFrame);

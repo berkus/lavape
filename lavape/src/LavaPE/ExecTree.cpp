@@ -403,9 +403,9 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
     break;
   case Initiator:
     if (elDef->TypeFlags.Contains(isConst))
-      lab += DString(" := Read-only initiator");
+      lab += DString(" := Read-only main program");
     else
-      lab += DString(" := Initiator");
+      lab += DString(" := Main program");
     break;
   case Package:
     errCode = Doc->CheckScope(elDef);

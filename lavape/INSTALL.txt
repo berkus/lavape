@@ -31,7 +31,7 @@ in the intended parent directory of the "lavape"
 installation directory (e.g. /opt or your home
 directory).
 
-tar xjvf <filename>.tar.bz2
+tar xjvf lavape-<release>.src.tar.bz2
 
 unpacks the source package and creates the
 "lavape" directory.
@@ -47,8 +47,6 @@ Launch lavape/bin/Lavape, make use of the online help
 
 How to build LavaPE.exe/Lava.exe on the Windows XP platform
 ===========================================================
-
-(Still under construction; you should not yet try it.)
 
 Prerequisites:
 

@@ -441,7 +441,8 @@ bool CVTView::EnableOverride(CTreeItem* item)
 
 void CVTView::OnUpdateOverride(wxAction* action) 
 {  
-  action->setEnabled(EnableOverride((CTreeItem*)GetListView()->currentItem()));
+  action->setEnabled((!GetDocument()->changeNothing) &&
+        EnableOverride((CTreeItem*)GetListView()->currentItem()));
 }
 
 void CVTView::OnOverride() 

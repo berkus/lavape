@@ -70,6 +70,7 @@
         <action name="viewTB1Action"/>
         <action name="viewTB2Action"/>
         <action name="viewTB3Action"/>
+        <action name="viewWhatNextTBAction"/>
         <action name="viewTB4Action"/>
         <action name="viewTB5Action"/>
         <action name="viewTB6Action"/>
@@ -79,7 +80,7 @@
         <separator/>
         <action name="setTreeFontAction"/>
         <action name="SetFormFontsAction"/>
-        <item text="Set form fonts" name="PopupMenuEditor_44" accel="">
+        <item text="Set form fonts" name="PopupMenuEditor_45" accel="">
             <action name="setFormTextFontAction"/>
             <action name="setFormLabelFontAction"/>
             <action name="setFormButtonFontAction"/>
@@ -116,6 +117,7 @@
         <action name="helpContentsAction"/>
         <action name="editingLavaProgsAction"/>
         <action name="learningLavaAction"/>
+        <action name="howToAction"/>
         <separator/>
         <action name="helpAboutAction"/>
     </item>
@@ -165,6 +167,14 @@
         <action name="checkAction"/>
         <action name="checkAllAction"/>
         <action name="runAction"/>
+    </toolbar>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>HelpToolbar</cstring>
+        </property>
+        <property name="label">
+            <string>Help toolbar</string>
+        </property>
     </toolbar>
     <toolbar dock="2">
         <property name="name">
@@ -410,6 +420,9 @@
         <property name="menuText">
             <string>&amp;Cut</string>
         </property>
+        <property name="whatsThis">
+            <string>Cut the selected entity and put it on the clipboard</string>
+        </property>
         <property name="accel">
             <string>Ctrl+X</string>
         </property>
@@ -429,6 +442,9 @@
         </property>
         <property name="menuText">
             <string>C&amp;opy</string>
+        </property>
+        <property name="whatsThis">
+            <string>Copy the selected entity to the clipboard</string>
         </property>
         <property name="accel">
             <string>Ctrl+C</string>
@@ -568,6 +584,9 @@
         </property>
         <property name="menuText">
             <string>Cascade</string>
+        </property>
+        <property name="whatsThis">
+            <string>Cascade windows</string>
         </property>
     </action>
     <action>
@@ -710,6 +729,9 @@
         <property name="menuText">
             <string>Collapse subtree</string>
         </property>
+        <property name="whatsThis">
+            <string>Collapse the whole subtree starting at the selection</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -736,6 +758,9 @@
         <property name="statusTip">
             <string>Show/hide optional parts of selected entity</string>
         </property>
+        <property name="whatsThis">
+            <string>Show/hide all empty optional parts of the selected entity</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -759,6 +784,9 @@
         <property name="statusTip">
             <string>Show all optional parts in whole sub-tree</string>
         </property>
+        <property name="whatsThis">
+            <string>Show all optional parts in whole sub-tree</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -780,6 +808,9 @@
             <string>Hide empty optional parts in whole sub-tree</string>
         </property>
         <property name="statusTip">
+            <string>Hide empty optional parts in whole sub-tree</string>
+        </property>
+        <property name="whatsThis">
             <string>Hide empty optional parts in whole sub-tree</string>
         </property>
     </action>
@@ -891,6 +922,9 @@
             <string>Check also included files</string>
         </property>
         <property name="menuText">
+            <string>Check also included files</string>
+        </property>
+        <property name="whatsThis">
             <string>Check also included files</string>
         </property>
     </action>
@@ -1168,6 +1202,9 @@
         <property name="menuText">
             <string>Add/edit comment</string>
         </property>
+        <property name="whatsThis">
+            <string>Add/edit a comment to/at the selected entity</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1357,6 +1394,9 @@
         <property name="menuText">
             <string>Delete</string>
         </property>
+        <property name="whatsThis">
+            <string>Delete the selected entity without putting it on the clipboard</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1381,6 +1421,9 @@
         </property>
         <property name="toolTip">
             <string>Editing Lava Programs</string>
+        </property>
+        <property name="whatsThis">
+            <string>Provide online help on "Editing Lava Programs"</string>
         </property>
     </action>
     <action>
@@ -1512,6 +1555,9 @@
         <property name="menuText">
             <string>Show conflicting assignment</string>
         </property>
+        <property name="whatsThis">
+            <string>Show conflicting previous assignment</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1545,6 +1591,9 @@
         </property>
         <property name="menuText">
             <string>Skip/comment out</string>
+        </property>
+        <property name="whatsThis">
+            <string>Skip/comment out (the selected construct)</string>
         </property>
     </action>
     <action>
@@ -1790,6 +1839,9 @@
         <property name="menuText">
             <string>Addition</string>
         </property>
+        <property name="whatsThis">
+            <string>Integer and floating point addition</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1817,6 +1869,9 @@
         </property>
         <property name="menuText">
             <string>Divide</string>
+        </property>
+        <property name="whatsThis">
+            <string>Integer and floating point division</string>
         </property>
     </action>
     <action>
@@ -1874,6 +1929,9 @@
         <property name="menuText">
             <string>Bitwise "and"</string>
         </property>
+        <property name="whatsThis">
+            <string>Bitwise "and" operation</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1888,6 +1946,9 @@
         <property name="menuText">
             <string>Bitwise "or"</string>
         </property>
+        <property name="whatsThis">
+            <string>Bitwise "or" operation</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -1900,6 +1961,9 @@
             <string>Bitwise "exclusive or"</string>
         </property>
         <property name="menuText">
+            <string>Bitwise "exclusive or"</string>
+        </property>
+        <property name="whatsThis">
             <string>Bitwise "exclusive or"</string>
         </property>
     </action>
@@ -2062,6 +2126,9 @@
         <property name="menuText">
             <string>Delete optional</string>
         </property>
+        <property name="whatsThis">
+            <string>Delete optional</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -2109,17 +2176,6 @@
     </action>
     <action>
         <property name="name">
-            <cstring>Action</cstring>
-        </property>
-        <property name="text">
-            <string></string>
-        </property>
-        <property name="menuText">
-            <string></string>
-        </property>
-    </action>
-    <action>
-        <property name="name">
             <cstring>setFormButtonFontAction</cstring>
         </property>
         <property name="text">
@@ -2127,6 +2183,42 @@
         </property>
         <property name="menuText">
             <string>Form button font</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>viewWhatNextTBAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Help toolbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>whatsThis</cstring>
+        </property>
+        <property name="text">
+            <string>Action</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>howToAction</cstring>
+        </property>
+        <property name="text">
+            <string>How to ...</string>
+        </property>
+        <property name="menuText">
+            <string>How to ...</string>
+        </property>
+        <property name="toolTip">
+            <string>How to accomplish various tasks</string>
         </property>
     </action>
 </actions>
@@ -3087,6 +3179,18 @@
         <receiver>CMainFrame</receiver>
         <slot>setFormTextFont()</slot>
     </connection>
+    <connection>
+        <sender>viewWhatNextTBAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>viewHelpTB()</slot>
+    </connection>
+    <connection>
+        <sender>howToAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>howTo_clicked()</slot>
+    </connection>
 </connections>
 <includes>
     <include location="local" impldecl="in declaration">redefines.h</include>
@@ -3211,6 +3315,9 @@
     <slot>setFormTextFont()</slot>
     <slot>setFormLabelFont()</slot>
     <slot>setFormButtonFont()</slot>
+    <slot>viewHelpTB()</slot>
+    <slot>whatNext_clicked()</slot>
+    <slot>howTo_clicked()</slot>
 </slots>
 <exportmacro>LAVAPEUI_DLL</exportmacro>
 <layoutdefaults spacing="6" margin="11"/>

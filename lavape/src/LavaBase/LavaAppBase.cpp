@@ -42,6 +42,8 @@
 #endif
 
 
+QAssistantClient *qacl=0;
+
 
 CLavaPEHint::CLavaPEHint(CPECommand cc, wxDocument* fromdoc, SynFlags first,
                        DWORD commandData1, DWORD commandData2,
@@ -1307,3 +1309,36 @@ unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,
 
 #endif
 
+
+
+WhatsThis::WhatsThis(char *text,QWidget *w) : QWhatsThis(w)
+{
+  if (text)
+    whatsThisText = QString(text);
+}
+
+bool WhatsThis::clicked(const QString &whatsThisHref)
+{
+  if (whatsThisHref.isEmpty())
+    return true;
+
+  QString fileName=ExeDir+"/../doc/html/whatsThis/"+whatsThisHref;
+	QString path("");
+	QStringList args;
+
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(fileName);
+
+  return true;
+}
+
+QString WhatsThis::text(const QPoint&)
+{
+  return whatsThisText;
+}

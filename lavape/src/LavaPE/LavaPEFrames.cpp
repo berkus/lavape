@@ -30,7 +30,7 @@
 #include "LavaAppBase.h"
 #include "LavaPEView.h"
 #include "LavaGUIView.h"
-//#include "ExecView.h"
+#include "ExecView.h"
 #include "VTView.h"
 #include "InclView.h"
 #include "LavaGUIFrame.h"
@@ -70,11 +70,14 @@
 #include "qdict.h"
 #include "qevent.h"
 #include "qtooltip.h"
+#include "qassistantclient.h"
 
 
 CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
 :CMainFrame(parent, name, fl)
 {
+  theActiveFrame = 0;
+
 	makeStyle(LBaseData->m_style);
 
   m_OutputBar = 0;
@@ -176,6 +179,7 @@ CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
 
 void CLavaMainFrame::makeStyle(const QString &style)
 {
+  bool isVisible, firstTime=false;
   if (!style.isEmpty()) {
     LBaseData->m_style = style;
     wxTheApp->saveSettings();
@@ -183,19 +187,33 @@ void CLavaMainFrame::makeStyle(const QString &style)
 	  if(style == "Motif" || style == "MotifPlus") {
 	    QPalette p( QColor( 192, 192, 192 ) );
 	    qApp->setPalette( p, TRUE );
-	    qApp->setFont( appFont, TRUE );
+	    qApp->setFont( LBaseData->m_GlobalFont, TRUE );
 	  }
   }
 
-	bool isVisible = Toolbar_7->isVisible();
-	delete Toolbar_7;
-  Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
-  Toolbar_7->setLabel(tr("Keyword toolbar"));
+  isVisible = Toolbar_7->isVisible();
+  if (LBaseData->declareButton) {
+    delete Toolbar_7;
+    Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
+    Toolbar_7->setLabel(tr("Keyword toolbar"));
+  }
+  else
+    firstTime = true;
   fillKwdToolbar(Toolbar_7);
 	if (isVisible)
 		Toolbar_7->show();
 	else
 		Toolbar_7->hide();
+
+  if (!firstTime) {
+    delete LBaseData->whatNextButton;
+    delete LBaseData->howToButton;
+    delete LBaseData->myWhatsThisButton;
+  }
+  fillHelpToolbar(HelpToolbar);
+
+  if (theActiveFrame && QString(theActiveFrame->name()) != "ExecFrame")
+    CExecView::DisableKwdButtons();
 
 	if (completelyCreated)
 		repaint();
@@ -217,13 +235,13 @@ bool CLavaMainFrame::OnCreate()
   m_OutputBar = new COutputBar(split);
   LoadFileHistory();
   m_OutputBar->hide();
+  HelpToolbar->setOffset(100000);
   Toolbar_3->setNewLine(true);
   Toolbar_5->hide();
   Toolbar_5->setNewLine(true);
   Toolbar_5->hide();
   Toolbar_6->hide();
   Toolbar_7->hide();
-//  QWhatsThis::whatsThisButton(Toolbar_1);
   OutputBarHidden = true;
 
 	completelyCreated = true;
@@ -235,7 +253,8 @@ void CLavaMainFrame::UpdateUI()
 {
   OnUpdateBarhammer(showUtilWindowAction);
   viewTB1Action->setOn(Toolbar_1->isVisible());  
-  viewTB2Action->setOn(Toolbar_2->isVisible());  
+  viewTB2Action->setOn(Toolbar_2->isVisible());
+  viewWhatNextTBAction->setOn(HelpToolbar->isVisible());
   viewTB3Action->setOn(Toolbar_3->isVisible());  
   viewTB4Action->setOn(Toolbar_4->isVisible());  
   viewTB5Action->setOn(Toolbar_5->isVisible());
@@ -257,7 +276,7 @@ void CLavaMainFrame::UpdateUI()
     runAction->setEnabled(false);
 }
 
-void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip)
+void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
 {
   QFont f;
 
@@ -272,7 +291,44 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   pb->setMaximumWidth(pb->fontMetrics().width("el. in set")+6);
   if (tooltip)
     QToolTip::add(pb,tooltip);
+  if (whatsThis)
+    new WhatsThis(whatsThis,pb);
   pb->show();
+}
+
+void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
+{
+  QFont f;
+
+  pb = new QPushButton(QString(text),tb);
+  connect(pb,SIGNAL(clicked()),this,slotParm);
+  f = pb->font();
+  f.setBold(true);
+  pb->setFont(f);
+  pb->setPaletteForegroundColor(QColor(blue));
+//  pb->setFlat(true);
+  pb->setAutoDefault(false);
+  pb->setMinimumHeight(pb->fontInfo().pointSize()+6);
+  pb->setMaximumWidth(pb->fontMetrics().width("What's this?")+6);
+  if (tooltip)
+    QToolTip::add(pb,tooltip);
+  if (whatsThis)
+    new WhatsThis(whatsThis,pb);
+  pb->show();
+}
+
+void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
+{
+  newHelpToolbutton(tb,LBaseData->whatNextButton,"What next?",SLOT(whatNext_clicked()),
+    "What can I do next at the current selection?",
+    "<p>Provides online help which lists the most important operations "
+    "that you can perform <b>at the current selection</b></p>");
+  newHelpToolbutton(tb,LBaseData->howToButton,"How to ...",SLOT(howTo_clicked()),
+    "How to accomplish various tasks",
+    "<p>Provides online help which explains the most basic and " 
+    "<b>frequent program development operations</b> related to "
+    "the <font color=\"red\">active view</font></p>");
+  LBaseData->myWhatsThisButton = QWhatsThis::whatsThisButton(HelpToolbar);
 }
 
 void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
@@ -284,7 +340,9 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 	QPalette pal(cgAct,cgDis,tb->palette().inactive());
 	tb->setPalette(pal);
 
-  newKwdToolbutton(tb,LBaseData->declareButton,"&declare",SLOT(declare()),"Declare local variables: \"d\"");
+  newKwdToolbutton(tb,LBaseData->declareButton,"&declare",SLOT(declare()),
+    "Declare local variables: \"d\"",
+    "<p><a href=\"Declare.htm\">declare</a> local variables</p>");
   newKwdToolbutton(tb,LBaseData->existsButton,"&exists",SLOT(exists()),"Existential quantifier: \"e\"");
   newKwdToolbutton(tb,LBaseData->foreachButton,"&foreach",SLOT(foreach()),"Universal quantifier: \"f\"");
   newKwdToolbutton(tb,LBaseData->selectButton,"se&lect",SLOT(select()),"Select elements from set(s) and add derived new elements to a given set: \"l\"");
@@ -1119,9 +1177,8 @@ void CLavaMainFrame::callback(){
 // end of exec handlers
 /////////////////////////////////////////////
 void CLavaMainFrame::adjustToolbar_7 () {
-  bool isVisible;
+  bool isVisible=Toolbar_7->isVisible();
 
-	isVisible = Toolbar_7->isVisible();
 	delete Toolbar_7;
   Toolbar_7 = 0;
   Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
@@ -1320,6 +1377,14 @@ void CLavaMainFrame::viewTB2()
     Toolbar_2->show();
 }
 
+void CLavaMainFrame::viewHelpTB() 
+{
+  if (HelpToolbar->isVisible())
+    HelpToolbar->hide();
+  else
+    HelpToolbar->show();
+}
+
 
 void CLavaMainFrame::viewTB3() 
 {
@@ -1364,6 +1429,48 @@ void CLavaMainFrame::viewTB7()
     Toolbar_7->hide();
   else
     Toolbar_7->show();
+}
+
+void CLavaMainFrame::whatNext_clicked() 
+{
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  QString fileName=ExeDir+"/../doc/html/whatnext/GlobalWhatNext.htm";
+	QString path("");
+	QStringList args;
+
+  if (view)
+    view->whatNext();
+  else {
+	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	  
+	  if (!qacl) {
+		  qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
+		  qacl->setArguments(args);
+	  }
+
+	  qacl->showPage(fileName);
+  }
+}
+
+void CLavaMainFrame::howTo_clicked() 
+{
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  QString fileName=ExeDir+"/../doc/html/howto/HowToContents.htm";
+	QString path("");
+	QStringList args;
+
+  if (view)
+    view->howTo();
+  else {
+	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	  
+	  if (!qacl) {
+		  qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
+		  qacl->setArguments(args);
+	  }
+
+	  qacl->showPage(fileName);
+  }
 }
 
 
