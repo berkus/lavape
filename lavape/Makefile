@@ -50,4 +50,9 @@ build:
 	cd src/Precompiler && $(MAKE); \
 	cd ../LavaPE && $(MAKE); \
 	cd ../Lava && $(MAKE);
+#
+lavaclean:
+	cd ../LavaPE && $(MAKE) cleanall; \
+	cd ../Lava && $(MAKE) clean;
+
 

@@ -25,9 +25,9 @@
 #include "LavaBaseStringInit.h"
 #include "LavaProgram.h"
 #include "qstring.h"
-#ifndef WIN32
 #include <stdlib.h>
 #include <errno.h>
+#ifndef WIN32
 #include <setjmp.h>
 #endif
  
