@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Read-Only functions and clauses</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER"><font color="#FF0000">Read-only</font> 
+    functions/invariants/clauses</H2>
+    
+    <h3 ALIGN="left">Preliminary remark</h3>
+    
+    <P>In <font color="#FF0000"><i><b>Lava</b></i></font>,  conditional clauses, 
+    like <font color="#0000FF"><b>if</b></font>-conditions, are not <i>Boolean</i> or 
+    other <i>expressions</i> but quite normal <i>statements</i>, whose 
+    evaluation yields a truth value (<font color="#0000FF"><b>true</b></font> or
+    <font color="#0000FF"><b>false</b></font>). This is a consequence of our 
+    general opinion that <font color="#FF0000"><i><b>Lava</b></i></font> 
+    programs are not sequences of instructions/operations but <i>logical 
+    statements</i>, and program execution means <i>verification</i> of those 
+    statements.</P>
+    
+    <P>In this context, assignment of values to variables (using the 
+    <font color="#0000FF"><b>set</b></font> or <font color="#0000FF"><b>copy</b></font> 
+    statements<font color="#0000FF"><b> </b></font>or output parameters 
+    of functions) requires particular consideration:</P>
+    
+    <P>Verification of the statement</P>
+    
+    <blockquote>
+    
+    <P><b><font color="#0000FF">set</font></b> x <font color="#0000FF"><b>&nbsp;&lt;==
+    </b></font>&nbsp;&lt;expression&gt;</P>
+    
+    </blockquote>
+    
+    <P>simply means to assume the validity of the equation</P>
+    
+    <blockquote>
+    
+    <P>x&nbsp; <font color="#0000FF"><b>=</b></font>&nbsp; &lt;expression&gt;</P>
+    
+    </blockquote>
+    
+    <P>for the further verification process. Furthermore, <font color="#FF0000">
+    <i><b>Lava</b></i></font> 
+    statements have to be ordered in such a way as to enable a sequential 
+    verification process. In particular, a value must be assigned (using
+    <font color="#0000FF"><b>set</b></font>/<b><font color="#0000FF">copy</font></b> 
+    or through output parameters) to a variable before it can in turn be used as 
+    an input parameter or as part of an expression.</P>
+    
+    <h3>Definition:</h3>
+    
+    <P>An executable <b><i><font color="#FF0000">Lava</font></i></b> construct 
+    has the <b>read-only</b> property (or is <b>free of side-effects</b>) if its 
+    execution doesn't change any pre-existing objects, i.e., objects that 
+    existed already before the execution of the construct started.</P>
+    
+    <h3>Read-only <i><font color="#FF0000">Lava</font></i> functions</h3>
+    
+    <P>If a function is declared &quot;read-only&quot; then <font color="#FF0000"><i><b>
+    Lava</b></i></font> makes sure</P>
+    
+    <ol>
+      <li>that its body assigns values (using <font color="#0000FF"><b>set</b></font>/<font color="#0000FF"><b>copy
+      </b></font>statements, or output parameters) only to <font color="#0000FF">
+      <b>declare</b></font> variables and to output parameters. The body of a 
+      read-only initializer may also assign values to attributes of the self 
+      object (but not in turn to attributes of attributes, etc.),</li>
+      <li>that it calls only read-only functions.</li>
+    </ol>
+    
+    <P>These two conditions together guarantee that the function doesn't change 
+    any object that existed already before the function call.</P>
+    
+    <h3><font color="#FF0000"><i>Lava</i></font> constructs with inherent 
+    read-only semantics</h3>
+    
+    <P>A <font color="#FF0000"><i>Lava</i></font> construct has inherent 
+    read-only semantics if it is</P>
+    
+    <ol>
+      <li>an <font color="#0000FF"><b>if</b></font>, <font color="#0000FF"><b>
+      elsif</b></font>, <font color="#0000FF"><b>ifx</b></font> <b>branching 
+      condition</b>, or</li>
+      <li>a statement that is evaluated by the &quot;<font color="#0000FF"><b>?</b></font>&quot; 
+      operator to yield a Boolean <font color="#0000FF"><b>true</b></font>/<font color="#0000FF"><b>false</b></font> 
+      result,</li>
+      <li>a <b>selection condition</b>, i.e., as the <font color="#0000FF"><b>
+      where</b></font> clause of the <font color="#0000FF"><b>exists</b></font> 
+      or <font color="#0000FF"><b>foreach</b></font> quantifiers or of the
+      <font color="#0000FF"><b>select</b></font> expression,</li>
+      <li>an <b>invariant ( = continuation condition)</b> in an interface or 
+      implementation declaration,</li>
+      <li>the logical negation <font color="#0000FF"><b>not</b></font> or the 
+      exclusive &quot;or&quot; <font color="#0000FF"><b>xor</b></font> , where &quot;A
+      <font color="#0000FF"><b>xor</b></font> B&quot; is interpreted as &quot;((<b><font color="#0000FF">not</font></b> 
+      A) <font color="#0000FF"><b>and</b></font> B) or (A and (<font color="#0000FF"><b>not</b></font> 
+      B))&quot;.</li>
+    </ol>
+    
+    <P>In contrast to the body of a read-only function, these inherently 
+    read-only constructs must not contain <font color="#0000FF"><b>declare</b></font> 
+    or <i>any</i> form of assignment for simplicity.</P>
+    
+    <P>In the first four cases it would be <i>technically possible</i> to allow 
+    assignments within these constructs, but it would be <i>problematic</i> to 
+    allow them, since a branching/selection/continuation decision could be 
+    invalidated by the very evaluation of the controlling conditional, 
+    selection, or invariant clause if we would allow side-effects. I.e., the 
+    decisive condition for branching, selection, or continuation possibly 
+    wouldn't hold any longer immediately after the evaluation.</P>
+    
+    <P>In&nbsp; case 5 it would have unpleasant <i>technical</i> consequences 
+    for the <i>implementation</i> if an assignment would occur 
+    in such a clause of the program that would force us to verify the <i>negation</i> 
+    of an assignment:</P>
+    
+    <blockquote>
+    
+    <P><font color="#0000FF"><b>not</b></font>&nbsp; (x&nbsp;
+    <font color="#0000FF"><b>=</b></font>&nbsp; &lt;expression&gt;)</P>
+    
+    </blockquote>
+    
+    <P>during the verification process, since x could then assume infinitely 
+    many possible values generally (viz. all values <i>not</i> equal to the 
+    value of &lt;expression&gt;). Therefore, since we do not like to test the truth 
+    value of the program statement for each of these infinitely many possible 
+    values of x, we prefer to exclude all constructs from the
+    <font color="#FF0000"><i><b>Lava</b></i></font> language that could provoke 
+    such a situation.</P>
+    
+    <h3><span lang="de">See also</span></h3>
+    <p><b><span lang="de"><a href="SingleAssigLogSem.htm">Logical semantics of
+    <i><font color="#FF0000">Lava</font></i></a></span></b></p>
+    
+    </BODY>
+</HTML>

@@ -1,8 +1,8 @@
 <!DOCTYPE UI><UI version="3.0" stdsetdef="1">
-<class>IDD_NamespaceBox</class>
+<class>IDD_PackageBox</class>
 <widget class="QDialog">
     <property name="name">
-        <cstring>IDD_NamespaceBox</cstring>
+        <cstring>IDD_PackageBox</cstring>
     </property>
     <property name="geometry">
         <rect>
@@ -231,37 +231,36 @@
     <connection>
         <sender>m_DelSupport1</sender>
         <signal>clicked()</signal>
-        <receiver>IDD_NamespaceBox</receiver>
+        <receiver>IDD_PackageBox</receiver>
         <slot>m_DelSupport1_clicked()</slot>
     </connection>
     <connection>
         <sender>m_ExtTypes</sender>
         <signal>activated(int)</signal>
-        <receiver>IDD_NamespaceBox</receiver>
+        <receiver>IDD_PackageBox</receiver>
         <slot>m_ExtTypes1_activated(int)</slot>
     </connection>
     <connection>
         <sender>PushButton_IDOK10</sender>
         <signal>clicked()</signal>
-        <receiver>IDD_NamespaceBox</receiver>
+        <receiver>IDD_PackageBox</receiver>
         <slot>OnOK()</slot>
     </connection>
     <connection>
         <sender>mANCEL10</sender>
         <signal>clicked()</signal>
-        <receiver>IDD_NamespaceBox</receiver>
+        <receiver>IDD_PackageBox</receiver>
         <slot>mANCEL10_clicked()</slot>
     </connection>
     <connection>
         <sender>ID_HELP8</sender>
         <signal>clicked()</signal>
-        <receiver>IDD_NamespaceBox</receiver>
+        <receiver>IDD_PackageBox</receiver>
         <slot>ID_HELP8_clicked()</slot>
     </connection>
 </connections>
 <includes>
     <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
-    <include location="local" impldecl="in implementation">idd_namespacebox.ui.h</include>
 </includes>
 <slots>
     <slot>m_DelSupport1_clicked()</slot>

@@ -1,0 +1,21 @@
+/* XPM */
+static char *PX_requireDis[] = {
+"21 15 3 1",
+"s c #A0A0A0",
+"  c #FFFFFF",
+"# c None",
+"    sssss       #####",
+"   sssssss      #####",
+"   ss   ss      #####",
+"        ss      #####",
+"       ss       #####",
+"     sss        #####",
+"    sss         #####",
+"    ss   ss     #####",
+"    ss   ss     #####",
+"    sssssss     #####",
+"     sssss      #####",
+"                #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####"};

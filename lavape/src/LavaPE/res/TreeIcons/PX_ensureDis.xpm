@@ -1,0 +1,21 @@
+/* XPM */
+static char *PX_ensureDis[] = {
+"21 15 3 1",
+"  c #FFFFFF",
+"s c #A0A0A0",
+"# c None",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####",
+"                #####",
+"      sss       #####",
+"      sss       #####",
+"      sss       #####"};
