@@ -1577,7 +1577,7 @@ LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
   CSectionDesc *funcSect;
   Expression *onEventExpr=(Expression*)onEvent.ptr;
   Expression *objRef, *actParm;
-  LavaObjectPtr object, callObj=0, selfParm, result=0;
+  LavaObjectPtr object, selfParm, result=0;
   CallbackObject cbObj;
   CHE* che;
 
@@ -1589,13 +1589,13 @@ LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
     objRef->SetRTError(ckd,&ERR_NullCallObject,stackFrame);
     return 0;
   }
-  funcSect = &(*callObj)[funcStm->funcSectionNumber + funcStm->funcDecl->SectionInfo2];
+  funcSect = &(*cbObj.callObj)[funcStm->funcSectionNumber + funcStm->funcDecl->SectionInfo2];
   cbObj.fdescCbFunc = &funcSect->funcDesc[funcStm->funcDecl->SectionInfo1];
   selfParm = cbObj.callObj - (*cbObj.callObj)->sectionOffset
                          + (*(cbObj.callObj - (*cbObj.callObj)->sectionOffset))[cbObj.fdescCbFunc->delta].sectionOffset;
   cbObj.callbackParms.append(selfParm);
 
-  for (che = (CHE*)funcStm->inputs.first; che; che = (CHE*)che->successor) {
+  for (che = (CHE*)((CHE*)funcStm->inputs.first)->successor; che; che = (CHE*)che->successor) {
     actParm = (Expression*)che->data;
     object = actParm->Evaluate(ckd,stackFrame,oldExprLevel);
     if (ckd.exceptionThrown) {
@@ -1626,6 +1626,7 @@ LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
 
   result = AllocateObject(ckd,ckd.document->DECLTab[B_Callback],false);
   
+  new(result + LSH) CallbackObject();
   *(CallbackObject*)(result + LSH) = cbObj;
   *(LavaVariablePtr)(result + LSH + (unsigned)CallbackAdapter[0]) = object;
 ret:

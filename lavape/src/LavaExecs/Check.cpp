@@ -4249,6 +4249,7 @@ bool FuncStatement::Check (CheckData &ckd)
   Parameter *opd;
   SynFlags ctxFlags;
 	bool visibleParms=false;
+  TID funcTid;
 #ifdef INTERPRETER
   Category cat;
   LavaDECL *actDecl, *formTypeDecl, *declTarget;
@@ -4273,7 +4274,9 @@ bool FuncStatement::Check (CheckData &ckd)
   CContext callContext = callCtx;
   if (myCtxFlags.bits)
     callContext.ContextFlags = myCtxFlags;
-  chpFormOut = GetFirstOutput(&ckd.document->IDTable,((Reference*)function.ptr)->refID);
+  funcTid = ((Reference*)function.ptr)->refID;
+  ADJUST4(funcTid);
+  chpFormOut = GetFirstOutput(&ckd.document->IDTable,funcTid);
   chpActOut = (CHE*)outputs.first;
   while (chpFormOut) {
     reposition(ckd,this,false,&outputs,chpFormOut,chpActOut);
@@ -5932,7 +5935,7 @@ AssertionData::AssertionData(CheckData &ckd, LavaDECL *funcDECL) {
 }
 
 unsigned AssertionData::PrepareAssertions(CheckData &ckd, SelfVar *selfVar) {
-  LavaDECL *implFuncDECL, *itfFuncDECL;
+  LavaDECL *implFuncDECL, *itfFuncDECL=0;
   TID itfFuncTID;
   AssertionData *adp;
   unsigned i=0;
@@ -5958,8 +5961,10 @@ unsigned AssertionData::PrepareAssertions(CheckData &ckd, SelfVar *selfVar) {
     maxFrameSize = max(maxFrameSize,((SelfVar*)ensureDECLimpl->Exec.ptr)->stackFrameSize);
   }
 
-  itfFuncTID = ((CHETID*)implFuncDECL->Supports.first)->data;
-  itfFuncDECL = ckd.document->IDTable.GetDECL(itfFuncTID, implFuncDECL->inINCL);
+  if (implFuncDECL->Supports.first) {
+    itfFuncTID = ((CHETID*)implFuncDECL->Supports.first)->data;
+    itfFuncDECL = ckd.document->IDTable.GetDECL(itfFuncTID, implFuncDECL->inINCL);
+  }
 
   if (!itfFuncDECL || (itfFuncDECL->DeclType != Function)) {
     stackFrameSize = maxFrameSize + nOwnOldExpr + nOvrOldExpr;

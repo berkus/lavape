@@ -806,7 +806,7 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         implElDecl->WorkFlags.EXCL(selAfter);
         implElDecl->SecondTFlags.EXCL(overrides);
         cheImplEl = NewCHE(implElDecl);
-        if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+        if (implDECL->NestedDecls.last && ((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
           implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, cheImplEl);
         else
           implDECL->NestedDecls.Append(cheImplEl);
@@ -2692,7 +2692,7 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
       newimplElDecl = MakeOneSetGet(isPropGet, implDECL, ifaceElDecl, checkLevel);
       if (newimplElDecl) {
         cheImplEl = NewCHE(newimplElDecl);
-        if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+        if (implDECL->NestedDecls.last && ((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
           implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, cheImplEl);
         else
           implDECL->NestedDecls.Append(cheImplEl);
@@ -2708,7 +2708,7 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
       newimplElDecl = MakeOneSetGet(isPropSet, implDECL, ifaceElDecl, checkLevel);
       if (newimplElDecl) {
         cheImplEl = NewCHE(newimplElDecl);
-        if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+        if (implDECL->NestedDecls.last && ((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
           implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, cheImplEl);
         else
           implDECL->NestedDecls.Append(cheImplEl);
