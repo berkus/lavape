@@ -157,12 +157,14 @@ void DDMakeClass::makeChildren()
         secClassDECL =  myObject[0][0].classDECL;
         sectionPtr = myObject;
         llast = secClassDECL->SectionInfo2 + LSH;
+        ll = LSH;
         if (secClassDECL->TypeFlags.Contains(isNative)) { 
           funcAdapter = GetAdapterTable(ckd, secClassDECL, secClassDECL);
           if (funcAdapter)
-            llast = llast - (unsigned)*funcAdapter[0]; //- native part of section
+            //llast = llast - (unsigned)*funcAdapter[0]; //- native part of section
+            ll = LSH + (unsigned)*funcAdapter[0]; //- members behind native part of section 
         }
-        for (ll = LSH; ll < llast; ll++) {
+        for (/*ll = LSH*/; ll < llast; ll++) {
           memPtr = (LavaVariablePtr)(sectionPtr + ll);
           attrDecl = myObject[0][0].attrDesc[ll-LSH].attrDECL;
           attrType = myDoc->IDTable.GetDECL(attrDecl->RefID, attrDecl->inINCL);
@@ -191,12 +193,14 @@ void DDMakeClass::makeChildren()
           childItem = myItem->createChild(new DDMakeClass, childItem, myDoc, *(LavaVariablePtr)(sectionPtr-2), label, false, false);            
         }
         llast = secClassDECL->SectionInfo2 + LSH;
+        ll = LSH;
         if (secClassDECL->TypeFlags.Contains(isNative)) { 
           funcAdapter = GetAdapterTable(ckd, secClassDECL, secClassDECL);
           if (funcAdapter)
-            llast = llast - (unsigned)*funcAdapter[0]; //- native part of section
+            //llast = llast - (unsigned)*funcAdapter[0]; //- native part of section
+            ll = LSH + (unsigned)*funcAdapter[0];
         }
-        for (ll = LSH; ll < llast; ll++) {
+        for (/*ll = LSH*/; ll < llast; ll++) {
           memPtr = (LavaVariablePtr)(sectionPtr + ll);
           attrDecl = myObject[0][0].attrDesc[ll-LSH].attrDECL;
           attrType = myDoc->IDTable.GetDECL(attrDecl->RefID, attrDecl->inINCL);

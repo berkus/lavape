@@ -1705,10 +1705,10 @@ bool ExceptionCallStack(CheckData& ckd, LavaVariablePtr stack)
 
 bool ExceptionDecFunc(CheckData& ckd, LavaVariablePtr stack)
 {
-  if (*(stack[SFH]+LSH))
+ /* if (*(stack[SFH]+LSH))
     DFC(*(LavaVariablePtr)(stack[SFH]+LSH));
   if (*(stack[SFH]+LSH+1))
-    DFC(*(LavaVariablePtr)(stack[SFH]+LSH+1));
+    DFC(*(LavaVariablePtr)(stack[SFH]+LSH+1));*/
   return true;
 }
 

@@ -9,7 +9,7 @@
 #include "LavaBaseDoc.h"
 
 //length of adapter table header
-#define LAH  7 //adapterTable[0]: length of embedded basic type
+#define LAH  7 //adapterTable[0]: length of native data, lava-attributes behind the native part of the section
                //adapterTable[1]: copy function
                //adapterTable[2]: compare function, this is not the "=="operator 
                //adapterTable[3]: serialize function 
@@ -58,6 +58,7 @@ extern LAVABASE_DLL bool DropException(CheckData& ckd, LavaVariablePtr stack);
 typedef QPtrList<LavaObjectPtr> CallbackParms;
 
 class CallbackObject {
+public:
   LavaDECL *callbackFunc;
   LavaObjectPtr callObj;
   CallbackParms callbackParms;

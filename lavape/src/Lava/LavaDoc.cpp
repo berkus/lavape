@@ -413,7 +413,7 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
   LavaObjectPtr sectionPtr, newStackFrame[SFH+2];
   LavaVariablePtr memPtr;
   LavaDECL *classDECL, *secClassDECL;
-  int iStore, iCast, iTab, iSect, ll, llast, objINCL, ii, *reversTab=0;
+  int iStore, iCast, iTab, iSect, ll, lmem, llast, objINCL, ii, *reversTab=0;
   TAdapterFunc* funcAdapter;
   QString dPN;
   DString synName, linkName;
@@ -460,6 +460,7 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
             if (isObject && firstStore && (iTab == 1))
               ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
             CDPSynFlags(PUT, cid, (address)(sectionPtr+1)); //(*cid->Ar) << *(DWORD*)(sectionPtr+1); //section flags
+            lmem = LSH;
             if ((*sectionPtr)->classDECL->TypeFlags.Contains(isNative)) { //native section content
               funcAdapter = GetAdapterTable(ckd, (*sectionPtr)->classDECL,0);
               if (!funcAdapter)
@@ -477,16 +478,17 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
                     StoreArray(cid, sectionPtr);
                 }
                 else {
-                  llast = (int)((unsigned)(funcAdapter[0])+3)/4+2;
+                  llast = (int)(unsigned)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
                   for (ll = LSH; ll < llast; ll++)
                     cid->PUTint(*(long int*)(sectionPtr+ll)); //(*cid->Ar) << *(DWORD*)(sectionPtr + ll);
                 }
               }
+              lmem = (int)(unsigned)funcAdapter[0] + LSH;
             }
-            else {
+            //else {  //(##########)
               llast = secClassDECL->SectionInfo2 + LSH;
-              for (ll = LSH; ll < llast; ll++) {
-                memPtr = (LavaVariablePtr)(sectionPtr + ll);
+              for (/*ll = LSH*/; lmem < llast; lmem++) {
+                memPtr = (LavaVariablePtr)(sectionPtr + lmem);
                 if (*memPtr) {
                   iCast = (*memPtr)[0][0].sectionOffset;
                   for (iStore = 1;
@@ -507,7 +509,7 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
                 long int ics = (iCast << 16) | iStore;
                 cid->PUTint(ics /*MAKELONG(iStore, iCast)*/); //(*cid->Ar) << MAKELONG(iStore, iCast); //store number of member object and section offset
               }//for (ll...
-            }//section not native
+            //}//section not native
           }//primary
         }//for (iSect...
       }//for (iTab...
@@ -654,7 +656,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
   LavaVariablePtr memPtr;
   LavaDECL *classDECL, *implDECL, *secClassDECL;
   CHESimpleSyntax *cheSyn;
-  int iTab, iSect, ll, llast, objINCL, iEnum;
+  int iTab, iSect, ll, lmem, llast, objINCL, iEnum;
   long lon;
   TID id;
   SynFlags secFlag;
@@ -771,6 +773,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
                *(sectionPtr+1) = (CSectionDesc*)secFlag.bits;
             if ((secClassDECL->DeclDescType == EnumType) && !enumDesc)
               enumDesc = (TEnumDescription*)secClassDECL->EnumDesc.ptr;
+            lmem = LSH;
             if ((*sectionPtr)->classDECL->TypeFlags.Contains(isNative)) { //native section content
               funcAdapter = GetAdapterTable(ckd, (*sectionPtr)->classDECL,0);
               if (!funcAdapter)
@@ -811,17 +814,18 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
                   }
                 }
                 else {
-                  llast = (int)((unsigned)(funcAdapter[0])+3)/4+2;
+                  llast = (int)(unsigned)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
                   for (ll = LSH; ll < llast; ll++)
                     cid->GETint(*(long int*)(sectionPtr + ll)); //(*cid->Ar) >> *(DWORD*)(sectionPtr + ll);
                 }
               }
+              lmem = (int)(unsigned)funcAdapter[0] + LSH;
             }
-            else {
+            //else {  //(##########)
               llast = secClassDECL->SectionInfo2 + LSH;
-              for (ll = LSH; ll < llast; ll++) 
-                cid->GETint(*(long int*)(sectionPtr + ll)); //(*cid->Ar) >> *(LONG*)(sectionPtr + ll);
-            }//section not native
+              for (/*ll = LSH*/; lmem < llast; lmem++) 
+                cid->GETint(*(long int*)(sectionPtr + lmem)); //(*cid->Ar) >> *(LONG*)(sectionPtr + ll);
+            //}//section not native
           }//primary
         }//for (iSect...
         ActTab++;
@@ -834,6 +838,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
           if (((CSectionDesc*)classDECL->SectionTabPtr)[iSect].SectionFlags.Contains(SectPrimary)) {
             secClassDECL = ((CSectionDesc*)classDECL->SectionTabPtr)[iSect].classDECL;
             sectionPtr = objPtr - (objPtr[0])[0].sectionOffset + (objPtr[0])[iSect].sectionOffset;
+            lmem = LSH;
             if ((*sectionPtr)->classDECL->TypeFlags.Contains(isNative)) {
               if ((secClassDECL->inINCL == 1)
                    && (secClassDECL->fromBType == B_Set))
@@ -841,15 +846,18 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
               else if ((secClassDECL->inINCL == 1)
                  && (secClassDECL->fromBType == B_Array))
                 LoadArray2(sectionPtr);
+              funcAdapter = GetAdapterTable(ckd, secClassDECL,0);
+              if (funcAdapter)
+                lmem = (int)(unsigned)funcAdapter[0] + LSH;
             }
-            else {
+            //else {  //(##########)
               llast = secClassDECL->SectionInfo2 + LSH;
-              for (ll = LSH; ll < llast; ll++) {
-                memPtr = (LavaVariablePtr)(sectionPtr + ll);
-                lon = *(long*)(LavaVariablePtr)(sectionPtr + ll);
+              for (/*ll = LSH*/; lmem < llast; lmem++) {
+                memPtr = (LavaVariablePtr)(sectionPtr + lmem);
+                lon = *(long*)(LavaVariablePtr)(sectionPtr + lmem);
                 *memPtr = ObjTab[(int)(signed short)LOWORD(lon)] + HIWORD(lon);
-              }//for (ll...
-            }//section not native
+              }//for (lmem...
+            //}//section not native
           }//primary
         }//for (iSect...
       }
