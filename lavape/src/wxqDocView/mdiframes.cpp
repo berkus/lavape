@@ -140,14 +140,17 @@ void wxMainFrame::Cascade()
   int ii;
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
+  QSize sz=m_workspace->size();
 
-  wxTheApp->isChMaximized = false;
   m_workspace->cascade();
+  wxTheApp->isChMaximized = false;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
     if (!((QMainWindow*)window)->isMinimized()) 
-      if (window->inherits("wxMDIChildFrame"))
+      if (window->inherits("wxMDIChildFrame")) {
         ((wxMDIChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
+        window->resize(sz.width()*7/10, sz.height()*7/10);
+      }
   }
 }
 
@@ -186,11 +189,11 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
     if (!((QMainWindow*)window)->isMinimized()) {
       preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
       actWidth = QMAX(widthForEach, preferredWidth);
+      if (window == theActiveFrame) 
+        window->showNormal();
       window->parentWidget()->resize(actWidth, allHeight );
       window->parentWidget()->move( x, 0);
       x += actWidth;
-      if (window == theActiveFrame)
-        window->showNormal();
     }
   }
 }
@@ -228,12 +231,10 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
     if (!((QMainWindow*)window)->isMinimized()) {
       preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
       actHeight = QMAX(heightForEach, preferredHeight);
+      if (window == theActiveFrame) 
+        window->showNormal();
       window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
       y += actHeight;
-      if (window == theActiveFrame)
-        window->showNormal();
-     // if (!((QMainWindow*)window)->isMaximized()) 
-     //   window->show();//showNormal();
     }
   }
 }
@@ -261,13 +262,15 @@ bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   if (!temp->m_viewClassInfo)
     return false;
-  if (oldWindowState == QEvent::ShowNormal)
-    resize(500,300);
-  if (oldWindowState == QEvent::ShowMaximized)
-    showMaximized();
+  QSize sz = ((wxMainFrame*)qApp->mainWidget())->GetClientWindow()->size();
   wxView *view = (wxView *)temp->m_viewClassInfo(GetClientWindow(),doc);
   setCentralWidget(view);
   view->SetDocument(doc);
+  if (oldWindowState == QEvent::ShowMaximized)
+    showMaximized();
+  else
+    showNormal();
+  resize(sz.width()*7/10, sz.height()*7/10); 
   if (view->OnCreate()) {
     wxDocManager::GetDocumentManager()->SetActiveView(view, true);
     return true;
@@ -298,22 +301,6 @@ void wxMDIChildFrame::InitialUpdate()
 void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
 {
 	QString title=caption();
-/*
-  if (isMinimized() ){}
-    if (windowMenuAction)
-		  showNormal();
-	  else
-      if (oldWindowState == QEvent::ShowMaximized)
-        showMaximized();
-      else
-  	    showNormal();//raise();
-  else
-    if (oldWindowState == QEvent::ShowMaximized)
-      showMaximized();
-    else
-  	  raise();
-  	//raise();
-*/
 	if (isMinimized() && windowMenuAction)
     if (oldWindowState == QEvent::ShowMaximized)
       showMaximized();
@@ -330,14 +317,6 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
       wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),activate);
 }
 
-/*
-void wxMDIChildFrame::Activate (bool activate,bool windowMenuAction)
-{
-  if (lastActive)
-    lastActive->OnActivateView();
-}
-*/
-
 void wxMDIChildFrame::SetTitle(QString &title)
 {
 	QString oldTitle=parentWidget()->caption(), newTitle=title;
@@ -351,34 +330,7 @@ void wxMDIChildFrame::SetTitle(QString &title)
 
 bool wxMDIChildFrame::event(QEvent * e )
 {
- /* switch (e->type()) {
-	case QEvent::ShowMinimized:
-	case QEvent::ShowNormal:
-	case QEvent::ShowMaximized:
-		if (isMinimized())
-			oldWindowState = QEvent::ShowMinimized;
-		else if (isMaximized())
-			oldWindowState = QEvent::ShowMaximized;
-		else
-			oldWindowState = QEvent::ShowNormal;
-		if (e->type() == QEvent::ShowMaximized)
-			wxTheApp->isChMaximized = true;
-		else
-			wxTheApp->isChMaximized = false;
-	break;
-	default: ;
-	}*/
   switch (e->type()) {
-    /*
-	case QEvent::ShowMinimized:
-		if (isMinimized())
-			oldWindowState = QEvent::ShowMinimized;
-		else if (isMaximized())
-			oldWindowState = QEvent::ShowMaximized;
-		else
-			oldWindowState = QEvent::ShowNormal;
-	break;
-  */
 	case QEvent::ShowNormal:
 		oldWindowState = QEvent::ShowNormal;
 		wxTheApp->isChMaximized = false;

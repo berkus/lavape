@@ -303,6 +303,10 @@ LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj)
       if (qf.isRelative()) {
         qf.setFile(QDir(IDTable.DocDir.c), *pfileName);
         *pfileName = qf.absFilePath();
+#ifdef WIN32
+        QString driveLetter = QString((*pfileName)[0].upper());
+        (*pfileName).replace(0,1,driveLetter);
+#endif
       }
       QFile file(*pfileName);
       if( !file.open(IO_ReadOnly))
@@ -712,8 +716,16 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
       lcomPur = !qf.isRelative();
       if (!lcomPur) 
         dPN = ExeDir + ComponentLinkDir + dPN;
+#ifdef WIN32
+      QString driveLetter = QString(dPN[0].upper());
+      dPN.replace(0,1,driveLetter);
+#endif
       qf.setFile(dPN);
       QString fn = ResolveLinks(qf);
+#ifdef WIN32
+      driveLetter = QString(fn[0].upper());
+      fn.replace(0,1,driveLetter);
+#endif
       synName = DString(fn);
       if (!synName.l) {
         LObjectError(ckd, cid->FileName, dPN, &ERR_lcomNotOpened);

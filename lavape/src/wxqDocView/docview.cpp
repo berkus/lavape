@@ -603,12 +603,12 @@ void wxDocument::OnChangedViewList()
 
 void wxDocument::UpdateAllViews(wxView *sender, unsigned param, QObject *hint)
 {
-    wxView *view = m_documentViews.first();
-    while (view)
-    {
-        view->OnUpdate(sender, param, hint);
-        view = m_documentViews.next();
-    }
+  wxView *view;
+  POSITION pos = GetFirstViewPos();
+  while (pos) {
+    view = GetNextView(pos); 
+    view->OnUpdate(sender, param, hint);
+  }
 }
 
 void wxDocument::SetTitle(const QString& title)
@@ -775,10 +775,16 @@ wxDocTemplate::~wxDocTemplate()
 wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
 {
   bool ok;
+  QString fn;
+
   if (!m_docClassInfo)
       return (wxDocument *) NULL;
   wxDocument *doc = (wxDocument *)m_docClassInfo();
-  QString fn = path;
+  fn = path;
+#ifdef WIN32
+  QString driveLetter = QString(fn[0].upper());
+  fn.replace(0,1,driveLetter);
+#endif
   QFileInfo info(fn);
   if (flags == wxDOC_NEW) {
     doc->SetUserFilename(info.fileName());
@@ -1135,8 +1141,13 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
 
   QString fn, path2;
 	QFileInfo qfi;
-  if (path != QString(""))
-      path2 = path;
+  if (path != QString("")) {
+    path2 = path;
+#ifdef WIN32
+    QString driveLetter = QString(path2[0].upper());
+    path2.replace(0,1,driveLetter);
+#endif
+  }
 	qfi.setFile(path2);
   if (!path2.isEmpty())
     fn = ResolveLinks(qfi);
@@ -1274,8 +1285,10 @@ wxDocTemplate *wxDocManager::MatchTemplate(const QString& WXUNUSED(path))
 // File history management
 void wxDocManager::AddFileToHistory(QString& file)
 {
-    if (m_fileHistory)
-        m_fileHistory->AddToHistory(new DString(file.ascii()),wxTheApp);
+  if (m_fileHistory) {
+    m_fileHistory->AddToHistory(new DString(file.ascii()),wxTheApp);
+    m_fileHistory->Save(*wxTheApp->settings);
+  }
 }
 
 void wxDocManager::SetFirstInHistory(int i)

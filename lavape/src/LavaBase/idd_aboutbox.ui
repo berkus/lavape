@@ -58,7 +58,7 @@
                     </font>
                 </property>
                 <property name="text">
-                    <string>&lt;center&gt;Lava Preview Release 0.7.2&lt;/center&gt;</string>
+                    <string>&lt;center&gt;Lava Preview Release 0.7.3&lt;/center&gt;</string>
                 </property>
                 <property name="textFormat">
                     <enum>RichText</enum>
@@ -110,6 +110,12 @@ at http://lavape.sourceforge.net</string>
                     <widget class="QLineEdit">
                         <property name="name">
                             <cstring>lineEdit1</cstring>
+                        </property>
+                        <property name="frameShape">
+                            <enum>LineEditPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>Sunken</enum>
                         </property>
                         <property name="text">
                             <string></string>

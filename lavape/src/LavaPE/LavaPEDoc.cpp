@@ -176,8 +176,10 @@ bool CLavaPEDoc::OpenCView(LavaDECL* cDECL)
     ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
   }
 
-  if (wxDocManager::GetOpenDocCount() == 1
-	&& GetViewCount() == 4)
+  if (!execChild->isMaximized()
+  && wxDocManager::GetOpenDocCount() == 1
+	&& GetViewCount() == 4
+  && MainView->GetParentFrame()->oldWindowState != QEvent::ShowMaximized)
 		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
 
   return true;
@@ -271,7 +273,8 @@ bool CLavaPEDoc::openVTView(LavaDECL** pdecl, unsigned long autoUpdate)
   else {
  //   UpdateVElems(*pdecl);
     hint = new CLavaPEHint(CPECommand_OpenSelView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, autoUpdate,(DWORD)pdecl);
-    UpdateAllViews(MainView,0,hint);
+    //UpdateAllViews(MainView,0,hint);
+    ((CLavaPEView*)MainView)->myVTView->OnUpdate(MainView, 0, hint);
     delete hint;
   }
   return TRUE;
@@ -2277,15 +2280,22 @@ bool CLavaPEDoc::CheckFuncImpl(LavaDECL* funcDECL, int checkLevel, bool& changed
       }
       if (elFound) {
         IOEl->OwnID = ((LavaDECL*)elFound->data)->OwnID;
+        *((LavaDECL*)elFound->data) = *IOEl;
+        IOEl = (LavaDECL*)elFound->data;
+        elFound = (CHE*)chain.Uncouple(elFound);
+        funcDECL->NestedDecls.Insert(cheIOEl->predecessor, elFound);
+        che = (CHE*)funcDECL->NestedDecls.Uncouple(cheIOEl);
+        delete che;
+        cheIOEl = elFound;
         changed = changed || (IOEl->RefID.nID != classIOEl->RefID.nID);
         typeFlags = classIOEl->TypeFlags;
 //        typeFlags.INCL(isFuncImpl);
 //        typeFlags.EXCL(Overrides);
         changed = (IOEl->TypeFlags == typeFlags); //true; 20.05.01
         IOEl->TypeFlags = typeFlags;
-        IDTable.Change((LavaDECL**)&cheIOEl->data);
-        che = (CHE*)chain.Uncouple(elFound);
-        delete che;
+        //IDTable.Change((LavaDECL**)&cheIOEl->data);
+        //che = (CHE*)chain.Uncouple(elFound);
+        //delete che;
       }
       else {
         changed = true;

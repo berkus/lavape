@@ -135,6 +135,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 	m_ComboBar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
   destroying = false;
   Base = 0;
+  myDoc = 0;
 }
 
 bool CExecView::OnCreate() 
@@ -523,7 +524,6 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
   bool isLastHint=false;
 
   externalHint = true; // to enforce UpdateParameters below and for combo-bar updates
-  myNewDECL = myDoc->IDTable.GetDECL(myID);
   if (hint)
     switch (hint->com) {
 
@@ -682,9 +682,10 @@ void CExecView::OnChar(QKeyEvent *e)
   SynObject *currentSynObj, *parent/*, *ocl*/;
 
   switch (key) {
+
   case Qt::Key_A:
     if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-      OnAssert();
+      OnAnd();
     break;
   case Qt::Key_C:
     if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
@@ -703,15 +704,6 @@ void CExecView::OnChar(QKeyEvent *e)
     if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
       OnForeach();
     break;
-/*
-  case Qt::Key_H:
-    if (!Taboo()
-    && text->currentSynObj->StatementSelected(text->currentSelection)
-    && myDECL->ParentDECL->DeclType == Function
-    && !myDECL->ParentDECL->TypeFlags.Contains(execIndependent))
-      OnFail();
-    break;
-*/
   case Qt::Key_I:
     if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
       OnIf();
@@ -1419,7 +1411,7 @@ exp: // Const_T
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSubObjects(decl, text->ckd.lpc);
         break;
       default:
-        if (pTID->fieldDecl)
+        if (pTID->fieldDecl && objRef->parentObject->primaryToken != FormParm_T)
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSubObjects(pTID->fieldDecl, pTID->context);
         else
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
@@ -2314,6 +2306,8 @@ void CExecView::OnDelete ()
     newRef->replacedType = oldRef->replacedType;
     newRef->flags = oldRef->flags;
     CopyUntil(oldRef,(CHE*)che->predecessor,newRef);
+    SetRefTypeFlags(newRef);
+
     text->currentSynObj = text->currentSynObj->parentObject;
     synObj = text->currentSynObj->parentObject;
     if (synObj->IsFuncInvocation()) {
@@ -4311,9 +4305,6 @@ void CExecView::OnInsertObjRef (QString &refName, TDODC &refIDs, bool append)
   CHE *chp;
   CHAINX *chx;
   const char *name=refName;
-  DWORD dw;
-  TIDType idtype;
-  LavaDECL *decl;
 
   if (append) {
     chx = text->currentSynObj->containingChain;
@@ -4341,6 +4332,19 @@ void CExecView::OnInsertObjRef (QString &refName, TDODC &refIDs, bool append)
     newRef->replacedType = text->currentSynObj->type;
   }
   newRef->parentObject = text->currentSynObj->parentObject;
+
+  for (chp = (CHE*)newRef->refIDs.first; chp; chp = (CHE*)chp->successor)
+    ((SynObject*)chp->data)->parentObject = newRef;
+
+  SetRefTypeFlags(newRef);
+
+  PutInsHint(newRef);
+}
+
+void CExecView::SetRefTypeFlags (ObjReference *newRef) {
+  DWORD dw;
+  TIDType idtype;
+  LavaDECL *decl;
 
   dw = myDoc->IDTable.GetVar(((TDOD*)((CHE*)newRef->refIDs.first)->data)->ID,idtype);
   if (idtype == localID) {
@@ -4377,20 +4381,6 @@ void CExecView::OnInsertObjRef (QString &refName, TDODC &refIDs, bool append)
       break;
     }
   }
-
-  for (chp = (CHE*)newRef->refIDs.first; chp; chp = (CHE*)chp->successor)
-    ((SynObject*)chp->data)->parentObject = newRef;
-
-/*  if (text->currentSynObj->parentObject->IsFuncInvocation()) {
-    text->currentSynObj = text->currentSynObj->parentObject;
-    if (text->currentSynObj->primaryToken == assignFX_T)
-      PutInsHint(new FuncExpressionV(newRef));
-    else
-      PutInsHint(new FuncStatementV(newRef));
-  }
-  else*/
-
-    PutInsHint(newRef);
 }
 
 void CExecView::OnAttach() 
@@ -5663,7 +5653,7 @@ void CExecView::OnUpdateFail(QPushButton *pb)
 	
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->OutputContext());
+    /*&& text->currentSynObj->OutputContext()*/);
 }
 
 void CExecView::OnUpdateQua(QPushButton *pb) 
@@ -5792,7 +5782,7 @@ void CExecView::OnUpdateSucceed(QPushButton *pb)
 	
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->OutputContext());
+    /*&& text->currentSynObj->OutputContext()*/);
 }
 
 void CExecView::OnUpdateEditPaste(wxAction* action) 

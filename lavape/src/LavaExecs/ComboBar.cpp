@@ -2181,7 +2181,8 @@ void CExecFields::OnType(LavaDECL *decl, DString accuName, TDODC accuIDs,
     typeIDs.Append(che);
     OnSupports(decl, accuName, accuIDs, typeIDs, context);
 
-    if (Bar->SelfTypeDECL->Supports.first //!!??
+    if ((Bar->SelfTypeDECL->DeclType != Interface)
+        && Bar->SelfTypeDECL->Supports.first 
         && (((CHETID*)Bar->SelfTypeDECL->Supports.first)->data == TID(decl->OwnID, decl->inINCL))) {
       for (inCheEl = (CHE*)Bar->SelfTypeDECL->NestedDecls.first; inCheEl;
            inCheEl = (CHE*)inCheEl->successor) 

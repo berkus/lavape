@@ -43,7 +43,7 @@ public:
   int LastBarState; //-1:hidden, else: ActTab of m_OutputBar
   void ShowBarTab(BarTabs tab);
   void fillKwdToolbar(QToolBar *tb);
-  void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text, char *slotParm);
+  void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0);
 	void customEvent(QCustomEvent *ev);
 /*
   QPushButton 

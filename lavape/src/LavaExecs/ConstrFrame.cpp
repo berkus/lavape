@@ -69,7 +69,7 @@ void CExecFrame::InitialUpdate()
 bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   setIcon(QPixmap((const char**) execframe));
-  resize(500,300);
+  //resize(500,300);
 
   LavaDECL *decl = (LavaDECL*)LBaseData->actHint->CommandData1;
   NewTitle(decl);

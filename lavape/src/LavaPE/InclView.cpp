@@ -227,6 +227,10 @@ void CInclView::customEvent(QCustomEvent *ev)
     QDir dir(GetDocument()->IDTable.DocDir.c);
 	  QFileInfo fi(dir, usersFn->c);
     QString fn = ResolveLinks(fi), abs_fn;
+#ifdef WIN32
+    QString driveLetter = QString(fn[0].upper());
+    fn.replace(0,1,driveLetter);
+#endif
     CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(fn);
     //doc->SetUserFilename( fn);
     delete usersFn;

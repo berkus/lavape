@@ -31,7 +31,6 @@
 #include "qsignalmapper.h"
 #include "qstylefactory.h"
 #include "qdict.h"
-#include "qwhatsthis.h"
 //#include "stdafx.h"
 
 

@@ -2045,10 +2045,10 @@ bool SucceedStatement::Check (CheckData &ckd)
 
   ENTRY
 
-  if (!OutputContext()) {
+/*  if (!OutputContext()) {
     SetError(ckd,&ERR_NotFinitary);
     ERROREXIT
-  }
+  }*/
 
   if (parentObject->IsMultOp()) {
     multOp = (MultipleOp*)parentObject;
@@ -2103,11 +2103,11 @@ bool FailStatement::Check (CheckData &ckd)
   SynFlags ctxFlags;
 
   ENTRY
-
+/*
   if (!OutputContext()) {
     SetError(ckd,&ERR_NotFinitary);
     ERROREXIT
-  }
+  }*/
 
   if (parentObject->IsMultOp()) {
     multOp = (MultipleOp*)parentObject;
@@ -4142,24 +4142,14 @@ bool FuncStatement::Check (CheckData &ckd)
   ok &= FuncExpression::Check(ckd);
 //  ckd.currentSynObj = this;
   oldError = oldError1;
-  if (!ok || !function.ptr || IsPH(function.ptr))
+  if (!function.ptr || IsPH(function.ptr))
     ERROREXIT
 
-  outParm = chpActOut = (CHE*)outputs.first;
-  for (outParm = (CHE*)outputs.first;
-       outParm;
-       outParm = (CHE*)outParm->successor) {
-    if (!((SynObject*)((Parameter*)outParm->data)->parameter.ptr)->flags.Contains(ignoreSynObj))
-      visibleParms = true;
-  }
-  if (visibleParms && !OutputContext()) {
-    SetError(ckd,&ERR_NotFinitary);
-    ok = false;
-  }
   CContext callContext = callCtx;
   if (myCtxFlags.bits)
     callContext.ContextFlags = myCtxFlags;
   chpFormOut = GetFirstOutput(&ckd.document->IDTable,((Reference*)function.ptr)->refID);
+  chpActOut = (CHE*)outputs.first;
   while (chpFormOut) {
     // locate act. parm. and reposition it if necessary:
     reposition(ckd,this,false,&outputs,chpFormOut,chpActOut);
@@ -4236,6 +4226,17 @@ bool FuncStatement::Check (CheckData &ckd)
         chpActOut = (CHE*)chpActOut->successor)  // delete remainder of parameter chain
     PutDelChainHint(ckd,this,&outputs,chpActOut);
 #endif
+
+  for (outParm = (CHE*)outputs.first;
+       outParm;
+       outParm = (CHE*)outParm->successor) {
+    if (!((SynObject*)((Parameter*)outParm->data)->parameter.ptr)->flags.Contains(ignoreSynObj))
+      visibleParms = true;
+  }
+  if (visibleParms && !OutputContext()) {
+    SetError(ckd,&ERR_NotFinitary);
+    ok = false;
+  }
 
   EXIT
 }

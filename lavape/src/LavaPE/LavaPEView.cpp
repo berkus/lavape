@@ -782,7 +782,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
       }
       if (ContainTab[parentType] [ ExecDef]
           && (gpt != Interface) 
-          && ((parentType != /*S*/Interface) || !(*(LavaDECL**)synEl)->TypeFlags.Contains(isComponent) )) {
+          && ((parentType != Interface) || !(*(LavaDECL**)synEl)->TypeFlags.Contains(isComponent) )) {
          data = new CMainItemData(TIType_Constraint, synEl);
          bm = GetPixmap(true, true, ExecDef);
          node = InsertItem(Constraint.c ,bm, parent);

@@ -114,6 +114,7 @@ public:
   void OnInsertEnum (QString &refName, TID &refTID, unsigned pos);
   void OnInsertObjRef (QString &refName, TDODC &refTIDs, bool append);
   void OnInsertRef (QString &refName, TID &refTID, bool isStatic=false, TID *vtypeID=0, bool fromNew=false);
+  void SetRefTypeFlags (ObjReference *objRef);
   void UpdateErrMsg (QString &helpMsg);
   bool EnableGotoDecl();
   bool EnableInsert();

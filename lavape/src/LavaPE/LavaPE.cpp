@@ -244,6 +244,10 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   m_docManager->AssociateTemplate(pFormTemplate);
 
 	ExeDir = applicationDirPath();
+#ifdef WIN32
+  QString driveLetter = QString(ExeDir[0].upper());
+  ExeDir.replace(0,1,driveLetter);
+#endif
   StdLava = ExeDir + "/std.lava";
   Tokens_INIT();
 }
@@ -544,6 +548,10 @@ void CLavaPEApp::OnFileOpen()
   QString fileName = lavaFileDialog(LBaseData.lastFileOpen, m_appWindow, "Select a file to open", true);
   if (fileName.isEmpty())
     return;
+#ifdef WIN32
+  QString driveLetter = QString(fileName[0].upper());
+  fileName.replace(0,1,driveLetter);
+#endif
   OpenDocumentFile(fileName);
 }
 
@@ -556,6 +564,10 @@ wxDocument* CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 	if (!name.contains('.'))
 		return 0;
   LBaseData.lastFileOpen = name;
+#ifdef WIN32
+  QString driveLetter = QString(name[0].upper());
+  name.replace(0,1,driveLetter);
+#endif
   return wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
 }
 

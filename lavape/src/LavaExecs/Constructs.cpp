@@ -231,7 +231,11 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
   }
   else if (parentObject->primaryToken == attach_T)
     return false;
+  else if (parentObject->primaryToken == qua_T)
+    return false;
   else if (parentObject->primaryToken == quant_T)
+    return false;
+  else if (parentObject->primaryToken == item_T)
     return false;
   else if (parentObject->primaryToken == intIntv_T)
     return false;
@@ -300,7 +304,11 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
   }
   else if (parentObject->primaryToken == attach_T)
     return false;
+  else if (parentObject->primaryToken == qua_T)
+    return false;
   else if (parentObject->primaryToken == quant_T)
+    return false;
+  else if (parentObject->primaryToken == item_T)
     return false;
   else if (parentObject->primaryToken == intIntv_T)
     return false;

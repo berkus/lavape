@@ -79,7 +79,7 @@
         <separator/>
         <action name="setTreeFontAction"/>
         <action name="SetFormFontsAction"/>
-        <item text="Set form fonts" name="PopupMenuEditor_44" accel="">
+        <item text="Set form fonts" name="PopupMenuEditor_44">
             <action name="setFormTextFontAction"/>
             <action name="setFormLabelFontAction"/>
             <action name="setFormButtonFontAction"/>

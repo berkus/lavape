@@ -605,6 +605,7 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
 {
   CMainItemData *itd, *oldItd;
   LavaDECL *elDef = *pelDef;
+  CTreeItem* item;
   if (viewTree->drawTree) {
     if (ActItem) 
       ActItem = viewTree->InsertItem(label.c, bm, parent, ActItem);
@@ -627,6 +628,11 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
     //ActItem->setPixmap(0, *bm);
     oldItd = (CMainItemData*)ActItem->getItemData();
     delete oldItd;
+    for (item = (CTreeItem*)ActItem->firstChild(); item; item = (CTreeItem*)item->nextSibling()) {
+      itd = (CMainItemData*)item->getItemData();
+      if ((itd->type != TIType_Constraint) && (itd->type != TIType_EnumItems))
+        itd->synEl = (DWORD)pelDef;
+    }
   }
   itd = new CMainItemData(TIType_DECL,  (unsigned long) pelDef, elDef->TreeFlags.Contains(isExpanded));
   ActItem->setItemData(itd);
@@ -931,6 +937,10 @@ void CExecTree::ExecConstraint(LavaDECL ** pelDef, int level)
     if (!CalcPos(level))
       return;
     ActItem = getSectionNode(ParItem, ExecDef);
+    if (!viewTree->drawTree) {
+      CMainItemData* data = (CMainItemData*)ActItem->getItemData();
+      data->synEl = ((CMainItemData*)ParItem->getItemData())->synEl;
+    }
     if (((SelfVar*)elDef->Exec.ptr)->IsEmptyExec()) {
       bm = GetPixmap(true, false, ExecDef, flag0);
       if ((elDef->ParentDECL->DeclType == Function)

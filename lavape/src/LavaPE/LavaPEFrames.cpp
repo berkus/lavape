@@ -69,7 +69,7 @@
 #include "qsignalmapper.h"
 #include "qdict.h"
 #include "qevent.h"
-
+#include "qtooltip.h"
 
 
 CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
@@ -223,7 +223,7 @@ bool CLavaMainFrame::OnCreate()
   Toolbar_5->hide();
   Toolbar_6->hide();
   Toolbar_7->hide();
-  QWhatsThis::whatsThisButton(Toolbar_1);
+//  QWhatsThis::whatsThisButton(Toolbar_1);
   OutputBarHidden = true;
 
 	completelyCreated = true;
@@ -257,11 +257,11 @@ void CLavaMainFrame::UpdateUI()
     runAction->setEnabled(false);
 }
 
-void CLavaMainFrame::newKwdToolbutton(QToolBar *tb, QPushButton *&pb, char *text, char *slotParm)
+void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip)
 {
   QFont f;
 
-  pb = new QPushButton(text,tb);
+  pb = new QPushButton(QString(text),tb);
   connect(pb,SIGNAL(clicked()),this,slotParm);
   f = pb->font();
   f.setBold(true);
@@ -270,52 +270,53 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb, QPushButton *&pb, char *text
   pb->setAutoDefault(false);
   pb->setMinimumHeight(pb->fontInfo().pointSize()+6);
   pb->setMaximumWidth(pb->fontMetrics().width("el. in set")+6);
+  if (tooltip)
+    QToolTip::add(pb,tooltip);
+  pb->show();
 }
 
 void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 {
-  if (LBaseData->m_style != "CDE") {
-	  QColorGroup cgDis(tb->palette().disabled());
-	  cgDis.setColor(QColorGroup::ButtonText,darkGray);
-	  QColorGroup cgAct(tb->palette().active());
-	  cgAct.setColor(QColorGroup::ButtonText,blue);
-	  QPalette pal(cgAct,cgDis,tb->palette().inactive());
-		tb->setPalette(pal);
-	}
+	QColorGroup cgDis(tb->palette().disabled());
+	cgDis.setColor(QColorGroup::ButtonText,darkGray);
+	QColorGroup cgAct(tb->palette().active());
+	cgAct.setColor(QColorGroup::ButtonText,blue);
+	QPalette pal(cgAct,cgDis,tb->palette().inactive());
+	tb->setPalette(pal);
 
-  newKwdToolbutton(tb,LBaseData->declareButton,"&declare",SLOT(declare()));
-  newKwdToolbutton(tb,LBaseData->existsButton,"&exists",SLOT(exists()));
-  newKwdToolbutton(tb,LBaseData->foreachButton,"&foreach",SLOT(foreach()));
-  newKwdToolbutton(tb,LBaseData->selectButton,"se&lect",SLOT(select()));
-  newKwdToolbutton(tb,LBaseData->elInSetButton,"el. in set",SLOT(elInSet()));
+  newKwdToolbutton(tb,LBaseData->declareButton,"&declare",SLOT(declare()),"Declare local variables: \"d\"");
+  newKwdToolbutton(tb,LBaseData->existsButton,"&exists",SLOT(exists()),"Existential quantifier: \"e\"");
+  newKwdToolbutton(tb,LBaseData->foreachButton,"&foreach",SLOT(foreach()),"Universal quantifier: \"f\"");
+  newKwdToolbutton(tb,LBaseData->selectButton,"se&lect",SLOT(select()),"Select elements from set(s) and add derived new elements to a given set: \"l\"");
+  newKwdToolbutton(tb,LBaseData->elInSetButton,"el. in set",SLOT(elInSet()),"Test if element is contained in set");
 
   tb->addSeparator();
 
-  newKwdToolbutton(tb,LBaseData->ifButton,"&if",SLOT(ifStm()));
-  newKwdToolbutton(tb,LBaseData->ifxButton,"if-e&xpr",SLOT(ifExpr()));
-  newKwdToolbutton(tb,LBaseData->switchButton,"s&witch",SLOT(switchStm()));
-  newKwdToolbutton(tb,LBaseData->typeSwitchButton,"&type",SLOT(typeStm()));
-  newKwdToolbutton(tb,LBaseData->andButton,"and / ;",SLOT(and_stm()));
-  newKwdToolbutton(tb,LBaseData->orButton,"&or",SLOT(or_stm()));
-  newKwdToolbutton(tb,LBaseData->xorButton,"xor",SLOT(xor_stm()));
-  newKwdToolbutton(tb,LBaseData->notButton,"not",SLOT(not_stm()));
-  newKwdToolbutton(tb,LBaseData->assertButton,"&assert",SLOT(assert_stm()));
-  newKwdToolbutton(tb,LBaseData->tryButton,"try",SLOT(try_stm()));
-  newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()));
-  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(fail()));
-  newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()));;
+  newKwdToolbutton(tb,LBaseData->ifButton,"&if",SLOT(ifStm()),"If-then-else statement: \"i\"");
+  newKwdToolbutton(tb,LBaseData->ifxButton,"if-e&xpr",SLOT(ifExpr()),"If-then-else expression: \"x\"");
+  newKwdToolbutton(tb,LBaseData->switchButton,"s&witch",SLOT(switchStm()),"Switch statement: \"w\"");
+  newKwdToolbutton(tb,LBaseData->typeSwitchButton,"&type",SLOT(typeStm()),"Type switch statement: \"t\"");
+  newKwdToolbutton(tb,LBaseData->andButton,"&and / ;",SLOT(and_stm()),"AND conjunction of statements: \"a\"");
+  newKwdToolbutton(tb,LBaseData->orButton,"&or",SLOT(or_stm()),"OR conjunction of statements: \"o\"");
+  newKwdToolbutton(tb,LBaseData->xorButton,"xor",SLOT(xor_stm()),"Exclusive OR of statements");
+  newKwdToolbutton(tb,LBaseData->notButton,"not",SLOT(not_stm()),"Negation of a statement");
+  newKwdToolbutton(tb,LBaseData->assertButton,"assert",SLOT(assert_stm()),"Assertion");
+  newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),"Try a statement, catch exceptions: \"y\"");
+  newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),"Immediate successful return");
+  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(fail()),"Immediate unsuccessfull return, optionally throw exception");
+  newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()),"Run a nested initiator");;
 
   tb->addSeparator();
 
-  newKwdToolbutton(tb,LBaseData->setButton,"&set",SLOT(set()));
-  newKwdToolbutton(tb,LBaseData->newButton,"&new",SLOT(newExpr()));
-  newKwdToolbutton(tb,LBaseData->cloneButton,"clone",SLOT(clone()));
-  newKwdToolbutton(tb,LBaseData->copyButton,"&copy",SLOT(copy()));
-  newKwdToolbutton(tb,LBaseData->attachButton,"attach",SLOT(attach()));
-  newKwdToolbutton(tb,LBaseData->qryItfButton,"qry itf",SLOT(qryItf()));
-  newKwdToolbutton(tb,LBaseData->scaleButton,"scale",SLOT(scale()));
-  newKwdToolbutton(tb,LBaseData->itemButton,"item",SLOT(item()));
-  newKwdToolbutton(tb,LBaseData->callbackButton,"callback",SLOT(callback()));
+  newKwdToolbutton(tb,LBaseData->setButton,"set",SLOT(set()),"Assignment statement: \"s\"");
+  newKwdToolbutton(tb,LBaseData->newButton,"&new",SLOT(newExpr()),"Create a new object: \"n\"");
+  newKwdToolbutton(tb,LBaseData->cloneButton,"clone",SLOT(clone()),"Clone an object");
+  newKwdToolbutton(tb,LBaseData->copyButton,"&copy",SLOT(copy()),"Copy an object onto another object: \"c\"");
+  newKwdToolbutton(tb,LBaseData->attachButton,"attach",SLOT(attach()),"Attach a component object through an interface");
+  newKwdToolbutton(tb,LBaseData->qryItfButton,"qry itf",SLOT(qryItf()),"Query interface: get another interface from an already known one");
+  newKwdToolbutton(tb,LBaseData->scaleButton,"scale",SLOT(scale()),"Add a scale (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters");
+  newKwdToolbutton(tb,LBaseData->itemButton,"item",SLOT(item()),"Get an enumeration item from its index");
+  newKwdToolbutton(tb,LBaseData->callbackButton,"callback",SLOT(callback()),"Define a callback");
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1400,10 +1401,10 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   setIcon(QPixmap((const char**) Lava));
   QSize sz;
-  if (oldWindowState != QEvent::ShowMaximized) {
+//  if (oldWindowState != QEvent::ShowMaximized) {
     sz = parentWidget()->size();
     resize(sz.width()*7/10, sz.height()*7/10);
-  }
+//  }
   splitter = new QSplitter(this);//vb);
   setCentralWidget(splitter);
   splitter->setOrientation(Qt::Horizontal);
@@ -1434,6 +1435,8 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     *it = 10;
     splitter->setSizes(list);
     lastActive = viewM;
+    if (oldWindowState == QEvent::ShowMaximized) 
+      showMaximized();
 		return true;
   }
   else {
@@ -1536,10 +1539,10 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   DString title = CalcTitle( (LavaDECL*)((CLavaPEApp*)wxTheApp)->LBaseData.actHint->CommandData1, ((CLavaBaseDoc*)LBaseData->actHint->fromDoc)->IDTable.DocName);
   setCaption(title.c);
   setIcon(QPixmap((const char**) Lava));
-  if (oldWindowState != QEvent::ShowMaximized) {
+//  if (oldWindowState != QEvent::ShowMaximized) {
     sz = parentWidget()->size();
     resize(sz.width()*7/10, sz.height()*7/10); 
-  }
+//  }
   splitter = new QSplitter(this);
   setCentralWidget(splitter);
   splitter->setOrientation(Qt::Horizontal);
@@ -1566,6 +1569,8 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     *it = totalW/4;
     splitter->setSizes(list);
     lastActive = viewR;
+    if (oldWindowState == QEvent::ShowMaximized) 
+      showMaximized();
     return true;
   }
   else {
