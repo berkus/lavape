@@ -201,6 +201,7 @@ void CLavaPEView::CleanListView()
 {
   delete m_tree;
   m_tree = new MyListView(this);
+  new TreeWhatsThis(m_tree);
 	//setFocusProxy(m_tree);
   m_tree->setSorting(-1);
   m_tree->addColumn("");
@@ -848,7 +849,7 @@ void CLavaPEView::DisableActions()
   frame->newCOspecAction->setEnabled(false);
   frame->newCOimplAction->setEnabled(false);
   frame->newVTAction->setEnabled(false);
-  frame->new_InterfaceAction->setEnabled(false);
+  frame->newInterfaceAction->setEnabled(false);
   frame->newSetAction->setEnabled(false);
   frame->editCutAction->setEnabled(false);
   frame->editCommentAction->setEnabled(false);
@@ -3621,7 +3622,15 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
               makeMess = false;
             }
             clipElDECL->Supports.Destroy();
+            /*
             clipElDECL->SecondTFlags.EXCL(overrides);
+            clipElDECL->SecondTFlags.EXCL(funcImpl);
+            clipElDECL->TypeFlags.EXCL(isProtected);
+            clipElDECL->TypeFlags.EXCL(isAbstract);
+            clipElDECL->TypeFlags.EXCL(forceOverride);
+            clipElDECL->TypeFlags.EXCL(isNative);
+            clipElDECL->TypeFlags.EXCL(defaultInitializer);
+            */
             clipElDECL->WorkFlags.INCL(skipOnCopy);
             dropDECL->WorkFlags.INCL(skipOnDeleteID);
             str2 = new DString(dropParent->FullName);
@@ -4264,7 +4273,7 @@ void CLavaPEView::UpdateUI()
       OnUpdateNewCSpec(frame->newCOspecAction);
       OnUpdateNewComponent(frame->newCOimplAction);
       OnUpdateNewVirtualType(frame->newVTAction);
-      OnUpdateNewInterface(frame->new_InterfaceAction);
+      OnUpdateNewInterface(frame->newInterfaceAction);
       OnUpdateNewset(frame->newSetAction);
 	    OnUpdateNewEnumItem(frame->newEnumItemAction);
 
@@ -4287,7 +4296,7 @@ void CLavaPEView::UpdateUI()
       frame->newCOspecAction->setEnabled(false);
       frame->newCOimplAction->setEnabled(false);
       frame->newVTAction->setEnabled(false);
-      frame->new_InterfaceAction->setEnabled(false);
+      frame->newInterfaceAction->setEnabled(false);
       frame->newSetAction->setEnabled(false);
 	    frame->newEnumItemAction->setEnabled(false);
       frame->openFormViewAction->setEnabled(false);
@@ -4311,7 +4320,7 @@ void CLavaPEView::UpdateUI()
     frame->newCOspecAction->setEnabled(false);
     frame->newCOimplAction->setEnabled(false);
     frame->newVTAction->setEnabled(false);
-    frame->new_InterfaceAction->setEnabled(false);
+    frame->newInterfaceAction->setEnabled(false);
     frame->newSetAction->setEnabled(false);
 	  frame->newEnumItemAction->setEnabled(false);
 
@@ -5093,8 +5102,8 @@ void CLavaPEView::OnUpdateMakeGUI(wxAction* action)
     }
     if (DECL && (DECL->DeclType == Interface)
           && !DECL->TypeFlags.Contains(isAbstract)
-          && !DECL->TypeFlags.Contains(isGUI)
-          || DECL->DeclType == FormDef) {
+          && (!DECL->TypeFlags.Contains(isGUI)
+              || DECL->DeclType == FormDef)) {
       GetDocument()->IDTable.GetPattern(DECL, context);
       action->setEnabled(!context.oContext || (context.oContext == DECL));
       return;
@@ -5230,21 +5239,87 @@ void CLavaPEView::OnUpdateShowOptionals(wxAction* action)
 //--------------------------------------------------------------------------
 
 
-TreeWhatsThis::TreeWhatsThis(CTreeView *tv) : WhatsThis(0,tv) {
-  treeView = tv;
+TreeWhatsThis::TreeWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
+  listView = lv;
 }
 
 
 QString TreeWhatsThis::text(const QPoint &point) {
-/*
-  int xc, yc;
+  CTreeItem *item=(CTreeItem*)listView->itemAt(point);
+  CMainItemData *itd=(CMainItemData*)item->getItemData();
+  LavaDECL *itemDECL;
 
-  execView->sv->viewportToContents(point.x(),point.y(),xc,yc);
-  QPoint pc = QPoint(xc-2,yc-2); // -2 seems to be necessary, don't know why
-  execView->text->NewSel(&pc);
-  if (execView->text->newSelection) {
-    execView->Select();
-    return execView->text->currentSynObj->whatsThisText();
-  }*/
-  return QString(QObject::tr("\"What's this?\" help not yet available for this declaration item"));
+  listView->setCurAndSel(item);
+
+  switch (itd->type) {
+  case TIType_DECL:
+    itemDECL = *(LavaDECL**)itd->synEl;
+    switch (itemDECL->DeclType) {
+    case Package:
+      return QString(QObject::tr("<p>This is a <a href=\"../Packages.htm#packages\">package</a>"
+        " (= group of declarations/implementations that belong closely together</p>"));
+    case Initiator:
+      return QString(QObject::tr("<p>This is an <a href=\"../Packages.htm#initiator\">initiator</a>"
+        " (= <font color=\"red\"><b><i>Lava</i></b></font> main program)</p>"));
+    case Interface:
+      if (itemDECL->TypeFlags.Contains(isGUI))
+        return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> interface "
+          "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> interface</p>"));
+      else if (itemDECL->SecondTFlags.Contains(isChain)
+      || itemDECL->SecondTFlags.Contains(isSet))
+        return QString(QObject::tr("<p>This is a <a href=\"SetChain.htm\">Set or Chain</a> type</p>"));
+      else if (itemDECL->SecondTFlags.Contains(isEnum))
+        return QString(QObject::tr("<p>This is an <a href=\"Enumeration.htm\">enumeration type</a></p>"));
+      else
+        return QString(QObject::tr("<p>This is an <a href=\"../SepItfImpl.htm\">interface</a>"
+        " (= the public part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>"));
+    case FormDef:
+      return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> implementation "
+        "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> interface</p>"));
+    case Impl:
+      if (itemDECL->TypeFlags.Contains(isGUI))
+        return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> implementation "
+          "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> interface</p>"));
+      else
+        return QString(QObject::tr("<p>This is an <a href=\"../SepItfImpl.htm\">implementation</a>"
+          " (= the private part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>"));
+    case CompObjSpec:
+      return QString(QObject::tr("<p>This is a <a href=\"../Components.htm\">component object</a> specification</p>"));
+    case CompObj:
+      return QString(QObject::tr("<p>This is a <a href=\"../Components.htm\">component object</a> implementation</p>"));
+    case VirtualType:
+      return QString(QObject::tr("<p>This is a <a href=\"../PatternsFrameworks.htm#VT\">virtual type</a> declaration</p>"));
+    case Function:
+      if (itemDECL->TypeFlags.Contains(isInitializer))
+        return QString(QObject::tr("<p>This is an <a href=\"../ObjectLifeCycle.htm#initializer\">initializer</a> of the above <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
+      else
+        return QString(QObject::tr("<p>This is a <a href=\"..//dialogs/FunctionBox.htm\">member function</a> of the above <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
+    case Attr:
+      return QString(QObject::tr("<p>This is a <a href=\"..//dialogs/MemVarBox.htm\">member variable</a> of a <font color=\"red\"><b><i>Lava</i></b></font> class</p>"));
+    case IAttr:
+      return QString(QObject::tr("<p>This is an <a href=\"..//dialogs/FuncParmBox.htm\">input parameter</a> of the above function</p>"));
+    case OAttr:
+      return QString(QObject::tr("<p>This is an <a href=\"..//dialogs/FuncParmBox.htm\">output parameter</a> of the above function</p>"));
+    }
+    break;
+  case TIType_CHEEnumSel:
+    return QString(QObject::tr("<p>This is an <a href=\"Enumeration.htm\">enumerated item</a></p>"));
+  case TIType_EnumItems:
+    return QString(QObject::tr("<p>This is the actual <a href=\"Enumeration.htm\">enumeration</a> of an enumeration type</p>"));
+  case TIType_Exec:
+    itemDECL = *(LavaDECL**)itd->synEl;
+    if (itemDECL->DeclType == Interface)
+      return QString(QObject::tr("<p>This is the (optional) <a href=\"../DBC.htm\">invariant</a> of the above interface</p>"));
+    else if (itemDECL->DeclType == Impl)
+      return QString(QObject::tr("<p>This is the (optional) <a href=\"../DBC.htm\">invariant</a> of the above implementation</p>"));
+    else
+      return QString(QObject::tr("<p>This is the <a href=\"../EditExec.htm#exec\">exec</a> (= executable body) of the above function</p>"));
+  case TIType_Require:
+    return QString(QObject::tr("<p>This is the (optional) <a href=\"../DBC.htm\">precondition</a> of the above function</p>"));
+  case TIType_Ensure:
+    return QString(QObject::tr("<p>This is the (optional) <a href=\"../DBC.htm\">postcondition</a> of the above function</p>"));
+  case TIType_VTypes:
+    return QString(QObject::tr("<p>These are the (optional) <a href=\"../PatternsFrameworks.htm#VT\">virtual types</a> of the above class or package</p>"));
+  }
+  return QString(QObject::tr("<p>No specific help available for this declaration item</p>"));
 }

@@ -1,5 +1,5 @@
 EXEC = LPC
-SUBPRO=disco
+SUBPRO=disco SFLsockets
 
 CPP_INCLUDES = -I. -I../disco -I$(QTDIR)/include
 

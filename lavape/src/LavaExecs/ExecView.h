@@ -143,6 +143,9 @@ public:
   SynObject * AdjacentSynObj (SynObject *currentSynObj, CHETokenNode *nextTokenNode);
 
 // tool buttons:
+ void DbgBreakpoint();
+ void DbgRunToSel();
+
   void OnBitAnd();
   void OnBitOr();
   void OnBitXor();
@@ -392,10 +395,11 @@ protected:
 class ExecWhatsThis : public WhatsThis
 {
 public:
-  ExecWhatsThis(CExecView *ev);
+  ExecWhatsThis(CExecView *ev) : WhatsThis(0,ev) { execView = ev; }
 
-  bool clicked(const QString &whatsThisHref);
+//  bool clicked(const QString &whatsThisHref);
   QString text(const QPoint&);
+
 private:
   CExecView *execView;
 };

@@ -471,13 +471,13 @@ void CLavaGUIView::OnCancel()
           if (myGUIProg->ckd.exceptionThrown)
             ok = false;
         }
-        catch (CRuntimeException* ex) {
-          if (!ex->SetLavaException(myGUIProg->ckd)) 
+        catch (CRuntimeException ex) {
+          if (!ex.SetLavaException(myGUIProg->ckd)) 
             throw;
           ok = false;
         }
-        catch (CHWException* ex) {
-          if (!ex->SetLavaException(myGUIProg->ckd)) 
+        catch (CHWException ex) {
+          if (!ex.SetLavaException(myGUIProg->ckd)) 
             throw;
           ok = false;
         }

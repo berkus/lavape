@@ -21,7 +21,6 @@
 #pragma implementation
 #endif
 
-
 #include "LavaThread.h"
 #include "LavaBaseDoc.h"
 

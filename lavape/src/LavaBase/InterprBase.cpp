@@ -371,7 +371,8 @@ TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* spe
   else
     if (specDECL && (specDECL->DeclType == CompObjSpec) 
       &&  classDECL->TypeFlags.Contains(isComponent)) {
-    QString lib = ExeDir + "/" + QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
+//    QString lib = ExeDir + "/" + QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
+    QString lib = QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
     TS adapt = (TS)QLibrary::resolve(lib, classDECL->LitStr.c);
     ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab =  adapt();
     return ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab;
@@ -520,7 +521,7 @@ LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specD
     return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
     break;
 
-  case PROT_STREAM: ; 
+  case PROT_NATIVE: ; 
     object = AllocateObject(ckd, specDECL, stateObj, urlObj);
     if (!object)
       return 0;
@@ -574,7 +575,7 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
     secn = ckd.document->GetSectionNumber(ckd, specDECL->RuntimeDECL->RelatedDECL, classDECL);
     return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
     break;
-  case PROT_STREAM:
+  case PROT_NATIVE:
     return CreateObject(ckd, urlObj, specDECL, classDECL, stateObj);
     break;
   default:
@@ -1259,14 +1260,11 @@ bool CHWException::SetLavaException(CheckData& ckd)
   *(LavaVariablePtr)(ckd.lastException + LSH) = codeObj;
   *(LavaVariablePtr)(ckd.lastException + LSH + 1) = strObj;
   NewQString((QString*)strObj+LSH, message);
-  if (HEnumSetVal(ckd, codeObj, lavaCode)) {
-    ckd.exceptionThrown = true;
+  ckd.exceptionThrown = true;
+  if (HEnumSetVal(ckd, codeObj, lavaCode))
     return true;
-  }
-  else {
-    ckd.exceptionThrown = true;
+  else
     return false;
-  }
 }
 
 CRuntimeException::CRuntimeException(int co, QString *err_code)
@@ -1296,14 +1294,11 @@ bool CRuntimeException::SetLavaException(CheckData& ckd)
   *(LavaVariablePtr)(ckd.lastException + LSH + 1) = strObj;
   *(LavaVariablePtr)(ckd.lastException + LSH) = codeObj;
   NewQString((QString*)strObj+LSH, message);
-  if (HEnumSetVal(ckd, codeObj, code)) {
-    ckd.exceptionThrown = true;
+  ckd.exceptionThrown = true;
+  if (HEnumSetVal(ckd, codeObj, code))
     return true;
-  }
-  else {
-    ckd.exceptionThrown = true;
+  else
     return false;
-  }
 }
 
 bool SetLavaException(CheckData& ckd, int code, const QString& mess)
@@ -1334,34 +1329,3 @@ bool SetLavaException(CheckData& ckd, int code, const QString& mess)
     return false;
   }
 }
-/*
-bool SetLavaException(CheckData& ckd, int code, QString *strCode)
-{
-  LavaObjectPtr ex, strObj, codeObj;
-  QString mess;
-
-  ex = AllocateObject(ckd, ckd.document->DECLTab[B_LavaException], false);
-  strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString], false);
-  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_LavaException]->NestedDecls.first->successor)->data, false);
-  if (!ex || !strObj || !codeObj) {
-    ckd.exceptionThrown = true;
-    return false;
-  }
-  int ii;
-  ((SynFlags*)(ex+1))->INCL(finished);
-  for (ii = 0; (ii < ex[0][0].nSections) && (ex[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
-  ex = ex + ex[0][ii].sectionOffset;
-  ckd.lastException = ex;
-  *(LavaVariablePtr)(ckd.lastException + LSH + 1) = strObj;
-  *(LavaVariablePtr)(ckd.lastException + LSH) = codeObj;
-  mess = *strCode;
-  NewQString((QString*)strObj+LSH, mess);
-  if (HEnumSetVal(ckd, codeObj, code)) {
-    ckd.exceptionThrown = true;
-    return true;
-  }
-  else {
-    ckd.exceptionThrown = true;
-    return false;
-  }
-}*/

@@ -11,9 +11,6 @@
 #include "mdiframes.h"
 
 
-//extern word PopupShellID;
-//extern word ChainToolFrameID;
-
 class CLavaGUIPopup : public QMainWindow 
 {
 public:

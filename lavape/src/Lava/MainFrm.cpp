@@ -127,7 +127,8 @@ void CLavaMainFrame::UpdateUI()
   PreconditionsAction->setEnabled(!LBaseData->m_checkPostconditions);  
   PreconditionsAction->setOn(LBaseData->m_checkPreconditions);  
   PostconditionsAction->setOn(LBaseData->m_checkPostconditions);  
-  InvariantsAction->setOn(LBaseData->m_checkInvariants);  
+  InvariantsAction->setOn(LBaseData->m_checkInvariants); 
+  pmDumpAction->setOn(LBaseData->m_pmDumps);
   fileCloseAction->setEnabled(enable);
   fileSaveAction->setEnabled(enable);
   fileSaveAsAction->setEnabled(enable);
@@ -358,6 +359,19 @@ void CLavaMainFrame::InvariantsToggled(bool on)
   else {
     LBaseData->m_checkInvariants = false;
     LBaseData->m_strCheckInvariants = "false";
+  }
+  ((CLavaApp*)wxTheApp)->saveSettings();
+}
+
+void CLavaMainFrame::PmDumpsToggled(bool on)
+{
+  if (on) {
+    LBaseData->m_pmDumps = true;
+    LBaseData->m_strPmDumps = "true";
+  }
+  else {
+    LBaseData->m_pmDumps = false;
+    LBaseData->m_strPmDumps = "false";
   }
   ((CLavaApp*)wxTheApp)->saveSettings();
 }

@@ -54,11 +54,12 @@ private:
 class InclWhatsThis : public WhatsThis
 {
 public:
-  InclWhatsThis(CInclView *tv);
+  InclWhatsThis(MyListView *lv);
 
   QString text(const QPoint&);
+
 private:
-  CInclView *inclView;
+  MyListView *listView;
 };
 
 #endif

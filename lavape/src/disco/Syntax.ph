@@ -22,7 +22,7 @@
 #include "wx_obj.h"
 #include "qpixmap.h"
 
-#define RELEASE  0
+#define RELEASE  1
 
 #undef VIEW
 
@@ -626,7 +626,7 @@ $TYPE +CDP {
   ExecDesc,
   //DefDesc,
     //SetType,
-  Unknown 
+  UnknownDDT 
   };
 
 
@@ -873,9 +873,85 @@ $TYPE +CDP {
     virtual void MakeExpression() {};
   };
 
+/****************************************************************************/
+
+// debug communication data:
+
+enum DebugCommand {  Dbg_Nothing, Dbg_Continue, Dbg_StopData, Dbg_MemberDataRq, Dbg_MemberData, Dbg_StackRq, Dbg_Stack};
+enum DbgContType {dbg_Cont, dbg_Step, dbg_StepOut, dbg_StepInto, dbg_RunTo};
+
+    struct ObjItemData  {
+      ObjItemData() {}
+      ~ObjItemData() {}
+      bool isPrivate;
+//      bool Selected;
+      bool HasChildren;
+      STRING Column0;
+      STRING Column1;
+      STRING Column2;
+      CHAINX Children; //ObjItemData in LavaPE, ObjDebugItem in Lava
+    };
+
+    struct StackData {
+      int SynObjID;       //crash point id
+      TDeclType ExecType; //in exec type
+      TID FuncID;         //of function
+      CSecTabBase-- *** Stack;
+      SynObjectBase-- *SynObj;
+    };
+
+    struct ProgramPoint {
+      int SynObjID;       // point id
+      TDeclType ExecType; //in exec type
+      TID FuncID;         //of function
+      bool Activate;
+      SynObjectBase-- *SynObj;
+    };
+
+    struct DebugStopData { //from Lava to LavaPE
+      int ActStackLevel;
+      CHAINANY <StackData> StackChain;
+      CHAINX /*ObjItemData*/ ObjectChain;
+      DebugStopData() {ActStackLevel=0;}
+    };
+
+    struct DebugContData { //from LavaPE to Lava
+      bool ClearBreakPoints;
+      CHAINANY <ProgramPoint> BreakPoints;
+      DbgContType ContType;
+      NESTED <ProgramPoint> RunToPoint;
+
+      DebugContData() {ClearBreakPoints = false;}
+    };
+
+    typedef CHAINANY <int> ChObjRq;
+
+    struct DebugMessage {
+        CASE DebugCommand Command OF
+        Dbg_StopData, Dbg_Stack:
+            NESTEDANY0 <DebugStopData> DbgData;
+        | Dbg_MemberData:
+            NESTEDANY0 <ObjItemData> ObjData;
+        | Dbg_MemberDataRq:
+            NESTED <ChObjRq> ObjNr;
+        | Dbg_StackRq:
+            int CallStackLevel;
+        | Dbg_Continue:
+            NESTEDANY <DebugContData> ContinueData;
+        ELSE
+        END;
+
+        void SetData(DebugCommand command, DebugStopData* data) //
+        {Command = command; DbgData.ptr = data; ObjData.ptr = 0; ObjNr.ptr=0;}
+
+        void SetData(ObjItemData* obj)
+        {Command = Dbg_MemberData; ObjData.ptr = obj; DbgData.ptr = 0; ObjNr.ptr=0;}
+
+        DebugMessage(DebugCommand com, ChObjRq* oRq) {Command = com; ObjNr.ptr = oRq;}
+        DebugMessage() {}
+    };
+
 }
-
-
 
 /*************************************************************************/
 /* Concrete syntactic objects: */

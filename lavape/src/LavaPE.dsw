@@ -29,6 +29,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name LavaGUI
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Lava_UI
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -62,6 +65,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name LavaStream
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SFLsockets
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -79,6 +85,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name disco
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SFLsockets
     End Project Dependency
 }}}
 
@@ -161,6 +170,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name LavaExecs
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SFLsockets
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -231,6 +243,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "SFLsockets"=.\SFLsockets\SFLsockets.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "Shortcut"=.\Shortcut\Shortcut.dsp - Package Owner=<4>
 
 Package=<5>
@@ -251,6 +275,9 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name SFLsockets
+    End Project Dependency
 }}}
 
 ###############################################################################

@@ -18,12 +18,15 @@
 
 
 #include "Constructs.h"
+#include "cmainframe.h"
 #include "Check.h"
+#include "DbgThreads.h"
 #include "BAdapter.h"
 #include "LavaBaseDoc.h"
 #include "LavaThread.h"
 #include "LavaBaseStringInit.h"
 #include "LavaProgram.h"
+#include "SafeInt.h"
 #include "qmap.h"
 #include "qstring.h"
 #include <stdlib.h>
@@ -45,16 +48,16 @@
   NEWSTACK[1] = (LavaObjectPtr)stackFrame; \
   NEWSTACK[2] = stackFrame[2]; \
   try { RESULT = FUNC(CKD, NEWSTACK, newOldExprLevel); ckd.selfVar = mySelfVar;}\
-  catch (CHWException*) {\
+  catch (CHWException) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
     throw;\
   }\
-  catch (CRuntimeException* ex) {\
+  catch (CRuntimeException ex) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    CKD.callStack = CallStack(CKD,stackFrame);\
-    if (ex->SetLavaException(CKD)) caught = true;\
+    CKD.callStack = CallStack(CKD,stackFrame,ex.message);\
+    if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
   if (caught) {\
@@ -74,16 +77,16 @@
     else\
       throw hwException;\
   }\
-  catch (CHWException*) {\
+  catch (CHWException) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
     throw;\
   }\
-  catch (CRuntimeException* ex) {\
+  catch (CRuntimeException ex) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    CKD.callStack = CallStack(CKD,stackFrame);\
-    if (ex->SetLavaException(CKD)) caught = true;\
+    CKD.callStack = CallStack(CKD,stackFrame,ex.message);\
+    if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
 }
@@ -97,18 +100,26 @@
   NEWSTACK[1] = (LavaObjectPtr)stackFrame; \
   NEWSTACK[2] = stackFrame[2]; \
   try { RESULT = FUNC(CKD, NEWSTACK); ckd.selfVar = mySelfVar;}\
-  catch (CHWException* ex) {\
+  catch (CHWException ex) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    CKD.callStack = CallStack(CKD,stackFrame);\
-    if (ex->SetLavaException(CKD)) caught = true;\
+    CKD.callStack = CallStack(CKD,stackFrame,ex.message);\
+    if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
-  catch (CRuntimeException* ex) {\
+  catch (SafeIntException ex) {\
+    CHWException exHW(ex.m_code == ERROR_ARITHMETIC_OVERFLOW?STATUS_INTEGER_OVERFLOW:STATUS_INTEGER_DIVIDE_BY_ZERO); \
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    CKD.callStack = CallStack(CKD,stackFrame);\
-    if (ex->SetLavaException(CKD)) caught = true;\
+    CKD.callStack = CallStack(CKD,stackFrame,exHW.message);\
+    if (exHW.SetLavaException(CKD)) caught = true;\
+    else throw;\
+  }\
+  catch (CRuntimeException ex) {\
+    ckd.selfVar = mySelfVar; \
+    RESULT = false;\
+    CKD.callStack = CallStack(CKD,stackFrame,ex.message);\
+    if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
   if (caught) {\
@@ -128,24 +139,34 @@
     else\
       throw hwException;\
   }\
-  catch (CHWException* ex) {\
+  catch (CHWException ex) {\
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
-    CKD.callStack = CallStack(CKD,stackFrame);\
-    if (!ex->SetLavaException(CKD))\
+    CKD.callStack = CallStack(CKD,stackFrame,ex.message);\
+    if (!ex.SetLavaException(CKD))\
       throw;\
   }\
-  catch (CRuntimeException* ex) {\
+  catch (SafeIntException ex) {\
+    siginfo_t si;\
+    si.si_code = ex.m_code == ERROR_ARITHMETIC_OVERFLOW?FPE_INTOVF:FPE_INTDIV;\
+    CHWException exHW(SIGFPE,&si); \
+    ckd.selfVar = mySelfVar; \
+    RESULT = false;\
+    CKD.callStack = CallStack(CKD,stackFrame,exHW.message);\
+    if (!exHW.SetLavaException(CKD))\
+      throw;\
+  }\
+  catch (CRuntimeException ex) {\
     ckd.selfVar = mySelfVar;\
     RESULT = false;\
-    CKD.callStack = CallStack(CKD,stackFrame);\
-    if (!ex->SetLavaException(CKD))\
+    CKD.callStack = CallStack(CKD,stackFrame,ex.message);\
+    if (!ex.SetLavaException(CKD))\
       throw;\
   }\
 }
 #endif
 
-
+/*
 QString SynObject::CallStack(CheckData &ckd,LavaVariablePtr crashStack) {
   SynObject *synObj=this, *oldSynObj;
   CHE *chp;
@@ -259,6 +280,178 @@ QString SynObject::CallStack(CheckData &ckd,LavaVariablePtr crashStack) {
   } while (stack);
   return msg + path;
 }
+*/
+
+
+QString SynObject::CallStack(CheckData &ckd,LavaVariablePtr crashStack,QString excMsg) {
+  SynObject *synObj=this, *oldSynObj;
+  CHE *chp;
+  LavaVariablePtr stack=crashStack;
+  QString cFileName, cSynObjName, msg, path, pmMsg;
+  unsigned inINCL;
+  bool debug=true;
+  CHEStackData* stData;
+  int rc;
+
+  debug = LBaseData->m_pmDumps || ckd.document->debugOn;
+  if (debug) {
+    ((CLavaDebugThread*)LBaseData->debugThread)->initData(ckd.document);
+    stData = new CHEStackData;
+    stData->data.SynObjID = synObj->synObjectID;
+    stData->data.Stack = (CSecTabBase***)crashStack;
+    stData->data.SynObj = synObj;
+    ((CLavaDebugThread*)LBaseData->debugThread)->dbgStopData->StackChain.Append(stData);
+  }
+  if (synObj->primaryToken == parameter_T)
+    synObj = (SynObject*)((Parameter*)synObj)->parameter.ptr;
+
+  msg = QString("Call stack:\n");
+
+  do {
+    if (synObj->primaryToken == VarName_T)
+      cSynObjName = QString(((VarName*)synObj)->varName.c);
+    else if (synObj->primaryToken == TDOD_T) {
+      cSynObjName = QString(((TDOD*)synObj)->name.c);
+      chp = (CHE*)((CHE*)synObj->whereInParent)->predecessor;
+      while (chp) {
+        synObj = (SynObject*)chp->data;
+        cSynObjName = QString(((TDOD*)synObj)->name.c) + "." + cSynObjName;
+        chp = (CHE*)chp->predecessor;
+      }
+      synObj = synObj->parentObject;
+    }
+    else if (synObj->primaryToken == ObjRef_T)
+      cSynObjName = QString(((ObjReference*)synObj)->refName.c);
+    else if (synObj->primaryToken == TypeRef_T)
+      cSynObjName = QString(((Reference*)synObj)->refName.c);
+    else if (synObj->primaryToken == Boolean_T)
+      cSynObjName = ((BoolConst*)synObj)->boolValue?QString("true"):QString("false");
+    else if (synObj->primaryToken == Const_T)
+      cSynObjName = QString(((Constant*)synObj)->str.c);
+    else if (synObj->primaryToken == enumConst_T)
+      cSynObjName = QString(((EnumConst*)synObj)->Id.c);
+    else if (synObj->primaryToken == nil_T)
+      cSynObjName = QString("nil");
+    else if (synObj->IsFuncInvocation()) {
+      path = "| " + QString(((Reference*)((FuncExpression*)synObj)->function.ptr)->refName.c)
+             + "() " + path;
+      synObj = synObj->parentObject;
+      continue;
+    }
+    else if (synObj->primaryToken == arrayAtIndex_T)
+      cSynObjName = QString(((ObjReference*)((ArrayAtIndex*)synObj)->arrayObj.ptr)->refName.c)
+                    + "[]";
+    else if (synObj->type == implementation_T) { // exec SelfVar
+      oldSynObj = synObj;
+      inINCL = ((SelfVar*)synObj)->inINCL;
+      cFileName = QString(ckd.document->IDTable.IDTab[inINCL]->FileName.c);
+      synObj = (SynObject*)(stack[0]);
+      if (debug) {
+        stData->data.FuncID = TID(((SelfVar*)oldSynObj)->execDECL->ParentDECL->OwnID,
+                                  ((SelfVar*)oldSynObj)->execDECL->ParentDECL->inINCL);
+        stData->data.ExecType = ((SelfVar*)oldSynObj)->execDECL->DeclType;
+        if (synObj) {
+          stData = new CHEStackData;
+          stData->data.SynObjID = synObj->synObjectID;
+          stData->data.Stack = (CSecTabBase ***)stack[1];
+          stData->data.SynObj = synObj;
+          ((CLavaDebugThread*)LBaseData->debugThread)->dbgStopData->StackChain.Append(stData);
+        }
+      }
+      stack = (LavaVariablePtr)stack[1];
+      switch (oldSynObj->primaryToken) {
+      case invariant_T:
+        path = QString("\n| invariant of ")
+               + ((SelfVar*)oldSynObj)->execDECL->FullName.c
+               + ", file " + cFileName + "\n" + path;
+        break;
+      case function_T:
+      case initializer_T:
+      case dftInitializer_T:
+        path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+               + "(), file " + cFileName + "\n" + path;
+        break;
+      case require_T:
+        if (((SelfVar*)oldSynObj)->execDECL->ParentDECL->ParentDECL->DeclType == Impl)
+          path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                 + "()::impl_require, file " + cFileName + "\n" + path;
+        else
+          path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                 + "()::require, file " + cFileName + "\n" + path;
+        break;
+      case ensure_T:
+        if (((SelfVar*)oldSynObj)->execDECL->ParentDECL->ParentDECL->DeclType == Impl)
+          path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                 + "()::impl_ensure, file " + cFileName + "\n" + path;
+        else
+          path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                 + "()::ensure, file " + cFileName + "\n" + path;
+        break;
+      default: // initiator
+        path = "\ninitiator "
+               + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+               + ", file "
+               + cFileName + "\n" + path;
+      }
+      if (stack) {
+        synObj = synObj->parentObject;
+        continue;
+      }
+      else
+        break;
+    }
+    else
+      cSynObjName = QString(TOKENSTR[synObj->primaryToken]);
+
+    if (stack) {
+      if (synObj->parentObject->primaryToken == parameter_T
+      || synObj->parentObject->IsUnaryOp()
+      || ((synObj->parentObject->IsMultOp()
+          || synObj->parentObject->IsBinaryOp())
+         && synObj->parentObject->type != Stm_T))
+        cSynObjName = QString("(") + cSynObjName + ")";
+      path = "| " + cSynObjName + " " + path;
+      if (synObj->parentObject->primaryToken == parameter_T)
+        synObj = synObj->parentObject;
+      synObj = synObj->parentObject;
+    }
+    else
+      path = cSynObjName + path;
+  } while (stack);
+  msg = msg + path;
+  if (debug) {
+    if (!ckd.document->debugOn && LBaseData->m_pmDumps) {
+      pmMsg = excMsg + "\n\n" + msg + "\n\nDebug this exception?\n\nClick \"No to all\" to disable debugging perpetually";
+      rc = information(qApp->mainWidget(),qApp->name(),QApplication::tr(pmMsg),QMessageBox::Yes|QMessageBox::Default,QMessageBox::No,QMessageBox::NoAll);
+    
+    }
+    else {
+      rc = QMessageBox::Yes;
+      msg = excMsg + "\n\n" + msg;
+      information(qApp->mainWidget(),qApp->name(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton,QMessageBox::NoButton);
+    }
+    if (rc == QMessageBox::Yes) {
+      if (!ckd.document->debugOn && LBaseData->m_pmDumps) {
+        ((CLavaDebugThread*)LBaseData->debugThread)->wait();
+        if (((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent->available())
+          (*((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent)++;
+        ((CLavaDebugThread*)LBaseData->debugThread)->start();
+      }
+      else
+        if (((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent->available())
+          (*((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent)++;
+      (*((CLavaDebugThread*)LBaseData->debugThread)->pContThreadEvent)--;
+      (*((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent)++;
+    }
+    else
+      if (rc == QMessageBox::NoAll) {
+        LBaseData->m_pmDumps = false;
+        LBaseData->m_strPmDumps = "false";
+        ((CMainFrame*)qApp->mainWidget())->pmDumpAction->setOn(false);
+      }
+  }
+  return msg;
+}
 
 void SynObject::SetRTError(CheckData &ckd,QString *errorCode,LavaVariablePtr stackFrame,const char *textParam) {
   SynObject *synObj=this;
@@ -312,20 +505,18 @@ void SynObject::SetRTError(CheckData &ckd,QString *errorCode,LavaVariablePtr sta
     code = RunTimeException_ex;
     //thr = true;
 
-  ckd.callStack = CallStack(ckd,stackFrame);
-
   if (textParam)
     msgText = QString(textParam) + ": " + msgText;
   else if (errorCode == &ERR_AssertionViolation
   && comment.ptr)
     msgText = msgText + ": " + comment.ptr->str.c;
 
+  ckd.callStack = CallStack(ckd,stackFrame,msgText);
+
   if (!SetLavaException(ckd, code, msgText)) {
     CRuntimeException* ex = new CRuntimeException(code, &msgText);
     throw ex;
   }
-//!!!  if (thr)
-//    throw (new CUserException);
 
   ckd.exceptionThrown = true;
 }
@@ -359,7 +550,7 @@ bool AssertionData::EvalOldExpressions (CheckData &ckd, RTAssDataDict &rtadDict,
       ex = CopyObject(ckd,&obj,&stackFrame[oldExprLevel],((SynFlags*)(obj+1))->Contains(stateObjFlag));
       ok = !ex && !ckd.exceptionThrown;
       if (ex) {
-        ex->message = ex->message + ((SelfVar*)ckd.selfVar)->CallStack(ckd,stackFrame);
+        ex->message = ex->message + ((SelfVar*)ckd.selfVar)->CallStack(ckd,stackFrame,ex->message);
         if (ex->SetLavaException(ckd)) 
           delete ex;
       }
@@ -871,7 +1062,7 @@ bool FailStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
     }
     ((SynFlags*)(object+1))->INCL(finished);
     for (ii = 0; (ii < object[0][0].nSections) && (object[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
-    ckd.callStack = CallStack(ckd,stackFrame);
+    ckd.callStack = CallStack(ckd,stackFrame,"Exception thrown by \"fail\" statement");
     ckd.lastException = object + object[0][ii].sectionOffset;
     ckd.exceptionThrown = true;
   }
@@ -2246,7 +2437,7 @@ LavaObjectPtr CloneExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackF
   ex = CopyObject(ckd,&obj,&copyOfObj,obj?((SynFlags*)(obj+1))->Contains(stateObjFlag):true/*ckd.stateObj*/);
   ckd.selfVar = mySelfVar;
   if (ex) {
-    ex->message = ex->message + CallStack(ckd,stackFrame);
+    ex->message = ex->message + CallStack(ckd,stackFrame,ex->message);
     if (ex->SetLavaException(ckd)) 
       delete ex;
   }
@@ -2306,7 +2497,7 @@ bool CopyStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
   ckd.selfVar = mySelfVar;
   ok = !ex && !ckd.exceptionThrown;
   if (ex) {
-    ex->message = ex->message + CallStack(ckd,stackFrame);
+    ex->message = ex->message + CallStack(ckd,stackFrame,ex->message);
     if (ex->SetLavaException(ckd)) 
       delete ex;
   }
@@ -2395,7 +2586,7 @@ LavaObjectPtr ExtendExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stack
   if (ckd.exceptionThrown)
     return (LavaObjectPtr)-1;
   if (ex) {
-    ex->message = ex->message + CallStack(ckd,stackFrame);
+    ex->message = ex->message + CallStack(ckd,stackFrame,ex->message);
     if (ex->SetLavaException(ckd)) 
       delete ex;
     return (LavaObjectPtr)-1;
@@ -2418,7 +2609,7 @@ LavaObjectPtr AttachObjectX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
   urlObj = ((Expression*)url.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown)
     return false;
-  if ((cosDecl->nOutput == PROT_LAVA) || (cosDecl->nOutput == PROT_STREAM)) {
+  if ((cosDecl->nOutput == PROT_LAVA) || (cosDecl->nOutput == PROT_NATIVE)) {
     rtObj = AttachLavaObject(ckd,urlObj,cosDecl,typeDECL,attachCat == stateObj);
     if (!rtObj && !ckd.exceptionThrown) {
       secn = ckd.document->GetSectionNumber(ckd, (*urlObj)->classDECL, ckd.document->DECLTab[VLString]);
@@ -2427,7 +2618,7 @@ LavaObjectPtr AttachObjectX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
     }
     return rtObj;
   }
-  else if (cosDecl->nOutput == PROT_STREAM) {
+  else if (cosDecl->nOutput == PROT_NATIVE) {
   }
   return 0;
 }
@@ -2970,7 +3161,7 @@ bool RunX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExpr
       ((SelfVar*)execDECL->Exec.ptr)->Check(ckd);
       ckd.selfVar = mySelfVar;
     }
-    catch(CUserException *) {
+    catch(CUserException) {
       ckd.selfVar = mySelfVar;
       return false;
     }

@@ -83,10 +83,12 @@ CWizardView::CWizardView(QWidget* parent, wxDocument* doc)
   QHBox* qhbox = new QHBox(qvbox);
   resetButton = new QPushButton("Reset", qhbox);
   applyButton = new QPushButton("Apply", qhbox);
+  helpButton = new QPushButton("Help", qhbox);
   myScrv = new GUIScrollView(qvbox, false);
   guibox = myScrv->qvbox; 
   connect (applyButton, SIGNAL(clicked()), this, SLOT(Apply()));
   connect (resetButton, SIGNAL(clicked()), this, SLOT(Reset()));
+  connect (helpButton, SIGNAL(clicked()), this, SLOT(Help()));
   wizard = 0;
   postedPage = 0;
   delayedID = 0;
@@ -209,6 +211,21 @@ void CWizardView::Apply()
 {
   wizard->OnApply();
   Reset();
+}
+
+
+void CWizardView::Help()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/EditForm.htm");
 }
 
 void CWizardView::Reset()
@@ -402,6 +419,7 @@ void CLavaPEWizard::setModified(bool mod)
 
 CLavaPEWizard::~CLavaPEWizard()
 {
+  /*
   if (GenPage)
     delete GenPage;
   if (MenuPage)
@@ -418,6 +436,7 @@ CLavaPEWizard::~CLavaPEWizard()
     delete ChainLitPage;
   if (ChFormPage)
     delete ChFormPage;
+    */
   if (FormDECL)
     delete FormDECL;
 }

@@ -22,6 +22,7 @@
 #endif
 
 
+#include "SYSTEM.h"
 #include "GUIwid.h"
 #include "GUIProgBase.h"
 #include "LavaMenu.h"
@@ -34,8 +35,7 @@
 #include "LavaGUIView.h"
 #include "LavaGUIPopup.h"
 #include "GUIProg.h"
-//#include "stdafx.h"
-
+#include "MACROS.h"
 
 
 enum {helpEvent,localEvent,popupMenuEvent,sigEvent} EventLocType;

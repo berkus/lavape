@@ -101,6 +101,7 @@
 #include "PX_commentt.xpm"
 #include "PX_errtab.xpm"
 #include "PX_findtab.xpm"
+#include "PX_debugTab.xpm"
 
 /*
 #define IDS_STRING1                     1

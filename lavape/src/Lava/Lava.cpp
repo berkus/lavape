@@ -21,7 +21,11 @@
 #pragma implementation
 #endif
 
+//#include "prelude.h"
+//#include "sflsock.h"
 #include "Lava.h"
+//#include "ASN1File.h"
+#include "CDPpp.h"
 #include "AboutBox.h"
 #include "LavaAppBase.h"
 #include "LavaThread.h"
@@ -41,6 +45,8 @@
 #include <signal.h>
 #include "qassistantclient.h"
 #include "qprocess.h"
+#include <stdlib.h>
+
 #ifndef WIN32
 #include <locale.h>
 #endif
@@ -49,9 +55,9 @@
 static QString szCheckPreconditions = "/CheckPreconditions";
 static QString szCheckPostconditions = "/CheckPostconditions";
 static QString szCheckInvariants = "/CheckInvariants";
+static QString szPmDumps = "/PmDumps";
 static QString szFormFont = "/FormFont";
 static QString szFormLabelFont = "/FormLabelFont";
-//static QString szFormButtonFont = "/FormButtonFont";
 static QString szGlobalFont = "/GlobalFont";
 static QString favoriteBrowser = "/MyBrowser";
 static QString gui_style = "/Style";
@@ -64,8 +70,28 @@ static char slash='/';
 
 int main( int argc, char ** argv ) {
 	CLavaApp ap(argc,argv);
-  
-//	char *old = setlocale (LC_NUMERIC, "C");
+  QString componentPath;
+
+//  DebugBreak();
+
+  if (sock_init())
+    qDebug("sock_init failed");
+
+#ifdef WIN32
+  componentPath = getenv("PATH");
+  if (componentPath.isEmpty())
+    componentPath = ExeDir + "\\Components";
+  else
+    componentPath = componentPath + ";" + ExeDir + "\\Components";
+  _putenv((QString("PATH=")+componentPath).latin1());
+#else
+  componentPath = getenv("PATH");
+  if (componentPath.isEmpty())
+    componentPath = ExeDir + "/Components";
+  else
+    componentPath = componentPath + ";" + ExeDir + "/Components";
+  setenv("PATH",componentPath.latin1(),1);
+#endif
 
   ap.m_appWindow = new CLavaMainFrame;
   if (ap.m_appWindow->OnCreate())
@@ -74,8 +100,6 @@ int main( int argc, char ** argv ) {
 		return 1;
 	
 	threadStg.setLocalData(new CThreadData(0)); 
-
-//  sigEnable();
 
 	int res = ap.exec();
 
@@ -110,6 +134,12 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   clipboard()->clear();
   LBaseData.actHint = 0;
   LBaseData.Init(0, 0);
+  LBaseData.debugThread = &debugThread;
+  debugThread.varAction = 0;
+  debugThread.dbgStopData = 0;
+  if (debugThread.pContThreadEvent->available())
+    (*debugThread.pContThreadEvent)++;
+
 
   settings.beginGroup("/generalSettings");
   LBaseData.m_strCheckPreconditions = settings.readEntry(szCheckPreconditions, 0, &ok);
@@ -141,6 +171,16 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   else {
     LBaseData.m_checkInvariants = false;
     LBaseData.m_strCheckInvariants = "false";
+  }
+  LBaseData.m_strPmDumps = settings.readEntry(szPmDumps, 0, &ok);
+  if (ok)
+    if (LBaseData.m_strPmDumps == "true")
+      LBaseData.m_pmDumps = true;
+    else
+      LBaseData.m_pmDumps = false;
+  else {
+    LBaseData.m_pmDumps = true;
+    LBaseData.m_strPmDumps = "true";
   }
   settings.endGroup();
 
@@ -367,17 +407,29 @@ void CLavaApp::OnFileOpen()
   OpenDocumentFile(fileName);
 }
 
-wxDocument* CLavaApp::OpenDocumentFile(const QString& lpszFileName) 
+void CLavaApp::OpenDocumentFile(const QString& lpszFileName) 
 {
   QString name;
   QDir cwd;
+  CLavaDoc* doc;
 
 	name = cwd.absFilePath(lpszFileName);
 	name = cwd.cleanDirPath(name);
 	if (!name.contains('.'))
-		return 0;
+		return;
   LBaseData.lastFileOpen = name;
-  return wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+  if (argc() > 2) {
+    debugThread.remoteIPAddress = QString(argv()[2]);
+    debugThread.remotePort = QString(argv()[3]);
+
+    //QMessageBox::critical(/*qApp->*/mainWidget(),qApp->name(),"Lava Interpreter: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    debugThread.debugOn = true;
+    debugThread.start();
+    doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+  }
+  else {
+    doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+  }
 }
 
 void CLavaApp::OnFileNew() 
@@ -422,6 +474,7 @@ void CLavaApp::saveSettings()
   settings.writeEntry(szCheckPreconditions,LBaseData.m_strCheckPreconditions);
   settings.writeEntry(szCheckPostconditions,LBaseData.m_strCheckPostconditions);
   settings.writeEntry(szCheckInvariants,LBaseData.m_strCheckInvariants);
+  settings.writeEntry(szPmDumps,LBaseData.m_strPmDumps);
   settings.endGroup();
 
   settings.beginGroup("/fontSettings");
@@ -591,20 +644,4 @@ void CLavaApp::LearningLava()
 	}
 
 	qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
-/*	QString buf;
-
-	if (LBaseData.m_myWebBrowser.isEmpty()) {
-    QMessageBox::critical(m_appWindow,name(),ERR_MissingBrowserPath,QMessageBox::Ok,0,0);
-		return;
-	}
-	
-	QStringList args;
-	args << LBaseData.m_myWebBrowser << "file://" + ExeDir+"/../doc/html/LavaBySamples.htm";
-	QProcess browser(args);
-
-	if (!browser.launch(buf)) {
-    QMessageBox::critical(m_appWindow,name(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok,0,0);
-		return;
-	}
-*/
 }

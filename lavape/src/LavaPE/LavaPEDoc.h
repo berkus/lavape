@@ -15,11 +15,14 @@
 #include "Syntax.h"
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
-//#include "wxExport.h"
+#include "LavaPE.h"
 #include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
+#include "qprocess.h"
+#include "prelude.h"
+#include "sflsock.h"
 
 
 class CLavaPEDoc : public CPEBaseDoc
@@ -73,8 +76,10 @@ public:
   virtual bool OnNewDocument();
   virtual bool OnOpenDocument(const QString& filename);
   void OnRunLava();
+  void OnDebugLava();
   void OnTotalCheck();
   void OnUpdateRunLava(wxAction* action);
+  void OnUpdateDebugLava(wxAction* action);
   bool OpenGUIView(LavaDECL** pdecl);
   bool OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate);
   virtual bool OpenExecView(LavaDECL* execDecl);
@@ -108,7 +113,7 @@ protected:
   LavaDECL* MakeOneSetGet(TypeFlag setgetflag, LavaDECL* implDECL,
                                      LavaDECL* propDecl, int checkLevel);
   bool MakeSetAndGets(LavaDECL* implDECL, LavaDECL* iFaceDECL, int checkLevel);
-  bool OnEmptyDoc(const DString& Name);
+  bool OnEmptyDoc(const QString& Name);
   void OnUpdateFilePrint(wxAction* action);
   bool openInTotalCheck;
   void ShrinkCollectDECL(LavaDECL* decl);

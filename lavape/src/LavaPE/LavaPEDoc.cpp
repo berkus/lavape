@@ -42,6 +42,8 @@
 #include "qfileinfo.h"
 #include "qprocess.h"
 #include "qptrlist.h"
+#include "prelude.h"
+#include "sflsock.h"
 
 
 CLavaPEDoc::CLavaPEDoc()
@@ -2954,10 +2956,10 @@ void CLavaPEDoc::OnCloseLastExecView()
   ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->hide();
 }
 
-bool CLavaPEDoc::OnEmptyDoc(const DString& Name)
+bool CLavaPEDoc::OnEmptyDoc(const QString& Name)
 {
   bool bb;
-  DString stdLava=DString(StdLavaLog);
+  QString stdLava=StdLavaLog;
 
   mySynDef = new SynDef;
   SynIO.InitSyntax(mySynDef, Name);
@@ -2988,7 +2990,7 @@ bool CLavaPEDoc::OnNewDocument()
   if (!CLavaBaseDoc::OnNewDocument())
     return false;
   if (!mySynDef) {
-    DString Name = DString(GetTitle());
+    QString Name = GetTitle();
     return OnEmptyDoc(Name);
   }
   return true;
@@ -2998,14 +3000,14 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
 {
 //  AfxDebugBreak();
   bool errEx;
-  DString str0, str, newTopName, *toINCL = 0, fn = DString(filename);
+  DString str0, str, newTopName, *toINCL = 0, fn(filename);
 	QString fName(filename);
   int readResult;
 
   //LBaseData->lastFileOpen = QString(fn.c);
   isStd = SameFile(fn.c, StdLava.ascii());
-  CalcNames(fn);
-  readResult = ReadSynDef(fn, mySynDef);
+  CalcNames(filename);
+  readResult = ReadSynDef(filename, mySynDef);
   isReadOnly = readResult > 0;
   if (readResult < 0) {
     mySynDef = 0;
@@ -3027,7 +3029,7 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
   if (mySynDef) {
     mySynDef->IDTable = (address)&IDTable;
     hasIncludes = false;
-    AddSyntax(mySynDef, fn, errEx);  //Add include files/patterns
+    AddSyntax(mySynDef, filename, errEx);  //Add include files/patterns
     if (errEx)
       return false;
     UpdateOtherDocs(0, str0, 0, false); 
@@ -3072,12 +3074,65 @@ void CLavaPEDoc::OnRunLava()
 	
 	QStringList args;
 	args << interpreterPath << lavaFile;
-	QProcess lavaInterpreter(args);
+	QProcess interpreter(args);
 
-	if (!lavaInterpreter.launch(buf)) {
+	if (!interpreter.launch(buf)) {
     QMessageBox::critical(qApp->mainWidget(),qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
 		return;
 	}
+}
+
+
+void CLavaPEDoc::OnDebugLava() 
+{
+	QString interpreterPath, lavaFile = GetFilename(), buf;
+  sockaddr_in sa;
+  socklen_t sz_sa=sizeof(sockaddr_in); 
+  
+  if (IsModified()
+    && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
+    && (QMessageBox::Cancel == QMessageBox::question(qApp->mainWidget(),qApp->name(),ERR_SaveFailed, 
+                    QMessageBox::Ok,QMessageBox::Cancel,0)))
+    return;
+
+  if (lavaFile.isEmpty()) {
+    QMessageBox::question(qApp->mainWidget(),qApp->name(),IDP_SaveFirst,QMessageBox::Ok,0,0);
+    return;
+  }
+#ifdef WIN32
+  interpreterPath = ExeDir + "/Lava.exe";
+#else
+  interpreterPath = ExeDir + "/Lava";
+#endif
+	
+  sock_init();
+  ((CLavaPEApp*)qApp)->debugThread.listenSocket = passive_TCP("0",20);
+  memset(&sa,0,sizeof(sockaddr_in));
+  int rc = getsockname((int)((CLavaPEApp*)qApp)->debugThread.listenSocket,(struct sockaddr*)&sa,&sz_sa);
+  QString host_addr = "127.0.0.1";
+
+	QStringList args;
+	args << interpreterPath << lavaFile << host_addr << QString("%1").arg(ntohs(sa.sin_port));
+	((CLavaPEApp*)qApp)->interpreter.setArguments(args);
+  debugOn = true;
+
+  ((CLavaPEApp*)qApp)->debugThread.doc = this;
+  ((CLavaPEApp*)qApp)->debugThread.start();
+	if (!((CLavaPEApp*)qApp)->interpreter.launch(buf)) {
+    ((CLavaPEApp*)qApp)->debugThread.terminate();
+    ((CLavaPEApp*)qApp)->debugThread.wait();
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
+		return;
+	}
+}
+
+void CLavaPEDoc::OnUpdateDebugLava(wxAction* action) 
+{
+  if (((CLavaPEApp*)qApp)->interpreter.isRunning() || ((CLavaPEApp*)qApp)->debugThread.running()) {
+    action->setEnabled(((CLavaPEApp*)qApp)->debugThread.interpreterWaits);
+    return;
+  }
+  OnUpdateRunLava(action);
 }
 
 //check all included documents
@@ -3163,7 +3218,6 @@ void CLavaPEDoc::OnTotalCheck()
 
 void CLavaPEDoc::OnUpdateRunLava(wxAction* action) 
 {
-  
   if (!mySynDef) 
     return;
   LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef.ptr;
@@ -3210,8 +3264,8 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
   if (/*!execChild->isMaximized()
   && */wxDocManager::GetOpenDocCount() == 1
 	&& GetViewCount() == 4
-  && wxDocManager::GetDocumentManager()->GetActiveView()->GetParentFrame()->oldWindowState != QEvent::ShowMaximized)
-//  && MainView->GetParentFrame()->oldWindowState != QEvent::ShowMaximized)
+  && wxDocManager::GetDocumentManager()->GetActiveView()->GetParentFrame()->oldWindowState != QEvent::ShowMaximized
+  && !MainView->GetParentFrame()->isMinimized())
 		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
 
   return true;
@@ -3870,7 +3924,8 @@ void CLavaPEDoc::UpdateOtherDocs(wxDocument* skipOther, DString& inclFile, int n
         if (synDel)
           doc->IDTable.RemoveFromInclTrans(cheSyn->data.nINCL, relInclFile);
         else {
-          if (doc->IncludeSyntax(inclFile, isNew)) {
+          QString inclFile_q=inclFile.c;
+          if (doc->IncludeSyntax(inclFile_q, isNew)) {
             if (isNew) {
               doc->Modify(true);
               impls = new CExecSetImpls(doc->mySynDef);
@@ -3924,5 +3979,3 @@ void CLavaPEDoc::UpdateOtherDocs(wxDocument* skipOther, DString& inclFile, int n
     che->data = 0;
   }
 }
-
-

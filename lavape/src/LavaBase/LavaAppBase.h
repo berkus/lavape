@@ -145,6 +145,8 @@
 #define IDU_LavaPE_OnDrop (QEvent::Type)(QEvent::User+10)
 #define IDU_LavaDump (QEvent::Type)(QEvent::User+11)
 #define IDU_LavaStart (QEvent::Type)(QEvent::User+12)
+#define IDU_LavaDebug (QEvent::Type)(QEvent::User+13)
+#define IDU_LavaDebugRq (QEvent::Type)(QEvent::User+14)
 
 enum CPECommand {
   CPECommand_OpenFormView, 
@@ -211,7 +213,7 @@ enum TRefacMove {
   exToBase
 };
 
-enum TCompoProt { PROT_LAVA, PROT_STREAM, PROT_DOTNET, PROT_CORBA, PROT_EJB,
+enum TCompoProt { PROT_LAVA, PROT_NATIVE, PROT_DOTNET, PROT_CORBA, PROT_EJB,
                   PROT_HTTP, PROT_FTP, PROT_MAIL};
 
 
@@ -364,6 +366,7 @@ public:
   ~CLavaBaseData();
 
   wxApp *theApp;
+  CLavaThread* debugThread; 
   unsigned long /*HCURSOR*/ ArrowCurser;
   bool inMultiDocUpdate; //open document in multi document update
   bool inRuntime;
@@ -388,6 +391,8 @@ public:
   QString m_strCheckPostconditions;
   bool m_checkInvariants;
   QString m_strCheckInvariants;
+  bool m_pmDumps;
+  QString m_strPmDumps;
 
   QFont m_ExecFont;
   QFont m_FormFont;
@@ -464,7 +469,6 @@ public:
   wxAction* toggleSubstTypeActionPtr;
   wxAction* trueActionPtr;
   wxAction* updateCancelActionPtr;
-
 
   QPushButton 
     *declareButton, *existsButton, *foreachButton,
@@ -567,7 +571,7 @@ public:
 class LAVABASE_DLL WhatsThis : public QObject, public QWhatsThis
 {
 public:
-  WhatsThis(char *text,QWidget *w);
+  WhatsThis(QString text,QWidget *w);
 
   bool clicked(const QString & href);
   QString text(const QPoint&);

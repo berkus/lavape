@@ -1,21 +1,42 @@
 // LavaPE.h : main header file for the LavaPE application
 //
 
-#if !defined(_LAVAPE_H__)
-#define _LAVAPE_H__
+#ifndef __LAVAPE
+#define __LAVAPE
 
 
 //#include "Resource.h"       // main symbols
 #include "DString.h"
 //#include "LavaPEFrames.h"
+#include "ChString.h"
 #include "LavaAppBase.h"
 #include "ExecUpdate.h"
-//#include "wxExport.h"
+#include "prelude.h"
+#include "sflsock.h"
+#include "ASN1File.h"
+
 #include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "ChString.h"
+#include "qprocess.h"
+
+
+class CLavaPEDebugThread : public CLavaThread
+{
+public:
+  QString remoteIPAddress, remotePort;
+  sock_t listenSocket, workSocket;
+  ASN1InSock *get_cid;
+  ASN1OutSock *put_cid;
+  DebugStopData dbgStopData;
+  DebugMessage* dbgRequest;
+  bool interpreterWaits;
+
+protected:
+  void reset();
+	void run();
+}; 
 
 
 class CLavaPEBrowse : public CPEBaseBrowse
@@ -48,16 +69,19 @@ public:
   CExecUpdate ExecUpdate;
   CLavaBaseData LBaseData;
   QString CMDLine;
+  QProcess interpreter;
+  CLavaPEDebugThread debugThread;
+  //CLavaPEPMdumpThread pmDumpThread;
+
   bool DoSaveAll();
   bool inTotalCheck;
   ChainOfString FindList;
   QPixmap* LavaPixmaps[50];
 
-
-
   public:
+  virtual bool event(QEvent *e);
   virtual int ExitInstance();
-  virtual wxDocument* OpenDocumentFile(const QString& lpszFileName);
+  virtual void OpenDocumentFile(const QString& lpszFileName);
   virtual void HtmlHelp();
   virtual void EditingLavaProgs();
   virtual void LearningLava();
@@ -99,7 +123,4 @@ extern  int overRidesBM;
 
 extern bool Q_EXPORT qt_use_native_dialogs;
 
-
-/////////////////////////////////////////////////////////////////////////////
-
-#endif // !defined(AFX_LAVAPE_H__BC8733D8_2301_11D3_B7AF_000000000000__INCLUDED_)
+#endif

@@ -27,7 +27,11 @@
 #include "DIO.h"
 #include "UNIX.h"
 #include "Halt.h"
-//#include "disco.h"
+#include "qapplication.h"
+
+#ifndef WIN32
+#define O_BINARY 0
+#endif
 
 
 void ASN1InFile::errorExitProc ()
@@ -46,36 +50,32 @@ void ASN1OutFile::errorExitProc ()
 } // END OF errorExitProc
 
 
-void ASN1InFile::error (DString msgText)
+void ASN1InFile::error (QString msgText)
 
 {
   if (!Silent) {
     IO.WriteLn();
     IO.WriteString("++++ ASN1InFile, error in ");
-    IO.WriteString(msgText.c);
+    IO.WriteString(msgText);
     IO.WriteLn();
   }
   Done = false;
 } // END OF error
 
 
-void ASN1OutFile::error (DString msgText)
+void ASN1OutFile::error (QString msgText)
 
 {
   if (!Silent) {
     IO.WriteLn();
     IO.WriteString("++++ ASN1OutFile, error in ");
-    IO.WriteString(msgText.c);
+    IO.WriteString(msgText);
     IO.WriteLn();
   }
   Done = false;
 } // END OF error
 
-#ifndef WIN32
-#define O_BINARY 0
-#endif
-
-ASN1InFile::ASN1InFile (const DString& fileName, bool silent)
+ASN1InFile::ASN1InFile (const QString& fileName, bool silent)
 {
   int rc;
   
@@ -85,7 +85,7 @@ ASN1InFile::ASN1InFile (const DString& fileName, bool silent)
   Silent = silent;
   bufferPtr = 0;
 
-  rc = open(fileName.c,O_RDONLY|O_BINARY,0644);
+  rc = open(fileName,O_RDONLY|O_BINARY,0644);
   if (rc < 0) {
     error("UNIX.open, file \""+fileName+"\"");
     Done = false;
@@ -101,7 +101,7 @@ ASN1InFile::ASN1InFile (const DString& fileName, bool silent)
 } // END OF ASN1InFile
 
 
-ASN1OutFile::ASN1OutFile (const DString& fileName, bool silent)
+ASN1OutFile::ASN1OutFile (const QString& fileName, bool silent)
 {
   int rc;
   
@@ -111,7 +111,7 @@ ASN1OutFile::ASN1OutFile (const DString& fileName, bool silent)
   Silent = silent;
   bufferPtr = 0;
   
-  rc = open(fileName.c,O_TRUNC | O_CREAT | O_WRONLY | O_BINARY,0644);
+  rc = open(fileName,O_TRUNC | O_CREAT | O_WRONLY | O_BINARY,0644);
   if (rc < 0) {
     error("UNIX.open, file \""+fileName+"\"");
     Done = false;
@@ -182,6 +182,154 @@ void ASN1InFile::getChar (unsigned char& c)
     }
     else if (charsRead == 0) {
       error("getChar: EOF reached");
+      return;
+    }
+    bufferPos = 0;
+  }
+  c = bufferPtr[bufferPos++];
+} // END OF GetChar
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Now the same with sockets:
+
+
+void ASN1InSock::errorExitProc ()
+
+{
+  error("ASN1 level procedure");
+  Done = false;
+} // END OF errorExitProc
+
+
+void ASN1OutSock::errorExitProc ()
+
+{
+  error("ASN1 level procedure");
+  Halt.HaltPMD();
+} // END OF errorExitProc
+
+
+void ASN1InSock::error (QString msgText)
+
+{
+  if (!Silent) {
+    IO.WriteLn();
+    IO.WriteString("++++ ASN1InSock, error in ");
+    IO.WriteString(msgText);
+    IO.WriteLn();
+  }
+  Done = false;
+  skip = true;
+} // END OF error
+
+
+void ASN1OutSock::error (QString msgText)
+
+{
+  if (!Silent) {
+    IO.WriteLn();
+    IO.WriteString("++++ ASN1OutSock, error in ");
+    IO.WriteString(msgText);
+    IO.WriteLn();
+  }
+  Done = false;
+  skip = true;
+} // END OF error
+
+ASN1InSock::ASN1InSock (sock_t socket, bool silent)
+{    
+  BufferSize = 20000;
+  Silent = silent;
+  bufferPtr = 0;
+
+  bufferPtr = new char [BufferSize];
+  fildes = socket;
+  bufferPos = 0;
+  bufferSize = BufferSize;
+  charsRead = 0;
+  openForOutput = false;
+  Done = true;
+} // END OF ASN1InFile
+
+
+ASN1OutSock::ASN1OutSock (sock_t socket, bool silent)
+{  
+  IO.INIT();
+  
+  BufferSize = 20000;
+  Silent = silent;
+  bufferPtr = 0;
+  
+  bufferPtr = new char [BufferSize];
+  fildes = socket;
+  bufferPos = 0;
+  bufferSize = BufferSize;
+  charsRead = 0;
+  openForOutput = true;
+  Done = true;
+} // END OF ASN1OutFile
+
+
+ASN1InSock::~ASN1InSock ()
+
+{
+  if (bufferPtr) {
+    close_socket(fildes);
+    delete [] bufferPtr;
+  }
+} // END OF ~ASN1InFile
+
+
+void ASN1OutSock::flush ()
+
+{
+  int rc;
+  
+  if (openForOutput && (bufferPos > 0)) {
+    rc = write_TCP(fildes,bufferPtr,bufferPos);
+    if ((rc < 0) || (rc != (int)bufferPos))
+      error("~ASN1OutSock: write_TCP");
+    bufferPos = 0;
+  }
+} // END OF ~ASN1OutFile
+
+ASN1OutSock::~ASN1OutSock ()
+
+{
+  flush();
+
+  if (bufferPtr) {
+    close_socket(fildes);
+    delete [] bufferPtr;
+  }
+} // END OF ~ASN1OutFile
+
+
+void ASN1OutSock::putChar (const unsigned char& c)
+
+{
+  int rc;
+  
+  if (bufferPos == bufferSize) {
+    rc = write_TCP(fildes,bufferPtr,bufferSize);
+    if ((rc < 0) || (rc != (int)bufferSize)) {
+      error("putChar: write_TCP");
+      return;
+    }
+    bufferPos = 0;
+  }
+  bufferPtr[bufferPos++] = c;
+} // END OF putChar
+
+
+void ASN1InSock::getChar (unsigned char& c)
+
+{
+  if (bufferPos == (unsigned)charsRead) {
+    charsRead = read_TCP(fildes,bufferPtr,bufferSize);
+    if (charsRead <= 0) {
+      error("getChar: UNIX.read_TCP");
       return;
     }
     bufferPos = 0;

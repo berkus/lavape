@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # ADD CPP /nologo /W3 /GX /I "..\disco" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /FD /c
-# SUBTRACT CPP /Z<none> /O<none> /Fr /YX
+# SUBTRACT CPP /Fr /YX
 # ADD BASE RSC /l 0x407 /d "NDEBUG"
 # ADD RSC /l 0x407 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -250,11 +250,49 @@ SOURCE=..\LavaPE\Debug\disco.dll
 
 !IF  "$(CFG)" == "Precompiler - Win32 Release"
 
+# Begin Custom Build
+InputPath=..\LavaPE\Debug\disco.dll
+InputName=disco
+
+"$(InputName).dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy $(InputPath) .
+
+# End Custom Build
+
 !ELSEIF  "$(CFG)" == "Precompiler - Win32 Debug"
 
 # Begin Custom Build
 InputPath=..\LavaPE\Debug\disco.dll
 InputName=disco
+
+"$(InputName).dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy $(InputPath) .
+
+# End Custom Build
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\LavaPE\Debug\SFLsockets.dll
+
+!IF  "$(CFG)" == "Precompiler - Win32 Release"
+
+# Begin Custom Build
+InputPath=..\LavaPE\Debug\SFLsockets.dll
+InputName=SFLsockets
+
+"$(InputName).dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
+	copy $(InputPath) .
+
+# End Custom Build
+
+!ELSEIF  "$(CFG)" == "Precompiler - Win32 Debug"
+
+# Begin Custom Build
+InputPath=..\LavaPE\Debug\SFLsockets.dll
+InputName=SFLsockets
 
 "$(InputName).dll" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
 	copy $(InputPath) .

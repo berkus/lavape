@@ -203,3 +203,9 @@ void CMainFrame::InvariantsToggled( bool )
 {
 
 }
+
+
+void CMainFrame::PmDumpsToggled( bool )
+{
+
+}

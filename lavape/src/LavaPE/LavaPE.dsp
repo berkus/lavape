@@ -43,8 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "NDEBUG" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /FD /c
-# SUBTRACT CPP /Z<none> /O<none> /Fr /YX
+# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "NDEBUG" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /FD /c
+# SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x407 /d "NDEBUG" /d "_AFXDLL"
@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 ..\wxqDocView\Release\wxqDocView.lib ..\LavaGUI\Release\LavaGUI.lib ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\LavaExecs\Release\LavaExecs.lib $(QTDIR)\librel\qtmain.lib $(QTDIR)\librel\qassistantclient.lib $(QTDIR)\librel\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /machine:I386
+# ADD LINK32 ..\wxqDocView\Release\wxqDocView.lib ..\LavaGUI\Release\LavaGUI.lib ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\LavaExecs\Release\LavaExecs.lib ..\SFLsockets\Release\SFLsockets.lib $(QTDIR)\librel\qtmain.lib $(QTDIR)\librel\qassistantclient.lib $(QTDIR)\librel\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /machine:I386
 
 !ELSEIF  "$(CFG)" == "LavaPE - Win32 Debug"
 
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "_DEBUG" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /FR /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\wxqDocView\Debug\wxqDocView.lib ..\LavaGUI\Debug\LavaGUI.lib ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaExecs\Debug\LavaExecs.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"../wxqDocView/Debug" /libpath:"$(QTDIR)/lib"
+# ADD LINK32 ..\wxqDocView\Debug\wxqDocView.lib ..\LavaGUI\Debug\LavaGUI.lib ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaExecs\Debug\LavaExecs.lib ..\SFLsockets\Debug\SFLsockets.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /nodefaultlib:"msvcrt.lib" /pdbtype:sept /libpath:"../wxqDocView/Debug" /libpath:"$(QTDIR)/lib"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ENDIF 
@@ -1110,6 +1110,13 @@ SOURCE=.\res\alias.bmp
 # Begin Source File
 
 SOURCE=.\res\appli.rc
+
+!IF  "$(CFG)" == "LavaPE - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "LavaPE - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

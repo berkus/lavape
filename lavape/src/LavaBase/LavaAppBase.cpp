@@ -785,7 +785,7 @@ TDeclDescType CPEBaseBrowse::GetExprType(SynDef *lavaCode, LavaDECL *decl)
         break;
       default: ;
     }
-  return Unknown;
+  return UnknownDDT;
 }
  
 TDeclType CPEBaseBrowse::GetCategory(SynDef *lavaCode, LavaDECL *decl, SynFlags& flags)
@@ -955,7 +955,7 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
         return;
       }
       else
-		    throw new CUserException;
+		    throw CUserException();
     }
     if (doClose ) {
       if (((CLavaBaseDoc*)fromDoc)->isObject ) {
@@ -988,7 +988,7 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
 			}
 		}
 		if (err) 
-			throw new CUserException;
+			throw CUserException();
   }
 }
 
@@ -1357,10 +1357,10 @@ unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,
 
 
 
-WhatsThis::WhatsThis(char *text,QWidget *w) : QWhatsThis(w)
+WhatsThis::WhatsThis(QString text,QWidget *w) : QWhatsThis(w)
 {
   if (text)
-    whatsThisText = QString(text);
+    whatsThisText = text;
 }
 
 bool WhatsThis::clicked(const QString &whatsThisHref)
@@ -1372,10 +1372,10 @@ bool WhatsThis::clicked(const QString &whatsThisHref)
 	QString path("");
 	QStringList args;
 
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
 		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
+	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 		qacl->setArguments(args);
 	}
 
@@ -1390,7 +1390,7 @@ QString WhatsThis::text(const QPoint&)
 }
 
 void ShowPage(char *file) {
-  QString fileName=ExeDir+"/../doc/html/whatsthis/"+file;
+  QString fileName=ExeDir+"/../doc/html/"+file;
 	QString path("");
 	QStringList args;
 

@@ -77,10 +77,30 @@
     form &quot;sin(x)&quot;, rather than &quot;x.sin()&quot;, &quot;log(x)&quot;,
     rather than &quot;x.log()&quot;.</P>
     
+    <P><b>Note</b> that <font color="#FF0000"><i><b>Lava</b></i></font> doesn't 
+    make a distinction between virtual and non-virtual member functions of 
+    classes, as for instance <b><i><font color="#FF0000">C++</font></i></b> 
+    does, but all non-static member functions are virtual automatically and thus 
+    may be overridden in derived classes.</P>
+    
+    <p><b>Restrictions concerning static function
+    calls<span lang="de">:</span></b></p>
+    
+    <P>To call a function statically means that you circumvent the usual virtual
+    function call (&quot;late binding&quot;) mechanism but you specify precisely
+    which version of the function from which interface shall be called. If <I>f</I> is a member <I>function</I> of <I>A</I> then<I> f</I>
+      can be <B><I>called</I></B> <I><B>statically</B></I> only from derived
+      classes in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, i.e., from
+      functions that are declared in a derived interface <I>B</I> of <I>A</I>
+      or in the implementation thereof. So if functions are declared in <I>A</I>
+      and overridden in <I>B</I> then clients of <I>B</I> are forced to use the
+      overridden version; they are not allowed to statically call the base
+      version.</P>
+    
     <H3>Initializer</H3>
     
     <P>Every interface (except for component object interfaces) must have at
-      least one <A HREF="../StagesSample.htm#creation">initializer</A>
+      least one <A HREF="../ObjectLifeCycle.htm#creation">initializer</A>
       function. Initializers are used to bring newly created objects into a
       state where all their non-optional member variables have a non-null value.
       Member functions may be invoked for a new object only after this state has

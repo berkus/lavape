@@ -21,6 +21,7 @@
 //#include "stdafx.h"
 
 
+
 class CLavaDoc : public CLavaProgram 
 {
 public:

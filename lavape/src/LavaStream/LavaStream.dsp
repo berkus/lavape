@@ -45,7 +45,7 @@ RSC=rc.exe
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LAVASTREAM_EXPORTS" /YX /FD /c
 # ADD CPP /nologo /MT /W3 /GX /I "." /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "$(QTDIR)\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LAVASTREAM_EXPORTS" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /FD /c
-# SUBTRACT CPP /Z<none> /O<none> /Fr /YX
+# SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x407 /d "NDEBUG"
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\wxqDocView\Release\wxqDocView.lib $(QTDIR)\librel\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"..\LavaPE\Release/LavaStream.dll"
+# ADD LINK32 ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\wxqDocView\Release\wxqDocView.lib $(QTDIR)\librel\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"..\LavaPE\Release\Components\LavaStream.dll"
 
 !ELSEIF  "$(CFG)" == "LavaStream - Win32 Debug"
 
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\LavaBase\Debug\LavaBase.lib $(QTDIR)\lib\qt-mt$(QTR).lib advapi32.lib wsock32.lib /nologo /dll /debug /machine:I386 /out:"..\LavaPE\Debug\LavaStream.dll"
+# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\LavaBase\Debug\LavaBase.lib $(QTDIR)\lib\qt-mt$(QTR).lib advapi32.lib wsock32.lib /nologo /dll /debug /machine:I386 /out:"..\LavaPE\Debug\Components\LavaStream.dll"
 
 !ENDIF 
 

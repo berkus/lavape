@@ -43,13 +43,10 @@
 #include "qdatastream.h"
 
 #ifdef WIN32
-  #include "qt_windows.h"
-  #include "commdlg.h"
-  #include "winuser.h"
+#include "qt_windows.h"
+#include "commdlg.h"
+#include "winuser.h"
 #endif
-
-//#include "stdafx.h"
-
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -158,9 +155,6 @@ bool CLavaDoc::SelectLcom(bool emptyDoc)
 
 bool CLavaDoc::OnOpenDocument(const QString& fname) 
 {
-//  AfxDebugBreak();
-//  CArchive *Ar;
-//  CFileException e;
   CheckData ckd;
   QString emptyName, filename;
   DString linkName;
@@ -210,8 +204,8 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
     return OnEmptyObj(PathName, linkName);
   }
   else { //Lava task (*.lava)
-    PathName = filename.ascii();
-    return OnOpenProgram(PathName, true, false, true);
+    PathName = filename.latin1();
+    return OnOpenProgram(filename, true, false, true);
   }
 }
 
@@ -225,8 +219,6 @@ bool CLavaDoc::SaveAs()
 bool CLavaDoc::OnSaveDocument(const QString& lpszPathName) 
 {
   CheckData ckd;
-  //CArchive Ar;
-  //CFileException e;
   CRuntimeException *ex;
   QString emptyName;
 
@@ -298,10 +290,7 @@ void CLavaDoc::customEvent(QCustomEvent *ev)
 }
 
 LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj) 
-{ //Attach object
-  //CArchive *Ar;
-  //CFile file; 
-  //CFileException e;
+{ 
   LavaObjectPtr urlStr, object=0;
   QString *pfileName, noName, err;
   int secn;
@@ -338,13 +327,6 @@ LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj)
         return 0;
       }
       file.close();
-    //}
-    /*
-    }
-    catch (CFileException* ) {
-      LObjectError(ckd, *pfileName, noName, &ERR_ldocNotOpened);
-    }
-    */
     if (object)
       *(LavaVariablePtr)(object-2) = urlObj;
     return object;
@@ -355,9 +337,6 @@ LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj)
 
 bool CLavaDoc::SaveObject(CheckData& ckd, LavaObjectPtr object) 
 {
-  //CArchive *Ar;
-  //CFile file; 
-  //CFileException e;
   LavaObjectPtr urlStr, urlObj;
   QString *pfileName, noName;
   int secn;
@@ -391,16 +370,7 @@ bool CLavaDoc::SaveObject(CheckData& ckd, LavaObjectPtr object)
         return false;
       }
       file.close();
-    //}
     return !ckd.exceptionThrown;
-    /*
-    }
-    catch (CFileException* ) {
-      LObjectError(ckd, *pfileName, noName, &ERR_ldocNotOpened);
-      return false;
-    }
-    return !ckd.exceptionThrown;
-    */
   }
   else
     return false;
@@ -535,15 +505,6 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
       MaxTab = 0;
       ActTab = 0;
     }
-  //}
-  /*
-  catch (CArchiveException* ) {
-    LObjectError(ckd, cid->FileName, dPN, &ERR_ldocNotStored);
-  }
-  catch (CFileException* ) {
-    LObjectError(ckd, cid->FileName, dPN, &ERR_ldocNotStored);
-  }
-  */
   firstStore = false;
   cid->PUTint(-1); //(*cid->Ar) << -1; //nID = -1 indicates end of objects
   if (objINCL) 
@@ -729,7 +690,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
         return false;
       }
       if (isObject) {
-        if (!OnOpenProgram(synName.c, false, lcomPur, false)) {
+        if (!OnOpenProgram(fn, false, lcomPur, false)) {
           LObjectError(ckd, cid->FileName, synName.c, &ERR_lcomNotOpened);
           return false;
         }
@@ -739,7 +700,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
         objINCL = 0;
       }
       else {
-        cheSyn = AttachSyntax(ckd, synName);
+        cheSyn = AttachSyntax(ckd, fn);
         if (!cheSyn) {
           LObjectError(ckd, cid->FileName, synName.c, &ERR_lcomNotOpened);
           return false;
@@ -1047,15 +1008,15 @@ bool CLavaDoc::ExecuteLavaObject()
         }
       }
     }
-    catch (CRuntimeException* exl) {
-      if (exl->SetLavaException(ckd)) 
+    catch (CRuntimeException exl) {
+      if (exl.SetLavaException(ckd)) 
         HCatch(ckd);
       else
        throw;
       return false;
     }
-    catch (CHWException* exl) {
-      if (exl->SetLavaException(ckd)) 
+    catch (CHWException exl) {
+      if (exl.SetLavaException(ckd)) 
         HCatch(ckd);
       else
        throw;
@@ -1064,9 +1025,7 @@ bool CLavaDoc::ExecuteLavaObject()
     return true;
   }
   else {
-//    AfxMessageBox("No executable Lava-GUI-service", MB_OK+MB_ICONSTOP);
     critical(qApp->mainWidget(), qApp->name(),"No executable Lava-GUI-service",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
 }
-

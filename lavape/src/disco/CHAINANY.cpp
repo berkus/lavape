@@ -51,6 +51,7 @@ void CHAINANY0::CDP (PutGetFlag pgf, ASN1* cid,
     cid->WrongElemStop(false);
     cid->GetSEQUENCE();
     cid->WrongElemStop(true);
+    if (cid->Skip()) return;
     
     if (!cid->WrongElem())
       for (elem = first; !cid->Skip(); elem = elem->successor) {
@@ -127,6 +128,7 @@ void CHAINX::CDP (PutGetFlag pgf, ASN1* cid, bool)
       cid->WrongElemStop(false);
       cid->GetEOC();
       cid->WrongElemStop(true);
+      if (cid->Skip()) return;
       if (!cid->WrongElem()) break;
       if (!cid->GotOptional())
         if (elem) {
@@ -145,6 +147,7 @@ void CHAINX::CDP (PutGetFlag pgf, ASN1* cid, bool)
           Append(elem);
         }
         cid->GETstring(className);
+        if (cid->Skip()) return;
         cli = wxClassInfo::FindClass(className.c);
         if (elem->data) {
           if (elem->data->GetWxClassInfo() != cli) {

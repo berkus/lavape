@@ -13,11 +13,11 @@ rel=STYLESHEET type=text/css></HEAD>
 <h2 align="center">Editing executable code</h2>
 
 <p align="left">Executable code is represented in the <a href="EditTree.htm">declaration
-tree</a> by the keywords &quot;exec&quot; and &quot;invariant&quot;. You may
+tree</a> by the keywords &quot;Exec&quot; and &quot;Invariant/Require/Ensure&quot;. You may
 double-click these keywords or click the spectacles <B>
 <IMG SRC="../images/Spectacles.png" ALT="Open property sheet" ALIGN="ABSMIDDLE" width="22" height="20">
- </B> to view the code in the <B><I><FONT color=#ff0000>Lava</FONT></I></B> 
-exec editor.</p>
+ </B> to view the code in the <B><I><FONT color=#ff0000>Lava</FONT></I></B>
+<a href="#exec">exec</a> editor.</p>
 <P>The <B><I><FONT color=#ff0000>Lava</FONT></I></B> exec view displays 
 executable <B><I><FONT color=#ff0000>Lava</FONT></I></B> code in a so-called 
 "rich edit view" window as normal text, but the normal text editing functions 
@@ -52,18 +52,14 @@ must be associated with executable code:</P>
   <LI><B>Initiators</B>, which serve as autonomous "<b><font color="#0000FF">main</font></b> programs" or "top level 
   threads" in <i><b><font color="#FF0000">Lava</font></b></i>. They must have an executable body, or short: an <b>&quot;exec&quot;</b> 
   (which starts with the keyword &quot;<b><font color="#0000FF">main</font></b>&quot;).<LI><B>Member functions</B> of interfaces and implementations, which must have 
-  an <b>exec</b>, too. A member function of an interface is automatically included in 
+  an <b>exec</b>, too (except if they are declared to be &quot;abstract&quot;, i.e., their 
+  implementation is deferred to a derived class). A member function of an interface is automatically included in 
   all implementations of that interface, but its exec occurs only in the 
   implementation, not in the interface. 
-  <LI><B><a name="constraint"></a>Invariants</B> of interfaces/implementations. An interface 
-  or implementation need not have an 
-  invariant, 
-  but if it has one, then it is executed automatically whenever a newly created 
-  object supporting this interface leaves the respective object creation 
-  construct (&quot;new&quot; or "clone"). (Not only the invariant of the new 
-  object's interface/implementation is executed but also those of base interfaces, 
-  base invariants first, interface invariants first.)&nbsp; </LI></UL>
-<P>In the <B><I><FONT color=#ff0000>LavaPE</FONT></I></B> tree view execs and 
+  <LI><B><a name="constraint"></a><a name="constraint" href="DBC.htm">attached assertions
+          </a> </B>(invariants attached to interfaces and 
+          implementations, pre- and postconditions attached to functions).</LI></UL>
+<P>In the <B><I><FONT color=#ff0000>LavaPE</FONT></I></B> tree view, execs and 
 invariants are associated with a specific little icon 
 <IMG 
 alt="exec icon" src="../images/constrai.png" width="21" height="15">which 

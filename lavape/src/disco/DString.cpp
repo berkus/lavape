@@ -31,7 +31,7 @@
 #include "DString.h"
 #include "MachDep.h"
 #include <ctype.h>
-//#include "disco.h"
+#include "MACROS.h"
 #include <string.h>
 
 

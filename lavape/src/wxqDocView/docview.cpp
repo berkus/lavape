@@ -221,6 +221,10 @@ void wxApp::hfStatusText(int itemId) {
   ((QMainWindow*)mainWidget())->statusBar()->message(tr("Open and raise this window"));
 }
 
+wxView *wxApp::activeView() {
+  return wxDocManager::GetDocumentManager()->GetActiveView();
+}
+
 void wxMainFrame::histFile(int histFileIndex) {
   OnMRUWindow(histFileIndex);
 }

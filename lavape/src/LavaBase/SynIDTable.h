@@ -10,8 +10,6 @@
 #include "DString.h"
 #include "SynIO.h"
 #include "Syntax.h"
-//#include "stdafx.h"
-//#include "wxExport.h"
 #include "qobject.h"
 #include "qstring.h"
 
@@ -103,6 +101,7 @@ public:
 //  int CheckID(const TID& id, LavaDECL**& pdecl, int fromIncl = 0); //return value: -1:ungültig; 0:OK; >0:neue ID nach drag & drop
   DWORD GetVar(const TID& id, TIDType& idtype, int fromIncl = 0); 
   void SetVar(const TID& id, DWORD data);
+  int GetINCL(CHESimpleSyntax* otherSyn, const DString& otherDocDir);
   void NewID(LavaDECL ** pdecl);
   void AddID(LavaDECL ** pdecl, int incl=0);
   void AddLocalID(DWORD pp, int id, int incl=0);

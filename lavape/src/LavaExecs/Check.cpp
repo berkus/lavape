@@ -21,7 +21,6 @@
 #pragma implementation
 #endif
 
-#include "SYSTEM.h"
 #include "Check.h"
 #include "qstring.h"
 #include "Constructs.h"
@@ -34,7 +33,7 @@
 
 #include "LavaBaseStringInit.h"
 #include "Convert.h"
-//#include "stdafx.h"
+#include "MACROS.h"
 
 
 #define ENTRY \
@@ -232,9 +231,9 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
     msg = msgText + "\n\nFile: " + cFileName + "\n\nPath to erroneous construct:\n\n" + cExecName + " | " + synObj->LocationOfConstruct();
 
   if (SetLavaException(ckd, check_ex, msg))
-    throw (new CUserException);
+    throw CUserException();
   else
-    throw (new CNotSupportedException);
+    throw CNotSupportedException();
 #else
   if (((SelfVar*)ckd.selfVar)->execView)
     new CLavaError(&synObj->errorChain,errorCode,new DString(textParam));
@@ -1557,7 +1556,7 @@ void UpdateParameters (CheckData &ckd) {
   }
 }
 
-static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRef, ConstrFlags ioFlag) {
+static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRef, ExecFlags ioFlag) {
   LavaDECL *decl=(LavaDECL*)parmDef->data;
   TID parmDefTid(decl->OwnID,0);
   FormParm *newParmRef;
@@ -4812,7 +4811,7 @@ bool AttachObject::Check (CheckData &ckd)
           }
         }
 
-        if ((objDECL->nOutput == PROT_LAVA) || (objDECL->nOutput == PROT_STREAM)) {
+        if ((objDECL->nOutput == PROT_LAVA) || (objDECL->nOutput == PROT_NATIVE)) {
           if (!objDECL->Items.first) {
             ((SynObject*)objType.ptr)->SetError(ckd,&ERR_OIDrequired);
             ok = false;
@@ -5529,11 +5528,11 @@ bool CopyStatement::Check (CheckData &ckd)
     target->ExprGetFVType(ckd,ontoTypeDecl,cat,ctxFlags);
     if (ctxFlags.bits)
       ckd.tempCtx.ContextFlags = ctxFlags;
-    if (!compatibleTypes(ckd,ontoTypeDecl,ckd.tempCtx,fromTypeDecl,fromCtx)
+/*    if (!compatibleTypes(ckd,ontoTypeDecl,ckd.tempCtx,fromTypeDecl,fromCtx)
     && !compatibleTypes(ckd,fromTypeDecl,fromCtx,ontoTypeDecl,ckd.tempCtx)) {
       source->SetError(ckd,ckd.errorCode);
       ok = false;
-    }
+    }*/
     ontoTypeDecl = ckd.document->GetType(ontoTypeDecl);
     if (target->IsOptional(ckd)
     && ontoTypeDecl

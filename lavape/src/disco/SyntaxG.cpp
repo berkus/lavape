@@ -473,6 +473,7 @@ void CDPTAnnoEx (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPAnnoExType(pgf,cid,(address)&vp->exType);
+    if (cid->Skip()) return;
     switch (vp->exType) {
     case anno_Color:
     case anno_TextColor:
@@ -530,6 +531,7 @@ void CDPTAnnotation (PutGetFlag pgf, ASN1* cid, address varAddr,
     CDPTBox(pgf,cid,(address)&vp->Box);
     vp->StringValue.CDP(pgf,cid);
     CDPTBasicType(pgf,cid,(address)&vp->BType);
+    if (cid->Skip()) return;
     switch (vp->BType) {
     case B_Bool:
       CDPpp.CVTbool(pgf,cid,vp->B);
@@ -578,6 +580,7 @@ void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr,
     CDPTSupports(pgf,cid,(address)&vp->Inherits);
     vp->Items.CDP(pgf,cid,CDPEnumSelId,NewCHEEnumSelId);
     CDPTDeclDescType(pgf,cid,(address)&vp->DeclDescType);
+    if (cid->Skip()) return;
     switch (vp->DeclDescType) {
     case BasicType:
       CDPTBasicType(pgf,cid,(address)&vp->BType);
@@ -709,6 +712,185 @@ void CDPSynObjectBase (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPSynObjectBase
+
+
+void CDPDebugCommand (PutGetFlag pgf, ASN1* cid, address varAddr,
+                      bool)
+
+{
+  DebugCommand *vp = (DebugCommand*)varAddr;
+  if (cid->Skip()) return;
+
+  if (pgf == PUT) cid->PUTunsigned(*vp);
+  else *vp = (DebugCommand)cid->FGETunsigned();
+} // END OF CDPDebugCommand
+
+
+void CDPDbgContType (PutGetFlag pgf, ASN1* cid, address varAddr,
+                     bool)
+
+{
+  DbgContType *vp = (DbgContType*)varAddr;
+  if (cid->Skip()) return;
+
+  if (pgf == PUT) cid->PUTunsigned(*vp);
+  else *vp = (DbgContType)cid->FGETunsigned();
+} // END OF CDPDbgContType
+
+
+IMPLEMENT_DYNAMIC_CLASS(ObjItemData,NULL)
+
+
+void CDPObjItemData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                     bool baseCDP)
+
+{
+  ObjItemData *vp = (ObjItemData*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPpp.CVTbool(pgf,cid,vp->isPrivate);
+    CDPpp.CVTbool(pgf,cid,vp->HasChildren);
+    vp->Column0.CDP(pgf,cid);
+    vp->Column1.CDP(pgf,cid);
+    vp->Column2.CDP(pgf,cid);
+    vp->Children.CDP(pgf,cid);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPObjItemData
+
+ChainAnyElem* NewCHEStackData ()
+{ return (ChainAnyElem*)(new CHEStackData); }
+
+
+IMPLEMENT_DYNAMIC_CLASS(StackData,NULL)
+
+
+void CDPStackData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                   bool baseCDP)
+
+{
+  StackData *vp = (StackData*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPpp.CVTint(pgf,cid,vp->SynObjID);
+    CDPTDeclType(pgf,cid,(address)&vp->ExecType);
+    CDPTID(pgf,cid,(address)&vp->FuncID);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPStackData
+
+ChainAnyElem* NewCHEProgramPoint ()
+{ return (ChainAnyElem*)(new CHEProgramPoint); }
+
+NESTEDINITCOPY(ProgramPoint)
+
+NESTEDCDP(ProgramPoint)
+
+
+IMPLEMENT_DYNAMIC_CLASS(ProgramPoint,NULL)
+
+
+void CDPProgramPoint (PutGetFlag pgf, ASN1* cid, address varAddr,
+                      bool baseCDP)
+
+{
+  ProgramPoint *vp = (ProgramPoint*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPpp.CVTint(pgf,cid,vp->SynObjID);
+    CDPTDeclType(pgf,cid,(address)&vp->ExecType);
+    CDPTID(pgf,cid,(address)&vp->FuncID);
+    CDPpp.CVTbool(pgf,cid,vp->Activate);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPProgramPoint
+
+
+IMPLEMENT_DYNAMIC_CLASS(DebugStopData,NULL)
+
+
+void CDPDebugStopData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                       bool baseCDP)
+
+{
+  DebugStopData *vp = (DebugStopData*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPpp.CVTint(pgf,cid,vp->ActStackLevel);
+    vp->StackChain.CDP(pgf,cid,CDPStackData,NewCHEStackData);
+    vp->ObjectChain.CDP(pgf,cid);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPDebugStopData
+
+
+IMPLEMENT_DYNAMIC_CLASS(DebugContData,NULL)
+
+
+void CDPDebugContData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                       bool baseCDP)
+
+{
+  DebugContData *vp = (DebugContData*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPpp.CVTbool(pgf,cid,vp->ClearBreakPoints);
+    vp->BreakPoints.CDP(pgf,cid,CDPProgramPoint,NewCHEProgramPoint);
+    CDPDbgContType(pgf,cid,(address)&vp->ContType);
+    vp->RunToPoint.CDP(pgf,cid,CDPProgramPoint);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPDebugContData
+
+NESTEDINITCOPY(ChObjRq)
+
+NESTEDCDP(ChObjRq)
+
+
+void CDPChObjRq (PutGetFlag pgf, ASN1* cid, address varAddr,
+                 bool)
+
+{
+  ChObjRq *vp = (ChObjRq*)varAddr;
+  if (cid->Skip()) return;
+
+  vp->CDP(pgf,cid,CDPint,NewCHEint);
+} // END OF CDPChObjRq
+
+
+IMPLEMENT_DYNAMIC_CLASS(DebugMessage,NULL)
+
+
+void CDPDebugMessage (PutGetFlag pgf, ASN1* cid, address varAddr,
+                      bool baseCDP)
+
+{
+  DebugMessage *vp = (DebugMessage*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPDebugCommand(pgf,cid,(address)&vp->Command);
+    if (cid->Skip()) return;
+    switch (vp->Command) {
+    case Dbg_StopData:
+    case Dbg_Stack:
+      vp->DbgData.CDP(pgf,cid);
+      break;
+    case Dbg_MemberData:
+      vp->ObjData.CDP(pgf,cid);
+      break;
+    case Dbg_MemberDataRq:
+      vp->ObjNr.CDP(pgf,cid,CDPChObjRq);
+      break;
+    case Dbg_StackRq:
+      CDPpp.CVTint(pgf,cid,vp->CallStackLevel);
+      break;
+    case Dbg_Continue:
+      vp->ContinueData.CDP(pgf,cid);
+      break;
+    }
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPDebugMessage
 
 ChainAnyElem* NewCHESigNodePtr ()
 { return (ChainAnyElem*)(new CHESigNodePtr); }

@@ -5,10 +5,14 @@
 #define _LAVA_
 
 #include "LavaAppBase.h"       // Hauptsymbole
-#include "LavaBaseDoc.h"       // Hauptsymbole
+#include "LavaDoc.h"       // Hauptsymbole
 #include "DumpView.h"       // Hauptsymbole
 #include "docview.h"
+#include "docview.h"
 #include "qstring.h"
+#include "DbgThreads.h"
+#include "prelude.h"
+#include "sflsock.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaApp:
@@ -23,14 +27,17 @@ public:
 
   wxDocTemplate *pLavaTaskTemplate, *pLavaLdocTemplate, *pLavaLcomTemplate;
   CLavaBaseData LBaseData;
-//  CLavaThread *mainThread;
   DString SyntaxToOpen;
   DString NameToStore;
+
+  QProcess lavape;
+  //CLavaPMdumpThread pmDumpThread;
+  CLavaDebugThread debugThread;
 
   QString CMDLine;
   public:
   bool event(QEvent *e);
-  virtual wxDocument* OpenDocumentFile(const QString& lpszFileName);
+  virtual void OpenDocumentFile(const QString& lpszFileName);
   virtual void OnSaveAll();
   virtual bool DoSaveAll();
   virtual void HtmlHelp();
@@ -48,7 +55,7 @@ public:
   QString InitWebBrowser ();
 
 private:
-    Q_OBJECT;
+  Q_OBJECT;
 };
 
 

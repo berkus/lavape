@@ -20,7 +20,7 @@
 
 typedef unsigned char *address;
 typedef unsigned char byte;
-typedef unsigned word;
+//typedef unsigned word;
 typedef unsigned long       DWORD;
 typedef unsigned short      WORD;
 
@@ -35,12 +35,11 @@ typedef void (*DPROC) ();
 #define NULL 0
 #endif
 
-//#undef BOOL
-//#define BOOL bool
 
-inline int min(int a, int b) { return a < b ? a : b; }
-inline int max(int a, int b) { return a > b ? a : b; }
+//#define min(a,b)        (((a) < (b))? (a): (b))
+//#define max(a,b)        (((a) > (b))? (a): (b))
 
+/*
 #ifdef WIN32
 #define strcasecmp stricmp
 #endif
@@ -54,7 +53,7 @@ inline int max(int a, int b) { return a > b ? a : b; }
 
 #define TRUNC(x) (unsigned(ABS(x)))
 
-//#ifdef __cplusplus
+*/
 
 enum PutGetFlag {PUT,GET,DontPUT};
 /*DontPUT implies PUT and is used internally by FIO procedures

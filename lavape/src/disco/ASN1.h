@@ -140,6 +140,7 @@ class DISCO_DLL ASN1 {
   unsigned char headerBuffer[20];
   /* the header must be kept for the "previewed"/GetElement case */
   unsigned octetStringNestingLevel, altID, nestedCASEs;
+  int wordSize;
   DString contentsBuffer;  
   TClass altClass;
 protected:
@@ -149,7 +150,7 @@ protected:
 
 public:
 
-  bool HeaderTrace, Silent;
+  bool HeaderTrace, Silent, isBigEndian;
   /* every ASN.1 header is printed (cf. "PrintHeader" below) if and as
      long as HeaderTrace is true;
      error messages are printed if and as long as Silent is false;
@@ -165,7 +166,7 @@ public:
   void SetSkip (const bool onOff);
 
 
-  bool Skip ();
+  inline bool Skip () { return skip; }
 
 
   void WrongElemStop (const bool onOff);

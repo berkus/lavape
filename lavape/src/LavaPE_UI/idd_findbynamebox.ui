@@ -19,11 +19,11 @@
     <property name="caption">
         <string>Find declaration by name</string>
     </property>
-    <vbox>
+    <grid>
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QComboBox">
+        <widget class="QComboBox" row="0" column="0">
             <item>
                 <property name="text">
                     <string>(What name)</string>
@@ -36,15 +36,7 @@
                 <bool>true</bool>
             </property>
         </widget>
-        <widget class="QCheckBox">
-            <property name="name">
-                <cstring>m_SearchWholeName</cstring>
-            </property>
-            <property name="text">
-                <string>Match for whole name only</string>
-            </property>
-        </widget>
-        <widget class="QCheckBox">
+        <widget class="QCheckBox" row="2" column="0">
             <property name="name">
                 <cstring>m_SearchCase</cstring>
             </property>
@@ -52,42 +44,14 @@
                 <string>Match case</string>
             </property>
         </widget>
-        <widget class="QLayoutWidget">
+        <widget class="QLayoutWidget" row="3" column="0">
             <property name="name">
-                <cstring>layout3</cstring>
+                <cstring>layout7</cstring>
             </property>
             <hbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <property name="margin">
-                    <number>0</number>
-                </property>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>PushButton_IDCANCEL1</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>0</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>1</width>
-                            <height>0</height>
-                        </size>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Cancel</string>
-                    </property>
-                </widget>
                 <widget class="QPushButton">
                     <property name="name">
                         <cstring>PushButton_IDOK1</cstring>
@@ -116,9 +80,42 @@
                         <bool>true</bool>
                     </property>
                 </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>PushButton_IDCANCEL1</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>0</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>1</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Cancel</string>
+                    </property>
+                </widget>
             </hbox>
         </widget>
-    </vbox>
+        <widget class="QCheckBox" row="1" column="0">
+            <property name="name">
+                <cstring>m_SearchWholeName</cstring>
+            </property>
+            <property name="text">
+                <string>Match whole name only</string>
+            </property>
+        </widget>
+    </grid>
 </widget>
 <connections>
     <connection>

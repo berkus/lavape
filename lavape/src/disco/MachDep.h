@@ -47,7 +47,7 @@ const unsigned BlanksPerTab = 8;
 #define hibyte(a) (unsigned char)((unsigned)(a) >> 24)
 
 
-typedef word BYTEorWORD;
+typedef unsigned BYTEorWORD;
 
 /**********************************************************************/
 /*                                                                    */

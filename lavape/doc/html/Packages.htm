@@ -2,6 +2,7 @@
 "hmpro4.dtd">
 <HTML>
   <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
     <META CONTENT="en-us">
     <META CONTENT="text/html; charset=windows-1252">
     <META NAME="Author" CONTENT="Klaus D. G&uuml;nther">
@@ -99,7 +100,7 @@
     <P>
       If you want to <B>execute</B> a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> file you just have to make sure that the first <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> entity in its
       top-level package is an <B>initiator</B>. Initiators play the role of <B>"autonomous main programs"</B> in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> and start with the ke<SPAN LANG=
-      "de">y</SPAN>word <SPAN LANG="de">"</SPAN><FONT COLOR="#0000FF"><B>main</B></FONT><SPAN LANG="de">"</SPAN>. They may have input parameters but once started they run autonomously (possibly even
+      "de">y</SPAN>word <SPAN LANG="de">"</SPAN><FONT COLOR="#0000FF"><B>main</B></FONT><SPAN LANG="de">"</SPAN>. They may have input parameters but once started they run autonomously (even
       as <A HREF="Transactions.htm">concurrently executing threads/transactions</A>). In particular they don't return output parameters and cannot throw exceptions to the calling level. A <B><I><FONT
       COLOR="#FF0000">Lava</FONT></I></B> program may (recursively) launch any number of subordinate initiators and thus consist of a collection of concurrently executing threads.
     </P>
@@ -142,4 +143,3 @@
     </P>
   </BODY>
 </HTML>
-

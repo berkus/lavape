@@ -38,7 +38,7 @@ protected: // Nur aus Serialisierung erzeugen
 
 public:
 
-  bool OnOpenProgram(DString pathName, bool imiExec, bool reDef, bool putErr);
+  bool OnOpenProgram(const QString pathName, bool imiExec, bool reDef, bool putErr);
   virtual ~CLavaProgram();
   virtual bool CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* specDECL=0);
   virtual int GetMemsSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL* memDECL, bool putErr=true);
@@ -54,18 +54,10 @@ public:
   virtual bool CheckForm(CheckData& ckd, LavaDECL* formDECL, int l = 0);
   bool MakeSectionTable(CheckData& ckd, LavaDECL *implDECL);
   void InitBAdapter();
-  bool LoadSyntax(DString& fn, SynDef*& sntx, bool reDef, bool putErr);
-
-//  virtual bool IsOuterParam(paramDECL, typeDECL);
-//  virtual int GetContextsSectionNumber(LavaDECL* classDECL, LavaDECL* baseDECL, bool outer);
-//  virtual int GetVTDelta(LavaDECL* ET_call, LavaDECL* ET_casted, LavaDECL* FVT_f, int v0, bool outer);
-//  virtual BOOL OpenGUIView(LavaDECL* decl, LavaVariablePtr in, LavaVariablePtr out) {return FALSE;}
-//  virtual void OnClose( OLECLOSE dwCloseOption ); 
-
+  bool LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool putErr);
 
   virtual void LavaError(CheckData& ckd, bool setEx, LavaDECL *decl, QString *nresourceID, LavaDECL* refDECL = 0);
   void HCatch(CheckData& ckd);
-
 
 };
 

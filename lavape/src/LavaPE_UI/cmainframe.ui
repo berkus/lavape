@@ -72,7 +72,7 @@
         <action name="newPackageAction"/>
         <action name="newInitiatorAction"/>
         <separator/>
-        <action name="new_InterfaceAction"/>
+        <action name="newInterfaceAction"/>
         <action name="newImplAction"/>
         <action name="newCOspecAction"/>
         <action name="newCOimplAction"/>
@@ -102,7 +102,7 @@
         <separator/>
         <action name="setTreeFontAction"/>
         <action name="SetFormFontsAction"/>
-        <item text="Set form fonts" name="PopupMenuEditor_68" accel="">
+        <item text="Set form fonts" name="popupMenu_65" accel="">
             <action name="setFormTextFontAction"/>
             <action name="setFormLabelFontAction"/>
             <action name="setFormButtonFontAction"/>
@@ -172,11 +172,18 @@
     </toolbar>
     <toolbar dock="2">
         <property name="name">
-            <cstring>HelpToolbar</cstring>
+            <cstring>ToolbarDbg</cstring>
         </property>
         <property name="label">
-            <string>Help toolbar</string>
+            <string>Debug toolbar</string>
         </property>
+        <action name="debugAction"/>
+        <action name="DbgStepNextAct"/>
+        <action name="DbgStepintoAct"/>
+        <action name="DbgStepoutAct"/>
+        <action name="DbgRunToSelAct"/>
+        <action name="DbgBreakpointAct"/>
+        <action name="DbgClearBreakpointsAct"/>
     </toolbar>
     <toolbar dock="2">
         <property name="name">
@@ -190,7 +197,7 @@
         <action name="newPackageAction"/>
         <action name="newInitiatorAction"/>
         <separator/>
-        <action name="new_InterfaceAction"/>
+        <action name="newInterfaceAction"/>
         <action name="newImplAction"/>
         <action name="newCOspecAction"/>
         <action name="newCOimplAction"/>
@@ -228,6 +235,14 @@
         <separator/>
         <action name="insAction"/>
         <action name="delAction"/>
+    </toolbar>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>HelpToolbar</cstring>
+        </property>
+        <property name="label">
+            <string>Help toolbar</string>
+        </property>
     </toolbar>
     <toolbar dock="2">
         <property name="name">
@@ -938,9 +953,6 @@
         <property name="enabled">
             <bool>false</bool>
         </property>
-        <property name="iconSet">
-            <iconset>image25</iconset>
-        </property>
         <property name="text">
             <string>Run</string>
         </property>
@@ -956,13 +968,16 @@
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image26</iconset>
+            <iconset>image25</iconset>
         </property>
         <property name="text">
-            <string>Include</string>
+            <string>include</string>
         </property>
         <property name="menuText">
             <string>Include...</string>
+        </property>
+        <property name="toolTip">
+            <string>Include</string>
         </property>
     </action>
     <action>
@@ -973,12 +988,15 @@
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image27</iconset>
+            <iconset>image26</iconset>
         </property>
         <property name="text">
-            <string>New package</string>
+            <string>package</string>
         </property>
         <property name="menuText">
+            <string>New package...</string>
+        </property>
+        <property name="toolTip">
             <string>New package</string>
         </property>
     </action>
@@ -990,33 +1008,35 @@
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image28</iconset>
+            <iconset>image27</iconset>
         </property>
         <property name="text">
-            <string>New main program</string>
+            <string>initiator</string>
         </property>
         <property name="menuText">
-            <string>New main program</string>
+            <string>New main program...</string>
         </property>
-        <property name="whatsThis">
-            <string>&lt;p&gt;&lt;font color="red"&gt;&lt;b&gt;Lava&lt;/b&gt; &lt;a href="MainProgram.htm"&gt;main program&lt;/a&gt;;
-nested main programs can be started using the "run" statement.&lt;/p&gt;</string>
+        <property name="toolTip">
+            <string>New main program</string>
         </property>
     </action>
     <action>
         <property name="name">
-            <cstring>new_InterfaceAction</cstring>
+            <cstring>newInterfaceAction</cstring>
         </property>
         <property name="enabled">
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image29</iconset>
+            <iconset>image28</iconset>
         </property>
         <property name="text">
-            <string>New interface</string>
+            <string>interface</string>
         </property>
         <property name="menuText">
+            <string>New interface...</string>
+        </property>
+        <property name="toolTip">
             <string>New interface</string>
         </property>
     </action>
@@ -1028,12 +1048,15 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image30</iconset>
+            <iconset>image29</iconset>
         </property>
         <property name="text">
-            <string>New implementation</string>
+            <string>implementation</string>
         </property>
         <property name="menuText">
+            <string>New implementation...</string>
+        </property>
+        <property name="toolTip">
             <string>New implementation</string>
         </property>
     </action>
@@ -1045,12 +1068,15 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image31</iconset>
+            <iconset>image30</iconset>
         </property>
         <property name="text">
-            <string>New component object spec.</string>
+            <string>COS</string>
         </property>
         <property name="menuText">
+            <string>New component object spec. ...</string>
+        </property>
+        <property name="toolTip">
             <string>New component object spec.</string>
         </property>
     </action>
@@ -1062,12 +1088,15 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image32</iconset>
+            <iconset>image31</iconset>
         </property>
         <property name="text">
-            <string>New component object impl.</string>
+            <string>COI</string>
         </property>
         <property name="menuText">
+            <string>New component object impl. ...</string>
+        </property>
+        <property name="toolTip">
             <string>New component object impl.</string>
         </property>
     </action>
@@ -1079,13 +1108,16 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image33</iconset>
+            <iconset>image32</iconset>
         </property>
         <property name="text">
-            <string>New set</string>
+            <string>set</string>
         </property>
         <property name="menuText">
             <string>New set</string>
+        </property>
+        <property name="toolTip">
+            <string>New set...</string>
         </property>
     </action>
     <action>
@@ -1096,12 +1128,15 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image34</iconset>
+            <iconset>image33</iconset>
         </property>
         <property name="text">
-            <string>New enumeration</string>
+            <string>enumeration</string>
         </property>
         <property name="menuText">
+            <string>New enumeration...</string>
+        </property>
+        <property name="toolTip">
             <string>New enumeration</string>
         </property>
     </action>
@@ -1113,13 +1148,16 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image35</iconset>
+            <iconset>image34</iconset>
         </property>
         <property name="text">
-            <string>New virtual type</string>
+            <string>VT</string>
         </property>
         <property name="menuText">
             <string>New virtual type</string>
+        </property>
+        <property name="toolTip">
+            <string>New virtual type...</string>
         </property>
     </action>
     <action>
@@ -1130,13 +1168,16 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image36</iconset>
+            <iconset>image35</iconset>
         </property>
         <property name="text">
-            <string>New function</string>
+            <string>function</string>
         </property>
         <property name="menuText">
-            <string>New function</string>
+            <string>New member function...</string>
+        </property>
+        <property name="toolTip">
+            <string>New member function</string>
         </property>
     </action>
     <action>
@@ -1147,12 +1188,15 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image37</iconset>
+            <iconset>image36</iconset>
         </property>
         <property name="text">
-            <string>New member variable</string>
+            <string>memberVariable</string>
         </property>
         <property name="menuText">
+            <string>New member variable...</string>
+        </property>
+        <property name="toolTip">
             <string>New member variable</string>
         </property>
     </action>
@@ -1164,12 +1208,15 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image38</iconset>
+            <iconset>image37</iconset>
         </property>
         <property name="text">
-            <string>New enumerated item</string>
+            <string>enumItem</string>
         </property>
         <property name="menuText">
+            <string>New enumerated item...</string>
+        </property>
+        <property name="toolTip">
             <string>New enumerated item</string>
         </property>
     </action>
@@ -1181,7 +1228,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image39</iconset>
+            <iconset>image38</iconset>
         </property>
         <property name="text">
             <string>Edit selected item</string>
@@ -1201,7 +1248,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image40</iconset>
+            <iconset>image39</iconset>
         </property>
         <property name="text">
             <string>Add/edit comment</string>
@@ -1221,7 +1268,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image41</iconset>
+            <iconset>image40</iconset>
         </property>
         <property name="text">
             <string>Go to declaration</string>
@@ -1238,7 +1285,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image42</iconset>
+            <iconset>image41</iconset>
         </property>
         <property name="text">
             <string>Go to implementation</string>
@@ -1255,7 +1302,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image43</iconset>
+            <iconset>image42</iconset>
         </property>
         <property name="text">
             <string>Return to reference</string>
@@ -1272,7 +1319,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image44</iconset>
+            <iconset>image43</iconset>
         </property>
         <property name="text">
             <string>Find decl. by name</string>
@@ -1292,7 +1339,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image45</iconset>
+            <iconset>image44</iconset>
         </property>
         <property name="text">
             <string>Show overridables</string>
@@ -1309,7 +1356,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image46</iconset>
+            <iconset>image45</iconset>
         </property>
         <property name="text">
             <string>Override</string>
@@ -1326,7 +1373,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image47</iconset>
+            <iconset>image46</iconset>
         </property>
         <property name="text">
             <string>Open form view</string>
@@ -1343,7 +1390,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image48</iconset>
+            <iconset>image47</iconset>
         </property>
         <property name="text">
             <string>Insert text</string>
@@ -1393,7 +1440,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image49</iconset>
+            <iconset>image48</iconset>
         </property>
         <property name="text">
             <string>Delete</string>
@@ -1441,7 +1488,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image50</iconset>
+            <iconset>image49</iconset>
         </property>
         <property name="text">
             <string>Toggle category</string>
@@ -1458,7 +1505,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image51</iconset>
+            <iconset>image50</iconset>
         </property>
         <property name="text">
             <string>Optional local variable</string>
@@ -1475,7 +1522,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image52</iconset>
+            <iconset>image51</iconset>
         </property>
         <property name="text">
             <string>Toggle substitutable type</string>
@@ -1492,7 +1539,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image53</iconset>
+            <iconset>image52</iconset>
         </property>
         <property name="text">
             <string>Insert before</string>
@@ -1506,7 +1553,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>insertAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image54</iconset>
+            <iconset>image53</iconset>
         </property>
         <property name="text">
             <string>Insert</string>
@@ -1523,7 +1570,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image55</iconset>
+            <iconset>image54</iconset>
         </property>
         <property name="text">
             <string>Toggle arrow direction</string>
@@ -1540,7 +1587,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image56</iconset>
+            <iconset>image55</iconset>
         </property>
         <property name="text">
             <string>Toggle input arrows</string>
@@ -1554,7 +1601,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>conflictingAssigAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image57</iconset>
+            <iconset>image56</iconset>
         </property>
         <property name="text">
             <string>Show conflicting assignment</string>
@@ -1574,7 +1621,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image58</iconset>
+            <iconset>image57</iconset>
         </property>
         <property name="text">
             <string>Put on a new line</string>
@@ -1591,7 +1638,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image59</iconset>
+            <iconset>image58</iconset>
         </property>
         <property name="text">
             <string>Skip</string>
@@ -1614,7 +1661,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image60</iconset>
+            <iconset>image59</iconset>
         </property>
         <property name="text">
             <string>Show/hide comments</string>
@@ -1628,7 +1675,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>lessThanAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image61</iconset>
+            <iconset>image60</iconset>
         </property>
         <property name="text">
             <string>Less than</string>
@@ -1659,7 +1706,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>lessEqualAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image62</iconset>
+            <iconset>image61</iconset>
         </property>
         <property name="text">
             <string>Less than or equal</string>
@@ -1673,7 +1720,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>equalAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image63</iconset>
+            <iconset>image62</iconset>
         </property>
         <property name="text">
             <string>Equal</string>
@@ -1687,7 +1734,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>notEqualAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image64</iconset>
+            <iconset>image63</iconset>
         </property>
         <property name="text">
             <string>Not equal</string>
@@ -1701,7 +1748,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>greaterEqualAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image65</iconset>
+            <iconset>image64</iconset>
         </property>
         <property name="text">
             <string>Greater or equal</string>
@@ -1715,7 +1762,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>greaterThanAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image66</iconset>
+            <iconset>image65</iconset>
         </property>
         <property name="text">
             <string>Greater than</string>
@@ -1729,7 +1776,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>functionCallAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image67</iconset>
+            <iconset>image66</iconset>
         </property>
         <property name="text">
             <string>Virtual function call</string>
@@ -1743,7 +1790,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>staticCallAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image68</iconset>
+            <iconset>image67</iconset>
         </property>
         <property name="text">
             <string>Static function call</string>
@@ -1757,7 +1804,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>trueAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image69</iconset>
+            <iconset>image68</iconset>
         </property>
         <property name="text">
             <string>True</string>
@@ -1771,7 +1818,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>falseAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image70</iconset>
+            <iconset>image69</iconset>
         </property>
         <property name="text">
             <string>False</string>
@@ -1785,7 +1832,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>evaluateAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image71</iconset>
+            <iconset>image70</iconset>
         </property>
         <property name="text">
             <string>Evaluate stm/expr</string>
@@ -1799,7 +1846,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>nullAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image72</iconset>
+            <iconset>image71</iconset>
         </property>
         <property name="text">
             <string>Nothing / null / nil</string>
@@ -1813,7 +1860,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>intervalAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image73</iconset>
+            <iconset>image72</iconset>
         </property>
         <property name="text">
             <string>Interval / array element</string>
@@ -1827,7 +1874,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>toggleSignAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image74</iconset>
+            <iconset>image73</iconset>
         </property>
         <property name="text">
             <string>Toggle sign</string>
@@ -1841,7 +1888,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>additionAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image75</iconset>
+            <iconset>image74</iconset>
         </property>
         <property name="text">
             <string>Addition</string>
@@ -1858,7 +1905,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>multiplicationAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image76</iconset>
+            <iconset>image75</iconset>
         </property>
         <property name="text">
             <string>Multiplication</string>
@@ -1872,7 +1919,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>divideAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image77</iconset>
+            <iconset>image76</iconset>
         </property>
         <property name="text">
             <string>Divide</string>
@@ -1889,7 +1936,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>modulusAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image78</iconset>
+            <iconset>image77</iconset>
         </property>
         <property name="text">
             <string>Modulus</string>
@@ -1903,7 +1950,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>leftShiftAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image79</iconset>
+            <iconset>image78</iconset>
         </property>
         <property name="text">
             <string>Left shift</string>
@@ -1917,7 +1964,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>rightShiftAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image80</iconset>
+            <iconset>image79</iconset>
         </property>
         <property name="text">
             <string>Right shift</string>
@@ -1931,7 +1978,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>bitAndAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image81</iconset>
+            <iconset>image80</iconset>
         </property>
         <property name="text">
             <string>Bitwise "and"</string>
@@ -1948,7 +1995,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>bitOrAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image82</iconset>
+            <iconset>image81</iconset>
         </property>
         <property name="text">
             <string>Bitwise "or"</string>
@@ -1965,7 +2012,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>bitXorAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image83</iconset>
+            <iconset>image82</iconset>
         </property>
         <property name="text">
             <string>Bitwise "exclusive or"</string>
@@ -1982,7 +2029,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>invertAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image84</iconset>
+            <iconset>image83</iconset>
         </property>
         <property name="text">
             <string>Not / invert bits</string>
@@ -1996,7 +2043,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>handleAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image85</iconset>
+            <iconset>image84</iconset>
         </property>
         <property name="text">
             <string>Handle of a set element</string>
@@ -2010,7 +2057,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>ordAction</cstring>
         </property>
         <property name="iconSet">
-            <iconset>image86</iconset>
+            <iconset>image85</iconset>
         </property>
         <property name="text">
             <string>Ordinal of enum. item</string>
@@ -2058,7 +2105,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>setTreeFontAction</cstring>
         </property>
         <property name="text">
-            <string>Set tree font...</string>
+            <string>Set tree font</string>
         </property>
         <property name="menuText">
             <string>Set tree font...</string>
@@ -2069,7 +2116,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <cstring>setExecFontAction</cstring>
         </property>
         <property name="text">
-            <string>Set exec font...</string>
+            <string>Set exec font</string>
         </property>
         <property name="menuText">
             <string>Set exec font...</string>
@@ -2083,7 +2130,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>true</bool>
         </property>
         <property name="iconSet">
-            <iconset>image87</iconset>
+            <iconset>image86</iconset>
         </property>
         <property name="text">
             <string>Show utility window</string>
@@ -2111,7 +2158,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image88</iconset>
+            <iconset>image87</iconset>
         </property>
         <property name="text">
             <string>Insert optional</string>
@@ -2128,7 +2175,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image89</iconset>
+            <iconset>image88</iconset>
         </property>
         <property name="text">
             <string>Delete optional</string>
@@ -2148,7 +2195,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <string>Set global font</string>
         </property>
         <property name="menuText">
-            <string>Set global font</string>
+            <string>Set global font...</string>
         </property>
     </action>
     <action>
@@ -2170,7 +2217,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <string>Form text font</string>
         </property>
         <property name="menuText">
-            <string>Form text font</string>
+            <string>Form text font...</string>
         </property>
     </action>
     <action>
@@ -2181,7 +2228,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <string>Form label font</string>
         </property>
         <property name="menuText">
-            <string>Form label font</string>
+            <string>Form label font...</string>
         </property>
     </action>
     <action>
@@ -2192,7 +2239,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <string>Form button font</string>
         </property>
         <property name="menuText">
-            <string>Form button font</string>
+            <string>Form button font...</string>
         </property>
     </action>
     <action>
@@ -2210,17 +2257,6 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
         </property>
         <property name="menuText">
             <string>Help toolbar</string>
-        </property>
-    </action>
-    <action>
-        <property name="name">
-            <cstring>whatsThis</cstring>
-        </property>
-        <property name="text">
-            <string>Action</string>
-        </property>
-        <property name="menuText">
-            <string>Action</string>
         </property>
     </action>
     <action>
@@ -2265,13 +2301,114 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image90</iconset>
+            <iconset>image89</iconset>
         </property>
         <property name="text">
-            <string>Make GUI-service for interface</string>
+            <string>makeGUI</string>
+        </property>
+        <property name="menuText">
+            <string>Make GUI-service for selected interface</string>
         </property>
         <property name="toolTip">
             <string>Make GUI-service for selected interface</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>debugAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image90</iconset>
+        </property>
+        <property name="text">
+            <string>Debug</string>
+        </property>
+        <property name="menuText">
+            <string>Debug</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>DbgBreakpointAct</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image92</iconset>
+        </property>
+        <property name="text">
+            <string>Set/reset Breakpoint</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>DbgClearBreakpointsAct</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image93</iconset>
+        </property>
+        <property name="text">
+            <string>Clear all breakpoints</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>DbgStepNextAct</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image94</iconset>
+        </property>
+        <property name="text">
+            <string>Step to next</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>DbgStepintoAct</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image95</iconset>
+        </property>
+        <property name="text">
+            <string>Step into</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>DbgStepoutAct</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image96</iconset>
+        </property>
+        <property name="text">
+            <string>Step out</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>DbgRunToSelAct</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image97</iconset>
+        </property>
+        <property name="text">
+            <string>Run to selection</string>
         </property>
     </action>
 </actions>
@@ -2352,202 +2489,220 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
         <data format="PNG" length="251">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000c249444154789ca593d16d04210c441f519a5a0ad8b67668cb05f8ca9a7c249c80db5b6d124b7c18e3e7b1654a66f21ffb189d8870ad753a11e15b8088b02424810d36ddbf8294de42add592d8f7bdf460dd36abb56f28b0c6013e47670de6e351ea71981f552a05c0e3bb690675db2efbed2d8db399006aed05a2d69e6a741c1328224c66929948326049c6f67a9799601b30b67bec3519a6d393c777136cadf26b3597c937d43c677056e58e9a09f01735e5dd671a577b5db0d1de02ce56fbccbe00c3a11f57c10eee3a0000000049454e44ae426082</data>
     </image>
     <image name="image25">
-        <data format="PNG" length="236">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000b349444154789c9d53510e8530082bc64bb90370ae9d6b07e88ec5fb9105272efa484c18aeb56d5048e24d9552cc7b92e2fdf60abd20fb8b202ad8b30bad35cbe6119812b4d6acd6fa49cdc58283490a4999c9a2773f2f33708248e4f60619c9f100300016fbd5acd66ab710b3a0e2bb52cac84955657729ee3bca7480cf5455e60fc829e7e23b8619fd66eae4f40255956c5d576060da83f952b4f2948b90c4711cd67bbf5d7afa81626d00908167d0bc445e3f3d958a23404062f40000000049454e44ae426082</data>
-    </image>
-    <image name="image26">
         <data format="PNG" length="176">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007749444154789ca593410ec0200804771a5fe5ffc3b7e889a641aa69f02408c3b28998993a677c3dcc397dd768666c0192e4be3200b9bb003733b680131cf023005814bd730f20768edd725315037b0ff2b41222e9d3edcac40c6f2b18b173f620e2938abe82b864f7abe2df0aaae94b4df7335dad6e4937dac4407627d675660000000049454e44ae426082</data>
     </image>
-    <image name="image27">
+    <image name="image26">
         <data format="PNG" length="183">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007e49444154789cbd925b0e852010434f8d9b92fda72e6bfc20081272cdf5d52f289d7242500401b0ae169d962545f1db75abb90d004860d760f147c30033404a2922b2110152ddf7857db1803d3c92944b7b152201fb71bebd0e68085d655ba704bfc800a6ff478fba5f7005ff5982b3977e9de0f00f3e27b02dd9bed3c106c6c93ded1103202a0000000049454e44ae426082</data>
     </image>
-    <image name="image28">
+    <image name="image27">
         <data format="PNG" length="187">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008249444154789cbd52c90d80300cb32b964af697192b3cb87a20083cb014b5b95c272a2310f32c9a7973220b498840ec06e44d1226338f9a302a8f091da5974b9e964131f3d88bc956418aa00f645f3e085e6dfc0213004822702e73f547b8af3575fe18e1ab926107bf13401270f3d39ef2652319e6af6377f9f2b6a1bf7393f8190b7b776863b92ae70a0000000049454e44ae426082</data>
     </image>
-    <image name="image29">
+    <image name="image28">
         <data format="PNG" length="199">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008e49444154789cc552d10e0321086bcd7e4aff3fe5b3d883e249bcdb655bb2355141a05023dde16662adad9fad3900a0ef30130120ee4ddd0f50126a1d450030c26be224c51ea33b523008e66deab7931c13ac85dc13af2494d09e3a86edc8f24e50e291123bbbbdc62e2129067f7b4942b9ed7083c7eab8bf943b411ecabe9ee0ff04e90d566d3f9b80e31f7c8c2712f1584b9f61859c0000000049454e44ae426082</data>
     </image>
-    <image name="image30">
+    <image name="image29">
         <data format="PNG" length="192">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008749444154789cc592e10a03210c83bfca5e4adf9ff858d98f3b6f75ccedc6311610a969d3b41836ee5d516b3bee08b0a177053b5a6b06901e6f0021895a371220763a278ee281cc85cd440e017b8e9f31440e079f1257239431bbbd2e7e879217950b5e09ae2ce22dffeb238972b2cf12b7293aeb3b6dfcb283ff0bcc3b58fda65f3a08499704ee2ff2633702fbcb540000000049454e44ae426082</data>
     </image>
-    <image name="image31">
+    <image name="image30">
         <data format="PNG" length="189">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008449444154789cc5926d0ac4200c445fa497d2fb333956f64f235569713f60074423bc6412b508c25d566beb3b062e1917d5d602d6fbd22120e15909cf67809270d7182dc07c679218924c0ed2f26d0bd97b8763859f54127697b964e9600706401267ddb79724ca5695071d43b4ccfb4697e6be76f0ff04e30cf61eeeb70eecfc071feb0539dc5158a90072790000000049454e44ae426082</data>
     </image>
-    <image name="image32">
+    <image name="image31">
         <data format="PNG" length="194">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008949444154789cc591510ac3300c439fcb2e95dc1fe558da479bce29cbda51c6042138b265d9091bb7a628a5ee7704d8d09a820db5560348af37809044292b09101b9d137b7147e6c26620bb803dc6477491ddc159e26c84a5cf6ecf8b3f61c98bca05ef046716f19afff591c472b1cf148f1cc445db4e9bb9ede0ff02c30e7cfaeb3f7010926e093c01bed8643590a6dd2f0000000049454e44ae426082</data>
     </image>
-    <image name="image33">
+    <image name="image32">
         <data format="PNG" length="213">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000009c49444154789c9d92c115832010443f3c9b8202d296d2960560599b835924eb9a07f927516658c6091b088657ad0120a52c00c771ae3d1680b5b3289fad236280e8bd1c15b7092c2342256c4e0696559e4d43ad15b8c62ee19e89ae3d93a5179f1bf26da25f578abd589f670822889e90529632109ff6a45de1e923c09eb3783d51e2cc2ff3f82ad23f666e912c76ec3d5f61b71e8c62339936b0bc0149734fa1c0a5947b0000000049454e44ae426082</data>
     </image>
-    <image name="image34">
+    <image name="image33">
         <data format="PNG" length="203">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000009249444154789ca5925b0e85200c44a7844dc1fe332eabf7036a4aa557a3e7475e731a8aa20a0580e3a060d25abfac650849b4d655e651d5f1cdc2bd0f3939f6451567d830491459d82029350beeb0aa5e544785d5fce4ee46b186f9a05fbb15c46a6f240a404982e432cfc67e5e768db9c33f658d9b26fc37f694a755333e0b962bc4df34b2eb5389812c9c9d93f924aff901d143711e692eae430000000049454e44ae426082</data>
     </image>
-    <image name="image35">
+    <image name="image34">
         <data format="PNG" length="196">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008b49444154789cad525b0ec3200cb3d12e05f79773acec8341a30a28ed6a29521ec48a13e80e0700331100722e1efd581b2135a73d9ec55348823b7c64922009007c61d539135d34756367390d4cf609bbfe52aaac984b2d208f658d9a6748ab65e55cfc6a996955dcc1c74c940e7d5546714934db20884123b983bf25bc47104fb673bed726e0efaf3fc617923a72d2a72640780000000049454e44ae426082</data>
     </image>
-    <image name="image36">
+    <image name="image35">
         <data format="PNG" length="202">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000009149444154789ccd92d111c42008441f4e9ad2eaa88b02b02cef23a3434ccce5f275fb0503bb0ba2b446abd50520e77288016a7529658f01dcf77a478acd1d2b32c09ca7ee382392551577175505c0cc8688b8fbc1b593a35b1cdbcc5a1704d8e6f1af56bac3cf135c0acce49c4b9305e57485f8e24375e977c63693a3cb931596677c8a14933762e97bcbbf0b8c8ff4161ffe50663e70aa81390000000049454e44ae426082</data>
     </image>
-    <image name="image37">
+    <image name="image36">
         <data format="PNG" length="195">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008a49444154789cad50410e0421082b663e25ff0f3eab7b18996588ae9a6c4f58a12d0809b666828e5af579c77a86d29a49adcafc31e28602009045bc5eb93f023e905d77525ca3043bce0e0140f23b78121fe82b008084f6d96147b8c8f7f05ddfc3a45216394a8eca2ddf902013eee88799094a6f2c9154dddb3ba2ac5b7e43ccec459ca6f87f82537c00b84d4b8d5704ac460000000049454e44ae426082</data>
     </image>
-    <image name="image38">
+    <image name="image37">
         <data format="PNG" length="187">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008249444154789cc591d10dc02008440fb7d201ba56d3b53a008c453faac410b51a3f7a5f28dee388a40a156142568cc9ce75dd5310618a31a96fb4ee9a0000f090527f4d374031f8a933292c816f8830cd242055d814bfcaf40afe71fd0b53098ae14e494f05ae8caa6baf835f4f18c5ec999b2bac988680556d038899ff4db00d78004e2749bcf3e219b00000000049454e44ae426082</data>
     </image>
-    <image name="image39">
+    <image name="image38">
         <data format="PNG" length="176">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007749444154789cc553410a80300c4bc457e5ffe45bf520c53957a6ec60a03042d336a5a36dac605b5203d847a4a4c8b76d7e9a20c595505264dc269809fb9c5b01493112b65c95b3b57e679d47a0edc7d2b2db9b65124020cebc0040f2f238e01f16fa6a55970acb87b45ec0364122237d567c0ffefe990ec8634e245f94a6810000000049454e44ae426082</data>
     </image>
-    <image name="image40">
+    <image name="image39">
         <data format="PNG" length="190">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008549444154789ca5535b0e803008b3c44bc9fdd31d0b3f14c5cd8d199b90f0580b1b19482e119baa2d090a09f7e10233c4371179906dc2aa49619e3e8bc07dc87ab910370253080272e570774afdd04cfc312c8c6c96f8a7602121ee34238e2c70d6dedd7aa89badd9810c1283afe46b02d5edd8a6b6cb24cb505446c519fc1640fd1bbf6207c3734bef637936d40000000049454e44ae426082</data>
     </image>
-    <image name="image41">
+    <image name="image40">
         <data format="PNG" length="205">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000009449444154789cad91510ec3200c439f512f55ee2fe758d907a2635d41489bbf88491c27916dceb3264084055cb10476e36628b34280ccc6757e2a308ad45a336fe95a7850261fe952ebfc8ea7cdb14325c2eadd1bb99ef98e027c2d515adb1e713c5da0bb8800603e03708cf657db9ee1bac2ddc92e8efe180b6b6d623b0b95edc78f5d11d9be92675889fceca03c917fd9c12e5ed7a25f443f95e2b00000000049454e44ae426082</data>
     </image>
-    <image name="image42">
+    <image name="image41">
         <data format="PNG" length="150">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005d49444154789cc592410ac0300804d7d24f75ffcf7ecb9c2c2d3446b090bd0574329a98247472b4ba019cab02f2f2bd061187bdce06ffc7603fa0bc8398b96440d249a6cf7783673f310092ecb3e00958dd9641da06d31d549a53836a06004823c05dcb1e990000000049454e44ae426082</data>
     </image>
-    <image name="image43">
+    <image name="image42">
         <data format="PNG" length="159">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000006649444154789ccd93c10dc0200c031dc452cdfe3263d12f720a0ab48ffa89f06127c2486294bb7700206948c814a010f7abcfcc64b3aaa6089afa0100455f1ca3676a14bdbc3b83aa0759634870aa906035f5146025b2857aaf2bfc04b0bbba4f133c7ea61ddd5f8a2f123ec8b5430000000049454e44ae426082</data>
     </image>
-    <image name="image44">
+    <image name="image43">
         <data format="PNG" length="227">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000aa49444154789ca552c10d03210c3355a7ca00cce5b93280d74a3f75450377aa544ba7bbd8c167024312fe45012892f536fbaa499639f3e6deefcf4749821fd7abbe9a597b00c09c73384e665644d41ad1fadae79e47df0f49481a9def9034248de7c920228ae4e562f700c0f8f714b62d1811b1cde2c41d0d32b34efc49bf4cd09baf4cb71964e6ed000d9298738e9f8ed1862b6f6e4bd0877407497b82fe275f18733dddd1e02e45d75e61f88fe009f314220000000049454e44ae426082</data>
     </image>
-    <image name="image45">
+    <image name="image44">
         <data format="PNG" length="152">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005f49444154789ccd93410a8050084467baffb9e65ab6c930523f7c1725b810794f14a4244ce218d1bf101080edc292385f4112bd305b679c0e5c37f082441bde8f43ef1556920c7e083a4905bf0499a483534126a9e05210a10e06007efe4c27b0863a9cd50f22b90000000049454e44ae426082</data>
     </image>
-    <image name="image46">
+    <image name="image45">
         <data format="PNG" length="142">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005549444154789cd5d3410a00210c43d1d663f5fee45a9d55057534627161f6ff21a80a40322ba9fa3a60667e0c44cc905f2022777e9201e8638634401fc7564805663143ca4ebc425444e855cd0640d30f49dfff0b1fa6762fc9ba4946c30000000049454e44ae426082</data>
     </image>
-    <image name="image47">
+    <image name="image46">
         <data format="XPM.GZ" length="407">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530513054d2e1524a5248565036000310570fc44d360041105719c44d4b83c92642b8200056aca78c04f4f4c062ca28002ca6ac9c88049495a162494989300c17c3ae0ea28aaeeab0f903ab7f8909835a6b2e00c2755c9f</data>
     </image>
-    <image name="image48">
+    <image name="image47">
         <data format="PNG" length="178">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007949444154789ccd52c109c4300c733a9606f05c9acb03682df7e592a447b852686b08015911924893647766bbf57a250020df7570492022124002c88838accfd84f9ea4e19859d64d3249e68cf5bc9383de9ebb37776f33768a40d2489aa461b99ae22e4b8c88a193c2aa9fa383cad967fc176bdffdca8f09ec90a97977c78b4d060000000049454e44ae426082</data>
     </image>
-    <image name="image49">
+    <image name="image48">
         <data format="PNG" length="175">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007649444154789ca552410ec0300852b34fd5ffc73dab3b99182bce651c2da052d9cce80f2e22a2a5babd709b712770aef3248b96ea8e8695384250e74c46534a2421936e45462156e356f9482e20a0704b83aa3b0af630c8c4fc43ad01127726821ef2ce9f324064afc76687c1db298fef608af11d203ccb6e4f14ac5223cb0000000049454e44ae426082</data>
     </image>
-    <image name="image50">
+    <image name="image49">
         <data format="PNG" length="152">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005f49444154789cdd51410ac0200c4bc54fcdff139fb59d025b98cad69d162868243569832432284eb4b6edaa9950efe58ef4662331008422ac7e74903d00a09ec522478e5c7c89e06271cefb3d3edfc253541dde0e31ed203d831f44483b38003047366a8d4202cd0000000049454e44ae426082</data>
     </image>
-    <image name="image51">
+    <image name="image50">
         <data format="PNG" length="179">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007a49444154789cad53c10d80300804e25232004377003a567dd55c2a2a1149fae0e08e022dbb3b554c4aec3f04b66ca2ea3ed077ef4c44c438034c9a09884f0c7d7923b7d6c68a614c9ec89956640554f731cf1d198bd4b7e0de39d34254fdbc4134f1c82271898228626617d28c9b1973f62fa41ed2172b6fe1009744526b5618a18a0000000049454e44ae426082</data>
     </image>
-    <image name="image52">
+    <image name="image51">
         <data format="PNG" length="136">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000004f49444154789c633c76ec18032580099ba09595e57f2b2bcbffc4886318005370ecd8714674399818b221585d400a186e06e00b4018400f48267c92d800ba25832c0c068701f802125b2c31529a1b01d29b2b71de6f69aa0000000049454e44ae426082</data>
     </image>
-    <image name="image53">
+    <image name="image52">
         <data format="PNG" length="163">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000006a49444154789cad93510ec0200843cbe2a5e4fea9c7725f7ccc08b2b17e9a475b481492a8482630016090e2415dd5655a04d95ba46603111cb5bb56c88ca2da5b83af7a18ac69a774b741e678ae81a566d2dd066f5436682740b5bbf720876c1b64f7077e5841aabff10675543268412c88ad0000000049454e44ae426082</data>
     </image>
-    <image name="image54">
+    <image name="image53">
         <data format="PNG" length="182">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007d49444154789ca552410ec0200883c54fe9ff539fe52eba900accc4de805a0aa20084d15a1d5b7202e86ae312118723a1bae79e48e014a103af5b2a505bfb4c03089f5b5e0754ed126d7111fe6aeafd0277e1d872dd253229cbbb0e22271ea788ec87c3c762c1dceb3b480596edc8bec81c21b3cc60eef508e92f9ce00585334163b3a095120000000049454e44ae426082</data>
     </image>
-    <image name="image55">
+    <image name="image54">
         <data format="PNG" length="148">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005b49444154789ca593c11100210803c1aea4ff896579df3c6e1246f8ef124013404c6a8d6827a8dab76adf7102259102e0a493d8044e927c0537ef9ff4e90adce849c009b2f390b823c3ad040ab60207b7122838a2b90355e3cff40191612cbbd24b26b20000000049454e44ae426082</data>
     </image>
-    <image name="image56">
+    <image name="image55">
         <data format="PNG" length="169">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007049444154789cc5935d0ac0200c83d3b14bd9fb138fe59e2a9dd49fcdc1f224ca972614852476746cd100cef64235153b93591e25f0f0eb04a3c949b5004026eb7b4de0a7474922f86630520f0600f16bb4c9be82c13d7dbfc65699945185a504064675962bf44ca61522132ff9fd335d644334c6b50d09650000000049454e44ae426082</data>
     </image>
-    <image name="image57">
+    <image name="image56">
         <data format="PNG" length="172">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007349444154789cb5914b0a80300c4413f152cdfd793d565c9462451d02e24016f9c2e439605fb4a9668bc816916ac6d3ec32d0c1e7f29abf2acd720de0567b0b405ba8687f2a76f0aa0557142a47e4818ae40f225a46348d713cf414749fcb6b2e74a5332c9528fe8811ba572d480a95239f311e245378be674b7b600000000049454e44ae426082</data>
     </image>
-    <image name="image58">
+    <image name="image57">
         <data format="PNG" length="151">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005e49444154789c633c76ec180325808922dd0c0c0c2cc81c2b2bcbff84341c3b769c912217a05bc2486a18c00c80b984e230a08f01f80297a001c89ab11984371071d98c1c952487017a3a20188de8d1860e08ba009746a25d4008509c0e00a1f2270eec0f7f0f0000000049454e44ae426082</data>
     </image>
-    <image name="image59">
+    <image name="image58">
         <data format="PNG" length="167">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000006e49444154789cc5934b0ac0200c445f422f55ef4f3c965d05822454b1d05949e24c3ea362669c408fd85f085c00addd03c0ac8b2762cccfa5c01ba2f05c40e3050f661d6564b32e125d88adae9001644039df0a8e5dd81a21db8d56c9d9ba6ab19a25775c597a07d9880ef9fd333d3a034c6af51a57770000000049454e44ae426082</data>
     </image>
-    <image name="image60">
+    <image name="image59">
         <data format="PNG" length="152">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005f49444154789ce592cd0a80300c83bf882fe5de9ff4b1ea4198433676504430a7b6e94f08956d66d84ac95e3d6c09b24bdaa13adced0004c30589da04e9c2e7b1601dc90efb54c0e80ce8ae07cb747a82f74dcc367e44c10f4daca5cf7ce20e8d00544e852eec1d0000000049454e44ae426082</data>
     </image>
-    <image name="image61">
+    <image name="image60">
         <data format="PNG" length="136">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000004f49444154789c633c76ec180325808922dd43cb002b2bcbffd8c459c8d548d000748dc78e1d6724ca006235c200c581c8882b2111eb129c066033089b2104bd70ecd871467ce140d00584c0c027650003f62169a6471edc0000000049454e44ae426082</data>
     </image>
-    <image name="image62">
+    <image name="image61">
         <data format="PNG" length="141">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005449444154789ccd52310e00210c2ac64fe9ff83cfd2c9a95e833a9ccc40a00524ed06e94afdb641ada52b0659114666f98b4436280960d68f842e4184a802e690a20a92c18aacd4716f241b76eee012ece2ff290f25e226beda7116950000000049454e44ae426082</data>
     </image>
-    <image name="image63">
+    <image name="image62">
         <data format="PNG" length="107">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000003249444154789c633c76ec180325808922ddc3c3001674012b2bcbfff8341c3b769c91aa2e60a4341a878117063e1d0cbc0100d0310f163b1469040000000049454e44ae426082</data>
     </image>
-    <image name="image64">
+    <image name="image63">
         <data format="PNG" length="121">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000004049444154789c633c76ec180325808922ddc3c3001662155a5959fec769002e490606068663c78e3352c505b80c62c12589ee2a5caea4381019475322e5060000b7801275474f75b70000000049454e44ae426082</data>
     </image>
-    <image name="image65">
+    <image name="image64">
         <data format="PNG" length="144">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005749444154789c633c76ec180325808922dd83c3002b2bcbff9418c0c8c0f01f6ec0b163c719b129c2670913b2262b2bcbffa4ba8811391ad135e37211326021c6167cae6221d76618202a10f101167235c25d30f4f30200a6dc24be331362840000000049454e44ae426082</data>
     </image>
-    <image name="image66">
+    <image name="image65">
         <data format="PNG" length="133">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000004c49444154789c633c76ec180325808922dd83d7002b2bcbff14bbc0cacaf23f310631e28a0574cdc78e1d6724c900620da2381059c8b519af01c89a716924e802421a618060201202039f9401bcbd20c1331e77d20000000049454e44ae426082</data>
     </image>
-    <image name="image67">
+    <image name="image66">
         <data format="PNG" length="164">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000006b49444154789ca5934b0ec020084407e3a5e4fea1c7b22b1a257e0ab0d14cc2cc13228908325552dd006aa489b9f530c1d81c26000091873e02e6d6adf34eb3f732baa9a8a7eaa772cd60349c9eb0a2f893ee26381ad8643bc014c16a2393814df75050f633d55bd26d1b2f48b03c7b5ca0b7860000000049454e44ae426082</data>
     </image>
-    <image name="image68">
+    <image name="image67">
         <data format="PNG" length="129">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000004849444154789c633c76ec180325808922dd0c0c0c2c8414585959fe87b18f1d3bce48920b903593ed025c36137401b2edf85c427120e23400d9d964798162178c200318073c330100cf0214c56ef6682c0000000049454e44ae426082</data>
     </image>
-    <image name="image69">
+    <image name="image68">
         <data format="PNG" length="116">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000003b49444154789c633c76ec180325808922ddd43080055dc0cacaf23f3e0dc78e1d67a4aa0b18f10522cc35e8b652d505a3060c0603f0a603bab8000053410f1439bf72fe0000000049454e44ae426082</data>
     </image>
-    <image name="image70">
+    <image name="image69">
         <data format="PNG" length="116">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000003b49444154789c633c76ec180325808922ddd43080059ba09595e57f5c1a8e1d3bce487b17e0b20d1ba0ad0bd0c3029b8b8641180cbc018c039e99004ab4117170d420660000000049454e44ae426082</data>
     </image>
-    <image name="image71">
+    <image name="image70">
         <data format="PNG" length="175">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007649444154789ca592d10d80200c44afc6a56400d6b2aed501ca58fa8531420ba42fe91fbdde91235545842db4ed0988c89dd2f18ef58e7a11ac05d542430722720300f305d542752ce14680f90400e49c9b6b3df6199b4b027fbeb6a7fec0c272e60ad4eb5eac7091ba3d586118c16be1506086708407134d35406e180b200000000049454e44ae426082</data>
     </image>
-    <image name="image72">
+    <image name="image71">
         <data format="PNG" length="198">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008d49444154789ca593cb1180200c4413bb920268cbd8560a58cac28b6132fc44cd89c3ee23bb030c80feccf6d610c29e43d8f327801981c48f0055cd769b9d6bf310e0c540629183888844ce46db00543537aa7b0c34059828c6c87e9bd14c4b1ce55e0298b9977b790391b344790df0662bb6b70dfba75c1766d9675d14402df2b0591406b0d4f668f8ef6fbc0065cf573f39eb4e070000000049454e44ae426082</data>
     </image>
-    <image name="image73">
+    <image name="image72">
         <data format="PNG" length="123">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000004249444154789c633c76ec180325808922ddd430800599636565f91f997fecd871464272d47501369bd1c5d05d32f081380c0cc01a0bb090c6970ea8e602c601cf4c00ad6f18c7051fb5240000000049454e44ae426082</data>
     </image>
-    <image name="image74">
+    <image name="image73">
         <data format="PNG" length="127">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000004649444154789c633c76ec18032580099fa49595e57f2b2bcbff641b40b10b88018ce86140c8c9c78e1d67a4ad0bb0b906dd56aaba80b65e2006b0a00b0cae5820060c7c2c000032ca1b0ea5c807020000000049454e44ae426082</data>
     </image>
-    <image name="image75">
+    <image name="image74">
         <data format="PNG" length="123">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000004249444154789c633c76ec180325808922dd3437c0cacaf2bf9595e5ff8173015d0c60448e4642fe858163c78e33d2c605e800e622641bd1c1c007226dc3802e2e0000418b14bbd1bcf7880000000049454e44ae426082</data>
     </image>
-    <image name="image76">
+    <image name="image75">
         <data format="PNG" length="165">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000006c49444154789ca592510e80300843c178a971ffe0b1e697c6cd5258d6cfad7d21057577d9d1b195ce0066ad9bb55e0254ccc8f702dc2f7d0c2cfcf50e800c82c222228ab6104d31877f1330237a0b012b8200d6410a4065b1720740d434830c87148519e49c3f3395ee604537ed7249c41e8b191e0000000049454e44ae426082</data>
     </image>
-    <image name="image77">
+    <image name="image76">
         <data format="PNG" length="132">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000004b49444154789cd5d3310a00200c43d1d45be9fd89c7d2d5c16aaa20d8fd7db2d448e2e6d2957e1a2825b7e38087a5c00a6f032326ab85020a76032a9e0622d85da06237a06200b0ff7fa103710b1e6dd12911ff0000000049454e44ae426082</data>
     </image>
-    <image name="image78">
+    <image name="image77">
         <data format="PNG" length="160">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000006749444154789cb591510e80300843c5782977ff74c7d22f1682803544be9694be8556006c9d39f431c679590198e29775c76abb1754f4c0c8bc009da100d9ef14a0322f80bdfbcde047aa1a3d2c6a8a0e316b2a05b0a7fc53e397201f2156e628c4b20566da19dcb7d64d65091c0e190000000049454e44ae426082</data>
     </image>
-    <image name="image79">
+    <image name="image78">
         <data format="PNG" length="151">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005e49444154789ccd92510ac0300843e3e8a5eafd498fe5be04e95a3af463f32b48f24089904465ae52fadf00d56ea7b06ab7960dba6eab250090434e70728800960aba2e3f51bc48e913e62646d30a327b1e8068da01a2670b783bdf57f906c84136117c3145550000000049454e44ae426082</data>
     </image>
-    <image name="image80">
+    <image name="image79">
         <data format="PNG" length="144">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005749444154789ccd52490e0021086b277e4aff9fceb3f4668cce480207e54a1728501222f584d877089492ab05da6108d4de945e5a0233869216872fa13f0cc7337a84c22126af735f211a62da11ada98029444f9d7fe50646e937b5e586da980000000049454e44ae426082</data>
     </image>
-    <image name="image81">
+    <image name="image80">
         <data format="PNG" length="162">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000006949444154789cad525b0ac03008d3d14bd5fb931dabfb12a49222b3fed5471263158074e2694d8bc86005b3b9e21b78b5ac601f66390a1059197309a012caae70d583d31a09c087e3fe9e339b6b072f7bf0eb0aaee4544f263226069c1430c6e849eca167ac46fb237d7dc83a0d22c90d170000000049454e44ae426082</data>
     </image>
-    <image name="image82">
+    <image name="image81">
         <data format="PNG" length="99">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000002a49444154789c633c76ec180325808922dd840cb0b2b2fc6f6565f97fe05c306ac0a801c402c601cf4c00d2c2081976f158a40000000049454e44ae426082</data>
     </image>
-    <image name="image83">
+    <image name="image82">
         <data format="PNG" length="101">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000002c49444154789c633c76ec180325808922ddb80cb0b2b2fc6f6565f91f179ff62e183560d4005201e3806726006de50b71723268a70000000049454e44ae426082</data>
     </image>
-    <image name="image84">
+    <image name="image83">
         <data format="PNG" length="111">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000003649444154789c633c76ec180325808922ddc3c30016648e9595e57f62351e3b769c91fa2e80998a0fa0bb72e003916203184793320300a0620cc545267d6c0000000049454e44ae426082</data>
     </image>
-    <image name="image85">
+    <image name="image84">
         <data format="PNG" length="240">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000b749444154789ca552db11032108844c9a920268ebb42d0ac0b2c887e1467cdc38c97ef9c05d77015515fec1fbe9922859bf57ad784440942ce702aa101e8888e57c05221c2d10255b29ed6a5ebb0b1131a2646ea35fab5614119b7e2022c6cc387aefe1022e7667d00ee0cb9c824f27ccb9000007c260a1155d5befcc3c6533119c601b62fb41b98bfae0568f038127cbcce8246d166216638b43174e6660ac0d16542b1225f31eafe0f3e142d324f60aabf3470bbfe00359918c6410b3cdd80000000049454e44ae426082</data>
     </image>
-    <image name="image86">
+    <image name="image85">
         <data format="PNG" length="168">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000006f49444154789ccd90d10d80200c445bb7a203b096752d0638c6c22f0ca9559ae087efeb2590e33806402b6c6f8722a989a4663d1c4044a47ab81e0ec839b3e71db61b78352d40bd82a60d66dc1ad82640e5d1edbdef1bfc6b83fed2e816b74129a5791e0e50dd5df778fc4294e5114fe3e43ab5472387d20000000049454e44ae426082</data>
     </image>
-    <image name="image87">
+    <image name="image86">
         <data format="PNG" length="167">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000006e49444154789ca5925d0a00210884c7e8fec79a6bcd3e2cbb9499f43310a8305fa9812400e8e49044c1a5ea1748da329a590f688b5e197ca9851978006437cd20c30b7621db5bf0900190f51ba903b466494babfd01de1cc591aa2f448674b078fff591485a6d931348b93103c003b84f38af2cd60ff20000000049454e44ae426082</data>
     </image>
-    <image name="image88">
+    <image name="image87">
         <data format="PNG" length="186">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008149444154789cc5d2d109c3400c0350b9742a0fa0b9349707d05aea4f52f21148da2bf4becc1d7e08fbca3656ce63a9fb1740010800d8aeaf80d519604b900d0a8048cab1b60ddb38bb3f05f686ab3749b93d44490080eececc441248d6f32e40b24862667200ef279899747736a876e4a30400d2ddef04246b798dffffcacbc00beb8b5cd16fa052750000000049454e44ae426082</data>
     </image>
-    <image name="image89">
+    <image name="image88">
         <data format="PNG" length="187">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008249444154789cd552c90dc0200c3355a7ca00cce5b93240d6723f4d0594f6433fb5c483f89062281181156c4bee2f02f6716066028088286fc6d47db382bbcbcce4ee1a05c93df12029008a089c2f72dd671c49b5bace300634a2eeb4dcadc419de0add483e1a93cbdd673decb5d6024066a6312c399220299239bb50feff9597030e280f6846036cc7150000000049454e44ae426082</data>
     </image>
-    <image name="image90">
+    <image name="image89">
         <data format="PNG" length="228">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000ab49444154789ca551410a04210c4b063f35fb7fe2b3b207ad74c50e031b2868d3a6b1d2867b173171df1fc7992b7b8624c286f790040006e00ac15f793a00e4bb6d903cc6d00090a766174fd3b30bce6220e63a9d631787f787bbb62aecc4e66e8e6be6135a34b358b96d60befb27b7040ec95268991a6292d8f664d5b8f3d2f8add70e2ad080ab1d2c51f2f81300d0bac49bf471d353b44b54217045c16ac891b927817f3076f00295932fd4f4b3bb57d716a60000000049454e44ae426082</data>
+    </image>
+    <image name="image90">
+        <data format="PNG" length="276">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000db49444154789c9d92310ec2300c455faa4a1de8ce4c2fc06e26164ec1f17a0a964ecdce056066a743a730808b714391b05429aaf3fcfd1d871823ffc4767f4c00258088249b8c31063ddb9cfe57f8dcb5a1b049bde00be694cf5d1b0042cec2b70243d560618072a9fd9ae9c8addacc608000a49ce71cbc1a2f33a1c2c24bcaebf19a7335b7e0c125185ecf68a75f131661dff1c72b8848d2497bf8cebb51b5788a7d286d3585bdaac256fd20bb04302d922e884efa4e9a3edb212e0a0beb1b5b4895bdf753ec9f9b3854cd07ec4344925f715bacfc05fb4efc9d0725c085f2161d75160000000049454e44ae426082</data>
+    </image>
+    <image name="image92">
+        <data format="PNG" length="176">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff610000007749444154789ca593410ac0200c04778baff2ffe45bdb93a229895af7a288198748686688526b15009819a33b65552c092443d013154b9ace2475e81290c5438e01dee418e053bc56d6f110d0d400f48eefe669af929c40e3deaf1f4006d932b8c904182d7e1bac2024a79f0a6761d784d934eee4ba892fad854316ccbd01020000000049454e44ae426082</data>
+    </image>
+    <image name="image93">
+        <data format="PNG" length="260">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff61000000cb49444154789c9d93db0dc5200c439daa5331006b11d6ea0059cbf7a33c429556e85aaaa0404e3001313378a59408006626d8d019059384886c810620a5c416382677406734d8d5615fa0e30b4012005045a0005475d85c00cf412f1d1d452905d17a92a402f35325827fde5b1aad994d0bdab2f46c51e648d28873a0f9f5e05e9d676b66729899f8d2a9faf079063d894f06b4435c20ce46715578d352c6ea20c37703d65abf01fe82e49cc78e4a2937c459ebfe81e8263e162e538115f1aff1ba2ee69cb75e6108f8473f42828d234e6a7cff0000000049454e44ae426082</data>
+    </image>
+    <image name="image94">
+        <data format="PNG" length="193">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff610000008849444154789ccd934d1280200885a1f1541cc073792e0ef0ae458b864aca52dbf43628321f7f23032055b552a84ba510e59cd9efc99dc0e17c92881a919a4318405fea00f184cbf5514c442c9e5baa001e0c80cff60972a960546924781b607d1eaa206e0ac8bc0362ff47503d0787b8add6780769815d9f87f833401cd85bff44937fa159c18c5672364d4f969a43550000000049454e44ae426082</data>
+    </image>
+    <image name="image95">
+        <data format="PNG" length="191">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff610000008649444154789ccd52b10dc0200c0b1557f900eee22e0ef05b74a822d190802a967a42d8318943222940eb12a05691524a8af82c2242c682c7bcf5c8e48a0a156449b5c6bc6b00a00370c7b2dc64a02449b765bd57dd76841df28a1cb7a3671bf8b2032bf6b695480e2ffaf303addb62d5be0c562691e638c41f1ad88f6261339a423ceee02b6e6b4f48fce44de80e0000000049454e44ae426082</data>
+    </image>
+    <image name="image96">
+        <data format="PNG" length="202">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff610000009149444154789ccd92c10d033108049753aaa200d7e5ba2860db220f8724f8f045277fb22f8360809585242a9999f77ecef70eb4d624e2c75533f9290ca99a03e601392ac0aa1918f9efcdde00557555f53ced9c9b7544e1a0334d8df80a529e7047a589abfb8781f97d6b83194c361100e5fd7972f648d53c6042726962d53c6bdbc43f01ac3eccaffb819789db1bece809a018514f0721ec3e0000000049454e44ae426082</data>
+    </image>
+    <image name="image97">
+        <data format="PNG" length="170">89504e470d0a1a0a0000000d49484452000000100000001008060000001ff3ff610000007149444154789ccd52490e80300804e3abe6017db40f986fd513d122259a72908403db0c9b929415d996aacb0180a38f363a80d4f7e8c0402c89a4dee3665b7cf7ac5127e9086453d38ba56956340078c7976211118dfe60367f94139ed12f2a23f8d9239502ccf6e0171c5ea1a483b77202bbaf3d4a21efa7890000000049454e44ae426082</data>
     </image>
 </images>
 <connections>
@@ -2720,7 +2875,7 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
         <slot>newInitiator()</slot>
     </connection>
     <connection>
-        <sender>new_InterfaceAction</sender>
+        <sender>newInterfaceAction</sender>
         <signal>activated()</signal>
         <receiver>CMainFrame</receiver>
         <slot>new_Interface()</slot>
@@ -3259,6 +3414,48 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
         <receiver>CMainFrame</receiver>
         <slot>makeGUI()</slot>
     </connection>
+    <connection>
+        <sender>debugAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>debug()</slot>
+    </connection>
+    <connection>
+        <sender>DbgBreakpointAct</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>DbgBreakpoint()</slot>
+    </connection>
+    <connection>
+        <sender>DbgClearBreakpointsAct</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>DbgClearBreakpoints()</slot>
+    </connection>
+    <connection>
+        <sender>DbgStepNextAct</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>DbgStepNext()</slot>
+    </connection>
+    <connection>
+        <sender>DbgStepintoAct</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>DbgStepinto()</slot>
+    </connection>
+    <connection>
+        <sender>DbgStepoutAct</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>DbgStepout()</slot>
+    </connection>
+    <connection>
+        <sender>DbgRunToSelAct</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>DbgRunToSel()</slot>
+    </connection>
 </connections>
 <includes>
     <include location="local" impldecl="in declaration">redefines.h</include>
@@ -3388,6 +3585,13 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
     <slot>howTo_clicked()</slot>
     <slot>saveEveryChange( bool )</slot>
     <slot>makeGUI()</slot>
+    <slot>debug()</slot>
+    <slot>DbgBreakpoint()</slot>
+    <slot>DbgClearBreakpoints()</slot>
+    <slot>DbgStepNext()</slot>
+    <slot>DbgStepinto()</slot>
+    <slot>DbgStepout()</slot>
+    <slot>DbgRunToSel()</slot>
 </slots>
 <exportmacro>LAVAPEUI_DLL</exportmacro>
 <layoutdefaults spacing="6" margin="11"/>

@@ -23,8 +23,8 @@
 
 #include "BAdapter.h"
 #include "LavaBaseDoc.h"
+#include "SafeInt.h"
 #include "LavaBaseStringInit.h"
-//#include "stdafx.h"
 #include "qobject.h"
 #include "qstring.h"
 #include "qmessagebox.h"
@@ -43,16 +43,6 @@
   }\
 }
 
-/*
-inline void *__cdecl operator new(size_t, void *_P)
-        {return (_P); }
-#if     _MSC_VER >= 1200
-inline void __cdecl operator delete(void *, void *)
-	{return; }
-#endif
-*/
-//static void* __cdecl operator new(size_t, void* adr) {return adr;}
-//static void operator delete(void*, void*) {} // needed only to prevent a compiler warning
 
 void NewQString(QString* pstr, const char* str)
 {
@@ -339,23 +329,23 @@ bool IntLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 bool IntPercent(CheckData& ckd, LavaVariablePtr stack)
 {
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[SFH+2]+LSH) = *(int*)(stack[SFH]+LSH) % *(int*)(stack[SFH+1]+LSH);
+  *(int*)(stack[SFH+2]+LSH) = (SafeInt<int>(*(int*)(stack[SFH]+LSH)) % SafeInt<int>(*(int*)(stack[SFH+1]+LSH))).Value();
   return true;
 }
 
 bool IntLT(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(int*)(stack[SFH]+LSH) < *(int*)(stack[SFH+1]+LSH);
+  return SafeInt<int>(*(int*)(stack[SFH]+LSH)) < SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
 }
 
 bool IntGT(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(int*)(stack[SFH]+LSH) > *(int*)(stack[SFH+1]+LSH);
+  return SafeInt<int>(*(int*)(stack[SFH]+LSH)) > SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
 }
 
 bool IntLET(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(int*)(stack[SFH]+LSH) <= *(int*)(stack[SFH+1]+LSH);
+  return SafeInt<int>(*(int*)(stack[SFH]+LSH)) <= SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
 }
 
 bool IntGET(CheckData& /*ckd*/, LavaVariablePtr stack)
@@ -365,33 +355,33 @@ bool IntGET(CheckData& /*ckd*/, LavaVariablePtr stack)
 
 bool IntPlus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register int ii =  *(int*)(stack[SFH]+LSH) + *(int*)(stack[SFH+1]+LSH);
+  SafeInt<int> ii =  SafeInt<int>(*(int*)(stack[SFH]+LSH)) + SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[SFH+2]+LSH) =  ii;
+  *(int*)(stack[SFH+2]+LSH) =  ii.Value();
   return true;
 }
 
 bool IntMinus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register int ii = - *(int*)(stack[SFH]+LSH);
+  SafeInt<int> ii = - SafeInt<int>(*(int*)(stack[SFH]+LSH));
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[SFH+1]+LSH) =  ii;
+  *(int*)(stack[SFH+1]+LSH) =  ii.Value();
   return true;
 }
 
 bool IntMulti(CheckData& ckd, LavaVariablePtr stack)
 {
-  register int ii = *(int*)(stack[SFH]+LSH) * (*(int*)(stack[SFH+1]+LSH));
+  SafeInt<int> ii = SafeInt<int>(*(int*)(stack[SFH]+LSH)) * SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[SFH+2]+LSH) =  ii;
+  *(int*)(stack[SFH+2]+LSH) =  ii.Value();
   return true;
 }
 
 bool IntDiv(CheckData& ckd, LavaVariablePtr stack)
 {
-  register int ii = *(int*)(stack[SFH]+LSH) / *(int*)(stack[SFH+1]+LSH);
+  SafeInt<int> ii = SafeInt<int>(*(int*)(stack[SFH]+LSH)) / SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[SFH+2]+LSH) =  ii;
+  *(int*)(stack[SFH+2]+LSH) =  ii.Value();
   return true;
 }
 
@@ -630,25 +620,27 @@ bool StringPlus(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-bool StringBox(CheckData& /*ckd*/, LavaVariablePtr stack)
+bool StringBox(CheckData& ckd, LavaVariablePtr stack)
 {
+  QWidget *parent=qApp->mainWidget();
+
   int rc=QMessageBox::NoButton;
   if ((QString*)(stack[SFH]+LSH)) 
     rc = information(
-      qApp->mainWidget(),qApp->name(),*(QString*)(stack[SFH]+LSH),
+      parent,qApp->name(),*(QString*)(stack[SFH]+LSH),
       QMessageBox::Ok | QMessageBox::Default,
       0,
       0);
   else
     rc = information(
-      qApp->mainWidget(),qApp->name(),"     ",
+      parent,qApp->name(),"     ",
       QMessageBox::Ok | QMessageBox::Default,
       QMessageBox::Abort,
       0);
 
   if (rc == QMessageBox::Abort)
 		if (question(
-			qApp->mainWidget(),qApp->name(),"Do you really want to abort this Lava program?",
+			parent,qApp->name(),"Do you really want to abort this Lava program?",
 			QMessageBox::Yes | QMessageBox::Default,
 			QMessageBox::No,
 			0) == QMessageBox::Yes)

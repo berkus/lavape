@@ -33,7 +33,7 @@
 #include "GUIProg.h"
 #include "Conv.h"
 #include "qmessagebox.h"
-//#include "stdafx.h"
+#include "MACROS.h"
 
 
 

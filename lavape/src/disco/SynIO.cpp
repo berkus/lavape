@@ -42,23 +42,23 @@ SynIOCLASS SynIO;
 static bool __INITstarted=false;
 
 
-void SynIOCLASS::error (DString errorMsg)
+void SynIOCLASS::error (QString errorMsg)
 
 {
   if (!Silent) {
-    DString mess = DString("++++ SynIO: ") + errorMsg;
-    qDebug(mess.c);
+    QString mess = QString("++++ SynIO: ") + errorMsg;
+    qDebug(mess);
   }
 
   Done = false;
 } // END OF error
 
-void SynIOCLASS::InitSyntax(SynDef *syntax, DString name)
+void SynIOCLASS::InitSyntax(SynDef *syntax, QString name)
 {
   CHESimpleSyntax *simpleSyntax = (CHESimpleSyntax*)syntax->SynDefTree.first;
   if (!simpleSyntax) {
     simpleSyntax = new CHESimpleSyntax;
-    simpleSyntax->data.SyntaxName = name;
+    simpleSyntax->data.SyntaxName = DString(name);
     simpleSyntax->data.nINCL = 0;
     syntax->SynDefTree.Insert(0, simpleSyntax);
     syntax->IDTable = 0;
@@ -68,7 +68,7 @@ void SynIOCLASS::InitSyntax(SynDef *syntax, DString name)
 
 }
 
-int SynIOCLASS::ReadSynDef (DString& fileName, SynDef *&syntax, ASN1* strgCid)
+int SynIOCLASS::ReadSynDef (const QString& fileName, SynDef *&syntax, ASN1* strgCid)
 {
   //returns -1 : read failed, 0: read ok, write ok, 1: read ok write failed
   ASN1* pcid;
@@ -84,19 +84,15 @@ int SynIOCLASS::ReadSynDef (DString& fileName, SynDef *&syntax, ASN1* strgCid)
       return -1;
     }
     else {
-      if (access(fileName.c,W_OK) != 0) //FILE_ATTRIBUTE_READONLY & GetFileAttributes(fileName.c))
+      if (access(fileName,W_OK) != 0) //FILE_ATTRIBUTE_READONLY & GetFileAttributes(fileName.c))
         ret = 1;
     }
     pcid = icid;
   }
   Done = true;
   syntax = new SynDef;
-  if (fileName.l) {
-    DString str;
-    CDPSTRING(GET, pcid, (address)&str);
-  }
-  else
-    CDPSTRING(GET, pcid, (address)&fileName);
+	DString fName;
+  CDPSTRING(GET, pcid, (address)&fName);
   CDPint(GET,pcid,(address)&syntax->Release);
   pcid->Release = syntax->Release;
   CDPSyntaxDefinition(GET,pcid,(address)&syntax->SynDefTree);
@@ -124,7 +120,7 @@ int SynIOCLASS::ReadSynDef (DString& fileName, SynDef *&syntax, ASN1* strgCid)
 
 
 
-bool SynIOCLASS::WriteSynDef (const DString& fileName, SynDef *syntax, ASN1* strgCid)
+bool SynIOCLASS::WriteSynDef (const QString& fileName, SynDef *syntax, ASN1* strgCid)
 {
   if (syntax) {
     if (strgCid)
@@ -135,7 +131,7 @@ bool SynIOCLASS::WriteSynDef (const DString& fileName, SynDef *syntax, ASN1* str
   return false;
 }
 
-bool SynIOCLASS::WriteSynDef (const DString& fileName,
+bool SynIOCLASS::WriteSynDef (const QString& fileName,
                               SyntaxDefinition &synDef,
                               int freeID,
                               int freeINCL,
@@ -143,16 +139,18 @@ bool SynIOCLASS::WriteSynDef (const DString& fileName,
                               ASN1* strgCid)
 
 {
+  ASN1* pcid;
+  DString str=fileName.latin1();
+
   if (synDef.first == 0) {
     Done = false;
     error("WriteSynDef: syntax definition = NIL");
     return false;
   }
-  ASN1* pcid;
 
   if (strgCid) {
     pcid = strgCid;
-    CDPSTRING(PUT, pcid, (address)&fileName);
+    CDPSTRING(PUT, pcid, (address)&str);
   }
   else {
     ASN1OutFile* ocid = new ASN1OutFile(fileName);
@@ -163,7 +161,6 @@ bool SynIOCLASS::WriteSynDef (const DString& fileName,
       return false;
     }
     pcid = ocid;
-    DString str;
     CDPSTRING(PUT, pcid, (address)&str);
   }
   Done = true;

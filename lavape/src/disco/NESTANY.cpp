@@ -48,6 +48,7 @@ void NESTEDANY0::CDP (PutGetFlag pgf, ASN1* cid)//,
   else
     if (cid->GotOptional()) {
       cid->GETstring(className);
+      if (cid->Skip()) return;
 /*
       if (className == DString("TBNFexpression"))
         className = "LavaDECL";

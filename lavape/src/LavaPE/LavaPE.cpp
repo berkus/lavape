@@ -34,7 +34,8 @@
 #endif
 #include <errno.h>
 
-
+#include <prelude.h>
+#include <sflsock.h>
 #include "LavaBaseStringInit.h"
 #include "LavaPEFrames.h"
 #include "LavaPEDoc.h"
@@ -47,6 +48,9 @@
 #include "VTView.h"
 #include "SynIO.h"
 #include "LavaPEStringInit.h"
+#include "MACROS.h"
+#include "ASN1File.h"
+
 #include "qdir.h"
 #include "qfont.h"
 #include "qfiledialog.h"
@@ -58,7 +62,6 @@
 
 #include "AboutBox.h"
 #include "qassistantclient.h"
-
 
 static QString szSaveEveryChange = "/SaveEveryChange";
 static QString szExecFont = "/ExecFont";
@@ -122,7 +125,13 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   inTotalCheck = false;;
   LBaseData.theApp = this;
   LBaseData.inRuntime = false;
+  debugThread.doc = 0;
+  LBaseData.debugThread = &debugThread;
   clipboard()->clear();
+  debugThread.get_cid = 0;
+  debugThread.put_cid = 0;
+  debugThread.interpreterWaits = false;
+
 
   settings.beginGroup("/generalSettings");
   LBaseData.m_strSaveEveryChange = settings.readEntry(szSaveEveryChange, 0, &ok);
@@ -267,6 +276,41 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   Tokens_INIT();
 }
 
+bool CLavaPEApp::event(QEvent *e)
+{
+  
+  if (e->type() == IDU_LavaDebug) {
+    ((CLavaMainFrame*)m_appWindow)->m_OutputBar->setDebugData((DebugMessage*)((QCustomEvent*)e)->data(), debugThread.doc);
+    ((CMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
+    ((CMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
+    ((CMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(true);
+    ((CMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(true);
+    ((CMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(true);
+    ((CMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(true);
+    m_appWindow->setActiveWindow();
+    m_appWindow->raise();
+    //m_appWindow->showMaximized();
+
+  }
+  else if (e->type() == IDU_LavaDebugRq) {
+    if (debugThread.dbgRequest) {
+      delete debugThread.dbgRequest;
+      debugThread.dbgRequest = 0;
+    }
+    debugThread.dbgRequest = (DebugMessage*)((QCustomEvent*)e)->data();
+    ((CMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(false);
+    ((CMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(false);
+    ((CMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
+    ((CMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
+    ((CMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
+    ((CMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(false);
+
+    (*debugThread.pContExecEvent)--;
+  }
+	else
+		wxApp::event(e);
+	return QApplication::event(e);
+}
 
 QString CLavaPEApp::InitWebBrowser () {
   QString prog;
@@ -568,20 +612,27 @@ void CLavaPEApp::OnFileOpen()
   OpenDocumentFile(fileName);
 }
 
-wxDocument* CLavaPEApp::OpenDocumentFile(const QString& lpszFileName) 
+void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName) 
 {
   QString name;
   QDir cwd;
 	name = cwd.absFilePath(lpszFileName);
 	name = cwd.cleanDirPath(name);
 	if (!name.contains('.'))
-		return 0;
+		return;
   LBaseData.lastFileOpen = name;
 #ifdef WIN32
   QString driveLetter = QString(name[0].upper());
   name.replace(0,1,driveLetter);
 #endif
-  return wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+  ((CLavaPEApp*)qApp)->debugThread.doc = (CLavaBaseDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+  if (argc() > 2) {
+    ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = QString(argv()[2]);
+    ((CLavaPEApp*)qApp)->debugThread.remotePort = QString(argv()[3]);
+
+    //QMessageBox::critical(qApp->mainWidget(),qApp->name(),"LavaPE: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    ((CLavaPEApp*)qApp)->debugThread.start();
+  }
 }
 
 
@@ -1188,7 +1239,6 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool c
   }
 }
 
-//bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, const DString& enumID, CFindWhat& fw)
 bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& fw)
 {
   CHESimpleSyntax* cheSyn;
@@ -1471,8 +1521,135 @@ QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QStr
   }
   */
 }
+/*
 extern LAVABASE_DLL QString L_GetOpenFileName(const QString& initialDir,
 				                                      const QString& filter,
 				                                      QWidget *parent,
                                               const QString& exten,
 				                                      const QString& caption);
+*/
+
+void CLavaPEDebugThread::reset()
+{
+  if (dbgRequest) {
+    delete dbgRequest;
+    dbgRequest = 0;
+  }
+  if (get_cid)
+    delete get_cid;
+  get_cid= 0;
+  if (put_cid)
+    delete put_cid;
+  put_cid= 0;
+  doc->debugOn = false;
+  interpreterWaits = false;
+//  ((CMainFrame*)wxTheApp->m_appWindow)->DbgBreakpointAct->setEnabled(false);
+//  ((CMainFrame*)wxTheApp->m_appWindow)->DbgClearBreakpointsAct->setEnabled(false);
+  ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepNextAct->setEnabled(false);
+  ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepintoAct->setEnabled(false);
+  ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepoutAct->setEnabled(false);
+  ((CMainFrame*)wxTheApp->m_appWindow)->DbgRunToSelAct->setEnabled(false);
+}
+
+
+void CLavaPEDebugThread::run() {
+
+  CThreadData *td = new CThreadData(this);
+  DebugMessage * mReceive;
+
+  fd_set read_fds;
+  int nReady;
+  
+	threadStg.setLocalData(td);
+  if (doc->debugOn) { 
+    FD_ZERO(&read_fds);
+    FD_SET(listenSocket,&read_fds);
+    while (true) {
+      nReady = sock_select(FD_SETSIZE,&read_fds,NULL,NULL,NULL);
+      if (nReady == -1)
+        if (errno == EINTR)
+          continue;
+        else {
+#ifdef WIN32
+          qDebug("last select error: %d",WSAGetLastError());
+#endif
+          reset();
+          ((CLavaPEApp*)qApp)->interpreter.kill();
+          return;
+        }
+      if (FD_ISSET(listenSocket,&read_fds)) {
+        workSocket = accept_socket(listenSocket);
+        break;
+      }
+    }//while
+  }
+  else {
+    sock_init();
+    workSocket = connect_TCP(remoteIPAddress,remotePort);
+  }
+  ASN1OutSock* out_cid = new ASN1OutSock (workSocket);
+  if (!out_cid->Done) {
+    delete out_cid;
+    qApp->exit(1);
+  }
+  put_cid = out_cid;
+
+  ASN1InSock* in_cid = new ASN1InSock (workSocket);
+  if (!in_cid->Done) {
+    delete in_cid;
+    qApp->exit(1);
+  }
+  get_cid = in_cid;
+  dbgRequest = 0;
+  if (doc->debugOn) {
+    dbgRequest = new DebugMessage(Dbg_Continue, 0);
+    if (((CLavaPEDoc*)doc)->ContinueData) {
+      dbgRequest->ContinueData.ptr = ((CLavaPEDoc*)doc)->ContinueData;
+      ((DebugContData*)dbgRequest->ContinueData.ptr)->ContType = dbg_Cont;
+      ((CLavaPEDoc*)doc)->ContinueData = 0;
+    }
+    CDPDebugMessage(PUT, put_cid, (address)dbgRequest);
+    if (put_cid->Done)
+      put_cid->flush();
+    else {
+      reset();
+      ((CLavaPEApp*)qApp)->interpreter.kill();
+      return;
+    }
+    //wxTheApp->m_appWindow->showMinimized();
+  }
+  else
+    doc->debugOn = true;
+  while (true) {
+    mReceive = new DebugMessage;
+    CDPDebugMessage(GET, get_cid, (address)mReceive);
+    if (get_cid->Done) {
+      interpreterWaits = true;
+      if (pContExecEvent->available())
+        (*pContExecEvent)++;
+
+		  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebug,(void*)mReceive));
+      if (wxTheApp->apExit)
+        break;
+      (*pContExecEvent)++;
+      if (!dbgRequest)
+        break;
+      if (((CLavaPEDoc*)doc)->ContinueData)
+        dbgRequest->ContinueData.ptr = ((CLavaPEDoc*)doc)->ContinueData;
+      else
+        dbgRequest->ContinueData.ptr = 0;
+      ((CLavaPEDoc*)doc)->ContinueData = 0;
+      CDPDebugMessage(PUT, put_cid, (address)dbgRequest);
+      if (!put_cid->Done) 
+        break;
+      put_cid->flush();
+      //wxTheApp->m_appWindow->showMinimized();
+      interpreterWaits = false;
+    }
+    else
+      break;
+  } 
+  reset();
+}
+
+

@@ -20,6 +20,18 @@
 #include "qdragobject.h"
 
 
+class TreeWhatsThis : public WhatsThis
+{
+public:
+  TreeWhatsThis(MyListView *lv);
+
+  QString text(const QPoint&);
+
+private:
+  MyListView *listView;
+};
+
+
 enum TIType {
   TIType_DECL,         // LavaDECL node
   TIType_CHEEnumSel,   // enum item node 

@@ -345,7 +345,7 @@ public:
 
 $TYPE +CDP {
 
-enum ConstrFlags {
+enum ExecFlags {
   staticCall,         //0
   ignoreSynObj,       //1
   newLine,            //2
@@ -378,6 +378,12 @@ enum ConstrFlags {
   isReverseLink       //29
 };
 
+enum WorkFlags {
+  isBreakPoint,
+  isTempPoint
+};
+
+
 class TComment {
 public:
   STRING str;
@@ -394,7 +400,8 @@ public:
   NESTED<TComment> comment;
   address-- whereInParent;
   CHAINX-- *containingChain;
-  SET flags;
+  SET flags; //ExecFlags
+  SET-- workFlags;
   CHETokenNode-- *startToken, *endToken, *primaryTokenNode;
   CHAINX-- errorChain;
   CHE-- *oldError;
@@ -465,7 +472,7 @@ public:
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored){}
   void SetError(CheckData &ckd,QString *error,char *textParam=0);
   void SetRTError(CheckData &ckd,QString *error,LavaVariablePtr stackFrame,const char *textParam=0);
-  QString CallStack(CheckData &ckd,LavaVariablePtr stack);
+  QString CallStack(CheckData &ckd,LavaVariablePtr stack,QString excMsg);
   QString LocationOfConstruct ();
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) { decl = 0; cat = unknownCategory; }
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
@@ -595,9 +602,6 @@ public:
   virtual bool IsPlaceHolder () { return false; }
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
-  virtual void whatNext() { ShowPage("VarName.htm"); }
-  virtual QString whatsThisText() {
-    return QString(QObject::tr("<p>This is a local variable</p>")); }
 };
 
 class FormParm : public Expression {
@@ -1218,8 +1222,6 @@ public:
 class Declare : public QuantStmOrExp {
 public:
   virtual bool IsDeclare () { return true; }
-  virtual QString whatsThisText() {
-   return "<p><a href=\"Declare.htm\">Declare</a> local variables</p>"; };
 };
 
 class Exists : public QuantStmOrExp {
@@ -1362,6 +1364,8 @@ public:
   VarNameV (const char *vn);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QString(QObject::tr("<p>This is a local variable</p>")); }
 };
 
 class FormParmV : public FormParm {
@@ -1423,6 +1427,8 @@ public:
   SucceedStatementV ();
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"); }
 };
 
 class FailStatementV : public FailStatement {
@@ -1430,6 +1436,9 @@ public:
   FailStatementV ();
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    " optionally throw exception</p>"); }
 };
 
 class OldExpressionV : public OldExpression {
@@ -1437,6 +1446,8 @@ public:
   OldExpressionV ();
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Old.htm\">Old</a> value of a variable or expression (on entry to function)</p>");}
 };
 
 class UnaryOpV : public UnaryOp {
@@ -1480,6 +1491,8 @@ public:
   LogicalNotV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>");}
 };
 
 class EvalExpressionV : public EvalExpression {
@@ -1504,6 +1517,8 @@ public:
   InSetStatementV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+   return QObject::tr("<p><a href=\"InSet.htm\">Element in set</a> test</p>"); };
 };
 
 class BinaryOpV : public BinaryOp {
@@ -1528,6 +1543,8 @@ public:
   SemicolonOpV () { MultipleOpInit(Semicolon_T); }
   void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored) {
     ::Draw(this,text,where,chxp,ignored); }
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>");}
 };
 
 class AndOpV : public AndOp {
@@ -1535,6 +1552,8 @@ public:
   AndOpV () { MultipleOpInit(and_T); }
   void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored) {
     ::Draw(this,text,where,chxp,ignored); }
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>");}
 };
 
 class OrOpV : public OrOp {
@@ -1542,6 +1561,8 @@ public:
   OrOpV () { MultipleOpInit(or_T); }
   void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored) {
     ::Draw(this,text,where,chxp,ignored); }
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>");}
 };
 
 class XorOpV : public XorOp {
@@ -1549,6 +1570,8 @@ public:
   XorOpV () { MultipleOpInit(xor_T); }
   void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored) {
     ::Draw(this,text,where,chxp,ignored); }
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>");}
 };
 
 class BitAndOpV : public BitAndOp {
@@ -1620,6 +1643,8 @@ public:
   AssignmentV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Assign.htm\">Assignment statement</a></p>"); }
 };
 
 class ArrayAtIndexV : public ArrayAtIndex {
@@ -1664,6 +1689,9 @@ public:
   CallbackV (ObjReference *handle);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>Use the <b>callback</b> expression to define a"
+    " <font color=\"red\"><i><b>Lava</b></i></font> <a href=\"../Callbacks.htm\">callback</a></p>");}
 };
 
 class AssertStatementV : public AssertStatement {
@@ -1672,6 +1700,10 @@ public:
   AssertStatementV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
+    " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
+    " and throws a specific exception in case of violation</p>"); }
 };
 
 class ThrowStatementV : public ThrowStatement {
@@ -1697,6 +1729,8 @@ public:
 
   virtual void Insert2Optionals (SynObject *&elsePart, SynObject *&branch, CHAINX *&chx);
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"IfStm.htm\">if-then-elsif-else</a> statement with\noptional elsif and else branches</p>"); }
 };
 
 class IfxThenV : public IfxThen {
@@ -1705,6 +1739,8 @@ public:
   IfxThenV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>");}
 };
 
 class IfExpressionV : public IfExpression {
@@ -1714,6 +1750,8 @@ public:
 
   virtual void InsertBranch (SynObject *&branch, CHAINX *&chx);
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>");}
 };
 
 class BranchV : public Branch {
@@ -1722,6 +1760,8 @@ public:
   BranchV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Switch.htm\">switch</a> statement with optional else branch</p>");}
 };
 
 class SwitchStatementV : public SwitchStatement {
@@ -1731,6 +1771,8 @@ public:
 
   virtual void Insert2Optionals (SynObject *&elsePart, SynObject *&branch, CHAINX *&chx);
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Switch.htm\">switch</a> statement with optional else branch</p>");}
 };
 
 class CatchClauseV : public CatchClause {
@@ -1747,6 +1789,8 @@ public:
   TryStatementV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"); }
 };
 
 class TypeBranchV : public TypeBranch {
@@ -1755,6 +1799,8 @@ public:
   TypeBranchV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"TypeSwitch.htm\">type switch</a> statement with optional else branch</p>");}
 };
 
 class TypeSwitchStatementV : public TypeSwitchStatement {
@@ -1764,6 +1810,8 @@ public:
 
   virtual void Insert2Optionals (SynObject *&elsePart, SynObject *&branch, CHAINX *&chx);
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"TypeSwitch.htm\">type switch</a> statement with optional else branch</p>");}
 };
 
 class AttachObjectV : public AttachObject {
@@ -1773,6 +1821,8 @@ public:
   AttachObjectV (Reference *ref);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Attach.htm\">Attach</a> an existing <b><i><font color=\"red\">Lava</font></i></b> component object through one of its interfaces</p>"); }
 };
 
 class NewExpressionV : public NewExpression {
@@ -1783,6 +1833,8 @@ public:
   NewExpressionV (FuncStatement *ref,bool withItf,bool withLoc);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>Create a <a href=\"New.htm\">new</a> object</p>");}
 };
 
 class CloneExpressionV : public CloneExpression {
@@ -1791,6 +1843,8 @@ public:
   CloneExpressionV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Clone.htm\">Clone</a> an existing <b><i><font color=\"red\">Lava</font></i></b> object</p>");}
 };
 
 class CopyStatementV : public CopyStatement {
@@ -1799,6 +1853,8 @@ public:
   CopyStatementV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Copy.htm\">Copy</a> an existing <b><i><font color=\"red\">Lava</font></i></b> object onto another object</p>");}
 };
 
 class EnumItemV : public EnumItem {
@@ -1807,6 +1863,8 @@ public:
   EnumItemV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>Get an enumeration <a href=\"EnumItem.htm\">item</a> from its index</p>");}
 };
 
 class ExtendExpressionV : public ExtendExpression {
@@ -1815,6 +1873,8 @@ public:
   ExtendExpressionV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>Add a <a href=\"Scale.htm\">scale</a> (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters</p>"); }
 };
 
 class RunV : public Run {
@@ -1825,6 +1885,8 @@ public:
   RunV (FuncStatement *ref);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Run.htm\">Run</a> a nested <a href=\"../Packages.htm#initiator\">initiator</a></p>");}
 };
 
 class QueryItfV : public QueryItf {
@@ -1833,6 +1895,8 @@ public:
   QueryItfV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"QryItf.htm\">Query interface:</a> Make another interface of a component object accessible, starting from a known interface</p>");}
 };
 
 class GetUUIDV : public GetUUID {
@@ -1870,6 +1934,8 @@ public:
   DeclareV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Declare.htm\">Declare</a> local variables</p>"); };
 };
 
 class ExistsV : public Exists {
@@ -1879,6 +1945,8 @@ public:
 
   virtual SynObject *InsertOptionals ();
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+   return QObject::tr("<p><a href=\"Exists.htm\">Existential quantifier</a> ranging \nover a finite set</p>"); };
 };
 
 class ForeachV : public Foreach {
@@ -1887,6 +1955,8 @@ public:
   ForeachV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+   return QObject::tr("<p><a href=\"Foreach.htm\">Universal quantifier</a> ranging \nover a finite set</p>"); };
 };
 
 class SelectExpressionV : public SelectExpression {
@@ -1895,6 +1965,8 @@ public:
   SelectExpressionV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"Select.htm\">Select</a> quantifier ranging \nover a finite set</p>"); }
 };
 
 

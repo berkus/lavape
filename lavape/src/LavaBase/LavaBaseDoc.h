@@ -124,6 +124,7 @@ public:
   bool isObject;
   bool inSaveProc;
   bool Redraw;
+  bool debugOn;
   LavaObjectPtr DocObjects[3]; //Runtime: [0] = GUI object,
                                //         [1] = start object,
                                //         [2] = show result 0bject
@@ -132,11 +133,11 @@ public:
   CThreadList *ThreadList;
   QWidget* DumpFrame;
 
-  CHESimpleSyntax* AddSyntax(SynDef *syntaxIncl, DString& fn, bool& errEx, int hint=0);
+  CHESimpleSyntax* AddSyntax(SynDef *syntaxIncl, const QString& fn, bool& errEx, int hint=0);
   bool AllowThrowType(LavaDECL* decl, TID throwID, int inINCL);
-  CHESimpleSyntax* AttachSyntax(CheckData& ckd, DString& fn); //Runtime include
+  CHESimpleSyntax* AttachSyntax(CheckData& ckd, QString& fn); //Runtime include
 
-  void CalcNames(const DString& FileName);
+  void CalcNames(const QString& FileName);
   virtual bool CheckCompObj(LavaDECL* compoDECL);
   QString* CheckException(LavaDECL *funcDecl, CheckData* pckd);
   QString* CheckFormEl(LavaDECL *formEl, LavaDECL *classEl);
@@ -167,8 +168,8 @@ public:
   LavaDECL* GetTypeAndContext(LavaDECL* decl, CContext &context);
   virtual int GetVTSectionNumber(CheckData& ckd, const CContext& /*context*/, LavaDECL* /*paramDECL*/, bool& /*outer*/) {return -1;}
 
-  virtual void IncludeHint(const DString& /*fullfn*/, CHESimpleSyntax* ) {}
-  CHESimpleSyntax* IncludeSyntax(DString& fn, bool& isNew, int hint=0);
+  virtual void IncludeHint(const QString& /*fullfn*/, CHESimpleSyntax* ) {}
+  CHESimpleSyntax* IncludeSyntax(const QString& fn, bool& isNew, int hint=0);
   virtual bool IsCDerivation(LavaDECL *decl, LavaDECL *baseDecl, CheckData* pckd=0);
 //  virtual bool IsOuterParam(paramDECL, typeDECL) {return false;}
   //virtual void LavaEnd(bool doClose = true) {}
@@ -181,7 +182,7 @@ public:
   bool okPattern(LavaDECL* decl);
   virtual LavaObjectPtr OpenObject(CheckData& ckd, LavaObjectPtr urlObj) {return 0;}
   virtual bool OverriddenMatch(LavaDECL *decl, bool setName=false, CheckData* pckd=0);
-  virtual int ReadSynDef(DString& fn, SynDef* &sntx, ASN1* cid = 0);//fn has all links resolved
+  virtual int ReadSynDef(const QString& fn, SynDef* &sntx, ASN1* cid = 0);//fn has all links resolved
 //  void ReduceType(TID& id, int inINCL, int& refs);
   virtual void ResetError() {}
   virtual bool SaveObject(CheckData& ckd, LavaObjectPtr object) {return false;}
@@ -247,6 +248,11 @@ public:
   virtual void OnGenHtml() {}
   virtual void OnGenHtmlS() {}
 
+  virtual void DbgBreakpoint() {}
+  virtual void DbgStepNext() {}
+  virtual void DbgStepinto() {}
+  virtual void DbgStepout() {}
+  virtual void DbgRunToSel() {}
   virtual void OnAnd() {}
   virtual void OnBitAnd() {}
   virtual void OnBitOr() {}
@@ -439,7 +445,7 @@ extern LAVABASE_DLL bool DEC_REV_CNT(CheckData &ckd, LavaObjectPtr object);
 class LAVABASE_DLL DumpEventData {
 public:
   DumpEventData(CLavaBaseDoc* d, LavaVariablePtr stack, CLavaThread* thread)
-  {doc = d; object = stack[0]; name = *((QString*)(stack[1]+LSH)); currentThread = thread;}
+  {doc = d; object = stack[SFH]; name = *((QString*)(stack[SFH+1]+LSH)); currentThread = thread;}
   CLavaBaseDoc* doc;
   LavaObjectPtr object;
   QString name;
@@ -645,7 +651,7 @@ extern LAVABASE_DLL void ToggleObjectCat(LavaObjectPtr obj);
 
 #ifndef WIN32
 extern LAVABASE_DLL jmp_buf contOnHWexception;
-extern LAVABASE_DLL CHWException *hwException;
+extern LAVABASE_DLL CHWException hwException;
 #endif
 
 #endif

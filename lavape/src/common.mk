@@ -14,7 +14,8 @@ moc_ui_files=$(addprefix Generated/moc_,$(cpp_ui_files1))
 o_moc_ui_files=$(moc_ui_files:.cpp=.o)
 
 cpp_files=$(wildcard *.cpp)
-o_files=$(cpp_files:.cpp=.o)
+c_files=$(wildcard *.c)
+o_files=$(cpp_files:.cpp=.o) $(c_files:.c=.o)
 
 basenames_mocable=$(basename $(MOCABLES))
 basenames_mocable_G=$(addprefix Generated/moc_,$(basenames_mocable))
@@ -73,7 +74,9 @@ endif
 endif
 
 .cpp.o:
-	g++ -c -ggdb -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
+	g++ -c -pipe -fPIC -ggdb -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
+.c.o:
+	gcc -c -pipe -fPIC -ggdb -MMD $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
 		
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's

@@ -72,6 +72,8 @@
 #include "qtooltip.h"
 #include "qassistantclient.h"
 
+typedef QMap<QString,QString> HelpTextMap;
+
 
 CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
 :CMainFrame(parent, name, fl)
@@ -226,6 +228,20 @@ CLavaMainFrame::~CLavaMainFrame()
 
 bool CLavaMainFrame::OnCreate()
 {
+  ToolbarWhatsThis *tbw1, *tbw2, *tbw3, *tbw4, *tbw5, *tbw6;
+
+  tbw1 = new ToolbarWhatsThis(Toolbar_1);
+  fillHelpMap1(tbw1);
+  tbw2 = new ToolbarWhatsThis(Toolbar_2);
+  fillHelpMap2(tbw2);
+  tbw3 = new ToolbarWhatsThis(Toolbar_3);
+  fillHelpMap3(tbw3);
+  tbw4 = new ToolbarWhatsThis(Toolbar_4);
+  fillHelpMap4(tbw4);
+  tbw5 = new ToolbarWhatsThis(Toolbar_5);
+  fillHelpMap5(tbw5);
+  tbw6 = new ToolbarWhatsThis(Toolbar_6);
+  fillHelpMap6(tbw6);
 	m_childFrameHistory->m_menu = windowMenu;
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
   setIcon(QPixmap((const char**) Lava));
@@ -271,13 +287,19 @@ void CLavaMainFrame::UpdateUI()
   findByNameAction->setEnabled(enable);
   checkAction->setEnabled(enable); 
   checkAllAction->setEnabled(enable);
-  if (doc) 
+  if (doc) {
     doc->OnUpdateRunLava(runAction);
-  else
+    doc->OnUpdateDebugLava(debugAction);
+    DbgBreakpointAct->setEnabled(true);
+    DbgClearBreakpointsAct->setEnabled(true);
+  }
+  else {
     runAction->setEnabled(false);
+    debugAction->setEnabled(false);
+  }
 }
 
-void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
+void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip,QString whatsThis)
 {
   QFont f;
 
@@ -345,41 +367,98 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 	tb->setPalette(pal);
 
   newKwdToolbutton(tb,LBaseData->declareButton,"&declare",SLOT(declare()),
-    "Declare local variables: \"d\"",
-    "<p><a href=\"Declare.htm\">declare</a> local variables</p>");
-  newKwdToolbutton(tb,LBaseData->existsButton,"&exists",SLOT(exists()),"Existential quantifier: \"e\"");
-  newKwdToolbutton(tb,LBaseData->foreachButton,"&foreach",SLOT(foreach()),"Universal quantifier: \"f\"");
-  newKwdToolbutton(tb,LBaseData->selectButton,"se&lect",SLOT(select()),"Select elements from set(s) and add derived new elements to a given set: \"l\"");
-  newKwdToolbutton(tb,LBaseData->elInSetButton,"el. in set",SLOT(elInSet()),"Test if element is contained in set");
+    QObject::tr("Declare local variables: \"d\""),
+    QObject::tr("<p><a href=\"Declare.htm\">declare</a> local variables</p>"));
+  newKwdToolbutton(tb,LBaseData->existsButton,"&exists",SLOT(exists()),
+    QObject::tr("Existential quantifier: \"e\""),
+    QObject::tr("<p><a href=\"Exists.htm\">Existential quantifier</a> ranging \nover a finite set</p>"));
+  newKwdToolbutton(tb,LBaseData->foreachButton,"&foreach",SLOT(foreach()),
+    QObject::tr("Universal quantifier: \"f\""),
+    QObject::tr("<p><a href=\"Foreach.htm\">Universal quantifier</a> ranging \nover a finite set</p>"));
+  newKwdToolbutton(tb,LBaseData->selectButton,"se&lect",SLOT(select()),
+    QObject::tr("Select elements from set(s) and add derived new elements to a given set: \"l\""),
+    QObject::tr("<p><a href=\"Select.htm\">Select</a> quantifier ranging \nover a finite set</p>"));
+  newKwdToolbutton(tb,LBaseData->elInSetButton,"el. in set",SLOT(elInSet()),
+    QObject::tr("Test if element is contained in set"),
+    QObject::tr("<p><a href=\"InSet.htm\">Element in set</a> test</p>"));
 
   tb->addSeparator();
 
-  newKwdToolbutton(tb,LBaseData->ifButton,"&if",SLOT(ifStm()),"If-then-else statement: \"i\"");
-  newKwdToolbutton(tb,LBaseData->ifxButton,"if-expr",SLOT(ifExpr()),"If-then-else expression: \"x\"");
-  newKwdToolbutton(tb,LBaseData->switchButton,"s&witch",SLOT(switchStm()),"Switch statement: \"w\"");
-  newKwdToolbutton(tb,LBaseData->typeSwitchButton,"&type",SLOT(typeStm()),"Type switch statement: \"t\"");
-  newKwdToolbutton(tb,LBaseData->andButton,"&and / ;",SLOT(and_stm()),"AND conjunction of statements: \"a\"");
-  newKwdToolbutton(tb,LBaseData->orButton,"&or",SLOT(or_stm()),"OR conjunction of statements: \"o\"");
-  newKwdToolbutton(tb,LBaseData->xorButton,"xor",SLOT(xor_stm()),"Exclusive OR of statements");
-  newKwdToolbutton(tb,LBaseData->notButton,"not",SLOT(not_stm()),"Negation of a statement");
-  newKwdToolbutton(tb,LBaseData->assertButton,"assert",SLOT(assert_stm()),"Assertion");
-  newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),"Try a statement, catch exceptions: \"y\"");
-  newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),"Immediate successful return");
-  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(fail()),"Immediate unsuccessfull return, optionally throw exception");
-  newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()),"Run a nested initiator");;
+  newKwdToolbutton(tb,LBaseData->ifButton,"&if",SLOT(ifStm()),
+    QObject::tr("If-then-else statement: \"i\""),
+    QObject::tr("<p><a href=\"IfStm.htm\">if-then-elsif-else</a> statement with optional\nelsif and else branches</p>"));
+  newKwdToolbutton(tb,LBaseData->ifxButton,"if-expr",SLOT(ifExpr()),
+    QObject::tr("If-then-else expression: \"x\""),
+    QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>"));
+  newKwdToolbutton(tb,LBaseData->switchButton,"s&witch",SLOT(switchStm()),
+    QObject::tr("Switch statement: \"w\""),
+    QObject::tr("<p><a href=\"Switch.htm\">switch</a> statement with optional else branch</p>"));
+  newKwdToolbutton(tb,LBaseData->typeSwitchButton,"&type",SLOT(typeStm()),
+    QObject::tr("Type switch statement: \"t\""),
+    QObject::tr("<p><a href=\"TypeSwitch.htm\">type switch</a> statement with optional else branch</p>"));
+  newKwdToolbutton(tb,LBaseData->andButton,"&and / ;",SLOT(and_stm()),
+    QObject::tr("AND conjunction of statements: \"a\""),
+    QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
+  newKwdToolbutton(tb,LBaseData->orButton,"&or",SLOT(or_stm()),
+    QObject::tr("OR conjunction of statements: \"o\""),
+    QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
+  newKwdToolbutton(tb,LBaseData->xorButton,"xor",SLOT(xor_stm()),
+    QObject::tr("Exclusive OR of statements"),
+    QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
+  newKwdToolbutton(tb,LBaseData->notButton,"not",SLOT(not_stm()),
+    QObject::tr("Negation of a statement"),
+    QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
+  newKwdToolbutton(tb,LBaseData->assertButton,"assert",SLOT(assert_stm()),
+    QObject::tr("Assertion"),
+    QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
+    " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
+    " and throws a specific exception in case of violation</p>"));
+  newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
+    QObject::tr("Try a statement, catch exceptions: \"y\""),
+    QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
+  newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),
+    QObject::tr("Immediate successful return"),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
+  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(fail()),
+    QObject::tr("Immediate unsuccessfull return, optionally throw exception"),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    " optionally throw exception</p>"));
+  newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()),
+    QObject::tr("Run a nested initiator"),
+    QObject::tr("<p><a href=\"Run.htm\">Run</a> a nested <a href=\"../Packages.htm#initiator\">initiator</a></p>"));
 
   tb->addSeparator();
 
-  newKwdToolbutton(tb,LBaseData->setButton,"&set",SLOT(set()),"Assignment statement: \"s\"");
-  newKwdToolbutton(tb,LBaseData->newButton,"&new",SLOT(newExpr()),"Create a new object: \"n\"");
-  newKwdToolbutton(tb,LBaseData->oldButton,"old",SLOT(old()),"Old value (on entry to function)");
-  newKwdToolbutton(tb,LBaseData->cloneButton,"clone",SLOT(clone()),"Clone an object");
-  newKwdToolbutton(tb,LBaseData->copyButton,"&copy",SLOT(copy()),"Copy an object onto another object: \"c\"");
-  newKwdToolbutton(tb,LBaseData->attachButton,"attach",SLOT(attach()),"Attach a component object through an interface");
-  newKwdToolbutton(tb,LBaseData->qryItfButton,"qry itf",SLOT(qryItf()),"Query interface: get another interface from an already known one");
-  newKwdToolbutton(tb,LBaseData->scaleButton,"scale",SLOT(scale()),"Add a scale (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters");
-  newKwdToolbutton(tb,LBaseData->itemButton,"item",SLOT(item()),"Get an enumeration item from its index");
-  newKwdToolbutton(tb,LBaseData->callbackButton,"callback",SLOT(callback()),"Define a callback");
+  newKwdToolbutton(tb,LBaseData->setButton,"&set",SLOT(set()),
+    QObject::tr("Assignment statement: \"s\""),
+    QObject::tr("<p><a href=\"Assign.htm\">Assignment statement</a></p>"));
+  newKwdToolbutton(tb,LBaseData->newButton,"&new",SLOT(newExpr()),
+    QObject::tr("Create a new object: \"n\""),
+    QObject::tr("<p>Create a <a href=\"New.htm\">new</a> object</p>"));
+  newKwdToolbutton(tb,LBaseData->oldButton,"old",SLOT(old()),
+    QObject::tr("Old value (on entry to function)"),
+    QObject::tr("<p><a href=\"Old.htm\">Old</a> value of a variable or expression (on entry to function)</p>"));
+  newKwdToolbutton(tb,LBaseData->cloneButton,"clone",SLOT(clone()),
+    QObject::tr("Clone an object"),
+    QObject::tr("<p><a href=\"Clone.htm\">Clone</a> an existing <b><i><font color=\"red\">Lava</font></i></b> object</p>"));
+  newKwdToolbutton(tb,LBaseData->copyButton,"&copy",SLOT(copy()),
+    QObject::tr("Copy an object onto another object: \"c\""),
+    QObject::tr("<p><a href=\"Copy.htm\">Copy</a> an existing <b><i><font color=\"red\">Lava</font></i></b> object onto another object</p>"));
+  newKwdToolbutton(tb,LBaseData->attachButton,"attach",SLOT(attach()),
+    QObject::tr("Attach a component object through an interface"),
+    QObject::tr("<p><a href=\"Attach.htm\">Attach</a> an existing <b><i><font color=\"red\">Lava</font></i></b> component object through one of its interfaces</p>"));
+  newKwdToolbutton(tb,LBaseData->qryItfButton,"qry itf",SLOT(qryItf()),
+    QObject::tr("Query interface: get another interface from an already known one"),
+    QObject::tr("<p><a href=\"QryItf.htm\">Query interface:</a> Make another interface of a component object accessible, starting from a known interface</p>"));
+  newKwdToolbutton(tb,LBaseData->scaleButton,"scale",SLOT(scale()),
+    QObject::tr("Add a scale (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters"),
+    QObject::tr("<p>Add a <a href=\"Scale.htm\">scale</a> (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters</p>"));
+  newKwdToolbutton(tb,LBaseData->itemButton,"item",SLOT(item()),
+    QObject::tr("Get an enumeration item from its index"),
+    QObject::tr("<p>Get an enumeration <a href=\"EnumItem.htm\">item</a> from its index</p>"));
+  newKwdToolbutton(tb,LBaseData->callbackButton,"callback",SLOT(callback()),
+    QObject::tr("Define a callback"),
+    QObject::tr("<p>Use the <b>callback</b> expression to define a <font color=\"red\"><i><b>Lava</b></i></font> <a href=\"../Callbacks.htm\">callback</a></p>"));
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -448,6 +527,17 @@ void CLavaMainFrame::findByName()
 void CLavaMainFrame::run()
 {
   ((CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->OnRunLava();
+}
+
+void CLavaMainFrame::debug()
+{
+  CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
+  if (doc->debugOn) {
+    DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
+    QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+  }
+  else
+    doc->OnDebugLava();
 }
 
 void CLavaMainFrame::check()
@@ -781,6 +871,62 @@ void CLavaMainFrame::override()
   if (view)
     view->OnOverride();
 }
+
+void CLavaMainFrame::DbgClearBreakpoints()
+{
+  CLavaPEDoc *debugDoc = (CLavaPEDoc*)LBaseData->debugThread->doc;
+  if (!debugDoc->ContinueData)
+    debugDoc->ContinueData = new DebugContData;
+  debugDoc->ContinueData->ClearBreakPoints = true;
+  debugDoc->ContinueData->BreakPoints.Destroy();
+}
+
+void CLavaMainFrame::DbgBreakpoint()
+{
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->DbgBreakpoint();
+
+}
+
+void CLavaMainFrame::DbgStepNext()
+{
+  CLavaPEDoc *debugDoc = (CLavaPEDoc*)LBaseData->debugThread->doc;
+  if (!debugDoc->ContinueData)
+    debugDoc->ContinueData = new DebugContData;
+  debugDoc->ContinueData->ContType = dbg_Step;
+  DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
+  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+}
+
+void CLavaMainFrame::DbgStepinto()
+{
+  CLavaPEDoc *debugDoc = (CLavaPEDoc*)LBaseData->debugThread->doc;
+  if (!debugDoc->ContinueData)
+    debugDoc->ContinueData = new DebugContData;
+  debugDoc->ContinueData->ContType = dbg_StepInto;
+  DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
+  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+}
+
+void CLavaMainFrame::DbgStepout()
+{
+  CLavaPEDoc *debugDoc = (CLavaPEDoc*)LBaseData->debugThread->doc;
+  if (!debugDoc->ContinueData)
+    debugDoc->ContinueData = new DebugContData;
+  debugDoc->ContinueData->ContType = dbg_StepOut;
+  DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
+  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+}
+
+void CLavaMainFrame::DbgRunToSel()
+{
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->DbgRunToSel();
+
+}
+
 
 void CLavaMainFrame::genLinkedHtml()
 {
@@ -1473,7 +1619,7 @@ void CLavaMainFrame::viewTB7()
 void CLavaMainFrame::whatNext_clicked() 
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  QString fileName=ExeDir+"/../doc/html/whatsthis/GlobalWhatNext.htm";
+  QString fileName=ExeDir+"/../doc/html/whatnext/GlobalWhatNext.htm";
 	QString path("");
 	QStringList args;
 
@@ -1511,31 +1657,6 @@ void CLavaMainFrame::howTo_clicked()
 	  qacl->showPage(fileName);
   }
 }
-
-
-/*
-void CLavaMainFrame::OnEditHints() 
-{
-  DString CHMname;
-  CWnd* pWnd = GetTopLevelParent();
-  
-  CHMname = ExeDir + "\\LavaPE.chm>ContextWin";
-  ::HtmlHelp(pWnd->m_hWnd, CHMname.c, HH_HELP_CONTEXT, ID_EDIT_HINTS);
-}
-
-void CLavaMainFrame::OnCheckRunHelp() 
-{
-  DString CHMname;
-  CWnd* pWnd = GetTopLevelParent();
-  
-  CHMname = ExeDir + "\\LavaPE.chm>ContextWin";
-  ::HtmlHelp(pWnd->m_hWnd, CHMname.c, HH_HELP_CONTEXT, ID_CHECK_RUN_HELP);
-  
-}
-
-*/
-
-
 
 
 CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent, "TreeFrame") 
@@ -1691,6 +1812,7 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     sz = parentWidget()->size();
     resize(sz.width()*7/10, sz.height()*7/10); 
 //  }
+  myDoc = (CLavaBaseDoc*)doc;
   splitter = new QSplitter(this);
   setCentralWidget(splitter);
   splitter->setOrientation(Qt::Horizontal);
@@ -1740,57 +1862,48 @@ void CFormFrame::CalcSplitters()
 {
 }
 
-/*
+QString ToolbarWhatsThis::text(const QPoint &point) {
+  QToolButton *button;
 
-/////////////////////////////////////////////////////////////////////////////
-// CFormFrame message handlers
-
-bool CFormFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext) 
-{
-  if (!m_Splitter.CreateStatic(this, 1, 2)) {
-    return FALSE;
-  }
-  CRect rect;
-  GetClientRect(&rect);
-  widthPrev = rect.right;
-  // add the first splitter pane - the default view in column 0
-  if (!m_Splitter.CreateView(0, 0,  pContext->m_pNewViewClass, CSize(3*rect.right/4, 50), pContext))
-    return FALSE;
-  // add the second splitter pane - an input view in column 1
-  if (!m_Splitter.CreateView(0, 1, RUNTIME_CLASS(CLavaPEView), CSize(rect.right/4, 50), pContext))
-    return FALSE;
-  // activate the input view
-  viewL = (QScrollView*)m_Splitter.GetPane(0,0);
-  viewR = (CLavaBaseView*)m_Splitter.GetPane(0,1);
-  ((CLavaGUIView*)viewL)->myTree = (CTreeView*)viewR;
-  ((CLavaPEView*)viewR)->myFormView = (QScrollView*)viewL;
-  SetActiveView(viewR);
-  return TRUE;
+  button = (QToolButton*)toolbar->childAt(point.x(),point.y());//execView->sv->viewportToContents(point.x(),point.y(),xc,yc);
+  if (!button)
+    return QString::null;
+  return helpTextMap[button->textLabel()];
 }
 
-bool CFormFrame::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CMDIFrameWnd* pParentWnd, CCreateContext* pContext) 
-{
-  dwStyle = dwStyle & (~FWS_ADDTOTITLE);
-  DString title = CalcTitle( (LavaDECL*)((CLavaPEApp*)wxTheApp)->LBaseData.actHint->CommandData1, ((CLavaBaseDoc*)LBaseData->actHint->fromDoc)->IDTable.DocName);
-  return CMDIChildWnd::Create(lpszClassName, title.c, dwStyle, rect, pParentWnd, pContext);
+void CLavaMainFrame::fillHelpMap1(ToolbarWhatsThis *tbw) {
 }
 
-
-void CFormFrame::RecalcLayout(bool bNotify) 
-{ 
-  CMDIChildWnd::RecalcLayout(bNotify);
-  CRect rect;
-  int w0, w1, w0m, w1m;
-  GetClientRect(&rect);
-  //remeber: rect.right = 0 if frame is minimized
-  if (viewL && viewR && rect.right && widthPrev && (rect.right != widthPrev)) {
-    m_Splitter.GetColumnInfo(0, w0, w0m);
-    m_Splitter.GetColumnInfo(1, w1, w1m);
-    m_Splitter.SetColumnInfo(0, rect.right*w0/widthPrev, 20);
-    m_Splitter.SetColumnInfo(1, rect.right*w1/widthPrev, 20);
-    m_Splitter.RecalcLayout();
-    widthPrev = rect.right;
-  }
+void CLavaMainFrame::fillHelpMap2(ToolbarWhatsThis *tbw) {
 }
 
-*/
+void CLavaMainFrame::fillHelpMap3(ToolbarWhatsThis *tbw) {
+  tbw->helpTextMap["include"] = QString("<p><a href=\"../Packages.htm#include\">Include</a>"
+    " another <font color=\"red\"><b><i>Lava</i></b></font> file</p>");
+  tbw->helpTextMap["package"] = QString("<p>Create a new <a href=\"../Packages.htm#packages\">package</a>"
+    " (= group of declarations/implementations that belong closely together)</p>");
+  tbw->helpTextMap["initiator"] = QString("<p>Create a new <a href=\"../Packages.htm#initiator\">initiator</a>"
+    " (= <font color=\"red\"><b><i>Lava</i></b></font> main program)</p>");
+  tbw->helpTextMap["interface"] = QString("<p>Create a new <a href=\"../SepItfImpl.htm\">interface</a></p>"
+    " (= the public part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>");
+  tbw->helpTextMap["implementation"] = QString("<p>Create a new <a href=\"../SepItfImpl.htm\">implementation</a></p>"
+    " (= the private part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>");
+  tbw->helpTextMap["COS"] = QString("<p>Create a new <a href=\"../Components.htm\">component object</a> specification</p>");
+  tbw->helpTextMap["COI"] = QString("<p>Create a new <a href=\"../Components.htm\">component object</a> implementation</p>");
+  tbw->helpTextMap["set"] = QString("<p>Create a new finite <a href=\"SetChain.htm\">set</a> of <font color=\"red\"><b><i>Lava</i></b></font> objects</p>");
+  tbw->helpTextMap["enumeration"] = QString("<p>Create a new <a href=\"Enumeration.htm\">enumeration type</a></p>");
+  tbw->helpTextMap["enumItem"] = QString("<p>Add a new <a href=\"Enumeration.htm\">enumerated item</a> to the current enumeration</p>");
+  tbw->helpTextMap["VT"] = QString("<p>Add a new <a href=\"../PatternsFrameworks.htm\">virtual type</a> to an interface or package</p>");
+  tbw->helpTextMap["function"] = QString("<p>Add a new virtual or static <a href=\"../dialogs/FunctionBox.htm\">member function</a> to the current interface or implementation</p>");
+  tbw->helpTextMap["memberVariable"] = QString("<p>Add a new <a href=\"../dialogs/MemVarBox.htm\">member variable</a> to the current interface or implementation</p>");
+  tbw->helpTextMap["makeGUI"] = QString("<p>Generate a <a href=\"../EditForm.htm#GUI\">GUI service interface</a> from the selected interface</p>");
+}
+
+void CLavaMainFrame::fillHelpMap4(ToolbarWhatsThis *tbw) {
+}
+
+void CLavaMainFrame::fillHelpMap5(ToolbarWhatsThis *tbw) {
+}
+
+void CLavaMainFrame::fillHelpMap6(ToolbarWhatsThis *tbw) {
+}

@@ -12,13 +12,12 @@
 
 
 
-#include "DString.h"
-
+#include "qstring.h"
 #include "Syntax.h"
 
 
 struct SynDef {
-  DString PathName; //only used if document is embedded, else empty string
+  QString PathName; //only used if document is embedded, else empty string
   int Release;
   int FreeID;
   int FreeINCL;
@@ -40,17 +39,17 @@ public:
   /* error messages are printed if and as long as Silent is false
      (= default) */
 
-  //LavaDECL** TypeInsert(SynDef *syntax, unsigned it, LavaDECL *decl, const DString& ModuleName);
+  //LavaDECL** TypeInsert(SynDef *syntax, unsigned it, LavaDECL *decl, const QString& ModuleName);
   //CHEProduction*  TypeRemove(SynDef *&syntax, unsigned it);
-  //void ChangeProduction(SynDef *syntax, const DString& oldName, LavaDECL *newDECL);
+  //void ChangeProduction(SynDef *syntax, const QString& oldName, LavaDECL *newDECL);
   //void FillInArrays(SynDef *syntax, int prevNb);
 
-  int ReadSynDef (DString& fileName, SynDef *&syntax, ASN1* strgCid = 0);
+  int ReadSynDef (const QString& fileName, SynDef *&syntax, ASN1* strgCid = 0);
   //returns -1 : read failed, 0: read ok, write ok, 1: read ok, write failed
 
-  void InitSyntax(SynDef *syntax, DString name);
+  void InitSyntax(SynDef *syntax, QString name);
 
-  bool WriteSynDef (const DString& fileName,
+  bool WriteSynDef (const QString& fileName,
                     SyntaxDefinition &synDef,
                     int freeID,
                     int freeINCL,
@@ -58,7 +57,7 @@ public:
                     ASN1* strgCid = 0
                     );
 
-  bool WriteSynDef (const DString& fileName,
+  bool WriteSynDef (const QString& fileName,
                     SynDef *syntax,
                     ASN1* strgCid = 0);
 
@@ -70,7 +69,7 @@ public:
 
 private:
 
-  void error (DString errorMsg);
+  void error (QString errorMsg);
 };
 
 extern DISCO_DLL SynIOCLASS SynIO;

@@ -70,6 +70,7 @@ CPEBaseDoc::CPEBaseDoc()
   UpdateNo = 1;
   Redraw = false;
   changeNothing = false;
+  ContinueData = 0;
 }
 
 CPEBaseDoc::~CPEBaseDoc()
@@ -100,14 +101,14 @@ void CPEBaseDoc::Serialize(QDataStream& ar)
 */
 }
 
-int CPEBaseDoc::ReadSynDef(DString& fn, SynDef* &sntx, ASN1*)
+int CPEBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1*)
 {
   //is the sntx open?
   CHESimpleSyntax *cheSyn;
   int fmode = 0;
   QFileInfo fi;
   QString qfn;
-  DString docDir = fn, stdName;
+  DString docDir = fn.latin1(), stdName;
 
   CPEBaseDoc* doc = (CPEBaseDoc*)FindOpenDoc(fn);
   if (doc) {
@@ -127,9 +128,9 @@ int CPEBaseDoc::ReadSynDef(DString& fn, SynDef* &sntx, ASN1*)
   QDir dir(docDir.c);
   cheSyn = (CHESimpleSyntax*)sntx->SynDefTree.first;
   if (!cheSyn->data.UsersName.l)
-    cheSyn->data.UsersName = fn;
+    cheSyn->data.UsersName = DString(fn.latin1());
   RelPathName(cheSyn->data.UsersName, IDTable.DocDir); //final value
-  cheSyn->data.SyntaxName = fn;
+  cheSyn->data.SyntaxName = DString(fn.latin1());
   RelPathName(cheSyn->data.SyntaxName, docDir);
   cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   while (cheSyn) {
@@ -140,7 +141,7 @@ int CPEBaseDoc::ReadSynDef(DString& fn, SynDef* &sntx, ASN1*)
     RelPathName(cheSyn->data.SyntaxName, docDir);
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   }
-  if (SameFile(fn, StdLava.ascii()))
+  if (SameFile(fn.latin1(), StdLava.ascii()))
     ((CHESimpleSyntax*)sntx->SynDefTree.first)->data.SyntaxName = DString("std.lava");
   else {
     if (sntx->SynDefTree.first->successor) {
@@ -159,9 +160,9 @@ CLavaBaseData* CPEBaseDoc::GetLBaseData()
   return LBaseData;
 }
 
-void CPEBaseDoc::IncludeHint(const DString& fullfn, CHESimpleSyntax* cheSyn)
+void CPEBaseDoc::IncludeHint(const QString& fullfn, CHESimpleSyntax* cheSyn)
 {
-  DString* pfn = new DString(fullfn);
+  QString* pfn = new QString(fullfn);
   CLavaPEHint *newHint = new CLavaPEHint(CPECommand_Include, this, (const unsigned long)0, (DWORD) cheSyn, (DWORD)pfn, (DWORD)cheSyn->predecessor);
   UndoMem.AddToMem(newHint);
 }
@@ -357,6 +358,15 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo/*, C
             && (!elDECL->Supports.first || (((CHETID*)elDECL->Supports.first)->data != id))) {
           elDECL->LocalName = DString ("copy_of_operator_") + LBaseData->OpFuncNames[elDECL->op];
           elDECL->op = OP_noOp;
+        }
+        if ((elDECL->DeclType == Function) && (decl4->DeclType == Impl) && !elDECL->Supports.first) {
+          elDECL->SecondTFlags.EXCL(overrides);
+          elDECL->SecondTFlags.EXCL(funcImpl);
+          elDECL->TypeFlags.EXCL(isProtected);
+          elDECL->TypeFlags.EXCL(isAbstract);
+          elDECL->TypeFlags.EXCL(forceOverride);
+          elDECL->TypeFlags.EXCL(isNative);
+          elDECL->TypeFlags.EXCL(defaultInitializer);
         }
         if (!hint->CommandData5 && (hintDECL->DeclType == DragDef)
           && !hint->FirstLast.Contains(multiDocHint)
@@ -805,7 +815,8 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
         else {
           inclDel = false;
           AbsPathName(inclFile, IDTable.DocDir);
-          hint->CommandData1 = (DWORD)IncludeSyntax(inclFile, bb, 2);
+          QString inclFile_q = inclFile.c;
+          hint->CommandData1 = (DWORD)IncludeSyntax(inclFile_q, bb, 2);
           if (!hint->CommandData1)
             return false;
           che1 = (CHESimpleSyntax*)hint->CommandData1;
@@ -834,7 +845,8 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
           if (IDTable.IDTab[che1->data.nINCL]->SimpleIDTab[id]->idType == globalID)
             IDTable.IDTab[che1->data.nINCL]->SimpleIDTab[id]->idType = noID;
         IDTable.IDTab[che1->data.nINCL]->FileName = che1->data.SyntaxName;
-        che1 = IncludeSyntax(inclFile, bb, 3);
+        QString inclFile_q = inclFile.c;
+        che1 = IncludeSyntax(inclFile_q, bb, 3);
         inclDel = false;
       }
       else {
@@ -949,7 +961,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   if (simpleSyntax) {
     isnew = !SameFile(simpleSyntax->data.SyntaxName, IDTable.DocDir, fn);
     if (isnew ) 
-      CalcNames(fn);
+      CalcNames(lpszPathName);
     simpleSyntax->data.UsersName = DString(GetUserFilename());
     simpleSyntax->data.SyntaxName = relFn; 
     if (!SameDir(IDTable.DocDir, oldDocDir)) {

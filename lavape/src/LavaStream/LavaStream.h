@@ -19,29 +19,29 @@
 
 extern LAVASTREAM_DLL TAdapterFunc TInAdapter [];
 extern LAVASTREAM_DLL TAdapterFunc TOutAdapter [];
-extern LAVASTREAM_DLL TAdapterFunc TInOutAdapter [];
+//extern LAVASTREAM_DLL TAdapterFunc TSpecAdapter [];
 
 
 extern "C" LAVASTREAM_DLL TAdapterFunc* TextIStream();
 
 extern "C" LAVASTREAM_DLL TAdapterFunc* TextOStream();
 
-extern "C" LAVASTREAM_DLL TAdapterFunc* TextStream();
+//extern "C" LAVASTREAM_DLL TAdapterFunc* TextStream();
 
 extern LAVASTREAM_DLL TAdapterFunc DInAdapter [];
 extern LAVASTREAM_DLL TAdapterFunc DOutAdapter [];
-extern LAVASTREAM_DLL TAdapterFunc DInOutAdapter [];
+//extern LAVASTREAM_DLL TAdapterFunc DSpecAdapter [];
 
 
 extern "C" LAVASTREAM_DLL TAdapterFunc* DataIStream();
 
 extern "C" LAVASTREAM_DLL TAdapterFunc* DataOStream();
 
-extern "C" LAVASTREAM_DLL TAdapterFunc* DataStream();
+//extern "C" LAVASTREAM_DLL TAdapterFunc* DataStream();
 
 extern LAVASTREAM_DLL QString ERR_OpenInFailed;
 extern LAVASTREAM_DLL QString ERR_OpenOutFailed;
-extern LAVASTREAM_DLL QString ERR_OpenInOutFailed;
+//extern LAVASTREAM_DLL QString ERR_OpenInOutFailed;
 
 #endif
 

@@ -181,6 +181,8 @@ CFindRefsBox::CFindRefsBox(LavaDECL* decl, bool inExec, CFindData* fw, QWidget* 
   else {
     if (findWhat->enumID.l)
       valRefName = QString(findWhat->enumID.c);
+    else
+      valRefName = QString(fw->searchName.c);
     m_InCurrentDoc->setEnabled(false);
     m_InDocs->setEnabled(false);
     m_InIncls->setEnabled(false);

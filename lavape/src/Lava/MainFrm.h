@@ -22,6 +22,7 @@ public:
   void PreconditionsToggled(bool on);
   void PostconditionsToggled(bool on);
   void InvariantsToggled(bool on);
+  void PmDumpsToggled(bool on);
 
 public slots:
   virtual void fileNew();

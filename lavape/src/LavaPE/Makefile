@@ -2,11 +2,11 @@ MOCABLES=Bars.h Boxes.h FindRefsBox.h LavaPE.h LavaPEFrames.h LavaPEView.h LavaP
 
 EXEC = LavaPE
 
-SUBPRO=disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI
+SUBPRO=disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI SFLsockets
 
 CPP_INCLUDES = -I. -Ires/TreeIcons -Ires/TOOLBUTTONS -Ires -I../LavaBase/Generated \
 	-I../LavaExecs/Generated -I../LavaPE_UI -I../LavaPE_UI/Generated -I../LavaGUI -I../LavaExecs \
-	-I../wxqDocView -I../disco -I../LavaBase -I$(QTDIR)/include
+	-I../wxqDocView -I../disco -I../LavaBase -I../SFLsockets -I$(QTDIR)/include
 CPP_FLAGS = -DEXECVIEW
 
 include ../common.mk

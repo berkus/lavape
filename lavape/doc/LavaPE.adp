@@ -113,7 +113,7 @@
 			<section ref="html/DBC.htm" title="Design By Contract (TM)">
 				<keyword ref="html/DBC.htm">DBC</keyword>
 				<keyword ref="html/DBC.htm">design by contract(TM)</keyword>
-				<keyword ref="html/DBC.htm">attached assertions(TM)</keyword>
+				<keyword ref="html/DBC.htm">attached assertions</keyword>
 			</section>
 			<section ref="html/SepItfImpl.htm" title="Strict separation of interfaces and implementations">
 				<keyword ref="html/SepItfImpl.htm">Ada</keyword>
@@ -222,10 +222,12 @@
 				<keyword ref="html/Callbacks.htm">event handling</keyword>
 			</section>
 			<section ref="html/Packages.htm" title="Lava projects, programming in the large">
+				<keyword ref="html/Packages.htm#packages">packages</keyword>
+				<keyword ref="html/Packages.htm#include">include files</keyword>
 				<keyword ref="html/Packages.htm#initiator">initiator</keyword>
 			</section>
 			<section ref="html/ProtectedFriend.htm" title="&quot;Private&quot; / &quot;protected&quot; / &quot;friend&quot; counterparts in Lava">
-				<keyword ref="html/ProtectedFriend.htm#staticCalls">function calls</keyword>
+				<keyword ref="html/ProtectedFriend.htm#staticCalls">static function calls</keyword>
 				<keyword ref="html/ProtectedFriend.htm">protected features</keyword>
 				<keyword ref="html/ProtectedFriend.htm">opaque packages</keyword>
 			</section>
@@ -420,4 +422,3 @@
 		<section ref="Copyright.htm" title="GNU Free Documentation License"/>
 	</DCF>
 </assistantconfig>
-

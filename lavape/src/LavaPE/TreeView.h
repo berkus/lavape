@@ -50,6 +50,7 @@ public:
   QString completeText;
   DString actLab;
   bool inRename;
+  int itemCount; //0 - based
 protected:
   TItemData *data;
   QPixmap *nPix;
@@ -111,16 +112,6 @@ public:
 private:
   Q_OBJECT
 
-};
-
-class TreeWhatsThis : public WhatsThis
-{
-public:
-  TreeWhatsThis(CTreeView *tv);
-
-  QString text(const QPoint&);
-private:
-  CTreeView *treeView;
 };
 
 #endif

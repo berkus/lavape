@@ -30,6 +30,22 @@
 #include "qfont.h"
 
 
+typedef QMap<QString,QString> HelpTextMap;
+
+class ToolbarWhatsThis : public WhatsThis
+{
+public:
+  ToolbarWhatsThis(QToolBar *tb):WhatsThis(0,tb) { toolbar = tb; }
+
+//  bool clicked(const QString &whatsThisHref);
+  QString text(const QPoint&);
+  HelpTextMap helpTextMap;
+
+private:
+  QToolBar *toolbar;
+};
+
+
 class CLavaMainFrame : public CMainFrame
 {
 public:
@@ -44,9 +60,15 @@ public:
   void ShowBarTab(BarTabs tab);
   void fillKwdToolbar(QToolBar *tb);
   void fillHelpToolbar(QToolBar *tb);
-  void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
+  void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
   void newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
 	void customEvent(QCustomEvent *ev);
+  void fillHelpMap1(ToolbarWhatsThis *tbw);
+  void fillHelpMap2(ToolbarWhatsThis *tbw);
+  void fillHelpMap3(ToolbarWhatsThis *tbw);
+  void fillHelpMap4(ToolbarWhatsThis *tbw);
+  void fillHelpMap5(ToolbarWhatsThis *tbw);
+  void fillHelpMap6(ToolbarWhatsThis *tbw);
 
 private:
 	int	lastTile;
@@ -103,6 +125,7 @@ public slots:
     virtual void check();
     virtual void checkAll();
     virtual void run();
+    virtual void debug();
     virtual void newInclude();
     virtual void newPackage();
     virtual void newInitiator();
@@ -133,8 +156,14 @@ public slots:
     virtual void genLinkedHtml();
     virtual void genSingleHtml();
     virtual void deleteOp();
+    virtual void DbgClearBreakpoints();
 
 // Exec handlers (tool buttons):
+    virtual void DbgBreakpoint();
+    virtual void DbgStepNext();
+    virtual void DbgStepinto();
+    virtual void DbgStepout();
+    virtual void DbgRunToSel();
     virtual void toggleCategory();
     virtual void optLocalVar();
     virtual void toggleSubstType();

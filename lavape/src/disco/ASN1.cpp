@@ -79,6 +79,7 @@ ASN1::ASN1 ()
   altTag = false;
   nestedCASEs = 0;
   contentsBuffer.Reset(100);
+  qSysInfo(&wordSize,&isBigEndian);
 }
 
 
@@ -111,7 +112,6 @@ void ASN1::error (ErrCode errCode,
     return;
   }
   if (!Silent) {
-    qDebug("");
     qDebug(QString("+++++ ")+callingProcedure+": %1"+ASN1Emsg[errCode].c);
   }
   errorExitProc();
@@ -157,6 +157,7 @@ void ASN1::getHeader (destinationType dT,
   /* "GetHeader" called out of proper context */
 
   getChar(inChar);
+  if (skip) return;
   switch (dT) {
 
   case putProcedure:
@@ -490,6 +491,7 @@ void ASN1::getString (TClass asn1Class,
   if (!s.l && s.c) s[0] = '\0';
   unusedBits1 = 0;
   getHeader(none,0,dummy,hdrPtr);
+  if (skip) return;
   if (octetStringNestingLevel > 0)
     if (EOC()) {
       eoc = true;
@@ -537,13 +539,6 @@ void ASN1::SetSkip (const bool onOff)
 
 {
   skip = onOff;
-}
-
-
-bool ASN1::Skip ()
-
-{
-  return skip;
 }
 
 
@@ -1303,13 +1298,14 @@ void ASN1::GETfloat (float& x)
   HdrPtr hdrPtr;
   bool empty;
   unsigned char *floatChar=(unsigned char *)&x;
-  unsigned i;
+  unsigned i, len=Release?4:5;
 
   if (skip) return;
   GetHeader(hdrPtr);
   if (skip) return;
   if (!tagOK(Universal,9)
-    || (topOfStack->header.LengthForm != ShortLength)) {
+    || topOfStack->header.LengthForm != ShortLength
+    || topOfStack->header.Len != len) {
     error(WrongElRep,"GETfloat/GETdouble");
     return;
   }
@@ -1319,12 +1315,20 @@ void ASN1::GETfloat (float& x)
   contentsBuffer.Reset(130);
   GetContents(contentsBuffer,empty);
   if (skip) return;
-  if (contentsBuffer[0] != (char)0x80) { // quick and dirty, incorrect ASN1 code!!
-    error(WrongElRep,"GETfloat/GETdouble");
-    return;
+  if (!Release) {
+    if (contentsBuffer[0] != (char)0x80) { // quick and dirty, incorrect ASN1 code!!
+      error(WrongElRep,"GETfloat/GETdouble");
+      return;
+    }
+    for (i=0; i<=3; i++)
+      *(floatChar+i) = contentsBuffer[i+1];
   }
-  for (i=0; i<=3; i++)
-    *(floatChar+i) = contentsBuffer[i+1];
+  else if (isBigEndian)
+    for (i=0; i<=3; i++)
+      *(floatChar+i) = contentsBuffer[i];
+  else
+    for (i=0; i<=3; i++)
+      *(floatChar+i) = contentsBuffer[3-i];
 }
 
 
@@ -1334,14 +1338,15 @@ void ASN1::GETdouble (double& x)
   HdrPtr hdrPtr;
   bool empty;
   unsigned char *floatChar=(unsigned char *)&x;
-  unsigned i;
+  unsigned i, len=Release?8:9;
 
   if (skip) return;
   GetHeader(hdrPtr);
   if (skip) return;
   if (!tagOK(Universal,9)
-    || (topOfStack->header.LengthForm != ShortLength)) {
-    error(WrongElRep,"GETfloat/GETdouble");
+    || topOfStack->header.LengthForm != ShortLength
+    || topOfStack->header.Len != len) {
+    error(WrongElRep,"GETdouble");
     return;
   }
   else
@@ -1350,12 +1355,20 @@ void ASN1::GETdouble (double& x)
   contentsBuffer.Reset(130);
   GetContents(contentsBuffer,empty);
   if (skip) return;
-  if (contentsBuffer[0] != (char)0x80) { // quick and dirty, incorrect ASN1 code!!
-    error(WrongElRep,"GETfloat/GETdouble");
-    return;
+  if (!Release) {
+    if (contentsBuffer[0] != (char)0x80) { // quick and dirty, incorrect ASN1 code!!
+      error(WrongElRep,"GETfloat/GETdouble");
+      return;
+    }
+    for (i=0; i<=7; i++)
+      *(floatChar+i) = contentsBuffer[i+1];
   }
-  for (i=0; i<=7; i++)
-    *(floatChar+i) = contentsBuffer[i+1];
+  else if (isBigEndian)
+    for (i=0; i<=7; i++)
+      *(floatChar+i) = contentsBuffer[i];
+  else
+    for (i=0; i<=7; i++)
+      *(floatChar+i) = contentsBuffer[7-i];
 }
 
 
@@ -1503,6 +1516,7 @@ void ASN1::GETstring (DString& s)
   if (skip) return;
   s.l = 0;
   getString(Universal,PrintableString,s,eoc,unusedBits);
+  if (skip) return;
   if (s.l > 0) {
     for (i = 0; i < s.l; i++)
       s[i] = (char)MachDep.FromASCII[(unsigned char)s[i]];
@@ -1573,9 +1587,8 @@ void ASN1::PUTfloat (const float x)
 
 {
   Header header;
-  unsigned char outChar, *floatChar=(unsigned char *)&x;
+  unsigned char /*outChar,*/ *floatChar=(unsigned char *)&x;
   unsigned i;
-  //char buffer[130];
 
   if (skip)
     return;
@@ -1583,18 +1596,14 @@ void ASN1::PUTfloat (const float x)
   header.Form = Primitive;
   header.Id = 9;
   header.LengthForm = DefiniteLength;
-  header.Len = 5;
-  //header.Len = 1+sprintf(buffer,"%f",x);
+  header.Len = 4;
   PutHeader(header);
-  outChar = (unsigned char)0x80; // quick and dirty, no correct ASN1 code!!
-  putChar(outChar);
-  for (i = 0; i <= 3; i++)
-    putChar(*(floatChar+i));
-/*
-  for (i = 0; i <= header.Len-2; i++) {
-    outChar = MachDep.ToASCII[(unsigned char)buffer[i]];
-    putChar(outChar);
-  }*/
+  if (isBigEndian)
+    for (i = 0; i <= 3; i++)
+      putChar(*(floatChar+i));
+  else
+    for (i = 3; i >= 0; i--)
+      putChar(*(floatChar+i));
 }
 
 
@@ -1602,9 +1611,8 @@ void ASN1::PUTdouble (const double x)
 
 {
   Header header;
-  unsigned char outChar, *floatChar=(unsigned char *)&x;
+  unsigned char /*outChar,*/ *floatChar=(unsigned char *)&x;
   unsigned i;
-  //char buffer[130];
 
   if (skip)
     return;
@@ -1612,18 +1620,14 @@ void ASN1::PUTdouble (const double x)
   header.Form = Primitive;
   header.Id = 9;
   header.LengthForm = DefiniteLength;
-  header.Len = 9;
-  //header.Len = 1+sprintf(buffer,"%f",x);
+  header.Len = 8;
   PutHeader(header);
-  outChar = (unsigned char)0x80;
-  putChar(outChar);
-  for (i = 0; i <= 7; i++)
-    putChar(*(floatChar+i));
-/*
-  for (i = 0; i <= header.Len-2; i++) {
-    outChar = MachDep.ToASCII[(unsigned char)buffer[i]];
-    putChar(outChar);
-  }*/
+  if (isBigEndian)
+    for (i = 0; i <= 7; i++)
+      putChar(*(floatChar+i));
+  else
+    for (i = 7; i >= 0; i--)
+      putChar(*(floatChar+i));
 }
 
 

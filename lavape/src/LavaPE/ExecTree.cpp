@@ -707,7 +707,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     elDef->DECLError1 = elDef->DECLError2;
     elDef->DECLError2.Destroy();
   }
-  if ((elDef->DeclDescType == Unknown)
+  if ((elDef->DeclDescType == UnknownDDT)
       || (elDef->DeclDescType == Undefined)
          && (elDef->LocalName.l == 0))
 //         && (!viewCase || viewTree->myInclView))
@@ -1639,7 +1639,7 @@ void CExecChecks::ExecMember(LavaDECL ** pelDef, int level)
     return;
   }
   (*pelDef)->DECLError2.Destroy();
-  if (((*pelDef)->DeclDescType == Unknown)
+  if (((*pelDef)->DeclDescType == UnknownDDT)
       || ((*pelDef)->DeclDescType == Undefined)
          && ((*pelDef)->LocalName.l == 0))
     return;

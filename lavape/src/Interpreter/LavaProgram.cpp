@@ -29,9 +29,10 @@
 #include "SynIDTable.h"
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
-//#include "Baseresource.h"
+#include "DbgThreads.h"
 #include "Constructs.h"
 #include "BAdapter.h"
+
 #include "qstring.h"
 #include "qmessagebox.h"
 
@@ -59,7 +60,7 @@ CLavaProgram::~CLavaProgram()
 }
 
 
-bool CLavaProgram::LoadSyntax(DString& fn, SynDef*& sntx, bool reDef, bool putErr)
+bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool putErr)
 {
   int readResult; 
   QString *errCode; 
@@ -68,14 +69,14 @@ bool CLavaProgram::LoadSyntax(DString& fn, SynDef*& sntx, bool reDef, bool putEr
   QString /* *toINCL,*/ str;
   CheckData ckd;
 
-  PathName = fn;
+  PathName = fn.latin1();
   readResult = ReadSynDef(fn, sntx);
   if (readResult < 0)
     sntx = 0;
 //  toINCL = 0;
   if (sntx) {
-    PathName = fn;
-    isStd = SameFile(fn, StdLava.ascii());
+    PathName = fn.latin1();
+    isStd = SameFile(PathName, StdLava.ascii());
     CalcNames(fn);
     sntx->IDTable = (address)&IDTable;
     hasIncludes = FALSE;
@@ -92,7 +93,7 @@ bool CLavaProgram::LoadSyntax(DString& fn, SynDef*& sntx, bool reDef, bool putEr
   else {
     if (readResult < 0) {
       if (reDef || putErr) {
-        str = QString("Cannot read lava component file '") + fn.c;
+        str = QString("Cannot read lava component file '") + fn;
         if (!putErr) {
           str += ", corrupt lava program syntax";
           str += "\n  ";
@@ -101,7 +102,7 @@ bool CLavaProgram::LoadSyntax(DString& fn, SynDef*& sntx, bool reDef, bool putEr
         }
       }
       else {
-        str = QString("Cannot read file '") + fn.c + ", corrupt lava program syntax";
+        str = QString("Cannot read file '") + fn + ", corrupt lava program syntax";
         str += "\n  ";
         str += "\nPerhaps different lava versions?"; 
         str += "\n  ";
@@ -112,7 +113,7 @@ bool CLavaProgram::LoadSyntax(DString& fn, SynDef*& sntx, bool reDef, bool putEr
     }
     else {
       if (reDef) {
-        str = QString("Lava component file '") + fn.c + "' not found";
+        str = QString("Lava component file '") + fn + "' not found";
         str += "\n  ";
         str += "\nDo you want to retry loading the lava document using another file name (*.lcom)?"; 
         str += "\n  ";
@@ -122,7 +123,7 @@ bool CLavaProgram::LoadSyntax(DString& fn, SynDef*& sntx, bool reDef, bool putEr
       }
       else {
         if (putErr) {
-          str = QString("File '") + fn.c + "' not found";
+          str = QString("File '") + fn + "' not found";
 //          AfxMessageBox(str.c, MB_OK+MB_ICONSTOP);
           critical(qApp->mainWidget(),qApp->name(),tr(str),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         }
@@ -134,16 +135,16 @@ bool CLavaProgram::LoadSyntax(DString& fn, SynDef*& sntx, bool reDef, bool putEr
 }
 
 
-bool CLavaProgram::OnOpenProgram(DString lpszPathName, bool imiExec, bool reDef, bool putErr) 
+bool CLavaProgram::OnOpenProgram(const QString lpszPathName, bool imiExec, bool reDef, bool putErr) 
 {
   bool synOk=true;
-	QString fName(lpszPathName.c);
+  QString fName=PathName.c;
 
   if (!mySynDef) 
-    if (lpszPathName.l)
+    if (lpszPathName.length())
       synOk = LoadSyntax(lpszPathName, mySynDef, reDef, putErr); //mySynDef from lava file
     else
-      synOk = LoadSyntax(PathName, mySynDef, reDef, putErr); //mySynDef from lava file
+      synOk = LoadSyntax(fName, mySynDef, reDef, putErr); //mySynDef from lava file
   if (!synOk || !mySynDef)
     return false;
 //  wxDocManager::GetDocumentManager()->AddFileToHistory(fName);
@@ -312,7 +313,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
       try {
         ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
       }
-      catch(CUserException *) {
+      catch(CUserException) {
       }
       if (ckdl.exceptionThrown) {
         if (ckd.lastException)
@@ -333,7 +334,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
       try {
         ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
       }
-      catch(CUserException *) {
+      catch(CUserException) {
       }
       if (ckdl.exceptionThrown) {
         if (ckd.lastException)
@@ -454,7 +455,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
         try {
           ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
         }
-        catch(CUserException *) {
+        catch(CUserException) {
         }
         if (ckdl.exceptionThrown) {
           if (ckd.lastException)
@@ -488,7 +489,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
             try {
               ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
             }
-            catch(CUserException *) {
+            catch(CUserException) {
             }
             if (ckdl.exceptionThrown) {
               if (ckd.lastException)
@@ -2148,7 +2149,7 @@ void CLavaProgram::HCatch(CheckData& ckd)
 void trans_func( unsigned u, _EXCEPTION_POINTERS* pExp )
 {
   _clearfp();
-  throw new CHWException(u);
+  throw CHWException(u);
 }
 
 void sigEnable() {
@@ -2169,7 +2170,7 @@ void sigEnable() {
 #else
 void signalHandler(int sig_number, siginfo_t *info)
 {
-	hwException = new CHWException(sig_number,info);
+	hwException = CHWException(sig_number,info);
   longjmp(contOnHWexception,1);
 }
 
@@ -2201,11 +2202,13 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
   QString msg="Normal end of application";
   unsigned frameSize, pos, newOldExprLevel;
   bool ok;
+
 #ifdef WIN32
   unsigned frameSizeBytes;
 
   CoInitialize(0);
 #endif
+
   ckd.document = (CLavaProgram*)doc;
   LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)ckd.document->mySynDef->SynDefTree.first)->data.TopDef.ptr;
   CHE* che;
@@ -2219,14 +2222,13 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
     if (topDECL && (topDECL->DeclType == ExecDef) && topDECL->Exec.ptr) {
       sigEnable();
 
-      try {        // Could throw a CUserException or other exception.
+      try {
 #ifndef WIN32
       if (setjmp(contOnHWexception)) throw hwException;
 #endif
         ckd.myDECL = topDECL;
         ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
         if (!ok) {
-//          AfxMessageBox("Please open this program in LavaPE and remove all static errors first!",MB_OK|MB_ICONSTOP);
           critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
           goto stop;
         }
@@ -2246,6 +2248,12 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
 #endif
         for (pos=0;pos<frameSize;pos++)
           newStackFrame[pos] = 0;
+        if (((CLavaDebugThread*)LBaseData->debugThread)->debugOn) {
+          doc->debugOn = true;
+          ((CLavaDebugThread*)LBaseData->debugThread)->initData(doc);
+          (*((CLavaDebugThread*)LBaseData->debugThread)->pContThreadEvent)--;
+          (*LBaseData->debugThread->pContExecEvent)++;
+        }
         if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel)) {
           if (!ckd.exceptionThrown)
             ((SelfVarX*)topDECL->Exec.ptr)->SetRTError(ckd, &ERR_ExecutionFailed,newStackFrame);
@@ -2267,26 +2275,26 @@ stop:     ckd.document->throwError = false;
           return 0;
         }
       }
-      catch (CHWException* ex) {
-        critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex->message),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      catch (CHWException ex) {
+        critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
       }
-      catch (CRuntimeException* ex) {
-        critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex->message),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      catch (CRuntimeException ex) {
+        critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
       }
-      catch(CUserException *) {
+      catch(CUserException) {
         if (ckd.lastException)
           ((CLavaProgram*)ckd.document)->HCatch(ckd);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
       }
-      catch(CException *) {
+      catch(CException) {
         // For other exception types, notify user here.
         critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         if (ckd.document->throwError) {
@@ -2356,7 +2364,7 @@ void showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillI
   if (ckd.document->throwError) {
     ckd.document->throwError = false;
 //    AfxThrowUserException();
-		throw new CUserException;
+		throw CUserException();
   }
 }
 

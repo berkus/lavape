@@ -670,7 +670,7 @@ void CCompSpecBox::m_CompoProt_activated(int pos)
     m_EnumAdd1->setEnabled(true);
     m_EnumDel1->setEnabled(true);
     m_EnumEdit1->setEnabled(true);
-    if ((myDECL->nOutput != PROT_LAVA) && (myDECL->nOutput != PROT_STREAM))
+    if ((myDECL->nOutput != PROT_LAVA) && (myDECL->nOutput != PROT_NATIVE))
       QMessageBox::critical(this,qApp->name(),ERR_NotYetImplemented,QMessageBox::Ok,0,0);
   }
 }
@@ -720,7 +720,7 @@ void CCompSpecBox::m_EnumAdd1_clicked()
       m_EnumEdit1->setEnabled(true);
     }
   }
-  else if (myDECL->nOutput == PROT_STREAM) {
+  else if (myDECL->nOutput == PROT_NATIVE) {
     if (ss > 1)
       QMessageBox::critical(this,qApp->name(),ERR_OneLibName,QMessageBox::Ok,0,0);
     else {
@@ -789,7 +789,7 @@ void CCompSpecBox::m_EnumEdit1_clicked()
       item->setText(fileName);
       m_EnumItems1->setSelected(0, true);
     }
-    else if (myDECL->nOutput == PROT_STREAM) {
+    else if (myDECL->nOutput == PROT_NATIVE) {
       iT = item->text();
       CEnumItem *cm = new CEnumItem(&iT, m_EnumItems1, 0, false, this);
       if (cm->exec() == QDialog::Accepted) {
@@ -867,7 +867,7 @@ void CCompSpecBox::OnOK()
       return;
     }
   }
-  else if (myDECL->nOutput == PROT_STREAM) {
+  else if (myDECL->nOutput == PROT_NATIVE) {
     if (m_EnumItems1->count() > 1) {
       QMessageBox::critical(this,qApp->name(),ERR_OneLibName,QMessageBox::Ok,0,0);
       m_EnumItems1->setFocus();

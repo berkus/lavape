@@ -138,11 +138,6 @@ CExecView::~CExecView()
   delete text;
 }
 
-bool ExecWhatsThis::clicked(const QString &whatsThisHref)
-{
-  return WhatsThis::clicked(whatsThisHref);
-}
-
 bool CExecView::OnCreate() 
 {
   sv->setFont(LBaseData->m_ExecFont);
@@ -1301,7 +1296,7 @@ obj:
         return;
       }
     }
-    else if (text->currentSynObj->parentObject->primaryToken == copy_T) {
+/*    else if (text->currentSynObj->parentObject->primaryToken == copy_T) {
       copyStm = (CopyStatement*)text->currentSynObj->parentObject;
       ((SynObject*)copyStm->fromObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
       if (decl) {
@@ -1311,7 +1306,7 @@ obj:
         sv->viewport()->update();
         return;
       }
-    }
+    }*/
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objCombo);
     sv->viewport()->update();
     return;
@@ -1342,6 +1337,12 @@ exp: // Const_T
     && text->currentSynObj->parentObject->primaryToken == EvalStm_T) {
       TID tidBool=TID(text->ckd.document->IDTable.BasicTypesID[B_Bool],myDoc->isStd?0:1);
       decl = myDoc->IDTable.GetDECL(tidBool);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,valueObj,true);
+    }
+    else if (text->currentSelection->data.token == Exp_T
+    && text->currentSynObj->parentObject->primaryToken == item_T) {
+      TID tidInteger=TID(text->ckd.document->IDTable.BasicTypesID[Integer],myDoc->isStd?0:1);
+      decl = myDoc->IDTable.GetDECL(tidInteger);
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,valueObj,true);
     }
     else if (text->currentSelection->data.token == Exp_T
@@ -1393,6 +1394,10 @@ exp: // Const_T
     else if (text->currentSynObj->parentObject->primaryToken == callback_T) {
       callbackExp = (Callback*)text->currentSynObj->parentObject;
       ((SynObject*)callbackExp->callbackType.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      if (!decl) {
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
+        break;
+      }
       decl = text->ckd.document->GetType(decl);
       text->ckd.document->IDTable.GetParamID(decl->ParentDECL,tid,isEventSpec); // eventSpec
       text->ckd.tempCtx = text->ckd.lpc;
@@ -1501,8 +1506,11 @@ exp: // Const_T
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetEnumCombo);
     else if (text->currentSynObj->parentObject->primaryToken == callback_T)
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(callbackCombo);
+    else if (text->currentSynObj->parentObject->primaryToken == item_T)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(typeCombo);
     else if (text->currentSynObj->parentObject->primaryToken == uuid_T
     || text->currentSynObj->parentObject->primaryToken == attach_T
+    || text->currentSynObj->parentObject->primaryToken == itf_T
     || (text->currentSynObj->parentObject->primaryToken == new_T
         && ((NewExpression*)text->currentSynObj->parentObject)->itf.ptr))
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(coiCombo);
@@ -3428,6 +3436,7 @@ bool CExecView::EnableGotoDecl()
     else {  // clone temp variable
       makeClone = (CloneExpression*)text->currentSynObj->parentObject;
       ((CloneExpression*)makeClone->fromObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      if (!decl) return false;
       decl = text->ckd.document->GetType(decl);
       tid = OWNID(decl);
       if (tid.nID > 0) return true;
@@ -3610,8 +3619,8 @@ void CExecView::OnFindReferences()
   case CrtblRef_T:
   case FuncRef_T:
 //    Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID,text->ckd.inINCL),sData.enumID,sData.findRefs);
-    Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID,text->ckd.inINCL),sData.findRefs);
-    if (sData.findRefs.FWhere == findInThisView) {
+    if (Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID,text->ckd.inINCL),sData.findRefs)
+      && (sData.findRefs.FWhere == findInThisView)) {
       sData.findRefs.refTid = ((Reference*)text->currentSynObj)->refID;
       sData.execDECL = myDECL;//->ParentDECL;
       sData.doc = myDoc;
@@ -3621,8 +3630,8 @@ void CExecView::OnFindReferences()
   case enumConst_T:
     sData.findRefs.enumID = ((EnumConst*)text->currentSynObj)->Id;
 //    Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((EnumConst*)text->currentSynObj)->refID,text->ckd.inINCL),sData.enumID,sData.findRefs);
-    Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((EnumConst*)text->currentSynObj)->refID,text->ckd.inINCL),sData.findRefs);
-    if (sData.findRefs.FWhere == findInThisView) {
+    if (Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((EnumConst*)text->currentSynObj)->refID,text->ckd.inINCL),sData.findRefs)
+     && (sData.findRefs.FWhere == findInThisView)) {
       sData.findRefs.refTid = ((EnumConst*)text->currentSynObj)->refID;
       sData.execDECL = myDECL;//->ParentDECL;
       sData.doc = myDoc;
@@ -3632,11 +3641,12 @@ void CExecView::OnFindReferences()
   case TDOD_T:
     if (((ObjReference*)text->currentSynObj->parentObject)->refIDs.first == (CHE*)((TDOD*)text->currentSynObj)->whereInParent) {
       //Base->Browser->OnFindRefs(myDoc,0,sData.enumID,sData.findRefs);
-      Base->Browser->OnFindRefs(myDoc,0,sData.findRefs);
-      sData.findRefs.refTid = ((TDOD*)text->currentSynObj)->ID;
-      sData.execDECL = myDECL;//->ParentDECL;
-      sData.doc = myDoc;
-      text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
+      if (Base->Browser->OnFindRefs(myDoc,0,sData.findRefs)) {
+        sData.findRefs.refTid = ((TDOD*)text->currentSynObj)->ID;
+        sData.execDECL = myDECL;//->ParentDECL;
+        sData.doc = myDoc;
+        text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
+      }
     }
     else
       //Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((TDOD*)text->currentSynObj)->ID,text->ckd.inINCL),sData.enumID,sData.findRefs);
@@ -3644,11 +3654,13 @@ void CExecView::OnFindReferences()
     break;
   case VarName_T:
     //Base->Browser->OnFindRefs(myDoc,0,sData.enumID,sData.findRefs);
-    Base->Browser->OnFindRefs(myDoc,0,sData.findRefs);
-    sData.findRefs.refTid = ((VarName*)text->currentSynObj)->varID;
-    sData.execDECL = myDECL;//->ParentDECL;
-    sData.doc = myDoc;
-    text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
+    sData.findRefs.searchName = ((VarName*)text->currentSynObj)->varName;
+    if (Base->Browser->OnFindRefs(myDoc,0,sData.findRefs)) {
+      sData.findRefs.refTid = ((VarName*)text->currentSynObj)->varID;
+      sData.execDECL = myDECL;//->ParentDECL;
+      sData.doc = myDoc;
+      text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
+    }
     break;
   default: ;
   }
@@ -5012,6 +5024,11 @@ void CExecView::UpdateUI()
 		return;
 
   //CLavaMainFrame* frame = (CLavaMainFrame*)((wxApp*)wxTheApp)->m_appWindow;
+	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
+	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
+	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
+	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
+	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
 
 	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
   OnUpdateHandle(LBaseData->handleActionPtr);
@@ -5882,7 +5899,9 @@ void CExecView::OnUpdateFalse(wxAction* action)
   
   action->setEnabled(!Taboo()
     && text->currentSynObj->ExpressionSelected(text->currentSelection)
-    && text->currentSynObj->BoolAdmissibleOnly(text->ckd));
+    && (text->currentSynObj->BoolAdmissibleOnly(text->ckd)
+        || text->currentSynObj->parentObject->primaryToken == elsif_T
+        || text->currentSynObj->parentObject->primaryToken == ifx_T));
 }
 
 void CExecView::OnUpdateForeach(QPushButton *pb) 
@@ -6231,7 +6250,9 @@ void CExecView::OnUpdateTrue(wxAction* action)
   
   action->setEnabled(!Taboo()
     && text->currentSynObj->ExpressionSelected(text->currentSelection)
-    && text->currentSynObj->BoolAdmissibleOnly(text->ckd));
+    && (text->currentSynObj->BoolAdmissibleOnly(text->ckd)
+        || text->currentSynObj->parentObject->primaryToken == elsif_T
+        || text->currentSynObj->parentObject->primaryToken == ifx_T));
 }
 
 void CExecView::OnUpdateXor(QPushButton *pb) 
@@ -6304,11 +6325,6 @@ void CExecView::whatNext()
 }
 
 
-ExecWhatsThis::ExecWhatsThis(CExecView *ev) : WhatsThis(0,ev) {
-  execView = ev;
-}
-
-
 QString ExecWhatsThis::text(const QPoint &point) {
   int xc, yc;
 
@@ -6321,4 +6337,41 @@ QString ExecWhatsThis::text(const QPoint &point) {
     return execView->text->currentSynObj->whatsThisText();
   }
   return QString::null;
+}
+
+void CExecView::DbgBreakpoint() 
+{
+  CHEProgramPoint* cheBreak = new CHEProgramPoint;
+  CPEBaseDoc *debugDoc = (CPEBaseDoc*)LBaseData->debugThread->doc;
+
+  if (!debugDoc->ContinueData)
+    debugDoc->ContinueData = new DebugContData;
+  cheBreak->data.SynObj = text->currentSynObj; 
+  cheBreak->data.SynObjID = text->currentSynObj->synObjectID;
+  cheBreak->data.ExecType = myDECL->DeclType;
+  cheBreak->data.FuncID.nINCL = debugDoc->IDTable.GetINCL((CHESimpleSyntax*)myDoc->IDTable.mySynDef->SynDefTree.first, myDoc->IDTable.DocDir);
+  cheBreak->data.FuncID.nID = myID.nID;
+  if (text->currentSynObj->workFlags.Contains(isBreakPoint))
+    text->currentSynObj->workFlags.EXCL(isBreakPoint);
+  else
+    text->currentSynObj->workFlags.INCL(isBreakPoint);
+  cheBreak->data.Activate = text->currentSynObj->workFlags.Contains(isBreakPoint);
+  debugDoc->ContinueData->BreakPoints.Append(cheBreak);
+}
+
+void CExecView::DbgRunToSel() 
+{
+  CPEBaseDoc *debugDoc = (CPEBaseDoc*)LBaseData->debugThread->doc;
+  if (!debugDoc->ContinueData)
+    debugDoc->ContinueData = new DebugContData;
+  debugDoc->ContinueData->ContType = dbg_RunTo;
+  debugDoc->ContinueData->RunToPoint.ptr = new ProgramPoint;
+  ProgramPoint * pp = debugDoc->ContinueData->RunToPoint.ptr;
+  pp->SynObj = text->currentSynObj; 
+  pp->SynObjID = text->currentSynObj->synObjectID;
+  pp->ExecType = myDECL->DeclType;
+  pp->FuncID.nINCL = debugDoc->IDTable.GetINCL((CHESimpleSyntax*)myDoc->IDTable.mySynDef->SynDefTree.first, myDoc->IDTable.DocDir);
+  pp->FuncID.nID = myID.nID;
+  DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
+  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
 }

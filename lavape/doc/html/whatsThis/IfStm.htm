@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+"hmpro4.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Language" content="en-us">
+    <meta content="text/html; charset=iso-8859-1">
+    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+    <title>
+      IfStatement
+    </title>
+    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
+  </head>
+  <body>
+  <h2 align="center">If-then-elsif-else statement</h2>
+  <p>The <font color="#FF0000"><i><b>Lava</b></i></font> <font color="#0000FF">
+  <b>if</b></font>-<font color="#0000FF"><b>then</b></font>-<font color="#0000FF"><b>elsif</b></font>-<font color="#0000FF"><b>else</b></font> 
+  branching statement is different from corresponding statements in other 
+  languages in so far as its <font color="#0000FF"><b>if</b></font>- and
+  <font color="#0000FF"><b>elsif</b></font>-conditions aren't <b>expressions</b> 
+  but <b>statements</b><i> </i>and as such may be <b>true</b> or <b>false</b>. 
+  This is a consequence of the <a href="../SingleAssigLogSem.htm">logical 
+  semantics</a> of <font color="#FF0000"><i><b>Lava</b></i></font>.</p>
+  <p>The <font color="#0000FF"><b>elsif</b></font> and <font color="#0000FF"><b>
+  else</b></font> branches are optional and may be omitted (by deleting them 
+  using the DEL key or the scissors button).</p>
+  <p><b>Please note</b> that <font color="#FF0000"><i><b>Lava</b></i></font> 
+  performs <a href="../IniChecks.htm">comprehensive initialization checks</a> 
+  for all kinds of variables. This may particularly involve a check whether a 
+  value is assigned to a certain variable <b>in all branches</b> of a
+  <font color="#FF0000"><i><b>Lava</b></i></font> <a href="../EditExec.htm#exec">
+  exec</a>, or <b>in all preceding branches</b> before a read reference to that 
+  variable. These checks will succeed only if you don't distribute these 
+  assignments over separate <font color="#0000FF"><b>if</b></font> statements as 
+  in the following example:</p>
+  <blockquote>
+    <pre><font color="#0000FF"><b>if</b></font>
+  A
+<font color="#0000FF"><b>then</b></font>
+  <font color="#0000FF"><b>set</b></font> var1 <font color="#0000FF"><b>&lt;==</b></font> x
+<font color="#0000FF"><b>#if</b></font>;
+<font color="#0000FF"><b>if</b></font>
+  <font color="#0000FF"><b>not</b></font> A
+<font color="#0000FF"><b>then</b></font>
+  <font color="#0000FF"><b>set</b></font> var1 <font color="#0000FF"><b>&lt;==</b></font> y
+<font color="#0000FF"><b>#if</b></font></pre>
+  </blockquote>
+  <p><font color="#FF0000"><i><b>Lava</b></i></font> won't be able to recognize 
+  that these two <font color="#0000FF"><b>if</b></font> statements constitute a 
+  complete disjunction, but you should use a single if-then-else statement as 
+  follows:</p>
+  <blockquote>
+    <pre><font color="#0000FF"><b>if</b></font>
+  A
+<font color="#0000FF"><b>then</b></font>
+  <font color="#0000FF"><b>set</b></font> var1 <font color="#0000FF"><b>&lt;==</b></font> x
+<font color="#0000FF"><b>else</b></font>
+  <font color="#0000FF"><b>set</b></font> var1 <font color="#0000FF"><b>&lt;==</b></font> y
+<font color="#0000FF"><b>#if</b></font></pre>
+  </blockquote>
+  </body>
+</html>

@@ -46,7 +46,7 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
   InitComplete = false;
   connect(m_tree,SIGNAL(doubleClicked(QListViewItem*,const QPoint&,int)), SLOT(OnDblclk(QListViewItem*,const QPoint&,int)));
   setFont(LBaseData->m_TreeFont);
-  new InclWhatsThis(this);
+  new InclWhatsThis(m_tree);
 }
 
 CInclView::~CInclView()
@@ -404,21 +404,14 @@ void CInclView::whatNext()
 }
 
 
-InclWhatsThis::InclWhatsThis(CInclView *tv) : WhatsThis(0,tv) {
-  inclView = tv;
+
+InclWhatsThis::InclWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
+  listView = lv;
 }
 
 
 QString InclWhatsThis::text(const QPoint &point) {
-/*
-  int xc, yc;
-
-  execView->sv->viewportToContents(point.x(),point.y(),xc,yc);
-  QPoint pc = QPoint(xc-2,yc-2); // -2 seems to be necessary, don't know why
-  execView->text->NewSel(&pc);
-  if (execView->text->newSelection) {
-    execView->Select();
-    return execView->text->currentSynObj->whatsThisText();
-  }*/
-  return QString(QObject::tr("\"What's this?\" help not yet available for this item"));
+  QListViewItem item=listView->itemAt(point);
+  //return execView->text->currentSynObj->whatsThisText();
+  return QString(QObject::tr("\"What's this?\" help not yet available for this declaration item"));
 }

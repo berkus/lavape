@@ -22,19 +22,20 @@
 #endif
 
 
-#include "SYSTEM.h"
 #include "SynIDTable.h"
 #include "SynIO.h"
 #include "Syntax.h"
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
 
-//#include "stdafx.h"
 #include "qobject.h"
 #include "qstring.h"
+#include "SYSTEM.h"
+#include "MACROS.h"
 
 
-
+//#define d_min(a,b)        (((a) < (b))? (a): (b))
+//#define max(a,b)        (((a) > (b))? (a): (b))
 
 TSimpleTable::TSimpleTable(int minimum)
 {
@@ -200,11 +201,26 @@ void TIDTable::SetPatternStart(int overID, int newID)
   ChangeTab.Append(che);
 }
 
+int TIDTable::GetINCL(CHESimpleSyntax* otherSyn, const DString& otherDocDir)
+{
+  CHESimpleSyntax* cheSyn;
+  for (cheSyn = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
+       cheSyn && !SameFile(otherSyn->data.SyntaxName, otherDocDir, cheSyn->data.SyntaxName, DocDir);
+       cheSyn = (CHESimpleSyntax*)cheSyn->successor);
+  if (cheSyn)
+    return cheSyn->data.nINCL;
+  else 
+    if (otherSyn->data.nINCL == 1)
+      return 1;
+    else
+      return -1;
+
+}
 
 void TIDTable::NewID(LavaDECL ** pdecl)
 {
   CHETID *cheID, *che;
-  CHESimpleSyntax *clipChe, *cheSyn;
+  CHESimpleSyntax *clipChe;
   bool copyStart = !inPattern && ((*pdecl)->inINCL != 0)
                     || ((*pdecl)->DeclType == PatternDef)
                     || ((*pdecl)->DeclType == DragDef);
@@ -249,6 +265,8 @@ void TIDTable::NewID(LavaDECL ** pdecl)
       CalcDirName(clipDocDir);
       clipChe = (CHESimpleSyntax*)ClipTree->first;
       while (clipChe) {
+        clipChe->data.clipIncl = GetINCL(clipChe, clipDocDir);
+        /*
         for (cheSyn = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
              cheSyn && !SameFile(clipChe->data.SyntaxName, clipDocDir, cheSyn->data.SyntaxName, DocDir);
              cheSyn = (CHESimpleSyntax*)cheSyn->successor);
@@ -259,6 +277,7 @@ void TIDTable::NewID(LavaDECL ** pdecl)
             clipChe->data.clipIncl = 1;
           else
             clipChe->data.clipIncl = -1;
+            */
         clipChe = (CHESimpleSyntax*)clipChe->successor;
       }
     }
@@ -523,6 +542,7 @@ void TIDTable::UndoDeleteLocalID(int delID)
     IDTab[0]->UndoDeleteLocalID(delID);
   //Down(*IDTab[0]->SimpleIDTab[delID]->pDECL, -2);
 }
+
 
 void TIDTable::AddINCL(const DString& name, int incl)
 {

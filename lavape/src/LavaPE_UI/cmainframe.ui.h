@@ -721,3 +721,45 @@ void CMainFrame::makeGUI()
 {
 
 }
+
+
+void CMainFrame::debug()
+{
+
+}
+
+
+void CMainFrame::DbgBreakpoint()
+{
+
+}
+
+
+void CMainFrame::DbgClearBreakpoints()
+{
+
+}
+
+
+void CMainFrame::DbgStepNext()
+{
+
+}
+
+
+void CMainFrame::DbgStepinto()
+{
+
+}
+
+
+void CMainFrame::DbgStepout()
+{
+
+}
+
+
+void CMainFrame::DbgRunToSel()
+{
+
+}

@@ -499,6 +499,7 @@ void CdpCoderCLASS::cdpRecordCase (TreeNodePtr node)
   CdpDataType(node->Down,node->Down->Right);
   /* transmit tag field value */
 
+  codeNl("if (cid->Skip()) return;");
   code("switch (");
   code(designator);
   restoreDesignator(savedDesLength);

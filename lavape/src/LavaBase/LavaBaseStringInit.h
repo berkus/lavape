@@ -235,6 +235,7 @@ extern LAVABASE_DLL QString ERR_MissingBrowserPath;
 extern LAVABASE_DLL QString ERR_BrowserStartFailed;
 extern LAVABASE_DLL QString ERR_ResolvingShortcutFailed;
 extern LAVABASE_DLL QString ERR_LavaStartFailed;
+extern LAVABASE_DLL QString ERR_LavaPEStartFailed;
 extern LAVABASE_DLL QString ERR_SaveFailed;
 extern LAVABASE_DLL QString ERR_LookForCompoObj;
 extern LAVABASE_DLL QString ERR_LookForCompoObjF;

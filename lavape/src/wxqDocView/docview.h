@@ -117,7 +117,8 @@ public:
         // set/get the vendor name
     const QString& GetVendorName() const { return m_vendorName; }
     void SetVendorName(const QString& name);
-    virtual wxDocument*  OpenDocumentFile (const QString& name) { return 0;}
+    virtual void OpenDocumentFile (const QString& name) { return;}
+    virtual wxView *activeView();
 
     QTimer *idleTimer;
     wxDocManager* m_docManager;

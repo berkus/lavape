@@ -28,8 +28,7 @@
 #include "FormWid.h"
 #include "CmdExec.h"
 #include "qstyle.h"
-//#include "WinEvts.h"
-//#include "stdafx.h"
+#include "MACROS.h"
 
 
 CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, 

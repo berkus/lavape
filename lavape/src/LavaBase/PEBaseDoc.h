@@ -54,6 +54,8 @@ public:
   bool changeNothing;
   CLavaBaseView *MainView;
   CLavaBaseView* DragView;
+  DebugContData* ContinueData;
+  int debugINCL;
 
   virtual void Serialize(QDataStream& ar);
   virtual bool OnSaveDocument(const QString& lpszPathName);
@@ -61,7 +63,7 @@ public:
   CLavaBaseData* GetLBaseData();
   virtual void ResetVElems(LavaDECL* ,int) {}
   virtual void ExecViewPrivToPub(LavaDECL* , int) {}
-  virtual int ReadSynDef(DString& fn, SynDef* &sntx, ASN1* cid = 0);//fn has all links resolved
+  virtual int ReadSynDef(const QString& fn, SynDef* &sntx, ASN1* cid = 0);//fn has all links resolved
   virtual void SetExecItemImage(LavaDECL* /*execDECL*/, bool /*empty*/, bool /*hasErrors*/) {}
   void MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bool skipServices = false); //with: with B_Object and B_Service
   bool Step(CLavaPEHint* hint, LavaDECL* parDECL, CHE*& relElem);
@@ -83,13 +85,14 @@ public:
   virtual void ResetError() {}
   virtual bool ErrorBarVisible() {return false;}
   virtual void OnShowError() {}
-  virtual wxDocument* FindOpenDoc(const DString& /*fn*/) {return 0;}
+  virtual wxDocument* FindOpenDoc(const QString& /*fn*/) {return 0;}
   virtual void UpdateMoveInDocs(const DString& /*clipDoc*/) {}
   virtual void UpdateOtherDocs(wxDocument* /*notOther*/, DString& /*inclFile*/, int ,bool, SynFlags flags=SETpp()) {}
   virtual int MakeFunc(LavaDECL* decl, bool otherDoc, QWidget* parent) {return -1;}
   void SetSelectDECL(CHE* elRemoved);
   bool InSection(CHE* el);
-  virtual void IncludeHint(const DString& fullfn, CHESimpleSyntax* cheSyn);
+  virtual void IncludeHint(const QString& fullfn, CHESimpleSyntax* cheSyn);
+  virtual void OnDebugLava() {}
 private:
     Q_OBJECT
 

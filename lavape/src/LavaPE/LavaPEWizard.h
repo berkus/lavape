@@ -69,10 +69,12 @@ public:
   int delayedID;
   QPushButton* resetButton;
   QPushButton* applyButton;
+  QPushButton* helpButton;
   virtual void setFont(const QFont& font);
 public slots:
   void Apply();
   void Reset();
+  void Help();
 private:
   Q_OBJECT
 };

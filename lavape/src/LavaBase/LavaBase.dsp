@@ -45,7 +45,7 @@ RSC=rc.exe
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
 # ADD CPP /nologo /MD /W3 /GX /I "." /I "Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaPE_UI" /I "$(QTDIR)\include" /D "WIN32" /D "NDEBUG" /D "LAVABASE_EXPORT" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /FD /c
-# SUBTRACT CPP /Z<none> /O<none> /Fr /YX
+# SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x407 /d "NDEBUG" /d "_AFXDLL"
@@ -118,6 +118,7 @@ SOURCE=.\BAdapter.cpp
 
 !ELSEIF  "$(CFG)" == "LavaBase - Win32 Debug"
 
+# ADD CPP /W3
 # SUBTRACT CPP /D "QT_ACCESSIBILITY_SUPPORT"
 
 !ENDIF 
@@ -336,6 +337,10 @@ InputName=PEBaseDoc
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=.\SafeInt.h
 # End Source File
 # Begin Source File
 

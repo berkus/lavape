@@ -37,7 +37,7 @@
 
 #ifndef WIN32
 jmp_buf contOnHWexception;
-CHWException *hwException;
+CHWException hwException(0,0);
 #endif
 
       
@@ -120,6 +120,7 @@ CLavaBaseDoc::CLavaBaseDoc()
   hasIncludes = false;
   throwError = false;
   isObject = false;
+  debugOn = false;
   RuntimeView = 0;
   inSaveProc = false;
   DocObjects[0] = 0;
@@ -169,30 +170,30 @@ CDocObjectServer *CLavaBaseDoc::GetDocObjectServer(LPOLEDOCUMENTSITE pDocSite)
 // CLavaBaseDoc serialization
 
 
-void CLavaBaseDoc::CalcNames(const DString& FileName)
+void CLavaBaseDoc::CalcNames(const QString& FileName)
 {
   int il;
 
-  IDTable.DocName = FileName;
-  IDTable.FileExtension = FileName;
+  IDTable.DocName = FileName.latin1();
+  IDTable.FileExtension = FileName.latin1();
   IDTable.mySynDef = mySynDef;
   for (il = IDTable.DocName.l-1; il && (IDTable.DocName[il] != '.'); il--);
   if (il) {
     IDTable.FileExtension.Delete(0, il);
-    IDTable.DocName.Delete(il, FileName.l-il);
+    IDTable.DocName.Delete(il, IDTable.DocName.l-il);
   }
   for (il = IDTable.DocName.l-1; il && (IDTable.DocName[il] != '\\') && (IDTable.DocName[il] != '/'); il--);
   if (il) {
     IDTable.DocName.Delete(0, il+1);
-    IDTable.DocDir = FileName;
-    IDTable.DocDir.Delete(il+1, FileName.l);
+    IDTable.DocDir = FileName.latin1();
+    IDTable.DocDir.Delete(il+1, IDTable.DocDir.l);
   }
   else
     IDTable.DocDir.Reset(0);
 }
 
 
-int CLavaBaseDoc::ReadSynDef(DString& fn, SynDef* &sntx, ASN1* cid)
+int CLavaBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1* cid)
 {
   //is the sntx open?
   DString docDir, stdName;
@@ -205,10 +206,10 @@ int CLavaBaseDoc::ReadSynDef(DString& fn, SynDef* &sntx, ASN1* cid)
   QString qfn;
   cheSyn = (CHESimpleSyntax*)sntx->SynDefTree.first;
   if (!cheSyn->data.UsersName.l)
-    cheSyn->data.UsersName = fn;
+    cheSyn->data.UsersName = DString(fn.latin1());
   RelPathName(cheSyn->data.UsersName, IDTable.DocDir);
-  cheSyn->data.SyntaxName = fn;
-  docDir = fn;
+  cheSyn->data.SyntaxName = DString(fn.latin1());
+  docDir = DString(fn.latin1());
   CalcDirName(docDir);
   RelPathName(cheSyn->data.SyntaxName, docDir);
   cheSyn = (CHESimpleSyntax*)cheSyn->successor;
@@ -221,7 +222,7 @@ int CLavaBaseDoc::ReadSynDef(DString& fn, SynDef* &sntx, ASN1* cid)
     RelPathName(cheSyn->data.SyntaxName, docDir);
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   }
-  if (SameFile(fn, StdLava.ascii()))
+  if (SameFile(fn.latin1(), StdLava.ascii()))
     ((CHESimpleSyntax*)sntx->SynDefTree.first)->data.SyntaxName = DString("std.lava");
   else {
     if (sntx->SynDefTree.first->successor) {
@@ -243,7 +244,7 @@ DString CLavaBaseDoc::GetAbsSynFileName()
   return IDTable.DocDir + IDTable.IDTab[0]->FileName;
 }
 
-CHESimpleSyntax* CLavaBaseDoc::AttachSyntax(CheckData& ckd, DString& fn)
+CHESimpleSyntax* CLavaBaseDoc::AttachSyntax(CheckData& ckd, QString& fn)
 {  //Add a new include at runtime
   bool isNew;
   QString* errCode;
@@ -260,38 +261,39 @@ CHESimpleSyntax* CLavaBaseDoc::AttachSyntax(CheckData& ckd, DString& fn)
   return syn;
 }
 
-CHESimpleSyntax* CLavaBaseDoc::IncludeSyntax(DString& fn, bool& isNew, int hint)
+CHESimpleSyntax* CLavaBaseDoc::IncludeSyntax(const QString& fn, bool& isNew, int hint)
 {  //Add a new include 
   SynDef *isyntax = 0;
   CHESimpleSyntax* cheSyn;
-  DString str/* = fn*/;
+  QString str/* = fn*/;
   bool errEx;
   //RelPathName(str, IDTable.DocDir);
   //is mySynDef really new?
   isNew = false;
   for (cheSyn = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
-       cheSyn && !SameFile(cheSyn->data.SyntaxName, IDTable.DocDir, fn /*str, IDTable.DocDir*/);
+       cheSyn && !SameFile(cheSyn->data.SyntaxName, IDTable.DocDir, fn.latin1() /*str, IDTable.DocDir*/);
        cheSyn = (CHESimpleSyntax*)cheSyn->successor);
   if (!cheSyn || !cheSyn->data.TopDef.ptr) {
     isNew = true;
     if ((ReadSynDef(fn, isyntax) < 0) || !isyntax) {
       if (!isyntax) {
-        str = DString("File '") + fn + "' not found";
-        critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok,0,0);
+        str = QString("File '") + fn + "' not found";
+        critical(qApp->mainWidget(),qApp->name(),str,QMessageBox::Ok,0,0);
       }
       return 0;
     }
     if (hint && (isyntax->SynDefTree.first == isyntax->SynDefTree.last)) {
-      str = DString("File '") + fn + " is not a valid lava file";
-      critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok,0,0);
+      str = QString("File '") + fn + " is not a valid lava file";
+      critical(qApp->mainWidget(),qApp->name(),str,QMessageBox::Ok,0,0);
       SynIO.DeleteSynDef(isyntax);
       return 0;
     }
-    DString docDir = fn;
+    DString docDir = fn.latin1();
     CalcDirName(docDir);
-    str = fn;
-    RelPathName(str, docDir);
-    ((CHESimpleSyntax*)isyntax->SynDefTree.first)->data.SyntaxName = str;
+//    str = fn;
+    DString dstr=fn.latin1();
+    RelPathName(dstr, docDir);
+    ((CHESimpleSyntax*)isyntax->SynDefTree.first)->data.SyntaxName = dstr;
     hasIncludes = TRUE;
     cheSyn = AddSyntax(isyntax, fn, errEx, hint);
     SynIO.DeleteSynDef(isyntax);
@@ -302,7 +304,7 @@ CHESimpleSyntax* CLavaBaseDoc::IncludeSyntax(DString& fn, bool& isNew, int hint)
 }
 
 
-CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, DString& fn, bool& errEx, int hint)
+CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, const QString& fn, bool& errEx, int hint)
 {
   //==========>>>>>fn is not a link!
   SynDef *isyntax=0;
@@ -315,7 +317,7 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, DString& fn, bool& 
     return 0;
   int in = 0;
   bool inherited = (syntaxIncl != mySynDef);
-  DString docDir = fn;
+  DString docDir = fn.latin1();
   CalcDirName(docDir);
   if (!inherited) {
     cheSynIncl->data.SyntaxName = IDTable.DocName + IDTable.FileExtension;
@@ -323,10 +325,10 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, DString& fn, bool& 
   }
   else {//not the mySynDef of this document?
     //has the new mySynDef allready an entry or dummy entry?
-    DString relFn = fn;
+    DString relFn = fn.latin1();
     RelPathName(relFn, IDTable.DocDir);
     for (plusSyn = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
-         plusSyn && !SameFile(plusSyn->data.SyntaxName, IDTable.DocDir, fn );//relFn, IDTable.DocDir);
+         plusSyn && !SameFile(plusSyn->data.SyntaxName, IDTable.DocDir, fn.latin1() );//relFn, IDTable.DocDir);
          plusSyn = (CHESimpleSyntax*)plusSyn->successor);
     if (!plusSyn) {
       plusSyn = new CHESimpleSyntax;
@@ -357,7 +359,7 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, DString& fn, bool& 
         IDTable.SetAsName(plusSyn->data.nINCL, plusSyn->data.LocalTopName, oldTopName, plusSyn->data.TopDef.ptr);
       if (hint == 3) {
         for (nplusSyn = ((CHESimpleSyntax*)plusSyn->successor);
-             nplusSyn && !SameFile(nplusSyn->data.SyntaxName, IDTable.DocDir, fn); //relFn, IDTable.DocDir);
+             nplusSyn && !SameFile(nplusSyn->data.SyntaxName, IDTable.DocDir, fn.latin1()); //relFn, IDTable.DocDir);
              nplusSyn = (CHESimpleSyntax*)nplusSyn->successor);
         if (nplusSyn) 
           DelSyntax(nplusSyn);
@@ -367,6 +369,7 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, DString& fn, bool& 
   cheSynIncl = (CHESimpleSyntax*)cheSynIncl->successor;
   //Add the includes of the new mySynDef
   DString fullfn;
+  QString fullfn_q;
   int rVal;
 
   while (cheSynIncl) {
@@ -377,7 +380,8 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, DString& fn, bool& 
     if (!cheSyn || !cheSyn->data.TopDef.ptr && !cheSyn->data.inWork) {
       fullfn = cheSynIncl->data.SyntaxName;
       AbsPathName(fullfn, docDir);
-      rVal = ReadSynDef(fullfn, isyntax);
+      fullfn_q = fullfn.c;
+      rVal = ReadSynDef(fullfn_q, isyntax);
       if (cheSyn)
         cheSyn->data.inWork = true;
       hasIncludes = TRUE;
@@ -398,7 +402,7 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, DString& fn, bool& 
       else if (rVal < 0)
         return 0;
       else {
-        nplusSyn = AddSyntax(isyntax, fullfn, errEx, hint);
+        nplusSyn = AddSyntax(isyntax, fullfn_q, errEx, hint);
         if (errEx)
           return 0;
         SynIO.DeleteSynDef(isyntax);

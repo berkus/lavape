@@ -44,6 +44,7 @@ bool CLavaGUIFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 		resize(500,300);
     if (LBaseData->inRuntime)
       hide();
+    myDoc = (CLavaBaseDoc*)doc;
 		return true;
 	}
 	else
@@ -65,12 +66,12 @@ void CLavaGUIFrame::closeEvent(QCloseEvent *e)
     onClose = true;
     ((CLavaGUIView*)myView)->NoteLastModified();
     if (LBaseData->inRuntime) {
-      if (((CLavaBaseDoc*)myView->GetDocument())->DumpFrame) {
-        ((LavaDumpFrame*)((CLavaBaseDoc*)myView->GetDocument())->DumpFrame)->returned = true;
-        delete ((CLavaBaseDoc*)myView->GetDocument())->DumpFrame;
+      if (myDoc->DumpFrame) {
+        ((LavaDumpFrame*)myDoc->DumpFrame)->returned = true;
+        delete myDoc->DumpFrame;
       }
-      if (((CLavaBaseDoc*)myView->GetDocument())->isObject) {
-	      if (myView->GetDocument()->Close())
+      if (myDoc->isObject) {
+	      if (myDoc->Close())
 		      QWidget::closeEvent(e);
         else
           onClose = false;
@@ -89,8 +90,9 @@ void CLavaGUIFrame::closeEvent(QCloseEvent *e)
 
 CLavaGUIFrame::~CLavaGUIFrame()
 {
-  if (((CLavaBaseDoc*)myView->GetDocument())->DumpFrame) 
-    ((LavaDumpFrame*)((CLavaBaseDoc*)myView->GetDocument())->DumpFrame)->returned = true;
+  if (!wxTheApp->apExit && !wxTheApp->deletingMainFrame
+    && myDoc->DumpFrame) 
+    ((LavaDumpFrame*)myDoc->DumpFrame)->returned = true;
   deleting = true;
 }
 
@@ -202,7 +204,7 @@ void CLavaGUIFrame::OnClose()
 {
   if (myView) {
     ((CLavaGUIView*)myView)->NoteLastModified();
-    if (LBaseData->inRuntime && !((CLavaBaseDoc*)myView->GetDocument())->isObject) 
+    if (LBaseData->inRuntime && !myDoc->isObject) 
       ((CLavaGUIView*)myView)->OnKill();
     else
       CMDIChildWnd::OnClose();

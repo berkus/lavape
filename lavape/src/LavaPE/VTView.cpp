@@ -51,6 +51,7 @@ CVTView::CVTView(QWidget* parent, wxDocument *doc)
   activeInt = false;
   currentBrType = findTID;
   setFont(LBaseData->m_TreeFont);
+  new VTWhatsThis(m_tree);
 }
 
 CVTView::~CVTView()
@@ -851,4 +852,16 @@ void CVTView::DisableActions()
   frame->gotoDeclAction->setEnabled(false);
   frame->overrideAction->setEnabled(false);
   frame->gotoImplAction->setEnabled(false);
+}
+
+
+VTWhatsThis::VTWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
+  listView = lv;
+}
+
+
+QString VTWhatsThis::text(const QPoint &point) {
+  QListViewItem item=listView->itemAt(point);
+  //return execView->text->currentSynObj->whatsThisText();
+  return QString(QObject::tr("\"What's this?\" help not yet available for this declaration item"));
 }

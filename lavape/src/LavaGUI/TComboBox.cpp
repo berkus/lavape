@@ -26,8 +26,8 @@
 #include "TComboBox.h"
 #include "GUIProgBase.h"
 #include "FormWid.h"
+#include "MACROS.h"
 #include "qstyle.h"
-//#include "stdafx.h"
 
 
 CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentWnd, char* WindowName, DString& defaultSel, unsigned width)

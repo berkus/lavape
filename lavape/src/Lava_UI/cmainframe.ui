@@ -43,13 +43,14 @@
         <action name="viewTB1Action"/>
         <separator/>
         <action name="setFormFontAction"/>
-        <item text="Set form font" name="PopupMenuEditor_12" accel="">
+        <item text="Set form font" name="popupMenu_12" accel="">
             <action name="setFormTextFontAction"/>
             <action name="setFormLabelFontAction"/>
         </item>
         <action name="setGlobalFontAction"/>
     </item>
     <item text="Options" name="Options">
+        <action name="pmDumpAction"/>
         <action name="PreconditionsAction"/>
         <action name="PostconditionsAction"/>
         <action name="InvariantsAction"/>
@@ -616,6 +617,23 @@
             <string>Check invariants</string>
         </property>
     </action>
+    <action>
+        <property name="name">
+            <cstring>pmDumpAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>post-mortem dump support</string>
+        </property>
+        <property name="menuText">
+            <string>post-mortem dump support</string>
+        </property>
+    </action>
 </actions>
 <images>
     <image name="image0">
@@ -839,6 +857,12 @@
         <receiver>CMainFrame</receiver>
         <slot>InvariantsToggled(bool)</slot>
     </connection>
+    <connection>
+        <sender>pmDumpAction</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>PmDumpsToggled(bool)</slot>
+    </connection>
 </connections>
 <includes>
     <include location="local" impldecl="in declaration">redefines.h</include>
@@ -881,6 +905,7 @@
     <slot>PreconditionsToggled( bool )</slot>
     <slot>PostconditionsToggled( bool )</slot>
     <slot>InvariantsToggled( bool )</slot>
+    <slot>PmDumpsToggled( bool )</slot>
 </slots>
 <exportmacro>LAVAUI_DLL</exportmacro>
 <layoutdefaults spacing="6" margin="11"/>

@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+"hmpro4.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Language" content="en-us">
+    <meta content="text/html; charset=iso-8859-1">
+    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+    <title>
+      Fail/succeed statements
+    </title>
+    <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
+  </head>
+  <body>
+  <h2 align="center">Succeed/fail statements</h2>
+  <p>Use the <font color="#0000FF"><b>succeed</b> </font>statement to return 
+  immediately and <b>successfully</b> from the current
+  <a href="../EditExec.htm#exec">exec</a>. If the function or operator has been 
+  invoked as a statement then the resulting truth value of that statement is <b>
+  &quot;true&quot;</b>.</p>
+  <p><b>Note:</b> If you are in a function with mandatory output parameters then 
+  succeed is admissible only at places in the function body where values have 
+  already been assigned to all mandatory output parameters. (This is checked and 
+  enforced by <font color="#FF0000"><i><b>LavaPE</b></i></font>!)</p>
+  <hr>
+  <p>Use the <font color="#0000FF"><b>fail</b> </font>statement to return 
+  immediately and <b>unsuccessfully</b> from the current
+  <a href="../EditExec.htm#exec">exec</a>. If the function or operator has been 
+  invoked as a statement then the resulting truth value of that statement is <b>
+  &quot;false&quot;</b>.</p>
+  <p><font color="#0000FF"><b>fail</b></font> has an optional exception 
+  parameter, i.e., an expression whose value will be thrown as an exception 
+  object if present.</p>
+  <p><b>Note:</b> If <font color="#0000FF"><b>fail</b></font> is used at a place 
+  in a function body where not yet all mandatory output parameters have been 
+  assigned a value then you <b>must</b> throw an exception in order to avoid 
+  inadvertent use of undefined outputs by the caller. (This is checked and 
+  enforced by <font color="#FF0000"><i><b>LavaPE</b></i></font>!)</p>
+  <p><b>See also</b> the <a href="Assert.htm">assert statement</a>.</p>
+  </body>
+</html>

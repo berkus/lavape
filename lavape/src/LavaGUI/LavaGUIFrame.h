@@ -42,6 +42,7 @@ public:
   virtual void closeEvent(QCloseEvent *e);
   //QToolBar* m_GUIBar;
   wxView* myView;
+  CLavaBaseDoc* myDoc;
   bool onClose;
 private:
 	Q_OBJECT

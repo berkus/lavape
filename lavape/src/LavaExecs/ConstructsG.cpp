@@ -16,16 +16,28 @@ ChainAnyElem* NewCHECVarDesc ()
 { return (ChainAnyElem*)(new CHECVarDesc); }
 
 
-void CDPConstrFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
-                     bool)
+void CDPExecFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
+                   bool)
 
 {
-  ConstrFlags *vp = (ConstrFlags*)varAddr;
+  ExecFlags *vp = (ExecFlags*)varAddr;
   if (cid->Skip()) return;
 
   if (pgf == PUT) cid->PUTunsigned(*vp);
-  else *vp = (ConstrFlags)cid->FGETunsigned();
-} // END OF CDPConstrFlags
+  else *vp = (ExecFlags)cid->FGETunsigned();
+} // END OF CDPExecFlags
+
+
+void CDPWorkFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
+                   bool)
+
+{
+  WorkFlags *vp = (WorkFlags*)varAddr;
+  if (cid->Skip()) return;
+
+  if (pgf == PUT) cid->PUTunsigned(*vp);
+  else *vp = (WorkFlags)cid->FGETunsigned();
+} // END OF CDPWorkFlags
 
 NESTEDINITCOPY(TComment)
 
