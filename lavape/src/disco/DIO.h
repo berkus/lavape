@@ -219,7 +219,7 @@ public:
 
 /**********************************************************************/
 
-private:
+//private:
   
   InFile *CurrentInFile, *StdIn;
   OutFile *CurrentOutFile, *StdOut, *StdErr;

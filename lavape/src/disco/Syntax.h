@@ -21,7 +21,7 @@
 #include "qwidget.h"
 #include "wx_obj.h"
 
-#define RELEASE  8
+#define RELEASE  0
 
 #undef VIEW
 
@@ -519,6 +519,7 @@ enum IterFlag {
 
 extern DISCO_DLL void CDPIterFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
                                    bool baseCDP=false);
+
 
 
 
@@ -1172,6 +1173,7 @@ struct DISCO_DLL SynObjectBase : public DObject  {
 
 
 
+
 /*************************************************************************/
 /* Concrete syntactic objects: */
 
@@ -1278,6 +1280,7 @@ struct DISCO_DLL CHEFormNode : ChainAnyElem {
 };
 
 extern DISCO_DLL ChainAnyElem* NewCHEFormNode ();
+
 
 extern DISCO_DLL LavaDECL *NewLavaDECL();
 extern DISCO_DLL bool RemoveErrCode(CHAINX* errors, QString* ids);

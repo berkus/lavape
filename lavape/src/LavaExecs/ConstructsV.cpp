@@ -1683,22 +1683,34 @@ void IfStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignore
   CHE *ifThenPtr;
 
   ENTRY
-  ifPart = true;
-  for (ifThenPtr = (CHE*)ifThens.first;
-       ifThenPtr;
-       ifThenPtr = (CHE*)ifThenPtr->successor) {
-    DRAWCHE(ifThenPtr,&ifThens);
-    t.NewLine();
-  }
-  primaryTokenNode = ((SynObject*)((CHE*)ifThens.first)->data)->primaryTokenNode;
 
-  if (elsePart.ptr) {
-    t.Insert(else_T,false,true);
-    NLincIndent(t);
-    DRAW(elsePart.ptr);
-    NLdecIndent(t);
+  if (!ifThens.first->successor
+  && !elsePart.ptr
+  && InReadOnlyClause()) {
+    DRAW(((IfThen*)((CHE*)ifThens.first)->data)->ifCondition.ptr);
+    t.Blank();
+    t.Insert(implies_T,true);
+    t.Blank();
+    DRAW(((IfThen*)((CHE*)ifThens.first)->data)->thenPart.ptr);
   }
-  t.Insert(ENDif_T);
+  else {
+    ifPart = true;
+    for (ifThenPtr = (CHE*)ifThens.first;
+         ifThenPtr;
+         ifThenPtr = (CHE*)ifThenPtr->successor) {
+      DRAWCHE(ifThenPtr,&ifThens);
+      t.NewLine();
+    }
+    primaryTokenNode = ((SynObject*)((CHE*)ifThens.first)->data)->primaryTokenNode;
+
+    if (elsePart.ptr) {
+      t.Insert(else_T,false,true);
+      NLincIndent(t);
+      DRAW(elsePart.ptr);
+      NLdecIndent(t);
+    }
+    t.Insert(ENDif_T);
+  }
   EXIT
 }
 

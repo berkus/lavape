@@ -30,13 +30,14 @@
 #include "ASN1.h"
 #include "MachDep.h"
 #include "Halt.h"
-#include "DIO.h"
-//#include "disco.h"
+//#include "DIO.h"
+#include <qapplication.h>
 
 #ifdef WIN32x
 #include <winsock.h>
 #endif
 
+using namespace std;
 
 static const DString ASN1Emsg[]={
   "called within contents field of primitive element",
@@ -110,13 +111,8 @@ void ASN1::error (ErrCode errCode,
     return;
   }
   if (!Silent) {
-    IO.WriteLn();
-    IO.WriteString("+++++ ");
-    IO.WriteString(callingProcedure);
-    IO.WriteString(": ");
-    IO.WriteString(ASN1Emsg[errCode].c);
-    /* output of error message */
-    IO.WriteLn();
+    qDebug("");
+    qDebug(QString("+++++ ")+callingProcedure+": %1"+ASN1Emsg[errCode].c);
   }
   errorExitProc();
   skip = true;
@@ -316,6 +312,7 @@ void ASN1::getHeader (destinationType dT,
 
   if (HeaderTrace)
     PrintHeader();
+
   hdrPtr = &topOfStack->header; /* actual result */
 }
 
@@ -915,51 +912,53 @@ void ASN1::PutBytes (const DString& s)
 void ASN1::PrintHeader ()
 
 {
+  QString msg;
+
   if (skip) return;
-  IO.WriteString("::: ");
+  msg += "::: ";
   if (EOC()) {
-    IO.WriteString("EOC");
-    IO.WriteLn();
+    msg += "EOC";
+    qDebug(msg);
     return;
   }
 
-  IO.WriteString("Class=");
+  msg += "Class=";
   switch (topOfStack->header.Class) {
 
   case Universal:
-    IO.WriteString("Universal");
+    msg += "Universal";
     break;
 
   case Application:
-    IO.WriteString("Application");
+    msg += "Application";
     break;
 
   case Context:
-    IO.WriteString("Context");
+    msg += "Context";
     break;
 
   case Private:
-    IO.WriteString("Private");
+    msg += "Private";
     break;
   }
-  IO.WriteString(", Form=");
+  msg += ", Form=";
   switch (topOfStack->header.Form) {
 
   case Primitive:
-    IO.WriteString("Primitive");
+    msg += "Primitive";
     break;
 
   case Constructor:
-    IO.WriteString("Constructor");
+    msg += "Constructor";
     break;
   }
-  IO.WriteString(", Id=");
-  IO.WriteCard(topOfStack->header.Id,1);
+  msg += ", Id=";
+  msg += QString("%1").arg(topOfStack->header.Id);
   if (topOfStack->header.LengthForm != IndefiniteLength) {
-    IO.WriteString(", Length=");
-    IO.WriteCard(topOfStack->header.Len,1);
+    msg += ", Length=";
+    msg += QString("%1").arg(topOfStack->header.Len,1);
   }
-  IO.WriteLn();
+  qDebug(msg);
 }
 
 
@@ -981,10 +980,8 @@ void ASN1::GetSEQUENCE ()
   }
   else
     wrongElem = false;
-  if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetSEQUENCE");
-    IO.WriteLn();
-  }
+  if (HeaderTrace)
+    qDebug("::: ASN1.GetSEQUENCE");
 }
 
 
@@ -1003,10 +1000,8 @@ void ASN1::GetSETTYPE ()
   }
   else
     wrongElem = false;
-  if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetSEQUENCE");
-    IO.WriteLn();
-  }
+  if (HeaderTrace)
+    qDebug("::: ASN1.GetSEQUENCE");
 }
 
 
@@ -1031,10 +1026,8 @@ void ASN1::GetEOC ()
     return;
   }
   popUp(topOfStack->header.ContentsBytesRead);
-  if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetEOC");
-    IO.WriteLn();
-  }
+  if (HeaderTrace)
+    qDebug("::: ASN1.GetEOC");
 }
 
 
@@ -1067,10 +1060,8 @@ void ASN1::GetNULL ()
   else
     wrongElem = false;
   popUp(0);
-  if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetNULL");
-    IO.WriteLn();
-  }
+  if (HeaderTrace)
+    qDebug("::: ASN1.GetNULL");
 }
 
 
@@ -1262,11 +1253,8 @@ void ASN1::GETint (long int& x)
   GetContents(contentsBuffer,empty);
   if (skip) return;
   x = convLongInteger(contentsBuffer);
-  if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GETint: ");
-    IO.WriteInt(int(x),0);
-    IO.WriteLn();
-  }
+  if (HeaderTrace)
+    qDebug("::: ASN1.GETint: "+QString("%1").arg(int(x)));
 }
 
 
@@ -1293,11 +1281,8 @@ void ASN1::GETint (int& x)
   GetContents(contentsBuffer,empty);
   if (skip) return;
   x = convInteger(contentsBuffer);
-  if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GETint: ");
-    IO.WriteInt(int(x),0);
-    IO.WriteLn();
-  }
+  if (HeaderTrace)
+    qDebug("::: ASN1.GETint: "+QString("%1").arg(int(x)));
 }
 
 
@@ -1394,17 +1379,11 @@ void ASN1::GETboolean (bool& b)
     wrongElem = false;
   contentsBuffer.Reset(100);
   GetContents(contentsBuffer,empty);
-  if ((unsigned char)contentsBuffer[0] == '\0')
-    b = false;
-  else
-    b = true;
   if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetBOOLEAN: ");
-    if (b)
-      IO.WriteString("true");
+    if ((unsigned char)contentsBuffer[0] != '\0')
+      qDebug("::: ASN1.GetBOOLEAN: true");
     else
-      IO.WriteString("false");
-    IO.WriteLn();
+      qDebug("::: ASN1.GetBOOLEAN: false");
   }
 }
 
@@ -1424,6 +1403,7 @@ void ASN1::GETbyte (unsigned char& c)
 
 {
   HdrPtr hdrPtr;
+  QString msg;
   bool empty;
 
   if (skip) return;
@@ -1443,9 +1423,8 @@ void ASN1::GETbyte (unsigned char& c)
   if (skip) return;
   c = (unsigned char)contentsBuffer[0];
   if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetBYTE: ");
-    IO.WriteHex(contentsBuffer);
-    IO.WriteLn();
+    msg = "::: ASN1.GetBYTE: " + toHex(contentsBuffer.c);
+    qDebug(msg);
   }
 }
 
@@ -1454,14 +1433,14 @@ void ASN1::GETbytes (DString& s)
 {
   bool eoc;
   unsigned unusedBits;
+  QString msg;
 
   if (skip) return;
   s.l = 0;
   getString(Universal,4,s,eoc,unusedBits);
   if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetBYTES: ");
-    IO.WriteHex(s);
-    IO.WriteLn();
+    msg = "::: ASN1.GetBYTES: " + toHex(s.c);
+    qDebug(msg);
   }
 }
 
@@ -1471,6 +1450,7 @@ void ASN1::GETbits (Bitstring& s)
 {
   bool eoc;
   unsigned unusedBits, nBits;
+  QString msg;
 
   if (skip) return;
   unusedBits = 0;
@@ -1479,9 +1459,8 @@ void ASN1::GETbits (Bitstring& s)
   nBits = 8*s.l-unusedBits;
   s.l = nBits;
   if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetBITS: ");
-    IO.WriteHex(s);
-    IO.WriteLn();
+    msg = "::: ASN1.GetBITS: " + toHex(s.c);
+    qDebug(msg);
   }
 }
 
@@ -1506,12 +1485,8 @@ void ASN1::GETchar (char& c)
   contentsBuffer.Reset(100);
   GetContents(contentsBuffer,empty);
   c = MachDep.FromASCII[(unsigned char)contentsBuffer[0]];
-  if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetCHAR: \"");
-    IO.Write(c);
-    IO.WriteString("\"");
-    IO.WriteLn();
-  }
+  if (HeaderTrace)
+    qDebug(QString("::: ASN1.GetCHAR: \"")+c+"\"");
 }
 
 
@@ -1529,12 +1504,8 @@ void ASN1::GETstring (DString& s)
       s[i] = (char)MachDep.FromASCII[(unsigned char)s[i]];
     s[s.l] = '\0';
   }
-  if (HeaderTrace) {
-    IO.WriteString("::: ASN1.GetSTRING: \"");
-    IO.WriteString(s);
-    IO.WriteString("\"");
-    IO.WriteLn();
-  }
+  if (HeaderTrace)
+    qDebug(QString("::: ASN1.GetSTRING: \"")+s.c+"\"");
 }
 
 
@@ -1780,4 +1751,25 @@ void ASN1::PUTstring (const DString& s)
     }
 }
 
+
+QString ASN1::toHex (QString sIn)
+
+{
+  QChar ch;
+  unsigned char uch;
+  QString sOut;
+
+  for (unsigned i = 0; i < sIn.length(); i++) {
+    uch = QChar(sIn.at(i));
+    uch = uch>>4;
+    uch = (uch < 10 ? '0'+uch : 'A'+(uch-10));
+    sOut += uch;
+    
+    uch = QChar(sIn.at(i));
+    uch = uch & '\x0f';
+    uch = (uch < 10 ? '0'+uch : 'A'+(uch-10));
+    sOut += uch;
+  }
+  return sOut;
+}
 

@@ -80,17 +80,6 @@ void dummy_func () {
 //IMPLEMENT_DYNCREATE(CExecView, CRichEditView)
 
 
-CExecView::~CExecView()
-{
-//  qDebug("~CExecView called!");
-  setFocusProxy(0); 
-  OnCloseExec();
-  if (editCtl)
-    delete editCtl;
-  delete text;
-}
-
-
 static bool ctrlPressed=false;
 static bool shiftPressed=false;
 static bool altPressed=false;
@@ -138,6 +127,15 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   Base = 0;
   myDoc = 0;
   new ExecWhatsThis(this);
+}
+
+CExecView::~CExecView()
+{
+  setFocusProxy(0); 
+  OnCloseExec();
+//  if (editCtl)
+//    delete editCtl;
+  delete text;
 }
 
 bool ExecWhatsThis::clicked(const QString &whatsThisHref)
@@ -694,7 +692,8 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
 }
 
 void MyScrollView::focusInEvent(QFocusEvent *ev) {
-  if (execView->initialUpdateDone)
+  if (execView->initialUpdateDone
+  && !execView->myDoc->deleting)
     execView->SetHelpText();
 }
 
@@ -1483,10 +1482,10 @@ exp: // Const_T
       sv->viewport()->update();
       return;
     }
-    if (text->currentSelection->data.token == TypeRef_T
-    /*&& Ignorable()*/)
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-    else if (text->currentSynObj->replacedType == SetPH_T)
+/*    if (text->currentSelection->data.token == TypeRef_T
+    && Ignorable())
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);*/
+    if (text->currentSynObj->replacedType == SetPH_T)
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetEnumCombo);
     else if (text->currentSynObj->parentObject->primaryToken == callback_T)
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(callbackCombo);
@@ -3725,11 +3724,12 @@ bool CExecView::EditOK()
           break;
         case HexConst_T:
           ((Constant*)synObj)->constType = Integer;
-          synObj->flags.INCL(isHexConst);
           break;
         case OctalConst_T:
           ((Constant*)synObj)->constType = Integer;
-          synObj->flags.INCL(isOctConst);
+          break;
+        case BitConst_T:
+          ((Constant*)synObj)->constType = Bitset;
           break;
         case DoubleConst_T:
           ((Constant*)synObj)->constType = Double;

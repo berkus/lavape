@@ -323,7 +323,7 @@ void Tokens_INIT ()
   ATO("item");
   ATO("requires");
   ATO("ensures");
-  ATO("?");
+  ATO("implies");
   ATO("?");
   
   ATO("charConst");

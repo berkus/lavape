@@ -957,7 +957,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
 { //lpszPathName is the full-path and all links resolved filename 
   wxView* tview;
   QString title;
-  DString fn, oldDocDir, oldDocName, oldFileExtension, *pNewName, relFn, HTitle;
+  DString fn, oldDocDir, oldDocName, oldFileExtension, *pNewName, relFn, HTitle, str;
   CLavaPEHint *hint;
   bool isnew;
   CHESimpleSyntax *simpleSyntax, *icheSS;
@@ -1040,12 +1040,21 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   isyntax->FreeINCL = IDTable.freeINCL;
   if (!SynIO.WriteSynDef(fn.c, isyntax)) {
     //QMessageBox();//"Lava file could not be opened for writing", MB_OK+MB_ICONINFORMATION);
-    QMessageBox::critical(qApp->mainWidget(),qApp->name(),"Lava file could not be opened for writing",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),"Lava file couldn't be opened for writing",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
   if (hasIncludes)
     delete isyntax; 
   isReadOnly =  (access(fn.c,W_OK) != 0);//(FILE_ATTRIBUTE_READONLY & GetFileAttributes(lpszPathName)) != 0;
+  if (mySynDef->SynDefTree.first == mySynDef->SynDefTree.last) {
+    if (!isStd) {
+      str = DString("File '") + fn + " is not a valid lava file";
+      critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok,0,0);
+    }
+    changeNothing = !isStd || !LBaseData->stdUpdate;
+  }
+	else
+		changeNothing = isReadOnly;
   /*
   UndoMem.CleanUndoMem();
   */

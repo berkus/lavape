@@ -47,7 +47,7 @@ void SynIOCLASS::error (DString errorMsg)
 {
   if (!Silent) {
     DString mess = DString("++++ SynIO: ") + errorMsg;
-//    AfxMessageBox(mess.c ,MB_OK+MB_ICONSTOP);
+    qDebug(mess.c);
   }
 
   Done = false;
@@ -157,7 +157,7 @@ bool SynIOCLASS::WriteSynDef (const DString& fileName,
   else {
     ASN1OutFile* ocid = new ASN1OutFile(fileName);
     if (!((ASN1OutFile*)ocid)->Done) {
-      error("syntax file could not be opened for writing");
+      error("syntax file couldn't be opened for writing");
       delete ocid;
       Done = false;
       return false;

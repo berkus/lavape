@@ -13,6 +13,7 @@
 
 #include "SYSTEM.h"
 #include "DString.h"
+#include <qstring.h>
 
 
 /**********************************************************************/
@@ -480,7 +481,8 @@ protected:
       DString& s,
                   bool& eoc,
                   unsigned& unusedBits);
-};
 
+  QString toHex (QString sIn);
+};
 
 #endif

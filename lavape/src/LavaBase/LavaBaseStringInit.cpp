@@ -41,6 +41,8 @@ QString ERR_Wrong_spcl_char;
 QString ERR_Apostr_missing;
 QString ERR_QMark_missing;
 QString ERR_Wrong_hex;
+QString ERR_HexTooLong;
+QString ERR_OverOrUnderflow;
 QString ERR_Wrong_oct;
 QString ERR_Wrong_exp;
 QString ERR_AssignInQuery;
@@ -263,6 +265,8 @@ void LavaBaseStringInit() {
   ERR_Apostr_missing  = QObject::tr("Closing ' expected");
   ERR_QMark_missing  = QObject::tr("Closing "" expected");
   ERR_Wrong_hex  = QObject::tr("Error in hexadecimal constant");
+  ERR_HexTooLong  = QObject::tr("Hexadecimal constant too long");
+  ERR_OverOrUnderflow = QObject::tr("Over- or underflow: Exponent to big");
   ERR_Wrong_oct  = QObject::tr("Error in octal constant");
   ERR_Wrong_exp  = QObject::tr("Wrong or incomplete exponent");
   ERR_AssignInQuery  = QObject::tr("\"Read-only\" clause or exec: assignments are allowed only to output and declare variables (in initializers also to self.member)");
@@ -344,7 +348,7 @@ void LavaBaseStringInit() {
   ERR_URLrequired  = QObject::tr("URL required for this kind of components");
   ERR_NullCallObject  = QObject::tr("Function call: Call object is null");
   ERR_NullMandatory  = QObject::tr("Null assignment to mandatory variable");
-  ERR_IntegerRange  = QObject::tr("Integer range error on conversion");
+  ERR_IntegerRange  = QObject::tr("Integer range error (number too big!)");
   ERR_EnumOrdLow  = QObject::tr("Ord of enumeration item <0 forbidden");
   ERR_EnumOrdHigh  = QObject::tr("Given integer value is higher than maximum Ord of enumeration");
   ERR_RunTimeException  = QObject::tr("Lava run time system: internal exception");
@@ -358,7 +362,7 @@ void LavaBaseStringInit() {
   ERR_EmptyExec  = QObject::tr("Missing or empty exec");
   ERR_AssertionViolation  = QObject::tr("Assertion or invariant violation");
   ERR_NoErrors  = QObject::tr("No errors or placeholders found");
-  ERR_ExecError  = QObject::tr("Error in executable code");
+  ERR_ExecError  = QObject::tr("Error or placeholder in executable code");
   ERR_DLLError  = QObject::tr("Native implementation DLL error");
   ERR_AssigToFrozen  = QObject::tr("Forbidden assignment to a member of a frozen value object");
   ERR_SingleAssViol  = QObject::tr("Single-assignment violation; press the ""conflict button"" (red and blue left arrows) to show the last conflicting previous assignment");
@@ -463,7 +467,7 @@ void LavaBaseStringInit() {
 	ERR_BrowserStartFailed = QObject::tr("Browser couldn't be started, errno=%1");
 	ERR_ResolvingShortcutFailed = QObject::tr("Resolving shortcut %1 failed");
 	ERR_LavaStartFailed = QObject::tr("The Lava interpreter couldn't be started, errno=%1");
-	ERR_SaveFailed = QObject::tr("Changes could not be saved to read-only Lava file.\nRun unchanged program?");
+	ERR_SaveFailed = QObject::tr("Changes couldn't be saved to read-only Lava file.\nRun unchanged program?");
 	ERR_LookForCompoObj = QObject::tr("Implementation of this  component object interface or specification not found. \n(Expected in a corresponding *.lcom file)");
 	ERR_LookForCompoObjF = QObject::tr("Implementation of the attribute or function of the component object interface not found. \n(Expected in a corresponding *.lcom file");
   ERR_NoImplForAbstract	= QObject::tr("Abstract or native function has no implementation");

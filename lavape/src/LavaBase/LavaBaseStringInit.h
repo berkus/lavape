@@ -21,6 +21,8 @@ extern LAVABASE_DLL QString ERR_Wrong_spcl_char;
 extern LAVABASE_DLL QString ERR_Apostr_missing;
 extern LAVABASE_DLL QString ERR_QMark_missing;
 extern LAVABASE_DLL QString ERR_Wrong_hex;
+extern LAVABASE_DLL QString ERR_HexTooLong;
+extern LAVABASE_DLL QString ERR_OverOrUnderflow;
 extern LAVABASE_DLL QString ERR_Wrong_oct;
 extern LAVABASE_DLL QString ERR_Wrong_exp;
 extern LAVABASE_DLL QString ERR_AssignInQuery;

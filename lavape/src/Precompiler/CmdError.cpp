@@ -64,11 +64,11 @@ void CmdErrorCLASS::CommandError (CmdErrType cmdErr)
     break;
 
   case OpenErrorOutput:
-    IO.WriteString("+++++ pp: output file could not be opened");
+    IO.WriteString("+++++ pp: output file couldn't be opened");
     break;
 
   case OpenErrorSource:
-    IO.WriteString("+++++ pp: source file could not be opened");
+    IO.WriteString("+++++ pp: source file couldn't be opened");
     break;
 
   case SourceEmpty:

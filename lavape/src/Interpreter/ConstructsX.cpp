@@ -1666,6 +1666,7 @@ static unsigned char map(unsigned char inChar) {
 LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame)
 {
   int i, k=-1;
+  DString bitset;
 
   if (value)
     IFC(value)
@@ -1690,7 +1691,19 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame)
       *(int*)(value+LSH) = strtol(str.c,0,0);
       if (errno == ERANGE) {
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
-        DFC(value);
+        IFC(value); // for permanent ref from Constant
+        allocatedObjects--;
+        return (LavaObjectPtr)-1;
+      }
+      break;
+    case Bitset:
+      bitset = str;
+      bitset.Replace("X",1);
+      *(int*)(value+LSH) = strtoul(bitset.c,0,0);
+      if (errno == ERANGE) {
+        SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
+        IFC(value); // for permanent ref from Constant
+        allocatedObjects--;
         return (LavaObjectPtr)-1;
       }
       break;

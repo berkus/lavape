@@ -21,7 +21,7 @@
 #include "qwidget.h"
 #include "wx_obj.h"
 
-#define RELEASE  8
+#define RELEASE  0
 
 #undef VIEW
 

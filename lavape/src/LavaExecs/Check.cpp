@@ -2746,8 +2746,6 @@ VarRefContext ObjReference::Context () {
     if (whereInParent == (address)&funcExpr->handle.ptr)
       return funcHandle;
   }
-  else if (parentObject->primaryToken == old_T)
-    return inOldExpression;
   else if (parentObject->primaryToken == arrayAtIndex_T
     && whereInParent == (address)&((ArrayAtIndex*)parentObject)->arrayObj.ptr) {
     if (parentObject->parentObject->primaryToken == assign_T) {
@@ -3232,16 +3230,14 @@ bool ObjReference::Check (CheckData &ckd) {
       ok1 &= ArrayTargetCheck(ckd);
       break;
 
-    case inOldExpression:
-      if ((flags.Contains(isLocalVar) && !flags.Contains(isSelfVar))
-      || flags.Contains(isOutputVar)) {
-        SetError(ckd,&ERR_LocalOrOutputVarInOld);
-        ok1 = false;
-      }
-      else
-        ok1 &= ReadCheck(ckd);
-      break;
     }
+  }
+
+  if (InOldExpression()
+  && ((flags.Contains(isLocalVar) && !flags.Contains(isSelfVar))
+      || flags.Contains(isOutputVar))) {
+    SetError(ckd,&ERR_LocalOrOutputVarInOld);
+    ok1 = false;
   }
 
   return ok1;

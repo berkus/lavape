@@ -75,7 +75,8 @@ int main( int argc, char ** argv ) {
 
 	int res = ap.exec();
 
-//	delete ap.mainThread;
+	if (allocatedObjects)
+    qDebug("\n\nMemory leak: %x orphaned Lava object(s)\n\n",allocatedObjects);
 	return res;
 }
 

@@ -29,7 +29,10 @@
 #include "DString.h"
 #include "qstring.h"
 #include <ctype.h>
-//#include "stdafx.h"
+#include <limits>
+#include <errno.h>
+
+using namespace std;
 
 
 static int *iStringp;
@@ -234,6 +237,10 @@ static bool strConst ()
 static bool number ()
 
 {
+  int n;
+  float f;
+  double d;
+
   switch (currentChar) {
   case '0':
     nextChar();
@@ -246,6 +253,29 @@ static bool number ()
         return false;
       }
       while (isxdigit(currentChar)) nextChar();
+      if (strp->length()-2 > 2*sizeof(unsigned)) {
+        *msgp = &ERR_HexTooLong;
+        return false;
+      }
+    }
+    else if ((currentChar == 'y')
+    || (currentChar == 'Y')) {
+      *tokenp = BitConst_T;
+      nextChar();
+      if (!isxdigit(currentChar)) {
+        *msgp = &ERR_Wrong_hex;
+        return false;
+      }
+      while (isxdigit(currentChar)) nextChar();
+      if (currentChar != '\0') {
+        *msgp = &ERR_Odd_char;
+        return false;
+      }
+      if (strp->length()-2 > 2*sizeof(unsigned)) {
+        *msgp = &ERR_HexTooLong;
+        return false;
+      }
+      return true; // overflow check not required
     }
     else if (isdigit(currentChar)) {
       *tokenp = OctalConst_T;
@@ -260,37 +290,40 @@ static bool number ()
     else if (currentChar == '.') {
       if (!fractionPart())
         return false;
-      else
-        return true;
     }
     else
       *tokenp = IntConst_T;
+/*
     switch (currentChar) {
     case 'l':
     case 'L':
+      ulCount++;
       nextChar();
       switch (currentChar) {
       case 'u':
       case 'U':
+        ulCount++;
         nextChar();
       }
       break;
     case 'u':
     case 'U':
+      ulCount++;
       nextChar();
       switch (currentChar) {
       case 'l':
       case 'L':
+        ulCount++;
         nextChar();
       }
     }
+*/
     break;
     
   case '.':
     if (!fractionPart())
       return false;
-    else
-      return true;
+    break;
 
   default:
     while (currentChar != '\0' && isdigit(currentChar))
@@ -299,8 +332,7 @@ static bool number ()
     case '.':
       if (!fractionPart())
         return false;
-      else
-        return true;
+      break;
     case '\0':
       *tokenp = IntConst_T;
       break;
@@ -309,12 +341,36 @@ static bool number ()
       return false;
     }
   }
-  if (currentChar == '\0')
-    return true;
-  else {
+
+  if (currentChar != '\0') {
     *msgp = &ERR_Odd_char;
     return false;
   }
+
+// over/underflow check:
+  errno = 0;
+  switch (*tokenp) {
+  case IntConst_T:
+  case OctalConst_T:
+    n = strtol(strp->ascii(),0,0);
+    break;
+  case FloatConst_T:
+    f = strtod(strp->ascii(),0);
+    if (errno == ERANGE
+      || f == numeric_limits<float>::infinity()) {
+      *msgp = &ERR_OverOrUnderflow;
+      return false;
+    }
+    break;
+  case DoubleConst_T:
+    d = strtod(strp->ascii(),0);
+    if (errno == ERANGE) {
+      *msgp = &ERR_OverOrUnderflow;
+      return false;
+    }
+    break;
+  }
+  return true;
 }
 
 

@@ -104,8 +104,7 @@ enum VarRefContext {
   assignmentTarget,
   funcHandle,
   arrayTarget,
-  inputParam,
-  inOldExpression
+  inputParam
 };
 
 
@@ -443,8 +442,8 @@ enum ConstrFlags {
   unused2,
   isInForeach,
   unfinishedAllowed,
-  isHexConst,
-  isOctConst,
+  free1,
+  free2,
   isUnsafeMandatory,
   isOptionalExpr,
   isReverseLink};

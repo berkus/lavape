@@ -450,7 +450,7 @@ bool wxDocument::OnSaveDocument(const QString& file)
     QFile f(file);
     if (!f.open(IO_WriteOnly))
     {
-        QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("Sorry, could not open this file for saving."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("Sorry, couldn't open this file for saving."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         return false;
     }
 
@@ -478,7 +478,7 @@ bool wxDocument::OnOpenDocument(const QString& file)
     QFile f(file);
     if (!f.open(IO_ReadOnly))
     {
-        QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("Sorry, could not open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         return false;
     }
 
@@ -1450,7 +1450,7 @@ wxDocTemplate *wxDocManager::SelectDocumentPath(wxDocTemplate **templates,
             else
                 msgTitle = QString(tr("File error"));
 
-            QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("Sorry, could not open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+            QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 
             path = QString("");
             return (wxDocTemplate *) NULL;

@@ -235,7 +235,7 @@ enum TToken {
   item_T,
   require_T,
   ensure_T,
-  FutureKWD4,
+  implies_T,
   FutureKWD5,
 
   CharConst_T,
@@ -247,7 +247,7 @@ enum TToken {
   StringConst_T,
 
   DoubleConst_T,
-  FutureCONST2,
+  BitConst_T,
   FutureCONST3,
   FutureCONST4,
   FutureCONST5,
