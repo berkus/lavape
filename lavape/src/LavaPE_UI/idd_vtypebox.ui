@@ -464,7 +464,7 @@
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>PushButton_ID_HELP13</cstring>
+                        <cstring>ID_HELP13</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
@@ -535,10 +535,10 @@
         <slot>PushButton_IDCANCEL16_clicked()</slot>
     </connection>
     <connection>
-        <sender>PushButton_ID_HELP13</sender>
+        <sender>ID_HELP13</sender>
         <signal>clicked()</signal>
         <receiver>IDD_VTypeBox</receiver>
-        <slot>PushButton_ID_HELP13_clicked()</slot>
+        <slot>ID_HELP13_clicked()</slot>
     </connection>
     <connection>
         <sender>m_EnableName1</sender>
@@ -591,7 +591,7 @@
     <slot>m_ValueObject_clicked()</slot>
     <slot>OnOK()</slot>
     <slot>PushButton_IDCANCEL16_clicked()</slot>
-    <slot>PushButton_ID_HELP13_clicked()</slot>
+    <slot>ID_HELP13_clicked()</slot>
     <slot>m_EnableName1_clicked()</slot>
     <slot>m_isAbstract_clicked()</slot>
     <slot>m_DefCat_clicked()</slot>

@@ -490,7 +490,7 @@
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>PushButton_ID_HELP2</cstring>
+                        <cstring>ID_HELP2</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
@@ -531,7 +531,7 @@
         <slot>OnCancel()</slot>
     </connection>
     <connection>
-        <sender>PushButton_ID_HELP2</sender>
+        <sender>ID_HELP2</sender>
         <signal>clicked()</signal>
         <receiver>IDD_LiteralItem</receiver>
         <slot>OnHelp()</slot>

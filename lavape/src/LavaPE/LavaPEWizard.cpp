@@ -842,7 +842,7 @@ void CFormTextBox::UpdateData(bool getData)
 
 
 CFormTextBox::CFormTextBox(LavaDECL * litEl, QWidget* pParent, bool asFirst)  
-  : IDD_LiteralItem(pParent, "FormTextBox", true)
+  : IDD_LiteralItem(pParent, "FormTextBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
   m_lit = "";
   myDecl = litEl;

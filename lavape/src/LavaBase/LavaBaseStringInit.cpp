@@ -420,7 +420,7 @@ void LavaBaseStringInit() {
   ERR_NoOverridden  = QObject::tr("Overridden feature or virtual type not found in base interface ");
   ERR_NoClassImpl  = QObject::tr("Implementation of this interface not found");
   ERR_IOParams  = QObject::tr("Inconsistency of function parameter (interface versus implementation)");
-  ERR_SetGetError  = QObject::tr("Set or get function of property not found");
+  ERR_SetGetError  = QObject::tr("Set or get function of attribute not found");
   ERR_funcImpl  = QObject::tr("Inconsistent function properties (implementation versus interface)");
   ERR_NoSetElemType  = QObject::tr("Set element type not found");
   ERR_CommonContext  = QObject::tr("Common base context of inner and outer context not allowed");
@@ -450,7 +450,7 @@ void LavaBaseStringInit() {
   ERR_ArrayXOutOfRange  = QObject::tr("Array index is out of range");
   ERR_SwitchMissingElse  = QObject::tr("Switch statement: No case applies and missing ""else""");
   ERR_CanceledForm  = QObject::tr("Form fill-out/edit canceled");
-  ERR_NoSetGetMember  = QObject::tr("No property in interface for set/get property function");
+  ERR_NoSetGetMember  = QObject::tr("No attribute in interface for set/get access function");
   ERR_SucceedNeedless  = QObject::tr("Succeed is superfluous here");
   ERR_CopyNullToNonNull  = QObject::tr("Cannot copy a null source to a non null target");
   ERR_ZombieAccess  = QObject::tr("Inadmissible access to zombified object");
@@ -462,6 +462,6 @@ void LavaBaseStringInit() {
 	ERR_LavaStartFailed = QObject::tr("The Lava interpreter couldn't be started, errno=%1");
 	ERR_SaveFailed = QObject::tr("Changes could not be saved to read-only Lava file.\nRun unchanged program?");
 	ERR_LookForCompoObj = QObject::tr("Implementation of this  component object interface or specification not found. \n(Expected in a corresponding *.lcom file)");
-	ERR_LookForCompoObjF = QObject::tr("Implementation of the property or function of the component object interface not found. \n(Expected in a corresponding *.lcom file");
-  ERR_NoImplForAbstract	= QObject::tr("Abstract or native function/property has no implementation");
+	ERR_LookForCompoObjF = QObject::tr("Implementation of the attribute or function of the component object interface not found. \n(Expected in a corresponding *.lcom file");
+  ERR_NoImplForAbstract	= QObject::tr("Abstract or native function has no implementation");
 }

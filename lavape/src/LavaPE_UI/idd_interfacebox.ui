@@ -636,7 +636,7 @@ as a form by this GUI service:</string>
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>PushButton_ID_HELP7</cstring>
+                        <cstring>ID_HELP7</cstring>
                     </property>
                     <property name="minimumSize">
                         <size>
@@ -669,10 +669,10 @@ as a form by this GUI service:</string>
         <slot>m_CANCEL9_clicked()</slot>
     </connection>
     <connection>
-        <sender>PushButton_ID_HELP7</sender>
+        <sender>ID_HELP7</sender>
         <signal>clicked()</signal>
         <receiver>IDD_InterfaceBox</receiver>
-        <slot>PushButton_ID_HELP7_clicked()</slot>
+        <slot>ID_HELP7_clicked()</slot>
     </connection>
     <connection>
         <sender>m_NonCreatable</sender>
@@ -767,7 +767,7 @@ as a form by this GUI service:</string>
     <slot>m_GUIStructs_activated( int )</slot>
     <slot>OnOK()</slot>
     <slot>m_CANCEL9_clicked()</slot>
-    <slot>PushButton_ID_HELP7_clicked()</slot>
+    <slot>ID_HELP7_clicked()</slot>
 </slots>
 <exportmacro>LAVAPEUI_DLL</exportmacro>
 <layoutdefaults spacing="6" margin="11"/>

@@ -98,6 +98,7 @@
                                | CommandData4: the LavaDECL** of the changed element  
                                | CommandData5: new enum item Id, in case of enum items labeledit 
                                | CommandData6: old enum item Id, in case of enum items labeledit 
+                               | CommandData7: if != 0: draw the tree, because the change has new tree-nodes
                                       
   CPECommand_Constraint,     | 
                                |   

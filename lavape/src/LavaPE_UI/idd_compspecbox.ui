@@ -307,7 +307,7 @@
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>PushButton_ID_HELP10</cstring>
+                        <cstring>ID_HELP10</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
@@ -541,10 +541,10 @@
         <slot>m_CANCEL13_clicked()</slot>
     </connection>
     <connection>
-        <sender>PushButton_ID_HELP10</sender>
+        <sender>ID_HELP10</sender>
         <signal>clicked()</signal>
         <receiver>IDD_CompSpecBox</receiver>
-        <slot>PushButton_ID_HELP10_clicked()</slot>
+        <slot>ID_HELP10_clicked()</slot>
     </connection>
     <connection>
         <sender>m_EnumItems1</sender>
@@ -573,7 +573,7 @@
     <slot>m_EnumDel1_clicked()</slot>
     <slot>OnOK()</slot>
     <slot>m_CANCEL13_clicked()</slot>
-    <slot>PushButton_ID_HELP10_clicked()</slot>
+    <slot>ID_HELP10_clicked()</slot>
     <slot>m_EnumItems1_selectionChanged( QListBoxItem * )</slot>
 </slots>
 <exportmacro>LAVAPEUI_DLL</exportmacro>

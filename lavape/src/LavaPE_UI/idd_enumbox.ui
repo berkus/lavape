@@ -288,7 +288,7 @@
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>PushButton_ID_HELP3</cstring>
+                        <cstring>ID_HELP3</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
@@ -341,10 +341,10 @@
         <slot>OnOK()</slot>
     </connection>
     <connection>
-        <sender>PushButton_ID_HELP3</sender>
+        <sender>ID_HELP3</sender>
         <signal>clicked()</signal>
         <receiver>IDD_EnumBox</receiver>
-        <slot>PushButton_ID_HELP3_clicked()</slot>
+        <slot>ID_HELP3_clicked()</slot>
     </connection>
     <connection>
         <sender>m_EnumItems</sender>
@@ -372,7 +372,7 @@
     <slot>m_EnumEdit_clicked()</slot>
     <slot>m_EnumDel_clicked()</slot>
     <slot>OnOK()</slot>
-    <slot>PushButton_ID_HELP3_clicked()</slot>
+    <slot>ID_HELP3_clicked()</slot>
     <slot>m_EnumItems_selectionChanged( QListBoxItem * )</slot>
     <slot>m_CANCEL5_clicked()</slot>
 </slots>

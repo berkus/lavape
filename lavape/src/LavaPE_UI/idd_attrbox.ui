@@ -800,6 +800,7 @@
 </tabstops>
 <includes>
     <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
+    <include location="local" impldecl="in implementation">idd_attrbox.ui.h</include>
 </includes>
 <slots>
     <slot>m_BasicTypes5_activated( int )</slot>

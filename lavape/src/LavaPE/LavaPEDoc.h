@@ -102,7 +102,7 @@ protected:
 
   bool CheckFuncImpl(LavaDECL* funcDECL, int checkLevel, bool& changed);
   LavaDECL* MakeOneSetGet(TypeFlag setgetflag, LavaDECL* implDECL,
-                                     LavaDECL* propDecl);
+                                     LavaDECL* propDecl, int checkLevel);
   bool OnEmptyDoc(const DString& Name);
   bool CollectP(const TIDs& paramIDs, LavaDECL* collectDECL);
   void ShrinkCollectDECL(LavaDECL* decl);

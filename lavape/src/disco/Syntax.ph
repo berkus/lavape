@@ -389,8 +389,10 @@ $TYPE +CDP {
     //22, Supports are already from drop doc in clipEl
     poppedUp,
     //23, used in LavaGUI: pop up after rebuilding the form
-    formVTOK
+    formVTOK,
     //24, used at runtime
+	newTreeNode
+	//25, used in updates
   };
 
   enum BasicFlag {

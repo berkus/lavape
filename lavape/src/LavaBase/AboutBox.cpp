@@ -43,7 +43,7 @@
 // CAboutBox dialog
 
 CAboutBox::CAboutBox(QWidget* parent, const char* name, bool modal) :
-	  IDD_AboutBox(parent,name,modal) {
+	  IDD_AboutBox(parent,name,modal, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu) {
   lineEdit1->setText(LBaseData->m_myWebBrowser);
 } 
 

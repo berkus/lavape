@@ -76,7 +76,7 @@ CLavaPEHint::~CLavaPEHint()
   else
     if (com == CPECommand_Constraint)
       LBaseData->ConstrUpdate->DeleteHint(this);
-  if(CommandData7) 
+  if(CommandData7 && (com != CPECommand_Change)) 
     delete (DString*)CommandData7;
 
 }
@@ -193,7 +193,8 @@ void CUndoMem::AddToMem(CLavaPEHint* hint)
       DrawTree = false;
     DrawTree = DrawTree || (hint->com == CPECommand_Insert)
                || (hint->com == CPECommand_Delete)
-               || (hint->com == CPECommand_Move);
+               || (hint->com == CPECommand_Move)
+               || (hint->com == CPECommand_Change && hint->CommandData7);
 
   }
   ((CPEBaseDoc*)hint->fromDoc)->modified = false;
@@ -241,7 +242,8 @@ CLavaPEHint* CUndoMem::UndoFromMem(int& pos)
         DrawTree = false;
       DrawTree = DrawTree || (UndoMemory[pos]->com == CPECommand_Insert)
                  || (UndoMemory[pos]->com == CPECommand_Delete)
-                 || (UndoMemory[pos]->com == CPECommand_Move);
+                 || (UndoMemory[pos]->com == CPECommand_Move)
+                 || ((UndoMemory[pos]->com == CPECommand_Change) && UndoMemory[pos]->CommandData7);
       return UndoMemory[pos];
     }
     else
@@ -273,7 +275,8 @@ CLavaPEHint* CUndoMem::RedoFromMem(int& pos)
       DrawTree = false;
     DrawTree = DrawTree || (RedoMemory[pos]->com == CPECommand_Insert)
                || (RedoMemory[pos]->com == CPECommand_Delete)
-               || (RedoMemory[pos]->com == CPECommand_Move);
+               || (RedoMemory[pos]->com == CPECommand_Move)
+               || (RedoMemory[pos]->com == CPECommand_Change && RedoMemory[pos]->CommandData7);
     return RedoMemory[pos];
   }
   else

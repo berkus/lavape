@@ -856,7 +856,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     }
     PutComment(pnode0,true,true);
     PutComment(pnode0,true,false);
-    if (chp) {
+    if (chp && (!pnode->TypeFlags.Contains(isGUI) || chp->successor)) {
       codeDIVid(pnode->OwnID);
       while (chp) {
         GenHTML((LavaDECL*)chp->data,localCategory,firstChild);
@@ -896,7 +896,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     break;
 
   case FormDef:
-    if (pnode->ParentDECL->TypeFlags.Contains(isGUI))
+/*    if (pnode->ParentDECL->TypeFlags.Contains(isGUI))
       break;
     myCategory = IsDef;
     PutCategory(myCategory,parentCategory,fstChild);
@@ -914,7 +914,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     code(" := <B>form </B>");
     PutLink(&GetDocument()->IDTable,pnode->RefID,singleFile);
     PutComment(pnode0,true,true);
-    PutComment(pnode0,true,false);
+    PutComment(pnode0,true,false);*/
     break;
 
   case Initiator:
@@ -1202,6 +1202,6 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   default: ;
   }
 
-  if (pnode->DeclType != ExecDef)
+  if (pnode->DeclType != ExecDef && pnode->DeclType != FormDef)
     codeEndDIV(); // terminate "single element" or "embedded exec" DIV
 }

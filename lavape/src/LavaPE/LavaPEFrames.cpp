@@ -272,31 +272,6 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb, QPushButton *&pb, char *text
   pb->setMaximumWidth(pb->fontMetrics().width("el. in set")+6);
 }
 
-/*
-bool CLavaMainFrame::event(QEvent *ev)
-{
-  bool isVisible;
-
-	if (ev->type() == QEvent::ApplicationPaletteChange && completelyCreated && Toolbar_7) {
-	  isVisible = Toolbar_7->isVisible();
-	  QWidget::event(ev);
-	  delete Toolbar_7;
-    Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
-    Toolbar_7->setLabel(tr("Keyword toolbar"));
-    fillKwdToolbar(Toolbar_7);
-	  if (isVisible)
-		  Toolbar_7->show();
-	  else
-		  Toolbar_7->hide();
-	  return true;
-	}
-	else {
-		wxMainFrame::event(ev);
-		return true;
-	}
-}
-*/
-
 void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 {
   if (LBaseData->m_style != "CDE") {

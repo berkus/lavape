@@ -214,8 +214,8 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
               new CLavaError(&elDef->DECLError1, &ERR_NoSetGetMember);
 
             IOid = TID(((LavaDECL*)((CHE*)elDef->NestedDecls.first)->data)->OwnID, 0);
-//            ((CLavaPEApp*)wxTheApp)->ConstrUpdate.MakeSetGet(Doc, Doc->GetConstrDECL(*pelDef,false),
-//                                           ((CHETID*)elDef->Supports.first)->data, IOid);
+            ((CLavaPEApp*)wxTheApp)->ConstrUpdate.MakeSetGet(Doc, Doc->GetConstrDECL(*pelDef,false),
+                                           ((CHETID*)elDef->Supports.first)->data, IOid);
           }
           else {
             if (!elDef->SecondTFlags.Contains(enableName))
@@ -250,10 +250,10 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
           lab1 += DString("initializer ");
       }
       if (elDef->TypeFlags.Contains(isPropGet))
-        lab1 += DString("property get");
+        lab1 += DString("attribute get function");
       else
         if (elDef->TypeFlags.Contains(isPropSet))
-          lab1 += DString("property set");
+          lab1 += DString("attribute set function");
         else
           if (elDef->op == OP_noOp)
             lab1 += DString("function");
@@ -1038,6 +1038,7 @@ void CExecImpls::ExecDefs(LavaDECL ** pelDef, int level)
   CLavaPEHint *newHint = 0;
   DString *pStr;
   SynFlags firstlast;
+  DWORD d7=0;
 
   if (Hint->FirstLast.Contains(multiDocHint))
     firstlast.INCL(multiDocHint);
@@ -1048,7 +1049,11 @@ void CExecImpls::ExecDefs(LavaDECL ** pelDef, int level)
       if ( ((*pelDef)->DeclType == Impl) 
         && ((CLavaPEDoc*)Hint->fromDoc)->CheckImpl(newDECL, CHLV_inUpdateHigh /*CHLV_fit*/)) {
         pStr = new DString((*pelDef)->FullName);
-        newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, (DWORD)newDECL, (DWORD)pStr, 0, (DWORD)pelDef);
+        if (newDECL->WorkFlags.Contains(newTreeNode)) {
+          newDECL->WorkFlags.EXCL(newTreeNode);
+          d7 = 1;
+        }
+        newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, (DWORD)newDECL, (DWORD)pStr, 0, (DWORD)pelDef,0,0,d7);
         ((CPEBaseDoc*)Hint->fromDoc)->UndoMem.AddToMem(newHint);
         ((CPEBaseDoc*)Hint->fromDoc)->UpdateDoc(NULL, false, newHint);
       }

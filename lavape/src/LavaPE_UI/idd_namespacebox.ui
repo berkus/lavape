@@ -200,7 +200,7 @@
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>PushButton_ID_HELP8</cstring>
+                        <cstring>ID_HELP8</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
@@ -253,10 +253,10 @@
         <slot>mANCEL10_clicked()</slot>
     </connection>
     <connection>
-        <sender>PushButton_ID_HELP8</sender>
+        <sender>ID_HELP8</sender>
         <signal>clicked()</signal>
         <receiver>IDD_NamespaceBox</receiver>
-        <slot>PushButton_ID_HELP8_clicked()</slot>
+        <slot>ID_HELP8_clicked()</slot>
     </connection>
 </connections>
 <includes>
@@ -268,7 +268,7 @@
     <slot>m_ExtTypes1_activated( int )</slot>
     <slot>OnOK()</slot>
     <slot>mANCEL10_clicked()</slot>
-    <slot>PushButton_ID_HELP8_clicked()</slot>
+    <slot>ID_HELP8_clicked()</slot>
 </slots>
 <exportmacro>LAVAPEUI_DLL</exportmacro>
 <layoutdefaults spacing="6" margin="11"/>

@@ -64,11 +64,9 @@ this: ../../lib/lib$(EXEC)
 ../../lib/lib$(EXEC): $(gen_files) $(all_o_files)
 	g++ -o ../../lib/lib$(EXEC) -shared -fstack-check -Wl,-soname=lib$(EXEC) -L../../lib -Wl,-rpath,$(LAVADIR)/lib -L$(QTDIR)/lib -Wl,-rpath,$(QTDIR)/lib -lqt-mt $(all_o_files)
 else
-this: ../../bin/$(EXEC) ../LavaPE/Debug/std.lava
+this: ../../bin/$(EXEC)
 ../../bin/$(EXEC): $(gen_files) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix .so,$(SUBPRO))))
 	g++ -o ../../bin/$(EXEC) $(all_o_files) -fstack-check -L../../lib -Wl,-rpath,$(LAVADIR)/lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -Wl,-rpath,$(QTDIR)/lib -lqassistantclient -lqt-mt
-../LavaPE/Debug/std.lava: ../../bin/std.lava
-	cp -p ../../bin/std.lava $@
 endif
 endif
 

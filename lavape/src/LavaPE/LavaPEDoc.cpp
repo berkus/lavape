@@ -2088,6 +2088,8 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         }
         if (checkLevel > CHLV_inUpdateHigh) 
           modified = true;
+        if (checkLevel == CHLV_inUpdateHigh)
+          implDECL->WorkFlags.INCL(newTreeNode);;
       }
       else  {  
         fchanged = false;
@@ -2339,7 +2341,7 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
 //               && !ifaceElDecl->TypeFlags.Contains(inheritsBody);
     }
     if (toImpl) {
-      newimplElDecl = MakeOneSetGet(isPropGet, implDECL, ifaceElDecl);
+      newimplElDecl = MakeOneSetGet(isPropGet, implDECL, ifaceElDecl, checkLevel);
       if (newimplElDecl) {
         cheImplEl = NewCHE(newimplElDecl);
         implDECL->NestedDecls.Append(cheImplEl);
@@ -2351,7 +2353,7 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
           modified = true;
         changed = true;
       }
-      newimplElDecl = MakeOneSetGet(isPropSet, implDECL, ifaceElDecl);
+      newimplElDecl = MakeOneSetGet(isPropSet, implDECL, ifaceElDecl, checkLevel);
       if (newimplElDecl) {
         cheImplEl = NewCHE(newimplElDecl);
         implDECL->NestedDecls.Append(cheImplEl);
@@ -2388,7 +2390,7 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
 }
 
 LavaDECL* CLavaPEDoc::MakeOneSetGet(TypeFlag setgetflag, LavaDECL* implDECL,
-                                        LavaDECL* propDecl)
+                                        LavaDECL* propDecl, int checkLevel)
 {
   LavaDECL *setGet, *IOEl, *returnDECL=0;
   CHE *cheSetGet, *cheIOEl;
@@ -2436,6 +2438,8 @@ LavaDECL* CLavaPEDoc::MakeOneSetGet(TypeFlag setgetflag, LavaDECL* implDECL,
     IOEl->inINCL = 0;
     cheIOEl = NewCHE(IOEl);
     setGet->NestedDecls.Append(cheIOEl);
+    if (checkLevel == CHLV_inUpdateHigh)
+      implDECL->WorkFlags.INCL(newTreeNode);;
   }
   if (setgetflag == isPropGet) {
     setGet->LocalName = DString("Get_") + propDecl->LocalName;

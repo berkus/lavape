@@ -121,7 +121,7 @@
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>PushButton_ID_HELP5</cstring>
+                        <cstring>ID_HELP5</cstring>
                     </property>
                     <property name="focusPolicy">
                         <enum>NoFocus</enum>
@@ -154,10 +154,10 @@
         <slot>PushButton_IDCANCEL7_clicked()</slot>
     </connection>
     <connection>
-        <sender>PushButton_ID_HELP5</sender>
+        <sender>ID_HELP5</sender>
         <signal>clicked()</signal>
         <receiver>IDD_ImplBox</receiver>
-        <slot>PushButton_ID_HELP5_clicked()</slot>
+        <slot>ID_HELP5_clicked()</slot>
     </connection>
 </connections>
 <tabstops>
@@ -171,7 +171,7 @@
     <slot>m_ImplTypes_activated( int )</slot>
     <slot>OnOK()</slot>
     <slot>PushButton_IDCANCEL7_clicked()</slot>
-    <slot>PushButton_ID_HELP5_clicked()</slot>
+    <slot>ID_HELP5_clicked()</slot>
 </slots>
 <exportmacro>LAVAPEUI_DLL</exportmacro>
 <layoutdefaults spacing="6" margin="11"/>

@@ -41,7 +41,10 @@
 #include "qlabel.h"
 #include "qmessagebox.h"
 #include "qfiledialog.h"
+#include "qassistantclient.h"
 
+
+static QAssistantClient *qacl=0;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -51,6 +54,17 @@
 CAttrBox::CAttrBox(QWidget*  parent)
   : IDD_AttrBox(parent, "AttrBox", true)
 {
+}
+
+CAttrBox::CAttrBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
+  : IDD_AttrBox(parent, "AttrBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  myDECL = decl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+  second = false;
+  //OnInitDialog();
 }
 
 void CAttrBox::UpdateData(bool getData)
@@ -78,19 +92,6 @@ void CAttrBox::UpdateData(bool getData)
     BGroup_Mode->setButton(valkindOfField);
   }
 }
-
-
-CAttrBox::CAttrBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : IDD_AttrBox(parent, "AttrBox", true)
-{
-  myDECL = decl;
-  myDoc = doc;
-  onNew = isNew;
-  OrigDECL = origDECL;
-  second = false;
-  //OnInitDialog();
-}
-
 
 ValOnInit CAttrBox::OnInitDialog() 
 {
@@ -505,7 +506,7 @@ void CAttrBox::OnOK()
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
-  if (m_SetGet->isOn())
+  if (m_SetGet->isOn()) 
     myDECL->TypeFlags.INCL(hasSetGet);
   else
     myDECL->TypeFlags.EXCL(hasSetGet);
@@ -551,7 +552,7 @@ CCompSpecBox::CCompSpecBox(QWidget* parent /*=NULL*/)
 }
 
 CCompSpecBox::CCompSpecBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_CompSpecBox(parent, "CompSpecBox", true)
+  : IDD_CompSpecBox(parent, "CompSpecBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
   myDECL = decl;
   myDoc = doc;
@@ -841,7 +842,7 @@ CCorrOverBox::CCorrOverBox(QWidget* parent )
 }
 
 CCorrOverBox::CCorrOverBox(LavaDECL* decl, CLavaPEDoc* doc, QWidget* parent)
- : IDD_CorrOverBox(parent, "CorrOverBox", true)
+ : IDD_CorrOverBox(parent, "CorrOverBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
   myDECL = decl;
   myDoc = doc;
@@ -984,6 +985,16 @@ CEnumBox::CEnumBox(QWidget* parent)
 {
 }
 
+CEnumBox::CEnumBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
+  : IDD_EnumBox( parent, "EnumBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  myDECL = decl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+  valBuildSet = false;
+}
+
 CEnumBox::~CEnumBox()
 {
 }
@@ -1000,16 +1011,6 @@ void CEnumBox::UpdateData(bool getData)
     m_NewName->setText(valNewName);
     m_BuildSet->setChecked(valBuildSet);
   }
-}
-
-CEnumBox::CEnumBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_EnumBox( parent, "EnumBox", true)
-{
-  myDECL = decl;
-  myDoc = doc;
-  onNew = isNew;
-  OrigDECL = origDECL;
-  valBuildSet = false;
 }
 
 ValOnInit CEnumBox::OnInitDialog() 
@@ -1180,7 +1181,7 @@ CEnumItem::CEnumItem(QWidget* parent)
 }
 
 CEnumItem::CEnumItem(QString *enumItem, QListBox* itemsBox, ChainAny0* items, bool isId, QWidget* parent)
-  : IDD_EnumItem(parent, "EnumItem", true)
+  : IDD_EnumItem(parent, "EnumItem", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
   m_EnumItem->setText(*enumItem);
   m_ItemAdr = enumItem;
@@ -1244,6 +1245,16 @@ CFuncBox::CFuncBox(QWidget* parent /*=NULL*/)
 {
 }
 
+CFuncBox::CFuncBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
+  : IDD_FuncBox(parent, "FuncBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  myDECL = decl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+  second = false;
+  setFont(LBaseData->m_TreeFont);
+}
 
 void CFuncBox::UpdateData(bool getData)
 {
@@ -1260,17 +1271,6 @@ void CFuncBox::UpdateData(bool getData)
     m_NewName->setText(valNewName);
     BGroup_ExecMode->setButton(valSynch);
   }
-}
-
-CFuncBox::CFuncBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_FuncBox(parent, "FuncBox", true)
-{
-  myDECL = decl;
-  myDoc = doc;
-  onNew = isNew;
-  OrigDECL = origDECL;
-  second = false;
-  setFont(LBaseData->m_TreeFont);
 }
 
 ValOnInit CFuncBox::OnInitDialog()
@@ -1854,6 +1854,14 @@ CImplBox::CImplBox(QWidget* parent /*=NULL*/)
 
 }
 
+CImplBox::CImplBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
+  : IDD_ImplBox(parent, "ImplBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  myDECL = decl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+}
 
 void CImplBox::UpdateData(bool getData)
 {
@@ -1861,15 +1869,6 @@ void CImplBox::UpdateData(bool getData)
     valImplSel = m_ImplSel->text();
   else 
     m_ImplSel->setText(valImplSel);
-}
-
-CImplBox::CImplBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_ImplBox(parent, "ImplBox", true)
-{
-  myDECL = decl;
-  myDoc = doc;
-  onNew = isNew;
-  OrigDECL = origDECL;
 }
 
 ValOnInit CImplBox::OnInitDialog() 
@@ -2001,6 +2000,20 @@ CIncludeBox::CIncludeBox(QWidget* parent /*=NULL*/)
 {
 }
 
+CIncludeBox::CIncludeBox(CLavaPEDoc* myDoc, CHESimpleSyntax* newChe, CHESimpleSyntax* oldChe, QWidget* parent)
+  : IDD_IncludeBox(parent, "IncludeBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  NewChe = newChe;
+  OldChe = oldChe;
+  MyDoc = myDoc;
+  if (NewChe->data.LocalTopName.l)
+    valUseAs = QString(NewChe->data.LocalTopName.c);
+  DString fn = NewChe->data.UsersName; 
+  AbsPathName(fn, MyDoc->IDTable.DocDir);
+  valFullPathName = QString(fn.c);
+  UpdateData(false);
+  //return BoxContinue;
+}
 
 void CIncludeBox::UpdateData(bool getData)
 {
@@ -2014,26 +2027,6 @@ void CIncludeBox::UpdateData(bool getData)
   }
 }
 
-
-CIncludeBox::CIncludeBox(CLavaPEDoc* myDoc, CHESimpleSyntax* newChe, CHESimpleSyntax* oldChe, QWidget* parent)
-  : IDD_IncludeBox(parent, "IncludeBox", true)
-{
-  NewChe = newChe;
-  OldChe = oldChe;
-  MyDoc = myDoc;
-/*
-}
-
-ValOnInit CIncludeBox::OnInitDialog() 
-{*/
-  if (NewChe->data.LocalTopName.l)
-    valUseAs = QString(NewChe->data.LocalTopName.c);
-  DString fn = NewChe->data.UsersName; 
-  AbsPathName(fn, MyDoc->IDTable.DocDir);
-  valFullPathName = QString(fn.c);
-  UpdateData(false);
-  //return BoxContinue;
-}
 
 void CIncludeBox::OnOK() 
 {
@@ -2071,6 +2064,15 @@ CInitBox::CInitBox(QWidget* parent)
 {
 }
 
+CInitBox::CInitBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
+ : IDD_InitBox(parent, "InitBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  myDECL = decl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+  isTop = (OrigDECL == ((CHESimpleSyntax*)myDoc->mySynDef->SynDefTree.first)->data.TopDef.ptr);
+}
 
 void CInitBox::UpdateData(bool getData)
 {
@@ -2085,17 +2087,6 @@ void CInitBox::UpdateData(bool getData)
     m_NewName->setText(valNewName);
     BGroup_ExecMode->setButton(valSynch);
   }
-}
-
-
-CInitBox::CInitBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
- : IDD_InitBox(parent, "InitBox", true)
-{
-  myDECL = decl;
-  myDoc = doc;
-  onNew = isNew;
-  OrigDECL = origDECL;
-  isTop = (OrigDECL == ((CHESimpleSyntax*)myDoc->mySynDef->SynDefTree.first)->data.TopDef.ptr);
 }
 
 ValOnInit CInitBox::OnInitDialog() 
@@ -2171,6 +2162,23 @@ CInterfaceBox::CInterfaceBox(QWidget* parent /*=NULL*/)
 {
 }
 
+CInterfaceBox::CInterfaceBox(LavaDECL* mydecl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
+  : IDD_InterfaceBox(parent, "InterfaceBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  valNewName = QString("");
+  valIfaceID = QString("");
+  valBuildSet = false;
+  valIsGUI = false;
+  valKindOfInterface =0;
+  myDECL = mydecl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+  if (OrigDECL)
+    ContextDECL = OrigDECL;
+  else
+    ContextDECL = myDECL->ParentDECL;
+}
 
 void CInterfaceBox::UpdateData(bool getData)
 {
@@ -2193,25 +2201,6 @@ void CInterfaceBox::UpdateData(bool getData)
     m_IsGUI->setChecked(valIsGUI);
     BGroup_KindOfInterface->setButton(valKindOfInterface);
   }
-}
-
-
-CInterfaceBox::CInterfaceBox(LavaDECL* mydecl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_InterfaceBox(parent, "InterfaceBox", true)
-{
-  valNewName = QString("");
-  valIfaceID = QString("");
-  valBuildSet = false;
-  valIsGUI = false;
-  valKindOfInterface =0;
-  myDECL = mydecl;
-  myDoc = doc;
-  onNew = isNew;
-  OrigDECL = origDECL;
-  if (OrigDECL)
-    ContextDECL = OrigDECL;
-  else
-    ContextDECL = myDECL->ParentDECL;
 }
 
 ValOnInit CInterfaceBox::OnInitDialog() 
@@ -2660,6 +2649,14 @@ CIOBox::CIOBox(QWidget*  /*=NULL*/)
 {
 }
 
+CIOBox::CIOBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
+  : IDD_IOBox(parent, "IOBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  myDECL = decl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+}
 
 void CIOBox::UpdateData(bool getData)
 {
@@ -2677,7 +2674,6 @@ void CIOBox::UpdateData(bool getData)
     BGroup_Mode->setButton(valkindOfField);
   }
 }
-
 
 void CIOBox::BaseClassesToCombo(LavaDECL *decl)
 {
@@ -2707,17 +2703,6 @@ void CIOBox::BaseClassesToCombo(LavaDECL *decl)
   SortCombo(m_BasicTypes);
   SortCombo(m_NamedTypes);
   //m_NamedTypes->SetDroppedWidth(maxWidth+6);
-}
-
-
-
-CIOBox::CIOBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : IDD_IOBox(parent, "IOBox", true)
-{
-  myDECL = decl;
-  myDoc = doc;
-  onNew = isNew;
-  OrigDECL = origDECL;
 }
 
 ValOnInit CIOBox::OnInitDialog()
@@ -3008,18 +2993,8 @@ CNamespaceBox::CNamespaceBox(QWidget* parent /*=NULL*/)
 {
 }
 
-
-void CNamespaceBox::UpdateData(bool getData)
-{
-  if (getData) 
-    valNewName = m_NewName->text();
-  else 
-    m_NewName->setText(valNewName);
-}
-
-
 CNamespaceBox::CNamespaceBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : IDD_NamespaceBox(parent, "NamespaceBox", true)
+  : IDD_NamespaceBox(parent, "NamespaceBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
   myDECL = decl;
   myDoc = doc;
@@ -3028,6 +3003,14 @@ CNamespaceBox::CNamespaceBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* do
   isTop = (OrigDECL == ((CHESimpleSyntax*)myDoc->mySynDef->SynDefTree.first)->data.TopDef.ptr);
   if (!onNew) 
     valNewName = QString(myDECL->LocalName.c);
+}
+
+void CNamespaceBox::UpdateData(bool getData)
+{
+  if (getData) 
+    valNewName = m_NewName->text();
+  else 
+    m_NewName->setText(valNewName);
 }
 
 ValOnInit CNamespaceBox::OnInitDialog() 
@@ -3120,6 +3103,14 @@ CSetBox::CSetBox(QWidget* parent )
 {
 }
 
+CSetBox::CSetBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
+  : IDD_SetBox(parent, "SetBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  myDECL = decl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+}
 
 void CSetBox::UpdateData(bool getData)
 {
@@ -3131,16 +3122,6 @@ void CSetBox::UpdateData(bool getData)
     m_NewName->setText(valNewName);
     m_Extend->setText(valExtend);
   }
-}
-
-
-CSetBox::CSetBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_SetBox(parent, "SetBox", true)
-{
-  myDECL = decl;
-  myDoc = doc;
-  onNew = isNew;
-  OrigDECL = origDECL;
 }
 
 ValOnInit CSetBox::OnInitDialog() 
@@ -3225,6 +3206,16 @@ CVTypeBox::CVTypeBox(QWidget* parent)
 {
 }
 
+CVTypeBox::CVTypeBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
+  : IDD_VTypeBox(parent, "VTypeBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+{
+  myDECL = decl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+  second = false;
+}
+
 void CVTypeBox::UpdateData(bool getData)
 {
   if (getData) {
@@ -3243,17 +3234,6 @@ void CVTypeBox::UpdateData(bool getData)
     BGroup_KindOfRef->setButton(valkindOfLink);
   }
 }
-
-CVTypeBox::CVTypeBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : IDD_VTypeBox(parent, "VTypeBox", true)
-{
-  myDECL = decl;
-  myDoc = doc;
-  onNew = isNew;
-  OrigDECL = origDECL;
-  second = false;
-}
-
 
 ValOnInit CVTypeBox::OnInitDialog() 
 {
@@ -3692,6 +3672,191 @@ void CVTypeBox::OnOK()
   }
   QDialog::accept();
 }
+
+
+
+void CAttrBox::ID_HELP15_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/MemVarBox.htm");
+}
+
+void CCompSpecBox::ID_HELP10_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/COSpecBox.htm");
+}
+
+void CEnumBox::ID_HELP3_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/EnumBox.htm");
+}
+
+void CEnumItem::ID_HELP4_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/EnumItemBox.htm");
+}
+
+void CFuncBox::ID_HELP9_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/FunctionBox.htm");
+}
+
+void CImplBox::ID_HELP5_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/ImplementationBox.htm");
+}
+
+void CIncludeBox::ID_HELP12_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/IncludeBox.htm");
+}
+
+void CInitBox::ID_HELP11_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/InitiatorBox.htm");
+}
+
+void CInterfaceBox::ID_HELP7_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/InterfaceBox.htm");
+}
+
+void CIOBox::ID_HELP14_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/FuncParmBox.htm");
+}
+
+void CNamespaceBox::ID_HELP8_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/PackageBox.htm");
+}
+
+void CSetBox::ID_HELP1_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/SetBox.htm");
+}
+
+void CVTypeBox::ID_HELP13_clicked()
+{
+	QString path("");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/dialogs/VirtualTypeBox.htm");
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 /*

@@ -681,7 +681,7 @@
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>PushButton_ID_HELP9</cstring>
+                        <cstring>ID_HELP9</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>
@@ -776,10 +776,10 @@
         <slot>OnOK()</slot>
     </connection>
     <connection>
-        <sender>PushButton_ID_HELP9</sender>
+        <sender>ID_HELP9</sender>
         <signal>clicked()</signal>
         <receiver>IDD_FuncBox</receiver>
-        <slot>PushButton_ID_HELP9_clicked()</slot>
+        <slot>ID_HELP9_clicked()</slot>
     </connection>
     <connection>
         <sender>m_CANCEL11</sender>
@@ -824,7 +824,7 @@
     <slot>m_RMOverrides_clicked()</slot>
     <slot>m_Initializer_clicked()</slot>
     <slot>OnOK()</slot>
-    <slot>PushButton_ID_HELP9_clicked()</slot>
+    <slot>ID_HELP9_clicked()</slot>
     <slot>m_CANCEL_clicked()</slot>
 </slots>
 <exportmacro>LAVAPEUI_DLL</exportmacro>

@@ -1,4 +1,4 @@
-#!/bin/sh -v
+#!/bin/sh
 if test $1 == $2 ; then
   exit
 fi
@@ -6,14 +6,14 @@ cd $1
 if test -d $2/LavaIcons ; then
   rm -rf $2/LavaIcons
 fi
-cp -r -f -p $1/LavaIcons $2
+cp -r -f -p LavaIcons $2
 if test -d $2/std; then
   rm -rf $2/std
 fi
-cp -r -p $1/std $2
-cp -f $1/std_m.htm $2
-cp -f $1/std.htm $2
-cp -f $1/std_1.htm $2
+cp -r -p std $2
+cp -f std_m.htm $2
+cp -f std.htm $2
+cp -f std_1.htm $2
 
 
 

@@ -46,7 +46,7 @@ CGotoBox::CGotoBox(QWidget* pParent)
 }
 
 CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
-  : IDD_GotoDeclSel(parent, "GotoBox", true)
+  : IDD_GotoDeclSel(parent, "GotoBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
 
   SelID.nID = -1;
@@ -166,7 +166,7 @@ CFindRefsBox::CFindRefsBox(QWidget* pParent /*=NULL*/)
 }
 
 CFindRefsBox::CFindRefsBox(LavaDECL* decl, bool inExec, CFindData* fw, QWidget* pParent)
-	: IDD_FindRefsBox(pParent, "FindRefsBox", true)
+	: IDD_FindRefsBox(pParent, "FindRefsBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
   myDECL = decl;
   setExec = inExec;
@@ -255,7 +255,7 @@ CFindByNameBox::CFindByNameBox(QWidget* pParent)
 }
 
 CFindByNameBox::CFindByNameBox(CFindData* fw, QWidget* pParent)
-	: IDD_FindByNameBox(pParent, "FindByNameBox", true)
+	: IDD_FindByNameBox(pParent, "FindByNameBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
   findWhat = fw;
 

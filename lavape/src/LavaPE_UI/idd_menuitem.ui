@@ -375,7 +375,7 @@
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>PushButton_ID_HELP</cstring>
+                        <cstring>ID_HELP</cstring>
                     </property>
                     <property name="sizePolicy">
                         <sizepolicy>

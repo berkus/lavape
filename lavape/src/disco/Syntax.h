@@ -458,7 +458,8 @@ enum WorkFlag {
   ImplFromBaseToEx,
   SupportsReady,
   poppedUp,
-  formVTOK};
+  formVTOK,
+  newTreeNode};
 
 extern DISCO_DLL void CDPWorkFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
                                    bool baseCDP=false);

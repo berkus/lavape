@@ -376,8 +376,8 @@ void Tokens_INIT ()
   ATO("?");
   ATO("?");
 
-  ATO("&lt;--");
-  ATO("-->");
+  ATO("&lt;==");
+  ATO("==>");
   ATO("&lt;");
   ATO("&lt;=");
   ATO("&lt;&lt;");
