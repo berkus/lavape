@@ -1061,7 +1061,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
 {
   Category cat = unknownCategory, catComp = unknownCategory;
   CContext compContext = context, bContext;
-  LavaDECL *fmvType=0, *memDECL;
+  LavaDECL *fmvType=0, *memDECL, *enumDecl;
   SynFlags ctxFlags;
   DString name;
   int cnt, pos; //, maxW = 0, npos, epos;
@@ -1141,37 +1141,41 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
   }
   SortCombo(m_CompaObjectsCtrl);
   item = 0;
-  if (forInput && decl && (decl->DeclDescType == EnumType)) {
-    //epos = m_EnumsCtrl->SelectString(0, decl->FullName.c);
-    item = m_EnumsCtrl->listBox()->findItem(decl->FullName.c, Qt::ExactMatch | Qt::CaseSensitive);
-    if (item) {
-      m_EnumsCtrl->setCurrentText(item->text());
-      lastSelStr = decl->FullName.c;
-    }
-    else {
-      item = m_EnumsCtrl->listBox()->findItem(decl->LocalName.c, Qt::ExactMatch | Qt::CaseSensitive);
+  if (forInput && decl) {
+    if (decl->DeclType == VirtualType)
+      enumDecl = ckd.document->IDTable.GetDECL(decl->RefID, decl->inINCL);
+    else
+      enumDecl = decl;
+    if (enumDecl && (enumDecl->DeclDescType == EnumType)) {
+      item = m_EnumsCtrl->listBox()->findItem(enumDecl->FullName.c, Qt::ExactMatch | Qt::CaseSensitive);
       if (item) {
         m_EnumsCtrl->setCurrentText(item->text());
-        lastSelStr = decl->LocalName.c;
+        lastSelStr = enumDecl->FullName.c;
+      }
+      else {
+        item = m_EnumsCtrl->listBox()->findItem(enumDecl->LocalName.c, Qt::ExactMatch | Qt::CaseSensitive);
+        if (item) {
+          m_EnumsCtrl->setCurrentText(item->text());
+          lastSelStr = enumDecl->LocalName.c;
+        }
+      }
+      if (item) { //epos && (epos != LB_ERR)) {
+        lastSelTID = TID(enumDecl->OwnID, enumDecl->inINCL);
+        EnumMenu.clear();//DestroyMenu( );
+        m_ButtonEnum = m_ComboBarDlg->IDC_ButtonEnum;
+        pos = 0;
+        for (enumsel = (CHEEnumSelId*)((TEnumDescription*)enumDecl->EnumDesc.ptr)->EnumField.Items.first;
+             enumsel;
+             enumsel = (CHEEnumSelId*)enumsel->successor) {   
+          EnumMenu.insertItem(enumsel->data.Id.c, pos);
+          pos++;
+        }
+        showEnums = true;
       }
     }
-    if (item) { //epos && (epos != LB_ERR)) {
-      lastSelTID = TID(decl->OwnID, decl->inINCL);
-      EnumMenu.clear();//DestroyMenu( );
-      m_ButtonEnum = m_ComboBarDlg->IDC_ButtonEnum;
-      pos = 0;
-      for (enumsel = (CHEEnumSelId*)((TEnumDescription*)decl->EnumDesc.ptr)->EnumField.Items.first;
-           enumsel;
-           enumsel = (CHEEnumSelId*)enumsel->successor) {   
-        EnumMenu.insertItem(enumsel->data.Id.c, pos);
-        pos++;
-      }
-      showEnums = true;
-    }
+	  else if (enumDecl->fromBType == Enumeration) //SecondTFlags.Contains(isEnum)))
+		  showEnumCombo = true;
   }
-	else if (forInput && decl && (decl->fromBType == Enumeration)) //SecondTFlags.Contains(isEnum)))
-		showEnumCombo = true;
-
   if (showObjs || showEnums || showEnumCombo) {
     SetCombos(true, true);
     m_CompaObjectsCtrl->show();
