@@ -581,6 +581,9 @@ void CVTView::OnOverrideI(CTreeItem* item)
   CVTItemData * itd;
   LavaDECL *OverDECL, *elDECL, *parentDECL;
   LavaDECL* decl;
+  TID elID;
+  CHETVElem *El;
+
   if (CollectDECL) {
     OverDECL = CollectDECL;
     parentDECL = ((LavaDECL*)((CHE*)CollectDECL->NestedDecls.first)->data)->ParentDECL;
@@ -614,8 +617,6 @@ void CVTView::OnOverrideI(CTreeItem* item)
       }
       parentDECL->ResetCheckmarks();
       che = (CHE*)decl->NestedDecls.first;
-      TID elID;
-      CHETVElem *El;
       while (che) {
         elDECL = (LavaDECL*)che->data;
         if ((elDECL->DeclType == VirtualType)
