@@ -28,12 +28,12 @@ dirs:
 links:
 	cd bin; \
 	if [ ! -e std.lava ]; then ln -s ../src/LavaPE/Debug/std.lava .; fi; \
-	if [ ! -e std ]; then ln -s ../src/LavaPE/std .; fi; \
-	if [ ! -e LavaIcons ]; then ln -s ../src/LavaPE/LavaIcons .; fi; \
-	if [ ! -h std_1.htm ]; then ln -s ../src/LavaPE/std_1.htm .; fi; \
-	if [ ! -h std_m.htm ]; then ln -s ../src/LavaPE/std_m.htm .; fi; \
-	if [ ! -h std.htm ]; then ln -s ../src/LavaPE/std.htm .; fi; \
-	if [ ! -h cp_icons_std ]; then ln -s ../src/LavaPE/cp_icons_std .; fi; \
+	if [ ! -e std ]; then ln -s ../src/LavaPE/Debug/std .; fi; \
+	if [ ! -e LavaIcons ]; then ln -s ../src/LavaPE/Debug/LavaIcons .; fi; \
+	if [ ! -h std_1.htm ]; then ln -s ../src/LavaPE/Debug/std_1.htm .; fi; \
+	if [ ! -h std_m.htm ]; then ln -s ../src/LavaPE/Debug/std_m.htm .; fi; \
+	if [ ! -h std.htm ]; then ln -s ../src/LavaPE/Debug/std.htm .; fi; \
+	if [ ! -h cp_icons_std ]; then ln -s ../src/LavaPE/Debug/cp_icons_std .; fi; \
 	cd ../src/Interpreter; \
 	if [ ! -h Constructs.ph ]; then ln -s ../LavaExecs/Constructs.ph .; fi; \
 	if [ ! -h Constructs.cpp ]; then ln -s ../LavaExecs/Constructs.cpp .; fi; \

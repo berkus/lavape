@@ -154,7 +154,6 @@ MyListView::MyListView(CTreeView* view)
   setFocusPolicy(QWidget::StrongFocus);
   viewport()->setAcceptDrops(true);
   setDragAutoScroll(true);
-  setShowToolTips(true);
 }
 
 void MyListView::setCurAndSel(QListViewItem* item, bool singleSel)
@@ -249,7 +248,7 @@ CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name): CLavaBa
   m_tree->addColumn("");
   m_tree->setRootIsDecorated(true);
   m_tree->header()->hide();
-  m_tree->setSelectionMode(QListView::Extended);//Single); 
+  m_tree->setSelectionMode(QListView::Extended);//Single);
 }
 
 

@@ -78,27 +78,24 @@ void CLavaPEView::OnGenHtmlI()
   SyntaxDefinition &synDef = GetDocument()->mySynDef->SynDefTree;
   CHESimpleSyntax *chpSimSyn;
   QString iconPathTo, copyCommand, mdCommand;
-	bool firstChild=true;
+  bool firstChild=true;
 
   if (pathName.isEmpty()) {
     QMessageBox::critical(this,qApp->name(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
     return;
   }
-	QFileInfo fi(pathName);
-	iconPathTo = fi.dirPath(true);
+  QFileInfo fi(pathName);
+  iconPathTo = fi.dirPath(true);
+  baseName = fi.baseName(true);
   pathName = pathName.left(pathName.length()-5);
-
   baseFile = pathName;
   copyCommand = ExeDir + "/cp_icons_std" + " " + ExeDir + " " + iconPathTo;
   if (!singleFile)
-    copyCommand += " " + baseFile;
+    copyCommand += " " + baseName;
 #ifdef WIN32
-	copyCommand.replace('/',"\\");
+  copyCommand.replace('/',"\\");
 #endif
   system(copyCommand);
-
-	QFileInfo bn(baseFile);
-  baseName = bn.baseName(true);
 
   if (singleFile)
     dclFile = baseFile + "_1.htm";

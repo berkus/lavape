@@ -59,6 +59,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   if (myFormNode->data.IoSigFlags.Contains(DONTPUT)
       || !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
+  listBox()->setVariableWidth(true);
   connect(this, SIGNAL(activated(int)), this, SLOT(OnSelendok(int)));
 
   show();

@@ -74,9 +74,9 @@ endif
 endif
 
 .cpp.o:
-	g++ -c -pipe -fPIC -ggdb -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
+	g++ -c -pipe -ggdb -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
 .c.o:
-	gcc -c -pipe -fPIC -ggdb -MMD $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
+	gcc -c -pipe -ggdb -MMD $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
 		
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's

@@ -92,6 +92,29 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QMainWindow* parent)
   myDoc->MakeBasicBox(m_BasicTypesCtrl, NoDef, true);
   m_BasicTypesCtrl->setCurrentItem(0);
   m_ObjectsCtrl->show();
+
+  m_TypesCtrl->listBox()->setVariableWidth(true);        
+  m_SetTypesCtrl->listBox()->setVariableWidth(true);  
+  m_CallbackCtrl->listBox()->setVariableWidth(true);   
+  m_BasicTypesCtrl->listBox()->setVariableWidth(true);  
+  m_EnumsCtrl->listBox()->setVariableWidth(true);
+  m_NewCtrl->listBox()->setVariableWidth(true); 
+  m_SNewCtrl->listBox()->setVariableWidth(true); 
+  m_ObjectsCtrl->listBox()->setVariableWidth(true);
+  m_SetObjectsCtrl->listBox()->setVariableWidth(true);
+  m_AttachCtrl->listBox()->setVariableWidth(true);
+  m_CallIntCtrl->listBox()->setVariableWidth(true);
+  m_CompoObjIntCtrl->listBox()->setVariableWidth(true);
+  m_ClassFuncsCtrl->listBox()->setVariableWidth(true);
+  m_VFuncsCtrl->listBox()->setVariableWidth(true);
+  m_SubObjectsCtrl->listBox()->setVariableWidth(true);
+  m_CompaObjectsCtrl->listBox()->setVariableWidth(true);
+  m_BaseInisCtrl->listBox()->setVariableWidth(true);
+  m_StaticFuncsCtrl->listBox()->setVariableWidth(true);
+  m_CompaTypesCtrl->listBox()->setVariableWidth(true);
+  m_CompaBTypesCtrl->listBox()->setVariableWidth(true);
+
+
   m_EnumsCtrl->show();
   EnumsEnable = false;
   EnumsShow = true;

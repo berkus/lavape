@@ -96,6 +96,7 @@ CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
   QDict<int> stylesDict( 17, FALSE );
   for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
 		QString styleStr = *it;
+//    qDebug("style=%s",styleStr.ascii());
 		QString styleAccel = styleStr;
 		if ( stylesDict[styleAccel.left(1)] ) {
 			for ( uint i = 0; i < styleAccel.length(); i++ ) {
@@ -354,11 +355,11 @@ void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
     "What can I do next at the current selection?",
     "<p>Provides online help which lists the most important operations "
     "that you can perform <b>at the current selection</b></p>");
-  newHelpToolbutton(tb,LBaseData->howToButton,"How to ...",SLOT(howTo_clicked()),
+/*  newHelpToolbutton(tb,LBaseData->howToButton,"How to ...",SLOT(howTo_clicked()),
     "How to accomplish various tasks",
     "<p>Provides online help which explains the most basic and " 
     "<b>frequent program development operations</b> related to "
-    "the <font color=\"red\">active view</font></p>");
+    "the <font color=\"red\">active view</font></p>");*/
 }
 
 void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)

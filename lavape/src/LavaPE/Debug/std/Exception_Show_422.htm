@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="GENERATOR" CONTENT="Lava HTML Generator">
+<TITLE>Exception_show.htm</TITLE>
+<LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaIcons/LavaStyles.css">
+</HEAD>
+<BODY><PRE>
+<FONT color=#0000FF>function</FONT> <A HREF="../std_m.htm#422" TARGET="frmLeft"><B><FONT color=#000000>Exception::show</FONT></B></A>
+
+<FONT color=#0000FF>declare</FONT>
+   <A HREF="../std_m.htm#92" TARGET="frmLeft"><FONT color=#000000>String</FONT></A> <A NAME="476"</A><FONT color=#D1009E>callStack</FONT>
+<FONT color=#0000FF>do</FONT>
+   <FONT color=#0000FF>set</FONT> <A HREF="#476"><FONT color=#D1009E>callStack</FONT></A> <FONT color=#0000FF>&lt;==</FONT> <A HREF="../std_m.htm#474" TARGET="frmLeft"><B><FONT color=#000000>Exception::callStack</FONT></B></A>;
+   <FONT color=#0000FF>if</FONT>
+      <A HREF="../std_m.htm#419" TARGET="frmLeft"><FONT color=#000000>self</FONT></A>.<A HREF="../std_m.htm#414" TARGET="frmLeft"><FONT color=#D1009E>message</FONT></A> = <FONT color=#0000FF>Ø</FONT>
+   <FONT color=#0000FF>then</FONT>
+      <FONT color=#0000FF>if</FONT>
+         <A HREF="#476"><FONT color=#D1009E>callStack</FONT></A> = <FONT color=#0000FF>Ø</FONT>
+      <FONT color=#0000FF>then</FONT>
+         <FONT color=#0000FF>call</FONT> <A HREF="../std_m.htm#419" TARGET="frmLeft"><FONT color=#000000>self</FONT></A>.<A HREF="../std_m.htm#413" TARGET="frmLeft"><FONT color=#000000>code</FONT></A>.<A HREF="../std_m.htm#395" TARGET="frmLeft"><B><FONT color=#000000>string</FONT></B></A>.<A HREF="../std_m.htm#96" TARGET="frmLeft"><B><FONT color=#000000>messageBox</FONT></B></A>
+      <FONT color=#D1009E>else</FONT>
+         <FONT color=#0000FF>call</FONT> ( <A HREF="../std_m.htm#419" TARGET="frmLeft"><FONT color=#000000>self</FONT></A>.<A HREF="../std_m.htm#413" TARGET="frmLeft"><FONT color=#000000>code</FONT></A>.<A HREF="../std_m.htm#395" TARGET="frmLeft"><B><FONT color=#000000>string</FONT></B></A> + "\n\n" + <A HREF="../std_m.htm#474" TARGET="frmLeft"><B><FONT color=#000000>Exception::callStack</FONT></B></A> ).<A HREF="../std_m.htm#96" TARGET="frmLeft"><B><FONT color=#000000>messageBox</FONT></B></A>
+      <FONT color=#0000FF>#if</FONT>
+   <FONT color=#D1009E>else</FONT>
+      <FONT color=#0000FF>if</FONT>
+         <A HREF="#476"><FONT color=#D1009E>callStack</FONT></A> = <FONT color=#0000FF>Ø</FONT>
+      <FONT color=#0000FF>then</FONT>
+         <FONT color=#0000FF>call</FONT> ( <A HREF="../std_m.htm#419" TARGET="frmLeft"><FONT color=#000000>self</FONT></A>.<A HREF="../std_m.htm#413" TARGET="frmLeft"><FONT color=#000000>code</FONT></A>.<A HREF="../std_m.htm#395" TARGET="frmLeft"><B><FONT color=#000000>string</FONT></B></A> + ":\n" + <A HREF="../std_m.htm#419" TARGET="frmLeft"><FONT color=#000000>self</FONT></A>.<A HREF="../std_m.htm#414" TARGET="frmLeft"><FONT color=#D1009E>message</FONT></A> ).<A HREF="../std_m.htm#96" TARGET="frmLeft"><B><FONT color=#000000>messageBox</FONT></B></A>
+      <FONT color=#D1009E>else</FONT>
+         <FONT color=#0000FF>call</FONT> ( <A HREF="../std_m.htm#419" TARGET="frmLeft"><FONT color=#000000>self</FONT></A>.<A HREF="../std_m.htm#413" TARGET="frmLeft"><FONT color=#000000>code</FONT></A>.<A HREF="../std_m.htm#395" TARGET="frmLeft"><B><FONT color=#000000>string</FONT></B></A> + ":\n" + <A HREF="../std_m.htm#419" TARGET="frmLeft"><FONT color=#000000>self</FONT></A>.<A HREF="../std_m.htm#414" TARGET="frmLeft"><FONT color=#D1009E>message</FONT></A> + "\n\n" + <A HREF="../std_m.htm#474" TARGET="frmLeft"><B><FONT color=#000000>Exception::callStack</FONT></B></A> ).<A HREF="../std_m.htm#96" TARGET="frmLeft"><B><FONT color=#000000>messageBox</FONT></B></A>
+      <FONT color=#0000FF>#if</FONT>
+   <FONT color=#0000FF>#if</FONT>
+<FONT color=#0000FF>#declare</FONT></PRE></BODY></HTML>

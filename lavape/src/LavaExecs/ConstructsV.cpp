@@ -2424,6 +2424,7 @@ CallbackV::CallbackV (ObjReference *handle) {
   onEvent.ptr = new SynObjectV(Exp_T);
   evt = new SynObjectV(Event_T);
   evt->flags.INCL(isDisabled);
+  evt = new ParameterV(evt);
   ((FuncExpression*)callback.ptr)->inputs.Prepend(new CHE(evt));
 }
 

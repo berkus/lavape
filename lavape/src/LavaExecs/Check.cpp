@@ -3920,7 +3920,13 @@ static void reposition(CheckData &ckd,SynObject *func,bool isInput,CHAINX *chain
   }
   else {
     if (isInput)
-      placeHdr = new SynObjectV(Exp_T);
+      if (func->parentObject->primaryToken == callback_T
+      && !chain->first) {
+        placeHdr = new SynObjectV(Event_T);
+        placeHdr->flags.INCL(isDisabled);
+      }
+      else
+        placeHdr = new SynObjectV(Exp_T);
     else
       placeHdr = new SynObjectV(ObjPH_T);
     parm = new ParameterV(placeHdr);

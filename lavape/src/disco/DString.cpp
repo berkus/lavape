@@ -278,7 +278,7 @@ DString operator+ (const DString& str1, const DString& str2)
   // rather than DString to ensure automatic destruction
   
   result = str1;
-  return result += str2;
+  return (result += str2);
 }
 
 

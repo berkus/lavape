@@ -2602,16 +2602,16 @@
             <cstring>howToAction</cstring>
         </property>
         <property name="text">
-            <string>How to ...</string>
+            <string>How to</string>
         </property>
         <property name="menuText">
-            <string>How to ...</string>
+            <string>OO analysis/design/implementation in Lava</string>
         </property>
         <property name="toolTip">
-            <string>How to accomplish various tasks</string>
+            <string>OO analysis/design/implementation in Lava</string>
         </property>
         <property name="whatsThis">
-            <string>How to accomplish various tasks</string>
+            <string>OO analysis/design/implementation in Lava</string>
         </property>
     </action>
     <action>

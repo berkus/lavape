@@ -162,7 +162,7 @@
                                 <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
-                                <string>Define object category</string>
+                                <string>Defines object category</string>
                             </property>
                         </widget>
                     </vbox>
