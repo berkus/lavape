@@ -21,7 +21,7 @@
 #pragma implementation
 #endif
 
-#include "ConstrUpdate.h"
+#include "ExecUpdate.h"
 #include "qstring.h"
 #include "Constructs.h"
 #include "Syntax.h"
@@ -37,7 +37,7 @@ SynObject *replacedObj, *toBeDrawn;
 bool multipleUpdates, insMult=false;
 
 
-bool CConstrUpdate::ChangeConstraint(CLavaPEHint *hint, wxDocument *doc, bool undo) {
+bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
   SynObject **ptr, *parent, *oldParent;
   CHAINX *chx;
   CHE *che, *newChe;
@@ -647,7 +647,7 @@ plusMinus:
 }
 
 
-void CConstrUpdate::DeleteHint(CLavaPEHint *hint) {
+void CExecUpdate::DeleteHint(CLavaPEHint *hint) {
   CHE *che;
   TComment *pCmt;
   SynObject *synObj;
@@ -687,7 +687,7 @@ void CConstrUpdate::DeleteHint(CLavaPEHint *hint) {
 }
 
 
-void CConstrUpdate::MakeExec(LavaDECL *myDECL) {
+void CExecUpdate::MakeExec(LavaDECL *myDECL) {
   SelfVarV *selfVar;
   LavaDECL *decl, *declName;
   SynObject *body, *execName;
@@ -697,7 +697,7 @@ void CConstrUpdate::MakeExec(LavaDECL *myDECL) {
   selfVar->type = implementation_T;
   selfVar->containingChain = 0;
   selfVar->parentObject = 0;
-  selfVar->stackPos = 0;
+  selfVar->stackPos = SFH;
   selfVar->execDECL = myDECL;
   selfVar->oldFormParms = 0;
   myDECL->Exec.ptr = selfVar;
@@ -728,7 +728,7 @@ void CConstrUpdate::MakeExec(LavaDECL *myDECL) {
     break;
   case Interface:
   case Impl:
-    selfVar->primaryToken = constraint_T;
+    selfVar->primaryToken = invariant_T;
   }
   if (selfVar->primaryToken == dftInitializer_T
   || selfVar->primaryToken == initializer_T)
@@ -760,7 +760,7 @@ void CConstrUpdate::MakeExec(LavaDECL *myDECL) {
 }
 
 
-void CConstrUpdate::MakeSetGet(CPEBaseDoc *myDoc, LavaDECL *myDECL, TID &prop, TID &parm) {
+void CExecUpdate::MakeSetGet(CPEBaseDoc *myDoc, LavaDECL *myDECL, TID &prop, TID &parm) {
   SelfVarV *selfVar;
   SynObject *synObj;
   AssignmentV *assigStm;

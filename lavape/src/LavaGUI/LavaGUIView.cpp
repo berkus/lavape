@@ -33,6 +33,9 @@
 #include "qclipboard.h"
 #include "LavaBaseStringInit.h"
 #include "qstatusbar.h"
+#include "qpushbutton.h"
+#include "qvbox.h"
+#include "qlayout.h"
 
 
 
@@ -67,21 +70,28 @@ void GUIScrollView::viewportResizeEvent(QResizeEvent* ev)
 CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
    : CLavaBaseView(parent,doc,"LavaGUIView")
 { 
-  myScrv = new GUIScrollView(this, false);
+  released = false;
+  QVBox *qvb = new QVBox(this);
+  myScrv = new GUIScrollView(qvb, false);
+  //QVBoxLayout* qvl = new QVBoxLayout(qvb);
+  //qvl->addWidget(myScrv);
+  if (LBaseData->inRuntime && !((CLavaBaseDoc*)doc)->isObject) {
+    QHBox* hb = new QHBox(qvb);
+    QPushButton* okButton = new QPushButton("Ok", hb);
+    QPushButton* resetButton = new QPushButton("Reset", hb);
+    //qvl->addWidget(hb);
+    connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
+    connect(resetButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
+  }
   qvbox = myScrv->qvbox; 
   myDECL = 0;
   myGUIProg = 0;
-	//m_pMemDC = 0;
-	//m_pBmp = 0;
-	//m_pOldBmp = 0;
   ServicePtr = 0;
   IniDataPtr = 0;
   ResultDPtr = 0;
   CurrentCategory = false;
-//  myThread = 0;
   mainTree = 0;
   myTree = 0;
-  //BitmapSize = QSize(0,0);
   LastBrowseNode = 0;
   inUpdate = true;
   StatusbarMess = "";
@@ -92,6 +102,7 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
 
 CLavaGUIView::~CLavaGUIView()
 {
+  DisableActions();
   if (myGUIProg) {
     if (!wxTheApp->apExit)
       myGUIProg->LavaForm.DeletePopups(myGUIProg->Root);
@@ -118,10 +129,10 @@ void CLavaGUIView::UpdateUI()
   OnUpdateEditPaste(LBaseData->editPasteActionPtr);
   OnUpdateEditCopy(LBaseData->editCopyActionPtr);
   OnUpdateEditCut(LBaseData->editCutActionPtr);
-  if (LBaseData->okActionPtr) {
+  if (LBaseData->updateCancelActionPtr) {
 	  OnUpdateTogglestate(LBaseData->toggleCatActionPtr);
     OnUpdateCancel(LBaseData->updateCancelActionPtr);
-    OnUpdateOk(LBaseData->okActionPtr);
+    //OnUpdateOk(LBaseData->okActionPtr);
   }
   if (!LBaseData->inRuntime) 
     OnUpdateGotodef(LBaseData->gotoDeclActionPtr);
@@ -134,10 +145,10 @@ void CLavaGUIView::DisableActions()
   LBaseData->editCutActionPtr->setEnabled(false);
   LBaseData->editCopyActionPtr->setEnabled(false);
   LBaseData->editPasteActionPtr->setEnabled(false);
-  if (LBaseData->okActionPtr) {
+  if (LBaseData->updateCancelActionPtr) {
 	  LBaseData->toggleCatActionPtr->setEnabled(false);
     LBaseData->updateCancelActionPtr->setEnabled(false);
-    LBaseData->okActionPtr->setEnabled(false);
+    //LBaseData->okActionPtr->setEnabled(false);
   }
   if (!LBaseData->inRuntime) 
     LBaseData->gotoDeclActionPtr->setEnabled(false);
@@ -157,8 +168,9 @@ void CLavaGUIView::OnInitialUpdate()
     myGUIProg->SetFont(&LBaseData->m_FormFont);  
     if (pHint && LBaseData->actHint->com == CPECommand_OpenFormView) {
       if (LBaseData->inRuntime) { //lava task only
+        //AddButtons();
+        GetParentFrame()->show();
         myDECL = (*(LavaObjectPtr)pHint->CommandData1)->implDECL;
-        //if (!GetDocument()->IsEmbedded())
         ((CLavaGUIFrame*)GetParentFrame())->NewTitle(myDECL, GetDocument()->IDTable.DocName);
         myID = TID(myDECL->OwnID, 0);
         ServicePtr = (LavaVariablePtr)pHint->CommandData1;
@@ -169,9 +181,9 @@ void CLavaGUIView::OnInitialUpdate()
         myGUIProg->FrozenObject = (int)pHint->CommandData4;
         myThread = (CLavaThread*)pHint->CommandData5;
         myGUIProg->fromFillIn = (int)pHint->CommandData6;
+        myGUIProg->myDECL = myDECL;
         myGUIProg->OnUpdate( myDECL, ResultDPtr);
-        //if (!GetDocument()->IsEmbedded())
-          wxTheApp->mainWidget()->showMaximized();
+        wxTheApp->mainWidget()->showMaximized();
       }
       else {
         myDECL = (LavaDECL*)pHint->CommandData1;
@@ -179,6 +191,7 @@ void CLavaGUIView::OnInitialUpdate()
         myID = TID(myDECL->OwnID, myDECL->inINCL);
         mainTree = (CLavaBaseView*)pHint->CommandData2; //LavaPE only
         LastBrowseNode = 0;
+        myGUIProg->myDECL = myDECL;
         myGUIProg->selDECL = myDECL;
         //myGUIProg->OnUpdate(myDECL, (LavaVariablePtr)pHint->CommandData3);
         OnUpdate(this, 0, pHint);
@@ -186,6 +199,7 @@ void CLavaGUIView::OnInitialUpdate()
     }
     else { //show Lava object autonom
       if (LBaseData->inRuntime && GetDocument()->isObject && GetDocument()->DocObjects[2]) {
+        GetParentFrame()->show();
         ServicePtr = &GetDocument()->DocObjects[0];
         IniDataPtr = &GetDocument()->DocObjects[1];
         ResultDPtr = &GetDocument()->DocObjects[2];
@@ -199,6 +213,7 @@ void CLavaGUIView::OnInitialUpdate()
         myID = TID(myDECL->OwnID, myDECL->inINCL);
         LastBrowseNode = 0;
         MessToStatusbar();
+        myGUIProg->myDECL = myDECL;
         myGUIProg->OnUpdate( myDECL, ResultDPtr);
         myGUIProg->MakeGUI.DisplayScreen(false);
       }
@@ -206,6 +221,7 @@ void CLavaGUIView::OnInitialUpdate()
   }
   else {
     if (LBaseData->inRuntime && GetDocument()->isObject) {
+      GetParentFrame()->show();
       GetDocument()->SelectLcom(true);
       myGUIProg = new CGUIProg;
       MessToStatusbar();
@@ -222,6 +238,7 @@ void CLavaGUIView::OnInitialUpdate()
         ((CLavaGUIFrame*)GetParentFrame())->setCaption(GetDocument()->GetTitle());
       myID = TID(myDECL->OwnID, myDECL->inINCL);
       LastBrowseNode = 0;
+      myGUIProg->myDECL = myDECL;
       myGUIProg->OnUpdate( myDECL, ResultDPtr);
       myGUIProg->MakeGUI.DisplayScreen(false);
     }
@@ -230,6 +247,7 @@ void CLavaGUIView::OnInitialUpdate()
 
 void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint) 
 { 
+  GetParentFrame()->show();
   inUpdate = true;
   CLavaPEHint* Hint = (CLavaPEHint*)pHint;
   if (Hint //&& Hint->CommandData1 
@@ -255,6 +273,7 @@ void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
   else
     if (Hint && (Hint->com == CPECommand_OpenFormView)) {
       if (LBaseData->inRuntime) {
+        released = false;
         ServicePtr = (LavaVariablePtr)Hint->CommandData1;
         IniDataPtr = (LavaVariablePtr)Hint->CommandData2;
         ResultDPtr = (LavaVariablePtr)Hint->CommandData3;
@@ -397,6 +416,8 @@ void CLavaGUIView::OnGotoDecl()
 
 void CLavaGUIView::OnOK()
 {
+  if (released)
+    return;
   NoteLastModified();
   if (LBaseData->inRuntime && !GetDocument()->isObject)// && !GetDocument()->IsEmbedded())
     if (myGUIProg && myGUIProg->LavaForm.OnOK( myGUIProg->Root))
@@ -405,17 +426,23 @@ void CLavaGUIView::OnOK()
         myThread->pContExecEvent->ex = myGUIProg->ex;
         myGUIProg->ckd.lastException = 0;
         myGUIProg->ckd.exceptionThrown = false;
+        released = true;
+        GetParentFrame()->hide();
         (*myThread->pContExecEvent)--; // release semaphore, -> client thread resumes
       }
 }
 
+/*
 void CLavaGUIView::OnUpdateOk(wxAction* action) 
 {
   action->setEnabled(LBaseData->inRuntime && !GetDocument()->isObject);// && !GetDocument()->IsEmbedded());
 }
+*/
 
 void CLavaGUIView::OnCancel()
 {
+  if (released)
+    return;
   bool ok = true;;
   if (myGUIProg && LBaseData->inRuntime) {
     if (GetDocument()->isObject) { 
@@ -471,7 +498,7 @@ void CLavaGUIView::OnCancel()
 
 void CLavaGUIView::OnUpdateCancel(wxAction* action) 
 {
-  action->setEnabled(LBaseData->inRuntime); // && !GetDocument()->IsEmbedded());
+  action->setEnabled(LBaseData->inRuntime && GetDocument()->isObject); // && !GetDocument()->IsEmbedded());
 }
 
 
@@ -490,6 +517,8 @@ void CLavaGUIView::NoteNewObj(LavaObjectPtr obj)
 
 void CLavaGUIView::OnDeleteOpt() 
 {
+  if (released)
+    return;
   if (myGUIProg && myGUIProg->DelNode) {
     if (myGUIProg->DelNode->data.IterFlags.Contains(Optional))
       myGUIProg->CmdExec.DeleteOptionalItem(myGUIProg->DelNode);  
@@ -528,6 +557,8 @@ void CLavaGUIView::OnUpdateDeleteopt(wxAction* action)
 
 void CLavaGUIView::OnInsertOpt() 
 {
+  if (released)
+    return;
   if (myGUIProg && myGUIProg->InsertNode) {
     myGUIProg->CmdExec.InsertIterItem(myGUIProg->InsertNode);
   }
@@ -589,6 +620,8 @@ void CLavaGUIView::OnModified()
 
 bool CLavaGUIView::OnKill()
 {
+  if (released)
+    return true;
   if (myGUIProg && LBaseData->inRuntime && !GetDocument()->isObject) {
     if (ResultDPtr && *ResultDPtr) {
       if (QMessageBox::question(
@@ -605,6 +638,7 @@ bool CLavaGUIView::OnKill()
           myThread->pContExecEvent->lastException = myGUIProg->ckd.lastException;
           myGUIProg->ckd.lastException = 0;
           myGUIProg->ckd.exceptionThrown = false;
+          released = true;
           (*myThread->pContExecEvent)--;
         }
       }
@@ -667,16 +701,11 @@ void CLavaGUIView::setNewLabelFont()
     myGUIProg->RedrawForm();
 }
 
-/*
-void CLavaGUIView::setNewButtonFont()
-{
-  if (myGUIProg) 
-    myGUIProg->RedrawForm();
-}
-*/
 
 void CLavaGUIView::OnEditCopy()
 {
+  if (released)
+    return;
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
     if (focw ) {
@@ -689,6 +718,8 @@ void CLavaGUIView::OnEditCopy()
 
 void CLavaGUIView::OnEditCut()
 {
+  if (released)
+    return;
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
     if (focw ) {
@@ -700,6 +731,8 @@ void CLavaGUIView::OnEditCut()
 
 void CLavaGUIView::OnEditPaste()
 {
+  if (released)
+    return;
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
     if (focw ) 
@@ -734,97 +767,3 @@ void CLavaGUIView::OnUpdateEditCopy(wxAction* action)
 }
   
 
-
-/*
-void CLavaGUIView::OnDestroy() 
-{
-  GetDocument()->RuntimeView = 0;
-  if (myGUIProg)
-    delete myGUIProg; 
-}*/
-
-/*
-void CLavaGUIView::OnDraw() 
-{
-  if (myGUIProg) { 
-    if (GetDocument()->Redraw) {
-      myGUIProg->RedrawForm();
-      GetDocument()->Redraw = false;
-    }
-    else
-      myGUIProg->MakeGUI.DisplayScreen(false);
-    myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode); 
-    //if (myGUIProg->newFocus && myGUIProg->newFocus->m_hWnd)
-    //  myGUIProg->newFocus->SetFocus();
-  }
-  if (myGUIProg->inSyncForm) {
-    myGUIProg->inSyncForm = false;
-//    myTree->SetFocus();
-  }
-//  inUpdate = false;
-}
-
-*/
-
-/*
-
-void CLavaGUIView::GetActViewSize(QSize& size) 
-{
-  QRect rect;
-  GetClientRect(&rect);
-  size = rect.Size();
-}
-
-bool CLavaGUIView::OnSetCursor(QWidget* pWnd, UINT nHitTest, UINT message) 
-{
-  if (!LBaseData->inRuntime)
-    SetCursor(LBaseData->ArrowCurser);
-  return false;
-}
-
-
-void CLavaGUIView::SetScreenshot()
-{
-  if (!GetDocument()->isObject || !GetDocument()->IsEmbedded())
-    return;
-	QSize size, sizeClient;
-
-  if (m_pMemDC != NULL) { //replace old picture
-		m_pMemDC->SelectObject(m_pOldBmp); // select out the bitmap
-		delete m_pBmp; //??
-		m_pBmp = 0; //??
- 
-		delete m_pMemDC;
-		m_pMemDC = NULL;			   
-	}
-
-	CDC *dc = GetDC();
-  QPoint point =  GetScrollPosition();
-  GetActViewSize(BitmapSize);
-	m_pMemDC = new CDC;
-  if (!m_pMemDC->CreateCompatibleDC(dc))
-    GetDocument()->LavaError(myGUIProg->ckd, true, 0, &ERR_NoPicture, 0);
-	m_pBmp = new CBitmap;
-  if (!m_pBmp->CreateDiscardableBitmap(dc, BitmapSize.cx, BitmapSize.cy)) {
-    GetDocument()->LavaError(myGUIProg->ckd, true, 0, &ERR_NoPicture, 0);
-    return;
-  }
-
-	m_pOldBmp = m_pMemDC->SelectObject(m_pBmp);
-  if (m_pOldBmp == NULL) {
-    GetDocument()->LavaError(myGUIProg->ckd, true, 0, &ERR_NoPicture, 0);
-    return;
-  }
-	
-	// Get the screen picture into the memory DC
-//  if (!m_pMemDC->StretchBlt(0, 0, sizeClient.cx, sizeClient.cy, dc, 0, 0, size.cx, size.cy, SRCCOPY ))
-  if (!m_pMemDC->BitBlt(0, 0,  BitmapSize.cx, BitmapSize.cy, dc,0, 0, SRCCOPY)) {
-    GetDocument()->LavaError(myGUIProg->ckd, true, 0, &ERR_NoPicture, 0);
-    return;
-  }
-
-	//Notify the server item that a change has been made that
-	// needs to be reflected in the metafile
-	((COleServerItem*)(GetDocument()->GetEmbeddedItem()))->NotifyChanged();
-}
-*/

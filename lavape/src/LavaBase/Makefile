@@ -1,4 +1,4 @@
-MOCABLES=AboutBox.h LavaAppBase.h LavaBaseDoc.h PEBaseDoc.h
+MOCABLES=AboutBox.h LavaAppBase.h LavaBaseDoc.h PEBaseDoc.h DumpView.h
 
 EXEC = LavaBase.so
 SUBPRO=disco wxqDocView

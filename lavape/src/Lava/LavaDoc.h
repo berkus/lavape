@@ -35,6 +35,7 @@ public:
   virtual bool OnSaveDocument(const QString& lpszPathName);
   virtual bool SelectLcom(bool emptyDoc);
 	virtual void customEvent(QCustomEvent *e);
+  virtual bool SaveAs();
 
 protected:
   void SerializeObj(CheckData& ckd, QDataStream& ar, LavaVariablePtr pObject, const QString& ldocName );
@@ -56,6 +57,7 @@ public:
   DString ObjectPathName;
   DString NameToStore;
   bool firstStore;
+  bool newLdoc;
   virtual LavaObjectPtr OpenObject(CheckData& ckd, LavaObjectPtr urlObj);
   virtual bool SaveObject(CheckData& ckd, LavaObjectPtr object);
 //  void CalcObjName(const DString& FileName);

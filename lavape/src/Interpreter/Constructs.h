@@ -43,6 +43,7 @@
 #include "qmessagebox.h"
 #include "qpainter.h"
 #include "qptrlist.h"
+#include "qptrdict.h"
 #include "LavaBaseDoc.h"
 #include "SynIDTable.h"
 #include "wx_obj.h"
@@ -107,15 +108,73 @@ enum VarRefContext {
   inputParam
 };
 
+enum ROContext {
+  noROContext,
+  roExec,
+  assertion,
+  roClause
+};
+
 
 class SynObject;
 class ObjReference;
 class VarName;
-class OldExpression;
+class SelfVar;
 
-typedef QPtrList<OldExpression> OldExprChain;
 
-typedef QPtrList<LavaDECL> AssertionChain;
+#ifdef INTERPRETER
+
+class RTAssertionData { // run time assertion data
+public:
+  unsigned oldExprLevel;
+  bool requireChecked, requireOK, ensureChecked, ensureOK, invariantChecked;
+
+  RTAssertionData(unsigned oel) {
+    oldExprLevel = oel;
+    requireChecked = false;
+    ensureChecked = false;
+    invariantChecked = false;
+  }
+};
+
+typedef QPtrDict<RTAssertionData> RTAssDataDict;
+
+class AssertionData : public AnyType { // check time assertion data
+public:
+  unsigned maxFrameSize, stackFrameSize, nOwnOldExpr, nOvrOldExpr, nTotalOldExpr;
+  bool hasOrInheritsPreconditions, hasOrInheritsPostconditions, hasOrInheritsInvariants;
+  LavaDECL *funcDECL, *requireDECL, *ensureDECL, *requireDECLimpl, *ensureDECLimpl,
+           *invariantDECL, *invariantDECLimpl;
+  QPtrList<AssertionData> overridden;
+  QPtrList<class OldExpression> oldExpressions; // pointers to OldExpression for eval.on method entry
+
+  AssertionData(CheckData &ckd, LavaDECL *funcDECL);
+
+  unsigned PrepareAssertions(CheckData &ckd, SelfVar *selfVar);
+  bool EvalOldExpressions (CheckData &ckd, RTAssDataDict &rtadDict, LavaVariablePtr stackFrame, unsigned &oldExprLevel);
+  bool EvalPreConditions (CheckData &ckd, RTAssDataDict &rtadDict, LavaVariablePtr stackFrame, AssertionData *parent, bool parentOK);
+  bool EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict, LavaVariablePtr stackFrame, AssertionData *parent);
+};
+
+
+typedef QPtrDict<LavaDECL> RTInvDataDict;
+// run time invariant dict;
+// is used only to recognize if an ivariant has already been checked
+
+class InvarData : public AnyType { // check time invariant data
+public:
+  unsigned maxFrameSize, stackFrameSize;
+  LavaDECL *itfDECL, *invariantDECL, *invariantDECLimpl;
+  bool hasOrInheritsInvariants;
+  QPtrList<InvarData> overridden;
+
+  InvarData(CheckData &ckd, LavaDECL *itfDECL);
+
+  unsigned PrepareInvariants(CheckData &ckd, SelfVar *selfVar);
+  bool EvalInvariants (CheckData &ckd, RTInvDataDict &rtInvDict, LavaVariablePtr stackFrame);
+};
+
+#endif
 
 
 
@@ -399,7 +458,7 @@ public:
   void INIT ();
   virtual void NewLine ();
 	CProgTextBase () { INIT(); }
-  virtual void Insert(TToken token,bool isPrimToken=false,bool isOpt=false/*CHE *pred*/)=0;
+  virtual void Insert(TToken token,bool isPrimToken=false,bool isOpt=false)=0;
   virtual void SynObjNewLine()=0;
   virtual void Blank ()=0;
 #endif
@@ -557,15 +616,12 @@ class SynObject : public SynObjectBase {
   bool NullAdmissible(CheckData &ckd);
   bool ExpressionSelected(CHETokenNode *currentSelection);
   bool HasOptionalParts();
-  virtual bool InReadOnlyContext();
-  virtual bool InReadOnlyClause();
-  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec)
+  virtual ROContext ReadOnlyContext();
+  virtual bool IsReadOnlyClause(SynObject *synObj)
   {
-    roExec=false;
     return false;
   }
   virtual bool InOldExpression();
-  virtual bool InFuncOrEnsure();
   virtual bool InInitializer(CheckData &ckd);
   virtual bool InHiddenIniClause(CheckData &ckd,SynObject *&synObj);
   virtual bool IsArrayObj();
@@ -675,9 +731,9 @@ class SynObject : public SynObjectBase {
     decl=0;
     cat=unknownCategory;
   }
-  virtual bool Execute(CheckData &ckd,LavaVariablePtr stackFrame);
-  virtual LavaObjectPtr Evaluate(CheckData &ckd,LavaVariablePtr stackFrame);
-  virtual bool Recursion(CheckData &ckd,LavaVariablePtr stackFrame,CHE *cheQuant,CHE *cheVar,LavaObjectPtr rSet=0)
+  virtual bool Execute(CheckData &ckd,LavaVariablePtr stackFrame,unsigned oldExprLevel);
+  virtual LavaObjectPtr Evaluate(CheckData &ckd,LavaVariablePtr stackFrame,unsigned oldExprLevel);
+  virtual bool Recursion(CheckData &ckd,LavaVariablePtr stackFrame,unsigned oldExprLevel,CHE *cheQuant,CHE *cheVar,LavaObjectPtr rSet=0)
   {
     return false;
   }
@@ -1058,12 +1114,9 @@ class SelfVar : public VarName {
   CHAINX baseInitCalls;
   NESTEDANY/*Expression*/ body;
   FormParms *oldFormParms;
-  LavaDECL *execDECL, *requireDECL, *ensureDECL, *selfType;
-  OldExprChain oldExpressions;
-  AssertionChain requireChain;
-  AssertionChain ensureChain;
-  unsigned nParams, nInputs, nOutputs, stackFrameSize, inINCL;
-  bool concernExecs, checked;
+  LavaDECL *execDECL, *funcDECL, *itfDECL, *selfType;
+  unsigned nParams, nInputs, nOutputs, stackFrameSize, firstOldExprExec, inINCL;
+  bool concernExecs, checked, isFuncBody, isInvariant;
   CContext selfCtx;
 
   SelfVar()
@@ -1071,6 +1124,8 @@ class SelfVar : public VarName {
     checked=false;
     concernExecs=false;
     execView=0;
+    isFuncBody=false;
+    isInvariant=false;
   }
   virtual bool IsEmptyExec();
   virtual bool IsSelfVar()
@@ -1083,9 +1138,7 @@ class SelfVar : public VarName {
   bool InitCheck(CheckData &ckd,bool inSelfCheck=true);
   bool InputCheck(CheckData &ckd);
   bool OutputCheck(CheckData &ckd);
-  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
-  virtual void BuildAssertionChains(CheckData &ckd);
 
   virtual void CopyData (AnyType *from) {
     *this = *(SelfVar*)from;
@@ -1325,9 +1378,8 @@ class EvalExpression : public UnaryOp {
   {
     return false;
   }
-  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec)
+  virtual bool IsReadOnlyClause(SynObject *synObj)
   {
-    roExec=false;
     return true;
   }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
@@ -1488,9 +1540,8 @@ class LogicalNot : public UnaryOp {
   {
     return false;
   }
-  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec)
+  virtual bool IsReadOnlyClause(SynObject *synObj)
   {
-    roExec=false;
     return true;
   }
   virtual bool Check(CheckData &ckd);
@@ -1578,7 +1629,7 @@ class MultipleOp : public Operation {
   }
   void MultipleOpInit(TToken primToken);
   virtual bool IsOptional(CheckData &ckd);
-  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
+  virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsMultOp()
   {
     return true;
@@ -1987,6 +2038,10 @@ class AssertStatement : public Expression {
   NESTEDANY/*Expression*/ statement;
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+  virtual bool IsReadOnlyClause(SynObject *synObj)
+  {
+    return true;
+  }
 
   AssertStatement () {}
 
@@ -2037,7 +2092,7 @@ class IfThen : public Expression {
   NESTEDANY/*Expression*/ ifCondition;
   NESTEDANY/*Expression*/ thenPart;
   CHETokenNode *thenToken;
-  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
+  virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsRepeatableClause(CHAINX *&chx);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -2093,7 +2148,7 @@ class IfxThen : public Expression {
   NESTEDANY/*Expression*/ ifCondition;
   NESTEDANY/*Expression*/ thenPart;
   CHETokenNode *thenToken;
-  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
+  virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsRepeatableClause(CHAINX *&chx);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -2635,7 +2690,7 @@ class QuantStmOrExp : public Expression {
   {
     return false;
   }
-  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
+  virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool Check(CheckData &ckd);
   virtual bool InitCheck(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -2790,7 +2845,7 @@ public:
 	QScrollView *sv;
 
 
-  void Insert(TToken token,bool isPrimToken=false,bool isOpt=false/*CHE *pred*/);
+  void Insert(TToken token,bool isPrimToken=false,bool isOpt=false);
   void SynObjNewLine();
   void Blank ();
 
@@ -2810,7 +2865,7 @@ public:
     selEnd = 0;
   }
 
-  void Insert(TToken token,bool isPrimToken=false,bool isOpt=false/*CHE *pred*/);
+  void Insert(TToken token,bool isPrimToken=false,bool isOpt=false);
   virtual void NewLine ();
   void SynObjNewLine();
   unsigned GetLineIndent ();
@@ -3459,23 +3514,24 @@ public:
   EnumConstX () { value = 0; enumItem = 0; }
   ~EnumConstX();
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class ObjReferenceX : public ObjReference {
 public:
   ObjReferenceX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
-  LavaObjectPtr GetPropertyInfo(CheckData &ckd, LavaVariablePtr stackFrame, unsigned stackPos, LavaDECL*& setExec);
-  LavaObjectPtr GetMemberObjPtr(CheckData &ckd, LavaVariablePtr stackFrame, unsigned stackPos);
-  LavaVariablePtr GetMemberVarPtr(CheckData &ckd, LavaVariablePtr stackFrame, unsigned stackPos);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+  LavaObjectPtr GetPropertyInfo(CheckData &ckd, LavaVariablePtr stackFrame, unsigned stackPos, LavaDECL*& setExec, unsigned oldExprLevel);
+  LavaObjectPtr GetMemberObjPtr(CheckData &ckd, LavaVariablePtr stackFrame, unsigned stackPos, unsigned oldExprLevel);
+  LavaVariablePtr GetMemberVarPtr(CheckData &ckd, LavaVariablePtr stackFrame, unsigned stackPos, unsigned oldExprLevel);
   bool assign (SynObject *source,
                LavaObjectPtr object,
                TargetType targetType,
                unsigned sectionNumber,
                CheckData &ckd,
-               LavaVariablePtr stackFrame);
+               LavaVariablePtr stackFrame,
+               unsigned oldExprLevel);
 };
 
 class VarNameX : public VarName {
@@ -3500,9 +3556,14 @@ public:
 
 class LAVAEXECS_DLL SelfVarX : public SelfVar {
 public:
-  SelfVarX() {}
+  SelfVarX() { 
+    stackFrameSize = 0;
+    funcDECL = 0;
+    itfDECL = 0;
+  }
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  bool ExecBaseInits (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class ConstantX : public Constant {
@@ -3510,7 +3571,7 @@ public:
   ConstantX() {}
   ~ConstantX();
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class BoolConstX : public BoolConst {
@@ -3518,21 +3579,21 @@ public:
   BoolConstX() {}
   ~BoolConstX();
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class NullConstX : public NullConst {
 public:
   NullConstX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame) { return 0; }
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) { return 0; }
 };
 
 class SucceedStatementX : public SucceedStatement {
 public:
   SucceedStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame) {
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
     ckd.immediateReturn = true; return true; }
 };
 
@@ -3540,93 +3601,93 @@ class FailStatementX : public FailStatement {
 public:
   FailStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class OldExpressionX : public OldExpression {
 public:
   OldExpressionX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class UnaryOpX : public UnaryOp {
 public:
   UnaryOpX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class InvertOpX : public UnaryOpX {
 public:
   InvertOpX() {}
 
-  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class HandleOpX : public HandleOp {
 public:
   HandleOpX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class OrdOpX : public UnaryOpX {
 public:
   OrdOpX() {}
 
-  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class MinusOpX : public UnaryOpX {
 public:
   MinusOpX() {}
 
-  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class LogicalNotX : public LogicalNot {
 public:
   LogicalNotX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame) {
-    return !((SynObjectX*)operand.ptr)->Execute(ckd,stackFrame);}
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+    return !((SynObjectX*)operand.ptr)->Execute(ckd,stackFrame,oldExprLevel);}
 };
 
 class EvalExpressionX : public EvalExpression {
 public:
   EvalExpressionX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class EvalStatementX : public EvalStatement {
 public:
   EvalStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class InSetStatementX : public InSetStatement {
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class BinaryOpX : public BinaryOp {
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class MultipleOpX : public MultipleOp {
 public:
   MultipleOpX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class SemicolonOpX : public MultipleOpX {
 public:
   SemicolonOpX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class AndOpX : public SemicolonOpX {
@@ -3638,14 +3699,14 @@ class OrOpX : public MultipleOpX {
 public:
   OrOpX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class XorOpX : public MultipleOpX {
 public:
   XorOpX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class BitAndOpX : public MultipleOpX {
@@ -3697,56 +3758,56 @@ class AssignmentX : public Assignment {
 public:
   AssignmentX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class ArrayAtIndexX : public ArrayAtIndex {
 public:
   ArrayAtIndexX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class ParameterX : public Parameter {
 public:
   ParameterX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class FuncExpressionX : public FuncExpression {
 public:
   FuncExpressionX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class FuncStatementX : public FuncStatement {
 public:
   FuncStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class CallbackX : public Callback {
 public:
   CallbackX() {}
 
-  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class AssertStatementX : public AssertStatement {
 public:
   AssertStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class ThrowStatementX : public ThrowStatement {
 public:
   ThrowStatementX() {}
 
-  //virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  //virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class IfThenX : public IfThen {
@@ -3758,7 +3819,7 @@ class IfStatementX : public IfStatement {
 public:
   IfStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class IfxThenX : public IfxThen {
@@ -3770,7 +3831,7 @@ class IfExpressionX : public IfExpression {
 public:
   IfExpressionX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class BranchX : public Branch {
@@ -3782,7 +3843,7 @@ class SwitchStatementX : public SwitchStatement {
 public:
   SwitchStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class TypeBranchX : public TypeBranch {
@@ -3794,7 +3855,7 @@ class TypeSwitchStatementX : public TypeSwitchStatement {
 public:
   TypeSwitchStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class CatchClauseX : public CatchClause {
@@ -3806,70 +3867,70 @@ class TryStatementX : public TryStatement {
 public:
   TryStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class AttachObjectX : public AttachObject {
 public:
   AttachObjectX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class NewExpressionX : public NewExpression {
 public:
   NewExpressionX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class CloneExpressionX : public CloneExpression {
 public:
   CloneExpressionX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class CopyStatementX : public CopyStatement {
 public:
   CopyStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class EnumItemX : public EnumItem {
 public:
   EnumItemX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class ExtendExpressionX : public ExtendExpression {
 public:
   ExtendExpressionX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class RunX : public Run {
 public:
   RunX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class QueryItfX : public QueryItf {
 public:
   QueryItfX() {}
 
-  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class GetUUIDX : public GetUUID {
 //public:
 //  GetUUIDX() {}
 
-  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
+  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class IntegerIntervalX : public IntegerInterval {
@@ -3886,7 +3947,7 @@ class DeclareX : public Declare {
 public:
 //  DeclareX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class QuantStmOrExpX : public QuantStmOrExp {
@@ -3898,24 +3959,24 @@ class ExistsX : public Exists {
 public:
 //  ExistsX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
-  bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame,CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet=0);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+  bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame,unsigned oldExprLevel,CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet=0);
 };
 
 class ForeachX : public Foreach {
 public:
 //  ForeachX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
-  bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame,CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet=0);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+  bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame,unsigned oldExprLevel,CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet=0);
 };
 
 class SelectExpressionX : public SelectExpression {
 public:
 //  SelectExpressionX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
-  bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame,CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+  bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame,unsigned oldExprLevel,CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet);
 };
 
 #endif

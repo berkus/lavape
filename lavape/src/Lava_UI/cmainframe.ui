@@ -8,7 +8,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>466</width>
+            <width>350</width>
             <height>694</height>
         </rect>
     </property>
@@ -24,7 +24,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>466</width>
+            <width>350</width>
             <height>29</height>
         </rect>
     </property>
@@ -48,6 +48,11 @@
             <action name="setFormLabelFontAction"/>
         </item>
         <action name="setGlobalFontAction"/>
+    </item>
+    <item text="Options" name="Options">
+        <action name="PreconditionsAction"/>
+        <action name="PostconditionsAction"/>
+        <action name="InvariantsAction"/>
     </item>
     <item text="Window" name="windowMenu">
         <action name="tileHorizAction"/>
@@ -85,7 +90,6 @@
         <action name="tileVerticAction"/>
         <action name="cascadeAction"/>
         <separator/>
-        <action name="okAction"/>
         <action name="editUndoAction"/>
         <action name="insAction"/>
         <action name="delAction"/>
@@ -189,10 +193,10 @@
             <iconset>image3</iconset>
         </property>
         <property name="text">
-            <string>Undo</string>
+            <string>Reset</string>
         </property>
         <property name="menuText">
-            <string>&amp;Undo</string>
+            <string>&amp;Reset</string>
         </property>
         <property name="accel">
             <string>Ctrl+Z</string>
@@ -491,30 +495,13 @@
     </action>
     <action>
         <property name="name">
-            <cstring>okAction</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="iconSet">
-            <iconset>image13</iconset>
-        </property>
-        <property name="text">
-            <string>OK</string>
-        </property>
-        <property name="menuText">
-            <string>OK</string>
-        </property>
-    </action>
-    <action>
-        <property name="name">
             <cstring>insAction</cstring>
         </property>
         <property name="enabled">
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image14</iconset>
+            <iconset>image13</iconset>
         </property>
         <property name="text">
             <string>Insert</string>
@@ -531,35 +518,13 @@
             <bool>false</bool>
         </property>
         <property name="iconSet">
-            <iconset>image15</iconset>
+            <iconset>image14</iconset>
         </property>
         <property name="text">
             <string>Delete</string>
         </property>
         <property name="menuText">
             <string>Delete</string>
-        </property>
-    </action>
-    <action>
-        <property name="name">
-            <cstring>viewnew_itemAction</cstring>
-        </property>
-        <property name="text">
-            <string>new item</string>
-        </property>
-        <property name="menuText">
-            <string>new item</string>
-        </property>
-    </action>
-    <action>
-        <property name="name">
-            <cstring>viewnew_itemAction_2</cstring>
-        </property>
-        <property name="text">
-            <string>new item</string>
-        </property>
-        <property name="menuText">
-            <string>new item</string>
         </property>
     </action>
     <action>
@@ -571,17 +536,6 @@
         </property>
         <property name="menuText">
             <string>Set form font</string>
-        </property>
-    </action>
-    <action>
-        <property name="name">
-            <cstring>viewnew_itemAction_3</cstring>
-        </property>
-        <property name="text">
-            <string>new item</string>
-        </property>
-        <property name="menuText">
-            <string>new item</string>
         </property>
     </action>
     <action>
@@ -615,6 +569,51 @@
         </property>
         <property name="menuText">
             <string>Label font</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>PreconditionsAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Check preconditions</string>
+        </property>
+        <property name="menuText">
+            <string>Check preconditions</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>PostconditionsAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Check pre- and postconditions</string>
+        </property>
+        <property name="menuText">
+            <string>Check pre- and postconditions</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>InvariantsAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Check invariants</string>
+        </property>
+        <property name="menuText">
+            <string>Check invariants</string>
         </property>
     </action>
 </actions>
@@ -659,12 +658,9 @@
         <data format="PNG" length="151">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005e49444154789cdd51410ac0200c4bc557b9f7b7dfda4e010d7363ab2703058da426ad793832284a1cad9dac2721dfcb1da9cd666200304678fb51e1110600b517939c3952f11041c5e494d7bb2ddfc257541efe0e31ed203d830d22a41d5c3d65366896759c690000000049454e44ae426082</data>
     </image>
     <image name="image13">
-        <data format="PNG" length="196">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008b49444154789ce552bb0ac3300c3c957c55bc09fc59c2047f96415bfa5bead20bae71db21b44b6ed43d7402c97edf7106b753eebf05a435455a53fcbe81370f6ef3e6d38dd4905f7ac28aa16e150060c5002034abcc349c1f0d9e06685621c9d9a8797bc237b0dd3480a4373fee1b0d9a55ea565f9a2c3d092048f6778e21562cbc796856918bbcf2273c008a864c1b5cd25cb10000000049454e44ae426082</data>
-    </image>
-    <image name="image14">
         <data format="PNG" length="198">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008d49444154789cc592410ac34008459fa5a7caec8439562883c70accceb9d6ef26812e024d3b85ba12c5c7f7abe54866e23635fd0b800102c891f61560d6037605da4102142df49ae748722467f553c031f0ae172d74d9c4680140598afad6152df0ea76bf0af0eae6d5e95b17c0fa5801ae2be85b57598a76901d908f14002a4bd1b19257b7e933feff95a7014fe2f55cc10ee4662f0000000049454e44ae426082</data>
     </image>
-    <image name="image15">
+    <image name="image14">
         <data format="PNG" length="199">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008e49444154789cd5523b0ac520101c434ee576811c4b82ecb10276ebb5e6356f83f1993449f3062cdcf9c08e06ab8627981eb9df0898fb8144210058b5706774dd3b2b94bd50a2b0ec85bdc0b92b1e9a950068d5f07d91e33ee2342b5bddc9d00734a2d369b99f1247b82b74d2ac9746e77cf7510ff3b22e0100250afb30e7d29690b644cdeab303e1ffbff2e3800f9eb768768f584dea0000000049454e44ae426082</data>
     </image>
 </images>
@@ -825,6 +821,24 @@
         <receiver>CMainFrame</receiver>
         <slot>setFormLabelFont()</slot>
     </connection>
+    <connection>
+        <sender>PreconditionsAction</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>PreconditionsToggled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>PostconditionsAction</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>PostconditionsToggled(bool)</slot>
+    </connection>
+    <connection>
+        <sender>InvariantsAction</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>InvariantsToggled(bool)</slot>
+    </connection>
 </connections>
 <includes>
     <include location="local" impldecl="in declaration">redefines.h</include>
@@ -864,6 +878,9 @@
     <slot>setFormLabelFont()</slot>
     <slot>setFormTextFont()</slot>
     <slot>setFormButtonFont()</slot>
+    <slot>PreconditionsToggled( bool )</slot>
+    <slot>PostconditionsToggled( bool )</slot>
+    <slot>InvariantsToggled( bool )</slot>
 </slots>
 <exportmacro>LAVAUI_DLL</exportmacro>
 <layoutdefaults spacing="6" margin="11"/>

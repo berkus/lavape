@@ -470,7 +470,7 @@ void CAttrBox::m_EnableName2_clicked()
 void CAttrBox::OnOK() 
 {
   UpdateData(true);
-  QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
+  QString* ids = CheckNewName(valNewName, myDECL, myDoc/*, OrigDECL*/);
   if (ids) {
     QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
     //m_NewName->SetCurSel(0, -1);
@@ -510,8 +510,11 @@ void CAttrBox::OnOK()
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
-  if (m_SetGet->isOn()) 
+  if (m_SetGet->isOn()) {
     myDECL->TypeFlags.INCL(hasSetGet);
+    if (OrigDECL->ParentDECL->TypeFlags.Contains(isNative))
+      myDECL->TypeFlags.INCL(isNative);
+  }
   else
     myDECL->TypeFlags.EXCL(hasSetGet);
   
@@ -667,7 +670,7 @@ void CCompSpecBox::m_CompoProt_activated(int pos)
     m_EnumAdd1->setEnabled(true);
     m_EnumDel1->setEnabled(true);
     m_EnumEdit1->setEnabled(true);
-    if (myDECL->nOutput != PROT_LAVA)
+    if ((myDECL->nOutput != PROT_LAVA) && (myDECL->nOutput != PROT_STREAM))
       QMessageBox::critical(this,qApp->name(),ERR_NotYetImplemented,QMessageBox::Ok,0,0);
   }
 }
@@ -684,7 +687,7 @@ void CCompSpecBox::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CCompSpecBox::m_EnumAdd1_clicked() 
 {
-  QString strFilter, fileExt, iT, fileName;
+  QString iT, fileName, dir;
   DString linkName, dstrDir;
   int dd=0, ss;
   CListItem *item;
@@ -699,23 +702,41 @@ void CCompSpecBox::m_EnumAdd1_clicked()
     if (ss > 1)
       QMessageBox::critical(this,qApp->name(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
     else {
-      if (myDECL->nOutput == PROT_LAVA) {
-        //fileName = QFileDialog::getOpenFileName(0,"Lava.Component (*.lcom)",this,
-        //              "open file dialog", IDS_LAVACOM_FILE, 0, false ); 
-        fileName = L_GetOpenFileName(
-                      0,
-                      this,
-                      IDS_LAVACOM_FILE,
-                      "Lava.Component (*.lcom)",
-                      "lcom"
-                      ); 
-        m_EnumItems1->insertItem("Not yet implemented", 0);
-        m_EnumItems1->setSelected(0, true);
-      }
+      dir = ExeDir + ComponentLinkDir;
+      fileName = L_GetOpenFileName(
+                    dir,
+                    this,
+                    IDS_LAVACOM_FILE,
+                    "Lava.Component (*.lcom)",
+                    "lcom"
+                    ); 
+      fileName.remove(0,dir.length());
+#ifdef WIN32
+      fileName.truncate(fileName.length()-4);
+#endif
+      m_EnumItems1->insertItem(fileName, 0);
+      m_EnumItems1->setSelected(0, true);
+      m_EnumDel1->setEnabled(true);
+      m_EnumEdit1->setEnabled(true);
     }
   }
+  else if (myDECL->nOutput == PROT_STREAM) {
+    if (ss > 1)
+      QMessageBox::critical(this,qApp->name(),ERR_OneLibName,QMessageBox::Ok,0,0);
+    else {
+      CEnumItem *cm = new CEnumItem(&iT, 0, 0, false, this);
+      if (cm->exec() == QDialog::Accepted) {
+        item = new CListItem(iT, TID(-1,-1));
+        m_EnumItems1->insertItem(item, 0);
+        m_EnumItems1->setSelected(0, true);
+        m_EnumDel1->setEnabled(true);
+        m_EnumEdit1->setEnabled(true);
+      } 
+      delete cm;
+   }
+  }
   else {
-    CEnumItem *cm = new CEnumItem(&iT, 0, 0, false, this);//parentWidget());
+    CEnumItem *cm = new CEnumItem(&iT, 0, 0, false, this);
     if (cm->exec() == QDialog::Accepted) {
       item = new CListItem(iT, TID(-1,-1));
       m_EnumItems1->insertItem(item, ss);
@@ -740,7 +761,7 @@ void CCompSpecBox::m_EnumDel1_clicked()
 
 void CCompSpecBox::m_EnumEdit1_clicked() 
 {
-  QString strFilter, fileExt, iT, sFile, fileName;
+  QString iT, dir, fileName;
   DString linkName, dstrDir;
   int dd=0, ss;
   CListItem *item;
@@ -748,21 +769,37 @@ void CCompSpecBox::m_EnumEdit1_clicked()
   ss = m_EnumItems1->currentItem();
   if (ss >= 0) {
     item = (CListItem*)m_EnumItems1->item(ss);
-    sFile = item->text();
     if (myDECL->nOutput == PROT_LAVA) {
-      //fileName = QFileDialog::getOpenFileName(sFile, "Lava.Component (*.lcom)", this,
-      //              "open file dialog", IDS_LAVACOM_FILE , 0, false); 
+      dir = ExeDir + ComponentLinkDir;
+      fileName = dir + item->text();
+#ifdef WIN32
+      fileName += ".lnk";
+#endif
       fileName = L_GetOpenFileName(
-                    sFile,
+                    fileName,
                     this,
                     IDS_LAVACOM_FILE,
                     "Lava.Component (*.lcom)",
                     "lcom"
                     ); 
-      m_EnumItems1->insertItem("Not yet implemented", 0);
+      fileName.remove(0,dir.length());
+#ifdef WIN32
+      fileName.truncate(fileName.length()-4);
+#endif
+      item->setText(fileName);
       m_EnumItems1->setSelected(0, true);
     }
+    else if (myDECL->nOutput == PROT_STREAM) {
+      iT = item->text();
+      CEnumItem *cm = new CEnumItem(&iT, m_EnumItems1, 0, false, this);
+      if (cm->exec() == QDialog::Accepted) {
+        item->setText(iT);
+        m_EnumItems1->setSelected(0, true);
+      } 
+      delete cm;
+    }
     else {
+      iT = item->text();
       CEnumItem* cm = new CEnumItem(&iT, m_EnumItems1, 0, false, this);//parentWidget());   
       if (cm->exec() == QDialog::Accepted) {
         m_EnumItems1->removeItem(ss);
@@ -797,7 +834,7 @@ void CCompSpecBox::SetButtons(int sel)
 void CCompSpecBox::OnOK() 
 {
   UpdateData(true);
-  QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
+  QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
     QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
     //m_NewName->SetCurSel(0, -1);
@@ -823,12 +860,21 @@ void CCompSpecBox::OnOK()
     return;
   }
 
-  if ((myDECL->nOutput == PROT_LAVA) && (m_EnumItems1->count() > 1)) {
-    QMessageBox::critical(this,qApp->name(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
-    m_EnumItems1->setFocus();
-    return;
+  if (myDECL->nOutput == PROT_LAVA) {
+    if (m_EnumItems1->count() > 1) {
+      QMessageBox::critical(this,qApp->name(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
+      m_EnumItems1->setFocus();
+      return;
+    }
   }
-
+  else if (myDECL->nOutput == PROT_STREAM) {
+    if (m_EnumItems1->count() > 1) {
+      QMessageBox::critical(this,qApp->name(),ERR_OneLibName,QMessageBox::Ok,0,0);
+      m_EnumItems1->setFocus();
+      return;
+    }
+    myDECL->TypeFlags.INCL(isNative);
+  }
   CHEEnumSelId * enumsel;
   while (ipos < maxi) {
     enumsel =  new CHEEnumSelId;
@@ -1154,7 +1200,7 @@ void CEnumBox::OnOK()
   QString str;
 
   UpdateData(true);
-  QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
+  QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
     QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
     m_NewName->setCursorPosition(0);
@@ -1197,8 +1243,9 @@ CEnumItem::CEnumItem(QWidget* parent)
 CEnumItem::CEnumItem(QString *enumItem, QListBox* itemsBox, ChainAny0* items, bool isId, QWidget* parent)
   : IDD_EnumItem(parent, "EnumItem", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
-  m_EnumItem->setText(*enumItem);
   m_ItemAdr = enumItem;
+  StartText = *enumItem;
+  m_EnumItem->setText(StartText);
   ItemsBox = itemsBox; //ItemsBox and Items != 0: Enum item, else Component object ID
   Items = items;
   isID = isId;
@@ -1211,7 +1258,7 @@ void CEnumItem::OnOK()
   int ipos, maxi;
   CHEEnumSelId *che;
   DString str;
-  QString txt;
+  QString txt, newText;
   CListItem *item;
 
   if ((Items || ItemsBox) && isID && !((CLavaPEApp*)wxTheApp)->LBaseData.isIdentifier(m_EnumItem->text()))
@@ -1219,12 +1266,19 @@ void CEnumItem::OnOK()
   else {
     if (ItemsBox) {
       maxi = ItemsBox->count();
-      for (ipos = 0; (ipos < maxi) && (m_EnumItem->text() != txt); ipos++) {
-        item = (CListItem*)ItemsBox->item(ipos);
-        txt = item->text();
+      newText = m_EnumItem->text();
+      if (newText != StartText) {
+        for (ipos = 0; (ipos < maxi) && (newText != txt); ipos++) {
+          item = (CListItem*)ItemsBox->item(ipos);
+          txt = item->text();
+        }
+        if (newText == txt) 
+          QMessageBox::critical(this,qApp->name(),ERR_NameInUse,QMessageBox::Ok,0,0);
+        else {
+          *m_ItemAdr = m_EnumItem->text();
+          QDialog::accept();
+        }
       }
-      if (m_EnumItem->text() == txt) 
-        QMessageBox::critical(this,qApp->name(),ERR_NameInUse,QMessageBox::Ok,0,0);
       else {
         *m_ItemAdr = m_EnumItem->text();
         QDialog::accept();
@@ -1235,7 +1289,7 @@ void CEnumItem::OnOK()
         str = DString(m_EnumItem->text());
         for (che = (CHEEnumSelId*)Items->first; che && (che->data.Id != str); che = (CHEEnumSelId*)che->successor);
         if (che)
-        QMessageBox::critical(this,qApp->name(),ERR_NameInUse,QMessageBox::Ok,0,0);
+          QMessageBox::critical(this,qApp->name(),ERR_NameInUse,QMessageBox::Ok,0,0);
         else {
           *m_ItemAdr = m_EnumItem->text();
           QDialog::accept();
@@ -1306,11 +1360,13 @@ ValOnInit CFuncBox::OnInitDialog()
     delete execAllPatt;
   }
   if ((myDECL->ParentDECL->DeclType == Impl)
-    || myDECL->TypeFlags.Contains(isGUI)
-    || myDECL->ParentDECL->TypeFlags.Contains(isComponent) ) {
+    || myDECL->TypeFlags.Contains(isGUI) ) {
+    //|| myDECL->ParentDECL->TypeFlags.Contains(isComponent) ) {
     m_Native1->setEnabled(false);
     m_Abstract->setEnabled(false);
     m_Initializer->setEnabled(false);
+    if (myDECL->ParentDECL->DeclType == Impl)
+      m_Protected->setEnabled(false);
   }
   else {
     if (!myDECL->ParentDECL->TypeFlags.Contains(isAbstract) )
@@ -1799,7 +1855,7 @@ void CFuncBox::OnOK()
     myDECL->TypeFlags.EXCL(isInitializer); 
   if (!myDECL->SecondTFlags.Contains(overrides) || myDECL->SecondTFlags.Contains(enableName)) {
     if (myDECL->op == OP_noOp) {
-      QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
+      QString* ids = CheckNewName(valNewName, myDECL, myDoc);
       if (ids) {
         QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
         m_NewName->setFocus();
@@ -1811,8 +1867,12 @@ void CFuncBox::OnOK()
       myDoc->MakeOperator(myDECL);
   }
   ListToChain(m_Inherits1, &myDECL->Inherits);  //fires
-  if (myDECL->ParentDECL->DeclType == Impl) 
-    myDoc->GetConstrDECL(myDECL, ExecDef);
+  if (m_Native1->isOn())
+    myDECL->TypeFlags.INCL(isNative); 
+  else
+    myDECL->TypeFlags.EXCL(isNative); 
+  if (!myDECL->TypeFlags.Contains(isNative) && (myDECL->ParentDECL->DeclType == Impl) )
+    myDoc->GetExecDECL(myDECL, ExecDef);
   if (!myDECL->Supports.first) 
     myDECL->SecondTFlags.EXCL(overrides);
   if (m_Abstract->isOn())
@@ -1835,10 +1895,6 @@ void CFuncBox::OnOK()
     myDECL->TypeFlags.INCL(isConst); 
   else
     myDECL->TypeFlags.EXCL(isConst); 
-  if (m_Native1->isOn())
-    myDECL->TypeFlags.INCL(isNative); 
-  else
-    myDECL->TypeFlags.EXCL(isNative); 
   if (m_Transaction->isOn())
     myDECL->TypeFlags.INCL(isTransaction); 
   else
@@ -1968,7 +2024,7 @@ void CImplBox::OnOK()
   }
   interfDECL = myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data);
   if (interfDECL) {
-    CheckNewName(valImplSel, myDECL, myDoc, OrigDECL);
+    CheckNewName(valImplSel, myDECL, myDoc);
     if (interfDECL->TypeFlags.Contains(isAbstract))
       myDECL->TypeFlags.INCL(isAbstract);
     else
@@ -1984,7 +2040,7 @@ void CImplBox::OnOK()
     }
     if (myDECL->DeclType == Impl)  
       myDoc->CheckImpl(myDECL, CHLV_inUpdateLow);
-    else {
+    else { //Component
       if (onNew) {
         inDECL = NewLavaDECL();
         inDECL->DeclType = Interface;
@@ -2000,17 +2056,12 @@ void CImplBox::OnOK()
         myDECL->NestedDecls.Append(Che);
         inDECL->TypeFlags.INCL(thisComponent);
       }
-      /*
-      else
-        myDoc->CheckCompObj(myDECL, CHLV_inUpdateLow);
-      */
     }
     QDialog::accept();
   }
   else
     QDialog::reject();
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // Dialogfeld CIncludeBox 
@@ -2160,14 +2211,14 @@ void CInitBox::OnOK()
     myDECL->LocalName.Destroy();
   }
   else  {
-    QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
+    QString* ids = CheckNewName(valNewName, myDECL, myDoc);
     if (ids) {
       QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
       m_NewName->setFocus();
       return;
     }
   }
-  myDoc->GetConstrDECL(myDECL, ExecDef);
+  myDoc->GetExecDECL(myDECL, ExecDef);
   if (m_Transaction1->isOn())
     myDECL->TypeFlags.INCL(isTransaction); 
   else
@@ -2308,7 +2359,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
     if (myDECL->TypeFlags.Contains(isComponent)) {
       valKindOfInterface = 2;
       m_InterfaceID->setEnabled(true);
-      m_Native->setEnabled(false);
+      //m_Native->setEnabled(false);
       if (myDECL->LitStr.l) {
         valIfaceID = QString(myDECL->LitStr.c);
       }
@@ -2466,8 +2517,8 @@ void CInterfaceBox::m_IsComponent_clicked()
                  OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   m_ExtTypes->setCurrentItem(0);
   m_InterfaceID->setEnabled(true);
-  m_Native->setChecked(false);
-  m_Native->setEnabled(false);
+  //m_Native->setChecked(false);
+  //m_Native->setEnabled(false);
   UpdateData(false);
 }
 
@@ -2501,9 +2552,8 @@ void CInterfaceBox::m_GUIStructs_activated(int pos)
 void CInterfaceBox::OnOK() 
 {
   UpdateData(true);
-  QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
-  CHE *che;
-  LavaDECL *fdecl, *IOdecl, *refdecl, *suDECL;
+  QString* ids = CheckNewName(valNewName, myDECL, myDoc/*, OrigDECL*/);
+  LavaDECL *suDECL;
   CHETID* cheS;
   bool extendsSet = false, extendsArray = false, extendsChain = false,
     extendsCallback = false, extendsException = false, extendsEnum = false;
@@ -2547,71 +2597,13 @@ void CInterfaceBox::OnOK()
     if (valIsGUI) {
       if (exID.nID >= 0) {
         myDECL->RefID = exID;
-        refdecl = myDoc->IDTable.GetDECL(exID);
-        if (refdecl->TypeFlags.Contains(thisComponent))
-          myDECL->TypeFlags.INCL(thisCompoForm);
- 
-        fdecl = NewLavaDECL();
-        fdecl->DeclType = Function;
-        fdecl->DeclDescType = StructDesc;
-        fdecl->ParentDECL = myDECL;
-        fdecl->LocalName = DString("FillOut");
-        fdecl->FullName = myDECL->FullName + fdecl->LocalName;
-        fdecl->TypeFlags += SET(isGUI, isNative, isConst,-1);
-        che = NewCHE(fdecl);
-        myDECL->NestedDecls.Append(che);
- 
-        IOdecl = NewLavaDECL();
-        IOdecl->DeclType = IAttr;
-        IOdecl->DeclDescType = NamedType;
-        IOdecl->ParentDECL = fdecl;
-        IOdecl->LocalName = DString("UI_in");
-        IOdecl->FullName = fdecl->FullName + IOdecl->LocalName;
-        IOdecl->RefID = myDECL->RefID;
-        IOdecl->TypeFlags += SET(isGUI, trueObjCat, isOptional,-1);
-
-        che = NewCHE(IOdecl);
-        fdecl->NestedDecls.Append(che);
- 
-        IOdecl = NewLavaDECL();
-        IOdecl->DeclType = OAttr;
-        IOdecl->DeclDescType = NamedType;
-        IOdecl->ParentDECL = fdecl;
-        IOdecl->LocalName = DString("UI_out");
-        IOdecl->FullName = fdecl->FullName + IOdecl->LocalName;
-        IOdecl->RefID = myDECL->RefID;
-        IOdecl->TypeFlags += SET(isGUI, trueObjCat,-1);
-
-        che = NewCHE(IOdecl);
-        fdecl->NestedDecls.Append(che);
-        fdecl = NewLavaDECL();
-        fdecl->DeclType = Function;
-        fdecl->DeclDescType = StructDesc;
-        fdecl->ParentDECL = myDECL;
-        fdecl->LocalName = DString("Edit");
-        fdecl->FullName = myDECL->FullName + fdecl->LocalName;
-        fdecl->TypeFlags += SET(isGUI, isGUIEdit, isNative,-1);
-        che = NewCHE(fdecl);
-        myDECL->NestedDecls.Append(che);
- 
-        IOdecl = NewLavaDECL();
-        IOdecl->DeclType = IAttr;
-        IOdecl->DeclDescType = NamedType;
-        IOdecl->ParentDECL = fdecl;
-        IOdecl->LocalName = DString("UI_in");
-        IOdecl->FullName = fdecl->FullName + IOdecl->LocalName;
-        IOdecl->RefID = myDECL->RefID;
-        IOdecl->TypeFlags += SET(isGUI, stateObject, trueObjCat,-1);
-
-        che = NewCHE(IOdecl);
-        fdecl->NestedDecls.Append(che);
-      } 
+        myDoc->MakeGUIFuncs(myDECL);
+      }
       else {
         QMessageBox::critical(this, qApp->name(), IDP_NoTypeSel, QMessageBox::Ok,0,0);
         m_GUIStructs->setFocus();
         return;
       }
-      myDECL->TypeFlags.INCL(isGUI);
     }
     if (!myDECL->TypeFlags.Contains(isComponent))
       myDoc->MakeIniFunc(myDECL);
@@ -2682,7 +2674,6 @@ void CInterfaceBox::OnOK()
   myDECL->WorkFlags.INCL(recalcVT);
   QDialog::accept();
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CIOBox dialog
@@ -3000,7 +2991,7 @@ void CIOBox::OnOK()
     QDialog::reject();
     return;
   }
-  QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
+  QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
     QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
 //    m_NewName->SetSel(0, -1);
@@ -3034,16 +3025,16 @@ void CIOBox::OnOK()
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CNamespaceBox dialog
+// CPackageBox dialog
 
 
-CNamespaceBox::CNamespaceBox(QWidget* parent /*=NULL*/)
-  : IDD_NamespaceBox(parent, "NamespaceBox", true)
+CPackageBox::CPackageBox(QWidget* parent /*=NULL*/)
+  : IDD_PackageBox(parent, "PackageBox", true)
 {
 }
 
-CNamespaceBox::CNamespaceBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : IDD_NamespaceBox(parent, "NamespaceBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+CPackageBox::CPackageBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
+  : IDD_PackageBox(parent, "PackageBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
 {
   myDECL = decl;
   myDoc = doc;
@@ -3054,7 +3045,7 @@ CNamespaceBox::CNamespaceBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* do
     valNewName = QString(myDECL->LocalName.c);
 }
 
-void CNamespaceBox::UpdateData(bool getData)
+void CPackageBox::UpdateData(bool getData)
 {
   if (getData) 
     valNewName = m_NewName->text();
@@ -3062,7 +3053,7 @@ void CNamespaceBox::UpdateData(bool getData)
     m_NewName->setText(valNewName);
 }
 
-ValOnInit CNamespaceBox::OnInitDialog() 
+ValOnInit CPackageBox::OnInitDialog() 
 {
   CHETID *ncheS, *cheS;
   LavaDECL* decl;
@@ -3112,20 +3103,20 @@ ValOnInit CNamespaceBox::OnInitDialog()
 }
 
 
-void CNamespaceBox::m_DelSupport1_clicked() 
+void CPackageBox::m_DelSupport1_clicked() 
 {
   int pos = m_Extends->currentItem();
   if (pos >= 0) 
     m_Extends->removeItem(pos);
 }
 
-void CNamespaceBox::m_ExtTypes1_activated(int pos) 
+void CPackageBox::m_ExtTypes1_activated(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_ExtTypes, m_Extends);
 }
 
-void CNamespaceBox::OnOK() 
+void CPackageBox::OnOK() 
 {
   UpdateData(true);
   ListToChain(m_Extends, &myDECL->Supports);
@@ -3138,7 +3129,7 @@ void CNamespaceBox::OnOK()
     myDECL->LocalName.Destroy();
   }
   else  {
-    QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
+    QString* ids = CheckNewName(valNewName, myDECL, myDoc);
     if (ids) {
       QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
       //m_NewName->SetSel(0, -1);
@@ -3234,7 +3225,7 @@ void CSetBox::m_BasicTypes_activated(int pos)
 void CSetBox::OnOK() 
 {
   UpdateData(true);
-  QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
+  QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
     QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
     m_NewName->setFocus();
@@ -3640,7 +3631,7 @@ void CVTypeBox::OnOK()
   LavaDECL* suDECL;
   CHETID* cheS;
 
-  QString* ids = CheckNewName(valNewName, myDECL, myDoc, OrigDECL);
+  QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
     QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
     //m_NewName->SetSel(0, -1);
@@ -3881,7 +3872,7 @@ void CIOBox::ID_HELP14_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/FuncParmBox.htm");
 }
 
-void CNamespaceBox::ID_HELP8_clicked()
+void CPackageBox::ID_HELP8_clicked()
 {
 	QString path("");
 	QStringList args;
@@ -3954,7 +3945,7 @@ bool SetSelections(QComboBox* basics, QComboBox* types, const QString& name)
   return false;
 }
 
-QString*  CheckNewName(const QString& valNewName, LavaDECL *myDECL, CLavaPEDoc* myDoc, LavaDECL *OrigDECL)
+QString*  CheckNewName(const QString& valNewName, LavaDECL *myDECL, CLavaPEDoc* myDoc/*, LavaDECL *OrigDECL*/)
 {
   if (!((CLavaPEApp*)wxTheApp)->LBaseData.isIdentifier(valNewName)) 
     return &IDP_IsNoID;
@@ -4135,8 +4126,8 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
     break;
 
   case Package:
-    box = new CNamespaceBox(decl, origDECL, doc, isNew, parent);
-    valIni = ((CNamespaceBox*)box)->OnInitDialog();
+    box = new CPackageBox(decl, origDECL, doc, isNew, parent);
+    valIni = ((CPackageBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
     else if (valIni == BoxOK)
@@ -4531,7 +4522,7 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
 
 
 /*
-void CExecAllDefs::ExecSHOW (LavaDECL ** pelDef, int incl)
+void CExecAllDefs::ExecFormDef (LavaDECL ** pelDef, int incl)
 {
   int pos;
   if (*pelDef != CallingDECL) {

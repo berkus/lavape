@@ -356,6 +356,7 @@ void TIDTable::CopiedToDoc(LavaDECL ** pnewDECL)
   CHETID *che;
 //  if (decl->WorkFlags.Contains(skipOnCopy))
 //    return;
+//  if (!decl->WorkFlags.Contains(fromPubToPriv))
   ChangeFromTab(decl->RefID);
   if (!decl->WorkFlags.Contains(fromPrivToPub) && !decl->WorkFlags.Contains(SupportsReady)) {
     che = (CHETID*)decl->Supports.first;
@@ -449,13 +450,13 @@ void TIDTable::Change(LavaDECL ** pnewDECL)
         IDTab[0]->SimpleIDTab[(*pnewDECL)->OwnID]->pDECL = pnewDECL;
         IDTab[0]->SimpleIDTab[(*pnewDECL)->OwnID]->idType = globalID;
       }
-      else { //a named namespace becomes unnamed
+      else { //a named package becomes unnamed
         IDTab[0]->DeleteID((*pnewDECL)->OwnID);
         (*pnewDECL)->OwnID = -1;
         ((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef.ptr = *pnewDECL;
       }
     }
-    else { //a unnamed namespace gets a name, or automatic insertion of a func-impl, func-IO, form-field
+    else { //a unnamed package gets a name, or automatic insertion of a func-impl, func-IO, form-field
       IDTab[0]->NewID(pnewDECL);
       if ((*pnewDECL)->DeclType == Package)
         ((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef.ptr = *pnewDECL;
@@ -954,6 +955,11 @@ TID TIDTable::FindImpl(TID interID, int funcnID)
   CHE *che;
   LavaDECL *decl;
   int incl, id;
+  if (GetDECL(interID)->DeclType == Impl)
+    if (funcnID)
+      return TID(funcnID, interID.nINCL);
+    else
+      return interID;
   for (incl = 0; incl < freeINCL; incl++) 
     if (IDTab[incl]->isValid) 
       for (id = 0; id < IDTab[incl]->freeID; id++) 
@@ -1425,8 +1431,9 @@ bool TIDTable::IsAnc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDEC
       baseDecl = GetFinalBasicType(cheID->data, decl->inINCL, conDECL);
       for (che = (CHE*)isAncChain.first; che && (che->data != baseDecl); che = (CHE*)che->successor);
       if (che) {
-        cheID->data.nID = -cheID->data.nID;
-        return false;
+        //cheID->data.nID = -cheID->data.nID;
+        //return false;
+        return true;
       }
       if (baseDecl && IsAnc(baseDecl, TID(baseDecl0->OwnID, baseDecl0->inINCL), 0, conDECL, isI, cheStart))
         return true;
@@ -1435,8 +1442,9 @@ bool TIDTable::IsAnc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDEC
       baseDecl = GetDECL(cheID->data, decl->inINCL);
       for (che = (CHE*)isAncChain.first; che && (che->data != baseDecl); che = (CHE*)che->successor);
       if (che) {
-        cheID->data.nID = -cheID->data.nID;
-        return false;
+        //cheID->data.nID = -cheID->data.nID;
+        //return false;
+        return true;
       }
       if (IsAnc(baseDecl, id, inINCL, conDECL, isI, cheStart))
         return true;

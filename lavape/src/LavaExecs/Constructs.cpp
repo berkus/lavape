@@ -22,11 +22,12 @@
 #endif
 
 #include "Constructs.h"
-#ifndef INTERPRETER
+#ifdef INTERPRETER
+#include "Check.h"
+#else
 #include "ExecView.h"
 #endif
 #include "wx_obj.h"
-#include "Check.h"
 #include "LavaBaseDoc.h"
 #include "Convert.h"
 #include "qstring.h"
@@ -143,7 +144,7 @@ SynObject::SynObject () {
   errorChanged = false;
 }
 
-LavaObjectPtr SynObject::Evaluate (CheckData &ckd, LavaVariablePtr) {
+LavaObjectPtr SynObject::Evaluate (CheckData &ckd, LavaVariablePtr,unsigned) {
 #ifdef INTERPRETER
   DString dFileName=ckd.document->GetAbsSynFileName();
   QString cFileName = dFileName.c;
@@ -158,7 +159,7 @@ LavaObjectPtr SynObject::Evaluate (CheckData &ckd, LavaVariablePtr) {
   return 0;
 }
 
-bool SynObject::Execute (CheckData &ckd, LavaVariablePtr) {
+bool SynObject::Execute (CheckData &ckd, LavaVariablePtr,unsigned) {
 #ifdef INTERPRETER
   DString dFileName=ckd.document->GetAbsSynFileName();
   QString cFileName = dFileName.c;
@@ -641,44 +642,27 @@ bool SynObject::InHiddenIniClause (CheckData &ckd, SynObject *&typeRef) {
   return false;
 }
 
-bool SynObject::InReadOnlyContext () {
+ROContext SynObject::ReadOnlyContext () {
   SynObject *obj=this, *parent=parentObject;
-  bool roExec=false;
 
   while (parent) {
-    if (parent->IsReadOnlyClause(obj,roExec)
-    || roExec)
-      return true;
+    if (parent->IsReadOnlyClause(obj))
+      return roClause;
     obj = parent;
     parent = parent->parentObject;
   }
-  return false;
-}
 
-bool SynObject::InOldExpression () {
-  SynObject *parent;
+  if (obj->primaryToken == invariant_T
+  || obj->primaryToken == require_T
+  || obj->primaryToken == ensure_T)
+    return assertion;
 
-  for (parent=parentObject;
-       parent;
-       parent = parent->parentObject)
-    if (parent->primaryToken == old_T)
-      return true;
-  return false;
-}
-
-bool SynObject::InFuncOrEnsure () {
-  SynObject *parent=this;
-
-  while (parent->parentObject)
-    parent = parent->parentObject;
-
-  if (((SelfVar*)parent)->execDECL->DeclType == Ensure
-  || ((SelfVar*)parent)->execDECL->ParentDECL->DeclType == Function)
-    return true;
+  if (((SelfVar*)obj)->execDECL->TypeFlags.Contains(isConst))
+    return roExec;
   else
-    return false;
+    return noROContext;
 }
-
+/*
 bool SynObject::InReadOnlyClause () {
   SynObject *obj=this, *parent=parentObject;
   bool roExec=false;
@@ -690,6 +674,17 @@ bool SynObject::InReadOnlyClause () {
     obj = parent;
     parent = parent->parentObject;
   }
+  return false;
+}
+*/
+bool SynObject::InOldExpression () {
+  SynObject *parent;
+
+  for (parent=parentObject;
+       parent;
+       parent = parent->parentObject)
+    if (parent->primaryToken == old_T)
+      return true;
   return false;
 }
 
@@ -749,9 +744,7 @@ void MultipleOp::MultipleOpInit (TToken primToken) {
   operands.Append(NewCHE());
 }
 
-bool MultipleOp::IsReadOnlyClause(SynObject *, bool &roExec) {
-  roExec = false;
-
+bool MultipleOp::IsReadOnlyClause(SynObject *) {
   switch (primaryToken) {
   //case or_T:
   case xor_T:
@@ -761,9 +754,7 @@ bool MultipleOp::IsReadOnlyClause(SynObject *, bool &roExec) {
   }
 }
 
-bool QuantStmOrExp::IsReadOnlyClause(SynObject *synObj, bool &roExec) {
-  roExec = false;
-
+bool QuantStmOrExp::IsReadOnlyClause(SynObject *synObj) {
   if (IsDeclare())
     return false;
   if (synObj->whereInParent == (address)&statement.ptr)
@@ -784,9 +775,7 @@ bool IfThen::IsRepeatableClause (CHAINX *&chx) {
   return true;
 }
 
-bool IfThen::IsReadOnlyClause(SynObject *synObj, bool &roExec) {
-  roExec = false;
-
+bool IfThen::IsReadOnlyClause(SynObject *synObj) {
   if (synObj->whereInParent == (address)&ifCondition.ptr)
     return true;
   else
@@ -803,9 +792,7 @@ bool IfxThen::IsRepeatableClause (CHAINX *&chx) {
   return true;
 }
 
-bool IfxThen::IsReadOnlyClause(SynObject *synObj, bool &roExec) {
-  roExec = false;
-
+bool IfxThen::IsReadOnlyClause(SynObject *synObj) {
   if (synObj->whereInParent == (address)&ifCondition.ptr)
     return true;
   else

@@ -16,6 +16,7 @@
 #include "SynIDTable.h"
 #include "qsize.h"
 #include "qwidget.h"
+#include "qscrollview.h"
 
 #ifdef WIN32
 #ifdef LAVAGUI_EXPORT
@@ -32,10 +33,12 @@
 class  LAVAGUI_DLL CGUIMet : public QObject
 { public:
 
-  wxView* ViewWin;  //CLavaGUIView
+  QWidget* ViewWin;  //CLavaGUIView or LavaGUIDialog
+  QScrollView* scrollView;
   CHEFormNode* DelNode;
   CHEFormNode* InsertNode;
   CLavaBaseDoc *myDoc;
+  LavaDECL *myDECL;
   int FrozenObject;
   int fromFillIn;
   QFont *Font; //this Object is allocated by the application and may not be destroyed
@@ -50,6 +53,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
 
   CGUIMet() {}
   ~CGUIMet();
+  QString winCaption();
   void SetFont(QFont *font);
   TFontCase SetTFont(QWidget* win, CHEFormNode* myFormNode);
   TFontCase SetLFont(QWidget* win, CHEFormNode* myFormNode);

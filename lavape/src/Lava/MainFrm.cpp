@@ -88,13 +88,13 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame(0, "LavaMainFrame")
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
   LBaseData->insActionPtr = insAction;
   LBaseData->delActionPtr = delAction;
-  LBaseData->okActionPtr = okAction;
+//  LBaseData->okActionPtr = okAction;
   LBaseData->toggleCatActionPtr = toggleCategoryAction;
   LBaseData->updateCancelActionPtr = editUndoAction;
   LBaseData->editCopyActionPtr = editCopyAction;
   LBaseData->editCutActionPtr = editCutAction;
   LBaseData->editPasteActionPtr = editPasteAction;
-  connect( okAction, SIGNAL( activated() ), this, SLOT( okAction_activated() ) );
+//  connect( okAction, SIGNAL( activated() ), this, SLOT( okAction_activated() ) );
   connect( toggleCategoryAction, SIGNAL( activated() ), this, SLOT( toggleCategoryAction_activated() ) );
   connect( editUndoAction, SIGNAL( activated() ), this, SLOT( editUndoAction_activated() ) );
   connect( insAction, SIGNAL( activated() ), this, SLOT( insAction_activated() ) );
@@ -124,6 +124,10 @@ void CLavaMainFrame::UpdateUI()
 {
   CLavaDoc* doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
   bool enable = doc && doc->isObject;
+  PreconditionsAction->setEnabled(!LBaseData->m_checkPostconditions);  
+  PreconditionsAction->setOn(LBaseData->m_checkPreconditions);  
+  PostconditionsAction->setOn(LBaseData->m_checkPostconditions);  
+  InvariantsAction->setOn(LBaseData->m_checkInvariants);  
   fileCloseAction->setEnabled(enable);
   fileSaveAction->setEnabled(enable);
   fileSaveAsAction->setEnabled(enable);
@@ -221,6 +225,8 @@ CLavaMainFrame::~CLavaMainFrame()
 
 void CLavaMainFrame::okAction_activated()
 {
+  if (((CLavaBaseDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->DumpFrame)
+    ((LavaDumpFrame*)((CLavaBaseDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->DumpFrame)->OnOK();
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnOK();
@@ -313,5 +319,46 @@ void CLavaMainFrame::editingLavaProgs()
 void CLavaMainFrame::learningLava()
 {
 	((CLavaApp*)wxTheApp)->LearningLava();
+}
+
+void CLavaMainFrame::PreconditionsToggled(bool on)
+{
+  if (on) {
+    LBaseData->m_checkPreconditions = true;
+    LBaseData->m_strCheckPreconditions = "true";
+  }
+  else {
+    LBaseData->m_checkPreconditions = false;
+    LBaseData->m_strCheckPreconditions = "false";
+  }
+  ((CLavaApp*)wxTheApp)->saveSettings();
+}
+
+void CLavaMainFrame::PostconditionsToggled(bool on)
+{
+  if (on) {
+    LBaseData->m_checkPostconditions = true;
+    LBaseData->m_strCheckPostconditions = "true";
+    LBaseData->m_checkPreconditions = true;
+    LBaseData->m_strCheckPreconditions = "true";
+  }
+  else {
+    LBaseData->m_checkPostconditions = false;
+    LBaseData->m_strCheckPostconditions = "false";
+  }
+  ((CLavaApp*)wxTheApp)->saveSettings();
+}
+
+void CLavaMainFrame::InvariantsToggled(bool on)
+{
+  if (on) {
+    LBaseData->m_checkInvariants = true;
+    LBaseData->m_strCheckInvariants = "true";
+  }
+  else {
+    LBaseData->m_checkInvariants = false;
+    LBaseData->m_strCheckInvariants = "false";
+  }
+  ((CLavaApp*)wxTheApp)->saveSettings();
 }
 

@@ -79,6 +79,7 @@ LavaDECL::LavaDECL() {
   fromBType = NonBasic;
   BType = NonBasic;
   ParentDECL = 0;
+  Exec.ptr = 0; // to initialize AssertionData* of functions
   OwnID = -1; //1000000;
   inINCL = 0;
   DeclType = NoDef;

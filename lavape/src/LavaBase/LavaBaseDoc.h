@@ -92,19 +92,16 @@ public:
 
 class LAVABASE_DLL CHWException
 {
-private:
-//    CHWException() {}
-//    CHWException( CHWException& ) {}
 public:
 #ifdef WIN32
-    CHWException(int n);
+    CHWException(unsigned n);
 #else
     CHWException(int sig_num, siginfo_t *info);
 #endif
     bool SetLavaException(CheckData& ckd);
     ~CHWException() {}
-    int codeHW;
-    int lavaCode;
+    unsigned codeHW;
+    unsigned lavaCode;
     QString message;
 };
 
@@ -133,66 +130,215 @@ public:
 //  DString ObjName;  //Runtime: name of object file
   wxView *RuntimeView; //used from *.ldoc only
   CThreadList *ThreadList;
+  QWidget* DumpFrame;
+
+  CHESimpleSyntax* AddSyntax(SynDef *syntaxIncl, DString& fn, bool& errEx, int hint=0);
+  bool AllowThrowType(LavaDECL* decl, TID throwID, int inINCL);
+  CHESimpleSyntax* AttachSyntax(CheckData& ckd, DString& fn); //Runtime include
 
   void CalcNames(const DString& FileName);
-  QString* CheckFormEl(LavaDECL *formEl, LavaDECL *classEl);
-  bool AllowThrowType(LavaDECL* decl, TID throwID, int inINCL);
-  QString* CheckException(LavaDECL *funcDecl, CheckData* pckd);
-  DString GetAbsSynFileName();          //get the document syl-file name
-  virtual int ReadSynDef(DString& fn, SynDef* &sntx, ASN1* cid = 0);//fn has all links resolved
-  CHESimpleSyntax* AddSyntax(SynDef *syntaxIncl, DString& fn, bool& errEx, int hint=0);
-  CHESimpleSyntax* IncludeSyntax(DString& fn, bool& isNew, int hint=0);
-  CHESimpleSyntax* AttachSyntax(CheckData& ckd, DString& fn); //Runtime include
-//  void ReduceType(TID& id, int inINCL, int& refs);
   virtual bool CheckCompObj(LavaDECL* compoDECL);
-  virtual bool OverriddenMatch(LavaDECL *decl, bool setName=false, CheckData* pckd=0);
-  virtual bool IsCDerivation(LavaDECL *decl, LavaDECL *baseDecl, CheckData* pckd=0);
-  virtual bool OnSaveModified() {return wxDocument::OnSaveModified();}
-  QString* ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, CheckData* pckd);
-  QString* TypeForMem(LavaDECL* memdecl, LavaDECL* typeDECL, CheckData* pckd);
-  QString* TestValOfVirtual(LavaDECL* vdecl, LavaDECL* valDECL);
-  SynFlags GetCategoryFlags(LavaDECL* memDECL, bool& catErr);
-  LavaDECL** GetFormpDECL(LavaDECL* decl);
-  LavaDECL* GetType(LavaDECL *decl);
-  bool MemberTypeContext(LavaDECL *memDECL, CContext &context, CheckData* pckd);
-  void NextContext(LavaDECL *decl, CContext &context);
-  LavaDECL* GetTypeAndContext(LavaDECL* decl, CContext &context);
-  LavaDECL* GetFinalMTypeAndContext(const TID& id, int inINCL, CContext &context, CheckData* pckd);
-  LavaDECL* GetFinalMVType(LavaDECL* decl, CContext &context, Category &cat, CheckData* pckd);
-  LavaDECL* GetFinalMVType(const TID& id, int inINCL, CContext &context, Category &cat, CheckData* pckd);
-  LavaDECL* FindInSupports(const DString& name, LavaDECL *self, LavaDECL *decl, bool down = false, bool onTop = true);
-  TID GetMappedVType(TID paramID, CContext &context, CheckData* pckd);
+  QString* CheckException(LavaDECL *funcDecl, CheckData* pckd);
+  QString* CheckFormEl(LavaDECL *formEl, LavaDECL *classEl);
   LavaDECL* CheckGetFinalMType(LavaDECL* inDECL, LavaDECL* typeDECL=0, CheckData* pckd=0);
+  virtual bool CheckForm(CheckData& ckd, LavaDECL* /*formDECL*/, int checkLevel = 0) {return false;}
+  virtual bool CheckImpl(CheckData& callingCkd, LavaDECL* /*classDECL*/, LavaDECL* specDECL=0) {return false;}
   QString* CheckScope(LavaDECL* elDef); //returns error code
-  bool okPattern(LavaDECL* decl);
   QString* CommonContext(LavaDECL* paramDECL);
 
-  virtual void IncludeHint(const DString& /*fullfn*/, CHESimpleSyntax* ) {}
+  virtual void DelSyntax(CHESimpleSyntax* delSyn) {}
+  QString* ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, CheckData* pckd);
+  LavaDECL* FindInSupports(const DString& name, LavaDECL *self, LavaDECL *decl, bool down = false, bool onTop = true);
+  DString GetAbsSynFileName();          //get the document syl-file name
+  SynFlags GetCategoryFlags(LavaDECL* memDECL, bool& catErr);
+//  virtual int GetContextsSectionNumber(LavaDECL* /*classDECL*/, LavaDECL* /*baseDECL*/, bool /*outer*/) {return -1;}
+  virtual LavaDECL* GetExecDECL(LavaDECL* parentDecl,TDeclType type,bool makeDecl=true,bool makeExec=true);
+  LavaDECL* GetFinalMVType(LavaDECL* decl, CContext &context, Category &cat, CheckData* pckd);
+  LavaDECL* GetFinalMVType(const TID& id, int inINCL, CContext &context, Category &cat, CheckData* pckd);
+  LavaDECL* GetFinalMTypeAndContext(const TID& id, int inINCL, CContext &context, CheckData* pckd);
+  LavaDECL** GetFormpDECL(LavaDECL* decl);
+  TID GetMappedVType(TID paramID, CContext &context, CheckData* pckd);
+  virtual int GetMemsSectionNumber(CheckData& ckd, LavaDECL* /*classDECL*/, LavaDECL* /*memDECL*/, bool putErr=true) {return -1;}
   virtual bool GetOperatorID(LavaDECL* , TOperator , TID& ) {return false;}
   virtual bool getOperatorID(LavaDECL* , TOperator , TID& ) {return false;}
-  virtual int GetMemsSectionNumber(CheckData& ckd, LavaDECL* /*classDECL*/, LavaDECL* /*memDECL*/, bool putErr=true) {return -1;}
-  virtual int GetVTSectionNumber(CheckData& ckd, const CContext& /*context*/, LavaDECL* /*paramDECL*/, bool& /*outer*/) {return -1;}
-//  virtual int GetContextsSectionNumber(LavaDECL* /*classDECL*/, LavaDECL* /*baseDECL*/, bool /*outer*/) {return -1;}
   virtual int GetSectionNumber(CheckData& ckd, const TID& /*classID*/, const TID& /*baseclassID*/) {return -1;}
   virtual int GetSectionNumber(CheckData& ckd, LavaDECL* /*classDECL*/, LavaDECL* /*baseDECL*/, bool putErr=true) {return -1;}
-  virtual bool CheckImpl(CheckData& callingCkd, LavaDECL* /*classDECL*/) {return false;}
-  virtual bool CheckForm(CheckData& ckd, LavaDECL* /*formDECL*/, int checkLevel = 0) {return false;}
+  LavaDECL* GetType(LavaDECL *decl);
+  LavaDECL* GetTypeAndContext(LavaDECL* decl, CContext &context);
+  virtual int GetVTSectionNumber(CheckData& ckd, const CContext& /*context*/, LavaDECL* /*paramDECL*/, bool& /*outer*/) {return -1;}
+
+  virtual void IncludeHint(const DString& /*fullfn*/, CHESimpleSyntax* ) {}
+  CHESimpleSyntax* IncludeSyntax(DString& fn, bool& isNew, int hint=0);
+  virtual bool IsCDerivation(LavaDECL *decl, LavaDECL *baseDecl, CheckData* pckd=0);
+//  virtual bool IsOuterParam(paramDECL, typeDECL) {return false;}
+  //virtual void LavaEnd(bool doClose = true) {}
+  virtual void LavaError(CheckData& /*ckd*/, bool /*setEx*/, LavaDECL*, QString* /*nresourceID*/, LavaDECL* /*refDECL = 0*/) {}
   virtual bool MakeFormVT(LavaDECL* , CheckData* pckd) {return false;}
   virtual bool MakeVElems(LavaDECL* , CheckData* pckd) {return false;}
-  virtual LavaDECL* GetConstrDECL(LavaDECL* parentDecl,TDeclType type,bool makeDecl=true,bool makeExec=true);
-//  virtual bool IsOuterParam(paramDECL, typeDECL) {return false;}
-
-  virtual void LavaError(CheckData& /*ckd*/, bool /*setEx*/, LavaDECL*, QString* /*nresourceID*/, LavaDECL* /*refDECL = 0*/) {}
-  //virtual void LavaEnd(bool doClose = true) {}
-  virtual void ResetError() {}
-  virtual bool SelectLcom(bool emptyDoc) {return false;}
+  bool MemberTypeContext(LavaDECL *memDECL, CContext &context, CheckData* pckd);
+  void NextContext(LavaDECL *decl, CContext &context);
+  virtual bool OnSaveModified() {return wxDocument::OnSaveModified();}
+  bool okPattern(LavaDECL* decl);
   virtual LavaObjectPtr OpenObject(CheckData& ckd, LavaObjectPtr urlObj) {return 0;}
+  virtual bool OverriddenMatch(LavaDECL *decl, bool setName=false, CheckData* pckd=0);
+  virtual int ReadSynDef(DString& fn, SynDef* &sntx, ASN1* cid = 0);//fn has all links resolved
+//  void ReduceType(TID& id, int inINCL, int& refs);
+  virtual void ResetError() {}
   virtual bool SaveObject(CheckData& ckd, LavaObjectPtr object) {return false;}
-  virtual void DelSyntax(CHESimpleSyntax* delSyn) {}
+  virtual bool SelectLcom(bool emptyDoc) {return false;}
+  QString* TestValOfVirtual(LavaDECL* vdecl, LavaDECL* valDECL);
+  QString* TypeForMem(LavaDECL* memdecl, LavaDECL* typeDECL, CheckData* pckd);
+
 private:
     Q_OBJECT
 
 };
+
+
+class LAVABASE_DLL CLavaBaseView : public wxView
+{
+public:
+//  VIEWFACTORY(CLavaBaseView)
+  CLavaBaseView(QWidget *parent,wxDocument *doc, const char*  name): wxView(parent,doc,name) {}
+  virtual void whatNext();
+  virtual void howTo();
+
+  virtual void OnEditCut() {}
+  virtual void OnEditCopy(){}
+  virtual void OnEditPaste(){}
+  virtual void OnFindReferences() {}
+  virtual void OnExpandAll() {}
+  virtual void OnCollapsAll() {}
+  virtual void OnShowOptionals() {}
+  virtual void OnShowAllEmptyOpt() {}
+  virtual void OnRemoveAllEmptyOpt() {}
+  virtual void OnNextComment() {}
+  virtual void OnPrevComment() {}
+  virtual void OnNextError() {}
+  virtual void OnPrevError() {}
+  virtual void OnNewInclude() {}
+  virtual void OnNewPackage() {}
+  virtual void OnNewinitiator() {}
+  virtual void OnNewInterface() {}
+  virtual void OnNewImpl() {}
+  virtual void OnNewCSpec() {}
+  virtual void OnNewComponent() {}
+  virtual void OnNewset() {}
+  virtual void OnNewenum() {}
+  virtual void OnNewVirtualType() {}
+  virtual void OnNewfunction() {}
+  virtual void OnNewmember() {}
+  virtual void OnNewEnumItem() {}
+  virtual void OnEditSel() {}
+  virtual void OnComment() {}
+  virtual void OnGotoDecl() {}
+  virtual void OnGotoImpl() {}
+  virtual void OnShowOverridables() {}
+  virtual void OnShowGUIview() {}
+  virtual void OnMakeGUI() {}
+  virtual void OnNewLitStr() {}  
+  virtual void OnInsertOpt() {}  
+  virtual void OnDeleteOpt() {}  
+  virtual void OnOK() {}
+  virtual void OnCancel() {}
+	virtual void OnTogglestate() {}
+  virtual void OnDelete() {}
+  virtual void OnOverride() {}
+  virtual void OnGenHtml() {}
+  virtual void OnGenHtmlS() {}
+
+  virtual void OnAnd() {}
+  virtual void OnBitAnd() {}
+  virtual void OnBitOr() {}
+  virtual void OnBitXor() {}
+  virtual void OnClone() {}
+  virtual void OnSelect() {}
+//  virtual void OnDelete() {}
+  virtual void OnDivide() {}
+//  virtual void OnEditCut() {}
+//  virtual void OnEditCopy() {}
+//  virtual void OnEditPaste() {}
+  virtual void OnEditUndo() {}
+  virtual void OnEditRedo() {}
+  virtual void OnEq() {}
+  virtual void OnDeclare() {}
+  virtual void OnForeach() {}
+  virtual void OnFunctionCall() {}
+  virtual void OnGe() {}
+  virtual void OnGt() {}
+  virtual void OnIf() {}
+  virtual void OnIfExpr() {}
+  virtual void OnIn() {}
+  virtual void OnInsert() {}
+  virtual void OnInsertBefore() {}
+  virtual void OnInvert() {}
+//  virtual void OnLButtonDblClk(UINT nFlags, QPoint point);
+  virtual void OnLButtonDown(QMouseEvent *e) {}
+  virtual void OnLe() {}
+  virtual void OnLshift() {}
+  virtual void OnLt() {}
+  virtual void OnPlusMinus() {}
+  virtual void OnMult() {}
+  virtual void OnNe() {}
+  virtual void OnShowComments() {}
+  virtual void OnNot() {}
+  virtual void OnNull() {}
+  virtual void OnOr() {}
+  virtual void OnPlus() {}
+  virtual void OnRshift() {}
+  virtual void OnSwitch() {}
+  virtual void OnXor() {}
+//  virtual void OnEditSel() {}
+//  virtual void OnComment() {}
+  virtual void OnToggleArrows() {}
+  virtual void OnNewLine() {}
+//  virtual void OnShowOptionals() {}
+//  virtual void OnGotoDecl() {}
+//  virtual void OnGotoImpl() {}
+  virtual void OnModulus() {}
+  virtual void OnIgnore() {}
+  virtual void OnAttach() {}
+  virtual void OnQueryItf() {}
+  virtual void OnStaticCall() {}
+  virtual void OnAssign() {}
+  virtual void OnCallback() {}
+  virtual void OnTypeSwitch() {}
+  virtual void OnInterval() {}
+  virtual void OnUuid() {}
+  virtual void OnCall() {}
+  virtual void OnExists() {}
+  virtual void OnCreateObject() {}
+  virtual void OnAssert() {}
+//  virtual void OnNextError() {}
+//  virtual void OnPrevError() {}
+//  virtual void OnNextComment() {}
+//  virtual void OnPrevComment() {}
+  virtual void OnConflict() {}
+  virtual void OnRefresh() {}
+  virtual void OnToggleCategory() {}
+  virtual void OnToggleSubstitutable() {}
+  virtual void OnCopy() {}
+  virtual void OnEvaluate() {}
+  virtual void OnInputArrow() {}
+//  virtual void OnSetFocus(QWidget* pOldWnd);
+//  virtual void OnKillFocus(QWidget* pNewWnd);
+  virtual void OnHandle() {}
+//  virtual void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+	virtual void OnOptLocalVar() {}
+	virtual void OnItem() {}
+	virtual void OnQua() {}
+	virtual void OnSucceed() {}
+	virtual void OnFail() {}
+	virtual void OnOld() {}
+	virtual void OnTrue() {}
+	virtual void OnFalse() {}
+	virtual void OnOrd() {}
+	virtual void OnTryStatement() {}
+
+private:
+    Q_OBJECT
+};
+
 
 class CVAttrDesc;
 
@@ -251,7 +397,6 @@ struct LAVABASE_DLL CheckData {
 };
 
 
-
 class LAVABASE_DLL CCopied {
 public:
   LavaObjectPtr sourceObjPtr;
@@ -268,6 +413,7 @@ public:
 
 #define UNDEF_VARIABLE (LavaObjectPtr)0
 #define LSH 2 //Lenght of section header in object
+#define SFH 3 //Lenght of stack frame header (function calls)
   //LavaObjectPtr : pointer to section in section table
   //LavaObjectPtr+1: objects section flags
 
@@ -289,6 +435,18 @@ extern LAVABASE_DLL bool DEC_REV_CNT(CheckData &ckd, LavaObjectPtr object);
 #define DFC(OBJ) {if (!DEC_FWD_CNT(ckd,OBJ)) return false;}
 #define DRC(OBJ) {if (!DEC_REV_CNT(ckd,OBJ)) return false;}
 
+
+class LAVABASE_DLL DumpEventData {
+public:
+  DumpEventData(CLavaBaseDoc* d, LavaVariablePtr stack, CLavaThread* thread)
+  {doc = d; object = stack[0]; name = *((QString*)(stack[1]+LSH)); currentThread = thread;}
+  CLavaBaseDoc* doc;
+  LavaObjectPtr object;
+  QString name;
+  CLavaThread *currentThread;
+
+  ~DumpEventData() {}
+};
 
 typedef LAVABASE_DLL bool (*TAdapterFunc)(CheckData&, LavaVariablePtr);  
 
@@ -365,6 +523,7 @@ public:
   LavaDECL* outerContext;  //package or interface of outer virtual types
   int nSections;           // number of sections belonging to this class
   SynFlags SectionFlags; 
+  TAdapterFunc* adapterTab;
   CSectionDesc();
   virtual void Destroy();
 };
@@ -385,47 +544,56 @@ public:
 //
 //Errorcodes corresponding to lava runtime exceptions
 //
-#define memory_ex 0                    
-#define check_ex 1
-#define NullCallObject_ex 2
-#define NullMandatory_ex 3
-#define NullParent_ex 4
-#define NullException_ex 5
-#define AssertionViolation_ex 6
-#define IntegerRange_ex 7
-#define EnumOrdLow_ex 8
-#define EnumOrdHigh_ex 9
-#define ElemNotInSet_ex 10
-#define RunTimeException_ex 11
-#define DLLError_ex 12
-#define ldocNotOpened_ex 13
-#define CompoNotFound_ex 14
-#define ldocIncompatible_ex 15
-#define IncompatibleCategory_ex 16
-#define NoPicture_ex 17
-#define CorruptObject_ex 18
-#define ldocNotStored_ex 19
-#define ArrayXOutOfRange_ex 20
-#define CanceledForm_ex 21
-#define AssigToFrozen_ex 22
-#define ZombieAccess_ex 23
-#define UnfinishedObject_ex 24
-#define ExecutionFailed_ex 25
-#define OutFunctionFailed_ex 26
+enum RTerrorCodes {
+  memory_ex,
+  check_ex,
+  NullCallObject_ex,
+  NullMandatory_ex,
+  NullParent_ex,
+  NullException_ex,
+  AssertionViolation_ex,
+  InvariantViolation_ex,
+  PreconditionViolation_ex,
+  PreconditionConsistency_ex,
+  PostconditionViolation_ex,
+  PostconditionConsistency_ex,
+  IntegerRange_ex,
+  EnumOrdLow_ex,
+  EnumOrdHigh_ex,
+  ElemNotInSet_ex,
+  RunTimeException_ex,
+  DLLError_ex,
+  ldocNotOpened_ex,
+  CompoNotFound_ex,
+  ldocIncompatible_ex,
+  IncompatibleCategory_ex,
+  NoPicture_ex,
+  CorruptObject_ex,
+  ldocNotStored_ex,
+  ArrayXOutOfRange_ex,
+  CanceledForm_ex,
+  AssigToFrozen_ex,
+  ZombieAccess_ex,
+  UnfinishedObject_ex,
+  ExecutionFailed_ex,
+  OutFunctionFailed_ex
+};
 
 //
 //Errorcodes corresponding to lava hardware exceptions
 //
-#define seg_violation_ex 0
-#define float_div_by_zero_ex 1
-#define float_overflow_ex 2
-#define float_underflow_ex 3
-#define float_inexact_result_ex 4
-#define float_invalid_op_ex 5
-#define float_subscript_out_of_range_ex 6
-#define integer_div_by_zero_ex 7
-#define integer_overflow_ex 8
-#define other_hardware_ex 9
+enum HWerrorCodes {
+  seg_violation_ex,
+  float_div_by_zero_ex,
+  float_overflow_ex,
+  float_underflow_ex,
+  float_inexact_result_ex,
+  float_invalid_op_ex,
+  float_subscript_out_of_range_ex,
+  integer_div_by_zero_ex,
+  integer_overflow_ex,
+  other_hardware_ex
+};
 
 
 extern LAVABASE_DLL bool SetLavaException(CheckData& ckd, int code, const QString& mess);
@@ -451,16 +619,15 @@ enum LAVABASE_DLL ObjectStateFlag {
    useDefaults,     //used in LavaGUI
    insertedItem,    //used in LavaGUI
    deletedItem,     //used in LavaGUI
-//   notFromSource,  //used in LavaGUI
-//   dontReplace,    //used in LavaGUI
    localCheckmark,  //temporary check mark
    dontSave,        //global object flag (in object+1)
    zombified,       //global object flag (in object+1)
    releaseFinished, //indicator that all sub-objects have been released/decremented
-   marked           //used in InterprBase::forceRelease
+   marked,          //used in InterprBase::forceRelease
+   compoPrim        //the creation section of component
 };
 
-extern LAVABASE_DLL LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* typeDECL, bool stateObj);
+extern LAVABASE_DLL LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* typeDECL, bool stateObj, LavaObjectPtr urlObj=0);
 extern LAVABASE_DLL LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj);
 extern LAVABASE_DLL LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specDECL, LavaDECL* classDECL, bool stateObj);
 extern LAVABASE_DLL bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object);
@@ -468,7 +635,7 @@ extern LAVABASE_DLL CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePt
 extern LAVABASE_DLL bool EqualObjects(CheckData &ckd, LavaObjectPtr leftVarPtr, LavaObjectPtr rightVarPtr, int specialEQ);
 extern LAVABASE_DLL bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr);
 extern LAVABASE_DLL void OneLevelCopy(CheckData& ckd, LavaObjectPtr& object);
-extern LAVABASE_DLL TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL);
+extern LAVABASE_DLL TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* specDECL);
 extern LAVABASE_DLL LavaObjectPtr CastEnumType(CheckData& ckd, LavaObjectPtr eTypeObjPtr);
 extern LAVABASE_DLL LavaObjectPtr CastChainType(CheckData& ckd, LavaObjectPtr chainTypeObjPtr/*, LavaDECL* chainTypeDECL*/);
 extern LAVABASE_DLL LavaObjectPtr CastSetType(CheckData& ckd, LavaObjectPtr setTypeObjPtr);

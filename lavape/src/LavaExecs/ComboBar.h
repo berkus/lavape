@@ -215,10 +215,10 @@ class CExecTypes: public CExec
 public:
   CExecTypes(CComboBar* bar);
   void ExecDefs (LavaDECL ** pelDef, int level);
-//  void ExecSHOW (LavaDECL ** pelDef, int level);
+//  void ExecFormDef (LavaDECL ** pelDef, int level);
   CComboBar* Bar;
   QSize sz;
-  QPainter *dc;
+//  QPainter *dc;
   int maxTW;
   int maxSTW;
   int maxIW;
@@ -244,7 +244,7 @@ public:
   CComboBar* Bar;
   QComboBox *FieldList;
   QSize sz;
-  QPainter *dc;
+//  QPainter *dc;
   int maxW;
   int maxSetW;
   TDODC *pAccuIDs; //the accumulated chain of IDs

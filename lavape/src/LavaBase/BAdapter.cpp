@@ -63,7 +63,7 @@ TAdapterFunc* StdAdapterTab [Identifier];
 
 //LavaDECL* DECLTab [Identifier];
 
-static TAdapterFunc ObjectAdapter[LAH + 7];
+static TAdapterFunc ObjectAdapter[LAH + 9];
 static TAdapterFunc BitsetAdapter[LAH + 7];
 static TAdapterFunc BoolAdapter[LAH + 5];
 static TAdapterFunc CharAdapter[LAH + 1];
@@ -90,9 +90,12 @@ bool DefaultEq(CheckData& /*ckd*/, LavaVariablePtr /*stack*/)
 
 bool ObjectFinalize(CheckData& ckd, LavaVariablePtr stack)
 {
-  LavaObjectPtr obj = stack[0] - stack[0][0][0].sectionOffset;
-  if (*(obj - 2) && !((SynFlags*)(obj + 1))->Contains(dontSave))  //url object?
-    ckd.document->SaveObject(ckd, stack[0]);
+  LavaObjectPtr obj = stack[SFH] - stack[SFH][0][0].sectionOffset;
+  if (*(obj - 2))  //url object?
+    if (obj[0][0].implDECL != obj[0][0].classDECL) { //not native i.e. Lava component
+      if ( !((SynFlags*)(obj + 1))->Contains(dontSave)) 
+        ckd.document->SaveObject(ckd, stack[SFH]);
+    }
   ((SynFlags*)(obj + 1))->INCL(zombified);
   return true;
 }
@@ -100,28 +103,28 @@ bool ObjectFinalize(CheckData& ckd, LavaVariablePtr stack)
 //general operator ==
 bool ObjectOpEqual(CheckData& ckd, LavaVariablePtr stack)
 {
-  return EqualObjects(ckd, stack[0], stack[1], 0);
+  return EqualObjects(ckd, stack[SFH], stack[SFH+1], 0);
 }
 
 //general operator !=
 bool ObjectOpNotEqual(CheckData& ckd, LavaVariablePtr stack)
 {
-  return !EqualObjects(ckd, stack[0], stack[1], 0);
+  return !EqualObjects(ckd, stack[SFH], stack[SFH+1], 0);
 }
 
 bool ObjectSameAs(CheckData& ckd, LavaVariablePtr stack)
 {
-  return EqualObjects(ckd, stack[0], stack[1], 1);
+  return EqualObjects(ckd, stack[SFH], stack[SFH+1], 1);
 }
  
 bool ObjectEquals(CheckData& ckd, LavaVariablePtr stack)
 {
-  return EqualObjects(ckd, stack[0], stack[1], 2);
+  return EqualObjects(ckd, stack[SFH], stack[SFH+1], 2);
 }
 
 bool ObjectSnapshot(CheckData& ckd, LavaVariablePtr stack)
 {
-  CRuntimeException* ex = CopyObject(ckd, &stack[0], &stack[1], false);
+  CRuntimeException* ex = CopyObject(ckd, &stack[SFH], &stack[SFH+1], false);
   if (ex)
     throw ex;
   if (ckd.exceptionThrown)
@@ -131,174 +134,186 @@ bool ObjectSnapshot(CheckData& ckd, LavaVariablePtr stack)
 
 bool ObjectDontSave(CheckData& ckd, LavaVariablePtr stack)
 {
-  if (*(bool*)(stack[1]+LSH))
-    ((SynFlags*)(stack[0] - stack[0][0][0].sectionOffset + 1))->INCL(dontSave);
+  if (*(bool*)(stack[SFH+1]+LSH))
+    ((SynFlags*)(stack[SFH] - stack[SFH][0][0].sectionOffset + 1))->INCL(dontSave);
   else
-    ((SynFlags*)(stack[0] - stack[0][0][0].sectionOffset + 1))->EXCL(dontSave);
+    ((SynFlags*)(stack[SFH] - stack[SFH][0][0].sectionOffset + 1))->EXCL(dontSave);
   return true;
 }
+
+bool ObjectDump(CheckData& ckd, LavaVariablePtr stack)
+{
+  CLavaThread *currentThread = CLavaThread::currentThread();
+  //currentThread->pContExecEvent->lastException = 0;
+  DumpEventData* data = new DumpEventData(ckd.document, stack, currentThread);
+	QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaDump,(void*)data));
+  (*currentThread->pContExecEvent)++;
+  ckd.document->DumpFrame = 0;
+  return true;
+}
+
 
 //Bitset adapter functions
 
 bool BsetEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(unsigned*)(stack[0]+LSH) == *(unsigned*)(stack[1]+LSH);
+  return *(unsigned*)(stack[SFH]+LSH) == *(unsigned*)(stack[SFH+1]+LSH);
 }
 
 
 bool BsetLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   //stack{0] is the object
-  //(ASN1ToFromAr*)stack[1] the cid
-  if (((ASN1tofromAr*)stack[1])->Ar->device()->isWritable())
-    ((ASN1tofromAr*)stack[1])->PUTunsigned(*(unsigned*)(stack[0]+LSH));
+  //(ASN1ToFromAr*)stack[SFH+1] the cid
+  if (((ASN1tofromAr*)stack[SFH+1])->Ar->device()->isWritable())
+    ((ASN1tofromAr*)stack[SFH+1])->PUTunsigned(*(unsigned*)(stack[SFH]+LSH));
   else
-    ((ASN1tofromAr*)stack[1])->GETunsigned(*(unsigned*)(stack[0]+LSH));
+    ((ASN1tofromAr*)stack[SFH+1])->GETunsigned(*(unsigned*)(stack[SFH]+LSH));
   return true;
 }
 
 bool BsetBwAnd(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Bitset], false)
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Bitset], false)
     /*
-  stack[2] = AllocateObject(ckd, ckd.document->DECLTab[Bitset], false);
-  if (!stack[2] && !ckd.exceptionThrown) {
+  stack[SFH+2] = AllocateObject(ckd, ckd.document->DECLTab[Bitset], false);
+  if (!stack[SFH+2] && !ckd.exceptionThrown) {
     CRuntimeException* ex = new CRuntimeException(memory_ex ,&&ERR_AllocObjectFailed);
     throw ex;
   }
   */
-  *(unsigned*)(stack[2]+LSH) = *(unsigned*)(stack[0]+LSH) & *(unsigned*)(stack[1]+LSH);
+  *(unsigned*)(stack[SFH+2]+LSH) = *(unsigned*)(stack[SFH]+LSH) & *(unsigned*)(stack[SFH+1]+LSH);
   return true;
 }
 
 bool BsetBwInclOr(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Bitset], false)
-  *(unsigned*)(stack[2]+LSH) = *(unsigned*)(stack[0]+LSH) | *(unsigned*)(stack[1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Bitset], false)
+  *(unsigned*)(stack[SFH+2]+LSH) = *(unsigned*)(stack[SFH]+LSH) | *(unsigned*)(stack[SFH+1]+LSH);
   return true;
 }
 
 bool BsetBwExclOr(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Bitset], false)  
-  *(unsigned*)(stack[2]+LSH) = *(unsigned*)(stack[0]+LSH) ^ *(unsigned*)(stack[1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Bitset], false)  
+  *(unsigned*)(stack[SFH+2]+LSH) = *(unsigned*)(stack[SFH]+LSH) ^ *(unsigned*)(stack[SFH+1]+LSH);
   return true;
 }
 
 bool BsetOnesComplement(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Bitset], false)
-  *(unsigned*)(stack[2]+LSH) = ~*(unsigned*)(stack[0]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Bitset], false)
+  *(unsigned*)(stack[SFH+2]+LSH) = ~*(unsigned*)(stack[SFH]+LSH);
   return true;
 }
 
 bool BsetLShift(CheckData& ckd, LavaVariablePtr stack)
 {
-  register unsigned ui = *(unsigned*)(stack[0]+LSH) << *(unsigned*)(stack[1]+LSH);
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Bitset], false)
-  *(unsigned*)(stack[2]+LSH) = ui;
+  register unsigned ui = *(unsigned*)(stack[SFH]+LSH) << *(unsigned*)(stack[SFH+1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Bitset], false)
+  *(unsigned*)(stack[SFH+2]+LSH) = ui;
   return true;
 }
 
 bool BsetRShift(CheckData& ckd, LavaVariablePtr stack)
 {
-  register unsigned ui = *(unsigned*)(stack[0]+LSH) >> *(unsigned*)(stack[1]+LSH);
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Bitset], false)
-  *(unsigned*)(stack[2]+LSH) = ui;
+  register unsigned ui = *(unsigned*)(stack[SFH]+LSH) >> *(unsigned*)(stack[SFH+1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Bitset], false)
+  *(unsigned*)(stack[SFH+2]+LSH) = ui;
   return true;
 }
 
 
 bool BsetString(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
-  QString str = QString("%1").arg(*(ulong*)(stack[0]+LSH), sizeof(unsigned) * 8,2);
-  new(stack[1]+LSH) QString(str);
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
+  QString str = QString("%1").arg(*(ulong*)(stack[SFH]+LSH), sizeof(unsigned) * 8,2);
+  new(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
 bool BoolEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(bool*)(stack[0]+LSH) == *(bool*)(stack[1]+LSH);
+  return *(bool*)(stack[SFH]+LSH) == *(bool*)(stack[SFH+1]+LSH);
 }
 
 
 bool BoolLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   //stack{0] is the object
-  //(ASN1ToFromAr*)stack[1] the cid
-  if (((ASN1tofromAr*)stack[1])->Ar->device()->isWritable())
-    ((ASN1tofromAr*)stack[1])->PUTboolean(*(bool*)(stack[0]+LSH));
+  //(ASN1ToFromAr*)stack[SFH+1] the cid
+  if (((ASN1tofromAr*)stack[SFH+1])->Ar->device()->isWritable())
+    ((ASN1tofromAr*)stack[SFH+1])->PUTboolean(*(bool*)(stack[SFH]+LSH));
   else
-    ((ASN1tofromAr*)stack[1])->GETboolean(*(bool*)(stack[0]+LSH));
+    ((ASN1tofromAr*)stack[SFH+1])->GETboolean(*(bool*)(stack[SFH]+LSH));
   return true;
 }
 
 bool BoolAnd(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[B_Bool], false)
-  *(bool*)(stack[2]+LSH) = *(bool*)(stack[0]+LSH) && *(bool*)(stack[1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[B_Bool], false)
+  *(bool*)(stack[SFH+2]+LSH) = *(bool*)(stack[SFH]+LSH) && *(bool*)(stack[SFH+1]+LSH);
   return true;
 }
 
 bool BoolInclOr(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[B_Bool], false)
-  *(bool*)(stack[2]+LSH) = *(bool*)(stack[0]+LSH) || *(bool*)(stack[1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[B_Bool], false)
+  *(bool*)(stack[SFH+2]+LSH) = *(bool*)(stack[SFH]+LSH) || *(bool*)(stack[SFH+1]+LSH);
   return true;
 }
 
 bool BoolExclOr(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[B_Bool], false)
-  *(bool*)(stack[2]+LSH) = *(bool*)(stack[0]+LSH) && !*(bool*)(stack[1]+LSH)
-                             || !*(bool*)(stack[0]+LSH) && *(bool*)(stack[1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[B_Bool], false)
+  *(bool*)(stack[SFH+2]+LSH) = *(bool*)(stack[SFH]+LSH) && !*(bool*)(stack[SFH+1]+LSH)
+                             || !*(bool*)(stack[SFH]+LSH) && *(bool*)(stack[SFH+1]+LSH);
   return true;
 }
 
 bool BoolNot(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[B_Bool], false)
-  *(bool*)(stack[1]+LSH) = !*(bool*)(stack[0]+LSH);
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[B_Bool], false)
+  *(bool*)(stack[SFH+1]+LSH) = !*(bool*)(stack[SFH]+LSH);
   return true;
 }
 
 bool BoolString(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
   QString str;
-  if (*(bool*)(stack[0]+LSH))
+  if (*(bool*)(stack[SFH]+LSH))
     str = QString("true");
   else
     str = QString("false");
-  new(stack[1]+LSH) QString(str);
+  new(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
 
 bool CharEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(char*)(stack[0]+LSH) == *(char*)(stack[1]+LSH);
+  return *(char*)(stack[SFH]+LSH) == *(char*)(stack[SFH+1]+LSH);
 }
 
 
 bool CharLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   //stack{0] is the object
-  //(ASN1ToFromAr*)stack[1] the cid
-  if (((ASN1tofromAr*)stack[1])->Ar->device()->isWritable())
-    ((ASN1tofromAr*)stack[1])->PUTchar(*(char*)(stack[0]+LSH));
+  //(ASN1ToFromAr*)stack[SFH+1] the cid
+  if (((ASN1tofromAr*)stack[SFH+1])->Ar->device()->isWritable())
+    ((ASN1tofromAr*)stack[SFH+1])->PUTchar(*(char*)(stack[SFH]+LSH));
   else
-    ((ASN1tofromAr*)stack[1])->GETchar(*(char*)(stack[0]+LSH));
+    ((ASN1tofromAr*)stack[SFH+1])->GETchar(*(char*)(stack[SFH]+LSH));
   return true;
 }
 
 bool CharString(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
   QString str;
-  str = *(char*)(stack[0]+LSH);
-  new(stack[1]+LSH) QString(str);
+  str = *(char*)(stack[SFH]+LSH);
+  new(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -306,88 +321,88 @@ bool CharString(CheckData& ckd, LavaVariablePtr stack)
 
 bool IntEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(int*)(stack[0]+LSH) == *(int*)(stack[1]+LSH);
+  return *(int*)(stack[SFH]+LSH) == *(int*)(stack[SFH+1]+LSH);
 }
 
 
 bool IntLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   //stack{0] is the object
-  //(ASN1ToFromAr*)stack[1] the cid
-  if (((ASN1tofromAr*)stack[1])->Ar->device()->isWritable())
-    ((ASN1tofromAr*)stack[1])->PUTint(*(int*)(stack[0]+LSH));
+  //(ASN1ToFromAr*)stack[SFH+1] the cid
+  if (((ASN1tofromAr*)stack[SFH+1])->Ar->device()->isWritable())
+    ((ASN1tofromAr*)stack[SFH+1])->PUTint(*(int*)(stack[SFH]+LSH));
   else
-    ((ASN1tofromAr*)stack[1])->GETint(*(int*)(stack[0]+LSH));
+    ((ASN1tofromAr*)stack[SFH+1])->GETint(*(int*)(stack[SFH]+LSH));
   return true;
 }
 
 bool IntPercent(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[2]+LSH) = *(int*)(stack[0]+LSH) % *(int*)(stack[1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH+2]+LSH) = *(int*)(stack[SFH]+LSH) % *(int*)(stack[SFH+1]+LSH);
   return true;
 }
 
 bool IntLT(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(int*)(stack[0]+LSH) < *(int*)(stack[1]+LSH);
+  return *(int*)(stack[SFH]+LSH) < *(int*)(stack[SFH+1]+LSH);
 }
 
 bool IntGT(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(int*)(stack[0]+LSH) > *(int*)(stack[1]+LSH);
+  return *(int*)(stack[SFH]+LSH) > *(int*)(stack[SFH+1]+LSH);
 }
 
 bool IntLET(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(int*)(stack[0]+LSH) <= *(int*)(stack[1]+LSH);
+  return *(int*)(stack[SFH]+LSH) <= *(int*)(stack[SFH+1]+LSH);
 }
 
 bool IntGET(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(int*)(stack[0]+LSH) >= *(int*)(stack[1]+LSH);
+  return *(int*)(stack[SFH]+LSH) >= *(int*)(stack[SFH+1]+LSH);
 }
 
 bool IntPlus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register int ii =  *(int*)(stack[0]+LSH) + *(int*)(stack[1]+LSH);
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[2]+LSH) =  ii;
+  register int ii =  *(int*)(stack[SFH]+LSH) + *(int*)(stack[SFH+1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH+2]+LSH) =  ii;
   return true;
 }
 
 bool IntMinus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register int ii = - *(int*)(stack[0]+LSH);
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[1]+LSH) =  ii;
+  register int ii = - *(int*)(stack[SFH]+LSH);
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH+1]+LSH) =  ii;
   return true;
 }
 
 bool IntMulti(CheckData& ckd, LavaVariablePtr stack)
 {
-  register int ii = *(int*)(stack[0]+LSH) * (*(int*)(stack[1]+LSH));
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[2]+LSH) =  ii;
+  register int ii = *(int*)(stack[SFH]+LSH) * (*(int*)(stack[SFH+1]+LSH));
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH+2]+LSH) =  ii;
   return true;
 }
 
 bool IntDiv(CheckData& ckd, LavaVariablePtr stack)
 {
-  register int ii = *(int*)(stack[0]+LSH) / *(int*)(stack[1]+LSH);
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[2]+LSH) =  ii;
+  register int ii = *(int*)(stack[SFH]+LSH) / *(int*)(stack[SFH+1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH+2]+LSH) =  ii;
   return true;
 }
 
 
 bool IntString(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
 //  register char* str = new char [33];
-  QString str = QString("%1").arg(*(int*)(stack[0]+LSH));
-//  _itoa(*(int*)(stack[0]+LSH), str, 10) ;
-  new(stack[1]+LSH) QString(str);
+  QString str = QString("%1").arg(*(int*)(stack[SFH]+LSH));
+//  _itoa(*(int*)(stack[SFH]+LSH), str, 10) ;
+  new(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -397,80 +412,80 @@ bool IntString(CheckData& ckd, LavaVariablePtr stack)
 
 bool FloatEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(float*)(stack[0]+LSH) == *(float*)(stack[1]+LSH);
+  return *(float*)(stack[SFH]+LSH) == *(float*)(stack[SFH+1]+LSH);
 }
 
 bool FloatLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   //stack{0] is the object
-  //(ASN1ToFromAr*)stack[1] the cid
-  if (((ASN1tofromAr*)stack[1])->Ar->device()->isWritable())
-    ((ASN1tofromAr*)stack[1])->PUTfloat(*(float*)(stack[0]+LSH));
+  //(ASN1ToFromAr*)stack[SFH+1] the cid
+  if (((ASN1tofromAr*)stack[SFH+1])->Ar->device()->isWritable())
+    ((ASN1tofromAr*)stack[SFH+1])->PUTfloat(*(float*)(stack[SFH]+LSH));
   else
-    ((ASN1tofromAr*)stack[1])->GETfloat(*(float*)(stack[0]+LSH));
+    ((ASN1tofromAr*)stack[SFH+1])->GETfloat(*(float*)(stack[SFH]+LSH));
   return true;
 }
 
 bool FloatLT(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(float*)(stack[0]+LSH) < *(float*)(stack[1]+LSH);
+  return *(float*)(stack[SFH]+LSH) < *(float*)(stack[SFH+1]+LSH);
 }
 
 bool FloatGT(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(float*)(stack[0]+LSH) > *(float*)(stack[1]+LSH);
+  return *(float*)(stack[SFH]+LSH) > *(float*)(stack[SFH+1]+LSH);
 }
 
 bool FloatLET(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(float*)(stack[0]+LSH) <= *(float*)(stack[1]+LSH);
+  return *(float*)(stack[SFH]+LSH) <= *(float*)(stack[SFH+1]+LSH);
 }
 
 bool FloatGET(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(float*)(stack[0]+LSH) >= *(float*)(stack[1]+LSH);
+  return *(float*)(stack[SFH]+LSH) >= *(float*)(stack[SFH+1]+LSH);
 }
 
 bool FloatPlus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = *(float*)(stack[0]+LSH) + *(float*)(stack[1]+LSH);
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[2]+LSH) = fl;
+  register float fl = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
+  *(float*)(stack[SFH+2]+LSH) = fl;
   return true;
 }
 
 bool FloatMinus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = - *(float*)(stack[0]+LSH);
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[1]+LSH) = fl;
+  register float fl = - *(float*)(stack[SFH]+LSH);
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Float], false)
+  *(float*)(stack[SFH+1]+LSH) = fl;
   return true;
 }
 
 bool FloatMulti(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = *(float*)(stack[0]+LSH) * (*(float*)(stack[1]+LSH));
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[2]+LSH) = fl;
+  register float fl = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
+  *(float*)(stack[SFH+2]+LSH) = fl;
   return true;
 }
 
 bool FloatDiv(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = *(float*)(stack[0]+LSH) / *(float*)(stack[1]+LSH);
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[2]+LSH) = fl;
+  register float fl = *(float*)(stack[SFH]+LSH) / *(float*)(stack[SFH+1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
+  *(float*)(stack[SFH+2]+LSH) = fl;
   return true;
 }
 
 bool FloatString(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
-  QString str = QString("%1").arg(*(float*)(stack[0]+LSH), 0,'f');
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
+  QString str = QString("%1").arg(*(float*)(stack[SFH]+LSH), 0,'f');
   //QString str;
   //QTextStream ts( &str, IO_WriteOnly );
-  //ts << *(float*)(stack[0]+LSH);
-  new(stack[1]+LSH) QString(str);
+  //ts << *(float*)(stack[SFH]+LSH);
+  new(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -478,94 +493,94 @@ bool FloatString(CheckData& ckd, LavaVariablePtr stack)
 
 bool DoubleEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(double*)(stack[0]+LSH) == *(double*)(stack[1]+LSH);
+  return *(double*)(stack[SFH]+LSH) == *(double*)(stack[SFH+1]+LSH);
 }
 
 
 bool DoubleLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   //stack{0] is the object
-  //(ASN1ToFromAr*)stack[1] the cid
-  if (((ASN1tofromAr*)stack[1])->Ar->device()->isWritable())
-    ((ASN1tofromAr*)stack[1])->PUTdouble(*(double*)(stack[0]+LSH));
+  //(ASN1ToFromAr*)stack[SFH+1] the cid
+  if (((ASN1tofromAr*)stack[SFH+1])->Ar->device()->isWritable())
+    ((ASN1tofromAr*)stack[SFH+1])->PUTdouble(*(double*)(stack[SFH]+LSH));
   else
-    ((ASN1tofromAr*)stack[1])->GETdouble(*(double*)(stack[0]+LSH));
+    ((ASN1tofromAr*)stack[SFH+1])->GETdouble(*(double*)(stack[SFH]+LSH));
   return true;
 }
 
 bool DoubleLT(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(double*)(stack[0]+LSH) < *(double*)(stack[1]+LSH);
+  return *(double*)(stack[SFH]+LSH) < *(double*)(stack[SFH+1]+LSH);
 }
 
 bool DoubleGT(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(double*)(stack[0]+LSH) > *(double*)(stack[1]+LSH);
+  return *(double*)(stack[SFH]+LSH) > *(double*)(stack[SFH+1]+LSH);
 }
 
 bool DoubleLET(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(double*)(stack[0]+LSH) <= *(double*)(stack[1]+LSH);
+  return *(double*)(stack[SFH]+LSH) <= *(double*)(stack[SFH+1]+LSH);
 }
 
 bool DoubleGET(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(double*)(stack[0]+LSH) >= *(double*)(stack[1]+LSH);
+  return *(double*)(stack[SFH]+LSH) >= *(double*)(stack[SFH+1]+LSH);
 }
 
 bool DoublePlus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl =  *(double*)(stack[0]+LSH) + *(double*)(stack[1]+LSH);
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[2]+LSH) = dbl;
+  register double dbl =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
+  *(double*)(stack[SFH+2]+LSH) = dbl;
   return true;
 }
 
 bool DoubleMinus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl = - *(double*)(stack[0]+LSH);
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[1]+LSH) = dbl;
+  register double dbl = - *(double*)(stack[SFH]+LSH);
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Double], false)
+  *(double*)(stack[SFH+1]+LSH) = dbl;
   return true;
 }
 
 bool DoubleMulti(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl = *(double*)(stack[0]+LSH) * (*(double*)(stack[1]+LSH));
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[2]+LSH) = dbl;
+  register double dbl = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
+  *(double*)(stack[SFH+2]+LSH) = dbl;
   return true;
 }
 
 bool DoubleDiv(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl = *(double*)(stack[0]+LSH) / *(double*)(stack[1]+LSH);
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[2]+LSH) = dbl;
+  register double dbl = *(double*)(stack[SFH]+LSH) / *(double*)(stack[SFH+1]+LSH);
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
+  *(double*)(stack[SFH+2]+LSH) = dbl;
   return true;
 }
 
 bool DoubleString(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
-  QString str = QString("%1").arg(*(double*)(stack[0]+LSH), 0,'f');
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
+  QString str = QString("%1").arg(*(double*)(stack[SFH]+LSH), 0,'f');
   //QTextStream ts( &str, IO_WriteOnly );
-  //ts << *(double*)(stack[0]+LSH);
-  new(stack[1]+LSH) QString(str);
+  //ts << *(double*)(stack[SFH]+LSH);
+  new(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
 // String adapter functions
 bool StringNewFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  new((*stack)+LSH) QString();
+  new((stack[SFH])+LSH) QString();
   return true;
 }
 
 bool StringCopy(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  if ((QString*)(stack[0]+LSH)) 
-    new(stack[1]+LSH) QString(*(QString*)(stack[0]+LSH));
+  if ((QString*)(stack[SFH]+LSH)) 
+    new(stack[SFH+1]+LSH) QString(*(QString*)(stack[SFH]+LSH));
   return true;
 }
 
@@ -580,47 +595,47 @@ bool HStringCopy(LavaObjectPtr s0, LavaObjectPtr s1)
 
 bool StringEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(QString*)(stack[0]+LSH) == *(QString*)(stack[1]+LSH);
+  return *(QString*)(stack[SFH]+LSH) == *(QString*)(stack[SFH+1]+LSH);
 }
 
 
 bool StringLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   //stack{0] is the object
-  //(ASN1ToFromAr*)stack[1] the cid
-  if (((ASN1tofromAr*)stack[1])->Ar->device()->isWritable())
-    ((ASN1tofromAr*)stack[1])->PUTCString((QString*)(stack[0]+LSH));
+  //(ASN1ToFromAr*)stack[SFH+1] the cid
+  if (((ASN1tofromAr*)stack[SFH+1])->Ar->device()->isWritable())
+    ((ASN1tofromAr*)stack[SFH+1])->PUTCString((QString*)(stack[SFH]+LSH));
   else
-    ((ASN1tofromAr*)stack[1])->GETCString((QString*)(stack[0]+LSH));
+    ((ASN1tofromAr*)stack[SFH+1])->GETCString((QString*)(stack[SFH]+LSH));
   return true;
 }
 
 
 bool StringDecFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  ((QString*)((*stack)+LSH))->QString::~QString();
+  ((QString*)((stack[SFH])+LSH))->QString::~QString();
   // destructor of embedded/explicitly placed QString must be called explicitly
   return true;
 }
 
 bool StringPlus(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[VLString], ((SynFlags*)(stack[0]+1))->Contains(stateObjFlag))
-  if ((QString*)(stack[0]+LSH) && (QString*)(stack[1]+LSH)) 
-    NewQString((QString*)stack[2]+LSH, (*(QString*)(stack[0]+LSH) + *(QString*)(stack[1]+LSH)));
-  else if ((QString*)(stack[1]+LSH)) 
-    NewQString((QString*)stack[2]+LSH, *(QString*)(stack[1]+LSH));
-  else if ((QString*)(stack[0]+LSH)) 
-    NewQString((QString*)stack[2]+LSH, *(QString*)(stack[0]+LSH));
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[VLString], ((SynFlags*)(stack[SFH]+1))->Contains(stateObjFlag))
+  if ((QString*)(stack[SFH]+LSH) && (QString*)(stack[SFH+1]+LSH)) 
+    NewQString((QString*)stack[SFH+2]+LSH, (*(QString*)(stack[SFH]+LSH) + *(QString*)(stack[SFH+1]+LSH)));
+  else if ((QString*)(stack[SFH+1]+LSH)) 
+    NewQString((QString*)stack[SFH+2]+LSH, *(QString*)(stack[SFH+1]+LSH));
+  else if ((QString*)(stack[SFH]+LSH)) 
+    NewQString((QString*)stack[SFH+2]+LSH, *(QString*)(stack[SFH]+LSH));
   return true;
 }
 
 bool StringBox(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   int rc=QMessageBox::NoButton;
-  if ((QString*)(stack[0]+LSH)) 
+  if ((QString*)(stack[SFH]+LSH)) 
     rc = information(
-      qApp->mainWidget(),qApp->name(),*(QString*)(stack[0]+LSH),
+      qApp->mainWidget(),qApp->name(),*(QString*)(stack[SFH]+LSH),
       QMessageBox::Ok | QMessageBox::Default,
       0,
       0);
@@ -644,11 +659,11 @@ bool StringBox(CheckData& /*ckd*/, LavaVariablePtr stack)
 
 //Enumeration
 
-bool HEnumSetVal(CheckData& ckd, LavaObjectPtr obj, int num)
+bool HEnumSetVal(CheckData& ckd, LavaObjectPtr obj, unsigned num)
 {
   TEnumDescription *enumDesc;
   CHEEnumSelId *enumSel;
-  int ii, ee, nn;
+  unsigned ii, ee, nn;
   LavaObjectPtr totalObj = obj - obj[0][0].sectionOffset;
   for (ii = 0; (ii < totalObj[0][0].nSections) && (totalObj[0][ii].classDECL->DeclDescType != EnumType); ii++);
   for (ee = 0; (ee < totalObj[0][0].nSections) && (totalObj[0][ee].classDECL != ckd.document->DECLTab[Enumeration]); ee++);
@@ -658,7 +673,7 @@ bool HEnumSetVal(CheckData& ckd, LavaObjectPtr obj, int num)
     for (nn = 0; (nn < num) && enumSel; nn++)
       enumSel = (CHEEnumSelId*)enumSel->successor;
     if (enumSel) {
-      *(int*)(totalObj + totalObj[0][ee].sectionOffset + LSH) = num;
+      *(unsigned*)(totalObj + totalObj[0][ee].sectionOffset + LSH) = num;
       new(totalObj + totalObj[0][ee].sectionOffset + LSH + 1) QString(enumSel->data.Id.c);
       return true;
     }
@@ -670,65 +685,65 @@ bool EnumNewFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   TEnumDescription *enumDesc;
   int ii;
-  LavaObjectPtr totalObj = stack[0] - stack[0][0][0].sectionOffset;
+  LavaObjectPtr totalObj = stack[SFH] - stack[SFH][0][0].sectionOffset;
   for (ii = 0; (ii < totalObj[0][0].nSections) && (totalObj[0][ii].classDECL->DeclDescType != EnumType); ii++);
   if (ii < totalObj[0][0].nSections) {
     enumDesc = (TEnumDescription*)totalObj[0][ii].classDECL->EnumDesc.ptr;
-    new((*stack)+LSH+1) QString(((CHEEnumSelId*)enumDesc->EnumField.Items.first)->data.Id.c);
+    new(stack[SFH]+LSH+1) QString(((CHEEnumSelId*)enumDesc->EnumField.Items.first)->data.Id.c);
   }
   else
-    new((*stack)+LSH+1) QString("");
+    new(stack[SFH]+LSH+1) QString("");
   return true;
 }
 
 bool EnumCopy(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  *(int*)(stack[1]+LSH) = *(int*)(stack[0]+LSH);
-  if ((QString*)(stack[0]+LSH+1))
-    new(stack[1]+LSH+1) QString(*(QString*)(stack[0]+LSH+1));
+  *(int*)(stack[SFH+1]+LSH) = *(int*)(stack[SFH]+LSH);
+  if ((QString*)(stack[SFH]+LSH+1))
+    new(stack[SFH+1]+LSH+1) QString(*(QString*)(stack[SFH]+LSH+1));
   return true;
 }
 
 
 bool EnumEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return *(int*)(stack[1]+LSH) == *(int*)(stack[0]+LSH);
+  return *(int*)(stack[SFH+1]+LSH) == *(int*)(stack[SFH]+LSH);
 }
 
 
 bool EnumLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   //stack{0] is the object
-  //(ASN1ToFromAr*)stack[1] the cid
+  //(ASN1ToFromAr*)stack[SFH+1] the cid
   //remember: only the name string of the enumeration value will be stored,
   //          the integer value will be recalculated after loading
-  if (((ASN1tofromAr*)stack[1])->Ar->device()->isWritable())
-    ((ASN1tofromAr*)stack[1])->PUTCString((QString*)(stack[0]+LSH+1));
+  if (((ASN1tofromAr*)stack[SFH+1])->Ar->device()->isWritable())
+    ((ASN1tofromAr*)stack[SFH+1])->PUTCString((QString*)(stack[SFH]+LSH+1));
   else
-    ((ASN1tofromAr*)stack[1])->GETCString((QString*)(stack[0]+LSH+1));
+    ((ASN1tofromAr*)stack[SFH+1])->GETCString((QString*)(stack[SFH]+LSH+1));
   return true;
 }
 
 
 bool EnumDecFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  ((QString*)((*stack)+LSH+1))->QString::~QString();
+  ((QString*)(stack[SFH]+LSH+1))->QString::~QString();
   // destructor of embedded/explicitly placed QString must be called explicitly
   return true;
 }
 
 bool EnumOrdFunc(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[1]+LSH) = *(int*)(stack[0]+LSH);
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH+1]+LSH) = *(int*)(stack[SFH]+LSH);
 
   return true;
 }
 
 bool EnumStringFunc(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
-  *(QString*)(stack[1]+LSH) = *(QString*)(stack[0]+LSH+1);
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
+  *(QString*)(stack[SFH+1]+LSH) = *(QString*)(stack[SFH]+LSH+1);
   return true;
 }
 
@@ -736,8 +751,8 @@ bool EnumCommentFunc(CheckData& ckd, LavaVariablePtr stack)
 {
   CHEEnumSelId *che;
   TEnumDescription* enumDesc;
-  int ii, num = *(int*)(stack[0]+LSH);
-  LavaObjectPtr totalObj = stack[0] - stack[0][0][0].sectionOffset;
+  int ii, num = *(int*)(stack[SFH]+LSH);
+  LavaObjectPtr totalObj = stack[SFH] - stack[SFH][0][0].sectionOffset;
   for (ii = 0; (ii < totalObj[0][0].nSections) && (totalObj[0][ii].classDECL->DeclDescType != EnumType); ii++);
   if (ii < totalObj[0][0].nSections) {
     ii = 0;
@@ -746,8 +761,8 @@ bool EnumCommentFunc(CheckData& ckd, LavaVariablePtr stack)
          che && (ii < num); che = (CHEEnumSelId*)che->successor)
       ii++;
     if (ii == num) {
-      OBJALLOC(stack[1], ckd, ckd.document->DECLTab[VLString], false)
-      *(QString*)(stack[1]+LSH) = QString(che->data.DECLComment.ptr->Comment.c);
+      OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
+      *(QString*)(stack[SFH+1]+LSH) = QString(che->data.DECLComment.ptr->Comment.c);
       return true;
     }
   }
@@ -765,7 +780,7 @@ bool EnumCommentFunc(CheckData& ckd, LavaVariablePtr stack)
 //Set
 bool SetNewFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  new((CHAINX*)((*stack)+LSH)) CHAINX();
+  new((CHAINX*)(stack[SFH]+LSH)) CHAINX();
   return true;
 }
 
@@ -776,16 +791,16 @@ bool SetCopy(CheckData& ckd, LavaVariablePtr stack)
   CHAINX *chainL, *chainR;
   CRuntimeException *ex;
 
-  chainL = (CHAINX*)(stack[0]+LSH);
+  chainL = (CHAINX*)(stack[SFH]+LSH);
   if (chainL) {
-    new(stack[1]+LSH) CHAINX();
-    chainR = (CHAINX*)(stack[1]+LSH);
-    if (((SynFlags*)stack[0]+1)->Contains(stateObjFlag))
-      ((SynFlags*)stack[1]+1)->INCL(stateObjFlag);
+    new(stack[SFH+1]+LSH) CHAINX();
+    chainR = (CHAINX*)(stack[SFH+1]+LSH);
+    if (((SynFlags*)stack[SFH]+1)->Contains(stateObjFlag))
+      ((SynFlags*)stack[SFH+1]+1)->INCL(stateObjFlag);
     for (che = (CHE*)chainL->first; che; che = (CHE*)che->successor) {
       OBJALLOC(handle, ckd, ckd.document->DECLTab[B_Che], false)
-      *(LavaVariablePtr)(handle+LSH) = stack[1]; //note set object in handle
-      if ((*stack[0])->SectionFlags.Contains(ElemsConstituent)) {
+      *(LavaVariablePtr)(handle+LSH) = stack[SFH+1]; //note set object in handle
+      if ((*stack[SFH])->SectionFlags.Contains(ElemsConstituent)) {
         if (((CHE*)(handle+LSH+1))->data)
           DFC((LavaObjectPtr)((CHE*)(handle+LSH+1))->data);
         ((CHE*)(handle+LSH+1))->data = 0;
@@ -796,7 +811,7 @@ bool SetCopy(CheckData& ckd, LavaVariablePtr stack)
           return false;
       }
       else {
-        if ((*stack[0])->SectionFlags.Contains(ElemsAcquaintance)) {
+        if ((*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance)) {
           if (((CHE*)(handle+LSH+1))->data) {
             DFC( (LavaObjectPtr)((CHE*)(handle+LSH+1))->data);
             IFC((LavaObjectPtr)che->data); // inc data
@@ -821,17 +836,17 @@ bool SetEq(CheckData& ckd, LavaVariablePtr stack)
 {
   CHE *cheR, *cheL;
   CHAINX *chainL, *chainR;
-  if (stack[0] == stack[1])
+  if (stack[SFH] == stack[SFH+1])
     return true;
-  chainL = (CHAINX*)(stack[0]+LSH);
-  chainR = (CHAINX*)(stack[1]+LSH);
+  chainL = (CHAINX*)(stack[SFH]+LSH);
+  chainR = (CHAINX*)(stack[SFH+1]+LSH);
   if (!chainL || !chainR)
     return false;
-  if ((*stack[0])->SectionFlags.Contains(SectChainType)) {
+  if ((*stack[SFH])->SectionFlags.Contains(SectChainType)) {
     cheL = (CHE*)chainL->first;
     cheR = (CHE*)chainR->first;
     while (cheL && cheR) {
-      if ((*stack[0])->SectionFlags.Contains(ElemsConstituent)) {
+      if ((*stack[SFH])->SectionFlags.Contains(ElemsConstituent)) {
         if (!EqualObjects(ckd, (LavaObjectPtr)cheL->data, (LavaObjectPtr)cheR->data, 0))
           return false;
       }
@@ -866,9 +881,9 @@ bool SetEq(CheckData& ckd, LavaVariablePtr stack)
 bool SetDecFunc(CheckData& ckd, LavaVariablePtr stack)
 {
   CHE *che, *succ;
-  bool forward = (*stack[0])->SectionFlags.Contains(ElemsConstituent)
-                 || (*stack[0])->SectionFlags.Contains(ElemsAcquaintance);
-  CHAINX *chain = (CHAINX*)(stack[0]+LSH);
+  bool forward = (*stack[SFH])->SectionFlags.Contains(ElemsConstituent)
+                 || (*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance);
+  CHAINX *chain = (CHAINX*)(stack[SFH]+LSH);
 
   for (che = (CHE*)chain->first; che; che = succ) {
     succ = (CHE*)che->successor; // save successor since che may be deleted
@@ -886,44 +901,44 @@ bool SetAdd(CheckData& ckd, LavaVariablePtr stack)
 {
   LavaObjectPtr che;
   OBJALLOC(che, ckd, ckd.document->DECLTab[B_Che], false)
-  *(LavaVariablePtr)(che+LSH) = stack[0];
-  ((CHE*)(che+LSH+1))->data = (DObject*)stack[1];
-  if (stack[1])
-    if ((*stack[0])->SectionFlags.Contains(ElemsConstituent)
-    || (*stack[0])->SectionFlags.Contains(ElemsAcquaintance))
-      IFC(stack[1]) // inc data
+  *(LavaVariablePtr)(che+LSH) = stack[SFH];
+  ((CHE*)(che+LSH+1))->data = (DObject*)stack[SFH+1];
+  if (stack[SFH+1])
+    if ((*stack[SFH])->SectionFlags.Contains(ElemsConstituent)
+    || (*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance))
+      IFC(stack[SFH+1]) // inc data
     else
-      IRC(stack[1]) // inc data
-  ((CHAINX*)(stack[0]+LSH))->Append((CHE*)(che+LSH+1));
+      IRC(stack[SFH+1]) // inc data
+  ((CHAINX*)(stack[SFH]+LSH))->Append((CHE*)(che+LSH+1));
   return true;
 }
 
 bool SetAddGetHandle(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[B_Che], false)
-  IFC(stack[2]);
-  *(LavaVariablePtr)(stack[2]+LSH) = stack[0];
-  ((CHE*)(stack[2]+LSH+1))->data = (DObject*)stack[1];
-  if (stack[1])
-    if ((*stack[0])->SectionFlags.Contains(ElemsConstituent)
-    || (*stack[0])->SectionFlags.Contains(ElemsAcquaintance))
-      IFC(stack[1]) // inc data
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[B_Che], false)
+  IFC(stack[SFH+2]);
+  *(LavaVariablePtr)(stack[SFH+2]+LSH) = stack[SFH];
+  ((CHE*)(stack[SFH+2]+LSH+1))->data = (DObject*)stack[SFH+1];
+  if (stack[SFH+1])
+    if ((*stack[SFH])->SectionFlags.Contains(ElemsConstituent)
+    || (*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance))
+      IFC(stack[SFH+1]) // inc data
     else
-      IRC(stack[1]) // inc data
-  ((CHAINX*)(stack[0]+LSH))->Append((CHE*)(stack[2]+LSH+1));
+      IRC(stack[SFH+1]) // inc data
+  ((CHAINX*)(stack[SFH]+LSH))->Append((CHE*)(stack[SFH+2]+LSH+1));
   return true;
 }
 
 
 bool SetGet(CheckData& ckd, LavaVariablePtr stack)
 {
-  CHE *che=(CHE*)(stack[1]+LSH+1);
+  CHE *che=(CHE*)(stack[SFH+1]+LSH+1);
 
-  if (stack[1]) {
-    if ((*(LavaVariablePtr)(stack[1]+LSH) == stack[0]) && che) {
-      stack[2] = (LavaObjectPtr)((CHE*)(stack[1]+LSH+1))->data;
-      if (stack[2])
-        IFC(stack[2]);
+  if (stack[SFH+1]) {
+    if ((*(LavaVariablePtr)(stack[SFH+1]+LSH) == stack[SFH]) && che) {
+      stack[SFH+2] = (LavaObjectPtr)((CHE*)(stack[SFH+1]+LSH+1))->data;
+      if (stack[SFH+2])
+        IFC(stack[SFH+2]);
     }
     else {
       CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
@@ -933,25 +948,25 @@ bool SetGet(CheckData& ckd, LavaVariablePtr stack)
     }
   }
   else
-    stack[2] = 0;
+    stack[SFH+2] = 0;
   return true;
 }
 
 bool SetRemove(CheckData& ckd, LavaVariablePtr stack)
 {
-  CHE *che=(CHE*)(stack[1]+LSH+1);
+  CHE *che=(CHE*)(stack[SFH+1]+LSH+1);
 
-  if (stack[1]) {
-    if (*(LavaVariablePtr)(stack[1]+LSH) == stack[0] && che) {
-      ((CHAINX*)(stack[0]+LSH))->Uncouple(che);
-      *(LavaVariablePtr)(stack[1]+LSH) = 0;
-      if (((CHE*)(stack[1]+LSH+1))->data)
-        if ((*stack[0])->SectionFlags.Contains(ElemsConstituent)
-        || (*stack[0])->SectionFlags.Contains(ElemsAcquaintance))
-          DFC((LavaObjectPtr)((CHE*)(stack[1]+LSH+1))->data) // dec data
+  if (stack[SFH+1]) {
+    if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == stack[SFH] && che) {
+      ((CHAINX*)(stack[SFH]+LSH))->Uncouple(che);
+      *(LavaVariablePtr)(stack[SFH+1]+LSH) = 0;
+      if (((CHE*)(stack[SFH+1]+LSH+1))->data)
+        if ((*stack[SFH])->SectionFlags.Contains(ElemsConstituent)
+        || (*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance))
+          DFC((LavaObjectPtr)((CHE*)(stack[SFH+1]+LSH+1))->data) // dec data
         else
-          DRC((LavaObjectPtr)((CHE*)(stack[1]+LSH+1))->data) // dec data
-      DFC(stack[1]); // dec element handle
+          DRC((LavaObjectPtr)((CHE*)(stack[SFH+1]+LSH+1))->data) // dec data
+      DFC(stack[SFH+1]); // dec element handle
     }
     else {
       CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
@@ -966,19 +981,19 @@ bool SetRemove(CheckData& ckd, LavaVariablePtr stack)
 
 bool SetRemoveAndGet(CheckData& ckd, LavaVariablePtr stack)
 {
-  CHE *che=(CHE*)(stack[1]+LSH+1);
+  CHE *che=(CHE*)(stack[SFH+1]+LSH+1);
 
-  if (stack[1]) {
-    if ((*(LavaVariablePtr)(stack[1]+LSH) == stack[0]) && che) {
-      stack[2] = (LavaObjectPtr)che->data;
-      ((CHAINX*)(stack[0]+LSH))->Uncouple(che);
-      *(LavaVariablePtr)(stack[1]+LSH) = 0;
-      if (stack[2] && !(*stack[0])->SectionFlags.Contains(ElemsConstituent)
-                   && !(*stack[0])->SectionFlags.Contains(ElemsAcquaintance)) {
-        IFC(stack[2]); // inc data
-        DRC(stack[2]); // dec data
+  if (stack[SFH+1]) {
+    if ((*(LavaVariablePtr)(stack[SFH+1]+LSH) == stack[SFH]) && che) {
+      stack[SFH+2] = (LavaObjectPtr)che->data;
+      ((CHAINX*)(stack[SFH]+LSH))->Uncouple(che);
+      *(LavaVariablePtr)(stack[SFH+1]+LSH) = 0;
+      if (stack[SFH+2] && !(*stack[SFH])->SectionFlags.Contains(ElemsConstituent)
+                   && !(*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance)) {
+        IFC(stack[SFH+2]); // inc data
+        DRC(stack[SFH+2]); // dec data
       }
-      DFC(stack[1]); // dec element handle
+      DFC(stack[SFH+1]); // dec element handle
     }
     else {
       CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
@@ -988,7 +1003,7 @@ bool SetRemoveAndGet(CheckData& ckd, LavaVariablePtr stack)
     }
   }
   else
-    stack[2] = 0;
+    stack[SFH+2] = 0;
   return true;
 }
 
@@ -996,15 +1011,15 @@ bool SetContains(CheckData& ckd, LavaVariablePtr stack)
 {
   CHE *che;
   int num=0;
-  if (stack[0] && stack[1] && (stack[0]+LSH)) {
-    for (che = (CHE*)((CHAINX*)(stack[0]+LSH))->first;
+  if (stack[SFH] && stack[SFH+1] && (stack[SFH]+LSH)) {
+    for (che = (CHE*)((CHAINX*)(stack[SFH]+LSH))->first;
          che;
          che = (CHE*)che->successor)
-      if (stack[1] == (LavaObjectPtr)che->data)
+      if (stack[SFH+1] == (LavaObjectPtr)che->data)
         num++;
   }
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[2]+LSH) = num;
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH+2]+LSH) = num;
   return true;
 }
 
@@ -1025,47 +1040,47 @@ bool HSetContains(LavaObjectPtr setObj, LavaObjectPtr elemObj)
 
 CRuntimeException* HSetInsertBefore(CheckData& ckd, LavaVariablePtr stack)
 {
-  stack[3]  = AllocateObject(ckd, ckd.document->DECLTab[B_Che], false);
-  if (!stack[3]) 
+  stack[SFH+3]  = AllocateObject(ckd, ckd.document->DECLTab[B_Che], false);
+  if (!stack[SFH+3]) 
     return new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-  CHAINX* chain = (CHAINX*)(stack[0]+LSH);
-  *(LavaVariablePtr)(stack[3]+LSH) = stack[0];
-  ((CHE*)(stack[3]+LSH+1))->data = (DObject*)stack[2];
-  if (stack[1])
-    if ((*(LavaVariablePtr)(stack[1]+LSH) == stack[0]) && (CHE*)(stack[1]+LSH+1))
-      chain->Insert(((CHE*)(stack[1]+LSH+1))->predecessor, (CHE*)(stack[3]+LSH+1));
+  CHAINX* chain = (CHAINX*)(stack[SFH]+LSH);
+  *(LavaVariablePtr)(stack[SFH+3]+LSH) = stack[SFH];
+  ((CHE*)(stack[SFH+3]+LSH+1))->data = (DObject*)stack[SFH+2];
+  if (stack[SFH+1])
+    if ((*(LavaVariablePtr)(stack[SFH+1]+LSH) == stack[SFH]) && (CHE*)(stack[SFH+1]+LSH+1))
+      chain->Insert(((CHE*)(stack[SFH+1]+LSH+1))->predecessor, (CHE*)(stack[SFH+3]+LSH+1));
     else
       return new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
   else
-    chain->Append((CHE*)(stack[3]+LSH+1));
-  if (stack[2])
-    if ((*stack[0])->SectionFlags.Contains(ElemsConstituent)
-    || (*stack[0])->SectionFlags.Contains(ElemsAcquaintance))
-      IFC(stack[2]) // inc data
+    chain->Append((CHE*)(stack[SFH+3]+LSH+1));
+  if (stack[SFH+2])
+    if ((*stack[SFH])->SectionFlags.Contains(ElemsConstituent)
+    || (*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance))
+      IFC(stack[SFH+2]) // inc data
     else
-      IRC(stack[2]) // inc data
+      IRC(stack[SFH+2]) // inc data
   return 0;
 }
 
 
 bool HSetFirst(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  CHAINX* chain = (CHAINX*)(stack[0] +LSH);
+  CHAINX* chain = (CHAINX*)(stack[SFH] +LSH);
   if (chain->first)
-    stack[1] = (LavaObjectPtr)(chain->first)-LSH-1;
+    stack[SFH+1] = (LavaObjectPtr)(chain->first)-LSH-1;
   else
-    stack[1] = 0;
+    stack[SFH+1] = 0;
   return true;
 }
 
 
 CRuntimeException* HSetSucc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  if (*(LavaVariablePtr)(stack[1]+LSH) == stack[0]) { 
-    if (stack[1] && (stack[1]+LSH+1) && ((CHE*)(stack[1]+LSH+1))->successor)
-      stack[2] = (LavaObjectPtr)(((CHE*)(stack[1]+LSH+1))->successor)-LSH-1;
+  if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == stack[SFH]) { 
+    if (stack[SFH+1] && (stack[SFH+1]+LSH+1) && ((CHE*)(stack[SFH+1]+LSH+1))->successor)
+      stack[SFH+2] = (LavaObjectPtr)(((CHE*)(stack[SFH+1]+LSH+1))->successor)-LSH-1;
     else
-      stack[2] = 0;
+      stack[SFH+2] = 0;
     return 0;
   }
   else
@@ -1185,31 +1200,33 @@ bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePt
 
 bool ChainAppend(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[2], ckd, ckd.document->DECLTab[B_Che], false)
-  LavaObjectPtr setObjPtr = stack[0] - ((stack[0])[0])[0].sectionOffset + ((stack[0])[0])[1].sectionOffset;
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[B_Che], false)
+  IFC(stack[SFH+2]);
+  LavaObjectPtr setObjPtr = stack[SFH] - stack[SFH][0][0].sectionOffset + stack[SFH][0][1].sectionOffset;
   CHAINX* chain = (CHAINX*)(setObjPtr+LSH);
-  *(LavaVariablePtr)(stack[2]+LSH) = setObjPtr;
-  ((CHE*)(stack[2]+LSH+1))->data = (DObject*)stack[1];
-  if (stack[1])
+  *(LavaVariablePtr)(stack[SFH+2]+LSH) = setObjPtr;
+  ((CHE*)(stack[SFH+2]+LSH+1))->data = (DObject*)stack[SFH+1];
+  if (stack[SFH+1])
     if ((*setObjPtr)->SectionFlags.Contains(ElemsConstituent)
     || (*setObjPtr)->SectionFlags.Contains(ElemsAcquaintance))
-      IFC(stack[1]) // inc data
+      IFC(stack[SFH+1]) // inc data
     else
-      IRC(stack[1]) // inc data
-  chain->Append((CHE*)(stack[2]+LSH+1));
+      IRC(stack[SFH+1]) // inc data
+  chain->Append((CHE*)(stack[SFH+2]+LSH+1));
   return true;
 }
 
 bool ChainInsertBefore(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[3], ckd, ckd.document->DECLTab[B_Che], false)
-  LavaObjectPtr setObjPtr = stack[0] - ((stack[0])[0])[0].sectionOffset + ((stack[0])[0])[1].sectionOffset;
+  OBJALLOC(stack[SFH+3], ckd, ckd.document->DECLTab[B_Che], false)
+  IFC(stack[SFH+3]);
+  LavaObjectPtr setObjPtr = stack[SFH] - stack[SFH][0][0].sectionOffset + stack[SFH][0][1].sectionOffset;
   CHAINX* chain = (CHAINX*)(setObjPtr+LSH);
-  *(LavaVariablePtr)(stack[3]+LSH) = setObjPtr;
-  ((CHE*)(stack[3]+LSH+1))->data = (DObject*)stack[2];
-  if (stack[1])
-    if ((*(LavaVariablePtr)(stack[1]+LSH) == setObjPtr) && (CHE*)(stack[1]+LSH+1))
-      chain->Insert(((CHE*)(stack[1]+LSH+1))->predecessor, (CHE*)(stack[3]+LSH+1));
+  *(LavaVariablePtr)(stack[SFH+3]+LSH) = setObjPtr;
+  ((CHE*)(stack[SFH+3]+LSH+1))->data = (DObject*)stack[SFH+2];
+  if (stack[SFH+1])
+    if ((*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) && (CHE*)(stack[SFH+1]+LSH+1))
+      chain->Insert(((CHE*)(stack[SFH+1]+LSH+1))->predecessor, (CHE*)(stack[SFH+3]+LSH+1));
     else {
       CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
       throw ex;
@@ -1217,26 +1234,27 @@ bool ChainInsertBefore(CheckData& ckd, LavaVariablePtr stack)
       return false;
     }
   else
-    chain->Append((CHE*)(stack[3]+LSH+1));
-  if (stack[2])
+    chain->Append((CHE*)(stack[SFH+3]+LSH+1));
+  if (stack[SFH+2])
     if ((*setObjPtr)->SectionFlags.Contains(ElemsConstituent)
     || (*setObjPtr)->SectionFlags.Contains(ElemsAcquaintance))
-      IFC(stack[2]) // inc data
+      IFC(stack[SFH+2]) // inc data
     else
-      IRC(stack[2]) // inc data
+      IRC(stack[SFH+2]) // inc data
   return true;
 }
 
 bool ChainInsertAfter(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[3], ckd, ckd.document->DECLTab[B_Che], false)
-  LavaObjectPtr setObjPtr = stack[0] - ((stack[0])[0])[0].sectionOffset + ((stack[0])[0])[1].sectionOffset;
+  OBJALLOC(stack[SFH+3], ckd, ckd.document->DECLTab[B_Che], false)
+  IFC(stack[SFH+3]);
+  LavaObjectPtr setObjPtr = stack[SFH] - stack[SFH][0][0].sectionOffset + stack[SFH][0][1].sectionOffset;
   CHAINX* chain = (CHAINX*)(setObjPtr+LSH);
-  *(LavaVariablePtr)(stack[3]+LSH) = setObjPtr;
-  ((CHE*)(stack[3]+LSH+1))->data = (DObject*)stack[2];
-  if (stack[1])
-    if ((*(LavaVariablePtr)(stack[1]+LSH) == setObjPtr) && (CHE*)(stack[1]+LSH+1))
-      chain->Insert((CHE*)(stack[1]+LSH+1), (CHE*)(stack[3]+LSH+1));
+  *(LavaVariablePtr)(stack[SFH+3]+LSH) = setObjPtr;
+  ((CHE*)(stack[SFH+3]+LSH+1))->data = (DObject*)stack[SFH+2];
+  if (stack[SFH+1])
+    if ((*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) && (CHE*)(stack[SFH+1]+LSH+1))
+      chain->Insert((CHE*)(stack[SFH+1]+LSH+1), (CHE*)(stack[SFH+3]+LSH+1));
     else {
       CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
       throw ex;
@@ -1244,54 +1262,52 @@ bool ChainInsertAfter(CheckData& ckd, LavaVariablePtr stack)
       return false;
     }
   else
-    chain->Insert(0, (CHE*)(stack[3]+LSH+1));
-  if (stack[2])
+    chain->Insert(0, (CHE*)(stack[SFH+3]+LSH+1));
+  if (stack[SFH+2])
     if ((*setObjPtr)->SectionFlags.Contains(ElemsConstituent)
     || (*setObjPtr)->SectionFlags.Contains(ElemsAcquaintance))
-      IFC(stack[2]) // inc data
+      IFC(stack[SFH+2]) // inc data
     else
-      IRC(stack[2]) // inc data
+      IRC(stack[SFH+2]) // inc data
   return true;
 }
 
 
 bool ChainFirst(CheckData& ckd, LavaVariablePtr stack)
 {
-  CHAINX* chain = (CHAINX*)(stack[0] - ((stack[0])[0])[0].sectionOffset + ((stack[0])[0])[1].sectionOffset+LSH);
+  CHAINX* chain = (CHAINX*)(stack[SFH] - stack[SFH][0][0].sectionOffset + stack[SFH][0][1].sectionOffset+LSH);
   if (chain->first) {
-    stack[1] = (LavaObjectPtr)(chain->first)-LSH-1;
-    IFC(stack[1]); // inc handle
+    stack[SFH+1] = (LavaObjectPtr)(chain->first)-LSH-1;
+    IFC(stack[SFH+1]); // inc handle
   }
   else
-    stack[1] = 0;
+    stack[SFH+1] = 0;
   return true;
 }
 
 bool ChainLast(CheckData& ckd, LavaVariablePtr stack)
 {
-  CHAINX* chain = (CHAINX*)(stack[0] - ((stack[0])[0])[0].sectionOffset + ((stack[0])[0])[1].sectionOffset+LSH);
+  CHAINX* chain = (CHAINX*)(stack[SFH] - stack[SFH][0][0].sectionOffset + stack[SFH][0][1].sectionOffset+LSH);
   if (chain->last) {
-    stack[1] = (LavaObjectPtr)(chain->last)-LSH-1;
-    IFC(stack[1]); // inc handle
+    stack[SFH+1] = (LavaObjectPtr)(chain->last)-LSH-1;
+    IFC(stack[SFH+1]); // inc handle
   }
   else
-    stack[1] = 0;
+    stack[SFH+1] = 0;
   return true;
 }
 
-
-
 bool ChainSucc(CheckData& ckd, LavaVariablePtr stack)
 {
-  LavaObjectPtr setObjPtr = stack[0] - ((stack[0])[0])[0].sectionOffset + ((stack[0])[0])[1].sectionOffset;
-  if (*(LavaVariablePtr)(stack[1]+LSH) == setObjPtr) { 
-    if (stack[1] && (stack[1]+LSH+1) && ((CHE*)(stack[1]+LSH+1))->successor) {
-      stack[2] = (LavaObjectPtr)(((CHE*)(stack[1]+LSH+1))->successor)-LSH-1;
-      if (stack[2])
-        IFC(stack[2]); // inc handle
+  LavaObjectPtr setObjPtr = stack[SFH] - stack[SFH][0][0].sectionOffset + stack[SFH][0][1].sectionOffset;
+  if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) { 
+    if (stack[SFH+1] && (stack[SFH+1]+LSH+1) && ((CHE*)(stack[SFH+1]+LSH+1))->successor) {
+      stack[SFH+2] = (LavaObjectPtr)(((CHE*)(stack[SFH+1]+LSH+1))->successor)-LSH-1;
+      if (stack[SFH+2])
+        IFC(stack[SFH+2]); // inc handle
     }
     else
-      stack[2] = 0;
+      stack[SFH+2] = 0;
     return true;
   }
   else {
@@ -1304,15 +1320,15 @@ bool ChainSucc(CheckData& ckd, LavaVariablePtr stack)
 
 bool ChainPrev(CheckData& ckd, LavaVariablePtr stack)
 {
-  LavaObjectPtr setObjPtr = stack[0] - ((stack[0])[0])[0].sectionOffset + ((stack[0])[0])[1].sectionOffset;
-  if (*(LavaVariablePtr)(stack[1]+LSH) == setObjPtr) { 
-    if (stack[1] && (stack[1]+LSH+1) && ((CHE*)(stack[1]+LSH+1))->predecessor) {
-      stack[2] = (LavaObjectPtr)(((CHE*)(stack[1]+LSH+1))->predecessor)-LSH-1;
-      if (stack[2])
-        IFC(stack[2]); // inc handle
+  LavaObjectPtr setObjPtr = stack[SFH] - stack[SFH][0][0].sectionOffset + stack[SFH][0][1].sectionOffset;
+  if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) { 
+    if (stack[SFH+1] && (stack[SFH+1]+LSH+1) && ((CHE*)(stack[SFH+1]+LSH+1))->predecessor) {
+      stack[SFH+2] = (LavaObjectPtr)(((CHE*)(stack[SFH+1]+LSH+1))->predecessor)-LSH-1;
+      if (stack[SFH+2])
+        IFC(stack[SFH+2]); // inc handle
     }
     else
-      stack[2] = 0;
+      stack[SFH+2] = 0;
     return true;
   }
   else {
@@ -1327,7 +1343,7 @@ bool ChainPrev(CheckData& ckd, LavaVariablePtr stack)
 //Che adapter functions
 bool CheNewFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  new((CHE*)(stack[0]+LSH)) CHE();
+  new((CHE*)(stack[SFH]+LSH)) CHE();
   return true;
 }
 
@@ -1339,20 +1355,20 @@ bool ArrayCopy(CheckData& ckd, LavaVariablePtr stack)
   LavaVariablePtr resultElPtr, sourceElPtr;
   CRuntimeException *ex;
 
-  i0 = *(int*)(stack[0]+LSH);
-  i1 = *(int*)(stack[1]+LSH);
+  i0 = *(int*)(stack[SFH]+LSH);
+  i1 = *(int*)(stack[SFH+1]+LSH);
   if (!i0)
     return true;
   if (!i1) {
     i1 = i0;
-    HArrayMakeLen(stack[1], i1);
+    HArrayMakeLen(stack[SFH+1], i1);
   }
-  if (((SynFlags*)stack[0]+1)->Contains(stateObjFlag))
-    ((SynFlags*)stack[1]+1)->INCL(stateObjFlag);
+  if (((SynFlags*)stack[SFH]+1)->Contains(stateObjFlag))
+    ((SynFlags*)stack[SFH+1]+1)->INCL(stateObjFlag);
   for (ii = 0; (ii < i0) && (ii < i1); ii++) {
-    resultElPtr = (*(LavaVariablePtr*)(stack[1]+LSH+1))+ii;
-    sourceElPtr = (*(LavaVariablePtr*)(stack[0]+LSH+1))+ii;
-    if ((*stack[0])->SectionFlags.Contains(ElemsConstituent)) {
+    resultElPtr = (*(LavaVariablePtr*)(stack[SFH+1]+LSH+1))+ii;
+    sourceElPtr = (*(LavaVariablePtr*)(stack[SFH]+LSH+1))+ii;
+    if ((*stack[SFH])->SectionFlags.Contains(ElemsConstituent)) {
       if ( *resultElPtr) {
         DFC( *resultElPtr);
         *resultElPtr = 0;
@@ -1366,17 +1382,17 @@ bool ArrayCopy(CheckData& ckd, LavaVariablePtr stack)
       }
     }
     else {
-      if ((*stack[0])->SectionFlags.Contains(ElemsAcquaintance)) {
+      if ((*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance)) {
         if ( *resultElPtr) 
           DFC(*resultElPtr);
-        *resultElPtr = (*(LavaVariablePtr*)(stack[0]+LSH+1))[ii];
+        *resultElPtr = (*(LavaVariablePtr*)(stack[SFH]+LSH+1))[ii];
         if ( *resultElPtr) 
           IFC( *resultElPtr); // inc data
       }
       else {
         if ( *resultElPtr) 
           DRC(  *resultElPtr);
-        *resultElPtr = (*(LavaVariablePtr*)(stack[0]+LSH+1))[ii];
+        *resultElPtr = (*(LavaVariablePtr*)(stack[SFH]+LSH+1))[ii];
         if ( *resultElPtr) 
           IRC( *resultElPtr); // inc data
       }
@@ -1390,16 +1406,16 @@ bool ArrayEq(CheckData& ckd, LavaVariablePtr stack)
 {
   int i0, ii;
 
-  i0 = *(int*)(stack[0]+LSH);
-  if (i0 != *(int*)(stack[1]+LSH))
+  i0 = *(int*)(stack[SFH]+LSH);
+  if (i0 != *(int*)(stack[SFH+1]+LSH))
     return false;
   for (ii = 0; (ii < i0); ii++) {
-    if ((*stack[0])->SectionFlags.Contains(ElemsConstituent)) {
-      if (!EqualObjects(ckd,(*(LavaVariablePtr*)(stack[0]+LSH+1))[ii], (*(LavaVariablePtr*)(stack[1]+LSH+1))[ii], 0))
+    if ((*stack[SFH])->SectionFlags.Contains(ElemsConstituent)) {
+      if (!EqualObjects(ckd,(*(LavaVariablePtr*)(stack[SFH]+LSH+1))[ii], (*(LavaVariablePtr*)(stack[SFH+1]+LSH+1))[ii], 0))
         return false;
     }
     else 
-      if ((*(LavaVariablePtr*)(stack[1]+LSH+1))[ii] != (*(LavaVariablePtr*)(stack[0]+LSH+1))[ii])
+      if ((*(LavaVariablePtr*)(stack[SFH+1]+LSH+1))[ii] != (*(LavaVariablePtr*)(stack[SFH]+LSH+1))[ii])
         return false;
   }
   return true;
@@ -1408,45 +1424,45 @@ bool ArrayEq(CheckData& ckd, LavaVariablePtr stack)
 bool ArrayDecFunc(CheckData& ckd, LavaVariablePtr stack)
 {
   LavaObjectPtr elObj;
-  int ii, len = *(int*)(stack[0]+LSH);
-  bool forward = stack[0][0][0].SectionFlags.Contains(ElemsConstituent)
-                 || stack[0][0][0].SectionFlags.Contains(ElemsAcquaintance);
+  int ii, len = *(int*)(stack[SFH]+LSH);
+  bool forward = stack[SFH][0][0].SectionFlags.Contains(ElemsConstituent)
+                 || stack[SFH][0][0].SectionFlags.Contains(ElemsAcquaintance);
   for (ii = 0; ii < len; ii++) {
-    elObj = (*(LavaVariablePtr*)(stack[0]+LSH+1))[ii];
+    elObj = (*(LavaVariablePtr*)(stack[SFH]+LSH+1))[ii];
     if (elObj)
       if (forward)
         DFC(elObj) // dec data
       else
         DRC(elObj) // dec data
   }
-  delete [] (*(LavaVariablePtr*)(stack[0]+LSH+1));
+  delete [] (*(LavaVariablePtr*)(stack[SFH]+LSH+1));
   return true;
 }
 
 
 bool ArraySetLength(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  return HArrayMakeLen(stack[0], *(int*)(stack[1]+LSH));
+  return HArrayMakeLen(stack[SFH], *(int*)(stack[SFH+1]+LSH));
 }
 
 bool ArrayGetLength(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[1], ckd, ckd.document->DECLTab[Integer], false)
-  *(int*)(stack[1]+LSH) = *(int*)(stack[0]+LSH);
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH+1]+LSH) = *(int*)(stack[SFH]+LSH);
   return true;
 }
 
 bool ArraySetEl(CheckData& ckd, LavaVariablePtr stack)
 {
-  int iSet = *(int*)(stack[1]+LSH);
-  if (iSet >= 0 && iSet < *(int*)(stack[0]+LSH)) {
-    (*(LavaVariablePtr*)(stack[0]+LSH+1))[iSet] = stack[2];
-    if (stack[2])
-      if ((*stack[0])->SectionFlags.Contains(ElemsConstituent)
-         || (*stack[0])->SectionFlags.Contains(ElemsAcquaintance))
-        IFC(stack[2]) // inc data
+  int iSet = *(int*)(stack[SFH+1]+LSH);
+  if (iSet >= 0 && iSet < *(int*)(stack[SFH]+LSH)) {
+    (*(LavaVariablePtr*)(stack[SFH]+LSH+1))[iSet] = stack[SFH+2];
+    if (stack[SFH+2])
+      if ((*stack[SFH])->SectionFlags.Contains(ElemsConstituent)
+         || (*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance))
+        IFC(stack[SFH+2]) // inc data
       else
-        IRC(stack[2]) // inc data
+        IRC(stack[SFH+2]) // inc data
   }
   else {
     CRuntimeException* ex = new CRuntimeException(ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
@@ -1459,11 +1475,11 @@ bool ArraySetEl(CheckData& ckd, LavaVariablePtr stack)
 
 bool ArrayGetEl(CheckData& ckd, LavaVariablePtr stack)
 {
-  int iSet = *(int*)(stack[1]+LSH);
-  if (iSet >= 0 && iSet < *(int*)(stack[0]+LSH)) {
-    stack[2] = (*(LavaVariablePtr*)(stack[0]+LSH+1))[iSet];
-    if (stack[2])
-      IFC(stack[2]); // inc data
+  int iSet = *(int*)(stack[SFH+1]+LSH);
+  if (iSet >= 0 && iSet < *(int*)(stack[SFH]+LSH)) {
+    stack[SFH+2] = (*(LavaVariablePtr*)(stack[SFH]+LSH+1))[iSet];
+    if (stack[SFH+2])
+      IFC(stack[SFH+2]); // inc data
     return true;
   }
   else {
@@ -1585,7 +1601,7 @@ bool HArrayUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr update
 bool LastException(CheckData& ckd, LavaVariablePtr stack)
 {
   IFC(ckd.lastException);
-  stack[1] = ckd.lastException;
+  stack[SFH+1] = ckd.lastException;
   //ckd.exceptionThrown = false;
   return true;
 }
@@ -1611,7 +1627,7 @@ bool ExceptionCallStack(CheckData& ckd, LavaVariablePtr stack)
       return false;
     }
     NewQString((QString*)strObj+LSH, ckd.callStack);
-    stack[1] = strObj;
+    stack[SFH+1] = strObj;
   }
   return true;
 }
@@ -1619,10 +1635,10 @@ bool ExceptionCallStack(CheckData& ckd, LavaVariablePtr stack)
 
 bool ExceptionDecFunc(CheckData& ckd, LavaVariablePtr stack)
 {
-  if (*(stack[0]+LSH))
-    DFC(*(LavaVariablePtr)(stack[0]+LSH));
-  if (*(stack[0]+LSH+1))
-    DFC(*(LavaVariablePtr)(stack[0]+LSH+1));
+  if (*(stack[SFH]+LSH))
+    DFC(*(LavaVariablePtr)(stack[SFH]+LSH));
+  if (*(stack[SFH]+LSH+1))
+    DFC(*(LavaVariablePtr)(stack[SFH]+LSH+1));
   return true;
 }
 
@@ -1647,6 +1663,7 @@ void MakeStdAdapter()
   ObjectAdapter[LAH+4] = ObjectEquals;
   ObjectAdapter[LAH+5] = ObjectSnapshot;
   ObjectAdapter[LAH+6] = ObjectDontSave;
+  ObjectAdapter[LAH+7] = ObjectDump;
 
   BitsetAdapter[0] = (TAdapterFunc)1;
   BitsetAdapter[1] = 0;

@@ -185,3 +185,21 @@ void CMainFrame::setFormButtonFont()
 {
 
 }
+
+
+void CMainFrame::PreconditionsToggled( bool )
+{
+
+}
+
+
+void CMainFrame::PostconditionsToggled( bool )
+{
+
+}
+
+
+void CMainFrame::InvariantsToggled( bool )
+{
+
+}

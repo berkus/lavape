@@ -58,14 +58,14 @@
 #include "Q_Undo.xpm"
 
 #include "PX_BasicType.xpm" //1
-#include "PX_Namespace.xpm"  //22
+#include "PX_package.xpm"  //22
 #include "PX_basicatt.xpm"   //0
 #include "PX_classAttr.xpm"  //5
 #include "PX_classimpl.xpm" //4
 #include "PX_classint.xpm"  //6
 #include "PX_coimpl.xpm"      //24
-#include "PX_constrai.xpm"  //8
-#include "PX_constrempty.xpm" //7
+#include "PX_exec.xpm"  //8
+#include "PX_execEmpty.xpm" //7
 #include "PX_cospec.xpm"    //23
 #include "PX_definitions.xpm"  //9
 #include "PX_enum.xpm"         //10

@@ -9,7 +9,7 @@
 #include "DString.h"
 //#include "LavaPEFrames.h"
 #include "LavaAppBase.h"
-#include "ConstrUpdate.h"
+#include "ExecUpdate.h"
 //#include "wxExport.h"
 #include "qcombobox.h"
 #include "docview.h"
@@ -45,7 +45,7 @@ public:
   ~CLavaPEApp();
   wxDocTemplate *pLavaTemplate, *pFormTemplate, *pExecTemplate, *pLComTemplate;
   CLavaPEBrowse Browser;
-  CConstrUpdate ConstrUpdate;
+  CExecUpdate ExecUpdate;
   CLavaBaseData LBaseData;
   QString CMDLine;
   bool DoSaveAll();

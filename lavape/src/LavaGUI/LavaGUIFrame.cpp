@@ -24,6 +24,7 @@
 
 #include "LavaAppBase.h"
 #include "LavaBaseDoc.h"
+#include "DumpView.h"
 #include "LavaGUIView.h"
 #include "LavaGUIFrame.h"
 #include "Lava.xpm"
@@ -41,19 +42,33 @@ bool CLavaGUIFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   if (wxMDIChildFrame::OnCreate(temp, doc)) {
 		setIcon(QPixmap((const char**) Lava));
 		resize(500,300);
+    if (LBaseData->inRuntime)
+      hide();
 		return true;
 	}
 	else
 		return false;
 }
 
+void CLavaGUIFrame::InitialUpdate()
+{
+  wxView *view = m_viewList.first();
+  while (view) {
+    view->OnInitialUpdate();
+    view = m_viewList.next();
+  }
+}
 
 void CLavaGUIFrame::closeEvent(QCloseEvent *e)
 {
   if (myView) {
     onClose = true;
     ((CLavaGUIView*)myView)->NoteLastModified();
-    if (LBaseData->inRuntime)
+    if (LBaseData->inRuntime) {
+      if (((CLavaBaseDoc*)myView->GetDocument())->DumpFrame) {
+        ((LavaDumpFrame*)((CLavaBaseDoc*)myView->GetDocument())->DumpFrame)->returned = true;
+        delete ((CLavaBaseDoc*)myView->GetDocument())->DumpFrame;
+      }
       if (((CLavaBaseDoc*)myView->GetDocument())->isObject) {
 	      if (myView->GetDocument()->Close())
 		      QWidget::closeEvent(e);
@@ -66,6 +81,7 @@ void CLavaGUIFrame::closeEvent(QCloseEvent *e)
         else
           onClose = false;
       }
+    }
     else
 		  QWidget::closeEvent(e);
   }
@@ -73,6 +89,8 @@ void CLavaGUIFrame::closeEvent(QCloseEvent *e)
 
 CLavaGUIFrame::~CLavaGUIFrame()
 {
+  if (((CLavaBaseDoc*)myView->GetDocument())->DumpFrame) 
+    ((LavaDumpFrame*)((CLavaBaseDoc*)myView->GetDocument())->DumpFrame)->returned = true;
   deleting = true;
 }
 
@@ -87,13 +105,18 @@ DString CLavaGUIFrame::CalcTitle(LavaDECL* decl, const DString& lavaName)
 
 void CLavaGUIFrame::NewTitle(LavaDECL *decl, const DString& lavaName)
 {
+  QString oldTitle=caption(), newTitle;
+
   if (decl) {
     DString title = CalcTitle(decl, lavaName);
-    setCaption(title.c);
+    newTitle = QString(title.c);
   }
   else
-    setCaption(lavaName.c);
-  QApplication::postEvent(qApp->mainWidget(),new QCustomEvent(QEvent::User,this));
+    newTitle = QString(lavaName.c);
+  setCaption(newTitle);
+  if (!oldTitle.isEmpty() && newTitle != oldTitle)
+    wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
+//  QApplication::postEvent(qApp->mainWidget(),new QCustomEvent(QEvent::User,this));
 }
 
 

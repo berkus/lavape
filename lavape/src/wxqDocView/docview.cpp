@@ -393,6 +393,12 @@ bool wxDocument::OnNewDocument()
 
 bool wxDocument::Save()
 {
+  QFileInfo fileInfo(m_documentFile);
+  if (fileInfo.exists() && !fileInfo.isWritable()) {
+    QString str = QString("File '") + m_documentFile + QString("' couldn't be opened for writing");
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),str ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    return false;
+  }
     bool ret = false;
 
 //    if (!IsModified() && m_savedYet) {
@@ -420,6 +426,11 @@ bool wxDocument::SaveAs()
         return false;
 
     QFileInfo fileInfo(fn);
+    if (fileInfo.exists() && !fileInfo.isWritable()) {
+      QString str = QString("File '") + fn + QString("' couldn't be opened for writing");
+      QMessageBox::critical(qApp->mainWidget(),qApp->name(),str ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      return false;
+  }
     QString ext = fileInfo.extension();
 
     if (ext.isEmpty())
@@ -828,7 +839,7 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
     if (ok) {
       wxMDIChildFrame* newFrame = CreateChildFrame(doc);
       newFrame->InitialUpdate();
-      newFrame->show();
+      //newFrame->show();
       return doc;
     }
     else {
@@ -1203,7 +1214,6 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
     }
     newDoc = temp->CreateDocument(path2);
     if (newDoc) {
-      AddFileToHistory(path2);
 			newDoc->SetDocumentSaved();
       return newDoc;
     }

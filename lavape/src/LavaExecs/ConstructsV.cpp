@@ -268,6 +268,7 @@ BaseInitV::BaseInitV (address,SelfVar *selfVar,LavaDECL *formBase) {
   tdod->parentObject = objRef;
   objRef->flags.INCL(isDisabled);
   objRef->flags.INCL(isSelfVar);
+
   if (formBase->DeclType == VirtualType) {
     self.ptr = objRef;
     baseItf2.ptr = baseItf.ptr->Clone();
@@ -325,7 +326,7 @@ void SelfVarV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
     t.Insert(primaryToken,true);
   }
   else {
-    if (primaryToken == constraint_T
+    if (primaryToken == invariant_T
     && execDECL->ParentDECL->DeclType == Impl) {
       t.Insert(implementation_T);
       t.Blank();
@@ -1681,17 +1682,34 @@ void IfStatementV::Insert2Optionals (SynObject *&elseP, SynObject *&branch, CHAI
 
 void IfStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   CHE *ifThenPtr;
+  ROContext roCtx=ReadOnlyContext();
+  bool parenth;
 
   ENTRY
 
   if (!ifThens.first->successor
   && !elsePart.ptr
-  && InReadOnlyClause()) {
+  && (roCtx == assertion
+      || roCtx == roClause)) {
+    parenth = 
+      ((SynObject*)((IfThen*)((CHE*)ifThens.first)->data)->ifCondition.ptr)->IsMultOp();
+    if (parenth)
+      t.Insert(Lparenth_T);
     DRAW(((IfThen*)((CHE*)ifThens.first)->data)->ifCondition.ptr);
+    if (parenth)
+      t.Insert(Rparenth_T);
+
     t.Blank();
     t.Insert(implies_T,true);
     t.Blank();
+
+    parenth = 
+      ((SynObject*)((IfThen*)((CHE*)ifThens.first)->data)->thenPart.ptr)->IsMultOp();
+    if (parenth)
+      t.Insert(Lparenth_T);
     DRAW(((IfThen*)((CHE*)ifThens.first)->data)->thenPart.ptr);
+    if (parenth)
+      t.Insert(Rparenth_T);
   }
   else {
     ifPart = true;
@@ -1856,7 +1874,7 @@ void BranchV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   CHE *labelPtr;
 
   ENTRY
-  t.Insert(case_T,true);
+  t.Insert(case_T,true,true);
   t.Blank();
   for (labelPtr = (CHE*)caseLabels.first;
        labelPtr;
@@ -2089,20 +2107,19 @@ FuncExpressionV::FuncExpressionV (Reference *ref) {
 }
 
 void FuncExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
-  bool isFirst=true, parenth;
+  bool isFirst=true/*, parenth*/;
   CHE *paramPtr;
 
   ENTRY
-
-  parenth = (/*flags.Contains(inputArrow) ||*/ IsFuncHandle()
-    || parentObject->primaryToken == old_T);
-
+/*
+  parenth = (IsFuncHandle() || parentObject->primaryToken == old_T);
+*/
   if (primaryToken == callback_T) {
     t.Insert(primaryToken,true);
     NLincIndent(t);
   }
-  else if (parenth)
-    t.Insert(Lparenth_T);
+/*  else if (parenth)
+    t.Insert(Lparenth_T);*/
 
   if (t.leftArrows) {
     if (handle.ptr) {
@@ -2194,8 +2211,8 @@ void FuncExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ign
     NLdecIndent(t);
     t.Insert(ENDcallback_T);
   }
-  else if (parenth)
-    t.Insert(Rparenth_T);
+/*  else if (parenth)
+    t.Insert(Rparenth_T);*/
 
   EXIT
 }
@@ -2236,6 +2253,8 @@ FuncStatementV::FuncStatementV (Reference *ref) {
 void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   bool isFirst=true, visibleParms=false;
   CHE *paramPtr;
+  ROContext roCtx=ReadOnlyContext();
+  bool drawCallKeywd = (roCtx != assertion) && (roCtx != roClause);
 
   ENTRY
 
@@ -2246,21 +2265,10 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
       visibleParms = true;
   }
 
-  if ((parentObject->primaryToken == new_T
-      && whereInParent == (address)&((NewExpression*)parentObject)->initializerCall.ptr)
-  || (parentObject->primaryToken == initializing_T
-      && whereInParent == (address)&((BaseInit*)parentObject)->initializerCall.ptr));
-  else {
-    if (InReadOnlyClause()) {
-//      t.Insert(true_T,true);
-//      t.Insert(Colon_T);
-    }
-    else {
-      t.Insert(primaryToken,true);
-      t.Blank();
-    }
+  if (drawCallKeywd) {
+    t.Insert(assignFS_T);
+    t.Blank();
   }
-
   if (t.leftArrows) {
     if (visibleParms) {
       if (outputs.first != outputs.last)

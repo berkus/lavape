@@ -451,7 +451,7 @@ enum WorkFlag {
   implRequired,
   hasDefaultIni,
   allowDEL,
-  nonEmptyConstraint,
+  nonEmptyInvariant,
   isReferenced,
   skipOnCopy,
   skipOnDeleteID,
@@ -460,7 +460,8 @@ enum WorkFlag {
   SupportsReady,
   poppedUp,
   formVTOK,
-  newTreeNode};
+  newTreeNode,
+  fromPubToPriv};
 
 extern DISCO_DLL void CDPWorkFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
                                    bool baseCDP=false);

@@ -11,7 +11,7 @@
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Lava Online Documentation">
-		<param name="Local" value="html/LavaOnlineDoc.htm">
+		<param name="Local" value="TitlePage.htm">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -37,11 +37,6 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Who might be interested in Lava?">
 				<param name="Local" value="html/FAQWhoTakeLook.htm">
-				<param name="ImageNumber" value="11">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="What about Lava on Linux?">
-				<param name="Local" value="html/FAQLavaLinux.htm">
 				<param name="ImageNumber" value="11">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
@@ -132,6 +127,21 @@
 				<param name="ImageNumber" value="11">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Object-oriented analysis and design">
+				<param name="Local" value="html/OOanalysis.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Object-Oriented Problem Separation through Many Irreducible Mini-Methods (OOPS:MIMM)">
+				<param name="Local" value="html/OOPS-MIMM.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Design By Contract (TM)">
+				<param name="Local" value="html/DBC.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Strict separation of interfaces and implementations">
 				<param name="Local" value="html/SepItfImpl.htm">
 				<param name="ImageNumber" value="11">
@@ -165,6 +175,10 @@
 				<param name="Name" value="Single-assignment; imperative vs. logical semantics">
 				<param name="Local" value="html/SingleAssigLogSem.htm">
 				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Read-only Lava constructs and functions">
+				<param name="Local" value="html/ReadOnly.htm">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Stages in the life of Lava objects">

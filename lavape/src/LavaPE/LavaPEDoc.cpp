@@ -62,807 +62,59 @@ CLavaPEDoc::~CLavaPEDoc()
 }
 
 
-bool CLavaPEDoc::OnNewDocument()
+
+bool CLavaPEDoc::AddVBase(LavaDECL* classDECL, LavaDECL* conDECL )
 {
-  if (!CLavaBaseDoc::OnNewDocument())
-    return false;
-  if (!mySynDef) {
-    DString Name = DString(GetTitle());
-    return OnEmptyDoc(Name);
-  }
-  return true;
-}
-
-bool CLavaPEDoc::OnEmptyDoc(const DString& Name)
-{
-  bool bb;
-  DString stdLava=DString(StdLavaLog);
-
-  mySynDef = new SynDef;
-  SynIO.InitSyntax(mySynDef, Name);
-  CalcNames(Name);
-  IDTable.mySynDef = mySynDef;
-  LavaDECL *TopDECL = NewLavaDECL();
-  if (((CLavaPEApp*)wxTheApp)->pLComTemplate == GetDocumentTemplate()) {
-    TopDECL->DeclType = Component;
-    isObject = true;
-  }
-  else
-    TopDECL->DeclType = Package;
-  TopDECL->DeclDescType = StructDesc; // = DefDesc;
-  TopDECL->TreeFlags.INCL(hasEmptyOpt);
-  TopDECL->TreeFlags.INCL(isExpanded);
-  TopDECL->WorkFlags.INCL(selDefs);
-  TopDECL->WorkFlags.INCL(selAfter);
-  TopDECL->OwnID = 0;
-  ((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef.ptr = TopDECL;
-  mySynDef->IDTable = (address)&IDTable;
-  isStd = false;
-  IDTable.MakeTable(mySynDef, isStd);
-  return (IncludeSyntax(stdLava, bb) != 0);
-}
-
-bool CLavaPEDoc::OnOpenDocument(const QString& filename) 
-{
-//  AfxDebugBreak();
-  bool errEx;
-  DString str0, str, newTopName, *toINCL = 0, fn = DString(filename);
-  int readResult;
-
-  //LBaseData->lastFileOpen = QString(fn.c);
-  isStd = SameFile(fn.c, StdLava.ascii());
-  CalcNames(fn);
-  readResult = ReadSynDef(fn, mySynDef);
-  isReadOnly = readResult > 0;
-  if (readResult < 0) {
-    mySynDef = 0;
-    return false;
-  }
-  if (mySynDef->SynDefTree.first == mySynDef->SynDefTree.last) {
-    if (!isStd) {
-      str = DString("File '") + fn + " is not a valid lava file";
-      critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok,0,0);
-    }
-    changeNothing = !isStd || !LBaseData->stdUpdate;
-  }
-	else
-		changeNothing = isReadOnly;
-  Modify(false);
-  isObject = (((CLavaPEApp*)wxTheApp)->pLComTemplate == GetDocumentTemplate());
-  if (mySynDef) {
-    mySynDef->IDTable = (address)&IDTable;
-    hasIncludes = false;
-    AddSyntax(mySynDef, fn, errEx);  //Add include files/patterns
-    if (errEx)
-      return false;
-    UpdateOtherDocs(0, str0, 0, false); 
-    //CExecChecks* ch = new CExecChecks(this, true);
-    IDTable.SetImplIDs(false);
-    //delete ch;
-  }
-  else {
-    if (readResult < 0) {
-      str = DString("Cannot read file '") + fn + DString(", corrupt lava program syntax");
-      str += "\n  ";
-      str += "\nPerhaps different lava versions?"; 
-      str += "\n  ";
-    }
-    else 
-      str = DString("File '") + fn + DString("' not found");
-    QMessageBox::critical(qApp->mainWidget(), qApp->name(), str.c,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-    return false;
-  }
-  return true;
-}//OnOpenDocument
-
-
-bool CLavaPEDoc::OpenCView(LavaDECL* cDECL)
-{
-  bool activ=false;
-  CLavaBaseView *view;
-  wxMDIChildFrame *execChild;
-//  LavaDECL *cDECL = (LavaDECL*)execChe->data;
-  POSITION pos = GetFirstViewPos();
-  while (pos && !activ) {
-    view = (CLavaBaseView*)GetNextView(pos);
-    activ = view->inherits("CExecView") && (((CExecView*)view)->myDECL == cDECL);
-  }
-  ViewPosRelease(pos);
-  if (activ)
-    execChild = view->GetParentFrame();
-  else {
-    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = new CLavaPEHint(CPECommand_OpenExecView, this, (const unsigned long)3, (DWORD) cDECL, (DWORD)MainView, (DWORD)wxTheApp->m_appWindow->statusBar(), (DWORD)((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar, 0); // (DWORD) pdecl);
-    execChild = ((CLavaPEApp*)wxTheApp)->pExecTemplate->CreateChildFrame(this);
-    activ = (execChild !=0);
-    execChild->InitialUpdate();
-		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->show();
-		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->show();
-		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->show();
-
-    if (!cDECL->Exec.ptr)
-      SetExecItemImage(cDECL, false, false);
-  }
-  if (activ) 
-    execChild->Activate(true);
-  if (((CLavaPEApp*)wxTheApp)->LBaseData.actHint) {
-    delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
-    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
-  }
-
-  if (/*!execChild->isMaximized()
-  && */wxDocManager::GetOpenDocCount() == 1
-	&& GetViewCount() == 4
-  && MainView->GetParentFrame()->oldWindowState != QEvent::ShowMaximized)
-		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
-
-  return true;
-}
-
-void CLavaPEDoc::OnCloseLastExecView()
-{
-	if (wxTheApp->deletingMainFrame) return;
-  ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->hide();
-  ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->hide();
-  ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->hide();
-}
-
-
-void CLavaPEDoc::SetExecItemImage(LavaDECL* execDECL, bool empty, bool hasErrors)
-{
-  if (!MainView)
-    return;
-  CLavaPEView* view = (CLavaPEView*)MainView;
-  QPixmap *bm, *sm = 0;
-  bool hasCom;
-  SynFlags flags;
-  if ((execDECL->ParentDECL->DeclType == Interface) || (execDECL->ParentDECL->DeclType == Impl))
-    flags.INCL(invariantPM);
-  if (empty)
-    flags.INCL(emptyPM);
-  CTreeItem* item = view->BrowseTree(execDECL->ParentDECL, (CTreeItem*)view->GetListView()->firstChild());
-  item = view->getSectionNode(item, execDECL->DeclType);
-  bm = view->GetPixmap(true,true,execDECL->DeclType,flags);
-  /*
-  if (empty) 
-    bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[7];
-  else
-    bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[8];
-  */
-  hasCom = execDECL && execDECL->DECLComment.ptr && execDECL->DECLComment.ptr->Comment.l;
-  if (item) {
-    item->setPix(bm); 
-    item->SetItemMask(hasErrors, hasCom);
-    item->repaint();
-  }
-}
-
-void CLavaPEDoc::SetTreeItemImage(LavaDECL* errDECL, bool hasErr)
-{ 
-  CLavaPEView* view = (CLavaPEView*)MainView;
-  CTreeItem* item = view->BrowseTree(errDECL, (CTreeItem*)view->GetListView()->firstChild());
-  if (item) {
-    item->SetItemMask(hasErr, errDECL->DECLComment.ptr);
-    item->repaint();
-  }
-}
-
-
-bool CLavaPEDoc::openFView(LavaDECL** pdecl)
-{ 
-  bool activ=false;
-  CLavaBaseView *view;
-  wxMDIChildFrame *formChild;
-  POSITION pos = GetFirstViewPos();
-  while (pos && !activ) {
-    view = (CLavaBaseView*)GetNextView(pos);
-    activ = !view->inherits("CTreeView") && !view->inherits("CExecView")
-         && (((CLavaPEView*)((CFormFrame*)view->GetParentFrame())->viewR)->myDECL == *pdecl);
-  }
-  ViewPosRelease(pos);
-  if (activ) 
-    formChild = view->GetParentFrame();
-  else {
-    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = new CLavaPEHint(CPECommand_OpenFormView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, 0, (DWORD)pdecl);
-    formChild = ((CLavaPEApp*)wxTheApp)->pFormTemplate->CreateChildFrame(this);
-    activ = (formChild !=0);
-    formChild->InitialUpdate();
-    delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
-    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
-
-  }
-  if (activ) {
-    formChild->Activate(true);
-	 // if (wxDocManager::GetOpenDocCount() == 1)
-	 //	  QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
-  }
-  return true;
-}//openFView
-
-
-bool CLavaPEDoc::openVTView(LavaDECL** pdecl, unsigned long autoUpdate)
-{ 
-  POSITION pos = GetFirstViewPos();
-  CLavaBaseView* view;
-  bool activ=FALSE; 
-  //CRect rr;
-  CLavaPEHint * hint;
-
-  while (pos && !activ) {
-    view = (CLavaBaseView*)GetNextView(pos);
-    activ = view->inherits("CVTView") && (((CVTView*)view)->myDECL == *pdecl);
-  }
-  ViewPosRelease(pos);
-  if (activ) {
-    if (!autoUpdate)
-      ((CTreeFrame*)view->GetParentFrame())->CalcSplitters(true); //make it visible
-  }
-  else {
- //   UpdateVElems(*pdecl);
-    hint = new CLavaPEHint(CPECommand_OpenSelView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, autoUpdate,(DWORD)pdecl);
-    //UpdateAllViews(MainView,0,hint);
-    ((CLavaPEView*)MainView)->myVTView->OnUpdate(MainView, 0, hint);
-    delete hint;
-  }
-  return TRUE;
-}//openVTView
-
-
-
-bool CLavaPEDoc::openWizardView(CLavaBaseView* formView, LavaDECL** pdecl/*, unsigned long autoUpdate*/)
-{ 
-//  POSITION pos = GetFirstViewPos();
-  CLavaBaseView* view;
-  bool activ=FALSE; 
-  //CRect rr;
-  CLavaPEHint * hint;
-
-  view = ((CFormFrame*)formView->GetParentFrame())->wizardView; 
-  hint = new CLavaPEHint(CPECommand_OpenWizardView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, 0 /*autoUpdate*/,(DWORD)pdecl);
-  view->OnUpdate(formView,0,hint);
-  delete hint;
-  return true;
-}//openWizardView
-
-void CLavaPEDoc::SetPEError(const CHAINX& ErrChain, bool andShow)
-{
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetErrorOnBar(ErrChain);
-  if (andShow) {
-    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetTab(tabError);
-    //((CLavaMainFrame*)wxTheApp->m_appWindow)->RecalcLayout();
-  }
-}
-
-void CLavaPEDoc::ResetError()
-{
-  DString str0;
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetComment(str0, true);
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->ResetError(); 
-}
-
-bool CLavaPEDoc::ErrorBarVisible()
-{
-  return  !((CLavaMainFrame*)wxTheApp->m_appWindow)->OutputBarHidden
-          && (((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->ActTab == tabError);
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////
-//Check LavaPEDoc
-DString CLavaPEDoc::GetTypeLabel(LavaDECL* elDef, bool goDown)
-{ 
-  DString lab;
-  QString cstr;
-  LavaDECL* decl;
-  lab.Reset(0);
-  if (elDef->DeclType == FormDef) {
-    lab = DString("Form");
-    if (goDown) {
-      decl = CheckGetFinalMType(elDef);
-      if (decl)
-        lab = lab + DString(" ") + decl->FullName;
-      else
-        lab = lab + DString(" ??");
-    }
-    return lab;
-  }
-
-  switch (elDef->DeclDescType) {
-    case StructDesc:
-      break;
-    case EnumType:
-//      lab = DString("Enumeration");
-      break;
-    case NamedType:
-    case BasicType:
-      if (elDef->DeclDescType == BasicType)
-        lab += ((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[elDef->BType];
-      else {
-//        decl = IDTable.GetDECL(elDef->RefID, elDef->inINCL);
-        decl = CheckGetFinalMType(elDef);
-        if (decl)
-          if (decl->DeclType == VirtualType)
-            lab = lab + lthen + decl->LocalName + grthen; 
-          else
-            if (decl->DeclType == FormDef)
-              lab += decl->ParentDECL->FullName;
-            else
-              lab += decl->FullName;
-        else {
-          lab += DString("??");
-          new CLavaError(&elDef->DECLError1, &ERR_NoRefType);
-        }
-      }
-      break; 
-    case LiteralString:
-      lab = DString("Literal");
-      break;
-    case ExecDesc:
-      return DString("Invariant");
-    default: 
-      lab.Reset(0);
-  }
-  return lab;
-}
-
-DString CLavaPEDoc::GetIOLabel(TAnnotation *anno)
-{
-  QString cstr;
-  /*
-  int ids;
-  if (anno && anno->IoSigFlags.Contains(DONTPUT))
-    ids = IDS_DONTPUT;
-  else
-    if (anno && (anno->Emphasis == NoEcho))
-      if (anno->IoSigFlags.Contains(UnprotectedUser) && anno->IoSigFlags.Contains(UnprotectedProg))
-        ids = IDS_NoEchoIO;
-      else
-        if (anno->IoSigFlags.Contains(UnprotectedUser))
-          ids = IDS_NoEchoI;
-        else
-          if (anno->IoSigFlags.Contains(UnprotectedProg))
-            ids = IDS_NoEchoO;
-          else
-            ids = IDS_NoEchoDefault;
-    else
-      if (anno && anno->IoSigFlags.Contains(UnprotectedUser) && anno->IoSigFlags.Contains(UnprotectedProg))
-        ids = IDS_EchoIO;
-      else
-        if (anno && anno->IoSigFlags.Contains(UnprotectedUser))
-          ids = IDS_EchoI;
-        else
-          if (anno && anno->IoSigFlags.Contains(UnprotectedProg))
-            ids = IDS_EchoO;
-          else
-            ids = IDS_EchoDefault;
-  cstr.LoadString(ids);
-  */
-  return DString(cstr);
-}
-
-
-CHE* CLavaPEDoc::GetConstrChe(LavaDECL* parentDecl,TDeclType type, bool makeIt)
-{
-  LavaDECL *cDECL = 0;
-  CHE *che, *afterChe = (CHE*)parentDecl->NestedDecls.last;
-  if (afterChe) {
-    cDECL = (LavaDECL*)afterChe->data;
-    if (cDECL->DeclType != type) {
-      if ((cDECL->DeclType == ExecDef)
-        || (cDECL->DeclType == Ensure) && (type == Require)) {
-        afterChe = (CHE*)afterChe->predecessor; 
-        if (afterChe) {
-          cDECL = (LavaDECL*)afterChe->data;
-          if (cDECL->DeclType != type) {
-            if (cDECL->DeclType == Ensure) {
-              afterChe = (CHE*)afterChe->predecessor; 
-              if (afterChe) {
-                cDECL = (LavaDECL*)afterChe->data;
-                if (cDECL->DeclType != type)
-                  cDECL = 0;
-              }
-              else
-                cDECL = 0;
-            }
-            else
-              cDECL = 0;
-          }//else ok
-        }
-        else
-          cDECL = 0;
-      }
-      else
-        cDECL = 0;
-    }//else ok
-  }
-  if (!cDECL) {
-    if (makeIt) {
-      cDECL = NewLavaDECL();
-      cDECL->DeclType = type;
-      cDECL->DeclDescType = ExecDesc;
-      cDECL->FullName = parentDecl->FullName;
-      cDECL->ParentDECL = parentDecl;
-      che = NewCHE(cDECL);
-      parentDecl->NestedDecls.Insert(afterChe, che);
-      ((CLavaPEApp*)wxTheApp)->ConstrUpdate.MakeExec(cDECL);
-      if (parentDecl->OwnID != -1)
-        ((SynObjectBase*)cDECL->Exec.ptr)->MakeTable((address)&IDTable, parentDecl->inINCL, (SynObjectBase*)cDECL, onNewID);
-      return che;
-    }
-    else
-      return 0;
-  }
-  else
-    return afterChe;
-}
-
-CHE* CLavaPEDoc::SetConstrChe(LavaDECL* parentDecl,LavaDECL* execDecl)
-{
-  LavaDECL *cDECL = 0;
-  CHE *che, *afterChe = (CHE*)parentDecl->NestedDecls.last;
-  if (afterChe) {
-    cDECL = (LavaDECL*)afterChe->data;
-    if (cDECL->DeclType != execDecl->DeclType) {
-      if ((cDECL->DeclType == ExecDef)
-        || (cDECL->DeclType == Ensure) && (execDecl->DeclType == Require)) {
-        afterChe = (CHE*)afterChe->predecessor; 
-        if (afterChe) {
-          cDECL = (LavaDECL*)afterChe->data;
-          if (cDECL->DeclType != execDecl->DeclType) {
-            if (cDECL->DeclType == Ensure) {
-              afterChe = (CHE*)afterChe->predecessor; 
-              if (afterChe) {
-                cDECL = (LavaDECL*)afterChe->data;
-                if (cDECL->DeclType != execDecl->DeclType)
-                  cDECL = 0;
-              }
-              else
-                cDECL = 0;
-            }
-            else
-              cDECL = 0;
-          }//else ok
-        }
-        else
-          cDECL = 0;
-      }
-      else
-        cDECL = 0;
-    }
-  }
-  if (!cDECL) {
-    che = NewCHE(execDecl);
-    parentDecl->NestedDecls.Insert(afterChe, che);
-    return che;
-  }
-  else
-    return 0;
-}
-
-
-bool CLavaPEDoc::IsSpecialOf(LavaDECL* decl, const TIDs& basicIDs, bool cDeriv)
-{  //c-derivations only
-  TID id;
-  bool ok;
-  CHETID* che;
-  CContext con;
-  LavaDECL *idecl, *baseDECL;
-
-  id = TID(decl->OwnID, decl->inINCL);
-  che = (CHETID*)basicIDs.first;
-  ok = true;
-  while (che && ok) {
-    ok = IDTable.IsAn(id, 0, che->data, 0);
-    if (ok && cDeriv) {
-      baseDECL = IDTable.GetDECL(che->data);
-      IDTable.GetPattern(baseDECL, con);
-      if (baseDECL && con.oContext)
-        ok = decl == baseDECL;
-      //else
-      if (!ok) 
-        ok = IsCDerivation(decl, baseDECL);     
-    }
-    che = (CHETID*)che->successor;
-  }
-  if (decl->DeclType == VirtualType) {
-    idecl = decl;
-    while (idecl && (idecl->DeclType == VirtualType)
-           && !idecl->TypeFlags.Contains(isAbstract)) {
-      idecl = IDTable.GetDECL(idecl->RefID, idecl->inINCL);
-      if (!idecl)
-        return false;
-      id = TID(idecl->OwnID, idecl->inINCL);
-      che = (CHETID*)basicIDs.first;
-      ok = true;
-      while (che && ok) {
-        ok = IDTable.IsAn(id, 0, che->data, 0);
-        if (ok && cDeriv) {
-          baseDECL = IDTable.GetDECL(che->data);
-          IDTable.GetPattern(baseDECL, con);
-          if (con.oContext)
-            ok = decl == baseDECL;
-          else 
-            ok = IsCDerivation(decl, baseDECL);
-        }
-        che = (CHETID*)che->successor;
-      }
-    } 
-    return false;
-  }
-  else
-    return ok;
-}
-
-
-void CLavaPEDoc::MakeOperator(LavaDECL* opDecl)
-{
-  if (opDecl->op == OP_noOp)
-    return;
-  opDecl->LocalName = LBaseData->OperatorNames[opDecl->op];
-  opDecl->FullName = opDecl->FullName + opDecl->LocalName;
-  TID parentID(opDecl->ParentDECL->OwnID, opDecl->ParentDECL->inINCL);
-  CHE *cheArg1=0, *cheArg2=0, *cheVal=0, *che;
-  LavaDECL *declArg1, *declArg2, *declVal;
-  while (opDecl->NestedDecls.first) {
-    che = (CHE*)opDecl->NestedDecls.Uncouple(opDecl->NestedDecls.first);
-    if (((LavaDECL*)che->data)->DeclType == IAttr) 
-      if (!cheArg1)
-        cheArg1 = che;
-      else
-        if (!cheArg2)
-          cheArg2 = che;
-        else
-          delete che;
-    else
-      if (((LavaDECL*)che->data)->DeclType == OAttr) {
-        cheVal = che;
-        opDecl->NestedDecls.Destroy();
-      }
-      else
-        delete che;
-  }
-  opDecl->NestedDecls.Destroy();
-  if (opDecl->op != OP_arraySet)
-    delete cheArg2;
-  if ((opDecl->op == OP_equal)
-     || (opDecl->op == OP_notequal)
-     || (opDecl->op == OP_lessthen)
-     || (opDecl->op == OP_greaterthen)
-     || (opDecl->op == OP_lessequal)
-     || (opDecl->op == OP_greaterequal)
-     || (opDecl->op == OP_arraySet)) {
-    if (cheVal)
-      delete cheVal;
-  }
-  else {
-    if (cheVal)
-      declVal = (LavaDECL*)cheVal->data;
-    else {
-      declVal = NewLavaDECL();
-      cheVal = NewCHE(declVal);
-      declVal->ParentDECL = opDecl;
-      declVal->DeclType = OAttr;
-      declVal->LocalName = DString("result");
-      declVal->TypeFlags.INCL(trueObjCat);
-    }
-    opDecl->NestedDecls.Append(cheVal);
-    if (opDecl->op == OP_fis) {
-      if (isStd)
-        declVal->RefID = TID (IDTable.BasicTypesID[(int)Integer], 0);
-      else
-        declVal->RefID = TID (IDTable.BasicTypesID[(int)Integer], 1);
-      declVal->BType = Integer;
-      declVal->DeclDescType = BasicType;
-    }
-    else {
-      declVal->RefID = parentID;
-      declVal->BType = opDecl->ParentDECL->fromBType;
-      if (opDecl->ParentDECL->fromBType == NonBasic)
-        declVal->DeclDescType = NamedType;
-      else 
-        declVal->DeclDescType = BasicType;
-    }
-  }
-  switch (opDecl->op) {
-  case OP_equal:
-  case OP_notequal:
-  case OP_lessthen:
-  case OP_greaterthen:
-  case OP_lessequal:
-  case OP_greaterequal:
-  case OP_plus:
-  case OP_mult:
-  case OP_div:
-  case OP_mod:
-  case OP_bwAnd:
-  case OP_bwOr:
-  case OP_bwXor:
-  case OP_lshift:
-  case OP_rshift:
-    if (cheArg1)
-      declArg1 = (LavaDECL*)cheArg1->data;
-    else {
-      declArg1 = NewLavaDECL();
-      cheArg1 = NewCHE(declArg1);
-      declArg1->ParentDECL = opDecl;
-      declArg1->DeclType = IAttr;
-      declArg1->LocalName = DString("op1");
-      declArg1->TypeFlags.INCL(trueObjCat);
-      if ((opDecl->op == OP_lshift) || (opDecl->op == OP_rshift)) {
-        declArg1->DeclDescType = BasicType;
-        declArg1->BType = Integer;
-        declArg1->RefID.nID = IDTable.BasicTypesID[Integer];
-        if (isStd)
-          declArg1->RefID.nINCL = 0;
-        else
-          declArg1->RefID.nINCL = 1;
-      }
-      else {
-        declArg1->RefID = parentID;
-        declArg1->BType = opDecl->ParentDECL->fromBType;
-        if (opDecl->ParentDECL->fromBType == NonBasic)
-          declArg1->DeclDescType = NamedType;
-        else 
-          declArg1->DeclDescType = BasicType;
-      }
-    }
-    opDecl->NestedDecls.Prepend(cheArg1);
-    break;
-  case OP_minus:
-  case OP_invert:
-//    declVal->RefID = parentID;
-  case OP_fis:
-    if (cheArg1)
-      delete cheArg1;
-    break;
-  case OP_arrayGet:
-    if (cheArg1)
-      declArg1 = (LavaDECL*)cheArg1->data;
-    else {
-      declArg1 = NewLavaDECL();
-      cheArg1 = NewCHE(declArg1);
-    }
-    declArg1->ParentDECL = opDecl;
-    declArg1->DeclType = IAttr;
-    declArg1->DeclDescType = BasicType;
-    declArg1->BType = Integer;
-    declArg1->TypeFlags.INCL(trueObjCat);
-    declArg1->RefID.nID = IDTable.BasicTypesID[Integer];
-    if (isStd)
-      declArg1->RefID.nINCL = 0;
-    else
-      declArg1->RefID.nINCL = 1;
-    declArg1->LocalName = DString("op1");
-    opDecl->NestedDecls.Prepend(cheArg1);
-    declVal->DeclDescType = NamedType;
-    declVal->BType = NonBasic;
-    declVal->TypeFlags.EXCL(trueObjCat);
-    IDTable.GetParamID(opDecl->ParentDECL, declVal->RefID, isArray);
-
-    break;
-  case OP_arraySet:
-    if (cheArg1)
-      declArg1 = (LavaDECL*)cheArg1->data;
-    else {
-      declArg1 = NewLavaDECL();
-      cheArg1 = NewCHE(declArg1);
-    }
-    declArg1->ParentDECL = opDecl;
-    declArg1->DeclType = IAttr;
-    declArg1->DeclDescType = BasicType;
-    declArg1->BType = Integer;
-    declArg1->TypeFlags.INCL(trueObjCat);
-    declArg1->RefID.nID = IDTable.BasicTypesID[Integer];
-    if (isStd)
-      declArg1->RefID.nINCL = 0;
-    else
-      declArg1->RefID.nINCL = 1;
-    declArg1->LocalName = DString("op1");
-    opDecl->NestedDecls.Prepend(cheArg1);
-    if (cheArg2)
-      declArg2 = (LavaDECL*)cheArg2->data;
-    else {
-      declArg2 = NewLavaDECL();
-      cheArg2 = NewCHE(declArg2);
-      declArg2->ParentDECL = opDecl;
-      declArg2->DeclType = IAttr;
-      declArg2->TypeFlags.INCL(trueObjCat);
-      declArg2->LocalName = DString("op2");
-    }
-    declArg2->DeclDescType = NamedType;
-    declArg2->BType = NonBasic;
-    IDTable.GetParamID(opDecl->ParentDECL, declArg2->RefID, isArray);
-    opDecl->NestedDecls.Append(cheArg2);
-
-    break;
-  }
-}
-
-bool CLavaPEDoc::GetOperatorID(LavaDECL* decl, TOperator op, TID& ElID)
-{
-//  ResetVElems(decl);
-  if (!decl)
-    return 0;
-  MakeVElems(decl);
-  return getOperatorID(decl, op, ElID);
-}
-
-
-bool CLavaPEDoc::getOperatorID(LavaDECL* decl, TOperator op, TID& ElID)
-{
-  //ResetVElems(decl); call Reset and Make before calling GetOperatorID 
-  //MakeVElems(decl);
+  LavaDECL *IFace, *ElFunc;
+  bool elOk, ok = true;
   CHETVElem *El;
-  for (El = (CHETVElem*)decl->VElems.VElems.first;
-       El && (El->data.op != op);
-       El = (CHETVElem*)El->successor);
-  if (El) {
-    ElID = El->data.VTEl;
-    return true;
-  }
-  return false;
-}
 
-bool CLavaPEDoc::MakeFormVT(LavaDECL *decl, CheckData* )
-{
-  if (decl->VElems.UpdateNo > UpdateNo)
-    return true;
-  decl->VElems.UpdateNo = UpdateNo+1;
-  ResetVElems(decl);
-  LavaDECL **PbaseFDECL, *guibaseDECL, *classDECL;
-  bool ok=true;
-  CHETID* cheID;
-  CHETVElem *El, *Elbase;
-  CheckForm(decl, CHLV_inUpdateLow);
-  if (decl->DeclType == FormDef) {  
-    cheID = (CHETID*)decl->Supports.first;
-    while (cheID) {
-      guibaseDECL = IDTable.GetDECL(cheID->data, decl->inINCL);
-      if (!guibaseDECL)
-        return false;
-      if (guibaseDECL->TypeFlags.Contains(isGUI)) {
-        PbaseFDECL = GetFormpDECL(guibaseDECL);
-        if (PbaseFDECL && *PbaseFDECL) {
-          ok = MakeFormVT(*PbaseFDECL);
-          Elbase = (CHETVElem*)(*PbaseFDECL)->VElems.VElems.first;
-          while (Elbase) {
-            for (El = (CHETVElem*)decl->VElems.VElems.first;
-                 El && (El->data.VTEl != Elbase->data.VTEl);
-                 El = (CHETVElem*)El->successor);
-            if (El) {
-              if (El->data.VTClss != Elbase->data.VTClss)
-                El->data.ok = false;
-            }
-            else {
-              El = new CHETVElem;
-              El->data.VTClss = Elbase->data.VTClss;
-              El->data.VTEl = Elbase->data.VTEl; 
-              El->data.TypeFlags = Elbase->data.TypeFlags;
-              El->data.ok = Elbase->data.ok;
-              decl->VElems.VElems.Append(El);
-            }
-            Elbase = (CHETVElem*)Elbase->successor;
-          }
+  CHETID *cheID = (CHETID*)classDECL->Supports.first;
+  while (cheID) { 
+    IFace = IDTable.GetDECL(cheID->data, classDECL->inINCL);
+    if (IFace) {
+      if (IFace->DeclType == VirtualType) {
+        IFace = IDTable.GetFinalBasicType(cheID->data, classDECL->inINCL, conDECL);
+        if (!IFace)
+          return false;
+        if (IFace->VElems.UpdateNo <= UpdateNo) {
+          ResetVElems(IFace);
+          elOk = MakeVElems(IFace);
+          ok = ok && elOk;
         }
+        elOk = AddVElems(conDECL, IFace);
+        ok = ok && elOk;
+        if (IFace->fromBType == NonBasic) {
+          //default initializer vorhanden?
+          ElFunc = 0;
+          for (El = (CHETVElem*)IFace->VElems.VElems.first;
+               El && (!ElFunc || !ElFunc->TypeFlags.Contains(defaultInitializer));
+               El = (CHETVElem*)El->successor) {
+            if (IFace == IDTable.GetDECL(El->data.VTClss)) {
+              ElFunc = IDTable.GetDECL(El->data.VTEl);
+              if (ElFunc && (ElFunc->DeclType != Function))
+                ElFunc = 0;
+            }
+            else
+              ElFunc = 0;
+          }
+          if (!ElFunc || !ElFunc->TypeFlags.Contains(defaultInitializer)) 
+            new CLavaError(&conDECL->DECLError1, &ERR_VBaseWithoutDefaultIni);
+        }
+            
       }
-      cheID = (CHETID*)cheID->successor;
+      elOk = AddVBase(IFace, conDECL);
+      ok = ok && elOk;
+      if (!ok) {// there is an error in a base class
+        new CLavaError(&classDECL->DECLError1, &ERR_InVTofBaseIF);
+        classDECL->WorkFlags.INCL(recalcVT);
+      }
     }
+    cheID = (CHETID*)cheID->successor;
   }
-
-  classDECL = IDTable.GetDECL(decl->RefID, decl->inINCL);
-  if (classDECL) {
-    El = new CHETVElem;
-    El->data.VTClss = TID( decl->OwnID, decl->inINCL);
-    El->data.VTEl = TID( classDECL->OwnID, classDECL->inINCL); 
-    El->data.TypeFlags = classDECL->TypeFlags;
-    decl->VElems.VElems.Append(El);
-  }
-  else
-    return false;
-  for (El = (CHETVElem*)decl->VElems.VElems.first;
-       El && El->data.ok;
-       El = (CHETVElem*)El->successor);
-  return  (El == 0) && ok;
+  return ok;
 }
+
 
 bool CLavaPEDoc::AddVElems(LavaDECL *decl, LavaDECL* baseDECL)
 {
@@ -964,911 +216,147 @@ bool CLavaPEDoc::AddVElems(LavaDECL *decl, LavaDECL* baseDECL)
 }
 
 
-bool CLavaPEDoc::AddVBase(LavaDECL* classDECL, LavaDECL* conDECL )
+void CLavaPEDoc::AutoCorr(LavaDECL* decl)
 {
-  LavaDECL *IFace, *ElFunc;
-  bool elOk, ok = true;
-  CHETVElem *El;
-
-  CHETID *cheID = (CHETID*)classDECL->Supports.first;
-  while (cheID) { 
-    IFace = IDTable.GetDECL(cheID->data, classDECL->inINCL);
-    if (IFace) {
-      if (IFace->DeclType == VirtualType) {
-        IFace = IDTable.GetFinalBasicType(cheID->data, classDECL->inINCL, conDECL);
-        if (!IFace)
-          return false;
-        if (IFace->VElems.UpdateNo <= UpdateNo) {
-          ResetVElems(IFace);
-          elOk = MakeVElems(IFace);
-          ok = ok && elOk;
-        }
-        elOk = AddVElems(conDECL, IFace);
-        ok = ok && elOk;
-        if (IFace->fromBType == NonBasic) {
-          //default initializer vorhanden?
-          ElFunc = 0;
-          for (El = (CHETVElem*)IFace->VElems.VElems.first;
-               El && (!ElFunc || !ElFunc->TypeFlags.Contains(defaultInitializer));
-               El = (CHETVElem*)El->successor) {
-            if (IFace == IDTable.GetDECL(El->data.VTClss)) {
-              ElFunc = IDTable.GetDECL(El->data.VTEl);
-              if (ElFunc && (ElFunc->DeclType != Function))
-                ElFunc = 0;
-            }
-            else
-              ElFunc = 0;
-          }
-          if (!ElFunc || !ElFunc->TypeFlags.Contains(defaultInitializer)) 
-            new CLavaError(&conDECL->DECLError1, &ERR_VBaseWithoutDefaultIni);
-        }
-            
-      }
-      elOk = AddVBase(IFace, conDECL);
-      ok = ok && elOk;
-      if (!ok) {// there is an error in a base class
-        new CLavaError(&classDECL->DECLError1, &ERR_InVTofBaseIF);
-        classDECL->WorkFlags.INCL(recalcVT);
-      }
-    }
-    cheID = (CHETID*)cheID->successor;
-  }
-  return ok;
-}
-
-bool CLavaPEDoc::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
-{
-  bool isNSp, isCreatable, elOk, allOk = true, GUInew = true, GUInewE = true, hasEnum = false;
+  LavaDECL *newDECL;
   QString cstr;
-  CHETVElem *El;
-  LavaDECL *elDecl, *IFace, *elBase;
-  CHE *cheDecl;
-  CHETID *cheID;
-  TID declID = TID(classDECL->OwnID, classDECL->inINCL);
-
-  if (!classDECL || (classDECL->DeclType == VirtualType))
-    return false;
-  classDECL->DECLError2.Destroy();
-  cheID = (CHETID*)classDECL->Supports.first;
-
-  if (classDECL->VElems.UpdateNo > UpdateNo)
-    return true;
-  classDECL->VElems.UpdateNo = UpdateNo+1;
-  ResetVElems(classDECL);
-  while (cheID) { //!!
-    IFace = IDTable.GetDECL(cheID->data, classDECL->inINCL);
-    if (IFace) {
-      if (IFace->DeclType == VirtualType) 
-        IFace = IDTable.GetFinalBasicType(cheID->data, classDECL->inINCL, classDECL);
-      if (IFace) {
-        if (IFace->VElems.UpdateNo <= UpdateNo) {
-          ResetVElems(IFace);
-          elOk = MakeVElems(IFace);
-          allOk = allOk && elOk;
+  CHE *cheEl, *cheIOEl, *che = (CHE*)decl->DECLError1.first;
+  CHETID *cheTID, *ncheTID;
+  bool lfuncImpl;
+  while (che) {
+    if (((CLavaError*)che->data)->showAutoCorrBox) {
+      ((CLavaError*)che->data)->showAutoCorrBox = false;
+      if (((CLavaError*)che->data)->IDS == &ERR_NoOverridden) {
+        newDECL = NewLavaDECL();
+        *newDECL = *decl;
+        CCorrOverBox * box = new CCorrOverBox(newDECL, this, MainView);
+        if (box->OnInitDialog() == BoxContinue) {
+          if (box->exec() != QDialog::Accepted) {
+            delete newDECL;
+            return; 
+          }
         }
-        elOk = AddVElems(classDECL, IFace);
-        allOk = allOk && elOk;
-        if (!allOk) { // there is an error in a base class
-          new CLavaError(&classDECL->DECLError1, &ERR_InVTofBaseIF);
-          classDECL->WorkFlags.INCL(recalcVT);
+        else {
+          delete newDECL;
+          return;
         }
       }
       else {
-        allOk = false;
-        new CLavaError(&classDECL->DECLError1, &ERR_NoBaseIF);
-      }
-    }
-    cheID = (CHETID*)cheID->successor;
-  }
-  elOk = AddVBase(classDECL, classDECL);
-  if (!elOk) {// there is an error in a base class
-    new CLavaError(&classDECL->DECLError2, &ERR_InVTofBaseIF);
-    classDECL->WorkFlags.INCL(recalcVT);
-  }
-  allOk = allOk && elOk;
-  if ((classDECL->DeclType != Interface) 
-       && (classDECL->DeclType != Package))
-    return allOk;
-
-  cheDecl = (CHE*)classDECL->NestedDecls.first;
-  isNSp = classDECL->DeclType == Package;
-  while (cheDecl) {
-    elDecl = (LavaDECL*)cheDecl->data;
-    if ( ( ( elDecl->DeclType == VirtualType)
-         || ( elDecl->DeclType == Function)
-         || ( elDecl->DeclType == Attr)
-         )
-        && elDecl->Supports.first) {
-      //check and replace the extensions and GUI-Show-function
-      for (El = (CHETVElem*)classDECL->VElems.VElems.first;
-           El && !IDTable.Overrides(TID(elDecl->OwnID, 0), elDecl->inINCL, El->data.VTEl, 0);
-           El = (CHETVElem*)El->successor);
-      if (El) {
-        cheID = (CHETID*)elDecl->Supports.first;
-        if (!IDTable.EQEQ(El->data.VTEl, 0, cheID->data, elDecl->inINCL) || El->data.Ambgs.first) {
-          if (IDTable.IsAnc(El->data.VTEl,0,TID(elDecl->OwnID, elDecl->inINCL),0)) {
-            for (elBase = IDTable.GetDECL(El->data.VTEl);
-                 elBase->Supports.first &&
-                 !IDTable.EQEQ(TID(elDecl->OwnID,elDecl->inINCL),0,((CHETID*)elBase->Supports.first)->data,elBase->inINCL);
-                 elBase = IDTable.GetDECL(((CHETID*)elBase->Supports.first)->data,elBase->inINCL) );
-            if (elBase->Supports.first) {
-              elBase->Supports.Destroy();
-              elBase->Supports = elDecl->Supports;
+        lfuncImpl = (((CLavaError*)che->data)->IDS == &ERR_MissingFuncDecl)
+                     || (((CLavaError*)che->data)->IDS == &ERR_NoSetGetMember)
+                    || (((CLavaError*)che->data)->IDS == &ERR_ImplOfAbstract);
+        if (AutoCorrBox(((CLavaError*)che->data)->IDS) != QDialog::Accepted) {
+          if (lfuncImpl)
+            decl->WorkFlags.INCL(allowDEL);
+          return;
+        }
+        newDECL = NewLavaDECL();
+        *newDECL = *decl;
+        if (lfuncImpl) {
+          newDECL->SecondTFlags.EXCL(funcImpl);      
+          newDECL->TypeFlags.EXCL(isPropGet);   
+          newDECL->TypeFlags.EXCL(isPropSet);
+          newDECL->TypeFlags.EXCL(isInitializer);
+          newDECL->TypeFlags.EXCL(defaultInitializer);
+          newDECL->Supports.Destroy();
+          if (newDECL->op != OP_noOp) {
+            newDECL->LocalName = DString("leaved_from_operator_") + LBaseData->OpFuncNames[newDECL->op];
+            newDECL->op = OP_noOp;
+          }
+          cheIOEl = (CHE*)newDECL->NestedDecls.first;
+          while (cheIOEl) {
+            ((LavaDECL*)cheIOEl->data)->SecondTFlags.EXCL(funcImpl);     
+            ((LavaDECL*)cheIOEl->data)->TypeFlags.EXCL(isPropGet);    
+            ((LavaDECL*)cheIOEl->data)->TypeFlags.EXCL(isPropSet);
+            ((LavaDECL*)cheIOEl->data)->Supports.Destroy();
+            cheIOEl = (CHE*)cheIOEl->successor;
+          }
+        }
+        else {
+          if (((CLavaError*)che->data)->IDS == &ERR_OverriddenStatic) {
+            newDECL->Supports.Destroy();
+            newDECL->SecondTFlags.EXCL(overrides);
+          }
+          else if (((CLavaError*)che->data)->IDS == &ERR_NoAbstract) 
+            newDECL->TypeFlags.EXCL(isAbstract);
+          else {
+            cheTID = (CHETID*)newDECL->Supports.first;
+            while (cheTID) {
+              if (!IDTable.GetDECL(cheTID->data, newDECL->inINCL)) {
+                ncheTID = (CHETID*)cheTID->successor;
+                if (!ncheTID && (decl->DeclType == Interface)
+                    && (cheTID == (CHETID*)newDECL->Supports.first)) {
+                  if (isStd)
+                    cheTID->data.nINCL = 0;
+                  else
+                    cheTID->data.nINCL = 1;
+                  cheTID->data.nID = IDTable.BasicTypesID[B_Object];
+                  if (cheTID->data.nID < 0)
+                    cheTID = 0;
+                }
+                else {
+                  newDECL->Supports.Uncouple(cheTID);
+                  delete cheTID;
+                  cheTID = ncheTID;
+                }
+              }
+              else
+                cheTID = (CHETID*)cheTID->successor;
+            }
+            cheTID = (CHETID*)newDECL->Inherits.first;
+            while (cheTID) {
+              if (!IDTable.GetDECL(cheTID->data, newDECL->inINCL)) {
+                ncheTID = (CHETID*)cheTID->successor;
+                newDECL->Inherits.Uncouple(cheTID);
+                delete cheTID;
+                cheTID = ncheTID;
+              }
+              else
+                cheTID = (CHETID*)cheTID->successor;
             }
           }
-          elDecl->Supports.Destroy();
-          elDecl->Supports = El->data.Ambgs;
-          cheID = new CHETID;
-          cheID->data = El->data.VTEl;
-          elDecl->Supports.Prepend(cheID);
-          if ((elDecl->DeclType == VirtualType) && (elDecl->RefID.nID >= 0))
-            IDTable.CheckValOfVirtual(elDecl);
         }
-        if (El->data.VTBaseEl.nID == -1)
-          El->data.VTBaseEl = El->data.VTEl;
-        El->data.VTEl = TID(elDecl->OwnID, elDecl->inINCL);
-        El->data.TypeFlags = elDecl->TypeFlags;
-        El->data.op = elDecl->op;
-        El->data.Ambgs.Destroy();
-        El->data.ok = true;
       }
-      else { //the overridden object was not found
-        El = new CHETVElem;
-        El->data.VTClss = declID;
-        El->data.VTEl = TID(elDecl->OwnID, elDecl->inINCL);
-        El->data.VTBaseEl = El->data.VTEl;
-        El->data.TypeFlags = elDecl->TypeFlags;
-        El->data.op = ((LavaDECL*)cheDecl->data)->op;
-        El->data.ok = false;
-        classDECL->VElems.VElems.Append(El);
-      }
+      for (cheEl = (CHE*)decl->ParentDECL->NestedDecls.first;
+           cheEl && ((LavaDECL*)cheEl->data != decl);
+           cheEl = (CHE*)cheEl->successor);
+      DString *name = new DString(decl->FullName);  
+      CLavaPEHint* hint = new CLavaPEHint(CPECommand_Change, this, (const unsigned long)3, (DWORD)newDECL, (DWORD)name, 0, (DWORD)&cheEl->data);
+      UndoMem.AddToMem(hint);
+      UpdateDoc(0, FALSE, hint);
+      return;
     }
-    else 
-      if (( elDecl->DeclType == Function) && elDecl->TypeFlags.Contains(isGUI)) {
-        for (El = (CHETVElem*)classDECL->VElems.VElems.first;
-             El && !El->data.TypeFlags.Contains(isGUI)
-                && (El->data.TypeFlags.Contains(isGUIEdit) == El->data.TypeFlags.Contains(isGUIEdit)); 
-             El = (CHETVElem*)El->successor);
-        if (El) {
-          if (El->data.TypeFlags.Contains(isGUIEdit))
-            GUInewE = false;
-          else
-            GUInew = false;
-          El->data.VTEl = TID(elDecl->OwnID, elDecl->inINCL);
-          El->data.VTBaseEl = El->data.VTEl;
-          El->data.op = elDecl->op;
-          El->data.Ambgs.Destroy();
-          El->data.TypeFlags = elDecl->TypeFlags;
-          El->data.ok = true;
-        }
-      }
-    if (isNSp && (elDecl->DeclType != VirtualType))
-      cheDecl = 0;
+    if (che == decl->DECLError1.last)
+      che = (CHE*)decl->DECLError2.first;
     else
-      cheDecl = (CHE*)cheDecl->successor;
-  }
-  cheDecl = (CHE*)classDECL->NestedDecls.first;
-  while (cheDecl) {
-    elDecl = (LavaDECL*)cheDecl->data;
-    if ( ( (elDecl->DeclType == VirtualType)
-        || ( elDecl->DeclType == Function) && !elDecl->TypeFlags.Contains(isStatic)
-        || ( elDecl->DeclType == Attr))
-        && !elDecl->Supports.first
-        && (GUInew || !elDecl->TypeFlags.Contains(isGUI))
-        && (GUInewE || !elDecl->TypeFlags.Contains(isGUIEdit))) {
-      El = new CHETVElem;
-      El->data.VTClss = declID;
-      El->data.VTEl = TID(elDecl->OwnID, elDecl->inINCL);
-      El->data.VTBaseEl = El->data.VTEl;
-      El->data.TypeFlags = elDecl->TypeFlags;
-      El->data.op = elDecl->op;
-      El->data.ok = true;
-      classDECL->VElems.VElems.Append(El);
-    }
-    if (isNSp && (elDecl->DeclType != VirtualType))
-      cheDecl = 0;
-    else
-      cheDecl = (CHE*)cheDecl->successor;
-  }
-  if (allOk) {
-    elOk = true;
-    declID = TID(-1,0);
-    isCreatable = !classDECL->TypeFlags.Contains(isAbstract) && (classDECL->DeclType != Package);
-    for (El = (CHETVElem*)classDECL->VElems.VElems.first;
-         El && El->data.ok;
-         El = (CHETVElem*)El->successor) {
-      elDecl = IDTable.GetDECL(El->data.VTEl);
-      if (isCreatable) {
-        if (elDecl->TypeFlags.Contains(isAbstract)) {
-          new CLavaError(&classDECL->DECLError1, &ERR_AbstractInherited, &elDecl->FullName);
-          classDECL->WorkFlags.INCL(recalcVT);
-          elOk = false;
-        }
-      }
-      if (elDecl->TypeFlags.Contains(forceOverride)
-          && (elDecl->ParentDECL != classDECL)) {
-        new CLavaError(&classDECL->DECLError1, &ERR_ForceOver, &elDecl->FullName);
-        classDECL->WorkFlags.INCL(recalcVT);
-        El->data.ok = false;
-        elOk = false;
-      }
-      if (declID != El->data.VTClss) {
-        declID = El->data.VTClss;
-        IFace = IDTable.GetDECL(declID);
-        if (IFace->DeclDescType == EnumType)
-          if (hasEnum && !classDECL->inINCL) {
-            new CLavaError(&classDECL->DECLError1, &ERR_OneEnum, &classDECL->FullName);
-            classDECL->WorkFlags.INCL(recalcVT);
-            elOk = false;
-          }
-          else
-            hasEnum = true;
-      }
-    }
-    allOk = El == 0;
-  }
-  if (!allOk) {
-    new CLavaError(&classDECL->DECLError1, &ERR_InVT);
-    classDECL->WorkFlags.INCL(recalcVT);
-  }
-  return allOk && elOk;
-}
-
-void CLavaPEDoc::ResetVElems(LavaDECL *classDECL)
-{
-  if (classDECL) {
-    classDECL->VElems.VElems.Destroy();
-    classDECL->DECLError2.Destroy();
-  }
-}
-
-bool CLavaPEDoc::CheckOverInOut(LavaDECL* funcDECL, int checkLevel)
-{
-  SynFlags typeFlags;
-  CHE *cheOverIO, *cheIO;
-  LavaDECL *IODECL, *OverFunc;
-  CHETID *cheID, *cheOverID;
-  CHAINX chain;
-  
-  if (!funcDECL->SecondTFlags.Contains(overrides))
-    return false;
-  if (!funcDECL->Supports.first) {
-    if (checkLevel == CHLV_fit) {
-      funcDECL->SecondTFlags.EXCL(overrides);
-      UpdateNo++;
-      return true;
-    }
-    else
-      return false;
-  }
-  cheID = (CHETID*)funcDECL->Supports.first;
-  OverFunc = IDTable.GetDECL(cheID->data, funcDECL->inINCL);
-  while (!OverFunc && cheID) {
-    cheID = (CHETID*)cheID->successor;
-    if (cheID)
-      OverFunc = IDTable.GetDECL(cheID->data, funcDECL->inINCL);
-  }
-  if (!OverFunc) {
-    if (checkLevel == CHLV_fit) {
-      funcDECL->Supports.Destroy();
-      funcDECL->SecondTFlags.EXCL(overrides);
-      UpdateNo++;
-      return true;
-    }
-    else
-      return false;
-  }
-  bool catErr, changed = false;
-  /*
-  if (funcDECL->TypeFlags.Contains(inheritsBody))
-    if (OverFunc->TypeFlags.Contains(isNative))
-      funcDECL->TypeFlags.INCL(isNative);
-    else
-      funcDECL->TypeFlags.EXCL(isNative);
-  */
-  if (!funcDECL->ParentDECL->TypeFlags.Contains(isAbstract)) 
-    funcDECL->TypeFlags.EXCL(isAbstract);
-  if (funcDECL->DeclType == Attr) {
-    if (!OverFunc->TypeFlags.Contains(isConst) && funcDECL->TypeFlags.Contains(isConst)) {
-      funcDECL->TypeFlags.EXCL(isConst);
-      changed = true;
-    }
-  }
-  else
-    if (OverFunc->TypeFlags.Contains(isConst) && !funcDECL->TypeFlags.Contains(isConst)) {
-      funcDECL->TypeFlags.INCL(isConst);
-      changed = true;
-    }
-  if (!OverFunc->TypeFlags.Contains(isProtected) && funcDECL->TypeFlags.Contains(isProtected)) {
-    funcDECL->TypeFlags.EXCL(isProtected);
-    changed = true;
-  }
-  if (funcDECL->DeclType == Attr)
-    return changed;
-
-  cheOverIO = (CHE*)OverFunc->NestedDecls.first;
-  if (checkLevel > CHLV_noCheck) {
-    chain.first = funcDECL->NestedDecls.first;
-    chain.last = funcDECL->NestedDecls.last;
-    funcDECL->NestedDecls.first = 0;
-    funcDECL->NestedDecls.last = 0;
-    while (cheOverIO) {
-      for (cheIO = (CHE*)chain.first;
-           cheIO && ( ((LavaDECL*)cheOverIO->data)->LocalName != ((LavaDECL*)cheIO->data)->LocalName);
-           cheIO = (CHE*)cheIO->successor);
-      if (cheIO) 
-        cheIO = (CHE*)chain.Uncouple(cheIO);
-      else {
-        UpdateNo++;
-        IODECL = NewLavaDECL();
-        *IODECL = *(LavaDECL*)cheOverIO->data;
-        IODECL->DECLComment.Destroy();
-        IODECL->Supports.Destroy();
-        IODECL->inINCL = 0;
-        IODECL->OwnID = -1;
-        if (IODECL->RefID.nID >= 0)
-          IODECL->RefID.nINCL = IDTable.IDTab[OverFunc->inINCL]->nINCLTrans[IODECL->RefID.nINCL].nINCL;
-        IODECL->ParentDECL = funcDECL;
-        IODECL->SecondTFlags.INCL(overrides);
-        IODECL->WorkFlags.EXCL(selAfter);
-        cheIO = NewCHE(IODECL);
-        if (checkLevel > CHLV_inUpdateLow) {
-          IDTable.NewID((LavaDECL**)&cheIO->data);
-          IODECL->WorkFlags.INCL(newTreeNode);
-        }
-        if (checkLevel > CHLV_inUpdateHigh) 
-          modified = true;
-        changed = true;
-      }
-      if (checkLevel > CHLV_inUpdateLow) {
-        typeFlags = ((LavaDECL*)cheIO->data)->TypeFlags;
-        GetCategoryFlags((LavaDECL*)cheIO->data, catErr);
-        changed = changed || (typeFlags != ((LavaDECL*)cheIO->data)->TypeFlags);
-      }
-      funcDECL->NestedDecls.Append(cheIO);
-      cheOverIO = (CHE*)cheOverIO->successor;
-    }
-    if (checkLevel > CHLV_inUpdateLow) {
-      cheIO = (CHE*)chain.first;
-      while (cheIO) {
-        UpdateNo++;
-        IDTable.DeleteID(((LavaDECL*)cheIO->data)->OwnID);
-        cheIO = (CHE*)cheIO->successor;
-        changed = true;
-      }
-    }
-  }
-  else {
-    cheIO = (CHE*)funcDECL->NestedDecls.first;
-    while (cheIO) {
-      UpdateNo++;
-      changed = true;
-      ((LavaDECL*)cheIO->data)->Supports.Destroy();
-      cheIO = (CHE*)cheIO->successor;
-    }
-  }
-  cheOverID = (CHETID*)funcDECL->Supports.first;
-  while (cheOverID) {
-    OverFunc = IDTable.GetDECL(cheOverID->data, funcDECL->inINCL);
-    if (OverFunc) {
-      cheOverIO = (CHE*)OverFunc->NestedDecls.first;
-      cheIO = (CHE*)funcDECL->NestedDecls.first;
-      //find the overridden parameter by name
-      while (cheIO) {
-        ((LavaDECL*)cheIO->data)->Supports.Destroy();
-        while (cheOverIO 
-          && ( ((LavaDECL*)cheOverIO->data)->LocalName != ((LavaDECL*)cheIO->data)->LocalName)) {
-          cheOverIO = (CHE*)cheOverIO->successor;
-          changed = true;
-        }
-        if (cheOverIO) {
-          cheID = new CHETID;
-          cheID->data = TID(((LavaDECL*)cheOverIO->data)->OwnID, ((LavaDECL*)cheOverIO->data)->inINCL);
-          ((LavaDECL*)cheIO->data)->Supports.Append(cheID);
-          UpdateNo++;
-        }
-        cheIO = (CHE*)cheIO->successor;
-      }
-    }
-    cheOverID = (CHETID*)cheOverID->successor;
-  }
-  return changed;
-}
-
-bool CLavaPEDoc::CollectP(const TIDs& paramIDs, LavaDECL* collectDECL)
-{
-  TIDs refIDs, baseParamIDs;
-  CHETID *cheID, *cheIDbase, *cheIDVal;
-  LavaDECL *ElDECL, *bDECL;
-
-  cheID = (CHETID*)paramIDs.first;
-  while (cheID) {
-    ElDECL = IDTable.GetDECL(cheID->data);
-    if (ElDECL) {
-      ElDECL->WorkFlags.INCL(checkmark);
-      ElDECL->ParentDECL->WorkFlags.INCL(checkmark);
-      cheIDVal = new CHETID;
-      cheIDVal->data =  TID(ElDECL->RefID.nID, IDTable.IDTab[ElDECL->inINCL]->nINCLTrans[ElDECL->RefID.nINCL].nINCL);
-      refIDs.Append(cheIDVal);
-      if (ElDECL->Supports.first) {
-        cheIDbase = new CHETID;
-        cheIDbase->data = ((CHETID*)ElDECL->Supports.first)->data;
-        cheIDbase->data.nINCL = IDTable.IDTab[ElDECL->inINCL]->nINCLTrans[cheIDbase->data.nINCL].nINCL;
-        baseParamIDs.Append(cheIDbase);
-      }
-    }
-    cheID = (CHETID*)cheID->successor;
-  }
-  if (baseParamIDs.first)
-    CollectP(baseParamIDs, 0);
-  collectPattern(ElDECL->ParentDECL, paramIDs, refIDs);
-  if (baseParamIDs.first) {
-    bDECL = IDTable.GetDECL(((CHETID*)baseParamIDs.first)->data);
-    if (bDECL)
-      bDECL->ParentDECL->ResetCheckmarks();
-  }
-  if (collectDECL) {
-//    RmDuplicates(collectDECL->ParentDECL);
-    *collectDECL = *ElDECL->ParentDECL;
-    collectDECL->DeclType = PatternDef;
-    ShrinkCollectDECL(collectDECL);
-    collectDECL->ResetCheckmarks();
-    //paramDECL->ParentDECL->ResetCheckmarks();
-    return collectDECL->NestedDecls.first != 0;
-  }
-  else 
-    return true;
-}
-
-bool CLavaPEDoc::CollectPattern(LavaDECL *paramDECL, LavaDECL* collectDECL)
-{
-  TIDs paramIDs;
-  CHETID  *cheID;
-  CHE* cheEl;
-  LavaDECL* ElDECL;
-
-  if (paramDECL->DeclType == PatternDef) {
-    cheEl = (CHE*)paramDECL->NestedDecls.first;
-    while (cheEl) {
-      ElDECL = (LavaDECL*)cheEl->data;
-      cheID = new CHETID;
-      cheID->data = TID(ElDECL->OwnID, ElDECL->inINCL);
-      paramIDs.Append(cheID);
-      cheEl = (CHE*)cheEl->successor;
-    }
-  }
-  else {
-    paramDECL->WorkFlags.INCL(checkmark);
-    paramDECL->ParentDECL->WorkFlags.INCL(checkmark);
-    cheID = new CHETID;
-    cheID->data = TID(paramDECL->OwnID, paramDECL->inINCL);
-    paramIDs.Append(cheID);
-  }
-  return CollectP(paramIDs, collectDECL);
-}
-
-
-bool CLavaPEDoc::collectPattern(LavaDECL *decl, const TIDs& paramIDs, const TIDs& refIDs)
-{
-  LavaDECL* elDECL /*, *baseElDECL -siehe unten*/;
-  CHE *che = (CHE*)decl->NestedDecls.first;
-  CHETID* cheID;
-  TID id;
-  bool inp, inPC = false;
-
-  while (che) {
-    elDECL = (LavaDECL*)che->data;
-    inp = false;
-    if (elDECL->DeclType == Interface) {
-      //is this interface value of a virtual type in the collection of virtual types to be ovverridden 
-      id =  TID(elDECL->OwnID, elDECL->inINCL);
-      for (cheID = (CHETID*)refIDs.first; !inp && (cheID != 0); cheID = (CHETID*)cheID->successor)
-        if (cheID->data == id)
-          inp = true;
-      if (collectPattern(elDECL, paramIDs, refIDs))
-        inp = true;
-    }
-    else {
-      if (elDECL->DeclType == Function) {
-        if (elDECL->TypeFlags.Contains(forceOverride)) {
-          elDECL->WorkFlags.INCL(checkmark);
-          elDECL->Inherits.Destroy();
-          inp = true;
-        }
-        else
-          inp = collectPattern(elDECL, paramIDs, refIDs);
-      }
-    }
-    if ((elDECL->DeclType == Interface) || (elDECL->DeclType == VirtualType)) {
-    /*
-    // wozu war das? -- probeweise wieder eingeklammert!!
-      if (!inp && elDECL->Supports.first) { //!
-        baseElDECL = IDTable.GetFinalDef(((CHETID*)elDECL->Supports.first)->data, elDECL->inINCL);
-        inp = (baseElDECL && baseElDECL->WorkFlags.Contains(checkmark));
-      }
-    */
-      if (inp) 
-        elDECL->WorkFlags.INCL(checkmark);
-    }
-    inPC = inPC || inp;
-    che = (CHE*)che->successor;
-  }
-  return inPC;
-}
-
-
-void CLavaPEDoc::ShrinkCollectDECL(LavaDECL* decl)
-{
-  CHE* chePre = 0;
-  CHE* che = (CHE*)decl->NestedDecls.first;
-  LavaDECL* elDECL;
-
-  while (che) {
-    elDECL = (LavaDECL*)che->data;
-    if (!elDECL->WorkFlags.Contains(checkmark) 
-        && (elDECL->DeclType != IAttr) && (elDECL->DeclType != OAttr)) {
-      decl->NestedDecls.Uncouple(che);
-      delete che;
-      if (chePre)
-        che = (CHE*)chePre->successor;
-      else
-        che = (CHE*)decl->NestedDecls.first;
-    }        
-    else {
-      elDECL->WorkFlags.EXCL(checkmark);
-      elDECL->Supports.Destroy();
-      elDECL->DECLComment.Destroy();
-      if (elDECL->DeclType == Interface) {
-        elDECL->Items.Destroy();
-        elDECL->DeclDescType = StructDesc;
-      }
-      ShrinkCollectDECL(elDECL);
-      if (elDECL->DeclType == Interface)
-        MakeIniFunc(elDECL);
-      chePre = che;
       che = (CHE*)che->successor;
-    }
   }
 }
 
-void CLavaPEDoc::MakeIniFunc(LavaDECL* ifDECL)
+
+int CLavaPEDoc::AutoCorrBox(QString* errID)
 {
-  LavaDECL* fdecl = NewLavaDECL();
-  fdecl->DeclType = Function;
-  fdecl->DeclDescType = StructDesc;
-  fdecl->ParentDECL = ifDECL;
-  fdecl->LocalName = DString("ini"); //myDECL->LocalName;
-  fdecl->FullName = ifDECL->FullName + fdecl->LocalName;
-  fdecl->TypeFlags += SET(isInitializer, defaultInitializer,isConst,-1);
-  CHE* che = NewCHE(fdecl);
-  ifDECL->NestedDecls.Append(che);
-}
-
-void CLavaPEDoc::ConcernForms(CLavaPEHint* hint)
-{
-  LavaDECL *hintDECL = (LavaDECL*)hint->CommandData1;
-  bool getFromMem = ((hintDECL->DeclType == DragFeature) 
-     || (hintDECL->DeclType == DragFeatureF) 
-     || (hintDECL->DeclType == DragParam) 
-     || (hintDECL->DeclType == PatternDef) 
-     || (hintDECL->DeclType == DragIO)
-     || (hintDECL->DeclType ==  DragDef));
-  CLavaPEHint* actHint, * lastHint;
-  int pos = -1;
-  if (getFromMem)
-    lastHint = UndoMem.GetLastHint();
+  QString cstr = *errID;
+  cstr += "\r\n";
+  if (errID == &ERR_NoOverridden) 
+    cstr += "Correct the declaration what it overrides? ";
+  else if ((errID == &ERR_MissingFuncDecl) || (errID == &ERR_NoSetGetMember) || (errID == &ERR_ImplOfAbstract))
+    cstr += "Change to private function?  ";
+  else if (errID == &ERR_NoAbstract)
+    cstr += "Make the function non abstract?  ";
+  else if (errID == &ERR_OverriddenStatic)
+    cstr += "Remove this erroneous reference?  ";
+  else if (errID == &ERR_CleanSupports)
+    cstr += "Remove this redundant entry?  ";
+  else if (errID == &ERR_OverriddenIOType)
+    cstr += "Set the right types?  ";
+  else if (errID == &ERR_NoOverridden)
+    cstr += "Set the right types?  ";
   else
-    lastHint = hint;
-  do {
-    if (getFromMem)
-      actHint = UndoMem.DoFromMem(pos);
-    else
-      actHint = hint;
-    hintDECL = (LavaDECL*)actHint->CommandData1;
-    if ( ( hintDECL->DeclType == Attr) && ( hintDECL->DeclDescType != Undefined)
-         || ( hintDECL->DeclType == VirtualType)
-            && (hintDECL->SecondTFlags.Contains(isSet) || hintDECL->SecondTFlags.Contains(isArray) )
-         || ( hintDECL->DeclType == Interface) && (actHint->com != CPECommand_Insert) ) {
-      CExecForms *fcf = new CExecForms(mySynDef, actHint);
-      delete fcf;
-    }
-  } while (actHint != lastHint);
-}
-
-
-void CLavaPEDoc::ConcernImpls(CLavaPEHint* hint, LavaDECL* ppDECL, bool )
-{  //extensions and implementations of the changed interface
-  TID ifaceID, funcID;
-  CExecOverrides *fcfo = 0;
-  CExecImpls *fcf = 0;
-  CLavaPEHint *actHint, *lastHint;
-  LavaDECL *dragdropParent, *pppDECL, *hintDECL;
-  bool execO, getFromMem;
-  int pos = -1;
-
-  ifaceID = TID(-1, 0);
-  funcID = TID(-1, 0);
-  hintDECL = (LavaDECL*)hint->CommandData1;
-  getFromMem = ((hintDECL->DeclType == DragFeature) 
-     || (hintDECL->DeclType == DragFeatureF) 
-     || (hintDECL->DeclType == DragParam) 
-     || (hintDECL->DeclType == PatternDef) 
-     || (hintDECL->DeclType == DragIO)
-     || (hintDECL->DeclType ==  DragDef));
-//    get the hints from UndoMem
-  if (getFromMem)
-    lastHint = UndoMem.GetLastHint();
-  else
-    lastHint = hint;
-  do {
-    if (getFromMem)
-      actHint = UndoMem.DoFromMem(pos);
-    else
-      actHint = hint;
-    hintDECL = (LavaDECL*)actHint->CommandData1;
-      
-    execO = (actHint->com != CPECommand_Delete)
-             || (hintDECL->DeclType != Interface)
-                && (hintDECL->DeclType != Function) 
-                && (hintDECL->DeclType != Attr) 
-             || (actHint->CommandData5 == 0); //not from drag
-    if (ppDECL &&
-       (  ( (hintDECL->DeclType == Function)  || (hintDECL->DeclType == Attr))
-           && (ppDECL->DeclType == Interface) 
-       || (hintDECL->DeclType == VirtualType)
-       || (hintDECL->DeclType == Attr) && hintDECL->TypeFlags.Contains(hasSetGet)
-                                      && (ppDECL->DeclType == Impl) ) ) {
-      dragdropParent = (LavaDECL*)actHint->CommandData5;
-      if (!dragdropParent || (hintDECL->ParentDECL != dragdropParent)) {
-        funcID.nID = hintDECL->OwnID;
-        ifaceID.nID = ppDECL->OwnID;
-        fcf = new CExecImpls(mySynDef, ifaceID, funcID, actHint);
-        if (execO) 
-          fcfo = new CExecOverrides(mySynDef, ifaceID, funcID, actHint);
-      }
-    }
-    else {
-      if (ppDECL && ((hintDECL->DeclType == IAttr) || (hintDECL->DeclType == OAttr))
-          && ( ppDECL->DeclType == Function)  && ppDECL->ParentDECL) {
-        pppDECL = ppDECL->ParentDECL;
-        if (pppDECL->DeclType == Interface) { 
-          funcID.nID = ppDECL->OwnID;
-          ifaceID.nID = pppDECL->OwnID;
-//          fcf = new CExecImpls(mySynDef, ifaceID, funcID, actHint);
-          if (execO) 
-            fcfo = new CExecOverrides(mySynDef, ifaceID, funcID, actHint);
-          fcf = new CExecImpls(mySynDef, ifaceID, funcID, actHint);//hier hin 10.11.2000
-          //Erinnerung: erst Overrides dann Impls, weil sonst die Implementation einer
-          //überschreibenden Funktion nicht angepasst wird
-        }
-      }
-      else
-        if ((actHint->com != CPECommand_Insert)
-          && (hintDECL->DeclType == Interface) ) { 
-          ifaceID.nID = hintDECL->OwnID;
-          fcf = new CExecImpls(mySynDef, ifaceID, funcID, actHint);
-          if (execO) 
-            fcfo = new CExecOverrides(mySynDef, ifaceID, funcID, actHint);
-        }
-    }
-    if (fcf)
-      delete fcf;
-    if (fcfo)
-      delete fcfo;
-    fcf = 0;
-    fcfo =0;
-  } while (actHint != lastHint);
-}
-
-void CLavaPEDoc::ConcernExecs(CLavaPEHint* hint)
-{
-  TDeclType defType = ((LavaDECL*)hint->CommandData1)->DeclType;
-  if ((hint->com != CPECommand_Insert) || ((defType == IAttr) || (defType == OAttr))) {
-    CLavaBaseView* view;
-    POSITION pos = GetFirstViewPos();
-    CheckData chd;
-    chd.concernExecs = true;
-    while (pos) {
-      view = (CLavaBaseView*)GetNextView(pos);
-      if (view->inherits("CExecView")) {
-        chd.document = this;
-        chd.myDECL = ((CExecView*)view)->myDECL;
-        chd.execView = view;
-        chd.hint = hint;
-        ((SynObject*)chd.myDECL->Exec.ptr)->Check(chd);
-      }
-    }
-  }
-}
-
-LavaDECL* CLavaPEDoc::MakeSet(const TID& setID, LavaDECL* decl)
-{
-  LavaDECL *setDECL, *basicDECL, *basePar, *paramEl, *refDECL;
-  CHETID* cheS;
-  CHE* che;
-  bool catErr;
-
-  if (decl)
-    setDECL = decl;
-  else
-    setDECL = NewLavaDECL();
-  setDECL->SecondTFlags.INCL(isSet);
-  setDECL->DeclType = Interface;
-  setDECL->DeclDescType = StructDesc;
-  setDECL->inINCL = 0;
-  setDECL->fromBType = NonBasic;
-  setDECL->Supports.Destroy();
-  cheS = new CHETID;
-  cheS->data.nID = IDTable.BasicTypesID[B_Set];
-  if (isStd)
-    cheS->data.nINCL = 0;
-  else
-    cheS->data.nINCL = 1;
-  basicDECL = IDTable.GetDECL(cheS->data);
-  if (!basicDECL)
-    return 0;
-  setDECL->Supports.Append(cheS);
-  basePar = (LavaDECL*)((CHE*)basicDECL->NestedDecls.first)->data;
-  paramEl = NewLavaDECL();
-  *paramEl = *basePar;
-  paramEl->DECLComment.Destroy();
-  che = NewCHE(paramEl);
-  setDECL->NestedDecls.Append(che);
-  paramEl->ParentDECL = setDECL;
-  paramEl->RefID = setID;
-  paramEl->TypeFlags.EXCL(isAbstract);
-  paramEl->TypeFlags.INCL(constituent);
-  paramEl->SecondTFlags.INCL(overrides);
-  paramEl->WorkFlags.EXCL(selAfter);
-  paramEl->inINCL = 0;
-  refDECL = IDTable.GetDECL(setID);
-  if (!refDECL)
-    return 0;
-  if (refDECL->fromBType == NonBasic)
-    paramEl->DeclDescType = NamedType;
-  else {
-    paramEl->DeclDescType = BasicType;
-    paramEl->BType = refDECL->fromBType;
-  }
-  cheS = new CHETID;
-  cheS->data.nID = paramEl->OwnID;
-  if (isStd)
-    cheS->data.nINCL = 0;
-  else
-    cheS->data.nINCL = 1;
-  paramEl->Supports.Destroy();
-  paramEl->Supports.Append(cheS);
-  GetCategoryFlags(paramEl, catErr);
-  MakeIniFunc(setDECL);
-  return setDECL;
-}
-
-bool CLavaPEDoc::CheckMenu(LavaDECL* formDECL, LavaDECL* classDECL)
-{
-  bool changed = false;
-  LavaDECL* inElClass = &((TEnumDescription*)classDECL->EnumDesc.ptr)->EnumField;
-  LavaDECL* inElForm = &((TEnumDescription*)formDECL->EnumDesc.ptr)->EnumField;
-  LavaDECL* menuTree = &((TEnumDescription*)formDECL->EnumDesc.ptr)->MenuTree;
-  CHE* inDefEl = (CHE*)menuTree->NestedDecls.first;
-  CHEEnumSelId* enumselClass = (CHEEnumSelId*)inElClass->Items.first;
-  CHEEnumSelId* enumselForm = (CHEEnumSelId*)inElForm->Items.first;
-  CHE* inDefEl0 = 0, *ininDefEl;
-  CHEEnumSelId* enumselForm0 = 0;
-  LavaDECL* Decl, *inDecl;
-  bool newItem = false;
-
-  while (enumselClass) { 
-    if (enumselForm && (enumselForm->data.Id == enumselClass->data.Id)) {
-      while (inDefEl && !((LavaDECL*)inDefEl->data)->LocalName.l) {
-        inDefEl0 = inDefEl;
-        inDefEl = (CHE*)inDefEl->successor;
-      }
-      if (inDefEl
-        && (((LavaDECL*)inDefEl->data)->LocalName == enumselClass->data.Id)) {
-        inDefEl0 = inDefEl;
-        inDefEl = (CHE*)inDefEl->successor;
-      }
-    }
-    else {
-      changed = true;
-      if (enumselForm) {
-        for ( ;enumselForm && (enumselForm->data.Id != enumselClass->data.Id);
-               enumselForm = (CHEEnumSelId*)enumselForm->successor);
-        if (enumselForm) {
-          enumselForm = (CHEEnumSelId*)inElForm->Items.Uncouple(enumselForm);
-          inElForm->Items.Insert(enumselForm0, enumselForm);
-          if (inDefEl) {
-            inDefEl0 = (CHE*)inDefEl->predecessor;
-            for ( ;inDefEl && (((LavaDECL*)inDefEl->data)->LocalName != enumselClass->data.Id);
-                   inDefEl = (CHE*)inDefEl->successor);
-            if (inDefEl) {
-              inDefEl = (CHE*)menuTree->NestedDecls.Uncouple(inDefEl);
-              menuTree->NestedDecls.Insert(inDefEl0, inDefEl);
-            }
-            if (inDefEl) {
-              inDefEl0 = inDefEl;
-              inDefEl = (CHE*)inDefEl->successor;
-            }
-            else
-              inDefEl = (CHE*)inDefEl0->successor;
-          } 
-        }
-        else
-          newItem = true;
-      }
-      else
-        newItem = true;
-    }//else
-    if (newItem) { //new item
-      newItem = false;
-      enumselForm = new CHEEnumSelId;
-      inElForm->Items.Insert(enumselForm0, enumselForm);
-      enumselForm->data.Id = enumselClass->data.Id;
-      enumselForm->data.SelectionCode = enumselClass->data.Id;
-      Decl = NewLavaDECL();
-      Decl->Annotation.ptr = new TAnnotation;
-      Decl->Annotation.ptr->FA.ptr = new TAnnotation;
-      Decl->LocalName = enumselClass->data.Id;
-      Decl->DeclType = Attr;
-      Decl->DeclDescType = Undefined;
-      inDefEl = NewCHE(Decl);
-      menuTree->NestedDecls.Insert(inDefEl0, inDefEl);
-      inDecl = NewLavaDECL();
-      inDecl->Annotation.ptr = new TAnnotation;
-      inDecl->Annotation.ptr->FA.ptr = new TAnnotation;
-      inDecl->DeclDescType = LiteralString;
-      inDecl->LitStr = enumselClass->data.Id;
-      ininDefEl = NewCHE(inDecl);
-      Decl->Annotation.ptr->Prefixes.Append(ininDefEl);
-      LavaDECL* inDecl = NewLavaDECL();
-      inDecl->Annotation.ptr = new TAnnotation;
-      inDecl->Annotation.ptr->FA.ptr = new TAnnotation;
-      inDecl->DeclDescType = LiteralString;
-      inDecl->LitStr = enumselClass->data.Id;
-      ininDefEl = NewCHE(inDecl);
-      Decl->Annotation.ptr->Prefixes.Append(ininDefEl);
-      inDefEl0 = inDefEl;
-      inDefEl = (CHE*)inDefEl->successor;
-    }
-    enumselForm0 = enumselForm;
-    enumselForm = (CHEEnumSelId*)enumselForm->successor;
-    enumselClass = (CHEEnumSelId*)enumselClass->successor;
-  }//while
-
-  ChainAnyElem* pred;
-  while (inDefEl) {
-    if (((LavaDECL*)inDefEl->data)->LocalName.l) {
-      changed = true;
-      pred = inDefEl->predecessor;
-      ((TEnumDescription*)formDECL->EnumDesc.ptr)->MenuTree.NestedDecls.Remove(pred);
-      if (pred)
-        inDefEl = (CHE*)pred->successor;
-      else
-        inDefEl = (CHE*)((TEnumDescription*)formDECL->EnumDesc.ptr)->MenuTree.NestedDecls.first;
-    }
-    else
-      inDefEl = (CHE*)inDefEl->successor;
-  }
-  if (enumselForm) {
-    pred = enumselForm->predecessor;
-    while (enumselForm) {
-      changed = true;
-      inElForm->Items.Remove(pred);
-      if (pred)
-        enumselForm = (CHEEnumSelId*)pred->successor;
-      else
-        enumselForm = (CHEEnumSelId*)inElForm->Items.first;
-    }
-  }
-  if (changed) {
-    LavaDECL* inEl = (LavaDECL*)formDECL->Annotation.ptr->MenuDECL.ptr;
-    if (inEl) {
-      ((TAnnotation*)formDECL->Annotation.ptr->FA.ptr)->BasicFlags
-          = ((TAnnotation*)inEl->Annotation.ptr->FA.ptr)->BasicFlags;
-      formDECL->Annotation.ptr->MenuDECL.Destroy();
-    }
-  }
-  return changed;
+    cstr += "Remove this undefined reference?  ";
+  return QMessageBox::question(0,qApp->name(),cstr,QMessageBox::Ok,QMessageBox::Cancel,0);
+  //return AfxMessageBox(cstr, MB_OKCANCEL+MB_ICONINFORMATION);
+  return 0;
 }
 
 
@@ -2085,6 +573,125 @@ bool CLavaPEDoc::CheckForm(LavaDECL* formDECL, int checkLevel)
 }
 
 
+bool CLavaPEDoc::CheckFuncImpl(LavaDECL* funcDECL, int checkLevel, bool& changed)
+{
+  CHE *cheIOEl, *checlassIOEl, *che, *elFound;
+  CHETID *cheid, *cheID;
+  LavaDECL *IOEl, *oldIOEl, *classIOEl, *classFuncDECL =0;
+  CHAINX chain;
+
+  cheID = (CHETID*)funcDECL->Supports.first; //implements
+  if (cheID) 
+    classFuncDECL = IDTable.GetDECL(cheID->data, funcDECL->inINCL);
+  if (!classFuncDECL)
+    return false;
+  funcDECL->TypeFlags.EXCL(isAbstract);
+  funcDECL->TypeFlags.EXCL(isNative);
+  SynFlags classTypeFlags = classFuncDECL->TypeFlags;
+  SynFlags typeFlags = funcDECL->TypeFlags;
+  if (typeFlags != classTypeFlags) {
+    changed = true;
+    funcDECL->TypeFlags = classTypeFlags;
+    funcDECL->SecondTFlags.INCL(funcImpl);
+  }
+  if (checkLevel > CHLV_inUpdateLow) {
+    chain.first = funcDECL->NestedDecls.first;
+    chain.last = funcDECL->NestedDecls.last;
+    funcDECL->NestedDecls.first = 0;
+    funcDECL->NestedDecls.last = 0;
+    funcDECL->NestedDecls = classFuncDECL->NestedDecls;
+    cheIOEl = (CHE*)funcDECL->NestedDecls.first;
+    while (cheIOEl) {
+      if (((LavaDECL*)cheIOEl->data)->DeclDescType == ExecDesc) {
+        che = (CHE*)cheIOEl->successor;
+        funcDECL->NestedDecls.Delete(cheIOEl);
+        cheIOEl = che;
+      }
+      else
+        cheIOEl = (CHE*)cheIOEl->successor;
+    }
+  }
+  cheIOEl = (CHE*)funcDECL->NestedDecls.first;
+  checlassIOEl = (CHE*)classFuncDECL->NestedDecls.first;
+  while (cheIOEl && checlassIOEl
+         && (((LavaDECL*)checlassIOEl->data)->DeclDescType != ExecDesc)
+         && (((LavaDECL*)cheIOEl->data)->DeclDescType != ExecDesc) ) {
+    IOEl = (LavaDECL*)cheIOEl->data;
+    classIOEl = (LavaDECL*)checlassIOEl->data;
+    cheID = new CHETID;
+    cheID->data = TID(classIOEl->OwnID, classIOEl->inINCL);
+    IOEl->Supports.Destroy();
+    IOEl->Supports.Append(cheID);  //implements
+    IOEl->RefID.nINCL = IDTable.IDTab[IOEl->inINCL]->nINCLTrans[IOEl->RefID.nINCL].nINCL;
+    IOEl->inINCL = 0;
+    IOEl->TypeFlags = classIOEl->TypeFlags;
+    IOEl->SecondTFlags.INCL(funcImpl);
+    IOEl->SecondTFlags.EXCL(overrides);
+    IOEl->WorkFlags.EXCL(selAfter);
+    if (checkLevel > CHLV_inUpdateLow) {
+      IOEl->ParentDECL = funcDECL;
+      che = (CHE*)chain.first;
+      elFound = 0;
+      while (che && !elFound) {
+        oldIOEl = (LavaDECL*)che->data;
+        if ((oldIOEl->DeclType == IAttr) || (oldIOEl->DeclType == OAttr)) {
+          cheid = (CHETID*)oldIOEl->Supports.first;
+          if (cheid && (IOEl->OwnID == cheid->data.nID)) 
+            elFound = che;
+          else {
+            che = (CHE*)che->successor;
+            changed = true;
+          }
+        }
+        else {
+          che = (CHE*)che->successor;
+          changed = true;
+        }
+      }
+      if (elFound) {
+        IOEl->OwnID = ((LavaDECL*)elFound->data)->OwnID;
+        *((LavaDECL*)elFound->data) = *IOEl;
+        IOEl = (LavaDECL*)elFound->data;
+        elFound = (CHE*)chain.Uncouple(elFound);
+        funcDECL->NestedDecls.Insert(cheIOEl->predecessor, elFound);
+        che = (CHE*)funcDECL->NestedDecls.Uncouple(cheIOEl);
+        delete che;
+        cheIOEl = elFound;
+        changed = changed || (IOEl->RefID.nID != classIOEl->RefID.nID);
+        typeFlags = classIOEl->TypeFlags;
+//        typeFlags.INCL(isFuncImpl);
+//        typeFlags.EXCL(Overrides);
+        changed = (IOEl->TypeFlags == typeFlags); //true; 20.05.01
+        IOEl->TypeFlags = typeFlags;
+        //IDTable.Change((LavaDECL**)&cheIOEl->data);
+        //che = (CHE*)chain.Uncouple(elFound);
+        //delete che;
+      }
+      else {
+        changed = true;
+        IDTable.NewID((LavaDECL**)&cheIOEl->data);
+        ((LavaDECL*)cheIOEl->data)->WorkFlags.INCL(newTreeNode);
+      }
+
+    }
+    cheIOEl = (CHE*)cheIOEl->successor;
+    checlassIOEl = (CHE*)checlassIOEl->successor;
+  }
+  che = (CHE*)chain.first;
+  while (che && ((((LavaDECL*)che->data)->DeclType == IAttr)
+    || (((LavaDECL*)che->data)->DeclType == OAttr))) {
+    IDTable.DeleteID(((LavaDECL*)che->data)->OwnID);
+    changed = true;
+    che = (CHE*)che->successor;
+  }
+  while (che) {
+    cheIOEl = che;
+    che = (CHE*)che->successor;
+    cheIOEl = (CHE*)chain.Uncouple(cheIOEl);
+    funcDECL->NestedDecls.Append(cheIOEl);
+  }
+  return true;
+}
 
 bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
 {
@@ -2198,7 +805,7 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         implElDecl->SecondTFlags.EXCL(overrides);
         cheImplEl = NewCHE(implElDecl);
         implDECL->NestedDecls.Append(cheImplEl);
-        GetConstrDECL(implElDecl,ExecDef);
+        GetExecDECL(implElDecl,ExecDef);
         implElDecl->ParentDECL = implDECL;
         if (checkLevel > CHLV_inUpdateLow) {
           UpdateNo++;
@@ -2326,561 +933,607 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
 }
 
 
-bool CLavaPEDoc::CheckFuncImpl(LavaDECL* funcDECL, int checkLevel, bool& changed)
+bool CLavaPEDoc::CheckMenu(LavaDECL* formDECL, LavaDECL* classDECL)
 {
-  CHE *cheIOEl, *checlassIOEl, *che, *elFound;
-  CHETID *cheid, *cheID;
-  LavaDECL *IOEl, *oldIOEl, *classIOEl, *classFuncDECL =0;
-  CHAINX chain;
+  bool changed = false;
+  LavaDECL* inElClass = &((TEnumDescription*)classDECL->EnumDesc.ptr)->EnumField;
+  LavaDECL* inElForm = &((TEnumDescription*)formDECL->EnumDesc.ptr)->EnumField;
+  LavaDECL* menuTree = &((TEnumDescription*)formDECL->EnumDesc.ptr)->MenuTree;
+  CHE* inDefEl = (CHE*)menuTree->NestedDecls.first;
+  CHEEnumSelId* enumselClass = (CHEEnumSelId*)inElClass->Items.first;
+  CHEEnumSelId* enumselForm = (CHEEnumSelId*)inElForm->Items.first;
+  CHE* inDefEl0 = 0, *ininDefEl;
+  CHEEnumSelId* enumselForm0 = 0;
+  LavaDECL* Decl, *inDecl;
+  bool newItem = false;
 
-  cheID = (CHETID*)funcDECL->Supports.first; //implements
-  if (cheID) 
-    classFuncDECL = IDTable.GetDECL(cheID->data, funcDECL->inINCL);
-  if (!classFuncDECL)
-    return false;
-  funcDECL->TypeFlags.EXCL(isAbstract);
-  funcDECL->TypeFlags.EXCL(isNative);
-  SynFlags classTypeFlags = classFuncDECL->TypeFlags;
-  SynFlags typeFlags = funcDECL->TypeFlags;
-  if (typeFlags != classTypeFlags) {
-    changed = true;
-    funcDECL->TypeFlags = classTypeFlags;
-    funcDECL->SecondTFlags.INCL(funcImpl);
+  while (enumselClass) { 
+    if (enumselForm && (enumselForm->data.Id == enumselClass->data.Id)) {
+      while (inDefEl && !((LavaDECL*)inDefEl->data)->LocalName.l) {
+        inDefEl0 = inDefEl;
+        inDefEl = (CHE*)inDefEl->successor;
+      }
+      if (inDefEl
+        && (((LavaDECL*)inDefEl->data)->LocalName == enumselClass->data.Id)) {
+        inDefEl0 = inDefEl;
+        inDefEl = (CHE*)inDefEl->successor;
+      }
+    }
+    else {
+      changed = true;
+      if (enumselForm) {
+        for ( ;enumselForm && (enumselForm->data.Id != enumselClass->data.Id);
+               enumselForm = (CHEEnumSelId*)enumselForm->successor);
+        if (enumselForm) {
+          enumselForm = (CHEEnumSelId*)inElForm->Items.Uncouple(enumselForm);
+          inElForm->Items.Insert(enumselForm0, enumselForm);
+          if (inDefEl) {
+            inDefEl0 = (CHE*)inDefEl->predecessor;
+            for ( ;inDefEl && (((LavaDECL*)inDefEl->data)->LocalName != enumselClass->data.Id);
+                   inDefEl = (CHE*)inDefEl->successor);
+            if (inDefEl) {
+              inDefEl = (CHE*)menuTree->NestedDecls.Uncouple(inDefEl);
+              menuTree->NestedDecls.Insert(inDefEl0, inDefEl);
+            }
+            if (inDefEl) {
+              inDefEl0 = inDefEl;
+              inDefEl = (CHE*)inDefEl->successor;
+            }
+            else
+              inDefEl = (CHE*)inDefEl0->successor;
+          } 
+        }
+        else
+          newItem = true;
+      }
+      else
+        newItem = true;
+    }//else
+    if (newItem) { //new item
+      newItem = false;
+      enumselForm = new CHEEnumSelId;
+      inElForm->Items.Insert(enumselForm0, enumselForm);
+      enumselForm->data.Id = enumselClass->data.Id;
+      enumselForm->data.SelectionCode = enumselClass->data.Id;
+      Decl = NewLavaDECL();
+      Decl->Annotation.ptr = new TAnnotation;
+      Decl->Annotation.ptr->FA.ptr = new TAnnotation;
+      Decl->LocalName = enumselClass->data.Id;
+      Decl->DeclType = Attr;
+      Decl->DeclDescType = Undefined;
+      inDefEl = NewCHE(Decl);
+      menuTree->NestedDecls.Insert(inDefEl0, inDefEl);
+      inDecl = NewLavaDECL();
+      inDecl->Annotation.ptr = new TAnnotation;
+      inDecl->Annotation.ptr->FA.ptr = new TAnnotation;
+      inDecl->DeclDescType = LiteralString;
+      inDecl->LitStr = enumselClass->data.Id;
+      ininDefEl = NewCHE(inDecl);
+      Decl->Annotation.ptr->Prefixes.Append(ininDefEl);
+      LavaDECL* inDecl = NewLavaDECL();
+      inDecl->Annotation.ptr = new TAnnotation;
+      inDecl->Annotation.ptr->FA.ptr = new TAnnotation;
+      inDecl->DeclDescType = LiteralString;
+      inDecl->LitStr = enumselClass->data.Id;
+      ininDefEl = NewCHE(inDecl);
+      Decl->Annotation.ptr->Prefixes.Append(ininDefEl);
+      inDefEl0 = inDefEl;
+      inDefEl = (CHE*)inDefEl->successor;
+    }
+    enumselForm0 = enumselForm;
+    enumselForm = (CHEEnumSelId*)enumselForm->successor;
+    enumselClass = (CHEEnumSelId*)enumselClass->successor;
+  }//while
+
+  ChainAnyElem* pred;
+  while (inDefEl) {
+    if (((LavaDECL*)inDefEl->data)->LocalName.l) {
+      changed = true;
+      pred = inDefEl->predecessor;
+      ((TEnumDescription*)formDECL->EnumDesc.ptr)->MenuTree.NestedDecls.Remove(pred);
+      if (pred)
+        inDefEl = (CHE*)pred->successor;
+      else
+        inDefEl = (CHE*)((TEnumDescription*)formDECL->EnumDesc.ptr)->MenuTree.NestedDecls.first;
+    }
+    else
+      inDefEl = (CHE*)inDefEl->successor;
   }
-  if (checkLevel > CHLV_inUpdateLow) {
+  if (enumselForm) {
+    pred = enumselForm->predecessor;
+    while (enumselForm) {
+      changed = true;
+      inElForm->Items.Remove(pred);
+      if (pred)
+        enumselForm = (CHEEnumSelId*)pred->successor;
+      else
+        enumselForm = (CHEEnumSelId*)inElForm->Items.first;
+    }
+  }
+  if (changed) {
+    LavaDECL* inEl = (LavaDECL*)formDECL->Annotation.ptr->MenuDECL.ptr;
+    if (inEl) {
+      ((TAnnotation*)formDECL->Annotation.ptr->FA.ptr)->BasicFlags
+          = ((TAnnotation*)inEl->Annotation.ptr->FA.ptr)->BasicFlags;
+      formDECL->Annotation.ptr->MenuDECL.Destroy();
+    }
+  }
+  return changed;
+}
+
+
+bool CLavaPEDoc::CheckOverInOut(LavaDECL* funcDECL, int checkLevel)
+{
+  SynFlags typeFlags;
+  CHE *cheOverIO, *cheIO, *chenext;
+  LavaDECL *IODECL, *OverFunc;
+  CHETID *cheID, *cheOverID;
+  CHAINX chain;
+  
+  if (!funcDECL->SecondTFlags.Contains(overrides))
+    return false;
+  if (!funcDECL->Supports.first) {
+    if (checkLevel == CHLV_fit) {
+      funcDECL->SecondTFlags.EXCL(overrides);
+      UpdateNo++;
+      return true;
+    }
+    else
+      return false;
+  }
+  cheID = (CHETID*)funcDECL->Supports.first;
+  OverFunc = IDTable.GetDECL(cheID->data, funcDECL->inINCL);
+  while (!OverFunc && cheID) {
+    cheID = (CHETID*)cheID->successor;
+    if (cheID)
+      OverFunc = IDTable.GetDECL(cheID->data, funcDECL->inINCL);
+  }
+  if (!OverFunc) {
+    if (checkLevel == CHLV_fit) {
+      funcDECL->Supports.Destroy();
+      funcDECL->SecondTFlags.EXCL(overrides);
+      UpdateNo++;
+      return true;
+    }
+    else
+      return false;
+  }
+  bool catErr, changed = false, found;
+  /*
+  if (funcDECL->TypeFlags.Contains(inheritsBody))
+    if (OverFunc->TypeFlags.Contains(isNative))
+      funcDECL->TypeFlags.INCL(isNative);
+    else
+      funcDECL->TypeFlags.EXCL(isNative);
+  */
+  if (!funcDECL->ParentDECL->TypeFlags.Contains(isAbstract)) 
+    funcDECL->TypeFlags.EXCL(isAbstract);
+  if (funcDECL->DeclType == Attr) {
+    if (!OverFunc->TypeFlags.Contains(isConst) && funcDECL->TypeFlags.Contains(isConst)) {
+      funcDECL->TypeFlags.EXCL(isConst);
+      changed = true;
+    }
+  }
+  else
+    if (OverFunc->TypeFlags.Contains(isConst) && !funcDECL->TypeFlags.Contains(isConst)) {
+      funcDECL->TypeFlags.INCL(isConst);
+      changed = true;
+    }
+  if (!OverFunc->TypeFlags.Contains(isProtected) && funcDECL->TypeFlags.Contains(isProtected)) {
+    funcDECL->TypeFlags.EXCL(isProtected);
+    changed = true;
+  }
+  if (funcDECL->DeclType == Attr)
+    return changed;
+
+  cheOverIO = (CHE*)OverFunc->NestedDecls.first;
+  if (checkLevel > CHLV_noCheck) {
     chain.first = funcDECL->NestedDecls.first;
     chain.last = funcDECL->NestedDecls.last;
     funcDECL->NestedDecls.first = 0;
     funcDECL->NestedDecls.last = 0;
-    funcDECL->NestedDecls = classFuncDECL->NestedDecls;
-    cheIOEl = (CHE*)funcDECL->NestedDecls.first;
-    while (cheIOEl) {
-      if (((LavaDECL*)cheIOEl->data)->DeclDescType == ExecDesc) {
-        che = (CHE*)cheIOEl->successor;
-        funcDECL->NestedDecls.Delete(cheIOEl);
-        cheIOEl = che;
+    while (cheOverIO && (((LavaDECL*)cheOverIO->data)->DeclDescType != ExecDesc)) {
+      cheID = 0;
+      cheIO = 0;
+      found = false;
+      cheIO = (CHE*)chain.first;
+      while (cheIO && !found && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
+        for (cheID = (CHETID*)((LavaDECL*)cheIO->data)->Supports.first;
+          cheID && (cheID->data != TID(((LavaDECL*)cheOverIO->data)->OwnID, ((LavaDECL*)cheOverIO->data)->inINCL));
+          cheID = (CHETID*)cheID->successor);
+        found = cheID != 0;
+        if (!found)
+          cheIO = (CHE*)cheIO->successor;
+      }
+      if (found) 
+        cheIO = (CHE*)chain.Uncouple(cheIO);
+      else {
+        UpdateNo++;
+        IODECL = NewLavaDECL();
+        *IODECL = *(LavaDECL*)cheOverIO->data;
+        IODECL->DECLComment.Destroy();
+        IODECL->Supports.Destroy();
+        IODECL->inINCL = 0;
+        IODECL->OwnID = -1;
+        if (IODECL->RefID.nID >= 0)
+          IODECL->RefID.nINCL = IDTable.IDTab[OverFunc->inINCL]->nINCLTrans[IODECL->RefID.nINCL].nINCL;
+        IODECL->ParentDECL = funcDECL;
+        IODECL->SecondTFlags.INCL(overrides);
+        IODECL->WorkFlags.EXCL(selAfter);
+        cheIO = NewCHE(IODECL);
+        if (checkLevel > CHLV_inUpdateLow) {
+          IDTable.NewID((LavaDECL**)&cheIO->data);
+          IODECL->WorkFlags.INCL(newTreeNode);
+        }
+        if (checkLevel > CHLV_inUpdateHigh) 
+          modified = true;
+        changed = true;
+      }
+      if (checkLevel > CHLV_inUpdateLow) {
+        typeFlags = ((LavaDECL*)cheIO->data)->TypeFlags;
+        GetCategoryFlags((LavaDECL*)cheIO->data, catErr);
+        changed = changed || (typeFlags != ((LavaDECL*)cheIO->data)->TypeFlags);
+      }
+      if (cheIO)
+        funcDECL->NestedDecls.Append(cheIO);
+      cheOverIO = (CHE*)cheOverIO->successor;
+    }
+    cheIO = (CHE*)chain.first;
+    while (cheIO) {
+      if (((LavaDECL*)cheIO->data)->DeclDescType == ExecDesc) {
+        chenext =(CHE*)cheIO->successor;
+        cheIO = (CHE*)chain.Uncouple(cheIO);
+        funcDECL->NestedDecls.Append(cheIO);
+        cheIO = chenext;
       }
       else
-        cheIOEl = (CHE*)cheIOEl->successor;
+        cheIO = (CHE*)cheIO->successor;
+    }
+   if (checkLevel > CHLV_inUpdateLow) {
+      cheIO = (CHE*)chain.first;
+      while (cheIO) {
+        UpdateNo++;
+        IDTable.DeleteID(((LavaDECL*)cheIO->data)->OwnID);
+        changed = true;
+        cheIO = (CHE*)cheIO->successor;
+      }
     }
   }
-  cheIOEl = (CHE*)funcDECL->NestedDecls.first;
-  checlassIOEl = (CHE*)classFuncDECL->NestedDecls.first;
-  while (cheIOEl && checlassIOEl
-         && (((LavaDECL*)checlassIOEl->data)->DeclDescType != ExecDesc)
-         && (((LavaDECL*)cheIOEl->data)->DeclDescType != ExecDesc) ) {
-    IOEl = (LavaDECL*)cheIOEl->data;
-    classIOEl = (LavaDECL*)checlassIOEl->data;
-    cheID = new CHETID;
-    cheID->data = TID(classIOEl->OwnID, classIOEl->inINCL);
-    IOEl->Supports.Destroy();
-    IOEl->Supports.Append(cheID);  //implements
-    IOEl->RefID.nINCL = IDTable.IDTab[IOEl->inINCL]->nINCLTrans[IOEl->RefID.nINCL].nINCL;
-    IOEl->inINCL = 0;
-    IOEl->TypeFlags = classIOEl->TypeFlags;
-    IOEl->SecondTFlags.INCL(funcImpl);
-    IOEl->SecondTFlags.EXCL(overrides);
-    IOEl->WorkFlags.EXCL(selAfter);
-    if (checkLevel > CHLV_inUpdateLow) {
-      IOEl->ParentDECL = funcDECL;
-      che = (CHE*)chain.first;
-      elFound = 0;
-      while (che && !elFound) {
-        oldIOEl = (LavaDECL*)che->data;
-        if ((oldIOEl->DeclType == IAttr) || (oldIOEl->DeclType == OAttr)) {
-          cheid = (CHETID*)oldIOEl->Supports.first;
-          if (cheid && (IOEl->OwnID == cheid->data.nID)) 
-            elFound = che;
-          else {
-            che = (CHE*)che->successor;
-            changed = true;
-          }
-        }
-        else {
-          che = (CHE*)che->successor;
+  else {
+    cheIO = (CHE*)funcDECL->NestedDecls.first;
+    while (cheIO) {
+      UpdateNo++;
+      changed = true;
+      ((LavaDECL*)cheIO->data)->Supports.Destroy();
+      cheIO = (CHE*)cheIO->successor;
+    }
+  }
+  cheOverID = (CHETID*)funcDECL->Supports.first;
+  while (cheOverID) {
+    OverFunc = IDTable.GetDECL(cheOverID->data, funcDECL->inINCL);
+    if (OverFunc) {
+      cheOverIO = (CHE*)OverFunc->NestedDecls.first;
+      cheIO = (CHE*)funcDECL->NestedDecls.first;
+      while (cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
+        for (cheID = (CHETID*)((LavaDECL*)cheIO->data)->Supports.first;
+          cheID && (cheID->data != TID(((LavaDECL*)cheOverIO->data)->OwnID, ((LavaDECL*)cheOverIO->data)->inINCL));
+          cheID = (CHETID*)cheID->successor);
+        if (!cheID) {
+          cheID = new CHETID;
+          cheID->data = TID(((LavaDECL*)cheOverIO->data)->OwnID, ((LavaDECL*)cheOverIO->data)->inINCL);
+          ((LavaDECL*)cheIO->data)->Supports.Append(cheID);
+          UpdateNo++;
           changed = true;
         }
+        cheIO = (CHE*)cheIO->successor;
+        cheOverIO = (CHE*)cheOverIO->successor;
       }
-      if (elFound) {
-        IOEl->OwnID = ((LavaDECL*)elFound->data)->OwnID;
-        *((LavaDECL*)elFound->data) = *IOEl;
-        IOEl = (LavaDECL*)elFound->data;
-        elFound = (CHE*)chain.Uncouple(elFound);
-        funcDECL->NestedDecls.Insert(cheIOEl->predecessor, elFound);
-        che = (CHE*)funcDECL->NestedDecls.Uncouple(cheIOEl);
-        delete che;
-        cheIOEl = elFound;
-        changed = changed || (IOEl->RefID.nID != classIOEl->RefID.nID);
-        typeFlags = classIOEl->TypeFlags;
-//        typeFlags.INCL(isFuncImpl);
-//        typeFlags.EXCL(Overrides);
-        changed = (IOEl->TypeFlags == typeFlags); //true; 20.05.01
-        IOEl->TypeFlags = typeFlags;
-        //IDTable.Change((LavaDECL**)&cheIOEl->data);
-        //che = (CHE*)chain.Uncouple(elFound);
-        //delete che;
+    }
+    cheOverID = (CHETID*)cheOverID->successor;
+  }
+  cheIO = (CHE*)funcDECL->NestedDecls.first;
+  while (cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
+    cheID = (CHETID*)((LavaDECL*)cheIO->data)->Supports.first;
+    while (cheID) {
+      IODECL = IDTable.GetDECL(cheID->data, funcDECL->inINCL);
+      if (IODECL) {
+        for (cheOverID = (CHETID*)funcDECL->Supports.first;
+            cheOverID && (cheOverID->data != TID(IODECL->ParentDECL->OwnID, IODECL->inINCL));
+            cheOverID = (CHETID*)cheOverID->successor);
       }
-      else {
+      else
+        cheOverID = 0;
+      if (!cheOverID) {
+        cheOverID = (CHETID*)cheID->successor;
+        ((LavaDECL*)cheIO->data)->Supports.Remove(cheID->predecessor);
+        cheID = cheOverID;
         changed = true;
-        IDTable.NewID((LavaDECL**)&cheIOEl->data);
-        ((LavaDECL*)cheIOEl->data)->WorkFlags.INCL(newTreeNode);
       }
+      else
+        cheID = (CHETID*)cheID->successor;
+    }
+    cheIO = (CHE*)cheIO->successor;
+  }
 
-    }
-    cheIOEl = (CHE*)cheIOEl->successor;
-    checlassIOEl = (CHE*)checlassIOEl->successor;
-  }
-  che = (CHE*)chain.first;
-  while (che && ((((LavaDECL*)che->data)->DeclType == IAttr)
-    || (((LavaDECL*)che->data)->DeclType == OAttr))) {
-    IDTable.DeleteID(((LavaDECL*)che->data)->OwnID);
-    changed = true;
-    che = (CHE*)che->successor;
-  }
-  while (che) {
-    cheIOEl = che;
-    che = (CHE*)che->successor;
-    cheIOEl = (CHE*)chain.Uncouple(cheIOEl);
-    funcDECL->NestedDecls.Append(cheIOEl);
-  }
-  return true;
-}
 
-bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int checkLevel)
-{
-  LavaDECL *ifaceElDecl, *newimplElDecl;
-  CHE *cheImplEl, *cheI=0, *cheImpl=0;
-  bool toImpl, changed = false;
-  CHETVElem *El = (CHETVElem*)classDecl->VElems.VElems.first;
-  cheImpl = (CHE*)implDECL->NestedDecls.first;
-  if (!El) {
-    cheI = (CHE*)classDecl->NestedDecls.first;
-    if (!cheI) {
-      cheI = cheImpl;
-      cheImpl = 0;
-    }
-  }
-  while (El || cheI) { 
-    if (El) {
-      ifaceElDecl = IDTable.GetDECL(El->data.VTEl);
-      toImpl = ifaceElDecl && (ifaceElDecl->DeclType == Attr) 
-               && ifaceElDecl->TypeFlags.Contains(isAbstract)
-               && ifaceElDecl->TypeFlags.Contains(hasSetGet);
-    }
-    else {
-      ifaceElDecl = (LavaDECL*)cheI->data;
-      toImpl = ifaceElDecl && (ifaceElDecl->DeclType == Attr)
-               && ifaceElDecl->TypeFlags.Contains(hasSetGet)
-               && !ifaceElDecl->TypeFlags.Contains(isAbstract);
-//               && !ifaceElDecl->TypeFlags.Contains(inheritsBody);
-    }
-    if (toImpl) {
-      newimplElDecl = MakeOneSetGet(isPropGet, implDECL, ifaceElDecl, checkLevel);
-      if (newimplElDecl) {
-        cheImplEl = NewCHE(newimplElDecl);
-        implDECL->NestedDecls.Append(cheImplEl);
-        if (checkLevel > CHLV_inUpdateLow) {
-          IDTable.NewID((LavaDECL**)&cheImplEl->data);
-          newimplElDecl->ParentDECL = implDECL;
-          newimplElDecl->WorkFlags.INCL(newTreeNode);
+        /*
+        ((LavaDECL*)cheIO->data)->Supports.Destroy();
+        while (cheOverIO 
+          && ( ((LavaDECL*)cheOverIO->data)->LocalName != ((LavaDECL*)cheIO->data)->LocalName)) {
+          cheOverIO = (CHE*)cheOverIO->successor;
+          changed = true;
         }
-        if (checkLevel > CHLV_inUpdateHigh) 
-          modified = true;
-        changed = true;
-      }
-      newimplElDecl = MakeOneSetGet(isPropSet, implDECL, ifaceElDecl, checkLevel);
-      if (newimplElDecl) {
-        cheImplEl = NewCHE(newimplElDecl);
-        implDECL->NestedDecls.Append(cheImplEl);
-        newimplElDecl->ParentDECL = implDECL;
-        if (checkLevel > CHLV_inUpdateLow) {
+        if (cheOverIO) {
+          cheID = new CHETID;
+          cheID->data = TID(((LavaDECL*)cheOverIO->data)->OwnID, ((LavaDECL*)cheOverIO->data)->inINCL);
+          ((LavaDECL*)cheIO->data)->Supports.Append(cheID);
           UpdateNo++;
-          IDTable.NewID((LavaDECL**)&cheImplEl->data);
-          newimplElDecl->WorkFlags.INCL(newTreeNode);
         }
-        if (checkLevel > CHLV_inUpdateHigh) 
-          modified = true;
-        changed = true;
+        cheIO = (CHE*)cheIO->successor;
       }
     }
-    if (El) {
-      El = (CHETVElem*)El->successor;
-      if (!El) {
-        cheI = (CHE*)classDecl->NestedDecls.first;
-        if (!cheI) {
-          cheI = cheImpl;
-          cheImpl = 0;
-        }
-      }
-    }
-    else {
-      cheI = (CHE*)cheI->successor;
-      if (!cheI) {
-        cheI = cheImpl;
-        cheImpl = 0;
-      }
-    }
-
-  }//all properties
+    cheOverID = (CHETID*)cheOverID->successor;
+  }
+  */
   return changed;
 }
 
-LavaDECL* CLavaPEDoc::MakeOneSetGet(TypeFlag setgetflag, LavaDECL* implDECL,
-                                        LavaDECL* propDecl, int checkLevel)
+bool CLavaPEDoc::CollectP(const TIDs& paramIDs, LavaDECL* collectDECL)
 {
-  LavaDECL *setGet, *IOEl, *returnDECL=0;
-  CHE *cheSetGet, *cheIOEl;
-  TID fID, supID;
-  bool found = false;
+  TIDs refIDs, baseParamIDs;
+  CHETID *cheID, *cheIDbase, *cheIDVal;
+  LavaDECL *ElDECL, *bDECL;
 
-  cheSetGet = (CHE*)implDECL->NestedDecls.first;
-  fID = TID(propDecl->OwnID, propDecl->inINCL);
-  if (cheSetGet)
-    setGet = (LavaDECL*)cheSetGet->data;
-  while (cheSetGet && !found) {
-    if ((setGet->DeclType == Function)  
-        && setGet->TypeFlags.Contains(setgetflag)
-        && setGet->Supports.first) {
-      supID = ((CHETID*)setGet->Supports.first)->data;
-      supID.nINCL = IDTable.IDTab[implDECL->inINCL]->nINCLTrans[supID.nINCL].nINCL;
-      found = (supID == fID);
+  cheID = (CHETID*)paramIDs.first;
+  while (cheID) {
+    ElDECL = IDTable.GetDECL(cheID->data);
+    if (ElDECL) {
+      ElDECL->WorkFlags.INCL(checkmark);
+      ElDECL->ParentDECL->WorkFlags.INCL(checkmark);
+      cheIDVal = new CHETID;
+      cheIDVal->data =  TID(ElDECL->RefID.nID, IDTable.IDTab[ElDECL->inINCL]->nINCLTrans[ElDECL->RefID.nINCL].nINCL);
+      refIDs.Append(cheIDVal);
+      if (ElDECL->Supports.first) {
+        cheIDbase = new CHETID;
+        cheIDbase->data = ((CHETID*)ElDECL->Supports.first)->data;
+        cheIDbase->data.nINCL = IDTable.IDTab[ElDECL->inINCL]->nINCLTrans[cheIDbase->data.nINCL].nINCL;
+        baseParamIDs.Append(cheIDbase);
+      }
     }
-    if (!found) {
-      cheSetGet = (CHE*)cheSetGet->successor;
-      if (cheSetGet)
-        setGet = (LavaDECL*)cheSetGet->data;
+    cheID = (CHETID*)cheID->successor;
+  }
+  if (baseParamIDs.first)
+    CollectP(baseParamIDs, 0);
+  collectPattern(ElDECL->ParentDECL, paramIDs, refIDs);
+  if (baseParamIDs.first) {
+    bDECL = IDTable.GetDECL(((CHETID*)baseParamIDs.first)->data);
+    if (bDECL)
+      bDECL->ParentDECL->ResetCheckmarks();
+  }
+  if (collectDECL) {
+//    RmDuplicates(collectDECL->ParentDECL);
+    *collectDECL = *ElDECL->ParentDECL;
+    collectDECL->DeclType = PatternDef;
+    ShrinkCollectDECL(collectDECL);
+    collectDECL->ResetCheckmarks();
+    //paramDECL->ParentDECL->ResetCheckmarks();
+    return collectDECL->NestedDecls.first != 0;
+  }
+  else 
+    return true;
+}
+
+bool CLavaPEDoc::CollectPattern(LavaDECL *paramDECL, LavaDECL* collectDECL)
+{
+  TIDs paramIDs;
+  CHETID  *cheID;
+  CHE* cheEl;
+  LavaDECL* ElDECL;
+
+  if (paramDECL->DeclType == PatternDef) {
+    cheEl = (CHE*)paramDECL->NestedDecls.first;
+    while (cheEl) {
+      ElDECL = (LavaDECL*)cheEl->data;
+      cheID = new CHETID;
+      cheID->data = TID(ElDECL->OwnID, ElDECL->inINCL);
+      paramIDs.Append(cheID);
+      cheEl = (CHE*)cheEl->successor;
     }
   }
-  if (!cheSetGet) { //function not found, then make it
-    setGet = NewLavaDECL();
-    setGet->DeclType = Function; // = *ifaceElDecl;
-    setGet->DeclDescType = StructDesc;
-    setGet->SecondTFlags.INCL(funcImpl);
-    setGet->TypeFlags.INCL(setgetflag);
-//    setGet->TypeFlags.INCL(isVirtual);
-    CHETID* cheID = new CHETID;
-    cheID->data = fID;
-    setGet->Supports.Destroy();
-    setGet->Supports.Append(cheID);  //implements get property
-    setGet->inINCL = 0;
-    returnDECL = setGet;
-    IOEl = NewLavaDECL();
-    IOEl->SecondTFlags.INCL(funcImpl);
-    if (setgetflag == isPropGet)
-      IOEl->DeclType = OAttr;
-    else
-      IOEl->DeclType = IAttr;
-    IOEl->DeclDescType = NamedType;
-    IOEl->inINCL = 0;
-    cheIOEl = NewCHE(IOEl);
-    setGet->NestedDecls.Append(cheIOEl);
-    if (checkLevel == CHLV_inUpdateHigh)
-      implDECL->WorkFlags.INCL(newTreeNode);;
+  else {
+    paramDECL->WorkFlags.INCL(checkmark);
+    paramDECL->ParentDECL->WorkFlags.INCL(checkmark);
+    cheID = new CHETID;
+    cheID->data = TID(paramDECL->OwnID, paramDECL->inINCL);
+    paramIDs.Append(cheID);
   }
-  if (setgetflag == isPropGet) {
-    setGet->LocalName = DString("Get_") + propDecl->LocalName;
-    setGet->TypeFlags.INCL(isConst);
-  }
-  else
-    setGet->LocalName = DString("Set_") + propDecl->LocalName;
-  cheIOEl = (CHE*)setGet->NestedDecls.first;
-  IOEl = (LavaDECL*)cheIOEl->data;
-  IOEl->RefID = TID(propDecl->RefID.nID, IDTable.IDTab[propDecl->inINCL]->nINCLTrans[propDecl->RefID.nINCL].nINCL);
-  IOEl->LocalName = propDecl->LocalName;
-  if (propDecl->TypeFlags.Contains(trueObjCat))
-    IOEl->TypeFlags.INCL(trueObjCat);
-  else
-    IOEl->TypeFlags.EXCL(trueObjCat);
-  if (propDecl->TypeFlags.Contains(definesObjCat))
-    IOEl->TypeFlags.INCL(definesObjCat);
-  else
-    IOEl->TypeFlags.EXCL(definesObjCat);
-  if (propDecl->TypeFlags.Contains(stateObject))
-    IOEl->TypeFlags.INCL(stateObject);
-  else
-    IOEl->TypeFlags.EXCL(stateObject);
-                                 
-  setGet->WorkFlags.INCL(checkmark);
-  return returnDECL;
+  return CollectP(paramIDs, collectDECL);
 }
 
 
-wxDocument* CLavaPEDoc::FindOpenDoc(const DString& fn)
+bool CLavaPEDoc::collectPattern(LavaDECL *decl, const TIDs& paramIDs, const TIDs& refIDs)
 {
-  POSITION pos; 
-  wxDocManager* mana = wxDocManager::GetDocumentManager();
-  pos = mana->GetFirstDocPos();
-  CLavaPEDoc* doc;
-  DString absName;
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
-    if (doc != this) {
-      absName  = doc->IDTable.IDTab[0]->FileName;
-      AbsPathName(absName, doc->IDTable.DocDir);
-      if (SameFile(absName, fn)) {
-        mana->DocPosRelease(pos);
-        return doc;
-      }
+  LavaDECL* elDECL /*, *baseElDECL -siehe unten*/;
+  CHE *che = (CHE*)decl->NestedDecls.first;
+  CHETID* cheID;
+  TID id;
+  bool inp, inPC = false;
+
+  while (che) {
+    elDECL = (LavaDECL*)che->data;
+    inp = false;
+    if (elDECL->DeclType == Interface) {
+      //is this interface value of a virtual type in the collection of virtual types to be ovverridden 
+      id =  TID(elDECL->OwnID, elDECL->inINCL);
+      for (cheID = (CHETID*)refIDs.first; !inp && (cheID != 0); cheID = (CHETID*)cheID->successor)
+        if (cheID->data == id)
+          inp = true;
+      if (collectPattern(elDECL, paramIDs, refIDs))
+        inp = true;
     }
-  }
-  return 0;
-}
-
-
-void CLavaPEDoc::UpdateMoveInDocs(const DString& clipDocFn)
-{
-  CHESimpleSyntax* cheSyn;
-  POSITION pos; 
-  DString absDropFn, *str;//, str0, absName, absName2, dragFn;
-  int dragIncl = -1, dropIncl = -1;
-  LavaDECL* oldTopDECL, *newTopDECL;
-  CLavaPEHint* hint;
-  CLavaPEDoc* doc, *dragDoc=0;
-  CLavaPEView* view;
-  SynFlags firstLast;
-
-  absDropFn  = IDTable.IDTab[0]->FileName;
-  AbsPathName(absDropFn, IDTable.DocDir);
-  firstLast.INCL(multiDocHint);
-  this->hasHint = true;
-  wxDocManager* mana = wxDocManager::GetDocumentManager();
-  pos = mana->GetFirstDocPos();
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
-    dragIncl = -1;
-    dropIncl = -1;
-    //dropFn = absName;
-    //dragFn = clipDoc;
-    if (absDropFn == clipDocFn)
-      dragDoc = this;
-    //RelPathName(dropFn, doc->IDTable.DocDir);
-    //RelPathName(dragFn, doc->IDTable.DocDir);
-    //absName2 = doc->IDTable.IDTab[0]->FileName;
-    //AbsPathName(absName2, doc->IDTable.DocDir);
-    if (!dragDoc && SameFile(doc->IDTable.IDTab[0]->FileName, doc->IDTable.DocDir, clipDocFn)) {
-      dragDoc = doc;
-      view = (CLavaPEView*)doc->DragView;
-      if (view && view->pDeclDragP && view->CollectDECL) {
-        /*
-        CTreeItem* dragParent = view->GetListView()->GetParentItem(view->m_hitemDrag);
-        TItemData* dd = (TItemData*)view->GetListView()->GetItemData(dragParent);
-        DWORD d4 = ((TItemData*)view->GetListView()->GetItemData(dragParent))->synEl;
-        */
-        FIRSTLAST(doc, firstLast);
-        DWORD d4 = (DWORD)view->pDeclDragP;
-        DString* str2 = 0;
-        if (view->CollectDECL->FullName.l)
-          str2 = new DString(view->CollectDECL->FullName);
-        hint = new CLavaPEHint(CPECommand_Delete, doc, firstLast, (DWORD)view->CollectDECL, (DWORD)str2, (DWORD)view->CollectPos, d4, 0);
-        doc->UpdateDoc(view, FALSE, hint);
-        view->pDeclDragP = 0;
-        delete hint; //??
-      }
-    }
-    cheSyn = (CHESimpleSyntax*)doc->mySynDef->SynDefTree.first;
-    while (cheSyn && ((dropIncl<0) || (dragIncl<0))) {
-      if ( SameFile(cheSyn->data.SyntaxName, doc->IDTable.DocDir, absDropFn))//, doc->IDTable.DocDir))
-        dropIncl = cheSyn->data.nINCL;
-      if (SameFile(cheSyn->data.SyntaxName, doc->IDTable.DocDir, clipDocFn)) 
-        dragIncl = cheSyn->data.nINCL;
-      cheSyn = (CHESimpleSyntax*)cheSyn->successor;
-    }
-    if ((dragIncl >= 0) && (dropIncl >= 0)) {
-      oldTopDECL = ((CHESimpleSyntax*)doc->mySynDef->SynDefTree.first)->data.TopDef.ptr;
-      newTopDECL = NewLavaDECL();
-      *newTopDECL = *oldTopDECL;
-      //Change IDs
-      doc->IDTable.StartClipIDs(dragIncl, dropIncl, &this->IDTable);
-      IDTable.StartClipIDs(dragIncl, dropIncl, &this->IDTable);
-      doc->IDTable.ChangeRefsToClipIDs(newTopDECL);
-      if (doc->IDTable.hasRefToClipID) {
-        ((CHESimpleSyntax*)doc->mySynDef->SynDefTree.first)->data.TopDef.ptr = newTopDECL;
-        doc->IDTable.DownChange(&((CHESimpleSyntax*)doc->mySynDef->SynDefTree.first)->data.TopDef.ptr);
-        str = new DString(newTopDECL->LocalName);
-        FIRSTLAST(doc, firstLast);
-        hint = new CLavaPEHint(CPECommand_Change, doc, firstLast, (DWORD)oldTopDECL, (DWORD)str, 0,  (DWORD)&((CHESimpleSyntax*)doc->mySynDef->SynDefTree.first)->data.TopDef.ptr);
-        doc->UndoMem.AddToMem(hint);
-        UpdateNo++;
-      }
-      else {
-        doc->IDTable.DragINCL = 0;
-        doc->IDTable.DropINCL = 0;
-        delete newTopDECL;
-      }
-    }
-  } 
-}
-
-void CLavaPEDoc::SetLastHints(bool fromDragDrop, bool otherDocs)
-{  //finish of drag and drop and change include file from InclView
-  POSITION pos; 
-  DString str0;
-  CExecSetImpls *impls;
-  CLavaPEDoc* doc;
-
-  wxDocManager* mana = wxDocManager::GetDocumentManager(); 
-  pos = mana->GetFirstDocPos();
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
-    if (doc->hasHint) {
-      doc->SetLastHint(false);
-      if (otherDocs)
-        doc->UpdateOtherDocs(this, str0, 0, false);
-    }
-  } 
-  pos = mana->GetFirstDocPos();
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
-    if (doc->hasHint || doc->drawView) {
-      doc->hasHint = false;
-      if (fromDragDrop) {
-        doc->drawView = false;
-        impls = new CExecSetImpls(doc->mySynDef);
-        delete impls;
-        ((CLavaPEView*)doc->MainView)->m_hitemDrag = 0;
-      }
-      doc->UpdateAllViews(NULL, 3, 0);
-    }
-  }
-}
-
-
-
-void CLavaPEDoc::UpdateOtherDocs(wxDocument* skipOther, DString& inclFile, int newINCL, bool synDel, SynFlags flag)
-{
-  CHESimpleSyntax* cheSyn;
-  CLavaPEDoc* doc;
-  CLavaPEHint* hint;
-  DString absDropFn, str, relInclFile; //,absName;
-  CHAINX chain;
-  CHE* che;
-  POSITION pos; 
-  bool isNew;
-  CExecSetImpls *impls;
-  wxDocManager* mana = wxDocManager::GetDocumentManager() ;
-
-  absDropFn = IDTable.IDTab[0]->FileName;
-  AbsPathName(absDropFn, IDTable.DocDir);
-
-  pos = mana->GetFirstDocPos();
-  NSTLavaDECL topDef;
-  DString oldTopName;
-  if (skipOther && !((CLavaPEView*)((CLavaPEDoc*)skipOther)->UndoMem.DrawTree))
-    flag.INCL(noDrawHint);
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
-    //dropFn = absName;
-    //RelPathName(dropFn, doc->IDTable.DocDir);
-    if (inclFile.l) {
-      relInclFile = inclFile;
-      RelPathName(relInclFile, doc->IDTable.DocDir);
-    }
-    cheSyn = (CHESimpleSyntax*)doc->mySynDef->SynDefTree.first;
-    if (cheSyn)
-      cheSyn = (CHESimpleSyntax*)cheSyn->successor;
-    for ( ;cheSyn && !SameFile(cheSyn->data.SyntaxName,doc->IDTable.DocDir, absDropFn);//,doc->IDTable.DocDir);
-           cheSyn = (CHESimpleSyntax*)cheSyn->successor);
-    if (cheSyn) {
-      if (inclFile.l) {
-        if (synDel)
-          doc->IDTable.RemoveFromInclTrans(cheSyn->data.nINCL, relInclFile);
-        else {
-          if (doc->IncludeSyntax(inclFile, isNew)) {
-            if (isNew) {
-              doc->Modify(true);
-              impls = new CExecSetImpls(doc->mySynDef);
-              delete impls;
-              doc->UpdateNo++;
-              if (skipOther)
-                doc->drawView = true;
-              else {
-                hint = new CLavaPEHint(CPECommand_FromOtherDoc, doc, flag);
-                doc->UpdateAllViews(NULL, CHLV_showError, hint);
-                delete hint;
-              }
-            }
-            else
-              doc->IDTable.SetInclTransValid(cheSyn->data.nINCL, relInclFile, newINCL);
-          }
-        }
-      }
-      else {
-        topDef.ptr = cheSyn->data.TopDef.ptr;
-        cheSyn->data.TopDef.ptr = 0;
-        cheSyn->data.TopDef = ((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef;
-        doc->IDTable.AddSimpleSyntax(mySynDef, IDTable.DocDir, true, cheSyn);
-        if (cheSyn->data.LocalTopName.l) {
-          oldTopName = cheSyn->data.TopDef.ptr->LocalName;
-          doc->IDTable.SetAsName(cheSyn->data.nINCL, cheSyn->data.LocalTopName, oldTopName, cheSyn->data.TopDef.ptr);
-        }
-        doc->UpdateNo++;
-        if (skipOther)
-          doc->drawView = true;
-        else {
-          hint = new CLavaPEHint(CPECommand_FromOtherDoc, doc, flag);//(const unsigned long) 0);
-          doc->changeInUpdate = false;
-          impls = new CExecSetImpls(doc->mySynDef);
-          delete impls;
-          doc->UpdateAllViews(NULL, CHLV_showError, hint);
-          if (doc->changeInUpdate) {
-            che = NewCHE((AnyType*)doc);
-            chain.Append(che);
-            doc->changeInUpdate = false;
-          }
-          delete hint;
-        }
-        UpdateNo++;
-        topDef.Destroy();
-      }
-    }
-  }
-  for (che = (CHE*)chain.first; che; che = (CHE*)che->successor) {
-    ((CLavaPEDoc*)che->data)->UpdateOtherDocs(0, str, 0, false, flag);
-    che->data = 0;
-  }
-}
-
-
-void CLavaPEDoc::FindReferences(DString& allNames, CFindData& fw)
-{
-  unsigned pos, pp;
-//  DString absFileName;
-  bool found;
-//  TID refID;
-  int ii;
-  
-  //refID.nID = id.nID;
-  TID id = fw.refTid;
-  CHESimpleSyntax *simpleSyntax = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
-  while (simpleSyntax) {
-    if (simpleSyntax->data.TopDef.ptr) {
-      found = false;
-      fw.fname = IDTable.IDTab[simpleSyntax->data.nINCL]->FileName;
-      AbsPathName(fw.fname, IDTable.DocDir);
-      for (ii = 0; (ii < IDTable.IDTab[simpleSyntax->data.nINCL]->maxTrans)
-                   && (!IDTable.IDTab[simpleSyntax->data.nINCL]->nINCLTrans[ii].isValid
-                       || (IDTable.IDTab[simpleSyntax->data.nINCL]->nINCLTrans[ii].nINCL != id.nINCL)); ii++);
-      fw.refTid.nINCL = ii;
-      pp = 0;
-      while ((pp < allNames.l) && !found) {
-        if (allNames.Contains (fw.fname,pp,pos)) {
-          found = (allNames[pos-1] == ',') && (allNames[pos+fw.fname.l] == ',');
-          if (!found)
-            pp = pos + fw.fname.l;
+    else {
+      if (elDECL->DeclType == Function) {
+        if (elDECL->TypeFlags.Contains(forceOverride)) {
+          elDECL->WorkFlags.INCL(checkmark);
+          elDECL->Inherits.Destroy();
+          inp = true;
         }
         else
-          pp = allNames.l;
-      }
-      if (!found) {
-        allNames = allNames + fw.fname + komma;
-        DownFind(simpleSyntax->data.TopDef.ptr, fw);//absFileName, refID, enumID, fw);
+          inp = collectPattern(elDECL, paramIDs, refIDs);
       }
     }
-    if (fw.FWhere == findInIncl)
-      simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor;
-    else
-      simpleSyntax = 0;
+    if ((elDECL->DeclType == Interface) || (elDECL->DeclType == VirtualType)) {
+    /*
+    // wozu war das? -- probeweise wieder eingeklammert!!
+      if (!inp && elDECL->Supports.first) { //!
+        baseElDECL = IDTable.GetFinalDef(((CHETID*)elDECL->Supports.first)->data, elDECL->inINCL);
+        inp = (baseElDECL && baseElDECL->WorkFlags.Contains(checkmark));
+      }
+    */
+      if (inp) 
+        elDECL->WorkFlags.INCL(checkmark);
+    }
+    inPC = inPC || inp;
+    che = (CHE*)che->successor;
   }
+  return inPC;
+}
+
+void CLavaPEDoc::ConcernExecs(CLavaPEHint* hint)
+{
+  TDeclType defType = ((LavaDECL*)hint->CommandData1)->DeclType;
+  if ((hint->com != CPECommand_Insert) || ((defType == IAttr) || (defType == OAttr))) {
+    CLavaBaseView* view;
+    POSITION pos = GetFirstViewPos();
+    CheckData chd;
+    chd.concernExecs = true;
+    while (pos) {
+      view = (CLavaBaseView*)GetNextView(pos);
+      if (view->inherits("CExecView")) {
+        chd.document = this;
+        chd.myDECL = ((CExecView*)view)->myDECL;
+        chd.execView = view;
+        chd.hint = hint;
+        ((SynObject*)chd.myDECL->Exec.ptr)->Check(chd);
+      }
+    }
+  }
+}
+
+void CLavaPEDoc::ConcernForms(CLavaPEHint* hint)
+{
+  LavaDECL *hintDECL = (LavaDECL*)hint->CommandData1;
+  bool getFromMem = ((hintDECL->DeclType == DragFeature) 
+     || (hintDECL->DeclType == DragFeatureF) 
+     || (hintDECL->DeclType == DragParam) 
+     || (hintDECL->DeclType == PatternDef) 
+     || (hintDECL->DeclType == DragIO)
+     || (hintDECL->DeclType ==  DragDef));
+  CLavaPEHint* actHint, * lastHint;
+  int pos = -1;
+  if (getFromMem)
+    lastHint = UndoMem.GetLastHint();
+  else
+    lastHint = hint;
+  do {
+    if (getFromMem)
+      actHint = UndoMem.DoFromMem(pos);
+    else
+      actHint = hint;
+    hintDECL = (LavaDECL*)actHint->CommandData1;
+    if ( ( hintDECL->DeclType == Attr) && ( hintDECL->DeclDescType != Undefined)
+         || ( hintDECL->DeclType == VirtualType)
+            && (hintDECL->SecondTFlags.Contains(isSet) || hintDECL->SecondTFlags.Contains(isArray) )
+         || ( hintDECL->DeclType == Interface) && (actHint->com != CPECommand_Insert) ) {
+      CExecForms *fcf = new CExecForms(mySynDef, actHint);
+      delete fcf;
+    }
+  } while (actHint != lastHint);
+}
+
+
+void CLavaPEDoc::ConcernImpls(CLavaPEHint* hint, LavaDECL* ppDECL, bool )
+{  //extensions and implementations of the changed interface
+  TID ifaceID, funcID;
+  CExecOverrides *fcfo = 0;
+  CExecImpls *fcf = 0;
+  CLavaPEHint *actHint, *lastHint;
+  LavaDECL *dragdropParent, *pppDECL, *hintDECL;
+  bool execO, getFromMem;
+  int pos = -1;
+
+  ifaceID = TID(-1, 0);
+  funcID = TID(-1, 0);
+  hintDECL = (LavaDECL*)hint->CommandData1;
+  getFromMem = ((hintDECL->DeclType == DragFeature) 
+     || (hintDECL->DeclType == DragFeatureF) 
+     || (hintDECL->DeclType == DragParam) 
+     || (hintDECL->DeclType == PatternDef) 
+     || (hintDECL->DeclType == DragIO)
+     || (hintDECL->DeclType ==  DragDef));
+//    get the hints from UndoMem
+  if (getFromMem)
+    lastHint = UndoMem.GetLastHint();
+  else
+    lastHint = hint;
+  do {
+    if (getFromMem)
+      actHint = UndoMem.DoFromMem(pos);
+    else
+      actHint = hint;
+    hintDECL = (LavaDECL*)actHint->CommandData1;
+      
+    execO = (actHint->com != CPECommand_Delete)
+             || (hintDECL->DeclType != Interface)
+                && (hintDECL->DeclType != Function) 
+                && (hintDECL->DeclType != Attr) 
+             || (actHint->CommandData5 == 0); //not from drag
+    if (ppDECL &&
+       (  ( (hintDECL->DeclType == Function)  || (hintDECL->DeclType == Attr))
+           && (ppDECL->DeclType == Interface) 
+       || (hintDECL->DeclType == VirtualType)
+       || (hintDECL->DeclType == Attr) && hintDECL->TypeFlags.Contains(hasSetGet)
+                                      && (ppDECL->DeclType == Impl) ) ) {
+      dragdropParent = (LavaDECL*)actHint->CommandData5;
+      if (!dragdropParent || (hintDECL->ParentDECL != dragdropParent)) {
+        funcID.nID = hintDECL->OwnID;
+        ifaceID.nID = ppDECL->OwnID;
+        fcf = new CExecImpls(mySynDef, ifaceID, funcID, actHint);
+        if (execO) 
+          fcfo = new CExecOverrides(mySynDef, ifaceID, funcID, actHint);
+      }
+    }
+    else {
+      if (ppDECL && ((hintDECL->DeclType == IAttr) || (hintDECL->DeclType == OAttr))
+          && ( ppDECL->DeclType == Function)  && ppDECL->ParentDECL) {
+        pppDECL = ppDECL->ParentDECL;
+        if (pppDECL->DeclType == Interface) { 
+          funcID.nID = ppDECL->OwnID;
+          ifaceID.nID = pppDECL->OwnID;
+//          fcf = new CExecImpls(mySynDef, ifaceID, funcID, actHint);
+          if (execO) 
+            fcfo = new CExecOverrides(mySynDef, ifaceID, funcID, actHint);
+          fcf = new CExecImpls(mySynDef, ifaceID, funcID, actHint);//hier hin 10.11.2000
+          //Erinnerung: erst Overrides dann Impls, weil sonst die Implementation einer
+          //überschreibenden Funktion nicht angepasst wird
+        }
+      }
+      else
+        if ((actHint->com != CPECommand_Insert)
+          && (hintDECL->DeclType == Interface) ) { 
+          ifaceID.nID = hintDECL->OwnID;
+          fcf = new CExecImpls(mySynDef, ifaceID, funcID, actHint);
+          if (execO) 
+            fcfo = new CExecOverrides(mySynDef, ifaceID, funcID, actHint);
+        }
+    }
+    if (fcf)
+      delete fcf;
+    if (fcfo)
+      delete fcfo;
+    fcf = 0;
+    fcfo =0;
+  } while (actHint != lastHint);
 }
 
 void CLavaPEDoc::DownFind(LavaDECL* decl, CFindData& fw) 
@@ -3004,6 +1657,99 @@ void CLavaPEDoc::DownFind(LavaDECL* decl, CFindData& fw)
   }
 }
 
+bool CLavaPEDoc::ErrorBarVisible()
+{
+  return  !((CLavaMainFrame*)wxTheApp->m_appWindow)->OutputBarHidden
+          && (((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->ActTab == tabError);
+}
+
+void CLavaPEDoc::SetCom8()
+{
+  UndoMem.SetCom8();
+}
+
+
+void CLavaPEDoc::ExecViewPrivToPub(LavaDECL* func, int delID)
+{
+  //1.PrivToPub: func is the new public func impl, func->Supports.first contains id of the old private func impl
+  //2.PubToPriv: func is the new private func, func->RefID contains id of the old public func impl
+  //             
+  POSITION pos = GetFirstViewPos();
+  bool activ=false;
+  wxView *view;
+  TID oldID = TID(delID,0);
+  while (pos) {
+    view = (CLavaBaseView*)GetNextView(pos);
+    activ = view->inherits("CExecView") && (((CExecView*)view)->myID == oldID);
+    if (activ)
+      ((CExecView*)view)->myID = TID(func->OwnID,0);
+  }
+  ViewPosRelease(pos);
+}
+
+wxDocument* CLavaPEDoc::FindOpenDoc(const DString& fn)
+{
+  POSITION pos; 
+  wxDocManager* mana = wxDocManager::GetDocumentManager();
+  pos = mana->GetFirstDocPos();
+  CLavaPEDoc* doc;
+  DString absName;
+  while (pos) {
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    if (doc != this) {
+      absName  = doc->IDTable.IDTab[0]->FileName;
+      AbsPathName(absName, doc->IDTable.DocDir);
+      if (SameFile(absName, fn)) {
+        mana->DocPosRelease(pos);
+        return doc;
+      }
+    }
+  }
+  return 0;
+}
+
+void CLavaPEDoc::FindReferences(DString& allNames, CFindData& fw)
+{
+  unsigned pos, pp;
+//  DString absFileName;
+  bool found;
+//  TID refID;
+  int ii;
+  
+  //refID.nID = id.nID;
+  TID id = fw.refTid;
+  CHESimpleSyntax *simpleSyntax = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
+  while (simpleSyntax) {
+    if (simpleSyntax->data.TopDef.ptr) {
+      found = false;
+      fw.fname = IDTable.IDTab[simpleSyntax->data.nINCL]->FileName;
+      AbsPathName(fw.fname, IDTable.DocDir);
+      for (ii = 0; (ii < IDTable.IDTab[simpleSyntax->data.nINCL]->maxTrans)
+                   && (!IDTable.IDTab[simpleSyntax->data.nINCL]->nINCLTrans[ii].isValid
+                       || (IDTable.IDTab[simpleSyntax->data.nINCL]->nINCLTrans[ii].nINCL != id.nINCL)); ii++);
+      fw.refTid.nINCL = ii;
+      pp = 0;
+      while ((pp < allNames.l) && !found) {
+        if (allNames.Contains (fw.fname,pp,pos)) {
+          found = (allNames[pos-1] == ',') && (allNames[pos+fw.fname.l] == ',');
+          if (!found)
+            pp = pos + fw.fname.l;
+        }
+        else
+          pp = allNames.l;
+      }
+      if (!found) {
+        allNames = allNames + fw.fname + komma;
+        DownFind(simpleSyntax->data.TopDef.ptr, fw);//absFileName, refID, enumID, fw);
+      }
+    }
+    if (fw.FWhere == findInIncl)
+      simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor;
+    else
+      simpleSyntax = 0;
+  }
+}
+
 TID CLavaPEDoc::FindUIReference(LavaDECL* decl, CFindData& fw) 
 {
   TID secondID;
@@ -3019,42 +1765,1547 @@ TID CLavaPEDoc::FindUIReference(LavaDECL* decl, CFindData& fw)
   return secondID;
 }
 
-bool CLavaPEDoc::TrueReference(LavaDECL* decl, int refCase, const TID& refTid)
+CHE* CLavaPEDoc::GetExecChe(LavaDECL* parentDecl,TDeclType type, bool makeIt)
 {
-  CHETID *che;
-
-  switch (refCase) {
-  case 0:  //RefID
-    if (decl->RefID == refTid)
-      return true;
-    break;
-  case 1: //Supports
-    for (che = (CHETID*)decl->Supports.first; che && (che->data != refTid); che = (CHETID*)che->successor);
-    if (che)
-      return true;
-    break;
-  case 2: //Inherits
-    for (che = (CHETID*)decl->Inherits.first; che && (che->data != refTid); che = (CHETID*)che->successor);
-    if (che)
-      return true;
-    break;
-  case 3: //Chain element in form
-    if ((decl->DeclType == VirtualType) && (decl->ParentDECL->DeclType == FormDef)
-      && decl->Annotation.ptr
-      && decl->Annotation.ptr->IterOrig.ptr
-      && ((TIteration*)decl->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr) {
-      LavaDECL* CHEEl = ((TIteration*)decl->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr;
-      if (CHEEl->RefID == refTid)
-        return true;
+  LavaDECL *cDECL = 0;
+  CHE *che, *afterChe = (CHE*)parentDecl->NestedDecls.last;
+  if (afterChe) {
+    cDECL = (LavaDECL*)afterChe->data;
+    if (cDECL->DeclType != type) {
+      if ((cDECL->DeclType == ExecDef)
+        || (cDECL->DeclType == Ensure) && (type == Require)) {
+        afterChe = (CHE*)afterChe->predecessor; 
+        if (afterChe) {
+          cDECL = (LavaDECL*)afterChe->data;
+          if (cDECL->DeclType != type) {
+            if (cDECL->DeclType == Ensure) {
+              afterChe = (CHE*)afterChe->predecessor; 
+              if (afterChe) {
+                cDECL = (LavaDECL*)afterChe->data;
+                if (cDECL->DeclType != type)
+                  cDECL = 0;
+              }
+              else
+                cDECL = 0;
+            }
+            else
+              cDECL = 0;
+          }//else ok
+        }
+        else
+          cDECL = 0;
+      }
+      else
+        cDECL = 0;
+    }//else ok
+  }
+  if (!cDECL) {
+    if (makeIt) {
+      cDECL = NewLavaDECL();
+      cDECL->DeclType = type;
+      cDECL->DeclDescType = ExecDesc;
+      cDECL->FullName = parentDecl->FullName;
+      cDECL->ParentDECL = parentDecl;
+      che = NewCHE(cDECL);
+      parentDecl->NestedDecls.Insert(afterChe, che);
+      ((CLavaPEApp*)wxTheApp)->ExecUpdate.MakeExec(cDECL);
+      if (parentDecl->OwnID != -1)
+        ((SynObjectBase*)cDECL->Exec.ptr)->MakeTable((address)&IDTable, parentDecl->inINCL, (SynObjectBase*)cDECL, onNewID);
+      return che;
     }
-    break;
-  case 4:  //Own id
-  case 5:  //enumID in own id
-    return (decl->OwnID == refTid.nID) && (decl->inINCL == refTid.nINCL);
-  default: ;
+    else
+      return 0;
+  }
+  else
+    return afterChe;
+}
+
+DString CLavaPEDoc::GetIOLabel(TAnnotation *anno)
+{
+  QString cstr;
+  /*
+  int ids;
+  if (anno && anno->IoSigFlags.Contains(DONTPUT))
+    ids = IDS_DONTPUT;
+  else
+    if (anno && (anno->Emphasis == NoEcho))
+      if (anno->IoSigFlags.Contains(UnprotectedUser) && anno->IoSigFlags.Contains(UnprotectedProg))
+        ids = IDS_NoEchoIO;
+      else
+        if (anno->IoSigFlags.Contains(UnprotectedUser))
+          ids = IDS_NoEchoI;
+        else
+          if (anno->IoSigFlags.Contains(UnprotectedProg))
+            ids = IDS_NoEchoO;
+          else
+            ids = IDS_NoEchoDefault;
+    else
+      if (anno && anno->IoSigFlags.Contains(UnprotectedUser) && anno->IoSigFlags.Contains(UnprotectedProg))
+        ids = IDS_EchoIO;
+      else
+        if (anno && anno->IoSigFlags.Contains(UnprotectedUser))
+          ids = IDS_EchoI;
+        else
+          if (anno && anno->IoSigFlags.Contains(UnprotectedProg))
+            ids = IDS_EchoO;
+          else
+            ids = IDS_EchoDefault;
+  cstr.LoadString(ids);
+  */
+  return DString(cstr);
+}
+
+bool CLavaPEDoc::GetOperatorID(LavaDECL* decl, TOperator op, TID& ElID)
+{
+//  ResetVElems(decl);
+  if (!decl)
+    return 0;
+  MakeVElems(decl);
+  return getOperatorID(decl, op, ElID);
+}
+
+bool CLavaPEDoc::getOperatorID(LavaDECL* decl, TOperator op, TID& ElID)
+{
+  //ResetVElems(decl); call Reset and Make before calling GetOperatorID 
+  //MakeVElems(decl);
+  CHETVElem *El;
+  for (El = (CHETVElem*)decl->VElems.VElems.first;
+       El && (El->data.op != op);
+       El = (CHETVElem*)El->successor);
+  if (El) {
+    ElID = El->data.VTEl;
+    return true;
   }
   return false;
 }
+
+DString CLavaPEDoc::GetTypeLabel(LavaDECL* elDef, bool goDown)
+{ 
+  DString lab;
+  QString cstr;
+  LavaDECL* decl;
+  lab.Reset(0);
+  if (elDef->DeclType == FormDef) {
+    lab = DString("Form");
+    if (goDown) {
+      decl = CheckGetFinalMType(elDef);
+      if (decl)
+        lab = lab + DString(" ") + decl->FullName;
+      else
+        lab = lab + DString(" ??");
+    }
+    return lab;
+  }
+
+  switch (elDef->DeclDescType) {
+    case StructDesc:
+      break;
+    case EnumType:
+//      lab = DString("Enumeration");
+      break;
+    case NamedType:
+    case BasicType:
+      if (elDef->DeclDescType == BasicType)
+        lab += ((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[elDef->BType];
+      else {
+//        decl = IDTable.GetDECL(elDef->RefID, elDef->inINCL);
+        decl = CheckGetFinalMType(elDef);
+        if (decl)
+          if (decl->DeclType == VirtualType)
+            lab = lab + lthen + decl->LocalName + grthen; 
+          else
+            if (decl->DeclType == FormDef)
+              lab += decl->ParentDECL->FullName;
+            else
+              lab += decl->FullName;
+        else {
+          lab += DString("??");
+          new CLavaError(&elDef->DECLError1, &ERR_NoRefType);
+        }
+      }
+      break; 
+    case LiteralString:
+      lab = DString("Literal");
+      break;
+    case ExecDesc:
+      return DString("Invariant");
+    default: 
+      lab.Reset(0);
+  }
+  return lab;
+}
+
+bool CLavaPEDoc::IsSpecialOf(LavaDECL* decl, const TIDs& basicIDs, bool cDeriv)
+{  //c-derivations only
+  TID id;
+  bool ok;
+  CHETID* che;
+  CContext con;
+  LavaDECL *idecl, *baseDECL;
+
+  id = TID(decl->OwnID, decl->inINCL);
+  che = (CHETID*)basicIDs.first;
+  ok = true;
+  while (che && ok) {
+    ok = IDTable.IsAn(id, 0, che->data, 0);
+    if (ok && cDeriv) {
+      baseDECL = IDTable.GetDECL(che->data);
+      IDTable.GetPattern(baseDECL, con);
+      if (baseDECL && con.oContext)
+        ok = decl == baseDECL;
+      //else
+      if (!ok) 
+        ok = IsCDerivation(decl, baseDECL);     
+    }
+    che = (CHETID*)che->successor;
+  }
+  if (decl->DeclType == VirtualType) {
+    idecl = decl;
+    while (idecl && (idecl->DeclType == VirtualType)
+           && !idecl->TypeFlags.Contains(isAbstract)) {
+      idecl = IDTable.GetDECL(idecl->RefID, idecl->inINCL);
+      if (!idecl)
+        return false;
+      id = TID(idecl->OwnID, idecl->inINCL);
+      che = (CHETID*)basicIDs.first;
+      ok = true;
+      while (che && ok) {
+        ok = IDTable.IsAn(id, 0, che->data, 0);
+        if (ok && cDeriv) {
+          baseDECL = IDTable.GetDECL(che->data);
+          IDTable.GetPattern(baseDECL, con);
+          if (con.oContext)
+            ok = decl == baseDECL;
+          else 
+            ok = IsCDerivation(decl, baseDECL);
+        }
+        che = (CHETID*)che->successor;
+      }
+    } 
+    return false;
+  }
+  else
+    return ok;
+}
+
+bool CLavaPEDoc::MakeFormVT(LavaDECL *decl, CheckData* )
+{
+  if (decl->VElems.UpdateNo > UpdateNo)
+    return true;
+  decl->VElems.UpdateNo = UpdateNo+1;
+  ResetVElems(decl);
+  LavaDECL **PbaseFDECL, *guibaseDECL, *classDECL;
+  bool ok=true;
+  CHETID* cheID;
+  CHETVElem *El, *Elbase;
+  CheckForm(decl, CHLV_inUpdateLow);
+  if (decl->DeclType == FormDef) {  
+    cheID = (CHETID*)decl->Supports.first;
+    while (cheID) {
+      guibaseDECL = IDTable.GetDECL(cheID->data, decl->inINCL);
+      if (!guibaseDECL)
+        return false;
+      if (guibaseDECL->TypeFlags.Contains(isGUI)) {
+        PbaseFDECL = GetFormpDECL(guibaseDECL);
+        if (PbaseFDECL && *PbaseFDECL) {
+          ok = MakeFormVT(*PbaseFDECL);
+          Elbase = (CHETVElem*)(*PbaseFDECL)->VElems.VElems.first;
+          while (Elbase) {
+            for (El = (CHETVElem*)decl->VElems.VElems.first;
+                 El && (El->data.VTEl != Elbase->data.VTEl);
+                 El = (CHETVElem*)El->successor);
+            if (El) {
+              if (El->data.VTClss != Elbase->data.VTClss)
+                El->data.ok = false;
+            }
+            else {
+              El = new CHETVElem;
+              El->data.VTClss = Elbase->data.VTClss;
+              El->data.VTEl = Elbase->data.VTEl; 
+              El->data.TypeFlags = Elbase->data.TypeFlags;
+              El->data.ok = Elbase->data.ok;
+              decl->VElems.VElems.Append(El);
+            }
+            Elbase = (CHETVElem*)Elbase->successor;
+          }
+        }
+      }
+      cheID = (CHETID*)cheID->successor;
+    }
+  }
+
+  classDECL = IDTable.GetDECL(decl->RefID, decl->inINCL);
+  if (classDECL) {
+    El = new CHETVElem;
+    El->data.VTClss = TID( decl->OwnID, decl->inINCL);
+    El->data.VTEl = TID( classDECL->OwnID, classDECL->inINCL); 
+    El->data.TypeFlags = classDECL->TypeFlags;
+    decl->VElems.VElems.Append(El);
+  }
+  else
+    return false;
+  for (El = (CHETVElem*)decl->VElems.VElems.first;
+       El && El->data.ok;
+       El = (CHETVElem*)El->successor);
+  return  (El == 0) && ok;
+}
+
+int CLavaPEDoc::MakeFunc(LavaDECL* idecl, bool otherDoc, QWidget* parent) 
+{
+  SynFlags first = (const unsigned long)1;
+  LavaDECL *funcDecl;
+  CLavaPEHint *hint;
+  DWORD d4;
+  DString *str2 = 0;
+  int pos;
+  TIDType type;
+  bool b=false;
+
+  funcDecl = NewLavaDECL();
+  funcDecl->TreeFlags.INCL(hasEmptyOpt);
+  funcDecl->TreeFlags.INCL(isExpanded);
+  funcDecl->DeclType = Function;
+  funcDecl->ParentDECL = idecl;
+  funcDecl->FullName = idecl->FullName;
+  funcDecl->DeclDescType = StructDesc;
+  funcDecl->ParentDECL->TreeFlags.INCL(MemsExpanded);
+  
+  if (CallBox(funcDecl, 0, this, true, b, parent) != QDialog::Accepted) {
+    delete funcDecl;
+    return -1;
+  }
+  d4 = IDTable.GetVar(TID(idecl->OwnID, 0), type);
+  pos = idecl->GetAppendPos(Function);
+  str2 = new DString(idecl->FullName);
+  hint = new CLavaPEHint(CPECommand_Insert, this, first, (DWORD) funcDecl, (DWORD)str2, (DWORD)pos, d4);
+  UndoMem.AddToMem(hint);
+  UpdateDoc(0, FALSE, hint);
+  if (d4 && (idecl->DeclType == Interface)) 
+    ConcernImpls(hint, *(LavaDECL**)d4);
+  ConcernExecs(hint);
+  if (otherDoc)
+    SetLastHint();
+  return funcDecl->OwnID;
+}
+
+
+LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, LavaDECL* posdecl)
+
+//Called from makeGUI-toolbutton handler:
+//                 makes GUI interface and implementation from relDECL,
+//                 which is an interface if called from main tree  or from its own
+//                 and is an attribute or virtual type if called from a GUIView or from its own,
+//always returns the GUIinterface.
+{
+  LavaDECL *GUIinterface=0, *GUIimpl=0, *interdecl, *attrdecl,
+             *newAttrdecl, *FormDecl, *posDECL=0;
+  QString valNewName;
+  DString *name;
+  int startpos = pos, implPos;
+  CLavaPEHint *hint;
+  CHE *elChe;
+  CHETID *cheID, *cheFID;
+  SynFlags firstlast;
+
+  if (posdecl)
+    posDECL = posdecl;
+  if (!startpos)
+    firstlast.INCL(firstHint);
+  if (relDECL->DeclType == Interface) {
+    if (relDECL->TypeFlags.Contains(isGUI))
+      return relDECL;
+    if (isStd || (relDECL->inINCL == 1))
+      return 0;
+    interdecl = relDECL;
+    if (!posdecl)
+      posDECL = interdecl;
+    attrdecl = 0;
+  }
+  else {
+    attrdecl = relDECL;
+    interdecl = IDTable.GetDECL(relDECL->RefID, relDECL->inINCL);
+    if (!posdecl)
+      posDECL = attrdecl->ParentDECL;
+    if (startpos && (interdecl->DeclType == FormDef))
+      return interdecl;
+    if (!startpos && ((CLavaPEApp*)wxTheApp)->Browser.findAnyForm(relDECL, relDECL->RefID, mySynDef)) {
+      GUIimpl = IDTable.GetDECL(relDECL->RefID, relDECL->inINCL)->ParentDECL;
+      GUIinterface = IDTable.GetDECL(((CHETID*)GUIimpl->Supports.first)->data);
+      return GUIinterface;
+    }
+    if (interdecl->DeclType == FormDef)
+      interdecl = IDTable.GetDECL(interdecl->RefID, interdecl->inINCL);
+    if (isStd || (interdecl->inINCL == 1))
+      return 0;
+  }
+  GUIinterface = NewLavaDECL();
+  GUIinterface->DeclType = Interface;
+  GUIinterface->DeclDescType = StructDesc;
+  GUIimpl = NewLavaDECL();
+  GUIimpl->DeclType = Impl;
+  GUIimpl->DeclDescType = StructDesc;
+  GUIinterface->RefID = TID(interdecl->OwnID, interdecl->inINCL);
+  GUIinterface->ParentDECL = posDECL->ParentDECL;
+  if (!startpos) {
+    elChe = (CHE*)posDECL->ParentDECL->NestedDecls.first;
+    pos = 2;
+    while (elChe && (posDECL != (LavaDECL*)elChe->data)) {
+      if (((LavaDECL*)elChe->data)->DeclType != VirtualType)
+        pos++;
+      elChe = (CHE*) elChe->successor;
+    }
+  }
+  GUIimpl->RefID = GUIinterface->RefID;
+  valNewName = QString("GUI_of_") + QString(interdecl->LocalName.c);
+  while (CheckNewName(valNewName, GUIinterface, this)) 
+    valNewName.insert(6,'_');
+  GUIimpl->ParentDECL = GUIinterface->ParentDECL;
+  GUIimpl->FullName = GUIinterface->FullName;
+  GUIimpl->LocalName = GUIinterface->LocalName;
+  GUIinterface->ParentDECL->TreeFlags.INCL(DefsExpanded);
+  MakeGUIFuncs(GUIinterface);
+ 
+  name = new DString(GUIinterface->FullName);
+  hint = new CLavaPEHint(CPECommand_Insert, this, firstlast, (DWORD) GUIinterface,
+    (DWORD)name, (DWORD)pos, (DWORD)pparent);
+  UndoMem.AddToMem(hint);
+  UpdateDoc(0, false, hint);
+  pos++;
+  firstlast.EXCL(firstHint);
+  cheID = new CHETID;
+  cheID->data = TID(GUIinterface->OwnID, GUIinterface->inINCL);
+  GUIimpl->Supports.Append(cheID);
+  GUIimpl->TypeFlags.INCL(isGUI);
+  for (cheID = (CHETID*)interdecl->Supports.first;
+       cheID; cheID = (CHETID*)cheID->successor) {
+    FormDecl = IDTable.GetDECL(cheID->data, interdecl->inINCL);
+    if (!FormDecl->TypeFlags.Contains(isGUI)) {
+      CFindLikeForm *fLike = new CFindLikeForm(mySynDef, cheID->data, interdecl->inINCL, GUIinterface);
+      if (fLike->pdecl && *fLike->pdecl) 
+        FormDecl = IDTable.GetDECL(((CHETID*)(*fLike->pdecl)->ParentDECL->Supports.first)->data,(*fLike->pdecl)->inINCL);
+      else {
+        FormDecl = MakeGUI(FormDecl, pparent, pos, posDECL);
+      }
+      if (FormDecl) {
+        cheFID = new CHETID;
+        cheFID->data = TID(FormDecl->OwnID, FormDecl->inINCL);
+        GUIinterface->Supports.Append(cheFID);
+      }
+    }
+  }
+  CheckImpl(GUIimpl, CHLV_inUpdateLow);
+  for (elChe = (CHE*)GUIimpl->NestedDecls.first;
+       elChe && (((LavaDECL*)elChe->data)->DeclType != FormDef);
+       elChe = (CHE*)elChe->successor);
+  if (elChe) {
+    FormDecl = (LavaDECL*)elChe->data;
+    for (elChe = (CHE*)FormDecl->NestedDecls.first;
+         elChe ;
+         elChe = (CHE*)elChe->successor) {
+      if ((((LavaDECL*)elChe->data)->DeclType == Attr) || (((LavaDECL*)elChe->data)->DeclType == VirtualType)) {
+        if (IDTable.GetDECL(((LavaDECL*)elChe->data)->RefID)->DeclType != FormDef)
+          if (!((CLavaPEApp*)wxTheApp)->Browser.findAnyForm((LavaDECL*)elChe->data, ((LavaDECL*)elChe->data)->RefID, mySynDef))
+            MakeGUI((LavaDECL*)elChe->data, pparent, pos, posDECL);
+    
+      }
+    }
+  }
+  else
+    return 0;
+  name = new DString(GUIimpl->FullName);
+  elChe = (CHE*)posDECL->ParentDECL->NestedDecls.first;
+  implPos = 2;
+  while (elChe && (GUIinterface != (LavaDECL*)elChe->data)) {
+    if (((LavaDECL*)elChe->data)->DeclType != VirtualType)
+      implPos++;
+    elChe = (CHE*) elChe->successor;
+  }
+  hint = new CLavaPEHint(CPECommand_Insert, this, firstlast, (DWORD) GUIimpl,
+    (DWORD)name, (DWORD)implPos, (DWORD)pparent);
+  UndoMem.AddToMem(hint);
+  UpdateDoc(0, false, hint);
+  pos++;
+
+  if (attrdecl) {
+    if (!startpos) {
+      newAttrdecl = NewLavaDECL();
+      *newAttrdecl = *attrdecl;
+      newAttrdecl->RefID = TID(FormDecl->OwnID, 0);
+     // hier hint für geändertes attr
+      for (elChe = (CHE*)attrdecl->ParentDECL->NestedDecls.first;
+           elChe && ((LavaDECL*)elChe->data != attrdecl);
+           elChe = (CHE*)elChe->successor);
+      name = new DString(newAttrdecl->FullName);  
+      hint = new CLavaPEHint(CPECommand_Change, this, firstlast,
+               (DWORD)newAttrdecl, (DWORD)name, 0, (DWORD)&elChe->data);
+      UndoMem.AddToMem(hint);
+      UpdateDoc(0, false, hint);
+    }
+    else
+      attrdecl->RefID = TID(FormDecl->OwnID, 0);
+  }
+  if (!startpos)
+    SetLastHint();
+  return GUIinterface;
+}
+
+
+void CLavaPEDoc::MakeGUIFuncs(LavaDECL* guiInterface)
+{
+  LavaDECL *interdecl, *fdecl, *IOdecl;
+  CHE *elChe;
+
+  interdecl = IDTable.GetDECL(guiInterface->RefID);
+  if (interdecl->TypeFlags.Contains(thisComponent))
+    guiInterface->TypeFlags.INCL(thisCompoForm);
+
+  fdecl = NewLavaDECL();
+  fdecl->DeclType = Function;
+  fdecl->DeclDescType = StructDesc;
+  fdecl->ParentDECL = guiInterface;
+  fdecl->LocalName = DString("FillOut");
+  fdecl->FullName = guiInterface->FullName + fdecl->LocalName;
+  fdecl->TypeFlags += SET(isGUI, isNative, isConst,-1);
+  elChe = NewCHE(fdecl);
+  guiInterface->NestedDecls.Append(elChe);
+
+  IOdecl = NewLavaDECL();
+  IOdecl->DeclType = IAttr;
+  IOdecl->DeclDescType = NamedType;
+  IOdecl->ParentDECL = fdecl;
+  IOdecl->LocalName = DString("UI_in");
+  IOdecl->FullName = fdecl->FullName + IOdecl->LocalName;
+  IOdecl->RefID = guiInterface->RefID;
+  IOdecl->TypeFlags += SET(isGUI, trueObjCat, isOptional,-1);
+  elChe = NewCHE(IOdecl);
+  fdecl->NestedDecls.Append(elChe);
+
+  IOdecl = NewLavaDECL();
+  IOdecl->DeclType = OAttr;
+  IOdecl->DeclDescType = NamedType;
+  IOdecl->ParentDECL = fdecl;
+  IOdecl->LocalName = DString("UI_out");
+  IOdecl->FullName = fdecl->FullName + IOdecl->LocalName;
+  IOdecl->RefID = guiInterface->RefID;
+  IOdecl->TypeFlags += SET(isGUI, trueObjCat,-1);
+  elChe = NewCHE(IOdecl);
+  fdecl->NestedDecls.Append(elChe);
+
+  fdecl = NewLavaDECL();
+  fdecl->DeclType = Function;
+  fdecl->DeclDescType = StructDesc;
+  fdecl->ParentDECL = guiInterface;
+  fdecl->LocalName = DString("Edit");
+  fdecl->FullName = guiInterface->FullName + fdecl->LocalName;
+  fdecl->TypeFlags += SET(isGUI, isGUIEdit, isNative,-1);
+  elChe = NewCHE(fdecl);
+  guiInterface->NestedDecls.Append(elChe);
+
+  IOdecl = NewLavaDECL();
+  IOdecl->DeclType = IAttr;
+  IOdecl->DeclDescType = NamedType;
+  IOdecl->ParentDECL = fdecl;
+  IOdecl->LocalName = DString("UI_in");
+  IOdecl->FullName = fdecl->FullName + IOdecl->LocalName;
+  IOdecl->RefID = guiInterface->RefID;
+  IOdecl->TypeFlags += SET(isGUI, stateObject, trueObjCat,-1);
+  elChe = NewCHE(IOdecl);
+  fdecl->NestedDecls.Append(elChe);
+
+  guiInterface->TypeFlags.INCL(isGUI);
+}
+
+void CLavaPEDoc::MakeIniFunc(LavaDECL* ifDECL)
+{
+  LavaDECL* fdecl = NewLavaDECL();
+  fdecl->DeclType = Function;
+  fdecl->DeclDescType = StructDesc;
+  fdecl->ParentDECL = ifDECL;
+  fdecl->LocalName = DString("ini"); //myDECL->LocalName;
+  fdecl->FullName = ifDECL->FullName + fdecl->LocalName;
+  fdecl->TypeFlags += SET(isInitializer, defaultInitializer,isConst,-1);
+  CHE* che = NewCHE(fdecl);
+  ifDECL->NestedDecls.Append(che);
+}
+
+
+LavaDECL* CLavaPEDoc::MakeOneSetGet(TypeFlag setgetflag, LavaDECL* implDECL,
+                                        LavaDECL* propDecl, int checkLevel)
+{
+  LavaDECL *setGet, *IOEl, *returnDECL=0;
+  CHE *cheSetGet, *cheIOEl;
+  TID fID, supID;
+  bool found = false;
+
+  cheSetGet = (CHE*)implDECL->NestedDecls.first;
+  fID = TID(propDecl->OwnID, propDecl->inINCL);
+  if (cheSetGet)
+    setGet = (LavaDECL*)cheSetGet->data;
+  while (cheSetGet && !found) {
+    if ((setGet->DeclType == Function)  
+        && setGet->TypeFlags.Contains(setgetflag)
+        && setGet->Supports.first) {
+      supID = ((CHETID*)setGet->Supports.first)->data;
+      supID.nINCL = IDTable.IDTab[implDECL->inINCL]->nINCLTrans[supID.nINCL].nINCL;
+      found = (supID == fID);
+    }
+    if (!found) {
+      cheSetGet = (CHE*)cheSetGet->successor;
+      if (cheSetGet)
+        setGet = (LavaDECL*)cheSetGet->data;
+    }
+  }
+  if (!cheSetGet) { //function not found, then make it
+    setGet = NewLavaDECL();
+    setGet->DeclType = Function; // = *ifaceElDecl;
+    setGet->DeclDescType = StructDesc;
+    setGet->SecondTFlags.INCL(funcImpl);
+    setGet->TypeFlags.INCL(setgetflag);
+//    setGet->TypeFlags.INCL(isVirtual);
+    CHETID* cheID = new CHETID;
+    cheID->data = fID;
+    setGet->Supports.Destroy();
+    setGet->Supports.Append(cheID);  //implements get property
+    setGet->inINCL = 0;
+    returnDECL = setGet;
+    IOEl = NewLavaDECL();
+    IOEl->SecondTFlags.INCL(funcImpl);
+    if (setgetflag == isPropGet)
+      IOEl->DeclType = OAttr;
+    else
+      IOEl->DeclType = IAttr;
+    IOEl->DeclDescType = NamedType;
+    IOEl->inINCL = 0;
+    cheIOEl = NewCHE(IOEl);
+    setGet->NestedDecls.Append(cheIOEl);
+    if (checkLevel == CHLV_inUpdateHigh)
+      implDECL->WorkFlags.INCL(newTreeNode);;
+  }
+  if (setgetflag == isPropGet) {
+    setGet->LocalName = DString("Get_") + propDecl->LocalName;
+    setGet->TypeFlags.INCL(isConst);
+  }
+  else
+    setGet->LocalName = DString("Set_") + propDecl->LocalName;
+  cheIOEl = (CHE*)setGet->NestedDecls.first;
+  IOEl = (LavaDECL*)cheIOEl->data;
+  IOEl->RefID = TID(propDecl->RefID.nID, IDTable.IDTab[propDecl->inINCL]->nINCLTrans[propDecl->RefID.nINCL].nINCL);
+  IOEl->LocalName = propDecl->LocalName;
+  if (propDecl->TypeFlags.Contains(trueObjCat))
+    IOEl->TypeFlags.INCL(trueObjCat);
+  else
+    IOEl->TypeFlags.EXCL(trueObjCat);
+  if (propDecl->TypeFlags.Contains(definesObjCat))
+    IOEl->TypeFlags.INCL(definesObjCat);
+  else
+    IOEl->TypeFlags.EXCL(definesObjCat);
+  if (propDecl->TypeFlags.Contains(stateObject))
+    IOEl->TypeFlags.INCL(stateObject);
+  else
+    IOEl->TypeFlags.EXCL(stateObject);
+                                 
+  setGet->WorkFlags.INCL(checkmark);
+  return returnDECL;
+}
+
+void CLavaPEDoc::MakeOperator(LavaDECL* opDecl)
+{
+  if (opDecl->op == OP_noOp)
+    return;
+  opDecl->LocalName = LBaseData->OperatorNames[opDecl->op];
+  opDecl->FullName = opDecl->FullName + opDecl->LocalName;
+  TID parentID(opDecl->ParentDECL->OwnID, opDecl->ParentDECL->inINCL);
+  CHE *cheArg1=0, *cheArg2=0, *cheVal=0, *che;
+  LavaDECL *declArg1, *declArg2, *declVal;
+  while (opDecl->NestedDecls.first) {
+    che = (CHE*)opDecl->NestedDecls.Uncouple(opDecl->NestedDecls.first);
+    if (((LavaDECL*)che->data)->DeclType == IAttr) 
+      if (!cheArg1)
+        cheArg1 = che;
+      else
+        if (!cheArg2)
+          cheArg2 = che;
+        else
+          delete che;
+    else
+      if (((LavaDECL*)che->data)->DeclType == OAttr) {
+        cheVal = che;
+        opDecl->NestedDecls.Destroy();
+      }
+      else
+        delete che;
+  }
+  opDecl->NestedDecls.Destroy();
+  if (opDecl->op != OP_arraySet)
+    delete cheArg2;
+  if ((opDecl->op == OP_equal)
+     || (opDecl->op == OP_notequal)
+     || (opDecl->op == OP_lessthen)
+     || (opDecl->op == OP_greaterthen)
+     || (opDecl->op == OP_lessequal)
+     || (opDecl->op == OP_greaterequal)
+     || (opDecl->op == OP_arraySet)) {
+    if (cheVal)
+      delete cheVal;
+  }
+  else {
+    if (cheVal)
+      declVal = (LavaDECL*)cheVal->data;
+    else {
+      declVal = NewLavaDECL();
+      cheVal = NewCHE(declVal);
+      declVal->ParentDECL = opDecl;
+      declVal->DeclType = OAttr;
+      declVal->LocalName = DString("result");
+      declVal->TypeFlags.INCL(trueObjCat);
+    }
+    opDecl->NestedDecls.Append(cheVal);
+    if (opDecl->op == OP_fis) {
+      if (isStd)
+        declVal->RefID = TID (IDTable.BasicTypesID[(int)Integer], 0);
+      else
+        declVal->RefID = TID (IDTable.BasicTypesID[(int)Integer], 1);
+      declVal->BType = Integer;
+      declVal->DeclDescType = BasicType;
+    }
+    else {
+      declVal->RefID = parentID;
+      declVal->BType = opDecl->ParentDECL->fromBType;
+      if (opDecl->ParentDECL->fromBType == NonBasic)
+        declVal->DeclDescType = NamedType;
+      else 
+        declVal->DeclDescType = BasicType;
+    }
+  }
+  switch (opDecl->op) {
+  case OP_equal:
+  case OP_notequal:
+  case OP_lessthen:
+  case OP_greaterthen:
+  case OP_lessequal:
+  case OP_greaterequal:
+  case OP_plus:
+  case OP_mult:
+  case OP_div:
+  case OP_mod:
+  case OP_bwAnd:
+  case OP_bwOr:
+  case OP_bwXor:
+  case OP_lshift:
+  case OP_rshift:
+    if (cheArg1)
+      declArg1 = (LavaDECL*)cheArg1->data;
+    else {
+      declArg1 = NewLavaDECL();
+      cheArg1 = NewCHE(declArg1);
+      declArg1->ParentDECL = opDecl;
+      declArg1->DeclType = IAttr;
+      declArg1->LocalName = DString("op1");
+      declArg1->TypeFlags.INCL(trueObjCat);
+      if ((opDecl->op == OP_lshift) || (opDecl->op == OP_rshift)) {
+        declArg1->DeclDescType = BasicType;
+        declArg1->BType = Integer;
+        declArg1->RefID.nID = IDTable.BasicTypesID[Integer];
+        if (isStd)
+          declArg1->RefID.nINCL = 0;
+        else
+          declArg1->RefID.nINCL = 1;
+      }
+      else {
+        declArg1->RefID = parentID;
+        declArg1->BType = opDecl->ParentDECL->fromBType;
+        if (opDecl->ParentDECL->fromBType == NonBasic)
+          declArg1->DeclDescType = NamedType;
+        else 
+          declArg1->DeclDescType = BasicType;
+      }
+    }
+    opDecl->NestedDecls.Prepend(cheArg1);
+    break;
+  case OP_minus:
+  case OP_invert:
+//    declVal->RefID = parentID;
+  case OP_fis:
+    if (cheArg1)
+      delete cheArg1;
+    break;
+  case OP_arrayGet:
+    if (cheArg1)
+      declArg1 = (LavaDECL*)cheArg1->data;
+    else {
+      declArg1 = NewLavaDECL();
+      cheArg1 = NewCHE(declArg1);
+    }
+    declArg1->ParentDECL = opDecl;
+    declArg1->DeclType = IAttr;
+    declArg1->DeclDescType = BasicType;
+    declArg1->BType = Integer;
+    declArg1->TypeFlags.INCL(trueObjCat);
+    declArg1->RefID.nID = IDTable.BasicTypesID[Integer];
+    if (isStd)
+      declArg1->RefID.nINCL = 0;
+    else
+      declArg1->RefID.nINCL = 1;
+    declArg1->LocalName = DString("op1");
+    opDecl->NestedDecls.Prepend(cheArg1);
+    declVal->DeclDescType = NamedType;
+    declVal->BType = NonBasic;
+    declVal->TypeFlags.EXCL(trueObjCat);
+    IDTable.GetParamID(opDecl->ParentDECL, declVal->RefID, isArray);
+
+    break;
+  case OP_arraySet:
+    if (cheArg1)
+      declArg1 = (LavaDECL*)cheArg1->data;
+    else {
+      declArg1 = NewLavaDECL();
+      cheArg1 = NewCHE(declArg1);
+    }
+    declArg1->ParentDECL = opDecl;
+    declArg1->DeclType = IAttr;
+    declArg1->DeclDescType = BasicType;
+    declArg1->BType = Integer;
+    declArg1->TypeFlags.INCL(trueObjCat);
+    declArg1->RefID.nID = IDTable.BasicTypesID[Integer];
+    if (isStd)
+      declArg1->RefID.nINCL = 0;
+    else
+      declArg1->RefID.nINCL = 1;
+    declArg1->LocalName = DString("op1");
+    opDecl->NestedDecls.Prepend(cheArg1);
+    if (cheArg2)
+      declArg2 = (LavaDECL*)cheArg2->data;
+    else {
+      declArg2 = NewLavaDECL();
+      cheArg2 = NewCHE(declArg2);
+      declArg2->ParentDECL = opDecl;
+      declArg2->DeclType = IAttr;
+      declArg2->TypeFlags.INCL(trueObjCat);
+      declArg2->LocalName = DString("op2");
+    }
+    declArg2->DeclDescType = NamedType;
+    declArg2->BType = NonBasic;
+    IDTable.GetParamID(opDecl->ParentDECL, declArg2->RefID, isArray);
+    opDecl->NestedDecls.Append(cheArg2);
+
+    break;
+  }
+}
+
+LavaDECL* CLavaPEDoc::MakeSet(const TID& setID, LavaDECL* decl)
+{
+  LavaDECL *setDECL, *basicDECL, *basePar, *paramEl, *refDECL;
+  CHETID* cheS;
+  CHE* che;
+  bool catErr;
+
+  if (decl)
+    setDECL = decl;
+  else
+    setDECL = NewLavaDECL();
+  setDECL->SecondTFlags.INCL(isSet);
+  setDECL->DeclType = Interface;
+  setDECL->DeclDescType = StructDesc;
+  setDECL->inINCL = 0;
+  setDECL->fromBType = NonBasic;
+  setDECL->Supports.Destroy();
+  cheS = new CHETID;
+  cheS->data.nID = IDTable.BasicTypesID[B_Set];
+  if (isStd)
+    cheS->data.nINCL = 0;
+  else
+    cheS->data.nINCL = 1;
+  basicDECL = IDTable.GetDECL(cheS->data);
+  if (!basicDECL)
+    return 0;
+  setDECL->Supports.Append(cheS);
+  basePar = (LavaDECL*)((CHE*)basicDECL->NestedDecls.first)->data;
+  paramEl = NewLavaDECL();
+  *paramEl = *basePar;
+  paramEl->DECLComment.Destroy();
+  che = NewCHE(paramEl);
+  setDECL->NestedDecls.Append(che);
+  paramEl->ParentDECL = setDECL;
+  paramEl->RefID = setID;
+  paramEl->TypeFlags.EXCL(isAbstract);
+  paramEl->TypeFlags.INCL(constituent);
+  paramEl->SecondTFlags.INCL(overrides);
+  paramEl->WorkFlags.EXCL(selAfter);
+  paramEl->inINCL = 0;
+  refDECL = IDTable.GetDECL(setID);
+  if (!refDECL)
+    return 0;
+  if (refDECL->fromBType == NonBasic)
+    paramEl->DeclDescType = NamedType;
+  else {
+    paramEl->DeclDescType = BasicType;
+    paramEl->BType = refDECL->fromBType;
+  }
+  cheS = new CHETID;
+  cheS->data.nID = paramEl->OwnID;
+  if (isStd)
+    cheS->data.nINCL = 0;
+  else
+    cheS->data.nINCL = 1;
+  paramEl->Supports.Destroy();
+  paramEl->Supports.Append(cheS);
+  GetCategoryFlags(paramEl, catErr);
+  MakeIniFunc(setDECL);
+  return setDECL;
+}
+
+bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int checkLevel)
+{
+  LavaDECL *ifaceElDecl, *newimplElDecl;
+  CHE *cheImplEl, *cheI=0, *cheImpl=0;
+  bool toImpl, changed = false;
+  CHETVElem *El = (CHETVElem*)classDecl->VElems.VElems.first;
+  cheImpl = (CHE*)implDECL->NestedDecls.first;
+  if (!El) {
+    cheI = (CHE*)classDecl->NestedDecls.first;
+    if (!cheI) {
+      cheI = cheImpl;
+      cheImpl = 0;
+    }
+  }
+  while (El || cheI) { 
+    if (El) {
+      ifaceElDecl = IDTable.GetDECL(El->data.VTEl);
+      toImpl = ifaceElDecl && (ifaceElDecl->DeclType == Attr) 
+               && ifaceElDecl->TypeFlags.Contains(isAbstract)
+               && ifaceElDecl->TypeFlags.Contains(hasSetGet);
+    }
+    else {
+      ifaceElDecl = (LavaDECL*)cheI->data;
+      toImpl = ifaceElDecl && (ifaceElDecl->DeclType == Attr)
+               && ifaceElDecl->TypeFlags.Contains(hasSetGet)
+               && !ifaceElDecl->TypeFlags.Contains(isAbstract);
+//               && !ifaceElDecl->TypeFlags.Contains(inheritsBody);
+    }
+    if (toImpl) {
+      newimplElDecl = MakeOneSetGet(isPropGet, implDECL, ifaceElDecl, checkLevel);
+      if (newimplElDecl) {
+        cheImplEl = NewCHE(newimplElDecl);
+        implDECL->NestedDecls.Append(cheImplEl);
+        if (checkLevel > CHLV_inUpdateLow) {
+          IDTable.NewID((LavaDECL**)&cheImplEl->data);
+          newimplElDecl->ParentDECL = implDECL;
+          newimplElDecl->WorkFlags.INCL(newTreeNode);
+        }
+        if (checkLevel > CHLV_inUpdateHigh) 
+          modified = true;
+        changed = true;
+      }
+      newimplElDecl = MakeOneSetGet(isPropSet, implDECL, ifaceElDecl, checkLevel);
+      if (newimplElDecl) {
+        cheImplEl = NewCHE(newimplElDecl);
+        implDECL->NestedDecls.Append(cheImplEl);
+        newimplElDecl->ParentDECL = implDECL;
+        if (checkLevel > CHLV_inUpdateLow) {
+          UpdateNo++;
+          IDTable.NewID((LavaDECL**)&cheImplEl->data);
+          newimplElDecl->WorkFlags.INCL(newTreeNode);
+        }
+        if (checkLevel > CHLV_inUpdateHigh) 
+          modified = true;
+        changed = true;
+      }
+    }
+    if (El) {
+      El = (CHETVElem*)El->successor;
+      if (!El) {
+        cheI = (CHE*)classDecl->NestedDecls.first;
+        if (!cheI) {
+          cheI = cheImpl;
+          cheImpl = 0;
+        }
+      }
+    }
+    else {
+      cheI = (CHE*)cheI->successor;
+      if (!cheI) {
+        cheI = cheImpl;
+        cheImpl = 0;
+      }
+    }
+
+  }//all properties
+  return changed;
+}
+
+bool CLavaPEDoc::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
+{
+  bool isNSp, isCreatable, elOk, allOk = true, GUInew = true, GUInewE = true, hasEnum = false;
+  QString cstr;
+  CHETVElem *El;
+  LavaDECL *elDecl, *IFace, *elBase;
+  CHE *cheDecl;
+  CHETID *cheID;
+  TID declID = TID(classDECL->OwnID, classDECL->inINCL);
+
+  if (!classDECL || (classDECL->DeclType == VirtualType))
+    return false;
+  classDECL->DECLError2.Destroy();
+  cheID = (CHETID*)classDECL->Supports.first;
+
+  if (classDECL->VElems.UpdateNo > UpdateNo)
+    return true;
+  classDECL->VElems.UpdateNo = UpdateNo+1;
+  ResetVElems(classDECL);
+  while (cheID) { //!!
+    IFace = IDTable.GetDECL(cheID->data, classDECL->inINCL);
+    if (IFace) {
+      if (IFace->DeclType == VirtualType) 
+        IFace = IDTable.GetFinalBasicType(cheID->data, classDECL->inINCL, classDECL);
+      if (IFace) {
+        if (IFace->VElems.UpdateNo <= UpdateNo) {
+          ResetVElems(IFace);
+          elOk = MakeVElems(IFace);
+          allOk = allOk && elOk;
+        }
+        elOk = AddVElems(classDECL, IFace);
+        allOk = allOk && elOk;
+        if (!allOk) { // there is an error in a base class
+          new CLavaError(&classDECL->DECLError1, &ERR_InVTofBaseIF);
+          classDECL->WorkFlags.INCL(recalcVT);
+        }
+      }
+      else {
+        allOk = false;
+        new CLavaError(&classDECL->DECLError1, &ERR_NoBaseIF);
+      }
+    }
+    cheID = (CHETID*)cheID->successor;
+  }
+  elOk = AddVBase(classDECL, classDECL);
+  if (!elOk) {// there is an error in a base class
+    new CLavaError(&classDECL->DECLError2, &ERR_InVTofBaseIF);
+    classDECL->WorkFlags.INCL(recalcVT);
+  }
+  allOk = allOk && elOk;
+  if ((classDECL->DeclType != Interface) 
+       && (classDECL->DeclType != Package))
+    return allOk;
+
+  cheDecl = (CHE*)classDECL->NestedDecls.first;
+  isNSp = classDECL->DeclType == Package;
+  while (cheDecl) {
+    elDecl = (LavaDECL*)cheDecl->data;
+    if ( ( ( elDecl->DeclType == VirtualType)
+         || ( elDecl->DeclType == Function)
+         || ( elDecl->DeclType == Attr)
+         )
+        && elDecl->Supports.first) {
+      //check and replace the extensions and GUI-Show-function
+      for (El = (CHETVElem*)classDECL->VElems.VElems.first;
+           El && !IDTable.Overrides(TID(elDecl->OwnID, 0), elDecl->inINCL, El->data.VTEl, 0);
+           El = (CHETVElem*)El->successor);
+      if (El) {
+        cheID = (CHETID*)elDecl->Supports.first;
+        if (!IDTable.EQEQ(El->data.VTEl, 0, cheID->data, elDecl->inINCL) || El->data.Ambgs.first) {
+          if (IDTable.IsAnc(El->data.VTEl,0,TID(elDecl->OwnID, elDecl->inINCL),0)) {
+            for (elBase = IDTable.GetDECL(El->data.VTEl);
+                 elBase->Supports.first &&
+                 !IDTable.EQEQ(TID(elDecl->OwnID,elDecl->inINCL),0,((CHETID*)elBase->Supports.first)->data,elBase->inINCL);
+                 elBase = IDTable.GetDECL(((CHETID*)elBase->Supports.first)->data,elBase->inINCL) );
+            if (elBase->Supports.first) {
+              elBase->Supports.Destroy();
+              elBase->Supports = elDecl->Supports;
+            }
+          }
+          elDecl->Supports.Destroy();
+          elDecl->Supports = El->data.Ambgs;
+          cheID = new CHETID;
+          cheID->data = El->data.VTEl;
+          elDecl->Supports.Prepend(cheID);
+          if ((elDecl->DeclType == VirtualType) && (elDecl->RefID.nID >= 0))
+            IDTable.CheckValOfVirtual(elDecl);
+        }
+        if (El->data.VTBaseEl.nID == -1)
+          El->data.VTBaseEl = El->data.VTEl;
+        El->data.VTEl = TID(elDecl->OwnID, elDecl->inINCL);
+        El->data.TypeFlags = elDecl->TypeFlags;
+        El->data.op = elDecl->op;
+        El->data.Ambgs.Destroy();
+        El->data.ok = true;
+      }
+      else { //the overridden object was not found
+        El = new CHETVElem;
+        El->data.VTClss = declID;
+        El->data.VTEl = TID(elDecl->OwnID, elDecl->inINCL);
+        El->data.VTBaseEl = El->data.VTEl;
+        El->data.TypeFlags = elDecl->TypeFlags;
+        El->data.op = ((LavaDECL*)cheDecl->data)->op;
+        El->data.ok = false;
+        classDECL->VElems.VElems.Append(El);
+      }
+    }
+    else 
+      if (( elDecl->DeclType == Function) && elDecl->TypeFlags.Contains(isGUI)) {
+        for (El = (CHETVElem*)classDECL->VElems.VElems.first;
+             El && !El->data.TypeFlags.Contains(isGUI)
+                && (El->data.TypeFlags.Contains(isGUIEdit) == El->data.TypeFlags.Contains(isGUIEdit)); 
+             El = (CHETVElem*)El->successor);
+        if (El) {
+          if (El->data.TypeFlags.Contains(isGUIEdit))
+            GUInewE = false;
+          else
+            GUInew = false;
+          El->data.VTEl = TID(elDecl->OwnID, elDecl->inINCL);
+          El->data.VTBaseEl = El->data.VTEl;
+          El->data.op = elDecl->op;
+          El->data.Ambgs.Destroy();
+          El->data.TypeFlags = elDecl->TypeFlags;
+          El->data.ok = true;
+        }
+      }
+    if (isNSp && (elDecl->DeclType != VirtualType))
+      cheDecl = 0;
+    else
+      cheDecl = (CHE*)cheDecl->successor;
+  }
+  cheDecl = (CHE*)classDECL->NestedDecls.first;
+  while (cheDecl) {
+    elDecl = (LavaDECL*)cheDecl->data;
+    if ( ( (elDecl->DeclType == VirtualType)
+        || ( elDecl->DeclType == Function) && !elDecl->TypeFlags.Contains(isStatic)
+        || ( elDecl->DeclType == Attr))
+        && !elDecl->Supports.first
+        && (GUInew || !elDecl->TypeFlags.Contains(isGUI))
+        && (GUInewE || !elDecl->TypeFlags.Contains(isGUIEdit))) {
+      El = new CHETVElem;
+      El->data.VTClss = declID;
+      El->data.VTEl = TID(elDecl->OwnID, elDecl->inINCL);
+      El->data.VTBaseEl = El->data.VTEl;
+      El->data.TypeFlags = elDecl->TypeFlags;
+      El->data.op = elDecl->op;
+      El->data.ok = true;
+      classDECL->VElems.VElems.Append(El);
+    }
+    if (isNSp && (elDecl->DeclType != VirtualType))
+      cheDecl = 0;
+    else
+      cheDecl = (CHE*)cheDecl->successor;
+  }
+  if (allOk) {
+    elOk = true;
+    declID = TID(-1,0);
+    isCreatable = !classDECL->TypeFlags.Contains(isAbstract) && (classDECL->DeclType != Package);
+    for (El = (CHETVElem*)classDECL->VElems.VElems.first;
+         El && El->data.ok;
+         El = (CHETVElem*)El->successor) {
+      elDecl = IDTable.GetDECL(El->data.VTEl);
+      if (isCreatable) {
+        if (elDecl->TypeFlags.Contains(isAbstract)) {
+          new CLavaError(&classDECL->DECLError1, &ERR_AbstractInherited, &elDecl->FullName);
+          classDECL->WorkFlags.INCL(recalcVT);
+          elOk = false;
+        }
+      }
+      if (elDecl->TypeFlags.Contains(forceOverride)
+          && (elDecl->ParentDECL != classDECL)) {
+        new CLavaError(&classDECL->DECLError1, &ERR_ForceOver, &elDecl->FullName);
+        classDECL->WorkFlags.INCL(recalcVT);
+        El->data.ok = false;
+        elOk = false;
+      }
+      if (declID != El->data.VTClss) {
+        declID = El->data.VTClss;
+        IFace = IDTable.GetDECL(declID);
+        if (IFace->DeclDescType == EnumType)
+          if (hasEnum && !classDECL->inINCL) {
+            new CLavaError(&classDECL->DECLError1, &ERR_OneEnum, &classDECL->FullName);
+            classDECL->WorkFlags.INCL(recalcVT);
+            elOk = false;
+          }
+          else
+            hasEnum = true;
+      }
+    }
+    allOk = El == 0;
+  }
+  if (!allOk) {
+    new CLavaError(&classDECL->DECLError1, &ERR_InVT);
+    classDECL->WorkFlags.INCL(recalcVT);
+  }
+  return allOk && elOk;
+}
+
+void CLavaPEDoc::Modify(bool bModified)
+{
+  wxDocument::Modify (bModified); 
+  if (MainView)
+    ((CTreeFrame*)MainView->GetParentFrame())->SetModified(bModified);
+}
+
+//check the own document
+void CLavaPEDoc::OnCheck() 
+{
+  CExecChecks* ch = new CExecChecks(this);
+  delete ch;
+  ShowErrorBox(false);
+}
+
+void CLavaPEDoc::OnCloseLastExecView()
+{
+	if (wxTheApp->deletingMainFrame) return;
+  ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->hide();
+  ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->hide();
+  ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->hide();
+}
+
+bool CLavaPEDoc::OnEmptyDoc(const DString& Name)
+{
+  bool bb;
+  DString stdLava=DString(StdLavaLog);
+
+  mySynDef = new SynDef;
+  SynIO.InitSyntax(mySynDef, Name);
+  CalcNames(Name);
+  IDTable.mySynDef = mySynDef;
+  LavaDECL *TopDECL = NewLavaDECL();
+  if (((CLavaPEApp*)wxTheApp)->pLComTemplate == GetDocumentTemplate()) {
+    TopDECL->DeclType = Component;
+    isObject = true;
+  }
+  else
+    TopDECL->DeclType = Package;
+  TopDECL->DeclDescType = StructDesc; // = DefDesc;
+  TopDECL->TreeFlags.INCL(hasEmptyOpt);
+  TopDECL->TreeFlags.INCL(isExpanded);
+  TopDECL->WorkFlags.INCL(selDefs);
+  TopDECL->WorkFlags.INCL(selAfter);
+  TopDECL->OwnID = 0;
+  ((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef.ptr = TopDECL;
+  mySynDef->IDTable = (address)&IDTable;
+  isStd = false;
+  IDTable.MakeTable(mySynDef, isStd);
+  return (IncludeSyntax(stdLava, bb) != 0);
+}
+
+bool CLavaPEDoc::OnNewDocument()
+{
+  if (!CLavaBaseDoc::OnNewDocument())
+    return false;
+  if (!mySynDef) {
+    DString Name = DString(GetTitle());
+    return OnEmptyDoc(Name);
+  }
+  return true;
+}
+
+bool CLavaPEDoc::OnOpenDocument(const QString& filename) 
+{
+//  AfxDebugBreak();
+  bool errEx;
+  DString str0, str, newTopName, *toINCL = 0, fn = DString(filename);
+	QString fName(filename);
+  int readResult;
+
+  //LBaseData->lastFileOpen = QString(fn.c);
+  isStd = SameFile(fn.c, StdLava.ascii());
+  CalcNames(fn);
+  readResult = ReadSynDef(fn, mySynDef);
+  isReadOnly = readResult > 0;
+  if (readResult < 0) {
+    mySynDef = 0;
+    return false;
+  }
+  wxDocManager::GetDocumentManager()->AddFileToHistory(fName);
+
+  if (mySynDef->SynDefTree.first == mySynDef->SynDefTree.last) {
+    if (!isStd) {
+      str = DString("File '") + fn + " is not a valid lava file";
+      critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok,0,0);
+    }
+    changeNothing = !isStd || !LBaseData->stdUpdate;
+  }
+	else
+		changeNothing = isReadOnly;
+  Modify(false);
+  isObject = (((CLavaPEApp*)wxTheApp)->pLComTemplate == GetDocumentTemplate());
+  if (mySynDef) {
+    mySynDef->IDTable = (address)&IDTable;
+    hasIncludes = false;
+    AddSyntax(mySynDef, fn, errEx);  //Add include files/patterns
+    if (errEx)
+      return false;
+    UpdateOtherDocs(0, str0, 0, false); 
+    //CExecChecks* ch = new CExecChecks(this, true);
+    IDTable.SetImplIDs(false);
+    //delete ch;
+  }
+  else {
+    if (readResult < 0) {
+      str = DString("Cannot read file '") + fn + DString(", corrupt lava program syntax");
+      str += "\n  ";
+      str += "\nPerhaps different lava versions?"; 
+      str += "\n  ";
+    }
+    else 
+      str = DString("File '") + fn + DString("' not found");
+    QMessageBox::critical(qApp->mainWidget(), qApp->name(), str.c,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    return false;
+  }
+  return true;
+}//OnOpenDocument
+
+void CLavaPEDoc::OnRunLava() 
+{
+	QString interpreterPath, lavaFile = GetFilename(), buf;
+
+  if (IsModified()
+    && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
+    && (QMessageBox::Cancel == QMessageBox::question(qApp->mainWidget(),qApp->name(),ERR_SaveFailed, 
+                    QMessageBox::Ok,QMessageBox::Cancel,0)))
+    return;
+
+  if (lavaFile.isEmpty()) {
+    QMessageBox::question(qApp->mainWidget(),qApp->name(),IDP_SaveFirst,QMessageBox::Ok,0,0);
+    return;
+  }
+#ifdef WIN32
+  interpreterPath = ExeDir + "/Lava.exe";
+#else
+  interpreterPath = ExeDir + "/Lava";
+#endif
+	
+	QStringList args;
+	args << interpreterPath << lavaFile;
+	QProcess lavaInterpreter(args);
+
+	if (!lavaInterpreter.launch(buf)) {
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
+		return;
+	}
+}
+
+//check all included documents
+void CLavaPEDoc::OnTotalCheck() 
+{
+  int ii, nErrBoxShown = 0;
+  DString absName, absName2, messStr, nstr;
+  bool docopen;
+  CLavaPEDoc *doc;
+  wxDocManager* mana = wxDocManager::GetDocumentManager();
+  POSITION pos = 0;
+
+  CExecChecks* ch = new CExecChecks(this);
+  delete ch;
+  wxView *actView = mana->GetActiveView();
+  ((CLavaPEApp*)wxTheApp)->inTotalCheck = true;
+  if (/*nTreeErrors ||*/ nErrors || nPlaceholders) {
+    ShowErrorBox(true);
+    nErrBoxShown++;
+  }
+  for (ii = 1; ii < IDTable.freeINCL; ii++) {
+    if (IDTable.IDTab[ii]->isValid) {
+      absName  = IDTable.IDTab[ii]->FileName;
+      AbsPathName(absName, IDTable.DocDir);
+      absName2.Reset(0);
+      docopen = false;
+      pos = mana->GetFirstDocPos();
+      while (pos && !SameFile(absName, absName2)) {
+        doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+        absName2  = doc->IDTable.IDTab[0]->FileName;
+        AbsPathName(absName2, doc->IDTable.DocDir);
+      }
+      if (SameFile(absName, absName2)) {
+        docopen = true;
+      }
+      if (docopen && !doc->checkedInTotalCheck) {
+        CExecChecks* ch = new CExecChecks(doc);
+        doc->checkedInTotalCheck = true;
+        delete ch;
+      }
+      else 
+        doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(absName.c);
+      if (doc && (/*doc->nTreeErrors ||*/ doc->nErrors || doc->nPlaceholders)) {
+        nErrBoxShown++;
+        if (docopen) {
+          doc->MainView->GetParentFrame()->Activate(true);
+          doc->ShowErrorBox(true);
+        }
+        doc->openInTotalCheck = false;
+      }
+      else 
+        if (doc && !docopen) {
+          doc->openInTotalCheck = true;
+          doc->OnCloseDocument(); //dies führte in einem mfc-Programm zum Absturz
+        }
+    }
+  }
+  messStr = DString("Total check finished: ");
+  if (!nErrBoxShown)
+    messStr += DString("No errors");
+  else {
+    messStr += DString("Errors in ");
+    if (nErrBoxShown == 1)
+      messStr += DString("one lava file");
+    else {
+      Convert.IntToString(nErrBoxShown, nstr);
+      messStr += nstr;
+      messStr += DString(" lava files");
+    }
+  }
+  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(), messStr.c,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+
+  pos = mana->GetFirstDocPos();
+  while (pos) {
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    doc->checkedInTotalCheck = false;
+    if (doc->openInTotalCheck)
+      doc->OnCloseDocument();
+  }
+  ((CLavaPEApp*)wxTheApp)->inTotalCheck = false;
+  mana->SetActiveView(actView, true);
+}
+
+void CLavaPEDoc::OnUpdateRunLava(wxAction* action) 
+{
+  
+  if (!mySynDef) 
+    return;
+  LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef.ptr;
+  CHE* che;
+  for (che = (CHE*)topDECL->NestedDecls.first;
+       che && (((LavaDECL*)che->data)->DeclType == VirtualType);
+       che = (CHE*) che->successor);
+  action->setEnabled(che && (((LavaDECL*)che->data)->DeclType == Initiator));
+}
+
+bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
+{
+  bool activ=false;
+  CLavaBaseView *view;
+  wxMDIChildFrame *execChild;
+//  LavaDECL *eDECL = (LavaDECL*)execChe->data;
+  POSITION pos = GetFirstViewPos();
+  while (pos && !activ) {
+    view = (CLavaBaseView*)GetNextView(pos);
+    activ = view->inherits("CExecView") && (((CExecView*)view)->myDECL == eDECL);
+  }
+  ViewPosRelease(pos);
+  if (activ)
+    execChild = view->GetParentFrame();
+  else {
+    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = new CLavaPEHint(CPECommand_OpenExecView, this, (const unsigned long)3, (DWORD) eDECL, (DWORD)MainView, (DWORD)wxTheApp->m_appWindow->statusBar(), (DWORD)((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar, 0); // (DWORD) pdecl);
+    execChild = ((CLavaPEApp*)wxTheApp)->pExecTemplate->CreateChildFrame(this);
+    activ = (execChild !=0);
+    execChild->InitialUpdate();
+		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->show();
+		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->show();
+		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->show();
+
+    if (!eDECL->Exec.ptr)
+      SetExecItemImage(eDECL, false, false);
+  }
+  if (activ) 
+    execChild->Activate(true);
+  if (((CLavaPEApp*)wxTheApp)->LBaseData.actHint) {
+    delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
+    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
+  }
+
+  if (/*!execChild->isMaximized()
+  && */wxDocManager::GetOpenDocCount() == 1
+	&& GetViewCount() == 4
+  && wxDocManager::GetDocumentManager()->GetActiveView()->GetParentFrame()->oldWindowState != QEvent::ShowMaximized)
+//  && MainView->GetParentFrame()->oldWindowState != QEvent::ShowMaximized)
+		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
+
+  return true;
+}
+
+bool CLavaPEDoc::OpenGUIView(LavaDECL** pdecl)
+{ 
+  bool activ=false;
+  CLavaBaseView *view;
+  wxMDIChildFrame *formChild;
+  POSITION pos = GetFirstViewPos();
+  while (pos && !activ) {
+    view = (CLavaBaseView*)GetNextView(pos);
+    activ = !view->inherits("CTreeView") && !view->inherits("CExecView")
+         && (((CLavaPEView*)((CFormFrame*)view->GetParentFrame())->viewR)->myDECL == *pdecl);
+  }
+  ViewPosRelease(pos);
+  if (activ) 
+    formChild = view->GetParentFrame();
+  else {
+    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = new CLavaPEHint(CPECommand_OpenFormView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, 0, (DWORD)pdecl);
+    formChild = ((CLavaPEApp*)wxTheApp)->pFormTemplate->CreateChildFrame(this);
+    activ = (formChild !=0);
+    formChild->InitialUpdate();
+    delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
+    ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
+
+  }
+  if (activ) {
+    formChild->Activate(true);
+	 // if (wxDocManager::GetOpenDocCount() == 1)
+	 //	  QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
+  }
+  return true;
+}//OpenGUIView
+
+bool CLavaPEDoc::OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate)
+{ 
+  POSITION pos = GetFirstViewPos();
+  CLavaBaseView* view;
+  bool activ=FALSE; 
+  //CRect rr;
+  CLavaPEHint * hint;
+
+  while (pos && !activ) {
+    view = (CLavaBaseView*)GetNextView(pos);
+    activ = view->inherits("CVTView") && (((CVTView*)view)->myDECL == *pdecl);
+  }
+  ViewPosRelease(pos);
+  if (activ) {
+    if (!autoUpdate)
+      ((CTreeFrame*)view->GetParentFrame())->CalcSplitters(true); //make it visible
+  }
+  else {
+ //   UpdateVElems(*pdecl);
+    hint = new CLavaPEHint(CPECommand_OpenSelView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, autoUpdate,(DWORD)pdecl);
+    //UpdateAllViews(MainView,0,hint);
+    ((CLavaPEView*)MainView)->myVTView->OnUpdate(MainView, 0, hint);
+    delete hint;
+  }
+  return TRUE;
+}//openVTView
+
+bool CLavaPEDoc::OpenWizardView(CLavaBaseView* formView, LavaDECL** pdecl/*, unsigned long autoUpdate*/)
+{ 
+//  POSITION pos = GetFirstViewPos();
+  CLavaBaseView* view;
+  bool activ=FALSE; 
+  //CRect rr;
+  CLavaPEHint * hint;
+
+  view = ((CFormFrame*)formView->GetParentFrame())->wizardView; 
+  hint = new CLavaPEHint(CPECommand_OpenWizardView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, 0 /*autoUpdate*/,(DWORD)pdecl);
+  view->OnUpdate(formView,0,hint);
+  delete hint;
+  return true;
+}//openWizardView
+
+void CLavaPEDoc::ResetError()
+{
+  DString str0;
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetComment(str0, true);
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->ResetError(); 
+}
+
+
+void CLavaPEDoc::ResetVElems(LavaDECL *classDECL)
+{
+  if (classDECL) {
+    classDECL->VElems.VElems.Destroy();
+    classDECL->DECLError2.Destroy();
+  }
+}
+
 
 void CLavaPEDoc::SetExecBarText(CSearchData& sData)
 {
@@ -3090,6 +3341,80 @@ void CLavaPEDoc::SetExecBarText(CSearchData& sData)
   data->nID = sData.execDECL->ParentDECL->OwnID;
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetFindText(barText, data);
 }
+
+
+CHE* CLavaPEDoc::SetExecChe(LavaDECL* parentDecl,LavaDECL* execDecl)
+{
+  LavaDECL *cDECL = 0;
+  CHE *che, *afterChe = (CHE*)parentDecl->NestedDecls.last;
+  if (afterChe) {
+    cDECL = (LavaDECL*)afterChe->data;
+    if (cDECL->DeclType != execDecl->DeclType) {
+      if ((cDECL->DeclType == ExecDef)
+        || (cDECL->DeclType == Ensure) && (execDecl->DeclType == Require)) {
+        afterChe = (CHE*)afterChe->predecessor; 
+        if (afterChe) {
+          cDECL = (LavaDECL*)afterChe->data;
+          if (cDECL->DeclType != execDecl->DeclType) {
+            if (cDECL->DeclType == Ensure) {
+              afterChe = (CHE*)afterChe->predecessor; 
+              if (afterChe) {
+                cDECL = (LavaDECL*)afterChe->data;
+                if (cDECL->DeclType != execDecl->DeclType)
+                  cDECL = 0;
+              }
+              else
+                cDECL = 0;
+            }
+            else
+              cDECL = 0;
+          }//else ok
+        }
+        else
+          cDECL = 0;
+      }
+      else
+        cDECL = 0;
+    }
+  }
+  if (!cDECL) {
+    che = NewCHE(execDecl);
+    parentDecl->NestedDecls.Insert(afterChe, che);
+    return che;
+  }
+  else
+    return 0;
+}
+
+void CLavaPEDoc::SetExecItemImage(LavaDECL* execDECL, bool empty, bool hasErrors)
+{
+  if (!MainView)
+    return;
+  CLavaPEView* view = (CLavaPEView*)MainView;
+  QPixmap *bm, *sm = 0;
+  bool hasCom;
+  SynFlags flags;
+  if ((execDECL->ParentDECL->DeclType == Interface) || (execDECL->ParentDECL->DeclType == Impl))
+    flags.INCL(invariantPM);
+  if (empty)
+    flags.INCL(emptyPM);
+  CTreeItem* item = view->BrowseTree(execDECL->ParentDECL, (CTreeItem*)view->GetListView()->firstChild());
+  item = view->getSectionNode(item, execDECL->DeclType);
+  bm = view->GetPixmap(true,true,execDECL->DeclType,flags);
+  /*
+  if (empty) 
+    bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[7];
+  else
+    bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[8];
+  */
+  hasCom = execDECL && execDECL->DECLComment.ptr && execDECL->DECLComment.ptr->Comment.l;
+  if (item) {
+    item->setPix(bm); 
+    item->SetItemMask(hasErrors, hasCom);
+    item->repaint();
+  }
+}
+
 
 void CLavaPEDoc::SetFindText(LavaDECL* inDecl, CFindData& fw)//const DString& absFileName, int refCase, const TID& refTid, const DString& enumID)
 {
@@ -3181,6 +3506,39 @@ void CLavaPEDoc::SetFindText(LavaDECL* inDecl, CFindData& fw)//const DString& ab
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetFindText(barText, data);
 }
 
+void CLavaPEDoc::SetLastHints(bool fromDragDrop, bool otherDocs)
+{  //finish of drag and drop and change include file from InclView
+  POSITION pos; 
+  DString str0;
+  CExecSetImpls *impls;
+  CLavaPEDoc* doc;
+
+  wxDocManager* mana = wxDocManager::GetDocumentManager(); 
+  pos = mana->GetFirstDocPos();
+  while (pos) {
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    if (doc->hasHint) {
+      doc->SetLastHint(false);
+      if (otherDocs)
+        doc->UpdateOtherDocs(this, str0, 0, false);
+    }
+  } 
+  pos = mana->GetFirstDocPos();
+  while (pos) {
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    if (doc->hasHint || doc->drawView) {
+      doc->hasHint = false;
+      if (fromDragDrop) {
+        doc->drawView = false;
+        impls = new CExecSetImpls(doc->mySynDef);
+        delete impls;
+        ((CLavaPEView*)doc->MainView)->m_hitemDrag = 0;
+      }
+      doc->UpdateAllViews(NULL, 3, 0);
+    }
+  }
+}
+
 
 void CLavaPEDoc::SetNameText(LavaDECL* inDecl, CFindData& fw)//const DString& absFileName, const DString& enumID)
 {
@@ -3258,96 +3616,24 @@ void CLavaPEDoc::SetNameText(LavaDECL* inDecl, CFindData& fw)//const DString& ab
   }
 }
 
-//check the own document
-void CLavaPEDoc::OnCheck() 
+void CLavaPEDoc::SetPEError(const CHAINX& ErrChain, bool andShow)
 {
-  CExecChecks* ch = new CExecChecks(this);
-  delete ch;
-  ShowErrorBox(false);
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetErrorOnBar(ErrChain);
+  if (andShow) {
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetTab(tabError);
+    //((CLavaMainFrame*)wxTheApp->m_appWindow)->RecalcLayout();
+  }
 }
 
-//check all included documents
-void CLavaPEDoc::OnTotalCheck() 
-{
-  int ii, nErrBoxShown = 0;
-  DString absName, absName2, messStr, nstr;
-  bool docopen;
-  CLavaPEDoc *doc;
-  wxDocManager* mana = wxDocManager::GetDocumentManager();
-  POSITION pos = 0;
-
-  CExecChecks* ch = new CExecChecks(this);
-  delete ch;
-  wxView *actView = mana->GetActiveView();
-  ((CLavaPEApp*)wxTheApp)->inTotalCheck = true;
-  if (/*nTreeErrors ||*/ nErrors || nPlaceholders) {
-    ShowErrorBox(true);
-    nErrBoxShown++;
+void CLavaPEDoc::SetTreeItemImage(LavaDECL* errDECL, bool hasErr)
+{ 
+  CLavaPEView* view = (CLavaPEView*)MainView;
+  CTreeItem* item = view->BrowseTree(errDECL, (CTreeItem*)view->GetListView()->firstChild());
+  if (item) {
+    item->SetItemMask(hasErr, errDECL->DECLComment.ptr);
+    item->repaint();
   }
-  for (ii = 1; ii < IDTable.freeINCL; ii++) {
-    if (IDTable.IDTab[ii]->isValid) {
-      absName  = IDTable.IDTab[ii]->FileName;
-      AbsPathName(absName, IDTable.DocDir);
-      absName2.Reset(0);
-      docopen = false;
-      pos = mana->GetFirstDocPos();
-      while (pos && !SameFile(absName, absName2)) {
-        doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
-        absName2  = doc->IDTable.IDTab[0]->FileName;
-        AbsPathName(absName2, doc->IDTable.DocDir);
-      }
-      if (SameFile(absName, absName2)) {
-        docopen = true;
-      }
-      if (docopen && !doc->checkedInTotalCheck) {
-        CExecChecks* ch = new CExecChecks(doc);
-        doc->checkedInTotalCheck = true;
-        delete ch;
-      }
-      else 
-        doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(absName.c);
-      if (doc && (/*doc->nTreeErrors ||*/ doc->nErrors || doc->nPlaceholders)) {
-        nErrBoxShown++;
-        if (docopen) {
-          doc->MainView->GetParentFrame()->Activate(true);
-          doc->ShowErrorBox(true);
-        }
-        doc->openInTotalCheck = false;
-      }
-      else 
-        if (doc && !docopen) {
-          doc->openInTotalCheck = true;
-          doc->OnCloseDocument(); //dies führte in einem mfc-Programm zum Absturz
-        }
-    }
-  }
-  messStr = DString("Total check finished: ");
-  if (!nErrBoxShown)
-    messStr += DString("No errors");
-  else {
-    messStr += DString("Errors in ");
-    if (nErrBoxShown == 1)
-      messStr += DString("one lava file");
-    else {
-      Convert.IntToString(nErrBoxShown, nstr);
-      messStr += nstr;
-      messStr += DString(" lava files");
-    }
-  }
-  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(), messStr.c,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-
-  pos = mana->GetFirstDocPos();
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
-    doc->checkedInTotalCheck = false;
-    if (doc->openInTotalCheck)
-      doc->OnCloseDocument();
-  }
-  ((CLavaPEApp*)wxTheApp)->inTotalCheck = false;
-  mana->SetActiveView(actView, true);
 }
-
-
 
 void CLavaPEDoc::ShowErrorBox(bool inOpen)
 {
@@ -3389,235 +3675,254 @@ void CLavaPEDoc::ShowErrorBox(bool inOpen)
   QMessageBox::critical(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 }
 
-void CLavaPEDoc::Modify(bool bModified)
+void CLavaPEDoc::ShrinkCollectDECL(LavaDECL* decl)
 {
-  wxDocument::Modify (bModified); 
-  if (MainView)
-    ((CTreeFrame*)MainView->GetParentFrame())->SetModified(bModified);
-}
+  CHE* chePre = 0;
+  CHE* che = (CHE*)decl->NestedDecls.first;
+  LavaDECL* elDECL;
 
-
-void CLavaPEDoc::OnRunLava() 
-{
-	QString interpreterPath, lavaFile = GetFilename(), buf;
-
-  if (IsModified()
-    && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
-    && (QMessageBox::Cancel == QMessageBox::question(qApp->mainWidget(),qApp->name(),ERR_SaveFailed, 
-                    QMessageBox::Ok,QMessageBox::Cancel,0)))
-    return;
-
-  if (lavaFile.isEmpty()) {
-    QMessageBox::question(qApp->mainWidget(),qApp->name(),IDP_SaveFirst,QMessageBox::Ok,0,0);
-    return;
-  }
-#ifdef WIN32
-  interpreterPath = ExeDir + "/Lava.exe";
-#else
-  interpreterPath = ExeDir + "/Lava";
-#endif
-	
-	QStringList args;
-	args << interpreterPath << lavaFile;
-	QProcess lavaInterpreter(args);
-
-	if (!lavaInterpreter.launch(buf)) {
-    QMessageBox::critical(qApp->mainWidget(),qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
-		return;
-	}
-}
-
-void CLavaPEDoc::OnUpdateRunLava(wxAction* action) 
-{
-  
-  if (!mySynDef) 
-    return;
-  LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef.ptr;
-  CHE* che;
-  for (che = (CHE*)topDECL->NestedDecls.first;
-       che && (((LavaDECL*)che->data)->DeclType == VirtualType);
-       che = (CHE*) che->successor);
-  action->setEnabled(che && (((LavaDECL*)che->data)->DeclType == Initiator));
-}
-
-int CLavaPEDoc::AutoCorrBox(QString* errID)
-{
-  QString cstr = *errID;
-  cstr += "\r\n";
-  if (errID == &ERR_NoOverridden) 
-    cstr += "Correct the declaration what it overrides? ";
-  else if ((errID == &ERR_MissingFuncDecl) || (errID == &ERR_NoSetGetMember) || (errID == &ERR_ImplOfAbstract))
-    cstr += "Change to private function?  ";
-  else if (errID == &ERR_NoAbstract)
-    cstr += "Make the function non abstract?  ";
-  else if (errID == &ERR_OverriddenStatic)
-    cstr += "Remove this erroneous reference?  ";
-  else if (errID == &ERR_CleanSupports)
-    cstr += "Remove this redundant entry?  ";
-  else if (errID == &ERR_OverriddenIOType)
-    cstr += "Set the right types?  ";
-  else if (errID == &ERR_NoOverridden)
-    cstr += "Set the right types?  ";
-  else
-    cstr += "Remove this undefined reference?  ";
-  return QMessageBox::question(0,qApp->name(),cstr,QMessageBox::Ok,QMessageBox::Cancel,0);
-  //return AfxMessageBox(cstr, MB_OKCANCEL+MB_ICONINFORMATION);
-  return 0;
-}
-
-void CLavaPEDoc::AutoCorr(LavaDECL* decl)
-{
-  LavaDECL *newDECL;
-  QString cstr;
-  CHE *cheEl, *cheIOEl, *che = (CHE*)decl->DECLError1.first;
-  CHETID *cheTID, *ncheTID;
-  bool lfuncImpl;
   while (che) {
-    if (((CLavaError*)che->data)->showAutoCorrBox) {
-      ((CLavaError*)che->data)->showAutoCorrBox = false;
-      if (((CLavaError*)che->data)->IDS == &ERR_NoOverridden) {
-        newDECL = NewLavaDECL();
-        *newDECL = *decl;
-        CCorrOverBox * box = new CCorrOverBox(newDECL, this, MainView);
-        if (box->OnInitDialog() == BoxContinue) {
-          if (box->exec() != QDialog::Accepted) {
-            delete newDECL;
-            return; 
-          }
-        }
+    elDECL = (LavaDECL*)che->data;
+    if (!elDECL->WorkFlags.Contains(checkmark) 
+        && (elDECL->DeclType != IAttr) && (elDECL->DeclType != OAttr)) {
+      decl->NestedDecls.Uncouple(che);
+      delete che;
+      if (chePre)
+        che = (CHE*)chePre->successor;
+      else
+        che = (CHE*)decl->NestedDecls.first;
+    }        
+    else {
+      elDECL->WorkFlags.EXCL(checkmark);
+      elDECL->Supports.Destroy();
+      elDECL->DECLComment.Destroy();
+      if (elDECL->DeclType == Interface) {
+        elDECL->Items.Destroy();
+        elDECL->DeclDescType = StructDesc;
+      }
+      ShrinkCollectDECL(elDECL);
+      if (elDECL->DeclType == Interface)
+        MakeIniFunc(elDECL);
+      chePre = che;
+      che = (CHE*)che->successor;
+    }
+  }
+}
+
+bool CLavaPEDoc::TrueReference(LavaDECL* decl, int refCase, const TID& refTid)
+{
+  CHETID *che;
+
+  switch (refCase) {
+  case 0:  //RefID
+    if (decl->RefID == refTid)
+      return true;
+    break;
+  case 1: //Supports
+    for (che = (CHETID*)decl->Supports.first; che && (che->data != refTid); che = (CHETID*)che->successor);
+    if (che)
+      return true;
+    break;
+  case 2: //Inherits
+    for (che = (CHETID*)decl->Inherits.first; che && (che->data != refTid); che = (CHETID*)che->successor);
+    if (che)
+      return true;
+    break;
+  case 3: //Chain element in form
+    if ((decl->DeclType == VirtualType) && (decl->ParentDECL->DeclType == FormDef)
+      && decl->Annotation.ptr
+      && decl->Annotation.ptr->IterOrig.ptr
+      && ((TIteration*)decl->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr) {
+      LavaDECL* CHEEl = ((TIteration*)decl->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr;
+      if (CHEEl->RefID == refTid)
+        return true;
+    }
+    break;
+  case 4:  //Own id
+  case 5:  //enumID in own id
+    return (decl->OwnID == refTid.nID) && (decl->inINCL == refTid.nINCL);
+  default: ;
+  }
+  return false;
+}
+
+void CLavaPEDoc::UpdateMoveInDocs(const DString& clipDocFn)
+{
+  CHESimpleSyntax* cheSyn;
+  POSITION pos; 
+  DString absDropFn, *str;//, str0, absName, absName2, dragFn;
+  int dragIncl = -1, dropIncl = -1;
+  LavaDECL* oldTopDECL, *newTopDECL;
+  CLavaPEHint* hint;
+  CLavaPEDoc* doc, *dragDoc=0;
+  CLavaPEView* view;
+  SynFlags firstLast;
+
+  absDropFn  = IDTable.IDTab[0]->FileName;
+  AbsPathName(absDropFn, IDTable.DocDir);
+  firstLast.INCL(multiDocHint);
+  this->hasHint = true;
+  wxDocManager* mana = wxDocManager::GetDocumentManager();
+  pos = mana->GetFirstDocPos();
+  while (pos) {
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    dragIncl = -1;
+    dropIncl = -1;
+    //dropFn = absName;
+    //dragFn = clipDoc;
+    if (absDropFn == clipDocFn)
+      dragDoc = this;
+    //RelPathName(dropFn, doc->IDTable.DocDir);
+    //RelPathName(dragFn, doc->IDTable.DocDir);
+    //absName2 = doc->IDTable.IDTab[0]->FileName;
+    //AbsPathName(absName2, doc->IDTable.DocDir);
+    if (!dragDoc && SameFile(doc->IDTable.IDTab[0]->FileName, doc->IDTable.DocDir, clipDocFn)) {
+      dragDoc = doc;
+      view = (CLavaPEView*)doc->DragView;
+      if (view && view->pDeclDragP && view->CollectDECL) {
+        /*
+        CTreeItem* dragParent = view->GetListView()->GetParentItem(view->m_hitemDrag);
+        TItemData* dd = (TItemData*)view->GetListView()->GetItemData(dragParent);
+        DWORD d4 = ((TItemData*)view->GetListView()->GetItemData(dragParent))->synEl;
+        */
+        FIRSTLAST(doc, firstLast);
+        DWORD d4 = (DWORD)view->pDeclDragP;
+        DString* str2 = 0;
+        if (view->CollectDECL->FullName.l)
+          str2 = new DString(view->CollectDECL->FullName);
+        hint = new CLavaPEHint(CPECommand_Delete, doc, firstLast, (DWORD)view->CollectDECL, (DWORD)str2, (DWORD)view->CollectPos, d4, 0);
+        doc->UpdateDoc(view, FALSE, hint);
+        view->pDeclDragP = 0;
+        delete hint; //??
+      }
+    }
+    cheSyn = (CHESimpleSyntax*)doc->mySynDef->SynDefTree.first;
+    while (cheSyn && ((dropIncl<0) || (dragIncl<0))) {
+      if ( SameFile(cheSyn->data.SyntaxName, doc->IDTable.DocDir, absDropFn))//, doc->IDTable.DocDir))
+        dropIncl = cheSyn->data.nINCL;
+      if (SameFile(cheSyn->data.SyntaxName, doc->IDTable.DocDir, clipDocFn)) 
+        dragIncl = cheSyn->data.nINCL;
+      cheSyn = (CHESimpleSyntax*)cheSyn->successor;
+    }
+    if ((dragIncl >= 0) && (dropIncl >= 0)) {
+      oldTopDECL = ((CHESimpleSyntax*)doc->mySynDef->SynDefTree.first)->data.TopDef.ptr;
+      newTopDECL = NewLavaDECL();
+      *newTopDECL = *oldTopDECL;
+      //Change IDs
+      doc->IDTable.StartClipIDs(dragIncl, dropIncl, &this->IDTable);
+      IDTable.StartClipIDs(dragIncl, dropIncl, &this->IDTable);
+      doc->IDTable.ChangeRefsToClipIDs(newTopDECL);
+      if (doc->IDTable.hasRefToClipID) {
+        ((CHESimpleSyntax*)doc->mySynDef->SynDefTree.first)->data.TopDef.ptr = newTopDECL;
+        doc->IDTable.DownChange(&((CHESimpleSyntax*)doc->mySynDef->SynDefTree.first)->data.TopDef.ptr);
+        str = new DString(newTopDECL->LocalName);
+        FIRSTLAST(doc, firstLast);
+        hint = new CLavaPEHint(CPECommand_Change, doc, firstLast, (DWORD)oldTopDECL, (DWORD)str, 0,  (DWORD)&((CHESimpleSyntax*)doc->mySynDef->SynDefTree.first)->data.TopDef.ptr);
+        doc->UndoMem.AddToMem(hint);
+        UpdateNo++;
+      }
+      else {
+        doc->IDTable.DragINCL = 0;
+        doc->IDTable.DropINCL = 0;
+        delete newTopDECL;
+      }
+    }
+  } 
+}
+
+
+void CLavaPEDoc::UpdateOtherDocs(wxDocument* skipOther, DString& inclFile, int newINCL, bool synDel, SynFlags flag)
+{
+  CHESimpleSyntax* cheSyn;
+  CLavaPEDoc* doc;
+  CLavaPEHint* hint;
+  DString absDropFn, str, relInclFile; //,absName;
+  CHAINX chain;
+  CHE* che;
+  POSITION pos; 
+  bool isNew;
+  CExecSetImpls *impls;
+  wxDocManager* mana = wxDocManager::GetDocumentManager() ;
+
+  absDropFn = IDTable.IDTab[0]->FileName;
+  AbsPathName(absDropFn, IDTable.DocDir);
+
+  pos = mana->GetFirstDocPos();
+  NSTLavaDECL topDef;
+  DString oldTopName;
+  if (skipOther && !((CLavaPEView*)((CLavaPEDoc*)skipOther)->UndoMem.DrawTree))
+    flag.INCL(noDrawHint);
+  while (pos) {
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    //dropFn = absName;
+    //RelPathName(dropFn, doc->IDTable.DocDir);
+    if (inclFile.l) {
+      relInclFile = inclFile;
+      RelPathName(relInclFile, doc->IDTable.DocDir);
+    }
+    cheSyn = (CHESimpleSyntax*)doc->mySynDef->SynDefTree.first;
+    if (cheSyn)
+      cheSyn = (CHESimpleSyntax*)cheSyn->successor;
+    for ( ;cheSyn && !SameFile(cheSyn->data.SyntaxName,doc->IDTable.DocDir, absDropFn);//,doc->IDTable.DocDir);
+           cheSyn = (CHESimpleSyntax*)cheSyn->successor);
+    if (cheSyn) {
+      if (inclFile.l) {
+        if (synDel)
+          doc->IDTable.RemoveFromInclTrans(cheSyn->data.nINCL, relInclFile);
         else {
-          delete newDECL;
-          return;
+          if (doc->IncludeSyntax(inclFile, isNew)) {
+            if (isNew) {
+              doc->Modify(true);
+              impls = new CExecSetImpls(doc->mySynDef);
+              delete impls;
+              doc->UpdateNo++;
+              if (skipOther)
+                doc->drawView = true;
+              else {
+                hint = new CLavaPEHint(CPECommand_FromOtherDoc, doc, flag);
+                doc->UpdateAllViews(NULL, CHLV_showError, hint);
+                delete hint;
+              }
+            }
+            else
+              doc->IDTable.SetInclTransValid(cheSyn->data.nINCL, relInclFile, newINCL);
+          }
         }
       }
       else {
-        lfuncImpl = (((CLavaError*)che->data)->IDS == &ERR_MissingFuncDecl)
-                     || (((CLavaError*)che->data)->IDS == &ERR_NoSetGetMember)
-                    || (((CLavaError*)che->data)->IDS == &ERR_ImplOfAbstract);
-        if (AutoCorrBox(((CLavaError*)che->data)->IDS) != QDialog::Accepted) {
-          if (lfuncImpl)
-            decl->WorkFlags.INCL(allowDEL);
-          return;
+        topDef.ptr = cheSyn->data.TopDef.ptr;
+        cheSyn->data.TopDef.ptr = 0;
+        cheSyn->data.TopDef = ((CHESimpleSyntax*)mySynDef->SynDefTree.first)->data.TopDef;
+        doc->IDTable.AddSimpleSyntax(mySynDef, IDTable.DocDir, true, cheSyn);
+        if (cheSyn->data.LocalTopName.l) {
+          oldTopName = cheSyn->data.TopDef.ptr->LocalName;
+          doc->IDTable.SetAsName(cheSyn->data.nINCL, cheSyn->data.LocalTopName, oldTopName, cheSyn->data.TopDef.ptr);
         }
-        newDECL = NewLavaDECL();
-        *newDECL = *decl;
-        if (lfuncImpl) {
-          newDECL->SecondTFlags.EXCL(funcImpl);      
-          newDECL->TypeFlags.EXCL(isPropGet);   
-          newDECL->TypeFlags.EXCL(isPropSet);
-          newDECL->TypeFlags.EXCL(isInitializer);
-          newDECL->TypeFlags.EXCL(defaultInitializer);
-          newDECL->Supports.Destroy();
-          if (newDECL->op != OP_noOp) {
-            newDECL->LocalName = DString("leaved_from_operator_") + LBaseData->OpFuncNames[newDECL->op];
-            newDECL->op = OP_noOp;
-          }
-          cheIOEl = (CHE*)newDECL->NestedDecls.first;
-          while (cheIOEl) {
-            ((LavaDECL*)cheIOEl->data)->SecondTFlags.EXCL(funcImpl);     
-            ((LavaDECL*)cheIOEl->data)->TypeFlags.EXCL(isPropGet);    
-            ((LavaDECL*)cheIOEl->data)->TypeFlags.EXCL(isPropSet);
-            ((LavaDECL*)cheIOEl->data)->Supports.Destroy();
-            cheIOEl = (CHE*)cheIOEl->successor;
-          }
-        }
+        doc->UpdateNo++;
+        if (skipOther)
+          doc->drawView = true;
         else {
-          if (((CLavaError*)che->data)->IDS == &ERR_OverriddenStatic) {
-            newDECL->Supports.Destroy();
-            newDECL->SecondTFlags.EXCL(overrides);
+          hint = new CLavaPEHint(CPECommand_FromOtherDoc, doc, flag);//(const unsigned long) 0);
+          doc->changeInUpdate = false;
+          impls = new CExecSetImpls(doc->mySynDef);
+          delete impls;
+          doc->UpdateAllViews(NULL, CHLV_showError, hint);
+          if (doc->changeInUpdate) {
+            che = NewCHE((AnyType*)doc);
+            chain.Append(che);
+            doc->changeInUpdate = false;
           }
-          else if (((CLavaError*)che->data)->IDS == &ERR_NoAbstract) 
-            newDECL->TypeFlags.EXCL(isAbstract);
-          else {
-            cheTID = (CHETID*)newDECL->Supports.first;
-            while (cheTID) {
-              if (!IDTable.GetDECL(cheTID->data, newDECL->inINCL)) {
-                ncheTID = (CHETID*)cheTID->successor;
-                if (!ncheTID && (decl->DeclType == Interface)
-                    && (cheTID == (CHETID*)newDECL->Supports.first)) {
-                  if (isStd)
-                    cheTID->data.nINCL = 0;
-                  else
-                    cheTID->data.nINCL = 1;
-                  cheTID->data.nID = IDTable.BasicTypesID[B_Object];
-                  if (cheTID->data.nID < 0)
-                    cheTID = 0;
-                }
-                else {
-                  newDECL->Supports.Uncouple(cheTID);
-                  delete cheTID;
-                  cheTID = ncheTID;
-                }
-              }
-              else
-                cheTID = (CHETID*)cheTID->successor;
-            }
-            cheTID = (CHETID*)newDECL->Inherits.first;
-            while (cheTID) {
-              if (!IDTable.GetDECL(cheTID->data, newDECL->inINCL)) {
-                ncheTID = (CHETID*)cheTID->successor;
-                newDECL->Inherits.Uncouple(cheTID);
-                delete cheTID;
-                cheTID = ncheTID;
-              }
-              else
-                cheTID = (CHETID*)cheTID->successor;
-            }
-          }
+          delete hint;
         }
+        UpdateNo++;
+        topDef.Destroy();
       }
-      cheEl = (CHE*)decl->ParentDECL->NestedDecls.first;
-      for (cheEl = (CHE*)decl->ParentDECL->NestedDecls.first;
-           cheEl && ((LavaDECL*)cheEl->data != decl);
-           cheEl = (CHE*)cheEl->successor);
-      DString *name = new DString(decl->FullName);  
-      CLavaPEHint* hint = new CLavaPEHint(CPECommand_Change, this, (const unsigned long)3, (DWORD)newDECL, (DWORD)name, 0, (DWORD)(DWORD)&cheEl->data);
-      UndoMem.AddToMem(hint);
-      UpdateDoc(0, FALSE, hint);
-      return;
     }
-    if (che == decl->DECLError1.last)
-      che = (CHE*)decl->DECLError2.first;
-    else
-      che = (CHE*)che->successor;
+  }
+  for (che = (CHE*)chain.first; che; che = (CHE*)che->successor) {
+    ((CLavaPEDoc*)che->data)->UpdateOtherDocs(0, str, 0, false, flag);
+    che->data = 0;
   }
 }
 
-int CLavaPEDoc::MakeFunc(LavaDECL* idecl, bool otherDoc, QWidget* parent) 
-{
-  SynFlags first = (const unsigned long)1;
-  LavaDECL *funcDecl;
-  CLavaPEHint *hint;
-  DWORD d4;
-  DString *str2 = 0;
-  int pos;
-  TIDType type;
-  bool b=false;
-
-  funcDecl = NewLavaDECL();
-  funcDecl->TreeFlags.INCL(hasEmptyOpt);
-  funcDecl->TreeFlags.INCL(isExpanded);
-  funcDecl->DeclType = Function;
-  funcDecl->ParentDECL = idecl;
-  funcDecl->FullName = idecl->FullName;
-  funcDecl->DeclDescType = StructDesc;
-  funcDecl->ParentDECL->TreeFlags.INCL(MemsExpanded);
-  
-  if (CallBox(funcDecl, 0, this, true, b, parent) != QDialog::Accepted) {
-    delete funcDecl;
-    return -1;
-  }
-  d4 = IDTable.GetVar(TID(idecl->OwnID, 0), type);
-  pos = idecl->GetAppendPos(Function);
-  str2 = new DString(idecl->FullName);
-  hint = new CLavaPEHint(CPECommand_Insert, this, first, (DWORD) funcDecl, (DWORD)str2, (DWORD)pos, d4);
-  UndoMem.AddToMem(hint);
-  UpdateDoc(0, FALSE, hint);
-  if (d4 && (idecl->DeclType == Interface)) 
-    ConcernImpls(hint, *(LavaDECL**)d4);
-  ConcernExecs(hint);
-  if (otherDoc)
-    SetLastHint();
-  return funcDecl->OwnID;
-}
 

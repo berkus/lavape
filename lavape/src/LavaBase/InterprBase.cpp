@@ -23,6 +23,7 @@
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
+#include "qlibrary.h"
 #include "LavaBaseStringInit.h"
 #ifdef WIN32
 #include <windows.h>
@@ -59,8 +60,8 @@ bool INC_REV_CNT(CheckData &ckd, LavaObjectPtr object) {
 
 bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
   register unsigned short fwdCnt;
-  LavaObjectPtr callPtr, sectionPtr;
-  LavaVariablePtr newStackFrame;
+  LavaObjectPtr callPtr, sectionPtr, newStackFrame[SFH+1];
+//  LavaVariablePtr newStackFrame;
   CSectionDesc* secTab;
   CVFuncDesc *fDesc;
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
@@ -80,15 +81,17 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
   fDesc = &(*(object + object[0][object[0][0].nSections-1].sectionOffset))->funcDesc[1]; 
 	  // call the object's finalize method
   callPtr = object + (*object)[fDesc->delta].sectionOffset;
+  newStackFrame[2] = 0;
+  newStackFrame[SFH] = callPtr;
   if (fDesc->isNative) {
-    if (!(*fDesc->funcPtr)(ckd, &callPtr) ) {
+    if (!(*fDesc->funcPtr)(ckd, newStackFrame) ) {
       ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
       ((SynFlags*)(object + 1))->INCL(zombified);
       return false;
     }
   }
   else 
-    if (!fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, &callPtr)) {
+    if (!fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame)) {
       ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
       ((SynFlags*)(object + 1))->INCL(zombified);
       return false;
@@ -104,26 +107,27 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
       secClassDECL = secTab[ii].classDECL;
       sectionPtr = object + secTab[ii].sectionOffset;
       if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
-        funcAdapter = GetAdapterTable(ckd, secClassDECL);
-        if (funcAdapter[5]) { // section has release function
-#ifdef WIN32
+        funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
+        if (funcAdapter && funcAdapter[5]) { // section has release function
+/*#ifdef WIN32
           __asm {
-            sub esp, 8
+            sub esp, 12
             mov newStackFrame, esp
           }
 #else
-					newStackFrame = new LavaObjectPtr[2];
-#endif
-          newStackFrame[0] = sectionPtr;
+					newStackFrame = new LavaObjectPtr[SFH+1];
+#endif*/
+          newStackFrame[2] = 0;
+          newStackFrame[SFH] = sectionPtr;
           funcAdapter[5](ckd, newStackFrame);
-#ifdef WIN32
+/*#ifdef WIN32
           __asm {
-            add esp, 8
+            add esp, 12
             mov newStackFrame, esp
           }
 #else
 					delete [] newStackFrame;
-#endif
+#endif*/
         }
       }
       else {
@@ -228,21 +232,22 @@ static void forceDecrement (CheckData &ckd, LavaObjectPtr object, bool constitue
       secClassDECL = secTab[ii].classDECL;
       sectionPtr = object + secTab[ii].sectionOffset;
       if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
-        funcAdapter = GetAdapterTable(ckd, secClassDECL);
+        funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
         if (funcAdapter[5]) { // section has release function
 #ifdef WIN32
           __asm {
-            sub esp, 8
+            sub esp, 16
             mov newStackFrame, esp
           }
 #else
-					newStackFrame = new LavaObjectPtr[2];
+					newStackFrame = new LavaObjectPtr[SFH+1];
 #endif
-          newStackFrame[0] = sectionPtr;
+          newStackFrame[2] = 0;
+          newStackFrame[SFH] = sectionPtr;
           funcAdapter[5](ckd, newStackFrame);
 #ifdef WIN32
           __asm {
-            add esp, 8
+            add esp, 16
             mov newStackFrame, esp
           }
 #else
@@ -300,21 +305,22 @@ static bool releaseUnusedConstituents (CheckData &ckd, LavaObjectPtr object, boo
       secClassDECL = secTab[ii].classDECL;
       sectionPtr = object + secTab[ii].sectionOffset;
       if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
-        funcAdapter = GetAdapterTable(ckd, secClassDECL);
+        funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
         if (funcAdapter[5]) { // section has release function
 #ifdef WIN32
           __asm {
-            sub esp, 8
+            sub esp, 16
             mov newStackFrame, esp
           }
 #else
-					newStackFrame = new LavaObjectPtr[2];
+					newStackFrame = new LavaObjectPtr[SFH+1];
 #endif
-          newStackFrame[0] = sectionPtr;
+          newStackFrame[2] = 0;
+          newStackFrame[SFH] = sectionPtr;
           funcAdapter[5](ckd, newStackFrame);
 #ifdef WIN32
           __asm {
-            add esp, 8
+            add esp, 16
             mov newStackFrame, esp
           }
 #else
@@ -353,38 +359,35 @@ static bool forceRelease (CheckData &ckd, LavaObjectPtr object, bool constituent
   return releaseUnusedConstituents(ckd,object,constituentsOnly,true); //true=top node;=>zombify
 }
 
+typedef TAdapterFunc* (*TS) ();
 
-TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL)
+
+TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* specDECL)
 {
   if (classDECL->fromBType != NonBasic) 
     return StdAdapterTab[classDECL->fromBType];
-  else {
-/*!!!    HINSTANCE hDLL = AfxLoadLibrary(classDECL->LitStr.c);
-    TAdapterFunc* ad;
-    FP fpGad;    
-    if (hDLL) {
-      fpGad = (FP)GetProcAddress(hDLL, "GetAdapterTable");
-      if (fpGad) {
-        ad = (*fpGad)();
-        if (ad)
-          return ad;
-      }
-    }
-    AfxFreeLibrary(hDLL);       
-    ckd.document->LavaError(ckd, true, classDECL, &ERR_DLLError,0);*/
-    return 0;
+  else if (((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab)
+    return ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab;
+  else
+    if (specDECL && (specDECL->DeclType == CompObjSpec) 
+      &&  classDECL->TypeFlags.Contains(isComponent)) {
+    QString lib = ExeDir + "/" + QString (((CHEEnumSelId*)specDECL->Items.first)->data.Id.c);
+    TS adapt = (TS)QLibrary::resolve(lib, classDECL->LitStr.c);
+    ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab =  adapt();
+    return ((CSectionDesc*)classDECL->SectionTabPtr)->adapterTab;
   }
+  return 0;
 }
 
-LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj)
+LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,LavaObjectPtr urlObj)
 {
   int ii;
-  LavaObjectPtr object, sectionPtr;
+  LavaObjectPtr object, sectionPtr, newStackFrame[SFH+1];
   TAdapterFunc *funcAdapter;
   SynObjectBase *mySelfVar=ckd.selfVar;
   
   if (!classDECL->WorkFlags.Contains(runTimeOK)) {
-    ckd.document->CheckImpl(ckd, classDECL);
+    ckd.document->CheckImpl(ckd, classDECL, classDECL);
     if (ckd.exceptionThrown) {
       ckd.selfVar = mySelfVar;
       return 0;
@@ -401,6 +404,8 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj)
   for (ii = 0; ii < lObject; ii++)
     *(object + ii) = 0;
   object = object + LOH;
+  if (urlObj)
+    *(LavaVariablePtr)(object-2) = urlObj;
   object[0] = &((CSectionDesc*)classDECL->SectionTabPtr)[0];
   int nsect = ((CSectionDesc*)classDECL->SectionTabPtr)[0].nSections;
   for (ii = nsect-1; ii >= 0; ii--) {
@@ -409,9 +414,12 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj)
       if  (!((SynFlags*)(sectionPtr+1))->Contains(sectEstablished)) {
         sectionPtr[0] = &((CSectionDesc*)classDECL->SectionTabPtr)[ii];
         if (sectionPtr[0]->classDECL->TypeFlags.Contains(isNative)) { //native base class
-          funcAdapter = GetAdapterTable(ckd, sectionPtr[0]->classDECL);
-          if (funcAdapter[4])   //section has new function 
-            funcAdapter[4](ckd, &sectionPtr);
+          funcAdapter = GetAdapterTable(ckd, sectionPtr[0]->classDECL, classDECL);
+          if (funcAdapter && funcAdapter[4]) {  //section has new function
+            newStackFrame[2] = 0;
+            newStackFrame[SFH] = sectionPtr;
+            funcAdapter[4](ckd, newStackFrame);
+          }
         }
         if (stateObj)
           ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
@@ -432,37 +440,44 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
 {
   CVFuncDesc *fDesc;
   LavaVariablePtr newStackFrame;
+  LavaObjectPtr newSF[SFH+1];
   bool ok=true;
-  int fsize;
+  int fsize, fsizeBytes;
 
   if (!object)
     return true;
+
   fDesc = &object[0]->funcDesc[0];
   fsize = fDesc->stackFrameSize;
   if (fDesc && fsize) {
     if (fDesc->isNative) {
 #ifdef WIN32
+      fsizeBytes = fsize<<2;
       __asm {
-        sub esp, fsize
+        sub esp, fsizeBytes
         mov newStackFrame, esp
       }
 #else
-			newStackFrame = new LavaObjectPtr[fsize>>2];
+			newStackFrame = new LavaObjectPtr[fsize];
 #endif
-      newStackFrame[0] = object;
+      newStackFrame[2] = 0;
+      newStackFrame[SFH] = object;
 //      TRY_FUNCCALL(ckd, (*fDesc->funcPtr), newStackFrame, fsize, ok)
       ok = (*fDesc->funcPtr)(ckd, newStackFrame);
 #ifdef WIN32
       __asm {
-        add esp, fsize
+        add esp, fsizeBytes
         mov newStackFrame, esp
       }
 #else
 			delete [] newStackFrame;
 #endif
     }
-    else 
-      ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, &object);
+    else {
+      newSF[2] = 0;
+      newSF[SFH] = object;
+      ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newSF);
+    }
     if (!ok)
       ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
   }
@@ -486,31 +501,44 @@ LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specD
 {
   int secn;
   LavaObjectPtr object;
-  DString synName;
-//  CHESimpleSyntax *cheSyn;
 
   switch ((TCompoProt)specDECL->nOutput) {
-  case PROT_LAVA: ; /*
-    synName = ResolveLinks(((CHEEnumSelId*)specDECL->Items.first)->data.Id);
-    cheSyn = ckd.document->AttachSyntax(ckd, synName);
-    if (!cheSyn)
+  case PROT_LAVA:
+    ckd.document->CheckCompObj(specDECL->RuntimeDECL);
+    object = AllocateObject(ckd, specDECL->RuntimeDECL->RelatedDECL, stateObj, urlObj);
+    if (!object)
       return 0;
-    ckd.document->IDTable.IDTab[cheSyn->data.nINCL]->LinkName = ((CHEEnumSelId*)specDECL->Items.first)->data.Id;
-*/    break;
+    if (object)
+      CallDefaultInit(ckd, object);
+    if (ckd.exceptionThrown)
+      return 0;
+    //*(LavaVariablePtr)(object-2) = urlObj; wird in AllocateObject gemacht
+
+    ((SynFlags*)(object+1))->INCL(finished);
+
+    secn = ckd.document->GetSectionNumber(ckd, specDECL->RuntimeDECL->RelatedDECL, classDECL);
+    return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
+    break;
+
+  case PROT_STREAM: ; 
+    object = AllocateObject(ckd, specDECL, stateObj, urlObj);
+    if (!object)
+      return 0;
+    if (ckd.exceptionThrown)
+      return 0;
+    //*(LavaVariablePtr)(object-2) = urlObj;
+
+    ((SynFlags*)(object+1))->INCL(finished);
+
+    secn = ckd.document->GetSectionNumber(ckd, specDECL, classDECL);
+    object = (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
+    ((SynFlags*)(object+1))->INCL(compoPrim);
+    return object;
+    break;
   default:
     ckd.document->LavaError(ckd, true, specDECL, &ERR_NotYetImplemented, 0);
     return 0;
   }
-  ckd.document->CheckCompObj(specDECL->RuntimeDECL);
-  object = AllocateObject(ckd, specDECL->RuntimeDECL->RelatedDECL, stateObj);
-  if (!object)
-    return 0;
-  CallDefaultInit(ckd, object);
-  if (ckd.exceptionThrown)
-    return 0;
-  *(LavaVariablePtr)(object-2) = urlObj;
-  secn = ckd.document->GetSectionNumber(ckd, specDECL->RuntimeDECL->RelatedDECL, classDECL);
-  return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
 }
 
 
@@ -545,6 +573,9 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
     ((SynFlags*)(object+1))->INCL(finished);
     secn = ckd.document->GetSectionNumber(ckd, specDECL->RuntimeDECL->RelatedDECL, classDECL);
     return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
+    break;
+  case PROT_STREAM:
+    return CreateObject(ckd, urlObj, specDECL, classDECL, stateObj);
     break;
   default:
     ckd.document->LavaError(ckd, true, specDECL, &ERR_NotYetImplemented, 0);
@@ -600,6 +631,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
   CVFuncDesc *fDesc;
   CRuntimeException *ex;
   int ii, sii, ll, llast, fsize;
+  unsigned fsizeBytes;
   bool constit, secCopy=false, fullCopy, stateO, ok, copyStart = false, isNew = false;
 
   sourceObjPtr = *sourceVarPtr;
@@ -652,22 +684,23 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
           copied->last = copied;
         }
         if (/*(*resultSectionPtr)->classDECL*/secClassDECL->TypeFlags.Contains(isNative)) { //native base class
-          funcAdapter = GetAdapterTable(ckd, secClassDECL/*(*resultSectionPtr)->classDECL*/);
+          funcAdapter = GetAdapterTable(ckd, secClassDECL,0);
           if (funcAdapter[1]) { //section has copy function
 #ifdef WIN32
             __asm {
-              sub esp, 12
+              sub esp, 20
               mov newStackFrame, esp
             }
 #else
-						newStackFrame = new LavaObjectPtr[3];
+						newStackFrame = new LavaObjectPtr[SFH+2];
 #endif
-            newStackFrame[0] = sourceSectionPtr;
-            newStackFrame[1] = resultSectionPtr;
+            newStackFrame[2] = 0;
+            newStackFrame[SFH] = sourceSectionPtr;
+            newStackFrame[SFH+1] = resultSectionPtr;
             funcAdapter[1](ckd, newStackFrame);
 #ifdef WIN32
             __asm {
-              add esp, 12
+              add esp, 20
               mov newStackFrame, esp
             }
 #else
@@ -753,19 +786,21 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
             if (fDesc->isNative) {
               fsize = fDesc->stackFrameSize;
 #ifdef WIN32
+              fsizeBytes = fsize<<2;
               __asm {
-                sub esp, fsize
+                sub esp, fsizeBytes
                 mov newStackFrame, esp
               }
 #else
-							newStackFrame = new LavaObjectPtr[fsize>>2];
+							newStackFrame = new LavaObjectPtr[fsize];
 #endif
-              newStackFrame[0] = resultObjPtr;
+              newStackFrame[2] = 0;
+              newStackFrame[SFH] = resultObjPtr;
               //TRY_FUNCCALL(ckd, (*fDesc->funcPtr), newStackFrame, (fsize), ok)
               ok = (*fDesc->funcPtr)(ckd, newStackFrame);
 #ifdef WIN32
               __asm {
-                add esp, fsize
+                add esp, fsizeBytes
                 mov newStackFrame, esp
               }
 #else
@@ -827,22 +862,23 @@ bool EqualObjects(CheckData &ckd, LavaObjectPtr leftPtr, LavaObjectPtr rightPtr,
       leftSectionPtr = leftObjPtr + secTab[ii].sectionOffset;
       rightSectionPtr = rightObjPtr + secTab[ii].sectionOffset;
       if (/*(*rightSectionPtr)->classDECL*/secClassDECL->TypeFlags.Contains(isNative)) { //native base class
-        funcAdapter = GetAdapterTable(ckd, secClassDECL);
+        funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
         if (funcAdapter[2]) { //section has compare function
 #ifdef WIN32
           __asm {
-            sub esp, 8
+            sub esp, 20
             mov newStackFrame, esp
           }
 #else
-					newStackFrame = new LavaObjectPtr[2];
+					newStackFrame = new LavaObjectPtr[SFH+2];
 #endif
-          newStackFrame[0] = leftSectionPtr;
-          newStackFrame[1] = rightSectionPtr;
+          newStackFrame[2] = 0;
+          newStackFrame[SFH] = leftSectionPtr;
+          newStackFrame[SFH+1] = rightSectionPtr;
           equ = funcAdapter[2](ckd, newStackFrame);
 #ifdef WIN32
           __asm {
-            add esp, 8
+            add esp, 20
             mov newStackFrame, esp
           }
 #else
@@ -906,7 +942,7 @@ void OneLevelCopy(CheckData &ckd, LavaObjectPtr& object)
         else if (secClassDECL->fromBType == B_Array) 
           HArrayOneLevelCopy(ckd, sourceSectionPtr, resultSectionPtr); //new array with same element objects
         else {
-          funcAdapter = GetAdapterTable(ckd, secClassDECL);
+          funcAdapter = GetAdapterTable(ckd, secClassDECL,0);
           llast = (int)((unsigned)(funcAdapter[0])+3)/4+2;
           for (ll = LSH; ll < llast; ll++)
             *(resultSectionPtr + ll) = *(sourceSectionPtr + ll);
@@ -973,22 +1009,23 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
           origObj = origSectionPtr - secTab[ii].sectionOffset; //may be new object
         }
         else {
-          funcAdapter = GetAdapterTable(ckd, secClassDECL);
+          funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
           if (funcAdapter[2]) { //section has compare function
 #ifdef WIN32
             __asm {
-              sub esp, 8
+              sub esp, 20
               mov newStackFrame, esp
             }
 #else
-						newStackFrame = new LavaObjectPtr[2];
+						newStackFrame = new LavaObjectPtr[SFH+2];
 #endif
-            newStackFrame[0] = origSectionPtr;
-            newStackFrame[1] = updateSectionPtr;
+            newStackFrame[2] = 0;
+            newStackFrame[SFH] = origSectionPtr;
+            newStackFrame[SFH+1] = updateSectionPtr;
             equ = funcAdapter[2](ckd, newStackFrame);
 #ifdef WIN32
             __asm {
-              add esp, 8
+              add esp, 20
               mov newStackFrame, esp
             }
 #else
@@ -1093,7 +1130,7 @@ LavaObjectPtr CastArrayType(CheckData& ckd, LavaObjectPtr arrayTypeObjPtr)
 }
 
 #ifdef WIN32
-CHWException::CHWException(int n)
+CHWException::CHWException(unsigned n)
 {
   codeHW = n;
   switch (codeHW) {
@@ -1129,18 +1166,18 @@ CHWException::CHWException(int n)
     message = QString("Hardware exception: Attempting to execute an instruction code not defined by the processor");
     lavaCode = other_hardware_ex;
     break; 
-  case STATUS_PRIVILEGED_INSTRUCTION:
+/*  case STATUS_PRIVILEGED_INSTRUCTION:
     message = QString("Hardware exception: Executing an instruction not allowed in current machine mode");
     lavaCode = other_hardware_ex;
-    break; 
+    break;*/
   case STATUS_DATATYPE_MISALIGNMENT:
     message = QString("Hardware exception: Reading or writing to data at an address that is not properly aligned; for example, 16-bit entities must be aligned on 2-byte boundaries.");
     lavaCode = other_hardware_ex;
     break;
-  case STATUS_SINGLE_STEP:
+/*  case STATUS_SINGLE_STEP:
     message = QString("Hardware exception: Executing one instruction in single-step mode; used only by debuggers");
     lavaCode = other_hardware_ex;
-    break;
+    break;*/
   default: ;
     lavaCode = other_hardware_ex;
     message = QString("Unknown hardware exception; infinite recursion??");
@@ -1170,10 +1207,10 @@ CHWException::CHWException(int sig_num, siginfo_t *info)
       message = QString("Hardware exception: Exceeding magnitude of lowest negative exponent of floating-point type");
       lavaCode = float_underflow_ex;
       break;
-    case FPE_FLTRES:
+/*    case FPE_FLTRES:
       message = QString("Hardware exception: Inexact result");
       lavaCode = float_inexact_result_ex;
-      break;
+      break;*/
     case FPE_FLTINV:
       message = QString("Hardware exception: Invalid operation");
       lavaCode = float_invalid_op_ex;

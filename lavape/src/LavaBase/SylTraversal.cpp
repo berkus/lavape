@@ -106,7 +106,7 @@ void CSylTraversal::DownTree(LavaDECL **pelDef, int level, DString& name)
       ExecSyl->ExecOut(pelDef, level);
       break;
     case FormDef:
-      ExecSyl->ExecSHOW(pelDef, level);
+      ExecSyl->ExecFormDef(pelDef, level);
       break;
     case NoDef:
       break;  //the ...->Iter.ptr)->IteratedExpr.ptr
@@ -130,7 +130,7 @@ void CSylTraversal::DownTree(LavaDECL **pelDef, int level, DString& name)
     case ExecDesc:
       if ((*pelDef)->ParentDECL && (*pelDef)->ParentDECL->FullName.l)
         (*pelDef)->FullName = (*pelDef)->ParentDECL->FullName;
-      ExecSyl->ExecConstraint(pelDef, level);
+      ExecSyl->ExecExec(pelDef, level);
       break;
     case Undefined:         //das sind die Literale
       ExecSyl->ExecUndef(pelDef,name);
@@ -185,7 +185,7 @@ void CTabTraversal::Run(bool withINCL, bool withStd)
             ExecTab->ExecDefs(IDTable->IDTab[incl]->SimpleIDTab[id]->pDECL, incl);
             break;
           case FormDef:
-            ExecTab->ExecSHOW(IDTable->IDTab[incl]->SimpleIDTab[id]->pDECL, incl);
+            ExecTab->ExecFormDef(IDTable->IDTab[incl]->SimpleIDTab[id]->pDECL, incl);
             break;
           case Attr:
             ExecTab->ExecMember(IDTable->IDTab[incl]->SimpleIDTab[id]->pDECL, incl);
@@ -220,11 +220,12 @@ CExec::~CExec()
 }
 
 
-CFindLikeForm::CFindLikeForm(SynDef *mySynDef, const TID& refID, int inINC, LavaDECL* guiDECL)
+CFindLikeForm::CFindLikeForm(SynDef *mySynDef, const TID& refID, int inINC, LavaDECL *visibleIn, LavaDECL* guiDECL)
 {
   RefID = refID; //of the basic type
   inINCL = inINC;
   GUIDECL = guiDECL;
+  visibleDECL = visibleIn;
   if (GUIDECL)
     GUIID = TID(GUIDECL->OwnID, GUIDECL->inINCL);
   pdecl = 0;
@@ -233,15 +234,16 @@ CFindLikeForm::CFindLikeForm(SynDef *mySynDef, const TID& refID, int inINC, Lava
   TabTravers->Run();
 }
 
-void CFindLikeForm::ExecSHOW(LavaDECL ** pelDef, int )
+void CFindLikeForm::ExecFormDef(LavaDECL ** pelDef, int )
 {
-  if (IDTab->EQEQ((*pelDef)->RefID, (*pelDef)->inINCL, RefID, inINCL)) {
-    if (!GUIDECL
-      || IDTab->EQEQ(((CHETID*)(*pelDef)->ParentDECL->Supports.first)->data, (*pelDef)->inINCL, GUIID, 0)) {
-      pdecl = pelDef;
-      TabTravers->Done = TRUE;
+  if ((*pelDef)->usableIn(visibleDECL))
+    if (IDTab->EQEQ((*pelDef)->RefID, (*pelDef)->inINCL, RefID, inINCL)) {
+      if (!GUIDECL
+        || IDTab->EQEQ(((CHETID*)(*pelDef)->ParentDECL->Supports.first)->data, (*pelDef)->inINCL, GUIID, 0)) {
+        pdecl = pelDef;
+        TabTravers->Done = TRUE;
+      }
     }
-  }
 }
 
 

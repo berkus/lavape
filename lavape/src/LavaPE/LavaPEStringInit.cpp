@@ -40,7 +40,7 @@ QString IDP_IsNoID;
 QString IDP_NoTableView;
 QString IDP_NoFieldInsertion;
 QString IDP_NoFormView;
-QString IDP_NoConstraintView;
+QString IDP_NoExecView;
 QString IDP_NoInsertionPos;
 QString IDP_NoDefaultForm;
 QString IDP_NoDefFound;
@@ -64,7 +64,7 @@ void LavaPEStringInit() {
   IDP_NoTableView = QObject::tr("No table view available for the selected item");
   IDP_NoFieldInsertion = QObject::tr("You cannot insert a type or field at the selected position");
   IDP_NoFormView  = QObject::tr("No form view available for the selected item");
-  IDP_NoConstraintView = QObject::tr("No invariant available for the selected item");
+  IDP_NoExecView = QObject::tr("No invariant available for the selected item");
   IDP_NoInsertionPos = QObject::tr("No item selected which indicate the insertion postion");
   IDP_NoDefaultForm = QObject::tr("The selected source interface has no valid form to derived from.");
   IDP_NoDefFound = QObject::tr("Missing declaration of referenced type");

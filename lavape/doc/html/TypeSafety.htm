@@ -72,8 +72,10 @@
     <P><FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT> does not make a
       one-sided decision in favor of one of these two alternative views but
       leaves the choice to the programmer for every single variable and VT
-      declaration. &quot;Subtype-substitution forbidden&quot; is the default in
-      <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>. It may be allowed
+      declaration. &quot;Subtype-substitution forbidden&quot; is the default in <I>
+      <FONT COLOR="#ff0000"><B>Lava<span lang="de"> </span></B></FONT></I>
+      (if the sub-type isn't derived in the classical sense but by 
+    specialization of virtual types). It may be allowed
       explicitly for individual occurrences of a type T. The name of the type is enclosed in braces: {T}, and
       we speak of the &quot;open&quot; or <B><A NAME="substitutableType"></A>&quot;substitutable
       type&quot; {T}</B> corresponding to the &quot;closed&quot; type T.&nbsp;
@@ -447,7 +449,7 @@
       is assigned to the corresponding formal input parameter, a formal output
       parameter is assigned to a receiving variable.</P>
 
-    <H3>4.1 Type-Checking in the Absence of Subtype-Substitutability</H3>
+    <H3><a name="section_4_1"></a>4.1 Type-Checking in the Absence of Subtype-Substitutability</H3>
 
     <P><B>An expression expr may be assigned to a variable var if</B> </P>
     <OL>
@@ -455,7 +457,7 @@
         <BR>
         and ST(expr) is c-derived from ST(var)<BR>
         and if both are multiform then EPC(var ) = EPC(expr), </LI>
-      <LI><B><A NAME="secondCase"></A>or</B> both&nbsp; are virtual<BR>
+      <LI><B><A NAME="secondCase"></A>or</B> both&nbsp; are virtual types<BR>
         <BR>
         and <A HREF="#EPC">EPC</A>(var ) = EPC(expr)<BR>
         and they are equal,&nbsp;<BR>

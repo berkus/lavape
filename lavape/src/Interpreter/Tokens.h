@@ -164,7 +164,7 @@ enum TToken {
   concurrent_T,
   toBeCalledOn_T,
   const_T,
-  constraint_T,
+  invariant_T,
   copy_T,
   declare_T,
   delete_T,

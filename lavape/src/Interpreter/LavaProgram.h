@@ -26,7 +26,7 @@ protected: // Nur aus Serialisierung erzeugen
   bool CheckFuncImpl(CheckData& ckd, LavaDECL* funcDECL, LavaDECL* classFuncDECL);
   bool CheckSetAndGets(CheckData& ckd, LavaDECL* implDECL, LavaDECL* classDecl);
   bool CheckOneSetGet(CheckData& ckd, TypeFlag setgetflag, LavaDECL* implDECL, LavaDECL* propDecl);
-  bool CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNsp, DWORD /*TAdapterFunc**/ funcAdapter);
+  bool CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNsp, DWORD /*TAdapterFunc**/ funcAdapter, LavaDECL* specDECL);
   bool AddVElems(CheckData& ckd, LavaDECL *classDECL, LavaDECL* baseDECL);
   bool AddVBase(CheckData& ckd, LavaDECL *classDECL, LavaDECL* baseDECL);
   bool AttachPrivatElems(CheckData& ckd, LavaDECL* classDECL);
@@ -40,7 +40,7 @@ public:
 
   bool OnOpenProgram(DString pathName, bool imiExec, bool reDef, bool putErr);
   virtual ~CLavaProgram();
-  virtual bool CheckImpl(CheckData& ckd, LavaDECL* classDECL);
+  virtual bool CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* specDECL=0);
   virtual int GetMemsSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL* memDECL, bool putErr=true);
   virtual int GetSectionNumber(CheckData& ckd, const TID& classID, const TID& baseclassID);
   virtual int GetSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL* baseDECL, bool putErr=true);
@@ -59,7 +59,7 @@ public:
 //  virtual bool IsOuterParam(paramDECL, typeDECL);
 //  virtual int GetContextsSectionNumber(LavaDECL* classDECL, LavaDECL* baseDECL, bool outer);
 //  virtual int GetVTDelta(LavaDECL* ET_call, LavaDECL* ET_casted, LavaDECL* FVT_f, int v0, bool outer);
-//  virtual BOOL openFView(LavaDECL* decl, LavaVariablePtr in, LavaVariablePtr out) {return FALSE;}
+//  virtual BOOL OpenGUIView(LavaDECL* decl, LavaVariablePtr in, LavaVariablePtr out) {return FALSE;}
 //  virtual void OnClose( OLECLOSE dwCloseOption ); 
 
 

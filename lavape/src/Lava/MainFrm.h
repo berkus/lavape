@@ -19,6 +19,9 @@ public:
   virtual void helpContents();
   virtual void editingLavaProgs();
   virtual void learningLava();
+  void PreconditionsToggled(bool on);
+  void PostconditionsToggled(bool on);
+  void InvariantsToggled(bool on);
 
 public slots:
   virtual void fileNew();

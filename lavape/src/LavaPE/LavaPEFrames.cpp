@@ -84,7 +84,7 @@ CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
 	lastTile = 0;
   QPopupMenu *style = new QPopupMenu(this);
   style->setCheckable( TRUE );
-  viewMenu->insertItem( "Set st&yle" , style );
+  optionMenu->insertItem( "Set st&yle" , style );
   QActionGroup *ag = new QActionGroup( this, 0 );
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
@@ -118,7 +118,7 @@ CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
 
   LBaseData->insActionPtr = insAction;
   LBaseData->delActionPtr = delAction;
-  LBaseData->okActionPtr = 0;
+//  LBaseData->okActionPtr = 0;
   LBaseData->toggleCatActionPtr = 0;
   LBaseData->updateCancelActionPtr = 0;
 
@@ -252,6 +252,7 @@ bool CLavaMainFrame::OnCreate()
 void CLavaMainFrame::UpdateUI()
 {
   OnUpdateBarhammer(showUtilWindowAction);
+  saveEveryChangeAction->setOn(LBaseData->m_saveEveryChange);  
   viewTB1Action->setOn(Toolbar_1->isVisible());  
   viewTB2Action->setOn(Toolbar_2->isVisible());
   viewWhatNextTBAction->setOn(HelpToolbar->isVisible());
@@ -616,7 +617,7 @@ void CLavaMainFrame::newPackage()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnNewNamespace();
+    view->OnNewPackage();
 }
 
 void CLavaMainFrame::newInitiator()
@@ -630,28 +631,28 @@ void CLavaMainFrame::new_Interface()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnNewclassintf();
+    view->OnNewInterface();
 }
 
 void CLavaMainFrame::newImpl()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnNewclassimpl();
+    view->OnNewImpl();
 }
 
 void CLavaMainFrame::newCOspec()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnCSpec();
+    view->OnNewCSpec();
 }
 
 void CLavaMainFrame::newCOimpl()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnComponent();
+    view->OnNewComponent();
 }
 
 void CLavaMainFrame::newSet()
@@ -735,14 +736,21 @@ void CLavaMainFrame::openFormView()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnShowformview();
+    view->OnShowGUIview();
+}
+
+void CLavaMainFrame::makeGUI()
+{
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnMakeGUI();
 }
 
 void CLavaMainFrame::insertText()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnLitStr();
+    view->OnNewLitStr();
 }
 
 void CLavaMainFrame::insAction_activated()
@@ -1344,6 +1352,10 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
 void CLavaMainFrame::showUtilWindow() 
 {
   if (OutputBarHidden) {
+    if ((m_OutputBar->ActTab == tabError) && !m_OutputBar->CommentEmpty && m_OutputBar->ErrorEmpty )
+      m_OutputBar->SetTab(tabComment);
+    else if ((m_OutputBar->ActTab == tabComment) && m_OutputBar->CommentEmpty && !m_OutputBar->ErrorEmpty)
+      m_OutputBar->SetTab(tabError);
     m_OutputBar->show();
     LastBarState = -1;
   }
@@ -1351,7 +1363,6 @@ void CLavaMainFrame::showUtilWindow()
     m_OutputBar->hide();
     LastBarState = (int)m_OutputBar->ActTab;
   }
-//  RecalcLayout();
   OutputBarHidden = !OutputBarHidden;
 }
 
@@ -1374,6 +1385,19 @@ void CLavaMainFrame::ShowBarTab(BarTabs tab)
     LastBarState = (int)tab;
   }
 //  RecalcLayout();
+}
+
+void CLavaMainFrame::saveEveryChange(bool on) 
+{
+  if (on) {
+    LBaseData->m_saveEveryChange = true;
+    LBaseData->m_strSaveEveryChange = "true";
+  }
+  else {
+    LBaseData->m_saveEveryChange = false;
+    LBaseData->m_strSaveEveryChange = "false";
+  }
+  ((CLavaPEApp*)wxTheApp)->saveSettings();
 }
 
 void CLavaMainFrame::viewTB1() 

@@ -27,6 +27,8 @@ public:
 
   BarTabs ActTab;
   QString IdlMsg;
+  bool ErrorEmpty;
+  bool CommentEmpty;
   void DeleteAllFindItems();
   void ResetError();
   void SetErrorOnBar(LavaDECL* decl);

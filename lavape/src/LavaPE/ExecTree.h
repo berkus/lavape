@@ -38,8 +38,8 @@ public:
   void ExecIn(LavaDECL ** pelDef, int level);
   void ExecOut(LavaDECL ** pelDef, int level);
   void ExecFText(LavaDECL ** pelDef, int level);
-  void ExecSHOW(LavaDECL ** pelDef, int level);
-  void ExecConstraint(LavaDECL ** pelDef, int level);
+  void ExecFormDef(LavaDECL ** pelDef, int level);
+  void ExecExec(LavaDECL ** pelDef, int level);
   void ExecEnum    (LavaDECL** inEl, DString name);
   void ExecEnumItem(CHEEnumSelId * enumsel, int level);
   void ExecStruct(LavaDECL ** pinEl, DString fieldID);
@@ -99,8 +99,8 @@ public:
   int skipLevel;
 
   virtual void ExecDefs (LavaDECL ** pelDef, int level);
-  virtual void ExecSHOW    (LavaDECL ** pelDef, int level);
-  virtual void ExecConstraint(LavaDECL ** pelDef, int level);
+  virtual void ExecFormDef    (LavaDECL ** pelDef, int level);
+  virtual void ExecExec(LavaDECL ** pelDef, int level);
   virtual void ExecNamed   (LavaDECL** pinEl, DString name);
   virtual void AddParentsCommand(LavaDECL ** pelDef, int level);
   void ChangeName(DString* nameToChange, DString& fullScopeName);
@@ -112,7 +112,7 @@ class CExecForms : public CExec
   public:
   CLavaPEHint *Hint;
   CExecForms(SynDef *lavaCode, CLavaPEHint *hint);
-  virtual void ExecSHOW(LavaDECL ** pelDef, int level);
+  virtual void ExecFormDef(LavaDECL ** pelDef, int level);
   int GetPosinForm(LavaDECL* decl);
 };
 
@@ -124,8 +124,8 @@ class CExecChecks : public CExec
   CLavaPEDoc* Doc;
   bool inOpen;
   CExecChecks(CLavaPEDoc* doc, bool inopen = false);
-  virtual void ExecConstraint(LavaDECL ** pelDef, int level);
-  virtual void ExecSHOW (LavaDECL ** pelDef, int level);
+  virtual void ExecExec(LavaDECL ** pelDef, int level);
+  virtual void ExecFormDef (LavaDECL ** pelDef, int level);
   virtual void ExecMember(LavaDECL ** pelDef, int level);
   virtual void ExecDefs(LavaDECL ** pelDef, int level);
   virtual void ExecIn(LavaDECL ** pelDef, int /*level*/);

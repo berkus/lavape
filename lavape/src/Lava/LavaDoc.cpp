@@ -63,6 +63,7 @@ CLavaDoc::CLavaDoc()
   ActTab = 0;
   Redraw = true;
   firstStore = true;
+  newLdoc = false;
 }
 
 CLavaDoc::~CLavaDoc()
@@ -73,7 +74,7 @@ CLavaDoc::~CLavaDoc()
 bool CLavaDoc::OnNewDocument()
 {
   bool ok;
-  isObject = true; //(((CLavaApp*)wxTheApp)->pLavaLdocTemplate == GetDocumentTemplate());
+  isObject = true; 
   if (!CLavaProgram::OnNewDocument())
     return false;
   if (((CLavaApp*)wxTheApp)->SyntaxToOpen.l) {
@@ -95,6 +96,7 @@ bool CLavaDoc::OnEmptyObj(const DString& lcomName, const DString& linkName)
     QString str = GetTitle();
     ObjectPathName = DString(str);
     Modify(true);
+    newLdoc = true;
     return ExecuteLavaObject();
   }
   else
@@ -104,7 +106,7 @@ bool CLavaDoc::OnEmptyObj(const DString& lcomName, const DString& linkName)
 
 bool CLavaDoc::SelectLcom(bool emptyDoc)
 {
-  QString iniDir, fileName = LBaseData->lastFileOpen;
+  QString iniFile, fileName = LBaseData->lastFileOpen;
   QFileInfo qf = QFileInfo(fileName);
   DString linkName;
   DString dir;
@@ -116,12 +118,12 @@ bool CLavaDoc::SelectLcom(bool emptyDoc)
   }
 #endif
   if (qf.extension() == ((CLavaApp*)wxTheApp)->pLavaLcomTemplate->GetDefaultExtension())
-    iniDir = qf.dirPath(true);
+    iniFile = qf.absFilePath();
   else
-    iniDir = ExeDir + ComponentLinkDir;
+    iniFile = ExeDir + ComponentLinkDir;
   QString filter = ("LavaCom file (*.lcom)");
 
-  fileName = L_GetOpenFileName( iniDir,
+  fileName = L_GetOpenFileName( iniFile,
 				      ((CLavaApp*)wxTheApp)->m_appWindow,
 				      "Lava (*.lcom) file defining the type of lava component object",
 				      filter,
@@ -167,6 +169,7 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
     return OnNewDocument();
   QFileInfo qf = QFileInfo(fname);
   filename = qf.absFilePath();
+  wxDocManager::GetDocumentManager()->AddFileToHistory(filename);
   if (((CLavaApp*)wxTheApp)->pLavaLdocTemplate == GetDocumentTemplate()) {
     QFile fn(filename); 
     ObjectPathName = DString(filename);
@@ -212,6 +215,12 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
   }
 }
 
+bool CLavaDoc::SaveAs()
+{
+  newLdoc = false;
+  return CLavaProgram::SaveAs();
+}
+
 
 bool CLavaDoc::OnSaveDocument(const QString& lpszPathName) 
 {
@@ -221,6 +230,10 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
   CRuntimeException *ex;
   QString emptyName;
 
+  if (newLdoc) {
+    newLdoc = false;
+    SaveAs();
+  }
   ckd.document = this;
   if (isObject) {
     ObjectPathName = DString(lpszPathName);
@@ -275,11 +288,12 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaDoc Serialisierung
-void CLavaDoc::customEvent(QCustomEvent *e)
+void CLavaDoc::customEvent(QCustomEvent *ev)
 {
-	COpenObjectParms *oop = (COpenObjectParms*)e->data();
-	
-  oop->obj = OpenObject(*oop->ckdPtr,oop->urlObj);
+	COpenObjectParms *oop = (COpenObjectParms*)ev->data();
+
+  if (ev->type() == IDU_OpenObject) 
+    oop->obj = OpenObject(*oop->ckdPtr,oop->urlObj);
 	(*oop->thr->pContExecEvent)--;
 }
 
@@ -361,8 +375,11 @@ bool CLavaDoc::SaveObject(CheckData& ckd, LavaObjectPtr object)
       if (qf.isRelative())
         qf.setFile(QString(IDTable.DocDir.c), *pfileName);
       QFile file(qf.absFilePath());
-      if( !file.open(IO_WriteOnly))
+      if( !file.open(IO_WriteOnly)) {
+        QString str = QString("File '") + *pfileName + QString("' couldn't be opened for writing");
+        QMessageBox::critical(qApp->mainWidget(),qApp->name(),str ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         return false;
+      }
       QDataStream ar(&file);
       SerializeObj(ckd, ar, &object, qf.absFilePath());
       if (ar.atEnd() || (file.status() != IO_Ok)) {
@@ -415,7 +432,7 @@ void CLavaDoc::SerializeObj(CheckData& ckd, QDataStream& ar, LavaVariablePtr pOb
 
 bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
 {
-  LavaObjectPtr sectionPtr, newStackFrame[3];
+  LavaObjectPtr sectionPtr, newStackFrame[SFH+2];
   LavaVariablePtr memPtr;
   LavaDECL *classDECL, *secClassDECL;
   int iStore, iCast, iTab, iSect, ll, llast, objINCL, ii, *reversTab=0;
@@ -463,12 +480,12 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
               ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
             CDPSynFlags(PUT, cid, (address)(sectionPtr+1)); //(*cid->Ar) << *(DWORD*)(sectionPtr+1); //section flags
             if ((*sectionPtr)->classDECL->TypeFlags.Contains(isNative)) { //native section content
-              funcAdapter = GetAdapterTable(ckd, (*sectionPtr)->classDECL);
+              funcAdapter = GetAdapterTable(ckd, (*sectionPtr)->classDECL,0);
               if (!funcAdapter)
                 return false;
               if (funcAdapter[3]) { //section has serialize function
-                newStackFrame[0] = sectionPtr;
-                newStackFrame[1] = (LavaObjectPtr)cid;
+                newStackFrame[SFH] = sectionPtr;
+                newStackFrame[SFH+1] = (LavaObjectPtr)cid;
                 funcAdapter[3](ckd, newStackFrame);
               }
               else {        
@@ -610,21 +627,11 @@ QString* CLavaDoc::LoadArray1(ASN1tofromAr* cid, LavaObjectPtr object)
   long int lon;
 
   cid->GETint(arrayLen); //(*cid->Ar) >> arrayLen;
-  //try {
-    HArrayMakeLen(object, arrayLen);
-    for (ii = 0; ii < arrayLen; ii++) {
-      cid->GETint(lon); //(*cid->Ar) >> lon;
-      (*(LavaVariablePtr*)(object+LSH+1))[ii] = (LavaObjectPtr)lon;
-    }
-  //}
-  /*
-  catch (CArchiveException* ) {
-    return &ERR_CorruptObject;
+  HArrayMakeLen(object, arrayLen);
+  for (ii = 0; ii < arrayLen; ii++) {
+    cid->GETint(lon); //(*cid->Ar) >> lon;
+    (*(LavaVariablePtr*)(object+LSH+1))[ii] = (LavaObjectPtr)lon;
   }
-  catch (CFileException* ) {
-    return &ERR_CorruptObject;
-  }
-  */
   return 0;
 }
 
@@ -644,30 +651,20 @@ QString* CLavaDoc::LoadChain1(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr o
   int iStore;
   long lon;
 
-  //try {
-    for (cid->GETint(lon); //(*cid->Ar) >> lon;
-         (signed short)LOWORD(lon) >= 0;
-         cid->GETint(lon)) { //(*cid->Ar) >> lon) {
-      iStore = (int)(signed short)LOWORD(lon);
-      if (iStore) {
-        LavaObjectPtr che  = AllocateObject(ckd, DECLTab[B_Che], false);
-        if (!che)
-          return &ERR_CorruptObject;
-        *(LavaVariablePtr)(che+LSH) = object;
-        ((CHE*)(che+LSH+1))->data = (DObject*)lon;
-        ((CHAINX*)(object+LSH))->Append((CHE*)(che+LSH+1));  
-        //SetAdd(ckd, callStack);
-      }
+  for (cid->GETint(lon); //(*cid->Ar) >> lon;
+       (signed short)LOWORD(lon) >= 0;
+       cid->GETint(lon)) { //(*cid->Ar) >> lon) {
+    iStore = (int)(signed short)LOWORD(lon);
+    if (iStore) {
+      LavaObjectPtr che  = AllocateObject(ckd, DECLTab[B_Che], false);
+      if (!che)
+        return &ERR_CorruptObject;
+      *(LavaVariablePtr)(che+LSH) = object;
+      ((CHE*)(che+LSH+1))->data = (DObject*)lon;
+      ((CHAINX*)(object+LSH))->Append((CHE*)(che+LSH+1));  
+      //SetAdd(ckd, callStack);
     }
-  //}
-  /*
-  catch (CArchiveException* ) {
-    return &ERR_CorruptObject;
   }
-  catch (CFileException* ) {
-    return &ERR_CorruptObject;
-  }
-  */
   return 0;
 }
 
@@ -681,7 +678,7 @@ void CLavaDoc::LoadChain2(LavaObjectPtr object)
 
 bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
 {
-  LavaObjectPtr sectionPtr, objPtr, newStackFrame[3];
+  LavaObjectPtr sectionPtr, objPtr, newStackFrame[SFH+2];
   LavaVariablePtr memPtr;
   LavaDECL *classDECL, *implDECL, *secClassDECL;
   CHESimpleSyntax *cheSyn;
@@ -800,12 +797,12 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
             if ((secClassDECL->DeclDescType == EnumType) && !enumDesc)
               enumDesc = (TEnumDescription*)secClassDECL->EnumDesc.ptr;
             if ((*sectionPtr)->classDECL->TypeFlags.Contains(isNative)) { //native section content
-              funcAdapter = GetAdapterTable(ckd, (*sectionPtr)->classDECL);
+              funcAdapter = GetAdapterTable(ckd, (*sectionPtr)->classDECL,0);
               if (!funcAdapter)
                 return false;
               if (funcAdapter[3]) { //section has serialize function
-                newStackFrame[0] = sectionPtr;
-                newStackFrame[1] = (LavaObjectPtr)cid;
+                newStackFrame[SFH] = sectionPtr;
+                newStackFrame[SFH+1] = (LavaObjectPtr)cid;
                 funcAdapter[3](ckd, newStackFrame);
                 if ((secClassDECL->inINCL == 1) && (secClassDECL->fromBType == Enumeration)
                   && enumDesc) {
@@ -887,18 +884,6 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
       ActTab = 0;
     }
   //}//try
-  /*
-  catch (CArchiveException* ) {
-    *pObject = 0;
-    LObjectError(ckd, cid->FileName, dPN, &ERR_CorruptObject);
-    return false;
-  }
-  catch (CFileException* ) {
-   *pObject = 0;
-   LObjectError(ckd, cid->FileName, dPN, &ERR_CorruptObject);
-   return false;
-  }
-  */
 	if (err)
 		delete err;
   return true;
@@ -917,97 +902,6 @@ bool CLavaDoc::IsModified()
   return wxDocument::IsModified();
 }
 
-/*
-void CLavaDoc::CalcObjName(const DString& FileName)
-{
-  ObjName = FileName;
-  int il = ObjName.l-1;
-  while (il && (ObjName[il] != '.'))
-    il--;
-  if (il) 
-    ObjName.Delete(il, FileName.l-il);
-  il = ObjName.l-1;
-  while (il && (ObjName[il] != '\\'))
-    il--;
-  if (il) {
-    ObjName.Delete(0, il+1);
-  }
-}
-*/
-
-  
-/*
-void CLavaDoc::OnDeactivateUI( bool bUndoable )
-{
-  POSITION pos = GetFirstViewPosition();
-  if (pos) {
-	  CLavaGUIView *pView = (CLavaGUIView*)GetNextView(pos);
-    pView->SetScreenshot();
-    Redraw = true;
-  }
-  COleServerDoc::OnDeactivateUI(bUndoable);
-}
-
-void CLavaDoc::OnSetItemRects(LPCRECT lpPosRect, LPCRECT lpClipRect)
-{
-  CRect rect = *lpPosRect;
-  CLavaGUIView *pView;
-  COleServerDoc::OnSetItemRects(lpPosRect, lpClipRect);
-  if (ActiveSize != rect.Size()) {
-    ActiveSize = rect.Size();
-    POSITION pos = GetFirstViewPosition();
-    if (pos) {
-	    pView = (CLavaGUIView*)GetNextView(pos);
-      pView->SetScrollSizes(MM_TEXT,  pView->TotalRect.Size());
-      Modify();
-    }
-  }
-}
-
-
-COleIPFrameWnd* CLavaDoc::CreateInPlaceFrame( CWnd* pParentWnd )
-{
-  return (CInPlaceFrame*)COleServerDoc::CreateInPlaceFrame( pParentWnd );
-}
-
-
-
-void CLavaDoc::OnCloseDocument() 
-{ 
-  if (!isObject )
-    LavaEnd(false);
-  COleServerDoc::OnCloseDocument();
-}
-
-void CLavaDoc::OnFileClose() 
-{
-  if (!isObject)
-    throwError = true;
-  LavaEnd(); 
-}
-*/
-
-/*
-void CLavaDoc::OnClose(OLECLOSE dwCloseOption) 
-{ 
-  MSG msgCur;
-
-  if (isObject ) {
-	  POSITION pos = GetFirstViewPosition();
-    if (pos) {
-	    CLavaGUIView *pView = (CLavaGUIView *)GetNextView(pos);
-      pView->NoteLastModified();
-    }
-  }
-
-  while (::PeekMessage(&msgCur, NULL, NULL, NULL, PM_NOREMOVE)
-  && msgCur.message != WM_KICKIDLE) {
-		::TranslateMessage(&msgCur);
-		::DispatchMessage(&msgCur);
-  }
-  COleServerDoc::OnClose(dwCloseOption);
-}
-*/
 
 void CLavaDoc::LObjectError(CheckData& ckd, const QString& ldocName, const QString& lcomName, QString* nresourceID, int moreText, const DString* text, const TID* id)
 {
@@ -1069,10 +963,6 @@ void CLavaDoc::LObjectError(CheckData& ckd, const QString& ldocName, const QStri
         }
     }
   }
-
-  //throwError = true;
-  //LavaEnd(true);
-
 }
 
 bool CLavaDoc::ExecuteLavaObject()
@@ -1180,15 +1070,3 @@ bool CLavaDoc::ExecuteLavaObject()
   }
 }
 
-
-/*
-bool CLavaDoc::OnSaveModified() 
-{
-  POSITION pos = GetFirstViewPosition();
-  if (pos) {
-	  CLavaGUIView *pView = (CLavaGUIView*)GetNextView(pos);
-    pView->NoteLastModified();
-  }
-	return wxDocument::OnSaveModified();
-}
-*/

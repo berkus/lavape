@@ -90,20 +90,20 @@ CTreeItem::~CTreeItem()
 void CTreeItem::startRename(int col)
 {
   inRename = true;
-  ((MyListView*)listView())->lavaView->startRename(this);
+  ((MyListView*)listView())->lavaView->RenameStart(this);
   QListViewItem::startRename(col);
 }
 
 void CTreeItem::okRename(int col)
 {
   QListViewItem::okRename(col);
-  ((MyListView*)listView())->lavaView->okRename(this);
+  ((MyListView*)listView())->lavaView->RenameOk(this);
   inRename = false;
 }
 
 void CTreeItem::cancelRename(int col)
 {
-  ((MyListView*)listView())->lavaView->cancelRename(this);
+  ((MyListView*)listView())->lavaView->RenameCancel(this);
   QListViewItem::cancelRename(col);
   inRename = false;
 }
@@ -185,14 +185,20 @@ void MyListView::keyPressEvent(QKeyEvent *ev)
   }
 }
 
+void MyListView::contentsMouseMoveEvent(QMouseEvent *ev)
+{
+  QListView::contentsMouseMoveEvent(ev);
+}
+
 void MyListView::contentsMousePressEvent(QMouseEvent *ev)
 {
   withShift = ev->state() & ShiftButton;
   withControl = ev->state() & ControlButton;
-  QListView::contentsMousePressEvent(ev);
+  QPoint p = contentsToViewport(ev->pos());
+  if(itemAt(p)) 
+    QListView::contentsMousePressEvent(ev);
   withShift = false;
   withControl = false;
-  QPoint p = contentsToViewport(ev->pos());
   if(!itemAt(p)) {
     setSelected(currentItem(), true);
     ensureItemVisible(currentItem());
@@ -202,7 +208,7 @@ void MyListView::contentsMousePressEvent(QMouseEvent *ev)
 
 QDragObject* MyListView::dragObject()
 {
-  return lavaView->OnBegindrag();
+  return lavaView->OnDragBegin();
 }
 
 void MyListView::contentsDragMoveEvent(QDragMoveEvent *ev)
@@ -229,7 +235,9 @@ void MyListView::contentsDropEvent(QDropEvent* ev)
 void MyListView::focusInEvent ( QFocusEvent * e )
 {
   lavaView->focusInEvent (e);
+
 }
+
 //**********************************************************************************
 
 CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name): CLavaBaseView(parent,doc,name)
@@ -243,6 +251,7 @@ CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name): CLavaBa
   m_tree->setSelectionMode(QListView::Extended);//Single); 
   new TreeWhatsThis(this);
 }
+
 
 
 CTreeItem* CTreeView::GetPrevSiblingItem(CTreeItem* item)

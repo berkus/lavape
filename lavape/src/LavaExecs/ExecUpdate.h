@@ -1,8 +1,8 @@
-// ConstrUpdate.h : header file
+// ExecUpdate.h : header file
 //
 
-#ifndef __ConstrUpdate
-#define __ConstrUpdate
+#ifndef __ExecUpdate
+#define __ExecUpdate
 
 
 #include "Constructs.h"
@@ -13,11 +13,11 @@
 extern SynObject *replacedObj, *toBeDrawn;
 extern bool multipleUpdates;
 
-class LAVAEXECS_DLL CConstrUpdate : public CBaseConstrUpdate {
+class LAVAEXECS_DLL CExecUpdate : public CBaseExecUpdate {
 public:
   void MakeExec(LavaDECL *myDECL);
 
-  bool ChangeConstraint(CLavaPEHint* hint, wxDocument* doc, bool undo);
+  bool ChangeExec(CLavaPEHint* hint, wxDocument* doc, bool undo);
   void DeleteHint(CLavaPEHint *hint);
   void MakeSetGet(CPEBaseDoc *myDoc, LavaDECL *myDECL, TID &prop, TID &parm);
 };

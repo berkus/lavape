@@ -709,3 +709,15 @@ void CMainFrame::howTo_clicked()
 {
 
 }
+
+
+void CMainFrame::saveEveryChange( bool )
+{
+
+}
+
+
+void CMainFrame::makeGUI()
+{
+
+}

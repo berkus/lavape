@@ -126,6 +126,7 @@ CLavaBaseDoc::CLavaBaseDoc()
   DocObjects[1] = 0;
   DocObjects[2] = 0;
   ThreadList = 0;
+  DumpFrame=0;
 }
 
 CLavaBaseDoc::~CLavaBaseDoc()
@@ -1262,7 +1263,7 @@ LavaDECL** CLavaBaseDoc::GetFormpDECL(LavaDECL* decl)
     if (decl->DeclType == Impl) 
       implDECL = decl;
     else {
-      CFindLikeForm *like = new CFindLikeForm(mySynDef, decl->RefID, decl->inINCL, decl);
+      CFindLikeForm *like = new CFindLikeForm(mySynDef, decl->RefID, decl->inINCL, decl, decl);
       pFormDECL = like->pdecl;
       delete like;
       return pFormDECL;
@@ -1354,20 +1355,6 @@ LavaDECL* CLavaBaseDoc::FindInSupports(const DString& name, LavaDECL *self, Lava
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaBaseDoc diagnostics
-/*
-#ifdef _DEBUG
-void CLavaBaseDoc::AssertValid() const
-{
-  COleServerDoc::AssertValid();
-}
-
-void CLavaBaseDoc::Dump(CDumpContext& dc) const
-{
-  COleServerDoc::Dump(dc);
-}
-#endif //_DEBUG
-*/
-
 
 
 bool CLavaBaseDoc::DeleteContents() 
@@ -1487,6 +1474,7 @@ CSectionDesc::CSectionDesc()
   nSections = 0;
   innerContext = 0; 
   outerContext = 0; 
+  adapterTab = 0;
 }
 
 void CSectionDesc::Destroy()
@@ -1632,7 +1620,7 @@ void AbsPathName(DString& fn, const DString& dirName)
 }
 
 
-LavaDECL* CLavaBaseDoc::GetConstrDECL(LavaDECL* parentDecl,TDeclType type, bool makeIt, bool makeExec)
+LavaDECL* CLavaBaseDoc::GetExecDECL(LavaDECL* parentDecl,TDeclType type, bool makeIt, bool makeExec)
 {
   LavaDECL *cDECL = 0;
   CHE *afterChe = (CHE*)parentDecl->NestedDecls.last;
@@ -1677,10 +1665,11 @@ LavaDECL* CLavaBaseDoc::GetConstrDECL(LavaDECL* parentDecl,TDeclType type, bool 
     CHE* che = NewCHE(cDECL);
     parentDecl->NestedDecls.Insert(afterChe, che);
     if (makeExec) {
-      LBaseData->ConstrUpdate->MakeExec(cDECL);
+      LBaseData->ExecUpdate->MakeExec(cDECL);
       if (parentDecl->OwnID != -1)
         ((SynObjectBase*)cDECL->Exec.ptr)->MakeTable((address)&IDTable, parentDecl->inINCL, (SynObjectBase*)cDECL, onNewID);
     }
   }
   return cDECL;
 }
+

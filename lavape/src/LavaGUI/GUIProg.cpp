@@ -58,7 +58,7 @@ CGUIProg::CGUIProg() : CGUIProgBase()
   Redraw = false;
 }
 
-void CGUIProg::Create(CLavaBaseDoc* doc, wxView* view)
+void CGUIProg::Create(CLavaBaseDoc* doc, QWidget* view)
 {
   Root = 0;
   myDoc = doc;
@@ -71,6 +71,10 @@ void CGUIProg::Create(CLavaBaseDoc* doc, wxView* view)
   MakeGUI.INIT(this);
   TreeSrch.INIT(this);
   ViewWin = view;
+  if (view->inherits("CLavaGUIView"))
+    scrollView = ((CLavaGUIView*)view)->scrollView();
+  //else
+  //  scrollView = ((LavaGUIDialog*)view)->scrollView();
   CGUIProgBase::Create();
 }
 
@@ -120,7 +124,7 @@ void CGUIProg::SyncTree(CHEFormNode *node)
         ((CLavaGUIView*)ViewWin)->resetLastBrowseNode();
       for (upNode = node; upNode && !upNode->data.FormSyntax->ParentDECL;upNode = upNode->data.FIP.up);
       for (;
-        upNode && upNode->data.FormSyntax->ParentDECL && (upNode->data.FormSyntax->ParentDECL->ParentDECL != ((CLavaGUIView*)ViewWin)->myDECL);
+        upNode && upNode->data.FormSyntax->ParentDECL && (upNode->data.FormSyntax->ParentDECL->ParentDECL != myDECL);
         upNode = upNode->data.FIP.up);
       if (upNode) {
         inSynchTree = true;
@@ -144,15 +148,15 @@ void CGUIProg::RedrawForm()
   //QPoint vpoint, tPoint;
   int sx, sy;
   if (Root) {
-    sx = ((CLavaGUIView*)ViewWin)->scrollView()->contentsX();
-    sy = ((CLavaGUIView*)ViewWin)->scrollView()->contentsY();
+    sx = ((GUIScrollView*)scrollView)->contentsX();
+    sy = ((GUIScrollView*)scrollView)->contentsY();
     refresh = false;
     LavaForm.DeleteWindows(Root, true);
   }
   refresh = true;
   MakeGUI.DisplayScreen(false);
-  ((CLavaGUIView*)ViewWin)->scrollView()->setContentsPos(sx, sy);
-  ((CLavaGUIView*)ViewWin)->scrollView()->updateContents();
+  ((GUIScrollView*)scrollView)->setContentsPos(sx, sy);
+  ((GUIScrollView*)scrollView)->updateContents();
 }
 
 CGUIProg::~CGUIProg()
@@ -171,7 +175,7 @@ void CGUIProg::OnTab(bool back, QWidget* win)
   else 
     MPTR = butNode;
   for (parentWin = win->parentWidget(); !parentWin->inherits("GUIVBox"); parentWin = parentWin->parentWidget());
-  if (((CLavaGUIView*)ViewWin)->qvbox == parentWin)
+  if (((GUIScrollView*)scrollView)->qvbox == parentWin)
     frmPtr = Root;
   else
     frmPtr = ((CLavaGUIPopup*)parentWin)->myFormNode;

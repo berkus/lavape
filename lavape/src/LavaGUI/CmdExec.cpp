@@ -235,7 +235,7 @@ CHEFormNode* CmdExecCLASS::GetIterNode(CHEFormNode* fNode)
 void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
 {
   CHEFormNode *popupNode, *beforeNode, *chainNode, *parNode, *insertedNode;
-  LavaObjectPtr newStackFrame[4], handle = 0;
+  LavaObjectPtr newStackFrame[SFH+4], handle = 0;
   LavaDECL *iterSyn, *formSyn;
 
   parNode = fNode->data.FIP.up;
@@ -259,20 +259,21 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
       insertedNode->data.ResultVarPtr = (CSecTabBase ***)((CGUIProg*)GUIProg)->LavaForm.NewLavaVarPtr(0);
       if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(formSyn, (LavaVariablePtr)insertedNode->data.ResultVarPtr))
         return;
-      newStackFrame[0] = *(LavaVariablePtr)chainNode->data.ResultVarPtr; //chain object
+      newStackFrame[2] = 0; //chain object
+      newStackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr; //chain object
       if (beforeNode->data.ResultVarPtr)
-        newStackFrame[1] = (LavaObjectPtr)beforeNode->data.HandleObjPtr; //before handle
+        newStackFrame[SFH+1] = (LavaObjectPtr)beforeNode->data.HandleObjPtr; //before handle
       else
-        newStackFrame[1] =  0;
-      newStackFrame[2] = *(LavaVariablePtr)insertedNode->data.ResultVarPtr; //new data
-      newStackFrame[2] = newStackFrame[2] + newStackFrame[2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, newStackFrame[2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
+        newStackFrame[SFH+1] =  0;
+      newStackFrame[SFH+2] = *(LavaVariablePtr)insertedNode->data.ResultVarPtr; //new data
+      newStackFrame[SFH+2] = newStackFrame[SFH+2] + newStackFrame[SFH+2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
       if (((CGUIProg*)GUIProg)->ckd.exceptionThrown)
         return;
       ((CGUIProg*)GUIProg)->ex = HSetInsertBefore(((CGUIProg*)GUIProg)->ckd, newStackFrame);
-      ((SynFlags*)(newStackFrame[2]+1))->INCL(insertedItem);
+      ((SynFlags*)(newStackFrame[SFH+2]+1))->INCL(insertedItem);
       if (((CGUIProg*)GUIProg)->ex)
         return;
-      handle = newStackFrame[3];
+      handle = newStackFrame[SFH+3];
       DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)insertedNode->data.ResultVarPtr); //decr from AllocateObject after putting into chain
       ((CGUIProg*)GUIProg)->OnModified();
     }
@@ -321,7 +322,7 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
 void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
 {
   CHEFormNode *popupNode, *delNode,  *chainNode;
-  LavaObjectPtr newStackFrame[3];
+  LavaObjectPtr newStackFrame[SFH+2];
 
   if (fNode->data.IterFlags.Contains(Ellipsis))
     delNode = (CHEFormNode*)fNode->predecessor;
@@ -339,8 +340,9 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
         chainNode = chainNode->data.FIP.up;
       if (chainNode) {
         if (GUIProg->fromFillIn) {
-          newStackFrame[0] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
-          newStackFrame[1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
+          newStackFrame[2] = 0;
+          newStackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
+          newStackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
           if (!SetRemove(((CGUIProg*)GUIProg)->ckd, newStackFrame))
             return;
         }

@@ -22,7 +22,7 @@
 #endif
 
 #include "PEBaseDoc.h"
-#include "ConstrFrame.h"
+#include "ExecFrame.h"
 #include "cmainframe.h"
 #include "ComboBar.h"
 #include "LavaAppBase.h"

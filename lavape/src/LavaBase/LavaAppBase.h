@@ -92,14 +92,16 @@
                                |          CommandData5: dragParent, if drop from drag and drop
                                |          CommandData6: ClipSyntaxDefinition from clipboard operation or drag and drop
                                |          CommandData7: Full path name of Clip-document from clipboard operation or drag and drop
-                               |          CommandData8: the CHE* from which CommandData1 is the data, set only in UpdateDoc
+                               |          CommandData8: drag and drop operations refac case
+                               |          CommandData9: the CHE* from which CommandData1 is the data, set only in UpdateDoc
                              
   CPECommand_Delete,         |   always CommandData1: old LavaDECL*  
                                |          CommandData2: name of parent DECL if exists 
                                |          CommandData3: position in the chain of parent DECL
                                |          CommandData4: LavaDECL** of parentDECL
                                |          CommandData5: dropParent, if drag from drag and drop in the same document
-                               |          CommandData8:  the CHE* from which CommandData1 is the data, set only in UpdateDoc
+                               |          CommandData8: drag and drop operations refac case
+                               |          CommandData9: the CHE* from which CommandData1 is the data, set only in UpdateDoc
                                    
   CPECommand_Change,         | CommandData1: new LavaDECL*  |  CommandData1.old LavaDECL*   
                                | CommandData2: old name of the DECL |  CommandData2.new name of the DECL
@@ -108,7 +110,7 @@
                                | CommandData6: old enum item Id, in case of enum items labeledit 
                                | CommandData7: if != 0: draw the tree, because the change has new tree-nodes
                                       
-  CPECommand_Constraint,     | 
+  CPECommand_Exec,     | 
                                |   
                                |  
                                | 
@@ -141,6 +143,8 @@
 #define IDU_LavaPE_SetLastHint (QEvent::Type)(QEvent::User+8)
 #define IDU_OpenObject (QEvent::Type)(QEvent::User+9)
 #define IDU_LavaPE_OnDrop (QEvent::Type)(QEvent::User+10)
+#define IDU_LavaDump (QEvent::Type)(QEvent::User+11)
+#define IDU_LavaStart (QEvent::Type)(QEvent::User+12)
 
 enum CPECommand {
   CPECommand_OpenFormView, 
@@ -154,7 +158,7 @@ enum CPECommand {
   CPECommand_Move, //not used in UpdateAllViews
   CPECommand_Delete,
   CPECommand_Change,
-  CPECommand_Constraint,
+  CPECommand_Exec,
   CPECommand_Comment,
   CPECommand_FromOtherDoc,
   CPECommand_LavaEnd //used only at runtime
@@ -178,6 +182,7 @@ public:
   DWORD CommandData6;
   DWORD CommandData7;
   DWORD CommandData8; 
+  DWORD CommandData9; 
 
   CLavaPEHint(CPECommand cc,
              wxDocument* fromdoc, 
@@ -188,7 +193,8 @@ public:
              DWORD commandData4=0, 
              DWORD commandData5=0, 
              DWORD commandData6=0, 
-             DWORD commandData7=0);
+             DWORD commandData7=0, 
+             DWORD commandData8=0);
 
   ~CLavaPEHint();
   void Destroy(bool inRedo);
@@ -197,8 +203,16 @@ private:
 };
 
 
-enum TCompoProt { PROT_LAVA, PROT_DOTNET, PROT_CORBA, PROT_EJB,
-                  PROT_HTTP, PROT_FILE, PROT_FTP, PROT_MAIL};
+enum TRefacMove {
+  noRefac,
+  privToPublic,
+  publicToPriv,
+  baseToEx,
+  exToBase
+};
+
+enum TCompoProt { PROT_LAVA, PROT_STREAM, PROT_DOTNET, PROT_CORBA, PROT_EJB,
+                  PROT_HTTP, PROT_FTP, PROT_MAIL};
 
 
 class LAVABASE_DLL  CBrowseContext : public QObject
@@ -292,6 +306,7 @@ public:
   CLavaPEHint* DoFromMem(int& pos);   //called by LavaPEDoc
   CLavaPEHint* UndoFromMem(int& pos); //called by LavaPEDoc
   CLavaPEHint* RedoFromMem(int& pos); //called by LavaPEDoc
+  void SetCom8();
   void OnEditUndo(); 
   void OnUpdateEditUndo(QAction *action);//CCmdUI* pCmdUI);
   bool EnableUndo();
@@ -333,11 +348,11 @@ private:
     Q_OBJECT
 };
 
-class LAVABASE_DLL CBaseConstrUpdate
+class LAVABASE_DLL CBaseExecUpdate
 {
 public:
   virtual void MakeExec(LavaDECL *myDECL){};
-  virtual bool ChangeConstraint(CLavaPEHint* , wxDocument* , bool /*undo*/) {return FALSE;}
+  virtual bool ChangeExec(CLavaPEHint* , wxDocument* , bool /*undo*/) {return FALSE;}
   virtual void DeleteHint(CLavaPEHint* ) {}
 };
 
@@ -345,7 +360,7 @@ class LAVABASE_DLL  CLavaBaseData : public QObject
 {
 public:
   CLavaBaseData() :QObject(0, "LavaBaseData") {newNum = 0; declareButton = 0; }
-  void Init(CPEBaseBrowse *browser, CBaseConstrUpdate *constrUpdate);
+  void Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate);
   ~CLavaBaseData();
 
   wxApp *theApp;
@@ -355,7 +370,7 @@ public:
   CLavaPEHint* actHint;
   CMultiUndoMem MultiUndoMem;
   CPEBaseBrowse *Browser;
-  CBaseConstrUpdate *ConstrUpdate;
+  CBaseExecUpdate *ExecUpdate;
   QSize ptMaxSize;
   QString lastFileOpen;
   QString WndPane;
@@ -364,6 +379,15 @@ public:
   QString lcomFileExt;
   int newNum;
   int stdUpdate;
+
+  bool m_saveEveryChange;
+  QString m_strSaveEveryChange;
+  bool m_checkPreconditions;
+  QString m_strCheckPreconditions;
+  bool m_checkPostconditions;
+  QString m_strCheckPostconditions;
+  bool m_checkInvariants;
+  QString m_strCheckInvariants;
 
   QFont m_ExecFont;
   QFont m_FormFont;
@@ -423,7 +447,7 @@ public:
   wxAction* nextErrorActionPtr;
   wxAction* notEqualActionPtr;
   wxAction* nullActionPtr;
-  wxAction* okActionPtr;        
+//  wxAction* okActionPtr;        
 	wxAction* optLocalVarActionPtr;
 	wxAction* ordActionPtr;
   wxAction* prevCommentActionPtr;

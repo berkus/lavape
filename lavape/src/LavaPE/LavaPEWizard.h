@@ -658,7 +658,7 @@ class CExecLike: public CExec
 {
 public:
   CExecLike(CLavaPEDoc* doc, QComboBox* list, LavaDECL * Ldecl, LavaDECL* sylDef=0);
-  void ExecSHOW(LavaDECL ** pelDef, int level);
+  void ExecFormDef(LavaDECL ** pelDef, int level);
   void ExecDefs (LavaDECL ** pelDef, int level);
   bool CheckSupports(LavaDECL *basedecl, LavaDECL *sylDef);
   CLavaPEDoc* myDoc;

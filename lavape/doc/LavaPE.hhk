@@ -161,6 +161,11 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="DBC (TM)">
+		<param name="Name" value="      Design by contract    ">
+		<param name="Local" value="html/DBC.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="DCE">
 		<param name="Name" value="Advantages of Java">
 		<param name="Local" value="html/AdvantJava.htm">
@@ -184,6 +189,11 @@
 			<param name="Local" value="html/LavaReadability.htm#declNesting">
 			</OBJECT>
 	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="design by contract (TM)">
+		<param name="Name" value="      Design by contract    ">
+		<param name="Local" value="html\DBC.htm">
+		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="design patterns">
 		<param name="Name" value="Patterns Home Page">
@@ -440,6 +450,11 @@
 		<param name="Local" value="html/DatabaseIntegration.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Many Irreducible Mini-Methods (MIMM)">
+		<param name="Name" value="      Object-oriented problem separation    ">
+		<param name="Local" value="html/OOPS-MIMM.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="members, private/public">
 		<param name="Name" value="Strict separation interface/implementation">
 		<param name="Local" value="html/SepItfImpl.htm">
@@ -557,9 +572,19 @@
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Object-Oriented Problem Separation (OOPS)">
+		<param name="Name" value="      Object-oriented problem separation    ">
+		<param name="Local" value="html/OOPS-MIMM.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="OLE">
 		<param name="Name" value="Advantages of Visual Basic">
 		<param name="Local" value="html/AdvantVB.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="OOPS:MIMM">
+		<param name="Name" value="      Object-oriented problem separation    ">
+		<param name="Local" value="html/OOPS-MIMM.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="opaque packages">
@@ -635,6 +660,16 @@
 		<param name="Name" value="RAD (Rapid Application Development)">
 		<param name="Name" value="Advantages of Visual Basic">
 		<param name="Local" value="html/AdvantVB.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="read-only functions">
+		<param name="Name" value="Function property sheet">
+		<param name="Local" value="html/dialogs/FunctionBox.htm#readOnly">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="read-only in general">
+		<param name="Name" value="Read-Only functions and clauses">
+		<param name="Local" value="html/ReadOnly.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="refactoring">

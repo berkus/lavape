@@ -48,7 +48,7 @@ QAssistantClient *qacl=0;
 CLavaPEHint::CLavaPEHint(CPECommand cc, wxDocument* fromdoc, SynFlags first,
                        DWORD commandData1, DWORD commandData2,
                        DWORD commandData3, DWORD commandData4,
-                       DWORD commandData5, DWORD commandData6, DWORD commandData7) :QObject(0, "LavaPEHint")
+                       DWORD commandData5, DWORD commandData6, DWORD commandData7, DWORD commandData8) :QObject(0, "LavaPEHint")
 { com = cc; 
   fromDoc = fromdoc;
   FirstLast = first;
@@ -59,6 +59,7 @@ CLavaPEHint::CLavaPEHint(CPECommand cc, wxDocument* fromdoc, SynFlags first,
   CommandData5 = commandData5;
   CommandData6 = commandData6;
   CommandData7 = commandData7;
+  CommandData8 = commandData8;
 }
 
 CLavaPEHint::~CLavaPEHint()
@@ -76,8 +77,8 @@ CLavaPEHint::~CLavaPEHint()
       delete (DString*)CommandData2;
   }
   else
-    if (com == CPECommand_Constraint)
-      LBaseData->ConstrUpdate->DeleteHint(this);
+    if (com == CPECommand_Exec)
+      LBaseData->ExecUpdate->DeleteHint(this);
   if(CommandData7 && (com != CPECommand_Change)) 
     delete (DString*)CommandData7;
 
@@ -92,11 +93,11 @@ void CLavaPEHint::Destroy(bool inRedo) //call this function only from CleanUndoM
         break;
       case CPECommand_Insert:
         if (inRedo) 
-          delete (CHE*)CommandData8;
+          delete (CHE*)CommandData9;
         break;
       case CPECommand_Delete:
         if (!inRedo) 
-          delete (CHE*)CommandData8;
+          delete (CHE*)CommandData9;
         break;
       case CPECommand_Include:
         if (inRedo) 
@@ -299,6 +300,37 @@ void  CUndoMem::CleanUndoMem()
     delete RedoMemory[redoMemPosition];
   }
   redoMemPosition = 0;
+}
+
+void CUndoMem::SetCom8()
+{
+  int posDel=-1, posIns=-1,
+      pos = undoMemPosition-1;
+  while ((pos >= 0) //&& !UndoMemory[pos]->FirstLast.Contains(firstHint)
+     && ((posDel == -1) || (posIns == -1))) {
+    if ((((LavaDECL*)UndoMemory[pos]->CommandData1)->DeclType == Function)
+        && (((LavaDECL*)UndoMemory[pos]->CommandData1)->ParentDECL->DeclType == Impl)) {
+      if (UndoMemory[pos]->com == CPECommand_Delete) 
+        posDel = pos;
+      else if ((UndoMemory[pos]->com == CPECommand_Insert)
+               || (UndoMemory[pos]->com == CPECommand_Move))
+        posIns = pos;
+    }
+    if (UndoMemory[pos]->FirstLast.Contains(firstHint))
+      pos = -1;
+    else
+      pos--;
+  }
+  while ((posDel >= 0) && (posIns >= 0)
+      && (UndoMemory[posDel]->com == CPECommand_Delete) 
+      && (((LavaDECL*)UndoMemory[posDel]->CommandData1)->DeclType == Function)
+      && (((LavaDECL*)UndoMemory[posDel]->CommandData1)->ParentDECL->DeclType == Impl)) {
+    UndoMemory[posDel]->CommandData8 = (DWORD)((LavaDECL*)UndoMemory[posIns]->CommandData1)->OwnID;
+    UndoMemory[posIns]->CommandData8 = (DWORD)((LavaDECL*)UndoMemory[posDel]->CommandData1)->OwnID;
+    ((CPEBaseDoc*)UndoMemory[posDel]->fromDoc)->ExecViewPrivToPub((LavaDECL*)UndoMemory[posIns]->CommandData1,(int)UndoMemory[posIns]->CommandData8);
+    posDel--;
+    posIns--;
+  }
 }
 
 CUndoMem::~CUndoMem()
@@ -786,12 +818,12 @@ CLavaBaseData *LBaseData;
 
 
 
-void CLavaBaseData::Init(CPEBaseBrowse *browser, CBaseConstrUpdate *constrUpdate)
+void CLavaBaseData::Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate)
 
 {
   LavaBaseStringInit();
   Browser = browser;
-  ConstrUpdate = constrUpdate;
+  ExecUpdate = execUpdate;
   BasicNames[NonBasic]     = "NonBasic";
   BasicNames[B_Object]     = "Object";
   BasicNames[Bitset]       = "Bitset";
@@ -1079,13 +1111,26 @@ QString L_GetOpenFileName(const QString& startFileName,
               const QString& exten2
             )
 {
-  QFileInfo qf = QFileInfo(startFileName);
-  QFileInfo qfresolved(ResolveLinks(qf));
-  QString currentFilter = qfresolved.extension();
-  QString initialDir = qf.dirPath(true);
+  QFileInfo qf;
+  QString fileName;
+  QString currentFilter;
+  QString initialDir;
+  if (startFileName.at(startFileName.length()-1) !='/') {
+    qf = QFileInfo(startFileName);
+    fileName = qf.fileName();
+    QFileInfo qfresolved(ResolveLinks(qf));
+    currentFilter = qfresolved.extension();
+    initialDir = qf.dirPath(true);
+  }
+  else
+    initialDir = startFileName;
 #ifdef WIN32
   OPENFILENAME ofn;                    // common dialog box structure
-  char szFile[260];                    // buffer for filename
+  char szFile[260]; // buffer for filename
+  if (fileName != QString::null)
+    strcpy(szFile, fileName.latin1()); 
+  else
+    szFile[0] = '\0'; 
   HWND hwnd = parent->winId();         // owner window
   QString resultName = ""; 
   QString filt = filter + "?*." + exten;
@@ -1099,7 +1144,6 @@ QString L_GetOpenFileName(const QString& startFileName,
   // Initialize OPENFILENAME
   ZeroMemory(&ofn, sizeof(OPENFILENAME));
   ofn.lStructSize = sizeof(OPENFILENAME);
-  szFile[0] = '\0';
   ofn.hwndOwner = hwnd;
   ofn.lpstrFile = szFile;
   ofn.nMaxFile = sizeof(szFile);
@@ -1128,7 +1172,6 @@ QString L_GetOpenFileName(const QString& startFileName,
 
 #else
   QFileDialog *fd = new QFileDialog(parent, "lavafileDialog", true);
-  QString fileName;
 	
   fd->addFilter(filter);
   if (filter2 != QString::null)

@@ -58,6 +58,7 @@ public:
   VIEWFACTORY(CLavaGUIView)
   virtual void UpdateUI();
   virtual void DisableActions();
+  void AddButtons();
   virtual void OnInitialUpdate();
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
@@ -71,6 +72,7 @@ public:
   TID myID;
   LavaDECL *myDECL;
   bool inUpdate;
+  bool released;
   CGUIProg *myGUIProg;
   CLavaThread* myThread;
   LavaVariablePtr ServicePtr;
@@ -90,8 +92,6 @@ public:
 
   void OnDeleteOpt();
   void OnInsertOpt();
-  void OnOK();
-  void OnCancel();
 	void OnTogglestate();
   void OnEditCopy();
   void OnEditCut();
@@ -114,32 +114,13 @@ protected:
   GUIScrollView* myScrv;
   QString StatusbarMess;
 
+public slots:
+  void OnOK();
+  void OnCancel();
+
 private:
   Q_OBJECT
 };
 
-
-/*
-  void OnDraw();
-  void SetScreenshot();
-  void GetActViewSize(QSize& size);
-
-	CBitmap *m_pBmp;     // bitmap in the dc holding screenshot
-	CBitmap *m_pOldBmp;  // old bitmap
-	CDC *m_pMemDC;       // memory dc holding the screenshot
-  QSize BitmapSize;
-
-
-// Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CLavaGUIView)
-  public:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-  virtual bool PreCreateWindow(CREATESTRUCT& cs);
-  //}}AFX_VIRTUAL
-
-
-*/
-/////////////////////////////////////////////////////////////////////////////
 
 #endif

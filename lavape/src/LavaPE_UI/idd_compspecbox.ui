@@ -230,6 +230,11 @@
                             <string>LAVA</string>
                         </property>
                     </item>
+                    <item>
+                        <property name="text">
+                            <string>TEXTSTREAM</string>
+                        </property>
+                    </item>
                     <property name="name">
                         <cstring>m_CompoProt</cstring>
                     </property>

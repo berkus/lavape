@@ -19,14 +19,16 @@ dirs:
 links:
 	cd bin; if [ ! -h std.lava ]; then ln -s ../src/LavaPE/std.lava .; fi; \
 	cd ../src/Interpreter; \
-	if [ ! -h Constructs.ph ]; then ln -s ../LavaExecs/Constructs.ph .; fi; \
-	if [ ! -h Constructs.cpp ]; then ln -s ../LavaExecs/Constructs.cpp .; fi; \
-	if [ ! -h Tokens.ph ]; then ln -s ../LavaExecs/Tokens.ph .; fi; \
-	if [ ! -h Tokens.cpp ]; then ln -s ../LavaExecs/Tokens.cpp .; fi; \
-	if [ ! -h Check.cpp ]; then ln -s ../LavaExecs/Check.cpp .; fi; \
-	if [ ! -h Check.h ]; then ln -s ../LavaExecs/Check.h .; fi; \
-	if [ ! -h MakeTable.cpp ]; then ln -s ../LavaExecs/MakeTable.cpp .; fi; \
-	if [ ! -h MakeTable.h ]; then ln -s ../LavaExecs/MakeTable.h .; fi;
+	rm -f Constructs.ph; ln -s ../LavaExecs/Constructs.ph .; \
+	rm -f Constructs.h; ln -s ../LavaExecs/Constructs.h .; \
+	rm -f Constructs.cpp; ln -s ../LavaExecs/Constructs.cpp .; \
+	rm -f ConstructsG.cpp; ln -s ../LavaExecs/ConstructsG.cpp .; \
+	rm -f Tokens.ph; ln -s ../LavaExecs/Tokens.ph .; \
+	rm -f Tokens.h; ln -s ../LavaExecs/Tokens.h .; \
+	rm -f Tokens.cpp; ln -s ../LavaExecs/Tokens.cpp .; \
+	rm -f TokensG.cpp; ln -s ../LavaExecs/TokensG.cpp .; \
+	rm -f Check.cpp; ln -s ../LavaExecs/Check.cpp .; \
+	rm -f MakeTable.cpp; ln -s ../LavaExecs/MakeTable.cpp .; \
 #
 build:
 	cd src/Precompiler && $(MAKE); \

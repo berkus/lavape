@@ -105,6 +105,16 @@
 				<keyword ref="html/OOanalysis.htm">o-o analysis</keyword>
 				<keyword ref="html/OOanalysis.htm#patternLanguage">pattern language</keyword>
 			</section>
+			<section ref="html/OOPS-MIMM.htm" title="Object-Oriented Problem Separation through Many Irreducible Mini-Methods (OOPS:MIMM)">
+				<keyword ref="html/OOPS-MIMM.htm">Object-Oriented Problem Separation (OOPS)</keyword>
+				<keyword ref="html/OOPS-MIMM.htm">Many Irreducible Mini-Methods (MIMM)</keyword>
+				<keyword ref="html/OOPS-MIMM.htm">OOPS:MIMM</keyword>
+			</section>
+			<section ref="html/DBC.htm" title="Design By Contract (TM)">
+				<keyword ref="html/DBC.htm">DBC</keyword>
+				<keyword ref="html/DBC.htm">design by contract(TM)</keyword>
+				<keyword ref="html/DBC.htm">attached assertions(TM)</keyword>
+			</section>
 			<section ref="html/SepItfImpl.htm" title="Strict separation of interfaces and implementations">
 				<keyword ref="html/SepItfImpl.htm">Ada</keyword>
 				<keyword ref="html/SepItfImpl.htm#classnotion">class notion</keyword>
@@ -167,7 +177,7 @@
 				<keyword ref="html/SingleAssigLogSem.htm">single assignment</keyword>
 			</section>
 			<section ref="html/ReadOnly.htm" title="Read-only Lava constructs and functions">
-			 	<keyword ref="html/dialogs/ReadOnly.htm">read-only in general</keyword>
+			 	<keyword ref="html/ReadOnly.htm">read-only in general</keyword>
 			</section>
 			<section ref="html/StagesSample.htm" title="Stages in the life of Lava objects">
 				<keyword ref="html/StagesSample.htm#initializer">constructor</keyword>

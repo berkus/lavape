@@ -90,7 +90,7 @@ bool CExecTree::CalcPos(int level)
          && (data->type != TIType_Features)
          && (data->type != TIType_Require)
          && (data->type != TIType_Ensure)
-         && (data->type != TIType_Constraint)
+         && (data->type != TIType_Exec)
          ) 
         ActLevel -= 1;
     }
@@ -104,7 +104,7 @@ bool CExecTree::CalcPos(int level)
          || (data->type == TIType_Features)
          || (data->type == TIType_Require)
          || (data->type == TIType_Ensure)
-         || (data->type == TIType_Constraint)
+         || (data->type == TIType_Exec)
          )
       ParItem = (CTreeItem*)ParItem->parent();
   }
@@ -220,7 +220,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
               new CLavaError(&elDef->DECLError1, &ERR_NoSetGetMember);
 
             IOid = TID(((LavaDECL*)((CHE*)elDef->NestedDecls.first)->data)->OwnID, 0);
-            ((CLavaPEApp*)wxTheApp)->ConstrUpdate.MakeSetGet(Doc, Doc->GetConstrDECL(*pelDef,ExecDef,true,false),
+            ((CLavaPEApp*)wxTheApp)->ExecUpdate.MakeSetGet(Doc, Doc->GetExecDECL(*pelDef,ExecDef,true,false),
                                            ((CHETID*)elDef->Supports.first)->data, IOid);
           }
           else {
@@ -504,40 +504,39 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
         *lab += DString(", extends ");
         ids = &ERR_NoBaseIF;
       }
-      else {
-        if (elDef->SecondTFlags.Contains(overrides)) { //function declaration or virtual type
-          *lab += DString(", overrides ");
-          if ((elDef->DeclType == VirtualType) 
-              || (elDef->DeclType == Attr) 
-              || (elDef->DeclType == IAttr) 
-              || (elDef->DeclType == OAttr)) {
-            if (!Doc->OverriddenMatch(elDef, true))
-              if (elDef->DeclType == VirtualType) 
-                new CLavaError(&elDef->DECLError1, &ERR_ParIncompatible);
-              else
-                if (elDef->DeclType == Attr) 
-                  new CLavaError(&elDef->DECLError1, &ERR_MemIncompatible);
-                else
-                  new CLavaError(&elDef->DECLError1, &ERR_OverriddenIOType);
+      else if (elDef->DeclType == CompObjSpec)
+        ids = &ERR_CompObjIntfNotFound;
+      else if (elDef->SecondTFlags.Contains(overrides)) { //function declaration or virtual type
+        *lab += DString(", overrides ");
+        if ((elDef->DeclType == VirtualType) 
+            || (elDef->DeclType == Attr) 
+            || (elDef->DeclType == IAttr) 
+            || (elDef->DeclType == OAttr)) {
+          if (!Doc->OverriddenMatch(elDef, true))
+            if (elDef->DeclType == VirtualType) 
+              new CLavaError(&elDef->DECLError1, &ERR_ParIncompatible);
             else
-              if (lName != elDef->LocalName) {
-                lab->Delete(0, lName.l);
-                lab->Insert(elDef->LocalName, 0);
-              }
-          }
-          ids = &ERR_NoOverridden;
+              if (elDef->DeclType == Attr) 
+                new CLavaError(&elDef->DECLError1, &ERR_MemIncompatible);
+              else
+                new CLavaError(&elDef->DECLError1, &ERR_OverriddenIOType);
+          else
+            if (lName != elDef->LocalName) {
+              lab->Delete(0, lName.l);
+              lab->Insert(elDef->LocalName, 0);
+            }
         }
-        else  
-          if ((elDef->DeclType == Function) 
+        ids = &ERR_NoOverridden;
+      }
+      else if ((elDef->DeclType == Function) 
               || (elDef->DeclType == Impl) 
               || (elDef->DeclType == CompObj)) {
-            withName = false;
-            ids = &ERR_MissingFuncDecl; //&ERR_NoRefType;
-          }
-          else 
-            if ((elDef->DeclType == VirtualType) && (elDef->ParentDECL->DeclType == FormDef))
-              return;
+        withName = false;
+        ids = &ERR_MissingFuncDecl; //&ERR_NoRefType;
       }
+      else 
+        if ((elDef->DeclType == VirtualType) && (elDef->ParentDECL->DeclType == FormDef))
+          return;
       pp = Doc->IDTable.GetDECL(cheS->data, elDef->inINCL);
       if (pp) {
         elDef->WorkFlags.EXCL(allowDEL);
@@ -641,7 +640,7 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
       itd = (CMainItemData*)item->getItemData();
       if ((itd->type != TIType_Require) 
         && (itd->type != TIType_Ensure)
-        && (itd->type != TIType_Constraint)
+        && (itd->type != TIType_Exec)
         && (itd->type != TIType_EnumItems))
         itd->synEl = (DWORD)pelDef;
     }
@@ -660,7 +659,8 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
                     && !elDef->TypeFlags.Contains(thisCompoForm);
   if (viewTree->drawTree && FinalUpdate)
     ActItem->setDragEnabled(enableDrag);
-  //ActItem->setDropEnabled(enableDrag);
+  //else 
+  //  ActItem->setDragEnabled(false);
   if (elDef->WorkFlags.Contains(selAfter)) {
     viewTree->SelItem = ActItem;
     elDef->WorkFlags.EXCL(selAfter);
@@ -684,6 +684,8 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
       viewTree->SelType = Interface;
       elDef->WorkFlags.EXCL(selDefs);
     }
+    else
+      viewTree->SelType = NoDef;
   }
 }
 
@@ -870,7 +872,7 @@ void CExecTree::ExecOut(LavaDECL ** pelDef, int level)
   ExecMember(pelDef, level);
 }
 
-void CExecTree::ExecSHOW(LavaDECL ** pelDef, int level)
+void CExecTree::ExecFormDef(LavaDECL ** pelDef, int level)
 {
   LavaDECL *pp, *elDef = *pelDef;
   QString cstr;
@@ -944,7 +946,7 @@ void CExecTree::ExecSHOW(LavaDECL ** pelDef, int level)
   }
 }
 
-void CExecTree::ExecConstraint(LavaDECL ** pelDef, int level)
+void CExecTree::ExecExec(LavaDECL ** pelDef, int level)
 {
   QPixmap *sm = 0, *bm;
   LavaDECL *elDef = *pelDef;
@@ -1255,7 +1257,7 @@ CExecForms::CExecForms(SynDef *lavaCode, CLavaPEHint *hint)
 }
 
 
-void CExecForms::ExecSHOW(LavaDECL ** pelDef, int )
+void CExecForms::ExecFormDef(LavaDECL ** pelDef, int )
 {
   LavaDECL *structDecl, *inDecl, *decl, *hintDECL, *partDECL;
   TID structID;
@@ -1555,7 +1557,7 @@ CExecChecks::CExecChecks(CLavaPEDoc* doc, bool inopen)
 }
 
 
-void CExecChecks::ExecConstraint(LavaDECL ** pelDef, int level)
+void CExecChecks::ExecExec(LavaDECL ** pelDef, int level)
 {
   if ((*pelDef)->Exec.ptr) {
     CheckData ckd;
@@ -1568,7 +1570,7 @@ void CExecChecks::ExecConstraint(LavaDECL ** pelDef, int level)
 }
 
 
-void CExecChecks::ExecSHOW(LavaDECL ** pelDef, int level)
+void CExecChecks::ExecFormDef(LavaDECL ** pelDef, int level)
 {
   LavaDECL *pp;
   CHETID *cheS;

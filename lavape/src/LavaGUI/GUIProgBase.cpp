@@ -28,7 +28,7 @@
 #include "qfontmetrics.h"
 #include "LavaGUIView.h"
 #include "FormWid.h"
-//#include "stdafx.h"
+#include "mdiframes.h"
 
 
 
@@ -194,6 +194,14 @@ QSize CGUIMet::CalcTextRect(int xcols, int yrows, const QFont& font)
   QFontMetrics fm(font);
   QSize size(xcols * maxCharWidth(font), yrows * fm.lineSpacing());
   return size;
+}
+
+QString CGUIMet::winCaption()
+{
+  if (ViewWin->inherits("CLavaGUIView"))
+    return ((wxView*)ViewWin)->GetParentFrame()->caption();
+  else
+    return ViewWin->caption();
 }
 
  /*

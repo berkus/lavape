@@ -1,7 +1,3 @@
-#ifdef __GNUC__
-#pragma implementation "Tokens.h"
-#endif
-
 //*******************************************************************
 //
 //   public procedures of structs/classes defined in Tokens.h

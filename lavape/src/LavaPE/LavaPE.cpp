@@ -39,7 +39,7 @@
 #include "LavaPEFrames.h"
 #include "LavaPEDoc.h"
 #include "LavaPEView.h"
-#include "ConstrFrame.h"
+#include "ExecFrame.h"
 #include "FindRefsBox.h"
 #include "SylTraversal.h"
 #include "ExecView.h"
@@ -60,6 +60,7 @@
 #include "qassistantclient.h"
 
 
+static QString szSaveEveryChange = "/SaveEveryChange";
 static QString szExecFont = "/ExecFont";
 static QString szFormFont = "/FormFont";
 static QString szFormLabelFont = "/FormLabelFont";
@@ -105,11 +106,11 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   bool ok;
   QSettings settings(QSettings::Native);
 
-  LBaseData.stdUpdate = 1; 
+  LBaseData.stdUpdate = 0; 
   //stop here and set stdUpdate = 1 to allow updates in std.lava
 
   Browser.LastBrowseContext = 0;
-  LBaseData.Init(&Browser, &ConstrUpdate);
+  LBaseData.Init(&Browser, &ExecUpdate);
   SynIO.INIT();
   InitGlobalStrings();
   LavaPEStringInit();
@@ -122,6 +123,19 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   LBaseData.theApp = this;
   LBaseData.inRuntime = false;
   clipboard()->clear();
+
+  settings.beginGroup("/generalSettings");
+  LBaseData.m_strSaveEveryChange = settings.readEntry(szSaveEveryChange, 0, &ok);
+  if (ok)
+    if (LBaseData.m_strSaveEveryChange == "true")
+      LBaseData.m_saveEveryChange = true;
+    else
+      LBaseData.m_saveEveryChange = false;
+  else {
+    LBaseData.m_saveEveryChange = true;
+    LBaseData.m_strSaveEveryChange = "true";
+  }
+  settings.endGroup();
 
   settings.beginGroup("/fontSettings");
   
@@ -187,8 +201,8 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   LavaPixmaps[ 4] = new QPixmap((const char**)PX_classimpl);
   LavaPixmaps[ 5] = new QPixmap((const char**)PX_classAttr);
   LavaPixmaps[ 6] = new QPixmap((const char**)PX_classint);
-  LavaPixmaps[ 7] = new QPixmap((const char**)PX_constrempty);
-  LavaPixmaps[ 8] = new QPixmap((const char**)PX_constrai);
+  LavaPixmaps[ 7] = new QPixmap((const char**)PX_execEmpty);
+  LavaPixmaps[ 8] = new QPixmap((const char**)PX_exec);
   LavaPixmaps[ 9] = new QPixmap((const char**)PX_definitions);//all types
   LavaPixmaps[10] = new QPixmap((const char**)PX_enum);
   LavaPixmaps[11] = new QPixmap((const char**)PX_enumattr);
@@ -202,7 +216,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   LavaPixmaps[19] = new QPixmap((const char**)PX_members);
   LavaPixmaps[20] = new QPixmap((const char**)PX_outputs);
   LavaPixmaps[21] = new QPixmap((const char**)PX_overwrit);
-  LavaPixmaps[22] = new QPixmap((const char**)PX_Namespace);
+  LavaPixmaps[22] = new QPixmap((const char**)PX_package);
   LavaPixmaps[23] = new QPixmap((const char**)PX_cospec);
   LavaPixmaps[24] = new QPixmap((const char**)PX_coimpl);
   LavaPixmaps[25] = new QPixmap((const char**)PX_lavafile);
@@ -697,7 +711,7 @@ void CLavaPEApp::OnUpdateEditRedo(wxAction* action)
 
 void CLavaPEApp::OnUpdatePopcontext(wxAction* action) 
 {
-  action->setEnabled(Browser.LastBrowseContext != 0); 
+  action->setEnabled((Browser.LastBrowseContext != 0) && wxDocManager::GetDocumentManager()->GetOpenDocCount()); 
 }
 
 void CLavaPEApp::OnUpdateSaveAll(wxAction* action) 
@@ -719,6 +733,11 @@ void CLavaPEApp::saveSettings()
   QSettings settings(QSettings::Native);
 
   settings.beginGroup(GetSettingsPath());
+
+  settings.beginGroup("/generalSettings");
+  settings.writeEntry(szSaveEveryChange,LBaseData.m_strSaveEveryChange);
+  settings.endGroup();
+
   settings.beginGroup("/fontSettings");
   settings.writeEntry(szExecFont,LBaseData.m_lfDefExecFont);
   settings.writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
@@ -753,9 +772,11 @@ int CLavaPEBrowse::findAnyForm(LavaDECL * decl, TID& refID, SynDef *lavaCode)
   TID id;
   int rr = 0;
   if (defPDECL && ((defPDECL->DeclType == Interface))) {
+    if (defPDECL->TypeFlags.Contains(isGUI))
+      return 1;
     id = TID(defPDECL->OwnID,0);
     //use any form if available
-    CFindLikeForm *fLike = new CFindLikeForm(lavaCode, id, defPDECL->inINCL);
+    CFindLikeForm *fLike = new CFindLikeForm(lavaCode, id, defPDECL->inINCL, decl);
     if (fLike->pdecl && *fLike->pdecl)
       defFDECL = *fLike->pdecl;
     delete fLike;
@@ -1081,7 +1102,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool c
   if (declsel) {
     //openExec = true: only after GotoImpl and this means always the ExecDef
     if (openExec && (((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data)->DeclDescType == ExecDesc))
-      return doc->OpenCView((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data);
+      return doc->OpenExecView((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data);
     else {
       pos = doc->GetFirstViewPos();
       view = (CLavaBaseView*)doc->GetNextView(pos); //find the appropriate view
@@ -1090,18 +1111,20 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool c
       else
         if (declsel->ParentDECL->DeclType == FormDef)
           formDECL = declsel->ParentDECL->ParentDECL;
-      for ( ;pos 
+      while ( pos 
            && ( !view->inherits("CLavaPEView")
                || !((CLavaPEView*)view)->myInclView && !formDECL
                || ((CLavaPEView*)view)->myInclView && formDECL
-               || !declsel->isInSubTree(((CLavaPEView*)view)->myDECL));
-           view = (CLavaBaseView*)doc->GetNextView(pos));
+               || !(!formDECL && declsel->isInSubTree(((CLavaPEView*)view)->myDECL)
+                    || (formDECL == ((CLavaPEView*)view)->myDECL)) ))
+           view = (CLavaBaseView*)doc->GetNextView(pos);
       doc->ViewPosRelease(pos);
 
-      if ( !view->inherits("CLavaPEView")
+      if (!view ||  !view->inherits("CLavaPEView")
             || !((CLavaPEView*)view)->myInclView && !formDECL
             || ((CLavaPEView*)view)->myInclView && formDECL
-            || !declsel->isInSubTree(((CLavaPEView*)view)->myDECL) ) {
+            || !(!formDECL && declsel->isInSubTree(((CLavaPEView*)view)->myDECL)
+                    || (formDECL == ((CLavaPEView*)view)->myDECL))) {
         view = doc->MainView; //find the documents main view
       }
       if (view) {
@@ -1334,7 +1357,7 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
     if (doc) {
       implDecl = doc->IDTable.GetDECL(0,decl->OwnID);
       if (implDecl) {
-        ((CLavaPEDoc*)doc)->OpenCView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
+        ((CLavaPEDoc*)doc)->OpenExecView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
         return true;
       }
     }
@@ -1364,7 +1387,7 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
         if (toID.nINCL)
           implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID, 0, true);
         else
-          ((CLavaPEDoc*)fromDoc)->OpenCView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
+          ((CLavaPEDoc*)fromDoc)->OpenExecView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
     }
     else 
       implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID);
@@ -1399,7 +1422,7 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
               if (toID.nINCL)
                 implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID, 0, true);
               else
-                doc->OpenCView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
+                doc->OpenExecView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
           }
           else 
             implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID);

@@ -39,7 +39,7 @@ public:
   CheckData ckd;
   CRuntimeException *ex;
 
-  void Create(CLavaBaseDoc* doc, wxView* view);
+  void Create(CLavaBaseDoc* doc, QWidget* view);
   void OnUpdate( LavaDECL* decl, LavaVariablePtr resultPtr);
   void OnTab(bool back, QWidget* win);
   void OnSetFocus(CHEFormNode* trp0);

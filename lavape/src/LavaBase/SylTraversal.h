@@ -33,8 +33,8 @@ public:
   virtual void ExecFText  (LavaDECL ** , int /*level*/) {}
   virtual void ExecIn      (LavaDECL ** , int /*level*/) {}
   virtual void ExecOut     (LavaDECL ** , int /*level*/) {}
-  virtual void ExecSHOW    (LavaDECL ** , int /*level*/) {}
-  virtual void ExecConstraint(LavaDECL ** , int /*level*/) {}
+  virtual void ExecFormDef    (LavaDECL ** , int /*level*/) {}
+  virtual void ExecExec(LavaDECL ** , int /*level*/) {}
   virtual void ExecLit     (LavaDECL** ) {}
   virtual void ExecUndef   (LavaDECL** , DString /*name*/) {}
   virtual void ExecStruct  (LavaDECL** , DString /*name*/) {}
@@ -95,11 +95,12 @@ class LAVABASE_DLL CFindLikeForm : public CExec
   int inINCL;
   TID RefID;
   TID GUIID;
+  LavaDECL *visibleDECL;
   LavaDECL *GUIDECL;
   LavaDECL **pdecl;
   TIDTable* IDTab;
-  CFindLikeForm(SynDef *syn, const TID& classID, int inINC, LavaDECL *GUIDECL=0);
-  void ExecSHOW(LavaDECL ** pelDef, int level);
+  CFindLikeForm(SynDef *syn, const TID& classID, int inINC, LavaDECL *visibleIn, LavaDECL *GUIDECL=0);
+  void ExecFormDef(LavaDECL ** pelDef, int level);
 };
 
 #endif

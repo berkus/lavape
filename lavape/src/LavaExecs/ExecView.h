@@ -400,10 +400,5 @@ private:
   CExecView *execView;
 };
 
-
-extern LAVAEXECS_DLL QToolBar* makeToolbar(wxMainFrame* pMainFrame);
-extern LAVAEXECS_DLL QToolBar* makeExecSwitches(wxMainFrame* pMainFrame);
-extern LAVAEXECS_DLL QToolBar* makeConstraintbar(wxMainFrame* pMainFrame);
-
 #endif
 /////////////////////////////////////////////////////////////////////////////

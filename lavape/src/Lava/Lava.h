@@ -4,10 +4,9 @@
 #ifndef _LAVA
 #define _LAVA_
 
-
-#include "resource.h"       // Hauptsymbole
 #include "LavaAppBase.h"       // Hauptsymbole
 #include "LavaBaseDoc.h"       // Hauptsymbole
+#include "DumpView.h"       // Hauptsymbole
 #include "docview.h"
 #include "qstring.h"
 

@@ -3,6 +3,8 @@
 
 #include "Constructs.h"
 #include "SynIDTable.h"
+#include "LavaBaseDoc.h"
+#include "qptrlist.h"
 
 extern unsigned GetNumInputs(TIDTable *idt, const TID &tid);
 extern CHE *GetFirstInput(LavaDECL *funcDecl);
@@ -24,6 +26,5 @@ extern  bool VerifyObj(CheckData &ckd, CHE *DODs, DString& name, ObjReference *p
 #endif
 
 #define OWNID(decl) TID(decl->OwnID,decl->inINCL)
-
 
 #endif

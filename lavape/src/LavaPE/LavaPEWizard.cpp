@@ -250,8 +250,6 @@ CLavaPEWizard::CLavaPEWizard(LavaDECL ** p_origDECL, LavaDECL* formDECL, CWizard
   setFont(LBaseData->m_TreeFont);
 
   modified = false;
-  myView->applyButton->setEnabled(false);
-  myView->resetButton->setEnabled(false);
   GenPage = 0;
   MenuPage = 0;
   IOPage = 0;
@@ -267,6 +265,9 @@ CLavaPEWizard::CLavaPEWizard(LavaDECL ** p_origDECL, LavaDECL* formDECL, CWizard
   resize(minimumSizeHint());
   show();
   connect (this, SIGNAL(currentChanged(QWidget*)), this, SLOT(OnSetActive(QWidget*)));
+  modified = false;
+  myView->applyButton->setEnabled(false);
+  myView->resetButton->setEnabled(false);
 }
 
 
@@ -3032,7 +3033,7 @@ bool CExecLike::CheckSupports(LavaDECL *basedecl, LavaDECL *FormDECL)
 }
 
 
-void CExecLike::ExecSHOW(LavaDECL ** pelDef, int incl)
+void CExecLike::ExecFormDef(LavaDECL ** pelDef, int incl)
 {
   if (myDoc->IDTable.EQEQ((*pelDef)->RefID, (*pelDef)->inINCL, myDECL->RefID, myDECL->inINCL)) {
     if (FormDECL && !CheckSupports(*pelDef, FormDECL)) 

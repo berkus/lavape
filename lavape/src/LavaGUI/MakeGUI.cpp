@@ -62,9 +62,9 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
     if (!suppressed) {
       firstnode = 0;
       firstnode = ((CGUIProg*)GUIProg)->TreeSrch.FirstNode();
-      size = ((CLavaGUIView*)GUIProg->ViewWin)->scrollView()->MaxBottomRight.size();
+      size = ((GUIScrollView*)GUIProg->scrollView)->MaxBottomRight.size();
       if (size.width() && size.height()) 
-        ((CLavaGUIView*)GUIProg->ViewWin)->scrollView()->resizeContents(size.width(),size.height());
+        ((GUIScrollView*)GUIProg->scrollView)->resizeContents(size.width(),size.height());
       if (!firstnode || !GUIProg->refresh)
         return;
 
@@ -74,12 +74,12 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
         formnode->successor = 0;
       else
         suffix = 0;
-      ((CLavaGUIView*)GUIProg->ViewWin)->scrollView()->MaxBottomRight = QRect(0,0,0,0);
-      pMaxBottomRight = &((CLavaGUIView*)GUIProg->ViewWin)->scrollView()->MaxBottomRight;
-      makeWidgets(firstnode,((CLavaGUIView*)GUIProg->ViewWin)->qvbox,str0,empty);
+      ((GUIScrollView*)GUIProg->scrollView)->MaxBottomRight = QRect(0,0,0,0);
+      pMaxBottomRight = &((GUIScrollView*)GUIProg->scrollView)->MaxBottomRight;
+      makeWidgets(firstnode,((GUIScrollView*)GUIProg->scrollView)->qvbox,str0,empty);
       pMaxBottomRight->setRight(pMaxBottomRight->right()+1);
       pMaxBottomRight->setBottom(pMaxBottomRight->bottom()+1);
-      ((CLavaGUIView*)GUIProg->ViewWin)->qvbox->resize(pMaxBottomRight->size());
+      ((GUIScrollView*)GUIProg->scrollView)->qvbox->resize(pMaxBottomRight->size());
       if (suffix)
         formnode->successor = suffix;
     }
@@ -92,7 +92,8 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
   }
   GUIProg->Warning = 0;
   GUIProg->InCommandAgent = true;
-  SetScrollSizes(((CLavaGUIView*)GUIProg->ViewWin)->scrollView());
+  SetScrollSizes(((GUIScrollView*)GUIProg->scrollView));
+
 } // END OF DisplayScreen
 
 
@@ -104,7 +105,7 @@ void MakeGUICLASS::SetScrollSizes(QScrollView* view)
   if (size.height() < view->visibleHeight() )
     size.setHeight(view->visibleHeight());
   ((GUIScrollView*)view)->qvbox->resize(size);
-  view->resizeContents(size.width(),size.height());;
+  view->resizeContents(size.width(),size.height());
   view->setContentsPos(0,0);
 }
 
@@ -725,14 +726,7 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
         newWidget = 0;
         return;
       }
-  else if (chFrmNd->data.BasicFlags.Contains(PopUp)) {
-//    chFrmNd->data.FIP.basePane = GUIProg->ViewWin;
-    /*
-    if (chFrmNd->data.IterFlags.Contains(Optional)) {
-      newWidget = 0;
-      return;
-    }*/
-    
+  else if (chFrmNd->data.BasicFlags.Contains(PopUp)) {    
     pred = (CHEFormNode*)chFrmNd->predecessor;
     if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
       explanText = pred->data.StringValue ;

@@ -36,14 +36,14 @@
 #include "Constructs.h"
 #include "Check.h"
 #include "Comment.h"
-#include "ConstrUpdate.h"
+#include "ExecUpdate.h"
 #include "LavaAppBase.h"
 #include "PEBaseDoc.h"
 #include "Resource.h"
 #include "ExecView.h"
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
-#include "ConstrFrame.h"
+#include "ExecFrame.h"
 #include "qtextedit.h"
 #include "qassistantclient.h"
 #include "LavaBaseStringInit.h"
@@ -163,7 +163,7 @@ void CExecView::OnCloseExec()
     myDoc->OnCloseLastExecView();
   if (myDoc->mySynDef // document is not yet closed
   && ((SelfVar*)myDECL->Exec.ptr)->IsEmptyExec()
-  && (((SelfVar*)myDECL->Exec.ptr)->primaryToken == constraint_T
+  && (((SelfVar*)myDECL->Exec.ptr)->primaryToken == invariant_T
       || ((SelfVar*)myDECL->Exec.ptr)->primaryToken == require_T
       || ((SelfVar*)myDECL->Exec.ptr)->primaryToken == ensure_T)) {
     myDoc->SetExecItemImage(
@@ -171,8 +171,8 @@ void CExecView::OnCloseExec()
       true,
       false);
     parent = myDECL->ParentDECL;
-    chp = myDoc->GetConstrChe(parent, myDECL->DeclType);
-    if (myDECL->WorkFlags.Contains(nonEmptyConstraint)) {
+    chp = myDoc->GetExecChe(parent, myDECL->DeclType);
+    if (myDECL->WorkFlags.Contains(nonEmptyInvariant)) {
       parent->NestedDecls.Uncouple(chp);
       chp->data = 0; // to prevent deleting data
       delete chp;
@@ -222,8 +222,8 @@ void CExecView::OnInitialUpdate()
   QFontInfo fi = redCtl->fontInfo();
   QString family = fi.family();
   int ptSize = fi.pointSize();
-  QFontMetrics *fmp=new QFontMetrics(redCtl->fontMetrics());
-  sv->fm = fmp;
+//  QFontMetrics *fmp=new QFontMetrics(redCtl->fontMetrics());
+  sv->fm = new QFontMetrics(redCtl->fontMetrics());//fmp;
   sv->widthOfBlank = sv->fm->width(" ");
   sv->widthOfIndent = sv->fm->width("nn");
   text->showComments = myDECL->TreeFlags.Contains(ShowExecComments);
@@ -467,9 +467,9 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
     currentX += width;
     contentsWidth = QMAX(contentsWidth,currentX);
     contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
-    if (contentsWidth > oldCW || contentsHeight > oldCH)
-      resizeContents(contentsWidth,contentsHeight);
   }
+  if (contentsWidth > oldCW || contentsHeight > oldCH)
+    resizeContents(contentsWidth,contentsHeight);
 	delete fm;
 }
 
@@ -489,8 +489,8 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
   contentsHeight = 0;
   p->eraseRect(0,0,contentsWidth,contentsHeight);
   fmt.font = font();
-  QFontMetrics *fmp = new QFontMetrics(fontMetrics());
-  fm = fmp;
+//  QFontMetrics *fmp = new QFontMetrics(fontMetrics());
+  fm = new QFontMetrics(fontMetrics());//fmp;
   QFontInfo fi(fmt.font);
   int ps = fi.pointSize();
   QString fam = fi.family();
@@ -543,7 +543,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
       multipleUpdates = true; // to enforce RedrawExec
       break;
 
-    case CPECommand_Constraint:
+    case CPECommand_Exec:
       externalHint = false;
       if ((LavaDECL*)hint->CommandData1 != myDECL)
         return;
@@ -580,7 +580,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     case CPECommand_Change:
       myNewDECL = myDoc->IDTable.GetDECL(myID);
       if (myNewDECL) { 
-        myNewDECL = myDoc->GetConstrDECL(myNewDECL,myExecCategory,false,false);
+        myNewDECL = myDoc->GetExecDECL(myNewDECL,myExecCategory,false,false);
         if (myNewDECL != myDECL) {
           execReplaced = true;
           myDECL = myNewDECL;
@@ -605,17 +605,21 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
 
     case CPECommand_Delete:
       if (myDECL->isInSubTree((LavaDECL*)hint->CommandData1)) {
-        if (((undoRedo == 1 && hint->FirstLast.Contains(firstHint))
-             || (undoRedo != 1
-                && (hint->FirstLast.Contains(lastHint)
-                    || hint->com == CPECommand_FromOtherDoc))
-            )
-        || undoRedo == 3) {
+        if ((!hint->CommandData8 || (myDECL->ParentDECL->ParentDECL->DeclType == Interface))
+            && ((   (undoRedo == 1 && hint->FirstLast.Contains(firstHint))
+                 || (undoRedo != 1
+                     && (hint->FirstLast.Contains(lastHint)
+                         || hint->com == CPECommand_FromOtherDoc))
+                )
+                || undoRedo == 3)) {
           delete GetParentFrame();
           return;
         }
         else {
-          deletePending = true;
+          if (hint->CommandData8 && (myDECL->ParentDECL->ParentDECL->DeclType == Interface))
+            delete GetParentFrame();
+          else
+            deletePending = true;
           return;
         }
       }
@@ -626,7 +630,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
 
   if (( hint
         && (hint->com == CPECommand_OpenExecView
-            || hint->com == CPECommand_Constraint
+            || hint->com == CPECommand_Exec
             || hint->com == CPECommand_Change
             || hint->com == CPECommand_ChangeInclude
             || hint->com == CPECommand_Delete
@@ -649,8 +653,8 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
       deletePending = false;
       myNewDECL = myDoc->IDTable.GetDECL(myID);
       if (myNewDECL) {
-        myNewDECL = myDoc->GetConstrDECL(myNewDECL,myExecCategory,false,false);
-        if (myNewDECL != myDECL) {
+        myNewDECL = myDoc->GetExecDECL(myNewDECL,myExecCategory,false,false);
+        if (myNewDECL && (myNewDECL != myDECL)) {
           execReplaced = true;
           myDECL = myNewDECL;
           text->INIT();
@@ -665,6 +669,11 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
           }
           toBeDrawn = 0; // to enforce RedrawExec
         }
+        else
+          if(!myNewDECL) {
+            delete GetParentFrame();
+            return;
+          }
       }
       else {
         delete GetParentFrame();
@@ -695,6 +704,7 @@ void MyScrollView::focusInEvent(QFocusEvent *ev) {
   if (execView->initialUpdateDone
   && !execView->myDoc->deleting)
     execView->SetHelpText();
+  execView->wxView::focusInEvent(ev);
 }
 
 void MyScrollView::keyPressEvent (QKeyEvent *e) {
@@ -721,7 +731,7 @@ void CExecView::OnChar(QKeyEvent *e)
     break;
   case Qt::Key_D:
     if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && !text->currentSynObj->InReadOnlyClause())
+    && text->currentSynObj->ReadOnlyContext() != roClause)
       OnDeclare();
     break;
   case Qt::Key_E:
@@ -758,7 +768,7 @@ void CExecView::OnChar(QKeyEvent *e)
     break;
   case Qt::Key_S:
     if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && !text->currentSynObj->InReadOnlyClause())
+    && text->currentSynObj->ReadOnlyContext() != roClause)
       OnAssign();
     break;
   case Qt::Key_T:
@@ -1484,10 +1494,10 @@ exp: // Const_T
       sv->viewport()->update();
       return;
     }
-/*    if (text->currentSelection->data.token == TypeRef_T
+    if (text->currentSelection->data.token == TypeRef_T
     && Ignorable())
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);*/
-    if (text->currentSynObj->replacedType == SetPH_T)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+    else if (text->currentSynObj->replacedType == SetPH_T)
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetEnumCombo);
     else if (text->currentSynObj->parentObject->primaryToken == callback_T)
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(callbackCombo);
@@ -1831,7 +1841,7 @@ static bool IsRelToken (TToken token)
 
 void CExecView::PutInsFlagHint(SET insFlags, SET firstLastHint) {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     firstLastHint,
     (DWORD)myDECL,
@@ -1847,7 +1857,7 @@ void CExecView::PutInsFlagHint(SET insFlags, SET firstLastHint) {
 
 void CExecView::PutPlusMinusHint() {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     SET(firstHint,lastHint,-1),
     (DWORD)myDECL,
@@ -1863,7 +1873,7 @@ void CExecView::PutPlusMinusHint() {
 /*
 void CExecView::PutArrowHint() {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     SET(firstHint,lastHint,-1),
     (DWORD)myDECL,
@@ -1877,7 +1887,7 @@ void CExecView::PutArrowHint() {
 
 void CExecView::PutDelFlagHint(SET delFlags, SET firstLastHint) {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     firstLastHint,
     (DWORD)myDECL,
@@ -1892,7 +1902,7 @@ void CExecView::PutDelFlagHint(SET delFlags, SET firstLastHint) {
 
 void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint, bool putHint) {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     firstLastHint,
     (DWORD)myDECL,
@@ -1914,7 +1924,7 @@ void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint, bool putHint) {
 
 void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLastHint) {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     firstLastHint,
     (DWORD)myDECL,
@@ -1932,7 +1942,7 @@ void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLas
 
 void CExecView::PutInsMultOpHint(SynObject *multOp) {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     SET(firstHint,-1),
     (DWORD)myDECL,
@@ -1948,7 +1958,7 @@ void CExecView::PutInsMultOpHint(SynObject *multOp) {
 
 void CExecView::PutChgCommentHint(TComment *pCmt) {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     SET(firstHint,lastHint,-1),
     (DWORD)myDECL,
@@ -1962,7 +1972,7 @@ void CExecView::PutChgCommentHint(TComment *pCmt) {
 
 void CExecView::PutChgOpHint(TToken token) {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     SET(firstHint,lastHint,-1),
     (DWORD)myDECL,
@@ -1987,7 +1997,7 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
       = (delObj->parentObject->IsMultOp()
       && chx->first->successor == chx->last) ? true : false;
     nextHint = new CLavaPEHint(
-      CPECommand_Constraint,
+      CPECommand_Exec,
       myDoc,
       delMult ? SET(firstHint,-1) : firstLastHint,
       (DWORD)myDECL,
@@ -1999,7 +2009,7 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
     myDoc->UndoMem.AddToMem(nextHint);
     if (delMult) {
       nextHint = new CLavaPEHint(
-        CPECommand_Constraint,
+        CPECommand_Exec,
         myDoc,
         SET(lastHint,-1),
         (DWORD)myDECL,
@@ -2021,7 +2031,7 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
       text->currentSynObjID = 0;
 
     nextHint = new CLavaPEHint(
-      CPECommand_Constraint,
+      CPECommand_Exec,
       myDoc,
       3UL,
       (DWORD)myDECL,
@@ -2039,7 +2049,7 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
 
 void CExecView::PutDelNestedHint(SET firstLastHint) {
   nextHint = new CLavaPEHint(
-    CPECommand_Constraint,
+    CPECommand_Exec,
     myDoc,
     firstLastHint,
     (DWORD)myDECL,
@@ -2161,7 +2171,7 @@ void CExecView::OnAnd()
   
   if (!EditOK()) return;
 
-  if (!text->currentSynObj->InReadOnlyClause())
+  if (text->currentSynObj->ReadOnlyContext() != roClause)
     InsMultOp(Semicolon_T,new SemicolonOpV());
   else
     InsMultOp(and_T,new AndOpV());
@@ -2584,7 +2594,7 @@ void CExecView::OnExists()
   // TODO: Add your command handler code here
   
   if (!EditOK()) return;
-  Exists *ex = new ExistsV(!text->currentSynObj->InReadOnlyContext());
+  Exists *ex = new ExistsV(text->currentSynObj->ReadOnlyContext() == noROContext);
   InsertOrReplace(ex);
 }
 
@@ -2593,7 +2603,7 @@ void CExecView::OnForeach()
   // TODO: Add your command handler code here
   
   if (!EditOK()) return;
-  Foreach *foreach = new ForeachV(!text->currentSynObj->InReadOnlyContext());
+  Foreach *foreach = new ForeachV(text->currentSynObj->ReadOnlyContext() == noROContext);
   InsertOrReplace(foreach);
 }
 
@@ -3514,7 +3524,7 @@ void CExecView::OnGotoDecl()
                parent = parent->parentObject);
         else
           parent = synObj;
-        myDoc->OpenCView(((SelfVar*)parent)->execDECL);
+        myDoc->OpenExecView(((SelfVar*)parent)->execDECL);
         if (tdod->parentObject->flags.Contains(isSelfVar))
           ((CExecView*)((SelfVar*)parent)->execView)->Select((SynObject*)((SelfVar*)parent)->execName.ptr);
         else
@@ -4241,7 +4251,7 @@ crtbl:
           tdod = new TDODV(true);
           ((VarName*)newExp->varName.ptr)->MakeTable((address)&myDoc->IDTable,0,newExp,onNewID,(address)&newExp->varName.ptr,0);
           ((VarName*)newExp->varName.ptr)->varID.nINCL = -1;
-            // to avoid a second assignment of an ID in constrUpdate
+            // to avoid a second assignment of an ID in execUpdate
           tdod->ID.nID = ((VarName*)newExp->varName.ptr)->varID.nID;
           newChe = new CHE(tdod);
           handle.Append(newChe);
@@ -5454,7 +5464,7 @@ void CExecView::OnUpdateCopy(QPushButton *pb)
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && !text->currentSynObj->InReadOnlyClause()); 
+    && text->currentSynObj->ReadOnlyContext() != roClause); 
 }
 
 void CExecView::OnUpdateToggleSubstitutable(wxAction* action) 
@@ -5545,7 +5555,7 @@ void CExecView::OnUpdateCall(QPushButton *pb)
   
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
-    && !text->currentSynObj->InReadOnlyClause());
+    && text->currentSynObj->ReadOnlyContext() != roClause);
 }
 /*
 void CExecView::OnUpdateUuid(QPushButton *pb) 
@@ -5625,7 +5635,7 @@ void CExecView::OnUpdateAssign(QPushButton *pb)
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && !text->currentSynObj->InReadOnlyClause());
+    && text->currentSynObj->ReadOnlyContext() != roClause);
 }
 
 void CExecView::OnUpdateAttach(QPushButton *pb) 
@@ -5863,7 +5873,7 @@ void CExecView::OnUpdateDeclare(QPushButton *pb)
   // TODO: Add your command update UI handler code here
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && !text->currentSynObj->InReadOnlyClause());
+    && text->currentSynObj->ReadOnlyContext() != roClause);
 }
 
 void CExecView::OnUpdateFalse(wxAction* action) 
@@ -5946,8 +5956,15 @@ bool CExecView::EnableInsert()
     || (  (text->currentSelection->data.token == FuncPH_T
           || text->currentSelection->data.token == FuncDisabled_T
           || text->currentSelection->data.token == FuncRef_T)
+        && text->currentSynObj->primaryToken == text->currentSelection->data.token
         && text->currentSynObj->parentObject->parentObject
         && text->currentSynObj->parentObject->parentObject->IsMultOp())
+    || (  (text->currentSelection->data.token == FuncPH_T
+          || text->currentSelection->data.token == FuncDisabled_T
+          || text->currentSelection->data.token == FuncRef_T)
+        && text->currentSynObj->primaryToken != text->currentSelection->data.token
+        && text->currentSynObj->parentObject
+        && text->currentSynObj->parentObject->IsMultOp())
     || (  (text->currentSelection->data.token == TypePH_T
           || text->currentSelection->data.token == TypeRef_T)
         && text->currentSynObj->parentObject->primaryToken == qua_T)
@@ -5984,7 +6001,7 @@ void CExecView::OnUpdateInsert(wxAction* action)
 {
   // TODO: Add your command update UI handler code here
   
-  if (Ignorable() || !text->currentSynObj->parentObject) {
+  if (Taboo() || Ignorable() || !text->currentSynObj->parentObject) {
     action->setEnabled(false);
     return;
   }

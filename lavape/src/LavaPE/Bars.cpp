@@ -74,6 +74,8 @@ COutputBar::COutputBar(QWidget *parent)
   setCurrentPage((int)ActTab);
   connect(this,SIGNAL(currentChanged(QWidget*)), SLOT(OnTabChange(QWidget*)));
   connect(FindPage,SIGNAL(doubleClicked(QListViewItem*)), SLOT(OnDblclk(QListViewItem*)));
+  ErrorEmpty = true;
+  CommentEmpty = true;
 }
 
 COutputBar::~COutputBar()
@@ -84,6 +86,7 @@ COutputBar::~COutputBar()
 void COutputBar::ResetError()
 {
   ErrorPage->clear();
+  ErrorEmpty = true;
 }
 
 void COutputBar::SetErrorOnBar(LavaDECL* decl)
@@ -92,6 +95,7 @@ void COutputBar::SetErrorOnBar(LavaDECL* decl)
   setError(decl->DECLError1, &cstrA);
   setError(decl->DECLError2, &cstrA);
   ErrorPage->setText(cstrA);
+  ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
 }
 
 void COutputBar::SetErrorOnBar(const CHAINX& ErrChain)
@@ -99,6 +103,7 @@ void COutputBar::SetErrorOnBar(const CHAINX& ErrChain)
   QString cstrA;
   setError(ErrChain, &cstrA);
   ErrorPage->setText(cstrA);
+  ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
 }
 
 void COutputBar::setError(const CHAINX& ErrChain, QString* cstrA)
@@ -130,6 +135,7 @@ void COutputBar::SetComment(const DString& text, bool toStatebar)
     if (toStatebar)
       wxTheApp->m_appWindow->statusBar()->message(IdlMsg);
   }
+  CommentEmpty = !text.l;
 }
 
 void COutputBar::SetFindText(const DString& text, CFindData* data)
@@ -166,10 +172,10 @@ void COutputBar::OnDblclk(QListViewItem* item)
           type = (TDeclType)data->index;
         else
           type = (TDeclType)(data->index - 100);
-        execDecl = doc->GetConstrDECL(decl, type, false,false);
+        execDecl = doc->GetExecDECL(decl, type, false,false);
         if (execDecl) {
           sData.synObjectID = data->refCase;
-          doc->OpenCView(execDecl);
+          doc->OpenExecView(execDecl);
           ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)execDecl, onSelect, 0,0, (address)&sData);
         }
       }
@@ -202,10 +208,6 @@ void COutputBar::SetTab(BarTabs tab)
   else
     ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastBarState = (int)ActTab;
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->OutputBarHidden = false;
-  /*
-  pTab->SetCurSel((int) tab);
-  ChangeTab(tab);
-  */
 }
 
 

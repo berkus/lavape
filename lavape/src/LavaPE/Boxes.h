@@ -26,7 +26,7 @@
 #include "idd_implbox.h"
 #include "idd_includebox.h"
 #include "idd_iobox.h"
-#include "idd_namespacebox.h"
+#include "idd_packagebox.h"
 #include "idd_setbox.h"
 #include "idd_vtypebox.h"
 
@@ -188,7 +188,7 @@ public:
 
   QString *m_ItemAdr;
   QListBox* ItemsBox;
-
+  QString StartText;
   ChainAny0* Items;
   bool isID;
   
@@ -420,13 +420,13 @@ private:
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// CNamespaceBox dialog
+// CPackageBox dialog
 
-class CNamespaceBox : public IDD_NamespaceBox
+class CPackageBox : public IDD_PackageBox
 {
 public:
-  CNamespaceBox(QWidget* parent = NULL);   // standard constructor
-  CNamespaceBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* parent = NULL); 
+  CPackageBox(QWidget* parent = NULL);   // standard constructor
+  CPackageBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* parent = NULL); 
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
 
@@ -532,7 +532,7 @@ private:
 
 extern bool SetSelections(QComboBox* basics, QComboBox* types, const QString& name);
 
-extern QString* CheckNewName(const QString& m_NewName, LavaDECL* myDECL, CLavaPEDoc* myDoc, LavaDECL* OrigDECL);
+extern QString* CheckNewName(const QString& m_NewName, LavaDECL* myDECL, CLavaPEDoc* myDoc/*, LavaDECL* OrigDECL*/);
 
 
 extern int SelEndOKToList(QComboBox* cbox, QListBox* list, int chpos = -1);
@@ -605,7 +605,7 @@ public:
   CExecAllDefs(CLavaPEDoc* doc, QComboBox* list, QComboBox* list2, QComboBox* list3,
       LavaDECL *parentDECL, LavaDECL *callingDECL, TDeclType deftype, SynFlags typeFlag);
   void ExecDefs (LavaDECL ** pelDef, int level);
-//  void ExecSHOW (LavaDECL ** pelDef, int level);
+//  void ExecFormDef (LavaDECL ** pelDef, int level);
   void FitBox(QComboBox* list, int maxWidth);
   CLavaPEDoc* myDoc;
   QComboBox *List;

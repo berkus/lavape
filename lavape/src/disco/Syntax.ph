@@ -374,7 +374,7 @@ $TYPE +CDP {
     //14, interface has a default initializer
     allowDEL,
     //15, allow function implementation to be deleted
-    nonEmptyConstraint,
+    nonEmptyInvariant,
     //16, invariant was non-empty
     isReferenced,
     //17, formal parameter is referenced in exec body
@@ -392,8 +392,10 @@ $TYPE +CDP {
     //23, used in LavaGUI: pop up after rebuilding the form
     formVTOK,
     //24, used at runtime
-	newTreeNode
+	newTreeNode,
 	//25, used in updates
+    fromPubToPriv
+    //26, used in refactoring: public to private
   };
 
   enum BasicFlag {
@@ -745,6 +747,7 @@ $TYPE +CDP {
                 // Attributes: ID of the type or type parameter
                 // PatternParam: ID of type
                 // BasicTypes: ID of interface in std.lava
+                // Set- Get function: id of property
     TDeclType DeclType;
     TOperator op;  // Function is operation
     int nInput;  //function: (1-based)  count of inputs
@@ -787,7 +790,8 @@ $TYPE +CDP {
                                  //GUI-Impl and FormDef: related Interface decl
                                  //Property: set-exec-decl
                                  //set exec decl: get-exec-decl
-																 //component specification, component implementation: assembly interface
+					             //component specification
+                                 // and component implementation: assembly interface
     CSecTabBase-- *SectionTabPtr;     //used at run time in implementations and interfaces
     int-CDP nSection;    //used at run time only:
                   //   interfaces, namespaces: (1 based) count of sections of class/namespace
@@ -803,7 +807,8 @@ $TYPE +CDP {
                   // functions, attributes, virtual types: (0-based) index of section containing this function or attribute or virtual type
                   // implementations and interfaces: (1-based) count of attributes in own section 
                   // -> length of section in object = SectionInfo2 +2
-    int-CDP SectionInfo3; //used at run time only:
+    int-CDP SectionInfo3; 
+                  //used at run time only:
                   // interfaces and namespaces: (1-based) count of virtual types in own section 
         
     LavaDECL();

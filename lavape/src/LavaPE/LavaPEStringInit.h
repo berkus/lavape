@@ -14,7 +14,7 @@ extern QString IDP_IsNoID;
 extern QString IDP_NoTableView;
 extern QString IDP_NoFieldInsertion;
 extern QString IDP_NoFormView;
-extern QString IDP_NoConstraintView;
+extern QString IDP_NoExecView;
 extern QString IDP_NoInsertionPos;
 extern QString IDP_NoDefaultForm;
 extern QString IDP_NoDefFound;

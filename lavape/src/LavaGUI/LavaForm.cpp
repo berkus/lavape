@@ -67,7 +67,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
               ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
             return false;
           }
-          if (((CLavaGUIView*)((CGUIProg*)GUIProg)->ViewWin)->GetDocument()->isObject
+          if (GUIProg->myDoc->isObject
             && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
             return false;
         }
@@ -80,7 +80,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
             ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
           return false;
         }
-        if (((CLavaGUIView*)((CGUIProg*)GUIProg)->ViewWin)->GetDocument()->isObject
+        if (GUIProg->myDoc->isObject
           && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
           return false;
       }
@@ -101,7 +101,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
             ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
           return false;
         }
-        if (((CLavaGUIView*)((CGUIProg*)GUIProg)->ViewWin)->GetDocument()->isObject
+        if (GUIProg->myDoc->isObject
           && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
           return false;
       }
@@ -113,7 +113,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
           ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
         return false;
       }
-      if (((CLavaGUIView*)((CGUIProg*)GUIProg)->ViewWin)->GetDocument()->isObject
+      if (GUIProg->myDoc->isObject
          && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
         return false;
     }
@@ -1210,7 +1210,7 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
                              SynFlags& defaultIOflags, TIDs *classChain)
 {
   LavaDECL *iterDECL;
-  LavaObjectPtr handle, multiObj, elemObj, newStackFrame[3];
+  LavaObjectPtr handle, multiObj, elemObj, newStackFrame[SFH+3];
   LavaVariablePtr elDataVarPtr;
   CHEFormNode* chainNode, *newFNode;
   int arrayLen, ii, iterations=0;
@@ -1244,11 +1244,12 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
         resultFNode->data.IterFlags.INCL(NoEllipsis);
       }*/
       if (FormDecl->SecondTFlags.Contains(isSet)) {
-        newStackFrame[0] = multiObj;
-        newStackFrame[1] = 0;
+        newStackFrame[2] = 0;
+        newStackFrame[SFH] = multiObj;
+        newStackFrame[SFH+1] = 0;
         if (!HSetFirst(((CGUIProg*)GUIProg)->ckd, newStackFrame))
         return false; 
-        handle = newStackFrame[1];
+        handle = newStackFrame[SFH+1];
         arrayLen = 0;
         iterations = 0;
       }
@@ -1265,12 +1266,13 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
       while (handle || (ii < arrayLen)) {
         if (!handle || !((SynFlags*)(handle+1))->Contains(deletedItem)) {
           if (FormDecl->SecondTFlags.Contains(isSet)) {
-            newStackFrame[0] = multiObj;
             newStackFrame[2] = 0;
-            newStackFrame[1] = handle;
+            newStackFrame[SFH] = multiObj;
+            newStackFrame[SFH+2] = (LavaObjectPtr)0;
+            newStackFrame[SFH+1] = handle;
             if (!SetGet(((CGUIProg*)GUIProg)->ckd, newStackFrame))
               return false;
-            elemObj = newStackFrame[2];
+            elemObj = newStackFrame[SFH+2];
             if (elemObj)
               DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,elemObj); //nicht nochmal zählen
           }
@@ -1309,24 +1311,26 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
           setDefaultValue(newFNode);
           if (FormDecl->SecondTFlags.Contains(isSet)) {
             newFNode->data.HandleObjPtr = (CSecTabBase**)handle;
-            newStackFrame[0] = multiObj;
-            newStackFrame[1] = handle;
             newStackFrame[2] = 0;
+            newStackFrame[SFH] = multiObj;
+            newStackFrame[SFH+1] = handle;
+            newStackFrame[SFH+2] = 0;
             ((CGUIProg*)GUIProg)->ex = HSetSucc(((CGUIProg*)GUIProg)->ckd, newStackFrame);
             if (((CGUIProg*)GUIProg)->ex)
               return false;
-            handle = newStackFrame[2];
+            handle = newStackFrame[SFH+2];
             iterations++;
           }
         }
         else { //deletedItem: ignore
-          newStackFrame[0] = multiObj;
-          newStackFrame[1] = handle;
           newStackFrame[2] = 0;
+          newStackFrame[SFH] = multiObj;
+          newStackFrame[SFH+1] = handle;
+          newStackFrame[SFH+2] = 0;
           ((CGUIProg*)GUIProg)->ex = HSetSucc(((CGUIProg*)GUIProg)->ckd, newStackFrame);
           if (((CGUIProg*)GUIProg)->ex)
             return false;
-          handle = newStackFrame[2];
+          handle = newStackFrame[SFH+2];
         }
       }//while
     }//if (chainNode &...
@@ -1349,11 +1353,12 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
     if (chainNode && !chainNode->data.IoSigFlags.Contains(DONTPUT)) {
       multiObj = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
       if (FormDecl->SecondTFlags.Contains(isSet)) {
-        newStackFrame[0] = multiObj;
-        newStackFrame[1] = 0;
+        newStackFrame[2] = 0;
+        newStackFrame[SFH] = multiObj;
+        newStackFrame[SFH+1] = 0;
         if (!HSetFirst(((CGUIProg*)GUIProg)->ckd, newStackFrame))
         return false; 
-        handle = newStackFrame[1];
+        handle = newStackFrame[SFH+1];
         arrayLen = 0;
         iterations = 0;
       }
@@ -1372,12 +1377,13 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
         /*
         if (!handle || !((SynFlags*)(handle+1))->Contains(deletedItem)) {
           if (FormDecl->SecondTFlags.Contains(isSet)) {
-            newStackFrame[0] = multiObj;
             newStackFrame[2] = 0;
-            newStackFrame[1] = handle;
+            newStackFrame[SFH] = multiObj;
+            newStackFrame[SFH+2] = 0;
+            newStackFrame[SFH+1] = handle;
             if (!SetGet(((CGUIProg*)GUIProg)->ckd, newStackFrame))
               return false;
-            elemObj = newStackFrame[2];
+            elemObj = newStackFrame[SFH+2];
             if (elemObj)
               DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,elemObj); //nicht nochmal zählen
           }

@@ -66,28 +66,6 @@
         <action name="nextErrorAction"/>
         <action name="prevErrorAction"/>
     </item>
-    <item text="&amp;View" name="viewMenu">
-        <action name="viewTB1Action"/>
-        <action name="viewTB2Action"/>
-        <action name="viewTB3Action"/>
-        <action name="viewWhatNextTBAction"/>
-        <action name="viewTB4Action"/>
-        <action name="viewTB5Action"/>
-        <action name="viewTB6Action"/>
-        <action name="viewTB7Action"/>
-        <separator/>
-        <action name="openFormViewAction"/>
-        <separator/>
-        <action name="setTreeFontAction"/>
-        <action name="SetFormFontsAction"/>
-        <item text="Set form fonts" name="PopupMenuEditor_45" accel="">
-            <action name="setFormTextFontAction"/>
-            <action name="setFormLabelFontAction"/>
-            <action name="setFormButtonFontAction"/>
-        </item>
-        <action name="setExecFontAction"/>
-        <action name="setGlobalFontAction"/>
-    </item>
     <item text="Insert" name="insertMenu">
         <action name="newIncludeAction"/>
         <separator/>
@@ -107,6 +85,30 @@
         <action name="newMemVarAction"/>
         <separator/>
         <action name="newEnumItemAction"/>
+    </item>
+    <item text="&amp;Options/View" name="optionMenu">
+        <action name="saveEveryChangeAction"/>
+        <separator/>
+        <action name="viewTB1Action"/>
+        <action name="viewTB2Action"/>
+        <action name="viewTB3Action"/>
+        <action name="viewWhatNextTBAction"/>
+        <action name="viewTB4Action"/>
+        <action name="viewTB5Action"/>
+        <action name="viewTB6Action"/>
+        <action name="viewTB7Action"/>
+        <separator/>
+        <action name="openFormViewAction"/>
+        <separator/>
+        <action name="setTreeFontAction"/>
+        <action name="SetFormFontsAction"/>
+        <item text="Set form fonts" name="PopupMenuEditor_68" accel="">
+            <action name="setFormTextFontAction"/>
+            <action name="setFormLabelFontAction"/>
+            <action name="setFormButtonFontAction"/>
+        </item>
+        <action name="setExecFontAction"/>
+        <action name="setGlobalFontAction"/>
     </item>
     <item text="&amp;Window" name="windowMenu">
         <action name="tileHorizAction"/>
@@ -201,6 +203,7 @@
         <action name="newMemVarAction"/>
         <separator/>
         <action name="newEnumItemAction"/>
+        <action name="makeGUIAction"/>
     </toolbar>
     <toolbar dock="2">
         <property name="name">
@@ -2234,6 +2237,43 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
             <string>How to accomplish various tasks</string>
         </property>
     </action>
+    <action>
+        <property name="name">
+            <cstring>saveEveryChangeAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Save every change</string>
+        </property>
+        <property name="menuText">
+            <string>Save every change</string>
+        </property>
+        <property name="statusTip">
+            <string>Save every change immediately, provided the file has already been saved once</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>makeGUIAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image90</iconset>
+        </property>
+        <property name="text">
+            <string>Make GUI-service for interface</string>
+        </property>
+        <property name="toolTip">
+            <string>Make GUI-service for selected interface</string>
+        </property>
+    </action>
 </actions>
 <images>
     <image name="image0">
@@ -2505,6 +2545,9 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
     </image>
     <image name="image89">
         <data format="PNG" length="187">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008249444154789cd552c90dc0200c3355a7ca00cce5b93240d6723f4d0594f6433fb5c483f89062281181156c4bee2f02f6716066028088286fc6d47db382bbcbcce4ee1a05c93df12029008a089c2f72dd671c49b5bace300634a2eeb4dcadc419de0add483e1a93cbdd673decb5d6024066a6312c399220299239bb50feff9597030e280f6846036cc7150000000049454e44ae426082</data>
+    </image>
+    <image name="image90">
+        <data format="PNG" length="228">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000ab49444154789ca551410a04210c4b063f35fb7fe2b3b207ad74c50e031b2868d3a6b1d2867b173171df1fc7992b7b8624c286f790040006e00ac15f793a00e4bb6d903cc6d00090a766174fd3b30bce6220e63a9d631787f787bbb62aecc4e66e8e6be6135a34b358b96d60befb27b7040ec95268991a6292d8f664d5b8f3d2f8add70e2ad080ab1d2c51f2f81300d0bac49bf471d353b44b54217045c16ac891b927817f3076f00295932fd4f4b3bb57d716a60000000049454e44ae426082</data>
     </image>
 </images>
 <connections>
@@ -3204,6 +3247,18 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
         <receiver>CMainFrame</receiver>
         <slot>howTo_clicked()</slot>
     </connection>
+    <connection>
+        <sender>saveEveryChangeAction</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>saveEveryChange(bool)</slot>
+    </connection>
+    <connection>
+        <sender>makeGUIAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>makeGUI()</slot>
+    </connection>
 </connections>
 <includes>
     <include location="local" impldecl="in declaration">redefines.h</include>
@@ -3331,6 +3386,8 @@ nested main programs can be started using the "run" statement.&lt;/p&gt;</string
     <slot>viewHelpTB()</slot>
     <slot>whatNext_clicked()</slot>
     <slot>howTo_clicked()</slot>
+    <slot>saveEveryChange( bool )</slot>
+    <slot>makeGUI()</slot>
 </slots>
 <exportmacro>LAVAPEUI_DLL</exportmacro>
 <layoutdefaults spacing="6" margin="11"/>

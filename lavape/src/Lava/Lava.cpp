@@ -26,6 +26,7 @@
 #include "LavaAppBase.h"
 #include "LavaThread.h"
 #include "LavaBaseDoc.h"
+#include "DumpView.h"
 #include "LavaProgram.h"
 #include "MainFrm.h"
 #include "LavaGUIFrame.h"
@@ -45,6 +46,9 @@
 #endif
 
 
+static QString szCheckPreconditions = "/CheckPreconditions";
+static QString szCheckPostconditions = "/CheckPostconditions";
+static QString szCheckInvariants = "/CheckInvariants";
 static QString szFormFont = "/FormFont";
 static QString szFormLabelFont = "/FormLabelFont";
 //static QString szFormButtonFont = "/FormButtonFont";
@@ -71,7 +75,7 @@ int main( int argc, char ** argv ) {
 	
 	threadStg.setLocalData(new CThreadData(0)); 
 
-  sigEnable();
+//  sigEnable();
 
 	int res = ap.exec();
 
@@ -106,6 +110,39 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   clipboard()->clear();
   LBaseData.actHint = 0;
   LBaseData.Init(0, 0);
+
+  settings.beginGroup("/generalSettings");
+  LBaseData.m_strCheckPreconditions = settings.readEntry(szCheckPreconditions, 0, &ok);
+  if (ok)
+    if (LBaseData.m_strCheckPreconditions == "true")
+      LBaseData.m_checkPreconditions = true;
+    else
+      LBaseData.m_checkPreconditions = false;
+  else {
+    LBaseData.m_checkPreconditions = true;
+    LBaseData.m_strCheckPreconditions = "true";
+  }
+  LBaseData.m_strCheckPostconditions = settings.readEntry(szCheckPostconditions, 0, &ok);
+  if (ok)
+    if (LBaseData.m_strCheckPostconditions == "true")
+      LBaseData.m_checkPostconditions = true;
+    else
+      LBaseData.m_checkPostconditions = false;
+  else {
+    LBaseData.m_checkPostconditions = false;
+    LBaseData.m_strCheckPostconditions = "false";
+  }
+  LBaseData.m_strCheckInvariants = settings.readEntry(szCheckInvariants, 0, &ok);
+  if (ok)
+    if (LBaseData.m_strCheckInvariants == "true")
+      LBaseData.m_checkInvariants = true;
+    else
+      LBaseData.m_checkInvariants = false;
+  else {
+    LBaseData.m_checkInvariants = false;
+    LBaseData.m_strCheckInvariants = "false";
+  }
+  settings.endGroup();
 
   settings.beginGroup("/fontSettings");
 
@@ -222,8 +259,13 @@ bool CLavaApp::event(QEvent *e)
 	CMsgBoxParams *mbp;
 	CLavaPEHint *pHint;
 	CLavaThread *thr;
+  DumpEventData* dumpdata;
 
 	switch (e->type()) {
+  case IDU_LavaStart:
+    thr = new CLavaThread(ExecuteLava,(CLavaDoc*)((QCustomEvent*)e)->data());
+    thr->start();
+    break;
 	case IDU_LavaEnd:
 	  pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
 		doc = (CLavaDoc*)pHint->fromDoc;
@@ -256,6 +298,16 @@ bool CLavaApp::event(QEvent *e)
 			(*mbp->thr->pContExecEvent)--;
 			break;
 		}
+    break;
+  case IDU_LavaDump:
+    dumpdata = (DumpEventData*)((QCustomEvent*)e)->data();
+    dumpdata->doc->DumpFrame = new LavaDumpFrame(((wxMainFrame*)mainWidget())/*->GetClientWindow()*/, dumpdata); 
+    ((QDialog*)dumpdata->doc->DumpFrame)->exec();
+    
+    
+    
+    delete (DumpEventData*)((QCustomEvent*)e)->data();
+		break;
 	default:
 		wxApp::event(e);
 	}
@@ -365,6 +417,13 @@ void CLavaApp::saveSettings()
   QSettings settings(QSettings::Native);
 
   settings.beginGroup(GetSettingsPath());
+
+  settings.beginGroup("/generalSettings");
+  settings.writeEntry(szCheckPreconditions,LBaseData.m_strCheckPreconditions);
+  settings.writeEntry(szCheckPostconditions,LBaseData.m_strCheckPostconditions);
+  settings.writeEntry(szCheckInvariants,LBaseData.m_strCheckInvariants);
+  settings.endGroup();
+
   settings.beginGroup("/fontSettings");
   settings.writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
   if (LBaseData.useLabelFont)

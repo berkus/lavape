@@ -136,8 +136,8 @@ bool CLavaProgram::LoadSyntax(DString& fn, SynDef*& sntx, bool reDef, bool putEr
 
 bool CLavaProgram::OnOpenProgram(DString lpszPathName, bool imiExec, bool reDef, bool putErr) 
 {
-  CLavaThread* exThread;
   bool synOk=true;
+	QString fName(lpszPathName.c);
 
   if (!mySynDef) 
     if (lpszPathName.l)
@@ -146,9 +146,10 @@ bool CLavaProgram::OnOpenProgram(DString lpszPathName, bool imiExec, bool reDef,
       synOk = LoadSyntax(PathName, mySynDef, reDef, putErr); //mySynDef from lava file
   if (!synOk || !mySynDef)
     return false;
+//  wxDocManager::GetDocumentManager()->AddFileToHistory(fName);
   if (imiExec) {
-    exThread = new CLavaThread(ExecuteLava,this);
-    exThread->start();
+    QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaStart, (void*)this));
+
   }
   return true;
 }
@@ -222,7 +223,7 @@ bool CLavaProgram::CheckNamesp(CheckData& ckd, LavaDECL* nspDECL)
 {
   if (nspDECL->WorkFlags.Contains(runTimeOK))
     return true;
-  if (!CheckVElems(ckd, nspDECL, true, 0))
+  if (!CheckVElems(ckd, nspDECL, true, 0, 0))
     return false;
   if (!MakeSectionTable(ckd, nspDECL))
     return false;
@@ -250,12 +251,19 @@ bool CLavaProgram::CheckContext(CheckData& ckd, const CContext& con)
 }
 
 
-bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL)
+bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* specDECL)
 {
+  LavaDECL *classElDecl, *implElDecl, *implDECL = classDECL->RuntimeDECL, *execDECL;;
+  CHE *cheImplEl, *cheClass=0;
+  bool toImpl;
+  TAdapterFunc* funcAdapter=0;
+  CContext con;
+  CheckData ckdl;
+  CHE* elChe, *execChe;
+
   if (!classDECL)
     return false;
-  LavaDECL *implDECL = classDECL->RuntimeDECL, *execDECL;
-  CheckData ckdl;
+
   ckdl.document = this;
 
   if (implDECL) {
@@ -273,6 +281,27 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL)
       implDECL = classDECL;
     }
   }
+
+  if (classDECL->TypeFlags.Contains(isNative) && (classDECL->DeclType != CompObjSpec)) {
+    funcAdapter = GetAdapterTable(ckd, classDECL, specDECL);
+    if (!funcAdapter
+      && (!classDECL->TypeFlags.Contains(isComponent) || specDECL && (specDECL->DeclType == CompObjSpec))) {
+      LavaError(ckd, true, classDECL, &ERR_NoNativeImpl); //native implementation not found
+      return false;
+    }
+  }
+  IDTable.GetPattern(classDECL, con);
+  if (!CheckVElems(ckd, classDECL, false, (DWORD)funcAdapter, specDECL))
+    return false;
+  implDECL->WorkFlags.INCL(runTimeOK); //prevents circle calls of CheckImpl
+  if (!CheckContext(ckd, con))
+    return false;
+  implDECL->WorkFlags.EXCL(runTimeOK);
+  implDECL = classDECL->RuntimeDECL;
+
+  if (LBaseData->m_checkInvariants)
+    classDECL->Exec.ptr = new InvarData(ckd,classDECL);
+
   if (classDECL->NestedDecls.last) {
     execDECL = (LavaDECL*)((CHE*)classDECL->NestedDecls.last)->data;
     if (execDECL->DeclDescType == ExecDesc) {
@@ -294,34 +323,31 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL)
       }
     }
   }
-
-  LavaDECL *classElDecl, *implElDecl;
-  CHE *cheImplEl, *cheClass=0;
-  bool toImpl;
-  TAdapterFunc* funcAdapter=0;
-
-  if (classDECL->TypeFlags.Contains(isNative)) {
-    funcAdapter = GetAdapterTable(ckd, classDECL);
-    if (!funcAdapter)
-      return false;
+  if ((implDECL != classDECL) && implDECL->NestedDecls.last) {
+    execDECL = (LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data;
+    if (execDECL->DeclDescType == ExecDesc) {
+      ckdl.myDECL = execDECL;
+      ckdl.currentStackLevel = 0;
+      ckdl.stackFrameSize = 0;
+      ckdl.inINCL = execDECL->inINCL;
+      try {
+        ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+      }
+      catch(CUserException *) {
+      }
+      if (ckdl.exceptionThrown) {
+        if (ckd.lastException)
+          DEC_FWD_CNT(ckd, ckd.lastException);
+        ckd.lastException = ckdl.lastException;
+        ckd.exceptionThrown = true;
+        return false;
+      }
+    }
   }
-  CContext con;
-  IDTable.GetPattern(classDECL, con);
-  if (!CheckVElems(ckd, classDECL, false, (DWORD)funcAdapter))
-    return false;
-  implDECL->WorkFlags.INCL(runTimeOK); //prevents circle calls of CheckImpl
-  if (!CheckContext(ckd, con))
-    return false;
-  implDECL->WorkFlags.EXCL(runTimeOK);
-  implDECL = classDECL->RuntimeDECL;
-  /*
-  if (!classDECL->TypeFlags.Contains(isAbstract)) 
-    El = (CHETVElem*)classDECL->VElems.VElems.first;
-  else
-  */
-    cheClass = (CHE*)classDECL->NestedDecls.first;
+  
+  cheClass = (CHE*)classDECL->NestedDecls.first;
   int nNative = LAH;  //length of adapter table header
-  while (/*El || */cheClass) {
+  while (cheClass) {
     classElDecl = (LavaDECL*)cheClass->data;
     toImpl = classElDecl && (classElDecl->DeclType == Function)
              && !classElDecl->TypeFlags.Contains(isAbstract)
@@ -335,10 +361,12 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL)
       else
         if (funcAdapter)
           classElDecl->RuntimeDECL = (LavaDECL*)funcAdapter[nNative];
+        /*
         else {
           LavaError(ckd, true, classElDecl, &ERR_NoNativeImpl); //native implementation not found
           return false;
         }
+        */
       nNative++;
     }
     if (toImpl) {
@@ -364,7 +392,6 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL)
     }
     cheClass = (CHE*)cheClass->successor;
   }
-//  if (!classDECL->TypeFlags.Contains(isComponent))
   if (! CheckSetAndGets(ckd, implDECL, classDECL))
     return false;
   if (implDECL->DeclType == Impl) { 
@@ -408,16 +435,17 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL)
   }
   if (!MakeSectionTable(ckd, classDECL))
     return false;
-  // remember: all exec checks must be done after construction of 
+  // remember: all function exec checks must be done after construction of 
   // the section table
-  CHE* elChe;
-  LavaDECL *elDECL;
   CSectionDesc* secTab = (CSectionDesc*)implDECL->SectionTabPtr;
-  for (elChe = (CHE*)implDECL->NestedDecls.first; elChe; elChe = (CHE*)elChe->successor) {
-    elDECL = (LavaDECL*)elChe->data;
-    if ((elDECL->DeclType == Function) && elDECL->NestedDecls.last) {
-      execDECL = (LavaDECL*)((CHE*)elDECL->NestedDecls.last)->data;
-      if (execDECL->DeclDescType == ExecDesc) {
+  for (elChe = (CHE*)classDECL->NestedDecls.first; elChe; elChe = (CHE*)elChe->successor) {
+    classElDecl = (LavaDECL*)elChe->data;
+    if (classElDecl->DeclType == Function) {
+      classElDecl->Exec.ptr = new AssertionData(ckdl,classElDecl);
+      for (execChe = (CHE*)classElDecl->NestedDecls.last;
+           execChe && (((LavaDECL*)execChe->data)->DeclDescType == ExecDesc);
+           execChe = (CHE*)execChe->predecessor) {
+        execDECL = (LavaDECL*)execChe->data;
         ckdl.myDECL = execDECL;
         ckdl.currentStackLevel = 0;
         ckdl.stackFrameSize = 0;
@@ -436,14 +464,50 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL)
           return false;
         }
         implDECL->WorkFlags.EXCL(runTimeOK);
-        if (!elDECL->TypeFlags.Contains(isStatic)
-           && !elDECL->TypeFlags.Contains(isPropGet)
-           && !elDECL->TypeFlags.Contains(isPropSet)) {
-            secTab[execDECL->SectionInfo2].funcDesc[execDECL->SectionInfo1].stackFrameSize
-                                      = ((SelfVar*)execDECL->Exec.ptr)->stackFrameSize;
-            if (elDECL->TypeFlags.Contains(defaultInitializer))
-              secTab[execDECL->SectionInfo2].funcDesc[0].stackFrameSize
-                                   = ((SelfVar*)execDECL->Exec.ptr)->stackFrameSize;
+      }
+    }
+  }
+  if (implDECL != classDECL) {
+    for (elChe = (CHE*)implDECL->NestedDecls.first; elChe; elChe = (CHE*)elChe->successor) {
+      implElDecl = (LavaDECL*)elChe->data;
+      if (implElDecl->DeclType == Function) {
+        if (!implElDecl->Supports.first
+        || implElDecl->TypeFlags.Contains(isPropGet)
+        || implElDecl->TypeFlags.Contains(isPropSet))
+          implElDecl->Exec.ptr = new AssertionData(ckdl,implElDecl);
+        for (execChe = (CHE*)implElDecl->NestedDecls.first;
+             execChe;
+             execChe = (CHE*)execChe->successor) {
+          if (((LavaDECL*)execChe->data)->DeclDescType == ExecDesc) {
+            execDECL = (LavaDECL*)execChe->data;
+            ckdl.myDECL = execDECL;
+            ckdl.currentStackLevel = 0;
+            ckdl.stackFrameSize = 0;
+            ckdl.inINCL = execDECL->inINCL;
+            implDECL->WorkFlags.INCL(runTimeOK);
+            try {
+              ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+            }
+            catch(CUserException *) {
+            }
+            if (ckdl.exceptionThrown) {
+              if (ckd.lastException)
+                DEC_FWD_CNT(ckd, ckd.lastException);
+              ckd.lastException = ckdl.lastException;
+              ckd.exceptionThrown = true;
+              return false;
+            }
+            implDECL->WorkFlags.EXCL(runTimeOK);
+            if ((execDECL->DeclType == ExecDef) && !implElDecl->TypeFlags.Contains(isStatic)
+               && !implElDecl->TypeFlags.Contains(isPropGet)
+               && !implElDecl->TypeFlags.Contains(isPropSet)) {
+                secTab[execDECL->SectionInfo2].funcDesc[execDECL->SectionInfo1].stackFrameSize
+                                          = ((SelfVar*)execDECL->Exec.ptr)->stackFrameSize;
+                if (implElDecl->TypeFlags.Contains(defaultInitializer))
+                  secTab[execDECL->SectionInfo2].funcDesc[0].stackFrameSize
+                                       = ((SelfVar*)execDECL->Exec.ptr)->stackFrameSize;
+            }
+          }
         }
       }
     }
@@ -487,7 +551,7 @@ bool CLavaProgram::CheckFuncImpl(CheckData& ckd, LavaDECL* funcDECL, LavaDECL* c
   }
   if ( checlassIOEl && (((LavaDECL*)checlassIOEl->data)->DeclDescType != ExecDesc)
      || !cheimplIOEl
-     || (((LavaDECL*)cheimplIOEl->data)->DeclDescType != ExecDesc)
+     || cheimplIOEl && (((LavaDECL*)cheimplIOEl->data)->DeclDescType != ExecDesc)
      || (((LavaDECL*)((CHE*)funcDECL->NestedDecls.last)->data)->DeclType != ExecDef) ) {
     LavaError(ckd, true, funcDECL, &ERR_funcImpl);
     return false;
@@ -499,7 +563,7 @@ bool CLavaProgram::CheckFuncImpl(CheckData& ckd, LavaDECL* funcDECL, LavaDECL* c
       return false;
     }
   }
-  classFuncDECL->RuntimeDECL = (LavaDECL*)cheimplIOEl->data;
+  classFuncDECL->RuntimeDECL = (LavaDECL*)((CHE*)funcDECL->NestedDecls.last)->data; //cheimplIOEl->data;
   return true;
 }
 
@@ -529,7 +593,8 @@ bool CLavaProgram::CheckSetAndGets(CheckData& ckd, LavaDECL* implDECL, LavaDECL*
       ifaceElDecl = (LavaDECL*)cheI->data;
       toImpl = ifaceElDecl && (ifaceElDecl->DeclType == Attr)
                && ifaceElDecl->TypeFlags.Contains(hasSetGet)
-               && !ifaceElDecl->TypeFlags.Contains(isAbstract);
+               && !ifaceElDecl->TypeFlags.Contains(isAbstract)
+               && !ifaceElDecl->TypeFlags.Contains(isNative);
     }
     if (toImpl) {
       if (!CheckOneSetGet(ckd, isPropGet, implDECL, ifaceElDecl))
@@ -641,7 +706,9 @@ bool CLavaProgram::CheckFuncInOut(CheckData& ckd, LavaDECL* funcDECL)
       funcDECL->TypeFlags.EXCL(isProtected);
     cheOverIO = (CHE*)OverFunc->NestedDecls.first;
     cheIO = (CHE*)funcDECL->NestedDecls.first;
-    while (cheOverIO && cheIO) {
+    while (cheOverIO && cheIO
+      && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)
+      && (((LavaDECL*)cheOverIO->data)->DeclDescType != ExecDesc)) {
       IODECL = (LavaDECL*)cheIO->data;
       if ((IODECL->DeclType != ((LavaDECL*)cheOverIO->data)->DeclType) 
         || !OverriddenMatch(IODECL, false, &ckd)) {
@@ -657,7 +724,8 @@ bool CLavaProgram::CheckFuncInOut(CheckData& ckd, LavaDECL* funcDECL)
       cheIO = (CHE*)cheIO->successor;
       cheOverIO = (CHE*)cheOverIO->successor;
     }
-    if (cheOverIO || cheIO) {
+    if (cheOverIO && (((LavaDECL*)cheOverIO->data)->DeclDescType != ExecDesc)
+      || cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
       LavaError(ckd, true, IODECL, &ERR_IOParams);
       return false;
     }
@@ -1342,6 +1410,8 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
       }
     }
   }
+  if (!AttachPrivatElems(*pckd, classDECL))
+    return false;
   if (vElems.first) {
     vElems.last->successor = classDECL->VElems.VElems.first;
     if (classDECL->VElems.VElems.first)
@@ -1484,7 +1554,7 @@ bool CLavaProgram::AttachPrivatElems(CheckData& ckd, LavaDECL* classDECL)
   return true;
 }
 
-bool CLavaProgram::CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNameSp, DWORD fAdapt/*TAdapterFunc* funcAdapter*/)
+bool CLavaProgram::CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNameSp, DWORD fAdapt, LavaDECL* specDECL)
 {
   if (classDECL->WorkFlags.Contains(runTimeOK))  //=CheckImpl, MakeVElems, MakeSectionTable ok
     return true;
@@ -1494,7 +1564,7 @@ bool CLavaProgram::CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNam
   CHE *cheDecl;
   TAdapterFunc* funcAdapter;
 
-  if (!MakeVElems(classDECL, &ckd) || !AttachPrivatElems(ckd, classDECL))
+  if (!MakeVElems(classDECL, &ckd) )//|| !AttachPrivatElems(ckd, classDECL))
     return false;
   if (!classDECL->SectionTabPtr)
     if (!AllocSectionTable(ckd, classDECL))
@@ -1511,20 +1581,9 @@ bool CLavaProgram::CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNam
   }
   else
     for (ii = 1;  ii < classDECL->nSection; ii++) {
-      if (!CheckImpl(ckd, ((CSectionDesc*)classDECL->SectionTabPtr)[ii].classDECL))
+      if (!CheckImpl(ckd, ((CSectionDesc*)classDECL->SectionTabPtr)[ii].classDECL, specDECL))
         return false;
     }
-  /*
-  for ( cheID = (CHETID*)classDECL->Supports.first; cheID; cheID = (CHETID*)cheID->successor ) {
-    baseDECL = IDTable.GetFinalDef(cheID->data, classDECL->inINCL); //!
-    if (classDECL->DeclType == Package) 
-      CheckNamesp(baseDECL);
-    else
-      CheckImpl(baseDECL);
-    nSection = nSection + baseDECL->nSection;
-  }
-  classDECL->nSection = nSection;
-  */
   implDECL = classDECL->RuntimeDECL;
   if (!implDECL)
     if (classDECL->WorkFlags.Contains(implRequired)) {
@@ -1551,8 +1610,8 @@ bool CLavaProgram::CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNam
   classDECL->SectionInfo1 = 1;  //remember: the 0-position in the virtual function table
                                 //is reserved for the default constructor
   funcAdapter = (TAdapterFunc*)fAdapt;
-  if (classDECL->TypeFlags.Contains(isNative))
-    classDECL->SectionInfo2 = (unsigned)funcAdapter[0];
+  if (classDECL->TypeFlags.Contains(isNative) && funcAdapter)
+    classDECL->SectionInfo2 = (unsigned)*funcAdapter[0];
   else
     classDECL->SectionInfo2 = 0;
   classDECL->SectionInfo3 = 0;
@@ -1731,7 +1790,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
 
   int ii, posSect = 1, inii,
       posAttr = 0, posFunc = 0, posParam = 0,
-      posAttrSect = 0, posFuncSect = 0, posParamSect = 0,
+      posAttrSect = 0, posFuncSect = 0, posParamSect = 0, nNative,
       offset=0, inINCL,
       totalInfo1, totalInfo2, totalInfo3;
   CSectionDesc *secTab, *baseTab, *valueTab;
@@ -1741,7 +1800,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
   TID  TIDDef, TIDCl;
   unsigned dist;
   bool outerParam;
-  TAdapterFunc* funcAdapter;
+  TAdapterFunc* funcAdapter=0;
   CVTypeDesc *pd;
   CVFuncDesc *fd;    
   CVAttrDesc *ad;    
@@ -1754,25 +1813,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
   totalInfo3 = classDECL->SectionInfo3; 
 
   //fill in section table and calculate length of function-, attr- and param table
-  /*
-  for (cheID = (CHETID*)classDECL->Supports.first; cheID; cheID = (CHETID*)cheID->successor) {
-    baseDECL = IDTable.GetFinalDef(cheID->data, inINCL);//!
-    baseTab = (CSectionDesc*)baseDECL->SectionTabPtr;
-    for (ii = 0; ii < baseTab[0].nSections; ii++) {
-      secTab[posSect] = baseTab[ii];
-      //is section class new?
-      for (inii = 1; 
-           (inii < posSect)  && (secTab[inii].implDECL != baseTab[ii].implDECL);
-           inii++);
-      if (inii == posSect) {
-        totalInfo1 += baseTab[ii].classDECL->SectionInfo1;
-        totalInfo2 += baseTab[ii].classDECL->SectionInfo2;
-        totalInfo3 += baseTab[ii].classDECL->SectionInfo3;
-      }
-      posSect++;
-    }
-  } 
-  */
+
   for (posSect = 0; posSect < classDECL->nSection; posSect++) {
     baseTab = (CSectionDesc*)secTab[posSect].classDECL->SectionTabPtr;
     secTab[posSect] = baseTab[0];
@@ -1813,6 +1854,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
          (ii < posSect) && (secTab[ii].implDECL != secTab[posSect].implDECL);
          ii++);
     if (ii == posSect) { //not dummy section
+      funcAdapter = 0;
       secTab[posSect].sectionOffset = offset;
       secTab[posSect].SectionFlags.INCL(SectPrimary);
       if (posSect > 0) {
@@ -1821,12 +1863,16 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
         secTab[posSect].vtypeDesc = 0;
       }
       if (secTab[posSect].classDECL->TypeFlags.Contains(isNative)) {
-        funcAdapter = GetAdapterTable(ckd, secTab[posSect].classDECL);
-        if (!funcAdapter)
-          return false;
-        dist =(unsigned)funcAdapter[0];
+        funcAdapter = GetAdapterTable(ckd, secTab[posSect].classDECL, secTab[0].classDECL);
+        //if (!funcAdapter)
+        //  return false;
+        if (funcAdapter)
+          dist =(unsigned)funcAdapter[0];
+        else
+          dist = 0;
         posAttr += dist; //positions for the native object
         offset += dist;
+        nNative = LAH;
       }
       posAttrSect = posAttr;
       posFuncSect = posFunc;
@@ -1853,14 +1899,19 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
             fd = &secTab[0].funcDesc[posFunc];
             fd->isNative = ElDECL->TypeFlags.Contains(isNative);
             if (fd->isNative) {
-              fd->funcPtr = (TAdapterFunc)ElDECL->RuntimeDECL;
-              fd->stackFrameSize = (ElDECL->nInput + ElDECL->nOutput + 3)<<2;
+              if ( funcAdapter) {
+                fd->funcPtr = funcAdapter[nNative];
+                nNative++;
+              }
+              else
+                fd->funcPtr = (TAdapterFunc)ElDECL->RuntimeDECL;
+              fd->stackFrameSize = ElDECL->nInput + ElDECL->nOutput + 1 + SFH;
               // +1 for self, +2 for pointer synObj and to parent stack frame
             }
             else {
               fd->funcExec = ElDECL->RuntimeDECL;
               //remember: the stackFrameSize must be set after the check of the exec has been done
-              //this sets only the right stackFrimeSize for functions of a base class
+              //this sets only the right stackFrameSize for functions of a base class
               if (fd->funcExec)
                 fd->stackFrameSize = ((SelfVar*)ElDECL->RuntimeDECL->Exec.ptr)->stackFrameSize;
               else
@@ -2079,26 +2130,40 @@ void CLavaProgram::LavaError(CheckData& ckd, bool setLavaEx, LavaDECL *decl, QSt
 void CLavaProgram::HCatch(CheckData& ckd)
 {
   CVFuncDesc *fDesc;
-  LavaObjectPtr exception;
+  LavaObjectPtr exception, newStackFrame[SFH+1];
   if (IDTable.catchfuncDecl) {
     exception = ckd.lastException;
-    //ckd.lastException = 0;
+		newStackFrame[0] = 0;
+		newStackFrame[1] = 0;
+		newStackFrame[2] = 0;
+    newStackFrame[SFH] = exception;
     ckd.exceptionThrown = false;
     fDesc = &(exception[0][0].funcDesc[IDTable.catchfuncDecl->SectionInfo1]);
-    fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, &exception);
+    fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame);
     DEC_FWD_CNT(ckd, exception);
   }
 }
 
 #ifdef WIN32
-void trans_func( unsigned int u, _EXCEPTION_POINTERS* pExp )
+void trans_func( unsigned u, _EXCEPTION_POINTERS* pExp )
 {
+  _clearfp();
   throw new CHWException(u);
 }
 
 void sigEnable() {
   _set_se_translator(trans_func);
-  _control87(0,_EM_UNDERFLOW | _EM_OVERFLOW | _EM_ZERODIVIDE | _EM_INVALID); // enable floating-point exceptions
+//  _control87(0,_EM_UNDERFLOW | _EM_OVERFLOW | _EM_ZERODIVIDE | _EM_INVALID); // enable floating-point exceptions
+
+// Get the default control word.
+   int cw = _controlfp( 0,0 );
+
+   // Set the exception masks OFF, turn exceptions on.
+//   cw &=~(EM_OVERFLOW|EM_UNDERFLOW|EM_INEXACT|EM_ZERODIVIDE|EM_DENORMAL);
+   cw &=~(EM_OVERFLOW|EM_UNDERFLOW|EM_ZERODIVIDE|EM_DENORMAL);
+
+   // Set the control word.
+   _controlfp( cw, MCW_EM );
 }
 
 #else
@@ -2134,10 +2199,11 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
   CheckData ckd;
   LavaVariablePtr newStackFrame=0;
   QString msg="Normal end of application";
-  unsigned frameSize;
+  unsigned frameSize, pos, newOldExprLevel;
   bool ok;
-
 #ifdef WIN32
+  unsigned frameSizeBytes;
+
   CoInitialize(0);
 #endif
   ckd.document = (CLavaProgram*)doc;
@@ -2168,23 +2234,26 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
         //newStackFrame = new LavaObjectPtr[((SelfVar*)topDECL->Exec.ptr)->stackFrameSize];
 
         frameSize = ((SelfVar*)topDECL->Exec.ptr)->stackFrameSize;
+        newOldExprLevel = frameSize - 1;
 #ifdef WIN32
+        frameSizeBytes = frameSize<<2;
         __asm {
-          sub esp, frameSize
+          sub esp, frameSizeBytes
           mov newStackFrame, esp
         }
 #else
-				newStackFrame = new LavaObjectPtr[frameSize>>2];
+				newStackFrame = new LavaObjectPtr[frameSize];
 #endif
-        newStackFrame[(frameSize>>2)-1] = 0;
-        if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame)) {
+        for (pos=0;pos<frameSize;pos++)
+          newStackFrame[pos] = 0;
+        if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel)) {
           if (!ckd.exceptionThrown)
             ((SelfVarX*)topDECL->Exec.ptr)->SetRTError(ckd, &ERR_ExecutionFailed,newStackFrame);
 
           if (newStackFrame) {
 #ifdef WIN32
             __asm {
-              add esp, frameSize
+              add esp, frameSizeBytes
             }
 #else
 						delete [] newStackFrame;
@@ -2238,7 +2307,7 @@ stop:     ckd.document->throwError = false;
       if (newStackFrame) {
 #ifdef WIN32
         __asm {
-          add esp, frameSize
+          add esp, frameSizeBytes
         }
 #else
         delete [] newStackFrame;
@@ -2268,7 +2337,7 @@ void showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillI
 {
   CLavaThread *currentThread = CLavaThread::currentThread();
   currentThread->pContExecEvent->lastException = 0;
-  CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, (DWORD)&stack[0], (DWORD)&stack[1], (DWORD)&stack[2], (DWORD)frozen, (DWORD)currentThread, (DWORD)fromFillIn);
+  CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, (DWORD)&stack[SFH], (DWORD)&stack[SFH+1], (DWORD)&stack[SFH+2], (DWORD)frozen, (DWORD)currentThread, (DWORD)fromFillIn);
 	QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaShow,(void*)hint));
   (*currentThread->pContExecEvent)++;
   if (currentThread->pContExecEvent->lastException) {
@@ -2293,25 +2362,28 @@ void showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillI
 
 bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack)
 {
-  LavaObjectPtr newStackFrame[3];
+  LavaObjectPtr newStackFrame[SFH+3];
   newStackFrame[0] = stack[0];
   newStackFrame[1] = stack[1];
-  newStackFrame[2] = 0;
-  CRuntimeException *ex = CopyObject(ckd, &newStackFrame[1], &newStackFrame[2], ((SynFlags*)(newStackFrame[1]+1))->Contains(stateObjFlag), newStackFrame[0][0][0].classDECL->RelatedDECL);
+  newStackFrame[2] = stack[2];
+  newStackFrame[SFH] = stack[SFH];
+  newStackFrame[SFH+1] = stack[SFH+1];
+  newStackFrame[SFH+2] = 0;
+  CRuntimeException *ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], ((SynFlags*)(newStackFrame[SFH+1]+1))->Contains(stateObjFlag), newStackFrame[SFH][0][0].classDECL->RelatedDECL);
   if (ckd.exceptionThrown)
     return false;
   if (ex)
     throw ex;
-  showFunc(ckd, newStackFrame, !((SynFlags*)(newStackFrame[2]+1))->Contains(stateObjFlag), false);
+  showFunc(ckd, newStackFrame, !((SynFlags*)(newStackFrame[SFH+2]+1))->Contains(stateObjFlag), false);
   if (ckd.exceptionThrown) {
-    if (newStackFrame[2])
-      DFC(newStackFrame[2]);
+    if (newStackFrame[SFH+2])
+      DFC(newStackFrame[SFH+2]);
     return false;
   }
   else {
-    UpdateObject(ckd, newStackFrame[1], &newStackFrame[2]);
-    if (newStackFrame[2])
-      DFC(newStackFrame[2]);
+    UpdateObject(ckd, newStackFrame[SFH+1], &newStackFrame[SFH+2]);
+    if (newStackFrame[SFH+2])
+      DFC(newStackFrame[SFH+2]);
     return true;
   }
 }
@@ -2319,10 +2391,10 @@ bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack)
 bool ShowFuncFillIn(CheckData& ckd, LavaVariablePtr stack)
 {
   CRuntimeException *ex;
-  if (stack[2])
-    DFC( stack[2]);
-  stack[2] = AllocateObject(ckd, stack[0][0][0].classDECL->RelatedDECL, false);
-  if (!stack[2]) {
+  if (stack[SFH+2])
+    DFC( stack[SFH+2]);
+  stack[SFH+2] = AllocateObject(ckd, stack[SFH][0][0].classDECL->RelatedDECL, false);
+  if (!stack[SFH+2]) {
     if (ckd.exceptionThrown)
       return false;
     else {
@@ -2330,8 +2402,8 @@ bool ShowFuncFillIn(CheckData& ckd, LavaVariablePtr stack)
       throw ex;
     }
   }
-  if (stack[1]) {
-    ex = CopyObject(ckd, &stack[1], &stack[2], false, stack[0][0][0].classDECL->RelatedDECL);
+  if (stack[SFH+1]) {
+    ex = CopyObject(ckd, &stack[SFH+1], &stack[SFH+2], false, stack[SFH][0][0].classDECL->RelatedDECL);
     if (ckd.exceptionThrown)
       return false;
     if (ex)
@@ -2341,7 +2413,7 @@ bool ShowFuncFillIn(CheckData& ckd, LavaVariablePtr stack)
   if (ckd.exceptionThrown)
     return false;
   else {
-    ((SynFlags*)(stack[2]+1))->INCL(finished);
+    ((SynFlags*)(stack[SFH+2]+1))->INCL(finished);
     return true;
   }
 }

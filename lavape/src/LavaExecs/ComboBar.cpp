@@ -1048,11 +1048,6 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
   }
   */
 
-  /*
-  QFont* font = m_CompaObjectsCtrl->GetFont();
-  CClientDC *dc = new CClientDC(this);
-  dc->SelectObject (font);
-  */
   EnumsShow = false;
 
   cnt = m_ObjectsCtrl->count();
@@ -1174,7 +1169,6 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
   }
   else
     ShowCombos(disableCombo);
-//  delete dc;  
   lastCombo = invalidateLast;
 }
 
@@ -1207,11 +1201,7 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
   */
   if (!decl)
     return;
-  /*
-  QFont* font = m_CompaTypesCtrl->GetFont();
-  CClientDC *dc = new CClientDC(this);
-  dc->SelectObject (font);
-  */
+ 
   cnt = m_TypesCtrl->count();
   for (pos = 1; pos < cnt; pos++) {
     /*
@@ -1258,7 +1248,6 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
   }
   else 
     m_CompaBTypesCtrl->setEnabled(false);
-  //delete dc;  
 }
 
 void CComboBar::ShowSubObjects(LavaDECL* decl, const CContext &context)
@@ -1962,51 +1951,6 @@ void CExecFields::AddToBox(LavaDECL** pdecl, DString& name, QComboBox* fieldList
     delete data;
   else 
     fieldList->listBox()->insertItem(data);//sort#
-  
-/*
-  start = fieldList->FindStringExact(0, name.c);
-  if (start != CB_ERR) {
-    count = fieldList->GetCount();
-    for (pos = start; (pos < count) && !found; pos++) {
-      fName.Reset(fieldList->GetLBTextLen(pos));
-      fName.l = fieldList->GetLBText(pos, fName.c);
-      fName[fName.l] = '\0';
-      if (fName == name) {
-        fdata = (CFieldsItemData*)fieldList->GetItemData(pos);
-        found = SameField(fdata->IDs, data->IDs, replace);
-        if (!found) {
-          if (replace) {
-            fieldList->DeleteString(pos);
-            delete fdata;
-          }
-          else {
-            if (!fdata->withClass) {
-              name.Delete(name.l - (*pdecl)->LocalName.l, (*pdecl)->LocalName.l);
-              fName = name + fdata->QName;
-              name += (*pdecl)->FullName;
-              data->withClass = true;
-              fdata->withClass = true;
-              fieldList->DeleteString(pos);
-              pos = fieldList->AddString(fName.c);
-              sz = dc->GetTextExtent(fName.c, fName.l);
-              maxW = max(maxW, sz.cx);
-              fieldList->SetItemData(pos, (DWORD)fdata);
-              pos = count;
-            }
-          }
-        }
-      }
-    }
-  }
-  if (found) 
-    delete data;
-  else {
-    pos = fieldList->AddString(name.c);
-    sz = dc->GetTextExtent(name.c, name.l);
-    maxW = max(maxW, sz.cx);
-    fieldList->SetItemData(pos, (DWORD)data);
-  }
-  */
 }
 
 void CExecFields::OnField(LavaDECL **pdecl, DString accuName, TDODC accuIDs, 

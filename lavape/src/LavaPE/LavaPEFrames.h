@@ -82,6 +82,7 @@ public slots:
     virtual void cascade();
     virtual void fileSaveAll();
     virtual void fileClose();
+    virtual void saveEveryChange(bool);
     virtual void viewTB1();
     virtual void viewTB2();
     virtual void viewTB3();
@@ -124,6 +125,7 @@ public slots:
     virtual void showOverridables();
     virtual void override();
     virtual void openFormView();
+    virtual void makeGUI();
     virtual void insertText();
     virtual void insAction_activated();
     virtual void delAction_activated();

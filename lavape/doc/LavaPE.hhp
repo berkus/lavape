@@ -22,7 +22,6 @@ html\AdvantVB.htm
 html\Aesthetics.htm
 html\DatabaseIntegration.htm
 html\KorfSpectacles.htm
-html\LavaOnlineDoc.htm
 html\LavaOverview.htm
 html\OrganizationAwareness.htm
 html\PatternsFrameworks.htm
@@ -146,7 +145,6 @@ html\FAQContributions.htm
 html\FAQDesignPatterns.htm
 html\FAQGerman.htm
 html\FAQLavaFuture.htm
-html\FAQLavaLinux.htm
 html\FAQUML.htm
 html\FAQWhoTakeLook.htm
 html\FAQ.htm
@@ -157,6 +155,10 @@ html\IniChecks.htm
 html\Refactoring.htm
 html\FAQLavaOrientation.htm
 html\FAQfromSpaghettiToFractals.htm
+html\OOPS-MIMM.htm
+html\ReadOnly.htm
+html\DBC.htm
+TitlePage.htm
 
 [ALIAS]
 ID_AND=html\EditExec.htm

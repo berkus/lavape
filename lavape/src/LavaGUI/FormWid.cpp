@@ -78,7 +78,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
   }  
   if (!LBaseData->inRuntime && border
     && myFormNode->data.FormSyntax->ParentDECL
-    &&  (myFormNode->data.FormSyntax->ParentDECL->ParentDECL == ((CLavaGUIView*)GUIProg->ViewWin)->myDECL))
+    &&  (myFormNode->data.FormSyntax->ParentDECL->ParentDECL == GUIProg->myDECL))
       {
     setLineWidth(1);
     setMidLineWidth(1);
@@ -129,7 +129,7 @@ void CFormWid::mousePressEvent(QMouseEvent* ev)
     myMenu->popup(ev->globalPos());//QPoint(ev->x(), ev->y()));
   else
     if (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin)
-      wxDocManager::GetDocumentManager()->SetActiveView(GUIProg->ViewWin);
+      wxDocManager::GetDocumentManager()->SetActiveView((wxView*)GUIProg->ViewWin);
 }
 
 void CFormWid::InsActivated()

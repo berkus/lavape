@@ -23,7 +23,7 @@ extern LAVABASE_DLL TAdapterFunc* StdAdapterTab [];
 //extern LAVABASE_DLL LavaDECL* DECLTab [];
 extern LAVABASE_DLL void NewQString(QString* pstr, const char* str);
 extern LAVABASE_DLL bool HStringCopy(LavaObjectPtr s0, LavaObjectPtr s1);
-extern LAVABASE_DLL bool HEnumSetVal(CheckData& ckd, LavaObjectPtr obj, int num);
+extern LAVABASE_DLL bool HEnumSetVal(CheckData& ckd, LavaObjectPtr obj, unsigned num);
 
 extern LAVABASE_DLL CRuntimeException* HSetInsertBefore(CheckData& ckd, LavaVariablePtr stack);
 extern LAVABASE_DLL bool HSetFirst(CheckData& ckd, LavaVariablePtr stack);
@@ -51,6 +51,7 @@ extern LAVABASE_DLL bool SetGet(CheckData& ckd, LavaVariablePtr stack);
 extern LAVABASE_DLL void MakeStdAdapter();
 
 extern LAVABASE_DLL bool DropException(CheckData& ckd, LavaVariablePtr stack);
+
 
 
 #endif

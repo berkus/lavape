@@ -159,7 +159,7 @@
                                         <bool>false</bool>
                                     </property>
                                     <property name="focusPolicy">
-                                        <enum>NoFocus</enum>
+                                        <enum>StrongFocus</enum>
                                     </property>
                                     <property name="alignment">
                                         <set>AlignLeft</set>
@@ -752,7 +752,6 @@ as a form by this GUI service:</string>
 </tabstops>
 <includes>
     <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
-    <include location="local" impldecl="in implementation">idd_interfacebox.ui.h</include>
 </includes>
 <slots>
     <slot>m_DelSupport_clicked()</slot>

@@ -38,7 +38,6 @@ public:
   CTreeItem(QString label, QPixmap* pix, QListView* parent);
 
   ~CTreeItem();
-
   void setItemData(TItemData* dat) {data = dat;}
   TItemData* getItemData() { return data;}
   void setPix(QPixmap* pix);
@@ -68,6 +67,7 @@ public:
   void setCurAndSel(QListViewItem* item, bool singleSel = true);
   void keyPressEvent(QKeyEvent* ev);
   void contentsMousePressEvent(QMouseEvent *ev);
+  void contentsMouseMoveEvent(QMouseEvent *ev);
   void focusInEvent ( QFocusEvent * e );
   QDragObject* dragObject();
   void contentsDragMoveEvent(QDragMoveEvent *ev);
@@ -98,15 +98,15 @@ public:
   CTreeItem* InsertItem(QString label, QPixmap* nPix, CTreeItem* parent, CTreeItem* afterItem=TVI_LAST);
   QLineEdit* GetEditControl() {return labelEditWid;}
   QLineEdit *labelEditWid;
-  virtual QDragObject* OnBegindrag() {return 0;}
+  virtual QDragObject* OnDragBegin() {return 0;}
   virtual void OnDelete() {}
-  virtual void startRename(CTreeItem* item) {}
-  virtual void okRename(CTreeItem* item) {}
-  virtual void cancelRename(CTreeItem* item) {}
-  virtual void OnDragOver(QDragMoveEvent* ev) {}
-  virtual void OnDragEnter(QDragEnterEvent* ev) {}
+  virtual void RenameStart(CTreeItem* item) {}
+  virtual void RenameOk(CTreeItem* item) {}
+  virtual void RenameCancel(CTreeItem* item) {}
+  virtual void OnDragOver(QDragMoveEvent* ev) {ev->ignore();}
+  virtual void OnDragEnter(QDragEnterEvent* ev) {ev->ignore();}
   virtual void OnDragLeave(QDragLeaveEvent* ev) {}
-  virtual void OnDrop(QDropEvent* ev) {}
+  virtual void OnDrop(QDropEvent* ev) {ev->ignore();}
   virtual void OnVkreturn() {}
 private:
   Q_OBJECT
