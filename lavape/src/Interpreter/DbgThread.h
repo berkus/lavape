@@ -15,13 +15,20 @@
 #include "sflsock.h"
 
 
+extern bool debugStep;
+extern bool debugStepFunc;
+extern bool debugStepInto;
+extern bool debugStepOut;
+extern LavaVariablePtr stepOutStack, currentStack;
+
+
 class LocalDebugVar : public VarAction {
 public:
-  LocalDebugVar(DebugStopData* data, CLavaBaseDoc* d)
+  LocalDebugVar(DbgStopData* data, CLavaBaseDoc* d)
   {dbgStopData = data; doc = d; }
   void run();
   virtual bool Action (CheckData &ckd, VarName *vn, TID &tid);
-  DebugStopData* dbgStopData;
+  DbgStopData* dbgStopData;
   CHEStackData* cheAct;
 };
 
@@ -29,20 +36,24 @@ class LAVAEXECS_DLL CLavaDebugThread : public CLavaThread
 {
 public:
   CLavaDebugThread();
+  ~CLavaDebugThread();
 
   void initData(CLavaBaseDoc* d);
   sock_t listenSocket, workSocket;
   QString remoteIPAddress, remotePort;
 
-  DebugStopData* dbgStopData;
+  DbgStopData* dbgStopData;
   LocalDebugVar *varAction;
   bool debugOn;
-  CEventEx *pContThreadEvent;
+  bool debugOff;
+  CEventEx *pContDebugEvent;
   DbgContType actContType;
+  CHAINANY /*ProgPoint*/ brkPnts;
+  DbgMessage mSend, mReceive;
 
-  ~CLavaDebugThread();
 protected:
 	void run();
+  void setBrkPnts();
 }; 
 
 #endif

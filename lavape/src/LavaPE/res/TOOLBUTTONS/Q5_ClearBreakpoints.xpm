@@ -1,0 +1,39 @@
+/* XPM */
+static char *DebugClearBreakpoints[] = {
+/* width height num_colors chars_per_pixel */
+"    16    16       16            1",
+/* colors */
+"` c #000000",
+". c #800000",
+"# c #008000",
+"a c #808000",
+"b c #000080",
+"c c #800080",
+"d c #008080",
+"e c None",
+"f c #808080",
+"g c #ff0000",
+"h c #00ff00",
+"i c #ffff00",
+"j c #0000ff",
+"k c #ff00ff",
+"l c #00ffff",
+"m c #ffffff",
+/* pixels */
+"eeee``eeeeeeeeee",
+"eee``m``eeeeeeee",
+"ee`m`m`m``eeeeee",
+"ee`m`m```m``eeee",
+"ee`m`m`m`..f`eee",
+"e``m`m`m..fm``ee",
+"`m...f`..f`m`m`e",
+"`m`f....fm`m`m`e",
+"`mmm`...`m`m`m`e",
+"e`mmf....mmmmm`e",
+"ee`m..fm..mmmm`e",
+"ee`..fmmf.fmmm`e",
+"eee..e`mmf.mm`ee",
+"eee.fe````````ee",
+"eeefeeeeeeeeeeee",
+"eeeeeeeeeeeeeeee"
+};
