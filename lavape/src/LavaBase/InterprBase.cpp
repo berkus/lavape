@@ -665,8 +665,8 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
     else
       return new CRuntimeException(RunTimeException_ex, &ERR_CopyNullToNonNull);
   sourceObjPtr = sourceObjPtr - (sourceObjPtr[0])[0].sectionOffset;
+  sourceClassDECL = sourceObjPtr[0][0].classDECL;
   if (resultClassDECL) {
-    sourceClassDECL = sourceObjPtr[0][0].classDECL;
     classDECL = resultClassDECL;
     fullCopy = (resultClassDECL == sourceClassDECL);
     if (!fullCopy) 

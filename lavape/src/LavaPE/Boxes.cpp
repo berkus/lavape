@@ -1765,6 +1765,7 @@ void CFuncBox::m_Initializer_clicked()
     m_ConstFunc->setEnabled(true); 
     m_Protected->setEnabled(true);
   }
+  myDECL->TypeFlags.EXCL(isConst);
   UpdateData(false);  
 }
 

@@ -2444,18 +2444,18 @@ static bool ResolveShortCut (HWND hwnd, QString pszLink, QString &resolved)
           hres = psl->GetPath (szGotPath, MAX_PATH,(WIN32_FIND_DATA *)&wfd, SLGP_UNCPRIORITY /*SLGP_SHORTPATH*/);
           if (! SUCCEEDED (hres)) {
             mm = QString("Resolving shortcut ") + pszLink + " failed!";
-            QMessageBox::critical(qApp->mainWidget(), mm, qApp->name() /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+            QMessageBox::critical(qApp->mainWidget(), qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
           }
           resolved = szGotPath;
         }
         else {
           mm = QString("Resolving shortcut ") + pszLink + " failed!";
-          QMessageBox::critical(qApp->mainWidget(), mm, qApp->name() /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(qApp->mainWidget(), qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         }
       }
       else {
         mm = QString("Loading shortcut ") + pszLink + " failed!";
-        QMessageBox::critical(qApp->mainWidget(), mm, qApp->name() /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(qApp->mainWidget(), qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       }
       // Release the pointer to IPersistFile.
       ppf->Release ();

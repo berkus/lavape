@@ -327,10 +327,12 @@ LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj)
       bool e = ar.atEnd();
       int ok = file.status();
       if (!ar.atEnd() || (file.status() != IO_Ok)) {
-        err = file.errorString();
+        if (!ckd.exceptionThrown) {
+          err = file.name() + ": " + file.errorString();
+          critical(qApp->mainWidget(), qApp->name(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          LObjectError(ckd, *pfileName, noName, &ERR_ldocNotOpened);
+        }
         file.resetStatus();
-        critical(qApp->mainWidget(), qApp->name(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-        LObjectError(ckd, *pfileName, noName, &ERR_ldocNotOpened);
         file.close();
         return 0;
       }
