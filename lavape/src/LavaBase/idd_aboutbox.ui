@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>IDD_AboutBox</class>
 <widget class="QDialog">
     <property name="name">
@@ -58,8 +58,7 @@
                     </font>
                 </property>
                 <property name="text">
-                    <string>&lt;center&gt;Lava Preview Release 0.7
-&lt;/center&gt;</string>
+                    <string>&lt;center&gt;Lava Preview Release 0.7.1&lt;/center&gt;</string>
                 </property>
                 <property name="textFormat">
                     <enum>RichText</enum>
@@ -208,10 +207,10 @@ at http://lavape.sourceforge.net</string>
 </widget>
 <images>
     <image name="image0">
-        <data format="XPM.GZ" length="509">789c8d8eb10ec2300c44f77c85d56c154a29122c884f0031222186d8a682a154823220c4bf133b2daad20edce4cbf3f952e470d86f212fcca3f5ed95802efe0e393febfa753c6dde265b94502e61056536339905825d733bcb8c61b6739558176d152496c556554f295a7910eb7b1b975d222bea801fe83fd093d1a98e8c3b229928770e55538088a7002233779104100b4a004a201c23cd2480024b01ca216dd19a21d05da6f8b31f90006a8d028ce0b3365f4bae7892</data>
+        <data format="PNG" length="204">89504e470d0a1a0a0000000d49484452000000150000000f08060000000b5a846b0000009349444154789ca5935b0e80300804d9c6fb1fcb1e0b7f1acbb3422431b1d68ec30641cc4c3fea9e13f6d925175dbaa3ad1a4d4ea99429e86c9b99d972a6d9c12a308446800e90c8b4bf298841c54189a1f23cfaa6be7de085f91c6af87ca458df766678b72f2c98e86d5bc508f1de21df6fd328868f1ace72c15c7c30111cf255a6528eecc6ba2ad90ef5454e04d2df2cde780086bb1d8ceaaf2e700000000049454e44ae426082</data>
     </image>
     <image name="image1">
-        <data format="XPM.GZ" length="419">789c6d8f410ac2301045f739c590d905690d52298847505c0ae262122dbaa882d685887737e9246953fc2161fecb9f092915ec771b50a57876d45d2dd80b3d409d5e6dfb3e1cd71f21f512740515683913b2000bdbfbedec6b7435ce7b796bbdad17b5666bbc6d9cd852b44dd3cf49424477660c79e739be60c63da19d1992216415711e1a0a6bc422a2490ea346f36c54ca0d28e5c628b00c45363c30fd6fd05ff65d891f51bb5a2d</data>
+        <data format="PNG" length="196">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008b49444154789c9d9251128020084497a65371b7a669badb5e8b3e1a0a0dcdda1fd0f1ada008498c4855cd7392e2f93c0a4728ae65b48296e91c37b2125bb0e74212aa6a660640001844da7c6d1edee0840141348b31f39dee3487caf8545a41d94619ebb70a0625bc6fe985bd16bec1cbfa30f806fb6f5c067f60a01a652faba77a0e7e8fb26b7a3fd2d70115534b2479c44a8f0000000049454e44ae426082</data>
     </image>
 </images>
 <connections>
