@@ -1686,12 +1686,16 @@ bool TIDTable::CheckValOfVirtual(LavaDECL* VTDecl, bool cor)
        che = (CHETID*)che->successor) {
     decl = GetDECL(che->data, VTDecl->inINCL);
     if (decl) {
-      ok = IsAn(VTDecl->RefID, VTDecl->inINCL, decl->RefID, decl->inINCL);
-      if (!ok && cor) {
-        cheOver = new CHETID;
-        cheOver->data = decl->RefID; //they have the same inINCL
-        valDECL->Supports.Append(cheOver);
+      if (decl->TypeFlags.Contains(isAbstract))
         ok = true;
+      else {
+        ok = IsAn(VTDecl->RefID, VTDecl->inINCL, decl->RefID, decl->inINCL);
+        if (!ok && cor) {
+          cheOver = new CHETID;
+          cheOver->data = decl->RefID; //they have the same inINCL
+          valDECL->Supports.Append(cheOver);
+          ok = true;
+        }
       }
     }
     else

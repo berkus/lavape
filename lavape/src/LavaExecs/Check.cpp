@@ -4110,8 +4110,12 @@ bool FuncExpression::Check (CheckData &ckd)
     }
   }
   else { //static function
-    if (IsPH(function.ptr))
+    ok = ((SynObject*)function.ptr)->Check(ckd);
+    if (!ok)
       ERROREXIT
+//    if (IsPH(function.ptr))
+//      ERROREXIT
+
     callObjCat = unknownCategory;
     funcTid = ((Reference*)function.ptr)->refID;
     ADJUST4(funcTid);
