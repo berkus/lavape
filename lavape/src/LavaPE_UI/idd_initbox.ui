@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>201</width>
-            <height>207</height>
+            <height>248</height>
         </rect>
     </property>
     <property name="sizePolicy">
@@ -39,7 +39,7 @@
         </property>
         <widget class="QLayoutWidget">
             <property name="name">
-                <cstring>layout58</cstring>
+                <cstring>layout9</cstring>
             </property>
             <vbox>
                 <property name="name">
@@ -87,11 +87,39 @@
                             <property name="focusPolicy">
                                 <enum>StrongFocus</enum>
                             </property>
+                            <property name="frameShape">
+                                <enum>LineEditPanel</enum>
+                            </property>
+                            <property name="frameShadow">
+                                <enum>Sunken</enum>
+                            </property>
                             <property name="alignment">
                                 <set>AlignLeft</set>
                             </property>
                         </widget>
                     </vbox>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>m_const</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>0</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>StrongFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Read-only</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
                 </widget>
                 <widget class="QCheckBox">
                     <property name="name">
@@ -289,11 +317,16 @@
 </connections>
 <tabstops>
     <tabstop>m_NewName</tabstop>
+    <tabstop>m_const</tabstop>
     <tabstop>m_Transaction1</tabstop>
+    <tabstop>m_Synch1</tabstop>
+    <tabstop>m_Concurrent1</tabstop>
+    <tabstop>PushButton_IDOK14</tabstop>
+    <tabstop>PushButton_IDCANCEL14</tabstop>
+    <tabstop>ID_HELP11</tabstop>
 </tabstops>
 <includes>
     <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
-    <include location="local" impldecl="in implementation">idd_initbox.ui.h</include>
 </includes>
 <slots>
     <slot>m_Transaction1_clicked()</slot>

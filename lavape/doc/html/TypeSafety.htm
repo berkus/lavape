@@ -16,21 +16,17 @@
     <H2 ALIGN="center">Static type-safety of <I><FONT COLOR="#ff0000">Lava</FONT></I>,
     related work</H2>
 
-    <P ALIGN="left"><B>See also:&nbsp;&nbsp;
-      <A HREF="../../Download/LavaVirtualTypes.pdf">LavaVirtualTypes.pdf</A>
-      </B>(The subsequent presentation is more up to date, however.)</P>
-
     <P ALIGN="left">Before we can proceed to the outline of a proof of the
       static type-safety of <B><I><FONT COLOR="#ff0000">Lava</FONT></I></B>
       we have to introduce a number of terms, to clarify several pertinent
       notions, and to explain a number of general restrictions that we impose on
-      the <A HREF="#compatibilit">admissibility of assignments</A> in order to
+      the <A HREF="#compatibility">admissibility of assignments</A> in order to
       achieve <A HREF="#typeSafety">static type-safety</A> for <B><I><FONT COLOR="#ff0000">Lava</FONT></I></B>.</P>
 
     <H3><B>1.&nbsp; Semantics of &quot;type conformance&quot;</B></H3>
 
-    <P>In the presence of <A HREF="PatternsFrameworks.htm#multiform1">multiform
-        types</A> and type parameters the semantics of the statement &quot;object
+    <P>In the presence of <a href="PatternsFrameworks.htm#multiform">multiform
+        types</a> and type parameters the semantics of the statement &quot;object
       x conforms to type Y&quot; has to be reconsidered.</P>
 
     <P>For instance, if x has been conceived and created as a List[Car], is it
@@ -213,7 +209,7 @@
       any pattern).</P>
 
     <P>The LPC of any piece of executable code that is contained in a member
-      function or constraint of an interface ITF is the pattern that contains
+      function or invariant of an interface ITF is the pattern that contains
       (and possibly comprises) the declaration of ITF (or the &quot;empty&quot;
       context NULLPC if ITF is not contained in any pattern).</P>
 
@@ -255,8 +251,8 @@
       <P><B>(L2) </B>ST(var) is <I>multiform</I> and contained in the
         LPC(var).<BR>
         <BR>
-        Then if var is referenced from within a local or member function or
-        constraint<BR>
+        Then if var is referenced from within a local or member function or 
+      invariant<BR>
         then EPC(var) = <A HREF="#SELFPC">SELFPC<BR>
           </A>else EPC(var) = LPC(var) (&quot;<B>EPC is static</B>&quot;).<BR>
         <BR>

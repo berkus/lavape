@@ -352,7 +352,7 @@ public:
   bool NullAdmissible (CheckData &ckd);
   bool ExpressionSelected (CHETokenNode *currentSelection);
   bool HasOptionalParts ();
-  virtual bool InReadOnlyContext();
+  virtual bool InReadOnlyContext(); // = InReadOnlyClause or in read-only Exec
   virtual bool InReadOnlyClause();
   virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec) {
     roExec = false; return false; }

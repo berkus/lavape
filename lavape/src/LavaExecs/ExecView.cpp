@@ -938,7 +938,6 @@ void CExecView::OnChar(QKeyEvent *e)
   case Qt::Key_Right:
     Select(RightSibling());
     break;
-  case Qt::Key_Return:
     if (EnableInsert()) {
       OnInsert();
       if (text->currentSelection->data.token == VarPH_T
@@ -950,6 +949,22 @@ void CExecView::OnChar(QKeyEvent *e)
     }
     else if (text->currentSynObj->IsStatement())
       OnAnd();
+    break;
+  case Qt::Key_F1:
+	  ((wxMainFrame*)wxTheApp->mainWidget())->helpContents();
+    break;
+  case Qt::Key_Return:
+    if (EnableInsert()) {
+      OnInsert();
+      if (text->currentSelection->data.token == VarPH_T) {
+        doubleClick = true;
+        Select();
+        doubleClick = false;
+      }
+    }
+    else if (text->currentSynObj->IsStatement())
+      OnAnd();
+    break;
   default:
     ;
   }
@@ -4569,8 +4584,8 @@ void CExecView::OnNextError()
         return;
       }
     }
-    QMessageBox::critical(this, qApp->name(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-/*    for ( currToken = (CHETokenNode*)text->tokenChain.first;
+//    QMessageBox::critical(this, qApp->name(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    for ( currToken = (CHETokenNode*)text->tokenChain.first;
           currToken;
           currToken = (CHETokenNode*)currToken->successor) {
       if ((currToken->data.flags.Contains(primToken)
@@ -4582,11 +4597,10 @@ void CExecView::OnNextError()
 			  sv->viewport()->update();
         return;
       }
-    }*/
+    }
   }
   else
     QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-//    AfxMessageBox(&ERR_NoErrors,MB_ICONINFORMATION|MB_OK);
 }
 
 void CExecView::OnPrevError()
@@ -4621,8 +4635,8 @@ void CExecView::OnPrevError()
         return;
       }
     }
-    QMessageBox::critical(this, qApp->name(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-/*    for ( currToken = (CHETokenNode*)text->tokenChain.last;
+//    QMessageBox::critical(this, qApp->name(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    for ( currToken = (CHETokenNode*)text->tokenChain.last;
           currToken;
           currToken = (CHETokenNode*)currToken->predecessor) {
       if ((currToken->data.flags.Contains(primToken)
@@ -4634,7 +4648,7 @@ void CExecView::OnPrevError()
 			  sv->viewport()->update();
         return;
       }
-    }*/
+    }
   }
   else
     QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
@@ -4657,8 +4671,8 @@ void CExecView::OnNextComment()
       return;
     }
   }
-  QMessageBox::critical(this, qApp->name(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-/*  for ( currToken = (CHETokenNode*)text->tokenChain.first;
+//  QMessageBox::critical(this, qApp->name(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  for ( currToken = (CHETokenNode*)text->tokenChain.first;
         currToken != startToken;
         currToken = (CHETokenNode*)currToken->successor) {
     if (currToken->data.token == Comment_T) {
@@ -4668,7 +4682,7 @@ void CExecView::OnNextComment()
 			sv->viewport()->update();
       return;
     }
-  }*/
+  }
 }
 
 void CExecView::OnPrevComment()
@@ -4687,8 +4701,8 @@ void CExecView::OnPrevComment()
       return;
     }
   }
-  QMessageBox::critical(this, qApp->name(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-/*  for (currToken = (CHETokenNode*)text->tokenChain.last;
+//  QMessageBox::critical(this, qApp->name(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  for (currToken = (CHETokenNode*)text->tokenChain.last;
        currToken != startToken;
        currToken = (CHETokenNode*)currToken->predecessor) {
     if (currToken->data.token == Comment_T) {
@@ -4698,7 +4712,7 @@ void CExecView::OnPrevComment()
 			sv->viewport()->update();
       return;
     }
-  }*/
+  }
 }
 
 void CExecView::OnConflict() 
@@ -5460,7 +5474,7 @@ void CExecView::OnUpdateEvaluate(wxAction* action)
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
   
   action->setEnabled(!Taboo() && (text->currentSynObj->StatementSelected(text->currentSelection)
-    || (text->currentSynObj->ExpressionSelected(text->currentSelection) && text->currentSynObj->BoolAdmissibleOnly(text->ckd))));
+    || (text->currentSynObj->ExpressionSelected(text->currentSelection) /*&& text->currentSynObj->BoolAdmissibleOnly(text->ckd)*/)));
   
 }
 
@@ -5469,7 +5483,7 @@ void CExecView::OnUpdateCopy(QPushButton *pb)
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && !text->currentSynObj->InReadOnlyContext()); 
+    && !text->currentSynObj->InReadOnlyClause()); 
 }
 
 void CExecView::OnUpdateToggleSubstitutable(wxAction* action) 

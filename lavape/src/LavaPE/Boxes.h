@@ -327,7 +327,7 @@ public:
 
 
 public slots:
-  virtual void m_Transaction1_clicked() {}
+//  virtual void m_Transaction1_clicked() {}
   virtual void OnOK();
   virtual void PushButton_IDCANCEL14_clicked() {QDialog::reject();}
   virtual void ID_HELP11_clicked();

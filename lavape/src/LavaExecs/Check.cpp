@@ -1871,8 +1871,11 @@ bool SelfVar::OutputCheck (CheckData &ckd) {
 
 bool SelfVar::IsReadOnlyClause(SynObject *synObj, bool &roExec)
 {
-  if (primaryToken == constraint_T
-    || myDECL->TypeFlags.Contains(isConst)) {
+  if (primaryToken == constraint_T) {
+    roExec = false;
+    return true;
+  }
+  else if (myDECL->TypeFlags.Contains(isConst)) {
     roExec = true;
     return true;
   }
@@ -3118,26 +3121,6 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   if (!parentObject->IsFuncInvocation())
     return ok;
 
-  if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
-    return ok;
-
-  decl = ckd.document->IDTable.GetDECL(((Reference*)funcExpr->function.ptr)->refID,ckd.inINCL);
-
-  if (!decl|| flags.Contains(brokenRef))
-    return ok;
-
-  if (!decl->TypeFlags.Contains(isConst))
-    if (InReadOnlyContext()) {
-      funcExpr->SetError(ckd,&ERR_NonROCallInROClause);
-      return false;
-    }
-    else if (!((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd)
-    && !flags.Contains(isSelfVar)
-    && !flags.Contains(isTempVar)) {
-      SetError(ckd,&ERR_ImmutableCallObj);
-      return false;
-    }
-
   if (refIDs.first == refIDs.last)
     if (flags.Contains(isTempVar))
       return true;
@@ -3150,6 +3133,28 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       }
       else
         return ok;
+    }
+
+  if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
+    return ok;
+
+  decl = ckd.document->IDTable.GetDECL(((Reference*)funcExpr->function.ptr)->refID,ckd.inINCL);
+
+  if (!decl|| flags.Contains(brokenRef))
+    return ok;
+
+  if (!decl->TypeFlags.Contains(isConst))
+    if (InReadOnlyContext()
+    && (!flags.Contains(isSelfVar)
+        || refIDs.first != refIDs.last)) {
+      funcExpr->SetError(ckd,&ERR_NonROCallInROClause);
+      return false;
+    }
+    else if (!((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd)
+    && !flags.Contains(isSelfVar)
+    && !flags.Contains(isTempVar)) {
+      SetError(ckd,&ERR_ImmutableCallObj);
+      return false;
     }
 
   return ok;
@@ -3909,13 +3914,16 @@ bool FuncExpression::Check (CheckData &ckd)
 
   ENTRY
 
+  if (!IsPH(function.ptr))
+    ok &= ((SynObject*)function.ptr)->Check(ckd);
+
   callExpr = (Expression*)handle.ptr;
   if (callExpr) {
     ok &= callExpr->Check(ckd);
     if (!ok) {
       if (((SynObject*)function.ptr)->primaryToken == FuncPH_T)
         ((SynObject*)function.ptr)->primaryToken = FuncDisabled_T;
-      ERROREXIT
+//      ERROREXIT
     }
     else if (((SynObject*)function.ptr)->primaryToken == FuncDisabled_T)
       ((SynObject*)function.ptr)->primaryToken = FuncPH_T;
@@ -3923,7 +3931,6 @@ bool FuncExpression::Check (CheckData &ckd)
 
   if (IsPH(function.ptr))
     ERROREXIT;
-  ok &= ((SynObject*)function.ptr)->Check(ckd);
 
   if (callExpr) {
     ckd.tempCtx = ckd.lpc;
@@ -5455,7 +5462,7 @@ bool CopyStatement::Check (CheckData &ckd)
 
   ENTRY
 
-  if (InReadOnlyContext()) {
+  if (InReadOnlyClause()) {
     SetError(ckd,&ERR_AssignInQuery);
     ERROREXIT
   }

@@ -503,7 +503,8 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
   bool inUndoRedo = (undoRedoCheck == 1) || (undoRedoCheck == 2);
   updateTree = updateTree || !foreignHint;
   drawTree = drawTree || (undoRedoCheck == CHLV_fit)
-                      || hint && (hint->com == CPECommand_FromOtherDoc) && !hint->FirstLast.Contains(noDrawHint);
+                      || hint && (hint->com == CPECommand_FromOtherDoc) && !hint->FirstLast.Contains(noDrawHint)
+                        && !((CLavaPEApp*)wxTheApp)->inTotalCheck;
   if (!updateTree)
     return;
   updateTree = !lastUpdate;
@@ -4958,7 +4959,7 @@ void CLavaPEView::okRename(CTreeItem *item)
 void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView) 
 {
   CTreeItem* sel;
-  if (GetDocument()->mySynDef) {
+  if (GetDocument()->mySynDef && !((CLavaPEApp*)wxTheApp)->inTotalCheck) {
     if (bActivate) {
       sel = (CTreeItem*)GetListView()->currentItem();
       SetErrAndCom(sel);

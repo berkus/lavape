@@ -241,6 +241,8 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
     return false;
   else if (parentObject->primaryToken == intIntv_T)
     return false;
+  else if (parentObject->IsFuncInvocation())
+    return false;
 
   return true;
 }
@@ -315,6 +317,8 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
   else if (parentObject->primaryToken == item_T)
     return false;
   else if (parentObject->primaryToken == intIntv_T)
+    return false;
+  else if (parentObject->IsFuncInvocation())
     return false;
 
   return true;
@@ -633,7 +637,8 @@ bool SynObject::InReadOnlyContext () {
   bool roExec=false;
 
   while (parent) {
-    if (parent->IsReadOnlyClause(obj,roExec))
+    if (parent->IsReadOnlyClause(obj,roExec)
+    || roExec)
       return true;
     obj = parent;
     parent = parent->parentObject;

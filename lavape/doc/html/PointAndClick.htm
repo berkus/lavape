@@ -39,9 +39,9 @@
         <OL>
           <LI><b>&quot;execs&quot;</b> (= &quot;bodies&quot;) of functions and of &quot;initiators&quot;
             (= main programs),</LI>
-          <LI><a name="constraint"></a><b>&quot;constraints&quot;</b> that may be associated with interfaces
+          <LI><a name="constraint"></a><b>&quot;invariants&quot;</b> that may be associated with interfaces
             and that must be fulfilled whenever a new object supporting the
-            respective interface has been completed. (Only the constraint of the
+            respective interface has been completed. (Only the invariant of the
             new object's interface is executed, not those of base interfaces.)</LI>
         </OL> </LI>
     </UL>
@@ -68,7 +68,7 @@
     <HR>
     
     <P>The <B>exec view</B> is a quite normal textual representation of an &quot;exec&quot;
-      or &quot;constraint&quot;. But although it uses the standard Windows &quot;rich
+      or &quot;invariant&quot;. But although it uses the standard Windows &quot;rich
       edit view&quot;, it is not editable directly as text. The executable
       program text is rather constructed from a number of basic statement,
       expression, and special constructs which typically would contain &quot;placeholders&quot;
@@ -84,7 +84,7 @@
       parser or compiler. The point-and click operations of the programmer
       generate / manipulate an internal tree representation of the
       <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> program <I>directly</I>.
-      The textual representation of execs / constraints is generated on the fly
+      The textual representation of execs / invariants is generated on the fly
       as long as a corresponding view is open.</P>
     
     <P><A HREF="EditExec.htm">Here</A> you can find more details about

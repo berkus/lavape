@@ -1247,15 +1247,17 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
 	HistWindow *hw;
 	DString title;
 	
-	if (ev->data()) {
-		title = DString(((QWidget*)ev->data())->caption());
-		if (title.l) {
-			if (title[title.l-1] == '*')
-				title = title.Substr(0,title.l-1);
-			hw = new HistWindow(title,(wxMDIChildFrame*)ev->data());
-			m_childFrameHistory->AddToHistory(hw,this);
-		}
-	}
+  if (ev->data()) {
+    if ( !((CLavaPEApp*)wxTheApp)->inTotalCheck) { //to prevent crash if mdi-frame already closed
+		  title = DString(((QWidget*)ev->data())->caption());
+		  if (title.l) {
+			  if (title[title.l-1] == '*')
+				  title = title.Substr(0,title.l-1);
+			  hw = new HistWindow(title,(wxMDIChildFrame*)ev->data());
+			  m_childFrameHistory->AddToHistory(hw,this);
+		  }
+    }
+  }
 	else
 		switch (lastTile) {
 		case 0:

@@ -62,6 +62,7 @@ public:
   virtual void fileExit();
   void LoadFileHistory();
 	wxHistory *GetWindowHistory () { return m_childFrameHistory; }
+  virtual void helpContents() {};
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);

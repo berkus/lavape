@@ -402,7 +402,10 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
     lab += DString(" := Component obj. impl.");
     break;
   case Initiator:
-    lab += DString(" := Initiator");
+    if (elDef->TypeFlags.Contains(isConst))
+      lab += DString(" := Read-only initiator");
+    else
+      lab += DString(" := Initiator");
     break;
   case Package:
     errCode = Doc->CheckScope(elDef);

@@ -36,7 +36,7 @@ Im Hahnböhl 11A
 D-64342 Seeheim, GERMANY
 
 E-mail:
-  guenthk@users.sourceforge.net
+  mailto:guenthk@users.sourceforge.net
 
 Lava home page:
   http://lavape.sourceforge.net 

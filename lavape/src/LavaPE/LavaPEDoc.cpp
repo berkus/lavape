@@ -3181,9 +3181,10 @@ void CLavaPEDoc::OnTotalCheck()
         doc->openInTotalCheck = false;
       }
       else 
-        if (doc && !docopen)
+        if (doc && !docopen) {
           doc->openInTotalCheck = true;
-          //doc->OnCloseDocument(); dies führte in einem mfc-Programm zum Absturz
+          doc->OnCloseDocument(); //dies führte in einem mfc-Programm zum Absturz
+        }
     }
   }
   messStr = DString("Total check finished: ");

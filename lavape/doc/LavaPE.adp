@@ -166,6 +166,9 @@
 				<keyword ref="html/SingleAssigLogSem.htm">assignment, single</keyword>
 				<keyword ref="html/SingleAssigLogSem.htm">single assignment</keyword>
 			</section>
+			<section ref="html/ReadOnly.htm" title="Read-only Lava constructs and functions">
+			 	<keyword ref="html/dialogs/ReadOnly.htm">read-only in general</keyword>
+			</section>
 			<section ref="html/StagesSample.htm" title="Stages in the life of Lava objects">
 				<keyword ref="html/StagesSample.htm#initializer">constructor</keyword>
 				<keyword ref="html/StagesSample.htm#creation">object</keyword>
@@ -284,6 +287,7 @@
 				<keyword ref="html/EditExec.htm#constraint">constraint</keyword>
 				<keyword ref="html/EditExec.htm">exec</keyword>
 				<keyword ref="html/EditExec.htm">placeholder</keyword>
+				<keyword ref="html/EditExec.htm#constraint">invariant</keyword>
 			</section>
 			<section ref="html/EditForm.htm" title="Editing form specifications">
 				<keyword ref="html/EditForm.htm">forms, automatic generation</keyword>
@@ -299,6 +303,7 @@
 				<section ref="html/dialogs/FieldLayoutBox.htm" title="Field layout in forms"/>
 				<section ref="html/dialogs/FunctionBox.htm" title="Function">
 			 		 <keyword ref="html/dialogs/FunctionBox.htm#static">functions</keyword>
+			 		 <keyword ref="html/dialogs/FunctionBox.htm#readOnly">read-only functions</keyword>
 				</section>
 				<section ref="html/dialogs/FuncParmBox.htm" title="Function parameter"/>
 				<section ref="html/dialogs/ImplementationBox.htm" title="Implementation"/>
@@ -405,5 +410,4 @@
 		<section ref="Copyright.htm" title="GNU Free Documentation License"/>
 	</DCF>
 </assistantconfig>
-
 

@@ -50,7 +50,7 @@
     Web pages and mail-boxes, all kinds of objects that are managed by 
     continuous system services. They are all made accessible through the same 
     operations <font color="#0000FF"><b>new</b></font>, <font color="#0000FF">
-    <b>attach</b></font>, and possibly <b><font color="#0000FF">query interface</font></b>, 
+    <A NAME="attach"></A><b>attach</b></font>, and possibly <b><font color="#0000FF">query interface</font></b>, 
     for processing through specific interfaces.</p>
     <p ALIGN="JUSTIFY">E.g., Web pages may be processed through the interface(s) 
     of a &quot;Document Object Model&quot; (DOM), files through read/write interfaces. 
@@ -61,7 +61,7 @@
     attributes, and that supports multiple inheritance (which is needed for 
     CORBA).</p>
     <p ALIGN="JUSTIFY">
-    <img border="1" src="../images/ComponentDemo.png" align="left" hspace="10" width="401" height="323">The name space of type identifiers is specific to the 
+    <img border="1" src="ComponentDemo.png" align="left" hspace="10" width="401" height="323">The name space of type identifiers is specific to the 
     respective kind of components. E.g., for Microsoft-COM components it is a 16 
     byte &quot;class ID&quot; (CLSID). The URLs of persistent objects have 
     various formats. For Web pages they consist of the usual Internet URL 
@@ -70,9 +70,9 @@
     <i><b>Lava </b></i></font>programming environment contains an <b>import 
     command</b> for components. Given a concrete component of any kind, its 
     purpose is to generate a <font color="#FF0000">
-    <i><b>Lava </b></i></font><b>component object specification</b> for all 
+    <i><b>Lava </b></i></font><b><a name="COS"></a>component object specification</b> for all 
     types of component objects that are supported by that component. A component 
-    object specification is primarily a list of <b>component object interfaces</b> 
+    object specification is primarily a list of <b><a name="COI"></a>component object interfaces</b> 
     that are supported by the respective component object.</p>
     <p ALIGN="JUSTIFY"><i><font color="#FF0000"><b>Lava</b></font></i> will also 
     support event handlers (callbacks, notifications) following the conventions 

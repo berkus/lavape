@@ -4,9 +4,11 @@
 <HTML>
   
   <HEAD>
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
     <META NAME="Author" CONTENT="Klaus D. Günther">
     <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
     <TITLE>Function property sheet</TITLE>
     <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
   </HEAD>
@@ -52,9 +54,13 @@
       invoked only from functions contained in the implementation of this or a
       derived interface.</P>
     
-    <H3>Read-only</H3>
+    <H3><a name="readOnly"></a>Read-only</H3>
     
-    <P>A read-only function must not modify its <I>self</I> object.</P>
+    <P>A function is &quot;read-only&quot; if its entire body has the 
+    <a href="../ReadOnly.htm">&quot;read-only&quot; 
+    property</a>, which means that it must not change any pre-existing objects, 
+    i.e., objects that existed already when the evaluation of the function body 
+    started.</P>
     
     <h3><a name="static"></a>Static</h3>
     

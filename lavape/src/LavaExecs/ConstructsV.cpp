@@ -1244,11 +1244,20 @@ void CopyStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   ENTRY
   t.Insert(primaryToken,true);
   t.Blank();
-  DRAW(fromObj.ptr);
-  t.Blank();
-  t.Insert(onto_T);
-  t.Blank();
-  DRAW(ontoObj.ptr);
+  if (t.leftArrows) {
+    DRAW(ontoObj.ptr);
+    t.Blank();
+    t.Insert(Larrow_T);
+    t.Blank();
+    DRAW(fromObj.ptr);
+  }
+  else {
+    DRAW(fromObj.ptr);
+    t.Blank();
+    t.Insert(Rarrow_T);
+    t.Blank();
+    DRAW(ontoObj.ptr);
+  }
   EXIT
 }
 

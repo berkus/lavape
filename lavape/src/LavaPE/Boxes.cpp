@@ -2096,6 +2096,7 @@ ValOnInit CInitBox::OnInitDialog()
 
   if (onNew) {
     m_Transaction1->setChecked(false);
+    m_const->setChecked(true);
     valSynch = 0;
   }
   else {
@@ -2103,6 +2104,10 @@ ValOnInit CInitBox::OnInitDialog()
       m_Transaction1->setChecked(true);
     else
       m_Transaction1->setChecked(false);
+    if (myDECL->TypeFlags.Contains(isConst)) 
+      m_const->setChecked(true);
+    else
+      m_const->setChecked(false);
     if (myDECL->TypeFlags.Contains(execConcurrent)) 
       valSynch = 1;
     /*
@@ -2139,6 +2144,10 @@ void CInitBox::OnOK()
     myDECL->TypeFlags.INCL(isTransaction); 
   else
     myDECL->TypeFlags.EXCL(isTransaction); 
+  if (m_const->isOn())
+    myDECL->TypeFlags.INCL(isConst); 
+  else
+    myDECL->TypeFlags.EXCL(isConst); 
 //  myDECL->TypeFlags.EXCL(execIndependent);
   myDECL->TypeFlags.INCL(execIndependent);
   myDECL->TypeFlags.EXCL(execConcurrent);
@@ -2514,7 +2523,7 @@ void CInterfaceBox::OnOK()
         fdecl->ParentDECL = myDECL;
         fdecl->LocalName = DString("FillOut");
         fdecl->FullName = myDECL->FullName + fdecl->LocalName;
-        fdecl->TypeFlags += SET(isGUI, isNative,-1);
+        fdecl->TypeFlags += SET(isGUI, isNative, isConst,-1);
         che = NewCHE(fdecl);
         myDECL->NestedDecls.Append(che);
  

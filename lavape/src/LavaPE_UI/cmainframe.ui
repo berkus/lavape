@@ -79,7 +79,7 @@
         <separator/>
         <action name="setTreeFontAction"/>
         <action name="SetFormFontsAction"/>
-        <item text="Set form fonts" name="PopupMenuEditor_44">
+        <item text="Set form fonts" name="PopupMenuEditor_44" accel="">
             <action name="setFormTextFontAction"/>
             <action name="setFormLabelFontAction"/>
             <action name="setFormButtonFontAction"/>
@@ -730,6 +730,12 @@
         <property name="menuText">
             <string>Show/hide optionals</string>
         </property>
+        <property name="toolTip">
+            <string>Show/hide optional parts of selected entity</string>
+        </property>
+        <property name="statusTip">
+            <string>Show/hide optional parts of selected entity</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -747,6 +753,12 @@
         <property name="menuText">
             <string>Show all optionals</string>
         </property>
+        <property name="toolTip">
+            <string>Show all optional parts in whole sub-tree</string>
+        </property>
+        <property name="statusTip">
+            <string>Show all optional parts in whole sub-tree</string>
+        </property>
     </action>
     <action>
         <property name="name">
@@ -763,6 +775,12 @@
         </property>
         <property name="menuText">
             <string>Hide empty optionals</string>
+        </property>
+        <property name="toolTip">
+            <string>Hide empty optional parts in whole sub-tree</string>
+        </property>
+        <property name="statusTip">
+            <string>Hide empty optional parts in whole sub-tree</string>
         </property>
     </action>
     <action>

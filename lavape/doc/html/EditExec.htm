@@ -13,7 +13,7 @@ rel=STYLESHEET type=text/css></HEAD>
 <h2 align="center">Editing executable code</h2>
 
 <p align="left">Executable code is represented in the <a href="EditTree.htm">declaration
-tree</a> by the keywords &quot;exec&quot; and &quot;constraint&quot;. You may
+tree</a> by the keywords &quot;exec&quot; and &quot;invariant&quot;. You may
 double-click these keywords or click the spectacles <B>
 <IMG SRC="../images/Spectacles.png" ALT="Open property sheet" ALIGN="ABSMIDDLE" width="22" height="20">
  </B> to view the code in the <B><I><FONT color=#ff0000>Lava</FONT></I></B> 
@@ -40,7 +40,8 @@ required.</B></P>
 <P><B>Clicking a special <I>insertion button</I>  or pressing the RETURN key causes an additional "empty" 
 copy of a repeatable sub-construct to be inserted after or before the selected
 copy (depending on the current state of the </B><b>"Insert before"</b><B> </B><b>button
-</b><IMG align=absMiddle 
+</b>
+<IMG align=absMiddle 
 alt="insert before" height=19 src="../images/InsertBefore.png" width=20><B>).</B></P>
 <P><B><A href="StructEdAdvant.htm"><B>Advantages of <FONT 
 color=#ff0000><I>Lava</I></FONT> structure editing</B></A> </B></P>
@@ -54,18 +55,21 @@ must be associated with executable code:</P>
   an <b>exec</b>, too. A member function of an interface is automatically included in 
   all implementations of that interface, but its exec occurs only in the 
   implementation, not in the interface. 
-  <LI><B><a name="constraint"></a>Constraints</B> of interfaces. An interface need not have a constraint, 
+  <LI><B><a name="constraint"></a>Invariants</B> of interfaces/implementations. An interface 
+  or implementation need not have an 
+  invariant, 
   but if it has one, then it is executed automatically whenever a newly created 
   object supporting this interface leaves the respective object creation 
-  construct (&quot;new&quot; or "clone"). (Only the constraint of the new
-    object's interface is executed, not those of base interfaces.)&nbsp; </LI></UL>
+  construct (&quot;new&quot; or "clone"). (Not only the invariant of the new 
+  object's interface/implementation is executed but also those of base interfaces, 
+  base invariants first, interface invariants first.)&nbsp; </LI></UL>
 <P>In the <B><I><FONT color=#ff0000>LavaPE</FONT></I></B> tree view execs and 
-constraints are associated with a specific little icon 
-<IMG align=absMiddle 
-alt="exec icon" src="../Samples/LavaIcons/constrai.png" width="21" height="15">which 
+invariants are associated with a specific little icon 
+<IMG 
+alt="exec icon" src="../images/constrai.png" width="21" height="15">which 
 you may double-click to open the corresponding <B><I><FONT 
 color=#ff0000>LavaPE</FONT></I></B> exec view. Alternatively you may 
-<I>select</I> the exec/constraint node of the declaration tree and then click 
+<I>select</I> the exec/invariant node of the declaration tree and then click 
 the spectacles 
 <IMG align=absMiddle alt=spectacles 
 src="../images/Spectacles.png" width="22" height="20"> on the <A 
@@ -105,7 +109,8 @@ corresponding statement template.</P>
 <P>If you have selected an existing statement, rather than a placeholder, and if 
 you then click one of the enabled statement tool buttons then the corresponding 
 statement template is<B> inserted after</B> or <B>before</B> the selected 
-statement, depending on the state of the "Insert before" tool button <IMG 
+statement, depending on the state of the "Insert before" tool button 
+<IMG 
 align=absMiddle alt="insert before" height=19 src="../images/InsertBefore.png" 
 width=20>. If the selected statement was an operand of a logical conjunction 
 (<B><FONT color=#0000ff>and</FONT></B> / <FONT color=#0000ff><B><FONT 
@@ -122,7 +127,8 @@ alt="insert placeholder" src="../images/InsertCopy.png" width="21" height="20"> 
 press the RETURN key then 
 a new placeholder <FONT color=#ff0000>&lt;stm&gt;</FONT> is<B> inserted 
 after</B> or <I><B><FONT color=#ff0000>before</FONT></B></I> the selected 
-statement, depending on the state of the "Insert before" tool button <IMG 
+statement, depending on the state of the "Insert before" tool button 
+<IMG 
 align=absMiddle alt="insert before" height=19 src="../images/InsertBefore.png" 
 width=20>. The same rule as in the preceding paragraph applies to the logical 
 conjunction that is used for the new placeholder.</P>
@@ -151,7 +157,8 @@ and if you then click the "Insert empty copy" tool button
 alt="insert placeholder" src="../images/InsertCopy.png" width="21" height="20"> then 
 a new placeholder <FONT color=#ff0000>&lt;expr&gt;</FONT> is inserted 
 <B>after</B> or <B>before</B> the selected expression, depending on the state of 
-the "Insert before" tool button <IMG align=absMiddle alt="insert before" 
+the "Insert before" tool button 
+<IMG align=absMiddle alt="insert before" 
 height=19 src="../images/InsertBefore.png" width=20>. But note that for 
 expressions the "Insert empty copy" button is only enabled if the selected 
 expression is an operand of an operation supporting multiple operands, like "+" 
@@ -183,17 +190,20 @@ color=#0000ff>delete</FONT></B> statements and of the <B><FONT
 color=#0000ff>select</FONT></B> expression. They all begin, except for the 
 quantifiers, with a characteristic keyword which you can click to select the 
 entire clause. You can delete the selected clause in the usual way using the 
-scissors <IMG align=absMiddle alt=scissors 
+scissors 
+<IMG align=absMiddle alt=scissors 
 src="../images/Scissors.png" width="16" height="20"> or the <B>DEL</B> key. You can click the 
 "Insert empty copy" button to insert a new template of this kind of clauses 
 <B>after</B> or <B>before</B> the selected clause, depending on the state of the 
-"Insert before" tool button <IMG align=absMiddle alt="insert before" height=19 
+"Insert before" tool button 
+<IMG align=absMiddle alt="insert before" height=19 
 src="../images/InsertBefore.png" width=20>.</P>
 <P>The quantifiers of <B><FONT color=#0000ff>declare</FONT></B> don't contain 
 any keyword that could be clicked to select the entire quantifier clause. As a 
 substitute you can select the <FONT color=#ff0000>&lt;type&gt;</FONT> 
 placeholder or the specified concrete type reference that has replaced it before 
-you click <IMG align=absMiddle alt=scissors 
+you click 
+<IMG align=absMiddle alt=scissors 
 src="../images/Scissors.png" width="16" height="20">or 
 <IMG align=absMiddle 
 alt="insert placeholder" src="../images/InsertCopy.png" width="21" height="20"> or 
@@ -205,7 +215,8 @@ selected also by clicking their characteristic <B><FONT
 color=#0000ff>in</FONT></B> keyword.</P>
 <P>Every quantifier contains a list of one or several variables. You can use 
 <IMG align=absMiddle alt="insert placeholder" 
-src="../images/InsertCopy.png" width="21" height="20">, <IMG align=absMiddle 
+src="../images/InsertCopy.png" width="21" height="20">, 
+<IMG align=absMiddle 
 alt="insert before" height=19 src="../images/InsertBefore.png" width=20>, 
 <IMG 
 align=absMiddle alt=Cut/Copy/Paste src="../images/CutCopyPaste.png" width="70" height="22">, and <B>DEL</B> in the obvious way for these. </P>
@@ -236,7 +247,8 @@ Comments are shown directly within the exec text, while in the tree view they
 are displayed in the comment page of the utility window if you select a 
 commented tree node.</P>
 <P><B>Error navigation</B></P>
-<P>The two buttons <IMG align=absMiddle alt=Errors 
+<P>The two buttons 
+<IMG align=absMiddle alt=Errors 
 src="../images/Errors.png" width="48" height="23"> may be used to open/close the error message 
 window and to step from error to error in forward or backward direction. If you 
 select a faulty (=red) construct then the first error message referring to that 
@@ -326,7 +338,8 @@ constructed &quot;1 + 2&quot; and you want to make this sum appear as the second
 factor of a product &quot;<font color="#FF0000">&lt;expr&gt;</font> * (1 +
 2)&quot;, then just do the following:</p>
 <ol>
-  <li>Depress the &quot;Insert before&quot; button <IMG align=absMiddle alt="insert before" 
+  <li>Depress the &quot;Insert before&quot; button 
+  <IMG align=absMiddle alt="insert before" 
 height=19 src="../images/InsertBefore.png" width=20>. This causes the <font color="#FF0000">&lt;expr&gt;</font>
     to be inserted <i>before</i> the &quot;1 + 2&quot;.</li>
   <li>Select the entire sum &quot;1 + 2&quot;: Either click the plus sign, or
