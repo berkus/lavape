@@ -321,7 +321,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
       lab += decl->FullName;
       cheImpl = (CHETID*)decl->ImplIDs.first;
       while (cheImpl) {
-        decl2 = Doc->IDTable.GetDECL(cheImpl->data, decl->inINCL);
+        decl2 = Doc->IDTable.GetDECL(cheImpl->data);//, decl->inINCL);
         nextImpl = (CHETID*)cheImpl->successor;
         if (!decl2) 
           decl->ImplIDs.Delete(cheImpl);
@@ -606,7 +606,7 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
   CMainItemData *itd, *oldItd;
   LavaDECL *elDef = *pelDef;
   CTreeItem* item;
-  if (viewTree->drawTree) {
+  if (viewTree->drawTree || elDef->WorkFlags.Contains(newTreeNode)) {
     if (ActItem) 
       ActItem = viewTree->InsertItem(label.c, bm, parent, ActItem);
     else
@@ -634,6 +634,7 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
         itd->synEl = (DWORD)pelDef;
     }
   }
+  elDef->WorkFlags.EXCL(newTreeNode);
   itd = new CMainItemData(TIType_DECL,  (unsigned long) pelDef, elDef->TreeFlags.Contains(isExpanded));
   ActItem->setItemData(itd);
   bool labelEditEnable = (elDef->DeclType != Impl)

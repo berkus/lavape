@@ -278,12 +278,12 @@ void SelfVar::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
     return;
   default: ;
   }
-  if (primaryToken != initiator_T) // function/initializer or constraint
+  if (primaryToken != initiator_T) // function/initializer or invariant
     if (update == onCopy
       || update == onMove) {
       if (update == onMove)
         VarName::MakeTable (table,inINCL,parent,update,(address)&execDECL->Exec.ptr,0,searchData);
-      if (execDECL->ParentDECL->DeclType == Interface) //constraint
+      if (execDECL->ParentDECL->DeclType == Interface) //invariant
         typeID = TID(execDECL->ParentDECL->OwnID,0);
       else // function/initializer
         if (execDECL->ParentDECL->ParentDECL)

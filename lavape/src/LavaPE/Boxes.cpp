@@ -1386,7 +1386,7 @@ ValOnInit CFuncBox::OnInitDialog()
     else
       m_ConstFunc->setChecked(false);
     if (myDECL->TypeFlags.Contains(isInitializer)) {
-      m_ConstFunc->setEnabled(false); 
+      m_ConstFunc->setEnabled(true); 
       m_Protected->setEnabled(false);
       m_Initializer->setChecked(true);
       m_DefaultIni->setEnabled(!hasParams

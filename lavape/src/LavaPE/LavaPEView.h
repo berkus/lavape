@@ -23,12 +23,12 @@ enum TIType {
   TIType_DECL,         // LavaDECL node
   TIType_CHEEnumSel,   // enum item node 
   TIType_EnumItems,    // enum items node    //this is not a node in syntax
-  TIType_VTypes,       // virtual type node //this is not a node in syntax
+  TIType_VTypes,       // virtual type node  //this is not a node in syntax
   TIType_Input,        // input node         //this is not a node in syntax
   TIType_Output,       // output node        //this is not a node in syntax
   TIType_Defs,         // local pattern node //this is not a node in syntax
   TIType_Features,     // local member node  //this is not a node in syntax
-  TIType_Constraint,   // constraint node    //this is not a node in syntax
+  TIType_Constraint,   // invariant node     //this is not a node in syntax
   TIType_Refac,        // only used as return value
   TIType_NoType
 };

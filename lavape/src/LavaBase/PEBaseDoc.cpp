@@ -1106,7 +1106,7 @@ void SortCombo(QComboBox* lbox)
 {
   CListItem* item = (CListItem*)lbox->listBox()->item(0);
   QString tt = item->text();
-  item->setText("0");
+  item->setText("\0");
   lbox->listBox()->sort(true);
   item->setText(tt);
 }

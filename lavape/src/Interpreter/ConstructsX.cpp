@@ -196,7 +196,7 @@ QString SynObject::CallStack(CheckData &ckd,LavaVariablePtr crashStack) {
       stack = (LavaVariablePtr)stack[last];
       switch (oldSynObj->primaryToken) {
       case constraint_T:
-        path = QString("\n| constraint of ")
+        path = QString("\n| invariant of ")
                + ((SelfVar*)oldSynObj)->myDECL->FullName.c
                + ", file " + cFileName + "\n" + path;
         continue;
@@ -2096,7 +2096,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
         return (LavaObjectPtr)-1;
       }
     }
-    if (execDECL) { // invoke constraint if it exists
+    if (execDECL) { // invoke invariant if it exists
       unsigned frameSize=((SelfVar*)execDECL->Exec.ptr)->stackFrameSize,
                last=(frameSize>>2)-1;
       LavaVariablePtr newStackFrame;

@@ -72,8 +72,8 @@ static int ContainTab [FormDef+1] [DragIO+1] = {
   /*FormDef*/    {  0,  0,  0,  0,  0,  0,  0,   0,   0,   0,  0,  1,  0,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0, 0 }, //FormDef
 };
 /* 
-   Note: Interfaces with Component flag and/or notification flag have no input, output and constraint.
-         Functions have no fields (DeclType = Attr) and no constraint.
+   Note: Interfaces with Component flag and/or notification flag have no input, output and invariant.
+         Functions have no fields (DeclType = Attr) and no invariant.
 */
 
 
@@ -726,7 +726,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
       || (parentType == Impl) ) 
     Constraint = DString("Exec");
   else
-    Constraint = DString("Constraint");
+    Constraint = DString("Invariant");
   if (!node) {
     if ((*(LavaDECL**)synEl)->TreeFlags.Contains(hasEmptyOpt)) {
       TDeclType gpt = Impl;
@@ -1059,7 +1059,7 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
       || (parentType == Impl) ) 
     Constraint = DString("Exec");
   else
-    Constraint = DString("Constraint");
+    Constraint = DString("Invariant");
   if ((parentType == Function) && (parent != GetListView()->firstChild())) {
     gp = (CTreeItem*)parent->parent();
     gp = (CTreeItem*)gp->parent();
@@ -2240,9 +2240,9 @@ bool CLavaPEView::DoRefac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
   del_d4 = (LavaDECL**)((CMainItemData*)itemDropParent->getItemData())->synEl;
   clipDECL = (LavaDECL*)Clipdata->synEl;  
   dragView = (CLavaPEView*)DragDoc->DragView;
-  itemData = (CMainItemData*)m_hitemDrag->getItemData();
+  itemData = (CMainItemData*)dragView->m_hitemDrag->getItemData();
   if (itemData->type == TIType_DECL)
-    pos = dragView->GetPos(0, m_hitemDrag);
+    pos = dragView->GetPos(0, dragView->m_hitemDrag);
   else
     pos = dragView->GetPos(0, 0);
   itemP = (CTreeItem*)dragView->m_hitemDrag->parent();
@@ -2333,9 +2333,9 @@ bool CLavaPEView::DoRefac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
       }
     }
     dragView = (CLavaPEView*)DragDoc->DragView;
-    itemData = (CMainItemData*)m_hitemDrag->getItemData();
+    itemData = (CMainItemData*)dragView->m_hitemDrag->getItemData();
     if (itemData->type == TIType_DECL)
-      pos = dragView->GetPos(0, m_hitemDrag);
+      pos = dragView->GetPos(0, dragView->m_hitemDrag);
     else
       pos = dragView->GetPos(0, 0);
     itemP = (CTreeItem*)dragView->m_hitemDrag->parent();
@@ -4197,7 +4197,7 @@ void CLavaPEView::SetErrAndCom(CTreeItem* item)
           decl = (LavaDECL*)che->data;
       }
       else
-        decl = 0; //no constraint node present
+        decl = 0; //no invariant node present
     }
     if (decl) {
       if (decl->DECLComment.ptr)

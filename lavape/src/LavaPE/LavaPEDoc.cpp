@@ -176,8 +176,8 @@ bool CLavaPEDoc::OpenCView(LavaDECL* cDECL)
     ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
   }
 
-  if (!execChild->isMaximized()
-  && wxDocManager::GetOpenDocCount() == 1
+  if (/*!execChild->isMaximized()
+  && */wxDocManager::GetOpenDocCount() == 1
 	&& GetViewCount() == 4
   && MainView->GetParentFrame()->oldWindowState != QEvent::ShowMaximized)
 		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
@@ -371,7 +371,7 @@ DString CLavaPEDoc::GetTypeLabel(LavaDECL* elDef, bool goDown)
       lab = DString("Literal");
       break;
     case ExecDesc:
-      return DString("Constraint");
+      return DString("Invariant");
     default: 
       lab.Reset(0);
   }
@@ -1211,8 +1211,10 @@ bool CLavaPEDoc::CheckOverInOut(LavaDECL* funcDECL, int checkLevel)
         IODECL->SecondTFlags.INCL(overrides);
         IODECL->WorkFlags.EXCL(selAfter);
         cheIO = NewCHE(IODECL);
-        if (checkLevel > CHLV_inUpdateLow) 
+        if (checkLevel > CHLV_inUpdateLow) {
           IDTable.NewID((LavaDECL**)&cheIO->data);
+          IODECL->WorkFlags.INCL(newTreeNode);
+        }
         if (checkLevel > CHLV_inUpdateHigh) 
           modified = true;
         changed = true;
@@ -1436,7 +1438,7 @@ void CLavaPEDoc::MakeIniFunc(LavaDECL* ifDECL)
   fdecl->ParentDECL = ifDECL;
   fdecl->LocalName = DString("ini"); //myDECL->LocalName;
   fdecl->FullName = ifDECL->FullName + fdecl->LocalName;
-  fdecl->TypeFlags += SET(isInitializer, defaultInitializer,-1);
+  fdecl->TypeFlags += SET(isInitializer, defaultInitializer,isConst,-1);
   CHE* che = NewCHE(fdecl);
   ifDECL->NestedDecls.Append(che);
 }
@@ -1943,6 +1945,7 @@ bool CLavaPEDoc::CheckForm(LavaDECL* formDECL, int checkLevel)
             if (checkLevel > CHLV_inUpdateLow) {
               UpdateNo++;
               IDTable.NewID((LavaDECL**)&cheformEl->data);
+              formElDecl->WorkFlags.INCL(newTreeNode);
             }
             if (checkLevel > CHLV_inUpdateHigh) 
               modified = true;
@@ -2088,11 +2091,12 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         if (checkLevel > CHLV_inUpdateLow) {
           UpdateNo++;
           IDTable.NewID((LavaDECL**)&cheImplEl->data);
+          implElDecl->WorkFlags.INCL(newTreeNode);
         }
         if (checkLevel > CHLV_inUpdateHigh) 
           modified = true;
         if (checkLevel == CHLV_inUpdateHigh)
-          implDECL->WorkFlags.INCL(newTreeNode);;
+          implDECL->WorkFlags.INCL(newTreeNode);
       }
       else  {  
         fchanged = false;
@@ -2300,6 +2304,7 @@ bool CLavaPEDoc::CheckFuncImpl(LavaDECL* funcDECL, int checkLevel, bool& changed
       else {
         changed = true;
         IDTable.NewID((LavaDECL**)&cheIOEl->data);
+        ((LavaDECL*)cheIOEl->data)->WorkFlags.INCL(newTreeNode);
       }
 
     }
@@ -2358,6 +2363,7 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
         if (checkLevel > CHLV_inUpdateLow) {
           IDTable.NewID((LavaDECL**)&cheImplEl->data);
           newimplElDecl->ParentDECL = implDECL;
+          newimplElDecl->WorkFlags.INCL(newTreeNode);
         }
         if (checkLevel > CHLV_inUpdateHigh) 
           modified = true;
@@ -2371,6 +2377,7 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
         if (checkLevel > CHLV_inUpdateLow) {
           UpdateNo++;
           IDTable.NewID((LavaDECL**)&cheImplEl->data);
+          newimplElDecl->WorkFlags.INCL(newTreeNode);
         }
         if (checkLevel > CHLV_inUpdateHigh) 
           modified = true;

@@ -451,7 +451,7 @@ static void PutExecLink(DString fileName)
     code("Exec");
     break;
   default:
-    code("Constraint");
+    code("Invariant");
   }
   code("</I></B></A>");
 }
@@ -561,7 +561,7 @@ static void PutCategory(TDeclType myCategory,TDeclType &parentCategory, bool &fi
     default:
 			code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('X");
 			codeCard(currentNode->ParentDECL->OwnID);
-			code("')\">Constraint:</DIV>");
+			code("')\">Invariant:</DIV>");
     }
     break;
   }

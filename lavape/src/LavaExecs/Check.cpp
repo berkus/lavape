@@ -154,7 +154,7 @@ QString SynObject::LocationOfConstruct () {
       cSynObjName = QString("nil");
     else if (synObj->primaryToken == FuncRef_T) {
       if (synObj->parentObject->type == implementation_T)
-        cSynObjName = QString("(name of function/initiator/constraint)");
+        cSynObjName = QString("(name of function/initiator/invariant)");
     }
     else if (synObj->IsFuncInvocation())
       cSynObjName = QString(((Reference*)((FuncExpression*)synObj)->function.ptr)->refName.c)
@@ -216,7 +216,7 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
     msgText = QString(textParam) + msgText;
 
   if (ckd.myDECL->ParentDECL->DeclType == Interface)
-    cExecName = QString("constraint of ") + ckd.myDECL->ParentDECL->FullName.c;
+    cExecName = QString("invariant of ") + ckd.myDECL->ParentDECL->FullName.c;
   else
     cExecName = ckd.myDECL->ParentDECL->FullName.c;
   if (synObj->type == implementation_T)
@@ -994,7 +994,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         }
       }
       if (primaryToken == FuncRef_T && parentObject->IsFuncInvocation())
-        if (parentObject->parentObject)  //to exclude execName of a constraint
+        if (parentObject->parentObject)  //to exclude execName of a invariant
           if (((FuncExpression*)parentObject)->flags.Contains(staticCall)
           || !((FuncExpression*)parentObject)->handle.ptr) {
             if (((FuncExpression*)parentObject)->vtypeID.nID != -1) {
@@ -1869,6 +1869,19 @@ bool SelfVar::OutputCheck (CheckData &ckd) {
   return ok;
 }
 
+bool SelfVar::IsReadOnlyClause(SynObject *synObj, bool &roExec)
+{
+  if (primaryToken == constraint_T
+    || myDECL->TypeFlags.Contains(isConst)) {
+    roExec = true;
+    return true;
+  }
+  else {
+    roExec = false;
+    return false;
+  }
+}
+
 bool SelfVar::Check (CheckData &ckd)
 {
   RefTable refTable;
@@ -2045,11 +2058,6 @@ bool SucceedStatement::Check (CheckData &ckd)
 
   ENTRY
 
-/*  if (!OutputContext()) {
-    SetError(ckd,&ERR_NotFinitary);
-    ERROREXIT
-  }*/
-
   if (parentObject->IsMultOp()) {
     multOp = (MultipleOp*)parentObject;
     che = (CHE*)whereInParent;
@@ -2103,11 +2111,6 @@ bool FailStatement::Check (CheckData &ckd)
   SynFlags ctxFlags;
 
   ENTRY
-/*
-  if (!OutputContext()) {
-    SetError(ckd,&ERR_NotFinitary);
-    ERROREXIT
-  }*/
 
   if (parentObject->IsMultOp()) {
     multOp = (MultipleOp*)parentObject;
@@ -2785,7 +2788,7 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
   Category cat;
   SynFlags ctxFlags;
   QString *rc;
-  bool ok=true;
+  bool ok=true, inROcontext=InReadOnlyContext();
 
   if (flags.Contains(isLocalVar)
   && flags.Contains(isInForeach)) {
@@ -2793,8 +2796,16 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
     ok = false;
   }
 
+//    return AssignCheckReadOnly(ckd);
+
   if (refIDs.first == refIDs.last) { // single target variable
-    if (flags.Contains(isSelfVar)) {
+    if (inROcontext
+    && !flags.Contains(isDeclareVar)
+    && !flags.Contains(isOutputVar)) {
+      SetError(ckd,&ERR_AssignInQuery);
+      return false;
+    }
+    else if (flags.Contains(isSelfVar)) {
       if (InInitializer(ckd) && vrc == copyTarget) {
         fromExpr = (Expression*)((CopyStatement*)parentObject)->fromObj.ptr;
         fromExpr->ExprGetFVType(ckd,decl,cat,ctxFlags);
@@ -2828,51 +2839,54 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
   else { // path a.b. ...
     dw = ckd.document->IDTable.GetVar(((TDOD*)((CHE*)refIDs.last)->data)->ID,idtype,ckd.inINCL);
     decl = *(LavaDECL**)dw;
-    if (flags.Contains(isStateObjMember)) {
-      if (decl->TypeFlags.Contains(isConst)) {
-        if (!flags.Contains(isSelfVar)
-        || !InInitializer(ckd)) {
-          SetError(ckd,&ERR_AssigToRdOnly);
-          return false;
-        }
-      }
-      else if (ckd.myDECL->ParentDECL->TypeFlags.Contains(isConst)
-      && flags.Contains(isSelfVar)
-      && InConstituent(ckd)) {
-        ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_RdOnlyFunc);
-        return false;
-      }
-      else if (flags.Contains(isDeclareVar)
-      || flags.Contains(isOutputVar)) {
-        secondChe = (CHE*)((CHE*)refIDs.first)->successor;
-        ((CHE*)refIDs.first)->successor = 0;
-        if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this)) {
-          ((TDOD*)((CHE*)refIDs.first)->data)->SetError(ckd,rc,((TDOD*)((CHE*)refIDs.first)->data)->name.c);
-          ((CHE*)refIDs.first)->successor = secondChe;
-          return false;
-        }
-        else
-          ((CHE*)refIDs.first)->successor = secondChe;
-      }
+    if (inROcontext
+    && !(flags.Contains(isSelfVar)
+         && InInitializer(ckd)
+         && refIDs.first->successor == refIDs.last)) {
+      SetError(ckd,&ERR_AssignInQuery);
+      return false;
     }
-    // !isStateObjMember:
-    else if (((CHE*)refIDs.first)->successor == refIDs.last) {
-      if (!flags.Contains(isTempVar))
-        if (flags.Contains(isSelfVar)) {
-          if (ckd.myDECL->ParentDECL->TypeFlags.Contains(isConst)) { // assignment to self.mem in read-only function
-            ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_RdOnlyFunc);
+    else
+      if (flags.Contains(isStateObjMember)) {
+        if (decl->TypeFlags.Contains(isConst)) {
+          if (!flags.Contains(isSelfVar)
+          || !InInitializer(ckd)) {
+            SetError(ckd,&ERR_AssigToRdOnly);
             return false;
           }
         }
-        else {
-          ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_AssigToFrozen);
-          return false;
+        else if (flags.Contains(isDeclareVar)
+        || flags.Contains(isOutputVar)) {
+          secondChe = (CHE*)((CHE*)refIDs.first)->successor;
+          ((CHE*)refIDs.first)->successor = 0;
+          if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this)) {
+            ((TDOD*)((CHE*)refIDs.first)->data)->SetError(ckd,rc,((TDOD*)((CHE*)refIDs.first)->data)->name.c);
+            ((CHE*)refIDs.first)->successor = secondChe;
+            return false;
+          }
+          else
+            ((CHE*)refIDs.first)->successor = secondChe;
         }
-    }
-    else {
-      ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_AssigToFrozen);
-      return false;
-    }
+      }
+      // !isStateObjMember:
+      else if (((CHE*)refIDs.first)->successor == refIDs.last) {
+        if (!flags.Contains(isTempVar))
+          if (flags.Contains(isSelfVar)) {
+            if (ckd.myDECL->ParentDECL->TypeFlags.Contains(isConst)
+            && !InInitializer(ckd)) { // assignment to self.mem in read-only function != initializer
+              ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_RdOnlyFunc);
+              return false;
+            }
+          }
+          else {
+            ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_AssigToFrozen);
+            return false;
+          }
+      }
+      else {
+        ((SynObject*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_AssigToFrozen);
+        return false;
+      }
   }
 
   // finally prevent single-assignment violations
@@ -3075,8 +3089,8 @@ bool ObjReference::Inherited (CheckData &ckd) {
 bool ObjReference::ArrayTargetCheck (CheckData &ckd) {
   if (((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd))
     return true;
-  if (!OutputContext()) {
-    SetError(ckd,&ERR_NotFinitary);
+  if (InReadOnlyContext()) {
+    SetError(ckd,&ERR_AssignInQuery);
     ERROREXIT
   }
   if (!((SynObject*)((ArrayAtIndex*)parentObject)->arrayObj.ptr)->flags.Contains(isTempVar))
@@ -3099,6 +3113,31 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   LavaDECL *decl;
   bool ok=true;
 
+  ok = ReadCheck(ckd);
+
+  if (!parentObject->IsFuncInvocation())
+    return ok;
+
+  if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
+    return ok;
+
+  decl = ckd.document->IDTable.GetDECL(((Reference*)funcExpr->function.ptr)->refID,ckd.inINCL);
+
+  if (!decl|| flags.Contains(brokenRef))
+    return ok;
+
+  if (!decl->TypeFlags.Contains(isConst))
+    if (InReadOnlyContext()) {
+      funcExpr->SetError(ckd,&ERR_NonROCallInROClause);
+      return false;
+    }
+    else if (!((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd)
+    && !flags.Contains(isSelfVar)
+    && !flags.Contains(isTempVar)) {
+      SetError(ckd,&ERR_ImmutableCallObj);
+      return false;
+    }
+
   if (refIDs.first == refIDs.last)
     if (flags.Contains(isTempVar))
       return true;
@@ -3113,30 +3152,11 @@ bool ObjReference::CallCheck (CheckData &ckd) {
         return ok;
     }
 
-  ok = ReadCheck(ckd);
-
-  if (!parentObject->IsFuncInvocation())
-    return ok;
-
-  if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
-    return ok;
-
-  decl = ckd.document->IDTable.GetDECL(((Reference*)funcExpr->function.ptr)->refID,ckd.inINCL);
-  if (!decl
-  || decl->TypeFlags.Contains(isConst)
-  || flags.Contains(brokenRef))
-    return ok;
-  if (((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd))
-    return true;
-  else {
-    SetError(ckd,&ERR_ImmutableCallObj);
-    return false;
-  }
-
+  return ok;
 }
 
 bool ObjReference::Check (CheckData &ckd) {
-  bool ok=true;
+  bool ok1=true;
 
   if (parentObject->primaryToken == FormParm_T) {
     if (((RefTable*)ckd.refTable)->ReadCheck(ckd,this)) {
@@ -3146,13 +3166,14 @@ bool ObjReference::Check (CheckData &ckd) {
       }
       else if (!((TDOD*)((CHE*)refIDs.last)->data)->errorChain.first)
         SetError(ckd,&ERR_MissingInitialization,refName.c);
-      ok = false;
+      ok1 = false;
     }
   }
   else {
     ENTRY
+    ok1 = ok;
 
-    ok &= UpdateReference(ckd);
+    ok1 &= UpdateReference(ckd);
 
     if (flags.Contains(brokenRef))
       ERROREXIT
@@ -3161,24 +3182,24 @@ bool ObjReference::Check (CheckData &ckd) {
     switch (vrc) {
     case assignmentTarget:
     case copyTarget:
-      ok &= AssignCheck(ckd,vrc);
+      ok1 &= AssignCheck(ckd,vrc);
       break;
 
     case inputParam:
-      ok &= ReadCheck(ckd);
+      ok1 &= ReadCheck(ckd);
       break;
 
     case funcHandle:
-      ok &= CallCheck(ckd);
+      ok1 &= CallCheck(ckd);
       break;
 
     case arrayTarget:
-      ok &= ArrayTargetCheck(ckd);
+      ok1 &= ArrayTargetCheck(ckd);
       break;
     }
   }
 
-  return ok;
+  return ok1;
 }
 
 bool TDOD::IsStateObject (CheckData &ckd)
@@ -3448,10 +3469,10 @@ bool Assignment::Check (CheckData &ckd)
 
   ENTRY
 
-  if (!OutputContext()) {
-    SetError(ckd,&ERR_NotFinitary);
+/*  if (InReadOnlyContext()) {
+    SetError(ckd,&ERR_AssignInQuery);
     ERROREXIT
-  }
+  }*/
 
   ok &= targObj->Check(ckd);
   ckd.tempCtx = ckd.lpc;
@@ -4120,7 +4141,7 @@ bool FuncExpression::Check (CheckData &ckd)
 
 bool FuncStatement::Check (CheckData &ckd)
 {
-  CHE *chpActOut, *chpFormOut, *outParm, *oldError1;
+  CHE *chpActOut, *chpFormOut, *oldError1;
   Parameter *opd;
   SynFlags ctxFlags;
 	bool visibleParms=false;
@@ -4226,18 +4247,18 @@ bool FuncStatement::Check (CheckData &ckd)
         chpActOut = (CHE*)chpActOut->successor)  // delete remainder of parameter chain
     PutDelChainHint(ckd,this,&outputs,chpActOut);
 #endif
-
+/*
   for (outParm = (CHE*)outputs.first;
        outParm;
        outParm = (CHE*)outParm->successor) {
     if (!((SynObject*)((Parameter*)outParm->data)->parameter.ptr)->flags.Contains(ignoreSynObj))
       visibleParms = true;
   }
-  if (visibleParms && !OutputContext()) {
-    SetError(ckd,&ERR_NotFinitary);
+  if (visibleParms && InReadOnlyContext()) {
+    SetError(ckd,&ERR_AssignInQuery);
     ok = false;
   }
-
+*/
   EXIT
 }
 
@@ -4769,8 +4790,8 @@ bool Run::Check (CheckData &ckd)
   ENTRY
 
 
-  if (!OutputContext()) {
-    SetError(ckd,&ERR_NotFinitary);
+  if (InReadOnlyContext()) {
+    SetError(ckd,&ERR_AssignInQuery);
     ERROREXIT
   }
 
@@ -5101,12 +5122,12 @@ bool QuantStmOrExp::Check (CheckData &ckd)
 #endif
 
   ENTRY
-  if ((IsDeclare()
+/*  if ((IsDeclare()
       || ((Exists*)this)->updateStatement.ptr)
-  && !OutputContext()) {
-    SetError(ckd,&ERR_NotFinitary);
+  && InReadOnlyContext()) {
+    SetError(ckd,&ERR_AssignInQuery);
     ok = false;
-  }
+  }*/
 
   for (chp = (CHE*)quantifiers.first;
        chp;
@@ -5434,8 +5455,8 @@ bool CopyStatement::Check (CheckData &ckd)
 
   ENTRY
 
-  if (!OutputContext()) {
-    SetError(ckd,&ERR_NotFinitary);
+  if (InReadOnlyContext()) {
+    SetError(ckd,&ERR_AssignInQuery);
     ERROREXIT
   }
 

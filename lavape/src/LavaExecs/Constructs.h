@@ -548,11 +548,15 @@ class SynObject : public SynObjectBase {
   bool NullAdmissible(CheckData &ckd);
   bool ExpressionSelected(CHETokenNode *currentSelection);
   bool HasOptionalParts();
-  virtual bool InFinitaryClause(SynObject *synObj)
+  virtual bool InReadOnlyContext();
+  virtual bool InReadOnlyClause();
+  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec)
   {
+    roExec=false;
     return false;
   }
   virtual bool InInitializer(CheckData &ckd);
+  virtual bool InHiddenIniClause(CheckData &ckd,SynObject *&synObj);
   virtual bool IsArrayObj();
   virtual bool IsAssigTarget();
   virtual bool IsBinaryOp()
@@ -633,7 +637,6 @@ class SynObject : public SynObjectBase {
   {
     return false;
   }
-  bool OutputContext();
   bool StatementSelected(CHETokenNode *currentSelection);
   bool SameExec(LavaDECL *decl);
   virtual bool Check(CheckData &ckd);
@@ -1048,6 +1051,7 @@ class SelfVar : public VarName {
   {
     checked=false;
     concernExecs=false;
+    myView=0;
   }
   virtual bool IsEmptyExec();
   virtual bool IsSelfVar()
@@ -1060,6 +1064,7 @@ class SelfVar : public VarName {
   bool InitCheck(CheckData &ckd,bool inSelfCheck=true);
   bool InputCheck(CheckData &ckd);
   bool OutputCheck(CheckData &ckd);
+  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 
   virtual void CopyData (AnyType *from) {
@@ -1275,8 +1280,9 @@ class EvalExpression : public UnaryOp {
   {
     return false;
   }
-  virtual bool InFinitaryClause(SynObject *synObj)
+  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec)
   {
+    roExec=false;
     return true;
   }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
@@ -1437,7 +1443,11 @@ class LogicalNot : public UnaryOp {
   {
     return false;
   }
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec)
+  {
+    roExec=false;
+    return true;
+  }
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 
@@ -1523,7 +1533,7 @@ class MultipleOp : public Operation {
   }
   void MultipleOpInit(TToken primToken);
   virtual bool IsOptional(CheckData &ckd);
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
   virtual bool IsMultOp()
   {
     return true;
@@ -1982,7 +1992,7 @@ class IfThen : public Expression {
   NESTEDANY/*Expression*/ ifCondition;
   NESTEDANY/*Expression*/ thenPart;
   CHETokenNode *thenToken;
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
   virtual bool IsRepeatableClause(CHAINX *&chx);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -2038,7 +2048,7 @@ class IfxThen : public Expression {
   NESTEDANY/*Expression*/ ifCondition;
   NESTEDANY/*Expression*/ thenPart;
   CHETokenNode *thenToken;
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
   virtual bool IsRepeatableClause(CHAINX *&chx);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -2581,7 +2591,7 @@ class QuantStmOrExp : public Expression {
   {
     return false;
   }
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj,bool &roExec);
   virtual bool Check(CheckData &ckd);
   virtual bool InitCheck(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);

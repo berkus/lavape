@@ -359,6 +359,7 @@ public:
 	QPainter *p;
 
   void keyPressEvent (QKeyEvent *e);
+  void focusInEvent(QFocusEvent *ev);
   void contentsMousePressEvent (QMouseEvent *e);
   void contentsMouseDoubleClickEvent (QMouseEvent *e);
   void drawContents (QPainter *p, int clipx, int clipy, int clipw, int cliph);

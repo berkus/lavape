@@ -352,8 +352,12 @@ public:
   bool NullAdmissible (CheckData &ckd);
   bool ExpressionSelected (CHETokenNode *currentSelection);
   bool HasOptionalParts ();
-  virtual bool InFinitaryClause(SynObject *synObj) { return false; }
+  virtual bool InReadOnlyContext();
+  virtual bool InReadOnlyClause();
+  virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec) {
+    roExec = false; return false; }
   virtual bool InInitializer (CheckData &ckd);
+  virtual bool InHiddenIniClause (CheckData &ckd, SynObject *&synObj);
   virtual bool IsArrayObj();
   virtual bool IsAssigTarget();
   virtual bool IsBinaryOp () { return false; }
@@ -380,7 +384,6 @@ public:
   virtual bool IsThrow () { return false; }
   virtual bool IsUnaryOp () { return false; }
   virtual bool NestedOptClause (SynObject *optClause) { return false; }
-  bool OutputContext();
   bool StatementSelected (CHETokenNode *currentSelection);
   bool SameExec (LavaDECL *decl);
 
@@ -573,7 +576,7 @@ public:
   bool-- concernExecs, checked;
   CContext-- selfCtx;
 
-  SelfVar () { checked = false; concernExecs = false; }
+  SelfVar () { checked = false; concernExecs = false; myView = 0;}
   virtual bool IsEmptyExec();
   virtual bool IsSelfVar() { return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
@@ -582,6 +585,7 @@ public:
   bool InitCheck (CheckData &ckd, bool inSelfCheck=true);
   bool InputCheck (CheckData &ckd);
   bool OutputCheck (CheckData &ckd);
+  virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
 
@@ -655,7 +659,8 @@ public:
 
   virtual bool IsUnaryOp() { return false; }
   virtual bool IsOptional (CheckData &ckd) { return false; };
-  virtual bool InFinitaryClause(SynObject *synObj) { return true; }
+  virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec) {
+    roExec = false; return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -699,7 +704,8 @@ class MinusOp : public UnaryOp {
 class LogicalNot : public UnaryOp {
 public:
   virtual bool IsOptional (CheckData &ckd) { return false; };
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec) {
+    roExec = false; return true; }
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
@@ -732,7 +738,7 @@ public:
   void MultipleOpInit (TToken primToken);
 
   virtual bool IsOptional (CheckData &ckd);
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec);
   virtual bool IsMultOp () { return true; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
@@ -865,7 +871,7 @@ public:
   NESTEDANY<Expression> thenPart;
   CHETokenNode-- *thenToken;
 
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -888,7 +894,7 @@ public:
   NESTEDANY<Expression> thenPart;
   CHETokenNode-- *thenToken;
 
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1116,7 +1122,7 @@ public:
   unsigned-- nQuantVars;
 
   virtual bool IsExists () { return false; }
-  virtual bool InFinitaryClause(SynObject *synObj);
+  virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec);
   virtual bool Check (CheckData &ckd);
   virtual bool InitCheck (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);

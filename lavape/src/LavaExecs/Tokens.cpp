@@ -260,7 +260,7 @@ void Tokens_INIT ()
   ATO("concurrent");
   ATO("when");
   ATO("const");
-  ATO("constraint");
+  ATO("invariant");
   ATO("copy");
   ATO("declare");
   ATO("delete");

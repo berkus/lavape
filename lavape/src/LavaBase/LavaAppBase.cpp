@@ -939,7 +939,7 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
   else {
     bool err = ((CLavaBaseDoc*)fromDoc)->throwError;
     ((CLavaBaseDoc*)fromDoc)->throwError = false;
-    CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, fromDoc, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread);
+    CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, fromDoc, (const unsigned long)3,(const unsigned long)curThr);
 		QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaEnd,(void*)hint));
     if (((CLavaBaseDoc*)fromDoc)->ThreadList) {
       thrL = ((CLavaBaseDoc*)fromDoc)->ThreadList;

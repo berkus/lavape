@@ -308,7 +308,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 
   tb->addSeparator();
 
-  newKwdToolbutton(tb,LBaseData->setButton,"set",SLOT(set()),"Assignment statement: \"s\"");
+  newKwdToolbutton(tb,LBaseData->setButton,"&set",SLOT(set()),"Assignment statement: \"s\"");
   newKwdToolbutton(tb,LBaseData->newButton,"&new",SLOT(newExpr()),"Create a new object: \"n\"");
   newKwdToolbutton(tb,LBaseData->cloneButton,"clone",SLOT(clone()),"Clone an object");
   newKwdToolbutton(tb,LBaseData->copyButton,"&copy",SLOT(copy()),"Copy an object onto another object: \"c\"");

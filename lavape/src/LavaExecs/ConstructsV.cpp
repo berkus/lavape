@@ -1138,8 +1138,11 @@ void NewExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
       DRAW(initializerCall.ptr);
       NLdecIndent(t);
     }
-    else if (butStatement.ptr)
-      t.NewLine();
+    else {
+      ((SynObject*)initializerCall.ptr)->startToken = 0;
+      if (butStatement.ptr)
+        t.NewLine();
+    }
 
     if (butStatement.ptr) {
       t.Insert(but_T,false,true);

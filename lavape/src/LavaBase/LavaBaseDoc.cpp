@@ -288,6 +288,8 @@ CHESimpleSyntax* CLavaBaseDoc::IncludeSyntax(DString& fn, bool& isNew, int hint)
     hasIncludes = TRUE;
     cheSyn = AddSyntax(isyntax, fn, errEx, hint);
     SynIO.DeleteSynDef(isyntax);
+    if (!LBaseData->inRuntime)
+      IDTable.SetImplIDs(false);
   }
   return cheSyn;
 }

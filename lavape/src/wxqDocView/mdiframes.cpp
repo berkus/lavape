@@ -247,9 +247,12 @@ void wxMainFrame::OnCloseWindow()
 wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
     : QMainWindow(parent,name,WDestructiveClose)
 {
+  QSize sz = ((wxMainFrame*)qApp->mainWidget())->GetClientWindow()->size();
+
   m_viewCount = 0;
   deleting = false;
   m_clientWindow = this;
+  resize(sz.width()*7/10, sz.height()*7/10);
   if (wxTheApp->isChMaximized)
 	  oldWindowState = QEvent::ShowMaximized;
   else
@@ -262,7 +265,6 @@ bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   if (!temp->m_viewClassInfo)
     return false;
-  QSize sz = ((wxMainFrame*)qApp->mainWidget())->GetClientWindow()->size();
   wxView *view = (wxView *)temp->m_viewClassInfo(GetClientWindow(),doc);
   setCentralWidget(view);
   view->SetDocument(doc);
@@ -270,7 +272,6 @@ bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     showMaximized();
   else
     showNormal();
-  resize(sz.width()*7/10, sz.height()*7/10); 
   if (view->OnCreate()) {
     wxDocManager::GetDocumentManager()->SetActiveView(view, true);
     return true;

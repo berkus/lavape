@@ -133,7 +133,7 @@ DString CExecFrame::CalcTitle(LavaDECL *decl)
       || parDECL->DeclType == Impl)
     title += ": Exec";
   else
-    title += ": Constraint";
+    title += ": Invariant";
   return title;
 }
 

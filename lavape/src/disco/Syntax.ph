@@ -187,7 +187,7 @@ $TYPE +CDP {
     hasEmptyOpt,    
     //7, 128
     leftArrows,
-    //8, 256 in constraint: assignment arrows from right to left
+    //8, 256 in exec: assignment arrows from right to left
 
     FREE_FLAG9,
     FREE_FLAG10,
@@ -374,7 +374,7 @@ $TYPE +CDP {
     allowDEL,
     //15, allow function implementation to be deleted
     nonEmptyConstraint,
-    //16, constraint was non-empty
+    //16, invariant was non-empty
     isReferenced,
     //17, formal parameter is referenced in exec body
     skipOnCopy,

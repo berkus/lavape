@@ -2182,14 +2182,12 @@ stop:     ckd.document->throwError = false;
         }
       }
       catch (CHWException* ex) {
-//        AfxMessageBox(ex->message, MB_OK|MB_ICONSTOP);
         critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex->message),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
       }
       catch (CRuntimeException* ex) {
-//        AfxMessageBox(ex->message, MB_OK|MB_ICONSTOP);
         critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex->message),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
@@ -2204,7 +2202,6 @@ stop:     ckd.document->throwError = false;
       }
       catch(CException *) {
         // For other exception types, notify user here.
-//        AfxMessageBox("Unknown exception during check or execution of Lava program",MB_OK|MB_ICONSTOP);
         critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
@@ -2214,7 +2211,6 @@ stop:     ckd.document->throwError = false;
       }
       catch(int) {
         // For stack overflow, notify user here.
-//        AfxMessageBox("Stack overflow!",MB_OK|MB_ICONSTOP);
         critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
@@ -2223,7 +2219,6 @@ stop:     ckd.document->throwError = false;
         return 0;
       }
       if (newStackFrame) {
-        //delete [] newStackFrame;
 #ifdef WIN32
         __asm {
           add esp, frameSize
@@ -2232,14 +2227,12 @@ stop:     ckd.document->throwError = false;
         delete [] newStackFrame;
 #endif
       }
-//      AfxMessageBox(msg, MB_OK+MB_ICONINFORMATION);
       information(qApp->mainWidget(),qApp->name(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
       QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaEnd,(void*)hint));
       return 1;
     }
     else {
-//      AfxMessageBox("No executable initiator in the first definition position", MB_OK+MB_ICONSTOP);
       critical(qApp->mainWidget(),qApp->name(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       ckd.document->throwError = false; //07.05.2002
       LavaEnd(ckd.document, true);  //07.05.2002
@@ -2247,7 +2240,6 @@ stop:     ckd.document->throwError = false;
     }
   }
   else {
-//    AfxMessageBox("No initiator in the first definition position", MB_OK+MB_ICONSTOP);
     critical(qApp->mainWidget(),qApp->name(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     ckd.document->throwError = false;  //07.05.2002
     LavaEnd(ckd.document, true);  //07.05.2002

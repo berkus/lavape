@@ -229,6 +229,8 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
       return false;
 
   }
+  else if (parentObject->IsBinaryOp())
+    return false;
   else if (parentObject->primaryToken == attach_T)
     return false;
   else if (parentObject->primaryToken == qua_T)
@@ -302,6 +304,8 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
       return false;
 
   }
+  else if (parentObject->IsBinaryOp())
+    return false;
   else if (parentObject->primaryToken == attach_T)
     return false;
   else if (parentObject->primaryToken == qua_T)
@@ -607,16 +611,48 @@ bool SynObject::IsObjRef () {
     return false;
 }
 
-bool SynObject::OutputContext () {
-  SynObject *obj=this, *parent=parentObject;
+bool SynObject::InHiddenIniClause (CheckData &ckd, SynObject *&typeRef) {
+  SynObject *obj=this, *parent= parentObject;
 
   while (parent) {
-    if (parent->InFinitaryClause(obj))
-      return false;
+    if (parent->primaryToken == new_T
+    && obj == ((NewExpression*)parent)->initializerCall.ptr
+    && !obj->startToken) {
+      typeRef =  (SynObject*)((NewExpression*)parent)->objType.ptr;
+      return true;
+    }
     obj = parent;
     parent = parent->parentObject;
   }
-  return true;
+
+  return false;
+}
+
+bool SynObject::InReadOnlyContext () {
+  SynObject *obj=this, *parent=parentObject;
+  bool roExec=false;
+
+  while (parent) {
+    if (parent->IsReadOnlyClause(obj,roExec))
+      return true;
+    obj = parent;
+    parent = parent->parentObject;
+  }
+  return false;
+}
+
+bool SynObject::InReadOnlyClause () {
+  SynObject *obj=this, *parent=parentObject;
+  bool roExec=false;
+
+  while (parent) {
+    if (parent->IsReadOnlyClause(obj,roExec)
+    && !roExec)
+      return true;
+    obj = parent;
+    parent = parent->parentObject;
+  }
+  return false;
 }
 
 FormParm::FormParm (bool) {
@@ -668,10 +704,6 @@ ObjReference::ObjReference (TDODC &id,const char *name) {
   refName = STRING(name);
 }
 
-bool LogicalNot::InFinitaryClause(SynObject *) {
-  return true;
-}
-
 void MultipleOp::MultipleOpInit (TToken primToken) {
   primaryToken = primToken;
   type = PlaceHolderType(primaryToken);
@@ -679,7 +711,9 @@ void MultipleOp::MultipleOpInit (TToken primToken) {
   operands.Append(NewCHE());
 }
 
-bool MultipleOp::InFinitaryClause(SynObject *) {
+bool MultipleOp::IsReadOnlyClause(SynObject *, bool &roExec) {
+  roExec = false;
+
   switch (primaryToken) {
   //case or_T:
   case xor_T:
@@ -689,7 +723,9 @@ bool MultipleOp::InFinitaryClause(SynObject *) {
   }
 }
 
-bool QuantStmOrExp::InFinitaryClause(SynObject *synObj) {
+bool QuantStmOrExp::IsReadOnlyClause(SynObject *synObj, bool &roExec) {
+  roExec = false;
+
   if (IsDeclare())
     return false;
   if (synObj->whereInParent == (address)&statement.ptr)
@@ -710,7 +746,9 @@ bool IfThen::IsRepeatableClause (CHAINX *&chx) {
   return true;
 }
 
-bool IfThen::InFinitaryClause(SynObject *synObj) {
+bool IfThen::IsReadOnlyClause(SynObject *synObj, bool &roExec) {
+  roExec = false;
+
   if (synObj->whereInParent == (address)&ifCondition.ptr)
     return true;
   else
@@ -727,7 +765,9 @@ bool IfxThen::IsRepeatableClause (CHAINX *&chx) {
   return true;
 }
 
-bool IfxThen::InFinitaryClause(SynObject *synObj) {
+bool IfxThen::IsReadOnlyClause(SynObject *synObj, bool &roExec) {
+  roExec = false;
+
   if (synObj->whereInParent == (address)&ifCondition.ptr)
     return true;
   else

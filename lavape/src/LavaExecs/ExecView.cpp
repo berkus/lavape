@@ -239,11 +239,11 @@ void CExecView::OnInitialUpdate()
   selfVar->oldFormParms = 0;
   selfVar->concernExecs = false;
   text->ckd.inInitialUpdate = true;
+  active = true;
   OnUpdate((wxView*)pHint->CommandData2, 0, pHint);
 	sv->setFocus();
   text->ckd.inInitialUpdate = false;
   initialUpdateDone = true;
-  active = true;
 }
 
 void MyScrollView::SetTokenFormat (CHETokenNode *currToken) {
@@ -669,6 +669,11 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
   }
 }
 
+void MyScrollView::focusInEvent(QFocusEvent *ev) {
+  if (execView->initialUpdateDone)
+    execView->SetHelpText();
+}
+
 void MyScrollView::keyPressEvent (QKeyEvent *e) {
   execView->OnChar(e);
 }
@@ -693,7 +698,7 @@ void CExecView::OnChar(QKeyEvent *e)
     break;
   case Qt::Key_D:
     if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->OutputContext())
+    && !text->currentSynObj->InReadOnlyClause())
       OnDeclare();
     break;
   case Qt::Key_E:
@@ -730,7 +735,7 @@ void CExecView::OnChar(QKeyEvent *e)
     break;
   case Qt::Key_S:
     if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->OutputContext())
+    && !text->currentSynObj->InReadOnlyClause())
       OnAssign();
     break;
   case Qt::Key_T:
@@ -1003,7 +1008,7 @@ void CExecView::Select (SynObject *selObj)
   QString str, str2, msg;
   QPoint luCorner;
   QFont *pFont=&LBaseData->m_ExecFont;
-  SynObject *synObj, *typeSwitchExpression;
+  SynObject *synObj, *typeSwitchExpression, *typeRef;
   Expression *callExpr;
   ObjReference *objRef;
   CComment *pComment;
@@ -1025,17 +1030,23 @@ void CExecView::Select (SynObject *selObj)
   SynFlags ctxFlags;
 
   if (selObj) {
-    if (selObj->primaryToken == parameter_T)
-      selObj = (SynObject*)((Parameter*)selObj)->parameter.ptr;
-		
-		if (selObj->type == elsif_T)
+    if (selObj->InHiddenIniClause(text->ckd,typeRef)) {
+      text->Select(typeRef);
+    }
+    else if (selObj->primaryToken == parameter_T) {
+      text->Select((SynObject*)((Parameter*)selObj)->parameter.ptr);
+    }
+    else if (selObj->type == elsif_T) {
 			if (selObj->parentObject->primaryToken == if_T)
 				text->newSelection = ((IfThen*)selObj)->thenToken;
 			else
 				text->newSelection = ((IfxThen*)selObj)->thenToken;
-		else
+      text->Select();
+    }
+    else {
 			text->newSelection = selObj->primaryTokenNode;
-    text->Select(selObj);
+      text->Select(selObj);
+    }
   }
   else if (forcePrimTokenSelect && text->selectAt) {
     forcePrimTokenSelect = false;
@@ -2102,7 +2113,7 @@ void CExecView::OnAnd()
   
   if (!EditOK()) return;
 
-  if (text->currentSynObj->OutputContext())
+  if (!text->currentSynObj->InReadOnlyClause())
     InsMultOp(Semicolon_T,new SemicolonOpV());
   else
     InsMultOp(and_T,new AndOpV());
@@ -2522,7 +2533,7 @@ void CExecView::OnExists()
   // TODO: Add your command handler code here
   
   if (!EditOK()) return;
-  Exists *ex = new ExistsV(text->currentSynObj->OutputContext());
+  Exists *ex = new ExistsV(!text->currentSynObj->InReadOnlyContext());
   InsertOrReplace(ex);
 }
 
@@ -2531,7 +2542,7 @@ void CExecView::OnForeach()
   // TODO: Add your command handler code here
   
   if (!EditOK()) return;
-  Foreach *foreach = new ForeachV(text->currentSynObj->OutputContext());
+  Foreach *foreach = new ForeachV(!text->currentSynObj->InReadOnlyContext());
   InsertOrReplace(foreach);
 }
 
@@ -5458,7 +5469,7 @@ void CExecView::OnUpdateCopy(QPushButton *pb)
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->OutputContext()); 
+    && !text->currentSynObj->InReadOnlyContext()); 
 }
 
 void CExecView::OnUpdateToggleSubstitutable(wxAction* action) 
@@ -5531,7 +5542,7 @@ void CExecView::OnUpdateCall(QPushButton *pb)
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->OutputContext());
+    && !text->currentSynObj->InReadOnlyContext());
 }
 /*
 void CExecView::OnUpdateUuid(QPushButton *pb) 
@@ -5611,7 +5622,7 @@ void CExecView::OnUpdateAssign(QPushButton *pb)
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->OutputContext());
+    && !text->currentSynObj->InReadOnlyClause());
 }
 
 void CExecView::OnUpdateAttach(QPushButton *pb) 
@@ -5653,7 +5664,7 @@ void CExecView::OnUpdateFail(QPushButton *pb)
 	
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
-    /*&& text->currentSynObj->OutputContext()*/);
+    /*&& !text->currentSynObj->InReadOnlyContext()*/);
 }
 
 void CExecView::OnUpdateQua(QPushButton *pb) 
@@ -5782,7 +5793,7 @@ void CExecView::OnUpdateSucceed(QPushButton *pb)
 	
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
-    /*&& text->currentSynObj->OutputContext()*/);
+    /*&& !text->currentSynObj->InReadOnlyContext()*/);
 }
 
 void CExecView::OnUpdateEditPaste(wxAction* action) 
@@ -5831,7 +5842,7 @@ void CExecView::OnUpdateDeclare(QPushButton *pb)
   // TODO: Add your command update UI handler code here
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && text->currentSynObj->OutputContext());
+    && !text->currentSynObj->InReadOnlyClause());
 }
 
 void CExecView::OnUpdateFalse(wxAction* action) 

@@ -72,7 +72,7 @@
     Doing of a complete operation will start with the first operation command.
     Undoing of a complete operation will start with the last operation command.
   
-    You only can copy, paste, cut, drag, drop, delete or insert a pattern, a constraint,
+    You only can copy, paste, cut, drag, drop, delete or insert a pattern, an exec,
     a member (or CaseConstruct), an input member or output member.
   
                                |

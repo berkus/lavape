@@ -86,8 +86,8 @@
     ID_REPLACE = QObject::tr("Reuse an existing data object and change it ""in place""\nReuse and change object");
     ID_XOR = QObject::tr("""exclusive or"" conjunction between statements\n""exclusive or"" conjunction");
     ID_OR_ELSE = QObject::tr("<stm1> ""or else"" <stm2>:  <stm2> is verified only if <stm1> fails\nor else");
-    ID_TRUE = QObject::tr("Successful termination of current function/initializer/constraint\nSuccessful termination");
-    ID_FALSE = QObject::tr("Throw exception, terminate current function/initializer/constraint\nThrow exception");
+    ID_TRUE = QObject::tr("Successful termination of current function/initializer/invariant\nSuccessful termination");
+    ID_FALSE = QObject::tr("Throw exception, terminate current function/initializer/invariant\nThrow exception");
     ID_NULL = QObject::tr("Constant ""nothing/null/nil""; shortcut: 0\nNothing/null/nil");
     ID_CLASS_CALL = QObject::tr("Call a function via the virtual function table of its first input argument\nVirtual function call");
     ID_INVERT = QObject::tr("Invert bits of a BitSet / logical not of a Boolean; shortcut: !\nNot / invert bits");
@@ -102,7 +102,7 @@
     ID_ITEM = QObject::tr("Item <int> of <enum>\nItem <int> of <enum>");
     ID_QUA = QObject::tr("Make an extension object (of a more derived class)\nExtend object");
     ID_FAIL = QObject::tr("Current function/initializer/constraint returns ""false"" and possibly throws an exception\nFailure return with(out) exception");
-    ID_SUCCEED = QObject::tr("Successful termination of current function/initializer/constraint\nSuccessful termination");
+    ID_SUCCEED = QObject::tr("Successful termination of current function/initializer/invariant\nSuccessful termination");
     ID_ORD = QObject::tr("Ordinal (=Integer) value of enumerated item\nOrdinal of enum. item");
     ID_OR_EXCEPTION = QObject::tr("Exception handling ""or"" branch\nException handling");
 */
