@@ -1666,6 +1666,8 @@ bool HArrayUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr update
     return false;
 }
 
+//Exception
+
 bool LastException(CheckData& ckd, LavaVariablePtr stack)
 {
   IFC(ckd.lastException);
@@ -1710,6 +1712,19 @@ bool ExceptionDecFunc(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+bool ExceptionEq(CheckData& ckd, LavaVariablePtr stack)
+{
+  int ll, llast;
+  llast = LSH+2;
+  for (ll = LSH; ll < llast; ll++) {
+    if (*(stack[SFH] + ll) != *(stack[SFH+1] + ll)) 
+      if (!EqualObjects(ckd, *(LavaVariablePtr)(stack[SFH+1] + ll), *(LavaVariablePtr)(stack[SFH] + ll), 0))
+        return false;
+  }
+  return true;
+}
+
+//Callback
 bool CallbackExec(CheckData& /*ckd*/, LavaVariablePtr /*stack*/)
 {
   return true;
@@ -1870,7 +1885,7 @@ void MakeStdAdapter()
 
   ChainAdapter[0] = 0;
   ChainAdapter[1] = 0;
-  ChainAdapter[2] = 0;
+  ChainAdapter[2] = DefaultEq;
   ChainAdapter[3] = 0; 
   ChainAdapter[4] = 0; 
   ChainAdapter[5] = 0; 
@@ -1887,7 +1902,7 @@ void MakeStdAdapter()
   //(CHE*)(Che+LSH+1): the disco-CHE
   CheAdapter[0] = (TAdapterFunc)((sizeof(CHE)+3)/4 + (sizeof(LavaObjectPtr)+3)/4);
   CheAdapter[1] = 0;
-  CheAdapter[2] = DefaultEq;
+  CheAdapter[2] = 0,//DefaultEq;
   CheAdapter[3] = 0;
   CheAdapter[4] = CheNewFunc;
   CheAdapter[5] = 0;
@@ -1907,7 +1922,7 @@ void MakeStdAdapter()
 
   ExceptionAdapter[0] = 0;
   ExceptionAdapter[1] = 0;
-  ExceptionAdapter[2] = DefaultEq;
+  ExceptionAdapter[2] = ExceptionEq;//DefaultEq;
   ExceptionAdapter[3] = 0;
   ExceptionAdapter[4] = 0;
   ExceptionAdapter[5] = ExceptionDecFunc;
