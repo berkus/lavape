@@ -47,7 +47,6 @@
 #include "qtextedit.h"
 #include "qassistantclient.h"
 #include "LavaBaseStringInit.h"
-//#include "LavaPEFrames.h"
 #include "Resource.h"
 #include "LavaExecsStringInit.h"
 #include "debugStop.xpm"
