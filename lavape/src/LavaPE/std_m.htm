@@ -1,0 +1,1293 @@
+<HTML>
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="GENERATOR" CONTENT="Lava HTML Generator">
+<TITLE>std_m</TITLE>
+<LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaIcons/LavaStyles.css">
+<SCRIPT LANGUAGE="JavaScript" SRC="LavaIcons/toggleDisplay.js" TYPE="text/javascript">
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" SRC="LavaIcons/gotoTarget.js" TYPE="text/javascript">
+</SCRIPT>
+</HEAD>
+<BODY>
+<CENTER><H1>std_m</H1>
+<A HREF="#index"><B>Go To Symbol Index</B></A><BR>
+</CENTER><BR><BR><DIV CLASS=Element>
+<A NAME="0"></A><IMG SRC="LavaIcons/package.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S0')">
+<B>package</B>
+<DIV ID="S0">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('D1')">Declarations:</DIV>
+<DIV ID="D1">
+<DIV class="Element"><A NAME="1"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S1')">
+Object := <B>interface</B>
+<DIV ID="S1">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F385')">Features:</DIV>
+<DIV ID="F385">
+<DIV class="Element"><A NAME="385"></A><I><FONT COLOR=#009000>
+Default finalization function; causes immediate
+ "zombification/invalidation" of the respective object
+ if called explicitly. May be overridden
+ in derived classes. Is called automatically
+ when an object isn't referenced any longer.</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png">
+Finalize := <B>read-only</B> <B>function</B></DIV>
+<DIV class="Element"><A NAME="2"></A><I><FONT COLOR=#009000>
+If "self" and "op1" are value objects
+ then they are compared constituent-wise
+ (like with "Equals");
+ if they are state objects then they are
+ compared for identity (like with "SameAs").</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S2')">
+operator "=" := <B>read-only</B> <B>function</B>
+<DIV ID="S2">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I3')">Input:</DIV>
+<DIV ID="I3">
+<DIV class="Element"><A NAME="3"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="4"></A><I><FONT COLOR=#009000>
+If "self" and "op1" are value objects
+ then they are compared constituent-wise
+ (like with "Equals");
+ if they are state objects then they are
+ compared for identity (like with "SameAs").</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S4')">
+operator "!=" := <B>read-only</B> <B>function</B>
+<DIV ID="S4">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I5')">Input:</DIV>
+<DIV ID="I5">
+<DIV class="Element"><A NAME="5"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="181"></A><I><FONT COLOR=#009000>
+Checks if "self" and op1 are identical
+ (in the same way as state objects are compared)</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S181')">
+IsSameAs := <B>read-only</B> <B>function</B>
+<DIV ID="S181">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I182')">Input:</DIV>
+<DIV ID="I182">
+<DIV class="Element"><A NAME="182"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="183"></A><I><FONT COLOR=#009000>
+Compares "self" and op1 constituent by constituent
+ (in the same way as value objects are compared)</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S183')">
+IsEqualTo := <B>read-only</B> <B>function</B>
+<DIV ID="S183">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I184')">Input:</DIV>
+<DIV ID="I184">
+<DIV class="Element"><A NAME="184"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="399"></A><I><FONT COLOR=#009000>
+Call "DontSave" to prevent a Lava component object
+ from being saved automatically when it isn't
+ referenced any longer.</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S399')">
+DontSave := <B>read-only</B> <B>function</B>
+<DIV ID="S399">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I404')">Input:</DIV>
+<DIV ID="I404">
+<DIV class="Element"><A NAME="404"></A><IMG SRC="LavaIcons/basicatt.png">
+dontSave : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="6"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S6')">
+Bitset := <B>interface</B>
+<DIV ID="S6">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F7')">Features:</DIV>
+<DIV ID="F7">
+<DIV class="Element"><A NAME="7"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S7')">
+operator "&" := <B>read-only</B> <B>function</B>
+<DIV ID="S7">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I8')">Input:</DIV>
+<DIV ID="I8">
+<DIV class="Element"><A NAME="8"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O9')">Output:</DIV>
+<DIV ID="O9">
+<DIV class="Element"><A NAME="9"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="10"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S10')">
+operator "|" := <B>read-only</B> <B>function</B>
+<DIV ID="S10">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I11')">Input:</DIV>
+<DIV ID="I11">
+<DIV class="Element"><A NAME="11"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O12')">Output:</DIV>
+<DIV ID="O12">
+<DIV class="Element"><A NAME="12"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="13"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S13')">
+operator "||" := <B>read-only</B> <B>function</B>
+<DIV ID="S13">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I14')">Input:</DIV>
+<DIV ID="I14">
+<DIV class="Element"><A NAME="14"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O15')">Output:</DIV>
+<DIV ID="O15">
+<DIV class="Element"><A NAME="15"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="244"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S244')">
+operator "¬" := <B>function</B>
+<DIV ID="S244">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O245')">Output:</DIV>
+<DIV ID="O245">
+<DIV class="Element"><A NAME="245"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="18"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S18')">
+operator "&lt;&lt;" := <B>read-only</B> <B>function</B>
+<DIV ID="S18">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I19')">Input:</DIV>
+<DIV ID="I19">
+<DIV class="Element"><A NAME="19"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O20')">Output:</DIV>
+<DIV ID="O20">
+<DIV class="Element"><A NAME="20"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="21"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S21')">
+operator ">>" := <B>read-only</B> <B>function</B>
+<DIV ID="S21">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I22')">Input:</DIV>
+<DIV ID="I22">
+<DIV class="Element"><A NAME="22"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O23')">Output:</DIV>
+<DIV ID="O23">
+<DIV class="Element"><A NAME="23"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="24"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S24')">
+Boolean := <B>interface</B>
+<DIV ID="S24">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F249')">Features:</DIV>
+<DIV ID="F249">
+<DIV class="Element"><A NAME="249"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S249')">
+operator "&" := <B>function</B>
+<DIV ID="S249">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I250')">Input:</DIV>
+<DIV ID="I250">
+<DIV class="Element"><A NAME="250"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O251')">Output:</DIV>
+<DIV ID="O251">
+<DIV class="Element"><A NAME="251"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="252"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S252')">
+operator "|" := <B>function</B>
+<DIV ID="S252">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I253')">Input:</DIV>
+<DIV ID="I253">
+<DIV class="Element"><A NAME="253"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O254')">Output:</DIV>
+<DIV ID="O254">
+<DIV class="Element"><A NAME="254"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="255"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S255')">
+operator "||" := <B>function</B>
+<DIV ID="S255">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I256')">Input:</DIV>
+<DIV ID="I256">
+<DIV class="Element"><A NAME="256"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O257')">Output:</DIV>
+<DIV ID="O257">
+<DIV class="Element"><A NAME="257"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="258"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S258')">
+operator "¬" := <B>function</B>
+<DIV ID="S258">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O259')">Output:</DIV>
+<DIV ID="O259">
+<DIV class="Element"><A NAME="259"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="25"></A><IMG SRC="LavaIcons/classint.png">
+Char := <B>interface</B></DIV>
+<DIV class="Element"><A NAME="26"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S26')">
+Integer := <B>interface</B>
+<DIV ID="S26">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F161')">Features:</DIV>
+<DIV ID="F161">
+<DIV class="Element"><A NAME="161"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S161')">
+operator "-" := <B>read-only</B> <B>function</B>
+<DIV ID="S161">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O162')">Output:</DIV>
+<DIV ID="O162">
+<DIV class="Element"><A NAME="162"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="27"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S27')">
+operator "&lt;" := <B>read-only</B> <B>function</B>
+<DIV ID="S27">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I28')">Input:</DIV>
+<DIV ID="I28">
+<DIV class="Element"><A NAME="28"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="29"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S29')">
+operator ">" := <B>read-only</B> <B>function</B>
+<DIV ID="S29">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I30')">Input:</DIV>
+<DIV ID="I30">
+<DIV class="Element"><A NAME="30"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="31"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S31')">
+operator "&lt;=" := <B>read-only</B> <B>function</B>
+<DIV ID="S31">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I32')">Input:</DIV>
+<DIV ID="I32">
+<DIV class="Element"><A NAME="32"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="33"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S33')">
+operator ">=" := <B>read-only</B> <B>function</B>
+<DIV ID="S33">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I34')">Input:</DIV>
+<DIV ID="I34">
+<DIV class="Element"><A NAME="34"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="35"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S35')">
+operator "+" := <B>read-only</B> <B>function</B>
+<DIV ID="S35">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I36')">Input:</DIV>
+<DIV ID="I36">
+<DIV class="Element"><A NAME="36"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O37')">Output:</DIV>
+<DIV ID="O37">
+<DIV class="Element"><A NAME="37"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="41"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S41')">
+operator "*" := <B>read-only</B> <B>function</B>
+<DIV ID="S41">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I42')">Input:</DIV>
+<DIV ID="I42">
+<DIV class="Element"><A NAME="42"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O43')">Output:</DIV>
+<DIV ID="O43">
+<DIV class="Element"><A NAME="43"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="44"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S44')">
+operator "/" := <B>read-only</B> <B>function</B>
+<DIV ID="S44">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I45')">Input:</DIV>
+<DIV ID="I45">
+<DIV class="Element"><A NAME="45"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O46')">Output:</DIV>
+<DIV ID="O46">
+<DIV class="Element"><A NAME="46"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="47"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S47')">
+operator "%" := <B>read-only</B> <B>function</B>
+<DIV ID="S47">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I48')">Input:</DIV>
+<DIV ID="I48">
+<DIV class="Element"><A NAME="48"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O49')">Output:</DIV>
+<DIV ID="O49">
+<DIV class="Element"><A NAME="49"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="260"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S260')">
+String := <B>read-only</B> <B>function</B>
+<DIV ID="S260">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O261')">Output:</DIV>
+<DIV ID="O261">
+<DIV class="Element"><A NAME="261"></A><IMG SRC="LavaIcons/basicatt.png">
+str : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="50"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S50')">
+Float := <B>interface</B>
+<DIV ID="S50">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F163')">Features:</DIV>
+<DIV ID="F163">
+<DIV class="Element"><A NAME="163"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S163')">
+operator "-" := <B>read-only</B> <B>function</B>
+<DIV ID="S163">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O164')">Output:</DIV>
+<DIV ID="O164">
+<DIV class="Element"><A NAME="164"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="51"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S51')">
+operator "&lt;" := <B>read-only</B> <B>function</B>
+<DIV ID="S51">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I52')">Input:</DIV>
+<DIV ID="I52">
+<DIV class="Element"><A NAME="52"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="53"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S53')">
+operator ">" := <B>read-only</B> <B>function</B>
+<DIV ID="S53">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I54')">Input:</DIV>
+<DIV ID="I54">
+<DIV class="Element"><A NAME="54"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="55"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S55')">
+operator "&lt;=" := <B>read-only</B> <B>function</B>
+<DIV ID="S55">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I56')">Input:</DIV>
+<DIV ID="I56">
+<DIV class="Element"><A NAME="56"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="57"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S57')">
+operator ">=" := <B>read-only</B> <B>function</B>
+<DIV ID="S57">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I58')">Input:</DIV>
+<DIV ID="I58">
+<DIV class="Element"><A NAME="58"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="59"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S59')">
+operator "+" := <B>read-only</B> <B>function</B>
+<DIV ID="S59">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I60')">Input:</DIV>
+<DIV ID="I60">
+<DIV class="Element"><A NAME="60"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O61')">Output:</DIV>
+<DIV ID="O61">
+<DIV class="Element"><A NAME="61"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="65"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S65')">
+operator "*" := <B>read-only</B> <B>function</B>
+<DIV ID="S65">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I66')">Input:</DIV>
+<DIV ID="I66">
+<DIV class="Element"><A NAME="66"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O67')">Output:</DIV>
+<DIV ID="O67">
+<DIV class="Element"><A NAME="67"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="68"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S68')">
+operator "/" := <B>read-only</B> <B>function</B>
+<DIV ID="S68">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I69')">Input:</DIV>
+<DIV ID="I69">
+<DIV class="Element"><A NAME="69"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O70')">Output:</DIV>
+<DIV ID="O70">
+<DIV class="Element"><A NAME="70"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="71"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S71')">
+Double := <B>interface</B>
+<DIV ID="S71">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F165')">Features:</DIV>
+<DIV ID="F165">
+<DIV class="Element"><A NAME="165"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S165')">
+operator "-" := <B>function</B>
+<DIV ID="S165">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O166')">Output:</DIV>
+<DIV ID="O166">
+<DIV class="Element"><A NAME="166"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="72"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S72')">
+operator "&lt;" := <B>read-only</B> <B>function</B>
+<DIV ID="S72">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I73')">Input:</DIV>
+<DIV ID="I73">
+<DIV class="Element"><A NAME="73"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="74"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S74')">
+operator ">" := <B>read-only</B> <B>function</B>
+<DIV ID="S74">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I75')">Input:</DIV>
+<DIV ID="I75">
+<DIV class="Element"><A NAME="75"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="76"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S76')">
+operator "&lt;=" := <B>read-only</B> <B>function</B>
+<DIV ID="S76">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I77')">Input:</DIV>
+<DIV ID="I77">
+<DIV class="Element"><A NAME="77"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="78"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S78')">
+operator ">=" := <B>read-only</B> <B>function</B>
+<DIV ID="S78">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I79')">Input:</DIV>
+<DIV ID="I79">
+<DIV class="Element"><A NAME="79"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="80"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S80')">
+operator "+" := <B>read-only</B> <B>function</B>
+<DIV ID="S80">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I81')">Input:</DIV>
+<DIV ID="I81">
+<DIV class="Element"><A NAME="81"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O82')">Output:</DIV>
+<DIV ID="O82">
+<DIV class="Element"><A NAME="82"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="86"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S86')">
+operator "*" := <B>read-only</B> <B>function</B>
+<DIV ID="S86">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I87')">Input:</DIV>
+<DIV ID="I87">
+<DIV class="Element"><A NAME="87"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O88')">Output:</DIV>
+<DIV ID="O88">
+<DIV class="Element"><A NAME="88"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="89"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S89')">
+operator "/" := <B>read-only</B> <B>function</B>
+<DIV ID="S89">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I90')">Input:</DIV>
+<DIV ID="I90">
+<DIV class="Element"><A NAME="90"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O91')">Output:</DIV>
+<DIV ID="O91">
+<DIV class="Element"><A NAME="91"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="92"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S92')">
+String := <B>interface</B>
+<DIV ID="S92">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F93')">Features:</DIV>
+<DIV ID="F93">
+<DIV class="Element"><A NAME="93"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S93')">
+operator "+" := <B>read-only</B> <B>function</B>
+<DIV ID="S93">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I94')">Input:</DIV>
+<DIV ID="I94">
+<DIV class="Element"><A NAME="94"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O95')">Output:</DIV>
+<DIV ID="O95">
+<DIV class="Element"><A NAME="95"></A><IMG SRC="LavaIcons/basicatt.png">
+result : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="96"></A><IMG SRC="LavaIcons/function.png">
+MessageBox := <B>read-only</B> <B>function</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="97"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S97')">
+Enumeration := <B>interface</B>
+<DIV ID="S97">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F405')">Features:</DIV>
+<DIV ID="F405">
+<DIV class="Element"><A NAME="405"></A><I><FONT COLOR=#009000>
+ordinal number of an enumerated item</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S405')">
+operator "#" := <B>function</B>
+<DIV ID="S405">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O406')">Output:</DIV>
+<DIV ID="O406">
+<DIV class="Element"><A NAME="406"></A><IMG SRC="LavaIcons/basicatt.png">
+ord : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="393"></A><I><FONT COLOR=#009000>
+ordinal number of an enumerated item</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S393')">
+Ord := <B>read-only</B> <B>function</B>
+<DIV ID="S393">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O394')">Output:</DIV>
+<DIV ID="O394">
+<DIV class="Element"><A NAME="394"></A><IMG SRC="LavaIcons/basicatt.png">
+ord : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="395"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S395')">
+String := <B>read-only</B> <B>function</B>
+<DIV ID="S395">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O396')">Output:</DIV>
+<DIV ID="O396">
+<DIV class="Element"><A NAME="396"></A><IMG SRC="LavaIcons/basicatt.png">
+str : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="449"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S449')">
+Comment := <B>read-only</B> <B>function</B>
+<DIV ID="S449">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O450')">Output:</DIV>
+<DIV ID="O450">
+<DIV class="Element"><A NAME="450"></A><IMG SRC="LavaIcons/basicatt.png">
+str : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="98"></A><IMG SRC="LavaIcons/settyp.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S98')">
+Set := <B>interface</B>
+<DIV ID="S98">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('V99')">Virtual types:</DIV>
+<DIV ID="V99">
+<DIV class="Element"><A NAME="99"></A><IMG SRC="LavaIcons/patpara.png">
+ELEMTYPE</DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F100')">Features:</DIV>
+<DIV ID="F100">
+<DIV class="Element"><A NAME="100"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S100')">
+Add := <B>function</B>
+<DIV ID="S100">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I101')">Input:</DIV>
+<DIV ID="I101">
+<DIV class="Element"><A NAME="101"></A><IMG SRC="LavaIcons/paramatt.png">
+data : <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="216"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S216')">
+AddGetHandle := <B>function</B>
+<DIV ID="S216">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I217')">Input:</DIV>
+<DIV ID="I217">
+<DIV class="Element"><A NAME="217"></A><IMG SRC="LavaIcons/paramatt.png">
+data : <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O218')">Output:</DIV>
+<DIV ID="O218">
+<DIV class="Element"><A NAME="218"></A><IMG SRC="LavaIcons/basicatt.png">
+add_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="231"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S231')">
+Get := <B>read-only</B> <B>function</B>
+<DIV ID="S231">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I232')">Input:</DIV>
+<DIV ID="I232">
+<DIV class="Element"><A NAME="232"></A><IMG SRC="LavaIcons/basicatt.png">
+get_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O233')">Output:</DIV>
+<DIV ID="O233">
+<DIV class="Element"><A NAME="233"></A><IMG SRC="LavaIcons/paramatt.png">
+data : <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="225"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S225')">
+Remove := <B>function</B>
+<DIV ID="S225">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I226')">Input:</DIV>
+<DIV ID="I226">
+<DIV class="Element"><A NAME="226"></A><IMG SRC="LavaIcons/basicatt.png">
+remove_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="228"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S228')">
+GetAndRemove := <B>function</B>
+<DIV ID="S228">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I229')">Input:</DIV>
+<DIV ID="I229">
+<DIV class="Element"><A NAME="229"></A><IMG SRC="LavaIcons/basicatt.png">
+remove_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O230')">Output:</DIV>
+<DIV ID="O230">
+<DIV class="Element"><A NAME="230"></A><IMG SRC="LavaIcons/paramatt.png">
+data : <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="390"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S390')">
+Contains := <B>read-only</B> <B>function</B>
+<DIV ID="S390">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I391')">Input:</DIV>
+<DIV ID="I391">
+<DIV class="Element"><A NAME="391"></A><IMG SRC="LavaIcons/paramatt.png">
+data : <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O392')">Output:</DIV>
+<DIV ID="O392">
+<DIV class="Element"><A NAME="392"></A><IMG SRC="LavaIcons/basicatt.png">
+count : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="102"></A><IMG SRC="LavaIcons/settyp.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S102')">
+Chain := <B>interface</B>, <B>extends</B> <A HREF="javascript:gotoTarget('#98','S98')"><FONT color=#000000>Set</FONT></A>
+<DIV ID="S102">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('V103')">Virtual types:</DIV>
+<DIV ID="V103">
+<DIV class="Element"><A NAME="103"></A><IMG SRC="LavaIcons/patpara.png">
+ELEMTYPE, <B>overrides</B> <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F155')">Features:</DIV>
+<DIV ID="F155">
+<DIV class="Element"><A NAME="155"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S155')">
+Append := <B>function</B>
+<DIV ID="S155">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I156')">Input:</DIV>
+<DIV ID="I156">
+<DIV class="Element"><A NAME="156"></A><IMG SRC="LavaIcons/paramatt.png">
+data : <A HREF="javascript:gotoTarget('#103','S103')"><FONT color=#000000>&lt;Chain::ELEMTYPE></FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O157')">Output:</DIV>
+<DIV ID="O157">
+<DIV class="Element"><A NAME="157"></A><IMG SRC="LavaIcons/basicatt.png">
+last_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="120"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S120')">
+InsertBefore := <B>function</B>
+<DIV ID="S120">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I121')">Input:</DIV>
+<DIV ID="I121">
+<DIV class="Element"><A NAME="121"></A><IMG SRC="LavaIcons/basicatt.png">
+before_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV>
+<DIV class="Element"><A NAME="122"></A><IMG SRC="LavaIcons/paramatt.png">
+data : <A HREF="javascript:gotoTarget('#103','S103')"><FONT color=#000000>&lt;Chain::ELEMTYPE></FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O123')">Output:</DIV>
+<DIV ID="O123">
+<DIV class="Element"><A NAME="123"></A><IMG SRC="LavaIcons/basicatt.png">
+new_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="116"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S116')">
+InsertAfter := <B>function</B>
+<DIV ID="S116">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I117')">Input:</DIV>
+<DIV ID="I117">
+<DIV class="Element"><A NAME="117"></A><IMG SRC="LavaIcons/basicatt.png">
+after_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV>
+<DIV class="Element"><A NAME="118"></A><IMG SRC="LavaIcons/paramatt.png">
+data : <A HREF="javascript:gotoTarget('#103','S103')"><FONT color=#000000>&lt;Chain::ELEMTYPE></FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O119')">Output:</DIV>
+<DIV ID="O119">
+<DIV class="Element"><A NAME="119"></A><IMG SRC="LavaIcons/basicatt.png">
+new_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="109"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S109')">
+First := <B>read-only</B> <B>function</B>
+<DIV ID="S109">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O110')">Output:</DIV>
+<DIV ID="O110">
+<DIV class="Element"><A NAME="110"></A><IMG SRC="LavaIcons/basicatt.png">
+first_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="111"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S111')">
+Last := <B>read-only</B> <B>function</B>
+<DIV ID="S111">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O112')">Output:</DIV>
+<DIV ID="O112">
+<DIV class="Element"><A NAME="112"></A><IMG SRC="LavaIcons/basicatt.png">
+last_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="188"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S188')">
+Succ := <B>read-only</B> <B>function</B>
+<DIV ID="S188">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I189')">Input:</DIV>
+<DIV ID="I189">
+<DIV class="Element"><A NAME="189"></A><IMG SRC="LavaIcons/basicatt.png">
+act_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O190')">Output:</DIV>
+<DIV ID="O190">
+<DIV class="Element"><A NAME="190"></A><IMG SRC="LavaIcons/basicatt.png">
+succ_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="191"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S191')">
+Pred := <B>read-only</B> <B>function</B>
+<DIV ID="S191">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I192')">Input:</DIV>
+<DIV ID="I192">
+<DIV class="Element"><A NAME="192"></A><IMG SRC="LavaIcons/basicatt.png">
+act_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O193')">Output:</DIV>
+<DIV ID="O193">
+<DIV class="Element"><A NAME="193"></A><IMG SRC="LavaIcons/basicatt.png">
+pred_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="104"></A><I><FONT COLOR=#009000>
+Elements of Sets/Chains and derived classes may be
+ distinguished/identified by a "Handle".
+ (See the pertaining member functions
+ and the Handle-operator "@" that may be used
+ in quantifiers.)</FONT></I><BR>
+<IMG SRC="LavaIcons/classint.png">
+Handle := <B>interface</B></DIV>
+<DIV class="Element"><A NAME="127"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S127')">
+Array := <B>interface</B>
+<DIV ID="S127">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('V128')">Virtual types:</DIV>
+<DIV ID="V128">
+<DIV class="Element"><A NAME="128"></A><IMG SRC="LavaIcons/patpara.png">
+ELEMTYPE</DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F388')">Features:</DIV>
+<DIV ID="F388">
+<DIV class="Element"><A NAME="388"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S388')">
+GetLength := <B>read-only</B> <B>function</B>
+<DIV ID="S388">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O389')">Output:</DIV>
+<DIV ID="O389">
+<DIV class="Element"><A NAME="389"></A><IMG SRC="LavaIcons/basicatt.png">
+length : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="386"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S386')">
+SetLength := <B>function</B>
+<DIV ID="S386">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I387')">Input:</DIV>
+<DIV ID="I387">
+<DIV class="Element"><A NAME="387"></A><IMG SRC="LavaIcons/basicatt.png">
+length : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="130"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S130')">
+operator "&lt;-[]" := <B>read-only</B> <B>function</B>
+<DIV ID="S130">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I131')">Input:</DIV>
+<DIV ID="I131">
+<DIV class="Element"><A NAME="131"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O132')">Output:</DIV>
+<DIV ID="O132">
+<DIV class="Element"><A NAME="132"></A><IMG SRC="LavaIcons/paramatt.png">
+result : <A HREF="javascript:gotoTarget('#128','S128')"><FONT color=#000000>&lt;Array::ELEMTYPE></FONT></A></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="133"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S133')">
+operator "[]&lt;-" := <B>function</B>
+<DIV ID="S133">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I134')">Input:</DIV>
+<DIV ID="I134">
+<DIV class="Element"><A NAME="134"></A><IMG SRC="LavaIcons/basicatt.png">
+op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV>
+<DIV class="Element"><A NAME="135"></A><IMG SRC="LavaIcons/paramatt.png">
+op2 : <A HREF="javascript:gotoTarget('#128','S128')"><FONT color=#000000>&lt;Array::ELEMTYPE></FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="145"></A><I><FONT COLOR=#009000>
+Placeholder for any type of embedded "in-place active" Document"</FONT></I><BR>
+<IMG SRC="LavaIcons/classint.png">
+ComponentObj := <B>interface</B></DIV>
+<DIV class="Element"><A NAME="407"></A><I><FONT COLOR=#009000>
+Non-creatable common base class for all kinds of exceptions</FONT></I><BR>
+<IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S407')">
+Exception := <B>interface</B>
+<DIV ID="S407">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('V451')">Virtual types:</DIV>
+<DIV ID="V451">
+<DIV class="Element"><A NAME="451"></A><IMG SRC="LavaIcons/patpara.png">
+ERRORCODE = <A HREF="javascript:gotoTarget('#97','S97')"><FONT color=#000000>Enumeration</FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F413')">Features:</DIV>
+<DIV ID="F413">
+<DIV class="Element"><A NAME="413"></A><I><FONT COLOR=#009000>
+Indicates the reason of the exception by an item
+ of an enumeration type</FONT></I><BR>
+<IMG SRC="LavaIcons/paramatt.png">
+code : <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV>
+<DIV class="Element"><A NAME="414"></A><I><FONT COLOR=#009000>
+Associates a message text with this exception
+ (may be empty)</FONT></I><BR>
+<IMG SRC="LavaIcons/basicatt.png">
+message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A><B>, optional</B></DIV>
+<DIV class="Element"><A NAME="410"></A><I><FONT COLOR=#009000>
+Delivers the last exception </FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S410')">
+Last := <B>function</B>
+<DIV ID="S410">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O411')">Output:</DIV>
+<DIV ID="O411">
+<DIV class="Element"><A NAME="411"></A><I><FONT COLOR=#009000>
+substitutable type, since exception types are
+ generally p-derived (but not c-derived) from "Exception":
+ They arise by specializing the "ERRORCODE"
+ virtual type of "Exception".</FONT></I><BR>
+<IMG SRC="LavaIcons/basicatt.png">
+last : {<A HREF="javascript:gotoTarget('#407','S407')"><FONT color=#000000>Exception</FONT></A>}<B>, optional</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="412"></A><I><FONT COLOR=#009000>
+Deactivate/remove the last exception.
+ Not really required, since this happens
+ automatically on successful exit from an
+ "or if exception" branch.</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png">
+Drop := <B>function</B></DIV>
+<DIV class="Element"><A NAME="474"></A><I><FONT COLOR=#009000>
+Delivers the call stack of the last exception,
+ or null, if no exception pending</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S474')">
+CallStack := <B>read-only</B> <B>function</B>
+<DIV ID="S474">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O475')">Output:</DIV>
+<DIV ID="O475">
+<DIV class="Element"><A NAME="475"></A><I><FONT COLOR=#009000>
+null if no exception pending</FONT></I><BR>
+<IMG SRC="LavaIcons/basicatt.png">
+callStack : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="424"></A><I><FONT COLOR=#009000>
+Initializer with two parameters (exception code and message text)</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S424')">
+Initialize := <B>initializer</B>
+<DIV ID="S424">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I427')">Input:</DIV>
+<DIV ID="I427">
+<DIV class="Element"><A NAME="427"></A><IMG SRC="LavaIcons/paramatt.png">
+code : <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV>
+<DIV class="Element"><A NAME="429"></A><IMG SRC="LavaIcons/basicatt.png">
+message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="415"></A><I><FONT COLOR=#009000>
+Default Catch function which simply calls "Show"</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png">
+Catch := <B>read-only</B> <B>function</B></DIV>
+<DIV class="Element"><A NAME="416"></A><I><FONT COLOR=#009000>
+Displays the exception code and the associated message text in a message box</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png">
+Show := <B>read-only</B> <B>function</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="452"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S452')">
+HardwareException := <B>interface</B>, <B>extends</B> <A HREF="javascript:gotoTarget('#407','S407')"><FONT color=#000000>Exception</FONT></A>
+<DIV ID="S452">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('V456')">Virtual types:</DIV>
+<DIV ID="V456">
+<DIV class="Element"><A NAME="456"></A><IMG SRC="LavaIcons/patpara.png">
+ERRORCODE = <A HREF="javascript:gotoTarget('#454','S454')"><FONT color=#000000>HardwareException::ErrorCode</FONT></A>, <B>overrides</B> <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('D454')">Declarations:</DIV>
+<DIV ID="D454">
+<DIV class="Element"><A NAME="454"></A><IMG SRC="LavaIcons/enum.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S454')">
+ErrorCode := <B>enumeration</B>, <B>extends</B> <A HREF="javascript:gotoTarget('#97','S97')"><FONT color=#000000>Enumeration</FONT></A>
+<DIV ID="S454"><IMG SRC="LavaIcons/enumsel.png"> segmentation_violation_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> float_div_by_zero_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> float_overflow_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> float_underflow_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> float_inexact_result_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> float_invalid_op_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> float_subscript_out_of_range_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> integer_div_by_zero_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> integer_overflow_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> other_signal_or_hardware_exception</DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="462"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S462')">
+RuntimeException := <B>interface</B>, <B>extends</B> <A HREF="javascript:gotoTarget('#407','S407')"><FONT color=#000000>Exception</FONT></A>
+<DIV ID="S462">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('V466')">Virtual types:</DIV>
+<DIV ID="V466">
+<DIV class="Element"><A NAME="466"></A><IMG SRC="LavaIcons/patpara.png">
+ERRORCODE = <A HREF="javascript:gotoTarget('#464','S464')"><FONT color=#000000>RuntimeException::ErrorCode</FONT></A>, <B>overrides</B> <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('D464')">Declarations:</DIV>
+<DIV ID="D464">
+<DIV class="Element"><A NAME="464"></A><IMG SRC="LavaIcons/enum.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S464')">
+ErrorCode := <B>enumeration</B>, <B>extends</B> <A HREF="javascript:gotoTarget('#97','S97')"><FONT color=#000000>Enumeration</FONT></A>
+<DIV ID="S464"><IMG SRC="LavaIcons/enumsel.png"> memory_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> static_check_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> null_call_object_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> null_mandatory_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> null_parent_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> null_exception_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> assertion_violation_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> integer_range_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> enum_ord_low_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> enum_ord_high_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> element_not_in_set_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> runtime_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> DLL_error_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> ldoc_not_opened_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> compo_not_found_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> ldoc_incompatible_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> incompatible_category_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> no_picture_exeption<BR>
+<IMG SRC="LavaIcons/enumsel.png"> corrupt_object_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> ldoc_not_stored_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> array_index_out_of_range_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> canceled_form_exception<BR>
+<IMG SRC="LavaIcons/enumsel.png"> assig_to_frozen<BR>
+<IMG SRC="LavaIcons/enumsel.png"> access_to_zombie<BR>
+<IMG SRC="LavaIcons/enumsel.png"> unfinished_object<BR>
+<IMG SRC="LavaIcons/enumsel.png"> execution_failed<BR>
+<IMG SRC="LavaIcons/enumsel.png"> out_function_failed</DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="366"></A><I><FONT COLOR=#009000>
+Base class for sets of registered callbacks of a
+ specific kind (described by the virtual types of
+ "Callbacks" and particularly by the nested type
+ "Callback").</FONT></I><BR>
+<IMG SRC="LavaIcons/settyp.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S366')">
+Callbacks := <B>interface</B>, <B>extends</B> <A HREF="javascript:gotoTarget('#98','S98')"><FONT color=#000000>Set</FONT></A>
+<DIV ID="S366">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('V384')">Virtual types:</DIV>
+<DIV ID="V384">
+<DIV class="Element"><A NAME="384"></A><IMG SRC="LavaIcons/patpara.png">
+ELEMTYPE = <A HREF="javascript:gotoTarget('#373','S373')"><FONT color=#000000>&lt;Callbacks::CALLBACK></FONT></A>, <B>overrides</B> <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV>
+<DIV class="Element"><A NAME="373"></A><IMG SRC="LavaIcons/patpara.png">
+CALLBACK = <A HREF="javascript:gotoTarget('#264','S264')"><FONT color=#000000>Callbacks::Callback</FONT></A></DIV>
+<DIV class="Element"><A NAME="370"></A><I><FONT COLOR=#009000>
+Base type for a concrete enumerated
+ type that is used to distinguish
+ individual kinds of events that are all
+ associated with the same type of event
+ description (see "eventDesc").</FONT></I><BR>
+<IMG SRC="LavaIcons/patpara.png">
+EVENTSPEC = <A HREF="javascript:gotoTarget('#97','S97')"><FONT color=#000000>Enumeration</FONT></A></DIV>
+<DIV class="Element"><A NAME="371"></A><I><FONT COLOR=#009000>
+Describes the details of an event that is
+ reported to a callback client by the callback
+ server. (See member function "NotifyClients".)</FONT></I><BR>
+<IMG SRC="LavaIcons/patpara.png">
+EVENTDESC</DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('D264')">Declarations:</DIV>
+<DIV ID="D264">
+<DIV class="Element"><A NAME="264"></A><I><FONT COLOR=#009000>
+Class "Callback" describes the set elements
+ of "Callbacks" and corresponds closely to
+ the "callback" expression that is used in
+ executable code to construct an individual
+ callback (in the sense of a "canned/deferred
+ function call").</FONT></I><BR>
+<IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S264')">
+Callback := <B>interface</B>
+<DIV ID="S264">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F358')">Features:</DIV>
+<DIV ID="F358">
+<DIV class="Element"><A NAME="358"></A><IMG SRC="LavaIcons/paramatt.png">
+spec : <A HREF="javascript:gotoTarget('#370','S370')"><FONT color=#000000>&lt;Callbacks::EVENTSPEC></FONT></A><B>, read-only</B></DIV>
+<DIV class="Element"><A NAME="266"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S266')">
+Execute := <B>read-only</B> <B>function</B>
+<DIV ID="S266">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I267')">Input:</DIV>
+<DIV ID="I267">
+<DIV class="Element"><A NAME="267"></A><IMG SRC="LavaIcons/paramatt.png">
+event : <A HREF="javascript:gotoTarget('#371','S371')"><FONT color=#000000>&lt;Callbacks::EVENTDESC></FONT></A><B>, optional</B></DIV></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F369')">Features:</DIV>
+<DIV ID="F369">
+<DIV class="Element"><A NAME="369"></A><I><FONT COLOR=#009000>
+Protected function called by a callback server
+ if a "reportable" event ("signals" clause in the
+ callback server's interface) occurs.</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S369')">
+NotifyClients := <B>protected</B> <B>read-only</B> <B>function</B>
+<DIV ID="S369">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I374')">Input:</DIV>
+<DIV ID="I374">
+<DIV class="Element"><A NAME="374"></A><I><FONT COLOR=#009000>
+All registered callbacks associated with
+ this same eventSpec are executed.</FONT></I><BR>
+<IMG SRC="LavaIcons/paramatt.png">
+eventSpec : <A HREF="javascript:gotoTarget('#370','S370')"><FONT color=#000000>&lt;Callbacks::EVENTSPEC></FONT></A></DIV>
+<DIV class="Element"><A NAME="375"></A><I><FONT COLOR=#009000>
+Type of the detailed event description
+ that is passed by the callback server to
+ the callback client through the callback
+ function's first argument.</FONT></I><BR>
+<IMG SRC="LavaIcons/paramatt.png">
+eventDesc : <A HREF="javascript:gotoTarget('#371','S371')"><FONT color=#000000>&lt;Callbacks::EVENTDESC></FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="367"></A><IMG SRC="LavaIcons/function.png">
+ini := <B>default initializer</B></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="376"></A><IMG SRC="LavaIcons/classimpl.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S376')">
+<B>implementation of </B><A HREF="javascript:gotoTarget('#366','S366')"><FONT color=#000000>Callbacks</FONT></A>
+<DIV ID="S376">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F377')">Features:</DIV>
+<DIV ID="F377">
+<DIV class="Element"><A NAME="377"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S377')">
+NotifyClients := <B>protected</B> <B>read-only</B> <B>function</B>
+<DIV ID="S377">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I378')">Input:</DIV>
+<DIV ID="I378">
+<DIV class="Element"><A NAME="378"></A><I><FONT COLOR=#009000>
+All registered callbacks associated with
+ this same eventSpec are executed.</FONT></I><BR>
+<IMG SRC="LavaIcons/paramatt.png">
+eventSpec : <A HREF="javascript:gotoTarget('#370','S370')"><FONT color=#000000>&lt;Callbacks::EVENTSPEC></FONT></A></DIV>
+<DIV class="Element"><A NAME="379"></A><I><FONT COLOR=#009000>
+Type of the detailed event description
+ that is passed by the callback server to
+ the callback client through the callback
+ function's first argument.</FONT></I><BR>
+<IMG SRC="LavaIcons/paramatt.png">
+eventDesc : <A HREF="javascript:gotoTarget('#371','S371')"><FONT color=#000000>&lt;Callbacks::EVENTDESC></FONT></A><B>, optional</B></DIV></DIV><DIV class="Category"><A HREF="std/Callbacks_NotifyClients_377.htm" TARGET="frmRight"><B><I>Exec</I></B></A></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="381"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S381')">
+ini := <B>default initializer</B>
+<DIV ID="S381"><DIV class="Category"><A HREF="std/Callbacks_ini_381.htm" TARGET="frmRight"><B><I>Exec</I></B></A></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="419"></A><IMG SRC="LavaIcons/classimpl.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S419')">
+<B>implementation of </B><A HREF="javascript:gotoTarget('#407','S407')"><FONT color=#000000>Exception</FONT></A>
+<DIV ID="S419">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F425')">Features:</DIV>
+<DIV ID="F425">
+<DIV class="Element"><A NAME="425"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S425')">
+Initialize := <B>initializer</B>
+<DIV ID="S425">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I428')">Input:</DIV>
+<DIV ID="I428">
+<DIV class="Element"><A NAME="428"></A><IMG SRC="LavaIcons/paramatt.png">
+code : <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV>
+<DIV class="Element"><A NAME="430"></A><IMG SRC="LavaIcons/basicatt.png">
+message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A><B>, optional</B></DIV></DIV><DIV class="Category"><A HREF="std/Exception_Initialize_425.htm" TARGET="frmRight"><B><I>Exec</I></B></A></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="420"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S420')">
+Catch := <B>read-only</B> <B>function</B>
+<DIV ID="S420"><DIV class="Category"><A HREF="std/Exception_Catch_420.htm" TARGET="frmRight"><B><I>Exec</I></B></A></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="422"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S422')">
+Show := <B>read-only</B> <B>function</B>
+<DIV ID="S422"><DIV class="Category"><A HREF="std/Exception_Show_422.htm" TARGET="frmRight"><B><I>Exec</I></B></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
+
+<BR><BR><A NAME="index"></A><H2>Index of symbols defined in this file</H2>
+<P>(Order: by lines from left to right,<BR>
+capital letters before small letters)</P>
+<FONT SIZE=1>
+<TABLE BORDER="0" BGCOLOR="#FFFFA0" WIDTH="100%" COLS="2" STYLE="font-size:10pt">
+<TR><TD><A HREF="javascript:gotoTarget('#127','S127')"><FONT color=#000000>Array</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#128','S128')"><FONT color=#000000>&lt;Array::ELEMTYPE></FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#388','S388')"><FONT color=#000000>Array::GetLength</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#389','S389')"><FONT color=#000000>Array::GetLength::length</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#386','S386')"><FONT color=#000000>Array::SetLength</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#387','S387')"><FONT color=#000000>Array::SetLength::length</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#130','S130')"><FONT color=#000000>Array::operator "&lt;-[]"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#131','S131')"><FONT color=#000000>Array::operator "&lt;-[]"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#132','S132')"><FONT color=#000000>Array::operator "&lt;-[]"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#133','S133')"><FONT color=#000000>Array::operator "[]&lt;-"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#134','S134')"><FONT color=#000000>Array::operator "[]&lt;-"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#135','S135')"><FONT color=#000000>Array::operator "[]&lt;-"::op2</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#6','S6')"><FONT color=#000000>Bitset</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#244','S244')"><FONT color=#000000>Bitset::operator "¬"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#245','S245')"><FONT color=#000000>Bitset::operator "¬"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#7','S7')"><FONT color=#000000>Bitset::operator "&"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#8','S8')"><FONT color=#000000>Bitset::operator "&"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#9','S9')"><FONT color=#000000>Bitset::operator "&"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#18','S18')"><FONT color=#000000>Bitset::operator "&lt;&lt;"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#19','S19')"><FONT color=#000000>Bitset::operator "&lt;&lt;"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#20','S20')"><FONT color=#000000>Bitset::operator "&lt;&lt;"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#21','S21')"><FONT color=#000000>Bitset::operator ">>"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#22','S22')"><FONT color=#000000>Bitset::operator ">>"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#23','S23')"><FONT color=#000000>Bitset::operator ">>"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#10','S10')"><FONT color=#000000>Bitset::operator "|"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#11','S11')"><FONT color=#000000>Bitset::operator "|"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#12','S12')"><FONT color=#000000>Bitset::operator "|"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#13','S13')"><FONT color=#000000>Bitset::operator "||"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#14','S14')"><FONT color=#000000>Bitset::operator "||"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#15','S15')"><FONT color=#000000>Bitset::operator "||"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#258','S258')"><FONT color=#000000>Boolean::operator "¬"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#259','S259')"><FONT color=#000000>Boolean::operator "¬"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#249','S249')"><FONT color=#000000>Boolean::operator "&"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#250','S250')"><FONT color=#000000>Boolean::operator "&"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#251','S251')"><FONT color=#000000>Boolean::operator "&"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#252','S252')"><FONT color=#000000>Boolean::operator "|"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#253','S253')"><FONT color=#000000>Boolean::operator "|"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#254','S254')"><FONT color=#000000>Boolean::operator "|"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#255','S255')"><FONT color=#000000>Boolean::operator "||"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#256','S256')"><FONT color=#000000>Boolean::operator "||"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#257','S257')"><FONT color=#000000>Boolean::operator "||"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#366','S366')"><FONT color=#000000>Callbacks</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#376','S376')"><FONT color=#000000>Callbacks</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#373','S373')"><FONT color=#000000>&lt;Callbacks::CALLBACK></FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#264','S264')"><FONT color=#000000>Callbacks::Callback</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#266','S266')"><FONT color=#000000>Callbacks::Callback::Execute</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#267','S267')"><FONT color=#000000>Callbacks::Callback::Execute::event</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#358','S358')"><FONT color=#000000>Callbacks::Callback::spec</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#384','S384')"><FONT color=#000000>&lt;Callbacks::ELEMTYPE></FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#371','S371')"><FONT color=#000000>&lt;Callbacks::EVENTDESC></FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#370','S370')"><FONT color=#000000>&lt;Callbacks::EVENTSPEC></FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#369','S369')"><FONT color=#000000>Callbacks::NotifyClients</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#377','S377')"><FONT color=#000000>Callbacks::NotifyClients</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#375','S375')"><FONT color=#000000>Callbacks::NotifyClients::eventDesc</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#379','S379')"><FONT color=#000000>Callbacks::NotifyClients::eventDesc</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#374','S374')"><FONT color=#000000>Callbacks::NotifyClients::eventSpec</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#378','S378')"><FONT color=#000000>Callbacks::NotifyClients::eventSpec</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#367','S367')"><FONT color=#000000>Callbacks::ini</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#381','S381')"><FONT color=#000000>Callbacks::ini</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#102','S102')"><FONT color=#000000>Chain</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#155','S155')"><FONT color=#000000>Chain::Append</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#156','S156')"><FONT color=#000000>Chain::Append::data</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#157','S157')"><FONT color=#000000>Chain::Append::last_hdl</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#103','S103')"><FONT color=#000000>&lt;Chain::ELEMTYPE></FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#109','S109')"><FONT color=#000000>Chain::First</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#110','S110')"><FONT color=#000000>Chain::First::first_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#116','S116')"><FONT color=#000000>Chain::InsertAfter</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#117','S117')"><FONT color=#000000>Chain::InsertAfter::after_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#118','S118')"><FONT color=#000000>Chain::InsertAfter::data</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#119','S119')"><FONT color=#000000>Chain::InsertAfter::new_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#120','S120')"><FONT color=#000000>Chain::InsertBefore</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#121','S121')"><FONT color=#000000>Chain::InsertBefore::before_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#122','S122')"><FONT color=#000000>Chain::InsertBefore::data</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#123','S123')"><FONT color=#000000>Chain::InsertBefore::new_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#111','S111')"><FONT color=#000000>Chain::Last</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#112','S112')"><FONT color=#000000>Chain::Last::last_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#191','S191')"><FONT color=#000000>Chain::Pred</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#192','S192')"><FONT color=#000000>Chain::Pred::act_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#193','S193')"><FONT color=#000000>Chain::Pred::pred_hdl</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#188','S188')"><FONT color=#000000>Chain::Succ</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#189','S189')"><FONT color=#000000>Chain::Succ::act_hdl</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#190','S190')"><FONT color=#000000>Chain::Succ::succ_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#25','S25')"><FONT color=#000000>Char</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#145','S145')"><FONT color=#000000>ComponentObj</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#86','S86')"><FONT color=#000000>Double::operator "*"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#87','S87')"><FONT color=#000000>Double::operator "*"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#88','S88')"><FONT color=#000000>Double::operator "*"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#80','S80')"><FONT color=#000000>Double::operator "+"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#81','S81')"><FONT color=#000000>Double::operator "+"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#82','S82')"><FONT color=#000000>Double::operator "+"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#165','S165')"><FONT color=#000000>Double::operator "-"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#166','S166')"><FONT color=#000000>Double::operator "-"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#89','S89')"><FONT color=#000000>Double::operator "/"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#90','S90')"><FONT color=#000000>Double::operator "/"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#91','S91')"><FONT color=#000000>Double::operator "/"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#72','S72')"><FONT color=#000000>Double::operator "&lt;"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#73','S73')"><FONT color=#000000>Double::operator "&lt;"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#76','S76')"><FONT color=#000000>Double::operator "&lt;="</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#77','S77')"><FONT color=#000000>Double::operator "&lt;="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#74','S74')"><FONT color=#000000>Double::operator ">"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#75','S75')"><FONT color=#000000>Double::operator ">"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#78','S78')"><FONT color=#000000>Double::operator ">="</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#79','S79')"><FONT color=#000000>Double::operator ">="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#97','S97')"><FONT color=#000000>Enumeration</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#449','S449')"><FONT color=#000000>Enumeration::Comment</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#450','S450')"><FONT color=#000000>Enumeration::Comment::str</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#393','S393')"><FONT color=#000000>Enumeration::Ord</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#394','S394')"><FONT color=#000000>Enumeration::Ord::ord</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#395','S395')"><FONT color=#000000>Enumeration::String</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#396','S396')"><FONT color=#000000>Enumeration::String::str</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#405','S405')"><FONT color=#000000>Enumeration::operator "#"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#406','S406')"><FONT color=#000000>Enumeration::operator "#"::ord</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#407','S407')"><FONT color=#000000>Exception</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#419','S419')"><FONT color=#000000>Exception</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#474','S474')"><FONT color=#000000>Exception::CallStack</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#475','S475')"><FONT color=#000000>Exception::CallStack::callStack</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#415','S415')"><FONT color=#000000>Exception::Catch</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#420','S420')"><FONT color=#000000>Exception::Catch</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#412','S412')"><FONT color=#000000>Exception::Drop</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#424','S424')"><FONT color=#000000>Exception::Initialize</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#425','S425')"><FONT color=#000000>Exception::Initialize</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#427','S427')"><FONT color=#000000>Exception::Initialize::code</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#428','S428')"><FONT color=#000000>Exception::Initialize::code</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#429','S429')"><FONT color=#000000>Exception::Initialize::message</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#430','S430')"><FONT color=#000000>Exception::Initialize::message</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#410','S410')"><FONT color=#000000>Exception::Last</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#411','S411')"><FONT color=#000000>Exception::Last::last</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#416','S416')"><FONT color=#000000>Exception::Show</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#422','S422')"><FONT color=#000000>Exception::Show</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#413','S413')"><FONT color=#000000>Exception::code</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#414','S414')"><FONT color=#000000>Exception::message</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#65','S65')"><FONT color=#000000>Float::operator "*"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#66','S66')"><FONT color=#000000>Float::operator "*"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#67','S67')"><FONT color=#000000>Float::operator "*"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#59','S59')"><FONT color=#000000>Float::operator "+"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#60','S60')"><FONT color=#000000>Float::operator "+"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#61','S61')"><FONT color=#000000>Float::operator "+"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#163','S163')"><FONT color=#000000>Float::operator "-"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#164','S164')"><FONT color=#000000>Float::operator "-"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#68','S68')"><FONT color=#000000>Float::operator "/"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#69','S69')"><FONT color=#000000>Float::operator "/"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#70','S70')"><FONT color=#000000>Float::operator "/"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#51','S51')"><FONT color=#000000>Float::operator "&lt;"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#52','S52')"><FONT color=#000000>Float::operator "&lt;"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#55','S55')"><FONT color=#000000>Float::operator "&lt;="</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#56','S56')"><FONT color=#000000>Float::operator "&lt;="::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#53','S53')"><FONT color=#000000>Float::operator ">"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#54','S54')"><FONT color=#000000>Float::operator ">"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#57','S57')"><FONT color=#000000>Float::operator ">="</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#58','S58')"><FONT color=#000000>Float::operator ">="::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#452','S452')"><FONT color=#000000>HardwareException</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#456','S456')"><FONT color=#000000>&lt;HardwareException::ERRORCODE></FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#454','S454')"><FONT color=#000000>HardwareException::ErrorCode</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#260','S260')"><FONT color=#000000>Integer::String</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#261','S261')"><FONT color=#000000>Integer::String::str</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#47','S47')"><FONT color=#000000>Integer::operator "%"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#48','S48')"><FONT color=#000000>Integer::operator "%"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#49','S49')"><FONT color=#000000>Integer::operator "%"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#41','S41')"><FONT color=#000000>Integer::operator "*"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#42','S42')"><FONT color=#000000>Integer::operator "*"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#43','S43')"><FONT color=#000000>Integer::operator "*"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#35','S35')"><FONT color=#000000>Integer::operator "+"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#36','S36')"><FONT color=#000000>Integer::operator "+"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#37','S37')"><FONT color=#000000>Integer::operator "+"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#161','S161')"><FONT color=#000000>Integer::operator "-"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#162','S162')"><FONT color=#000000>Integer::operator "-"::result</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#44','S44')"><FONT color=#000000>Integer::operator "/"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#45','S45')"><FONT color=#000000>Integer::operator "/"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#46','S46')"><FONT color=#000000>Integer::operator "/"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#27','S27')"><FONT color=#000000>Integer::operator "&lt;"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#28','S28')"><FONT color=#000000>Integer::operator "&lt;"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#31','S31')"><FONT color=#000000>Integer::operator "&lt;="</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#32','S32')"><FONT color=#000000>Integer::operator "&lt;="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#29','S29')"><FONT color=#000000>Integer::operator ">"</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#30','S30')"><FONT color=#000000>Integer::operator ">"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#33','S33')"><FONT color=#000000>Integer::operator ">="</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#34','S34')"><FONT color=#000000>Integer::operator ">="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#399','S399')"><FONT color=#000000>Object::DontSave</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#404','S404')"><FONT color=#000000>Object::DontSave::dontSave</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#385','S385')"><FONT color=#000000>Object::Finalize</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#183','S183')"><FONT color=#000000>Object::IsEqualTo</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#184','S184')"><FONT color=#000000>Object::IsEqualTo::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#181','S181')"><FONT color=#000000>Object::IsSameAs</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#182','S182')"><FONT color=#000000>Object::IsSameAs::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#4','S4')"><FONT color=#000000>Object::operator "!="</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#5','S5')"><FONT color=#000000>Object::operator "!="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#2','S2')"><FONT color=#000000>Object::operator "="</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#3','S3')"><FONT color=#000000>Object::operator "="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#462','S462')"><FONT color=#000000>RuntimeException</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#466','S466')"><FONT color=#000000>&lt;RuntimeException::ERRORCODE></FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#464','S464')"><FONT color=#000000>RuntimeException::ErrorCode</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#98','S98')"><FONT color=#000000>Set</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#100','S100')"><FONT color=#000000>Set::Add</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#101','S101')"><FONT color=#000000>Set::Add::data</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#216','S216')"><FONT color=#000000>Set::AddGetHandle</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#218','S218')"><FONT color=#000000>Set::AddGetHandle::add_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#217','S217')"><FONT color=#000000>Set::AddGetHandle::data</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#390','S390')"><FONT color=#000000>Set::Contains</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#392','S392')"><FONT color=#000000>Set::Contains::count</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#391','S391')"><FONT color=#000000>Set::Contains::data</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#231','S231')"><FONT color=#000000>Set::Get</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#233','S233')"><FONT color=#000000>Set::Get::data</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#232','S232')"><FONT color=#000000>Set::Get::get_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#228','S228')"><FONT color=#000000>Set::GetAndRemove</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#230','S230')"><FONT color=#000000>Set::GetAndRemove::data</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#229','S229')"><FONT color=#000000>Set::GetAndRemove::remove_hdl</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#225','S225')"><FONT color=#000000>Set::Remove</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#226','S226')"><FONT color=#000000>Set::Remove::remove_hdl</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#96','S96')"><FONT color=#000000>String::MessageBox</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#93','S93')"><FONT color=#000000>String::operator "+"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#94','S94')"><FONT color=#000000>String::operator "+"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#95','S95')"><FONT color=#000000>String::operator "+"::result</FONT></A></TD>
+</TR>
+</TABLE></FONT>
+</DIV></BODY></HTML>
