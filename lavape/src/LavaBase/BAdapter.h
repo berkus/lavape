@@ -55,5 +55,12 @@ extern LAVABASE_DLL void MakeStdAdapter();
 extern LAVABASE_DLL bool DropException(CheckData& ckd, LavaVariablePtr stack);
 
 
+typedef QPtrList<LavaObjectPtr> CallbackParms;
+
+class CallbackObject {
+  LavaDECL *callbackFunc;
+  LavaObjectPtr callObj;
+  CallbackParms callbackParms;
+};
 
 #endif

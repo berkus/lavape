@@ -3576,6 +3576,8 @@ bool Assignment::Check (CheckData &ckd)
     ((IfExpression*)exprValue.ptr)->callObjCat = catTarget;
   }
   ok &= ((SynObject*)exprValue.ptr)->Check(ckd);
+  if (!ok)
+    ERROREXIT
   // important for NullAdmissible check on exprValue:
   // check targetObj first (so targetObj/isOptionalExpr flag is updated)
 

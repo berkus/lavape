@@ -1924,7 +1924,8 @@ void MakeStdAdapter()
   HW_L_ExceptionAdapter[5] = 0;
   HW_L_ExceptionAdapter[6] = 0;
   
-  CallbackAdapter[0] = 0;
+  // event spec (enum. item) + actual callback object
+  CallbackAdapter[0] = (TAdapterFunc)(1 + (sizeof(CallbackObject)+3)/4);
   CallbackAdapter[1] = 0;
   CallbackAdapter[2] = DefaultEq;
   CallbackAdapter[3] = 0;

@@ -1576,13 +1576,15 @@ LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
   FuncStatement *funcStm=(FuncStatement*)callback.ptr;
   Expression *onEventExpr=(Expression*)onEvent.ptr;
   Expression *objRef;
-  LavaObjectPtr callObj, object;
+  LavaObjectPtr callObj, object, result;
+  CallbackObject cbObj;
 
   objRef = (ExpressionX*)funcStm->handle.ptr;
-  callObj = objRef->Evaluate(ckd,stackFrame,oldExprLevel);
+  cbObj.callObj = objRef->Evaluate(ckd,stackFrame,oldExprLevel);
 
   object = onEventExpr->Evaluate(ckd,stackFrame,oldExprLevel);
-  return (LavaObjectPtr)-1;
+  result = AllocateObject(ckd,ckd.document->DECLTab[B_Callback],flags.Contains(isVariable));
+  return result;
 }
 
 
