@@ -73,7 +73,7 @@ static TAdapterFunc CheAdapter[LAH ];
 static TAdapterFunc ArrayAdapter[LAH + 4];
 static TAdapterFunc ExceptionAdapter[LAH + 3];
 static TAdapterFunc HW_L_ExceptionAdapter[LAH ];
-static TAdapterFunc CallbackAdapter[LAH + 1];
+TAdapterFunc CallbackAdapter[LAH + 1];
 static TAdapterFunc LinkAdapter[LAH ];
 
 static TAdapterFunc ServiceAdapter[LAH ];

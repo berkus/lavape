@@ -22,6 +22,9 @@ adapterPos_refCount, adapterPos_DD};
 typedef LAVABASE_DLL TAdapterFunc* (*FP)();
 
 extern LAVABASE_DLL TAdapterFunc* StdAdapterTab [];
+
+extern LAVABASE_DLL TAdapterFunc CallbackAdapter[LAH + 1];
+
 //extern LAVABASE_DLL LavaDECL* DECLTab [];
 extern LAVABASE_DLL void NewQString(QString* pstr, const char* str);
 extern LAVABASE_DLL bool HStringCopy(LavaObjectPtr s0, LavaObjectPtr s1);

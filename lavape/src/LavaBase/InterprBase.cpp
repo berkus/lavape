@@ -392,7 +392,7 @@ TAdapterFunc* GetAdapterTable(CheckData &ckd, LavaDECL* classDECL, LavaDECL* spe
   return 0;
 }
 
-LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,LavaObjectPtr urlObj)
+LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj, LavaObjectPtr urlObj)
 {
   int ii;
   LavaObjectPtr object, sectionPtr, newStackFrame[SFH+1];
@@ -1379,8 +1379,8 @@ bool SetLavaException(CheckData& ckd, int code, const QString& mess)
   for (ii = 0; (ii < ex[0][0].nSections) && (ex[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
   ex = ex + ex[0][ii].sectionOffset;
   ckd.lastException = ex;
-  *(LavaVariablePtr)(ckd.lastException + LSH + 1) = strObj;
   *(LavaVariablePtr)(ckd.lastException + LSH) = codeObj;
+  *(LavaVariablePtr)(ckd.lastException + LSH + 1) = strObj;
   NewQString((QString*)strObj+LSH, mess);
   if (HEnumSetVal(ckd, codeObj, code)) {
     ckd.exceptionThrown = true;

@@ -1623,7 +1623,11 @@ LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
   }
 
   object = onEventExpr->Evaluate(ckd,stackFrame,oldExprLevel);
+
   result = AllocateObject(ckd,ckd.document->DECLTab[B_Callback],false);
+  
+  *(CallbackObject*)(result + LSH) = cbObj;
+  *(LavaVariablePtr)(result + LSH + (unsigned)CallbackAdapter[0]) = object;
 ret:
   return result;
 }
