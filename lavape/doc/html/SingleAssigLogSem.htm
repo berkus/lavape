@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Single-assignment, imperative and logical semantics</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Single-assignment;<BR>
+     imperative vs. logical semantics of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+    programs</H2>
+    
+    <P>We have <a href="Unsolved.htm#singleAssign"> defined</a> single-assignment in
+    another section as follows:</P>
+    <UL>
+      <LI><B>At run time, a value may be assigned to a variable only once in
+        every program branch within the scope of the variable.</B></LI>
+    </UL>
+    
+    <P>Once a value (or a <I>new</I> value) has been assigned to a variable
+      then after this assignment this variable stands for this value in this
+      same program branch. This allows us (but does not force us) to view a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      variable as a<I> logical variable</I> and an assignment as a <I>logical
+      statement </I>which expresses the <I>requirement</I> that its left-hand
+      side should be identical to its right-hand side.</P>
+    
+    <P>The <I>logical semantics</I> considers <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      statements as <I>logical statements</I> that are to be <I>verified</I>,
+      or rendered <I>true</I>, in a certain order (from top to bottom).
+      Particularly the &quot;;&quot; separator between statements is interpreted
+      as &quot;logical and&quot; conjunction in this view. Formal parameters of
+      functions are <I>free variables</I>, all other variables are <I>quantified</I>
+      by the unbounded logical quantifier <B><FONT COLOR="#0000FF">declare</FONT></B>
+      or by the bounded quantifiers <B><FONT COLOR="#0000FF">exists</FONT></B>,
+      <B><FONT COLOR="#0000FF">foreach</FONT></B> or the by the set constructor<I> </I><B><FONT COLOR="#0000FF">select</FONT></B>.
+      The logical semantics enables us to revise the
+      <A HREF="Transactions.htm#transact">transaction notion</A> in a quite
+      satisfactory way.</P>
+    
+    <P>But you can also continue to apply the traditional imperative semantics
+      and view a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variable as
+      a <I>container</I> and an assignment as an <I>instruction</I> to put the
+      value of its right-hand side into the container designated by its
+      left-hand side. </P>
+    
+    <P>From the <I>imperative</I> point of view <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      statements are <I>instructions</I> that are to be <I>executed</I> and &quot;;&quot;
+      means <I>sequential execution</I>. The <B><FONT COLOR="#0000FF">declare</FONT></B>
+      quantifier is viewed as a traditional declaration statement, the bounded
+      quantifiers <FONT COLOR="#0000FF"> <B>exists</B></FONT> and <B><FONT COLOR="#0000FF">foreach</FONT></B><I> </I>are viewed as
+      loop constructs, and <B><FONT COLOR="#0000FF">select</FONT></B>
+      corresponds to the <B><I><FONT COLOR="#FF0000">SQL</FONT></I></B>
+      select expression.</P>
+    
+    <P>Clearly a really precise formal definition of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      semantics would require much greater efforts. (For further study.)</P>
+    
+    <P><B>See also:</B></P>
+    
+    <P><B><A HREF="Transactions.htm">Transactions</A></B></P>
+    
+    <P><B><A HREF="SingleAssigSample.htm">Single-assignment sample</A></B></P>
+  </BODY>
+</HTML>

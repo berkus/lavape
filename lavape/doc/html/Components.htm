@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Components</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER"><font color="#FF0000"><i>Lava</i></font> component 
+    support</H2>
+    
+    <h3 ALIGN="left">Component object = &quot;external&quot; object with interfaces</h3>
+    
+    <font FACE="Arial" SIZE="2"></font>
+    
+    <p ALIGN="left">There exists quite a number of different component notions 
+     
+    with different goals and features. Although component support in <b><i>
+    <font color="#FF0000">Lava</font></i></b> is still in an early, conceptual 
+    phase, our basic ideas about components can already be outlined:</p>
+    
+    <p ALIGN="left">From the <b><i><font color="#FF0000">Lava</font></i></b> 
+    perspective, components are various kinds of containers of &quot;external&quot; 
+    objects which in turn may have different types. The type of an object is 
+    designated by an <font color="#FF0000"><b><i>Lava</i></b></font><b>-external 
+    type identifier</b>, and an object may be processed by the respective <b><i><font color="#FF0000">Lava</font></i></b> 
+    client program through one or several &quot;interfaces&quot;. For locating the proper 
+    object owner, object server, or the memory location of a <i>
+    persistent</i> object we need a <b>&quot;uniform resource locator&quot;</b> 
+    (URL) additionally .</p>
+    
+    <p ALIGN="left">The &quot;remote access&quot; components that are presently on the 
+    market, like COM/DCOM, Enterprise Java Beans (EJB), 
+    CORBA objects and CORBA Component Model (CCM), are examples of component 
+    notions that can be interpreted in this unified way.</p>
+    
+    <p ALIGN="JUSTIFY">Moreover, <font color="#FF0000"><i><b>Lava</b></i></font> 
+    treats <i>all</i> kinds of persistent local or remote objects with 
+    &quot;external&quot; identifiers, that can be processed through interfaces, as 
+    component objects, for instance files, databases, local and FTP<span lang="de">
+    </span>file<span lang="de"> </span>systems, 
+    Web pages and mail-boxes, all kinds of objects that are managed by 
+    continuous system services. They are all made accessible through the same 
+    operations <font color="#0000FF"><b>new</b></font>, <font color="#0000FF">
+    <b>attach</b></font>, and possibly <b><font color="#0000FF">query interface</font></b>, 
+    for processing through specific interfaces.</p>
+    <p ALIGN="JUSTIFY">E.g., Web pages may be processed through the interface(s) 
+    of a &quot;Document Object Model&quot; (DOM), files through read/write interfaces. 
+    <b>Databases</b> may be viewed as persistent sets of objects whose interfaces 
+    describe the data structure of these database objects. In the last case this 
+    requires, of course, an interface notion like that of <font color="#FF0000">
+    <i><b>Lava</b></i></font>, that includes not only functions but also 
+    attributes, and that supports multiple inheritance (which is needed for 
+    CORBA).</p>
+    <p ALIGN="JUSTIFY">
+    <img border="1" src="../images/ComponentDemo.png" align="left" hspace="10" width="401" height="323">The name space of type identifiers is specific to the 
+    respective kind of components. E.g., for Microsoft-COM components it is a 16 
+    byte &quot;class ID&quot; (CLSID). The URLs of persistent objects have 
+    various formats. For Web pages they consist of the usual Internet URL 
+    (http://...), the URL of local files is their usual pathname, etc..</p>
+    <p ALIGN="JUSTIFY">The file menu of the <font color="#FF0000">
+    <i><b>Lava </b></i></font>programming environment contains an <b>import 
+    command</b> for components. Given a concrete component of any kind, its 
+    purpose is to generate a <font color="#FF0000">
+    <i><b>Lava </b></i></font><b>component object specification</b> for all 
+    types of component objects that are supported by that component. A component 
+    object specification is primarily a list of <b>component object interfaces</b> 
+    that are supported by the respective component object.</p>
+    <p ALIGN="JUSTIFY"><i><font color="#FF0000"><b>Lava</b></font></i> will also 
+    support event handlers (callbacks, notifications) following the conventions 
+    of the respective component notion. They enable immediate reaction to events 
+    occurring within the component object, provided that the component supports 
+    such notiications.</p>
+    <p ALIGN="JUSTIFY"><b><i><font color="#FF0000">Lava</font></i></b> will 
+    provide prefabricated component object specifications for various standard 
+    types of components (like file, http, ftp, mail) which will render explicit 
+    import operations superfluous in these cases.</p>
+    <p ALIGN="JUSTIFY">New component objects are created by a variant of the 
+    quite normal <b><i><font color="#FF0000">Lava</font></i></b>
+    <font color="#0000FF"><b>new</b></font> construct in the address space of 
+    the containing component. If a component object, for instance a persistent 
+    object, has already been created outside the <font color="#FF0000"><i><b>
+    Lava</b></i></font> program then it can be attached to the <b><i>
+    <font color="#FF0000">Lava</font></i></b> program by the <b><i>
+    <font color="#FF0000">Lava</font></i></b> <font color="#0000FF"><b>attach</b></font> 
+    operation.</p>
+    <p ALIGN="JUSTIFY">The <font color="#0000FF"><b>new</b></font> and
+    <font color="#0000FF"><b>attach</b></font> operations specify the
+    <font color="#FF0000"><i><b>Lava</b></i></font> name of a component object 
+    specification and of an interface through that the object is to be 
+    processed. For persistent objects the respective URL is specified 
+    additionally. An object may have several interfaces, and a
+    <font color="#0000FF"><b>query interface</b></font> operation allows you to 
+    navigate forth and back between these. (In this way, objects having many 
+    capabilities can be used by non-oo languages or by programming languages 
+    that support only single inheritance.)</p>
+    </font>
+    
+    <b>
+    <h3>Parameter passing between components</h3>
+    </b>
+    <p>If you call a method of a component object and this call is directed 
+    across the border between address spaces or programming languages then you 
+    will be forced generally to pass complex parameter objects &quot;by value&quot;, i.e., 
+    they are <i>copied</i> to the target address space. Two questions arise in 
+    this context:</p>
+    <ol>
+      <li>
+    <p ALIGN="JUSTIFY">Is parameter passing &quot;by value&quot; indeed <i>semantically</i> 
+    admissible and meaningful in this concrete case?</p>
+      </li>
+      <li>
+    <p ALIGN="JUSTIFY">Which nested sub-objects of the parameter object are 
+    really <i>constituents,</i> and which of them are merely <i>acquaintances</i> 
+    of the object, that should be viewed as separate, independent objects and 
+    thus should not be passed &quot;by value&quot; together with the actual parameter 
+    object?</p>
+      </li>
+    </ol>
+    <p ALIGN="JUSTIFY">The answer to the first question will generally be &quot;no&quot; 
+    if the object is a <i>variable state object</i> with <i>uniqueness semantics</i>. </p>
+    <p ALIGN="JUSTIFY">For instance is the semantics of a bank account not 
+    preserved by parameter passing by value, cloning or copying, unless it has 
+    just the semantics of copying a <i>snapshot</i> of its current state. But 
+    the semantics of such a snapshot differs from that of the actual bank 
+    account.</p>
+    <p ALIGN="JUSTIFY">In contrast to this is copying a (signed and thereafter 
+    immutable) money transfer order semantics-preserving, provided it doesn't 
+    cause the money transfer order to be executed twice.</p>
+    <p ALIGN="JUSTIFY">In <b><i><font color="#FF0000">Lava</font></i></b> you 
+    can distinguish these two object categories explicitly: When declaring a 
+    variable you can (and must) specify whether the values of that variable are 
+    mutable <i>state objects</i> (with uniqueness semantics) or complex value 
+    objects that become immutable after they have been constructed completely 
+    (i.e., when they leave the <font color="#FF0000"><i><b>Lava</b></i></font> 
+    new construct); thereafter they may be copied/cloned/passed by value without 
+    restrictions.</p>
+    <p ALIGN="JUSTIFY">Likewise, you have to distinguish explicitly in <b><i>
+    <font color="#FF0000">Lava</font></i></b> whether a member variable of some
+    <b><i><font color="#FF0000">Lava</font></i></b> class represents a <i>
+    constituent</i> of the containing object, or else a <i>pointer</i> to a 
+    separate object (<i>acquaintance</i>).</p>
+    <p ALIGN="JUSTIFY">As a consequence of these explicit semantic distinctions, 
+    parameter passing by value, copying, cloning, and comparison of objects can 
+    be performed automatically in <b><i><font color="#FF0000">Lava</font></i></b>, 
+    while in other languages the programmer has to resort to the manual 
+    programming of individual cases generally.</p>
+    <h3 ALIGN="JUSTIFY">Close coupling of component objects</h3>
+    <p ALIGN="JUSTIFY">A component-based language should also support <i>close 
+    coupling</i> of component objects. Here the high-level support of 
+    Microsoft's <b>OLE</b> (Object Linking and Embedding) in Visual Basic has 
+    set a standard behind that the <b><i><font color="#FF0000">Lava</font></i></b> 
+    development must not fall back. <i>Close coupling</i> deals primarily with 
+    embedding of component objects into container objects at the user interface 
+    and in persistent storage (&quot;compound documents&quot;,
+    <a name="activeDoc"></a>&quot;in-place active documents&quot;) and connecting them by 
+    event notification, drag-and-drop, transactions or in other ways. </p>
+    <p ALIGN="JUSTIFY">As a first step towards <i>close coupling</i>
+    <font color="#FF0000"><i><b>Lava</b></i></font> 
+    will support component objects with OLE server and container capabilities 
+    (in the sense of compound documents). Support of OLE automation and of 
+    persistent <font color="#FF0000"><i><b>Lava</b></i></font> component objects 
+    with full interface export will follow as a second step.</p>
+    <p ALIGN="JUSTIFY"><b>Note</b> that <b><i><font color="#FF0000">Lava</font></i></b> 
+    provides high-level support of <a href="EditForm.htm">form-based user 
+    interfaces</a> that are generated in a semi-automatic way from <b><i>
+    <font color="#FF0000">Lava</font></i></b> interface declarations.</p>
+    </font>
+    
+    
+    <h3 ALIGN="JUSTIFY">See also</h3>
+    <p ALIGN="JUSTIFY"><b><a href="ComponentSamples.htm">Component samples</a></b>.</p>
+    
+    
+  </BODY>
+</HTML>

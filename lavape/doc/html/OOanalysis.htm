@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Object-oriented analysis and design</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="center">Using <font color="#FF0000"><i>Lava</i></font><font color="#000000">
+    for object-oriented analysis and design</font></H2>
+    
+    <P><font color="#FF0000"><b><i>Lava</i></b></font> supports a <b>highly
+    incremental programming style</b> with successive completion and
+    modification of initially very coarse and preliminary declarations that may
+    require major revisions and restructuring later:</P>
+    
+    <ul>
+      <li>You can start by defining just a few object classes (= <font color="#FF0000"><b><i>Lava
+        </i></b></font>interfaces) having a few primary methods. </li>
+      <li>You need not yet assign attributes (= member variables) to the object
+        classes, </li>
+      <li>and you need not (but may) declare formal parameters for the methods. </li>
+    </ul>
+    <P>For instance, the object-oriented essence of a <b><i><font color="#FF0000"> UML</font></i></b> &quot;use case&quot; like &quot;bank customer opens
+    new account&quot;, which would typically be established in the requirements
+    analysis phase of a new project, can be imitated quite easily and naturally
+    in <font color="#FF0000"><b><i>Lava </i></b></font>by declaring three
+    interfaces &quot;Bank&quot;, &quot;Customer&quot; and &quot;Account&quot;
+    and a &quot;CreateAccount&quot; method of &quot;Bank&quot;. </P>
+    
+    <P>You can successively add details (member variables, formal parameters,
+    further interfaces, partial implementations of functions) just as they enter
+    your head.</P>
+    
+    <P>You need not interrupt your flow of thoughts and switch to a completely
+    different representation (from &quot;use cases&quot; to &quot;class
+    diagrams&quot;, say) just because you want to keep your idea that the
+    CreateAccount method should have an input parameter of type
+    &quot;Customer&quot; and an output parameter of type &quot;Account&quot;.
+    You may stay within the same language all the time and add, remove, and
+    change details as they enter your mind.</P>
+    
+    <P><font color="#FF0000"><b><i>Lava</i></b></font> provides <b>automatic
+    updates of all existing references</b> if you change the arrangement of
+    declarations in the <font color="#FF0000"><b><i>Lava</i></b></font>
+    declaration tree, if you assign a new name to any <font color="#FF0000"><b><i>Lava</i></b></font>
+    entity, or if you change the order or number of formal parameters of a
+    function. Therefore it is very inexpensive to make such changes, and this
+    makes it very attractive to use <font color="#FF0000"><b><i>Lava</i></b></font>
+    already in the still very instable analysis and design phases of software
+    projects.</P>
+    
+    <p>It <i>is</i> expensive, however, to move <i>member variables or functions</i>
+    from one interface to another one, since they must then be referenced
+    through other (containing) variables, and the parameters of the functions
+    will have to be adapted to the new situation. This cannot easily performed
+    by an automatic update of references but will require manual changes at all
+    affected places.</p>
+    <p>Therefore it is very important to arrive at a stable assignment of member
+    variables and functions to containing interfaces <i>as early as possible</i>.
+    In our opinion this is a strong argument in favor of a true <i>object-oriented
+    analysis</i> and an <b>incremental single-language approach (like <font color="#FF0000"><i>Lava</i></font>)
+    to OO analysis, design and implementation</b>.</p>
+    <p><b><i><font color="#FF0000">Lava</font></i></b> provides particular
+    support for the design phase by providing a specialization/override notion
+    for <i>families</i> of related interfaces that refer to each other and that
+    have overridable type parameters (<a href="PatternsFrameworks.htm">patterns
+    / virtual
+    types </a>). They are particularly suited to represent
+    reusable and adaptable <a target=_blank href="http://hillside.net/patterns/"><b>design
+    patterns</b></a> and frameworks on which you may want to build during the design
+    phase.</p>
+    <p><a name="patternLanguage"></a>Additionally we could imagine that the nested tree structure of <font color="#FF0000"><i><b>Lava</b></i></font>
+    declarations may be well suited for specifying entire <b> &quot;<a target=_blank href="http://www.designmatrix.com/pl/anatomy.html">pattern
+    languages</a>&quot;</b> as tree structures consisting of primary and subordinate
+    (&quot;auxiliary&quot; / &quot;successor&quot;) patterns.</p>
+    
+  </BODY>
+</HTML>

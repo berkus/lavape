@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Protected/friend</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">&quot;Private&quot; / &quot;protected&quot; / &quot;friend&quot;
+    counterparts in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B></H2>
+    
+    <H3>Private / friend</H3>
+    
+    <P>The <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> counterpart of
+      <B>&quot;private&quot;</B> features of <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>
+      or <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> classes are the
+      features contained in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      implementations. All <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      implementations are completely <B>opaque</B>. You cannot reference any
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> entity that is declared
+      within a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> implementation
+      from outside that implementation.</P>
+    
+    <P>The analogous effect can be achieved also for
+      <A HREF="Packages.htm#packages">packages</A> by declaring them to be <B>opaque</B>.
+      Within an implementation or opaque package <I>IP</I> you can derive
+      interfaces from &quot;outer&quot; base interfaces or declare new
+      interfaces and <B>share these within <I>IP</I> without making them
+      visible to the outside world</B>. </P>
+    
+    <P>Implementations of these new interfaces may be even located in separate
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> files but nevertheless
+      have the same scope (visibility domain) as the interfaces they implement.
+      The accessibility of <I>implementations</I> at run time is not restricted by these
+      <I>&quot;opaque&quot;</I> specifiers. (Note that implementations need
+      never be referenced expressly in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>.)</P>
+    
+    <P>We leave it to the reader to compare this opaqueness notion of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      with the capabilities inherent in the <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>
+      <B>friend specification</B> or the <B>inner classes</B> of <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>.</P>
+    
+    <H3><A NAME="protected"></A>Protected</H3>
+    
+    <P>If an interface <I>A</I> has a feature (= member variable or member
+      function) <I>f </I>and interface <I>B</I> is derived from <I>A</I> then
+      in some cases you would like to prevent users of <I>B</I> to directly
+      access <I>f</I>. By analogy to the <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>
+      and <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> &quot;protected&quot;
+      specifier you can declare such a feature to be <B>protected</B> in the
+      associated variable or function property sheet of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>
+      to make<I> f </I>invisible to the clients of <I>B</I> while remaining
+      visible to <I>B</I> and its implementation. </P>
+    
+    <H3><A NAME="staticCalls"></A>Restrictions concerning static function
+    calls</H3>
+    
+    <P>To call a function statically means that you circumvent the usual virtual
+    function call (&quot;late binding&quot;) mechanism but you specify precisely
+    which version of the function from which interface shall be called. If <I>f</I> is a member <I>function</I> of <I>A</I> then<I> f</I>
+      can be <B><I>called</I></B> <I><B>statically</B></I> only from derived
+      classes in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, i.e., from
+      functions that are declared in a derived interface <I>B</I> of <I>A</I>
+      or in the implementation thereof. So if functions are declared in <I>A</I>
+      and overridden in <I>B</I> then clients of <I>B</I> are forced to use the
+      overridden version; they are not allowed to statically call the base
+      version.</P>
+  </BODY>
+</HTML>

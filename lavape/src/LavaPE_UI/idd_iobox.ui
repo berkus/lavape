@@ -1,0 +1,413 @@
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<class>IDD_IOBox</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>IDD_IOBox</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>334</width>
+            <height>302</height>
+        </rect>
+    </property>
+    <property name="sizePolicy">
+        <sizepolicy>
+            <hsizetype>1</hsizetype>
+            <vsizetype>1</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+        </sizepolicy>
+    </property>
+    <property name="font">
+        <font>
+        </font>
+    </property>
+    <property name="caption">
+        <string>Input/output</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <property name="spacing">
+            <number>15</number>
+        </property>
+        <property name="resizeMode">
+            <enum>Fixed</enum>
+        </property>
+        <widget class="QLayoutWidget">
+            <property name="name">
+                <cstring>layout47</cstring>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <property name="spacing">
+                    <number>15</number>
+                </property>
+                <widget class="QButtonGroup" row="0" column="1">
+                    <property name="name">
+                        <cstring>BGroup_ObjCat</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Object category</string>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QRadioButton">
+                            <property name="name">
+                                <cstring>m_ValueObject1</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Value object</string>
+                            </property>
+                        </widget>
+                        <widget class="QRadioButton">
+                            <property name="name">
+                                <cstring>m_StateObject1</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>State object</string>
+                            </property>
+                        </widget>
+                        <widget class="QRadioButton">
+                            <property name="name">
+                                <cstring>m_SameAsSelf</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Same as ""self""</string>
+                            </property>
+                        </widget>
+                    </vbox>
+                </widget>
+                <widget class="QGroupBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>GroupBox_IDC_STATIC33</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="title">
+                        <string>Select type of input/output</string>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QComboBox">
+                            <item>
+                                <property name="text">
+                                    <string>(Basic types)</string>
+                                </property>
+                            </item>
+                            <property name="name">
+                                <cstring>m_BasicTypes</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QComboBox">
+                            <item>
+                                <property name="text">
+                                    <string>(Other types)</string>
+                                </property>
+                            </item>
+                            <property name="name">
+                                <cstring>m_NamedTypes</cstring>
+                            </property>
+                        </widget>
+                    </vbox>
+                </widget>
+                <widget class="QLayoutWidget" row="0" column="0">
+                    <property name="name">
+                        <cstring>layout45</cstring>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>Label_IDC_STATIC64</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>NoFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Name</string>
+                            </property>
+                            <property name="alignment">
+                                <set>AlignTop|AlignLeft</set>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit">
+                            <property name="name">
+                                <cstring>m_NewName</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="alignment">
+                                <set>AlignLeft</set>
+                            </property>
+                        </widget>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>Label_IDC_STATIC65</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>NoFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Type</string>
+                            </property>
+                            <property name="alignment">
+                                <set>AlignTop|AlignLeft</set>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit">
+                            <property name="name">
+                                <cstring>m_NewTypeType</cstring>
+                            </property>
+                            <property name="enabled">
+                                <bool>false</bool>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>NoFocus</enum>
+                            </property>
+                            <property name="alignment">
+                                <set>AlignLeft</set>
+                            </property>
+                        </widget>
+                        <widget class="QCheckBox">
+                            <property name="name">
+                                <cstring>m_Substitutable1</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Substitutable type</string>
+                            </property>
+                        </widget>
+                    </vbox>
+                </widget>
+                <widget class="QButtonGroup" row="1" column="1">
+                    <property name="name">
+                        <cstring>BGroup_Mode</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Mode</string>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QRadioButton">
+                            <property name="name">
+                                <cstring>m_Mandatory</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Mandatory</string>
+                            </property>
+                        </widget>
+                        <widget class="QRadioButton">
+                            <property name="name">
+                                <cstring>m_Optional</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Optional</string>
+                            </property>
+                        </widget>
+                    </vbox>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QLayoutWidget">
+            <property name="name">
+                <cstring>layout46</cstring>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <spacer>
+                    <property name="name">
+                        <cstring>spacer18</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>40</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>PushButton_IDOK18</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>0</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>1</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>OK</string>
+                    </property>
+                    <property name="default">
+                        <bool>true</bool>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>PushButton_IDCANCEL18</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>0</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>1</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Cancel</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>PushButton_ID_HELP14</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>0</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>1</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Help</string>
+                    </property>
+                </widget>
+            </hbox>
+        </widget>
+    </vbox>
+</widget>
+<connections>
+    <connection>
+        <sender>m_BasicTypes</sender>
+        <signal>activated(int)</signal>
+        <receiver>IDD_IOBox</receiver>
+        <slot>m_BasicTypes4_activated(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_NamedTypes</sender>
+        <signal>activated(int)</signal>
+        <receiver>IDD_IOBox</receiver>
+        <slot>m_NamedTypes4_activated(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_Substitutable1</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOBox</receiver>
+        <slot>m_Substitutable1_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>PushButton_IDOK18</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOBox</receiver>
+        <slot>OnOK()</slot>
+    </connection>
+    <connection>
+        <sender>PushButton_IDCANCEL18</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOBox</receiver>
+        <slot>PushButton_IDCANCEL18_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>PushButton_ID_HELP14</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOBox</receiver>
+        <slot>PushButton_ID_HELP14_clicked()</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>m_NewName</tabstop>
+    <tabstop>m_Substitutable1</tabstop>
+    <tabstop>m_BasicTypes</tabstop>
+    <tabstop>m_NamedTypes</tabstop>
+    <tabstop>m_ValueObject1</tabstop>
+    <tabstop>m_StateObject1</tabstop>
+    <tabstop>m_SameAsSelf</tabstop>
+    <tabstop>m_Mandatory</tabstop>
+    <tabstop>m_Optional</tabstop>
+</tabstops>
+<includes>
+    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
+</includes>
+<slots>
+    <slot>m_BasicTypes4_activated( int )</slot>
+    <slot>m_NamedTypes4_activated( int )</slot>
+    <slot>m_Substitutable1_clicked()</slot>
+    <slot>OnOK()</slot>
+    <slot>PushButton_IDCANCEL18_clicked()</slot>
+    <slot>PushButton_ID_HELP14_clicked()</slot>
+</slots>
+<exportmacro>LAVAPEUI_DLL</exportmacro>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

@@ -1,0 +1,139 @@
+Installation of Lava/LavaPE
+===========================
+
+How to build Lava/LavaPE on LINUX platforms
+===========================================
+
+Prerequisites:
+
+You need the GNU GCC compiler and the GNU make tool,
+as well as a developer version of the Qt toolkit,
+particularly the Qt include files, the shared library
+libqt-mt.so.3, and (for the Lava online help) the
+Qt assistant tool.
+
+Qt can usually be found in /usr/lib/qt3.
+
+Make sure that the qt3/include, qt3/lib, and qt3/bin subdirectories
+are present and libqt-mt.so.3 is contained in qt3/lib.
+If required you will have to install the developer version
+of Qt first; it will probably be contained on your Linux distribution CDs.
+
+If the Qt location is different from /usr/lib/qt3 on your Linux box
+then you have to define an environment variable
+
+   export QTDIR=<Qt installation directory>
+
+before starting the LavaPE build process (see below).
+
+Store the compressed source package <filename>.tar.bz2
+in the intended parent directory of the "lavape"
+installation directory (e.g. /opt or your home
+directory).
+
+tar xjvf <filename>.tar.bz2
+
+unpacks the source package and creates the
+"lavape" directory.
+
+cd lavape; make
+
+completes the installation process and generates
+the LavaPE and Lava interpreter executables.
+
+Launch lavape/bin/Lavape, make use of the online help
+(Help menu) and open the samples in lavape/samples.
+
+
+How to build LavaPE.exe/Lava.exe on the Windows XP platform
+===========================================================
+
+(Still under construction; you should not yet try it.)
+
+Prerequisites:
+
+You need MS Visual Studio 6.0 and a "Qt for Windows"
+installation (Release 3.x.x, to be bought from
+TrollTech: http://www.trolltech.com.)
+
+Define two environment variables
+   
+   QTDIR=<Qt installation directory>
+   QTLIB=<Qt installation directory>\lib\qt-mt3.x.x.lib
+
+Unzip the zipped Lava source distribution xyz.zip to a
+directory of your choice, which will thereafter contain
+a subdirectory "lavape"
+
+Open the workspace lavape\src\LavaPE\LavaPE.dsw.
+
+Make "Precompiler" the active project.
+
+Click the "Build" button or select "Build LPC.exe"
+from the Build menu. disco.dll and LPC.exe will be built.
+(This has to be done only on the first build of LavaPE.)
+
+Now make LavaPE the active project and build it.
+
+Make Lava the active project and build it.
+
+Contents of the Lava source distribution
+========================================
+
+Presently we use MS Visual Studio 6.0 on Windows NT
+for the Lava development.
+
+The LavaCVS workspace is subdivided into 8 sub-projects
+which are contained in the following sub-directories:
+
+disco ............. makes disco.dll (Lava-unspecific basic functionality; the wx... files have been taken
+                    from wxWindows (http://www.wxwindows.org) and adapted to the needs of Lava)
+disco\PCdir ....... makes PP.exe (the Lava pre-processor, see below)
+Interpreter ....... makes Interpreter.dll (the actual Lava interpreter classes)
+Lava .............. makes Lava.exe (MFC-wrapper for the interpreter)
+LavaBase .......... makes LavaBase.dll (common base classes of LavaPE and Lava)
+LavaExecs ......... makes LavaExecs.dll (the "exec view" of LavaPE)
+LavaGUI ........... makes LavaGUI.dll (GUI builder, shared by LavaPE.exe and Lava.exe
+LavaPE ............ makes LavaPE.exe (the Lava programming environment and "declaration tree view")
+
+
+The Lava Precompiler LPC.exe
+============================
+
+This has been "inherited" from a precursor project "DISCO"
+(a development environment for distributed applications
+with particular support for form-based workflow applications
+and digital signatures for structured data (particularly "forms").
+
+It is used in Lava only to produce serialization/deserialization
+procedures for Lava programs: Lava programs are represented internally
+as "abstract syntax trees" (AST). ASTs are stored in files using
+a CCITT ASN.1 encoding. The C++ data types of the AST are defined
+in disco\Syntax.ph (Lava declarations) and LavaExecs\Constructs.ph
+(Lava executable code) using "precompiler macros".
+
+LPC.exe translates these into regular C++ class declarations (in disco\Syntax.h)
+and ASN.1 coding/decoding procedures "CDP<type-name>" (in disco\SyntaxG.cpp
+and LavaExecs\ConstructsG.cpp). Constructs.ph is supplemented by Tokens.ph
+which deals with the "terminal symbols" or "tokens" of the Lava executable
+constructs.
+
+So if you change the AST structure described by Syntax.ph, Constructs.ph,
+and Tokens.ph then PP.exe is invoked subsequently to produce new *.h/*G.cpp
+files.
+
+Incompatible changes of the AST structure should be avoided, however,
+if possible, since they are likely to break existing Lava programs.
+
+In the past we couldn't completely avoid such changes and have inserted
+migration code for automatic upgrades of existing Lava programs manually
+in SyntaxG.cpp and ConstructsG.cpp. This migration code is executed if
+an older release of a Lava program is read from a *.lava file. The
+release is stored as an integer at the beginning of the file and tested
+by the above-mentioned migration code. (Look for "Release" in the *G.cpp
+sources.) We keep backup copies (called *G_.cpp) of these *G.cpp files
+as a safeguard against inadvertent replacement by LPC.exe.
+
+The new Qt-based portable version of Lava/LavaPE is still free of such
+migration code.
+

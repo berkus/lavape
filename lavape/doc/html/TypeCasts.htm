@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Type casts</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2>Patterns with virtual types as a means to avoid &quot;type casts&quot;
+    </H2>
+    
+    <P><B><A HREF="Unsolved.htm#typeCasts">Problem statement</A></B> </P>
+    
+    <P>The reason for the necessity of type casts in languages like <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>
+      or <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> is </P>
+    <OL>
+      <LI>that you cannot replace the types of all kinds of variables (local
+        variables, member variables, function parameters) with more derived
+        types on class derivation and </LI>
+      <LI>that you cannot consistently specialize entire groups of
+        interdependent classes.</LI>
+    </OL>
+    
+    <P>(<B><I><FONT COLOR="#FF0000">Eiffel</FONT></I></B> supports
+      redefinitions of the first category but either requires very complicated
+      and expensive &quot;system-level type checks&quot; at compile time or must
+      rely on run time type checks.)</P>
+    
+    <P>The <B><A HREF="PatternsFrameworks.htm">pattern / virtual type</A></B>
+      concept of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> with its
+      modified, VT-related type conformance checks fulfills both requirements
+      and provides a type-safe and consistent way of specializing entire groups
+      of interdependent interfaces. It particularly enables specialization of
+      local variables, member variables, and function parameters without
+      requiring the exhaustive system-level type checks of <B><I><FONT COLOR="#FF0000">Eiffel</FONT></I></B>
+      and without having to rely on run time type checks to this end.</P>
+    
+    <P ALIGN="LEFT"><B><a href="PatternSamples.htm">Pattern
+    samples</a></B></P>
+  </BODY>
+</HTML>

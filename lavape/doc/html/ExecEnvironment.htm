@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Execution environment of Lava applications</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Execution environments of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+    applications</H2>
+    
+    <P>A <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> file represents an
+      executable program if the first <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      entity in its top-level package is an <A HREF="Packages.htm#initiator">initiator</A>.
+      You can execute such a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      program, i.e., its first initiator, from <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>
+      by clicking the &quot;Run&quot; button. Alternatively you could start the
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> interpreter (Lava.exe)
+      and pass the name of an executable <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      program as a command line parameter to it.</P>
+    
+    <P>This way of starting a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      program by starting a top-level initiator is appropriate for <B>stand-alone
+      <I><FONT COLOR="#FF0000">Lava</FONT></I> applications</B> or for 
+      programs with a <B><I><FONT COLOR="#FF0000">Lava</FONT></I> main
+      program</B> that perhaps make use of  <B>&quot;foreign-language&quot;
+      <A HREF="Components.htm">components</A></B> additionally. </P>
+    
+    <P>Conversely a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> program
+      could be invoked <B>as a component</B> from another <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      or foreign-language main program or component.</P>
+    
+    <P>In any case we have to envisage several ways how such a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      program or <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> component
+      may interact with its environment, and that is what the term &quot;execution
+      environments&quot; is intended to express. The pertinent support available
+      from the underlying operating system will largely decide upon the variety
+      of reasonable execution environments:</P>
+    <OL>
+      <LI>A <B>&quot;<I><FONT COLOR="#FF0000">Lava</FONT></I> console
+        application&quot;</B> might be started from a command line environment
+        and consume/produce nothing else than line mode input/output.</LI>
+      <LI>A <B>&quot;<I><FONT COLOR="#FF0000">Lava</FONT></I> MDI
+        application&quot;</B> may present a Multiple-Document Interface to the
+        user. Several <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        programs may run concurrently in such an execution environment and open
+        any number of MDI child windows. <B>This is what the current <I><FONT COLOR="#FF0000">Lava</FONT></I>
+        development aims at as a first step.</B></LI>
+      <LI><B>&quot;<I><FONT COLOR="#FF0000">Lava</FONT></I> SDI applications&quot;</B>
+        presenting a single-program/Single-Document Interface are imaginable as
+        a special case.</LI>
+      <LI><B>Component-based applications</B> with <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        programs on the client/container or on the component/server side could
+        support various features, for instance, in <B><I><FONT COLOR="#FF0000">Microsoft
+        COM</FONT></I></B> terms: Linking/embedding of user interfaces, compound
+        documents, <B><I><FONT COLOR="#FF0000">ActiveX Documents</FONT></I></B>,
+        <B><I><FONT COLOR="#FF0000">ActiveX Controls</FONT></I></B>,
+        particularly embedding of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        objects in WEB pages similar to <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
+        applets or <B><I><FONT COLOR="#FF0000">ActiveX Controls/Documents</FONT></I></B>,
+        <B><I><FONT COLOR="#FF0000">Automation</FONT></I></B> client or
+        server, drag-and-drop between components, communication through the
+        clipboard, database access through <B><I><FONT COLOR="#FF0000">OLE-DB</FONT></I></B>.</LI>
+      <LI><B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> programs as <B><I><FONT COLOR="#FF0000">CORBA</FONT></I></B>
+        objects/components.</LI>
+    </OL>
+  </BODY>
+</HTML>

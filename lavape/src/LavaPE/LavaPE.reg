@@ -1,0 +1,30 @@
+REGEDIT
+;   Diese .REG-Datei kann von Ihrem SETUP-Programm verwendet werden.
+;   Falls kein SETUP-Programm verfügbar ist, werden die unten stehenden Einträge
+;   automatisch in InitInstance registriert, mit einem Aufruf an 
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+HKEY_CLASSES_ROOT\.lava = LavaPE.Document
+HKEY_CLASSES_ROOT\LavaPE.Document\shell\open\command = LAVAPE.EXE %1
+HKEY_CLASSES_ROOT\LavaPE.Document\shell\open\ddeexec = [open("%1")]
+HKEY_CLASSES_ROOT\LavaPE.Document\shell\open\ddeexec\application = LAVAPE
+    ; Hinweis: die Anwendung ist optional
+    ;  (als Standardwert wird der Name der Anwendung in "command" verwendet)
+
+HKEY_CLASSES_ROOT\LavaPE.Document = LavaPE Document
+HKEY_CLASSES_ROOT\LavaPE.Document\protocol\StdFileEditing\server = LAVAPE.EXE
+HKEY_CLASSES_ROOT\LavaPE.Document\protocol\StdFileEditing\verb\0 = &Edit
+HKEY_CLASSES_ROOT\LavaPE.Document\Insertable =
+HKEY_CLASSES_ROOT\LavaPE.Document\CLSID = {BC8733D3-2301-11D3-B7AF-000000000000}
+
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000} = LavaPE Document
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\DefaultIcon = LAVAPE.EXE,1
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\LocalServer32 = LAVAPE.EXE
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\ProgId = LavaPE.Document
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\MiscStatus = 32
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\AuxUserType\3 = LavaPE
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\AuxUserType\2 = Untitled
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\Insertable = 
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\verb\1 = &Öffnen,0,2
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\verb\0 = &Bearbeiten,0,2
+HKEY_CLASSES_ROOT\CLSID\{BC8733D3-2301-11D3-B7AF-000000000000}\InprocHandler32 = ole32.dll

@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Strict separation interface/implementation</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Strict separation of interfaces and implementations</H2>
+    
+    <P><b>According to the <font color="#FF0000">black-box principle</font>, a <font color="#FF0000"><i>Lava</i></font>
+    class consists of two completely separate parts:</b></P>
+    
+    <ul>
+      <li><b>a (public)&nbsp; <font color="#FF0000">interface</font>
+    and&nbsp;</b></li>
+      <li><b> a (private, encapsulated, opaque) <font color="#FF0000">implementation</font>.</b></li>
+    </ul>
+    
+    <p>The interface contains the exported features (member variables/attributes and member
+    functions/methods) of the class that can be referenced from anywhere (unless they
+    are <a href="ProtectedFriend.htm">protected</a>). Interfaces support <b>multiple
+    inheritance</b> (with <a href="#virtualBaseClasses"> shared base classes</a>),
+    i.e., an interface may be derived from several other base interfaces.</p>
+    <p>The implementation contains the &quot;private&quot; features of the class
+    (which cannot be referenced from the &quot;outside world&quot;) and the
+    implementations of all non-abstract functions that are explicitly enumerated in the
+    interface.</p>
+    <p><a name="implInheritance"></a>Member functions that are inherited from base interfaces and that are not
+    overridden in the current interface have to be implemented in the
+    implementations of those base interfaces and need not be re-implemented in
+    the implementation in question. In this (and only this) sense <b>implementations
+    are inherited (or better: taken over)</b> from base interfaces in <b><i><font color="#FF0000">Lava</font></i></b>,
+    quite in contrast to the semantics of the &quot;implements&quot; clauses in <font color="#FF0000"><i><b>Java</b></i></font>
+    classes, which force you to implement <i>all</i> functions (including the
+    inherited base interface functions) in the class containing the
+    &quot;implements&quot; clause. (See also <a href="#objectCreation">object
+    creation</a> below.)</p>
+    
+    <P><a name="infoHiding"></a>Older, non-object-oriented languages like <FONT COLOR="#FF0000"><I><STRONG>Modula-2</STRONG></I></FONT>
+      and <FONT COLOR="#FF0000"><I><STRONG>Ada</STRONG></I></FONT>, that were
+      based on <B>&quot;abstract data types&quot;</B>, had already achieved a
+      clean syntactic separation of <I>&quot;interfaces/definitions&quot;</I>
+      and <I>&quot;implementations&quot;</I> according to the important <b>&quot;principle
+      of information hiding&quot;</b>. The same interface could be implemented
+      in several alternative ways, and an implementation could be changed
+      without affecting the users of the interface, particularly without any
+      need to recompile the dependent program modules.</P>
+    
+    <P>Strict separation of interfaces and implementations as well as the
+      distinction between state and value objects is downright a necessity if
+      you aim at a language that is from the beginning on not only object- but
+      also <A HREF="Components.htm">component-oriented</A>, where
+      components are pre-fabricated, dynamically loadable software modules
+      written in any language, that communicate with other components via
+      standardized function-call interfaces, like <font color="#FF0000"><i><b> CORBA</b></i></font> or
+    <font color="#FF0000"><i><b> COM</b></i></font> components.</P>
+    
+    <P>In object-oriented languages this very useful and reasonable separation
+      has been abandoned again so far. The distinction between <b>public</b>, <b>private</b>, and
+    <b>protected</b> members of a class is an
+      insufficient substitute for such a strict syntactic separation.</P>
+    
+    <P><a name="JavaInterfaces"></a>The distinction made by <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>
+      between &quot;<I>interfaces&quot;</I> and <I>&quot;classes</I>&quot;
+      doesn't meet the requirements as well:</P>
+    <OL>
+      <LI>A <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>
+        interface is a collection of <I>functions</I> solely. You cannot
+        specify member <I>data</I> in a <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>
+        interface.
+         </LI>
+      <LI>You <I>need not use</I> <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
+        interfaces; you can completely ignore them and use classes instead, as
+        in C++, to specify the public (interface) as well as the private
+        (implementation) features of objects. A third possibility is to use &quot;abstract
+        classes&quot; as a substitute for interfaces with data members. So there
+        is no clear separation of the roles of interfaces and classes in
+        <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>.</LI>
+    </OL>
+    
+    <P> <a name="multipleInheritance"></a>One reason for the dual nature of classes in <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>
+      is that you need classes in <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT><FONT COLOR="#000000">
+      not only for describing implementations but also</FONT><FONT COLOR="#FF0000"><I><STRONG>
+      </STRONG></I></FONT>for specifying &quot;interfaces with data members&quot;.
+      The reason, in turn, for the absence of data members in
+      <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT> interfaces is
+      the <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>
+      compromise as to <b>multiple inheritance</b>: <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>
+      interfaces support multiple inheritance, <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>
+      classes don't, since a general support of multiple inheritance for classes
+      (including data members) would have been considerably more expensive.</P>
+    
+    <P><A NAME="setGetFunctions"></A>Some people have made a merit of this
+      deficiency by saying that you should not expose data members in interfaces
+      anyway. They recommend that you should declare variables in
+      <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT> always as
+      being of some interface (rather than class) type and use classes solely
+      for describing the implementations of interfaces. But if you strictly
+      separate (public) interfaces and (private) implementations and if, as a
+      consequence, interfaces are the <I>only</I> way of exposing the public
+      features of data types then it would be extremely strange and unnatural in
+      many cases to hide their data members behind <b> Set/Get... or other access
+    functions</b>. For <A HREF="TwoObjectCategories.htm">services</A> this might
+      be acceptable frequently, although it may be more natural even then to
+      expose, e.g., the current balance of a bank account as a read-only data
+      member of an account interface. But for <A HREF="TwoObjectCategories.htm">value
+        objects</A>, which expressly serve as messages between services and
+      which are primarily characterized by their data structure, it would
+      certainly be unacceptable to hide their data members behind access
+      functions.</P>
+    
+    <P>Notwithstanding, access to a data member xy of a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      interface may be <I>implemented</I> by proper <b>Set and Get functions</b>
+      that are invoked <I>implicitly</I> on read and assignment access to this
+      data member. In a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      interface you can specify this as an optional property of a data member,
+      but the corresponding Set/Get functions will appear only in the <I>implementation</I>
+      of the interface.</P>
+    
+    <P>Unlike <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>
+      classes, a <FONT COLOR="#FF0000"><I><B>Lava</B>
+    </I></FONT>
+      implementation implements exactly one interface (and thus has the same
+      name as the interface). <FONT COLOR="#FF0000"><I><B>Lava</B>
+    </I></FONT>
+      implementations serve <i>only</i> for implementing their
+      corresponding interfaces, and they do not inherit from other
+      implementations.&nbsp;</P>
+    
+    <P><b><a name="implements"></a>Meaning of &quot;implements&quot;:</b> If interface <i>B</i> extends
+    interfaces <i>A<sub>1</sub>, ..., A<sub>n</sub></i> then an implementation
+    of <i>B</i> provides implementations of those non-abstract member functions
+    of <i>B</i> that are listed explicitly in the declaration of <i>B</i>, i.e.,
+    that override member functions of <i>A<sub>1</sub>, ..., A<sub>n</sub></i>
+    or that have been declared for the first time in <i>B</i>. So an
+    implementation of <i>B</i>  <i>does not</i> comprise implementations of <i>A<sub>1</sub>,
+    ..., A<sub>n</sub></i> but concerns only the new or overridden functions of <i>B</i>.</P>
+    
+    <h3><b><a name="objectCreation"></a>O</b><b>bject creation</b></h3>
+    
+    <P>An interface <i>A</i>
+    may be marked as being &quot;creatable&quot;.
+      Then it may be used in &quot;<B><FONT COLOR="#0000FF">new</FONT></B>&quot;
+      operations to specify the type of the objects to be created. It is the job
+      of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> run time system
+      to find an implementation of <i>A</i>, as well as implementations of all
+    direct or indirect base interfaces of <i>A</i>. The (&quot;public&quot;)
+    features (member variables and member functions) of all those interfaces and
+    the (&quot;private&quot;) features of all those implementations are combined
+    and make up the implementation of the new object of type <i>A</i>.</P>
+    
+    <P>The search process for an implementation corresponding to a given
+    interface <i>A</i> proceeds <a href="Packages.htm#implSearch">as follows</a>: At first the <b><i><font color="#FF0000">Lava</font></i></b>
+    interpreter searches the current file containing the &quot;<b><font color="#0000FF">new</font></b>&quot;
+    expression. If an implementation of <i>A</i> isn't found there then all 
+    directly or indirectly included files are searched in the same way for an 
+    implementation.</P>
+    
+    <P>Note that the &quot;local&quot; features of an implementation, that are
+    declared only within this implementation and that are not exported through
+    the corresponding interface, cannot be referenced from anywhere outside this
+    implementation. In particular, <b>an implementation cannot use local
+    features of other implementations</b> that are &quot;ingredients&quot; of
+    the same object: Implementations may only reference their own (private)
+    features and features that are exported through interfaces. (The latter
+    features may be declared <a href="ProtectedFriend.htm"><b>protected</b></a>,
+    however, which means that they may be referenced <i>only</i> by
+    implementations corresponding to interfaces that extend the interface
+    containing the protected feature.)</P>
+    
+    <h3>Classes in <font color="#FF0000"><i>Lava</i></font></h3>
+    
+    <P>Because of this close relation between implementations and the interfaces
+    that they implement we use the term <b><a name="classNotion"></a>&quot;class&quot;</b>
+    in <b><i><font color="#FF0000"> Lava</font></i></b> in a more informal way 
+    to refer to this pair consisting of an interface and its associated 
+    implementation. Cf. the section &quot;<a href="Packages.htm#implSearch">How
+    <font color="#FF0000"><i>Lava</i></font> locates implementations of 
+    interfaces</a>&quot; to understand how different implementations may be associated with
+    the same interface.</P>
+    
+    <P>The <b><i><font color="#FF0000">Java</font></i></b> notions of
+    &quot;interface&quot;, &quot;class&quot;, &quot;implements&quot; and
+    &quot;extends&quot; provide two unrelated inheritance structures: one for
+    interfaces and one for classes. You can use classes as well as interfaces to
+    declare the types of variables, and a <b><i><font color="#FF0000">Java</font></i></b>
+    class may implement any number of interfaces. We believe that all this is
+    more confusing as helpful for programmers. In contrast to this, <font color="#FF0000"><i><b>Lava</b></i></font>
+    provides an inheritance notion only for interfaces, types of <font color="#FF0000"><i><b>Lava</b></i></font>
+    variables can be declared only with interfaces, and a <font color="#FF0000"><i><b>Lava</b></i></font>
+    implementation implements exactly one interface and doesn't serve any other
+    purpose.</P>
+    
+    <h3>Shared base classes</h3>
+    
+    <P><B><I><FONT COLOR="#FF0000"><a name="virtualBaseClasses"></a>Lava</FONT></I></B> supports <B>multiple
+      inheritance with shared base classes</B>, where &quot;shared base class&quot; is used in the sense of
+    the &quot;virtual base classes&quot; of <FONT COLOR="#FF0000"><I><B>C++</B></I></FONT>:
+      If a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> interface A
+      inherits the same base interface B several times on several inheritance
+      paths then an object of type A contains only one base object of type B.</P>
+    
+    <P>Note that <b>&quot;virtual base class&quot;</b>  means something different
+    in <font color="#FF0000"><i><b>Lava</b></i></font> than in <b><i>
+    <font color="#FF0000">C++</font></i></b>: <b><i><font color="#FF0000">Lava</font></i></b> allows you
+    to specify a <a href="PatternsFrameworks.htm#VT">virtual type</a> as a base
+    interface of a new interface, and these are called &quot;virtual base
+    interfaces&quot;. Cf. our <a href="VirtualBaseSamples.htm">virtual base samples</a>.
+    <font color="#FF0000"><i><b>Lava</b></i></font> virtual base classes provide 
+    one particular way to implement <b>mixins</b> in <font color="#FF0000"><i>
+    <b>Lava</b></i></font> (see below).</P>
+    
+    <h3><b><a name="mixins"></a>Mixins, multiple inheritance, virtual base 
+    classes</b></h3>
+    
+    <P>Often you would like to enhance some basic class with flexibly selectable 
+    supplementary feature sets. Usually such a supplementary feature set 
+    wouldn't represent a class of objects that may be created independently but 
+    it rather resembles a garnishment that you may select for your meal in 
+    better restaurants: they are not meals of their own but just supplements.</P>
+    
+    <P>In the programming context such supplements are called <b>mixins</b>. 
+    (Cf. the discussion (in German) of
+    <a target="_blank" href="http://www.wikiservice.at/dse/wiki.cgi?MixIn">
+    mixins</a> in <a target="_blank" href="http://www.memorymanagement.org/">
+    DseWiki</a>.) <b><i><font color="#FF0000">Lava</font></i></b> provides 
+    essentially two different ways to realize mixins:</P>
+    
+    <ol>
+      <li><b>By multiple inheritance</b>, where the enhanced class inherits from 
+      some basic primary class and from selectable supplementary classes that 
+      often will be <a href="#objectCreation">non-creatable</a> since it doesn't 
+      make sense to create objects from them.</li>
+      <li><b><a href="#virtualBaseClasses">By virtual base classes</a></b> (see 
+      above). This resembles the way how mixins may be implemented in <b><i>
+      <font color="#FF0000">C++</font></i></b> (apart from multiple inheritance 
+      as in <b><i><font color="#FF0000">Lava</font></i></b>): In <b><i>
+      <font color="#FF0000">C++</font></i></b> you can declare template classes 
+      in a way that their base class(es) are template parameters.</li>
+    </ol>
+    
+    <H3>See also</H3>
+    
+    <P><B><A HREF="ProtectedFriend.htm">&quot;Private / protected / friend&quot;<B>
+        counterparts</B> in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B></A></B></P>
+    
+    <P><B><A HREF="TwoObjectCategories.htm">Two object categories</A></B></P>
+    
+    <P><B><A HREF="StagesSample.htm">Stages in the life of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        objects</A></B></P>
+    
+    <P><B><A HREF="Components.htm">Component objects</A></B></P>
+  </BODY>
+</HTML>

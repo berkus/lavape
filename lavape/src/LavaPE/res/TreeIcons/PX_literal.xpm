@@ -1,0 +1,39 @@
+/* XPM */
+static char *PX_literal[] = {
+/* width height num_colors chars_per_pixel */
+"    21    15        17             1",
+/* colors */
+"` c #000000",
+". c #800000",
+"# c #008000",
+"a c #808000",
+"b c #000080",
+"c c #800080",
+"d c #008080",
+"e c #c0c0c0",
+"f c #808080",
+"g c #ff0000",
+"h c #00ff00",
+"i c #ffff00",
+"j c #0000ff",
+"k c #ff00ff",
+"l c #00ffff",
+"m c #ffffff",
+"n c None",
+/* pixels */
+"eeeeeeeeeeeeeeeennnnn",
+"eeeeeeeeeeeeeeeennnnn",
+"eeeeee`eeeeeeeeennnnn",
+"eeeeee`eeeeeeeeennnnn",
+"eeeeee`eeeeeeeeennnnn",
+"ef``fe```fef``fennnnn",
+"eeee`e`ff`e`fe`ennnnn",
+"ef```e`ee`e`ee`ennnnn",
+"e`fe`e`ee`e`eeeennnnn",
+"e`fe`e`ff`e`fe`ennnnn",
+"ef``fef``fef``fennnnn",
+"eeeeeeeeeeeeeeeennnnn",
+"eeeeeeeeeeeeeeeennnnn",
+"eeeeeeeeeeeeeeeennnnn",
+"eeeeeeeeeeeeeeeennnnn"
+};

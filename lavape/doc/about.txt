@@ -1,0 +1,31 @@
+LavaPE 0.7
+
+The unusual programming environment
+of the object-oriented Lava language
+
+that replaces text editors completely with
+structure editors
+
+and supports many modern programming
+language features:
+
+  * no syntax errors possible owing to
+    structure editing,
+
+  * immediate checking for semantic errors
+    after every single editing step,
+
+  * strict separation of class interfaces
+    and class implementations,
+
+  * multiple inheritance of interfaces,
+
+  * support of design pattern realization
+    by parameterized families of classes,
+
+  * which also renders type casts superfluous,
+
+  * dynamically attached software components
+    
+
+Lava home page: http://www.sit.fhg.de/Lava/

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <TITLE>Virtual type property sheet</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Virtual type property sheet</H2>
+    
+    <H3>Name</H3>
+    
+    <P>The name of a virtual type (or &quot;<A HREF="../PatternsFrameworks.htm">pattern</A>
+      parameter&quot;) may contain only letters, digits, and &quot;_&quot;. The
+      first character must not be a digit.</P>
+    
+    <H3>Enable renaming</H3>
+    
+    <p>You may change the names of functions, member variables and virtual types
+    when you override them in a derived interface or pattern (for instance in
+    order to resolve name collisions in cases of multiple inheritance). They
+    inherit the names of the base versions by default (and their name is changed
+    accordingly if the inherited base name is changed). Check this check-box if
+    you would like to assign a different name (which will not be changed then if
+    the base name is changed).</p>
+    
+    <H3>Select value type of VT</H3>
+    
+    <P>If a virtual type is not abstract then you must specify an existing type
+      as its value. This may be a concrete type or may again be virtual and may
+      be selected from the combo-boxes &quot;Basic interfaces&quot; and &quot;Other
+      interfaces&quot;. &quot;Basic interfaces&quot; lists all interfaces whose
+      declaration is contained in the basic include file <I>std.lava</I>. </P>
+    <HR>
+    
+    <H3>Remove overrides</H3>
+    
+    <P>Transforms an <A HREF="../OverrideView.htm">overridden</A> virtual type
+      into a non-overridden virtual type, as if it had been newly declared in the
+      containing pattern.</P>
+    
+    <H3>Final</H3>
+    
+    <P>A <A HREF="../TypeSafety.htm#compatibility">final virtual type</A>
+      may not be overridden when overriding the containing pattern. This may be
+      required if a variable whose type is the current VT occurs on the target
+      side of an assignment anywhere.</P>
+    
+    <H3>Abstract</H3>
+    
+    <P>A virtual type (pattern parameter) of a package or of a
+      <A HREF="InterfaceBox.htm#creatable">non-creatable</A> interface may be
+      abstract. I.e., the specification of a value type for this pattern
+      parameter is deferred to a derived pattern. For an abstract virtual type
+      you may also defer the decision upon the
+      <A HREF="../TwoObjectCategories.htm">object category</A> until it is
+      overridden by a non-abstract virtual type in a derived pattern. See next
+      paragraph.</P>
+    
+    <H3>Define object category</H3>
+    
+    <P>A virtual type may or may not determine the
+      <A HREF="../TwoObjectCategories.htm">object category</A> of all objects
+      declared with this VT.</P>
+    
+    <H3>Object category</H3>
+    
+    <P>If you have decided that the virtual type shall determine the
+      <A HREF="../TwoObjectCategories.htm">object category</A> of all objects
+      declared with this VT then you must select this category here.</P>
+    
+    <h3>Kind of element reference</h3>
+    
+    <P>If this VT defines the type of the elements of a set, chain, or array 
+    then you may specify whether the elements are treated as
+    <a href="../PointersRefCounts.htm#refTypes">constituents, acquaintances or 
+    reverse links</a>.</P>
+  </BODY>
+</HTML>

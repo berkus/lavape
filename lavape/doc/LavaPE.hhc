@@ -1,0 +1,781 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="FrameName" value="frmTopic">
+	<param name="Window Styles" value="0x800025">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Lava Online Documentation">
+		<param name="Local" value="html/LavaOnlineDoc.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Frequently Asked Questions">
+			<param name="Local" value="html/FAQ.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Why yet another object-oriented programming language?">
+				<param name="Local" value="html/FAQWhyAnotherPL.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="What's the principal orientation of the Lava development?">
+				<param name="Local" value="html/FAQLavaOrientation.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Principal orientation in terms of spaghetti, tortellini and fractals.">
+				<param name="Local" value="html/FAQfromSpaghettiToFractals.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Who might be interested in Lava?">
+				<param name="Local" value="html/FAQWhoTakeLook.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="What about Lava on Linux?">
+				<param name="Local" value="html/FAQLavaLinux.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Will Lava provide the same wealth of class libraries as commercial languages?">
+				<param name="Local" value="html/FAQClassLibraries.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Does Lava support component-based programming?">
+				<param name="Local" value="html/Components.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Does Lava support design patterns?">
+				<param name="Local" value="html/FAQDesignPatterns.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Does Lava support &quot;refactoring&quot;?">
+				<param name="Local" value="html/Refactoring.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="What about Lava and UML?">
+				<param name="Local" value="html/FAQUML.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Next steps, future plans, desirable contributions">
+				<param name="Local" value="html/FAQLavaFuture.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="How can I contribute to the Lava development?">
+				<param name="Local" value="html/FAQContributions.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Gibt es die Lava Dokumentation auch auf Deutsch?">
+				<param name="Local" value="html/FAQGerman.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="From Java and Visual Basic to Lava">
+			<param name="Local" value="html/WhyLava.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Advantages of Java">
+				<param name="Local" value="html/AdvantJava.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Advantages of Visual Basic">
+				<param name="Local" value="html/AdvantVB.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Urgent problems in current programming languages">
+				<param name="Local" value="html/Unsolved.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Lava solutions and highlights">
+			<param name="Local" value="html/LavaOverview.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lava is perfectly &quot;point-and-click&quot;">
+				<param name="Local" value="html/PointAndClick.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Advantages of structure editing">
+				<param name="Local" value="html/StructEdAdvant.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lava refactoring support">
+				<param name="Local" value="html/Refactoring.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Improved comprehensibility of Lava programs">
+				<param name="Local" value="html/LavaReadability.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Strict separation of interfaces and implementations">
+				<param name="Local" value="html/SepItfImpl.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Two object categories: state and data objects">
+				<param name="Local" value="html/TwoObjectCategories.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lava as a component integration language">
+				<param name="Local" value="html/Components.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lava supports design patterns/frameworks">
+				<param name="Local" value="html/PatternsFrameworks.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lava is statically type-safe">
+				<param name="Local" value="html/TypeSafety.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lava renders &quot;type casts&quot; superfluous">
+				<param name="Local" value="html/TypeCasts.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Single-assignment; imperative vs. logical semantics">
+				<param name="Local" value="html/SingleAssigLogSem.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Stages in the life of Lava objects">
+				<param name="Local" value="html/StagesSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Comprehensive initialization checks">
+				<param name="Local" value="html/IniChecks.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Pointers, reference counts, storage management">
+				<param name="Local" value="html/PointersRefCounts.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Integrated database expressive means">
+				<param name="Local" value="html/DatabaseIntegration.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Multi-threading, synchronization, transactions">
+				<param name="Local" value="html/Transactions.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Lava callback concept">
+				<param name="Local" value="html/Callbacks.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lava projects, programming in the large">
+				<param name="Local" value="html/Packages.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="&quot;Private&quot; / &quot;protected&quot; / &quot;friend&quot; counterparts in Lava">
+				<param name="Local" value="html/ProtectedFriend.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Execution environments of Lava applications">
+				<param name="Local" value="html/ExecEnvironment.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The o-o Lava interpreter">
+				<param name="Local" value="html/Interpreter.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lava is organization-aware">
+				<param name="Local" value="html/OrganizationAwareness.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lava is security-aware">
+				<param name="Local" value="html/Security.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Learning Lava by samples">
+			<param name="Local" value="html/LavaBySamples.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="&quot;Hello World&quot;">
+				<param name="Local" value="html/HelloWorldSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Forms-oriented user interface">
+				<param name="Local" value="html/FormSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Stages in the life of Lava objects">
+				<param name="Local" value="html/StagesSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="State and value objects">
+				<param name="Local" value="html/StateValueSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Interfaces and implementations">
+				<param name="Local" value="html/ItfImplSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Single-assignment">
+				<param name="Local" value="html/SingleAssigSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Database access">
+				<param name="Local" value="html/DatabaseSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Private / protected / friend">
+				<param name="Local" value="html/ProtectedFriendSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Replacing loops by recursion">
+				<param name="Local" value="html/RepetComputSamples.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Recursion">
+					<param name="Local" value="html/RecursionSamples.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Cursor/iterator/visitor">
+					<param name="Local" value="html/CursorVisitorSamples.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Quantifier and select">
+					<param name="Local" value="html/QuantifierSamples.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Pattern samples">
+				<param name="Local" value="html/PatternSamples.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Basic virtual type samples">
+					<param name="Local" value="html/VTSamples.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="A type is either virtual or non-virtual">
+					<param name="Local" value="html/IsSelfVirtualSample.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Virtual base types">
+					<param name="Local" value="html/VirtualBaseSamples.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Substitutable types">
+					<param name="Local" value="html/SubstitutableSamples.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Counter - counterexamples">
+					<param name="Local" value="html/CounterSamples.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Component objects">
+				<param name="Local" value="html/ComponentSamples.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Exception handling">
+				<param name="Local" value="html/ExceptionSamples.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Callback sample">
+				<param name="Local" value="html/CallbackSample.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="How to edit and run Lava programs">
+			<param name="Local" value="html/BasicEditing.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Editing the declaration tree">
+				<param name="Local" value="html/EditTree.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Using the override view">
+				<param name="Local" value="html/OverrideView.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Editing the include file view">
+				<param name="Local" value="html/EditInclude.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Editing executable code">
+				<param name="Local" value="html/EditExec.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Editing form specifications">
+				<param name="Local" value="html/EditForm.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="How to check and run a Lava program">
+				<param name="Local" value="html/commands/CheckAndRun.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Property sheets and command help">
+			<param name="Local" value="html/DialogAndCmdHelp.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Property sheets of Lava entities">
+				<param name="Local" value="html/PropertySheets.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Chain type in forms">
+					<param name="Local" value="html/dialogs/ChainFormBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Component object specification">
+					<param name="Local" value="html/dialogs/COSpecBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Enumeration">
+					<param name="Local" value="html/dialogs/EnumBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Enumeration item">
+					<param name="Local" value="html/dialogs/EnumItemBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Explan. texts / defaults in forms">
+					<param name="Local" value="html/dialogs/ContentBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Field layout in forms">
+					<param name="Local" value="html/dialogs/FieldLayoutBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Function">
+					<param name="Local" value="html/dialogs/FunctionBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Function parameter">
+					<param name="Local" value="html/dialogs/FuncParmBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Implementation">
+					<param name="Local" value="html/dialogs/ImplementationBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Include file">
+					<param name="Local" value="html/dialogs/IncludeBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Individual explanatory text items in forms">
+					<param name="Local" value="html/dialogs/ExplanTextBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Initiator">
+					<param name="Local" value="html/dialogs/InitiatorBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Interface">
+					<param name="Local" value="html/dialogs/InterfaceBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Member variable">
+					<param name="Local" value="html/dialogs/MemVarBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Menu in form">
+					<param name="Local" value="html/dialogs/MenuBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Menu item in form">
+					<param name="Local" value="html/dialogs/MenuItemBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Package">
+					<param name="Local" value="html/dialogs/PackageBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Set">
+					<param name="Local" value="html/dialogs/SetBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Virtual type">
+					<param name="Local" value="html/dialogs/VirtualTypeBox.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Command help">
+				<param name="Local" value="html/CommandHelp.htm">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="About (Help menu)">
+					<param name="Local" value="html/commands/AboutCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Cascade (Window menu)">
+					<param name="Local" value="html/commands/CascadeCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Check and run">
+					<param name="Local" value="html/commands/CheckAndRun.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Close (File menu)">
+					<param name="Local" value="html/commands/CloseCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Comment">
+					<param name="Local" value="html/commands/Comment.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Context help">
+					<param name="Local" value="html/commands/ContextHelpCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Copy (Edit menu)">
+					<param name="Local" value="html/commands/CopyCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Cut (Edit menu)">
+					<param name="Local" value="html/commands/CutCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Edit menu commands">
+					<param name="Local" value="html/commands/EditMenuCommands.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="File 1,2,3,4 (File menu)">
+					<param name="Local" value="html/commands/File1,2,3,4Command.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="File close (File menu)">
+					<param name="Local" value="html/commands/FileCloseCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="File exit (File menu)">
+					<param name="Local" value="html/commands/FileExitCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="File menu commands">
+					<param name="Local" value="html/commands/FileMenuCommands.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="File new (File menu)">
+					<param name="Local" value="html/commands/FileNewCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="File open (File menu)">
+					<param name="Local" value="html/commands/FileOpenCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="File save as (File menu)">
+					<param name="Local" value="html/commands/FileSaveAsCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="File save (File menu)">
+					<param name="Local" value="html/commands/FileSaveCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Generate HTML (File menu)">
+					<param name="Local" value="html/commands/GenHtmlCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Go to declaration">
+					<param name="Local" value="html/commands/GoToDeclaration.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Import component">
+					<param name="Local" value="html/commands/ImportCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Insert text in form">
+					<param name="Local" value="html/commands/InsertTextInForm.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New component object implementation">
+					<param name="Local" value="html/commands/NewCOImpl.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New component object specification">
+					<param name="Local" value="html/commands/NewCOSpec.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New enumeration">
+					<param name="Local" value="html/commands/NewEnumeration.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New function">
+					<param name="Local" value="html/commands/NewFunction.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New implementation">
+					<param name="Local" value="html/commands/NewImplementation.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New include file">
+					<param name="Local" value="html/commands/NewInclude.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New initiator">
+					<param name="Local" value="html/commands/NewInitiator.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New interface">
+					<param name="Local" value="html/commands/NewInterface.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New member variable or function parameter">
+					<param name="Local" value="html/commands/NewVariable.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New package">
+					<param name="Local" value="html/commands/NewPackage.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New set">
+					<param name="Local" value="html/commands/NewSet.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="New virtual type">
+					<param name="Local" value="html/commands/NewVT.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Next window">
+					<param name="Local" value="html/commands/NextWindowCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Open form view">
+					<param name="Local" value="html/commands/OpenFormView.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Override">
+					<param name="Local" value="html/commands/Override.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Paste (Edit menu)">
+					<param name="Local" value="html/commands/PasteCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Previous window">
+					<param name="Local" value="html/commands/PreviousWindowCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Return to reference">
+					<param name="Local" value="html/commands/ReturnToRef.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Show overridables">
+					<param name="Local" value="html/commands/ShowOverridables.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Spectacles">
+					<param name="Local" value="html/commands/Spectacles.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Tile horizontal (Window menu)">
+					<param name="Local" value="html/commands/TileHorizontalCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Tile vertical (Window menu)">
+					<param name="Local" value="html/commands/TileVerticalCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Undo/redo (Edit menu)">
+					<param name="Local" value="html/commands/UndoCommand.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="View menu commands">
+					<param name="Local" value="html/commands/ViewMenuCommands.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Window 1,2,... (Window menu)">
+					<param name="Local" value="html/commands/Window1,2,...Command.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Window arrange icons">
+					<param name="Local" value="html/commands/WindowArrangeIcons.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Window menu commands">
+					<param name="Local" value="html/commands/WindowMenuCommands.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Release notes, planned enhancements, desirable contributions">
+			<param name="Local" value="html/ProjectState.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Release notes">
+				<param name="Local" value="html/ReleaseNotes.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Next steps, future plans, desirable contributions">
+				<param name="Local" value="html/FAQLavaFuture.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Appendix: The cited Morgenstern poems">
+			<param name="Local" value="html/Poems.htm">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Korf's Joke">
+				<param name="Local" value="html/KorfsJoke.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Aesthete">
+				<param name="Local" value="html/Aesthetics.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Picket Fence">
+				<param name="Local" value="html/PicketFence.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Snail's Monologue">
+				<param name="Local" value="html/Snail.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Spectacles">
+				<param name="Local" value="html/KorfSpectacles.htm">
+				<param name="ImageNumber" value="11">
+				</OBJECT>
+		</UL>
+	</UL>
+</UL>
+</BODY></HTML>

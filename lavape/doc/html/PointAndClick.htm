@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Point and click</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Lava is perfectly &quot;point-and-click&quot;</H2>
+    
+    <P><FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> programs
+      are no longer &quot;written&quot; but &quot;constructed&quot; in Lego-like
+      fashion from basic constructs, and this is true also for the executable
+      parts of <FONT COLOR="#FF0000"><I><STRONG>Lava </STRONG></I></FONT>programs.</P>
+    
+    <P>The <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> programming
+      environment (<FONT COLOR="#FF0000"><I><STRONG>LavaPE</STRONG></I></FONT>)
+      provides quite a number of different views for editing and inspecting
+      <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> programs, but
+      there are two dominating primary views, the &quot;declaration view&quot;
+      and the &quot;exec view&quot;:</P>
+    <UL>
+      <LI>The <A HREF="EditTree.htm"><B>declaration view</B></A> is used for
+        declaring various kinds of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        entities, in particular new interfaces, implementations, and their
+        respective sub-structures.<BR>
+         </LI>
+      <LI><a name="exec"></a>The <A HREF="EditExec.htm"><B>exec view</B></A> is used to
+        construct the executable portions of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        programs, i.e.,
+        <OL>
+          <LI><b>&quot;execs&quot;</b> (= &quot;bodies&quot;) of functions and of &quot;initiators&quot;
+            (= main programs),</LI>
+          <LI><a name="constraint"></a><b>&quot;constraints&quot;</b> that may be associated with interfaces
+            and that must be fulfilled whenever a new object supporting the
+            respective interface has been completed. (Only the constraint of the
+            new object's interface is executed, not those of base interfaces.)</LI>
+        </OL> </LI>
+    </UL>
+    
+    <P>The <B>declaration view</B> is a &quot;tree view&quot; to which
+      everybody is accustomed, for instance, from the &quot;Explorer&quot; of
+      Microsoft Windows. Tree construction is controlled by tool buttons
+      corresponding to the basic <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      notions, like &quot;new package&quot;, &quot;new interface&quot;, &quot;new
+      implementation&quot;, &quot;new member variable&quot;, &quot;new member
+      function&quot;, &quot;new function parameter&quot;, etc.. The properties
+      of these entities are edited using appropriate dialog boxes. Subtrees can
+      be easily copied and moved by drag-and-drop operations or
+      expanded/collapsed by proper tool buttons.</P>
+    
+    <P>There are several auxiliary tree views the most important of which is
+      used for specifying the details of an individual or collective 
+      <A HREF="OverrideView.htm">interface derivation</A> leading to a derived
+      interface or pattern.</P>
+    
+    <P><A HREF="EditTree.htm">Here</A> you can find more details about
+      point-and-click editing of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      declaration view. </P>
+    <HR>
+    
+    <P>The <B>exec view</B> is a quite normal textual representation of an &quot;exec&quot;
+      or &quot;constraint&quot;. But although it uses the standard Windows &quot;rich
+      edit view&quot;, it is not editable directly as text. The executable
+      program text is rather constructed from a number of basic statement,
+      expression, and special constructs which typically would contain &quot;placeholders&quot;
+      <FONT COLOR="#FF0000">&lt;stm&gt;</FONT><FONT COLOR="#000000">,</FONT><FONT COLOR="#FF0000">
+      &lt;expr&gt;</FONT><FONT COLOR="#000000">,</FONT><FONT COLOR="#FF0000"> &lt;var&gt;</FONT><FONT COLOR="#000000">,</FONT><FONT COLOR="#FF0000">
+      &lt;type&gt;</FONT><FONT COLOR="#000000">,</FONT><FONT COLOR="#FF0000"> &lt;func&gt;</FONT><FONT COLOR="#000000">,</FONT><FONT COLOR="#FF0000">
+      &lt;set&gt;</FONT> ... for statements, expressions, variable / type /
+      function / set references ... that may be inserted at these places.</P>
+    
+    <P>In fact, <B>there is no fixed textual syntax of</B>
+      <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT><STRONG>
+      </STRONG>at all, nor is there a <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT>
+      parser or compiler. The point-and click operations of the programmer
+      generate / manipulate an internal tree representation of the
+      <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> program <I>directly</I>.
+      The textual representation of execs / constraints is generated on the fly
+      as long as a corresponding view is open.</P>
+    
+    <P><A HREF="EditExec.htm">Here</A> you can find more details about
+      point-and-click editing of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      exec view. </P>
+    <HR>
+    
+    <P><a name="HTMLdoc"></a>For documentation and publishing purposes an HTML representation of an
+      entire <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> program can be <a href="commands/GenHtmlCommand.htm">
+      generated automatically</a>. This comprises also the declaration parts of the
+      program in some obvious but noncommittal textual syntax. Except for this,
+      <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> isn't a
+      conventional textual language, but it is inseparably connected with <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>.
+    </P>
+    
+    <P>A particular highlight of this philosophy is the capability to generate
+      a <A HREF="EditForm.htm">default form representation</A> from an
+      interface declaration on a single mouse-click, which can then be
+      customized using the <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT>
+      UI builder.</P>
+    
+    <h3><B>See also</B></h3>
+    
+    <P><a href="BasicEditing.htm">Basic editing procedures</a></P>
+    
+    <P><a href="Refactoring.htm">Lava refactoring support</a></P>
+  </BODY>
+</HTML>

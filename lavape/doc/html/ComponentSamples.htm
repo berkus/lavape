@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Component sample</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Creating / attaching / using component objects</H2>
+    
+    <H3>Sample files</H3>
+        
+    <p>
+    Please open <b>ComponentIntro.lava</b> in
+    <font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
+    
+    <p>
+    Please open <b>AttachDemo.lava</b> in
+    <font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
+    
+
+    <p>Please open <b>AttachDemo.ldoc </b>in
+    <font color="#FF0000"><b><i>Lava</i></b></font>.</p>
+    
+
+    <h3>
+    Topics</h3>
+    
+
+    <p>
+    <b><i><font color="#FF0000"><a href="Components.htm">
+    <font color="#FF0000">Lava</font></a></font></i></b><a href="Components.htm"> 
+    component support</a>: Using <i>external</i> (transient or persistent,
+    <font color="#FF0000"><i><b>Lava</b></i></font> or &quot;foreign&quot;) data objects.</p>
+    
+
+<h3>Overview</h3>
+<h4><font face="Arial">Creating/attaching component objects</font></h4>
+<p>From the <font color="#FF0000"><i><b>Lava</b></i></font> perspective, 
+component objects are &quot;external&quot; objects that are identified by external 
+&quot;component object identifiers&quot; (COID). The COID is specified as part of a 
+&quot;component object specification&quot; (COS), which also comprises a list of all 
+&quot;component object interfaces&quot; that are supported by the component object.</p>
+<p>You can use the <font color="#FF0000"><i><b>Lava</b></i></font>
+<font color="#0000FF"><b>new</b></font> and <font color="#0000FF"><b>attach</b></font> 
+expressions to create a new or access an existing component object. You have to 
+specify 1. a COS in these expressions, 2. a component object interface that you 
+want to open, and 3., if the respective object is persistent, you have to specify a <b><font color="#0000FF">url</font></b> which identifies the location of the object within the respective component 
+namespace. The latter depends on the component protocol (LAVA, .NET, CORBA, EJB, 
+FILE, HTTP, FTP, MAIL, ...) of the object. The respective component implementation is found 
+on the basis of the external COID in a way that depends on the respective 
+component protocol.</p>
+<p>If a component object supports more than one component object interface then 
+you can navigate between these, using the <font color="#0000FF"><b>query 
+interface</b></font> expression to get any further interface from a given one.</p>
+<p>The first sample (<i>ComponentIntro.lava</i>) presents an outline of what is 
+envisaged by this <font color="#FF0000"><i><b>Lava</b></i></font> component 
+concept.</p>
+<h4><font face="Arial">Persistent <i><font color="#FF0000">Lava</font></i> objects</font></h4>
+<p>If you want to make a <font color="#FF0000"><i><b>Lava</b></i></font> object 
+persistent you have to implement it within a <font color="#FF0000"><i><b>Lava</b></i></font>
+<b>component</b> (file name suffix .lcom instead of .lava): </p>
+<p>Use &quot;New component&quot; 
+from the file menu of <font color="#FF0000"><i><b>LavaPE</b></i></font> to 
+create a new <font color="#FF0000"><i><b>Lava</b></i></font> component file. 
+This file will typically include some other files which in turn contain
+<font color="#FF0000"><i><b>Lava</b></i></font> <a href="Components.htm">
+component object specifications</a>. </p>
+<p>Click the button &quot;New component object implementation&quot; to create a new 
+component object implementation. The associated dialog box provides a list of 
+all component object specifications that are visible at this place. Select one 
+of these. A &quot;component assembly interface&quot; having this same name is created 
+below the <i>declarations</i> node of the component object implementation. </p>
+<p>This interface extends all interfaces that are supported by the underlying 
+component object specification, and the actual component object implementation 
+now is essentially a quite normal <b><i><font color="#FF0000">Lava</font></i></b> 
+implementation of this component assembly interface. This in turn amounts to 
+implementing the individual component object interfaces that are supported by 
+the underlying component object specification.</p>
+<p>A <b><i><font color="#FF0000">Lava</font></i></b> program can create or 
+attach such an external <font color="#FF0000"><i><b>Lava</b></i></font> object 
+as described above, and it can change its state (if it is a state object). The 
+modified state is saved automatically when the object's reference count goes 
+down to zero. (You may invoke Object::DontSave on the object if you don't want 
+to save it.) </p>
+<p>The state of a (new or modified) <font color="#FF0000"><i><b>Lava</b></i></font> 
+component object is stored in a file having a file name suffix &quot;.ldoc&quot;. This 
+file contains a pointer to the underlying *.lcom component implementation file. 
+Many such *.ldoc &quot;<font color="#FF0000"><i><b>Lava</b></i></font> document 
+files&quot; may use the same *.lcom component implementation, just like many MS Word 
+documents may use the same Word program. In order to avoid the dependency of the 
+*.ldoc's from the absolute pathnames of the *.lcom files, you can &quot;register&quot; the 
+latter in a fixed place: You can place a link to it (i.e., a quite normal 
+Windows *.lnk file) in the &quot;Components&quot; subdirectory of the
+<font color="#FF0000"><i><b>Lava</b></i></font> installation directory.</p>
+<p>Either the absolute pathname or the name of this link file may be specified 
+as the COID (component object identifier) of the component object in its COS 
+(component object specification).</p>
+<p>A <b><i><font color="#FF0000">Lava</font></i></b> component object may also 
+be associated with a <a href="EditForm.htm">form representation</a>. In this 
+case, when you double-click an *.lcom file in the Windows Explorer, then the <b>
+<i><font color="#FF0000">Lava</font></i></b> object is activated and the 
+corresponding form is displayed; you can fill it in, and if you close this 
+application it may be stored as a *.ldoc file. If you double-click a *.ldoc file 
+then it is opened and displayed again and you can modify the fields of the form 
+and save it again.</p>
+<p><font color="#FF0000"><i><b>Lava</b></i></font> *.ldoc document objects may 
+be processed both by the <font color="#0000FF"><b>attach</b></font> mechanism 
+and via the forms-oriented user interface (if the latter exists), but presently 
+not at the same time.</p>
+<h4><font face="Arial"><b><a name="OLEinPlaceActivation"></a>Close integration of component objects</b></font></h4>
+<p><b><font color="#FF0000"><i>Lava</i></font> </b>.lcom/.ldoc<b> </b>document 
+objects that have a user interface may also be embedded into OLE container 
+applications, e.g., into a MS Word or Excel document. See the <i>LavaEmbeddedInWord.doc</i> 
+sample below. I.e., these objects always support OLE in-place activation/editing 
+without any further provisions.</p>
+<h3>Where to look and what to do</h3>
+        
+    <p>
+    Please open <b>ComponentIntro.lava</b> in
+    <font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
+    
+    <p>
+    This minimalistic sample presents a raw impression of what the <font color="#FF0000"><i>
+    <b>Lava</b></i></font> component concept envisages.</p>
+    
+    <p>
+    Please open <b>AttachDemo.lava</b> in
+    <font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
+    
+    <p>
+    The initiator of <i>AttachDemo.lava</i> uses <font color="#0000FF"><b>attach</b></font> 
+    to open the <font color="#FF0000"><i><b>Lava</b></i></font> document file <i>
+    AttachDemo.ldoc</i>. The (state object) <i>sAttach</i> of type <i>
+    LavaCompoIF</i> is then presented to the user by calling the <i>Edit</i> 
+    method of the GUI service that has been associated with class <i>LavaCompoIF</i>. 
+    You can then modify the content of this object and click the OK button 
+    to terminate the form editing process. Finally the object is saved 
+    automatically, when its reference count becomes zero on program termination.</p>
+    
+    <p>
+    Subsequently you may double-click the <font color="#FF0000"><i><b>Lava</b></i></font> 
+    document file <b> <i>AttachDemo.ldoc</i></b> to which the <b><i>
+    <font color="#FF0000">Lava</font></i></b> document object has been saved in 
+    the preceding step. You will see your modifications and may now apply 
+    further modifications, this time directly through the GUI service CompoForm 
+    contained in the component object implementation in file <i>LCompoImpl.lcom</i>. 
+    You can save these new modifications and use the <i>Close</i> command from 
+    the file menu to close the <font color="#FF0000"><i><b>Lava</b></i></font> 
+    document.<br>
+<br>
+    Please open <b><a href="../samples/LavaEmbeddedInWord.doc">LavaEmbeddedInWord.doc</a>. </b>
+      This sample works only in the old <font color="#FF0000"><i><b>MFC</b></i></font> 
+    version of <font color="#FF0000"><i><b>Lava</b></i></font>/<b><i><font color="#FF0000">LavaPE</font></i></b>.</p>
+    
+
+    <p>
+    Open the Word document &quot;<b>LavaEmbeddedInWord.doc</b>&quot; in the &quot;Samples&quot; 
+    sub-directory of your <b><font color="#FF0000"><i>LavaPE</i></font></b> 
+    installation directory. This Word document contains an embedded
+    <font color="#FF0000"><i><b>Lava</b></i></font> form which supports OLE 
+    in-place editing. Its implementation as a <b><i><font color="#FF0000">Lava</font></i></b> 
+    component object is the same&nbsp; file &quot;<i>LCompoImpl.lcom</i>&quot; 
+    as in the two AttachDemo samples above.</p>
+    
+
+    </BODY>
+</HTML>

@@ -1,0 +1,13 @@
+define slots
+define signals protected
+define emit
+define Q_OBJECT
+define Q_EXPORT
+define DECLARE_DYNAMIC_CLASS(X)
+define IMPLEMENT_DYNAMIC_CLASS(X)
+define DISCO_DLL
+define LAVABASE_DLL
+define LAVAEXECS_DLL
+define WXDLLEXPORT
+define __cplusplus
+

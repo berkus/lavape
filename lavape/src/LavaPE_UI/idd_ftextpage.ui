@@ -1,0 +1,483 @@
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<class>FormtextPage</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>FormtextPage</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>314</width>
+            <height>334</height>
+        </rect>
+    </property>
+    <property name="sizePolicy">
+        <sizepolicy>
+            <hsizetype>1</hsizetype>
+            <vsizetype>1</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+        </sizepolicy>
+    </property>
+    <property name="caption">
+        <string>Formtext</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLineEdit">
+            <property name="name">
+                <cstring>m_EditLiteral</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+                <enum>StrongFocus</enum>
+            </property>
+            <property name="alignment">
+                <set>AlignLeft</set>
+            </property>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>GroupBox_IDC_STATIC12</cstring>
+            </property>
+            <property name="focusPolicy">
+                <enum>NoFocus</enum>
+            </property>
+            <property name="title">
+                <string>Literal positioning</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC24</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Horizontal tab</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>m_LiSPIN2</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>StrongFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="1">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC25</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Horizontal space</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="1" column="1">
+                    <property name="name">
+                        <cstring>m_LiSPIN1</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>StrongFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="2">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC26</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Vertical space</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="1" column="2">
+                    <property name="name">
+                        <cstring>m_LiSPIN3</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>StrongFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>m_beforeBase</cstring>
+                    </property>
+                    <property name="text">
+                        <string>before fields inherited from base type</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox6</cstring>
+            </property>
+            <property name="title">
+                <string>Font</string>
+            </property>
+            <hbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>defaultFont</cstring>
+                    </property>
+                    <property name="text">
+                        <string>default</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>fontButton</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>1</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                        <size>
+                            <width>20</width>
+                            <height>32767</height>
+                        </size>
+                    </property>
+                    <property name="text">
+                        <string>...</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>fontName</cstring>
+                    </property>
+                    <property name="text">
+                        <string></string>
+                    </property>
+                </widget>
+                <spacer>
+                    <property name="name">
+                        <cstring>spacer6</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>16</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+            </hbox>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>groupBox6_2</cstring>
+            </property>
+            <property name="title">
+                <string>Colors</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>textLabel1_3</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Foreground color</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="1" column="0">
+                    <property name="name">
+                        <cstring>textLabel1_2_2</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Background color</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="1">
+                    <property name="name">
+                        <cstring>defaultBackground</cstring>
+                    </property>
+                    <property name="text">
+                        <string>default</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="0" column="1">
+                    <property name="name">
+                        <cstring>defaultForeground</cstring>
+                    </property>
+                    <property name="text">
+                        <string>default</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="1" column="2">
+                    <property name="name">
+                        <cstring>colorButtonB</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>1</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                        <size>
+                            <width>20</width>
+                            <height>32767</height>
+                        </size>
+                    </property>
+                    <property name="text">
+                        <string>...</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="0" column="2">
+                    <property name="name">
+                        <cstring>colorButtonF</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>1</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                        <size>
+                            <width>20</width>
+                            <height>32767</height>
+                        </size>
+                    </property>
+                    <property name="text">
+                        <string>...</string>
+                    </property>
+                </widget>
+                <widget class="QFrame" row="0" column="3">
+                    <property name="name">
+                        <cstring>ForeColor</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>0</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>24</width>
+                            <height>24</height>
+                        </size>
+                    </property>
+                    <property name="maximumSize">
+                        <size>
+                            <width>24</width>
+                            <height>24</height>
+                        </size>
+                    </property>
+                    <property name="frameShape">
+                        <enum>StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Plain</enum>
+                    </property>
+                </widget>
+                <widget class="QFrame" row="1" column="3">
+                    <property name="name">
+                        <cstring>BackColor</cstring>
+                    </property>
+                    <property name="minimumSize">
+                        <size>
+                            <width>24</width>
+                            <height>24</height>
+                        </size>
+                    </property>
+                    <property name="maximumSize">
+                        <size>
+                            <width>24</width>
+                            <height>24</height>
+                        </size>
+                    </property>
+                    <property name="frameShape">
+                        <enum>StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Plain</enum>
+                    </property>
+                </widget>
+                <spacer row="1" column="4">
+                    <property name="name">
+                        <cstring>spacer6_2_2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>30</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+                <spacer row="0" column="4">
+                    <property name="name">
+                        <cstring>spacer6_3</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>30</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                </spacer>
+            </grid>
+        </widget>
+        <spacer>
+            <property name="name">
+                <cstring>spacer8</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>16</height>
+                </size>
+            </property>
+        </spacer>
+    </vbox>
+</widget>
+<connections>
+    <connection>
+        <sender>m_LiSPIN2</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>m_HorizTab_valueChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_LiSPIN1</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>m_HorizSpace_valueChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_LiSPIN3</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>m_VertSpace_valueChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_EditLiteral</sender>
+        <signal>textChanged(const QString&amp;)</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>m_EditLiteral_textChanged(const QString&amp;)</slot>
+    </connection>
+    <connection>
+        <sender>defaultFont</sender>
+        <signal>clicked()</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>defaultFont_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>fontButton</sender>
+        <signal>clicked()</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>fontButton_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>defaultForeground</sender>
+        <signal>clicked()</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>defaultForeground_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>defaultBackground</sender>
+        <signal>clicked()</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>defaultBackground_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>colorButtonF</sender>
+        <signal>clicked()</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>colorButtonF_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>colorButtonB</sender>
+        <signal>clicked()</signal>
+        <receiver>FormtextPage</receiver>
+        <slot>colorButtonB_clicked()</slot>
+    </connection>
+</connections>
+<includes>
+    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
+    <include location="local" impldecl="in implementation">idd_ftextpage.ui.h</include>
+</includes>
+<slots>
+    <slot>m_HorizTab_valueChanged( int )</slot>
+    <slot>m_HorizSpace_valueChanged( int )</slot>
+    <slot>m_VertSpace_valueChanged( int )</slot>
+    <slot>m_EditLiteral_textChanged( const QString &amp; )</slot>
+    <slot>defaultFont_clicked()</slot>
+    <slot>fontButton_clicked()</slot>
+    <slot>defaultForeground_clicked()</slot>
+    <slot>defaultBackground_clicked()</slot>
+    <slot>colorButtonF_clicked()</slot>
+    <slot>colorButtonB_clicked()</slot>
+</slots>
+<exportmacro>LAVAPEUI_DLL</exportmacro>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

@@ -1,0 +1,835 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="FrameName" value="frmTopic">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="abort transaction">
+		<param name="Name" value="Transaction support">
+		<param name="Local" value="html/Transactions.htm#exception">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Ada">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="aesthetic vs. pragmatic value">
+		<param name="Name" value="Overview of the Lava solutions">
+		<param name="Local" value="html/LavaOverview.htm#aesthetic">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="application-level pointers">
+		<param name="Name" value="Pointers and reference counts">
+		<param name="Local" value="html/PointersRefCounts.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="assignment">
+		<param name="Name" value="Single-assignment, imperative and logical semantics">
+		<param name="Local" value="html/SingleAssigLogSem.htm">
+		<param name="Name" value="Declaration, creation, lifetime of objects">
+		<param name="Local" value="html/StagesSample.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="single">
+			<param name="Name" value="Single-assignment, imperative and logical semantics">
+			<param name="Local" value="html/SingleAssigLogSem.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="C++">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="callbacks">
+		<param name="Name" value="Callbacks">
+		<param name="Local" value="html/Callbacks.htm">
+		<param name="Name" value="Callback sample">
+		<param name="Local" value="html/CallbackSample.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="category">
+		<param name="Name" value="Two categories of objects">
+		<param name="Local" value="html/TwoObjectCategories.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="class notion">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm#classNotion">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="code refactoring">
+		<param name="Name" value="Lava refactoring support">
+		<param name="Local" value="html/Refactoring.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="COM">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		<param name="Name" value="Advantages of Visual Basic">
+		<param name="Local" value="html/AdvantVB.htm">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#components">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="combo boxes">
+		<param name="Name" value="Advantages of Lava structure editing">
+		<param name="Local" value="html/StructEdAdvant.htm">
+		<param name="Name" value="Editing the declaration tree view">
+		<param name="Local" value="html/EditTree.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="component">
+		<param name="Name" value="Component based">
+		<param name="Local" value="html/Components.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#components">
+		<param name="Name" value="Two categories of objects">
+		<param name="Local" value="html/TwoObjectCategories.htm#component">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="import">
+			<param name="Name" value="Import command (Help menu)">
+			<param name="Local" value="html/commands/ImportCommand.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="objects">
+			<param name="Name" value="Component based">
+			<param name="Local" value="html/Components.htm">
+			<param name="Name" value="Unsolved problems">
+			<param name="Local" value="html/Unsolved.htm#components">
+			<param name="Name" value="Two categories of objects">
+			<param name="Local" value="html/TwoObjectCategories.htm#component">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="constraint">
+		<param name="Name" value="Point and click">
+		<param name="Local" value="html/PointAndClick.htm#constraint">
+		<param name="Name" value="Editing executable code">
+		<param name="Local" value="html/EditExec.htm#constraint">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="constructor">
+		<param name="Name" value="Declaration, creation, lifetime of objects">
+		<param name="Local" value="html/StagesSample.htm#initializer">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="CORBA">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm">
+		<param name="Name" value="Two categories of objects">
+		<param name="Local" value="html/TwoObjectCategories.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="creation of objects">
+		<param name="Name" value="Declaration, creation, lifetime of objects">
+		<param name="Local" value="html/StagesSample.htm">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm#objectCreation">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="database">
+		<param name="Name" value="Database integration">
+		<param name="Local" value="html/DatabaseIntegration.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="objects">
+			<param name="Name" value="Two categories of objects">
+			<param name="Local" value="html/TwoObjectCategories.htm#database">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="DCE">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="DCOM">
+		<param name="Name" value="Advantages of Visual Basic">
+		<param name="Local" value="html/AdvantVB.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="declarations">
+		<param name="Name" value="Editing the declaration tree view">
+		<param name="Local" value="html/EditTree.htm">
+		<param name="Name" value="Declaration, creation, lifetime of objects">
+		<param name="Local" value="html/StagesSample.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="nesting of">
+			<param name="Name" value="Comprehensibility of Lava programs">
+			<param name="Local" value="html/LavaReadability.htm#declNesting">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="design patterns">
+		<param name="Name" value="Patterns Home Page">
+		<param name="Local" value="http://hillside.net/patterns/">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#patterns">
+		<param name="Name" value="Patterns/frameworks">
+		<param name="Local" value="html/PatternsFrameworks.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="destructor">
+		<param name="Name" value="Pointers and reference counts">
+		<param name="Local" value="html/PointersRefCounts.htm#finalize">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="documentation generator">
+		<param name="Name" value="File Print command">
+		<param name="Local" value="html/commands/GenHtmlCommand.htm">
+		<param name="Name" value="Point and click">
+		<param name="Local" value="html/PointAndClick.htm#HTMLdoc">
+		<param name="Name" value="Learning Lava by samples">
+		<param name="Local" value="html/LavaBySamples.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Eiffel">
+		<param name="Name" value="Patterns/frameworks">
+		<param name="Local" value="html/PatternsFrameworks.htm">
+		<param name="Name" value="Pattern samples">
+		<param name="Local" value="html/PatternSamples.htm">
+		<param name="Name" value="Two categories of objects">
+		<param name="Local" value="html/TwoObjectCategories.htm#declaration">
+		<param name="Name" value="Type casts">
+		<param name="Local" value="html/TypeCasts.htm">
+		<param name="Name" value="Type-safety of Lava">
+		<param name="Local" value="html/TypeSafety.htm#Eiffel">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#Eiffel1">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#Eiffel2">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="event handling">
+		<param name="Name" value="Callbacks">
+		<param name="Local" value="html/Callbacks.htm">
+		<param name="Name" value="Callback sample">
+		<param name="Local" value="html/CallbackSample.htm">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="exception handling">
+		<param name="Name" value="Exception samples">
+		<param name="Local" value="html/ExceptionSamples.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="transaction abort">
+			<param name="Name" value="Transaction support">
+			<param name="Local" value="html/Transactions.htm#exception">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="exec">
+		<param name="Name" value="Point and click">
+		<param name="Local" value="html/PointAndClick.htm#exec">
+		<param name="Name" value="Editing executable code">
+		<param name="Local" value="html/EditExec.htm#exec">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="execution of Lava programs">
+		<param name="Name" value="Check and run Lava programs">
+		<param name="Local" value="html/commands/CheckAndRun.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="exit">
+		<param name="Name" value="File Exit command">
+		<param name="Local" value="html/commands/FileExitCommand.htm">
+		<param name="URL" value="html/commands/FileExitCommand.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="files: managing">
+		<param name="Name" value="File Open command">
+		<param name="Local" value="html/commands/FileOpenCommand.htm">
+		<param name="URL" value="html/commands/FileOpenCommand.htm">
+		<param name="Name" value="File Close command">
+		<param name="Local" value="html/commands/FileCloseCommand.htm">
+		<param name="URL" value="html/commands/FileCloseCommand.htm">
+		<param name="Name" value="File Save As command">
+		<param name="Local" value="html/commands/FileSaveAsCommand.htm">
+		<param name="URL" value="html/commands/FileSaveAsCommand.htm">
+		<param name="Name" value="File 1, 2, 3, 4 command">
+		<param name="Local" value="html/commands/File1,2,3,4Command.htm">
+		<param name="URL" value="html/commands/File1,2,3,4Command.htm">
+		<param name="Name" value="File menu commands">
+		<param name="Local" value="html/commands/FileMenuCommands.htm">
+		<param name="URL" value="html/commands/FileMenuCommands.htm">
+		<param name="Name" value="File New command">
+		<param name="Local" value="html/commands/FileNewCommand.htm">
+		<param name="URL" value="html/commands/FileNewCommand.htm">
+		<param name="Name" value="File Save command">
+		<param name="Local" value="html/commands/FileSaveCommand.htm">
+		<param name="URL" value="html/commands/FileSaveCommand.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="finalizer, finalization">
+		<param name="Name" value="Pointers and reference counts">
+		<param name="Local" value="html/PointersRefCounts.htm#finalize">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="forms, automatic generation">
+		<param name="Name" value="Editing form specifications">
+		<param name="Local" value="html/EditForm.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="frameworks">
+		<param name="Name" value="Patterns/frameworks">
+		<param name="Local" value="html/PatternsFrameworks.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#patterns">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="garbage collection">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		<param name="Name" value="Pointers and reference counts">
+		<param name="Local" value="html/PointersRefCounts.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="HTML repr. of Lava programs">
+		<param name="Name" value="File Print command">
+		<param name="Local" value="html/commands/GenHtmlCommand.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="IDE (Integrated Development Environment)">
+		<param name="Name" value="Advantages of Visual Basic">
+		<param name="Local" value="html/AdvantVB.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="IDL">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="implementations">
+		<param name="See Also" value="implementations">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="and interfaces">
+			<param name="Name" value="Strict separation interface/implementation">
+			<param name="Local" value="html/SepItfImpl.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="inheritance">
+			<param name="Name" value="Strict separation interface/implementation">
+			<param name="Local" value="html/SepItfImpl.htm#implInheritance">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="object creation">
+			<param name="Name" value="Strict separation interface/implementation">
+			<param name="Local" value="html/SepItfImpl.htm#objectCreation">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="import">
+		<param name="Name" value="Import command (Help menu)">
+		<param name="Local" value="html/commands/ImportCommand.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="information hiding principle">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm#infoHiding">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="inheritance">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="See Also" value="inheritance">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="multiple">
+			<param name="See Also" value="multiple inheritance">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="of implementations">
+			<param name="Name" value="Strict separation interface/implementation">
+			<param name="Local" value="html/SepItfImpl.htm#implInheritance">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="initialization checks">
+		<param name="Name" value="Initialization checks">
+		<param name="Local" value="html/IniChecks.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="initializer">
+		<param name="Name" value="Declaration, creation, lifetime of objects">
+		<param name="Local" value="html/StagesSample.htm#initializer">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="initiator">
+		<param name="Name" value="Projects, programming in the large">
+		<param name="Local" value="html/Packages.htm#initiator">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="interface">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="nesting">
+			<param name="Name" value="Comprehensibility of Lava programs">
+			<param name="Local" value="html/LavaReadability.htm#declNesting">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Java">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Beans">
+			<param name="Name" value="Unsolved problems">
+			<param name="Local" value="html/Unsolved.htm#components">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="interfaces">
+			<param name="Name" value="Strict separation interface/implementation">
+			<param name="Local" value="html/SepItfImpl.htm#JavaInterfaces">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="launching a Lava program">
+		<param name="Name" value="Check and run Lava programs">
+		<param name="Local" value="html/commands/CheckAndRun.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="life-time">
+		<param name="Name" value="Declaration, creation, lifetime of objects">
+		<param name="Local" value="html/StagesSample.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="LISP">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="logical conjunctions">
+		<param name="Name" value="Database integration">
+		<param name="Local" value="html/DatabaseIntegration.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="members, private/public">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="memory management">
+		<param name="Name" value="Pointers and reference counts">
+		<param name="Local" value="html/PointersRefCounts.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="mixins">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm#mixins">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Modula-2">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		<param name="Name" value="Older languages">
+		<param name="Local" value="html/SepItfImpl.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#sepItfImpl">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="monitors">
+		<param name="Name" value="Transaction support">
+		<param name="Local" value="html/Transactions.htm#synch">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="multiple inheritance">
+		<param name="See Also" value="multiple inheritance">
+		<param name="Comment" value="object">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="and virtual types">
+			<param name="Name" value="Counter-counterexamples">
+			<param name="Local" value="html/CounterSamples.htm#StringList">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="in Lava">
+			<param name="Name" value="Strict separation interface/implementation">
+			<param name="Local" value="html/SepItfImpl.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="in Java">
+			<param name="Name" value="Strict separation interface/implementation">
+			<param name="Local" value="html/SepItfImpl.htm#multipleInheritance">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="versus code generation wizards">
+			<param name="Name" value="Comprehensibility of Lava programs">
+			<param name="Local" value="html/LavaReadability.htm#codeGeneration">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="with shared base classes">
+			<param name="Name" value="Strict separation interface/implementation">
+			<param name="Local" value="html/SepItfImpl.htm#virtualBaseClasses">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="multi-threading">
+		<param name="Name" value="Transaction support">
+		<param name="Local" value="html/Transactions.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="nested declarations">
+		<param name="Name" value="Comprehensibility of Lava programs">
+		<param name="Local" value="html/LavaReadability.htm#declNesting">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="new">
+		<param name="Name" value="Declaration, creation, lifetime of objects">
+		<param name="Local" value="html/StagesSample.htm#creation">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="object">
+			<param name="Name" value="Declaration, creation, lifetime of objects">
+			<param name="Local" value="html/StagesSample.htm#creation">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&lt;virtual_type&gt;?">
+			<param name="Name" value="Declaration, creation, lifetime of objects">
+			<param name="Local" value="html/StagesSample.htm#newVT">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Oberon">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="object">
+		<param name="Name" value="Two categories of objects">
+		<param name="Local" value="html/TwoObjectCategories.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#stateValue">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="categories: state, value">
+			<param name="Name" value="Two categories of objects">
+			<param name="Local" value="html/TwoObjectCategories.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="component object">
+			<param name="Name" value="Component based">
+			<param name="Local" value="html/Components.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="creation">
+			<param name="Name" value="Strict separation interface/implementation">
+			<param name="Local" value="html/SepItfImpl.htm#objectCreation">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="OLE">
+		<param name="Name" value="Advantages of Visual Basic">
+		<param name="Local" value="html/AdvantVB.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="opaque packages">
+		<param name="Name" value="Protected/friend">
+		<param name="Local" value="html/ProtectedFriend.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="override view">
+		<param name="Name" value="Override view">
+		<param name="Local" value="html/OverrideView.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Pascal">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="pattern">
+		<param name="Name" value="Patterns/frameworks">
+		<param name="Local" value="html/PatternsFrameworks.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#patterns">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="parameters">
+			<param name="Name" value="Patterns/frameworks">
+			<param name="Local" value="html/PatternsFrameworks.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="o-o analysis">
+			<param name="Name" value="Object-oriented analysis and design">
+			<param name="Local" value="html/OOanalysis.htm#patternLanguage">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="persistent data">
+		<param name="Name" value="Database integration">
+		<param name="Local" value="html/DatabaseIntegration.htm">
+		<param name="Name" value="Database objects">
+		<param name="Local" value="html/TwoObjectCategories.htm#database">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="placeholder">
+		<param name="Name" value="Point and click">
+		<param name="Local" value="html/PointAndClick.htm">
+		<param name="Name" value="Editing executable code">
+		<param name="Local" value="html/EditExec.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="point and click">
+		<param name="Name" value="Point and click">
+		<param name="Local" value="html/PointAndClick.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="pointers">
+		<param name="Name" value="Pointers and reference counts">
+		<param name="Local" value="html/PointersRefCounts.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="protected features">
+		<param name="Name" value="Protected/friend">
+		<param name="Local" value="html/ProtectedFriend.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="quantifiers">
+		<param name="Name" value="Database integration">
+		<param name="Local" value="html/DatabaseIntegration.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="RAD (Rapid Application Development)">
+		<param name="Name" value="Advantages of Visual Basic">
+		<param name="Local" value="html/AdvantVB.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="refactoring">
+		<param name="Name" value="Lava refactoring support">
+		<param name="Local" value="html/Refactoring.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="reference counts">
+		<param name="Name" value="Pointers and reference counts">
+		<param name="Local" value="html/PointersRefCounts.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="semaphores">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#synch">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="single assignment">
+		<param name="Name" value="Single-assignment, imperative and logical semantics">
+		<param name="Local" value="html/SingleAssigLogSem.htm">
+		<param name="Name" value="Single-assignment sample">
+		<param name="Local" value="html/SingleAssigSample.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="SmallTalk">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="specialization, collective">
+		<param name="Name" value="Patterns/frameworks">
+		<param name="Local" value="html/PatternsFrameworks.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="SQL">
+		<param name="Name" value="Database integration">
+		<param name="Local" value="html/DatabaseIntegration.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#SQL">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="select expression">
+			<param name="Name" value="Database integration">
+			<param name="Local" value="html/DatabaseIntegration.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="starting a Lava program">
+		<param name="Name" value="Check and run Lava programs">
+		<param name="Local" value="html/commands/CheckAndRun.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="state object (service)">
+		<param name="Name" value="Two categories of objects">
+		<param name="Local" value="html/TwoObjectCategories.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="static">
+		<param name="See Also" value="static">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="functions">
+			<param name="Name" value="Function property sheet">
+			<param name="Local" value="html/dialogs/FunctionBox.htm#static">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="function calls">
+			<param name="Name" value="Protected/friend">
+			<param name="Local" value="html/ProtectedFriend.htm#staticCalls">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="samples">
+			<param name="Name" value="Substitutable samples">
+			<param name="Local" value="html/SubstitutableSamples.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="storage managent">
+		<param name="Name" value="Pointers and reference counts">
+		<param name="Local" value="html/PointersRefCounts.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="substitutable types">
+		<param name="Name" value="Type-safety of Lava">
+		<param name="Local" value="html/TypeSafety.htm#substitutableType">
+		<param name="Name" value="Substitutable samples">
+		<param name="Local" value="html/SubstitutableSamples.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="synchronization">
+		<param name="Name" value="Transaction support">
+		<param name="Local" value="html/Transactions.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="textual programming">
+		<param name="Name" value="Point and click">
+		<param name="Local" value="html/PointAndClick.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="textual syntax of Lava">
+		<param name="Name" value="Point and click">
+		<param name="Local" value="html/PointAndClick.htm#textualSyntax">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="threads">
+		<param name="Name" value="Advantages of Java">
+		<param name="Local" value="html/AdvantJava.htm">
+		<param name="Name" value="Transaction support">
+		<param name="Local" value="html/Transactions.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="transactions">
+		<param name="Name" value="Database integration">
+		<param name="Local" value="html/DatabaseIntegration.htm">
+		<param name="Name" value="Transaction support">
+		<param name="Local" value="html/Transactions.htm">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm#synch">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="abort">
+			<param name="Name" value="Transaction support">
+			<param name="Local" value="html/Transactions.htm#exception">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="try block">
+		<param name="Name" value="Transaction support">
+		<param name="Local" value="html/Transactions.htm#exception">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="type-safe">
+		<param name="Name" value="Type-safety of Lava">
+		<param name="Local" value="html/TypeSafety.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Unsolved problems">
+		<param name="Name" value="Unsolved problems">
+		<param name="Local" value="html/Unsolved.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="value object (structure)">
+		<param name="Name" value="Two categories of objects">
+		<param name="Local" value="html/TwoObjectCategories.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="views of LavaPE">
+		<param name="Name" value="Basic program editing procedures">
+		<param name="Local" value="html/BasicEditing.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="declaration">
+			<param name="Name" value="Editing the declaration tree view">
+			<param name="Local" value="html/EditTree.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="exec">
+			<param name="Name" value="Editing executable code">
+			<param name="Local" value="html/EditExec.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="forms">
+			<param name="Name" value="Editing form specifications">
+			<param name="Local" value="html/EditForm.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="override">
+			<param name="Name" value="Override view">
+			<param name="Local" value="html/OverrideView.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="virtual types">
+		<param name="Name" value="Patterns/frameworks">
+		<param name="Local" value="html/PatternsFrameworks.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="virtual base classes">
+		<param name="Name" value="Virtual base samples">
+		<param name="Local" value="html/VirtualBaseSamples.htm">
+		<param name="Name" value="Strict separation interface/implementation">
+		<param name="Local" value="html/SepItfImpl.htm#virtualBaseClasses">
+		<param name="Name" value="Pattern samples">
+		<param name="Local" value="html/PatternSamples.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Visual Basic">
+		<param name="Name" value="Advantages of Visual Basic">
+		<param name="Local" value="html/AdvantVB.htm">
+		</OBJECT>
+</UL>
+</BODY></HTML>

@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Declaration, creation, lifetime of objects</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER"><B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+    variables, <BR>
+     stages in the life of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+    objects</H2>
+    
+    <H3><A NAME="dclCreation"></A>Declaration of variables</H3>
+    
+    <P>In addition to literal constants, like &quot;3&quot;, a programming
+      language needs &quot;variables&quot; to which you can assign values, like</P>
+
+<PRE><FONT FACE="Times New Roman">       pi  <FONT COLOR="#0000FF">&lt;==</FONT>  3.14</FONT></PRE>
+    
+    <P>In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variables may be
+      declared </P>
+    <OL>
+      <LI>as member variables of interfaces or implementations using the
+        <A HREF="EditTree.htm">declaration view</A> of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>,</LI>
+      <LI>as input or output parameters of functions or initiators using the
+        <A HREF="EditTree.htm">declaration view</A> of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>,</LI>
+      <LI>as &quot;unbounded&quot; local variables in execs or constraints
+        using the <B><FONT COLOR="#0000FF">declare</FONT></B> construct in the
+        <A HREF="EditExec.htm">exec view</A> of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>,</LI>
+      <LI>as &quot;unbounded&quot; local variables in  <B><FONT COLOR="#0000FF">type</FONT></B>
+        ... <B><FONT COLOR="#0000FF">case</FONT></B> branching statements in 
+      execs or constraints,</LI>
+      <LI>as &quot;bounded&quot; local variables ranging over some finite set
+        of objects, using &quot;quantifiers&quot; <B><FONT COLOR="#0000FF">foreach</FONT></B>,
+        <B><FONT COLOR="#0000FF">exists</FONT></B>,
+        <B><FONT COLOR="#0000FF">select</FONT></B> in the
+        <A HREF="EditExec.htm">exec view</A> of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>,</LI>
+      <LI>automatically as auxiliary variables &quot;<I>temp...</I>&quot; in
+        the <B><FONT COLOR="#0000FF">new</FONT></B> and <B><FONT COLOR="#0000FF">clone</FONT></B>
+        object creation constructs.</LI>
+    </OL>
+    
+    <P ALIGN="left">In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> you
+      have to declare the <B>type</B> (for instance &quot;Integer&quot;) and
+      the <B>object category</B>  (<a href="TwoObjectCategories.htm">state or value
+    object</a>) of variables. The type
+      must be either a concrete interface or a <A HREF="PatternsFrameworks.htm">&quot;virtual
+        type&quot;</A> which has been declared as a &quot;pattern parameter&quot;
+      of a containing interface or package. If the type of a variable is virtual then
+      this virtual type (or one of its ancestors in the inheritance path) may be
+      declared responsible for the determination of the object category.&nbsp;</P>
+
+    <P ALIGN="left"> A tilde
+      &quot;~&quot; precedes the interface name in the declaration of state
+      objects and this way indicates that new values may be assigned to their
+    immediate member variables again and again.</P>
+
+    <H3><A NAME="creation"></A>Creation, initialization, completion of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+    objects</H3>
+    
+    <P>A concrete object may be created and assigned to <I>acc</I> using the
+      <B><FONT COLOR="#0000FF">new</FONT></B> expression of
+      <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT>:</P>
+
+<PRE><FONT FACE="Courier New">   acc <FONT COLOR="#0000FF">&lt;==</FONT><FONT COLOR="#0000FF"> <STRONG>new</STRONG></FONT> ~Account temp
+             <FONT COLOR="#008000"><I>initialization of the new account</I></FONT>:
+             temp.<B>accountInit</B>(i1,i2,...)
+           <B><FONT COLOR="#0000FF">but</FONT></B>
+<FONT COLOR="#008000"><I>             customization of the new account:
+</I></FONT>             temp.balance <B><FONT COLOR="#0000FF">&lt;==</FONT></B> 1000.00;
+             ...
+           <B><FONT COLOR="#0000FF">#new</FONT></B></FONT></PRE>
+    
+    <P>Thereafter <I>acc</I> will point to a newly created state object of
+      type &quot;Account&quot;. </P>
+    
+    <P>Note that <B><FONT COLOR="#0000FF">new</FONT> ...
+      <FONT COLOR="#0000FF">#new</FONT></B> is an expression in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      that may occur in any place where expressions are appropriate, not only on
+      the right side of assignments. Therefore it provides an auxiliary variable
+      <I>temp</I> as a reference to the newly created object in the initializer
+      call and in the <B><FONT COLOR="#0000FF">but</FONT></B> customization
+      clause.</P>
+    
+    <P><B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> demands a more strict
+      separation of the initialization, customization, and usage phases of
+      objects than most other languages. We believe that it is at least worth an
+      experiment to enforce more discipline and to prevent overly chaotic
+      program structures concerning these aspects. </P>
+    
+    <P><B>Initialization</B> belongs to the duties of an <B>interface
+      provider</B>. Its purpose is to bring a new object into a state where all
+      its non-optional member variables have admissible values such that the
+      methods of the interface may be safely applied to the new object.</P>
+    
+    <P><B>Customization</B> (in the <B><FONT COLOR="#0000FF">but</FONT></B>
+      clauses of <B><FONT COLOR="#0000FF">new</FONT></B> and <B><FONT COLOR="#0000FF">clone</FONT></B>
+      expressions) gives the <B>interface client</B> an opportunity to modify
+      the initialized new object in a client-specific way in cases where the
+      initilizers offered by the interface provider do not completely meet the
+      client's requirements.</P>
+    
+    <P>Here a summary of the pertinent <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      rules:</P>
+    <OL>
+      <LI><a name="initializer"></a>Every <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> 
+      interface must have at least one <b>&quot;initializer&quot;</b> function 
+      (roughly corresponding to a <b>constructor</b> in <b><i>
+      <font color="#FF0000">C++</font></i></b> or <b><i><font color="#FF0000">
+      Java</font></i></b>). You must always specify an <I>initializer</I>
+        (rather than a creatable interface) for the <B><FONT COLOR="#0000FF">new</FONT></B>
+        expression.</LI>
+      <LI>An interface may have a <b>&quot;default initializer&quot;</b> without
+        parameters (which will then be omitted from the new expression).</LI>
+      <LI>Initializers must first call an initializer for every base class of
+        their associated interface</LI>
+      <LI>and must then explicitly assign a value to every non-optional member
+        of the interface</LI>
+      <LI>before they may apply other member functions of their interface to
+        their <I>self</I> object.</LI>
+      <LI>A new object may be passed as a parameter to a function or initiator
+        only after it has left this entire construction hoarding &quot;<B><FONT COLOR="#0000FF">new</FONT></B>
+        ... <B><FONT COLOR="#0000FF">#new</FONT></B>&quot; or &quot;<B><FONT COLOR="#0000FF">clone</FONT></B>
+        ... <B><FONT COLOR="#0000FF">#clone</FONT></B>&quot; and thus counts
+        as complete.</LI>
+      <LI>Value objects must not be changed any more after completion.</LI>
+    </OL>
+    
+    <p><b><a name="newVT"></a>&quot;<font color="#0000FF">new</font> &lt;virtual_type&gt;&quot;?:
+    </b><font color="#FF0000"><i><b>Lava</b></i></font> doesn't support the
+    creation of objects whose type is specified as a virtual type. The reason is
+    that a specific initializer is needed on object creation in any case, and
+    initializers are no virtual functions but inseparably associated with a
+    quite specific class. We could at best look for a (parameterless)
+    default&nbsp; initializer (see point 2 above) at run time when the real type
+    is known that corresponds to the specified virtual type. This would
+    represent a kind of virtualization of initializers that we felt to be rather
+    unnatural and arbitrary. Instead, we recommend to resort to the quite usual
+    solution of providing &quot;factory classes&quot; and the usual (virtual)
+    &quot;factory functions&quot; for creating such objects whose real type is
+    only known at run time.</p>
+    
+    <p><b>See also</b> <a href="SepItfImpl.htm#objectCreation"><b>object
+    creation</b></a>.</p>
+    
+    <H3>Lifetime of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> objects</H3>
+    
+    <P>Roughly speaking, a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      object may be deleted and the storage allocated to it may be freed when
+      the object is no longer referenced by any <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      variable of any kind: Storage management for <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      objects is based on <A HREF="PointersRefCounts.htm">reference counts</A>.
+    </P>
+    
+    <P>Persistent objects are realized as <A HREF="Components.htm">persistent
+        component objects</A> in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>.</P>
+    
+    <H3>Assignment and parameter passing</H3>
+    
+    <P>Assignment of a value (= result of an expression: an object) to a
+      variable means always that the variable is made to point to this object.
+      Parameter passing is viewed as a special case: The value is assigned to a
+      formal input or output parameter of a function or initiator.</P>
+    
+    <P>Two variables may have the same value, i.e., point to the same object.
+      The reference count of an object is incremented by 1 when the object is
+      assigned to a variable or passed as an input parameter to a
+      function/operator or initiator. It is decremented by 1 if program
+      execution leaves the scope of a variable that points to the object. </P>
+    
+    <h3 ALIGN="left"><B>See also</B></h3>
+    
+    <P ALIGN="left"><a href="SingleAssigLogSem.htm"><b>S</b></a><B><A HREF="SingleAssigLogSem.htm">ingle-assignment</A></B></P>
+    
+    <P ALIGN="left"><b><a href="PointersRefCounts.htm#finalize">
+    Finalizers/destructors</a></b></P>
+  </BODY>
+</HTML>

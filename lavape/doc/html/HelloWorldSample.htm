@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Hello World</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">&quot;Hello World&quot; sample</H2>
+    
+    <H3>Sample files</H3>
+    
+    <P>
+    <!--<OBJECT id=hhctrl type="application/x-oleobject"
+        classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"
+        codebase="hhctrl.ocx#Version=4,74,9273,0"
+        width=12
+        height=12>
+    <PARAM name="Command" value="ShortCut">
+    <PARAM name="Button" value="Click to open HelloWorld.lava in LavaPE">
+    <PARAM name="Item1" value=",LavaPE.lnk,Samples\HelloWorld.lava">
+    </OBJECT>-->
+    Please open <b>HelloWorld.lava</b> in
+    <font color="#FF0000"><b><i>LavaPE</i></b></font>.</P>
+    
+    <H3>Topics</H3>
+    
+    <P><A HREF="Packages.htm#initiator">Initiator</A>, exec,
+      <A HREF="ExecEnvironment.htm">execution environment</A>, basic types,
+      String, MessageBox.</P>
+    
+    <H3>Overview</H3>
+    
+    <P>An <B>initiator</B> is a kind of &quot;main program&quot; or autonomous
+      thread of execution in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>.
+      The usual <B>&quot;Hello World&quot;</B> sample is based on the
+      <B>initiator</B> notion, the <B>String</B> class and its <B>MessageBox</B>
+      member function. </P>
+    
+    <H3>Where to look and what to do</H3>
+    
+    <P>When you open a *.lava file in <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>
+      (using the &quot;File-&gt;Open&quot; menu or by double-clicking it in
+      Windows Explorer or by selecting it from the history list of the File
+      menu) the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      <A HREF="EditTree.htm">declaration tree view</A> appears. The left
+      splitter window of the declaration window lists all direct and indirect
+      <A HREF="Packages.htm#include">include files</A> of the current file. You
+      can minimize the include view by dragging its right border towards the
+      left border of the declaration window.</P>
+    
+    <P>In the declaration view the &quot;HelloWorld&quot; initiator is the
+      first declaration of the (unnamed) top-level package: A <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      program file can be executed only if its first top-level declaration is an
+      initiator.</P>
+    
+    <P>In order to open the executable body of the HelloWorld initiator in the
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> <A HREF="EditExec.htm">exec
+        view</A> you may either double-click the little &quot;exec&quot; icon
+      <IMG SRC="../Samples/LavaIcons/constrai.png" ALT="Exec icon" ALIGN="ABSMIDDLE" width="21" height="15">or
+      select the <I>Exec</I> keyword to the right of the icon by a single
+      mouse-click and then click the spectacles
+      <IMG SRC="../images/Spectacles.png" ALT="Spectacles" ALIGN="ABSMIDDLE" width="22" height="20">.
+    </P>
+    
+    <P>Try the &quot;Tile windows&quot; buttons 
+    <IMG SRC="../images/Tile.png" ALT="Tile" ALIGN="ABSMIDDLE" width="67" height="21">
+      in order to achieve a tiled or cascading arrangement of exec and tree
+    views.</P>
+    
+    <P>Click the &quot;Run&quot; button 
+    <IMG SRC="../images/Run.png" ALT="Run" ALIGN="ABSMIDDLE" width="22" height="22">
+    to run the <I>HelloWorld.lava</I>
+      sample.</P>
+    
+    <P><B>You should try to alter the initiator exec in order to familiarize with the <I><FONT COLOR="#FF0000">Lava</FONT></I> structure
+      editor:</B></P>
+    
+    <P><B>Change the &quot;Hello World!&quot; constant into a concatenation of
+      two constants <I>&quot;Hello&quot;</I> and <I>&quot; World!&quot;</I>:</B><I>
+      </I></P>
+    <OL>
+      <LI>Click the <I>&quot;Hello World!&quot;</I> constant to <I>select</I>
+        it (single mouse-click). </LI>
+      <LI>Then click the &quot;+&quot; operator 
+      <IMG SRC="../images/Plus.png" ALT="Plus" ALIGN="ABSMIDDLE" width="17" height="19">
+        to make the constant the first operand of a &quot;+&quot; operation (=
+        string concatenation, since the first operand is of type
+        &quot;String&quot;). </LI>
+      <LI>Double-click the <I>&quot;Hello World!&quot;</I> constant, or select
+        it and click the spectacles 
+      <IMG SRC="../images/Spectacles.png" ALT="Spectacles" ALIGN="ABSMIDDLE" width="22" height="20">,
+        or press the &quot;down&quot; arrow key to &quot;open&quot; it in a little text edit window. </LI>
+      <LI>Now you can delete the trailing <I>&quot;World!&quot;</I>
+        substring.</LI>
+      <LI>Close the little edit window by pressing the return key or by
+        clicking anywhere outside the window. </LI>
+      <LI>Double-click the <FONT COLOR="#FF0000">&lt;expr&gt;</FONT>
+        placeholder, or select it and click the spectacles, or press the
+        &quot;down&quot; arrow key to open a little text
+        edit window on it. </LI>
+      <LI>Enter the string <I>&quot;World!&quot;</I>. </LI>
+      <LI>Close the little edit window and click &quot;Run&quot;
+        <IMG SRC="../images/Run.png" ALT="Run" ALIGN="ABSMIDDLE" width="22" height="22">
+        again.</LI>
+    </OL>
+    
+    <P><B>Assign &quot;Hello &quot; and &quot;World!&quot; to separate string
+      variables: </B></P>
+    <OL>
+      <LI>Select the <font color="#0000FF"><b>call</b></font> statement by
+        clicking the <b><font color="#0000FF">call</font></b> keyword and press
+        the <b>DEL</b> button to delete the statement. </LI>
+      <LI>Click the <b><font color="#0000FF">declare</font></b> button on the
+        keyword toolbar (to the left): The skeleton of a <b><font color="#0000FF">declare</font></b>
+        statement is inserted, with the selection on the <font color="#FF0000">&lt;type&gt;</font>
+        placeholder. </LI>
+      <LI>Select type &quot;String&quot; from the &quot;Basic types&quot;
+        combo-box. It replaces <font color="#FF0000">&lt;type&gt;</font>, and
+        the selection is on <font color="#FF0000">&lt;varName&gt;</font> now. </LI>
+      <LI>Double-click the <font color="#FF0000">&lt;varName&gt;</font>
+        placeholder, or select
+        it and click the spectacles 
+      <IMG SRC="../images/Spectacles.png" ALT="Spectacles" ALIGN="ABSMIDDLE" width="22" height="20">,
+        or press the &quot;down&quot; arrow key
+        to &quot;open&quot; it in a little text edit window. Enter the name of
+        the first String variable (that shall hold the value &quot;Hello
+        &quot;), e.g. &quot;h&quot;. </LI>
+      <LI>Press the return key to close the little edit window. </LI>
+      <LI>Click the &quot;Insert&quot; button 
+      <IMG SRC="../images/Insert.png" ALT="Insert" ALIGN="ABSMIDDLE" width="23" height="21">,
+        or press the return key once more to insert another <FONT COLOR="#FF0000">&lt;var&gt;</FONT>
+        placeholder for the second String variable. Enter its name, e.g.
+        &quot;w&quot;, in the same way as before.&nbsp; </LI>
+      <LI>Select the <font color="#FF0000">&lt;stm&gt;</font> placeholder. </LI>
+      <LI>Click the <font color="#0000FF"><b>set</b></font> keyword button to
+        insert an assignment statement. The selection is on the <font color="#FF0000">&lt;var&gt;</font>
+        placeholder on the left-hand side of the assignment. </LI>
+      <LI>Select the local variable &quot;h&quot; from the &quot;Variables&quot;
+        combo-box. The selection is on <font color="#FF0000">&lt;expr&gt;</font>
+        thereafter. </LI>
+      <LI>Double-click the <font color="#FF0000">&lt;expr&gt;</font>
+        placeholder, or select
+        it and click the spectacles 
+      <IMG SRC="../images/Spectacles.png" ALT="Spectacles" ALIGN="ABSMIDDLE" width="22" height="20">,
+        or press the &quot;down&quot; arrow key
+        to &quot;open&quot; it in a little text edit window. Enter the string
+        &quot;Hello &quot;. Press the return key to close the little text edit
+        window </LI>
+      <LI>Click the <font color="#0000FF"><b>set</b></font> keyword of the
+        assignment statement to select the latter. Repeat steps 8 - 10 to construct the second assignment
+        statement &quot;<font color="#0000FF"><b>set</b></font> w<IMG SRC="../images/leftArrow.png" ALT="Left arrow" ALIGN="ABSMIDDLE" width="24" height="19">&quot;World!&quot;.</LI>
+      <LI>Click the <font color="#0000FF"><b>set</b></font> keyword of the
+        second assignment statement to select the latter. Click the 
+      <img border="0" src="../images/vcall.png" align="absmiddle" width="20" height="17">
+        button to insert a function <font color="#0000FF"><b>call</b></font>
+        statement after the second assignment statement.</LI>
+      <LI>The selection is on the <font color="#FF0000">&lt;expr&gt;</font>
+        placeholder for the call object of the function call. The other
+        placeholders of the function call statement are still black (=
+        disabled).</LI>
+      <LI>Click the &quot;+&quot; operator 
+      <IMG SRC="../images/Plus.png" ALT="Plus" ALIGN="ABSMIDDLE" width="17" height="19">
+        to replace <font color="#FF0000">&lt;expr&gt;</font> with the envisaged string
+        concatenation operation. The call object is now &quot;(&lt;expr&gt; +
+        &lt;expr&gt;)&quot;.</LI>
+      <LI>Select the first operand of 
+      <IMG SRC="../images/Plus.png" ALT="Plus" ALIGN="ABSMIDDLE" width="17" height="19">
+        and replace it with the variable &quot;h&quot; from the &quot;(Variables)&quot;
+        combo-box.</LI>
+      <LI>Select the second operand of 
+      <IMG SRC="../images/Plus.png" ALT="Plus" ALIGN="ABSMIDDLE" width="17" height="19">
+        and replace it with the variable &quot;w&quot; from the &quot;(Variables)&quot;
+        combo-box.</LI>
+      <LI>The <font color="#FF0000">&lt;func&gt;</font> placeholder is red (=
+        enabled), since the type (String) of the call object can now be
+        determined. Select it and replace it with function &quot;MessageBox&quot;
+        from the &quot;(Virtual call)&quot; combo-box. Note that the latter
+        contains only member functions of interface &quot;String&quot; (and of
+        its base interface &quot;Object&quot;).</LI>
+      <LI>Test your changes by clicking the &quot;Run&quot; button 
+      <IMG SRC="../images/Run.png" ALT="Run" ALIGN="ABSMIDDLE" width="22" height="22">.</LI>
+    </OL>
+    
+    
+  </BODY>
+</HTML>

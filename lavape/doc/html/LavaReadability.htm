@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 4.0">
+    <TITLE>Comprehensibility of Lava programs</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="center"><strong><font size="6">Improved comprehensi</font><FONT SIZE="6">bility
+    of </FONT><FONT COLOR="#FF0000" SIZE="6"><I>Lava</I></FONT></strong><FONT SIZE="6">
+    programs</FONT></H2>
+    
+    <P>Particularly the following features promise to improve the readability
+    and comprehensibility of <font color="#FF0000"><i><b>Lava</b></i></font>
+    programs:&nbsp;</P>
+    
+    <ol>
+      <li><b><i><font color="#FF0000">Lava</font></i></b> is a <b> small language</b>
+        all of whose constructs can be represented by a limited number of tool
+        buttons of the <b><i><font color="#FF0000">LavaPE</font></i></b>
+        programming environment.</li>
+      <li>The absence of <a href="Unsolved.htm#loops">conventional loop
+        constructs</a> and the <a href="SingleAssigLogSem.htm">single-assignment</a>
+        nature of <font color="#FF0000"><i><b>Lava</b></i></font> have the
+        highly desirable consequence that loops have to be replaced with
+        recursive functions. Therefore, <font color="#FF0000"><b><i>Lava</i></b></font>
+        programs will typically consist of many <a name="smallFunctions"></a><b> small functions</b> and will not
+        contain large and obscure nested loop constructs.</li>
+      <li>The <b> single-assignment</b> nature of <font color="#FF0000"><i><b>Lava</b></i></font>,
+        in combination with the <b> absence of global variables</b> and
+        &quot;static&quot; member variables and functions,
+        <a href="Unsolved.htm#singleAssign">
+        clarifies the data flow</a> of <font color="#FF0000"><i><b>Lava</b></i></font>
+        programs in a similar way as abandoning
+        &quot;go to&quot; has clarified the control flow of programs.</li>
+      <li><a name="declNesting"></a><b>Declarations</b> are separated from executable code; they
+        <b> can be</b> <b> nested to any depth</b> and
+        grouped into <a href="Packages.htm#packages">packages</a>. The top layer
+        of the <font color="#FF0000"><b><i>Lava</i></b></font>  <a href="EditTree.htm"> <b> declaration tree</b></a>
+        is reserved for the really basic primary declarations; subordinate auxiliary notions are hidden on lower tree levels, which the programmer
+        will open in the <font color="#FF0000"><b><i>Lava</i></b></font>   <a href="EditTree.htm">declaration
+        tree view </a>only if required.&nbsp;To keep the semantics of nested
+        declarations as simple and their arrangement as flexible as possible,
+        nesting of declarations is used in <font color="#FF0000"><b><i>Lava</i></b></font>   <a href="EditTree.htm"> </a><i>only</i>
+        as a means to reflect the primary and subordinate nature of
+        declarations; it does <i>not</i> imply any special semantic relationship
+        between layers of nesting (unlike, e.g., the &quot;inner classes&quot;
+        of <b><i><font color="#FF0000">Java)</font></i></b>.&nbsp;<br>
+        <br>
+        Note, however, the &quot;sealed&quot; nature of implementations and <a href="ProtectedFriend.htm">opaque</a>
+        packages, as well as the role of <font color="#FF0000"><b><i>Lava</i></b></font>   
+        <a href="PatternsFrameworks.htm">patterns </a>as a closed scope or
+        domain of <a href="PatternsFrameworks.htm#VTvisibility">visibility</a>
+        for the contained virtual types.</li>
+      <li>The distinction between <a href="TwoObjectCategories.htm"><b>immutable
+        value and variable state objects</b></a> has been introduced primarily as a
+        means to emphasize the quite different role of these objects in the
+        context of the respective application. Following the traditional
+        languages, you could, of course, declare all objects as state objects in
+        a <font color="#FF0000"><i><b>Lava</b></i></font>
+        program, but you would definitely sacrifice a great deal of readability
+        this way.</li>
+      <li> <font color="#FF0000"><i><b>Lava</b></i></font>
+        enforces a <a href="StagesSample.htm"><b> strict initialization discipline</b></a> on object creation. All
+        mandatory member variables of an object must be initialized within a
+        proper initializer function of the respective (creatable) interface.
+        They can be further customized within the <b><font color="#0000FF">but</font></b>-clause
+        of the <font color="#0000FF"><b>new</b></font> construct. Member
+        variables of value objects cannot be changed any more after leaving the <font color="#0000FF"><b>new</b></font>
+        construct.</li>
+      <li> <a name="inOutParams"></a> Formal parameters of functions are clearly separated into <b>
+        &quot;input&quot; and &quot;output&quot; parameters</b>. This allows
+        additional consistency checks: A function <i>must not</i> assign a value
+        to one of its input parameters, whereas a value <i>must</i> be assigned
+        to every non-optional output parameter in every branch of the function. (Formal
+        parameters and member variables may be declared &quot;optional&quot;. In this case they may assume the special
+        default value Ø, which means
+        &quot;undefined&quot;.)</li>
+      <li> The <a href="PatternsFrameworks.htm">overridable type parameters</a>
+        of <font color="#FF0000"><i><b>Lava</b></i></font>
+        packages and interfaces facilitate the composition of large applications
+        and components from rather small <b> reusable design patterns</b>. They render explicit type casts
+        superfluous and elevate <font color="#FF0000"><i><b>Lava</b></i></font>
+        programs to a new level of static type-safety in this way.&nbsp;</li>
+      <li> <font color="#FF0000"><i><b><a name="codeGeneration"></a>Lava</b></i></font>
+        support for <b> multiple inheritance</b> is restricted to the semantically less
+        problematic case of <a href="SepItfImpl.htm#virtualBaseClasses">&quot;shared
+        base classes&quot;</a>. Multiple inheritance is important since it
+        allows us to equip complex objects with <i>separately implemented</i>
+        capabilities. This is particularly useful on the top level of entire
+        applications or components. Here multiple inheritance is highly welcome
+        as a more appropriate substitute for <b> &quot;code generation
+        wizards&quot;</b>, since it is much simpler to modify the list of base
+        classes of a class than to edit the generated program text in order to revise the
+        set of capabilities to be supported by the application or component.</li>
+      <li> Furthermore, multiple inheritance allows us to <b> <a name="smallInterfaces"></a> decompose a large
+        interface into many small ones</b>, whose implementations may then be
+        provided separately, even in separate files. (By comparison, recall: If
+        a <b><i><font color="#FF0000">Java</font></i></b> class implements many
+        interfaces then the implementations of all member functions of all those
+        interfaces are contained in this same class declaration/definition
+        within one single file.)</li>
+    </ol>
+    
+  </BODY>
+</HTML>

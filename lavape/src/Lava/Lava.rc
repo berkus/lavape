@@ -1,0 +1,5 @@
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Lava.ico"
+IDR_LAVATASKTYPE        ICON    DISCARDABLE     "res\\LavaTask.ico"
+IDR_LAVACOMTYPE         ICON    DISCARDABLE     "res\\LavaCom.ico"
+IDR_LAVADOCTYPE         ICON    DISCARDABLE     "res\\LavaDoc.ico"
+

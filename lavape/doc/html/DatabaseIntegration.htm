@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <TITLE>Database integration</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER"><STRONG>Integrated database expressive means</STRONG></H2>
+    
+    <P ALIGN="left">It is one of the most important features of
+      <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> that it
+      neither needs <b> &quot;embedded <I><FONT COLOR="#FF0000">SQL</FONT></I>&quot;</b>
+      nor any other <I>special</I> expressive means for database or
+      <A HREF="Transactions.htm">transaction</A> management.
+      <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT> is based on
+      (bounded) quantifier logic and provides finite sets of objects,
+      quantifiers <FONT COLOR="#0000FF"><STRONG>exists</STRONG></FONT>,
+      <FONT COLOR="#0000FF"><STRONG>foreach</STRONG></FONT>, logical conjunctions <FONT COLOR="#0000FF"><STRONG>and</STRONG></FONT>,
+      <FONT COLOR="#0000FF"><STRONG>or</STRONG></FONT>, <FONT COLOR="#0000FF"><STRONG>not</STRONG></FONT>,
+      <B><FONT COLOR="#0000FF">xor</FONT></B>, <FONT COLOR="#0000FF"><STRONG>if</STRONG></FONT>-<FONT COLOR="#0000FF"><STRONG>then</STRONG></FONT>-<FONT COLOR="#0000FF"><STRONG>else</STRONG></FONT>,
+      and a set construction expression <FONT COLOR="#0000FF"><STRONG>select</STRONG></FONT>,
+      that roughly corresponds to the <B><I><FONT COLOR="#FF0000">SQL</FONT></I></B>
+      &quot;select&quot; expression. These can be used to express object and set
+      queries and data manipulation algorithms, and these expressive means are
+      independent of the persistent or transient nature of the underlying data.
+    </P>
+    
+    <P ALIGN="left">The <B><FONT COLOR="#0000FF">where</FONT></B> clause of
+      the quantifiers and the <B><FONT COLOR="#0000FF">select</FONT></B>
+      expression corresponds roughly to the &quot;where&quot; clause of <B><I><FONT COLOR="#FF0000">SQL</FONT></I></B>.
+      We shall need further clauses corresponding to the various clauses of &quot;select&quot;
+      in <B><I><FONT COLOR="#FF0000">SQL</FONT></I></B> (for further study).</P>
+    
+    <P>A database, including external <B><I><FONT COLOR="#FF0000">SQL</FONT></I></B>
+      or object-oriented databases, appears in <FONT COLOR="#FF0000"><I><STRONG>Lava</STRONG></I></FONT>
+      as a special (persistent) <A HREF="Components.htm">component object</A>.
+      The <B><FONT COLOR="#0000FF"><A HREF="Components.htm#attach">attach</A></FONT></B>
+      construct is used to &quot;open&quot; it, which means to make it
+      accessible through a specific interface. Subsequently the database may be
+      used in the same way as any other <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      object.</P>
+    
+    <P><STRONG>See also</STRONG></P>
+    
+    <P><B><A HREF="Transactions.htm"><I><FONT COLOR="#FF0000">Lava</FONT></I>
+        transaction management</A></B> </P>
+    
+    <P><B><A HREF="DatabaseSample.htm">Database sample</A></B></P>
+  </BODY>
+</HTML>

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<TITLE>Repetitive computation samples</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<LINK href="LavaStyles.css" 
+type=text/css rel=STYLESHEET></HEAD>
+<BODY>
+<H2 align=center>Replacing loops by recursion</H2>
+<P>It might appear as a provocation that <I><B><FONT 
+color=#ff0000>Lava</FONT></B></I> abandons sequential loops, and many people 
+will say perhaps&nbsp; that <B><I><FONT color=#ff0000>Lava</FONT></I></B> will not be accepted 
+by the majority of programmers for this reason.  </P>
+<P>On the other hand, mathematicians (like us) remember very well how surprised 
+they were when they learned their first (procedural) programming language and 
+had to write "do-, for-, repeat- or while-loops", instead of recursion, and 
+mathematically provocative statements like "n = n+1".&nbsp;  </P>
+<P>Of course, all this is largely a matter of practice and habitude. We believe, 
+however, that it will pay in the long run to abandon "multiple assignment", and, 
+as a consequence, sequential loops, just as it pays to avoid "go to". The latter 
+guarantees that the flow of control is essentially directed from top to bottom, 
+except for cases where it returns to the beginning of a loop. Unfortunately, 
+this remaining exception, where the control flow returns to the beginning of a 
+loop, together with multiple assignment, may seriously obscure the data flow of 
+a program:  </P>
+<DIV align=center>
+<CENTER>
+<TABLE height=73 cellSpacing=1 cellPadding=20 align=center bgColor=#00ffff 
+border=3 frame=border CLEAR="NO">
+  <TBODY>
+  <TR>
+    <TD align=middle width="100%" height=6><b><FONT face=Arial>Multiple 
+      assignment in a jungle<BR>of loops and branching statements:</FONT></b></TD></TR>
+  <TR>
+    <TD vAlign=top width="100%" height=288><PRE><font size=-1>int x;
+
+while (...)
+  if (...)
+    while (...) {
+      x = f(x,...);
+      ...
+    }
+  else
+    while (...)
+      if (...) {
+        x = g(<b><font color="#FF0000">x</font></b>,...);
+	<font color="#FF0000">// where has this value of x been assigned???</font>
+        ...
+      }
+      else
+        if (...) {
+          x = h1(x,...);
+          ...
+        }
+        else {
+          x = h2(x,...);
+          ...
+        }</font></PRE></TD></TR>
+  <TR>
+    <TD vAlign=top width="100%" height=55>
+      <P align=center><FONT face=Arial>On read access, the current value of 
+      "x"<BR>may generally originate from assignments<BR>anywhere above or below 
+      the place of the read access:</FONT></P>
+      <P align=center><FONT face=Arial color=#ff0000><B>The data flow is 
+      obscured.</B></FONT>  </P></TD></TR></TBODY></TABLE></CENTER></DIV>
+<P style="margin-top: 10pt">In contrast to this, if we use recursive functions 
+instead of loops and abandon multiple assignment, then the above &quot;jungle&quot; is 
+decomposed into small functions and the data flow within each of the 
+corresponding function bodies is directed strictly from top to bottom<span lang="de">:
+</span></P>
+<P style="margin-top: 10pt"><b><span lang="de">F</span>or every read access to a 
+<I><FONT 
+color=#ff0000>Lava </FONT></I>variable you can easily find the origin of the current value of this variable by 
+following the containing program branch in upward direction (unless the variable 
+is an input variable and therefore a value is 
+assigned to it already <I>outside</I> this function).&nbsp;</b></P>
+<P><B><A name=topToBottom></A>Summary: In <I><FONT 
+color=#ff0000>Lava</FONT></I>, both control flow <EM><FONT 
+color=#ff0000>and</FONT></EM> data flow are directed strictly from top to 
+bottom.</B></P>
+<P>The most 
+important advantage of this combination of single-assignment and&nbsp;recursion 
+in <font color="#FF0000"><i><b>Lava</b></i></font>, 
+however,&nbsp;is that it&nbsp;enables perfect initialization checks for</P>
+<UL>
+  <LI>all local variables, 
+  <LI>all output parameters of the current function, 
+  <LI>all variables occurring as input parameters of function calls, and
+  
+  <LI>all non-optional member variables of classes within initializer 
+  functions of classes.</LI></UL>
+<h3>Samples</h3>
+<p>In the following we present two categories of samples which 
+are both related to iteration/recursion. </p>
+<p>The <b>Recursion samples</b> illustrate how sequential loops can 
+be replaced by tail recursion in a more or less mechanical way and how 
+computationally inefficient forms of recursion, particularly tree recursion, can 
+be transformed into tail recursion.</p>
+<p>The <b>Iterator/cursor/visitor samples</b> show how certain 
+aspects and details of aggregate/container objects can be hidden and separated 
+from certain kinds of sequential algorithms that run through these data 
+structures and process the contained items.</p>
+<p>There is a kind of traditional loops that aren't inherently 
+sequential since they don't forward information from one pass of the loop to the 
+next. They could therefore be executed concurrently. They typically run through 
+an index range or through the elements of a set and perform an <i>exhaustive</i> 
+or a <i>&quot;stop when found&quot;</i> search. This kind of loops is expressed by
+<a href="DatabaseIntegration.htm">&quot;quantifiers&quot;</a> <font color="#0000FF"><b>
+exist</b></font> and <font color="#0000FF"><b>foreach</b></font> in
+<font color="#FF0000"><b><i>Lava</i></b></font>, as well as by the <b>
+<font color="#0000FF"><a href="DatabaseIntegration.htm">select</a></font></b> 
+expression which corresponds to the SQL select construct and is used to express 
+set-oriented queries. The <b>Quantifier sample</b> presents a basic application 
+of <b><font color="#0000FF">exist</font></b> and <font color="#0000FF"><b>
+foreach</b></font> quantifiers and of set element handles.</p>
+<h3>
+<a href="RecursionSamples.htm">Recursion samples</a></h3>
+<h3>
+<a href="CursorVisitorSamples.htm">Iterator / cursor / visitor 
+samples</a></h3>
+
+<h3>
+<a href="QuantifierSamples.htm">Quantifier sample</a></h3>
+
+</BODY></HTML>

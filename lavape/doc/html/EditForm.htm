@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <TITLE>Editing form specifications</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Editing form specifications</H2>
+    
+    <P>The point-and-click philosophy of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>
+      implies in particular that a few mouse-clicks suffice to produce a default
+      form representation from a given interface declaration. This automatic
+      mapping is governed by the following simple principles some of which have
+      not yet been implemented (NYI) so far, however:</P>
+    <UL>
+      <LI><B>Member variables</B> of the interface are mapped to the <B>data
+        fields</B> of the form.</LI>
+      <LI>The <B>identifiers</B> of variables are used as <B>explanatory text
+        to the left of the data field</B> unless you specify alternative
+        texts/positions.</LI>
+      <LI>If the type of a member variable is again a user-defined interface
+        then this member variable is represented by a nested form (<B>&quot;group
+        box&quot;</B>) or possibly also by a <B>pop-up form</B>, provided you
+        have generated a form representation for this member type previously.</LI>
+      <LI><B>Member functions</B> are represented by <B>tool buttons</B> or
+        <B>menu items</B> that trigger the member functions if they are
+        clicked/selected from the menu (NYI).</LI>
+      <LI>The member functions of <B>inherited interfaces</B> (<B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        supports multiple inheritance!) are placed in separate <B>toolbars</B>
+        or <B>menus</B> of their own (NYI).</LI>
+    </UL>
+    
+    <P>The representation of an elementary data field depends on the type of
+      the corresponding member variable:</P>
+    <UL>
+      <LI><B>Integer</B>, <B>Float</B>, <B>Double</B>, and <B>String</B>
+        are represented by small single-line <B>text edit windows</B>. For <B>String</B>
+        multi-line text edit windows may be used alternatively.</LI>
+      <LI><B>Boolean</B> variables are represented by <B>check-boxes</B>.</LI>
+      <LI><B>Enumerated types</B> may be represented by <B>combo-boxes</B>,
+        <B>pop-up menus</B>, <B>groups of radio-buttons</B>, or groups of
+        normal <B>push buttons</B>.</LI>
+      <LI><B>Chains</B> (= doubly-linked lists) of some element type are
+        represented by horizontal or vertical <B>lists</B>, usually of variable
+        length.</LI>
+      <LI>Constant <B>default values</B> may be specified for elementary
+        fields.</LI>
+      <LI><b><a name="sub-form"></a>Non-elementary</b> field types that are
+        defined by another <b><font color="#FF0000"><i>Lava</i></font></b> type
+        are put into a nested rectangular box. The fields of the corresponding
+        sub-form are positioned relative to this containing <b>sub-form box</b>.</LI>
+    </UL>
+    
+    <H3>How to generate and edit forms</H3>
+    
+    <P>To generate a form representation <I>F_XY</I> of an existing interface
+      <I>XY</I> you simply create a &quot;GUI-interface&quot; <I>F_XY</I> and
+      a corresponding implementation:</P>
+    <OL>
+      <LI>Click the <B>&quot;New interface&quot;</B> button
+        <IMG SRC="../images/NewItf.png" ALT="new interface" ALIGN="ABSMIDDLE" width="23" height="22">
+        on the <A HREF="EditTree.htm#declBar">declaration toolbar</A>: The
+        property sheet for the new interface opens. Fill in the name <I>F_XY</I>
+        in the name field of the property sheet, check the <B>&quot;GUI
+        interface&quot; check-box</B>, and select the interface XY from the
+        combo-box below this check-box. After clicking &quot;OK&quot; the <B>new
+        GUI interface</B> appears as a new node in the declaration tree, having
+        a specific icon 
+      <IMG SRC="../Samples/LavaIcons/formint.png" ALT="GUI service" ALIGN="ABSMIDDLE" width="21" height="15">.</LI>
+      <LI>Click the <B>&quot;New implementation&quot;</B> button: The (very
+        small) implementation property sheet pops up and requests you to select
+        the interface to be implemented. Select <I>F_XY</I> from the combo-box.
+        The new implementation node appears in the declaration tree, having a
+        specific icon 
+      <IMG SRC="../images/Formimpl.png" ALT="Open form view" ALIGN="ABSMIDDLE" width="23" height="21">.</LI>
+      <LI>Select the GUI implementation node and click the <B>&quot;Open form
+        view&quot;</B> tool button on the <A HREF="EditTree.htm#declBar">declaration
+          toolbar</A>, which has the same icon
+        <IMG SRC="../images/Formimpl.png" ALT="Open form view" ALIGN="ABSMIDDLE" width="23" height="21">
+        as the GUI implementation node. The form view is opened, consisting of
+        two splitter windows: the actual <B>form view</B> (WYSIWYG, read-only)
+        on the left and the <B>form structure tree</B> on the right.</LI>
+      <LI>Now you can open the property sheets of the individual fields of the
+        form: Double-click the respective field in the form structure tree, or
+        select the field and click the spectacles button
+        <IMG SRC="../images/Spectacles.png" ALT="spectacles" ALIGN="ABSMIDDLE" width="22" height="20">.&nbsp;</LI>
+      <LI>You can intersperse &quot;intermediary text&quot; after any field of
+        the form by selecting this field in the form structure tree and pressing
+        the return key then. (Alternatively you can click the &quot;intermediary
+        text&quot; button 
+      <img border="0" src="../images/TextButton.png" align="absmiddle" width="20" height="19">.)</LI>
+    </OL>
+    
+    <H3><A NAME="GUIenhancements"></A>Planned enhancements</H3>
+    
+    <P>The present <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B> GUI
+      builder is a very provisory solution. It is based on software that we have
+      inherited from a former project. The most desirable enhancements/changes
+      would certainly be:</P>
+    <OL>
+      <LI>The layout of forms is now based on the specification of horizontal
+        and vertical tabulators and spaces in multiples of character sizes of
+        the default font. It should better be based on justification, alignment,
+        and margin specifications instead. </LI>
+      <LI>Specification of foreground/background colors, fonts, and borders
+        should be supported.</LI>
+      <LI>The toolbar and menu construction support (see above), should be
+        implemented.</LI>
+      <LI>It should be possible to add <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        <A HREF="Callbacks.htm">callback functions</A> to a GUI
+        interface/implementation and to direct user interface events to these.</LI>
+    </OL>
+    
+    <H3>How to present/fill out a form</H3>
+    
+    <P>Every GUI interface contains two member functions <b>FillOut </b>and<b> 
+    Edit</b> that can be
+      called in order to present the form representation <I>F_XY</I> of an
+      object <I>xy</I> of type <I>XY</I>. Before you can call&nbsp; <b>FillOut
+    </b>and<b> Edit </b>you
+      must create an object <I>f_xy</I> of type <I>F_XY</I>. The object <I>xy</I>
+      serves as input parameter to <b>FillOut </b>and<b> Edit</b>.  </P>
+    
+    <P><b>FillOut </b>first<b> </b>generates a copy of <i>xy</i>. this copy is 
+    presented to the user. The copy may be modified by the user then. Clicking 
+    the OK button terminates the editing process and the <b>FillOut</b> passes 
+    the modified copy through its output parameter to the caller.</P>
+    <p>You can use <b>FillOut </b>also to present and fill out an <b>empty form</b>: Simply pass
+    the input parameter &quot;<b><font color="#0000FF">Ø</font></b>&quot;&nbsp;
+    (the &quot;null&quot; object&quot;) to <b>FillOut </b>(&quot;empty input
+    form&quot;). </p>
+    
+    <P><b>Edit</b> presents its input object <i>xy </i>directly to the user 
+    (rather than a copy of it) and allows the user to edit it &quot;in place&quot;, 
+    provided xy is a state object.</P>
+    
+    <P><b>Summary:</b> <b>FillOut</b> uses its input parameter, which is a value 
+    object, as a template for the initialization of a separate output object 
+    which may be modified by the user after initialization and which is returned 
+    finally as an output parameter. <b>Edit</b> accepts a state object as input 
+    parameter and enables you to modify it &quot;in place&quot;. Both <b>FillOut </b>and<b> 
+    Edit</b> are terminated by clicking the OK button.</P>
+    
+    <P>In contrast to this <b>FillOut </b>and<b> Edit</b> mechanism, persistent
+    <i><b><font color="#FF0000"><a href="ComponentSamples.htm">
+    <font color="#FF0000">Lava</font></a></font></b></i><a href="ComponentSamples.htm"> 
+    component objects</a> may be edited &quot;directly&quot; without explicit invocation 
+    of a forms editing method (but using the same kind of <b><i>
+    <font color="#FF0000">Lava</font></i></b> GUI services as <b>FillOut </b>and<b> 
+    Edit</b>).</P>
+    <h3><b>See also</b> </h3>
+    <p>our <a href="FormSample.htm">form sample</a> and the<i><b><font color="#FF0000">
+    <a href="ComponentSamples.htm"><font color="#FF0000">Lava</font></a></font></b></i><a href="ComponentSamples.htm"> 
+    component object</a> samples.</p>
+  </BODY>
+</HTML>

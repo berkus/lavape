@@ -1,0 +1,6282 @@
+/* LavaPE -- Lava Programming Environment
+   Copyright (C) 2002 Fraunhofer-Gesellschaft
+	 (http://www.sit.fraunhofer.de/english/)
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software Foundation,
+   Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
+
+
+#ifdef __GNUC__
+#pragma implementation
+#endif
+
+
+#include "docview.h"
+#include "qstring.h"
+#include "qstatusbar.h"
+#include "qfontmetrics.h"
+#include "qscrollview.h"
+#include "qapplication.h"
+#include "qnamespace.h"
+#include "qmessagebox.h"
+#include "qcheckbox.h"
+#include "qwidget.h"
+#include "qevent.h"
+#include "Constructs.h"
+#include "Check.h"
+#include "Comment.h"
+#include "ConstrUpdate.h"
+#include "LavaAppBase.h"
+#include "Resource.h"
+#include "ExecView.h"
+#include "SylTraversal.h"
+#include "PEBaseDoc.h"
+#include "ConstrFrame.h"
+#include "qtextedit.h"
+#include "LavaBaseStringInit.h"
+//#include "LavaPEFrames.h"
+#include "Resource.h"
+#include "LavaExecsStringInit.h"
+
+
+#define IsPH(PTR) ((SynObject*)PTR)->IsPlaceHolder()
+#define ADJUST(nnn,decl) \
+  nnn.nINCL = myDoc->IDTable.IDTab[decl->inINCL]->nINCLTrans[nnn.nINCL].nINCL
+#define ADJUST4(nnn) \
+  nnn.nINCL = ckd.document->IDTable.IDTab[ckd.inINCL]->nINCLTrans[nnn.nINCL].nINCL
+
+#define CONTEXTINI \
+  text->ckd.iC = text->ckd.execIC; text->ckd.oC = text->ckd.execOC
+
+void *focusWindow=0;
+bool isExecView;
+static bool deletePending=false;
+
+static SynObject *clipBoardObject=0;
+static wxDocument *clipBoardDoc;
+
+static unsigned ExecCount=0;
+
+void dummy_func () {
+	ASN1 *cid=new ASN1;
+	CDPTDOD(PUT,cid,0,true);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CExecView
+
+//IMPLEMENT_DYNCREATE(CExecView, CRichEditView)
+
+
+CExecView::~CExecView()
+{
+  setFocusProxy(0); 
+  OnCloseExec();
+  if (editCtl)
+    delete editCtl;
+  delete text;
+}
+
+
+static bool ctrlPressed=false;
+static bool shiftPressed=false;
+static bool altPressed=false;
+
+
+static void CopyUntil(ObjReference *oldRef,CHE *chpStop,ObjReference *newRef) {
+  CHE *chp, *newChp;
+  TDOD *oldTdod, *newTdod;
+  bool isFirst=true;
+  
+  chp = (CHE*)oldRef->refIDs.first;
+  do {
+    oldTdod = (TDOD*)chp->data;
+    newTdod = new TDODV(true);
+    newChp = NewCHE(newTdod);
+    *newTdod = *oldTdod;
+    if (isFirst) {
+      isFirst = false;
+      newRef->refName = oldTdod->name;
+    }
+    else
+      newRef->refName = newRef->refName + "." + oldTdod->name;
+    newRef->refIDs.Append(newChp);
+    if (chp == chpStop)
+      break;
+    else
+      chp = (CHE*)chp->successor;
+  } while (chp);
+}
+
+
+CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,"ExecView")
+{ 
+	active = false;
+  sv = new MyScrollView(this);
+  sv->setFocusPolicy(QWidget::StrongFocus);
+  sv->setResizePolicy(QScrollView::AutoOneFit);
+  redCtl = sv->viewport();
+  redCtl->setBackgroundColor(white);
+  text = new CProgText;
+  sv->text = text;
+  sv->execView = this;
+	m_ComboBar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
+  destroying = false;
+  Base = 0; // also indicates whether OnInitialUpdate has already been called
+}
+
+bool CExecView::OnCreate() 
+{
+  sv->setFont(LBaseData->m_ExecFont);
+  return true;
+}
+
+void CExecView::OnCloseExec() 
+{
+  LavaDECL *parent;
+  CHE *chp;
+
+	DisableActions();
+  --ExecCount;
+  if (myDoc->mySynDef)
+    ((SelfVar*)text->ckd.selfVar)->myView = 0;
+  destroying = true;
+  if (!ExecCount && ((wxApp*)qApp)->m_appWindow)
+    myDoc->OnCloseLastExecView();
+  if (myDoc->mySynDef // document is not yet closed
+  && ((SelfVar*)myDECL->Exec.ptr)->IsEmptyExec()
+  && ((SelfVar*)myDECL->Exec.ptr)->primaryToken == constraint_T) {
+    myDoc->SetExecItemImage(
+      myDECL,
+      true,
+      false);
+    parent = myDECL->ParentDECL;
+    if (myDECL->WorkFlags.Contains(nonEmptyConstraint)) {
+      chp = (CHE*)parent->NestedDecls.last;
+      parent->NestedDecls.Uncouple(chp);
+      chp->data = 0; // to prevent deleting data
+      delete chp;
+    }
+    else
+      parent->NestedDecls.Cut(parent->NestedDecls.last->predecessor);
+  }
+  Base->Browser->LastBrowseContext->RemoveView(this);
+}
+
+
+void CExecView::OnInitialUpdate()
+{
+  myDoc = (CPEBaseDoc*)GetDocument();
+  Base = myDoc->GetLBaseData();
+  CLavaPEHint* pHint = Base->actHint;
+  Base->actHint = 0;
+  myMainView = (wxView*)pHint->CommandData2;
+  myDECL = (LavaDECL*)pHint->CommandData1;
+  statusBar = wxTheApp->m_appWindow->statusBar();
+  myID = TID(myDECL->ParentDECL->OwnID, 0);
+  editCtlVisible = false;
+  insertBefore = false;
+  forcePrimTokenSelect = false;
+  clicked = false;
+  //checked = false;
+  doubleClick = false;
+  multHint = 0;
+  editCtl = 0;
+  tempNo = 0;
+  externalHint = false;
+  nextError = false;
+
+  ExecCount++;
+  errMsgUpdated = false;
+  autoScroll = false;
+
+////////////////////////////////////////////////////////////////////////////////////
+// text:
+
+  text->htmlGen = false;
+  text->redCtl = sv->viewport();
+  text->sv = sv;
+  QFontInfo fi = redCtl->fontInfo();
+  QString family = fi.family();
+  int ptSize = fi.pointSize();
+  QFontMetrics *fmp=new QFontMetrics(redCtl->fontMetrics());
+  sv->fm = fmp;
+  sv->widthOfBlank = sv->fm->width(" ");
+  sv->widthOfIndent = sv->fm->width("nn");
+  text->showComments = myDECL->TreeFlags.Contains(ShowExecComments);
+  text->ignored = false;
+  if (myDECL->TreeFlags.Contains(leftArrows))
+    text->leftArrows = true;
+  else
+    text->leftArrows = false;
+  text->currentSynObjID = 0;
+  text->document = myDoc;
+  text->ckd.document = myDoc;
+  text->ckd.myDECL = myDECL;
+  text->ckd.execView = this;
+  text->newLines = 0;
+  text->insBlank = false;
+////////////////////////////////////////////////////////////////////////////////////
+
+  Tokens_INIT();
+  new CLavaError(&plhChain,&ERR_Placeholder);
+
+  selfVar = (SelfVar*)myDECL->Exec.ptr;
+  selfVar->formParms.ptr = 0;
+  selfVar->oldFormParms = 0;
+  selfVar->concernExecs = false;
+  text->ckd.inInitialUpdate = true;
+  OnUpdate((wxView*)pHint->CommandData2, 0, pHint);
+	sv->setFocus();
+  text->ckd.inInitialUpdate = false;
+}
+
+void MyScrollView::SetTokenFormat (CHETokenNode *currToken) {
+  TToken token = currToken->data.token;
+
+  fmt.bold = false;
+  fmt.italic = false;
+
+  if (token == Larrow_T
+  || token == Rarrow_T
+	|| token == NewLineSym_T) {
+    fmt.color = QColor("#0000FF"); // blue
+    if (currToken->data.flags.Contains(ignoreSynObj)) {
+      fmt.italic = true;
+      fmt.color = QColor("#FF0000"); // red
+    }
+    else if (currToken == currToken->data.synObject->primaryTokenNode
+    && currToken->data.synObject->lastError) {
+      fmt.color = QColor("#FF0000"); // red
+      fmt.bold = true; //fmt.dwEffects = cfe_bold;
+    }
+  }
+  else if (token == FuncRef_T
+  || token == TypeRef_T
+  || token == CrtblRef_T
+  || token == enumConst_T
+  ) {
+    fmt.color = QColor("#000000"); // black
+    if (token == FuncRef_T)
+      fmt.bold = true;
+    if (currToken->data.flags.Contains(ignoreSynObj)) {
+      fmt.italic = true;
+      fmt.color = QColor("#FF0000"); // red
+    }
+    else if (currToken == currToken->data.synObject->primaryTokenNode
+    && currToken->data.synObject->lastError) {
+      fmt.color = QColor("#FF0000"); // red
+      fmt.bold = true;
+    }
+  }
+  else if (token == Comment_T) {
+    fmt.italic = true;
+    fmt.color = QColor("#009000"); // green
+  }
+  else if (TOKENSTR[token][0].isLetter()
+  || TOKENSTR[token][0]=='@'
+  || TOKENSTR[token][0]=='#'
+  || TOKENSTR[token][0]==':'
+  || TOKENSTR[token][0]=='Ø') {
+    if (currToken->data.flags.Contains(isOpt))
+      fmt.color = QColor("#D1009E"); // pink
+    else
+    fmt.color = QColor("#0000FF"); // blue
+    if (currToken->data.flags.Contains(ignoreSynObj)) {
+      fmt.italic = true;
+      fmt.color = QColor("#FF0000"); // red
+    }
+    else if (currToken == currToken->data.synObject->primaryTokenNode
+    && currToken->data.synObject->lastError) {
+      fmt.color = QColor("#FF0000"); // red
+      fmt.bold = true;
+    }
+    else if (currToken->data.flags.Contains(abstractPP))
+      fmt.color = QColor("#FF0000"); // red
+  }
+  else if (currToken->data.synObject->IsPlaceHolder()
+  && !currToken->data.flags.Contains(isDisabled)) {
+    fmt.color = QColor("#FF0000"); // red
+    if (currToken->data.flags.Contains(ignoreSynObj))
+      fmt.italic = true;
+    else if (currToken == currToken->data.synObject->primaryTokenNode
+    && currToken->data.synObject->lastError)
+      fmt.bold = true;
+  }
+  else {
+    fmt.color = QColor("#000000"); // black
+    if (currToken->data.flags.Contains(ignoreSynObj)) {
+      fmt.italic = true;
+      fmt.color = QColor("#FF0000"); // red
+    }
+    else if (currToken->data.synObject->lastError
+    && (currToken == currToken->data.synObject->primaryTokenNode
+        || token == Rbracket_T)) {
+      fmt.color = QColor("#FF0000"); // red
+      fmt.bold = true;
+    }
+    else if (currToken->data.flags.Contains(isOpt))
+      fmt.color = QColor("#D1009E"); // pink
+  }
+}
+
+int MyScrollView::calcIndent (CHETokenNode *currentToken) {
+  SynObject *ancestor=currentToken->data.synObject;
+	unsigned ind;
+
+  while (ancestor && ancestor->startToken == currentToken)
+    ancestor = ancestor->parentObject;
+  if (ancestor)
+    ind = ancestor->startPos+currentToken->data.indent*widthOfIndent;
+  else
+    ind = leftMargin+currentToken->data.indent*widthOfIndent;
+
+	return ind;
+}
+
+void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool inSelection) {
+  int width, lineWidth=0, oldCW=contentsWidth, oldCH=contentsHeight;
+  QPen currentPen;
+  QColor currentColor;
+  QString line;
+  int nl_pos, old_nl_pos, cmtWidth, startY, r, g, b;
+  bool firstLine=true;
+  SynObject *ancestor=currentToken->data.synObject;
+
+  SetTokenFormat(currentToken);
+
+  if (inSelection) {
+    currentColor = (QColor)fmt.color;
+    currentColor.rgb(&r,&g,&b);
+    r = 255 - r;
+    g = 255 - g;
+    b = 255 - b;
+    currentColor.setRgb(r,g,b);
+    p->setPen(currentColor);
+  }
+  else
+    p->setPen(fmt.color);
+
+  if (fmt.bold)
+    fmt.font.setBold(true);
+  else
+    fmt.font.setBold(false);
+  if (fmt.italic)
+    fmt.font.setItalic(true);
+  else
+    fmt.font.setItalic(false);
+
+  p->setFont(fmt.font);
+  QFontInfo fi(fmt.font);
+  QString family = fi.family();
+  int ptSize = fi.pointSize();
+  fm = new QFontMetrics(p->fontMetrics());
+
+	if (currentToken == ancestor->startToken)
+		ancestor->startPos = -1;
+
+	if (currentToken->data.newLines) {
+    currentY += currentToken->data.newLines*fm->height();
+
+    if (currentToken == currentToken->data.synObject->startToken)
+      currentX = calcIndent(currentToken);
+    else
+      currentX = currentToken->data.synObject->startPos/*startToken->data.rect.left()*/
+                 + currentToken->data.indent*widthOfIndent;
+		text->lastIndent = currentX;
+  }
+
+	if (currentToken == currentToken->data.synObject->startToken)
+		while (ancestor && ancestor->startPos == -1) {
+			if (currentToken->data.token != Comment_T
+					|| ((TComment*)currentToken->data.synObject->comment.ptr)->trailing
+					|| !((TComment*)currentToken->data.synObject->comment.ptr)->inLine
+					|| ancestor != currentToken->data.synObject)
+			ancestor->startPos = currentX;
+			ancestor = ancestor->parentObject;
+		}
+
+  if (currentToken->data.token == Comment_T) {
+    startY = currentY-fm->ascent();
+    cmtWidth = 0;
+    nl_pos = 0;
+
+    old_nl_pos = -1;
+    do {
+      if (firstLine)
+        firstLine = false;
+      else {
+        old_nl_pos = nl_pos;
+        currentY += fm->height();
+      }
+      nl_pos = currentToken->data.str.find('\n',old_nl_pos+1);
+      if (nl_pos == -1) {
+        line = currentToken->data.str.mid(old_nl_pos+1);
+        if (line.length()) {
+          p->drawText(currentX,currentY,line);
+          lineWidth=fm->width(line);
+          contentsWidth = QMAX(contentsWidth,currentX+lineWidth);
+          cmtWidth = QMAX(cmtWidth,lineWidth);
+        }
+        break;
+      }
+      else {
+        line = currentToken->data.str.mid(old_nl_pos+1,nl_pos - old_nl_pos - 1);
+        if (line.length()) {
+          p->drawText(currentX,currentY,line);
+          lineWidth=fm->width(line);
+          contentsWidth = QMAX(contentsWidth,currentX+lineWidth);
+          cmtWidth = QMAX(cmtWidth,lineWidth);
+        }
+      }
+      contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
+    } while (true);
+    currentToken->data.rect.setRect(currentX,startY,cmtWidth,currentY+fm->descent()-startY);
+    currentX += cmtWidth;
+  }
+
+  else { // no comment token
+    p->drawText(currentX,currentY,currentToken->data.str);
+    width=fm->width(currentToken->data.str);
+    currentToken->data.rect.setRect(currentX,currentY-fm->ascent(),width,fm->height());
+    currentX += width;
+    contentsWidth = QMAX(contentsWidth,currentX);
+    contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
+    if (contentsWidth > oldCW || contentsHeight > oldCH)
+      resizeContents(contentsWidth,contentsHeight);
+  }
+	delete fm;
+}
+
+void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, int cliph)
+{
+  CHETokenNode *currentToken;
+  bool inSelection=false;
+  QRect vr=visibleRect(), vr_vpt=viewport()->visibleRect(), gmt=viewport()->geometry(), cr=childrenRect();
+
+	if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
+		return;
+  p = pt;
+
+  viewport()->setUpdatesEnabled(false);
+
+  contentsWidth = 0;
+  contentsHeight = 0;
+  p->eraseRect(0,0,contentsWidth,contentsHeight);
+  fmt.font = font();
+  QFontMetrics *fmp = new QFontMetrics(fontMetrics());
+  fm = fmp;
+  QFontInfo fi(fmt.font);
+  int ps = fi.pointSize();
+  QString fam = fi.family();
+  currentX = leftMargin;
+  currentY = fm->ascent();
+  for (currentToken = (CHETokenNode*)text->tokenChain.first;
+       currentToken;
+       currentToken = (CHETokenNode*)currentToken->successor) {
+
+    if (currentToken->data.flags.Contains(insertBlank)) {
+      p->drawText(currentX,currentY," ");
+      currentX += widthOfBlank;
+    }
+    if (currentToken == execView->selStartPos) {
+      inSelection = true;
+      p->setBackgroundMode(Qt::OpaqueMode);
+      p->setBackgroundColor(black);
+    }
+    DrawToken(text,currentToken,inSelection);
+    if (currentToken == execView->selEndPos) {
+      inSelection = false;
+      p->setBackgroundMode(Qt::TransparentMode);
+      p->setBackgroundColor(white);
+    }
+  }
+  viewport()->setUpdatesEnabled(true);
+  if (execView->autoScroll) {
+    ensureVisible(execView->selEndPos->data.rect.left(),execView->selEndPos->data.rect.top(),50,50);
+    execView->autoScroll = false;
+  }
+}
+
+void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint) 
+{
+  // TODO: Add your specialized code here and/or call the base class
+  LavaDECL *myNewDECL;
+  CLavaPEHint *hint =(CLavaPEHint*)pHint;
+  SET flags;
+  QString str;
+  CSearchData sData;
+  bool isLastHint=false;
+
+  externalHint = true; // to enforce UpdateParameters below and for combo-bar updates
+  myNewDECL = myDoc->IDTable.GetDECL(myID);
+  if (hint)
+    switch (hint->com) {
+
+    case CPECommand_OpenExecView:
+      replacedObj = 0;
+      toBeDrawn = 0;
+      multipleUpdates = true; // to enforce RedrawExec
+      break;
+
+    case CPECommand_Constraint:
+      externalHint = false;
+      if ((LavaDECL*)hint->CommandData1 != myDECL)
+        return;
+      if (hint->FirstLast.Contains(impliedExecHint)
+      && undoRedo != 2)
+        return;
+      if (hint->FirstLast.Contains(firstHint)) {
+        if (!hint->FirstLast.Contains(lastHint)) // nur firstHint
+          if ((InsertMode)hint->CommandData3 == InsMult) { // cannot be undo
+            multHint = hint;
+            return;
+          }
+          else { // must be InsFlags/DelFlags
+            if (undoRedo != 1) return; // do/redo case
+            // else draw
+          }
+      }
+      else  // not firstHint
+        if (hint->FirstLast.Contains(lastHint)) {
+          if (undoRedo == 1)
+            return; // undo case
+          if (multHint) {
+            hint = multHint;
+            multHint = 0;
+            isLastHint = true; // since lastHint flag is lost here!
+          }
+        }
+        else
+          return;
+
+      SetSelectAt(hint);
+      break;
+
+    case CPECommand_Change:
+      myNewDECL = myDoc->IDTable.GetDECL(myID);
+      if (myNewDECL) {
+        myNewDECL = (LavaDECL*)((CHE*)myNewDECL->NestedDecls.last)->data;
+        if (myNewDECL != myDECL) {
+          myDECL = myNewDECL;
+          text->INIT();
+          Base->Browser->LastBrowseContext->RemoveView(this);
+          text->ckd.myDECL = myDECL;
+          selfVar = (SelfVar*)myDECL->Exec.ptr;
+          selfVar->execDECL = myDECL;
+          toBeDrawn = 0; // to enforce RedrawExec
+        }
+      }
+      else {
+        delete GetParentFrame();
+        return;
+      }
+      break;
+
+    case CPECommand_Delete:
+      if (myDECL->isInSubTree((LavaDECL*)hint->CommandData1)) {
+        if (((undoRedo == 1 && hint->FirstLast.Contains(firstHint))
+             || (undoRedo != 1
+                && (hint->FirstLast.Contains(lastHint)
+                    || hint->com == CPECommand_FromOtherDoc))
+            )
+        || undoRedo == 3) {
+          delete GetParentFrame();
+          return;
+        }
+        else {
+          deletePending = true;
+          return;
+        }
+      }
+      break;
+
+    default: ;
+    }
+
+  if (( hint
+        && (hint->com == CPECommand_OpenExecView
+            || hint->com == CPECommand_Constraint
+            || hint->com == CPECommand_Change
+            || hint->com == CPECommand_ChangeInclude
+            || hint->com == CPECommand_Delete
+            || hint->com == CPECommand_FromOtherDoc
+            || hint->com == CPECommand_Exclude
+            || hint->com == CPECommand_Include
+            || hint->com == CPECommand_Insert
+           )
+        && (
+             (undoRedo == 1 && hint->FirstLast.Contains(firstHint))
+             || (undoRedo != 1
+                 && (hint->FirstLast.Contains(lastHint)
+                    || hint->com == CPECommand_FromOtherDoc))
+           )
+      )
+      || undoRedo == 3
+      || isLastHint) {  
+
+    if (deletePending) {
+      deletePending = false;
+      myNewDECL = myDoc->IDTable.GetDECL(myID);
+      if (myNewDECL) {
+        myNewDECL = (LavaDECL*)((CHE*)myNewDECL->NestedDecls.last)->data;
+        if (myNewDECL != myDECL) {
+          myDECL = myNewDECL;
+          text->INIT();
+          Base->Browser->LastBrowseContext->RemoveView(this);
+          text->ckd.myDECL = myDECL;
+          selfVar = (SelfVar*)myDECL->Exec.ptr;
+          selfVar->execDECL = myDECL;
+          toBeDrawn = 0; // to enforce RedrawExec
+        }
+      }
+      else {
+        delete GetParentFrame();
+        return;
+      }
+    }
+
+    ((CExecFrame*)GetParentFrame())->m_ComboBar->OnUpdate(myDECL->ParentDECL,externalHint);
+
+    if (externalHint)
+      ((CExecFrame*)GetParentFrame())->NewTitle(myDECL);
+
+    text->ckd.hint = hint;
+    text->ckd.undoRedo = undoRedo;
+
+    Check();
+    selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSetSynOID, 0,0, (address)&sData);
+    RedrawExec(text->selectAt);
+    selfVar->oldFormParms = (FormParms*)selfVar->formParms.ptr;
+
+    toBeDrawn = 0;
+    multipleUpdates = false;
+    externalHint = false;
+  }
+}
+
+void MyScrollView::keyPressEvent (QKeyEvent *e) {
+  execView->OnChar(e);
+}
+
+void CExecView::OnChar(QKeyEvent *e) 
+{
+  // TODO: Add your message handler code here and/or call default
+  int key=e->key();
+  ButtonState state=e->state();
+  SynObject *currentSynObj, *parent/*, *ocl*/;
+
+  switch (key) {
+  case Qt::Key_A:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnAssert();
+    break;
+  case Qt::Key_C:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnCopy();
+    break;
+  case Qt::Key_D:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+    && text->currentSynObj->OutputContext())
+      OnDeclare();
+    break;
+  case Qt::Key_E:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnExists();
+    break;
+  case Qt::Key_F:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnForeach();
+    break;
+/*
+  case Qt::Key_H:
+    if (!Taboo()
+    && text->currentSynObj->StatementSelected(text->currentSelection)
+    && myDECL->ParentDECL->DeclType == Function
+    && !myDECL->ParentDECL->TypeFlags.Contains(execIndependent))
+      OnFail();
+    break;
+*/
+  case Qt::Key_I:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnIf();
+    break;
+  case Qt::Key_L:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnSelect();
+    break;
+  case Qt::Key_N:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnCreateObject();
+    break;
+  case Qt::Key_O:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnOr();
+    break;
+  case Qt::Key_Q:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnQueryItf();
+    break;
+  case Qt::Key_R:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnCall();
+    break;
+  case Qt::Key_S:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+    && text->currentSynObj->OutputContext())
+      OnAssign();
+    break;
+  case Qt::Key_T:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnTypeSwitch();
+    break;
+  case Qt::Key_W:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnSwitch();
+    break;
+  case Qt::Key_X:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnIfExpr();
+    break;
+  case Qt::Key_Equal:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnEq();
+    break;
+  case Qt::Key_Asterisk:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnMult();
+    break;
+  case Qt::Key_Plus:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnPlus();
+    break;
+  case Qt::Key_Minus:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnPlusMinus();
+    break;
+  case Qt::Key_Slash:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnDivide();
+    break;
+  case Qt::Key_Question:
+    if (!Taboo() && (text->currentSynObj->StatementSelected(text->currentSelection)
+    || (text->currentSynObj->ExpressionSelected(text->currentSelection) && text->currentSynObj->BoolAdmissibleOnly(text->ckd))))
+      OnEvaluate();
+    break;
+  case Qt::Key_0:
+    if (!Taboo()
+    && ((text->currentSynObj->ExpressionSelected(text->currentSelection)
+         && text->currentSynObj->NullAdmissible(text->ckd))
+        || text->currentSynObj->IsOutputParam()))
+      OnNull();
+    break;
+  case Qt::Key_Percent:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnModulus();
+    break;
+  case Qt::Key_Ampersand:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnBitAnd();
+    break;
+  case Qt::Key_At:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnHandle();
+    break;
+  case Qt::Key_NumberSign:
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnNe();
+    else if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnOrd();
+    break;
+  case Qt::Key_Exclam:
+    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+      OnInvert();
+    else if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnNot();
+    break;
+  case Qt::Key_1:
+    if (ctrlPressed) {
+      /*
+      CComboBar* bar = (CComboBar*)GetParentFrame()->GetControlBar(IDD_ComboBar);
+      if (bar->LeftComboID) {
+        QComboBox* m_box = bar->m_ComboBarDlg->bar->LeftComboID;
+        if (m_box) {
+          m_box->ShowDropDown(true);
+          m_box->SetCurSel(0);
+          m_box->setFocus();
+        }
+      }*/
+      CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
+      if (bar->LeftCombo) {
+        bar->LeftCombo->popup();
+        bar->LeftCombo->setCurrentItem(0);
+        bar->LeftCombo->setFocus();
+      }
+    }
+    break;
+  case Qt::Key_2:
+    if (ctrlPressed) {
+      /*
+      CComboBar* bar = (CComboBar*)GetParentFrame()->GetControlBar(IDD_ComboBar);
+      if (bar->RightComboID) {
+        QComboBox* m_box = bar->m_ComboBarDlg->bar->RightComboID;
+        if (m_box) {
+          m_box->ShowDropDown(true);
+          m_box->SetCurSel(0);
+          m_box->setFocus();
+        }
+      }
+      */
+      CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
+      if (bar->RightCombo) {
+        bar->RightCombo->popup();
+        bar->RightCombo->setCurrentItem(0);
+        bar->RightCombo->setFocus();
+      }
+    }
+    break;
+  case Qt::Key_3:
+    if (ctrlPressed) {
+//      CComboBar* bar = (CComboBar*)GetParentFrame()->GetControlBar(IDD_ComboBar);
+      CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
+      if (bar->EnumsEnable) {
+        bar->TrackEnum(); 
+//        bar->EnumMenu.setFocus();
+      }
+      else {
+        if (bar->RightCombo && bar->ThirdCombo) {
+          bar->ThirdCombo->popup();
+          bar->ThirdCombo->setCurrentItem(0);
+          bar->ThirdCombo->setFocus();
+        }
+        /*
+        if (bar->RightComboID) {
+          QComboBox* m_box = bar->m_ComboBarDlg->bar->ThirdComboID;
+          if (m_box) {
+            m_box->ShowDropDown(true);
+            m_box->SetCurSel(0);
+            m_box->setFocus();
+          }
+        }
+        */
+      }
+    }
+    break;
+/*
+  case '\xe2':
+    if (altPressed) 
+      if (shiftPressed) {
+        if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+          OnGe();
+      }
+      else if (ctrlPressed) {
+        if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
+          OnBitOr();
+      }
+      else {
+        if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+          OnLe();
+      }
+    else
+      if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+        if (shiftPressed)
+          OnGt();
+        else
+          OnLt();
+    break;
+*/
+  case Qt::Key_Delete: // 0x2e DEL key
+  case Qt::Key_Backspace: // 0x08 BACKSPACE key
+    if ((Ignorable() && !inIgnore)
+    && !(inBaseInits
+         && text->currentSynObj->primaryToken == FuncRef_T
+         && text->currentSynObj->parentObject->parentObject->primaryToken == initializing_T))
+      return;
+    if (!text->currentSynObj->parentObject->parentObject
+    && text->currentSynObj->IsPlaceHolder())
+      return;
+/*
+    if (IsDeletablePrimary()
+    || text->currentSelection->data.OptionalClauseToken(ocl)
+    || text->currentSelection->data.token == Comment_T
+    || (text->currentSynObj->IsFuncInvocation()
+        && text->currentSynObj->parentObject->primaryToken != new_T
+        && text->currentSynObj->parentObject->primaryToken != callback_T)
+    || text->currentSynObj->IsPlaceHolder()) {*/
+      editCut = false;
+      OnDelete();
+//    }
+    return;
+  case Qt::Key_Tab:
+    if (state = Qt::ShiftButton) // Shift key down ==> BACKTAB
+      text->newSelection = text->FindPrecedingPlaceholder();
+    else // TAB
+      text->newSelection = text->FindNextPlaceholder();
+    Select();
+    break;
+  case Qt::Key_Up:
+    currentSynObj = text->currentSynObj;
+    parent = currentSynObj->parentObject;
+    if (parent && parent->primaryToken == ObjRef_T
+    && ((ObjReference*)parent)->refIDs.first == ((ObjReference*)parent)->refIDs.last) {
+      currentSynObj = parent;
+      parent = currentSynObj->parentObject;
+    }
+
+    if (parent
+    && parent->primaryToken == parameter_T) {
+      currentSynObj = parent;
+      parent = currentSynObj->parentObject;
+    }
+    Select(parent);
+    break;
+  case Qt::Key_Down:
+    if (text->currentSynObj->primaryToken == parameter_T)
+      currentSynObj = (SynObject*)((Parameter*)text->currentSynObj)->parameter.ptr;
+    else
+      currentSynObj = text->currentSynObj;
+
+    if (currentSynObj->type == VarPH_T
+    || currentSynObj->primaryToken == Exp_T
+    || currentSynObj->IsConstant()) {
+      text->currentSynObj = currentSynObj;
+      if (text->currentSynObj->primaryToken != enumConst_T
+      && text->currentSynObj->primaryToken != Boolean_T
+      && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
+      && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
+        doubleClick = true;
+      Select();
+      doubleClick = false;
+    }
+    else if (text->currentSelection->data.token == Comment_T) {
+      doubleClick = true;
+      clicked = true;
+      Select();
+    }
+    else if (!IsPH(currentSynObj)
+    && currentSynObj->primaryToken != TDOD_T
+    && currentSynObj->primaryToken != FuncRef_T
+    && currentSynObj->primaryToken != TypeRef_T
+    && currentSynObj->primaryToken != CrtblRef_T) {
+      text->currentSynObj = currentSynObj;
+      Select(FirstChild());
+    }
+    break;
+  case Qt::Key_Left:
+    Select(LeftSibling());
+    break;
+  case Qt::Key_Right:
+    Select(RightSibling());
+    break;
+  case Qt::Key_Return:
+    if (EnableInsert()) {
+      OnInsert();
+      if (text->currentSelection->data.token == VarPH_T
+			|| text->currentSelection->data.token == Exp_T) {
+        doubleClick = true;
+        Select();
+        doubleClick = false;
+      }
+    }
+    else if (text->currentSynObj->IsStatement())
+      OnAnd();
+  default:
+    ;
+  }
+}
+
+void MyScrollView::contentsMousePressEvent (QMouseEvent *e) {
+  if (e->button() != Qt::LeftButton)
+    return;
+  execView->OnLButtonDown(e);
+}
+
+void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
+  if (e->button() != Qt::LeftButton)
+    return;
+  execView->OnLButtonDblClk(e);
+}
+
+void CExecView::OnLButtonDown(QMouseEvent *e) 
+{
+  // TODO: Add your message handler code here and/or call default
+  QPoint pos=e->pos();
+
+  clicked = true;
+  if (EditOK()) {
+    text->NewSel(&pos);
+    if (text->newSelection == text->currentSelection
+    && (text->currentSelection->data.synObject->primaryToken == VarPH_T
+        || (text->currentSelection->data.synObject->primaryToken == Exp_T
+            && !text->currentSelection->data.synObject->BoolAdmissibleOnly(text->ckd)
+            && !text->currentSelection->data.synObject->EnumAdmissibleOnly(text->ckd))
+        || text->currentSelection->data.synObject->primaryToken == VarName_T
+        || text->currentSelection->data.token == Comment_T
+        || (text->currentSelection->data.token == Const_T
+            && !text->currentSelection->data.synObject->BoolAdmissibleOnly(text->ckd)
+            && !text->currentSelection->data.synObject->EnumAdmissibleOnly(text->ckd)))) {
+      doubleClick = true;
+    }
+    Select();
+    sv->viewport()->update();
+  }
+  doubleClick = false;
+  clicked = false;
+}
+
+void CExecView::OnLButtonDblClk(QMouseEvent *e) 
+{
+  // TODO: Add your message handler code here and/or call default
+  
+  doubleClick = true;
+  OnLButtonDown(e);
+  doubleClick = false;
+}
+
+void CExecView::Select (SynObject *selObj)
+{
+  QString str, str2, msg;
+  QPoint luCorner;
+  QFont *pFont=&LBaseData->m_ExecFont;
+  SynObject *synObj, *typeSwitchExpression;
+  Expression *callExpr;
+  ObjReference *objRef;
+  CComment *pComment;
+  TDOD *pTID;
+  TIDType idtype;
+  TID tid, tidOperatorFunc;
+  DWORD dw;
+  FuncExpression *funcExpr;
+  Assignment *assigStm;
+  CopyStatement *copyStm;
+  Callback *callbackExp;
+  MultipleOp *multOpExp;
+  IfExpression *ifx;
+  CHE *chpFormIn;
+  unsigned iInp=1, iOut=1;
+  LavaDECL *decl, *eventDescDecl, *finalDecl, *declSwitchExpression;
+  Category cat, catSwitchExpression;
+  CContext nullCtx, callCtx;
+  SynFlags ctxFlags;
+
+  if (selObj) {
+    if (selObj->primaryToken == parameter_T)
+      selObj = (SynObject*)((Parameter*)selObj)->parameter.ptr;
+		
+		if (selObj->type == elsif_T)
+			if (selObj->parentObject->primaryToken == if_T)
+				text->newSelection = ((IfThen*)selObj)->thenToken;
+			else
+				text->newSelection = ((IfxThen*)selObj)->thenToken;
+		else
+			text->newSelection = selObj->primaryTokenNode;
+    text->Select(selObj);
+  }
+  else if (forcePrimTokenSelect && text->selectAt) {
+    forcePrimTokenSelect = false;
+    text->newSelection = text->selectAt->primaryTokenNode;
+    text->Select();
+  }
+  else
+    text->Select();
+
+//	wxDocManager::GetDocumentManager()->SetActiveView(this);
+	// important: text->Select first
+
+  autoScroll = true;
+
+  ObjComboUpdate ocUpd(this);
+  ocUpd.CheckLocalScope(text->ckd,text->currentSynObj);
+  tempNo = ocUpd.tempNo;
+  inExecHeader = ocUpd.inExecHeader;
+  inFormParms = ocUpd.inFormParms;
+  inBaseInits = ocUpd.inBaseInits;
+  inIgnore = ocUpd.inIgnore;
+  inParameter = ocUpd.inParameter;
+  inForeach = ocUpd.inForeach;
+
+  SetHelpText();
+  sv->viewport()->update();
+
+  if (text->currentSelection->data.token == Comment_T) {
+    if (!EditOK() || !clicked) return;
+    clicked = false;
+
+    if (doubleClick) {
+      doubleClick = false;
+
+//      setUpdatesEnabled(true);
+      pComment = new CComment(false);
+      synObj = text->currentSynObj;
+      if (synObj->comment.ptr) {
+        pComment->inline_comment->setChecked(synObj->comment.ptr->inLine);
+        pComment->trailing_comment->setChecked(synObj->comment.ptr->trailing);
+        pComment->text->setText(synObj->comment.ptr->str.c);
+      }
+
+      pComment->exec();
+      if (pComment->result() == QDialog::Accepted) {
+        TComment *pCmt = new TCommentV;
+        pCmt->inLine = pComment->inline_comment->isChecked();
+        pCmt->trailing = pComment->trailing_comment->isChecked();
+        pCmt->str = STRING(pComment->text->text());
+        text->currentSynObj = synObj;
+        PutChgCommentHint(pCmt);
+        if (synObj->comment.ptr) {
+          if (synObj->comment.ptr->trailing)
+            text->newSelection = synObj->endToken;
+          else
+            text->newSelection = synObj->startToken;
+          text->Select();
+        }
+      }
+      delete pComment;
+
+    }
+    return;
+  }
+
+  if (text->currentSelection->data.token == Tilde_T)
+    text->currentSelection = text->currentSynObj->primaryTokenNode;
+
+  switch (text->currentSynObj->primaryToken) {
+  case FuncRef_T:
+    if (doubleClick && EnableGotoDecl()) {
+      doubleClick = false;
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+      OnGotodef();
+      sv->viewport()->update();
+      return;
+    }
+
+  case FuncPH_T:
+    if (text->currentSynObj->parentObject->parentObject
+    && text->currentSynObj->parentObject->parentObject->primaryToken == new_T
+    && text->currentSynObj->parentObject->whereInParent
+       == (address)&((NewExpression*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newCombo);
+      sv->viewport()->update();
+      return;
+    }
+    else if (text->currentSynObj->parentObject->parentObject
+    && text->currentSynObj->parentObject->parentObject->primaryToken == run_T
+    && text->currentSynObj->parentObject->whereInParent
+       == (address)&((Run*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newCombo);
+      sv->viewport()->update();
+      return;
+    }
+    funcExpr = (FuncExpression*)text->currentSynObj->parentObject;
+    callExpr = (Expression*)funcExpr->handle.ptr;
+    if (!funcExpr->parentObject) {
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+      sv->viewport()->update();
+      return;
+    }
+    if (funcExpr->parentObject->primaryToken == initializing_T) { // base initializer call
+      tid = ((Reference*)((BaseInit*)funcExpr->parentObject)->baseItf.ptr)->refID;
+      if (tid.nID >= 0)
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowBaseInis(tid);
+      else
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+      sv->viewport()->update();
+      return;
+    }
+    //else if (funcExpr->flags.Contains(staticCall)
+    else if (callExpr) {
+      if (callExpr->IsPlaceHolder())
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+      else {
+        if (callExpr->flags.Contains(isSelfVar)
+        && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last) {
+          decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
+          callCtx = text->ckd.lpc;
+        }
+        else {
+          ((SynObject*)funcExpr->handle.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+          callCtx = text->ckd.tempCtx;
+          decl = text->ckd.document->GetTypeAndContext(decl, callCtx);
+          text->ckd.document->NextContext(decl, callCtx);
+        }
+        if (decl)
+          if (text->currentSynObj->parentObject->parentObject->primaryToken == callback_T
+          && text->currentSynObj->parentObject->whereInParent
+            == (address)&((Callback*)text->currentSynObj->parentObject->parentObject)->callback.ptr) {
+            callbackExp = (Callback*)text->currentSynObj->parentObject->parentObject;
+            ((SynObject*)callbackExp->callbackType.ptr)->ExprGetFVType(text->ckd,eventDescDecl,cat,ctxFlags);
+            eventDescDecl = text->ckd.document->GetType(eventDescDecl);
+            if (eventDescDecl) {
+              text->ckd.document->IDTable.GetParamID(eventDescDecl,tid,isEventDesc); // eventDesc
+              text->ckd.tempCtx = text->ckd.lpc;
+              eventDescDecl = myDoc->GetFinalMTypeAndContext(tid,0,text->ckd.tempCtx, 0);
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,eventDescDecl,callCtx);
+            }
+            else
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+          }
+          else {
+            if (callExpr->flags.Contains(isSelfVar)
+            && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,true);
+            else
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx);
+          }
+        else
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+      }
+    }
+    else //static function
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowStaticFuncs(text->ckd);
+    sv->viewport()->update();
+    return;
+
+  case nil_T:
+    if (text->currentSynObj->IsOutputParam())
+      goto obj;
+    else
+      goto exp;
+
+  case ObjPH_T:
+obj:
+    if (text->currentSynObj->parentObject->parentObject->primaryToken == assignFS_T) {
+      if (text->currentSynObj->whereInParent
+          != (address)&((FuncExpression*)text->currentSynObj->parentObject->parentObject)->handle.ptr) {
+        funcExpr = (FuncExpression*)text->currentSynObj->parentObject->parentObject;
+        decl = myDoc->IDTable.GetDECL(((Parameter*)text->currentSynObj->parentObject)->formParmID,text->ckd.inINCL);
+        if (funcExpr->handle.ptr) {
+          text->ckd.tempCtx = funcExpr->callCtx;
+          if (funcExpr->myCtxFlags.bits)
+            text->ckd.tempCtx.ContextFlags = funcExpr->myCtxFlags;
+        }
+        else
+          text->ckd.tempCtx = text->ckd.lpc;
+        finalDecl = myDoc->GetFinalMVType(decl->RefID,decl->inINCL,text->ckd.tempCtx,cat,0);
+        if (finalDecl) {
+          if (decl->TypeFlags.Contains(substitutable))
+            text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,finalDecl,text->ckd.tempCtx,cat,false);
+          sv->viewport()->update();
+          return;
+        }
+      }
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == assign_T) {
+      assigStm = (Assignment*)text->currentSynObj->parentObject;
+      ((SynObject*)assigStm->exprValue.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      if (decl && decl != (LavaDECL*)-1) {
+        if (ctxFlags.bits)
+          text->ckd.tempCtx.ContextFlags = ctxFlags;
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,false);
+        sv->viewport()->update();
+        return;
+      }
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == copy_T) {
+      copyStm = (CopyStatement*)text->currentSynObj->parentObject;
+      ((SynObject*)copyStm->fromObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      if (decl) {
+        if (ctxFlags.bits)
+          text->ckd.tempCtx.ContextFlags = ctxFlags;
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,false,true);
+        sv->viewport()->update();
+        return;
+      }
+    }
+    ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objCombo);
+    sv->viewport()->update();
+    return;
+
+  case Exp_T:
+  case Lbracket_T:
+  case Rbracket_T:
+  case Boolean_T:
+  case ifx_T:
+exp: // Const_T
+    if (text->currentSynObj->parentObject->primaryToken == parameter_T) {
+      decl = myDoc->IDTable.GetDECL(((Parameter*)text->currentSynObj->parentObject)->formParmID,text->ckd.inINCL);
+      funcExpr = (FuncExpression*)text->currentSynObj->parentObject->parentObject;
+      if (funcExpr->handle.ptr)
+        text->ckd.tempCtx = funcExpr->callCtx;
+      else
+        text->ckd.tempCtx = text->ckd.lpc;
+      finalDecl = myDoc->GetFinalMVType(decl->RefID,decl->inINCL,text->ckd.tempCtx,cat,0);
+      if (finalDecl) {
+        if (decl->TypeFlags.Contains(substitutable))
+          text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,finalDecl,text->ckd.tempCtx,cat,true);
+      }
+      else
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
+    }
+    else if (text->currentSelection->data.token == Exp_T
+    && text->currentSynObj->parentObject->primaryToken == EvalStm_T) {
+      TID tidBool=TID(text->ckd.document->IDTable.BasicTypesID[B_Bool],myDoc->isStd?0:1);
+      decl = myDoc->IDTable.GetDECL(tidBool);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,nullCtx,valueObj,true);
+    }
+    else if (text->currentSelection->data.token == Exp_T
+    && text->currentSynObj->parentObject->primaryToken == elsif_T) {
+      ifx = (IfExpression*)text->currentSynObj->parentObject->parentObject;
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,ifx->targetDecl,ifx->targetCtx,ifx->targetCat,true);
+    }
+    else if (text->currentSelection->data.token == Exp_T
+    && text->currentSynObj->parentObject->primaryToken == ifx_T) {
+      ifx = (IfExpression*)text->currentSynObj->parentObject;
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,ifx->targetDecl,ifx->targetCtx,ifx->targetCat,true);
+    }
+    else if (text->currentSelection->data.token == Exp_T
+    && text->currentSynObj->parentObject->primaryToken == select_T
+    && text->currentSynObj->whereInParent
+        == (address)&((SelectExpression*)text->currentSynObj->parentObject)->resultSet.ptr)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetCombo);
+    else if (text->currentSelection->data.token == Exp_T
+    && text->currentSynObj->parentObject->primaryToken == select_T
+    && text->currentSynObj->whereInParent
+        == (address)&((SelectExpression*)text->currentSynObj->parentObject)->addObject.ptr)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objCombo);
+    else if (text->currentSelection->data.token == Exp_T
+    && text->currentSynObj->parentObject->primaryToken == Handle_T) {
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,0,nullCtx,valueObj,true);
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == assign_T) {
+      assigStm = (Assignment*)text->currentSynObj->parentObject;
+      ((SynObject*)assigStm->targetObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      if (decl) {
+        if (ctxFlags.bits)
+          text->ckd.tempCtx.ContextFlags = ctxFlags;
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,true);
+      }
+      else
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == copy_T) {
+      copyStm = (CopyStatement*)text->currentSynObj->parentObject;
+      ((SynObject*)copyStm->ontoObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      if (decl) {
+        if (ctxFlags.bits)
+          text->ckd.tempCtx.ContextFlags = ctxFlags;
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,true,true);
+      }
+      else
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == callback_T) {
+      callbackExp = (Callback*)text->currentSynObj->parentObject;
+      ((SynObject*)callbackExp->callbackType.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      decl = text->ckd.document->GetType(decl);
+      text->ckd.document->IDTable.GetParamID(decl->ParentDECL,tid,isEventSpec); // eventSpec
+      text->ckd.tempCtx = text->ckd.lpc;
+      decl = myDoc->GetFinalMTypeAndContext(tid,0,text->ckd.tempCtx, 0);
+      if (decl)
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,true);
+      else
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
+    }
+    else if (text->currentSynObj->parentObject->IsMultOp()
+    && text->currentSynObj->parentObject->IsExpression()) {
+      multOpExp = (MultipleOp*)text->currentSynObj->parentObject;
+      ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      text->ckd.tempCtx = text->ckd.lpc;
+      decl = text->ckd.document->GetTypeAndContext(decl,text->ckd.tempCtx);
+      if (decl
+      && myDoc->GetOperatorID(decl,(TOperator)(multOpExp->primaryToken-not_T),tidOperatorFunc)) {
+        chpFormIn = GetFirstInput(&myDoc->IDTable,tidOperatorFunc);
+        tid = ((LavaDECL*)chpFormIn->data)->RefID;
+        ADJUST(tid,decl);
+        if (ctxFlags.bits)
+          text->ckd.tempCtx.ContextFlags = ctxFlags;
+        decl = myDoc->GetFinalMVType(tid,0,text->ckd.tempCtx,cat,0);
+        if (decl) {
+          if (((LavaDECL*)chpFormIn->data)->TypeFlags.Contains(substitutable))
+            text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,true);
+        }
+        else
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
+      }
+      else
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == in_T
+    && text->currentSynObj->whereInParent == (address)&((InSetStatement*)text->currentSynObj->parentObject)->operand2.ptr)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetCombo);
+    else
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
+    if (text->currentSelection->data.token == true_T
+    || text->currentSelection->data.token == false_T) {
+      sv->viewport()->update();
+      return;
+    }
+    break;
+
+  case SetPH_T:
+    ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetEnumCombo);
+    sv->viewport()->update();
+    return;
+
+  case TDOD_T:
+    if (doubleClick && EnableGotoDecl()) {
+      doubleClick = false;
+      OnGotodef();
+      sv->viewport()->update();
+      return;
+    }
+    objRef = (ObjReference*)text->currentSynObj->parentObject;
+    if (objRef->flags.Contains(isDisabled)
+    || objRef->flags.Contains(inExecHdr)
+    || objRef->parentObject->primaryToken == Handle_T
+    || (objRef->parentObject->primaryToken == assignFS_T
+        && objRef->parentObject->parentObject->primaryToken == callback_T))
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+    else {
+      pTID = (TDOD*)text->currentSynObj;
+      dw = myDoc->IDTable.GetVar(pTID->ID,idtype,text->ckd.inINCL);
+      switch (idtype) {
+      case noID:
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+        break;
+      case localID:
+        if (objRef->flags.Contains(isSelfVar)
+        && objRef->refIDs.first == objRef->refIDs.last)
+          decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
+        else {
+          ((VarName*)dw)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+          decl = text->ckd.document->GetType(decl);
+        }
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSubObjects(decl, text->ckd.lpc);
+        break;
+      default:
+        if (pTID->fieldDecl)
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSubObjects(pTID->fieldDecl, pTID->context);
+        else
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+      }
+    }
+    doubleClick = false;
+    sv->viewport()->update();
+    return;
+
+  case TypePH_T:
+  case TypeRef_T:
+    if (doubleClick && EnableGotoDecl()) {
+      doubleClick = false;
+      OnGotodef();
+      sv->viewport()->update();
+      return;
+    }
+    if (text->currentSelection->data.token == TypeRef_T
+    /*&& Ignorable()*/)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+    else if (text->currentSynObj->replacedType == SetPH_T)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetEnumCombo);
+    else if (text->currentSynObj->parentObject->primaryToken == callback_T)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(callbackCombo);
+    else if (text->currentSynObj->parentObject->primaryToken == uuid_T
+    || text->currentSynObj->parentObject->primaryToken == attach_T
+    || (text->currentSynObj->parentObject->primaryToken == new_T
+        && ((NewExpression*)text->currentSynObj->parentObject)->itf.ptr))
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(coiCombo);
+    else if(text->currentSynObj->type == TypePH_T
+    && text->currentSynObj->parentObject->primaryToken == caseType_T) {
+      typeSwitchExpression = (SynObject*)((TypeSwitchStatement*)text->currentSynObj->parentObject->parentObject)->caseExpression.ptr;
+      typeSwitchExpression->ExprGetFVType(text->ckd,declSwitchExpression,catSwitchExpression,ctxFlags);
+      if (declSwitchExpression) {
+        CContext swCtx = text->ckd.tempCtx;
+        if (ctxFlags.bits)
+          swCtx.ContextFlags = ctxFlags;
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompaTypes(text->ckd,declSwitchExpression,swCtx);
+      }
+      else
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(typeCombo);
+    }
+    else
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(typeCombo);
+    doubleClick = false;
+    sv->viewport()->update();
+    return;
+
+  case CrtblPH_T:
+  case Callee_T:
+  case CompObj_T:
+  case CrtblRef_T:
+    if (doubleClick && EnableGotoDecl()) {
+      doubleClick = false;
+      OnGotodef();
+      sv->viewport()->update();
+      return;
+    }
+    if (text->currentSynObj->parentObject->primaryToken == attach_T)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(attachCombo);
+    else if (text->currentSynObj->parentObject->primaryToken == new_T)
+      if (text->currentSynObj->parentObject->parentObject->primaryToken == select_T
+      && text->currentSynObj->parentObject->whereInParent
+          == (address)&((SelectExpression*)text->currentSynObj->parentObject->parentObject)->resultSet.ptr)
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newCombo);
+      else
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newAndCObjCombo);
+    else // "call" statement
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(callCombo);
+    doubleClick = false;
+    sv->viewport()->update();
+    return;
+
+  case VarPH_T:
+    str = TOKENSTR[VarPH_T];
+    editToken = VarName_T;
+    ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+    break;
+
+  case VarName_T:
+    str = ((VarName*)text->currentSynObj)->varName.c;
+    editToken = VarName_T;
+    ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+    break;
+
+  case Const_T:
+    str = ((Constant*)text->currentSynObj)->str.c;
+    editToken = Const_T;
+    if (doubleClick)
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+    else
+      goto exp;
+    break;
+
+  case enumConst_T:
+    ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
+    if (doubleClick && EnableGotoDecl()) {
+      OnGotodef();
+      doubleClick = false;
+    }
+    else {
+      doubleClick = false;
+      goto exp;
+    }
+
+  default:
+    if (text->currentSynObj->replacedType == Exp_T)
+      goto exp;
+    ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+    sv->viewport()->update();
+    return;
+  }
+
+  if (!doubleClick) {
+    sv->viewport()->update();
+    return;
+  }
+
+  doubleClick = false;
+  sv->viewport()->repaint();
+	// otherwise the MiniEdit's position would be unknown in the following code
+
+  if (text->currentSelection->data.token == Exp_T
+  || text->currentSelection->data.token == ExpOpt_T)
+    OnConst();
+  else {
+    if (!editCtl)
+      editCtl = new MiniEdit(this);
+    sv->addChild(editCtl,text->currentSelection->data.rect.left()-editCtl->frameWidth(),text->currentSelection->data.rect.top()-editCtl->frameWidth());
+    editCtl->setFont(sv->viewport()->font());
+    editCtl->setText(str);
+    editCtl->setFixedWidth(text->currentSelection->data.rect.width()+2*editCtl->frameWidth()+10);
+    editCtl->setFixedHeight(text->currentSelection->data.rect.height()+2*editCtl->frameWidth());
+    int r=text->currentSelection->data.rect.right();
+    sv->contentsWidth = QMAX(sv->contentsWidth,r);
+    editCtl->setCursorPosition(str.length());
+    editCtl->setFocus();
+    editCtl->show();
+    if (text->currentSynObj->IsPlaceHolder())
+      editCtl->selectAll();
+    editCtlVisible = true;
+  }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CExecView message handlers
+
+
+void CExecView::SetSelectAt (CLavaPEHint *hint) {
+  CHAINX *chx;
+  CHE *che;
+  SynObject *insObj;
+  MultipleOp *multOp;
+
+  text->selectAfter = text->selectAt;
+  switch ((InsertMode)hint->CommandData3) {
+  case InsMult:
+    if (text->selectAt) break;
+    multOp = (MultipleOp*)hint->CommandData4;
+    insObj = (SynObject*)((CHE*)multOp->operands.first->successor)->data;
+    text->selectAt = multOp; //insObj;
+    text->selectAfter = multOp; //insObj;
+    break;
+  case InsChain:
+    if (text->selectAt) break;
+    che = (CHE*)hint->CommandData4;
+    insObj = (SynObject*)che->data;
+    text->selectAt = insObj;
+    text->selectAfter = insObj;
+    break;
+  case DelChain:
+    if (text->selectAt) break;
+    chx = (CHAINX*)hint->CommandData5;
+    if (chx->first) {
+      che = (CHE*)hint->CommandData4;
+      if (che->successor)
+        text->selectAt = (SynObject*)((CHE*)che->successor)->data;
+      else if (che->predecessor)
+        text->selectAt = (SynObject*)((CHE*)che->predecessor)->data;
+      else
+        text->selectAt = (SynObject*)hint->CommandData2;
+    }
+    else
+      text->selectAt = (SynObject*)hint->CommandData2;
+    text->selectAfter = text->selectAt;
+    break;
+  default:
+    if (text->selectAt) break;
+    text->selectAt = toBeDrawn;
+    text->selectAfter = toBeDrawn;
+  }
+
+  text->plhSearch = false;
+}
+
+
+void CExecView::Check () {
+//  text->ckd.currentSynObj = 0;
+  text->ckd.nErrors = 0;
+  text->ckd.nPlaceholders = 0;
+  ((SynObject*)myDECL->Exec.ptr)->Check(text->ckd);
+}
+
+
+void CExecView::RedrawExec(SynObject *selectAt)
+{
+  // TODO: Add your command handler code here
+  CSearchData sData;
+
+  text->tokenChain.Destroy();
+  text->INIT();
+  replacedObj = 0;
+  if (myDECL->TreeFlags.Contains(leftArrows))
+    text->leftArrows = true;
+  else
+    text->leftArrows = false;
+  text->showComments = myDECL->TreeFlags.Contains(ShowExecComments);
+
+  text->selectAt = selectAt?selectAt:selfVar;
+  text->selectAfter = text->selectAt;
+  
+  Redraw(selfVar);
+
+  if (externalHint && text->currentSynObjID) {
+    sData.synObjectID = text->currentSynObjID;
+    sData.execView = this;
+    selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
+  }
+  else
+    Select();
+
+  sv->viewport()->update();
+  sv->update();
+	GetParentFrame()->update();
+}
+
+
+void CExecView::Redraw (SynObject *newObj) {
+  CHETokenNode *delToken, *delTokenSucc, *oldStartToken, *oldEndToken,
+    *newStartToken, *newEndToken;
+  SynObject *parent, *oldFormParms=selfVar->oldFormParms;
+  FuncExpression *funcExpr;
+  bool mod=true, ignore=false;
+  QString selText;
+//  int para, startOfLine, nArrows=0, len;
+
+  if (newObj && newObj->primaryToken == FormParms_T && oldFormParms) {
+    oldStartToken = oldFormParms->startToken;
+    oldEndToken = oldFormParms->endToken;
+  }
+  else if (replacedObj) {
+    oldStartToken = replacedObj->startToken;
+    oldEndToken = replacedObj->endToken;
+    replacedObj = 0;
+  }
+  else {
+    oldStartToken = 0;
+    oldEndToken = 0;
+  }
+  if (newObj) {
+    text->currentSynObj = newObj->parentObject;
+    for (parent = newObj->parentObject;
+         parent;
+         parent = parent->parentObject) {
+      if (parent->flags.Contains(ignoreSynObj)) {
+        ignore = true;
+        break;
+      }
+    }
+  }
+
+  if (oldStartToken) {
+    text->currentToken = (CHETokenNode*)oldStartToken->predecessor;
+    text->firstMoved = (CHETokenNode*)oldEndToken->successor;
+
+    delToken = oldStartToken;
+    do {
+      delTokenSucc = (CHETokenNode*)delToken->successor;
+      if (delToken == text->currentSelection)
+        text->currentSelection = 0;
+      text->tokenChain.Remove(text->currentToken);
+      if (delToken == oldEndToken) break;
+      else delToken = delTokenSucc;
+    } while (true);
+
+    if (newObj) {
+      newObj->Draw(*text,newObj->whereInParent,newObj->containingChain,ignore);
+      newStartToken = newObj->startToken;
+      newEndToken = newObj->endToken;
+      parent = newObj->parentObject;
+      while (parent && mod) {
+        mod = false;
+        if (parent->startToken == oldStartToken) {
+          mod = true;
+          parent->startToken = newStartToken;
+        }
+        if (parent->endToken == oldEndToken) {
+          mod = true;
+          parent->endToken = newEndToken;
+        }
+        parent = parent->parentObject;
+      }
+    }
+
+//    text->CorrectPositions();
+  }
+  else {
+    newObj->Draw(*text,newObj->whereInParent,0,ignore);
+    text->insertedChars = 0;
+  }
+
+  if (newObj && newObj->IsFuncInvocation()) {
+    funcExpr = (FuncExpression*)newObj;
+    if (funcExpr->handle.ptr) {
+      if (((SynObject*)funcExpr->handle.ptr)->IsPlaceHolder())
+        text->newSelection = ((SynObject*)funcExpr->handle.ptr)->primaryTokenNode;
+    }
+    else if (((SynObject*)funcExpr->function.ptr)->IsPlaceHolder())
+      text->newSelection = ((SynObject*)funcExpr->function.ptr)->primaryTokenNode;
+  }
+}
+
+bool CExecView::IsTopLevelToken ()
+{
+  return (text->currentSelection->data.flags.Contains(primToken)
+    || text->currentSelection->data.token == Lparenth_T
+    || text->currentSelection->data.token == Rparenth_T
+    || text->currentSelection->data.token == Larrow_T
+    || text->currentSelection->data.token == Rarrow_T
+    || text->currentSynObj->primaryToken == arrayAtIndex_T
+		|| selStartPos == text->currentSynObj->startToken);
+}
+
+bool CExecView::IsDeletablePrimary () {
+  if ((IsTopLevelToken()
+       && (text->currentSelection->data.synObject->primaryToken != assignFS_T
+           || text->currentSelection->data.synObject->parentObject->primaryToken != callback_T))
+  || text->currentSelection->data.token == TDOD_T
+  || text->currentSelection->data.token == Tilde_T)
+    return true;
+  return false;
+}
+
+static bool IsRelToken (TToken token) 
+{
+  switch (token) {
+  case Equal_T:
+  case NotEqual_T:
+  case LessThan_T:
+  case GreaterThan_T:
+  case LessEqual_T:
+  case GreaterEqual_T:
+    return true;
+  default:
+    return false;
+  }
+}
+
+
+void CExecView::PutInsFlagHint(SET insFlags, SET firstLastHint) {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    firstLastHint,
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj,
+    (DWORD)InsFlags,
+    (DWORD)insFlags.bits);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  if (firstLastHint.Contains(lastHint))
+    myDoc->UpdateDoc(this, false);
+}
+
+
+void CExecView::PutPlusMinusHint() {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    SET(firstHint,lastHint,-1),
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj->parentObject,
+    (DWORD)PlusMinus,
+    (DWORD)text->currentSynObj,
+    (DWORD)0);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  myDoc->UpdateDoc(this, false);
+}
+
+/*
+void CExecView::PutArrowHint() {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    SET(firstHint,lastHint,-1),
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj,
+    (DWORD)ToggleArrows);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  myDoc->UpdateDoc(this, false);
+}
+*/
+
+void CExecView::PutDelFlagHint(SET delFlags, SET firstLastHint) {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    firstLastHint,
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj,
+    (DWORD)DelFlags,
+    (DWORD)delFlags.bits);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  if (firstLastHint.Contains(lastHint))
+    myDoc->UpdateDoc(this, false);
+}
+
+void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint, bool putHint) {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    firstLastHint,
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj->parentObject,
+    (DWORD)InsNested,
+    (DWORD)insObj,
+    (DWORD)text->currentSynObj->containingChain,
+    (DWORD)text->currentSynObj->whereInParent);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  if (firstLastHint.Contains(lastHint)) {
+    if (putHint)
+      myDoc->UpdateDoc(this, false,nextHint);
+    else
+      myDoc->UpdateDoc(this, false);
+  }
+}
+
+
+void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLastHint) {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    firstLastHint,
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj,
+    (DWORD)InsChain,
+    (DWORD)newChe,
+    (DWORD)chain,
+    (DWORD)pred);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  if (firstLastHint.Contains(lastHint))
+    myDoc->UpdateDoc(this, false);
+}
+
+
+void CExecView::PutInsMultOpHint(SynObject *multOp) {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    SET(firstHint,-1),
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj->parentObject,
+    (DWORD)InsMult,
+    (DWORD)multOp,
+    (DWORD)text->currentSynObj->containingChain,
+    (DWORD)text->currentSynObj->whereInParent);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  nextHint = 0;
+}
+
+void CExecView::PutChgCommentHint(TComment *pCmt) {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    SET(firstHint,lastHint,-1),
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj,
+    (DWORD)ChgComment,
+    (DWORD)pCmt);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  myDoc->UpdateDoc(this, false);
+}
+
+void CExecView::PutChgOpHint(TToken token) {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    SET(firstHint,lastHint,-1),
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj,
+    (DWORD)ChgOp,
+    (DWORD)token);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  myDoc->UpdateDoc(this, false);
+}
+
+void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
+  CHAINX *chx=delObj->containingChain;
+  CHE *che;
+  SynObject *placeHdr=0;
+
+  if (chx
+  && ((!delObj->IsExpression() && chx->first != chx->last)
+      || delObj->IsPlaceHolder())) {
+    che = (CHE*)delObj->whereInParent;
+    bool delMult
+      = (delObj->parentObject->IsMultOp()
+      && chx->first->successor == chx->last) ? true : false;
+    nextHint = new CLavaPEHint(
+      CPECommand_Constraint,
+      myDoc,
+      delMult ? SET(firstHint,-1) : firstLastHint,
+      (DWORD)myDECL,
+      (DWORD)text->currentSynObj->parentObject, // parent,
+      (DWORD)DelChain,
+      (DWORD)che,
+      (DWORD)chx,
+      (DWORD)che->predecessor);
+    myDoc->UndoMem.AddToMem(nextHint);
+    if (delMult) {
+      nextHint = new CLavaPEHint(
+        CPECommand_Constraint,
+        myDoc,
+        SET(lastHint,-1),
+        (DWORD)myDECL,
+        (DWORD)text->currentSynObj->parentObject->parentObject,
+        (DWORD)DelMult,
+        (DWORD)delObj->parentObject,
+        (DWORD)text->currentSynObj->parentObject->containingChain,
+        (DWORD)text->currentSynObj->parentObject->whereInParent);
+      myDoc->UndoMem.AddToMem(nextHint);
+    }
+  }
+  else {
+    if (delObj->primaryToken != TypePH_T
+    && (delObj->primaryToken != Exp_T
+        || delObj->parentObject->primaryToken != fail_T))
+        // optional type in set quantifier or optional exception expression in fail stm
+      placeHdr = new SynObjectV(delObj->replacedType);
+    else
+      text->currentSynObjID = 0;
+
+    nextHint = new CLavaPEHint(
+      CPECommand_Constraint,
+      myDoc,
+      3UL,
+      (DWORD)myDECL,
+      (DWORD)text->currentSynObj->parentObject,
+      (DWORD)InsNested,
+      (DWORD)placeHdr,
+      (DWORD)text->currentSynObj->containingChain,
+      (DWORD)text->currentSynObj->whereInParent);
+    myDoc->UndoMem.AddToMem(nextHint);
+  }
+
+  if (firstLastHint.Contains(lastHint))
+    myDoc->UpdateDoc(this, false);
+}
+
+void CExecView::PutDelNestedHint(SET firstLastHint) {
+  nextHint = new CLavaPEHint(
+    CPECommand_Constraint,
+    myDoc,
+    firstLastHint,
+    (DWORD)myDECL,
+    (DWORD)text->currentSynObj->parentObject,
+    (DWORD)DelNested,
+    (DWORD)text->currentSynObj,
+    (DWORD)text->currentSynObj->containingChain,
+    (DWORD)text->currentSynObj->whereInParent);
+
+  myDoc->UndoMem.AddToMem(nextHint);
+  if (firstLastHint.Contains(lastHint))
+    myDoc->UpdateDoc(this, false);
+}
+
+
+void CExecView::InsertOrReplace (SynObject *insObj) {
+  switch (text->currentSynObj->primaryToken) {
+  case FuncRef_T:
+  case FuncPH_T:
+  case FuncDisabled_T:
+  case TDOD_T:
+    text->currentSynObj = text->currentSynObj->parentObject;
+    break;
+  default: ;
+  }
+  if (!text->currentSynObj->IsPlaceHolder()
+  && text->currentSynObj->IsStatement())
+    InsMultChain(insObj);
+  else
+    PutInsHint(insObj);
+}
+
+void CExecView::InsMultChain (SynObject *insObj) {
+  MultipleOp *multOp;
+  CHE *che, *newChe = NewCHE(insObj);
+
+  if (text->currentSynObj->parentObject->IsMultOp()) {
+    multOp = (MultipleOp*)text->currentSynObj->parentObject;
+    che = (CHE*)text->currentSynObj->whereInParent;
+    text->currentSynObj = multOp;
+    if (insertBefore)
+      PutInsChainHint(newChe,&multOp->operands,(CHE*)che->predecessor);
+    else
+      PutInsChainHint(newChe,&multOp->operands,che);
+  }
+  else {
+    if (insObj->type == Stm_T)
+      multOp = new SemicolonOpV();
+    else
+      multOp = new PlusOpV();
+    PutInsMultOpHint(multOp);
+    text->currentSynObj = multOp;
+    if (insertBefore)
+      PutInsChainHint(newChe,&multOp->operands,(CHE*)0,SET(lastHint,-1));
+    else
+      PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,SET(lastHint,-1));
+  }
+}
+
+void CExecView::InsMultOp (TToken primaryToken, MultipleOp *multOp) {
+  SynObject *insObj = new SynObjectV(OperandType(primaryToken));
+  CHE *newChe = NewCHE(insObj);
+
+  // if we are on a mult op or an element of a mult op of this same type
+  // then we insert a new element before or after the present location
+  // else we insert a new mult op in place of the current element
+  // whose only elements are the current element and a placeholder for a
+  // new element before or after the current element:
+
+  switch (text->currentSynObj->primaryToken) {
+  case FuncRef_T:
+  case FuncPH_T:
+  case FuncDisabled_T:
+  case TDOD_T:
+    text->currentSynObj = text->currentSynObj->parentObject;
+    break;
+  default: ;
+  }
+  PutInsMultOpHint(multOp);
+  text->currentSynObj = multOp;
+  if (insertBefore)
+    PutInsChainHint(newChe,&multOp->operands,(CHE*)0,SET(lastHint,-1));
+  else
+    PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,SET(lastHint,-1));
+}
+
+
+bool CExecView::Ignorable () {
+  if ((inIgnore || inExecHeader || inFormParms || inBaseInits
+  || !text->currentSynObj->parentObject
+  || text->currentSynObj->flags.Contains(isDisabled))
+  && !inParameter)
+    return true;
+  else
+    return false;
+}
+
+bool CExecView::Taboo () {
+  if ((inExecHeader || inFormParms || inBaseInits || !text->currentSynObj->parentObject)
+  && !inParameter)
+    return true;
+  else if (text->currentSynObj->parentObject
+  && (text->currentSynObj->parentObject->primaryToken == Handle_T
+      || (text->currentSynObj->parentObject->parentObject
+      && text->currentSynObj->parentObject->primaryToken == ObjRef_T
+      && text->currentSynObj->parentObject->parentObject->primaryToken == Handle_T)))
+    return true;
+  else
+    return false;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+void CExecView::OnAnd() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+
+  if (text->currentSynObj->OutputContext())
+    InsMultOp(Semicolon_T,new SemicolonOpV());
+  else
+    InsMultOp(and_T,new AndOpV());
+}
+
+void CExecView::OnBitAnd() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InsMultOp(BitAnd_T,new BitAndOpV());
+}
+
+void CExecView::OnBitOr() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InsMultOp(BitOr_T,new BitOrOpV());
+}
+
+void CExecView::OnBitXor() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InsMultOp(BitXor_T,new BitXorOpV());
+}
+
+void CExecView::OnClone() 
+{
+  CloneExpressionV *mcln;
+  VarName *varNamePtr;
+  char buffer[10];
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+
+  mcln = new CloneExpressionV(true);
+  varNamePtr = (VarName*)mcln->varName.ptr;
+  if (tempNo > 0) {
+		sprintf(buffer,"%u",++tempNo);
+    varNamePtr->varName += buffer;
+//    varNamePtr->varName += _ultoa(++tempNo,buffer,10);
+	}
+  InsertOrReplace(mcln);
+}
+
+void CExecView::OnSelect() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  SelectExpression *collect = new SelectExpressionV(true);
+  InsertOrReplace(collect);
+}
+
+void CExecView::OnComment()
+{
+  // TODO: Add your command handler code here
+  SynObject *synObj = text->currentSynObj;
+
+  if (!EditOK()) return;
+  clicked = false;
+//!!!  setUpdatesEnabled(true);
+  CComment *pComment = new CComment(this,"Comment",true);
+
+  if (synObj->comment.ptr) {
+    pComment->inline_comment->setChecked(synObj->comment.ptr->inLine);
+    pComment->trailing_comment->setChecked(synObj->comment.ptr->trailing);
+    pComment->text->setText(synObj->comment.ptr->str.c);
+  }
+
+  pComment->exec();
+  if (pComment->result() == QDialog::Accepted) {
+    TComment *pCmt = new TCommentV;
+    pCmt->inLine = pComment->inline_comment->isChecked();
+    pCmt->trailing = pComment->trailing_comment->isChecked();
+    pCmt->str = STRING(pComment->text->text());
+    text->currentSynObj = synObj;
+    text->showComments = true;
+    myDECL->TreeFlags.INCL(ShowExecComments);
+//		GetDocument()->Modify(true);
+    PutChgCommentHint(pCmt);
+  }
+  delete pComment;
+}
+
+void CExecView::OnConst() 
+{
+  // TODO: Add your command handler code here
+  if (!EditOK()) return;
+
+  if (!editCtl)
+    editCtl = new MiniEdit(this);
+  sv->addChild(editCtl,text->currentSelection->data.rect.left()-editCtl->frameWidth(),text->currentSelection->data.rect.top()-editCtl->frameWidth());
+  editCtl->setFont(sv->viewport()->font());
+  editCtl->setText(TOKENSTR[Const_T]);
+  editCtl->setFixedWidth(sv->fm->width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
+  editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());
+  int r=text->currentSelection->data.rect.right();
+  sv->contentsWidth = QMAX(sv->contentsWidth,r);
+  editCtl->setFocus();
+  editCtl->show();
+  editCtl->selectAll();
+  editCtlVisible = true;
+  editToken = Const_T;
+}
+
+void CExecView::OnDelete () 
+{
+  // TODO: Add your command handler code here
+  bool reject=false;
+  CHAINX *chx;
+  SynObject *oldCurrentSynObj = text->currentSynObj, *synObj, *optClause;
+  ObjReference *oldRef, *newRef;
+  FuncExpression *funcExpr;
+  CallbackV *callback;
+  Run *runStm;
+  NewExpression *newExp;
+  CloneExpression *copyStm;
+  AttachObject *attachStm;
+
+  if (!EditOK()) return;
+
+	text->currentSynObjID = 0;
+
+  if (text->currentSelection->data.token == Comment_T) {
+    TComment *pCmt = new TCommentV;
+    pCmt->inLine = false;
+    pCmt->trailing = false;
+    pCmt->str = STRING("");
+    PutChgCommentHint(pCmt);
+    return;
+  }
+
+  chx = text->currentSynObj->containingChain;
+
+  if (text->currentSynObj->IsPlaceHolder()
+  && !chx
+  && !(text->currentSynObj->parentObject->primaryToken == quant_T
+       && text->currentSelection->data.token == TypePHopt_T
+       && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
+  && !text->currentSynObj->parentObject->NestedOptClause(text->currentSynObj)
+  && text->currentSynObj->parentObject->primaryToken != fail_T
+  && text->currentSelection->data.token != ObjPHOpt_T) {
+    text->currentSynObj = text->currentSynObj->parentObject;
+    if (text->currentSynObj->primaryToken == elsif_T) {
+      chx = text->currentSynObj->containingChain;
+      if (text->currentSynObj->whereInParent == (address)chx->first)
+        text->currentSynObj = text->currentSynObj->parentObject;
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == callback_T)
+      text->currentSynObj = text->currentSynObj->parentObject;
+    else if (text->currentSynObj->primaryToken == parameter_T)
+      text->currentSynObj = text->currentSynObj->parentObject;
+  }
+  else if (text->currentSynObj->primaryToken == TDOD_T) {
+    if ((CHE*)text->currentSynObj->whereInParent == chx->first)
+      text->currentSynObj = text->currentSynObj->parentObject;
+  }
+
+  if (editCut) {
+    clipBoardObject = (SynObject*)text->currentSynObj->Clone();
+    clipBoardDoc = myDoc;
+  }
+
+  chx = text->currentSynObj->containingChain;
+  if (chx && chx->first == chx->last)
+    if (text->currentSynObj->IsPlaceHolder()) {
+      if (text->currentSynObj->parentObject->primaryToken == case_T
+        || text->currentSynObj->parentObject->primaryToken == quant_T)
+        reject = true;
+    }
+    else if (text->currentSynObj->primaryToken == case_T
+    || text->currentSynObj->primaryToken == caseType_T
+    || text->currentSynObj->primaryToken == catch_T
+    || text->currentSynObj->primaryToken == elsif_T
+    || text->currentSynObj->primaryToken == quant_T)
+      reject = true;
+
+  if (reject) {
+    QMessageBox::critical(this,qApp->name(),ERR_One_must_remain,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    text->currentSynObj = oldCurrentSynObj;
+    return;
+  }
+  
+  if (text->currentSelection->data.OptionalClauseToken(optClause)) {
+    text->currentSynObj = optClause;
+    PutDelNestedHint(SET(firstHint,lastHint,-1));
+    return;
+  }
+
+  if (text->currentSynObj->primaryToken == TDOD_T) {
+    CHE *che = (CHE*)text->currentSynObj->whereInParent;
+    oldRef = (ObjReference*)text->currentSynObj->parentObject;
+    newRef = new ObjReferenceV;
+    newRef->primaryToken = oldRef->primaryToken;
+    newRef->type = oldRef->type;
+    newRef->replacedType = oldRef->replacedType;
+    newRef->flags = oldRef->flags;
+    CopyUntil(oldRef,(CHE*)che->predecessor,newRef);
+    text->currentSynObj = text->currentSynObj->parentObject;
+    synObj = text->currentSynObj->parentObject;
+    if (synObj->IsFuncInvocation()) {
+      funcExpr = (FuncExpression*)synObj;
+      if (text->currentSynObj->whereInParent == (address)&funcExpr->handle.ptr) {
+        if (funcExpr->parentObject->primaryToken == callback_T) {
+          text->currentSynObj = text->currentSynObj->parentObject->parentObject;
+          //text.currentSynObj = text->currentSynObj->parentObject;
+          callback = new CallbackV(newRef);
+          PutInsHint(callback);
+        }
+        else
+          PutInsHint(newRef);
+      }
+      else
+        PutInsHint(newRef);
+    }
+    else
+      PutInsHint(newRef);
+  }
+  else if (text->currentSynObj->primaryToken == ObjRef_T)
+    PutDelHint(text->currentSynObj);
+  else if (text->currentSynObj->primaryToken == FuncRef_T) {
+    PutInsHint(new SynObjectV(FuncPH_T));
+  }
+  else if (text->currentSynObj->primaryToken == CrtblRef_T) {
+    text->currentSynObj = text->currentSynObj->parentObject;
+    if (text->currentSynObj->primaryToken == run_T) {
+      runStm = new RunV(true);
+      PutInsHint(runStm);
+    }
+    else if (text->currentSynObj->primaryToken == attach_T) {
+      attachStm = new AttachObjectV(true);
+      PutInsHint(attachStm);
+    }
+    else { // NewExpression
+      newExp = new NewExpressionV(true);
+      PutInsHint(newExp);
+    }
+  }
+  else if (text->currentSynObj->primaryToken == assignFS_T)
+    if (text->currentSynObj->parentObject->primaryToken == callback_T)
+      return;
+    else if (text->currentSynObj->parentObject->primaryToken == run_T) {
+      text->currentSynObj = text->currentSynObj->parentObject;
+      runStm = new RunV(true);
+      PutInsHint(runStm);
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == new_T
+    && (!((NewExpression*)text->currentSynObj->parentObject)->butStatement.ptr
+        || text->currentSynObj->whereInParent
+          != (address)&((NewExpression*)text->currentSynObj->parentObject)->butStatement.ptr)) {
+      text->currentSynObj = text->currentSynObj->parentObject;
+      newExp = new NewExpressionV(true);
+      PutInsHint(newExp);
+    }
+    else
+      PutDelHint(text->currentSynObj);
+  else if (text->currentSynObj->primaryToken == VarName_T
+    && text->currentSynObj->parentObject->primaryToken == run_T) {
+    return;
+  }
+  else if (text->currentSynObj->primaryToken == VarName_T
+    && text->currentSynObj->parentObject->primaryToken == new_T) {
+    return;
+  }
+  else if (text->currentSynObj->primaryToken == VarName_T
+    && text->currentSynObj->parentObject->primaryToken == clone_T) {
+    text->currentSynObj = text->currentSynObj->parentObject;
+    copyStm = new CloneExpressionV(true);
+    PutInsHint(copyStm);
+  }
+  else if (text->currentSynObj->parentObject->NestedOptClause (text->currentSynObj)
+  && text->currentSynObj->IsPlaceHolder()) {
+    PutDelNestedHint(SET(firstHint,lastHint,-1));
+    return;
+  }
+  else if (text->currentSelection->data.token == ObjPHOpt_T) {
+    text->selectAt = text->currentSynObj->parentObject->parentObject;
+    PutInsFlagHint(SET(ignoreSynObj,-1));
+  }
+  else
+    PutDelHint(text->currentSynObj);
+}
+
+void CExecView::OnDivide() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InsMultOp(Slash_T,new DivideOpV());
+}
+
+void CExecView::OnEditCopy() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (clipBoardObject)
+    delete clipBoardObject;
+  if (text->currentSynObj->primaryToken == TDOD_T)
+    clipBoardObject = (SynObject*)text->currentSynObj->parentObject->Clone();
+  else
+    clipBoardObject = (SynObject*)text->currentSynObj->Clone();
+  clipBoardDoc = myDoc;
+}
+
+void CExecView::OnEditCut() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (clipBoardObject)
+    delete clipBoardObject;
+  editCut = true;
+  OnDelete();
+}
+
+void CExecView::OnEditPaste() 
+{
+  // TODO: Add your command handler code here
+  SynObject *insObj;
+  CHE *che, *newChe;
+  CHAINX *chx, *chxp;
+  MultipleOp *multOp;
+
+  if (!EditOK()) return;
+
+  chx = text->currentSynObj->containingChain;
+  insObj = (SynObject*)clipBoardObject->Clone();
+  insObj->MakeTable((address)&myDoc->IDTable,0,insObj,onConstrCopy,0,0);
+  insObj->MakeTable((address)&myDoc->IDTable,0,insObj,onCopy,0,0);
+//  insObj->MakeTable((address)&myDoc->IDTable,0,insObj->parentObject,onConstrCopy,0,0);
+//  insObj->MakeTable((address)&myDoc->IDTable,0,insObj->parentObject,onCopy,0,0);
+
+  if (text->currentSynObj->primaryToken == TDOD_T)
+    text->currentSynObj = text->currentSynObj->parentObject;
+
+  if (text->currentSynObj->IsPlaceHolder()
+  || (!text->currentSynObj->IsStatement()
+      && !text->currentSynObj->IsRepeatableClause(chxp))) {
+    insObj->replacedType = text->currentSynObj->type;
+    InsertOrReplace(insObj);
+  }
+  else if (chx) {
+    che = (CHE*)text->currentSynObj->whereInParent;
+    newChe = NewCHE(insObj);
+    if (insertBefore)
+      che = (CHE*)che->predecessor;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    PutInsChainHint(newChe,
+      chx,
+      che);
+  }
+  else {
+    multOp = new SemicolonOpV();
+    PutInsMultOpHint(multOp);
+    text->currentSynObj = multOp;
+    newChe = NewCHE(insObj);
+    if (insertBefore)
+      PutInsChainHint(newChe,&multOp->operands,(CHE*)0,SET(lastHint,-1));
+    else
+      PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,SET(lastHint,-1));
+  }
+}
+
+void CExecView::OnEditUndo () 
+{
+
+  // TODO: Add your command handler code here
+
+  if (!EditOK()) return;
+  //text.selectAt = text->currentSynObj;
+  GetDocument()->UndoMem.OnEditUndo();
+}
+
+void CExecView::OnEditRedo () 
+{
+
+  // TODO: Add your command handler code here
+
+  if (!EditOK()) return;
+  //text.selectAt = text->currentSynObj;
+  GetDocument()->UndoMem.OnEditRedo();
+}
+
+void CExecView::OnEq() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSynObj->IsBinaryOp())
+    PutChgOpHint(Equal_T);
+  else {
+    BinaryOp *binOp = new BinaryOpV(Equal_T);
+    InsertOrReplace(binOp);
+  }
+
+}
+
+void CExecView::OnDeclare() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  Declare *dcl = new DeclareV(true);
+  InsertOrReplace(dcl);
+}
+
+void CExecView::OnExists() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  Exists *ex = new ExistsV(text->currentSynObj->OutputContext());
+  InsertOrReplace(ex);
+}
+
+void CExecView::OnForeach() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  Foreach *foreach = new ForeachV(text->currentSynObj->OutputContext());
+  InsertOrReplace(foreach);
+}
+
+void CExecView::OnGe() 
+{
+  // TODO: Add your command handler code here
+
+  if (!EditOK()) return;
+  if (text->currentSynObj->IsBinaryOp())
+    PutChgOpHint(GreaterEqual_T);
+  else {
+    BinaryOp *binOp = new BinaryOpV(GreaterEqual_T);
+    InsertOrReplace(binOp);
+  }
+}
+
+void CExecView::OnGt() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSynObj->IsBinaryOp())
+    PutChgOpHint(GreaterThan_T);
+  else {
+    BinaryOp *binOp = new BinaryOpV(GreaterThan_T);
+    InsertOrReplace(binOp);
+  }
+}
+
+void CExecView::OnIf() 
+{
+  // TODO: Add your command handler code here
+
+  if (!EditOK()) return;
+  IfStatement *ifStm = new IfStatementV(true);
+  InsertOrReplace(ifStm);
+}
+
+void CExecView::OnIfExpr() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  IfExpression *ifExp = new IfExpressionV(true);
+  InsertOrReplace(ifExp);
+}
+
+void CExecView::OnIn() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InSetStatement *inSetStm = new InSetStatementV(true);
+  InsertOrReplace(inSetStm);
+}
+
+void CExecView::OnInsert() 
+{
+  // TODO: Add your command handler code here
+  SynObject *synObj = text->currentSynObj;
+
+  if (!EditOK()) return;
+
+  if (insertBefore)
+    InsertBefore();
+  else
+    InsertAfter();
+}
+
+void CExecView::OnInsertBefore() 
+{
+  // TODO: Add your command handler code here
+
+  insertBefore = !insertBefore;
+}
+
+void CExecView::InsertAfter() 
+{
+  // TODO: Add your command handler code here
+  SynObject *insObj;
+  Quantifier *qf;
+  CHAINX *chx;
+  CHE *che, *newChe;
+  QString str;
+  bool withSet=true, isInsert=false;
+  
+  if ((text->currentSelection->data.token == Tilde_T
+  || text->currentSelection->data.token == Dollar_T
+  || text->currentSelection->data.token == Equal_T)
+  && text->currentSynObj->primaryToken == TypeRef_T)
+    text->currentSelection = text->currentSynObj->primaryTokenNode;
+  switch (text->currentSelection->data.token) {
+  case elsif_T:
+  case then_T:
+    che = (CHE*)text->currentSynObj->whereInParent;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    if (text->currentSynObj->primaryToken == if_T) {
+      insObj = new IfThenV(true);
+      newChe = NewCHE(insObj);
+      PutInsChainHint(newChe,
+        chx,
+        che);
+    }
+    else {
+      insObj = new IfxThenV(true);
+      newChe = NewCHE(insObj);
+      PutInsChainHint(newChe,
+        chx,
+        che);
+    }
+    return;
+
+  case catch_T:
+    che = (CHE*)text->currentSynObj->whereInParent;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    insObj = new CatchClauseV(true);
+    newChe = NewCHE(insObj);
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  case case_T:
+    che = (CHE*)text->currentSynObj->whereInParent;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    insObj = new BranchV(true);
+    newChe = NewCHE(insObj);
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  case caseType_T:
+    che = (CHE*)text->currentSynObj->whereInParent;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    insObj = new TypeBranchV(true);
+    newChe = NewCHE(insObj);
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  case TDOD_T:
+    if (text->currentSynObj->primaryToken != ObjRef_T)
+      text->currentSynObj = text->currentSynObj->parentObject;
+  case TypePH_T:
+  case TypePHopt_T:
+  case TypeRef_T:
+  case SetPH_T:
+  case CrtblPH_T:
+  case Callee_T:
+  case CompObj_T:
+  case CrtblRef_T:
+    if (text->currentSynObj->primaryToken == quant_T) {
+      if (text->currentSynObj->parentObject->primaryToken == declare_T)
+        withSet = false;
+      goto quantCase;
+    }
+    if (text->currentSynObj->parentObject->primaryToken == quant_T) {
+      text->currentSynObj = text->currentSynObj->parentObject;
+      if (text->currentSynObj->parentObject->primaryToken == declare_T)
+        withSet = false;
+      goto quantCase;
+    }
+    else
+      goto deflt;
+  case from_T:
+  case in_T:
+quantCase:
+    insObj = new QuantifierV(withSet);
+    newChe = NewCHE(insObj);
+    che = (CHE*)text->currentSynObj->whereInParent;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  case VarPH_T:
+  case VarName_T:
+    if (!EditOK())
+      return;
+    che = (CHE*)text->currentSynObj->whereInParent;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    newChe = NewCHE(new SynObjectV(VarPH_T));
+    qf = (Quantifier*)text->currentSynObj;
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  default:
+deflt:
+    if (text->currentSynObj->parentObject
+    && text->currentSynObj->parentObject->IsFuncInvocation()
+    && !text->currentSynObj->containingChain)
+      text->currentSynObj = text->currentSynObj->parentObject;
+    if (text->currentSynObj->containingChain) {
+      insObj = new SynObjectV(text->currentSynObj->replacedType);
+      newChe = NewCHE(insObj);
+      che = (CHE*)text->currentSynObj->whereInParent;
+      chx = text->currentSynObj->containingChain;
+      text->currentSynObj = text->currentSynObj->parentObject;
+      PutInsChainHint(newChe,
+        chx,
+        che);
+    }
+    else // single <stm>
+      OnAnd();
+  }
+}
+
+
+void CExecView::InsertBefore() 
+{
+  // TODO: Add your command handler code here
+  SynObject *insObj;
+  Quantifier *qf;
+  CHAINX *chx;
+  CHE *che, *newChe;
+  QString str;
+  bool withSet=true, isInsert=false;
+
+  if ((text->currentSelection->data.token == Tilde_T
+  || text->currentSelection->data.token == Dollar_T
+  || text->currentSelection->data.token == Equal_T)
+  && text->currentSynObj->primaryToken == TypeRef_T)
+    text->currentSelection = text->currentSynObj->primaryTokenNode;
+  switch (text->currentSelection->data.token) {
+  case elsif_T:
+  case then_T:
+    chx = text->currentSynObj->containingChain;
+    che = (CHE*)text->currentSynObj->whereInParent;
+    che = (CHE*)che->predecessor;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    if (text->currentSynObj->primaryToken == if_T) {
+      insObj = new IfThenV(true);
+      newChe = NewCHE(insObj);
+      PutInsChainHint(newChe,
+        chx,
+        che);
+    }
+    else {
+      insObj = new IfxThenV(true);
+      newChe = NewCHE(insObj);
+      PutInsChainHint(newChe,
+        chx,
+        che);
+    }
+    return;
+
+  case catch_T:
+    che = (CHE*)text->currentSynObj->whereInParent;
+    che = (CHE*)che->predecessor;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    insObj = new CatchClauseV(true);
+    newChe = NewCHE(insObj);
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  case case_T:
+    che = (CHE*)text->currentSynObj->whereInParent;
+    che = (CHE*)che->predecessor;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    insObj = new BranchV(true);
+    newChe = NewCHE(insObj);
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  case caseType_T:
+    che = (CHE*)text->currentSynObj->whereInParent;
+    che = (CHE*)che->predecessor;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    insObj = new TypeBranchV(true);
+    newChe = NewCHE(insObj);
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  case TDOD_T:
+    if (text->currentSynObj->primaryToken != ObjRef_T)
+      text->currentSynObj = text->currentSynObj->parentObject;
+  case TypePH_T:
+  case TypePHopt_T:
+  case TypeRef_T:
+  case SetPH_T:
+  case CrtblPH_T:
+  case Callee_T:
+  case CompObj_T:
+  case CrtblRef_T:
+    if (text->currentSynObj->primaryToken == quant_T) {
+      if (text->currentSynObj->parentObject->primaryToken == declare_T)
+        withSet = false;
+      goto quantCase;
+    }
+    if (text->currentSynObj->parentObject->primaryToken == quant_T) {
+      text->currentSynObj = text->currentSynObj->parentObject;
+      if (text->currentSynObj->parentObject->primaryToken == declare_T)
+        withSet = false;
+      goto quantCase;
+    }
+    else
+      goto deflt;
+  case from_T:
+  case in_T:
+quantCase:
+    insObj = new QuantifierV(withSet);
+    newChe = NewCHE(insObj);
+    che = (CHE*)text->currentSynObj->whereInParent;
+    che = (CHE*)che->predecessor;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  case VarPH_T:
+  case VarName_T:
+    if (!EditOK())
+      return;
+    che = (CHE*)text->currentSynObj->whereInParent;
+    che = (CHE*)che->predecessor;
+    chx = text->currentSynObj->containingChain;
+    text->currentSynObj = text->currentSynObj->parentObject;
+    newChe = NewCHE(new SynObjectV(VarPH_T));
+    qf = (Quantifier*)text->currentSynObj;
+    PutInsChainHint(newChe,
+      chx,
+      che);
+    return;
+
+  default:
+deflt:
+    if (text->currentSynObj->parentObject
+    && text->currentSynObj->parentObject->IsFuncInvocation()
+    && !text->currentSynObj->containingChain)
+      text->currentSynObj = text->currentSynObj->parentObject;
+    if (text->currentSynObj->containingChain) {
+      insObj = new SynObjectV(text->currentSynObj->replacedType);
+      newChe = NewCHE(insObj);
+      che = (CHE*)text->currentSynObj->whereInParent;
+      che = (CHE*)che->predecessor;
+      chx = text->currentSynObj->containingChain;
+      text->currentSynObj = text->currentSynObj->parentObject;
+      PutInsChainHint(newChe,
+        chx,
+        che);
+    }
+    else // single <stm>
+      OnAnd();
+  }
+}
+
+void CExecView::OnInvert() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InvertOp *invertOp = new InvertOpV(true);
+  InsertOrReplace(invertOp);
+}
+
+void CExecView::OnEditSel() 
+{
+  // TODO: Add your message handler code here and/or call default
+  
+  if (text->currentSynObj->BoolAdmissibleOnly(text->ckd)
+  || text->currentSynObj->EnumAdmissibleOnly(text->ckd))
+    return;
+  doubleClick = true;
+  clicked = true;
+  Select();
+  clicked = false;
+  doubleClick = false;
+}
+
+void CExecView::OnLe() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSynObj->IsBinaryOp())
+    PutChgOpHint(LessEqual_T);
+  else {
+    BinaryOp *binOp = new BinaryOpV(LessEqual_T);
+    InsertOrReplace(binOp);
+  }
+}
+
+void CExecView::OnLshift() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSelection->data.token == Rshift_T)
+    PutChgOpHint(Lshift_T);
+  else
+    InsMultOp(Lshift_T,new LshiftOpV());
+}
+
+void CExecView::OnLt() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSynObj->IsBinaryOp())
+    PutChgOpHint(LessThan_T);
+  else {
+    BinaryOp *binOp = new BinaryOpV(LessThan_T);
+    InsertOrReplace(binOp);
+  }
+}
+
+void CExecView::OnMult() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSynObj->type == ObjPH_T
+      && text->currentSynObj->parentObject->IsFuncInvocation()
+      && text->currentSynObj->whereInParent
+      == (address)&((FuncExpression*)text->currentSynObj->parentObject)->handle.ptr) {
+    SynObject *ast = new SynObjectV(Mult_T);
+    ast->type = ObjPH_T;
+    PutInsHint(ast);
+  }
+  else
+    InsMultOp(Mult_T,new MultOpV());
+}
+
+void CExecView::OnNe()
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSynObj->IsBinaryOp())
+    PutChgOpHint(NotEqual_T);
+  else {
+    BinaryOp *binOp = new BinaryOpV(NotEqual_T);
+    InsertOrReplace(binOp);
+  }
+}
+
+void CExecView::OnShowComments() 
+{
+  // TODO: Add your command handler code here
+  if (!EditOK()) return;
+  text->showComments = !text->showComments;
+  if (text->showComments)
+    myDECL->TreeFlags.INCL(ShowExecComments);
+  else
+    myDECL->TreeFlags.EXCL(ShowExecComments);
+
+  RedrawExec(text->selectAt);
+}
+
+void CExecView::OnNot() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  LogicalNot *logNot = new LogicalNotV(true);
+  InsertOrReplace(logNot);
+}
+
+void CExecView::OnNull() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  NullConst *nConst = new NullConstV();
+  InsertOrReplace(nConst);
+}
+
+void CExecView::OnOr() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InsMultOp(or_T,new OrOpV());
+}
+
+void CExecView::OnPlus() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InsMultOp(Plus_T,new PlusOpV());
+}
+
+void CExecView::OnPlusMinus() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSelection->data.token == Plus_T
+  && text->currentSynObj->IsMultOp())
+    text->currentSynObj = ((CHETokenNode*)text->currentSelection->successor)->data.synObject;
+  PutPlusMinusHint();
+}
+
+void CExecView::OnRshift() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSelection->data.token == Lshift_T)
+    PutChgOpHint(Rshift_T);
+  else
+    InsMultOp(Rshift_T,new RshiftOpV());
+}
+
+void CExecView::OnShowOptionals() 
+{
+  SynObject *delObj=0, *insObj=0, *elsePart=0, *branch=0, *orgunit=0, *oid=0, *iid=0,
+            *statement=0, *updateStatement=0;
+  CHAINX *chx;
+  CHE *outParm;
+  unsigned nOpt=0;
+  bool isNewClause, isCompObjSpec=false, isFirst=true, hasOpt=false, singleParm;
+  AttachObject *attachObject;
+  Foreach *foreachStm;
+  Exists *existsStm;
+  Quantifier *quant;
+  FailStatement *failStm;
+  FuncStatement *funcStm;
+  CloneExpression *cloneExpr;
+  NewExpression *newExpr;
+  LavaDECL *decl;
+
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+
+  if  ((  (text->currentSelection->data.token == TypePH_T
+          || text->currentSelection->data.token == TypePHopt_T
+          || text->currentSelection->data.token == TypeRef_T
+          || text->currentSelection->data.token == SetPH_T
+          || text->currentSelection->data.token == ObjRef_T
+          )
+        && text->currentSynObj->parentObject->primaryToken == quant_T)
+       || text->currentSelection->data.token == FuncRef_T)
+    text->currentSynObj = text->currentSynObj->parentObject;
+
+  //forcePrimTokenSelect = true;
+  if (text->currentSynObj->primaryToken == attach_T
+  || text->currentSynObj->primaryToken == run_T
+  || text->currentSynObj->primaryToken == new_T) {
+    isNewClause = text->currentSynObj->primaryToken == new_T;
+    attachObject = (AttachObject*)text->currentSynObj;
+    if (((AttachObject*)text->currentSynObj)->objType.ptr && !IsPH(((AttachObject*)text->currentSynObj)->objType.ptr)) {
+      decl = myDoc->IDTable.GetDECL(((Reference*)((AttachObject*)text->currentSynObj)->objType.ptr)->refID,text->ckd.inINCL);
+      if (decl && decl->DeclType == CompObjSpec) {
+        isCompObjSpec = true;
+        hasOpt = true;
+      }
+    }
+    else if (text->currentSynObj->primaryToken == attach_T)
+      hasOpt = true;
+
+    if (isNewClause) {
+      newExpr = (NewExpression*)text->currentSynObj;
+      if (!isCompObjSpec && !newExpr->butStatement.ptr) nOpt++;
+    }
+//    if (hasOpt && !attachObject->orgunit.ptr) nOpt++;
+    if (hasOpt && !attachObject->url.ptr) nOpt++;
+    if (isNewClause)
+      if (!isCompObjSpec && !newExpr->butStatement.ptr) {
+        insObj = new SynObjectV(Stm_T);
+        text->currentSynObj = insObj;
+        insObj->parentObject = newExpr;
+        insObj->whereInParent = (address)&newExpr->butStatement.ptr;
+        if (isFirst) {
+          isFirst = false;
+          --nOpt;
+          if (nOpt)
+            PutInsHint(insObj,SET(firstHint,-1));
+          else
+            PutInsHint(insObj,SET(firstHint,lastHint,-1));
+        }
+        else {
+          --nOpt;
+          if (nOpt)
+            PutInsHint(insObj,SET());
+          else
+            PutInsHint(insObj,SET(lastHint,-1));
+        }
+      }
+
+/*    if (hasOpt && !attachObject->orgunit.ptr) {
+      insObj = new SynObjectV(Exp_T);
+      text->currentSynObj = insObj;
+      insObj->parentObject = attachObject;
+      insObj->whereInParent = (address)&attachObject->orgunit.ptr;
+        if (isFirst) {
+          isFirst = false;
+          --nOpt;
+          if (nOpt)
+            PutInsHint(insObj,SET(firstHint,-1));
+          else
+            PutInsHint(insObj,SET(firstHint,lastHint,-1));
+        }
+        else {
+          --nOpt;
+          if (nOpt)
+            PutInsHint(insObj,SET());
+          else
+            PutInsHint(insObj,SET(lastHint,-1));
+        }
+    }*/
+
+    if (hasOpt && !attachObject->url.ptr) {
+      insObj = new SynObjectV(Exp_T);
+      text->currentSynObj = insObj;
+      insObj->parentObject = attachObject;
+      insObj->whereInParent = (address)&attachObject->url.ptr;
+        if (isFirst) {
+          isFirst = false;
+          --nOpt;
+          if (nOpt)
+            PutInsHint(insObj,SET(firstHint,-1));
+          else
+            PutInsHint(insObj,SET(firstHint,lastHint,-1));
+        }
+        else {
+          --nOpt;
+          if (nOpt)
+            PutInsHint(insObj,SET());
+          else
+            PutInsHint(insObj,SET(lastHint,-1));
+        }
+    }
+  }
+  else if (text->currentSynObj->primaryToken == clone_T) {
+    cloneExpr = (CloneExpression*)text->currentSynObj;
+    if (!cloneExpr->butStatement.ptr) {
+      insObj = new SynObjectV(Stm_T);
+      text->currentSynObj = insObj;
+      insObj->parentObject = cloneExpr;
+      insObj->whereInParent = (address)&cloneExpr->butStatement.ptr;
+      PutInsHint(insObj,SET(firstHint,lastHint,-1));
+    }
+  }
+  else if (text->currentSynObj->primaryToken == foreach_T) {
+    foreachStm = (Foreach*)text->currentSynObj;
+    if (!foreachStm->statement.ptr) nOpt++;
+    if (!foreachStm->updateStatement.ptr) nOpt++;
+    if (!foreachStm->statement.ptr) {
+      insObj = new SynObjectV(Stm_T);
+      text->currentSynObj = insObj;
+      insObj->parentObject = foreachStm;
+      insObj->whereInParent = (address)&foreachStm->statement.ptr;
+      if (nOpt > 1)
+        PutInsHint(insObj,SET(firstHint,-1));
+      else
+        PutInsHint(insObj,SET(firstHint,lastHint,-1));
+    }
+    if (!foreachStm->updateStatement.ptr) {
+      insObj = new SynObjectV(Stm_T);
+      text->currentSynObj = insObj;
+      insObj->parentObject = foreachStm;
+      insObj->whereInParent = (address)&foreachStm->updateStatement.ptr;
+      if (nOpt > 1)
+        PutInsHint(insObj,SET(lastHint,-1));
+      else
+        PutInsHint(insObj,SET(firstHint,lastHint,-1));
+    }
+  }
+  else if (text->currentSynObj->primaryToken == exists_T) {
+    existsStm = (Exists*)text->currentSynObj;
+    if (!existsStm->updateStatement.ptr) {
+      insObj = new SynObjectV(Stm_T);
+      text->currentSynObj = insObj;
+      insObj->parentObject = existsStm;
+      insObj->whereInParent = (address)&existsStm->updateStatement.ptr;
+      PutInsHint(insObj,SET(firstHint,lastHint,-1));
+    }
+  }
+  else if (text->currentSynObj->primaryToken == quant_T
+  && ((Quantifier*)text->currentSynObj)->set.ptr) {
+    quant = (Quantifier*)text->currentSynObj;
+    if (!quant->elemType.ptr) {
+      insObj = new SynObjectV(TypePH_T);
+      insObj->parentObject = quant;
+      insObj->whereInParent = (address)&quant->elemType.ptr;
+      text->currentSynObj = insObj;
+      PutInsHint(insObj,SET(firstHint,lastHint,-1));
+    }
+  }
+  else if (text->currentSynObj->primaryToken == fail_T) {
+    failStm = (FailStatement*)text->currentSynObj;
+    if (!failStm->exception.ptr) {
+      insObj = new SynObjectV(Exp_T);
+      insObj->parentObject = failStm;
+      insObj->whereInParent = (address)&failStm->exception.ptr;
+      text->currentSynObj = insObj;
+      PutInsHint(insObj,SET(firstHint,lastHint,-1));
+    }
+  }
+  else if (text->currentSynObj->primaryToken == ifx_T) {
+    text->currentSynObj->InsertBranch(branch,chx);
+    if (branch)
+      PutInsChainHint(NewCHE(branch),chx,(CHE*)chx->first,SET(firstHint,lastHint,-1));
+  }
+  else if (text->currentSynObj->primaryToken == assignFS_T) {
+    funcStm = (FuncStatement*)text->currentSynObj;
+    if (funcStm->outputs.first == funcStm->outputs.last)
+      singleParm = true;
+    else 
+      singleParm = false;
+    for (outParm=(CHE*)funcStm->outputs.first;
+         outParm;
+         outParm = (CHE*)outParm->successor) {
+      text->currentSynObj = (SynObject*)((Parameter*)outParm->data)->parameter.ptr;
+      if (singleParm)
+        PutDelFlagHint(SET(ignoreSynObj,-1),SET(firstHint,lastHint,-1));
+      else if (outParm == (CHE*)funcStm->outputs.first)
+        PutDelFlagHint(SET(ignoreSynObj,-1),SET(firstHint,-1));
+      else if (outParm == (CHE*)funcStm->outputs.last)
+        PutDelFlagHint(SET(ignoreSynObj,-1),SET(lastHint,-1));
+      else
+        PutDelFlagHint(SET(ignoreSynObj,-1),SET());
+    }
+  }
+  else { // if, [type]switch
+    text->currentSynObj->Insert2Optionals(elsePart,branch,chx);
+    if (elsePart || branch) {
+      if (elsePart && branch) {
+        PutInsChainHint(NewCHE(branch),chx,(CHE*)chx->first,SET(firstHint,-1));
+        text->currentSynObj = elsePart;
+        PutInsHint(elsePart,SET(lastHint,-1));
+      }
+      else if (branch) {
+        if (text->currentSynObj->IsIfStmExpr())
+          PutInsChainHint(NewCHE(branch),chx,(CHE*)chx->first,SET(firstHint,lastHint,-1));
+        else
+          PutInsChainHint(NewCHE(branch),chx,0,SET(firstHint,lastHint,-1));
+      }
+      else {
+        text->currentSynObj = elsePart;
+        PutInsHint(elsePart,SET(firstHint,lastHint,-1));
+      }
+    }
+  }
+}
+
+bool CExecView::EnableGotoDecl() 
+{
+  // TODO: Add your command update UI handler code here
+  DWORD dw;
+  TIDType idtype=noID;
+  TDOD *tdod;
+  TID tid, setTid, tidOperatorFunc;
+  CHE *che;
+  LavaDECL *decl, *setDecl;
+  SynObject *typeObj, *synObj;
+  Quantifier *quant;
+  CloneExpression *makeClone;
+  Category cat;
+  SynFlags ctxFlags;
+  
+  if (text->currentSelection->data.token == Comment_T)
+    return false;
+
+  switch (text->currentSynObj->primaryToken) {
+  case FuncRef_T:
+  case TypeRef_T:
+  case CrtblRef_T:
+    dw = myDoc->IDTable.GetVar(((Reference*)text->currentSynObj)->refID,idtype,text->ckd.inINCL);
+    if (idtype != noID) return true;
+    break;
+  case enumConst_T:
+    dw = myDoc->IDTable.GetVar(((EnumConst*)text->currentSynObj)->refID,idtype,text->ckd.inINCL);
+    if (idtype != noID) return true;
+    break;
+  case TDOD_T:
+    tdod = (TDOD*)text->currentSynObj;
+    dw = myDoc->IDTable.GetVar(tdod->ID,idtype,text->ckd.inINCL);
+    synObj = (SynObject*)dw;
+    if (idtype == noID) return false;
+    if (!tdod->errorChain.first) return true;
+    for (che = (CHE*)tdod->errorChain.first; che; che = (CHE*)che->successor)
+      if (((CLavaError*)che->data)->IDS == &ERR_Broken_ref)
+        return false;
+    return true;
+    break;
+  case VarName_T:
+    typeObj = ((VarName*)text->currentSynObj)->TypeRef();
+    if (typeObj)
+      if (typeObj->IsPlaceHolder())
+        return false;
+      else
+        return true;
+    else if (text->currentSynObj->parentObject->primaryToken == quant_T) { // typeless quant. set var
+      quant = (Quantifier*)text->currentSynObj->parentObject;
+      ((SynObject*)quant->set.ptr)->ExprGetFVType(text->ckd,setDecl,cat,ctxFlags);
+      setDecl = text->ckd.document->GetType(setDecl);
+      if (!setDecl) return false;
+      if (((SynObject*)quant->set.ptr)->primaryToken == intIntv_T
+      || ((SynObject*)quant->set.ptr)->primaryToken == TypeRef_T) {
+        tid = OWNID(setDecl);
+      }
+      else
+        text->ckd.document->IDTable.GetParamID(setDecl,tid,isSet);
+      if (tid.nID > 0) return true;
+    }
+    else {  // clone temp variable
+      makeClone = (CloneExpression*)text->currentSynObj->parentObject;
+      ((CloneExpression*)makeClone->fromObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      decl = text->ckd.document->GetType(decl);
+      tid = OWNID(decl);
+      if (tid.nID > 0) return true;
+    }
+    break;
+  default:
+    if (text->currentSynObj->primaryToken == arrayAtIndex_T) {
+      ((SynObject*)((ArrayAtIndex*)text->currentSynObj)->arrayObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      decl = text->ckd.document->GetType(decl);
+    }
+    else if (text->currentSynObj->IsMultOp() && text->currentSynObj->ExpressionSelected(text->currentSelection)) {
+      ((SynObject*)((CHE*)((MultipleOp*)text->currentSynObj)->operands.first)->data)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      decl = text->ckd.document->GetType(decl);
+    }
+    else if (text->currentSynObj->IsBinaryOp()) {
+      ((SynObject*)((BinaryOp*)text->currentSynObj)->operand1.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      decl = text->ckd.document->GetType(decl);
+    }
+    else if (text->currentSynObj->IsUnaryOp()) {
+      ((SynObject*)((UnaryOp*)text->currentSynObj)->operand.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      decl = text->ckd.document->GetType(decl);
+    }
+    else
+      return false;
+    myDoc->GetOperatorID(decl,(TOperator)(text->currentSynObj->primaryToken-not_T),tidOperatorFunc);
+    if (tidOperatorFunc.nID > 0) return true;
+  }
+
+  return false;
+}
+
+void CExecView::OnGotodef() 
+{
+  // TODO: Add your command handler code here
+  SynObject *synObj, *parent;
+  TIDType idtype;
+  TDOD *tdod;
+  TID tid, setTid, tidOperatorFunc;
+  LavaDECL *decl, *setDecl;
+  SynObject *typeObj;
+  CloneExpression *makeClone;
+  Quantifier *quant;
+  TID itfTid;
+  Category cat;
+  SynFlags ctxFlags;
+  
+  if (!EditOK()) return;
+
+  Base->Browser->LastBrowseContext = new CBrowseContext(this,text->currentSynObj);
+  switch (text->currentSelection->data.token) {
+    case FuncRef_T:
+    case TypeRef_T:
+    case CrtblRef_T:
+      Base->Browser->BrowseDECL(GetDocument(),((Reference*)text->currentSynObj)->refID);
+      break;
+    case enumConst_T:
+      Base->Browser->BrowseDECL(GetDocument(),((EnumConst*)text->currentSynObj)->refID, &((EnumConst*)text->currentSynObj)->Id);
+      break;
+    case VarName_T:
+      typeObj = ((VarName*)text->currentSynObj)->TypeRef();
+      if (typeObj) {
+        Select(typeObj);
+      }
+      else if (text->currentSynObj->parentObject->primaryToken == quant_T) { // typeless quant. set var
+        quant = (Quantifier*)text->currentSynObj->parentObject;
+        quant = (Quantifier*)text->currentSynObj->parentObject;
+        ((SynObject*)quant->set.ptr)->ExprGetFVType(text->ckd,setDecl,cat,ctxFlags);
+        setDecl = text->ckd.document->GetType(setDecl);
+        if (!setDecl) return;
+        if (((SynObject*)quant->set.ptr)->primaryToken == intIntv_T
+        || ((SynObject*)quant->set.ptr)->primaryToken == TypeRef_T)
+          tid = OWNID(setDecl);
+        else
+          text->ckd.document->IDTable.GetParamID(setDecl,tid,isSet);
+        Base->Browser->BrowseDECL(GetDocument(),tid);
+      }
+      else {  // clone temp variable
+        makeClone = (CloneExpression*)text->currentSynObj->parentObject;
+        ((CloneExpression*)makeClone->fromObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        decl = text->ckd.document->GetType(decl);
+        tid = OWNID(decl);
+        Base->Browser->BrowseDECL(GetDocument(),tid);
+      }
+      break;
+    case TDOD_T:
+      tdod = (TDOD*)text->currentSynObj;
+      synObj = (SynObject*)myDoc->IDTable.GetVar(tdod->ID,idtype,text->ckd.inINCL);
+      if (idtype == globalID)
+        Base->Browser->BrowseDECL(GetDocument(),tdod->ID);
+      else if (((ObjReference*)tdod->parentObject)->OutOfScope(text->ckd)) {
+        if (synObj->parentObject)
+          for (parent = synObj->parentObject;
+               parent->parentObject;
+               parent = parent->parentObject);
+        else
+          parent = synObj;
+        LavaDECL *execDecl = ((SelfVar*)parent)->execDECL;
+        myDoc->OpenCView(execDecl);
+        CExecView *execView = (CExecView*)((SelfVar*)parent)->myView;
+        if (tdod->parentObject->flags.Contains(isSelfVar))
+          execView->Select((SynObject*)execView->selfVar->execName.ptr);
+        else
+          execView->Select(synObj);
+      }
+      else if (tdod->parentObject->flags.Contains(isSelfVar))
+        Select((SynObject*)((SelfVar*)synObj)->execName.ptr);
+      else
+        Select(synObj);
+      break;
+    default:
+      if (text->currentSynObj->primaryToken == arrayAtIndex_T) {
+        ((SynObject*)((ArrayAtIndex*)text->currentSynObj)->arrayObj.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        decl = text->ckd.document->GetType(decl);
+      }
+      else if (text->currentSynObj->IsMultOp()) {
+        ((SynObject*)((CHE*)((MultipleOp*)text->currentSynObj)->operands.first)->data)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        decl = text->ckd.document->GetType(decl);
+      }
+      else if (text->currentSynObj->IsBinaryOp()) {
+        ((SynObject*)((BinaryOp*)text->currentSynObj)->operand1.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        decl = text->ckd.document->GetType(decl);
+      }
+      else if (text->currentSynObj->IsUnaryOp()) {
+        ((SynObject*)((UnaryOp*)text->currentSynObj)->operand.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+        decl = text->ckd.document->GetType(decl);
+      }
+      myDoc->GetOperatorID(decl,(TOperator)(text->currentSynObj->primaryToken-not_T),tidOperatorFunc);
+      Base->Browser->BrowseDECL(GetDocument(),tidOperatorFunc);
+  }
+}
+
+void CExecView::OnGotoImpl() 
+{
+  if (!EditOK()) return;
+  LavaDECL* decl;
+  Base->Browser->LastBrowseContext = new CBrowseContext(this,text->currentSynObj);
+  switch (text->currentSelection->data.token) {
+  case FuncRef_T:
+    decl = GetDocument()->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID);
+    if (decl && (decl->TypeFlags.Contains(isAbstract) || decl->TypeFlags.Contains(isNative))) {
+      QMessageBox::information(this, qApp->name(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      Base->Browser->DestroyLastBrsContext();
+    }
+    else
+      if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
+  //      AfxMessageBox(&ERR_NoFuncImpl, MB_OK+MB_ICONINFORMATION);
+        QMessageBox::critical(this,qApp->name(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        Base->Browser->DestroyLastBrsContext();
+      }
+    break;
+  case TypeRef_T:
+    if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
+//      AfxMessageBox(&ERR_NoClassImpl, MB_OK+MB_ICONINFORMATION);
+        QMessageBox::critical(this,qApp->name(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      Base->Browser->DestroyLastBrsContext();
+    }
+    break;
+  case CrtblRef_T:
+    if ((text->currentSynObj->parentObject->primaryToken == run_T)
+    || text->currentSynObj->parentObject->primaryToken == new_T)
+    if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
+//        AfxMessageBox(&ERR_NoClassImpl, MB_OK+MB_ICONINFORMATION);
+        QMessageBox::critical(this,qApp->name(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        Base->Browser->DestroyLastBrsContext();
+      }
+    break;
+  default: ;
+  }
+}
+
+void CExecView::OnFindReferences() 
+{
+  CSearchData sData;
+
+  if (!EditOK()) return;
+
+  sData.findRefs.FWhere = findInThisView;
+//  sData.findRefs.enumID = sData.enumID;
+  Base->Browser->LastBrowseContext = new CBrowseContext(this,text->currentSynObj);
+  switch (text->currentSelection->data.token) {
+  case TypeRef_T:
+  case CrtblRef_T:
+  case FuncRef_T:
+//    Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID,text->ckd.inINCL),sData.enumID,sData.findRefs);
+    Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID,text->ckd.inINCL),sData.findRefs);
+    if (sData.findRefs.FWhere == findInThisView) {
+      sData.findRefs.refTid = ((Reference*)text->currentSynObj)->refID;
+      sData.execDECL = myDECL->ParentDECL;
+      sData.doc = myDoc;
+      text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
+    }
+    break;
+  case enumConst_T:
+    sData.findRefs.enumID = ((EnumConst*)text->currentSynObj)->Id;
+//    Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((EnumConst*)text->currentSynObj)->refID,text->ckd.inINCL),sData.enumID,sData.findRefs);
+    Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((EnumConst*)text->currentSynObj)->refID,text->ckd.inINCL),sData.findRefs);
+    if (sData.findRefs.FWhere == findInThisView) {
+      sData.findRefs.refTid = ((EnumConst*)text->currentSynObj)->refID;
+      sData.execDECL = myDECL->ParentDECL;
+      sData.doc = myDoc;
+      text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
+    }
+    break;
+  case TDOD_T:
+    if (((ObjReference*)text->currentSynObj->parentObject)->refIDs.first == (CHE*)((TDOD*)text->currentSynObj)->whereInParent) {
+      //Base->Browser->OnFindRefs(myDoc,0,sData.enumID,sData.findRefs);
+      Base->Browser->OnFindRefs(myDoc,0,sData.findRefs);
+      sData.findRefs.refTid = ((TDOD*)text->currentSynObj)->ID;
+      sData.execDECL = myDECL->ParentDECL;
+      sData.doc = myDoc;
+      text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
+    }
+    else
+      //Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((TDOD*)text->currentSynObj)->ID,text->ckd.inINCL),sData.enumID,sData.findRefs);
+      Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((TDOD*)text->currentSynObj)->ID,text->ckd.inINCL),sData.findRefs);
+    break;
+  case VarName_T:
+    //Base->Browser->OnFindRefs(myDoc,0,sData.enumID,sData.findRefs);
+    Base->Browser->OnFindRefs(myDoc,0,sData.findRefs);
+    sData.findRefs.refTid = ((VarName*)text->currentSynObj)->varID;
+    sData.execDECL = myDECL->ParentDECL;
+    sData.doc = myDoc;
+    text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
+    break;
+  default: ;
+  }
+}
+
+
+void CExecView::OnSwitch() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  SwitchStatement *swStm = new SwitchStatementV(true);
+  InsertOrReplace(swStm);
+}
+
+void CExecView::OnTrue() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  BoolConst *trueConst = new BoolConstV(true);
+  InsertOrReplace(trueConst);
+}
+
+void CExecView::OnFalse() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  BoolConst *falseConst = new BoolConstV(false);
+  InsertOrReplace(falseConst);
+}
+
+void CExecView::OnXor() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InsMultOp(xor_T,new XorOpV());
+}
+bool CExecView::EditOK() 
+{
+  // TODO: Add your message handler code here and/or call default
+  QString str;
+  SynObject *synObj;
+  TToken token=editToken;
+  VarConstCheck rc;
+
+  if (editCtlVisible) {
+    rc = editCtl->InputIsCorrect(token,m_ComboBar);
+    if (rc == noChange) {
+      editCtl->hide();
+      editCtlVisible = false;
+      sv->setFocus();
+      return true;
+    }
+    else if (rc == correct) {
+      editCtl->hide();
+      editCtlVisible = false;
+      sv->setFocus();
+      if (clicked || !editCtl->edited())
+        return true;
+      editCtl->setEdited(false);
+      str = editCtl->text();
+      if (editToken == VarName_T) {
+        synObj = new VarNameV(str);
+        if (text->currentSynObj->primaryToken == VarName_T)
+          ((VarName*)synObj)->varID = ((VarName*)text->currentSynObj)->varID;
+        if (text->currentSynObj->parentObject
+        && text->currentSynObj->parentObject->parentObject
+        && text->currentSynObj->parentObject->parentObject->IsDeclare())
+          synObj->flags.INCL(isDeclareVar);
+        PutInsHint(synObj);
+      }
+      else {
+        synObj = new ConstantV(str);
+
+
+//        B_Bool,Char,Integer,Float,Double,VLString,Any,ComponentObj,
+//        Enumeration,B_Object,B_RefToObject,B_SetOfObject
+
+        switch (token) {
+        case IntConst_T:
+          ((Constant*)synObj)->constType = Integer;
+          break;
+        case HexConst_T:
+          ((Constant*)synObj)->constType = Integer;
+          synObj->flags.INCL(isHexConst);
+          break;
+        case OctalConst_T:
+          ((Constant*)synObj)->constType = Integer;
+          synObj->flags.INCL(isOctConst);
+          break;
+        case DoubleConst_T:
+          ((Constant*)synObj)->constType = Double;
+          break;
+        case FloatConst_T:
+          ((Constant*)synObj)->constType = Float;
+          break;
+        case CharConst_T:
+          ((Constant*)synObj)->constType = Char;
+          break;
+        case StringConst_T:
+          ((Constant*)synObj)->constType = VLString;
+          break;
+        }
+        PutInsHint(synObj);
+      }
+      return true;
+    }
+    else
+      return false;
+  }
+  else
+    return true;
+}
+
+
+SynObject *CExecView::FirstChild ()
+{
+  SynObject *currentSynObj=text->currentSynObj;
+  ObjReference *objRef;
+  CHETokenNode *nextTokenNode=currentSynObj->startToken;
+
+  if (currentSynObj->primaryToken  == parameter_T)
+    currentSynObj = (SynObject*)((Parameter*)currentSynObj)->parameter.ptr;
+  else if (currentSynObj->primaryToken == ObjRef_T
+  && ((ObjReference*)currentSynObj)->refIDs.first 
+        == ((ObjReference*)currentSynObj)->refIDs.last)
+    return currentSynObj;
+
+  for ( ; nextTokenNode; nextTokenNode = (CHETokenNode*)nextTokenNode->successor) {
+    if (nextTokenNode->data.synObject != currentSynObj) {
+      if (nextTokenNode->data.synObject->parentObject == currentSynObj
+      || nextTokenNode->data.synObject->parentObject->primaryToken == parameter_T)
+        return nextTokenNode->data.synObject;
+      if (nextTokenNode->data.synObject->parentObject
+      && (nextTokenNode->data.synObject->parentObject->primaryToken == quant_T
+          || nextTokenNode->data.synObject->parentObject->primaryToken == FormParm_T
+          || nextTokenNode->data.synObject->primaryToken == TDOD_T)
+      && (nextTokenNode->data.synObject->parentObject->parentObject == currentSynObj
+          || (nextTokenNode->data.synObject->parentObject->parentObject
+              && nextTokenNode->data.synObject->parentObject->primaryToken == ObjRef_T
+              && nextTokenNode->data.synObject->parentObject->parentObject->primaryToken == parameter_T
+              && nextTokenNode->data.synObject->parentObject->parentObject->parentObject == currentSynObj))) {
+        if (nextTokenNode->data.synObject->primaryToken == TDOD_T) {
+          objRef = (ObjReference*)nextTokenNode->data.synObject->parentObject;
+          if (((ObjReference*)objRef)->refIDs.first 
+              == ((ObjReference*)objRef)->refIDs.last)
+            return nextTokenNode->data.synObject;
+        }
+        return nextTokenNode->data.synObject->parentObject;
+      }
+    }
+  }
+  return text->currentSynObj;
+}
+
+SynObject *CExecView::LeftSibling ()
+{
+  CHETokenNode *nextTokenNode=(CHETokenNode*)text->currentSynObj->startToken->predecessor;
+  SynObject *currentSynObj=text->currentSynObj, *parent=currentSynObj->parentObject, *select;
+
+  if (!parent)
+    return text->currentSynObj;
+  if (parent->primaryToken == ObjRef_T
+  && ((ObjReference*)parent)->refIDs.first == ((ObjReference*)parent)->refIDs.last) {
+    currentSynObj = parent;
+    parent = currentSynObj->parentObject;
+  }
+
+  if (parent
+  && parent->primaryToken == parameter_T) {
+    currentSynObj = parent;
+    parent = currentSynObj->parentObject;
+  }
+
+  for ( ; nextTokenNode; nextTokenNode = (CHETokenNode*)nextTokenNode->predecessor) {
+    if (nextTokenNode->data.token == Comma_T
+    && nextTokenNode->data.synObject->primaryToken == FormParms_T)
+      nextTokenNode = (CHETokenNode*)nextTokenNode->predecessor;
+    else if (nextTokenNode->data.token == Colon_T
+    && nextTokenNode->data.synObject->primaryToken == FormParms_T
+    && ((CHETokenNode*)nextTokenNode->predecessor)->data.token == outputs_T)
+      nextTokenNode = (CHETokenNode*)nextTokenNode->predecessor->predecessor;
+
+    if (nextTokenNode->data.synObject != currentSynObj
+    && nextTokenNode->data.synObject->parentObject == parent)
+      return nextTokenNode->data.synObject;
+    select = AdjacentSynObj(currentSynObj,nextTokenNode);
+    if (select)
+      return select;
+  }
+  return text->currentSynObj;
+}
+
+SynObject *CExecView::RightSibling ()
+{
+  CHETokenNode *nextTokenNode=(CHETokenNode*)text->currentSynObj->endToken->successor;
+  SynObject *currentSynObj=text->currentSynObj, *parent=currentSynObj->parentObject, *select;
+
+  if (!parent)
+    return text->currentSynObj;
+  if (parent->primaryToken == ObjRef_T
+  && ((ObjReference*)parent)->refIDs.first == ((ObjReference*)parent)->refIDs.last) {
+    currentSynObj = parent;
+    parent = currentSynObj->parentObject;
+  }
+
+  if (parent
+  && parent->primaryToken == parameter_T) {
+    currentSynObj = parent;
+    parent = currentSynObj->parentObject;
+  }
+
+  for ( ; nextTokenNode; nextTokenNode = (CHETokenNode*)nextTokenNode->successor) {
+    if (nextTokenNode->data.token == Comma_T
+    && nextTokenNode->data.synObject->primaryToken == FormParms_T)
+      nextTokenNode = (CHETokenNode*)nextTokenNode->successor;
+    else if (nextTokenNode->data.token == inputs_T
+    || nextTokenNode->data.token == outputs_T)
+      nextTokenNode = (CHETokenNode*)nextTokenNode->successor->successor;
+
+    if (nextTokenNode->data.synObject != currentSynObj
+    && nextTokenNode->data.synObject->parentObject == parent)
+      return nextTokenNode->data.synObject;
+    select = AdjacentSynObj(currentSynObj,nextTokenNode);
+    if (select)
+      return select;
+  }
+  return text->currentSynObj;
+}
+
+SynObject *CExecView::AdjacentSynObj(SynObject *currentSynObj, CHETokenNode *nextTokenNode)
+{
+  // basically tests whether nextTokenNode->data.synObject differs from currentSynObj
+  // but has the same parentObject as the latter, with certain exceptions
+
+  if (nextTokenNode->data.synObject->parentObject
+  && nextTokenNode->data.synObject->parentObject != currentSynObj
+  && (nextTokenNode->data.synObject->parentObject->primaryToken == quant_T
+      || nextTokenNode->data.synObject->primaryToken == TDOD_T)
+  && nextTokenNode->data.synObject->parentObject->parentObject == currentSynObj->parentObject)
+    return nextTokenNode->data.synObject->parentObject;
+  else if (nextTokenNode->data.synObject->parentObject
+  && nextTokenNode->data.synObject->parentObject->parentObject
+  && nextTokenNode->data.synObject->parentObject->parentObject != currentSynObj
+  && nextTokenNode->data.synObject->parentObject->parentObject->primaryToken == quant_T
+  && nextTokenNode->data.synObject->parentObject->parentObject->parentObject == currentSynObj->parentObject)
+    return nextTokenNode->data.synObject->parentObject->parentObject;
+  else if (nextTokenNode->data.synObject->parentObject
+  && nextTokenNode->data.synObject->parentObject != currentSynObj
+  && nextTokenNode->data.synObject->parentObject->primaryToken == parameter_T
+  && nextTokenNode->data.synObject->parentObject->parentObject == currentSynObj->parentObject)
+    return nextTokenNode->data.synObject->parentObject;
+  else if (nextTokenNode->data.token == TDOD_T
+  && nextTokenNode->data.synObject->parentObject->parentObject->primaryToken == parameter_T
+  && nextTokenNode->data.synObject->parentObject->parentObject->parentObject == currentSynObj->parentObject)
+    return nextTokenNode->data.synObject;
+  else if (currentSynObj->primaryToken == FormParm_T) {
+    if (nextTokenNode->data.token == TDOD_T
+    && nextTokenNode->data.synObject->parentObject->parentObject->primaryToken == FormParm_T)
+      return nextTokenNode->data.synObject->parentObject->parentObject;
+    else if (nextTokenNode->data.token == TypeRef_T
+    && nextTokenNode->data.synObject->parentObject->primaryToken == FormParm_T)
+      return nextTokenNode->data.synObject->parentObject;
+  }
+  else if (currentSynObj->primaryToken == FuncRef_T
+  && currentSynObj->parentObject->type == implementation_T
+  && nextTokenNode->data.synObject->parentObject
+  && nextTokenNode->data.synObject->parentObject->primaryToken == FormParm_T)
+    return nextTokenNode->data.synObject->parentObject->parentObject;
+  return 0;
+}
+
+void CExecView::OnToggleArrows() 
+{
+  // TODO: Add your command handler code here
+
+  if (!EditOK()) return;
+  if (!EditOK()) return;
+  text->leftArrows = !text->leftArrows;
+  if (text->leftArrows)
+    myDECL->TreeFlags.INCL(leftArrows);
+  else
+    myDECL->TreeFlags.EXCL(leftArrows);
+
+  RedrawExec(text->selectAt);
+}
+
+void CExecView::OnNewLine()
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  if (text->currentSynObj->flags.Contains(newLine))
+    PutDelFlagHint(SET(newLine,-1));
+  else
+    PutInsFlagHint(SET(newLine,-1));
+}
+
+void CExecView::OnModulus() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  InsMultOp(Percent_T,new ModulusOpV());
+}
+
+void CExecView::OnIgnore() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+
+  if (((  text->currentSynObj->primaryToken == TypePH_T
+       || text->currentSynObj->primaryToken == TypeRef_T
+       || text->currentSynObj->primaryToken == SetPH_T
+       || text->currentSynObj->primaryToken == ObjRef_T)
+      && text->currentSynObj->parentObject->primaryToken == quant_T)
+    || (text->currentSynObj->parentObject
+        && text->currentSynObj->parentObject->IsFuncInvocation()))
+    text->currentSynObj = text->currentSynObj->parentObject;
+
+  if (text->currentSynObj->flags.Contains(ignoreSynObj))
+    PutDelFlagHint(SET(ignoreSynObj,-1));
+  else
+    PutInsFlagHint(SET(ignoreSynObj,-1));
+}
+
+
+void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TID *vtypeID, bool fromNew)
+{
+  Reference *ref;
+  ObjReference *objRef;
+  FuncStatement *funcStm, *oldFuncStm;
+  FuncExpression *funcExpr, *oldFuncExpr;
+  Expression *newHdl;
+  Run *runStm, *oldRunStm;
+  NewExpression *newExp, *oldCreateExp;
+  AttachObject *oldAttachExp;
+  VarName *varNamePtr;
+  CHE *chpParam, *chpFormParm, *newChe;
+  TDODC handle;
+  TDODV *tdod;
+  LavaDECL *decl, *decl2;
+  TID tid;
+  ParameterV *param;
+  bool first = true, sameRunType;
+  QString str = "";
+  char buffer[10];
+
+  decl = myDoc->IDTable.GetDECL(refID);
+  switch (text->currentSynObj->primaryToken) {
+  case FuncRef_T:
+  case FuncPH_T:
+    if (text->currentSynObj->parentObject->parentObject
+    && text->currentSynObj->parentObject->parentObject->primaryToken == new_T
+    && text->currentSynObj->parentObject->whereInParent
+       == (address)&((NewExpression*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
+      text->currentSynObj = (SynObject*)((NewExpression*)text->currentSynObj->parentObject->parentObject)->objType.ptr;
+      goto crtbl;
+    }
+    else if (text->currentSynObj->parentObject->parentObject
+    && text->currentSynObj->parentObject->parentObject->primaryToken == run_T
+    && text->currentSynObj->parentObject->whereInParent
+       == (address)&((Run*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
+      text->currentSynObj = (SynObject*)((Run*)text->currentSynObj->parentObject->parentObject)->objType.ptr;
+      goto crtbl;
+    }
+    text->currentSynObj = text->currentSynObj->parentObject;
+    if (text->currentSynObj->primaryToken == assignFX_T) {
+      oldFuncExpr = (FuncExpression*)text->currentSynObj;
+      funcExpr = new FuncExpressionV(new ReferenceV(FuncPH_T,refID,refName));
+      if (isStaticCall) {
+        funcExpr->flags.INCL(staticCall);
+        if (vtypeID)
+          funcExpr->vtypeID = *vtypeID;
+      }
+      if (((FuncExpression*)text->currentSynObj)->handle.ptr) {
+        newHdl = (Expression*)((FuncExpression*)text->currentSynObj)->handle.ptr->Clone();
+        funcExpr->handle.ptr = newHdl;
+        newHdl->MakeTable((address)&myDoc->IDTable,0,newHdl->parentObject,onConstrCopy,0,0);
+        newHdl->MakeTable((address)&myDoc->IDTable,0,newHdl->parentObject,onCopy,0,0);
+        newHdl->parentObject = funcExpr;
+        newHdl->whereInParent = (address)&funcExpr->handle.ptr;
+      }
+      chpFormParm = (CHE*)decl->NestedDecls.first;
+      chpParam = (CHE*)oldFuncExpr->inputs.first;
+      while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
+        param = (ParameterV*)chpParam->data->Clone();
+        decl2 = (LavaDECL*)chpFormParm->data;
+        param->formParmID = TID(decl2->OwnID,decl2->inINCL);
+        param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
+        param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
+        newChe = NewCHE(param);
+        param->containingChain = (CHAINX*)&funcExpr->inputs;
+        param->whereInParent = (address)newChe;
+        funcExpr->inputs.Append(newChe);
+        chpFormParm = (CHE*)chpFormParm->successor;
+        chpParam = (CHE*)chpParam->successor;
+      }
+      funcExpr->replacedType = oldFuncExpr->replacedType;
+      funcExpr->flags += oldFuncExpr->flags;
+      if (!isStaticCall)
+        funcExpr->flags.EXCL(staticCall);
+      if (fromNew)
+        PutInsHint(funcExpr,SET(lastHint,-1),true);
+      else
+        PutInsHint(funcExpr);
+    }
+    else {
+      oldFuncStm = (FuncStatement*)text->currentSynObj;
+      funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName));
+      if (isStaticCall) {
+        funcStm->flags.INCL(staticCall);
+        if (vtypeID)
+          funcStm->vtypeID = *vtypeID;
+      }
+      if (((FuncExpression*)text->currentSynObj)->handle.ptr) {
+        newHdl = (Expression*)((FuncExpression*)text->currentSynObj)->handle.ptr->Clone();
+        funcStm->handle.ptr = newHdl;
+        newHdl->MakeTable((address)&myDoc->IDTable,0,newHdl->parentObject,onConstrCopy,0,0);
+        newHdl->MakeTable((address)&myDoc->IDTable,0,newHdl->parentObject,onCopy,0,0);
+        newHdl->parentObject = funcStm;
+        newHdl->whereInParent = (address)&funcStm->handle.ptr;
+      }
+      chpFormParm = (CHE*)decl->NestedDecls.first;
+      chpParam = (CHE*)oldFuncStm->inputs.first;
+      while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
+        param = (ParameterV*)chpParam->data->Clone();
+        decl2 = (LavaDECL*)chpFormParm->data;
+        param->formParmID = TID(decl2->OwnID,decl2->inINCL);
+        param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
+        param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
+        newChe = NewCHE(param);
+        param->containingChain = (CHAINX*)&funcStm->outputs;
+        param->whereInParent = (address)newChe;
+        funcStm->inputs.Append(newChe);
+        chpFormParm = (CHE*)chpFormParm->successor;
+        chpParam = (CHE*)chpParam->successor;
+      }
+      chpParam = (CHE*)oldFuncStm->outputs.first;
+      while (chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr)
+        chpFormParm = (CHE*)chpFormParm->successor;
+      while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == OAttr) {
+        param = (ParameterV*)chpParam->data->Clone();
+        decl2 = (LavaDECL*)chpFormParm->data;
+        param->formParmID = TID(decl2->OwnID,decl2->inINCL);
+        param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
+        param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
+        newChe = NewCHE(param);
+        param->containingChain = (CHAINX*)&funcStm->outputs;
+        param->whereInParent = (address)newChe;
+        funcStm->outputs.Append(newChe);
+        chpFormParm = (CHE*)chpFormParm->successor;
+        chpParam = (CHE*)chpParam->successor;
+      }
+      funcStm->replacedType = oldFuncStm->replacedType;
+      funcStm->flags += oldFuncStm->flags;
+      if (!isStaticCall)
+        funcStm->flags.EXCL(staticCall);
+      if (fromNew)
+        PutInsHint(funcStm,SET(lastHint,-1),true);
+      else
+        PutInsHint(funcStm);
+    }
+    break;
+  case CrtblPH_T:
+  case Callee_T:
+  case CompObj_T:
+  case CrtblRef_T:
+crtbl:
+    text->currentSynObj = text->currentSynObj->parentObject;
+    if (text->currentSynObj->primaryToken == run_T) {
+      oldRunStm = (Run*)text->currentSynObj;
+      switch (decl->DeclType) {
+      case Initiator:
+        runStm = new RunV(new ReferenceV(CrtblPH_T,refID,refName));
+        sameRunType = (oldRunStm->initializerCall.ptr == 0);
+        if (sameRunType) {
+          chpFormParm = (CHE*)decl->NestedDecls.first;
+          chpParam = (CHE*)oldRunStm->inputs.first;
+          while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
+            param = (ParameterV*)chpParam->data->Clone();
+            decl2 = (LavaDECL*)chpFormParm->data;
+            param->formParmID = TID(decl2->OwnID,decl2->inINCL);
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
+            newChe = NewCHE(param);
+            param->containingChain = (CHAINX*)&runStm->inputs;
+            param->whereInParent = (address)newChe;
+            runStm->inputs.Append(newChe);
+            chpFormParm = (CHE*)chpFormParm->successor;
+            chpParam = (CHE*)chpParam->successor;
+          }
+        }
+        break;
+      case Function:
+        oldFuncStm = (FuncStatement*)oldRunStm->initializerCall.ptr;
+        ref = new ReferenceV(FuncPH_T,refID,refName);
+        funcStm = new FuncStatementV(ref);
+        funcStm->flags.INCL(staticCall);
+        ref->parentObject = funcStm;
+        runStm = new RunV(funcStm);
+        funcStm->parentObject = runStm;
+        decl2 = decl->ParentDECL;
+        tid.nID = decl2->OwnID;
+        tid.nINCL = decl2->inINCL;
+        str = decl->FullName.c;
+        runStm->objType.ptr
+          = new ReferenceV(CrtblPH_T,tid,str);
+        tdod = new TDODV(true);
+        runStm->varName.ptr = new VarNameV("temp");
+        varNamePtr = (VarName*)runStm->varName.ptr;
+        if (tempNo > 1) {
+					sprintf(buffer,"%u",tempNo);
+          varNamePtr->varName += buffer;
+				}
+//          varNamePtr->varName += _ultoa(tempNo,buffer,10);
+        varNamePtr->MakeTable((address)&myDoc->IDTable,0,runStm,onNewID,(address)&runStm->varName.ptr,0);
+        ((VarName*)runStm->varName.ptr)->varID.nINCL = -1;
+          // to avoid a second assignment of an ID in constrUpdate
+        tdod->ID.nID = ((VarName*)runStm->varName.ptr)->varID.nID;
+        newChe = new CHE(tdod);
+        handle.Append(newChe);
+        objRef = new ObjReferenceV(handle,varNamePtr->varName.c);
+        objRef->parentObject = funcStm;
+        objRef->whereInParent = (address)&funcStm->handle.ptr;
+        tdod->parentObject = objRef;
+        objRef->flags.INCL(isDisabled);
+        objRef->flags.INCL(isTempVar);
+        funcStm->handle.ptr = objRef;
+        funcStm->replacedType = Callee_T;
+        sameRunType = (oldRunStm->initializerCall.ptr != 0);
+        if (sameRunType) {
+          chpFormParm = (CHE*)decl->NestedDecls.first;
+          chpParam = (CHE*)oldFuncStm->inputs.first;
+          while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
+            param = (ParameterV*)chpParam->data->Clone();
+            decl2 = (LavaDECL*)chpFormParm->data;
+            param->formParmID = TID(decl2->OwnID,decl2->inINCL);
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
+            newChe = NewCHE(param);
+            param->containingChain = (CHAINX*)&funcStm->outputs;
+            param->whereInParent = (address)newChe;
+            funcStm->inputs.Append(newChe);
+            chpFormParm = (CHE*)chpFormParm->successor;
+            chpParam = (CHE*)chpParam->successor;
+          }
+          chpParam = (CHE*)oldFuncStm->outputs.first;
+          while (chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr)
+            chpFormParm = (CHE*)chpFormParm->successor;
+          while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == OAttr) {
+            param = (ParameterV*)chpParam->data->Clone();
+            decl2 = (LavaDECL*)chpFormParm->data;
+            param->formParmID = TID(decl2->OwnID,decl2->inINCL);
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
+            newChe = NewCHE(param);
+            param->containingChain = (CHAINX*)&funcStm->outputs;
+            param->whereInParent = (address)newChe;
+            funcStm->outputs.Append(newChe);
+            chpFormParm = (CHE*)chpFormParm->successor;
+            chpParam = (CHE*)chpParam->successor;
+          }
+        }
+        break;
+      }
+      runStm->replacedType = runStm->replacedType;
+      runStm->flags += oldRunStm->flags;
+      PutInsHint(runStm);
+    }
+    else if (text->currentSynObj->primaryToken == new_T) {
+      oldCreateExp = (NewExpression*)text->currentSynObj;
+      decl = myDoc->IDTable.GetDECL(refID);
+      switch (decl->DeclType) {
+      case CompObjSpec:
+        ref = new ReferenceV(CrtblPH_T,refID,refName);
+        newExp = new NewExpressionV(
+          ref,
+          true,
+          true);
+        varNamePtr = (VarName*)newExp->varName.ptr;
+        if (tempNo > 1) {
+					sprintf(buffer,"%u",tempNo);
+          varNamePtr->varName += buffer;
+//          varNamePtr->varName += _ultoa(tempNo,buffer,10);
+				}
+        break;
+      case Interface:
+        newExp = new NewExpressionV(
+          new ReferenceV(CrtblPH_T,refID,refName),
+          false,
+          false);
+        varNamePtr = (VarName*)newExp->varName.ptr;
+        if (tempNo > 1) {
+					sprintf(buffer,"%u",tempNo);
+          varNamePtr->varName += buffer;
+//          varNamePtr->varName += _ultoa(tempNo,buffer,10);
+				}
+        break;
+      case Function:
+        newExp = (NewExpressionV*)text->currentSynObj;
+        oldFuncStm = (FuncStatement*)newExp->initializerCall.ptr;
+        ref = new ReferenceV(FuncPH_T,refID,refName);
+        funcStm = new FuncStatementV(ref);
+        funcStm->flags.INCL(staticCall);
+        funcStm->replacedType = CrtblPH_T;
+        ref->parentObject = funcStm;
+        if (oldFuncStm) {
+          chpFormParm = (CHE*)decl->NestedDecls.first;
+          chpParam = (CHE*)oldFuncStm->inputs.first;
+          while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
+            param = (ParameterV*)chpParam->data->Clone();
+            decl2 = (LavaDECL*)chpFormParm->data;
+            param->formParmID = TID(decl2->OwnID,decl2->inINCL);
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
+            newChe = NewCHE(param);
+            param->containingChain = (CHAINX*)&funcStm->outputs;
+            param->whereInParent = (address)newChe;
+            funcStm->inputs.Append(newChe);
+            chpFormParm = (CHE*)chpFormParm->successor;
+            chpParam = (CHE*)chpParam->successor;
+          }
+          chpParam = (CHE*)oldFuncStm->outputs.first;
+          while (chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr)
+            chpFormParm = (CHE*)chpFormParm->successor;
+          while (chpParam) {
+            param = (ParameterV*)chpParam->data->Clone();
+            if (chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == OAttr) {
+              decl = (LavaDECL*)chpFormParm->data;
+              param->formParmID = TID(decl->OwnID,decl->inINCL);
+              chpFormParm = (CHE*)chpFormParm->successor;
+            }
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
+            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
+            newChe = NewCHE(param);
+            param->containingChain = (CHAINX*)&funcStm->outputs;
+            param->whereInParent = (address)newChe;
+            funcStm->outputs.Append(newChe);
+            chpParam = (CHE*)chpParam->successor;
+          }
+          funcStm->replacedType = oldFuncStm->replacedType;
+          funcStm->flags += oldFuncStm->flags;
+        }
+        decl2 = decl->ParentDECL;
+        tid.nID = decl2->OwnID;
+        tid.nINCL = decl2->inINCL;
+        str = decl2->LocalName.c;
+        if (newExp->initializerCall.ptr) {
+          text->currentSynObj = (SynObject*)newExp->objType.ptr;
+          ref = new ReferenceV(CrtblPH_T,tid,str);
+          PutInsHint(ref,SET(firstHint,-1));
+          funcStm->handle.ptr 
+            = ((FuncStatement*)newExp->initializerCall.ptr)->handle.ptr->Clone();
+          text->currentSynObj = (SynObject*)newExp->initializerCall.ptr;
+          text->selectAt = ref;
+          PutInsHint(funcStm,SET(lastHint,-1));
+          return;
+        }
+        else {
+          Category targetCat = newExp->targetCat;
+          newExp = new NewExpressionV(
+            funcStm,
+            false,
+            false);
+          funcStm->parentObject = newExp;
+          varNamePtr = (VarName*)newExp->varName.ptr;
+          if (tempNo > 1) {
+						sprintf(buffer,"%u",tempNo);
+						varNamePtr->varName += buffer;
+//						varNamePtr->varName += _ultoa(tempNo,buffer,10);
+					}
+          newExp->objType.ptr = new ReferenceV(CrtblPH_T,tid,str);
+          if (targetCat == stateObj)
+            ((Reference*)newExp->objType.ptr)->flags.INCL(isVariable);
+          tdod = new TDODV(true);
+          ((VarName*)newExp->varName.ptr)->MakeTable((address)&myDoc->IDTable,0,newExp,onNewID,(address)&newExp->varName.ptr,0);
+          ((VarName*)newExp->varName.ptr)->varID.nINCL = -1;
+            // to avoid a second assignment of an ID in constrUpdate
+          tdod->ID.nID = ((VarName*)newExp->varName.ptr)->varID.nID;
+          newChe = new CHE(tdod);
+          handle.Append(newChe);
+          objRef = new ObjReferenceV(handle,varNamePtr->varName.c);
+          objRef->parentObject = funcStm;
+          objRef->whereInParent = (address)&funcStm->handle.ptr;
+          tdod->parentObject = objRef;
+          objRef->flags.INCL(isDisabled);
+          objRef->flags.INCL(isTempVar);
+          funcStm->handle.ptr = objRef;
+        }
+        break;
+      }
+      newExp->replacedType = oldCreateExp->replacedType;
+      //newExp->flags += oldCreateExp->flags;
+      PutInsHint(newExp);
+    }
+    else if (text->currentSynObj->primaryToken == attach_T) {
+      oldAttachExp = (AttachObject*)text->currentSynObj;
+      text->currentSynObj = (SynObject*)oldAttachExp->objType.ptr;
+      ref = new ReferenceV(CrtblPH_T,refID,refName);
+      PutInsHint(ref);
+    }
+    break;
+  default: // TypeRef
+    ref = new ReferenceV(text->currentSynObj->type,refID,refName);
+    decl = myDoc->IDTable.GetDECL(refID);
+    if (((Expression*)text->currentSynObj->parentObject)->targetCat == stateObj)
+      ref->flags.INCL(isVariable);
+    if (text->currentSynObj->parentObject->primaryToken != select_T) {
+      PutInsHint(ref);
+      return;
+    }
+    //durch select mit nicht-leerer extract-Klausel ersetzen???
+  }
+}
+
+void CExecView::OnInsertObjRef (QString &refName, TDODC &refIDs, bool append)
+{
+  ObjReference *newRef, *oldRef;
+  CHE *chp;
+  CHAINX *chx;
+  const char *name=refName;
+  DWORD dw;
+  TIDType idtype;
+  LavaDECL *decl;
+
+  if (append) {
+    chx = text->currentSynObj->containingChain;
+    chp = (CHE*)text->currentSynObj->whereInParent;
+    TDODC *refCopy = new TDODC(refIDs);
+    oldRef = (ObjReference*)text->currentSynObj->parentObject;
+    newRef = new ObjReferenceV;
+    newRef->primaryToken = oldRef->primaryToken;
+    newRef->type = oldRef->type;
+    newRef->replacedType = oldRef->replacedType;
+    CopyUntil(oldRef,chp,newRef);
+    newRef->refName += DString(refName);
+    newRef->refIDs.last->successor = refCopy->first;
+    refCopy->first->predecessor = newRef->refIDs.last;
+    newRef->refIDs.last = refCopy->last;
+    refCopy->first = 0;
+    refCopy->last = 0;
+    delete refCopy;
+    text->currentSynObj = text->currentSynObj->parentObject;
+  }
+  else {
+    newRef = new ObjReferenceV(refIDs,name);
+    if (text->currentSynObj->type == TDOD_T)
+      text->currentSynObj = text->currentSynObj->parentObject;
+    newRef->replacedType = text->currentSynObj->type;
+  }
+  newRef->parentObject = text->currentSynObj->parentObject;
+
+  dw = myDoc->IDTable.GetVar(((TDOD*)((CHE*)newRef->refIDs.first)->data)->ID,idtype);
+  if (idtype == localID) {
+    newRef->flags.INCL(isLocalVar);
+    if (((SynObject*)dw)->parentObject
+    && ((SynObject*)dw)->parentObject->parentObject
+    && ((SynObject*)dw)->parentObject->parentObject->IsDeclare())
+      newRef->flags.INCL(isDeclareVar);
+    if (((SynObject*)dw)->type == implementation_T)
+      newRef->flags.INCL(isSelfVar);
+    else
+      switch (((SynObject*)dw)->parentObject->primaryToken) {
+      case new_T:
+      case clone_T:
+        newRef->flags.INCL(isTempVar);
+        break;
+      default: ;
+      }
+  }
+  dw = myDoc->IDTable.GetVar(((TDOD*)((CHE*)newRef->refIDs.last)->data)->ID,idtype);
+  if (idtype == globalID) {
+    decl = *(LavaDECL**)dw;
+    switch (decl->DeclType) {
+    case Attr:
+      newRef->flags.INCL(isMemberVar);
+      if (((TDOD*)((CHE*)((CHE*)newRef->refIDs.last)->predecessor)->data)->IsStateObject(text->ckd))
+        newRef->flags.INCL(isStateObjMember);
+      break;
+    case IAttr:
+      newRef->flags.INCL(isInputVar);
+      break;
+    case OAttr:
+      newRef->flags.INCL(isOutputVar);
+      break;
+    }
+  }
+
+  for (chp = (CHE*)newRef->refIDs.first; chp; chp = (CHE*)chp->successor)
+    ((SynObject*)chp->data)->parentObject = newRef;
+
+/*  if (text->currentSynObj->parentObject->IsFuncInvocation()) {
+    text->currentSynObj = text->currentSynObj->parentObject;
+    if (text->currentSynObj->primaryToken == assignFX_T)
+      PutInsHint(new FuncExpressionV(newRef));
+    else
+      PutInsHint(new FuncStatementV(newRef));
+  }
+  else*/
+
+    PutInsHint(newRef);
+}
+
+void CExecView::OnAttach() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  AttachObject *newOp = new AttachObjectV(true);
+  InsertOrReplace(newOp);
+}
+
+void CExecView::OnQueryItf() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  QueryItf *newOp = new QueryItfV(true);
+  InsertOrReplace(newOp);
+}
+
+void CExecView::OnStaticCall() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  
+  SynObject *synObj;
+
+  if (!EditOK()) return;
+
+  if (text->currentSynObj->IsStatement())
+    synObj = new FuncStatementV(false,false,true);
+  else
+    synObj = new FuncExpressionV(false,true);
+  InsertOrReplace(synObj);
+}
+
+void CExecView::OnAssign() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  
+  if (!EditOK()) return;
+  Assignment *assig = new AssignmentV(true);
+  InsertOrReplace(assig);
+}
+
+void CExecView::OnCallback() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  ObjReference *selfRef;
+  TDOD *tdod;
+  TDODC tdodc;
+  CHE *newChe;
+  CallbackV *cbObj;
+  
+  if (!EditOK()) return;
+  
+  tdod = new TDODV(true);
+  tdod->ID.nID = selfVar->varID.nID;
+  tdod->flags.INCL(isDisabled);
+  newChe = new CHE(tdod);
+  tdodc.Append(newChe);
+  selfRef = new ObjReferenceV(tdodc,"self");
+  selfRef->flags.INCL(isSelfVar);
+  tdod->parentObject = selfRef;
+  cbObj = new CallbackV(selfRef);
+  InsertOrReplace(cbObj);
+}
+
+void CExecView::OnTypeSwitch() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  
+  if (!EditOK()) return;
+  TypeSwitchStatement *swStm = new TypeSwitchStatementV(true);
+  InsertOrReplace(swStm);
+}
+
+void CExecView::OnInterval() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  SynObject *synObj, *newObj;
+
+  if (!EditOK()) return;
+
+  if (text->currentSynObj->primaryToken == TDOD_T)
+    synObj = text->currentSynObj->parentObject;
+  else
+    synObj = text->currentSynObj;
+
+  if ((synObj->parentObject->primaryToken == in_T
+      && synObj->whereInParent == (address)&((InSetStatement*)synObj->parentObject)->operand2.ptr)
+  || (synObj->parentObject->primaryToken == quant_T
+      && synObj->whereInParent == (address)&((Quantifier*)synObj->parentObject)->set.ptr)) {
+    newObj = new IntegerIntervalV(true);
+    newObj->type = SetPH_T;
+  }
+  else {
+    newObj = new ArrayAtIndexV(true);
+    if (synObj->parentObject->primaryToken == assign_T
+    && synObj->whereInParent
+      == (address)&((Assignment*)synObj->parentObject)->targetObj.ptr)
+      newObj->type = arrayAtIndex_T; // -> no expression
+  }
+  newObj->replacedType = synObj->replacedType;
+  InsertOrReplace(newObj);
+}
+/*
+void CExecView::OnUuid() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  
+  if (!EditOK()) return;
+  GetUUID *newOp = new GetUUIDV(true);
+  InsertOrReplace(newOp);
+}
+*/
+void CExecView::OnCall() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  
+  if (!EditOK()) return;
+  Run *newCall = new RunV(true);
+  InsertOrReplace(newCall);
+}
+
+void CExecView::OnCreateObject() 
+{
+  NewExpressionV *newExp;
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+
+  newExp = new NewExpressionV(true);
+  InsertOrReplace(newExp);
+}
+
+void CExecView::OnAssert() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  
+  if (!EditOK()) return;
+  AssertStatement *assertStm = new AssertStatementV(true);
+  InsertOrReplace(assertStm);
+}
+
+void CExecView::OnNextError()
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  CHETokenNode *currToken;
+
+  if (!EditOK()) return;
+
+  if (nErrors+nPlaceholders) {
+    currToken = (CHETokenNode*)text->currentSelection;
+    if (!((currToken->data.flags.Contains(primToken)
+          && currToken->data.synObject->lastError)
+         || text->currentSynObj->IsPlaceHolder())
+    || myDoc->ErrorBarVisible())
+      currToken = (CHETokenNode*)currToken->successor;
+    else {
+      nextError = true;
+      Select(currToken->data.synObject);
+//      ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_DlgBuildBar->SetErrorOnBar(errDECL);
+//      ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_DlgBuildBar->SetTab(tabError);
+			sv->viewport()->update();
+      return;
+    }
+
+    for ( ; currToken; currToken = (CHETokenNode*)currToken->successor) {
+      if ((currToken->data.flags.Contains(primToken)
+          && currToken->data.synObject->lastError
+          && currToken == currToken->data.synObject->primaryTokenNode) // because of multiple ops.
+      || (currToken->data.synObject->IsPlaceHolder()
+          && !currToken->data.flags.Contains(isDisabled))) {
+        nextError = true;
+        Select(currToken->data.synObject);
+//        ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_DlgBuildBar->SetTab(tabError);
+			  sv->viewport()->update();
+        return;
+      }
+    }
+    for ( currToken = (CHETokenNode*)text->tokenChain.first;
+          currToken;
+          currToken = (CHETokenNode*)currToken->successor) {
+      if ((currToken->data.flags.Contains(primToken)
+          && currToken->data.synObject->lastError)
+      || (currToken->data.synObject->IsPlaceHolder()
+          && !currToken->data.flags.Contains(isDisabled))) {
+        nextError = true;
+        Select(currToken->data.synObject);
+//        ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_DlgBuildBar->SetTab(tabError);
+			  sv->viewport()->update();
+        return;
+      }
+    }
+  }
+  else
+    QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+//    AfxMessageBox(&ERR_NoErrors,MB_ICONINFORMATION|MB_OK);
+}
+
+void CExecView::OnPrevError()
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  CHETokenNode *currToken;
+
+  if (!EditOK()) return;
+
+  if (nErrors+nPlaceholders) {
+    currToken = (CHETokenNode*)text->currentSelection;
+    if (!(currToken->data.flags.Contains(primToken)
+          && currToken->data.synObject->lastError)
+    || myDoc->ErrorBarVisible())
+      currToken = (CHETokenNode*)currToken->predecessor;
+    else {
+      nextError = true;
+      Select(currToken->data.synObject);
+			sv->viewport()->update();
+      return;
+    }
+
+    for ( ; currToken; currToken = (CHETokenNode*)currToken->predecessor) {
+      if ((currToken->data.flags.Contains(primToken)
+          && currToken == currToken->data.synObject->primaryTokenNode // because of multiple ops.
+          && currToken->data.synObject->lastError)
+      || (currToken->data.synObject->IsPlaceHolder()
+          && !currToken->data.flags.Contains(isDisabled))) {
+        nextError = true;
+        Select(currToken->data.synObject);
+			  sv->viewport()->update();
+        return;
+      }
+    }
+    for ( currToken = (CHETokenNode*)text->tokenChain.last;
+          currToken;
+          currToken = (CHETokenNode*)currToken->predecessor) {
+      if ((currToken->data.flags.Contains(primToken)
+          && currToken->data.synObject->lastError)
+      || (currToken->data.synObject->IsPlaceHolder()
+          && !currToken->data.flags.Contains(isDisabled))) {
+        nextError = true;
+        Select(currToken->data.synObject);
+			  sv->viewport()->update();
+        return;
+      }
+    }
+  }
+  else
+    QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+//    AfxMessageBox(&ERR_NoErrors,MB_ICONINFORMATION|MB_OK);
+}
+
+void CExecView::OnNextComment()
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  CHETokenNode *startToken = (CHETokenNode*)text->currentSelection, *currToken;
+
+  if (!EditOK()) return;
+
+  for (currToken = (CHETokenNode*)startToken->successor ; currToken; currToken = (CHETokenNode*)currToken->successor) {
+    if (currToken->data.token == Comment_T) {
+      text->newSelection = currToken;
+      text->Select();
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+			sv->viewport()->update();
+      return;
+    }
+  }
+  for ( currToken = (CHETokenNode*)text->tokenChain.first;
+        currToken != startToken;
+        currToken = (CHETokenNode*)currToken->successor) {
+    if (currToken->data.token == Comment_T) {
+      text->newSelection = currToken;
+      text->Select();
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+			sv->viewport()->update();
+      return;
+    }
+  }
+}
+
+void CExecView::OnPrevComment()
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  CHETokenNode *startToken = (CHETokenNode*)text->currentSelection, *currToken;
+
+  if (!EditOK()) return;
+
+  for (currToken = (CHETokenNode*)startToken->predecessor; currToken; currToken = (CHETokenNode*)currToken->predecessor) {
+    if (currToken->data.token == Comment_T) {
+      text->newSelection = currToken;
+      text->Select();
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+			sv->viewport()->update();
+      return;
+    }
+  }
+  for (currToken = (CHETokenNode*)text->tokenChain.last;
+       currToken != startToken;
+       currToken = (CHETokenNode*)currToken->predecessor) {
+    if (currToken->data.token == Comment_T) {
+      text->newSelection = currToken;
+      text->Select();
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+			sv->viewport()->update();
+      return;
+    }
+  }
+}
+
+void CExecView::OnConflict() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+
+  if (!EditOK()) return;
+  Base->Browser->LastBrowseContext = new CBrowseContext(this,text->currentSynObj);
+  Select((TDOD*)((CHE*)((ObjReference*)text->currentSynObj->parentObject)->conflictingAssig->refIDs.last)->data);  
+}
+
+bool CExecView::ConflictSelected()
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  CHE *che;
+
+  if (text->currentSynObj->primaryToken != TDOD_T)
+    return false;
+
+  che = (CHE*)text->currentSynObj->whereInParent;
+  if (che->successor || !text->currentSynObj->lastError)
+    return false;
+
+  for (che = (CHE*)text->currentSynObj->errorChain.first;
+       che
+       && ((CLavaError*)che->data)->IDS != &ERR_SingleAssViol
+       &&((CLavaError*)che->data)->IDS != &ERR_PrevDescAssig;
+       che = (CHE*)che->successor);
+  if (che)
+    return true;
+  else
+    return false;
+}
+
+void CExecView::OnToggleCategory() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  if (!EditOK()) return;
+
+  if (text->currentSynObj->flags.Contains(isVariable)) {
+    if (text->ckd.myDECL->ParentDECL->DeclType == Function
+    && !text->ckd.myDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
+      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
+      PutInsFlagHint(SET(isSameAsSelf,-1),SET(lastHint,-1));
+    }
+    else
+      PutDelFlagHint(SET(isVariable,-1));
+  }
+  else if (text->currentSynObj->flags.Contains(isSameAsSelf))
+    PutDelFlagHint(SET(isSameAsSelf,-1));
+  else
+    PutInsFlagHint(SET(isVariable,-1));
+}
+
+bool CExecView::ToggleCatEnabled() 
+{
+  LavaDECL *decl;
+  NewExpression *newExp;
+  Category cat;
+  SynFlags ctxFlags;
+
+  if (Ignorable())
+    return false;
+
+  switch (text->currentSynObj->primaryToken) {
+  case CrtblRef_T:
+    if (text->currentSynObj->parentObject->primaryToken == new_T) {
+      newExp = (NewExpression*)text->currentSynObj->parentObject;
+      decl = myDoc->IDTable.GetDECL(((Reference*)newExp->objType.ptr)->refID,text->ckd.inINCL);
+      if (decl && decl->DeclType == CompObjSpec)
+        return false;
+      else
+        return true;
+    }
+    break;
+  case TypeRef_T:
+    if (text->currentSynObj->parentObject->primaryToken == quant_T
+    && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
+      return false;
+    text->currentSynObj->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+    if (decl && decl->DeclType == VirtualType && decl->TypeFlags.Contains(definesObjCat))
+      return false;
+    else
+      return true;
+  default: 
+    if (text->currentSynObj->IsConstant() && text->currentSynObj->primaryToken != nil_T)
+      return true;
+  }
+  return false;
+}
+
+void CExecView::OnToggleSubstitutable() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  if (!EditOK()) return;
+
+  if (text->currentSynObj->flags.Contains(isSubstitutable)) {
+    PutDelFlagHint(SET(isSubstitutable,-1));
+  }
+  else
+    PutInsFlagHint(SET(isSubstitutable,-1));
+}
+
+bool CExecView::ToggleSubstitutableEnabled() 
+{
+  LavaDECL *decl;
+  CContext ctx;
+
+  if (Ignorable()
+  || text->currentSynObj->primaryToken != TypeRef_T
+  || text->currentSynObj->parentObject->primaryToken == caseType_T
+  || text->currentSynObj->parentObject->primaryToken == attach_T
+  || text->currentSynObj->parentObject->primaryToken == new_T
+  || text->currentSynObj->parentObject->primaryToken == itf_T
+  || text->currentSynObj->parentObject->primaryToken == qua_T)
+    return false;
+
+  decl = myDoc->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID,text->ckd.inINCL);
+  if (myDoc->IDTable.otherOContext(decl, myDECL))
+    return true;
+  else
+    return false;
+}
+
+void CExecView::OnCopy() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  CopyStatementV *cpy;
+  
+  if (!EditOK()) return;
+
+  cpy = new CopyStatementV(true);
+  InsertOrReplace(cpy);
+}
+
+void CExecView::OnEvaluate() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  SynObject *synObj;
+
+  if (!EditOK()) return;
+
+  if (text->currentSynObj->StatementSelected(text->currentSelection))
+    synObj = new EvalStatementV(true);
+  else
+    synObj = new EvalExpressionV(true);
+  InsertOrReplace(synObj);
+  
+}
+
+void CExecView::OnInputArrow() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  
+  if (!EditOK()) return;
+  if (text->currentSynObj->type == FuncPH_T || text->currentSynObj->type == CrtblPH_T)
+    text->currentSynObj = text->currentSynObj->parentObject;
+
+  if (text->currentSynObj->flags.Contains(inputArrow))
+    PutDelFlagHint(SET(inputArrow,-1));
+  else
+    PutInsFlagHint(SET(inputArrow,-1));
+}
+
+void CExecView::focusInEvent(QFocusEvent *ev) 
+{
+//!!!  CTextEdit::focusInEvent(ev);
+  
+  // TODO: Add your message handler code here
+  focusWindow = (void*)this;
+  isExecView = true;
+  sv->setFocus();
+}
+
+void CExecView::focusOutEvent(QFocusEvent *ev) 
+{
+//!!!  CRichEditView::focusOutEvent(ev);
+  
+  // TODO: Add your message handler code here
+  focusWindow = 0;
+}
+
+void CExecView::OnFunctionCall() 
+{
+  // TODO: Add your command handler code here
+  SynObject *synObj;
+
+  if (!EditOK()) return;
+
+  if (text->currentSynObj->StatementSelected(text->currentSelection))
+    synObj = new FuncStatementV(true);
+  else
+    synObj = new FuncExpressionV(true);
+  InsertOrReplace(synObj);
+}
+
+void CExecView::OnHandle() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  HandleOp *handleOp = new HandleOpV(true);
+  InsertOrReplace(handleOp);
+}
+
+void CExecView::OnOptLocalVar() 
+{
+	// TODO: Add your command handler code here
+  if (!EditOK()) return;
+
+  if (text->currentSynObj->flags.Contains(isOptionalExpr)) {
+    PutDelFlagHint(SET(isOptionalExpr,-1));
+  }
+  else
+    PutInsFlagHint(SET(isOptionalExpr,-1));
+	
+}
+
+void CExecView::OnItem() 
+{
+	// TODO: Add your command handler code here
+	
+  if (!EditOK()) return;
+  EnumItem *item = new EnumItemV(true);
+  InsertOrReplace(item);
+}
+
+void CExecView::OnQua() 
+{
+	// TODO: Add your command handler code here
+	
+  if (!EditOK()) return;
+  ExtendExpression *qua = new ExtendExpressionV(true);
+  InsertOrReplace(qua);
+}
+
+void CExecView::OnSucceed() 
+{
+	// TODO: Add your command handler code here
+	
+  if (!EditOK()) return;
+  SucceedStatement *succStm = new SucceedStatementV();
+  InsertOrReplace(succStm);
+}
+
+void CExecView::OnFail() 
+{
+	// TODO: Add your command handler code here
+	
+  if (!EditOK()) return;
+  FailStatement *fStm = new FailStatementV();
+  InsertOrReplace(fStm);
+}
+
+void CExecView::OnOrd() 
+{
+	// TODO: Add your command handler code here
+	
+  if (!EditOK()) return;
+  OrdOp *ordOp = new OrdOpV(true);
+  InsertOrReplace(ordOp);
+}
+
+void CExecView::OnTryStatement() 
+{
+	// TODO: Add your command handler code here
+	
+  if (!EditOK()) return;
+  TryStatement *tryStm = new TryStatementV(true);
+  InsertOrReplace(tryStm);
+}
+
+void CExecView::SetHelpText () {
+  QString helpMsg;
+  SynObject *ocl;
+  CHAINX *chxp;
+
+  if (text->currentSynObj->primaryToken == Exp_T
+  || text->currentSynObj->IsEditableConstant())
+    helpMsg = ID_ENTER_CONST;
+  else if (text->currentSelection->data.token == Comment_T)
+    helpMsg = ID_EDIT_COMMENT;
+  else if (text->currentSelection->data.OptionalClauseToken(ocl)
+  || (text->currentSynObj->IsRepeatableClause(chxp)
+      && !text->currentSynObj->IsIfClause()))
+    helpMsg = ID_OPT_CLAUSE;
+  else if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+  && !text->currentSynObj->IsPlaceHolder())
+    helpMsg = ID_INSERT_STM;
+  else if (ToggleCatEnabled())
+    helpMsg = ID_TOGGLE_CATEGORY;
+  else if (!Ignorable() && text->currentSynObj->ExpressionSelected(text->currentSelection)
+  && !text->currentSynObj->IsPlaceHolder())
+    helpMsg = ID_REPLACE_EXP;
+  else if (text->currentSynObj->type == VarPH_T)
+    helpMsg = ID_ENTER_VARNAME;
+  else
+    helpMsg = ID_F1_HELP;
+
+  if (!inIgnore)
+    UpdateErrMsg(helpMsg);
+  else
+    statusBar->message(helpMsg);
+}
+
+void CExecView::OnInsertEnum (QString &itemName, TID &typeID, unsigned pos)
+{
+  EnumConst *item;
+
+  item = new EnumConstV(text->currentSynObj->type,typeID,itemName);
+  PutInsHint(item);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// UpdateUI functions:
+
+void CExecView::UpdateUI()
+{
+
+	if (!myDoc || !myDoc->mySynDef)
+		return;
+
+  //CLavaMainFrame* frame = (CLavaMainFrame*)((wxApp*)wxTheApp)->m_appWindow;
+
+	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
+  OnUpdateHandle(LBaseData->handleActionPtr);
+  OnUpdateInputArrow(LBaseData->toggleInputArrowsActionPtr);
+  OnUpdateEditSel(LBaseData->editSelItemActionPtr);
+  OnUpdateEvaluate(LBaseData->evaluateActionPtr);
+  OnUpdateToggleSubstitutable(LBaseData->toggleSubstTypeActionPtr);
+  OnUpdateConflict(LBaseData->conflictingAssigActionPtr);
+  OnUpdateToggleCategory(LBaseData->toggleCategoryActionPtr);
+  OnUpdateNextComment(LBaseData->nextCommentActionPtr);
+  OnUpdatePrevComment(LBaseData->prevCommentActionPtr);
+  OnUpdateNextError(LBaseData->nextErrorActionPtr);
+  OnUpdatePrevError(LBaseData->prevErrorActionPtr);
+//  OnUpdateUuid(LBaseData->action);
+  OnUpdateInterval(LBaseData->intervalActionPtr);
+  OnUpdateIgnore(LBaseData->commentOutActionPtr);
+  OnUpdateModulus(LBaseData->modulusActionPtr);
+  OnUpdateNewLine(LBaseData->newLineActionPtr);
+  OnUpdateShowOptionals(LBaseData->showOptsActionPtr);
+  OnUpdateGotoDecl(LBaseData->gotoDeclActionPtr);
+  OnUpdateGotoImpl(LBaseData->gotoImplActionPtr);
+  OnUpdateFindReferences(LBaseData->findRefsActionPtr);
+  OnUpdateToggleArrows(LBaseData->toggleArrowsActionPtr);
+  OnUpdateComment(LBaseData->editCommentActionPtr);
+  OnUpdateButtonEnum();
+  OnUpdateNewFunc();
+  OnUpdateNewPFunc();
+  OnUpdateEditCut(LBaseData->editCutActionPtr);
+  OnUpdateEditCopy(LBaseData->editCopyActionPtr);
+  OnUpdateEditPaste(LBaseData->editPasteActionPtr);
+  OnUpdateEditUndo(LBaseData->editUndoActionPtr);
+  OnUpdateEditRedo(LBaseData->editRedoActionPtr);
+  OnUpdateBitOr(LBaseData->bitOrActionPtr);
+  OnUpdateBitAnd(LBaseData->bitAndActionPtr);
+  OnUpdateBitXor(LBaseData->bitXorActionPtr);
+  OnUpdateDelete(LBaseData->deleteActionPtr);
+  OnUpdateDivide(LBaseData->divideActionPtr);
+  OnUpdateEq(LBaseData->equalActionPtr);
+  OnUpdateNe(LBaseData->notEqualActionPtr);
+  OnUpdateLe(LBaseData->lessEqualActionPtr);
+  OnUpdateLt(LBaseData->lessThanActionPtr);
+  OnUpdateGe(LBaseData->greaterEqualActionPtr);
+  OnUpdateGt(LBaseData->greaterThanActionPtr);
+  OnUpdateTrue(LBaseData->trueActionPtr);
+  OnUpdateFalse(LBaseData->falseActionPtr);
+  OnUpdateFunctionCall(LBaseData->functionCallActionPtr);
+  OnUpdateStaticCall(LBaseData->staticCallActionPtr);
+  OnUpdateInsert(LBaseData->insertActionPtr);
+  OnUpdateInsertBefore(LBaseData->insertBeforeActionPtr);
+  OnUpdateInvert(LBaseData->invertActionPtr);
+  OnUpdateLshift(LBaseData->leftShiftActionPtr);
+  OnUpdateRshift(LBaseData->rightShiftActionPtr);
+  OnUpdatePlusMinus(LBaseData->toggleSignActionPtr);
+  OnUpdateMult(LBaseData->multiplicationActionPtr);
+  OnUpdateShowComments(LBaseData->toggleCommentsActionPtr);
+  OnUpdateNull(LBaseData->nullActionPtr);
+  OnUpdatePlus(LBaseData->additionActionPtr);
+	OnUpdateOrd(LBaseData->ordActionPtr);
+
+  OnUpdateDeclare(LBaseData->declareButton);
+  OnUpdateExists(LBaseData->existsButton);
+  OnUpdateForeach(LBaseData->foreachButton);
+  OnUpdateSelect(LBaseData->selectButton);
+  OnUpdateIn(LBaseData->elInSetButton);
+  OnUpdateIf(LBaseData->ifButton);
+  OnUpdateIfExpr(LBaseData->ifxButton);
+  OnUpdateSwitch(LBaseData->switchButton);
+  OnUpdateTypeSwitch(LBaseData->typeSwitchButton);
+  OnUpdateAnd(LBaseData->andButton);
+  OnUpdateOr(LBaseData->orButton);
+  OnUpdateXor(LBaseData->xorButton);
+  OnUpdateNot(LBaseData->notButton);
+  OnUpdateAssert(LBaseData->assertButton);
+	OnUpdateTry(LBaseData->tryButton);
+	OnUpdateSucceed(LBaseData->succeedButton);
+	OnUpdateFail(LBaseData->failButton);
+  OnUpdateCall(LBaseData->runButton);
+  OnUpdateAssign(LBaseData->setButton);
+  OnUpdateCreate(LBaseData->newButton);
+  OnUpdateClone(LBaseData->cloneButton);
+  OnUpdateCopy(LBaseData->copyButton);
+  OnUpdateAttach(LBaseData->attachButton);
+  OnUpdateQueryItf(LBaseData->qryItfButton);
+	OnUpdateQua(LBaseData->scaleButton);
+	OnUpdateItem(LBaseData->itemButton);
+  OnUpdateCallback(LBaseData->callbackButton);
+}
+
+void CExecView::DisableActions()
+{
+
+	if (!myDoc || !myDoc->mySynDef)
+		return;
+
+  //CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
+
+  //LBaseData->editPasteActionPtr->setEnabled(false);
+	LBaseData->optLocalVarActionPtr->setEnabled(false);
+  LBaseData->handleActionPtr->setEnabled(false);
+  LBaseData->toggleInputArrowsActionPtr->setEnabled(false);
+  LBaseData->editSelItemActionPtr->setEnabled(false);
+  LBaseData->evaluateActionPtr->setEnabled(false);
+  LBaseData->toggleSubstTypeActionPtr->setEnabled(false);
+  LBaseData->conflictingAssigActionPtr->setEnabled(false);
+  LBaseData->toggleCategoryActionPtr->setEnabled(false);
+//  LBaseData->nextCommentActionPtr->setEnabled(false);
+//  LBaseData->prevCommentActionPtr->setEnabled(false);
+//  LBaseData->nextErrorActionPtr->setEnabled(false);
+//  LBaseData->prevErrorActionPtr->setEnabled(false);
+//  OnUpdateUuid(LBaseData->action);
+  LBaseData->intervalActionPtr->setEnabled(false);
+  LBaseData->commentOutActionPtr->setEnabled(false);
+  LBaseData->modulusActionPtr->setEnabled(false);
+  LBaseData->newLineActionPtr->setEnabled(false);
+  LBaseData->showOptsActionPtr->setEnabled(false);
+  LBaseData->gotoDeclActionPtr->setEnabled(false);
+  LBaseData->gotoImplActionPtr->setEnabled(false);
+  LBaseData->findRefsActionPtr->setEnabled(false);
+  LBaseData->toggleArrowsActionPtr->setEnabled(false);
+  LBaseData->editCommentActionPtr->setEnabled(false);
+  LBaseData->editCutActionPtr->setEnabled(false);
+  LBaseData->editCopyActionPtr->setEnabled(false);
+  LBaseData->editPasteActionPtr->setEnabled(false);
+  LBaseData->editUndoActionPtr->setEnabled(false);
+  LBaseData->editRedoActionPtr->setEnabled(false);
+  LBaseData->bitOrActionPtr->setEnabled(false);
+  LBaseData->bitAndActionPtr->setEnabled(false);
+  LBaseData->bitXorActionPtr->setEnabled(false);
+  LBaseData->deleteActionPtr->setEnabled(false);
+  LBaseData->divideActionPtr->setEnabled(false);
+  LBaseData->equalActionPtr->setEnabled(false);
+  LBaseData->notEqualActionPtr->setEnabled(false);
+  LBaseData->lessEqualActionPtr->setEnabled(false);
+  LBaseData->lessThanActionPtr->setEnabled(false);
+  LBaseData->greaterEqualActionPtr->setEnabled(false);
+  LBaseData->greaterThanActionPtr->setEnabled(false);
+  LBaseData->trueActionPtr->setEnabled(false);
+  LBaseData->falseActionPtr->setEnabled(false);
+  LBaseData->functionCallActionPtr->setEnabled(false);
+  LBaseData->staticCallActionPtr->setEnabled(false);
+  LBaseData->insertActionPtr->setEnabled(false);
+  LBaseData->insertBeforeActionPtr->setEnabled(false);
+  LBaseData->invertActionPtr->setEnabled(false);
+  LBaseData->leftShiftActionPtr->setEnabled(false);
+  LBaseData->rightShiftActionPtr->setEnabled(false);
+  LBaseData->toggleSignActionPtr->setEnabled(false);
+  LBaseData->multiplicationActionPtr->setEnabled(false);
+  LBaseData->toggleCommentsActionPtr->setEnabled(false);
+  LBaseData->nullActionPtr->setEnabled(false);
+  LBaseData->additionActionPtr->setEnabled(false);
+	LBaseData->ordActionPtr->setEnabled(false);
+
+  LBaseData->declareButton->setEnabled(false);
+  LBaseData->existsButton->setEnabled(false);
+  LBaseData->foreachButton->setEnabled(false);
+  LBaseData->selectButton->setEnabled(false);
+  LBaseData->elInSetButton->setEnabled(false);
+  LBaseData->ifButton->setEnabled(false);
+  LBaseData->ifxButton->setEnabled(false);
+  LBaseData->switchButton->setEnabled(false);
+  LBaseData->typeSwitchButton->setEnabled(false);
+  LBaseData->andButton->setEnabled(false);
+  LBaseData->orButton->setEnabled(false);
+  LBaseData->xorButton->setEnabled(false);
+  LBaseData->notButton->setEnabled(false);
+  LBaseData->assertButton->setEnabled(false);
+	LBaseData->tryButton->setEnabled(false);
+	LBaseData->succeedButton->setEnabled(false);
+	LBaseData->failButton->setEnabled(false);
+  LBaseData->runButton->setEnabled(false);
+  LBaseData->setButton->setEnabled(false);
+  LBaseData->newButton->setEnabled(false);
+  LBaseData->cloneButton->setEnabled(false);
+  LBaseData->copyButton->setEnabled(false);
+  LBaseData->attachButton->setEnabled(false);
+  LBaseData->qryItfButton->setEnabled(false);
+	LBaseData->scaleButton->setEnabled(false);
+	LBaseData->itemButton->setEnabled(false);
+  LBaseData->callbackButton->setEnabled(false);
+}
+
+
+void CExecView::OnUpdateGotoImpl(wxAction* action) 
+{
+  switch (text->currentSelection->data.token) {
+  case FuncRef_T:
+  case TypeRef_T:
+    action->setEnabled(true);
+    return;
+  case CrtblRef_T:
+    if (text->currentSynObj->parentObject->primaryToken == new_T
+    || text->currentSynObj->parentObject->primaryToken == run_T)
+      action->setEnabled(true);
+    return;
+  default: ;
+  }
+  action->setEnabled(false);
+}
+
+void CExecView::OnUpdateModulus(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateFindReferences(wxAction* action) 
+{
+  switch (text->currentSelection->data.token) {
+  case VarName_T:
+  case TDOD_T:
+  case FuncRef_T:
+  case TypeRef_T:
+  case CrtblRef_T:
+  case enumConst_T:
+    action->setEnabled(true);
+    return;
+  default: ;
+  }
+  action->setEnabled(false);
+}
+
+void CExecView::OnUpdateGotoDecl(wxAction* action) 
+{
+  action->setEnabled(EnableGotoDecl());
+}
+
+void CExecView::OnUpdateEditSel(wxAction* action) 
+{
+  // TODO: Add your message handler code here and/or call default
+  
+  
+  action->setEnabled(
+    (text->currentSynObj->primaryToken == Exp_T
+        && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
+        && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
+    || (text->currentSynObj->IsConstant() 
+        && text->currentSynObj->primaryToken != enumConst_T
+        && text->currentSynObj->primaryToken != Boolean_T)
+    || text->currentSynObj->type == VarPH_T
+    || text->currentSelection->data.token == Comment_T);
+}
+
+bool CExecView::EnableCut() 
+{
+  if ((Ignorable() && !inIgnore)
+  && !(inBaseInits
+       && text->currentSynObj->primaryToken == FuncRef_T
+       && text->currentSynObj->parentObject->parentObject->primaryToken == initializing_T))
+    return false;
+
+  if (text->currentSynObj->parentObject
+  && !text->currentSynObj->parentObject->parentObject
+  && text->currentSynObj->IsPlaceHolder())
+    return false;
+
+  if (text->currentSynObj->primaryToken == VarName_T
+  && (text->currentSynObj->parentObject->primaryToken == new_T
+      || text->currentSynObj->parentObject->primaryToken == run_T))
+  return false;
+
+  if (text->currentSynObj->primaryToken == TDOD_T
+  && text->currentSynObj->parentObject->parentObject->IsFuncInvocation()) {
+    if (text->currentSynObj->parentObject->parentObject->parentObject->primaryToken == new_T)
+      return (text->currentSynObj->parentObject->parentObject->whereInParent
+        != (address)&((NewExpression*)text->currentSynObj->parentObject->parentObject->parentObject)->initializerCall.ptr);
+    else if (text->currentSynObj->parentObject->parentObject->parentObject->primaryToken == run_T)
+      return (text->currentSynObj->parentObject->parentObject->whereInParent
+        != (address)&((Run*)text->currentSynObj->parentObject->parentObject->parentObject)->initializerCall.ptr);
+  }
+
+  return (IsDeletablePrimary()
+    || (text->currentSynObj->IsFuncInvocation()
+        && text->currentSynObj->parentObject->primaryToken != new_T
+        && text->currentSynObj->parentObject->primaryToken != callback_T)
+    || (text->currentSynObj->IsPlaceHolder()
+        && text->currentSynObj->parentObject->primaryToken != parameter_T));
+}
+
+void CExecView::OnUpdateEditCut(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(EnableCut());
+}
+
+void CExecView::OnUpdateButtonEnum() 
+{
+  CComboBar* bar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
+  bar->m_ComboBarDlg->IDC_ButtonEnum->setEnabled(bar->EnumsEnable);
+  if (bar->EnumsShow)
+    bar->m_ComboBarDlg->IDC_ButtonEnum->show();
+  else
+    bar->m_ComboBarDlg->IDC_ButtonEnum->hide();
+}
+
+void CExecView::OnUpdateNewFunc() 
+{
+  CComboBar* bar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
+  bar->m_ComboBarDlg->IDC_NewFunc->setEnabled(bar->NewFuncEnable);
+  if (bar->NewFuncShow)
+    bar->m_ComboBarDlg->IDC_NewFunc->show();
+  else
+    bar->m_ComboBarDlg->IDC_NewFunc->hide();
+}
+
+void CExecView::OnUpdateNewPFunc() 
+{
+  CComboBar* bar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
+  bar->m_ComboBarDlg->IDC_NewPFunc->setEnabled(bar->NewPFuncEnable);
+  if (bar->NewFuncShow)
+    bar->m_ComboBarDlg->IDC_NewPFunc->show();
+  else
+    bar->m_ComboBarDlg->IDC_NewPFunc->hide();
+}
+
+void CExecView::OnUpdateAnd(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateBitAnd(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateBitOr(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateBitXor(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateClone(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+
+  pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateSelect(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateComment(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+
+  if (Taboo())
+    action->setEnabled(false);
+  else
+    action->setEnabled(!editCtlVisible && IsTopLevelToken());
+}
+
+void CExecView::OnUpdateDelete(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  OnUpdateEditCut(action);
+}
+
+void CExecView::OnUpdateDivide(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateOptLocalVar(wxAction* action) 
+{
+	// TODO: Add your command update UI handler code here
+	bool isDeclareVar;
+
+  if (text->currentSynObj->primaryToken == VarName_T
+  && text->currentSynObj->parentObject
+  && text->currentSynObj->parentObject->parentObject
+  && text->currentSynObj->parentObject->parentObject->IsDeclare())
+    isDeclareVar = true;
+  else
+    isDeclareVar = false;
+  action->setEnabled(!Taboo() && isDeclareVar);
+
+  action->setOn(text->currentSynObj->flags.Contains(isOptionalExpr));
+//  if (action->m_pOther)
+//    ((QToolBar*)action->m_pOther)->GetToolBarCtrl().PressButton(action->m_nID,showArrow);
+}
+
+void CExecView::OnUpdateHandle(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateFunctionCall(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && (text->currentSynObj->StatementSelected(text->currentSelection)
+    || (text->currentSynObj->ExpressionSelected(text->currentSelection))));
+}
+
+void CExecView::OnUpdateInputArrow(wxAction* action) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  bool showArrow;
+  SynObject *synObj=text->currentSynObj;
+
+  if (synObj->type == FuncPH_T || (synObj->type == CrtblPH_T && synObj->parentObject->primaryToken == run_T))
+    synObj = synObj->parentObject;
+
+  showArrow = (synObj->IsFuncInvocation() || synObj->primaryToken == run_T)
+    && synObj->flags.Contains(inputArrow);
+  action->setEnabled(!Taboo() && (synObj->IsFuncInvocation() || synObj->primaryToken == run_T));
+
+  action->setOn(showArrow);
+}
+
+void CExecView::OnUpdateEvaluate(wxAction* action) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  action->setEnabled(!Taboo() && (text->currentSynObj->StatementSelected(text->currentSelection)
+    || (text->currentSynObj->ExpressionSelected(text->currentSelection) && text->currentSynObj->BoolAdmissibleOnly(text->ckd))));
+  
+}
+
+void CExecView::OnUpdateCopy(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+    && text->currentSynObj->OutputContext()); 
+}
+
+void CExecView::OnUpdateToggleSubstitutable(wxAction* action) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+
+  action->setEnabled(ToggleSubstitutableEnabled());
+  action->setOn(text->currentSynObj->flags.Contains(isSubstitutable));
+}
+
+void CExecView::OnUpdateToggleCategory(wxAction* action) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+
+  action->setEnabled(ToggleCatEnabled());
+  action->setOn(text->currentSynObj->flags.Contains(isVariable));
+}
+
+void CExecView::OnUpdateConflict(wxAction* action) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+
+  action->setEnabled(ConflictSelected());
+}
+
+void CExecView::OnUpdateNextComment(wxAction* action)
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(text->showComments);
+}
+
+void CExecView::OnUpdatePrevComment(wxAction* action)
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(text->showComments);
+}
+
+void CExecView::OnUpdateNextError(wxAction* action)
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(true);
+}
+
+void CExecView::OnUpdatePrevError(wxAction* action)
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(true);
+}
+
+void CExecView::OnUpdateAssert(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateCreate(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+
+  pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateCall(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+    && text->currentSynObj->OutputContext());
+}
+/*
+void CExecView::OnUpdateUuid(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+*/
+void CExecView::OnUpdateStaticCall(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && (text->currentSynObj->StatementSelected(text->currentSelection)
+    || (text->currentSynObj->ExpressionSelected(text->currentSelection)
+        //&& text->currentSynObj->parentObject->primaryToken != assign_T
+        )));
+}
+
+void CExecView::OnActivateView(bool bActivate, wxView *deactiveView) 
+{
+  // TODO: Speziellen Code hier einfügen und/oder Basisklasse aufrufen
+  QString empty;
+
+	
+  if (Base && GetDocument()->mySynDef && !destroying && bActivate) {
+    active = true;
+    SetHelpText();
+    if (!sv->hasFocus())
+      sv->setFocus();
+  }
+  else if (!bActivate) {
+    active = false;
+    DisableActions();
+	}
+}
+
+void CExecView::OnUpdateInterval(wxAction* action) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+
+  if (Taboo()) {
+    action->setEnabled(false);
+    return;
+  }
+  action->setEnabled(text->currentSynObj->ExpressionSelected(text->currentSelection)
+    || (text->currentSynObj->primaryToken == ObjPH_T
+        && !text->currentSynObj->parentObject->IsFuncInvocation())
+    || text->currentSynObj->primaryToken == SetPH_T);
+}
+
+void CExecView::OnUpdateExists(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateTypeSwitch(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateCallback(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo()
+    && text->currentSynObj->ExpressionSelected(text->currentSelection)
+    && selfVar->primaryToken != initiator_T);
+}
+
+void CExecView::OnUpdateAssign(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+    && text->currentSynObj->OutputContext());
+}
+
+void CExecView::OnUpdateAttach(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateQueryItf(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateIgnore(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  SynObject *synObj=text->currentSynObj;
+  CHAINX *chx=synObj->containingChain;
+
+  if ((Ignorable() && !inIgnore)
+  || synObj->IsPlaceHolder()
+  || !synObj->IsStatement()) {
+    action->setEnabled(false);
+    return;
+  }
+
+  action->setEnabled(true);
+
+  bool ig = synObj->flags.Contains(ignoreSynObj);
+  action->setOn(ig);
+}
+
+void CExecView::OnUpdateFail(QPushButton *pb) 
+{
+	// TODO: Add your command update UI handler code here
+	
+  pb->setEnabled(!Taboo()
+    && text->currentSynObj->StatementSelected(text->currentSelection)
+    && text->currentSynObj->OutputContext());
+}
+
+void CExecView::OnUpdateQua(QPushButton *pb) 
+{
+	// TODO: Add your command update UI handler code here
+	
+  pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateItem(QPushButton *pb) 
+{
+	// TODO: Add your command update UI handler code here
+	
+  pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateNewLine(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  CHETokenNode *startToken, *predToken;
+  SynObject *parent;
+  bool inFormParm=false;
+
+  if (text->currentSynObj->flags.Contains(inExecHdr)) {
+    action->setEnabled(false);
+    return;
+  }
+
+  for (parent = text->currentSynObj; parent; parent = parent->parentObject) {
+    if (parent->primaryToken == FormParms_T) {
+      inFormParm = true;
+      break;
+    }
+  }
+
+  if (inFormParm) {
+    action->setEnabled(false);
+    return;
+  }
+
+  startToken = text->currentSynObj->startToken;
+  predToken = (CHETokenNode*)text->currentSynObj->startToken->predecessor;
+  if (!predToken) {
+    action->setEnabled(false);
+    return;
+  }
+
+  bool nl = text->currentSynObj->flags.Contains(newLine);
+  if (nl)
+    action->setEnabled(true);
+  else
+    if (predToken->data.rect.top() < startToken->data.rect.top()) {
+      action->setEnabled(false);
+      return;
+    }
+    else
+      action->setEnabled(true);
+
+  action->setOn(nl);
+}
+
+void CExecView::OnUpdateToggleArrows(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+
+  action->setEnabled(true);
+  action->setOn(!myDECL->TreeFlags.Contains(leftArrows));
+}
+
+bool CExecView::EnableCopy()
+{
+  if ((Ignorable() && !inIgnore)
+  || !text->currentSynObj->parentObject)
+    return false;
+
+  return ((IsDeletablePrimary()
+    && text->currentSynObj->primaryToken != quant_T
+    && (text->currentSynObj->primaryToken != TDOD_T
+        || ((CHE*)text->currentSynObj->whereInParent)->predecessor == 0)
+    && !( text->currentSynObj->parentObject->IsSelfVar()
+          && text->currentSynObj->whereInParent == (address)&((SelfVar*)text->currentSynObj->parentObject)->execName.ptr))
+    || (text->currentSynObj->containingChain
+        //&& text->currentSynObj->primaryToken != quant_T
+        && text->currentSynObj->primaryToken != TDOD_T)
+    || (text->currentSynObj->parentObject
+        && text->currentSynObj->parentObject->IsFuncInvocation()));
+}
+
+void CExecView::OnUpdateEditCopy(wxAction* action)
+{
+  // TODO: Add your command update UI handler code here
+
+  action->setEnabled(EnableCopy());
+}
+
+bool CExecView::EnablePaste() 
+{
+  if ((Ignorable() && !inIgnore)
+  || !clipBoardObject
+  || clipBoardDoc != myDoc)
+    return false;
+
+  if (clipBoardObject->primaryToken == ObjRef_T) {
+    if (!text->currentSynObj->IsPlaceHolder()
+    || (text->currentSynObj->type != Exp_T
+        && text->currentSynObj->type != ObjPH_T))
+      return false;
+  }
+  else if (text->currentSynObj->type != clipBoardObject->type)
+    return false;
+
+  return true;
+}
+
+void CExecView::OnUpdateTry(QPushButton *pb) 
+{
+	// TODO: Add your command update UI handler code here
+	
+  pb->setEnabled(!Taboo()
+    && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateSucceed(QPushButton *pb) 
+{
+	// TODO: Add your command update UI handler code here
+	
+  pb->setEnabled(!Taboo()
+    && text->currentSynObj->StatementSelected(text->currentSelection)
+    && text->currentSynObj->OutputContext());
+}
+
+void CExecView::OnUpdateEditPaste(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(EnablePaste());
+}
+
+bool CExecView::EnableUndo () 
+{
+  return (GetDocument()->UndoMem.EnableUndo());
+}
+
+void CExecView::OnUpdateEditUndo (wxAction* action) 
+{
+
+  // TODO: Add your command handler code here
+
+  if (editCtlVisible)
+    action->setEnabled(false);
+  else
+    GetDocument()->UndoMem.OnUpdateEditUndo(action);
+}
+
+void CExecView::OnUpdateEditRedo (wxAction* action) 
+{
+
+  // TODO: Add your command handler code here
+
+  if (editCtlVisible)
+    action->setEnabled(false);
+  else
+    GetDocument()->UndoMem.OnUpdateEditRedo(action);
+}
+
+void CExecView::OnUpdateEq(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateDeclare(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
+    && text->currentSynObj->OutputContext());
+}
+
+void CExecView::OnUpdateFalse(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo()
+    && text->currentSynObj->ExpressionSelected(text->currentSelection)
+    && text->currentSynObj->BoolAdmissibleOnly(text->ckd));
+}
+
+void CExecView::OnUpdateForeach(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateGe(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateGt(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateIf(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateIfExpr(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo()
+    && text->currentSynObj->ExpressionSelected(text->currentSelection)
+    && (text->currentSynObj->parentObject->primaryToken == assign_T
+        || text->currentSynObj->parentObject->primaryToken == parameter_T
+        || text->currentSynObj->parentObject->IsBinaryOp()
+        || text->currentSynObj->parentObject->IsMultOp())
+    && !text->currentSynObj->parentObject->IsUnaryOp()
+    && (!text->currentSynObj->parentObject->IsBinaryOp()
+        || text->currentSynObj->whereInParent != (address)&((BinaryOp*)text->currentSynObj->parentObject)->operand1.ptr)
+    && (!text->currentSynObj->parentObject->IsMultOp()
+        || text->currentSynObj->whereInParent != (address)((MultipleOp*)text->currentSynObj->parentObject)->operands.first));
+}
+
+void CExecView::OnUpdateIn(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+bool CExecView::EnableInsert()
+{
+  if (Ignorable() || !text->currentSynObj->parentObject)
+    return false;
+
+  return (
+    ( text->currentSynObj->ExpressionSelected(text->currentSelection)
+      && (( text->currentSynObj->primaryToken == TDOD_T
+             && text->currentSynObj->parentObject->containingChain)
+          || (text->currentSynObj->primaryToken != TDOD_T
+             && text->currentSynObj->containingChain)))
+    || (text->currentSynObj->StatementSelected(text->currentSelection)
+        && (text->currentSynObj->containingChain
+            || text->currentSynObj->primaryToken == Stm_T))
+    || (  (text->currentSelection->data.token == FuncPH_T
+          || text->currentSelection->data.token == FuncDisabled_T
+          || text->currentSelection->data.token == FuncRef_T)
+        && text->currentSynObj->parentObject->parentObject
+        && text->currentSynObj->parentObject->parentObject->IsMultOp())
+    || (  (text->currentSelection->data.token == TypePH_T
+          || text->currentSelection->data.token == TypeRef_T)
+        && text->currentSynObj->parentObject->primaryToken == qua_T)
+    || (text->currentSelection->data.token == then_T
+        || text->currentSelection->data.token == elsif_T
+        || text->currentSelection->data.token == from_T
+        || (text->currentSelection->data.token == in_T
+            && text->currentSynObj->primaryToken == quant_T)
+        || text->currentSelection->data.token == case_T
+        || text->currentSelection->data.token == caseType_T)
+    || ((text->currentSelection->data.token == TypePH_T
+        || text->currentSelection->data.token == TypePHopt_T
+        || text->currentSelection->data.token == TypeRef_T
+        || text->currentSelection->data.token == CrtblPH_T
+        || text->currentSelection->data.token == Callee_T
+        || text->currentSelection->data.token == CompObj_T
+        || text->currentSelection->data.token == CrtblRef_T
+        || text->currentSelection->data.token == SetPH_T
+        || text->currentSelection->data.token == ObjRef_T
+        || text->currentSelection->data.token == Tilde_T
+        || text->currentSelection->data.token == Dollar_T)
+        && text->currentSynObj->parentObject->primaryToken == quant_T)
+    || ((text->currentSelection->data.token == Tilde_T
+        || text->currentSelection->data.token == Dollar_T
+        || text->currentSelection->data.token == Equal_T)
+        && text->currentSynObj->primaryToken == TypeRef_T)
+    || ((text->currentSelection->data.token == VarPH_T
+        || text->currentSelection->data.token == VarName_T)
+        && text->currentSynObj->parentObject->primaryToken == quant_T)
+  );
+}
+
+void CExecView::OnUpdateInsert(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  if (Ignorable() || !text->currentSynObj->parentObject) {
+    action->setEnabled(false);
+    return;
+  }
+  action->setEnabled(
+    ( text->currentSynObj->ExpressionSelected(text->currentSelection)
+      && (( text->currentSynObj->primaryToken == TDOD_T
+             && text->currentSynObj->parentObject->containingChain)
+          || (text->currentSynObj->primaryToken != TDOD_T
+             && text->currentSynObj->containingChain)))
+    || (text->currentSynObj->StatementSelected(text->currentSelection)
+        && (text->currentSynObj->containingChain
+            || text->currentSynObj->primaryToken == Stm_T))
+    || (  (text->currentSelection->data.token == FuncPH_T
+          || text->currentSelection->data.token == FuncDisabled_T
+          || text->currentSelection->data.token == FuncRef_T)
+        && text->currentSynObj->parentObject->parentObject
+        && text->currentSynObj->parentObject->parentObject->IsMultOp())
+    || (  (text->currentSelection->data.token == TypePH_T
+          || text->currentSelection->data.token == TypeRef_T)
+        && text->currentSynObj->parentObject->primaryToken == qua_T)
+    || (text->currentSelection->data.token == then_T
+        || text->currentSelection->data.token == elsif_T
+        || text->currentSelection->data.token == from_T
+        || (text->currentSelection->data.token == in_T
+            && text->currentSynObj->primaryToken == quant_T)
+        || text->currentSelection->data.token == catch_T
+        || text->currentSelection->data.token == case_T
+        || text->currentSelection->data.token == caseType_T)
+    || (text->currentSynObj->primaryToken == quant_T)
+    || ((text->currentSelection->data.token == TypePH_T
+        || text->currentSelection->data.token == TypePHopt_T
+        || text->currentSelection->data.token == TypeRef_T
+        || text->currentSelection->data.token == CrtblPH_T
+        || text->currentSelection->data.token == Callee_T
+        || text->currentSelection->data.token == CompObj_T
+        || text->currentSelection->data.token == CrtblRef_T
+        || text->currentSelection->data.token == SetPH_T
+        || text->currentSelection->data.token == ObjRef_T
+        || text->currentSelection->data.token == Tilde_T
+        || text->currentSelection->data.token == Dollar_T)
+        && text->currentSynObj->parentObject->primaryToken == quant_T)
+    || ((text->currentSelection->data.token == Tilde_T
+        || text->currentSelection->data.token == Dollar_T
+        || text->currentSelection->data.token == Equal_T)
+        && text->currentSynObj->primaryToken == TypeRef_T)
+    || ((text->currentSelection->data.token == VarPH_T
+        || text->currentSelection->data.token == VarName_T)
+        && text->currentSynObj->parentObject->primaryToken == quant_T)
+  );
+}
+
+void CExecView::OnUpdateInsertBefore(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(true);
+  action->setOn(insertBefore);
+}
+
+void CExecView::OnUpdateInvert(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateLe(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateLshift(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateLt(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateMult(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateNe(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateShowComments(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(true);
+  action->setOn(text->showComments);
+}
+
+void CExecView::OnUpdateNot(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateNull(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo()
+    && text->currentSynObj->ExpressionSelected(text->currentSelection)
+    && text->currentSynObj->NullAdmissible(text->ckd));
+}
+
+void CExecView::OnUpdateOr(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdatePlus(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdatePlusMinus(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateOrd(wxAction* action) 
+{
+	// TODO: Add your command update UI handler code here
+	
+  action->setEnabled(!Taboo()
+    && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateRshift(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateShowOptionals(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  SynObject *lookAt = text->currentSynObj;
+  Quantifier *quantPtr;
+
+  if (Ignorable()) {
+    action->setEnabled(false);
+    return;
+  }
+
+  if (text->currentSynObj->parentObject
+  && text->currentSynObj->parentObject->primaryToken == quant_T
+  && text->currentSynObj->parentObject->parentObject->primaryToken != declare_T
+  && (text->currentSelection->data.token == TypePHopt_T
+      || text->currentSelection->data.token == TypeRef_T
+      || text->currentSelection->data.token == SetPH_T
+      || text->currentSelection->data.token == ObjRef_T)) {
+    lookAt = text->currentSynObj->parentObject;
+  }
+  else if (text->currentSynObj->parentObject
+  && text->currentSynObj->parentObject->primaryToken == quant_T
+  && (text->currentSelection->data.token == VarPH_T
+      || text->currentSelection->data.token == VarName_T)) {
+    lookAt = text->currentSynObj;
+    quantPtr = (Quantifier*)lookAt->parentObject;
+  }
+  else if (text->currentSynObj->parentObject
+  && text->currentSynObj->parentObject->primaryToken == assignFS_T) {
+    if (text->currentSelection->data.token == FuncRef_T
+    || text->currentSelection->data.token == FuncPH_T) {
+      lookAt = text->currentSynObj->parentObject;
+    }
+  }
+
+  action->setOn(false);
+  if (lookAt->HasOptionalParts())
+    action->setEnabled(true);
+  else {
+    action->setEnabled(false);
+    return;
+  }
+}
+
+void CExecView::OnUpdateSwitch(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateTrue(wxAction* action) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  action->setEnabled(!Taboo()
+    && text->currentSynObj->ExpressionSelected(text->currentSelection)
+    && text->currentSynObj->BoolAdmissibleOnly(text->ckd));
+}
+
+void CExecView::OnUpdateXor(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+
+void CExecView::UpdateErrMsg (QString &helpMsg) {
+  CHAINX emptyChain;
+  QString errorMsg;
+
+  if (!active || !text->currentSelection/* || errMsgUpdated*/) return;
+
+  if (text->currentSynObj->lastError
+  && (text->currentSelection == text->currentSynObj->primaryTokenNode
+      || text->currentSelection->data.token == Rbracket_T)) {
+    myDoc->SetPEError(text->currentSynObj->errorChain,nextError);
+    errorMsg = *((CLavaError*)((CHE*)text->currentSynObj->errorChain.first)->data)->IDS;
+    errorMsg = ((CLavaError*)((CHE*)text->currentSynObj->errorChain.first)->data)->textParam.c + errorMsg;
+    statusBar->message(errorMsg);
+    nextError = false;
+    return;
+  }
+  else if (nextError)
+    myDoc->SetPEError(plhChain,true);
+  else {
+    myDoc->SetPEError(emptyChain,false);
+    nextError = false;
+	}
+
+  if (text->currentSynObj->comment.ptr)
+    statusBar->message(text->currentSynObj->comment.ptr->str.c);
+  else
+    statusBar->message(helpMsg);
+  errMsgUpdated = true;
+}
+
+ObjComboUpdate::ObjComboUpdate (CExecView *ev) {
+  bool criticalScope=false;
+
+  execView = ev;
+  doc = ev->myDoc;
+  ev->m_ComboBar->RemoveLocals();
+}
+
+bool ObjComboUpdate::Action (CheckData &ckd, VarName *varName, TID &tid) {
+  TID varID;
+
+  if (ckd.criticalScope)
+    ckd.criticalScope = false;
+  else if (tid.nID != -1 && (!ckd.handleOpd || ckd.inQuant)) {
+    varID = varName->varID;
+    ADJUST4(varID);
+    ADJUST4(tid);
+    execView->m_ComboBar->AddLocal(varID,varName->varName,tid);
+  }
+  return false;
+}
+

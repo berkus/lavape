@@ -1,0 +1,30 @@
+REGEDIT
+;   Diese .REG-Datei kann von Ihrem SETUP-Programm verwendet werden.
+;   Falls kein SETUP-Programm verfügbar ist, werden die unten stehenden Einträge
+;   automatisch in InitInstance registriert, mit einem Aufruf an 
+;   CWinApp::RegisterShellFileTypes and COleObjectFactory::UpdateRegistryAll.
+
+HKEY_CLASSES_ROOT\.lava = Lava.Document
+HKEY_CLASSES_ROOT\Lava.Document\shell\open\command = LAVA.EXE %1
+HKEY_CLASSES_ROOT\Lava.Document\shell\open\ddeexec = [open("%1")]
+HKEY_CLASSES_ROOT\Lava.Document\shell\open\ddeexec\application = LAVA
+    ; Hinweis: die Anwendung ist optional
+    ;  (als Standardwert wird der Name der Anwendung in "command" verwendet)
+
+HKEY_CLASSES_ROOT\Lava.Document = Lava Document
+HKEY_CLASSES_ROOT\Lava.Document\protocol\StdFileEditing\server = LAVA.EXE
+HKEY_CLASSES_ROOT\Lava.Document\protocol\StdFileEditing\verb\0 = &Edit
+HKEY_CLASSES_ROOT\Lava.Document\Insertable =
+HKEY_CLASSES_ROOT\Lava.Document\CLSID = {EF6A8824-2475-11D3-B7B1-000000000000}
+
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000} = Lava Document
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\DefaultIcon = LAVA.EXE,1
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\LocalServer32 = LAVA.EXE
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\ProgId = Lava.Document
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\MiscStatus = 32
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\AuxUserType\3 = Lava
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\AuxUserType\2 = Lava
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\Insertable = 
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\verb\1 = &Öffnen,0,2
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\verb\0 = &Bearbeiten,0,2
+HKEY_CLASSES_ROOT\CLSID\{EF6A8824-2475-11D3-B7B1-000000000000}\InprocHandler32 = ole32.dll

@@ -1,0 +1,483 @@
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<class>IDD_IOPage</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>IDD_IOPage</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>304</width>
+            <height>391</height>
+        </rect>
+    </property>
+    <property name="sizePolicy">
+        <sizepolicy>
+            <hsizetype>7</hsizetype>
+            <vsizetype>7</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+        </sizepolicy>
+    </property>
+    <property name="caption">
+        <string>IO+Layout</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>GroupBox_IDC_STATIC</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>7</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+                <enum>NoFocus</enum>
+            </property>
+            <property name="title">
+                <string>Input/Output property of the field</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QCheckBox" row="0" column="2">
+                    <property name="name">
+                        <cstring>m_UseDefault</cstring>
+                    </property>
+                    <property name="text">
+                        <string>default</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="0" column="1">
+                    <property name="name">
+                        <cstring>m_isOutput</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Output</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>m_Echo</cstring>
+                    </property>
+                    <property name="text">
+                        <string>No echo</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="1" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>m_NoFIO</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Unused (placeholder)</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="0" column="0">
+                    <property name="name">
+                        <cstring>m_isInput</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Input</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>GroupBox_IDC_STATIC1</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>7</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+                <enum>NoFocus</enum>
+            </property>
+            <property name="title">
+                <string>Pos. of entire field (incl. prefix/suffix)</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QSpinBox" row="1" column="2">
+                    <property name="name">
+                        <cstring>m_SPIN3</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>m_SPIN2</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="2">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC4</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Vertical space</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC2</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Horizontal tab</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="1" column="1">
+                    <property name="name">
+                        <cstring>m_SPIN1</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>m_groupbox</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Use group box</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="1">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC3</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Horizontal space</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <widget class="QGroupBox">
+            <property name="name">
+                <cstring>GroupBox_IDC_STATIC2</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>7</hsizetype>
+                    <vsizetype>7</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+            <property name="focusPolicy">
+                <enum>NoFocus</enum>
+            </property>
+            <property name="title">
+                <string>Rel. pos. of actual data field</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QSpinBox" row="1" column="0">
+                    <property name="name">
+                        <cstring>m_SPIN5</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="1" column="3">
+                    <property name="name">
+                        <cstring>m_SPIN6</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="3">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC7</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Vertical space</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC6</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Horizontal space</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="2" column="0">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC8</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Columns</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="3" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>m_SPIN8</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="1" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>m_SPIN4</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="0">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC5</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Horizontal tab</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="2" column="1" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>Label_IDC_STATIC9</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Rows</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="4" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>m_Popupw</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Popup window</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox" row="4" column="2" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>m_MultiLine</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Multiline text</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="3" column="0">
+                    <property name="name">
+                        <cstring>m_SPIN7</cstring>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+        <spacer>
+            <property name="name">
+                <cstring>spacer5</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>20</height>
+                </size>
+            </property>
+        </spacer>
+    </vbox>
+</widget>
+<connections>
+    <connection>
+        <sender>m_MultiLine</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>OnMultiLine()</slot>
+    </connection>
+    <connection>
+        <sender>m_Popupw</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>OnPopupw()</slot>
+    </connection>
+    <connection>
+        <sender>m_UseDefault</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>OnUseDefault()</slot>
+    </connection>
+    <connection>
+        <sender>m_NoFIO</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>OnNoFIO()</slot>
+    </connection>
+    <connection>
+        <sender>m_isOutput</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>OnisOutput()</slot>
+    </connection>
+    <connection>
+        <sender>m_isInput</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>OnisInput()</slot>
+    </connection>
+    <connection>
+        <sender>m_Echo</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>m_Echo_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>m_SPIN5</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>horizTabChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_SPIN4</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>horizSpaceChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_SPIN6</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>vertSpaceChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_SPIN2</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>horizTabChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_SPIN1</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>horizSpaceChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_SPIN3</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>vertSpaceChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_SPIN7</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>colsChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_SPIN8</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>rowsChanged(int)</slot>
+    </connection>
+    <connection>
+        <sender>m_groupbox</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_IOPage</receiver>
+        <slot>m_groupbox_clicked()</slot>
+    </connection>
+</connections>
+<includes>
+    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
+</includes>
+<slots>
+    <slot>OnMultiLine()</slot>
+    <slot>OnPopupw()</slot>
+    <slot>OnUseDefault()</slot>
+    <slot>OnNoFIO()</slot>
+    <slot>OnisOutput()</slot>
+    <slot>OnisInput()</slot>
+    <slot>m_Echo_clicked()</slot>
+    <slot>horizTabChanged( int )</slot>
+    <slot>horizSpaceChanged( int )</slot>
+    <slot>vertSpaceChanged( int )</slot>
+    <slot>colsChanged( int )</slot>
+    <slot>rowsChanged( int )</slot>
+    <slot>m_groupbox_clicked()</slot>
+    <slot>defaultFontT_clicked()</slot>
+    <slot>defaultFontL_clicked()</slot>
+    <slot>fontButtonT_clicked()</slot>
+    <slot>fontButtonL_clicked()</slot>
+</slots>
+<exportmacro>LAVAPEUI_DLL</exportmacro>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Initialization checks</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER"><strong>Comprehensive initialization checks</strong></H2>
+    
+    <p>Inadvertent use of uninitialized data frequently causes programs to crash 
+    in a way that is hard and time-consuming to disentangle, which in turn gives 
+    rise to immense costs. The attempt to 
+    prevent such situations has therefore been a constitutive design goal of the
+    <i><font color="#FF0000"><b>Lava</b></font></i> development. </p>
+    
+    <p>Our goal was to prevent missing initialization and use of undefined 
+    values by <i>static</i> checks (at programming time) wherever possible . 
+    However, this required a 
+    major revision of the expressive means for executable code, in comparison 
+    with more traditional wide-spread programming languages. In particular, we 
+    have</p>
+    
+    <ul>
+      <li><a href="RepetComputSamples.htm">replaced traditional loop constructs</a> 
+      by recursive function calls and bounded quantifiers,</li>
+      <li>replaced the traditional view of program variables as &quot;reusable data 
+      containers&quot; by a &quot;<a href="SingleAssigLogSem.htm">single-assignment</a>&quot; 
+      view of variable usage, and</li>
+      <li>eliminated parameter passing &quot;by reference&quot; in favor of an unambiguous 
+      distinction between input and output parameters.</li>
+    </ul>
+    
+    <p>More precisely, missing initialization and use of undefined values have 
+    to be prevented with respect to</p>
+    
+    <ol>
+      <li><b>local</b> variables,</li>
+      <li><b>member </b>variables of classes, and</li>
+      <li><b>output</b> parameters of function calls.</li>
+    </ol>
+    
+    <p>(Note that <i>global variables</i> have been abolished anyway in
+    <font color="#FF0000"><i><b>Lava</b></i></font> in favor of a purely local, 
+    explicit data flow, in order to facilitate the analysis and comprehension of 
+    data flow in complex programs.)</p>
+    
+    <p>Before you proceed, you should have understood how <font color="#FF0000">
+    <i><b>Lava</b></i></font> <a href="RepetComputSamples.htm">replaces 
+    traditional loop constructs</a> and that this implies:</p>
+    
+    <p><b><span lang="de">F</span>or every read access to a 
+    <font color="#FF0000"><i>Lava</i></font> variable you can easily find the origin of the current value of this variable by 
+following the containing program branch in upward direction (unless the variable 
+is an input variable and therefore a value is 
+assigned to it already <I>outside</I> this function).&nbsp;</b></p>
+    
+    <p>Now let's return to the three kinds of initialization problems. Note that
+    <i><font color="#FF0000"><b>LavaPE </b></font></i>1. <a href="EditExec.htm">
+    shows executable code</a> in separate windows, every function and initiator 
+    body and every constraint in a window of its own, and 2. after every single 
+    editing step in the <font color="#FF0000"><i><b>LavaPE</b></i></font> 
+    structure editors <font color="#FF0000"><i><b>LavaPE</b></i></font> performs 
+    a static check on all the <i><font color="#FF0000"><b>Lava</b></font></i> 
+    code that is currently being presented in any open Window.</p>
+    
+    <h3>1. Local variables</h3>
+    
+    <p>Local variables may be introduced in several different ways, i.e., by 
+    several constructs:</p>
+    <ul>
+      <li><font color="#0000FF"><b>declare</b></font> (just declares new local 
+      variables in the usual sense),</li>
+      <li><font color="#0000FF"><b>foreach</b></font> (universal quantifier 
+      ranging over some finite set of objects),</li>
+      <li><font color="#0000FF"><b>exists</b></font> (existential quantifier 
+      ranging over some finite set of objects),</li>
+      <li><font color="#0000FF"><b>select</b></font> (<font color="#FF0000"><i><b>Lava</b></i></font> 
+      counterpart of the <font color="#FF0000"><i><b>SQL</b></i></font> select 
+      expression),</li>
+      <li><font color="#0000FF"><b>type</b></font> (branches over the run time 
+      type of an expression value).</li>
+    </ul>
+    
+    <p>which all assign values to the respective local variables that they 
+    introduce, except for the declare construct. So we need to consider only <i>
+    declared</i> variables.</p>
+    
+    <p>For every read access to a <i>declared</i> local variable
+    <font color="#FF0000"><i><b>LavaPE</b></i></font> checks (statically, = at 
+    programming time) if a value is assigned to this variable above the place of 
+    reference in the same program&nbsp; branch and reports an error otherwise. A 
+    somewhat unusual consequence of this is that a newly declared (non-optional) 
+    local variable is always displayed bold and red initially, marking an error, 
+    since there has not yet been assigned a value to it.</p>
+    <h3>2. Member variables</h3>
+    <p>In order to guarantee that all non-optional member variables of
+    <font color="#FF0000"><i><b>Lava</b></i></font> objects are properly 
+    initialized, <font color="#FF0000"><i><b>Lava</b></i></font> enforces an 
+    unusually stringent initialization discipline<span lang="de">:</span></p>
+    <ol>
+      <li>New <font color="#FF0000"><i><b>Lava</b></i></font> objects are 
+      created using the <font color="#0000FF"><b>new</b></font> expression, 
+      which requires the specification of an &quot;initializer&quot; associated with the 
+      new object's class.</li>
+      <li><font color="#FF0000"><i><b>LavaPE</b></i></font> makes sure (by 
+      purely static checks) that every initializer assigns a value to every 
+      non-optional member variable of this class in each of its branches.</li>
+      <li>You can modify these values within the (optional)
+      <font color="#800080"><b>but</b></font> clause of the
+      <font color="#0000FF"><b>new</b></font> expression and in this way <i>
+      customize</i> the object before its completion.</li>
+      <li>When a new object leaves the <font color="#0000FF"><b>new</b></font> 
+      construct <font color="#FF0000"><i><b>Lava</b></i></font> marks it as <i>
+      finished</i>. <font color="#FF0000"><i><b>Lava</b></i></font> makes sure 
+      (by run time checks) that you cannot pass an unfinished object (from 
+      within an initializer or a <font color="#800080"><b>but</b></font> clause) 
+      as an input parameter to any function.<br>
+      <br>
+      This enforces essentially a strict <i>bottom-up construction of new 
+      objects</i> from member objects that have to be constructed first.</li>
+    </ol>
+    <p>Two concessions will (to some degree) soften the &quot;pain&quot; caused by such a 
+    strict bottom-up construction discipline:<i> </i></p>
+    <p><i>From within an initializer</i></p>
+    <ul>
+      <li>you may use <i>self</i>&nbsp; for calling a method of self's class: self.method(...), after all 
+      non-optional members of <i>self</i> have been initialized, although the new object has not 
+      yet been marked as <i>finished</i> in this case.</li>
+      <li>you may pass a (not yet completely 
+      initialized) <i>self</i> object as an input parameter to <i>another initializer</i>: This 
+      is inevitably needed if you would like to establish a 
+      &quot;backward&quot; <a href="PointersRefCounts.htm">pointer</a> from a member object to its containing parent object.</li>
+    </ul>
+    <p>In more detail, point 2 above means that from every &quot;return point&quot; of the 
+    function body the check follows the respective branch in upward direction 
+    and makes sure that a value is assigned to every non-optional output 
+    parameter in this branch.</p>
+    <p>A &quot;return point&quot; may be the end of the function body or a
+    <font color="#0000FF"><b>succeed</b></font> or <font color="#0000FF"><b>fail</b></font> 
+    statement. The <font color="#0000FF"><b>fail</b></font> statement may 
+    optionally specify an expression whose value designates an exception that is 
+    to be thrown.</p>
+    <p>If a function has output parameters (see below) then it must not be left 
+    through a <font color="#0000FF"><b>fail</b></font> statement without 
+    throwing an exception (checked at programming time).</p>
+    <p>An exception-throwing <font color="#0000FF"><b>fail</b></font> statement 
+    is the <i>only</i> way to exit from an initializer if you cannot assign a 
+    value to every non-optional output parameter. (Checked essentially at 
+    programming time. A <i>null-exception</i> exception is thrown if at run time 
+    if the exception expression in the <font color="#0000FF"><b>fail</b></font> 
+    statement yields a <i>null</i> value.)</p>
+    <h3>3. Output parameters</h3>
+    
+    <p><b><font color="#FF0000"><i>Lava</i></font> doesn't support parameter 
+    passing &quot;by reference&quot;.</b></p>
+    
+    <p>In <font color="#FF0000"><i><b>Lava</b></i></font> function parameters 
+    are either input or output parameters. For reference parameters it wouldn't 
+    be clear whether or not the function assigns a value to them, whereas a
+    <font color="#FF0000"><i><b>Lava</b></i></font>&nbsp; function <b>must</b> 
+    assign a value to <b>every</b> non-optional output parameter, and this is 
+    checked already at programming time (= statically).</p>
+    
+    <p>This is an essential prerequisite for all kinds of <font color="#FF0000">
+    <i><b>Lava</b></i></font>&nbsp; initialization checks since only then you 
+    can also cover those cases where a variable is initialized by being an 
+    actual output parameter of a function call.</p>
+    
+    <p>Assignment of optional to non-optional variables can be checked only at 
+    run time and may cause a null-pointer-exception to occur.</p>
+    
+    <p>Like the member initialization checks (see above), the initialization 
+    checks for output parameters are performed at all return points of the 
+    function body.</p>
+    
+    <p>An exception-throwing <font color="#0000FF"><b>fail</b></font> statement 
+    is again the <i>only</i> way to exit from a function if you cannot assign a 
+    value to every non-optional output parameter. (Checked essentially at 
+    programming time. A <i>null-exception</i> exception is thrown if at run time 
+    if the exception expression in the <font color="#0000FF"><b>fail</b></font> 
+    statement yields a <i>null</i> value.)</p>
+    
+    <p>In this way <font color="#FF0000"><i><b>Lava</b></i></font> makes sure 
+    that undefined outputs cannot be used <i>inadvertently</i> by the caller of 
+    a failing function but only if the resulting exception is caught and the 
+    respective output parameters are used nevertheless thereafter. </p>
+    
+    <p>(The worst thing that may happen then is that such an output is null: 
+    then a null-pointer-exception will be thrown in turn, or you use the output 
+    although its value may be meaningless in this case: that's your own risk and 
+    should be avoided without reliable knowledge about the function's 
+    implementation.)</p>
+    
+    </BODY>
+</HTML>

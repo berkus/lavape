@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <TITLE>The Lava interpreter</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">The object-oriented <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+    interpreter</H2>
+    
+    <P>The point-and-click operations of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      programmer (using <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>)
+      operate directly on an internal tree-representation of the lava program (a
+      kind of &quot;abstract syntax tree&quot;). Particularly the executable
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> constructs correspond
+      to specific <B><I><FONT COLOR="#FF0000">C++</FONT></I></B> classes. The
+      <B><I><FONT COLOR="#FF0000">C++</FONT></I></B> class of a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      statement or expression construct comprises an &quot;Execute&quot; or &quot;Evaluate&quot;
+      member function, respectively. These essentially make up the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      interpreter (together with various functions of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      run time system, of course). Note that also the logical conjunctions (like
+      &quot;;&quot; = &quot;and&quot;, &quot;or&quot;, &quot;not&quot;, &quot;if-then-else&quot;,
+      &quot;switch&quot;, ...) and the quantifiers (&quot;declare&quot;, &quot;foreach&quot;,
+      &quot;exists&quot;, &quot;select&quot;) are represented in this way and
+      have specific &quot;Execute&quot; functions (or &quot;Evaluate&quot; for
+      the &quot;select&quot; expression).</P>
+    
+    <P>So the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> interpreter is
+      not a separate piece of program of its own but is, in a sense, spread over
+      the <B><I><FONT COLOR="#FF0000">C++</FONT></I></B> classes representing
+      the various executable <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      constructs.</P>
+    
+    <P>The internal tree-representation of a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      program is transformed into an ASN.1 encoding when the program is stored
+      in a file. The interpreter reads this ASN.1 representation into main
+      memory before execution, transforms it back into the original
+      tree-representation and recursively checks the entire program for
+      correctness and completeness. The check functions for the executable
+      constructs are again member functions of the <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>
+      classes corresponding to the respective constructs. They are essentially
+      the same check functions that are also applied after each point-and-click
+      editing operation of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      programmer at programming time, but would typically compute additional
+      information that is needed at execution time, for instance &quot;virtual
+      function tables&quot; (VFT's), relative positions of functions within
+      these VFT's, relative positions of local variables on the run time stack
+      and of member objects within the containing object.</P>
+    
+    <H3>Advantages of the object-oriented <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+    interpreter as compared with a VM or &quot;byte code&quot; interpreter:</H3>
+    
+    <OL>
+      <LI>The object-oriented interpreter of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        operates on <I>whole <B><FONT COLOR="#FF0000">Lava</FONT></B>
+        constructs</I> whose interpretation is performed by small and efficient
+        <B><I><FONT COLOR="#FF0000">C++</FONT></I></B> functions, whereas a
+        byte code interpreter operates on the very low level of tiny, individual
+        bytes. Hence an object-oriented interpreter can be expected to run
+        significantly faster than a byte code interpreter.</LI>
+      <LI>The development of an object-oriented interpreter is much easier than
+        the development of a virtual machine.</LI>
+      <LI>In particular, by <I>reinterpreting</I> a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        program as a <B><I><FONT COLOR="#FF0000">C++</FONT></I></B> program
+        in this way we can utilize many features of the <B><I><FONT COLOR="#FF0000">C++
+        </FONT></I></B>run time system <I>directly</I> for <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>;
+        for instance, <B><I><FONT COLOR="#FF0000">C++ </FONT></I></B>exception 
+      handling to handle non-catchable <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        exceptions (&quot;fatal errors&quot;), <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>
+        threads (or rather the Windows/MFC thread class) to implement concurrent
+        execution in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>; even
+        the <B><I><FONT COLOR="#FF0000">C++</FONT></I></B> run time stack can
+        be used <I>directly</I> as <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+        run time stack with the help of very few inline assembler statements. We
+        need not reconstruct all these features from scratch on a byte code /
+        virtual machine level.</LI>
+      <LI>It is much easier to <I>adapt</I> an object-oriented interpreter to
+        new or modified language constructs.</LI>
+      <LI><I>Compilation</I> into byte code is not required.</LI>
+      <LI>Delicate and error-prone <I>byte code verification</I> before
+        execution is not required.</LI>
+    </OL>
+  </BODY>
+</HTML>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <TITLE>Virtual base samples</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Virtual base sample </H2>
+    
+    <H3>Sample files</H3>
+    
+    <p>Please open <b>VirtualBase.lava</b> in
+<font color="#FF0000"><b><i>LavaPE</i></b></font>.</p>
+    
+    <H3>Topic </H3>
+    
+    <p><b>&quot;Mix-in&quot;</b>: Specifying a <a href="PatternsFrameworks.htm#VT">virtual type</a> (rather
+    than a concrete interface) as a base type of a new interface.&nbsp; (In <i>
+    <b><font color="#FF0000">C++</font></b></i> you can use &quot;templates&quot; to 
+    achieve a similar effect, although there is a principal difference between 
+    templates and virtual types.) </p>
+    
+    <H3>Overview </H3>
+    
+    <p>First remember that the term &quot;<a href="SepItfImpl.htm#virtualBaseClasses">virtual
+    base class</a>&quot; has a different meaning in <b><i><font color="#FF0000">Lava</font></i></b>
+    than in C++.&nbsp; </p>
+    
+    <p>While in other OO languages you can extend only concrete
+    classes/interfaces, <b><i><font color="#FF0000">Lava</font></i></b> allows
+    you to specify <i>virtual</i> types (= type parameters of containing
+    patterns) as base interfaces of a new interface.&nbsp; </p>
+    
+    <p>This unique feature of <b><i><font color="#FF0000">Lava</font></i></b>
+    provides a much more natural and convenient realization of the well-known
+    &quot;decorator&quot; pattern (cf. the frequently cited &quot;Design
+    Patterns&quot; book <a href="TypeSafety.htm#GOF">[8]</a> of the &quot;Gang
+    of Four&quot;).&nbsp; </p>
+    
+    <p>A typical application of the decorator pattern is, for instance, to
+    &quot;decorate&quot; all kinds of windows of a graphical user interface by
+    scrollbars or borders (or first scrollbars and then borders). More
+    precisely: </p>
+    
+    <p>There is a common base class B of all types of windows. There are special
+    window classes W<sub>1</sub>, W<sub>2</sub>, W<sub>3</sub>, ... that are all
+    derived from B. In order to attach a border to any type of window you need
+    to use only functions that are already declared in B, for instance a
+    function <i>reqSize</i> that computes the &quot;required size&quot; of the
+    respective window, which will, of course, depend on the respective content
+    of that type of window. Therefore <i>reqSize</i> will be overridden by the
+    special window types W<sub>1</sub>, W<sub>2</sub>, W<sub>3</sub>, ..., and
+    the decorator extension DW<sub>n</sub> of any special window type W<sub>n</sub>
+    (which adds the border to W<sub>n</sub>) will have to call this overridden W<sub>n</sub>-version
+    of <i>reqSize</i> <font color="#FF0000">statically</font>.&nbsp; </p>
+    
+    <p> Actually we could
+    declare and implement the border extension of special window classes without
+    knowing anything about a concrete W<sub>n</sub> except that it is derived
+    from B. All we need is a way to specify a type <i>parameter</i> (rather than
+    a concrete type) as a base type of a new type and a way to express a static
+    call of a member function of such a parameter type. Both features are
+    supported by <b><i><font color="#FF0000">Lava</font></i></b>, as is
+    demonstrated by our virtual base sample. </p>
+    
+    <p>A particular advantage of the <b><i><font color="#FF0000">Lava </font></i></b>solution
+    to the decorator problem is that DW<sub>n</sub> is a true extension of W<sub>n</sub>
+    and thus inherits all features of W<sub>n</sub> (including those of B). The
+    solution of <a href="TypeSafety.htm#GOF">[8]</a>  establishes the
+    specialized windows W<sub>n </sub>as child windows (i.e., as member
+    variables) of the decorated windows DW<sub>n</sub>. Thus DW<sub>n</sub>
+    doesn't inherit the features of W<sub>n</sub> automatically, but you have to
+    reconstruct them explicitly in DW<sub>n</sub> by &quot;delegating&quot; the
+    respective function calls to the corresponding functions of the W<sub>n</sub>
+    member object of DW<sub>n</sub>. </p>
+    
+    <p><b>Summary:</b> The virtual base types of <b><i><font color="#FF0000">Lava
+    </font></i></b>provide a new kind of abstraction that enables us to specify
+    and implement&nbsp; extension interfaces (in a generic way, &quot;once for
+    all&quot;) without knowing the precise concrete type(s) of the base
+    interface(s). </p>
+    
+    <H3>Where to look and what to do</H3>
+    
+    <p>
+    <OBJECT id=hhctrl0 type="application/x-oleobject"
+        classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"
+        codebase="hhctrl.ocx#Version=4,74,9273,0"
+        width=12
+        height=12>
+    <PARAM name="Command" value="ShortCut">
+    <PARAM name="Button" value="Click to open VirtualBase.lava in LavaPE">
+    <PARAM name="Item1" value=",LavaPE.lnk,Samples\VirtualBase.lava">
+    </OBJECT>
+    Please open <b>VirtualBase.lava</b> in
+<font color="#FF0000"><b><i>LavaPE</i></b></font>,<br>
+    or <font color="#0000FF"><b><a href="../Samples/VirtualBase.htm" target="_top">VirtualBase.htm</a></b>
+    </font>
+      (as a substitute if you haven't installed <font color="#FF0000"><i><b>LavaPE</b></i></font>)
+    </p>
+    
+    <p><a href="EditTree.htm">Read the comments</a> in the declaration tree.</p>
+    <p>Open the body (&quot;exec&quot;) of the initiator &quot;<i>DecoratorDemo</i>&quot;.</p>
+    <p>Look at the different implementations of <i>func</i>, <i>func1</i>, <i>func2</i>. </p>
+    <p><a href="EditTree.htm">Run</a> the sample program and watch the outputs
+    (message boxes) that are generated by the successive function calls in the
+    initiator body. They indicate which function version is actually called. </p>
+    
+  </BODY>
+</HTML>

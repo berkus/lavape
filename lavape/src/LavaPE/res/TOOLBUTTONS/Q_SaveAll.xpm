@@ -1,0 +1,38 @@
+/* XPM */
+static char *Q_SaveAll[] = {
+/* width height num_colors chars_per_pixel */
+"    16    15       16            1",
+/* colors */
+"` c #000000",
+". c #800000",
+"# c #008000",
+"a c #808000",
+"b c #000080",
+"c c #800080",
+"d c #008080",
+"e c None",
+"f c #808080",
+"g c #ff0000",
+"h c #00ff00",
+"i c #ffff00",
+"j c #0000ff",
+"k c #ff00ff",
+"l c #00ffff",
+"m c #ffffff",
+/* pixels */
+"eeee```````````e",
+"eeee`a`mmmmm`m`e",
+"ee```````````a`e",
+"ee`a`mmmmm`m`a`e",
+"`````````````a`e",
+"`a`mmmmm`m`a`a`e",
+"`a`mmmmm`a`a`a`e",
+"`a`mmmmm`a`a`a`e",
+"`a`mmmmm`a`a`a`e",
+"`a```````a`a```e",
+"`aaaaaaaaa`a`eee",
+"`a`````m`a```eee",
+"```````m`a`eeeee",
+"e``````````eeeee",
+"eeeeeeeeeeeeeeee"
+};

@@ -1,0 +1,3196 @@
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<class>CMainFrame</class>
+<widget class="QMainWindow">
+    <property name="name">
+        <cstring>CMainFrame</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>501</width>
+            <height>685</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>LavaPE</string>
+    </property>
+</widget>
+<menubar>
+    <property name="name">
+        <cstring>menubar</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>501</width>
+            <height>29</height>
+        </rect>
+    </property>
+    <item text="&amp;File" name="fileMenu">
+        <action name="fileNewAction"/>
+        <action name="newCompoAction"/>
+        <action name="importComponentAction"/>
+        <action name="fileOpenAction"/>
+        <action name="fileCloseAction"/>
+        <action name="fileSaveAction"/>
+        <action name="fileSaveAsAction"/>
+        <action name="fileSaveAllAction"/>
+        <separator/>
+        <action name="newIncludeAction"/>
+        <action name="genLinkedHtmlAction"/>
+        <action name="genSingleHtmlAction"/>
+        <separator/>
+        <action name="fileExitAction"/>
+    </item>
+    <item text="&amp;Edit" name="editMenu">
+        <action name="editSelItemAction"/>
+        <action name="editCutAction"/>
+        <action name="editCopyAction"/>
+        <action name="editPasteAction"/>
+        <action name="deleteAction"/>
+        <separator/>
+        <action name="editUndoAction"/>
+        <action name="editRedoAction"/>
+    </item>
+    <item text="Find" name="findMenu">
+        <action name="findRefsAction"/>
+        <action name="findByNameAction"/>
+        <action name="gotoDeclAction"/>
+        <action name="gotoImplAction"/>
+        <action name="returnToRefAction"/>
+        <separator/>
+        <action name="nextCommentAction"/>
+        <action name="prevCommentAction"/>
+        <action name="nextErrorAction"/>
+        <action name="prevErrorAction"/>
+    </item>
+    <item text="&amp;View" name="viewMenu">
+        <action name="viewTB1Action"/>
+        <action name="viewTB2Action"/>
+        <action name="viewTB3Action"/>
+        <action name="viewTB4Action"/>
+        <action name="viewTB5Action"/>
+        <action name="viewTB6Action"/>
+        <action name="viewTB7Action"/>
+        <separator/>
+        <action name="openFormViewAction"/>
+        <separator/>
+        <action name="setTreeFontAction"/>
+        <action name="SetFormFontsAction"/>
+        <item text="Set form fonts" name="SetFormFontsAction_2" accel="">
+            <action name="setFormTextFontAction"/>
+            <action name="setFormLabelFontAction"/>
+            <action name="setFormButtonFontAction"/>
+        </item>
+        <action name="setExecFontAction"/>
+        <action name="setGlobalFontAction"/>
+    </item>
+    <item text="Insert" name="insertMenu">
+        <action name="newIncludeAction"/>
+        <separator/>
+        <action name="newPackageAction"/>
+        <action name="newInitiatorAction"/>
+        <separator/>
+        <action name="new_InterfaceAction"/>
+        <action name="newImplAction"/>
+        <action name="newCOspecAction"/>
+        <action name="newCOimplAction"/>
+        <separator/>
+        <action name="newSetAction"/>
+        <action name="newEnumAction"/>
+        <separator/>
+        <action name="newVTAction"/>
+        <action name="newFuncAction"/>
+        <action name="newMemVarAction"/>
+        <separator/>
+        <action name="newEnumItemAction"/>
+    </item>
+    <item text="&amp;Window" name="windowMenu">
+        <action name="tileHorizAction"/>
+        <action name="tileVerticAction"/>
+        <action name="cascadeAction"/>
+    </item>
+    <item text="&amp;Help" name="helpMenu">
+        <action name="helpContentsAction"/>
+        <action name="editingLavaProgsAction"/>
+        <action name="learningLavaAction"/>
+        <separator/>
+        <action name="helpAboutAction"/>
+    </item>
+</menubar>
+<toolbars>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>Toolbar_1</cstring>
+        </property>
+        <property name="label">
+            <string>File toolbar</string>
+        </property>
+        <action name="fileNewAction"/>
+        <action name="newCompoAction"/>
+        <action name="fileOpenAction"/>
+        <action name="fileSaveAction"/>
+        <action name="fileSaveAllAction"/>
+        <separator/>
+        <action name="editCutAction"/>
+        <action name="editCopyAction"/>
+        <action name="editPasteAction"/>
+        <action name="editUndoAction"/>
+        <action name="editRedoAction"/>
+        <separator/>
+        <action name="tileHorizAction"/>
+        <action name="tileVerticAction"/>
+        <action name="cascadeAction"/>
+    </toolbar>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>Toolbar_2</cstring>
+        </property>
+        <property name="label">
+            <string>Tree op. toolbar</string>
+        </property>
+        <action name="expandAction"/>
+        <action name="collapseAction"/>
+        <action name="showOptsAction"/>
+        <action name="showAllOptsAction"/>
+        <action name="hideEmptyOptsAction"/>
+        <separator/>
+        <action name="showUtilWindowAction"/>
+        <action name="nextCommentAction"/>
+        <action name="prevCommentAction"/>
+        <action name="nextErrorAction"/>
+        <action name="prevErrorAction"/>
+        <action name="checkAction"/>
+        <action name="checkAllAction"/>
+        <action name="runAction"/>
+    </toolbar>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>Toolbar_3</cstring>
+        </property>
+        <property name="label">
+            <string>Declaration toolbar</string>
+        </property>
+        <action name="newIncludeAction"/>
+        <separator/>
+        <action name="newPackageAction"/>
+        <action name="newInitiatorAction"/>
+        <separator/>
+        <action name="new_InterfaceAction"/>
+        <action name="newImplAction"/>
+        <action name="newCOspecAction"/>
+        <action name="newCOimplAction"/>
+        <separator/>
+        <action name="newSetAction"/>
+        <action name="newEnumAction"/>
+        <separator/>
+        <action name="newVTAction"/>
+        <action name="newFuncAction"/>
+        <action name="newMemVarAction"/>
+        <separator/>
+        <action name="newEnumItemAction"/>
+    </toolbar>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>Toolbar_4</cstring>
+        </property>
+        <property name="label">
+            <string>Details toolbar</string>
+        </property>
+        <action name="editSelItemAction"/>
+        <action name="editCommentAction"/>
+        <action name="gotoDeclAction"/>
+        <action name="gotoImplAction"/>
+        <action name="returnToRefAction"/>
+        <action name="findRefsAction"/>
+        <action name="findByNameAction"/>
+        <separator/>
+        <action name="showOverridablesAction"/>
+        <action name="overrideAction"/>
+        <separator/>
+        <action name="openFormViewAction"/>
+        <action name="insertTextAction"/>
+        <separator/>
+        <action name="insAction"/>
+        <action name="delAction"/>
+    </toolbar>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>Toolbar_5</cstring>
+        </property>
+        <property name="label">
+            <string>Exec switches toolbar</string>
+        </property>
+        <action name="toggleCategoryAction"/>
+        <action name="toggleSubstTypeAction"/>
+        <action name="optLocalVarAction"/>
+        <action name="insertBeforeAction"/>
+        <action name="insertAction"/>
+        <action name="toggleArrowsAction"/>
+        <action name="toggleInputArrowsAction"/>
+        <action name="conflictingAssigAction"/>
+        <action name="newLineAction"/>
+        <action name="commentOutAction"/>
+        <action name="toggleCommentsAction"/>
+    </toolbar>
+    <toolbar dock="2">
+        <property name="name">
+            <cstring>Toolbar_6</cstring>
+        </property>
+        <property name="label">
+            <string>Exec op. toolbar</string>
+        </property>
+        <action name="lessThanAction"/>
+        <action name="lessEqualAction"/>
+        <action name="equalAction"/>
+        <action name="notEqualAction"/>
+        <action name="greaterEqualAction"/>
+        <action name="greaterThanAction"/>
+        <separator/>
+        <action name="functionCallAction"/>
+        <action name="staticCallAction"/>
+        <action name="trueAction"/>
+        <action name="falseAction"/>
+        <action name="evaluateAction"/>
+        <separator/>
+        <action name="nullAction"/>
+        <action name="intervalAction"/>
+        <action name="toggleSignAction"/>
+        <action name="additionAction"/>
+        <action name="multiplicationAction"/>
+        <action name="divideAction"/>
+        <action name="modulusAction"/>
+        <action name="leftShiftAction"/>
+        <action name="rightShiftAction"/>
+        <action name="bitAndAction"/>
+        <action name="bitOrAction"/>
+        <action name="bitXorAction"/>
+        <action name="invertAction"/>
+        <action name="handleAction"/>
+        <action name="ordAction"/>
+    </toolbar>
+    <toolbar dock="5">
+        <property name="name">
+            <cstring>Toolbar_7</cstring>
+        </property>
+        <property name="label">
+            <string>Keyword toolbar</string>
+        </property>
+    </toolbar>
+</toolbars>
+<actions>
+    <action>
+        <property name="name">
+            <cstring>fileNewAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image0</iconset>
+        </property>
+        <property name="text">
+            <string>New Lava file</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;New Lava file</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+N</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>fileOpenAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image1</iconset>
+        </property>
+        <property name="text">
+            <string>Open</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Open...</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+O</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>fileSaveAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image2</iconset>
+        </property>
+        <property name="text">
+            <string>Save</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Save</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+S</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>fileSaveAsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Save As</string>
+        </property>
+        <property name="menuText">
+            <string>Save &amp;As...</string>
+        </property>
+        <property name="accel">
+            <string></string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>fileExitAction</cstring>
+        </property>
+        <property name="text">
+            <string>Exit</string>
+        </property>
+        <property name="menuText">
+            <string>E&amp;xit</string>
+        </property>
+        <property name="accel">
+            <string></string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>editUndoAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image3</iconset>
+        </property>
+        <property name="text">
+            <string>Undo</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Undo</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+Z</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>editRedoAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image4</iconset>
+        </property>
+        <property name="text">
+            <string>Redo</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Redo</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+Y</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>editCutAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image5</iconset>
+        </property>
+        <property name="text">
+            <string>Cut</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Cut</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+X</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>editCopyAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image6</iconset>
+        </property>
+        <property name="text">
+            <string>Copy</string>
+        </property>
+        <property name="menuText">
+            <string>C&amp;opy</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+C</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>editPasteAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image7</iconset>
+        </property>
+        <property name="text">
+            <string>Paste</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Paste</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+V</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>findRefsAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image8</iconset>
+        </property>
+        <property name="text">
+            <string>Find references</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Find references...</string>
+        </property>
+        <property name="toolTip">
+            <string>Find references</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+F</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>helpContentsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Help topics</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;Help topics</string>
+        </property>
+        <property name="accel">
+            <string></string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>helpIndexAction</cstring>
+        </property>
+        <property name="text">
+            <string>Help index</string>
+        </property>
+        <property name="menuText">
+            <string>Help index</string>
+        </property>
+        <property name="accel">
+            <string></string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>helpAboutAction</cstring>
+        </property>
+        <property name="text">
+            <string>About LavaPE</string>
+        </property>
+        <property name="menuText">
+            <string>&amp;About LavaPE...</string>
+        </property>
+        <property name="toolTip">
+            <string>About LavaPE...</string>
+        </property>
+        <property name="accel">
+            <string></string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>tileHorizAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image9</iconset>
+        </property>
+        <property name="text">
+            <string>Action</string>
+        </property>
+        <property name="menuText">
+            <string>Tile horizontal</string>
+        </property>
+        <property name="toolTip">
+            <string>Tile horizontal</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>tileVerticAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image10</iconset>
+        </property>
+        <property name="text">
+            <string>TileVertical</string>
+        </property>
+        <property name="menuText">
+            <string>Tile Vertical</string>
+        </property>
+        <property name="toolTip">
+            <string>Tile Vertical</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>cascadeAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image11</iconset>
+        </property>
+        <property name="text">
+            <string>Cascade</string>
+        </property>
+        <property name="menuText">
+            <string>Cascade</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newCompoAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image12</iconset>
+        </property>
+        <property name="text">
+            <string>New component</string>
+        </property>
+        <property name="menuText">
+            <string>New component</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>fileSaveAllAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image13</iconset>
+        </property>
+        <property name="text">
+            <string>Save all</string>
+        </property>
+        <property name="menuText">
+            <string>Save all</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>fileCloseAction</cstring>
+        </property>
+        <property name="text">
+            <string>Close</string>
+        </property>
+        <property name="menuText">
+            <string>Close</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>viewTB1Action</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>File toolbar</string>
+        </property>
+        <property name="menuText">
+            <string>File toolbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>viewTB2Action</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Tree oper. toolbar</string>
+        </property>
+        <property name="menuText">
+            <string>Tree oper. toolbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>viewTB3Action</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Declaration toolbar</string>
+        </property>
+        <property name="menuText">
+            <string>Declaration toolbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>viewTB4Action</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Details toolbar</string>
+        </property>
+        <property name="menuText">
+            <string>Details toolbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>expandAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image14</iconset>
+        </property>
+        <property name="text">
+            <string>Expand subtree</string>
+        </property>
+        <property name="menuText">
+            <string>Expand subtree</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>collapseAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image15</iconset>
+        </property>
+        <property name="text">
+            <string>Collapse subtree</string>
+        </property>
+        <property name="menuText">
+            <string>Collapse subtree</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>showOptsAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image16</iconset>
+        </property>
+        <property name="text">
+            <string>Show/hide optionals</string>
+        </property>
+        <property name="menuText">
+            <string>Show/hide optionals</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>showAllOptsAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image17</iconset>
+        </property>
+        <property name="text">
+            <string>Show all optionals</string>
+        </property>
+        <property name="menuText">
+            <string>Show all optionals</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>hideEmptyOptsAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image18</iconset>
+        </property>
+        <property name="text">
+            <string>Hide empty optionals</string>
+        </property>
+        <property name="menuText">
+            <string>Hide empty optionals</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>nextCommentAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image19</iconset>
+        </property>
+        <property name="text">
+            <string>Next comment</string>
+        </property>
+        <property name="menuText">
+            <string>Next comment</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>prevCommentAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image20</iconset>
+        </property>
+        <property name="text">
+            <string>Preceding comment</string>
+        </property>
+        <property name="menuText">
+            <string>Preceding comment</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>nextErrorAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image21</iconset>
+        </property>
+        <property name="text">
+            <string>Next error</string>
+        </property>
+        <property name="menuText">
+            <string>Next error</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>prevErrorAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image22</iconset>
+        </property>
+        <property name="text">
+            <string>Preceding error</string>
+        </property>
+        <property name="menuText">
+            <string>Preceding error</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>checkAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image23</iconset>
+        </property>
+        <property name="text">
+            <string>Check</string>
+        </property>
+        <property name="menuText">
+            <string>Check</string>
+        </property>
+        <property name="toolTip">
+            <string>Check</string>
+        </property>
+        <property name="statusTip">
+            <string>Check the entire Lava file, including all contained execs.</string>
+        </property>
+        <property name="whatsThis">
+            <string>&lt;b&gt;Check&lt;/b&gt; the entire Lava file, including all contained execs.</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>checkAllAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image24</iconset>
+        </property>
+        <property name="text">
+            <string>Check also included files</string>
+        </property>
+        <property name="menuText">
+            <string>Check also included files</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>runAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image25</iconset>
+        </property>
+        <property name="text">
+            <string>Run</string>
+        </property>
+        <property name="menuText">
+            <string>Run</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newIncludeAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image26</iconset>
+        </property>
+        <property name="text">
+            <string>Include</string>
+        </property>
+        <property name="menuText">
+            <string>Include...</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newPackageAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image27</iconset>
+        </property>
+        <property name="text">
+            <string>New package</string>
+        </property>
+        <property name="menuText">
+            <string>New package</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newInitiatorAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image28</iconset>
+        </property>
+        <property name="text">
+            <string>New initiator</string>
+        </property>
+        <property name="menuText">
+            <string>New initiator</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>new_InterfaceAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image29</iconset>
+        </property>
+        <property name="text">
+            <string>New interface</string>
+        </property>
+        <property name="menuText">
+            <string>New interface</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newImplAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image30</iconset>
+        </property>
+        <property name="text">
+            <string>New implementation</string>
+        </property>
+        <property name="menuText">
+            <string>New implementation</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newCOspecAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image31</iconset>
+        </property>
+        <property name="text">
+            <string>New component object spec.</string>
+        </property>
+        <property name="menuText">
+            <string>New component object spec.</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newCOimplAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image32</iconset>
+        </property>
+        <property name="text">
+            <string>New component object impl.</string>
+        </property>
+        <property name="menuText">
+            <string>New component object impl.</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newSetAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image33</iconset>
+        </property>
+        <property name="text">
+            <string>New set</string>
+        </property>
+        <property name="menuText">
+            <string>New set</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newEnumAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image34</iconset>
+        </property>
+        <property name="text">
+            <string>New enumeration</string>
+        </property>
+        <property name="menuText">
+            <string>New enumeration</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newVTAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image35</iconset>
+        </property>
+        <property name="text">
+            <string>New virtual type</string>
+        </property>
+        <property name="menuText">
+            <string>New virtual type</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newFuncAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image36</iconset>
+        </property>
+        <property name="text">
+            <string>New function</string>
+        </property>
+        <property name="menuText">
+            <string>New function</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newMemVarAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image37</iconset>
+        </property>
+        <property name="text">
+            <string>New member variable</string>
+        </property>
+        <property name="menuText">
+            <string>New member variable</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newEnumItemAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image38</iconset>
+        </property>
+        <property name="text">
+            <string>New enumerated item</string>
+        </property>
+        <property name="menuText">
+            <string>New enumerated item</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>editSelItemAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image39</iconset>
+        </property>
+        <property name="text">
+            <string>Edit selected item</string>
+        </property>
+        <property name="menuText">
+            <string>Edit selected item</string>
+        </property>
+        <property name="accel">
+            <string>Ctrl+E</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>editCommentAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image40</iconset>
+        </property>
+        <property name="text">
+            <string>Add/edit comment</string>
+        </property>
+        <property name="menuText">
+            <string>Add/edit comment</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>gotoDeclAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image41</iconset>
+        </property>
+        <property name="text">
+            <string>Go to declaration</string>
+        </property>
+        <property name="menuText">
+            <string>Go to declaration</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>gotoImplAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image42</iconset>
+        </property>
+        <property name="text">
+            <string>Go to implementation</string>
+        </property>
+        <property name="menuText">
+            <string>Go to implementation</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>returnToRefAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image43</iconset>
+        </property>
+        <property name="text">
+            <string>Return to reference</string>
+        </property>
+        <property name="menuText">
+            <string>Return to reference</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>findByNameAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image44</iconset>
+        </property>
+        <property name="text">
+            <string>Find decl. by name</string>
+        </property>
+        <property name="menuText">
+            <string>Find decl. by name...</string>
+        </property>
+        <property name="toolTip">
+            <string>Find decl. by name...</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>showOverridablesAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image45</iconset>
+        </property>
+        <property name="text">
+            <string>Show overridables</string>
+        </property>
+        <property name="menuText">
+            <string>Show overridables</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>overrideAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image46</iconset>
+        </property>
+        <property name="text">
+            <string>Override</string>
+        </property>
+        <property name="menuText">
+            <string>Override</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>openFormViewAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image47</iconset>
+        </property>
+        <property name="text">
+            <string>Open form view</string>
+        </property>
+        <property name="menuText">
+            <string>Open form view</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>insertTextAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image48</iconset>
+        </property>
+        <property name="text">
+            <string>Insert text</string>
+        </property>
+        <property name="menuText">
+            <string>Insert text</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>importComponentAction</cstring>
+        </property>
+        <property name="text">
+            <string>Import component</string>
+        </property>
+        <property name="menuText">
+            <string>Import component</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>genLinkedHtmlAction</cstring>
+        </property>
+        <property name="text">
+            <string>Generate linked HTML files</string>
+        </property>
+        <property name="menuText">
+            <string>Generate linked HTML files</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>genSingleHtmlAction</cstring>
+        </property>
+        <property name="text">
+            <string>Generate single HTML file</string>
+        </property>
+        <property name="menuText">
+            <string>Generate single HTML file</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>deleteAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image49</iconset>
+        </property>
+        <property name="text">
+            <string>Delete</string>
+        </property>
+        <property name="menuText">
+            <string>Delete</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>faqAction</cstring>
+        </property>
+        <property name="text">
+            <string>Frequently asked questions</string>
+        </property>
+        <property name="menuText">
+            <string>Frequently asked questions</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>editingLavaProgsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Editing Lava Progs</string>
+        </property>
+        <property name="menuText">
+            <string>Editing Lava Programs</string>
+        </property>
+        <property name="toolTip">
+            <string>Editing Lava Programs</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>toggleCategoryAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image50</iconset>
+        </property>
+        <property name="text">
+            <string>Toggle category</string>
+        </property>
+        <property name="menuText">
+            <string>Toggle category</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>optLocalVarAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image51</iconset>
+        </property>
+        <property name="text">
+            <string>Optional local variable</string>
+        </property>
+        <property name="menuText">
+            <string>Optional local variable</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>toggleSubstTypeAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image52</iconset>
+        </property>
+        <property name="text">
+            <string>Toggle substitutable type</string>
+        </property>
+        <property name="menuText">
+            <string>Toggle substitutable type</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>insertBeforeAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image53</iconset>
+        </property>
+        <property name="text">
+            <string>Insert before</string>
+        </property>
+        <property name="menuText">
+            <string>Insert before</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>insertAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image54</iconset>
+        </property>
+        <property name="text">
+            <string>Insert</string>
+        </property>
+        <property name="menuText">
+            <string>Insert</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>toggleArrowsAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image55</iconset>
+        </property>
+        <property name="text">
+            <string>Toggle arrow direction</string>
+        </property>
+        <property name="menuText">
+            <string>Toggle arrow direction</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>toggleInputArrowsAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image56</iconset>
+        </property>
+        <property name="text">
+            <string>Toggle input arrows</string>
+        </property>
+        <property name="menuText">
+            <string>Toggle input arrows</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>conflictingAssigAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image57</iconset>
+        </property>
+        <property name="text">
+            <string>Show conflicting assignment</string>
+        </property>
+        <property name="menuText">
+            <string>Show conflicting assignment</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>newLineAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image58</iconset>
+        </property>
+        <property name="text">
+            <string>Put on a new line</string>
+        </property>
+        <property name="menuText">
+            <string>Put on a new line</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>commentOutAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image59</iconset>
+        </property>
+        <property name="text">
+            <string>Skip/comment out</string>
+        </property>
+        <property name="menuText">
+            <string>Skip/comment out</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>toggleCommentsAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image60</iconset>
+        </property>
+        <property name="text">
+            <string>Show/hide comments</string>
+        </property>
+        <property name="menuText">
+            <string>Show/hide comments</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>lessThanAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image61</iconset>
+        </property>
+        <property name="text">
+            <string>Less than</string>
+        </property>
+        <property name="menuText">
+            <string>Less than</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>viewTB5Action</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Exec switches toolbar</string>
+        </property>
+        <property name="menuText">
+            <string>Exec switches toolbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>lessEqualAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image62</iconset>
+        </property>
+        <property name="text">
+            <string>Less than or equal</string>
+        </property>
+        <property name="menuText">
+            <string>Less than or equal</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>equalAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image63</iconset>
+        </property>
+        <property name="text">
+            <string>Equal</string>
+        </property>
+        <property name="menuText">
+            <string>Equal</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>notEqualAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image64</iconset>
+        </property>
+        <property name="text">
+            <string>Not equal</string>
+        </property>
+        <property name="menuText">
+            <string>Not equal</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>greaterEqualAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image65</iconset>
+        </property>
+        <property name="text">
+            <string>Greater or equal</string>
+        </property>
+        <property name="menuText">
+            <string>Greater or equal</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>greaterThanAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image66</iconset>
+        </property>
+        <property name="text">
+            <string>Greater than</string>
+        </property>
+        <property name="menuText">
+            <string>Greater than</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>functionCallAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image67</iconset>
+        </property>
+        <property name="text">
+            <string>Virtual function call</string>
+        </property>
+        <property name="menuText">
+            <string>Virtual function call</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>staticCallAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image68</iconset>
+        </property>
+        <property name="text">
+            <string>Static function call</string>
+        </property>
+        <property name="menuText">
+            <string>Static function call</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>trueAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image69</iconset>
+        </property>
+        <property name="text">
+            <string>True / succeed</string>
+        </property>
+        <property name="menuText">
+            <string>True / succeed</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>falseAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image70</iconset>
+        </property>
+        <property name="text">
+            <string>False / fail</string>
+        </property>
+        <property name="menuText">
+            <string>False / fail</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>evaluateAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image71</iconset>
+        </property>
+        <property name="text">
+            <string>Evaluate stm/expr</string>
+        </property>
+        <property name="menuText">
+            <string>Evaluate stm/expr</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>nullAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image72</iconset>
+        </property>
+        <property name="text">
+            <string>Nothing / null / nil</string>
+        </property>
+        <property name="menuText">
+            <string>Nothing / null / nil</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>intervalAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image73</iconset>
+        </property>
+        <property name="text">
+            <string>Interval / array element</string>
+        </property>
+        <property name="menuText">
+            <string>Interval / array element</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>toggleSignAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image74</iconset>
+        </property>
+        <property name="text">
+            <string>Toggle sign</string>
+        </property>
+        <property name="menuText">
+            <string>Toggle sign</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>additionAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image75</iconset>
+        </property>
+        <property name="text">
+            <string>Addition</string>
+        </property>
+        <property name="menuText">
+            <string>Addition</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>multiplicationAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image76</iconset>
+        </property>
+        <property name="text">
+            <string>Multiplication</string>
+        </property>
+        <property name="menuText">
+            <string>Multiplication</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>divideAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image77</iconset>
+        </property>
+        <property name="text">
+            <string>Divide</string>
+        </property>
+        <property name="menuText">
+            <string>Divide</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>modulusAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image78</iconset>
+        </property>
+        <property name="text">
+            <string>Modulus</string>
+        </property>
+        <property name="menuText">
+            <string>Modulus</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>leftShiftAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image79</iconset>
+        </property>
+        <property name="text">
+            <string>Left shift</string>
+        </property>
+        <property name="menuText">
+            <string>Left shift</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>rightShiftAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image80</iconset>
+        </property>
+        <property name="text">
+            <string>Right shift</string>
+        </property>
+        <property name="menuText">
+            <string>Right shift</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>bitAndAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image81</iconset>
+        </property>
+        <property name="text">
+            <string>Bitwise "and"</string>
+        </property>
+        <property name="menuText">
+            <string>Bitwise "and"</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>bitOrAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image82</iconset>
+        </property>
+        <property name="text">
+            <string>Bitwise "or"</string>
+        </property>
+        <property name="menuText">
+            <string>Bitwise "or"</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>bitXorAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image83</iconset>
+        </property>
+        <property name="text">
+            <string>Bitwise "exclusive or"</string>
+        </property>
+        <property name="menuText">
+            <string>Bitwise "exclusive or"</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>invertAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image84</iconset>
+        </property>
+        <property name="text">
+            <string>Not / invert bits</string>
+        </property>
+        <property name="menuText">
+            <string>Not / invert bits</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>handleAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image85</iconset>
+        </property>
+        <property name="text">
+            <string>Handle of a set element</string>
+        </property>
+        <property name="menuText">
+            <string>Handle of a set element</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>ordAction</cstring>
+        </property>
+        <property name="iconSet">
+            <iconset>image86</iconset>
+        </property>
+        <property name="text">
+            <string>Ordinal of enum. item</string>
+        </property>
+        <property name="menuText">
+            <string>Ordinal of enum. item</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>viewTB6Action</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Exec oper. toolbar</string>
+        </property>
+        <property name="menuText">
+            <string>Exec oper. toolbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>viewTB7Action</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="on">
+            <bool>true</bool>
+        </property>
+        <property name="text">
+            <string>Keyword toolbar</string>
+        </property>
+        <property name="menuText">
+            <string>Keyword toolbar</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>setTreeFontAction</cstring>
+        </property>
+        <property name="text">
+            <string>Set tree font...</string>
+        </property>
+        <property name="menuText">
+            <string>Set tree font...</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>setExecFontAction</cstring>
+        </property>
+        <property name="text">
+            <string>Set exec font...</string>
+        </property>
+        <property name="menuText">
+            <string>Set exec font...</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>showUtilWindowAction</cstring>
+        </property>
+        <property name="toggleAction">
+            <bool>true</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image87</iconset>
+        </property>
+        <property name="text">
+            <string>Show utility window</string>
+        </property>
+        <property name="menuText">
+            <string>Show utility window</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>learningLavaAction</cstring>
+        </property>
+        <property name="text">
+            <string>Learning Lava by samples</string>
+        </property>
+        <property name="menuText">
+            <string>Learning Lava by samples</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>insAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image88</iconset>
+        </property>
+        <property name="text">
+            <string>Insert optional</string>
+        </property>
+        <property name="menuText">
+            <string>Insert optional</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>delAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
+        </property>
+        <property name="iconSet">
+            <iconset>image89</iconset>
+        </property>
+        <property name="text">
+            <string>Delete optional</string>
+        </property>
+        <property name="menuText">
+            <string>Delete optional</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>setGlobalFontAction</cstring>
+        </property>
+        <property name="text">
+            <string>Set global font</string>
+        </property>
+        <property name="menuText">
+            <string>Set global font</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>SetFormFontsAction</cstring>
+        </property>
+        <property name="text">
+            <string>Set form fonts</string>
+        </property>
+        <property name="menuText">
+            <string>Set form fonts</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>setFormTextFontAction</cstring>
+        </property>
+        <property name="text">
+            <string>Form text font</string>
+        </property>
+        <property name="menuText">
+            <string>Form text font</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>setFormLabelFontAction</cstring>
+        </property>
+        <property name="text">
+            <string>Form label font</string>
+        </property>
+        <property name="menuText">
+            <string>Form label font</string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>Action</cstring>
+        </property>
+        <property name="text">
+            <string></string>
+        </property>
+    </action>
+    <action>
+        <property name="name">
+            <cstring>setFormButtonFontAction</cstring>
+        </property>
+        <property name="text">
+            <string>Form button font</string>
+        </property>
+        <property name="menuText">
+            <string>Form button font</string>
+        </property>
+    </action>
+</actions>
+<images>
+    <image name="image0">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c65033000711341dc343000ab44035031653040134b040298208a58a23216318820aa5e8899c86260713a8bc101420c5b18a08ad55a730100ea1553e8</data>
+    </image>
+    <image name="image1">
+        <data format="XPM.GZ" length="419">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530553054d2e152d2534856f0cbcf4b05b195816c650330007193415c0b030b283709c44d0302083711c64d4b039b0307cacaca4012454c198251d541242062103d50ed1031e5c4a4446508d08399a79c940885486230a1443475ca3080645e320cc0d52184e0ea9085a062284230318405e8fe8502ac62b5d65c004c715a29</data>
+    </image>
+    <image name="image2">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650330007113415c0b030b28574f1905e841c41295f5a040590f8b1836758954114b84392411490c0130d561eac5661e0131d440808aa102a55a6b2e00635e4a64</data>
+    </image>
+    <image name="image3">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b113816c650330007195415c0b031004ab8400e5c4c44465100321061201626431300f4281c512e1424086324c0c6a124421442c11ae0c594c0f8b18c2bc4424b7c01ca98c2106770b922a14374344107e4b4400905b91c5f4a010dd0eb0de5a6b2e00887f54f3</data>
+    </image>
+    <image name="image4">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b113816c650330007195415c0b031004ab0402e5c4c444653d08808a81448018590cca8352603165a802b06022440ca609642a8618c85c0c313d4cb144843a65b8d330dd82ee66650c31902b9491c5406e4a44008418421cae17c58e5a6b2e00880e54f3</data>
+    </image>
+    <image name="image5">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650330007113615c0b30570f0c94a1584f8f0c3165104215032a8208a18829638ac194218b252a27628ae9252626a28881f88920098418984bac981e86793027a1b80f2e566bcd0500dc8b4b6c</data>
+    </image>
+    <image name="image6">
+        <data format="XPM.GZ" length="404">789c6d90c10a02211086ef3ec5b07393d84da808a247283a06d161b4a20e5b50db21a277cf19911ce94764e6f31b113b0bdbcd0a6c671e030d9700e14c77b08767dfbf76fbe5db346e066e0a1370cdc8342d0458dfae47ae31d6389670eb733b9796b83d496410256d4e6214f3830523d40ce3f212e59197cd171e6262e4b5176fe0e9dae3b3ca43568b376b2f457b99fdf1720aa6ffa0669f85f9026e175d0a</data>
+    </image>
+    <image name="image7">
+        <data format="XPM.GZ" length="449">789c6d8fb10ac2301086f73cc591db8a5833a805f1111447411c924b8a0e55d03a88f8ee5e728d6dd12fcbfdff7d6d4859c07eb781a254f7d6b667023ad91b14fed134cfc371fd52da2cc0cc6109464f949e02c1f67a0971469e719688d1e758a54831561c64eb7294ad8db166641b72aceb744b021999a48b19ad45e953878e1c7263911c61d771d5fd204ed9c38ea1d79fdee3e38591e74384dba1275df0238f9dbf5ef8f57cfe56de36f6049f19745ff47ba53ef2ee6d9b</data>
+    </image>
+    <image name="image8">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650330004ba1017c62cacaca70122ea6a70c27f1a8530601280917032b819050316564001153862a83ea2620a68c2686240213833a0c6a3f6e3165b818586fad351700cd0b3f0e</data>
+    </image>
+    <image name="image9">
+        <data format="XPM.GZ" length="404">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530513054d2e152d2534856f0cbcf4b05b193806c650330007113615c0b305719c44d0303b04614a0ac07164b44065031b8605252124c2c09cc87127075ca7040aa185e7b91c4b0aba3b2bda840a9d69a0b00180b5c2a</data>
+    </image>
+    <image name="image10">
+        <data format="XPM.GZ" length="404">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530513054d2e152d2534856f0cbcf4b05b193806c650330007195615c0b303711c44d0303b04634001653460150b144082f5139292949199f3a1050865243440c8b3fd0c3a5d69a0b0099d85a66</data>
+    </image>
+    <image name="image11">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650320b03000711341dc343000ab5446003d208088256211c3aa0e06b0ea05a98489256211c354a78c6222584c0f4525925822869832a63a3d841bc9114332afd69a0b0086e64d28</data>
+    </image>
+    <image name="image12">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c65033000711341dc343000ab44035031653040134b0402982092ba44653d6554b14490184410451dd44c847920d1c44434b1442c6258d4414431c412b188a1a983038418b6304015abb5e60200eea54d7f</data>
+    </image>
+    <image name="image13">
+        <data format="XPM.GZ" length="404">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530513054d2e152d2534856f0cbcf4b05b195816c650330007113415c0b030b283709c44d0303b046205046003db858a27212082827c1c4905425c2c510aaa062caca98ea5054a18b25922506333f11e666e5441800a9d24356970451a587ecbe24882a881892d710626840a9d69a0b00e590549d</data>
+    </image>
+    <image name="image14">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e15252564856f0cbcf4b05b113816c6503300071f540dcb43438574f4f191940c5121331c594d1c54074220860138302981848182683104b845370318410c23c24c5f8d461350fd35ea89331c5d0fd81122eb5d65c0065a84c69</data>
+    </image>
+    <image name="image15">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b113816c65033000719541dcb43418570f0d8095282b132b9698882606a2b18ac1017e31b828925e242132ccc3740b5962b5d65c00495f5288</data>
+    </image>
+    <image name="image16">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c65033000711341dcb43418570f0d807500819e5e2210e8e981d870b144304012d3032983603d24313d3d6c6260f350c5a0427a68e66113c3302f118b797a98e6c101923fe0a6e116c308975a6b2e00a66a4c36</data>
+    </image>
+    <image name="image17">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e15252564856f0cbcf4b05b1f5806c6503300073414059194a292b43c494a1809018a65e6534001183aa80aa8489219b884f0c532f363be04ac014420c61227e314cbd2876d45a73010064173d98</data>
+    </image>
+    <image name="image18">
+        <data format="XPM.GZ" length="389">789c5d8ec10ac2300c86ef7d8ad0dc8a6c16d18bf8088a47413c84ead0c314e63c88f8ee3669bacdfe97241f7ffea47670d86fc1d5e6d9537f0b10aed4813bbfdaf67d3c6d3ec6fa15f8252cc0db99b10801768ffb85fb2af63817f1483c364d1e2b16a216a2c450153b222c594458ec3212868304294bc688a466965d0593c52993783d36dc48f18893bb1a2f4e65118d7f27c6ae828df1d3dd3fd9efdafc006a31474c</data>
+    </image>
+    <image name="image19">
+        <data format="XPM.GZ" length="419">789c858eb10ec2201086779ee2021b315486ba181f41d3d1c438d053a24335d13a34c677973b7ad61aa3df02ffc7f14361615d2dc116eada86f68880877001bbbb354db7d92eee4afb19f8124af07aa2b40384d5f9b4a7bd497b336528d61263a41828c628a7982309ee4918c631bd33c2e0648457232edf6299dd4be592ff2ebf33ea0b8cfcc57dba9a49069930b83481d4f6eec673dffa7eba1efd98ab27c86e595d</data>
+    </image>
+    <image name="image20">
+        <data format="XPM.GZ" length="419">789c8d8eb10ac2301086f73cc5916c415a33d4457c04c5b1200ed7d3a04315b40e527c7773678f5441f19bfeffcbe592d243bd5e822fcdb5c3ee484007bc80dfdddaf6bed92e7a63c30c420515043b31b60082d5f9b4e7ec527653816ba33546aec835463da55765217b04277052e794c139513aac4e15cbc16525f2971b5fce7f49a0f0d5354232246076698278efd8bdcffdfb46f1817dcccd13d1ed5973</data>
+    </image>
+    <image name="image21">
+        <data format="XPM.GZ" length="419">789c858fc10ac2300c86ef7d8ab0dc866cf63011c447503c0ae221ad0e3dcc81ce8388ef6efbc74e9d07ff429aff6b92b6654eebd582f2d25c3ae98e9efc41ce94efae4d73db6ce77793d909d98a2ab2d9c86405795ab6a77dcc39e43c86a275d14e7bebd5c615ad445bd7e9b40862a8805e8c93de2c9560e7c4b40b50598f74c87fa6f7e0690381396627128243c007c3ceb038409d4e0956044119c67cb1bef7838967f683ba9fb73c66e609c6055b0b</data>
+    </image>
+    <image name="image22">
+        <data format="XPM.GZ" length="419">789c7d8f4d0ac2301085f739c5d0d90569eda2228847505c0ae262122dbaa882d685887737f3dab4b5822f3099f7cd0f496669bb5991cdccbd96faecc99fe446f6f0a8aae76ebf7c99249f515e5041793231494a9ed6d7cb51730e394f21b54eedbcb3beb17ad48adab28cd5146248b3c838aa650c149b238b4861cb7a04f88f0d87f1b491c01cb31309c121e083e1665814a4df17ac0842c3b0e68b75b303269ed98ffa7edef25e980fc1fb5b0b</data>
+    </image>
+    <image name="image23">
+        <data format="XPM.GZ" length="404">789c8d8fc10ac2301044eff98a257b0b9236a022889fa07814c4c36e55f45005ad0711ffdd6c92a6da5e9c4098799925496160b35e8229d4bda1e65c4175a21b98fda3ae9fdbdde2a5b49b829bc0189c1e296da182d5f572104fde63192491633c7a494489b35256188c42f2426f3a46d4ee9985063323658614dbcc842d4bc8434b7f31fbcd78c030c3ee0e6f99d3619ea5c19b85f4fe964a4981fda2c07ac8eaf75c7d00cdc955b9</data>
+    </image>
+    <image name="image24">
+        <data format="XPM.GZ" length="404">789c5d90c10ac2300c86ef7d8ab0dc8a6c2ba808e223281e05f1d054450f53d07910f1dd4dd3ac734ba1e4fffaa7695a59d86dd7602bf36c7d7b0d102efe01f6f86a9af7feb0fa98c2cdc1cd600aae9898a284009bfbed1473cf39d612515292678e2831ca451d97148e42197a0e1c30f448841d4c4c14c34495c9397912a88c9489b5ab2569c4986fed7bc42d5985b1d2b7885546482a5b65e884b235cff1675536b0f67f80a3794bb52afb2ecd0f865256bf</data>
+    </image>
+    <image name="image25">
+        <data format="XPM.GZ" length="404">789c6d90c10ac2300c86ef7d8ab0dc866c2ba808e223281e05f1f06f2a7a9882ce8388ef6e93ae5d51ff429bff2349d396396dd64bca4b73efd09d1b6a4eb851be7fb4ed73bb5bbc4c66a7642734269b8d4c565043abebe52031bb982b9558889d55b2c4d6628f2a2d8c6266b7ff30fec3d23c8858c39e81bd52260e3de484313b0a770c4cb3644360610e06b49f76812421dea105bee3c0e087ed516085af1e5851270ffbfa83f88ef7dc7c00264d4bc9</data>
+    </image>
+    <image name="image26">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c65033000711341dc343000ab44030831652840114b0401e544652c6289cac862408d200c15039902519708570711035b0115835a88a20e2686ac8e58f390dd97882a0607f8c30049acd69a0b00f89b5015</data>
+    </image>
+    <image name="image27">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e15252564856f0cbcf4b05b113816c6503300071f540dc34208072f59441400f8c8000ac5b594f2f11444084206289406e22581ca45c0f6cb21e04406888bac4c444b0322850465607559d488a981e916244db8106b08841c3001528d55a73010061fe5378</data>
+    </image>
+    <image name="image28">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e15252564856f0cbcf4b05b113816c6503300071f540dc3420807295411001c0baf5f4f41211002ca60701286258d5258220a618ba3a656c62ca40318833c034444c997c31a8d9ca2876408460341ef3508052ad351700b17258d1</data>
+    </image>
+    <image name="image29">
+        <data format="XPM.GZ" length="419">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530553054d2e15252564856f0cbcf4b05b193806c65033000711341dcb43418570fc2050980b8c9306e5a1a5856594f3931514f4f19482a0301d86c3d3d3d302f31114c81d581c54018220851071401f3107af520827a7ac8e629437828624928009f58321c50478c387bd18052ad351700ca3569c9</data>
+    </image>
+    <image name="image30">
+        <data format="XPM.GZ" length="419">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530553054d2e15252564856f0cbcf4b05b113816c65033000719340dcb43418570fc2050980b8c9306e5a1a5856190813f59495951313818432d86c3d3d3d302f31114c81d581c5401822085107e321f4ea410451cd03da91886e47120ac027960c07d41123ce5e34a0546bcd0500ca4369db</data>
+    </image>
+    <image name="image31">
+        <data format="XPM.GZ" length="419">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530553054d2e15252564856f0cbcf4b05b193806c65033000719321dcb434083711c40571205c3d081726aba70c8489ca40900826c166ebe9e981798989600aac0e04122142204184bac44464bd20d3609ae1e6c17948624928009f58321c50478c387bd18052ad351700d3b96800</data>
+    </image>
+    <image name="image32">
+        <data format="XPM.GZ" length="419">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530553054d2e15252564856f0cbcf4b05b113816c65033000719321dcb434083709c40571205c3d081726aba70c84897acacaca89894042196cb69e9e1e98979808a6c0eac062200c1184a883f1107af52082a8e601ed4844b7230905e0134b8603ea8811672f1a50aab5e60200c3966903</data>
+    </image>
+    <image name="image33">
+        <data format="XPM.GZ" length="389">789c758ebd0a02311084fb3cc592ed82dc194411c447502c05b118a2a2c579a06721e2bb9b4d8c897f53cd7e99d96c6d68b99891a9d5b9437770e4f63891d95c9ae6ba5a4f6f4adb11d9210dc8ea9ed24c8ee6ed712bbef29ec77d918c9071e715c74ac40c70546000aa8c32cba8c8f13b4b4266b2beec07e67dd90fa781f1c57cf9b5b360f29eb2f18f9f8cffb2a74a96b29f2cdc729fa80752ee4c34</data>
+    </image>
+    <image name="image34">
+        <data format="XPM.GZ" length="389">789c8d8fbf0a02310cc6f73e4568b622398be8223e8287a3200ea12a3a9c829ec321bebbe9ff431cfc484af2e34b431a03dbcd1a4ca31e3df71707eecc77308767d70dbbfdeaa5b45d809dc30cac9e288de0a0bd5d8fbe66a9711ae45bf2ed49945a42c4f044856962ce883932411e5240021323a2e44c0ceb6861e2ab2baaafee4dcc23c91892d9378e328b3ffefb8f655aeec09131df8b5fd2efa5fa00ce785024</data>
+    </image>
+    <image name="image35">
+        <data format="XPM.GZ" length="389">789c9dccb10a02310c06e0bd4f119aad48ee8ae8223e82e2281c0ea12a3a9cc2790e22bebb497a2a5d14fc4921ff47db2ac07ab58050b94bcffd31413a7007617b6ddb5bb399df9d8f5388131843f423e711122ccfa79dee2c3bd616ada4752f192a21eac8b16423312a4cab09e7d8cfaccaef642333d49bafb77ad1dac7285bfef18bc96a83a531ff6d38d04f2be21f33f704c41a50d0</data>
+    </image>
+    <image name="image36">
+        <data format="XPM.GZ" length="404">789cb58ec10ac2300c86ef7d8ad0dc8a742ba808e2234c3c0ae221ad8a1ea6e0e641c4773749d9d4e1d5bf2de4ff9af46fe160bdaac015a669a93d254847ba82dbddeafabed92e1ec6862984098c21d891b108099697f35e6ae21a4b95d8287656ca12ebc51e58f9d623caf64844c852e69965a4500394318a18f964c64d3cac3d91ba59d517fbecc3fe3d49a12ee29d4b03a6ff1bccfe66f807d6cb3ee7e60500874deb</data>
+    </image>
+    <image name="image37">
+        <data format="XPM.GZ" length="404">789c8d8c310a02311045fb9c6248ba2059036a231e41b114c4e26f3468b10aba1622dedd64925db222e2638af96f865f69daac97a42b716bd19e1cb923aea4f7f7a6796c778ba7907646764a13b27224a42247abcbf91077845d8d99184d8c3e9062dd45eff9aa94323c092e6361868e4daff25fe2e3aff84a0ea66ceb1c62e3c0194001e192e1bee0cc1707d499dee12f1740c12f57225f73f10682875a6b</data>
+    </image>
+    <image name="image38">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e15252564856f0cbcf4b05b113816c650b03100071f540dc34208072959595f5c00802c0bac1027aa8626011b810541d04a0a9435606160309a0ebd5c362079093a89708422000334f192680229648be180a205aacd69a0b00604d4be3</data>
+    </image>
+    <image name="image39">
+        <data format="XPM.GZ" length="404">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530513054d2e152d2534856f0cbcf4b05b195816c65033000711321dc342000719340dcb43418570f0de0155356564617038a28c3a420626035ca3029b0185c17440aec48989832420c6c8832c216b0bac4c424a0109844124b048b25922e06351dc50ea2c2a0d69a0b006a6d4e91</data>
+    </image>
+    <image name="image40">
+        <data format="XPM.GZ" length="419">789c9d8eb10e02210c86779ea2a1dbc570329c8bf111348e26c60150a2c369a2e7608cef6e4b415137bf10d2ff035ada0656cb3934adba0c6e3804087b7786667bedfbdb7a33bb2b6d27603be8c0ea91d206022c4ec71dd79e6a1c2738861263e4881c632ca74e228bd487c002d5e2b0223b445760993a93f2decb46b2b8faa2383a7f2d71753f97fbd1dcf4e663aea97ff276a6223bf3e382f097fb423fa6ea09a91a5ad6</data>
+    </image>
+    <image name="image41">
+        <data format="XPM.GZ" length="404">789c6d8fc10ac2300c86ef7d8ad0dc8a6416d48bf8088a47413c64d5a28739d07910f1dd6dba4957eb0f81fe5f92bfa432b0dbaec154eade717771e0ce7c03737c34cd737f58bd94b60bb0739881d513a5091c6cdaeb49de1cde388d125b7fadf76251ac0feabb8448a1980645269011a5951861449c58b4a1ea5e69f797491073c6e2b72127df8d9354e4957392573281e33b785076db9fb91c8de692f47ba93e2b94581d</data>
+    </image>
+    <image name="image42">
+        <data format="XPM.GZ" length="404">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530513054d2e152d2534856f0cbcf4b05b193806c65033000719561dcb434103711c44d4b83c9eaa1014262ca5040582c1108a8298666475212167b8182c86e4e82020c7fa0a94315c21e06b5d65c00fde64f1f</data>
+    </image>
+    <image name="image43">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c65033000711361dcb434b04a205056d68303981848301102a062ca60802206d288ae0e2284210602c488252200ba18c27d9488e9112f860c946aadb90075815975</data>
+    </image>
+    <image name="image44">
+        <data format="XPM.GZ" length="389">789c6d8ecb0ac2301045f7f98a21b32b92b68822889fa0b814c4c5a50abaa882d68588ffeecca44955bc43e67172f3280bdaac975494eed6a13b35d41c71a5627f6fdbc776b7783a5f4fa99ed0986a3f723e5043abcbf9a03d4bcf954947e838ab34ccf9233bc108bac092c13006965d0e5205073626b30d1aa2c472707f9ff91019a2efdfbbb1634e2933f40cdf0c3165a6ff8d4266f633581ed8a02f5f2a9fbe54fc6beedebe1a477e</data>
+    </image>
+    <image name="image45">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650330004ba1014ac59451014e313d5421a8792842303b9085e0f6220921dc821042721f5c08d9cd3021e2fd566bcd0500293a40fd</data>
+    </image>
+    <image name="image46">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650330004ba10132c49431c5949595d1c59495e182303165658420544c5919491022a6ac8c2c081653564611047b0b15e01423dbbfb5d65c00a5d640fd</data>
+    </image>
+    <image name="image47">
+        <data format="XPM.GZ" length="407">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530513054d2e1524a5248565036000310570fc44d360041105719c44d4b83c92642b8200056aca78c04f4f4c062ca28002ca6ac9c88049495a162494989300c17c3ae0ea28aaeeab0f903ab7f8909835a6b2e00c2755c9f</data>
+    </image>
+    <image name="image48">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650330007113415c0b031004ab4403f8c594c9134b54564ed453061160164c9db29e7262228800b260ea94417aa104580c2c0b13d34316c3d09b884490ee370262b5d65c00f510498b</data>
+    </image>
+    <image name="image49">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816ce5b4340320004ba101b098b2b2328c0f6241d429c34495116230410809330f2c08558db043196e00aa981eaa9832a63a2ce661b117c97dc86258fc01f7ac32b25bd0c2005dacd69a0b00dbd641d7</data>
+    </image>
+    <image name="image50">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1019898b2b23254441926a60c061049a898321280ea85a980aa8588c18c8248e2b317530c8b1d58c5a8ad174dacd69a0b00a7674132</data>
+    </image>
+    <image name="image51">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650320484b037113415c0b031004ab4403e4892903015c0cccd60311400c1183082542c413c1621021b09832544c190240624012b718422fd89244543bc09624e2760b563713f66fad351700ee58470a</data>
+    </image>
+    <image name="image52">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101b898b2329c8489418420348dc4604260161dedc5ea5f9470a9b5e602007b624292</data>
+    </image>
+    <image name="image53">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b113816c650320484b03719541dcb434900058251a002b518672a00c88189803a52062500570e550f3807cb8103e313da0981e869832a6189232b2c41221400fd9bfc48ac1cdabb5e602005b0c4ac0</data>
+    </image>
+    <image name="image54">
+        <data format="XPM.GZ" length="404">789c8d8dbb0a02311045fb7cc5907441660da88df8098aa5201699d5a0c5baa06b21e2bfbb37d9872e829e26f71e323399a5cd7a493653d7ca57a79cf2a3bf90dddf8ae2bedd2d1e4abb19b9294dc8e991d24c39adcaf301d9d4d98c6b424015d41020507daa200e029340ec9d077fb8e1ac887002a9f927c9a6a79b456bbe778ea3e34fd72f8d2e1d8c0ef18763e137d72e641edef8ea5af473ae5e25055383</data>
+    </image>
+    <image name="image55">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1010262cacad8c49431f5c20451cc830a42c594e1009b98325e75d8ccc3652f36f761f307fe30a8b5e6020073fe4287</data>
+    </image>
+    <image name="image56">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650320484b03711341dcb434900058251ac027a6acac8c2ea68c550cc24d4c848bc194818550c52042287a13a180901836bda87660738b1e928bf1fb1745acd69a0b00e95e4c51</data>
+    </image>
+    <image name="image57">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b113816c650320484b03719541dcb434900058251a40125356461253560671e14208316538c02f86a6179b1d78dc92988824969808e2c28510628970805f0c4d2f363b30dc526bcd0500f0d54edc</data>
+    </image>
+    <image name="image58">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1013c62ca30804d4c198b5e90205962ca986240be329a18367bd1dd07371fc36fd8c4f08541ad351700707842c9</data>
+    </image>
+    <image name="image59">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650320484b03711341dcb434900058251a20494c5919c80212ca10802206065031881a9810cc3c652421b058221ac02586a4174ca1da019141731f7e3713e3df5a6b2e00eb724bf4</data>
+    </image>
+    <image name="image60">
+        <data format="XPM.GZ" length="419">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530553054d2e152d2534856f0cbcf4b05b1816a15940dc000c44d8471d3d2405c6510372d0d269b04e18204c0e6c0803218e8810d0003a05012182823c4802a92928100590c551d36f3c8b10388686e0749fea8b5e602008d5f618d</data>
+    </image>
+    <image name="image61">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101ea89296388292ba38b29c384e0620811fc62d8f462b703bb5b48f65bad3517003ae943c6</data>
+    </image>
+    <image name="image62">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101ea88296388292b2b830910808829838590c5a022287ae16204f4c2ed20c22d64f9add69a0b0084aa4292</data>
+    </image>
+    <image name="image63">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1015a8929430121316aeba59a58ad351700fc34436e</data>
+    </image>
+    <image name="image64">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101da8a298301580cc254c62e86ae174d1d4e311afaa3d69a0b00bcb24300</data>
+    </image>
+    <image name="image65">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1014ac594b189294345952100ac57192a8a2ca6071745b6032246402fb23e7c6e21db6fb5d65c0083ce4292</data>
+    </image>
+    <image name="image66">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101aa882963135356c61003092a639a0713c52f86452f363bb0b9851cbfd55a7301003b1543c6</data>
+    </image>
+    <image name="image67">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101a2c4949595d1c594b18a41f5821830024841d401196021ac6208bd60793d22c4b0e9858a412914b7208b61f3af3204c0c56aadb900547f41cc</data>
+    </image>
+    <image name="image68">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1014262cacacae862ca58c530f4c2951110c3a6972e6258fd0b17abb5e60200ffe6438f</data>
+    </image>
+    <image name="image69">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba10152c594a18090185818d3bcc12486dfbfb5d65c00e0b4436e</data>
+    </image>
+    <image name="image70">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba10192c594218008316c7a7199478c18b1e6112746c8bfb5d65c00c21c432c</data>
+    </image>
+    <image name="image71">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b113816c650320484b037195415c0b031004ab4403f8c594131313d1c412c100454c3951192c812c06e1a18ae9e9611743370fa10a450c2644480c9bdf48d75b6bcd05003ffe4db4</data>
+    </image>
+    <image name="image72">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650320484b037113415c0b031004ab4403e862caca1862202124b14465e544b010424c3911a42a11592c112286a20ec453c6148320143190611862897a186289508be06210e321caa062505b1391fc0b95c7150660b15a6b2e00731b47ba</data>
+    </image>
+    <image name="image73">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba10112c59481004ee11583eaa3bb1871ee23ecdf5a6b2e0078344266</data>
+    </image>
+    <image name="image74">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1012431656532c594a1809018257660733309f662f32f7eb15a6b2e00a18a42ea</data>
+    </image>
+    <image name="image75">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba10132c49495a927a60c07f8c5a86d2f61ffd65a730100f1764342</data>
+    </image>
+    <image name="image76">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1010262caca2862602e9c80aa03316118ae17c8812064f394c100cd0eb8107e312c7ab1d881c52d58dd8cc56f6861506bcd05005e82423a</data>
+    </image>
+    <image name="image77">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101f2c49431c59431c59431c5604248627021841842082e8624842486e93e242132fd0615abb5e6020043e443e7</data>
+    </image>
+    <image name="image78">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1018898321080b9600a2c0662817910198262500390c5a0422876a08ac1ed044ba28a41841162088bf08ac1dd871083fb0dd50eb4304013abb5e60200d8bb41b6</data>
+    </image>
+    <image name="image79">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101ea8829c384946162caca5031200322a60c130233c04e4311d1c329864d2f763bb0bb852cbfd55a730100a8d842be</data>
+    </image>
+    <image name="image80">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1014ac594611c652431652807ca00eb558689421850f35044718a61d18bcd0e6c6e21db6fb5d65c00a72042be</data>
+    </image>
+    <image name="image81">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101fc62ca408026a6ac0c17441283604262b8cc43b317aa152c8e2aa68c21a687210603e86e065204fd8b24566bcd0500619a422f</data>
+    </image>
+    <image name="image82">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1010262cacac3570c9b7f1162b5d65c003dca43dc</data>
+    </image>
+    <image name="image83">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba101bc62caca103c1cc5088541ad351700ad9242ea</data>
+    </image>
+    <image name="image84">
+        <data format="XPM.GZ" length="374">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530523054d2e152d2534856f0cbcf4b05b195816c650320484b034ba1011a892923005e3138a0b618c5fea8b5e60200f9744384</data>
+    </image>
+    <image name="image85">
+        <data format="XPM.GZ" length="389">789c6d904d0bc2300c86effd1561efadc8b6228a20fe04c5a3201ec274e8610e741e44fcef36adfd989842491e92371f95a6dd764dba52f781874b43cd996fa48f8fae7bee0fab972acc9ccc8ca6648a892a4a6a68d35f4fe2c3faa8adb5ad842ce1a296e7327f2c63b0366660f919194328446490149452cc81b1537382f8327821886862f0acfccb620fa9f572d92c6ca1eb93cd1cc74b7a610dbf48da37cc37ba41bacb7ba93e58b947ab</data>
+    </image>
+    <image name="image86">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650320484b037113415c0b031004ab44034862caca2084269608426862608424a60c0304c490acc02b46827930a720c412954108550c61851e81304088d55a7301002ef345e0</data>
+    </image>
+    <image name="image87">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c65033000711341dc343000ab5446017ab8c51291005c0ca2029b98328a189220927970414c31654cbdc862105d2862302b51c5d0dd8cea3598981e0a008be9a189d55a7301004bfb4eb4</data>
+    </image>
+    <image name="image88">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650330007113415c0b031004ab4403a488292b13ad4e59391188f4f4c0245c4c4f0f4625a28a8194a1ab036a4ec45407a2d0d4c1eda0c46f1862b5d65c0019be47d5</data>
+    </image>
+    <image name="image89">
+        <data format="XPM.GZ" length="389">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232345330345530563054d2e152d2534856f0cbcf4b05b195816c650330007113415c0b031004ab4403a48a292bc3449495718a252a2782c48044224c2c5119ac0e4c2542c5942162ca60802e86641e5c6f22422f363b28f51b8a58ad351700fda647d1</data>
+    </image>
+</images>
+<connections>
+    <connection>
+        <sender>fileSaveAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>fileSave()</slot>
+    </connection>
+    <connection>
+        <sender>fileSaveAsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>fileSaveAs()</slot>
+    </connection>
+    <connection>
+        <sender>editUndoAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>editUndo()</slot>
+    </connection>
+    <connection>
+        <sender>editRedoAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>editRedo()</slot>
+    </connection>
+    <connection>
+        <sender>editCutAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>editCut()</slot>
+    </connection>
+    <connection>
+        <sender>editCopyAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>editCopy()</slot>
+    </connection>
+    <connection>
+        <sender>editPasteAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>editPaste()</slot>
+    </connection>
+    <connection>
+        <sender>findRefsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>editFind()</slot>
+    </connection>
+    <connection>
+        <sender>helpContentsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>helpContents()</slot>
+    </connection>
+    <connection>
+        <sender>helpAboutAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>helpAbout()</slot>
+    </connection>
+    <connection>
+        <sender>tileHorizAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>tileHoriz()</slot>
+    </connection>
+    <connection>
+        <sender>cascadeAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>cascade()</slot>
+    </connection>
+    <connection>
+        <sender>tileVerticAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>tileVertic()</slot>
+    </connection>
+    <connection>
+        <sender>expandAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>expandSubtree()</slot>
+    </connection>
+    <connection>
+        <sender>collapseAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>collapseSubtree()</slot>
+    </connection>
+    <connection>
+        <sender>showOptsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>showOpts()</slot>
+    </connection>
+    <connection>
+        <sender>showAllOptsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>showAllOpts()</slot>
+    </connection>
+    <connection>
+        <sender>nextCommentAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>nextComment()</slot>
+    </connection>
+    <connection>
+        <sender>hideEmptyOptsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>hideEmptyOpts()</slot>
+    </connection>
+    <connection>
+        <sender>prevCommentAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>prevComment()</slot>
+    </connection>
+    <connection>
+        <sender>nextErrorAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>nextError()</slot>
+    </connection>
+    <connection>
+        <sender>prevErrorAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>prevError()</slot>
+    </connection>
+    <connection>
+        <sender>checkAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>check()</slot>
+    </connection>
+    <connection>
+        <sender>checkAllAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>checkAll()</slot>
+    </connection>
+    <connection>
+        <sender>runAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>run()</slot>
+    </connection>
+    <connection>
+        <sender>newIncludeAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newInclude()</slot>
+    </connection>
+    <connection>
+        <sender>newPackageAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newPackage()</slot>
+    </connection>
+    <connection>
+        <sender>newInitiatorAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newInitiator()</slot>
+    </connection>
+    <connection>
+        <sender>new_InterfaceAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>new_Interface()</slot>
+    </connection>
+    <connection>
+        <sender>newImplAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newImpl()</slot>
+    </connection>
+    <connection>
+        <sender>newCOspecAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newCOspec()</slot>
+    </connection>
+    <connection>
+        <sender>newCOimplAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newCOimpl()</slot>
+    </connection>
+    <connection>
+        <sender>newSetAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newSet()</slot>
+    </connection>
+    <connection>
+        <sender>newEnumAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newEnum()</slot>
+    </connection>
+    <connection>
+        <sender>newVTAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newVT()</slot>
+    </connection>
+    <connection>
+        <sender>newFuncAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newFunc()</slot>
+    </connection>
+    <connection>
+        <sender>newEnumItemAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newEnumItem()</slot>
+    </connection>
+    <connection>
+        <sender>editSelItemAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>editSelItem()</slot>
+    </connection>
+    <connection>
+        <sender>editCommentAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>editComment()</slot>
+    </connection>
+    <connection>
+        <sender>gotoDeclAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>gotoDec()</slot>
+    </connection>
+    <connection>
+        <sender>gotoImplAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>gotoImpl()</slot>
+    </connection>
+    <connection>
+        <sender>returnToRefAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>returnToRef()</slot>
+    </connection>
+    <connection>
+        <sender>findByNameAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>findByName()</slot>
+    </connection>
+    <connection>
+        <sender>showOverridablesAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>showOverridables()</slot>
+    </connection>
+    <connection>
+        <sender>overrideAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>override()</slot>
+    </connection>
+    <connection>
+        <sender>openFormViewAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>openFormView()</slot>
+    </connection>
+    <connection>
+        <sender>insertTextAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>insertText()</slot>
+    </connection>
+    <connection>
+        <sender>importComponentAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>importComponent()</slot>
+    </connection>
+    <connection>
+        <sender>genLinkedHtmlAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>genLinkedHtml()</slot>
+    </connection>
+    <connection>
+        <sender>genSingleHtmlAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>genSingleHtml()</slot>
+    </connection>
+    <connection>
+        <sender>faqAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>faq()</slot>
+    </connection>
+    <connection>
+        <sender>toggleCategoryAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>toggleCategory()</slot>
+    </connection>
+    <connection>
+        <sender>optLocalVarAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>optLocalVar()</slot>
+    </connection>
+    <connection>
+        <sender>toggleSubstTypeAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>toggleSubstType()</slot>
+    </connection>
+    <connection>
+        <sender>insertBeforeAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>insertBefore()</slot>
+    </connection>
+    <connection>
+        <sender>insertAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>insert()</slot>
+    </connection>
+    <connection>
+        <sender>toggleArrowsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>toggleArrows()</slot>
+    </connection>
+    <connection>
+        <sender>toggleInputArrowsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>toggleInputArrows()</slot>
+    </connection>
+    <connection>
+        <sender>conflictingAssigAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>conflictingAssig()</slot>
+    </connection>
+    <connection>
+        <sender>newLineAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newLine()</slot>
+    </connection>
+    <connection>
+        <sender>commentOutAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>commentOut()</slot>
+    </connection>
+    <connection>
+        <sender>toggleCommentsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>toggleComments()</slot>
+    </connection>
+    <connection>
+        <sender>lessThanAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>lessThan()</slot>
+    </connection>
+    <connection>
+        <sender>lessEqualAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>lessEqua()</slot>
+    </connection>
+    <connection>
+        <sender>equalAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>equal()</slot>
+    </connection>
+    <connection>
+        <sender>notEqualAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>notEqual()</slot>
+    </connection>
+    <connection>
+        <sender>greaterEqualAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>greaterEqual()</slot>
+    </connection>
+    <connection>
+        <sender>greaterThanAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>greaterThan()</slot>
+    </connection>
+    <connection>
+        <sender>functionCallAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>functionCall()</slot>
+    </connection>
+    <connection>
+        <sender>staticCallAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>staticCall()</slot>
+    </connection>
+    <connection>
+        <sender>evaluateAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>evaluate()</slot>
+    </connection>
+    <connection>
+        <sender>nullAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>null()</slot>
+    </connection>
+    <connection>
+        <sender>intervalAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>interval()</slot>
+    </connection>
+    <connection>
+        <sender>toggleSignAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>toggleSign()</slot>
+    </connection>
+    <connection>
+        <sender>additionAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>addition()</slot>
+    </connection>
+    <connection>
+        <sender>multiplicationAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>multiplication()</slot>
+    </connection>
+    <connection>
+        <sender>divideAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>divide()</slot>
+    </connection>
+    <connection>
+        <sender>modulusAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>modulus()</slot>
+    </connection>
+    <connection>
+        <sender>leftShiftAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>leftShift()</slot>
+    </connection>
+    <connection>
+        <sender>rightShiftAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>rightShift()</slot>
+    </connection>
+    <connection>
+        <sender>bitAndAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>bitAnd()</slot>
+    </connection>
+    <connection>
+        <sender>bitOrAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>bitOr()</slot>
+    </connection>
+    <connection>
+        <sender>bitXorAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>bitXor()</slot>
+    </connection>
+    <connection>
+        <sender>invertAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>invert()</slot>
+    </connection>
+    <connection>
+        <sender>handleAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>handle()</slot>
+    </connection>
+    <connection>
+        <sender>ordAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>ord()</slot>
+    </connection>
+    <connection>
+        <sender>viewTB6Action</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>viewTB6()</slot>
+    </connection>
+    <connection>
+        <sender>viewTB7Action</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>viewTB7()</slot>
+    </connection>
+    <connection>
+        <sender>setTreeFontAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>setTreeFont()</slot>
+    </connection>
+    <connection>
+        <sender>setExecFontAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>setExecFont()</slot>
+    </connection>
+    <connection>
+        <sender>fileCloseAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>fileClose()</slot>
+    </connection>
+    <connection>
+        <sender>showUtilWindowAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>showUtilWindow()</slot>
+    </connection>
+    <connection>
+        <sender>learningLavaAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>learningLava()</slot>
+    </connection>
+    <connection>
+        <sender>viewTB1Action</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>viewTB1()</slot>
+    </connection>
+    <connection>
+        <sender>viewTB2Action</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>viewTB2()</slot>
+    </connection>
+    <connection>
+        <sender>viewTB3Action</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>viewTB3()</slot>
+    </connection>
+    <connection>
+        <sender>viewTB4Action</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>viewTB4()</slot>
+    </connection>
+    <connection>
+        <sender>viewTB5Action</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>viewTB5()</slot>
+    </connection>
+    <connection>
+        <sender>newCompoAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newCompo()</slot>
+    </connection>
+    <connection>
+        <sender>fileNewAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>fileNew()</slot>
+    </connection>
+    <connection>
+        <sender>fileOpenAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>fileOpen()</slot>
+    </connection>
+    <connection>
+        <sender>falseAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>falseHandler()</slot>
+    </connection>
+    <connection>
+        <sender>trueAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>trueHandler()</slot>
+    </connection>
+    <connection>
+        <sender>newMemVarAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>newMemVar()</slot>
+    </connection>
+    <connection>
+        <sender>fileExitAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>fileExit()</slot>
+    </connection>
+    <connection>
+        <sender>fileSaveAllAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>fileSaveAll()</slot>
+    </connection>
+    <connection>
+        <sender>deleteAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>deleteOp()</slot>
+    </connection>
+    <connection>
+        <sender>editingLavaProgsAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>editingLavaProgs()</slot>
+    </connection>
+    <connection>
+        <sender>insAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>insAction_activated()</slot>
+    </connection>
+    <connection>
+        <sender>delAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>delAction_activated()</slot>
+    </connection>
+    <connection>
+        <sender>setGlobalFontAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>setGlobalFont()</slot>
+    </connection>
+    <connection>
+        <sender>setFormButtonFontAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>setFormButtonFont()</slot>
+    </connection>
+    <connection>
+        <sender>setFormLabelFontAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>setFormLabelFont()</slot>
+    </connection>
+    <connection>
+        <sender>setFormTextFontAction</sender>
+        <signal>activated()</signal>
+        <receiver>CMainFrame</receiver>
+        <slot>setFormTextFont()</slot>
+    </connection>
+</connections>
+<includes>
+    <include location="local" impldecl="in declaration">redefines.h</include>
+    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
+    <include location="local" impldecl="in implementation">cmainframe.ui.h</include>
+</includes>
+<slots>
+    <slot>fileNew()</slot>
+    <slot>fileOpen()</slot>
+    <slot>fileSave()</slot>
+    <slot>fileSaveAs()</slot>
+    <slot>filePrint()</slot>
+    <slot>editUndo()</slot>
+    <slot>editRedo()</slot>
+    <slot>editCut()</slot>
+    <slot>editCopy()</slot>
+    <slot>editPaste()</slot>
+    <slot>editFind()</slot>
+    <slot>helpContents()</slot>
+    <slot>helpAbout()</slot>
+    <slot>tileHoriz()</slot>
+    <slot>tileVertic()</slot>
+    <slot>cascade()</slot>
+    <slot>fileSaveAll()</slot>
+    <slot>fileClose()</slot>
+    <slot>viewTB1()</slot>
+    <slot>viewTB2()</slot>
+    <slot>viewTB3()</slot>
+    <slot>viewTB4()</slot>
+    <slot>expandSubtree()</slot>
+    <slot>collapseSubtree()</slot>
+    <slot>showOpts()</slot>
+    <slot>showAllOpts()</slot>
+    <slot>hideEmptyOpts()</slot>
+    <slot>nextComment()</slot>
+    <slot>prevComment()</slot>
+    <slot>nextError()</slot>
+    <slot>prevError()</slot>
+    <slot>check()</slot>
+    <slot>checkAll()</slot>
+    <slot>run()</slot>
+    <slot>newInclude()</slot>
+    <slot>newPackage()</slot>
+    <slot>newInitiator()</slot>
+    <slot>new_Interface()</slot>
+    <slot>newImpl()</slot>
+    <slot>newCOspec()</slot>
+    <slot>newCOimpl()</slot>
+    <slot>newSet()</slot>
+    <slot>newEnum()</slot>
+    <slot>newVT()</slot>
+    <slot>newFunc()</slot>
+    <slot>newEnumItem()</slot>
+    <slot>editSelItem()</slot>
+    <slot>editComment()</slot>
+    <slot>gotoDec()</slot>
+    <slot>gotoImpl()</slot>
+    <slot>returnToRef()</slot>
+    <slot>findByName()</slot>
+    <slot>showOverridables()</slot>
+    <slot>override()</slot>
+    <slot>openFormView()</slot>
+    <slot>insertText()</slot>
+    <slot>importComponent()</slot>
+    <slot>genLinkedHtml()</slot>
+    <slot>genSingleHtml()</slot>
+    <slot>deleteOp()</slot>
+    <slot>faq()</slot>
+    <slot>LearningLava()</slot>
+    <slot>toggleCategory()</slot>
+    <slot>optLocalVar()</slot>
+    <slot>toggleSubstType()</slot>
+    <slot>insertBefore()</slot>
+    <slot>insert()</slot>
+    <slot>toggleArrows()</slot>
+    <slot>toggleInputArrows()</slot>
+    <slot>conflictingAssig()</slot>
+    <slot>newLine()</slot>
+    <slot>commentOut()</slot>
+    <slot>toggleComments()</slot>
+    <slot>lessThan()</slot>
+    <slot>viewTB5()</slot>
+    <slot>lessEqua()</slot>
+    <slot>equal()</slot>
+    <slot>notEqual()</slot>
+    <slot>greaterEqual()</slot>
+    <slot>greaterThan()</slot>
+    <slot>functionCall()</slot>
+    <slot>staticCall()</slot>
+    <slot>evaluate()</slot>
+    <slot>null()</slot>
+    <slot>interval()</slot>
+    <slot>toggleSign()</slot>
+    <slot>addition()</slot>
+    <slot>multiplication()</slot>
+    <slot>divide()</slot>
+    <slot>modulus()</slot>
+    <slot>leftShift()</slot>
+    <slot>rightShift()</slot>
+    <slot>bitAnd()</slot>
+    <slot>bitOr()</slot>
+    <slot>bitXor()</slot>
+    <slot>invert()</slot>
+    <slot>handle()</slot>
+    <slot>ord()</slot>
+    <slot>viewTB6()</slot>
+    <slot>viewTB7()</slot>
+    <slot>setTreeFont()</slot>
+    <slot>setFormFont()</slot>
+    <slot>setExecFont()</slot>
+    <slot>showUtilWindow()</slot>
+    <slot>learningLava()</slot>
+    <slot>newCompo()</slot>
+    <slot>falseHandler()</slot>
+    <slot>trueHandler()</slot>
+    <slot>newMemVar()</slot>
+    <slot>fileExit()</slot>
+    <slot>editingLavaProgs()</slot>
+    <slot>insAction_activated()</slot>
+    <slot>delAction_activated()</slot>
+    <slot>setGlobalFont()</slot>
+    <slot>setFormTextFont()</slot>
+    <slot>setFormLabelFont()</slot>
+    <slot>setFormButtonFont()</slot>
+</slots>
+<exportmacro>LAVAPEUI_DLL</exportmacro>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

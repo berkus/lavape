@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 4.0">
+    <TITLE>Function parameter property sheet</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Function parameter property sheet</H2>
+    
+    <H3>Name</H3>
+    
+    <P>The name of a function parameter may contain only letters, digits, and &quot;_&quot;.
+      The first character must not be a digit.</P>
+    
+    <h3>Substitutable type</h3>
+    
+    <P>Indicates whether the type of this formal parameter shall be <a href="../TypeSafety.htm#substitutableType">substitutable</a>,
+    i.e., whether the type of a corresponding actual parameter may also be <a href="../TypeSafety.htm#p-derived">p-derived</a>
+    (rather than <a href="../TypeSafety.htm#c-derived">c-derived</a>) from this
+    formal parameter type. (Cf. the <i><a href="../../../doc/html/PatternSamples.htm">ModelManyViews</a></i>
+    and <i><a href="../../../doc/html/PatternSamples.htm">CarMeeting</a></i> samples.)</P>
+    
+    <H3>Select type of input/output</H3>
+    
+    <P>The type of the current function parameter may be selected from the
+      combo-boxes &quot;Basic types&quot; and &quot;Other types&quot;. &quot;Basic
+      types&quot; lists all interfaces whose declaration is contained in the
+      basic include file <I>std.lava</I>. If you don't explicitly select a type
+      for a new function parameter then its type will be <I>String</I>.</P>
+    
+    <H3>Object category</H3>
+    
+    <P>The <A HREF="../TwoObjectCategories.htm">object category</A> of a
+      function parameter may be <I>value object</I> (default) or <I>state
+      object </I>or<I> same as &quot;self&quot;</I>. The latter means that the
+      parameter's category equals that of the function's &quot;self&quot; object
+      (which can, of course, be determined only on the callers level).</P>
+    
+    <H3>Mode</H3>
+    
+    <P>The mode of a function parameter may be <I><a name="mandatory"></a></I><b>mandatory</b> (default) or
+    <b>optional</b>. If optional, the parameter may assume the special <I>null
+      value</I> &Oslash; (&quot;undefined&quot;).</P>
+  </BODY>
+</HTML>

@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <TITLE>Function property sheet</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Function property sheet</H2>
+    
+    <H3>Name</H3>
+    
+    <P>The name of a function may contain only letters, digits, and &quot;_&quot;.
+      The first character must not be a digit.</P>
+    
+    <H3>Enable renaming</H3>
+    
+    <p>You may change the names of functions, member variables and virtual types
+    when you override them in a derived interface or pattern (for instance in
+    order to resolve name collisions in cases of multiple inheritance). They
+    inherit the names of the base versions by default (and their name is changed
+    accordingly if the inherited base name is changed).&nbsp;</p>
+    
+    <p> Check this check-box if
+    you would like to assign a different name (which will not be changed then if
+    the base name is changed). But note that you have to provide a new
+    implementation for overridden functions. Also note that all Lava entities
+    have a unique internal identifier. Therefore name clashes caused by multiple
+    inheritance actually doesn't matter in Lava since the external, readable
+    identifiers are not used and not needed for the distinction of Lava
+    entities. The only problem is that the <i>programmer</i> possibly cannot
+    distinguish these entities at first sight but has to click the &quot;go to
+    declaration&quot; button to this end.</p>
+    
+    <H3>Operator</H3>
+    
+    <P>You can also use one of the usual operator symbols for relational and
+      arithmetic operators for your new function instead of a name. The number
+      of arguments and their types are determined automatically in this case.
+    </P>
+    
+    <H3>Protected</H3>
+    
+    <P>A <A HREF="../ProtectedFriend.htm">protected</A> function can be
+      invoked only from functions contained in the implementation of this or a
+      derived interface.</P>
+    
+    <H3>Read-only</H3>
+    
+    <P>A read-only function must not modify its <I>self</I> object.</P>
+    
+    <h3><a name="static"></a>Static</h3>
+    
+    <P>An interface may have static member functions. These are invoked without
+    call expression and have no &quot;self&quot;/&quot;this&quot; variable.
+    Interfaces with static member functions are used primarily if you want to
+    add further functions to an existing type T of objects without
+    extending T. Example: Mathematical functions that can be applied to
+    Integers/Floats/Doubles but that are not contained in the
+    Integer/Float/Double interfaces: You may declare then, for instance, an
+    interface &quot;Math&quot; containing static functions &quot;sin&quot;,
+    &quot;cos&quot;, &quot;exp&quot;, &quot;log&quot;, etc. that accept
+    &quot;Float x&quot; as input parameter and you can invoke these in the usual
+    form &quot;sin(x)&quot;, rather than &quot;x.sin()&quot;, &quot;log(x)&quot;,
+    rather than &quot;x.log()&quot;.</P>
+    
+    <H3>Initializer</H3>
+    
+    <P>Every interface (except for component object interfaces) must have at
+      least one <A HREF="../StagesSample.htm#creation">initializer</A>
+      function. Initializers are used to bring newly created objects into a
+      state where all their non-optional member variables have a non-null value.
+      Member functions may be invoked for a new object only after this state has
+      been reached. <I>Base initializers</I> are called automatically for every
+      base interface at the beginning of the body of any initializer in order to
+      properly initialize the base parts of the current object.</P>
+    
+    <P>In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> you must always
+      specify an <I>initializer</I> (rather than a creatable interface) when
+      using a <B><FONT COLOR="#0000FF">new</FONT></B> expression to create a
+      new object.</P>
+    
+    <H3>Default initializer</H3>
+    
+    <P>A default initializer has no arguments. It is suppressed in <B><FONT COLOR="#0000FF">new</FONT></B>
+      expressions and this way enables a more compact syntax of <B><FONT COLOR="#0000FF">new</FONT></B>
+      expressions.</P>
+    
+    <H3>Abstract</H3>
+    
+    <P>An abstract function is not implemented in the implementation of the
+      containing interface. Its implementation is deferred to a derived
+      interface. Interfaces containing abstract functions cannot be creatable;
+    therefore the &quot;abstract&quot; check-box is disabled if the function
+    belongs to a creatable interface.</P>
+    
+    <H3><A NAME="native"></A>Native</H3>
+    
+    <P>See <A HREF="InterfaceBox.htm#native">native interfaces</A>.</P>
+    
+    <H3>Transaction</H3>
+    
+    <P>A function may be executed as an atomic
+      <A HREF="../Transactions.htm#transact">transaction</A>.</P>
+    
+    <HR>
+    
+    <H3>Synchronous</H3>
+    
+    <P>A function is executed in <a href="../Transactions.htm"> synchronous</a> mode by default, i.e., the caller
+      waits until it returns.</P>
+    
+    <H3>Concurrent</H3>
+    
+    <P>If a function is to be executed in <a href="../Transactions.htm"> concurrent</a> mode then a concurrently
+      executing thread is allocated and assigned to it.</P>
+    
+    <H3>Autonomous </H3>
+    
+    <P><a href="../Transactions.htm">Autonomous</a> execution means <I>concurrent</I> execution but,
+      moreover, the function neither has output parameters nor can it throw
+      exceptions.</P>
+    <HR>
+    
+    <H3>Select exception types</H3>
+    
+    <P>A function may throw exceptions (using the <font color="#0000FF"><b>fail</b></font> 
+    statement) of one or several types that you must select here:
+    <font color="#0000FF"><b>fail</b></font> may only throw exeptions that are 
+    compatible with some type from this list.</P>
+    
+    <H3>Remove overrides</H3>
+    
+    <P>Transforms an overridden function into a non-overridden function, as if it
+      had been newly declared in the containing interface.</P>
+    
+    <H3><a name="forceOverride"></a>Callable only from this VT context</H3>
+    
+    
+<P>The function together with its containing interface must always be 
+<a href="../OverrideView.htm">overridden</a> when the containing pattern is derived. Thus it cannot 
+  be called with a <I>self</I> object of a more 
+<a href="../TypeSafety.htm#p-derived">p-derived</a> run-time type, and static calls are forbidden 
+  either.</P>
+    
+    
+<P>This may be necessary particularly if a local variable or formal parameter 
+  whose type is <a href="../PatternsFrameworks.htm#multiform">multiform</a> occurs 
+  on the target side of an assignment in the  body of this function and the source side 
+  of the assignment is non-multiform. </P>
+    
+    
+<P>Example: the right-hand side is a &quot;<font color="#0000FF"><b>new</b></font> <i>
+type</i>&quot; - expression, the left-hand side is a variable having some virtual 
+type whose concrete value is <i>type</i> in the context of the function body. 
+This is the typical purpose and behavior of a &quot;factory function&quot; which is 
+overridden when the respective class is specialized.</P>
+  </BODY>
+</HTML>

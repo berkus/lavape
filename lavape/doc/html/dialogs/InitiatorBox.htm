@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 4.0">
+    <TITLE>Initiator property sheet</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Initiator property sheet</H2>
+    
+    <H3>Name</H3>
+    
+    <P>The name of an <A HREF="../Packages.htm#initiator">initiator</A> may
+      contain only letters, digits, and &quot;_&quot;. The first character must
+      not be a digit.</P>
+    
+    <H3>Transaction</H3>
+    
+    <P>An initiator may be executed as an atomic
+      <A HREF="../Transactions.htm#transact">transaction</A>. </P>
+    
+    <H3>Synchronous</H3>
+    
+    <P>If an initiator is executed in <a href="../Transactions.htm"> synchronous</a> mode then the caller waits
+      until it returns.</P>
+    
+    <H3>Concurrent</H3>
+    
+    <P>If an initiator is executed in <a href="../Transactions.htm"> concurrent</a> mode then a concurrently
+      executing thread is allocated and assigned to it.</P>
+    
+    <P><b>Note: </b>Initiators cannot throw exceptions and never have output
+      parameters. </P>
+    
+    <P></P>
+  </BODY>
+</HTML>

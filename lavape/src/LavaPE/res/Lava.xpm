@@ -1,0 +1,39 @@
+/* XPM */
+static char *Lava[] = {
+/* width height num_colors chars_per_pixel */
+"    16    16       16            1",
+/* colors */
+"` c #000000",
+". c #800000",
+"# c #008000",
+"a c #808000",
+"b c #000080",
+"c c #800080",
+"d c #008080",
+"e c #000000",
+"f c #808080",
+"g c #ff0000",
+"h c #00ff00",
+"i c #ffff00",
+"j c #0000ff",
+"k c #ff00ff",
+"l c #00ffff",
+"m c #ffffff",
+/* pixels */
+"lllllllmmmmmmmmm",
+"lllllmmmmmmmmmll",
+"llllmmmmmmmmllll",
+"lllllmmmmmllllll",
+"llllllmmmlllllll",
+"lllllggi`gllllll",
+"lllll`gi`g`lllll",
+"lllll`gi````llll",
+"llll``gggig`llll",
+"lll```igggig`lll",
+"l````gig``gi``ll",
+"``````i```gig``l",
+"`````ig```g`i``l",
+"````gg````i`ii``",
+"``gii`````gggig`",
+"`ggig`g``gggggi`"
+};

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
+ "hmpro4.dtd">
+
+<HTML>
+  
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <META NAME="Author" CONTENT="Klaus D. Günther">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage Express 2.0">
+    <TITLE>Interface property sheet</TITLE>
+    <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
+  </HEAD>
+  
+  <BODY>
+    
+    <H2 ALIGN="CENTER">Interface property sheet</H2>
+    
+    <H3>Name</H3>
+    
+    <P>The name of an interface may contain only letters, digits, and &quot;_&quot;.
+      The first character must not be a digit.</P>
+    
+    <H3>Declare also &quot;Set&quot; of ...</H3>
+    
+    <P>Generates also a nested declaration of an interface &quot;Set&quot;,
+      where the set elements support the present interface.</P>
+    
+    <H3><A NAME="creatable"></A>Creatable / Non-creatable</H3>
+    
+    <P>New objects of type XY can be created (using the <B><FONT COLOR="#0000FF">new</FONT></B>
+      expression) only if XY is a <I>creatable</I> interface; only creatable
+      interfaces are listed in the combo-box associated with the
+      <FONT COLOR="#FF0000">&lt;creatable&gt;</FONT> placeholder of the <B><FONT COLOR="#0000FF">new</FONT><FONT COLOR="#0000FF">
+      </FONT></B>construct. (New objects may emerge also as output objects of
+      other built-in or native functions, e.g., the <I>Handle</I> objects
+      associated with <I>Chain</I> elements.)</P>
+    
+    <P>As a consequence, creatable interfaces must not contain <I>abstract</I>
+      functions. If an interface contains abstract functions or if it would not
+      make sense to create objects supporting this and only this interface, for
+      instance a general <I>Print</I> interface, then you will declare it to be
+      non-creatable. </P>
+    
+    <H3><A NAME="native"></A>Native</H3>
+    
+    <P>If an interface is to contain <A HREF="FunctionBox.htm#native">native</A>
+      functions (implemented in some other language) then you must declare it to
+      be native. Native interfaces are implemented in a special way as dynamic
+      link libraries (DLLs). A native interface may nevertheless contain
+      non-native functions .</P>
+    
+    <H3>Component object interface</H3>
+    
+    <P><A HREF="../Components.htm">Component object interfaces</A> are the
+      basic ingredients of <A HREF="COSpecBox.htm">component object
+        specifications</A>. The parameters of their functions are subject to
+      special restrictions, and their member variables must be accessed through
+      set/get functions.</P>
+    
+    <H3>Interface UUID</H3>
+    
+    <P>Interfaces of <A HREF="../Components.htm">component objects</A> are
+      designated by an external identifier: A <U><B>U</B></U>niversally <U><B>U</B></U>nique<B>
+      <U>ID</U></B>entifier.</P>
+    
+    <H3>Select interfaces to be extended</H3>
+    
+    <P>A new interface may extend one or several existing <I>base interfaces</I>.
+      These may be selected from the combo-boxes &quot;Basic interfaces&quot;
+      and &quot;Other interfaces&quot;. &quot;Basic interfaces&quot; lists all
+      interfaces whose declaration is contained in the basic include file <I>std.lava</I>.
+      If you don't explicitly select a base interface then the new interface is
+      derived from interface <I>Object</I> in <I>std.lava</I>.</P>
+    <HR>
+    
+    <H3><A NAME="GUIservice"></A>GUI interface</H3>
+    
+    <P>You can mark an interface as a <A HREF="../EditForm.htm">GUI interface</A>
+      and select an existing interface <I>XY</I> for which a form
+      representation is to be generated. A member function <I>Show</I> is
+      created automatically that can be used to present objects of type <I>XY</I>
+      as forms that can be filled in.</P>
+    
+    <H3>Select type of signals</H3>
+    
+    <P>Hereby you can express that objects supporting the new interface can
+      signal events that have occurred in the object by invoking associated
+      <A HREF="../Callbacks.htm">callback</A> functions.</P>
+  </BODY>
+</HTML>

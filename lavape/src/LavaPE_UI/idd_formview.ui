@@ -1,0 +1,48 @@
+<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<class>IDD_FORMVIEW</class>
+<widget class="QWidget">
+    <property name="name">
+        <cstring>IDD_FORMVIEW</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>318</width>
+            <height>356</height>
+        </rect>
+    </property>
+    <property name="font">
+        <font>
+            <family>MS Sans Serif</family>
+        </font>
+    </property>
+    <property name="caption">
+        <string>IDD_FORMVIEW</string>
+    </property>
+    <widget class="QPushButton">
+        <property name="name">
+            <cstring>m_BUTTON1</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>232</x>
+                <y>321</y>
+                <width>75</width>
+                <height>23</height>
+            </rect>
+        </property>
+        <property name="focusPolicy">
+            <enum>NoFocus</enum>
+        </property>
+        <property name="text">
+            <string>Apply</string>
+        </property>
+    </widget>
+</widget>
+<includes>
+    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
+</includes>
+<exportmacro>LAVAPEUI_DLL</exportmacro>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

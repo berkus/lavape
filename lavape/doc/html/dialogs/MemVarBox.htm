@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Member variable property sheet</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<META content="Klaus D. Günther" name=Author>
+<META content="Microsoft FrontPage 5.0" name=GENERATOR><LINK 
+href="../LavaStyles.css" type=text/css rel=STYLESHEET></HEAD>
+<BODY>
+<H2 align=center>Member variable property sheet</H2>
+<H3>Name</H3>
+<P>The name of a function parameter may contain only letters, digits, and "_". 
+The first character must not be a digit.</P>
+<H3>Enable renaming</H3>
+<P>You may change the names of functions, member variables and virtual types 
+when you override them in a derived interface or pattern (for instance in order 
+to resolve name collisions in cases of multiple inheritance). They inherit the 
+names of the base versions by default (and their name is changed accordingly if 
+the inherited base name is changed). Check this check-box if you would like to 
+assign a different name (which will not be changed then if the base name is 
+changed).</P>
+<H3>Select type of member variable</H3>
+<P>The type of the member variable may be selected from the combo-boxes "Basic 
+types" and "Other types". "Basic types" lists all interfaces whose declaration 
+is contained in the basic include file <I>std.lava</I>. If you don't explicitly 
+select a type for a new member variable then its type will be <I>String</I>.</P>
+<H3>Kind of reference</H3>
+<P>This attribute enables us to distinguish <A 
+href="../PointersRefCounts.htm#refTypes">three kinds of references</A> to other 
+objects: <I>Constituents</I>, <I>acquaintances</I>, and <I>reverse</I> (back or 
+up) links. Constituents <I>belong</I> to the current object, acquaintances 
+are<I> pointers to independent objects</I>, and reverse links are 
+<I>auxiliary</I> back or up pointers that are required to facilitate automatic 
+storage management by reference counts.</P>
+<H3>Object category</H3>
+<P>The <A href="../TwoObjectCategories.htm">object category</A> of a member 
+variable may be <I>value object</I> (default) or <I>state object</I>.</P>
+<H3>Protected</H3>
+<P>A <A href="../ProtectedFriend.htm">protected</A> member variable can be 
+accessed only by functions contained in the implementation of the present or a 
+derived interface.</P>
+<H3>Read-only</H3>
+<P>A read-only member variable <I>xy</I> of some object can be assigned a value 
+only "from inside the object" via the path <I>self.xy</I>, i.e., from within 
+functions belonging to the current interface or its implementation. It is 
+write-protected against access "from outside".</P>
+<H3>Copy on access</H3>
+<P>The effect of this attribute is that the respective member object remains 
+<I>isolated</I> from the outside world. Every read access delivers a copy of the 
+object (that may the manipulated without affecting the original object), every 
+write access assigns a copy to the corresponding member variable (that will not 
+be affected by subsequent modifications of the write input object).</P>
+<H3>Abstract</H3>
+<P>This attribute is enabled only if the member variable is accessed via set/get 
+functions (see next paragraph). It allows you to defer the implementation of the 
+set/get functions to a derived interface: The set/get functions are 
+abstract.</P>
+<H3>Access via set/get functions</H3>
+<P>If a member variable <I>xy</I> has this property then <A 
+href="../Unsolved.htm#setGetFunctions">set/get functions</A> are generated for 
+it in the implementation of the containing interface. Every read or write access 
+to the variable is redirected implicitly through these get/set functions. Only 
+these set/get functions themselves may directly access the variable. In this way 
+you can supervise every access attempt to the variable and, by properly 
+modifying the default set/get functions, achieve additional side effects or 
+perform access permission checks.</P>
+<P><A href="../SepItfImpl.htm#setGetFunctions">See also</A>.</P>
+<H3>Consumable</H3>
+<P><I>Consumable</I> member variables are used for <A 
+href="../Transactions.htm#producerConsumer">producer/consumer 
+synchronization</A> in <B><I><FONT color=#ff0000>Lava</FONT></I></B>.</P>
+<H3>Mode</H3>
+<P>The mode of a member variable may be <I><A 
+name=mandatory></A></I><B>mandatory</B> (default), <B>optional</B>, or 
+<B>placeholder</B>. If <I>optional</I>, the parameter may assume the special 
+<I>null value</I> Ø ("undefined"). <I>Placeholder</I> members cannot be accessed 
+at all. They are used in <A href="../EditForm.htm">forms</A> to describe fields 
+that are to be <I>filled in</I> only in a later step by some other person, 
+although they are <I>visible</I> from the beginning.</P>
+<P></P></BODY></HTML>
