@@ -105,6 +105,7 @@ CUtilityView::CUtilityView(QWidget *parent)
 
 CUtilityView::~CUtilityView()
 {
+  DeleteAllFindItems()
 }
 
 

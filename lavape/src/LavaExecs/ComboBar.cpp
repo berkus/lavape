@@ -118,6 +118,9 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QMainWindow* parent)
   m_EnumsCtrl->show();
   EnumsEnable = false;
   EnumsShow = true;
+  NewFuncEnable = false;
+  NewPFuncEnable = false;
+
   CContext context;
   myDoc->NextContext(myDECL, context);
   if (myDECL->DeclType == Function) {
