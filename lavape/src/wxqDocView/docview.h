@@ -85,7 +85,7 @@ public:
 		QThread *mainThread;
 		bool deletingMainFrame;
     bool isChMaximized;
-    bool apExit;
+    bool appExit;
 
     virtual void saveSettings() {}
     virtual void UpdateUI() {}

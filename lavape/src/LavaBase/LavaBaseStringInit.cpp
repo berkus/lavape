@@ -376,7 +376,7 @@ void LavaBaseStringInit() {
   ERR_PreconditionConsistency  = QObject::tr("Precondition violation");
   ERR_PostconditionViolation  = QObject::tr("Postcondition violation");
   ERR_PostconditionConsistency  = QObject::tr("Postcondition of overridden method should be true");
-  ERR_NoErrors  = QObject::tr("No errors or placeholders found");
+  ERR_NoErrors  = QObject::tr("No errors or placeholders found in this exec");
   ERR_ExecError  = QObject::tr("Error or placeholder in executable code");
   ERR_DLLError  = QObject::tr("Native implementation DLL error");
   ERR_AssigToFrozen  = QObject::tr("Forbidden assignment to a member of a frozen value object");
@@ -486,7 +486,7 @@ void LavaBaseStringInit() {
 	ERR_SaveFailed = QObject::tr("Changes couldn't be saved to read-only Lava file.\nRun unchanged program?");
 	ERR_LookForCompoObj = QObject::tr("Implementation of this  component object interface or specification not found. \n(Expected in a corresponding *.lcom file)");
 	ERR_LookForCompoObjF = QObject::tr("Implementation of the attribute or function of the component object interface not found. \n(Expected in a corresponding *.lcom file");
-  ERR_NoImplForAbstract	= QObject::tr("Abstract or native function has no implementation");
+  ERR_NoImplForAbstract	= QObject::tr("Abstract or native function doesn't have a Lava implementation");
   ERR_LocalOrOutputVarInOld = QObject::tr("Local and output variables not allowed in \"old\" expression");
   ERR_OneLibName = QObject::tr("Only set the name of the library implementing the component");
   ERR_CompObjIntfNotFound = QObject::tr("Supported component object interface not found");

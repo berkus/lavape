@@ -49,7 +49,7 @@ $INCLUDE "Syntax.ph"
 #endif
 
 
-#define leftMargin 5
+#define LEFTMARGIN 17
 #define INDENT 3
 
 #ifdef EXECVIEW
@@ -379,7 +379,7 @@ enum ExecFlags {
 };
 
 enum WorkFlags {
-  isBreakPoint,
+  isBrkPnt,
   isTempPoint
 };
 
@@ -472,7 +472,7 @@ public:
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored){}
   void SetError(CheckData &ckd,QString *error,char *textParam=0);
   void SetRTError(CheckData &ckd,QString *error,LavaVariablePtr stackFrame,const char *textParam=0);
-  QString CallStack(CheckData &ckd,LavaVariablePtr stack,QString excMsg);
+  QString DebugStop(CheckData &ckd,LavaVariablePtr stack,QString excMsg,StopReason sr);
   QString LocationOfConstruct ();
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) { decl = 0; cat = unknownCategory; }
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
@@ -1428,7 +1428,7 @@ public:
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"); }
+    return QObject::tr("<p><a href=\"FailSucceed.htm\">Affirm</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"); }
 };
 
 class FailStatementV : public FailStatement {
@@ -1437,7 +1437,7 @@ public:
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    return QObject::tr("<p><a href=\"FailSucceed.htm\">Negate</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
     " optionally throw exception</p>"); }
 };
 
@@ -1681,6 +1681,8 @@ public:
   FuncStatementV (ObjReference *ref, bool out=false);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>This is a <a href=\"MemberFunctions.htm\">Function</a> call statement</p>"); }
 };
 
 class CallbackV : public Callback {
@@ -2100,8 +2102,7 @@ class SucceedStatementX : public SucceedStatement {
 public:
   SucceedStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
-    ckd.immediateReturn = true; return true; }
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class FailStatementX : public FailStatement {

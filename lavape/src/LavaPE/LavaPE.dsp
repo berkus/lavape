@@ -103,6 +103,10 @@ SOURCE=.\Boxes.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\DbgThreadPE.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ExecTree.cpp
 # End Source File
 # Begin Source File
@@ -193,6 +197,10 @@ InputName=Boxes
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=.\DbgThreadPE.h
 # End Source File
 # Begin Source File
 
@@ -1437,6 +1445,10 @@ SOURCE=.\hlp\Scmin.bmp
 # End Group
 # Begin Source File
 
+SOURCE=.\res\bitmap1.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\LavaCom.ico
 # End Source File
 # Begin Source File
@@ -1453,7 +1465,15 @@ SOURCE=.\res\lavatask.ico
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\Q4_DebugStop.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ReadMe.txt
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\startDebug.bmp
 # End Source File
 # Begin Source File
 
@@ -1474,6 +1494,10 @@ InputName=std
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\stopDebug.bmp
 # End Source File
 # End Target
 # End Project

@@ -537,7 +537,9 @@ enum TTableUpdate {
            onTypeID,
 		   onSearch,
            onSelect,
-		   onSetSynOID
+		   onSetSynOID,
+           onSetBrkPnt,
+           onSetRunToPnt
            };
 
   struct CSecTabBase {
@@ -877,22 +879,41 @@ $TYPE +CDP {
 
 // debug communication data:
 
-enum DebugCommand {  Dbg_Nothing, Dbg_Continue, Dbg_StopData, Dbg_MemberDataRq, Dbg_MemberData, Dbg_StackRq, Dbg_Stack};
-enum DbgContType {dbg_Cont, dbg_Step, dbg_StepOut, dbg_StepInto, dbg_RunTo};
+enum DbgCommand {  Dbg_Nothing, 
+                   Dbg_Continue,     //LavaPE to Lava
+                   Dbg_StopData,     //Lava to LavaPE
+                   Dbg_MemberDataRq, //LavaPE to Lava
+                   Dbg_MemberData,   //Lava to LavaPE
+                   Dbg_StackRq,      //LavaPE to Lava
+                   Dbg_Stack,         //Lava to LavaPE
+                   Dbg_Exit          //LavaPE to Lava
+                   };
 
-    struct ObjItemData  {
-      ObjItemData() {}
-      ~ObjItemData() {}
+enum StopReason {  Stop_BreakPoint,
+                   Stop_NextStm,
+                   Stop_NextFunc,
+                   Stop_NextOp,
+                   Stop_StepInto,
+                   Stop_StepOut,
+                   Stop_FunctionCall,
+                   Stop_Exception
+                   };
+
+enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, dbg_RunTo};
+
+    struct DDItemData  {    //Lava to LavaPE
+      DDItemData() {}
+      ~DDItemData() {}
       bool isPrivate;
 //      bool Selected;
       bool HasChildren;
       STRING Column0;
       STRING Column1;
       STRING Column2;
-      CHAINX Children; //ObjItemData in LavaPE, ObjDebugItem in Lava
+      CHAINX Children; //DDItemData in LavaPE, DebugItem in Lava
     };
 
-    struct StackData {
+    struct StackData {         //Lava to LavaPE
       int SynObjID;       //crash point id
       TDeclType ExecType; //in exec type
       TID FuncID;         //of function
@@ -900,55 +921,71 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepOut, dbg_StepInto, dbg_RunTo};
       SynObjectBase-- *SynObj;
     };
 
-    struct ProgramPoint {
+    struct ProgPoint {          //LavaPE to Lava
       int SynObjID;       // point id
-      TDeclType ExecType; //in exec type
-      TID FuncID;         //of function
+      TDeclType ExecType; // in exec type
+      TID FuncID;         // of function
       bool Activate;
       SynObjectBase-- *SynObj;
+      DString-- FuncDocName;
+      DString-- FuncDocDir;
+      address-- FuncDoc;
     };
 
-    struct DebugStopData { //from Lava to LavaPE
+    struct DbgStopData { //from Lava to LavaPE
+      StopReason stopReason;
       int ActStackLevel;
       CHAINANY <StackData> StackChain;
-      CHAINX /*ObjItemData*/ ObjectChain;
-      DebugStopData() {ActStackLevel=0;}
+      CHAINX /*DDItemData*/ ObjectChain;
+      DbgStopData() {ActStackLevel=0;}
     };
 
-    struct DebugContData { //from LavaPE to Lava
-      bool ClearBreakPoints;
-      CHAINANY <ProgramPoint> BreakPoints;
+    struct DbgContData { //from LavaPE to Lava
+      bool ClearBrkPnts;
+      CHAINANY <ProgPoint> BrkPnts;
       DbgContType ContType;
-      NESTED <ProgramPoint> RunToPoint;
+      NESTED <ProgPoint> RunToPnt;
 
-      DebugContData() {ClearBreakPoints = false;}
+      DbgContData() {ClearBrkPnts = false;}
     };
 
     typedef CHAINANY <int> ChObjRq;
 
-    struct DebugMessage {
-        CASE DebugCommand Command OF
+    struct DbgMessage {
+        CASE DbgCommand Command OF
         Dbg_StopData, Dbg_Stack:
-            NESTEDANY0 <DebugStopData> DbgData;
+            NESTEDANY0 <DbgStopData> DbgData; //Lava to LavaPE
         | Dbg_MemberData:
-            NESTEDANY0 <ObjItemData> ObjData;
+            NESTEDANY0 <DDItemData> ObjData; //Lava to LavaPE
         | Dbg_MemberDataRq:
-            NESTED <ChObjRq> ObjNr;
+            NESTED <ChObjRq> ObjNr;           //LavaPE to Lava
         | Dbg_StackRq:
-            int CallStackLevel;
+            int CallStackLevel;               //LavaPE to Lava
         | Dbg_Continue:
-            NESTEDANY <DebugContData> ContinueData;
+            NESTEDANY <DbgContData> ContData; //LavaPE to Lava
         ELSE
         END;
 
-        void SetData(DebugCommand command, DebugStopData* data) //
-        {Command = command; DbgData.ptr = data; ObjData.ptr = 0; ObjNr.ptr=0;}
+        void SetSendData(DbgCommand command, DbgStopData* data) //Lava to LavaPE
+        {Command = command; 
+         DbgData.ptr = 0;
+         DbgData.ptr = data; 
+         }
 
-        void SetData(ObjItemData* obj)
-        {Command = Dbg_MemberData; ObjData.ptr = obj; DbgData.ptr = 0; ObjNr.ptr=0;}
+        void SetSendData(DDItemData* obj) //Lava to LavaPE
+        { Command = Dbg_MemberData; 
+          ObjData.ptr = obj; 
+         }
 
-        DebugMessage(DebugCommand com, ChObjRq* oRq) {Command = com; ObjNr.ptr = oRq;}
-        DebugMessage() {}
+        DbgMessage(DbgCommand com, ChObjRq* oRq) {Command = com; ObjNr.ptr = oRq;}
+        DbgMessage() {}
+
+        void Destroy() {
+         DbgData.ptr = 0;
+         ObjData.ptr=0; //it is also part of DbgData, therefor no Destroy()
+         ObjNr.Destroy();
+         ContData.Destroy();
+        }
     };
 
 }

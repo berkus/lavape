@@ -50,6 +50,9 @@
 //#include "LavaPEFrames.h"
 #include "Resource.h"
 #include "LavaExecsStringInit.h"
+#include "debugStop.xpm"
+#include "debugStopGreen.xpm"
+#include "breakPoint.xpm"
 
 
 #define IsPH(PTR) ((SynObject*)PTR)->IsPlaceHolder()
@@ -68,6 +71,7 @@ static SynObject *clipBoardObject=0;
 static wxDocument *clipBoardDoc;
 
 static unsigned ExecCount=0;
+static CExecView *lastDebugStopExec=0;
 
 void dummy_func () {
 	ASN1 *cid=new ASN1;
@@ -131,11 +135,13 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 
 CExecView::~CExecView()
 {
-  setFocusProxy(0); 
+  setFocusProxy(0);
+  if (sv->debugStopToken)
+    lastDebugStopExec = 0;
   OnCloseExec();
-//  if (editCtl)
-//    delete editCtl;
   delete text;
+  if (lastDebugStopExec == this)
+    lastDebugStopExec = 0;
 }
 
 bool CExecView::OnCreate() 
@@ -349,7 +355,7 @@ int MyScrollView::calcIndent (CHETokenNode *currentToken) {
   if (ancestor)
     ind = ancestor->startPos+currentToken->data.indent*widthOfIndent;
   else
-    ind = leftMargin+currentToken->data.indent*widthOfIndent;
+    ind = LEFTMARGIN+currentToken->data.indent*widthOfIndent;
 
 	return ind;
 }
@@ -365,7 +371,7 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
 
   SetTokenFormat(currentToken);
 
-  if (inSelection) {
+  if (inSelection && !inDebugStop) {
     currentColor = (QColor)fmt.color;
     currentColor.rgb(&r,&g,&b);
     r = 255 - r;
@@ -405,6 +411,10 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
                  + currentToken->data.indent*widthOfIndent;
 		text->lastIndent = currentX;
   }
+  if (inDebugStop)
+    debugStopY = currentY-fm->ascent();
+  if (inBreakPoint)
+    breakPointY = currentY-fm->ascent();
 
 	if (currentToken == currentToken->data.synObject->startToken)
 		while (ancestor && ancestor->startPos == -1) {
@@ -433,7 +443,7 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
       if (nl_pos == -1) {
         line = currentToken->data.str.mid(old_nl_pos+1);
         if (line.length()) {
-          p->drawText(currentX,currentY,line);
+          p->drawText(currentX,currentY,line,0,-1);
           lineWidth=fm->width(line);
           contentsWidth = QMAX(contentsWidth,currentX+lineWidth);
           cmtWidth = QMAX(cmtWidth,lineWidth);
@@ -443,7 +453,7 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
       else {
         line = currentToken->data.str.mid(old_nl_pos+1,nl_pos - old_nl_pos - 1);
         if (line.length()) {
-          p->drawText(currentX,currentY,line);
+          p->drawText(currentX,currentY,line,0,-1);
           lineWidth=fm->width(line);
           contentsWidth = QMAX(contentsWidth,currentX+lineWidth);
           cmtWidth = QMAX(cmtWidth,lineWidth);
@@ -456,7 +466,7 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
   }
 
   else { // no comment token
-    p->drawText(currentX,currentY,currentToken->data.str);
+    p->drawText(currentX,currentY,currentToken->data.str,0,-1);
     width=fm->width(currentToken->data.str);
     currentToken->data.rect.setRect(currentX,currentY-fm->ascent(),width,fm->height());
     currentX += width;
@@ -468,11 +478,19 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
 	delete fm;
 }
 
+typedef QValueList<int> BreakPointList;
+
 void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, int cliph)
 {
   CHETokenNode *currentToken;
-  bool inSelection=false;
+  bool inSelection=false, debugStopOccurred=false;
   QRect vr=visibleRect(), vr_vpt=viewport()->visibleRect(), gmt=viewport()->geometry(), cr=childrenRect();
+  QPen myPen(QPen::NoPen);
+  BreakPointList bpl;
+  BreakPointList::iterator it;
+
+  inDebugStop=false;
+  inBreakPoint=false;
 
 	if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
 		return;
@@ -484,35 +502,122 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
   contentsHeight = 0;
   p->eraseRect(0,0,contentsWidth,contentsHeight);
   fmt.font = font();
-//  QFontMetrics *fmp = new QFontMetrics(fontMetrics());
   fm = new QFontMetrics(fontMetrics());//fmp;
   QFontInfo fi(fmt.font);
   int ps = fi.pointSize();
   QString fam = fi.family();
-  currentX = leftMargin;
+  currentX = LEFTMARGIN;
   currentY = fm->ascent();
+
   for (currentToken = (CHETokenNode*)text->tokenChain.first;
        currentToken;
        currentToken = (CHETokenNode*)currentToken->successor) {
 
+    inDebugStop = false;
+    inBreakPoint = false;
+
     if (currentToken->data.flags.Contains(insertBlank)) {
-      p->drawText(currentX,currentY," ");
+      p->drawText(currentX,currentY," ",0,-1);
       currentX += widthOfBlank;
     }
-    if (currentToken == execView->selStartPos) {
+
+    if (!inSelection && currentToken == execView->selStartPos)
       inSelection = true;
+
+    if (currentToken == debugStopToken) {
+      inDebugStop = true;
+      debugStopOccurred = true;
+      p->setBackgroundMode(Qt::OpaqueMode);
+      if (stopReason == Stop_StepOut)
+        p->setBackgroundColor(QColor(180,180,255));
+      else
+        p->setBackgroundColor(QColor(150,255,150));
+    }
+    if (currentToken->data.synObject->workFlags.Contains(isBrkPnt)
+    && (currentToken->data.flags.Contains(primToken)
+        || currentToken->data.token == assignFS_T)) {
+      inBreakPoint = true;
+      if (!inDebugStop) {
+        p->setBackgroundMode(Qt::OpaqueMode);
+        p->setBackgroundColor(QColor(255,150,150));
+      }
+    }
+    else if (currentToken->data.token == TDOD_T
+    && currentToken->data.synObject->parentObject->workFlags.Contains(isBrkPnt)
+    && currentToken == currentToken->data.synObject->parentObject->startToken) {
+      inBreakPoint = true;
+      if (!inDebugStop) {
+        p->setBackgroundMode(Qt::OpaqueMode);
+        p->setBackgroundColor(QColor(255,130,180));
+      }
+    }
+    else if (inSelection && !inDebugStop) {
       p->setBackgroundMode(Qt::OpaqueMode);
       p->setBackgroundColor(black);
     }
     DrawToken(text,currentToken,inSelection);
-    if (currentToken == execView->selEndPos) {
-      inSelection = false;
-      p->setBackgroundMode(Qt::TransparentMode);
-      p->setBackgroundColor(white);
+    if (inBreakPoint)
+      bpl.append(breakPointY);
+    if (inDebugStop) {
+      inDebugStop = false;
+      if (inSelection)
+        if (currentToken == execView->selEndPos) {
+          inSelection = false;
+          p->setBackgroundMode(Qt::TransparentMode);
+          p->setBackgroundColor(white);
+        }
+        else {
+          p->setBackgroundMode(Qt::OpaqueMode);
+          p->setBackgroundColor(black);
+        }
+      else {
+        p->setBackgroundMode(Qt::TransparentMode);
+        p->setBackgroundColor(white);
+      }
     }
+    else if (inBreakPoint) {
+      inBreakPoint = false;
+      if (inSelection)
+        if (currentToken == execView->selEndPos) {
+          inSelection = false;
+          p->setBackgroundMode(Qt::TransparentMode);
+          p->setBackgroundColor(white);
+        }
+        else {
+          p->setBackgroundMode(Qt::OpaqueMode);
+          p->setBackgroundColor(black);
+        }
+      else {
+        p->setBackgroundMode(Qt::TransparentMode);
+        p->setBackgroundColor(white);
+      }
+    }
+    else if (inSelection)
+      if (currentToken == execView->selEndPos) {
+        inSelection = false;
+        p->setBackgroundMode(Qt::TransparentMode);
+        p->setBackgroundColor(white);
+      }
   }
+
+  p->setBrush(QColor(210,210,210));
+  p->setPen(myPen);
+  p->drawRect(0,0,15,contentsHeight>=viewport()->height()?contentsHeight:viewport()->height());
+  fm = new QFontMetrics(fontMetrics());
+  for ( it = bpl.begin(); it != bpl.end(); ++it )
+   p->drawPixmap(0,*it+(fm->ascent()>14?fm->ascent()-14:0),*breakPoint);
+  if (debugStopOccurred)
+    if (innermostStop)
+      p->drawPixmap(0,debugStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStop);
+    else
+      p->drawPixmap(0,debugStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStopGreen);
+
   viewport()->setUpdatesEnabled(true);
-  if (execView->autoScroll) {
+  if (debugStopOccurred && execView->autoScroll) {
+    ensureVisible(debugStopToken->data.rect.left(),debugStopToken->data.rect.top(),50,50);  
+    execView->autoScroll = false;
+  }
+  else if (execView->autoScroll) {
     ensureVisible(execView->selEndPos->data.rect.left(),execView->selEndPos->data.rect.top(),50,50);
     execView->autoScroll = false;
   }
@@ -1022,6 +1127,10 @@ void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
 
 MyScrollView::MyScrollView (QWidget *parent) : QScrollView(parent) {
   execView = (CExecView*)parent;
+  debugStop = new QPixmap((const char**)debugStop_xpm);
+  debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
+  breakPoint = new QPixmap((const char**)breakPoint_xpm);
+  debugStopToken = 0;
 }
 
 void CExecView::OnLButtonDown(QMouseEvent *e) 
@@ -1138,7 +1247,6 @@ void CExecView::Select (SynObject *selObj)
     if (doubleClick) {
       doubleClick = false;
 
-//      setUpdatesEnabled(true);
       pComment = new CComment(this);
       synObj = text->currentSynObj;
       if (synObj->comment.ptr) {
@@ -1720,8 +1828,8 @@ void CExecView::RedrawExec(SynObject *selectAt)
     execReplaced = false;
 
   sv->viewport()->update();
-  sv->update();
-	GetParentFrame()->update();
+//  sv->update();
+//	GetParentFrame()->update();
 }
 
 
@@ -4544,7 +4652,7 @@ void CExecView::OnNextError()
     else {
       nextError = true;
       Select(currToken->data.synObject);
-			sv->viewport()->update();
+//			sv->viewport()->update();
       return;
     }
 
@@ -4556,7 +4664,7 @@ void CExecView::OnNextError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-			  sv->viewport()->update();
+//			  sv->viewport()->update();
         return;
       }
     }
@@ -4570,7 +4678,7 @@ void CExecView::OnNextError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-			  sv->viewport()->update();
+//			  sv->viewport()->update();
         return;
       }
     }
@@ -4595,7 +4703,7 @@ void CExecView::OnPrevError()
     else {
       nextError = true;
       Select(currToken->data.synObject);
-			sv->viewport()->update();
+//			sv->viewport()->update();
       return;
     }
 
@@ -4607,7 +4715,7 @@ void CExecView::OnPrevError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-			  sv->viewport()->update();
+//			  sv->viewport()->update();
         return;
       }
     }
@@ -4621,14 +4729,13 @@ void CExecView::OnPrevError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-			  sv->viewport()->update();
+//			  sv->viewport()->update();
         return;
       }
     }
   }
   else
     QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-//    AfxMessageBox(&ERR_NoErrors,MB_ICONINFORMATION|MB_OK);
 }
 
 void CExecView::OnNextComment()
@@ -5024,12 +5131,6 @@ void CExecView::UpdateUI()
 		return;
 
   //CLavaMainFrame* frame = (CLavaMainFrame*)((wxApp*)wxTheApp)->m_appWindow;
-	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
-	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
-	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
-	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
-	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
-
 	OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
   OnUpdateHandle(LBaseData->handleActionPtr);
   OnUpdateInputArrow(LBaseData->toggleInputArrowsActionPtr);
@@ -6341,37 +6442,60 @@ QString ExecWhatsThis::text(const QPoint &point) {
 
 void CExecView::DbgBreakpoint() 
 {
-  CHEProgramPoint* cheBreak = new CHEProgramPoint;
-  CPEBaseDoc *debugDoc = (CPEBaseDoc*)LBaseData->debugThread->doc;
+  CHEProgPoint* cheBreak;
+  SynObject *stopObj=text->currentSynObj;
 
-  if (!debugDoc->ContinueData)
-    debugDoc->ContinueData = new DebugContData;
-  cheBreak->data.SynObj = text->currentSynObj; 
-  cheBreak->data.SynObjID = text->currentSynObj->synObjectID;
-  cheBreak->data.ExecType = myDECL->DeclType;
-  cheBreak->data.FuncID.nINCL = debugDoc->IDTable.GetINCL((CHESimpleSyntax*)myDoc->IDTable.mySynDef->SynDefTree.first, myDoc->IDTable.DocDir);
-  cheBreak->data.FuncID.nID = myID.nID;
-  if (text->currentSynObj->workFlags.Contains(isBreakPoint))
-    text->currentSynObj->workFlags.EXCL(isBreakPoint);
-  else
-    text->currentSynObj->workFlags.INCL(isBreakPoint);
-  cheBreak->data.Activate = text->currentSynObj->workFlags.Contains(isBreakPoint);
-  debugDoc->ContinueData->BreakPoints.Append(cheBreak);
+  if (!LBaseData->ContData)
+    LBaseData->ContData = new DbgContData;
+  if (stopObj->primaryToken == TDOD_T)
+    stopObj = stopObj->parentObject;
+  for (cheBreak = (CHEProgPoint*)LBaseData->ContData->BrkPnts.first;
+       cheBreak && (cheBreak->data.SynObj != stopObj);
+       cheBreak = (CHEProgPoint*)cheBreak->successor);
+  if (cheBreak) {
+    stopObj->workFlags.EXCL(isBrkPnt);
+    LBaseData->ContData->BrkPnts.Delete(cheBreak);
+    sv->viewport()->update();
+  }
+  else {
+    cheBreak = new CHEProgPoint;;
+    cheBreak->data.SynObj = stopObj; 
+    cheBreak->data.SynObjID = stopObj->synObjectID;
+    cheBreak->data.ExecType = myDECL->DeclType;
+    cheBreak->data.FuncDoc = (address)GetDocument();
+    cheBreak->data.FuncDocName = ((CHESimpleSyntax*)GetDocument()->IDTable.mySynDef->SynDefTree.first)->data.SyntaxName;
+    cheBreak->data.FuncDocDir = GetDocument()->IDTable.DocDir;
+    cheBreak->data.FuncID.nID = myID.nID;
+    if (stopObj->workFlags.Contains(isBrkPnt))
+      stopObj->workFlags.EXCL(isBrkPnt);
+    else
+      stopObj->workFlags.INCL(isBrkPnt);
+    cheBreak->data.Activate = stopObj->workFlags.Contains(isBrkPnt);
+    LBaseData->ContData->BrkPnts.Append(cheBreak);
+    sv->viewport()->update();
+  }
 }
 
 void CExecView::DbgRunToSel() 
 {
-  CPEBaseDoc *debugDoc = (CPEBaseDoc*)LBaseData->debugThread->doc;
-  if (!debugDoc->ContinueData)
-    debugDoc->ContinueData = new DebugContData;
-  debugDoc->ContinueData->ContType = dbg_RunTo;
-  debugDoc->ContinueData->RunToPoint.ptr = new ProgramPoint;
-  ProgramPoint * pp = debugDoc->ContinueData->RunToPoint.ptr;
+  if (!LBaseData->ContData)
+    LBaseData->ContData = new DbgContData;
+  LBaseData->ContData->ContType = dbg_RunTo;
+  LBaseData->ContData->RunToPnt.ptr = new ProgPoint;
+  ProgPoint * pp = LBaseData->ContData->RunToPnt.ptr;
   pp->SynObj = text->currentSynObj; 
   pp->SynObjID = text->currentSynObj->synObjectID;
   pp->ExecType = myDECL->DeclType;
-  pp->FuncID.nINCL = debugDoc->IDTable.GetINCL((CHESimpleSyntax*)myDoc->IDTable.mySynDef->SynDefTree.first, myDoc->IDTable.DocDir);
+  pp->FuncDocName = ((CHESimpleSyntax*)myDoc->IDTable.mySynDef->SynDefTree.first)->data.SyntaxName;
+  pp->FuncDocDir = myDoc->IDTable.DocDir;
+  pp->FuncDoc = (address)myDoc;
   pp->FuncID.nID = myID.nID;
-  DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
+  pp->FuncID.nINCL = LBaseData->debugThread->doc->IDTable.GetINCL(pp->FuncDocName,pp->FuncDocDir);
+  if (pp->FuncID.nINCL < 0) {
+    LBaseData->ContData->RunToPnt.Destroy();
+    QMessageBox::critical(this,qApp->name(),"This run-to-selection is not part of the debuged lava program",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    return;
+  }
+  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
   QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
 }

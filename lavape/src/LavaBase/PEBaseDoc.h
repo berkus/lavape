@@ -54,7 +54,6 @@ public:
   bool changeNothing;
   CLavaBaseView *MainView;
   CLavaBaseView* DragView;
-  DebugContData* ContinueData;
   int debugINCL;
 
   virtual void Serialize(QDataStream& ar);

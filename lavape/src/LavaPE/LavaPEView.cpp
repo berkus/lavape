@@ -2687,9 +2687,9 @@ void CLavaPEView::OnInitialUpdate()
     }
     CExecChecks* ch = new CExecChecks(GetDocument(), true);
     delete ch;
-    if (/*GetDocument()->nTreeErrors ||*/ GetDocument()->nErrors || GetDocument()->nPlaceholders)
+    if (GetDocument()->nErrors || GetDocument()->nPlaceholders)
       GetDocument()->ShowErrorBox(true);
-
+    ((CLavaPEApp*)wxTheApp)->debugThread.restoreBrkPoints(GetDocument());
   }
 }
 

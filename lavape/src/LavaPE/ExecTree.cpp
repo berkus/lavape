@@ -1559,11 +1559,14 @@ CExecChecks::CExecChecks(CLavaPEDoc* doc, bool inopen)
 
 void CExecChecks::ExecExec(LavaDECL ** pelDef, int level)
 {
+  CSearchData sData;
+  sData.doc = Doc;
   if ((*pelDef)->Exec.ptr) {
     CheckData ckd;
     ckd.document = Doc;
     ckd.myDECL = *pelDef; 
     ((SynObject*)(*pelDef)->Exec.ptr)->Check(ckd);
+    ((SynObject*)(*pelDef)->Exec.ptr)->MakeTable((address)&Doc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
     Doc->nErrors += ckd.nErrors;
     Doc->nPlaceholders += ckd.nPlaceholders;
   }

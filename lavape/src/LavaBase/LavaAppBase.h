@@ -147,6 +147,7 @@
 #define IDU_LavaStart (QEvent::Type)(QEvent::User+12)
 #define IDU_LavaDebug (QEvent::Type)(QEvent::User+13)
 #define IDU_LavaDebugRq (QEvent::Type)(QEvent::User+14)
+#define IDU_LavaDebugW (QEvent::Type)(QEvent::User+15)
 
 enum CPECommand {
   CPECommand_OpenFormView, 
@@ -275,7 +276,7 @@ public:
   CBrowseContext *LastBrowseContext;
   void DestroyLastBrsContext(); //use this function only in case of failing browse result
 
-  virtual bool GotoDECL(wxDocument* , LavaDECL* , TID , bool /*popUp*/, DString* enumID=0, bool openExec=false) {return FALSE;}
+  virtual bool GotoDECL(wxDocument* , LavaDECL* , TID , bool /*popUp*/, DString* enumID=0, bool openExec=false) {return false;}
   LavaDECL* BrowseDECL(wxDocument* doc, TID& id, DString* enumID=0, bool openExec=false);
   bool CanBrowse(LavaDECL* DECL);
 
@@ -358,15 +359,17 @@ public:
   virtual void DeleteHint(CLavaPEHint* ) {}
 };
 
+
 class LAVABASE_DLL  CLavaBaseData : public QObject
 {
 public:
-  CLavaBaseData() :QObject(0, "LavaBaseData") {newNum = 0; declareButton = 0; }
+  CLavaBaseData() :QObject(0, "LavaBaseData") {newNum = 0; declareButton = 0; ContData = 0;}
   void Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate);
   ~CLavaBaseData();
 
   wxApp *theApp;
   CLavaThread* debugThread; 
+  DbgContData* ContData;  //used in LavaPE
   unsigned long /*HCURSOR*/ ArrowCurser;
   bool inMultiDocUpdate; //open document in multi document update
   bool inRuntime;
@@ -501,6 +504,8 @@ class LAVABASE_DLL CSearchData {
 public:
   CSearchData () {
     nextFreeID = 0;
+    synObj = 0;
+    debugStop = false;
   }
 
   //DString fileName;
@@ -509,9 +514,13 @@ public:
   //TID refID;
   //DString enumID;
   unsigned synObjectID, nextFreeID;
+  SynObjectBase *synObj;
   DString constructNesting;
   wxDocument *doc;
   CFindData findRefs;
+  bool debugStop;
+  StopReason stopReason;
+  bool innermostStop;
 };
 
 

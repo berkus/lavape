@@ -104,11 +104,11 @@ CLavaGUIView::~CLavaGUIView()
 {
   DisableActions();
   if (myGUIProg) {
-    if (!wxTheApp->apExit)
+    if (!wxTheApp->appExit)
       myGUIProg->LavaForm.DeletePopups(myGUIProg->Root);
     delete myGUIProg;   
   }
-  if (!wxTheApp->apExit) {
+  if (!wxTheApp->appExit) {
     QString msg("");
     wxTheApp->m_appWindow->statusBar()->message(msg);
   }

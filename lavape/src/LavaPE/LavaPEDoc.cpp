@@ -1677,13 +1677,13 @@ void CLavaPEDoc::ExecViewPrivToPub(LavaDECL* func, int delID)
   //2.PubToPriv: func is the new private func, func->RefID contains id of the old public func impl
   //             
   POSITION pos = GetFirstViewPos();
-  bool activ=false;
+  bool active=false;
   wxView *view;
   TID oldID = TID(delID,0);
   while (pos) {
     view = (CLavaBaseView*)GetNextView(pos);
-    activ = view->inherits("CExecView") && (((CExecView*)view)->myID == oldID);
-    if (activ)
+    active = view->inherits("CExecView") && (((CExecView*)view)->myID == oldID);
+    if (active)
       ((CExecView*)view)->myID = TID(func->OwnID,0);
   }
   ViewPosRelease(pos);
@@ -2948,6 +2948,22 @@ void CLavaPEDoc::OnCheck()
   ShowErrorBox(false);
 }
 
+bool CLavaPEDoc::OnCloseDocument() 
+{
+  if (!((wxApp*)qApp)->appExit ) {
+    ((CLavaPEApp*)wxTheApp)->debugThread.removeBrkPoints(this);
+    if (debugOn && ((CLavaPEApp*)wxTheApp)->debugThread.running()) {
+      close_socket(((CLavaPEApp*)wxTheApp)->debugThread.workSocket);
+      ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->setDebugData(0, this);
+      ((CLavaPEApp*)wxTheApp)->debugThread.doc = 0;
+      (*((CLavaPEApp*)wxTheApp)->debugThread.pContExecEvent)--;
+    }
+    if (((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->stopDoc == this)
+      ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->stopDoc = 0;
+  }
+  return CPEBaseDoc::OnCloseDocument();
+}
+
 void CLavaPEDoc::OnCloseLastExecView()
 {
 	if (wxTheApp->deletingMainFrame) return;
@@ -3061,11 +3077,13 @@ void CLavaPEDoc::OnRunLava()
     && (QMessageBox::Cancel == QMessageBox::question(qApp->mainWidget(),qApp->name(),ERR_SaveFailed, 
                     QMessageBox::Ok,QMessageBox::Cancel,0)))
     return;
-
+  lavaFile = GetFilename();
+  /*
   if (lavaFile.isEmpty()) {
     QMessageBox::question(qApp->mainWidget(),qApp->name(),IDP_SaveFirst,QMessageBox::Ok,0,0);
     return;
   }
+  */
 #ifdef WIN32
   interpreterPath = ExeDir + "/Lava.exe";
 #else
@@ -3094,11 +3112,13 @@ void CLavaPEDoc::OnDebugLava()
     && (QMessageBox::Cancel == QMessageBox::question(qApp->mainWidget(),qApp->name(),ERR_SaveFailed, 
                     QMessageBox::Ok,QMessageBox::Cancel,0)))
     return;
-
+  lavaFile = GetFilename();
+/*
   if (lavaFile.isEmpty()) {
     QMessageBox::question(qApp->mainWidget(),qApp->name(),IDP_SaveFirst,QMessageBox::Ok,0,0);
     return;
   }
+  */
 #ifdef WIN32
   interpreterPath = ExeDir + "/Lava.exe";
 #else
@@ -3117,6 +3137,7 @@ void CLavaPEDoc::OnDebugLava()
   debugOn = true;
 
   ((CLavaPEApp*)qApp)->debugThread.doc = this;
+  ((CLavaPEApp*)qApp)->debugThread.adjustBrkPnts();
   ((CLavaPEApp*)qApp)->debugThread.start();
 	if (!((CLavaPEApp*)qApp)->interpreter.launch(buf)) {
     ((CLavaPEApp*)qApp)->debugThread.terminate();
@@ -3124,10 +3145,18 @@ void CLavaPEDoc::OnDebugLava()
     QMessageBox::critical(qApp->mainWidget(),qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
 		return;
 	}
+  connect(&((CLavaPEApp*)qApp)->interpreter,SIGNAL(processExited()),SLOT(interpreterExited()));
+}
+
+void CLavaPEDoc::interpreterExited () {
+  close_socket(((CLavaPEApp*)wxTheApp)->debugThread.workSocket);
+  (*((CLavaPEApp*)qApp)->debugThread.pContExecEvent)--;
 }
 
 void CLavaPEDoc::OnUpdateDebugLava(wxAction* action) 
 {
+  if (!mySynDef) 
+    return;
   if (((CLavaPEApp*)qApp)->interpreter.isRunning() || ((CLavaPEApp*)qApp)->debugThread.running()) {
     action->setEnabled(((CLavaPEApp*)qApp)->debugThread.interpreterWaits);
     return;
@@ -3230,22 +3259,22 @@ void CLavaPEDoc::OnUpdateRunLava(wxAction* action)
 
 bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
 {
-  bool activ=false;
+  bool active=false;
   CLavaBaseView *view;
   wxMDIChildFrame *execChild;
 //  LavaDECL *eDECL = (LavaDECL*)execChe->data;
   POSITION pos = GetFirstViewPos();
-  while (pos && !activ) {
+  while (pos && !active) {
     view = (CLavaBaseView*)GetNextView(pos);
-    activ = view->inherits("CExecView") && (((CExecView*)view)->myDECL == eDECL);
+    active = view->inherits("CExecView") && (((CExecView*)view)->myDECL == eDECL);
   }
   ViewPosRelease(pos);
-  if (activ)
+  if (active)
     execChild = view->GetParentFrame();
   else {
     ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = new CLavaPEHint(CPECommand_OpenExecView, this, (const unsigned long)3, (DWORD) eDECL, (DWORD)MainView, (DWORD)wxTheApp->m_appWindow->statusBar(), (DWORD)((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar, 0); // (DWORD) pdecl);
     execChild = ((CLavaPEApp*)wxTheApp)->pExecTemplate->CreateChildFrame(this);
-    activ = (execChild !=0);
+    active = (execChild !=0);
     execChild->InitialUpdate();
 		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->show();
 		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->show();
@@ -3254,7 +3283,7 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
     if (!eDECL->Exec.ptr)
       SetExecItemImage(eDECL, false, false);
   }
-  if (activ) 
+  if (active) 
     execChild->Activate(true);
   if (((CLavaPEApp*)wxTheApp)->LBaseData.actHint) {
     delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
@@ -3273,28 +3302,28 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
 
 bool CLavaPEDoc::OpenGUIView(LavaDECL** pdecl)
 { 
-  bool activ=false;
+  bool active=false;
   CLavaBaseView *view;
   wxMDIChildFrame *formChild;
   POSITION pos = GetFirstViewPos();
-  while (pos && !activ) {
+  while (pos && !active) {
     view = (CLavaBaseView*)GetNextView(pos);
-    activ = !view->inherits("CTreeView") && !view->inherits("CExecView")
+    active = !view->inherits("CTreeView") && !view->inherits("CExecView")
          && (((CLavaPEView*)((CFormFrame*)view->GetParentFrame())->viewR)->myDECL == *pdecl);
   }
   ViewPosRelease(pos);
-  if (activ) 
+  if (active) 
     formChild = view->GetParentFrame();
   else {
     ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = new CLavaPEHint(CPECommand_OpenFormView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, 0, (DWORD)pdecl);
     formChild = ((CLavaPEApp*)wxTheApp)->pFormTemplate->CreateChildFrame(this);
-    activ = (formChild !=0);
+    active = (formChild !=0);
     formChild->InitialUpdate();
     delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
     ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
 
   }
-  if (activ) {
+  if (active) {
     formChild->Activate(true);
 	 // if (wxDocManager::GetOpenDocCount() == 1)
 	 //	  QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
@@ -3306,16 +3335,16 @@ bool CLavaPEDoc::OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate)
 { 
   POSITION pos = GetFirstViewPos();
   CLavaBaseView* view;
-  bool activ=FALSE; 
+  bool active=FALSE; 
   //CRect rr;
   CLavaPEHint * hint;
 
-  while (pos && !activ) {
+  while (pos && !active) {
     view = (CLavaBaseView*)GetNextView(pos);
-    activ = view->inherits("CVTView") && (((CVTView*)view)->myDECL == *pdecl);
+    active = view->inherits("CVTView") && (((CVTView*)view)->myDECL == *pdecl);
   }
   ViewPosRelease(pos);
-  if (activ) {
+  if (active) {
     if (!autoUpdate)
       ((CTreeFrame*)view->GetParentFrame())->CalcSplitters(true); //make it visible
   }
@@ -3333,7 +3362,7 @@ bool CLavaPEDoc::OpenWizardView(CLavaBaseView* formView, LavaDECL** pdecl/*, uns
 { 
 //  POSITION pos = GetFirstViewPos();
   CLavaBaseView* view;
-  bool activ=FALSE; 
+  bool active=FALSE; 
   //CRect rr;
   CLavaPEHint * hint;
 

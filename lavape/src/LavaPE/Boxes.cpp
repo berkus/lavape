@@ -512,7 +512,8 @@ void CAttrBox::OnOK()
     myDECL->TypeFlags.EXCL(stateObject);
   if (m_SetGet->isOn()) {
     myDECL->TypeFlags.INCL(hasSetGet);
-    if (OrigDECL->ParentDECL->TypeFlags.Contains(isNative))
+    if (myDECL->ParentDECL && myDECL->ParentDECL->TypeFlags.Contains(isNative)
+      || OrigDECL && OrigDECL->ParentDECL && OrigDECL->ParentDECL->TypeFlags.Contains(isNative))
       myDECL->TypeFlags.INCL(isNative);
   }
   else

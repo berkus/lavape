@@ -132,12 +132,13 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 
     QApplication::connect((const QObject*)QApplication::eventLoop(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
     connect(this,SIGNAL(guiThreadAwake()),SLOT(onGuiThreadAwake()));
-    apExit = false;
+    appExit = false;
 }
 
 wxApp::~wxApp() {
   QSettings settings(QSettings::Native);
 
+  appExit = true;
   settings.beginGroup(GetSettingsPath());
   m_docManager->FileHistorySave(settings);
   delete m_docManager;
@@ -186,12 +187,12 @@ void wxApp::onUpdateUI()
   QWidget *focView; //, *fw;
   char **argv=qApp->argv();
 
-	if (apExit /*deletingMainFrame*/)
+	if (appExit /*deletingMainFrame*/)
 		return;
 		
 	inUpdateUI = true;
 //  qDebug("onUpdateUI called");
-		
+
   for (act = actionList.first(); act; act = actionList.next())
     act->enable = false;
 
@@ -210,7 +211,6 @@ void wxApp::onUpdateUI()
 		wxTheApp->OpenDocumentFile(argv[1]);
 	}
 	
-//	inUpdateUI = false;
 }
 
 void wxApp::histFile(int histFileIndex) {

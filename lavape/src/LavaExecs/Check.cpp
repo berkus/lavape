@@ -1356,6 +1356,7 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
   Quantifier *quant, *stopQuant=0;
   VarName *varName;
   Reference *elemTypePtr;
+  SynObject *synObjOrig=synObj;
   SelfVar *selfVar;
   TID tid, typeID;
   LavaDECL *decl;
@@ -1397,6 +1398,8 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
     case declare_T:
     case exists_T:
     case select_T:
+      if (synObj == synObjOrig)
+        break;
       ckd.inQuant = (synObj->primaryToken != declare_T);
       for ( chp = (CHE*)((QuantStmOrExp*)synObj)->quantifiers.first;
             chp;
@@ -1605,16 +1608,16 @@ bool FormParms::Check (CheckData &ckd)
 {
   SelfVar *selfVar=(SelfVar*)parentObject;
   CHE *chpParmRef, *chpParmDef;
-#ifndef INTERPRETER
+//#ifndef INTERPRETER
   TDOD *tdod;
   LavaDECL *parmDecl;
-#endif
+//#endif
   TID rID=((Reference*)selfVar->execName.ptr)->refID;
 
   ENTRY
 
   ADJUST4(rID);
-#ifndef INTERPRETER
+//#ifndef INTERPRETER
   chpParmDef = GetFirstInput(&ckd.document->IDTable,rID);
   while (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == IAttr) {
     // locate old parm. and reposition it if necessary:
@@ -1624,7 +1627,7 @@ bool FormParms::Check (CheckData &ckd)
     parmDecl->WorkFlags.EXCL(isReferenced);
     chpParmDef = (CHE*)chpParmDef->successor;
   }
-#endif
+//#endif
 
   chpParmDef = GetFirstOutput(&ckd.document->IDTable,rID);
   if (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == OAttr) {
@@ -2880,7 +2883,7 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
           return false;
         }
       }
-      else {
+      else if (parentObject->primaryToken != copy_T) {
         SetError(ckd,&ERR_AssigToSelf);
         return false;
       }

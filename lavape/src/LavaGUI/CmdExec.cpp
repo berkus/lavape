@@ -259,6 +259,8 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
       insertedNode->data.ResultVarPtr = (CSecTabBase ***)((CGUIProg*)GUIProg)->LavaForm.NewLavaVarPtr(0);
       if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(formSyn, (LavaVariablePtr)insertedNode->data.ResultVarPtr))
         return;
+      newStackFrame[0] = 0;
+      newStackFrame[1] = 0;
       newStackFrame[2] = 0; //chain object
       newStackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr; //chain object
       if (beforeNode->data.ResultVarPtr)
@@ -340,6 +342,8 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
         chainNode = chainNode->data.FIP.up;
       if (chainNode) {
         if (GUIProg->fromFillIn) {
+          newStackFrame[0] = 0;
+          newStackFrame[1] = 0;
           newStackFrame[2] = 0;
           newStackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
           newStackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;

@@ -102,11 +102,11 @@ void wxMainFrame::closeEvent (QCloseEvent*)
 
 void wxMainFrame::fileExit()
 {
-  ((wxApp*)qApp)->apExit = true;
+  ((wxApp*)qApp)->appExit = true;
   if ( wxDocManager::GetDocumentManager()->Clear(false))
 	  qApp->quit();
 	else
-		((wxApp*)qApp)->apExit = false;
+		((wxApp*)qApp)->appExit = false;
 }
 
 void wxMainFrame::LoadFileHistory() {

@@ -125,6 +125,7 @@ public:
   bool inSaveProc;
   bool Redraw;
   bool debugOn;
+  bool startedFromLavaPE;
   LavaObjectPtr DocObjects[3]; //Runtime: [0] = GUI object,
                                //         [1] = start object,
                                //         [2] = show result 0bject
@@ -250,8 +251,10 @@ public:
 
   virtual void DbgBreakpoint() {}
   virtual void DbgStepNext() {}
+  virtual void DbgStepNextFunction() {}
   virtual void DbgStepinto() {}
   virtual void DbgStepout() {}
+  virtual void DbgStop() {}
   virtual void DbgRunToSel() {}
   virtual void OnAnd() {}
   virtual void OnBitAnd() {}

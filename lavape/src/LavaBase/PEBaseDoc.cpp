@@ -70,7 +70,6 @@ CPEBaseDoc::CPEBaseDoc()
   UpdateNo = 1;
   Redraw = false;
   changeNothing = false;
-  ContinueData = 0;
 }
 
 CPEBaseDoc::~CPEBaseDoc()

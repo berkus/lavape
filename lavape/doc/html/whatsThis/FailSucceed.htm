@@ -11,26 +11,26 @@
     <link rel="STYLESHEET" type="text/css" href="../LavaStyles.css">
   </head>
   <body>
-  <h2 align="center">Succeed/fail statements</h2>
-  <p>Use the <font color="#0000FF"><b>succeed</b> </font>statement to return 
-  immediately and <b>successfully</b> from the current
+  <h2 align="center">Affirm/negate statements</h2>
+  <p>Use the <font color="#0000FF"><b>affirm</b> </font>statement to induce an 
+  immediate <b>affirmative/successful</b> return from the current
   <a href="../EditExec.htm#exec">exec</a>. If the function or operator has been 
   invoked as a statement then the resulting truth value of that statement is <b>
   &quot;true&quot;</b>.</p>
   <p><b>Note:</b> If you are in a function with mandatory output parameters then 
-  succeed is admissible only at places in the function body where values have 
+  <font color="#0000FF"><b>affirm</b></font> is admissible only at places in the function body where values have 
   already been assigned to all mandatory output parameters. (This is checked and 
   enforced by <font color="#FF0000"><i><b>LavaPE</b></i></font>!)</p>
   <hr>
-  <p>Use the <font color="#0000FF"><b>fail</b> </font>statement to return 
-  immediately and <b>unsuccessfully</b> from the current
+  <p>Use the <font color="#0000FF"><b>negate</b> </font>statement to induce an 
+  immediate <b>negative/unsuccessful</b> return from the current
   <a href="../EditExec.htm#exec">exec</a>. If the function or operator has been 
   invoked as a statement then the resulting truth value of that statement is <b>
   &quot;false&quot;</b>.</p>
-  <p><font color="#0000FF"><b>fail</b></font> has an optional exception 
+  <p><font color="#0000FF"><b>negate</b></font> has an optional exception 
   parameter, i.e., an expression whose value will be thrown as an exception 
   object if present.</p>
-  <p><b>Note:</b> If <font color="#0000FF"><b>fail</b></font> is used at a place 
+  <p><b>Note:</b> If <font color="#0000FF"><b>negate</b></font> is used at a place 
   in a function body where not yet all mandatory output parameters have been 
   assigned a value then you <b>must</b> throw an exception in order to avoid 
   inadvertent use of undefined outputs by the caller. (This is checked and 

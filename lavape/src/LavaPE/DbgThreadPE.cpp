@@ -1,0 +1,377 @@
+/* LavaPE -- Lava Programming Environment
+   Copyright (C) 2002 Fraunhofer-Gesellschaft
+	 (http://www.sit.fraunhofer.de/english/)
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software Foundation,
+   Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
+
+
+#ifdef __GNUC__
+#pragma implementation
+#endif
+
+
+#include "DbgThreadPE.h"
+#include "LavaPE.h"
+#include "LavaBaseDoc.h"
+#include "SynIDTable.h"
+#include "ExecView.h"
+#include "Constructs.h"
+
+#ifdef WIN32
+#include <windows.h>
+#include <winreg.h>
+#include <process.h>
+#else
+#include <stdio.h>
+#include <unistd.h>
+#endif
+#include <errno.h>
+
+#include <prelude.h>
+#include <sflsock.h>
+#include "MACROS.h"
+#include "ASN1File.h"
+
+
+void CLavaPEDebugThread::reset(bool final)
+{
+  if (dbgRequest) {
+    delete dbgRequest;
+    dbgRequest = 0;
+  }
+  if (get_cid)
+    delete get_cid;
+  get_cid= 0;
+  if (put_cid)
+    delete put_cid;
+  put_cid= 0;
+  if (!final) {
+    if (doc)
+      doc->debugOn = false;
+    interpreterWaits = false;
+	  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebug,(void*)0));
+  }
+}
+
+
+void CLavaPEDebugThread::checkBrkPnts1() 
+{
+  CHEProgPoint *rmPP, *chePPnew;
+  ProgPoint *runToPP;
+
+  if (LBaseData->ContData) {
+    chePPnew = (CHEProgPoint*)LBaseData->ContData->BrkPnts.first;
+    while (chePPnew) {
+      if (chePPnew->data.FuncDoc) {
+        chePPnew->data.FuncDocName = ((CHESimpleSyntax*)((CLavaBaseDoc*)chePPnew->data.FuncDoc)->IDTable.mySynDef->SynDefTree.first)->data.SyntaxName;
+        chePPnew->data.FuncDocDir = ((CLavaBaseDoc*)chePPnew->data.FuncDoc)->IDTable.DocDir;
+      }
+      chePPnew->data.FuncID.nINCL = doc->IDTable.GetINCL(chePPnew->data.FuncDocName, chePPnew->data.FuncDocDir);
+      if (chePPnew->data.FuncID.nINCL < 0) {
+        rmPP = chePPnew;
+        chePPnew = (CHEProgPoint*)chePPnew->successor;
+        LBaseData->ContData->BrkPnts.Remove(rmPP->predecessor);
+      }
+      else
+        chePPnew = (CHEProgPoint*)chePPnew->successor;
+    } 
+    runToPP = LBaseData->ContData->RunToPnt.ptr;
+    if (runToPP) {
+      if (runToPP->FuncDoc) {
+        runToPP->FuncDocName = ((CHESimpleSyntax*)((CLavaBaseDoc*)runToPP->FuncDoc)->IDTable.mySynDef->SynDefTree.first)->data.SyntaxName;
+        runToPP->FuncDocDir = ((CLavaBaseDoc*)runToPP->FuncDoc)->IDTable.DocDir;
+      }
+      runToPP->FuncID.nINCL = doc->IDTable.GetINCL(runToPP->FuncDocName,runToPP->FuncDocDir);
+      if (runToPP->FuncID.nINCL < 0) {
+        LBaseData->ContData->RunToPnt.Destroy();
+        LBaseData->ContData->ContType = dbg_Step;
+      }
+    }
+    dbgRequest->ContData.ptr = LBaseData->ContData;
+  }
+  else
+    dbgRequest->ContData.ptr = 0;
+  LBaseData->ContData = 0;
+}
+
+
+void CLavaPEDebugThread::checkBrkPnts2() 
+{
+  CHEProgPoint *chePP, *chePPnew, *rmPP;
+
+  if (!dbgRequest->ContData.ptr)
+    return;
+  chePPnew = (CHEProgPoint*)((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first;
+  while (chePPnew) {
+    if (!chePPnew->data.Activate) {
+      chePP = (CHEProgPoint*)brkPnts.first;
+      while (chePP && ((chePP->data.SynObjID != chePPnew->data.SynObjID) || (chePP->data.FuncID != chePPnew->data.FuncID)))
+        chePP = (CHEProgPoint*)chePP->successor;
+      if (chePP) 
+        brkPnts.Remove(chePP->predecessor);
+      rmPP = chePPnew;
+      chePPnew = (CHEProgPoint*)chePPnew->successor;
+      ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.Remove(rmPP->predecessor);
+    }
+    else
+      chePPnew = (CHEProgPoint*)chePPnew->successor;
+  }
+  if (brkPnts.last)
+    brkPnts.last->successor = ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first;
+  else   
+    brkPnts.first = ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first;
+  if (((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last)
+    brkPnts.last =  ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last;
+
+  ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
+  ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
+}
+
+
+void CLavaPEDebugThread::run() {
+
+  CThreadData *td = new CThreadData(this);
+  DbgMessages dbgReceived;
+
+  fd_set read_fds;
+  int nReady;
+  
+	threadStg.setLocalData(td);
+  if (doc->debugOn) { 
+    FD_ZERO(&read_fds);
+    FD_SET(listenSocket,&read_fds);
+    while (true) {
+      nReady = sock_select(FD_SETSIZE,&read_fds,NULL,NULL,NULL);
+      if (nReady == -1)
+        if (errno == EINTR)
+          continue;
+        else {
+#ifdef WIN32
+          qDebug("last select error: %d",WSAGetLastError());
+#endif
+          reset(false);
+          ((CLavaPEApp*)qApp)->interpreter.kill();
+          return;
+        }
+      if (FD_ISSET(listenSocket,&read_fds)) {
+        workSocket = accept_socket(listenSocket);
+        break;
+      }
+    }//while
+  }
+  else {
+    sock_init();
+    workSocket = connect_TCP(remoteIPAddress,remotePort);
+  }
+  put_cid = new ASN1OutSock (workSocket);
+  if (!put_cid->Done) {
+    delete put_cid;
+    qApp->exit(1);
+  }
+//  put_cid = out_cid;
+
+  get_cid = new ASN1InSock (workSocket);
+  if (!get_cid->Done) {
+    delete get_cid;
+    qApp->exit(1);
+  }
+//  get_cid = in_cid;
+  dbgRequest = 0;
+  if (doc->debugOn) {
+    dbgRequest = new DbgMessage(Dbg_Continue, 0);
+    checkBrkPnts1();
+    checkBrkPnts2();
+    if (!dbgRequest->ContData.ptr)
+      dbgRequest->ContData.ptr = new DbgContData;
+    ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = brkPnts.first;
+    ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = brkPnts.last;
+    if (dbgRequest->ContData.ptr)
+      ((DbgContData*)dbgRequest->ContData.ptr)->ContType = dbg_Cont;
+    CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
+    if (put_cid->Done) {
+      put_cid->flush();
+      ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
+      ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
+    }
+    else {
+      reset(false);
+      //((CLavaPEApp*)qApp)->interpreter.kill();
+      return;
+    }
+    startedFromLava = false;
+  }
+  else {
+    startedFromLava = true;
+    doc->debugOn = true;
+  }
+  while (true) {
+    if (dbgReceived.lastReceived)
+      delete dbgReceived.lastReceived;
+    dbgReceived.lastReceived = dbgReceived.newReceived;
+    dbgReceived.newReceived = new DbgMessage;
+		//QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugW,(void*)0));
+    CDPDbgMessage(GET, get_cid, (address)dbgReceived.newReceived);
+    if (get_cid->Done) {
+      interpreterWaits = true;
+      if (pContExecEvent->available())
+        (*pContExecEvent)++;
+
+		  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebug,(void*)&dbgReceived));
+      if (wxTheApp->appExit)
+        break;
+      (*pContExecEvent)++;
+      if (!dbgRequest)
+        break;
+
+      checkBrkPnts1();
+
+      CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
+      if (!put_cid->Done) 
+        break;
+      put_cid->flush();
+
+      checkBrkPnts2(); 
+      interpreterWaits = false;
+    }
+    else
+      break;
+  } 
+  if (dbgReceived.lastReceived)
+    delete dbgReceived.lastReceived;
+  if (dbgReceived.newReceived)
+    delete dbgReceived.newReceived;
+  reset(false);
+  if (!((wxApp*)qApp)->appExit && startedFromLava) 
+    qApp->exit(0);
+}
+
+
+
+void CLavaPEDebugThread::adjustBrkPnts() 
+//remember: this function is called only from main thread
+{
+  CHEProgPoint *rmPP, *chePP;
+  bool doMess = false;
+  chePP = (CHEProgPoint*)brkPnts.first;
+  while (chePP) {
+    chePP->data.FuncID.nINCL = doc->IDTable.GetINCL(chePP->data.FuncDocName, chePP->data.FuncDocDir);
+    if (chePP->data.FuncID.nINCL < 0) {
+      rmPP = chePP;
+      doMess = doMess || rmPP->data.SynObj;
+      chePP = (CHEProgPoint*)chePP->successor;
+      if (chePP->data.SynObj)
+        ((SynObject*)chePP->data.SynObj)->workFlags.EXCL(isBrkPnt);
+      brkPnts.Remove(rmPP->predecessor);
+      if (doMess)
+        QMessageBox::information(qApp->mainWidget(), qApp->name(),"One or more breakpoints cannot not be set and have been removed",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    }
+    else
+      chePP = (CHEProgPoint*)chePP->successor;
+  } 
+}
+
+void CLavaPEDebugThread::clearBrkPnts()
+//remember: this function is called only from main thread
+{ 
+  CHEProgPoint *chePP;
+  CLavaBaseView *view;
+  if (LBaseData->ContData) {
+    for (chePP = (CHEProgPoint*)LBaseData->ContData->BrkPnts.first;
+         chePP; chePP = (CHEProgPoint*)chePP->successor) 
+      if (chePP->data.SynObj)
+        ((SynObject*)chePP->data.SynObj)->workFlags.EXCL(isBrkPnt);
+  }
+  for (chePP = (CHEProgPoint*)brkPnts.first; 
+       chePP; chePP = (CHEProgPoint*)chePP->successor) 
+    if (chePP->data.SynObj)
+      ((SynObject*)chePP->data.SynObj)->workFlags.EXCL(isBrkPnt);
+
+  POSITION pos = doc->GetFirstViewPos();
+  while (pos) {
+    view = (CLavaBaseView*)doc->GetNextView(pos);
+    if (view->inherits("CExecView")) 
+      ((CExecView*)view)->sv->viewport()->update();
+  }
+  LBaseData->ContData->BrkPnts.Destroy();
+  ((CLavaPEDebugThread*)LBaseData->debugThread)->brkPnts.Destroy();
+}
+
+void CLavaPEDebugThread::removeBrkPoints(CLavaBaseDoc* closedDoc)
+//remember: this function is called only from main thread 
+// after closing a document
+{
+  CHEProgPoint *chePP;
+  if (LBaseData->ContData) {
+    for (chePP = (CHEProgPoint*)LBaseData->ContData->BrkPnts.first;
+         chePP; chePP = (CHEProgPoint*)chePP->successor) {
+           if (closedDoc == (CLavaBaseDoc*)chePP->data.FuncDoc) {
+             chePP->data.SynObj = 0;
+             chePP->data.FuncDoc = 0;
+           }
+    }
+  }
+  for (chePP = (CHEProgPoint*)brkPnts.first; 
+       chePP; chePP = (CHEProgPoint*)chePP->successor) {
+    if (closedDoc == (CLavaBaseDoc*)chePP->data.FuncDoc) {
+      chePP->data.SynObj = 0;
+      chePP->data.FuncDoc = 0;
+    }
+  }
+}
+
+
+void CLavaPEDebugThread::restoreBrkPoints(CLavaBaseDoc* openedDoc)
+//remember: this function is called only from main thread
+{
+  LavaDECL *funcDecl, *execDecl;
+  CheckData ckd;
+  CSearchData sData;
+  CHEProgPoint *chePP;
+
+  ckd.document = doc;
+  if (LBaseData->ContData) {
+    for (chePP = (CHEProgPoint*)LBaseData->ContData->BrkPnts.first;
+         chePP; chePP = (CHEProgPoint*)chePP->successor) {
+      if (!chePP->data.SynObj && SameFile(openedDoc->IDTable.IDTab[0]->FileName, openedDoc->IDTable.DocDir, 
+        chePP->data.FuncDocName, chePP->data.FuncDocDir)) {
+        funcDecl = openedDoc->IDTable.GetDECL(0, chePP->data.FuncID.nID);
+        execDecl = openedDoc->GetExecDECL(funcDecl, chePP->data.ExecType, false,false);
+        if (execDecl) {
+          sData.synObjectID = chePP->data.SynObjID;
+          sData.doc = openedDoc;
+          ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&openedDoc->IDTable, 0, (SynObjectBase*)execDecl, onSetBrkPnt, 0,0, (address)&sData);
+          chePP->data.SynObj = sData.synObj;
+          chePP->data.FuncDoc = (address)openedDoc;
+        }
+      }
+    }
+  }
+  for (chePP = (CHEProgPoint*)brkPnts.first; 
+       chePP; chePP = (CHEProgPoint*)chePP->successor) {
+    if (!chePP->data.SynObj && SameFile(openedDoc->IDTable.IDTab[0]->FileName, openedDoc->IDTable.DocDir, 
+          chePP->data.FuncDocName, chePP->data.FuncDocDir)) {
+      funcDecl = openedDoc->IDTable.GetDECL(0, chePP->data.FuncID.nID);
+      execDecl = openedDoc->GetExecDECL(funcDecl, chePP->data.ExecType, false,false);
+      if (execDecl) {
+        sData.synObjectID = chePP->data.SynObjID;
+        sData.doc = openedDoc;
+        ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&openedDoc->IDTable, 0, (SynObjectBase*)execDecl, onSetBrkPnt, 0,0, (address)&sData);
+        chePP->data.SynObj = sData.synObj;
+        chePP->data.FuncDoc = (address)openedDoc;
+      }
+    }
+  }
+}
+

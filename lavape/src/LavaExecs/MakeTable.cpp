@@ -36,15 +36,41 @@
   parentObject = (SynObject*)parent; \
   whereInParent = where; \
   containingChain = chxp; \
-  if (searchData) synObjectID = ++((CSearchData*)searchData)->nextFreeID;
+  if (update == onSetSynOID) synObjectID = ++((CSearchData*)searchData)->nextFreeID; \
+  if (((update == onSetBrkPnt) || (update == onSetRunToPnt)) \
+    && (synObjectID == ((CSearchData*)searchData)->synObjectID)) { \
+    if (update == onSetBrkPnt) { \
+      workFlags.INCL(isBrkPnt); \
+      ((CSearchData*)searchData)->synObj = this; \
+    } \
+    else \
+      workFlags.INCL(isTempPoint); \
+    return; \
+  } 
 #else
 #define ENTRY \
-  if (searchData) synObjectID = ++((CSearchData*)searchData)->nextFreeID; \
-  if (update == onSelect) { \
+  if (update == onSetSynOID) synObjectID = ++((CSearchData*)searchData)->nextFreeID; \
+  else if (update == onSelect) { \
     if (synObjectID == ((CSearchData*)searchData)->synObjectID) { \
-      ((CExecView*)((CSearchData*)searchData)->execView)->Select(this); \
+      if (((CSearchData*)searchData)->debugStop) { \
+        ((CExecView*)((CSearchData*)searchData)->execView)->sv->stopReason = ((CSearchData*)searchData)->stopReason; \
+        ((CExecView*)((CSearchData*)searchData)->execView)->sv->innermostStop = ((CSearchData*)searchData)->innermostStop; \
+        if (primaryToken == assignFS_T) \
+          ((CExecView*)((CSearchData*)searchData)->execView)->sv->debugStopToken = startToken; \
+        else \
+          ((CExecView*)((CSearchData*)searchData)->execView)->sv->debugStopToken = primaryTokenNode; \
+        ((CExecView*)((CSearchData*)searchData)->execView)->autoScroll = true; \
+        ((CExecView*)((CSearchData*)searchData)->execView)->sv->viewport()->update(); \
+      } \
+      else \
+        ((CExecView*)((CSearchData*)searchData)->execView)->Select(this); \
       return; \
     } \
+  } \
+  else if ((update == onSetBrkPnt) \
+  && (synObjectID == ((CSearchData*)searchData)->synObjectID)) { \
+    workFlags.INCL(isBrkPnt); \
+    ((CSearchData*)searchData)->synObj = this; \
   } \
   parentObject = (SynObject*)parent; \
   whereInParent = where; \
@@ -249,9 +275,7 @@ void SelfVar::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
 
   execDECL = (LavaDECL*)parent;
 
-/*  if (update == onSelect)
-    ((CSearchData*)searchData)->execView = (wxView*)execView;
-  else*/ if (update == onSearch && inINCL && !checked) {
+  if (update == onSearch && inINCL && !checked) {
     MakeTable(table,inINCL,parent,onAddID,(address)this,0,(address)&sData);
     CheckData ckd;
     ckd.myDECL = execDECL; 

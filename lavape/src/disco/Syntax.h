@@ -524,7 +524,6 @@ extern DISCO_DLL void CDPIterFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
 
 
 
-
 struct TAnnotation;
 
 
@@ -558,7 +557,9 @@ enum TTableUpdate {
            onTypeID,
 		   onSearch,
            onSelect,
-		   onSetSynOID
+		   onSetSynOID,
+           onSetBrkPnt,
+           onSetRunToPnt
            };
 
   struct CSecTabBase {
@@ -1173,21 +1174,36 @@ struct DISCO_DLL SynObjectBase : public DObject  {
   { CDPSynObjectBase(pgf,cid,(address)this,baseCDP); }
 };
 
-enum DebugCommand {
+enum DbgCommand {
   Dbg_Nothing,
   Dbg_Continue,
   Dbg_StopData,
   Dbg_MemberDataRq,
   Dbg_MemberData,
   Dbg_StackRq,
-  Dbg_Stack};
+  Dbg_Stack,
+  Dbg_Exit};
 
-extern DISCO_DLL void CDPDebugCommand (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+extern DISCO_DLL void CDPDbgCommand (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                     bool baseCDP=false);
+
+enum StopReason {
+  Stop_BreakPoint,
+  Stop_NextStm,
+  Stop_NextFunc,
+  Stop_NextOp,
+  Stop_StepInto,
+  Stop_StepOut,
+  Stop_FunctionCall,
+  Stop_Exception};
+
+extern DISCO_DLL void CDPStopReason (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                     bool baseCDP=false);
 
 enum DbgContType {
   dbg_Cont,
   dbg_Step,
+  dbg_StepFunc,
   dbg_StepOut,
   dbg_StepInto,
   dbg_RunTo};
@@ -1195,15 +1211,15 @@ enum DbgContType {
 extern DISCO_DLL void CDPDbgContType (PutGetFlag pgf, ASN1* cid, address varAddr,
                                       bool baseCDP=false);
 
-struct DISCO_DLL ObjItemData : public DObject  {
-  DECLARE_DYNAMIC_CLASS(ObjItemData)
+struct DISCO_DLL DDItemData : public DObject  {
+  DECLARE_DYNAMIC_CLASS(DDItemData)
 
 
-  ObjItemData()
+  DDItemData()
   {
   }
 
-  ~ObjItemData()
+  ~DDItemData()
   {
   }
   bool isPrivate;
@@ -1214,15 +1230,15 @@ struct DISCO_DLL ObjItemData : public DObject  {
   CHAINX Children;
 
   virtual void CopyData (AnyType *from) {
-    *this = *(ObjItemData*)from;
+    *this = *(DDItemData*)from;
   }
 
-  friend DISCO_DLL void CDPObjItemData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                        bool baseCDP=false);
+  friend DISCO_DLL void CDPDDItemData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                       bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPObjItemData(pgf,cid,(address)this,baseCDP); }
+  { CDPDDItemData(pgf,cid,(address)this,baseCDP); }
 };
 
 struct DISCO_DLL StackData : public DObject  {
@@ -1260,124 +1276,128 @@ struct DISCO_DLL CHEStackData : ChainAnyElem {
 
 extern DISCO_DLL ChainAnyElem* NewCHEStackData ();
 
-struct DISCO_DLL ProgramPoint : public DObject  {
-  DECLARE_DYNAMIC_CLASS(ProgramPoint)
+struct DISCO_DLL ProgPoint : public DObject  {
+  DECLARE_DYNAMIC_CLASS(ProgPoint)
 
   int SynObjID;
   TDeclType ExecType;
   TID FuncID;
   bool Activate;
   SynObjectBase *SynObj;
+  DString FuncDocName;
+  DString FuncDocDir;
+  address FuncDoc;
 
-  ProgramPoint () {}
+  ProgPoint () {}
 
   virtual void CopyData (AnyType *from) {
-    *this = *(ProgramPoint*)from;
+    *this = *(ProgPoint*)from;
   }
 
-  friend DISCO_DLL void CDPProgramPoint (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                         bool baseCDP=false);
+  friend DISCO_DLL void CDPProgPoint (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                      bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPProgramPoint(pgf,cid,(address)this,baseCDP); }
+  { CDPProgPoint(pgf,cid,(address)this,baseCDP); }
 };
 
-struct DISCO_DLL CHEProgramPoint : ChainAnyElem {
-  ProgramPoint data;
+struct DISCO_DLL CHEProgPoint : ChainAnyElem {
+  ProgPoint data;
 
   ChainAnyElem* Clone ()
-  { return new CHEProgramPoint(*this); }
+  { return new CHEProgPoint(*this); }
 
   void CopyData (ChainAnyElem* from)
-  { this->data = ((CHEProgramPoint*)from)->data; }
+  { this->data = ((CHEProgPoint*)from)->data; }
 };
 
-extern DISCO_DLL ChainAnyElem* NewCHEProgramPoint ();
+extern DISCO_DLL ChainAnyElem* NewCHEProgPoint ();
 
-struct DISCO_DLL NST0ProgramPoint {
+struct DISCO_DLL NST0ProgPoint {
 protected:
 
-  void init (const NST0ProgramPoint&);
+  void init (const NST0ProgPoint&);
 
-  void copy (const NST0ProgramPoint&);
+  void copy (const NST0ProgPoint&);
 
 public:
 
-  ProgramPoint *ptr;
+  ProgPoint *ptr;
 
-  NST0ProgramPoint () { ptr = 0; }
+  NST0ProgPoint () { ptr = 0; }
 
-  NST0ProgramPoint (const NST0ProgramPoint& n)
+  NST0ProgPoint (const NST0ProgPoint& n)
   { init(n); }
 
   void Destroy () { delete ptr; ptr = 0; }
 
-  NST0ProgramPoint& operator= (const NST0ProgramPoint& n)
+  NST0ProgPoint& operator= (const NST0ProgPoint& n)
   { copy(n); return *this; }
 
   void CDP (PutGetFlag pgf, ASN1 *cid, ConversionProc cdp);
 };
 
-struct DISCO_DLL NSTProgramPoint : NST0ProgramPoint {
-  NSTProgramPoint() {}
+struct DISCO_DLL NSTProgPoint : NST0ProgPoint {
+  NSTProgPoint() {}
 
-  NSTProgramPoint (const NSTProgramPoint& n)
+  NSTProgPoint (const NSTProgPoint& n)
   { init(n); }
 
-  NSTProgramPoint& operator= (const NSTProgramPoint& n)
+  NSTProgPoint& operator= (const NSTProgPoint& n)
   { copy(n); return *this; }
 
-  virtual ~NSTProgramPoint () { Destroy(); }
+  virtual ~NSTProgPoint () { Destroy(); }
 };
 
-struct DISCO_DLL DebugStopData : public DObject  {
-  DECLARE_DYNAMIC_CLASS(DebugStopData)
+struct DISCO_DLL DbgStopData : public DObject  {
+  DECLARE_DYNAMIC_CLASS(DbgStopData)
 
+  StopReason stopReason;
   int ActStackLevel;
   CHAINANY/*StackData*/ StackChain;
   CHAINX ObjectChain;
 
-  DebugStopData()
+  DbgStopData()
   {
     ActStackLevel=0;
   }
 
   virtual void CopyData (AnyType *from) {
-    *this = *(DebugStopData*)from;
+    *this = *(DbgStopData*)from;
   }
 
-  friend DISCO_DLL void CDPDebugStopData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                          bool baseCDP=false);
+  friend DISCO_DLL void CDPDbgStopData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDebugStopData(pgf,cid,(address)this,baseCDP); }
+  { CDPDbgStopData(pgf,cid,(address)this,baseCDP); }
 };
 
-struct DISCO_DLL DebugContData : public DObject  {
-  DECLARE_DYNAMIC_CLASS(DebugContData)
+struct DISCO_DLL DbgContData : public DObject  {
+  DECLARE_DYNAMIC_CLASS(DbgContData)
 
-  bool ClearBreakPoints;
-  CHAINANY/*ProgramPoint*/ BreakPoints;
+  bool ClearBrkPnts;
+  CHAINANY/*ProgPoint*/ BrkPnts;
   DbgContType ContType;
-  NSTProgramPoint RunToPoint;
+  NSTProgPoint RunToPnt;
 
-  DebugContData()
+  DbgContData()
   {
-    ClearBreakPoints=false;
+    ClearBrkPnts=false;
   }
 
   virtual void CopyData (AnyType *from) {
-    *this = *(DebugContData*)from;
+    *this = *(DbgContData*)from;
   }
 
-  friend DISCO_DLL void CDPDebugContData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                          bool baseCDP=false);
+  friend DISCO_DLL void CDPDbgContData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDebugContData(pgf,cid,(address)this,baseCDP); }
+  { CDPDbgContData(pgf,cid,(address)this,baseCDP); }
 };
 
 typedef CHAINANY/*int*/ ChObjRq;
@@ -1421,16 +1441,16 @@ struct DISCO_DLL NSTChObjRq : NST0ChObjRq {
 extern DISCO_DLL void CDPChObjRq (PutGetFlag pgf, ASN1* cid, address varAddr,
                                   bool baseCDP=false);
 
-struct DISCO_DLL DebugMessage : public DObject  {
-  DECLARE_DYNAMIC_CLASS(DebugMessage)
+struct DISCO_DLL DbgMessage : public DObject  {
+  DECLARE_DYNAMIC_CLASS(DbgMessage)
 
-  /*  CASE */ DebugCommand Command; /* OF */
+  /*  CASE */ DbgCommand Command; /* OF */
 
   //    Dbg_StopData,Dbg_Stack:
-          NESTEDANY0/*DebugStopData*/ DbgData;
+          NESTEDANY0/*DbgStopData*/ DbgData;
 
   //  | Dbg_MemberData:
-          NESTEDANY0/*ObjItemData*/ ObjData;
+          NESTEDANY0/*DDItemData*/ ObjData;
 
   //  | Dbg_MemberDataRq:
           NSTChObjRq ObjNr;
@@ -1439,48 +1459,51 @@ struct DISCO_DLL DebugMessage : public DObject  {
           int CallStackLevel;
 
   //  | Dbg_Continue:
-          NESTEDANY/*DebugContData*/ ContinueData;
+          NESTEDANY/*DbgContData*/ ContData;
 
   //  ELSE
 
   //  END
-  void SetData(DebugCommand command,DebugStopData *data)
+  void SetSendData(DbgCommand command,DbgStopData *data)
   {
     Command=command;
+    DbgData.ptr=0;
     DbgData.ptr=data;
-    ObjData.ptr=0;
-    ObjNr.ptr=0;
   }
-  void SetData(ObjItemData *obj)
+  void SetSendData(DDItemData *obj)
   {
     Command=Dbg_MemberData;
     ObjData.ptr=obj;
-    DbgData.ptr=0;
-    ObjNr.ptr=0;
   }
 
-  DebugMessage(DebugCommand com,ChObjRq *oRq)
+  DbgMessage(DbgCommand com,ChObjRq *oRq)
   {
     Command=com;
     ObjNr.ptr=oRq;
   }
 
-  DebugMessage()
+  DbgMessage()
   {
+  }
+  void Destroy()
+  {
+    DbgData.ptr=0;
+    ObjData.ptr=0;
+    ObjNr.Destroy();
+    ContData.Destroy();
   }
 
   virtual void CopyData (AnyType *from) {
-    *this = *(DebugMessage*)from;
+    *this = *(DbgMessage*)from;
   }
 
-  friend DISCO_DLL void CDPDebugMessage (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                         bool baseCDP=false);
+  friend DISCO_DLL void CDPDbgMessage (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                       bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDebugMessage(pgf,cid,(address)this,baseCDP); }
+  { CDPDbgMessage(pgf,cid,(address)this,baseCDP); }
 };
-
 
 /*************************************************************************/
 /* Concrete syntactic objects: */
@@ -1592,7 +1615,6 @@ struct DISCO_DLL CHEFormNode : ChainAnyElem {
 };
 
 extern DISCO_DLL ChainAnyElem* NewCHEFormNode ();
-
 
 extern DISCO_DLL LavaDECL *NewLavaDECL();
 extern DISCO_DLL bool RemoveErrCode(CHAINX* errors, QString* ids);

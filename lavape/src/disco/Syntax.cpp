@@ -68,7 +68,7 @@ TAnnotation *NewTAnnotation()
   { return new TAnnotation; }
 
 LavaDECL::~LavaDECL() {
-  if (SectionTabPtr && (DeclType == Interface)) {
+  if (SectionTabPtr && ((DeclType == Interface) || (DeclType == CompObjSpec))) {
 		SectionTabPtr->Destroy();
     delete [] SectionTabPtr;
 	}

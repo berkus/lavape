@@ -34,13 +34,16 @@ CLavaThread::CLavaThread(unsigned (*fp)(CLavaBaseDoc *), CLavaBaseDoc* docu)
 	doc = docu;
   pContExecEvent = new CEventEx();
 
-  if (!doc->ThreadList)
+  if (!doc->ThreadList) {
 		doc->ThreadList = new CThreadList;
+    doc->ThreadList->setAutoDelete(true);
+  }
 }
 
 CLavaThread::~CLavaThread()
 {
   (*pContExecEvent)--;
+  wait();
   delete pContExecEvent;
 }
 

@@ -43,5 +43,21 @@ extern LAVASTREAM_DLL QString ERR_OpenInFailed;
 extern LAVASTREAM_DLL QString ERR_OpenOutFailed;
 //extern LAVASTREAM_DLL QString ERR_OpenInOutFailed;
 
+
+class LAVASTREAM_DLL DDStreamClass : public DDMakeClass
+{
+public:
+  DDStreamClass() {}
+  DDStreamClass(bool text) {isDStream = text;}
+  bool isDStream;
+  virtual bool hasChildren();
+  virtual void makeChildren();
+  QString value2;
+  virtual QString getValue0(const QString& stdLabel);
+  virtual QString getValue1();
+  virtual QString getValue2();
+};
+
+
 #endif
 

@@ -29,7 +29,7 @@
 #include "SynIDTable.h"
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
-#include "DbgThreads.h"
+#include "DbgThread.h"
 #include "Constructs.h"
 #include "BAdapter.h"
 
@@ -260,6 +260,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
   TAdapterFunc* funcAdapter=0;
   CContext con;
   CheckData ckdl;
+  CSearchData sData;
   CHE* elChe, *execChe;
 
   if (!classDECL)
@@ -312,6 +313,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
       ckdl.inINCL = execDECL->inINCL;
       try {
         ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+        ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
       }
       catch(CUserException) {
       }
@@ -333,6 +335,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
       ckdl.inINCL = execDECL->inINCL;
       try {
         ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+        ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
       }
       catch(CUserException) {
       }
@@ -454,6 +457,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
         implDECL->WorkFlags.INCL(runTimeOK);
         try {
           ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+          ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
         }
         catch(CUserException) {
         }
@@ -488,6 +492,8 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
             implDECL->WorkFlags.INCL(runTimeOK);
             try {
               ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+              sData.nextFreeID = 0;
+              ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
             }
             catch(CUserException) {
             }
@@ -2111,15 +2117,11 @@ void CLavaProgram::LavaError(CheckData& ckd, bool setLavaEx, LavaDECL *decl, QSt
     code = check_ex;
 
   if (setLavaEx) {
-    if (!SetLavaException(ckd, code, msg)) {
-      CRuntimeException* ex = new CRuntimeException(code, &msg);
-      throw ex;
-    }
+    if (!SetLavaException(ckd, code, msg))
+      throw CRuntimeException(code, &msg);
   }
-  else {
-    CRuntimeException* ex = new CRuntimeException(code, &msg);
-    throw ex;
-  }
+  else
+    throw CRuntimeException(code, &msg);
   /*
   critical(qApp->mainWidget(),qApp->name(),tr(msg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   throwError = true;
@@ -2198,6 +2200,7 @@ void sigEnable() {
 unsigned ExecuteLava(CLavaBaseDoc *doc)
 {
   CheckData ckd;
+  CSearchData sData;
   LavaVariablePtr newStackFrame=0;
   QString msg="Normal end of application";
   unsigned frameSize, pos, newOldExprLevel;
@@ -2224,16 +2227,17 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
 
       try {
 #ifndef WIN32
-      if (setjmp(contOnHWexception)) throw hwException;
+        if (setjmp(contOnHWexception)) throw hwException;
 #endif
         ckd.myDECL = topDECL;
         ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
+        sData.nextFreeID = 0;
+        ((SynObject*)topDECL->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
         if (!ok) {
           critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
           goto stop;
         }
         topDECL->WorkFlags.INCL(runTimeOK);
-        //newStackFrame = new LavaObjectPtr[((SelfVar*)topDECL->Exec.ptr)->stackFrameSize];
 
         frameSize = ((SelfVar*)topDECL->Exec.ptr)->stackFrameSize;
         newOldExprLevel = frameSize - 1;
@@ -2250,10 +2254,13 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
           newStackFrame[pos] = 0;
         if (((CLavaDebugThread*)LBaseData->debugThread)->debugOn) {
           doc->debugOn = true;
-          ((CLavaDebugThread*)LBaseData->debugThread)->initData(doc);
-          (*((CLavaDebugThread*)LBaseData->debugThread)->pContThreadEvent)--;
-          (*LBaseData->debugThread->pContExecEvent)++;
+          (*((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent)--; 
+          //debug thread continue, now initialisation is finished 
+          (*((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent)++; 
+          //execution thread wait until debug thread has received first message from LavaPE
         }
+//      {CRuntimeException* ex = new CRuntimeException(ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
+//      throw ex;}
         if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel)) {
           if (!ckd.exceptionThrown)
             ((SelfVarX*)topDECL->Exec.ptr)->SetRTError(ckd, &ERR_ExecutionFailed,newStackFrame);
@@ -2381,7 +2388,7 @@ bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack)
   if (ckd.exceptionThrown)
     return false;
   if (ex)
-    throw ex;
+    throw *ex;
   showFunc(ckd, newStackFrame, !((SynFlags*)(newStackFrame[SFH+2]+1))->Contains(stateObjFlag), false);
   if (ckd.exceptionThrown) {
     if (newStackFrame[SFH+2])
@@ -2399,23 +2406,22 @@ bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack)
 bool ShowFuncFillIn(CheckData& ckd, LavaVariablePtr stack)
 {
   CRuntimeException *ex;
+
   if (stack[SFH+2])
     DFC( stack[SFH+2]);
   stack[SFH+2] = AllocateObject(ckd, stack[SFH][0][0].classDECL->RelatedDECL, false);
   if (!stack[SFH+2]) {
     if (ckd.exceptionThrown)
       return false;
-    else {
-      ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-      throw ex;
-    }
+    else
+      throw CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
   }
   if (stack[SFH+1]) {
     ex = CopyObject(ckd, &stack[SFH+1], &stack[SFH+2], false, stack[SFH][0][0].classDECL->RelatedDECL);
     if (ckd.exceptionThrown)
       return false;
     if (ex)
-      throw ex;
+      throw *ex;
   }
   showFunc(ckd, stack, false, true);
   if (ckd.exceptionThrown)

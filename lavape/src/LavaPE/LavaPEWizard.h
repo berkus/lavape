@@ -14,8 +14,6 @@
 #include "LavaPEView.h"
 #include "SylTraversal.h"
 #include "Syntax.h"
-//#include "resource.h"
-//#include "wxExport.h"
 #include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"

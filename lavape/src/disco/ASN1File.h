@@ -98,7 +98,7 @@ public:
      (= default) */
 
 
-  ASN1InSock (sock_t socket, bool silent=false);
+  ASN1InSock (sock_t socket, bool silent=true);
 
   ~ASN1InSock ();
 
@@ -133,7 +133,7 @@ public:
      (= default) */
 
 
-  ASN1OutSock (sock_t socket, bool silent=false);
+  ASN1OutSock (sock_t socket, bool silent=true);
 
   ~ASN1OutSock ();
 

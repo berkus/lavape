@@ -34,32 +34,62 @@ private:
   Q_OBJECT
 
 };
-class DumpItem;
-class ObjDebugItem;
 
-class LAVABASE_DLL ObjItem
+class DDItem;
+
+class LAVABASE_DLL DDMakeClass
 {
 public:
-  bool hasChildren();
-  void makeChildren(DumpItem* item, ObjDebugItem* data);
-  void makeSetChildren(DumpItem* item, ObjDebugItem* data);
-  void makeArrayChildren(DumpItem* item, ObjDebugItem* data);
-  void setValues(DumpItem* item, ObjDebugItem* data);
+  DDMakeClass() {myItem = 0;}
+  DDItem *myItem;
+  virtual bool hasChildren();
+  virtual void makeChildren();
+  virtual QString getValue0(const QString& stdLabel);
+  virtual QString getValue1();
+  virtual QString getValue2();
   LavaObjectPtr myObject;
-  bool withChildren;
-  bool childrenDrawn;
-  bool isSection;
-  bool isTop;
-  bool isPriv;
   CLavaBaseDoc *myDoc;
+  bool isCasted;
+  bool isSection;
 };
 
-class LAVABASE_DLL DumpItem :public QListViewItem, public ObjItem 
+class  LAVABASE_DLL DDArrayClass : public DDMakeClass
 {
 public:
-  DumpItem(DumpItem* parent, DumpItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false);
-  DumpItem(DumpItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false);
-  DumpItem(DumpListView* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName);
+  DDArrayClass() {myItem = 0;}
+  virtual bool hasChildren();
+  virtual void makeChildren();
+};
+
+class  LAVABASE_DLL DDSetClass : public DDMakeClass
+{
+public:
+  DDSetClass() {myItem = 0;}
+  virtual bool hasChildren();
+  virtual void makeChildren();
+  virtual QString getValue0(const QString& stdLabel);
+};
+
+class LAVABASE_DLL DDItem
+{
+public:
+  virtual DDItem* createChild(DDMakeClass* dd, DDItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object,
+    QString varName, bool isSec=true, bool isPriv=false) {return 0;}
+  DDMakeClass *DD;
+  bool withChildren;
+  bool childrenDrawn;
+  bool isTop;
+  bool isPriv;
+  ~DDItem() {delete DD;}
+};
+
+class LAVABASE_DLL DumpItem :public QListViewItem, public DDItem 
+{
+public:
+  DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false);
+  DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false);
+  DumpItem(DDMakeClass* dd, DumpListView* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName);
+  virtual DDItem* createChild(DDMakeClass* dd, DDItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false);
   void setOpen(bool o);
   ~DumpItem();
 
@@ -81,13 +111,14 @@ private:
 };
 
 
-class LAVABASE_DLL ObjDebugItem :public ObjItem, public ObjItemData {
+class LAVABASE_DLL DebugItem :public DDItem, public DDItemData {
 public:
-  ObjDebugItem() {}
-  ~ObjDebugItem() {}
-  ObjDebugItem(ObjDebugItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false, bool drawChildren=false);
+  DebugItem() {}
+  ~DebugItem() {}
+  DebugItem(DDMakeClass* dd, DebugItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false, bool drawChildren=false);
+  virtual DDItem* createChild(DDMakeClass* dd, DDItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false);
   
-  static ObjDebugItem* openObj (CHE* cheObj, CHEint* number);
+  static DebugItem* openObj (CHE* cheObj, CHEint* number);
 };
 
 

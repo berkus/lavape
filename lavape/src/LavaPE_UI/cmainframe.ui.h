@@ -763,3 +763,16 @@ void CMainFrame::DbgRunToSel()
 {
 
 }
+
+
+
+void CMainFrame::DbgStepNextFunction()
+{
+
+}
+
+
+void CMainFrame::DbgStop()
+{
+
+}

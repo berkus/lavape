@@ -161,8 +161,10 @@ public slots:
 // Exec handlers (tool buttons):
     virtual void DbgBreakpoint();
     virtual void DbgStepNext();
+    virtual void DbgStepNextFunction();
     virtual void DbgStepinto();
     virtual void DbgStepout();
+    virtual void DbgStop();
     virtual void DbgRunToSel();
     virtual void toggleCategory();
     virtual void optLocalVar();

@@ -23,6 +23,7 @@
 
 
 #include "LavaBaseDoc.h"
+#include "BAdapter.h"
 #include "qapplication.h"
 #include "qframe.h"
 #include "qlistview.h"
@@ -32,29 +33,43 @@
 #include "qvbox.h"
 #include "qlayout.h"
 
-
-void ObjItem::setValues(DumpItem* item, ObjDebugItem* data)
+QString DDMakeClass::getValue0(const QString& stdLabel)
 {
-  QString str1, str2;
-  int ii;
-  if (!myObject) {
-    if (item)
-      item->setText(1, "0x00000000   ");
-    else
-      data->Column1 = DString("0x00000000   ");
-    return;
+  QString str0;
+  if (!isSection && myObject) {
+    if (isCasted)
+      str0 = " / " + QString(myObject[0][0].classDECL->FullName.c);
   }
+  if (myObject)
+    str0 = str0 + ")";
+  str0 = str0 + "   ";
+  str0 = stdLabel + str0;
+  return str0;
+}
+
+
+QString DDMakeClass::getValue1()
+{
+  QString str1;
+  int ii;
+  if (!myObject) 
+    return QString("0x00000000   ");
   else 
     if (!isSection) {
       str1 = QString("%1").arg((ulong)(myObject), 8,16);
       for (ii=0; str1[ii]==' '; ii++)
         str1[ii]='0';
       str1 = "0x" + str1;
-      if (item)
-        item->setText(1, str1);
-      else
-        data->Column1 = DString(str1);
+      return str1;
     }
+  return str1;
+}
+
+QString DDMakeClass::getValue2()
+{
+  QString str2;
+  if (!myObject)
+    return str2;
   if (myObject[0][0].classDECL == myDoc->DECLTab[Bitset] )
     str2 = QString("%1").arg(*(ulong*)(myObject+LSH), sizeof(unsigned) * 8,2);
   else if (myObject[0][0].classDECL == myDoc->DECLTab[B_Bool] )
@@ -84,169 +99,145 @@ void ObjItem::setValues(DumpItem* item, ObjDebugItem* data)
     if (((CHAINX*)(myObject+LSH))->first == 0)
       str2 = "0x00000000";
     else
-      return;
+      return str2;
   }
   else if (myObject[0][0].classDECL == myDoc->DECLTab[B_Array]) {
     if (*(int*)(myObject+LSH) == 0)
       str2 = "0x00000000";
     else
-      return;
+      return str2;
   }
   else
-    return; //no value
+    return str2; //no value
   if (str2.isNull())
     str2 = "0";
-  if (item)
-    item->setText(2, str2);
-  else
-    data->Column2 = DString(str2);
+  return str2;
 }
 
 
-bool ObjItem::hasChildren()
+
+bool DDMakeClass::hasChildren()
 {
+  TAdapterFunc *funcAdapter;
+  CheckData ckd;
+
+  ckd.document = myDoc;
   if (!myObject || !myObject[0])
     return false;
+  int ll = myObject[0][0].classDECL->SectionInfo2;
+  if (myObject[0][0].classDECL->TypeFlags.Contains(isNative)) {
+    funcAdapter = GetAdapterTable(ckd, myObject[0][0].classDECL, myObject[0][0].classDECL);
+    if (funcAdapter)
+      ll = ll - (unsigned)*funcAdapter[0]; //- native part of section
+  }
   if (isSection)
-    if (myObject[0][0].classDECL == myDoc->DECLTab[B_Set])
-      return ((CHAINX*)(myObject+LSH))->first != 0;
-    else if (myObject[0][0].classDECL != myDoc->DECLTab[B_Array])//array
-      return *(int*)(myObject+LSH) != 0;
-    else
-      return myObject[0][0].classDECL->SectionInfo2;
+    return ll > 0;
   else
-    if (myObject[0][0].classDECL != myDoc->DECLTab[B_Set]
-        && myObject[0][0].classDECL != myDoc->DECLTab[B_Array])
-      return myObject
-             && ((myObject[0][0].classDECL->inINCL != 1) 
-                || myObject[0][0].classDECL != myDoc->DECLTab[Bitset] 
-                  && myObject[0][0].classDECL != myDoc->DECLTab[B_Bool]   
-                  && myObject[0][0].classDECL != myDoc->DECLTab[Char]    
-                  && myObject[0][0].classDECL != myDoc->DECLTab[Integer] 
-                  && myObject[0][0].classDECL != myDoc->DECLTab[Float]  
-                  && myObject[0][0].classDECL != myDoc->DECLTab[Double] 
-                  && myObject[0][0].classDECL != myDoc->DECLTab[VLString]  
-                  && myObject[0][0].classDECL != myDoc->DECLTab[Enumeration]
-                  && myObject[0][0].classDECL != myDoc->DECLTab[B_Object])
-             && (myObject[0][0].classDECL->SectionInfo2
-                 || (myObject[0][0].nSections > 2) && (myObject[0][1].classDECL != myDoc->DECLTab[Enumeration]));
-    else
-      if (myObject[0][0].classDECL == myDoc->DECLTab[B_Set])
-        return ((CHAINX*)(myObject+LSH))->first != 0;
-      else //array
-        return *(int*)(myObject+LSH) != 0;
+    return (ll > 0) || (myObject[0][0].nSections > 2)
+                       && (myObject[0][1].classDECL != myDoc->DECLTab[Enumeration]);
 }
 
-void ObjItem::makeChildren(DumpItem* item, ObjDebugItem* data)
+void DDMakeClass::makeChildren()
 
 {
-  LavaObjectPtr sectionPtr;
+  LavaObjectPtr sectionPtr, newStackFrame[SFH+2];
   LavaVariablePtr memPtr;
   LavaDECL *secClassDECL, *attrDecl, *attrType;
-  DWORD childItem=0;
-  int iSect, iiSect, ll, llast;
+  DDItem *childItem=0;
+  int iSect, ll, llast;
   QString label;
   bool hasChain=false;
+  TAdapterFunc *funcAdapter;
+  CheckData ckd;
 
-  if (!childrenDrawn) {
+  ckd.document = myDoc;
+  if (!myItem->childrenDrawn) {
     if (myObject && myObject[0]) {
       if (isSection) { //put the members
         secClassDECL =  myObject[0][0].classDECL;
         sectionPtr = myObject;
-        if (!secClassDECL->TypeFlags.Contains(isNative)) { 
-          llast = secClassDECL->SectionInfo2 + LSH;
-          for (ll = LSH; ll < llast; ll++) {
-            memPtr = (LavaVariablePtr)(sectionPtr + ll);
-            attrDecl = myObject[0][0].attrDesc[ll-LSH].attrDECL;
-            attrType = myDoc->IDTable.GetDECL(attrDecl->RefID, attrDecl->inINCL);
-            label = QString(attrDecl->LocalName.c) + "   (" + QString(attrType->FullName.c);
-            if (item)
-              if (childItem)
-                childItem = (DWORD)new DumpItem(item, (DumpItem*)childItem, myDoc, *memPtr, label, false, attrDecl->ParentDECL->DeclType == Impl);
-              else
-                childItem = (DWORD)new DumpItem(item, myDoc, *memPtr, label, false, attrDecl->ParentDECL->DeclType == Impl);
-            else {
-              childItem = (DWORD)new ObjDebugItem(data, myDoc, *memPtr, label, false, attrDecl->ParentDECL->DeclType == Impl);
-              data->Children.Append(new CHE((ObjDebugItem*)childItem));
-            }
-          }//for (ll...
-        }//section not native
-        else { //chain, set or array
+        llast = secClassDECL->SectionInfo2 + LSH;
+        if (secClassDECL->TypeFlags.Contains(isNative)) { 
+          funcAdapter = GetAdapterTable(ckd, secClassDECL, secClassDECL);
+          if (funcAdapter)
+            llast = llast - (unsigned)*funcAdapter[0]; //- native part of section
+        }
+        for (ll = LSH; ll < llast; ll++) {
+          memPtr = (LavaVariablePtr)(sectionPtr + ll);
+          attrDecl = myObject[0][0].attrDesc[ll-LSH].attrDECL;
+          attrType = myDoc->IDTable.GetDECL(attrDecl->RefID, attrDecl->inINCL);
+          label = QString(attrDecl->LocalName.c) + "   (" + QString(attrType->FullName.c);
+          childItem = myItem->createChild(new DDMakeClass, childItem, myDoc, *memPtr, label, false, attrDecl->ParentDECL->DeclType == Impl);
+        }//for (ll...
+        if (secClassDECL->TypeFlags.Contains(isNative)) { 
           if (secClassDECL == myDoc->DECLTab[B_Set]) 
-            makeSetChildren(item, data);
+            makeChildren();
           else if (myObject[0][0].classDECL == myDoc->DECLTab[B_Array]) 
-            makeArrayChildren(item, data);
+            makeChildren();
+          else {
+            funcAdapter = GetAdapterTable(ckd, secClassDECL, secClassDECL);
+            if (funcAdapter && funcAdapter[adapterPos_DD]) //section has DD function
+              makeChildren();
+          }
         }
       }//isSection
       else { // put the members of section 0 and all other sections
         secClassDECL =  myObject[0][0].classDECL;
         sectionPtr = myObject;
-        if (!secClassDECL->TypeFlags.Contains(isNative)) { 
-          llast = secClassDECL->SectionInfo2 + LSH;
-          for (ll = LSH; ll < llast; ll++) {
-            memPtr = (LavaVariablePtr)(sectionPtr + ll);
-            attrDecl = myObject[0][0].attrDesc[ll-LSH].attrDECL;
-            attrType = myDoc->IDTable.GetDECL(attrDecl->RefID, attrDecl->inINCL);
-            label = QString(attrDecl->LocalName.c) + "   (" + QString(attrType->FullName.c);
-            if (item)
-              if (childItem)
-                childItem = (DWORD)new DumpItem(item, (DumpItem*)childItem, myDoc, *memPtr, label, false, attrDecl->ParentDECL->DeclType == Impl);
-              else
-                childItem = (DWORD)new DumpItem(item, myDoc, *memPtr, label, false, attrDecl->ParentDECL->DeclType == Impl);
-            else {
-              childItem = (DWORD)new ObjDebugItem(data, myDoc, *memPtr, label, false, attrDecl->ParentDECL->DeclType == Impl, false);
-              data->Children.Append(new CHE((ObjDebugItem*)childItem));
-            }
-          }//for (ll...
-        }//section not native
+        if (secClassDECL->DeclType == CompObjSpec) {
+          label = "url-object";
+          if (sectionPtr-2)
+            label = label + "  (" + QString((*(LavaVariablePtr)(sectionPtr-2))[0][0].classDECL->FullName.c);
+          childItem = myItem->createChild(new DDMakeClass, childItem, myDoc, *(LavaVariablePtr)(sectionPtr-2), label, false, false);            
+        }
+        llast = secClassDECL->SectionInfo2 + LSH;
+        if (secClassDECL->TypeFlags.Contains(isNative)) { 
+          funcAdapter = GetAdapterTable(ckd, secClassDECL, secClassDECL);
+          if (funcAdapter)
+            llast = llast - (unsigned)*funcAdapter[0]; //- native part of section
+        }
+        for (ll = LSH; ll < llast; ll++) {
+          memPtr = (LavaVariablePtr)(sectionPtr + ll);
+          attrDecl = myObject[0][0].attrDesc[ll-LSH].attrDECL;
+          attrType = myDoc->IDTable.GetDECL(attrDecl->RefID, attrDecl->inINCL);
+          label = QString(attrDecl->LocalName.c) + "   (" + QString(attrType->FullName.c);
+          childItem = myItem->createChild(new DDMakeClass, childItem, myDoc, *memPtr, label, false, attrDecl->ParentDECL->DeclType == Impl);            
+        }//for (ll...
+        if (secClassDECL->TypeFlags.Contains(isNative)) { 
+          //funcAdapter = GetAdapterTable(ckd, secClassDECL, secClassDECL);
+          if (funcAdapter && funcAdapter[adapterPos_DD]) {//section has DD function
+            newStackFrame[0] = 0;
+            newStackFrame[1] = 0;
+            newStackFrame[2] = 0;
+            newStackFrame[SFH] = sectionPtr;
+            funcAdapter[adapterPos_DD](ckd, newStackFrame);
+            childItem = myItem->createChild((DDMakeClass*)(newStackFrame[SFH+1]), childItem, myDoc, sectionPtr, label, false, false);            
+          }
+        }
         for (iSect = 1; iSect < myObject[0]->nSections; iSect++) {
           if (myObject[0][iSect].SectionFlags.Contains(SectPrimary)) {
             secClassDECL = myObject[0][iSect].classDECL;
             if ((secClassDECL->inINCL != 1) 
-              || secClassDECL != myDoc->DECLTab[Bitset] 
-                && secClassDECL != myDoc->DECLTab[B_Bool]   
-                && secClassDECL != myDoc->DECLTab[Char]    
-                && secClassDECL != myDoc->DECLTab[Integer] 
-                && secClassDECL != myDoc->DECLTab[Float]  
-                && secClassDECL != myDoc->DECLTab[Double] 
-                && secClassDECL != myDoc->DECLTab[VLString]  
-                && secClassDECL != myDoc->DECLTab[Enumeration]
-                && secClassDECL != myDoc->DECLTab[B_Set]
-                && secClassDECL != myDoc->DECLTab[B_Chain]
+              || secClassDECL != myDoc->DECLTab[B_Chain]
                 && secClassDECL != myDoc->DECLTab[B_Object]) {
               sectionPtr = myObject - myObject[0][0].sectionOffset + myObject[0][iSect].sectionOffset;
               label = "(" + QString(secClassDECL->FullName.c) + ")";
-              if (item)
-                if (childItem)
-                  childItem = (DWORD)new DumpItem(item, (DumpItem*)childItem, myDoc, sectionPtr, label);
-                else
-                  childItem = (DWORD)new DumpItem(item, myDoc, sectionPtr, label);
-              else {
-                childItem = (DWORD)new ObjDebugItem(data, myDoc, sectionPtr, label, false, attrDecl->ParentDECL->DeclType == Impl);
-                data->Children.Append(new CHE((ObjDebugItem*)childItem));
-              }
-            }
-            else {
-              if (secClassDECL == myDoc->DECLTab[B_Set]) {
-                for (iiSect = 0; !hasChain && (iiSect < myObject[0]->nSections); iiSect++) 
-                  hasChain = (myObject[0][iiSect].classDECL == myDoc->DECLTab[B_Chain]);
-                if (hasChain) 
-                  label = "(Chain)";
-                else 
-                  label = "(Set)";
-                sectionPtr = myObject - myObject[0][0].sectionOffset + myObject[0][iSect].sectionOffset;
-                if (item)
-                  if (childItem)
-                    childItem = (DWORD)(new DumpItem(item, (DumpItem*)childItem, myDoc, sectionPtr, label));
-                  else
-                    childItem = (DWORD)(new DumpItem(item, myDoc, sectionPtr, label));
-                else {
-                  childItem = (DWORD)new ObjDebugItem(data, myDoc, sectionPtr, label, false, attrDecl->ParentDECL->DeclType == Impl);
-                  data->Children.Append(new CHE((ObjDebugItem*)childItem));
+              if (secClassDECL->TypeFlags.Contains(isNative)) {
+                funcAdapter = GetAdapterTable(ckd, secClassDECL, myObject[0][0].classDECL);
+                if (funcAdapter && funcAdapter[adapterPos_DD]) {//section has DD function
+                  newStackFrame[0] = 0;
+                  newStackFrame[1] = 0;
+                  newStackFrame[2] = 0;
+                  newStackFrame[SFH] = 0;
+                  funcAdapter[adapterPos_DD](ckd, newStackFrame);
+                  childItem = myItem->createChild(*(DDMakeClass**)(newStackFrame[SFH+1]+LSH), childItem, myDoc, sectionPtr, label);            
                 }
+                else
+                  childItem = myItem->createChild( new DDMakeClass, childItem, myDoc, sectionPtr, label);
               }
+              else
+                childItem = myItem->createChild( new DDMakeClass, childItem, myDoc, sectionPtr, label);
             }
-
           }//primary
         }//for (iSect...
       }
@@ -255,20 +246,24 @@ void ObjItem::makeChildren(DumpItem* item, ObjDebugItem* data)
 
 }
 
+bool DDArrayClass::hasChildren()
+{
+  return *(int*)(myObject+LSH) != 0;
+}
 
-void ObjItem::makeArrayChildren(DumpItem* item, ObjDebugItem* data)
+void DDArrayClass::makeChildren()
 {
   int arrayLen, ii, iSect;
   LavaObjectPtr object;
   LavaVariablePtr array = *(LavaVariablePtr*)(myObject+LSH+1);
-  DWORD childItem=0;
-  QString label;
+  DDItem* childItem=0;
+  QString label0, label;
 
   LavaDECL* elemType = myObject[0][0].vtypeDesc[0].fValue;
   arrayLen = *(int*)(myObject+LSH);
-  label = "   (" + QString(elemType->FullName.c) + ")";
+  label0 = "   (" + QString(elemType->FullName.c) + ")";
   for (ii = 0; ii < arrayLen; ii++) {
-    label = "[" + QString("%1").arg(ii) + "]" + label;
+    label = "[" + QString("%1").arg(ii) + "]" + label0;
     object = array[ii];
     if (object) {
       object = object - object[0][0].sectionOffset;
@@ -280,24 +275,35 @@ void ObjItem::makeArrayChildren(DumpItem* item, ObjDebugItem* data)
       if (iSect < object[0]->nSections)
         object = object- object[0][iSect].sectionOffset;
     }
-    if (item)
-      if (childItem)
-        childItem = (DWORD)new DumpItem(item, (DumpItem*)childItem, myDoc, object, label, false, false);
-      else
-        childItem = (DWORD)new DumpItem(item, myDoc, object, label, false, false);
-     else {
-      childItem = (DWORD)new ObjDebugItem(data, myDoc, object, label, false, false);
-      data->Children.Append(new CHE((ObjDebugItem*)childItem));
-    }
+    childItem = myItem->createChild( new DDMakeClass, childItem, myDoc, object, label, false, false);
   }
 }
 
 
-void ObjItem::makeSetChildren(DumpItem* item, ObjDebugItem* data)
+bool DDSetClass::hasChildren()
+{
+  return ((CHAINX*)(myObject+LSH))->first != 0;
+}
+
+QString DDSetClass::getValue0(const QString& stdLabel)
+{
+  int iSect;
+  bool hasChain = false;
+  LavaObjectPtr fullObj = myObject - myObject[0][0].sectionOffset;           
+  for (iSect = 0; !hasChain && (iSect < fullObj[0]->nSections); iSect++) 
+    hasChain = (fullObj[0][iSect].classDECL == myDoc->DECLTab[B_Chain]);
+  if (hasChain) 
+    return QString("(Chain)");
+  else 
+    return QString("(Set)");
+}
+
+
+void DDSetClass::makeChildren()
 {
   CHE* che;
   LavaObjectPtr object;
-  DWORD childItem=0;
+  DDItem* childItem=0;
   QString label;
   int iSect;
 
@@ -315,13 +321,7 @@ void ObjItem::makeSetChildren(DumpItem* item, ObjDebugItem* data)
       if (iSect < object[0]->nSections)
         object = object- object[0][iSect].sectionOffset;
     }
-    if (item)
-      if (childItem)
-        childItem = (DWORD)new DumpItem(item, (DumpItem*)childItem, myDoc, object, label, false, false);
-      else
-        childItem = (DWORD)new DumpItem(item, myDoc, object, label, false, false);
-    else
-      childItem = (DWORD)new ObjDebugItem(data, myDoc, object, label, false, false);
+    childItem = myItem->createChild( new DDMakeClass, childItem, myDoc, object, label, false, false);
   }
 }
 
@@ -378,74 +378,84 @@ void LavaDumpFrame::OnOK()
   QDialog::accept();
 }
 
+DDItem* DumpItem::createChild(DDMakeClass* dd, DDItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool isPriv)
+{
+  if (afterItem)
+    return new DumpItem(dd, this, (DumpItem*)afterItem, doc, object, varName, isSec, isPriv);
+  else
+    return new DumpItem(dd, this, doc, object, varName, isSec, isPriv);
+}
 
-DumpItem::DumpItem(DumpItem* parent, DumpItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv)
+DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv)
   :QListViewItem(parent, afterItem) 
 { 
-  isSection = isSec;
-  if (isSection || !object)
-    myObject = object;
-  else {
-    myObject = object - object[0][0].sectionOffset; 
-    if (myObject != object)
-      varName = varName + " / " + QString(myObject[0][0].classDECL->FullName.c);
-    varName = varName + ")";
-  }
+  DD = dd;
+  DD->myItem = this;
+  DD->isSection = isSec;
+  if (DD->isSection || !object)
+    DD->myObject = object;
+  else 
+    DD->myObject = object - object[0][0].sectionOffset; 
+  DD->isCasted = DD->myObject != object;
   isTop = false;
   isPriv = priv;
-  myDoc = doc;
+  DD->myDoc = doc;
   childrenDrawn = false;
-  withChildren = hasChildren();
+  withChildren = DD->hasChildren();
   setExpandable(withChildren);
   setHeight(16);
-  varName = varName + "   ";
-  setText(0,varName);
-  setValues(this, 0);    
+  setText(0,DD->getValue0(varName));
+  setText(1, DD->getValue1());
+  setText(2, DD->getValue2());
+  //setValues(this, 0);    
 }
 
-DumpItem::DumpItem(DumpItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv)
+DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv)
   :QListViewItem(parent) 
 { 
-  isSection = isSec;
-  if (isSection || !object)
-    myObject = object;
-  else {
-    myObject = object - object[0][0].sectionOffset; 
-    if (myObject != object)
-      varName = varName + " / " + QString(myObject[0][0].classDECL->FullName.c);
-    varName = varName + ")";
-  }
+  DD = dd;
+  DD->myItem = this;
+  DD->isSection = isSec;
+  if (DD->isSection || !object)
+    DD->myObject = object;
+  else 
+    DD->myObject = object - object[0][0].sectionOffset; 
+  DD->isCasted = DD->myObject != object;
   isTop = false;
   isPriv = priv;
-  myDoc = doc;
+  DD->myDoc = doc;
   childrenDrawn = false;
-  withChildren = hasChildren();
+  withChildren = DD->hasChildren();
   setExpandable(withChildren);
   setHeight(16);
-  varName = varName + "   ";
-  setText(0,varName);
-  setValues(this, 0);    
+  setText(0, DD->getValue0(varName));
+  setText(1, DD->getValue1());
+  setText(2, DD->getValue2());
 }
 
 
-DumpItem::DumpItem (DumpListView* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName)
+DumpItem::DumpItem (DDMakeClass* dd, DumpListView* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName)
   :QListViewItem(parent) 
 { 
-  isSection = false;
+  DD = dd;
+  DD->myItem = this;
+  DD->isSection = false;
   isPriv = false;
-  if (isSection || !object)
-    myObject = object;
+  if (DD->isSection || !object)
+    DD->myObject = object;
   else
-    myObject = object - object[0][0].sectionOffset; 
+    DD->myObject = object - object[0][0].sectionOffset; 
+  DD->isCasted = DD->myObject != object;
   isTop = true;
-  myDoc = doc;
+  DD->myDoc = doc;
   childrenDrawn = false;
-  withChildren = hasChildren();
+  withChildren = DD->hasChildren();
   setExpandable(withChildren);
   setHeight(16);
   varName = varName + "   ";
   setText(0,varName);
-  setValues(this, 0);    
+  setText(1, DD->getValue1());
+  setText(2, DD->getValue2());
 }
 
 
@@ -457,7 +467,7 @@ DumpItem::~DumpItem()
 void DumpItem::setOpen(bool O)
 {
   if (O && withChildren) {
-    makeChildren(this, 0);
+    DD->makeChildren();
     childrenDrawn = true;
     QListViewItem::setOpen(O);
   }
@@ -504,49 +514,55 @@ DumpListView::DumpListView(QWidget *parent,CLavaBaseDoc* doc, LavaObjectPtr obje
   }
   else
     label = varName;
-  rootItem = new DumpItem(this, myDoc, object, label);
+  rootItem = new DumpItem(new DDMakeClass, this, myDoc, object, label);
   rootItem->setOpen(true);
 }
 
 /* Lava *******************************************************************************/
 
-ObjDebugItem::ObjDebugItem(ObjDebugItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv, bool drawChildren)
+DebugItem::DebugItem(DDMakeClass* dd, DebugItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv, bool drawChildren)
 {
-  isSection = isSec;
-  if (isSection || !object)
-    myObject = object;
-  else {
-    myObject = object - object[0][0].sectionOffset; 
-    if (myObject != object)
-      varName = varName + " / " + QString(myObject[0][0].classDECL->FullName.c);
-    varName = varName + ")";
-  }
+  DD = dd;
+  DD->myItem = this;
+  DD->isSection = isSec;
+  if (DD->isSection || !object)
+    DD->myObject = object;
+  else 
+    DD->myObject = object - object[0][0].sectionOffset; 
+  DD->isCasted = DD->myObject != object;
   isTop = false;
   isPriv = priv;
   isPrivate = priv;
-  myDoc = doc;
+  DD->myDoc = doc;
   childrenDrawn = false;
-  withChildren = hasChildren();
+  withChildren = DD->hasChildren();
   HasChildren = withChildren;
-  varName = varName + "   ";
-  Column0 = DString(varName);
-  setValues(0, this);
+  Column0 = DString(DD->getValue0(varName));
+  Column1 = DString(DD->getValue1());
+  Column2 = DString(DD->getValue2());
   if (drawChildren) {
-    makeChildren(0, this);
+    DD->makeChildren();
     childrenDrawn = true;
   }
 }
 
-ObjDebugItem* ObjDebugItem::openObj (CHE* cheObj, CHEint* number)
+DDItem* DebugItem::createChild(DDMakeClass* dd, DDItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool isPriv)
+{
+  DebugItem* it = new DebugItem(dd, this, doc, object, varName, isSec, isPriv);
+  Children.Append(new CHE((DebugItem*)it));
+  return it;
+}
+
+DebugItem* DebugItem::openObj (CHE* cheObj, CHEint* number)
 {
   if (number->data)
     for (int ii = 0; ii < number->data; ii++) 
       cheObj = (CHE*)cheObj->successor;
-  if (!((ObjDebugItem*)cheObj->data)->childrenDrawn)
-    ((ObjDebugItem*)cheObj->data)->makeChildren(0, (ObjDebugItem*)cheObj->data);
+  if (!((DebugItem*)cheObj->data)->childrenDrawn)
+    ((DebugItem*)cheObj->data)->DD->makeChildren();
   if (number->successor) 
-    return openObj((CHE*)((ObjDebugItem*)cheObj->data)->Children.first, (CHEint*)number->successor);
+    return openObj((CHE*)((DebugItem*)cheObj->data)->Children.first, (CHEint*)number->successor);
   else
-    return (ObjDebugItem*)cheObj->data;
+    return (DebugItem*)cheObj->data;
   
 }

@@ -22,7 +22,6 @@
 #endif
 
 #include "CHAINANY.h"
-#include "Syntax.h"
 #include "wx_obj.h"
 
 

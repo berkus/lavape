@@ -1,3 +1,5 @@
+/* We have slightly modified this file to adapt it to the needs of the Lava project */
+
 #ifdef __GNUC__
 #pragma implementation
 #endif

@@ -72,7 +72,7 @@ int main( int argc, char ** argv ) {
 	CLavaApp ap(argc,argv);
   QString componentPath;
 
-//  DebugBreak();
+  //DebugBreak();
 
   if (sock_init())
     qDebug("sock_init failed");
@@ -102,7 +102,7 @@ int main( int argc, char ** argv ) {
 	threadStg.setLocalData(new CThreadData(0)); 
 
 	int res = ap.exec();
-
+  
 	if (allocatedObjects)
     qDebug("\n\nMemory leak: %x orphaned Lava object(s)\n\n",allocatedObjects);
 	return res;
@@ -120,7 +120,6 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   int rc;
   sigset_t sigs;
 #endif
-
   SynIO.INIT();
   InitGlobalStrings();
   qt_use_native_dialogs = false;
@@ -135,11 +134,6 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   LBaseData.actHint = 0;
   LBaseData.Init(0, 0);
   LBaseData.debugThread = &debugThread;
-  debugThread.varAction = 0;
-  debugThread.dbgStopData = 0;
-  if (debugThread.pContThreadEvent->available())
-    (*debugThread.pContThreadEvent)++;
-
 
   settings.beginGroup("/generalSettings");
   LBaseData.m_strCheckPreconditions = settings.readEntry(szCheckPreconditions, 0, &ok);
@@ -310,16 +304,24 @@ bool CLavaApp::event(QEvent *e)
 	  pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
 		doc = (CLavaDoc*)pHint->fromDoc;
 		thr = (CLavaThread*)pHint->CommandData1;
-		thr->wait();
-		delete thr;
+    if (thr) {
+		  thr->wait();
+		 // delete thr;
+    }
 		delete (CLavaPEHint*)pHint;
-		doc->OnCloseDocument();
+    if (doc)
+		  doc->OnCloseDocument();
+    return true;
 		break;
 	case IDU_LavaShow:
 		((CLavaDoc*)((CLavaPEHint*)((QCustomEvent*)e)->data())->fromDoc)->UpdateAllViews(0, 0, (CLavaPEHint*)((QCustomEvent*)e)->data());
+    mainWidget()->setActiveWindow();
+    mainWidget()->raise();
 		delete (CLavaPEHint*)((QCustomEvent*)e)->data();
 		break;
 	case IDU_LavaMsgBox:
+    mainWidget()->setActiveWindow();
+    mainWidget()->raise();
 		mbp = (CMsgBoxParams*)((QCustomEvent*)e)->data();
 		switch (mbp->funcSpec) {
 		case 0:
@@ -340,6 +342,8 @@ bool CLavaApp::event(QEvent *e)
 		}
     break;
   case IDU_LavaDump:
+//    mainWidget()->setActiveWindow();
+//    mainWidget()->raise();
     dumpdata = (DumpEventData*)((QCustomEvent*)e)->data();
     dumpdata->doc->DumpFrame = new LavaDumpFrame(((wxMainFrame*)mainWidget())/*->GetClientWindow()*/, dumpdata); 
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
@@ -424,8 +428,12 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
 
     //QMessageBox::critical(/*qApp->*/mainWidget(),qApp->name(),"Lava Interpreter: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     debugThread.debugOn = true;
-    debugThread.start();
     doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+    doc->startedFromLavaPE = true;
+    ((CLavaMainFrame*)m_appWindow)->fileOpenAction->setEnabled(false);
+    ((CLavaMainFrame*)m_appWindow)->fileNewAction->setEnabled(false);
+    debugThread.initData(doc);
+    debugThread.start();
   }
   else {
     doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);

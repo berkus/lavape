@@ -11,15 +11,12 @@ dirs:
 	if [ ! -e bin ] ; then mkdir bin; fi; \
 	if [ ! -e lib ] ; then mkdir lib; fi; \
 	cd bin; \
-	if [ ! -e Components ] ; then \
-	  mkdir Components; cd Components; \
-		ln -s $(LAVADIR)/samples/LCompoImpl.lcom LCompoImpl.lcom.lnk; \
-		ln -s $(LAVADIR)/samples/LCompoSmall.lcom LCompoSmall.lcom.lnk; \
-    cd ../..; \
-  else \
-    cd ..; \
-	fi; \
-	cd src/Lava; if [ ! -e Generated ]; then mkdir Generated; fi ; \
+	if [ ! -e Components ] ; then mkdir Components; fi; \
+	cd Components; \
+	if [ ! -e LCompoImpl.lcom.lnk ]; then ln -s $(LAVADIR)/samples/LCompoImpl.lcom LCompoImpl.lcom.lnk; fi; \
+	if [ ! -e LavaStream.lava ]; then ln -s $(LAVADIR)/samples/LavaStream.lava .; fi; \
+	if [ ! -e libLavaStream.so ]; then ln -s $(LAVADIR)/lib/libLavaStream.so .; fi; \
+	cd ../../src/Lava; if [ ! -e Generated ]; then mkdir Generated; fi ; \
 	cd ../LavaBase; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaExecs; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaGUI; if [ ! -e Generated ]; then mkdir Generated; fi; \

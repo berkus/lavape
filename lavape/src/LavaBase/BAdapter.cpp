@@ -29,6 +29,7 @@
 #include "qstring.h"
 #include "qmessagebox.h"
 #include "LavaAppBase.h"
+#include "DumpView.h"
 #ifndef WIN32
 //#include <fenv.h>
 #endif
@@ -37,10 +38,8 @@
 #define OBJALLOC(RESULT, CKD, DECL, ST) {\
   RESULT = AllocateObject(CKD, DECL, ST);\
 	((SynFlags*)(RESULT+1))->INCL(finished); \
-  if (!RESULT && !CKD.exceptionThrown) {\
-    CRuntimeException* ex = new CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
-    throw ex;\
-  }\
+  if (!RESULT && !CKD.exceptionThrown)\
+    throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
 }
 
 
@@ -53,13 +52,13 @@ TAdapterFunc* StdAdapterTab [Identifier];
 
 //LavaDECL* DECLTab [Identifier];
 
-static TAdapterFunc ObjectAdapter[LAH + 9];
+static TAdapterFunc ObjectAdapter[LAH + 10];
 static TAdapterFunc BitsetAdapter[LAH + 7];
 static TAdapterFunc BoolAdapter[LAH + 5];
 static TAdapterFunc CharAdapter[LAH + 1];
-static TAdapterFunc IntAdapter[LAH + 10];
-static TAdapterFunc FloatAdapter[LAH + 9];
-static TAdapterFunc DoubleAdapter[LAH + 9];
+static TAdapterFunc IntAdapter[LAH + 12];
+static TAdapterFunc FloatAdapter[LAH + 11];
+static TAdapterFunc DoubleAdapter[LAH + 11];
 static TAdapterFunc StringAdapter[LAH + 3];
 static TAdapterFunc EnumAdapter[LAH +4];
 static TAdapterFunc SetAdapter[LAH + 6];
@@ -116,7 +115,7 @@ bool ObjectSnapshot(CheckData& ckd, LavaVariablePtr stack)
 {
   CRuntimeException* ex = CopyObject(ckd, &stack[SFH], &stack[SFH+1], false);
   if (ex)
-    throw ex;
+    throw *ex;
   if (ckd.exceptionThrown)
     return false;
   return true;
@@ -139,6 +138,19 @@ bool ObjectDump(CheckData& ckd, LavaVariablePtr stack)
 	QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaDump,(void*)data));
   (*currentThread->pContExecEvent)++;
   ckd.document->DumpFrame = 0;
+  return true;
+}
+
+bool ObjectSetState(CheckData& ckd, LavaVariablePtr stack)
+{
+  LavaObjectPtr resultObjPtr=stack[SFH];
+
+  resultObjPtr = resultObjPtr - (resultObjPtr[0])[0].sectionOffset;
+  CRuntimeException* ex = CopyObject(ckd, &stack[SFH+1], &resultObjPtr, false);
+  if (ex)
+    throw *ex;
+  if (ckd.exceptionThrown)
+    return false;
   return true;
 }
 
@@ -165,13 +177,6 @@ bool BsetLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 bool BsetBwAnd(CheckData& ckd, LavaVariablePtr stack)
 {
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Bitset], false)
-    /*
-  stack[SFH+2] = AllocateObject(ckd, ckd.document->DECLTab[Bitset], false);
-  if (!stack[SFH+2] && !ckd.exceptionThrown) {
-    CRuntimeException* ex = new CRuntimeException(memory_ex ,&&ERR_AllocObjectFailed);
-    throw ex;
-  }
-  */
   *(unsigned*)(stack[SFH+2]+LSH) = *(unsigned*)(stack[SFH]+LSH) & *(unsigned*)(stack[SFH+1]+LSH);
   return true;
 }
@@ -361,6 +366,14 @@ bool IntPlus(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+bool IntIncBy(CheckData& ckd, LavaVariablePtr stack)
+{
+  SafeInt<int> ii =  SafeInt<int>(*(int*)(stack[SFH]+LSH)) + SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
+//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH]+LSH) =  ii.Value();
+  return true;
+}
+
 bool IntMinus(CheckData& ckd, LavaVariablePtr stack)
 {
   SafeInt<int> ii = - SafeInt<int>(*(int*)(stack[SFH]+LSH));
@@ -374,6 +387,14 @@ bool IntMulti(CheckData& ckd, LavaVariablePtr stack)
   SafeInt<int> ii = SafeInt<int>(*(int*)(stack[SFH]+LSH)) * SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
   *(int*)(stack[SFH+2]+LSH) =  ii.Value();
+  return true;
+}
+
+bool IntMultBy(CheckData& ckd, LavaVariablePtr stack)
+{
+  SafeInt<int> ii = SafeInt<int>(*(int*)(stack[SFH]+LSH)) * SafeInt<int>(*(int*)(stack[SFH+1]+LSH));
+//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
+  *(int*)(stack[SFH]+LSH) =  ii.Value();
   return true;
 }
 
@@ -444,6 +465,14 @@ bool FloatPlus(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+bool FloatIncBy(CheckData& ckd, LavaVariablePtr stack)
+{
+  register float fl = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
+//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
+  *(float*)(stack[SFH]+LSH) = fl;
+  return true;
+}
+
 bool FloatMinus(CheckData& ckd, LavaVariablePtr stack)
 {
   register float fl = - *(float*)(stack[SFH]+LSH);
@@ -457,6 +486,14 @@ bool FloatMulti(CheckData& ckd, LavaVariablePtr stack)
   register float fl = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
   *(float*)(stack[SFH+2]+LSH) = fl;
+  return true;
+}
+
+bool FloatMultBy(CheckData& ckd, LavaVariablePtr stack)
+{
+  register float fl = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
+//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
+  *(float*)(stack[SFH]+LSH) = fl;
   return true;
 }
 
@@ -526,6 +563,14 @@ bool DoublePlus(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+bool DoubleIncBy(CheckData& ckd, LavaVariablePtr stack)
+{
+  register double dbl =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
+//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
+  *(double*)(stack[SFH]+LSH) = dbl;
+  return true;
+}
+
 bool DoubleMinus(CheckData& ckd, LavaVariablePtr stack)
 {
   register double dbl = - *(double*)(stack[SFH]+LSH);
@@ -539,6 +584,14 @@ bool DoubleMulti(CheckData& ckd, LavaVariablePtr stack)
   register double dbl = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
   *(double*)(stack[SFH+2]+LSH) = dbl;
+  return true;
+}
+
+bool DoubleMultBy(CheckData& ckd, LavaVariablePtr stack)
+{
+  register double dbl = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
+//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
+  *(double*)(stack[SFH]+LSH) = dbl;
   return true;
 }
 
@@ -624,6 +677,8 @@ bool StringBox(CheckData& ckd, LavaVariablePtr stack)
 {
   QWidget *parent=qApp->mainWidget();
 
+  qApp->mainWidget()->setActiveWindow();
+  qApp->mainWidget()->raise();
   int rc=QMessageBox::NoButton;
   if ((QString*)(stack[SFH]+LSH)) 
     rc = information(
@@ -765,7 +820,7 @@ bool EnumCommentFunc(CheckData& ckd, LavaVariablePtr stack)
   else
     ex = new CRuntimeException(EnumOrdLow_ex, &ERR_EnumOrdLow);
     //SetLavaException(ckd, EnumOrdLow_ex, &&ERR_EnumOrdLow);
-  throw ex;
+  throw *ex;
   return false;
 }
 
@@ -798,7 +853,7 @@ bool SetCopy(CheckData& ckd, LavaVariablePtr stack)
         ((CHE*)(handle+LSH+1))->data = 0;
         ex = CopyObject(ckd, (LavaVariablePtr)&che->data, (LavaVariablePtr)&((CHE*)(handle+LSH+1))->data, ((SynFlags*)(((LavaObjectPtr)che->data)+1))->Contains(stateObjFlag));
         if (ex)
-          throw ex;
+          throw *ex;
         if (ckd.exceptionThrown)
           return false;
       }
@@ -889,6 +944,15 @@ bool SetDecFunc(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+bool SetDD(CheckData& ckd, LavaVariablePtr stack)
+{
+  DDMakeClass* dd = new DDSetClass;
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
+  *(stack[SFH+1]+LSH) = (CSectionDesc*)dd;
+  return true;
+}
+
+
 bool SetAdd(CheckData& ckd, LavaVariablePtr stack)
 {
   LavaObjectPtr che;
@@ -933,9 +997,7 @@ bool SetGet(CheckData& ckd, LavaVariablePtr stack)
         IFC(stack[SFH+2]);
     }
     else {
-      CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-      throw ex;
-      //SetLavaException(ckd, ElemNotInSet_ex, &&ERR_ElemNotInSet);
+      throw CRuntimeException(ElemNotInSet_ex,&ERR_ElemNotInSet);
       return false;
     }
   }
@@ -961,9 +1023,7 @@ bool SetRemove(CheckData& ckd, LavaVariablePtr stack)
       DFC(stack[SFH+1]); // dec element handle
     }
     else {
-      CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-      throw ex;
-      //SetLavaException(ckd, ElemNotInSet_ex, &ERR_ElemNotInSet);
+      throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
       return false;
     }
   }
@@ -988,9 +1048,7 @@ bool SetRemoveAndGet(CheckData& ckd, LavaVariablePtr stack)
       DFC(stack[SFH+1]); // dec element handle
     }
     else {
-      CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-      throw ex;
-      //SetLavaException(ckd, ElemNotInSet_ex, &ERR_ElemNotInSet);
+      throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
       return false;
     }
   }
@@ -999,15 +1057,25 @@ bool SetRemoveAndGet(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
-bool SetContains(CheckData& ckd, LavaVariablePtr stack)
+bool SetCount(CheckData& ckd, LavaVariablePtr stack)
 {
   CHE *che;
   int num=0;
-  if (stack[SFH] && stack[SFH+1] && (stack[SFH]+LSH)) {
-    for (che = (CHE*)((CHAINX*)(stack[SFH]+LSH))->first;
-         che;
-         che = (CHE*)che->successor)
-      if (stack[SFH+1] == (LavaObjectPtr)che->data)
+  LavaObjectPtr objPtr = stack[SFH+1];
+
+  if (stack[SFH] && (stack[SFH]+LSH)) {
+    if (objPtr) {
+      objPtr = objPtr - (*objPtr)->sectionOffset;
+      for (che = (CHE*)((CHAINX*)(stack[SFH]+LSH))->first;
+           che;
+           che = (CHE*)che->successor)
+        if (EqualObjects(ckd,objPtr,(LavaObjectPtr)che->data,0))
+          num++;
+    }
+    else
+      for (che = (CHE*)((CHAINX*)(stack[SFH]+LSH))->first;
+           che;
+           che = (CHE*)che->successor)
         num++;
   }
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Integer], false)
@@ -1220,9 +1288,7 @@ bool ChainInsertBefore(CheckData& ckd, LavaVariablePtr stack)
     if ((*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) && (CHE*)(stack[SFH+1]+LSH+1))
       chain->Insert(((CHE*)(stack[SFH+1]+LSH+1))->predecessor, (CHE*)(stack[SFH+3]+LSH+1));
     else {
-      CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-      throw ex;
-      //SetLavaException(ckd, ElemNotInSet_ex, &ERR_ElemNotInSet);
+      throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
       return false;
     }
   else
@@ -1248,9 +1314,7 @@ bool ChainInsertAfter(CheckData& ckd, LavaVariablePtr stack)
     if ((*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) && (CHE*)(stack[SFH+1]+LSH+1))
       chain->Insert((CHE*)(stack[SFH+1]+LSH+1), (CHE*)(stack[SFH+3]+LSH+1));
     else {
-      CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-      throw ex;
-      //SetLavaException(ckd, ElemNotInSet_ex, &ERR_ElemNotInSet);
+      throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
       return false;
     }
   else
@@ -1303,9 +1367,7 @@ bool ChainSucc(CheckData& ckd, LavaVariablePtr stack)
     return true;
   }
   else {
-    CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-    throw ex;
-    //SetLavaException(ckd, ElemNotInSet_ex, &ERR_ElemNotInSet);
+    throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
     return false;
   }
 }
@@ -1324,9 +1386,7 @@ bool ChainPrev(CheckData& ckd, LavaVariablePtr stack)
     return true;
   }
   else {
-    CRuntimeException* ex = new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-    throw ex;
-    //SetLavaException(ckd, ElemNotInSet_ex, &ERR_ElemNotInSet);
+    throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
     return false;
   }
 }
@@ -1368,7 +1428,7 @@ bool ArrayCopy(CheckData& ckd, LavaVariablePtr stack)
       if (*sourceElPtr) {
         ex = CopyObject(ckd, sourceElPtr, resultElPtr,  ((SynFlags*)((*sourceElPtr)+1))->Contains(stateObjFlag));
         if (ex)
-          throw ex;
+          throw *ex;
         if (ckd.exceptionThrown)
           return false;
       }
@@ -1431,6 +1491,13 @@ bool ArrayDecFunc(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+bool ArrayDD(CheckData& ckd, LavaVariablePtr stack)
+{
+  DDMakeClass* dd = new DDArrayClass;
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Integer], false)
+  *(stack[SFH+1]+LSH) = (CSectionDesc*)dd;
+  return true;
+}
 
 bool ArraySetLength(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
@@ -1457,9 +1524,7 @@ bool ArraySetEl(CheckData& ckd, LavaVariablePtr stack)
         IRC(stack[SFH+2]) // inc data
   }
   else {
-    CRuntimeException* ex = new CRuntimeException(ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
-    throw ex;
-    //SetLavaException(ckd, ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
+    throw CRuntimeException(ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
     return false;
   }
   return true;
@@ -1475,9 +1540,7 @@ bool ArrayGetEl(CheckData& ckd, LavaVariablePtr stack)
     return true;
   }
   else {
-    CRuntimeException* ex = new CRuntimeException(ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
-    throw ex;
-    //SetLavaException(ckd, ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
+    throw CRuntimeException(ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
     return false;
   }
 }
@@ -1648,6 +1711,7 @@ void MakeStdAdapter()
   ObjectAdapter[3] = 0;
   ObjectAdapter[4] = 0;
   ObjectAdapter[5] = 0;
+  ObjectAdapter[6] = 0;
   ObjectAdapter[LAH] =   ObjectFinalize; //no change of position in virtual function table
   ObjectAdapter[LAH+1] = ObjectOpEqual;
   ObjectAdapter[LAH+2] = ObjectOpNotEqual;
@@ -1656,6 +1720,7 @@ void MakeStdAdapter()
   ObjectAdapter[LAH+5] = ObjectSnapshot;
   ObjectAdapter[LAH+6] = ObjectDontSave;
   ObjectAdapter[LAH+7] = ObjectDump;
+  ObjectAdapter[LAH+8] = ObjectSetState;
 
   BitsetAdapter[0] = (TAdapterFunc)1;
   BitsetAdapter[1] = 0;
@@ -1663,6 +1728,7 @@ void MakeStdAdapter()
   BitsetAdapter[3] = BsetLavaIO;
   BitsetAdapter[4] = 0;
   BitsetAdapter[5] = 0;
+  BitsetAdapter[6] = 0;
   BitsetAdapter[LAH]   = BsetBwAnd;
   BitsetAdapter[LAH+1] = BsetBwInclOr;
   BitsetAdapter[LAH+2] = BsetBwExclOr;
@@ -1677,6 +1743,7 @@ void MakeStdAdapter()
   BoolAdapter[3] = BoolLavaIO;
   BoolAdapter[4] = 0;
   BoolAdapter[5] = 0;
+  BoolAdapter[6] = 0;
   BoolAdapter[LAH]   = BoolAnd;
   BoolAdapter[LAH+1] = BoolInclOr;
   BoolAdapter[LAH+2] = BoolExclOr;
@@ -1689,6 +1756,7 @@ void MakeStdAdapter()
   CharAdapter[3] = CharLavaIO;
   CharAdapter[4] = 0;
   CharAdapter[5] = 0;
+  CharAdapter[6] = 0;
   CharAdapter[LAH] = CharString;
 
   IntAdapter[0] = (TAdapterFunc)1;
@@ -1697,16 +1765,19 @@ void MakeStdAdapter()
   IntAdapter[3] = IntLavaIO;
   IntAdapter[4] = 0;
   IntAdapter[5] = 0;
+  IntAdapter[6] = 0;
   IntAdapter[LAH]   = IntMinus;
   IntAdapter[LAH+1] = IntLT;
   IntAdapter[LAH+2] = IntGT;
   IntAdapter[LAH+3] = IntLET;
   IntAdapter[LAH+4] = IntGET;
   IntAdapter[LAH+5] = IntPlus;
-  IntAdapter[LAH+6] = IntMulti;
-  IntAdapter[LAH+7] = IntDiv;
-  IntAdapter[LAH+8] = IntPercent;
-  IntAdapter[LAH+9] = IntString;
+  IntAdapter[LAH+6] = IntIncBy;
+  IntAdapter[LAH+7] = IntMulti;
+  IntAdapter[LAH+8] = IntMultBy;
+  IntAdapter[LAH+9] = IntDiv;
+  IntAdapter[LAH+10] = IntPercent;
+  IntAdapter[LAH+11] = IntString;
 
   FloatAdapter[0] = (TAdapterFunc)1;
   FloatAdapter[1] = 0;
@@ -1714,15 +1785,18 @@ void MakeStdAdapter()
   FloatAdapter[3] = FloatLavaIO;
   FloatAdapter[4] = 0;
   FloatAdapter[5] = 0;
+  FloatAdapter[6] = 0;
   FloatAdapter[LAH]   = FloatMinus;
   FloatAdapter[LAH+1] = FloatLT;
   FloatAdapter[LAH+2] = FloatGT;
   FloatAdapter[LAH+3] = FloatLET;
   FloatAdapter[LAH+4] = FloatGET;
   FloatAdapter[LAH+5] = FloatPlus;
-  FloatAdapter[LAH+6] = FloatMulti;
-  FloatAdapter[LAH+7] = FloatDiv;
-  FloatAdapter[LAH+8] = FloatString;
+  FloatAdapter[LAH+6] = FloatIncBy;
+  FloatAdapter[LAH+7] = FloatMulti;
+  FloatAdapter[LAH+8] = FloatMultBy;
+  FloatAdapter[LAH+9] = FloatDiv;
+  FloatAdapter[LAH+10] = FloatString;
 
   DoubleAdapter[0] = (TAdapterFunc)2;
   DoubleAdapter[1] = 0;
@@ -1730,15 +1804,18 @@ void MakeStdAdapter()
   DoubleAdapter[3] = DoubleLavaIO;
   DoubleAdapter[4] = 0;
   DoubleAdapter[5] = 0;
+  DoubleAdapter[6] = 0;
   DoubleAdapter[LAH]   = DoubleMinus;
   DoubleAdapter[LAH+1] = DoubleLT;
   DoubleAdapter[LAH+2] = DoubleGT;
   DoubleAdapter[LAH+3] = DoubleLET;
   DoubleAdapter[LAH+4] = DoubleGET;
   DoubleAdapter[LAH+5] = DoublePlus;
-  DoubleAdapter[LAH+6] = DoubleMulti;
-  DoubleAdapter[LAH+7] = DoubleDiv;
-  DoubleAdapter[LAH+8] = DoubleString;
+  DoubleAdapter[LAH+6] = DoubleIncBy;
+  DoubleAdapter[LAH+7] = DoubleMulti;
+  DoubleAdapter[LAH+8] = DoubleMultBy;
+  DoubleAdapter[LAH+9] = DoubleDiv;
+  DoubleAdapter[LAH+10] = DoubleString;
 
   StringAdapter[0] = (TAdapterFunc)((sizeof(QString)+3)/4);
   StringAdapter[1] = StringCopy;
@@ -1746,6 +1823,7 @@ void MakeStdAdapter()
   StringAdapter[3] = StringLavaIO;
   StringAdapter[4] = StringNewFunc;
   StringAdapter[5] = StringDecFunc;
+  StringAdapter[6] = 0;
   StringAdapter[LAH]   = StringPlus;
   StringAdapter[LAH+1] = StringBox;
 
@@ -1756,6 +1834,7 @@ void MakeStdAdapter()
   EnumAdapter[3] = EnumLavaIO;
   EnumAdapter[4] = EnumNewFunc;
   EnumAdapter[5] = EnumDecFunc;
+  EnumAdapter[6] = 0;
   EnumAdapter[LAH] = EnumOrdFunc;
   EnumAdapter[LAH+1] = EnumOrdFunc;
   EnumAdapter[LAH+2] = EnumStringFunc; 
@@ -1767,12 +1846,13 @@ void MakeStdAdapter()
   SetAdapter[3] = 0;
   SetAdapter[4] = SetNewFunc;
   SetAdapter[5] = SetDecFunc;
+  SetAdapter[6] = SetDD;
   SetAdapter[LAH]   = SetAdd;
   SetAdapter[LAH+1] = SetAddGetHandle;
   SetAdapter[LAH+2] = SetGet;
   SetAdapter[LAH+3] = SetRemove;
   SetAdapter[LAH+4] = SetRemoveAndGet;
-  SetAdapter[LAH+5] = SetContains;
+  SetAdapter[LAH+5] = SetCount;
 
 
   ChainAdapter[0] = 0;
@@ -1781,6 +1861,7 @@ void MakeStdAdapter()
   ChainAdapter[3] = 0; 
   ChainAdapter[4] = 0; 
   ChainAdapter[5] = 0; 
+  ChainAdapter[6] = 0; 
   ChainAdapter[LAH]   = ChainAppend; 
   ChainAdapter[LAH+1] = ChainInsertBefore;
   ChainAdapter[LAH+2] = ChainInsertAfter;
@@ -1797,6 +1878,7 @@ void MakeStdAdapter()
   CheAdapter[3] = 0;
   CheAdapter[4] = CheNewFunc;
   CheAdapter[5] = 0;
+  CheAdapter[6] = 0;
 
   ArrayAdapter[0] = (TAdapterFunc)2; //length and LavaVariablePtr 
   ArrayAdapter[1] = ArrayCopy;
@@ -1804,6 +1886,7 @@ void MakeStdAdapter()
   ArrayAdapter[3] = 0;
   ArrayAdapter[4] = 0;
   ArrayAdapter[5] = ArrayDecFunc;
+  ArrayAdapter[6] = ArrayDD;
   ArrayAdapter[LAH]   = ArrayGetLength;
   ArrayAdapter[LAH+1] = ArraySetLength;
   ArrayAdapter[LAH+2] = ArrayGetEl;
@@ -1815,6 +1898,7 @@ void MakeStdAdapter()
   ExceptionAdapter[3] = 0;
   ExceptionAdapter[4] = 0;
   ExceptionAdapter[5] = ExceptionDecFunc;
+  ExceptionAdapter[6] = 0;
   ExceptionAdapter[LAH] = LastException;
   ExceptionAdapter[LAH+1] = DropException;
   ExceptionAdapter[LAH+2] = ExceptionCallStack;
@@ -1825,6 +1909,7 @@ void MakeStdAdapter()
   HW_L_ExceptionAdapter[3] = 0;
   HW_L_ExceptionAdapter[4] = 0;
   HW_L_ExceptionAdapter[5] = 0;
+  HW_L_ExceptionAdapter[6] = 0;
   
   CallbackAdapter[0] = 0;
   CallbackAdapter[1] = 0;
@@ -1832,6 +1917,7 @@ void MakeStdAdapter()
   CallbackAdapter[3] = 0;
   CallbackAdapter[4] = 0;
   CallbackAdapter[5] = 0;
+  CallbackAdapter[6] = 0;
   CallbackAdapter[LAH] = CallbackExec;
 
   StdAdapterTab[B_Object]     = &ObjectAdapter[0];

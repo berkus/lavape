@@ -340,16 +340,22 @@ struct Format {
 
 class MyScrollView : public QScrollView {
 public:
-  MyScrollView::MyScrollView (QWidget *parent);
+  MyScrollView (QWidget *parent);
+  ~MyScrollView () { delete debugStop; delete breakPoint; delete fm; }
 
 	int calcIndent(CHETokenNode *currentToken);
 
   CProgText *text;
   CExecView *execView;
   Format fmt;
-	int currentX, currentY, widthOfIndent, widthOfBlank, contentsWidth, contentsHeight;
+	int currentX, currentY, debugStopY, breakPointY, widthOfIndent, widthOfBlank, contentsWidth, contentsHeight;
   QFontMetrics *fm;
 	QPainter *p;
+  QPixmap *debugStop, *debugStopGreen, *breakPoint;
+  bool inDebugStop, inBreakPoint;
+  CHETokenNode *debugStopToken;
+  StopReason stopReason;
+  bool innermostStop;
 
   void keyPressEvent (QKeyEvent *e);
   void focusInEvent(QFocusEvent *ev);

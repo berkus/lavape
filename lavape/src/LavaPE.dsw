@@ -21,12 +21,6 @@ Package=<4>
     Project_Dep_Name wxqDocView
     End Project Dependency
     Begin Project Dependency
-    Project_Dep_Name Precompiler
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name LavaExecs
-    End Project Dependency
-    Begin Project Dependency
     Project_Dep_Name LavaGUI
     End Project Dependency
     Begin Project Dependency

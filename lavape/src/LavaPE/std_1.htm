@@ -1046,7 +1046,7 @@ Show := <B>read-only</B> <B>function</B>
       <FONT color=#0000FF>if</FONT>
          <FONT color=#D1009E>callStack</FONT> = <FONT color=#0000FF>Ø</FONT>
       <FONT color=#0000FF>then</FONT>
-         <FONT color=#0000FF>call</FONT> <FONT color=#000000>self</FONT>.<FONT color=#000000>code</FONT>.<B><FONT color=#000000>String</FONT></B>.<B><FONT color=#000000>MessageBox</FONT></B>
+         <FONT color=#0000FF>call</FONT> (<FONT color=#000000>self</FONT>.<FONT color=#000000>code</FONT>.<B><FONT color=#000000>String</FONT></B>).<B><FONT color=#000000>MessageBox</FONT></B>
       <FONT color=#D1009E>else</FONT>
          <FONT color=#0000FF>call</FONT> ( <FONT color=#000000>self</FONT>.<FONT color=#000000>code</FONT>.<B><FONT color=#000000>String</FONT></B> + "\n\n" + <B><FONT color=#000000>Exception::CallStack</FONT></B> ).<B><FONT color=#000000>MessageBox</FONT></B>
       <FONT color=#0000FF>#if</FONT>

@@ -714,16 +714,28 @@ void CDPSynObjectBase (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPSynObjectBase
 
 
-void CDPDebugCommand (PutGetFlag pgf, ASN1* cid, address varAddr,
-                      bool)
+void CDPDbgCommand (PutGetFlag pgf, ASN1* cid, address varAddr,
+                    bool)
 
 {
-  DebugCommand *vp = (DebugCommand*)varAddr;
+  DbgCommand *vp = (DbgCommand*)varAddr;
   if (cid->Skip()) return;
 
   if (pgf == PUT) cid->PUTunsigned(*vp);
-  else *vp = (DebugCommand)cid->FGETunsigned();
-} // END OF CDPDebugCommand
+  else *vp = (DbgCommand)cid->FGETunsigned();
+} // END OF CDPDbgCommand
+
+
+void CDPStopReason (PutGetFlag pgf, ASN1* cid, address varAddr,
+                    bool)
+
+{
+  StopReason *vp = (StopReason*)varAddr;
+  if (cid->Skip()) return;
+
+  if (pgf == PUT) cid->PUTunsigned(*vp);
+  else *vp = (StopReason)cid->FGETunsigned();
+} // END OF CDPStopReason
 
 
 void CDPDbgContType (PutGetFlag pgf, ASN1* cid, address varAddr,
@@ -738,14 +750,14 @@ void CDPDbgContType (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPDbgContType
 
 
-IMPLEMENT_DYNAMIC_CLASS(ObjItemData,NULL)
+IMPLEMENT_DYNAMIC_CLASS(DDItemData,NULL)
 
 
-void CDPObjItemData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                     bool baseCDP)
+void CDPDDItemData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                    bool baseCDP)
 
 {
-  ObjItemData *vp = (ObjItemData*)varAddr;
+  DDItemData *vp = (DDItemData*)varAddr;
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
@@ -756,7 +768,7 @@ void CDPObjItemData (PutGetFlag pgf, ASN1* cid, address varAddr,
     vp->Column2.CDP(pgf,cid);
     vp->Children.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
-} // END OF CDPObjItemData
+} // END OF CDPDDItemData
 
 ChainAnyElem* NewCHEStackData ()
 { return (ChainAnyElem*)(new CHEStackData); }
@@ -779,22 +791,22 @@ void CDPStackData (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPStackData
 
-ChainAnyElem* NewCHEProgramPoint ()
-{ return (ChainAnyElem*)(new CHEProgramPoint); }
+ChainAnyElem* NewCHEProgPoint ()
+{ return (ChainAnyElem*)(new CHEProgPoint); }
 
-NESTEDINITCOPY(ProgramPoint)
+NESTEDINITCOPY(ProgPoint)
 
-NESTEDCDP(ProgramPoint)
-
-
-IMPLEMENT_DYNAMIC_CLASS(ProgramPoint,NULL)
+NESTEDCDP(ProgPoint)
 
 
-void CDPProgramPoint (PutGetFlag pgf, ASN1* cid, address varAddr,
-                      bool baseCDP)
+IMPLEMENT_DYNAMIC_CLASS(ProgPoint,NULL)
+
+
+void CDPProgPoint (PutGetFlag pgf, ASN1* cid, address varAddr,
+                   bool baseCDP)
 
 {
-  ProgramPoint *vp = (ProgramPoint*)varAddr;
+  ProgPoint *vp = (ProgPoint*)varAddr;
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
@@ -803,44 +815,45 @@ void CDPProgramPoint (PutGetFlag pgf, ASN1* cid, address varAddr,
     CDPTID(pgf,cid,(address)&vp->FuncID);
     CDPpp.CVTbool(pgf,cid,vp->Activate);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
-} // END OF CDPProgramPoint
+} // END OF CDPProgPoint
 
 
-IMPLEMENT_DYNAMIC_CLASS(DebugStopData,NULL)
+IMPLEMENT_DYNAMIC_CLASS(DbgStopData,NULL)
 
 
-void CDPDebugStopData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                       bool baseCDP)
+void CDPDbgStopData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                     bool baseCDP)
 
 {
-  DebugStopData *vp = (DebugStopData*)varAddr;
+  DbgStopData *vp = (DbgStopData*)varAddr;
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPStopReason(pgf,cid,(address)&vp->stopReason);
     CDPpp.CVTint(pgf,cid,vp->ActStackLevel);
     vp->StackChain.CDP(pgf,cid,CDPStackData,NewCHEStackData);
     vp->ObjectChain.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
-} // END OF CDPDebugStopData
+} // END OF CDPDbgStopData
 
 
-IMPLEMENT_DYNAMIC_CLASS(DebugContData,NULL)
+IMPLEMENT_DYNAMIC_CLASS(DbgContData,NULL)
 
 
-void CDPDebugContData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                       bool baseCDP)
+void CDPDbgContData (PutGetFlag pgf, ASN1* cid, address varAddr,
+                     bool baseCDP)
 
 {
-  DebugContData *vp = (DebugContData*)varAddr;
+  DbgContData *vp = (DbgContData*)varAddr;
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPpp.CVTbool(pgf,cid,vp->ClearBreakPoints);
-    vp->BreakPoints.CDP(pgf,cid,CDPProgramPoint,NewCHEProgramPoint);
+    CDPpp.CVTbool(pgf,cid,vp->ClearBrkPnts);
+    vp->BrkPnts.CDP(pgf,cid,CDPProgPoint,NewCHEProgPoint);
     CDPDbgContType(pgf,cid,(address)&vp->ContType);
-    vp->RunToPoint.CDP(pgf,cid,CDPProgramPoint);
+    vp->RunToPnt.CDP(pgf,cid,CDPProgPoint);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
-} // END OF CDPDebugContData
+} // END OF CDPDbgContData
 
 NESTEDINITCOPY(ChObjRq)
 
@@ -858,18 +871,18 @@ void CDPChObjRq (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPChObjRq
 
 
-IMPLEMENT_DYNAMIC_CLASS(DebugMessage,NULL)
+IMPLEMENT_DYNAMIC_CLASS(DbgMessage,NULL)
 
 
-void CDPDebugMessage (PutGetFlag pgf, ASN1* cid, address varAddr,
-                      bool baseCDP)
+void CDPDbgMessage (PutGetFlag pgf, ASN1* cid, address varAddr,
+                    bool baseCDP)
 
 {
-  DebugMessage *vp = (DebugMessage*)varAddr;
+  DbgMessage *vp = (DbgMessage*)varAddr;
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPDebugCommand(pgf,cid,(address)&vp->Command);
+    CDPDbgCommand(pgf,cid,(address)&vp->Command);
     if (cid->Skip()) return;
     switch (vp->Command) {
     case Dbg_StopData:
@@ -886,11 +899,11 @@ void CDPDebugMessage (PutGetFlag pgf, ASN1* cid, address varAddr,
       CDPpp.CVTint(pgf,cid,vp->CallStackLevel);
       break;
     case Dbg_Continue:
-      vp->ContinueData.CDP(pgf,cid);
+      vp->ContData.CDP(pgf,cid);
       break;
     }
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
-} // END OF CDPDebugMessage
+} // END OF CDPDbgMessage
 
 ChainAnyElem* NewCHESigNodePtr ()
 { return (ChainAnyElem*)(new CHESigNodePtr); }

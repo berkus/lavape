@@ -201,20 +201,16 @@ void TIDTable::SetPatternStart(int overID, int newID)
   ChangeTab.Append(che);
 }
 
-int TIDTable::GetINCL(CHESimpleSyntax* otherSyn, const DString& otherDocDir)
+int TIDTable::GetINCL(const DString& otherSytaxName, const DString& otherDocDir)
 {
   CHESimpleSyntax* cheSyn;
   for (cheSyn = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
-       cheSyn && !SameFile(otherSyn->data.SyntaxName, otherDocDir, cheSyn->data.SyntaxName, DocDir);
+       cheSyn && !SameFile(otherSytaxName, otherDocDir, cheSyn->data.SyntaxName, DocDir);
        cheSyn = (CHESimpleSyntax*)cheSyn->successor);
   if (cheSyn)
     return cheSyn->data.nINCL;
   else 
-    if (otherSyn->data.nINCL == 1)
-      return 1;
-    else
-      return -1;
-
+    return -1;
 }
 
 void TIDTable::NewID(LavaDECL ** pdecl)
@@ -265,7 +261,10 @@ void TIDTable::NewID(LavaDECL ** pdecl)
       CalcDirName(clipDocDir);
       clipChe = (CHESimpleSyntax*)ClipTree->first;
       while (clipChe) {
-        clipChe->data.clipIncl = GetINCL(clipChe, clipDocDir);
+        if (clipChe->data.nINCL == 1)
+          clipChe->data.clipIncl = 1;
+        else
+          clipChe->data.clipIncl = GetINCL(clipChe->data.SyntaxName, clipDocDir);
         /*
         for (cheSyn = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
              cheSyn && !SameFile(clipChe->data.SyntaxName, clipDocDir, cheSyn->data.SyntaxName, DocDir);
@@ -872,7 +871,7 @@ void TIDTable::FillBasicTypesID(CHESimpleSyntax* stdSyntax, bool isstd)
       elDECL->fromBType = (TBasicType)ii;
     }
     if (elDECL->fromBType == B_Exception) {
-      DString catchname = DString("Catch");
+      DString catchname = DString("catch");
       for (cheChe = (CHE*)elDECL->NestedDecls.first;
            cheChe && (((LavaDECL*)cheChe->data)->LocalName != catchname);
            cheChe = (CHE*)cheChe->successor);
@@ -901,7 +900,7 @@ void TIDTable::FillBasicTypesID(CHESimpleSyntax* stdSyntax, bool isstd)
         elDECL->SecondTFlags.INCL(isException);
         cheChe = (CHE*)elDECL->NestedDecls.first; //the enumaration type
         ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isException);
-        for (; cheChe && (((LavaDECL*)cheChe->data)->LocalName != "Catch");
+        for (; cheChe && (((LavaDECL*)cheChe->data)->LocalName != "catch");
                cheChe = (CHE*)cheChe->successor);
         if (cheChe)
           catchfuncDecl = (LavaDECL*)cheChe->data;

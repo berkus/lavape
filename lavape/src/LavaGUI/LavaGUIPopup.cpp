@@ -62,7 +62,7 @@ void CLavaGUIPopup::moveEvent(QMoveEvent* ev)
 
 CLavaGUIPopup::~CLavaGUIPopup()
 {
-  if (wxTheApp->apExit)
+  if (wxTheApp->appExit)
     return;
   CHEFormNode* subNode;
   if (hasFocNode(myFormNode)) 

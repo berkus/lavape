@@ -121,6 +121,7 @@ CLavaBaseDoc::CLavaBaseDoc()
   throwError = false;
   isObject = false;
   debugOn = false;
+  startedFromLavaPE = false;
   RuntimeView = 0;
   inSaveProc = false;
   DocObjects[0] = 0;

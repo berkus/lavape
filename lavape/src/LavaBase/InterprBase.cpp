@@ -81,6 +81,8 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
   fDesc = &(*(object + object[0][object[0][0].nSections-1].sectionOffset))->funcDesc[1]; 
 	  // call the object's finalize method
   callPtr = object + (*object)[fDesc->delta].sectionOffset;
+  newStackFrame[0] = 0;
+  newStackFrame[1] = 0;
   newStackFrame[2] = 0;
   newStackFrame[SFH] = callPtr;
   if (fDesc->isNative) {
@@ -242,6 +244,8 @@ static void forceDecrement (CheckData &ckd, LavaObjectPtr object, bool constitue
 #else
 					newStackFrame = new LavaObjectPtr[SFH+1];
 #endif
+          newStackFrame[0] = 0;
+          newStackFrame[1] = 0;
           newStackFrame[2] = 0;
           newStackFrame[SFH] = sectionPtr;
           funcAdapter[5](ckd, newStackFrame);
@@ -315,6 +319,8 @@ static bool releaseUnusedConstituents (CheckData &ckd, LavaObjectPtr object, boo
 #else
 					newStackFrame = new LavaObjectPtr[SFH+1];
 #endif
+          newStackFrame[0] = 0;
+          newStackFrame[1] = 0;
           newStackFrame[2] = 0;
           newStackFrame[SFH] = sectionPtr;
           funcAdapter[5](ckd, newStackFrame);
@@ -417,6 +423,8 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
         if (sectionPtr[0]->classDECL->TypeFlags.Contains(isNative)) { //native base class
           funcAdapter = GetAdapterTable(ckd, sectionPtr[0]->classDECL, classDECL);
           if (funcAdapter && funcAdapter[4]) {  //section has new function
+            newStackFrame[0] = 0;
+            newStackFrame[1] = 0;
             newStackFrame[2] = 0;
             newStackFrame[SFH] = sectionPtr;
             funcAdapter[4](ckd, newStackFrame);
@@ -441,7 +449,6 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
 {
   CVFuncDesc *fDesc;
   LavaVariablePtr newStackFrame;
-  LavaObjectPtr newSF[SFH+1];
   bool ok=true;
   int fsize, fsizeBytes;
 
@@ -451,34 +458,33 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
   fDesc = &object[0]->funcDesc[0];
   fsize = fDesc->stackFrameSize;
   if (fDesc && fsize) {
-    if (fDesc->isNative) {
 #ifdef WIN32
-      fsizeBytes = fsize<<2;
-      __asm {
-        sub esp, fsizeBytes
-        mov newStackFrame, esp
-      }
+    fsizeBytes = fsize<<2;
+    __asm {
+      sub esp, fsizeBytes
+      mov newStackFrame, esp
+    }
 #else
-			newStackFrame = new LavaObjectPtr[fsize];
+		newStackFrame = new LavaObjectPtr[fsize];
 #endif
-      newStackFrame[2] = 0;
-      newStackFrame[SFH] = object;
-//      TRY_FUNCCALL(ckd, (*fDesc->funcPtr), newStackFrame, fsize, ok)
+    newStackFrame[0] = 0;
+    newStackFrame[1] = 0;
+    newStackFrame[2] = 0;
+    newStackFrame[SFH] = object;
+
+    if (fDesc->isNative)
       ok = (*fDesc->funcPtr)(ckd, newStackFrame);
+    else
+      ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame);
+
 #ifdef WIN32
-      __asm {
-        add esp, fsizeBytes
-        mov newStackFrame, esp
-      }
+    __asm {
+      add esp, fsizeBytes
+      mov newStackFrame, esp
+    }
 #else
-			delete [] newStackFrame;
+	  delete [] newStackFrame;
 #endif
-    }
-    else {
-      newSF[2] = 0;
-      newSF[SFH] = object;
-      ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newSF);
-    }
     if (!ok)
       ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
   }
@@ -644,6 +650,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
       return 0;
     else
       return new CRuntimeException(RunTimeException_ex, &ERR_CopyNullToNonNull);
+  sourceObjPtr = sourceObjPtr - (sourceObjPtr[0])[0].sectionOffset;
   if (resultClassDECL) {
     sourceClassDECL = sourceObjPtr[0][0].classDECL;
     classDECL = resultClassDECL;
@@ -652,7 +659,6 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
       sourceSecTab = sourceObjPtr[0];
   }
   else {
-    sourceObjPtr = sourceObjPtr - (sourceObjPtr[0])[0].sectionOffset;
     fullCopy = true;
     classDECL = sourceObjPtr[0]->classDECL;
   }
@@ -695,6 +701,8 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
 #else
 						newStackFrame = new LavaObjectPtr[SFH+2];
 #endif
+            newStackFrame[0] = 0;
+            newStackFrame[1] = 0;
             newStackFrame[2] = 0;
             newStackFrame[SFH] = sourceSectionPtr;
             newStackFrame[SFH+1] = resultSectionPtr;
@@ -795,6 +803,8 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
 #else
 							newStackFrame = new LavaObjectPtr[fsize];
 #endif
+              newStackFrame[0] = 0;
+              newStackFrame[1] = 0;
               newStackFrame[2] = 0;
               newStackFrame[SFH] = resultObjPtr;
               //TRY_FUNCCALL(ckd, (*fDesc->funcPtr), newStackFrame, (fsize), ok)
@@ -873,6 +883,8 @@ bool EqualObjects(CheckData &ckd, LavaObjectPtr leftPtr, LavaObjectPtr rightPtr,
 #else
 					newStackFrame = new LavaObjectPtr[SFH+2];
 #endif
+          newStackFrame[0] = 0;
+          newStackFrame[1] = 0;
           newStackFrame[2] = 0;
           newStackFrame[SFH] = leftSectionPtr;
           newStackFrame[SFH+1] = rightSectionPtr;
@@ -1020,6 +1032,8 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
 #else
 						newStackFrame = new LavaObjectPtr[SFH+2];
 #endif
+            newStackFrame[0] = 0;
+            newStackFrame[1] = 0;
             newStackFrame[2] = 0;
             newStackFrame[SFH] = origSectionPtr;
             newStackFrame[SFH+1] = updateSectionPtr;

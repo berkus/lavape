@@ -1244,6 +1244,8 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
         resultFNode->data.IterFlags.INCL(NoEllipsis);
       }*/
       if (FormDecl->SecondTFlags.Contains(isSet)) {
+        newStackFrame[0] = 0;
+        newStackFrame[1] = 0;
         newStackFrame[2] = 0;
         newStackFrame[SFH] = multiObj;
         newStackFrame[SFH+1] = 0;
@@ -1266,6 +1268,8 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
       while (handle || (ii < arrayLen)) {
         if (!handle || !((SynFlags*)(handle+1))->Contains(deletedItem)) {
           if (FormDecl->SecondTFlags.Contains(isSet)) {
+            newStackFrame[0] = 0;
+            newStackFrame[1] = 0;
             newStackFrame[2] = 0;
             newStackFrame[SFH] = multiObj;
             newStackFrame[SFH+2] = (LavaObjectPtr)0;
@@ -1311,6 +1315,8 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
           setDefaultValue(newFNode);
           if (FormDecl->SecondTFlags.Contains(isSet)) {
             newFNode->data.HandleObjPtr = (CSecTabBase**)handle;
+            newStackFrame[0] = 0;
+            newStackFrame[1] = 0;
             newStackFrame[2] = 0;
             newStackFrame[SFH] = multiObj;
             newStackFrame[SFH+1] = handle;
@@ -1323,6 +1329,8 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
           }
         }
         else { //deletedItem: ignore
+          newStackFrame[0] = 0;
+          newStackFrame[1] = 0;
           newStackFrame[2] = 0;
           newStackFrame[SFH] = multiObj;
           newStackFrame[SFH+1] = handle;

@@ -10,6 +10,7 @@
 //#include "LavaPEFrames.h"
 #include "ChString.h"
 #include "LavaAppBase.h"
+#include "DbgThreadPE.h"
 #include "ExecUpdate.h"
 #include "prelude.h"
 #include "sflsock.h"
@@ -20,23 +21,6 @@
 #include "qobject.h"
 #include "qstring.h"
 #include "qprocess.h"
-
-
-class CLavaPEDebugThread : public CLavaThread
-{
-public:
-  QString remoteIPAddress, remotePort;
-  sock_t listenSocket, workSocket;
-  ASN1InSock *get_cid;
-  ASN1OutSock *put_cid;
-  DebugStopData dbgStopData;
-  DebugMessage* dbgRequest;
-  bool interpreterWaits;
-
-protected:
-  void reset();
-	void run();
-}; 
 
 
 class CLavaPEBrowse : public CPEBaseBrowse

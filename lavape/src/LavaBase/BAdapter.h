@@ -9,13 +9,15 @@
 #include "LavaBaseDoc.h"
 
 //length of adapter table header
-#define LAH  6 //adapterTable[0]: length of embedded basic type
+#define LAH  7 //adapterTable[0]: length of embedded basic type
                //adapterTable[1]: copy function
                //adapterTable[2]: compare function, this is not the "=="operator 
                //adapterTable[3]: serialize function 
                //adapterTable[4]: new function, used in AllocateObject
                //adapterTable[5]: refcount function, used in DEC_[FWD|REV]_CNT
-               
+               //adapterTable[6]: dump&debug function, returns a DDMakeClass-object
+enum adapterPos {adapterPos_len, adapterPos_copy, adapterPos_compare, adapterPos_serialize, adapterPos_newFunc,
+adapterPos_refCount, adapterPos_DD};              
 
 typedef LAVABASE_DLL TAdapterFunc* (*FP)();
 

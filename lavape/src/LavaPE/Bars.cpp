@@ -25,6 +25,7 @@
 #include "LavaPEStringInit.h"
 #include "LavaPE.h"
 #include "TreeView.h"
+#include "ExecView.h"
 #include "Bars.h"
 //#include "ExecView.h"
 #include "LavaPEDoc.h"
@@ -92,6 +93,8 @@ COutputBar::COutputBar(QWidget *parent)
   connect(FindPage,SIGNAL(doubleClicked(QListViewItem*)), SLOT(OnDblclk(QListViewItem*)));
   ErrorEmpty = true;
   CommentEmpty = true;
+  firstDebug = true;
+  stopDoc = 0;
 }
 
 COutputBar::~COutputBar()
@@ -217,7 +220,14 @@ void COutputBar::DeleteAllFindItems()
 
 void COutputBar::SetTab(BarTabs tab)
 {
+
   setCurrentPage((int)tab);
+  if ((tab == tabDebug) && firstDebug) {
+    QSize sz = ((CLavaMainFrame*)wxTheApp->m_appWindow)->size();
+    int h = sz.height()/3;
+    resize(sz.width(), h);
+    firstDebug = false;
+  }
   if (((CLavaMainFrame*)wxTheApp->m_appWindow)->OutputBarHidden) {
     show();
     ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastBarState = -1;
@@ -238,61 +248,199 @@ void COutputBar::OnTabChange(QWidget* curPage)
   }
 }
 
-void COutputBar::setDebugData(DebugMessage* message, CLavaBaseDoc* doc)
+void COutputBar::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
 {
-  switch (message->Command) {
-  case Dbg_MemberData:
-    if (VarView->itemToOpen) {
-      VarView->itemToOpen->makeChildren(((ObjItemData*)message->ObjData.ptr)->Children);
-      VarView->itemToOpen->setOpen(true);
-      VarView->setSelected(VarView->itemToOpen, true);
-      VarView->itemToOpen = 0;
+  CLavaBaseView *view=0;
+
+  if (dbgReceived && dbgReceived->newReceived) {
+    switch (dbgReceived->newReceived->Command) {
+    case Dbg_MemberData:
+      if (VarView->itemToOpen) {
+        VarView->itemToOpen->makeChildren(((DDItemData*)dbgReceived->newReceived->ObjData.ptr)->Children);
+        VarView->itemToOpen->setOpen(true);
+        VarView->setSelected(VarView->itemToOpen, true);
+        VarView->itemToOpen = 0;
+      }
+      break;
+    case Dbg_StopData: 
+      StackView->makeItems((DbgStopData*)dbgReceived->newReceived->DbgData.ptr, doc);
+      if (dbgReceived->lastReceived)
+        removeExecStackPos((DbgStopData*)dbgReceived->lastReceived->DbgData.ptr, doc);
+    case Dbg_Stack: 
+      showExecStackPos((DbgStopData*)dbgReceived->newReceived->DbgData.ptr, doc);
+      VarView->makeItems((DbgStopData*)dbgReceived->newReceived->DbgData.ptr);
+      break;
+    default:;
     }
-    break;
-  case Dbg_StopData: 
-    StackView->makeItems((DebugStopData*)message->DbgData.ptr, doc);
-  case Dbg_Stack: 
-    showExecStackPos((DebugStopData*)message->DbgData.ptr, doc);
-    VarView->makeItems((DebugStopData*)message->DbgData.ptr);
-    break;
-  default:;
+    SetTab(tabDebug);
   }
-  SetTab(tabDebug);
+  else { //reset
+    if (stopDoc) {
+      POSITION pos = stopDoc->GetFirstViewPos();
+      while (pos) {
+        view = (CLavaBaseView*)stopDoc->GetNextView(pos);
+        if (view->inherits("CExecView")/* && (((CExecView*)view)->myDECL == stopExecDECL)*/) {
+          ((CExecView*)view)->sv->debugStopToken = 0;
+          ((CExecView*)view)->sv->viewport()->repaint();
+          pos = 0;
+        }
+      }
+    }
+    while (VarView->firstChild())
+      delete VarView->firstChild();
+    while (StackView->firstChild())
+      delete StackView->firstChild();
+    ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepNextAct->setEnabled(false);
+    ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
+    ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepintoAct->setEnabled(false);
+    ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepoutAct->setEnabled(false);
+    ((CMainFrame*)wxTheApp->m_appWindow)->DbgRunToSelAct->setEnabled(false);
+  }
 
 }
 
-
-void COutputBar::showExecStackPos(DebugStopData* data, CLavaBaseDoc* doc)
+void COutputBar::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
 {
-  CHEStackData* chData = (CHEStackData*)data->StackChain.GetNth(data->ActStackLevel+1);
-  LavaDECL *funcDecl, *execDecl;
-  CLavaBaseDoc* actDoc;
+  CHEStackData *cheData;
+  LavaDECL *funcDecl;
+  TID tid;
+  POSITION pos;
+  wxView *view;
+  QString qfn;
+  DString fn;
+
+  if (!data)
+    return;
+  cheData = (CHEStackData*)data->StackChain.first;
+  while (cheData)  {
+    funcDecl = doc->IDTable.GetDECL(cheData->data.FuncID);
+    if (funcDecl && funcDecl->inINCL) {
+      fn = ((CLavaPEDoc*)doc)->IDTable.GetRelSynFileName(cheData->data.FuncID);
+      AbsPathName(fn, ((CLavaPEDoc*)doc)->IDTable.DocDir);
+      qfn = QString(fn.c);
+      stopDoc = 0;
+      pos = wxTheApp->m_docManager->GetFirstDocPos();
+      while (pos) {
+        stopDoc = (CLavaPEDoc*)wxTheApp->m_docManager->GetNextDoc(pos);
+        if (stopDoc && (qfn == stopDoc->GetFilename()))
+          pos = 0;
+        else
+          stopDoc = 0;
+      }
+      if (stopDoc)
+        funcDecl = stopDoc->IDTable.GetDECL(0, cheData->data.FuncID.nID);
+    }
+    else
+      stopDoc = doc;
+    if (stopDoc) {
+      stopExecDECL = stopDoc->GetExecDECL(funcDecl, cheData->data.ExecType, false,false);
+      if (stopExecDECL) {
+        pos = stopDoc->GetFirstViewPos();
+        view = 0;
+        while (pos) {
+          view = (CLavaBaseView*)stopDoc->GetNextView(pos);
+          if (view->inherits("CExecView") && (((CExecView*)view)->myDECL == stopExecDECL))
+            pos =0;
+          else
+            view = 0;
+        }
+        if (view) {
+          ((CExecView*)view)->sv->debugStopToken = 0;
+          ((CExecView*)view)->sv->viewport()->repaint();
+        }
+      }
+    }
+    cheData = (CHEStackData*)cheData->successor;
+  }//while
+}
+
+void COutputBar::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
+{
+  CHEStackData *cheData, *cheDataAct = (CHEStackData*)data->StackChain.GetNth(data->ActStackLevel+1);
+  LavaDECL *funcDecl;
   CSearchData sData;
   TID tid;
+  POSITION pos;
+  wxView *view;
+  QString qfn;
+  DString fn;
 
-  funcDecl = doc->IDTable.GetDECL(chData->data.FuncID);
-  ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, funcDecl, tid/*chData->data.FuncID*/, true, 0, false);
-  if (funcDecl->inINCL) {
-    DString fn = ((CLavaPEDoc*)doc)->IDTable.GetRelSynFileName(chData->data.FuncID);
-    AbsPathName(fn, ((CLavaPEDoc*)doc)->IDTable.DocDir);
-    actDoc = (CLavaPEDoc*)wxTheApp->m_docManager->FindOpenDocument(fn.c);
-      funcDecl = actDoc->IDTable.GetDECL(0, chData->data.FuncID.nID);
-  }
-  else
-    actDoc = doc;
-  execDecl = actDoc->GetExecDECL(funcDecl, chData->data.ExecType, false,false);
-  if (execDecl) {
-    sData.synObjectID = chData->data.SynObjID;
-    ((CLavaPEDoc*)actDoc)->OpenExecView(execDecl);
-    sData.execView = wxDocManager::GetDocumentManager()->GetActiveView();
-    ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&actDoc->IDTable, 0, (SynObjectBase*)execDecl, onSelect, 0,0, (address)&sData);
-  }
+  cheData = (CHEStackData*)data->StackChain.first;
+  while (cheData)  {
+    if (cheData != cheDataAct) {
+      funcDecl = doc->IDTable.GetDECL(cheData->data.FuncID);
+      //((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, funcDecl, tid, true, 0, true, false);
+      if (funcDecl && funcDecl->inINCL) {
+        fn = ((CLavaPEDoc*)doc)->IDTable.GetRelSynFileName(cheData->data.FuncID);
+        AbsPathName(fn, ((CLavaPEDoc*)doc)->IDTable.DocDir);
+        qfn = QString(fn.c);
+        if (cheDataAct) {
+          stopDoc = 0;
+          pos = wxTheApp->m_docManager->GetFirstDocPos();
+          while (pos) {
+            stopDoc = (CLavaPEDoc*)wxTheApp->m_docManager->GetNextDoc(pos);
+            if (stopDoc && (qfn == stopDoc->GetFilename()))
+              pos = 0;
+            else
+              stopDoc = 0;
+          }
+        }
+        else
+          stopDoc = (CLavaPEDoc*)wxTheApp->m_docManager->FindOpenDocument(qfn);//and open it
+        if (stopDoc)
+          funcDecl = stopDoc->IDTable.GetDECL(0, cheData->data.FuncID.nID);
+      }
+      else
+        stopDoc = doc;
+      if (stopDoc) {
+        stopExecDECL = stopDoc->GetExecDECL(funcDecl, cheData->data.ExecType, false,false);
+        if (stopExecDECL) {
+          sData.synObjectID = cheData->data.SynObjID;
+          if (cheDataAct) { //= not the actual stack position
+            sData.execView = 0;
+            pos = stopDoc->GetFirstViewPos();
+            while (pos) {
+              view = (CLavaBaseView*)stopDoc->GetNextView(pos);
+              if (view->inherits("CExecView") && (((CExecView*)view)->myDECL == stopExecDECL)) {
+                sData.execView = (CExecView*)view;
+                break;
+              }
+            }
+          }
+          else {
+            ((CLavaPEDoc*)stopDoc)->OpenExecView(stopExecDECL);
+            sData.execView = wxDocManager::GetDocumentManager()->GetActiveView();
+          }
+          if (sData.execView) {
+            sData.debugStop = true;
+            sData.stopReason = data->stopReason;
+            if (cheData == data->StackChain.first)
+              sData.innermostStop = true;
+            else
+              sData.innermostStop = false;
+            ((SynObjectBase*)stopExecDECL->Exec.ptr)->MakeTable((address)&stopDoc->IDTable, 0, (SynObjectBase*)stopExecDECL, onSelect, 0,0, (address)&sData);
+      
+          }
+        }
+      }
+    }
+    if (cheDataAct) {
+        cheData = (CHEStackData*)cheData->successor;
+      if (!cheData) {
+        cheData = cheDataAct;
+        cheDataAct = 0;
+      }
+    }
+    else
+      cheData = 0;
+  }//while
 }
 
 
-VarItem::VarItem(VarItem* parent, VarItem* afterItem, ObjItemData* data)
+VarItem::VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListView* view)
   :QListViewItem(parent, afterItem) 
 {
+  myView = view;
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
@@ -300,14 +448,15 @@ VarItem::VarItem(VarItem* parent, VarItem* afterItem, ObjItemData* data)
   childrenDrawn = false;
   hasChildren = data->HasChildren;
   setExpandable(hasChildren);
-  setHeight(16);
+  //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
 }
 
-VarItem::VarItem(VarItem* parent, ObjItemData* data)
+VarItem::VarItem(VarItem* parent, DDItemData* data, VarListView* view)
   :QListViewItem(parent) 
 {
+  myView = view;
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
@@ -315,12 +464,12 @@ VarItem::VarItem(VarItem* parent, ObjItemData* data)
   childrenDrawn = false;
   hasChildren = data->HasChildren;
   setExpandable(hasChildren);
-  setHeight(16);
+  //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
 }
 
-VarItem::VarItem(VarListView* parent, VarItem* afterItem, ObjItemData* data)
+VarItem::VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data)
   :QListViewItem(parent, afterItem) 
 {
   setText(0, data->Column0.c);
@@ -331,12 +480,12 @@ VarItem::VarItem(VarListView* parent, VarItem* afterItem, ObjItemData* data)
   childrenDrawn = false;
   hasChildren = data->HasChildren;
   setExpandable(hasChildren);
-  setHeight(16);
+  //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
 }
 
-VarItem::VarItem(VarListView* parent, ObjItemData* data)
+VarItem::VarItem(VarListView* parent, DDItemData* data)
   :QListViewItem(parent) 
 {
   setText(0, data->Column0.c);
@@ -347,7 +496,7 @@ VarItem::VarItem(VarListView* parent, ObjItemData* data)
   childrenDrawn = false;
   hasChildren = data->HasChildren;
   setExpandable(hasChildren);
-  setHeight(16);
+  //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
 }
@@ -360,9 +509,9 @@ void VarItem::makeChildren(const CHAINX& data)
   int cc = 0;
   for (chData = (CHE*)data.first; chData; chData = (CHE*)chData->successor) {
     if (item)
-      item = new VarItem(this, item, (ObjItemData*)chData->data);
+      item = new VarItem(this, item, (DDItemData*)chData->data, myView);
     else
-      item = new VarItem(this, (ObjItemData*)chData->data);
+      item = new VarItem(this, (DDItemData*)chData->data, myView);
     item->itemCount = cc;
     cc++;
   }
@@ -384,7 +533,7 @@ void VarItem::paintCell( QPainter * p, const QColorGroup & cg,
 
 void VarItem::setOpen(bool O)
 {
-  DebugMessage* mess;
+  DbgMessage* mess;
   ChObjRq *rqs;
 
   if (O && hasChildren) {
@@ -392,7 +541,7 @@ void VarItem::setOpen(bool O)
       rqs = new ChObjRq;
       makeNrs(rqs);
       myView->itemToOpen = this;
-      mess = new DebugMessage(Dbg_MemberDataRq,rqs);
+      mess = new DbgMessage(Dbg_MemberDataRq,rqs);
       QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
       return;
     }
@@ -427,7 +576,7 @@ VarListView::VarListView(QWidget *parent, COutputBar* bar)
   setSelectionMode(QListView::Single);
 }
 
-void VarListView::makeItems(DebugStopData* data)
+void VarListView::makeItems(DbgStopData* data)
 {
   CHE* chData;
   VarItem* item=0;
@@ -435,10 +584,10 @@ void VarListView::makeItems(DebugStopData* data)
   while (firstChild())
     delete firstChild();
   for (chData = (CHE*)data->ObjectChain.first; chData; chData = (CHE*)chData->successor) {
-    if (item)
-      item = new VarItem(this, item, (ObjItemData*)chData->data);
+    if (item) 
+      item = new VarItem(this, item, (DDItemData*)chData->data);
     else
-      item = new VarItem(this, (ObjItemData*)chData->data);
+      item = new VarItem(this, (DDItemData*)chData->data);
     item->itemCount = cc;
     cc++;
   }
@@ -467,13 +616,13 @@ void StackListView::selChanged()
 {
   lastSelected = (CTreeItem*)currentItem();
   if (allDrawn) {
-    DebugMessage* mess = new DebugMessage(Dbg_StackRq,0);
+    DbgMessage* mess = new DbgMessage(Dbg_StackRq,0);
     mess->CallStackLevel = lastSelected->itemCount;
     QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
 }
 
-void StackListView::makeItems(DebugStopData* data, CLavaBaseDoc* doc)
+void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
 {
   CHEStackData* chData;
   CTreeItem *item=0, *lastItem=0;
@@ -487,36 +636,38 @@ void StackListView::makeItems(DebugStopData* data, CLavaBaseDoc* doc)
   for (chData = (CHEStackData*)data->StackChain.first; 
        chData; chData = (CHEStackData*)chData->successor) {
     funcDecl = doc->IDTable.GetDECL(chData->data.FuncID);
-    label = QString(funcDecl->FullName.c) + " (";
-    switch (funcDecl->DeclType) {
-    case Function:
-      switch (chData->data.ExecType) {
-      case ExecDef:
-        label = label + "function)";
+    if (funcDecl) {
+      label = QString(funcDecl->FullName.c) + " (";
+      switch (funcDecl->DeclType) {
+      case Function:
+        switch (chData->data.ExecType) {
+        case ExecDef:
+          label = label + "function)";
+          break;
+        case Require:
+          label = label + "require)";
+          break;
+        case Ensure:
+          label = label + "ensure)";
+          break;
+        default:;
+        }
         break;
-      case Require:
-        label = label + "require)";
+      case Interface:
+      case Impl:
+        label = label + "invariant)";
         break;
-      case Ensure:
-        label = label + "ensure)";
+      case Initiator:
+        label = label + "initiator)";
         break;
       default:;
       }
-      break;
-    case Interface:
-    case Impl:
-      label = label + "invariant)";
-      break;
-    case Initiator:
-      label = label + "initiator)";
-      break;
-    default:;
+      item = new CTreeItem(label, this, item);
+      item->itemCount = ii;
+      if (ii == data->ActStackLevel) 
+        lastSelected = item;
+      ii++;
     }
-    item = new CTreeItem(label, this, item);
-    item->itemCount = ii;
-    if (ii == data->ActStackLevel) 
-      lastSelected = item;
-    ii++;
 
 
   }

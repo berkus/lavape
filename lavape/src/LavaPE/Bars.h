@@ -7,6 +7,7 @@
 #include "SylTraversal.h"
 #include "TreeView.h"
 #include "DumpView.h"
+#include "DbgThreadPE.h"
 #include "Resource.h"
 #include "Syntax.h"
 //#include "wxExport.h"
@@ -29,7 +30,7 @@ class StackListView: public QListView
 public:
   StackListView(QWidget *parent, COutputBar* bar);
   ~StackListView() {}
-  void makeItems(DebugStopData* data, CLavaBaseDoc* doc);
+  void makeItems(DbgStopData* data, CLavaBaseDoc* doc);
   COutputBar* myBar;
   CTreeItem* lastSelected;
   bool allDrawn;
@@ -48,7 +49,7 @@ class VarListView: public QListView
 public:
   VarListView(QWidget *parent, COutputBar* bar);
   ~VarListView() {}
-  void makeItems(DebugStopData* data);
+  void makeItems(DbgStopData* data);
   COutputBar* myBar;
   VarItem *itemToOpen;
 private:
@@ -59,10 +60,10 @@ private:
 
 class VarItem  :public QListViewItem {
 public:
-  VarItem(VarItem* parent, VarItem* afterItem, ObjItemData* data);
-  VarItem(VarItem* parent, ObjItemData* data);
-  VarItem(VarListView* parent, ObjItemData* data);
-  VarItem(VarListView* parent, VarItem* afterItem, ObjItemData* data);
+  VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListView* view);
+  VarItem(VarItem* parent, DDItemData* data, VarListView* view);
+  VarItem(VarListView* parent, DDItemData* data);
+  VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data);
   void makeChildren(const CHAINX& children);
   virtual void paintCell( QPainter * p, const QColorGroup & cg,
 			       int column, int width, int align );
@@ -95,17 +96,21 @@ public:
   void SetComment(const DString& str, bool toStatebar = false);
   void SetFindText(const DString& text, CFindData* data);
   void SetTab(BarTabs tab);
-  void setDebugData(DebugMessage* message, CLavaBaseDoc* doc);
-  void showExecStackPos(DebugStopData* data, CLavaBaseDoc* doc);
+  void setDebugData(DbgMessages* message, CLavaBaseDoc* doc);
+  void showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc);
+  void removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc);
   //void ChangeTab(BarTabs actTab);
   VarListView* VarView;
   StackListView* StackView;
+  CLavaBaseDoc* stopDoc;
 
 protected:
   QListView* FindPage;
   QTextEdit* CommentPage;
   QTextEdit* ErrorPage;
   QSplitter *DebugPage;
+  LavaDECL *stopExecDECL;
+  bool firstDebug;
   //void OnSize(UINT nType, int cx, int cy);
   //HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 public slots:

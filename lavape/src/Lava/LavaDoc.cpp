@@ -65,6 +65,14 @@ CLavaDoc::CLavaDoc()
 
 CLavaDoc::~CLavaDoc()
 {
+  if (startedFromLavaPE) 
+    qApp->exit(0);
+  else
+    if (!((wxApp*)qApp)->appExit && debugOn && this == ((CLavaApp*)wxTheApp)->debugThread.doc) {
+      ((CLavaApp*)wxTheApp)->debugThread.doc = 0;
+      close_socket(((CLavaApp*)wxTheApp)->debugThread.workSocket);
+      (*((CLavaApp*)wxTheApp)->debugThread.pContDebugEvent)--;
+    }
 }
 
  
@@ -410,6 +418,9 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
   QString dPN;
   DString synName, linkName;
   
+  newStackFrame[0] = 0;
+  newStackFrame[1] = 0;
+  newStackFrame[2] = 0;
   //try {
     if (object) {
       objINCL = (*object)->classDECL->inINCL;
@@ -654,6 +665,9 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
   TEnumDescription *enumDesc=0;
   CHEEnumSelId *cheItem;
 
+  newStackFrame[0] = 0;
+  newStackFrame[1] = 0;
+  newStackFrame[2] = 0;
   isObject = ((CLavaApp*)wxTheApp)->pLavaLdocTemplate == GetDocumentTemplate();
   if (isObject)
     firstStore = false;
@@ -918,10 +932,8 @@ void CLavaDoc::LObjectError(CheckData& ckd, const QString& ldocName, const QStri
       if (isObject && throwError)
         critical(qApp->mainWidget(), qApp->name(),msg,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       else
-        if (!SetLavaException(ckd, code, msg)) {
-          CRuntimeException* ex = new CRuntimeException(code, &msg);
-          throw ex;
-        }
+        if (!SetLavaException(ckd, code, msg))
+          throw CRuntimeException(code, &msg);
     }
   }
 }

@@ -1,3 +1,5 @@
+/* We have slightly modified this file to adapt it to the needs of the Lava project */
+
 /*  ----------------------------------------------------------------<Prolog>-
     Name:       sflsock.h
     Title:      TCP/IP, UDP/IP socket functions

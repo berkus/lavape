@@ -10,7 +10,7 @@
 #include "docview.h"
 #include "docview.h"
 #include "qstring.h"
-#include "DbgThreads.h"
+#include "DbgThread.h"
 #include "prelude.h"
 #include "sflsock.h"
 

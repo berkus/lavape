@@ -72,6 +72,7 @@ public:
   virtual bool MakeVElems(LavaDECL *decl, CheckData* pckd = 0);
   virtual void Modify(bool bModified);
   void OnCheck();
+  bool OnCloseDocument();
   virtual void OnCloseLastExecView();
   virtual bool OnNewDocument();
   virtual bool OnOpenDocument(const QString& filename);
@@ -117,6 +118,9 @@ protected:
   void OnUpdateFilePrint(wxAction* action);
   bool openInTotalCheck;
   void ShrinkCollectDECL(LavaDECL* decl);
+
+public slots:
+  void interpreterExited();
 
 private:
     Q_OBJECT;

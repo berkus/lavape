@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "..\LavaExecs" /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "NDEBUG" /D "QT_THREAD_SUPPORT" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "..\LavaExecs" /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "NDEBUG" /D "QT_THREAD_SUPPORT" /FD /c
 # SUBTRACT CPP /Fr /YX /Yc /Yu
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\wxqDocView\Release\wxqDocView.lib $(QTDIR)\librel\qt-mt$(QTR).lib ole32.lib /nologo /subsystem:windows /dll /machine:I386 /out:"..\LavaPE\Release\Interpreter.dll"
+# ADD LINK32 ..\disco\Release\disco.lib ..\SFLsockets\Release\SFLsockets.lib ..\LavaBase\Release\LavaBase.lib ..\wxqDocView\Release\wxqDocView.lib $(QTDIR)\librel\qt-mt$(QTR).lib ole32.lib /nologo /subsystem:windows /dll /machine:I386 /out:"..\LavaPE\Release\Interpreter.dll"
 # SUBTRACT LINK32 /debug
 
 !ELSEIF  "$(CFG)" == "Interpreter - Win32 Debug"
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "_DEBUG" /D "QT_THREAD_SUPPORT" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\LavaPE" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "_DEBUG" /D "QT_THREAD_SUPPORT" /FR /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x407 /d "_DEBUG" /d "_AFXDLL"
@@ -124,7 +124,7 @@ SOURCE=.\ConstructsX.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\DbgThreads.cpp
+SOURCE=.\DbgThread.cpp
 # End Source File
 # Begin Source File
 
@@ -160,7 +160,7 @@ SOURCE=..\LavaExecs\Constructs.ph
 # End Source File
 # Begin Source File
 
-SOURCE=.\DbgThreads.h
+SOURCE=.\DbgThread.h
 # End Source File
 # Begin Source File
 

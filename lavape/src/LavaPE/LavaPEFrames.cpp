@@ -408,21 +408,21 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->notButton,"not",SLOT(not_stm()),
     QObject::tr("Negation of a statement"),
     QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
+  newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
+    QObject::tr("Try a statement, catch exceptions: \"y\""),
+    QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
   newKwdToolbutton(tb,LBaseData->assertButton,"assert",SLOT(assert_stm()),
     QObject::tr("Assertion"),
     QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
     " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
     " and throws a specific exception in case of violation</p>"));
-  newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
-    QObject::tr("Try a statement, catch exceptions: \"y\""),
-    QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
-  newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),
-    QObject::tr("Immediate successful return"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
-  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(fail()),
-    QObject::tr("Immediate unsuccessfull return, optionally throw exception"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
-    " optionally throw exception</p>"));
+  newKwdToolbutton(tb,LBaseData->succeedButton,"affirm",SLOT(succeed()),
+    QObject::tr("Immediate affirmative/successful return"),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Affirm</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
+  newKwdToolbutton(tb,LBaseData->failButton,"negate",SLOT(fail()),
+    QObject::tr("Immediate negative/unsuccessful return, optionally throw exception"),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Negate</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    " optionally throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()),
     QObject::tr("Run a nested initiator"),
     QObject::tr("<p><a href=\"Run.htm\">Run</a> a nested <a href=\"../Packages.htm#initiator\">initiator</a></p>"));
@@ -527,17 +527,6 @@ void CLavaMainFrame::findByName()
 void CLavaMainFrame::run()
 {
   ((CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->OnRunLava();
-}
-
-void CLavaMainFrame::debug()
-{
-  CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
-  if (doc->debugOn) {
-    DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
-    QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
-  }
-  else
-    doc->OnDebugLava();
 }
 
 void CLavaMainFrame::check()
@@ -872,13 +861,26 @@ void CLavaMainFrame::override()
     view->OnOverride();
 }
 
+
+void CLavaMainFrame::debug()
+{
+  if (((CLavaPEDebugThread*)LBaseData->debugThread)->running()) {
+    DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
+    QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+  }
+  else {
+    CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
+    doc->OnDebugLava();
+  }
+}
+
+
 void CLavaMainFrame::DbgClearBreakpoints()
 {
-  CLavaPEDoc *debugDoc = (CLavaPEDoc*)LBaseData->debugThread->doc;
-  if (!debugDoc->ContinueData)
-    debugDoc->ContinueData = new DebugContData;
-  debugDoc->ContinueData->ClearBreakPoints = true;
-  debugDoc->ContinueData->BreakPoints.Destroy();
+  if (!LBaseData->ContData)
+    LBaseData->ContData = new DbgContData;
+  LBaseData->ContData->ClearBrkPnts = true;
+  ((CLavaPEDebugThread*)LBaseData->debugThread)->clearBrkPnts();
 }
 
 void CLavaMainFrame::DbgBreakpoint()
@@ -886,37 +888,55 @@ void CLavaMainFrame::DbgBreakpoint()
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->DbgBreakpoint();
-
 }
 
 void CLavaMainFrame::DbgStepNext()
 {
-  CLavaPEDoc *debugDoc = (CLavaPEDoc*)LBaseData->debugThread->doc;
-  if (!debugDoc->ContinueData)
-    debugDoc->ContinueData = new DebugContData;
-  debugDoc->ContinueData->ContType = dbg_Step;
-  DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
+  if (!LBaseData->ContData)
+    LBaseData->ContData = new DbgContData;
+  LBaseData->ContData->ContType = dbg_Step;
+  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
+  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+}
+
+void CLavaMainFrame::DbgStepNextFunction()
+{
+  if (!LBaseData->ContData)
+    LBaseData->ContData = new DbgContData;
+  LBaseData->ContData->ContType = dbg_StepFunc;
+  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
   QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::DbgStepinto()
 {
-  CLavaPEDoc *debugDoc = (CLavaPEDoc*)LBaseData->debugThread->doc;
-  if (!debugDoc->ContinueData)
-    debugDoc->ContinueData = new DebugContData;
-  debugDoc->ContinueData->ContType = dbg_StepInto;
-  DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
+  if (!LBaseData->ContData)
+    LBaseData->ContData = new DbgContData;
+  LBaseData->ContData->ContType = dbg_StepInto;
+  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
   QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::DbgStepout()
 {
-  CLavaPEDoc *debugDoc = (CLavaPEDoc*)LBaseData->debugThread->doc;
-  if (!debugDoc->ContinueData)
-    debugDoc->ContinueData = new DebugContData;
-  debugDoc->ContinueData->ContType = dbg_StepOut;
-  DebugMessage* mess = new DebugMessage(Dbg_Continue,0);
+  if (!LBaseData->ContData)
+    LBaseData->ContData = new DbgContData;
+  LBaseData->ContData->ContType = dbg_StepOut;
+  DbgMessage* mess = new DbgMessage(Dbg_Continue,0);
   QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+}
+
+void CLavaMainFrame::DbgStop()
+{
+  if (((CLavaPEDebugThread*)LBaseData->debugThread)->interpreterWaits) {
+    DbgMessage* mess = new DbgMessage(Dbg_Exit,0);
+    QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+  }
+  else 
+    if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava) 
+      close_socket(((CLavaPEDebugThread*)LBaseData->debugThread)->workSocket);
+    else 
+      ((CLavaPEApp*)qApp)->interpreter.kill();
 }
 
 void CLavaMainFrame::DbgRunToSel()

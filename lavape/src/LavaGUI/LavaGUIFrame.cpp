@@ -90,7 +90,7 @@ void CLavaGUIFrame::closeEvent(QCloseEvent *e)
 
 CLavaGUIFrame::~CLavaGUIFrame()
 {
-  if (!wxTheApp->apExit && !wxTheApp->deletingMainFrame
+  if (!wxTheApp->appExit && !wxTheApp->deletingMainFrame
     && myDoc->DumpFrame) 
     ((LavaDumpFrame*)myDoc->DumpFrame)->returned = true;
   deleting = true;
