@@ -328,11 +328,13 @@ public:
   bool isparamRef;           // true if referenced type is also virtual type
         // remember: the RefID-DECL is the RuntimeDECL in paramDECL
   LavaDECL *fValue;  //final value of paramDECL    
+/*
   struct {
     bool outerParam; // if isparamRef
     int paramSecNo;  // remember: SectionInfo1 in paramDECL->RuntimeDECL is pos in section
                      //           SectionInfo2 in paramDECL->RuntimeDECL is section number
   };
+*/
   ~CVTypeDesc() {}
 };
 

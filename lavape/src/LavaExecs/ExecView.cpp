@@ -1079,7 +1079,7 @@ void CExecView::Select (SynObject *selObj)
       doubleClick = false;
 
 //      setUpdatesEnabled(true);
-      pComment = new CComment(false);
+      pComment = new CComment(this);
       synObj = text->currentSynObj;
       if (synObj->comment.ptr) {
         pComment->inline_comment->setChecked(synObj->comment.ptr->inLine);

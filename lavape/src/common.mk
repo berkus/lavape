@@ -31,7 +31,9 @@ ifeq ($(LAVADIR),)
 LAVADIR = $(shell cd ../..; pwd)
 endif
 
-ifeq ($(shell uname -o),Cygwin)
+OPSYS = $(shell uname -s | colrm 7)
+
+ifeq ($(OPSYS),CYGWIN)
 QTDIR=/opt/qt/3.2
 LD_LIBRARY_PATH=/usr/X11R6/bin
 export LD_LIBRARY_PATH
@@ -43,8 +45,8 @@ endif
 endif
 
 rec_make: $(make_subpro) this
-	
-ifeq ($(shell uname -o),Cygwin)
+
+ifeq ($(OPSYS),CYGWIN)
 ifeq ($(suffix $(EXEC)),.so)
 base=$(basename $(EXEC))
 EXEC2=cyg$(addsuffix .dll,$(base))
