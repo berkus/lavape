@@ -513,18 +513,20 @@ LavaDECL* CLavaBaseDoc::GetTypeAndContext(LavaDECL *decl, CContext &context)
 {
   //returns the (not mapped) value of the virtual type
   //and the (static LPC) iContext and oContext of the virtual type
+  TID tidObject=TID(IDTable.BasicTypesID[B_Object],isStd?0:1);
+
   if (!decl)
     return 0;
   NextContext(decl, context);
 	if (decl->TypeFlags.Contains(substitutable))
 		context.ContextFlags = SET(multiContext,-1);
   if (decl->DeclType == VirtualType) {
-    if (decl->RefID.nID >= 0) {
+    if (decl->RefID.nID >= 0)
       decl = IDTable.GetDECL(decl->RefID, decl->inINCL);
-      NextContext(decl, context); //18.05.01 ???neue Probleme
-    }
     else
-      return 0;
+      decl = IDTable.GetDECL(tidObject);
+//      decl = 0;
+    NextContext(decl, context); //18.05.01 ???neue Probleme
   }
   return decl;
 }
@@ -703,6 +705,7 @@ LavaDECL* CLavaBaseDoc::GetFinalMTypeAndContext(const TID& id, int inINCL, CCont
   //and the new calculated oContext
 
   LavaDECL *decl = IDTable.GetDECL(id, inINCL);
+  TID tidObject=TID(IDTable.BasicTypesID[B_Object],isStd?0:1);
   Category cat;
 
   if (!decl)
@@ -715,7 +718,8 @@ LavaDECL* CLavaBaseDoc::GetFinalMTypeAndContext(const TID& id, int inINCL, CCont
       return IDTable.GetDECL(decl->RefID, decl->inINCL);
     }
     else
-      return 0;
+      return IDTable.GetDECL(tidObject);
+//      return 0;
   }
   else {
     NextContext(decl, context);

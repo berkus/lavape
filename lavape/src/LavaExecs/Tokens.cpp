@@ -154,8 +154,8 @@ void Tokens_INIT ()
   ATO("<<");
   ATO(">>");
   ATO("[]");
-/*
-#ifdef WIN32
+
+/*#ifdef WIN32
   ATO(QChar(0x2190));
   ATO(QChar(0x2192));
 #else*/
@@ -292,7 +292,7 @@ void Tokens_INIT ()
   ATO("inputs");
   ATO("to");
   ATO("interface");
-  ATO("loc/ou");
+  ATO("old");
   ATO("new");
   ATO("Ø");
   ATO("of");
@@ -321,8 +321,8 @@ void Tokens_INIT ()
   ATO("once");
 
   ATO("item");
-  ATO("extend");
-  ATO("?");
+  ATO("requires");
+  ATO("ensures");
   ATO("?");
   ATO("?");
   

@@ -70,6 +70,7 @@ extern LAVABASE_DLL QString ERR_FuncParmOutOfScope;
 extern LAVABASE_DLL QString ERR_AssigInLogNot;
 extern LAVABASE_DLL QString ERR_SelfInStatic;
 extern LAVABASE_DLL QString ERR_UndefType;
+extern LAVABASE_DLL QString ERR_CallExprUndefType;
 extern LAVABASE_DLL QString ERR_NoCompObjItf;
 extern LAVABASE_DLL QString ERR_ReservedName;
 extern LAVABASE_DLL QString ERR_Parameter;
@@ -231,6 +232,7 @@ extern LAVABASE_DLL QString ERR_SaveFailed;
 extern LAVABASE_DLL QString ERR_LookForCompoObj;
 extern LAVABASE_DLL QString ERR_LookForCompoObjF;
 extern LAVABASE_DLL QString ERR_NoImplForAbstract;
+extern LAVABASE_DLL QString ERR_LocalOrOutputVarInOld;
 
 extern void LavaBaseStringInit();
 

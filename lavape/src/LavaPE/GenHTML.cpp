@@ -269,7 +269,7 @@ static void GenIndex(CLavaPEView *dartView,bool withINCL)
 {
   TIDTable *IDTable = (TIDTable*)dartView->GetDocument()->mySynDef->IDTable;
   SyntaxDefinition &synDef = dartView->GetDocument()->mySynDef->SynDefTree;
-  LavaDECL *decl, *parentDecl;
+  LavaDECL *decl, *parentDecl, *pDECL;
   int incl, id;
   SYMLIST symList;
   SYMLIST::iterator i;
@@ -294,7 +294,14 @@ static void GenIndex(CLavaPEView *dartView,bool withINCL)
             if (!inFormDef) {
               sep = new SymEntry;
               sep->refID = TID(id, incl);
-              sep->fullName = (*IDTable->IDTab[incl]->SimpleIDTab[id]->pDECL)->FullName;
+              pDECL = *IDTable->IDTab[incl]->SimpleIDTab[id]->pDECL;
+              sep->fullName = pDECL->FullName;
+              if (pDECL->DeclType == Impl
+              || (pDECL->DeclType == Function
+                  && pDECL->ParentDECL->DeclType == Impl)
+              || ((pDECL->DeclType == IAttr || pDECL->DeclType == OAttr)
+                   && pDECL->ParentDECL->ParentDECL->DeclType == Impl))
+                sep->fullName += "::impl";
               symList.insert(symList.end(),*sep);
             }
             else
@@ -427,6 +434,12 @@ static void PutLink(TIDTable *IDTable,TID &refID,bool singleFile)
 		}
 		else {
 				symName = pnode->FullName.c;
+        if (pnode->DeclType == Impl
+        || (pnode->DeclType == Function
+            && pnode->ParentDECL->DeclType == Impl)
+        || ((pnode->DeclType == IAttr || pnode->DeclType == OAttr)
+            && pnode->ParentDECL->ParentDECL->DeclType == Impl))
+          symName += "::impl";
 				symName.replace('<',"&lt;");
 				code(symName);
 		}
@@ -444,14 +457,22 @@ static void PutExecLink(DString fileName)
   code("<A HREF=\"");
   code(fileName.c);
   code("\" TARGET=\"frmRight\"><B><I>");
-  switch (currentNode->ParentDECL->DeclType) {
-  case Function:
-  case Initiator:
-  case Impl:
-    code("Exec");
+  switch (currentNode->DeclType) {
+  case Require:
+    code("Require");
+    break;
+  case Ensure:
+    code("Ensure");
     break;
   default:
-    code("Invariant");
+    switch (currentNode->ParentDECL->DeclType) {
+    case Function:
+    case Initiator:
+      code("Exec");
+      break;
+    default:
+      code("Invariant");
+    }
   }
   code("</I></B></A>");
 }
@@ -540,23 +561,40 @@ static void PutCategory(TDeclType myCategory,TDeclType &parentCategory, bool &fi
   case IAttr:
 		code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('I");
 		codeCard(currentNode->OwnID);
-		code("')\">Input:</DIV>");
+		code("')\">Inputs:</DIV>");
  		codeDIVid(currentNode->OwnID,'I');
     break;
   case OAttr:
 		code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('O");
 		codeCard(currentNode->OwnID);
-		code("')\">Output:</DIV>");
+		code("')\">Outputs:</DIV>");
  		codeDIVid(currentNode->OwnID,'O');
     break;
   case ExecDef:
+  case Require:
+  case Ensure:
     switch (currentNode->ParentDECL->DeclType) {
     case Function:
     case Initiator:
-    case Impl:
 			code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('X");
 			codeCard(currentNode->ParentDECL->OwnID);
-			code("')\">Exec:</DIV>");
+      switch (currentNode->DeclType) {
+      case ExecDef:
+			  code("')\">Exec:</DIV>");
+        break;
+      case Require:
+        if (currentNode->ParentDECL->ParentDECL->DeclType == Impl)
+			    code("_ReqI')\">Require:</DIV>");
+        else
+			    code("_Req')\">Require:</DIV>");
+        break;
+      case Ensure:
+        if (currentNode->ParentDECL->ParentDECL->DeclType == Impl)
+			      code("_EnsI')\">Ensure:</DIV>");
+        else
+			    code("_Ens')\">Ensure:</DIV>");
+        break;
+      }
       break;
     default:
 			code("\n<DIV CLASS=\"Category\" TITLE=\"click to hide/show details\" ONCLICK=\"toggleDisplay('X");
@@ -565,7 +603,9 @@ static void PutCategory(TDeclType myCategory,TDeclType &parentCategory, bool &fi
     }
     break;
   }
-	if (myCategory != ExecDef)
+	if (myCategory != ExecDef
+  && myCategory != Require
+  && myCategory != Ensure)
 		codeElementDIV();
 }
 
@@ -805,7 +845,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     code(" := ");
     if (pnode->TypeFlags.Contains(isPersistent))
       code("<B>persistent</B> ");
-    code("<B>component obj. spec.</B>");
+    code("<B>compon. obj. spec.</B>");
     for ( chpTID = (CHETID*)pnode->Supports.first;
           chpTID;
           chpTID = (CHETID*)chpTID->successor) {
@@ -1149,7 +1189,19 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     if (pnode->DeclDescType != ExecDesc)
       break;
   case ExecDef:
-    myCategory = ExecDef;
+  case Require:
+  case Ensure:
+    switch (pnode->DeclType) {
+    case ExecDef:
+      myCategory = ExecDef;
+      break;
+    case Ensure:
+      myCategory = Ensure;
+      break;
+    case Require:
+      myCategory = Require;
+      break;
+    }
     if (singleFile)
       PutCategory(myCategory,parentCategory,fstChild);
     else {
@@ -1160,6 +1212,15 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
       while (fullName.Contains("::",loc,loc)) {
         fullName.Delete(loc,2);
         fullName.Insert("_",loc++);
+      }
+      switch (pnode->DeclType) {
+      case Require:
+        fullName += "_Req";
+        break;
+      case Ensure:
+        fullName += "_Ens";
+        break;
+      default:;
       }
 			if (!fstChild)
 				codeEndDIV();
@@ -1172,6 +1233,21 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     if (singleFile) {
       code("<DIV ID=X");
       codeCard(pnode->ParentDECL->OwnID);
+      switch (pnode->DeclType) {
+      case Require:
+        if (pnode->ParentDECL->ParentDECL->DeclType == Impl)
+          code("_ReqI");
+        else
+          code("_Req");
+        break;
+      case Ensure:
+        if (pnode->ParentDECL->ParentDECL->DeclType == Impl)
+          code("_EnsI");
+        else
+          code("_Ens");
+        break;
+      default:;
+      }
       code(">\n\n<HR><PRE>");
     }
     else {
@@ -1202,6 +1278,9 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
   default: ;
   }
 
-  if (pnode->DeclType != ExecDef && pnode->DeclType != FormDef)
+  if (pnode->DeclType != ExecDef
+  && pnode->DeclType != Ensure
+  && pnode->DeclType != Require
+  && pnode->DeclType != FormDef)
     codeEndDIV(); // terminate "single element" or "embedded exec" DIV
 }

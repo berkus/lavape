@@ -197,18 +197,18 @@ QString SynObject::CallStack(CheckData &ckd,LavaVariablePtr crashStack) {
       switch (oldSynObj->primaryToken) {
       case constraint_T:
         path = QString("\n| invariant of ")
-               + ((SelfVar*)oldSynObj)->myDECL->FullName.c
+               + ((SelfVar*)oldSynObj)->execDECL->FullName.c
                + ", file " + cFileName + "\n" + path;
         continue;
       case function_T:
       case initializer_T:
       case dftInitializer_T:
-        path = "\n| " + QString(((SelfVar*)oldSynObj)->myDECL->FullName.c)
+        path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
                + "(), file " + cFileName + "\n" + path;
         break;
       default: // initiator
         path = "\ninitiator "
-               + QString(((SelfVar*)oldSynObj)->myDECL->FullName.c)
+               + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
                + ", file "
                + cFileName + "\n" + path;
       }
@@ -482,6 +482,10 @@ bool FailStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame) {
   else
     ckd.immediateReturn = true;
   return false;
+}
+
+LavaObjectPtr OldExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame) {
+  return (LavaObjectPtr)-1;;
 }
 
 LavaObjectPtr UnaryOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame) {
@@ -2505,74 +2509,59 @@ bool RunX::Execute (CheckData &ckd, LavaVariablePtr stackFrame) {
   LavaVariablePtr newStackFrame;
   unsigned pos=1, nInputs=0, frameSize;
   LavaObjectPtr object;
-  bool ok;
   LavaDECL *myDECL = ckd.myDECL;
   SynObjectBase *mySelfVar=ckd.selfVar;
 
   if (flags.Contains(ignoreSynObj)) return true;
 
-  if (initializerCall.ptr) {
-    object = AllocateObject(ckd,typeDECL,true);
-    if (!object) {
-      if (!ckd.exceptionThrown)
-        SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+  if (!execDECL->WorkFlags.Contains(runTimeOK)) {
+    ckd.myDECL = execDECL;
+    ckd.inINCL = execDECL->inINCL;
+    try {
+      ((SelfVar*)execDECL->Exec.ptr)->Check(ckd);
+      ckd.selfVar = mySelfVar;
+    }
+    catch(CUserException *) {
+      ckd.selfVar = mySelfVar;
       return false;
     }
-    stackFrame[((ObjReference*)((FuncStatement*)initializerCall.ptr)->handle.ptr)->stackPos]
-      = object;
-    ok = ((SynObject*)initializerCall.ptr)->Execute(ckd,stackFrame);
-    RETURN(ok)
+    ckd.myDECL = myDECL;
+    ckd.inINCL = myDECL->inINCL;
+    execDECL->WorkFlags.INCL(runTimeOK);
   }
-  else { // initiator call
-    if (!execDECL->WorkFlags.Contains(runTimeOK)) {
-      ckd.myDECL = execDECL;
-      ckd.inINCL = execDECL->inINCL;
-      try {
-        ((SelfVar*)execDECL->Exec.ptr)->Check(ckd);
-        ckd.selfVar = mySelfVar;
-      }
-      catch(CUserException *) {
-        ckd.selfVar = mySelfVar;
-        return false;
-      }
-      ckd.myDECL = myDECL;
-      ckd.inINCL = myDECL->inINCL;
-      execDECL->WorkFlags.INCL(runTimeOK);
-    }
-    frameSize = ((SelfVar*)execDECL->Exec.ptr)->stackFrameSize;
+  frameSize = ((SelfVar*)execDECL->Exec.ptr)->stackFrameSize;
 #ifdef WIN32
-    __asm {
-      sub esp, frameSize
-      mov newStackFrame, esp
-    }
+  __asm {
+    sub esp, frameSize
+    mov newStackFrame, esp
+  }
 #else
-    newStackFrame = new LavaObjectPtr[frameSize>>2];
+  newStackFrame = new LavaObjectPtr[frameSize>>2];
 #endif
-    newStackFrame[0] = 0;
+  newStackFrame[0] = 0;
 
-    for (che = (CHE*)inputs.first; che; che = (CHE*)che->successor) {
-      object = ((Expression*)che->data)->Evaluate(ckd,stackFrame);
-      if (ckd.exceptionThrown)
-        goto ret;
-      if (object)
-        newStackFrame[pos++] = CASTOBJECT(object, ((Expression*)che->data)->sectionNumber);
-      else
-        newStackFrame[pos++] = 0;
-    }
+  for (che = (CHE*)inputs.first; che; che = (CHE*)che->successor) {
+    object = ((Expression*)che->data)->Evaluate(ckd,stackFrame);
+    if (ckd.exceptionThrown)
+      goto ret;
+    if (object)
+      newStackFrame[pos++] = CASTOBJECT(object, ((Expression*)che->data)->sectionNumber);
+    else
+      newStackFrame[pos++] = 0;
+  }
 
-    ((SelfVar*)execDECL->Exec.ptr)->Execute(ckd,newStackFrame);
-    ckd.selfVar = mySelfVar;
+  ((SelfVar*)execDECL->Exec.ptr)->Execute(ckd,newStackFrame);
+  ckd.selfVar = mySelfVar;
 
 ret:
 #ifdef WIN32
-    __asm {
-      add esp, frameSize
-    }
+  __asm {
+    add esp, frameSize
+  }
 #else
-    delete [] newStackFrame;
+  delete [] newStackFrame;
 #endif
     SUCCEED  // initiators are autonomous, ==> initiator calls can only succeed
-  }
 }
 
 bool CVFuncDescX::Execute(SynObjectBase* obj, CheckData& ckd, LavaVariablePtr stackFrame)

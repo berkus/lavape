@@ -145,31 +145,33 @@ void COutputBar::OnDblclk(QListViewItem* item)
   TID tid;
   CLavaPEDoc *doc;
   CSearchData sData;
-  LavaDECL *decl;
+  LavaDECL *decl, *execDecl;
+  TDeclType type;
 
   data = (CFindData*)((CTreeItem*)item)->getItemData();
   doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(data->fname.c);
   if (doc) {
     decl = doc->IDTable.GetDECL(0, data->nID);
     if (decl) {
-      switch (data->index) {
-      case 0:
+      if (!data->index) {
         if (doc->TrueReference(decl, data->refCase, data->refTid))
           ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, tid, true, &data->enumID);
         else
           QMessageBox::critical(this, qApp->name(), IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-        break;
-      case 1:
-      case 3:
-        sData.synObjectID = data->refCase;
-        decl = (LavaDECL*)((CHE*)decl->NestedDecls.last)->data;
-        doc->OpenCView(decl);
-        ((SynObjectBase*)decl->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)decl, onSelect, 0,0, (address)&sData);
-        break;
-      case 2:
+      }
+      else if (data->index == 2)
         ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, tid, true, &data->enumID);
-        break;
-      default: ;
+      else {
+        if (data->index < 100)
+          type = (TDeclType)data->index;
+        else
+          type = (TDeclType)(data->index - 100);
+        execDecl = doc->GetConstrDECL(decl, type, false,false);
+        if (execDecl) {
+          sData.synObjectID = data->refCase;
+          doc->OpenCView(execDecl);
+          ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)execDecl, onSelect, 0,0, (address)&sData);
+        }
       }
     }
   }
@@ -217,27 +219,5 @@ void COutputBar::OnTabChange(QWidget* curPage)
   }
 
 }
-
-/*
-void COutputBar::ChangeTab(BarTabs actTab)
-{
-  ActTab = actTab;
-  if (actTab == tabFind) {
-    pEdFind->ShowWindow(SW_SHOW);
-    pEdCom->ShowWindow(SW_HIDE);
-    pEdErr->ShowWindow(SW_HIDE);
-  }
-  CTreeItem(QString label, QListView* parent, CTreeItem* afterItem);
-    pEdFind->ShowWindow(SW_HIDE);
-    pEdCom->ShowWindow(SW_SHOW);
-    pEdErr->ShowWindow(SW_HIDE);
-  }
-  if (actTab == tabError) {
-    pEdFind->ShowWindow(SW_HIDE);
-    pEdCom->ShowWindow(SW_HIDE);
-    pEdErr->ShowWindow(SW_SHOW);
-  }
-}
-*/
 
 

@@ -487,8 +487,6 @@ class wxDocument;
 #  define WXDLLIMPORT
 #endif
 
-class WXDLLEXPORT wxApp;
-extern WXDLLEXPORT_DATA(wxApp*) wxTheApp;
 
 #define wxConstCast(ptr,classname) const_cast<classname *>(ptr)
 

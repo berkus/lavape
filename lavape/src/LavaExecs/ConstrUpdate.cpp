@@ -706,18 +706,28 @@ void CConstrUpdate::MakeExec(CPEBaseDoc*, LavaDECL *myDECL) {
   declName = decl;
   switch (decl->DeclType) {
   case Function:
-    if (decl->TypeFlags.Contains(defaultInitializer))
-      selfVar->primaryToken = dftInitializer_T;
-    else if (decl->TypeFlags.Contains(isInitializer))
-      selfVar->primaryToken = initializer_T;
-    else
-      selfVar->primaryToken = function_T;
+    switch (myDECL->DeclType) {
+    case Require:
+      selfVar->primaryToken = require_T;
+      break;
+    case Ensure:
+      selfVar->primaryToken = ensure_T;
+      break;
+    default:
+      if (decl->TypeFlags.Contains(defaultInitializer))
+        selfVar->primaryToken = dftInitializer_T;
+      else if (decl->TypeFlags.Contains(isInitializer))
+        selfVar->primaryToken = initializer_T;
+      else
+        selfVar->primaryToken = function_T;
+    }
     decl = decl->ParentDECL;
     break;
   case Initiator:
     selfVar->primaryToken = initiator_T;
     break;
   case Interface:
+  case Impl:
     selfVar->primaryToken = constraint_T;
   }
   if (selfVar->primaryToken == dftInitializer_T

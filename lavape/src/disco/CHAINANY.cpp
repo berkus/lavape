@@ -105,7 +105,6 @@ void CHAINX::CDP (PutGetFlag pgf, ASN1* cid, bool)
   CHE *elem, *predecessor;
   DString className;
   wxClassInfo *cli;
-  bool eoc;
   
   if (cid->Skip()) return;
   
@@ -146,40 +145,16 @@ void CHAINX::CDP (PutGetFlag pgf, ASN1* cid, bool)
           Append(elem);
         }
         cid->GETstring(className);
-        if (className == DString("TBNFexpression"))
-          className = "LavaDECL";
-        else if (className == DString("MakeCreate"))
-          className = "NewExpression";
-        else if (className == DString("MakeClone"))
-          className = "CloneExpression";
-        else if (className == DString("SuccStatement"))
-          className = "SucceedStatement";
-        if (className == DString("EnumConst")
-        && cid->Release < 6) {
-          className = "SynObject";
-//          cli = wxClassInfo::FindClass(className.c);
-          elem->data = (DObject*)wxCreateDynamicObject(className.c);//(DObject*)cli->CreateObject();
-          ((SynObjectBase*)elem->data)->MakeExpression();
-          cid->SkipElement(eoc);
-        }
-        else if (className == DString("FailStatement")
-        && cid->Release < 7) {
-//          cli = wxClassInfo::FindClass(className.c);
-          elem->data = (DObject*)wxCreateDynamicObject(className.c);//(DObject*)cli->CreateObject();
-          cid->SkipElement(eoc);
-        }
-        else {
-          cli = wxClassInfo::FindClass(className.c);
-          if (elem->data) {
-            if (elem->data->GetWxClassInfo() != cli) {
-              delete elem->data;
-              elem->data = (DObject*)cli->CreateObject();
-            }
-          }
-          else
+        cli = wxClassInfo::FindClass(className.c);
+        if (elem->data) {
+          if (elem->data->GetWxClassInfo() != cli) {
+            delete elem->data;
             elem->data = (DObject*)cli->CreateObject();
-          elem->data->CDP(pgf,cid,false);
+          }
         }
+        else
+          elem->data = (DObject*)cli->CreateObject();
+        elem->data->CDP(pgf,cid,false);
       }
       predecessor = elem;
     }

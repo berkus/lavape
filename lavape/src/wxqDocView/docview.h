@@ -107,7 +107,8 @@ public:
         else
             return m_appName;
     }
-    void SetAppName(const QString& name) { m_appName = name; }
+    void SetAppName(const QString& name);
+    QString GetSettingsPath() { return m_settingsPath; }
 
         // set/get the app class name
     QString GetClassName() const { return m_className; }
@@ -115,13 +116,13 @@ public:
 
         // set/get the vendor name
     const QString& GetVendorName() const { return m_vendorName; }
-    void SetVendorName(const QString& name) { m_vendorName = name; }
+    void SetVendorName(const QString& name);
     virtual wxDocument*  OpenDocumentFile (const QString& name) { return 0;}
 
     QTimer *idleTimer;
     wxDocManager* m_docManager;
     wxMainFrame *m_appWindow;
-    QSettings *settings;
+//    QSettings *settings;
 
 public slots:
     void about();
@@ -131,7 +132,7 @@ public slots:
     void hfStatusText(int itemId);
 
 private:
-    QString m_appName, m_className, m_vendorName;
+    QString m_vendorName, m_appName, m_className, m_settingsPath;
     QPtrList<wxAction> actionList;
     bool inUpdateUI;
 
@@ -640,6 +641,8 @@ private:
 };
 
 extern WXDLLEXPORT QString ResolveLinks(QFileInfo &qf);
+
+extern WXDLLEXPORT_DATA(wxApp*) wxTheApp;
 
 
 /*

@@ -247,12 +247,14 @@ void SelfVar::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
   if (searchData)
     sData = *(CSearchData*)searchData;
 
-  if (update == onSelect)
-    ((CSearchData*)searchData)->execView = myView;
-  else if (update == onSearch && inINCL && !checked) {
+  execDECL = (LavaDECL*)parent;
+
+/*  if (update == onSelect)
+    ((CSearchData*)searchData)->execView = (wxView*)execView;
+  else*/ if (update == onSearch && inINCL && !checked) {
     MakeTable(table,inINCL,parent,onAddID,(address)this,0,(address)&sData);
     CheckData ckd;
-    ckd.myDECL = (LavaDECL*)parent; 
+    ckd.myDECL = execDECL; 
     ckd.inINCL = inINCL;
     ckd.document = (CLavaBaseDoc*)((CSearchData*)searchData)->doc;
     Check(ckd); // only to insert identifiers of references
@@ -296,7 +298,6 @@ void SelfVar::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
   containingChain = 0;
   parentObject = 0;
   concernExecs = false;
-  execDECL = (LavaDECL*)parent;
 
 
   ((SynObject*)execName.ptr)->parentObject = this;
@@ -339,6 +340,13 @@ void FailStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,TT
   ENTRY
   if ((SynObject*)exception.ptr)
     MTBL (exception.ptr);
+}
+
+void OldExpression::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
+{
+  ENTRY
+  if ((SynObject*)variable.ptr)
+    MTBL (variable.ptr);
 }
 
 void UnaryOp::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
@@ -644,17 +652,13 @@ void Run::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate
 {
   CHE *chp;
 
-  AttachObject::MakeTable(table,inINCL,parent,update,where,chxp,searchData);
-
+  ENTRY
+  MTBL(initiator.ptr);
   for (chp = (CHE*)inputs.first;
        chp;
        chp = (CHE*)chp->successor) {
     MTBLCHE (chp,&inputs);
   }
-  if (varName.ptr)
-    MTBL (varName.ptr);
-  if (initializerCall.ptr)
-    MTBL (initializerCall.ptr);
 }
 
 void QueryItf::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)

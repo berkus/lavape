@@ -88,7 +88,10 @@ bool CExecTree::CalcPos(int level)
          && (data->type != TIType_Output)
          && (data->type != TIType_Defs)
          && (data->type != TIType_Features)
-         && (data->type != TIType_Constraint)) 
+         && (data->type != TIType_Require)
+         && (data->type != TIType_Ensure)
+         && (data->type != TIType_Constraint)
+         ) 
         ActLevel -= 1;
     }
     ParItem = (CTreeItem*)ActItem->parent();
@@ -99,7 +102,10 @@ bool CExecTree::CalcPos(int level)
          || (data->type == TIType_Output)
          || (data->type == TIType_Defs)
          || (data->type == TIType_Features)
-         || (data->type == TIType_Constraint))
+         || (data->type == TIType_Require)
+         || (data->type == TIType_Ensure)
+         || (data->type == TIType_Constraint)
+         )
       ParItem = (CTreeItem*)ParItem->parent();
   }
   else
@@ -214,7 +220,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
               new CLavaError(&elDef->DECLError1, &ERR_NoSetGetMember);
 
             IOid = TID(((LavaDECL*)((CHE*)elDef->NestedDecls.first)->data)->OwnID, 0);
-            ((CLavaPEApp*)wxTheApp)->ConstrUpdate.MakeSetGet(Doc, Doc->GetConstrDECL(*pelDef,false),
+            ((CLavaPEApp*)wxTheApp)->ConstrUpdate.MakeSetGet(Doc, Doc->GetConstrDECL(*pelDef,ExecDef,true,false),
                                            ((CHETID*)elDef->Supports.first)->data, IOid);
           }
           else {
@@ -633,15 +639,20 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
     delete oldItd;
     for (item = (CTreeItem*)ActItem->firstChild(); item; item = (CTreeItem*)item->nextSibling()) {
       itd = (CMainItemData*)item->getItemData();
-      if ((itd->type != TIType_Constraint) && (itd->type != TIType_EnumItems))
+      if ((itd->type != TIType_Require) 
+        && (itd->type != TIType_Ensure)
+        && (itd->type != TIType_Constraint)
+        && (itd->type != TIType_EnumItems))
         itd->synEl = (DWORD)pelDef;
     }
   }
   elDef->WorkFlags.EXCL(newTreeNode);
   itd = new CMainItemData(TIType_DECL,  (unsigned long) pelDef, elDef->TreeFlags.Contains(isExpanded));
   ActItem->setItemData(itd);
-  bool labelEditEnable = (elDef->DeclType != Impl)
+  bool labelEditEnable = !Doc->changeNothing
+                         && (elDef->DeclType != Impl)
                          && !elDef->SecondTFlags.Contains(funcImpl)
+                         && !elDef->SecondTFlags.Contains(overrides)
                          && (elDef->op == OP_noOp)
                          && (viewTree->myInclView || (elDef->DeclDescType == LiteralString));
   ActItem->setRenameEnabled(0, labelEditEnable);
@@ -838,8 +849,8 @@ void CExecTree::ExecFText(LavaDECL ** pelDef, int level)
   TDeclDescType exprType = LiteralString;
   TDeclType defType = NoDef;
   lab = (*pelDef)->LocalName;
-  SynFlags flags;
-  bm = GetPixmap(false, true, FormText, flags);
+  //SynFlags flags;
+  bm = GetPixmap(false, true, FormText/*, flags*/);
   CTreeItem* parent = getSectionNode(ParItem, FormText);
   MakeItem(lab, bm, parent, pelDef);
 }
@@ -936,25 +947,28 @@ void CExecTree::ExecConstraint(LavaDECL ** pelDef, int level)
 {
   QPixmap *sm = 0, *bm;
   LavaDECL *elDef = *pelDef;
-  SynFlags flag0, flag1= ((const unsigned long) 1);
+  SynFlags flag; 
   if (elDef->Exec.ptr) {
     if (!CalcPos(level))
       return;
-    ActItem = getSectionNode(ParItem, ExecDef);
+    ActItem = getSectionNode(ParItem, elDef->DeclType);
     if (!viewTree->drawTree) {
       CMainItemData* data = (CMainItemData*)ActItem->getItemData();
       data->synEl = ((CMainItemData*)ParItem->getItemData())->synEl;
     }
+    if ((elDef->ParentDECL->DeclType == Interface) || (elDef->ParentDECL->DeclType == Impl))
+      flag.INCL(invariantPM);
     if (((SelfVar*)elDef->Exec.ptr)->IsEmptyExec()) {
-      bm = GetPixmap(true, false, ExecDef, flag0);
-      if ((elDef->ParentDECL->DeclType == Function)
+      flag.INCL(emptyPM);
+      bm = GetPixmap(true, false, elDef->DeclType, flag);
+      if ( (elDef->ParentDECL->DeclType == Function) && (elDef->DeclType == ExecDef)
         || (elDef->ParentDECL->DeclType == Initiator)) {
         elDef->DECLError2.Destroy();
         new CLavaError(&elDef->DECLError2, &ERR_NoExecBody);
       }
     }
     else
-      bm = GetPixmap(true, false, ExecDef, flag1);
+      bm = GetPixmap(true, false, elDef->DeclType, flag);
     ActItem->setPix(bm); //viewTree->SetItemImage(ActItem, bm, bm);
     ActItem->SetItemMask(elDef->DECLError1.first || elDef->DECLError2.first, 
         elDef->DECLComment.ptr && elDef->DECLComment.ptr->Comment.l);

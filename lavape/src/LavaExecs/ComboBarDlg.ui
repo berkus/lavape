@@ -58,6 +58,12 @@
         <property name="pixmap">
             <pixmap>image1</pixmap>
         </property>
+        <property name="toolTip" stdset="0">
+            <string>New private member function</string>
+        </property>
+        <property name="whatsThis" stdset="0">
+            <string>&lt;p&gt;&lt;b&gt;Function creation shortcut:&lt;/b&gt;&lt;br&gt;&lt;br&gt;Creates a new private member function in the (implementation of the) current class and replaces the current &lt;font color=red&gt;&amp;lt;func&amp;gt;&lt;/font&gt; placeholder with a reference to it.&lt;/p&gt;</string>
+        </property>
     </widget>
     <widget class="QComboBox">
         <item>
@@ -122,6 +128,12 @@
         <property name="pixmap">
             <pixmap>image2</pixmap>
         </property>
+        <property name="toolTip" stdset="0">
+            <string>New public member function</string>
+        </property>
+        <property name="whatsThis" stdset="0">
+            <string>&lt;p&gt;&lt;b&gt;Function creation shortcut:&lt;/b&gt;&lt;br&gt;&lt;br&gt;Creates a new public member function in the current class and replaces the current &lt;font color=red&gt;&amp;lt;func&amp;gt;&lt;/font&gt; placeholder with a reference to it.&lt;/p&gt;</string>
+        </property>
     </widget>
     <widget class="QComboBox">
         <item>
@@ -147,7 +159,7 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string>(Virtual calls)</string>
+                <string> ( Virtual call ) </string>
             </property>
         </item>
         <property name="name">
@@ -330,7 +342,7 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string> (Callable entities)  </string>
+                <string> (Initiators/main progs.)  </string>
             </property>
         </item>
         <property name="name">
@@ -387,7 +399,7 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string> ( Static call )</string>
+                <string> ( Non-virtual call )</string>
             </property>
         </item>
         <property name="name">
@@ -408,7 +420,7 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string> ( Comp. obj. specs.)</string>
+                <string> ( Compon. obj. specs.)</string>
             </property>
         </item>
         <property name="name">
@@ -495,10 +507,10 @@
         <data format="XPM.GZ" length="557">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232325330345330523054d2e152525648565036000310570fc44d0303301727204a565919268060c165959561820816922c188165e12c145904204d164512591a61af3214e929839d06761e91b22806432571f908ea6d5ca101218909495c80806cad35170094c861d9</data>
     </image>
     <image name="image1">
-        <data format="XPM.GZ" length="474">789c9590410ac2301045f739c5d0d905b186a204c423082e0571f1331274d18db60b11ef6ea6a5d8d25af0cfeabdf96420b9a5e3614f36378f0ad54d48aeb893bdd465f93c9d772f93394f6e436b72d9c264818478d54451147de19d2f14978a31765b6e5185223a8cb1298f3267193a08210880be552969be16cc5a15499b5e57930c63a29b0c30e8828306c36bad1c5860ea85ff2cf0cb7699ff9d917d6fcd07a3327284</data>
+        <data format="PNG" length="207">89504e470d0a1a0a0000000d49484452000000120000001008060000001b062f5c0000009649444154789cad93510ec420084487c68b1b7aefd98f028bcaa64dd7498c01e105508500b141c70ec8082200b2d80901629d5dc30fb2002dba82440400a05de3c47d596d4cf400411e9d434896104fbf8a64b5c868da6ced6ab6c9f2256e8db9a2b535f2c7e5da796a6d8608721777c069d81e34429e681a76b2f8b0b5baa2f7da066aabebddd72b4013f66636aeef3bfa53db66f4012ffb6703b682c08f0000000049454e44ae426082</data>
     </image>
     <image name="image2">
-        <data format="XPM.GZ" length="459">789c9590c10ac2300c86ef7d8ab0dc8a38cb440ae223081e05f1f07752f4b08b6e0711dfddb465685919f8e7f47d4d1348ade978d893aed5a3477f6ba9bde24efa3274ddf374debd54652c990dadc9540b552da9255ec50474016d638d6d0272402f49af18d1fbf8779239cb9062083b00991572525f2b8d2ce49c98dc865e46a1570c7ee78ae4b81df9b624330b9426fc671395ec98f9eb4cec7bab3e03c66828</data>
+        <data format="PNG" length="199">89504e470d0a1a0a0000000d49484452000000120000001008060000001b062f5c0000008e49444154789cad93510e80200c433be3c50d07af1f38295583519a18659b4fda48002026689901e9402440d2eef55955b672f4d9f5063b2222e204a4b2a65af5252007021a5d4248de4294c02ad845b67e5d97adc87ceb9f9faeb5307eb3e159b94db1e69080ba18012dec1cea216f6461cb8aefac3dece8bba681d66be9dbd1bb011976904daaff857f685a463bcab96afcd3b6f4680000000049454e44ae426082</data>
     </image>
 </images>
 <layoutdefaults spacing="6" margin="11"/>

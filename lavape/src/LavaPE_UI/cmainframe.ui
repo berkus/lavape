@@ -13,7 +13,7 @@
         </rect>
     </property>
     <property name="caption">
-        <string>LavaPE</string>
+        <string>Lava Programming Environment</string>
     </property>
 </widget>
 <menubar>
@@ -990,10 +990,14 @@
             <iconset>image28</iconset>
         </property>
         <property name="text">
-            <string>New initiator</string>
+            <string>New main program</string>
         </property>
         <property name="menuText">
-            <string>New initiator</string>
+            <string>New main program</string>
+        </property>
+        <property name="whatsThis">
+            <string>&lt;p&gt;&lt;font color="red"&gt;&lt;b&gt;Lava&lt;/b&gt; &lt;a href="MainProgram.htm"&gt;main program&lt;/a&gt;;
+nested main programs can be started using the "run" statement.&lt;/p&gt;</string>
         </property>
     </action>
     <action>
@@ -1587,9 +1591,12 @@
             <iconset>image59</iconset>
         </property>
         <property name="text">
-            <string>Skip/comment out</string>
+            <string>Skip</string>
         </property>
         <property name="menuText">
+            <string>Skip/comment out</string>
+        </property>
+        <property name="toolTip">
             <string>Skip/comment out</string>
         </property>
         <property name="whatsThis">
@@ -1750,10 +1757,10 @@
             <iconset>image69</iconset>
         </property>
         <property name="text">
-            <string>True / succeed</string>
+            <string>True</string>
         </property>
         <property name="menuText">
-            <string>True / succeed</string>
+            <string>True</string>
         </property>
     </action>
     <action>
@@ -1764,10 +1771,10 @@
             <iconset>image70</iconset>
         </property>
         <property name="text">
-            <string>False / fail</string>
+            <string>False</string>
         </property>
         <property name="menuText">
-            <string>False / fail</string>
+            <string>False</string>
         </property>
     </action>
     <action>
@@ -2198,12 +2205,18 @@
         <property name="text">
             <string>Help toolbar</string>
         </property>
+        <property name="menuText">
+            <string>Help toolbar</string>
+        </property>
     </action>
     <action>
         <property name="name">
             <cstring>whatsThis</cstring>
         </property>
         <property name="text">
+            <string>Action</string>
+        </property>
+        <property name="menuText">
             <string>Action</string>
         </property>
     </action>

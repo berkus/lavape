@@ -13,14 +13,15 @@
 #include "qstring.h"
 
 
-enum TNodeType { TNodeType_Class, TNodeType_VT, TNodeType_Func, TNodeType_Mem };
+enum TNodeType { TNodeType_Class, TNodeType_VT, TNodeType_Feature };
+enum TBrowseCase { findBaseTID, findTID, findInterfaceVTs, findInterfaceFeatures};
 
 class CVTItemData : public TItemData {
 public:
   CVTItemData() {}
-  CVTItemData(TNodeType t, CHETVElem* V, int A) {type = t; VTEl = V; AmbgNo = A;}
+  CVTItemData(TNodeType t, CHETVElem* V, int A);
   TNodeType type;
-  CHETVElem* VTEl;
+  TVElem VTEl_Tree;
   int AmbgNo;
 };
 
@@ -47,6 +48,8 @@ public:
   LavaDECL* CollectDECL;
   CTreeItem *collectParent, *lastCurrent;
   bool activeInt;
+  TID currentBaseID;
+  TBrowseCase currentBrType;
 
   CLavaPEDoc* GetDocument();
 
@@ -61,8 +64,8 @@ public:
   bool VerifyItem(CTreeItem* item, CTreeItem* topItem = 0);
   bool DrawTreeAgain();
 //  void SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask);
-  void gotoDef(CTreeItem* item);
-  CTreeItem* BrowseTree(TID id, CTreeItem* start);
+  void gotoDef(CTreeItem* item, bool toImpl);
+  CTreeItem* BrowseTree(TID id, CTreeItem* start, int browseCase);
 
 
 protected:
@@ -70,12 +73,13 @@ protected:
   virtual void destroy();
 
   void OnUpdateGotodef(wxAction* action);
+  void OnUpdateGotoImpl(wxAction* action);
   void OnUpdateOverride(wxAction* action);
 
 public:
-  void OnGotodef();
+  void OnGotoDecl();
   void OnOverride();
-
+  void OnGotoImpl();
 public slots:
   void OnSelchanged();
   //void OnDblclk(QListViewItem* onItem, const QPoint&, int);

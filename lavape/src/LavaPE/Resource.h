@@ -89,8 +89,14 @@
 #include "PX_settyp.xpm" //28
 #include "PX_undefine.xpm" //26
 #include "PX_xcommask.xpm"  //31
-#include "PX_xerrcommask.xpm" //33
 #include "PX_xerrmask.xpm" //32
+#include "PX_xerrcommask.xpm" //33
+#include "PX_ensure.xpm" //34
+#include "PX_ensureDis.xpm" //35
+#include "PX_invariant.xpm" //36
+#include "PX_invariantDis.xpm" //37
+#include "PX_require.xpm" //38
+#include "PX_requireDis.xpm" //39
                          //25?
 #include "PX_commentt.xpm"
 #include "PX_errtab.xpm"

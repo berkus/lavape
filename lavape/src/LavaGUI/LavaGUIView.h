@@ -96,7 +96,7 @@ public:
   void OnEditCopy();
   void OnEditCut();
   void OnEditPaste();
-  void OnGotodef();
+  void OnGotoDecl();
 
   void OnUpdateGotodef(wxAction* action);
 	void OnUpdateTogglestate(wxAction* action);

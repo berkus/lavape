@@ -1075,77 +1075,79 @@ void TIDTable::Down(LavaDECL *elDef, TTableUpdate onWhat, int nINCL)
       elDef->FullName = elDef->ParentDECL->FullName;
   if ((elDef->DeclDescType == StructDesc) || (elDef->DeclDescType == EnumType)) {
     inCheEl = (CHE*)elDef->NestedDecls.first;
-    while (inCheEl && (((LavaDECL*)inCheEl->data)->DeclDescType != ExecDesc)) {
+    while (inCheEl) {
       inEl = (LavaDECL*)inCheEl->data;
       if ((inEl->DeclType == Interface) || (inEl->DeclType == Package))
         inEl->WorkFlags.INCL(recalcVT);
-      switch (onWhat) {
-      case onUndoDeleteID:
-        UndoDeleteID(inEl->OwnID);
-        break;
-      case onDeleteID:
-        DeleteID(inEl->OwnID);
-        break;
-      case onAddID:
-        inEl->FullName = elDef->FullName;
-        inEl->ParentDECL = elDef;
-        if (inEl->TypeFlags.Contains(defaultInitializer))
-          elDef->WorkFlags.INCL(hasDefaultIni);
-        if (inEl->DeclType == VirtualType) {
-          elDef->WorkFlags.INCL(isPattern);
-          inEl->WorkFlags.INCL(isPartOfPattern);
-        }
-        if ((inEl->DeclType == Interface)
-          && (elDef->WorkFlags.Contains(isPartOfPattern) || elDef->WorkFlags.Contains(isPattern)))
-          inEl->WorkFlags.INCL(isPartOfPattern);
-        AddID((LavaDECL**)&inCheEl->data, nINCL);
-        break;
-      case onNewID:
-        inEl->FullName = elDef->FullName;
-        if ((elDef->DeclType == PatternDef) || (elDef->DeclType == DragDef))
-          inEl->ParentDECL = elDef->ParentDECL;
-        else
+      if (inEl->DeclDescType != ExecDesc) {
+        switch (onWhat) {
+        case onUndoDeleteID:
+          UndoDeleteID(inEl->OwnID);
+          break;
+        case onDeleteID:
+          DeleteID(inEl->OwnID);
+          break;
+        case onAddID:
+          inEl->FullName = elDef->FullName;
           inEl->ParentDECL = elDef;
-        if (inEl->TypeFlags.Contains(defaultInitializer))
-          elDef->WorkFlags.INCL(hasDefaultIni);
-        NewID((LavaDECL**)&inCheEl->data);
-        break;
-      case onChange:
-        inEl->FullName = elDef->FullName;
-        inEl->ParentDECL = elDef;
-        DownChange((LavaDECL**)&inCheEl->data);
-        break;
-      case onUndoChange:
-        UndoChange((LavaDECL**)&inCheEl->data);
-        break;
-      case onCopy:
-        CopiedToDoc((LavaDECL**)&inCheEl->data);
-        break;
-      case onMove:
-        inEl->ParentDECL = elDef;
-        ChangeRefsToClipIDs((LavaDECL*)inCheEl->data);
-        break;
+          if (inEl->TypeFlags.Contains(defaultInitializer))
+            elDef->WorkFlags.INCL(hasDefaultIni);
+          if (inEl->DeclType == VirtualType) {
+            elDef->WorkFlags.INCL(isPattern);
+            inEl->WorkFlags.INCL(isPartOfPattern);
+          }
+          if ((inEl->DeclType == Interface)
+            && (elDef->WorkFlags.Contains(isPartOfPattern) || elDef->WorkFlags.Contains(isPattern)))
+            inEl->WorkFlags.INCL(isPartOfPattern);
+          AddID((LavaDECL**)&inCheEl->data, nINCL);
+          break;
+        case onNewID:
+          inEl->FullName = elDef->FullName;
+          if ((elDef->DeclType == PatternDef) || (elDef->DeclType == DragDef))
+            inEl->ParentDECL = elDef->ParentDECL;
+          else
+            inEl->ParentDECL = elDef;
+          if (inEl->TypeFlags.Contains(defaultInitializer))
+            elDef->WorkFlags.INCL(hasDefaultIni);
+          NewID((LavaDECL**)&inCheEl->data);
+          break;
+        case onChange:
+          inEl->FullName = elDef->FullName;
+          inEl->ParentDECL = elDef;
+          DownChange((LavaDECL**)&inCheEl->data);
+          break;
+        case onUndoChange:
+          UndoChange((LavaDECL**)&inCheEl->data);
+          break;
+        case onCopy:
+          CopiedToDoc((LavaDECL**)&inCheEl->data);
+          break;
+        case onMove:
+          inEl->ParentDECL = elDef;
+          ChangeRefsToClipIDs((LavaDECL*)inCheEl->data);
+          break;
+        }
+      }
+      else { //exec
+        if ( (onWhat == onAddID) || (onWhat == onNewID) || (onWhat == onChange)) {
+          inEl->FullName = elDef->FullName;
+          inEl->ParentDECL = elDef;
+        }
+        inEl->inINCL = nINCL;
+        if (!nINCL || LBaseData->inRuntime || (onWhat == onMove)) {
+          if (( (onWhat != onNewID) && (onWhat != onCopy) || !elDef->WorkFlags.Contains(skipOnCopy))
+            && ((onWhat != onDeleteID) || !elDef->WorkFlags.Contains(skipOnDeleteID))) {
+            if ((onWhat == onChange) && elDef->WorkFlags.Contains(skipOnCopy))
+              execOnWhat = onMove;
+            else
+              execOnWhat = onWhat;
+            ((SynObjectBase*)inEl->Exec.ptr)->MakeTable((address)this, nINCL, (SynObjectBase*)inEl, execOnWhat, 0, 0, (address)&sData);
+          }
+          if (onWhat == onCopy)
+            elDef->WorkFlags.EXCL(skipOnCopy);
+        }
       }
       inCheEl = (CHE*)inCheEl->successor;
-    }
-    if (inCheEl && (((LavaDECL*)inCheEl->data)->DeclDescType == ExecDesc)) {
-      if ( (onWhat == onAddID) || (onWhat == onNewID) || (onWhat == onChange)) {
-        ((LavaDECL*)inCheEl->data)->FullName = elDef->FullName;
-        ((LavaDECL*)inCheEl->data)->ParentDECL = elDef;
-      }
-      ((LavaDECL*)inCheEl->data)->inINCL = nINCL;
-      if (!nINCL || LBaseData->inRuntime || (onWhat == onMove)) {
-        if (( (onWhat != onNewID) && (onWhat != onCopy) || !elDef->WorkFlags.Contains(skipOnCopy))
-          && ((onWhat != onDeleteID) || !elDef->WorkFlags.Contains(skipOnDeleteID))) {
-          if ((onWhat == onChange) && elDef->WorkFlags.Contains(skipOnCopy))
-            execOnWhat = onMove;
-          else
-            execOnWhat = onWhat;
-          ((SynObjectBase*)((LavaDECL*)inCheEl->data)->Exec.ptr)->MakeTable((address)this, nINCL, (SynObjectBase*)inCheEl->data, execOnWhat, 0, 0, (address)&sData);
-        }
-        if (onWhat == onCopy)
-          elDef->WorkFlags.EXCL(skipOnCopy);
-      }
     }
     elDef->WorkFlags.EXCL(skipOnDeleteID);
   }

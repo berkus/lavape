@@ -88,7 +88,8 @@ enum ContextFlags {
   InXor,
   InIfCond,
   InForEach,
-  InBranch
+  InBranch,
+  InBut
 };
 
 
@@ -103,7 +104,8 @@ enum VarRefContext {
   assignmentTarget,
   funcHandle,
   arrayTarget,
-  inputParam
+  inputParam,
+  inOldExpression
 };
 
 
@@ -517,6 +519,7 @@ class SynObject : public SynObjectBase {
 
 
   public:
+  QWidget *execView;
   TToken primaryToken, type, replacedType;
   SynObject *parentObject;
   NSTTComment comment;
@@ -556,6 +559,7 @@ class SynObject : public SynObjectBase {
     roExec=false;
     return false;
   }
+  virtual bool InFuncOrEnsure();
   virtual bool InInitializer(CheckData &ckd);
   virtual bool InHiddenIniClause(CheckData &ckd,SynObject *&synObj);
   virtual bool IsArrayObj();
@@ -671,14 +675,8 @@ class SynObject : public SynObjectBase {
   {
     return false;
   }
-  virtual void whatNext()
-  {
-    QMessageBox::critical(qApp->mainWidget(),qApp->name(),QObject::tr("\"What next\" help not yet available for this construct"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-  }
-  virtual QString whatsThisText()
-  {
-    return QString(QObject::tr("<p>\"What's this\" help not yet available for this construct</p>"));
-  }
+  virtual void whatNext();
+  virtual QString whatsThisText();
 
   virtual void CopyData (AnyType *from) {
     *this = *(SynObject*)from;
@@ -775,10 +773,6 @@ class Operation : public Expression {
   LavaDECL *funcDecl;
   unsigned funcSectionNumber;
   CContext callCtx;
-  virtual bool IsPlaceHolder()
-  {
-    return false;
-  }
   virtual bool IsOperation()
   {
     return true;
@@ -943,6 +937,14 @@ class VarName : public Expression {
   }
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+  virtual void whatNext()
+  {
+    ShowPage("VarName.htm");
+  }
+  virtual QString whatsThisText()
+  {
+    return QString(QObject::tr("<p>This is a local variable</p>"));
+  }
 
   VarName () {}
 
@@ -1050,8 +1052,7 @@ class SelfVar : public VarName {
   CHAINX baseInitCalls;
   NESTEDANY/*Expression*/ body;
   FormParms *oldFormParms;
-  LavaDECL *execDECL, *myDECL, *selfType;
-  wxView *myView;
+  LavaDECL *execDECL, *selfType;
   unsigned nParams, nInputs, nOutputs, stackFrameSize, inINCL;
   bool concernExecs, checked;
   CContext selfCtx;
@@ -1060,7 +1061,7 @@ class SelfVar : public VarName {
   {
     checked=false;
     concernExecs=false;
-    myView=0;
+    execView=0;
   }
   virtual bool IsEmptyExec();
   virtual bool IsSelfVar()
@@ -1245,6 +1246,30 @@ class FailStatement : public Expression {
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPFailStatement(pgf,cid,(address)this,baseCDP); }
+};
+
+class OldExpression : public Expression {
+  DECLARE_DYNAMIC_CLASS(OldExpression)
+
+
+  public:
+  NESTEDANY/*ObjReference*/ variable;
+  virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
+  virtual bool Check(CheckData &ckd);
+  virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+
+  OldExpression () {}
+
+  virtual void CopyData (AnyType *from) {
+    *this = *(OldExpression*)from;
+  }
+
+  friend void CDPOldExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                bool baseCDP=false);
+
+  virtual void CDP (PutGetFlag pgf, ASN1* cid,
+                    bool baseCDP=false)
+  { CDPOldExpression(pgf,cid,(address)this,baseCDP); }
 };
 
 class UnaryOp : public Operation {
@@ -2441,15 +2466,14 @@ class ExtendExpression : public Expression {
   { CDPExtendExpression(pgf,cid,(address)this,baseCDP); }
 };
 
-class Run : public AttachObject {
+class Run : public Expression {
   DECLARE_DYNAMIC_CLASS(Run)
 
 
   public:
-  NESTEDANY/*FuncStatement*/ initializerCall;
-  NESTEDANY/*VarName*/ varName;
+  NESTEDANY/*Reference*/ initiator;
   CHAINX inputs;
-  LavaDECL *execDECL;
+  LavaDECL *execDECL, *typeDECL;
   unsigned nParams;
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -2903,6 +2927,13 @@ public:
 class FailStatementV : public FailStatement {
 public:
   FailStatementV ();
+
+  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+};
+
+class OldExpressionV : public OldExpression {
+public:
+  OldExpressionV ();
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
 };
@@ -3499,6 +3530,13 @@ public:
   FailStatementX() {}
 
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame);
+};
+
+class OldExpressionX : public OldExpression {
+public:
+  OldExpressionX() {}
+
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame);
 };
 
 class UnaryOpX : public UnaryOp {

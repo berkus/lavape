@@ -98,10 +98,12 @@ int xerrBM = 32;
 int xerrcomBM = 33;
 
 
+
 CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 :wxApp(argc, argv )
 {
   bool ok;
+  QSettings settings(QSettings::Native);
 
   LBaseData.stdUpdate = 0; 
   //stop here and set stdUpdate = 1 to allow updates in std.lava
@@ -115,15 +117,15 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 
   SetVendorName("FhG-SIT");
   SetAppName("LavaPE");
-  settings->beginGroup("/FhG-SIT/LavaPE");
+  settings.beginGroup(GetSettingsPath());
   inTotalCheck = false;;
   LBaseData.theApp = this;
   LBaseData.inRuntime = false;
   clipboard()->clear();
 
-  settings->beginGroup("/fontSettings");
+  settings.beginGroup("/fontSettings");
   
-  LBaseData.m_lfDefExecFont = settings->readEntry(szExecFont, 0, &ok);
+  LBaseData.m_lfDefExecFont = settings.readEntry(szExecFont, 0, &ok);
   if (ok)
     LBaseData.m_ExecFont.fromString(LBaseData.m_lfDefExecFont);
   else {
@@ -131,7 +133,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
     LBaseData.m_lfDefExecFont = LBaseData.m_ExecFont.toString();
   }
 
-  LBaseData.m_lfDefFormFont = settings->readEntry(szFormFont, 0, &ok);
+  LBaseData.m_lfDefFormFont = settings.readEntry(szFormFont, 0, &ok);
   if (ok)
     LBaseData.m_FormFont.fromString(LBaseData.m_lfDefFormFont);
   else {
@@ -139,7 +141,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
     LBaseData.m_lfDefFormFont = LBaseData.m_FormFont.toString();
   }
 
-  LBaseData.m_lfDefFormLabelFont = settings->readEntry(szFormLabelFont, 0, &ok);
+  LBaseData.m_lfDefFormLabelFont = settings.readEntry(szFormLabelFont, 0, &ok);
   if (ok) {
     LBaseData.m_FormLabelFont.fromString(LBaseData.m_lfDefFormLabelFont);
     LBaseData.useLabelFont = true;
@@ -149,20 +151,8 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
     LBaseData.m_lfDefFormLabelFont = LBaseData.m_lfDefFormFont;//LBaseData.m_FormFont.toString();
     LBaseData.useLabelFont = false;
   }
-  /*
-  LBaseData.m_lfDefFormButtonFont = settings->readEntry(szFormButtonFont, 0, &ok);
-  if (ok) {
-    LBaseData.m_FormButtonFont.fromString(LBaseData.m_lfDefFormButtonFont);
-    LBaseData.useButtonFont = true;
-  }
-  else {
-    LBaseData.m_FormButtonFont = LBaseData.m_FormFont;//QApplication::font();
-    LBaseData.m_lfDefFormButtonFont = LBaseData.m_lfDefFormFont;//LBaseData.m_FormFont.toString();
-    LBaseData.useButtonFont = false;
-  }
-  */
 
-  LBaseData.m_lfDefTreeFont = settings->readEntry(szTreeFont, 0, &ok);
+  LBaseData.m_lfDefTreeFont = settings.readEntry(szTreeFont, 0, &ok);
   if (ok)
     LBaseData.m_TreeFont.fromString(LBaseData.m_lfDefTreeFont);
   else {
@@ -170,7 +160,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
     LBaseData.m_lfDefTreeFont = LBaseData.m_TreeFont.toString();
   }
 
-  LBaseData.m_lfDefGlobalFont = settings->readEntry(szGlobalFont, 0, &ok);
+  LBaseData.m_lfDefGlobalFont = settings.readEntry(szGlobalFont, 0, &ok);
   if (ok)
     LBaseData.m_GlobalFont.fromString(LBaseData.m_lfDefGlobalFont);
   else {
@@ -179,12 +169,12 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   }
   setFont(LBaseData.m_GlobalFont,false);
 
-  settings->endGroup();
+  settings.endGroup();
 
-  settings->beginGroup("/otherSettings");
-  LBaseData.m_myWebBrowser = settings->readEntry(favoriteBrowser, 0, &ok);
-  LBaseData.m_style = settings->readEntry(gui_style, 0, &ok);
-  settings->endGroup();
+  settings.beginGroup("/otherSettings");
+  LBaseData.m_myWebBrowser = settings.readEntry(favoriteBrowser, 0, &ok);
+  LBaseData.m_style = settings.readEntry(gui_style, 0, &ok);
+  settings.endGroup();
 #ifndef WIN32
   if (LBaseData.m_myWebBrowser.isEmpty())
 #endif
@@ -224,7 +214,13 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   LavaPixmaps[31] = new QPixmap((const char**)PX_xcommask);
   LavaPixmaps[32] = new QPixmap((const char**)PX_xerrmask);
   LavaPixmaps[33] = new QPixmap((const char**)PX_xerrcommask);
-  LavaPixmaps[34] = 0;
+  LavaPixmaps[34] = new QPixmap((const char**)PX_ensure);
+  LavaPixmaps[35] = new QPixmap((const char**)PX_ensureDis);
+  LavaPixmaps[36] = new QPixmap((const char**)PX_invariant);
+  LavaPixmaps[37] = new QPixmap((const char**)PX_invariantDis);
+  LavaPixmaps[38] = new QPixmap((const char**)PX_require);
+  LavaPixmaps[39] = new QPixmap((const char**)PX_requireDis);
+  LavaPixmaps[40] = 0;
 
   pLavaTemplate = new wxDocTemplate(m_docManager,
     "LavaPE", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava Tree View",
@@ -351,7 +347,7 @@ void CLavaPEApp::OnPopcontext()
       }
       else 
         if (backView->inherits("CVTView")) 
-          item =((CVTView*)backView)->BrowseTree(back->id, 0);
+          item =((CVTView*)backView)->BrowseTree(back->id, 0, back->type);
         else
           item = 0;
       if (item) 
@@ -720,23 +716,27 @@ CLavaPEApp::~CLavaPEApp()
 
 void CLavaPEApp::saveSettings()
 {
-  settings->beginGroup("/fontSettings");
-  settings->writeEntry(szExecFont,LBaseData.m_lfDefExecFont);
-  settings->writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
-  if (LBaseData.useLabelFont)
-    settings->writeEntry(szFormLabelFont,LBaseData.m_lfDefFormLabelFont);
-  /*
-  if (LBaseData.useButtonFont)
-    settings->writeEntry(szFormButtonFont,LBaseData.m_lfDefFormButtonFont);
-    */
-  settings->writeEntry(szTreeFont,LBaseData.m_lfDefTreeFont);
-  settings->writeEntry(szGlobalFont,LBaseData.m_lfDefGlobalFont);
-  settings->endGroup();
+  QSettings settings(QSettings::Native);
 
-  settings->beginGroup("/otherSettings");
-  settings->writeEntry(favoriteBrowser,LBaseData.m_myWebBrowser);
-  settings->writeEntry(gui_style,LBaseData.m_style);
-  settings->endGroup();
+  settings.beginGroup(GetSettingsPath());
+  settings.beginGroup("/fontSettings");
+  settings.writeEntry(szExecFont,LBaseData.m_lfDefExecFont);
+  settings.writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
+  if (LBaseData.useLabelFont)
+    settings.writeEntry(szFormLabelFont,LBaseData.m_lfDefFormLabelFont);
+  settings.writeEntry(szTreeFont,LBaseData.m_lfDefTreeFont);
+  settings.writeEntry(szGlobalFont,LBaseData.m_lfDefGlobalFont);
+  settings.endGroup();
+
+  settings.beginGroup("/otherSettings");
+  settings.writeEntry(favoriteBrowser,LBaseData.m_myWebBrowser);
+  settings.writeEntry(gui_style,LBaseData.m_style);
+  settings.endGroup();
+/*  settings->endGroup();
+
+  delete settings; // saves settings
+	settings = new QSettings(QSettings::Native);
+  settings->beginGroup(GetSettingsPath());*/
 }
 
 int CLavaPEApp::ExitInstance() 
@@ -1079,7 +1079,8 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool c
     declsel = decl;
   }
   if (declsel) {
-    if (openExec && (((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data)->DeclType == ExecDef))
+    //openExec = true: only after GotoImpl and this means always the ExecDef
+    if (openExec && (((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data)->DeclDescType == ExecDesc))
       return doc->OpenCView((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data);
     else {
       pos = doc->GetFirstViewPos();

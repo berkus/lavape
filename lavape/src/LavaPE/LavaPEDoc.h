@@ -36,7 +36,9 @@ public:
   DString GetIOLabel(TAnnotation *anno);
 
   bool openFView(LavaDECL** pdecl);
-  virtual LavaDECL* GetConstrDECL(LavaDECL* decl,bool makeExec=true);
+  virtual LavaDECL* GetConstrDECL(LavaDECL* parentDecl,TDeclType type,bool makeDecl=true,bool makeExec=true);
+  virtual CHE* GetConstrChe(LavaDECL* parentDecl,TDeclType type,bool makeIt=true);
+  virtual CHE* SetConstrChe(LavaDECL* parentDecl,LavaDECL* execDecl);
   virtual bool OpenCView(LavaDECL* constrdecl);
   virtual void OnCloseLastExecView();
   bool openVTView(LavaDECL** pdecl, unsigned long autoUpdate);
@@ -54,7 +56,7 @@ public:
   bool IsSpecialOf(LavaDECL* decl, const TIDs& basicIDs, bool cDeriv=false);
                               //return : true :  id is an ancestor of upId
                               //         false : id is not an ancestor of upId
-  virtual int MakeFunc(LavaDECL* decl, bool otherDoc);
+  virtual int MakeFunc(LavaDECL* decl, bool otherDoc, QWidget* parent);
   void MakeIniFunc(LavaDECL* ifDECL);
   LavaDECL* MakeSet(const TID& setID, LavaDECL* decl=0);
   void MakeOperator(LavaDECL* opDecl);

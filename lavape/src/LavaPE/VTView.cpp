@@ -32,6 +32,14 @@
 #include "qpixmapcache.h"
 
 
+CVTItemData::CVTItemData(TNodeType t, CHETVElem* V, int A)
+{
+  type = t;
+ // VTEl = new CHETVElem;
+  VTEl_Tree = V->data;
+  AmbgNo = A;
+}
+
 CVTView::CVTView(QWidget* parent, wxDocument *doc)
 : CTreeView(parent, doc, "VTView")
 {  
@@ -41,6 +49,7 @@ CVTView::CVTView(QWidget* parent, wxDocument *doc)
   collectParent = 0;
   lastCurrent = 0;
   activeInt = false;
+  currentBrType = findTID;
   setFont(LBaseData->m_TreeFont);
 }
 
@@ -69,12 +78,14 @@ void CVTView::UpdateUI()
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   OnUpdateGotodef(frame->gotoDeclAction);
   OnUpdateOverride(frame->overrideAction);
+  OnUpdateGotoImpl(frame->gotoImplAction);
 }
 
 void CVTView::OnInitialUpdate()
 {
   OnUpdate(this, 0, 0);
-  GetListView()->setCurrentItem(GetListView()->firstChild());
+  if (GetListView()->firstChild())
+    GetListView()->setCurAndSel(GetListView()->firstChild());
 }
 
 
@@ -107,11 +118,8 @@ void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
       || (((CLavaPEHint*)pHint)->com == CPECommand_FromOtherDoc)) {
     if (bb) {
       setUpdatesEnabled(false);
-      //if (myDECL->WorkFlags.Contains(recalcVT)) {19.08.2002, nach einfügen von feature in Basisklasse wurde VElems nicht neu brechnet
-        //myDECL->VElems.UpdateNo = GetDocument()->UpdateNo;
-				if (GetDocument()->MakeVElems(myDECL) )
-					myDECL->WorkFlags.EXCL(recalcVT);
-      //}
+			if (GetDocument()->MakeVElems(myDECL) )
+				myDECL->WorkFlags.EXCL(recalcVT);
       DeleteItemData(0);
       delete GetListView()->firstChild();
       if (DrawTreeAgain()) {
@@ -122,6 +130,12 @@ void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
       ExpandItem((CTreeItem*)GetListView()->firstChild(), 5);
       setUpdatesEnabled(true);
       GetListView()->update();
+      if (currentBaseID.nID != -1)
+        lastCurrent = BrowseTree(currentBaseID,0,(int)currentBrType);
+      if (lastCurrent)
+        GetListView()->setCurAndSel(lastCurrent);
+      else
+        GetListView()->setCurAndSel(GetListView()->firstChild());
     }
     else {
       myDECL = 0;
@@ -143,7 +157,7 @@ bool CVTView::DrawTreeAgain()
   TID TIDCl, TIDDef;
   CVTItemData * data;
   LavaDECL *ClDECL=0, *ElDECL;
-  CHETVElem *El;
+  CHETVElem *El, *ElView;
 
   bmCl = myMainView->GetPixmap(false, false, myDECL->DeclType);
   bmPP = myMainView->GetPixmap(true, true, VirtualType);
@@ -185,7 +199,9 @@ bool CVTView::DrawTreeAgain()
             labCl = DString("Virtual types");
             itemP = InsertItem(labCl.c, bmPP,topNode, TVI_FIRST);
           }
-          data = new CVTItemData(TNodeType_Class, El, 0);
+          ElView = new CHETVElem;
+          *ElView = *El;
+          data = new CVTItemData(TNodeType_Class, ElView, 0);
           if (ClDECL)
             labCl = ClDECL->FullName;
           else 
@@ -203,7 +219,7 @@ bool CVTView::DrawTreeAgain()
           bm = bmF;
         else
           bm = bmA;
-        type = TNodeType_Mem;
+        type = TNodeType_Feature;
         if (!itemACl) {
           if (!itemA) {
             labCl = DString("Features");
@@ -212,7 +228,9 @@ bool CVTView::DrawTreeAgain()
             else
               itemA = InsertItem(labCl.c, bmAA, topNode);
           }
-          data = new CVTItemData(TNodeType_Class, El, 0);
+          ElView = new CHETVElem;
+          *ElView = *El;
+          data = new CVTItemData(TNodeType_Class, ElView, 0);
           if (ClDECL)
             labCl = ClDECL->FullName;
           else 
@@ -225,7 +243,9 @@ bool CVTView::DrawTreeAgain()
         }
         itemCl = itemACl;
       }
-      data = new CVTItemData(type, El, 0);
+      ElView = new CHETVElem;
+      *ElView = *El;
+      data = new CVTItemData(type, ElView, 0);
       item = InsertItem(lab.c, bm, itemCl);
       if (El->data.Ambgs.first || !El->data.ok) 
         item->SetItemMask(true, false);
@@ -238,7 +258,9 @@ bool CVTView::DrawTreeAgain()
           lab += DString(" (in ");
           lab += ElDECL->ParentDECL->LocalName;
           lab += klz;
-          data = new CVTItemData(type, El, no);
+          ElView = new CHETVElem;
+          *ElView = *El;
+          data = new CVTItemData(type, ElView, no);
           item = InsertItem(lab.c, bm, itemCl);
           item->SetItemMask(true, false);
           item->setItemData(  data);
@@ -265,7 +287,7 @@ void CVTView::DeleteItemData(CTreeItem* parent)
     parent = (CTreeItem*)GetListView()->firstChild();
   if (parent) {
     CVTItemData * itd = (CVTItemData*)parent->getItemData();
-    if (itd)
+    if (itd) 
       delete itd;
     CTreeItem* item = (CTreeItem*)parent->firstChild();
     while (item) {
@@ -299,78 +321,137 @@ void CVTView::destroy()
   CTreeView::destroy(); 
 }
 
-void CVTView::OnGotodef() 
+void CVTView::OnGotoImpl()
 {
-  gotoDef((CTreeItem*)GetListView()->currentItem());
+  gotoDef((CTreeItem*)GetListView()->currentItem(), true);
+ 
 }
 
-void CVTView::gotoDef(CTreeItem* item)
+
+void CVTView::OnGotoDecl() 
 {
+  gotoDef((CTreeItem*)GetListView()->currentItem(), false);
+}
+
+void CVTView::gotoDef(CTreeItem* item, bool toImpl)
+{
+  TID id;
+  CHETID* cheID;
+  int ii;
+  LavaDECL *decl;
+  TBrowseCase bCase = findTID;
+  CTreeItem *child;
+
   if (item) {
     CVTItemData * itd = (CVTItemData*)item->getItemData();
-    if (itd->type != TNodeType_Class) {
-      TID id;
+    if (itd->type == TNodeType_Class) {
+      child = (CTreeItem*)item->firstChild();
+      if (((CVTItemData*)child->getItemData())->type == TNodeType_VT)
+        bCase = findInterfaceVTs;
+      else
+        bCase = findInterfaceFeatures;
+      ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = new CBrowseContext(this, GetDocument()->IDTable.GetDECL(itd->VTEl_Tree.VTClss), (int)bCase);//, (CTreeItem*)item->parent());//GetParentItem(item));
+      if (toImpl) {
+        if (!LBaseData->Browser->GotoImpl(GetDocument(), itd->VTEl_Tree.VTClss)) 
+          QMessageBox::critical(this, qApp->name(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      }
+      else
+        LBaseData->Browser->BrowseDECL(GetDocument(), itd->VTEl_Tree.VTClss);
+    }
+    else {
       id.nID = -1;
       if (!itd->AmbgNo)
-        id = itd->VTEl->data.VTEl;
+        id = itd->VTEl_Tree.VTEl;
       else {
-        CHETID* cheID = (CHETID*)itd->VTEl->data.Ambgs.first;
-        for (int ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++) 
+        cheID = (CHETID*)itd->VTEl_Tree.Ambgs.first;
+        for (ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++) 
           cheID = (CHETID*)cheID->successor;
         if (cheID)
           id = cheID->data;
       }
-      ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = new CBrowseContext(this, GetDocument()->IDTable.GetDECL(id));//, (CTreeItem*)item->parent());//GetParentItem(item));
-      ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(GetDocument(), id);
+      decl = GetDocument()->IDTable.GetDECL(id);
+      ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = new CBrowseContext(this, decl);//, (CTreeItem*)item->parent());//GetParentItem(item));
+      if (toImpl) {
+        if (!LBaseData->Browser->GotoImpl(GetDocument(), decl)) 
+          if (decl->TypeFlags.Contains(isAbstract) || decl->TypeFlags.Contains(isNative)) 
+            QMessageBox::information(this, qApp->name(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          else
+            QMessageBox::critical(this, qApp->name(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      }
+      else
+        ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(GetDocument(), id);
     }
   }
 }
 
-CTreeItem* CVTView::BrowseTree(TID id, CTreeItem* start)
+CTreeItem* CVTView::BrowseTree(TID id, CTreeItem* start, int browseCase)
 {
   TID elId;
+  TBrowseCase bCase = (TBrowseCase)browseCase;
   CTreeItem *topItem, *item=0;
   if (start)
     topItem = start;
   else
     topItem = (CTreeItem*)GetListView()->firstChild();
+  if (!topItem)
+    return 0;
   CVTItemData * itd = (CVTItemData*)topItem->getItemData();
-  if (itd && (itd->type != TNodeType_Class)) {
-    if (!itd->AmbgNo)
-      elId = itd->VTEl->data.VTEl;
-    else {
-      CHETID* cheID = (CHETID*)itd->VTEl->data.Ambgs.first;
-      for (int ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++) 
-        cheID = (CHETID*)cheID->successor;
-      if (cheID)
-        elId = cheID->data;
+  if (itd)
+    if (itd->type != TNodeType_Class) {
+      if ((itd->type == TNodeType_Feature ) && (bCase == findBaseTID))
+        elId = itd->VTEl_Tree.VTBaseEl;
+      else {
+        if (!itd->AmbgNo)
+          elId = itd->VTEl_Tree.VTEl;
+        else {
+          CHETID* cheID = (CHETID*)itd->VTEl_Tree.Ambgs.first;
+          for (int ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++) 
+            cheID = (CHETID*)cheID->successor;
+          if (cheID)
+            elId = cheID->data;
+        }
+      }
+      if (id == elId)
+        return topItem;
     }
-  }
-  if (id == elId)
-    return topItem;
+    else {
+      elId = itd->VTEl_Tree.VTClss;
+      if ((bCase == findInterfaceVTs) && (id == elId))
+        return topItem;
+      else
+        if (bCase == findInterfaceFeatures)
+          bCase = findInterfaceVTs;
+    }
   CTreeItem* nitem;
   bool isValid = false;
   while (topItem && !item) {
     nitem = (CTreeItem*)topItem->firstChild();
     if (nitem)
-      item = BrowseTree(id, nitem);
+      item = BrowseTree(id, nitem, (int)bCase);
     if (!item) {
       topItem = (CTreeItem*)topItem->nextSibling();
       if (topItem) {
         itd = (CVTItemData*)topItem->getItemData();
         if (itd && (itd->type != TNodeType_Class)) {
           if (!itd->AmbgNo)
-            elId = itd->VTEl->data.VTEl;
+            elId = itd->VTEl_Tree.VTEl;
           else {
-            CHETID* cheID = (CHETID*)itd->VTEl->data.Ambgs.first;
+            CHETID* cheID = (CHETID*)itd->VTEl_Tree.Ambgs.first;
             for (int ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++) 
               cheID = (CHETID*)cheID->successor;
             if (cheID)
               elId = cheID->data;
           }
+          if (id == elId)
+            return topItem;
         }
-        if (id == elId)
-          return topItem;
+        else {
+          if ((bCase == findInterfaceVTs) && (id == elId))
+            return topItem;
+          else
+            if (bCase == findInterfaceFeatures)
+              bCase = findInterfaceVTs;
+        }
       }
     }
   }
@@ -378,13 +459,32 @@ CTreeItem* CVTView::BrowseTree(TID id, CTreeItem* start)
 
 }
 
+void CVTView::OnUpdateGotoImpl(wxAction* action) 
+{
+  CVTItemData * itd;
+  LavaDECL* decl;
+  bool enable;
+
+  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
+  if (item) {
+    itd = (CVTItemData*)item->getItemData();
+    enable = itd && (itd->type != TNodeType_VT);
+    if (enable && (itd->type == TNodeType_Feature)) {
+      decl = GetDocument()->IDTable.GetDECL(itd->VTEl_Tree.VTEl);
+      enable = (decl->DeclType != Attr) || decl->TypeFlags.Contains(hasSetGet);
+    }
+    action->setEnabled(enable);
+  }
+  else
+    action->setEnabled(false);
+}
 
 void CVTView::OnUpdateGotodef(wxAction* action) 
 {
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
   if (item) {
     CVTItemData * itd = (CVTItemData*)item->getItemData();
-    action->setEnabled(itd && (itd->type != TNodeType_Class));
+    action->setEnabled(itd );
   }
   else
     action->setEnabled(false);
@@ -407,9 +507,8 @@ bool CVTView::EnableOverride(CTreeItem* item)
   if (activeInt && item) {
     itd = (CVTItemData*)item->getItemData();
     if (itd && ((itd->type == TNodeType_VT)
-               || (itd->type == TNodeType_Func)
-               || (itd->type == TNodeType_Mem))) {
-      ElDECL = GetDocument()->IDTable.GetDECL(itd->VTEl->data.VTEl);
+               || (itd->type == TNodeType_Feature))) {
+      ElDECL = GetDocument()->IDTable.GetDECL(itd->VTEl_Tree.VTEl);
       if (ElDECL) {
         TID TIDDef(ElDECL->ParentDECL->OwnID, ElDECL->inINCL);
         if (myID != TIDDef) {
@@ -456,9 +555,9 @@ void CVTView::PrepareDECL(LavaDECL* decl, CVTItemData* itd)
   decl->inINCL = 0;
   decl->DECLComment.Destroy();
   decl->SecondTFlags.INCL(overrides);
-  decl->Supports = itd->VTEl->data.Ambgs;
+  decl->Supports = itd->VTEl_Tree.Ambgs;
   CHETID* cheTID = new CHETID;
-  cheTID->data = itd->VTEl->data.VTEl;
+  cheTID->data = itd->VTEl_Tree.VTEl;
   decl->Supports.Prepend(cheTID);
   decl->OwnID = -1;
   decl->FullName = myDECL->FullName + ddppkt + decl->LocalName;
@@ -488,7 +587,7 @@ void CVTView::OnOverrideI(CTreeItem* item)
   else
     if (item) {
       itd = (CVTItemData*)item->getItemData();
-      OverDECL = GetDocument()->IDTable.GetDECL(itd->VTEl->data.VTEl);
+      OverDECL = GetDocument()->IDTable.GetDECL(itd->VTEl_Tree.VTEl);
       parentDECL = OverDECL->ParentDECL;
     }
   if (OverDECL) {
@@ -532,6 +631,8 @@ void CVTView::OnOverrideI(CTreeItem* item)
         }
         che = (CHE*)che->successor;
       }
+      currentBaseID = itd->VTEl_Tree.VTBaseEl;
+      currentBrType = findBaseTID;
       myDECL->ResetCheckmarks();
       OverDECL->ResetCheckmarks();
       myDECL->TreeFlags.INCL(isExpanded);
@@ -548,6 +649,9 @@ void CVTView::OnOverrideI(CTreeItem* item)
       GetDocument()->ConcernImpls(hintConcern, *(LavaDECL**)d4);
       GetDocument()->ConcernExecs(hint);
       GetDocument()->SetLastHint();
+      lastCurrent = BrowseTree(currentBaseID,0,(int)currentBrType);
+      if (lastCurrent)
+        GetListView()->setCurAndSel(lastCurrent);
       myVT.Destroy();
       delete hint;
       delete hintConcern;
@@ -566,6 +670,8 @@ void CVTView::OnOverrideI(CTreeItem* item)
       DWORD d4 = GetDocument()->IDTable.GetVar(myID, type);
       DString *str2 = new DString(myDECL->FullName);
       int pos = myDECL->GetAppendPos(decl->DeclType);
+      currentBaseID = itd->VTEl_Tree.VTBaseEl;
+      currentBrType = findBaseTID;
       CLavaPEHint* hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, (DWORD) decl, (DWORD)str2, (DWORD)pos, d4);
       if (!CollectDECL)
         GetDocument()->UndoMem.AddToMem(hint);
@@ -573,6 +679,9 @@ void CVTView::OnOverrideI(CTreeItem* item)
       GetDocument()->ConcernImpls(hint, *(LavaDECL**)d4);
       GetDocument()->ConcernExecs(hint);
       GetDocument()->SetLastHint();
+      lastCurrent = BrowseTree(currentBaseID,0,(int)currentBrType);
+      if (lastCurrent)
+        GetListView()->setCurAndSel(lastCurrent);
     }
   }
   if (CollectDECL)
@@ -602,9 +711,8 @@ void CVTView::SetVTError(CTreeItem* item)
   if (item  && (item != GetListView()->firstChild())) {
     CVTItemData * itd = (CVTItemData*)item->getItemData();
     if (itd && ((itd->type == TNodeType_VT)
-               || (itd->type == TNodeType_Func)
-               || (itd->type == TNodeType_Mem))
-         && itd->VTEl->data.Ambgs.first) {
+               || (itd->type == TNodeType_Feature))
+         && itd->VTEl_Tree.Ambgs.first) {
       CHAINX ErrChain;
       new CLavaError(&ErrChain, &ERR_AmbgInVT);
       ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_OutputBar->SetErrorOnBar(ErrChain);
@@ -620,13 +728,13 @@ bool CVTView::AddToExChain(CTreeItem* itemOver)
   if ((collectParent == (CTreeItem*)itemOver->parent())
       && EnableOverride(itemOver)) {
     CVTItemData * itd = (CVTItemData*)itemOver->getItemData();
-    if (!itd->VTEl->data.ElDECL) {
+    if (!itd->VTEl_Tree.ElDECL) {
       decl = NewLavaDECL();
-      de = GetDocument()->IDTable.GetDECL(itd->VTEl->data.VTEl);
+      de = GetDocument()->IDTable.GetDECL(itd->VTEl_Tree.VTEl);
       if (!de)
         return false;
       *decl = *de;
-      itd->VTEl->data.ElDECL = decl;
+      itd->VTEl_Tree.ElDECL = decl;
       decl->DECLComment.Destroy();
       if (decl->DeclType == VirtualType)
         CollectDECL->DeclType = PatternDef;
@@ -705,6 +813,21 @@ void CVTView::OnSelchanged()
     if (!itemOver)
       DeleteExChain();
   lastCurrent = selItem;
+  CVTItemData * itd = (CVTItemData*)lastCurrent->getItemData();
+  if (itd) {
+    if (itd->type == TNodeType_Class) {
+      CTreeItem* child = (CTreeItem*)lastCurrent->firstChild();
+      if (((CVTItemData*)child->getItemData())->type == TNodeType_VT)
+        currentBrType = findInterfaceVTs;
+      else
+        currentBrType = findInterfaceFeatures;
+      currentBaseID = itd->VTEl_Tree.VTClss;
+    }
+    else {
+      currentBaseID = itd->VTEl_Tree.VTBaseEl;
+      currentBrType = findBaseTID;
+    }
+  }
 }
 
 void CVTView::OnActivateView(bool bActivate, wxView *deactiveView) 
@@ -727,4 +850,5 @@ void CVTView::DisableActions()
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   frame->gotoDeclAction->setEnabled(false);
   frame->overrideAction->setEnabled(false);
+  frame->gotoImplAction->setEnabled(false);
 }

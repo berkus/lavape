@@ -46,6 +46,7 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
   InitComplete = false;
   connect(m_tree,SIGNAL(doubleClicked(QListViewItem*,const QPoint&,int)), SLOT(OnDblclk(QListViewItem*,const QPoint&,int)));
   setFont(LBaseData->m_TreeFont);
+  new InclWhatsThis(this);
 }
 
 CInclView::~CInclView()
@@ -394,4 +395,30 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
     else 
       DisableActions();
   }
+}
+
+
+void CInclView::whatNext() 
+{
+  QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+}
+
+
+InclWhatsThis::InclWhatsThis(CInclView *tv) : WhatsThis(0,tv) {
+  inclView = tv;
+}
+
+
+QString InclWhatsThis::text(const QPoint &point) {
+/*
+  int xc, yc;
+
+  execView->sv->viewportToContents(point.x(),point.y(),xc,yc);
+  QPoint pc = QPoint(xc-2,yc-2); // -2 seems to be necessary, don't know why
+  execView->text->NewSel(&pc);
+  if (execView->text->newSelection) {
+    execView->Select();
+    return execView->text->currentSynObj->whatsThisText();
+  }*/
+  return QString(QObject::tr("\"What's this?\" help not yet available for this item"));
 }

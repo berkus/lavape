@@ -38,6 +38,7 @@
 #include "Comment.h"
 #include "ConstrUpdate.h"
 #include "LavaAppBase.h"
+#include "PEBaseDoc.h"
 #include "Resource.h"
 #include "ExecView.h"
 #include "SylTraversal.h"
@@ -62,7 +63,6 @@
 
 void *focusWindow=0;
 bool isExecView;
-static bool deletePending=false;
 
 static SynObject *clipBoardObject=0;
 static wxDocument *clipBoardDoc;
@@ -82,6 +82,7 @@ void dummy_func () {
 
 CExecView::~CExecView()
 {
+//  qDebug("~CExecView called!");
   setFocusProxy(0); 
   OnCloseExec();
   if (editCtl)
@@ -139,6 +140,11 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   new ExecWhatsThis(this);
 }
 
+bool ExecWhatsThis::clicked(const QString &whatsThisHref)
+{
+  return WhatsThis::clicked(whatsThisHref);
+}
+
 bool CExecView::OnCreate() 
 {
   sv->setFont(LBaseData->m_ExecFont);
@@ -153,26 +159,28 @@ void CExecView::OnCloseExec()
 	DisableActions();
   --ExecCount;
   if (myDoc->mySynDef)
-    ((SelfVar*)text->ckd.selfVar)->myView = 0;
+    ((SelfVar*)text->ckd.selfVar)->execView = 0;
   destroying = true;
   if (!ExecCount && ((wxApp*)qApp)->m_appWindow)
     myDoc->OnCloseLastExecView();
   if (myDoc->mySynDef // document is not yet closed
   && ((SelfVar*)myDECL->Exec.ptr)->IsEmptyExec()
-  && ((SelfVar*)myDECL->Exec.ptr)->primaryToken == constraint_T) {
+  && (((SelfVar*)myDECL->Exec.ptr)->primaryToken == constraint_T
+      || ((SelfVar*)myDECL->Exec.ptr)->primaryToken == require_T
+      || ((SelfVar*)myDECL->Exec.ptr)->primaryToken == ensure_T)) {
     myDoc->SetExecItemImage(
       myDECL,
       true,
       false);
     parent = myDECL->ParentDECL;
+    chp = myDoc->GetConstrChe(parent, myDECL->DeclType);
     if (myDECL->WorkFlags.Contains(nonEmptyConstraint)) {
-      chp = (CHE*)parent->NestedDecls.last;
       parent->NestedDecls.Uncouple(chp);
       chp->data = 0; // to prevent deleting data
       delete chp;
     }
     else
-      parent->NestedDecls.Cut(parent->NestedDecls.last->predecessor);
+      parent->NestedDecls.Remove(chp->predecessor);
   }
   Base->Browser->LastBrowseContext->RemoveView(this);
 }
@@ -186,6 +194,7 @@ void CExecView::OnInitialUpdate()
   Base->actHint = 0;
   myMainView = (wxView*)pHint->CommandData2;
   myDECL = (LavaDECL*)pHint->CommandData1;
+  myExecCategory = myDECL->DeclType;
   statusBar = wxTheApp->m_appWindow->statusBar();
   myID = TID(myDECL->ParentDECL->OwnID, 0);
   editCtlVisible = false;
@@ -197,8 +206,10 @@ void CExecView::OnInitialUpdate()
   multHint = 0;
   editCtl = 0;
   tempNo = 0;
+  execReplaced = false;
   externalHint = false;
   nextError = false;
+  deletePending = false;
 
   ExecCount++;
   errMsgUpdated = false;
@@ -570,15 +581,21 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
 
     case CPECommand_Change:
       myNewDECL = myDoc->IDTable.GetDECL(myID);
-      if (myNewDECL) {
-        myNewDECL = (LavaDECL*)((CHE*)myNewDECL->NestedDecls.last)->data;
+      if (myNewDECL) { 
+        myNewDECL = myDoc->GetConstrDECL(myNewDECL,myExecCategory,false,false);
         if (myNewDECL != myDECL) {
+          execReplaced = true;
           myDECL = myNewDECL;
           text->INIT();
           Base->Browser->LastBrowseContext->RemoveView(this);
           text->ckd.myDECL = myDECL;
           selfVar = (SelfVar*)myDECL->Exec.ptr;
           selfVar->execDECL = myDECL;
+          if (text->currentSynObjID) {
+            sData.synObjectID = text->currentSynObjID;
+            sData.execView = this;
+            selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
+          }
           toBeDrawn = 0; // to enforce RedrawExec
         }
       }
@@ -634,14 +651,20 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
       deletePending = false;
       myNewDECL = myDoc->IDTable.GetDECL(myID);
       if (myNewDECL) {
-        myNewDECL = (LavaDECL*)((CHE*)myNewDECL->NestedDecls.last)->data;
+        myNewDECL = myDoc->GetConstrDECL(myNewDECL,myExecCategory,false,false);
         if (myNewDECL != myDECL) {
+          execReplaced = true;
           myDECL = myNewDECL;
           text->INIT();
           Base->Browser->LastBrowseContext->RemoveView(this);
           text->ckd.myDECL = myDECL;
           selfVar = (SelfVar*)myDECL->Exec.ptr;
           selfVar->execDECL = myDECL;
+          if (text->currentSynObjID) {
+            sData.synObjectID = text->currentSynObjID;
+            sData.execView = this;
+            selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
+          }
           toBeDrawn = 0; // to enforce RedrawExec
         }
       }
@@ -651,7 +674,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
       }
     }
 
-    ((CExecFrame*)GetParentFrame())->m_ComboBar->OnUpdate(myDECL->ParentDECL,externalHint);
+    ((CExecFrame*)GetParentFrame())->m_ComboBar->OnUpdate(myDECL,externalHint);
 
     if (externalHint)
       ((CExecFrame*)GetParentFrame())->NewTitle(myDECL);
@@ -748,9 +771,10 @@ void CExecView::OnChar(QKeyEvent *e)
       OnSwitch();
     break;
   case Qt::Key_X:
-    if (!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection))
-      OnIfExpr();
+    if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
+      OnFunctionCall();
     break;
+
   case Qt::Key_Equal:
     if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
       OnEq();
@@ -833,7 +857,6 @@ void CExecView::OnChar(QKeyEvent *e)
       }
     }
     break;
-/*
   case '\xe2':
     if (altPressed) 
       if (shiftPressed) {
@@ -855,7 +878,6 @@ void CExecView::OnChar(QKeyEvent *e)
         else
           OnLt();
     break;
-*/
   case Qt::Key_Delete: // 0x2e DEL key
   case Qt::Key_Backspace: // 0x08 BACKSPACE key
 
@@ -1149,7 +1171,7 @@ void CExecView::Select (SynObject *selObj)
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-      OnGotodef();
+      OnGotoDecl();
       sv->viewport()->update();
       return;
     }
@@ -1159,14 +1181,6 @@ void CExecView::Select (SynObject *selObj)
     && text->currentSynObj->parentObject->parentObject->primaryToken == new_T
     && text->currentSynObj->parentObject->whereInParent
        == (address)&((NewExpression*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newCombo);
-      sv->viewport()->update();
-      return;
-    }
-    else if (text->currentSynObj->parentObject->parentObject
-    && text->currentSynObj->parentObject->parentObject->primaryToken == run_T
-    && text->currentSynObj->parentObject->whereInParent
-       == (address)&((Run*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newCombo);
       sv->viewport()->update();
       return;
@@ -1422,7 +1436,7 @@ exp: // Const_T
   case TDOD_T:
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
-      OnGotodef();
+      OnGotoDecl();
       sv->viewport()->update();
       return;
     }
@@ -1465,7 +1479,7 @@ exp: // Const_T
   case TypeRef_T:
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
-      OnGotodef();
+      OnGotoDecl();
       sv->viewport()->update();
       return;
     }
@@ -1506,7 +1520,7 @@ exp: // Const_T
   case CrtblRef_T:
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
-      OnGotodef();
+      OnGotoDecl();
       sv->viewport()->update();
       return;
     }
@@ -1549,7 +1563,7 @@ exp: // Const_T
   case enumConst_T:
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
     if (doubleClick && EnableGotoDecl()) {
-      OnGotodef();
+      OnGotoDecl();
       doubleClick = false;
     }
     else {
@@ -1683,6 +1697,8 @@ void CExecView::RedrawExec(SynObject *selectAt)
   }
   else
     Select();
+  if (execReplaced)
+    execReplaced = false;
 
   sv->viewport()->update();
   sv->update();
@@ -3432,7 +3448,7 @@ bool CExecView::EnableGotoDecl()
   return false;
 }
 
-void CExecView::OnGotodef() 
+void CExecView::OnGotoDecl() 
 {
   // TODO: Add your command handler code here
   SynObject *synObj, *parent;
@@ -3497,13 +3513,11 @@ void CExecView::OnGotodef()
                parent = parent->parentObject);
         else
           parent = synObj;
-        LavaDECL *execDecl = ((SelfVar*)parent)->execDECL;
-        myDoc->OpenCView(execDecl);
-        CExecView *execView = (CExecView*)((SelfVar*)parent)->myView;
+        myDoc->OpenCView(((SelfVar*)parent)->execDECL);
         if (tdod->parentObject->flags.Contains(isSelfVar))
-          execView->Select((SynObject*)execView->selfVar->execName.ptr);
+          ((CExecView*)((SelfVar*)parent)->execView)->Select((SynObject*)((SelfVar*)parent)->execName.ptr);
         else
-          execView->Select(synObj);
+          ((CExecView*)((SelfVar*)parent)->execView)->Select(synObj);
       }
       else if (tdod->parentObject->flags.Contains(isSelfVar))
         Select((SynObject*)((SelfVar*)synObj)->execName.ptr);
@@ -3588,7 +3602,7 @@ void CExecView::OnFindReferences()
     Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID,text->ckd.inINCL),sData.findRefs);
     if (sData.findRefs.FWhere == findInThisView) {
       sData.findRefs.refTid = ((Reference*)text->currentSynObj)->refID;
-      sData.execDECL = myDECL->ParentDECL;
+      sData.execDECL = myDECL;//->ParentDECL;
       sData.doc = myDoc;
       text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
     }
@@ -3599,7 +3613,7 @@ void CExecView::OnFindReferences()
     Base->Browser->OnFindRefs(myDoc,text->ckd.document->IDTable.GetDECL(((EnumConst*)text->currentSynObj)->refID,text->ckd.inINCL),sData.findRefs);
     if (sData.findRefs.FWhere == findInThisView) {
       sData.findRefs.refTid = ((EnumConst*)text->currentSynObj)->refID;
-      sData.execDECL = myDECL->ParentDECL;
+      sData.execDECL = myDECL;//->ParentDECL;
       sData.doc = myDoc;
       text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
     }
@@ -3609,7 +3623,7 @@ void CExecView::OnFindReferences()
       //Base->Browser->OnFindRefs(myDoc,0,sData.enumID,sData.findRefs);
       Base->Browser->OnFindRefs(myDoc,0,sData.findRefs);
       sData.findRefs.refTid = ((TDOD*)text->currentSynObj)->ID;
-      sData.execDECL = myDECL->ParentDECL;
+      sData.execDECL = myDECL;//->ParentDECL;
       sData.doc = myDoc;
       text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
     }
@@ -3621,7 +3635,7 @@ void CExecView::OnFindReferences()
     //Base->Browser->OnFindRefs(myDoc,0,sData.enumID,sData.findRefs);
     Base->Browser->OnFindRefs(myDoc,0,sData.findRefs);
     sData.findRefs.refTid = ((VarName*)text->currentSynObj)->varID;
-    sData.execDECL = myDECL->ParentDECL;
+    sData.execDECL = myDECL;//->ParentDECL;
     sData.doc = myDoc;
     text->ckd.selfVar->MakeTable((address)&text->ckd.document->IDTable, 0, (SynObjectBase*)myDECL, onSearch, 0,0, (address)&sData);
     break;
@@ -3972,7 +3986,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
   LavaDECL *decl, *decl2;
   TID tid;
   ParameterV *param;
-  bool first = true, sameRunType;
+  bool first = true;
   QString str = "";
   char buffer[10];
 
@@ -3985,13 +3999,6 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
     && text->currentSynObj->parentObject->whereInParent
        == (address)&((NewExpression*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
       text->currentSynObj = (SynObject*)((NewExpression*)text->currentSynObj->parentObject->parentObject)->objType.ptr;
-      goto crtbl;
-    }
-    else if (text->currentSynObj->parentObject->parentObject
-    && text->currentSynObj->parentObject->parentObject->primaryToken == run_T
-    && text->currentSynObj->parentObject->whereInParent
-       == (address)&((Run*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
-      text->currentSynObj = (SynObject*)((Run*)text->currentSynObj->parentObject->parentObject)->objType.ptr;
       goto crtbl;
     }
     text->currentSynObj = text->currentSynObj->parentObject;
@@ -4103,94 +4110,20 @@ crtbl:
       switch (decl->DeclType) {
       case Initiator:
         runStm = new RunV(new ReferenceV(CrtblPH_T,refID,refName));
-        sameRunType = (oldRunStm->initializerCall.ptr == 0);
-        if (sameRunType) {
-          chpFormParm = (CHE*)decl->NestedDecls.first;
-          chpParam = (CHE*)oldRunStm->inputs.first;
-          while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
-            param = (ParameterV*)chpParam->data->Clone();
-            decl2 = (LavaDECL*)chpFormParm->data;
-            param->formParmID = TID(decl2->OwnID,decl2->inINCL);
-            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
-            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
-            newChe = NewCHE(param);
-            param->containingChain = (CHAINX*)&runStm->inputs;
-            param->whereInParent = (address)newChe;
-            runStm->inputs.Append(newChe);
-            chpFormParm = (CHE*)chpFormParm->successor;
-            chpParam = (CHE*)chpParam->successor;
-          }
-        }
-        break;
-      case Function:
-        oldFuncStm = (FuncStatement*)oldRunStm->initializerCall.ptr;
-        ref = new ReferenceV(FuncPH_T,refID,refName);
-        funcStm = new FuncStatementV(ref);
-        funcStm->flags.INCL(staticCall);
-        ref->parentObject = funcStm;
-        runStm = new RunV(funcStm);
-        funcStm->parentObject = runStm;
-        decl2 = decl->ParentDECL;
-        tid.nID = decl2->OwnID;
-        tid.nINCL = decl2->inINCL;
-        str = decl->FullName.c;
-        runStm->objType.ptr
-          = new ReferenceV(CrtblPH_T,tid,str);
-        tdod = new TDODV(true);
-        runStm->varName.ptr = new VarNameV("temp");
-        varNamePtr = (VarName*)runStm->varName.ptr;
-        if (tempNo > 1) {
-					sprintf(buffer,"%u",tempNo);
-          varNamePtr->varName += buffer;
-				}
-//          varNamePtr->varName += _ultoa(tempNo,buffer,10);
-        varNamePtr->MakeTable((address)&myDoc->IDTable,0,runStm,onNewID,(address)&runStm->varName.ptr,0);
-        ((VarName*)runStm->varName.ptr)->varID.nINCL = -1;
-          // to avoid a second assignment of an ID in constrUpdate
-        tdod->ID.nID = ((VarName*)runStm->varName.ptr)->varID.nID;
-        newChe = new CHE(tdod);
-        handle.Append(newChe);
-        objRef = new ObjReferenceV(handle,varNamePtr->varName.c);
-        objRef->parentObject = funcStm;
-        objRef->whereInParent = (address)&funcStm->handle.ptr;
-        tdod->parentObject = objRef;
-        objRef->flags.INCL(isDisabled);
-        objRef->flags.INCL(isTempVar);
-        funcStm->handle.ptr = objRef;
-        funcStm->replacedType = Callee_T;
-        sameRunType = (oldRunStm->initializerCall.ptr != 0);
-        if (sameRunType) {
-          chpFormParm = (CHE*)decl->NestedDecls.first;
-          chpParam = (CHE*)oldFuncStm->inputs.first;
-          while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
-            param = (ParameterV*)chpParam->data->Clone();
-            decl2 = (LavaDECL*)chpFormParm->data;
-            param->formParmID = TID(decl2->OwnID,decl2->inINCL);
-            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
-            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
-            newChe = NewCHE(param);
-            param->containingChain = (CHAINX*)&funcStm->outputs;
-            param->whereInParent = (address)newChe;
-            funcStm->inputs.Append(newChe);
-            chpFormParm = (CHE*)chpFormParm->successor;
-            chpParam = (CHE*)chpParam->successor;
-          }
-          chpParam = (CHE*)oldFuncStm->outputs.first;
-          while (chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr)
-            chpFormParm = (CHE*)chpFormParm->successor;
-          while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == OAttr) {
-            param = (ParameterV*)chpParam->data->Clone();
-            decl2 = (LavaDECL*)chpFormParm->data;
-            param->formParmID = TID(decl2->OwnID,decl2->inINCL);
-            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
-            param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
-            newChe = NewCHE(param);
-            param->containingChain = (CHAINX*)&funcStm->outputs;
-            param->whereInParent = (address)newChe;
-            funcStm->outputs.Append(newChe);
-            chpFormParm = (CHE*)chpFormParm->successor;
-            chpParam = (CHE*)chpParam->successor;
-          }
+        chpFormParm = (CHE*)decl->NestedDecls.first;
+        chpParam = (CHE*)oldRunStm->inputs.first;
+        while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
+          param = (ParameterV*)chpParam->data->Clone();
+          decl2 = (LavaDECL*)chpFormParm->data;
+          param->formParmID = TID(decl2->OwnID,decl2->inINCL);
+          param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onConstrCopy,0,0);
+          param->MakeTable((address)&myDoc->IDTable,0,param->parentObject,onCopy,0,0);
+          newChe = NewCHE(param);
+          param->containingChain = (CHAINX*)&runStm->inputs;
+          param->whereInParent = (address)newChe;
+          runStm->inputs.Append(newChe);
+          chpFormParm = (CHE*)chpFormParm->successor;
+          chpParam = (CHE*)chpParam->successor;
         }
         break;
       }
@@ -4986,6 +4919,15 @@ void CExecView::OnFail()
   InsertOrReplace(fStm);
 }
 
+void CExecView::OnOld() 
+{
+	// TODO: Add your command handler code here
+	
+  if (!EditOK()) return;
+  OldExpression *oldExpr = new OldExpressionV();
+  InsertOrReplace(oldExpr);
+}
+
 void CExecView::OnOrd() 
 {
 	// TODO: Add your command handler code here
@@ -5051,6 +4993,8 @@ void CExecView::OnInsertEnum (QString &itemName, TID &typeID, unsigned pos)
 
 void CExecView::UpdateUI()
 {
+
+//  qDebug("UpdateUI called!");
 
 	if (!initialUpdateDone/* || !myDoc || !myDoc->mySynDef*/)
 		return;
@@ -5135,6 +5079,7 @@ void CExecView::UpdateUI()
   OnUpdateCall(LBaseData->runButton);
   OnUpdateAssign(LBaseData->setButton);
   OnUpdateCreate(LBaseData->newButton);
+  OnUpdateOld(LBaseData->oldButton);
   OnUpdateClone(LBaseData->cloneButton);
   OnUpdateCopy(LBaseData->copyButton);
   OnUpdateAttach(LBaseData->attachButton);
@@ -5232,6 +5177,7 @@ void CExecView::DisableKwdButtons() {
   LBaseData->runButton->setEnabled(false);
   LBaseData->setButton->setEnabled(false);
   LBaseData->newButton->setEnabled(false);
+  LBaseData->oldButton->setEnabled(false);
   LBaseData->cloneButton->setEnabled(false);
   LBaseData->copyButton->setEnabled(false);
   LBaseData->attachButton->setEnabled(false);
@@ -5329,9 +5275,6 @@ bool CExecView::EnableCut()
     if (text->currentSynObj->parentObject->parentObject->parentObject->primaryToken == new_T)
       return (text->currentSynObj->parentObject->parentObject->whereInParent
         != (address)&((NewExpression*)text->currentSynObj->parentObject->parentObject->parentObject)->initializerCall.ptr);
-    else if (text->currentSynObj->parentObject->parentObject->parentObject->primaryToken == run_T)
-      return (text->currentSynObj->parentObject->parentObject->whereInParent
-        != (address)&((Run*)text->currentSynObj->parentObject->parentObject->parentObject)->initializerCall.ptr);
   }
 
   return (IsDeletablePrimary()
@@ -5582,12 +5525,24 @@ void CExecView::OnUpdateCreate(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
+void CExecView::OnUpdateOld(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+
+  pb->setEnabled(!Taboo() 
+    && text->currentSynObj->ExpressionSelected(text->currentSelection)
+    && (myDECL->DeclType == Ensure
+        || (myDECL->DeclType == ExecDef 
+            && myDECL->ParentDECL->DeclType == Function)));
+}
+
 void CExecView::OnUpdateCall(QPushButton *pb) 
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
   
-  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
-    && !text->currentSynObj->InReadOnlyContext());
+  pb->setEnabled(!Taboo()
+    && text->currentSynObj->StatementSelected(text->currentSelection)
+    && !text->currentSynObj->InReadOnlyClause());
 }
 /*
 void CExecView::OnUpdateUuid(QPushButton *pb) 
@@ -6037,8 +5992,8 @@ void CExecView::OnUpdateInsert(wxAction* action)
           || (text->currentSynObj->primaryToken != TDOD_T
              && text->currentSynObj->containingChain)))
     || (text->currentSynObj->StatementSelected(text->currentSelection)
-        && (text->currentSynObj->containingChain
-            || text->currentSynObj->primaryToken == Stm_T))
+        /*&& (text->currentSynObj->containingChain
+            || text->currentSynObj->primaryToken == Stm_T)*/)
     || (  (text->currentSelection->data.token == FuncPH_T
           || text->currentSelection->data.token == FuncDisabled_T
           || text->currentSelection->data.token == FuncRef_T)
@@ -6329,7 +6284,7 @@ void CExecView::whatNext()
 }
 
 
-ExecWhatsThis::ExecWhatsThis(CExecView *ev) : WhatsThis(0,ev->sv) {
+ExecWhatsThis::ExecWhatsThis(CExecView *ev) : WhatsThis(0,ev) {
   execView = ev;
 }
 

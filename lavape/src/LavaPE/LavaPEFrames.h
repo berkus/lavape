@@ -193,6 +193,7 @@ public slots:
     virtual void call();
     virtual void set();
     virtual void newExpr();
+    virtual void old();
     virtual void clone();
     virtual void copy();
     virtual void attach();

@@ -126,22 +126,31 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 		deletingMainFrame = false;
 		isChMaximized = false;
 
-    SetVendorName("TestVendor");
+//    SetVendorName("FhG-SIT");
+//    SetAppName("LavaPE");
     SetClassName(argv[0]);
-		settings = new QSettings(QSettings::Native);
-
-//    idleTimer = new QTimer(this);
-//    idleTimer->start(0,false);
 
     QApplication::connect((const QObject*)QApplication::eventLoop(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
     connect(this,SIGNAL(guiThreadAwake()),SLOT(onGuiThreadAwake()));
-//    connect(idleTimer,SIGNAL(timeout()),SLOT(onIdle()));
     apExit = false;
 }
 
 wxApp::~wxApp() {
-  m_docManager->FileHistorySave(*settings);
-  delete settings;
+  QSettings settings(QSettings::Native);
+
+  settings.beginGroup(GetSettingsPath());
+  m_docManager->FileHistorySave(settings);
+//  delete settings;
+}
+
+void wxApp::SetVendorName(const QString& name) {
+  m_vendorName = name; 
+  m_settingsPath = "/" + name;
+}
+
+void wxApp::SetAppName(const QString& name) {
+  m_appName = name;
+  m_settingsPath += "/" + name;
 }
 
 void wxApp::onGuiThreadAwake() {
@@ -801,12 +810,12 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
   doc->SetCommandProcessor(doc->OnCreateCommandProcessor());
   doc->SetDocTypeName(m_docTypeName);
   if (doc->OnCreate(fn)) {
-    wxMDIChildFrame* newFrame = CreateChildFrame(doc);
     if (flags == wxDOC_NEW)
       ok = doc->OnNewDocument();
     else 
       ok = doc->OnOpenDocument(fn);
     if (ok) {
+      wxMDIChildFrame* newFrame = CreateChildFrame(doc);
       newFrame->InitialUpdate();
       newFrame->show();
       return doc;
@@ -1285,9 +1294,12 @@ wxDocTemplate *wxDocManager::MatchTemplate(const QString& WXUNUSED(path))
 // File history management
 void wxDocManager::AddFileToHistory(QString& file)
 {
+  QSettings settings(QSettings::Native);
+
   if (m_fileHistory) {
+    settings.beginGroup(wxTheApp->GetSettingsPath());
     m_fileHistory->AddToHistory(new DString(file.ascii()),wxTheApp);
-    m_fileHistory->Save(*wxTheApp->settings);
+    m_fileHistory->Save(settings);
   }
 }
 

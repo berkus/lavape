@@ -48,9 +48,14 @@
   1. Open view operations (no undo facility):                      
 
   CPECommand_OpenFormView,  |  CommandData1: always the related LavaDECL    | not in Queue
-  CPECommand_OpenExecView,   |  CommandData2: always the CDEView* mainView
+  CPECommand_OpenWizardView,|  CommandData2: always the CDEView* mainView
   CPECommand_OpenSelView,   |  
-  CPECommand_OpenWizardView,    |  
+
+  --------------------------------------------------------------------------
+  CPECommand_OpenExecView,  |  CommandData1: always the related CHE*
+                            |  CommandData2: always the CDEView* mainView
+    
+      
 -----------------------------------------------------------------------------------------------
                                |                                 
   2. Include lava file operations (with undo facility):
@@ -204,9 +209,10 @@ public:
   CHEFormNode* formNode;
   TID id;
   TID parentID;
+  int type; //only used in VTView
   
   CBrowseContext(wxView* view, SynObjectBase* synObj);
-  CBrowseContext(wxView* view, LavaDECL* decl);
+  CBrowseContext(wxView* view, LavaDECL* decl, int t=0);
   CBrowseContext(wxView* view, CHEFormNode* node);
 
   void RemoveView(wxView* view);
@@ -230,8 +236,10 @@ enum TFindWhere { findInThisView, findInThisDoc, findInDocs, findInIncl};
 
 class LAVABASE_DLL CFindData {
 public:
-  int index; //=0: reference in declaration tree, =1: reference in exec,
-             //=2: name in declaration tree, =3: name in exec 
+  int index; //=0: reference in declaration tree,
+             //=1: reference in exec,
+             //=2: name in declaration tree,
+             //=3: name in exec 
   SynFlags FindRefFlags;
   TFindWhere FWhere;
   DString fname; //file
@@ -439,7 +447,7 @@ public:
     *andButton, *orButton,
     *xorButton, *notButton, *assertButton,
     *tryButton, *succeedButton, *failButton, *runButton,
-    *setButton, *newButton, *cloneButton,
+    *setButton, *newButton, *oldButton, *cloneButton,
     *copyButton, *attachButton, *qryItfButton,
     *scaleButton, *itemButton, *callbackButton,
 
@@ -555,5 +563,7 @@ extern LAVABASE_DLL int question(QWidget *parent, const QString &caption,
 			 int button0, int button1, int button2=0);
 
 extern LAVABASE_DLL QAssistantClient *qacl;
+
+extern LAVABASE_DLL void ShowPage(char *file);
 
 #endif

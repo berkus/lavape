@@ -65,63 +65,16 @@ CComboBar::CComboBar()
 {
 }
 
-
-/*
-BEGIN_MESSAGE_MAP(CComboBar, CDialogBar)
-  //{{AFX_MSG_MAP(CComboBar)
-	ON_CBN_CLOSEUP(IDC_BasicTypes, OnCloseupBasicTypes)
-	ON_CBN_CLOSEUP(IDC_CompaBTypes, OnCloseupCompaBTypes)
-	ON_CBN_CLOSEUP(IDC_ComboAttach, OnCloseupComboAttach)
-	ON_CBN_CLOSEUP(IDC_ComboBaseInis, OnCloseupComboBaseInis)
-	ON_CBN_CLOSEUP(IDC_COMBOCall, OnCloseupCOMBOCall)
-	ON_CBN_CLOSEUP(IDC_COMBOCallback, OnCloseupCOMBOCallback)
-	ON_CBN_CLOSEUP(IDC_ComboClassFuncs, OnCloseupComboClassFuncs)
-	ON_CBN_CLOSEUP(IDC_ComboCompObjects, OnCloseupComboCompObjects)
-	ON_CBN_CLOSEUP(IDC_ComboEnums, OnCloseupComboEnums)
-	ON_CBN_CLOSEUP(IDC_ComboFuncs, OnCloseupComboFuncs)
-	ON_CBN_CLOSEUP(IDC_ComboNew, OnCloseupComboNew)
-	ON_CBN_CLOSEUP(IDC_ComboObjects, OnCloseupComboObjects)
-	ON_CBN_CLOSEUP(IDC_ComboSetObjects, OnCloseupComboSetObjects)
-	ON_CBN_CLOSEUP(IDC_ComboSetTypes, OnCloseupComboSetTypes)
-	ON_CBN_CLOSEUP(IDC_ComboSNew, OnCloseupComboSNew)
-	ON_CBN_CLOSEUP(IDC_ComboSubObjects, OnCloseupComboSubObjects)
-	ON_CBN_CLOSEUP(IDC_ComboTypes, OnCloseupComboTypes)
-	ON_CBN_CLOSEUP(IDC_CompaTypes, OnCloseupCompaTypes)
-	ON_CBN_CLOSEUP(IDC_CompoInterf, OnCloseupCompoInterf)
-	ON_CBN_CLOSEUP(IDC_StaticFuncs, OnCloseupStaticFuncs)
-  ON_NOTIFY_EX( TTN_NEEDTEXT, 0, SetToolText )
-
-
-	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-*/
-
-//  ON_CBN_SELENDOK(IDC_ComboStatFuncs, OnSelendokComboStatFuncs)
-
 /////////////////////////////////////////////////////////////////////////////
-// CComboBar message handlers
-/*
-bool  CComboBar::SetToolText( UINT id, NMHDR * pTTTStruct, LRESULT * pResult )
-{
-  NMHDR hdr = ((LPNMTTDISPINFO)pTTTStruct)->hdr;
-  int nID = ::GetDlgCtrlID((HWND)hdr.idFrom);
 
-  if (nID == IDC_ButtonEnum)
-    ((NMTTDISPINFO*)pTTTStruct)->lpszText ="Enum items";
-  else if (nID == IDC_NewFunc)
-    ((NMTTDISPINFO*)pTTTStruct)->lpszText ="New exported function";
-  else if (nID == IDC_NewPFunc)
-    ((NMTTDISPINFO*)pTTTStruct)->lpszText ="New private function";
-  return TRUE;
-}
-*/
 #undef QMainWindow
 
-CComboBar::CComboBar(LavaDECL* decl, CPEBaseDoc *doc, QMainWindow* parent)
+CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QMainWindow* parent)
 :QDockWindow(parent, "ComboBar")//:QToolBar( parent ) 
 {
-  myDECL = decl;
-  if (decl->DeclType == Function)
+  ExecDECL = execDecl;
+  myDECL = execDecl->ParentDECL;
+  if (myDECL->DeclType == Function)
     SelfTypeDECL = myDECL->ParentDECL;
   else
     SelfTypeDECL = myDECL;
@@ -140,17 +93,6 @@ CComboBar::CComboBar(LavaDECL* decl, CPEBaseDoc *doc, QMainWindow* parent)
   m_BasicTypesCtrl->setCurrentItem(0);
   m_ObjectsCtrl->show();
   m_EnumsCtrl->show();
-  /*
-  BitmapEnums.LoadBitmap(IDB_BITMAPEnums); 
-  m_ButtonEnum->SetBitmap(HBITMAP(BitmapEnums));
-
-  BmNewCFunc.LoadBitmap(IDB_BITMAPNewCFunc); 
-  m_NewFunc->SetBitmap(HBITMAP(BmNewCFunc));
-
-  BmNewPFunc.LoadBitmap(IDB_BITMAPNewPFunc); 
-  m_NewPFunc->SetBitmap(HBITMAP(BmNewPFunc));
-  EnumMenu.CreatePopupMenu( );
-  */
   EnumsEnable = false;
   EnumsShow = true;
   CContext context;
@@ -170,8 +112,8 @@ CComboBar::CComboBar(LavaDECL* decl, CPEBaseDoc *doc, QMainWindow* parent)
   }
   for (int ii = 0; ii < hcombosEnum; ii++)
     VisibleList[ii] = false;
-  ((SelfVar*)((LavaDECL*)((CHE*)myDECL->NestedDecls.last)->data)->Exec.ptr)->selfCtx = context;
-  OnUpdate(myDECL,true);   //calculates all other boxes
+  ((SelfVar*)ExecDECL->Exec.ptr)->selfCtx = context;
+  OnUpdate(ExecDECL,true);   //calculates all other boxes
   connect (&EnumMenu, SIGNAL(activated(int)), this, SLOT(OnEnumMenu(int )));
   connect (m_ComboBarDlg->IDC_ComboObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboObjects(int)));
   connect (m_ComboBarDlg->IDC_ComboSetObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSetObjects(int)));
@@ -199,16 +141,17 @@ CComboBar::CComboBar(LavaDECL* decl, CPEBaseDoc *doc, QMainWindow* parent)
  
 }
 
-void CComboBar::OnUpdate(LavaDECL *decl, bool externalHint)
+void CComboBar::OnUpdate(LavaDECL *execDecl, bool externalHint)
 {
   SetCombos(true, false);
   DeleteObjData(false); //delete the object combos
   if (externalHint) {
-    myDECL = decl;
+    ExecDECL = execDecl;
+    myDECL = execDecl->ParentDECL;
     LeftCombo = 0;
     RightCombo = 0;
     ThirdCombo = 0;
-    if (decl->DeclType == Function)
+    if (myDECL->DeclType == Function)
       SelfTypeDECL = myDECL->ParentDECL;
     else
       SelfTypeDECL = myDECL;
@@ -226,50 +169,10 @@ void CComboBar::OnUpdate(LavaDECL *decl, bool externalHint)
     ResetComboItems(m_CallIntCtrl);
     ResetComboItems(m_EnumsCtrl);
     ResetComboItems(m_CompoObjIntCtrl);
-    /*Q
-    int pos = m_TypesCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_TypesCtrl->DeleteString(1);
 
-    pos = m_ObjectsCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_ObjectsCtrl->DeleteString(1);
-
-    pos = m_CallbackCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_CallbackCtrl->DeleteString(1);
-
-    pos = m_SetTypesCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_SetTypesCtrl->DeleteString(1);
-
-    pos = m_NewCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_NewCtrl->DeleteString(1);
-
-    pos = m_SNewCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_SNewCtrl->DeleteString(1);
-
-    pos = m_AttachCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_AttachCtrl->DeleteString(1);
-
-    pos = m_CallIntCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_CallIntCtrl->DeleteString(1);
-
-    pos = m_EnumsCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_EnumsCtrl->DeleteString(1);
-
-    pos = m_CompoObjIntCtrl->GetCount();
-    while (pos > 1) 
-      pos = m_CompoObjIntCtrl->DeleteString(1);
-    */
     CExecTypes * execFuncType = new CExecTypes(this);
     delete execFuncType;
-    CExecFields* execFields = new CExecFields(this, myDECL, ((SelfVar*)((LavaDECL*)((CHE*)myDECL->NestedDecls.last)->data)->Exec.ptr)->selfCtx);
+    CExecFields* execFields = new CExecFields(this, myDECL, ((SelfVar*)ExecDECL->Exec.ptr)->selfCtx);
     delete execFields;
     m_TypesCtrl->setCurrentItem(0);
     m_SetTypesCtrl->setCurrentItem(0);
@@ -300,38 +203,10 @@ void CComboBar::DeleteObjData(bool setCombo)
     m_CompaObjectsCtrl = m_ComboBarDlg->IDC_ComboCompObjects;
   }
 
-/*
-  pos = m_ObjectsCtrl->GetCount();
-  while (pos > 1) {
-    data = (CFieldsItemData*)m_ObjectsCtrl->GetItemData(1);
-    delete data;
-    pos = m_ObjectsCtrl->DeleteString(1);
-  }
-  */
-
   ResetComboItems(m_SubObjectsCtrl);
   ResetComboItems(m_SetObjectsCtrl);
   ResetComboItems(m_CompaObjectsCtrl);
-  /*Q
-  pos = m_SubObjectsCtrl->GetCount();
-  while (pos > 1) {
-    data = (CFieldsItemData*)m_SubObjectsCtrl->GetItemData(1);
-    delete data;
-    pos = m_SubObjectsCtrl->DeleteString(1);
-  }
-  pos = m_SetObjectsCtrl->GetCount();
-  while (pos > 1) {
-    data = (CFieldsItemData*)m_SetObjectsCtrl->GetItemData(1);
-    delete data;
-    pos = m_SetObjectsCtrl->DeleteString(1);
-  }
-  pos = m_CompaObjectsCtrl->GetCount();
-  while (pos > 1) {
-    data = (CFieldsItemData*)m_CompaObjectsCtrl->GetItemData(1);
-    delete data;
-    pos = m_CompaObjectsCtrl->DeleteString(1);
-  }
-  */
+
 }
 
 
@@ -454,7 +329,25 @@ void CComboBar::OnButtonEnum()
 
 void CComboBar::OnNewPFunc()
 {
-  TID id = TID(FuncParentDecl->OwnID, FuncParentDecl->inINCL), otherID;
+  TID id;
+  LavaDECL *funcDecl;
+
+  CExecView *view = (CExecView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  id.nID = myDoc->MakeFunc(SelfTypeDECL, false, view);
+  id.nINCL = 0;
+  view->GetParentFrame()->Activate(true);
+  if (id.nID > 0) {
+    funcDecl = myDoc->IDTable.GetDECL(id);
+    QString refName = QString(funcDecl->LocalName.c);
+    view->OnInsertRef(refName, id, false, 0, true);
+  }
+}
+
+void CComboBar::OnNewFunc()
+{
+  if (FuncParentDecl->DeclType == Impl)
+    FuncParentDecl = myDoc->IDTable.GetDECL(((CHETID*)FuncParentDecl->Supports.first)->data, FuncParentDecl->inINCL);
+  TID otherID, id = TID(FuncParentDecl->OwnID, FuncParentDecl->inINCL);
   DString fn;
   CPEBaseDoc* doc;
   LavaDECL* destDECL = 0, *funcDecl;
@@ -472,21 +365,14 @@ void CComboBar::OnNewPFunc()
     destDECL = FuncParentDecl;
   }
   if (destDECL) 
-    id.nID = doc->MakeFunc(destDECL, doc != myDoc);
+    id.nID = doc->MakeFunc(destDECL, doc != myDoc, view);
   view->GetParentFrame()->Activate(true);
   if (id.nID > 0) {
     otherID = TID(id.nID, 0);
     funcDecl = doc->IDTable.GetDECL(otherID);
-    QString refName=QString(funcDecl->LocalName.c);
+    QString refName = QString(funcDecl->LocalName.c);
     view->OnInsertRef(refName, id, false, 0, doc == myDoc);
   }
-}
-
-void CComboBar::OnNewFunc()
-{
-  if (FuncParentDecl->DeclType == Impl)
-    FuncParentDecl = myDoc->IDTable.GetDECL(((CHETID*)FuncParentDecl->Supports.first)->data, FuncParentDecl->inINCL);
-  OnNewPFunc();
 }
 
 
@@ -828,7 +714,7 @@ void CComboBar::AddLocal(const TID& id, const DString& name, const TID& typeID, 
   m_SetObjectsCtrl = m_ComboBarDlg->IDC_ComboSetObjects;
   tdod->ID = id;
   tdod->name = name;
-  tdod->context = ((SelfVar*)((LavaDECL*)((CHE*)myDECL->NestedDecls.last)->data)->Exec.ptr)->selfCtx;
+  tdod->context = ((SelfVar*)ExecDECL->Exec.ptr)->selfCtx;
   che = NewCHE(tdod);
   accuIDs.Append(che);
   data->IDs = accuIDs;
@@ -1565,15 +1451,18 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDe
   m_NewFunc = m_ComboBarDlg->IDC_NewFunc;
   m_NewPFunc = m_ComboBarDlg->IDC_NewPFunc;
   m_NewFunc->show();
-  m_NewFunc->setEnabled(true);
+  //m_NewFunc->setEnabled(true);
   m_NewPFunc->show();
-  m_NewPFunc->setEnabled(true);
+  //m_NewPFunc->setEnabled(true);
   NewFuncShow = true;
   NewFuncEnable = true;
   if (FuncParentDecl->DeclType == Impl)
     NewPFuncEnable = true;
   else
-    NewPFuncEnable = false;
+    if (SelfTypeDECL->Supports.first && (((CHETID*)SelfTypeDECL->Supports.first)->data == TID(FuncParentDecl->OwnID,FuncParentDecl->inINCL))) 
+      NewPFuncEnable = true;
+    else
+      NewPFuncEnable = false;
   LeftCombo = m_ComboBarDlg->IDC_ComboFuncs;
   m_ClassFuncsCtrl->show();
   m_ClassFuncsCtrl->setCurrentItem(0);
@@ -1853,7 +1742,7 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
   if (elDef->fromBType != NonBasic)
     return;
   elType = elDef->DeclType;
-  CContext context = ((SelfVar*)((LavaDECL*)((CHE*)Bar->myDECL->NestedDecls.last)->data)->Exec.ptr)->selfCtx;
+  CContext context = ((SelfVar*)Bar->ExecDECL->Exec.ptr)->selfCtx;
   while (elType == VirtualType){
     refID = TID(refEl->OwnID, refEl->inINCL);
     if (context.oContext && (refID == Bar->myDoc->GetMappedVType(refID, context, 0)))  {
@@ -1875,7 +1764,7 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
         combo = Bar->m_NewCtrl;
         //pMax = &maxIW;
         setClassName = true;
-        combo2 = Bar->m_CallIntCtrl;
+        //combo2 = Bar->m_CallIntCtrl;
         //pMax2 = &maxCallW;
       }
     break;

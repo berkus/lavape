@@ -1291,7 +1291,7 @@ ValOnInit CFuncBox::OnInitDialog()
 {
   CHE* cheIO;
   SynFlags typeflag;
-  LavaDECL *decl,  *baseDECL, *output;
+  LavaDECL *decl,  *baseDECL;
   CHETID *ncheS, *cheS;
   CListItem *listItem;
 
@@ -1344,8 +1344,10 @@ ValOnInit CFuncBox::OnInitDialog()
   else {
     valNewName = QString(myDECL->LocalName.c);
     cheIO = (CHE*)myDECL->NestedDecls.first;
-    hasParams = cheIO && (((LavaDECL*)cheIO->data)->DeclType != ExecDef);
-    while (cheIO && (((LavaDECL*)cheIO->data)->DeclType != ExecDef)) {
+    hasParams = cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc);
+    hasOutput = false;
+    while (cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
+      hasOutput = hasOutput || (((LavaDECL*)cheIO->data)->DeclType == OAttr);
       if (((LavaDECL*)cheIO->data)->TypeFlags.Contains(sameAsSelf)) {
         m_StaticFunc->setEnabled(false);
         cheIO = 0;
@@ -1353,13 +1355,6 @@ ValOnInit CFuncBox::OnInitDialog()
       else
         cheIO = (CHE*)cheIO->successor;
     }
-    hasOutput = false;
-    if (myDECL->NestedDecls.last) {
-      output = (LavaDECL*)((CHE*)myDECL->NestedDecls.last)->data;
-      if ((output->DeclType == ExecDef) && myDECL->NestedDecls.last->predecessor)
-        output = (LavaDECL*)((CHE*)myDECL->NestedDecls.last->predecessor)->data;
-      hasOutput = output->DeclType == OAttr;
-    } 
     hasOutput = hasOutput || myDECL->Inherits.first;
 
     if (!myDECL->ParentDECL->TypeFlags.Contains(isAbstract)) 
@@ -1817,7 +1812,7 @@ void CFuncBox::OnOK()
   }
   ListToChain(m_Inherits1, &myDECL->Inherits);  //fires
   if (myDECL->ParentDECL->DeclType == Impl) 
-    myDoc->GetConstrDECL(myDECL);
+    myDoc->GetConstrDECL(myDECL, ExecDef);
   if (!myDECL->Supports.first) 
     myDECL->SecondTFlags.EXCL(overrides);
   if (m_Abstract->isOn())
@@ -2172,7 +2167,7 @@ void CInitBox::OnOK()
       return;
     }
   }
-  myDoc->GetConstrDECL(myDECL);
+  myDoc->GetConstrDECL(myDECL, ExecDef);
   if (m_Transaction1->isOn())
     myDECL->TypeFlags.INCL(isTransaction); 
   else

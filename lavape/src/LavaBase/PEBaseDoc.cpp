@@ -264,7 +264,7 @@ bool CPEBaseDoc::Step(CLavaPEHint* hint, LavaDECL* parDECL, CHE*& relElem)
 CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo/*, CHE *elRemoved*/)
 {
   CLavaPEHint  *newHint, *viewHint = hint;
-  CHE *cheElDef, *relElem, *cheHint, *elRemoved;
+  CHE *cheElDef, *relElem, *cheHint, *elRemoved, *cheExec;
   DString *str, *str2 = 0, absName;
   LavaDECL *hintDECL, *parEl = 0, **pNewDecl, *elDECL, *colDECL, *oldDECL, *decl4;
   TDeclType lastDefType = NoDef;
@@ -417,11 +417,15 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo/*, C
           IDTable.UndoDeleteID(elDECL->OwnID);
           IDTable.Change((LavaDECL**)&cheElDef->data);
         }
-        else
-          if ((elDECL->DeclType == Function)
-              && elDECL->NestedDecls.last
-              && (((LavaDECL*)((CHE*)elDECL->NestedDecls.last)->data)->DeclType == ExecDef))
-            ((SynObjectBase*)((LavaDECL*)((CHE*)elDECL->NestedDecls.last)->data)->Exec.ptr)->MakeTable((address)&IDTable, 0, (SynObjectBase*)((CHE*)elDECL->NestedDecls.last)->data, onTypeID);
+        else 
+          if (elDECL->DeclType == Function) {
+            cheExec = (CHE*)elDECL->NestedDecls.first;
+            while(cheExec) {
+              if (((LavaDECL*)cheExec->data)->DeclDescType == ExecDesc)
+                ((SynObjectBase*)((LavaDECL*)cheExec->data)->Exec.ptr)->MakeTable((address)&IDTable, 0, (SynObjectBase*)cheExec->data, onTypeID);
+              cheExec = (CHE*)cheExec->successor;
+            }
+          }
         if (!undo && !redo && !elDECL->SecondTFlags.Contains(funcImpl)
             && !elDECL->SecondTFlags.Contains(overrides)
             && (elDECL->DeclType != FormText)) {
@@ -721,9 +725,8 @@ void  CPEBaseDoc::ChangeDECL(CLavaPEHint* hint, bool undo)
 bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool redo)
 { 
   int newINCL=0, pos = -1, undoRedo = 0;
-  LavaDECL *decl, *cDECL;
+  LavaDECL *decl;
   CHESimpleSyntax *che1, *che2;
-  CHE *che;
   CLavaPEHint *hint, *viewHint;
   TDECLComment* ptr;
   DString inclFile, clipDoc, oldTopName, oldUsedName;
@@ -770,12 +773,8 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
       if (LBaseData->ConstrUpdate) {
         if (undo || redo) {
           decl = ((LavaDECL*)hint->CommandData1)->ParentDECL;
-          if (decl->NestedDecls.last) 
-            cDECL = (LavaDECL*)((CHE*)decl->NestedDecls.last)->data;
-          if ( !decl->NestedDecls.last || (cDECL->DeclDescType != ExecDesc)) {
-            che = NewCHE((LavaDECL*)hint->CommandData1);
-            decl->NestedDecls.Append(che);
-          }
+          if (!GetConstrDECL(decl,((LavaDECL*)hint->CommandData1)->DeclType, false,false)) 
+            SetConstrChe(decl,(LavaDECL*)hint->CommandData1);
           OpenCView((LavaDECL*)hint->CommandData1);
         }
         LBaseData->ConstrUpdate->ChangeConstraint(hint, this, undo || redo);

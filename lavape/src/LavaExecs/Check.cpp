@@ -35,11 +35,11 @@
 
 
 #define ENTRY \
+  execView=ckd.execView; \
   bool ok=true; \
   oldError = (CHE*)errorChain.first; \
   errorChain.Destroy(); lastError = 0; \
   if (flags.Contains(ignoreSynObj)) return true;
-//  ckd.currentSynObj = this;
 
 #define EXIT {return ok;}
 
@@ -229,7 +229,7 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
   else
     throw (new CNotSupportedException);
 #else
-  if (((SelfVar*)ckd.selfVar)->myView)
+  if (((SelfVar*)ckd.selfVar)->execView)
     new CLavaError(&synObj->errorChain,errorCode,new DString(textParam));
   ckd.nErrors++;
   synObj->lastError = errorCode;
@@ -832,6 +832,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
     objRef->flags.EXCL(brokenRef);
     che = (CHE*)objRef->refIDs.first;
     tdod = (TDOD*)che->data;
+    tdod->execView=ckd.execView;
     tdodID = tdod->ID;
     ADJUST4(tdodID);
     ((TDOD*)che->data)->oldError = (CHE*)((TDOD*)che->data)->errorChain.first;
@@ -993,7 +994,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
           ok = false;
         }
       }
-      if (primaryToken == FuncRef_T && parentObject->IsFuncInvocation())
+      if (primaryToken == FuncRef_T && parentObject && parentObject->IsFuncInvocation())
         if (parentObject->parentObject)  //to exclude execName of a invariant
           if (((FuncExpression*)parentObject)->flags.Contains(staticCall)
           || !((FuncExpression*)parentObject)->handle.ptr) {
@@ -1072,8 +1073,8 @@ bool SynObject::UpdateReference (CheckData &ckd) {
     else {
       if (primaryToken == FuncRef_T
       && !parentObject->parentObject) {
-        ((Reference*)this)->refID = TID(((SelfVar*)parentObject)->myDECL->OwnID,0);
-        ((Reference*)this)->refName = ((SelfVar*)parentObject)->myDECL->FullName;
+        ((Reference*)this)->refID = TID(((SelfVar*)parentObject)->execDECL->OwnID,0);
+        ((Reference*)this)->refName = ((SelfVar*)parentObject)->execDECL->FullName;
         break;
       }
       if (!((Reference*)this)->refName.l) {
@@ -1209,7 +1210,7 @@ bool MultipleOp::Check (CheckData &ckd)
   Category cat, callObjCat;
   SET oldFlags=ckd.flags;
   SynFlags ctxFlags;
-  bool isStm;
+  bool isStm, opd1ok=true;
 #ifdef INTERPRETER
   LavaDECL *actDecl, *formDecl;
   TID actTid, formTid;
@@ -1232,8 +1233,12 @@ bool MultipleOp::Check (CheckData &ckd)
         ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
     }
     opd = (SynObject*)chp->data;
-    if (isStm || !opd->IsIfStmExpr())
+    if (isStm || !opd->IsIfStmExpr()) {
       ok &= opd->Check(ckd);
+      if (chp == (CHE*)operands.first)
+        opd1ok = ok;
+    }
+
   }
 
   if (primaryToken == or_T) {
@@ -1252,6 +1257,9 @@ bool MultipleOp::Check (CheckData &ckd)
     opd1->SetError(ckd,&ERR_IfxForbidden);
     ERROREXIT
   }
+
+  if (!opd1ok)
+    ERROREXIT
 
   ckd.tempCtx = ckd.lpc;
   opd1->ExprGetFVType(ckd,declOp1,cat,ctxFlags);
@@ -1447,17 +1455,6 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
         }
       }
       break;
-    case run_T:
-      tempNo++;
-      varName = (VarName*)((Run*)synObj)->varName.ptr;
-      elemTypePtr = (Reference*)((Run*)synObj)->objType.ptr;
-      if (NoPH(varName)) {
-        typeID = elemTypePtr->refID;
-        ADJUST4(typeID);
-        if (Action(ckd,varName,typeID)) return;
-      }
-      ckd.criticalScope = false;
-      break;
     case new_T:
       if (!((NewExpression*)synObj)->itf.ptr) {
         tempNo++;
@@ -1496,6 +1493,8 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
     case initializer_T:
     case dftInitializer_T:
     case constraint_T:
+    case require_T:
+    case ensure_T:
       selfVar = (SelfVar*)synObj;
       if (!selfVar->execDECL->ParentDECL->TypeFlags.Contains(isStatic)) {
         typeID = selfVar->typeID;
@@ -1516,6 +1515,11 @@ void UpdateParameters (CheckData &ckd) {
   SelfVar *selfVar=(SelfVar*)ckd.myDECL->Exec.ptr;
   LavaDECL *decl=ckd.myDECL->ParentDECL;
 
+  if (ckd.myDECL->DeclType == Require
+  || ckd.myDECL->DeclType == Ensure
+  || decl->DeclType == Interface)
+    return;
+
   if (decl->DeclType == Function)
     if (decl->TypeFlags.Contains(defaultInitializer))
       selfVar->primaryToken = dftInitializer_T;
@@ -1523,8 +1527,6 @@ void UpdateParameters (CheckData &ckd) {
       selfVar->primaryToken = initializer_T;
     else
       selfVar->primaryToken = function_T;
-  if (decl->DeclType == Interface)
-    return;
 
   selfVar->oldFormParms = (FormParms*)selfVar->formParms.ptr;
 #ifdef INTERPRETER
@@ -1871,11 +1873,13 @@ bool SelfVar::OutputCheck (CheckData &ckd) {
 
 bool SelfVar::IsReadOnlyClause(SynObject *synObj, bool &roExec)
 {
-  if (primaryToken == constraint_T) {
+  if (primaryToken == constraint_T
+  || primaryToken == require_T
+  || primaryToken == ensure_T) {
     roExec = false;
     return true;
   }
-  else if (myDECL->TypeFlags.Contains(isConst)) {
+  else if (execDECL->TypeFlags.Contains(isConst)) {
     roExec = true;
     return true;
   }
@@ -1901,25 +1905,25 @@ bool SelfVar::Check (CheckData &ckd)
 
   ENTRY
 
-  myDECL=ckd.myDECL->ParentDECL;
+//  execDECL=ckd.myDECL->ParentDECL;
   ckd.selfVar = this;
-  if (ckd.execView)
-    myView = ckd.execView;
 
   ok &= ((SynObject*)execName.ptr)->Check(ckd);
 
-  if (myDECL->DeclType == Function)
-    ckd.selfTypeDECL = myDECL->ParentDECL;
+  if (execDECL->ParentDECL->DeclType == Function
+  || execDECL->ParentDECL->DeclType == Require
+  || execDECL->DeclType == Ensure)
+    ckd.selfTypeDECL = execDECL->ParentDECL->ParentDECL;
   else
-    ckd.selfTypeDECL = myDECL;
+    ckd.selfTypeDECL = execDECL->ParentDECL;
   ckd.inINCL = ckd.myDECL->inINCL;
 
-  ckd.document->NextContext(myDECL, ckd.lpc);
+  ckd.document->NextContext(execDECL, ckd.lpc);
 
-  if (myDECL->DeclType == Function) {
+  if (execDECL->ParentDECL->DeclType == Function) {
     ckd.lpc.ContextFlags.INCL(selfiContext);
     ckd.lpc.ContextFlags.INCL(selfoContext);
-    if (myDECL->TypeFlags.Contains(forceOverride))
+    if (execDECL->ParentDECL->TypeFlags.Contains(forceOverride))
       ckd.lpc.ContextFlags.INCL(staticContext);
     else
       ckd.lpc.ContextFlags.EXCL(staticContext);
@@ -1938,7 +1942,7 @@ bool SelfVar::Check (CheckData &ckd)
 #ifdef INTERPRETER
   inINCL = ckd.inINCL;
   stackPos = 0;
-  switch (myDECL->DeclType) {
+  switch (execDECL->ParentDECL->DeclType) {
     case Function:
     case Impl:
       nInputs = ckd.myDECL->ParentDECL->nInput;
@@ -1958,28 +1962,39 @@ bool SelfVar::Check (CheckData &ckd)
   ckd.stackFrameSize = nParams;
 #endif
 
+  if (execDECL->DeclType == ExecDef
+  && execDECL->ParentDECL->DeclType != Impl) {
 //#ifndef INTERPRETER
-  UpdateParameters(ckd);
-  // must be done before BaseInitsCheck since it resets the "isReferenced" WorkFlag of
-  // input parameters
+    UpdateParameters(ckd);
+    // must be done before BaseInitsCheck since it resets the "isReferenced" WorkFlag of
+    // input parameters
 //#endif
 
-  if (myDECL->TypeFlags.Contains(isInitializer))
-    ok &= BaseInitsCheck(ckd);
-  else
-    baseInitCalls.Destroy();
+    if (execDECL->ParentDECL->TypeFlags.Contains(isInitializer))
+      ok &= BaseInitsCheck(ckd);
+    else
+      baseInitCalls.Destroy();
+  }
 
   ok &= ((SynObject*)body.ptr)->Check(ckd);
 
   if (primaryToken == constraint_T
-  && NoPH(body.ptr))
-    ckd.myDECL->WorkFlags.INCL(nonEmptyConstraint);
+       || primaryToken == require_T
+       || primaryToken == ensure_T)
+    if (NoPH(body.ptr))
+      ckd.myDECL->WorkFlags.INCL(nonEmptyConstraint);
+//    else
+//      ckd.myDECL->WorkFlags.EXCL(nonEmptyConstraint);
 
-  if (myDECL->TypeFlags.Contains(isInitializer))
-    ok &= InitCheck(ckd);
-  ok &= InputCheck(ckd); // check if all non-optional input parameters have been referenced
-  if (myDECL->DeclType == Function)
-    ok &= OutputCheck(ckd); // check if all non-optional output parameters have been set
+  if (execDECL->DeclType == ExecDef
+  && execDECL->ParentDECL->DeclType != Impl) {
+    if (execDECL->ParentDECL->TypeFlags.Contains(isInitializer))
+      ok &= InitCheck(ckd);
+
+    ok &= InputCheck(ckd); // check if all non-optional input parameters have been referenced
+    if (execDECL->ParentDECL->DeclType == Function)
+      ok &= OutputCheck(ckd); // check if all non-optional output parameters have been set
+  }
 
 #ifdef INTERPRETER
   stackFrameSize = (ckd.stackFrameSize+2)<<2; // +2 for caller's synObj and stack address
@@ -2139,10 +2154,10 @@ bool FailStatement::Check (CheckData &ckd)
     EXIT
   }
 
+  ok &= ((SynObject*)exception.ptr)->Check(ckd);
+
   if (IsPH(exception.ptr))
     ERROREXIT
-
-  ok &= ((SynObject*)exception.ptr)->Check(ckd);
 
   if (ckd.myDECL->ParentDECL->DeclType == Initiator) {
     ((SynObject*)exception.ptr)->SetError(ckd,&ERR_ThrowInInitiator);
@@ -2181,6 +2196,17 @@ bool FailStatement::Check (CheckData &ckd)
   }
   ((SynObject*)exception.ptr)->SetError(ckd,&ERR_InadmissibleThrow);
   ERROREXIT
+}
+
+bool OldExpression::Check (CheckData &ckd)
+{
+  ENTRY
+  ok &= ((SynObject*)variable.ptr)->Check(ckd);
+  EXIT
+}
+
+void OldExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
+  ((ObjReference*)variable.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
 }
 
 bool UnaryOp::IsOptional (CheckData &ckd) {
@@ -2475,7 +2501,7 @@ bool BinaryOp::Check (CheckData &ckd)
 #endif
   SynFlags ctxFlags1, ctxFlags2;
   Category cat1, cat2, formCat2, callObjCat;
-  bool opd2IsNull=false;
+  bool opd1ok, opd2IsNull=false;
 
   ENTRY
 
@@ -2487,7 +2513,7 @@ bool BinaryOp::Check (CheckData &ckd)
     ERROREXIT
   }
 
-  ok &= opd1->Check(ckd);
+  ok &= opd1ok = opd1->Check(ckd);
 
   if (!opd2->IsIfStmExpr())
     ok &= opd2->Check(ckd);
@@ -2508,17 +2534,14 @@ bool BinaryOp::Check (CheckData &ckd)
   if (IsPH(opd1))
     ERROREXIT
   else if (!declFuncClass) {
-    opd1->SetError(ckd,&ERR_UndefType);
+    if (opd1ok)
+      opd1->SetError(ckd,&ERR_UndefType);
     ERROREXIT
   }
-  else if (declOp1->TypeFlags.Contains(isAbstract)) {
+/*  else if (declOp1->TypeFlags.Contains(isAbstract)) {
     SetError(ckd,&ERR_OperatorUndefined);
     ERROREXIT
-  }
-  if (declFuncClass->TypeFlags.Contains(isAbstract)) {
-    SetError(ckd,&ERR_OperatorUndefined);
-    ERROREXIT
-  }
+  }*/
   declFuncClass = ckd.document->GetTypeAndContext(declFuncClass,callCtx);
   ckd.document->NextContext(declFuncClass, callCtx);
   callObjCat = cat1;
@@ -2545,7 +2568,7 @@ bool BinaryOp::Check (CheckData &ckd)
     opFunctionID = tidOperatorFunc;
 #endif
 
-  if (opd2IsNull || IsPH(opd2))
+  if (opd2IsNull || IsPH(opd2) || !declOp2)
     EXIT
   chpFormIn = GetFirstInput(&ckd.document->IDTable,tidOperatorFunc);
   formParmDecl = (LavaDECL*)chpFormIn->data;
@@ -2723,6 +2746,8 @@ VarRefContext ObjReference::Context () {
     if (whereInParent == (address)&funcExpr->handle.ptr)
       return funcHandle;
   }
+  else if (parentObject->primaryToken == old_T)
+    return inOldExpression;
   else if (parentObject->primaryToken == arrayAtIndex_T
     && whereInParent == (address)&((ArrayAtIndex*)parentObject)->arrayObj.ptr) {
     if (parentObject->parentObject->primaryToken == assign_T) {
@@ -2777,6 +2802,8 @@ bool ObjReference::OutOfScope (CheckData &ckd) {
   lvs.CheckLocalScope(ckd,this);
   if (lvs.inForeach)
     flags.INCL(isInForeach);
+  else
+    flags.EXCL(isInForeach);
   if (lvs.found) return false;
   else return true;
 }
@@ -2845,6 +2872,9 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
     if (inROcontext
     && !(flags.Contains(isSelfVar)
          && InInitializer(ckd)
+         && refIDs.first->successor == refIDs.last)
+    && !(ckd.flags.Contains(InBut)
+         && flags.Contains(isTempVar)
          && refIDs.first->successor == refIDs.last)) {
       SetError(ckd,&ERR_AssignInQuery);
       return false;
@@ -3035,7 +3065,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   }
 
   if (flags.Contains(isDeclareVar)
-  || flags.Contains(isOutputVar)) {
+  || (flags.Contains(isOutputVar) && ckd.myDECL->DeclType != Ensure)) {
     secondChe = (CHE*)((CHE*)refIDs.first)->successor;
     ((CHE*)refIDs.first)->successor = 0;
     if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this)) {
@@ -3131,8 +3161,8 @@ bool ObjReference::CallCheck (CheckData &ckd) {
         ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
         return false;
       }
-      else
-        return ok;
+//      else
+//        return ok;
     }
 
   if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
@@ -3145,7 +3175,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
 
   if (!decl->TypeFlags.Contains(isConst))
     if (InReadOnlyContext()
-    && (!flags.Contains(isSelfVar)
+    && (!flags.Contains(isDeclareVar)
         || refIDs.first != refIDs.last)) {
       funcExpr->SetError(ckd,&ERR_NonROCallInROClause);
       return false;
@@ -3200,6 +3230,16 @@ bool ObjReference::Check (CheckData &ckd) {
 
     case arrayTarget:
       ok1 &= ArrayTargetCheck(ckd);
+      break;
+
+    case inOldExpression:
+      if ((flags.Contains(isLocalVar) && !flags.Contains(isSelfVar))
+      || flags.Contains(isOutputVar)) {
+        SetError(ckd,&ERR_LocalOrOutputVarInOld);
+        ok1 = false;
+      }
+      else
+        ok1 &= ReadCheck(ckd);
       break;
     }
   }
@@ -3327,7 +3367,7 @@ void VarName::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
     ((SynObject*)((TypeBranch*)parentObject)->exprType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
     break;
   case run_T:
-    ((SynObject*)((Run*)parentObject)->objType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
+    ((SynObject*)((Run*)parentObject)->initiator.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
     break;
   case new_T:
     ((SynObject*)((NewExpression*)parentObject)->objType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
@@ -3356,9 +3396,6 @@ Reference *VarName::TypeRef ()
     break;
   case caseType_T:
     type = (SynObject*)((TypeBranch*)parentObject)->exprType.ptr;
-    break;
-  case run_T:
-    type = (SynObject*)((Run*)parentObject)->objType.ptr;
     break;
   case new_T:
     type = (SynObject*)((NewExpression*)parentObject)->objType.ptr;
@@ -3914,8 +3951,7 @@ bool FuncExpression::Check (CheckData &ckd)
 
   ENTRY
 
-  if (!IsPH(function.ptr))
-    ok &= ((SynObject*)function.ptr)->Check(ckd);
+  ((SynObject*)function.ptr)->Check(ckd);
 
   callExpr = (Expression*)handle.ptr;
   if (callExpr) {
@@ -3923,14 +3959,10 @@ bool FuncExpression::Check (CheckData &ckd)
     if (!ok) {
       if (((SynObject*)function.ptr)->primaryToken == FuncPH_T)
         ((SynObject*)function.ptr)->primaryToken = FuncDisabled_T;
-//      ERROREXIT
     }
     else if (((SynObject*)function.ptr)->primaryToken == FuncDisabled_T)
       ((SynObject*)function.ptr)->primaryToken = FuncPH_T;
   }
-
-  if (IsPH(function.ptr))
-    ERROREXIT;
 
   if (callExpr) {
     ckd.tempCtx = ckd.lpc;
@@ -3938,8 +3970,9 @@ bool FuncExpression::Check (CheckData &ckd)
     objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
 
     if (!objTypeDecl) {
-      if (!((Expression*)handle.ptr)->flags.Contains(brokenRef))
-        ((SynObject*)handle.ptr)->SetError(ckd,&ERR_UndefType);
+      if (!((Expression*)handle.ptr)->flags.Contains(brokenRef)
+      && !IsPH(handle.ptr))
+        ((SynObject*)function.ptr)->SetError(ckd,&ERR_CallExprUndefType);
       if (((SynObject*)function.ptr)->primaryToken == FuncPH_T)
         ((SynObject*)function.ptr)->primaryToken = FuncDisabled_T;
     }
@@ -4784,92 +4817,65 @@ bool Run::Check (CheckData &ckd)
 {
   CHE *chpActIn, *chpFormIn;
   SynObject *opd;
-  TID tidType;
+  TID tidInitiator;
+  LavaDECL *decl;
   CContext callCtx;
   Category callObjCat;
 #ifdef INTERPRETER
-  CHE *chpExec;
+//  CHE *chpExec;
   unsigned oldStackLevel=ckd.currentStackLevel;
   Category cat;
   SynFlags ctxFlags;
 #endif
 
   ENTRY
+  ok &= ((SynObject*)initiator.ptr)->Check(ckd);
 
+  if (IsPH(initiator.ptr))
+    ERROREXIT
 
-  if (InReadOnlyContext()) {
-    SetError(ckd,&ERR_AssignInQuery);
+  chpActIn = (CHE*)inputs.first;
+  tidInitiator = ((Reference*)initiator.ptr)->refID;
+  ADJUST4(tidInitiator);
+  decl = ckd.document->IDTable.GetDECL(tidInitiator);
+  if (!decl->TypeFlags.Contains(isConst) && InReadOnlyContext()) {
+    SetError(ckd,&ERR_NonROCallInROClause);
     ERROREXIT
   }
 
-  if (objType.ptr)
-    ok &= ((SynObject*)objType.ptr)->Check(ckd);
-  if (itf.ptr)
-    ok &= ((SynObject*)itf.ptr)->Check(ckd);
-//  if (orgunit.ptr)
-//    ok &= ((SynObject*)orgunit.ptr)->Check(ckd);
-  if (url.ptr)
-    ok &= ((SynObject*)url.ptr)->Check(ckd);
-
-  if (!initializerCall.ptr) { // initiator case
-    if (IsPH(objType.ptr))
-      ERROREXIT
-
-    chpActIn = (CHE*)inputs.first;
-    tidType = ((Reference*)objType.ptr)->refID;
-    ADJUST4(tidType);
-    chpFormIn = GetFirstInput(&ckd.document->IDTable,tidType);
-    callCtx = ckd.lpc;
-    callObjCat = unknownCategory;
-    while (chpFormIn) {
-      // locate act. parm. and reposition it if necessary:
-      reposition(ckd,this,true,&inputs,chpFormIn,chpActIn);
-      // check act. parm.:
-      opd = (SynObject*)chpActIn->data;
-      ok &= opd->Check(ckd);
-      // check act.parm/form.parm. type compatibility:
-      ok &= compatibleInput(ckd,chpActIn,chpFormIn,callCtx,callObjCat);
-      if (chpActIn)
-        chpActIn = (CHE*)chpActIn->successor;
-      chpFormIn = (CHE*)chpFormIn->successor;
-      if (chpFormIn && ((LavaDECL*)chpFormIn->data)->DeclType != IAttr)
-        chpFormIn = 0;
-    }
+  chpFormIn = GetFirstInput(&ckd.document->IDTable,tidInitiator);
+  callCtx = ckd.lpc;
+  callObjCat = unknownCategory;
+  while (chpFormIn) {
+    // locate act. parm. and reposition it if necessary:
+    reposition(ckd,this,true,&inputs,chpFormIn,chpActIn);
+    // check act. parm.:
+    opd = (SynObject*)chpActIn->data;
+    ok &= opd->Check(ckd);
+    // check act.parm/form.parm. type compatibility:
+    ok &= compatibleInput(ckd,chpActIn,chpFormIn,callCtx,callObjCat);
     if (chpActIn)
+      chpActIn = (CHE*)chpActIn->successor;
+    chpFormIn = (CHE*)chpFormIn->successor;
+    if (chpFormIn && ((LavaDECL*)chpFormIn->data)->DeclType != IAttr)
+      chpFormIn = 0;
+  }
+  if (chpActIn)
 #ifdef INTERPRETER
-      SetError(ckd,&ERR_RedundantParms);
+    SetError(ckd,&ERR_RedundantParms);
 #else
-    for ( ;
-          chpActIn;
-          chpActIn = (CHE*)chpActIn->successor)  // delete remainder of parameter chain
-      PutDelChainHint(ckd,this,&inputs,chpActIn);
+  for ( ;
+        chpActIn;
+        chpActIn = (CHE*)chpActIn->successor)  // delete remainder of parameter chain
+    PutDelChainHint(ckd,this,&inputs,chpActIn);
 #endif
 
 #ifdef INTERPRETER
-    ((SynObject*)objType.ptr)->ExprGetFVType(ckd,typeDECL,cat,ctxFlags);
+  ((SynObject*)initiator.ptr)->ExprGetFVType(ckd,typeDECL,cat,ctxFlags);
 //    isStateObj = (cat == stateObj ? true : false);
-    typeDECL = ckd.document->GetType(typeDECL);
-    nParams = typeDECL->nInput;
-    chpExec = (CHE*)typeDECL->NestedDecls.last;
-    if (!chpExec)
-      ((Reference*)objType.ptr)->SetError(ckd,&ERR_EmptyExec);
-    execDECL = (LavaDECL*)chpExec->data; // ??
-    if (execDECL->DeclType != ExecDef)
-      ((Reference*)objType.ptr)->SetError(ckd,&ERR_EmptyExec);
+  typeDECL = ckd.document->GetType(typeDECL);
+  nParams = typeDECL->nInput;
 #endif
-  }
-  else {
-    ok &= ((SynObject*)initializerCall.ptr)->Check(ckd);
-#ifdef INTERPRETER
-    ckd.currentStackLevel++;
-    ((ObjReference*)((FuncStatement*)initializerCall.ptr)->handle.ptr)->stackPos = ckd.currentStackLevel;
-    typeDECL = ckd.document->IDTable.GetDECL(((Reference*)((FuncStatement*)initializerCall.ptr)->function.ptr)->refID,ckd.inINCL);
-    typeDECL = typeDECL->ParentDECL; // ??
-    if (ckd.currentStackLevel > ckd.stackFrameSize)
-      ckd.stackFrameSize = ckd.currentStackLevel;
-    ckd.currentStackLevel = oldStackLevel;
-#endif
-  }
 
   EXIT
 }
@@ -5294,6 +5300,7 @@ bool NewExpression::Check (CheckData &ckd)
   LavaDECL *objDECL, *urlDECL, *stringDECL;
   CHETID *supp;
   bool ok1;
+  SET oldFlags=ckd.flags;
 
   ENTRY
   if (objType.ptr) {
@@ -5390,8 +5397,11 @@ bool NewExpression::Check (CheckData &ckd)
     }
   }
 
-  if (butStatement.ptr)
+  if (butStatement.ptr) {
+    ckd.flags.INCL(InBut);
     ok &= ((SynObject*)butStatement.ptr)->Check(ckd);
+    ckd.flags = oldFlags;
+  }
 
 #ifdef INTERPRETER
   if (ckd.currentStackLevel > ckd.stackFrameSize)
@@ -5411,6 +5421,7 @@ void CloneExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &c
 
 bool CloneExpression::Check (CheckData &ckd)
 {
+  SET oldFlags=ckd.flags;
 #ifdef INTERPRETER
   TID tidType;
   unsigned oldStackLevel=ckd.currentStackLevel;
@@ -5440,8 +5451,11 @@ bool CloneExpression::Check (CheckData &ckd)
     execDECL = 0;
 #endif
 
-  if (butStatement.ptr)
+  if (butStatement.ptr) {
+    ckd.flags.INCL(InBut);
     ok &= ((SynObject*)butStatement.ptr)->Check(ckd);
+    ckd.flags = oldFlags;
+  }
 
 #ifdef INTERPRETER
   ckd.currentStackLevel = oldStackLevel;
@@ -5695,6 +5709,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
   }
   while (cheo) {
     dod = (TDOD*)cheo->data;
+    dod->execView=ckd.execView;
     dod->oldError = (CHE*)dod->errorChain.first;
     dod->errorChain.Destroy();
     dod->lastError = 0;

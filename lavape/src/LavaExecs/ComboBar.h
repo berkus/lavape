@@ -66,11 +66,12 @@ class LAVAEXECS_DLL CComboBar : public QDockWindow//QToolBar
 {
 public:
   CComboBar();   // standard constructor
-  CComboBar(LavaDECL* decl, CPEBaseDoc* doc, QMainWindow* parent);  
+  CComboBar(LavaDECL* execDecl, CPEBaseDoc* doc, QMainWindow* parent);  
   ~CComboBar() {}
   virtual QSize sizeHint() const {return m_ComboBarDlg->size();}
   void DeleteObjData(bool setCombo = true);
-  LavaDECL *myDECL;
+  LavaDECL *ExecDECL;
+  LavaDECL *myDECL; //parent of exec
   LavaDECL *SelfTypeDECL;  //Implementation if myDECL function
   LavaDECL *IntfDECL;
   LavaDECL *FuncParentDecl;
@@ -95,7 +96,7 @@ public:
   bool IsInBox(QComboBox* combo, const DString& name, int id, int incl, bool& sameName);
   void RemoveLocals();
   void AddLocal(const TID& id, const DString& name, const TID& typeID, bool subst=false);
-  void OnUpdate(LavaDECL *decl, bool externalHint);
+  void OnUpdate(LavaDECL *execDecl, bool externalHint);
   bool UsedName(const DString& name);
   void SetCombos(bool setVar, bool hideCombo);
   void TrackEnum();

@@ -308,17 +308,21 @@ void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,
   pb->setPaletteForegroundColor(QColor(blue));
 //  pb->setFlat(true);
   pb->setAutoDefault(false);
-  pb->setMinimumHeight(pb->fontInfo().pointSize()+6);
-  pb->setMaximumWidth(pb->fontMetrics().width("What's this?")+6);
+//  pb->setMinimumHeight(pb->fontInfo().pointSize()+6);
+//  pb->setMaximumWidth(pb->fontMetrics().width("What's this?")+6);
   if (tooltip)
     QToolTip::add(pb,tooltip);
   if (whatsThis)
     new WhatsThis(whatsThis,pb);
+  pb->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
   pb->show();
 }
 
 void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
 {
+  LBaseData->myWhatsThisButton = QWhatsThis::whatsThisButton(HelpToolbar);
+  QWhatsThis::add(LBaseData->myWhatsThisButton,"<p>Drag the \"What's this?\" cursor to any user interface object"
+    " and drop it there to see a <b>little popup info (but usually more than a tooltip)</b> on that object.</p>");
   newHelpToolbutton(tb,LBaseData->whatNextButton,"What next?",SLOT(whatNext_clicked()),
     "What can I do next at the current selection?",
     "<p>Provides online help which lists the most important operations "
@@ -328,7 +332,6 @@ void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
     "<p>Provides online help which explains the most basic and " 
     "<b>frequent program development operations</b> related to "
     "the <font color=\"red\">active view</font></p>");
-  LBaseData->myWhatsThisButton = QWhatsThis::whatsThisButton(HelpToolbar);
 }
 
 void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
@@ -351,7 +354,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   tb->addSeparator();
 
   newKwdToolbutton(tb,LBaseData->ifButton,"&if",SLOT(ifStm()),"If-then-else statement: \"i\"");
-  newKwdToolbutton(tb,LBaseData->ifxButton,"if-e&xpr",SLOT(ifExpr()),"If-then-else expression: \"x\"");
+  newKwdToolbutton(tb,LBaseData->ifxButton,"if-expr",SLOT(ifExpr()),"If-then-else expression: \"x\"");
   newKwdToolbutton(tb,LBaseData->switchButton,"s&witch",SLOT(switchStm()),"Switch statement: \"w\"");
   newKwdToolbutton(tb,LBaseData->typeSwitchButton,"&type",SLOT(typeStm()),"Type switch statement: \"t\"");
   newKwdToolbutton(tb,LBaseData->andButton,"&and / ;",SLOT(and_stm()),"AND conjunction of statements: \"a\"");
@@ -368,6 +371,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 
   newKwdToolbutton(tb,LBaseData->setButton,"&set",SLOT(set()),"Assignment statement: \"s\"");
   newKwdToolbutton(tb,LBaseData->newButton,"&new",SLOT(newExpr()),"Create a new object: \"n\"");
+  newKwdToolbutton(tb,LBaseData->oldButton,"old",SLOT(old()),"Old value (on entry to function)");
   newKwdToolbutton(tb,LBaseData->cloneButton,"clone",SLOT(clone()),"Clone an object");
   newKwdToolbutton(tb,LBaseData->copyButton,"&copy",SLOT(copy()),"Copy an object onto another object: \"c\"");
   newKwdToolbutton(tb,LBaseData->attachButton,"attach",SLOT(attach()),"Attach a component object through an interface");
@@ -536,7 +540,7 @@ void CLavaMainFrame::editFind()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnFindreferences();
+    view->OnFindReferences();
 }
 
 void CLavaMainFrame::expandSubtree()
@@ -710,7 +714,7 @@ void CLavaMainFrame::gotoDec()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnGotodef();
+    view->OnGotoDecl();
 }
 
 void CLavaMainFrame::gotoImpl()
@@ -1132,6 +1136,12 @@ void CLavaMainFrame::newExpr(){
     view->OnCreateObject();
 }
 
+void CLavaMainFrame::old(){
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnOld();
+}
+
 void CLavaMainFrame::clone(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
@@ -1188,6 +1198,11 @@ void CLavaMainFrame::adjustToolbar_7 () {
 	  Toolbar_7->hide();
   Toolbar_7->setLabel(tr("Keyword toolbar"));
   fillKwdToolbar(Toolbar_7);
+
+  delete LBaseData->whatNextButton;
+  delete LBaseData->howToButton;
+  delete LBaseData->myWhatsThisButton;
+  fillHelpToolbar(HelpToolbar);
 }
 
 
@@ -1434,7 +1449,7 @@ void CLavaMainFrame::viewTB7()
 void CLavaMainFrame::whatNext_clicked() 
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  QString fileName=ExeDir+"/../doc/html/whatnext/GlobalWhatNext.htm";
+  QString fileName=ExeDir+"/../doc/html/whatsthis/GlobalWhatNext.htm";
 	QString path("");
 	QStringList args;
 

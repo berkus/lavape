@@ -18,9 +18,11 @@
 
 
 #include "Constructs.h"
+#include "ExecView.h"
 #include "Convert.h"
 #include "DIO.h"
 #include "CHAINANY.h"
+#include "LavaAppBase.h"
 #include "qstring.h"
 //#include "stdafx.h"
 
@@ -312,9 +314,27 @@ void SelfVarV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
 
   ENTRY
 
-  t.Insert(primaryToken,true);
-  t.Blank();
-  DRAW(execName.ptr);
+  if (execDECL->DeclType == Require
+  || execDECL->DeclType == Ensure) {
+    DRAW(execName.ptr);
+    t.Blank();
+    if (execDECL->ParentDECL->ParentDECL->DeclType == Impl) {
+      t.Insert(implementation_T);
+      t.Blank();
+    }
+    t.Insert(primaryToken,true);
+  }
+  else {
+    if (primaryToken == constraint_T
+    && execDECL->ParentDECL->DeclType == Impl) {
+      t.Insert(implementation_T);
+      t.Blank();
+    }
+    t.Insert(primaryToken,true);
+    t.Blank();
+    DRAW(execName.ptr);
+  }
+
   if (funcDecl->TypeFlags.Contains(isTransaction)
   || funcDecl->TypeFlags.Contains(execConcurrent)) {
     t.Blank();
@@ -514,6 +534,32 @@ void FailStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   EXIT
 }
 
+OldExpressionV::OldExpressionV () {
+  type = Exp_T;
+  replacedType = type;
+  primaryToken = old_T;
+  variable.ptr = new SynObjectV(ObjPH_T);
+}
+
+void OldExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
+  ENTRY
+  bool parenth=IsFuncHandle();
+
+  if (parenth)
+    t.Insert(Lparenth_T);
+
+  t.Insert(old_T,true);
+  if (variable.ptr) {
+    t.Blank();
+    DRAW(variable.ptr);
+  }
+
+  if (parenth)
+    t.Insert(Rparenth_T);
+
+  EXIT
+}
+
 MinusOpV::MinusOpV (bool) {
   type = Exp_T;
   replacedType = type;
@@ -658,9 +704,9 @@ void Draw (MultipleOp *self,CProgTextBase &t,address where,CHAINX *chxp,bool ign
       }
       else
         if (((SynObject*)((CHE*)self->operands.first)->data)->type == Stm_T) {
-					t.NewLine();
-          t.Insert(self->primaryToken,true);
           t.Blank();
+          t.Insert(self->primaryToken,true);
+					t.NewLine();
         }
         else {
           t.Blank();
@@ -911,21 +957,14 @@ RunV::RunV (bool) {
   type = Stm_T;
   replacedType = type;
   primaryToken = run_T;
-  objType.ptr = new SynObjectV(Callee_T);
+  initiator.ptr = new SynObjectV(Callee_T);
 }
 
 RunV::RunV (Reference *ref) {
   type = Stm_T;
   replacedType = type;
   primaryToken = run_T;
-  objType.ptr = ref;
-}
-
-RunV::RunV (FuncStatement *funcStm) {
-  type = Stm_T;
-  replacedType = type;
-  primaryToken = run_T;
-  initializerCall.ptr = funcStm;
+  initiator.ptr = ref;
 }
 
 void RunV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
@@ -935,40 +974,42 @@ void RunV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
 
   t.Insert(primaryToken,true);
-  if (initializerCall.ptr) {
-    t.Blank();
-    t.Insert(with_T); // changed to "once"
-    t.Blank();
-    DRAW(objType.ptr);
-    t.Blank();
-    DRAW(varName.ptr);
-    t.Insert(Colon_T);
-    NLincIndent(t);
-    DRAW(initializerCall.ptr);
+  t.Blank();
+  if (t.leftArrows) {
+    DRAW(initiator.ptr);
     if (!primaryTokenNode)
-      primaryTokenNode = ((SynObject*)initializerCall.ptr)->primaryTokenNode;
-    NLdecIndent(t);
-    t.Insert(ENDrun_T);
+      primaryTokenNode = ((SynObject*)initiator.ptr)->primaryTokenNode;
+
+    if (inputs.first
+    && flags.Contains(inputArrow)) {
+      t.Blank();
+      t.Insert(Larrow_T);
+      t.Blank();
+    }
+
+    if ((inputs.first
+        && !flags.Contains(inputArrow))
+    || inputs.first != inputs.last)
+      t.Insert(Lparenth_T);
+
+    for (paramPtr = (CHE*)inputs.first;
+         paramPtr;
+         paramPtr = (CHE*)paramPtr->successor) {
+      if (!isFirst)
+        t.Insert(Comma_T,false);
+      else
+        isFirst = false;
+      DRAWCHE(paramPtr,&inputs);
+    }
+    if ((inputs.first
+        && !flags.Contains(inputArrow))
+    || inputs.first != inputs.last)
+      t.Insert(Rparenth_T);
   }
-  else { // placeholder or initiator call
-    t.Blank();
-    if (t.leftArrows) {
-      DRAW(objType.ptr);
-      if (!primaryTokenNode)
-        primaryTokenNode = ((SynObject*)objType.ptr)->primaryTokenNode;
-
-      if (inputs.first
-      && flags.Contains(inputArrow)) {
-        t.Blank();
-        t.Insert(Larrow_T);
-        t.Blank();
-      }
-
-      if ((inputs.first
-          && !flags.Contains(inputArrow))
-      || inputs.first != inputs.last)
+  else {
+    if (flags.Contains(inputArrow)) {
+      if (inputs.first != inputs.last)
         t.Insert(Lparenth_T);
-
       for (paramPtr = (CHE*)inputs.first;
            paramPtr;
            paramPtr = (CHE*)paramPtr->successor) {
@@ -978,55 +1019,36 @@ void RunV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
           isFirst = false;
         DRAWCHE(paramPtr,&inputs);
       }
-      if ((inputs.first
-          && !flags.Contains(inputArrow))
-      || inputs.first != inputs.last)
+      if (inputs.first != inputs.last)
         t.Insert(Rparenth_T);
+
+      if (inputs.first) {
+        t.Blank();
+        t.Insert(Rarrow_T);
+        t.Blank();
+      }
+
+      DRAW(initiator.ptr);
+      if (!primaryTokenNode)
+        primaryTokenNode = ((SynObject*)initiator.ptr)->primaryTokenNode;
     }
     else {
-      if (flags.Contains(inputArrow)) {
-        if (inputs.first != inputs.last)
-          t.Insert(Lparenth_T);
-        for (paramPtr = (CHE*)inputs.first;
-             paramPtr;
-             paramPtr = (CHE*)paramPtr->successor) {
-          if (!isFirst)
-            t.Insert(Comma_T,false);
-          else
-            isFirst = false;
-          DRAWCHE(paramPtr,&inputs);
-        }
-        if (inputs.first != inputs.last)
-          t.Insert(Rparenth_T);
-
-        if (inputs.first) {
-          t.Blank();
-          t.Insert(Rarrow_T);
-          t.Blank();
-        }
-
-        DRAW(objType.ptr);
-        if (!primaryTokenNode)
-          primaryTokenNode = ((SynObject*)objType.ptr)->primaryTokenNode;
+      DRAW(initiator.ptr);
+      if (!primaryTokenNode)
+        primaryTokenNode = ((SynObject*)initiator.ptr)->primaryTokenNode;
+      if (inputs.first)
+        t.Insert(Lparenth_T);
+      for (paramPtr = (CHE*)inputs.first;
+           paramPtr;
+           paramPtr = (CHE*)paramPtr->successor) {
+        if (!isFirst)
+          t.Insert(Comma_T,false);
+        else
+          isFirst = false;
+        DRAWCHE(paramPtr,&inputs);
       }
-      else {
-        DRAW(objType.ptr);
-        if (!primaryTokenNode)
-          primaryTokenNode = ((SynObject*)objType.ptr)->primaryTokenNode;
-        if (inputs.first)
-          t.Insert(Lparenth_T);
-        for (paramPtr = (CHE*)inputs.first;
-             paramPtr;
-             paramPtr = (CHE*)paramPtr->successor) {
-          if (!isFirst)
-            t.Insert(Comma_T,false);
-          else
-            isFirst = false;
-          DRAWCHE(paramPtr,&inputs);
-        }
-        if (inputs.first)
-          t.Insert(Rparenth_T);
-      }
+      if (inputs.first)
+        t.Insert(Rparenth_T);
     }
   }
   EXIT
@@ -1419,7 +1441,10 @@ void ExistsV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   }
 
   NLdecIndent(t);
-  t.Insert(where_T);
+  if (updateStatement.ptr)
+    t.Insert(where_T);
+  else
+    t.Insert(with_T);
   NLincIndent(t);
   DRAW(statement.ptr);
 
@@ -1528,8 +1553,12 @@ void ForeachV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
     NLdecIndent(t);
     if (updateStatement.ptr)
       t.Insert(where_T,false,true);
-    else
+    else {
       t.Insert(holds_T);
+      t.Blank();
+      t.Insert(true_T);
+      t.Insert(Colon_T);
+    }
     NLincIndent(t);
     DRAW(statement.ptr);
   }
@@ -2210,8 +2239,14 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   || (parentObject->primaryToken == initializing_T
       && whereInParent == (address)&((BaseInit*)parentObject)->initializerCall.ptr));
   else {
-    t.Insert(primaryToken,true);
-    t.Blank();
+    if (InReadOnlyClause()) {
+//      t.Insert(true_T,true);
+//      t.Insert(Colon_T);
+    }
+    else {
+      t.Insert(primaryToken,true);
+      t.Blank();
+    }
   }
 
   if (t.leftArrows) {

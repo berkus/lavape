@@ -64,6 +64,7 @@ public:
   wxView *myMainView;
   TID myID;
   LavaDECL *myDECL;
+  TDeclType myExecCategory;
   QStatusBar *statusBar;
   CLavaBaseData *Base;
   CProgText *text;
@@ -72,9 +73,9 @@ public:
 	CComboBar *m_ComboBar;
 
   bool editCtlVisible, insertBefore, editCut, doubleClick,
-       clicked, active, forcePrimTokenSelect,
+       clicked, active, forcePrimTokenSelect, deletePending,
        inIgnore, inExecHeader, inFormParms, inBaseInits,
-       inParameter, inForeach, externalHint, nextError,
+       inParameter, inForeach, externalHint, execReplaced, nextError,
        destroying, autoScroll, errMsgUpdated, initialUpdateDone;
   TToken editToken;
   SelfVar *selfVar;
@@ -176,7 +177,7 @@ public:
   void OnToggleArrows();
   void OnNewLine();
   void OnShowOptionals();
-  void OnGotodef();
+  void OnGotoDecl();
   void OnGotoImpl();
   void OnFindReferences();
   void OnModulus();
@@ -217,6 +218,7 @@ public:
   void OnAssert();
 	void OnSucceed();
 	void OnFail();
+	void OnOld();
   void OnCall();
   void OnAssign();
   void OnCreateObject();
@@ -300,6 +302,7 @@ public:
   void OnUpdateCopy(QPushButton *pb);
   void OnUpdateAssert(QPushButton *pb);
   void OnUpdateCreate(QPushButton *pb);
+  void OnUpdateOld(QPushButton *pb);
   void OnUpdateExists(QPushButton *pb);
   void OnUpdateCall(QPushButton *pb);
 //  void OnUpdateUuid(QPushButton *pb);
@@ -391,6 +394,7 @@ class ExecWhatsThis : public WhatsThis
 public:
   ExecWhatsThis(CExecView *ev);
 
+  bool clicked(const QString &whatsThisHref);
   QString text(const QPoint&);
 private:
   CExecView *execView;

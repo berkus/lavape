@@ -588,15 +588,17 @@ CBrowseContext::CBrowseContext(wxView* view, CHEFormNode* node):QObject(0, "Brow
   fromView = view;
   synObjSel = 0;
   formNode = node;
+  type = NoDef;
 }
 
 
-CBrowseContext::CBrowseContext(wxView* view, LavaDECL* decl):QObject(0, "BrowseContext")
+CBrowseContext::CBrowseContext(wxView* view, LavaDECL* decl, int t):QObject(0, "BrowseContext")
 {
   prev = LBaseData->Browser->LastBrowseContext;
   fromView = view;
   synObjSel = 0;
   formNode = 0;
+  type = t;
   id = TID(decl->OwnID, decl->inINCL);
   if (decl->ParentDECL)
     parentID = TID(decl->ParentDECL->OwnID, decl->inINCL);
@@ -609,6 +611,7 @@ CBrowseContext::CBrowseContext(wxView* view, SynObjectBase* synObj):QObject(0, "
   fromView = view;
   synObjSel = synObj;
   formNode = 0;
+  type = NoDef;
 }
 
 void CBrowseContext::RemoveView(wxView* view)
@@ -1341,4 +1344,17 @@ bool WhatsThis::clicked(const QString &whatsThisHref)
 QString WhatsThis::text(const QPoint&)
 {
   return whatsThisText;
+}
+
+void ShowPage(char *file) {
+  QString fileName=ExeDir+"/../doc/html/whatsthis/"+file;
+	QString path("");
+	QStringList args;
+
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	if (!qacl) {
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
+		qacl->setArguments(args);
+	}
+	qacl->showPage(fileName);
 }

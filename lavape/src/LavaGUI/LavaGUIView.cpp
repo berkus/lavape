@@ -356,7 +356,7 @@ void CLavaGUIView::OnUpdateGotodef(wxAction* action)
                     && myGUIProg->focNode->data.FIP.widget->hasFocus());
 }
 
-void CLavaGUIView::OnGotodef()
+void CLavaGUIView::OnGotoDecl()
 {
   TID id;
   LavaDECL *fDecl = myGUIProg->focNode->data.FormSyntax;

@@ -104,7 +104,10 @@ void wxMainFrame::fileExit()
 }
 
 void wxMainFrame::LoadFileHistory() {
-  wxDocManager::GetDocumentManager()->FileHistoryLoad(*wxTheApp->settings);
+  QSettings settings(QSettings::Native);
+
+  settings.beginGroup(wxTheApp->GetSettingsPath());
+  wxDocManager::GetDocumentManager()->FileHistoryLoad(settings);
 }
 
 void wxMainFrame::OnMRUFile(int histFileIndex)

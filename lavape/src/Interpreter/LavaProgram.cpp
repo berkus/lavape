@@ -275,7 +275,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL)
   }
   if (classDECL->NestedDecls.last) {
     execDECL = (LavaDECL*)((CHE*)classDECL->NestedDecls.last)->data;
-    if (execDECL->DeclType == ExecDef) {
+    if (execDECL->DeclDescType == ExecDesc) {
       ckdl.myDECL = execDECL;
       ckdl.currentStackLevel = 0;
       ckdl.stackFrameSize = 0;
@@ -417,7 +417,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL)
     elDECL = (LavaDECL*)elChe->data;
     if ((elDECL->DeclType == Function) && elDECL->NestedDecls.last) {
       execDECL = (LavaDECL*)((CHE*)elDECL->NestedDecls.last)->data;
-      if (execDECL->DeclType == ExecDef) {
+      if (execDECL->DeclDescType == ExecDesc) {
         ckdl.myDECL = execDECL;
         ckdl.currentStackLevel = 0;
         ckdl.stackFrameSize = 0;
@@ -466,8 +466,14 @@ bool CLavaProgram::CheckFuncImpl(CheckData& ckd, LavaDECL* funcDECL, LavaDECL* c
     return false;
   }
   cheimplIOEl = (CHE*)funcDECL->NestedDecls.first;
+  if (!cheimplIOEl) {
+    LavaError(ckd, true, funcDECL, &ERR_funcImpl);
+    return false;
+  }
   checlassIOEl = (CHE*)classFuncDECL->NestedDecls.first;
-  while (cheimplIOEl && checlassIOEl) {
+  while (cheimplIOEl && checlassIOEl
+    && (((LavaDECL*)cheimplIOEl->data)->DeclDescType != ExecDesc)
+    && (((LavaDECL*)checlassIOEl->data)->DeclDescType != ExecDesc) ) {
     implIOEl = (LavaDECL*)cheimplIOEl->data;
     classIOEl = (LavaDECL*)checlassIOEl->data;
     if ((implIOEl->DeclType != classIOEl->DeclType)
@@ -479,7 +485,10 @@ bool CLavaProgram::CheckFuncImpl(CheckData& ckd, LavaDECL* funcDECL, LavaDECL* c
     cheimplIOEl = (CHE*)cheimplIOEl->successor;
     checlassIOEl = (CHE*)checlassIOEl->successor;
   }
-  if (checlassIOEl || !cheimplIOEl || (((LavaDECL*)cheimplIOEl->data)->DeclType != ExecDef)) {
+  if ( checlassIOEl && (((LavaDECL*)checlassIOEl->data)->DeclDescType != ExecDesc)
+     || !cheimplIOEl
+     || (((LavaDECL*)cheimplIOEl->data)->DeclDescType != ExecDesc)
+     || (((LavaDECL*)((CHE*)funcDECL->NestedDecls.last)->data)->DeclType != ExecDef) ) {
     LavaError(ckd, true, funcDECL, &ERR_funcImpl);
     return false;
   }
@@ -604,7 +613,7 @@ bool CLavaProgram::CheckFuncInOut(CheckData& ckd, LavaDECL* funcDECL)
 
   for (cheIO = (CHE*)funcDECL->NestedDecls.first; cheIO; cheIO = (CHE*)cheIO->successor) {
     IODECL = (LavaDECL*)cheIO->data;
-    if (IODECL->DeclType != ExecDef) {
+    if (IODECL->DeclDescType != ExecDesc) {
       IOType = IDTable.GetDECL(IODECL->RefID, IODECL->inINCL);
       if (!IOType) {
         LavaError(ckd, true, IODECL, &ERR_NoRefType);

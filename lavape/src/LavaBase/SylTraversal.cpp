@@ -110,6 +110,8 @@ void CSylTraversal::DownTree(LavaDECL **pelDef, int level, DString& name)
       break;
     case NoDef:
       break;  //the ...->Iter.ptr)->IteratedExpr.ptr
+    case Require:
+    case Ensure:
     case ExecDef:
       break;
     default:

@@ -22,6 +22,9 @@
 #endif
 
 #include "Constructs.h"
+#ifndef INTERPRETER
+#include "ExecView.h"
+#endif
 #include "wx_obj.h"
 #include "Check.h"
 #include "LavaBaseDoc.h"
@@ -207,8 +210,9 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
 
     ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(ckd,declHandle,cat,ctxFlags);
     declHandle = ckd.document->GetTypeAndContext(declHandle,ckd.tempCtx);
-    if (declHandle
-    && ckd.document->GetOperatorID(declHandle,(TOperator)(multOpExp->primaryToken-not_T),tidOperatorFunc)) {
+    if (!declHandle)
+      return false;
+    if (ckd.document->GetOperatorID(declHandle,(TOperator)(multOpExp->primaryToken-not_T),tidOperatorFunc)) {
       chpFormIn = GetFirstInput(&ckd.document->IDTable,tidOperatorFunc);
       targetTid = ((LavaDECL*)chpFormIn->data)->RefID;
       ADJUST(targetTid,((LavaDECL*)chpFormIn->data));
@@ -230,6 +234,8 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
 
   }
   else if (parentObject->IsBinaryOp())
+    return false;
+  else if (parentObject->primaryToken == Minus_T)
     return false;
   else if (parentObject->primaryToken == attach_T)
     return false;
@@ -284,8 +290,9 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
 
     ((SynObject*)((CHE*)multOpExp->operands.first)->data)->ExprGetFVType(ckd,declHandle,cat,ctxFlags);
     declHandle = ckd.document->GetTypeAndContext(declHandle,ckd.tempCtx);
-    if (declHandle
-    && ckd.document->GetOperatorID(declHandle,(TOperator)(multOpExp->primaryToken-not_T),tidOperatorFunc)) {
+    if (!declHandle)
+      return false;
+    if (ckd.document->GetOperatorID(declHandle,(TOperator)(multOpExp->primaryToken-not_T),tidOperatorFunc)) {
       chpFormIn = GetFirstInput(&ckd.document->IDTable,tidOperatorFunc);
       targetTid = ((LavaDECL*)chpFormIn->data)->RefID;
       ADJUST(targetTid,((LavaDECL*)chpFormIn->data));
@@ -307,6 +314,8 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
 
   }
   else if (parentObject->IsBinaryOp())
+    return false;
+  else if (parentObject->primaryToken == Minus_T)
     return false;
   else if (parentObject->primaryToken == attach_T)
     return false;
@@ -646,6 +655,19 @@ bool SynObject::InReadOnlyContext () {
   return false;
 }
 
+bool SynObject::InFuncOrEnsure () {
+  SynObject *parent=this;
+
+  while (parent->parentObject)
+    parent = parent->parentObject;
+
+  if (((SelfVar*)parent)->execDECL->DeclType == Ensure
+  || ((SelfVar*)parent)->execDECL->ParentDECL->DeclType == Function)
+    return true;
+  else
+    return false;
+}
+
 bool SynObject::InReadOnlyClause () {
   SynObject *obj=this, *parent=parentObject;
   bool roExec=false;
@@ -852,3 +874,151 @@ bool Exists::NestedOptClause (SynObject *optClause) {
     else
       return false;
 }
+
+#ifdef INTERPRETER
+QString SynObject::whatsThisText() { return QString::null; }
+#else
+QString SynObject::whatsThisText() {
+  switch (primaryToken) {
+  case CrtblPH_T:
+    break;
+  case Exp_T:
+    if (parentObject->primaryToken == fail_T)
+      return QString(QObject::tr("<p>This is a placeholder for an <b>optional executable <font color=red><i>Lava</i></font> expression</b> in a fail statement."
+      "<br><br>Press the Delete key to remove it.</p>"));
+    else
+      return QString(QObject::tr("<p>This is a placeholder for an <b>executable <font color=red><i>Lava</i></font> expression</b></p>"));
+    break;
+  case ExpDisabled_T:
+    return QString(QObject::tr("<p>This is a disabled placeholder for an executable <font color=red><i><b>Lava</b></i></font> expression</p>"));
+    break;
+  case FuncPH_T:
+    if (((FuncExpression*)parentObject)->handle.ptr)
+      return QString(QObject::tr("<p>This is a <b>placeholder for a function reference</b>."
+      "<br><br>Select a function from the function combo-boxes at the top of the exec window.</p>"));
+    else
+      return QString(QObject::tr("<p>This is a <b>placeholder for a reference to a static function</b>."
+      "<br><br>First select an interface containing the desired static function from the type combo-boxes "
+      "at the top of the exec window.<br><br>Then select a static function from the function combo-box "
+      "which appears to the right of the type combo-boxes.</p>"));
+    break;
+  case FuncDisabled_T:
+    return QString(QObject::tr("<p>This is a <b>disabled placeholder for a function reference</b>."
+      "<br><br>Insert a call expression first to enable it.</p>"));
+    break;
+  case ObjPH_T:
+    if (parentObject->primaryToken == parameter_T)
+      return QString(QObject::tr("<p>This is a placeholder for an output parameter. Output parameters are always optional."
+        "<br><br>Press the Delete key to remove it.</p>"));
+    else
+      return QString(QObject::tr("<p>This is a placeholder for a local or member variable</p>"));
+    break;
+  case ObjPHOpt_T:
+    break;
+  case ObjDisabled_T:
+    return QString(QObject::tr("<p>This is a placeholder for a disabled local or member variable</p>"));
+    break;
+  case SetPH_T:
+    break;
+  case SetAttribPH_T:
+    break;
+  case Stm_T:
+    return QString(QObject::tr("<p>This is a placeholder for an executable <font color=red><i><b>Lava</b></i></font> statement</p>"));
+    break;
+  case TypePH_T:
+    if (parentObject->primaryToken == quant_T
+    && !parentObject->parentObject->IsDeclare())
+      return QString(QObject::tr("<p>This is a placeholder for an optional type reference."
+      "<br><br>Press the Delete key to remove it.</p>"));
+    else
+      return QString(QObject::tr("<p>This is a placeholder for a type reference</p>"));
+    break;
+  case VarPH_T:
+    return QString(QObject::tr("<p>This is a placeholder for a <b>new</b> local variable to be declared here</p>"));
+    break;
+  default:
+    return QString(QObject::tr("<p>\"What's this\" help is not yet available for this syntactic element</p>"));
+  }
+  return QString(QObject::tr("<p>\"What's this\" help is not yet available for this syntactic element</p>"));
+}
+#endif
+
+#ifdef INTERPRETER
+void SynObject::whatNext() {}
+#else
+void SynObject::whatNext() {
+  switch (primaryToken) {
+  case CrtblPH_T:
+    break;
+  case Exp_T:
+    QWhatsThis::display(QString(QObject::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> expression "
+      "by clicking one of the enabled expression buttons on the keyword toolbar "
+      "or on the operations toolbar. "
+      "<a href=\"Expr_wn.htm\">More...</a></p>")),
+      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+    break;
+  case ExpDisabled_T:
+//    return QString(QObject::tr("<p>This is a disabled placeholder for an executable Lava expression</p>"));
+    break;
+  case ExpOpt_T:
+    break;
+  case FuncPH_T:
+    if (((FuncExpression*)parentObject)->handle.ptr)
+      QWhatsThis::display(QString(QObject::tr("Select a function from the function combo-boxes at the top of the exec window.</p>")),
+      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+    else
+      QWhatsThis::display(QString(QObject::tr("<p>This is a <b>placeholder for a reference to a static function</b>."
+      "<br><br>First select an interface containing the desired static function from the type combo-boxes "
+      "at the top of the exec window.<br><br>Then select a static function from the function combo-box "
+      "which appears to the right of the type combo-boxes.</p>")),
+      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+    break;
+  case FuncDisabled_T:
+    QWhatsThis::display(QString(QObject::tr("<p>This is a <b>disabled placeholder for a function reference</b>."
+      "<br><br>Insert a call expression first to enable it.</p>")),
+      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+    break;
+  case ObjPH_T:
+//    return QString(QObject::tr("<p>This is a placeholder for a local or member variable</p>"));
+    break;
+  case ObjPHOpt_T:
+    break;
+  case ObjDisabled_T:
+    break;
+  case SetPH_T:
+    break;
+  case SetAttribPH_T:
+    break;
+  case Stm_T:
+    QWhatsThis::display(QString(QObject::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> statement "
+      "by clicking one of the enabled statement buttons on the keyword toolbar "
+      "or on the operations toolbar. "
+      "<a href=\"Stm_wn.htm\">More...</a></p>")),execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+    break;
+  case TypePH_T:
+    QWhatsThis::display(QString(QObject::tr("<p>Select a type from the \"Types\" or "
+      "\"Basic types\" combo-boxes at the top of this window. "
+      "<a href=\"Stm_wn.htm\">More...</a></p>")),
+      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+    break;
+  case VarPH_T:
+//    return QString(QObject::tr("<p>This is a placeholder for a new local variable</p>"));
+    break;
+  default:
+    if (((CExecView*)execView)->text->currentSynObj->StatementSelected(((CExecView*)execView)->text->currentSelection))
+      QWhatsThis::display(QString(QObject::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> statement "
+      "before or after the selected statement "
+      "by clicking one of the enabled statement buttons on the keyword toolbar "
+        "or on the operations toolbar. "
+        "<a href=\"Statement_wn.htm\">More...</a></p>")),execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+    else if (((CExecView*)execView)->text->currentSynObj->ExpressionSelected(((CExecView*)execView)->text->currentSelection))
+      QWhatsThis::display(QString(QObject::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> expression "
+        "by clicking one of the enabled expression buttons on the keyword toolbar "
+        "or on the operations toolbar. "
+        "<a href=\"Expression_wn.htm\">More...</a></p>")),execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+    else
+      QWhatsThis::display(QString(QObject::tr("<p>\"What next?\" help not yet available for this selection")),
+      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+  }
+}
+#endif

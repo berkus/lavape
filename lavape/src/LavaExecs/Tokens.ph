@@ -204,7 +204,7 @@ enum TToken {
   inputs_T,
   intIntv_T,
   itf_T,
-  FutureKWD1,
+  old_T,
   new_T,
   nil_T,
   of_T,
@@ -233,8 +233,8 @@ enum TToken {
   with_T,
 
   item_T,
-  FutureKWD2,
-  FutureKWD3,
+  require_T,
+  ensure_T,
   FutureKWD4,
   FutureKWD5,
 

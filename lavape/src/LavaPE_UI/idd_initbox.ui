@@ -25,7 +25,7 @@
         </font>
     </property>
     <property name="caption">
-        <string>Initiator</string>
+        <string>Main program</string>
     </property>
     <vbox>
         <property name="name">
@@ -176,9 +176,6 @@
                         <widget class="QRadioButton">
                             <property name="name">
                                 <cstring>m_Concurrent1</cstring>
-                            </property>
-                            <property name="focusPolicy">
-                                <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
                                 <string>Concurrent</string>

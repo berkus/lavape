@@ -90,6 +90,7 @@ QString ERR_FuncParmOutOfScope;
 QString ERR_AssigInLogNot;
 QString ERR_SelfInStatic;
 QString ERR_UndefType;
+QString ERR_CallExprUndefType;
 QString ERR_NoCompObjItf;
 QString ERR_ReservedName;
 QString ERR_Parameter;
@@ -251,6 +252,7 @@ QString ERR_SaveFailed;
 QString ERR_LookForCompoObj;
 QString ERR_LookForCompoObjF;
 QString ERR_NoImplForAbstract;
+QString ERR_LocalOrOutputVarInOld;
 
 void LavaBaseStringInit() {
   IDS_LAVACOM_FILE  = QObject::tr("Lava component file (*.lcom) defining the type of a lava component object");
@@ -263,7 +265,7 @@ void LavaBaseStringInit() {
   ERR_Wrong_hex  = QObject::tr("Error in hexadecimal constant");
   ERR_Wrong_oct  = QObject::tr("Error in octal constant");
   ERR_Wrong_exp  = QObject::tr("Wrong or incomplete exponent");
-  ERR_AssignInQuery  = QObject::tr("\"Read-only\" clause or function: assignments are allowed only to output and declare variables (in initializers also to self.member)");
+  ERR_AssignInQuery  = QObject::tr("\"Read-only\" clause or exec: assignments are allowed only to output and declare variables (in initializers also to self.member)");
   ERR_Broken_ref  = QObject::tr("Broken reference");
   ERR_IsntSet  = QObject::tr("This should be a set");
   ERR_MissingParms  = QObject::tr("Missing parameter(s)");
@@ -308,6 +310,7 @@ void LavaBaseStringInit() {
   ERR_FuncParmOutOfScope  = QObject::tr("This function parameter belongs to a different function");
   ERR_SelfInStatic  = QObject::tr("""self"" is used in an initiator or static function");
   ERR_UndefType  = QObject::tr("Undefined type");
+  ERR_CallExprUndefType = QObject::tr("Call expression has undefined type");
   ERR_NoCompObjItf  = QObject::tr("Must be a component object interface");
   ERR_ReservedName  = QObject::tr("Reserved name");
   ERR_Parameter  = QObject::tr("Formal/actual parameters don't match");
@@ -355,7 +358,7 @@ void LavaBaseStringInit() {
   ERR_EmptyExec  = QObject::tr("Missing or empty exec");
   ERR_AssertionViolation  = QObject::tr("Assertion or invariant violation");
   ERR_NoErrors  = QObject::tr("No errors or placeholders found");
-  ERR_ExecError  = QObject::tr("Error in exec/invariant");
+  ERR_ExecError  = QObject::tr("Error in executable code");
   ERR_DLLError  = QObject::tr("Native implementation DLL error");
   ERR_AssigToFrozen  = QObject::tr("Forbidden assignment to a member of a frozen value object");
   ERR_SingleAssViol  = QObject::tr("Single-assignment violation; press the ""conflict button"" (red and blue left arrows) to show the last conflicting previous assignment");
@@ -377,7 +380,7 @@ void LavaBaseStringInit() {
   ERR_MemIncompatible  = QObject::tr("Incompatible type");
   ERR_AmbgInVT  = QObject::tr("Ambiguity in the virtual table");
   ERR_ErrInForm  = QObject::tr("Error in form");
-//  ERR_RdOnlyFunc  = QObject::tr("Read-only functions may assign only to output and declare variables (initializers also to self.member)");
+  ERR_RdOnlyFunc  = QObject::tr("Read-only functions may assign only to output and declare variables (initializers also to self.member)");
   ERR_OverriddenDiffs  = QObject::tr("Overridden attribut/function/input/output/virtual type has inconsistent properties");
   ERR_ImplUndefItf  = QObject::tr("Implementation implements an undefined interface");
   ERR_BaseInit  = QObject::tr("Erroneous base initializer call");
@@ -401,7 +404,7 @@ void LavaBaseStringInit() {
   = QObject::tr("""self"" must be completely initialized before its methods may be called");
   ERR_NoInitializer  = QObject::tr("This isn't an initializer");
   ERR_ExplicitInitializerCall  = QObject::tr("Explicit initializer calls are not allowed");
-  ERR_MissingFuncDecl  = QObject::tr("No such member function or variable");
+  ERR_MissingFuncDecl  = QObject::tr("No such member function or variable:");
   ERR_MissingInitialization 
   = QObject::tr(": a value must be assigned in all program branches (check also for missing else branches)");
   ERR_UnaryOpUndefined  = QObject::tr("Operator undefined for this type of operand");
@@ -409,7 +412,7 @@ void LavaBaseStringInit() {
   ERR_UseVT  = QObject::tr("Error: This or a base type is virtual; => ref. to concrete interface forbidden");
   ERR_WrongContext  = QObject::tr("Type cannot be referenced from the current pattern context");
   ERR_ImmutableCallObj  = QObject::tr("Frozen value object is used to call non-read-only member function");
-  ERR_NonROCallInROClause = "Forbidden call of non-read-only function in read-only clause or function";
+  ERR_NonROCallInROClause = "Forbidden call of non-read-only function/initiator in read-only clause or exec";
   ERR_SuccFailNotLast  = QObject::tr("Succeed/fail returns control; therefore there must not follow any further statement");
   ERR_NoNativeImpl  = QObject::tr("Implementation of native function not found/no adapter table");
   ERR_NoFuncImpl  = QObject::tr("Implementation of this function not found");
@@ -464,4 +467,5 @@ void LavaBaseStringInit() {
 	ERR_LookForCompoObj = QObject::tr("Implementation of this  component object interface or specification not found. \n(Expected in a corresponding *.lcom file)");
 	ERR_LookForCompoObjF = QObject::tr("Implementation of the attribute or function of the component object interface not found. \n(Expected in a corresponding *.lcom file");
   ERR_NoImplForAbstract	= QObject::tr("Abstract or native function has no implementation");
+  ERR_LocalOrOutputVarInOld = QObject::tr("Local and output variables not allowed in \"old\" expression");
 }

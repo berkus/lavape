@@ -28,7 +28,9 @@ enum TIType {
   TIType_Output,       // output node        //this is not a node in syntax
   TIType_Defs,         // local pattern node //this is not a node in syntax
   TIType_Features,     // local member node  //this is not a node in syntax
-  TIType_Constraint,   // invariant node     //this is not a node in syntax
+  TIType_Require,
+  TIType_Ensure,
+  TIType_Constraint,   // invariant/exec node     
   TIType_Refac,        // only used as return value
   TIType_NoType
 };
@@ -48,6 +50,7 @@ enum TisOnWhat {  //CLavaPEWizard creation cause
   isOnFormProps
 };
 
+enum PMFlag {emptyPM, invariantPM};
 
 class LavaSource: public QStoredDrag
 {
@@ -144,6 +147,7 @@ public:
   void GenHTML(LavaDECL *pnode,TDeclType &category, bool &firstChild);
   void OnGenHtmlI();
   void whatNext();
+  LavaDECL* GetConstrDECL(CTreeItem* item);
 
   //Document update actions----------------------------------------
 
@@ -229,10 +233,10 @@ public:
   void OnEditCut(); //
   void OnEditPaste(); //
   void OnEditSel();//
-  void OnShowConstraint();
+  void OnShowConstraint(TDeclType type);
   void OnShowformview();//
   virtual void OnDelete();//
-  void OnGotodef();//
+  void OnGotoDecl();//
   void OnNewmember();//
   void OnNewclassimpl();//
   void OnShowOverridables();//
@@ -258,7 +262,7 @@ public:
 //  void OnShowPattern();
 	void OnNewEnumItem();//
 	void OnGotoImpl();//
-	void OnFindreferences();//
+	void OnFindReferences();//
 
   void OnGenHtml();
   void OnGenHtmlS();

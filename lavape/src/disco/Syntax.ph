@@ -572,9 +572,8 @@ $TYPE +CDP {
    // Any change in TDeclType must take care of the following rules:
    // NoDef is always the first,
    // followed by all types which are structures (have StructDesc as DeclDescType), the last is FormDef,
-   // followed by other types which are not structures, the first is Alias,
-   // followed by attributes
-   // followed by ExecDef which is always the last of all values which are realy used in LavaDECL and .lava files
+   // followed by other types which are not structures, 
+   // but values which are realy used in LavaDECL and .lava files
    // after these there may be technical values used only in programs
 
     NoDef, 
@@ -595,12 +594,14 @@ $TYPE +CDP {
     OAttr,
     ExecDef,
     FormText,
-    PatternDef,   // only used as collection decl in override operations and in LavaGUI
+    PatternDef,   // used as DeclType in chain-forms and as collection decl in override operations
+    Require,
+    Ensure,
     DragParam,    // only used as collaction decl in drag and drop- or copy operations
     DragDef,      // only used as collaction decl in drag and drop- or copy operations
     DragFeature,  // with attributes, only used as collaction decl in drag and drop- or copy operations
     DragFeatureF, // with functions, only used as collection decl in drag and drop- or copy operations
-    DragIO,
+    DragIO,       // input- or output items in drag and drop or copy and paste
     DragEnum,     // enum items in drag and drop or copy and paste
     DragFText,     // FormText in drag and drop or copy and paste
     UnDef,   //only used as return value 

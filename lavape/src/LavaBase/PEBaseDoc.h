@@ -73,8 +73,10 @@ public:
   void OnDestroyMainView(CLavaBaseView* mview);
   bool Undo(bool redo = FALSE);
   virtual bool OnSaveModified();
-  virtual LavaDECL* GetConstrDECL(LavaDECL* decl,bool makeExec) {return 0;}
-  virtual bool OpenCView(LavaDECL* /*execDECL*/) {return false;}
+  virtual LavaDECL* GetConstrDECL(LavaDECL* parentDecl,TDeclType type,bool makeDecl=true,bool makeExec=true) {return 0;}
+  virtual CHE* GetConstrChe(LavaDECL* parentDecl,TDeclType type,bool makeIt=true) {return 0;}
+  virtual CHE* SetConstrChe(LavaDECL* parentDecl,LavaDECL* execDecl) {return 0;}
+  virtual bool OpenCView(LavaDECL* execDECL) {return false;}
   virtual void OnCloseLastExecView() {}
   virtual void SetExecBarText(CSearchData& /*sData*/) {}
   virtual void SetPEError(const CHAINX& /*ErrChain*/, bool /*andShow*/) {}
@@ -84,7 +86,7 @@ public:
   virtual wxDocument* FindOpenDoc(const DString& /*fn*/) {return 0;}
   virtual void UpdateMoveInDocs(const DString& /*clipDoc*/) {}
   virtual void UpdateOtherDocs(wxDocument* /*notOther*/, DString& /*inclFile*/, int ,bool, SynFlags flags=SETpp()) {}
-  virtual int MakeFunc(LavaDECL* decl, bool otherDoc) {return -1;}
+  virtual int MakeFunc(LavaDECL* decl, bool otherDoc, QWidget* parent) {return -1;}
   void SetSelectDECL(CHE* elRemoved);
   bool InSection(CHE* el);
   virtual void IncludeHint(const DString& fullfn, CHESimpleSyntax* cheSyn);
@@ -106,7 +108,7 @@ public:
   virtual void OnEditCut() {}
   virtual void OnEditCopy(){}
   virtual void OnEditPaste(){}
-  virtual void OnFindreferences() {}
+  virtual void OnFindReferences() {}
   virtual void OnExpandAll() {}
   virtual void OnCollapsAll() {}
   virtual void OnShowOptionals() {}
@@ -131,7 +133,7 @@ public:
   virtual void OnNewEnumItem() {}
   virtual void OnEditSel() {}
   virtual void OnComment() {}
-  virtual void OnGotodef() {}
+  virtual void OnGotoDecl() {}
   virtual void OnGotoImpl() {}
   virtual void OnShowOverridables() {}
   virtual void OnShowformview() {}
@@ -192,9 +194,8 @@ public:
   virtual void OnToggleArrows() {}
   virtual void OnNewLine() {}
 //  virtual void OnShowOptionals() {}
-//  virtual void OnGotodef() {}
+//  virtual void OnGotoDecl() {}
 //  virtual void OnGotoImpl() {}
-  virtual void OnFindReferences() {}
   virtual void OnModulus() {}
   virtual void OnIgnore() {}
   virtual void OnAttach() {}
@@ -229,6 +230,7 @@ public:
 	virtual void OnQua() {}
 	virtual void OnSucceed() {}
 	virtual void OnFail() {}
+	virtual void OnOld() {}
 	virtual void OnTrue() {}
 	virtual void OnFalse() {}
 	virtual void OnOrd() {}

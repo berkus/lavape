@@ -240,42 +240,6 @@ CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name): CLavaBa
 }
 
 
-/*
-bool CTreeView::Expand(CTreeItem* item, bool exp)
-{ 
-  item->setOpen(exp);
-  return exp;
-}
-
-TItemData* CTreeView::GetItemData(CTreeItem* item) 
-{
-  return item->data;
-}
-
-CTreeItem* CTreeView::GetNextVisibleItem(CTreeItem* item)
-{
-  return (CTreeItem*)item->itemBelow();
-}
-
-
-
-CTreeItem* CTreeView::GetNextItem(CTreeItem* item, bool firstChild)
-{ 
-  if (firstChild)
-    return (CTreeItem*)item->firstChild();
-  else
-    return (CTreeItem*)item->nextSibling();
-}
-
-  
-void CTreeView::SetItemData(CTreeItem* item, TItemData* itd)
-{
-  item->data = itd;
-}
-
-*/
-
-
 CTreeItem* CTreeView::GetPrevSiblingItem(CTreeItem* item)
 {
   CTreeItem* ib = (CTreeItem*)item->itemAbove();
@@ -288,11 +252,12 @@ CTreeItem* CTreeView::GetPrevSiblingItem(CTreeItem* item)
   }
 }
 
-
+/*
 CTreeItem* CTreeView::HitTest(QPoint qp)
 {
   return (CTreeItem*)m_tree->itemAt(qp);
 }
+*/
 
 CTreeItem* CTreeView::InsertItem(QString label, QPixmap* nPix, CTreeItem* parent, CTreeItem* afterItem)
 {

@@ -98,16 +98,17 @@ CLavaApp::CLavaApp(int argc, char ** argv )
 
   SetVendorName("FhG-SIT");
   SetAppName("LavaPE");
-  settings->beginGroup("/FhG-SIT/LavaPE");
+  QSettings settings(QSettings::Native);
+  settings.beginGroup(GetSettingsPath());
   LBaseData.theApp = this;
   LBaseData.inRuntime = true;
   clipboard()->clear();
   LBaseData.actHint = 0;
   LBaseData.Init(0, 0);
 
-  settings->beginGroup("/fontSettings");
+  settings.beginGroup("/fontSettings");
 
-  LBaseData.m_lfDefFormFont = settings->readEntry(szFormFont, 0, &ok);
+  LBaseData.m_lfDefFormFont = settings.readEntry(szFormFont, 0, &ok);
   if (ok)
     LBaseData.m_FormFont.fromString(LBaseData.m_lfDefFormFont);
   else {
@@ -115,7 +116,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
     LBaseData.m_lfDefFormFont = LBaseData.m_FormFont.toString();
   }
 
-  LBaseData.m_lfDefFormLabelFont = settings->readEntry(szFormLabelFont, 0, &ok);
+  LBaseData.m_lfDefFormLabelFont = settings.readEntry(szFormLabelFont, 0, &ok);
   if (ok) {
     LBaseData.m_FormLabelFont.fromString(LBaseData.m_lfDefFormLabelFont);
     LBaseData.useLabelFont = true;
@@ -126,20 +127,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
     LBaseData.useLabelFont = false;
   }
 
-  /*
-  LBaseData.m_lfDefFormButtonFont = settings->readEntry(szFormButtonFont, 0, &ok);
-  if (ok) {
-    LBaseData.m_FormButtonFont.fromString(LBaseData.m_lfDefFormButtonFont);
-    LBaseData.useButtonFont = true;
-  }
-  else {
-    LBaseData.m_FormButtonFont = LBaseData.m_FormFont;//QApplication::font();
-    LBaseData.m_lfDefFormButtonFont = LBaseData.m_lfDefFormFont;//LBaseData.m_FormFont.toString();
-    LBaseData.useButtonFont = false;
-  }
-  */
-
-  LBaseData.m_lfDefGlobalFont = settings->readEntry(szGlobalFont, 0, &ok);
+  LBaseData.m_lfDefGlobalFont = settings.readEntry(szGlobalFont, 0, &ok);
   if (ok)
     LBaseData.m_GlobalFont.fromString(LBaseData.m_lfDefGlobalFont);
   else {
@@ -148,12 +136,12 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   }
   setFont(LBaseData.m_GlobalFont,false);
 
-  settings->endGroup();
+  settings.endGroup();
 
-  settings->beginGroup("/otherSettings");
-  LBaseData.m_myWebBrowser = settings->readEntry(favoriteBrowser, 0, &ok);
-  LBaseData.m_style = settings->readEntry(gui_style, 0, &ok);
-  settings->endGroup();
+  settings.beginGroup("/otherSettings");
+  LBaseData.m_myWebBrowser = settings.readEntry(favoriteBrowser, 0, &ok);
+  LBaseData.m_style = settings.readEntry(gui_style, 0, &ok);
+  settings.endGroup();
 #ifndef WIN32
   if (LBaseData.m_myWebBrowser.isEmpty())
 #endif
@@ -373,19 +361,20 @@ void CLavaApp::OnAppAbout()
 
 void CLavaApp::saveSettings()
 {
-  settings->beginGroup("/fontSettings");
-  settings->writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
-  if (LBaseData.useLabelFont)
-    settings->writeEntry(szFormLabelFont,LBaseData.m_lfDefFormLabelFont);
-  //if (LBaseData.useButtonFont)
-  //  settings->writeEntry(szFormButtonFont,LBaseData.m_lfDefFormButtonFont);
-  settings->writeEntry(szGlobalFont,LBaseData.m_lfDefGlobalFont);
-  settings->endGroup();
+  QSettings settings(QSettings::Native);
 
-  settings->beginGroup("/otherSettings");
-  settings->writeEntry(favoriteBrowser,LBaseData.m_myWebBrowser);
-  settings->writeEntry(gui_style,LBaseData.m_style);
-  settings->endGroup();
+  settings.beginGroup(GetSettingsPath());
+  settings.beginGroup("/fontSettings");
+  settings.writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
+  if (LBaseData.useLabelFont)
+    settings.writeEntry(szFormLabelFont,LBaseData.m_lfDefFormLabelFont);
+  settings.writeEntry(szGlobalFont,LBaseData.m_lfDefGlobalFont);
+  settings.endGroup();
+
+  settings.beginGroup("/otherSettings");
+  settings.writeEntry(favoriteBrowser,LBaseData.m_myWebBrowser);
+  settings.writeEntry(gui_style,LBaseData.m_style);
+  settings.endGroup();
 }
 
 int CLavaApp::ExitInstance() 

@@ -361,6 +361,23 @@ void CDPFailStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPFailStatement
 
 
+IMPLEMENT_DYNAMIC_CLASS(OldExpression,Expression)
+
+
+void CDPOldExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                       bool baseCDP)
+
+{
+  OldExpression *vp = (OldExpression*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    vp->variable.CDP(pgf,cid);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPOldExpression
+
+
 IMPLEMENT_DYNAMIC_CLASS(UnaryOp,Operation)
 
 
@@ -1189,7 +1206,7 @@ void CDPExtendExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPExtendExpression
 
 
-IMPLEMENT_DYNAMIC_CLASS(Run,AttachObject)
+IMPLEMENT_DYNAMIC_CLASS(Run,Expression)
 
 
 void CDPRun (PutGetFlag pgf, ASN1* cid, address varAddr,
@@ -1200,9 +1217,8 @@ void CDPRun (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPAttachObject(pgf,cid,(address)(AttachObject*)vp,true);
-    vp->initializerCall.CDP(pgf,cid);
-    vp->varName.CDP(pgf,cid);
+    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    vp->initiator.CDP(pgf,cid);
     vp->inputs.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPRun

@@ -93,14 +93,9 @@ public:
 
   MyListView *m_tree;
 
- // bool Expand(CTreeItem* item, bool exp);
-  //CTreeItem* GetNextVisibleItem(CTreeItem* item);
-  //TItemData* GetItemData(CTreeItem* item);
-  //CTreeItem* GetNextItem(CTreeItem* item, bool firstChild);
   CTreeItem* GetPrevSiblingItem(CTreeItem* item);
-  CTreeItem* HitTest(QPoint qp);
+//  CTreeItem* HitTest(QPoint qp);
   CTreeItem* InsertItem(QString label, QPixmap* nPix, CTreeItem* parent, CTreeItem* afterItem=TVI_LAST);
-  //void SetItemData(CTreeItem* item, TItemData* itd);
   QLineEdit* GetEditControl() {return labelEditWid;}
   QLineEdit *labelEditWid;
   virtual QDragObject* OnBegindrag() {return 0;}

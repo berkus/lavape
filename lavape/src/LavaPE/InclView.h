@@ -38,6 +38,7 @@ public:
   void OnEditSel();
   bool Expanded;
   bool InitComplete;
+  virtual void whatNext();
 
 protected:
   void OnUpdateDelete(wxAction* action);
@@ -48,6 +49,16 @@ public slots:
   //void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 private:
     Q_OBJECT;
+};
+
+class InclWhatsThis : public WhatsThis
+{
+public:
+  InclWhatsThis(CInclView *tv);
+
+  QString text(const QPoint&);
+private:
+  CInclView *inclView;
 };
 
 #endif

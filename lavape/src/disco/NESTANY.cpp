@@ -34,7 +34,7 @@ void NESTEDANY0::CDP (PutGetFlag pgf, ASN1* cid)//,
   DObject *oPtr;
   wxClassInfo *cli;
   DString className;
-  bool eoc;
+//  bool eoc;
 
   if (cid->Skip()) return;
   
@@ -48,6 +48,7 @@ void NESTEDANY0::CDP (PutGetFlag pgf, ASN1* cid)//,
   else
     if (cid->GotOptional()) {
       cid->GETstring(className);
+/*
       if (className == DString("TBNFexpression"))
         className = "LavaDECL";
       else if (className == DString("MakeCreate"))
@@ -70,7 +71,7 @@ void NESTEDANY0::CDP (PutGetFlag pgf, ASN1* cid)//,
         ptr = (DObject*)wxCreateDynamicObject(className.c);//(DObject*)cli->CreateObject();
         cid->SkipElement(eoc);
       }
-      else {
+      else {*/
         cli = wxClassInfo::FindClass(className.c);
         if (ptr) {
           if (ptr->GetWxClassInfo() != cli) {
@@ -83,57 +84,9 @@ void NESTEDANY0::CDP (PutGetFlag pgf, ASN1* cid)//,
         oPtr = (DObject*)ptr;
         oPtr->CDP(GET,cid,false);
       }
-    }
+//    }
     else {
       delete ptr;
       ptr = 0;
     }
 }
-
-/*
-void NESTEDANY0::FIO (PutGetFlag pgf, ASN1* cid,
-                      ConversionProc fio,
-                      NestedAllocationProc allocNewElem)
-{ 
-  if (cid->Skip()) return;
-  
-  if (pgf == PUT)
-    if (ptr == 0) FIOpp.EOANULL(pgf,cid);
-    else {
-      FIOpp.DOWN(1);
-      fio(pgf,cid,(address)ptr+sizeof(AnyType),false);
-      FIOpp.UP(1);
-    }
-  else {
-    FIOpp.flushAddressQueue(GET,cid);
-    if (FIOpp.isEOA(cid)) {
-      cid->WrongElemStop(false);
-      cid->GetNULL();
-      cid->WrongElemStop(true);
-      if (!cid->WrongElem()) {
-        FIOpp.GetEOA(cid);
-        delete ptr;
-        ptr = 0;
-        return;
-      }
-    }
-  
-    FIOpp.DOWN(1);
-    if (ptr == 0) ptr = (AnyType*)allocNewElem();
-    fio(pgf,cid,(address)ptr+sizeof(AnyType),false);
-    FIOpp.UP(1);
-  }
-}
-
-
-void NESTEDANY0::SIG (ASN1* cid,
-                      SignatureProc sig)
-{ 
-  if (cid->Skip()) return;
-  
-  if (ptr == 0)
-    return;
-  else
-    sig(cid,(address)ptr+sizeof(AnyType));
-}
-*/
