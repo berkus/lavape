@@ -220,7 +220,6 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
   if (!firstTime) {
     delete LBaseData->whatNextButton;
-    delete LBaseData->howToButton;
     delete LBaseData->myWhatsThisButton;
   }
   fillHelpToolbar(HelpToolbar);
@@ -355,11 +354,6 @@ void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
     "What can I do next at the current selection?",
     "<p>Provides online help which lists the most important operations "
     "that you can perform <b>at the current selection</b></p>");
-/*  newHelpToolbutton(tb,LBaseData->howToButton,"How to ...",SLOT(howTo_clicked()),
-    "How to accomplish various tasks",
-    "<p>Provides online help which explains the most basic and " 
-    "<b>frequent program development operations</b> related to "
-    "the <font color=\"red\">active view</font></p>");*/
 }
 
 void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
@@ -1379,7 +1373,6 @@ void CLavaMainFrame::adjustToolbar_7 () {
   fillKwdToolbar(Toolbar_7);
 
   delete LBaseData->whatNextButton;
-  delete LBaseData->howToButton;
   delete LBaseData->myWhatsThisButton;
   fillHelpToolbar(HelpToolbar);
 }

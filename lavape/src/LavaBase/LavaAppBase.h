@@ -504,7 +504,7 @@ public:
     *copyButton, *attachButton, *qryItfButton,
     *scaleButton, *itemButton, *callbackButton,
 
-    *whatNextButton, *howToButton;
+    *whatNextButton;
 
   QToolButton *myWhatsThisButton;
 
