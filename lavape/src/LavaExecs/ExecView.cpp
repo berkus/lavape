@@ -5888,6 +5888,8 @@ void CExecView::OnUpdateIfExpr(QPushButton *pb)
   pb->setEnabled(!Taboo()
     && text->currentSynObj->ExpressionSelected(text->currentSelection)
     && (text->currentSynObj->parentObject->primaryToken == assign_T
+        || (text->currentSynObj->parentObject->primaryToken == ObjRef_T
+            && text->currentSynObj->parentObject->parentObject->primaryToken == assign_T)
         || text->currentSynObj->parentObject->primaryToken == parameter_T
         || text->currentSynObj->parentObject->IsBinaryOp()
         || text->currentSynObj->parentObject->IsMultOp())

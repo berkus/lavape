@@ -244,18 +244,17 @@ bool RefTable::assigned (CheckData &ckd,
   CVarDesc *varDesc;
   TID tid;
 
-  for (cheTbl = (CHECVarDesc*)oRefTbl.first; cheTbl; cheTbl = (CHECVarDesc*)cheTbl->successor) {
-    tid = ((TDOD*)che->data)->ID;
-    ADJUST4(tid);
+  tid = ((TDOD*)che->data)->ID;
+  ADJUST4(tid);
+  for (cheTbl = (CHECVarDesc*)oRefTbl.first; cheTbl; cheTbl = (CHECVarDesc*)cheTbl->successor)
     if (cheTbl->data.varID == tid) break;
-  }
 
   if (cheTbl) { // found: end or recursion
     varDesc = &cheTbl->data;
     if (che->successor)
       return assigned(ckd,varDesc->subTree,(CHE*)che->successor);
     else
-      return true;
+      return varDesc->writeAccess;
   }
   else // not found
     return false;
