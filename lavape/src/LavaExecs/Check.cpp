@@ -4151,7 +4151,7 @@ bool FuncExpression::Check (CheckData &ckd)
 
   chpFormIn = GetFirstInput(&ckd.document->IDTable,funcTid);
   chpFormOut = GetFirstOutput(&ckd.document->IDTable,funcTid);
-  switch (primaryToken) {
+  switch (parentObject->primaryToken) {
   case assignFX_T:
     if (!chpFormOut
     || (chpFormOut->successor
@@ -4191,7 +4191,7 @@ bool FuncExpression::Check (CheckData &ckd)
       (opd->primaryToken==parameter_T?(SynObject*)((Parameter*)opd)->parameter.ptr : opd);
     if (!actParm->IsIfStmExpr())
       ok/*rc*/ &= opd->Check(ckd);
-    if (true/*rc*/) {
+    if (actParm->primaryToken != Event_T) {
       // check act.parm/form.parm. type compatibility:
       ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
 //    parm = (SynObject*)((Parameter*)chpActIn->data)->parameter.ptr;

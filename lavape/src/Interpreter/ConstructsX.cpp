@@ -1630,6 +1630,7 @@ LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
   *(CallbackObject*)(result + LSH) = cbObj;
   *(LavaVariablePtr)(result + LSH + (unsigned)CallbackAdapter[0]) = object;
 ret:
+  ((SynFlags*)(result+1))->INCL(finished);
   return result;
 }
 
