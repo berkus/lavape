@@ -2201,12 +2201,12 @@ bool FailStatement::Check (CheckData &ckd)
 bool OldExpression::Check (CheckData &ckd)
 {
   ENTRY
-  ok &= ((SynObject*)variable.ptr)->Check(ckd);
+  ok &= ((SynObject*)paramExpr.ptr)->Check(ckd);
   EXIT
 }
 
 void OldExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
-  ((ObjReference*)variable.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
+  ((ObjReference*)paramExpr.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
 }
 
 bool UnaryOp::IsOptional (CheckData &ckd) {
@@ -3959,6 +3959,7 @@ bool FuncExpression::Check (CheckData &ckd)
     if (!ok) {
       if (((SynObject*)function.ptr)->primaryToken == FuncPH_T)
         ((SynObject*)function.ptr)->primaryToken = FuncDisabled_T;
+      ERROREXIT
     }
     else if (((SynObject*)function.ptr)->primaryToken == FuncDisabled_T)
       ((SynObject*)function.ptr)->primaryToken = FuncPH_T;

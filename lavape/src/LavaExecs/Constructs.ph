@@ -360,6 +360,7 @@ public:
   virtual bool InReadOnlyClause();
   virtual bool IsReadOnlyClause(SynObject *synObj, bool &roExec) {
     roExec = false; return false; }
+  virtual bool InOldExpression();
   virtual bool InFuncOrEnsure();
   virtual bool InInitializer (CheckData &ckd);
   virtual bool InHiddenIniClause (CheckData &ckd, SynObject *&synObj);
@@ -653,7 +654,7 @@ public:
 
 class OldExpression : public Expression {
 public:
-  NESTEDANY<ObjReference> variable;
+  NESTEDANY<Expression> paramExpr;
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);

@@ -373,7 +373,7 @@ void CDPOldExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,(address)(Expression*)vp,true);
-    vp->variable.CDP(pgf,cid);
+    vp->paramExpr.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPOldExpression
 

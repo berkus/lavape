@@ -538,7 +538,7 @@ OldExpressionV::OldExpressionV () {
   type = Exp_T;
   replacedType = type;
   primaryToken = old_T;
-  variable.ptr = new SynObjectV(ObjPH_T);
+  paramExpr.ptr = new SynObjectV(Exp_T);
 }
 
 void OldExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
@@ -549,10 +549,8 @@ void OldExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
     t.Insert(Lparenth_T);
 
   t.Insert(old_T,true);
-  if (variable.ptr) {
-    t.Blank();
-    DRAW(variable.ptr);
-  }
+  t.Blank();
+  DRAW(paramExpr.ptr);
 
   if (parenth)
     t.Insert(Rparenth_T);
@@ -680,6 +678,7 @@ void Draw (MultipleOp *self,CProgTextBase &t,address where,CHAINX *chxp,bool ign
        || self->parentObject->IsMultOp()
        || self->parentObject->IsUnaryOp()
        || self->parentObject->IsInSetStm()
+       || self->InOldExpression()
        || self->parentObject->primaryToken == qua_T
        || self->IsFuncHandle()
        || self->parentObject->IsThrow()
@@ -2083,7 +2082,8 @@ void FuncExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ign
 
   ENTRY
 
-  parenth = (/*flags.Contains(inputArrow) ||*/ IsFuncHandle());
+  parenth = (/*flags.Contains(inputArrow) ||*/ IsFuncHandle()
+    || parentObject->primaryToken == old_T);
 
   if (primaryToken == callback_T) {
     t.Insert(primaryToken,true);

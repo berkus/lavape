@@ -655,6 +655,17 @@ bool SynObject::InReadOnlyContext () {
   return false;
 }
 
+bool SynObject::InOldExpression () {
+  SynObject *parent;
+
+  for (parent=parentObject;
+       parent;
+       parent = parent->parentObject)
+    if (parent->primaryToken == old_T)
+      return true;
+  return false;
+}
+
 bool SynObject::InFuncOrEnsure () {
   SynObject *parent=this;
 

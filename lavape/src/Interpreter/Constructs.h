@@ -559,6 +559,7 @@ class SynObject : public SynObjectBase {
     roExec=false;
     return false;
   }
+  virtual bool InOldExpression();
   virtual bool InFuncOrEnsure();
   virtual bool InInitializer(CheckData &ckd);
   virtual bool InHiddenIniClause(CheckData &ckd,SynObject *&synObj);
@@ -1253,7 +1254,7 @@ class OldExpression : public Expression {
 
 
   public:
-  NESTEDANY/*ObjReference*/ variable;
+  NESTEDANY/*Expression*/ paramExpr;
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);

@@ -5529,7 +5529,8 @@ void CExecView::OnUpdateOld(QPushButton *pb)
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
 
-  pb->setEnabled(!Taboo() 
+  pb->setEnabled(!Taboo()
+    && !text->currentSynObj->InOldExpression()
     && text->currentSynObj->ExpressionSelected(text->currentSelection)
     && (myDECL->DeclType == Ensure
         || (myDECL->DeclType == ExecDef 

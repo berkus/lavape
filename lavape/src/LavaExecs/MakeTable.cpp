@@ -345,8 +345,7 @@ void FailStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,TT
 void OldExpression::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
 {
   ENTRY
-  if ((SynObject*)variable.ptr)
-    MTBL (variable.ptr);
+  MTBL (paramExpr.ptr);
 }
 
 void UnaryOp::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
