@@ -2557,7 +2557,8 @@ void CInterfaceBox::OnOK()
   LavaDECL *suDECL;
   CHETID* cheS;
   bool extendsSet = false, extendsArray = false, extendsChain = false,
-    extendsCallback = false, extendsException = false, extendsEnum = false;
+    extendsCallback = false, extendsException = false, extendsEnum = false,
+    extendsCallbackServer = false;
 
   if (ids) {
     QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
@@ -2618,6 +2619,7 @@ void CInterfaceBox::OnOK()
         extendsSet = extendsSet || suDECL->SecondTFlags.Contains(isSet);
         extendsArray = extendsArray || suDECL->SecondTFlags.Contains(isArray);
         extendsChain = extendsChain || suDECL->SecondTFlags.Contains(isChain);
+        extendsCallbackServer = extendsCallbackServer || suDECL->SecondTFlags.Contains(isCallbackServer);
         extendsCallback = extendsCallback || suDECL->SecondTFlags.Contains(isCallback);
         extendsException = extendsException || suDECL->SecondTFlags.Contains(isException);
         extendsEnum = extendsEnum || suDECL->SecondTFlags.Contains(isEnum);
@@ -2654,6 +2656,10 @@ void CInterfaceBox::OnOK()
       myDECL->SecondTFlags.INCL(isEnum);
     else
       myDECL->SecondTFlags.EXCL(isEnum);
+    if (extendsCallbackServer)
+      myDECL->SecondTFlags.INCL(isCallbackServer);
+    else
+      myDECL->SecondTFlags.EXCL(isCallbackServer);
     if (extendsCallback)
       myDECL->SecondTFlags.INCL(isCallback);
     else

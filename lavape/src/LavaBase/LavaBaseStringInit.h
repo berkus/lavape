@@ -152,7 +152,7 @@ extern LAVABASE_DLL QString ERR_OverriddenIOType;
 extern LAVABASE_DLL QString ERR_SecondImpl;
 extern LAVABASE_DLL QString ERR_inStd;
 extern LAVABASE_DLL QString ERR_SecondDefaultIni;
-extern LAVABASE_DLL QString ERR_NoCallbackType;
+extern LAVABASE_DLL QString ERR_NoCallbackServerType;
 extern LAVABASE_DLL QString ERR_IncompWithTargetVT;
 extern LAVABASE_DLL QString ERR_WrongEvSpecType;
 extern LAVABASE_DLL QString ERR_IncompatibleCategory;

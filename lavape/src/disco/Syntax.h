@@ -426,10 +426,11 @@ enum SecondTFlag {
   isSet,
   isChain,
   isArray,
-  isCallback,
+  isCallbackServer,
   isEventDesc,
   isEventSpec,
-  isException};
+  isException,
+  isCallback};
 
 extern DISCO_DLL void CDPSecondTFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
                                       bool baseCDP=false);

@@ -1580,6 +1580,7 @@ LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
   LavaObjectPtr object, selfParm, result=0;
   CallbackObject cbObj;
   CHE* che;
+  TID cbTID;
 
   objRef = (ExpressionX*)funcStm->handle.ptr;
   cbObj.callObj = objRef->Evaluate(ckd,stackFrame,oldExprLevel);
@@ -1624,7 +1625,8 @@ LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
 
   object = onEventExpr->Evaluate(ckd,stackFrame,oldExprLevel);
 
-  result = AllocateObject(ckd,ckd.document->DECLTab[B_Callback],false);
+  ckd.document->IDTable.GetParamRefID(((Reference*)callbackServerType.ptr)->refDecl, cbTID, isCallback);
+  result = AllocateObject(ckd,ckd.document->IDTable.GetDECL(cbTID),false);
   
   new(result + LSH) CallbackObject();
   *(CallbackObject*)(result + LSH) = cbObj;

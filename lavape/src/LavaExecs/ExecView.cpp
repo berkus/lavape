@@ -1429,7 +1429,7 @@ void CExecView::Select (SynObject *selObj)
           && text->currentSynObj->parentObject->whereInParent
             == (address)&((Callback*)text->currentSynObj->parentObject->parentObject)->callback.ptr) {
             callbackExp = (Callback*)text->currentSynObj->parentObject->parentObject;
-            ((SynObject*)callbackExp->callbackType.ptr)->ExprGetFVType(text->ckd,eventDescDecl,cat,ctxFlags);
+            ((SynObject*)callbackExp->callbackServerType.ptr)->ExprGetFVType(text->ckd,eventDescDecl,cat,ctxFlags);
             eventDescDecl = text->ckd.document->GetType(eventDescDecl);
             if (eventDescDecl) {
               text->ckd.document->IDTable.GetParamID(eventDescDecl,tid,isEventDesc); // eventDesc
@@ -1594,7 +1594,7 @@ exp: // Const_T
     }
     else if (text->currentSynObj->parentObject->primaryToken == callback_T) {
       callbackExp = (Callback*)text->currentSynObj->parentObject;
-      ((SynObject*)callbackExp->callbackType.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+      ((SynObject*)callbackExp->callbackServerType.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
       if (!decl) {
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
         break;

@@ -884,7 +884,7 @@ void CDPCallback (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,(address)(Expression*)vp,true);
-    vp->callbackType.CDP(pgf,cid);
+    vp->callbackServerType.CDP(pgf,cid);
     vp->callback.CDP(pgf,cid);
     vp->onEvent.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);

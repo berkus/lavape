@@ -2425,7 +2425,7 @@ CallbackV::CallbackV (ObjReference *handle) {
   type = Exp_T;
   replacedType = type;
   primaryToken = callback_T;
-  callbackType.ptr = new SynObjectV(TypePH_T);
+  callbackServerType.ptr = new SynObjectV(TypePH_T);
   callback.ptr = new FuncStatementV(handle,false);
   onEvent.ptr = new SynObjectV(Exp_T);
   evt = new SynObjectV(Event_T);
@@ -2443,7 +2443,7 @@ void CallbackV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) 
   t.Blank();
 //  t.Insert(type_T);
 //  t.Blank();
-  DRAW(callbackType.ptr);
+  DRAW(callbackServerType.ptr);
   t.Insert(Colon_T);
   NLincIndent(t);
   DRAW(callback.ptr);

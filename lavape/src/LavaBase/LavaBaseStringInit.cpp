@@ -172,7 +172,7 @@ QString ERR_OverriddenIOType;
 QString ERR_SecondImpl;
 QString ERR_inStd;
 QString ERR_SecondDefaultIni;
-QString ERR_NoCallbackType;
+QString ERR_NoCallbackServerType;
 QString ERR_IncompWithTargetVT;
 QString ERR_WrongEvSpecType;
 QString ERR_IncompatibleCategory;
@@ -302,7 +302,7 @@ void LavaBaseStringInit() {
   ERR_SecondImpl  = QObject::tr("Interface with more than one implementation");
   ERR_inStd  = QObject::tr("std.lava corrupted");
   ERR_SecondDefaultIni  = QObject::tr("Second default initializer");
-  ERR_NoCallbackType  = QObject::tr("No callback type");
+  ERR_NoCallbackServerType  = QObject::tr("No callback server type");
   ERR_IncompWithTargetVT  = QObject::tr("Incompatible with virtual type of assignment target or set elements (""force override"" missing?)");
   ERR_WrongEvSpecType  = QObject::tr("Incompatible event specification type");
   ERR_IncompatibleCategory 

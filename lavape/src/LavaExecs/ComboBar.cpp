@@ -1823,7 +1823,7 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
         combo2 = Bar->m_SetTypesCtrl;
         //pMax2 = &maxSTW;
       }
-      if (/*elDef*/refEl->SecondTFlags.Contains(isCallback)) {
+      if (/*elDef*/refEl->SecondTFlags.Contains(isCallbackServer)) {
         combo2 = Bar->m_CallbackCtrl;
         //pMax2 = &maxCBW;
       }

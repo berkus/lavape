@@ -4373,7 +4373,7 @@ bool FuncStatement::Check (CheckData &ckd)
 void Callback::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   LavaDECL *setDecl;
   
-  ((SynObject*)callbackType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
+  ((SynObject*)callbackServerType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
   TID tidCallback=TID(ckd.document->IDTable.BasicTypesID[B_Callback],ckd.document->isStd?0:1);
   TID tidSet=TID(ckd.document->IDTable.BasicTypesID[B_Set],ckd.document->isStd?0:1);
   setDecl = ckd.document->IDTable.GetDECL(tidSet);
@@ -4395,16 +4395,16 @@ bool Callback::Check (CheckData &ckd)
 
   ENTRY
   ckd.tempCtx = ckd.lpc;
-  ok &= ((SynObject*)callbackType.ptr)->Check(ckd);
+  ok &= ((SynObject*)callbackServerType.ptr)->Check(ckd);
   ok &= ((SynObject*)callback.ptr)->Check(ckd);
   ok &= ((SynObject*)onEvent.ptr)->Check(ckd);
 
-  ((SynObject*)callbackType.ptr)->ExprGetFVType(ckd,cbTypeDecl,cat,ctxFlags);
+  ((SynObject*)callbackServerType.ptr)->ExprGetFVType(ckd,cbTypeDecl,cat,ctxFlags);
   cbTypeDecl = ckd.document->GetType(cbTypeDecl);
   if (!cbTypeDecl)
     ERROREXIT
-  if (!cbTypeDecl->SecondTFlags.Contains(isCallback)) {
-    ((SynObject*)callbackType.ptr)->SetError(ckd,&ERR_NoCallbackType);
+  if (!cbTypeDecl->SecondTFlags.Contains(isCallbackServer)) {
+    ((SynObject*)callbackServerType.ptr)->SetError(ckd,&ERR_NoCallbackServerType);
     ERROREXIT
   }
 

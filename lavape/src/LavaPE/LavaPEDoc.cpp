@@ -743,6 +743,10 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
     implDECL->TypeFlags.INCL(isGUI);
   else
     implDECL->TypeFlags.EXCL(isGUI);
+  if (classDecl->SecondTFlags.Contains(isCallbackServer))
+    implDECL->SecondTFlags.INCL(isCallbackServer);
+  else
+    implDECL->SecondTFlags.EXCL(isCallbackServer);
   if (classDecl->SecondTFlags.Contains(isCallback))
     implDECL->SecondTFlags.INCL(isCallback);
   else
@@ -2329,7 +2333,7 @@ void CLavaPEDoc::MakeIniFunc(LavaDECL* ifDECL)
   fdecl->ParentDECL = ifDECL;
   fdecl->LocalName = DString("ini"); //myDECL->LocalName;
   fdecl->FullName = ifDECL->FullName + fdecl->LocalName;
-  fdecl->TypeFlags += SET(isInitializer, defaultInitializer,isConst,-1);
+  fdecl->TypeFlags += SET(isInitializer, defaultInitializer,/*isConst,*/-1);
   CHE* che = NewCHE(fdecl);
   ifDECL->NestedDecls.Prepend(che);
 }

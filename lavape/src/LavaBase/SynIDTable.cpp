@@ -849,16 +849,15 @@ void TIDTable::FillBasicTypesID(CHESimpleSyntax* stdSyntax, bool isstd)
     elDECL = (LavaDECL*)che->data;
     if (ii == B_Callback) {
       if (isstd) { //elDECL is Callbacks
-        elDECL->SecondTFlags.INCL(isCallback); //type CallbackServer
+        elDECL->SecondTFlags.INCL(isCallbackServer); //type CallbackServer
         cheChe = (CHE*)elDECL->NestedDecls.first;
+        ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isCallback); //virtual type callback
         cheChe = (CHE*)cheChe->successor;
-//        ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isCallback); //virtual type callback
-//        cheChe = (CHE*)cheChe->successor;
         ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isEventSpec);
         cheChe = (CHE*)cheChe->successor;
         ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isEventDesc);
         cheChe = (CHE*)cheChe->successor;  //type Callback
-//        ((LavaDECL*)cheChe->data)->SecondTFlags.EXCL(isCallback); 
+        ((LavaDECL*)cheChe->data)->SecondTFlags.EXCL(isCallback); 
       }
       else
         for (cheChe = (CHE*)elDECL->NestedDecls.first; cheChe && (((LavaDECL*)cheChe->data)->DeclType != Interface); cheChe = (CHE*)cheChe->successor);
@@ -910,25 +909,6 @@ void TIDTable::FillBasicTypesID(CHESimpleSyntax* stdSyntax, bool isstd)
     ii++;
     che = (CHE*)che->successor;
   }
-  /*
-  if (isstd) {
-    elDECL = (LavaDECL*)che->data;
-    if (elDECL->LocalName == DString("Callbacks")) {
-      cheChe = (CHE*)elDECL->NestedDecls.first;
-      cheChe = (CHE*)cheChe->successor;
-      ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isCallback); //virtual type callback
-      cheChe = (CHE*)cheChe->successor;
-      ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isEventSpec);
-      cheChe = (CHE*)cheChe->successor;
-      ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isEventDesc);
-      cheChe = (CHE*)cheChe->successor;                            //callbacks virtual type
-      ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isCallback); //type Callback
-    }
-    else
-      AfxDebugBreak();
-  }
-  */
-
 }
 
 

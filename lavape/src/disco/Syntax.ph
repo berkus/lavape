@@ -330,15 +330,17 @@ $TYPE +CDP {
     isArray,
     //16, the LavaDECL defines an array or an interface which extends a array
     //    or is the array element virtual type
-    isCallback,
-    //17  the decl extends Callback or the callback virtual type
+    isCallbackServer,
+    //17  the decl extends CallbackServer
     isEventDesc,
     //18 the decl is the event descrption virtual type of a callback pattern
     isEventSpec,
     //19 the decl is the event specification virtual type of a callback pattern
-	  isException
-		//20, the LavaDECL defines an exception or an interface which extends an exception
+    isException,
+	//20, the LavaDECL defines an exception or an interface which extends an exception
     //    or is the exception enumeration virtual type
+    isCallback
+    //21  the decl extends Callback or the callback virtual type
 	};
 	  
   enum WorkFlag {

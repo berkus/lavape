@@ -2020,7 +2020,7 @@ class FuncStatement : public FuncExpression {
 struct Callback : public Expression {
   DECLARE_DYNAMIC_CLASS(Callback)
 
-  NESTEDANY/*Reference*/ callbackType;
+  NESTEDANY/*Reference*/ callbackServerType;
   NESTEDANY/*FuncStatement*/ callback;
   NESTEDANY/*Expression*/ onEvent;
   virtual bool IsOptional(CheckData &ckd)

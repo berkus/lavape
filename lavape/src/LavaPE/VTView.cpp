@@ -630,6 +630,14 @@ void CVTView::OnOverrideI(CTreeItem* item)
           if (!isN)
             elDECL->TypeFlags.EXCL(isNative);
         }
+        else {
+          if (!isN)
+            elDECL->TypeFlags.EXCL(isNative);
+          elDECL->TypeFlags.EXCL(isAbstract);
+          if (elDECL->DeclType == Interface)
+            elDECL->fromBType = NonBasic;
+        }
+          
         che = (CHE*)che->successor;
       }
       currentBaseID = itd->VTEl_Tree.VTBaseEl;

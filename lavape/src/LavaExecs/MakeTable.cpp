@@ -545,7 +545,7 @@ void FuncStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,TT
 void Callback::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
 {
   ENTRY
-  MTBL (callbackType.ptr);
+  MTBL (callbackServerType.ptr);
   MTBL (callback.ptr);
   MTBL (onEvent.ptr);
 }

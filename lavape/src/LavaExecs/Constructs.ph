@@ -932,7 +932,7 @@ public:
 };
 
 struct Callback : public Expression {
-  NESTEDANY<Reference> callbackType;
+  NESTEDANY<Reference> callbackServerType;
   NESTEDANY<FuncStatement> callback;
   NESTEDANY<Expression> onEvent;
 
