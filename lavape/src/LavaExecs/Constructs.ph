@@ -2311,7 +2311,7 @@ class CallbackX : public Callback {
 public:
   CallbackX() {}
 
-  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class AssertStatementX : public AssertStatement {

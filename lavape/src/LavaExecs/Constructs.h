@@ -35,7 +35,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
+
 #include "Syntax.h"
+
 
 #include "qwidget.h"
 #include "qscrollview.h"
@@ -3891,7 +3893,7 @@ class CallbackX : public Callback {
 public:
   CallbackX() {}
 
-  //LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class AssertStatementX : public AssertStatement {

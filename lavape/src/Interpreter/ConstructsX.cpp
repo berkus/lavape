@@ -1572,6 +1572,20 @@ bool InSetStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsig
 }
 
 
+LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+  FuncStatement *funcStm=(FuncStatement*)callback.ptr;
+  Expression *onEventExpr=(Expression*)onEvent.ptr;
+  Expression *objRef;
+  LavaObjectPtr callObj, object;
+
+  objRef = (ExpressionX*)funcStm->handle.ptr;
+  callObj = objRef->Evaluate(ckd,stackFrame,oldExprLevel);
+
+  object = onEventExpr->Evaluate(ckd,stackFrame,oldExprLevel);
+  return (LavaObjectPtr)-1;
+}
+
+
 bool AssertStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
 
   STOP_AT_STM(ckd, stackFrame, true)
