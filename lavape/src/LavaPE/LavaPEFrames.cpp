@@ -75,8 +75,7 @@
 CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
 :CMainFrame(parent, name, fl)
 {
-  if (!LBaseData->m_style.isEmpty())
-	  makeStyle(LBaseData->m_style);
+	makeStyle(LBaseData->m_style);
 
   m_OutputBar = 0;
 	lastTile = 0;
@@ -177,46 +176,16 @@ CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
 
 void CLavaMainFrame::makeStyle(const QString &style)
 {
-  LBaseData->m_style = style;
-  wxTheApp->saveSettings();
-	qApp->setStyle(style);
-/*
-	if(style == "Platinum") {
-	  QPalette p( QColor( 239, 239, 239 ) );
-	  qApp->setPalette( p, TRUE );
-	  qApp->setFont( appFont, TRUE );
-	} 
-	else if(style == "Windows") {
-	  qApp->setFont( appFont, TRUE );
-	} 
-	else if(style == "CDE") {
-	  QPalette p( QColor( 75, 123, 130 ) );
-	  p.setColor( QPalette::Active, QColorGroup::Base, QColor( 55, 77, 78 ) );
-	  p.setColor( QPalette::Inactive, QColorGroup::Base, QColor( 55, 77, 78 ) );
-	  p.setColor( QPalette::Disabled, QColorGroup::Base, QColor( 55, 77, 78 ) );
-	  p.setColor( QPalette::Active, QColorGroup::Highlight, Qt::white );
-	  p.setColor( QPalette::Active, QColorGroup::HighlightedText, QColor( 55, 77, 78 ) );
-	  p.setColor( QPalette::Inactive, QColorGroup::Highlight, Qt::white );
-	  p.setColor( QPalette::Inactive, QColorGroup::HighlightedText, QColor( 55, 77, 78 ) );
-	  p.setColor( QPalette::Disabled, QColorGroup::Highlight, Qt::white );
-	  p.setColor( QPalette::Disabled, QColorGroup::HighlightedText, QColor( 55, 77, 78 ) );
-	  p.setColor( QPalette::Active, QColorGroup::Foreground, Qt::white );
-	  p.setColor( QPalette::Active, QColorGroup::Text, Qt::white );
-	  p.setColor( QPalette::Active, QColorGroup::ButtonText, Qt::white );
-	  p.setColor( QPalette::Inactive, QColorGroup::Foreground, Qt::white );
-	  p.setColor( QPalette::Inactive, QColorGroup::Text, Qt::white );
-	  p.setColor( QPalette::Inactive, QColorGroup::ButtonText, Qt::white );
-	  p.setColor( QPalette::Disabled, QColorGroup::Foreground, Qt::lightGray );
-	  p.setColor( QPalette::Disabled, QColorGroup::Text, Qt::lightGray );
-	  p.setColor( QPalette::Disabled, QColorGroup::ButtonText, Qt::lightGray );
-	  qApp->setPalette( p, TRUE );
-	  qApp->setFont( QFont( "times", appFont.pointSize() ), TRUE );
-	} */
-	if(style == "Motif" || style == "MotifPlus") {
-	  QPalette p( QColor( 192, 192, 192 ) );
-	  qApp->setPalette( p, TRUE );
-	  qApp->setFont( appFont, TRUE );
-	}
+  if (!style.isEmpty()) {
+    LBaseData->m_style = style;
+    wxTheApp->saveSettings();
+	  qApp->setStyle(style);
+	  if(style == "Motif" || style == "MotifPlus") {
+	    QPalette p( QColor( 192, 192, 192 ) );
+	    qApp->setPalette( p, TRUE );
+	    qApp->setFont( appFont, TRUE );
+	  }
+  }
 
 	bool isVisible = Toolbar_7->isVisible();
 	delete Toolbar_7;
