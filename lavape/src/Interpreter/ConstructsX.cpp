@@ -1574,16 +1574,57 @@ bool InSetStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsig
 
 LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   FuncStatement *funcStm=(FuncStatement*)callback.ptr;
+  CSectionDesc *funcSect;
   Expression *onEventExpr=(Expression*)onEvent.ptr;
-  Expression *objRef;
-  LavaObjectPtr object, result;
+  Expression *objRef, *actParm;
+  LavaObjectPtr object, callObj=0, selfParm, result=0;
   CallbackObject cbObj;
+  CHE* che;
 
   objRef = (ExpressionX*)funcStm->handle.ptr;
   cbObj.callObj = objRef->Evaluate(ckd,stackFrame,oldExprLevel);
+  if (ckd.exceptionThrown)
+    return (LavaObjectPtr)-1;
+  if (!cbObj.callObj) {
+    objRef->SetRTError(ckd,&ERR_NullCallObject,stackFrame);
+    return 0;
+  }
+  funcSect = &(*callObj)[funcStm->funcSectionNumber + funcStm->funcDecl->SectionInfo2];
+  cbObj.fdescCbFunc = &funcSect->funcDesc[funcStm->funcDecl->SectionInfo1];
+  selfParm = cbObj.callObj - (*cbObj.callObj)->sectionOffset
+                         + (*(cbObj.callObj - (*cbObj.callObj)->sectionOffset))[cbObj.fdescCbFunc->delta].sectionOffset;
+  cbObj.callbackParms.append(selfParm);
+
+  for (che = (CHE*)funcStm->inputs.first; che; che = (CHE*)che->successor) {
+    actParm = (Expression*)che->data;
+    object = actParm->Evaluate(ckd,stackFrame,oldExprLevel);
+    if (ckd.exceptionThrown) {
+      object = 0;
+      goto ret;
+    }
+    if (object) {
+      if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
+      && !actParm->flags.Contains(unfinishedAllowed)) {
+        // unfinished objects may be passed only to input parms of initializers
+        actParm->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
+        cbObj.callbackParms.append(object);
+        goto ret;
+      }
+      if (actParm->formVType->DeclType == VirtualType)
+        if (objRef)
+          cbObj.callbackParms.append(((CLavaProgram*)ckd.document)->CastVInObj(ckd, object, funcStm->callCtx, selfParm[0][0].classDECL, actParm->formVType, actParm->vSectionNumber, actParm->isOuter));
+        else
+          cbObj.callbackParms.append(((CLavaProgram*)ckd.document)->CastVInObj(ckd, object, funcStm->callCtx, funcStm->objTypeDecl, actParm->formVType, actParm->vSectionNumber, actParm->isOuter));
+      else
+        cbObj.callbackParms.append(CASTOBJECT(object, actParm->sectionNumber));
+    }
+    else
+     cbObj.callbackParms.append(0);
+  }
 
   object = onEventExpr->Evaluate(ckd,stackFrame,oldExprLevel);
-  result = AllocateObject(ckd,ckd.document->DECLTab[B_Callback],flags.Contains(isVariable));
+  result = AllocateObject(ckd,ckd.document->DECLTab[B_Callback],false);
+ret:
   return result;
 }
 
@@ -3199,10 +3240,7 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
     else {
       funcSect = &(*callObj)[funcSectionNumber + funcDecl->SectionInfo2];
       fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
-/*      if (funcDecl->TypeFlags.Contains(isNative)) 
-        frameSize = funcDecl->nInput + funcDecl->nOutput + 1 + SFH;
-      else*/
-        frameSize = fDesc->stackFrameSize;
+      frameSize = fDesc->stackFrameSize;
 #ifdef WIN32
       frameSizeBytes = frameSize<<2;
       __asm {

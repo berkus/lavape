@@ -4005,18 +4005,22 @@ bool FuncExpression::Check (CheckData &ckd)
 
   ENTRY
 
-  ((SynObject*)function.ptr)->Check(ckd);
+//  ((SynObject*)function.ptr)->Check(ckd);
 
   callExpr = (Expression*)handle.ptr;
   if (callExpr) {
     ok &= callExpr->Check(ckd);
     if (!ok) {
-      if (((SynObject*)function.ptr)->primaryToken == FuncPH_T)
+      if (((SynObject*)function.ptr)->primaryToken == FuncPH_T) {
         ((SynObject*)function.ptr)->primaryToken = FuncDisabled_T;
+        ((SynObject*)function.ptr)->flags.INCL(isDisabled);
+      }
       ERROREXIT
     }
-    else if (((SynObject*)function.ptr)->primaryToken == FuncDisabled_T)
+    else if (((SynObject*)function.ptr)->primaryToken == FuncDisabled_T) {
       ((SynObject*)function.ptr)->primaryToken = FuncPH_T;
+      ((SynObject*)function.ptr)->flags.EXCL(isDisabled);
+    }
   }
 
   if (callExpr) {
@@ -4049,7 +4053,8 @@ bool FuncExpression::Check (CheckData &ckd)
         objTypeTid = OWNID(objTypeDecl);
     }
 
-    if (IsPH(function.ptr))
+    ok = ((SynObject*)function.ptr)->Check(ckd);
+    if (!ok)
       ERROREXIT
 
     funcTid = ((Reference*)function.ptr)->refID;
