@@ -736,6 +736,13 @@ Reference::Reference (TToken token,TID id,const char *name) {
   refName = STRING(name);
 }
 
+bool Reference::IsExecutable() {
+  if (type == FuncPH_T)
+    return true;
+  else
+    return false;
+}
+
 TDOD::TDOD () {
   type = TDOD_T;
   replacedType = type;

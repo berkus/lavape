@@ -51,9 +51,9 @@
 #define CHECKIMPL(FUNCDECL) \
   classDecl = FUNCDECL->ParentDECL; \
   if (classDecl->DeclType == Impl) \
-    classDecl = doc->IDTable.GetDECL(((CHETID*)classDecl->Supports.first)->data, classDecl->inINCL); \
+    classDecl = myDoc->IDTable.GetDECL(((CHETID*)classDecl->Supports.first)->data, classDecl->inINCL); \
   if (classDecl->DeclType == Interface) \
-    doc->CheckImpl(ckd, classDecl); 
+    myDoc->CheckImpl(ckd, classDecl); 
 
 
 
@@ -80,9 +80,9 @@ CLavaDebugThread::CLavaDebugThread() {
 
 void CLavaDebugThread::initData(CLavaBaseDoc* d) {
   if (!dbgStopData) {
-    doc = d;
+    myDoc = d;
     dbgStopData = new DbgStopData;
-    varAction = new LocalDebugVar(dbgStopData, doc);
+    varAction = new LocalDebugVar(dbgStopData, myDoc);
   }
 }
 
@@ -134,7 +134,7 @@ void CLavaDebugThread::run() {
     int rc = getsockname((int)listenSocket,(struct sockaddr*)&sa,&sz_sa);
     QString host_addr = "127.0.0.1";
 	  QStringList args;
-	  args << lavapePath << doc->GetFilename() << host_addr << QString("%1").arg(ntohs(sa.sin_port));
+	  args << lavapePath << myDoc->GetFilename() << host_addr << QString("%1").arg(ntohs(sa.sin_port));
 	  lavape.setArguments(args);
 	  if (!lavape.launch(buf)) {
       QMessageBox::critical(qApp->mainWidget(),qApp->name(),ERR_LavaPEStartFailed.arg(errno),QMessageBox::Ok,0,0);
@@ -174,8 +174,9 @@ void CLavaDebugThread::run() {
     mSend.SetSendData(Dbg_StopData, dbgStopData);
     CDPDbgMessage(PUT, put_cid, (address)&mSend);
     put_cid->flush();
-    doc->debugOn = true;
+    myDoc->debugOn = true;
   }
+  LBaseData->debugOn = true;
   while (true) {
    	CDPDbgMessage(GET,get_cid,(address)&mReceive);
     if (get_cid->Done) {
@@ -196,11 +197,14 @@ void CLavaDebugThread::run() {
         mReceive.ObjNr.Destroy();
         break;
       case Dbg_Continue:
-        setBrkPnts();
-
-        dbgStopData->ActStackLevel = 0;  //reset dbgStopData
-        dbgStopData->StackChain.Destroy();
-        dbgStopData->ObjectChain.Destroy();
+        if (varAction) {
+          setBrkPnts();
+          if (dbgStopData) {
+            dbgStopData->ActStackLevel = 0;  //reset dbgStopData
+            dbgStopData->StackChain.Destroy();
+            dbgStopData->ObjectChain.Destroy();
+          }
+        }
 //        qApp->mainWidget()->setActiveWindow();
 //        qApp->mainWidget()->raise();
 //         qDebug("Dbg_Continue, available=%d",pContExecEvent->available());
@@ -238,12 +242,16 @@ void CLavaDebugThread::run() {
   varAction=0;
   delete put_cid;
   delete get_cid;
+  LBaseData->debugOn = false;
   debugOn = false;
-  if (doc)
-    if (doc->startedFromLavaPE) 
-      qApp->quit();
+  if (myDoc)
+    if (myDoc->startedFromLavaPE) {
+      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
+      QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaEnd,(void*)hint));
+//      qApp->quit();
+    }
     else 
-      doc->Close();
+      myDoc->Close();
 }
 
 void CLavaDebugThread::setBrkPnts()
@@ -253,7 +261,7 @@ void CLavaDebugThread::setBrkPnts()
   CSearchData sData;
   CheckData ckd;
 
-  ckd.document = doc;
+  ckd.document = myDoc;
 
   if (mReceive.ContData.ptr) {
     actContType = ((DbgContData*)mReceive.ContData.ptr)->ContType;
@@ -266,19 +274,20 @@ void CLavaDebugThread::setBrkPnts()
     for (chePPnew = (CHEProgPoint*)((DbgContData*)mReceive.ContData.ptr)->BrkPnts.first;
          chePPnew; chePPnew = (CHEProgPoint*)chePPnew->successor) {
       if (chePPnew->data.Activate) {
-        funcDecl = doc->IDTable.GetDECL(chePPnew->data.FuncID);
-        execDecl = doc->GetExecDECL(funcDecl, chePPnew->data.ExecType, false,false);
+        funcDecl = myDoc->IDTable.GetDECL(chePPnew->data.FuncID);
+        execDecl = myDoc->GetExecDECL(funcDecl, chePPnew->data.ExecType, false,false);
         if (execDecl) {
           CHECKIMPL(funcDecl)
           sData.synObjectID = chePPnew->data.SynObjID;
-          sData.doc = doc;
-          ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)execDecl, onSetBrkPnt, 0,0, (address)&sData);
+          sData.doc = myDoc;
+          ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)execDecl, onSetBrkPnt, 0,0, (address)&sData);
           chePPnew->data.SynObj = sData.synObj;
         }
       }
       else {
         chePP = (CHEProgPoint*)brkPnts.first;
-        while (chePP && (chePP->data.SynObjID != chePPnew->data.SynObjID))
+        while (chePP && ((chePP->data.SynObjID != chePPnew->data.SynObjID)
+          || (chePP->data.FuncID != chePPnew->data.FuncID)))
           chePP = (CHEProgPoint*)chePP->successor;
         if (chePP) {
           ((SynObject*)chePP->data.SynObj)->workFlags.EXCL(isBrkPnt);
@@ -294,13 +303,13 @@ void CLavaDebugThread::setBrkPnts()
     ((DbgContData*)mReceive.ContData.ptr)->BrkPnts.first = 0;
     ((DbgContData*)mReceive.ContData.ptr)->BrkPnts.last = 0;
     if (actContType == dbg_RunTo) {
-      funcDecl = doc->IDTable.GetDECL(((DbgContData*)mReceive.ContData.ptr)->RunToPnt.ptr->FuncID);
-      execDecl = doc->GetExecDECL(funcDecl, ((DbgContData*)mReceive.ContData.ptr)->RunToPnt.ptr->ExecType, false,false);
+      funcDecl = myDoc->IDTable.GetDECL(((DbgContData*)mReceive.ContData.ptr)->RunToPnt.ptr->FuncID);
+      execDecl = myDoc->GetExecDECL(funcDecl, ((DbgContData*)mReceive.ContData.ptr)->RunToPnt.ptr->ExecType, false,false);
       if (execDecl) {
         CHECKIMPL(funcDecl)
         sData.synObjectID = ((DbgContData*)mReceive.ContData.ptr)->RunToPnt.ptr->SynObjID;
-        sData.doc = doc;
-        ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)execDecl, onSetRunToPnt, 0,0, (address)&sData);
+        sData.doc = myDoc;
+        ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)execDecl, onSetRunToPnt, 0,0, (address)&sData);
       }
     }
     else if (actContType == dbg_Step)

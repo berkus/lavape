@@ -112,7 +112,7 @@ public:
   bool ToggleCatEnabled();
   bool ToggleSubstitutableEnabled();
   bool Ignorable ();
-  bool Taboo ();
+  bool Taboo (bool isEnableBreakpoints=false);
   void OnConst();
   void PutInsFlagHint(SET insFlags, SET firstLasthint=SET(firstHint,lastHint,-1));
   void PutDelFlagHint(SET insFlags, SET firstLastHint=SET(firstHint,lastHint,-1));
@@ -143,8 +143,8 @@ public:
   SynObject * AdjacentSynObj (SynObject *currentSynObj, CHETokenNode *nextTokenNode);
 
 // tool buttons:
- void DbgBreakpoint();
- void DbgRunToSel();
+  void DbgBreakpoint();
+  void DbgRunToSel();
 
   void OnBitAnd();
   void OnBitOr();
@@ -297,6 +297,16 @@ public:
   void OnUpdateRshift(wxAction* action);
   void OnUpdateTrue(wxAction* action);
 
+  void OnUpdateDbgStart(wxAction* action);
+  void OnUpdateDbgStepNext(wxAction* action);
+  void OnUpdateDbgStepNextFunction(wxAction* action);
+  void OnUpdateDbgStepinto(wxAction* action);
+  void OnUpdateDbgStepout(wxAction* action);
+  void OnUpdateDbgRunToSel(wxAction* action);
+  void OnUpdateDbgBreakpoint(wxAction* action);
+  void OnUpdateDbgClearBreakpoints(wxAction* action);
+  void OnUpdateDbgStop(wxAction* action);
+
 	void OnUpdateTry(QPushButton *pb);
 	void OnUpdateFail(QPushButton *pb);
 	void OnUpdateSucceed(QPushButton *pb);
@@ -341,21 +351,26 @@ struct Format {
 class MyScrollView : public QScrollView {
 public:
   MyScrollView (QWidget *parent);
-  ~MyScrollView () { delete debugStop; delete breakPoint; delete fm; }
+  ~MyScrollView () { 
+	  delete debugStop; 
+	  delete debugStopGreen; 
+		delete breakPoint; 
+//		delete fm;
+	}
 
 	int calcIndent(CHETokenNode *currentToken);
 
   CProgText *text;
   CExecView *execView;
   Format fmt;
-	int currentX, currentY, debugStopY, breakPointY, widthOfIndent, widthOfBlank, contentsWidth, contentsHeight;
-  QFontMetrics *fm;
+	int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent, widthOfBlank, contentsWidth, contentsHeight;
+//  QFontMetrics *fm;
 	QPainter *p;
   QPixmap *debugStop, *debugStopGreen, *breakPoint;
   bool inDebugStop, inBreakPoint;
   CHETokenNode *debugStopToken;
+  CHETokenNode *callerStopToken;
   StopReason stopReason;
-  bool innermostStop;
 
   void keyPressEvent (QKeyEvent *e);
   void focusInEvent(QFocusEvent *ev);

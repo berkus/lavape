@@ -455,6 +455,7 @@ public:
   virtual bool IsOperation () { return false; }
   virtual bool IsPlaceHolder () { return true; }
   virtual bool IsRepeatableClause (CHAINX *&chx) { return false; }
+  virtual bool IsExecutable() { return true; }
   virtual bool IsSelfVar() { return false; }
   bool IsStatement ();
   virtual bool IsThrow () { return false; }
@@ -499,6 +500,7 @@ struct TDOD : public SynObject {
   virtual bool IsPlaceHolder () { return false; };
   virtual bool IsOptional (CheckData &ckd) { return flags.Contains(isOptionalExpr); }
   bool IsStateObject (CheckData &ckd);
+  virtual bool IsExecutable() { return false; }
   bool accessTypeOK (SynFlags accessFlags);
   bool ReplaceWithLocalParm(CheckData &ckd, LavaDECL *funcDecl,TDeclType declType);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -538,6 +540,7 @@ public:
   LavaDECL-- *refDecl;
 
   virtual bool IsPlaceHolder () { return false; }
+  virtual bool IsExecutable();
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
@@ -600,6 +603,7 @@ public:
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   Reference *TypeRef ();
   virtual bool IsPlaceHolder () { return false; }
+  virtual bool IsExecutable() { return false; }
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
@@ -1018,6 +1022,7 @@ public:
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual bool IsRepeatableClause (CHAINX *&chx);
+  virtual bool IsExecutable() { return false; }
 };
 
 class SwitchStatement : public Expression {
@@ -1038,6 +1043,7 @@ public:
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual bool IsRepeatableClause (CHAINX *&chx);
+  virtual bool IsExecutable() { return false; }
 };
 
 class TryStatement : public Expression {
@@ -1060,6 +1066,7 @@ public:
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual bool IsRepeatableClause (CHAINX *&chx);
+  virtual bool IsExecutable() { return false; }
 };
 
 class TypeSwitchStatement : public Expression {
@@ -1202,6 +1209,7 @@ public:
 
   virtual bool IsPlaceHolder () { return false; }
   bool IsRepeatableClause (CHAINX *&chx);
+  virtual bool IsExecutable() { return false; }
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
@@ -1428,7 +1436,7 @@ public:
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p><a href=\"FailSucceed.htm\">Affirm</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"); }
+    return QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"); }
 };
 
 class FailStatementV : public FailStatement {
@@ -1437,7 +1445,7 @@ public:
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p><a href=\"FailSucceed.htm\">Negate</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    return QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
     " optionally throw exception</p>"); }
 };
 

@@ -54,11 +54,16 @@
     if (synObjectID == ((CSearchData*)searchData)->synObjectID) { \
       if (((CSearchData*)searchData)->debugStop) { \
         ((CExecView*)((CSearchData*)searchData)->execView)->sv->stopReason = ((CSearchData*)searchData)->stopReason; \
-        ((CExecView*)((CSearchData*)searchData)->execView)->sv->innermostStop = ((CSearchData*)searchData)->innermostStop; \
-        if (primaryToken == assignFS_T) \
-          ((CExecView*)((CSearchData*)searchData)->execView)->sv->debugStopToken = startToken; \
+        if (((CSearchData*)searchData)->innermostStop) \
+          if (primaryToken == assignFS_T) \
+            ((CExecView*)((CSearchData*)searchData)->execView)->sv->debugStopToken = startToken; \
+          else \
+            ((CExecView*)((CSearchData*)searchData)->execView)->sv->debugStopToken = primaryTokenNode; \
         else \
-          ((CExecView*)((CSearchData*)searchData)->execView)->sv->debugStopToken = primaryTokenNode; \
+          if (primaryToken == assignFS_T) \
+            ((CExecView*)((CSearchData*)searchData)->execView)->sv->callerStopToken = startToken; \
+          else \
+            ((CExecView*)((CSearchData*)searchData)->execView)->sv->callerStopToken = primaryTokenNode; \
         ((CExecView*)((CSearchData*)searchData)->execView)->autoScroll = true; \
         ((CExecView*)((CSearchData*)searchData)->execView)->sv->viewport()->update(); \
       } \

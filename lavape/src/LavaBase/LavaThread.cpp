@@ -31,18 +31,18 @@ QThreadStorage<CThreadData*> threadStg;
 CLavaThread::CLavaThread(unsigned (*fp)(CLavaBaseDoc *), CLavaBaseDoc* docu)
 {
   exec = fp;
-	doc = docu;
+	myDoc = docu;
   pContExecEvent = new CEventEx();
 
-  if (!doc->ThreadList) {
-		doc->ThreadList = new CThreadList;
-    doc->ThreadList->setAutoDelete(true);
+  if (!myDoc->ThreadList) {
+		myDoc->ThreadList = new CThreadList;
+    myDoc->ThreadList->setAutoDelete(true);
   }
 }
 
 CLavaThread::~CLavaThread()
 {
-  (*pContExecEvent)--;
+  terminate(); //(*pContExecEvent)--;
   wait();
   delete pContExecEvent;
 }
@@ -59,6 +59,6 @@ CLavaThread *CLavaThread::currentThread() {
 void CLavaThread::run() {
   CThreadData *td = new CThreadData(this);
 	threadStg.setLocalData(td);
-  doc->ThreadList->append(this);
-	(*exec)(doc);
+  myDoc->ThreadList->append(this);
+	(*exec)(myDoc);
 }

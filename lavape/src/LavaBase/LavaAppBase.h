@@ -363,16 +363,17 @@ public:
 class LAVABASE_DLL  CLavaBaseData : public QObject
 {
 public:
-  CLavaBaseData() :QObject(0, "LavaBaseData") {newNum = 0; declareButton = 0; ContData = 0;}
+  CLavaBaseData() :QObject(0, "LavaBaseData") {newNum = 0; declareButton = 0; ContData = 0; debugOn = false;}
   void Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate);
   ~CLavaBaseData();
 
   wxApp *theApp;
-  CLavaThread* debugThread; 
+  CLavaThread* debugThread;
+  bool debugOn;
   DbgContData* ContData;  //used in LavaPE
   unsigned long /*HCURSOR*/ ArrowCurser;
   bool inMultiDocUpdate; //open document in multi document update
-  bool inRuntime;
+  bool inRuntime, enableBreakpoints;
   CLavaPEHint* actHint;
   CMultiUndoMem MultiUndoMem;
   CPEBaseBrowse *Browser;
@@ -472,6 +473,16 @@ public:
   wxAction* toggleSubstTypeActionPtr;
   wxAction* trueActionPtr;
   wxAction* updateCancelActionPtr;
+
+  wxAction* DbgActionPtr;
+  wxAction* DbgStepNextActPtr;
+  wxAction* DbgStepNextFunctionActPtr;
+  wxAction* DbgStepintoActPtr;
+  wxAction* DbgStepoutActPtr;
+  wxAction* DbgRunToSelActPtr;
+  wxAction* DbgClearBreakpointsActPtr;
+  wxAction* DbgBreakpointActPtr;
+  wxAction* DbgStopActionPtr;
 
   QPushButton 
     *declareButton, *existsButton, *foreachButton,

@@ -177,6 +177,16 @@ CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
   LBaseData->toggleSignActionPtr = toggleSignAction;
   LBaseData->toggleSubstTypeActionPtr = toggleSubstTypeAction;
   LBaseData->trueActionPtr = trueAction;
+
+  LBaseData->DbgActionPtr = DbgAction;
+  LBaseData->DbgStepNextActPtr = DbgStepNextAct;
+  LBaseData->DbgStepNextFunctionActPtr = DbgStepNextFunctionAct;
+  LBaseData->DbgStepintoActPtr = DbgStepintoAct;
+  LBaseData->DbgStepoutActPtr = DbgStepoutAct;
+  LBaseData->DbgRunToSelActPtr = DbgRunToSelAct;
+  LBaseData->DbgBreakpointActPtr = DbgBreakpointAct;
+  LBaseData->DbgClearBreakpointsActPtr = DbgClearBreakpointsAct;
+  LBaseData->DbgStopActionPtr = DbgStopAction;
 }
 
 void CLavaMainFrame::makeStyle(const QString &style)
@@ -287,16 +297,10 @@ void CLavaMainFrame::UpdateUI()
   findByNameAction->setEnabled(enable);
   checkAction->setEnabled(enable); 
   checkAllAction->setEnabled(enable);
-  if (doc) {
+  if (doc)
     doc->OnUpdateRunLava(runAction);
-    doc->OnUpdateDebugLava(debugAction);
-    DbgBreakpointAct->setEnabled(true);
-    DbgClearBreakpointsAct->setEnabled(true);
-  }
-  else {
+  else
     runAction->setEnabled(false);
-    debugAction->setEnabled(false);
-  }
 }
 
 void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip,QString whatsThis)
@@ -416,12 +420,12 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
     " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
     " and throws a specific exception in case of violation</p>"));
-  newKwdToolbutton(tb,LBaseData->succeedButton,"affirm",SLOT(succeed()),
+  newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),
     QObject::tr("Immediate affirmative/successful return"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Affirm</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
-  newKwdToolbutton(tb,LBaseData->failButton,"negate",SLOT(fail()),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
+  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(fail()),
     QObject::tr("Immediate negative/unsuccessful return, optionally throw exception"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Negate</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
     " optionally throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()),
     QObject::tr("Run a nested initiator"),
@@ -862,7 +866,7 @@ void CLavaMainFrame::override()
 }
 
 
-void CLavaMainFrame::debug()
+void CLavaMainFrame::DbgStart()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->running()) {
     DbgMessage* mess = new DbgMessage(Dbg_Continue,0);

@@ -2951,13 +2951,20 @@ void CLavaPEDoc::OnCheck()
 bool CLavaPEDoc::OnCloseDocument() 
 {
   if (!((wxApp*)qApp)->appExit ) {
-    ((CLavaPEApp*)wxTheApp)->debugThread.removeBrkPoints(this);
     if (debugOn && ((CLavaPEApp*)wxTheApp)->debugThread.running()) {
+      //((CLavaPEApp*)wxTheApp)->debugThread.clearBrkPnts();
+      ((CLavaPEApp*)wxTheApp)->debugThread.removeBrkPoints(this);
+      if (((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived) 
+        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived->DbgData.ptr, this);
+      if (((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived) 
+        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived->DbgData.ptr, this);
       close_socket(((CLavaPEApp*)wxTheApp)->debugThread.workSocket);
       ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->setDebugData(0, this);
-      ((CLavaPEApp*)wxTheApp)->debugThread.doc = 0;
+      ((CLavaPEApp*)wxTheApp)->debugThread.myDoc = 0;
       (*((CLavaPEApp*)wxTheApp)->debugThread.pContExecEvent)--;
     }
+    else
+      ((CLavaPEApp*)wxTheApp)->debugThread.removeBrkPoints(this);
     if (((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->stopDoc == this)
       ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_OutputBar->stopDoc = 0;
   }
@@ -3135,8 +3142,9 @@ void CLavaPEDoc::OnDebugLava()
 	args << interpreterPath << lavaFile << host_addr << QString("%1").arg(ntohs(sa.sin_port));
 	((CLavaPEApp*)qApp)->interpreter.setArguments(args);
   debugOn = true;
+  changeNothing = true;
 
-  ((CLavaPEApp*)qApp)->debugThread.doc = this;
+  ((CLavaPEApp*)qApp)->debugThread.myDoc = this;
   ((CLavaPEApp*)qApp)->debugThread.adjustBrkPnts();
   ((CLavaPEApp*)qApp)->debugThread.start();
 	if (!((CLavaPEApp*)qApp)->interpreter.launch(buf)) {
@@ -3151,17 +3159,6 @@ void CLavaPEDoc::OnDebugLava()
 void CLavaPEDoc::interpreterExited () {
   close_socket(((CLavaPEApp*)wxTheApp)->debugThread.workSocket);
   (*((CLavaPEApp*)qApp)->debugThread.pContExecEvent)--;
-}
-
-void CLavaPEDoc::OnUpdateDebugLava(wxAction* action) 
-{
-  if (!mySynDef) 
-    return;
-  if (((CLavaPEApp*)qApp)->interpreter.isRunning() || ((CLavaPEApp*)qApp)->debugThread.running()) {
-    action->setEnabled(((CLavaPEApp*)qApp)->debugThread.interpreterWaits);
-    return;
-  }
-  OnUpdateRunLava(action);
 }
 
 //check all included documents

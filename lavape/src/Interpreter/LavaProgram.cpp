@@ -2155,18 +2155,17 @@ void trans_func( unsigned u, _EXCEPTION_POINTERS* pExp )
 }
 
 void sigEnable() {
-  _set_se_translator(trans_func);
+  _set_se_translator(trans_func);/*
 //  _control87(0,_EM_UNDERFLOW | _EM_OVERFLOW | _EM_ZERODIVIDE | _EM_INVALID); // enable floating-point exceptions
 
 // Get the default control word.
    int cw = _controlfp( 0,0 );
 
    // Set the exception masks OFF, turn exceptions on.
-//   cw &=~(EM_OVERFLOW|EM_UNDERFLOW|EM_INEXACT|EM_ZERODIVIDE|EM_DENORMAL);
-   cw &=~(EM_OVERFLOW|EM_UNDERFLOW|EM_ZERODIVIDE|EM_DENORMAL);
+   cw &=~(EM_OVERFLOW|EM_UNDERFLOW|EM_ZERODIVIDE|EM_DENORMAL|EM_INEXACT);
 
    // Set the control word.
-   _controlfp( cw, MCW_EM );
+   _controlfp( cw, MCW_EM );*/
 }
 
 #else
@@ -2183,11 +2182,11 @@ void sigEnable() {
 
   rc = sigfillset(&sigs);
   rc = pthread_sigmask(SIG_UNBLOCK,&sigs,0);
-  feenableexcept(FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID);
+//  feenableexcept(FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID);
   sa.sa_handler = (sighandler_t)signalHandler;
   sa.sa_mask = sigs;
   sa.sa_flags = SA_SIGINFO;
-	rc = sigaction(SIGFPE,&sa,&sa_old);
+//	rc = sigaction(SIGFPE,&sa,&sa_old);
 	rc = sigaction(SIGABRT,&sa,&sa_old);
 	rc = sigaction(SIGILL,&sa,&sa_old);
 	rc = sigaction(SIGINT,&sa,&sa_old);
@@ -2252,7 +2251,7 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
 #endif
         for (pos=0;pos<frameSize;pos++)
           newStackFrame[pos] = 0;
-        if (((CLavaDebugThread*)LBaseData->debugThread)->debugOn) {
+        if (LBaseData->debugOn) {
           doc->debugOn = true;
           (*((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent)--; 
           //debug thread continue, now initialisation is finished 

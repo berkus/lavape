@@ -198,10 +198,9 @@ bool TNewFuncInOut(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr obj = stack[SFH]-stack[SFH][0]->sectionOffset;
   LavaObjectPtr urlObj = *(LavaVariablePtr)(obj-2);
   QString fileName =  *(QString*)(urlObj+LSH);
-  LavaObjectPtr mode = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
-  IFC(mode);
-  *(bool*)(mode+LSH) = false;
-  *(LavaVariablePtr)(stack[SFH]+LSH) = mode;
+  LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
+  *(bool*)(modeObj+LSH) = false;
+  *(LavaVariablePtr)(stack[SFH]+LSH) = modeObj;
   new(stack[SFH]+LSH+1) QFile(fileName);
   new(stack[SFH]+LSH+1+szQFile) QTextStream((QFile*)(stack[SFH]+LSH+1));
   return true;
@@ -314,10 +313,10 @@ bool DNewFuncInOut(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr obj = stack[SFH]-stack[SFH][0]->sectionOffset;
   LavaObjectPtr urlObj = *(LavaVariablePtr)(obj-2);
   QString fileName =  *(QString*)(urlObj+LSH);
-  LavaObjectPtr mode = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
-  IFC(mode);
-  *(bool*)(mode+LSH) = false;
-  *(LavaVariablePtr)(stack[SFH]+LSH) = mode;
+  LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
+  ((SynFlags*)(modeObj+1))->INCL(finished);
+  *(bool*)(modeObj+LSH) = false;
+  *(LavaVariablePtr)(stack[SFH]+LSH) = modeObj;
   new(stack[SFH]+LSH+1) QFile(fileName);
   new(stack[SFH]+LSH+1+szQFile) QDataStream((QFile*)(stack[SFH]+LSH+1));
   return true;

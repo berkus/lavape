@@ -276,21 +276,23 @@ bool CLavaPEApp::event(QEvent *e)
 {
   
   if (e->type() == IDU_LavaDebug) {
-    ((CLavaMainFrame*)m_appWindow)->m_OutputBar->setDebugData((DbgMessages*)((QCustomEvent*)e)->data(), debugThread.doc);
-    ((CMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
-    ((CMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
-    ((CMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(true);
-    ((CMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(true);
-    ((CMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(true);
-    ((CMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(true);
-    ((CMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(true);
+    ((CLavaMainFrame*)m_appWindow)->m_OutputBar->setDebugData((DbgMessages*)((QCustomEvent*)e)->data(), debugThread.myDoc);
+    LBaseData.enableBreakpoints = true;
+    if (((QCustomEvent*)e)->data()) {
+      ((CMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
+      ((CMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(true);
+      ((CMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(true);
+      ((CMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(true);
+      ((CMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(true);
+    }
+    else {
+      ((CMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
+      ((CMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
+      ((CMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
+      ((CMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
+    }
     m_appWindow->setActiveWindow();
     m_appWindow->raise();
-#ifdef WIN32
-//    SetForegroundWindow(m_appWindow->winId());
-#endif
-    //m_appWindow->showMaximized();
-
   }
   else if (e->type() == IDU_LavaDebugRq) {
     if (debugThread.dbgRequest) {
@@ -298,13 +300,14 @@ bool CLavaPEApp::event(QEvent *e)
       debugThread.dbgRequest = 0;
     }
     debugThread.dbgRequest = (DbgMessage*)((QCustomEvent*)e)->data();
-    ((CMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(false);
+//    ((CMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(false);
+//    ((CMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(false);
+    LBaseData.enableBreakpoints = false;
     ((CMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(false);
     ((CMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
     ((CMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
     ((CMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
     ((CMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
-    ((CMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(false);
 
     (*debugThread.pContExecEvent)--;
   }
@@ -630,7 +633,7 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
   QString driveLetter = QString(name[0].upper());
   name.replace(0,1,driveLetter);
 #endif
-  ((CLavaPEApp*)qApp)->debugThread.doc = (CLavaBaseDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+  ((CLavaPEApp*)qApp)->debugThread.myDoc = (CLavaBaseDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
   if (argc() > 2) {
     ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = QString(argv()[2]);
     ((CLavaPEApp*)qApp)->debugThread.remotePort = QString(argv()[3]);

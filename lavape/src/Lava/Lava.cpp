@@ -73,7 +73,6 @@ int main( int argc, char ** argv ) {
   QString componentPath;
 
   //DebugBreak();
-
   if (sock_init())
     qDebug("sock_init failed");
 
@@ -286,7 +285,6 @@ QString CLavaApp::InitWebBrowser () {
 	return prog;
 }
 
-
 bool CLavaApp::event(QEvent *e)
 {
 	CLavaDoc *doc;
@@ -303,11 +301,11 @@ bool CLavaApp::event(QEvent *e)
 	case IDU_LavaEnd:
 	  pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
 		doc = (CLavaDoc*)pHint->fromDoc;
-		thr = (CLavaThread*)pHint->CommandData1;
+/*		thr = (CLavaThread*)pHint->CommandData1;
     if (thr) {
 		  thr->wait();
 		 // delete thr;
-    }
+    }*/
 		delete (CLavaPEHint*)pHint;
     if (doc)
 		  doc->OnCloseDocument();
@@ -428,6 +426,7 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
 
     //QMessageBox::critical(/*qApp->*/mainWidget(),qApp->name(),"Lava Interpreter: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     debugThread.debugOn = true;
+    LBaseData.debugOn = true;
     doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
     doc->startedFromLavaPE = true;
     ((CLavaMainFrame*)m_appWindow)->fileOpenAction->setEnabled(false);

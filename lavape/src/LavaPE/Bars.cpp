@@ -275,26 +275,29 @@ void COutputBar::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
     SetTab(tabDebug);
   }
   else { //reset
+    if (doc && dbgReceived && dbgReceived->lastReceived) {
+      removeExecStackPos((DbgStopData*)dbgReceived->lastReceived->DbgData.ptr, doc);
+      delete dbgReceived->lastReceived;
+      dbgReceived->lastReceived = 0;
+    }
+    /*
     if (stopDoc) {
       POSITION pos = stopDoc->GetFirstViewPos();
       while (pos) {
         view = (CLavaBaseView*)stopDoc->GetNextView(pos);
-        if (view->inherits("CExecView")/* && (((CExecView*)view)->myDECL == stopExecDECL)*/) {
+        if (view->inherits("CExecView")) { // && (((CExecView*)view)->myDECL == stopExecDECL)) {
           ((CExecView*)view)->sv->debugStopToken = 0;
           ((CExecView*)view)->sv->viewport()->repaint();
-          pos = 0;
+          //pos = 0;
         }
       }
     }
+    */
+    StackView->allDrawn = false;
     while (VarView->firstChild())
       delete VarView->firstChild();
     while (StackView->firstChild())
       delete StackView->firstChild();
-    ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepNextAct->setEnabled(false);
-    ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
-    ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepintoAct->setEnabled(false);
-    ((CMainFrame*)wxTheApp->m_appWindow)->DbgStepoutAct->setEnabled(false);
-    ((CMainFrame*)wxTheApp->m_appWindow)->DbgRunToSelAct->setEnabled(false);
   }
 
 }
@@ -344,9 +347,10 @@ void COutputBar::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
           else
             view = 0;
         }
-        if (view) {
+        if (view && (((CExecView*)view)->sv->debugStopToken || ((CExecView*)view)->sv->callerStopToken) ) {
           ((CExecView*)view)->sv->debugStopToken = 0;
-          ((CExecView*)view)->sv->viewport()->repaint();
+          ((CExecView*)view)->sv->callerStopToken = 0;
+          ((CExecView*)view)->sv->viewport()->update();
         }
       }
     }
@@ -402,7 +406,7 @@ void COutputBar::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
             while (pos) {
               view = (CLavaBaseView*)stopDoc->GetNextView(pos);
               if (view->inherits("CExecView") && (((CExecView*)view)->myDECL == stopExecDECL)) {
-                sData.execView = (CExecView*)view;
+                sData.execView = view;
                 break;
               }
             }
@@ -412,14 +416,21 @@ void COutputBar::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
             sData.execView = wxDocManager::GetDocumentManager()->GetActiveView();
           }
           if (sData.execView) {
-            sData.debugStop = true;
-            sData.stopReason = data->stopReason;
-            if (cheData == data->StackChain.first)
-              sData.innermostStop = true;
-            else
-              sData.innermostStop = false;
-            ((SynObjectBase*)stopExecDECL->Exec.ptr)->MakeTable((address)&stopDoc->IDTable, 0, (SynObjectBase*)stopExecDECL, onSelect, 0,0, (address)&sData);
-      
+            if (!cheDataAct || (cheData == data->StackChain.first)) {
+              sData.debugStop = true;
+              sData.stopReason = data->stopReason;
+              if (cheData == data->StackChain.first)
+                sData.innermostStop = true;
+              else
+                sData.innermostStop = false;
+              ((SynObjectBase*)stopExecDECL->Exec.ptr)->MakeTable((address)&stopDoc->IDTable, 0, (SynObjectBase*)stopExecDECL, onSelect, 0,0, (address)&sData);
+              ((CExecView*)sData.execView)->sv->viewport()->update();
+            }
+            else 
+              if (((CExecView*)sData.execView)->sv->callerStopToken) {
+                ((CExecView*)sData.execView)->sv->callerStopToken = 0;
+                ((CExecView*)sData.execView)->sv->viewport()->update();
+              }
           }
         }
       }

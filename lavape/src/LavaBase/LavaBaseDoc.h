@@ -93,6 +93,7 @@ public:
 class LAVABASE_DLL CHWException
 {
 public:
+  CHWException(){};
 #ifdef WIN32
     CHWException(unsigned n);
 #else
@@ -103,6 +104,12 @@ public:
     unsigned codeHW;
     unsigned lavaCode;
     QString message;
+};
+
+class LAVABASE_DLL CFPException : public CHWException
+{
+public:
+    CFPException(bool isQuietNaN);
 };
 
 
@@ -249,13 +256,16 @@ public:
   virtual void OnGenHtml() {}
   virtual void OnGenHtmlS() {}
 
+  virtual void DbgStart() {}
   virtual void DbgBreakpoint() {}
+  virtual void DbgClearBreakpoints() {};
   virtual void DbgStepNext() {}
   virtual void DbgStepNextFunction() {}
   virtual void DbgStepinto() {}
   virtual void DbgStepout() {}
   virtual void DbgStop() {}
   virtual void DbgRunToSel() {}
+
   virtual void OnAnd() {}
   virtual void OnBitAnd() {}
   virtual void OnBitOr() {}
@@ -599,6 +609,7 @@ enum HWerrorCodes {
   float_inexact_result_ex,
   float_invalid_op_ex,
   float_subscript_out_of_range_ex,
+  float_quietNAN_ex,
   integer_div_by_zero_ex,
   integer_overflow_ex,
   other_hardware_ex

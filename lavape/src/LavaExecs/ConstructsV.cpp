@@ -514,7 +514,7 @@ SucceedStatementV::SucceedStatementV () {
 
 void SucceedStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-    t.Insert(succeed_T,true);
+  t.Insert(succeed_T,true);
   EXIT
 }
 
@@ -527,11 +527,14 @@ FailStatementV::FailStatementV () {
 
 void FailStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-  t.Insert(fail_T,true);
+
   if (exception.ptr) {
+    t.Insert(throw_T,true);
     t.Blank();
     DRAW(exception.ptr);
   }
+  else
+    t.Insert(fail_T,true);
   EXIT
 }
 

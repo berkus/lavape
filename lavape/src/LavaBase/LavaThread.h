@@ -38,7 +38,7 @@ public:
   ~CLavaThread();
 
 	unsigned (*exec)(CLavaBaseDoc *d);
-	CLavaBaseDoc *doc;
+	CLavaBaseDoc *myDoc;
 
   CEventEx *pContExecEvent;
 

@@ -29,12 +29,13 @@ class CLavaPEDebugThread : public CLavaThread
 {
 public:
   CLavaPEDebugThread() 
-    {dbgRequest=0; get_cid=0; put_cid=0; interpreterWaits = false; doc=0;}
+    {dbgRequest=0; get_cid=0; put_cid=0; interpreterWaits = false; myDoc=0;}
   QString remoteIPAddress, remotePort;
   sock_t listenSocket, workSocket;
   ASN1InSock *get_cid;
   ASN1OutSock *put_cid;
   DbgMessage* dbgRequest;
+  DbgMessages dbgReceived;
   CHAINANY brkPnts;
   bool interpreterWaits;
   bool startedFromLava;

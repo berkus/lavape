@@ -1165,6 +1165,10 @@ CHWException::CHWException(unsigned n)
     message = QString("Hardware exception: Exceeding magnitude of lowest negative exponent of floating-point type");
     lavaCode = float_underflow_ex;
     break;
+  case STATUS_FLOAT_INEXACT_RESULT:
+    message = QString("Hardware exception: Floating-point operation yields inexact result");
+    lavaCode = float_inexact_result_ex;
+    break;
   case STATUS_INTEGER_DIVIDE_BY_ZERO:
     message = QString("Hardware exception: Integer division by 0");
     lavaCode = integer_div_by_zero_ex;
@@ -1280,6 +1284,18 @@ bool CHWException::SetLavaException(CheckData& ckd)
   else
     return false;
 }
+
+CFPException::CFPException(bool isQuietNaN) {
+  if (isQuietNaN) {
+    message = QString("Hardware exception: \"Not-a-number(quietNaN)\" in floating-point operation");
+    lavaCode = float_quietNAN_ex;
+  }
+  else {
+    message = QString("Hardware exception: Exceeding maximum positive exponent of floating-point type");
+    lavaCode = float_overflow_ex;
+  }
+}
+
 
 CRuntimeException::CRuntimeException(int co, QString *err_code)
 {

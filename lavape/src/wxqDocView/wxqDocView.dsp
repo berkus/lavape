@@ -44,8 +44,8 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "WXQDOCVIEW_EXPORTS" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /W3 /GX /I "Generated" /I "..\disco" /I "$(QTDIR)\include" /D "WIN32" /D "NDEBUG" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /FD /c
-# SUBTRACT CPP /Z<none> /O<none> /Fr /YX
+# ADD CPP /nologo /MT /W3 /GX /I "Generated" /I "..\disco" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /FD /c
+# SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x407 /d "NDEBUG"
@@ -73,17 +73,17 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "..\disco" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /FR /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "Generated" /I "..\disco" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /FR /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "Generated" /I "..\disco" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /FR /FD /GZ /c
 # SUBTRACT CPP /YX
-# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x407 /d "_DEBUG"
-# ADD RSC /l 0x407 /d "_DEBUG"
+# ADD BASE MTL /nologo /mktyplib203 /win32
+# ADD MTL /nologo /mktyplib203 /win32
+# ADD BASE RSC /l 0x407
+# ADD RSC /l 0x407
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 ..\disco\Debug S\disco.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qui.lib $(QTDIR)\lib\qt-mt321.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD BASE LINK32 ..\disco\Debug\disco.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qui.lib $(QTDIR)\lib\qt-mt321.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
 # ADD LINK32 ..\disco\Debug\disco.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /out:"..\LavaPE\Debug\wxqDocView.dll" /pdbtype:sept
 
 !ENDIF 

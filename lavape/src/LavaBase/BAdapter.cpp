@@ -30,9 +30,11 @@
 #include "qmessagebox.h"
 #include "LavaAppBase.h"
 #include "DumpView.h"
-#ifndef WIN32
-//#include <fenv.h>
-#endif
+#include <float.h>
+#include <stdio.h>
+#include <limits>
+
+using namespace std;
 
 
 #define OBJALLOC(RESULT, CKD, DECL, ST) {\
@@ -41,6 +43,10 @@
   if (!RESULT && !CKD.exceptionThrown)\
     throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
 }
+
+#define TEST_AND_THROW(T) \
+  if (result == numeric_limits<T>::infinity()) throw CFPException(false); \
+  else if (result == numeric_limits<T>::quiet_NaN()) throw CFPException(true);
 
 
 void NewQString(QString* pstr, const char* str)
@@ -459,59 +465,63 @@ bool FloatGET(CheckData& /*ckd*/, LavaVariablePtr stack)
 
 bool FloatPlus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
+  register float result = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
+  TEST_AND_THROW(float)
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[SFH+2]+LSH) = fl;
+  *(float*)(stack[SFH+2]+LSH) = result;
   return true;
 }
 
 bool FloatIncBy(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
-//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[SFH]+LSH) = fl;
+  register float result = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
+  TEST_AND_THROW(float)
+  *(float*)(stack[SFH]+LSH) = result;
   return true;
 }
 
 bool FloatMinus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = - *(float*)(stack[SFH]+LSH);
+  register float result = - *(float*)(stack[SFH]+LSH);
+  TEST_AND_THROW(float)
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[SFH+1]+LSH) = fl;
+  *(float*)(stack[SFH+1]+LSH) = result;
   return true;
 }
 
 bool FloatMulti(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
+  register float result = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
+  TEST_AND_THROW(float)
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[SFH+2]+LSH) = fl;
+  *(float*)(stack[SFH+2]+LSH) = result;
   return true;
 }
 
 bool FloatMultBy(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
-//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[SFH]+LSH) = fl;
+  register float result = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
+  TEST_AND_THROW(float)
+  *(float*)(stack[SFH]+LSH) = result;
   return true;
 }
 
 bool FloatDiv(CheckData& ckd, LavaVariablePtr stack)
 {
-  register float fl = *(float*)(stack[SFH]+LSH) / *(float*)(stack[SFH+1]+LSH);
+  register float result = *(float*)(stack[SFH]+LSH) / *(float*)(stack[SFH+1]+LSH);
+  TEST_AND_THROW(float)
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
-  *(float*)(stack[SFH+2]+LSH) = fl;
+  *(float*)(stack[SFH+2]+LSH) = result;
   return true;
 }
 
 bool FloatString(CheckData& ckd, LavaVariablePtr stack)
 {
+//  char buf[200];
+
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
-  QString str = QString("%1").arg(*(float*)(stack[SFH]+LSH), 0,'f');
-  //QString str;
-  //QTextStream ts( &str, IO_WriteOnly );
-  //ts << *(float*)(stack[SFH]+LSH);
+  QString str = QString::number(*(float*)(stack[SFH]+LSH));
+//  sprintf(buf,"%g",*(float*)(stack[SFH]+LSH));//  QString str = QString(buf);
   new(stack[SFH+1]+LSH) QString(str);
   return true;
 }
@@ -526,8 +536,6 @@ bool DoubleEq(CheckData& /*ckd*/, LavaVariablePtr stack)
 
 bool DoubleLavaIO(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  //stack{0] is the object
-  //(ASN1ToFromAr*)stack[SFH+1] the cid
   if (((ASN1tofromAr*)stack[SFH+1])->Ar->device()->isWritable())
     ((ASN1tofromAr*)stack[SFH+1])->PUTdouble(*(double*)(stack[SFH]+LSH));
   else
@@ -557,58 +565,63 @@ bool DoubleGET(CheckData& /*ckd*/, LavaVariablePtr stack)
 
 bool DoublePlus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
+  register double result =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
+  TEST_AND_THROW(double)
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[SFH+2]+LSH) = dbl;
+  *(double*)(stack[SFH+2]+LSH) = result;
   return true;
 }
 
 bool DoubleIncBy(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
-//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[SFH]+LSH) = dbl;
+  register double result =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
+  TEST_AND_THROW(double)
+  *(double*)(stack[SFH]+LSH) = result;
   return true;
 }
 
 bool DoubleMinus(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl = - *(double*)(stack[SFH]+LSH);
+  register double result = - *(double*)(stack[SFH]+LSH);
+  TEST_AND_THROW(double)
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[SFH+1]+LSH) = dbl;
+  *(double*)(stack[SFH+1]+LSH) = result;
   return true;
 }
 
 bool DoubleMulti(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
+  double result = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
+  TEST_AND_THROW(double)
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[SFH+2]+LSH) = dbl;
+  *(double*)(stack[SFH+2]+LSH) = result;
   return true;
 }
 
 bool DoubleMultBy(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
-//  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[SFH]+LSH) = dbl;
+  register double result = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
+  TEST_AND_THROW(double)
+  *(double*)(stack[SFH]+LSH) = result;
   return true;
 }
 
 bool DoubleDiv(CheckData& ckd, LavaVariablePtr stack)
 {
-  register double dbl = *(double*)(stack[SFH]+LSH) / *(double*)(stack[SFH+1]+LSH);
+  register double result = *(double*)(stack[SFH]+LSH) / *(double*)(stack[SFH+1]+LSH);
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
-  *(double*)(stack[SFH+2]+LSH) = dbl;
+  *(double*)(stack[SFH+2]+LSH) = result;
   return true;
 }
 
 bool DoubleString(CheckData& ckd, LavaVariablePtr stack)
 {
+//  char buf[200];
+
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
-  QString str = QString("%1").arg(*(double*)(stack[SFH]+LSH), 0,'f');
-  //QTextStream ts( &str, IO_WriteOnly );
-  //ts << *(double*)(stack[SFH]+LSH);
+  QString str = QString::number(*(double*)(stack[SFH]+LSH));
+//  sprintf(buf,"%g",*(double*)(stack[SFH]+LSH));
+//  QString str = QString(buf);
   new(stack[SFH+1]+LSH) QString(str);
   return true;
 }

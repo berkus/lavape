@@ -273,7 +273,7 @@ void Tokens_INIT ()
   ATO("exec");
   ATO("exists");
   ATO("extract");
-  ATO("negate");
+  ATO("fail");
   ATO("false");
   ATO("for");
   ATO("foreach");
@@ -305,7 +305,7 @@ void Tokens_INIT ()
   ATO("quantifier");
   ATO("select");
   ATO("service");
-  ATO("affirm");
+  ATO("succeed");
   ATO("switch");
   ATO("then");
   ATO("throw");

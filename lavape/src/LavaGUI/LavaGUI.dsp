@@ -43,13 +43,13 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 LIB32=link.exe -lib
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /Yu"stdafx.h" /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /D "LAVAGUI_EXPORT" /FR /FD /c
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /Yu"stdafx.h" /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /FR /FD /c
 # SUBTRACT CPP /YX
-# ADD BASE MTL /nologo /D "_DEBUG" /win32
-# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x407 /d "_DEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x409 /i "..\LavaPE" /i "..\LavaBase" /d "_DEBUG" /d "_AFXDLL"
+# ADD BASE MTL /nologo /win32
+# ADD MTL /nologo /mktyplib203 /win32
+# ADD BASE RSC /l 0x407
+# ADD RSC /l 0x409 /i "..\LavaPE" /i "..\LavaBase"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -72,12 +72,12 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 LIB32=link.exe -lib
-# ADD BASE CPP /nologo /MDd /W3 /Gm /Gi /GX /Zi /Od /Gf /Gy /I "..\disco" /I "..\LavaBase" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_AFXEXT" /D "LavaGUI_EXPORT" /FR /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "NDEBUG" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "QT_ACCESSIBILITY_SUPPORT" /D "LAVAGUI_EXPORT" /FD /c
-# SUBTRACT CPP /Z<none> /O<none> /Fr /YX
-# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x409 /d "_DEBUG" /d "_AFXDLL"
+# ADD BASE CPP /nologo /MDd /W3 /Gm /Gi /GX /Zi /Od /Gf /Gy /I "..\disco" /I "..\LavaBase" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXEXT" /D "LavaGUI_EXPORT" /FR /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /FD /c
+# SUBTRACT CPP /Fr /YX
+# ADD BASE MTL /nologo /mktyplib203 /win32
+# ADD MTL /nologo /mktyplib203 /win32
+# ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409 /d "NDEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo

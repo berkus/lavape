@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "..\LavaExecs" /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "NDEBUG" /D "QT_THREAD_SUPPORT" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "..\LavaExecs" /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /FD /c
 # SUBTRACT CPP /Fr /YX /Yc /Yu
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -72,12 +72,12 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 LIB32=link.exe -lib
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\LavaPE" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "_DEBUG" /D "QT_THREAD_SUPPORT" /FR /FD /c
-# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
-# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
-# ADD BASE RSC /l 0x407 /d "_DEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x409 /d "_DEBUG" /d "_AFXDLL"
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\LavaPE" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /FR /FD /c
+# ADD BASE MTL /nologo /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /mktyplib203 /o "NUL" /win32
+# ADD BASE RSC /l 0x407
+# ADD RSC /l 0x409
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo

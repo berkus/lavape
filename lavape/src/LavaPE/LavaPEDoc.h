@@ -80,7 +80,6 @@ public:
   void OnDebugLava();
   void OnTotalCheck();
   void OnUpdateRunLava(wxAction* action);
-  void OnUpdateDebugLava(wxAction* action);
   bool OpenGUIView(LavaDECL** pdecl);
   bool OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate);
   virtual bool OpenExecView(LavaDECL* execDecl);

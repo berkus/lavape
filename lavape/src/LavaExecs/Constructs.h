@@ -695,6 +695,10 @@ class SynObject : public SynObjectBase {
   {
     return false;
   }
+  virtual bool IsExecutable()
+  {
+    return true;
+  }
   virtual bool IsSelfVar()
   {
     return false;
@@ -784,6 +788,10 @@ struct TDOD : public SynObject {
     return flags.Contains(isOptionalExpr);
   }
   bool IsStateObject(CheckData &ckd);
+  virtual bool IsExecutable()
+  {
+    return false;
+  }
   bool accessTypeOK(SynFlags accessFlags);
   bool ReplaceWithLocalParm(CheckData &ckd,LavaDECL *funcDecl,TDeclType declType);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -880,6 +888,7 @@ class Reference : public SynObject {
   {
     return false;
   }
+  virtual bool IsExecutable();
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
@@ -1002,6 +1011,10 @@ class VarName : public Expression {
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   Reference *TypeRef();
   virtual bool IsPlaceHolder()
+  {
+    return false;
+  }
+  virtual bool IsExecutable()
   {
     return false;
   }
@@ -2214,6 +2227,10 @@ class Branch : public Expression {
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual bool IsRepeatableClause(CHAINX *&chx);
+  virtual bool IsExecutable()
+  {
+    return false;
+  }
 
   Branch () {}
 
@@ -2264,6 +2281,10 @@ class CatchClause : public Expression {
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual bool IsRepeatableClause(CHAINX *&chx);
+  virtual bool IsExecutable()
+  {
+    return false;
+  }
 
   CatchClause () {}
 
@@ -2315,6 +2336,10 @@ class TypeBranch : public Expression {
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual bool IsRepeatableClause(CHAINX *&chx);
+  virtual bool IsExecutable()
+  {
+    return false;
+  }
 
   TypeBranch () {}
 
@@ -2661,6 +2686,10 @@ class Quantifier : public SynObject {
     return false;
   }
   bool IsRepeatableClause(CHAINX *&chx);
+  virtual bool IsExecutable()
+  {
+    return false;
+  }
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 
@@ -2987,7 +3016,7 @@ public:
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p><a href=\"FailSucceed.htm\">Affirm</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"); }
+    return QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"); }
 };
 
 class FailStatementV : public FailStatement {
@@ -2996,7 +3025,7 @@ public:
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p><a href=\"FailSucceed.htm\">Negate</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    return QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
     " optionally throw exception</p>"); }
 };
 

@@ -891,6 +891,7 @@ void CLavaBaseData::Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate)
   maxb=((unsigned)Identifier);
   actHint = 0;
   inMultiDocUpdate = false;
+  enableBreakpoints = false;
   if (Browser)
     Browser->LastBrowseContext = 0;
   LBaseData = this;

@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SFLSOCKETS_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "." /D "DEBUG" /D "SFL_EXPORT" /D "WIN32" /D "_WINDOWS" /D "BLOCKING_CONNECT" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "." /D "SFL_EXPORT" /D "WIN32" /D "BLOCKING_CONNECT" /D "DEBUG" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x407 /d "NDEBUG"
@@ -70,12 +70,12 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 LIB32=link.exe -lib
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SFLSOCKETS_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "." /D "SFL_EXPORT" /D "WIN32" /D "_WINDOWS" /D "BLOCKING_CONNECT" /FR /YX /FD /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_WINDOWS" /D "_USRDLL" /D "SFLSOCKETS_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "." /D "SFL_EXPORT" /D "WIN32" /D "BLOCKING_CONNECT" /D "DEBUG" /FR /YX /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x407 /d "_DEBUG"
-# ADD RSC /l 0x407 /d "_DEBUG"
+# ADD MTL /nologo /mktyplib203 /win32
+# ADD BASE RSC /l 0x407
+# ADD RSC /l 0x407
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo

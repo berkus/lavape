@@ -125,7 +125,6 @@ public slots:
     virtual void check();
     virtual void checkAll();
     virtual void run();
-    virtual void debug();
     virtual void newInclude();
     virtual void newPackage();
     virtual void newInitiator();
@@ -156,16 +155,17 @@ public slots:
     virtual void genLinkedHtml();
     virtual void genSingleHtml();
     virtual void deleteOp();
-    virtual void DbgClearBreakpoints();
 
 // Exec handlers (tool buttons):
-    virtual void DbgBreakpoint();
+    virtual void DbgStart();
     virtual void DbgStepNext();
     virtual void DbgStepNextFunction();
     virtual void DbgStepinto();
     virtual void DbgStepout();
-    virtual void DbgStop();
     virtual void DbgRunToSel();
+    virtual void DbgBreakpoint();
+    virtual void DbgClearBreakpoints();
+    virtual void DbgStop();
     virtual void toggleCategory();
     virtual void optLocalVar();
     virtual void toggleSubstType();

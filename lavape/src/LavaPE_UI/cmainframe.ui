@@ -25,7 +25,7 @@
             <x>0</x>
             <y>0</y>
             <width>501</width>
-            <height>24</height>
+            <height>29</height>
         </rect>
     </property>
     <item text="&amp;File" name="fileMenu">
@@ -177,7 +177,7 @@
         <property name="label">
             <string>Debug toolbar</string>
         </property>
-        <action name="debugAction"/>
+        <action name="DbgAction"/>
         <action name="DbgStepNextAct"/>
         <action name="DbgStepNextFunctionAct"/>
         <action name="DbgStepintoAct"/>
@@ -185,7 +185,7 @@
         <action name="DbgRunToSelAct"/>
         <action name="DbgBreakpointAct"/>
         <action name="DbgClearBreakpointsAct"/>
-        <action name="debugStopAction"/>
+        <action name="DbgStopAction"/>
     </toolbar>
     <toolbar dock="2">
         <property name="name">
@@ -2320,7 +2320,10 @@
     </action>
     <action>
         <property name="name">
-            <cstring>debugAction</cstring>
+            <cstring>DbgAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
         </property>
         <property name="iconSet">
             <iconset>image91</iconset>
@@ -2454,13 +2457,16 @@
     </action>
     <action>
         <property name="name">
-            <cstring>debugStopAction</cstring>
+            <cstring>DbgStopAction</cstring>
+        </property>
+        <property name="enabled">
+            <bool>false</bool>
         </property>
         <property name="iconSet">
             <iconset>image98</iconset>
         </property>
         <property name="text">
-            <string>debugStop</string>
+            <string>DbgStop</string>
         </property>
         <property name="menuText">
             <string>Stop debugging</string>
@@ -2483,10 +2489,10 @@
             <string>StopAtNextFunc</string>
         </property>
         <property name="menuText">
-            <string>Stop at next function/operator</string>
+            <string>Stop at next function/operator/constant</string>
         </property>
         <property name="toolTip">
-            <string>Stop at next function/operator</string>
+            <string>Stop at next function/operator/constant</string>
         </property>
     </action>
 </actions>
@@ -3502,10 +3508,10 @@
         <slot>makeGUI()</slot>
     </connection>
     <connection>
-        <sender>debugAction</sender>
+        <sender>DbgAction</sender>
         <signal>activated()</signal>
         <receiver>CMainFrame</receiver>
-        <slot>debug()</slot>
+        <slot>DbgStart()</slot>
     </connection>
     <connection>
         <sender>DbgBreakpointAct</sender>
@@ -3550,7 +3556,7 @@
         <slot>DbgStepNextFunction()</slot>
     </connection>
     <connection>
-        <sender>debugStopAction</sender>
+        <sender>DbgStopAction</sender>
         <signal>activated()</signal>
         <receiver>CMainFrame</receiver>
         <slot>DbgStop()</slot>
@@ -3684,7 +3690,7 @@
     <slot>howTo_clicked()</slot>
     <slot>saveEveryChange( bool )</slot>
     <slot>makeGUI()</slot>
-    <slot>debug()</slot>
+    <slot>DbgStart()</slot>
     <slot>DbgBreakpoint()</slot>
     <slot>DbgClearBreakpoints()</slot>
     <slot>DbgStepNext()</slot>

@@ -123,9 +123,6 @@
  || defined (__DJGPP__))
 #   undef __MSDOS__
 #   define __MSDOS__
-#   if (defined (_DEBUG))
-#       define DEBUG
-#   endif
 #endif
 
 /*  EDM 96/05/28                                                             */
@@ -471,6 +468,7 @@ typedef struct {                        /*  Database timestamp               */
  *  is false.  Note that you must include sflsyst.c in your application, for
  *  the sys_assert() function.
  */
+/*
 #if (defined (DEBUG))
 #   ifdef __cplusplus
 extern "C" {
@@ -485,9 +483,10 @@ SFL_DLL void  sys_assert  (const char *filename, unsigned line_number);
 #   ifdef __cplusplus
 };
 #   endif
-#else
+#else*/
+#   undef  ASSERT
 #   define ASSERT(f)
-#endif
+//#endif
 
 
 /*- Boolean operators and constants -----------------------------------------*/

@@ -723,7 +723,7 @@ void CMainFrame::makeGUI()
 }
 
 
-void CMainFrame::debug()
+void CMainFrame::DbgStart()
 {
 
 }

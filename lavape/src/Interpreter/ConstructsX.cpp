@@ -29,6 +29,7 @@
 #include "SafeInt.h"
 #include "qmap.h"
 #include "qstring.h"
+#include <float.h>
 #include <stdlib.h>
 #include <errno.h>
 #ifndef WIN32
@@ -68,34 +69,35 @@
     sub esp, fSizeBytes}\
   }\
   currentStack = stackFrame; \
-  if (debugStepOut && NEWSTACK == stepOutStack) { \
-    stepOutStack = 0; \
-    debugStepOut = false; \
-    if (IsFuncInvocation()) \
-      ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
-    else \
-      DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
-  else if (debugStep) { \
-    debugStep = false; \
-    if (IsFuncInvocation()) \
-      ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
-    else \
-      DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
-  else if (debugStepFunc) { \
-    debugStepFunc = false; \
-    if (IsFuncInvocation()) \
-      ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
-    else \
-      DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
-  else if (debugStepInto) { \
-    debugStepInto = false; \
-    if (IsFuncInvocation()) \
-      ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
-    else \
-      DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
-  else { \
-    debugStep = oldDebugStep; \
-    debugStepFunc = oldDebugStepFunc; } \
+  if (LBaseData->debugOn) \
+    if (debugStepOut && NEWSTACK == stepOutStack) { \
+      stepOutStack = 0; \
+      debugStepOut = false; \
+      if (IsFuncInvocation()) \
+        ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
+      else \
+        DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
+    else if (debugStep) { \
+      debugStep = false; \
+      if (IsFuncInvocation()) \
+        ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
+      else \
+        DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
+    else if (debugStepFunc) { \
+      debugStepFunc = false; \
+      if (IsFuncInvocation()) \
+        ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
+      else \
+        DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
+    else if (debugStepInto) { \
+      debugStepInto = false; \
+      if (IsFuncInvocation()) \
+        ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
+      else \
+        DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
+    else { \
+      debugStep = oldDebugStep; \
+      debugStepFunc = oldDebugStepFunc; } \
 }
 #else
 #define FCALL(CKD, FUNC, NEWSTACK, FRAMESIZE, RESULT)  {\
@@ -125,34 +127,35 @@
     else throw;\
   }\
   currentStack = stackFrame; \
-  if (debugStepOut && NEWSTACK == stepOutStack) { \
-    stepOutStack = 0; \
-    debugStepOut = false; \
-    if (IsFuncInvocation()) \
-      ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
-    else \
-      DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
-  else if (debugStep) { \
-    debugStep = false; \
-    if (IsFuncInvocation()) \
-      ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
-    else \
-      DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
-  else if (debugStepFunc) { \
-    debugStepFunc = false; \
-    if (IsFuncInvocation()) \
-      ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
-    else \
-      DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
-  else if (debugStepInto) { \
-    debugStepInto = false; \
-    if (IsFuncInvocation()) \
-      ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
-    else \
-      DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
-  else { \
-    debugStep = oldDebugStep; \
-    debugStepFunc = oldDebugStepFunc; } \
+  if (LBaseData->debugOn) \
+    if (debugStepOut && NEWSTACK == stepOutStack) { \
+      stepOutStack = 0; \
+      debugStepOut = false; \
+      if (IsFuncInvocation()) \
+        ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
+      else \
+        DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
+    else if (debugStep) { \
+      debugStep = false; \
+      if (IsFuncInvocation()) \
+        ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
+      else \
+        DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
+    else if (debugStepFunc) { \
+      debugStepFunc = false; \
+      if (IsFuncInvocation()) \
+        ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
+      else \
+        DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
+    else if (debugStepInto) { \
+      debugStepInto = false; \
+      if (IsFuncInvocation()) \
+        ((Reference*)((FuncStatement*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); \
+      else \
+        DebugStop(CKD,stackFrame,QString::null,Stop_StepOut); } \
+    else { \
+      debugStep = oldDebugStep; \
+      debugStepFunc = oldDebugStepFunc; } \
 }
 #endif
 
@@ -243,59 +246,53 @@
 
 #define STOP_AT_STM(CKD, STACK, RC) { \
   if (flags.Contains(ignoreSynObj)) return RC; \
-  if (type == Stm_T) \
-    if (debugStep || debugStepInto || debugStepInto) {\
-      debugStep = false; \
-      debugStepInto = false; \
+  if (LBaseData->debugOn) \
+    if (type == Stm_T) \
+      if (debugStep || debugStepInto) {\
+        debugStep = false; \
+        debugStepInto = false; \
+        DebugStop(CKD,STACK,QString::null,Stop_NextStm); }\
+      else if (workFlags.Contains(isBrkPnt)) { \
+        debugStepFunc = false; \
+        debugStep = false; \
+        debugStepInto = false; \
+        DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); } \
+      else if (workFlags.Contains(isTempPoint)) { \
+        debugStepFunc = false; \
+        debugStep = false; \
+        debugStepInto = false; \
+        workFlags.EXCL(isTempPoint); \
+        DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); }}
+
+#define STOP_AT_OP(CKD, STACK) { \
+  if (LBaseData->debugOn) \
+    if (debugStepFunc) { \
       debugStepFunc = false; \
-      DebugStop(CKD,STACK,QString::null,Stop_NextStm); }\
+      DebugStop(CKD,STACK,QString::null,Stop_NextOp); } \
     else if (workFlags.Contains(isBrkPnt)) { \
-      debugStepFunc = false; \
       debugStep = false; \
       debugStepInto = false; \
       DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); } \
     else if (workFlags.Contains(isTempPoint)) { \
-      debugStepFunc = false; \
       debugStep = false; \
       debugStepInto = false; \
       workFlags.EXCL(isTempPoint); \
       DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); }}
 
-#define STOP_AT_OP(CKD, STACK) { \
-  if (debugStepFunc) { \
-    debugStepFunc = false; \
-    debugStep = false; \
-    debugStepInto = false; \
-    DebugStop(CKD,STACK,QString::null,Stop_NextOp); } \
-  else if (workFlags.Contains(isBrkPnt)) { \
-    debugStepFunc = false; \
-    debugStep = false; \
-    debugStepInto = false; \
-    DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); } \
-  else if (workFlags.Contains(isTempPoint)) { \
-    debugStepFunc = false; \
-    debugStep = false; \
-    debugStepInto = false; \
-    workFlags.EXCL(isTempPoint); \
-    DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); }}
-
 #define STOP_AT_FUNC(CKD, STACK,SYNOBJ) { \
-  if (debugStepFunc) { \
-    debugStepFunc = false; \
-    debugStep = false; \
-    debugStepInto = false; \
-    SYNOBJ->DebugStop(CKD,STACK,QString::null,Stop_NextFunc); } \
-  else if (SYNOBJ->workFlags.Contains(isBrkPnt)) { \
-    debugStepFunc = false; \
-    debugStep = false; \
-    debugStepInto = false; \
-    SYNOBJ->DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); } \
-  else if (SYNOBJ->workFlags.Contains(isTempPoint)) { \
-    debugStepFunc = false; \
-    debugStep = false; \
-    debugStepInto = false; \
-    workFlags.EXCL(isTempPoint); \
-    SYNOBJ->DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); }}
+  if (LBaseData->debugOn) \
+    if (debugStepFunc) { \
+      debugStepFunc = false; \
+      SYNOBJ->DebugStop(CKD,STACK,QString::null,Stop_NextFunc); } \
+    else if (SYNOBJ->workFlags.Contains(isBrkPnt)) { \
+      debugStep = false; \
+      debugStepInto = false; \
+      SYNOBJ->DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); } \
+    else if (SYNOBJ->workFlags.Contains(isTempPoint)) { \
+      debugStep = false; \
+      debugStepInto = false; \
+      workFlags.EXCL(isTempPoint); \
+      SYNOBJ->DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); }}
 
 
 QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString excMsg=QString::null,StopReason stopReason=Stop_Exception) {
@@ -317,7 +314,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
     && synObj->parentObject->primaryToken == assignFS_T
     && synObj->parentObject->parentObject->primaryToken == new_T
     && synObj->parentObject->whereInParent == (address)&((NewExpression*)synObj->parentObject->parentObject)->initializerCall.ptr) {
-      iniDecl = ckd.document->IDTable.GetDECL(((Reference*)((FuncStatement*)synObj->parentObject)->function.ptr)->refID,ckd.inINCL);
+      iniDecl = ((Reference*)synObj)->refDecl;
       if (!iniDecl
       || iniDecl->TypeFlags.Contains(defaultInitializer))
         synObj = synObj->parentObject->parentObject;
@@ -470,8 +467,8 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
       }
       else {
         rc = QMessageBox::Yes;
-        msg = excMsg + "\n\n" + msg;
-        information(qApp->mainWidget(),qApp->name(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton,QMessageBox::NoButton);
+        pmMsg = excMsg + "\n\n" + msg;
+        information(qApp->mainWidget(),qApp->name(),QApplication::tr(pmMsg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton,QMessageBox::NoButton);
       }
     else
       rc = QMessageBox::Yes;
@@ -2326,6 +2323,8 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
   int i, k=-1;
   DString bitset;
 
+//  STOP_AT_OP(ckd,stackFrame)
+
   if (value)
     IFC(value)
   else {
@@ -2366,9 +2365,15 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       }
       break;
     case Float:
+#ifdef WIN32
+//      _clearfp();
+#endif
       *(float*)(value+LSH) = (float)strtod(str.c,0); //(float)atof(str.c);
       break;
     case Double:
+#ifdef WIN32
+//      _clearfp();
+#endif
       *(double*)(value+LSH) = strtod(str.c,0); //atof(str.c);
       break;
     case VLString:
@@ -2423,7 +2428,8 @@ ConstantX::~ConstantX () {
 
 LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
 {
-  STOP_AT_STM(ckd, stackFrame, 0)
+//  STOP_AT_OP(ckd,stackFrame)
+
   if (value)
     IFC(value)
   else {
@@ -2449,6 +2455,8 @@ BoolConstX::~BoolConstX () {
 
 LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel)
 {
+//  STOP_AT_OP(ckd,stackFrame)
+
   if (value)
     IFC(value)
   else {
@@ -2854,11 +2862,12 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
 
   if (parentObject->primaryToken == new_T) {
     iniDecl = ckd.document->IDTable.GetDECL(((Reference*)function.ptr)->refID,ckd.inINCL);
-    if (iniDecl)
+    if (iniDecl) {
       if (iniDecl->TypeFlags.Contains(defaultInitializer))
         dftInitializer = true;
-      else
-        STOP_AT_STM(ckd, stackFrame, true)
+    }
+//      else
+//        STOP_AT_STM(ckd, stackFrame, true)
     else
       STOP_AT_STM(ckd, stackFrame, true)
   }
