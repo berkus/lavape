@@ -47,6 +47,7 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
   connect(m_tree,SIGNAL(doubleClicked(QListViewItem*,const QPoint&,int)), SLOT(OnDblclk(QListViewItem*,const QPoint&,int)));
   setFont(LBaseData->m_TreeFont);
   new InclWhatsThis(m_tree);
+  GetListView()->setSelectionMode(QListView::Single);
 }
 
 CInclView::~CInclView()

@@ -505,7 +505,7 @@ bool CVTView::EnableOverride(CTreeItem* item)
   CHETID* cheID;
   CContext con;
   bool sameContext;
-  if (activeInt && item) {
+  if (!multiSelectCanceled && activeInt && item) {
     itd = (CVTItemData*)item->getItemData();
     if (itd && ((itd->type == TNodeType_VT)
                || (itd->type == TNodeType_Feature))) {
@@ -541,7 +541,7 @@ bool CVTView::EnableOverride(CTreeItem* item)
 
 void CVTView::OnUpdateOverride(wxAction* action) 
 {  
-  action->setEnabled((!GetDocument()->changeNothing) &&
+  action->setEnabled(!multiSelectCanceled && (!GetDocument()->changeNothing) &&
         EnableOverride((CTreeItem*)GetListView()->currentItem()));
 }
 
@@ -578,22 +578,29 @@ void CVTView::PrepareDECL(LavaDECL* decl, CVTItemData* itd)
 
 void CVTView::OnOverrideI(CTreeItem* item)
 {
-  CVTItemData * itd;
-  LavaDECL *OverDECL, *elDECL, *parentDECL;
-  LavaDECL* decl;
+  CVTItemData *itd;
+  LavaDECL *OverDECL, *elDECL, *parentDECL, *decl;
   TID elID;
   CHETVElem *El;
+  TIDType type;
+  CHE* che;
+  DString *str2;
+  DWORD d4;
+  int pos;
+  CLavaPEHint *hintConcern, *hint;
 
+  if (item)
+    itd = (CVTItemData*)item->getItemData();
+  else
+    return;
   if (CollectDECL) {
     OverDECL = CollectDECL;
     parentDECL = ((LavaDECL*)((CHE*)CollectDECL->NestedDecls.first)->data)->ParentDECL;
   }
-  else
-    if (item) {
-      itd = (CVTItemData*)item->getItemData();
-      OverDECL = GetDocument()->IDTable.GetDECL(itd->VTEl_Tree.VTEl);
-      parentDECL = OverDECL->ParentDECL;
-    }
+  else {
+    OverDECL = GetDocument()->IDTable.GetDECL(itd->VTEl_Tree.VTEl);
+    parentDECL = OverDECL->ParentDECL;
+  }
   if (OverDECL) {
     bool isN = myDECL->TypeFlags.Contains(isNative);
     if ((OverDECL->DeclType == VirtualType) || (OverDECL->DeclType == PatternDef)) {
@@ -601,7 +608,7 @@ void CVTView::OnOverrideI(CTreeItem* item)
       decl->ParentDECL = myDECL;
       GetDocument()->CollectPattern(OverDECL, decl);
       decl->FullName = myDECL->FullName;
-      CHE* che = (CHE*)parentDECL->NestedDecls.first;
+      che = (CHE*)parentDECL->NestedDecls.first;
       while (che) {
         elDECL = (LavaDECL*)che->data;
         if (elDECL->WorkFlags.Contains(checkmark)) {
@@ -646,15 +653,14 @@ void CVTView::OnOverrideI(CTreeItem* item)
       myDECL->ResetCheckmarks();
       OverDECL->ResetCheckmarks();
       myDECL->TreeFlags.INCL(isExpanded);
-      DString *str2 = new DString(myDECL->FullName);
-      TIDType type;
-      DWORD d4 = GetDocument()->IDTable.GetVar(myID, type);
-      int pos = 10000;
-      CLavaPEHint* hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, (DWORD) decl, (DWORD)str2, (DWORD)pos, d4);
+      str2 = new DString(myDECL->FullName);
+      d4 = GetDocument()->IDTable.GetVar(myID, type);
+      pos = 10000;
+      hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, (DWORD) decl, (DWORD)str2, (DWORD)pos, d4);
       if (myDECL->DeclType != Package)
         GetDocument()->IDTable.SetPatternStart(parentDECL->OwnID, myDECL->OwnID);
       GetDocument()->UpdateDoc(this, false, hint);
-      CLavaPEHint* hintConcern = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)0, (DWORD) myDECL, 0, 0, d4);
+      hintConcern = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)0, (DWORD) myDECL, 0, 0, d4);
       GetDocument()->ConcernForms(hintConcern);
       GetDocument()->ConcernImpls(hintConcern, *(LavaDECL**)d4);
       GetDocument()->ConcernExecs(hint);
@@ -676,13 +682,12 @@ void CVTView::OnOverrideI(CTreeItem* item)
         *decl = *OverDECL;
         PrepareDECL(decl, itd);
       }
-      TIDType type;
-      DWORD d4 = GetDocument()->IDTable.GetVar(myID, type);
-      DString *str2 = new DString(myDECL->FullName);
-      int pos = myDECL->GetAppendPos(decl->DeclType);
+      d4 = GetDocument()->IDTable.GetVar(myID, type);
+      str2 = new DString(myDECL->FullName);
+      pos = myDECL->GetAppendPos(decl->DeclType);
       currentBaseID = itd->VTEl_Tree.VTBaseEl;
       currentBrType = findBaseTID;
-      CLavaPEHint* hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, (DWORD) decl, (DWORD)str2, (DWORD)pos, d4);
+      hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, (DWORD) decl, (DWORD)str2, (DWORD)pos, d4);
       if (!CollectDECL)
         GetDocument()->UndoMem.AddToMem(hint);
       GetDocument()->UpdateDoc(this, false, hint);
@@ -695,7 +700,7 @@ void CVTView::OnOverrideI(CTreeItem* item)
     }
   }
   if (CollectDECL)
-    DeleteExChain();
+    DeleteExChain(true);
 }
 
 bool CVTView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
@@ -758,7 +763,7 @@ bool CVTView::AddToExChain(CTreeItem* itemOver)
   return false;
 }
 
-void CVTView::DeleteExChain()
+void CVTView::DeleteExChain(bool inSel)
 {
   CHETVElem* El = (CHETVElem*)myDECL->VElems.VElems.first;
   while (El) {
@@ -766,26 +771,18 @@ void CVTView::DeleteExChain()
     El = (CHETVElem*)El->successor;
   }
   CTreeItem* item = (CTreeItem*)GetListView()->firstChild();
-//  unsigned nStateMask=0;// = TVIS_DROPHILITED; 
-//  unsigned nState = 0;
-//  SetAllStates(item, nState, nStateMask);
   if (CollectDECL) {
     delete CollectDECL;
     CollectDECL = 0;
   }
 }
 
-/*
-void CVTView::SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask)
+void CVTView::setSelPost(QListViewItem* selItem)
 {
-  //GetListView()->SetItemState(item1, nState, nStateMask);
-  CTreeItem* item = GetNextItem(item1, true);
-  while(item) {
-    SetAllStates(item, nState, nStateMask);
-    item = (CTreeItem*)item->nextSibling();
-  }
+  GetListView()->selectAll(false);
+  GetListView()->setCurAndSel(selItem);
 }
-*/
+
 
 void CVTView::OnSelchanged() 
 {
@@ -794,34 +791,54 @@ void CVTView::OnSelchanged()
   if (!selItem)
     return;
   SetVTError(selItem);
-  
   if (itemOver && (GetListView()->withControl && !GetListView()->withShift || GetListView()->withShift && !GetListView()->withControl)) {
     if (!CollectDECL) {
       CollectDECL = NewLavaDECL();
       collectParent = (CTreeItem*)itemOver->parent();
-      if (AddToExChain(itemOver)) {
-        if (GetListView()->withShift) {
-          while (itemOver && (itemOver != selItem)) {
-            itemOver = (CTreeItem*)itemOver->nextSibling();//GetListView()->GetNextSiblingItem(itemOver);
-            if (!AddToExChain(itemOver))
-              itemOver = 0;
-          }
-          if (!itemOver || !CollectDECL->NestedDecls.first)
-            DeleteExChain();
+    }
+    if (itemOver && AddToExChain(itemOver)) {
+      if (GetListView()->withShift) {
+        while (itemOver && (itemOver != selItem)) {
+          itemOver = (CTreeItem*)itemOver->nextSibling();//GetListView()->GetNextSiblingItem(itemOver);
+          if (itemOver && !AddToExChain(itemOver)) 
+            itemOver = 0;
+          
         }
-        else { 
-          itemOver = selItem;
-          if (itemOver && !AddToExChain(itemOver))
-            DeleteExChain();
+        if (!itemOver || !CollectDECL->NestedDecls.first || (itemOver != selItem)) {
+          multiSelectCanceled = true;
+          DeleteExChain(false);
+          GetListView()->withShift = false;
+          QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+          /*GetListView()->selectAll(false);
+          GetListView()->setCurAndSel(selItem);*/
         }
       }
-      else
-        DeleteExChain();
+      else { //Control
+        itemOver = selItem;
+        if (itemOver && !AddToExChain(itemOver)) {
+          multiSelectCanceled = true;
+          DeleteExChain(false);
+          GetListView()->withControl = false;
+          QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+          /*GetListView()->selectAll(false);
+          GetListView()->setCurAndSel(selItem);*/
+        }
+      }
+    }
+    else {
+      multiSelectCanceled = true;
+      DeleteExChain(false);
+      GetListView()->withShift = false;
+      GetListView()->withControl = false;
+      QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+      /*GetListView()->selectAll(false);
+      GetListView()->setCurAndSel(selItem);*/
     }
   }
-  else
-    if (!itemOver)
-      DeleteExChain();
+  else {
+    if (!itemOver) 
+      DeleteExChain(false);
+  }
   lastCurrent = selItem;
   CVTItemData * itd = (CVTItemData*)lastCurrent->getItemData();
   if (itd) {

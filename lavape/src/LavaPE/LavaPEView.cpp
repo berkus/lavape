@@ -1199,6 +1199,10 @@ bool CLavaPEView::event(QEvent *ev)
     OnDropPost(((QCustomEvent*)ev)->data());
     return true;
   }
+  else if (ev->type() == IDU_LavaPE_setSel) {
+    setSelPost((QListViewItem*)((QCustomEvent*)ev)->data());
+    return true;
+  }
   else
 		return wxView::event(ev);
 }
@@ -2347,6 +2351,7 @@ void CLavaPEView::OnDropPost(void* act)
   CLavaPEHint* hint=0, *delHint=0;
   CPECommand com;
   int pos;
+  CMainItemData* itemDat;
   QDropEvent::Action action = (QDropEvent::Action)(int)act;
 
       declClip =  (LavaDECL*)Clipdata->synEl;
@@ -2465,7 +2470,8 @@ void CLavaPEView::OnDropPost(void* act)
                   pos--;
               }
             }
-            d4 = ((CMainItemData*)itemDropP->getItemData())->synEl;
+            itemDat = (CMainItemData*)itemDropP->getItemData();
+            d4 = itemDat->synEl;
           }
           else {
             //as child inserted
@@ -3156,9 +3162,16 @@ void CLavaPEView::OnRclick(QListViewItem* itemHit)
   }
 }
 
+void CLavaPEView::setSelPost(QListViewItem* selItem)
+{
+  GetListView()->selectAll(false);
+  GetListView()->setCurAndSel(selItem);
+}
+
+
 void CLavaPEView::OnSelchanged()  
 {
-  bool ok, sameCat, collected = false;
+  bool ok = true, sameCat, collected = false;
   CTreeItem *itemDrag, *item;
   LavaDECL *itemDECL;
 
@@ -3172,34 +3185,41 @@ void CLavaPEView::OnSelchanged()
       CanDelete = true;
       CollectDECL = NewLavaDECL();
       CollectDECL->DeclType = NoDef;
-      ok = AddToDragChain(lastCurrent);
+      multiSelectCanceled = !AddToDragChain(lastCurrent);
       CollectPos = GetPos(lastCurrent, 0);
     }
     if (GetListView()->withShift) {
       itemDrag = lastCurrent;
       while (itemDrag && (itemDrag != selItem)) {
         itemDrag = (CTreeItem*)itemDrag->nextSibling();
-        if (!AddToDragChain(itemDrag))
+        if (multiSelectCanceled || !AddToDragChain(itemDrag)) {
+          multiSelectCanceled = true;
           itemDrag = 0;
+        }
       }
       if (!itemDrag || (itemDrag != selItem)
           || !CollectDECL->NestedDecls.first
           && (!CollectDECL->EnumDesc.ptr || !((TEnumDescription*)CollectDECL->EnumDesc.ptr)->EnumField.Items.first)) {
+        multiSelectCanceled = true;
+        QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_setSel, (void*)selItem));
         DeleteDragChain();
         GetListView()->withShift = false;
-        GetListView()->selectAll(false);
-        GetListView()->setCurAndSel(selItem);
+        QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+        /*GetListView()->selectAll(false);
+        GetListView()->setCurAndSel(selItem);*/
       }
       else
         collected = true;
     }
     else {//withControl
       sameCat = lastCurrent->parent() == selItem->parent();
-      if (!AddToDragChain((CTreeItem*)selItem, true, sameCat)) {
+      if (multiSelectCanceled || !AddToDragChain((CTreeItem*)selItem, true, sameCat)) {
+        multiSelectCanceled = true;
         DeleteDragChain();
         GetListView()->withControl = false;
-        GetListView()->selectAll(false);
-        GetListView()->setCurAndSel(selItem);
+        QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+        /*GetListView()->selectAll(false);
+        GetListView()->setCurAndSel(selItem);*/
       }
       else
         collected = true;

@@ -187,8 +187,34 @@ void MyListView::keyPressEvent(QKeyEvent *ev)
 
 void MyListView::contentsMouseMoveEvent(QMouseEvent *ev)
 {
-  QListView::contentsMouseMoveEvent(ev);
+  QListViewItem* item2, *item = currentItem();
+  if (!lavaView->multiSelectCanceled && item && item->dragEnabled())
+    QListView::contentsMouseMoveEvent(ev);
+  else {
+    QPoint p = contentsToViewport(ev->pos());
+    item2 = itemAt(p);
+    if (!lavaView->multiSelectCanceled && (ev->state() == LeftButton)) {
+      if (item2 != item) {
+        withControl = true;
+        setCurrentItem(item2);
+        setSelected(item2, true);
+        withControl = false;
+      }
+    }
+    else 
+      if (lavaView->multiSelectCanceled) {
+        selectAll(false);
+        setCurAndSel(item2);
+      } 
+  }
 }
+
+void MyListView::contentsMouseReleaseEvent(QMouseEvent *ev)
+{
+  lavaView->multiSelectCanceled = false;
+  QListView::contentsMouseReleaseEvent(ev);
+}
+
 
 void MyListView::contentsMousePressEvent(QMouseEvent *ev)
 {
@@ -205,6 +231,7 @@ void MyListView::contentsMousePressEvent(QMouseEvent *ev)
     currentItem()->repaint();
   }
 }
+
 
 QDragObject* MyListView::dragObject()
 {
@@ -249,6 +276,8 @@ CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name): CLavaBa
   m_tree->setRootIsDecorated(true);
   m_tree->header()->hide();
   m_tree->setSelectionMode(QListView::Extended);//Single);
+  CollectDECL = 0;
+  multiSelectCanceled = false;
 }
 
 

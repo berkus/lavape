@@ -149,6 +149,7 @@
 #define IDU_LavaDebug (QEvent::Type)(QEvent::User+13)
 #define IDU_LavaDebugRq (QEvent::Type)(QEvent::User+14)
 #define IDU_LavaDebugW (QEvent::Type)(QEvent::User+15)
+#define IDU_LavaPE_setSel (QEvent::Type)(QEvent::User+16)
 
 enum CPECommand {
   CPECommand_OpenFormView, 

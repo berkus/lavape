@@ -122,7 +122,6 @@ public:
   CTreeView *myVTView;      //myVTView != 0: -> main view
   int CollectPos;
   int DragINCL, DropINCL; //defined in drop-view
-  LavaDECL* CollectDECL;
   LavaDECL* declDrag, **pDeclDragP; //defined in drag-view
   LavaDECL * myDECL;
   LavaDECL ** p_myDECL;
@@ -188,6 +187,7 @@ public:
   virtual void RenameStart(CTreeItem* item);
   virtual void resizeEvent(QResizeEvent * );
 //  void SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask, bool inPattern);
+  void setSelPost(QListViewItem* selItem);
   void SetErrAndCom(CTreeItem* item);
   void SetTreeFlags(CTreeItem* item, bool exp);
   virtual void UpdateUI();

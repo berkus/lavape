@@ -52,12 +52,11 @@ public:
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
   //virtual bool PreCreateWindow(CREATESTRUCT& cs);
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
-
+  void setSelPost(QListViewItem* selItem);
   CLavaPEView* myMainView;
   LavaDECL * myDECL; //=the decl from which it was initiated
   TID myID;
   ChainAny myVT;
-  LavaDECL* CollectDECL;
   CTreeItem *collectParent, *lastCurrent;
   bool activeInt;
   TID currentBaseID;
@@ -71,7 +70,7 @@ public:
   void OnOverrideI(CTreeItem* item);
   bool EnableOverride(CTreeItem* item);
   bool AddToExChain(CTreeItem* itemOver);
-  void DeleteExChain();
+  void DeleteExChain(bool inSel);
   void SetVTError(CTreeItem* item);
   bool VerifyItem(CTreeItem* item, CTreeItem* topItem = 0);
   bool DrawTreeAgain();

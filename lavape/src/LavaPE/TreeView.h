@@ -68,6 +68,7 @@ public:
   void setCurAndSel(QListViewItem* item, bool singleSel = true);
   void keyPressEvent(QKeyEvent* ev);
   void contentsMousePressEvent(QMouseEvent *ev);
+  void contentsMouseReleaseEvent(QMouseEvent *ev);
   void contentsMouseMoveEvent(QMouseEvent *ev);
   void focusInEvent ( QFocusEvent * e );
   QDragObject* dragObject();
@@ -109,6 +110,8 @@ public:
   virtual void OnDragLeave(QDragLeaveEvent* ev) {}
   virtual void OnDrop(QDropEvent* ev) {ev->ignore();}
   virtual void OnVkreturn() {}
+  LavaDECL* CollectDECL;
+  bool multiSelectCanceled;
 private:
   Q_OBJECT
 
