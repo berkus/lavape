@@ -35,7 +35,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
+
 #include "Syntax.h"
+
 
 #include "qwidget.h"
 #include "qscrollview.h"
@@ -111,7 +113,7 @@ class ObjReference;
 class VarName;
 
 
-class VarAction : public AnyType  {
+class LAVAEXECS_DLL VarAction : public AnyType  {
 
   public:
   CLavaBaseDoc *doc;
@@ -127,7 +129,7 @@ class VarAction : public AnyType  {
   }
 };
 
-class LocalVarSearch : public VarAction {
+class LAVAEXECS_DLL LocalVarSearch : public VarAction {
 
   public:
   TID *toBeFound;
@@ -141,7 +143,7 @@ class LocalVarSearch : public VarAction {
   }
 };
 
-class LocalVarByNameSearch : public VarAction {
+class LAVAEXECS_DLL LocalVarByNameSearch : public VarAction {
 
   public:
   STRING toBeFound;
@@ -156,7 +158,7 @@ class LocalVarByNameSearch : public VarAction {
   }
 };
 
-class TokenNode : public AnyType  {
+class LAVAEXECS_DLL TokenNode : public AnyType  {
 
   public:
   SynObject *synObject;
@@ -174,7 +176,7 @@ class TokenNode : public AnyType  {
   }
 };
 
-struct CHETokenNode : ChainAnyElem {
+struct LAVAEXECS_DLL CHETokenNode : ChainAnyElem {
   TokenNode data;
 
   ChainAnyElem* Clone ()
@@ -184,11 +186,11 @@ struct CHETokenNode : ChainAnyElem {
   { this->data = ((CHETokenNode*)from)->data; }
 };
 
-extern ChainAnyElem* NewCHETokenNode ();
+extern LAVAEXECS_DLL ChainAnyElem* NewCHETokenNode ();
 
 typedef CHAINANY/*TokenNode*/ CHToken;
 
-class CVarDesc : public AnyType  {
+class LAVAEXECS_DLL CVarDesc : public AnyType  {
 
   public:
 
@@ -205,7 +207,7 @@ class CVarDesc : public AnyType  {
   }
 };
 
-struct CHECVarDesc : ChainAnyElem {
+struct LAVAEXECS_DLL CHECVarDesc : ChainAnyElem {
   CVarDesc data;
 
   ChainAnyElem* Clone ()
@@ -215,9 +217,9 @@ struct CHECVarDesc : ChainAnyElem {
   { this->data = ((CHECVarDesc*)from)->data; }
 };
 
-extern ChainAnyElem* NewCHECVarDesc ();
+extern LAVAEXECS_DLL ChainAnyElem* NewCHECVarDesc ();
 
-class CRefEntry : public AnyType  {
+class LAVAEXECS_DLL CRefEntry : public AnyType  {
 
   public:
 
@@ -250,7 +252,7 @@ class CRefEntry : public AnyType  {
   }
 };
 
-class CBranch : public CRefEntry {
+class LAVAEXECS_DLL CBranch : public CRefEntry {
 
   public:
   CHE *branchStm, *precedingBranch;
@@ -274,7 +276,7 @@ class CBranch : public CRefEntry {
   }
 };
 
-class CBranchStm : public CBranch {
+class LAVAEXECS_DLL CBranchStm : public CBranch {
 
   public:
 
@@ -291,7 +293,7 @@ class CBranchStm : public CBranch {
   }
 };
 
-class CEndBranchStm : public CBranch {
+class LAVAEXECS_DLL CEndBranchStm : public CBranch {
 
   public:
 
@@ -310,7 +312,7 @@ class CEndBranchStm : public CBranch {
   }
 };
 
-class CWriteAccess : public CRefEntry {
+class LAVAEXECS_DLL CWriteAccess : public CRefEntry {
 
   public:
 
@@ -330,7 +332,7 @@ class CWriteAccess : public CRefEntry {
   }
 };
 
-class CFailSucceed : public CRefEntry {
+class LAVAEXECS_DLL CFailSucceed : public CRefEntry {
 
   public:
 
@@ -446,10 +448,10 @@ enum ConstrFlags {
   isOptionalExpr,
   isReverseLink};
 
-extern void CDPConstrFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+extern LAVAEXECS_DLL void CDPConstrFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
-class TComment : public DObject  {
+class LAVAEXECS_DLL TComment : public DObject  {
   DECLARE_DYNAMIC_CLASS(TComment)
 
 
@@ -467,15 +469,15 @@ class TComment : public DObject  {
     *this = *(TComment*)from;
   }
 
-  friend void CDPTComment (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPTComment (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPTComment(pgf,cid,(address)this,baseCDP); }
 };
 
-struct NST0TComment {
+struct LAVAEXECS_DLL NST0TComment {
 protected:
 
   void init (const NST0TComment&);
@@ -499,7 +501,7 @@ public:
   void CDP (PutGetFlag pgf, ASN1 *cid, ConversionProc cdp);
 };
 
-struct NSTTComment : NST0TComment {
+struct LAVAEXECS_DLL NSTTComment : NST0TComment {
   NSTTComment() {}
 
   NSTTComment (const NSTTComment& n)
@@ -511,7 +513,7 @@ struct NSTTComment : NST0TComment {
   virtual ~NSTTComment () { Destroy(); }
 };
 
-class SynObject : public SynObjectBase {
+class LAVAEXECS_DLL SynObject : public SynObjectBase {
   DECLARE_DYNAMIC_CLASS(SynObject)
 
 
@@ -672,15 +674,15 @@ class SynObject : public SynObjectBase {
     *this = *(SynObject*)from;
   }
 
-  friend void CDPSynObject (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPSynObject (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPSynObject(pgf,cid,(address)this,baseCDP); }
 };
 
-struct TDOD : public SynObject {
+struct LAVAEXECS_DLL TDOD : public SynObject {
   DECLARE_DYNAMIC_CLASS(TDOD)
 
   STRING name;
@@ -712,8 +714,8 @@ struct TDOD : public SynObject {
     *this = *(TDOD*)from;
   }
 
-  friend void CDPTDOD (PutGetFlag pgf, ASN1* cid, address varAddr,
-                       bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPTDOD (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                     bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -722,10 +724,10 @@ struct TDOD : public SynObject {
 
 typedef CHAINX TDODC;
 
-extern void CDPTDODC (PutGetFlag pgf, ASN1* cid, address varAddr,
-                      bool baseCDP=false);
+extern LAVAEXECS_DLL void CDPTDODC (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                    bool baseCDP=false);
 
-class Expression : public SynObject {
+class LAVAEXECS_DLL Expression : public SynObject {
   DECLARE_DYNAMIC_CLASS(Expression)
 
 
@@ -746,15 +748,15 @@ class Expression : public SynObject {
     *this = *(Expression*)from;
   }
 
-  friend void CDPExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                           bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPExpression(pgf,cid,(address)this,baseCDP); }
 };
 
-class Operation : public Expression {
+class LAVAEXECS_DLL Operation : public Expression {
   DECLARE_DYNAMIC_CLASS(Operation)
 
 
@@ -778,15 +780,15 @@ class Operation : public Expression {
     *this = *(Operation*)from;
   }
 
-  friend void CDPOperation (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPOperation (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPOperation(pgf,cid,(address)this,baseCDP); }
 };
 
-class Reference : public SynObject {
+class LAVAEXECS_DLL Reference : public SynObject {
   DECLARE_DYNAMIC_CLASS(Reference)
 
 
@@ -812,15 +814,15 @@ class Reference : public SynObject {
     *this = *(Reference*)from;
   }
 
-  friend void CDPReference (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPReference (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPReference(pgf,cid,(address)this,baseCDP); }
 };
 
-class EnumConst : public Expression {
+class LAVAEXECS_DLL EnumConst : public Expression {
   DECLARE_DYNAMIC_CLASS(EnumConst)
 
 
@@ -854,15 +856,15 @@ class EnumConst : public Expression {
     *this = *(EnumConst*)from;
   }
 
-  friend void CDPEnumConst (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPEnumConst (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPEnumConst(pgf,cid,(address)this,baseCDP); }
 };
 
-class ObjReference : public Expression {
+class LAVAEXECS_DLL ObjReference : public Expression {
   DECLARE_DYNAMIC_CLASS(ObjReference)
 
 
@@ -906,15 +908,15 @@ class ObjReference : public Expression {
     *this = *(ObjReference*)from;
   }
 
-  friend void CDPObjReference (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPObjReference (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                             bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPObjReference(pgf,cid,(address)this,baseCDP); }
 };
 
-class VarName : public Expression {
+class LAVAEXECS_DLL VarName : public Expression {
   DECLARE_DYNAMIC_CLASS(VarName)
 
 
@@ -938,15 +940,15 @@ class VarName : public Expression {
     *this = *(VarName*)from;
   }
 
-  friend void CDPVarName (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPVarName (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPVarName(pgf,cid,(address)this,baseCDP); }
 };
 
-class FormParm : public Expression {
+class LAVAEXECS_DLL FormParm : public Expression {
   DECLARE_DYNAMIC_CLASS(FormParm)
 
 
@@ -966,15 +968,15 @@ class FormParm : public Expression {
     *this = *(FormParm*)from;
   }
 
-  friend void CDPFormParm (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPFormParm (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPFormParm(pgf,cid,(address)this,baseCDP); }
 };
 
-class FormParms : public Expression {
+class LAVAEXECS_DLL FormParms : public Expression {
   DECLARE_DYNAMIC_CLASS(FormParms)
 
 
@@ -993,15 +995,15 @@ class FormParms : public Expression {
     *this = *(FormParms*)from;
   }
 
-  friend void CDPFormParms (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPFormParms (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPFormParms(pgf,cid,(address)this,baseCDP); }
 };
 
-class BaseInit : public Expression {
+class LAVAEXECS_DLL BaseInit : public Expression {
   DECLARE_DYNAMIC_CLASS(BaseInit)
 
 
@@ -1019,15 +1021,15 @@ class BaseInit : public Expression {
     *this = *(BaseInit*)from;
   }
 
-  friend void CDPBaseInit (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPBaseInit (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPBaseInit(pgf,cid,(address)this,baseCDP); }
 };
 
-class SelfVar : public VarName {
+class LAVAEXECS_DLL SelfVar : public VarName {
   DECLARE_DYNAMIC_CLASS(SelfVar)
 
 
@@ -1066,15 +1068,15 @@ class SelfVar : public VarName {
     *this = *(SelfVar*)from;
   }
 
-  friend void CDPSelfVar (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPSelfVar (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPSelfVar(pgf,cid,(address)this,baseCDP); }
 };
 
-class Constant : public Expression {
+class LAVAEXECS_DLL Constant : public Expression {
   DECLARE_DYNAMIC_CLASS(Constant)
 
 
@@ -1107,15 +1109,15 @@ class Constant : public Expression {
     *this = *(Constant*)from;
   }
 
-  friend void CDPConstant (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPConstant (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPConstant(pgf,cid,(address)this,baseCDP); }
 };
 
-class BoolConst : public Expression {
+class LAVAEXECS_DLL BoolConst : public Expression {
   DECLARE_DYNAMIC_CLASS(BoolConst)
 
 
@@ -1147,15 +1149,15 @@ class BoolConst : public Expression {
     *this = *(BoolConst*)from;
   }
 
-  friend void CDPBoolConst (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPBoolConst (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPBoolConst(pgf,cid,(address)this,baseCDP); }
 };
 
-class NullConst : public Expression {
+class LAVAEXECS_DLL NullConst : public Expression {
   DECLARE_DYNAMIC_CLASS(NullConst)
 
 
@@ -1181,15 +1183,15 @@ class NullConst : public Expression {
     *this = *(NullConst*)from;
   }
 
-  friend void CDPNullConst (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPNullConst (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPNullConst(pgf,cid,(address)this,baseCDP); }
 };
 
-class SucceedStatement : public Expression {
+class LAVAEXECS_DLL SucceedStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(SucceedStatement)
 
 
@@ -1202,15 +1204,15 @@ class SucceedStatement : public Expression {
     *this = *(SucceedStatement*)from;
   }
 
-  friend void CDPSucceedStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                   bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPSucceedStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                                 bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPSucceedStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class FailStatement : public Expression {
+class LAVAEXECS_DLL FailStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(FailStatement)
 
 
@@ -1225,15 +1227,15 @@ class FailStatement : public Expression {
     *this = *(FailStatement*)from;
   }
 
-  friend void CDPFailStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPFailStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                              bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPFailStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class UnaryOp : public Operation {
+class LAVAEXECS_DLL UnaryOp : public Operation {
   DECLARE_DYNAMIC_CLASS(UnaryOp)
 
 
@@ -1254,15 +1256,15 @@ class UnaryOp : public Operation {
     *this = *(UnaryOp*)from;
   }
 
-  friend void CDPUnaryOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPUnaryOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPUnaryOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class EvalExpression : public UnaryOp {
+class LAVAEXECS_DLL EvalExpression : public UnaryOp {
   DECLARE_DYNAMIC_CLASS(EvalExpression)
 
 
@@ -1289,15 +1291,15 @@ class EvalExpression : public UnaryOp {
     *this = *(EvalExpression*)from;
   }
 
-  friend void CDPEvalExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPEvalExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                               bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPEvalExpression(pgf,cid,(address)this,baseCDP); }
 };
 
-class EvalStatement : public EvalExpression {
+class LAVAEXECS_DLL EvalStatement : public EvalExpression {
   DECLARE_DYNAMIC_CLASS(EvalStatement)
 
 
@@ -1310,15 +1312,15 @@ class EvalStatement : public EvalExpression {
     *this = *(EvalStatement*)from;
   }
 
-  friend void CDPEvalStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPEvalStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                              bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPEvalStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class ArrayAtIndex : public Operation {
+class LAVAEXECS_DLL ArrayAtIndex : public Operation {
   DECLARE_DYNAMIC_CLASS(ArrayAtIndex)
 
 
@@ -1340,15 +1342,15 @@ class ArrayAtIndex : public Operation {
     *this = *(ArrayAtIndex*)from;
   }
 
-  friend void CDPArrayAtIndex (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPArrayAtIndex (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                             bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPArrayAtIndex(pgf,cid,(address)this,baseCDP); }
 };
 
-class InvertOp : public UnaryOp {
+class LAVAEXECS_DLL InvertOp : public UnaryOp {
   DECLARE_DYNAMIC_CLASS(InvertOp)
 
 
@@ -1358,15 +1360,15 @@ class InvertOp : public UnaryOp {
     *this = *(InvertOp*)from;
   }
 
-  friend void CDPInvertOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPInvertOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPInvertOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class HandleOp : public Expression {
+class LAVAEXECS_DLL HandleOp : public Expression {
   DECLARE_DYNAMIC_CLASS(HandleOp)
 
   NESTEDANY/*ObjReference*/ operand;
@@ -1384,15 +1386,15 @@ class HandleOp : public Expression {
     *this = *(HandleOp*)from;
   }
 
-  friend void CDPHandleOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPHandleOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPHandleOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class OrdOp : public UnaryOp {
+class LAVAEXECS_DLL OrdOp : public UnaryOp {
   DECLARE_DYNAMIC_CLASS(OrdOp)
 
 
@@ -1402,15 +1404,15 @@ class OrdOp : public UnaryOp {
     *this = *(OrdOp*)from;
   }
 
-  friend void CDPOrdOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                        bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPOrdOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                      bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPOrdOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class MinusOp : public UnaryOp {
+class LAVAEXECS_DLL MinusOp : public UnaryOp {
   DECLARE_DYNAMIC_CLASS(MinusOp)
 
 
@@ -1420,15 +1422,15 @@ class MinusOp : public UnaryOp {
     *this = *(MinusOp*)from;
   }
 
-  friend void CDPMinusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPMinusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPMinusOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class LogicalNot : public UnaryOp {
+class LAVAEXECS_DLL LogicalNot : public UnaryOp {
   DECLARE_DYNAMIC_CLASS(LogicalNot)
 
 
@@ -1447,15 +1449,15 @@ class LogicalNot : public UnaryOp {
     *this = *(LogicalNot*)from;
   }
 
-  friend void CDPLogicalNot (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPLogicalNot (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                           bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPLogicalNot(pgf,cid,(address)this,baseCDP); }
 };
 
-class InSetStatement : public Expression {
+class LAVAEXECS_DLL InSetStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(InSetStatement)
 
 
@@ -1474,15 +1476,15 @@ class InSetStatement : public Expression {
     *this = *(InSetStatement*)from;
   }
 
-  friend void CDPInSetStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPInSetStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                               bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPInSetStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class BinaryOp : public Operation {
+class LAVAEXECS_DLL BinaryOp : public Operation {
   DECLARE_DYNAMIC_CLASS(BinaryOp)
 
 
@@ -1503,15 +1505,15 @@ class BinaryOp : public Operation {
     *this = *(BinaryOp*)from;
   }
 
-  friend void CDPBinaryOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPBinaryOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPBinaryOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class MultipleOp : public Operation {
+class LAVAEXECS_DLL MultipleOp : public Operation {
   DECLARE_DYNAMIC_CLASS(MultipleOp)
 
 
@@ -1536,15 +1538,15 @@ class MultipleOp : public Operation {
     *this = *(MultipleOp*)from;
   }
 
-  friend void CDPMultipleOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPMultipleOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                           bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPMultipleOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class SemicolonOp : public MultipleOp {
+class LAVAEXECS_DLL SemicolonOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(SemicolonOp)
 
 
@@ -1554,15 +1556,15 @@ class SemicolonOp : public MultipleOp {
     *this = *(SemicolonOp*)from;
   }
 
-  friend void CDPSemicolonOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                              bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPSemicolonOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                            bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPSemicolonOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class AndOp : public MultipleOp {
+class LAVAEXECS_DLL AndOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(AndOp)
 
 
@@ -1572,15 +1574,15 @@ class AndOp : public MultipleOp {
     *this = *(AndOp*)from;
   }
 
-  friend void CDPAndOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                        bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPAndOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                      bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPAndOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class OrOp : public MultipleOp {
+class LAVAEXECS_DLL OrOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(OrOp)
 
 
@@ -1590,15 +1592,15 @@ class OrOp : public MultipleOp {
     *this = *(OrOp*)from;
   }
 
-  friend void CDPOrOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                       bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPOrOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                     bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPOrOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class XorOp : public MultipleOp {
+class LAVAEXECS_DLL XorOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(XorOp)
 
 
@@ -1608,15 +1610,15 @@ class XorOp : public MultipleOp {
     *this = *(XorOp*)from;
   }
 
-  friend void CDPXorOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                        bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPXorOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                      bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPXorOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class BitAndOp : public MultipleOp {
+class LAVAEXECS_DLL BitAndOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(BitAndOp)
 
 
@@ -1626,15 +1628,15 @@ class BitAndOp : public MultipleOp {
     *this = *(BitAndOp*)from;
   }
 
-  friend void CDPBitAndOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPBitAndOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPBitAndOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class BitOrOp : public MultipleOp {
+class LAVAEXECS_DLL BitOrOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(BitOrOp)
 
 
@@ -1644,15 +1646,15 @@ class BitOrOp : public MultipleOp {
     *this = *(BitOrOp*)from;
   }
 
-  friend void CDPBitOrOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPBitOrOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPBitOrOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class BitXorOp : public MultipleOp {
+class LAVAEXECS_DLL BitXorOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(BitXorOp)
 
 
@@ -1662,15 +1664,15 @@ class BitXorOp : public MultipleOp {
     *this = *(BitXorOp*)from;
   }
 
-  friend void CDPBitXorOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPBitXorOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPBitXorOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class DivideOp : public MultipleOp {
+class LAVAEXECS_DLL DivideOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(DivideOp)
 
 
@@ -1680,15 +1682,15 @@ class DivideOp : public MultipleOp {
     *this = *(DivideOp*)from;
   }
 
-  friend void CDPDivideOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPDivideOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPDivideOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class ModulusOp : public MultipleOp {
+class LAVAEXECS_DLL ModulusOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(ModulusOp)
 
 
@@ -1698,15 +1700,15 @@ class ModulusOp : public MultipleOp {
     *this = *(ModulusOp*)from;
   }
 
-  friend void CDPModulusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPModulusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPModulusOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class LshiftOp : public MultipleOp {
+class LAVAEXECS_DLL LshiftOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(LshiftOp)
 
 
@@ -1716,15 +1718,15 @@ class LshiftOp : public MultipleOp {
     *this = *(LshiftOp*)from;
   }
 
-  friend void CDPLshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPLshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPLshiftOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class RshiftOp : public MultipleOp {
+class LAVAEXECS_DLL RshiftOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(RshiftOp)
 
 
@@ -1734,15 +1736,15 @@ class RshiftOp : public MultipleOp {
     *this = *(RshiftOp*)from;
   }
 
-  friend void CDPRshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPRshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPRshiftOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class PlusOp : public MultipleOp {
+class LAVAEXECS_DLL PlusOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(PlusOp)
 
 
@@ -1752,15 +1754,15 @@ class PlusOp : public MultipleOp {
     *this = *(PlusOp*)from;
   }
 
-  friend void CDPPlusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPPlusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                       bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPPlusOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class MultOp : public MultipleOp {
+class LAVAEXECS_DLL MultOp : public MultipleOp {
   DECLARE_DYNAMIC_CLASS(MultOp)
 
 
@@ -1770,15 +1772,15 @@ class MultOp : public MultipleOp {
     *this = *(MultOp*)from;
   }
 
-  friend void CDPMultOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPMultOp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                       bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPMultOp(pgf,cid,(address)this,baseCDP); }
 };
 
-class Assignment : public Expression {
+class LAVAEXECS_DLL Assignment : public Expression {
   DECLARE_DYNAMIC_CLASS(Assignment)
 
 
@@ -1795,15 +1797,15 @@ class Assignment : public Expression {
     *this = *(Assignment*)from;
   }
 
-  friend void CDPAssignment (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPAssignment (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                           bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPAssignment(pgf,cid,(address)this,baseCDP); }
 };
 
-class Parameter : public Expression {
+class LAVAEXECS_DLL Parameter : public Expression {
   DECLARE_DYNAMIC_CLASS(Parameter)
 
 
@@ -1825,15 +1827,15 @@ class Parameter : public Expression {
     *this = *(Parameter*)from;
   }
 
-  friend void CDPParameter (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPParameter (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPParameter(pgf,cid,(address)this,baseCDP); }
 };
 
-class FuncExpression : public Expression {
+class LAVAEXECS_DLL FuncExpression : public Expression {
   DECLARE_DYNAMIC_CLASS(FuncExpression)
 
 
@@ -1865,15 +1867,15 @@ class FuncExpression : public Expression {
     *this = *(FuncExpression*)from;
   }
 
-  friend void CDPFuncExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPFuncExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                               bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPFuncExpression(pgf,cid,(address)this,baseCDP); }
 };
 
-class FuncStatement : public FuncExpression {
+class LAVAEXECS_DLL FuncStatement : public FuncExpression {
   DECLARE_DYNAMIC_CLASS(FuncStatement)
 
 
@@ -1888,15 +1890,15 @@ class FuncStatement : public FuncExpression {
     *this = *(FuncStatement*)from;
   }
 
-  friend void CDPFuncStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPFuncStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                              bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPFuncStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-struct Callback : public Expression {
+struct LAVAEXECS_DLL Callback : public Expression {
   DECLARE_DYNAMIC_CLASS(Callback)
 
   NESTEDANY/*Reference*/ callbackType;
@@ -1916,15 +1918,15 @@ struct Callback : public Expression {
     *this = *(Callback*)from;
   }
 
-  friend void CDPCallback (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPCallback (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPCallback(pgf,cid,(address)this,baseCDP); }
 };
 
-class AssertStatement : public Expression {
+class LAVAEXECS_DLL AssertStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(AssertStatement)
 
 
@@ -1939,15 +1941,15 @@ class AssertStatement : public Expression {
     *this = *(AssertStatement*)from;
   }
 
-  friend void CDPAssertStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPAssertStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                                bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPAssertStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class ThrowStatement : public Expression {
+class LAVAEXECS_DLL ThrowStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(ThrowStatement)
 
 
@@ -1966,15 +1968,15 @@ class ThrowStatement : public Expression {
     *this = *(ThrowStatement*)from;
   }
 
-  friend void CDPThrowStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPThrowStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                               bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPThrowStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class IfThen : public Expression {
+class LAVAEXECS_DLL IfThen : public Expression {
   DECLARE_DYNAMIC_CLASS(IfThen)
 
 
@@ -1993,15 +1995,15 @@ class IfThen : public Expression {
     *this = *(IfThen*)from;
   }
 
-  friend void CDPIfThen (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPIfThen (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                       bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPIfThen(pgf,cid,(address)this,baseCDP); }
 };
 
-class IfStatement : public Expression {
+class LAVAEXECS_DLL IfStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(IfStatement)
 
 
@@ -2022,15 +2024,15 @@ class IfStatement : public Expression {
     *this = *(IfStatement*)from;
   }
 
-  friend void CDPIfStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                              bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPIfStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                            bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPIfStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class IfxThen : public Expression {
+class LAVAEXECS_DLL IfxThen : public Expression {
   DECLARE_DYNAMIC_CLASS(IfxThen)
 
 
@@ -2049,15 +2051,15 @@ class IfxThen : public Expression {
     *this = *(IfxThen*)from;
   }
 
-  friend void CDPIfxThen (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPIfxThen (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPIfxThen(pgf,cid,(address)this,baseCDP); }
 };
 
-class IfExpression : public Expression {
+class LAVAEXECS_DLL IfExpression : public Expression {
   DECLARE_DYNAMIC_CLASS(IfExpression)
 
 
@@ -2086,15 +2088,15 @@ class IfExpression : public Expression {
     *this = *(IfExpression*)from;
   }
 
-  friend void CDPIfExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPIfExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                             bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPIfExpression(pgf,cid,(address)this,baseCDP); }
 };
 
-class Branch : public Expression {
+class LAVAEXECS_DLL Branch : public Expression {
   DECLARE_DYNAMIC_CLASS(Branch)
 
 
@@ -2111,15 +2113,15 @@ class Branch : public Expression {
     *this = *(Branch*)from;
   }
 
-  friend void CDPBranch (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPBranch (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                       bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPBranch(pgf,cid,(address)this,baseCDP); }
 };
 
-class SwitchStatement : public Expression {
+class LAVAEXECS_DLL SwitchStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(SwitchStatement)
 
 
@@ -2137,15 +2139,15 @@ class SwitchStatement : public Expression {
     *this = *(SwitchStatement*)from;
   }
 
-  friend void CDPSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                                bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPSwitchStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class CatchClause : public Expression {
+class LAVAEXECS_DLL CatchClause : public Expression {
   DECLARE_DYNAMIC_CLASS(CatchClause)
 
 
@@ -2161,15 +2163,15 @@ class CatchClause : public Expression {
     *this = *(CatchClause*)from;
   }
 
-  friend void CDPCatchClause (PutGetFlag pgf, ASN1* cid, address varAddr,
-                              bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPCatchClause (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                            bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPCatchClause(pgf,cid,(address)this,baseCDP); }
 };
 
-class TryStatement : public Expression {
+class LAVAEXECS_DLL TryStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(TryStatement)
 
 
@@ -2185,15 +2187,15 @@ class TryStatement : public Expression {
     *this = *(TryStatement*)from;
   }
 
-  friend void CDPTryStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPTryStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                             bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPTryStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class TypeBranch : public Expression {
+class LAVAEXECS_DLL TypeBranch : public Expression {
   DECLARE_DYNAMIC_CLASS(TypeBranch)
 
 
@@ -2212,15 +2214,15 @@ class TypeBranch : public Expression {
     *this = *(TypeBranch*)from;
   }
 
-  friend void CDPTypeBranch (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPTypeBranch (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                           bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPTypeBranch(pgf,cid,(address)this,baseCDP); }
 };
 
-class TypeSwitchStatement : public Expression {
+class LAVAEXECS_DLL TypeSwitchStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(TypeSwitchStatement)
 
 
@@ -2240,15 +2242,15 @@ class TypeSwitchStatement : public Expression {
     *this = *(TypeSwitchStatement*)from;
   }
 
-  friend void CDPTypeSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                      bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPTypeSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                                    bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPTypeSwitchStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class AttachObject : public Expression {
+class LAVAEXECS_DLL AttachObject : public Expression {
   DECLARE_DYNAMIC_CLASS(AttachObject)
 
 
@@ -2273,15 +2275,15 @@ class AttachObject : public Expression {
     *this = *(AttachObject*)from;
   }
 
-  friend void CDPAttachObject (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPAttachObject (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                             bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPAttachObject(pgf,cid,(address)this,baseCDP); }
 };
 
-class NewExpression : public AttachObject {
+class LAVAEXECS_DLL NewExpression : public AttachObject {
   DECLARE_DYNAMIC_CLASS(NewExpression)
 
 
@@ -2305,15 +2307,15 @@ class NewExpression : public AttachObject {
     *this = *(NewExpression*)from;
   }
 
-  friend void CDPNewExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPNewExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                              bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPNewExpression(pgf,cid,(address)this,baseCDP); }
 };
 
-class CloneExpression : public Expression {
+class LAVAEXECS_DLL CloneExpression : public Expression {
   DECLARE_DYNAMIC_CLASS(CloneExpression)
 
   NESTEDANY/*VarName*/ varName;
@@ -2335,15 +2337,15 @@ class CloneExpression : public Expression {
     *this = *(CloneExpression*)from;
   }
 
-  friend void CDPCloneExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPCloneExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                                bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPCloneExpression(pgf,cid,(address)this,baseCDP); }
 };
 
-class CopyStatement : public Expression {
+class LAVAEXECS_DLL CopyStatement : public Expression {
   DECLARE_DYNAMIC_CLASS(CopyStatement)
 
   NESTEDANY/*Expression*/ fromObj;
@@ -2363,15 +2365,15 @@ class CopyStatement : public Expression {
     *this = *(CopyStatement*)from;
   }
 
-  friend void CDPCopyStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPCopyStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                              bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPCopyStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class EnumItem : public Expression {
+class LAVAEXECS_DLL EnumItem : public Expression {
   DECLARE_DYNAMIC_CLASS(EnumItem)
 
 
@@ -2388,15 +2390,15 @@ class EnumItem : public Expression {
     *this = *(EnumItem*)from;
   }
 
-  friend void CDPEnumItem (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPEnumItem (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPEnumItem(pgf,cid,(address)this,baseCDP); }
 };
 
-class ExtendExpression : public Expression {
+class LAVAEXECS_DLL ExtendExpression : public Expression {
   DECLARE_DYNAMIC_CLASS(ExtendExpression)
 
 
@@ -2414,15 +2416,15 @@ class ExtendExpression : public Expression {
     *this = *(ExtendExpression*)from;
   }
 
-  friend void CDPExtendExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                   bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPExtendExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                                 bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPExtendExpression(pgf,cid,(address)this,baseCDP); }
 };
 
-class Run : public AttachObject {
+class LAVAEXECS_DLL Run : public AttachObject {
   DECLARE_DYNAMIC_CLASS(Run)
 
 
@@ -2441,15 +2443,15 @@ class Run : public AttachObject {
     *this = *(Run*)from;
   }
 
-  friend void CDPRun (PutGetFlag pgf, ASN1* cid, address varAddr,
-                      bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPRun (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                    bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPRun(pgf,cid,(address)this,baseCDP); }
 };
 
-class QueryItf : public Expression {
+class LAVAEXECS_DLL QueryItf : public Expression {
   DECLARE_DYNAMIC_CLASS(QueryItf)
 
 
@@ -2470,15 +2472,15 @@ class QueryItf : public Expression {
     *this = *(QueryItf*)from;
   }
 
-  friend void CDPQueryItf (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPQueryItf (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPQueryItf(pgf,cid,(address)this,baseCDP); }
 };
 
-class GetUUID : public Expression {
+class LAVAEXECS_DLL GetUUID : public Expression {
   DECLARE_DYNAMIC_CLASS(GetUUID)
 
 
@@ -2498,15 +2500,15 @@ class GetUUID : public Expression {
     *this = *(GetUUID*)from;
   }
 
-  friend void CDPGetUUID (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPGetUUID (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPGetUUID(pgf,cid,(address)this,baseCDP); }
 };
 
-class IntegerInterval : public SynObject {
+class LAVAEXECS_DLL IntegerInterval : public SynObject {
   DECLARE_DYNAMIC_CLASS(IntegerInterval)
 
 
@@ -2530,15 +2532,15 @@ class IntegerInterval : public SynObject {
     *this = *(IntegerInterval*)from;
   }
 
-  friend void CDPIntegerInterval (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPIntegerInterval (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                                bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPIntegerInterval(pgf,cid,(address)this,baseCDP); }
 };
 
-class Quantifier : public SynObject {
+class LAVAEXECS_DLL Quantifier : public SynObject {
   DECLARE_DYNAMIC_CLASS(Quantifier)
 
 
@@ -2561,15 +2563,15 @@ class Quantifier : public SynObject {
     *this = *(Quantifier*)from;
   }
 
-  friend void CDPQuantifier (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPQuantifier (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                           bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPQuantifier(pgf,cid,(address)this,baseCDP); }
 };
 
-class QuantStmOrExp : public Expression {
+class LAVAEXECS_DLL QuantStmOrExp : public Expression {
   DECLARE_DYNAMIC_CLASS(QuantStmOrExp)
 
 
@@ -2592,15 +2594,15 @@ class QuantStmOrExp : public Expression {
     *this = *(QuantStmOrExp*)from;
   }
 
-  friend void CDPQuantStmOrExp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPQuantStmOrExp (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                              bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPQuantStmOrExp(pgf,cid,(address)this,baseCDP); }
 };
 
-class Declare : public QuantStmOrExp {
+class LAVAEXECS_DLL Declare : public QuantStmOrExp {
   DECLARE_DYNAMIC_CLASS(Declare)
 
 
@@ -2616,15 +2618,15 @@ class Declare : public QuantStmOrExp {
     *this = *(Declare*)from;
   }
 
-  friend void CDPDeclare (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPDeclare (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPDeclare(pgf,cid,(address)this,baseCDP); }
 };
 
-class Exists : public QuantStmOrExp {
+class LAVAEXECS_DLL Exists : public QuantStmOrExp {
   DECLARE_DYNAMIC_CLASS(Exists)
 
 
@@ -2642,15 +2644,15 @@ class Exists : public QuantStmOrExp {
     *this = *(Exists*)from;
   }
 
-  friend void CDPExists (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPExists (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                       bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPExists(pgf,cid,(address)this,baseCDP); }
 };
 
-class Foreach : public Exists {
+class LAVAEXECS_DLL Foreach : public Exists {
   DECLARE_DYNAMIC_CLASS(Foreach)
 
 
@@ -2660,15 +2662,15 @@ class Foreach : public Exists {
     *this = *(Foreach*)from;
   }
 
-  friend void CDPForeach (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPForeach (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPForeach(pgf,cid,(address)this,baseCDP); }
 };
 
-class SelectExpression : public QuantStmOrExp {
+class LAVAEXECS_DLL SelectExpression : public QuantStmOrExp {
   DECLARE_DYNAMIC_CLASS(SelectExpression)
 
 
@@ -2688,8 +2690,8 @@ class SelectExpression : public QuantStmOrExp {
     *this = *(SelectExpression*)from;
   }
 
-  friend void CDPSelectExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                   bool baseCDP=false);
+  friend LAVAEXECS_DLL void CDPSelectExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                                 bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)

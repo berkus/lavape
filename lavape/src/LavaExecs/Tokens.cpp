@@ -154,14 +154,14 @@ void Tokens_INIT ()
   ATO("<<");
   ATO(">>");
   ATO("[]");
-
+/*
 #ifdef WIN32
   ATO(QChar(0x2190));
   ATO(QChar(0x2192));
-#else
-  ATO("<--");
-  ATO("-->");
-#endif
+#else*/
+  ATO(" <== ");
+  ATO(" ==> ");
+//#endif
   ATO(".");
 
   ATO("(");

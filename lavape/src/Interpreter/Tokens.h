@@ -281,8 +281,9 @@ enum TToken {
   LshiftHTML,
   NoToken};
 
-extern void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr,
-                       bool baseCDP=false);
+extern LAVAEXECS_DLL void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                     bool baseCDP=false);
+
 
 
 //extern QChar TOKENSTR[NoToken+1][MaxLenToken];

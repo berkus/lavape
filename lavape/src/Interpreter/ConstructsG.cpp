@@ -1,3 +1,7 @@
+#ifdef __GNUC__
+#pragma implementation "Constructs.h"
+#endif
+
 //*******************************************************************
 //
 //   public procedures of structs/classes defined in Constructs.h
