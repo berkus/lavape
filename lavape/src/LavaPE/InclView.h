@@ -37,6 +37,7 @@ public:
   void OnDelete();
   void OnEditSel();
   bool Expanded;
+  bool InitComplete;
 
 protected:
   void OnUpdateDelete(wxAction* action);

@@ -4341,7 +4341,7 @@ bool IfxThen::Check (CheckData &ckd)
   SET oldFlags=ckd.flags;
 
   ENTRY
-  ckd.flags += SET(InIfCond,InBranch);
+  ckd.flags += SET(InIfCond,InBranch,-1);
   ok &= ((SynObject*)ifCondition.ptr)->Check(ckd);
   ckd.flags = oldFlags;
   ok &= ((SynObject*)thenPart.ptr)->Check(ckd);

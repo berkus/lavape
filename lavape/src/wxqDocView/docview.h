@@ -133,7 +133,7 @@ public slots:
 private:
     QString m_appName, m_className, m_vendorName;
     QPtrList<wxAction> actionList;
-    unsigned inUpdateUI;
+    bool inUpdateUI;
 
     Q_OBJECT
 };

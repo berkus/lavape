@@ -175,10 +175,11 @@ bool CLavaPEDoc::OpenCView(LavaDECL* cDECL)
     delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
     ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
   }
-	if (wxDocManager::GetOpenDocCount() == 1
-	&& GetViewCount() == 4
-	/*&& !wxTheApp->isChMaximized*/)
+
+  if (wxDocManager::GetOpenDocCount() == 1
+	&& GetViewCount() == 4)
 		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
+
   return true;
 }
 

@@ -43,6 +43,7 @@
 CInclView::CInclView(QWidget* parent, wxDocument *doc)
 : CTreeView(parent, doc, "InclView")
 {
+  InitComplete = false;
   connect(m_tree,SIGNAL(doubleClicked(QListViewItem*,const QPoint&,int)), SLOT(OnDblclk(QListViewItem*,const QPoint&,int)));
   setFont(LBaseData->m_TreeFont);
 }
@@ -69,6 +70,8 @@ CLavaPEDoc* CInclView::GetDocument() // non-debug version is inline
 
 void CInclView::UpdateUI()
 {
+  if (!InitComplete)
+    return;
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   OnUpdateDelete(frame->deleteAction);
   OnUpdateEditSel(frame->editSelItemAction);
@@ -84,6 +87,7 @@ void CInclView::OnInitialUpdate()
     GetListView()->firstChild()->setOpen(true);
     GetListView()->setCurrentItem(GetListView()->firstChild());
     GetListView()->setSelected(GetListView()->firstChild(), true);
+    InitComplete = true;
   }
 }
 
@@ -114,7 +118,7 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
     //                               bm, bm, TVIS_EXPANDED, TVIS_EXPANDED,
     //                                0, TVI_ROOT, TVI_LAST);
   cheSyn = (CHESimpleSyntax*)doc->mySynDef->SynDefTree.first;
- parent->setItemData( (TItemData*)cheSyn);
+  parent->setItemData( (TItemData*)cheSyn);
   if (cheSyn)
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   while (cheSyn) {

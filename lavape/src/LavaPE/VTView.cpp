@@ -64,6 +64,8 @@ bool CVTView::OnCreate()
 
 void CVTView::UpdateUI()
 {
+  if (!myDECL)
+    return;
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   OnUpdateGotodef(frame->gotoDeclAction);
   OnUpdateOverride(frame->overrideAction);

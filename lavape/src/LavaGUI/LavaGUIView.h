@@ -78,6 +78,7 @@ public:
   LavaVariablePtr ResultDPtr;
   bool CurrentCategory;
   CHEFormNode* LastBrowseNode;
+  bool clipboard_text_notEmpty;
 
   void SyncForm(LavaDECL* formDECL);
   void resetLastBrowseNode();

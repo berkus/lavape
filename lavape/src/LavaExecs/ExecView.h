@@ -75,7 +75,7 @@ public:
        clicked, active, forcePrimTokenSelect,
        inIgnore, inExecHeader, inFormParms, inBaseInits,
        inParameter, inForeach, externalHint, nextError,
-       destroying, autoScroll, errMsgUpdated;
+       destroying, autoScroll, errMsgUpdated, initialUpdateDone;
   TToken editToken;
   SelfVar *selfVar;
   CHAINX plhChain;

@@ -200,6 +200,8 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
   drawTree = false;
   inSync = false;
   Clipdata = 0;
+  clipboard_lava_notEmpty = false;
+
   if (!GetDocument()->MainView) 
     GetDocument()->MainView = this;
   connect(m_tree,SIGNAL(selectionChanged()), SLOT(OnSelchanged()));
@@ -223,6 +225,8 @@ CLavaPEView::~CLavaPEView()
 
 void CLavaPEView::UpdateUI()
 {
+  if (!myDECL)
+    return;
   CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
   frame->expandAction->setEnabled(true);
   frame->collapseAction->setEnabled(true);
@@ -2505,32 +2509,27 @@ void CLavaPEView::IOnEditCopy()
       decl = *(LavaDECL**)data->synEl;
     if (data && (decl && !decl->TypeFlags.Contains(thisComponent) && !decl->TypeFlags.Contains(thisCompoForm)
                  || (data->type == TIType_CHEEnumSel))) {
-
-      //CSharedFile globFile;
-      //CArchive ar(&globFile,CArchive::store);
       QByteArray ba;
 			QDataStream ar(ba,IO_WriteOnly);
-      CMainItemData clipdata(data->type, 0);
-      clipdata.synEl = (unsigned long) NewLavaDECL();  //the Clipdata synEl is LavaDECL*
+      CMainItemData clipData(data->type, 0);
+      clipData.synEl = (unsigned long) NewLavaDECL();  //the Clipdata synEl is LavaDECL*
       if (!CollectDECL) {
         CollectDECL = NewLavaDECL();
         CollectDECL->DeclType = NoDef;
         AddToDragChain(item);
       }
-      *(LavaDECL*)clipdata.synEl = *CollectDECL;
-      clipdata.ClipTree = &GetDocument()->mySynDef->SynDefTree;
-      clipdata.docPathName = new DString(GetDocument()->GetAbsSynFileName());
-      clipdata.Serialize(ar);
+      *(LavaDECL*)clipData.synEl = *CollectDECL;
+      clipData.ClipTree = &GetDocument()->mySynDef->SynDefTree;
+      clipData.docPathName = new DString(GetDocument()->GetAbsSynFileName());
+      clipData.Serialize(ar);
+      defTypeSpicked = ((LavaDECL*)clipData.synEl)->DeclType;
+      treeflagsSpicked = ((LavaDECL*)clipData.synEl)->TreeFlags;
+      secondtflagsSpicked = ((LavaDECL*)clipData.synEl)->SecondTFlags;
+
       LavaSource *ls = new LavaSource();
       ls->setEncodedData(ba);
       wxTheApp->clipboard()->setData(ls, QClipboard::Clipboard);
-      /*
-      COleDataSource *srcItem = new COleDataSource;
-
-      srcItem->CacheGlobalData(m_nIDClipFormat,globFile.Detach());
-      srcItem->FlushClipboard();
-      srcItem->SetClipboard();
-      */
+      clipboard_lava_notEmpty = wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat);
     }
   }
 
@@ -2858,7 +2857,8 @@ void CLavaPEView::OnEditPaste()
   DString *str2;
   DWORD d4;
 
-  if (wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat)) {
+//  if (wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat)) {
+  if (clipboard_lava_notEmpty) {
     QByteArray ba = ((LavaSource*)wxTheApp->clipboard()->data(QClipboard::Clipboard))->encodedData(m_nIDClipFormat);
 		QDataStream ar(ba,IO_ReadOnly);
     item = (CTreeItem*)GetListView()->currentItem();
@@ -2941,14 +2941,14 @@ void CLavaPEView::OnUpdateEditPaste(wxAction* action)
   bool bEnable = false;
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
   if (item) {
-    bEnable = wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat);
-		if (bEnable) {
-      QByteArray ar = ((LavaSource*)wxTheApp->clipboard()->data(QClipboard::Clipboard))->encodedData(m_nIDClipFormat);
-      CMainItemData clipdata;
-      SynFlags treeflags, secondtflags;
-      TDeclType deftype= clipdata.Spick(ar, treeflags, secondtflags);
-      bEnable = (CanPaste(deftype, treeflags, secondtflags, item) != TIType_NoType);
-    }
+    bEnable = clipboard_lava_notEmpty; //wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat);
+		if (bEnable) //{
+      //QByteArray ar = ((LavaSource*)wxTheApp->clipboard()->data(QClipboard::Clipboard))->encodedData(m_nIDClipFormat);
+      //CMainItemData clipdata;
+      //SynFlags treeflags, secondtflags;
+      //TDeclType deftype= clipdata.Spick(ar, treeflags, secondtflags);
+      bEnable = (CanPaste(defTypeSpicked, treeflagsSpicked, secondtflagsSpicked, item) != TIType_NoType);
+    //}
   }
   action->setEnabled(bEnable);
   /*
@@ -4965,6 +4965,13 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
       if (!GetListView()->hasFocus())
         GetListView()->setFocus();
       sel->repaint();
+      clipboard_lava_notEmpty = wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat);
+      if (clipboard_lava_notEmpty) {
+        QByteArray ar = ((LavaSource*)wxTheApp->clipboard()->data(QClipboard::Clipboard))->encodedData(m_nIDClipFormat);
+        SynFlags treeflags, secondtflags;
+        CMainItemData clipData;
+        defTypeSpicked = clipData.Spick(ar, treeflagsSpicked, secondtflagsSpicked);
+      }
     }
     else
       DisableActions();

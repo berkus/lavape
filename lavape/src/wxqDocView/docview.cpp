@@ -130,11 +130,12 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
     SetClassName(argv[0]);
 		settings = new QSettings(QSettings::Native);
 
-    idleTimer = new QTimer(this);
-    idleTimer->start(0);
+//    idleTimer = new QTimer(this);
+//    idleTimer->start(0,false);
 
+    QApplication::connect((const QObject*)QApplication::eventLoop(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
     connect(this,SIGNAL(guiThreadAwake()),SLOT(onGuiThreadAwake()));
-    connect(idleTimer,SIGNAL(timeout()),SLOT(onIdle()));
+//    connect(idleTimer,SIGNAL(timeout()),SLOT(onIdle()));
     apExit = false;
 }
 
@@ -145,7 +146,9 @@ wxApp::~wxApp() {
 
 void wxApp::onGuiThreadAwake() {
 	// make sure that UpdateUI is invoked only once between two wait states
-  inUpdateUI = 0;
+//	qDebug("onGuiThreadAwake");
+  inUpdateUI = false;
+//  idleTimer->start(0,true);
 }
 
 static bool cmdLineEvaluated=false;
@@ -153,12 +156,16 @@ static bool cmdLineEvaluated=false;
 void wxApp::onIdle()
 {
 	// make sure that UpdateUI is invoked only once between two wait states
-	if (!inUpdateUI++)
+	if (!inUpdateUI) {
+//	  qDebug("onIdle, postEvent");
+//    inUpdateUI = true;
 		QApplication::postEvent(this,new QCustomEvent(IDU_Idle,0));
+	}
 }
 
 void wxApp::customEvent(QCustomEvent *e)
 {
+//  qDebug("customEvent called");
 	if (e->type() == IDU_Idle)
 	  	onUpdateUI();
 }
@@ -167,13 +174,17 @@ void wxApp::onUpdateUI()
 {
   wxAction* act;
   QWidget *focView; //, *fw;
-  char **argv=qApp->argv();;
+  char **argv=qApp->argv();
 
 	if (apExit /*deletingMainFrame*/)
 		return;
-
+		
+	inUpdateUI = true;
+//  qDebug("onUpdateUI called");
+		
   for (act = actionList.first(); act; act = actionList.next())
     act->enable = false;
+
   UpdateUI();
   if (m_appWindow)
     m_appWindow->UpdateUI();
@@ -188,6 +199,8 @@ void wxApp::onUpdateUI()
 		cmdLineEvaluated = true;
 		wxTheApp->OpenDocumentFile(argv[1]);
 	}
+	
+//	inUpdateUI = false;
 }
 
 void wxApp::histFile(int histFileIndex) {
@@ -1576,8 +1589,6 @@ void wxDocManager::SetActiveView(wxView *view, bool activate)
       view->OnActivateView();
       view->GetParentFrame()->NotifyActive(view);
     }
-    else
-      ;//m_activeView->OnActivateView();
   }
   else
     if (m_activeView == view)

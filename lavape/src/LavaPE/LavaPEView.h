@@ -74,6 +74,7 @@ public:
 
   virtual void Serialize(QDataStream& ar);
   TDeclType Spick( QByteArray& ar, SynFlags& treeflags, SynFlags& secondtflags);
+
   void Destroy();
   ~CMainItemData();
 };
@@ -151,6 +152,11 @@ public:
 //  UINT m_nIDDragBackFormat;
   int CollectPos;
   CMainItemData* Clipdata;
+  bool clipboard_lava_notEmpty;
+  TDeclType defTypeSpicked;
+  SynFlags treeflagsSpicked;
+  SynFlags secondtflagsSpicked;
+
   LavaDECL* CollectDECL;
   CTreeItem* m_hitemDrag;
   CTreeItem* m_hitemDragP;

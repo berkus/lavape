@@ -122,6 +122,7 @@ static void CopyUntil(ObjReference *oldRef,CHE *chpStop,ObjReference *newRef) {
 
 CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,"ExecView")
 { 
+  initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
 	active = false;
   sv = new MyScrollView(this);
   sv->setFocusPolicy(QWidget::StrongFocus);
@@ -133,7 +134,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   sv->execView = this;
 	m_ComboBar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
   destroying = false;
-  Base = 0; // also indicates whether OnInitialUpdate has already been called
+  Base = 0;
 }
 
 bool CExecView::OnCreate() 
@@ -240,6 +241,8 @@ void CExecView::OnInitialUpdate()
   OnUpdate((wxView*)pHint->CommandData2, 0, pHint);
 	sv->setFocus();
   text->ckd.inInitialUpdate = false;
+  initialUpdateDone = true;
+  active = true;
 }
 
 void MyScrollView::SetTokenFormat (CHETokenNode *currToken) {
@@ -675,6 +678,7 @@ void CExecView::OnChar(QKeyEvent *e)
   // TODO: Add your message handler code here and/or call default
   int key=e->key();
   ButtonState state=e->state();
+	ctrlPressed = (state & Qt::ControlButton);
   SynObject *currentSynObj, *parent/*, *ocl*/;
 
   switch (key) {
@@ -807,69 +811,27 @@ void CExecView::OnChar(QKeyEvent *e)
     break;
   case Qt::Key_1:
     if (ctrlPressed) {
-      /*
-      CComboBar* bar = (CComboBar*)GetParentFrame()->GetControlBar(IDD_ComboBar);
-      if (bar->LeftComboID) {
-        QComboBox* m_box = bar->m_ComboBarDlg->bar->LeftComboID;
-        if (m_box) {
-          m_box->ShowDropDown(true);
-          m_box->SetCurSel(0);
-          m_box->setFocus();
-        }
-      }*/
       CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
-      if (bar->LeftCombo) {
+      if (bar->LeftCombo)
         bar->LeftCombo->popup();
-        bar->LeftCombo->setCurrentItem(0);
-        bar->LeftCombo->setFocus();
-      }
     }
     break;
   case Qt::Key_2:
     if (ctrlPressed) {
-      /*
-      CComboBar* bar = (CComboBar*)GetParentFrame()->GetControlBar(IDD_ComboBar);
-      if (bar->RightComboID) {
-        QComboBox* m_box = bar->m_ComboBarDlg->bar->RightComboID;
-        if (m_box) {
-          m_box->ShowDropDown(true);
-          m_box->SetCurSel(0);
-          m_box->setFocus();
-        }
-      }
-      */
       CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
-      if (bar->RightCombo) {
+      if (bar->RightCombo)
         bar->RightCombo->popup();
-        bar->RightCombo->setCurrentItem(0);
-        bar->RightCombo->setFocus();
-      }
     }
     break;
   case Qt::Key_3:
     if (ctrlPressed) {
-//      CComboBar* bar = (CComboBar*)GetParentFrame()->GetControlBar(IDD_ComboBar);
       CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
       if (bar->EnumsEnable) {
         bar->TrackEnum(); 
-//        bar->EnumMenu.setFocus();
       }
       else {
-        if (bar->RightCombo && bar->ThirdCombo) {
+        if (bar->RightCombo && bar->ThirdCombo)
           bar->ThirdCombo->popup();
-          bar->ThirdCombo->setCurrentItem(0);
-          bar->ThirdCombo->setFocus();
-        }
-        /*
-        if (bar->RightComboID) {
-          QComboBox* m_box = bar->m_ComboBarDlg->bar->ThirdComboID;
-          if (m_box) {
-            m_box->ShowDropDown(true);
-            m_box->SetCurSel(0);
-            m_box->setFocus();
-          }
-        }
-        */
       }
     }
     break;
@@ -919,7 +881,7 @@ void CExecView::OnChar(QKeyEvent *e)
 //    }
     return;
   case Qt::Key_Tab:
-    if (state = Qt::ShiftButton) // Shift key down ==> BACKTAB
+    if (state & Qt::ShiftButton) // Shift key down ==> BACKTAB
       text->newSelection = text->FindPrecedingPlaceholder();
     else // TAB
       text->newSelection = text->FindNextPlaceholder();
@@ -2247,7 +2209,8 @@ void CExecView::OnConst()
   sv->addChild(editCtl,text->currentSelection->data.rect.left()-editCtl->frameWidth(),text->currentSelection->data.rect.top()-editCtl->frameWidth());
   editCtl->setFont(sv->viewport()->font());
   editCtl->setText(TOKENSTR[Const_T]);
-  editCtl->setFixedWidth(sv->fm->width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
+	QFontMetrics fom(editCtl->font());
+  editCtl->setFixedWidth(fom.width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
   editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());
   int r=text->currentSelection->data.rect.right();
   sv->contentsWidth = QMAX(sv->contentsWidth,r);
@@ -4589,8 +4552,6 @@ void CExecView::OnNextError()
     else {
       nextError = true;
       Select(currToken->data.synObject);
-//      ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_DlgBuildBar->SetErrorOnBar(errDECL);
-//      ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_DlgBuildBar->SetTab(tabError);
 			sv->viewport()->update();
       return;
     }
@@ -4603,12 +4564,12 @@ void CExecView::OnNextError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-//        ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_DlgBuildBar->SetTab(tabError);
 			  sv->viewport()->update();
         return;
       }
     }
-    for ( currToken = (CHETokenNode*)text->tokenChain.first;
+    QMessageBox::critical(this, qApp->name(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+/*    for ( currToken = (CHETokenNode*)text->tokenChain.first;
           currToken;
           currToken = (CHETokenNode*)currToken->successor) {
       if ((currToken->data.flags.Contains(primToken)
@@ -4617,11 +4578,10 @@ void CExecView::OnNextError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-//        ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_DlgBuildBar->SetTab(tabError);
 			  sv->viewport()->update();
         return;
       }
-    }
+    }*/
   }
   else
     QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
@@ -4660,7 +4620,8 @@ void CExecView::OnPrevError()
         return;
       }
     }
-    for ( currToken = (CHETokenNode*)text->tokenChain.last;
+    QMessageBox::critical(this, qApp->name(), "No (more) errors found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+/*    for ( currToken = (CHETokenNode*)text->tokenChain.last;
           currToken;
           currToken = (CHETokenNode*)currToken->predecessor) {
       if ((currToken->data.flags.Contains(primToken)
@@ -4672,7 +4633,7 @@ void CExecView::OnPrevError()
 			  sv->viewport()->update();
         return;
       }
-    }
+    }*/
   }
   else
     QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
@@ -4695,7 +4656,8 @@ void CExecView::OnNextComment()
       return;
     }
   }
-  for ( currToken = (CHETokenNode*)text->tokenChain.first;
+  QMessageBox::critical(this, qApp->name(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+/*  for ( currToken = (CHETokenNode*)text->tokenChain.first;
         currToken != startToken;
         currToken = (CHETokenNode*)currToken->successor) {
     if (currToken->data.token == Comment_T) {
@@ -4705,7 +4667,7 @@ void CExecView::OnNextComment()
 			sv->viewport()->update();
       return;
     }
-  }
+  }*/
 }
 
 void CExecView::OnPrevComment()
@@ -4724,7 +4686,8 @@ void CExecView::OnPrevComment()
       return;
     }
   }
-  for (currToken = (CHETokenNode*)text->tokenChain.last;
+  QMessageBox::critical(this, qApp->name(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+/*  for (currToken = (CHETokenNode*)text->tokenChain.last;
        currToken != startToken;
        currToken = (CHETokenNode*)currToken->predecessor) {
     if (currToken->data.token == Comment_T) {
@@ -4734,7 +4697,7 @@ void CExecView::OnPrevComment()
 			sv->viewport()->update();
       return;
     }
-  }
+  }*/
 }
 
 void CExecView::OnConflict() 
@@ -5055,7 +5018,7 @@ void CExecView::OnInsertEnum (QString &itemName, TID &typeID, unsigned pos)
 void CExecView::UpdateUI()
 {
 
-	if (!myDoc || !myDoc->mySynDef)
+	if (!initialUpdateDone/* || !myDoc || !myDoc->mySynDef*/)
 		return;
 
   //CLavaMainFrame* frame = (CLavaMainFrame*)((wxApp*)wxTheApp)->m_appWindow;

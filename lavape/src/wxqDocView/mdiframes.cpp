@@ -83,8 +83,9 @@ QWorkspace* wxMainFrame::CreateWorkspace(QWidget* parent)
 void wxMainFrame::windowActivated(QWidget* w)
 {
   theActiveFrame = (QMainWindow*)w;
-  if (w && w->inherits("wxMDIChildFrame"))
+  if (w && w->inherits("wxMDIChildFrame")) {
     ((wxMDIChildFrame*)w)->Activate();
+  }
 }
 
 
@@ -313,6 +314,11 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
   	  raise();
   	//raise();
 */
+	if (isMinimized() && windowMenuAction)
+    if (oldWindowState == QEvent::ShowMaximized)
+      showMaximized();
+    else
+      showNormal();
 	if (title.at(title.length()-1) == '*')
 		title = title.left(title.length()-1);
 	wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);

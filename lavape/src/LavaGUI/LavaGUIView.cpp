@@ -85,6 +85,8 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
   LastBrowseNode = 0;
   inUpdate = true;
   StatusbarMess = "";
+  clipboard_text_notEmpty = false;
+
 }
 
 
@@ -350,7 +352,7 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
 
 void CLavaGUIView::OnUpdateGotodef(wxAction* action)
 {
-  action->setEnabled(myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget
+  action->setEnabled(myGUIProg && myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget
                     && myGUIProg->focNode->data.FIP.widget->hasFocus());
 }
 
@@ -639,6 +641,7 @@ void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
       if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget)
         if (!myGUIProg->focNode->data.FIP.widget->hasFocus())
           myGUIProg->focNode->data.FIP.widget->setFocus();
+      clipboard_text_notEmpty = !QApplication::clipboard()->text().isEmpty();
     }
     else {
       QString msg("");
@@ -676,8 +679,10 @@ void CLavaGUIView::OnEditCopy()
 {
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
-    if (focw )
+    if (focw ) {
       ((CTEdit*)focw)->copy();
+      clipboard_text_notEmpty = !QApplication::clipboard()->text().isEmpty();
+    }
   }
 }
 
@@ -686,8 +691,10 @@ void CLavaGUIView::OnEditCut()
 {
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
-    if (focw )
+    if (focw ) {
       ((CTEdit*)focw)->cut();
+      clipboard_text_notEmpty = !QApplication::clipboard()->text().isEmpty();
+    }
   }
 }
 
@@ -695,7 +702,7 @@ void CLavaGUIView::OnEditPaste()
 {
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
-    if (focw )
+    if (focw ) 
       ((CTEdit*)focw)->paste();
   }
 }
@@ -706,7 +713,7 @@ void CLavaGUIView::OnUpdateEditPaste(wxAction* action)
   action->setEnabled (myGUIProg && myGUIProg->editNode
                      && (myGUIProg->editNode == myGUIProg->focNode)
                      && !((CTEdit*)myGUIProg->editNode->data.FIP.widget)->isReadOnly()
-                     && !QApplication::clipboard()->text().isEmpty());
+                     && clipboard_text_notEmpty);
 }
 
 void CLavaGUIView::OnUpdateEditCut(wxAction* action) 
