@@ -33,12 +33,12 @@
       one or more <B>&quot;client data&quot;</B><I> </I>arguments, provided by
       the notification client, in a callback parameter list, without requiring
       the server to &quot;know&quot; and to insert those client data arguments
-      when the callback function is called.</P>
+      at the time when the callback function is called.</P>
     
     <P>We felt that the present <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
       solution is too indirect and awkward. It is based on intermediate <B>listener
       objects</B> that contain the client data and on auxiliary constructs like <B>
-      inner, adapter, and anonymous classes</B>. We should prefer a solution
+      inner, adapter, and anonymous classes</B>. We  prefer a solution
       allowing the event-consuming client object to direct a quite
       straightforward request to the event-producing server object:</P>
     <BLOCKQUOTE>
@@ -59,8 +59,8 @@
     <b>Note: </b><b>The server does not need to know the
         declaration of the callback function cbf!</b></P>
     
-    <P>This is exactly what you can express in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      if a client is to register a callback with a server.</P>
+    <P>This is exactly what you can express in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> 
+    if a client wants to register a callback with a server.</P>
     
     <P>To meet the requirements of object-orientation and static type checking
       <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> provides a single
@@ -91,12 +91,12 @@
 <PRE><FONT FACE="Courier New">  <B><FONT COLOR="#0000FF">  declare</FONT></B>
       SE_Callback cb
     <B><FONT COLOR="#0000FF">do</FONT></B>
-      cb <B><FONT COLOR="#0000FF">&lt;==</FONT></B> <B><FONT COLOR="#0000FF"><FONT COLOR="#0000FF">callback</FONT> of type</FONT></B> SE_Callback:
+      cb <B><FONT COLOR="#0000FF">&lt;==</FONT></B> <B><FONT COLOR="#0000FF"><FONT COLOR="#0000FF">callback</FONT> from</FONT></B> SE_Callback:
                <b><font color="#0000FF">call</font></b> self.cbf(&lt;event&gt;,cd1,cd2,...)
              <font color="#0000FF"><b>when</b></font>
                evtSpec
              <B><FONT COLOR="#0000FF">#callback</FONT></B>;
-      server.SE_callbacks.Add(cb) <i><font color="#008080">register callback cb</font></i>
+      server.register(cb) <i><font color="#008080">register callback cb</font></i>
     <B><FONT COLOR="#0000FF">#declare</FONT></B></FONT></PRE>
     
     <P><b>At programming time</b> <I><B><FONT COLOR="#FF0000">LavaPE</FONT></B></I>
@@ -118,6 +118,6 @@
       with the first formal parameter of the client's callback function <I>cbf</I>.</P>
     
     <P><b>For further details see
-      classes <I>Callbacks</I>  and <i>Callback </i>in <FONT COLOR="#FF0000">std.lava</FONT> and our <A HREF="CallbackSample.htm">callback sample</A>.</b></P>
+      classes <I>CallbackServer</I>  and <i>Callback </i>in <FONT COLOR="#FF0000">std.lava</FONT> and our <A HREF="CallbackSample.htm">callback sample</A>.</b></P>
   </BODY>
 </HTML>

@@ -329,7 +329,7 @@ void LavaBaseStringInit() {
   ERR_ReservedName  = QObject::tr("Reserved name");
   ERR_Parameter  = QObject::tr("Formal/actual parameters don't match");
   ERR_NullException  = QObject::tr("Fail statement: exception parameter is null");
-  ERR_NotYetInitialized  = QObject::tr(": a value must be assigned in all preceding program branches (check also for missing else branches)");
+  ERR_NotYetInitialized  = QObject::tr(": a value must be assigned in all preceding program branches (check also for missing else branches!)");
   ERR_AssigToRdOnly  = QObject::tr("Forbidden assignment to read-only member variable");
   ERR_IncompatibleType  = QObject::tr("Incompatible type");
   ERR_NotSingleOutput  = QObject::tr("Function must have exactly one output parameter");
@@ -425,7 +425,7 @@ void LavaBaseStringInit() {
   ERR_ExplicitInitializerCall  = QObject::tr("Explicit initializer calls are not allowed");
   ERR_MissingFuncDecl  = QObject::tr("No such member function or variable:");
   ERR_MissingInitialization 
-  = QObject::tr(": a value must be assigned in all program branches (check also for missing else branches)");
+  = QObject::tr(": a value must be assigned in all program branches (check also for missing else branches!)");
   ERR_UnaryOpUndefined  = QObject::tr("Operator undefined for this type of operand");
   ERR_HandleOpParm  = QObject::tr("Parameter of handle operator # must be a quantified variable");
   ERR_UseVT  = QObject::tr("Error: This or a base type is virtual; => ref. to concrete interface forbidden");

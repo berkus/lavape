@@ -1576,7 +1576,7 @@ LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
   FuncStatement *funcStm=(FuncStatement*)callback.ptr;
   Expression *onEventExpr=(Expression*)onEvent.ptr;
   Expression *objRef;
-  LavaObjectPtr callObj, object, result;
+  LavaObjectPtr object, result;
   CallbackObject cbObj;
 
   objRef = (ExpressionX*)funcStm->handle.ptr;

@@ -53,12 +53,12 @@ Source: C:\lavape\doc\html\whatNext\*; DestDir: {app}\doc\html\whatNext; Flags: 
 Source: C:\lavape\doc\html\howto\*; DestDir: {app}\doc\html\howto; Flags: ignoreversion
 Source: C:\lavape\doc\images\*; DestDir: {app}\doc\images; Flags: ignoreversion
 Source: C:\lavape\src\LavaPE\Release\std\*; DestDir: {app}\bin\std; Flags: ignoreversion
-Source: C:\lavape\src\LavaPE\LavaIcons\*; DestDir: {app}\bin\LavaIcons; Flags: ignoreversion
+Source: C:\lavape\src\LavaPE\Debug\LavaIcons\*; DestDir: {app}\bin\LavaIcons; Flags: ignoreversion
 Source: C:\lavape\src\LavaPE\Release\std.lava; DestDir: {app}\bin; Attribs: readonly; Flags: ignoreversion uninsremovereadonly
 Source: C:\lavape\src\LavaPE\Release\std.htm; DestDir: {app}\bin; Flags: ignoreversion
 Source: C:\lavape\src\LavaPE\Release\std_m.htm; DestDir: {app}\bin; Flags: ignoreversion
 Source: C:\lavape\src\LavaPE\Release\std_1.htm; DestDir: {app}\bin; Flags: ignoreversion
-Source: C:\lavape\src\LavaPE\Release\cp_icons_std.bat; DestDir: {app}\bin; Flags: ignoreversion
+Source: C:\lavape\src\LavaPE\Debug\cp_icons_std.bat; DestDir: {app}\bin; Flags: ignoreversion
 Source: C:\lavape\samples\*; DestDir: {app}\samples; Flags: ignoreversion
 Source: C:\lavape\*.txt; DestDir: {app}; Flags: ignoreversion
 Source: C:\lavape\src\Shortcut\Release\Shortcut.exe; DestDir: {app}\bin; Flags: ignoreversion
