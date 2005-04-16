@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>IDD_VTypeBox</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>359</width>
-            <height>350</height>
+            <width>369</width>
+            <height>345</height>
         </rect>
     </property>
     <property name="sizePolicy">
@@ -39,7 +39,7 @@
         </property>
         <widget class="QLayoutWidget">
             <property name="name">
-                <cstring>layout20</cstring>
+                <cstring>layout28</cstring>
             </property>
             <grid>
                 <property name="name">
@@ -47,25 +47,19 @@
                 </property>
                 <widget class="QLayoutWidget" row="0" column="0">
                     <property name="name">
-                        <cstring>layout54</cstring>
+                        <cstring>layout27</cstring>
                     </property>
                     <vbox>
                         <property name="name">
                             <cstring>unnamed</cstring>
                         </property>
-                        <property name="spacing">
-                            <number>0</number>
-                        </property>
                         <widget class="QLayoutWidget">
                             <property name="name">
-                                <cstring>layout53</cstring>
+                                <cstring>layout26</cstring>
                             </property>
                             <hbox>
                                 <property name="name">
                                     <cstring>unnamed</cstring>
-                                </property>
-                                <property name="margin">
-                                    <number>0</number>
                                 </property>
                                 <widget class="QLabel">
                                     <property name="name">
@@ -92,6 +86,23 @@
                                         <string>Name</string>
                                     </property>
                                 </widget>
+                                <spacer>
+                                    <property name="name">
+                                        <cstring>spacer4_2</cstring>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Horizontal</enum>
+                                    </property>
+                                    <property name="sizeType">
+                                        <enum>Expanding</enum>
+                                    </property>
+                                    <property name="sizeHint">
+                                        <size>
+                                            <width>10</width>
+                                            <height>16</height>
+                                        </size>
+                                    </property>
+                                </spacer>
                                 <widget class="QCheckBox">
                                     <property name="name">
                                         <cstring>m_EnableName1</cstring>
@@ -121,17 +132,72 @@
                         </widget>
                     </vbox>
                 </widget>
-                <widget class="QLayoutWidget" row="0" column="1">
+                <widget class="QGroupBox" row="3" column="0">
                     <property name="name">
-                        <cstring>layout47</cstring>
+                        <cstring>GroupBox_IDC_STATIC29</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>0</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>NoFocus</enum>
+                    </property>
+                    <property name="title">
+                        <string>Select value type of VT</string>
                     </property>
                     <vbox>
                         <property name="name">
                             <cstring>unnamed</cstring>
                         </property>
-                        <widget class="QCheckBox">
+                        <widget class="QComboBox">
+                            <item>
+                                <property name="text">
+                                    <string>(Basic Types)</string>
+                                </property>
+                            </item>
                             <property name="name">
-                                <cstring>m_RMOverrides1</cstring>
+                                <cstring>m_BasicTypes</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QComboBox">
+                            <item>
+                                <property name="text">
+                                    <string>(Other Types)</string>
+                                </property>
+                            </item>
+                            <property name="name">
+                                <cstring>m_NamedTypes</cstring>
+                            </property>
+                        </widget>
+                    </vbox>
+                </widget>
+                <widget class="QButtonGroup" row="2" column="1">
+                    <property name="name">
+                        <cstring>BGroup_ObjCat</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>5</hsizetype>
+                            <vsizetype>0</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="title">
+                        <string>Object category</string>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QRadioButton">
+                            <property name="name">
+                                <cstring>m_ValueObject</cstring>
                             </property>
                             <property name="enabled">
                                 <bool>false</bool>
@@ -140,34 +206,37 @@
                                 <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
-                                <string>Remove overrides</string>
+                                <string>Value object</string>
                             </property>
                         </widget>
-                        <widget class="QCheckBox">
+                        <widget class="QRadioButton">
                             <property name="name">
-                                <cstring>m_isAbstract</cstring>
+                                <cstring>m_StateObject</cstring>
+                            </property>
+                            <property name="enabled">
+                                <bool>false</bool>
                             </property>
                             <property name="focusPolicy">
                                 <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
-                                <string>Abstract</string>
+                                <string>State object</string>
                             </property>
                         </widget>
-                        <widget class="QCheckBox">
+                        <widget class="QRadioButton">
                             <property name="name">
-                                <cstring>m_DefCat</cstring>
+                                <cstring>m_AnyCategory</cstring>
                             </property>
-                            <property name="focusPolicy">
-                                <enum>StrongFocus</enum>
+                            <property name="enabled">
+                                <bool>false</bool>
                             </property>
                             <property name="text">
-                                <string>Defines object category</string>
+                                <string>Any object category</string>
                             </property>
                         </widget>
                     </vbox>
                 </widget>
-                <widget class="QButtonGroup" row="2" column="1">
+                <widget class="QButtonGroup" row="3" column="1">
                     <property name="name">
                         <cstring>BGroup_KindOfRef</cstring>
                     </property>
@@ -230,7 +299,53 @@
                         </widget>
                     </vbox>
                 </widget>
-                <widget class="QLayoutWidget" row="1" column="0">
+                <widget class="QLayoutWidget" row="0" column="1" rowspan="2" colspan="1">
+                    <property name="name">
+                        <cstring>layout47</cstring>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QCheckBox">
+                            <property name="name">
+                                <cstring>m_RMOverrides1</cstring>
+                            </property>
+                            <property name="enabled">
+                                <bool>false</bool>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Remove overrides</string>
+                            </property>
+                        </widget>
+                        <widget class="QCheckBox">
+                            <property name="name">
+                                <cstring>m_isAbstract</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Abstract</string>
+                            </property>
+                        </widget>
+                        <widget class="QCheckBox">
+                            <property name="name">
+                                <cstring>m_DefCat</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Defines object category</string>
+                            </property>
+                        </widget>
+                    </vbox>
+                </widget>
+                <widget class="QLayoutWidget" row="1" column="0" rowspan="2" colspan="1">
                     <property name="name">
                         <cstring>layout48</cstring>
                     </property>
@@ -293,99 +408,6 @@
                             </property>
                             <property name="text">
                                 <string>Is a substitutable type</string>
-                            </property>
-                        </widget>
-                    </vbox>
-                </widget>
-                <widget class="QButtonGroup" row="1" column="1">
-                    <property name="name">
-                        <cstring>BGroup_ObjCat</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>5</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="title">
-                        <string>Object category</string>
-                    </property>
-                    <vbox>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QRadioButton">
-                            <property name="name">
-                                <cstring>m_ValueObject</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="focusPolicy">
-                                <enum>StrongFocus</enum>
-                            </property>
-                            <property name="text">
-                                <string>Value object</string>
-                            </property>
-                        </widget>
-                        <widget class="QRadioButton">
-                            <property name="name">
-                                <cstring>m_StateObject</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="focusPolicy">
-                                <enum>StrongFocus</enum>
-                            </property>
-                            <property name="text">
-                                <string>State object</string>
-                            </property>
-                        </widget>
-                    </vbox>
-                </widget>
-                <widget class="QGroupBox" row="2" column="0">
-                    <property name="name">
-                        <cstring>GroupBox_IDC_STATIC29</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>0</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="title">
-                        <string>Select value type of VT</string>
-                    </property>
-                    <vbox>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QComboBox">
-                            <item>
-                                <property name="text">
-                                    <string>(Basic Types)</string>
-                                </property>
-                            </item>
-                            <property name="name">
-                                <cstring>m_BasicTypes</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QComboBox">
-                            <item>
-                                <property name="text">
-                                    <string>(Other Types)</string>
-                                </property>
-                            </item>
-                            <property name="name">
-                                <cstring>m_NamedTypes</cstring>
                             </property>
                         </widget>
                     </vbox>
@@ -566,8 +588,8 @@
     </connection>
 </connections>
 <tabstops>
-    <tabstop>m_NewName</tabstop>
     <tabstop>m_EnableName1</tabstop>
+    <tabstop>m_NewName</tabstop>
     <tabstop>m_Substitutable</tabstop>
     <tabstop>m_BasicTypes</tabstop>
     <tabstop>m_NamedTypes</tabstop>
@@ -576,8 +598,9 @@
     <tabstop>m_DefCat</tabstop>
     <tabstop>m_ValueObject</tabstop>
     <tabstop>m_StateObject</tabstop>
-    <tabstop>m_DownInd</tabstop>
+    <tabstop>m_AnyCategory</tabstop>
     <tabstop>m_DownC</tabstop>
+    <tabstop>m_DownInd</tabstop>
     <tabstop>m_Back</tabstop>
 </tabstops>
 <includes>

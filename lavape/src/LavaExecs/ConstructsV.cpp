@@ -409,6 +409,8 @@ void ReferenceV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored)
     t.Insert(Tilde_T);
   else if (flags.Contains(isSameAsSelf))
     t.Insert(Equal_T);
+  else if (flags.Contains(isUnknownCat))
+    t.Insert(Mult_T);
   t.Insert(primaryToken,true);
   if (flags.Contains(isSubstitutable))
     t.Insert(Rbrace_T);
@@ -508,7 +510,11 @@ NullConstV::NullConstV () {
 
 void NullConstV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
-    t.Insert(nil_T,true);
+    if (parentObject->primaryToken == connect_T
+    || parentObject->primaryToken == disconnect_T)
+      t.Insert(Mult_T,true);
+    else
+      t.Insert(nil_T,true);
   EXIT
 }
 
@@ -2120,15 +2126,6 @@ void FuncExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ign
   CHE *paramPtr;
 
   ENTRY
-/*
-  parenth = (IsFuncHandle() || parentObject->primaryToken == old_T);
-*/
-  if (primaryToken == callback_T) {
-    t.Insert(primaryToken,true);
-    NLincIndent(t);
-  }
-/*  else if (parenth)
-    t.Insert(Lparenth_T);*/
 
   if (t.leftArrows) {
     if (handle.ptr) {
@@ -2216,13 +2213,6 @@ void FuncExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ign
     }
   }
 
-  if (primaryToken == callback_T) {
-    NLdecIndent(t);
-    t.Insert(ENDcallback_T);
-  }
-/*  else if (parenth)
-    t.Insert(Rparenth_T);*/
-
   EXIT
 }
 
@@ -2275,7 +2265,10 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   }
 
   if (drawCallKeywd) {
-    t.Insert(assignFS_T);
+    if (primaryToken == signal_T)
+      t.Insert(signal_T);
+    else
+      t.Insert(assignFS_T);
     t.Blank();
   }
   if (t.leftArrows) {
@@ -2419,41 +2412,74 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   EXIT
 }
 
-CallbackV::CallbackV (ObjReference *handle) {
-  SynObject *evt;
-
-  type = Exp_T;
+ConnectV::ConnectV () {
+  type = Stm_T;
   replacedType = type;
-  primaryToken = callback_T;
-  callbackServerType.ptr = new SynObjectV(TypePH_T);
-  callback.ptr = new FuncStatementV(handle,false);
-  onEvent.ptr = new SynObjectV(Exp_T);
-  evt = new SynObjectV(Event_T);
-  evt->flags.INCL(isDisabled);
-  evt = new ParameterV(evt);
-  ((FuncExpression*)callback.ptr)->inputs.Prepend(new CHE(evt));
+  primaryToken = connect_T;
+  signalSender.ptr = new SynObjectV(Exp_T);
+  signalFunction.ptr = new SynObjectV(FuncDisabled_T);
+  signalReceiver.ptr = new SynObjectV(Exp_T);
+  callbackFunction.ptr = new SynObjectV(FuncDisabled_T);
 }
 
-void CallbackV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
+void ConnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
 
   t.Insert(primaryToken,true);
   t.Blank();
+  t.Insert(signal_T);
+  t.Blank();
+  DRAW(signalSender.ptr);
+  t.Insert(Period_T);
+  DRAW(signalFunction.ptr);
+  t.Blank();
+  t.Insert(to_T);
+  t.Blank();
+  t.Insert(handler_T);
+  t.Blank();
+  DRAW(signalReceiver.ptr);
+  t.Insert(Period_T);
+  DRAW(callbackFunction.ptr);
+  EXIT
+}
+
+DisconnectV::DisconnectV () {
+  type = Stm_T;
+  replacedType = type;
+  primaryToken = disconnect_T;
+  signalSender.ptr = new SynObjectV(Exp_T);
+  signalFunction.ptr = new SynObjectV(FuncDisabled_T);
+  signalReceiver.ptr = new SynObjectV(Exp_T);
+  callbackFunction.ptr = new SynObjectV(FuncDisabled_T);
+}
+
+void DisconnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
+  ENTRY
+
+  t.Insert(primaryToken,true);
+  t.Blank();
+  t.Insert(signal_T);
+  t.Blank();
+  DRAW(signalSender.ptr);
+  t.Insert(Period_T);
+  DRAW(signalFunction.ptr);
+  t.Blank();
   t.Insert(from_T);
   t.Blank();
-//  t.Insert(type_T);
-//  t.Blank();
-  DRAW(callbackServerType.ptr);
-  t.Insert(Colon_T);
-  NLincIndent(t);
-  DRAW(callback.ptr);
-  NLdecIndent(t);
-  t.Insert(toBeCalledOn_T);
-  NLincIndent(t);
-  DRAW(onEvent.ptr);
-  NLdecIndent(t);
-  t.Insert(ENDcallback_T);
+  t.Insert(handler_T);
+  t.Blank();
+  DRAW(signalReceiver.ptr);
+  t.Insert(Period_T);
+  DRAW(callbackFunction.ptr);
   EXIT
+}
+
+EmitV::EmitV () : FuncStatementV(true,false,true) {
+  primaryToken = signal_T;
+}
+
+EmitV::EmitV (Reference *ref) : FuncStatementV(ref) {
+  primaryToken = signal_T;
 }
 
 

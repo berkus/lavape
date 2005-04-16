@@ -506,7 +506,7 @@ enum ExecFlags {
   inputArrow,
   isSameAsSelf,
   isSubstitutable,
-  unused2,
+  isUnknownCat,
   isInForeach,
   unfinishedAllowed,
   free1,
@@ -2017,32 +2017,74 @@ class FuncStatement : public FuncExpression {
   { CDPFuncStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-struct Callback : public Expression {
-  DECLARE_DYNAMIC_CLASS(Callback)
+struct Connect : public Expression {
+  DECLARE_DYNAMIC_CLASS(Connect)
 
-  NESTEDANY/*Reference*/ callbackServerType;
-  NESTEDANY/*FuncStatement*/ callback;
-  NESTEDANY/*Expression*/ onEvent;
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
-  virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
+
+  public:
+  NESTEDANY/*Expression*/ signalSender;
+  NESTEDANY/*Reference*/ signalFunction;
+  NESTEDANY/*Expression*/ signalReceiver;
+  NESTEDANY/*Reference*/ callbackFunction;
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 
-  Callback () {}
+  Connect () {}
 
   virtual void CopyData (AnyType *from) {
-    *this = *(Callback*)from;
+    *this = *(Connect*)from;
   }
 
-  friend void CDPCallback (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPConnect (PutGetFlag pgf, ASN1* cid, address varAddr,
+                          bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPCallback(pgf,cid,(address)this,baseCDP); }
+  { CDPConnect(pgf,cid,(address)this,baseCDP); }
+};
+
+struct Disconnect : public Expression {
+  DECLARE_DYNAMIC_CLASS(Disconnect)
+
+
+  public:
+  NESTEDANY/*Expression*/ signalSender;
+  NESTEDANY/*Reference*/ signalFunction;
+  NESTEDANY/*Expression*/ signalReceiver;
+  NESTEDANY/*Reference*/ callbackFunction;
+  virtual bool Check(CheckData &ckd);
+  virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+
+  Disconnect () {}
+
+  virtual void CopyData (AnyType *from) {
+    *this = *(Disconnect*)from;
+  }
+
+  friend void CDPDisconnect (PutGetFlag pgf, ASN1* cid, address varAddr,
+                             bool baseCDP=false);
+
+  virtual void CDP (PutGetFlag pgf, ASN1* cid,
+                    bool baseCDP=false)
+  { CDPDisconnect(pgf,cid,(address)this,baseCDP); }
+};
+
+struct Emit : public FuncStatement {
+  DECLARE_DYNAMIC_CLASS(Emit)
+
+
+  Emit () {}
+
+  virtual void CopyData (AnyType *from) {
+    *this = *(Emit*)from;
+  }
+
+  friend void CDPEmit (PutGetFlag pgf, ASN1* cid, address varAddr,
+                       bool baseCDP=false);
+
+  virtual void CDP (PutGetFlag pgf, ASN1* cid,
+                    bool baseCDP=false)
+  { CDPEmit(pgf,cid,(address)this,baseCDP); }
 };
 
 class AssertStatement : public Expression {
@@ -3277,15 +3319,35 @@ public:
     return QObject::tr("<p>This is a <a href=\"MemberFunctions.htm\">Function</a> call statement</p>"); }
 };
 
-class CallbackV : public Callback {
+class ConnectV : public Connect {
 public:
-  CallbackV () {}
-  CallbackV (ObjReference *handle);
+  ConnectV ();
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p>Use the <b>callback</b> expression to define a"
-    " <font color=\"red\"><i><b>Lava</b></i></font> <a href=\"../Callbacks.htm\">callback</a></p>");}
+    return QObject::tr("<p>Use the <b>connect</b> statement to connect a "
+    "<a href=\"../Callbacks.htm\">software signal</a> to a signal handler (\"callback\")</p>");}
+};
+
+class DisconnectV : public Disconnect {
+public:
+  DisconnectV ();
+
+  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>Use the <b>disconnect</b> statement to disconnect a "
+    "<a href=\"../Callbacks.htm\">software signal</a> from a signal handler (\"callback\")</p>");}
+};
+
+class EmitV : public FuncStatementV {
+public:
+  EmitV ();
+  EmitV (Reference *ref);
+
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>Use the <b>signal</b> statement to emit a "
+    "<a href=\"../Callbacks.htm\">software signal</a>, i.e., to call the signal handlers"
+    " (\"callbacks\") connected to the signal</p>");}
 };
 
 class AssertStatementV : public AssertStatement {
@@ -3889,11 +3951,25 @@ public:
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
-class CallbackX : public Callback {
+class ConnectX : public Connect {
 public:
-  CallbackX() {}
+  ConnectX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+};
+
+class DisconnectX : public Disconnect {
+public:
+  DisconnectX() {}
+
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+};
+
+class EmitX : public Emit {
+public:
+  EmitX() {}
+
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class AssertStatementX : public AssertStatement {

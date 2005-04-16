@@ -231,7 +231,9 @@ public:
   void OnQueryItf();
 	void OnQua();
 	void OnItem();
-  void OnCallback();
+  void OnConnect();
+  void OnDisconnect();
+  void OnEmitSignal();
 
 
 
@@ -320,7 +322,9 @@ public:
   void OnUpdateCall(QPushButton *pb);
 //  void OnUpdateUuid(QPushButton *pb);
   void OnUpdateTypeSwitch(QPushButton *pb);
-  void OnUpdateCallback(QPushButton *pb);
+  void OnUpdateConnect(QPushButton *pb);
+  void OnUpdateDisconnect(QPushButton *pb);
+  void OnUpdateEmitSignal(QPushButton *pb);
   void OnUpdateAssign(QPushButton *pb);
   void OnUpdateAttach(QPushButton *pb);
   void OnUpdateQueryItf(QPushButton *pb);

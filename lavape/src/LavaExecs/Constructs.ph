@@ -368,7 +368,7 @@ enum ExecFlags {
   inputArrow,         //19
   isSameAsSelf,       //20
   isSubstitutable,    //21
-  unused2,            //22
+  isUnknownCat,       //22
   isInForeach,        //23
   unfinishedAllowed,  //24
   free1,              //25
@@ -931,15 +931,29 @@ public:
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
 
-struct Callback : public Expression {
-  NESTEDANY<Reference> callbackServerType;
-  NESTEDANY<FuncStatement> callback;
-  NESTEDANY<Expression> onEvent;
+struct Connect : public Expression {
+public:
+  NESTEDANY<Expression> signalSender;
+  NESTEDANY<Reference> signalFunction;
+  NESTEDANY<Expression> signalReceiver;
+  NESTEDANY<Reference> callbackFunction;
 
-  virtual bool IsOptional (CheckData &ckd) { return false; };
-  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+};
+
+struct Disconnect : public Expression {
+public:
+  NESTEDANY<Expression> signalSender;
+  NESTEDANY<Reference> signalFunction;
+  NESTEDANY<Expression> signalReceiver;
+  NESTEDANY<Reference> callbackFunction;
+
+  virtual bool Check (CheckData &ckd);
+  virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+};
+
+struct Emit : public FuncStatement {
 };
 
 class AssertStatement : public Expression {
@@ -1695,15 +1709,35 @@ public:
     return QObject::tr("<p>This is a <a href=\"MemberFunctions.htm\">Function</a> call statement</p>"); }
 };
 
-class CallbackV : public Callback {
+class ConnectV : public Connect {
 public:
-  CallbackV () {}
-  CallbackV (ObjReference *handle);
+  ConnectV ();
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p>Use the <b>callback</b> expression to define a"
-    " <font color=\"red\"><i><b>Lava</b></i></font> <a href=\"../Callbacks.htm\">callback</a></p>");}
+    return QObject::tr("<p>Use the <b>connect</b> statement to connect a "
+    "<a href=\"../Callbacks.htm\">software signal</a> to a signal handler (\"callback\")</p>");}
+};
+
+class DisconnectV : public Disconnect {
+public:
+  DisconnectV ();
+
+  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>Use the <b>disconnect</b> statement to disconnect a "
+    "<a href=\"../Callbacks.htm\">software signal</a> from a signal handler (\"callback\")</p>");}
+};
+
+class EmitV : public FuncStatementV {
+public:
+  EmitV ();
+  EmitV (Reference *ref);
+
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>Use the <b>signal</b> statement to emit a "
+    "<a href=\"../Callbacks.htm\">software signal</a>, i.e., to call the signal handlers"
+    " (\"callbacks\") connected to the signal</p>");}
 };
 
 class AssertStatementV : public AssertStatement {
@@ -2307,11 +2341,25 @@ public:
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
-class CallbackX : public Callback {
+class ConnectX : public Connect {
 public:
-  CallbackX() {}
+  ConnectX() {}
 
-  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+};
+
+class DisconnectX : public Disconnect {
+public:
+  DisconnectX() {}
+
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
+};
+
+class EmitX : public Emit {
+public:
+  EmitX() {}
+
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class AssertStatementX : public AssertStatement {

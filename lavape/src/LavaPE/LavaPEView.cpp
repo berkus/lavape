@@ -972,6 +972,7 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
   }
   if ((ptype != TIType_Output) && ContainTab[parentType] [ OAttr]
         && !(*(LavaDECL**)synEl)->TypeFlags.Contains(execIndependent)
+        && !(*(LavaDECL**)synEl)->SecondTFlags.Contains(isLavaSignal)
         && !(*(LavaDECL**)synEl)->TypeFlags.Contains(defaultInitializer)
         /*&& ((parentType != Function) || !(*(LavaDECL**)synEl)->SecondTFlags.Contains(funcImpl)) */
         && ((parentType != Interface) 
@@ -1545,6 +1546,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
       if ((ncase == OAttr) 
         || ContainTab[parentType] [OAttr]
           && !(*(LavaDECL**)synEl)->TypeFlags.Contains(execIndependent)
+          && !(*(LavaDECL**)synEl)->SecondTFlags.Contains(isLavaSignal)
           && !(*(LavaDECL**)synEl)->TypeFlags.Contains(defaultInitializer)) {
         data = new CMainItemData(TIType_Output, synEl, (*(LavaDECL**)synEl)->TreeFlags.Contains(OutExpanded));
         bm = GetPixmap(true, true, OAttr);

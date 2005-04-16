@@ -1572,68 +1572,18 @@ bool InSetStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsig
 }
 
 
-LavaObjectPtr CallbackX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
-  FuncStatement *funcStm=(FuncStatement*)callback.ptr;
-  CSectionDesc *funcSect;
-  Expression *onEventExpr=(Expression*)onEvent.ptr;
-  Expression *objRef, *actParm;
-  LavaObjectPtr object, selfParm, result=0;
-  CallbackObject cbObj;
-  CHE* che;
-  TID cbTID;
+bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+  return false;
+}
 
-  objRef = (ExpressionX*)funcStm->handle.ptr;
-  cbObj.callObj = objRef->Evaluate(ckd,stackFrame,oldExprLevel);
-  if (ckd.exceptionThrown)
-    return (LavaObjectPtr)-1;
-  if (!cbObj.callObj) {
-    objRef->SetRTError(ckd,&ERR_NullCallObject,stackFrame);
-    return 0;
-  }
-  funcSect = &(*cbObj.callObj)[funcStm->funcSectionNumber + funcStm->funcDecl->SectionInfo2];
-  cbObj.fdescCbFunc = &funcSect->funcDesc[funcStm->funcDecl->SectionInfo1];
-  selfParm = cbObj.callObj - (*cbObj.callObj)->sectionOffset
-                         + (*(cbObj.callObj - (*cbObj.callObj)->sectionOffset))[cbObj.fdescCbFunc->delta].sectionOffset;
-  cbObj.callbackParms.append(selfParm);
 
-  for (che = (CHE*)((CHE*)funcStm->inputs.first)->successor; che; che = (CHE*)che->successor) {
-    actParm = (Expression*)che->data;
-    object = actParm->Evaluate(ckd,stackFrame,oldExprLevel);
-    if (ckd.exceptionThrown) {
-      object = 0;
-      goto ret;
-    }
-    if (object) {
-      if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
-      && !actParm->flags.Contains(unfinishedAllowed)) {
-        // unfinished objects may be passed only to input parms of initializers
-        actParm->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
-        cbObj.callbackParms.append(object);
-        goto ret;
-      }
-      if (actParm->formVType->DeclType == VirtualType)
-        if (objRef)
-          cbObj.callbackParms.append(((CLavaProgram*)ckd.document)->CastVInObj(ckd, object, funcStm->callCtx, selfParm[0][0].classDECL, actParm->formVType, actParm->vSectionNumber, actParm->isOuter));
-        else
-          cbObj.callbackParms.append(((CLavaProgram*)ckd.document)->CastVInObj(ckd, object, funcStm->callCtx, funcStm->objTypeDecl, actParm->formVType, actParm->vSectionNumber, actParm->isOuter));
-      else
-        cbObj.callbackParms.append(CASTOBJECT(object, actParm->sectionNumber));
-    }
-    else
-     cbObj.callbackParms.append(0);
-  }
+bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+  return false;
+}
 
-  object = onEventExpr->Evaluate(ckd,stackFrame,oldExprLevel);
 
-  ckd.document->IDTable.GetParamRefID(((Reference*)callbackServerType.ptr)->refDecl, cbTID, isCallback);
-  result = AllocateObject(ckd,ckd.document->IDTable.GetDECL(cbTID),false);
-  
-  new(result + LSH) CallbackObject();
-  *(CallbackObject*)(result + LSH) = cbObj;
-  *(LavaVariablePtr)(result + LSH + (unsigned)CallbackAdapter[0]) = object;
-ret:
-  ((SynFlags*)(result+1))->INCL(finished);
-  return result;
+bool EmitX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+  return false;
 }
 
 

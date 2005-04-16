@@ -245,6 +245,10 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
     return false;
   else if (parentObject->primaryToken == clone_T)
     return false;
+  else if (parentObject->primaryToken == connect_T)
+    return false;
+  else if (parentObject->primaryToken == disconnect_T)
+    return false;
   else if (parentObject->primaryToken == copy_T)
     return false;
   else if (parentObject->primaryToken == qua_T)
@@ -332,6 +336,10 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
     return false;
   else if (parentObject->primaryToken == clone_T)
     return false;
+  else if (parentObject->primaryToken == connect_T)
+    return false;
+  else if (parentObject->primaryToken == disconnect_T)
+    return false;
   else if (parentObject->primaryToken == copy_T)
     return false;
   else if (parentObject->primaryToken == qua_T)
@@ -355,6 +363,7 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
   IfExpression *ifx;
   MultipleOp *multOpExp;
   BinaryOp *binOpEx;
+  Connect *connectStm;
   CHE *chpFormIn;
   Category cat;
   TID targetTid, tidOperatorFunc;
@@ -403,6 +412,17 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
     targetObj = (SynObject*)assig->targetObj.ptr;
     return targetObj->IsOptional(ckd);
   }
+  else if (parentObject->primaryToken == connect_T) {
+    connectStm = (Connect*)parentObject;
+    if (whereInParent == (address)&connectStm->signalSender.ptr)
+      return true;
+    else
+      return false;
+  }
+  else if (parentObject->primaryToken == disconnect_T)
+    return true;
+  else if (IsFuncHandle())
+    return false;
   else if (parentObject->primaryToken == elsif_T) {
     ifx = (IfExpression*)parentObject->parentObject;
     return ifx->NullAdmissible(ckd);
@@ -422,8 +442,7 @@ bool SynObject::IsExpression () {
   || primaryToken == ObjPH_T
   || primaryToken == ObjRef_T
   || (type == FuncPH_T
-      && (parentObject->primaryToken == assignFX_T
-          || parentObject->primaryToken == callback_T)))
+      && parentObject->primaryToken == assignFX_T))
     return true;
   if (primaryToken != TDOD_T) return false;
   parent = (ObjReference*)parentObject;
@@ -438,7 +457,8 @@ bool SynObject::ExpressionSelected (CHETokenNode *currentSelection) {
 
   if (IsExpression()
   && !currentSelection->data.OptionalClauseToken(optClause)
-  && !IsAssigTarget())
+  && !IsAssigTarget()
+  && !(parentObject->primaryToken == ObjRef_T && parentObject->flags.Contains(isDisabled)))
     return true;
   else
     return false;
@@ -479,7 +499,6 @@ bool SynObject::IsStatement () {
   case FuncDisabled_T:
     if (parentObject->IsSelfVar()
     || parentObject->primaryToken == assignFX_T
-    || parentObject->primaryToken == callback_T
     || parentObject->parentObject->primaryToken == new_T
     || parentObject->parentObject->primaryToken == run_T
     )

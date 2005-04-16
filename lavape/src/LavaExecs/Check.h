@@ -16,7 +16,7 @@ extern bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &con
 extern bool sameType(CheckData &ckd, const TID &t1, const TID &t2);
 extern bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext &callCtx, Category callObjCat);
 extern bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext &callCtx, Category callObjCat);
-extern QString *noCallbackFunction(CheckData &ckd, LavaDECL *funcDecl, LavaDECL *eventDescDecl, const CContext &evDescCtx, const CContext &callCtx);
+extern bool slotFunction(CheckData &ckd, LavaDECL *funcDecl, LavaDECL *signalDecl, const CContext &signalCtx, const CContext &callCtx);
 
 extern  bool VerifyObj(CheckData &ckd, CHE *DODs, DString& name, ObjReference *parent, LavaDECL *startDecl=0); 
 

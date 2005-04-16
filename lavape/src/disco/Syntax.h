@@ -328,7 +328,6 @@ enum TBasicType {
   B_Exception,
   B_HWException,
   B_LavaException,
-  B_Callback,
   Identifier};
 
 extern DISCO_DLL void CDPTBasicType (PutGetFlag pgf, ASN1* cid, address varAddr,
@@ -344,15 +343,15 @@ enum TreeFlag {
   MemsExpanded,
   hasEmptyOpt,
   leftArrows,
-  FREE_FLAG9,
-  FREE_FLAG10,
-  FREE_FLAG11,
-  FREE_FLAG12,
-  FREE_FLAG13,
-  FREE_FLAG14,
-  FREE_FLAG15,
-  FREE_FLAG16,
-  FREE_FLAG17,
+  FREE_TREEFLAG9,
+  FREE_TREEFLAG10,
+  FREE_TREEFLAG11,
+  FREE_TREEFLAG12,
+  FREE_TREEFLAG13,
+  FREE_TREEFLAG14,
+  FREE_TREEFLAG15,
+  FREE_TREEFLAG16,
+  FREE_TREEFLAG17,
   dragOverrides,
   mixedDrag,
   dragVT,
@@ -385,7 +384,7 @@ enum TypeFlag {
   forceOverride,
   isPropGet,
   isPropSet,
-  Free_FLAG13,
+  isAnyCategory,
   constituent,
   acquaintance,
   isInitializer,
@@ -409,7 +408,7 @@ extern DISCO_DLL void CDPTypeFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
                                    bool baseCDP=false);
 
 enum SecondTFlag {
-  FREE_FLAG0,
+  isLavaSignal,
   FREE_FLAG1,
   FREE_FLAG2,
   FREE_FLAG3,
@@ -426,11 +425,11 @@ enum SecondTFlag {
   isSet,
   isChain,
   isArray,
-  isCallbackServer,
+  FREE_FLAG17,
   isEventDesc,
-  isEventSpec,
+  FREE_FLAG18,
   isException,
-  isCallback};
+  FREE_FLAG21};
 
 extern DISCO_DLL void CDPSecondTFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
                                       bool baseCDP=false);

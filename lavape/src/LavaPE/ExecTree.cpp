@@ -165,6 +165,8 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
         new CLavaError(&elDef->DECLError1, &ERR_NoAbstract);
       if (elDef->TypeFlags.Contains(stateObject))
         lab += DString("~");
+      else if (elDef->TypeFlags.Contains(isAnyCategory))
+        lab += DString("*");
     }
     else {
       lab += DString(" = ");
@@ -172,6 +174,8 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
         lab += DString("{");
       if (elDef->TypeFlags.Contains(stateObject))
         lab += DString("~");
+      else if (elDef->TypeFlags.Contains(isAnyCategory))
+        lab += DString("*");
       if (elDef->DeclDescType == NamedType) {
         decl2 = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
         if (decl2) {
@@ -272,33 +276,37 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
         bool changed = Doc->CheckOverInOut(elDef, checkLevel);
         Doc->changeInUpdate = Doc->changeInUpdate || changed;
       }
-      if (elDef->TypeFlags.Contains(isNative))
-        lab1 += DString("native ");
-      if (elDef->TypeFlags.Contains(isAbstract)) {
-        lab1 += DString("abstract ");
-        if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract))
-          new CLavaError(&elDef->DECLError1, &ERR_NoAbstract, 0, useAutoBox);
+      if (elDef->SecondTFlags.Contains(isLavaSignal))
+        lab1 += DString("signal");
+      else {
+        if (elDef->TypeFlags.Contains(isNative))
+          lab1 += DString("native ");
+        if (elDef->TypeFlags.Contains(isAbstract)) {
+          lab1 += DString("abstract ");
+          if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract))
+            new CLavaError(&elDef->DECLError1, &ERR_NoAbstract, 0, useAutoBox);
+        }
+        if (elDef->TypeFlags.Contains(isProtected))
+          lab1 += DString("protected ");
+        if (elDef->ParentDECL->DeclType == Impl) 
+          lab1 += DString("private ");
+        if (elDef->TypeFlags.Contains(isStatic))
+          lab1 += DString("static ");
+        else
+          if (elDef->TypeFlags.Contains(isConst))
+            lab1 += DString("read-only ");
+        if (elDef->TypeFlags.Contains(defaultInitializer)) {
+          if ((elDef->ParentDECL->DeclType == Interface)
+              && elDef->ParentDECL->WorkFlags.Contains(hasDefaultIni))
+            new CLavaError(&elDef->DECLError1, &ERR_SecondDefaultIni);
+          elDef->ParentDECL->WorkFlags.INCL(hasDefaultIni);
+          lab1 += DString("default ");
+        }
+        if (elDef->TypeFlags.Contains(isInitializer))
+          lab1 += DString("initializer ");
+        if (elDef->op == OP_noOp)
+          lab1 += DString("function");
       }
-      if (elDef->TypeFlags.Contains(isProtected))
-        lab1 += DString("protected ");
-      if (elDef->ParentDECL->DeclType == Impl) 
-        lab1 += DString("private ");
-      if (elDef->TypeFlags.Contains(isStatic))
-        lab1 += DString("static ");
-      else
-        if (elDef->TypeFlags.Contains(isConst))
-          lab1 += DString("read-only ");
-      if (elDef->TypeFlags.Contains(defaultInitializer)) {
-        if ((elDef->ParentDECL->DeclType == Interface)
-            && elDef->ParentDECL->WorkFlags.Contains(hasDefaultIni))
-          new CLavaError(&elDef->DECLError1, &ERR_SecondDefaultIni);
-        elDef->ParentDECL->WorkFlags.INCL(hasDefaultIni);
-        lab1 += DString("default ");
-      }
-      if (elDef->TypeFlags.Contains(isInitializer))
-        lab1 += DString("initializer ");
-      if (elDef->op == OP_noOp)
-        lab1 += DString("function");
     }
     if (lab1.l) {
       if (elDef->op == OP_noOp)
@@ -741,6 +749,8 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
       lab += DString("{");
     if (elDef->TypeFlags.Contains(stateObject))
       lab += DString("~");
+    else if (elDef->TypeFlags.Contains(isAnyCategory))
+      lab += DString("*");
     lab += Doc->GetTypeLabel(elDef, true);
     if (elDef->TypeFlags.Contains(substitutable))
       lab += DString("}");

@@ -314,7 +314,7 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   pb->setFont(f);
   pb->setFlat(true);
   pb->setAutoDefault(false);
-  pb->setMinimumHeight(pb->fontInfo().pointSize()+6);
+  pb->setMinimumHeight(pb->fontInfo().pointSize()+4);
   pb->setMaximumWidth(pb->fontMetrics().width("el. in set")+6);
   if (tooltip)
     QToolTip::add(pb,tooltip);
@@ -455,9 +455,15 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->itemButton,"item",SLOT(item()),
     QObject::tr("Get an enumeration item from its index"),
     QObject::tr("<p>Get an enumeration <a href=\"EnumItem.htm\">item</a> from its index</p>"));
-  newKwdToolbutton(tb,LBaseData->callbackButton,"callback",SLOT(callback()),
-    QObject::tr("Define a callback"),
-    QObject::tr("<p>Use the <b>callback</b> expression to define a <font color=\"red\"><i><b>Lava</b></i></font> <a href=\"../Callbacks.htm\">callback</a></p>"));
+  newKwdToolbutton(tb,LBaseData->connectButton,"connect",SLOT(connectSignal()),
+    QObject::tr("Connect a signal to a handler (\"callback\")"),
+    QObject::tr("<p>Connect a software signal to a <a href=\"../Callbacks.htm\">handler (\"callback\")</a></p>"));
+  newKwdToolbutton(tb,LBaseData->disconnectButton,"disconn",SLOT(disconnect()),
+    QObject::tr("Disconnect a handler (\"callback\") from a signal"),
+    QObject::tr("<p>Disconnect a signal from a <a href=\"../Callbacks.htm\">handler (\"callback\")</a></p>"));
+  newKwdToolbutton(tb,LBaseData->emitButton,"signal",SLOT(emitSignal()),
+    QObject::tr("Emit a signal"),
+    QObject::tr("<p>Emit a <a href=\"../Callbacks.htm\">software signal</a></p>"));
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1351,10 +1357,22 @@ void CLavaMainFrame::item(){
     view->OnItem();
 }
 
-void CLavaMainFrame::callback(){
+void CLavaMainFrame::connectSignal(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnCallback();
+    view->OnConnect();
+}
+
+void CLavaMainFrame::disconnect(){
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnDisconnect();
+}
+
+void CLavaMainFrame::emitSignal(){
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnEmitSignal();
 }
 
 // end of exec handlers

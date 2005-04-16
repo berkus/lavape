@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>IDD_FuncBox</class>
 <widget class="QDialog">
     <property name="name">
@@ -361,7 +361,7 @@
                         </widget>
                         <widget class="QCheckBox">
                             <property name="name">
-                                <cstring>m_Transaction</cstring>
+                                <cstring>m_Signal</cstring>
                             </property>
                             <property name="sizePolicy">
                                 <sizepolicy>
@@ -375,7 +375,7 @@
                                 <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
-                                <string>Transaction</string>
+                                <string>Signal</string>
                             </property>
                         </widget>
                     </vbox>
@@ -787,6 +787,12 @@
         <receiver>IDD_FuncBox</receiver>
         <slot>m_CANCEL_clicked()</slot>
     </connection>
+    <connection>
+        <sender>m_Signal</sender>
+        <signal>clicked()</signal>
+        <receiver>IDD_FuncBox</receiver>
+        <slot>m_Signal_clicked()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>m_NewName</tabstop>
@@ -800,7 +806,7 @@
     <tabstop>m_DefaultIni</tabstop>
     <tabstop>m_Abstract</tabstop>
     <tabstop>m_Native1</tabstop>
-    <tabstop>m_Transaction</tabstop>
+    <tabstop>m_Signal</tabstop>
     <tabstop>m_Synch</tabstop>
     <tabstop>m_Concurrent</tabstop>
     <tabstop>m_Independent</tabstop>
@@ -811,6 +817,7 @@
 </tabstops>
 <includes>
     <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
+    <include location="local" impldecl="in implementation">idd_funcbox.ui.h</include>
 </includes>
 <slots>
     <slot>m_EnableName_clicked()</slot>
@@ -826,6 +833,7 @@
     <slot>OnOK()</slot>
     <slot>ID_HELP9_clicked()</slot>
     <slot>m_CANCEL_clicked()</slot>
+    <slot>m_Signal_clicked()</slot>
 </slots>
 <exportmacro>LAVAPEUI_DLL</exportmacro>
 <layoutdefaults spacing="6" margin="11"/>

@@ -36,13 +36,6 @@
 ASN1ppCLASS ASN1pp;
 static bool __INITstarted=false;
 
-//#ifndef WIN32
-//static void continuation (Signal,...)
-//{
-//  ResetSignal(SIGINT);
-//} // END OF continuation
-//#endif
-
 
 /***********************************************************************/
 
@@ -57,14 +50,4 @@ void ASN1ppCLASS::INIT ()
 {
   if (__INITstarted) return;
   __INITstarted = true;
-
-
-//  if (access("pause.file",R_OK) == 0) {
-//#ifndef WIN32
-//    CatchSignal(SIGINT,continuation);
-//    pause(); // enter command "cont sig INT" to continue in debugger, 
-//    // or command "kill -INT <process-id>" from a shell
-//#endif
-//  }
-
 }

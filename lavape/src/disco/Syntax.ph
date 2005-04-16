@@ -166,7 +166,6 @@ $TYPE +CDP {
 		B_Exception,
 		B_HWException,
 		B_LavaException,
-    B_Callback,
     Identifier //this must be the last
   };
 
@@ -190,15 +189,15 @@ $TYPE +CDP {
     leftArrows,
     //8, 256 in exec: assignment arrows from right to left
 
-    FREE_FLAG9,
-    FREE_FLAG10,
-    FREE_FLAG11,
-    FREE_FLAG12,
-    FREE_FLAG13,
-    FREE_FLAG14,
-    FREE_FLAG15,
-    FREE_FLAG16,
-    FREE_FLAG17,
+    FREE_TREEFLAG9,
+    FREE_TREEFLAG10,
+    FREE_TREEFLAG11,
+    FREE_TREEFLAG12,
+    FREE_TREEFLAG13,
+    FREE_TREEFLAG14,
+    FREE_TREEFLAG15,
+    FREE_TREEFLAG16,
+    FREE_TREEFLAG17,
     dragOverrides,  //overrides on clipboard
     //18,  
     mixedDrag,
@@ -258,8 +257,8 @@ $TYPE +CDP {
     //11/2048, get property function in a service implementation, the RefID is the ID of the property
     isPropSet,
     //12/4096, set property function in a service implementation, the RefID is the ID of the property
-    Free_FLAG13,
-    //13/8192
+    isAnyCategory,
+    //13/8192, indefinite object category (stateObject or valueObject)
     constituent, 
     //14/16384 an attribute defines a down link
     acquaintance,
@@ -301,7 +300,8 @@ $TYPE +CDP {
 
 
 	enum SecondTFlag {
-	  FREE_FLAG0,
+	  isLavaSignal,
+      //0, function is Signal
 	  FREE_FLAG1,
 	  FREE_FLAG2,
 	  FREE_FLAG3,
@@ -330,17 +330,15 @@ $TYPE +CDP {
     isArray,
     //16, the LavaDECL defines an array or an interface which extends a array
     //    or is the array element virtual type
-    isCallbackServer,
-    //17  the decl extends CallbackServer
+    FREE_FLAG17,
     isEventDesc,
-    //18 the decl is the event descrption virtual type of a callback pattern
-    isEventSpec,
+    //18 the decl is the event description virtual type of a callback pattern
+    FREE_FLAG18,
     //19 the decl is the event specification virtual type of a callback pattern
     isException,
 	//20, the LavaDECL defines an exception or an interface which extends an exception
     //    or is the exception enumeration virtual type
-    isCallback
-    //21  the decl extends Callback or the callback virtual type
+    FREE_FLAG21
 	};
 	  
   enum WorkFlag {

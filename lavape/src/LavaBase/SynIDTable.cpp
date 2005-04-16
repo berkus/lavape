@@ -847,29 +847,8 @@ void TIDTable::FillBasicTypesID(CHESimpleSyntax* stdSyntax, bool isstd)
   LavaDECL* elDECL, *paramDECL;
   while (che && (ii < (int)Identifier)) {
     elDECL = (LavaDECL*)che->data;
-    if (ii == B_Callback) {
-      if (isstd) { //elDECL is Callbacks
-        elDECL->SecondTFlags.INCL(isCallbackServer); //type CallbackServer
-        cheChe = (CHE*)elDECL->NestedDecls.first;
-        ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isCallback); //virtual type callback
-        cheChe = (CHE*)cheChe->successor;
-        ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isEventSpec);
-        cheChe = (CHE*)cheChe->successor;
-        ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isEventDesc);
-        cheChe = (CHE*)cheChe->successor;  //type Callback
-        ((LavaDECL*)cheChe->data)->SecondTFlags.EXCL(isCallback); 
-      }
-      else
-        for (cheChe = (CHE*)elDECL->NestedDecls.first; cheChe && (((LavaDECL*)cheChe->data)->DeclType != Interface); cheChe = (CHE*)cheChe->successor);
-      if (cheChe) {
-        BasicTypesID[ii] = ((LavaDECL*)cheChe->data)->OwnID;
-        ((LavaDECL*)cheChe->data)->fromBType = (TBasicType)ii;
-      }
-    }
-    else {
-      BasicTypesID[ii] = elDECL->OwnID;
-      elDECL->fromBType = (TBasicType)ii;
-    }
+    BasicTypesID[ii] = elDECL->OwnID;
+    elDECL->fromBType = (TBasicType)ii;
     if (elDECL->fromBType == B_Exception) {
       DString catchname = DString("catch");
       for (cheChe = (CHE*)elDECL->NestedDecls.first;

@@ -872,23 +872,60 @@ void CDPFuncStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPFuncStatement
 
 
-IMPLEMENT_DYNAMIC_CLASS(Callback,Expression)
+IMPLEMENT_DYNAMIC_CLASS(Connect,Expression)
 
 
-void CDPCallback (PutGetFlag pgf, ASN1* cid, address varAddr,
-                  bool baseCDP)
+void CDPConnect (PutGetFlag pgf, ASN1* cid, address varAddr,
+                 bool baseCDP)
 
 {
-  Callback *vp = (Callback*)varAddr;
+  Connect *vp = (Connect*)varAddr;
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,(address)(Expression*)vp,true);
-    vp->callbackServerType.CDP(pgf,cid);
-    vp->callback.CDP(pgf,cid);
-    vp->onEvent.CDP(pgf,cid);
+    vp->signalSender.CDP(pgf,cid);
+    vp->signalFunction.CDP(pgf,cid);
+    vp->signalReceiver.CDP(pgf,cid);
+    vp->callbackFunction.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
-} // END OF CDPCallback
+} // END OF CDPConnect
+
+
+IMPLEMENT_DYNAMIC_CLASS(Disconnect,Expression)
+
+
+void CDPDisconnect (PutGetFlag pgf, ASN1* cid, address varAddr,
+                    bool baseCDP)
+
+{
+  Disconnect *vp = (Disconnect*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    vp->signalSender.CDP(pgf,cid);
+    vp->signalFunction.CDP(pgf,cid);
+    vp->signalReceiver.CDP(pgf,cid);
+    vp->callbackFunction.CDP(pgf,cid);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPDisconnect
+
+
+IMPLEMENT_DYNAMIC_CLASS(Emit,FuncStatement)
+
+
+void CDPEmit (PutGetFlag pgf, ASN1* cid, address varAddr,
+              bool baseCDP)
+
+{
+  Emit *vp = (Emit*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPFuncStatement(pgf,cid,(address)(FuncStatement*)vp,true);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPEmit
 
 
 IMPLEMENT_DYNAMIC_CLASS(AssertStatement,Expression)

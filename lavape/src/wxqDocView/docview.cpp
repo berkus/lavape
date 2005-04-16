@@ -421,6 +421,10 @@ bool wxDocument::SaveAs()
   
     QString fn = QFileDialog::getSaveFileName(GetFilename(), docTemplate->GetFileFilter());
 
+#ifdef WIN32
+    QString driveLetter = QString(fn[0].upper());
+    fn.replace(0,1,driveLetter);
+#endif
     if (fn.isEmpty())
         return false;
 
@@ -812,8 +816,10 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
   wxDocument *doc = (wxDocument *)m_docClassInfo();
   fn = path;
 #ifdef WIN32
-  QString driveLetter = QString(fn[0].upper());
-  fn.replace(0,1,driveLetter);
+  if (!fn.isEmpty()) {
+    QString driveLetter = QString(fn[0].upper());
+    fn.replace(0,1,driveLetter);
+  }
 #endif
   QFileInfo info(fn);
   if (flags == wxDOC_NEW) {

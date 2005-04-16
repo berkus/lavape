@@ -147,36 +147,6 @@ void CDPppCLASS::CVTchar (PutGetFlag pgf,
 }
 
 
-/*
-void CDPppCLASS::CVTVLBYTES1 (PutGetFlag pgf,
-                              ASN1 *cid,
-                              unsigned& length,
-                              address& a)
-
-{
-  DString bytesPtr;
-  HdrPtr hdrPtr;
-
-  bytesPtr = a;
-  if (pgf == PUT)
-    ASN1.PutBYTES(cid,*bytesPtr,length);
-  else {
-    ASN1.Preview(cid,hdrPtr);
-    if (a == 0) {
-      bytesPtr = new char [StUnits.StorageForBytes(hdrPtr->Len)] ???;
-      a = bytesPtr;
-      length = hdrPtr->Len;
-    }
-    else if (length < hdrPtr->Len) {
-      length = 0;
-      return;
-    }
-    ASN1.GetBYTES(cid,*bytesPtr,length);
-  }
-}
-*/
-
-
 /* **********************************************************************/
 
 
@@ -360,17 +330,6 @@ void CDPBITSTRING (PutGetFlag pgf,
 
   vp->CDP(pgf,cid);
 }
-
-/*
-void CDPSigCerts (PutGetFlag pgf,
-                  ASN1 *cid,
-                  address a)
-{
-  SigCerts *vp=(SigCerts *)a;
-
-  vp->CDP(pgf,cid);
-}
-*/
 
 
 /**********************************************************************/

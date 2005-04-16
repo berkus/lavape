@@ -542,12 +542,22 @@ void FuncStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,TT
   }
 }
 
-void Callback::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
+void Connect::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
 {
   ENTRY
-  MTBL (callbackServerType.ptr);
-  MTBL (callback.ptr);
-  MTBL (onEvent.ptr);
+  MTBL (signalSender.ptr);
+  MTBL (signalFunction.ptr);
+  MTBL (signalReceiver.ptr);
+  MTBL (callbackFunction.ptr);
+}
+
+void Disconnect::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
+{
+  ENTRY
+  MTBL (signalSender.ptr);
+  MTBL (signalFunction.ptr);
+  MTBL (signalReceiver.ptr);
+  MTBL (callbackFunction.ptr);
 }
 
 void IfThen::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)

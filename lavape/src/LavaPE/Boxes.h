@@ -232,6 +232,7 @@ public slots:
     virtual void m_CHECKOp_clicked();
     virtual void m_Abstract_clicked();
     virtual void m_Native1_clicked();
+    virtual void m_Signal_clicked();
     virtual void m_StaticFunc_clicked();
     virtual void m_RMOverrides_clicked();
     virtual void m_Initializer_clicked();

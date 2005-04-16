@@ -321,7 +321,9 @@ public:
   virtual void OnQueryItf() {}
   virtual void OnStaticCall() {}
   virtual void OnAssign() {}
-  virtual void OnCallback() {}
+  virtual void OnConnect() {}
+  virtual void OnDisconnect() {}
+  virtual void OnEmitSignal() {}
   virtual void OnTypeSwitch() {}
   virtual void OnInterval() {}
   virtual void OnUuid() {}

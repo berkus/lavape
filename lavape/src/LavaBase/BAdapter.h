@@ -23,8 +23,6 @@ typedef LAVABASE_DLL TAdapterFunc* (*FP)();
 
 extern LAVABASE_DLL TAdapterFunc* StdAdapterTab [];
 
-extern LAVABASE_DLL TAdapterFunc CallbackAdapter[LAH + 1];
-
 //extern LAVABASE_DLL LavaDECL* DECLTab [];
 extern LAVABASE_DLL void NewQString(QString* pstr, const char* str);
 extern LAVABASE_DLL bool HStringCopy(LavaObjectPtr s0, LavaObjectPtr s1);
@@ -57,14 +55,5 @@ extern LAVABASE_DLL void MakeStdAdapter();
 
 extern LAVABASE_DLL bool DropException(CheckData& ckd, LavaVariablePtr stack);
 
-
-typedef QPtrList<CSectionDesc*> CallbackParms;
-
-class CallbackObject {
-public:
-  CVFuncDesc *fdescCbFunc;
-  LavaObjectPtr callObj;
-  CallbackParms callbackParms;
-};
 
 #endif

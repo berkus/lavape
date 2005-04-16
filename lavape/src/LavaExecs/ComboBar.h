@@ -54,7 +54,7 @@ enum TShowCombo {
   attachCombo,     //persistent component object specification 
   coiCombo,        //component object interfaces
   callCombo,       //Inititors
-  callbackCombo,
+  //signalsCombo,
   invalidateLast
 };
 
@@ -85,14 +85,14 @@ public:
 //  bool Create(QWidget* insertAfter, QWidget* pParentWnd, UINT nIDTemplate, UINT nStyle, UINT nID );
   void ShowCombos(TShowCombo what, TID* pID=0); 
   void ShowSubObjects(LavaDECL* decl, const CContext &context);  //decl is type or field
-  void ShowClassFuncs(CheckData &ckd, LavaDECL *decl, LavaDECL* eventDescDecl, const CContext &callCtx, bool withStatic=false);  //decl is interface or implementation
+  void ShowClassFuncs(CheckData &ckd, LavaDECL *decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic=false, bool showSignals=false);  //decl is interface or implementation
   void ShowStaticFuncs(CheckData &ckd); 
   void showIFFuncs();
   void ShowBaseInis(const TID& id);  //decl is interface or implementation
 //  void ShowUpcasts(const TID& id, bool theTop = true);     //id is interface or implementation
   void ShowCompObjects(CheckData &ckd, LavaDECL *decl, const CContext &context, Category givenCat, bool forInput, bool forCopy=false); //compatible objects, iC is type
   void ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &context); //compatible types
-  void FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDECL, LavaDECL* vbaseDECL, LavaDECL* eventDescDecl, const CContext &evDescCtx, const CContext &callCtx, bool withStatic);
+  void FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDECL, LavaDECL* vbaseDECL, LavaDECL* signalDecl, const CContext &signalCtx, const CContext &callCtx, bool withStatic, bool showSignals=false);
   bool IsInBox(QComboBox* combo, const DString& name, int id, int incl, bool& sameName);
   void RemoveLocals();
   void AddLocal(const TID& id, const DString& name, const TID& typeID, bool subst=false);
@@ -105,7 +105,7 @@ public:
   //static boxes
   QComboBox*  m_TypesCtrl;        
   QComboBox*  m_SetTypesCtrl;  
-  QComboBox*  m_CallbackCtrl;   
+  //QComboBox*  m_SignalsCtrl;   
   QComboBox*  m_BasicTypesCtrl;  
   QComboBox*  m_EnumsCtrl;        //Enumeration types, right
   QComboBox*  m_NewCtrl;          //creatable interfaces, left
@@ -133,7 +133,7 @@ public:
   QPixmap BmNewPFunc;
   QPopupMenu EnumMenu;
 
-  enum combosEnum {v_Types, v_SetTypes, v_Callback, v_BasicTypes, v_Enums, v_New, v_SNew,
+  enum combosEnum {v_Types, v_SetTypes/*, v_Signals*/, v_BasicTypes, v_Enums, v_New, v_SNew,
         v_Objects, v_SetObjects, v_Attach, v_CallInt, v_CompoObjInt, v_ClassFuncs,
         v_VFuncs, v_SubObjects, v_CompaObjects, v_BaseInis, v_StaticFuncs, v_CompaTypes,
         v_CompaBTypes, hcombosEnum};
@@ -198,7 +198,7 @@ public slots:
   void OnSelendokComboSetTypes(int pos);
   void OnSelendokCompoInterf(int pos);
   void OnSelendokCOMBOCall(int pos);
-  void OnSelendokCOMBOCallback(int pos);
+  //void OnSelendokCOMBOSignals(int pos);
   void OnSelendokStaticFuncs(int pos);
 
   void OnButtonEnum();

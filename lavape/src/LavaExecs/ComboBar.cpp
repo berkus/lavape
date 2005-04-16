@@ -95,7 +95,7 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QMainWindow* parent)
 
   m_TypesCtrl->listBox()->setVariableWidth(true);        
   m_SetTypesCtrl->listBox()->setVariableWidth(true);  
-  m_CallbackCtrl->listBox()->setVariableWidth(true);   
+  //m_SignalsCtrl->listBox()->setVariableWidth(true);   
   m_BasicTypesCtrl->listBox()->setVariableWidth(true);  
   m_EnumsCtrl->listBox()->setVariableWidth(true);
   m_NewCtrl->listBox()->setVariableWidth(true); 
@@ -159,7 +159,7 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QMainWindow* parent)
   connect (m_ComboBarDlg->IDC_ComboSetTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSetTypes(int)));
   connect (m_ComboBarDlg->IDC_CompoInterf, SIGNAL(activated(int)), this, SLOT(OnSelendokCompoInterf(int)));
   connect (m_ComboBarDlg->IDC_COMBOCall, SIGNAL(activated(int)), this, SLOT(OnSelendokCOMBOCall(int)));
-  connect (m_ComboBarDlg->IDC_COMBOCallback, SIGNAL(activated(int)), this, SLOT(OnSelendokCOMBOCallback(int)));
+  //connect (m_ComboBarDlg->IDC_COMBOSignals, SIGNAL(activated(int)), this, SLOT(OnSelendokCOMBOSignals(int)));
   connect (m_ComboBarDlg->IDC_StaticFuncs, SIGNAL(activated(int)), this, SLOT(OnSelendokStaticFuncs(int)));
   connect (m_ComboBarDlg->IDC_ButtonEnum, SIGNAL(clicked()), this, SLOT(OnButtonEnum()));
   connect (m_ComboBarDlg->IDC_NewFunc, SIGNAL(clicked()), this, SLOT(OnNewFunc()));
@@ -187,7 +187,7 @@ void CComboBar::OnUpdate(LavaDECL *execDecl, bool externalHint)
       IntfDECL = SelfTypeDECL;
     ResetComboItems(m_TypesCtrl);
     ResetComboItems(m_ObjectsCtrl);
-    ResetComboItems(m_CallbackCtrl);
+    //ResetComboItems(m_SignalsCtrl);
     ResetComboItems(m_SetTypesCtrl);
     ResetComboItems(m_NewCtrl);
     ResetComboItems(m_SNewCtrl);
@@ -202,7 +202,7 @@ void CComboBar::OnUpdate(LavaDECL *execDecl, bool externalHint)
     delete execFields;
     m_TypesCtrl->setCurrentItem(0);
     m_SetTypesCtrl->setCurrentItem(0);
-    m_CallbackCtrl->setCurrentItem(0);
+    //m_SignalsCtrl->setCurrentItem(0);
     m_ObjectsCtrl->setCurrentItem(0);
     m_EnumsCtrl->setCurrentItem(0);
   //  m_StatFuncsCtrl->setCurrentItem(0);
@@ -525,18 +525,19 @@ void CComboBar::OnSelendokComboSetTypes(int pos)
     m_SetTypesCtrl->setCurrentItem(0); 
 }
 
-
-void CComboBar::OnSelendokCOMBOCallback(int pos) 
+/*
+void CComboBar::OnSelendokCOMBOSignals(int pos) 
 {
-  m_CallbackCtrl = m_ComboBarDlg->IDC_COMBOCallback;
-  //m_CallbackCtrl->ShowDropDown(false);
-  pos = SelEndOKToStr(pos, m_CallbackCtrl, &lastSelStr, &lastSelTID);
+  m_SignalsCtrl = m_ComboBarDlg->IDC_COMBOSignals;
+  //m_SignalsCtrl->ShowDropDown(false);
+  pos = SelEndOKToStr(pos, m_SignalsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
   else 
-    m_CallbackCtrl->setCurrentItem(0);
+    m_SignalsCtrl->setCurrentItem(0);
 }
+*/
 
 /*
 void CComboBar::OnSelendokComboUpcasts() 
@@ -785,7 +786,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
     if (what == disableCombo) {
       m_TypesCtrl->setEnabled(false);
       m_SetTypesCtrl->setEnabled(false);
-      m_CallbackCtrl->setEnabled(false);
+      //m_SignalsCtrl->setEnabled(false);
       m_BasicTypesCtrl->setEnabled(false);
       m_EnumsCtrl->setEnabled(false);
       m_ButtonEnum->setEnabled(false);
@@ -894,14 +895,16 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_SetTypesCtrl->setEnabled(true);
         LeftCombo = m_ComboBarDlg->IDC_ComboSetTypes;
         break;
-      case callbackCombo:
-        m_CallbackCtrl->show();
-        if (!VisibleList[v_Callback])
-          m_CallbackCtrl->setCurrentItem(0);
+        /*
+      case signalsCombo:
+        m_SignalsCtrl->show();
+        if (!VisibleList[v_Signals])
+          m_SignalsCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
-          m_CallbackCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_COMBOCallback;
+          m_SignalsCtrl->setEnabled(true);
+        LeftCombo = m_ComboBarDlg->IDC_COMBOSignals;
         break;
+        */
       case newCombo:
         m_NewCtrl->show();
         if (!VisibleList[v_New])
@@ -960,7 +963,7 @@ void CComboBar::SetCombos(bool setVar, bool hideCombo)
     m_TypesCtrl = m_ComboBarDlg->IDC_ComboTypes;
     m_CompaTypesCtrl = m_ComboBarDlg->IDC_CompaTypes;
     m_SetTypesCtrl = m_ComboBarDlg->IDC_ComboSetTypes;
-    m_CallbackCtrl = m_ComboBarDlg->IDC_COMBOCallback;
+    //m_SignalsCtrl = m_ComboBarDlg->IDC_COMBOSignals;
     m_BasicTypesCtrl = m_ComboBarDlg->IDC_BasicTypes;
     m_CompaBTypesCtrl = m_ComboBarDlg->IDC_CompaBTypes;
     m_EnumsCtrl = m_ComboBarDlg->IDC_ComboEnums;
@@ -992,7 +995,7 @@ void CComboBar::SetCombos(bool setVar, bool hideCombo)
     VisibleList[v_Types] = m_TypesCtrl->isVisible();
     VisibleList[v_CompaTypes] = m_CompaTypesCtrl->isVisible();
     VisibleList[v_SetTypes] = m_SetTypesCtrl->isVisible();
-    VisibleList[v_Callback] = m_CallbackCtrl->isVisible();
+    //VisibleList[v_Signals] = m_SignalsCtrl->isVisible();
     VisibleList[v_BasicTypes] = m_BasicTypesCtrl->isVisible();
     VisibleList[v_CompaBTypes] = m_CompaBTypesCtrl->isVisible();
     VisibleList[v_Objects] = m_ObjectsCtrl->isVisible();
@@ -1016,7 +1019,7 @@ void CComboBar::SetCombos(bool setVar, bool hideCombo)
     m_TypesCtrl->hide();
     m_CompaTypesCtrl->hide();
     m_SetTypesCtrl->hide();
-    m_CallbackCtrl->hide();
+    //m_SignalsCtrl->hide();
     m_BasicTypesCtrl->hide();
     m_CompaBTypesCtrl->hide();
     m_ObjectsCtrl->hide();
@@ -1387,7 +1390,7 @@ void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface
 }
 
 
-void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDescDecl, const CContext &callCtx, bool withStatic) 
+void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic, bool showSignals) 
 //decl is the final static real type (interface or implementation)
 {
   CHETVElem* El;
@@ -1411,7 +1414,7 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDe
     else
       allowProtected = true;
   }*/
-  CContext evDescCtx = ckd.tempCtx;
+  CContext signalCtx = ckd.tempCtx;
 
   SetCombos(true, true);
   ResetComboItems(m_ClassFuncsCtrl);
@@ -1424,17 +1427,17 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDe
         if (!elDECL->SecondTFlags.Contains(funcImpl)
             && !elDECL->TypeFlags.Contains(isStatic)
             && !elDECL->TypeFlags.Contains(isInitializer)
-            && (elDECL->op == OP_noOp) ) {
-          if (!eventDescDecl || !noCallbackFunction(ckd, elDECL, eventDescDecl,evDescCtx,callCtx)
-              && !IsInBox(m_VFuncsCtrl, elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
-            if (sameName) {
-              item = new CListItem(elDECL->FullName, TID(elDECL->OwnID, elDECL->inINCL));
-              m_VFuncsCtrl->listBox()->insertItem(item);//sort#
-            }
-            else {
-              item = new CListItem(elDECL->LocalName, TID(elDECL->OwnID, elDECL->inINCL));
-              m_VFuncsCtrl->listBox()->insertItem(item);//sort#
-            }
+            && (elDECL->op == OP_noOp)
+            && (showSignals == elDECL->SecondTFlags.Contains(isLavaSignal))
+            && (!signalDecl || slotFunction(ckd, elDECL, signalDecl,signalCtx,callCtx))
+            && !IsInBox(m_VFuncsCtrl,elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
+          if (sameName) {
+            item = new CListItem(elDECL->FullName, TID(elDECL->OwnID, elDECL->inINCL));
+            m_VFuncsCtrl->listBox()->insertItem(item);//sort#
+          }
+          else {
+            item = new CListItem(elDECL->LocalName, TID(elDECL->OwnID, elDECL->inINCL));
+            m_VFuncsCtrl->listBox()->insertItem(item);//sort#
           }
         }
       }
@@ -1450,7 +1453,7 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDe
             && !elDECL->TypeFlags.Contains(isStatic)
             && !elDECL->TypeFlags.Contains(isInitializer)
             && (elDECL->op == OP_noOp)
-            && !eventDescDecl
+            && !signalDecl
             && (!elDECL->TypeFlags.Contains(isProtected) || allowProtected)) {
           //pos = m_ClassFuncsCtrl->AddString(elDECL->FullName.c);
           idata = new CStatFuncItem(elDECL->FullName, elDECL->OwnID, elDECL->inINCL);
@@ -1464,7 +1467,7 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDe
     conDECL = myDoc->IDTable.GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL);
   else
     conDECL = decl;
-  FuncsInSupports(ckd, decl, conDECL, 0, eventDescDecl, evDescCtx, callCtx, withStatic);
+  FuncsInSupports(ckd, decl, conDECL, 0, signalDecl, signalCtx, callCtx, withStatic);
   if (decl->DeclType == Interface) {
     myDoc->MakeVElems(decl, 0);
     for (El = (CHETVElem*)decl->VElems.VElems.first; El; El = (CHETVElem*)El->successor) {
@@ -1472,8 +1475,9 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDe
       if (elDECL && (elDECL->DeclType == Function)
           && !elDECL->TypeFlags.Contains(isInitializer)
           && (elDECL->op == OP_noOp)
-          && (!eventDescDecl || !noCallbackFunction(ckd, elDECL, eventDescDecl,evDescCtx,callCtx))
           && (!elDECL->TypeFlags.Contains(isProtected) || allowProtected)
+          && (showSignals == elDECL->SecondTFlags.Contains(isLavaSignal))
+          && (!signalDecl || slotFunction(ckd, elDECL, signalDecl,signalCtx,callCtx))
           && !IsInBox(m_VFuncsCtrl, elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
         if (sameName) {
           item = new CListItem(elDECL->FullName, TID(elDECL->OwnID, elDECL->inINCL));
@@ -1509,7 +1513,7 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* eventDe
   LeftCombo = m_ComboBarDlg->IDC_ComboFuncs;
   m_ClassFuncsCtrl->show();
   m_ClassFuncsCtrl->setCurrentItem(0);
-  if (eventDescDecl || !withStatic)
+  if (signalDecl || !withStatic)
     m_ClassFuncsCtrl->setEnabled(false);
   else {
     if (!LBaseData->debugOn)
@@ -1620,7 +1624,7 @@ bool CComboBar::IsInBox(QComboBox* combo, const DString& name, int id, int incl,
   return inBox;
 }
 
-void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDECL, LavaDECL* vbaseDECL, LavaDECL* eventDescDecl, const CContext &evDescCtx, const CContext &callCtx, bool withStatic)
+void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDECL, LavaDECL* vbaseDECL, LavaDECL* signalDecl, const CContext &signalCtx, const CContext &callCtx, bool withStatic, bool showSignals)
 {
   CHE* che;
   CHETID *cheS;
@@ -1653,17 +1657,17 @@ void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDEC
             && !cheDECL->TypeFlags.Contains(isInitializer)
             && !cheDECL->TypeFlags.Contains(isStatic)
             && (cheDECL->op == OP_noOp)
-            && !cheDECL->SecondTFlags.Contains(funcImpl)) {
-          if ((!eventDescDecl || !noCallbackFunction(ckd, cheDECL, eventDescDecl,evDescCtx,callCtx))
-               && !IsInBox(m_VFuncsCtrl,cheDECL->LocalName/*FullName*/, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
-            if (sameName) {
-              item = new CListItem(cheDECL->FullName, TID(cheDECL->OwnID, cheDECL->inINCL));
-              m_VFuncsCtrl->listBox()->insertItem(item);//sort#
-            }
-            else {
-              item = new CListItem(cheDECL->LocalName, TID(cheDECL->OwnID, cheDECL->inINCL));
-              m_VFuncsCtrl->listBox()->insertItem(item);//sort#
-            }
+            && !cheDECL->SecondTFlags.Contains(funcImpl)
+            && (showSignals == cheDECL->SecondTFlags.Contains(isLavaSignal))
+            && (!signalDecl || slotFunction(ckd, cheDECL, signalDecl,signalCtx,callCtx))
+            && !IsInBox(m_VFuncsCtrl,cheDECL->LocalName, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
+          if (sameName) {
+            item = new CListItem(cheDECL->FullName, TID(cheDECL->OwnID, cheDECL->inINCL));
+            m_VFuncsCtrl->listBox()->insertItem(item);//sort#
+          }
+          else {
+            item = new CListItem(cheDECL->LocalName, TID(cheDECL->OwnID, cheDECL->inINCL));
+            m_VFuncsCtrl->listBox()->insertItem(item);//sort#
           }
         }//function
         che = (CHE*)che->successor;
@@ -1683,7 +1687,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDEC
              && !cheDECL->TypeFlags.Contains(isStatic)
              && (cheDECL->op == OP_noOp)) {
           if (!cheDECL->TypeFlags.Contains(isAbstract)  && !cheDECL->SecondTFlags.Contains(funcImpl)) {
-            if (withStatic && !eventDescDecl
+            if (withStatic && !signalDecl
                 && !cheDECL->TypeFlags.Contains(forceOverride)
                 && !IsInBox(m_ClassFuncsCtrl,cheDECL->FullName, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
               idata = new CStatFuncItem(cheDECL->FullName, cheDECL->OwnID, cheDECL->inINCL);
@@ -1695,7 +1699,8 @@ void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDEC
               }
             }
             if ((decl->DeclType == Impl)
-              && (!eventDescDecl || !noCallbackFunction(ckd, cheDECL, eventDescDecl,evDescCtx,callCtx))
+              && (showSignals == cheDECL->SecondTFlags.Contains(isLavaSignal))
+              && (!signalDecl || slotFunction(ckd, cheDECL, signalDecl,signalCtx,callCtx))
               && (!cheDECL->TypeFlags.Contains(isProtected) || allowProtected)
               && !IsInBox(m_VFuncsCtrl,cheDECL->LocalName/*FullName*/, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
               if (sameName) {
@@ -1727,11 +1732,12 @@ void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDEC
         while (El) {
           ElDECL = myDoc->IDTable.GetDECL(El->data.VTEl);
           if (ElDECL && (ElDECL->DeclType == Function)
-          && (ElDECL->op == OP_noOp)
-          && (!eventDescDecl || !noCallbackFunction(ckd, ElDECL, eventDescDecl,evDescCtx,callCtx))
-          && (!ElDECL->TypeFlags.Contains(isProtected) || allowProtected)
-          && !ElDECL->TypeFlags.Contains(isInitializer) 
-          && !IsInBox(m_VFuncsCtrl, ElDECL->LocalName, ElDECL->OwnID, ElDECL->inINCL, sameName)) {
+              && (ElDECL->op == OP_noOp)
+              && (showSignals == ElDECL->SecondTFlags.Contains(isLavaSignal))
+              && (!signalDecl || slotFunction(ckd, ElDECL, signalDecl,signalCtx,callCtx))
+              && (!ElDECL->TypeFlags.Contains(isProtected) || allowProtected)
+              && !ElDECL->TypeFlags.Contains(isInitializer) 
+              && !IsInBox(m_VFuncsCtrl, ElDECL->LocalName, ElDECL->OwnID, ElDECL->inINCL, sameName)) {
             if (sameName) {
               item = new CListItem(ElDECL->FullName, TID(ElDECL->OwnID, ElDECL->inINCL));
               m_VFuncsCtrl->listBox()->insertItem(item);//sort#
@@ -1751,7 +1757,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDEC
           El = (CHETVElem*)El->successor;
         }
       }
-      FuncsInSupports(ckd, inDECL, conDECL, vDECL, eventDescDecl, evDescCtx, callCtx, withStatic);
+      FuncsInSupports(ckd, inDECL, conDECL, vDECL, signalDecl, signalCtx, callCtx, withStatic);
     }//inDECL
     cheS = (CHETID*)cheS->successor;
   }//while cheS
@@ -1768,7 +1774,7 @@ CExecTypes::CExecTypes(CComboBar* bar)
   SortCombo(Bar->m_CallIntCtrl);
   SortCombo(Bar->m_TypesCtrl);
   SortCombo(Bar->m_SetTypesCtrl);
-  SortCombo(Bar->m_CallbackCtrl);
+  //SortCombo(Bar->m_SignalsCtrl);
   SortCombo(Bar->m_EnumsCtrl);
   SortCombo(Bar->m_CompoObjIntCtrl);
   SortCombo(Bar->m_AttachCtrl);
@@ -1823,10 +1829,9 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
         combo2 = Bar->m_SetTypesCtrl;
         //pMax2 = &maxSTW;
       }
-      if (/*elDef*/refEl->SecondTFlags.Contains(isCallbackServer)) {
-        combo2 = Bar->m_CallbackCtrl;
-        //pMax2 = &maxCBW;
-      }
+      //if (/*elDef*/refEl->SecondTFlags.Contains(isCallbackServer)) {
+      //  combo2 = Bar->m_SignalsCtrl;
+      //}
       if (/*elDef*/refEl->DeclDescType == EnumType) {
         combo2 = Bar->m_EnumsCtrl;
         //pMax2 = &maxEnuW;

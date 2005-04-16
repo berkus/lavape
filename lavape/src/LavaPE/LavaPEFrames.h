@@ -233,7 +233,9 @@ public slots:
     virtual void qryItf();
     virtual void scale();
     virtual void item();
-    virtual void callback();
+    virtual void connectSignal();
+    virtual void disconnect();
+    virtual void emitSignal();
 // end of exec handlers
 
     virtual void viewTB6();

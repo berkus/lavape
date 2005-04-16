@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 LIB32=link.exe -lib
-# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32"  /D "_WINDOWS" /D "_WINDLL" /Yu"stdafx.h" /c
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /Yu"stdafx.h" /c
 # ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I ".\res\TOOLBUTTONS" /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaPE" /I "..\LavaPE\Generated" /I "..\LavaPE\res" /I "..\LavaPE\res\TreeIcons" /I "..\LavaPE\res\Toolbuttons" /I "..\LavaBase" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /I "$(QTDIR)\include" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "EXECVIEW" /D "WIN32" /D "QT_THREAD_SUPPORT" /FR /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /win32

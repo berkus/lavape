@@ -196,7 +196,7 @@ void Tokens_INIT ()
 // initial letter #
   ATO("#assert");
   ATO("#run");
-  ATO("#callback");
+  ATO("#connect");
   ATO("#clone");
   ATO("#declare");
   ATO("#delete");
@@ -251,14 +251,14 @@ void Tokens_INIT ()
   ATO("but");
   ATO("by");
   ATO("run");
-  ATO("callback");
+  ATO("connect");
   ATO("case");
   ATO("case");
   ATO("or if exception:");
   ATO("clone");
   ATO("complete");
   ATO("concurrent");
-  ATO("when");
+  ATO("disconnect");
   ATO("const");
   ATO("invariant");
   ATO("copy");
@@ -304,7 +304,7 @@ void Tokens_INIT ()
   ATO("qua");
   ATO("quantifier");
   ATO("select");
-  ATO("service");
+  ATO("signal");
   ATO("succeed");
   ATO("switch");
   ATO("then");
@@ -324,7 +324,7 @@ void Tokens_INIT ()
   ATO("requires");
   ATO("ensures");
   ATO("implies");
-  ATO("?");
+  ATO("handler");
   
   ATO("charConst");
   ATO("floatConst");

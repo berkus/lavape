@@ -502,7 +502,7 @@ public:
     *tryButton, *succeedButton, *failButton, *runButton,
     *setButton, *newButton, *oldButton, *cloneButton,
     *copyButton, *attachButton, *qryItfButton,
-    *scaleButton, *itemButton, *callbackButton,
+    *scaleButton, *itemButton, *connectButton, *disconnectButton, *emitButton,
 
     *whatNextButton;
 

@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>IDD_IOBox</class>
 <widget class="QDialog">
     <property name="name">
@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>334</width>
-            <height>302</height>
+            <width>314</width>
+            <height>273</height>
         </rect>
     </property>
     <property name="sizePolicy">
@@ -39,21 +39,18 @@
         </property>
         <widget class="QLayoutWidget">
             <property name="name">
-                <cstring>layout47</cstring>
+                <cstring>layout11</cstring>
             </property>
             <grid>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <property name="spacing">
-                    <number>15</number>
-                </property>
-                <widget class="QButtonGroup" row="0" column="1">
+                <widget class="QButtonGroup" row="2" column="1">
                     <property name="name">
-                        <cstring>BGroup_ObjCat</cstring>
+                        <cstring>BGroup_Mode</cstring>
                     </property>
                     <property name="title">
-                        <string>Object category</string>
+                        <string>Mode</string>
                     </property>
                     <vbox>
                         <property name="name">
@@ -61,40 +58,29 @@
                         </property>
                         <widget class="QRadioButton">
                             <property name="name">
-                                <cstring>m_ValueObject1</cstring>
+                                <cstring>m_Mandatory</cstring>
                             </property>
                             <property name="focusPolicy">
                                 <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
-                                <string>Value object</string>
+                                <string>Mandatory</string>
                             </property>
                         </widget>
                         <widget class="QRadioButton">
                             <property name="name">
-                                <cstring>m_StateObject1</cstring>
+                                <cstring>m_Optional</cstring>
                             </property>
                             <property name="focusPolicy">
                                 <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
-                                <string>State object</string>
-                            </property>
-                        </widget>
-                        <widget class="QRadioButton">
-                            <property name="name">
-                                <cstring>m_SameAsSelf</cstring>
-                            </property>
-                            <property name="focusPolicy">
-                                <enum>StrongFocus</enum>
-                            </property>
-                            <property name="text">
-                                <string>Same as ""self""</string>
+                                <string>Optional</string>
                             </property>
                         </widget>
                     </vbox>
                 </widget>
-                <widget class="QGroupBox" row="1" column="0">
+                <widget class="QGroupBox" row="1" column="0" rowspan="2" colspan="1">
                     <property name="name">
                         <cstring>GroupBox_IDC_STATIC33</cstring>
                     </property>
@@ -204,12 +190,12 @@
                         </widget>
                     </vbox>
                 </widget>
-                <widget class="QButtonGroup" row="1" column="1">
+                <widget class="QButtonGroup" row="0" column="1" rowspan="2" colspan="1">
                     <property name="name">
-                        <cstring>BGroup_Mode</cstring>
+                        <cstring>BGroup_ObjCat</cstring>
                     </property>
                     <property name="title">
-                        <string>Mode</string>
+                        <string>Object category</string>
                     </property>
                     <vbox>
                         <property name="name">
@@ -217,24 +203,43 @@
                         </property>
                         <widget class="QRadioButton">
                             <property name="name">
-                                <cstring>m_Mandatory</cstring>
+                                <cstring>m_ValueObject1</cstring>
                             </property>
                             <property name="focusPolicy">
                                 <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
-                                <string>Mandatory</string>
+                                <string>Value object</string>
                             </property>
                         </widget>
                         <widget class="QRadioButton">
                             <property name="name">
-                                <cstring>m_Optional</cstring>
+                                <cstring>m_StateObject1</cstring>
                             </property>
                             <property name="focusPolicy">
                                 <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
-                                <string>Optional</string>
+                                <string>State object</string>
+                            </property>
+                        </widget>
+                        <widget class="QRadioButton">
+                            <property name="name">
+                                <cstring>m_SameAsSelf</cstring>
+                            </property>
+                            <property name="focusPolicy">
+                                <enum>StrongFocus</enum>
+                            </property>
+                            <property name="text">
+                                <string>Same as ""self""</string>
+                            </property>
+                        </widget>
+                        <widget class="QRadioButton">
+                            <property name="name">
+                                <cstring>m_AnyCategory</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Any object category</string>
                             </property>
                         </widget>
                     </vbox>
@@ -394,6 +399,7 @@
     <tabstop>m_ValueObject1</tabstop>
     <tabstop>m_StateObject1</tabstop>
     <tabstop>m_SameAsSelf</tabstop>
+    <tabstop>m_AnyCategory</tabstop>
     <tabstop>m_Mandatory</tabstop>
     <tabstop>m_Optional</tabstop>
 </tabstops>

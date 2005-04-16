@@ -450,6 +450,7 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
           contentsWidth = QMAX(contentsWidth,currentX+lineWidth);
           cmtWidth = QMAX(cmtWidth,lineWidth);
         }
+        contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
         break;
       }
       else {
@@ -461,7 +462,6 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
           cmtWidth = QMAX(cmtWidth,lineWidth);
         }
       }
-      contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
     } while (true);
     currentToken->data.rect.setRect(currentX,startY,cmtWidth,currentY+fm->descent()-startY);
     currentX += cmtWidth;
@@ -1277,12 +1277,13 @@ void CExecView::Select (SynObject *selObj)
   FuncExpression *funcExpr;
   Assignment *assigStm;
   CopyStatement *copyStm;
-  Callback *callbackExp;
+  Connect *connStm;
+  Disconnect *disconnStm;
   MultipleOp *multOpExp;
   IfExpression *ifx;
   CHE *chpFormIn;
   unsigned iInp=1, iOut=1;
-  LavaDECL *decl, *eventDescDecl, *finalDecl, *declSwitchExpression;
+  LavaDECL *decl, *finalDecl, *declSwitchExpression;
   Category cat, catSwitchExpression;
   CContext nullCtx, callCtx;
   SynFlags ctxFlags;
@@ -1392,67 +1393,93 @@ void CExecView::Select (SynObject *selObj)
       sv->viewport()->update();
       return;
     }
-    funcExpr = (FuncExpression*)text->currentSynObj->parentObject;
-    callExpr = (Expression*)funcExpr->handle.ptr;
-    if (!funcExpr->parentObject) {
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-      sv->viewport()->update();
-      return;
-    }
-    if (funcExpr->parentObject->primaryToken == initializing_T) { // base initializer call
-      tid = ((Reference*)((BaseInit*)funcExpr->parentObject)->baseItf.ptr)->refID;
-      if (tid.nID >= 0)
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowBaseInis(tid);
-      else
+
+    if (text->currentSynObj->parentObject->IsFuncInvocation()) {
+      funcExpr = (FuncExpression*)text->currentSynObj->parentObject;
+      callExpr = (Expression*)funcExpr->handle.ptr;
+      if (!funcExpr->parentObject) {
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-      sv->viewport()->update();
-      return;
-    }
-    //else if (funcExpr->flags.Contains(staticCall)
-    else if (callExpr) {
-      if (callExpr->IsPlaceHolder())
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-      else {
-        if (callExpr->flags.Contains(isSelfVar)
-        && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last) {
-          decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
-          callCtx = text->ckd.lpc;
-        }
+        sv->viewport()->update();
+        return;
+      }
+      if (funcExpr->parentObject->primaryToken == initializing_T) { // base initializer call
+        tid = ((Reference*)((BaseInit*)funcExpr->parentObject)->baseItf.ptr)->refID;
+        if (tid.nID >= 0)
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowBaseInis(tid);
+        else
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+        sv->viewport()->update();
+        return;
+      }
+      if (callExpr) {
+        if (callExpr->IsPlaceHolder())
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
         else {
-          ((SynObject*)funcExpr->handle.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
-          callCtx = text->ckd.tempCtx;
-          decl = text->ckd.document->GetTypeAndContext(decl, callCtx);
-          text->ckd.document->NextContext(decl, callCtx);
-        }
-        if (decl)
-          if (text->currentSynObj->parentObject->parentObject->primaryToken == callback_T
-          && text->currentSynObj->parentObject->whereInParent
-            == (address)&((Callback*)text->currentSynObj->parentObject->parentObject)->callback.ptr) {
-            callbackExp = (Callback*)text->currentSynObj->parentObject->parentObject;
-            ((SynObject*)callbackExp->callbackServerType.ptr)->ExprGetFVType(text->ckd,eventDescDecl,cat,ctxFlags);
-            eventDescDecl = text->ckd.document->GetType(eventDescDecl);
-            if (eventDescDecl) {
-              text->ckd.document->IDTable.GetParamID(eventDescDecl,tid,isEventDesc); // eventDesc
-              text->ckd.tempCtx = text->ckd.lpc;
-              eventDescDecl = myDoc->GetFinalMTypeAndContext(tid,0,text->ckd.tempCtx, 0);
-              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,eventDescDecl,callCtx);
-            }
-            else
-              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+          if (callExpr->flags.Contains(isSelfVar)
+          && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last) {
+            decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
+            callCtx = text->ckd.lpc;
           }
           else {
+            callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+            callCtx = text->ckd.tempCtx;
+            decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
+            text->ckd.document->NextContext(decl,callCtx);
+          }
+          if (decl)
             if (callExpr->flags.Contains(isSelfVar)
             && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
               ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,true);
             else
               ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx);
-          }
-        else
-          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+          else
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+        }
       }
+      else //static function
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowStaticFuncs(text->ckd);
     }
-    else //static function
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowStaticFuncs(text->ckd);
+    else if (text->currentSynObj->parentObject->primaryToken == connect_T) { // connect/disconnect
+      connStm = (Connect*)text->currentSynObj->parentObject;
+      if (text->currentSynObj->whereInParent == (address)&connStm->signalFunction.ptr) {
+        callExpr = (Expression*)connStm->signalSender.ptr;
+        if (callExpr) {
+          if (callExpr->IsPlaceHolder())
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+          else {
+            if (callExpr->flags.Contains(isSelfVar)
+            && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last) {
+              decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
+              callCtx = text->ckd.lpc;
+            }
+            else {
+              callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+              callCtx = text->ckd.tempCtx;
+              decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
+              text->ckd.document->NextContext(decl,callCtx);
+            }
+            if (decl)
+              if (callExpr->flags.Contains(isSelfVar)
+              && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
+                ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,true);
+              else
+                ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx);
+            else
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+          }
+        }
+      }
+      else
+        callExpr = (Expression*)connStm->signalReceiver.ptr;
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == disconnect_T) { // connect/disconnect
+      disconnStm = (Disconnect*)text->currentSynObj->parentObject;
+      if (text->currentSynObj->whereInParent == (address)&disconnStm->signalFunction.ptr)
+        callExpr = (Expression*)disconnStm->signalSender.ptr;
+      else
+        callExpr = (Expression*)disconnStm->signalReceiver.ptr;
+    }
+
     sv->viewport()->update();
     return;
 
@@ -1592,22 +1619,6 @@ exp: // Const_T
       else
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
     }
-    else if (text->currentSynObj->parentObject->primaryToken == callback_T) {
-      callbackExp = (Callback*)text->currentSynObj->parentObject;
-      ((SynObject*)callbackExp->callbackServerType.ptr)->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
-      if (!decl) {
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
-        break;
-      }
-      decl = text->ckd.document->GetType(decl);
-      text->ckd.document->IDTable.GetParamID(decl->ParentDECL,tid,isEventSpec); // eventSpec
-      text->ckd.tempCtx = text->ckd.lpc;
-      decl = myDoc->GetFinalMTypeAndContext(tid,0,text->ckd.tempCtx, 0);
-      if (decl)
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,true);
-      else
-        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
-    }
     else if (text->currentSynObj->parentObject->IsMultOp()
     && text->currentSynObj->parentObject->IsExpression()) {
       multOpExp = (MultipleOp*)text->currentSynObj->parentObject;
@@ -1660,9 +1671,7 @@ exp: // Const_T
     objRef = (ObjReference*)text->currentSynObj->parentObject;
     if (objRef->flags.Contains(isDisabled)
     || objRef->flags.Contains(inExecHdr)
-    || objRef->parentObject->primaryToken == Handle_T
-    || (objRef->parentObject->primaryToken == assignFS_T
-        && objRef->parentObject->parentObject->primaryToken == callback_T))
+    || objRef->parentObject->primaryToken == Handle_T)
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
     else {
       pTID = (TDOD*)text->currentSynObj;
@@ -1705,8 +1714,6 @@ exp: // Const_T
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
     else if (text->currentSynObj->replacedType == SetPH_T)
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetEnumCombo);
-    else if (text->currentSynObj->parentObject->primaryToken == callback_T)
-      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(callbackCombo);
     else if (text->currentSynObj->parentObject->primaryToken == item_T)
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(typeCombo);
     else if (text->currentSynObj->parentObject->primaryToken == uuid_T
@@ -2024,8 +2031,7 @@ bool CExecView::IsTopLevelToken ()
 
 bool CExecView::IsDeletablePrimary () {
   if ((IsTopLevelToken()
-       && (text->currentSelection->data.synObject->primaryToken != assignFS_T
-           || text->currentSelection->data.synObject->parentObject->primaryToken != callback_T))
+       && text->currentSelection->data.synObject->primaryToken != assignFS_T)
   || text->currentSelection->data.token == TDOD_T
   || text->currentSelection->data.token == Tilde_T)
     return true;
@@ -2278,7 +2284,7 @@ void CExecView::InsertOrReplace (SynObject *insObj) {
   switch (text->currentSynObj->primaryToken) {
   case FuncRef_T:
   case FuncPH_T:
-  case FuncDisabled_T:
+//  case FuncDisabled_T:
   case TDOD_T:
     text->currentSynObj = text->currentSynObj->parentObject;
     break;
@@ -2498,11 +2504,9 @@ void CExecView::OnDelete ()
   CHAINX *chx;
   SynObject *oldCurrentSynObj = text->currentSynObj, *synObj, *optClause;
   ObjReference *oldRef, *newRef;
-  FuncExpression *funcExpr;
-  CallbackV *callback;
   Run *runStm;
   NewExpression *newExp;
-  CloneExpression *copyStm;
+  CloneExpression *cloneExp;
   AttachObject *attachStm;
 
   if (!EditOK()) return;
@@ -2537,8 +2541,6 @@ void CExecView::OnDelete ()
       if (text->currentSynObj->whereInParent == (address)chx->first)
         text->currentSynObj = text->currentSynObj->parentObject;
     }
-    else if (text->currentSynObj->parentObject->primaryToken == callback_T)
-      text->currentSynObj = text->currentSynObj->parentObject;
     else if (text->currentSynObj->primaryToken == parameter_T)
       text->currentSynObj = text->currentSynObj->parentObject;
   }
@@ -2591,26 +2593,17 @@ void CExecView::OnDelete ()
 
     text->currentSynObj = text->currentSynObj->parentObject;
     synObj = text->currentSynObj->parentObject;
-    if (synObj->IsFuncInvocation()) {
-      funcExpr = (FuncExpression*)synObj;
-      if (text->currentSynObj->whereInParent == (address)&funcExpr->handle.ptr) {
-        if (funcExpr->parentObject->primaryToken == callback_T) {
-          text->currentSynObj = text->currentSynObj->parentObject->parentObject;
-          //text.currentSynObj = text->currentSynObj->parentObject;
-          callback = new CallbackV(newRef);
-          PutInsHint(callback);
-        }
-        else
-          PutInsHint(newRef);
-      }
-      else
-        PutInsHint(newRef);
-    }
-    else
+    if (synObj->IsFuncInvocation())
       PutInsHint(newRef);
   }
   else if (text->currentSynObj->primaryToken == ObjRef_T)
-    PutDelHint(text->currentSynObj);
+    if (text->currentSynObj->parentObject->primaryToken == signal_T
+    && text->currentSynObj->flags.Contains(isSelfVar)) {
+      text->currentSynObj = oldCurrentSynObj;
+      return;
+    }
+    else
+      PutDelHint(text->currentSynObj);
   else if (text->currentSynObj->primaryToken == FuncRef_T) {
     PutInsHint(new SynObjectV(FuncPH_T));
   }
@@ -2630,9 +2623,7 @@ void CExecView::OnDelete ()
     }
   }
   else if (text->currentSynObj->primaryToken == assignFS_T)
-    if (text->currentSynObj->parentObject->primaryToken == callback_T)
-      return;
-    else if (text->currentSynObj->parentObject->primaryToken == run_T) {
+    if (text->currentSynObj->parentObject->primaryToken == run_T) {
       text->currentSynObj = text->currentSynObj->parentObject;
       runStm = new RunV(true);
       PutInsHint(runStm);
@@ -2658,8 +2649,12 @@ void CExecView::OnDelete ()
   else if (text->currentSynObj->primaryToken == VarName_T
     && text->currentSynObj->parentObject->primaryToken == clone_T) {
     text->currentSynObj = text->currentSynObj->parentObject;
-    copyStm = new CloneExpressionV(true);
-    PutInsHint(copyStm);
+    cloneExp = new CloneExpressionV(true);
+    PutInsHint(cloneExp);
+  }
+  else if (text->currentSynObj->primaryToken == nil_T
+    && text->currentSynObj->replacedType == FuncDisabled_T) {
+    PutInsHint(new SynObjectV(FuncDisabled_T));
   }
   else if (text->currentSynObj->parentObject->NestedOptClause (text->currentSynObj)
   && text->currentSynObj->IsPlaceHolder()) {
@@ -3299,6 +3294,8 @@ void CExecView::OnNull()
   
   if (!EditOK()) return;
   NullConst *nConst = new NullConstV();
+  if (text->currentSynObj->primaryToken == FuncDisabled_T)
+    nConst->replacedType = FuncDisabled_T;
   InsertOrReplace(nConst);
 }
 
@@ -4226,8 +4223,8 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
       text->currentSynObj = (SynObject*)((NewExpression*)text->currentSynObj->parentObject->parentObject)->objType.ptr;
       goto crtbl;
     }
-    text->currentSynObj = text->currentSynObj->parentObject;
-    if (text->currentSynObj->primaryToken == assignFX_T) {
+    if (text->currentSynObj->parentObject->primaryToken == assignFX_T) {
+      text->currentSynObj = text->currentSynObj->parentObject;
       oldFuncExpr = (FuncExpression*)text->currentSynObj;
       funcExpr = new FuncExpressionV(new ReferenceV(FuncPH_T,refID,refName));
       if (isStaticCall) {
@@ -4267,9 +4264,13 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
       else
         PutInsHint(funcExpr);
     }
-    else {
+    else if (text->currentSynObj->parentObject->primaryToken == assignFS_T) {
+      text->currentSynObj = text->currentSynObj->parentObject;
       oldFuncStm = (FuncStatement*)text->currentSynObj;
-      funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName));
+      if (oldFuncStm->primaryToken == signal_T)
+        funcStm = new EmitV(new ReferenceV(FuncPH_T,refID,refName));
+      else
+        funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName));
       if (isStaticCall) {
         funcStm->flags.INCL(staticCall);
         if (vtypeID)
@@ -4322,6 +4323,11 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
         PutInsHint(funcStm,SET(lastHint,-1),true);
       else
         PutInsHint(funcStm);
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == connect_T) {
+      PutInsHint(new ReferenceV(FuncPH_T,refID,refName));
+    }
+    else if (text->currentSynObj->parentObject->primaryToken == disconnect_T) {
     }
     break;
   case CrtblPH_T:
@@ -4628,27 +4634,41 @@ void CExecView::OnAssign()
   InsertOrReplace(assig);
 }
 
-void CExecView::OnCallback() 
+void CExecView::OnConnect() 
 {
   // TODO: Code für Befehlsbehandlungsroutine hier einfügen
-  ObjReference *selfRef;
-  TDOD *tdod;
+  InsertOrReplace(new ConnectV());
+}
+
+void CExecView::OnDisconnect() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  InsertOrReplace(new DisconnectV());
+}
+
+void CExecView::OnEmitSignal() 
+{
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  EmitV *emitStm=new EmitV();
+  ObjReferenceV *objRef;
+  TDODV *tdod;
   TDODC tdodc;
   CHE *newChe;
-  CallbackV *cbObj;
-  
-  if (!EditOK()) return;
-  
+
   tdod = new TDODV(true);
-  tdod->ID.nID = selfVar->varID.nID;
-  tdod->flags.INCL(isDisabled);
+  tdod->name = STRING("self");
+  tdod->ID = selfVar->varID;
   newChe = new CHE(tdod);
   tdodc.Append(newChe);
-  selfRef = new ObjReferenceV(tdodc,"self");
-  selfRef->flags.INCL(isSelfVar);
-  tdod->parentObject = selfRef;
-  cbObj = new CallbackV(selfRef);
-  InsertOrReplace(cbObj);
+  objRef = new ObjReferenceV(tdodc,"self");
+  objRef->flags.INCL(isDisabled);
+  objRef->flags.INCL(isSelfVar);
+  emitStm->handle.ptr = objRef;
+  tdod->parentObject = objRef;
+  tdod->containingChain = (CHAINX*)&objRef->refIDs;
+  objRef->parentObject = emitStm;
+  objRef->whereInParent = (address)&emitStm->handle.ptr;
+  InsertOrReplace(emitStm);
 }
 
 void CExecView::OnTypeSwitch() 
@@ -4656,8 +4676,7 @@ void CExecView::OnTypeSwitch()
   // TODO: Code für Befehlsbehandlungsroutine hier einfügen
   
   if (!EditOK()) return;
-  TypeSwitchStatement *swStm = new TypeSwitchStatementV(true);
-  InsertOrReplace(swStm);
+  InsertOrReplace(new TypeSwitchStatementV(true));
 }
 
 void CExecView::OnInterval() 
@@ -4933,11 +4952,17 @@ void CExecView::OnToggleCategory()
       PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
       PutInsFlagHint(SET(isSameAsSelf,-1),SET(lastHint,-1));
     }
-    else
-      PutDelFlagHint(SET(isVariable,-1));
+    else {
+      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
+      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+    }
   }
-  else if (text->currentSynObj->flags.Contains(isSameAsSelf))
-    PutDelFlagHint(SET(isSameAsSelf,-1));
+  else if (text->currentSynObj->flags.Contains(isSameAsSelf)) {
+    PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,-1));
+    PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+  }
+  else if (text->currentSynObj->flags.Contains(isUnknownCat))
+    PutDelFlagHint(SET(isUnknownCat,-1));
   else
     PutInsFlagHint(SET(isVariable,-1));
 }
@@ -5314,7 +5339,9 @@ void CExecView::UpdateUI()
   OnUpdateQueryItf(LBaseData->qryItfButton);
 	OnUpdateQua(LBaseData->scaleButton);
 	OnUpdateItem(LBaseData->itemButton);
-  OnUpdateCallback(LBaseData->callbackButton);
+  OnUpdateConnect(LBaseData->connectButton);
+  OnUpdateDisconnect(LBaseData->disconnectButton);
+  OnUpdateEmitSignal(LBaseData->emitButton);
 }
 
 void CExecView::DisableActions()
@@ -5417,7 +5444,9 @@ void CExecView::DisableKwdButtons() {
   LBaseData->qryItfButton->setEnabled(false);
 	LBaseData->scaleButton->setEnabled(false);
 	LBaseData->itemButton->setEnabled(false);
-  LBaseData->callbackButton->setEnabled(false);
+  LBaseData->connectButton->setEnabled(false);
+  LBaseData->disconnectButton->setEnabled(false);
+  LBaseData->emitButton->setEnabled(false);
 }
 
 
@@ -5508,12 +5537,14 @@ bool CExecView::EnableCut()
     if (text->currentSynObj->parentObject->parentObject->parentObject->primaryToken == new_T)
       return (text->currentSynObj->parentObject->parentObject->whereInParent
         != (address)&((NewExpression*)text->currentSynObj->parentObject->parentObject->parentObject)->initializerCall.ptr);
+    else if (text->currentSynObj->parentObject->flags.Contains(isSelfVar)
+    && text->currentSynObj->parentObject->parentObject->primaryToken == signal_T)
+      return false;
   }
 
   return (IsDeletablePrimary()
     || (text->currentSynObj->IsFuncInvocation()
-        && text->currentSynObj->parentObject->primaryToken != new_T
-        && text->currentSynObj->parentObject->primaryToken != callback_T)
+        && text->currentSynObj->parentObject->primaryToken != new_T)
     || (text->currentSynObj->IsPlaceHolder()
         && text->currentSynObj->parentObject->primaryToken != parameter_T));
 }
@@ -5706,7 +5737,7 @@ void CExecView::OnUpdateToggleCategory(wxAction* action)
   }
 
   action->setEnabled(ToggleCatEnabled());
-  action->setOn(text->currentSynObj->flags.Contains(isVariable));
+//  action->setOn(text->currentSynObj->flags.Contains(isVariable));
 }
 
 void CExecView::OnUpdateConflict(wxAction* action) 
@@ -5842,12 +5873,28 @@ void CExecView::OnUpdateTypeSwitch(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateCallback(QPushButton *pb) 
+void CExecView::OnUpdateConnect(QPushButton *pb) 
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
   
   pb->setEnabled(!Taboo()
-    && text->currentSynObj->ExpressionSelected(text->currentSelection)
+    && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateDisconnect(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo()
+    && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateEmitSignal(QPushButton *pb) 
+{
+  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  
+  pb->setEnabled(!Taboo()
+    && text->currentSynObj->StatementSelected(text->currentSelection)
     && selfVar->primaryToken != initiator_T);
 }
 
@@ -6351,8 +6398,11 @@ void CExecView::OnUpdateNull(wxAction* action)
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo()
-    && text->currentSynObj->ExpressionSelected(text->currentSelection)
-    && text->currentSynObj->NullAdmissible(text->ckd));
+    && ((text->currentSynObj->ExpressionSelected(text->currentSelection)
+         && text->currentSynObj->NullAdmissible(text->ckd))
+        || ((text->currentSynObj->primaryToken == FuncDisabled_T
+            || text->currentSynObj->primaryToken == FuncRef_T)
+           && text->currentSynObj->parentObject->primaryToken == disconnect_T)));
 }
 
 void CExecView::OnUpdateOr(QPushButton *pb) 

@@ -73,7 +73,6 @@ static TAdapterFunc CheAdapter[LAH ];
 static TAdapterFunc ArrayAdapter[LAH + 4];
 static TAdapterFunc ExceptionAdapter[LAH + 3];
 static TAdapterFunc HW_L_ExceptionAdapter[LAH ];
-TAdapterFunc CallbackAdapter[LAH + 1];
 static TAdapterFunc LinkAdapter[LAH ];
 
 static TAdapterFunc ServiceAdapter[LAH ];
@@ -1725,12 +1724,6 @@ bool ExceptionEq(CheckData& ckd, LavaVariablePtr stack)
 }
 */
 
-//Callback
-bool CallbackExec(CheckData& /*ckd*/, LavaVariablePtr /*stack*/)
-{
-  return true;
-}
-
 
 void MakeStdAdapter()
 {
@@ -1940,16 +1933,6 @@ void MakeStdAdapter()
   HW_L_ExceptionAdapter[5] = 0;
   HW_L_ExceptionAdapter[6] = 0;
   
-  // event spec (enum. item) + actual callback object
-  CallbackAdapter[0] = (TAdapterFunc)((sizeof(CallbackObject)+3)/4);
-  CallbackAdapter[1] = 0;
-  CallbackAdapter[2] = DefaultEq;
-  CallbackAdapter[3] = 0;
-  CallbackAdapter[4] = 0;
-  CallbackAdapter[5] = 0;
-  CallbackAdapter[6] = 0;
-  CallbackAdapter[LAH] = CallbackExec;
-
   StdAdapterTab[B_Object]     = &ObjectAdapter[0];
   StdAdapterTab[Bitset]       = &BitsetAdapter[0];
   StdAdapterTab[B_Bool]       = &BoolAdapter[0];
@@ -1967,6 +1950,5 @@ void MakeStdAdapter()
   StdAdapterTab[B_Exception]  = &ExceptionAdapter[0];
   StdAdapterTab[B_HWException]= &HW_L_ExceptionAdapter[0];
   StdAdapterTab[B_LavaException] = &HW_L_ExceptionAdapter[0];
-  StdAdapterTab[B_Callback]   = &CallbackAdapter[0];
 
 }

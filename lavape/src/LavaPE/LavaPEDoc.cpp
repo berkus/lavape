@@ -743,14 +743,6 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
     implDECL->TypeFlags.INCL(isGUI);
   else
     implDECL->TypeFlags.EXCL(isGUI);
-  if (classDecl->SecondTFlags.Contains(isCallbackServer))
-    implDECL->SecondTFlags.INCL(isCallbackServer);
-  else
-    implDECL->SecondTFlags.EXCL(isCallbackServer);
-  if (classDecl->SecondTFlags.Contains(isCallback))
-    implDECL->SecondTFlags.INCL(isCallback);
-  else
-    implDECL->SecondTFlags.EXCL(isCallback);
   changed = changed || (typeFlag != implDECL->TypeFlags);
 
   cheI = (CHE*)classDecl->NestedDecls.first;
@@ -2859,8 +2851,7 @@ bool CLavaPEDoc::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
     else 
       if (( elDecl->DeclType == Function) && elDecl->TypeFlags.Contains(isGUI)) {
         for (El = (CHETVElem*)classDECL->VElems.VElems.first;
-             El && !El->data.TypeFlags.Contains(isGUI)
-                && (El->data.TypeFlags.Contains(isGUIEdit) == El->data.TypeFlags.Contains(isGUIEdit)); 
+             El && !El->data.TypeFlags.Contains(isGUI); 
              El = (CHETVElem*)El->successor);
         if (El) {
           if (El->data.TypeFlags.Contains(isGUIEdit))

@@ -721,25 +721,51 @@ bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContex
   return ok;
 }
 
-QString *noCallbackFunction(CheckData &ckd, LavaDECL *funcDecl, LavaDECL *eventDescDecl, const CContext &evDescCtx, const CContext &callCtx) {
-  CHE *chp;
-  LavaDECL *formParmType;
-  Category cat;
 
-  if (GetFirstOutput(funcDecl))
-    return &ERR_CallbackHasOutput;
-  chp = GetFirstInput(funcDecl);
-  if (!chp)
-    return &ERR_CallbackHasNoInput;
-  ckd.tempCtx = callCtx;
-  ckd.document->MemberTypeContext((LavaDECL*)chp->data, ckd.tempCtx,&ckd);
-  formParmType = ckd.document->GetFinalMVType(((LavaDECL*)chp->data)->RefID,((LavaDECL*)chp->data)->inINCL,ckd.tempCtx,cat,&ckd);
-  if (((LavaDECL*)chp->data)->TypeFlags.Contains(substitutable))
-    ckd.tempCtx.ContextFlags = SET(multiContext,-1);  //?? stimmt der Context
-  if (!compatibleTypes(ckd,eventDescDecl,evDescCtx,formParmType,ckd.tempCtx))
-    return &ERR_CallbackWrongEvtArg;
+bool slotFunction(CheckData &ckd, LavaDECL *funcDecl, LavaDECL *signalDecl, const CContext &signalCtx, const CContext &callCtx) {
+
+
+  CHE *chSlot, *chSignal;
+  LavaDECL *formParmTypeSlot, *formParmTypeSignal;
+  Category cat, catS;
+  CContext sigCtx;
+
+  if (GetFirstOutput(funcDecl)) {
+    //ckd.errorCode = &ERR_SlotHasOutput;
+    return false;
+  }
+  chSlot = GetFirstInput(funcDecl);
+  chSignal = GetFirstInput(signalDecl);
+  while (chSlot && chSignal 
+        && (((LavaDECL*)chSlot->data)->DeclType == IAttr)
+        && (((LavaDECL*)chSignal->data)->DeclType == IAttr)) {
+    ckd.tempCtx = callCtx;
+    sigCtx = signalCtx;
+    ckd.document->MemberTypeContext((LavaDECL*)chSlot->data, ckd.tempCtx,&ckd);
+    ckd.document->MemberTypeContext((LavaDECL*)chSignal->data, sigCtx,&ckd);
+    formParmTypeSlot = ckd.document->GetFinalMVType(((LavaDECL*)chSlot->data)->RefID,((LavaDECL*)chSlot->data)->inINCL,ckd.tempCtx,cat,&ckd);
+    formParmTypeSignal = ckd.document->GetFinalMVType(((LavaDECL*)chSignal->data)->RefID,((LavaDECL*)chSignal->data)->inINCL,sigCtx,catS,&ckd);
+    if (((LavaDECL*)chSlot->data)->TypeFlags.Contains(substitutable))
+      ckd.tempCtx.ContextFlags = SET(multiContext,-1);  //?? stimmt der Context
+    if (((LavaDECL*)chSignal->data)->TypeFlags.Contains(substitutable))
+      sigCtx.ContextFlags = SET(multiContext,-1);  //?? stimmt der Context
+    if (!compatibleTypes(ckd,formParmTypeSignal,sigCtx,formParmTypeSlot,ckd.tempCtx)) {
+      //ckd.errorCode = &ERR_SlotWrongArg;
+      return false;
+    }
+    chSlot = (CHE*)chSlot->successor;
+    chSignal = (CHE*)chSignal->successor;
+    if (((LavaDECL*)chSlot->data)->DeclType != IAttr) 
+      chSlot = 0;
+    if (((LavaDECL*)chSignal->data)->DeclType != IAttr) 
+      chSignal = 0;
+  }
+  if (chSignal || chSlot) {
+    //ckd.errorCode = &ERR_SlotWrongArg
+    return false;
+  }
   else
-    return 0;
+    return true;
 }
 
 unsigned GetNumInputs(TIDTable *idt, const TID &tid)
@@ -1082,7 +1108,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
       }
       else if (decl->DeclType == VirtualType)
         ((Reference*)this)->refName = "<" + decl->FullName + ">";
-      else
+      else if (parentObject->IsFuncInvocation())
         ((Reference*)this)->refName = decl->FullName;
     }
     else {
@@ -3928,13 +3954,7 @@ static void reposition(CheckData &ckd,SynObject *func,bool isInput,CHAINX *chain
   }
   else {
     if (isInput)
-      if (func->parentObject->primaryToken == callback_T
-      && !chain->first) {
-        placeHdr = new SynObjectV(Event_T);
-        placeHdr->flags.INCL(isDisabled);
-      }
-      else
-        placeHdr = new SynObjectV(Exp_T);
+      placeHdr = new SynObjectV(Exp_T);
     else
       placeHdr = new SynObjectV(ObjPH_T);
     parm = new ParameterV(placeHdr);
@@ -4165,16 +4185,6 @@ bool FuncExpression::Check (CheckData &ckd)
       flags.EXCL(isOptionalExpr);
 
     break;
-  case callback_T:
-    if (!chpFormIn) {
-      ((SynObject*)function.ptr)->SetError(ckd,&ERR_EventInputRequired);
-      ok = false;
-    }
-    if (chpFormOut) {
-      ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoOutputsAllowed);
-      ok = false;
-    }
-    break;
   default: ;
   }
 
@@ -4370,23 +4380,45 @@ bool FuncStatement::Check (CheckData &ckd)
   EXIT
 }
 
-void Callback::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
-  LavaDECL *setDecl;
-  
-  ((SynObject*)callbackServerType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
-  TID tidCallback=TID(ckd.document->IDTable.BasicTypesID[B_Callback],ckd.document->isStd?0:1);
-  TID tidSet=TID(ckd.document->IDTable.BasicTypesID[B_Set],ckd.document->isStd?0:1);
-  setDecl = ckd.document->IDTable.GetDECL(tidSet);
-  decl = ckd.document->GetFinalMVType(
-    (LavaDECL*)((CHE*)setDecl->NestedDecls.first)->data,ckd.tempCtx,cat,&ckd);
-    
-#ifdef INTERPRETER
-  finalType = ckd.document->GetType(decl);
-#endif
+bool Connect::Check (CheckData &ckd)
+{
+  bool rc;
+
+  ENTRY
+
+  ok &= ((SynObject*)signalSender.ptr)->Check(ckd);
+  if (ok) {
+    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T) {
+      ((SynObject*)signalFunction.ptr)->primaryToken = FuncPH_T;
+      ((SynObject*)signalFunction.ptr)->flags.EXCL(isDisabled);
+    }
+  }
+  else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
+      ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
+    }
+  ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
+
+  rc = ((SynObject*)signalReceiver.ptr)->Check(ckd);
+  if (rc) {
+    if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncDisabled_T) {
+      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncPH_T;
+      ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
+    }
+  }
+  else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
+      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+    }
+  ok &= rc;
+  ok &= ((SynObject*)callbackFunction.ptr)->Check(ckd);
+
+  EXIT
 }
 
-bool Callback::Check (CheckData &ckd)
-{
+bool Disconnect::Check (CheckData &ckd)
+{ return false;
+/*
   TID tid;
   LavaDECL  *cbTypeDecl, *evSpecDecl, *funcDecl, *paramDecl;
   QString *rc;
@@ -4413,7 +4445,7 @@ bool Callback::Check (CheckData &ckd)
     ckd.document->IDTable.GetParamID(cbTypeDecl,tid,isEventDesc); // eventDesc
     ckd.tempCtx = ckd.lpc;
     paramDecl = ckd.document->GetFinalMVType(tid,0,ckd.tempCtx,cat,&ckd);
-    if (rc = noCallbackFunction(ckd,funcDecl,paramDecl,ckd.tempCtx,((FuncStatement*)callback.ptr)->callCtx)) {
+    if (rc = slotFunction(ckd,funcDecl,paramDecl,ckd.tempCtx,((FuncStatement*)callback.ptr)->callCtx)) {
       ((Reference*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,rc);
       ok = false;
     }
@@ -4432,6 +4464,7 @@ bool Callback::Check (CheckData &ckd)
   }
 
   EXIT
+*/
 }
 
 bool IfThen::Check (CheckData &ckd)
