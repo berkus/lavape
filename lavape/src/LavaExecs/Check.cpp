@@ -1110,6 +1110,8 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         ((Reference*)this)->refName = "<" + decl->FullName + ">";
       else if (parentObject->IsFuncInvocation())
         ((Reference*)this)->refName = decl->FullName;
+      else
+        ((Reference*)this)->refName = decl->LocalName;
     }
     else {
       if (primaryToken == FuncRef_T

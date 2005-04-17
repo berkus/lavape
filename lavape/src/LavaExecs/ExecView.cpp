@@ -1459,11 +1459,7 @@ void CExecView::Select (SynObject *selObj)
               text->ckd.document->NextContext(decl,callCtx);
             }
             if (decl)
-              if (callExpr->flags.Contains(isSelfVar)
-              && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
-                ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,true);
-              else
-                ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx);
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
             else
               ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
           }
