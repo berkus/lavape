@@ -755,9 +755,9 @@ bool slotFunction(CheckData &ckd, LavaDECL *funcDecl, LavaDECL *signalDecl, cons
     }
     chSlot = (CHE*)chSlot->successor;
     chSignal = (CHE*)chSignal->successor;
-    if (((LavaDECL*)chSlot->data)->DeclType != IAttr) 
+    if (chSlot && ((LavaDECL*)chSlot->data)->DeclType != IAttr) 
       chSlot = 0;
-    if (((LavaDECL*)chSignal->data)->DeclType != IAttr) 
+    if (chSignal && ((LavaDECL*)chSignal->data)->DeclType != IAttr) 
       chSignal = 0;
   }
   if (chSignal || chSlot) {
