@@ -1287,6 +1287,7 @@ void CExecView::Select (SynObject *selObj)
   Category cat, catSwitchExpression;
   CContext nullCtx, callCtx;
   SynFlags ctxFlags;
+  bool isSigFunc;
 
   if (selObj) {
     if (selObj->InHiddenIniClause(text->ckd,typeRef)) {
@@ -1443,30 +1444,36 @@ void CExecView::Select (SynObject *selObj)
       connStm = (Connect*)text->currentSynObj->parentObject;
       if (text->currentSynObj->whereInParent == (address)&connStm->signalFunction.ptr) {
         callExpr = (Expression*)connStm->signalSender.ptr;
-        if (callExpr) {
-          if (callExpr->IsPlaceHolder())
-            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+        isSigFunc = true;
+      }
+      else {
+        callExpr = (Expression*)connStm->signalReceiver.ptr;
+        isSigFunc = false;
+      }
+      if (callExpr) {
+        if (callExpr->IsPlaceHolder())
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+        else {
+          if (callExpr->flags.Contains(isSelfVar)
+          && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last) {
+            decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
+            callCtx = text->ckd.lpc;
+          }
           else {
-            if (callExpr->flags.Contains(isSelfVar)
-            && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last) {
-              decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
-              callCtx = text->ckd.lpc;
-            }
-            else {
-              callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
-              callCtx = text->ckd.tempCtx;
-              decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
-              text->ckd.document->NextContext(decl,callCtx);
-            }
-            if (decl)
+            callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+            callCtx = text->ckd.tempCtx;
+            decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
+            text->ckd.document->NextContext(decl,callCtx);
+          }
+          if (decl)
+            if (isSigFunc)
               ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
             else
-              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-          }
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,((Reference*)connStm->signalFunction.ptr)->refDecl,callCtx,false);
+          else
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
         }
       }
-      else
-        callExpr = (Expression*)connStm->signalReceiver.ptr;
     }
     else if (text->currentSynObj->parentObject->primaryToken == disconnect_T) { // connect/disconnect
       disconnStm = (Disconnect*)text->currentSynObj->parentObject;

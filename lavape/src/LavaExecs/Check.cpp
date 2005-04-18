@@ -1023,9 +1023,9 @@ bool SynObject::UpdateReference (CheckData &ckd) {
     }
     else {
       decl = ckd.document->IDTable.GetDECL(((Reference*)this)->refID,ckd.inINCL);
-#ifdef INTERPRETER
+//#ifdef INTERPRETER
       ((Reference*)this)->refDecl = decl;
-#endif
+//#endif
     }
     if (decl) {
       if ((primaryToken == TypeRef_T || primaryToken == CrtblRef_T)
