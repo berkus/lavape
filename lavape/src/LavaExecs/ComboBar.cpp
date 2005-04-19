@@ -1419,6 +1419,14 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* signalD
   SetCombos(true, true);
   ResetComboItems(m_ClassFuncsCtrl);
   ResetComboItems(m_VFuncsCtrl);
+  m_VFuncsCtrl->removeItem(0);
+  if (showSignals)
+    m_VFuncsCtrl->insertItem( tr( " (Signals) " ) );
+  else if (signalDecl)
+    m_VFuncsCtrl->insertItem( tr( " (Slots) " ) );
+  else
+    m_VFuncsCtrl->insertItem( tr( " (Virtual calls) " ) );
+
   if (SelfTypeDECL->Supports.first && (((CHETID*)SelfTypeDECL->Supports.first)->data == TID(decl->OwnID,decl->inINCL))) {
     che = (CHE*)SelfTypeDECL->NestedDecls.first; //!!
     while (che) {

@@ -138,7 +138,7 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string> ( Virtual call ) </string>
+                <string> (Virtual calls) </string>
             </property>
         </item>
         <property name="name">
@@ -303,7 +303,7 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string> (Comp. obj. interface)</string>
+                <string> (Comp. obj. interfaces)</string>
             </property>
         </item>
         <property name="name">
@@ -357,7 +357,7 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string> ( Basic types )</string>
+                <string> (Basic types)</string>
             </property>
         </item>
         <property name="name">
@@ -378,7 +378,7 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string> ( Non-virtual call )</string>
+                <string> (Non-virtual calls)</string>
             </property>
         </item>
         <property name="name">
@@ -399,7 +399,7 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string> ( Compon. obj. specs.)</string>
+                <string> (Compon. obj. specs.)</string>
             </property>
         </item>
         <property name="name">
