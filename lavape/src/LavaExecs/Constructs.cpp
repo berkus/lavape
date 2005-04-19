@@ -372,9 +372,8 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
   ckd.tempCtx = ckd.lpc;
   if (parentObject->primaryToken == parameter_T) {
     targetDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
-    if (targetDecl && !targetDecl->TypeFlags.Contains(isOptional)) {
+    if (targetDecl && !targetDecl->TypeFlags.Contains(isOptional))
       return false;
-    }
   }
   else if (parentObject->primaryToken == fail_T)
     return true;
@@ -402,9 +401,8 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
     && ckd.document->GetOperatorID(declHandle,(TOperator)(binOpEx->primaryToken-not_T),tidOperatorFunc)) {
       chpFormIn = GetFirstInput(&ckd.document->IDTable,tidOperatorFunc);
       targetDecl = (LavaDECL*)chpFormIn->data;
-      if (targetDecl && !targetDecl->TypeFlags.Contains(isOptional)) {
+      if (targetDecl && !targetDecl->TypeFlags.Contains(isOptional))
         return false;
-      }
     }
   }
   else if (parentObject->primaryToken == assign_T) {

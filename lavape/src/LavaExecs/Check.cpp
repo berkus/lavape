@@ -4384,8 +4384,6 @@ bool FuncStatement::Check (CheckData &ckd)
 
 bool Connect::Check (CheckData &ckd)
 {
-  bool rc;
-
   ENTRY
 
   ok &= ((SynObject*)signalSender.ptr)->Check(ckd);
@@ -4401,8 +4399,8 @@ bool Connect::Check (CheckData &ckd)
     }
   ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
 
-  rc = ((SynObject*)signalReceiver.ptr)->Check(ckd);
-  if (rc) {
+  ok &= ((SynObject*)signalReceiver.ptr)->Check(ckd);
+  if (ok) {
     if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncDisabled_T) {
       ((SynObject*)callbackFunction.ptr)->primaryToken = FuncPH_T;
       ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
@@ -4412,61 +4410,42 @@ bool Connect::Check (CheckData &ckd)
       ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
       ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
     }
-  ok &= rc;
   ok &= ((SynObject*)callbackFunction.ptr)->Check(ckd);
 
   EXIT
 }
 
 bool Disconnect::Check (CheckData &ckd)
-{ return false;
-/*
-  TID tid;
-  LavaDECL  *cbTypeDecl, *evSpecDecl, *funcDecl, *paramDecl;
-  QString *rc;
-  Category cat;
-  SynFlags ctxFlags;
-
+{
   ENTRY
-  ckd.tempCtx = ckd.lpc;
-  ok &= ((SynObject*)callbackServerType.ptr)->Check(ckd);
-  ok &= ((SynObject*)callback.ptr)->Check(ckd);
-  ok &= ((SynObject*)onEvent.ptr)->Check(ckd);
 
-  ((SynObject*)callbackServerType.ptr)->ExprGetFVType(ckd,cbTypeDecl,cat,ctxFlags);
-  cbTypeDecl = ckd.document->GetType(cbTypeDecl);
-  if (!cbTypeDecl)
-    ERROREXIT
-  if (!cbTypeDecl->SecondTFlags.Contains(isCallbackServer)) {
-    ((SynObject*)callbackServerType.ptr)->SetError(ckd,&ERR_NoCallbackServerType);
-    ERROREXIT
-  }
-
-  if (!((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder()) {
-    funcDecl = ckd.document->IDTable.GetDECL(((Reference*)((FuncStatement*)callback.ptr)->function.ptr)->refID,ckd.inINCL);
-    ckd.document->IDTable.GetParamID(cbTypeDecl,tid,isEventDesc); // eventDesc
-    ckd.tempCtx = ckd.lpc;
-    paramDecl = ckd.document->GetFinalMVType(tid,0,ckd.tempCtx,cat,&ckd);
-    if (rc = slotFunction(ckd,funcDecl,paramDecl,ckd.tempCtx,((FuncStatement*)callback.ptr)->callCtx)) {
-      ((Reference*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,rc);
-      ok = false;
+  ok &= ((SynObject*)signalSender.ptr)->Check(ckd);
+  if (ok) {
+    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T) {
+      ((SynObject*)signalFunction.ptr)->primaryToken = FuncPH_T;
+      ((SynObject*)signalFunction.ptr)->flags.EXCL(isDisabled);
     }
   }
+  else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
+      ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
+    }
+  ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
 
-  ((SynObject*)onEvent.ptr)->ExprGetFVType(ckd,evSpecDecl,cat,ctxFlags);
-  evSpecDecl = ckd.document->GetType(evSpecDecl);
-  if (!evSpecDecl)
-    ok = false;
-  ckd.document->IDTable.GetParamID(cbTypeDecl,tid,isEventSpec); // eventSpec
-  ckd.tempCtx = ckd.lpc;
-  paramDecl = ckd.document->GetFinalMTypeAndContext(tid,0,ckd.tempCtx,&ckd);
-  if (evSpecDecl && paramDecl != evSpecDecl) {
-    ((SynObject*)onEvent.ptr)->SetError(ckd,&ERR_WrongEvSpecType);
-    ok = false;
+  ok &= ((SynObject*)signalReceiver.ptr)->Check(ckd);
+  if (ok) {
+    if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncDisabled_T) {
+      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncPH_T;
+      ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
+    }
   }
+  else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
+      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+    }
+  ok &= ((SynObject*)callbackFunction.ptr)->Check(ckd);
 
   EXIT
-*/
 }
 
 bool IfThen::Check (CheckData &ckd)
