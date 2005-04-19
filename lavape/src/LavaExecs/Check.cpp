@@ -4051,7 +4051,7 @@ bool FuncExpression::Check (CheckData &ckd)
     if (!objTypeDecl) {
       if (!((Expression*)handle.ptr)->flags.Contains(brokenRef)
       && !IsPH(handle.ptr))
-        ((SynObject*)function.ptr)->SetError(ckd,&ERR_CallExprUndefType);
+        ((SynObject*)handle.ptr)->SetError(ckd,&ERR_CallExprUndefType);
       if (((SynObject*)function.ptr)->primaryToken == FuncPH_T)
         ((SynObject*)function.ptr)->primaryToken = FuncDisabled_T;
     }
@@ -4382,20 +4382,77 @@ bool FuncStatement::Check (CheckData &ckd)
 
 bool Connect::Check (CheckData &ckd)
 {
+  TID objTypeTid, selfTid, funcItfTid, funcTid;
+  LavaDECL *funcDecl, *funcItf, *funcImpl=0;
+  Expression *callExpr;
+  LavaDECL *objTypeDecl;
+  Category cat;
+  CContext callCtx;
+  SynFlags myCtxFlags;
+
   ENTRY
 
   ok &= ((SynObject*)signalSender.ptr)->Check(ckd);
-  if (ok) {
-    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T) {
-      ((SynObject*)signalFunction.ptr)->primaryToken = FuncPH_T;
-      ((SynObject*)signalFunction.ptr)->flags.EXCL(isDisabled);
+
+  callExpr = (Expression*)signalSender.ptr;
+  ckd.tempCtx = ckd.lpc;
+  callExpr->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
+  objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
+
+  if (!objTypeDecl) {
+    if (!callExpr->flags.Contains(brokenRef)
+    && !IsPH(callExpr))
+      callExpr->SetError(ckd,&ERR_CallExprUndefType);
+    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T)
+      ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
+  }
+  else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T) {
+    ((SynObject*)signalFunction.ptr)->primaryToken = FuncPH_T;
+    ((SynObject*)signalFunction.ptr)->flags.EXCL(isDisabled);
+  }
+
+  if (objTypeDecl) {
+    callCtx = ckd.tempCtx;
+    ckd.document->NextContext(objTypeDecl, callCtx);
+    if (callExpr->flags.Contains(isSelfVar)
+    && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
+      // Implementation required for self, rather than Interface
+      objTypeDecl = ckd.document->IDTable.GetDECL(((SelfVar*)ckd.selfVar)->typeID,ckd.inINCL);
+
+    if (objTypeDecl)
+      objTypeTid = OWNID(objTypeDecl);
+  }
+
+  ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
+  if (!ok)
+    ERROREXIT
+
+  funcTid = ((Reference*)signalFunction.ptr)->refID;
+  ADJUST4(funcTid);
+  if (objTypeTid.nID != -1) {
+    funcDecl = ckd.document->IDTable.GetDECL(funcTid);
+    if (!funcDecl)
+      ERROREXIT
+    if (!funcDecl->SecondTFlags.Contains(isLavaSignal)) {
+      ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_NoSignal);
+      ok = false;
+    }
+    if (funcDecl->TypeFlags.Contains(isInitializer)) {
+      ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_InitializerForbidden);
+      ok = false;
+    }
+    funcItf = funcDecl->ParentDECL;
+    if (funcItf->DeclType == Impl) {
+      funcImpl = funcItf;
+      funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
+    }
+    funcItfTid = OWNID(funcItf);
+    if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
+      ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
+      ok = false;
     }
   }
-  else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
-      ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
-      ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
-    }
-  ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
+
 
   ok &= ((SynObject*)signalReceiver.ptr)->Check(ckd);
   if (ok) {
@@ -4407,7 +4464,8 @@ bool Connect::Check (CheckData &ckd)
   else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
       ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
       ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
-    }
+      ERROREXIT
+  }
   ok &= ((SynObject*)callbackFunction.ptr)->Check(ckd);
 
   EXIT

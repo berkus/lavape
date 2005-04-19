@@ -128,7 +128,9 @@ QString ERR_VirtualCircle;
 QString ERR_InvalidValOfVT;
 QString ERR_SelfUnfinishedCallObj;
 QString ERR_NoInitializer;
+QString ERR_InitializerForbidden;
 QString ERR_ExplicitInitializerCall;
+QString ERR_NoSignal;
 QString ERR_MissingFuncDecl;
 QString ERR_MissingInitialization;
 QString ERR_UnaryOpUndefined;
@@ -413,7 +415,9 @@ void LavaBaseStringInit() {
   ERR_SelfUnfinishedCallObj 
   = QObject::tr("""self"" must be completely initialized before its methods may be called");
   ERR_NoInitializer  = QObject::tr("This isn't an initializer");
+  ERR_InitializerForbidden = QObject::tr("Initializer not allowed here");
   ERR_ExplicitInitializerCall  = QObject::tr("Explicit initializer calls are not allowed");
+  ERR_NoSignal  = QObject::tr("This isn't a signal function");
   ERR_MissingFuncDecl  = QObject::tr("No such member function or variable:");
   ERR_MissingInitialization 
   = QObject::tr(": a value must be assigned in all program branches (check also for missing else branches!)");
