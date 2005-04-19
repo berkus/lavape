@@ -1023,9 +1023,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
     }
     else {
       decl = ckd.document->IDTable.GetDECL(((Reference*)this)->refID,ckd.inINCL);
-//#ifdef INTERPRETER
       ((Reference*)this)->refDecl = decl;
-//#endif
     }
     if (decl) {
       if ((primaryToken == TypeRef_T || primaryToken == CrtblRef_T)
@@ -1110,7 +1108,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         ((Reference*)this)->refName = "<" + decl->FullName + ">";
       else if (parentObject->IsFuncInvocation())
         ((Reference*)this)->refName = decl->FullName;
-      else
+      else // [dis]connect
         ((Reference*)this)->refName = decl->LocalName;
     }
     else {

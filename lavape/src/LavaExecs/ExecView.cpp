@@ -1283,9 +1283,9 @@ void CExecView::Select (SynObject *selObj)
   IfExpression *ifx;
   CHE *chpFormIn;
   unsigned iInp=1, iOut=1;
-  LavaDECL *decl, *finalDecl, *declSwitchExpression;
+  LavaDECL *decl, *declSig, *finalDecl, *declSwitchExpression;
   Category cat, catSwitchExpression;
-  CContext nullCtx, callCtx;
+  CContext nullCtx, callCtx, callCtxSig;
   SynFlags ctxFlags;
   bool isSigFunc;
 
@@ -1468,8 +1468,15 @@ void CExecView::Select (SynObject *selObj)
           if (decl)
             if (isSigFunc)
               ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
-            else
+            else { // slot function
+              callExpr = (Expression*)connStm->signalSender.ptr;
+              callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
+              callCtxSig = text->ckd.tempCtx;
+              declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
+              text->ckd.document->NextContext(declSig,callCtxSig);
+              text->ckd.tempCtx = callCtxSig;
               ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,((Reference*)connStm->signalFunction.ptr)->refDecl,callCtx,false);
+            }
           else
             ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
         }
