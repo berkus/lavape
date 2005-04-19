@@ -68,27 +68,6 @@
     <widget class="QComboBox">
         <item>
             <property name="text">
-                <string> (Callback server types)  </string>
-            </property>
-        </item>
-        <property name="name">
-            <cstring>IDC_COMBOSignals</cstring>
-        </property>
-        <property name="enabled">
-            <bool>false</bool>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>138</width>
-                <height>20</height>
-            </rect>
-        </property>
-    </widget>
-    <widget class="QComboBox">
-        <item>
-            <property name="text">
                 <string> (Basic types)</string>
             </property>
         </item>
