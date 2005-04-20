@@ -4453,20 +4453,64 @@ bool Connect::Check (CheckData &ckd)
     }
   }
 
+////////////////////////////////////////////////////////////////////////////////////////
 
   ok &= ((SynObject*)signalReceiver.ptr)->Check(ckd);
-  if (ok) {
-    if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncDisabled_T) {
-      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncPH_T;
-      ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
+
+  callExpr = (Expression*)signalReceiver.ptr;
+  ckd.tempCtx = ckd.lpc;
+  callExpr->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
+  objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
+
+  if (!objTypeDecl) {
+    if (!callExpr->flags.Contains(brokenRef)
+    && !IsPH(callExpr))
+      callExpr->SetError(ckd,&ERR_CallExprUndefType);
+    if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncPH_T)
+      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+  }
+  else if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncDisabled_T) {
+    ((SynObject*)callbackFunction.ptr)->primaryToken = FuncPH_T;
+    ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
+  }
+
+  if (objTypeDecl) {
+    callCtx = ckd.tempCtx;
+    ckd.document->NextContext(objTypeDecl, callCtx);
+    if (callExpr->flags.Contains(isSelfVar)
+    && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
+      // Implementation required for self, rather than Interface
+      objTypeDecl = ckd.document->IDTable.GetDECL(((SelfVar*)ckd.selfVar)->typeID,ckd.inINCL);
+
+    if (objTypeDecl)
+      objTypeTid = OWNID(objTypeDecl);
+  }
+
+  ok &= ((SynObject*)callbackFunction.ptr)->Check(ckd);
+  if (!ok)
+    ERROREXIT
+
+  funcTid = ((Reference*)callbackFunction.ptr)->refID;
+  ADJUST4(funcTid);
+  if (objTypeTid.nID != -1) {
+    funcDecl = ckd.document->IDTable.GetDECL(funcTid);
+    if (!funcDecl)
+      ERROREXIT
+    if (funcDecl->TypeFlags.Contains(isInitializer)) {
+      ((Reference*)callbackFunction.ptr)->SetError(ckd,&ERR_InitializerForbidden);
+      ok = false;
+    }
+    funcItf = funcDecl->ParentDECL;
+    if (funcItf->DeclType == Impl) {
+      funcImpl = funcItf;
+      funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
+    }
+    funcItfTid = OWNID(funcItf);
+    if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
+      ((SynObject*)callbackFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
+      ok = false;
     }
   }
-  else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
-      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
-      ERROREXIT
-  }
-  ok &= ((SynObject*)callbackFunction.ptr)->Check(ckd);
 
   EXIT
 }
