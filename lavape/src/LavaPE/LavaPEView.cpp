@@ -3784,7 +3784,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
         if (implEl) {
           clipImplEl = NewCHE(NewLavaDECL());
           *((LavaDECL*)clipImplEl->data) = *((LavaDECL*)implEl->data);
-          if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+          if (implDECL->NestedDecls.last && ((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
             implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, clipImplEl);
           else
             implDECL->NestedDecls.Append(clipImplEl);
@@ -3797,7 +3797,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
             if (implEl) {
               clipImplEl = NewCHE(NewLavaDECL());
               *((LavaDECL*)clipImplEl->data) = *((LavaDECL*)implEl->data);
-              if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+              if (implDECL->NestedDecls.last && ((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
                 implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, clipImplEl);
               else
                 implDECL->NestedDecls.Append(clipImplEl);
@@ -3848,7 +3848,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
     else {
       ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = false;
       if (clipEl) {
-        QMessageBox::critical(this, qApp->name(),"Cannot move feature because the implementation is not available",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(this, qApp->name(),"Cannot move feature because the implementation of the target interface does not yet exist",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         ;//AfxMessageBox("Cannot move feature because the implementation is not available");
         return false;
       }
