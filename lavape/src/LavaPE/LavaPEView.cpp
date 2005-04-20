@@ -3797,10 +3797,10 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
             if (implEl) {
               clipImplEl = NewCHE(NewLavaDECL());
               *((LavaDECL*)clipImplEl->data) = *((LavaDECL*)implEl->data);
-            if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
-              implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, clipImplEl);
-            else
-              implDECL->NestedDecls.Append(clipImplEl);
+              if (((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
+                implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, clipImplEl);
+              else
+                implDECL->NestedDecls.Append(clipImplEl);
             }
           }
         }
