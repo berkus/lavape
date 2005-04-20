@@ -2046,6 +2046,7 @@ ValOnInit CImplBox::OnInitDialog()
     }
     if (pos < icount)
       m_ImplTypes->setCurrentItem(pos-1);
+    m_ImplTypes->setEnabled(false);
   }
   delete execAllPatt;
   UpdateData(false);
