@@ -4083,6 +4083,11 @@ bool FuncExpression::Check (CheckData &ckd)
       funcDecl = ckd.document->IDTable.GetDECL(funcTid);
       if (!funcDecl)
         ERROREXIT
+      if (primaryToken == signal_T
+        && !funcDecl->SecondTFlags.Contains(isLavaSignal)) {
+        ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoSignal);
+        ok = false;
+      }
       if (flags.Contains(staticCall)
       && !funcDecl->TypeFlags.Contains(isInitializer)
       && !(callExpr->flags.Contains(isSelfVar)

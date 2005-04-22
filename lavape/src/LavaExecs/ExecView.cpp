@@ -1430,7 +1430,10 @@ void CExecView::Select (SynObject *selObj)
           if (decl)
             if (callExpr->flags.Contains(isSelfVar)
             && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
-              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,true);
+              if (funcExpr->primaryToken == signal_T)
+                ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
+              else
+                ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,true);
             else
               ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx);
           else
@@ -4334,7 +4337,9 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
       else
         PutInsHint(funcStm);
     }
-    else if (text->currentSynObj->parentObject->primaryToken == connect_T) {
+    else if (text->currentSynObj->parentObject->primaryToken == connect_T
+    || text->currentSynObj->parentObject->primaryToken == disconnect_T
+    || text->currentSynObj->parentObject->primaryToken == signal_T) {
       PutInsHint(new ReferenceV(FuncPH_T,refID,refName));
     }
     else if (text->currentSynObj->parentObject->primaryToken == disconnect_T) {

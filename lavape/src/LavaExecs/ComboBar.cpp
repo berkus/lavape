@@ -1475,7 +1475,7 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* signalD
     conDECL = myDoc->IDTable.GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL);
   else
     conDECL = decl;
-  FuncsInSupports(ckd, decl, conDECL, 0, signalDecl, signalCtx, callCtx, withStatic);
+  FuncsInSupports(ckd, decl, conDECL, 0, signalDecl, signalCtx, callCtx, withStatic,showSignals);
   if (decl->DeclType == Interface) {
     myDoc->MakeVElems(decl, 0);
     for (El = (CHETVElem*)decl->VElems.VElems.first; El; El = (CHETVElem*)El->successor) {
