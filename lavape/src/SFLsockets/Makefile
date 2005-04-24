@@ -1,3 +1,5 @@
+PRJ = SFLsockets
+
 EXEC = SFLsockets.so
 
 CPP_INCLUDES = -I.

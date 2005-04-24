@@ -28,6 +28,14 @@ all_o_files=$(sort $(o_files) $(o_ph_files) $(o_ui_files) $(o_moc_ui_files) $(o_
 make_subpro=$(addsuffix .rec,$(SUBPRO))
 clean_subpro=$(addsuffix .cln,$(SUBPRO))
 
+ifeq ($(PCH),)
+GCC = gcc
+GPP = g++
+else
+GCC = $(PCH)/bin/gcc
+GPP = $(PCH)/bin/g++
+endif
+
 ifeq ($(LAVADIR),)
 LAVADIR = $(shell cd ../..; pwd)
 endif
@@ -53,30 +61,32 @@ base=$(basename $(EXEC))
 EXEC2=cyg$(addsuffix .dll,$(base))
 imports=$(addprefix -l,$(SUBPRO))
 this: ../../bin/$(EXEC2)
-../../bin/$(EXEC2): $(gen_files) $(all_o_files)
-	g++ -o ../../bin/$(EXEC2) -shared -fstack-check -Wl,--out-implib=../../bin/lib${base}.dll.a -Wl,--export-all-symbols -Wl,--enable-auto-import -Wl,--whole-archive $(all_o_files) -Wl,--no-whole-archive -L../../bin $(imports) -L$(QTDIR)/lib -lqt-mt
+../../bin/$(EXEC2): $(gen_files) $(PRJ)_all.h.gch $(all_o_files)
+	$(GPP) -o ../../bin/$(EXEC2) -shared -fstack-check -Wl,--out-implib=../../bin/lib${base}.dll.a -Wl,--export-all-symbols -Wl,--enable-auto-import -Wl,--whole-archive $(all_o_files) -Wl,--no-whole-archive -L../../bin $(imports) -L$(QTDIR)/lib -lqt-mt
 else
 EXEC2=$(addsuffix .exe,$(EXEC))
 this: ../../bin/$(EXEC2)
-../../bin/$(EXEC2): $(gen_files) $(all_o_files) $(addprefix ../../bin/,$(addprefix cyg,$(addsuffix .dll,$(SUBPRO))))
-	g++ -o ../../bin/$(EXEC2) $(all_o_files) -fstack-check -L../../bin $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib $(asscli) -lqt-mt
+../../bin/$(EXEC2): $(gen_files) $(PRJ)_all.h.gch $(all_o_files) $(addprefix ../../bin/,$(addprefix cyg,$(addsuffix .dll,$(SUBPRO))))
+	$(GPP) -o ../../bin/$(EXEC2) $(all_o_files) -fstack-check -L../../bin $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib $(asscli) -lqt-mt
 endif
 else
 ifeq ($(suffix $(EXEC)),.so)
 this: ../../lib/lib$(EXEC)
-../../lib/lib$(EXEC): $(gen_files) $(all_o_files)
-	g++ -o ../../lib/lib$(EXEC) -shared -fstack-check -Wl,-soname=lib$(EXEC) -L../../lib -Wl,-rpath,$(LAVADIR)/lib -L$(QTDIR)/lib -Wl,-rpath,$(QTDIR)/lib -lqt-mt $(all_o_files)
+../../lib/lib$(EXEC): $(gen_files) $(PRJ)_all.h.gch $(all_o_files)
+	$(GPP) -o ../../lib/lib$(EXEC) -shared -fstack-check -Wl,-soname=lib$(EXEC) -L../../lib -Wl,-rpath,$(LAVADIR)/lib -L$(QTDIR)/lib -Wl,-rpath,$(QTDIR)/lib -lqt-mt $(all_o_files)
 else
 this: ../../bin/$(EXEC)
-../../bin/$(EXEC): $(gen_files) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix .so,$(SUBPRO))))
-	g++ -o ../../bin/$(EXEC) $(all_o_files) -fstack-check -L../../lib -Wl,-rpath,$(LAVADIR)/lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -Wl,-rpath,$(QTDIR)/lib -lqassistantclient -lqt-mt
+../../bin/$(EXEC): $(gen_files) $(PRJ)_all.h.gch $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix .so,$(SUBPRO))))
+	$(GPP) -o ../../bin/$(EXEC) $(all_o_files) -fstack-check -L../../lib -Wl,-rpath,$(LAVADIR)/lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -Wl,-rpath,$(QTDIR)/lib -lqassistantclient -lqt-mt
 endif
 endif
 
 .cpp.o:
-	g++ -c -pipe -ggdb -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
+	$(GPP) -c -pipe -ggdb -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) -include $(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
 .c.o:
-	gcc -c -pipe -ggdb -MMD $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
+	$(GCC) -c -pipe -ggdb -MMD $(CPP_FLAGS) -include $(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
+$(PRJ)_all.h.gch:
+	$(GPP) -c -pipe -ggdb -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
 		
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's

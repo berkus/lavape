@@ -1,4 +1,5 @@
-#for LPC:
+PRJ = disco
+
 DLL = DISCO
 
 EXEC = disco.so
