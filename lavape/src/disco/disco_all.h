@@ -1,0 +1,41 @@
+#ifndef _disco_PCH
+#define _disco_PCH
+
+#include "SFLsockets_all.h"
+
+#include "qcstring.h"
+#include "qstring.h"
+#include "AnyType.h"
+#include "ASN1File.h"
+#include "ASN1.h"
+#include "ASN1pp.h"
+#include "CDPpp.h"
+#include "ChainA.h"
+#include "CHAINANY.h"
+#include "ChString.h"
+#include "Convert.h"
+#include "DateTime.h"
+#include "DIO.h"
+#include "DString.h"
+#include "Halt.h"
+#include "InFile.h"
+#include "MachDep.h"
+#include "MACROS.h"
+#include "NestA.h"
+#include "NESTANY.h"
+#include "OSDep.h"
+#include "OutFile.h"
+#include "PMDump.h"
+#include "SETpp.h"
+#include "STR.h"
+#include "StrIFile.h"
+#include "StrOFile.h"
+#include "SynIO.h"
+#include "Syntax.h"
+#include "SYSTEM.h"
+#include "TextFile.h"
+#include "UNIX.h"
+#include "wx_obj.h"
+
+#endif
+
