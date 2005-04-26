@@ -173,7 +173,10 @@ QString ERR_SecondImpl;
 QString ERR_inStd;
 QString ERR_SecondDefaultIni;
 QString ERR_IncompWithTargetVT;
-QString ERR_WrongEvSpecType;
+QString ERR_SlotHasOutput;
+QString ERR_SlotWrongArg;
+QString ERR_SlotTooManyArgs;
+QString ERR_SlotTooFewArgs;
 QString ERR_IncompatibleCategory;
 QString ERR_SetIsFrozenValObj;
 QString ERR_EnumIntvType;
@@ -299,9 +302,12 @@ void LavaBaseStringInit() {
   ERR_inStd  = QObject::tr("std.lava corrupted");
   ERR_SecondDefaultIni  = QObject::tr("Second default initializer");
   ERR_IncompWithTargetVT  = QObject::tr("Incompatible with virtual type of assignment target or set elements (""force override"" missing?)");
-  ERR_WrongEvSpecType  = QObject::tr("Incompatible event specification type");
-  ERR_IncompatibleCategory 
-  = QObject::tr("Incompatible object category (state vs. value object)");
+  ERR_SlotHasOutput  = QObject::tr("Callback functions must not have output parameters");
+  ERR_SlotTooManyArgs  = QObject::tr("Callback function has more parameters than signal function");
+  ERR_SlotTooFewArgs  = QObject::tr("Callback function has fewer parameters than signal function");
+  ERR_SlotWrongArg  = QObject::tr("Argument #%1 of callback function incompatible to corresponding argument of signal function");
+
+  ERR_IncompatibleCategory  = QObject::tr("Incompatible object category (state vs. value object)");
   ERR_SetIsFrozenValObj  = QObject::tr("Forbidden insertion: result set is a frozen value object");
   ERR_EnumIntvType  = QObject::tr("Type restriction not allowed for enumerated and interval sets");
   ERR_AbstractInherited  = QObject::tr(": Creatable interface inherits this abstract feature or virtual type ");

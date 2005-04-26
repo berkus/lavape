@@ -1437,7 +1437,7 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* signalD
             && !elDECL->TypeFlags.Contains(isInitializer)
             && (elDECL->op == OP_noOp)
             && (showSignals == elDECL->SecondTFlags.Contains(isLavaSignal))
-            && (!signalDecl || slotFunction(ckd, elDECL, signalDecl,signalCtx,callCtx))
+            && (!signalDecl || slotFunction(ckd, elDECL, callCtx, signalDecl,signalCtx))
             && !IsInBox(m_VFuncsCtrl,elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
           if (sameName) {
             item = new CListItem(elDECL->FullName, TID(elDECL->OwnID, elDECL->inINCL));
@@ -1485,7 +1485,7 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* signalD
           && (elDECL->op == OP_noOp)
           && (!elDECL->TypeFlags.Contains(isProtected) || allowProtected)
           && (showSignals == elDECL->SecondTFlags.Contains(isLavaSignal))
-          && (!signalDecl || slotFunction(ckd, elDECL, signalDecl,signalCtx,callCtx))
+          && (!signalDecl || slotFunction(ckd, elDECL, callCtx, signalDecl,signalCtx))
           && !IsInBox(m_VFuncsCtrl, elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
         if (sameName) {
           item = new CListItem(elDECL->FullName, TID(elDECL->OwnID, elDECL->inINCL));
@@ -1667,7 +1667,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDEC
             && (cheDECL->op == OP_noOp)
             && !cheDECL->SecondTFlags.Contains(funcImpl)
             && (showSignals == cheDECL->SecondTFlags.Contains(isLavaSignal))
-            && (!signalDecl || slotFunction(ckd, cheDECL, signalDecl,signalCtx,callCtx))
+            && (!signalDecl || slotFunction(ckd, cheDECL, callCtx, signalDecl,signalCtx))
             && !IsInBox(m_VFuncsCtrl,cheDECL->LocalName, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
           if (sameName) {
             item = new CListItem(cheDECL->FullName, TID(cheDECL->OwnID, cheDECL->inINCL));
@@ -1708,7 +1708,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDEC
             }
             if ((decl->DeclType == Impl)
               && (showSignals == cheDECL->SecondTFlags.Contains(isLavaSignal))
-              && (!signalDecl || slotFunction(ckd, cheDECL, signalDecl,signalCtx,callCtx))
+              && (!signalDecl || slotFunction(ckd, cheDECL, callCtx, signalDecl,signalCtx))
               && (!cheDECL->TypeFlags.Contains(isProtected) || allowProtected)
               && !IsInBox(m_VFuncsCtrl,cheDECL->LocalName/*FullName*/, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
               if (sameName) {
@@ -1742,7 +1742,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDEC
           if (ElDECL && (ElDECL->DeclType == Function)
               && (ElDECL->op == OP_noOp)
               && (showSignals == ElDECL->SecondTFlags.Contains(isLavaSignal))
-              && (!signalDecl || slotFunction(ckd, ElDECL, signalDecl,signalCtx,callCtx))
+              && (!signalDecl || slotFunction(ckd, ElDECL, callCtx, signalDecl,signalCtx))
               && (!ElDECL->TypeFlags.Contains(isProtected) || allowProtected)
               && !ElDECL->TypeFlags.Contains(isInitializer) 
               && !IsInBox(m_VFuncsCtrl, ElDECL->LocalName, ElDECL->OwnID, ElDECL->inINCL, sameName)) {

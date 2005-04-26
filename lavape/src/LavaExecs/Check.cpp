@@ -722,24 +722,25 @@ bool compatibleOutput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContex
 }
 
 
-bool slotFunction(CheckData &ckd, LavaDECL *funcDecl, LavaDECL *signalDecl, const CContext &signalCtx, const CContext &callCtx) {
+bool slotFunction(CheckData &ckd, LavaDECL *callbackDecl, const CContext &callbackCtx, LavaDECL *signalDecl, const CContext &signalCtx) {
 
 
   CHE *chSlot, *chSignal;
   LavaDECL *formParmTypeSlot, *formParmTypeSignal;
   Category cat, catS;
   CContext sigCtx;
+  unsigned iArg=1;
 
-  if (GetFirstOutput(funcDecl)) {
-    //ckd.errorCode = &ERR_SlotHasOutput;
+  if (GetFirstOutput(callbackDecl)) {
+    ckd.errorCode = &ERR_SlotHasOutput;
     return false;
   }
-  chSlot = GetFirstInput(funcDecl);
+  chSlot = GetFirstInput(callbackDecl);
   chSignal = GetFirstInput(signalDecl);
   while (chSlot && chSignal 
         && (((LavaDECL*)chSlot->data)->DeclType == IAttr)
         && (((LavaDECL*)chSignal->data)->DeclType == IAttr)) {
-    ckd.tempCtx = callCtx;
+    ckd.tempCtx = callbackCtx;
     sigCtx = signalCtx;
     ckd.document->MemberTypeContext((LavaDECL*)chSlot->data, ckd.tempCtx,&ckd);
     ckd.document->MemberTypeContext((LavaDECL*)chSignal->data, sigCtx,&ckd);
@@ -750,18 +751,24 @@ bool slotFunction(CheckData &ckd, LavaDECL *funcDecl, LavaDECL *signalDecl, cons
     if (((LavaDECL*)chSignal->data)->TypeFlags.Contains(substitutable))
       sigCtx.ContextFlags = SET(multiContext,-1);  //?? stimmt der Context
     if (!compatibleTypes(ckd,formParmTypeSignal,sigCtx,formParmTypeSlot,ckd.tempCtx)) {
-      //ckd.errorCode = &ERR_SlotWrongArg;
+      ckd.errorCode = &ERR_SlotWrongArg;
+      ckd.iArg = iArg;
       return false;
     }
     chSlot = (CHE*)chSlot->successor;
     chSignal = (CHE*)chSignal->successor;
+    iArg++;
     if (chSlot && ((LavaDECL*)chSlot->data)->DeclType != IAttr) 
       chSlot = 0;
     if (chSignal && ((LavaDECL*)chSignal->data)->DeclType != IAttr) 
       chSignal = 0;
   }
-  if (chSignal || chSlot) {
-    //ckd.errorCode = &ERR_SlotWrongArg
+  if (chSignal) {
+    ckd.errorCode = &ERR_SlotTooFewArgs;
+    return false;
+  }
+  else if (chSlot) {
+    ckd.errorCode = &ERR_SlotTooManyArgs;
     return false;
   }
   else
@@ -4385,15 +4392,18 @@ bool FuncStatement::Check (CheckData &ckd)
   EXIT
 }
 
+static QString slotWrongArg;
+
 bool Connect::Check (CheckData &ckd)
 {
   TID objTypeTid, selfTid, funcItfTid, funcTid;
-  LavaDECL *funcDecl, *funcItf, *funcImpl=0;
+  LavaDECL *sigDecl, *callbackDecl, *funcItf, *funcImpl=0;
   Expression *callExpr;
   LavaDECL *objTypeDecl;
   Category cat;
-  CContext callCtx;
+  CContext sigCtx, callbackCtx;
   SynFlags myCtxFlags;
+//  QString slotWrongArg;
 
   ENTRY
 
@@ -4417,8 +4427,8 @@ bool Connect::Check (CheckData &ckd)
   }
 
   if (objTypeDecl) {
-    callCtx = ckd.tempCtx;
-    ckd.document->NextContext(objTypeDecl, callCtx);
+    sigCtx = ckd.tempCtx;
+    ckd.document->NextContext(objTypeDecl, sigCtx);
     if (callExpr->flags.Contains(isSelfVar)
     && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
       // Implementation required for self, rather than Interface
@@ -4435,18 +4445,18 @@ bool Connect::Check (CheckData &ckd)
   funcTid = ((Reference*)signalFunction.ptr)->refID;
   ADJUST4(funcTid);
   if (objTypeTid.nID != -1) {
-    funcDecl = ckd.document->IDTable.GetDECL(funcTid);
-    if (!funcDecl)
+    sigDecl = ckd.document->IDTable.GetDECL(funcTid);
+    if (!sigDecl)
       ERROREXIT
-    if (!funcDecl->SecondTFlags.Contains(isLavaSignal)) {
+    if (!sigDecl->SecondTFlags.Contains(isLavaSignal)) {
       ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_NoSignal);
       ok = false;
     }
-    if (funcDecl->TypeFlags.Contains(isInitializer)) {
+    if (sigDecl->TypeFlags.Contains(isInitializer)) {
       ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_InitializerForbidden);
       ok = false;
     }
-    funcItf = funcDecl->ParentDECL;
+    funcItf = sigDecl->ParentDECL;
     if (funcItf->DeclType == Impl) {
       funcImpl = funcItf;
       funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
@@ -4480,8 +4490,8 @@ bool Connect::Check (CheckData &ckd)
   }
 
   if (objTypeDecl) {
-    callCtx = ckd.tempCtx;
-    ckd.document->NextContext(objTypeDecl, callCtx);
+    callbackCtx = ckd.tempCtx;
+    ckd.document->NextContext(objTypeDecl, callbackCtx);
     if (callExpr->flags.Contains(isSelfVar)
     && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
       // Implementation required for self, rather than Interface
@@ -4498,14 +4508,14 @@ bool Connect::Check (CheckData &ckd)
   funcTid = ((Reference*)callbackFunction.ptr)->refID;
   ADJUST4(funcTid);
   if (objTypeTid.nID != -1) {
-    funcDecl = ckd.document->IDTable.GetDECL(funcTid);
-    if (!funcDecl)
+    callbackDecl = ckd.document->IDTable.GetDECL(funcTid);
+    if (!callbackDecl)
       ERROREXIT
-    if (funcDecl->TypeFlags.Contains(isInitializer)) {
+    if (callbackDecl->TypeFlags.Contains(isInitializer)) {
       ((Reference*)callbackFunction.ptr)->SetError(ckd,&ERR_InitializerForbidden);
       ok = false;
     }
-    funcItf = funcDecl->ParentDECL;
+    funcItf = callbackDecl->ParentDECL;
     if (funcItf->DeclType == Impl) {
       funcImpl = funcItf;
       funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
@@ -4515,6 +4525,24 @@ bool Connect::Check (CheckData &ckd)
       ((SynObject*)callbackFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
       ok = false;
     }
+  }
+
+  if (!ok)
+    ERROREXIT
+
+///////////////////////////////////////////////////////////////////////////////////
+
+// check whether slot is compatible with signal?
+
+  ok &= slotFunction(ckd,callbackDecl,callbackCtx,sigDecl,sigCtx);
+  if (!ok) {
+    if (ckd.errorCode == &ERR_SlotWrongArg) {
+      slotWrongArg = ERR_SlotWrongArg.arg(ckd.iArg);
+      ((SynObject*)callbackFunction.ptr)->SetError(ckd,&slotWrongArg);
+    }
+    else
+      ((SynObject*)callbackFunction.ptr)->SetError(ckd,ckd.errorCode);
+    ERROREXIT
   }
 
   EXIT
