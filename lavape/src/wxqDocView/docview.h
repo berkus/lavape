@@ -72,9 +72,6 @@ private:
     Q_OBJECT
 };
 
-#define IDU_Idle (QEvent::Type)QEvent::User
-// User+0 is reserved for IDU_Idle; cf LavaAppBase.h
-
 class WXDLLEXPORT wxApp : public QApplication
 {
 public:

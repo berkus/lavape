@@ -21,54 +21,15 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
+#include "disco_all.h"
 
-               implementation of class MachDepCLASS
-
- **********************************************************************/
-
-#include "MachDep.h"
-//#include "disco.h"
+//#include "MachDep.h"
 
 
 MachDepCLASS MachDep;
 static bool __INITstarted=false;
 
 
-
-/************************************************************************/
-
-/*
-bool MachDepCLASS::IsLetter (char ch)
-{
-  if (((ch >= 'A')
-       && (ch <= 'Z'))
-      || ((ch >= 'a')
-          && (ch <= 'z')))
-    return true;
-  else
-    return false;
-}
-
-
-bool MachDepCLASS::IsIdChar (char ch)
-{
-  if (((ch >= 'A')
-       && (ch <= 'Z'))
-      || ((ch >= 'a')
-          && (ch <= 'z'))
-      || ((ch >= '0')
-          && (ch <= '9')))
-    return true;
-  else
-    return false;
-}
-*/
-
-
-/**********************************************************************/
-/*           class constructor (the former "module body"):            */
-/**********************************************************************/
 
 void MachDepCLASS::INIT ()
 {

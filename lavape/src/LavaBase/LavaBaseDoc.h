@@ -436,17 +436,6 @@ public:
 
 
 
-#define UNDEF_VARIABLE (LavaObjectPtr)0
-#define LSH 2 //Lenght of section header in object
-#define SFH 3 //Lenght of stack frame header (function calls)
-  //LavaObjectPtr : pointer to section in section table
-  //LavaObjectPtr+1: objects section flags
-
-#define LOH 2 //Lenght of header in object:
-  // LavaObjectPtr-1: reference counts (2 x unsigned short)
-  // changed: use LavaObjectPtr+1 in the main section of the object
-  // instead of LavaObjectPtr-2 for object-global flags
-  // LavaObjectPtr-2: LavaObjectPtr urlObj of attached object
 
 extern LAVABASE_DLL int allocatedObjects;
 
@@ -454,11 +443,6 @@ extern LAVABASE_DLL bool INC_FWD_CNT(CheckData &ckd, LavaObjectPtr object);
 extern LAVABASE_DLL bool INC_REV_CNT(CheckData &ckd, LavaObjectPtr object);
 extern LAVABASE_DLL bool DEC_FWD_CNT(CheckData &ckd, LavaObjectPtr object);
 extern LAVABASE_DLL bool DEC_REV_CNT(CheckData &ckd, LavaObjectPtr object);
-
-#define IFC(OBJ) {if (!INC_FWD_CNT(ckd,OBJ)) return false;}
-#define IRC(OBJ) {if (!INC_REV_CNT(ckd,OBJ)) return false;}
-#define DFC(OBJ) {if (!DEC_FWD_CNT(ckd,OBJ)) return false;}
-#define DRC(OBJ) {if (!DEC_REV_CNT(ckd,OBJ)) return false;}
 
 
 class LAVABASE_DLL DumpEventData {

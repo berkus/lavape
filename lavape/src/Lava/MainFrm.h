@@ -2,8 +2,8 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_MAINFRM_H__EF6A882E_2475_11D3_B7B1_000000000000__INCLUDED_)
-#define AFX_MAINFRM_H__EF6A882E_2475_11D3_B7B1_000000000000__INCLUDED_
+#ifndef __MainFrame
+#define __MainFrame
 
 #include "cmainframe.h"
 

@@ -22,10 +22,13 @@
 #endif
 
 
-//#include "stdafx.h"
+#include "LavaBase_all.h"
+#include "MACROS.h"
+/*
 #include "AboutBox.h"
 #include "LavaBaseStringInit.h"
 #include "LavaAppBase.h"
+*/
 #include "qobject.h"
 #include "qstring.h"
 #include "qfiledialog.h"

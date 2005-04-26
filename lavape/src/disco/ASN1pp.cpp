@@ -30,7 +30,6 @@
 
 #include "ASN1pp.h"
 #include "UNIX.h"
-//#include "disco.h"
 
 
 ASN1ppCLASS ASN1pp;

@@ -26,11 +26,11 @@
                implementation of class HaltCLASS
 
  **********************************************************************/
+#include "UNIX.h"
 
 #include "SYSTEM.h"
-#include "Halt.h"
 #include <stdlib.h>
-//#include "disco.h"
+//#include "Halt.h"
 
 
 HaltCLASS Halt;

@@ -21,10 +21,12 @@
 #pragma implementation
 #endif
 
+#include "disco_all.h"
+/*
 #include "Syntax.h"
 #include "NESTANY.h"
 #include "AnyType.h"
-//#include "disco.h"
+*/
 
 
 void NESTEDANY0::CDP (PutGetFlag pgf, ASN1* cid)//,

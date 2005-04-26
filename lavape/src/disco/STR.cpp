@@ -21,17 +21,11 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
-
-    implementation of classes STRING/ARBITRARY/...
-
- **********************************************************************/
-
-
+#include "disco_all.h"
+/*
 #include "STR.h"
 #include "ASN1.h"
-//#include "disco.h"
-
+*/
 
 void STRING::CDP (PutGetFlag pgf, ASN1 *cid)
 {

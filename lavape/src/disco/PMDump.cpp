@@ -21,15 +21,11 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
+#include "disco_all.h"
 
-               implementation of class PMDumpCLASS
-
- **********************************************************************/
-
-#include "PMDump.h"
 #include "UNIX.h"
-//#include "disco.h"
+
+//#include "PMDump.h"
 
 
 PMDumpCLASS PMDump;

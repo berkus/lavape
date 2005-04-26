@@ -8,14 +8,6 @@
 
 #include "LavaBaseDoc.h"
 
-//length of adapter table header
-#define LAH  7 //adapterTable[0]: length of native data, lava-attributes behind the native part of the section
-               //adapterTable[1]: copy function
-               //adapterTable[2]: compare function, this is not the "=="operator 
-               //adapterTable[3]: serialize function 
-               //adapterTable[4]: new function, used in AllocateObject
-               //adapterTable[5]: refcount function, used in DEC_[FWD|REV]_CNT
-               //adapterTable[6]: dump&debug function, returns a DDMakeClass-object
 enum adapterPos {adapterPos_len, adapterPos_copy, adapterPos_compare, adapterPos_serialize, adapterPos_newFunc,
 adapterPos_refCount, adapterPos_DD};              
 

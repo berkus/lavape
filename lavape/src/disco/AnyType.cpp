@@ -21,7 +21,9 @@
 #pragma implementation
 #endif
 
-#include "AnyType.h"
+#include "disco_all.h"
+
+//#include "AnyType.h"
 
 AnyType* AnyType::Clone () {
   AnyType *result;

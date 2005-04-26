@@ -21,17 +21,9 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
+#include "disco_all.h"
 
-         implementation of class StringOutFile
-
- **********************************************************************/
-
-#include "StrOFile.h"
-//#include "disco.h"
-
-
-/************************************************************************/
+//#include "StrOFile.h"
 
 
 StringOutFile::StringOutFile (char * const buffer,

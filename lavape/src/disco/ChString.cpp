@@ -21,9 +21,9 @@
 #pragma implementation
 #endif
 
-#include "ChString.h"
-//#include "disco.h"
+#include "disco_all.h"
 
+//#include "ChString.h"
 
 
 bool ChainOfString::Contains (const DString& elem)

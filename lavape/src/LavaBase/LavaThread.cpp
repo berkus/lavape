@@ -21,8 +21,12 @@
 #pragma implementation
 #endif
 
+#include "LavaBase_all.h"
+#include "MACROS.h"
+/*
 #include "LavaThread.h"
 #include "LavaBaseDoc.h"
+*/
 
 
 QThreadStorage<CThreadData*> threadStg;

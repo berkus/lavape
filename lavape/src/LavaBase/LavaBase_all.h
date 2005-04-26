@@ -1,13 +1,6 @@
 #ifndef _LavaBase_PCH
 #define _LavaBase_PCH
 
-//use these if the compiler does not support _intXX
-
-#ifdef NEEDS_INT_DEFINED
-#define _int16 short
-#define _int32 long
-#define _int64 long long
-#endif
 
 #include "wxqDocView_all.h"
 
@@ -20,8 +13,9 @@
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
 #include "LavaThread.h"
+#include "MACROS.h"
 #include "PEBaseDoc.h"
-#include "SafeInt.h"
+//#include "SafeInt.h"
 #include "SylTraversal.h"
 #include "SynIDTable.h"
 

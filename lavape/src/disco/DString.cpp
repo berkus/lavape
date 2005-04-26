@@ -27,9 +27,11 @@
 
  **********************************************************************/
 
-
+#include "UNIX.h"
+/*
 #include "DString.h"
 #include "MachDep.h"
+*/
 #include <ctype.h>
 #include "MACROS.h"
 #include <string.h>

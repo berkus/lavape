@@ -21,15 +21,16 @@
 #pragma implementation
 #endif
 
+#include "disco_all.h"
+
 #include "SYSTEM.h"
 
 #include <time.h>
-#include "DateTime.h"
+//#include "DateTime.h"
 
 #include "ASN1pp.h"
-#include "CDPpp.h"
-#include "Convert.h"
-//#include "disco.h"
+//#include "CDPpp.h"
+//#include "Convert.h"
 
 
 static long tval;

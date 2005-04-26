@@ -21,17 +21,9 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
+#include "disco_all.h"
 
-         implementation of class StringInFile
-
- **********************************************************************/
-
-#include "StrIFile.h"
-//#include "disco.h"
-
-
-/************************************************************************/
+//#include "StrIFile.h"
 
 
 StringInFile::StringInFile (char * const buffer,

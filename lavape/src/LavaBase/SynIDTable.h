@@ -7,21 +7,13 @@
 #define __SynIDTable
 
 
+#include "MACROS.h"
 #include "DString.h"
 #include "SynIO.h"
 #include "Syntax.h"
 #include "qobject.h"
 #include "qstring.h"
 
-#ifdef WIN32
-#ifdef LAVABASE_EXPORT
-#define LAVABASE_DLL __declspec( dllexport )
-#else
-#define LAVABASE_DLL __declspec( dllimport )
-#endif
-#else
-#define LAVABASE_DLL
-#endif
 
 enum TIDType { noID, localID , globalID };
 

@@ -27,12 +27,13 @@
 
  **********************************************************************/
 
+#include "disco_all.h"
+/*
 #include "ASN1.h"
 #include "MachDep.h"
 #include "Halt.h"
-//#include "DIO.h"
 #include <qapplication.h>
-
+*/
 #ifdef WIN32x
 #include <winsock.h>
 #endif

@@ -26,13 +26,14 @@
                implementation of class CDPppCLASS
 
  **********************************************************************/
-
+#include "disco_all.h"
+/*
 #include "CDPpp.h"
 
 #include "MachDep.h"
 #include "STR.h"
 #include "DIO.h"
-//#include "disco.h"
+*/
 
 
 CDPppCLASS CDPpp;

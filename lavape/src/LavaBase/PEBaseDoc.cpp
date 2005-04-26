@@ -21,7 +21,9 @@
 #pragma implementation
 #endif
 
-
+#include "LavaBase_all.h"
+#include "MACROS.h"
+/*
 #include "LavaBaseStringInit.h"
 #include "LavaAppBase.h"
 #include "PEBaseDoc.h"
@@ -29,10 +31,9 @@
 #include "SynIO.h"
 #include "Convert.h"
 #include "SylTraversal.h"
-//#include "DPatternName.h"
-//#include "stdafx.h"
 #include "docview.h"
 #include "mdiframes.h"
+*/
 #include "qmessagebox.h"
 #include "qcstring.h"
 #include "qobject.h"

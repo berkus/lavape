@@ -21,15 +21,19 @@
 #pragma implementation
 #endif
 
+#include "LavaBase_all.h"
+#include "MACROS.h"
+/*
 #include "BAdapter.h"
 #include "LavaBaseDoc.h"
-#include "SafeInt.h"
 #include "LavaBaseStringInit.h"
+#include "LavaAppBase.h"
+#include "DumpView.h"
+*/
+#include "SafeInt.h"
 #include "qobject.h"
 #include "qstring.h"
 #include "qmessagebox.h"
-#include "LavaAppBase.h"
-#include "DumpView.h"
 #include <float.h>
 #include <stdio.h>
 #include <limits>

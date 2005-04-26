@@ -17,14 +17,17 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-
+#include "LavaBase_all.h"
+#include "MACROS.h"
+/*
 #include "LavaBaseDoc.h"
 #include "BAdapter.h"
 #include "docview.h"
+#include "LavaBaseStringInit.h"
+*/
 #include "qobject.h"
 #include "qstring.h"
 #include "qlibrary.h"
-#include "LavaBaseStringInit.h"
 #ifdef WIN32
 #include <windows.h>
 #else

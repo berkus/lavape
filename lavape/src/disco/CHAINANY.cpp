@@ -21,7 +21,9 @@
 #pragma implementation
 #endif
 
-#include "CHAINANY.h"
+#include "disco_all.h"
+
+//#include "CHAINANY.h"
 #include "wx_obj.h"
 
 

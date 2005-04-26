@@ -68,15 +68,15 @@ this: ../../bin/$(EXEC)
 endif
 
 .cpp.o:
-	$(CC) -c -pipe -g -fPIC -MMD -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) -include $(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -g -fPIC -MMD -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
 
 .c.o:
-	$(CC) -c -pipe -g -fPIC -MMD -D_REENTRANT $(CPP_FLAGS) -include $(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -g -fPIC -MMD -D_REENTRANT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -MMD $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $<
 
 #SFLsockets_all.h.gch:
-#	$(CC) -c -pipe -g -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
+#	$(CC) -c -pipe -g -MMD -D__UNIX__ -D_REENTRANT -DQT_THREAD_SUPPORT $(CPP_FLAGS) -include $(PRJ)_all.h $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 $(PRJ)_all.h.gch: $(PRJ)_all.h
 	$(CC) -c -pipe -g -fPIC -MMD -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h

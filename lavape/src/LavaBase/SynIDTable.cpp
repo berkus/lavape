@@ -21,21 +21,23 @@
 #pragma implementation
 #endif
 
-
+#include "LavaBase_all.h"
+#include "MACROS.h"
+/*
 #include "SynIDTable.h"
 #include "SynIO.h"
 #include "Syntax.h"
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
-
+*/
 #include "qobject.h"
 #include "qstring.h"
 #include "SYSTEM.h"
-#include "MACROS.h"
+//#include "MACROS.h"
 
 
-//#define d_min(a,b)        (((a) < (b))? (a): (b))
-//#define max(a,b)        (((a) > (b))? (a): (b))
+#define min(a,b)        (((a) < (b))? (a): (b))
+#define max(a,b)        (((a) > (b))? (a): (b))
 
 TSimpleTable::TSimpleTable(int minimum)
 {

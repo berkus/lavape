@@ -21,17 +21,11 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
-
-               implementation of class OSDepCLASS
-
- **********************************************************************/
-
+#include "disco_all.h"
 
 #include <stdlib.h>
 #include <signal.h>
-//#include "disco.h"
-#include "OSDep.h"
+//#include "OSDep.h"
 
 OSDepCLASS OSDep;
 static bool __INITstarted=false;

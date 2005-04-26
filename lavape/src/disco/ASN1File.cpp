@@ -21,17 +21,15 @@
 #pragma implementation
 #endif
 
+#include "disco_all.h"
+/*
 #include "ASN1File.h"
-
 #include "SYSTEM.h"
 #include "DIO.h"
 #include "UNIX.h"
 #include "Halt.h"
 #include "qapplication.h"
-
-#ifndef WIN32
-#define O_BINARY 0
-#endif
+*/
 
 
 void ASN1InFile::errorExitProc ()

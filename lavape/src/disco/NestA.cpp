@@ -21,8 +21,9 @@
 #pragma implementation
 #endif
 
-#include "NestA.h"
-//#include "disco.h"
+#include "disco_all.h"
+
+//#include "NestA.h"
 
 
 void NestedAny0::init (const NestedAny0 &n)

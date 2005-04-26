@@ -21,17 +21,13 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
-
-               implementation of class IOCLASS
-
- **********************************************************************/
-
+#include "disco_all.h"
+/*
 #include "DIO.h"
-#include "UNIX.h"
 #include "StrIFile.h"
 #include "StrOFile.h"
-//#include "disco.h"
+*/
+#include "UNIX.h"
 
 
 IOCLASS IO;

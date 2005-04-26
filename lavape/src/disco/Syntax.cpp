@@ -21,8 +21,9 @@
 #pragma implementation
 #endif
 
-#include "Syntax.h"
-//#include "disco.h"
+#include "disco_all.h"
+
+//#include "Syntax.h"
 
 
 CLavaError::CLavaError(CHAINX* errors, QString* ids, DString *text, bool autoC)

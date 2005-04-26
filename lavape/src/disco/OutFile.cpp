@@ -21,19 +21,15 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
+#include "disco_all.h"
 
-               implementation of class OutFile
-
- **********************************************************************/
-
+#include "UNIX.h"
+/*
 #include "OutFile.h"
 #include "MachDep.h"
 #include "OSDep.h"
-#include "UNIX.h"
 #include "Convert.h"
-//#include "disco.h"
-
+*/
 
 bool openInAppendMode=false;
 

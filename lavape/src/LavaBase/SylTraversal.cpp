@@ -21,11 +21,13 @@
 #pragma implementation
 #endif
 
-
+#include "LavaBase_all.h"
+#include "MACROS.h"
+/*
 #include "LavaAppBase.h"
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
-//#include "stdafx.h"
+*/
 #include "qobject.h"
 #include "qstring.h"
 

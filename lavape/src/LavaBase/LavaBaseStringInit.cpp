@@ -21,10 +21,12 @@
 #pragma implementation
 #endif
 
+#include "LavaBase_all.h"
+#include "MACROS.h"
 
 #include "qobject.h"
 #include "qstring.h"
-#include "LavaBaseStringInit.h"
+//#include "LavaBaseStringInit.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

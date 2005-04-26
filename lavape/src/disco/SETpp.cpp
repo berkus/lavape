@@ -21,10 +21,12 @@
 #pragma implementation
 #endif
 
-#include "SYSTEM.h"
-#include "SETpp.h"
+#include "disco_all.h"
+
 #include <stdarg.h>
-//#include "disco.h"
+#include "SYSTEM.h"
+
+//#include "SETpp.h"
 
 
 SETpp::SETpp (int arg1 ...)

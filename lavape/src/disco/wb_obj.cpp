@@ -21,7 +21,7 @@
 
 
 #ifdef __GNUC__
-#pragma implementation
+#pragma implementation "wx_obj.h"
 #endif
 
 /*
@@ -36,9 +36,6 @@
 
 /* static const char sccsid[] = "@(#)wb_obj.cc  1.2 5/9/94"; */
 
-#ifdef __GNUC__
-#pragma implementation "wx_obj.h"
-#endif
 
 // For compilers that support precompilation, includes "wx.h".
 //#include "wx_prec.h"
@@ -50,8 +47,6 @@
 #include "wx_obj.h"
 #include "string.h"
 #include "qapplication.h"
-//#include "disco.h"
-
 
 
 // Hand-coded IMPLEMENT... macro for wxObject (define static data)

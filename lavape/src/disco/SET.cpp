@@ -22,9 +22,8 @@
 #endif
 
 #include "SYSTEM.h"
-#include "stdio.h"
-#include "stdarg.h"
-//#include "disco.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 
 SET::SET (int arg1 ...)

@@ -22,6 +22,10 @@
 
 
 
+#define IDU_Idle (QEvent::Type)QEvent::User
+// User+0 is reserved for IDU_Idle; cf LavaAppBase.h
+
+
 // ----------------------------------------------------------------------------
 // compiler and OS identification
 // ----------------------------------------------------------------------------

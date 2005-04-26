@@ -21,21 +21,16 @@
 #pragma implementation
 #endif
 
-
-
-/**********************************************************************
-
-               implementation of class SynIOCLASS
-
- **********************************************************************/
+#include "disco_all.h"
 
 #include "SYSTEM.h"
 #include "UNIX.h"
+/*
 #include "SynIO.h"
 #include "ASN1File.h"
 #include "CDPpp.h"
 #include "DIO.h"
-//#include "disco.h"
+*/
 
 
 SynIOCLASS SynIO;

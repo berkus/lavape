@@ -24,6 +24,8 @@
 
 #ifdef WIN32
 #define strcasecmp stricmp
+#else
+#define O_BINARY 0
 #endif
 
 #define EVEN(arg) (!(arg & 1))

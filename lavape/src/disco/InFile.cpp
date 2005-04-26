@@ -21,24 +21,17 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
+#include "disco_all.h"
 
-         implementation of class InFile
-
- **********************************************************************/
-
-#include "InFile.h"
-#include "MachDep.h"
+#include <stdlib.h>
 #include "UNIX.h"
 #include "OSDep.h"
-//#include "disco.h"
+/*
+#include "InFile.h"
+#include "MachDep.h"
+*/
 
 
-/************************************************************************/
-
-#ifndef WIN32
-#define O_BINARY 0
-#endif
 
 InFile::InFile (const DString& filename)
 {

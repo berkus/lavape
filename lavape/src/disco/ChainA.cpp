@@ -21,9 +21,9 @@
 #pragma implementation
 #endif
 
-#include "ChainA.h"
-//#include "disco.h"
+#include "disco_all.h"
 
+#include "ChainA.h"
 
 
 void ChainAny0::init (const ChainAny0 &c)

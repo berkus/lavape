@@ -126,30 +126,6 @@
 *
 */
 
-#define CHLV_noCheck       10
-#define CHLV_inUpdateLow   11
-#define CHLV_inUpdateLowFinal 12
-#define CHLV_inUpdateHigh  13 //fit but no call of NewID() and no setting of modified-flag
-#define CHLV_showError     14
-#define CHLV_fit           15
-
-//User+0 is reserved for IDU_Idle
-#define IDU_LavaEnd (QEvent::Type)(QEvent::User+1)
-#define IDU_LavaShow (QEvent::Type)(QEvent::User+2)
-#define IDU_LavaPE_SyncTree (QEvent::Type)(QEvent::User+3)
-#define IDU_LavaPE_CalledView (QEvent::Type)(QEvent::User+4)
-#define IDU_LavaMsgBox (QEvent::Type)(QEvent::User+5)
-#define IDU_LavaGUIInsDel (QEvent::Type)(QEvent::User+6)
-#define IDU_LavaPE_SyncForm (QEvent::Type)(QEvent::User+7)
-#define IDU_LavaPE_SetLastHint (QEvent::Type)(QEvent::User+8)
-#define IDU_OpenObject (QEvent::Type)(QEvent::User+9)
-#define IDU_LavaPE_OnDrop (QEvent::Type)(QEvent::User+10)
-#define IDU_LavaDump (QEvent::Type)(QEvent::User+11)
-#define IDU_LavaStart (QEvent::Type)(QEvent::User+12)
-#define IDU_LavaDebug (QEvent::Type)(QEvent::User+13)
-#define IDU_LavaDebugRq (QEvent::Type)(QEvent::User+14)
-#define IDU_LavaDebugW (QEvent::Type)(QEvent::User+15)
-#define IDU_LavaPE_setSel (QEvent::Type)(QEvent::User+16)
 
 enum CPECommand {
   CPECommand_OpenFormView, 

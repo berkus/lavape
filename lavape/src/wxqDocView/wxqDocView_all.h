@@ -3,10 +3,10 @@
 
 #include "disco_all.h"
 
-#include "defs.h"
+//#include "defs.h"
 #include "docview.h"
 #include "mdiframes.h"
-#include "setup.h"
+//#include "setup.h"
 #include "wxExport.h"
 
 #endif

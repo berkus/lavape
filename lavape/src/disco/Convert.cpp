@@ -21,14 +21,9 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
+#include "disco_all.h"
 
-               implementation of class ConvertCLASS
-
- **********************************************************************/
-
-#include "Convert.h"
-//#include "disco.h"
+//#include "Convert.h"
 
 
 ConvertCLASS Convert;

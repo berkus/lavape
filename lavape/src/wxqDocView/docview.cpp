@@ -45,12 +45,15 @@
 #pragma implementation
 #endif
 
+#include "wxqDocView_all.h"
 
 #include "SYSTEM.h"
 #include "setup.h"
+/*
 #include "defs.h"
 #include "docview.h"
 #include "mdiframes.h"
+*/
 #include "qmetaobject.h"
 #include "qptrlist.h"
 #include "qstring.h"

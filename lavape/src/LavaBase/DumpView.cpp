@@ -21,17 +21,21 @@
 #pragma implementation
 #endif
 
-
+#include "LavaBase_all.h"
+#include "MACROS.h"
+/*
 #include "LavaBaseDoc.h"
 #include "BAdapter.h"
+#include "DumpView.h"
+*/
 #include "qapplication.h"
 #include "qframe.h"
 #include "qlistview.h"
 #include "qheader.h"
-#include "DumpView.h"
 #include "qpushbutton.h"
 #include "qvbox.h"
 #include "qlayout.h"
+
 
 QString DDMakeClass::getValue0(const QString& stdLabel)
 {
