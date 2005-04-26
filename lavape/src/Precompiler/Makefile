@@ -1,3 +1,5 @@
+PRJ = Precompiler
+
 EXEC = LPC
 SUBPRO=disco SFLsockets
 

@@ -23,7 +23,7 @@
 
 
 #include "GUIProg.h"
-#include "LavaGUIPopup.h"
+//#include "LavaGUIPopup.h"
 #include "LavaAppBase.h"
 #include "LavaBaseDoc.h"
 #include "LavaGUIView.h"
@@ -31,8 +31,6 @@
 
 #include "TEdit.h"
 #include "mdiframes.h"
-//#include "stdafx.h"
-
 
 
 CGUIProg::CGUIProg() : CGUIProgBase()

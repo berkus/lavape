@@ -62,6 +62,8 @@ public:
   ChainAny0 (const ChainAny0& c) { init(c); }
 
   virtual void Destroy ();
+  
+  virtual ~ChainAny0(){}
 
   ChainAny0& operator= (const ChainAny0& c)
   { copy(c); return *this; }
@@ -102,7 +104,7 @@ public:
 
   ChainAny () : ChainAny0() {}
 
-  ChainAny (const ChainAny0& c) { init(c); }
+  ChainAny (const ChainAny0& c) : ChainAny0() { init(c); }
 
   ChainAny (const ChainAny& c) { init(c); }
   // only this is recognized as a copy constructor

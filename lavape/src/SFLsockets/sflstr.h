@@ -115,7 +115,7 @@ char   *eatchar            (char **strBuff, char cChar);
 #define SENSECASE  1
 
 #define mstrncpy(dest,src,len) {strncpy(dest,src,len);*(dest+len)='\0';}
-#define cstrcpy(dest,src) {*dest=src;*(dest+1)='\0';}
+//#define cstrcpy(dest,src) {*dest=src;*(dest+1)='\0';}
 #define deletechar(strbuf,pos) strcpy((strbuf+pos),(strbuf+pos+1))
 #define deletechars(strbuf,pos,cnt) strcpy((strbuf+pos),(strbuf+pos+cnt))
 #define getcommandlinearg(argnum) ((argnum)<=(argc-1))?argv[argnum]:""

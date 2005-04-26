@@ -208,7 +208,7 @@ public:
 
   Bitstring () : DString() {}
     
-  Bitstring (const Bitstring& str) { init(str); }
+  Bitstring (const Bitstring& str) : DString() { init(str); }
 
   Bitstring& operator= (const Bitstring& str)
   { copy(str); return *this; }

@@ -10,7 +10,6 @@
 #ifndef __GUIProg
 #define __GUIProg
 
-//#include "stdafx.h"
 
 #include "SYSTEM.h"
 #include "ASN1.h"

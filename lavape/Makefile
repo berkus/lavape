@@ -4,7 +4,7 @@ export LAVADIR
 all: lavadir dirs links build
 lavadir:
   echo setting LAVADIR=$(LAVADIR)
-SUBPRO=lavape/src/disco lavape/src/wxqDocView lavape/src/LavaBase lavape/src/LavaPE_UI lavape/src/LavaExecs lavape/src/LavaGUI lavape/src/LavaPE lavape/src/Lava_UI lavape/src/Interpreter lavape/src/Lava lavape/src/LavaStream
+SUBPRO=Precompiler SFLsockets disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter Lava LavaStream
 include src/common.mk
 #
 dirs:
@@ -48,8 +48,7 @@ build:
 	cd ../LavaPE && $(MAKE); \
 	cd ../Lava && $(MAKE);
 #
-lavaclean:
-	cd ../LavaPE && $(MAKE) cleanall; \
-	cd ../Lava && $(MAKE) clean;
+#:
+distclean: $(clean_subpro) clean
 
 

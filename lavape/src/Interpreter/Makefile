@@ -1,3 +1,5 @@
+PRJ = Interpreter
+
 MOCABLES=
 
 EXEC = Interpreter.so

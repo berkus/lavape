@@ -1,3 +1,6 @@
+#ifndef _LavaGUIPopup
+#define _LavaGUIPopup
+
 #ifdef _GNUG__
 #pragma interface
 #endif
@@ -10,6 +13,7 @@
 #include "GUIProgBase.h"
 #include "mdiframes.h"
 
+#undef QMainWindow
 
 class CLavaGUIPopup : public QMainWindow 
 {
@@ -26,4 +30,6 @@ private:
   Q_OBJECT
 
 };
+
+#endif
 

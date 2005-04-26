@@ -21,6 +21,7 @@
 #ifndef _SFLENV_INCLUDED                /*  Allow multiple inclusions        */
 #define _SFLENV_INCLUDED
 
+#include "sflsymb.h"
 
 /*  Function prototypes                                                      */
 

@@ -17,7 +17,7 @@ struct DISCO_DLL CHAINANY0 : public ChainAny0 {
 
   CHAINANY0 () : ChainAny0() {}
 
-  CHAINANY0 (const CHAINANY0& c) { init(c); }
+  CHAINANY0 (const CHAINANY0& c) : ChainAny0() { init(c); }
 
   CHAINANY0& operator= (const CHAINANY0& c)
   { copy(c); return *this; }

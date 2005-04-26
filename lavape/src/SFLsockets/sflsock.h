@@ -29,9 +29,6 @@
 #ifndef SFLSOCK_INCLUDED               /*  Allow multiple inclusions        */
 #define SFLSOCK_INCLUDED
 
-#ifdef __GNUC__
-#pragma interface
-#endif
 
 #ifdef WIN32
 #ifdef SFL_EXPORT
@@ -371,7 +368,7 @@ Bool ip_nonblock;
 #ifdef __cplusplus
 extern "C" 
 #endif
-char *connect_errlist [];
+char *connect_errlist [20];
 
 #ifdef __cplusplus
 extern "C" 

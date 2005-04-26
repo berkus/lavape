@@ -29,6 +29,8 @@
 #ifndef SFLDIR_INCLUDED                /*  Allow multiple inclusions        */
 #define SFLDIR_INCLUDED
 
+#include "sflnode.h"
+
 #if !(defined (NAME_MAX))               /*  Posix uses NAME_MAX              */
 #   if !(defined (MAXNAMLEN))           /*  BSD uses MAXNAMLEN               */
 #       if (defined (__WINDOWS__))

@@ -3,7 +3,6 @@
 
 #include "SFLsockets_all.h"
 
-#include "qcstring.h"
 #include "qstring.h"
 #include "AnyType.h"
 #include "ASN1File.h"

@@ -1,3 +1,6 @@
+#ifndef _TStatic
+#define _TStatic
+
 #ifdef _GNUG__
 #pragma interface
 #endif
@@ -24,5 +27,5 @@ private:
   Q_OBJECT
 
 };
+#endif
 
-/////////////////////////////////////////////////////////////////////////////
