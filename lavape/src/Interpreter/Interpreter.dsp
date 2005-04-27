@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\LavaPE" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\LavaPE" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /FR /YX /FD /c
 # ADD BASE MTL /nologo /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x407

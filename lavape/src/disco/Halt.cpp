@@ -21,13 +21,10 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
 
-               implementation of class HaltCLASS
+#include "disco_all.h"
 
- **********************************************************************/
 #include "UNIX.h"
-
 #include "SYSTEM.h"
 #include <stdlib.h>
 //#include "Halt.h"

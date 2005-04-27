@@ -21,11 +21,8 @@
 #pragma implementation
 #endif
 
-/**********************************************************************
 
-          implementation of classes DString/Bitstring
-
- **********************************************************************/
+#include "disco_all.h"
 
 #include "UNIX.h"
 /*

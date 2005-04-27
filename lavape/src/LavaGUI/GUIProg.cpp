@@ -23,7 +23,7 @@
 
 
 #include "GUIProg.h"
-//#include "LavaGUIPopup.h"
+#include "LavaGUIPopup.h"
 #include "LavaAppBase.h"
 #include "LavaBaseDoc.h"
 #include "LavaGUIView.h"

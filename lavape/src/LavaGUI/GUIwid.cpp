@@ -33,7 +33,7 @@
 #include "TStatic.h"
 #include "mdiframes.h"
 #include "LavaGUIView.h"
-//#include "LavaGUIPopup.h"
+#include "LavaGUIPopup.h"
 #include "GUIProg.h"
 #include "MACROS.h"
 

@@ -35,9 +35,10 @@
 #include "SYSTEM.h"
 //#include "MACROS.h"
 
-
+#ifndef WIN32
 #define min(a,b)        (((a) < (b))? (a): (b))
 #define max(a,b)        (((a) > (b))? (a): (b))
+#endif
 
 TSimpleTable::TSimpleTable(int minimum)
 {

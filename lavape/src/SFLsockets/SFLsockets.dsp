@@ -214,6 +214,10 @@ SOURCE=..\SFLsockets\sflsock.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\SFLsockets_all.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\sflstr.h
 # End Source File
 # Begin Source File
