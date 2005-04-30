@@ -4,7 +4,7 @@ export LAVADIR
 all: lavadir dirs links build
 lavadir:
   echo setting LAVADIR=$(LAVADIR)
-SUBPRO=Precompiler SFLsockets disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter Lava LavaStream
+SUBPRO=Precompiler SFLsockets disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
 include src/common.mk
 #
 dirs:
