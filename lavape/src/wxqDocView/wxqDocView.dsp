@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "WXQDOCVIEW_EXPORTS" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /W3 /GX /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /YX"wxqDocView_all.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /YX"" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "..\disco" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /FR /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /FR /YX"wxqDocView_all.h" /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /FR /YX"" /FD /GZ /c
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
 # ADD BASE RSC /l 0x407

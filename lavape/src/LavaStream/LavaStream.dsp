@@ -44,8 +44,8 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LAVASTREAM_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /I "." /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "$(QTDIR)\include" /D "WIN32" /D "LAVASTREAM_EXPORTS" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /FD /c
-# SUBTRACT CPP /Fr /YX
+# ADD CPP /nologo /MT /W3 /GX /I "." /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "$(QTDIR)\include" /D "WIN32" /D "LAVASTREAM_EXPORTS" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /YX /FD /c
+# SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x407 /d "NDEBUG"

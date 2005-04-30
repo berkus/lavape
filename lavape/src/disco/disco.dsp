@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /YX /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\wxqDocView" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "DISCO_EXPORT" /D "QT_DLL" /FR /YX"disco_all.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\wxqDocView" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "DISCO_EXPORT" /D "QT_DLL" /FR /YX"" /FD /c
 # ADD BASE MTL /nologo /win32
 # ADD MTL /nologo /mktyplib203 /win32
 # ADD BASE RSC /l 0x407
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "DISCO_EXPORT" /FR /Yu"disco.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "..\wxqDocView" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "DISCO_EXPORT" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /YX"disco_all.h" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "..\wxqDocView" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "DISCO_EXPORT" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /YX"" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32

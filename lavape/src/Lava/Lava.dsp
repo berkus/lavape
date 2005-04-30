@@ -43,8 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "..\disco" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Interpreter" /I "../SFLsockets" /I "..\LavaExecs" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /I "res" /I "$(QTDIR)\include" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /FD /c
-# SUBTRACT CPP /Fr /YX
+# ADD CPP /nologo /MD /W3 /GX /I "..\disco" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Interpreter" /I "../SFLsockets" /I "..\LavaExecs" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /I "res" /I "$(QTDIR)\include" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /YX /FD /c
+# SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x407 /d "NDEBUG" /d "_AFXDLL"

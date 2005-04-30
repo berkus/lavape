@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "..\wxqDocView" /I "..\LavaPE_UI" /I "$(QTDIR)\include" /D "WIN32" /D "LAVABASE_EXPORT" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /YX"LavaBase_all.h" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "." /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "..\wxqDocView" /I "..\LavaPE_UI" /I "$(QTDIR)\include" /D "WIN32" /D "LAVABASE_EXPORT" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /YX"" /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "..\wxqDocView" /I "..\LavaPE_UI" /I "$(QTDIR)\include" /D "WIN32" /D "LAVABASE_EXPORT" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FR /YX"LavaBase_all.h" /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "..\wxqDocView" /I "..\LavaPE_UI" /I "$(QTDIR)\include" /D "WIN32" /D "LAVABASE_EXPORT" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FR /YX"" /FD /c
 # SUBTRACT CPP /WX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /mktyplib203 /o "NUL" /win32

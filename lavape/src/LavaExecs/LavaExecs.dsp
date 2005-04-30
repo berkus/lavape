@@ -73,8 +73,8 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /Gi /Zi /Od /Gf /Gy /I "..\disco" /I "..\LavaPE" /I "..\LavaBase" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_MBCS" /D "EXECS_EXPORT" /FR /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\res\TOOLBUTTONS" /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaPE" /I "..\LavaPE\Generated" /I "..\LavaPE\res" /I "..\LavaPE\res\TreeIcons" /I "..\LavaPE\res\Toolbuttons" /I "..\LavaBase" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "EXECVIEW" /D "QT_THREAD_SUPPORT" /FD /c
-# SUBTRACT CPP /Fr /YX
+# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\res\TOOLBUTTONS" /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaPE" /I "..\LavaPE\Generated" /I "..\LavaPE\res" /I "..\LavaPE\res\TreeIcons" /I "..\LavaPE\res\Toolbuttons" /I "..\LavaBase" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "EXECVIEW" /D "QT_THREAD_SUPPORT" /YX /FD /c
+# SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /i "..\LavaPE" /i "..\LavaBase"

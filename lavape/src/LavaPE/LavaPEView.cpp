@@ -3846,7 +3846,6 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
         QMessageBox::critical(this, qApp->name(),"Cannot move feature because the implementation\n"
           "of the target interface does not yet exist\n"
           "or is in another Lava file that is not open currently",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-        ;//AfxMessageBox("Cannot move feature because the implementation is not available");
         return false;
       }
       else
