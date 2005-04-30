@@ -1,6 +1,3 @@
-// Bars.h : header file
-//
-
 #ifndef __Bars
 #define __Bars
 
@@ -10,7 +7,7 @@
 #include "DbgThreadPE.h"
 #include "Resource.h"
 #include "Syntax.h"
-//#include "wxExport.h"
+#include "wxExport.h"
 #include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"

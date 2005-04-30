@@ -17,11 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
+#include "MACROS.h"
 #include "LavaPE.h"
 
 #ifdef WIN32
@@ -44,7 +40,7 @@
 #include "FindRefsBox.h"
 #include "SylTraversal.h"
 #include "ExecView.h"
-#include "cmainframe.h"
+//#include "cmainframe.h"
 #include "VTView.h"
 #include "SynIO.h"
 #include "LavaPEStringInit.h"

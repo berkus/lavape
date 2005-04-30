@@ -1,26 +1,9 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class ProcCoderCLASS
-
- **********************************************************************/
-
 #ifndef __ProcCoder
 #define __ProcCoder
 
 
 #include "IntCode.h"
 
-
-
-/**********************************************************************/
-/*                                                                    */
-/*           DEFINITION OF CLASS (~ Modula-2 - MODULE)                */
-/*                                                                    */
-/**********************************************************************/
 
 class ProcCoderCLASS {
 

@@ -1,14 +1,5 @@
-// LavaPEDoc.h : interface of the CLavaPEDoc class
-//
-/////////////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_LavaPEDoc_H__BC8733E1_2301_11D3_B7AF_000000000000__INCLUDED_)
-#define AFX_LavaPEDoc_H__BC8733E1_2301_11D3_B7AF_000000000000__INCLUDED_
-
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
-
+#ifndef __LavaPEDoc 
+#define __LavaPEDoc
 
 
 #include "SynIO.h"

@@ -17,19 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
-/**********************************************************************
-
-               implementation of class CdpCoderCLASS
-
- **********************************************************************/
-
 #include "CdpCoder.h"
-
 #include "TypCoder.h"
 #include "ProCoder.h"
 #include "DParser.h"
@@ -39,6 +27,8 @@
 #include "DString.h"
 #include "DIO.h"
 #include "Convert.h"
+
+
 
 CdpCoderCLASS CdpCoder;
 static bool __INITstarted=false;

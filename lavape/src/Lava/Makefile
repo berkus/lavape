@@ -1,7 +1,9 @@
+PRJ = Lava
+
 MOCABLES=Lava.h LavaDoc.h MainFrm.h
 
 EXEC = Lava
-SUBPRO=disco wxqDocView LavaBase LavaGUI Lava_UI Interpreter LavaStream SFLsockets
+SUBPRO=SFLsockets disco wxqDocView LavaBase LavaGUI Lava_UI Interpreter LavaStream
 
 CPP_INCLUDES = -I. -Ires -I../LavaBase/Generated -I../SFLsockets \
 	-I../Interpreter -I../Lava_UI -I../Lava_UI/Generated -I../LavaGUI \

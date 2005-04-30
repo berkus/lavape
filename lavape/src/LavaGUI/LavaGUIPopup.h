@@ -1,10 +1,6 @@
 #ifndef _LavaGUIPopup
 #define _LavaGUIPopup
 
-#ifdef _GNUG__
-#pragma interface
-#endif
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaGUIPopup window

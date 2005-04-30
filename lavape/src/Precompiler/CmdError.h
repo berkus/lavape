@@ -1,23 +1,5 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class CmdErrorCLASS
-
- **********************************************************************/
-
 #ifndef __CmdError
 #define __CmdError
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
 
 
 #include "SYSTEM.h"

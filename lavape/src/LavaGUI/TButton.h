@@ -1,11 +1,6 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
-
-// TButton.h : header file
-//
 #ifndef __TButton
 #define __TButton
+
 
 #include "GUIProgBase.h"
 #include "qradiobutton.h"

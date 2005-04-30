@@ -1,9 +1,11 @@
+#ifndef __CHAINANYCLASS
+#define __CHAINANYCLASS
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
+*/
 
-#ifndef __CHAINANYCLASS
-#define __CHAINANYCLASS
 
 #include "ASN1pp.h"
 #include "ChainA.h"

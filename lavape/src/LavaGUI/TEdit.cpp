@@ -17,19 +17,12 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
 #include "SYSTEM.h"
 #include "TEdit.h"
 #include "GUIProgBase.h"
 #include "GUIProg.h"
 #include "qvalidator.h"
 #include "FormWid.h"
-//#include "stdafx.h"
-
 
 
 /////////////////////////////////////////////////////////////////////////////

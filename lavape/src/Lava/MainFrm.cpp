@@ -17,11 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
 #include "Lava.h"
 #include "MainFrm.h"
 #include "LavaDoc.h"
@@ -31,7 +26,6 @@
 #include "qsignalmapper.h"
 #include "qstylefactory.h"
 #include "qdict.h"
-//#include "stdafx.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

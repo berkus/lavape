@@ -1,10 +1,6 @@
-/********************************************************************
-
-                       UNIX - include file
- ********************************************************************/
-
 #ifndef __UNIX
 #define __UNIX
+
 
 #ifdef SOLARIS2
 // boolean is defined as "enum boolean {B_FALSE,B_TRUE}"

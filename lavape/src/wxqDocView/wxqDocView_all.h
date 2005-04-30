@@ -1,7 +1,9 @@
 #ifndef _wxqDocView_PCH
 #define _wxqDocView_PCH
 
+
 #include "disco_all.h"
+#include "SFLsockets_all.h"
 
 //#include "defs.h"
 #include "docview.h"

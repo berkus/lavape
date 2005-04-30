@@ -2,7 +2,6 @@
 #define __Scanner
 
 
-//#include "StdAfx.h"
 #include "ComboBar.h"
 #include "Tokens.h"
 #include "qstring.h"

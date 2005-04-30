@@ -1,13 +1,5 @@
-// LavaDoc.h : Schnittstelle der Klasse CLavaDoc
-//
-/////////////////////////////////////////////////////////////////////////////
-
 #ifndef _LAVADOC
 #define _LAVADOC
-
-#ifdef __GNUC__
-#pragma interface "LavaDoc.h"
-#endif
 
 
 #include "LavaProgram.h"
@@ -18,8 +10,6 @@
   #include "qt_windows.h"
   #include "commdlg.h"
 #endif
-//#include "stdafx.h"
-
 
 
 class CLavaDoc : public CLavaProgram 

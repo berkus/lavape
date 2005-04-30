@@ -1,13 +1,3 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class SCCLASS
-
- **********************************************************************/
-
 #ifndef __Scanner
 #define __Scanner
 
@@ -21,10 +11,6 @@ struct SourcePosition {
   char currentChar, subsequentChar;
 };
 
-
-/**********************************************************************/
-/*         initialization proc. (the former "module body"):           */
-/**********************************************************************/
 
 void Scanner_INIT ();
 

@@ -17,10 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
 #include "ExecUpdate.h"
 #include "qstring.h"
 #include "Constructs.h"
@@ -29,7 +25,7 @@
 #include "ExecView.h"
 #include "PEBaseDoc.h"
 #include "NESTANY.h"
-//#include "stdafx.h"
+
 
 #define IsPH(PTR) ((SynObject*)PTR)->IsPlaceHolder()
 

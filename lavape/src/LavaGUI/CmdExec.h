@@ -1,13 +1,3 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class CmdExecCLASS
-
- **********************************************************************/
-
 #ifndef __CmdExec
 #define __CmdExec
 

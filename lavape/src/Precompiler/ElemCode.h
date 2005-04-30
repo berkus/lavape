@@ -1,7 +1,3 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
 #ifndef __ElemCode
 #define __ElemCode
 
@@ -15,13 +11,9 @@
 
 
 #include "Atoms.h"
-
 #include "IntCode.h"
 
 
-/**********************************************************************/
-/*         initialization proc. (the former "module body"):           */
-/**********************************************************************/
 void EC_INIT ();
 
 extern DString designator;

@@ -17,16 +17,12 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
 #include "LavaBase_all.h"
 #include "MACROS.h"
-/*
+
 #include "LavaThread.h"
 #include "LavaBaseDoc.h"
-*/
+
 
 
 QThreadStorage<CThreadData*> threadStg;

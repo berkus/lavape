@@ -1,13 +1,6 @@
-// LavaPEFrames.h : 
-//
-/////////////////////////////////////////////////////////////////////////////
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-
 #ifndef __LavaPEFrames
 #define __LavaPEFrames
+
 
 #include "LavaGUIFrame.h"
 #include "PEBaseDoc.h"

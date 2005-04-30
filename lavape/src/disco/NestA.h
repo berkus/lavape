@@ -1,13 +1,13 @@
+#ifndef __NestedAnyCLASS
+#define __NestedAnyCLASS
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-#ifndef __NestedAnyCLASS
-#define __NestedAnyCLASS
+*/
 
 #include "SYSTEM.h"
 #include "AnyType.h"
-
 
 
 class DISCO_DLL NestedAny0 {

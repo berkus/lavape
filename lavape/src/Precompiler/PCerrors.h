@@ -1,23 +1,5 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class PCerrorsCLASS
-
- **********************************************************************/
-
 #ifndef __PCerrors
 #define __PCerrors
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
 
 
 #include "SYSTEM.h"

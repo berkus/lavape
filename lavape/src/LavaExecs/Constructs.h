@@ -20,9 +20,6 @@
 #ifndef __Constructs
 #define __Constructs
 
-#ifdef __GNUC__
-#pragma interface
-#endif
 
 
 #include "SYSTEM.h"

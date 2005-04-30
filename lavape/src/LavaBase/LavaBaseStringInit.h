@@ -1,9 +1,3 @@
-
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-
 #ifndef __LavaBaseStringInit
 #define __LavaBaseStringInit
 

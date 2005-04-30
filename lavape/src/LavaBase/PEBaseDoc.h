@@ -1,8 +1,3 @@
-
-#ifdef __GNUC__
-#pragma interface
-#endif
-
 #ifndef __CPEBaseDoc
 #define __CPEBaseDoc
 
@@ -14,7 +9,7 @@
 #include "SylTraversal.h"
 #include "SynIDTable.h"
 #include "qcstring.h"
-//#include "wxExport.h"
+#include "wxExport.h"
 #include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"

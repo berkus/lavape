@@ -1,12 +1,6 @@
 #ifndef _TStatic
 #define _TStatic
 
-#ifdef _GNUG__
-#pragma interface
-#endif
-
-// TStatic.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // CTStatic window

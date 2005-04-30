@@ -1,10 +1,3 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
-
-// TComboBox.h : header file
-//
-
 #ifndef __TComboBox
 #define __TComboBox
 

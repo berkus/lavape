@@ -1,3 +1,6 @@
+#ifndef wxb_objh
+#define wxb_objh
+
 /*
 
  * File:  wx_obj.h
@@ -21,20 +24,11 @@
 /* sccsid[] = "@(#)wx_obj.h 1.2 5/9/94" */
 
 
-
+/*
 #ifdef __GNUC__
-
 #pragma interface
-
 #endif
-
-
-
-#ifndef wxb_objh
-
-#define wxb_objh
-
-
+*/
 
 #include "SYSTEM.h"
 

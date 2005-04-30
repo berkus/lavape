@@ -12,6 +12,15 @@
 #endif
 
 
+#ifndef max
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
+
 #define UNDEF_VARIABLE (LavaObjectPtr)0
 #define LSH 2 //Lenght of section header in object
 #define SFH 3 //Lenght of stack frame header (function calls)

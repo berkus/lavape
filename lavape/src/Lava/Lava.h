@@ -1,8 +1,5 @@
-// Lava.h : Haupt-Header-Datei für die Anwendung LAVA
-//
-
 #ifndef _LAVA
-#define _LAVA_
+#define _LAVA
 
 #include "LavaAppBase.h"       // Hauptsymbole
 #include "LavaDoc.h"       // Hauptsymbole

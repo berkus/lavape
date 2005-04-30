@@ -1,6 +1,3 @@
-// DbThreads.h : 
-//
-
 #ifndef __DBTHREAD
 #define __DBTHREAD
 

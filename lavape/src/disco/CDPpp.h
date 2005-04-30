@@ -1,48 +1,23 @@
+#ifndef __CDPpp
+#define __CDPpp
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-               #include file for class CDPppCLASS
-
- **********************************************************************/
-
-#ifndef __CDPpp
-#define __CDPpp
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
-
+*/
 
 #include "SYSTEM.h"
+#include "ASN1pp.h"
 #include "Halt.h"
 #include "SETpp.h"
-#include "ASN1pp.h"
-//#include "FIOpp.h"
 #include "CHAINANY.h"
 #include "NESTANY.h"
 
-
-
-/**********************************************************************/
-/*                                                                    */
-/*           DEFINITION OF CLASS (~ Modula-2 - MODULE)                */
-/*                                                                    */
-/**********************************************************************/
 
 class DISCO_DLL CDPppCLASS {
 
 public:
 
-  /**********************************************************************/
-  /*         initialization proc. (the former "module body"):           */
-  /**********************************************************************/
   void INIT ();
 
   bool Return;

@@ -1,9 +1,9 @@
 PRJ = Precompiler
 
 EXEC = LPC
-SUBPRO=disco SFLsockets
+SUBPRO=SFLsockets disco
 
-CPP_INCLUDES = -I. -I../disco -I$(QTDIR)/include
+CPP_INCLUDES = -I. -I../disco -I../SFLsockets -I$(QTDIR)/include
 
 include ../common.mk
 

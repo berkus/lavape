@@ -17,19 +17,8 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
-/**********************************************************************
-
-               implementation of class ArgumentsCLASS
-
- **********************************************************************/
 
 #include "Args.h"
-//#include "disco.h"
 
 
 ArgumentsCLASS Arguments;

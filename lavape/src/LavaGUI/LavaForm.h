@@ -1,8 +1,3 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-
 #ifndef __EmptyForm
 #define __EmptyForm
 

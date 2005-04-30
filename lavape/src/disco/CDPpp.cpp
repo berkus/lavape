@@ -16,24 +16,17 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-
+/*
 #ifdef __GNUC__
 #pragma implementation
 #endif
+*/
 
-/**********************************************************************
-
-               implementation of class CDPppCLASS
-
- **********************************************************************/
-#include "disco_all.h"
-/*
 #include "CDPpp.h"
-
 #include "MachDep.h"
 #include "STR.h"
 #include "DIO.h"
-*/
+
 
 
 CDPppCLASS CDPpp;

@@ -17,10 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
 #include "Constructs.h"
 #ifdef INTERPRETER
 #include "Check.h"
@@ -33,7 +29,6 @@
 #include "qstring.h"
 #include "qmessagebox.h"
 #include "DIO.h"
-//#include "stdafx.h"
 
 
 #define ADJUST(nnn,decl) \

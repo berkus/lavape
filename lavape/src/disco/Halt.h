@@ -1,38 +1,12 @@
+#ifndef __Halt
+#define __Halt
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-               #include file for class HaltCLASS
-
- **********************************************************************/
-
-#ifndef __Halt
-#define __Halt
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
-
+*/
 
 #include "SYSTEM.h"
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                further #includes/types/constants                   */
-/*              required by the private class members:                */
-/*                                                                    */
-/**********************************************************************/
-
-
-//#include "UNIX.h"
-
 #include "PMDump.h"
 
 typedef struct epiProcDesc *epiProc;
@@ -43,11 +17,6 @@ struct DISCO_DLL epiProcDesc {
 };
 
 
-/**********************************************************************/
-/*                                                                    */
-/*           DEFINITION OF CLASS (~ Modula-2 - MODULE)                */
-/*                                                                    */
-/**********************************************************************/
 
 class DISCO_DLL HaltCLASS {
 

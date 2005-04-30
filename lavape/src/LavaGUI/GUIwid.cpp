@@ -17,11 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
+#include "MACROS.h"
 #include "SYSTEM.h"
 #include "GUIwid.h"
 #include "GUIProgBase.h"
@@ -35,7 +31,6 @@
 #include "LavaGUIView.h"
 #include "LavaGUIPopup.h"
 #include "GUIProg.h"
-#include "MACROS.h"
 
 
 //enum {helpEvent,localEvent,popupMenuEvent,sigEvent} EventLocType;

@@ -1,6 +1,7 @@
 #ifndef __Check
 #define __Check
 
+
 #include "Constructs.h"
 #include "SynIDTable.h"
 #include "LavaBaseDoc.h"

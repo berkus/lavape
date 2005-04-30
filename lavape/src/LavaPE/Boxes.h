@@ -1,6 +1,3 @@
-// Boxes.h : header file
-//
-
 #ifndef __Boxes
 #define __Boxes
 

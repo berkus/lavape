@@ -1,27 +1,17 @@
+#ifndef __OutFile
+#define __OutFile
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-               #include file for class OutFile
-
- **********************************************************************/
-
-#ifndef __OutFile
-#define __OutFile
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
+*/
 
 #include "SYSTEM.h"
+
 #include "TextFile.h"
 #include "DString.h"
+
+
 
 extern DISCO_DLL bool openInAppendMode;
 

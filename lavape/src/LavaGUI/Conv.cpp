@@ -17,26 +17,12 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
-/**********************************************************************
-
-               implementation of class ConvCLASS
-
- **********************************************************************/
-
+#include "MACROS.h"
 #include "DIO.h"
 #include "string.h"
 #include "GUIProg.h"
 #include "Conv.h"
 #include "qmessagebox.h"
-#include "MACROS.h"
-
-
-
 
 
 /***************************************************************************/

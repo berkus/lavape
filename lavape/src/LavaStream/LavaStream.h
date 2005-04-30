@@ -1,12 +1,8 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-
 #ifndef __LavaStream
 #define __LavaStream
 
 #include "BAdapter.h"
+#include "DumpView.h"
 
 
 

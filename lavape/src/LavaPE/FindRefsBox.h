@@ -1,11 +1,5 @@
-#if !defined(AFX_FINDREFSBOX1_H__E10CBE4D_44E9_40E1_8933_7B9B82AA1F76__INCLUDED_)
-#define AFX_FINDREFSBOX1_H__E10CBE4D_44E9_40E1_8933_7B9B82AA1F76__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// FindRefsBox1.h : header file
-//
+#ifndef __FindRefsBox
+#define __FindRefsBox
 
 
 #include "LavaAppBase.h"

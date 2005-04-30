@@ -19,10 +19,11 @@
 /* This file has been taken over from www.wxwindows.org
    and adapted to the needs of LavaPE */
 
-
+/*
 #ifdef __GNUC__
 #pragma implementation "wx_obj.h"
 #endif
+*/
 
 /*
  * File:  wb_obj.cc

@@ -1,14 +1,6 @@
-// LavaAppBase.h 
-
-
-
 #ifndef __LavaAppBase
 #define __LavaAppBase
 
-
-#ifndef __AFXWIN_H__
-//  #error include 'stdafx.h' before including this file for PCH
-#endif
 
 #include "SYSTEM.h"
  
@@ -21,7 +13,7 @@
 #include "defs.h"
 #include "docview.h"
 #include "LavaThread.h"
-//#include "wxExport.h"
+#include "wxExport.h"
 #include "qcombobox.h"
 #include "qlistview.h" 
 #include "qfont.h"
@@ -289,10 +281,10 @@ public:
   CLavaPEHint* RedoFromMem(int& pos); //called by LavaPEDoc
   void SetCom8();
   void OnEditUndo(); 
-  void OnUpdateEditUndo(QAction *action);//CCmdUI* pCmdUI);
+  void OnUpdateEditUndo(QAction *action);
   bool EnableUndo();
   void OnEditRedo(); 
-  void OnUpdateEditRedo(QAction *action); //CCmdUI* pCmdUI);
+  void OnUpdateEditRedo(QAction *action);
   CUndoMem();
   ~CUndoMem();
   bool DocModified();

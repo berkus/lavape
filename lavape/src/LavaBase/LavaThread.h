@@ -1,8 +1,3 @@
-
-#ifdef __GNUC__
-#pragma interface
-#endif
-
 #ifndef __CLavaThread
 #define __CLavaThread
 

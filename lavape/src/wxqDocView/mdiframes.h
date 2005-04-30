@@ -12,10 +12,6 @@
 #ifndef _WX_DOCMDI_H_
 #define _WX_DOCMDI_H_
 
-#ifdef __GNUC__
-#pragma interface "mdiframes.h"
-#endif
-
 #include "DString.h"
 #include "qglobal.h"
 #include "setup.h"

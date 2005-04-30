@@ -1,11 +1,3 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
-// LavaGUIFrames.h : 
-//
-/////////////////////////////////////////////////////////////////////////////
-
-
 #ifndef __LavaGUIFrame
 #define __LavaGUIFrame
 

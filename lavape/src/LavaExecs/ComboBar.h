@@ -1,8 +1,6 @@
-// ComboBar.h : header file
-//
-
 #ifndef __ComboBar
 #define __ComboBar
+
 
 #include "qcombobox.h"
 #include "qpushbutton.h"
@@ -15,7 +13,6 @@
 #include "Constructs.h"
 #include "ComboBarDlg.h"
 #include "CHAINANY.h"
-//#include "Resource.h"
 
 
 extern LAVAEXECS_DLL void ResetComboItems(QComboBox* box);

@@ -17,11 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
 #include "ASN1pp.h"
 #include "CDPpp.h"
 #include "Convert.h"
@@ -35,8 +30,6 @@
 #include "LavaGUIView.h"
 #include "qdir.h"
 #include "qfileinfo.h"
-//#include "stdafx.h"
-
 
 
 

@@ -1,6 +1,3 @@
-// ExecUpdate.h : header file
-//
-
 #ifndef __ExecUpdate
 #define __ExecUpdate
 

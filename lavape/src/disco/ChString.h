@@ -1,9 +1,10 @@
+#ifndef __ChainOfStringCLASS
+#define __ChainOfStringCLASS
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-#ifndef __ChainOfStringCLASS
-#define __ChainOfStringCLASS
+*/
 
 #include "ChainA.h"
 #include "DString.h"

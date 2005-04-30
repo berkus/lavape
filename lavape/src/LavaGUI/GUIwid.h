@@ -1,20 +1,8 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
-
-
-/**********************************************************************
-
-  GUIwid.h                     Widgets - include file
- **********************************************************************/
-
 #ifndef __Widgets
 #define __Widgets
 
 
-//#include "StdAfx.h"
 #include "SYSTEM.h"
-#include "GUIres.h"
 #include "GUIProgBase.h"
 
 #include "UNIX.h"

@@ -1,23 +1,5 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class XParserCLASS
-
- **********************************************************************/
-
 #ifndef __XParser
 #define __XParser
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
 
 
 #include "SYSTEM.h"
@@ -31,15 +13,10 @@
 /**********************************************************************/
 
 #include "ContxtCK.h"
-
 #include "DParser.h"
-
 #include "Scanner.h"
-
 #include "Atoms.h"
-
 #include "IntCode.h"
-
 #include "PCerrors.h"
 /* 
 FROM X409pp IMPORT
@@ -49,19 +26,10 @@ HighOID, HighVAL;
 #include "DString.h"
 
 
-/**********************************************************************/
-/*                                                                    */
-/*           DEFINITION OF CLASS (~ Modula-2 - MODULE)                */
-/*                                                                    */
-/**********************************************************************/
-
 class XParserCLASS {
 
 public:
 
-  /**********************************************************************/
-  /*         initialization proc. (the former "module body"):           */
-  /**********************************************************************/
   void INIT ();
 
   void CallMacro ();

@@ -1,7 +1,3 @@
-// CLavaProgram.h : Schnittstelle der Klasse CCLavaProgram
-//
-/////////////////////////////////////////////////////////////////////////////
-
 #ifndef __LavaProgram
 #define __LavaProgram
 

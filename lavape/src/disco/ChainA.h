@@ -1,12 +1,13 @@
+#ifndef __ChainAnyCLASS
+#define __ChainAnyCLASS
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
+*/
 
-#ifndef __ChainAnyCLASS
-#define __ChainAnyCLASS
-
-#include "AnyType.h"
 #include "SYSTEM.h"
+#include "AnyType.h"
 
 
 class DISCO_DLL ChainAnyElem {

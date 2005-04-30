@@ -17,17 +17,12 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
 #include "Tokens.h"
 #include "Constructs.h"
 //#include "TokenNode.h"
 #include "SYSTEM.h"
 #include <string.h>
-//#include "stdafx.h"
+
 
 const unsigned MaxLenToken = 20;
 const unsigned MaxString = 1000;

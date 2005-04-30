@@ -24,7 +24,6 @@
 #include "CHAINANY.h"
 #include "LavaAppBase.h"
 #include "qstring.h"
-//#include "stdafx.h"
 
 
 #define IsPH(PTR) ((SynObject*)PTR)->IsPlaceHolder()

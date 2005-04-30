@@ -1,14 +1,12 @@
+#ifndef __DateTime
+#define __DateTime
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-#ifndef __DateTime
-#define __DateTime
-
-
+*/
 
 #include "SYSTEM.h"
-
 #include "ASN1pp.h"
 
 

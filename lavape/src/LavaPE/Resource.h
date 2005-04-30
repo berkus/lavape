@@ -1,12 +1,8 @@
-//{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by LavaPE.rc
-//
 #ifndef __resource_h
 #define __resource_h
 
 #include "Lava.xpm"
-#include "execframe.xpm"
+//#include "execframe.xpm"
 #include "Q2_EditSel.xpm"
 #include "Q2_FindByName.xpm"
 #include "Q2_FindRefs.xpm"

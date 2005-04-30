@@ -12,10 +12,6 @@
 #ifndef _WX_DOCH__
 #define _WX_DOCH__
 
-#ifdef __GNUC__
-    #pragma interface "docview.h"
-#endif
-
 
 #include "DString.h"
 #include "wxExport.h"

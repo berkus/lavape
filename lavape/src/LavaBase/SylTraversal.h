@@ -1,8 +1,3 @@
-
-#ifdef __GNUC__
-#pragma interface
-#endif
-
 #ifndef __SylTraversal
 #define __SylTraversal
 
@@ -10,8 +5,7 @@
 #include "Syntax.h"
 #include "SynIO.h"
 #include "LavaAppBase.h"
-//#include "stdafx.h"
-//#include "wxExport.h"
+#include "wxExport.h"
 #include "qobject.h"
 #include "qstring.h"
 

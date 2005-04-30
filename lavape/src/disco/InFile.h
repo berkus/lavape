@@ -1,34 +1,15 @@
+#ifndef __InFile
+#define __InFile
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-         #include file for class InFile
-
- **********************************************************************/
-
-#ifndef __InFile
-#define __InFile
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
-
+*/
 
 #include "TextFile.h"
 #include "DString.h"
 
 
-/**********************************************************************/
-/*                                                                    */
-/*                      DEFINITION OF CLASS                           */
-/*                                                                    */
-/**********************************************************************/
 
 class DISCO_DLL InFile : public TextFile {
 

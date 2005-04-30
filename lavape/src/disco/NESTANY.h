@@ -1,9 +1,10 @@
+#ifndef __NESTEDANYCLASS
+#define __NESTEDANYCLASS
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-#ifndef __NESTEDANYCLASS
-#define __NESTEDANYCLASS
+*/
 
 #include "NestA.h"
 #include "ASN1pp.h"

@@ -3,9 +3,9 @@ PRJ = LavaPE_UI
 MOCABLES=
 
 EXEC = LavaPE_UI.so
-SUBPRO=disco wxqDocView LavaBase SFLsockets
+SUBPRO=SFLsocketsdisco wxqDocView LavaBase
 
-CPP_INCLUDES = -I. -I../disco -I../wxqDocView -IGenerated -I$(QTDIR)/include
+CPP_INCLUDES = -I. -I../disco -I../SFLsockets -I../LavaBase -I../LavaBase/Generated -I../wxqDocView -IGenerated -I$(QTDIR)/include
 
 include ../common.mk
 

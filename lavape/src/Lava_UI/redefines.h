@@ -8,3 +8,4 @@
 #define QAction wxAction
 
 #endif
+

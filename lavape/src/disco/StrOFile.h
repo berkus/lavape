@@ -1,33 +1,13 @@
+#ifndef __StringOutFile
+#define __StringOutFile
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-         #include file for class StringOutFile
-
- **********************************************************************/
-
-#ifndef __StringOutFile
-#define __StringOutFile
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
-
+*/
 
 #include "OutFile.h"
 
-
-/**********************************************************************/
-/*                                                                    */
-/*                      DEFINITION OF CLASS                           */
-/*                                                                    */
-/**********************************************************************/
 
 
 class DISCO_DLL StringOutFile : public OutFile {
@@ -42,9 +22,6 @@ public:
 
 
   void Flush ();
-
-
-/**********************************************************************/
 
 private:
 

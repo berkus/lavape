@@ -17,18 +17,13 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
 #include "LavaBase_all.h"
 #include "MACROS.h"
-/*
+
 #include "AboutBox.h"
 #include "LavaBaseStringInit.h"
 #include "LavaAppBase.h"
-*/
+
 #include "qobject.h"
 #include "qstring.h"
 #include "qfiledialog.h"

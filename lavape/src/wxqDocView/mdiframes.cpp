@@ -32,16 +32,12 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
 #include "wxqDocView_all.h"
 
 #include "SYSTEM.h"
 #include "defs.h"
 
-//#include "mdiframes.h"
+#include "mdiframes.h"
 #include "qstring.h"
 #include "qmenubar.h"
 #include "qstatusbar.h"

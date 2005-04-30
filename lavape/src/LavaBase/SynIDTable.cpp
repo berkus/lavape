@@ -17,28 +17,25 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
 #include "LavaBase_all.h"
 #include "MACROS.h"
-/*
+
 #include "SynIDTable.h"
 #include "SynIO.h"
 #include "Syntax.h"
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
-*/
+
 #include "qobject.h"
 #include "qstring.h"
 #include "SYSTEM.h"
-//#include "MACROS.h"
-
+#include "MACROS.h"
+/*
 #ifndef WIN32
 #define min(a,b)        (((a) < (b))? (a): (b))
 #define max(a,b)        (((a) > (b))? (a): (b))
 #endif
+*/
 
 TSimpleTable::TSimpleTable(int minimum)
 {

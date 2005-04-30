@@ -1,16 +1,10 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
+#ifndef __LavaMenu
+#define __LavaMenu
 
-// LavaMenu.h : header file
-//
 
 #include "GUIProgBase.h"
 #include "qlineedit.h"
 
-
-#ifndef __LavaMenu
-#define __LavaMenu
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaMenu window

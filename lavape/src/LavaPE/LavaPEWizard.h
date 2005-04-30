@@ -1,14 +1,5 @@
-// LavaPEWizard.h : header file
-//
-
-
 #ifndef __CLavaPEWizard
 #define __CLavaPEWizard
-
-
-#ifdef __GNUC__
-#pragma interface
-#endif
 
 
 #include "LavaPEView.h"

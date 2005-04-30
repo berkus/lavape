@@ -1,9 +1,5 @@
-// LavaPEView.h : interface of the CLavaPEView class
-//
-/////////////////////////////////////////////////////////////////////////////
-
-#if !defined(_LAVAPEVIEW_H__)
-#define _LAVAPEVIEW_H__
+#ifndef __LavaPEView
+#define __LavaPEView
 
 
 #include "TreeView.h"

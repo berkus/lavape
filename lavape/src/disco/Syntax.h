@@ -1,20 +1,15 @@
+#ifndef __Syntax
+#define __Syntax
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
+*/
 /* Lava programming environment and Lava interpreter.
    Copyright (C) 2001 Fraunhofer-Gesellschaft.
    The GNU GPL license applies. For details see the file
    "license.txt" in the top level directory. */
 
-/**********************************************************************
-
-                      #include file Syntax.ph
-
- **********************************************************************/
-
-#ifndef __Syntax
-#define __Syntax
 
 #include "qstring.h"
 #include "qfont.h"
@@ -521,7 +516,6 @@ enum IterFlag {
 
 extern DISCO_DLL void CDPIterFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
                                    bool baseCDP=false);
-
 
 
 
@@ -1514,7 +1508,6 @@ struct DISCO_DLL DbgMessage : public DObject  {
   { CDPDbgMessage(pgf,cid,(address)this,baseCDP); }
 };
 
-
 /*************************************************************************/
 /* Concrete syntactic objects: */
 
@@ -1625,7 +1618,6 @@ struct DISCO_DLL CHEFormNode : ChainAnyElem {
 };
 
 extern DISCO_DLL ChainAnyElem* NewCHEFormNode ();
-
 
 extern DISCO_DLL LavaDECL *NewLavaDECL();
 extern DISCO_DLL bool RemoveErrCode(CHAINX* errors, QString* ids);

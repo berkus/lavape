@@ -1,16 +1,10 @@
+#ifndef __DSynIO
+#define __DSynIO
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-// SynIO.h : interface of the SynIOCLASS class
-//
-/////////////////////////////////////////////////////////////////////////////
-
-
-#ifndef __DSynIO
-#define __DSynIO
-
-
+*/
 
 #include "qstring.h"
 #include "Syntax.h"

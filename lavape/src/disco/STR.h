@@ -1,20 +1,15 @@
+#ifndef __STRING0
+#define __STRING0
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-         #include file for class STRING0/STRING
-
- **********************************************************************/
-
-#ifndef __STRING0
-#define __STRING0
+*/
 
 #include "SYSTEM.h"
+
 #include "DString.h"
 #include "CDPpp.h"
-//#include "FIOpp.h"
 #include "ASN1.h"
 #include "CHAINANY.h"
 #include "NESTANY.h"

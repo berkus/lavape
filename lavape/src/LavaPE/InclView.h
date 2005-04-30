@@ -1,7 +1,3 @@
-// InclView.h : header file
-//
-
-
 #ifndef __InclView
 #define __InclView
 

@@ -1,21 +1,6 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
-
-// LavaPEFormView.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CLavaGUIView form view
-
-
 #ifndef __LavaPEFormView
 #define __LavaPEFormView
 
-
-/*
-#include "stdafx.h"
-*/
 
 #include "GUIProgBase.h"
 #include "GUIProg.h"

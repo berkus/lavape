@@ -17,11 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
 #include "LavaPEStringInit.h"
 #include "LavaPE.h"
 #include "TreeView.h"

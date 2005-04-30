@@ -17,17 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
-/**********************************************************************
-
-               implementation of class CoderCLASS
-
- **********************************************************************/
-
 #include "ChString.h"
 #include "DIO.h"
 #include "MachDep.h"

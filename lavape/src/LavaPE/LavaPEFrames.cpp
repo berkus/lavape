@@ -17,15 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #include "LavaPE.h"
 #include "LavaAppBase.h"
 #include "LavaPEView.h"

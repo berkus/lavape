@@ -17,10 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
 #include "ExecView.h"
 #include "Scanner.h"
 #include "LavaBaseStringInit.h"
@@ -28,7 +24,6 @@
 #include "qmessagebox.h"
 #include "qapplication.h"
 #include "qlayout.h"
-//#include "stdafx.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

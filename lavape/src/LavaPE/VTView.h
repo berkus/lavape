@@ -1,8 +1,6 @@
-// VTView.h : header file
-//
-
 #ifndef __VTView
 #define __VTView
+
 
 #include "LavaPEView.h"
 #include "ExecTree.h"

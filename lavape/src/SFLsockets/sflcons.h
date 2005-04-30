@@ -22,6 +22,8 @@
 #ifndef SFLCONS_INCLUDED               /*  Allow multiple inclusions        */
 #define SFLCONS_INCLUDED
 
+#include "prelude.h"
+
 
 /*  Type definition for operator redirection function                        */
 

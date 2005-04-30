@@ -1,18 +1,14 @@
+#ifndef __Convert
+#define __Convert
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-               #include file for class ConvertCLASS
-
- **********************************************************************/
-
-#ifndef __Convert
-#define __Convert
+*/
 
 #include "SYSTEM.h"
 #include "DString.h"
+
 
 class DISCO_DLL ConvertCLASS {
 

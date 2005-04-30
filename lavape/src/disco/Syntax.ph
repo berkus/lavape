@@ -1,20 +1,15 @@
+#ifndef __Syntax
+#define __Syntax
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
+*/
 /* Lava programming environment and Lava interpreter.
    Copyright (C) 2001 Fraunhofer-Gesellschaft.
    The GNU GPL license applies. For details see the file
    "license.txt" in the top level directory. */
 
-/**********************************************************************
-
-                      #include file Syntax.ph
-
- **********************************************************************/
-
-#ifndef __Syntax
-#define __Syntax
 
 #include "qstring.h"
 #include "qfont.h"

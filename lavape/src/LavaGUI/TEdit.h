@@ -1,16 +1,10 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
-
-// TEdit.h : header file
-//
-
 #ifndef __TEdit
 #define __TEdit
 
 #include "GUIProgBase.h"
 #include "qlineedit.h"
 #include "qtextedit.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CTEdit window

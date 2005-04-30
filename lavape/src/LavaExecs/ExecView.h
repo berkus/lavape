@@ -1,16 +1,6 @@
-// ExecView.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// CExecView view
-
-#ifdef __GNUC__
-#pragma interface "ExecView.h"
-#endif
-
-
 #ifndef __CExecView
 #define __CExecView
+
 
 #include "qevent.h"
 #include "qscrollview.h"

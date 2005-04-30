@@ -1,19 +1,18 @@
 #ifndef __AnyType
 #define __AnyType
-
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
+*/
 
-
+#include "SYSTEM.h"
 #include "wx_obj.h"
 #include "ASN1pp.h"
 
 
 class DISCO_DLL AnyType : public wxObject {
 public: 
-//  virtual ~AnyType () {};
-
   virtual void CopyData (AnyType *);
 
   virtual AnyType* Clone ();

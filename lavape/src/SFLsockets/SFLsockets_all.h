@@ -1,7 +1,7 @@
 #ifndef _SFLsockets_PCH
 #define _SFLsockets_PCH
 
-#include "prelude.h"
+//#include "prelude.h"
 #include "sflcons.h"
 #include "sflconv.h"
 #include "sfldate.h"

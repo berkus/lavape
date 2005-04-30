@@ -1,9 +1,10 @@
+#ifndef __SETpp
+#define __SETpp
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-#ifndef __SETpp
-#define __SETpp
+*/
 
 #include "SYSTEM.h"
 #include "ASN1.h"

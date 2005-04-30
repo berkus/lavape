@@ -19,12 +19,12 @@
 
 #include "LavaBase_all.h"
 #include "MACROS.h"
-/*
+
 #include "LavaBaseDoc.h"
 #include "BAdapter.h"
 #include "docview.h"
 #include "LavaBaseStringInit.h"
-*/
+
 #include "qobject.h"
 #include "qstring.h"
 #include "qlibrary.h"

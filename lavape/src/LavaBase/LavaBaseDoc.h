@@ -1,10 +1,3 @@
-// CLavaBaseDoc.h : interface of the CLavaBaseDoc class
-//
-/////////////////////////////////////////////////////////////////////////////
-#ifdef __GNUC__
-#pragma interface
-#endif
-
 #ifndef __CLavaBaseDoc
 #define __CLavaBaseDoc
 

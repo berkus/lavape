@@ -1,17 +1,9 @@
-/////////////////////////////////////////////////////////////////////////////
-// TreeView.h
-/////////////////////////////////////////////////////////////////////////////
-
-#ifdef __GNUC__
-// #pragma interface "TreeCtrl.h"
-#endif
-
 #ifndef __DUMPVIEW__H_
 #define __DUMPVIEW__H_
 
 #include "LavaBaseDoc.h"
 #include "Syntax.h"
-//#include "wxExport.h"
+#include "wxExport.h"
 #include "qmainwindow.h" 
 #include "qlistview.h" 
 #include "qdialog.h" 

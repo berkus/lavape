@@ -1,7 +1,3 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
 #ifndef __TreeSrch
 #define __TreeSrch
 
@@ -10,6 +6,7 @@
 #include "DString.h"
 #include "Syntax.h"
 #include "GUIProgBase.h"
+
 
 class LAVAGUI_DLL TreeSrchCLASS {
 

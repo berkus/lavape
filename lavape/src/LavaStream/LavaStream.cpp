@@ -17,10 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
 #include "BAdapter.h"
 #include "DumpView.h"
 #include "LavaBaseDoc.h"
@@ -32,9 +28,6 @@
 #include "qmessagebox.h"
 #include "LavaAppBase.h"
 #include "LavaStream.h"
-#ifndef WIN32
-//#include <fenv.h>
-#endif
 
 
 static QString inStrT("TextIStream");

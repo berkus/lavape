@@ -17,11 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
 #include "docview.h"
 #include "qstring.h"
 #include "LavaAppBase.h"
@@ -31,7 +26,6 @@
 #include "PEBaseDoc.h"
 #include "qpopupmenu.h"
 #include "qlayout.h"
-//#include "stdafx.h"
 
 
 int SelEndOKToStr(int pos, QComboBox* cbox, QString* editStr, TID* exID)

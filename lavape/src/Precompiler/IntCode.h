@@ -1,23 +1,5 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class IntCodeCLASS
-
- **********************************************************************/
-
 #ifndef __IntCode
 #define __IntCode
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
 
 
 #include "SYSTEM.h"

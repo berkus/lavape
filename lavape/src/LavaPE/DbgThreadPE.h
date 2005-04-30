@@ -1,6 +1,3 @@
-// LavaPE.h : main header file for the LavaPE application
-//
-
 #ifndef __DbgThread
 #define __DbgThread
 

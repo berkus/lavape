@@ -1,16 +1,10 @@
+#ifndef __String
+#define __String
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-               #include file for class DString
-
- **********************************************************************/
-
-#ifndef __String
-#define __String
-
+*/
 
 #include "SYSTEM.h"
 

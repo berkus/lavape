@@ -1,5 +1,6 @@
-#ifndef _Precompiler
-#define _Precompiler
+#ifndef __Precompiler
+#define __Precompiler
+
 
 #include "disco_all.h"
 

@@ -1,51 +1,15 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class DParserCLASS
-
- **********************************************************************/
-
 #ifndef __DParser
 #define __DParser
 
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
-
-
 #include "SYSTEM.h"
 #include "ChString.h"
-
 #include "IntCode.h"
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                further #includes/types/constants                   */
-/*              required by the private class members:                */
-/*                                                                    */
-/**********************************************************************/
-
 #include "CmdError.h"
 #include "Scanner.h"
 #include "Atoms.h"
 #include "ContxtCK.h"
 #include "PCerrors.h"
 
-
-
-/**********************************************************************/
-/*                                                                    */
-/*           DEFINITION OF CLASS (~ Modula-2 - MODULE)                */
-/*                                                                    */
-/**********************************************************************/
 
 class DParserCLASS {
 

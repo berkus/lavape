@@ -1,13 +1,3 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class MakeGUICLASS
-
- **********************************************************************/
-
 #ifndef __MakeGUI
 #define __MakeGUI
 

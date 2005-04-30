@@ -9,16 +9,9 @@
 
 #include "LavaGUIPopup.h"
 #include "GUIProgBase.h"
-//#include "stdafx.h"
 
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-
-
-
-#ifdef __GNUC__
-#pragma implementation
-#endif
 
 
 /////////////////////////////////////////////////////////////////////////////

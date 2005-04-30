@@ -1,23 +1,5 @@
-#ifdef __GNUC__
-#pragma interface
-#endif
-
-/**********************************************************************
-
-               #include file for class ParserCLASS
-
- **********************************************************************/
-
 #ifndef __Parser
 #define __Parser
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
 
 
 #include "SYSTEM.h"
@@ -31,25 +13,13 @@
 /**********************************************************************/
 
 #include "ContxtCK.h"
-
 #include "DParser.h"
-
 #include "XParser.h"
-
 #include "Scanner.h"
-
 #include "Atoms.h"
-
 #include "IntCode.h"
-
 #include "PCerrors.h"
 
-
-/**********************************************************************/
-/*                                                                    */
-/*           DEFINITION OF CLASS (~ Modula-2 - MODULE)                */
-/*                                                                    */
-/**********************************************************************/
 
 class ParserCLASS {
 

@@ -17,18 +17,12 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
 
 #include "GUIProg.h"
 #include "LavaMenu.h"
 #include "GUIProgBase.h"
 #include "FormWid.h"
 #include "qlineedit.h"
-//#include "stdafx.h"
-
 
 
 /////////////////////////////////////////////////////////////////////////////

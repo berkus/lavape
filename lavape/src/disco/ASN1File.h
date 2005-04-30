@@ -1,18 +1,13 @@
+#ifndef __ASN1File
+#define __ASN1File
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
+*/
 
-/**********************************************************************
+#include "SFLsockets_all.h"
 
-         #include file for class ASN1FileCLASS
-
- **********************************************************************/
-
-#ifndef __ASN1File
-#define __ASN1File
-
-#include "prelude.h"
-#include "sflsock.h"
 #include "qstring.h"
 #include "ASN1.h"
 

@@ -2,7 +2,12 @@
 #define _LavaPE_PCH
 
 #include "LavaPE_UI_all.h"
-#include "Lava_all.h"
+#include "disco_all.h"
+#include "SFLsockets_all.h"
+#include "wxqDocView_all.h"
+#include "LavaBase_all.h"
+#include "LavaGUI_all.h"
+#include "LavaExecs_all.h"
 
 #include "Bars.h"
 #include "Boxes.h"

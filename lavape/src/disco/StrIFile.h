@@ -1,33 +1,13 @@
+#ifndef __StringInFile
+#define __StringInFile
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-         #include file for class StringInFile
-
- **********************************************************************/
-
-#ifndef __StringInFile
-#define __StringInFile
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
-
+*/
 
 #include "InFile.h"
 
-
-/**********************************************************************/
-/*                                                                    */
-/*                      DEFINITION OF CLASS                           */
-/*                                                                    */
-/**********************************************************************/
 
 
 class DISCO_DLL StringInFile : public InFile {

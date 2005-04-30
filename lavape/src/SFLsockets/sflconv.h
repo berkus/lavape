@@ -42,7 +42,7 @@ int    conv_str_day     (const char *day_name);
 char  *conv_time_str    (long time, int flags, char timesep, int width);
 long   conv_str_time    (const char *string);
 
-char  *conv_bool_str    (Bool boolean, int format);
+char  *conv_bool_str    (Bool boole, int format);
 int    conv_str_bool    (const char *string);
 
 char  *conv_time_pict   (long time, const char *picture);

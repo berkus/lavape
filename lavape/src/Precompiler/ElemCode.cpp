@@ -17,27 +17,11 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
-/**********************************************************************
-
-               implementation of class ElemCodeCLASS
-
- **********************************************************************/
-
 #include "SYSTEM.h"
-
 #include "ElemCode.h"
-
 #include "PCerrors.h"
-
 #include "DIO.h"
-
 #include "DString.h"
-
 #include "MachDep.h"
 
 

@@ -1,27 +1,14 @@
+#ifndef __ASN1
+#define __ASN1
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-         #include file for class ASN1
-
- **********************************************************************/
-
-#ifndef __ASN1
-#define __ASN1
+*/
 
 #include "SYSTEM.h"
 #include "DString.h"
 #include <qstring.h>
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
 
 
 enum TClass {

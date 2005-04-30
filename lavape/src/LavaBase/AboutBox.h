@@ -6,10 +6,6 @@
 #include "LavaAppBase.h"
 #include "qlineedit.h"
 
-#ifdef __GNUC__
-#pragma interface
-#endif
-
 
 class LAVABASE_DLL CAboutBox : public IDD_AboutBox
 {

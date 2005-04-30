@@ -1,10 +1,3 @@
-#ifdef _GNUG__
-#pragma interface
-#endif
-
-// FormWid.h : header file
-//
-
 #ifndef __FormWid
 #define __FormWid
 
@@ -13,6 +6,7 @@
 #include "qwidget.h"
 #include "qpainter.h"
 #include "qgroupbox.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CFormWid window

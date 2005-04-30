@@ -17,16 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-/**********************************************************************
-
-               implementation of class CmdExecCLASS
-
- **********************************************************************/
-
 #include "DIO.h"
 
 #include "GUIProg.h"
@@ -36,7 +26,6 @@
 #include "qmessagebox.h"
 #include "LavaBaseStringInit.h"
 #include "TButton.h"
-//#include "stdafx.h"
 
 /*
 bool CmdExecCLASS::okBType (TBasicType btype,int in)

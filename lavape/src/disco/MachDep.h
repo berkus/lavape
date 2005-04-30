@@ -1,24 +1,10 @@
+#ifndef __MachDep
+#define __MachDep
+/*
 #ifdef __GNUC__
 #pragma interface
 #endif
-
-/**********************************************************************
-
-               #include file for class MachDepCLASS
-
- **********************************************************************/
-
-#ifndef __MachDep
-#define __MachDep
-
-
-/**********************************************************************/
-/*                                                                    */
-/*                    #includes/types/constants                       */
-/*              required by the public class members:                 */
-/*                                                                    */
-/**********************************************************************/
-
+*/
 
 #include "SYSTEM.h"
 #include <ctype.h>

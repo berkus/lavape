@@ -17,17 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#ifdef __GNUC__
-#pragma implementation
-#endif
-
-
-/**********************************************************************
-
-               implementation of class MakeGUICLASS
-
- **********************************************************************/
-
 #include "DIO.h"
 
 #include "GUIwid.h"
@@ -39,10 +28,6 @@
 #include "mdiframes.h"
 #include "LavaGUIPopup.h"
 #include "qlayout.h"
-//#include "stdafx.h"
-
-
-
 
 
 
