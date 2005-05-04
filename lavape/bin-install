@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+rm -f bin/lavape bin/lava
+echo "#!/bin/bash">bin/lavape
+PWD=`pwd`
+echo -n "export LD_LIBRARY_PATH=$PWD">>bin/lavape
+echo '/lib:$LD_LIBRARY_PATH'>>bin/lavape
+echo "$PWD/bin/LavaPE">>bin/lavape
+chmod a+x bin/lavape
+echo "#!/bin/bash">bin/lava
+echo -n "export LD_LIBRARY_PATH=$PWD">>bin/lava
+echo '/lib:$LD_LIBRARY_PATH'>>bin/lava
+echo "$PWD/bin/Lava">>bin/lava
+chmod a+x bin/lava
