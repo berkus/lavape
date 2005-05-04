@@ -44,8 +44,8 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LAVAPE_UI_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /I "." /I "..\disco" /I "..\wxqDocView" /I "..\LavaBase" /I "$(QTDIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAPEUI_EXPORT" /D "QT_THREAD_SUPPORT" /YX /FD /c
-# SUBTRACT CPP /Fr
+# ADD CPP /nologo /MT /W3 /GX /I "." /I "..\disco" /I "..\wxqDocView" /I "..\LavaBase" /I "$(QTDIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAPEUI_EXPORT" /D "QT_THREAD_SUPPORT" /FD /c
+# SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x407 /d "NDEBUG"
@@ -72,7 +72,8 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_WINDOWS" /D "_USRDLL" /D "LAVAPE_UI_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\LavaBase" /I "." /I "..\disco" /I "..\wxqDocView" /I "$(QTDIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAPEUI_EXPORT" /D "QT_THREAD_SUPPORT" /FR /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\LavaBase" /I "." /I "..\disco" /I "..\wxqDocView" /I "$(QTDIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAPEUI_EXPORT" /D "QT_THREAD_SUPPORT" /FR /FD /GZ /c
+# SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
 # ADD BASE RSC /l 0x407

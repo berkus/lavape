@@ -44,7 +44,8 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /Yu"stdafx.h" /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /FR /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /FR /FD /c
+# SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /win32
 # ADD MTL /nologo /mktyplib203 /win32
 # ADD BASE RSC /l 0x407
@@ -72,8 +73,8 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /Gi /GX /Zi /Od /Gf /Gy /I "..\disco" /I "..\LavaBase" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXEXT" /D "LavaGUI_EXPORT" /FR /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /YX /FD /c
-# SUBTRACT CPP /Fr
+# ADD CPP /nologo /MD /W3 /GX /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /FD /c
+# SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
 # ADD BASE RSC /l 0x409
@@ -202,6 +203,10 @@ SOURCE=.\GUIProg.h
 # Begin Source File
 
 SOURCE=.\GUIProgBase.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\GUIres.h
 # End Source File
 # Begin Source File
 

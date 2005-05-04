@@ -43,8 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /YX /FD /c
-# SUBTRACT CPP /Fr
+# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FD /c
+# SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x407 /d "NDEBUG" /d "_AFXDLL"
@@ -70,7 +70,8 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FR /YX /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FR /FD /c
+# SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x407
@@ -1249,13 +1250,6 @@ SOURCE=.\res\lavafile.bmp
 # Begin Source File
 
 SOURCE=.\res\LavaPE.rc
-
-!IF  "$(CFG)" == "LavaPE - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "LavaPE - Win32 Debug"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
