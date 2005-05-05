@@ -365,8 +365,8 @@ public slots:
     virtual void m_DelSupport_clicked();
     virtual void m_BasicTypes1_activated( int );
     virtual void m_ExtTypes_activated( int );
-    virtual void m_DelInherits_clicked();
-    virtual void m_InheritTypes_activated( int );
+//    virtual void m_DelInherits_clicked();
+//    virtual void m_InheritTypes_activated( int );
     virtual void m_IsComponent_clicked();
     virtual void m_NonCreatable_clicked();
     virtual void m_Creatable_clicked();

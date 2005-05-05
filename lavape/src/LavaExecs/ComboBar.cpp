@@ -213,9 +213,6 @@ void CComboBar::OnUpdate(LavaDECL *execDecl, bool externalHint)
 
 void CComboBar::DeleteObjData(bool setCombo)
 {
-  //int pos;
-  //CFieldsItemData * data;
-
   if (setCombo) {
     m_ObjectsCtrl = m_ComboBarDlg->IDC_ComboObjects;
     m_SubObjectsCtrl = m_ComboBarDlg->IDC_ComboSubObjects;
@@ -233,11 +230,8 @@ void CComboBar::DeleteObjData(bool setCombo)
 void CComboBar::OnSelendokComboObjects(int pos) 
 {
   m_ObjectsCtrl = m_ComboBarDlg->IDC_ComboObjects;
-  //m_ObjectsCtrl->ShowDropDown(false);
-  //int pos = m_ObjectsCtrl->currentItem();
   lastOK = pos > 0; //&& (pos > 0);
   if (lastOK) {
-    //m_ObjectsCtrl->GetLBText(pos, lastSelStr);
     CFieldsItem *data = (CFieldsItem*)m_ObjectsCtrl->listBox()->item(pos);
     lastSelStr = data->text();
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertObjRef(lastSelStr, data->IDs,false);
@@ -249,8 +243,6 @@ void CComboBar::OnSelendokComboObjects(int pos)
 void CComboBar::OnSelendokComboCompObjects(int pos) 
 {
   m_CompaObjectsCtrl = m_ComboBarDlg->IDC_ComboCompObjects;
-  //m_CompaObjectsCtrl->ShowDropDown(false);
-  //int pos = m_CompaObjectsCtrl->currentItem();
   lastOK = pos > 0;
   if (lastOK) {
     CFieldsItem *data = (CFieldsItem*)m_CompaObjectsCtrl->listBox()->item(pos);
@@ -260,23 +252,11 @@ void CComboBar::OnSelendokComboCompObjects(int pos)
   else 
     m_CompaObjectsCtrl->setCurrentItem(0);
 
-  /*
-  lastOK = pos && (pos > 0);
-  if (lastOK) {
-    m_CompaObjectsCtrl->GetLBText(pos, lastSelStr);
-    CFieldsItemData *data = (CFieldsItemData*)m_CompaObjectsCtrl->GetItemData(pos);
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertObjRef(lastSelStr, data->IDs,false);
-  }
-  else 
-    m_CompaObjectsCtrl->setCurrentItem(0);
-    */
 }
 
 void CComboBar::OnSelendokComboSetObjects(int pos) 
 {
   m_SetObjectsCtrl = m_ComboBarDlg->IDC_ComboSetObjects;
-  //m_SetObjectsCtrl->ShowDropDown(false);
-  //int pos = m_SetObjectsCtrl->currentItem();
   lastOK = pos > 0;
   if (lastOK) {
     CFieldsItem *data = (CFieldsItem*)m_SetObjectsCtrl->listBox()->item(pos);
@@ -285,16 +265,6 @@ void CComboBar::OnSelendokComboSetObjects(int pos)
   }
   else 
     m_SetObjectsCtrl->setCurrentItem(0);
-  /*
-  lastOK = pos && (pos > 0);
-  if (lastOK) {
-    m_SetObjectsCtrl->GetLBText(pos, lastSelStr);
-    CFieldsItemData *data = (CFieldsItemData*)m_SetObjectsCtrl->GetItemData(pos);
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertObjRef(lastSelStr, data->IDs,false);
-  }
-  else 
-    m_SetObjectsCtrl->setCurrentItem(0);
-    */
 }
 
 
@@ -304,7 +274,6 @@ void CComboBar::OnSelendokComboEnums(int pos)
   LavaDECL* decl;
 
   m_EnumsCtrl = m_ComboBarDlg->IDC_ComboEnums;
-  //m_EnumsCtrl->ShowDropDown(false);
   pos = SelEndOKToStr(pos, m_EnumsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
@@ -312,7 +281,6 @@ void CComboBar::OnSelendokComboEnums(int pos)
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
     else {
       EnumMenu.clear();//DestroyMenu( );
-      //EnumMenu.CreatePopupMenu( );
       m_ButtonEnum = m_ComboBarDlg->IDC_ButtonEnum;
       decl = myDoc->IDTable.GetDECL(lastSelTID);
       if (decl && (decl->DeclDescType == EnumType)) {
@@ -320,7 +288,6 @@ void CComboBar::OnSelendokComboEnums(int pos)
         for (enumsel = (CHEEnumSelId*)((TEnumDescription*)decl->EnumDesc.ptr)->EnumField.Items.first;
              enumsel;
              enumsel = (CHEEnumSelId*)enumsel->successor) {   
-          //EnumMenu.AppendMenu(MF_STRING, pos, enumsel->data.Id.c);
           EnumMenu.insertItem(enumsel->data.Id.c, pos);
           pos++;
         }
@@ -407,8 +374,6 @@ void CComboBar::OnEnumMenu(int id)
 void CComboBar::OnSelendokComboSubObjects(int pos) 
 {
   m_SubObjectsCtrl = m_ComboBarDlg->IDC_ComboSubObjects;
-  //m_SubObjectsCtrl->ShowDropDown(false);
-  //int pos = m_SubObjectsCtrl->currentItem();
   lastOK = pos > 0;
   if (lastOK) {
     CFieldsItem *data = (CFieldsItem*)m_SubObjectsCtrl->listBox()->item(pos);
@@ -417,76 +382,52 @@ void CComboBar::OnSelendokComboSubObjects(int pos)
   }
   else 
     m_SubObjectsCtrl->setCurrentItem(0);
-  /*
-  lastOK = pos && (pos > 0);
-  if (lastOK) {
-    m_SubObjectsCtrl->GetLBText(pos, lastSelStr);
-    CFieldsItemData *data = (CFieldsItemData*)m_SubObjectsCtrl->GetItemData(pos);
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertObjRef(lastSelStr, data->IDs, true);
-  }
-  else 
-    m_SubObjectsCtrl->setCurrentItem(0);
-  */
 }
 
 void CComboBar::OnSelendokBasicTypes(int pos) 
 {
   m_BasicTypesCtrl = m_ComboBarDlg->IDC_BasicTypes;
-  //m_BasicTypesCtrl->ShowDropDown(false);
   pos = SelEndOKToStr(pos, m_BasicTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
-  if (lastOK) 
-    if (onShowStatic) {
+  if (lastOK) {
+    if (onShowStatic) 
       showIFFuncs();
-    }
     else 
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-    else {
-    m_BasicTypesCtrl->setCurrentItem(0);
+    m_ComboBarDlg->IDC_ComboTypes->setCurrentItem(0);
   }
+  else 
+    m_BasicTypesCtrl->setCurrentItem(0);
 }
 
 void CComboBar::OnSelendokCompaBTypes(int pos) 
 {
   m_CompaBTypesCtrl = m_ComboBarDlg->IDC_CompaBTypes;
-  //m_CompaBTypesCtrl->ShowDropDown(false);
   pos = SelEndOKToStr(pos, m_CompaBTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
-  if (lastOK) 
-    if (onShowStatic) {
+  if (lastOK) {
+    if (onShowStatic) 
       showIFFuncs();
-    }
     else 
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-    else {
-    m_CompaBTypesCtrl->setCurrentItem(0);
+    m_ComboBarDlg->IDC_CompaTypes->setCurrentItem(0);
   }
+  else 
+    m_CompaBTypesCtrl->setCurrentItem(0);
 }
-
-/*
-void CComboBar::OnSelendokComboBasicUpcasts() 
-{
-  m_BasicUpcastsCtrl = m_ComboBarDlg->IDC_ComboBasicUpcasts;
-  int pos = SelEndOKToStr(m_BasicUpcastsCtrl, &lastSelStr, &lastSelTID);
-  lastOK = pos && (pos > 0);
-  if (lastOK) 
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else
-    m_BasicUpcastsCtrl->setCurrentItem(0);
-}
-*/
 
 void CComboBar::OnSelendokComboTypes(int pos) 
 {
   m_TypesCtrl = m_ComboBarDlg->IDC_ComboTypes;
-  //m_TypesCtrl->ShowDropDown(false);
   pos = SelEndOKToStr(pos, m_TypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
-  if (lastOK)
+  if (lastOK) {
     if (onShowStatic) 
       showIFFuncs();
     else
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
+    m_ComboBarDlg->IDC_BasicTypes->setCurrentItem(0);
+  }
   else 
     m_TypesCtrl->setCurrentItem(0);
 }
@@ -494,14 +435,15 @@ void CComboBar::OnSelendokComboTypes(int pos)
 void CComboBar::OnSelendokCompaTypes(int pos) 
 {
   m_CompaTypesCtrl = m_ComboBarDlg->IDC_CompaTypes;
-  //m_CompaTypesCtrl->ShowDropDown(false);
   pos = SelEndOKToStr(pos, m_CompaTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
-  if (lastOK)
+  if (lastOK) {
     if (onShowStatic) 
       showIFFuncs();
     else
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
+    m_ComboBarDlg->IDC_CompaBTypes->setCurrentItem(0);
+  }
   else 
     m_CompaTypesCtrl->setCurrentItem(0);
 }
@@ -510,7 +452,6 @@ void CComboBar::OnSelendokCompaTypes(int pos)
 void CComboBar::OnSelendokComboSetTypes(int pos) 
 {
   m_SetTypesCtrl = m_ComboBarDlg->IDC_ComboSetTypes;
-  //m_SetTypesCtrl->ShowDropDown(false);
   pos = SelEndOKToStr(pos, m_SetTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -519,11 +460,120 @@ void CComboBar::OnSelendokComboSetTypes(int pos)
     m_SetTypesCtrl->setCurrentItem(0); 
 }
 
+
+void CComboBar::OnSelendokComboFuncs(int pos) 
+{ //Virtual functions
+  m_VFuncsCtrl = m_ComboBarDlg->IDC_ComboFuncs;
+  pos = SelEndOKToStr(pos, m_VFuncsCtrl, &lastSelStr, &lastSelTID);
+  lastOK = pos && (pos > 0);
+  if (lastOK)
+    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
+  else 
+    m_VFuncsCtrl->setCurrentItem(0);
+}
+
+
+void CComboBar::OnSelendokComboClassFuncs(int pos) 
+{
+  m_ClassFuncsCtrl = m_ComboBarDlg->IDC_ComboClassFuncs;
+  CStatFuncItem *idata;
+  lastOK = pos > 0;
+  if (lastOK) {
+    idata = (CStatFuncItem*)m_ClassFuncsCtrl->listBox()->item(pos);
+    lastSelStr = idata->text();
+    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, idata->funcID, true, &idata->vtypeID);
+  }
+  else 
+    m_ClassFuncsCtrl->setCurrentItem(0);
+}
+
+
+void CComboBar::OnSelendokComboBaseInis(int pos) 
+{
+  m_BaseInisCtrl = m_ComboBarDlg->IDC_ComboBaseInis;
+  pos = SelEndOKToStr(pos, m_BaseInisCtrl, &lastSelStr, &lastSelTID);
+  lastOK = pos && (pos > 0);
+  if (lastOK)
+    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID, true);
+  else 
+    m_BaseInisCtrl->setCurrentItem(0);
+}
+
+
+void CComboBar::OnSelendokComboNew(int pos) 
+{
+  m_NewCtrl = m_ComboBarDlg->IDC_ComboNew;
+  pos = SelEndOKToStr(pos, m_NewCtrl, &lastSelStr, &lastSelTID);
+  lastOK = pos && (pos > 0);
+  if (lastOK)
+    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
+  else 
+    m_NewCtrl->setCurrentItem(0);
+}
+
+void CComboBar::OnSelendokComboSNew(int pos) 
+{
+  m_SNewCtrl = m_ComboBarDlg->IDC_ComboSNew;
+  pos = SelEndOKToStr(pos, m_SNewCtrl, &lastSelStr, &lastSelTID);
+  lastOK = pos && (pos > 0);
+  if (lastOK)
+    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
+  else 
+    m_SNewCtrl->setCurrentItem(0);
+}
+
+void CComboBar::OnSelendokComboAttach(int pos) 
+{
+  m_AttachCtrl = m_ComboBarDlg->IDC_ComboAttach;
+  pos = SelEndOKToStr(pos, m_AttachCtrl, &lastSelStr, &lastSelTID);
+  lastOK = pos && (pos > 0);
+  if (lastOK)
+    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
+  else 
+    m_AttachCtrl->setCurrentItem(0);
+}
+
+
+void CComboBar::OnSelendokCOMBOCall(int pos) 
+{
+  m_CallIntCtrl = m_ComboBarDlg->IDC_COMBOCall;
+  pos = SelEndOKToStr(pos, m_CallIntCtrl, &lastSelStr, &lastSelTID);
+  lastOK = pos && (pos > 0);
+  if (lastOK)
+    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
+  else 
+    m_CallIntCtrl->setCurrentItem(0);
+}
+
+
+void CComboBar::OnSelendokCompoInterf(int pos) 
+{
+  m_CompoObjIntCtrl = m_ComboBarDlg->IDC_CompoInterf;
+  pos = SelEndOKToStr(pos, m_CompoObjIntCtrl, &lastSelStr, &lastSelTID);
+  lastOK = pos && (pos > 0);
+  if (lastOK)
+    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
+  else 
+    m_CompoObjIntCtrl->setCurrentItem(0);
+}
+
+
+void CComboBar::OnSelendokStaticFuncs(int pos) 
+{
+  m_StaticFuncsCtrl = m_ComboBarDlg->IDC_StaticFuncs;
+  pos = SelEndOKToStr(pos, m_StaticFuncsCtrl, &lastSelStr, &lastSelTID);
+  lastOK = pos && (pos > 0);
+  if (lastOK)
+    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
+  else 
+    m_StaticFuncsCtrl->setCurrentItem(0);  
+}
+
+
 /*
 void CComboBar::OnSelendokCOMBOSignals(int pos) 
 {
   m_SignalsCtrl = m_ComboBarDlg->IDC_COMBOSignals;
-  //m_SignalsCtrl->ShowDropDown(false);
   pos = SelEndOKToStr(pos, m_SignalsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -546,137 +596,18 @@ void CComboBar::OnSelendokComboUpcasts()
 }
 */
 
-void CComboBar::OnSelendokComboFuncs(int pos) 
-{ //Virtual functions
-  m_VFuncsCtrl = m_ComboBarDlg->IDC_ComboFuncs;
-  //m_VFuncsCtrl->ShowDropDown(false);
-  pos = SelEndOKToStr(pos, m_VFuncsCtrl, &lastSelStr, &lastSelTID);
+/*
+void CComboBar::OnSelendokComboBasicUpcasts() 
+{
+  m_BasicUpcastsCtrl = m_ComboBarDlg->IDC_ComboBasicUpcasts;
+  int pos = SelEndOKToStr(m_BasicUpcastsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
-  if (lastOK)
+  if (lastOK) 
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
-    m_VFuncsCtrl->setCurrentItem(0);
+  else
+    m_BasicUpcastsCtrl->setCurrentItem(0);
 }
-
-
-void CComboBar::OnSelendokComboClassFuncs(int pos) 
-{
-  m_ClassFuncsCtrl = m_ComboBarDlg->IDC_ComboClassFuncs;
-  CStatFuncItem *idata;
-  //int pos = m_ClassFuncsCtrl->currentItem();
-  lastOK = pos > 0;
-  if (lastOK) {
-    idata = (CStatFuncItem*)m_ClassFuncsCtrl->listBox()->item(pos);
-    lastSelStr = idata->text();
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, idata->funcID, true, &idata->vtypeID);
-  }
-  else 
-    m_ClassFuncsCtrl->setCurrentItem(0);
-
-  /*
-  //m_ClassFuncsCtrl->ShowDropDown(false);
-  //int pos = SelEndOKToStr(m_ClassFuncsCtrl, &lastSelStr, &lastSelTID);
-  if (pos > 0) {
-    m_ClassFuncsCtrl->GetLBText(pos, lastSelStr);
-    idata = (CStatFuncItem*)m_ClassFuncsCtrl->GetItemData(pos);
-  }
-  lastOK = pos && (pos > 0);
-  if (lastOK)
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, idata->funcID, true, &idata->vtypeID);
-  else 
-    m_ClassFuncsCtrl->setCurrentItem(0);
-  */
-}
-
-
-void CComboBar::OnSelendokComboBaseInis(int pos) 
-{
-  m_BaseInisCtrl = m_ComboBarDlg->IDC_ComboBaseInis;
-  //m_BaseInisCtrl->ShowDropDown(false);
-  pos = SelEndOKToStr(pos, m_BaseInisCtrl, &lastSelStr, &lastSelTID);
-  lastOK = pos && (pos > 0);
-  if (lastOK)
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID, true);
-  else 
-    m_BaseInisCtrl->setCurrentItem(0);
-}
-
-
-void CComboBar::OnSelendokComboNew(int pos) 
-{
-  m_NewCtrl = m_ComboBarDlg->IDC_ComboNew;
-  //m_NewCtrl->ShowDropDown(false);
-  pos = SelEndOKToStr(pos, m_NewCtrl, &lastSelStr, &lastSelTID);
-  lastOK = pos && (pos > 0);
-  if (lastOK)
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
-    m_NewCtrl->setCurrentItem(0);
-}
-
-void CComboBar::OnSelendokComboSNew(int pos) 
-{
-  m_SNewCtrl = m_ComboBarDlg->IDC_ComboSNew;
-  //m_SNewCtrl->ShowDropDown(false);
-  pos = SelEndOKToStr(pos, m_SNewCtrl, &lastSelStr, &lastSelTID);
-  lastOK = pos && (pos > 0);
-  if (lastOK)
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
-    m_SNewCtrl->setCurrentItem(0);
-}
-
-void CComboBar::OnSelendokComboAttach(int pos) 
-{
-  m_AttachCtrl = m_ComboBarDlg->IDC_ComboAttach;
-  //m_AttachCtrl->ShowDropDown(false);
-  pos = SelEndOKToStr(pos, m_AttachCtrl, &lastSelStr, &lastSelTID);
-  lastOK = pos && (pos > 0);
-  if (lastOK)
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
-    m_AttachCtrl->setCurrentItem(0);
-}
-
-
-void CComboBar::OnSelendokCOMBOCall(int pos) 
-{
-  m_CallIntCtrl = m_ComboBarDlg->IDC_COMBOCall;
-  //m_CallIntCtrl->ShowDropDown(false);
-  pos = SelEndOKToStr(pos, m_CallIntCtrl, &lastSelStr, &lastSelTID);
-  lastOK = pos && (pos > 0);
-  if (lastOK)
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
-    m_CallIntCtrl->setCurrentItem(0);
-}
-
-
-void CComboBar::OnSelendokCompoInterf(int pos) 
-{
-  m_CompoObjIntCtrl = m_ComboBarDlg->IDC_CompoInterf;
-  //m_CompoObjIntCtrl->ShowDropDown(false);
-  pos = SelEndOKToStr(pos, m_CompoObjIntCtrl, &lastSelStr, &lastSelTID);
-  lastOK = pos && (pos > 0);
-  if (lastOK)
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
-    m_CompoObjIntCtrl->setCurrentItem(0);
-}
-
-
-void CComboBar::OnSelendokStaticFuncs(int pos) 
-{
-  m_StaticFuncsCtrl = m_ComboBarDlg->IDC_StaticFuncs;
-  //m_StaticFuncsCtrl->ShowDropDown(false);
-  pos = SelEndOKToStr(pos, m_StaticFuncsCtrl, &lastSelStr, &lastSelTID);
-  lastOK = pos && (pos > 0);
-  if (lastOK)
-    ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
-    m_StaticFuncsCtrl->setCurrentItem(0);  
-}
-
+*/
 
 void CComboBar::RemoveLocals()
 {
@@ -691,11 +622,6 @@ void CComboBar::RemoveLocals()
     myDoc->IDTable.GetVar(((TDOD*)firstID->data)->ID, idtype); 
     if ((idtype == localID) || (idtype == noID)) {
       m_ObjectsCtrl->removeItem(pos);
-      /*
-      data = (CFieldsItemData*)m_ObjectsCtrl->GetItemData(pos);
-      delete data;
-      m_ObjectsCtrl->DeleteString(pos);
-      */
       cnt--;
     }
     else
@@ -708,12 +634,6 @@ void CComboBar::RemoveLocals()
     if (firstID) {
       if ((idtype == localID) || (idtype == noID)) { 
         m_SetObjectsCtrl->removeItem(pos);
-        /*
-        data = (CFieldsItemData*)m_SetObjectsCtrl->GetItemData(pos);
-       myDoc->IDTable.GetVar(((TDOD*)firstID->data)->ID, idtype); 
-       delete data;
-        m_SetObjectsCtrl->DeleteString(pos);
-        */
         cnt--;
       }
       else
@@ -768,7 +688,6 @@ bool CComboBar::UsedName(const DString& name)
   m_ObjectsCtrl = m_ComboBarDlg->IDC_ComboObjects;
   CFieldsItem* fdata = (CFieldsItem*)m_ObjectsCtrl->listBox()->findItem(QString(name.c), Qt::ExactMatch | Qt::CaseSensitive);
   return fdata != 0;
-//  return FindStringCaseExact(m_ObjectsCtrl, name, 1) >= 0;
 }
 
 void CComboBar::ShowCombos(TShowCombo what, TID* pID)
@@ -1552,17 +1471,11 @@ void CComboBar::showIFFuncs()
 {
   LavaDECL *decl, *elDECL;
   CHE* che;
-//  int pos;
   CListItem *item;
 
   SetCombos(true, true);
   onShowStatic = true;
   ResetComboItems(m_StaticFuncsCtrl);
-  /*Q
-  pos = m_StaticFuncsCtrl->GetCount();
-  while (pos > 1) 
-    pos = m_StaticFuncsCtrl->DeleteString(1);
-  */
   decl = myDoc->IDTable.GetDECL(lastSelTID);
   while (decl) {
     for (che = (CHE*)decl->NestedDecls.first; che; che = (CHE*)che->successor) {

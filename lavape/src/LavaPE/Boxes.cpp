@@ -2352,10 +2352,10 @@ ValOnInit CInterfaceBox::OnInitDialog()
   int pos, icount;
   QString * err;
   CExecAllDefs * execAllPatt;
-  CHETID *ncheS, *cheS;
-  LavaDECL* decl;
+//  CHETID *ncheS, *cheS;
+//  LavaDECL* decl;
   bool found=false;
-  CListItem *listItem;
+//  CListItem *listItem;
 
 
 //  GetDlgItem(IDC_StatIDLabel)->SetWindowText("CLSID of implementation DLL");
@@ -2386,6 +2386,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
       }
     }
     SupportsToList();
+    /*
     cheS = (CHETID*)myDECL->Inherits.first;
     while (cheS) {
       if (cheS->data.nID >= 0) {
@@ -2407,7 +2408,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
       }
       else
         cheS = (CHETID*)cheS->successor;
-    } 
+    } */
     m_BuildSet1->setEnabled(false);
     m_Native->setChecked(myDECL->TypeFlags.Contains(isNative));
     if (myDECL->TypeFlags.Contains(isComponent)) {
@@ -2423,7 +2424,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
         valKindOfInterface = 1;
   }
   myDoc->MakeBasicBox(m_BasicTypes, myDECL->DeclType, false);
-  execAllPatt = new CExecAllDefs(myDoc, m_ExtTypes, m_InheritTypes, m_GUIStructs,
+  execAllPatt = new CExecAllDefs(myDoc, m_ExtTypes, m_GUIStructs, 0,
                         myDECL->ParentDECL, OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   delete execAllPatt;
   m_BasicTypes->setCurrentItem(0);
@@ -2540,7 +2541,7 @@ void CInterfaceBox::m_BasicTypes1_activated(int pos)
   m_BasicTypes->setCurrentItem(0);
 }
 
-
+/*
 void CInterfaceBox::m_DelInherits_clicked() 
 {
   int pos;
@@ -2550,13 +2551,13 @@ void CInterfaceBox::m_DelInherits_clicked()
     m_Inherits->removeItem(pos);
   }  
 }
-
 void CInterfaceBox::m_InheritTypes_activated(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_InheritTypes, m_Inherits);
 }
 
+*/
 
 void CInterfaceBox::m_IsComponent_clicked() 
 {
@@ -2566,8 +2567,8 @@ void CInterfaceBox::m_IsComponent_clicked()
   else 
     myDECL->TypeFlags.EXCL(isComponent);
   ResetComboItems(m_ExtTypes);
-  CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_ExtTypes, m_InheritTypes,
-                 m_GUIStructs, myDECL->ParentDECL,
+  CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_ExtTypes,
+                 m_GUIStructs, 0, myDECL->ParentDECL,
                  OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   m_ExtTypes->setCurrentItem(0);
   m_InterfaceID->setEnabled(true);
@@ -2719,7 +2720,7 @@ void CInterfaceBox::OnOK()
         cheS->data.nINCL = 1;
       myDECL->Supports.Append(cheS);
     }
-  ListToChain(m_Inherits, &myDECL->Inherits);  //signals
+//  ListToChain(m_Inherits, &myDECL->Inherits);  //signals
   myDECL->WorkFlags.INCL(recalcVT);
   QDialog::accept();
 }
