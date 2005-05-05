@@ -35,129 +35,13 @@
         </property>
         <widget class="QLayoutWidget">
             <property name="name">
-                <cstring>layout15</cstring>
+                <cstring>layout7</cstring>
             </property>
-            <hbox>
+            <grid>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <widget class="QLayoutWidget">
-                    <property name="name">
-                        <cstring>layout17</cstring>
-                    </property>
-                    <vbox>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <property name="spacing">
-                            <number>0</number>
-                        </property>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>Label_IDC_STATIC36</cstring>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>0</hsizetype>
-                                    <vsizetype>0</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="minimumSize">
-                                <size>
-                                    <width>1</width>
-                                    <height>0</height>
-                                </size>
-                            </property>
-                            <property name="text">
-                                <string>Name</string>
-                            </property>
-                        </widget>
-                        <widget class="QLayoutWidget">
-                            <property name="name">
-                                <cstring>layout16</cstring>
-                            </property>
-                            <hbox>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QLineEdit">
-                                    <property name="name">
-                                        <cstring>m_NewName</cstring>
-                                    </property>
-                                    <property name="sizePolicy">
-                                        <sizepolicy>
-                                            <hsizetype>0</hsizetype>
-                                            <vsizetype>0</vsizetype>
-                                            <horstretch>0</horstretch>
-                                            <verstretch>0</verstretch>
-                                        </sizepolicy>
-                                    </property>
-                                    <property name="minimumSize">
-                                        <size>
-                                            <width>150</width>
-                                            <height>0</height>
-                                        </size>
-                                    </property>
-                                    <property name="focusPolicy">
-                                        <enum>StrongFocus</enum>
-                                    </property>
-                                    <property name="alignment">
-                                        <set>AlignLeft</set>
-                                    </property>
-                                </widget>
-                                <spacer>
-                                    <property name="name">
-                                        <cstring>spacer7</cstring>
-                                    </property>
-                                    <property name="orientation">
-                                        <enum>Horizontal</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                        <enum>Minimum</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                        <size>
-                                            <width>40</width>
-                                            <height>20</height>
-                                        </size>
-                                    </property>
-                                </spacer>
-                            </hbox>
-                        </widget>
-                    </vbox>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>m_BuildSet1</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>3</hsizetype>
-                            <vsizetype>1</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>StrongFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Declare also ""Set"" of ...</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>layout12</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QButtonGroup">
+                <widget class="QButtonGroup" row="1" column="0">
                     <property name="name">
                         <cstring>BGroup_KindOfInterface</cstring>
                     </property>
@@ -302,7 +186,7 @@
                                 <enum>StrongFocus</enum>
                             </property>
                             <property name="text">
-                                <string>GUI interface</string>
+                                <string>GUI service</string>
                             </property>
                         </widget>
                         <widget class="QLabel">
@@ -335,7 +219,7 @@ as a form by this GUI service:</string>
                         </widget>
                     </vbox>
                 </widget>
-                <widget class="QGroupBox">
+                <widget class="QGroupBox" row="1" column="1">
                     <property name="name">
                         <cstring>GroupBox_IDC_STATIC16</cstring>
                     </property>
@@ -447,7 +331,113 @@ as a form by this GUI service:</string>
                         </widget>
                     </vbox>
                 </widget>
-            </hbox>
+                <widget class="QLayoutWidget" row="0" column="0">
+                    <property name="name">
+                        <cstring>layout17</cstring>
+                    </property>
+                    <vbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <property name="spacing">
+                            <number>0</number>
+                        </property>
+                        <widget class="QLabel">
+                            <property name="name">
+                                <cstring>Label_IDC_STATIC36</cstring>
+                            </property>
+                            <property name="sizePolicy">
+                                <sizepolicy>
+                                    <hsizetype>0</hsizetype>
+                                    <vsizetype>0</vsizetype>
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                            <property name="minimumSize">
+                                <size>
+                                    <width>1</width>
+                                    <height>0</height>
+                                </size>
+                            </property>
+                            <property name="text">
+                                <string>Name</string>
+                            </property>
+                        </widget>
+                        <widget class="QLayoutWidget">
+                            <property name="name">
+                                <cstring>layout16</cstring>
+                            </property>
+                            <hbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QLineEdit">
+                                    <property name="name">
+                                        <cstring>m_NewName</cstring>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>0</hsizetype>
+                                            <vsizetype>0</vsizetype>
+                                            <horstretch>0</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                    <property name="minimumSize">
+                                        <size>
+                                            <width>150</width>
+                                            <height>0</height>
+                                        </size>
+                                    </property>
+                                    <property name="focusPolicy">
+                                        <enum>StrongFocus</enum>
+                                    </property>
+                                    <property name="alignment">
+                                        <set>AlignLeft</set>
+                                    </property>
+                                </widget>
+                                <spacer>
+                                    <property name="name">
+                                        <cstring>spacer7</cstring>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Horizontal</enum>
+                                    </property>
+                                    <property name="sizeType">
+                                        <enum>Minimum</enum>
+                                    </property>
+                                    <property name="sizeHint">
+                                        <size>
+                                            <width>40</width>
+                                            <height>20</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                            </hbox>
+                        </widget>
+                    </vbox>
+                </widget>
+                <widget class="QCheckBox" row="0" column="1">
+                    <property name="name">
+                        <cstring>m_BuildSet1</cstring>
+                    </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>3</hsizetype>
+                            <vsizetype>1</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                    <property name="focusPolicy">
+                        <enum>StrongFocus</enum>
+                    </property>
+                    <property name="text">
+                        <string>Declare also ""Set"" of ...</string>
+                    </property>
+                </widget>
+            </grid>
         </widget>
         <spacer>
             <property name="name">
