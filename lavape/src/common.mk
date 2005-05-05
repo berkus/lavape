@@ -115,14 +115,14 @@ endif
 	cd $(LAVADIR)/src/$(basename $@) && $(MAKE) clean
 
 clean:
-	rm -rf *.o PCH/*.gch *.d Generated/*.o Generated/*.d
-#	rm -rf *.o *.d Generated/*.o Generated/*.d $(gen_files)
+	rm -rf *.o PCH/*.gch Generated/*.o
+#	rm -rf *.o *.d Generated/*.o Generated/*.d *.d Generated/*.cpp Generated/*.h $(gen_files)
 
 cleanall: $(clean_subpro) clean
 
 
 # Include the generated dependency files if they exist already
-dependencies=$(wildcard *.d)
+dependencies=$(wildcard *.d Generated/*.d PCH/*.d)
 ifneq ($(dependencies),)
 include $(dependencies)
 endif
