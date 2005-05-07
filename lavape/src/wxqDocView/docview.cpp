@@ -41,9 +41,6 @@
 // ----------------------------------------------------------------------------
 
 
-
-#include "wxqDocView_all.h"
-
 #include "SYSTEM.h"
 #include "setup.h"
 
