@@ -105,7 +105,7 @@ ValOnInit CAttrBox::OnInitDialog()
     myDECL->TypeFlags.INCL(trueObjCat);
     m_ValueObject->setChecked(true);
     myDoc->MakeBasicBox(m_BasicTypes, NoDef, true, TypeFlags.Contains(constituent));
-    execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0,0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
+    execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
     //m_BasicTypes->SelectString(-1, ((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
     m_BasicTypes->setCurrentText(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
     if (SelEndOKToStr(m_BasicTypes, &valNewTypeType, &myDECL->RefID) > 0) {
@@ -184,7 +184,7 @@ ValOnInit CAttrBox::OnInitDialog()
     }
     else {
       myDoc->MakeBasicBox(m_BasicTypes, NoDef, true, TypeFlags.Contains(constituent));
-      execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, 0,myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
+      execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
     }
     /*
     if (myDoc->GetCategoryFlags(myDECL).Contains(definesObjCat)) {
@@ -339,7 +339,7 @@ void CAttrBox::m_DownInd1_clicked()
     ResetComboItems(m_BasicTypes);
     myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
     ResetComboItems(m_NamedTypes);
-    CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, 0,myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
+    CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
     delete execAllPatt;
   if (!SetSelections(m_BasicTypes, m_NamedTypes, valNewTypeType))
 //    if (!SetSelections())
@@ -356,7 +356,7 @@ void CAttrBox::m_DownC1_clicked()
     ResetComboItems(m_BasicTypes);
     myDoc->MakeBasicBox(m_BasicTypes, NoDef, true, true);
     ResetComboItems(m_NamedTypes);
-    CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, 0,myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
+    CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
     delete execAllPatt;
   if (!SetSelections(m_BasicTypes, m_NamedTypes, valNewTypeType))
 //    if (!SetSelections())
@@ -368,7 +368,7 @@ void CAttrBox::m_DownC1_clicked()
       ResetComboItems(m_BasicTypes);
       myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
       ResetComboItems(m_NamedTypes);
-      CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, 0,myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
+      CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
       delete execAllPatt;
       if (!SetSelections(m_BasicTypes, m_NamedTypes, valNewTypeType))
       //if (!SetSelections())
@@ -459,7 +459,7 @@ void CAttrBox::m_Substitutable2_clicked()
   ResetComboItems(m_BasicTypes);
   myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
   ResetComboItems(m_NamedTypes);
-  CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, 0,myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
+  CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
   delete execAllPatt;
   if (!SetSelections(m_BasicTypes, m_NamedTypes, valNewTypeType))
 //  if (!SetSelections())
@@ -652,7 +652,7 @@ ValOnInit CCompSpecBox::OnInitDialog()
   //m_EnumItems1->SetCurSel(-1);
   m_EnumItems1->setCurrentItem(0);
   SynFlags typeflag;
-  CExecAllDefs * execAllPatt = new CExecAllDefs(myDoc, m_ExtTypes, 0,0, myDECL->ParentDECL,
+  CExecAllDefs * execAllPatt = new CExecAllDefs(myDoc, m_ExtTypes, 0, myDECL->ParentDECL,
                                                 OrigDECL, CompObjSpec, typeflag);
   m_NewName->setFocus();
   delete execAllPatt;
@@ -1370,7 +1370,7 @@ ValOnInit CFuncBox::OnInitDialog()
   }
 
   if (!second) {
-    CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes1, 0, 0,myDECL->ParentDECL, OrigDECL, Function, typeflag);
+    CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes1, 0, myDECL->ParentDECL, OrigDECL, Function, typeflag);
     delete execAllPatt;
   }
   if ((myDECL->ParentDECL->DeclType == Impl)
@@ -2027,7 +2027,7 @@ ValOnInit CImplBox::OnInitDialog()
       }
     }
   }
-  execAllPatt = new CExecAllDefs(myDoc, m_ImplTypes, 0, 0,myDECL->ParentDECL, OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
+  execAllPatt = new CExecAllDefs(myDoc, m_ImplTypes, 0, myDECL->ParentDECL, OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   if (myDECL->DeclType == CompObj) {
     setCaption("Component object implementation");
     Label_IDC_ComboEx->setText( "Component object to be implemented");
@@ -2424,7 +2424,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
         valKindOfInterface = 1;
   }
   myDoc->MakeBasicBox(m_BasicTypes, myDECL->DeclType, false);
-  execAllPatt = new CExecAllDefs(myDoc, m_ExtTypes, m_GUIStructs, 0,
+  execAllPatt = new CExecAllDefs(myDoc, m_ExtTypes, m_GUIStructs, 
                         myDECL->ParentDECL, OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   delete execAllPatt;
   m_BasicTypes->setCurrentItem(0);
@@ -2568,7 +2568,7 @@ void CInterfaceBox::m_IsComponent_clicked()
     myDECL->TypeFlags.EXCL(isComponent);
   ResetComboItems(m_ExtTypes);
   CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_ExtTypes,
-                 m_GUIStructs, 0, myDECL->ParentDECL,
+                 m_GUIStructs, myDECL->ParentDECL,
                  OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   m_ExtTypes->setCurrentItem(0);
   m_InterfaceID->setEnabled(true);
@@ -2808,7 +2808,7 @@ ValOnInit CIOBox::OnInitDialog()
     m_ValueObject1->setChecked(true);
     myDECL->TypeFlags.INCL(trueObjCat);
     myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
-    execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, 0,myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
+    execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
     m_BasicTypes->setCurrentText(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
     int num = SelEndOKToStr(m_BasicTypes, &valNewTypeType, &myDECL->RefID);
     if (num > 0) {
@@ -2914,14 +2914,14 @@ ValOnInit CIOBox::OnInitDialog()
           }
           else {
             myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
-            execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0,0, myDECL->ParentDECL, OrigDECL,
+            execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL,
                                          Attr, TypeFlags);
           }
         }
       }
       else {
         myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
-        execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0,0, myDECL->ParentDECL, OrigDECL,
+        execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL,
                                      Attr, TypeFlags);
       }
     }
@@ -3046,7 +3046,7 @@ void CIOBox::m_Substitutable1_clicked()
   ResetComboItems(m_BasicTypes);
   myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
   ResetComboItems(m_NamedTypes);
-  CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, 0,myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
+  CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
   delete execAllPatt;
   if (!SetSelections(m_BasicTypes, m_NamedTypes, valNewTypeType))
 //  if (!SetSelections())
@@ -3254,7 +3254,7 @@ ValOnInit CSetBox::OnInitDialog()
     PushButton_IDOK3->setDefault( false );
     PushButton_IDCANCEL3->setDefault( true );
   }
-  CExecAllDefs * execAllPatt = new CExecAllDefs(myDoc, m_ExTypes, 0, 0,myDECL->ParentDECL, OrigDECL,  Attr, typeflag);
+  CExecAllDefs * execAllPatt = new CExecAllDefs(myDoc, m_ExTypes, 0, myDECL->ParentDECL, OrigDECL,  Attr, typeflag);
   myDoc->MakeBasicBox(m_BasicTypes, NoDef, false);
   delete execAllPatt;
   /* 
@@ -3383,7 +3383,7 @@ ValOnInit CVTypeBox::OnInitDialog()
   
   if (onNew) {
     myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
-    execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0,0, myDECL->ParentDECL, OrigDECL, VirtualType, typeflag);
+    execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, VirtualType, typeflag);
     if ((myDECL->ParentDECL->DeclType == Interface)
         && !myDECL->ParentDECL->TypeFlags.Contains(isAbstract) )
       m_isAbstract->setEnabled(false);
@@ -3460,7 +3460,7 @@ ValOnInit CVTypeBox::OnInitDialog()
     }
     else {
       myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
-      execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0,0, myDECL->ParentDECL, OrigDECL, VirtualType, myDECL->TypeFlags);
+      execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, VirtualType, myDECL->TypeFlags);
     }
     if ((myDECL->ParentDECL->DeclType == Package) 
         || myDECL->ParentDECL->TypeFlags.Contains(isAbstract)) {
@@ -3691,7 +3691,7 @@ void CVTypeBox::m_Substitutable_clicked()
   ResetComboItems(m_BasicTypes);
   myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
   ResetComboItems(m_NamedTypes);
-  CExecAllDefs* execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0,0, myDECL->ParentDECL, OrigDECL, VirtualType, myDECL->TypeFlags);
+  CExecAllDefs* execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, VirtualType, myDECL->TypeFlags);
   delete execAllPatt;
   if (!SetSelections(m_BasicTypes, m_NamedTypes, valNewTypeType))
     valNewTypeType = QString("");
@@ -4410,7 +4410,7 @@ void CExecDefs::ExecDefs (LavaDECL ** pelDef, int )
 
 
 CExecAllDefs::CExecAllDefs(CLavaPEDoc* doc, 
-                           QComboBox* list, QComboBox* list2, QComboBox* list3,
+                           QComboBox* list, QComboBox* list2, //QComboBox* list3,
                            LavaDECL *parentDECL, LavaDECL *callingDECL,
                            TDeclType deftype, SynFlags typeFlag)
 {
@@ -4418,7 +4418,7 @@ CExecAllDefs::CExecAllDefs(CLavaPEDoc* doc,
 
   List = list;
   List2 = list2;
-  List3 = list3;
+  //List3 = list3;
   CallingDECL = callingDECL;
   ParentDECL = parentDECL;
   IntfDECL = ParentDECL;
@@ -4437,11 +4437,13 @@ CExecAllDefs::CExecAllDefs(CLavaPEDoc* doc,
   TabTravers = new CTabTraversal(this, myDoc->mySynDef);
   TabTravers->Run(true, true);
   if (List) 
-    FitBox(List, 0); // maxWidth);
+    FitBox(List, 0); 
   if (List2)
-    FitBox(List2, 0);// maxWidth2);
+    FitBox(List2, 0); //GUI-Box only
+  /*
   if (List3)
-    FitBox(List3, 0);//maxWidth3); //GUI-Box only
+    FitBox(List3, 0);
+    */
   //delete dc;
 }
 
@@ -4578,24 +4580,26 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
     listItem = new CListItem(lab, TID(elDef->OwnID, incl));
     List->listBox()->insertItem(listItem);//sort
   }
+  /*
   if (((DeclType == Interface) || (DeclType == CompObjSpec))
     && List2  && elDef->SecondTFlags.Contains(isEnum)) {
     listItem = new CListItem(elDef->FullName, TID(elDef->OwnID, incl));
     List2->listBox()->insertItem(listItem);//sort
   }
+  */
   if (elType == VirtualType) 
     decl = myDoc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
-  if (List3 && 
+  if (List2 && //List3 && 
        (elType == Interface) && !elDef->TypeFlags.Contains(isGUI)
      ) {
     if (ParentDECL && ParentDECL->FullName.l) {
       LocalName = ((CLavaPEApp*)wxTheApp)->LBaseData.calcRelName (elDef->FullName, ParentDECL->FullName);
       listItem = new CListItem(LocalName, TID(elDef->OwnID, incl));
-      List3->listBox()->insertItem(listItem);//sort
+      List2->listBox()->insertItem(listItem);//sort
     }
     else {
       listItem = new CListItem(elDef->FullName, TID(elDef->OwnID, incl));
-      List3->listBox()->insertItem(listItem);//sort
+      List2->listBox()->insertItem(listItem);//sort
     }
   }
 }

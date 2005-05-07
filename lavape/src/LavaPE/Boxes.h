@@ -600,20 +600,14 @@ public:
 class CExecAllDefs: public CExec
 {
 public:
-  CExecAllDefs(CLavaPEDoc* doc, QComboBox* list, QComboBox* list2, QComboBox* list3,
+  CExecAllDefs(CLavaPEDoc* doc, QComboBox* list, QComboBox* list2, //QComboBox* list3,
       LavaDECL *parentDECL, LavaDECL *callingDECL, TDeclType deftype, SynFlags typeFlag);
   void ExecDefs (LavaDECL ** pelDef, int level);
-//  void ExecFormDef (LavaDECL ** pelDef, int level);
   void FitBox(QComboBox* list, int maxWidth);
   CLavaPEDoc* myDoc;
   QComboBox *List;
   QComboBox *List2;
-  QComboBox *List3;
-  //CDC* dc;
-  //QSize sz;
-  //int maxWidth;
-  //int maxWidth2;
-  //int maxWidth3;
+  //QComboBox *List3;
   LavaDECL *ParentDECL;
   LavaDECL *CallingDECL;
   LavaDECL *IntfDECL;
