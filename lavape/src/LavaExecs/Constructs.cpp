@@ -358,7 +358,7 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
   IfExpression *ifx;
   MultipleOp *multOpExp;
   BinaryOp *binOpEx;
-//  Connect *connectStm;
+  Disconnect *disconnStm;
   CHE *chpFormIn;
   Category cat;
   TID targetTid, tidOperatorFunc;
@@ -414,8 +414,17 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
     else*/
       return false;
   }
-  else if (parentObject->primaryToken == disconnect_T)
-    return true;
+  else if (parentObject->primaryToken == disconnect_T) {
+    disconnStm = (Disconnect*)parentObject;
+    if (whereInParent == (address)&disconnStm->signalSender.ptr
+    && ((SynObject*)disconnStm->signalReceiver.ptr)->primaryToken == nil_T)
+      return false;
+    else if (whereInParent == (address)&disconnStm->signalReceiver.ptr
+    && ((SynObject*)disconnStm->signalSender.ptr)->primaryToken == nil_T)
+      return false;
+    else
+      return true;
+  }
   else if (IsFuncHandle())
     return false;
   else if (parentObject->primaryToken == elsif_T) {

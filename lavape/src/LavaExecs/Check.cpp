@@ -3537,7 +3537,7 @@ bool BoolConst::Check (CheckData &ckd) {
 }
 
 void NullConst::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
-  decl = (LavaDECL*)-1;
+  decl = 0;
   cat = unknownCategory;
   ctxFlags.bits = 0;
 #ifdef INTERPRETER
@@ -4546,6 +4546,8 @@ bool Connect::Check (CheckData &ckd)
 
 bool Disconnect::Check (CheckData &ckd)
 {
+  bool rc;
+
   ENTRY
 
   ok &= ((SynObject*)signalSender.ptr)->Check(ckd);
@@ -4561,8 +4563,8 @@ bool Disconnect::Check (CheckData &ckd)
     }
   ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
 
-  ok &= ((SynObject*)signalReceiver.ptr)->Check(ckd);
-  if (ok) {
+  rc = ((SynObject*)signalReceiver.ptr)->Check(ckd);
+  if (rc) {
     if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncDisabled_T) {
       ((SynObject*)callbackFunction.ptr)->primaryToken = FuncPH_T;
       ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
@@ -4572,6 +4574,7 @@ bool Disconnect::Check (CheckData &ckd)
       ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
       ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
     }
+  ok &= rc;
   ok &= ((SynObject*)callbackFunction.ptr)->Check(ckd);
 
   EXIT

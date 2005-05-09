@@ -1448,44 +1448,79 @@ void CExecView::Select (SynObject *selObj)
         callExpr = (Expression*)connStm->signalReceiver.ptr;
         isSigFunc = false;
       }
-      if (callExpr) {
-        if (callExpr->IsPlaceHolder())
-          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-        else {
-          if (callExpr->flags.Contains(isSelfVar)
-          && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last) {
-            decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
-            callCtx = text->ckd.lpc;
-          }
-          else {
-            callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
-            callCtx = text->ckd.tempCtx;
-            decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
-            text->ckd.document->NextContext(decl,callCtx);
-          }
-          if (decl)
-            if (isSigFunc)
-              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
-            else { // slot function
-              callExpr = (Expression*)connStm->signalSender.ptr;
-              callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
-              callCtxSig = text->ckd.tempCtx;
-              declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
-              text->ckd.document->NextContext(declSig,callCtxSig);
-              text->ckd.tempCtx = callCtxSig;
-              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,((Reference*)connStm->signalFunction.ptr)->refDecl,callCtx,false);
-            }
-          else
-            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+      if (callExpr->IsPlaceHolder())
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+      else {
+        if (callExpr->flags.Contains(isSelfVar)
+        && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last) {
+          decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
+          callCtx = text->ckd.lpc;
         }
+        else {
+          callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+          callCtx = text->ckd.tempCtx;
+          decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
+          text->ckd.document->NextContext(decl,callCtx);
+        }
+        if (decl)
+          if (isSigFunc)
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
+          else { // slot function
+            callExpr = (Expression*)connStm->signalSender.ptr;
+            callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
+            callCtxSig = text->ckd.tempCtx;
+            declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
+            text->ckd.document->NextContext(declSig,callCtxSig);
+            text->ckd.tempCtx = callCtxSig;
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,((Reference*)connStm->signalFunction.ptr)->refDecl,callCtx,false);
+          }
+        else
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       }
     }
     else if (text->currentSynObj->parentObject->primaryToken == disconnect_T) { // connect/disconnect
       disconnStm = (Disconnect*)text->currentSynObj->parentObject;
-      if (text->currentSynObj->whereInParent == (address)&disconnStm->signalFunction.ptr)
+      if (text->currentSynObj->whereInParent == (address)&disconnStm->signalFunction.ptr) {
         callExpr = (Expression*)disconnStm->signalSender.ptr;
-      else
+        isSigFunc = true;
+      }
+      else {
         callExpr = (Expression*)disconnStm->signalReceiver.ptr;
+        isSigFunc = false;
+      }
+      if (callExpr->IsPlaceHolder())
+        ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+      else {
+        if (callExpr->flags.Contains(isSelfVar)
+        && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last) {
+          decl = text->ckd.document->IDTable.GetDECL(selfVar->typeID,text->ckd.inINCL);
+          callCtx = text->ckd.lpc;
+        }
+        else {
+          callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
+          callCtx = text->ckd.tempCtx;
+          decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
+          text->ckd.document->NextContext(decl,callCtx);
+        }
+        if (decl)
+          if (isSigFunc)
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
+          else { // slot function
+            callExpr = (Expression*)disconnStm->signalSender.ptr;
+            callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
+            callCtxSig = text->ckd.tempCtx;
+            declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
+            text->ckd.document->NextContext(declSig,callCtxSig);
+            text->ckd.tempCtx = callCtxSig;
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,((Reference*)disconnStm->signalFunction.ptr)->refDecl,callCtx,false);
+          }
+        else {
+          if (isSigFunc)
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowStaticFuncs(text->ckd);
+          else
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowStaticFuncs(text->ckd);
+        }
+      }
     }
 
     sv->viewport()->update();

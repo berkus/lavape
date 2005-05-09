@@ -1336,7 +1336,7 @@ void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* signalD
   if (showSignals)
     m_VFuncsCtrl->insertItem( tr( " (Signals) " ) );
   else if (signalDecl)
-    m_VFuncsCtrl->insertItem( tr( " (Slots) " ) );
+    m_VFuncsCtrl->insertItem( tr( " (Handlers) " ) );
   else
     m_VFuncsCtrl->insertItem( tr( " (Virtual calls) " ) );
 

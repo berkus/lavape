@@ -9,4 +9,3 @@ fi
 rm -f precomp_header.h precomp_header.h.gch
 
 echo $PRECOMP_SUPPORT
-
