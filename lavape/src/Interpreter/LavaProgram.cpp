@@ -2228,15 +2228,15 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
 #endif
         ckd.myDECL = topDECL;
         ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
+        if (!ok) {
+          critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          goto stop;
+        }
         sData.nextFreeID = 0;
         sData.doc = ckd.document;
         sData.nextFreeID = 0;
         sData.finished = false;
         ((SynObject*)topDECL->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
-        if (!ok) {
-          critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-          goto stop;
-        }
         topDECL->WorkFlags.INCL(runTimeOK);
 
         frameSize = ((SelfVar*)topDECL->Exec.ptr)->stackFrameSize;
