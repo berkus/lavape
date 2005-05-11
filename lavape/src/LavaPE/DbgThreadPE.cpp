@@ -163,7 +163,7 @@ void CLavaPEDebugThread::run() {
   fd_set read_fds;
   int nReady;
   
-	threadStg.setLocalData(td);
+	threadStg()->setLocalData(td);
   if (myDoc->debugOn) { 
     FD_ZERO(&read_fds);
     FD_SET(listenSocket,&read_fds);

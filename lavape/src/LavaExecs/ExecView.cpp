@@ -1498,9 +1498,13 @@ void CExecView::Select (SynObject *selObj)
         }
         else {
           callExpr->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
-          callCtx = text->ckd.tempCtx;
-          decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
-          text->ckd.document->NextContext(decl,callCtx);
+          if (decl == (LavaDECL*)-1)
+            decl = 0;
+          else {
+            callCtx = text->ckd.tempCtx;
+            decl = text->ckd.document->GetTypeAndContext(decl,callCtx);
+            text->ckd.document->NextContext(decl,callCtx);
+          }
         }
         if (decl)
           if (isSigFunc)

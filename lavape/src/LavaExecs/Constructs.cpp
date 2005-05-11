@@ -353,7 +353,7 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
 
 bool SynObject::NullAdmissible (CheckData &ckd) {
   LavaDECL *targetDecl, *declHandle;
-  SynObject *targetObj;
+  SynObject *targetObj, *synObj;
   Assignment *assig;
   IfExpression *ifx;
   MultipleOp *multOpExp;
@@ -420,6 +420,19 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
     && ((SynObject*)disconnStm->signalReceiver.ptr)->primaryToken == nil_T)
       return false;
     else if (whereInParent == (address)&disconnStm->signalReceiver.ptr
+    && ((SynObject*)disconnStm->signalSender.ptr)->primaryToken == nil_T)
+      return false;
+    else
+      return true;
+  }
+  else if (parentObject->primaryToken == ObjRef_T
+  && parentObject->parentObject->primaryToken == disconnect_T) {
+    disconnStm = (Disconnect*)parentObject->parentObject;
+    synObj = parentObject;
+    if (synObj->whereInParent == (address)&disconnStm->signalSender.ptr
+    && ((SynObject*)disconnStm->signalReceiver.ptr)->primaryToken == nil_T)
+      return false;
+    else if (synObj->whereInParent == (address)&disconnStm->signalReceiver.ptr
     && ((SynObject*)disconnStm->signalSender.ptr)->primaryToken == nil_T)
       return false;
     else

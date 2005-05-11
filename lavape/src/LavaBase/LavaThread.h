@@ -50,9 +50,9 @@ public:
 	CLavaThread *threadPtr;
 };
 
-template class LAVABASE_DLL QThreadStorage<class CThreadData *>;
+//template class LAVABASE_DLL QThreadStorage<class CThreadData *>;
 
-extern LAVABASE_DLL QThreadStorage<CThreadData*> threadStg;
+extern LAVABASE_DLL QThreadStorage<CThreadData*>* threadStg();
 
 typedef QPtrList<CLavaThread> CThreadList;
 

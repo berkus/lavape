@@ -25,7 +25,11 @@
 
 
 
-QThreadStorage<CThreadData*> threadStg;
+static QThreadStorage<CThreadData*> myThreadStg;
+
+QThreadStorage<CThreadData*>* threadStg() {
+  return &myThreadStg;
+}
 
 
 CLavaThread::CLavaThread(unsigned (*fp)(CLavaBaseDoc *), CLavaBaseDoc* docu)
@@ -53,12 +57,12 @@ CThreadData::CThreadData(CLavaThread *thr)
 }
 
 CLavaThread *CLavaThread::currentThread() {
-	return threadStg.localData()->threadPtr; 
+	return threadStg()->localData()->threadPtr; 
 }
 
 void CLavaThread::run() {
   CThreadData *td = new CThreadData(this);
-	threadStg.setLocalData(td);
+	threadStg()->setLocalData(td);
   myDoc->ThreadList->append(this);
 	(*exec)(myDoc);
 }

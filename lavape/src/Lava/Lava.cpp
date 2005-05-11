@@ -94,7 +94,7 @@ int main( int argc, char ** argv ) {
 	else
 		return 1;
 	
-	threadStg.setLocalData(new CThreadData(0)); 
+	threadStg()->setLocalData(new CThreadData(0)); 
 
 	int res = ap.exec();
   

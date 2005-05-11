@@ -105,7 +105,7 @@ void CLavaDebugThread::run() {
 
 
   CThreadData *td = new CThreadData(this);
-	threadStg.setLocalData(td);
+	threadStg()->setLocalData(td);
   
   if (debugOn) 
     workSocket = connect_TCP(remoteIPAddress,remotePort);

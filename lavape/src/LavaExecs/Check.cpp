@@ -4528,7 +4528,7 @@ bool Connect::Check (CheckData &ckd)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-// check whether slot is compatible with signal?
+// check whether slot is compatible with signal
 
   ok &= slotFunction(ckd,callbackDecl,callbackCtx,sigDecl,sigCtx);
   if (!ok) {

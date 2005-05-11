@@ -55,11 +55,14 @@ endif
 rec_make: $(make_subpro) this
 
 ifeq ($(OPSYS),CYGWIN_NT-5.1)
+DLLSUFFIX=.dll
 EXEC2=$(addsuffix .dll,$(basename $(EXEC)))
 else
 ifeq ($(OPSYS),Darwin)
+DLLSUFFIX=.dylib
 EXEC2=$(addsuffix .dylib,$(basename $(EXEC)))
 else
+DLLSUFFIX=.so
 EXEC2=$(EXEC)
 endif
 endif
@@ -70,7 +73,7 @@ this: ../../lib/lib$(EXEC2)
 	$(CC) -o ../../lib/lib$(EXEC2) $(all_o_files) -shared -fstack-check -Wl,-soname=lib$(EXEC2) -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -lqt-mt
 else
 this: ../../bin/$(EXEC)
-../../bin/$(EXEC): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix .so,$(SUBPRO))))
+../../bin/$(EXEC): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
 	$(CC) -o ../../bin/$(EXEC) $(all_o_files) -fstack-check -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lqassistantclient -lqt-mt
 endif
 
