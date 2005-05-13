@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 >precomp_header.h
 
 if gcc -x c-header precomp_header.h >/dev/null 2>&1; then

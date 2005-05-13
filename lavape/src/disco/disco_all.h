@@ -108,7 +108,7 @@
 #include "AnyType.h"
 #include "ASN1File.h"
 #include "ASN1.h"
-//#include "ASN1pp.h"
+#include "ASN1pp.h"
 #include "CDPpp.h"
 #include "ChainA.h"
 #include "CHAINANY.h"
@@ -120,7 +120,7 @@
 #include "Halt.h"
 #include "InFile.h"
 #include "MachDep.h"
-//#include "MACROS.h"
+#include "MACROS.h"
 #include "NestA.h"
 #include "NESTANY.h"
 #include "OSDep.h"
@@ -135,6 +135,6 @@
 #include "SYSTEM.h"
 #include "TextFile.h"
 #include "UNIX.h"
-//#include "wx_obj.h"
+#include "wx_obj.h"
 
 #endif
