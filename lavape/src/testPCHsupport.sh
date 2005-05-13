@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/sh
 
 >precomp_header.h
 

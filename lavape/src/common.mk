@@ -78,15 +78,15 @@ this: ../../bin/$(EXEC)
 endif
 
 .cpp.o:
-	$(CC) -c -pipe -g -MMD $(PCH_WARN) -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -ggdb -MMD $(PCH_WARN) -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -fPIC -MMD -H -Winvalid-pch -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(incl_subpro) $(CPP_INCLUDES) -o $@ $<
 
 .c.o:
-	$(CC) -c -pipe -g -MMD $(PCH_WARN) -D_REENTRANT $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -ggdb -MMD $(PCH_WARN) -D_REENTRANT $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -fPIC -MMD -Winvalid-pch -D_REENTRANT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h
-	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -g -MMD -Winvalid-pch -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -ggdb -MMD -Winvalid-pch -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
