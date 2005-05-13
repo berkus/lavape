@@ -416,9 +416,9 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
   TAnnotation *anno;
   CHEEnumSelId *enumSel=0;
   DString str(100);
-  QString *pstr;
+  QString qstr, *pstr;
   int iVal;
-  bool dftDefined, ok;
+  bool dftDefined;
 
   anno = resultFNode->data.Annotation.ptr;
   if (!resultFNode->data.Atomic)
@@ -540,11 +540,18 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
         resultFNode->data.StringValue.Reset(100);
         if (resultFNode->data.BType == Float) {
           resultFNode->data.F = *(float*)((*rPtr)+LSH);
-          Conv.RealToString(resultFNode->data.F, 0, anno->Length.Field, resultFNode->data.StringValue, ok);
+          qstr.setNum(resultFNode->data.F);
+          qstr = qstr.rightJustify(anno->Length.Field,' ',true);
+          resultFNode->data.StringValue = DString(qstr);
+      //    Conv.RealToString(resultFNode->data.F, 0, anno->Length.Field, resultFNode->data.StringValue, ok);
         }
         else {
           resultFNode->data.Db = *(double*)((*rPtr)+LSH);
-          Conv.RealToString(resultFNode->data.Db, 0, anno->Length.Field, resultFNode->data.StringValue, ok);
+          resultFNode->data.F = *(float*)((*rPtr)+LSH);
+          qstr.setNum(resultFNode->data.Db);
+          qstr = qstr.rightJustify(anno->Length.Field,' ',true);
+          resultFNode->data.StringValue = DString(qstr);
+//          Conv.RealToString(resultFNode->data.Db, 0, anno->Length.Field, resultFNode->data.StringValue, ok);
         }
         resultFNode->data.FIP.leng = resultFNode->data.StringValue.l;
         resultFNode->data.IoSigFlags.INCL(trueValue);

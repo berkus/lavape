@@ -87,9 +87,9 @@ public:
 
 /* from Stamps and RealConv (DRdir ************************************** */
 
-  void StringToReal (DString& str, int digits, unsigned width, bool& okay);
+//  void StringToReal (DString& str, int digits, unsigned width, bool& okay);
 
-  void RealToString (double r, int Digits, int width, DString& str, bool& okay);
+//  void RealToString (double r, int Digits, int width, DString& str, bool& okay);
   void Trim (DString& str); //  removes leading and trailing blanks for a string 
   void RTBS (DString& str); //  removes trailing blanks for a string
   void RLBS (DString& str); //  removes leading blanks for a string
