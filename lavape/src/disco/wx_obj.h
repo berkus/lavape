@@ -102,14 +102,6 @@ class DISCO_DLL wxClassInfo
 
    wxClassInfo *baseInfo2;
 
-
-
-   static wxClassInfo *first;
-
-   wxClassInfo *next;
-
-
-
    wxClassInfo(char *cName, char *baseName1, char *baseName2, int sz, wxObjectConstructorFn fn);
 
 

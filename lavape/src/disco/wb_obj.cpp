@@ -48,11 +48,14 @@
 #include "wx_obj.h"
 #include "string.h"
 #include "qapplication.h"
+#include "qdict.h"
 
 
 // Hand-coded IMPLEMENT... macro for wxObject (define static data)
 wxClassInfo wxObject::classwxObject("wxObject", NULL, NULL, sizeof(wxObject), NULL);
-wxClassInfo *wxClassInfo::first = NULL;
+
+static QDict<wxClassInfo> *classDict=0;
+
 
 // Useful buffer, initialized in wxCommonInit
 char *wxBuffer = NULL;
@@ -82,16 +85,17 @@ wxObject::~wxObject(void)
  
 wxClassInfo::wxClassInfo(char *cName, char *baseName1, char *baseName2, int sz, wxObjectConstructorFn constr)
 {
+  if (!classDict)
+    classDict = new QDict<wxClassInfo>(311);
+
   className = cName;
   baseClassName1 = baseName1;
   baseClassName2 = baseName2;
 
   objectSize = sz;
   objectConstructor = constr;
-  
-  next = first;
-  first = this;
-
+  if (!(*classDict)[className])
+    classDict->insert(className,this);
   baseInfo1 = NULL;
   baseInfo2 = NULL;
 }
@@ -106,24 +110,15 @@ wxObject *wxClassInfo::CreateObject(void)
 
 wxClassInfo *wxClassInfo::FindClass(char *c)
 {
-  wxClassInfo *p = first;
-  while (p)
-  {
-    if (p && p->GetClassName() && strcmp(p->GetClassName(), c) == 0)
-      return p;
-    p = p->next;
-  }
-  return NULL;
+  return (*classDict)[c];
 }
 
 wxObject *wxCreateDynamicObject(char *name)
 {
-  wxClassInfo *info = wxClassInfo::first;
-  while (info)
-  {
-    if (info->className && strcmp(info->className, name) == 0)
-      return info->CreateObject();
-    info = info->next;
-  }
-  return NULL;
+  wxClassInfo *info = (*classDict)[name];
+
+  if (info)
+    return info->CreateObject();
+  else
+    return 0;
 }
