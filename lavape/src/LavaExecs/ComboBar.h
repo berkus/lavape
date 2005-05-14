@@ -151,6 +151,7 @@ protected:
   CheckData lastCkd;
   bool onShowStatic; //select an interface and then a static function defined in this interface
   bool onShowSignals; //select an interface and then a signal function defined in this interface
+  bool onShowSlots; //select an interface and then a handler function defined in this interface
   void showIFFuncs();
   void FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *decl, LavaDECL* conDECL, LavaDECL* vbaseDECL, LavaDECL* signalDecl, const CContext &signalCtx, const CContext &callCtx, bool withStatic, bool showSignals=false);
   bool IsInBox(QComboBox* combo, const DString& name, int id, int incl, bool& sameName);

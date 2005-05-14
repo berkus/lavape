@@ -114,6 +114,7 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QMainWindow* parent)
   EnumsShow = true;
   NewFuncEnable = false;
   NewPFuncEnable = false;
+  lastSignalDecl = 0;
 
   CContext context;
   myDoc->NextContext(myDECL, context);
@@ -397,7 +398,15 @@ void CComboBar::OnSelendokBasicTypes(int pos)
       decl = myDoc->IDTable.GetDECL(lastSelTID);
       SetCombos(true, true);
       onShowSignals = true;
-      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, lastSignalDecl, lastCkd.tempCtx, false, lastSignalDecl==0);
+      ResetComboItems(m_StaticFuncsCtrl);
+      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, 0, lastCkd.tempCtx, false, true);
+    }
+    else if (onShowSlots) {
+      decl = myDoc->IDTable.GetDECL(lastSelTID);
+      SetCombos(true, true);
+      onShowSlots = true;
+      ResetComboItems(m_StaticFuncsCtrl);
+      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, lastSignalDecl, lastCkd.tempCtx, false, false);
     }
     else
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
@@ -420,7 +429,15 @@ void CComboBar::OnSelendokCompaBTypes(int pos)
       decl = myDoc->IDTable.GetDECL(lastSelTID);
       SetCombos(true, true);
       onShowSignals = true;
-      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, lastSignalDecl, lastCkd.tempCtx, false, lastSignalDecl==0);
+      ResetComboItems(m_StaticFuncsCtrl);
+      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, 0, lastCkd.tempCtx, false, true);
+    }
+    else if (onShowSlots) {
+      decl = myDoc->IDTable.GetDECL(lastSelTID);
+      SetCombos(true, true);
+      onShowSlots = true;
+      ResetComboItems(m_StaticFuncsCtrl);
+      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, lastSignalDecl, lastCkd.tempCtx, false, false);
     }
     else 
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
@@ -443,7 +460,15 @@ void CComboBar::OnSelendokComboTypes(int pos)
       decl = myDoc->IDTable.GetDECL(lastSelTID);
       SetCombos(true, true);
       onShowSignals = true;
-      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, lastSignalDecl, lastCkd.tempCtx, false, lastSignalDecl==0);
+      ResetComboItems(m_StaticFuncsCtrl);
+      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, 0, lastCkd.tempCtx, false, true);
+    }
+    else if (onShowSlots) {
+      decl = myDoc->IDTable.GetDECL(lastSelTID);
+      SetCombos(true, true);
+      onShowSlots = true;
+      ResetComboItems(m_StaticFuncsCtrl);
+      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, lastSignalDecl, lastCkd.tempCtx, false, false);
     }
     else
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
@@ -466,7 +491,15 @@ void CComboBar::OnSelendokCompaTypes(int pos)
       decl = myDoc->IDTable.GetDECL(lastSelTID);
       SetCombos(true, true);
       onShowSignals = true;
-      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, lastSignalDecl, lastCkd.tempCtx, false, lastSignalDecl==0);
+      ResetComboItems(m_StaticFuncsCtrl);
+      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, 0, lastCkd.tempCtx, false, true);
+    }
+    else if (onShowSlots) {
+      decl = myDoc->IDTable.GetDECL(lastSelTID);
+      SetCombos(true, true);
+      onShowSlots = true;
+      ResetComboItems(m_StaticFuncsCtrl);
+      showClassFuncs(lastCkd, m_StaticFuncsCtrl, decl, lastSignalDecl, lastCkd.tempCtx, false, false);
     }
     else
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
@@ -980,6 +1013,7 @@ void CComboBar::SetCombos(bool setVar, bool hideCombo)
   }
   onShowStatic = false;
   onShowSignals = false;
+  onShowSlots = false;
 }
 
 /* not used
@@ -1511,16 +1545,16 @@ void CComboBar::ShowSignalFuncs(CheckData &ckd)
   RightCombo = m_ComboBarDlg->IDC_BasicTypes;
   m_StaticFuncsCtrl->removeItem(0);
   m_StaticFuncsCtrl->insertItem( tr( " (Signals) " ) );
-  m_StaticFuncsCtrl->show();
-    m_StaticFuncsCtrl->setCurrentItem(0);
+  m_StaticFuncsCtrl->setCurrentItem(0);
   m_StaticFuncsCtrl->setEnabled(false);
+  m_StaticFuncsCtrl->show();
   lastCombo = invalidateLast;
 }
 
 void CComboBar::ShowSlotFuncs(CheckData &ckd, LavaDECL* signalDecl)
 {
   SetCombos(true, true);
-  onShowSignals = true;
+  onShowSlots = true;
   lastSignalDecl = signalDecl;
   lastCkd = ckd;
   m_TypesCtrl->show();
@@ -1535,9 +1569,9 @@ void CComboBar::ShowSlotFuncs(CheckData &ckd, LavaDECL* signalDecl)
   RightCombo = m_ComboBarDlg->IDC_BasicTypes;
   m_StaticFuncsCtrl->removeItem(0);
   m_StaticFuncsCtrl->insertItem( tr( " (Handler) " ) );
-  m_StaticFuncsCtrl->show();
-    m_StaticFuncsCtrl->setCurrentItem(0);
+  m_StaticFuncsCtrl->setCurrentItem(0);
   m_StaticFuncsCtrl->setEnabled(false);
+  m_StaticFuncsCtrl->show();
   lastCombo = invalidateLast;
 }
 
