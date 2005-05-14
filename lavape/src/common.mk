@@ -42,6 +42,7 @@ endif
 OPSYS = $(shell uname)
 
 ifeq ($(OPSYS),Darwin)
+_AUX = 1
 DLLSUFFIX = .dylib
 MACFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module
 ifeq ($(PRJ),SFLsockets)

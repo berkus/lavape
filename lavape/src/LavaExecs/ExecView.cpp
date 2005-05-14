@@ -1525,10 +1525,14 @@ void CExecView::Select (SynObject *selObj)
             ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,sigFuncDecl,callCtx,false);
           }
         else {
+          if (((SynObject*)disconnStm->signalFunction.ptr)->primaryToken == nil_T)
+            sigFuncDecl = 0;
+          else
+            sigFuncDecl = ((Reference*)disconnStm->signalFunction.ptr)->refDecl;
           if (isSigFunc)
             ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSignalFuncs(text->ckd);
           else
-            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowStaticFuncs(text->ckd);
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSlotFuncs(text->ckd,sigFuncDecl);
         }
       }
     }
