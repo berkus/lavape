@@ -65,37 +65,30 @@ public:
   CComboBar();   // standard constructor
   CComboBar(LavaDECL* execDecl, CPEBaseDoc* doc, QMainWindow* parent);  
   ~CComboBar() {}
-  virtual QSize sizeHint() const {return m_ComboBarDlg->size();}
-  void DeleteObjData(bool setCombo = true);
+
   LavaDECL *ExecDECL;
   LavaDECL *myDECL; //parent of exec
   LavaDECL *SelfTypeDECL;  //Implementation if myDECL function
   LavaDECL *IntfDECL;
   LavaDECL *FuncParentDecl;
   CPEBaseDoc *myDoc;
-  bool lastOK;
-  TShowCombo lastCombo;
-  QString lastSelStr;
-  TID lastSelTID;
-  bool onShowStatic; //select an interface and then a static function defined in this interface
 
-//  bool Create(QWidget* insertAfter, QWidget* pParentWnd, UINT nIDTemplate, UINT nStyle, UINT nID );
+  virtual QSize sizeHint() const {return m_ComboBarDlg->size();}
+  void DeleteObjData(bool setCombo = true);
+
   void ShowCombos(TShowCombo what, TID* pID=0); 
   void ShowSubObjects(LavaDECL* decl, const CContext &context);  //decl is type or field
   void ShowClassFuncs(CheckData &ckd, LavaDECL *decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic=false, bool showSignals=false);  //decl is interface or implementation
   void ShowStaticFuncs(CheckData &ckd); 
-  void showIFFuncs();
+  void ShowSignalFuncs(CheckData &ckd); 
+  void ShowSlotFuncs(CheckData &ckd, LavaDECL* signalDecl); 
   void ShowBaseInis(const TID& id);  //decl is interface or implementation
-//  void ShowUpcasts(const TID& id, bool theTop = true);     //id is interface or implementation
   void ShowCompObjects(CheckData &ckd, LavaDECL *decl, const CContext &context, Category givenCat, bool forInput, bool forCopy=false); //compatible objects, iC is type
   void ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &context); //compatible types
-  void FuncsInSupports(CheckData &ckd, LavaDECL *decl, LavaDECL* conDECL, LavaDECL* vbaseDECL, LavaDECL* signalDecl, const CContext &signalCtx, const CContext &callCtx, bool withStatic, bool showSignals=false);
-  bool IsInBox(QComboBox* combo, const DString& name, int id, int incl, bool& sameName);
   void RemoveLocals();
   void AddLocal(const TID& id, const DString& name, const TID& typeID, bool subst=false);
   void OnUpdate(LavaDECL *execDecl, bool externalHint);
   bool UsedName(const DString& name);
-  void SetCombos(bool setVar, bool hideCombo);
   void TrackEnum();
 
   ComboBarDlg* m_ComboBarDlg;
@@ -118,7 +111,7 @@ public:
   QComboBox*  m_SubObjectsCtrl;   //subobjects, left
   QComboBox*  m_CompaObjectsCtrl; //compatible objects, left
   QComboBox*  m_BaseInisCtrl;     //initializer function of base classes, left
-  QComboBox*  m_StaticFuncsCtrl;  //static functions of a selected interface, right
+  QComboBox*  m_StaticFuncsCtrl;  //static or signal functions of a selected interface, right
   QComboBox*  m_CompaTypesCtrl;   //compatible types     
   QComboBox*  m_CompaBTypesCtrl;  //compatible basic types
 
@@ -150,6 +143,19 @@ public:
 //  bool SetToolText( UINT id, NMHDR * pTTTStruct, LRESULT * pResult );
 
 protected:
+  bool lastOK;
+  TShowCombo lastCombo;
+  QString lastSelStr;
+  TID lastSelTID;
+  LavaDECL *lastSignalDecl;
+  CheckData lastCkd;
+  bool onShowStatic; //select an interface and then a static function defined in this interface
+  bool onShowSignals; //select an interface and then a signal function defined in this interface
+  void showIFFuncs();
+  void FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *decl, LavaDECL* conDECL, LavaDECL* vbaseDECL, LavaDECL* signalDecl, const CContext &signalCtx, const CContext &callCtx, bool withStatic, bool showSignals=false);
+  bool IsInBox(QComboBox* combo, const DString& name, int id, int incl, bool& sameName);
+  void SetCombos(bool setVar, bool hideCombo);
+  void showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL *decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic=false, bool showSignals=false);  //decl is interface or implementation
 
 /*
 	void OnCloseupBasicTypes();

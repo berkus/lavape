@@ -1520,7 +1520,7 @@ void CExecView::Select (SynObject *selObj)
           }
         else {
           if (isSigFunc)
-            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowStaticFuncs(text->ckd);
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSignalFuncs(text->ckd);
           else
             ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowStaticFuncs(text->ckd);
         }
