@@ -1175,15 +1175,11 @@ bool SynObject::Check (CheckData &ckd)
 {
   ENTRY
 #ifdef INTERPRETER
-  if (primaryToken != Event_T)
-    SetError(ckd,&ERR_Placeholder);
+  SetError(ckd,&ERR_Placeholder);
 #endif
-  if (!flags.Contains(isDisabled))
+//  if (!flags.Contains(isDisabled))
     ckd.nPlaceholders++;
-  if (primaryToken == Event_T)
-    EXIT
-  else
-    ERROREXIT
+  ERROREXIT
 }
 
 bool MultipleOp::IsOptional (CheckData &ckd) {
@@ -4209,28 +4205,26 @@ bool FuncExpression::Check (CheckData &ckd)
       (opd->primaryToken==parameter_T?(SynObject*)((Parameter*)opd)->parameter.ptr : opd);
     if (!actParm->IsIfStmExpr())
       ok/*rc*/ &= opd->Check(ckd);
-    if (actParm->primaryToken != Event_T) {
-      // check act.parm/form.parm. type compatibility:
-      ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
-//    parm = (SynObject*)((Parameter*)chpActIn->data)->parameter.ptr;
+    // check act.parm/form.parm. type compatibility:
+    ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
+//  parm = (SynObject*)((Parameter*)chpActIn->data)->parameter.ptr;
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
-      formInParmDecl = (LavaDECL*)chpFormIn->data;
-      if (!formInParmDecl->TypeFlags.Contains(isOptional)
-      && ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->IsOptional(ckd))
-        ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->flags.INCL(isUnsafeMandatory);
-      ckd.tempCtx = callContext;
-      ((Expression*)chpActIn->data)->formVType = ckd.document->IDTable.GetDECL(formInParmDecl->RefID,formInParmDecl->inINCL);
-      ((Expression*)chpActIn->data)->vSectionNumber = ckd.document->GetVTSectionNumber(ckd, callCtx, ((Expression*)chpActIn->data)->formVType, ((Expression*)chpActIn->data)->isOuter);
-      formInParmDecl = ckd.document->GetFinalMTypeAndContext(formInParmDecl->RefID,formInParmDecl->inINCL,ckd.tempCtx,&ckd);
-      if (actDecl != (LavaDECL*)-1) { // "nothing"?
-        actDecl = ckd.document->GetType(actDecl);
-        ((Expression*)chpActIn->data)->sectionNumber = ckd.document->GetSectionNumber(ckd, actDecl,formInParmDecl);
-      }
-      if (callExpr && callExpr->flags.Contains(isDisabled)) // initializer call
-        opd->flags.INCL(unfinishedAllowed);
-#endif
+    formInParmDecl = (LavaDECL*)chpFormIn->data;
+    if (!formInParmDecl->TypeFlags.Contains(isOptional)
+    && ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->IsOptional(ckd))
+      ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->flags.INCL(isUnsafeMandatory);
+    ckd.tempCtx = callContext;
+    ((Expression*)chpActIn->data)->formVType = ckd.document->IDTable.GetDECL(formInParmDecl->RefID,formInParmDecl->inINCL);
+    ((Expression*)chpActIn->data)->vSectionNumber = ckd.document->GetVTSectionNumber(ckd, callCtx, ((Expression*)chpActIn->data)->formVType, ((Expression*)chpActIn->data)->isOuter);
+    formInParmDecl = ckd.document->GetFinalMTypeAndContext(formInParmDecl->RefID,formInParmDecl->inINCL,ckd.tempCtx,&ckd);
+    if (actDecl != (LavaDECL*)-1) { // "nothing"?
+      actDecl = ckd.document->GetType(actDecl);
+      ((Expression*)chpActIn->data)->sectionNumber = ckd.document->GetSectionNumber(ckd, actDecl,formInParmDecl);
     }
+    if (callExpr && callExpr->flags.Contains(isDisabled)) // initializer call
+      opd->flags.INCL(unfinishedAllowed);
+#endif
     if (chpActIn)
       chpActIn = (CHE*)chpActIn->successor;
     chpFormIn = (CHE*)chpFormIn->successor;
@@ -4570,7 +4564,7 @@ bool Disconnect::Check (CheckData &ckd)
       ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
     }
   }
-  else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
+  else if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncPH_T) {
       ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
       ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
     }

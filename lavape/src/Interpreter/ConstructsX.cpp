@@ -163,6 +163,10 @@
 }
 #endif
 
+#ifdef _AUX
+#define FPE_INTOVF FPE_FLTOVF
+#define FPE_INTDIV FPE_FLTDIV
+#endif
 
 #ifdef WIN32
 #define NATIVE_FCALL(CKD, FUNC, NEWSTACK, FRAMESIZE, RESULT)  {\

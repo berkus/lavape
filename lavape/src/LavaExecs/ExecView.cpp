@@ -1278,7 +1278,7 @@ void CExecView::Select (SynObject *selObj)
   IfExpression *ifx;
   CHE *chpFormIn;
   unsigned iInp=1, iOut=1;
-  LavaDECL *decl, *declSig, *finalDecl, *declSwitchExpression;
+  LavaDECL *decl, *declSig, *sigFuncDecl, *finalDecl, *declSwitchExpression;
   Category cat, catSwitchExpression;
   CContext nullCtx, callCtx, callCtxSig;
   SynFlags ctxFlags;
@@ -1512,11 +1512,17 @@ void CExecView::Select (SynObject *selObj)
           else { // slot function
             callExpr = (Expression*)disconnStm->signalSender.ptr;
             callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
-            callCtxSig = text->ckd.tempCtx;
-            declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
-            text->ckd.document->NextContext(declSig,callCtxSig);
+            if (declSig != (LavaDECL*)-1) {
+              callCtxSig = text->ckd.tempCtx;
+              declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
+              text->ckd.document->NextContext(declSig,callCtxSig);
+            }
+            if (((SynObject*)disconnStm->signalFunction.ptr)->primaryToken == nil_T)
+              sigFuncDecl = 0;
+            else
+              sigFuncDecl = ((Reference*)disconnStm->signalFunction.ptr)->refDecl;
             text->ckd.tempCtx = callCtxSig;
-            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,((Reference*)disconnStm->signalFunction.ptr)->refDecl,callCtx,false);
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,sigFuncDecl,callCtx,false);
           }
         else {
           if (isSigFunc)
@@ -2331,7 +2337,9 @@ void CExecView::InsertOrReplace (SynObject *insObj) {
   switch (text->currentSynObj->primaryToken) {
   case FuncRef_T:
   case FuncPH_T:
-//  case FuncDisabled_T:
+    if (insObj->primaryToken != nil_T)
+      text->currentSynObj = text->currentSynObj->parentObject;
+    break;
   case TDOD_T:
     text->currentSynObj = text->currentSynObj->parentObject;
     break;
@@ -3341,8 +3349,8 @@ void CExecView::OnNull()
   
   if (!EditOK()) return;
   NullConst *nConst = new NullConstV();
-  if (text->currentSynObj->primaryToken == FuncDisabled_T)
-    nConst->replacedType = FuncDisabled_T;
+  if (text->currentSynObj->primaryToken == FuncPH_T)
+    nConst->replacedType = FuncPH_T;
   InsertOrReplace(nConst);
 }
 
@@ -6449,7 +6457,7 @@ void CExecView::OnUpdateNull(wxAction* action)
   action->setEnabled(!Taboo()
     && ((text->currentSynObj->ExpressionSelected(text->currentSelection)
          && text->currentSynObj->NullAdmissible(text->ckd))
-        || ((text->currentSynObj->primaryToken == FuncDisabled_T
+        || ((text->currentSynObj->primaryToken == FuncPH_T
             || text->currentSynObj->primaryToken == FuncRef_T)
            && text->currentSynObj->parentObject->primaryToken == disconnect_T)));
 }

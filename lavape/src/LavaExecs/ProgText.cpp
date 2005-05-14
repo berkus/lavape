@@ -198,7 +198,6 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
   if (token == FuncDisabled_T
   || token == ExpDisabled_T
   || token == CrtblDisabled_T
-  || token == Event_T
   || token == ObjDisabled_T)
     currentToken->data.flags.INCL(isDisabled);
 
@@ -425,7 +424,6 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     && token != FuncDisabled_T
     && token != ExpDisabled_T
     && token != CrtblDisabled_T
-    && token != Event_T
     && token != ObjDisabled_T) {
     if (ignored) {
       code("<I>");
