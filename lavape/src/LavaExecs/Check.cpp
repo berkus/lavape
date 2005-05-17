@@ -4540,7 +4540,7 @@ bool Connect::Check (CheckData &ckd)
 
 bool Disconnect::Check (CheckData &ckd)
 {
-  bool rc;
+  bool rc, rcSigFunc;
 
   ENTRY
 
@@ -4555,10 +4555,11 @@ bool Disconnect::Check (CheckData &ckd)
       ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
       ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
     }
-  ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
+  rcSigFunc = ((SynObject*)signalFunction.ptr)->Check(ckd);
+  ok &= rcSigFunc;
 
   rc = ((SynObject*)signalReceiver.ptr)->Check(ckd);
-  if (rc) {
+  if (rc && rcSigFunc) {
     if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncDisabled_T) {
       ((SynObject*)callbackFunction.ptr)->primaryToken = FuncPH_T;
       ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
