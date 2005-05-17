@@ -2128,6 +2128,8 @@ void CExecView::PutInsFlagHint(SET insFlags, SET firstLastHint) {
 
 
 void CExecView::PutPlusMinusHint() {
+  if (text->currentSynObj->primaryToken == TDOD_T)
+    text->currentSynObj = text->currentSynObj->parentObject;
   nextHint = new CLavaPEHint(
     CPECommand_Exec,
     myDoc,
