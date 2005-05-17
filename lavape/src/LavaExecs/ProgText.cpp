@@ -147,6 +147,15 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
     currentToken->data.str = ((Constant*)currentSynObj)->str.c;
     break;
   case FuncRef_T:
+    if (currentSynObj->parentObject->primaryToken == disconnect_T
+    && ((currentSynObj->whereInParent == (address)&((Disconnect*)currentSynObj->parentObject)->signalFunction.ptr
+        && ((SynObject*)((Disconnect*)currentSynObj->parentObject)->signalSender.ptr)->primaryToken == nil_T)
+        || (currentSynObj->whereInParent == (address)&((Disconnect*)currentSynObj->parentObject)->callbackFunction.ptr
+           && ((SynObject*)((Disconnect*)currentSynObj->parentObject)->signalReceiver.ptr)->primaryToken == nil_T)))
+      currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
+    else
+      currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
+    break;
   case TypeRef_T:
   case CrtblRef_T:
     currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
