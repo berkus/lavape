@@ -77,9 +77,11 @@ typedef qbyte sock_t;                   /*  Use sock_t for all sockets       */
  *  OpenVMS Dec C defines these as "unsigned int".
  */
 
-//#ifdef __WINDOWS__
+#if !defined(__socklen_t_defined) && !defined(__SOCKLEN_T_DEFINED)
 typedef int socklen_t;
-//#endif
+#define __socklen_t_defined
+#define __SOCKLEN_T_DEFINED
+#endif
 
 #if (defined (__GLIBC__) && (__GLIBC__ > 1))
 typedef socklen_t  argsize_t;           /*  GNU libc: size arg for sock func */
