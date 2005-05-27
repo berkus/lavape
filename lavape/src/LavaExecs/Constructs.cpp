@@ -516,6 +516,8 @@ bool SynObject::IsStatement () {
   case FuncDisabled_T:
     if (parentObject->IsSelfVar()
     || parentObject->primaryToken == assignFX_T
+    || parentObject->primaryToken == connect_T
+    || parentObject->primaryToken == disconnect_T
     || parentObject->parentObject->primaryToken == new_T
     || parentObject->parentObject->primaryToken == run_T
     )

@@ -1,7 +1,8 @@
-#! /bin/sh
+#! /usr/bin/env sh
 
 >precomp_header.h
 
+PRECOMP_SUPPORT=no
 if gcc -x c-header precomp_header.h >/dev/null 2>&1; then
    gcc -x c++-header precomp_header.h && PRECOMP_SUPPORT=yes
 fi
