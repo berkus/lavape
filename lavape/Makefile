@@ -30,18 +30,18 @@ links:
 	if [ ! -e std.lava ]; then ln -s ../src/LavaPE/Debug/std.lava .; fi; \
 	if [ ! -e std ]; then ln -s ../src/LavaPE/Debug/std .; fi; \
 	if [ ! -e LavaIcons ]; then ln -s ../src/LavaPE/Debug/LavaIcons .; fi; \
-	if [ ! -h std_1.htm ]; then ln -s ../src/LavaPE/Debug/std_1.htm .; fi; \
-	if [ ! -h std_m.htm ]; then ln -s ../src/LavaPE/Debug/std_m.htm .; fi; \
-	if [ ! -h std.htm ]; then ln -s ../src/LavaPE/Debug/std.htm .; fi; \
-	if [ ! -h cp_icons_std ]; then ln -s ../src/LavaPE/Debug/cp_icons_std .; fi; \
+	if [ ! -e std_1.htm ]; then ln -s ../src/LavaPE/Debug/std_1.htm .; fi; \
+	if [ ! -e std_m.htm ]; then ln -s ../src/LavaPE/Debug/std_m.htm .; fi; \
+	if [ ! -e std.htm ]; then ln -s ../src/LavaPE/Debug/std.htm .; fi; \
+	if [ ! -e cp_icons_std ]; then ln -s ../src/LavaPE/Debug/cp_icons_std .; fi; \
 	cd ../src/Interpreter; \
-	if [ ! -h Constructs.ph ]; then ln -s ../LavaExecs/Constructs.ph .; fi; \
-	if [ ! -h Constructs.cpp ]; then ln -s ../LavaExecs/Constructs.cpp .; fi; \
-	if [ ! -h Tokens.ph ]; then ln -s ../LavaExecs/Tokens.ph .; fi; \
-	if [ ! -h Tokens.cpp ]; then ln -s ../LavaExecs/Tokens.cpp .; fi; \
-	if [ ! -h Check.cpp ]; then ln -s ../LavaExecs/Check.cpp .; fi; \
-	if [ ! -h Check.h ]; then ln -s ../LavaExecs/Check.h .; fi; \
-	if [ ! -h MakeTable.cpp ]; then ln -s ../LavaExecs/MakeTable.cpp .; fi
+	if [ ! -e Constructs.ph ]; then ln -s ../LavaExecs/Constructs.ph .; fi; \
+	if [ ! -e Constructs.cpp ]; then ln -s ../LavaExecs/Constructs.cpp .; fi; \
+	if [ ! -e Tokens.ph ]; then ln -s ../LavaExecs/Tokens.ph .; fi; \
+	if [ ! -e Tokens.cpp ]; then ln -s ../LavaExecs/Tokens.cpp .; fi; \
+	if [ ! -e Check.cpp ]; then ln -s ../LavaExecs/Check.cpp .; fi; \
+	if [ ! -e Check.h ]; then ln -s ../LavaExecs/Check.h .; fi; \
+	if [ ! -e MakeTable.cpp ]; then ln -s ../LavaExecs/MakeTable.cpp .; fi
 #
 build:
 	cd src/Precompiler && $(MAKE) \

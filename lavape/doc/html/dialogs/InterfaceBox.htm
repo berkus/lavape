@@ -4,9 +4,11 @@
 <HTML>
   
   <HEAD>
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Language" content="en-us">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
     <META NAME="Author" CONTENT="Klaus D. Günther">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage Express 2.0">
+    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
     <TITLE>Interface property sheet</TITLE>
     <LINK REL="STYLESHEET" TYPE="text/css" HREF="../LavaStyles.css">
   </HEAD>
@@ -49,6 +51,14 @@
       link libraries (DLLs). A native interface may nevertheless contain
       non-native functions .</P>
     
+    <H3><A NAME="GUIservice"></A>GUI service</H3>
+    
+    <P>You can mark an interface as a <A HREF="../EditForm.htm">GUI service interface</A>
+      and select an existing interface <I>XY</I> for which a form
+      representation is to be generated. A member function <I>Show</I> is
+      created automatically that can be used to present objects of type <I>XY</I>
+      as forms that can be filled in.</P>
+    
     <H3>Component object interface</H3>
     
     <P><A HREF="../Components.htm">Component object interfaces</A> are the
@@ -71,20 +81,5 @@
       interfaces whose declaration is contained in the basic include file <I>std.lava</I>.
       If you don't explicitly select a base interface then the new interface is
       derived from interface <I>Object</I> in <I>std.lava</I>.</P>
-    <HR>
-    
-    <H3><A NAME="GUIservice"></A>GUI interface</H3>
-    
-    <P>You can mark an interface as a <A HREF="../EditForm.htm">GUI interface</A>
-      and select an existing interface <I>XY</I> for which a form
-      representation is to be generated. A member function <I>Show</I> is
-      created automatically that can be used to present objects of type <I>XY</I>
-      as forms that can be filled in.</P>
-    
-    <H3>Select type of signals</H3>
-    
-    <P>Hereby you can express that objects supporting the new interface can
-      signal events that have occurred in the object by invoking associated
-      <A HREF="../Callbacks.htm">callback</A> functions.</P>
-  </BODY>
+    </BODY>
 </HTML>
