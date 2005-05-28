@@ -77,10 +77,10 @@ typedef qbyte sock_t;                   /*  Use sock_t for all sockets       */
  *  OpenVMS Dec C defines these as "unsigned int".
  */
 
-#if !defined(__socklen_t_defined) && !defined(__SOCKLEN_T_DEFINED)
+#if !defined(__socklen_t_defined) && !defined(_SOCKLEN_T_DECLARED)
 typedef int socklen_t;
 #define __socklen_t_defined
-#define __SOCKLEN_T_DEFINED
+#define _SOCKLEN_T_DECLARED
 #endif
 
 #if (defined (__GLIBC__) && (__GLIBC__ > 1))

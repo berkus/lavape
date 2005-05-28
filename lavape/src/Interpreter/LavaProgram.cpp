@@ -2167,7 +2167,11 @@ void sigEnable() {
 }
 
 #else
-void signalHandler(int sig_number, siginfo_t *info)
+void signalHandler(int sig_number, siginfo_t *info
+#ifdef _FREEBSD_
+, void *
+#endif
+)
 {
 	hwException = CHWException(sig_number,info);
   longjmp(contOnHWexception,1);
@@ -2181,7 +2185,11 @@ void sigEnable() {
   rc = sigfillset(&sigs);
   rc = pthread_sigmask(SIG_UNBLOCK,&sigs,0);
 //  feenableexcept(FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID);
+#ifdef _FREEBSD_
+  sa.sa_sigaction = (void(*)(int, struct __siginfo *, void *))signalHandler;
+#else
   sa.sa_handler = (sighandler_t)signalHandler;
+#endif
   sa.sa_mask = sigs;
   sa.sa_flags = SA_SIGINFO;
 //	rc = sigaction(SIGFPE,&sa,&sa_old);

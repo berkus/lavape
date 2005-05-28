@@ -58,6 +58,9 @@ CC = gcc
 else
 CC = g++
 endif
+ifeq ($(OPSYS),FreeBSD)
+OSCPPFLAGS = -D_FREEBSD_
+endif
 endif
 
 asscli=-lqassistantclient
@@ -75,15 +78,15 @@ this: ../../lib/lib$(EXEC2)
 else
 this: ../../bin/$(EXEC)
 ../../bin/$(EXEC): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
-	$(CC) -o ../../bin/$(EXEC) $(all_o_files) $(OSEXECFLAGS) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lqassistantclient -lqt-mt -lc
+	$(CC) -o ../../bin/$(EXEC) $(all_o_files) $(OSEXECFLAGS) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lqassistantclient -lqt-mt -lpthread -lc
 endif
 
 .cpp.o:
-	$(CC) -c -pipe -g -MMD $(PCH_WARN) -DQT_THREAD_SUPPORT -D__UNIX__ $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -g -MMD $(PCH_WARN) -DQT_THREAD_SUPPORT -D__UNIX__ $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -fPIC -MMD -H -Winvalid-pch -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(incl_subpro) $(CPP_INCLUDES) -o $@ $<
 
 .c.o:
-	$(CC) -c -pipe -g -MMD $(PCH_WARN) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -g -MMD $(PCH_WARN) -D__UNIX__ $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -fPIC -MMD -Winvalid-pch -D_REENTRANT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h

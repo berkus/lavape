@@ -31,7 +31,7 @@
 #include "Convert.h"
 
 
-static long tval;
+static time_t tval;
 DateTimePtr dateTime ()
 
 {
