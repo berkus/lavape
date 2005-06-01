@@ -43,7 +43,8 @@ OPSYS = $(shell uname)
 
 ifeq ($(OPSYS),Darwin)
 DLLSUFFIX = .dylib
-OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -D_AUX
+OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module
+OSCPPFLGS = -D_AUX
 ifeq ($(PRJ),SFLsockets)
 CC = cc
 else

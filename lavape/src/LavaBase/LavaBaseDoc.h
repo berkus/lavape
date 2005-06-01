@@ -19,6 +19,13 @@
 
 
 
+#ifdef _AUX
+#define FPE_INTOVF FPE_FLTOVF
+#define FPE_INTDIV FPE_FLTDIV
+#endif
+
+
+
 struct CheckData;
 
 
