@@ -42,26 +42,28 @@ endif
 OPSYS = $(shell uname)
 
 ifeq ($(OPSYS),Darwin)
-DLLSUFFIX = .dylib
-OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
-OSCPPFLAGS = -D_AUX
-ifeq ($(PRJ),SFLsockets)
-CC = cc
+  DLLSUFFIX = .dylib
+  OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
+  OSCPPFLAGS = -D_AUX
+  ifeq ($(PRJ),SFLsockets)
+    CC = cc
+  else
+    CC = c++
+  endif
 else
-CC = c++
-endif
-else
-DLLSUFFIX = .so
-OSDLLFLAGS = -shared -Wl,-soname=lib$(EXEC2) -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib
-OSEXECFLAGS = -fstack-check -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib
-ifeq ($(PRJ),SFLsockets)
-CC = gcc
-else
-CC = g++
-endif
-ifeq ($(OPSYS),FreeBSD)
-OSCPPFLAGS = -D_FREEBSD_
-endif
+  DLLSUFFIX = .so
+  OSDLLFLAGS = -shared -Wl,-soname=lib$(EXEC2) -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib
+  OSEXECFLAGS = -fstack-check -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib
+  ifeq ($(PRJ),SFLsockets)
+    CC = gcc
+  else
+    CC = g++
+  endif
+  ifeq ($(OPSYS),FreeBSD)
+    OSCPPFLAGS = -D_FREEBSD_
+  else
+    OSCPPFLAGS =
+  endif
 endif
 
 asscli=-lqassistantclient
@@ -87,7 +89,7 @@ endif
 #	$(CC) -c -pipe -g -fPIC -MMD -H -Winvalid-pch -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(incl_subpro) $(CPP_INCLUDES) -o $@ $<
 
 .c.o:
-	$(CC) -c -pipe -g -MMD $(PCH_WARN) -D__UNIX__ $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -g -MMD $(PCH_WARN) -D__UNIX__ $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -fPIC -MMD -Winvalid-pch -D_REENTRANT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h
