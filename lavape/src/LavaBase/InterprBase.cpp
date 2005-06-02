@@ -32,6 +32,8 @@
 #include <windows.h>
 #else
 #include <signal.h>
+#include <string.h>
+#include <unistd.h>
 #endif
 
 int allocatedObjects=0;
@@ -1269,6 +1271,7 @@ CHWException::CHWException(int sig_num, siginfo_t *info)
       message = QString("Hardware exception: Invalid operation");
       lavaCode = float_invalid_op_ex;
       break;
+#ifndef _AUX
     case FPE_FLTSUB:
       message = QString("Hardware exception: Subscript out of range");
       lavaCode = float_subscript_out_of_range_ex;
@@ -1281,14 +1284,15 @@ CHWException::CHWException(int sig_num, siginfo_t *info)
       message = QString("Hardware exception: Integer overflow");
       lavaCode = integer_overflow_ex;
       break;
+#endif
     default:
       lavaCode = other_hardware_ex;
-      message = QString((const char*)strsignal(codeHW));
+      message = QString((const char*)sys_siglist[codeHW]/*strsignal(codeHW)*/);
     }
     break;
   default: ;
     lavaCode = other_hardware_ex;
-    message = QString((const char*)strsignal(codeHW));
+    message = QString((const char*)sys_siglist[codeHW]/*strsignal(codeHW)*/);
   }
 }
 #endif

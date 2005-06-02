@@ -43,8 +43,8 @@ OPSYS = $(shell uname)
 
 ifeq ($(OPSYS),Darwin)
 DLLSUFFIX = .dylib
-OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module
-OSCPPFLGS = -D_AUX
+OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
+OSCPPFLAGS = -D_AUX
 ifeq ($(PRJ),SFLsockets)
 CC = cc
 else
@@ -91,7 +91,7 @@ endif
 #	$(CC) -c -pipe -g -fPIC -MMD -Winvalid-pch -D_REENTRANT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h
-	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -g -MMD -Winvalid-pch -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -g -MMD -Winvalid-pch -D__UNIX__ -DQT_THREAD_SUPPORT $(OSCPPFLAGS) $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
