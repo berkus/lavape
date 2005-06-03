@@ -32,7 +32,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
+
 #include "Syntax.h"
+
 
 #include "qwidget.h"
 #include "qscrollview.h"
@@ -2064,22 +2066,25 @@ struct Disconnect : public Expression {
   { CDPDisconnect(pgf,cid,(address)this,baseCDP); }
 };
 
-struct Emit : public FuncStatement {
-  DECLARE_DYNAMIC_CLASS(Emit)
+struct Signal : public FuncStatement {
+  DECLARE_DYNAMIC_CLASS(Signal)
 
 
-  Emit () {}
+  public:
+  virtual bool Check(CheckData &ckd);
+
+  Signal () {}
 
   virtual void CopyData (AnyType *from) {
-    *this = *(Emit*)from;
+    *this = *(Signal*)from;
   }
 
-  friend void CDPEmit (PutGetFlag pgf, ASN1* cid, address varAddr,
-                       bool baseCDP=false);
+  friend void CDPSignal (PutGetFlag pgf, ASN1* cid, address varAddr,
+                         bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPEmit(pgf,cid,(address)this,baseCDP); }
+  { CDPSignal(pgf,cid,(address)this,baseCDP); }
 };
 
 class AssertStatement : public Expression {
@@ -3334,10 +3339,10 @@ public:
     "<a href=\"../Callbacks.htm\">software signal</a> from a signal handler (\"callback\")</p>");}
 };
 
-class EmitV : public FuncStatementV {
+class SignalV : public FuncStatementV {
 public:
-  EmitV ();
-  EmitV (Reference *ref);
+  SignalV ();
+  SignalV (Reference *ref);
 
   virtual QString whatsThisText() {
     return QObject::tr("<p>Use the <b>signal</b> statement to emit a "
@@ -3960,9 +3965,9 @@ public:
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
-class EmitX : public Emit {
+class SignalX : public Signal {
 public:
-  EmitX() {}
+  SignalX() {}
 
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };

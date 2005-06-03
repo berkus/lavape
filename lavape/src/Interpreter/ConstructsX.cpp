@@ -1581,7 +1581,7 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
 }
 
 
-bool EmitX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   return false;
 }
 

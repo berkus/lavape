@@ -2477,11 +2477,11 @@ void DisconnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored
   EXIT
 }
 
-EmitV::EmitV () : FuncStatementV(true,false,true) {
+SignalV::SignalV () : FuncStatementV(true,false,true) {
   primaryToken = signal_T;
 }
 
-EmitV::EmitV (Reference *ref) : FuncStatementV(ref) {
+SignalV::SignalV (Reference *ref) : FuncStatementV(ref) {
   primaryToken = signal_T;
 }
 

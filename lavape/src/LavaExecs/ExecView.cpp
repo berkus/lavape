@@ -4331,7 +4331,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
       text->currentSynObj = text->currentSynObj->parentObject;
       oldFuncStm = (FuncStatement*)text->currentSynObj;
       if (oldFuncStm->primaryToken == signal_T)
-        funcStm = new EmitV(new ReferenceV(FuncPH_T,refID,refName));
+        funcStm = new SignalV(new ReferenceV(FuncPH_T,refID,refName));
       else
         funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName));
       if (isStaticCall) {
@@ -4714,7 +4714,7 @@ void CExecView::OnDisconnect()
 void CExecView::OnEmitSignal() 
 {
   // TODO: Code für Befehlsbehandlungsroutine hier einfügen
-  EmitV *emitStm=new EmitV();
+  SignalV *emitStm=new SignalV();
   ObjReferenceV *objRef;
   TDODV *tdod;
   TDODC tdodc;

@@ -950,7 +950,9 @@ public:
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
 
-struct Emit : public FuncStatement {
+struct Signal : public FuncStatement {
+public:
+  virtual bool Check (CheckData &ckd);
 };
 
 class AssertStatement : public Expression {
@@ -1726,10 +1728,10 @@ public:
     "<a href=\"../Callbacks.htm\">software signal</a> from a signal handler (\"callback\")</p>");}
 };
 
-class EmitV : public FuncStatementV {
+class SignalV : public FuncStatementV {
 public:
-  EmitV ();
-  EmitV (Reference *ref);
+  SignalV ();
+  SignalV (Reference *ref);
 
   virtual QString whatsThisText() {
     return QObject::tr("<p>Use the <b>signal</b> statement to emit a "
@@ -2352,9 +2354,9 @@ public:
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
-class EmitX : public Emit {
+class SignalX : public Signal {
 public:
-  EmitX() {}
+  SignalX() {}
 
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };

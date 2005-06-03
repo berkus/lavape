@@ -912,20 +912,20 @@ void CDPDisconnect (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPDisconnect
 
 
-IMPLEMENT_DYNAMIC_CLASS(Emit,FuncStatement)
+IMPLEMENT_DYNAMIC_CLASS(Signal,FuncStatement)
 
 
-void CDPEmit (PutGetFlag pgf, ASN1* cid, address varAddr,
-              bool baseCDP)
+void CDPSignal (PutGetFlag pgf, ASN1* cid, address varAddr,
+                bool baseCDP)
 
 {
-  Emit *vp = (Emit*)varAddr;
+  Signal *vp = (Signal*)varAddr;
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPFuncStatement(pgf,cid,(address)(FuncStatement*)vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
-} // END OF CDPEmit
+} // END OF CDPSignal
 
 
 IMPLEMENT_DYNAMIC_CLASS(AssertStatement,Expression)

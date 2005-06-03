@@ -43,16 +43,16 @@
 
 //DateTimePtr dateTime ();
 
-typedef int Signal;
+typedef int TSignal;
 
-typedef void (*SignalHandler)(Signal,...);
+typedef void (*SignalHandler)(TSignal,...);
 
 
 
 /* **********************************************************************/
 
 /*
-extern "C" SignalHandler signal (Signal sig,
+extern "C" SignalHandler signal (TSignal sig,
                                  SignalHandler func);
 */
 /* Define handler procedure for specified signal.
@@ -60,15 +60,15 @@ extern "C" SignalHandler signal (Signal sig,
    signal returned. */
 
 
-extern "C" DISCO_DLL void CatchSignal (Signal sig,
+extern "C" DISCO_DLL void CatchSignal (TSignal sig,
                              SignalHandler func);
 /* Define handler procedure for specified signal */
 
 
-extern "C" DISCO_DLL void ResetSignal (Signal sig);
+extern "C" DISCO_DLL void ResetSignal (TSignal sig);
 
 
-extern "C" DISCO_DLL void IgnoreSignal (Signal sig);
+extern "C" DISCO_DLL void IgnoreSignal (TSignal sig);
 
 
 #endif
