@@ -39,10 +39,6 @@ ifeq ($(shell cd $(LAVADIR)/src; ./testPCHsupport.sh),yes)
 PCH_INCL = -include PCH/$(PRJ)_all.h
 PCH_TARGET = PCH/$(PRJ)_all.h.gch
 PCH_WARN = -Winvalid-pch
-else
-PCH_INCL =
-PCH_TARGET = 
-PCH_WARN = 
 endif
 
 OPSYS = $(shell uname)
@@ -58,7 +54,8 @@ ifeq ($(OPSYS),Darwin)
   endif
 else
   DLLSUFFIX = .so
-  OSDLLFLAGS = -shared -Wl,-soname=lib$(EXEC2) -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib
+  OSDLLFLAGS = -shared
+# -Wl,-soname=lib$(EXEC2) -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib
   OSEXECFLAGS = -fstack-check -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib
   ifeq ($(PRJ),SFLsockets)
     CC = gcc
@@ -83,19 +80,19 @@ ifeq ($(suffix $(EXEC)),.so)
 EXEC2 = $(addsuffix $(DLLSUFFIX),$(basename $(EXEC)))
 this: ../../lib/lib$(EXEC2)
 ../../lib/lib$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) -o ../../lib/lib$(EXEC2) $(all_o_files) $(OSDLLFLAGS) -L../../lib -L$(QTDIR)/lib -L/usr/lib -lqt-mt $(addprefix -l,$(SUBPRO)) -lc
+	$(CC) -o ../../lib/lib$(EXEC2) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib -L/usr/lib -lqt-mt $(addprefix -l,$(SUBPRO)) -lc
 else
 this: ../../bin/$(EXEC)
 ../../bin/$(EXEC): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
-	$(CC) -o ../../bin/$(EXEC) $(all_o_files) $(OSEXECFLAGS) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lqassistantclient -lqt-mt -lpthread -lc
+	$(CC) -o ../../bin/$(EXEC) $(OSEXECFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lqassistantclient -lqt-mt -lpthread -lc
 endif
 
 .cpp.o:
-	$(CC) -c -pipe -MMD $(PCH_WARN) -DQT_THREAD_SUPPORT -D__UNIX__ $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -MMD $(PCH_WARN) -DQT_THREAD_SUPPORT -D__UNIX__ -fPIC $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -fPIC -MMD -H -Winvalid-pch -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(incl_subpro) $(CPP_INCLUDES) -o $@ $<
 
 .c.o:
-	$(CC) -c -pipe -MMD $(PCH_WARN) -D__UNIX__ $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -MMD $(PCH_WARN) -D__UNIX__ -fPIC $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -fPIC -MMD -Winvalid-pch -D_REENTRANT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h
