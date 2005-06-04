@@ -2188,7 +2188,11 @@ void sigEnable() {
 #ifdef _FREEBSD_
   sa.sa_sigaction = (void(*)(int, struct __siginfo *, void *))signalHandler;
 #else
-  sa.sa_handler = (sighandler_t)signalHandler;
+#ifdef _AUX
+  sa.sa_handler = (void(*)(int,struct siginfo*))signalHandler;
+#else
+  sa.sa_handler = (void(*)(int, struct __siginfo *))signalHandler;
+#endif
 #endif
   sa.sa_mask = sigs;
   sa.sa_flags = SA_SIGINFO;

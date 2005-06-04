@@ -1,5 +1,10 @@
 #! /usr/bin/env sh
 
+if [ $PCH. = 0. ]; then
+  echo no
+  exit
+fi
+
 >precomp_header.h
 
 PRECOMP_SUPPORT=no
