@@ -4439,10 +4439,6 @@ bool Connect::Check (CheckData &ckd)
       ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_NoSignal);
       ok = false;
     }
-    if (sigDecl->TypeFlags.Contains(isInitializer)) {
-      ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_InitializerForbidden);
-      ok = false;
-    }
     funcItf = sigDecl->ParentDECL;
     if (funcItf->DeclType == Impl) {
       funcImpl = funcItf;

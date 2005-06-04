@@ -43,6 +43,14 @@ endif
 
 OPSYS = $(shell uname)
 
+ifeq ($(OPSYS),SunOS)
+  RPATH = -Wl,-R,
+  SONAME = -h
+else
+  RPATH = -Wl,-rpath,
+  SONAME = -Wl,-soname=
+endif
+
 ifeq ($(OPSYS),Darwin)
   DLLSUFFIX = .dylib
   OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
@@ -54,9 +62,8 @@ ifeq ($(OPSYS),Darwin)
   endif
 else
   DLLSUFFIX = .so
-  OSDLLFLAGS = -shared
-# -Wl,-soname=lib$(EXEC2) -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib
-  OSEXECFLAGS = -fstack-check -Wl,-rpath,$(LAVADIR)/lib -Wl,-rpath,$(QTDIR)/lib
+  OSDLLFLAGS = -shared $(SONAME) lib$(EXEC2) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
+  OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
   ifeq ($(PRJ),SFLsockets)
     CC = gcc
   else
@@ -96,7 +103,7 @@ endif
 #	$(CC) -c -pipe -g -fPIC -MMD -Winvalid-pch -D_REENTRANT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h
-	echo PCH_TARGET=$(PCH_TARGET); if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D__UNIX__ -DQT_THREAD_SUPPORT $(OSCPPFLAGS) $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	echo PCH_TARGET=$(PCH_TARGET); if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D__UNIX__ -DQT_THREAD_SUPPORT -fPIC $(OSCPPFLAGS) $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
