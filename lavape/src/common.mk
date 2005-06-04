@@ -39,6 +39,10 @@ ifeq ($(shell cd $(LAVADIR)/src; ./testPCHsupport.sh),yes)
 PCH_INCL = -include PCH/$(PRJ)_all.h
 PCH_TARGET = PCH/$(PRJ)_all.h.gch
 PCH_WARN = -Winvalid-pch
+else
+PCH_INCL =
+PCH_TARGET = 
+PCH_WARN = 
 endif
 
 OPSYS = $(shell uname)

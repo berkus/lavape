@@ -2191,7 +2191,7 @@ void sigEnable() {
 #ifdef _AUX
   sa.sa_handler = (void(*)(int,struct siginfo*))signalHandler;
 #else
-  sa.sa_handler = (void(*)(int, struct __siginfo *))signalHandler;
+  sa.sa_handler = (sighandler_t)signalHandler;
 #endif
 #endif
   sa.sa_mask = sigs;
