@@ -62,7 +62,7 @@ ifeq ($(OPSYS),Darwin)
   endif
 else
   DLLSUFFIX = .so
-  OSDLLFLAGS = -shared $(SONAME) lib$(EXEC2) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
+  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC2) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
   OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
   ifeq ($(PRJ),SFLsockets)
     CC = gcc
