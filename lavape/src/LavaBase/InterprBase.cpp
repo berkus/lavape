@@ -1241,6 +1241,12 @@ CHWException::CHWException(unsigned n)
 }
 
 #else
+#ifndef __SunOS
+#define STRSIGNAL (const char *)sys_siglist[codeHW]
+#else
+#define STRSIGNAL strsignal(codeHW)
+#endif
+
 CHWException::CHWException(int sig_num, siginfo_t *info)
 {
   codeHW = sig_num;
@@ -1287,12 +1293,12 @@ CHWException::CHWException(int sig_num, siginfo_t *info)
 #endif
     default:
       lavaCode = other_hardware_ex;
-      message = QString((const char*)sys_siglist[codeHW]/*strsignal(codeHW)*/);
+      message = QString(STRSIGNAL);
     }
     break;
   default: ;
     lavaCode = other_hardware_ex;
-    message = QString((const char*)sys_siglist[codeHW]/*strsignal(codeHW)*/);
+    message = QString(STRSIGNAL);
   }
 }
 #endif

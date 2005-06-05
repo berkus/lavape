@@ -46,6 +46,7 @@ OPSYS = $(shell uname)
 ifeq ($(OPSYS),SunOS)
   RPATH = -Wl,-R,
   SONAME = -h
+  OSLIBFLAGS = -lsocket
 else
   RPATH = -Wl,-rpath,
   SONAME = -Wl,-soname=
@@ -54,7 +55,7 @@ endif
 ifeq ($(OPSYS),Darwin)
   DLLSUFFIX = .dylib
   OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
-  OSCPPFLAGS = $(DBG) -D_AUX
+  OSCPPFLAGS = __$(OPSYS) $(DBG)
   ifeq ($(PRJ),SFLsockets)
     CC = cc
   else
@@ -69,10 +70,10 @@ else
   else
     CC = g++
   endif
-  ifeq ($(OPSYS),FreeBSD)
-    OSCPPFLAGS = $(DBG) -D_FREEBSD_
+  ifeq ($(OPSYS),SunOS)
+    OSCPPFLAGS = -fPIC __$(OPSYS) $(DBG)
   else
-    OSCPPFLAGS = $(DBG)
+    OSCPPFLAGS = __$(OPSYS) $(DBG)
   endif
 endif
 
@@ -87,23 +88,23 @@ ifeq ($(suffix $(EXEC)),.so)
 EXEC2 = $(addsuffix $(DLLSUFFIX),$(basename $(EXEC)))
 this: ../../lib/lib$(EXEC2)
 ../../lib/lib$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) -o ../../lib/lib$(EXEC2) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib -L/usr/lib -lqt-mt $(addprefix -l,$(SUBPRO)) -lc
+	$(CC) -o ../../lib/lib$(EXEC2) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib -lqt-mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS) -lc
 else
 this: ../../bin/$(EXEC)
 ../../bin/$(EXEC): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
-	$(CC) -o ../../bin/$(EXEC) $(OSEXECFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lqassistantclient -lqt-mt -lpthread -lc
+	$(CC) -o ../../bin/$(EXEC) $(OSEXECFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lqassistantclient -lqt-mt $(OSLIBFLAGS) -lpthread -lc
 endif
 
 .cpp.o:
-	$(CC) -c -pipe -MMD $(PCH_WARN) -DQT_THREAD_SUPPORT -D__UNIX__ -fPIC $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -MMD $(PCH_WARN) -DQT_THREAD_SUPPORT -D__UNIX__ $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -fPIC -MMD -H -Winvalid-pch -D_REENTRANT -D__UNIX__ -DQT_THREAD_SUPPORT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(incl_subpro) $(CPP_INCLUDES) -o $@ $<
 
 .c.o:
-	$(CC) -c -pipe -MMD $(PCH_WARN) -D__UNIX__ -fPIC $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -MMD $(PCH_WARN) -D__UNIX__  $(OSCPPFLAGS) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
 #	$(CC) -c -pipe -g -fPIC -MMD -Winvalid-pch -D_REENTRANT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h
-	echo PCH_TARGET=$(PCH_TARGET); if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D__UNIX__ -DQT_THREAD_SUPPORT -fPIC $(OSCPPFLAGS) $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	echo PCH_TARGET=$(PCH_TARGET); if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D__UNIX__ -DQT_THREAD_SUPPORT $(OSCPPFLAGS) $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
@@ -145,7 +146,7 @@ endif
 	cd $(LAVADIR)/src/$(basename $@) && $(MAKE) clean
 
 clean:
-	rm -rf *.o *.d PCH/*.gch Generated/*.o
+	rm -rf *.o *.d PCH/*.gch Generated/*.o Generated/*.d
 #	rm -rf *.o *.d Generated/*.o Generated/*.d *.d Generated/*.cpp Generated/*.h $(gen_files)
 
 cleanall: $(clean_subpro) clean

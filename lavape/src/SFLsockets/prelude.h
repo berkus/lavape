@@ -163,6 +163,7 @@
 #endif
 
 #if (defined (_AUX))
+#   undef __UNIX__
 #   define __UTYPE_AUX
 #   define __UNIX__
 #elif (defined (__BEOS__))

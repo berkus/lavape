@@ -30,7 +30,9 @@ const unsigned BytesPerADDRESS = 4;
 const unsigned MinusZero = 0X80000000;
 const unsigned BlanksPerTab = 8;
 
+#ifndef hibyte
 #define hibyte(a) (unsigned char)((unsigned)(a) >> 24)
+#endif
 
 
 typedef unsigned BYTEorWORD;
