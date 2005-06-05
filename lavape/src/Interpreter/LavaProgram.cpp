@@ -37,7 +37,9 @@
 #include <signal.h>
 #include <setjmp.h>
 #include <pthread.h>
+#ifndef __SunOS
 #include <fenv.h>
+#endif
 #endif
 
 
@@ -2188,10 +2190,14 @@ void sigEnable() {
 #ifdef __FreeBSD
   sa.sa_sigaction = (void(*)(int, struct __siginfo *, void *))signalHandler;
 #else
+#ifdef __SunOS
+  sa.sa_sigaction = (void(*)(int,  siginfo_t *, void *))signalHandler;
+#else
 #ifdef __Darwin
   sa.sa_handler = (void(*)(int,struct siginfo*))signalHandler;
 #else
   sa.sa_handler = (sighandler_t)signalHandler;
+#endif
 #endif
 #endif
   sa.sa_mask = sigs;

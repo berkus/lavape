@@ -85,7 +85,7 @@ int main( int argc, char ** argv ) {
     componentPath = ExeDir + "/Components";
   else
     componentPath = componentPath + ";" + ExeDir + "/Components";
-  _putenv((QString("PATH=")+componentPath).latin1());
+  putenv((char *)(QString("PATH=")+componentPath).latin1());
 //  setenv("PATH",componentPath.latin1(),1);
 #endif
 
