@@ -85,7 +85,8 @@ int main( int argc, char ** argv ) {
     componentPath = ExeDir + "/Components";
   else
     componentPath = componentPath + ";" + ExeDir + "/Components";
-  setenv("PATH",componentPath.latin1(),1);
+  _putenv((QString("PATH=")+componentPath).latin1());
+//  setenv("PATH",componentPath.latin1(),1);
 #endif
 
   ap.m_appWindow = new CLavaMainFrame;
