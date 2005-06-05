@@ -2168,7 +2168,7 @@ void sigEnable() {
 
 #else
 void signalHandler(int sig_number, siginfo_t *info
-#ifdef _FREEBSD_
+#ifdef __FreeBSD
 , void *
 #endif
 )
@@ -2185,10 +2185,10 @@ void sigEnable() {
   rc = sigfillset(&sigs);
   rc = pthread_sigmask(SIG_UNBLOCK,&sigs,0);
 //  feenableexcept(FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID);
-#ifdef _FREEBSD_
+#ifdef __FreeBSD
   sa.sa_sigaction = (void(*)(int, struct __siginfo *, void *))signalHandler;
 #else
-#ifdef _AUX
+#ifdef __Darwin
   sa.sa_handler = (void(*)(int,struct siginfo*))signalHandler;
 #else
   sa.sa_handler = (sighandler_t)signalHandler;

@@ -19,7 +19,7 @@
 
 
 
-#ifdef _AUX
+#ifdef __Darwin
 #define FPE_INTOVF FPE_FLTOVF
 #define FPE_INTDIV FPE_FLTDIV
 #endif

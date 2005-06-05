@@ -1277,7 +1277,7 @@ CHWException::CHWException(int sig_num, siginfo_t *info)
       message = QString("Hardware exception: Invalid operation");
       lavaCode = float_invalid_op_ex;
       break;
-#ifndef _AUX
+#ifndef __Darwin
     case FPE_FLTSUB:
       message = QString("Hardware exception: Subscript out of range");
       lavaCode = float_subscript_out_of_range_ex;

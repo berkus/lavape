@@ -162,7 +162,7 @@
 #   endif
 #endif
 
-#if (defined (_AUX))
+#if (defined (__Darwin))
 #   undef __UNIX__
 #   define __UTYPE_AUX
 #   define __UNIX__
