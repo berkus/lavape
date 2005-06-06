@@ -2,13 +2,13 @@
 #define __DISCO_MACROS
 
 
-#ifndef max
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
-#endif
+//#ifndef max
+#define lmax(a,b)            (((a) > (b)) ? (a) : (b))
+//#endif
 
-#ifndef min
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-#endif
+//#ifndef min
+#define lmin(a,b)            (((a) < (b)) ? (a) : (b))
+//#endif
 
 
 #ifndef WIN32

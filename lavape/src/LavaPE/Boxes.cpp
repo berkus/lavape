@@ -4377,7 +4377,7 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
     listItem = new CListItem(lab, TID(elDef->OwnID, elDef->inINCL));
     IBox->m_ExtTypes->listBox()->insertItem(listItem);//sort
     //sz = dc->GetTextExtent(lab.c, lab.l);
-    //maxWidth = max(maxWidth, sz.cx);
+    //maxWidth = lmax(maxWidth, sz.cx);
   }
 }
   
@@ -4472,12 +4472,12 @@ void CExecAllDefs::FitBox(QComboBox* list, int maxWidth)
       listItemA = new CListItem(decl->FullName, listItemA->itemData());
       list->listBox()->changeItem(listItemA, posA);
       //sz = dc->GetTextExtent(decl->FullName.c, decl->FullName.l);
-      //maxWidth = max(maxWidth, sz.cx);
+      //maxWidth = lmax(maxWidth, sz.cx);
       decl = myDoc->IDTable.GetDECL(listItemB->itemData());
       listItemB = new CListItem(decl->FullName, listItemB->itemData());
       list->listBox()->changeItem(listItemB, posB);
       //sz = dc->GetTextExtent(decl->FullName.c, decl->FullName.l);
-      //maxWidth = max(maxWidth, sz.cx);
+      //maxWidth = lmax(maxWidth, sz.cx);
     }
     nowB = !nowB;
   }
@@ -4615,12 +4615,12 @@ void CExecAllDefs::ExecFormDef (LavaDECL ** pelDef, int incl)
         DString LocalName = ((CLavaPEApp*)wxTheApp)->LBaseData.calcRelName ((*pelDef)->FullName, ParentDECL->FullName);
         pos = List->AddString(LocalName.c);
         sz = dc->GetTextExtent(LocalName.c, LocalName.l);
-        maxWidth = max(maxWidth, sz.cx);
+        maxWidth = lmax(maxWidth, sz.cx);
       }
       else {
         pos = List->AddString((*pelDef)->FullName.c);
         sz = dc->GetTextExtent((*pelDef)->FullName.c, (*pelDef)->FullName.l);
-        maxWidth = max(maxWidth, sz.cx);
+        maxWidth = lmax(maxWidth, sz.cx);
       }
       List->SetItemData(pos, MAKELONG((*pelDef)->OwnID, incl));
     }

@@ -30,12 +30,7 @@
 #include "qstring.h"
 #include "SYSTEM.h"
 #include "MACROS.h"
-/*
-#ifndef WIN32
-#define min(a,b)        (((a) < (b))? (a): (b))
-#define max(a,b)        (((a) > (b))? (a): (b))
-#endif
-*/
+
 
 TSimpleTable::TSimpleTable(int minimum)
 {
@@ -740,7 +735,7 @@ int TIDTable::AddSimpleSyntax(SynDef *isyntax, const DString& idocDir, bool relo
     for (simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor;
          simpleSyntax;
          simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor) 
-      is = max(is,simpleSyntax->data.nINCL+1);
+      is = lmax(is,simpleSyntax->data.nINCL+1);
   }
   else
     is = 1000;
@@ -897,13 +892,13 @@ void TIDTable::MakeTable(SynDef *syn, bool isstd)
   mySynDef = syn;
   CHESimpleSyntax *simpleSyntax = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
   while ( simpleSyntax) {
-    incl = max(incl, simpleSyntax->data.nINCL);
+    incl = lmax(incl, simpleSyntax->data.nINCL);
     simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor;
   }
   simpleSyntax = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
   freeINCL = mySynDef->FreeINCL;
 
-  maxINCL = max(5, freeINCL) ;
+  maxINCL = lmax(5, freeINCL) ;
   IDTab = new TSimpleTable* [maxINCL];
   IDTab[0] = new TSimpleTable(mySynDef->FreeID);
   if (maxINCL > 1)

@@ -1101,7 +1101,7 @@ void CLavaPEBrowse::makeDefaultMenu(LavaDECL* decl)
   enumsel = (CHEEnumSelId*)inEl->Items.first;
   while (enumsel) {
     enumsel->data.SelectionCode = enumsel->data.Id;
-    ml = max ( ml, enumsel->data.SelectionCode.l);
+    ml = lmax ( ml, enumsel->data.SelectionCode.l);
     inCheDECL = NewLavaDECL();
     inCheDECL->Annotation.ptr = new TAnnotation;
     inCheDECL->Annotation.ptr->FA.ptr = new TAnnotation;

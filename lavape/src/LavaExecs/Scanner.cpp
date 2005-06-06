@@ -17,6 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
+#include <limits>
 #include "Scanner.h"
 #include "LavaBaseStringInit.h"
 
@@ -24,7 +25,7 @@
 #include "DString.h"
 #include "qstring.h"
 #include <ctype.h>
-#include <limits>
+
 #include <errno.h>
 
 using namespace std;

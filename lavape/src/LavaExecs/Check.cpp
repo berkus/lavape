@@ -4365,18 +4365,7 @@ bool FuncStatement::Check (CheckData &ckd)
         chpActOut = (CHE*)chpActOut->successor)  // delete remainder of parameter chain
     PutDelChainHint(ckd,this,&outputs,chpActOut);
 #endif
-/*
-  for (outParm = (CHE*)outputs.first;
-       outParm;
-       outParm = (CHE*)outParm->successor) {
-    if (!((SynObject*)((Parameter*)outParm->data)->parameter.ptr)->flags.Contains(ignoreSynObj))
-      visibleParms = true;
-  }
-  if (visibleParms && InReadOnlyContext()) {
-    SetError(ckd,&ERR_AssignInQuery);
-    ok = false;
-  }
-*/
+
   EXIT
 }
 
@@ -6152,12 +6141,12 @@ unsigned AssertionData::PrepareAssertions(CheckData &ckd, SelfVar *selfVar) {
   requireDECLimpl = ((CLavaBaseDoc*)ckd.document)->GetExecDECL(implFuncDECL,Require,false,false);
   if (requireDECLimpl) {
     hasOrInheritsPreconditions = true;
-    maxFrameSize = max(maxFrameSize,((SelfVar*)requireDECLimpl->Exec.ptr)->stackFrameSize);
+    maxFrameSize = lmax(maxFrameSize,((SelfVar*)requireDECLimpl->Exec.ptr)->stackFrameSize);
   }
   ensureDECLimpl = ((CLavaBaseDoc*)ckd.document)->GetExecDECL(implFuncDECL,Ensure,false,false);
   if (ensureDECLimpl) {
     hasOrInheritsPostconditions = true;
-    maxFrameSize = max(maxFrameSize,((SelfVar*)ensureDECLimpl->Exec.ptr)->stackFrameSize);
+    maxFrameSize = lmax(maxFrameSize,((SelfVar*)ensureDECLimpl->Exec.ptr)->stackFrameSize);
   }
 
   if (implFuncDECL->Supports.first) {
@@ -6178,12 +6167,12 @@ unsigned AssertionData::PrepareAssertions(CheckData &ckd, SelfVar *selfVar) {
   requireDECL = ((CLavaBaseDoc*)ckd.document)->GetExecDECL(itfFuncDECL,Require,false,false);
   if (requireDECL) {
     hasOrInheritsPreconditions = true;
-    maxFrameSize = max(maxFrameSize,((SelfVar*)requireDECL->Exec.ptr)->stackFrameSize);
+    maxFrameSize = lmax(maxFrameSize,((SelfVar*)requireDECL->Exec.ptr)->stackFrameSize);
   }
   ensureDECL = ((CLavaBaseDoc*)ckd.document)->GetExecDECL(itfFuncDECL,Ensure,false,false);
   if (ensureDECL) {
     hasOrInheritsPostconditions = true;
-    maxFrameSize = max(maxFrameSize,((SelfVar*)ensureDECL->Exec.ptr)->stackFrameSize);
+    maxFrameSize = lmax(maxFrameSize,((SelfVar*)ensureDECL->Exec.ptr)->stackFrameSize);
   }
 
   if (itfFuncDECL->TypeFlags.Contains(isInitializer)) {
@@ -6194,7 +6183,7 @@ unsigned AssertionData::PrepareAssertions(CheckData &ckd, SelfVar *selfVar) {
   for (adp=overridden.first();
        adp;
        adp=overridden.next()) {
-    maxFrameSize = max(maxFrameSize,adp->maxFrameSize);
+    maxFrameSize = lmax(maxFrameSize,adp->maxFrameSize);
     nOvrOldExpr += adp->nTotalOldExpr;
     if (adp->hasOrInheritsPreconditions)
       hasOrInheritsPreconditions = true;
@@ -6265,7 +6254,7 @@ unsigned InvarData::PrepareInvariants(CheckData &ckd, SelfVar *selfVar) {
   for (idp=overridden.first();
        idp;
        idp=overridden.next()) {
-    maxFrameSize = max(maxFrameSize,idp->stackFrameSize);
+    maxFrameSize = lmax(maxFrameSize,idp->stackFrameSize);
     if (idp->hasOrInheritsInvariants)
       hasOrInheritsInvariants = true;
   }

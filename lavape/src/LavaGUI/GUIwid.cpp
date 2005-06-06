@@ -396,9 +396,9 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
       sz = gb->size();
       strSz = GUIProg->CalcStringRect(gb->title(), gb->font()) + GUIProg->CalcTextRect(2,1, gb->font());
       bord = ((QFrame*)gb)->lineWidth();
-      wid = max(sz.width(), wrect.left()+wsz.width()+2*bord + GUIProg->xMargin);
-      wid = max(wid, strSz.width()+2*bord );
-      gb->resize(wid, max(sz.height(), wrect.top()+wsz.height()+2*bord + GUIProg->yMargin));
+      wid = lmax(sz.width(), wrect.left()+wsz.width()+2*bord + GUIProg->xMargin);
+      wid = lmax(wid, strSz.width()+2*bord );
+      gb->resize(wid, lmax(sz.height(), wrect.top()+wsz.height()+2*bord + GUIProg->yMargin));
       wrect = gb->geometry();
       wsz = gb->size();
       parent = gb->parentWidget();
@@ -406,9 +406,9 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
     sz = parent->size();
     bord = ((QFrame*)parent)->lineWidth();
     if (parent->parentWidget()->inherits("GUIVBox")) 
-      parent->resize(max(sz.width(), wrect.left()+wsz.width()+2*bord + GUIProg->xMargin), max(sz.height(), wrect.top()+wsz.height()+2*bord + GUIProg->yMargin));
+      parent->resize(lmax(sz.width(), wrect.left()+wsz.width()+2*bord + GUIProg->xMargin), lmax(sz.height(), wrect.top()+wsz.height()+2*bord + GUIProg->yMargin));
     else
-      parent->resize(max(sz.width(), wrect.left()+wsz.width()+2*bord), max(sz.height(), wrect.top()+wsz.height()+2*bord));
+      parent->resize(lmax(sz.width(), wrect.left()+wsz.width()+2*bord), lmax(sz.height(), wrect.top()+wsz.height()+2*bord));
     newParentRect = parent->geometry();
     grandparent = parent->parentWidget();
     if (!grandparent->inherits("GUIVBox")) {
@@ -421,9 +421,9 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
         sz = gb->size();
         strSz = GUIProg->CalcStringRect(gb->title(), gb->font()) + GUIProg->CalcTextRect(2,1, gb->font());
         bord = ((QFrame*)gb)->lineWidth();
-        wid = max(sz.width(), rect.left()+wsz.width()+2*bord + GUIProg->xMargin);
-        wid = max(wid, strSz.width()+2*bord);
-        gb->resize(wid, max(sz.height(), rect.top()+wsz.height() + GUIProg->yMargin));
+        wid = lmax(sz.width(), rect.left()+wsz.width()+2*bord + GUIProg->xMargin);
+        wid = lmax(wid, strSz.width()+2*bord);
+        gb->resize(wid, lmax(sz.height(), rect.top()+wsz.height() + GUIProg->yMargin));
         rect = gb->geometry();
         wsz = gb->size();
         grandparent = gb->parentWidget();
@@ -431,9 +431,9 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
       bord = ((QFrame*)grandparent)->lineWidth();
       sz = grandparent->size();
       if (grandparent->parentWidget()->inherits("GUIVBox")) 
-        grandparent->resize(max(sz.width(), rect.left()+wsz.width()+2*bord + GUIProg->xMargin), max(sz.height(), rect.top()+wsz.height()+2*bord + GUIProg->yMargin));
+        grandparent->resize(lmax(sz.width(), rect.left()+wsz.width()+2*bord + GUIProg->xMargin), lmax(sz.height(), rect.top()+wsz.height()+2*bord + GUIProg->yMargin));
       else
-        grandparent->resize(max(sz.width(), rect.left()+wsz.width()+2*bord), max(sz.height(), rect.top()+wsz.height()+2*bord));
+        grandparent->resize(lmax(sz.width(), rect.left()+wsz.width()+2*bord), lmax(sz.height(), rect.top()+wsz.height()+2*bord));
       newParentRect = grandparent->geometry();
     }
     else if (((GUIVBox*)grandparent)->FromPopup) {

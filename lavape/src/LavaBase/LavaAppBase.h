@@ -265,7 +265,7 @@ public:
 class LAVABASE_DLL  CUndoMem {
 
   bool wasFirst;
-  int max;
+  int max_undo;
   CLavaPEHint** UndoMemory;
   int undoMemPosition;
   int saveMemPosition;

@@ -121,11 +121,11 @@ CUndoMem::CUndoMem()
   saveMemPosition = 0;
   DrawTree = false;
   wasFirst = false;
-  max = 128;
-  UndoMemory = new CLavaPEHint* [max];
-  RedoMemory = new CLavaPEHint* [max];
+  max_undo = 128;
+  UndoMemory = new CLavaPEHint* [max_undo];
+  RedoMemory = new CLavaPEHint* [max_undo];
   int ii;
-  for ( ii= 0; ii < max; ii++) {
+  for ( ii= 0; ii < max_undo; ii++) {
     UndoMemory[ii] = 0;
     RedoMemory[ii] = 0;
   }
@@ -171,15 +171,15 @@ void CUndoMem::AddToMem(CLavaPEHint* hint)
     }
   UndoMemory[undoMemPosition] = hint;
   undoMemPosition++;
-  if (undoMemPosition >= max) {
-    CLavaPEHint** newMem = new CLavaPEHint* [max+128];
-    CLavaPEHint** newredoMem = new CLavaPEHint* [max+128];
+  if (undoMemPosition >= max_undo) {
+    CLavaPEHint** newMem = new CLavaPEHint* [max_undo+128];
+    CLavaPEHint** newredoMem = new CLavaPEHint* [max_undo+128];
     int ii;
-    for (ii = 0; ii < max; ii++) {
+    for (ii = 0; ii < max_undo; ii++) {
       newMem[ii] = UndoMemory[ii];
       newredoMem[ii] = RedoMemory[ii];
     }
-    max += 128;
+    max_undo += 128;
     UndoMemory = newMem;
     RedoMemory = newredoMem;
   }

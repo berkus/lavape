@@ -72,15 +72,14 @@ int main( int argc, char ** argv ) {
   if (sock_init())
     qDebug("sock_init failed");
 
-#ifdef WIN32
   componentPath = getenv("PATH");
+#ifdef WIN32
   if (componentPath.isEmpty())
     componentPath = ExeDir + "\\Components";
   else
     componentPath = componentPath + ";" + ExeDir + "\\Components";
   _putenv((QString("PATH=")+componentPath).latin1());
 #else
-  componentPath = getenv("PATH");
   if (componentPath.isEmpty())
     componentPath = ExeDir + "/Components";
   else

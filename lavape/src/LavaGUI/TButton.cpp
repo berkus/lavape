@@ -126,7 +126,7 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   GUIProg->SetColor(this, ((CFormWid*)Radio)->myFormNode);//myFormNode);
   QSize size = GUIProg->CalcStringRect(label, font());
-  size.setHeight(max(size.height(), myFormNode->data.Pixmap->height()));
+  size.setHeight(lmax(size.height(), myFormNode->data.Pixmap->height()));
   int bord = ((QFrame*)parent)->lineWidth();
   int iw1 = ((wxApp*)wxTheApp)->style().pixelMetric(QStyle::PM_ButtonMargin, this);
   int iw2 = ((wxApp*)wxTheApp)->style().pixelMetric(QStyle::PM_DefaultFrameWidth, this)*2;
