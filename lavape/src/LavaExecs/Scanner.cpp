@@ -351,7 +351,8 @@ static bool number ()
 //    n = strtol(strp->ascii(),0,0);
     break;
   case FloatConst_T:
-    f = strtod(strp->ascii(),0);
+    f = strp->toFloat();
+//    f = strtod(strp->ascii(),0);
     if (errno == ERANGE
       || f == numeric_limits<float>::infinity()) {
       *msgp = &ERR_OverOrUnderflow;
