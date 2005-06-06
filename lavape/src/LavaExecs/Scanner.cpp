@@ -347,7 +347,8 @@ static bool number ()
   switch (*tokenp) {
   case IntConst_T:
   case OctalConst_T:
-    n = strtol(strp->ascii(),0,0);
+    n = strp->toInt();
+//    n = strtol(strp->ascii(),0,0);
     break;
   case FloatConst_T:
     f = strtod(strp->ascii(),0);
@@ -358,7 +359,8 @@ static bool number ()
     }
     break;
   case DoubleConst_T:
-    d = strtod(strp->ascii(),0);
+    d = strp->toDouble();
+//    d = strtod(strp->ascii(),0);
     if (errno == ERANGE) {
       *msgp = &ERR_OverOrUnderflow;
       return false;

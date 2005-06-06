@@ -4426,8 +4426,9 @@ bool Connect::Check (CheckData &ckd)
   }
 
   ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
-  if (!ok)
+  if (!ok) {
     ERROREXIT
+  }
 
   funcTid = ((Reference*)signalFunction.ptr)->refID;
   ADJUST4(funcTid);
