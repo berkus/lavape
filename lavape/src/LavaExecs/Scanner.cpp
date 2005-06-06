@@ -25,7 +25,6 @@
 #include "DString.h"
 #include "qstring.h"
 #include <ctype.h>
-
 #include <errno.h>
 
 using namespace std;
