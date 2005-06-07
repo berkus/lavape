@@ -288,7 +288,7 @@ passive_socket (
       }
 
     /*  Bind the socket                                                      */
-#ifndef __WINDOWS__                                                     
+#ifndef __WINDOWS__
     int optval=1;
     int rc = setsockopt(handle,SOL_SOCKET,SO_REUSEADDR,&optval,sizeof(optval));
 #endif
