@@ -526,7 +526,7 @@ LavaDECL* CLavaBaseDoc::GetTypeAndContext(LavaDECL *decl, CContext &context)
   //and the (static LPC) iContext and oContext of the virtual type
   TID tidObject=TID(IDTable.BasicTypesID[B_Object],isStd?0:1);
 
-  if (!decl)
+  if (!decl || decl == (LavaDECL*)-1)
     return 0;
   NextContext(decl, context);
 	if (decl->TypeFlags.Contains(substitutable))
