@@ -101,8 +101,8 @@ enum TToken {
   FutureSEP5,
 
   ENDassert_T,
-  ENDrun_T,
   FutureEND6,
+  FutureEND7,
   ENDclone_T,
   ENDdeclare_T,
   ENDdelete_T,
@@ -113,7 +113,7 @@ enum TToken {
   ENDnew_T,
   ENDselect_T,
   ENDswitch_T,
-  ENDtransaction_T,
+  FutureEND8,
   ENDtry_T,
   ENDtypeof_T,
 

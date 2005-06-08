@@ -1468,12 +1468,16 @@ void CExecView::Select (SynObject *selObj)
 //            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
           else { // slot function
             callExpr = (Expression*)connStm->signalSender.ptr;
-            callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
-            callCtxSig = text->ckd.tempCtx;
-            declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
-            text->ckd.document->NextContext(declSig,callCtxSig);
-            text->ckd.tempCtx = callCtxSig;
-            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,((Reference*)connStm->signalFunction.ptr)->refDecl,callCtx,false);
+            if (((SynObject*)connStm->callbackFunction.ptr)->flags.Contains(isDisabled))
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+            else {
+              callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
+              callCtxSig = text->ckd.tempCtx;
+              declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
+              text->ckd.document->NextContext(declSig,callCtxSig);
+              text->ckd.tempCtx = callCtxSig;
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,((Reference*)connStm->signalFunction.ptr)->refDecl,callCtx,false);
+            }
           }
         else
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
@@ -1519,10 +1523,10 @@ void CExecView::Select (SynObject *selObj)
               declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
               text->ckd.document->NextContext(declSig,callCtxSig);
             }
-            if (((SynObject*)disconnStm->signalFunction.ptr)->primaryToken == nil_T)
-              sigFuncDecl = 0;
-            else
+            if (((SynObject*)disconnStm->signalFunction.ptr)->primaryToken == FuncRef_T)
               sigFuncDecl = ((Reference*)disconnStm->signalFunction.ptr)->refDecl;
+            else
+              sigFuncDecl = 0;
             text->ckd.tempCtx = callCtxSig;
             ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,sigFuncDecl,callCtx,false);
           }
@@ -2716,7 +2720,7 @@ void CExecView::OnDelete ()
     PutInsHint(cloneExp);
   }
   else if (text->currentSynObj->primaryToken == nil_T
-    && text->currentSynObj->replacedType == FuncDisabled_T) {
+    && text->currentSynObj->replacedType == FuncPH_T) {
     PutInsHint(new SynObjectV(FuncDisabled_T));
   }
   else if (text->currentSynObj->parentObject->NestedOptClause (text->currentSynObj)

@@ -1112,7 +1112,12 @@ bool SynObject::UpdateReference (CheckData &ckd) {
       else if (parentObject->IsFuncInvocation())
         ((Reference*)this)->refName = decl->FullName;
       else // [dis]connect
-        ((Reference*)this)->refName = decl->LocalName;
+        if (whereInParent == (address)&((Disconnect*)parentObject)->signalFunction.ptr
+            || (whereInParent == (address)&((Disconnect*)parentObject)->callbackFunction.ptr
+               && ((SynObject*)((Disconnect*)parentObject)->signalReceiver.ptr)->primaryToken == nil_T))
+          ((Reference*)this)->refName = decl->FullName;
+        else
+          ((Reference*)this)->refName = decl->LocalName;
     }
     else {
       if (primaryToken == FuncRef_T
@@ -4394,8 +4399,10 @@ bool Connect::Check (CheckData &ckd)
     if (!callExpr->flags.Contains(brokenRef)
     && !IsPH(callExpr))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
-    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T)
+    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
       ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
+    }
   }
   else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T) {
     ((SynObject*)signalFunction.ptr)->primaryToken = FuncPH_T;
@@ -4416,18 +4423,30 @@ bool Connect::Check (CheckData &ckd)
 
   ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
   if (!ok) {
+    if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
+      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+    ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
     ERROREXIT
   }
+  else
+    ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
 
   funcTid = ((Reference*)signalFunction.ptr)->refID;
   ADJUST4(funcTid);
   if (objTypeTid.nID != -1) {
     sigDecl = ckd.document->IDTable.GetDECL(funcTid);
-    if (!sigDecl)
+    if (!sigDecl) {
+      if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
+        ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
       ERROREXIT
+    }
     if (!sigDecl->SecondTFlags.Contains(isLavaSignal)) {
       ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_NoSignal);
-      ok = false;
+      if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
+        ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+      ERROREXIT
     }
     funcItf = sigDecl->ParentDECL;
     if (funcItf->DeclType == Impl) {
@@ -4454,8 +4473,10 @@ bool Connect::Check (CheckData &ckd)
     if (!callExpr->flags.Contains(brokenRef)
     && !IsPH(callExpr))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
-    if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncPH_T)
+    if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncPH_T) {
       ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+    }
   }
   else if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncDisabled_T) {
     ((SynObject*)callbackFunction.ptr)->primaryToken = FuncPH_T;

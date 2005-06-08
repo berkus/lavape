@@ -413,9 +413,6 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("Immediate negative/unsuccessful return, optionally throw exception"),
     QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
     " optionally throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
-  newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()),
-    QObject::tr("Run a nested initiator"),
-    QObject::tr("<p><a href=\"Run.htm\">Run</a> a nested <a href=\"../Packages.htm#initiator\">initiator</a></p>"));
 
   tb->addSeparator();
 
@@ -455,6 +452,9 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->emitButton,"signal",SLOT(emitSignal()),
     QObject::tr("Emit a signal"),
     QObject::tr("<p>Emit a <a href=\"../Callbacks.htm\">software signal</a></p>"));
+  newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()),
+    QObject::tr("Run a nested initiator"),
+    QObject::tr("<p><a href=\"Run.htm\">Run</a> a nested <a href=\"../Packages.htm#initiator\">initiator</a></p>"));
 }
 
 /////////////////////////////////////////////////////////////////////////////

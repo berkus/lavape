@@ -154,8 +154,8 @@ void Tokens_INIT ()
   ATO(QChar(0x2190));
   ATO(QChar(0x2192));
 #else*/
-  ATO(" <== ");
-  ATO(" ==> ");
+  ATO("  <==  ");
+  ATO("  ==>  ");
 //#endif
   ATO(".");
 
