@@ -3361,7 +3361,8 @@ void CExecView::OnNull()
   
   if (!EditOK()) return;
   NullConst *nConst = new NullConstV();
-  if (text->currentSynObj->primaryToken == FuncPH_T)
+  if (text->currentSynObj->primaryToken == FuncPH_T
+  || text->currentSynObj->primaryToken == FuncRef_T)
     nConst->replacedType = FuncPH_T;
   InsertOrReplace(nConst);
 }
