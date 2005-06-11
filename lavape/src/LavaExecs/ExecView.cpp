@@ -1484,6 +1484,7 @@ void CExecView::Select (SynObject *selObj)
       }
     }
     else if (text->currentSynObj->parentObject->primaryToken == disconnect_T) { // connect/disconnect
+disconn:
       disconnStm = (Disconnect*)text->currentSynObj->parentObject;
       if (text->currentSynObj->whereInParent == (address)&disconnStm->signalFunction.ptr) {
         callExpr = (Expression*)disconnStm->signalSender.ptr;
@@ -1523,12 +1524,16 @@ void CExecView::Select (SynObject *selObj)
               declSig = text->ckd.document->GetTypeAndContext(declSig,callCtxSig);
               text->ckd.document->NextContext(declSig,callCtxSig);
             }
-            if (((SynObject*)disconnStm->signalFunction.ptr)->primaryToken == FuncRef_T)
-              sigFuncDecl = ((Reference*)disconnStm->signalFunction.ptr)->refDecl;
-            else
-              sigFuncDecl = 0;
-            text->ckd.tempCtx = callCtxSig;
-            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,sigFuncDecl,callCtx,false);
+            if (((SynObject*)disconnStm->callbackFunction.ptr)->flags.Contains(isDisabled))
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+            else {
+              if (((SynObject*)disconnStm->signalFunction.ptr)->primaryToken == FuncRef_T)
+                sigFuncDecl = ((Reference*)disconnStm->signalFunction.ptr)->refDecl;
+              else
+                sigFuncDecl = 0;
+              text->ckd.tempCtx = callCtxSig;
+              ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,sigFuncDecl,callCtx,false);
+            }
           }
         else {
           if (((SynObject*)disconnStm->signalFunction.ptr)->primaryToken == nil_T)
@@ -1537,6 +1542,8 @@ void CExecView::Select (SynObject *selObj)
             sigFuncDecl = ((Reference*)disconnStm->signalFunction.ptr)->refDecl;
           if (isSigFunc)
             ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSignalFuncs(text->ckd);
+          else if (((SynObject*)disconnStm->callbackFunction.ptr)->flags.Contains(isDisabled))
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
           else
             ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSlotFuncs(text->ckd,sigFuncDecl);
         }
@@ -1549,6 +1556,9 @@ void CExecView::Select (SynObject *selObj)
   case nil_T:
     if (text->currentSynObj->IsOutputParam())
       goto obj;
+    else if (text->currentSynObj->parentObject->primaryToken == disconnect_T
+    && text->currentSynObj->replacedType == FuncPH_T)
+      goto disconn;
     else
       goto exp;
 
@@ -4284,6 +4294,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
   switch (text->currentSynObj->primaryToken) {
   case FuncRef_T:
   case FuncPH_T:
+  case nil_T:
     if (text->currentSynObj->parentObject->parentObject
     && text->currentSynObj->parentObject->parentObject->primaryToken == new_T
     && text->currentSynObj->parentObject->whereInParent

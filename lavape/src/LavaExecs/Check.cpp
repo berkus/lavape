@@ -4624,23 +4624,23 @@ bool Disconnect::Check (CheckData &ckd)
     funcTid = ((Reference*)signalFunction.ptr)->refID;
     ADJUST4(funcTid);
   }
-  if (objTypeTid.nID != -1) {
-    sigDecl = ckd.document->IDTable.GetDECL(funcTid);
-    if (((SynObject*)signalFunction.ptr)->primaryToken != nil_T && !sigDecl) {
-      ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
+  sigDecl = ckd.document->IDTable.GetDECL(funcTid);
+  if (((SynObject*)signalFunction.ptr)->primaryToken != nil_T && !sigDecl) {
+    ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
+    if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
+      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+    ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+    ERROREXIT
+  }
+  if (sigDecl) {
+    if (!sigDecl->SecondTFlags.Contains(isLavaSignal)) {
+      ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_NoSignal);
       if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
         ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
       ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
       ERROREXIT
     }
-    if (sigDecl) {
-      if (!sigDecl->SecondTFlags.Contains(isLavaSignal)) {
-        ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_NoSignal);
-        if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
-          ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-        ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
-        ERROREXIT
-      }
+    if (objTypeTid.nID != -1) {
       funcItf = sigDecl->ParentDECL;
       if (funcItf->DeclType == Impl) {
         funcImpl = funcItf;
@@ -4672,13 +4672,8 @@ bool Disconnect::Check (CheckData &ckd)
     && !callExpr->flags.Contains(brokenRef)
     && !IsPH(callExpr))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
-    if (callExpr->primaryToken == nil_T) {
-      if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncPH_T) {
-        ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-        ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
-      }
-    }
-    else if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncPH_T) {
+    if (callExpr->primaryToken != nil_T
+    && ((SynObject*)callbackFunction.ptr)->primaryToken == FuncPH_T) {
       ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
       ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
     }
@@ -4699,6 +4694,8 @@ bool Disconnect::Check (CheckData &ckd)
     if (objTypeDecl)
       objTypeTid = OWNID(objTypeDecl);
   }
+  else
+    objTypeTid.nID = -1;
 
   ok &= ((SynObject*)callbackFunction.ptr)->Check(ckd);
   if (!ok)
