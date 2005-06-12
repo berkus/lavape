@@ -359,6 +359,7 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
   MultipleOp *multOpExp;
   BinaryOp *binOpEx;
   Disconnect *disconnStm;
+  Connect *connectStm;
   CHE *chpFormIn;
   Category cat;
   TID targetTid, tidOperatorFunc;
@@ -405,13 +406,19 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
     targetObj = (SynObject*)assig->targetObj.ptr;
     return targetObj->IsOptional(ckd);
   }
-  else if ((parentObject->primaryToken == ObjRef_T
-    && parentObject->parentObject->primaryToken == connect_T)
-  || (parentObject->primaryToken == connect_T)) {
-/*    connectStm = (Connect*)parentObject;
+  else if (parentObject->primaryToken == ObjRef_T
+    && parentObject->parentObject->primaryToken == connect_T) {
+    connectStm = (Connect*)parentObject->parentObject;
+    if (parentObject->whereInParent == (address)&connectStm->signalSender.ptr)
+      return true;
+    else
+      return false;
+  }
+  else if (parentObject->primaryToken == connect_T) {
+    connectStm = (Connect*)parentObject;
     if (whereInParent == (address)&connectStm->signalSender.ptr)
       return true;
-    else*/
+    else
       return false;
   }
   else if (parentObject->primaryToken == disconnect_T) {
@@ -1010,6 +1017,16 @@ QString SynObject::whatsThisText() {
     break;
   case VarPH_T:
     return QString(QObject::tr("<p>This is a placeholder for a <b>new</b> local variable to be declared here</p>"));
+    break;
+  case const_T:
+    return QString(QObject::tr("<p>This is a constant</p>"));
+    break;
+  case nil_T:
+    if (parentObject->primaryToken == disconnect_T)
+      return QString(QObject::tr("<p>This is a \"wildcard\", meaning \"any object\"; "
+      "produced by the <img src=\"doc/images/Null.png\"> (\"undefined\") toolbutton</p>"));
+    else
+      return QString(QObject::tr("<p>This is a \"null/nil/nothing/undefined\" constant</p>"));
     break;
   default:
     return QString(QObject::tr("<p>\"What's this\" help is not yet available for this syntactic element</p>"));

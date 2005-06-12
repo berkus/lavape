@@ -4397,6 +4397,7 @@ bool Connect::Check (CheckData &ckd)
 
   if (!objTypeDecl) {
     if (!callExpr->flags.Contains(brokenRef)
+    && callExpr->primaryToken != nil_T
     && !IsPH(callExpr))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
     if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
@@ -4436,15 +4437,15 @@ bool Connect::Check (CheckData &ckd)
 
   funcTid = ((Reference*)signalFunction.ptr)->refID;
   ADJUST4(funcTid);
-  if (objTypeTid.nID != -1) {
-    sigDecl = ckd.document->IDTable.GetDECL(funcTid);
-    if (!sigDecl) {
-      ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
-      if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
-        ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
-      ERROREXIT
-    }
+  sigDecl = ckd.document->IDTable.GetDECL(funcTid);
+  if (!sigDecl) {
+    ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
+    if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
+      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+    ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+    ERROREXIT
+  }
+  else {
     if (!sigDecl->SecondTFlags.Contains(isLavaSignal)) {
       ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_NoSignal);
       if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
@@ -4452,18 +4453,20 @@ bool Connect::Check (CheckData &ckd)
       ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
       ERROREXIT
     }
-    funcItf = sigDecl->ParentDECL;
-    if (funcItf->DeclType == Impl) {
-      funcImpl = funcItf;
-      funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
-    }
-    funcItfTid = OWNID(funcItf);
-    if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
-      ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
-      if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
-        ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
-      ok = false;
+    if (objTypeTid.nID != -1) {
+      funcItf = sigDecl->ParentDECL;
+      if (funcItf->DeclType == Impl) {
+        funcImpl = funcItf;
+        funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
+      }
+      funcItfTid = OWNID(funcItf);
+      if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
+        ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
+        if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
+          ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
+        ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+        ok = false;
+      }
     }
   }
 
