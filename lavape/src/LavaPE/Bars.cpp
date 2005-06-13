@@ -701,7 +701,7 @@ void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
         label = label + "impl. invariant)";
         break;
       case Initiator:
-        label = label + "initiator)";
+        label = label + "main program)";
         break;
       default:;
       }

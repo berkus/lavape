@@ -454,7 +454,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p>Emit a <a href=\"../Callbacks.htm\">software signal</a></p>"));
   newKwdToolbutton(tb,LBaseData->runButton,"&run",SLOT(call()),
     QObject::tr("Run a nested initiator"),
-    QObject::tr("<p><a href=\"Run.htm\">Run</a> a nested <a href=\"../Packages.htm#initiator\">initiator</a></p>"));
+    QObject::tr("<p><a href=\"Run.htm\">Run</a> a nested <a href=\"../Packages.htm#initiator\">main program</a></p>"));
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1911,7 +1911,7 @@ void CLavaMainFrame::fillHelpMap3(ToolbarWhatsThis *tbw) {
     " another <font color=\"red\"><b><i>Lava</i></b></font> file</p>");
   tbw->helpTextMap["package"] = QString("<p>Create a new <a href=\"../Packages.htm#packages\">package</a>"
     " (= group of declarations/implementations that belong closely together)</p>");
-  tbw->helpTextMap["initiator"] = QString("<p>Create a new <a href=\"../Packages.htm#initiator\">initiator</a>"
+  tbw->helpTextMap["initiator"] = QString("<p>Create a new <a href=\"../Packages.htm#initiator\">main program</a>"
     " (= <font color=\"red\"><b><i>Lava</i></b></font> main program)</p>");
   tbw->helpTextMap["interface"] = QString("<p>Create a new <a href=\"../SepItfImpl.htm\">interface</a></p>"
     " (= the public part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>");

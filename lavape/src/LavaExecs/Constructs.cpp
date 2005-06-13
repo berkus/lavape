@@ -945,8 +945,6 @@ bool Exists::NestedOptClause (SynObject *optClause) {
 QString SynObject::whatsThisText() { return QString::null; }
 #else
 QString SynObject::whatsThisText() {
-  QPixmap nullIcon = QPixmap(Q6_null);
-
   switch (primaryToken) {
   case CrtblPH_T:
     break;
@@ -1028,6 +1026,7 @@ QString SynObject::whatsThisText() {
   case nil_T:
     if (parentObject->primaryToken == disconnect_T
     || parentObject->primaryToken == connect_T) {
+      QPixmap nullIcon = QPixmap(Q6_null);
       QMimeSourceFactory::defaultFactory()->setPixmap( "nullIcon", Q6_null );
       if (replacedType == Exp_T)
         return QString(QObject::tr("<p>This is a \"wildcard\", meaning \"any object\"; "

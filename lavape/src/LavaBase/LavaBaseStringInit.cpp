@@ -295,7 +295,7 @@ void LavaBaseStringInit() {
   ERR_ExactlyOneLcom  = QObject::tr("Exactly one name of a  *.lcom file or link to a *.lcom file expected");
   ERR_AllocObjectFailed  = QObject::tr("Object allocation failed");
   ERR_ImmutableArray  = QObject::tr("This array is a frozen, immutable value object");
-  ERR_ThrowInInitiator  = QObject::tr("In initiators, ""fail"" must not throw a non-null exception ");
+  ERR_ThrowInInitiator  = QObject::tr("In main programs, ""fail"" must not throw a non-null exception ");
   ERR_SecondImpl  = QObject::tr("Interface with more than one implementation");
   ERR_inStd  = QObject::tr("std.lava corrupted");
   ERR_SecondDefaultIni  = QObject::tr("Second default initializer");
@@ -315,13 +315,13 @@ void LavaBaseStringInit() {
   ERR_CorruptObject  = QObject::tr("Cannot read lava object with this lava component program");
   ERR_AbstrMemType  = QObject::tr("Do not use an abstract type for a member or formal parameter in a creatable interface");
   ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
-  ERR_NotOptional  = QObject::tr("""nothing/0"" may be assigned only to optional variables or function/initiator parameters");
+  ERR_NotOptional  = QObject::tr("""nothing/0"" may be assigned only to optional variables or function/main program parameters");
   ERR_AssigToLocal  = QObject::tr("Single-assignment violation: forbidden assignment to initialized local variable");
   ERR_NameInUse  = QObject::tr("This name is already in use within the current scope; please choose a different name");
   ERR_OutOfScope  = QObject::tr("Variable is referenced outside its scope");
   ERR_NoAbstract  = QObject::tr("An abstract virtual type or function cannot occur in a creatable interface");
   ERR_FuncParmOutOfScope  = QObject::tr("This function parameter belongs to a different function");
-  ERR_SelfInStatic  = QObject::tr("""self"" is used in an initiator or static function");
+  ERR_SelfInStatic  = QObject::tr("""self"" is used in an main program or static function");
   ERR_UndefType  = QObject::tr("Undefined type");
   ERR_CallExprUndefType = QObject::tr("Call expression has undefined type");
   ERR_NoCompObjItf  = QObject::tr("Must be a component object interface");
@@ -406,7 +406,7 @@ void LavaBaseStringInit() {
   ERR_EnterValue  = QObject::tr("Please enter value");
   ERR_SelectValue  = QObject::tr("Please select value");
   ERR_WrongCopyTarget  = QObject::tr("The target of a copy operation must be a state object, the ""self"" of an initializer, or ""temp""");
-  ERR_NoExecBody  = QObject::tr("Missing function or initiator body");
+  ERR_NoExecBody  = QObject::tr("Missing function or main program body");
   ERR_AssigInForeach  = QObject::tr("Potential multiple assignment in ""foreach"" construct");
   ERR_NestedVTs  = QObject::tr("Nested virtual types not allowed here");
   ERR_VTOutOfScope  = QObject::tr("Out of scope reference to virtual type");
@@ -430,7 +430,7 @@ void LavaBaseStringInit() {
   ERR_UseVT  = QObject::tr("Error: This or a base type is virtual; => ref. to concrete interface forbidden");
   ERR_WrongContext  = QObject::tr("Type cannot be referenced from the current pattern context");
   ERR_ImmutableCallObj  = QObject::tr("Frozen value object is used to call non-read-only member function");
-  ERR_NonROCallInROClause = "Forbidden call of non-read-only function/initiator in read-only clause or exec";
+  ERR_NonROCallInROClause = "Forbidden call of non-read-only function/main program in read-only clause or exec";
   ERR_SuccFailNotLast  = QObject::tr("Succeed/fail returns control; therefore there must not follow any further statement");
   ERR_NoNativeImpl  = QObject::tr("Implementation of native function not found/no adapter table");
   ERR_NoFuncImpl  = QObject::tr("Implementation of this function not found");

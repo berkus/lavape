@@ -152,7 +152,7 @@ QString SynObject::LocationOfConstruct () {
       cSynObjName = QString("nil");
     else if (synObj->primaryToken == FuncRef_T) {
       if (synObj->parentObject->type == implementation_T)
-        cSynObjName = QString("(name of function/initiator/invariant)");
+        cSynObjName = QString("(name of function/main program/invariant)");
     }
     else if (synObj->IsFuncInvocation())
       if (((SynObject*)((FuncExpression*)synObj)->function.ptr)->primaryToken == FuncPH_T

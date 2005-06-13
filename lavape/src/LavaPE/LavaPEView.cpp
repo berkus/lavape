@@ -5287,7 +5287,7 @@ QString TreeWhatsThis::text(const QPoint &point) {
       return QString(QObject::tr("<p>This is a <a href=\"../Packages.htm#packages\">package</a>"
         " (= group of declarations/implementations that belong closely together</p>"));
     case Initiator:
-      return QString(QObject::tr("<p>This is an <a href=\"../Packages.htm#initiator\">initiator</a>"
+      return QString(QObject::tr("<p>This is a <a href=\"../Packages.htm#initiator\">main program</a>"
         " (= <font color=\"red\"><b><i>Lava</i></b></font> main program)</p>"));
     case Interface:
       if (itemDECL->TypeFlags.Contains(isGUI))
