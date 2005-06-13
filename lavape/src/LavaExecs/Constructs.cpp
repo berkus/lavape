@@ -29,6 +29,7 @@
 #include "qstring.h"
 #include "qmessagebox.h"
 #include "DIO.h"
+#include "Q6_null.xpm"
 
 
 #define ADJUST(nnn,decl) \
@@ -939,10 +940,13 @@ bool Exists::NestedOptClause (SynObject *optClause) {
       return false;
 }
 
+
 #ifdef INTERPRETER
 QString SynObject::whatsThisText() { return QString::null; }
 #else
 QString SynObject::whatsThisText() {
+  QPixmap nullIcon = QPixmap(Q6_null);
+
   switch (primaryToken) {
   case CrtblPH_T:
     break;
@@ -1022,9 +1026,16 @@ QString SynObject::whatsThisText() {
     return QString(QObject::tr("<p>This is a constant</p>"));
     break;
   case nil_T:
-    if (parentObject->primaryToken == disconnect_T)
-      return QString(QObject::tr("<p>This is a \"wildcard\", meaning \"any object\"; "
-      "produced by the <img src=\"doc/images/Null.png\"> (\"undefined\") toolbutton</p>"));
+    if (parentObject->primaryToken == disconnect_T
+    || parentObject->primaryToken == connect_T) {
+      QMimeSourceFactory::defaultFactory()->setPixmap( "nullIcon", Q6_null );
+      if (replacedType == Exp_T)
+        return QString(QObject::tr("<p>This is a \"wildcard\", meaning \"any object\"; "
+        "produced by the <img src=\"nullIcon\"> (\"undefined\") toolbutton</p>"));
+      else
+        return QString(QObject::tr("<p>This is a \"wildcard\", meaning \"any signal or callback, respectively\"; "
+        "produced by the <img src=\"nullIcon\"> (\"undefined\") toolbutton</p>"));
+    }
     else
       return QString(QObject::tr("<p>This is a \"null/nil/nothing/undefined\" constant</p>"));
     break;
