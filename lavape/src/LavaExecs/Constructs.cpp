@@ -22,6 +22,7 @@
 #include "Check.h"
 #else
 #include "ExecView.h"
+#include "Q6_null.xpm"
 #endif
 #include "wx_obj.h"
 #include "LavaBaseDoc.h"
@@ -29,7 +30,6 @@
 #include "qstring.h"
 #include "qmessagebox.h"
 #include "DIO.h"
-#include "Q6_null.xpm"
 
 
 #define ADJUST(nnn,decl) \
@@ -1030,10 +1030,10 @@ QString SynObject::whatsThisText() {
       QMimeSourceFactory::defaultFactory()->setPixmap( "nullIcon", Q6_null );
       if (replacedType == Exp_T)
         return QString(QObject::tr("<p>This is a \"wildcard\", meaning \"any object\"; "
-        "produced by the <img src=\"nullIcon\"> (\"undefined\") toolbutton</p>"));
+        "produced by the <img src=\"nullIcon\"> (\"undefined\") tool button</p>"));
       else
         return QString(QObject::tr("<p>This is a \"wildcard\", meaning \"any signal or callback, respectively\"; "
-        "produced by the <img src=\"nullIcon\"> (\"undefined\") toolbutton</p>"));
+        "produced by the <img src=\"nullIcon\"> (\"undefined\") tool button</p>"));
     }
     else
       return QString(QObject::tr("<p>This is a \"null/nil/nothing/undefined\" constant</p>"));

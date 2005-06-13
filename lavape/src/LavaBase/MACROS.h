@@ -28,10 +28,11 @@
   //LavaObjectPtr+1: objects section flags
 
 #define LOH 2 //Lenght of header in object:
-  // LavaObjectPtr-1: reference counts (2 x unsigned short)
+  // LavaObjectPtr-1: reference counts (2 x unsigned short);
   // changed: use LavaObjectPtr+1 in the main section of the object
-  // instead of LavaObjectPtr-2 for object-global flags
-  // LavaObjectPtr-2: LavaObjectPtr urlObj of attached object
+  // instead of LavaObjectPtr-2 for object-global flags;
+  // LavaObjectPtr-2: pointer to the object's run time data,
+  // e.g. urlObj, sender/receiver lists for [dis]connect and signal primitives
 
 //length of adapter table header
 #define LAH  7 //adapterTable[0]: length of native data, lava-attributes behind the native part of the section

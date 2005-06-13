@@ -11,10 +11,10 @@
 #include "qcstring.h"
 #include "qobject.h"
 #include "qstring.h"
+#include "qvaluelist.h"
 #ifndef WIN32
 #include <setjmp.h>
 #include <signal.h>
-//#include <fenv.h>
 #endif
 
 
@@ -673,5 +673,25 @@ extern LAVABASE_DLL DebugStep nextDebugStep;
 
 extern LAVABASE_DLL unsigned stepOutStackDepth;
 extern LAVABASE_DLL unsigned currentStackDepth;
+
+
+class Receiver {
+public:
+  LavaDECL *signalDecl, *receiverDecl, *callbackDecl;
+};
+
+class Sender {
+public:
+  LavaDECL *senderDecl, *signalDecl, *callbackDecl;
+};
+
+class RunTimeData {
+public:
+  RunTimeData() { urlObj = 0; }
+
+  LavaObjectPtr urlObj;
+  QValueList<Receiver> receiverList;
+  QValueList<Sender> senderList;  
+};
 
 #endif

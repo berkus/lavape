@@ -188,9 +188,9 @@ void DDMakeClass::makeChildren()
         sectionPtr = myObject;
         if (secClassDECL->DeclType == CompObjSpec) {
           label = "url-object";
-          if (sectionPtr-2)
-            label = label + "  (" + QString((*(LavaVariablePtr)(sectionPtr-2))[0][0].classDECL->FullName.c);
-          childItem = myItem->createChild(new DDMakeClass, childItem, myDoc, *(LavaVariablePtr)(sectionPtr-2), label, false, false);            
+          if (sectionPtr-2 && ((RunTimeData*)(sectionPtr-2))->urlObj)
+            label = label + "  (" + QString((((RunTimeData*)(sectionPtr-2))->urlObj)[0][0].classDECL->FullName.c);
+          childItem = myItem->createChild(new DDMakeClass, childItem, myDoc, ((RunTimeData*)(sectionPtr-2))->urlObj, label, false, false);            
         }
         llast = secClassDECL->SectionInfo2 + LSH;
         ll = LSH;

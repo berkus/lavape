@@ -5818,7 +5818,6 @@ void CExecView::OnUpdateToggleCategory(wxAction* action)
   }
 
   action->setEnabled(ToggleCatEnabled());
-//  action->setOn(text->currentSynObj->flags.Contains(isVariable));
 }
 
 void CExecView::OnUpdateConflict(wxAction* action) 

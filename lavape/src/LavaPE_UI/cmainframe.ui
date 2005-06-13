@@ -1635,9 +1635,6 @@
         <property name="name">
             <cstring>toggleCategoryAction</cstring>
         </property>
-        <property name="toggleAction">
-            <bool>true</bool>
-        </property>
         <property name="iconSet">
             <iconset>image50</iconset>
         </property>

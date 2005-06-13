@@ -360,10 +360,6 @@ SOURCE=.\redefines.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Resource.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\TreeView.h
 
 !IF  "$(CFG)" == "LavaPE - Win32 Release"
@@ -1250,6 +1246,13 @@ SOURCE=.\res\lavafile.bmp
 # Begin Source File
 
 SOURCE=.\res\LavaPE.rc
+
+!IF  "$(CFG)" == "LavaPE - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "LavaPE - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

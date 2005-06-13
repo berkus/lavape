@@ -189,7 +189,7 @@ bool TPutString(CheckData& ckd, LavaVariablePtr stack)
 bool TNewFuncInOut(CheckData& ckd, LavaVariablePtr stack)
 {
   LavaObjectPtr obj = stack[SFH]-stack[SFH][0]->sectionOffset;
-  LavaObjectPtr urlObj = *(LavaVariablePtr)(obj-2);
+  LavaObjectPtr urlObj = ((RunTimeData*)(obj-2))->urlObj;
   QString fileName =  *(QString*)(urlObj+LSH);
   LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
   *(bool*)(modeObj+LSH) = false;
@@ -304,7 +304,7 @@ bool DPutString(CheckData& ckd, LavaVariablePtr stack)
 bool DNewFuncInOut(CheckData& ckd, LavaVariablePtr stack)
 {
   LavaObjectPtr obj = stack[SFH]-stack[SFH][0]->sectionOffset;
-  LavaObjectPtr urlObj = *(LavaVariablePtr)(obj-2);
+  LavaObjectPtr urlObj = ((RunTimeData*)(obj-2))->urlObj;
   QString fileName =  *(QString*)(urlObj+LSH);
   LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
   ((SynFlags*)(modeObj+1))->INCL(finished);
