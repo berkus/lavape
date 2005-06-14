@@ -4762,7 +4762,6 @@ bool Disconnect::Check (CheckData &ckd)
 
 bool Signal::Check (CheckData &ckd)
 {
-  CHE *oldError1;
   TID objTypeTid, selfTid, funcItfTid, funcTid;
   LavaDECL *sigDecl, *funcImpl=0;
   Expression *callExpr;
@@ -4773,13 +4772,11 @@ bool Signal::Check (CheckData &ckd)
 
   ENTRY
 
-  oldError1 = oldError;
-  ok &= FuncStatement::Check(ckd);
-  oldError = oldError1;
+  ok &= ((FuncStatement*)fCall.ptr)->Check(ckd);
   if (!ok)
     ERROREXIT
 
-  callExpr = (Expression*)handle.ptr;
+  callExpr = (Expression*)((FuncStatement*)fCall.ptr)->handle.ptr;
   ckd.tempCtx = ckd.lpc;
   callExpr->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
   objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
@@ -4788,12 +4785,12 @@ bool Signal::Check (CheckData &ckd)
     if (!callExpr->flags.Contains(brokenRef)
     && !IsPH(callExpr))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
-    if (((SynObject*)function.ptr)->primaryToken == FuncPH_T)
-      ((SynObject*)function.ptr)->primaryToken = FuncDisabled_T;
+    if (((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->primaryToken == FuncPH_T)
+      ((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
   }
-  else if (((SynObject*)function.ptr)->primaryToken == FuncDisabled_T) {
-    ((SynObject*)function.ptr)->primaryToken = FuncPH_T;
-    ((SynObject*)function.ptr)->flags.EXCL(isDisabled);
+  else if (((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->primaryToken == FuncDisabled_T) {
+    ((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->primaryToken = FuncPH_T;
+    ((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->flags.EXCL(isDisabled);
   }
   if (objTypeDecl) {
     sigCtx = ckd.tempCtx;
@@ -4807,14 +4804,14 @@ bool Signal::Check (CheckData &ckd)
       objTypeTid = OWNID(objTypeDecl);
   }
 
-  funcTid = ((Reference*)function.ptr)->refID;
+  funcTid = ((Reference*)((FuncStatement*)fCall.ptr)->function.ptr)->refID;
   ADJUST4(funcTid);
   if (objTypeTid.nID != -1) {
     sigDecl = ckd.document->IDTable.GetDECL(funcTid);
     if (!sigDecl)
       ERROREXIT
     if (!sigDecl->SecondTFlags.Contains(isLavaSignal)) {
-      ((Reference*)function.ptr)->SetError(ckd,&ERR_NoSignal);
+      ((Reference*)((FuncStatement*)fCall.ptr)->function.ptr)->SetError(ckd,&ERR_NoSignal);
       ok = false;
     }
   }

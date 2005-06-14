@@ -333,8 +333,8 @@ LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj)
       }
       file.close();
     if (object) {
-      if (!*(object-2)) *(LavaVariablePtr)(object-2) = (LavaObjectPtr)new RunTimeData;
-      ((RunTimeData*)*(object-2))->urlObj = urlObj;
+      if (!*(object-LOH)) *(LavaVariablePtr)(object-LOH) = (LavaObjectPtr)new RunTimeData;
+      ((RunTimeData*)*(object-LOH))->urlObj = urlObj;
     }
     return object;
   }
@@ -351,7 +351,7 @@ bool CLavaDoc::SaveObject(CheckData& ckd, LavaObjectPtr object)
   if (object) {
     //try {
       object = object - object[0]->sectionOffset;
-      urlObj = ((RunTimeData*)*(object-2))->urlObj;
+      urlObj = ((RunTimeData*)*(object-LOH))->urlObj;
       secn = GetSectionNumber(ckd, (*urlObj)->classDECL, DECLTab[VLString]);
       if (ckd.exceptionThrown)
         return false;

@@ -940,7 +940,6 @@ bool Exists::NestedOptClause (SynObject *optClause) {
       return false;
 }
 
-
 #ifdef INTERPRETER
 QString SynObject::whatsThisText() { return QString::null; }
 #else

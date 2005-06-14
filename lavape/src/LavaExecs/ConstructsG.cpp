@@ -912,7 +912,7 @@ void CDPDisconnect (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPDisconnect
 
 
-IMPLEMENT_DYNAMIC_CLASS(Signal,FuncStatement)
+IMPLEMENT_DYNAMIC_CLASS(Signal,Expression)
 
 
 void CDPSignal (PutGetFlag pgf, ASN1* cid, address varAddr,
@@ -923,7 +923,8 @@ void CDPSignal (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPFuncStatement(pgf,cid,(address)(FuncStatement*)vp,true);
+    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    vp->fCall.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPSignal
 

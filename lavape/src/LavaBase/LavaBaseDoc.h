@@ -11,7 +11,8 @@
 #include "qcstring.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "qvaluelist.h"
+#include "qptrlist.h"
+#include "qptrdict.h"
 #ifndef WIN32
 #include <setjmp.h>
 #include <signal.h>
@@ -677,21 +678,38 @@ extern LAVABASE_DLL unsigned currentStackDepth;
 
 class Receiver {
 public:
-  LavaDECL *signalDecl, *receiverDecl, *callbackDecl;
+  Receiver (LavaObjectPtr rcv, LavaDECL *cb) {
+    receiver = rcv;
+    callbackDecl = cb;
+  }
+
+  LavaObjectPtr receiver;
+  LavaDECL *callbackDecl;
 };
 
-class Sender {
+typedef QPtrList<Receiver> ReceiverList;
+
+class Callback {
 public:
-  LavaDECL *senderDecl, *signalDecl, *callbackDecl;
+  Callback (LavaObjectPtr sdr, LavaDECL *cb) {
+    sender = sdr;
+    callbackDecl = cb;
+  }
+
+  LavaObjectPtr sender;
+  LavaDECL *callbackDecl;
 };
+
+typedef QPtrList<Callback> CallbackList;
 
 class RunTimeData {
 public:
   RunTimeData() { urlObj = 0; }
 
   LavaObjectPtr urlObj;
-  QValueList<Receiver> receiverList;
-  QValueList<Sender> senderList;  
+
+  QPtrDict<ReceiverList> receiverList;  // key = LavaDECL *signalDecl
+  QPtrDict<CallbackList> callbackList;  // key = LavaDECL *signalDecl
 };
 
 #endif

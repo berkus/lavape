@@ -423,8 +423,8 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
     *(object + ii) = 0;
   object = object + LOH;
   if (urlObj) {
-    if (!*(object-2)) *(LavaVariablePtr)(object-2) = (LavaObjectPtr)new RunTimeData;
-    ((RunTimeData*)*(object-2))->urlObj = urlObj;
+    if (!*(object-LOH)) *(LavaVariablePtr)(object-LOH) = (LavaObjectPtr)new RunTimeData;
+    ((RunTimeData*)*(object-LOH))->urlObj = urlObj;
   }
   object[0] = &((CSectionDesc*)classDECL->SectionTabPtr)[0];
   int nsect = ((CSectionDesc*)classDECL->SectionTabPtr)[0].nSections;

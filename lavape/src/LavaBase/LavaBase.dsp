@@ -319,6 +319,10 @@ SOURCE=.\LavaThread.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\MACROS.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\PEBaseDoc.h
 
 !IF  "$(CFG)" == "LavaBase - Win32 Release"

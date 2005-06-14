@@ -1425,7 +1425,7 @@ void CExecView::Select (SynObject *selObj)
           if (decl)
             if (callExpr->flags.Contains(isSelfVar)
             && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
-              if (funcExpr->primaryToken == signal_T)
+              if (funcExpr->parentObject->primaryToken == signal_T)
                 ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
               else
                 ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,true);
@@ -4346,10 +4346,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
     else if (text->currentSynObj->parentObject->primaryToken == assignFS_T) {
       text->currentSynObj = text->currentSynObj->parentObject;
       oldFuncStm = (FuncStatement*)text->currentSynObj;
-      if (oldFuncStm->primaryToken == signal_T)
-        funcStm = new SignalV(new ReferenceV(FuncPH_T,refID,refName));
-      else
-        funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName));
+      funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName));
       if (isStaticCall) {
         funcStm->flags.INCL(staticCall);
         if (vtypeID)
@@ -4730,8 +4727,9 @@ void CExecView::OnDisconnect()
 void CExecView::OnEmitSignal() 
 {
   // TODO: Code für Befehlsbehandlungsroutine hier einfügen
-  SignalV *emitStm=new SignalV();
+  SignalV *emitStm=new SignalV(true);
   ObjReferenceV *objRef;
+  FuncStatementV *funcStm;
   TDODV *tdod;
   TDODC tdodc;
   CHE *newChe;
@@ -4744,11 +4742,15 @@ void CExecView::OnEmitSignal()
   objRef = new ObjReferenceV(tdodc,"self");
   objRef->flags.INCL(isDisabled);
   objRef->flags.INCL(isSelfVar);
-  emitStm->handle.ptr = objRef;
+  funcStm = new FuncStatementV;
+  funcStm->parentObject = emitStm;
+  emitStm->fCall.ptr = funcStm;
+  funcStm->handle.ptr = objRef;
+  funcStm->function.ptr = new SynObjectV(FuncPH_T);
   tdod->parentObject = objRef;
   tdod->containingChain = (CHAINX*)&objRef->refIDs;
-  objRef->parentObject = emitStm;
-  objRef->whereInParent = (address)&emitStm->handle.ptr;
+  objRef->parentObject = funcStm;
+  objRef->whereInParent = (address)&emitStm->fCall.ptr;
   InsertOrReplace(emitStm);
 }
 

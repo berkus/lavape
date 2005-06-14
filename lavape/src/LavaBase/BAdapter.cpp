@@ -85,7 +85,7 @@ bool DefaultEq(CheckData& /*ckd*/, LavaVariablePtr /*stack*/)
 bool ObjectFinalize(CheckData& ckd, LavaVariablePtr stack)
 {
   LavaObjectPtr obj = stack[SFH] - stack[SFH][0][0].sectionOffset;
-  if (*(obj - 2) && ((RunTimeData*)*(obj-2))->urlObj)  //url object?
+  if (*(obj - LOH) && ((RunTimeData*)*(obj-LOH))->urlObj)  //url object?
     if (obj[0][0].implDECL != obj[0][0].classDECL) { //not native i.e. Lava component
       if ( !((SynFlags*)(obj + 1))->Contains(dontSave)) 
         ckd.document->SaveObject(ckd, stack[SFH]);

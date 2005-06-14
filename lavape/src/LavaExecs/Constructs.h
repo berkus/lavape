@@ -1997,10 +1997,14 @@ class FuncStatement : public FuncExpression {
 
   public:
   CHAINX outputs;
+
+  FuncStatement()
+  {
+  }
+
+  FuncStatement(Reference *ref);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
-
-  FuncStatement () {}
 
   virtual void CopyData (AnyType *from) {
     *this = *(FuncStatement*)from;
@@ -2066,12 +2070,14 @@ struct Disconnect : public Expression {
   { CDPDisconnect(pgf,cid,(address)this,baseCDP); }
 };
 
-struct Signal : public FuncStatement {
+class Signal : public Expression {
   DECLARE_DYNAMIC_CLASS(Signal)
 
 
   public:
+  NESTEDANY/*Expression*/ fCall;
   virtual bool Check(CheckData &ckd);
+  virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 
   Signal () {}
 
@@ -3321,7 +3327,8 @@ public:
 
 class ConnectV : public Connect {
 public:
-  ConnectV ();
+  ConnectV (){};
+  ConnectV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
@@ -3331,7 +3338,8 @@ public:
 
 class DisconnectV : public Disconnect {
 public:
-  DisconnectV ();
+  DisconnectV (){};
+  DisconnectV (bool);
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
@@ -3339,11 +3347,12 @@ public:
     "<a href=\"../Callbacks.htm\">software signal</a> from a signal handler (\"callback\")</p>");}
 };
 
-class SignalV : public FuncStatementV {
+class SignalV : public Signal {
 public:
-  SignalV ();
-  SignalV (Reference *ref);
+  SignalV(){}
+  SignalV(bool);
 
+  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
     return QObject::tr("<p>Use the <b>signal</b> statement to emit a "
     "<a href=\"../Callbacks.htm\">software signal</a>, i.e., to call the signal handlers"

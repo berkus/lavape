@@ -2240,6 +2240,20 @@ FuncStatementV::FuncStatementV (ObjReference *ref, bool out) {
   if (out)
     outputs.Append(NewCHE(new ParameterV(new SynObjectV(ObjDisabled_T))));
 }
+/*
+FuncStatement::FuncStatement () {
+  type = Stm_T;
+  replacedType = type;
+  primaryToken = assignFS_T;
+  function.ptr = new SynObjectV(FuncPH_T);
+}
+*/
+FuncStatement::FuncStatement (Reference *ref) {
+  type = Stm_T;
+  replacedType = type;
+  primaryToken = assignFS_T;
+  function.ptr = ref;
+}
 
 FuncStatementV::FuncStatementV (Reference *ref) {
   type = Stm_T;
@@ -2252,7 +2266,7 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   bool isFirst=true, visibleParms=false;
   CHE *paramPtr;
   ROContext roCtx=ReadOnlyContext();
-  bool drawCallKeywd = (roCtx != assertion) && (roCtx != roClause);
+  bool drawCallKeywd = (roCtx != assertion) && (roCtx != roClause) && (parentObject->primaryToken != signal_T);
 
   ENTRY
 
@@ -2411,7 +2425,7 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   EXIT
 }
 
-ConnectV::ConnectV () {
+ConnectV::ConnectV (bool) {
   type = Stm_T;
   replacedType = type;
   primaryToken = connect_T;
@@ -2444,7 +2458,7 @@ void ConnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   EXIT
 }
 
-DisconnectV::DisconnectV () {
+DisconnectV::DisconnectV (bool) {
   type = Stm_T;
   replacedType = type;
   primaryToken = disconnect_T;
@@ -2470,15 +2484,25 @@ void DisconnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored
   DRAW(signalReceiver.ptr);
   t.Insert(Period_T);
   DRAW(callbackFunction.ptr);
+
   EXIT
 }
 
-SignalV::SignalV () : FuncStatementV(true,false,true) {
+SignalV::SignalV (bool) {
+  type = Stm_T;
+  replacedType = type;
   primaryToken = signal_T;
 }
 
-SignalV::SignalV (Reference *ref) : FuncStatementV(ref) {
-  primaryToken = signal_T;
+
+void SignalV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
+  ENTRY
+
+  t.Insert(primaryToken,true);
+  t.Blank();
+  DRAW(fCall.ptr);
+
+  EXIT
 }
 
 
