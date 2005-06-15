@@ -2194,7 +2194,7 @@ void sigEnable() {
   sa.sa_sigaction = (void(*)(int,  siginfo_t *, void *))signalHandler;
 #else
 #ifdef __Darwin
-  sa.sa_handler = (void(*)(int,struct siginfo*))signalHandler;
+  sa.__sigaction_u.__sa_sigaction = (void(*)(int,struct __siginfo*,void*))signalHandler;
 #else
   sa.sa_handler = (sighandler_t)signalHandler;
 #endif
