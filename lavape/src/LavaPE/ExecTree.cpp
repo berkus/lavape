@@ -265,6 +265,8 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
       decl = Doc->IDTable.GetDECL(((CHETID*)elDef->Supports.first)->data, elDef->inINCL);
       if (decl && decl->TypeFlags.Contains(isAbstract))
         new CLavaError(&elDef->DECLError1, &ERR_ImplOfAbstract, 0, useAutoBox);
+      if (decl && decl->TypeFlags.Contains(isNative))
+        new CLavaError(&elDef->DECLError1, &ERR_NoImplForAbstract, 0, useAutoBox);
     }
     else {
       if (checkLevel != CHLV_noCheck) {
@@ -535,7 +537,7 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
               || (elDef->DeclType == Impl) 
               || (elDef->DeclType == CompObj)) {
         withName = false;
-        ids = &ERR_MissingFuncDecl; //&ERR_NoRefType;
+        ids = &ERR_MissingItfFuncDecl; //&ERR_NoRefType;
       }
       else 
         if ((elDef->DeclType == VirtualType) && (elDef->ParentDECL->DeclType == FormDef))
@@ -779,6 +781,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
           || !elDef->ParentDECL->SecondTFlags.Contains(funcImpl)) {
           elDef->SecondTFlags.EXCL(overrides);
           elDef->SecondTFlags.EXCL(funcImpl);
+          elDef->TypeFlags.EXCL(isProtected);
           elDef->TypeFlags.EXCL(isPropGet);
           elDef->TypeFlags.EXCL(isPropSet);
           elDef->TypeFlags.EXCL(isInitializer);

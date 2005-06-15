@@ -239,8 +239,9 @@ void CLavaPEDoc::AutoCorr(LavaDECL* decl)
         }
       }
       else {
-        lfuncImpl = (((CLavaError*)che->data)->IDS == &ERR_MissingFuncDecl)
+        lfuncImpl = (((CLavaError*)che->data)->IDS == &ERR_MissingItfFuncDecl)
                      || (((CLavaError*)che->data)->IDS == &ERR_NoSetGetMember)
+                     || (((CLavaError*)che->data)->IDS == &ERR_NoImplForAbstract)
                     || (((CLavaError*)che->data)->IDS == &ERR_ImplOfAbstract);
         if (AutoCorrBox(((CLavaError*)che->data)->IDS) != QDialog::Accepted) {
           if (lfuncImpl)
@@ -251,6 +252,7 @@ void CLavaPEDoc::AutoCorr(LavaDECL* decl)
         *newDECL = *decl;
         if (lfuncImpl) {
           newDECL->SecondTFlags.EXCL(funcImpl);      
+          newDECL->TypeFlags.EXCL(isProtected);
           newDECL->TypeFlags.EXCL(isPropGet);   
           newDECL->TypeFlags.EXCL(isPropSet);
           newDECL->TypeFlags.EXCL(isInitializer);
@@ -337,7 +339,8 @@ int CLavaPEDoc::AutoCorrBox(QString* errID)
   cstr += "\r\n";
   if (errID == &ERR_NoOverridden) 
     cstr += "Correct the declaration what it overrides? ";
-  else if ((errID == &ERR_MissingFuncDecl) || (errID == &ERR_NoSetGetMember) || (errID == &ERR_ImplOfAbstract))
+  else if ((errID == &ERR_MissingItfFuncDecl) || (errID == &ERR_NoSetGetMember) || (errID == &ERR_ImplOfAbstract)
+       || (errID == &ERR_NoImplForAbstract))
     cstr += "Change to private function?  ";
   else if (errID == &ERR_NoAbstract)
     cstr += "Make the function non abstract?  ";
@@ -840,19 +843,26 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
       if (checkLevel == CHLV_fit) {
         changed = true;
         UpdateNo++;
+        /*
         if (implElDecl->SecondTFlags.Contains(funcImpl) ) {
           if (implElDecl->TypeFlags.Contains(isPropGet) || implElDecl->TypeFlags.Contains(isPropSet)) {
             classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
             if (classElDecl && !classElDecl->TypeFlags.Contains(hasSetGet)) 
               new CLavaError(&implElDecl->DECLError2, &ERR_NoSetGetMember);
             else
-              new CLavaError(&implElDecl->DECLError2, &ERR_MissingFuncDecl);
+              new CLavaError(&implElDecl->DECLError2, &ERR_MissingItfFuncDecl);
           }
-          else
-            new CLavaError(&implElDecl->DECLError2, &ERR_MissingFuncDecl);
+          else {
+            classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
+            if (classElDecl) 
+              new CLavaError(&implElDecl->DECLError2, &ERR_NoImplForAbstract);
+            else
+              new CLavaError(&implElDecl->DECLError2, &ERR_MissingItfFuncDecl);
+          }
         }
-
+        */
         implElDecl->SecondTFlags.EXCL(funcImpl);     
+        implElDecl->TypeFlags.EXCL(isProtected);
         implElDecl->TypeFlags.EXCL(isPropGet);    
         implElDecl->TypeFlags.EXCL(isPropSet);
         implElDecl->TypeFlags.EXCL(isInitializer);
@@ -872,20 +882,37 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         }
       }
       else
+        if (implElDecl->SecondTFlags.Contains(funcImpl) ) {
+          if (implElDecl->TypeFlags.Contains(isPropGet) || implElDecl->TypeFlags.Contains(isPropSet)) {
+            classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
+            if (classElDecl && !classElDecl->TypeFlags.Contains(hasSetGet)) 
+              new CLavaError(&implElDecl->DECLError2, &ERR_NoSetGetMember);
+            else
+              if (checkLevel == CHLV_showError) 
+                new CLavaError(&implElDecl->DECLError2, &ERR_MissingItfFuncDecl);
+          }
+          else {
+            classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
+            if (classElDecl) {
+              if (checkLevel == CHLV_showError) 
+                new CLavaError(&implElDecl->DECLError2, &ERR_NoImplForAbstract);
+            }
+            else
+              if (checkLevel == CHLV_showError) 
+                new CLavaError(&implElDecl->DECLError2, &ERR_MissingItfFuncDecl);
+          }
+        }
+ 
+        /*
         if (implElDecl->TypeFlags.Contains(isPropGet) || implElDecl->TypeFlags.Contains(isPropSet)) {
           classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
-          if (classElDecl) /*{
-            implElDecl->SecondTFlags.EXCL(funcImpl);
-            implElDecl->TypeFlags.EXCL(isPropGet);
-            implElDecl->TypeFlags.EXCL(isPropSet);
-          }
-          else
-            if (checkLevel == CHLV_showError) */
+          if (classElDecl) 
               new CLavaError(&implElDecl->DECLError1, &ERR_NoSetGetMember);
         }
         else
           if (checkLevel == CHLV_showError) 
             new CLavaError(&implElDecl->DECLError1, &ERR_MissingFuncDecl);
+        */
     }
     cheImplEl = (CHE*)cheImplEl->successor;
   }

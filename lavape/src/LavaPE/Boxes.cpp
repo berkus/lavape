@@ -1598,10 +1598,11 @@ ValOnInit CFuncBox::OnInitDialog()
       decl = myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data);
       if (!decl ) {
         myDECL->SecondTFlags.EXCL(funcImpl);
+        myDECL->TypeFlags.EXCL(isProtected);
         myDECL->TypeFlags.EXCL(isPropGet);
         myDECL->TypeFlags.EXCL(isPropSet);
         myDECL->Supports.Destroy();
-        if (myDoc->AutoCorrBox(&ERR_MissingFuncDecl) != QDialog::Accepted) {
+        if (myDoc->AutoCorrBox(&ERR_MissingItfFuncDecl) != QDialog::Accepted) {
           OrigDECL->WorkFlags.INCL(allowDEL);
           return BoxCancel; //QDialog::reject();
         }
@@ -1897,6 +1898,7 @@ void CFuncBox::OnOK()
     }
     else {
       myDECL->SecondTFlags.EXCL(funcImpl);
+      myDECL->TypeFlags.EXCL(isProtected);
       myDECL->Supports.Destroy();
     }
   UpdateData(true);

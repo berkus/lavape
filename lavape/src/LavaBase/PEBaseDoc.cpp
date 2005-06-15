@@ -369,6 +369,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
           && !elDECL->WorkFlags.Contains(fromPrivToPub)) { //not drag-drop, no pattern: paste or only drop
           if (elDECL->SecondTFlags.Contains(funcImpl)) {
             elDECL->SecondTFlags.EXCL(funcImpl);
+            elDECL->TypeFlags.EXCL(isProtected);
             elDECL->Supports.Destroy();
           }
           if (elDECL->SecondTFlags.Contains(overrides)) {
