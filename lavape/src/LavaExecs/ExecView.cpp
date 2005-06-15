@@ -857,20 +857,16 @@ void CExecView::OnChar(QKeyEvent *e)
       if (currentSynObj->type == VarPH_T
       || currentSynObj->primaryToken == Exp_T
       || currentSynObj->IsConstant()) {
-        if (GetDocument()->changeNothing)
-          return;
         text->currentSynObj = currentSynObj;
         if (text->currentSynObj->primaryToken != enumConst_T
         && text->currentSynObj->primaryToken != Boolean_T
         && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
         && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
           doubleClick = true;
-        Select();
+        Select(text->currentSynObj);
         doubleClick = false;
       }
       else if (text->currentSelection->data.token == Comment_T) {
-        if (GetDocument()->changeNothing)
-          return;
         doubleClick = true;
         clicked = true;
         Select();
@@ -890,6 +886,9 @@ void CExecView::OnChar(QKeyEvent *e)
     case Qt::Key_Right:
       Select(RightSibling());
       break;
+    case Qt::Key_Return:
+      if (GetDocument()->changeNothing)
+        return;
       if (EnableInsert()) {
         OnInsert();
         if (text->currentSelection->data.token == VarPH_T
@@ -1135,7 +1134,7 @@ void CExecView::OnChar(QKeyEvent *e)
         && !text->currentSynObj->BoolAdmissibleOnly(text->ckd)
         && !text->currentSynObj->EnumAdmissibleOnly(text->ckd))
           doubleClick = true;
-        Select();
+        Select(text->currentSynObj);
         doubleClick = false;
       }
       else if (text->currentSelection->data.token == Comment_T) {
@@ -1160,21 +1159,6 @@ void CExecView::OnChar(QKeyEvent *e)
     case Qt::Key_Right:
       Select(RightSibling());
       break;
-      if (EnableInsert()) {
-        OnInsert();
-        if (text->currentSelection->data.token == VarPH_T
-			  || text->currentSelection->data.token == Exp_T) {
-          doubleClick = true;
-          Select();
-          doubleClick = false;
-        }
-      }
-      else if (text->currentSynObj->IsStatement())
-        OnAnd();
-      break;
-    case Qt::Key_F1:
-	    ((wxMainFrame*)wxTheApp->mainWidget())->helpContents();
-      break;
     case Qt::Key_Return:
       if (GetDocument()->changeNothing)
         break;
@@ -1188,6 +1172,9 @@ void CExecView::OnChar(QKeyEvent *e)
       }
       else if (text->currentSynObj->IsStatement())
         OnAnd();
+      break;
+    case Qt::Key_F1:
+	    ((wxMainFrame*)wxTheApp->mainWidget())->helpContents();
       break;
     case Qt::Key_Escape:
       break;
