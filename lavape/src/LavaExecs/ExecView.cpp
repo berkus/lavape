@@ -4733,7 +4733,6 @@ void CExecView::OnEmitSignal()
   funcStm->parentObject = emitStm;
   emitStm->fCall.ptr = funcStm;
   funcStm->handle.ptr = objRef;
-  funcStm->function.ptr = new SynObjectV(FuncPH_T);
   tdod->parentObject = objRef;
   tdod->containingChain = (CHAINX*)&objRef->refIDs;
   objRef->parentObject = funcStm;

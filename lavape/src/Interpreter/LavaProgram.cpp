@@ -406,7 +406,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
               new CLavaError(&implElDecl->DECLError1, &ERR_NoSetGetMember);
           }
           else
-            LavaError(ckd, true, implElDecl, &ERR_MissingFuncDecl);
+            LavaError(ckd, true, implElDecl, &ERR_MissingItfFuncDecl);
           return false;
         }
       if ((implElDecl->DeclType == Function) 

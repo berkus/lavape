@@ -129,7 +129,9 @@ QString ERR_NoInitializer;
 QString ERR_InitializerForbidden;
 QString ERR_ExplicitInitializerCall;
 QString ERR_NoSignal;
+QString ERR_SignalNoOutput;
 QString ERR_MissingFuncDecl;
+QString ERR_MissingItfFuncDecl;
 QString ERR_MissingInitialization;
 QString ERR_UnaryOpUndefined;
 QString ERR_HandleOpParm;
@@ -422,7 +424,9 @@ void LavaBaseStringInit() {
   ERR_InitializerForbidden = QObject::tr("Initializer not allowed here");
   ERR_ExplicitInitializerCall  = QObject::tr("Explicit initializer calls are not allowed");
   ERR_NoSignal  = QObject::tr("This isn't a signal function");
+  ERR_SignalNoOutput = QObject::tr("Signal functions must not have output parameters");
   ERR_MissingFuncDecl  = QObject::tr("No such member function or variable:");
+  ERR_MissingItfFuncDecl  = QObject::tr("No such member function in class interface:");
   ERR_MissingInitialization 
   = QObject::tr(": a value must be assigned in all program branches (check also for missing else branches!)");
   ERR_UnaryOpUndefined  = QObject::tr("Operator undefined for this type of operand");

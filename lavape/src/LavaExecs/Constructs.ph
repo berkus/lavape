@@ -1704,7 +1704,7 @@ public:
 
 class FuncStatementV : public FuncStatement {
 public:
-  FuncStatementV () {}
+  FuncStatementV ();
   FuncStatementV (bool funcDisabled, bool out=false, bool staticFunc=false);
   FuncStatementV (Reference *ref);
   FuncStatementV (ObjReference *ref, bool out=false);

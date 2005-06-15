@@ -1580,6 +1580,8 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
   CallbackList *cbListPtr;
   LavaDECL *signalDecl, *callbackDecl;
 
+  STOP_AT_STM(ckd, stackFrame, true)
+
   signalDecl = ((Reference*)signalFunction.ptr)->refDecl;
   receiver = ((Expression*)signalReceiver.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   callbackDecl = ((Reference*)callbackFunction.ptr)->refDecl;
@@ -1624,12 +1626,18 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
 
 
 bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
-  return false;
+
+  STOP_AT_STM(ckd, stackFrame, true)
+
+  return true;
 }
 
 
 bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
-  return false;
+
+  STOP_AT_STM(ckd, stackFrame, true)
+
+  return true;
 }
 
 

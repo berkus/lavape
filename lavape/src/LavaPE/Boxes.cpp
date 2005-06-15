@@ -1512,8 +1512,10 @@ ValOnInit CFuncBox::OnInitDialog()
       else
         valSynch = 0;
 
-    if (hasOutput) 
+    if (hasOutput) {
+      m_Signal->setEnabled(false);
       m_Independent->setEnabled(false);
+    }
     CalcOpBox();
     if (myDECL->op != OP_noOp) {
       m_CHECKOp->setChecked(true);

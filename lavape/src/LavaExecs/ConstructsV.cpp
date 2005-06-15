@@ -2240,19 +2240,12 @@ FuncStatementV::FuncStatementV (ObjReference *ref, bool out) {
   if (out)
     outputs.Append(NewCHE(new ParameterV(new SynObjectV(ObjDisabled_T))));
 }
-/*
-FuncStatement::FuncStatement () {
+
+FuncStatementV::FuncStatementV () {
   type = Stm_T;
   replacedType = type;
   primaryToken = assignFS_T;
   function.ptr = new SynObjectV(FuncPH_T);
-}
-*/
-FuncStatement::FuncStatement (Reference *ref) {
-  type = Stm_T;
-  replacedType = type;
-  primaryToken = assignFS_T;
-  function.ptr = ref;
 }
 
 FuncStatementV::FuncStatementV (Reference *ref) {
