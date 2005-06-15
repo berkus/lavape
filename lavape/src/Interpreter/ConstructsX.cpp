@@ -1600,6 +1600,7 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
       rcvListPtr->append(new Receiver(receiver,callbackDecl));
     else {
       rcvListPtr = new ReceiverList;
+      rcvListPtr->setAutoDelete(true);
       rcvListPtr->append(new Receiver(receiver,callbackDecl));
       rcvDict->insert(signalDecl,rcvListPtr);
     }
@@ -1617,6 +1618,7 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
     cbListPtr->append(new Callback(sender,callbackDecl));
   else {
     cbListPtr = new CallbackList;
+    cbListPtr->setAutoDelete(true);
     cbListPtr->append(new Callback(sender,callbackDecl));
     cbDict->insert(signalDecl,cbListPtr);
   }
@@ -1634,10 +1636,32 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
 
 
 bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+  LavaObjectPtr selfObj=stackFrame[SFH], object;
+  RunTimeData *runTimeData;
+  QPtrDict<ReceiverList> *rcvDict;
+  ReceiverList *rcvListPtr;
+  Receiver *receiverEntry;
+  LavaDECL *signalDecl;
 
   STOP_AT_STM(ckd, stackFrame, true)
 
+  signalDecl = ((Reference*)((FuncStatement*)fCall.ptr)->function.ptr)->refDecl;
+  object = selfObj - (*selfObj)->sectionOffset;
+  runTimeData = (RunTimeData*)*(object-LOH);
+  rcvDict = &runTimeData->receiverList;
+  rcvListPtr = (*rcvDict)[signalDecl];
+  if (rcvListPtr)
+    for (receiverEntry = rcvListPtr->first();
+         receiverEntry;
+         receiverEntry = rcvListPtr->next())
+      receiverEntry->callCallback(ckd,stackFrame,oldExprLevel,(FuncStatement*)fCall.ptr);
+
   return true;
+}
+
+void Receiver::callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel, SynObjectBase *sCall) {
+  FuncStatement *signalCall= (FuncStatement*)sCall;
+
 }
 
 

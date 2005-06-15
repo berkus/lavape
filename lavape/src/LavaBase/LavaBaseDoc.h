@@ -685,6 +685,8 @@ public:
 
   LavaObjectPtr receiver;
   LavaDECL *callbackDecl;
+
+  void callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel,SynObjectBase *signalCall);
 };
 
 typedef QPtrList<Receiver> ReceiverList;
@@ -704,7 +706,11 @@ typedef QPtrList<Callback> CallbackList;
 
 class RunTimeData {
 public:
-  RunTimeData() { urlObj = 0; }
+  RunTimeData() {
+    urlObj = 0;
+    receiverList.setAutoDelete(true);
+    callbackList.setAutoDelete(true);
+  }
 
   LavaObjectPtr urlObj;
 
