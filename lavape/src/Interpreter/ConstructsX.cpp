@@ -1648,6 +1648,8 @@ bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldE
   signalDecl = ((Reference*)((FuncStatement*)fCall.ptr)->function.ptr)->refDecl;
   object = selfObj - (*selfObj)->sectionOffset;
   runTimeData = (RunTimeData*)*(object-LOH);
+  if (!runTimeData) return true;
+
   rcvDict = &runTimeData->receiverList;
   rcvListPtr = (*rcvDict)[signalDecl];
   if (rcvListPtr)
