@@ -47,6 +47,8 @@ TSimpleTable::TSimpleTable(int minimum)
 
 TSimpleTable::~TSimpleTable()
 {
+  for (int ii = 0; ii < maxID; ii++)
+    delete SimpleIDTab[ii];
   delete [] SimpleIDTab;
   if (nINCLTrans)
     delete [] nINCLTrans;

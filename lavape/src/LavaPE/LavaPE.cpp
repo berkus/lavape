@@ -816,6 +816,7 @@ void CLavaPEApp::saveSettings()
 int CLavaPEApp::ExitInstance() 
 {
   saveSettings();
+  delete [] TOKENSTR;
   return 0;
 }
 
