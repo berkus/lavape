@@ -146,7 +146,7 @@ endif
 	cd $(LAVADIR)/src/$(basename $@) && $(MAKE) clean
 
 clean:
-	rm -rf *.o *.d PCH/*.gch Generated/*.o Generated/*.d
+	rm -rf *.o *.d PCH/*.gch PCH/*.d Generated/*.o Generated/*.d
 #	rm -rf *.o *.d Generated/*.o Generated/*.d *.d Generated/*.cpp Generated/*.h $(gen_files)
 
 cleanall: $(clean_subpro) clean
