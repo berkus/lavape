@@ -294,7 +294,8 @@ enum TToken {
 
 
 //extern QChar TOKENSTR[NoToken+1][MaxLenToken];
-extern QString TOKENSTR[NoToken+1];
+//extern QString TOKENSTR[NoToken+1];
+extern QString *TOKENSTR;
 extern unsigned priority[EndOfOperators];
 
 
