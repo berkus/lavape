@@ -297,7 +297,7 @@ void MyScrollView::SetTokenFormat (CHETokenNode *currToken) {
   || TOKENSTR[token][0]=='@'
   || TOKENSTR[token][0]=='#'
   || TOKENSTR[token][0]==':'
-  || TOKENSTR[token][0]=='Ø') {
+  || TOKENSTR[token][0]=='~') {
     if (currToken->data.flags.Contains(isOpt))
       fmt.color = QColor("#D1009E"); // pink
     else
@@ -972,7 +972,7 @@ void CExecView::OnChar(QKeyEvent *e)
       break;
     case Qt::Key_X:
       if (!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection))
-        OnFunctionCall();
+        OnIfExpr();
       break;
 
     case Qt::Key_Equal:
@@ -4677,7 +4677,7 @@ void CExecView::OnQueryItf()
 
 void CExecView::OnStaticCall() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   
   SynObject *synObj;
 
@@ -4692,7 +4692,7 @@ void CExecView::OnStaticCall()
 
 void CExecView::OnAssign() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   
   if (!EditOK()) return;
   Assignment *assig = new AssignmentV(true);
@@ -4701,19 +4701,19 @@ void CExecView::OnAssign()
 
 void CExecView::OnConnect() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   InsertOrReplace(new ConnectV());
 }
 
 void CExecView::OnDisconnect() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   InsertOrReplace(new DisconnectV());
 }
 
 void CExecView::OnEmitSignal() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fr Befehlsbehandlungsroutine hier einfgen
   SignalV *emitStm=new SignalV(true);
   ObjReferenceV *objRef;
   FuncStatementV *funcStm;
@@ -4742,7 +4742,7 @@ void CExecView::OnEmitSignal()
 
 void CExecView::OnTypeSwitch() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   
   if (!EditOK()) return;
   InsertOrReplace(new TypeSwitchStatementV(true));
@@ -4750,7 +4750,7 @@ void CExecView::OnTypeSwitch()
 
 void CExecView::OnInterval() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   SynObject *synObj, *newObj;
 
   if (!EditOK()) return;
@@ -4780,7 +4780,7 @@ void CExecView::OnInterval()
 /*
 void CExecView::OnUuid() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   
   if (!EditOK()) return;
   GetUUID *newOp = new GetUUIDV(true);
@@ -4789,7 +4789,7 @@ void CExecView::OnUuid()
 */
 void CExecView::OnCall() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   
   if (!EditOK()) return;
   Run *newCall = new RunV(true);
@@ -4809,7 +4809,7 @@ void CExecView::OnCreateObject()
 
 void CExecView::OnAssert() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   
   if (!EditOK()) return;
   AssertStatement *assertStm = new AssertStatementV(true);
@@ -4818,7 +4818,7 @@ void CExecView::OnAssert()
 
 void CExecView::OnNextError()
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   CHETokenNode *currToken;
 
   if (!EditOK()) return;
@@ -4869,7 +4869,7 @@ void CExecView::OnNextError()
 
 void CExecView::OnPrevError()
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   CHETokenNode *currToken;
 
   if (!EditOK()) return;
@@ -4920,7 +4920,7 @@ void CExecView::OnPrevError()
 
 void CExecView::OnNextComment()
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   CHETokenNode *startToken = (CHETokenNode*)text->currentSelection, *currToken;
 
   if (!EditOK()) return;
@@ -4950,7 +4950,7 @@ void CExecView::OnNextComment()
 
 void CExecView::OnPrevComment()
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   CHETokenNode *startToken = (CHETokenNode*)text->currentSelection, *currToken;
 
   if (!EditOK()) return;
@@ -4980,7 +4980,7 @@ void CExecView::OnPrevComment()
 
 void CExecView::OnConflict() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
 
   if (!EditOK()) return;
   Base->Browser->LastBrowseContext = new CBrowseContext(this,text->currentSynObj);
@@ -4989,7 +4989,7 @@ void CExecView::OnConflict()
 
 bool CExecView::ConflictSelected()
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   CHE *che;
 
   if (text->currentSynObj->primaryToken != TDOD_T)
@@ -5012,7 +5012,7 @@ bool CExecView::ConflictSelected()
 
 void CExecView::OnToggleCategory() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   if (!EditOK()) return;
 
   if (text->currentSynObj->flags.Contains(isVariable)) {
@@ -5075,7 +5075,7 @@ bool CExecView::ToggleCatEnabled()
 
 void CExecView::OnToggleSubstitutable() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   if (!EditOK()) return;
 
   if (text->currentSynObj->flags.Contains(isSubstitutable)) {
@@ -5108,7 +5108,7 @@ bool CExecView::ToggleSubstitutableEnabled()
 
 void CExecView::OnCopy() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   CopyStatementV *cpy;
   
   if (!EditOK()) return;
@@ -5119,7 +5119,7 @@ void CExecView::OnCopy()
 
 void CExecView::OnEvaluate() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   SynObject *synObj;
 
   if (!EditOK()) return;
@@ -5134,7 +5134,7 @@ void CExecView::OnEvaluate()
 
 void CExecView::OnInputArrow() 
 {
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
   
   if (!EditOK()) return;
   if (text->currentSynObj->type == FuncPH_T || text->currentSynObj->type == CrtblPH_T)
@@ -5757,7 +5757,7 @@ void CExecView::OnUpdateFunctionCall(wxAction* action)
 
 void CExecView::OnUpdateInputArrow(wxAction* action) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   bool showArrow;
   SynObject *synObj=text->currentSynObj;
 
@@ -5773,7 +5773,7 @@ void CExecView::OnUpdateInputArrow(wxAction* action)
 
 void CExecView::OnUpdateEvaluate(wxAction* action) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   action->setEnabled(!Taboo() && (text->currentSynObj->StatementSelected(text->currentSelection)
     || (text->currentSynObj->ExpressionSelected(text->currentSelection) /*&& text->currentSynObj->BoolAdmissibleOnly(text->ckd)*/)));
@@ -5782,7 +5782,7 @@ void CExecView::OnUpdateEvaluate(wxAction* action)
 
 void CExecView::OnUpdateCopy(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
     && text->currentSynObj->ReadOnlyContext() != roClause); 
@@ -5790,7 +5790,7 @@ void CExecView::OnUpdateCopy(QPushButton *pb)
 
 void CExecView::OnUpdateToggleSubstitutable(wxAction* action) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
 
   action->setEnabled(ToggleSubstitutableEnabled());
   action->setOn(text->currentSynObj->flags.Contains(isSubstitutable));
@@ -5798,7 +5798,7 @@ void CExecView::OnUpdateToggleSubstitutable(wxAction* action)
 
 void CExecView::OnUpdateToggleCategory(wxAction* action) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
 
   if (GetDocument()->changeNothing) {
     action->setEnabled(false);
@@ -5810,7 +5810,7 @@ void CExecView::OnUpdateToggleCategory(wxAction* action)
 
 void CExecView::OnUpdateConflict(wxAction* action) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
 
   action->setEnabled(ConflictSelected());
 }
@@ -5845,21 +5845,21 @@ void CExecView::OnUpdatePrevError(wxAction* action)
 
 void CExecView::OnUpdateAssert(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
 void CExecView::OnUpdateCreate(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
 
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
 void CExecView::OnUpdateOld(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
 
   pb->setEnabled(!Taboo()
     && !text->currentSynObj->InOldExpression()
@@ -5871,7 +5871,7 @@ void CExecView::OnUpdateOld(QPushButton *pb)
 
 void CExecView::OnUpdateCall(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
@@ -5880,7 +5880,7 @@ void CExecView::OnUpdateCall(QPushButton *pb)
 /*
 void CExecView::OnUpdateUuid(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
@@ -5897,7 +5897,7 @@ void CExecView::OnUpdateStaticCall(wxAction* action)
 
 void CExecView::OnActivateView(bool bActivate, wxView *deactiveView) 
 {
-  // TODO: Speziellen Code hier einfügen und/oder Basisklasse aufrufen
+  // TODO: Speziellen Code hier einfï¿½gen und/oder Basisklasse aufrufen
   QString empty;
 
 	
@@ -5915,7 +5915,7 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
 
 void CExecView::OnUpdateInterval(wxAction* action) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
 
   if (Taboo()) {
     action->setEnabled(false);
@@ -5929,21 +5929,21 @@ void CExecView::OnUpdateInterval(wxAction* action)
 
 void CExecView::OnUpdateExists(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
 void CExecView::OnUpdateTypeSwitch(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
 void CExecView::OnUpdateConnect(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection));
@@ -5951,7 +5951,7 @@ void CExecView::OnUpdateConnect(QPushButton *pb)
 
 void CExecView::OnUpdateDisconnect(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection));
@@ -5959,7 +5959,7 @@ void CExecView::OnUpdateDisconnect(QPushButton *pb)
 
 void CExecView::OnUpdateEmitSignal(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
@@ -5968,7 +5968,7 @@ void CExecView::OnUpdateEmitSignal(QPushButton *pb)
 
 void CExecView::OnUpdateAssign(QPushButton *pb) 
 {
-  // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberfläche hier einfügen
+  // TODO: Code fï¿½r die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflï¿½che hier einfï¿½gen
   
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
     && text->currentSynObj->ReadOnlyContext() != roClause);
