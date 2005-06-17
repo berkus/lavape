@@ -77,6 +77,6 @@ bin_dist: build
   cd ..; tar cjf lavape-0.8.4-linux-bin.tar.bz2 lavape; ls -l lavape-*
 #
 #:
-distclean: $(clean_subpro) clean
+distclean: cleanall
 
 
