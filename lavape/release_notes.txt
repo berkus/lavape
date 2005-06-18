@@ -1,0 +1,99 @@
+(Note that it may be easier and cheaper to
+keep your Lava installation up-to-date
+by checking it out and updating it from
+our SourceForge CVS repository, which
+always reflects at least the state of
+the most recent downloadable release.)
+
+
+How to install LavaPE on LINUX
+==============================
+
+Download the compressed tar file of the
+LavaPE source distribution and store it
+in the parent directory of the envisaged
+lavape installation directory.
+
+Uncompress it using the command
+
+   tar xjvf lavape-<release>-src.tar.bz2
+
+Read lavape/INSTALL for the details
+and pre-requisites of a successfull
+installation. (In particular, you need
+to have GNU gcc/make and the developer version
+of TrollTech/Qt on your Linux box; install
+them from your Linux distribution CDs if necessary.)
+
+Then build the LavaPE executables as follows:
+
+   cd lavape
+   make
+
+This will take quite a while.
+You will find the executables
+of the Lava Programming Environment
+in lavape/bin thereafter:
+"LavaPE", "Lava", and "LPC".
+(The Lava Precompiler "LPC" is needed
+only during the build process.)
+
+Launch "LavaPE", consult the Online Help,
+open some sample programs from the
+lavape/samples directory and enjoy the
+unique structure editing features of LavaPE.
+
+We'd appreciate very much if you would inform
+us (e-mail: guenthk@users.sourceforge.net)
+about any problems that you have encounterd
+during the installation or while using
+Lava/LavaPE.
+
+But let us also know if you could successfully
+install and use LavaPE. We could test it only
+on SuSE Linux 9.2 and Windows XP, so far. We use
+always the most recent Qt release.
+
+
+How to install the binary release of LavaPE on Windows
+======================================================
+
+Simply launch the downloaded lavape-<rel>.exe file and
+follow the instructions of the installer.
+
+
+How to build Lava/LavaPE on Windows from the source tarball
+===========================================================
+
+This makes sense only if you have MS DevStudio and the
+(non-free, commercial) version of Qt. Set environment
+variables 
+   QTDIR=<Qt installation directory>
+   QTR=<(Qt release without dots, e.g.: 332>
+	 QTRDOT=<Qt release with dots, e.g.: 3.3.2>
+and add the Qt source, include, lib, and bin directories
+to the directory list under DevStudio/Options/Directories.
+
+Use an appropriate unpacker program to unpack the Lava
+source tarball to a directory of your choice, say <lavape>.
+
+Open the DevStudio workspace
+   <lavape>\src\LavaPE.dsw
+and build the projects "Precompiler", "LavaPE", and "Lava"
+in their debug configuration(build the "Precompiler" first).
+
+Thereafter you can start the LavaPE.exe/Lava.exe executables
+from DevStudio or from a file manager or DOS box. They are
+in directory <lavape>\src\LavaPE\Debug.
+
+Online help will work only if you copy the <lavape>\doc
+directory to <lavape>\src\LavaPE.
+
+The "AttacDemo.lava" and the corresponding Lava document file
+"AttachDemo.ldoc" can be opened successfully in the Lava
+interpreter only if you create a sub-directory "Components"
+in <lavape>\src\LavaPE and copy <lavape>\samples\LCompoImpl.lcom
+to this Components directory. (It suffices to create a
+"LcompoImpl.lcom.lnk" link that points to
+<lavape>\samples\LCompoImpl.lcom.)
+

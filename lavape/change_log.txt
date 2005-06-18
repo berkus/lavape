@@ -1,0 +1,20 @@
+New or changed features:
+=======================
+
+The debugger now displays also the values of function and
+operator input and output parameters (and "self") if you stop
+on a function/operator call immediately before the body
+of the function/operator is entered, and also immediately
+after you have stepped out of a function/operator body.
+
+WhatsThis and WhatNext help has been extended.
+HowTo help is still missing.
+
+Bug fixes:
+=========
+
+Several bugs related to the display and management
+of breakpoints in the Lava debugger have been
+removed.
+
+A number of minor bugs has been fixed.
