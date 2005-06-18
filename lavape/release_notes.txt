@@ -2,11 +2,11 @@
 keep your Lava installation up-to-date
 by checking it out and updating it from
 our SourceForge CVS repository, which
-always reflects at least the state of
-the most recent downloadable release.)
+always reflects the current state of the
+Lava software development.)
 
 
-How to install LavaPE on LINUX
+How to install LavaPE on UNIX
 ==============================
 
 Download the compressed tar file of the
@@ -18,12 +18,21 @@ Uncompress it using the command
 
    tar xjvf lavape-<release>-src.tar.bz2
 
-Read lavape/INSTALL for the details
+or, if your UNIX-tar command doesn't support
+the "j" option:
+
+   bunzip2 lavape-<release>-src.tar.bz2
+   tar xf lavape-<release>-src.tar
+
+Read lavape/INSTALL.txt for the details
 and pre-requisites of a successfull
 installation. (In particular, you need
 to have GNU gcc/make and the developer version
 of TrollTech/Qt on your Linux box; install
-them from your Linux distribution CDs if necessary.)
+them from your Linux distribution CDs if necessary.
+If Qt isn't installed in /usr/lib/qt3 you have to
+provide an environment variable QTDIR that points
+to the Qt installation directory.
 
 Then build the LavaPE executables as follows:
 
@@ -50,9 +59,9 @@ during the installation or while using
 Lava/LavaPE.
 
 But let us also know if you could successfully
-install and use LavaPE. We could test it only
-on SuSE Linux 9.2 and Windows XP, so far. We use
-always the most recent Qt release.
+install and use LavaPE. So far, we could not test Lava
+on all platforms where we can build it successfully.
+(Btw: We use always the most recent Qt release.)
 
 
 How to install the binary release of LavaPE on Windows

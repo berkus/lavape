@@ -1,20 +1,31 @@
+Change Log for Release 0.8.4
+============================
+
 New or changed features:
 =======================
 
-The debugger now displays also the values of function and
-operator input and output parameters (and "self") if you stop
-on a function/operator call immediately before the body
-of the function/operator is entered, and also immediately
-after you have stepped out of a function/operator body.
+1.) The Lava software can now be successfully built
+on Windows XP, Linux, FreeBSD, MacOS X.2,
+Solaris 9 (Sparc station and x86).
 
-WhatsThis and WhatNext help has been extended.
-HowTo help is still missing.
+It has been tested successfully on the Windows XP,
+Suse Linux 9.2, Fedora Core 3 Linux, and FreeBSD
+platforms.
 
-Bug fixes:
-=========
+On Mac OS X.2 and Solaris it could not yet be tested,
+since the SourceForge Compile Farm hosts don't
+allow you to test applications that have a graphical
+user interface.
 
-Several bugs related to the display and management
-of breakpoints in the Lava debugger have been
-removed.
+We should therefore appreciate reports on attempts
+to build and test the software on the latter platforms.
 
-A number of minor bugs has been fixed.
+
+2.) We have completely re-designed and re-implemented the
+Lava callback support in view of the planned extended
+GUI programming support.
+
+Callbacks are now treated in close analogy to the
+signal/slot/connect/disconnect/emit notions of the
+TroolTech Qt GUI programming toolkit. See the
+"Callbacks" documentation in the online help.
