@@ -935,8 +935,9 @@ struct Connect : public Expression {
 public:
   NESTEDANY<Expression> signalSender;
   NESTEDANY<Reference> signalFunction;
-  NESTEDANY<Expression> signalReceiver;
-  NESTEDANY<Reference> callbackFunction;
+//  NESTEDANY<Expression> signalReceiver;
+//  NESTEDANY<Expression> signalReceiver;
+  NESTEDANY<FuncStatement> callback;
 
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -955,7 +956,7 @@ public:
 
 class Signal : public Expression {
 public:
-  NESTEDANY<Expression> fCall;
+  NESTEDANY<Expression> sCall;
 
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);

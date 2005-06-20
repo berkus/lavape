@@ -678,15 +678,20 @@ extern LAVABASE_DLL unsigned currentStackDepth;
 
 class Receiver {
 public:
-  Receiver (LavaObjectPtr rcv, LavaDECL *cb) {
+  Receiver (LavaObjectPtr rcv, LavaDECL *cb, SynObjectBase *cbfs) {
     receiver = rcv;
     callbackDecl = cb;
+    cbFuncStm = cbfs;
   }
+
+  bool IsFuncInvocation(){ return true; }
+  QString DebugStop(CheckData &ckd,LavaVariablePtr stack,QString excMsg,StopReason sr,LavaVariablePtr calleeStack,LavaDECL *calleeFunc){ return QString::null; }
 
   LavaObjectPtr receiver;
   LavaDECL *callbackDecl;
+  SynObjectBase *cbFuncStm;
 
-  void callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel,SynObjectBase *signalCall);
+  bool callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel, SynObjectBase *sCall);
 };
 
 typedef QPtrList<Receiver> ReceiverList;

@@ -1432,7 +1432,7 @@ void CExecView::Select (SynObject *selObj)
         isSigFunc = true;
       }
       else {
-        callExpr = (Expression*)connStm->signalReceiver.ptr;
+        callExpr = (Expression*)((FuncStatement*)connStm->callback.ptr)->handle.ptr;
         isSigFunc = false;
       }
       if (callExpr->IsPlaceHolder())
@@ -1455,7 +1455,7 @@ void CExecView::Select (SynObject *selObj)
 //            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
           else { // slot function
             callExpr = (Expression*)connStm->signalSender.ptr;
-            if (((SynObject*)connStm->callbackFunction.ptr)->flags.Contains(isDisabled))
+            if (((SynObject*)((FuncStatement*)connStm->callback.ptr)->function.ptr)->flags.Contains(isDisabled))
               ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
             else {
               callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);
@@ -4701,14 +4701,14 @@ void CExecView::OnAssign()
 
 void CExecView::OnConnect() 
 {
-  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
-  InsertOrReplace(new ConnectV());
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  InsertOrReplace(new ConnectV(true));
 }
 
 void CExecView::OnDisconnect() 
 {
-  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
-  InsertOrReplace(new DisconnectV());
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
+  InsertOrReplace(new DisconnectV(true));
 }
 
 void CExecView::OnEmitSignal() 
@@ -4731,12 +4731,12 @@ void CExecView::OnEmitSignal()
   objRef->flags.INCL(isSelfVar);
   funcStm = new FuncStatementV;
   funcStm->parentObject = emitStm;
-  emitStm->fCall.ptr = funcStm;
+  emitStm->sCall.ptr = funcStm;
   funcStm->handle.ptr = objRef;
   tdod->parentObject = objRef;
   tdod->containingChain = (CHAINX*)&objRef->refIDs;
   objRef->parentObject = funcStm;
-  objRef->whereInParent = (address)&emitStm->fCall.ptr;
+  objRef->whereInParent = (address)&emitStm->sCall.ptr;
   InsertOrReplace(emitStm);
 }
 

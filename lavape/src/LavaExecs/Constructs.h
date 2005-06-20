@@ -32,7 +32,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
+
 #include "Syntax.h"
+
 
 #include "qwidget.h"
 #include "qscrollview.h"
@@ -2023,8 +2025,7 @@ struct Connect : public Expression {
   public:
   NESTEDANY/*Expression*/ signalSender;
   NESTEDANY/*Reference*/ signalFunction;
-  NESTEDANY/*Expression*/ signalReceiver;
-  NESTEDANY/*Reference*/ callbackFunction;
+  NESTEDANY/*FuncStatement*/ callback;
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 
@@ -2073,7 +2074,7 @@ class Signal : public Expression {
 
 
   public:
-  NESTEDANY/*Expression*/ fCall;
+  NESTEDANY/*Expression*/ sCall;
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 

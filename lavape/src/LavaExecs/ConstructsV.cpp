@@ -2259,7 +2259,10 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   bool isFirst=true, visibleParms=false;
   CHE *paramPtr;
   ROContext roCtx=ReadOnlyContext();
-  bool drawCallKeywd = (roCtx != assertion) && (roCtx != roClause) && (parentObject->primaryToken != signal_T);
+  bool drawCallKeywd = (roCtx != assertion) 
+    && (roCtx != roClause) 
+    && (parentObject->primaryToken != connect_T)
+    && (parentObject->primaryToken != signal_T);
 
   ENTRY
 
@@ -2271,10 +2274,7 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   }
 
   if (drawCallKeywd) {
-    if (primaryToken == signal_T)
-      t.Insert(signal_T);
-    else
-      t.Insert(assignFS_T);
+    t.Insert(assignFS_T);
     t.Blank();
   }
   if (t.leftArrows) {
@@ -2424,8 +2424,9 @@ ConnectV::ConnectV (bool) {
   primaryToken = connect_T;
   signalSender.ptr = new SynObjectV(Exp_T);
   signalFunction.ptr = new SynObjectV(FuncDisabled_T);
-  signalReceiver.ptr = new SynObjectV(Exp_T);
-  callbackFunction.ptr = new SynObjectV(FuncDisabled_T);
+  callback.ptr = new FuncStatementV(true);
+//  signalReceiver.ptr = new SynObjectV(Exp_T);
+//  callbackFunction.ptr = new SynObjectV(FuncDisabled_T);
 }
 
 void ConnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
@@ -2442,12 +2443,8 @@ void ConnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   DRAW(signalFunction.ptr);
   t.Blank();
   t.Insert(to_T);
-//  t.Blank();
-//  t.Insert(handler_T);
   t.Blank();
-  DRAW(signalReceiver.ptr);
-  t.Insert(Period_T);
-  DRAW(callbackFunction.ptr);
+  DRAW(callback.ptr);
   EXIT
 }
 
@@ -2493,7 +2490,7 @@ void SignalV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
 
   t.Insert(primaryToken,true);
   t.Blank();
-  DRAW(fCall.ptr);
+  DRAW(sCall.ptr);
 
   EXIT
 }

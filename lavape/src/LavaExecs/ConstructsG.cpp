@@ -886,8 +886,7 @@ void CDPConnect (PutGetFlag pgf, ASN1* cid, address varAddr,
     CDPExpression(pgf,cid,(address)(Expression*)vp,true);
     vp->signalSender.CDP(pgf,cid);
     vp->signalFunction.CDP(pgf,cid);
-    vp->signalReceiver.CDP(pgf,cid);
-    vp->callbackFunction.CDP(pgf,cid);
+    vp->callback.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPConnect
 
@@ -924,7 +923,7 @@ void CDPSignal (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,(address)(Expression*)vp,true);
-    vp->fCall.CDP(pgf,cid);
+    vp->sCall.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPSignal
 

@@ -540,7 +540,7 @@ void FuncStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,TT
 void Signal::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
 {
   ENTRY
-  MTBL (fCall.ptr);
+  MTBL (sCall.ptr);
 }
 
 void Connect::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
@@ -548,8 +548,7 @@ void Connect::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
   ENTRY
   MTBL (signalSender.ptr);
   MTBL (signalFunction.ptr);
-  MTBL (signalReceiver.ptr);
-  MTBL (callbackFunction.ptr);
+  MTBL (callback.ptr);
 }
 
 void Disconnect::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)

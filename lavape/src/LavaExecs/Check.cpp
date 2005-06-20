@@ -4032,8 +4032,9 @@ bool FuncExpression::Check (CheckData &ckd)
 //  ((SynObject*)function.ptr)->Check(ckd);
 
   callExpr = (Expression*)handle.ptr;
+  ok &= callExpr->Check(ckd);
+#ifndef INTERPRETER
   if (callExpr) {
-    ok &= callExpr->Check(ckd);
     if (!ok) {
       if (((SynObject*)function.ptr)->primaryToken == FuncPH_T) {
         ((SynObject*)function.ptr)->primaryToken = FuncDisabled_T;
@@ -4046,12 +4047,13 @@ bool FuncExpression::Check (CheckData &ckd)
       ((SynObject*)function.ptr)->flags.EXCL(isDisabled);
     }
   }
-
+#endif
   if (callExpr) {
     ckd.tempCtx = ckd.lpc;
     ((Expression*)handle.ptr)->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
     objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
 
+#ifndef INTERPRETER
     if (!objTypeDecl) {
       if (!((Expression*)handle.ptr)->flags.Contains(brokenRef)
       && !IsPH(handle.ptr))
@@ -4063,6 +4065,7 @@ bool FuncExpression::Check (CheckData &ckd)
       ((SynObject*)function.ptr)->primaryToken = FuncPH_T;
       ((SynObject*)function.ptr)->flags.EXCL(isDisabled);
     }
+#endif
 
     if (objTypeDecl) {
       callCtx = ckd.tempCtx;
@@ -4197,54 +4200,56 @@ bool FuncExpression::Check (CheckData &ckd)
   default: ;
   }
 
-  chpActIn = (CHE*)inputs.first;
   CContext callContext = callCtx;
   if (myCtxFlags.bits)
     callContext.ContextFlags = myCtxFlags;
-  while (chpFormIn) {
-    // locate act. parm. and reposition it if necessary:
-    reposition(ckd,this,true,&inputs,chpFormIn,chpActIn);
-    opd = (SynObject*)chpActIn->data;
-    // check act. parm.:
-    actParm =
-      (opd->primaryToken==parameter_T?(SynObject*)((Parameter*)opd)->parameter.ptr : opd);
-    if (!actParm->IsIfStmExpr())
-      ok/*rc*/ &= opd->Check(ckd);
-    // check act.parm/form.parm. type compatibility:
-    ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
-//  parm = (SynObject*)((Parameter*)chpActIn->data)->parameter.ptr;
+  if (parentObject->primaryToken != connect_T) {
+    chpActIn = (CHE*)inputs.first;
+    while (chpFormIn) {
+      // locate act. parm. and reposition it if necessary:
+      reposition(ckd,this,true,&inputs,chpFormIn,chpActIn);
+      opd = (SynObject*)chpActIn->data;
+      // check act. parm.:
+      actParm =
+        (opd->primaryToken==parameter_T?(SynObject*)((Parameter*)opd)->parameter.ptr : opd);
+      if (!actParm->IsIfStmExpr())
+        ok/*rc*/ &= opd->Check(ckd);
+      // check act.parm/form.parm. type compatibility:
+      ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
+  //  parm = (SynObject*)((Parameter*)chpActIn->data)->parameter.ptr;
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
-    formInParmDecl = (LavaDECL*)chpFormIn->data;
-    if (!formInParmDecl->TypeFlags.Contains(isOptional)
-    && ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->IsOptional(ckd))
-      ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->flags.INCL(isUnsafeMandatory);
-    ckd.tempCtx = callContext;
-    ((Expression*)chpActIn->data)->formVType = ckd.document->IDTable.GetDECL(formInParmDecl->RefID,formInParmDecl->inINCL);
-    ((Expression*)chpActIn->data)->vSectionNumber = ckd.document->GetVTSectionNumber(ckd, callCtx, ((Expression*)chpActIn->data)->formVType, ((Expression*)chpActIn->data)->isOuter);
-    formInParmDecl = ckd.document->GetFinalMTypeAndContext(formInParmDecl->RefID,formInParmDecl->inINCL,ckd.tempCtx,&ckd);
-    if (actDecl != (LavaDECL*)-1) { // "nothing"?
-      actDecl = ckd.document->GetType(actDecl);
-      ((Expression*)chpActIn->data)->sectionNumber = ckd.document->GetSectionNumber(ckd, actDecl,formInParmDecl);
+      formInParmDecl = (LavaDECL*)chpFormIn->data;
+      if (!formInParmDecl->TypeFlags.Contains(isOptional)
+      && ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->IsOptional(ckd))
+        ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->flags.INCL(isUnsafeMandatory);
+      ckd.tempCtx = callContext;
+      ((Expression*)chpActIn->data)->formVType = ckd.document->IDTable.GetDECL(formInParmDecl->RefID,formInParmDecl->inINCL);
+      ((Expression*)chpActIn->data)->vSectionNumber = ckd.document->GetVTSectionNumber(ckd, callCtx, ((Expression*)chpActIn->data)->formVType, ((Expression*)chpActIn->data)->isOuter);
+      formInParmDecl = ckd.document->GetFinalMTypeAndContext(formInParmDecl->RefID,formInParmDecl->inINCL,ckd.tempCtx,&ckd);
+      if (actDecl != (LavaDECL*)-1) { // "nothing"?
+        actDecl = ckd.document->GetType(actDecl);
+        ((Expression*)chpActIn->data)->sectionNumber = ckd.document->GetSectionNumber(ckd, actDecl,formInParmDecl);
+      }
+      if (callExpr && callExpr->flags.Contains(isDisabled)) // initializer call
+        opd->flags.INCL(unfinishedAllowed);
+#endif
+      if (chpActIn)
+        chpActIn = (CHE*)chpActIn->successor;
+      chpFormIn = (CHE*)chpFormIn->successor;
+      if (chpFormIn && ((LavaDECL*)chpFormIn->data)->DeclType != IAttr)
+        chpFormIn = 0;
     }
-    if (callExpr && callExpr->flags.Contains(isDisabled)) // initializer call
-      opd->flags.INCL(unfinishedAllowed);
-#endif
     if (chpActIn)
-      chpActIn = (CHE*)chpActIn->successor;
-    chpFormIn = (CHE*)chpFormIn->successor;
-    if (chpFormIn && ((LavaDECL*)chpFormIn->data)->DeclType != IAttr)
-      chpFormIn = 0;
-  }
-  if (chpActIn)
 #ifdef INTERPRETER
-    SetError(ckd,&ERR_RedundantParms);
+      SetError(ckd,&ERR_RedundantParms);
 #else
-  for ( ;
-        chpActIn;
-        chpActIn = (CHE*)chpActIn->successor)  // delete remainder of parameter chain
-    PutDelChainHint(ckd,this,&inputs,chpActIn);
+    for ( ;
+          chpActIn;
+          chpActIn = (CHE*)chpActIn->successor)  // delete remainder of parameter chain
+      PutDelChainHint(ckd,this,&inputs,chpActIn);
 #endif
+  }
 #ifdef INTERPRETER
   nInputs = ((Reference*)function.ptr)->refDecl->nInput;
   nParams = nInputs + nOutputs + 1;
@@ -4298,16 +4303,6 @@ bool FuncStatement::Check (CheckData &ckd)
     if (!((SynObject*)((Parameter*)chpActOut->data)->parameter.ptr)->flags.Contains(ignoreSynObj)) {
       // locate act. parm. and reposition it if necessary:
       opd = (Parameter*)chpActOut->data;
-/*#ifndef INTERPRETER
-      if (((SynObject*)opd->parameter.ptr)->primaryToken == nil_T) { // migration to new syntax
-        nilObj = (NullConst*)opd->parameter.ptr;
-        objPHobj = new SynObjectV(ObjPH_T);
-        objPHobj->flags.INCL(ignoreSynObj);
-        objPHobj->parentObject = nilObj->parentObject;
-        objPHobj->whereInParent = nilObj->whereInParent;
-        opd->parameter.ptr = objPHobj;
-      }
-#endif*/
       bool rc = opd->Check(ckd);
       if (rc) {
         ok &= rc;
@@ -4400,15 +4395,19 @@ bool Connect::Check (CheckData &ckd)
     && callExpr->primaryToken != nil_T
     && !IsPH(callExpr))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
+#ifndef INTERPRETER
     if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
       ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
       ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
     }
+#endif
   }
+#ifndef INTERPRETER
   else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T) {
     ((SynObject*)signalFunction.ptr)->primaryToken = FuncPH_T;
     ((SynObject*)signalFunction.ptr)->flags.EXCL(isDisabled);
   }
+#endif
 
   if (objTypeDecl) {
     sigCtx = ckd.tempCtx;
@@ -4426,31 +4425,37 @@ bool Connect::Check (CheckData &ckd)
 // en|disable callback specification:
 
   ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
+#ifndef INTERPRETER
   if (!ok) {
-    if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
-      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-    ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+    if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
+    ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
     ERROREXIT
   }
   else
-    ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
+    ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.EXCL(isDisabled);
+#endif
 
   funcTid = ((Reference*)signalFunction.ptr)->refID;
   ADJUST4(funcTid);
   sigDecl = ckd.document->IDTable.GetDECL(funcTid);
   if (!sigDecl) {
     ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
-    if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
-      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-    ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+#ifndef INTERPRETER
+    if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
+    ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+#endif
     ERROREXIT
   }
   else {
     if (!sigDecl->SecondTFlags.Contains(isLavaSignal)) {
       ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_NoSignal);
-      if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
-        ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+#ifndef INTERPRETER
+      if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+        ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+#endif
       ERROREXIT
     }
     if (objTypeTid.nID != -1) {
@@ -4462,9 +4467,11 @@ bool Connect::Check (CheckData &ckd)
       funcItfTid = OWNID(funcItf);
       if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
         ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
-        if (((SynObject*)callbackFunction.ptr)->IsPlaceHolder())
-          ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-        ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+#ifndef INTERPRETER
+        if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+          ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
+        ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+#endif
         ok = false;
       }
     }
@@ -4472,26 +4479,35 @@ bool Connect::Check (CheckData &ckd)
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
-  ok &= ((SynObject*)signalReceiver.ptr)->Check(ckd);
-
-  callExpr = (Expression*)signalReceiver.ptr;
+  callExpr = (Expression*)((FuncStatement*)callback.ptr)->handle.ptr;
+  ok &= callExpr->Check(ckd);
   ckd.tempCtx = ckd.lpc;
   callExpr->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
   objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
 
+#ifdef INTERPRETER
+  ok &= ((SynObject*)callback.ptr)->Check(ckd);
+  if (!ok)
+    ERROREXIT
+#else
   if (!objTypeDecl) {
     if (!callExpr->flags.Contains(brokenRef)
     && !IsPH(callExpr))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
-    if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncPH_T) {
-      ((SynObject*)callbackFunction.ptr)->primaryToken = FuncDisabled_T;
-      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+#ifndef INTERPRETER
+    if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken == FuncPH_T) {
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
     }
+#endif
   }
-  else if (((SynObject*)callbackFunction.ptr)->primaryToken == FuncDisabled_T) {
-    ((SynObject*)callbackFunction.ptr)->primaryToken = FuncPH_T;
-    ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
+#ifndef INTERPRETER
+  else if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken == FuncDisabled_T) {
+    ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncPH_T;
+    ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.EXCL(isDisabled);
   }
+#endif
+#endif
 
   if (objTypeDecl) {
     callbackCtx = ckd.tempCtx;
@@ -4505,23 +4521,27 @@ bool Connect::Check (CheckData &ckd)
       objTypeTid = OWNID(objTypeDecl);
   }
 
-  ok &= ((SynObject*)callbackFunction.ptr)->Check(ckd);
+  ok &= ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->Check(ckd);
   if (!ok)
     ERROREXIT
 
-  funcTid = ((Reference*)callbackFunction.ptr)->refID;
+  funcTid = ((Reference*)((FuncStatement*)callback.ptr)->function.ptr)->refID;
   ADJUST4(funcTid);
   if (objTypeTid.nID != -1) {
     callbackDecl = ckd.document->IDTable.GetDECL(funcTid);
     if (!callbackDecl) {
-      ((SynObject*)callbackFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
-      ((SynObject*)callbackFunction.ptr)->flags.INCL(isDisabled);
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
+#ifndef INTERPRETER
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+#endif
       ERROREXIT
     }
+#ifndef INTERPRETER
     else
-      ((SynObject*)callbackFunction.ptr)->flags.EXCL(isDisabled);
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.EXCL(isDisabled);
+#endif
     if (callbackDecl->TypeFlags.Contains(isInitializer)) {
-      ((Reference*)callbackFunction.ptr)->SetError(ckd,&ERR_InitializerForbidden);
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,&ERR_InitializerForbidden);
       ok = false;
     }
     funcItf = callbackDecl->ParentDECL;
@@ -4531,7 +4551,7 @@ bool Connect::Check (CheckData &ckd)
     }
     funcItfTid = OWNID(funcItf);
     if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
-      ((SynObject*)callbackFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
       ok = false;
     }
   }
@@ -4547,10 +4567,10 @@ bool Connect::Check (CheckData &ckd)
   if (!ok) {
     if (ckd.errorCode == &ERR_SlotWrongArg) {
       slotWrongArg = ERR_SlotWrongArg.arg(ckd.iArg);
-      ((SynObject*)callbackFunction.ptr)->SetError(ckd,&slotWrongArg);
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,&slotWrongArg);
     }
     else
-      ((SynObject*)callbackFunction.ptr)->SetError(ckd,ckd.errorCode);
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,ckd.errorCode);
     ERROREXIT
   }
 
@@ -4772,11 +4792,11 @@ bool Signal::Check (CheckData &ckd)
 
   ENTRY
 
-  ok &= ((FuncStatement*)fCall.ptr)->Check(ckd);
+  ok &= ((FuncStatement*)sCall.ptr)->Check(ckd);
   if (!ok)
     ERROREXIT
 
-  callExpr = (Expression*)((FuncStatement*)fCall.ptr)->handle.ptr;
+  callExpr = (Expression*)((FuncStatement*)sCall.ptr)->handle.ptr;
   ckd.tempCtx = ckd.lpc;
   callExpr->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
   objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
@@ -4785,12 +4805,12 @@ bool Signal::Check (CheckData &ckd)
     if (!callExpr->flags.Contains(brokenRef)
     && !IsPH(callExpr))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
-    if (((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->primaryToken == FuncPH_T)
-      ((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
+    if (((SynObject*)((FuncStatement*)sCall.ptr)->function.ptr)->primaryToken == FuncPH_T)
+      ((SynObject*)((FuncStatement*)sCall.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
   }
-  else if (((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->primaryToken == FuncDisabled_T) {
-    ((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->primaryToken = FuncPH_T;
-    ((SynObject*)((FuncStatement*)fCall.ptr)->function.ptr)->flags.EXCL(isDisabled);
+  else if (((SynObject*)((FuncStatement*)sCall.ptr)->function.ptr)->primaryToken == FuncDisabled_T) {
+    ((SynObject*)((FuncStatement*)sCall.ptr)->function.ptr)->primaryToken = FuncPH_T;
+    ((SynObject*)((FuncStatement*)sCall.ptr)->function.ptr)->flags.EXCL(isDisabled);
   }
   if (objTypeDecl) {
     sigCtx = ckd.tempCtx;
@@ -4804,14 +4824,14 @@ bool Signal::Check (CheckData &ckd)
       objTypeTid = OWNID(objTypeDecl);
   }
 
-  funcTid = ((Reference*)((FuncStatement*)fCall.ptr)->function.ptr)->refID;
+  funcTid = ((Reference*)((FuncStatement*)sCall.ptr)->function.ptr)->refID;
   ADJUST4(funcTid);
   if (objTypeTid.nID != -1) {
     sigDecl = ckd.document->IDTable.GetDECL(funcTid);
     if (!sigDecl)
       ERROREXIT
     if (!sigDecl->SecondTFlags.Contains(isLavaSignal)) {
-      ((Reference*)((FuncStatement*)fCall.ptr)->function.ptr)->SetError(ckd,&ERR_NoSignal);
+      ((Reference*)((FuncStatement*)sCall.ptr)->function.ptr)->SetError(ckd,&ERR_NoSignal);
       ok = false;
     }
   }
