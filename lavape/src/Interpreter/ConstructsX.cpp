@@ -44,17 +44,17 @@
 #define RETURN(OK) {if (!(OK) || ckd.exceptionThrown) return false; else return true;}
 
 #ifdef WIN32
-#define FCALL(CKD, CALLEDSELF, NEWSTACK, FRAMESIZE, RESULT)  {\
+#define FCALL(CKD, CALLEDSELF, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
   bool caught=false; \
   unsigned newOldExprLevel=FRAMESIZE-1, fSizeBytes = FRAMESIZE<<2;\
   DebugStep oldDebugStep=nextDebugStep; \
   if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
     nextDebugStep = noStep; \
-  if (primaryToken == ObjRef_T) \
+  if (primaryToken == ObjRef_T) /* set-function */ \
     NEWSTACK[0] = (LavaObjectPtr)parentObject; \
   else if (IsFuncInvocation()) \
-    NEWSTACK[0] = (LavaObjectPtr)((FuncExpression*)this)->function.ptr; \
-  else \
+    NEWSTACK[0] = (LavaObjectPtr)SYNOBJ; \
+  else /* operator function */ \
     NEWSTACK[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = (LavaObjectPtr)stackFrame;\
   NEWSTACK[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
@@ -64,7 +64,7 @@
     ckd.selfVar = mySelfVar;\
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
@@ -74,7 +74,7 @@
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
@@ -93,12 +93,12 @@
       if (currentStackDepth < stepOutStackDepth) { \
         stepOutStackDepth = 0; \
         if (IsFuncInvocation()) \
-          CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+          CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
         else \
           CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
     else { \
       if (IsFuncInvocation()) \
-        CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+        CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
       else \
         CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
 }
@@ -112,7 +112,7 @@
   if (primaryToken == ObjRef_T) \
     NEWSTACK[0] = (LavaObjectPtr)parentObject; \
   else if (IsFuncInvocation()) \
-    NEWSTACK[0] = (LavaObjectPtr)((FuncExpression*)this)->function.ptr; \
+    NEWSTACK[0] = (LavaObjectPtr)SYNOBJ; \
   else \
     NEWSTACK[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = (LavaObjectPtr)stackFrame; \
@@ -127,7 +127,7 @@
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
@@ -137,7 +137,7 @@
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
@@ -152,19 +152,19 @@
       if (currentStackDepth < stepOutStackDepth) { \
         stepOutStackDepth = 0; \
         if (IsFuncInvocation()) \
-          CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+          CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
         else \
           CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
     else { \
       if (IsFuncInvocation()) \
-        CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+        CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
       else \
         CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
 }
 #endif
 
 #ifdef WIN32
-#define NATIVE_FCALL(CKD, FUNC, NEWSTACK, FRAMESIZE, RESULT)  {\
+#define NATIVE_FCALL(CKD, FUNC, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
   bool caught=false; \
   QString myExMessage; \
   unsigned fSizeBytes = FRAMESIZE<<2;\
@@ -174,7 +174,7 @@
   if (primaryToken == ObjRef_T) \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)parentObject; \
   else if (IsFuncInvocation()) \
-    NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)((FuncExpression*)this)->function.ptr; \
+    NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)SYNOBJ; \
   else \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = CKD.stackFrame[1] = (LavaObjectPtr)stackFrame; \
@@ -184,7 +184,7 @@
     ckd.selfVar = mySelfVar;\
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
@@ -195,7 +195,7 @@
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (exHW.SetLavaException(CKD)) caught = true;\
@@ -205,7 +205,7 @@
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
@@ -224,17 +224,17 @@
       if (currentStackDepth < stepOutStackDepth) { \
         stepOutStackDepth = 0; \
         if (IsFuncInvocation()) \
-          CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+          CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
         else \
           CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
     else { \
       if (IsFuncInvocation()) \
-        ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+        (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
       else \
         DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
 }
 #else
-#define NATIVE_FCALL(CKD, FUNC, NEWSTACK, FRAMESIZE, RESULT)  {\
+#define NATIVE_FCALL(CKD, FUNC, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
   bool caught=false; \
   DebugStep oldDebugStep=nextDebugStep; \
   if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
@@ -242,7 +242,7 @@
   if (primaryToken == ObjRef_T) \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)parentObject; \
   else if (IsFuncInvocation()) \
-    NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)((FuncExpression*)this)->function.ptr; \
+    NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)SYNOBJ; \
   else \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = CKD.stackFrame[1] = (LavaObjectPtr)stackFrame; \
@@ -257,7 +257,7 @@
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
@@ -270,7 +270,7 @@
     ckd.selfVar = mySelfVar; \
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (exHW.SetLavaException(CKD)) caught = true;\
@@ -280,7 +280,7 @@
     ckd.selfVar = mySelfVar;\
     RESULT = false;\
     if (IsFuncInvocation()) \
-      CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
     else \
       CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
     if (ex.SetLavaException(CKD)) caught = true;\
@@ -295,12 +295,12 @@
       if (currentStackDepth < stepOutStackDepth) { \
         stepOutStackDepth = 0; \
         if (IsFuncInvocation()) \
-          CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+          CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
         else \
           CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
     else { \
       if (IsFuncInvocation()) \
-        CKD.callStack = ((Reference*)((FuncExpression*)this)->function.ptr)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+        CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
       else \
         CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
 }
@@ -962,10 +962,10 @@ bool SelfVarX::ExecBaseInits (CheckData &ckd, LavaVariablePtr stackFrame, unsign
         newStackFrame[SFH] = callObj + (*callObj)[secN].sectionOffset;
 
         if (fDesc->isNative) {
-          NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok)
+          NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(SynObject*)0)
         }
         else
-          FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok)
+          FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
 #ifdef WIN32
         __asm {
           add esp, frameSizeBytes
@@ -1240,9 +1240,9 @@ LavaObjectPtr UnaryOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, un
   STOP_AT_OP(ckd,stackFrame)
   
   if (fDesc->isNative) 
-    NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok)
+    NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(SynObject*)0)
   else 
-    FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok)
+    FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
 
   DFC(object);
   object = newStackFrame[SFH+1];
@@ -1323,9 +1323,9 @@ bool BinaryOpX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned ol
   STOP_AT_OP(ckd,stackFrame)
 
   if (fDesc->isNative) 
-    NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok)
+    NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(SynObject*)0)
   else 
-    FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok)
+    FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
 
   if (newStackFrame[SFH+1])
     DFC(newStackFrame[SFH+1]);  // release input parameter
@@ -1399,9 +1399,9 @@ LavaObjectPtr MultipleOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame,
     STOP_AT_OP(ckd,stackFrame)
 
     if (fDesc->isNative) 
-      NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok)
+      NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(SynObject*)0)
     else 
-      FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok)
+      FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
     
     if (newStackFrame[SFH+1])
       DFC(newStackFrame[SFH+1]);  // release input parameter
@@ -1737,14 +1737,14 @@ bool Receiver::callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned
   for (; pos < callbackCall->nParams+SFH;)
     newStackFrame[pos++] = 0;
 
-  STOP_AT_FUNC(ckd,stackFrame,((Reference*)callbackCall->function.ptr))
+  STOP_AT_FUNC(ckd,stackFrame,((Reference*)signalCall->function.ptr))
 
   if (fDesc->isNative) {
     ckd.stateObj = stateObj;
-    NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok)
+    NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(Reference*)signalCall->function.ptr)
   }
   else 
-    FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok)
+    FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(Reference*)signalCall->function.ptr)
 
 ret:
   for (pos=SFH+1; pos <= nInputs+SFH; pos++)
@@ -2397,7 +2397,7 @@ fieldCase:
     else
       newStackFrame[SFH+1] = 0;
 
-    FCALL(ckd,((SynObject*)setExec->Exec.ptr),newStackFrame,frameSize,ok);
+    FCALL(ckd,((SynObject*)setExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0);
 
     DFC(newStackFrame[SFH]);  // release self
     if (newStackFrame[SFH+1])
@@ -2450,9 +2450,9 @@ fieldCase:
       newStackFrame[SFH+2] = 0;
 
     if (fDesc->isNative) 
-      NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,6,ok)
+      NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,6,ok,(SynObject*)0)
     else 
-      FCALL(ckd,((SynObject*)fDesc->funcExec->Exec.ptr),newStackFrame,6,ok)
+      FCALL(ckd,((SynObject*)fDesc->funcExec->Exec.ptr),newStackFrame,6,ok,(SynObject*)0)
 
     if (newStackFrame[SFH+2])
       DFC(newStackFrame[SFH+2]);  // release input parameter 2
@@ -2532,9 +2532,9 @@ LavaObjectPtr ArrayAtIndexX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
     newStackFrame[SFH+1] = 0;
   newStackFrame[SFH+2] = 0;
   if (fDesc->isNative) 
-    NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,20,ok)
+    NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,20,ok,(SynObject*)0)
   else 
-    FCALL(ckd,((SynObject*)fDesc->funcExec->Exec.ptr),newStackFrame,5,ok)
+    FCALL(ckd,((SynObject*)fDesc->funcExec->Exec.ptr),newStackFrame,5,ok,(SynObject*)0)
   if (ok) {
     object = newStackFrame[SFH+2];
     if (object)
@@ -3015,7 +3015,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
 #endif
         newStackFrame[SFH] = object;
         if (fDesc->isNative) {
-          NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok)
+          NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(SynObject*)0)
           if (ckd.exceptionThrown) {
             ckd.currentStackLevel = oldStackLevel;
             DFC(object);
@@ -3023,7 +3023,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
           }
         }
         else {
-          FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok)
+          FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
           if (ckd.exceptionThrown) {
             ckd.currentStackLevel = oldStackLevel;
             DFC(object);
@@ -3260,17 +3260,17 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
   if (objRef)
     if (fDesc->isNative) {
       ckd.stateObj = stateObj;
-      NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok)
+      NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
     else 
-      FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok)
+      FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
   else
     if (funcDecl->TypeFlags.Contains(isNative)) {
       ckd.stateObj = stateObj;
-      NATIVE_FCALL(ckd,((TAdapterFunc)funcDecl->RuntimeDECL),newStackFrame,frameSize,ok)
+      NATIVE_FCALL(ckd,((TAdapterFunc)funcDecl->RuntimeDECL),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
     else
-      FCALL(ckd,staticExec,newStackFrame,frameSize,ok)
+      FCALL(ckd,staticExec,newStackFrame,frameSize,ok,(Reference*)function.ptr)
   if (!ok) {
     goto ret;
   }
@@ -3447,17 +3447,17 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
   if (objRef)
     if (fDesc->isNative) {
       ckd.stateObj = stateObj;
-      NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok)
+      NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
     else 
-      FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok)
+      FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
   else
     if (funcDecl->TypeFlags.Contains(isNative)) {
       ckd.stateObj = stateObj;
-      NATIVE_FCALL(ckd,((TAdapterFunc)funcDecl->RuntimeDECL),newStackFrame,frameSize,ok)
+      NATIVE_FCALL(ckd,((TAdapterFunc)funcDecl->RuntimeDECL),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
     else
-      FCALL(ckd,staticExec,newStackFrame,frameSize,ok)
+      FCALL(ckd,staticExec,newStackFrame,frameSize,ok,(Reference*)function.ptr)
   if (!ok) {
     object = (LavaObjectPtr)-1;
     goto ret;

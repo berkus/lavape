@@ -4692,7 +4692,7 @@ void CExecView::OnStaticCall()
 
 void CExecView::OnAssign() 
 {
-  // TODO: Code fï¿½r Befehlsbehandlungsroutine hier einfï¿½gen
+  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
   
   if (!EditOK()) return;
   Assignment *assig = new AssignmentV(true);
