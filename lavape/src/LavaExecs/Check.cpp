@@ -4032,7 +4032,8 @@ bool FuncExpression::Check (CheckData &ckd)
 //  ((SynObject*)function.ptr)->Check(ckd);
 
   callExpr = (Expression*)handle.ptr;
-  ok &= callExpr->Check(ckd);
+  if (callExpr)
+    ok &= callExpr->Check(ckd);
 #ifndef INTERPRETER
   if (callExpr) {
     if (!ok) {
@@ -4396,7 +4397,8 @@ bool Connect::Check (CheckData &ckd)
     && !IsPH(callExpr))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
 #ifndef INTERPRETER
-    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
+    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T
+    && callExpr->primaryToken != nil_T) {
       ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
       ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
     }
