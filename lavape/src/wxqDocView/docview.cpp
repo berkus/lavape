@@ -369,22 +369,22 @@ void wxDocument::ViewPosRelease(POSITION pos)
 
 bool wxDocument::OnNewDocument()
 {
-    /*if (!OnSaveModified())
-        return false;
+  /*if (!OnSaveModified())
+      return false;
 
-    if (OnCloseDocument()==false) return false;
-    DeleteContents();*/
-    Modify(false);
-    SetDocumentSaved(false);
+  if (OnCloseDocument()==false) return false;
+  DeleteContents();*/
+  Modify(false);
+  SetDocumentSaved(false);
 
-    QString name;
-    wxDocManager::GetDocumentManager()->MakeDefaultName(name);
-		name += "." + m_documentTemplate->GetDefaultExtension();
-    SetTitle(name);
-    SetFilename(name, true);
-    SetUserFilename(name);
+  QString name;
+  wxDocManager::GetDocumentManager()->MakeDefaultName(name);
+	name += "." + m_documentTemplate->GetDefaultExtension();
+  SetTitle(name);
+  SetFilename(name, true);
+  SetUserFilename(name);
 
-    return true;
+  return true;
 }
 
 bool wxDocument::Save()

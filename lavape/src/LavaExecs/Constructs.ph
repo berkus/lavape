@@ -934,9 +934,8 @@ public:
 struct Connect : public Expression {
 public:
   NESTEDANY<Expression> signalSender;
+  NESTEDANY<Expression> signalSenderClass;
   NESTEDANY<Reference> signalFunction;
-//  NESTEDANY<Expression> signalReceiver;
-//  NESTEDANY<Expression> signalReceiver;
   NESTEDANY<FuncStatement> callback;
 
   virtual bool Check (CheckData &ckd);

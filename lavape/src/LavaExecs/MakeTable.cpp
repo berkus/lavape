@@ -546,7 +546,10 @@ void Signal::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpd
 void Connect::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
 {
   ENTRY
-  MTBL (signalSender.ptr);
+  if (signalSender.ptr)
+    MTBL (signalSender.ptr)
+  else
+    MTBL (signalSenderClass.ptr)
   MTBL (signalFunction.ptr);
   MTBL (callback.ptr);
 }

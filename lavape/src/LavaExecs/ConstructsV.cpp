@@ -2418,15 +2418,16 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   EXIT
 }
 
-ConnectV::ConnectV (bool) {
+ConnectV::ConnectV (bool senderClass) {
   type = Stm_T;
   replacedType = type;
   primaryToken = connect_T;
-  signalSender.ptr = new SynObjectV(Exp_T);
+  if (senderClass)
+    signalSenderClass.ptr = new SynObjectV(TypePH_T);
+  else
+    signalSender.ptr = new SynObjectV(Exp_T);
   signalFunction.ptr = new SynObjectV(FuncDisabled_T);
   callback.ptr = new FuncStatementV(true);
-//  signalReceiver.ptr = new SynObjectV(Exp_T);
-//  callbackFunction.ptr = new SynObjectV(FuncDisabled_T);
 }
 
 void ConnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
@@ -2434,12 +2435,16 @@ void ConnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
 
   t.Insert(primaryToken,true);
   t.Blank();
-//  t.Insert(signal_T);
-//  t.Blank();
-  DRAW(signalSender.ptr);
-  t.Blank();
-  t.Insert(BitOr_T);
-  t.Blank();
+  if (signalSender.ptr) {
+    DRAW(signalSender.ptr);
+    t.Insert(Period_T);
+  }
+  else {
+    DRAW(signalSenderClass.ptr);
+    t.Blank();
+    t.Insert(Colon_T);
+    t.Blank();
+  }
   DRAW(signalFunction.ptr);
   t.Blank();
   t.Insert(to_T);

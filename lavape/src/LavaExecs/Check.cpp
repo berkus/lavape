@@ -4377,36 +4377,41 @@ bool Connect::Check (CheckData &ckd)
   TID objTypeTid, selfTid, funcItfTid, funcTid;
   LavaDECL *sigDecl, *callbackDecl, *funcItf, *funcImpl=0;
   Expression *callExpr;
-  LavaDECL *objTypeDecl;
+  LavaDECL *objTypeDecl=0;
   Category cat;
   CContext sigCtx, callbackCtx;
   SynFlags myCtxFlags;
+  bool senderClassOK;
 
   ENTRY
 
-  ok &= ((SynObject*)signalSender.ptr)->Check(ckd);
-
   callExpr = (Expression*)signalSender.ptr;
-  ckd.tempCtx = ckd.lpc;
-  callExpr->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
-  objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
+  if (callExpr) {
+    ok &= ((SynObject*)signalSender.ptr)->Check(ckd);
+    ckd.tempCtx = ckd.lpc;
+    callExpr->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
+    objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
+  }
+  else {
+    senderClassOK = ((SynObject*)signalSenderClass.ptr)->Check(ckd);
+    ok &= senderClassOK;
+  }
 
-  if (!objTypeDecl) {
-    if (!callExpr->flags.Contains(brokenRef)
-    && callExpr->primaryToken != nil_T
-    && !IsPH(callExpr))
+  if (!objTypeDecl && !senderClassOK) {
+    if (callExpr
+    && !IsPH(callExpr)
+    && !callExpr->flags.Contains(brokenRef))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
 #ifndef INTERPRETER
-    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T
-    && callExpr->primaryToken != nil_T) {
+    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T)
       ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
-      ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
-    }
+    ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
 #endif
   }
 #ifndef INTERPRETER
-  else if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T) {
-    ((SynObject*)signalFunction.ptr)->primaryToken = FuncPH_T;
+  else {
+    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T)
+      ((SynObject*)signalFunction.ptr)->primaryToken = FuncPH_T;
     ((SynObject*)signalFunction.ptr)->flags.EXCL(isDisabled);
   }
 #endif
@@ -4730,6 +4735,8 @@ bool Disconnect::Check (CheckData &ckd)
     funcTid = ((Reference*)callbackFunction.ptr)->refID;
     ADJUST4(funcTid);
   }
+  else
+    funcTid.nID = -1;
   if (objTypeTid.nID != -1) {
     callbackDecl = ckd.document->IDTable.GetDECL(funcTid);
     if (((SynObject*)callbackFunction.ptr)->primaryToken != nil_T && !callbackDecl) {

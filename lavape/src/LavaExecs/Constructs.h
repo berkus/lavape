@@ -2024,6 +2024,7 @@ struct Connect : public Expression {
 
   public:
   NESTEDANY/*Expression*/ signalSender;
+  NESTEDANY/*Expression*/ signalSenderClass;
   NESTEDANY/*Reference*/ signalFunction;
   NESTEDANY/*FuncStatement*/ callback;
   virtual bool Check(CheckData &ckd);
