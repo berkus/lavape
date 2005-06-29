@@ -1588,6 +1588,7 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
     ((Expression*)((FuncStatement*)callback.ptr)->handle.ptr)->SetRTError(ckd,&ERR_NullCallObject,stackFrame);
     return false;
   }
+  DFC(receiver);
   callbackDecl = ((Reference*)((FuncStatement*)callback.ptr)->function.ptr)->refDecl;
 
   if (signalSender.ptr) {
@@ -1596,6 +1597,7 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
       ((Expression*)signalSender.ptr)->SetRTError(ckd,&ERR_NullCallObject,stackFrame);
       return false;
     }
+    DFC(sender);
     object = sender - (*sender)->sectionOffset;
     runTimeData = (RunTimeData*)*(object-LOH);
     if (!runTimeData) {
@@ -1752,10 +1754,9 @@ ret:
   for (pos=SFH+1; pos <= nInputs+SFH; pos++)
     if (newStackFrame[pos])
       DFC(newStackFrame[pos]);  // release input parameters
-  if (callObj)
-    DFC(callObj); 
-    // release self after input parameters since it might be needed for releasing
-    // the inputs in case "set.Remove(#elem)"; see CheDecFunc in BAdapter.cpp
+//  if (callObj)
+//    DFC(callObj); 
+    // don't release self since there wasn't an explicit call expression here
 #ifdef WIN32
   __asm {
     add esp, frameSizeBytes
