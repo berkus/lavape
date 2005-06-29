@@ -411,15 +411,11 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
     && parentObject->parentObject->primaryToken == connect_T) {
     connectStm = (Connect*)parentObject->parentObject;
     if (parentObject->whereInParent == (address)&connectStm->signalSender.ptr)
-      return true;
-    else
       return false;
   }
   else if (parentObject->primaryToken == connect_T) {
     connectStm = (Connect*)parentObject;
     if (whereInParent == (address)&connectStm->signalSender.ptr)
-      return true;
-    else
       return false;
   }
   else if (parentObject->primaryToken == disconnect_T) {
