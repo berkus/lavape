@@ -4374,8 +4374,8 @@ static QString slotWrongArg;
 
 bool Connect::Check (CheckData &ckd)
 {
-  TID objTypeTid, selfTid, funcItfTid, funcTid;
-  LavaDECL *sigDecl, *callbackDecl, *funcItf, *funcImpl=0;
+  TID objTypeTid, senderClassTid, selfTid, funcItfTid, funcTid;
+  LavaDECL *sigDecl, *callbackDecl, *senderClass, *funcItf, *funcImpl=0;
   Expression *callExpr;
   LavaDECL *objTypeDecl=0;
   Category cat;
@@ -4393,8 +4393,10 @@ bool Connect::Check (CheckData &ckd)
     objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
   }
   else {
-    senderClassOK = ((SynObject*)signalSenderClass.ptr)->Check(ckd);
+    senderClassOK = ((Reference*)signalSenderClass.ptr)->Check(ckd);
     ok &= senderClassOK;
+    if (senderClassOK)
+      senderClass = ((Reference*)signalSenderClass.ptr)->refDecl;
   }
 
   if (!objTypeDecl && !senderClassOK) {
@@ -4430,7 +4432,6 @@ bool Connect::Check (CheckData &ckd)
 
 
 // en|disable callback specification:
-
   ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
 #ifndef INTERPRETER
   if (!ok) {
@@ -4465,12 +4466,26 @@ bool Connect::Check (CheckData &ckd)
 #endif
       ERROREXIT
     }
-    if (objTypeTid.nID != -1) {
+    if (objTypeTid.nID == -1) {
       funcItf = sigDecl->ParentDECL;
-      if (funcItf->DeclType == Impl) {
-        funcImpl = funcItf;
+      if (funcItf->DeclType == Impl)
         funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
+      funcItfTid = OWNID(funcItf);
+      senderClassTid = OWNID(senderClass);
+      if (!ckd.document->IDTable.IsAn(senderClassTid,0,funcItfTid,0)) {
+        ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
+#ifndef INTERPRETER
+        if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+          ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
+        ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+#endif
+        ok = false;
       }
+    }
+    else {
+      funcItf = sigDecl->ParentDECL;
+      if (funcItf->DeclType == Impl)
+        funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
       funcItfTid = OWNID(funcItf);
       if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
         ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
@@ -4492,79 +4507,23 @@ bool Connect::Check (CheckData &ckd)
   callExpr->ExprGetFVType(ckd,objTypeDecl,cat,myCtxFlags);
   objTypeDecl = ckd.document->GetTypeAndContext(objTypeDecl,ckd.tempCtx);
 
-#ifdef INTERPRETER
   ok &= ((SynObject*)callback.ptr)->Check(ckd);
-  if (!ok)
-    ERROREXIT
-#else
-  if (!objTypeDecl) {
-    if (!callExpr->flags.Contains(brokenRef)
-    && !IsPH(callExpr))
-      callExpr->SetError(ckd,&ERR_CallExprUndefType);
-#ifndef INTERPRETER
-    if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken == FuncPH_T) {
-      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
-      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
-    }
-#endif
-  }
-#ifndef INTERPRETER
-  else if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken == FuncDisabled_T) {
-    ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncPH_T;
-    ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.EXCL(isDisabled);
-  }
-#endif
-#endif
-
-  if (objTypeDecl) {
-    callbackCtx = ckd.tempCtx;
-    ckd.document->NextContext(objTypeDecl, callbackCtx);
-    if (callExpr->flags.Contains(isSelfVar)
-    && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
-      // Implementation required for self, rather than Interface
-      objTypeDecl = ckd.document->IDTable.GetDECL(((SelfVar*)ckd.selfVar)->typeID,ckd.inINCL);
-
-    if (objTypeDecl)
-      objTypeTid = OWNID(objTypeDecl);
-  }
-
-  ok &= ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->Check(ckd);
-  if (!ok)
+  if (!ok || !objTypeDecl)
     ERROREXIT
 
+  callbackCtx = ckd.tempCtx;
+  ckd.document->NextContext(objTypeDecl, callbackCtx);
+  if (callExpr->flags.Contains(isSelfVar)
+  && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)
+    // Implementation required for self, rather than Interface
+    objTypeDecl = ckd.document->IDTable.GetDECL(((SelfVar*)ckd.selfVar)->typeID,ckd.inINCL);
+
+  if (objTypeDecl)
+    objTypeTid = OWNID(objTypeDecl);
   funcTid = ((Reference*)((FuncStatement*)callback.ptr)->function.ptr)->refID;
   ADJUST4(funcTid);
-  if (objTypeTid.nID != -1) {
+  if (objTypeTid.nID != -1)
     callbackDecl = ckd.document->IDTable.GetDECL(funcTid);
-    if (!callbackDecl) {
-      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
-#ifndef INTERPRETER
-      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
-#endif
-      ERROREXIT
-    }
-#ifndef INTERPRETER
-    else
-      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.EXCL(isDisabled);
-#endif
-    if (callbackDecl->TypeFlags.Contains(isInitializer)) {
-      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,&ERR_InitializerForbidden);
-      ok = false;
-    }
-    funcItf = callbackDecl->ParentDECL;
-    if (funcItf->DeclType == Impl) {
-      funcImpl = funcItf;
-      funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
-    }
-    funcItfTid = OWNID(funcItf);
-    if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
-      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
-      ok = false;
-    }
-  }
-
-  if (!ok)
-    ERROREXIT
 
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -4587,7 +4546,7 @@ bool Connect::Check (CheckData &ckd)
 bool Disconnect::Check (CheckData &ckd)
 {
   TID objTypeTid, selfTid, funcItfTid, funcTid;
-  LavaDECL *sigDecl, *callbackDecl, *funcItf, *funcImpl=0;
+  LavaDECL *sigDecl, *callbackDecl, *funcItf;
   Expression *callExpr;
   LavaDECL *objTypeDecl;
   Category cat;
@@ -4673,7 +4632,6 @@ bool Disconnect::Check (CheckData &ckd)
     if (objTypeTid.nID != -1) {
       funcItf = sigDecl->ParentDECL;
       if (funcItf->DeclType == Impl) {
-        funcImpl = funcItf;
         funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
       }
       funcItfTid = OWNID(funcItf);
@@ -4754,7 +4712,6 @@ bool Disconnect::Check (CheckData &ckd)
       }
       funcItf = callbackDecl->ParentDECL;
       if (funcItf->DeclType == Impl) {
-        funcImpl = funcItf;
         funcItf = ckd.document->IDTable.GetDECL(((CHETID*)funcItf->Supports.first)->data, funcItf->inINCL);
       }
       funcItfTid = OWNID(funcItf);
@@ -4792,7 +4749,7 @@ bool Disconnect::Check (CheckData &ckd)
 bool Signal::Check (CheckData &ckd)
 {
   TID objTypeTid, selfTid, funcItfTid, funcTid;
-  LavaDECL *sigDecl, *funcImpl=0;
+  LavaDECL *sigDecl;
   Expression *callExpr;
   LavaDECL *objTypeDecl;
   Category cat;

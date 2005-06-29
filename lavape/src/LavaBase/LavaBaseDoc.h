@@ -698,13 +698,14 @@ typedef QPtrList<Receiver> ReceiverList;
 
 class Callback {
 public:
-  Callback (LavaObjectPtr sdr, LavaDECL *cb) {
+  Callback (LavaObjectPtr sdr, LavaDECL *sdrClass, LavaDECL *cb) {
     sender = sdr;
+    senderClass = sdrClass;
     callbackDecl = cb;
   }
 
   LavaObjectPtr sender;
-  LavaDECL *callbackDecl;
+  LavaDECL * senderClass, *callbackDecl;
 };
 
 typedef QPtrList<Callback> CallbackList;

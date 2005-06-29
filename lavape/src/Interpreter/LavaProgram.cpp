@@ -2277,8 +2277,6 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
           (*((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent)++; 
           //execution thread wait until debug thread has received first message from LavaPE
         }
-//      {CRuntimeException* ex = new CRuntimeException(ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
-//      throw ex;}
         if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel)) {
           if (!ckd.exceptionThrown)
             ((SelfVarX*)topDECL->Exec.ptr)->SetRTError(ckd, &ERR_ExecutionFailed,newStackFrame);
