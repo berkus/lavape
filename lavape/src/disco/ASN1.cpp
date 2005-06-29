@@ -27,6 +27,7 @@
 #include "MachDep.h"
 #include "Halt.h"
 #include <qapplication.h>
+#include <qmessagebox.h>
 
 #ifdef WIN32x
 #include <winsock.h>
@@ -100,6 +101,7 @@ void ASN1::error (ErrCode errCode,
                   char *callingProcedure)
 
 {
+  QString errMsg=QString("Error in input file:\n\nDetails:\n+++++ ")+callingProcedure+": "+ASN1Emsg[errCode].c;
   if ((errCode == WrongElRep)
       && !wrongElemStop) {
     wrongElem = true;
@@ -107,7 +109,8 @@ void ASN1::error (ErrCode errCode,
     return;
   }
   if (!Silent) {
-    qDebug(QString("+++++ ")+callingProcedure+": %1"+ASN1Emsg[errCode].c);
+    qDebug(errMsg);
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),errMsg,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   }
   errorExitProc();
   skip = true;
