@@ -17,7 +17,7 @@
 #endif
 
 
-#ifdef WIN32
+#ifndef NULL
 #define NULL 0
 #endif
 

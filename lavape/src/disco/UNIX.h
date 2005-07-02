@@ -16,7 +16,9 @@
 #include <io.h>
 #define W_OK 2
 #define R_OK 4
+#ifndef X_OK
 #define X_OK 4
+#endif
 #include <time.h>
 #else
 #include <sys/time.h>

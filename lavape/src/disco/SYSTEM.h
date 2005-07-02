@@ -31,29 +31,6 @@ typedef unsigned short      WORD;
 
 typedef void (*DPROC) ();
 
-#ifdef WIN32
-#define NULL 0
-#endif
-
-
-//#define min(a,b)        (((a) < (b))? (a): (b))
-//#define max(a,b)        (((a) > (b))? (a): (b))
-
-/*
-#ifdef WIN32
-#define strcasecmp stricmp
-#endif
-
-#define EVEN(arg) (!(arg & 1))
-#define ODD(arg) (arg & 1)
-
-#define ABS(x) (x >= 0 ? x : -x)
-
-#define CAP(c) ((islower(c)) ? (c | ' ') : c)
-
-#define TRUNC(x) (unsigned(ABS(x)))
-
-*/
 
 enum PutGetFlag {PUT,GET,DontPUT};
 /*DontPUT implies PUT and is used internally by FIO procedures
