@@ -2274,7 +2274,7 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
   }
 
   if (drawCallKeywd) {
-    t.Insert(assignFS_T);
+    t.Insert(assignFS_T,true);
     t.Blank();
   }
   if (t.leftArrows) {

@@ -1379,7 +1379,8 @@ void CExecView::Select (SynObject *selObj)
     }
 
     if (text->currentSynObj->parentObject->primaryToken == connect_T
-    || text->currentSynObj->parentObject->parentObject->primaryToken == connect_T) { // connect/disconnect
+    || (text->currentSynObj->parentObject->parentObject
+        && text->currentSynObj->parentObject->parentObject->primaryToken == connect_T)) { // connect/disconnect
       if (text->currentSynObj->parentObject->primaryToken == connect_T) {
         connStm = (Connect*)text->currentSynObj->parentObject;
         callExpr = (Expression*)connStm->signalSender.ptr;
@@ -2105,7 +2106,7 @@ bool CExecView::IsTopLevelToken ()
 
 bool CExecView::IsDeletablePrimary () {
   if ((IsTopLevelToken()
-       && text->currentSelection->data.synObject->primaryToken != assignFS_T)
+       /*&& text->currentSelection->data.synObject->primaryToken != assignFS_T*/)
   || text->currentSelection->data.token == TDOD_T
   || text->currentSelection->data.token == Tilde_T)
     return true;
