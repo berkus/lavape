@@ -103,7 +103,7 @@
         CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
 }
 #else
-#define FCALL(CKD, CALLEDSELF, NEWSTACK, FRAMESIZE, RESULT)  {\
+#define FCALL(CKD, CALLEDSELF, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
   bool caught=false; \
   unsigned newOldExprLevel=FRAMESIZE-1;\
   DebugStep oldDebugStep=nextDebugStep; \
