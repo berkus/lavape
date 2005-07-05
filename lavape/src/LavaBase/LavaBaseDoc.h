@@ -684,6 +684,8 @@ public:
     cbFuncStm = cbfs;
   }
 
+  bool matches (LavaObjectPtr rcvr, LavaDECL *cbDecl);
+
   bool IsFuncInvocation(){ return true; }
   QString DebugStop(CheckData &ckd,LavaVariablePtr stack,QString excMsg,StopReason sr,LavaVariablePtr calleeStack,LavaDECL *calleeFunc){ return QString::null; }
 
@@ -704,8 +706,10 @@ public:
     callbackDecl = cb;
   }
 
+  bool matches (LavaObjectPtr sdr, LavaDECL *sigDecl);
+
   LavaObjectPtr sender;
-  LavaDECL * senderClass, *callbackDecl;
+  LavaDECL *senderClass, *callbackDecl;
 };
 
 typedef QPtrList<Callback> CallbackList;
@@ -714,14 +718,14 @@ class RunTimeData {
 public:
   RunTimeData() {
     urlObj = 0;
-    receiverList.setAutoDelete(true);
-    callbackList.setAutoDelete(true);
+    receiverDict.setAutoDelete(true);
+    callbackDict.setAutoDelete(true);
   }
 
   LavaObjectPtr urlObj;
 
-  QPtrDict<ReceiverList> receiverList;  // key = LavaDECL *signalDecl
-  QPtrDict<CallbackList> callbackList;  // key = LavaDECL *signalDecl
+  QPtrDict<ReceiverList> receiverDict;  // key = LavaDECL *signalDecl
+  QPtrDict<CallbackList> callbackDict;  // key = LavaDECL *signalDecl
 };
 
 #endif

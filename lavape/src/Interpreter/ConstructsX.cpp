@@ -1604,7 +1604,7 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
       runTimeData = new RunTimeData;
       *(LavaVariablePtr)(object-LOH) = (LavaObjectPtr)runTimeData;
     }
-    rcvDict = &runTimeData->receiverList;
+    rcvDict = &runTimeData->receiverDict;
     rcvListPtr = (*rcvDict)[signalDecl];
     if (!rcvListPtr) {
       rcvListPtr = new ReceiverList;
@@ -1622,7 +1622,7 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
     runTimeData = new RunTimeData;
     *(LavaVariablePtr)(object-LOH) = (LavaObjectPtr)runTimeData;
   }
-  cbDict = &runTimeData->callbackList;
+  cbDict = &runTimeData->callbackDict;
   cbListPtr = (*cbDict)[signalDecl];
   if (cbListPtr)
     cbListPtr->append(new Callback(sender,senderClass,callbackDecl));
@@ -1638,15 +1638,107 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
 
 
 bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+  LavaObjectPtr sender=0, senderObj, receiver=0, receiverObj;
+  RunTimeData *runTimeData;
+  QPtrDict<ReceiverList> *rcvDict;
+  QPtrDict<CallbackList> *sdrDict;
+  ReceiverList *rcvListPtr;
+  Receiver *receiverEntry;
+  CallbackList *sdrListPtr;
+  Callback *senderEntry;
+  LavaDECL *signalDecl=0, *callbackDecl=0;
 
   STOP_AT_STM(ckd, stackFrame, true)
+
+  if (((SynObject*)signalSender.ptr)->primaryToken != nil_T) {
+    sender = ((SynObject*)signalSender.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
+    if (!sender) {
+      ((Expression*)signalSender.ptr)->SetRTError(ckd,&ERR_NullCallObject,stackFrame);
+      return false;
+    }
+    senderObj = sender - (*sender)->sectionOffset;
+  }
+  if (((SynObject*)signalFunction.ptr)->primaryToken != nil_T)
+    signalDecl = ((Reference*)signalFunction.ptr)->refDecl;
+  if (((SynObject*)signalReceiver.ptr)->primaryToken != nil_T) {
+    receiver = ((SynObject*)signalReceiver.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
+    if (!receiver) {
+      ((Expression*)signalReceiver.ptr)->SetRTError(ckd,&ERR_NullCallObject,stackFrame);
+      return false;
+    }
+    receiverObj = receiver - (*receiver)->sectionOffset;
+  }
+  if (((SynObject*)callbackFunction.ptr)->primaryToken != nil_T)
+    callbackDecl = ((Reference*)callbackFunction.ptr)->refDecl;
+
+  if (sender) {
+    runTimeData = (RunTimeData*)*(senderObj-LOH);
+    if (runTimeData) {
+      rcvDict = &runTimeData->receiverDict;
+      if (signalDecl) { // specific signal
+        rcvListPtr = (*rcvDict)[signalDecl];
+        if (rcvListPtr)
+          for (receiverEntry = rcvListPtr->first();
+               receiverEntry;)
+            if (receiverEntry->matches(receiver,callbackDecl))
+              rcvListPtr->remove();
+            else
+              receiverEntry = rcvListPtr->next();
+      }
+      else { // all signals
+        QPtrDictIterator<ReceiverList> it(*rcvDict);
+        for( ; it.current(); ++it ) {
+          rcvListPtr = it.current();
+          for (receiverEntry = rcvListPtr->first();
+               receiverEntry;)
+            if (receiverEntry->matches(receiver,callbackDecl)) {
+              rcvListPtr->remove();
+              receiverEntry = rcvListPtr->current();
+            }
+            else
+              receiverEntry = rcvListPtr->next();
+        }
+      }
+    }
+  }
+
+  if (receiver) {
+    runTimeData = (RunTimeData*)*(receiverObj-LOH);
+    if (runTimeData) {
+      sdrDict = &runTimeData->callbackDict;
+      if (signalDecl) { // specific signal
+        sdrListPtr = (*sdrDict)[signalDecl];
+        if (sdrListPtr)
+          for (senderEntry = sdrListPtr->first();
+               senderEntry;)
+            if (senderEntry->matches(sender,callbackDecl))
+              sdrListPtr->remove();
+            else
+              senderEntry = sdrListPtr->next();
+      }
+      else { // all signals
+        QPtrDictIterator<CallbackList> it(*sdrDict);
+        for( ; it.current(); ++it ) {
+          sdrListPtr = it.current();
+          for (senderEntry = sdrListPtr->first();
+               receiverEntry;)
+            if (senderEntry->matches(sender,callbackDecl)) {
+              sdrListPtr->remove();
+              senderEntry = sdrListPtr->current();
+            }
+            else
+              senderEntry = sdrListPtr->next();
+        }
+      }
+    }
+  }
 
   return true;
 }
 
 
 bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
-  LavaObjectPtr selfObj=stackFrame[SFH], object;
+  LavaObjectPtr selfObj=stackFrame[SFH];
   RunTimeData *runTimeData;
   QPtrDict<ReceiverList> *rcvDict;
   ReceiverList *rcvListPtr;
@@ -1656,11 +1748,11 @@ bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldE
   STOP_AT_STM(ckd, stackFrame, true)
 
   signalDecl = ((Reference*)((FuncStatement*)sCall.ptr)->function.ptr)->refDecl;
-  object = selfObj - (*selfObj)->sectionOffset;
-  runTimeData = (RunTimeData*)*(object-LOH);
+  selfObj = selfObj - (*selfObj)->sectionOffset;
+  runTimeData = (RunTimeData*)*(selfObj-LOH);
   if (!runTimeData) return true;
 
-  rcvDict = &runTimeData->receiverList;
+  rcvDict = &runTimeData->receiverDict;
   rcvListPtr = (*rcvDict)[signalDecl];
   if (rcvListPtr)
     for (receiverEntry = rcvListPtr->first();
@@ -1767,6 +1859,21 @@ ret:
   RETURN(ok)
 }
 
+bool Receiver::matches (LavaObjectPtr rcvr, LavaDECL *cbDecl) {
+  if ((!rcvr || rcvr == receiver)
+  && (!cbDecl || cbDecl == callbackDecl))
+    return true;
+  else
+    return false;
+}
+
+bool Callback::matches (LavaObjectPtr sdr, LavaDECL *cbDecl) {
+  if ((!sdr || sdr == sender)
+  && (!cbDecl || cbDecl == callbackDecl))
+    return true;
+  else
+    return false;
+}
 
 bool AssertStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
 
