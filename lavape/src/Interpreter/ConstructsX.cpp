@@ -1721,7 +1721,7 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
         for( ; it.current(); ++it ) {
           sdrListPtr = it.current();
           for (senderEntry = sdrListPtr->first();
-               receiverEntry;)
+               senderEntry;)
             if (senderEntry->matches(sender,callbackDecl)) {
               sdrListPtr->remove();
               senderEntry = sdrListPtr->current();
