@@ -72,6 +72,7 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
   TAdapterFunc *funcAdapter;
   int ii, lmem, llast;
+  RunTimeData *runTimeData;
 
   object = object - (*object)->sectionOffset;
   fwdCnt = *(((unsigned short *)object)-1);
@@ -82,6 +83,7 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
   if (fwdCnt) return true;
   
 ////////////////////////////////////////////////////////////////// finalize:
+
 
   fDesc = &(*(object + object[0][object[0][0].nSections-1].sectionOffset))->funcDesc[1]; 
 	  // call the object's finalize method
@@ -103,6 +105,10 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
       ((SynFlags*)(object + 1))->INCL(zombified);
       return false;
     }
+
+  runTimeData = (RunTimeData*)*(object-LOH);
+  if (runTimeData)
+    delete runTimeData;
 
 ////////////////////////////////////////////////////////////////// DEC members:
 
