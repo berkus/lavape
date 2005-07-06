@@ -1682,8 +1682,10 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
         if (rcvListPtr)
           for (receiverEntry = rcvListPtr->first();
                receiverEntry;)
-            if (receiverEntry->matches(receiver,callbackDecl))
+            if (receiverEntry->matches(receiver,callbackDecl)) {
               rcvListPtr->remove();
+              receiverEntry = rcvListPtr->current();
+            }
             else
               receiverEntry = rcvListPtr->next();
       }
@@ -1713,8 +1715,10 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
         if (sdrListPtr)
           for (senderEntry = sdrListPtr->first();
                senderEntry;)
-            if (senderEntry->matches(sender,callbackDecl))
+            if (senderEntry->matches(sender,callbackDecl)) {
               sdrListPtr->remove();
+              senderEntry = sdrListPtr->current();
+            }
             else
               senderEntry = sdrListPtr->next();
       }
