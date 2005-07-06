@@ -1656,6 +1656,7 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
       ((Expression*)signalSender.ptr)->SetRTError(ckd,&ERR_NullCallObject,stackFrame);
       return false;
     }
+    DFC(sender);
     senderObj = sender - (*sender)->sectionOffset;
   }
   if (((SynObject*)signalFunction.ptr)->primaryToken != nil_T)
@@ -1666,6 +1667,7 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
       ((Expression*)signalReceiver.ptr)->SetRTError(ckd,&ERR_NullCallObject,stackFrame);
       return false;
     }
+    DFC(receiver);
     receiverObj = receiver - (*receiver)->sectionOffset;
   }
   if (((SynObject*)callbackFunction.ptr)->primaryToken != nil_T)
@@ -1779,7 +1781,7 @@ bool Receiver::callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned
   TToken primaryToken=callbackCall->primaryToken;
   SynObject *parentObject=callbackCall->parentObject;
 
-  callObj = receiver; // objRef->Evaluate(ckd,stackFrame,oldExprLevel);
+  callObj = receiver;
   funcSect = &(*callObj)[callbackCall->funcSectionNumber + callbackCall->funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[callbackCall->funcDecl->SectionInfo1];
   frameSize = fDesc->stackFrameSize;
