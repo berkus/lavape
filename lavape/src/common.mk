@@ -55,8 +55,10 @@ endif
 ifeq ($(OPSYS),MINGW32_NT-5.1)
   OPSYS = MINGW32
   OSCAT = WIN32
+	LN = cp
 else
   OSCAT = __UNIX__
+	LN = ln -s
 endif
 
 ifeq ($(OPSYS),Darwin)
@@ -94,7 +96,7 @@ rec_make: $(make_subpro) this
 ifeq ($(suffix $(EXEC)),.so)
 EXEC2 = $(addsuffix $(DLLSUFFIX),$(basename $(EXEC)))
 this: ../../lib/lib$(EXEC2)
-../../lib/lib$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
+../../lib/lib$(EXEC2): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
 	$(CC) -o ../../lib/lib$(EXEC2) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib -lqt-mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS) -lc
 else
 this: ../../bin/$(EXEC)
@@ -111,7 +113,7 @@ endif
 #	$(CC) -c -pipe -g -fPIC -MMD -Winvalid-pch -D_REENTRANT $(CPP_FLAGS) -include PCH/$(PRJ)_all.h $(CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h
-	echo PCH_TARGET=$(PCH_TARGET); if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D$(OSCAT) -DQT_THREAD_SUPPORT $(OSCPPFLAGS) $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D$(OSCAT) -DQT_THREAD_SUPPORT $(OSCPPFLAGS) $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's

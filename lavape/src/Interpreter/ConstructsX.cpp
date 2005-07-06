@@ -1847,7 +1847,7 @@ ret:
     if (newStackFrame[pos])
       DFC(newStackFrame[pos]);  // release input parameters
 //  if (callObj)
-//    DFC(callObj); 
+//  DFC(callObj); 
     // don't release self since there wasn't an explicit call expression here
 #ifdef WIN32
   __asm {

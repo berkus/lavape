@@ -1,10 +1,10 @@
 LAVADIR=$(shell pwd)
 export LAVADIR
 
-all: lavadir dirs links build
-lavadir:
-  echo setting LAVADIR=$(LAVADIR)
+all: dirs links build
+
 SUBPRO=Precompiler SFLsockets disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
+
 include src/common.mk
 #
 dirs:
@@ -12,11 +12,9 @@ dirs:
 	if [ ! -e lib ] ; then mkdir lib; fi; \
 	cd bin; \
 	if [ ! -e Components ] ; then mkdir Components; fi; \
-	cd Components; \
-	if [ ! -e LCompoImpl.lcom.lnk ]; then ln -s ../../samples/LCompoImpl.lcom LCompoImpl.lcom.lnk; fi; \
-	if [ ! -e LavaStream.lava ]; then ln -s ../../samples/LavaStream.lava .; fi; \
-	if [ ! -e libLavaStream.so ]; then ln -s ../../lib/libLavaStream.so .; fi; \
-	cd ../../src/Lava; if [ ! -e Generated ]; then mkdir Generated; fi ; \
+	if [ ! -e std ]; then $(LN) ../src/LavaPE/Debug/std .; fi; \
+	if [ ! -e LavaIcons ]; then $(LN) ../src/LavaPE/Debug/LavaIcons .; fi; \
+	cd ../src/Lava; if [ ! -e Generated ]; then mkdir Generated; fi ; \
 	cd ../LavaBase; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaExecs; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaGUI; if [ ! -e Generated ]; then mkdir Generated; fi; \
@@ -25,23 +23,30 @@ dirs:
 	cd ../LavaPE; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../wxqDocView; if [ ! -e Generated ]; then mkdir Generated; fi;
 #
-links:
-	cd bin; \
-	if [ ! -e std.lava ]; then ln -s ../src/LavaPE/Debug/std.lava .; fi; \
-	if [ ! -e std ]; then ln -s ../src/LavaPE/Debug/std .; fi; \
-	if [ ! -e LavaIcons ]; then ln -s ../src/LavaPE/Debug/LavaIcons .; fi; \
-	if [ ! -e std_1.htm ]; then ln -s ../src/LavaPE/Debug/std_1.htm .; fi; \
-	if [ ! -e std_m.htm ]; then ln -s ../src/LavaPE/Debug/std_m.htm .; fi; \
-	if [ ! -e std.htm ]; then ln -s ../src/LavaPE/Debug/std.htm .; fi; \
-	if [ ! -e cp_icons_std ]; then ln -s ../src/LavaPE/Debug/cp_icons_std .; fi; \
-	cd ../src/Interpreter; \
-	if [ ! -e Constructs.ph ]; then ln -s ../LavaExecs/Constructs.ph .; fi; \
-	if [ ! -e Constructs.cpp ]; then ln -s ../LavaExecs/Constructs.cpp .; fi; \
-	if [ ! -e Tokens.ph ]; then ln -s ../LavaExecs/Tokens.ph .; fi; \
-	if [ ! -e Tokens.cpp ]; then ln -s ../LavaExecs/Tokens.cpp .; fi; \
-	if [ ! -e Check.cpp ]; then ln -s ../LavaExecs/Check.cpp .; fi; \
-	if [ ! -e Check.h ]; then ln -s ../LavaExecs/Check.h .; fi; \
-	if [ ! -e MakeTable.cpp ]; then ln -s ../LavaExecs/MakeTable.cpp .; fi
+links: bin/std.lava bin/std_1.htm bin/std_m.htm bin/std.htm bin/cp_icons_std \
+  bin/Components/LCompoImpl.lcom.lnk \
+	bin/Components/LavaStream.lava \
+	bin/Components/libLavaStream.so
+
+bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
+	rm -f $@; $(LN) ../../$< $@
+bin/Components/LavaStream.lava: samples/LavaStream.lava
+	rm -f $@; $(LN) ../../$< $@
+bin/Components/libLavaStream.so: lib/libLavaStream.so
+	rm -f $@; $(LN) ../../$< $@
+lib/libLavaStream.so:
+	cd src/LavaStream; $(MAKE)
+bin/std.lava: src/LavaPE/Debug/std.lava
+	rm -f $@; $(LN) ../$< $@
+bin/std_1.htm: src/LavaPE/Debug/std_1.htm
+	rm -f $@; $(LN) ../$< $@
+bin/std_m.htm: src/LavaPE/Debug/std_m.htm
+	rm -f $@; $(LN) ../$< $@
+bin/std.htm: src/LavaPE/Debug/std.htm
+	rm -f $@; $(LN) ../$< $@
+bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
+	rm -f $@; $(LN) ../$< $@
+
 #
 build:
 	cd src/Precompiler && $(MAKE) \
