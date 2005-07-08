@@ -18,29 +18,42 @@
     callback concept</H2>
     
     <P>Presently there does not exist a common understanding on how to support
-      <B>event notification</B> / <B>callbacks</B> in modern object-oriented
-      programming languages. In the course of the <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
+      <B>event/signal notification</B> <b>(callbacks)</b> in modern object-oriented
+      programming languages.</P>
+    
+    <P>In the course of the <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
       development <B><I><FONT COLOR="#FF0000">Sun Microsystems</FONT></I></B>
       has replaced the original event handling concept by a new philosophy based
       on <I>event listeners</I>, <I>adapter classes</I>, and <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
-      language extensions introducing <I>anonymous</I> and <I>inner classes</I>.
+      language extensions introducing <I>anonymous</I> and <I>inner classes</I>.</P>
+    
+    <P>
       <B><I><FONT COLOR="#FF0000">Microsoft</FONT></I></B> has made (and
-      withdrawn) a proposal for an own callback-specific <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
-      language extension.</P>
+      withdrawn) a proposal for an own callback-specific <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> 
+    language extension (&quot;delegates&quot;), and has then provided a more comprehensive 
+    <i>delegate</i> or <i>callable 
+    entity</i> notion in <font color="#FF0000"><i><b>C#</b></i></font>.</P>
     
-    <P>The problem is primarily to find a truly object-oriented way to pass an
-      <B>event description, provided by the notifying server</B>, as well as
-      one or more <B>&quot;client data&quot;</B><I> </I>arguments, provided by
-      the notification client, in a callback parameter list, without requiring
-      the server to &quot;know&quot; and to insert those client data arguments
-      at the time when the callback function is called.</P>
+    <P>The problem is primarily to find a truly object-oriented and type-safe 
+    way to associate &quot;client data&quot;, provided by
+      the envisaged callback receiver, with the event/signal sender object 
+    (&quot;server&quot;) without requiring
+      the server to &quot;know&quot; the type and structure of the client data.</P>
     
-    <P>We felt that the present <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
-      solution is too indirect and awkward. It is based on intermediate <B>listener
-      objects</B> that contain the client data and on auxiliary constructs like <B>
-      inner, adapter, and anonymous classes</B>. We  prefer a solution
-      allowing the event-consuming client object to direct a quite
-      straightforward request to the event-producing server object:</P>
+    <P>We felt that the present <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> 
+    and <font color="#FF0000"><i><b>C#</b></i></font>
+      solutions are too complex and indirect and lack the desirable intuitive 
+    simplicity and clarity. In contrast to the former, the <font color="#FF0000">
+    <i><b>Lava</b></i></font> solution doesn't require the introduction of 
+    additional types of entities (like <i>delegates</i> or <i>inner classes</i>) 
+    but is solely based on three specific executable statements:
+    <font color="#0000FF"><b>connect</b></font>, <font color="#0000FF"><b>
+    disconnect</b></font> and <font color="#0000FF"><b>signal</b></font>. The 
+    underlying idea has been taken from the
+    <a target="_blank" href="http://doc.trolltech.com/4.0/signalsandslots.html">
+    signal/slot notion</a> in <font color="#FF0000"><i><b>TrollTech's Qt toolkit</b></i></font>, 
+    and has been adapted to the conceptual setting of the <font color="#FF0000">
+    <b><i>Lava</i></b></font> language.</P>
     <BLOCKQUOTE>
       
       <P><b>Call my member function <I>self.cbf(evtDesc,cd1,cd2,...)</I>

@@ -510,7 +510,10 @@ bool SynObject::IsStatement () {
   if (type == Stm_T)
     if ((parentObject->primaryToken == new_T
         && whereInParent != (address)&((NewExpression*)parentObject)->butStatement.ptr)
-    || parentObject->primaryToken == run_T)
+    || parentObject->primaryToken == run_T
+    || (primaryToken == assignFS_T
+        && (parentObject->primaryToken == connect_T
+            || parentObject->primaryToken == signal_T)))
       return false;
     else
       return true;
@@ -520,6 +523,9 @@ bool SynObject::IsStatement () {
   case FuncDisabled_T:
     if (parentObject->IsSelfVar()
     || parentObject->primaryToken == assignFX_T
+    || (parentObject->primaryToken == assignFS_T
+        && (parentObject->parentObject->primaryToken == connect_T
+            || parentObject->parentObject->primaryToken == signal_T))
     || parentObject->primaryToken == connect_T
     || parentObject->primaryToken == disconnect_T
     || parentObject->parentObject->primaryToken == new_T
