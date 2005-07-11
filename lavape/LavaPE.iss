@@ -54,7 +54,7 @@ Source: C:\lavape\doc\html\howto\*; DestDir: {app}\doc\html\howto; Flags: ignore
 Source: C:\lavape\doc\images\*; DestDir: {app}\doc\images; Flags: ignoreversion
 Source: C:\lavape\src\LavaPE\Release\std\*; DestDir: {app}\bin\std; Flags: ignoreversion
 Source: C:\lavape\src\LavaPE\Debug\LavaIcons\*; DestDir: {app}\bin\LavaIcons; Flags: ignoreversion
-Source: C:\lavape\src\LavaPE\Release\std.lava; DestDir: {app}\bin; Attribs: readonly; Flags: ignoreversion uninsremovereadonly
+Source: C:\lavape\src\LavaPE\Release\std.lava; DestDir: {app}\bin; Attribs: readonly; Flags: ignoreversion
 Source: C:\lavape\src\LavaPE\Release\std.htm; DestDir: {app}\bin; Flags: ignoreversion
 Source: C:\lavape\src\LavaPE\Release\std_m.htm; DestDir: {app}\bin; Flags: ignoreversion
 Source: C:\lavape\src\LavaPE\Release\std_1.htm; DestDir: {app}\bin; Flags: ignoreversion
@@ -87,20 +87,20 @@ Filename: {app}\bin\LavaPE.exe; Description: Launch LavaPE; Parameters: {app}\sa
 Type: filesandordirs; Name: {app}\bin\Components
 
 [Registry]
-Root: HKCR; SubKey: Lava.Component; ValueType: string; ValueName: ; ValueData: Lava Component; Flags: uninsdeletekey
+;Root: HKCR; SubKey: Lava.Component; ValueType: string; ValueName: ; ValueData: Lava Component; Flags: uninsdeletekey
 Root: HKCR; SubKey: Lava.Component\protocol\StdFileEditing\server; ValueType: string; ValueName: ; ValueData: {app}\bin\LavaPE.exe %1
 Root: HKCR; SubKey: Lava.Component\protocol\StdFileEditing\verb\0; ValueType: string; ValueName: ; ValueData: &Edit
 Root: HKCR; SubKey: Lava.Component\shell\open\command; ValueType: string; ValueName: ; ValueData: {app}\bin\LavaPE.exe %1
-Root: HKCR; SubKey: Lava.Object; ValueType: string; ValueName: ; ValueData: Lava Object; Flags: uninsdeletekey
+;Root: HKCR; SubKey: Lava.Object; ValueType: string; ValueName: ; ValueData: Lava Object; Flags: uninsdeletekey
 Root: HKCR; SubKey: Lava.Object\protocol\StdFileEditing\server; ValueType: string; ValueName: ; ValueData: {app}\bin\Lava.exe %1
 Root: HKCR; SubKey: Lava.Object\protocol\StdFileEditing\verb\0; ValueType: string; ValueName: ; ValueData: &Edit
 Root: HKCR; SubKey: Lava.Object\shell\open\command; ValueType: string; ValueName: ; ValueData: {app}\bin\Lava.exe %1
-Root: HKCR; SubKey: Lava.Program; ValueType: string; ValueName: ; ValueData: Lava Program; Flags: uninsdeletekey
+;Root: HKCR; SubKey: Lava.Program; ValueType: string; ValueName: ; ValueData: Lava Program; Flags: uninsdeletekey
 Root: HKCR; SubKey: Lava.Program\protocol\StdFileEditing\server; ValueType: string; ValueName: ; ValueData: {app}\bin\Lava.exe %1
 Root: HKCR; SubKey: Lava.Program\protocol\StdFileEditing\verb\0; ValueType: string; ValueName: ; ValueData: &Edit
 Root: HKCR; SubKey: Lava.Program\shell\Edit; ValueType: string; ValueName: ; ValueData: &Edit with LavaPE
 Root: HKCR; SubKey: Lava.Program\shell\Edit\command; ValueType: string; ValueName: ; ValueData: "{app}\bin\LavaPE.exe %1"
 Root: HKCR; SubKey: Lava.Program\shell\open\command; ValueType: string; ValueName: ; ValueData: {app}\bin\Lava.exe %1
-Root: HKCR; SubKey: .lava; ValueType: string; ValueName: ; ValueData: Lava.Program; Flags: uninsdeletekey
-Root: HKCR; SubKey: .lcom; ValueType: string; ValueName: ; ValueData: Lava.Component; Flags: uninsdeletekey
-Root: HKCR; SubKey: .ldoc; ValueType: string; ValueName: ; ValueData: Lava.Object; Flags: uninsdeletekey
+;Root: HKCR; SubKey: .lava; ValueType: string; ValueName: ; ValueData: Lava.Program; Flags: uninsdeletekey
+;Root: HKCR; SubKey: .lcom; ValueType: string; ValueName: ; ValueData: Lava.Component; Flags: uninsdeletekey
+;Root: HKCR; SubKey: .ldoc; ValueType: string; ValueName: ; ValueData: Lava.Object; Flags: uninsdeletekey

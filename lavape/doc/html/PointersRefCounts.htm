@@ -72,25 +72,26 @@
       therefore none of them would ever be destroyed. </P>
     
     <P>In order to avoid this, <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      provides a third kind of references between objects: <A NAME="reverse"></A><I><B><FONT COLOR="#FF0000">
-    reverse links</FONT></B></I>. They should be used particularly for backward 
+      provides a third kind of references between objects: <A NAME="reverse"></A>
+    <b>reverse links</b>. They should be used particularly for backward 
     references to &quot;parent&quot; or &quot;ancestor&quot; objects or anyhow </P>
     
     <ul>
       <li>in a way that prevents the emergence of closed cycles of 
       constituent/acquaintance references. </li>
       <li>Moreover, proper functioning of storage management, as outlined below, 
-      requires that reverse links always point to objects that can be reached 
-      also by at least one forward (i.e., constituent/acquaintance) link.</li>
+      requires that reverse links always originate from objects that can be reached 
+      by a forward (i.e., constituent/acquaintance) link from the target object 
+      of the reverse link.</li>
     </ul>
     
     <P> <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       manages a separate reference count for reverse links. If the normal
       &quot;forward&quot; reference count of an object becomes 0 so that the object can 
       at most, if at all, be
-      reached via reverse links from now on then it is 
+      reached via reverse links from now on, then it is 
     automatically and irreversibly transformed
-      into a <b>&quot;zombie&quot;</b> object, and all its links to other objects are
+      into a <b>&quot;zombie&quot;</b> object, and all its <b>constituent</b> links to other objects are
       released (recursively!). This will, under the 
       above-mentioned conditions, cause all reverse
       links pointing to this object to disappear. If not, then any subsequent
@@ -98,15 +99,15 @@
       exception to be thrown.</P>
     
     <P>In addition, <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> provides a 
-    basic method <b><i>Finalize</i></b> of class <i>Object</i>, which 
+    basic method <b><i>finalize</i></b> of class <i>Object</i>, which 
     marks the object as a zombie 
     <i>immediately</i> by setting its forward count to 0, and which
       (recursively) releases all its references.</P>
     
-    <P>&nbsp;<i>Object::Finalize</i> can be used</P>
+    <P>&nbsp;<i>Object::finalize</i> can be used</P>
     <OL>
       <LI>for (secure) manual storage management in exceptional cases of
-        reference structures containing closed cycles (&quot;dangling pointers&quot;
+        reference structures containing closed cycles of forward links (&quot;dangling pointers&quot;
         cannot occur even in this case!),<BR>
          </LI>
       <LI>to forcibly and immediately terminate the validity/usability of an
@@ -116,12 +117,12 @@
     <P>Note, however, that <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       objects are not <I>destroyed</I> before both the normal <i>and</i> the reverse
       reference count are 0. This can be achieved only by proper usage of the
-      three reference types and, in exceptional cases, the <i>Object::Finalize </i>
+      three reference types and, in exceptional cases, the <i>Object::finalize </i>
     method. </P>
     
     <P>So <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> guarantees the
       absence of &quot;dangling pointers&quot; under all circumstances, and
-      under normal circumstances (without exotic or unreasonable linkage
+      under normal circumstances (without circular or simply unreasonable linkage
       structures) objects that are not needed any longer will be destroyed
       automatically at the earliest possible time.</P>
     
@@ -134,7 +135,7 @@
     implicitly/automatically when objects are going to be destroyed (by the <b>
     <i><font color="#FF0000">Java</font></i></b> garbage collector or the <b><i>
     <font color="#FF0000">C++</font></i></b> delete operation or if local 
-    variables disappear from the <b><i><font color="#FF0000">C++</font></i></b> 
+    variables disappear from the 
     run time stack. They give an opportunity to the object to perform special 
     finalization operations before it is destroyed and its storage is freed. In <i>
     <font color="#FF0000"><b>C++</b></font></i>, destructors are required 
@@ -147,26 +148,26 @@
     clean-up operations before it is released and destroyed, E.g., a file 
     descriptor should close the respective file if the user of the file 
     descriptor has forgotten to do this (or has been prevented from doing so by 
-    an exception that occurred befor the close).</P>
+    an exception that occurred before the close).</P>
     
     <P>Like <b><i><font color="#FF0000">Java</font></i></b>, <b>
-    <i><font color="#FF0000">Lava</font></i></b> provides a <i> <b>Finalize</b></i> 
+    <i><font color="#FF0000">Lava</font></i></b> provides a <i> <b>finalize</b></i> 
     method of class <i>Object</i> to this end (see above), which 
-    may be overridden in more derived classes. It is invoked automatically by 
+    may be overridden in  derived classes. It is invoked automatically by 
     the <b><i><font color="#FF0000">Lava</font></i></b> run time system when an 
     object is about to be destroyed since its reference counts are 0. </P>
     
-    <P>Note, however, that <i>Finalize</i> may attach the respective 
+    <P>Note, however, that <i>finalize</i> may attach the respective 
     object as a member to some other object and thus cause its reference 
     count(s) to become non-zero again. In this case the object isn't destroyed, 
-    of course, after <i>Finalize</i> returns. </P>
+    of course, after <i>finalize</i> returns. </P>
     
-    <P>The Finalize method of a derived class is a quite normal 
-    method and isn't restricted anyhow. It may in turn call <i>Object::Finalize</i> 
+    <P>The finalize method of a derived class is a quite normal 
+    method and isn't restricted anyhow. It may in turn call <i>Object::finalize</i> 
     (by a &quot;static call&quot;) if the respective object is to be zombified finally 
     even if its reference counts are not yet = 0.</P>
     
-    <P>If <i>Finalize</i> is invoked by a
+    <P>If <i>finalize</i> is invoked by a
     <a target="_blank" href="http://www.memorymanagement.org/glossary/t.html#tracing.garbage.collection">
     tracing garbage collector</a> as in <b><i><font color="#FF0000">Java</font></i></b> 
     the you can get into troubles since the time of invocation is more or less 

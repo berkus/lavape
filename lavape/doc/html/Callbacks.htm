@@ -24,113 +24,125 @@
     <P>In the course of the <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
       development <B><I><FONT COLOR="#FF0000">Sun Microsystems</FONT></I></B>
       has replaced the original event handling concept by a new philosophy based
-      on <I>event listeners</I>, <I>adapter classes</I>, and <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
-      language extensions introducing <I>anonymous</I> and <I>inner classes</I>.</P>
+      on <b>event listeners, adapter classes</b>, and <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
+      language extensions introducing <b>anonymous and inner classes</b>.</P>
     
     <P>
       <B><I><FONT COLOR="#FF0000">Microsoft</FONT></I></B> has made (and
       withdrawn) a proposal for an own callback-specific <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> 
-    language extension (&quot;delegates&quot;), and has then provided a more comprehensive 
-    <i>delegate</i> or <i>callable 
-    entity</i> notion in <font color="#FF0000"><i><b>C#</b></i></font>.</P>
+    language extension (&quot;delegates&quot;), and has then provided a more comprehensive
+      <b>delegate</b> or <b> <i>callable 
+    entity</i> </b>notion in <font color="#FF0000"><i><b>C#</b></i></font>.</P>
     
     <P>The problem is primarily to find a truly object-oriented and type-safe 
-    way to associate &quot;client data&quot;, provided by
+    way to associate arbitrary <b>&quot;client data&quot;</b>, provided by
       the envisaged callback receiver, with the event/signal sender object 
     (&quot;server&quot;) without requiring
-      the server to &quot;know&quot; the type and structure of the client data.</P>
+      the signal sender&nbsp; to &quot;know&quot; the type and structure of the client data.</P>
     
     <P>We felt that the present <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> 
     and <font color="#FF0000"><i><b>C#</b></i></font>
       solutions are too complex and indirect and lack the desirable intuitive 
-    simplicity and clarity. In contrast to the former, the <font color="#FF0000">
-    <i><b>Lava</b></i></font> solution doesn't require the introduction of 
-    additional types of entities (like <i>delegates</i> or <i>inner classes</i>) 
+    simplicity and clarity. In contrast to the former, <b>the </b> <font color="#FF0000">
+    <i><b>Lava</b></i></font><b> solution doesn't require the introduction of 
+    additional types of entities</b> (like <i>delegates</i> or <i>inner classes</i>) 
     but is solely based on three specific executable statements:
     <font color="#0000FF"><b>connect</b></font>, <font color="#0000FF"><b>
-    disconnect</b></font> and <font color="#0000FF"><b>signal</b></font>. The 
-    underlying idea has been taken from the
+    disconnect</b></font> and <font color="#0000FF"><b>signal</b></font>.</P>
+    
+    <P>The 
+    principal idea has been taken over from the
     <a target="_blank" href="http://doc.trolltech.com/4.0/signalsandslots.html">
-    signal/slot notion</a> in <font color="#FF0000"><i><b>TrollTech's Qt toolkit</b></i></font>, 
-    and has been adapted to the conceptual setting of the <font color="#FF0000">
-    <b><i>Lava</i></b></font> language.</P>
-    <BLOCKQUOTE>
-      
-      <P><b>Call my member function <I>self.cbf(evtDesc,cd1,cd2,...)</I>
-        when your event <I>evtSpec</I> occurs.</b></P>
-      
-    </BLOCKQUOTE>
+    signal/slot concept</a> in <i><b>
+    <a target="_blank" href="http://www.trolltech.com">TrollTech's</a>
+    <a target="_blank" href="http://www.trolltech.com/products/qt/index.html">Qt toolkit</a></b></i>, 
+    and has been modified<span lang="de"> and </span>adapted to the conceptual setting of the <font color="#FF0000">
+    <b><i>Lava</i></b></font> language:</P>
     
-    <P>Here the first argument <i>evtDesc</i> of our callback function <i>cbf</i> will describe the details of
-        the server event, and <i>cd1</i>, <i>cd2</i>, ... are client data
-        objects that are provided by the client already together with this
-        request. <i>&quot;evtSpec&quot;</i> is an enumerated item of some enumerated type
-    <i>ServEv</i>&nbsp;
-      that distinguishes the supported server events. The server may provide
-        several such enumerated types <i>ServEv </i>each of which corresponds to one class
-    <i>ServEvDesc</i> of server event descriptions that may be used for <i>evtDesc</i>.
-    <b>Note: </b><b>The server does not need to know the
-        declaration of the callback function cbf!</b></P>
+    <P>In the signal sender class a signal (that can be emitted by an object of 
+    this class) is declared as a member function without output parameters, 
+    having the special &quot;signal&quot; attribute. A <b>signal function</b> doesn't have an 
+    implementation. An object of a class having signals may explicitly emit a signal  using the <font color="#0000FF">
+    <b>signal</b></font> statement (instead of a normal function <font color="#0000FF">
+    <b>call</b></font> statement), with actual parameters, say <i>parm1</i>, <i>
+    parm2</i>, ... :</P>
+    <div align="center">
+      <center>
+    <table border="1" cellspacing="0" id="AutoNumber1" bgcolor="#FFFFFF" cellpadding="5" width="0%" height="0%" style="border-collapse: collapse" bordercolor="#111111">
+      <tr>
+        <td width="100%" align="center" height="20">
+      <font face="Courier New">
+      <font color="#0000FF"><b>signal</b></font> self.<b>sigFunc</b> (parm1,parm2,...)
+      </font>
+        </td>
+      </tr>
+    </table>
     
-    <P>This is exactly what you can express in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> 
-    if a client wants to register a callback with a server.</P>
+      </center>
+    </div>
     
-    <P>To meet the requirements of object-orientation and static type checking
-      <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> provides a single
-      callback-specific <B><FONT COLOR="#0000FF">callback</FONT></B>
- expression and makes use of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      <A HREF="PatternsFrameworks.htm">virtual types</A> moreover. The special
-    expression could be called a <I>&quot;canned function call&quot;.</I> It
-      wraps up the above expression <I>self.cbf(&lt;event&gt;,cd1,cd2,...)</I>
-      together with <i>evtSpec</i> in a special data object of class <I>SE_Callback</I>
-      (which the server has derived to this end from the basic <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class
-      <I>Callback</I> defined in the basic include file <B><FONT COLOR="#FF0000"><I>std.lava</I></FONT></B>).
-    The declaration of <i>Callback</i> in <b><i><font color="#FF0000">std.lava</font></i></b>
-    is nested within class <i>Callbacks,</i> which extends class <i>Set</i> and
-    is used as the parent of all types of lists of registered callbacks.
-    </P>
+    <P>Note that an object (<i>self</i> in the example) can only <i>itself</i> emit a 
+    signal; it cannot force <i>another</i> object to emit a signal, except, of 
+    course, if the class of the other object exports a method having this effect 
+    (like the <i>sendSignal</i> function in our <A HREF="CallbackSample.htm">callback sample</A>).</P>
     
-    <P>Class <I>Callbacks</I> has two virtual (parameter) types: <I>&quot;eventSpec
-      = Enumeration&quot; </I>and <I>&quot;eventDesc&quot; </I>(an abstract
-      virtual type). These are assigned new values <i>ServEv </i> and <i>ServEvDesc</i>,
-      respectively, when the server programmer derives (one or several classes) <I>SE_Callbacks</I> from
-      <I>Callbacks</I>.&nbsp;</P>
+    <P>You can use the <font color="#0000FF"><b>connect</b></font> statement to 
+    specify to which handler objects and handler methods a signal is to be 
+    transmitted:</P>
     
-    <P>The (executable) <B><FONT COLOR="#0000FF">callback</FONT></B>
-      construct allows the callback client to &quot;freeze&quot; the desired
-      callback function invocation in a state where its first (= event) argument
-      <I>&lt;event&gt;</I> is not yet known but everything else is known.</P>
-
-<PRE><FONT FACE="Courier New">  <B><FONT COLOR="#0000FF">  declare</FONT></B>
-      SE_Callback cb
-    <B><FONT COLOR="#0000FF">do</FONT></B>
-      cb <B><FONT COLOR="#0000FF">&lt;==</FONT></B> <B><FONT COLOR="#0000FF"><FONT COLOR="#0000FF">callback</FONT> from</FONT></B> SE_Callback:
-               <b><font color="#0000FF">call</font></b> self.cbf(&lt;event&gt;,cd1,cd2,...)
-             <font color="#0000FF"><b>when</b></font>
-               evtSpec
-             <B><FONT COLOR="#0000FF">#callback</FONT></B>;
-      server.register(cb) <i><font color="#008080">register callback cb</font></i>
-    <B><FONT COLOR="#0000FF">#declare</FONT></B></FONT></PRE>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber3" cellpadding="5" bgcolor="#FFFFFF">
+        <tr>
+          <td width="100%"><font face="Courier New"><font color="#0000FF"><b>
+          connect</b></font> sigSender.<b>sigFunc</b> to handlerObj.<b>hdlFunc</b></font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
     
-    <P><b>At programming time</b> <I><B><FONT COLOR="#FF0000">LavaPE</FONT></B></I>
-      checks the <B><FONT COLOR="#0000FF">callback</FONT></B> expression and
-      this way makes sure that the class of the first <i> formal</i> parameter of <I>cbf</I>
-      equals VT &lt;<I>eventDesc&gt; (=ServerEvent)</I> or a base class thereof, and <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>
-      allows you to select the event type only from the
-      enumerated type &lt;<I>eventSpec&gt;</I> (= <i>ServEv</i>). </P>
+    <P>You may connect the same signal sender / signal function to several 
+    handler objects / handler functions. When the sender emits this signal, then 
+    all handlers will be invoked in the order of the corresponding
+    <font color="#0000FF"><b>connect</b></font>s</P>
     
-    <P><b>At run time</b> the actual callback execution is carried out by a native function <i>Execute</i>
-      of class <i>Callback</i>. It replaces the first (placeholder) argument <I>&lt;event&gt;</I>
-      of <I>cbf</I> with the actual argument <I>actEvent</I> and then executes the &quot;canned call&quot; <I>cb</I>.&nbsp;</P>
+    <P>Transmitting a signal to a handler object <i>handlerObj</i> having a 
+    handler method <i>hdlFunc</i> means that the handler function is invoked 
+    with that handler object as call object, and the actual parameters are taken 
+    from the signal statement, just as if the following function call would be 
+    performed in place of the signal function call:</P>
     
-    <P>The <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-    <a href="PatternsFrameworks.htm#VT">virtual type</a> mechanism ensures (at programming time) that the
-      actual parameter <I>actEvent</I> of <i>NotifyClients</i> and of <i>Execute</i>
-      is compatible with the corresponding (virtual) formal parameter type <I>eventDesc</I>
-      (= <I>ServerEvent</I>). Consequently <I>actEvent</I> is also compatible
-      with the first formal parameter of the client's callback function <I>cbf</I>.</P>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber2" bgcolor="#FFFFFF" cellpadding="5">
+        <tr>
+          <td width="100%"><font face="Courier New"><font color="#0000FF"><b>
+          call</b></font> handlerObj.<b>hdlFunc</b>(parm1,parm2,...)</font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
     
-    <P><b>For further details see
-      classes <I>CallbackServer</I>  and <i>Callback </i>in <FONT COLOR="#FF0000">std.lava</FONT> and our <A HREF="CallbackSample.htm">callback sample</A>.</b></P>
+    <P>This requires that the handler function must have the same number of 
+    input (and no output) parameters, and the formal parameters of the signal 
+    function must be assignment compatible to the corresponding formal 
+    parameters of the handler function.</P>
+    
+    <P>Moreover, if the call objects or the formal parameters of the functions 
+    occurring in the <font color="#0000FF"><b>connect</b></font> statement 
+    depend on <a href="PatternsFrameworks.htm#VT">virtual types</a>, then
+    <font color="#FF0000"><i><b>LavaPE</b></i></font> will reject the
+    <font color="#0000FF"><b>connect</b></font> if <i>sigSender</i> and <i>
+    handlerObj</i> don't belong to the same
+    <a href="PatternsFrameworks.htm#patternContext">pattern context</a> and thus 
+    don't apply the same interpretation to the involved virtual types.</P>
+    
+    <P>The envisaged extension of the <font color="#FF0000"><i><b>Lava</b></i></font> 
+    GUI support requires that you can also specify a signal sender class only in 
+    the <font color="#0000FF"><b>connect</b></font> statement, rather than a 
+    concrete signal sender object (to be explained after the GUI support 
+    extension.)</P>
+    
+    <P><b>See also our <A HREF="CallbackSample.htm">callback sample</A>.</b></P>
   </BODY>
 </HTML>
