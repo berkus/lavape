@@ -130,18 +130,32 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\Lava.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\LavaPE.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Lava.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\LavaPE.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+  WriteRegStr HKCR "Lava.Component\protocol\StdFileEditing\server" "" "$INSTDIR\bin\LavaPE.exe %1"
+  WriteRegStr HKCR "Lava.Component\protocol\StdFileEditing\verb\0" "" "&Edit"
+  WriteRegStr HKCR "Lava.Component\shell\open\command" "" "$INSTDIR\bin\LavaPE.exe %1"
+  WriteRegStr HKCR "Lava.Object\protocol\StdFileEditing\server" "" "$INSTDIR\bin\Lava.exe %1"
+  WriteRegStr HKCR "Lava.Object\protocol\StdFileEditing\verb\0" "" "&Edit"
+  WriteRegStr HKCR "Lava.Object\shell\open\command" "" "$INSTDIR\bin\Lava.exe %1"
+  WriteRegStr HKCR "Lava.Program\protocol\StdFileEditing\server" "" "$INSTDIR\bin\Lava.exe %1"
+  WriteRegStr HKCR "Lava.Program\protocol\StdFileEditing\verb\0" "" "&Edit"
+  WriteRegStr HKCR "Lava.Program\shell\Edit" "" "&Edit with LavaPE"
+  WriteRegStr HKCR "Lava.Program\shell\Edit\command" "" "$INSTDIR\bin\LavaPE.exe %1"
+  WriteRegStr HKCR "Lava.Program\shell\open\command" "" "$INSTDIR\bin\Lava.exe %1"
+  WriteRegStr HKCR ".lava" "" "Lava.Program"
+  WriteRegStr HKCR ".lcom" "" "Lava.Component"
+  WriteRegStr HKCR ".ldoc" "" "Lava.Object"
 SectionEnd
 
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "The entire Lava software, including the required components from TrollTech's Qt toolkit"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "The entire Lava software, including the required components from TrollTech's Qt toolkit, Lava sample programs, and HTML online help files"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 
@@ -163,5 +177,12 @@ Section Uninstall
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
+  DeleteRegKey HKCR "Lava.Component"
+  DeleteRegKey HKCR "Lava.Object"
+  DeleteRegKey HKCR "Lava.Program"
+  DeleteRegKey HKCR ".lava"
+  DeleteRegKey HKCR ".lcom"
+  DeleteRegKey HKCR ".ldoc"
+  DeleteRegKey HKCU "FhG-SIT"
 ;  SetAutoClose true
 SectionEnd
