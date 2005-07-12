@@ -221,7 +221,7 @@ int GetObjectLength(LavaDECL* typeDECL)
 }
 
 
-static void forceDecrement (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) {
+static void forceDecrement (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly, LavaObjectList& objList) {
   register unsigned short fwdCnt;
   CSectionDesc* secTab;
   LavaVariablePtr newStackFrame;
@@ -284,10 +284,10 @@ static void forceDecrement (CheckData &ckd, LavaObjectPtr object, bool constitue
             || attrDECL->TypeFlags.Contains(acquaintance)) {
               if (constituentsOnly) {
                 if (attrDECL->TypeFlags.Contains(constituent))
-                  forceDecrement(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly);
+                  forceDecrement(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly, objList);
               }
               else
-                forceDecrement(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly);
+                forceDecrement(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly, objList);
             }
             else
               forceDRC(ckd,(LavaObjectPtr)sectionPtr[lmem]);
@@ -295,9 +295,34 @@ static void forceDecrement (CheckData &ckd, LavaObjectPtr object, bool constitue
       //}
     }
   }
+  ((SynFlags*)(object + 1))->EXCL(marked);
+  if (!*(((unsigned short *)object)-1)) {
+    ((SynFlags*)(object+1))->INCL(releaseFinished);
+    ((SynFlags*)(object + 1))->INCL(zombified);
+  }
+  if (((SynFlags*)(object+1))->Contains(releaseFinished) && !*(((unsigned short *)object)-2)) {
+    if (objList.findRef(object) < 0)
+      objList.append(object);
+  }
 }
 
 
+static bool forceRelease (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) {
+  LavaObjectList ObjList;
+  object = object - (*object)->sectionOffset;
+  forceDecrement(ckd,object,constituentsOnly, ObjList);
+  LavaObjectPtr delObj;
+  for (delObj = ObjList.first(); delObj; ObjList.next()) {
+    delete [] (delObj-LOH);
+    allocatedObjects--;
+  }
+  return true;
+
+  //return releaseUnusedConstituents(ckd,object,constituentsOnly,true); //true=top node;=>zombify
+}
+
+
+/*
 static bool releaseUnusedConstituents (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly, bool topNode) {
   register unsigned short fwdCnt;
   CSectionDesc* secTab;
@@ -354,7 +379,7 @@ static bool releaseUnusedConstituents (CheckData &ckd, LavaObjectPtr object, boo
       }
       //else { //(##########)
         llast = LSH + secClassDECL->SectionInfo2;
-        for (/*ll = LSH*/; lmem < llast; lmem++) {
+        for (; lmem < llast; lmem++) {
           attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
           if (sectionPtr[lmem])
             if (attrDECL->TypeFlags.Contains(constituent)
@@ -372,15 +397,9 @@ static bool releaseUnusedConstituents (CheckData &ckd, LavaObjectPtr object, boo
       //}
     }
   }
+  ((SynFlags*)(object + 1))->EXCL(marked);
   return true;
-}
-
-
-static bool forceRelease (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) {
-  object = object - (*object)->sectionOffset;
-  forceDecrement(ckd,object,constituentsOnly);
-  return releaseUnusedConstituents(ckd,object,constituentsOnly,true); //true=top node;=>zombify
-}
+}*/
 
 typedef TAdapterFunc* (*TS) ();
 

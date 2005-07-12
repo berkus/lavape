@@ -697,6 +697,7 @@ public:
 };
 
 typedef QPtrList<Receiver> ReceiverList;
+typedef QPtrList<CSectionDesc*> LavaObjectList;
 
 class Callback {
 public:
