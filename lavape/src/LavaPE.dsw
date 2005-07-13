@@ -258,18 +258,6 @@ Package=<4>
 
 ###############################################################################
 
-Project: "Shortcut"=.\Shortcut\Shortcut.dsp - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-}}}
-
-###############################################################################
-
 Project: "disco"=.\disco\disco.dsp - Package Owner=<4>
 
 Package=<5>
