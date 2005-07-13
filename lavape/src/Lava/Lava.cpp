@@ -119,10 +119,11 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   InitGlobalStrings();
   qt_use_native_dialogs = false;
 
-  SetVendorName("FhG-SIT");
+  SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
   QSettings settings(QSettings::Native);
-  settings.beginGroup(GetSettingsPath());
+  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+//  settings.beginGroup(GetSettingsPath());
   LBaseData.theApp = this;
   LBaseData.inRuntime = true;
   clipboard()->clear();
@@ -471,7 +472,8 @@ void CLavaApp::saveSettings()
 {
   QSettings settings(QSettings::Native);
 
-  settings.beginGroup(GetSettingsPath());
+  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+//  settings.beginGroup(GetSettingsPath());
 
   settings.beginGroup("/generalSettings");
   settings.writeEntry(szCheckPreconditions,LBaseData.m_strCheckPreconditions);
@@ -611,7 +613,7 @@ void CLavaApp::OnChooseGlobalFont()
 
 void CLavaApp::HtmlHelp()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	if (!qacl) {
@@ -624,7 +626,7 @@ void CLavaApp::HtmlHelp()
 
 void CLavaApp::EditingLavaProgs()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -638,7 +640,7 @@ void CLavaApp::EditingLavaProgs()
 
 void CLavaApp::LearningLava()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	

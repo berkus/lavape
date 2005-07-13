@@ -14,10 +14,16 @@ SetCompressor lzma
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
 
+Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
+OutFile "lavape-0.8.4-win32.exe"
+InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
+;InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
+
 ;--------------------------------
 ;Interface Configuration
 
   !define MUI_HEADERIMAGE
+;  !define MUI_HEADERIMAGE_RIGHT
   !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
   ;!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\win.bmp" ; optional
   !define MUI_HEADERIMAGE_BITMAP "Volcano2.bmp" ; optional
@@ -44,8 +50,9 @@ SetCompressor lzma
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
+;!define MUI_FINISHPAGE_RUN_FUNCTION function_name
 !define MUI_FINISHPAGE_RUN "$INSTDIR\bin\LavaPE.exe"
-!define MUI_FINISHPAGE_RUN_PARAMETERS "$INSTDIR\samples\HelloWorld.lava"
+!define MUI_FINISHPAGE_RUN_PARAMETERS "..\samples\HelloWorld.lava"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -64,20 +71,16 @@ SetCompressor lzma
 
 ; MUI end ------
 
-Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "lavape-0.8.4-win32.exe"
-InstallDir "$PROGRAMFILES\LavaPE"
-InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
-;ShowInstDetails show
-;ShowUnInstDetails show
-
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
 
 Section "LavaPE (required)" SEC01
   SectionIn RO
-
+  
+;  MessageBox MB_OK "DOCUMENTS = $DOCUMENTS"
+;  MessageBox MB_OK "$INSTDIR"
+  
   SetOutPath $INSTDIR
   File "*.txt"
 
@@ -107,30 +110,31 @@ Section "LavaPE (required)" SEC01
   File "src\LavaPE\Release\Components\LavaStream.lava"
   File "src\LavaPE\Release\Components\LavaStream.dll"
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
+  SetOutPath $INSTDIR\bin ; working directory for automatic launch of LavaPE
 SectionEnd
 
 Section "Start Menu Folder"
   CreateDirectory "$SMPROGRAMS\LavaPE"
-  CreateShortCut "$SMPROGRAMS\LavaPE\LavaPE.lnk" "$INSTDIR\bin\LavaPE.exe"
-  CreateShortCut "$SMPROGRAMS\LavaPE\Lava.lnk" "$INSTDIR\bin\Lava.exe"
+  CreateShortCut "$SMPROGRAMS\LavaPE\Lava Programming Environment.lnk" "$INSTDIR\bin\LavaPE.exe"
+  CreateShortCut "$SMPROGRAMS\LavaPE\Lava Interpreter.lnk" "$INSTDIR\bin\Lava.exe"
   CreateShortCut "$SMPROGRAMS\LavaPE\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
   CreateShortCut "$SMPROGRAMS\LavaPE\Uninstall.lnk" "$INSTDIR\uninst.exe"SectionEnd
 SectionEnd
 
 Section "Desktop Folder"
   CreateDirectory "$DESKTOP\LavaPE"
-  CreateShortCut "$DESKTOP\LavaPE\LavaPE.lnk" "$INSTDIR\bin\LavaPE.exe"
-  CreateShortCut "$DESKTOP\LavaPE\Lava.lnk" "$INSTDIR\bin\Lava.exe"
-  CreateShortCut "$DESKTOP\LavaPE\Samples.lnk" "$INSTDIR\samples"
+  CreateShortCut "$DESKTOP\LavaPE\Lava Programming Environment.lnk" "$INSTDIR\bin\LavaPE.exe"
+  CreateShortCut "$DESKTOP\LavaPE\Lava Interpreter.lnk" "$INSTDIR\bin\Lava.exe"
+  CreateShortCut "$DESKTOP\LavaPE\Lava Samples.lnk" "$INSTDIR\samples"
   CreateShortCut "$DESKTOP\LavaPE\License.lnk" "$INSTDIR\COPYING.txt"
-  CreateShortCut "$DESKTOP\LavaPE\SamplesReadme.lnk" "$INSTDIR\SamplesReadme.txt"
+  CreateShortCut "$DESKTOP\LavaPE\Samples Readme.lnk" "$INSTDIR\SamplesReadme.txt"
   CreateShortCut "$DESKTOP\LavaPE\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
   CreateShortCut "$DESKTOP\LavaPE\Uninstall.lnk" "$INSTDIR\uninst.exe"
 SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\LavaPE.exe"
+;  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\LavaPE.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\LavaPE.exe"
@@ -151,7 +155,11 @@ Section -Post
   WriteRegStr HKCR ".lava" "" "Lava.Program"
   WriteRegStr HKCR ".lcom" "" "Lava.Component"
   WriteRegStr HKCR ".ldoc" "" "Lava.Object"
-SectionEnd
+  
+  RMDir /r "$DOCUMENTS\..\.assistant"
+    ; to prevent erroneous reuse of outdated .assistant data belonging to
+    ; a former installation in a different INSTDIR
+  SectionEnd
 
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -174,7 +182,10 @@ Section Uninstall
   RMDir /r "$SMPROGRAMS\LavaPE"
   RMDir /r "$DESKTOP\LavaPE"
   RMDir /r "$INSTDIR"
-
+  RMDir /r "$DOCUMENTS\..\.assistant"
+    ; to prevent erroneous reuse of outdated .assistant data belonging to
+    ; a former installation in a different INSTDIR
+  
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
   DeleteRegKey HKCR "Lava.Component"
@@ -183,6 +194,6 @@ Section Uninstall
   DeleteRegKey HKCR ".lava"
   DeleteRegKey HKCR ".lcom"
   DeleteRegKey HKCR ".ldoc"
-  DeleteRegKey HKCU "FhG-SIT"
+  DeleteRegKey HKCU "Software\Fraunhofer-SIT"
 ;  SetAutoClose true
 SectionEnd

@@ -1368,7 +1368,7 @@ bool WhatsThis::clicked(const QString &whatsThisHref)
     return true;
 
   QString fileName=ExeDir+"/../doc/html/whatsThis/"+whatsThisHref;
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 
 	
@@ -1390,7 +1390,7 @@ QString WhatsThis::text(const QPoint&)
 
 void ShowPage(char *file) {
   QString fileName=ExeDir+"/../doc/html/"+file;
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";

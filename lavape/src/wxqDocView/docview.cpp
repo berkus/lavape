@@ -136,7 +136,8 @@ wxApp::~wxApp() {
   QSettings settings(QSettings::Native);
 
   appExit = true;
-  settings.beginGroup(GetSettingsPath());
+  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+//  settings.beginGroup(GetSettingsPath());
   m_docManager->FileHistorySave(settings);
   delete m_docManager;
   delete mainWidget();
@@ -200,6 +201,8 @@ void wxApp::onUpdateUI()
 
 	if (!cmdLineEvaluated && qApp->argc() > 1) {
 		cmdLineEvaluated = true;
+//    QMessageBox::critical(qApp->mainWidget(),qApp->name(),QString(argv[0])+" "+QString(argv[1]),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+//    QMessageBox::critical(qApp->mainWidget(),qApp->name(),QString("CWD = ")+QDir::currentDirPath(),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 		wxTheApp->OpenDocumentFile(argv[1]);
 	}
 	
@@ -1331,7 +1334,8 @@ void wxDocManager::AddFileToHistory(QString& file)
   QSettings settings(QSettings::Native);
 
   if (m_fileHistory) {
-    settings.beginGroup(wxTheApp->GetSettingsPath());
+    settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+//    settings.beginGroup(wxTheApp->GetSettingsPath());
     m_fileHistory->AddToHistory(new DString(file.ascii()),wxTheApp);
     m_fileHistory->Save(settings);
   }

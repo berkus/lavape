@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<assistantconfig version="3.3.1">
+<assistantconfig version="3.3.4">
 	<profile>
 		<property name="name">LavaDoc</property>
 		<property name="title">Lava Online Documentation</property>
@@ -8,6 +8,7 @@
 		<property name="startpage">LavaOnlineDoc.htm</property>
 		<property name="aboutmenutext">About LavaPE</property>
 		<property name="abouturl">about.txt</property>
+		<property name="assistantdocs">../doc</property>
 	</profile>
 	<DCF ref="LavaOnlineDoc.htm" icon="Lava.xpm" imagedir="images" title="LavaPE Manual">
 		<section ref="html/FAQ.htm" title="Frequently Asked Questions">
@@ -77,7 +78,7 @@
 			</section>
 		</section>
 		<section ref="html/LavaOverview.htm" title="Lava solutions and highlights">
-			<keyword ref="html/LavaOverview.htm#aesthetic">aesthetic vs. pragmatic vauel</keyword>
+			<keyword ref="html/LavaOverview.htm#aesthetic">aesthetic vs. pragmatic value</keyword>
 			<section ref="html/PointAndClick.htm" title="Lava is perfectly &quot;point-and-click&quot;">
 				<keyword ref="html/PointAndClick.htm#constraint">constraint</keyword>
 				<keyword ref="html/PointAndClick.htm#htmldoc">documentation generator</keyword>

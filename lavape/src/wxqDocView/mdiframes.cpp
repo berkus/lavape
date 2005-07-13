@@ -108,7 +108,8 @@ void wxMainFrame::fileExit()
 void wxMainFrame::LoadFileHistory() {
   QSettings settings(QSettings::Native);
 
-  settings.beginGroup(wxTheApp->GetSettingsPath());
+  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+//  settings.beginGroup(wxTheApp->GetSettingsPath());
   wxDocManager::GetDocumentManager()->FileHistoryLoad(settings);
 }
 

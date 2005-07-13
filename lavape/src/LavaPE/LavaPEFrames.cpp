@@ -1649,7 +1649,7 @@ void CLavaMainFrame::whatNext_clicked()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   QString fileName=ExeDir+"/../doc/html/whatNext/GlobalWhatNext.htm";
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 
   if (view)
@@ -1670,7 +1670,7 @@ void CLavaMainFrame::howTo_clicked()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   QString fileName=ExeDir+"/../doc/html/howTo/HowToContents.htm";
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 
   if (view)

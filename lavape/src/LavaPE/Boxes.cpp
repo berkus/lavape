@@ -3818,7 +3818,7 @@ void CVTypeBox::OnOK()
 
 void CAttrBox::ID_HELP15_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3832,7 +3832,7 @@ void CAttrBox::ID_HELP15_clicked()
 
 void CCompSpecBox::ID_HELP10_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3846,7 +3846,7 @@ void CCompSpecBox::ID_HELP10_clicked()
 
 void CEnumBox::ID_HELP3_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3860,7 +3860,7 @@ void CEnumBox::ID_HELP3_clicked()
 
 void CEnumItem::ID_HELP4_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3874,7 +3874,7 @@ void CEnumItem::ID_HELP4_clicked()
 
 void CFuncBox::ID_HELP9_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3888,7 +3888,7 @@ void CFuncBox::ID_HELP9_clicked()
 
 void CImplBox::ID_HELP5_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3902,7 +3902,7 @@ void CImplBox::ID_HELP5_clicked()
 
 void CIncludeBox::ID_HELP12_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3916,7 +3916,7 @@ void CIncludeBox::ID_HELP12_clicked()
 
 void CInitBox::ID_HELP11_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3930,7 +3930,7 @@ void CInitBox::ID_HELP11_clicked()
 
 void CInterfaceBox::ID_HELP7_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3944,7 +3944,7 @@ void CInterfaceBox::ID_HELP7_clicked()
 
 void CIOBox::ID_HELP14_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3958,7 +3958,7 @@ void CIOBox::ID_HELP14_clicked()
 
 void CPackageBox::ID_HELP8_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3972,7 +3972,7 @@ void CPackageBox::ID_HELP8_clicked()
 
 void CSetBox::ID_HELP1_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -3986,7 +3986,7 @@ void CSetBox::ID_HELP1_clicked()
 
 void CVTypeBox::ID_HELP13_clicked()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	

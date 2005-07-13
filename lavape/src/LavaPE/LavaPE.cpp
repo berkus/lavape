@@ -115,9 +115,10 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   LavaPEStringInit();
   qt_use_native_dialogs = false;
 
-  SetVendorName("FhG-SIT");
+  SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
-  settings.beginGroup(GetSettingsPath());
+  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+//  settings.beginGroup(GetSettingsPath());
   inTotalCheck = false;;
   LBaseData.theApp = this;
   LBaseData.inRuntime = false;
@@ -642,8 +643,9 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 
 void CLavaPEApp::HtmlHelp()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
+
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	if (!qacl) {
 		qacl = new QAssistantClient(path,m_appWindow);
@@ -655,7 +657,7 @@ void CLavaPEApp::HtmlHelp()
 
 void CLavaPEApp::EditingLavaProgs()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -669,7 +671,7 @@ void CLavaPEApp::EditingLavaProgs()
 
 void CLavaPEApp::LearningLava()
 {
-	QString path("");
+	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -787,7 +789,8 @@ void CLavaPEApp::saveSettings()
 {
   QSettings settings(QSettings::Native);
 
-  settings.beginGroup(GetSettingsPath());
+  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+//  settings.beginGroup(GetSettingsPath());
 
   settings.beginGroup("/generalSettings");
   settings.writeEntry(szSaveEveryChange,LBaseData.m_strSaveEveryChange);
@@ -806,11 +809,6 @@ void CLavaPEApp::saveSettings()
   settings.writeEntry(favoriteBrowser,LBaseData.m_myWebBrowser);
   settings.writeEntry(gui_style,LBaseData.m_style);
   settings.endGroup();
-/*  settings->endGroup();
-
-  delete settings; // saves settings
-	settings = new QSettings(QSettings::Native);
-  settings->beginGroup(GetSettingsPath());*/
 }
 
 int CLavaPEApp::ExitInstance() 
