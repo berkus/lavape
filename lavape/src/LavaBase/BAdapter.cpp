@@ -82,15 +82,67 @@ bool DefaultEq(CheckData& /*ckd*/, LavaVariablePtr /*stack*/)
   return true;
 }
 
+
 bool ObjectFinalize(CheckData& ckd, LavaVariablePtr stack)
 {
-  LavaObjectPtr obj = stack[SFH] - stack[SFH][0][0].sectionOffset;
-  if (*(obj - LOH) && ((RunTimeData*)*(obj-LOH))->urlObj)  //url object?
-    if (obj[0][0].implDECL != obj[0][0].classDECL) { //not native i.e. Lava component
-      if ( !((SynFlags*)(obj + 1))->Contains(dontSave)) 
+  LavaObjectPtr object, sectionPtr, newStackFrame[SFH+1];
+  CSectionDesc* secTab;
+  LavaDECL *classDECL, *secClassDECL, *attrDECL;
+  TAdapterFunc *funcAdapter;
+  int ii, lmem, llast;
+
+  object = stack[SFH] - stack[SFH][0][0].sectionOffset;
+  if (*(object - LOH) && ((RunTimeData*)*(object-LOH))->urlObj)  //url object?
+    if (object[0][0].implDECL != object[0][0].classDECL) { //not native i.e. Lava component
+      if ( !((SynFlags*)(object + 1))->Contains(dontSave)) 
         ckd.document->SaveObject(ckd, stack[SFH]);
     }
-  ((SynFlags*)(obj + 1))->INCL(zombified);
+  if (!((SynFlags*)(object + 1))->Contains(zombified)) {// DEC members:
+    ((SynFlags*)(object + 1))->INCL(zombified);
+
+    classDECL = (*object)->classDECL;
+    secTab = (CSectionDesc*)classDECL->SectionTabPtr;
+    for (ii = 0; ii < secTab->nSections; ii++) {
+      if (secTab[ii].SectionFlags.Contains(SectPrimary)) {
+        secClassDECL = secTab[ii].classDECL;
+        sectionPtr = object + secTab[ii].sectionOffset;
+        lmem = LSH;
+        if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
+          funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
+          if (funcAdapter && funcAdapter[5]) { // section has release function
+            newStackFrame[2] = 0;
+            newStackFrame[SFH] = sectionPtr;
+            funcAdapter[5](ckd, newStackFrame);
+          }
+          if (funcAdapter)
+            lmem = (int)(unsigned)funcAdapter[0] + LSH;
+        }
+        llast = LSH + secClassDECL->SectionInfo2;
+        for (/*ll = LSH*/; lmem < llast; lmem++) {
+          attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
+          if (sectionPtr[lmem])
+            if (attrDECL->TypeFlags.Contains(constituent)
+            || attrDECL->TypeFlags.Contains(acquaintance)) {
+              DFC((LavaObjectPtr)sectionPtr[lmem]);
+            }
+            else
+              DRC((LavaObjectPtr)sectionPtr[lmem]);
+        }
+      }
+    }
+  }
+  RunTimeData* runTimeData = (RunTimeData*)*(object-LOH);
+  if (runTimeData)
+    delete runTimeData;
+  *(object-LOH) = 0;
+  return true;
+}
+
+
+bool ObjectZombifyRec(CheckData& ckd, LavaVariablePtr stack)
+{
+  (*(((unsigned short *)stack[SFH])-1))++;
+  forceZombify(ckd,stack[SFH],*(bool*)(stack[SFH+1]+LSH));
   return true;
 }
 
@@ -1735,14 +1787,15 @@ void MakeStdAdapter()
   ObjectAdapter[5] = 0;
   ObjectAdapter[6] = 0;
   ObjectAdapter[LAH] =   ObjectFinalize; //no change of position in virtual function table
-  ObjectAdapter[LAH+1] = ObjectOpEqual;
-  ObjectAdapter[LAH+2] = ObjectOpNotEqual;
-  ObjectAdapter[LAH+3] = ObjectSameAs;
-  ObjectAdapter[LAH+4] = ObjectEquals;
-  ObjectAdapter[LAH+5] = ObjectSnapshot;
-  ObjectAdapter[LAH+6] = ObjectDontSave;
-  ObjectAdapter[LAH+7] = ObjectDump;
-  ObjectAdapter[LAH+8] = ObjectSetState;
+  ObjectAdapter[LAH+1] = ObjectZombifyRec;
+  ObjectAdapter[LAH+2] = ObjectOpEqual;
+  ObjectAdapter[LAH+3] = ObjectOpNotEqual;
+  ObjectAdapter[LAH+4] = ObjectSameAs;
+  ObjectAdapter[LAH+5] = ObjectEquals;
+  ObjectAdapter[LAH+6] = ObjectSnapshot;
+  ObjectAdapter[LAH+7] = ObjectDontSave;
+  ObjectAdapter[LAH+8] = ObjectDump;
+  ObjectAdapter[LAH+9] = ObjectSetState;
 
   BitsetAdapter[0] = (TAdapterFunc)1;
   BitsetAdapter[1] = 0;

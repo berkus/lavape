@@ -65,14 +65,16 @@ bool INC_REV_CNT(CheckData &ckd, LavaObjectPtr object) {
 
 bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
   register unsigned short fwdCnt;
-  LavaObjectPtr callPtr, sectionPtr, newStackFrame[SFH+1];
-//  LavaVariablePtr newStackFrame;
-  CSectionDesc* secTab;
+  LavaObjectPtr callPtr, /*sectionPtr,*/ newStackFrame[SFH+1];
   CVFuncDesc *fDesc;
+//  LavaVariablePtr newStackFrame;
+  /*
+  CSectionDesc* secTab;
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
   TAdapterFunc *funcAdapter;
   int ii, lmem, llast;
   RunTimeData *runTimeData;
+  */
 
   object = object - (*object)->sectionOffset;
   fwdCnt = *(((unsigned short *)object)-1);
@@ -105,62 +107,6 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
       ((SynFlags*)(object + 1))->INCL(zombified);
       return false;
     }
-
-  runTimeData = (RunTimeData*)*(object-LOH);
-  if (runTimeData)
-    delete runTimeData;
-
-////////////////////////////////////////////////////////////////// DEC members:
-
-  classDECL = (*object)->classDECL;
- 
-  secTab = (CSectionDesc*)classDECL->SectionTabPtr;
-  for (ii = 0; ii < secTab->nSections; ii++) {
-    if (secTab[ii].SectionFlags.Contains(SectPrimary)) {
-      secClassDECL = secTab[ii].classDECL;
-      sectionPtr = object + secTab[ii].sectionOffset;
-      lmem = LSH;
-      if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
-        funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
-        if (funcAdapter && funcAdapter[5]) { // section has release function
-/*#ifdef WIN32
-          __asm {
-            sub esp, 12
-            mov newStackFrame, esp
-          }
-#else
-					newStackFrame = new LavaObjectPtr[SFH+1];
-#endif*/
-          newStackFrame[2] = 0;
-          newStackFrame[SFH] = sectionPtr;
-          funcAdapter[5](ckd, newStackFrame);
-/*#ifdef WIN32
-          __asm {
-            add esp, 12
-            mov newStackFrame, esp
-          }
-#else
-					delete [] newStackFrame;
-#endif*/
-        }
-        if (funcAdapter)
-          lmem = (int)(unsigned)funcAdapter[0] + LSH;
-      }
-      //else { //(##########)
-        llast = LSH + secClassDECL->SectionInfo2;
-        for (/*ll = LSH*/; lmem < llast; lmem++) {
-          attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
-          if (sectionPtr[lmem])
-            if (attrDECL->TypeFlags.Contains(constituent)
-            || attrDECL->TypeFlags.Contains(acquaintance)) {
-              DFC((LavaObjectPtr)sectionPtr[lmem]);
-            }
-            else
-              DRC((LavaObjectPtr)sectionPtr[lmem]);
-        }
-      //}
-    }
-  }
 
 ////////////////////////////////////////////////////////////////// delete object:
 
@@ -221,61 +167,60 @@ int GetObjectLength(LavaDECL* typeDECL)
 }
 
 
-static void forceDecrement (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly, LavaObjectList& objList) {
-  register unsigned short fwdCnt;
+bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) {
   CSectionDesc* secTab;
-  LavaVariablePtr newStackFrame;
-  LavaObjectPtr sectionPtr;
+  LavaObjectPtr sectionPtr, callPtr, newStackFrame[SFH+1];
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
   TAdapterFunc *funcAdapter;
   int ii, lmem, llast;
+  CVFuncDesc *fDesc;
 
   object = object - (*object)->sectionOffset;
-  fwdCnt = *(((unsigned short *)object)-1);
-  if (!fwdCnt || ((SynFlags*)(object + 1))->Contains(marked))
-    return; // recursive invocation: stop recursion
 
-  *(((unsigned short *)object)-1) = --fwdCnt;
-  ((SynFlags*)(object + 1))->INCL(marked);
-  
-
-  classDECL = (*object)->classDECL;
- 
-  secTab = (CSectionDesc*)classDECL->SectionTabPtr;
-  for (ii = 0; ii < secTab->nSections; ii++) {
-    if (secTab[ii].SectionFlags.Contains(SectPrimary)) {
-      secClassDECL = secTab[ii].classDECL;
-      sectionPtr = object + secTab[ii].sectionOffset;
-      lmem = LSH;
-      if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
-        funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
-        if (funcAdapter && funcAdapter[5]) { // section has release function
-#ifdef WIN32
-          __asm {
-            sub esp, 16
-            mov newStackFrame, esp
-          }
-#else
-					newStackFrame = new LavaObjectPtr[SFH+1];
-#endif
-          newStackFrame[0] = 0;
-          newStackFrame[1] = 0;
-          newStackFrame[2] = 0;
-          newStackFrame[SFH] = sectionPtr;
-          funcAdapter[5](ckd, newStackFrame);
-#ifdef WIN32
-          __asm {
-            add esp, 16
-            mov newStackFrame, esp
-          }
-#else
-					delete [] newStackFrame;
-#endif
-        }
-        if (funcAdapter)
-          lmem = (int)(unsigned)funcAdapter[0] + LSH;
+  if (!((SynFlags*)(object + 1))->Contains(zombified)) {
+    ((SynFlags*)(object + 1))->INCL(zombified);
+	  // call the object's finalize method
+    fDesc = &(*(object + object[0][object[0][0].nSections-1].sectionOffset))->funcDesc[1]; 
+    callPtr = object + (*object)[fDesc->delta].sectionOffset;
+    newStackFrame[0] = 0;
+    newStackFrame[1] = 0;
+    newStackFrame[2] = 0;
+    newStackFrame[SFH] = callPtr;
+    if (fDesc->isNative) {
+      if (!(*fDesc->funcPtr)(ckd, newStackFrame) ) {
+        ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
+        ((SynFlags*)(object + 1))->INCL(zombified);
+        return false;
       }
-      //else { //(##########)
+    }
+    else 
+      if (!fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame)) {
+        ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
+        ((SynFlags*)(object + 1))->INCL(zombified);
+        return false;
+      }
+    
+    //zombify and finalize members
+    classDECL = (*object)->classDECL;
+ 
+    secTab = (CSectionDesc*)classDECL->SectionTabPtr;
+    for (ii = 0; ii < secTab->nSections; ii++) {
+      if (secTab[ii].SectionFlags.Contains(SectPrimary)) {
+        secClassDECL = secTab[ii].classDECL;
+        sectionPtr = object + secTab[ii].sectionOffset;
+        lmem = LSH;
+        if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
+          funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
+          if (funcAdapter && funcAdapter[5]) { // section has release function
+            newStackFrame[0] = 0;
+            newStackFrame[1] = 0;
+            newStackFrame[2] = 0;
+            newStackFrame[SFH] = sectionPtr;
+            funcAdapter[5](ckd, newStackFrame);
+          }
+          if (funcAdapter)
+            lmem = (int)(unsigned)funcAdapter[0] + LSH;
+        }
         llast = LSH + secClassDECL->SectionInfo2;
         for (/*ll = LSH*/; lmem < llast; lmem++) {
           attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
@@ -284,122 +229,28 @@ static void forceDecrement (CheckData &ckd, LavaObjectPtr object, bool constitue
             || attrDECL->TypeFlags.Contains(acquaintance)) {
               if (constituentsOnly) {
                 if (attrDECL->TypeFlags.Contains(constituent))
-                  forceDecrement(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly, objList);
+                  forceZombify(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly);
               }
               else
-                forceDecrement(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly, objList);
+                forceZombify(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly);
             }
             else
               forceDRC(ckd,(LavaObjectPtr)sectionPtr[lmem]);
         }
-      //}
+      }
     }
   }
-  ((SynFlags*)(object + 1))->EXCL(marked);
-  if (!*(((unsigned short *)object)-1)) {
+  (*(((unsigned short *)object)-1))--;
+  if (!*(((unsigned short *)object)-1))
     ((SynFlags*)(object+1))->INCL(releaseFinished);
-    ((SynFlags*)(object + 1))->INCL(zombified);
-  }
   if (((SynFlags*)(object+1))->Contains(releaseFinished) && !*(((unsigned short *)object)-2)) {
-    if (objList.findRef(object) < 0)
-      objList.append(object);
-  }
-}
-
-
-static bool forceRelease (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) {
-  LavaObjectList ObjList;
-  object = object - (*object)->sectionOffset;
-  forceDecrement(ckd,object,constituentsOnly, ObjList);
-  LavaObjectPtr delObj;
-  for (delObj = ObjList.first(); delObj; ObjList.next()) {
-    delete [] (delObj-LOH);
+    delete [] (object-LOH);
     allocatedObjects--;
   }
   return true;
-
-  //return releaseUnusedConstituents(ckd,object,constituentsOnly,true); //true=top node;=>zombify
 }
 
 
-/*
-static bool releaseUnusedConstituents (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly, bool topNode) {
-  register unsigned short fwdCnt;
-  CSectionDesc* secTab;
-  LavaVariablePtr newStackFrame;
-  LavaObjectPtr sectionPtr;
-  LavaDECL *classDECL, *secClassDECL, *attrDECL;
-  TAdapterFunc *funcAdapter;
-  int ii, lmem, llast;
-
-  object = object - (*object)->sectionOffset;
-  fwdCnt = *(((unsigned short *)object)-1);
-  if (!fwdCnt || ((SynFlags*)(object + 1))->Contains(marked))
-    return true; // recursive invocation: stop recursion
-
-  *(((unsigned short *)object)-1) = --fwdCnt;
-  ((SynFlags*)(object + 1))->INCL(marked);
-  
-
-  classDECL = (*object)->classDECL;
- 
-  secTab = (CSectionDesc*)classDECL->SectionTabPtr;
-  for (ii = 0; ii < secTab->nSections; ii++) {
-    if (secTab[ii].SectionFlags.Contains(SectPrimary)) {
-      secClassDECL = secTab[ii].classDECL;
-      sectionPtr = object + secTab[ii].sectionOffset;
-      lmem = LSH;
-      if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
-        funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
-        if (funcAdapter && funcAdapter[5]) { // section has release function
-#ifdef WIN32
-          __asm {
-            sub esp, 16
-            mov newStackFrame, esp
-          }
-#else
-					newStackFrame = new LavaObjectPtr[SFH+1];
-#endif
-          newStackFrame[0] = 0;
-          newStackFrame[1] = 0;
-          newStackFrame[2] = 0;
-          newStackFrame[SFH] = sectionPtr;
-          funcAdapter[5](ckd, newStackFrame);
-#ifdef WIN32
-          __asm {
-            add esp, 16
-            mov newStackFrame, esp
-          }
-#else
-					delete [] newStackFrame;
-#endif
-        }
-        if (funcAdapter)
-          lmem = (int)(unsigned)funcAdapter[0] + LSH;
-      }
-      //else { //(##########)
-        llast = LSH + secClassDECL->SectionInfo2;
-        for (; lmem < llast; lmem++) {
-          attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
-          if (sectionPtr[lmem])
-            if (attrDECL->TypeFlags.Contains(constituent)
-            || attrDECL->TypeFlags.Contains(acquaintance)) {
-              if (constituentsOnly) {
-                if (attrDECL->TypeFlags.Contains(constituent))
-                  forceDecrement(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly);
-              }
-              else
-                forceDecrement(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly);
-            }
-            else
-              forceDRC(ckd,(LavaObjectPtr)sectionPtr[lmem]);
-        }
-      //}
-    }
-  }
-  ((SynFlags*)(object + 1))->EXCL(marked);
-  return true;
-}*/
 
 typedef TAdapterFunc* (*TS) ();
 

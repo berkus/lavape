@@ -606,7 +606,7 @@ enum HWerrorCodes {
   other_hardware_ex
 };
 
-
+extern LAVABASE_DLL bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly);
 extern LAVABASE_DLL bool SetLavaException(CheckData& ckd, int code, const QString& mess);
 //extern LAVABASE_DLL bool SetLavaException(CheckData& ckd, int code, QString *strCode);
   
@@ -634,7 +634,7 @@ enum LAVABASE_DLL ObjectStateFlag {
    dontSave,        //global object flag (in object+1)
    zombified,       //global object flag (in object+1)
    releaseFinished, //indicator that all sub-objects have been released/decremented
-   marked,          //used in InterprBase::forceRelease
+//   marked,          //used in InterprBase::forceRelease
    compoPrim        //the creation section of component
 };
 
