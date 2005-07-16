@@ -3,11 +3,13 @@
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LavaPE"
 !define PRODUCT_VERSION "0.8.4"
-!define PRODUCT_PUBLISHER "Klaus D. Günther"
+!define PRODUCT_PUBLISHER "The lavape project "
 !define PRODUCT_WEB_SITE "http://lavape.sf.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\LavaPE.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
-!define PRODUCT_UNINST_ROOT_KEY "HKLM"
+!define HelpLink "https://sourceforge.net/tracker/?group_id=93752&atid=605431"
+!define URLUpdateInfo "https://sourceforge.net/project/showfiles.php?group_id=93752"
+!define PRODUCT_UNINST_ROOT_KEY "HKCU"
 
 SetCompressor lzma
 
@@ -16,6 +18,12 @@ SetCompressor lzma
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "lavape-0.8.4-win32.exe"
+Var instForAll
+Var userName
+Var unInstString
+Var installedBy
+Var installedFor
+
 InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 ;InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 
@@ -73,13 +81,37 @@ InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
+  
+  ReadRegStr $installedBy ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY} "InstalledBy"
+  IfErrors continue
+  MessageBox MB_ICONSTOP|MB_OK "There exists already an installation of ${PRODUCT_NAME} under your user ID.$\n\
+    Please uninstall it first!"
+  Abort
+
+continue:
+  ClearErrors
+  UserInfo::GetName
+  IfErrors askAll ; Win 9X !
+  Pop $userName
+  UserInfo::GetAccountType
+  Pop $1
+  StrCmp $1 "Admin" askAll 0
+  StrCpy $instForAll "no"
+  Goto done
+  
+askAll:
+  MessageBox MB_ICONQUESTION|MB_YESNO "Do you want to install ${PRODUCT_NAME} ${PRODUCT_VERSION} for all users?" IDYES 0 IDNO +3
+  StrCpy $instForAll "yes"
+  Goto done
+  StrCpy $instForAll "no"
+done:
 FunctionEnd
 
 Section "LavaPE (required)" SEC01
   SectionIn RO
   
-;  MessageBox MB_OK "DOCUMENTS = $DOCUMENTS"
-;  MessageBox MB_OK "$INSTDIR"
+  StrCmp $instForAll "yes" 0 +2
+  SetShellVarContext all
   
   SetOutPath $INSTDIR
   File "*.txt"
@@ -88,6 +120,7 @@ Section "LavaPE (required)" SEC01
   File "src\LavaPE\Release\*.exe"
   File "src\LavaPE\Release\*.dll"
   File "src\LavaPE\Release\*.lava"
+  SetFileAttributes $OUTDIR\std.lava READONLY|ARCHIVE
   File "src\LavaPE\Release\*.htm"
   File "src\LavaPE\Release\*.bat"
 
@@ -134,13 +167,17 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-;  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\LavaPE.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\LavaPE.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\LavaPE.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "HelpLink" "${HelpLink}"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLUpdateInfo" "${URLUpdateInfo}"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstalledBy" "$userName"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstalledForAllUsers" "$instForAll"
   WriteRegStr HKCR "Lava.Component\protocol\StdFileEditing\server" "" "$INSTDIR\bin\LavaPE.exe %1"
   WriteRegStr HKCR "Lava.Component\protocol\StdFileEditing\verb\0" "" "&Edit"
   WriteRegStr HKCR "Lava.Component\shell\open\command" "" "$INSTDIR\bin\LavaPE.exe %1"
@@ -174,20 +211,53 @@ Section -Post
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you want to uninstall $(^Name) and all its components?" IDYES +2
+
+  ReadRegStr $installedBy ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY} "InstalledBy"
+  IfErrors 0 continue
+  MessageBox MB_ICONSTOP|MB_OK "${PRODUCT_NAME} ${PRODUCT_VERSION} has been installed under a different user ID,$\n\
+    please switch to that user id for uninstalling ${PRODUCT_NAME} ${PRODUCT_VERSION}!"
   Abort
+  
+continue:
+  ReadRegStr $unInstString ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY} "UninstallString"
+  StrCmp $unInstString "$INSTDIR\uninst.exe" continue2 0
+  MessageBox MB_ICONSTOP|MB_OK "${PRODUCT_NAME} ${PRODUCT_VERSION} has been installed under a different user ID,$\n\
+    please switch to that user id for uninstalling ${PRODUCT_NAME} ${PRODUCT_VERSION}!"
+  Abort
+  
+continue2:
+  ReadRegStr $instForAll ${PRODUCT_UNINST_ROOT_KEY} ${PRODUCT_UNINST_KEY} "InstalledForAllUsers"
+  StrCmp $instForAll "yes" 0 ask
+  StrCpy $installedFor " for all users"
+  ClearErrors
+  UserInfo::GetName
+  IfErrors ask ; Win 9X !
+  UserInfo::GetAccountType
+  Pop $1
+  StrCmp $1 "Admin" ask 0
+  MessageBox MB_ICONSTOP|MB_OK "You are not authorized to uninstall ${PRODUCT_NAME} ${PRODUCT_VERSION},$\ninstalled$installedFor by $installedBy!"
+  Abort
+  
+ask:
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you really want to uninstall ${PRODUCT_NAME} ${PRODUCT_VERSION},$\ninstalled$installedFor by $installedBy?" IDYES done
+  Abort
+
+done:
 FunctionEnd
 
 Section Uninstall
+  StrCmp $instForAll "yes" 0 +2
+  SetShellVarContext all
+  
   RMDir /r "$SMPROGRAMS\LavaPE"
   RMDir /r "$DESKTOP\LavaPE"
   RMDir /r "$INSTDIR"
-  RMDir /r "$DOCUMENTS\..\.assistant"
+  RMDir /r "$PROFILE\.assistant"
     ; to prevent erroneous reuse of outdated .assistant data belonging to
     ; a former installation in a different INSTDIR
   
-  DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
+  DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKCR "Lava.Component"
   DeleteRegKey HKCR "Lava.Object"
   DeleteRegKey HKCR "Lava.Program"

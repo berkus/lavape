@@ -98,8 +98,10 @@ int main( int argc, char ** argv ) {
 
 	int res = ap.exec();
   
-	if (allocatedObjects)
+  if (allocatedObjects) {
     qDebug("\n\nMemory leak: %x orphaned Lava object(s)\n\n",allocatedObjects);
+    QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), QString("Memory leak: %1 orphaned Lava object(s)").arg(allocatedObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  }
 	return res;
 }
 

@@ -72,21 +72,27 @@ which replaces text editors completely by structure editors</STRONG></FONT></P>
     for
     <a target="_blank" href="https://sourceforge.net/project/showfiles.php?group_id=93752">download</a></font><p>
     <font face="Arial Black" color="#FF0000">New:</font><p>
-    <font face="Arial Black" size="2">(A) We have completely rewritten the <i>
-    <font color="#FF0000">Lava </font></i>&quot;callback&quot; support, roughly 
+    <font face="Arial Black" size="2">(1) We have completely rewritten the <i>
+    <font color="#FF0000">Lava </font></i>&quot;<a href="doc/html/Callbacks.htm">callback</a>&quot; support, roughly 
     after the model of<br>
     the &quot;signal/slot&quot; concept of
     <a target="_blank" href="http://www.trolltech.com/products/qt/index.html">
     TrollTechs Qt</a>. This is a first step towards an extended <i>
     <font color="#FF0000">Lava</font></i> GUI builder that will support also 
     mainframe windows, menus, toolbars and callbacks.</font><p>
-    <font face="Arial Black" size="2">(B) <font color="#FF0000"><i><b>Lava</b></i></font> 
+    <font face="Arial Black" size="2">(2) <font color="#FF0000"><i><b>Lava</b></i></font> 
     is more portable now. It can be built on the Windows XP, Linux, FreeBSD, Solaris 
     (sparc station and x86, g++), and Mac OS X.2 platforms. It has been tested, so 
     far, on Windows XP, Linux and FreeBSD. Please tell us if it runs also on the 
     other platforms (and also if not).</font><p>
-    <font face="Arial Black" size="2">(C) You can now benefit from &quot;precompiled 
-    headers&quot; if you use the g++ compiler (g++ release 3.4 or higher).</font></td>
+    <font face="Arial Black" size="2">(3) You can now benefit from &quot;precompiled 
+    headers&quot; if you use the g++ compiler (g++ release 3.4 or higher).</font><p>
+    <font face="Arial Black" size="2">(4) For the Windows platform we have 
+    migrated to the NullSoft Install System (<a target="_blank" href="http://nsis.sourceforge.net/">NSIS</a>).</font><p>
+    <font face="Arial Black" size="2">(5) We have added a method &quot;zombifyRec&quot; (zombify 
+    recursively) to class &quot;Object&quot; to make it easier to
+    <a href="doc/html/PointersRefCounts.htm">release</a> collections of objects 
+    containing circular forward references.</font></td>
   </tr>
 </table>
 
