@@ -24,13 +24,20 @@ Object := <B>interface</B>
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F385')">Features:</DIV>
 <DIV ID="F385">
 <DIV class="Element"><A NAME="385"></A><I><FONT COLOR=#009000>
-Default finalization function; causes immediate
- "zombification/invalidation" of the respective object
- if called explicitly. May be overridden
- in derived classes. Is called automatically
- when an object isn't referenced any longer.</FONT></I><BR>
+Default finalization function; causes immediate "zombification/invalidation" of the respective object if called explicitly. May be overridden in derived classes. Is called automatically when an object isn't referenced any longer by forward pointers (see "pointers" in the online help index).</FONT></I><BR>
 <IMG SRC="LavaIcons/function.png">
-finalize := <B>read-only</B> <B>function</B></DIV>
+finalize := <B>function</B></DIV>
+<DIV class="Element"><A NAME="524"></A><I><FONT COLOR=#009000>
+Zombifies the current object like "finalize", but also all its (direct and indirect) constituents, and also its (direct and indirect) acquaintances, if its input parameter "acquaintancesToo" is "true".</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S524')">
+zombifyRec := <B>function</B>
+<DIV ID="S524">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I525')">Inputs:</DIV>
+<DIV ID="I525">
+<DIV class="Element"><A NAME="525"></A><I><FONT COLOR=#009000>
+If "true", then all direct and indirect acquaintances of the current object are zombified, too.</FONT></I><BR>
+<IMG SRC="LavaIcons/basicatt.png">
+acquaintancesToo : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV></DIV></DIV>
 <DIV class="Element"><A NAME="2"></A><I><FONT COLOR=#009000>
 If "self" and "op1" are value objects then they are compared constituent-wise (like with "IsEqualTo"); if they are state objects then they are compared for identity (like with "IsSameAs").</FONT></I><BR>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S2')">
@@ -868,7 +875,7 @@ callStack : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>Str
 <DIV class="Element"><A NAME="424"></A><I><FONT COLOR=#009000>
 Initializer with two parameters (exception code and message text)</FONT></I><BR>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S424')">
-initialize := <B>read-only</B> <B>initializer</B>
+initialize := <B>initializer</B>
 <DIV ID="S424">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I427')">Inputs:</DIV>
 <DIV ID="I427">
@@ -948,114 +955,29 @@ ErrorCode := <B>enumeration</B>, <B>extends</B> <A HREF="javascript:gotoTarget('
 <IMG SRC="LavaIcons/enumsel.png"> unfinished_object<BR>
 <IMG SRC="LavaIcons/enumsel.png"> execution_failed<BR>
 <IMG SRC="LavaIcons/enumsel.png"> out_function_failed</DIV></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="366"></A><I><FONT COLOR=#009000>
-Base class for sets of registered callbacks of a
- specific kind (described by the virtual types of
- "Callbacks" and particularly by the nested type
- "Callback").</FONT></I><BR>
-<IMG SRC="LavaIcons/settyp.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S366')">
-Callbacks := <B>interface</B>, <B>extends</B> <A HREF="javascript:gotoTarget('#98','S98')"><FONT color=#000000>Set</FONT></A>
-<DIV ID="S366">
-<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('V384')">Virtual types:</DIV>
-<DIV ID="V384">
-<DIV class="Element"><A NAME="384"></A><IMG SRC="LavaIcons/patpara.png">
-ELEMTYPE = <A HREF="javascript:gotoTarget('#373','S373')"><FONT color=#000000>&lt;Callbacks::CALLBACK></FONT></A>, <B>overrides</B> <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV>
-<DIV class="Element"><A NAME="373"></A><IMG SRC="LavaIcons/patpara.png">
-CALLBACK = <A HREF="javascript:gotoTarget('#264','S264')"><FONT color=#000000>Callbacks::Callback</FONT></A></DIV>
-<DIV class="Element"><A NAME="370"></A><I><FONT COLOR=#009000>
-Base type for a concrete enumerated
- type that is used to distinguish
- individual kinds of events that are all
- associated with the same type of event
- description (see "eventDesc").</FONT></I><BR>
-<IMG SRC="LavaIcons/patpara.png">
-EVENTSPEC = <A HREF="javascript:gotoTarget('#97','S97')"><FONT color=#000000>Enumeration</FONT></A></DIV>
-<DIV class="Element"><A NAME="371"></A><I><FONT COLOR=#009000>
-Describes the details of an event that is
- reported to a callback client by the callback
- server. (See member function "NotifyClients".)</FONT></I><BR>
-<IMG SRC="LavaIcons/patpara.png">
-EVENTDESC</DIV></DIV>
-<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('D264')">Declarations:</DIV>
-<DIV ID="D264">
-<DIV class="Element"><A NAME="264"></A><I><FONT COLOR=#009000>
-Class "Callback" describes the set elements
- of "Callbacks" and corresponds closely to
- the "callback" expression that is used in
- executable code to construct an individual
- callback (in the sense of a "canned/deferred
- function call").</FONT></I><BR>
-<IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S264')">
-Callback := <B>interface</B>
-<DIV ID="S264">
-<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F358')">Features:</DIV>
-<DIV ID="F358">
-<DIV class="Element"><A NAME="358"></A><IMG SRC="LavaIcons/paramatt.png">
-spec : <A HREF="javascript:gotoTarget('#370','S370')"><FONT color=#000000>&lt;Callbacks::EVENTSPEC></FONT></A><B>, read-only</B></DIV>
-<DIV class="Element"><A NAME="266"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S266')">
-execute := <B>read-only</B> <B>function</B>
-<DIV ID="S266">
-<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I267')">Inputs:</DIV>
-<DIV ID="I267">
-<DIV class="Element"><A NAME="267"></A><IMG SRC="LavaIcons/paramatt.png">
-event : <A HREF="javascript:gotoTarget('#371','S371')"><FONT color=#000000>&lt;Callbacks::EVENTDESC></FONT></A><B>, optional</B></DIV></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
-<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F369')">Features:</DIV>
-<DIV ID="F369">
-<DIV class="Element"><A NAME="369"></A><I><FONT COLOR=#009000>
-Protected function called by a callback server
- if a "reportable" event ("signals" clause in the
- callback server's interface) occurs.</FONT></I><BR>
-<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S369')">
-notifyClients := <B>protected</B> <B>read-only</B> <B>function</B>
-<DIV ID="S369">
-<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I374')">Inputs:</DIV>
-<DIV ID="I374">
-<DIV class="Element"><A NAME="374"></A><I><FONT COLOR=#009000>
-All registered callbacks associated with
- this same eventSpec are executed.</FONT></I><BR>
-<IMG SRC="LavaIcons/paramatt.png">
-eventSpec : <A HREF="javascript:gotoTarget('#370','S370')"><FONT color=#000000>&lt;Callbacks::EVENTSPEC></FONT></A></DIV>
-<DIV class="Element"><A NAME="375"></A><I><FONT COLOR=#009000>
-Type of the detailed event description
- that is passed by the callback server to
- the callback client through the callback
- function's first argument.</FONT></I><BR>
-<IMG SRC="LavaIcons/paramatt.png">
-eventDesc : <A HREF="javascript:gotoTarget('#371','S371')"><FONT color=#000000>&lt;Callbacks::EVENTDESC></FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="367"></A><IMG SRC="LavaIcons/function.png">
-ini := <B>read-only</B> <B>default initializer</B></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="376"></A><IMG SRC="LavaIcons/classimpl.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S376')">
-<B>implementation of </B><A HREF="javascript:gotoTarget('#366','S366')"><FONT color=#000000>Callbacks</FONT></A>
-<DIV ID="S376">
-<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F377')">Features:</DIV>
-<DIV ID="F377">
-<DIV class="Element"><A NAME="377"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S377')">
-notifyClients := <B>protected</B> <B>read-only</B> <B>function</B>
-<DIV ID="S377">
-<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I378')">Inputs:</DIV>
-<DIV ID="I378">
-<DIV class="Element"><A NAME="378"></A><I><FONT COLOR=#009000>
-All registered callbacks associated with
- this same eventSpec are executed.</FONT></I><BR>
-<IMG SRC="LavaIcons/paramatt.png">
-eventSpec : <A HREF="javascript:gotoTarget('#370','S370')"><FONT color=#000000>&lt;Callbacks::EVENTSPEC></FONT></A></DIV>
-<DIV class="Element"><A NAME="379"></A><I><FONT COLOR=#009000>
-Type of the detailed event description
- that is passed by the callback server to
- the callback client through the callback
- function's first argument.</FONT></I><BR>
-<IMG SRC="LavaIcons/paramatt.png">
-eventDesc : <A HREF="javascript:gotoTarget('#371','S371')"><FONT color=#000000>&lt;Callbacks::EVENTDESC></FONT></A><B>, optional</B></DIV></DIV><DIV class="Category"><A HREF="std/Callbacks_notifyClients_377.htm" TARGET="frmRight"><B><I>Exec</I></B></A></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="381"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S381')">
-ini := <B>read-only</B> <B>default initializer</B>
-<DIV ID="S381"><DIV class="Category"><A HREF="std/Callbacks_ini_381.htm" TARGET="frmRight"><B><I>Exec</I></B></A></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV class="Element"><A NAME="520"></A><I><FONT COLOR=#009000>
+RTS stands for "Run Time System" and provides access to states and functions of the Lava run time system through a number of specific member variables and static member functions.</FONT></I><BR>
+<IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S520')">
+RTS := <B>interface</B>
+<DIV ID="S520">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F522')">Features:</DIV>
+<DIV ID="F522">
+<DIV class="Element"><A NAME="522"></A><I><FONT COLOR=#009000>
+Delivers the caller object of the current class member function, or null if invoked from within an initiator.</FONT></I><BR>
+<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S522')">
+caller := <B>read-only</B> <B>function</B>
+<DIV ID="S522">
+<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O523')">Outputs:</DIV>
+<DIV ID="O523">
+<DIV class="Element"><A NAME="523"></A><IMG SRC="LavaIcons/basicatt.png">
+caller : *<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
 <DIV class="Element"><A NAME="419"></A><IMG SRC="LavaIcons/classimpl.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S419')">
 <B>implementation of </B><A HREF="javascript:gotoTarget('#407','S407')"><FONT color=#000000>Exception</FONT></A>
 <DIV ID="S419">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F425')">Features:</DIV>
 <DIV ID="F425">
 <DIV class="Element"><A NAME="425"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S425')">
-initialize := <B>read-only</B> <B>initializer</B>
+initialize := <B>initializer</B>
 <DIV ID="S425">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I428')">Inputs:</DIV>
 <DIV ID="I428">
@@ -1143,33 +1065,6 @@ capital letters before small letters)</P>
 </TR>
 <TR><TD><A HREF="javascript:gotoTarget('#479','S479')"><FONT color=#000000>Boolean::string</FONT></A></TD>
 <TD><A HREF="javascript:gotoTarget('#480','S480')"><FONT color=#000000>Boolean::string::str</FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#366','S366')"><FONT color=#000000>Callbacks</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#373','S373')"><FONT color=#000000>&lt;Callbacks::CALLBACK></FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#264','S264')"><FONT color=#000000>Callbacks::Callback</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#266','S266')"><FONT color=#000000>Callbacks::Callback::execute</FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#267','S267')"><FONT color=#000000>Callbacks::Callback::execute::event</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#358','S358')"><FONT color=#000000>Callbacks::Callback::spec</FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#384','S384')"><FONT color=#000000>&lt;Callbacks::ELEMTYPE></FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#371','S371')"><FONT color=#000000>&lt;Callbacks::EVENTDESC></FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#370','S370')"><FONT color=#000000>&lt;Callbacks::EVENTSPEC></FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#376','S376')"><FONT color=#000000>Callbacks::impl</FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#367','S367')"><FONT color=#000000>Callbacks::ini</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#381','S381')"><FONT color=#000000>Callbacks::ini::impl</FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#369','S369')"><FONT color=#000000>Callbacks::notifyClients</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#375','S375')"><FONT color=#000000>Callbacks::notifyClients::eventDesc</FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#379','S379')"><FONT color=#000000>Callbacks::notifyClients::eventDesc::impl</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#374','S374')"><FONT color=#000000>Callbacks::notifyClients::eventSpec</FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#378','S378')"><FONT color=#000000>Callbacks::notifyClients::eventSpec::impl</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#377','S377')"><FONT color=#000000>Callbacks::notifyClients::impl</FONT></A></TD>
 </TR>
 <TR><TD><A HREF="javascript:gotoTarget('#102','S102')"><FONT color=#000000>Chain</FONT></A></TD>
 <TD><A HREF="javascript:gotoTarget('#155','S155')"><FONT color=#000000>Chain::append</FONT></A></TD>
@@ -1408,44 +1303,52 @@ capital letters before small letters)</P>
 <TR><TD><A HREF="javascript:gotoTarget('#489','S489')"><FONT color=#000000>Object::snapShot</FONT></A></TD>
 <TD><A HREF="javascript:gotoTarget('#490','S490')"><FONT color=#000000>Object::snapShot::result</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#462','S462')"><FONT color=#000000>RuntimeException</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#466','S466')"><FONT color=#000000>&lt;RuntimeException::ERRORCODE></FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#524','S524')"><FONT color=#000000>Object::zombifyRec</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#525','S525')"><FONT color=#000000>Object::zombifyRec::acquaintancesToo</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#464','S464')"><FONT color=#000000>RuntimeException::ErrorCode</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#98','S98')"><FONT color=#000000>Set</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#520','S520')"><FONT color=#000000>RTS</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#522','S522')"><FONT color=#000000>RTS::caller</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#100','S100')"><FONT color=#000000>Set::add</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#523','S523')"><FONT color=#000000>RTS::caller::caller</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#462','S462')"><FONT color=#000000>RuntimeException</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#101','S101')"><FONT color=#000000>Set::add::data</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#216','S216')"><FONT color=#000000>Set::addGetHandle</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#466','S466')"><FONT color=#000000>&lt;RuntimeException::ERRORCODE></FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#464','S464')"><FONT color=#000000>RuntimeException::ErrorCode</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#218','S218')"><FONT color=#000000>Set::addGetHandle::add_hdl</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#217','S217')"><FONT color=#000000>Set::addGetHandle::data</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#98','S98')"><FONT color=#000000>Set</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#390','S390')"><FONT color=#000000>Set::count</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#392','S392')"><FONT color=#000000>Set::count::count</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#100','S100')"><FONT color=#000000>Set::add</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#101','S101')"><FONT color=#000000>Set::add::data</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#391','S391')"><FONT color=#000000>Set::count::data</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#231','S231')"><FONT color=#000000>Set::get</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#216','S216')"><FONT color=#000000>Set::addGetHandle</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#218','S218')"><FONT color=#000000>Set::addGetHandle::add_hdl</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#233','S233')"><FONT color=#000000>Set::get::data</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#232','S232')"><FONT color=#000000>Set::get::get_hdl</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#217','S217')"><FONT color=#000000>Set::addGetHandle::data</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#390','S390')"><FONT color=#000000>Set::count</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#228','S228')"><FONT color=#000000>Set::getAndRemove</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#230','S230')"><FONT color=#000000>Set::getAndRemove::data</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#392','S392')"><FONT color=#000000>Set::count::count</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#391','S391')"><FONT color=#000000>Set::count::data</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#229','S229')"><FONT color=#000000>Set::getAndRemove::remove_hdl</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#225','S225')"><FONT color=#000000>Set::remove</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#231','S231')"><FONT color=#000000>Set::get</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#233','S233')"><FONT color=#000000>Set::get::data</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#226','S226')"><FONT color=#000000>Set::remove::remove_hdl</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#232','S232')"><FONT color=#000000>Set::get::get_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#228','S228')"><FONT color=#000000>Set::getAndRemove</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#96','S96')"><FONT color=#000000>String::messageBox</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#93','S93')"><FONT color=#000000>String::operator "+"</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#230','S230')"><FONT color=#000000>Set::getAndRemove::data</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#229','S229')"><FONT color=#000000>Set::getAndRemove::remove_hdl</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#94','S94')"><FONT color=#000000>String::operator "+"::op1</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#95','S95')"><FONT color=#000000>String::operator "+"::result</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#225','S225')"><FONT color=#000000>Set::remove</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#226','S226')"><FONT color=#000000>Set::remove::remove_hdl</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#96','S96')"><FONT color=#000000>String::messageBox</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#93','S93')"><FONT color=#000000>String::operator "+"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#94','S94')"><FONT color=#000000>String::operator "+"::op1</FONT></A></TD>
+</TR>
+<TR><TD><A HREF="javascript:gotoTarget('#95','S95')"><FONT color=#000000>String::operator "+"::result</FONT></A></TD>
 </TR>
 </TABLE></FONT>
 </DIV></BODY></HTML>
