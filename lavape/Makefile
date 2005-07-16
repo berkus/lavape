@@ -26,7 +26,8 @@ dirs:
 links: bin/std.lava bin/std_1.htm bin/std_m.htm bin/std.htm bin/cp_icons_std \
   bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
-	bin/Components/libLavaStream.so
+	bin/Components/libLavaStream.so \
+	bin/assistant
 
 bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
 	rm -f $@; $(LN) ../../$< $@
@@ -46,6 +47,8 @@ bin/std.htm: src/LavaPE/Debug/std.htm
 	rm -f $@; $(LN) ../$< $@
 bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 	rm -f $@; $(LN) ../$< $@
+bin/assistant: $(QTDIR)/bin/assistant
+	rm -f $@; $(LN) $< $@
 
 #
 build:
