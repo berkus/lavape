@@ -6,8 +6,37 @@ always reflects the current state of the
 Lava software development.)
 
 
-How to install LavaPE on UNIX
-==============================
+How to install the LavaPE binary release for Linux
+==================================================
+
+Download the compressed tar file of the
+LavaPE source distribution and store it
+in the parent directory of the envisaged
+lavape installation directory.
+
+Uncompress it using the command
+
+   tar xjvf lavape-<release>-linux-bin.tar.bz2
+
+or, if your UNIX-tar command doesn't support
+the "j" option:
+
+   bunzip2 lavape-<release>-linux-bin.tar.bz2
+   tar xf lavape-<release>-linux-bin.tar
+
+Then just execute the install script:
+
+   cd lavape
+	 ./install
+
+This script generates two program launch scripts
+"lavape" and "lava" in lavape/bin which you can use
+then to launch the Lava Programming Environment or
+the Lava Interpreter.
+
+
+How to install LavaPE from the source distribution on UNIX
+==========================================================
 
 Download the compressed tar file of the
 LavaPE source distribution and store it
@@ -67,7 +96,7 @@ on all platforms where we can build it successfully.
 How to install the binary release of LavaPE on Windows
 ======================================================
 
-Simply launch the downloaded lavape-<rel>.exe file and
+Simply launch the downloaded lavape-<rel>-win32.bin.exe file and
 follow the instructions of the installer.
 
 
@@ -78,8 +107,8 @@ This makes sense only if you have MS DevStudio and the
 (non-free, commercial) version of Qt. Set environment
 variables 
    QTDIR=<Qt installation directory>
-   QTR=<(Qt release without dots, e.g.: 332>
-	 QTRDOT=<Qt release with dots, e.g.: 3.3.2>
+   QTR=<(Qt release without dots, e.g.: 334>
+	 QTRDOT=<Qt release with dots, e.g.: 3.3.4>
 and add the Qt source, include, lib, and bin directories
 to the directory list under DevStudio/Options/Directories.
 
@@ -89,7 +118,7 @@ source tarball to a directory of your choice, say <lavape>.
 Open the DevStudio workspace
    <lavape>\src\LavaPE.dsw
 and build the projects "Precompiler", "LavaPE", and "Lava"
-in their debug configuration(build the "Precompiler" first).
+in their debug configuration (build the "Precompiler" first).
 
 Thereafter you can start the LavaPE.exe/Lava.exe executables
 from DevStudio or from a file manager or DOS box. They are

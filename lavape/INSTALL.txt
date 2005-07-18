@@ -1,102 +1,174 @@
 Installation of Lava/LavaPE
 ===========================
 
-How to build Lava/LavaPE on LINUX platforms
-===========================================
-
-Prerequisites:
-
-You need the GNU GCC compiler and the GNU make tool,
-as well as a developer version of the Qt toolkit,
-particularly the Qt include files, the shared library
-libqt-mt.so.3, and (for the Lava online help) the
-Qt assistant tool.
-
-Qt can usually be found in /usr/lib/qt3.
-
-Make sure that the qt3/include, qt3/lib, and qt3/bin subdirectories
-are present and libqt-mt.so.3 is contained in qt3/lib.
-If required you will have to install the developer version
-of Qt first; it will probably be contained on your Linux distribution CDs.
-
-If the Qt location is different from /usr/lib/qt3 on your Linux box
-then you have to define an environment variable
-
-   export QTDIR=<Qt installation directory>
-
-before starting the LavaPE build process (see below).
-
-Store the compressed source package <filename>.tar.bz2
-in the intended parent directory of the "lavape"
-installation directory (e.g. /opt or your home
-directory).
-
-tar xjvf lavape-<release>.src.tar.bz2
-
-unpacks the source package and creates the
-"lavape" directory.
-
-cd lavape; make
-
-completes the installation process and generates
-the LavaPE and Lava interpreter executables.
-
-Launch lavape/bin/Lavape, make use of the online help
-(Help menu) and open the samples in lavape/samples.
+(Note that it may be easier and cheaper to
+keep your Lava installation up-to-date
+by checking it out and updating it from
+our SourceForge CVS repository, which
+always reflects the current state of the
+Lava software development.)
 
 
-How to build LavaPE.exe/Lava.exe on the Windows XP platform
+How to install the LavaPE binary release for Linux
+==================================================
+
+Download the compressed tar file of the
+LavaPE source distribution and store it
+in the parent directory of the envisaged
+lavape installation directory.
+
+Uncompress it using the command
+
+   tar xjvf lavape-<release>-linux-bin.tar.bz2
+
+or, if your UNIX-tar command doesn't support
+the "j" option:
+
+   bunzip2 lavape-<release>-linux-bin.tar.bz2
+   tar xf lavape-<release>-linux-bin.tar
+
+Then just execute the install script:
+
+   cd lavape
+	 ./install
+
+This script generates two program launch scripts
+"lavape" and "lava" in lavape/bin which you can use
+then to launch the Lava Programming Environment or
+the Lava Interpreter.
+
+
+How to install LavaPE from the source distribution on UNIX
+==========================================================
+
+Download the compressed tar file of the
+LavaPE source distribution and store it
+in the parent directory of the envisaged
+lavape installation directory.
+
+Uncompress it using the command
+
+   tar xjvf lavape-<release>-src.tar.bz2
+
+or, if your UNIX-tar command doesn't support
+the "j" option:
+
+   bunzip2 lavape-<release>-src.tar.bz2
+   tar xf lavape-<release>-src.tar
+
+Read lavape/INSTALL.txt for the details
+and pre-requisites of a successfull
+installation. (In particular, you need
+to have GNU gcc/make and the developer version
+of TrollTech/Qt on your Linux box; install
+them from your Linux distribution CDs if necessary.
+If Qt isn't installed in /usr/lib/qt3 you have to
+provide an environment variable QTDIR that points
+to the Qt installation directory.
+
+Then build the LavaPE executables as follows:
+
+   cd lavape
+   make
+
+This will take quite a while.
+You will find the executables
+of the Lava Programming Environment
+in lavape/bin thereafter:
+"LavaPE", "Lava", and "LPC".
+(The Lava Precompiler "LPC" is needed
+only during the build process.)
+
+Launch "LavaPE", consult the Online Help,
+open some sample programs from the
+lavape/samples directory and enjoy the
+unique structure editing features of LavaPE.
+
+We'd appreciate very much if you would inform
+us (e-mail: guenthk@users.sourceforge.net)
+about any problems that you have encounterd
+during the installation or while using
+Lava/LavaPE.
+
+But let us also know if you could successfully
+install and use LavaPE. So far, we could not test Lava
+on all platforms where we can build it successfully.
+(Btw: We use always the most recent Qt release.)
+
+
+How to install the binary release of LavaPE on Windows
+======================================================
+
+Simply launch the downloaded lavape-<rel>-win32.bin.exe file and
+follow the instructions of the installer.
+
+
+How to build Lava/LavaPE on Windows from the source tarball
 ===========================================================
 
-Prerequisites:
-
-You need MS Visual Studio 6.0 and a "Qt for Windows"
-installation (Release 3.x.x, to be bought from
-TrollTech: http://www.trolltech.com.)
-
-Define two environment variables
-   
+This makes sense only if you have MS DevStudio 6.0 and the
+(non-free, commercial) version of Qt. Set environment
+variables 
    QTDIR=<Qt installation directory>
-   QTLIB=<Qt installation directory>\lib\qt-mt3.x.x.lib
+   QTR=<(Qt release without dots, e.g.: 334>
+	 QTRDOT=<Qt release with dots, e.g.: 3.3.4>
+and add the Qt source, include, lib, and bin directories
+to the directory list under DevStudio/Options/Directories.
 
-Unzip the zipped Lava source distribution xyz.zip to a
-directory of your choice, which will thereafter contain
-a subdirectory "lavape"
+Use an appropriate unpacker program to unpack the Lava
+source tarball to a directory of your choice, say <lavape>.
 
-Open the workspace lavape\src\LavaPE\LavaPE.dsw.
+Open the DevStudio workspace
+   <lavape>\src\LavaPE.dsw
+and build the projects "Precompiler", "LavaPE", and "Lava"
+in their debug configuration (build the "Precompiler" first).
 
-Make "Precompiler" the active project.
+Thereafter you can start the LavaPE.exe/Lava.exe executables
+from DevStudio or from a file manager or DOS box. They are
+in directory <lavape>\src\LavaPE\Debug.
 
-Click the "Build" button or select "Build LPC.exe"
-from the Build menu. disco.dll and LPC.exe will be built.
-(This has to be done only on the first build of LavaPE.)
+Online help will work only if you copy the <lavape>\doc
+directory to <lavape>\src\LavaPE.
 
-Now make LavaPE the active project and build it.
+The "AttacDemo.lava" and the corresponding Lava document file
+"AttachDemo.ldoc" can be opened successfully in the Lava
+interpreter only if you create a sub-directory "Components"
+in <lavape>\src\LavaPE and copy <lavape>\samples\LCompoImpl.lcom
+to this Components directory. (It suffices to create a
+"LcompoImpl.lcom.lnk" link that points to
+<lavape>\samples\LCompoImpl.lcom.)
 
-Make Lava the active project and build it.
 
 Contents of the Lava source distribution
 ========================================
 
-Presently we use MS Visual Studio 6.0 on Windows NT
-for the Lava development.
-
-The LavaCVS workspace is subdivided into 8 sub-projects
+The lavape/src directory is subdivided into the following sub-directories
 which are contained in the following sub-directories:
 
-disco ............. makes disco.dll (Lava-unspecific basic functionality; the wx... files have been taken
-                    from wxWindows (http://www.wxwindows.org) and adapted to the needs of Lava)
-disco\PCdir ....... makes PP.exe (the Lava pre-processor, see below)
-Interpreter ....... makes Interpreter.dll (the actual Lava interpreter classes)
+disco ............. makes the disco shared library (Lava-unspecific basic functionality;
+                    the wx... files have been taken from wxWindows
+										(see http://www.wxwidgets.org) and adapted to the needs of Lava)
+Precompiler ....... makes the Lava precompiler LPC (see below)
+Interpreter ....... makes the Lava Interpreter shared library (the actual Lava interpreter classes)
 Lava .............. makes Lava.exe (MFC-wrapper for the interpreter)
-LavaBase .......... makes LavaBase.dll (common base classes of LavaPE and Lava)
-LavaExecs ......... makes LavaExecs.dll (the "exec view" of LavaPE)
-LavaGUI ........... makes LavaGUI.dll (GUI builder, shared by LavaPE.exe and Lava.exe
-LavaPE ............ makes LavaPE.exe (the Lava programming environment and "declaration tree view")
+Lava_UI ........... makes the user interface of the Lava interpreter
+LavaStream ........ makes the LavaStream shared library containing the native implementation
+                    of the Lava stream classes
+LavaBase .......... makes the LavaBase shared library (common base classes of LavaPE and Lava)
+LavaExecs ......... makes the LavaExecs shared library (the "exec view" of LavaPE)
+LavaGUI ........... makes the LavaGUI shared library (GUI builder, shared by LavaPE and Lava
+LavaPE ............ makes LavaPE (the Lava programming environment
+                    and particularly the "declaration tree view")
+LavaPE_UI ......... makes the user interface of LavaPE
+wxqDocView ........ makes the wxqDocView shared library serving for document/view support;
+                    has been taken from the wxWidgets toolkit ( http://www.wxwidgets.org)
+										and adapted to the needs of Qt and Lava
+SFLsockets ........ makes the socket support library for the debugger communication between
+                    LavaPe and Lava; has been taken and adapted from the Standard Function Library
+										(see http://www.imatix.com/html/sfl/)
 
-
-The Lava Precompiler LPC.exe
-============================
+The Lava Precompiler LPC
+========================
 
 This has been "inherited" from a precursor project "DISCO"
 (a development environment for distributed applications
@@ -117,7 +189,7 @@ which deals with the "terminal symbols" or "tokens" of the Lava executable
 constructs.
 
 So if you change the AST structure described by Syntax.ph, Constructs.ph,
-and Tokens.ph then PP.exe is invoked subsequently to produce new *.h/*G.cpp
+and Tokens.ph then LPC is invoked subsequently to produce new *.h/*G.cpp
 files.
 
 Incompatible changes of the AST structure should be avoided, however,

@@ -1,5 +1,7 @@
 LAVADIR=$(shell pwd)
 export LAVADIR
+ASSISTANT=$(shell which assistant)
+export ASSISTANT
 
 all: dirs links build
 
@@ -47,8 +49,10 @@ bin/std.htm: src/LavaPE/Debug/std.htm
 	rm -f $@; $(LN) ../$< $@
 bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 	rm -f $@; $(LN) ../$< $@
-bin/assistant: $(QTDIR)/bin/assistant
-	rm -f $@; $(LN) $< $@
+bin/assistant:
+	rm -f $@; \
+	if [ .$(ASSISTANT) != . ] ; then $(LN) $(ASSISTANT) $@ ; \
+	else echo ; echo ++++ error: Lava online help works only if Qt assistant is in your PATH!; echo ; exit 1; fi
 
 #
 build:
@@ -82,7 +86,7 @@ bin_dist: build
   cd ../..; cp ../lib/*.so lib; cd lib; strip *.so; cd ..; \
   cp $(QTDIR)/lib/libqt-mt.so lib; strip lib/libqt-mt.so; \
   cp $(QTDIR)/bin/assistant bin; strip bin/assistant;\
-  cd ..; tar cjf lavape-0.8.4-linux-bin.tar.bz2 lavape; ls -l lavape-*
+  cd ..; tar cjf /windows/d/lavape-0.8.4-linux-bin.tar.bz2 lavape; ls -l /windows/d/lavape-*; rm -rf lavape
 #
 #:
 distclean: cleanall

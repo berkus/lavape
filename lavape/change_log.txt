@@ -4,28 +4,26 @@ Change Log for Release 0.8.4
 New or changed features:
 =======================
 
-1.) The Lava software can now be successfully built
-on Windows XP, Linux, FreeBSD, MacOS X.2,
-Solaris 9 (Sparc station and x86).
+(1) We have completely rewritten the Lava "callback" support,
+    roughly after the model of the "signal/slot" concept of 
+		TrollTechs Qt. This is a first step towards an extended
+		Lava GUI builder that will support also mainframe windows,
+		menus, toolbars and callbacks.
 
-It has been tested successfully on the Windows XP,
-Suse Linux 9.2, Fedora Core 3 Linux, and FreeBSD
-platforms.
+(2) Lava is more portable now. It can be built on the Windows XP,
+    Linux, FreeBSD, Solaris (sparc station and x86, g++),
+		and Mac OS X.2 platforms. It has been tested, so far,
+		on Windows XP, Linux and FreeBSD. Please tell us if it runs
+		also on the other platforms (and also if not).
 
-On Mac OS X.2 and Solaris it could not yet be tested,
-since the SourceForge Compile Farm hosts don't
-allow you to test applications that have a graphical
-user interface.
-
-We should therefore appreciate reports on attempts
-to build and test the software on the latter platforms.
+(3) You can now benefit from "precompiled headers" if you use
+    the g++ compiler (g++ release 3.4 or higher).
 
 
-2.) We have completely re-designed and re-implemented the
-Lava callback support in view of the planned extended
-GUI programming support.
+(4) For the Windows platform we have migrated to the
+    NullSoft Install System (NSIS).
 
-Callbacks are now treated in close analogy to the
-signal/slot/connect/disconnect/emit notions of the
-TroolTech Qt GUI programming toolkit. See the
-"Callbacks" documentation in the online help.
+
+(5) We have added a method "zombifyRec" (zombify recursively)
+    to class "Object" as a further aid for deactivating whole
+		collections of objects containing circular forward references.
