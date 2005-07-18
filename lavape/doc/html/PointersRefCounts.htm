@@ -80,7 +80,7 @@
       <li>in a way that prevents the emergence of closed cycles of 
       constituent/acquaintance references. </li>
       <li>Moreover, proper functioning of storage management, as outlined below, 
-      requires that reverse links always originate from objects that can be reached 
+      requires that reverse links  originate from objects that can be reached 
       by a forward (i.e., constituent/acquaintance) link from the target object 
       of the reverse link.</li>
     </ul>
@@ -91,8 +91,8 @@
       at most, if at all, be
       reached via reverse links from now on, then it is 
     automatically and irreversibly transformed
-      into a <b>&quot;zombie&quot;</b> object, and all its <b>constituent</b> links to other objects are
-      released (recursively!). This will, under the 
+      into a <b>&quot;zombie&quot;</b> object, and the reference counts of all its <b>constituent</b> objects are
+      decremented by 1 (recursively!). This will, under the 
       above-mentioned conditions, cause all reverse
       links pointing to this object to disappear. If not, then any subsequent
       attempt to access such a zombie (via a reverse link) causes a specific
@@ -101,7 +101,7 @@
     <P>In addition, <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> provides a 
     basic method <b><i>finalize</i></b> of class <i>Object</i>, which 
     marks the object as a zombie 
-    <i>immediately</i> by setting its forward count to 0, and which
+    <i>immediately</i> and which
       (recursively) releases all its references.</P>
     
     <P>&nbsp;<i>Object::finalize</i> can be used</P>
@@ -114,11 +114,19 @@
         object, for instance if a bank account is closed.</LI>
     </OL>
     
+    <P>As a further aid for releasing whole collections of objects that are 
+    linked together by potentially circular forward (= constituent or 
+    acquaintance) links, class <i>Object</i> provides a method <i>zombifyRec</i> 
+    with a boolean parameter <i>aquaintancesToo</i> which recursively finalizes 
+    and zombifies an object and all its constituents (and acquaintances, if <i>
+    aquaintancesToo</i> is true), irrespective of their reference counts.</P>
+    
     <P>Note, however, that <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       objects are not <I>destroyed</I> before both the normal <i>and</i> the reverse
       reference count are 0. This can be achieved only by proper usage of the
-      three reference types and, in exceptional cases, the <i>Object::finalize </i>
-    method. </P>
+      three reference types and, in exceptional cases, the <i>Object::finalize</i>
+    and <i>Object::zombifyRec </i>
+    methods. </P>
     
     <P>So <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> guarantees the
       absence of &quot;dangling pointers&quot; under all circumstances, and
