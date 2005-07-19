@@ -27,7 +27,7 @@ the "j" option:
 Then just execute the install script:
 
    cd lavape
-	 ./install
+   ./install
 
 This script generates two program launch scripts
 "lavape" and "lava" in lavape/bin which you can use

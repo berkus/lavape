@@ -17,7 +17,7 @@ SetCompressor lzma
 !include "MUI.nsh"
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "lavape-0.8.4-win32.bin.exe"
+OutFile "lavape-0.8.4-win32-bin.exe"
 Var instForAll
 Var userName
 Var unInstString

@@ -5,16 +5,16 @@ New or changed features:
 =======================
 
 (1) We have completely rewritten the Lava "callback" support,
-    roughly after the model of the "signal/slot" concept of 
-		TrollTechs Qt. This is a first step towards an extended
+    roughly after the model of the "signal/slot" concept of
+    TrollTechs Qt. This is a first step towards an extended
 		Lava GUI builder that will support also mainframe windows,
-		menus, toolbars and callbacks.
+    menus, toolbars and callbacks.
 
 (2) Lava is more portable now. It can be built on the Windows XP,
     Linux, FreeBSD, Solaris (sparc station and x86, g++),
-		and Mac OS X.2 platforms. It has been tested, so far,
-		on Windows XP, Linux and FreeBSD. Please tell us if it runs
-		also on the other platforms (and also if not).
+    and Mac OS X.2 platforms. It has been tested, so far,
+    on Windows XP, Linux and FreeBSD. Please tell us if it runs
+    also on the other platforms (and also if not).
 
 (3) You can now benefit from "precompiled headers" if you use
     the g++ compiler (g++ release 3.4 or higher).
@@ -26,4 +26,4 @@ New or changed features:
 
 (5) We have added a method "zombifyRec" (zombify recursively)
     to class "Object" as a further aid for deactivating whole
-		collections of objects containing circular forward references.
+    collections of objects containing circular forward references.
