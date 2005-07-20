@@ -243,7 +243,7 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) 
   (*(((unsigned short *)object)-1))--;
   if (!*(((unsigned short *)object)-1))
     ((SynFlags*)(object+1))->INCL(releaseFinished);
-  if (((SynFlags*)(object+1))->Contains(releaseFinished) && !*(((unsigned short *)object)-2)) {
+  if (!*(((unsigned short *)object)-2)) {
     delete [] (object-LOH);
     allocatedObjects--;
   }
