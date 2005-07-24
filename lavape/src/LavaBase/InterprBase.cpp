@@ -64,25 +64,19 @@ bool INC_REV_CNT(CheckData &ckd, LavaObjectPtr object) {
 
 
 bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
-  register unsigned short fwdCnt;
+  register unsigned short fwdCnt, revCnt;
   LavaObjectPtr callPtr, /*sectionPtr,*/ newStackFrame[SFH+1];
   CVFuncDesc *fDesc;
-//  LavaVariablePtr newStackFrame;
-  /*
-  CSectionDesc* secTab;
-  LavaDECL *classDECL, *secClassDECL, *attrDECL;
-  TAdapterFunc *funcAdapter;
-  int ii, lmem, llast;
-  RunTimeData *runTimeData;
-  */
 
   object = object - (*object)->sectionOffset;
   fwdCnt = *(((unsigned short *)object)-1);
   if (!fwdCnt)
     return true; // recursive invocation, stop recursion
 
-  *(((unsigned short *)object)-1) = --fwdCnt;
-  if (fwdCnt) return true;
+  if (fwdCnt > 1) {
+    *(((unsigned short *)object)-1) = --fwdCnt;
+    return true;
+  }
   
 ////////////////////////////////////////////////////////////////// finalize:
 
@@ -110,15 +104,19 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
 
 ////////////////////////////////////////////////////////////////// delete object:
 
-  if (!*(((unsigned short *)object)-2)) { // if reverse count =0, too
+  fwdCnt = *(((unsigned short *)object)-1);
+  *(((unsigned short *)object)-1) = --fwdCnt;
+  revCnt = *(((unsigned short *)object)-2);
+
+  if (!fwdCnt && !revCnt) { // both counts are 0
     delete [] (object-LOH);
     allocatedObjects--;
     return true;
   }
-  else
-    ((SynFlags*)(object+1))->INCL(releaseFinished);
-    // indicator for "release-recursion finished"; see DEC_REV_CNT
-  ((SynFlags*)(object + 1))->INCL(zombified);
+
+  ((SynFlags*)(object+1))->INCL(releaseFinished);
+  // indicator for "release-recursion finished"; see DEC_REV_CNT
+
   return true;
 }
 
