@@ -144,6 +144,7 @@ void ASN1::getHeader (destinationType dT,
       if (s.l+topOfStack->header.HeaderLen > s.m)
         s.Expand(s.l+topOfStack->header.HeaderLen - s.m);
       s.Append(DString((char*)headerBuffer,topOfStack->header.HeaderLen));
+      break;
     default: ;
     }
     return;
@@ -1187,11 +1188,7 @@ void ASN1::GETunsigned (unsigned& x)
   GETint(y);
   if (skip) return;
   if (wrongElem) return;
-/*
-  if (y < 0)
-    error(NegCard,"GETunsigned");
-  else */
-    x = (unsigned)y;
+  x = (unsigned)y;
 }
 
 
@@ -1204,11 +1201,7 @@ void ASN1::GETunsigned (long unsigned& x)
   GETint(y);
   if (skip) return;
   if (wrongElem) return;
-/*
-  if (y < 0)
-    error(NegCard,"GETunsigned");
-  else */
-    x = (long unsigned)y;
+  x = (long unsigned)y;
 }
 
 

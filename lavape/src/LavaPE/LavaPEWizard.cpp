@@ -648,7 +648,7 @@ bool CChainFormPage::OnApply()
     dl = m_DelText.length();
     if ((il || dl) && !anno)
       myWizard->FormDECL->Annotation.ptr->FA.ptr = new TAnnotation;
-      anno =  (TAnnotation*)myWizard->FormDECL->Annotation.ptr->FA.ptr;
+    anno =  (TAnnotation*)myWizard->FormDECL->Annotation.ptr->FA.ptr;
     if (il)
       anno->String1 = DString(m_InsText);
     if (dl)

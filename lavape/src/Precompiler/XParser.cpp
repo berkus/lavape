@@ -190,22 +190,22 @@ void XParserCLASS::GetMacro ()
         NextAtom();
         if (Atom == Lparenth) {
           NextAtom();
-    IntCode.RefTypeIdent();
+          IntCode.RefTypeIdent();
           IntCode.CheckTypeDefined(true,false);
           Check(Rparenth);
         }
-  else
-    IntCode.GlobalProperties.Flags.INCL(DTypesUsed);
+        else
+          IntCode.GlobalProperties.Flags.INCL(DTypesUsed);
         DParser.Expression(); /* for the sender program name */
         Check(Comma);
         if (Atom == Lparenth) {
           NextAtom();
-    IntCode.RefTypeIdent();
+          IntCode.RefTypeIdent();
           IntCode.CheckTypeDefined(true,false);
           Check(Rparenth);
         }
-  else
-    IntCode.GlobalProperties.Flags.INCL(DTypesUsed);
+        else
+          IntCode.GlobalProperties.Flags.INCL(DTypesUsed);
         DParser.Expression(); /* for the sender orgunit */
         IntCode.Pop();
         Check(Rparenth);
@@ -409,8 +409,8 @@ void XParserCLASS::putMacro ()
       NextAtom();
       if ((Atom == Val) || (Atom == ValEnc)) {
         IntCode.Push(STobVal);
-     if (Atom == ValEnc)
-       IntCode.TopOfStack()->Flags.INCL(Encrypt);
+        if (Atom == ValEnc)
+          IntCode.TopOfStack()->Flags.INCL(Encrypt);
         NextAtom();
         Check(Assign);
         constOrVar();
@@ -479,8 +479,8 @@ void XParserCLASS::PutPrivMacro ()
       NextAtom();
       if ((Atom == Val) || (Atom == ValEnc)) {
         IntCode.Push(STobVal);
-     if (Atom == ValEnc)
-       IntCode.TopOfStack()->Flags.INCL(Encrypt);
+        if (Atom == ValEnc)
+          IntCode.TopOfStack()->Flags.INCL(Encrypt);
         NextAtom();
         Check(Assign);
         constOrVar();
@@ -540,8 +540,8 @@ void XParserCLASS::ReturnMacro ()
       NextAtom();
       if ((Atom == Val) || (Atom == ValEnc)) {
         IntCode.Push(STobVal);
-     if (Atom == ValEnc)
-       IntCode.TopOfStack()->Flags.INCL(Encrypt);
+        if (Atom == ValEnc)
+          IntCode.TopOfStack()->Flags.INCL(Encrypt);
         NextAtom();
         Check(Assign);
         constOrVar();
@@ -768,10 +768,10 @@ void XParserCLASS::inputOutputObjects ()
     /* object value (optional): */
     if (Atom == Comma) {
       NextAtom();
-       if ((Atom == Inval) || (Atom == InvalEnc)) {
-   IntCode.Push(STobVal);
-   if (Atom == InvalEnc)
-     IntCode.TopOfStack()->Flags.INCL(Encrypt);
+      if ((Atom == Inval) || (Atom == InvalEnc)) {
+        IntCode.Push(STobVal);
+        if (Atom == InvalEnc)
+          IntCode.TopOfStack()->Flags.INCL(Encrypt);
         NextAtom();
         Check(Assign);
         constOrVar();

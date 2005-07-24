@@ -955,10 +955,8 @@ QString SynObject::whatsThisText() {
       "<br><br>Press the Delete key to remove it.</p>"));
     else
       return QString(QObject::tr("<p>This is a placeholder for an <b>executable <font color=red><i>Lava</i></font> expression</b></p>"));
-    break;
   case ExpDisabled_T:
     return QString(QObject::tr("<p>This is a disabled placeholder for an executable <font color=red><i><b>Lava</b></i></font> expression</p>"));
-    break;
   case FuncPH_T:
     if (((FuncExpression*)parentObject)->handle.ptr)
       return QString(QObject::tr("<p>This is a <b>placeholder for a function reference</b>."
@@ -968,7 +966,6 @@ QString SynObject::whatsThisText() {
       "<br><br>First select an interface containing the desired static function from the type combo-boxes "
       "at the top of the exec window.<br><br>Then select a static function from the function combo-box "
       "which appears to the right of the type combo-boxes.</p>"));
-    break;
   case FuncRef_T:
     if (((FuncExpression*)parentObject)->handle.ptr)
       return QString(QObject::tr("<p>This is a <b>function reference</b>."
@@ -978,30 +975,25 @@ QString SynObject::whatsThisText() {
       "<br><br>To replace it, first select an interface containing the desired static function from the type combo-boxes "
       "at the top of the exec window.<br><br>Then select a static function from the function combo-box "
       "which appears to the right of the type combo-boxes.</p>"));
-    break;
   case FuncDisabled_T:
     return QString(QObject::tr("<p>This is a <b>disabled placeholder for a function reference</b>."
       "<br><br>Insert a call expression first to enable it.</p>"));
-    break;
   case ObjPH_T:
     if (parentObject->primaryToken == parameter_T)
       return QString(QObject::tr("<p>This is a placeholder for an output parameter. Output parameters are always optional."
         "<br><br>Press the Delete key to remove it.</p>"));
     else
       return QString(QObject::tr("<p>This is a placeholder for a local or member variable</p>"));
-    break;
   case ObjPHOpt_T:
     break;
   case ObjDisabled_T:
     return QString(QObject::tr("<p>This is a placeholder for a disabled local or member variable</p>"));
-    break;
   case SetPH_T:
     break;
   case SetAttribPH_T:
     break;
   case Stm_T:
     return QString(QObject::tr("<p>This is a placeholder for an executable <font color=red><i><b>Lava</b></i></font> statement</p>"));
-    break;
   case TypePH_T:
     if (parentObject->primaryToken == quant_T
     && !parentObject->parentObject->IsDeclare())
@@ -1009,7 +1001,6 @@ QString SynObject::whatsThisText() {
       "<br><br>Press the Delete key to remove it.</p>"));
     else
       return QString(QObject::tr("<p>This is a placeholder for a type reference</p>"));
-    break;
   case TypeRef_T:
     if (parentObject->primaryToken == quant_T
     && !parentObject->parentObject->IsDeclare())
@@ -1017,13 +1008,10 @@ QString SynObject::whatsThisText() {
       "<br><br>Press the Delete key twice to remove it.</p>"));
     else
       return QString(QObject::tr("<p>This is a type reference</p>"));
-    break;
   case VarPH_T:
     return QString(QObject::tr("<p>This is a placeholder for a <b>new</b> local variable to be declared here</p>"));
-    break;
   case const_T:
     return QString(QObject::tr("<p>This is a constant</p>"));
-    break;
   case nil_T:
     if (parentObject->primaryToken == disconnect_T
     || parentObject->primaryToken == connect_T) {
@@ -1038,7 +1026,6 @@ QString SynObject::whatsThisText() {
     }
     else
       return QString(QObject::tr("<p>This is a \"null/nil/nothing/undefined\" constant</p>"));
-    break;
   default:
     return QString(QObject::tr("<p>\"What's this\" help is not yet available for this syntactic element</p>"));
   }

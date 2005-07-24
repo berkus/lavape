@@ -402,7 +402,7 @@ void IntCodeCLASS::TypeDef ()
     if (CmdParms.CurrentIncludeFile.l > 0) {
       newEntry->module = CmdParms.CurrentIncludeFile;
       while (newEntry->module.Contains(slash,0,loc))
-      newEntry->module = newEntry->module.Substr(loc+1,0);
+        newEntry->module = newEntry->module.Substr(loc+1,0);
       newEntry->module.Contains(".",0,loc);
       newEntry->module = newEntry->module.Substr(0,loc);
     }

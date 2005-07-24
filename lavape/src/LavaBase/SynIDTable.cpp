@@ -1669,13 +1669,15 @@ bool TIDTable::otherOContext(LavaDECL* decl1, LavaDECL *decl2)
   GetPattern(decl2, con2);
   if (!con1.oContext || !con2.oContext)
     return true;
-  if (con1.iContext && !con2.iContext)
+  if (con1.iContext && !con2.iContext) {
     if (IsAn(con1.iContext,TID(con2.oContext->OwnID, con2.oContext->inINCL),0))
       return false;
+  }
   else
     if (!con1.iContext && con2.iContext)
       if (IsAn(con1.oContext,TID(con2.iContext->OwnID, con2.iContext->inINCL),0))
         return false;
+  
   return !IsAn(con1.oContext,TID(con2.oContext->OwnID, con2.oContext->inINCL),0)
          && !IsAn(con2.oContext,TID(con1.oContext->OwnID, con1.oContext->inINCL),0);
 }
@@ -1878,7 +1880,6 @@ bool TIDTable::isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL)
   }
   else
     return param != 0;
-  return false;
 }
 
 bool TIDTable::isValOfOtherVirtual(LavaDECL *decl, LavaDECL* vdecl)

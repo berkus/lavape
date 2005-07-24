@@ -345,6 +345,7 @@ bool wxMDIChildFrame::event(QEvent * e )
 	case QEvent::ShowMaximized:
 		oldWindowState = QEvent::ShowMaximized;
 		wxTheApp->isChMaximized = true;
+    break;
 	default: ;
   }
   return QMainWindow::event(e);

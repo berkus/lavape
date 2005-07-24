@@ -640,9 +640,10 @@ ValOnInit CCompSpecBox::OnInitDialog()
       m_EnumDel1->setEnabled(true);
       m_EnumEdit1->setEnabled(true);
       for (enumsel = (CHEEnumSelId*)myDECL->Items.first; enumsel;
-           enumsel = (CHEEnumSelId*)enumsel->successor)
+      enumsel = (CHEEnumSelId*)enumsel->successor) {
         item = new CListItem(enumsel->data.Id, TID(-1,-1));
         m_EnumItems1->insertItem(item);
+      }
     }
     m_Persistent->setChecked(myDECL->TypeFlags.Contains(isPersistent));
   }
@@ -3389,9 +3390,10 @@ ValOnInit CVTypeBox::OnInitDialog()
     myDoc->MakeBasicBox(m_BasicTypes, NoDef, true);
     execAllPatt = new CExecAllDefs(myDoc, m_NamedTypes, 0, myDECL->ParentDECL, OrigDECL, VirtualType, typeflag);
     if ((myDECL->ParentDECL->DeclType == Interface)
-        && !myDECL->ParentDECL->TypeFlags.Contains(isAbstract) )
+    && !myDECL->ParentDECL->TypeFlags.Contains(isAbstract)) {
       m_isAbstract->setEnabled(false);
       valkindOfLink = 0;
+    }
   }
   else {
     valNewName = myDECL->LocalName.c;

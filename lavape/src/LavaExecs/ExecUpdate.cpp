@@ -672,11 +672,12 @@ void CExecUpdate::DeleteHint(CLavaPEHint *hint) {
     pCmt = (TComment*)hint->CommandData4;
     delete pCmt;
     break;
+/*  case PlusMinus:
     synObj = (SynObject*)hint->CommandData4;
     if (synObj->primaryToken == Minus_T
     && !((MinusOp*)synObj)->operand.ptr)
       delete (SynObject*)hint->CommandData4;
-    break;
+    break;*/
   default:
     delete (SynObject*)hint->CommandData4;
   }

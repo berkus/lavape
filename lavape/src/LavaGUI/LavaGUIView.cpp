@@ -258,11 +258,10 @@ void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
       myDECL = GetDocument()->IDTable.GetDECL(myID);
       if (!myDECL)
         return;
-      //if (!GetDocument()->IsEmbedded())
-        ((CLavaGUIFrame*)GetParentFrame())->NewTitle(myDECL, GetDocument()->IDTable.DocName);
-       LastBrowseNode = 0;
-       myGUIProg->OnUpdate(myDECL, 0);
-       myGUIProg->MakeGUI.DisplayScreen(false);
+      ((CLavaGUIFrame*)GetParentFrame())->NewTitle(myDECL, GetDocument()->IDTable.DocName);
+      LastBrowseNode = 0;
+      myGUIProg->OnUpdate(myDECL, 0);
+      myGUIProg->MakeGUI.DisplayScreen(false);
     }
   }
   else

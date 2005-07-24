@@ -304,9 +304,8 @@ void ConvertCLASS::StringToTime (const DString& str,
            || ((state == DOt1)  && (ch == ' ')))
            /* skip leading blanks: go on */
            ;
-          else {
+          else
             goto exit;
-           }
     else goto exit;
   } exit: ; /* LOOP */
   

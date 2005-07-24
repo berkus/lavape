@@ -418,7 +418,6 @@ LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specD
 
     secn = ckd.document->GetSectionNumber(ckd, specDECL->RuntimeDECL->RelatedDECL, classDECL);
     return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
-    break;
 
   case PROT_NATIVE: ; 
     object = AllocateObject(ckd, specDECL, stateObj, urlObj);
@@ -433,7 +432,7 @@ LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specD
     object = (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
     ((SynFlags*)(object+1))->INCL(compoPrim);
     return object;
-    break;
+
   default:
     ckd.document->LavaError(ckd, true, specDECL, &ERR_NotYetImplemented, 0);
     return 0;
@@ -472,10 +471,10 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
     ((SynFlags*)(object+1))->INCL(finished);
     secn = ckd.document->GetSectionNumber(ckd, specDECL->RuntimeDECL->RelatedDECL, classDECL);
     return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
-    break;
+
   case PROT_NATIVE:
     return CreateObject(ckd, urlObj, specDECL, classDECL, stateObj);
-    break;
+
   default:
     ckd.document->LavaError(ckd, true, specDECL, &ERR_NotYetImplemented, 0);
   }

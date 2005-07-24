@@ -356,7 +356,6 @@ int CLavaPEDoc::AutoCorrBox(QString* errID)
     cstr += "Remove this undefined reference?  ";
   return QMessageBox::question(0,qApp->name(),cstr,QMessageBox::Ok,QMessageBox::Cancel,0);
   //return AfxMessageBox(cstr, MB_OKCANCEL+MB_ICONINFORMATION);
-  return 0;
 }
 
 

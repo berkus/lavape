@@ -309,7 +309,6 @@ bool CLavaApp::event(QEvent *e)
     if (doc)
 		  doc->OnCloseDocument();
     return true;
-		break;
 	case IDU_LavaShow:
 		((CLavaDoc*)((CLavaPEHint*)((QCustomEvent*)e)->data())->fromDoc)->UpdateAllViews(0, 0, (CLavaPEHint*)((QCustomEvent*)e)->data());
     mainWidget()->setActiveWindow();

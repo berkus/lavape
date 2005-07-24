@@ -51,7 +51,6 @@ TFontCase CGUIMet::SetLFont(QWidget* win, CHEFormNode* myFormNode)
     if (win)
       win->setFont(myFormNode->data.LFont);
     return ownFont;
-    break;
   case parentFont:
   case mainFont:
     for (pp = myFormNode->data.FIP.up; pp; pp = pp->data.FIP.up) {
@@ -84,7 +83,6 @@ TFontCase CGUIMet::SetTFont(QWidget* win, CHEFormNode* myFormNode)
     if (win)
       win->setFont(myFormNode->data.TFont);
     return ownFont;
-    break;
   case parentFont:
   case mainFont:
     for (pp = myFormNode->data.FIP.up; pp; pp = pp->data.FIP.up) {

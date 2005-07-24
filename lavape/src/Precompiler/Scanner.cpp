@@ -604,26 +604,26 @@ void SkipUntilPPescape ()
         goto exit;
 
       case '/':
-  switch (subsequentChar) {
-  case '*':
+        switch (subsequentChar) {
+        case '*':
           CommentLine = currentLine;
           CommentCol = currentCol;
           /* keep position for potential error messages */
           nextChar();
           nextChar();
           skipComment();
-    break;
-
-  case '/':
+          break;
+      
+        case '/':
           CommentLine = currentLine;
           CommentCol = currentCol;
           /* keep position for potential error messages */
           nextChar();
           nextChar();
           skip1LineComment();
-    break;
-    
-  default:
+          break;
+          
+        default:
           nextChar();
         }
         break;
@@ -635,18 +635,18 @@ void SkipUntilPPescape ()
         CommentCol = currentCol;
         nextChar();
         for (;;) {
-    switch (currentChar) {
-    case '\\':
-      skipSpecialChar();
-      break;
-    case EOL:
-      PCerrors.LexicalError(StringExceedsLine);
-      goto exit2;
-    default:
-      if (currentChar == oldCh) goto exit2;
-      else nextChar();
-    }
-  } exit2:
+          switch (currentChar) {
+          case '\\':
+            skipSpecialChar();
+            break;
+          case EOL:
+            PCerrors.LexicalError(StringExceedsLine);
+            goto exit2;
+          default:
+            if (currentChar == oldCh) goto exit2;
+            else nextChar();
+          }
+        } exit2:
         nextChar();
         break;
 

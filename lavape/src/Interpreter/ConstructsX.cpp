@@ -1254,7 +1254,7 @@ LavaObjectPtr UnaryOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, un
 	delete [] newStackFrame;
 #endif
   if (!ok)
-    return (LavaObjectPtr)-1;;
+    return (LavaObjectPtr)-1;
   return object;
 }
 

@@ -4802,8 +4802,6 @@ bool Signal::Check (CheckData &ckd)
     }
   }
 
-  return ok;
-
   EXIT
 }
 

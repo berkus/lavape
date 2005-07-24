@@ -54,7 +54,7 @@ void DParserCLASS::ImportStatements ()
 
     default:
       goto exit;
-    } exit:
+  } exit:
     
   NonPPstatements();
 }
@@ -774,7 +774,7 @@ void DParserCLASS::memList (FlagSet& attributes,
           Check(Colon);
           break;
         default: goto exit;
-        } exit:
+      } exit:
     if (Atom == Lbrace) {
       annotFieldList = true;
       NextAtom();
@@ -1070,16 +1070,16 @@ void DParserCLASS::annotations (FlagSet& attributes)
       break;
       
     case Plus:
-     if (!PCerrors.Recovery)
-       if (tos->Atomic)
-         PCerrors.ContextError(NotAllowed,AtomLine,AtomCol);
-      NextAtom();
-      Check(Sig);
-      sigRefs();
-      attributes.INCL(HasSIG);
-      if (!hasSIG)
-        firstSIGanno = true;
-      break;
+      if (!PCerrors.Recovery)
+        if (tos->Atomic)
+          PCerrors.ContextError(NotAllowed,AtomLine,AtomCol);
+        NextAtom();
+        Check(Sig);
+        sigRefs();
+        attributes.INCL(HasSIG);
+        if (!hasSIG)
+          firstSIGanno = true;
+        break;
       
     case Slash:
       formAnnotations(attributes);

@@ -595,7 +595,6 @@ bool wxDocument::OnSaveModified()
         case QMessageBox::No:
             Modify(false);
             return true;
-            break;
         case QMessageBox::Yes:
             return Save();
         case QMessageBox::Cancel:
@@ -701,7 +700,7 @@ wxMDIChildFrame *wxView::CalcParentFrame()
   for (parent = parentWidget();
        parent && !parent->inherits("wxMDIChildFrame");
        parent = parent->parentWidget());
-      return (wxMDIChildFrame*)parent;
+  return (wxMDIChildFrame*)parent;
 }
 
 wxView::~wxView()
@@ -1309,16 +1308,16 @@ bool wxDocManager::MakeDefaultName(QString& name)
 // If docName is empty, a document is not currently active.
 QString wxDocManager::MakeFrameTitle(wxDocument* doc)
 {
-    QString appName = qApp->name();
-    QString title;
-    if (!doc)
-        title = appName;
+  QString appName = qApp->name();
+  QString title;
+  if (!doc)
+      title = appName;
   else {
-        QString docName;
-        doc->GetPrintableName(docName);
-        title = docName + QString(tr(" - ")) + appName;
-    }
-    return title;
+    QString docName;
+    doc->GetPrintableName(docName);
+    title = docName + QString(tr(" - ")) + appName;
+  }
+  return title;
 }
 
 

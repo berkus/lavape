@@ -2771,11 +2771,14 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
       break;
     case TIType_Require:
       asChild = (eType == Require);
+      break;
     case TIType_Ensure:
       asChild = (eType == Ensure);
+      break;
     case TIType_Exec:
       asChild = (eType == ExecDef);
-    default:
+      break;
+   default:
       asChild = false;
     }
   }

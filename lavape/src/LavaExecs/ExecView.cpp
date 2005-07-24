@@ -1867,6 +1867,7 @@ exp: // Const_T
     if (doubleClick && EnableGotoDecl()) {
       OnGotoDecl();
       doubleClick = false;
+      break;
     }
     else {
       doubleClick = false;
@@ -3690,7 +3691,6 @@ bool CExecView::EnableGotoDecl()
       if (((CLavaError*)che->data)->IDS == &ERR_Broken_ref)
         return false;
     return true;
-    break;
   case VarName_T:
     typeObj = ((VarName*)text->currentSynObj)->TypeRef();
     if (typeObj)

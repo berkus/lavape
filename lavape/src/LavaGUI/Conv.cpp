@@ -216,9 +216,8 @@ void ConvCLASS::ConvToStr (unsigned num,
     cnt++;
     digits[cnt] = '-';
   }
-  if (width <= 0) width = cnt;
-  /* "StrInit(str,maxlength);" should be replaced with */
-  /* declaration "DString str(maxlength);" */;
+  if (width <= 0)
+    width = cnt;
   maxlen = width;
   str.Reset(width);
   

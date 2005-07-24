@@ -408,7 +408,8 @@ void DString::Replace (const DString& substr,
   
   if (start > l) return;
   
-  if (start+ls > m) Expand(start+ls-m);
+  if (start+ls > m)
+    Expand(start+ls-m);
   
   /* now insert the substring */ ;
   for (unsigned i = start; i < start+ls; i++)

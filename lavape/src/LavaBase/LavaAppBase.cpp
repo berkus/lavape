@@ -750,13 +750,10 @@ TBasicType CPEBaseBrowse::GetBasicType(SynDef *lavaCode, LavaDECL* decl)
     switch (decl->DeclDescType) {
       case BasicType:
         return decl->BType;
-        break;
       case EnumType:
         return Enumeration;
-        break;
       case NamedType:
        return GetBasicType(lavaCode, ((TIDTable*)lavaCode->IDTable)->GetDECL(decl->RefID, decl->inINCL));
-        break;
       case StructDesc: 
       case Undefined:
         return NonBasic;
@@ -778,10 +775,8 @@ TDeclDescType CPEBaseBrowse::GetExprType(SynDef *lavaCode, LavaDECL *decl)
       case ExecDesc:
       case Undefined:
         return decl->DeclDescType;
-        break;
       case NamedType:
         return GetExprType(lavaCode, ((TIDTable*)lavaCode->IDTable)->GetDECL(decl->RefID, decl->inINCL));
-        break;
       default: ;
     }
   return UnknownDDT;
@@ -1297,7 +1292,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
         else
           jj++;
       }
-      if (fn[jj] = '\0') {
+      if (fn[jj] == '\0') {
         fn.l = jj;
         resultNames.append(fn.c);
         fn.l=0; fn.c=0; fn.m=0;

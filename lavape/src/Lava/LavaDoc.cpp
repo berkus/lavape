@@ -896,7 +896,7 @@ void CLavaDoc::LObjectError(CheckData& ckd, const QString& ldocName, const QStri
       msg += "\nLava Object: " + ldocName;
       if (lcomName.length())
         msg += "\nLava Component Program: " + lcomName;
-        msg += ":\n" + errText;
+      msg += ":\n" + errText;
       if (id) {
         Convert.IntToString(id->nINCL, strINCL);
         Convert.IntToString(id->nID, strID);

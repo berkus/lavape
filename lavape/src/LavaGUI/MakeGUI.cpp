@@ -144,12 +144,8 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       }
       else  /* overlay of preceding frame */
         getPrecedingFramesNeighbourData(chFrmNd,refFrame, frameSpacing);
-      /*
-    if (vertical)
-      SetTopLeft( context.currentFrame, refFrame, frameSpacing, NULL, context.indent);
-    else
-    */
-      SetTopLeft( context.currentFrame, NULL, context.indent, refFrame, frameSpacing);
+
+    SetTopLeft( context.currentFrame, NULL, context.indent, refFrame, frameSpacing);
     context.precedingWidgetInFrame = 0;
   }
 

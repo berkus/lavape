@@ -127,7 +127,6 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
     }
     return false;
   }
-  return true;
 }
 
 
