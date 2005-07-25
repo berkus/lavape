@@ -184,10 +184,10 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
   }
   if (!cc)
     return;
-  if (cc > 3) {
+//  if (cc > 3) {
     m_workspace->tile();
     return;
-  }
+/*  }
   allHeight = m_workspace->height() - minHeight;
   widthForEach = m_workspace->width() / cc;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
@@ -201,7 +201,7 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
       window->parentWidget()->move( x, 0);
       x += actWidth;
     }
-  }
+  }*/
 }
     
 void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
@@ -227,7 +227,7 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
   }
   if (!cc)
     return;
-  if (cc > 3) {
+  if (cc > 2) {
     m_workspace->tile();
     return;
   }

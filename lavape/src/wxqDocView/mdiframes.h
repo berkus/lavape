@@ -61,10 +61,10 @@ public:
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);
-  QVBox * m_CentralWidget;
-  QWorkspace * m_workspace;
+  QVBox *m_CentralWidget;
+  QWorkspace *m_workspace;
 	wxHistory *m_childFrameHistory;
-  QMainWindow* theActiveFrame;
+  QMainWindow *theActiveFrame;
 	bool completelyCreated;
   void Cascade();
   void TileVertic(QMenuBar *menubar, int& lastTile);

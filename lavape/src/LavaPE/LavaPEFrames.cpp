@@ -1374,12 +1374,12 @@ void CLavaMainFrame::adjustToolbar_7 () {
 	delete Toolbar_7;
   Toolbar_7 = 0;
   Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
+  Toolbar_7->setLabel(tr("Keyword toolbar"));
+  fillKwdToolbar(Toolbar_7);
 	if (isVisible)
 	  Toolbar_7->show();
 	else
 	  Toolbar_7->hide();
-  Toolbar_7->setLabel(tr("Keyword toolbar"));
-  fillKwdToolbar(Toolbar_7);
 
   delete LBaseData->whatNextButton;
   delete LBaseData->myWhatsThisButton;
@@ -1513,10 +1513,10 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
   }
 	else
 		switch (lastTile) {
-		case 0:
 		case 1:
 			tileVertic();
 			break;
+		case 0:
 		case 2:
 			tileHoriz();
 		}
