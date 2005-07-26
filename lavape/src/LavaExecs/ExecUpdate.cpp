@@ -646,7 +646,6 @@ plusMinus:
 void CExecUpdate::DeleteHint(CLavaPEHint *hint) {
   CHE *che;
   TComment *pCmt;
-  SynObject *synObj;
 
   switch ((InsertMode)hint->CommandData3) {
   case InsFlags:

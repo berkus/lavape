@@ -162,7 +162,7 @@ void wxMainFrame::Cascade()
 
 void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
 {
-  int ii, cc = 0, x = 0, widthForEach, preferredWidth, actWidth, minHeight=0, allHeight;
+  int ii, cc = 0, x = 0, minHeight=0;
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
 

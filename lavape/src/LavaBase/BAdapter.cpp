@@ -885,7 +885,6 @@ bool EnumCommentFunc(CheckData& ckd, LavaVariablePtr stack)
     ex = new CRuntimeException(EnumOrdLow_ex, &ERR_EnumOrdLow);
     //SetLavaException(ckd, EnumOrdLow_ex, &&ERR_EnumOrdLow);
   throw *ex;
-  return false;
 }
 
 //Set
@@ -1060,10 +1059,8 @@ bool SetGet(CheckData& ckd, LavaVariablePtr stack)
       if (stack[SFH+2])
         IFC(stack[SFH+2]);
     }
-    else {
+    else
       throw CRuntimeException(ElemNotInSet_ex,&ERR_ElemNotInSet);
-      return false;
-    }
   }
   else
     stack[SFH+2] = 0;
@@ -1086,10 +1083,8 @@ bool SetRemove(CheckData& ckd, LavaVariablePtr stack)
           DRC((LavaObjectPtr)((CHE*)(stack[SFH+1]+LSH+1))->data) // dec data
       DFC(stack[SFH+1]); // dec element handle
     }
-    else {
+    else
       throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-      return false;
-    }
   }
   return true;
 }
@@ -1111,10 +1106,8 @@ bool SetRemoveAndGet(CheckData& ckd, LavaVariablePtr stack)
       }
       DFC(stack[SFH+1]); // dec element handle
     }
-    else {
+    else
       throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-      return false;
-    }
   }
   else
     stack[SFH+2] = 0;
@@ -1351,10 +1344,8 @@ bool ChainInsertBefore(CheckData& ckd, LavaVariablePtr stack)
   if (stack[SFH+1])
     if ((*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) && (CHE*)(stack[SFH+1]+LSH+1))
       chain->Insert(((CHE*)(stack[SFH+1]+LSH+1))->predecessor, (CHE*)(stack[SFH+3]+LSH+1));
-    else {
+    else
       throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-      return false;
-    }
   else
     chain->Append((CHE*)(stack[SFH+3]+LSH+1));
   if (stack[SFH+2])
@@ -1377,10 +1368,8 @@ bool ChainInsertAfter(CheckData& ckd, LavaVariablePtr stack)
   if (stack[SFH+1])
     if ((*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) && (CHE*)(stack[SFH+1]+LSH+1))
       chain->Insert((CHE*)(stack[SFH+1]+LSH+1), (CHE*)(stack[SFH+3]+LSH+1));
-    else {
+    else
       throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-      return false;
-    }
   else
     chain->Insert(0, (CHE*)(stack[SFH+3]+LSH+1));
   if (stack[SFH+2])
@@ -1430,10 +1419,8 @@ bool ChainSucc(CheckData& ckd, LavaVariablePtr stack)
       stack[SFH+2] = 0;
     return true;
   }
-  else {
+  else
     throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-    return false;
-  }
 }
 
 bool ChainPrev(CheckData& ckd, LavaVariablePtr stack)
@@ -1449,10 +1436,8 @@ bool ChainPrev(CheckData& ckd, LavaVariablePtr stack)
       stack[SFH+2] = 0;
     return true;
   }
-  else {
+  else
     throw CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
-    return false;
-  }
 }
 
 
@@ -1587,10 +1572,8 @@ bool ArraySetEl(CheckData& ckd, LavaVariablePtr stack)
       else
         IRC(stack[SFH+2]) // inc data
   }
-  else {
+  else
     throw CRuntimeException(ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
-    return false;
-  }
   return true;
 }
 
@@ -1603,10 +1586,8 @@ bool ArrayGetEl(CheckData& ckd, LavaVariablePtr stack)
       IFC(stack[SFH+2]); // inc data
     return true;
   }
-  else {
+  else
     throw CRuntimeException(ArrayXOutOfRange_ex, &ERR_ArrayXOutOfRange);
-    return false;
-  }
 }
 
 //helper functions
