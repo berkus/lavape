@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>IDD_VTypeBox</class>
 <widget class="QDialog">
     <property name="name">
@@ -249,7 +249,7 @@
                         </sizepolicy>
                     </property>
                     <property name="title">
-                        <string>Kind of element references</string>
+                        <string>Chain/set  elements of this type are:</string>
                     </property>
                     <vbox>
                         <property name="name">
@@ -263,7 +263,7 @@
                                 <bool>false</bool>
                             </property>
                             <property name="focusPolicy">
-                                <enum>StrongFocus</enum>
+                                <enum>NoFocus</enum>
                             </property>
                             <property name="text">
                                 <string>Constituent</string>
@@ -277,10 +277,13 @@
                                 <bool>false</bool>
                             </property>
                             <property name="focusPolicy">
-                                <enum>StrongFocus</enum>
+                                <enum>TabFocus</enum>
                             </property>
                             <property name="text">
                                 <string>Acquaintance</string>
+                            </property>
+                            <property name="checked">
+                                <bool>true</bool>
                             </property>
                         </widget>
                         <widget class="QRadioButton">
@@ -291,7 +294,7 @@
                                 <bool>false</bool>
                             </property>
                             <property name="focusPolicy">
-                                <enum>StrongFocus</enum>
+                                <enum>NoFocus</enum>
                             </property>
                             <property name="text">
                                 <string>Reverse (back or up link)</string>
