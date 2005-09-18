@@ -29,7 +29,14 @@ links: bin/std.lava bin/std_1.htm bin/std_m.htm bin/std.htm bin/cp_icons_std \
   bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
 	bin/Components/libLavaStream.so \
-	bin/assistant
+	bin/assistant \
+	src/Interpreter/Check.cpp \
+	src/Interpreter/Check.h \
+	src/Interpreter/Constructs.cpp \
+	src/Interpreter/Constructs.ph \
+	src/Interpreter/MakeTable.cpp \
+	src/Interpreter/Tokens.cpp \
+	src/Interpreter/Tokens.ph
 
 bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
 	rm -f $@; $(LN) ../../$< $@
@@ -53,6 +60,21 @@ bin/assistant:
 	rm -f $@; \
 	if [ .$(ASSISTANT) != . ] ; then $(LN) $(ASSISTANT) $@ ; \
 	else echo ; echo ++++ error: Lava online help works only if Qt assistant is in your PATH!; echo ; exit 1; fi
+
+src/Interpreter/Check.cpp: src/LavaExecs/Check.cpp
+	rm -f $@; $(LN) ../LavaExecs/Check.cpp $@
+src/Interpreter/Check.h: src/LavaExecs/Check.h
+	rm -f $@; $(LN) ../LavaExecs/Check.h $@
+src/Interpreter/Constructs.cpp: src/LavaExecs/Constructs.cpp
+	rm -f $@; $(LN) ../LavaExecs/Constructs.cpp $@
+src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
+	rm -f $@; $(LN) ../LavaExecs/Constructs.ph $@
+src/Interpreter/MakeTable.cpp: src/LavaExecs/MakeTable.cpp
+	rm -f $@; $(LN) ../LavaExecs/MakeTable.cpp $@
+src/Interpreter/Tokens.cpp: src/LavaExecs/Tokens.cpp
+	rm -f $@; $(LN) ../LavaExecs/Tokens.cpp $@
+src/Interpreter/Tokens.ph: src/LavaExecs/Tokens.ph
+	rm -f $@; $(LN) ../LavaExecs/Tokens.ph $@
 
 #
 build:
