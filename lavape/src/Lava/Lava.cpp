@@ -279,7 +279,7 @@ QString CLavaApp::InitWebBrowser () {
 			prog = str;
   }
 #else
-	prog = "mozilla";
+	prog = "firefox";
 #endif
 	return prog;
 }
