@@ -6,7 +6,6 @@
 #include "LavaGUIView.h"
 #include "LavaPEDoc.h"
 #include "Syntax.h"
-//#include "wxExport.h"
 #include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"
