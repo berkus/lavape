@@ -29,7 +29,7 @@ public slots:
   virtual void fileSaveAll();
   virtual void fileClose();
   virtual void fileExit();
-	void makeStyle(const QString &style);
+  void makeStyle(const QString &style);
   void helpAbout();
   void okAction_activated();
   void toggleCategoryAction_activated();

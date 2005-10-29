@@ -113,11 +113,6 @@ static void PutDelChainHint (CheckData &ckd,SynObject *func,CHAINX *chx,CHE *che
 #endif
 
 
-enum ExecExceptions {
-  NullException
-};
-
-
 QString SynObject::LocationOfConstruct () {
   SynObject *synObj=this;
   QString cSynObjName, varName, path;
@@ -336,7 +331,8 @@ QString *RefTable::findMatchingAccess (
       CVarDesc *refEntry,
       bool nestedCall,
       bool &isAssigned,
-      ObjReference *objRef) {
+      ObjReference *objRef,
+      bool backward) {
 
   QString *errorCode=ckd.iniCheck?&ERR_NotYetInitialized:0;
   unsigned totalBranches=1, iniBranches=0;
@@ -386,7 +382,10 @@ QString *RefTable::findMatchingAccess (
 
       if (((CRefEntry*)chp->data)->IsBranchStm())
         continue;
-      chp = (CHE*)chp->predecessor;
+      if (backward)
+        chp = (CHE*)chp->predecessor;
+      else
+        chp = (CHE*)chp->successor;
       if (errorCode = findMatchingAccess(ckd,chp,refEntry,true,iniInBrStm,objRef))
         return errorCode;
       if (ckd.iniCheck)
@@ -425,7 +424,10 @@ QString *RefTable::findMatchingAccess (
       else
         chp = ((CBranch*)chp->data)->branchStm;
     }
-    chp = (CHE*)chp->predecessor;
+    if (backward)
+      chp = (CHE*)chp->predecessor;
+    else
+      chp = (CHE*)chp->successor;
   } while (chp);
 
   if (ckd.iniCheck && !alreadyIni)

@@ -188,11 +188,11 @@ void CLavaMainFrame::makeStyle(const QString &style)
     LBaseData->m_style = style;
     wxTheApp->saveSettings();
 	  qApp->setStyle(style);
-	  if(style == "Motif" || style == "MotifPlus") {
+/*	  if(style == "Motif" || style == "MotifPlus") {
 	    QPalette p( QColor( 192, 192, 192 ) );
 	    qApp->setPalette( p, TRUE );
 	    qApp->setFont( LBaseData->m_GlobalFont, TRUE );
-	  }
+	  }*/
   }
 
   isVisible = Toolbar_7->isVisible();

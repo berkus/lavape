@@ -295,7 +295,8 @@ public:
                           CVarDesc *refEntry,
                           bool nestedCall,
                           bool &isAssigned,
-                          ObjReference *objRef);
+                          ObjReference *objRef,
+                          bool backward=true);
   void findObjRef (CheckData &ckd,
                    CObjRefTable &orTbl,
                    CVarDesc *oldVarDesc,
