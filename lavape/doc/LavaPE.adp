@@ -223,6 +223,9 @@
 			<section ref="html/Callbacks.htm" title="The Lava callback concept">
 				<keyword ref="html/Callbacks.htm">callbacks</keyword>
 				<keyword ref="html/Callbacks.htm">event handling</keyword>
+				<keyword ref="html/Callbacks.htm">signals/handlers</keyword>
+				<keyword ref="html/Callbacks.htm">software signals</keyword>
+				<keyword ref="html/Callbacks.htm">handlers</keyword>
 			</section>
 			<section ref="html/Packages.htm" title="Lava projects, programming in the large">
 				<keyword ref="html/Packages.htm#packages">packages</keyword>
