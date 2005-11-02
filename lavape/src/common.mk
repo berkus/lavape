@@ -91,6 +91,7 @@ ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt3
 endif
 
+all: this
 rec_make: $(make_subpro) this
 
 ifeq ($(suffix $(EXEC)),.so)

@@ -2673,7 +2673,7 @@ void CExecView::OnDelete ()
 
     text->currentSynObj = text->currentSynObj->parentObject;
     synObj = text->currentSynObj->parentObject;
-    if (synObj->IsFuncInvocation())
+//    if (synObj->IsFuncInvocation())
       PutInsHint(newRef);
   }
   else if (text->currentSynObj->primaryToken == ObjRef_T)
