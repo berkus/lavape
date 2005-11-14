@@ -1,4 +1,4 @@
-#SHELL=/usr/bin/env bash
+SHELL=/usr/bin/env bash
 
 ph_files=$(wildcard *.ph)
 h_ph_files=$(ph_files:.ph=.h)
@@ -91,7 +91,7 @@ ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt3
 endif
 
-all: this
+#all: this
 rec_make: $(make_subpro) this
 
 ifeq ($(suffix $(EXEC)),.so)
