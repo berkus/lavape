@@ -1808,6 +1808,24 @@ void IfExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignor
   EXIT
 }
 
+ElseExpressionV::ElseExpressionV (bool) {
+  type = Exp_T;
+  replacedType = type;
+  primaryToken = elseX_T;
+  expr1.ptr = new SynObjectV(Exp_T);
+  expr2.ptr = new SynObjectV(Exp_T);
+}
+
+void ElseExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
+  ENTRY
+  DRAW(expr1.ptr);
+  t.Blank();
+  t.Insert(elseX_T,true);
+  t.Blank();
+  DRAW(expr2.ptr);
+  EXIT
+}
+
 IfxThenV::IfxThenV (bool) {
   type = elsif_T;
   replacedType = type;

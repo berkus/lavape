@@ -332,9 +332,9 @@ void Tokens_INIT ()
   ATO("octalConst");
   ATO("stringConst");
 
-  ATO("?");
-  ATO("?");
-  ATO("?");
+  ATO("doubleConst");
+  ATO("bitConst");
+  ATO("else");
   ATO("?");
   ATO("?");
 

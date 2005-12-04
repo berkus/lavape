@@ -201,6 +201,7 @@ public:
   void OnIn();
   void OnIf();
   void OnIfExpr();
+  void OnElseExpr();
   void OnSwitch();
   void OnTypeSwitch();
   void OnAnd();
@@ -325,6 +326,7 @@ public:
   void OnUpdateForeach(QPushButton *pb);
   void OnUpdateIf(QPushButton *pb);
   void OnUpdateIfExpr(QPushButton *pb);
+  void OnUpdateElseExpr(QPushButton *pb);
   void OnUpdateIn(QPushButton *pb);
   void OnUpdateNot(QPushButton *pb);
   void OnUpdateOr(QPushButton *pb);

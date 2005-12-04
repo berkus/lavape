@@ -230,7 +230,7 @@ enum TToken {
   StringConst_T,
   DoubleConst_T,
   BitConst_T,
-  FutureCONST3,
+  elseX_T,
   FutureCONST4,
   FutureCONST5,
   Callee_T,
@@ -276,6 +276,7 @@ enum TToken {
 
 extern void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr,
                        bool baseCDP=false);
+
 
 
 //extern QChar TOKENSTR[NoToken+1][MaxLenToken];

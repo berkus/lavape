@@ -2936,6 +2936,15 @@ void CExecView::OnIfExpr()
   InsertOrReplace(ifExp);
 }
 
+void CExecView::OnElseExpr() 
+{
+  // TODO: Add your command handler code here
+  
+  if (!EditOK()) return;
+  ElseExpression *elseExp = new ElseExpressionV(true);
+  InsertOrReplace(elseExp);
+}
+
 void CExecView::OnIn() 
 {
   // TODO: Add your command handler code here
@@ -5419,6 +5428,7 @@ void CExecView::UpdateUI()
   OnUpdateIn(LBaseData->elInSetButton);
   OnUpdateIf(LBaseData->ifButton);
   OnUpdateIfExpr(LBaseData->ifxButton);
+  OnUpdateElseExpr(LBaseData->elsexButton);
   OnUpdateSwitch(LBaseData->switchButton);
   OnUpdateTypeSwitch(LBaseData->typeSwitchButton);
   OnUpdateAnd(LBaseData->andButton);
@@ -5524,6 +5534,7 @@ void CExecView::DisableKwdButtons() {
   LBaseData->elInSetButton->setEnabled(false);
   LBaseData->ifButton->setEnabled(false);
   LBaseData->ifxButton->setEnabled(false);
+  LBaseData->elsexButton->setEnabled(false);
   LBaseData->switchButton->setEnabled(false);
   LBaseData->typeSwitchButton->setEnabled(false);
   LBaseData->andButton->setEnabled(false);
@@ -6299,6 +6310,14 @@ void CExecView::OnUpdateIfExpr(QPushButton *pb)
         || text->currentSynObj->whereInParent != (address)&((BinaryOp*)text->currentSynObj->parentObject)->operand1.ptr)
     && (!text->currentSynObj->parentObject->IsMultOp()
         || text->currentSynObj->whereInParent != (address)((MultipleOp*)text->currentSynObj->parentObject)->operands.first));
+}
+
+void CExecView::OnUpdateElseExpr(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo()
+    && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
 void CExecView::OnUpdateIn(QPushButton *pb) 

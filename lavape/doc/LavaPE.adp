@@ -224,6 +224,9 @@
 				<keyword ref="html/Callbacks.htm">callbacks</keyword>
 				<keyword ref="html/Callbacks.htm">event handling</keyword>
 				<keyword ref="html/Callbacks.htm">signals/handlers</keyword>
+				<keyword ref="html/Callbacks.htm">connect</keyword>
+        <keyword ref="html/Callbacks.htm">disconnect</keyword>
+				<keyword ref="html/Callbacks.htm">connect</keyword>
 				<keyword ref="html/Callbacks.htm">software signals</keyword>
 				<keyword ref="html/Callbacks.htm">handlers</keyword>
 			</section>

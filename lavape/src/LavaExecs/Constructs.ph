@@ -1034,6 +1034,17 @@ public:
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
 
+class ElseExpression : public Expression {
+public:
+  NESTEDANY<Expression> expr1, expr2;
+
+  ElseExpression () {}
+
+  virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  virtual bool Check (CheckData &ckd);
+  virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+};
+
 class Branch : public Expression {
 public:
   CHAINX/*Constant*/ caseLabels;
@@ -1807,6 +1818,16 @@ public:
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
     return QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>");}
+};
+
+class ElseExpressionV : public ElseExpression {
+public:
+  ElseExpressionV () {}
+  ElseExpressionV (bool);
+
+  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>\"x <a href=\"ElseExpr.htm\">else</a> y\" yields x if x != null, else y</p>");}
 };
 
 class BranchV : public Branch {

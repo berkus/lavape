@@ -289,6 +289,7 @@ public:
   virtual void OnGt() {}
   virtual void OnIf() {}
   virtual void OnIfExpr() {}
+  virtual void OnElseExpr() {}
   virtual void OnIn() {}
   virtual void OnInsert() {}
   virtual void OnInsertBefore() {}

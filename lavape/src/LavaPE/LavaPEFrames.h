@@ -206,6 +206,7 @@ public slots:
     virtual void elInSet();
     virtual void ifStm();
     virtual void ifExpr();
+    virtual void elseExpr();
     virtual void switchStm();
     virtual void typeStm();
     virtual void and_stm();

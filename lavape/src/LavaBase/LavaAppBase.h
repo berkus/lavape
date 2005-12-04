@@ -464,7 +464,7 @@ public:
   QPushButton 
     *declareButton, *existsButton, *foreachButton,
     *selectButton, *elInSetButton, *ifButton,
-    *ifxButton, *switchButton, *typeSwitchButton,
+    *ifxButton, *elsexButton, *switchButton, *typeSwitchButton,
     *andButton, *orButton,
     *xorButton, *notButton, *assertButton,
     *tryButton, *succeedButton, *failButton, *runButton,

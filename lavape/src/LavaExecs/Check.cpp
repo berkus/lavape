@@ -4983,6 +4983,22 @@ bool IfExpression::Check (CheckData &ckd)
   EXIT
 }
 
+void ElseExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags)
+{
+  decl = 0;
+  /*if (!parentObject->IsBinaryOp()
+  || whereInParent != (address)&((BinaryOp*)parentObject)->operand1.ptr)
+    NullAdmissible(ckd);*/
+#ifdef INTERPRETER
+  finalType = 0;
+#endif
+}
+
+bool ElseExpression::Check (CheckData &ckd)
+{
+  return true;
+}
+
 bool TypeBranch::Check (CheckData &ckd)
 {
   LavaDECL *declBranchType, *declSwitchExpression=((TypeSwitchStatement*)parentObject)->declSwitchExpression;

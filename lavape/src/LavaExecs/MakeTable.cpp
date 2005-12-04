@@ -605,6 +605,13 @@ void IfExpression::MakeTable (address table,int inINCL,SynObjectBase *parent,TTa
     MTBL (elsePart.ptr);
 }
 
+void ElseExpression::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
+{
+  ENTRY
+  MTBL (expr1.ptr);
+  MTBL (expr2.ptr);
+}
+
 void TypeBranch::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
 {
   ENTRY
