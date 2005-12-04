@@ -4056,6 +4056,13 @@ public:
   LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
+class ElseExpressionX : public ElseExpression {
+public:
+  ElseExpressionX() {}
+
+  LavaObjectPtr Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel){ return 0;};
+};
+
 class BranchX : public Branch {
 public:
   BranchX() {}
