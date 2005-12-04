@@ -4996,7 +4996,22 @@ void ElseExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &ca
 
 bool ElseExpression::Check (CheckData &ckd)
 {
-  return true;
+  Expression *opd1, *opd2;
+
+  ENTRY
+
+  opd1 = (Expression*)expr1.ptr;
+  opd2 = (Expression*)expr2.ptr;
+
+  if (opd1->IsIfStmExpr()) {
+    opd1->SetError(ckd,&ERR_IfxForbidden);
+    ERROREXIT
+  }
+
+  ok &= opd1->Check(ckd);
+  ok &= opd2->Check(ckd);
+
+  EXIT
 }
 
 bool TypeBranch::Check (CheckData &ckd)
