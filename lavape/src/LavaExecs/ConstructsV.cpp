@@ -2441,9 +2441,10 @@ void ConnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   }
   else {
     DRAW(signalSenderClass.ptr);
-    t.Blank();
+//    t.Blank();
     t.Insert(Colon_T);
-    t.Blank();
+    t.Insert(Colon_T);
+//    t.Blank();
   }
   DRAW(signalFunction.ptr);
   t.Blank();
@@ -2469,9 +2470,9 @@ void DisconnectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored
   t.Insert(primaryToken,true);
   t.Blank();
   DRAW(signalSender.ptr);
-  t.Blank();
-  t.Insert(BitOr_T);
-  t.Blank();
+//  t.Blank();
+  t.Insert(Period_T);
+//  t.Blank();
   DRAW(signalFunction.ptr);
   t.Blank();
   t.Insert(from_T);

@@ -72,6 +72,8 @@ LavaDECL::~LavaDECL() {
 		SectionTabPtr->Destroy();
     delete [] SectionTabPtr;
 	}
+  if (runTimeData)
+    delete runTimeData;
 }
 
 LavaDECL::LavaDECL() {
@@ -90,6 +92,7 @@ LavaDECL::LavaDECL() {
   VElems.UpdateNo = 0;
   RuntimeDECL = 0;  
   RelatedDECL = 0;
+  runTimeData = 0;
   SectionTabPtr = 0;   //used at run time in implementations
   SectionInfo1 = -1;
   SectionInfo2 = -1;

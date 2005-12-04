@@ -244,6 +244,7 @@ void CExecView::OnInitialUpdate()
   selfVar->formParms.ptr = 0;
   selfVar->oldFormParms = 0;
   selfVar->concernExecs = false;
+  selfVar->execView= this;
   text->ckd.inInitialUpdate = true;
   active = true;
   OnUpdate((wxView*)pHint->CommandData2, 0, pHint);
@@ -1516,8 +1517,8 @@ disconn:
         }
         if (decl)
           if (isSigFunc)
-            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSignalFuncs(text->ckd);
-//            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
+//            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowSignalFuncs(text->ckd);
+            ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassFuncs(text->ckd,decl,0,callCtx,false,true);
           else { // slot function
             callExpr = (Expression*)disconnStm->signalSender.ptr;
             callExpr->ExprGetFVType(text->ckd,declSig,cat,ctxFlags);

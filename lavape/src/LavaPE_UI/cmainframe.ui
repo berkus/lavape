@@ -1,4 +1,4 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
 <class>CMainFrame</class>
 <widget class="QMainWindow">
     <property name="name">
@@ -760,7 +760,7 @@
             <string>Declaration toolbar</string>
         </property>
         <property name="menuText">
-            <string>Declaration toolbaShow d</string>
+            <string>Show declaration toolbar</string>
         </property>
         <property name="toolTip">
             <string>Show declaration toolbar</string>

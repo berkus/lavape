@@ -33,7 +33,7 @@
 
 
 #define ENTRY \
-  execView=ckd.execView; \
+  if (!execView) execView=ckd.execView; \
   bool ok=true; \
   oldError = (CHE*)errorChain.first; \
   errorChain.Destroy(); lastError = 0; \
@@ -1114,7 +1114,9 @@ bool SynObject::UpdateReference (CheckData &ckd) {
       else if (parentObject->IsFuncInvocation())
         ((Reference*)this)->refName = decl->FullName;
       else // [dis]connect
-        if (whereInParent == (address)&((Disconnect*)parentObject)->signalFunction.ptr
+        if ((whereInParent == (address)&((Disconnect*)parentObject)->signalFunction.ptr
+             && (!((Disconnect*)parentObject)->signalSender.ptr
+                 || ((SynObject*)((Disconnect*)parentObject)->signalSender.ptr)->primaryToken == nil_T))
             || (whereInParent == (address)&((Disconnect*)parentObject)->callbackFunction.ptr
                && ((SynObject*)((Disconnect*)parentObject)->signalReceiver.ptr)->primaryToken == nil_T))
           ((Reference*)this)->refName = decl->FullName;
@@ -4383,7 +4385,7 @@ bool Connect::Check (CheckData &ckd)
   Category cat;
   CContext sigCtx, callbackCtx;
   SynFlags myCtxFlags;
-  bool senderClassOK;
+  bool senderClassOK=false;
 
   ENTRY
 
@@ -4407,16 +4409,18 @@ bool Connect::Check (CheckData &ckd)
     && !callExpr->flags.Contains(brokenRef))
       callExpr->SetError(ckd,&ERR_CallExprUndefType);
 #ifndef INTERPRETER
-    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T)
+    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncPH_T) {
       ((SynObject*)signalFunction.ptr)->primaryToken = FuncDisabled_T;
-    ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
+      ((SynObject*)signalFunction.ptr)->flags.INCL(isDisabled);
+    }
 #endif
   }
 #ifndef INTERPRETER
   else {
-    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T)
+    if (((SynObject*)signalFunction.ptr)->primaryToken == FuncDisabled_T) {
       ((SynObject*)signalFunction.ptr)->primaryToken = FuncPH_T;
-    ((SynObject*)signalFunction.ptr)->flags.EXCL(isDisabled);
+      ((SynObject*)signalFunction.ptr)->flags.EXCL(isDisabled);
+    }
   }
 #endif
 
@@ -4437,9 +4441,10 @@ bool Connect::Check (CheckData &ckd)
   ok &= ((SynObject*)signalFunction.ptr)->Check(ckd);
 #ifndef INTERPRETER
   if (!ok) {
-    if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+    if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder()) {
       ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
-    ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+    }
     ERROREXIT
   }
   else
@@ -4452,9 +4457,10 @@ bool Connect::Check (CheckData &ckd)
   if (!sigDecl) {
     ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
 #ifndef INTERPRETER
-    if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+    if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder()) {
       ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
-    ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+    }
 #endif
     ERROREXIT
   }
@@ -4462,9 +4468,10 @@ bool Connect::Check (CheckData &ckd)
     if (!sigDecl->SecondTFlags.Contains(isLavaSignal)) {
       ((Reference*)signalFunction.ptr)->SetError(ckd,&ERR_NoSignal);
 #ifndef INTERPRETER
-      if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+      if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder()) {
         ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
-      ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+        ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+      }
 #endif
       ERROREXIT
     }
@@ -4477,9 +4484,10 @@ bool Connect::Check (CheckData &ckd)
       if (!ckd.document->IDTable.IsAn(senderClassTid,0,funcItfTid,0)) {
         ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
 #ifndef INTERPRETER
-        if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+        if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder()) {
           ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
-        ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+          ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+        }
 #endif
         ok = false;
       }
@@ -4492,9 +4500,10 @@ bool Connect::Check (CheckData &ckd)
       if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
         ((SynObject*)signalFunction.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
 #ifndef INTERPRETER
-        if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder())
+        if (((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->IsPlaceHolder()) {
           ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->primaryToken = FuncDisabled_T;
-        ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+          ((SynObject*)((FuncStatement*)callback.ptr)->function.ptr)->flags.INCL(isDisabled);
+        }
 #endif
         ok = false;
       }

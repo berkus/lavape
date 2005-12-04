@@ -785,8 +785,10 @@ $TYPE +CDP {
                                  //GUI-Impl and FormDef: related Interface decl
                                  //Property: set-exec-decl
                                  //set exec decl: get-exec-decl
-					             //component specification
+					                       //component specification
                                  // and component implementation: assembly interface
+    address-- runTimeData;    // used at run time:
+                                 // callback receiver list if sender is a class
     CSecTabBase-- *SectionTabPtr;     //used at run time in implementations and interfaces
     int-CDP nSection;    //used at run time only:
                   //   interfaces, namespaces: (1 based) count of sections of class/namespace

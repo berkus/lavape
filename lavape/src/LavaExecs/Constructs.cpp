@@ -138,6 +138,7 @@ SynObject::SynObject () {
   currentIndent = 0;
 	startPos = -1;
   errorChanged = false;
+  execView = 0;
 }
 
 LavaObjectPtr SynObject::Evaluate (CheckData &ckd, LavaVariablePtr,unsigned) {

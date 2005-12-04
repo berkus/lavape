@@ -945,6 +945,7 @@ struct DISCO_DLL LavaDECL : public DObject  {
   TIDs ImplIDs;
   LavaDECL *RuntimeDECL;
   LavaDECL *RelatedDECL;
+  address runTimeData;
   CSecTabBase *SectionTabPtr;
   int nSection;
   int SectionInfo1;

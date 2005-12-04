@@ -1613,8 +1613,19 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
     }
     rcvListPtr->append(new Receiver(receiver,callbackDecl,(FuncStatement*)callback.ptr));
   }
-  else
+  else {
     senderClass = ((Reference*)signalSenderClass.ptr)->refDecl;
+    rcvDict = (QPtrDict<ReceiverList>*)senderClass->runTimeData;
+    if (!rcvDict)
+      rcvDict = new QPtrDict<ReceiverList>;
+    rcvListPtr = (*rcvDict)[signalDecl];
+    if (!rcvListPtr) {
+      rcvListPtr = new ReceiverList;
+      rcvListPtr->setAutoDelete(true);
+      rcvDict->insert(signalDecl,rcvListPtr);
+    }
+    rcvListPtr->append(new Receiver(receiver,callbackDecl,(FuncStatement*)callback.ptr));
+  }
 
   object = receiver - (*receiver)->sectionOffset;
   runTimeData = (RunTimeData*)*(object-LOH);
@@ -1683,6 +1694,8 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
           for (receiverEntry = rcvListPtr->first();
                receiverEntry;)
             if (receiverEntry->matches(receiver,callbackDecl)) {
+              if (!receiver) {
+              }
               rcvListPtr->remove();
               receiverEntry = rcvListPtr->current();
             }
