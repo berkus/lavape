@@ -348,7 +348,7 @@ LavaDumpFrame::LavaDumpFrame( QWidget* parent, DumpEventData* data)
 
 
   connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
-  fromThread = data->currentThread;
+//  fromThread = data->currentThread;
   returned = false;
   show();
 }
@@ -358,7 +358,7 @@ LavaDumpFrame::~LavaDumpFrame()
 {
   if (!returned && !wxTheApp->deletingMainFrame) {
     returned = true;
-    (*fromThread->pContExecEvent)--;
+    //(*fromThread->pContExecEvent)--;
   }
 
 }
@@ -367,7 +367,7 @@ void LavaDumpFrame::closeEvent(QCloseEvent *e)
 {
   if (!returned) {
     returned = true;
-    (*fromThread->pContExecEvent)--;
+    //(*fromThread->pContExecEvent)--;
   }
   QWidget::closeEvent(e);
 }
@@ -377,7 +377,7 @@ void LavaDumpFrame::OnOK()
   if (!returned) {
     returned = true;
     QApplication::postEvent(this, new QCloseEvent());
-    (*fromThread->pContExecEvent)--;
+    //(*fromThread->pContExecEvent)--;
   }
   QDialog::accept();
 }

@@ -194,7 +194,7 @@ QString CGUIMet::winCaption()
   if (ViewWin->inherits("CLavaGUIView"))
     return ((wxView*)ViewWin)->GetParentFrame()->caption();
   else
-    return ViewWin->caption();
+    return ((LavaGUIDialog*)ViewWin)->caption();
 }
 
  /*

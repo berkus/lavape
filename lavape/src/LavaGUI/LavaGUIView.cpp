@@ -17,6 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
+#include "MACROS.h"
 #include "LavaGUIView.h"
 #include "LavaGUIFrame.h"
 #include "SylTraversal.h"
@@ -31,6 +32,7 @@
 #include "qpushbutton.h"
 #include "qvbox.h"
 #include "qlayout.h"
+#include "Lava.xpm"
 
 
 
@@ -61,6 +63,178 @@ void GUIScrollView::viewportResizeEvent(QResizeEvent* ev)
   QScrollView::viewportResizeEvent(ev);
 }
 
+LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
+: QDialog(parent, "", true, WType_TopLevel | WStyle_MinMax)
+{
+  returned = false;
+  resize(700,500);
+  myScrv = new GUIScrollView(this, false);
+  QHBox* hb = new QHBox(this);
+  QPushButton* okButton = new QPushButton("Ok", hb);
+  QPushButton* resetButton = new QPushButton("Reset", hb);
+  QPushButton* cancelButton = new QPushButton("Cancel", hb);
+  qvbl = new QVBoxLayout(this);
+  QHBoxLayout* hbl = new QHBoxLayout(hb);
+  qvbl->addWidget(myScrv);
+  qvbl->addWidget(hb);
+  hbl->addWidget(okButton);
+  hbl->addWidget(resetButton);
+  hbl->addWidget(cancelButton);
+  connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
+  connect(resetButton, SIGNAL(clicked()), this, SLOT(OnReset()));
+  connect(cancelButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
+  qvbox = myScrv->qvbox; 
+  myDoc = (CLavaBaseDoc*)pHint->fromDoc;
+  if (myDoc->mySynDef) {
+    myGUIProg = new CGUIProg;
+    myGUIProg->Create(myDoc, this);
+    myGUIProg->SetFont(&LBaseData->m_FormFont);  
+    ServicePtr = (LavaVariablePtr)pHint->CommandData1;
+    IniDataPtr = (LavaVariablePtr)pHint->CommandData2;
+    ResultDPtr = (LavaVariablePtr)pHint->CommandData3;
+    myDECL = (*ServicePtr)[0]->implDECL;
+    NewTitle(myDECL, myDoc->IDTable.DocName);
+    myID = TID(myDECL->OwnID, 0);
+    myGUIProg->FrozenObject = (int)pHint->CommandData4;
+    myThread = (CLavaThread*)pHint->CommandData5;
+    myGUIProg->fromFillIn = (int)pHint->CommandData6;
+    myGUIProg->myDECL = myDECL;
+    myGUIProg->OnUpdate( myDECL, ResultDPtr);
+    myGUIProg->MakeGUI.DisplayScreen(false);
+  }
+}
+
+void LavaGUIDialog::setpropSize(QSize& scrSize)
+{
+  QSize sizeF = size();
+  sizeF.setWidth(lmin(sizeF.width(), scrSize.width() + 20));
+  sizeF.setHeight(lmin(sizeF.height(), scrSize.height() + 60));
+  resize(sizeF);
+}
+
+
+LavaGUIDialog::~LavaGUIDialog()
+{
+  if (myGUIProg) {
+    if (!wxTheApp->appExit)
+      myGUIProg->LavaForm.DeletePopups(myGUIProg->Root);
+    delete myGUIProg;   
+  }
+}
+
+void LavaGUIDialog::closeEvent(QCloseEvent *e)
+{
+  if (myGUIProg && ResultDPtr && *ResultDPtr) {
+    if (QMessageBox::question(
+          qApp->mainWidget(),qApp->name(),"Do you really want to cancel this Lava dialog?",
+          QMessageBox::Yes,
+          QMessageBox::No) == QMessageBox::Yes) {
+      OnCancel();      
+    }
+    else
+      return;
+  }
+}
+
+void LavaGUIDialog::OnOK()
+{
+  if (myGUIProg) {
+    myGUIProg->NoteLastModified();
+    if (myGUIProg->LavaForm.OnOK( myGUIProg->Root)) {
+      if (myThread && myThread->pContExecEvent) {
+        myThread->pContExecEvent->lastException = myGUIProg->ckd.lastException;
+        myThread->pContExecEvent->ex = myGUIProg->ex;
+        myGUIProg->ckd.lastException = 0;
+        myGUIProg->ckd.exceptionThrown = false;
+      }
+      QDialog::accept();
+    }
+  }
+}
+
+void LavaGUIDialog::OnCancel()
+{
+  if (myGUIProg) {
+    myGUIProg->NoteLastModified();
+    if (*ResultDPtr) {
+      DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
+      *ResultDPtr = 0;
+    }
+    if (myThread && myThread->pContExecEvent) {
+      myThread->pContExecEvent->lastException = myGUIProg->ckd.lastException;
+      myThread->pContExecEvent->ex = myGUIProg->ex;
+      myGUIProg->ckd.lastException = 0;
+      myGUIProg->ckd.exceptionThrown = false;
+    }
+  }
+  QDialog::reject();
+}
+
+void LavaGUIDialog::OnReset()
+{
+  bool ok = true;;
+  if (myGUIProg) {
+    myGUIProg->NoteLastModified();
+    if (*ResultDPtr) {
+      DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
+      *ResultDPtr = 0;
+    }
+    if (myGUIProg->fromFillIn) 
+      *ResultDPtr = AllocateObject(myGUIProg->ckd, (*ServicePtr)[0][0].classDECL->RelatedDECL, false);
+    if ((*ResultDPtr || !myGUIProg->fromFillIn) && !myGUIProg->ckd.exceptionThrown) {
+      if (*IniDataPtr) {
+        try {
+#ifndef WIN32
+          if (setjmp(contOnHWexception)) throw hwException;
+#endif
+          if (myGUIProg->fromFillIn) 
+            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag), (*ServicePtr)[0][0].classDECL->RelatedDECL);
+          else
+            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag));
+          if (myGUIProg->ex)
+            ok = false;
+          if (myGUIProg->ckd.exceptionThrown)
+            ok = false;
+        }
+        catch (CRuntimeException ex) {
+          if (!ex.SetLavaException(myGUIProg->ckd)) 
+            //throw;
+          ok = false;
+        }
+        catch (CHWException ex) {
+          if (!ex.SetLavaException(myGUIProg->ckd)) 
+            //throw;
+          ok = false;
+        }
+        ok = ok && !myGUIProg->ckd.exceptionThrown && !myGUIProg->ex;
+      }
+      if (ok && *ResultDPtr) {
+        myGUIProg->OnUpdate( myDECL, ResultDPtr);
+        myGUIProg->MakeGUI.DisplayScreen(false);
+        return;
+      }
+    }
+  }
+  OnCancel(); //return to calling program if exceptions appear}
+}
+
+
+void LavaGUIDialog::NewTitle(LavaDECL *decl, const DString& lavaName)
+{
+  QString /*oldTitle=caption(),*/ newTitle;
+
+  if (decl) {
+    DString title = lavaName;
+    title += DString(" - ");
+    title += decl->FullName;
+    newTitle = QString(title.c);
+  }
+  else
+    newTitle = QString(lavaName.c);
+  setCaption(newTitle);
+  //if (!oldTitle.isEmpty() && newTitle != oldTitle)
+  //  wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
+}
 
 CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
    : CLavaBaseView(parent,doc,"LavaGUIView")
@@ -68,13 +242,10 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
   released = false;
   QVBox *qvb = new QVBox(this);
   myScrv = new GUIScrollView(qvb, false);
-  //QVBoxLayout* qvl = new QVBoxLayout(qvb);
-  //qvl->addWidget(myScrv);
   if (LBaseData->inRuntime && !((CLavaBaseDoc*)doc)->isObject) {
     QHBox* hb = new QHBox(qvb);
     QPushButton* okButton = new QPushButton("Ok", hb);
     QPushButton* resetButton = new QPushButton("Reset", hb);
-    //qvl->addWidget(hb);
     connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
     connect(resetButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
   }
@@ -162,39 +333,21 @@ void CLavaGUIView::OnInitialUpdate()
     myGUIProg->Create(GetDocument(), this);
     myGUIProg->SetFont(&LBaseData->m_FormFont);  
     if (pHint && LBaseData->actHint->com == CPECommand_OpenFormView) {
-      if (LBaseData->inRuntime) { //lava task only
-        //AddButtons();
-        GetParentFrame()->show();
-        myDECL = (*(LavaObjectPtr)pHint->CommandData1)->implDECL;
-        ((CLavaGUIFrame*)GetParentFrame())->NewTitle(myDECL, GetDocument()->IDTable.DocName);
-        myID = TID(myDECL->OwnID, 0);
-        ServicePtr = (LavaVariablePtr)pHint->CommandData1;
-        IniDataPtr = (LavaVariablePtr)pHint->CommandData2;
-        ResultDPtr = (LavaVariablePtr)pHint->CommandData3;
-        if (*ResultDPtr) 
-          CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
-        myGUIProg->FrozenObject = (int)pHint->CommandData4;
-        myThread = (CLavaThread*)pHint->CommandData5;
-        myGUIProg->fromFillIn = (int)pHint->CommandData6;
-        myGUIProg->myDECL = myDECL;
-        myGUIProg->OnUpdate( myDECL, ResultDPtr);
-        wxTheApp->mainWidget()->showMaximized();
-      }
-      else {
+      if (!LBaseData->inRuntime) { 
+        //LavaPE only
         myDECL = (LavaDECL*)pHint->CommandData1;
         for ( ; myDECL && (myDECL->DeclType == VirtualType); myDECL = GetDocument()->IDTable.GetDECL(myDECL->RefID, myDECL->inINCL));
         myID = TID(myDECL->OwnID, myDECL->inINCL);
-        mainTree = (CLavaBaseView*)pHint->CommandData2; //LavaPE only
+        mainTree = (CLavaBaseView*)pHint->CommandData2; 
         LastBrowseNode = 0;
         myGUIProg->myDECL = myDECL;
         myGUIProg->selDECL = myDECL;
-        //myGUIProg->OnUpdate(myDECL, (LavaVariablePtr)pHint->CommandData3);
         OnUpdate(this, 0, pHint);
       }
     }
-    else { //show Lava object autonom
+    else { //show Lava object autonom (.ldoc)
       if (LBaseData->inRuntime && GetDocument()->isObject && GetDocument()->DocObjects[2]) {
-        GetParentFrame()->show();
+        GetParentFrame()->showMaximized();
         ServicePtr = &GetDocument()->DocObjects[0];
         IniDataPtr = &GetDocument()->DocObjects[1];
         ResultDPtr = &GetDocument()->DocObjects[2];
@@ -203,8 +356,7 @@ void CLavaGUIView::OnInitialUpdate()
         myGUIProg->FrozenObject = 0;
         myGUIProg->fromFillIn = 1;
         myDECL = (*ServicePtr)[0][0].implDECL;
-        //if (!GetDocument()->IsEmbedded())
-          ((CLavaGUIFrame*)GetParentFrame())->setCaption(GetDocument()->GetTitle());
+        ((CLavaGUIFrame*)GetParentFrame())->setCaption(GetDocument()->GetTitle());
         myID = TID(myDECL->OwnID, myDECL->inINCL);
         LastBrowseNode = 0;
         MessToStatusbar();
@@ -216,7 +368,7 @@ void CLavaGUIView::OnInitialUpdate()
   }
   else {
     if (LBaseData->inRuntime && GetDocument()->isObject) {
-      GetParentFrame()->show();
+      GetParentFrame()->showMaximized();
       GetDocument()->SelectLcom(true);
       myGUIProg = new CGUIProg;
       MessToStatusbar();
@@ -245,12 +397,13 @@ void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
   GetParentFrame()->show();
   inUpdate = true;
   CLavaPEHint* Hint = (CLavaPEHint*)pHint;
-  if (Hint //&& Hint->CommandData1 
+  if (Hint 
         && ((Hint->com == CPECommand_Delete)
         ||  (Hint->com == CPECommand_Insert)
         ||  (Hint->com == CPECommand_Change)
         ||  (Hint->com == CPECommand_FromOtherDoc))
-      || (undoRedoCheck == 3) || (undoRedoCheck > CHLV_showError)) {
+        || (undoRedoCheck == 3) || (undoRedoCheck > CHLV_showError)) { 
+    //LavaPE
     if ((undoRedoCheck == 1) && Hint && Hint->FirstLast.Contains(firstHint)
         || (undoRedoCheck != 1) && Hint && Hint->FirstLast.Contains(lastHint)
         || (undoRedoCheck == 3) || (undoRedoCheck >= CHLV_showError)) {
@@ -266,21 +419,8 @@ void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
   }
   else
     if (Hint && (Hint->com == CPECommand_OpenFormView)) {
-      if (LBaseData->inRuntime) {
-        released = false;
-        ServicePtr = (LavaVariablePtr)Hint->CommandData1;
-        IniDataPtr = (LavaVariablePtr)Hint->CommandData2;
-        ResultDPtr = (LavaVariablePtr)Hint->CommandData3;
-        if (*ResultDPtr)
-          CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
-        myDECL = (*ServicePtr)[0]->implDECL;
-        myGUIProg->FrozenObject = (int)Hint->CommandData4;
-        myThread = (CLavaThread*)Hint->CommandData5;
-        myGUIProg->fromFillIn = (int)Hint->CommandData6;
-        //if (!GetDocument()->IsEmbedded())
-          ((CLavaGUIFrame*)GetParentFrame())->NewTitle(myDECL, GetDocument()->IDTable.DocName);
-      }
-      else {
+      if (!LBaseData->inRuntime) { 
+        //LavaPE
         ServicePtr = 0;
         myDECL = (LavaDECL*)Hint->CommandData1;
       }
@@ -289,7 +429,7 @@ void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
       myGUIProg->OnUpdate(myDECL, ResultDPtr);
       //if (LBaseData->inRuntime)
       myGUIProg->MakeGUI.DisplayScreen(false);
-   }
+    }
   inUpdate = false;
 
 }
@@ -330,13 +470,6 @@ void CLavaGUIView::resetLastBrowseNode()
 void CLavaGUIView::SyncForm(LavaDECL* selDECL)
 {
   if (!inUpdate && !myGUIProg->inSynchTree) {
-    /*
-    if (myGUIProg->FocusPopup) 
-      setFocus();
-      */
-    //if (LastBrowseNode && LastBrowseNode->data.IoSigFlags.Contains(setViewBorder)) {
-    //  LastBrowseNode->data.IoSigFlags.EXCL(setViewBorder);
-    //}
     resetLastBrowseNode();
     if (scrollView()->MaxBottomRight.bottom()) {
       LastBrowseNode = myGUIProg->LavaForm.BrowseForm(myGUIProg->Root, selDECL);
@@ -413,27 +546,12 @@ void CLavaGUIView::OnOK()
   if (released)
     return;
   NoteLastModified();
-  if (LBaseData->inRuntime && !GetDocument()->isObject)// && !GetDocument()->IsEmbedded())
-    if (myGUIProg && myGUIProg->LavaForm.OnOK( myGUIProg->Root))
-      if (myThread && myThread->pContExecEvent) {
-        myThread->pContExecEvent->lastException = myGUIProg->ckd.lastException;
-        myThread->pContExecEvent->ex = myGUIProg->ex;
-        myGUIProg->ckd.lastException = 0;
-        myGUIProg->ckd.exceptionThrown = false;
-        released = true;
-        GetParentFrame()->hide();
-        (*myThread->pContExecEvent)--; // release semaphore, -> client thread resumes
-      }
+
 }
 
-/*
-void CLavaGUIView::OnUpdateOk(wxAction* action) 
-{
-  action->setEnabled(LBaseData->inRuntime && !GetDocument()->isObject);// && !GetDocument()->IsEmbedded());
-}
-*/
 
 void CLavaGUIView::OnCancel()
+
 {
   if (released)
     return;
@@ -447,43 +565,6 @@ void CLavaGUIView::OnCancel()
     if (*ResultDPtr) {
       DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
       *ResultDPtr = 0;
-    }
-    if (myGUIProg->fromFillIn) 
-      *ResultDPtr = AllocateObject(myGUIProg->ckd, (*ServicePtr)[0][0].classDECL->RelatedDECL, false);
-    if ((*ResultDPtr || !myGUIProg->fromFillIn) && !myGUIProg->ckd.exceptionThrown) {
-      if (*IniDataPtr) {
-        try {
-#ifndef WIN32
-          if (setjmp(contOnHWexception)) throw hwException;
-#endif
-          if (myGUIProg->fromFillIn) 
-            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag), (*ServicePtr)[0][0].classDECL->RelatedDECL);
-          else
-            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag));
-          if (myGUIProg->ex)
-            ok = false;
-          if (myGUIProg->ckd.exceptionThrown)
-            ok = false;
-        }
-        catch (CRuntimeException ex) {
-          if (!ex.SetLavaException(myGUIProg->ckd)) 
-            throw;
-          ok = false;
-        }
-        catch (CHWException ex) {
-          if (!ex.SetLavaException(myGUIProg->ckd)) 
-            throw;
-          ok = false;
-        }
-        ok = ok && !myGUIProg->ckd.exceptionThrown && !myGUIProg->ex;
-      }
-      if (ok && *ResultDPtr) {
-        CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
-        LastBrowseNode = 0;
-        myGUIProg->OnUpdate( myDECL, ResultDPtr);
-        myGUIProg->MakeGUI.DisplayScreen(false);
-        return;
-      }
     }
   }
   OnOK(); //return to calling program if exceptions appear
@@ -529,7 +610,6 @@ void CLavaGUIView::OnUpdateDeleteopt(wxAction* action)
       && myGUIProg->focNode->data.FIP.widget
       && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
       && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
-    //CFrameWnd *frm = myGUIProg->focNode->data.FIP.widget->GetParentFrame();
     QWidget* delWindow = myGUIProg->focNode->data.FIP.frameWidget;
     myGUIProg->DelNode = myGUIProg->focNode;
     while (myGUIProg->DelNode && (delWindow != this)) {// && (delWindow != frm)) {
@@ -566,7 +646,6 @@ void CLavaGUIView::OnUpdateInsertopt(wxAction* action)
       && myGUIProg->focNode->data.FIP.widget
         && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
         && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
-      //CFrameWnd *frm = myGUIProg->focNode->data.FIP.widget->GetParentFrame();
       QWidget* insertWindow = myGUIProg->focNode->data.FIP.frameWidget;
       myGUIProg->InsertNode = myGUIProg->focNode;
       while (myGUIProg->InsertNode && (insertWindow != this)) {// && (insertWindow != frm)) {
@@ -616,16 +695,17 @@ bool CLavaGUIView::OnKill()
 {
   if (released)
     return true;
+  /*
   if (myGUIProg && LBaseData->inRuntime && !GetDocument()->isObject) {
     if (ResultDPtr && *ResultDPtr) {
       if (QMessageBox::question(
             qApp->mainWidget(),qApp->name(),"Do you really want to abort this Lava program?",
             QMessageBox::Yes,
             QMessageBox::No) == QMessageBox::Yes) {
-        /*
-        DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
-        *ResultDPtr = 0;
-        */
+        
+        //DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
+        //*ResultDPtr = 0;
+        
         if (myThread && myThread->pContExecEvent) {
           if (!myGUIProg->ckd.lastException)
             SetLavaException(myGUIProg->ckd, CanceledForm_ex, ERR_CanceledForm);
@@ -639,6 +719,7 @@ bool CLavaGUIView::OnKill()
       return false;
     }
   }
+  */
   return true;
 }
 

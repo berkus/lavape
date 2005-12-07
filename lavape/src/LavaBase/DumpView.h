@@ -11,12 +11,12 @@
 
 class DumpListView;
 
-class LAVABASE_DLL LavaDumpFrame : public QDialog //QMainWindow 
+class LAVABASE_DLL LavaDumpFrame : public QDialog 
 {
 public:
   LavaDumpFrame( QWidget* parent, DumpEventData* data);
   virtual ~LavaDumpFrame();
-  CLavaThread* fromThread;
+//  CLavaThread* fromThread;
   DumpListView * view;
   bool returned;
   void closeEvent(QCloseEvent *e);

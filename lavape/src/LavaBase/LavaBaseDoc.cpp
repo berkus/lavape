@@ -1371,14 +1371,14 @@ bool CLavaBaseDoc::DeleteContents()
 {
   CheckData ckd;
   ckd.document = this;
-/*
+
   if (DocObjects[0])
     DEC_FWD_CNT(ckd,DocObjects[0]);
   if (DocObjects[1])
     DEC_FWD_CNT(ckd,DocObjects[1]);
   if (DocObjects[2])
     DEC_FWD_CNT(ckd,DocObjects[2]);
-*/
+
   DocObjects[0] = 0;
   DocObjects[1] = 0;
   DocObjects[2] = 0;

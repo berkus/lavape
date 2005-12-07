@@ -26,6 +26,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
 { public:
 
   QWidget* ViewWin;  //CLavaGUIView or LavaGUIDialog
+  bool isView;
   QScrollView* scrollView;
   CHEFormNode* DelNode;
   CHEFormNode* InsertNode;

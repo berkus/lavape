@@ -89,8 +89,11 @@ int main( int argc, char ** argv ) {
 #endif
 
   ap.m_appWindow = new CLavaMainFrame;
-  if (ap.m_appWindow->OnCreate())
-		ap.m_appWindow->showMaximized();
+  if (ap.m_appWindow->OnCreate()) {
+    ap.m_appWindow->resize(300,300);
+    ap.m_appWindow->show();
+		//ap.m_appWindow->showMaximized();
+  }
 	else
 		return 1;
 	
@@ -291,6 +294,8 @@ bool CLavaApp::event(QEvent *e)
 	CLavaPEHint *pHint;
 	CLavaThread *thr;
   DumpEventData* dumpdata;
+  int result;
+  CheckData ckd;
 
 	switch (e->type()) {
   case IDU_LavaStart:
@@ -309,12 +314,6 @@ bool CLavaApp::event(QEvent *e)
     if (doc)
 		  doc->OnCloseDocument();
     return true;
-	case IDU_LavaShow:
-		((CLavaDoc*)((CLavaPEHint*)((QCustomEvent*)e)->data())->fromDoc)->UpdateAllViews(0, 0, (CLavaPEHint*)((QCustomEvent*)e)->data());
-    mainWidget()->setActiveWindow();
-    mainWidget()->raise();
-		delete (CLavaPEHint*)((QCustomEvent*)e)->data();
-		break;
 	case IDU_LavaMsgBox:
     mainWidget()->setActiveWindow();
     mainWidget()->raise();
@@ -337,15 +336,31 @@ bool CLavaApp::event(QEvent *e)
 			break;
 		}
     break;
+	case IDU_LavaShow:
+    pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
+    ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(((wxMainFrame*)mainWidget()), pHint); 
+    result = ((QDialog*)((CLavaDoc*)pHint->fromDoc)->LavaDialog)->exec();
+    delete ((CLavaDoc*)pHint->fromDoc)->LavaDialog;
+    ((CLavaDoc*)pHint->fromDoc)->LavaDialog = 0;
+    if (pHint->CommandData5) {
+      thr = (CLavaThread*)((CLavaPEHint*)((QCustomEvent*)e)->data())->CommandData5;
+      if (result == QDialog::Rejected) {
+        if (!thr->pContExecEvent->ex)
+          ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
+          thr->pContExecEvent->ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+          //SetLavaException(ckd, CanceledForm_ex, ERR_CanceledForm);
+      }
+      (*thr->pContExecEvent)--;
+    }
+    delete (CLavaPEHint*)((QCustomEvent*)e)->data();
+		break;
   case IDU_LavaDump:
-//    mainWidget()->setActiveWindow();
-//    mainWidget()->raise();
     dumpdata = (DumpEventData*)((QCustomEvent*)e)->data();
-    dumpdata->doc->DumpFrame = new LavaDumpFrame(((wxMainFrame*)mainWidget())/*->GetClientWindow()*/, dumpdata); 
+    dumpdata->doc->DumpFrame = new LavaDumpFrame(((wxMainFrame*)mainWidget()), dumpdata); 
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
-    
-    
-    
+    delete dumpdata->doc->DumpFrame;
+    dumpdata->doc->DumpFrame = 0;
+    (*((DumpEventData*)((QCustomEvent*)e)->data())->currentThread->pContExecEvent)--;
     delete (DumpEventData*)((QCustomEvent*)e)->data();
 		break;
 	default:
@@ -362,37 +377,7 @@ QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QStr
   return L_GetOpenFileName(startFileName, parent, caption,
           "Lava file (*.lava)", "lava", "Lava object file (*.ldoc)", "ldoc");
 
-  /*
-  QString fileName;
-  QFileDialog *fd = new QFileDialog(parent, "lavafileDialog", true);
-  QFileInfo qf = QFileInfo(startFileName);
 
-  fd->addFilter( "Lava task file (*.lava)");
-  fd->addFilter( "Lava object file (*.ldoc)");
-  fd->setCaption(caption);
-  fd->setDir(qf.dirPath(true));
-  QString filter = qf.extension();
-  if (filter.isEmpty())
-    filter = "lava";
-  filter = "*." + filter;
-  fd->setSelectedFilter(filter);
-  fd->setSelection(startFileName);
-  if (existing)
-    fd->setMode( QFileDialog::ExistingFile );
-  else
-    fd->setMode( QFileDialog::AnyFile );
-  fd->setViewMode( QFileDialog::List );
-  fd->setFilter(filter);
-  if (fd->exec() == QDialog::Accepted ) {
-    fileName = fd->selectedFile();
-    delete fd;
-    return fileName;
-  }
-  else {
-    delete fd;
-    return 0;
-  }
-  */
 }
 
 void CLavaApp::OnFileOpen() 
@@ -524,12 +509,6 @@ void CLavaApp::OnChooseFormFont(int font_case)
         LBaseData.m_FormLabelFont = lf;
         LBaseData.m_lfDefFormLabelFont = LBaseData.m_lfDefFormFont;
       }
-      /*
-      if (!LBaseData.useButtonFont) {
-        LBaseData.m_FormButtonFont = lf;
-        LBaseData.m_lfDefFormButtonFont = LBaseData.m_lfDefFormFont;
-      }
-      */
       dm = wxDocManager::GetDocumentManager();
       posD = dm->GetFirstDocPos();
       while (posD) {
@@ -568,30 +547,7 @@ void CLavaApp::OnChooseFormFont(int font_case)
       saveSettings();
     }
   }
-  /*
-  else {
-    lf = LBaseData.m_FormButtonFont;
 
-    lf = QFontDialog::getFont(&ok,LBaseData.m_FormButtonFont,m_appWindow);
-    if (ok) {
-      LBaseData.m_FormButtonFont = lf;
-      LBaseData.m_lfDefFormButtonFont = lf.toString();
-
-      dm = wxDocManager::GetDocumentManager();
-      posD = dm->GetFirstDocPos();
-      while (posD) {
-        doc = (CLavaDoc*)dm->GetNextDoc(posD);
-        posV = doc->GetFirstViewPos();
-        while (posV) {
-          view = doc->GetNextView(posV);
-          if (view->inherits("CLavaGUIView")) 
-            ((CLavaGUIView*)view)->setNewButtonFont();
-        }
-      }
-      saveSettings();
-    }
-  }
-  */
 }
 
 

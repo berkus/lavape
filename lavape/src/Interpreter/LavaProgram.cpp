@@ -26,6 +26,7 @@
 #include "DbgThread.h"
 #include "Constructs.h"
 #include "BAdapter.h"
+#include "LavaGUIView.h"
 
 #include "qstring.h"
 #include "qmessagebox.h"
@@ -2363,31 +2364,40 @@ stop:     ckd.document->throwError = false;
   }
 }
 
-void showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
+CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
 {
+  CRuntimeException* ex=0;
   CLavaThread *currentThread = CLavaThread::currentThread();
-  currentThread->pContExecEvent->lastException = 0;
   CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, (DWORD)&stack[SFH], (DWORD)&stack[SFH+1], (DWORD)&stack[SFH+2], (DWORD)frozen, (DWORD)currentThread, (DWORD)fromFillIn);
-	QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaShow,(void*)hint));
-  (*currentThread->pContExecEvent)++;
-  if (currentThread->pContExecEvent->lastException) {
-    if (ckd.lastException)
-      DEC_FWD_CNT(ckd, ckd.lastException);
-    ckd.lastException = currentThread->pContExecEvent->lastException;
+  if (currentThread) {
     currentThread->pContExecEvent->lastException = 0;
-    ckd.exceptionThrown = true;
-  }
-  else 
-    if (currentThread->pContExecEvent->ex) {
-      CRuntimeException* ex = currentThread->pContExecEvent->ex;
-      currentThread->pContExecEvent->ex = 0;
-      throw ex;
+	  QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaShow,(void*)hint));
+    (*currentThread->pContExecEvent)++;
+    if (currentThread->pContExecEvent->lastException) {
+      if (ckd.lastException)
+        DEC_FWD_CNT(ckd, ckd.lastException);
+      ckd.lastException = currentThread->pContExecEvent->lastException;
+      currentThread->pContExecEvent->lastException = 0;
+      ckd.exceptionThrown = true;
     }
+    else 
+      if (currentThread->pContExecEvent->ex) {
+        ex = currentThread->pContExecEvent->ex;
+        currentThread->pContExecEvent->ex = 0;
+      }
+  }
+  else {
+    ((CLavaBaseDoc*)hint->fromDoc)->LavaDialog = new LavaGUIDialog(qApp->mainWidget(), hint); 
+    int result = ((QDialog*)((CLavaBaseDoc*)hint->fromDoc)->LavaDialog)->exec();
+    if (result == QDialog::Accepted) {}
+    else {}
+
+  }
   if (ckd.document->throwError) {
     ckd.document->throwError = false;
-//    AfxThrowUserException();
 		throw CUserException();
   }
+  return ex;
 }
 
 bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack)
@@ -2404,13 +2414,15 @@ bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack)
     return false;
   if (ex)
     throw *ex;
-  showFunc(ckd, newStackFrame, !((SynFlags*)(newStackFrame[SFH+2]+1))->Contains(stateObjFlag), false);
+  ex = showFunc(ckd, newStackFrame, !((SynFlags*)(newStackFrame[SFH+2]+1))->Contains(stateObjFlag), false);
   if (ckd.exceptionThrown) {
     if (newStackFrame[SFH+2])
       DFC(newStackFrame[SFH+2]);
     return false;
   }
   else {
+    if (ex)
+      throw *ex;
     UpdateObject(ckd, newStackFrame[SFH+1], &newStackFrame[SFH+2]);
     if (newStackFrame[SFH+2])
       DFC(newStackFrame[SFH+2]);
@@ -2438,10 +2450,12 @@ bool ShowFuncFillIn(CheckData& ckd, LavaVariablePtr stack)
     if (ex)
       throw *ex;
   }
-  showFunc(ckd, stack, false, true);
+  ex = showFunc(ckd, stack, false, true);
   if (ckd.exceptionThrown)
     return false;
   else {
+    if (ex)
+      throw *ex;
     ((SynFlags*)(stack[SFH+2]+1))->INCL(finished);
     return true;
   }

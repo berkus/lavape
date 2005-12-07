@@ -142,6 +142,7 @@ public:
   wxView *RuntimeView; //used from *.ldoc only
   CThreadList *ThreadList;
   QWidget* DumpFrame;
+  QWidget* LavaDialog;
 
   CHESimpleSyntax* AddSyntax(SynDef *syntaxIncl, const QString& fn, bool& errEx, int hint=0);
   bool AllowThrowType(LavaDECL* decl, TID throwID, int inINCL);

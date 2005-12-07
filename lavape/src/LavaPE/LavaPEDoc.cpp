@@ -1843,10 +1843,10 @@ CHE* CLavaPEDoc::GetExecChe(LavaDECL* parentDecl,TDeclType type, bool makeIt)
     return afterChe;
 }
 
+/*
 DString CLavaPEDoc::GetIOLabel(TAnnotation *anno)
 {
   QString cstr;
-  /*
   int ids;
   if (anno && anno->IoSigFlags.Contains(DONTPUT))
     ids = IDS_DONTPUT;
@@ -1874,9 +1874,9 @@ DString CLavaPEDoc::GetIOLabel(TAnnotation *anno)
           else
             ids = IDS_EchoDefault;
   cstr.LoadString(ids);
-  */
   return DString(cstr);
 }
+*/
 
 bool CLavaPEDoc::GetOperatorID(LavaDECL* decl, TOperator op, TID& ElID)
 {

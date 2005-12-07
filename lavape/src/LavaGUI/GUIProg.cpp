@@ -64,10 +64,11 @@ void CGUIProg::Create(CLavaBaseDoc* doc, QWidget* view)
   MakeGUI.INIT(this);
   TreeSrch.INIT(this);
   ViewWin = view;
+  isView = view->inherits("CLavaGUIView");
   if (view->inherits("CLavaGUIView"))
     scrollView = ((CLavaGUIView*)view)->scrollView();
-  //else
-  //  scrollView = ((LavaGUIDialog*)view)->scrollView();
+  else
+    scrollView = ((LavaGUIDialog*)view)->scrollView();
   CGUIProgBase::Create();
 }
 
@@ -133,7 +134,8 @@ void CGUIProg::SyncTree(CHEFormNode *node)
 
 void CGUIProg::OnModified()
 {
-  ((CLavaGUIView*)ViewWin)->OnModified();
+  if (isView)
+    ((CLavaGUIView*)ViewWin)->OnModified();
 }  
 
 void CGUIProg::RedrawForm()

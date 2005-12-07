@@ -13,8 +13,8 @@
 /////////////////////////////////////////////////////////////////////////////
 // CLavaGUIFrame frame
 //
-// This is the Childframe class of the Splitter - View containing
-// a CLavaGUIView - View and a CLavaPEView - View
+// This is the Lava-runtime-childframe class and a baseclass of the LavaPE-childframe 
+// containing the splitter including a CLavaGUIView-view and a CLavaPEView-view
 //
 /////////////////////////////////////////////////////////////////////////////
 

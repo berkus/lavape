@@ -1854,8 +1854,6 @@ bool LavaFormCLASS::OnOK(CHEFormNode *object_first)
           && !((CGUIProg*)GUIProg)->FrozenObject) {
           //show MessageBox and
           //SetFocus
-//    actFNode->data.FIP.up->data.IoSigFlags.INCL(setViewBorder);
-//    ((CGUIProg*)GUIProg)->RedrawForm();
           QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), ERR_EnterValue,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
           if (((CGUIProg*)GUIProg)->MakeGUI.setFocus(1,actFNode)) 
             if (GUIProg->focNode) 

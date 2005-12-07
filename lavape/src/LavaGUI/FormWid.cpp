@@ -123,7 +123,8 @@ void CFormWid::mousePressEvent(QMouseEvent* ev)
   if (myMenu) 
     myMenu->popup(ev->globalPos());//QPoint(ev->x(), ev->y()));
   else
-    if (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin)
+    if (GUIProg->isView && 
+      (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
       wxDocManager::GetDocumentManager()->SetActiveView((wxView*)GUIProg->ViewWin);
 }
 
@@ -151,7 +152,7 @@ bool CFormWid::event(QEvent* ev)
     return true;
   }
   else {
-    if (ev->type() == QEvent::Enter) 
+    if ((ev->type() == QEvent::Enter) && GUIProg->isView)
       ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
     return QFrame::event(ev);
   }

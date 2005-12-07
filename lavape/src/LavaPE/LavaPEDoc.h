@@ -46,7 +46,7 @@ public:
   virtual void FindReferences(DString& allNames, CFindData& fw);
   TID FindUIReference(LavaDECL* decl, CFindData& fw);
   virtual CHE* GetExecChe(LavaDECL* parentDecl,TDeclType type,bool makeIt=true);
-  DString GetIOLabel(TAnnotation *anno);
+//  DString GetIOLabel(TAnnotation *anno);
   virtual bool GetOperatorID(LavaDECL* decl, TOperator op, TID& ElID);
   virtual bool getOperatorID(LavaDECL* decl, TOperator op, TID& ElID);
   DString GetTypeLabel(LavaDECL* elDef, bool goDown); 

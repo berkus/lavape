@@ -19,6 +19,7 @@
 
 #include "DIO.h"
 
+#include "MACROS.h"
 #include "GUIwid.h"
 #include "FormWid.h"
 #include "GUIProg.h"
@@ -90,6 +91,9 @@ void MakeGUICLASS::SetScrollSizes(QScrollView* view)
   if (size.height() < view->visibleHeight() )
     size.setHeight(view->visibleHeight());
   ((GUIScrollView*)view)->qvbox->resize(size);
+
+  if (GUIProg->ViewWin->inherits("LavaGUIDialog"))
+    ((LavaGUIDialog*)GUIProg->ViewWin)->setpropSize(((GUIScrollView*)view)->MaxBottomRight.size());
   view->resizeContents(size.width(),size.height());
   view->setContentsPos(0,0);
 }

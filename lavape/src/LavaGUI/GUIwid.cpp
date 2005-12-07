@@ -129,7 +129,7 @@ void GUIwidCLASS::CreatePopupWindow(bool isTextPopup, QWidget*& popupShell, QWid
 {
   DString str = ("TextPopupwidget");
   if (!popupShell) {
-    QWidget* parent = ((wxMainFrame*)qApp->mainWidget())->GetClientWindow(); //GUIProg->ViewWin;
+    QWidget* parent = ((wxMainFrame*)qApp->mainWidget())->GetClientWindow();
     popupShell = new CLavaGUIPopup(parent, GUIProg, data);
   }
   QString cap = GUIProg->winCaption();

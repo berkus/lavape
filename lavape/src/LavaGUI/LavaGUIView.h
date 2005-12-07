@@ -10,6 +10,7 @@
 #include "docview.h"
 #include "qscrollview.h"
 #include "qvbox.h"
+#include "qdialog.h" 
 
 class LAVAGUI_DLL GUIVBox : public QFrame
 {
@@ -35,6 +36,43 @@ private:
   Q_OBJECT
 };
 
+class LAVAGUI_DLL LavaGUIDialog : public QDialog
+{
+public:
+  LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint);           // protected constructor used by dynamic creation
+  virtual ~LavaGUIDialog();
+
+  GUIScrollView* scrollView() {return myScrv;}
+  void NewTitle(LavaDECL *decl, const DString& lavaName);
+  void setpropSize(QSize& scrSize);
+
+  GUIVBox* qvbox;
+  CLavaBaseDoc* myDoc;
+  TID myID;
+  LavaDECL *myDECL;
+  CGUIProg *myGUIProg;
+  CLavaThread* myThread;
+  LavaVariablePtr ServicePtr;
+  LavaVariablePtr IniDataPtr;
+  LavaVariablePtr ResultDPtr;
+  QVBoxLayout *qvbl;
+  bool returned;
+
+  void closeEvent(QCloseEvent *e);
+
+protected:
+  GUIScrollView* myScrv;
+
+public slots:
+  void OnOK();
+  void OnReset();
+  void OnCancel();
+
+private:
+  Q_OBJECT
+};
+
+
 class LAVAGUI_DLL CLavaGUIView : public CLavaBaseView
 {
 public:
@@ -43,7 +81,7 @@ public:
   VIEWFACTORY(CLavaGUIView)
   virtual void UpdateUI();
   virtual void DisableActions();
-  void AddButtons();
+//  void AddButtons();
   virtual void OnInitialUpdate();
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
@@ -59,7 +97,7 @@ public:
   bool inUpdate;
   bool released;
   CGUIProg *myGUIProg;
-  CLavaThread* myThread;
+//  CLavaThread* myThread;
   LavaVariablePtr ServicePtr;
   LavaVariablePtr IniDataPtr;
   LavaVariablePtr ResultDPtr;

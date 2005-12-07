@@ -113,7 +113,6 @@ void CLavaGUIFrame::NewTitle(LavaDECL *decl, const DString& lavaName)
   setCaption(newTitle);
   if (!oldTitle.isEmpty() && newTitle != oldTitle)
     wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
-//  QApplication::postEvent(qApp->mainWidget(),new QCustomEvent(QEvent::User,this));
 }
 
 
@@ -130,81 +129,3 @@ void CLavaGUIFrame::SetModified(const QString& lavaName, bool changed)
   setCaption(title.c);
 }
 
-
-/*
-BEGIN_MESSAGE_MAP(CLavaGUIFrame, CMDIChildWnd)
-  //{{AFX_MSG_MAP(CLavaGUIFrame)
-  ON_WM_SYSCOMMAND( )
-  ON_WM_CLOSE()
-  ON_WM_CREATE()
-	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// CLavaGUIFrame message handlers
-
-bool CLavaGUIFrame::PreCreateWindow(CREATESTRUCT& cs)
-{
-  cs.lpszClass = LPCTSTR(LBaseData->WndPopup);
-  return CMDIChildWnd::PreCreateWindow(cs);
-}
-
-bool CLavaGUIFrame::Create(LPCTSTR lpszClassName, LPCTSTR , DWORD dwStyle, const RECT& rect, CMDIFrameWnd* pParentWnd, CCreateContext* pContext) 
-{
-//  dwStyle = dwStyle & (~FWS_ADDTOTITLE);
-  DString title;
-  title.Reset(1);
-  return CMDIChildWnd::Create(lpszClassName, title.c, dwStyle, rect, pParentWnd, pContext);
-
-}
-
-
-int CLavaGUIFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc);
-{
-  if (CMDIChildWnd::OnCreate(lpCreateStruct) == -1)
-    return -1;
-//  CMDIFrameWnd* pMainFrame = (CMDIFrameWnd*)GetParentFrame();
-  if (!LBaseData->inRuntime) {
-    EnableDocking(CBRS_ALIGN_ANY);
-    m_GUIBar = new CToolBar;
-    m_GUIBar->Create(this);
-    m_GUIBar->LoadToolBar(IDR_GUIBAR);
-    m_GUIBar->ModifyStyle(0,TBSTYLE_FLAT);
-    m_GUIBar->EnableDocking(CBRS_ALIGN_ANY);
-    DockControlBar(m_GUIBar,AFX_IDW_DOCKBAR_TOP);
-    m_GUIBar->SetBarStyle(m_GUIBar->GetBarStyle() |
-                      CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC | CBRS_GRIPPER);
-    ShowControlBar(m_GUIBar,true,false);
-  }
-  else
-    m_GUIBar = 0;
-
-//  ShowWindow(SW_SHOWMAXIMIZED);
-  RecalcLayout(); 
-  return 0;
-}
-
-
-void CLavaGUIFrame::OnSysCommand( UINT nID, LPARAM lParam )
-{
-  if (nID == SC_MAXIMIZE)
-    wxTheApp->isChMaximized = TRUE;
-  else
-    if (nID == SC_RESTORE)
-      wxTheApp->isChMaximized = FALSE;
-  CMDIChildWnd::OnSysCommand(nID, lParam);
-}
-
-void CLavaGUIFrame::OnClose() 
-{
-  if (myView) {
-    ((CLavaGUIView*)myView)->NoteLastModified();
-    if (LBaseData->inRuntime && !myDoc->isObject) 
-      ((CLavaGUIView*)myView)->OnKill();
-    else
-      CMDIChildWnd::OnClose();
-  }
-  else
-    CMDIChildWnd::OnClose();
-}
-*/
