@@ -1713,7 +1713,7 @@ bool DropException(CheckData& ckd, LavaVariablePtr stack)
   if (ckd.lastException) {
     DFC(ckd.lastException);
     ckd.lastException = 0;
-    ckd.callStack = QString("");
+    ckd.callStack.setLength(0);
     ckd.exceptionThrown = false;
   }
   return true;
