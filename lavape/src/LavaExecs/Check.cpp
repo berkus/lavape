@@ -1255,7 +1255,7 @@ bool MultipleOp::Check (CheckData &ckd)
   CHE *chp, *chpActIn, *chpFormIn, *chpFormOut, *branchStm, *precedingBranch;
   SynObject *opd, *opd1;
   TID tidOp1, tidOperatorFunc, tidOutparm1;
-  LavaDECL *declOp1;
+  LavaDECL *declOp1, *formInParmDecl;
   Category cat, callObjCat;
   SET oldFlags=ckd.flags;
   SynFlags ctxFlags;
@@ -1373,6 +1373,16 @@ bool MultipleOp::Check (CheckData &ckd)
   //if (!((SynObject*)chpActIn->data)->IsIfStmExpr()) {
       if (chpActIn->predecessor)
         compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
+      opd = (SynObject*)chpActIn->data;
+      formInParmDecl = (LavaDECL*)chpFormIn->data;
+      if (opd->IsOptional(ckd)
+        && !formInParmDecl->TypeFlags.Contains(isOptional)) {
+        if (opd->primaryToken == ifx_T)
+          ((SynObject*)((CHE*)((IfExpression*)opd)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
+        else
+          ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
+        ERROREXIT
+      }
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
       actDecl = ckd.document->GetType(actDecl);
@@ -2357,7 +2367,7 @@ bool UnaryOp::Check (CheckData &ckd)
 #endif
 
   ENTRY
-  if (((SynObject*)operand.ptr)->IsIfStmExpr()) {
+  if (((SynObject*)operand.ptr)->primaryToken == ifx_T) {
     ((SynObject*)operand.ptr)->SetError(ckd,&ERR_IfxForbidden);
     ERROREXIT
   }
@@ -4025,7 +4035,7 @@ bool FuncExpression::Check (CheckData &ckd)
   CHE *chpActIn, *chpFormIn, *chpFormOut;
   SynObject *opd, *actParm;
   TID objTypeTid, selfTid, funcItfTid, funcTid;
-  LavaDECL *funcItf, *funcImpl=0, *implItfDecl;
+  LavaDECL *funcItf, *funcImpl=0, *implItfDecl, *formInParmDecl;
   Expression *callExpr;
   Category cat;
   SynFlags ctxFlags;
@@ -4033,7 +4043,7 @@ bool FuncExpression::Check (CheckData &ckd)
 #ifdef INTERPRETER
   unsigned nInputs, nOutputs;
   TID vTid;
-  LavaDECL *formInParmDecl, *actDecl;
+  LavaDECL *actDecl;
 #endif
 
   ENTRY
@@ -4224,9 +4234,17 @@ bool FuncExpression::Check (CheckData &ckd)
       // check act.parm/form.parm. type compatibility:
       ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
   //  parm = (SynObject*)((Parameter*)chpActIn->data)->parameter.ptr;
+      formInParmDecl = (LavaDECL*)chpFormIn->data;
+      if (opd->IsOptional(ckd)
+        && !formInParmDecl->TypeFlags.Contains(isOptional)) {
+        if (opd->primaryToken == ifx_T)
+          ((SynObject*)((CHE*)((IfExpression*)opd)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
+        else
+          ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
+        ERROREXIT
+      } 
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
-      formInParmDecl = (LavaDECL*)chpFormIn->data;
       if (!formInParmDecl->TypeFlags.Contains(isOptional)
       && ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->IsOptional(ckd))
         ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->flags.INCL(isUnsafeMandatory);

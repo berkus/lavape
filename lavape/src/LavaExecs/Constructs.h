@@ -623,7 +623,7 @@ class SynObject : public SynObjectBase {
   bool EnumAdmissibleOnly(CheckData &ckd);
   bool NullAdmissible(CheckData &ckd);
   bool ExpressionSelected(CHETokenNode *currentSelection);
-  bool IsOptional(CheckData &ckd)
+  virtual bool IsOptional(CheckData &ckd)
   {
     return flags.Contains(isOptionalExpr);
   }

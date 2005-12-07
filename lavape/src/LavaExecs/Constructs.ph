@@ -424,7 +424,7 @@ public:
   bool EnumAdmissibleOnly (CheckData &ckd);
   bool NullAdmissible (CheckData &ckd);
   bool ExpressionSelected (CHETokenNode *currentSelection);
-  bool IsOptional(CheckData &ckd) { return flags.Contains(isOptionalExpr); }
+  virtual bool IsOptional(CheckData &ckd) { return flags.Contains(isOptionalExpr); }
   bool HasOptionalParts ();
   virtual ROContext ReadOnlyContext();
 //  virtual bool InReadOnlyClause();
