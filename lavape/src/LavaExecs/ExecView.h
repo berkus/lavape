@@ -200,6 +200,7 @@ public:
   void OnSelect();
   void OnIn();
   void OnIf();
+  void OnIfdef();
   void OnIfExpr();
   void OnElseExpr();
   void OnSwitch();

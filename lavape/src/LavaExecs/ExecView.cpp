@@ -2927,6 +2927,15 @@ void CExecView::OnIf()
   InsertOrReplace(ifStm);
 }
 
+void CExecView::OnIfdef() 
+{
+  // TODO: Add your command handler code here
+
+  if (!EditOK()) return;
+  IfdefStatement *ifdefStm = new IfdefStatementV(true);
+  InsertOrReplace(ifdefStm);
+}
+
 void CExecView::OnIfExpr() 
 {
   // TODO: Add your command handler code here

@@ -289,6 +289,7 @@ public:
   virtual void OnGe() {}
   virtual void OnGt() {}
   virtual void OnIf() {}
+  virtual void OnIfdef() {}
   virtual void OnIfExpr() {}
   virtual void OnElseExpr() {}
   virtual void OnIn() {}

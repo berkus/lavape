@@ -383,9 +383,9 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->ifButton,"&if",SLOT(ifStm()),
     QObject::tr("If-then-else statement: \"i\""),
     QObject::tr("<p><a href=\"IfStm.htm\">if-then-elsif-else</a> statement with optional\nelsif and else branches</p>"));
-  newKwdToolbutton(tb,LBaseData->ifdefButton,"&ifdef",SLOT(ifStm()),
+  newKwdToolbutton(tb,LBaseData->ifdefButton,"&ifdef",SLOT(ifdefStm()),
     QObject::tr("Ifdef statement"),
-    QObject::tr("<p><a href=\"IfStm.htm\">ifdef</a> statement: if variable != null then ...</p>"));
+    QObject::tr("<p><a href=\"IfdefStm.htm\">ifdef</a> statement: if variable != null then ...</p>"));
   newKwdToolbutton(tb,LBaseData->switchButton,"s&witch",SLOT(switchStm()),
     QObject::tr("Switch statement: \"w\""),
     QObject::tr("<p><a href=\"Switch.htm\">switch</a> statement with optional else branch</p>"));
@@ -1226,6 +1226,12 @@ void CLavaMainFrame::ifStm(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnIf();
+}
+
+void CLavaMainFrame::ifdefStm(){
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnIfdef();
 }
 
 void CLavaMainFrame::ifExpr(){

@@ -591,6 +591,15 @@ void IfxThen::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
   MTBL (thenPart.ptr);
 }
 
+void IfdefStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
+{
+  ENTRY
+  MTBL (ifCondition.ptr);
+  MTBL (thenPart.ptr);
+  if (elsePart.ptr)
+    MTBL (elsePart.ptr);
+}
+
 void IfExpression::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
 {
   CHE *chp;

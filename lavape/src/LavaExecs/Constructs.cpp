@@ -842,6 +842,13 @@ bool IfStatement::NestedOptClause (SynObject *optClause) {
     return false;
 }
 
+bool IfdefStatement::NestedOptClause (SynObject *optClause) {
+  if (optClause->whereInParent == (address)&elsePart.ptr)
+    return true;
+  else
+    return false;
+}
+
 bool IfThen::IsRepeatableClause (CHAINX *&chx) {
   chx = &((IfStatement*)parentObject)->ifThens;
   return true;

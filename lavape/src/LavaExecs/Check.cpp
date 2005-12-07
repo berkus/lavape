@@ -3672,7 +3672,7 @@ bool Assignment::Check (CheckData &ckd)
   if (!targObj->IsOptional(ckd)
   && ((SynObject*)exprValue.ptr)->IsOptional(ckd))
     ((SynObject*)targetObj.ptr)->flags.INCL(isUnsafeMandatory);
-  if (!((SynObject*)exprValue.ptr)->IsIfStmExpr()) {
+  if (!((SynObject*)exprValue.ptr)->IsIfStmExpr() && declSource != (LavaDECL*)-1) {
     declSource = ckd.document->GetType(declSource);
     ((Expression*)exprValue.ptr)->sectionNumber = ckd.document->GetSectionNumber(ckd, declSource,declTarget);
   }
@@ -4884,6 +4884,26 @@ bool IfxThen::Check (CheckData &ckd)
   ok &= ((SynObject*)ifCondition.ptr)->Check(ckd);
   ckd.flags = oldFlags;
   ok &= ((SynObject*)thenPart.ptr)->Check(ckd);
+  EXIT
+}
+
+bool IfdefStatement::Check (CheckData &ckd)
+{
+  CHE *branchStm, *precedingBranch;
+
+  ENTRY
+
+  ((RefTable*)ckd.refTable)->NewBranchStm(branchStm,precedingBranch);
+
+  ok &= ((SynObject*)ifCondition.ptr)->Check(ckd);
+  ok &= ((SynObject*)thenPart.ptr)->Check(ckd);
+
+  ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
+  if (elsePart.ptr)
+    ok &= ((SynObject*)elsePart.ptr)->Check(ckd);
+
+  ((RefTable*)ckd.refTable)->EndBranchStm(branchStm,precedingBranch);
+
   EXIT
 }
 

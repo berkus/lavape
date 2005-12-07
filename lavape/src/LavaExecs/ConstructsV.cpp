@@ -1771,6 +1771,45 @@ void IfThenV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   EXIT
 }
 
+IfdefStatementV::IfdefStatementV (bool) {
+  type = Stm_T;
+  replacedType = type;
+  primaryToken = ifdef_T;
+  ifCondition.ptr = new SynObjectV(ObjPH_T);
+  thenPart.ptr = new SynObjectV(Stm_T);
+  elsePart.ptr = new SynObjectV(Stm_T);
+}
+
+void IfdefStatementV::InsertElsePart (SynObject *&elseP) {
+  if (!elsePart.ptr) {
+    elseP = new SynObjectV(Stm_T);
+    elseP->parentObject = this;
+    elseP->whereInParent = (address)&elsePart.ptr;
+  }
+}
+
+void IfdefStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
+  ENTRY
+
+  t.Insert(ifdef_T,true);
+  t.Blank();
+  DRAW(ifCondition.ptr);
+  t.Blank();
+  t.Insert(then_T);
+  NLincIndent(t);
+  DRAW(thenPart.ptr);
+  NLdecIndent(t);
+
+  if (elsePart.ptr) {
+    t.Insert(else_T,false,true);
+    NLincIndent(t);
+    DRAW(elsePart.ptr);
+    NLdecIndent(t);
+  }
+  t.Insert(ENDifdef_T);
+  EXIT
+}
+
 IfExpressionV::IfExpressionV (bool) {
   type = Exp_T;
   replacedType = type;
@@ -1844,7 +1883,7 @@ IfxThenV::IfxThenV (bool) {
 void IfxThenV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
   if (ifPart)
-    t.Insert(ifx_T,true);
+    t.Insert(if_T,true);
   else
     t.Insert(elsif_T,true,true);
   ifPart = false;

@@ -1981,6 +1981,26 @@ LavaObjectPtr IfExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
     sectionNumber = ckd.document->GetSectionNumber(ckd, ((Expression*)elsePart.ptr)->finalType,targetDecl);
   return result;
 }
+ 
+LavaObjectPtr ElseExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+  LavaObjectPtr result;
+
+  STOP_AT_BPT(ckd,stackFrame)
+
+  result = ((Expression*)expr1.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
+  if (ckd.exceptionThrown) {
+//    DFC(result);
+    return (LavaObjectPtr)-1;
+  }
+  if (result) return result;
+  result = ((Expression*)expr2.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
+  if (ckd.exceptionThrown) {
+//    DFC(result);
+    return (LavaObjectPtr)-1;
+  }
+
+  return result;
+}
 
 bool SwitchStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   CHE *branchp, *caseLabelp;
@@ -1993,7 +2013,7 @@ bool SwitchStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsi
 
   caseExpr = ((Expression*)caseExpression.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown) {
-    DFC(caseExpr);
+//    DFC(caseExpr);
     return false;
   }
 

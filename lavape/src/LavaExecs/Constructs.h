@@ -2195,6 +2195,36 @@ class IfxThen : public Expression {
   { CDPIfxThen(pgf,cid,(address)this,baseCDP); }
 };
 
+class IfdefStatement : public Expression {
+  DECLARE_DYNAMIC_CLASS(IfdefStatement)
+
+
+  public:
+  NESTEDANY/*ObjReference*/ ifCondition;
+  NESTEDANY/*Expression*/ thenPart;
+  NESTEDANY/*Expression*/ elsePart;
+  virtual bool IsIfStmExpr()
+  {
+    return true;
+  }
+  virtual bool NestedOptClause(SynObject *optClause);
+  virtual bool Check(CheckData &ckd);
+  virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+
+  IfdefStatement () {}
+
+  virtual void CopyData (AnyType *from) {
+    *this = *(IfdefStatement*)from;
+  }
+
+  friend void CDPIfdefStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                 bool baseCDP=false);
+
+  virtual void CDP (PutGetFlag pgf, ASN1* cid,
+                    bool baseCDP=false)
+  { CDPIfdefStatement(pgf,cid,(address)this,baseCDP); }
+};
+
 class CondExpression : public Expression {
   DECLARE_DYNAMIC_CLASS(CondExpression)
 
@@ -3401,6 +3431,17 @@ public:
     return QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>");}
 };
 
+class IfdefStatementV : public IfdefStatement {
+public:
+  IfdefStatementV () {}
+  IfdefStatementV (bool);
+
+  virtual void InsertElsePart (SynObject *&elsePart);
+  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p><a href=\"IfdefStm.htm\">ifdef</a> statement with optional else branch: if variable != null then ...</p>"); }
+};
+
 class CondExpressionV : public CondExpression {
 public:
   CondExpressionV () {}
@@ -4018,6 +4059,13 @@ public:
 class IfxThenX : public IfxThen {
 public:
   IfxThenX() {}
+};
+
+class IfdefStatementX : public IfdefStatement {
+public:
+  IfdefStatementX() {}
+
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) { return true; };
 };
 
 class CondExpressionX : public CondExpression {

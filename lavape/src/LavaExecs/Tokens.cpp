@@ -209,7 +209,7 @@ void Tokens_INIT ()
   ATO("#try");
   ATO("#type");
 
-  ATO("?");
+  ATO("#ifdef");
   ATO("?");
   ATO("?");
   ATO("?");
@@ -335,7 +335,7 @@ void Tokens_INIT ()
   ATO("doubleConst");
   ATO("bitConst");
   ATO("else");
-  ATO("?");
+  ATO("ifdef");
   ATO("?");
 
   ATO("<callee>");

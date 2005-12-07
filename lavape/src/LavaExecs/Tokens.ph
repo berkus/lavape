@@ -117,7 +117,7 @@ enum TToken {
   ENDtry_T,
   ENDtypeof_T,
 
-  FutureEND1,
+  ENDifdef_T,
   FutureEND2,
   FutureEND3,
   FutureEND4,
@@ -242,7 +242,7 @@ enum TToken {
   DoubleConst_T,
   BitConst_T,
   elseX_T,
-  FutureCONST4,
+  ifdef_T,
   FutureCONST5,
   
   Callee_T,
