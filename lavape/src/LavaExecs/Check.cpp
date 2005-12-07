@@ -2376,6 +2376,7 @@ bool UnaryOp::Check (CheckData &ckd)
   callCtx = ckd.tempCtx;
   ckd.document->NextContext(declOp1, callCtx);
 
+  tidOperatorFunc = opFunctionID;
   chpFormOut = GetFirstOutput(&ckd.document->IDTable,tidOperatorFunc);
   if (chpFormOut)
     if (((LavaDECL*)chpFormOut->data)->TypeFlags.Contains(isOptional))
@@ -2385,7 +2386,6 @@ bool UnaryOp::Check (CheckData &ckd)
 
   if (declOp1) {
 #ifdef INTERPRETER
-    tidOperatorFunc = opFunctionID;
     if (tidOperatorFunc.nID == -1)
       SetError(ckd,&ERR_UnaryOpUndefined);
     funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc,ckd.inINCL);
