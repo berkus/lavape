@@ -232,6 +232,7 @@ bool SynObject::BoolAdmissibleOnly (CheckData &ckd) {
 
   }
   else if (parentObject->primaryToken == elsif_T
+  || parentObject->primaryToken == elseX_T
   || parentObject->primaryToken == ifx_T)
     return false;
   else if (parentObject->IsBinaryOp())
@@ -323,6 +324,7 @@ bool SynObject::EnumAdmissibleOnly (CheckData &ckd) {
 
   }
   else if (parentObject->primaryToken == elsif_T
+  || parentObject->primaryToken == elseX_T
   || parentObject->primaryToken == ifx_T)
     return false;
   else if (parentObject->IsBinaryOp())
@@ -852,7 +854,7 @@ bool IfThen::IsReadOnlyClause(SynObject *synObj) {
     return false;
 }
 
-IfExpression::IfExpression () {
+CondExpression::CondExpression () {
   isOpt=true;
   targetDecl=0;
 }

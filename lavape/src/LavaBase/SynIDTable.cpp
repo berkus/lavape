@@ -872,7 +872,7 @@ void TIDTable::FillBasicTypesID(CHESimpleSyntax* stdSyntax, bool isstd)
       }
       else if ((elDECL->fromBType == B_Exception)
             || (elDECL->fromBType == B_HWException)
-            || (elDECL->fromBType == B_LavaException)) {
+            || (elDECL->fromBType == B_RTException)) {
         elDECL->SecondTFlags.INCL(isException);
         cheChe = (CHE*)elDECL->NestedDecls.first; //the enumaration type
         ((LavaDECL*)cheChe->data)->SecondTFlags.INCL(isException);

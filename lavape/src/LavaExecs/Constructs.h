@@ -623,6 +623,10 @@ class SynObject : public SynObjectBase {
   bool EnumAdmissibleOnly(CheckData &ckd);
   bool NullAdmissible(CheckData &ckd);
   bool ExpressionSelected(CHETokenNode *currentSelection);
+  bool IsOptional(CheckData &ckd)
+  {
+    return flags.Contains(isOptionalExpr);
+  }
   bool HasOptionalParts();
   virtual ROContext ReadOnlyContext();
   virtual bool IsReadOnlyClause(SynObject *synObj)
@@ -663,10 +667,6 @@ class SynObject : public SynObjectBase {
     return false;
   }
   virtual bool IsExpression();
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return true;
-  }
   virtual bool IsIfStmExpr()
   {
     return false;
@@ -782,10 +782,6 @@ struct TDOD : public SynObject {
   virtual bool IsPlaceHolder()
   {
     return false;
-  }
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return flags.Contains(isOptionalExpr);
   }
   bool IsStateObject(CheckData &ckd);
   virtual bool IsExecutable()
@@ -922,10 +918,6 @@ class EnumConst : public Expression {
   virtual bool IsConstant()
   {
     return true;
-  }
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
   }
   virtual bool IsEditableConstant()
   {
@@ -1184,10 +1176,6 @@ class Constant : public Expression {
   {
     return true;
   }
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
   virtual bool IsEditableConstant()
   {
     return true;
@@ -1224,10 +1212,6 @@ class BoolConst : public Expression {
   {
     return true;
   }
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
   virtual bool IsEditableConstant()
   {
     return false;
@@ -1255,10 +1239,6 @@ class NullConst : public Expression {
   virtual bool IsConstant()
   {
     return true;
-  }
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
   }
   virtual bool IsEditableConstant()
   {
@@ -1359,7 +1339,6 @@ class UnaryOp : public Operation {
   {
     return true;
   }
-  virtual bool IsOptional(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1384,10 +1363,6 @@ class EvalExpression : public UnaryOp {
 
   public:
   virtual bool IsUnaryOp()
-  {
-    return false;
-  }
-  virtual bool IsOptional(CheckData &ckd)
   {
     return false;
   }
@@ -1486,10 +1461,6 @@ class HandleOp : public Expression {
   DECLARE_DYNAMIC_CLASS(HandleOp)
 
   NESTEDANY/*ObjReference*/ operand;
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1549,10 +1520,6 @@ class LogicalNot : public UnaryOp {
 
 
   public:
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
   virtual bool IsReadOnlyClause(SynObject *synObj)
   {
     return true;
@@ -1611,7 +1578,6 @@ class BinaryOp : public Operation {
   {
     return true;
   }
-  virtual bool IsOptional(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1641,7 +1607,6 @@ class MultipleOp : public Operation {
   {
   }
   void MultipleOpInit(TToken primToken);
-  virtual bool IsOptional(CheckData &ckd);
   virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsMultOp()
   {
@@ -1969,7 +1934,6 @@ class FuncExpression : public Expression {
   CContext callCtx;
   Category callObjCat;
   SynFlags myCtxFlags;
-  virtual bool IsOptional(CheckData &ckd);
   virtual bool IsFuncInvocation()
   {
     return true;
@@ -2231,24 +2195,42 @@ class IfxThen : public Expression {
   { CDPIfxThen(pgf,cid,(address)this,baseCDP); }
 };
 
-class IfExpression : public Expression {
+class CondExpression : public Expression {
+  DECLARE_DYNAMIC_CLASS(CondExpression)
+
+
+  public:
+  LavaDECL *targetDecl;
+  CContext targetCtx;
+  Category callObjCat;
+  bool isOpt;
+
+  CondExpression();
+
+  virtual void CopyData (AnyType *from) {
+    *this = *(CondExpression*)from;
+  }
+
+  friend void CDPCondExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                 bool baseCDP=false);
+
+  virtual void CDP (PutGetFlag pgf, ASN1* cid,
+                    bool baseCDP=false)
+  { CDPCondExpression(pgf,cid,(address)this,baseCDP); }
+};
+
+class IfExpression : public CondExpression {
   DECLARE_DYNAMIC_CLASS(IfExpression)
 
 
   public:
   CHAINX ifThens;
   NESTEDANY/*Expression*/ elsePart;
-  LavaDECL *targetDecl;
-  CContext targetCtx;
-  Category callObjCat;
-  bool isOpt;
 
-  IfExpression();
-  virtual bool IsIfStmExpr()
+  IfExpression()
   {
-    return true;
   }
-  virtual bool IsOptional(CheckData &ckd)
+  virtual bool IsIfStmExpr()
   {
     return true;
   }
@@ -2268,7 +2250,7 @@ class IfExpression : public Expression {
   { CDPIfExpression(pgf,cid,(address)this,baseCDP); }
 };
 
-class ElseExpression : public Expression {
+class ElseExpression : public CondExpression {
   DECLARE_DYNAMIC_CLASS(ElseExpression)
 
 
@@ -2277,6 +2259,10 @@ class ElseExpression : public Expression {
 
   ElseExpression()
   {
+  }
+  virtual bool IsIfStmExpr()
+  {
+    return true;
   }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
@@ -2470,10 +2456,6 @@ class AttachObject : public Expression {
   NESTEDANY/*Expression*/ url;
   LavaDECL *typeDECL, *execDECL;
   Category attachCat;
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
   virtual bool NestedOptClause(SynObject *optClause);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -2502,10 +2484,6 @@ class NewExpression : public AttachObject {
   NESTEDANY/*FuncStatement*/ initializerCall;
   NESTEDANY/*Expression*/ butStatement;
   bool errorInInitializer;
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
   virtual bool NestedOptClause(SynObject *optClause);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
@@ -2667,10 +2645,6 @@ class QueryItf : public Expression {
   public:
   NESTEDANY/*Reference*/ itf;
   NESTEDANY/*ObjReference*/ givenObj;
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -2695,10 +2669,6 @@ class GetUUID : public Expression {
 
   public:
   NESTEDANY/*Reference*/ itf;
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -2889,10 +2859,6 @@ class SelectExpression : public QuantStmOrExp {
 
   public:
   NESTEDANY/*Expression*/ addObject, resultSet;
-  virtual bool IsOptional(CheckData &ckd)
-  {
-    return false;
-  }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -3433,6 +3399,11 @@ public:
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
     return QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>");}
+};
+
+class CondExpressionV : public CondExpression {
+public:
+  CondExpressionV () {}
 };
 
 class IfExpressionV : public IfExpression {
@@ -4047,6 +4018,11 @@ public:
 class IfxThenX : public IfxThen {
 public:
   IfxThenX() {}
+};
+
+class CondExpressionX : public CondExpression {
+public:
+  CondExpressionX() {}
 };
 
 class IfExpressionX : public IfExpression {

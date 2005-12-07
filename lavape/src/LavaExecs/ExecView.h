@@ -325,6 +325,7 @@ public:
   void OnUpdateDeclare(QPushButton *pb);
   void OnUpdateForeach(QPushButton *pb);
   void OnUpdateIf(QPushButton *pb);
+  void OnUpdateIfdef(QPushButton *pb);
   void OnUpdateIfExpr(QPushButton *pb);
   void OnUpdateElseExpr(QPushButton *pb);
   void OnUpdateIn(QPushButton *pb);

@@ -201,8 +201,8 @@ void CLavaProgram::InitBAdapter()
   DECLTab[B_HWException ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_HWException], 0);
   if (!DECLTab[B_HWException])
     LavaError(ckd, false, 0, &ERR_inStd);
-  DECLTab[B_LavaException ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_LavaException], 0);
-  if (!DECLTab[B_LavaException])
+  DECLTab[B_RTException ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_RTException], 0);
+  if (!DECLTab[B_RTException])
     LavaError(ckd, false, 0, &ERR_inStd);
   MakeStdAdapter();
 }

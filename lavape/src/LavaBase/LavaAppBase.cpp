@@ -835,7 +835,7 @@ void CLavaBaseData::Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate)
   BasicNames[ComponentObj] = "ComponentObj";
   BasicNames[B_Exception]  = "Exception";
   BasicNames[B_HWException]  = "HardwareException";
-  BasicNames[B_LavaException]  = "RuntimeException";
+  BasicNames[B_RTException]  = "RuntimeException";
   BasicNames[Identifier]   = "Identifier";
 
   OperatorNames [OP_equal ] =    DString("operator \"=\""); 

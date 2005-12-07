@@ -1983,6 +1983,6 @@ void MakeStdAdapter()
   StdAdapterTab[ComponentObj] = &LinkAdapter[0];
   StdAdapterTab[B_Exception]  = &ExceptionAdapter[0];
   StdAdapterTab[B_HWException]= &HW_L_ExceptionAdapter[0];
-  StdAdapterTab[B_LavaException] = &HW_L_ExceptionAdapter[0];
+  StdAdapterTab[B_RTException] = &HW_L_ExceptionAdapter[0];
 
 }

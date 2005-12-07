@@ -3778,7 +3778,10 @@ void CLavaPEDoc::ShowErrorBox(bool inOpen)
       mess += QString(" placeholders");
   }
   mess += QString(pkt.c);
-  QMessageBox::critical(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  if (nErrors + nPlaceholders)
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  else
+    QMessageBox::information(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 }
 
 void CLavaPEDoc::ShrinkCollectDECL(LavaDECL* decl)

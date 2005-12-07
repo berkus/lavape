@@ -317,7 +317,7 @@ void LavaBaseStringInit() {
   ERR_CorruptObject  = QObject::tr("Cannot read lava object with this lava component program");
   ERR_AbstrMemType  = QObject::tr("Do not use an abstract type for a member or formal parameter in a creatable interface");
   ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
-  ERR_NotOptional  = QObject::tr("""nothing/0"" may be assigned only to optional variables or function/main program parameters");
+  ERR_NotOptional  = QObject::tr("An expression whose value might be null may be assigned only to optional variables or function/main program parameters");
   ERR_AssigToLocal  = QObject::tr("Single-assignment violation: forbidden assignment to initialized local variable");
   ERR_NameInUse  = QObject::tr("This name is already in use within the current scope; please choose a different name");
   ERR_OutOfScope  = QObject::tr("Variable is referenced outside its scope");

@@ -645,10 +645,10 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   if (ctxFlags.bits) // of actParm???
     ckd.tempCtx.ContextFlags = ctxFlags;
   if (parm->IsIfStmExpr()) {
-    ((IfExpression*)parm)->targetDecl = formTypeDecl;
-    ((IfExpression*)parm)->targetCtx = ckd.tempCtx;
-    ((IfExpression*)parm)->targetCat = formCat;
-    ((IfExpression*)parm)->callObjCat = callObjCat;
+    ((CondExpression*)parm)->targetDecl = formTypeDecl;
+    ((CondExpression*)parm)->targetCtx = ckd.tempCtx;
+    ((CondExpression*)parm)->targetCat = formCat;
+    ((CondExpression*)parm)->callObjCat = callObjCat;
     ok &= parm->Check(ckd);
   }
   else {
@@ -904,10 +904,6 @@ bool SynObject::UpdateReference (CheckData &ckd) {
 //#ifndef INTERPRETER
       objRef->refName = ((VarName*)dw)->varName;
       ((TDOD*)che->data)->name = objRef->refName;
-      if (((VarName*)dw)->flags.Contains(isOptionalExpr))
-        ((TDOD*)che->data)->flags.INCL(isOptionalExpr);
-      else
-        ((TDOD*)che->data)->flags.EXCL(isOptionalExpr);
 //#endif
       if (objRef->OutOfScope(ckd)) {
         if (objRef->flags.Contains(isSelfVar)
@@ -957,6 +953,10 @@ bool SynObject::UpdateReference (CheckData &ckd) {
             objRef->flags.INCL(isSubstitutable);
           objRef->myFinalVType = startDeclV;
           objRef->myCategory = cat;
+          if (((VarName*)dw)->flags.Contains(isOptionalExpr))
+            objRef->flags.INCL(isOptionalExpr);
+          else
+            objRef->flags.EXCL(isOptionalExpr);
         }
         che = (CHE*)che->successor;
         if (che)
@@ -1191,10 +1191,6 @@ bool SynObject::Check (CheckData &ckd)
   ERROREXIT
 }
 
-bool MultipleOp::IsOptional (CheckData &ckd) {
-  return flags.Contains(isOptionalExpr);
-}
-
 void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   TID tidOperatorFunc;
   LavaDECL *declOutparm1;
@@ -1256,7 +1252,7 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, S
 
 bool MultipleOp::Check (CheckData &ckd)
 {
-  CHE *chp, *chpActIn, *chpFormIn, *branchStm, *precedingBranch;
+  CHE *chp, *chpActIn, *chpFormIn, *chpFormOut, *branchStm, *precedingBranch;
   SynObject *opd, *opd1;
   TID tidOp1, tidOperatorFunc, tidOutparm1;
   LavaDECL *declOp1;
@@ -1353,6 +1349,14 @@ bool MultipleOp::Check (CheckData &ckd)
 
   chpActIn = (CHE*)operands.first;
   chpFormIn = GetFirstInput(&ckd.document->IDTable,tidOperatorFunc);
+
+  chpFormOut = GetFirstOutput(&ckd.document->IDTable,tidOperatorFunc);
+  if (chpFormOut)
+    if (((LavaDECL*)chpFormOut->data)->TypeFlags.Contains(isOptional))
+      flags.INCL(isOptionalExpr);
+    else
+      flags.EXCL(isOptionalExpr);
+
 #ifdef INTERPRETER
   formDecl = (LavaDECL*)chpFormIn->data;
   formVType = ckd.document->IDTable.GetDECL(formDecl->RefID,formDecl->inINCL);
@@ -2279,10 +2283,6 @@ void OldExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat
   ((ObjReference*)paramExpr.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
 }
 
-bool UnaryOp::IsOptional (CheckData &ckd) {
-  return flags.Contains(isOptionalExpr);
-}
-
 void UnaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   TID tidOperatorFunc;
   LavaDECL *declOutparm1;
@@ -2351,9 +2351,9 @@ bool UnaryOp::Check (CheckData &ckd)
   LavaDECL *declOp1;
   Category cat;
   SynFlags ctxFlags;
+  CHE *chpFormOut;
 #ifdef INTERPRETER
   LavaDECL *formDecl;
-  CHE *chpFormOut;
 #endif
 
   ENTRY
@@ -2375,6 +2375,14 @@ bool UnaryOp::Check (CheckData &ckd)
   declOp1 = ckd.document->GetTypeAndContext(declOp1,ckd.tempCtx);
   callCtx = ckd.tempCtx;
   ckd.document->NextContext(declOp1, callCtx);
+
+  chpFormOut = GetFirstOutput(&ckd.document->IDTable,tidOperatorFunc);
+  if (chpFormOut)
+    if (((LavaDECL*)chpFormOut->data)->TypeFlags.Contains(isOptional))
+      flags.INCL(isOptionalExpr);
+    else
+      flags.EXCL(isOptionalExpr);
+
   if (declOp1) {
 #ifdef INTERPRETER
     tidOperatorFunc = opFunctionID;
@@ -2383,7 +2391,6 @@ bool UnaryOp::Check (CheckData &ckd)
     funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc,ckd.inINCL);
     if (!funcDecl)
       SetError(ckd,&ERR_UnaryOpUndefined);
-    chpFormOut = GetFirstOutput(&ckd.document->IDTable,tidOperatorFunc);
     formDecl = (LavaDECL*)chpFormOut->data;
     formVType = ckd.document->IDTable.GetDECL(formDecl->RefID,formDecl->inINCL);
     vSectionNumber = ckd.document->GetVTSectionNumber(ckd, callCtx, formVType, isOuter);
@@ -2495,10 +2502,6 @@ bool InSetStatement::Check (CheckData &ckd)
   EXIT
 }
 
-bool BinaryOp::IsOptional (CheckData &ckd) {
-  return flags.Contains(isOptionalExpr);
-}
-
 void BinaryOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   TID tidOp1, tidOperatorFunc, tidOutparm1;
   LavaDECL *declOutparm1;
@@ -2565,10 +2568,7 @@ bool BinaryOp::Check (CheckData &ckd)
   LavaDECL *declFuncClass, *declOp1, *declOp2, *finalDeclOp2,
     *formParmDecl, *formTypeDecl;
   CContext op2Ctx;
-  CHE *chpFormIn;
-#ifdef INTERPRETER
-  CHE *chpFormOut;
-#endif
+  CHE *chpFormIn, *chpFormOut;
   SynFlags ctxFlags1, ctxFlags2;
   Category cat1, cat2, formCat2, callObjCat;
   bool opd1ok, opd2IsNull=false;
@@ -2661,10 +2661,10 @@ bool BinaryOp::Check (CheckData &ckd)
       formCat2 = valueObj;
 
   if (opd2->IsIfStmExpr()) {
-    ((IfExpression*)opd2)->targetDecl = formTypeDecl;
-    ((IfExpression*)opd2)->targetCtx = ctx;
-    ((IfExpression*)opd2)->targetCat = formCat2;
-    ((IfExpression*)opd2)->callObjCat = callObjCat;
+    ((CondExpression*)opd2)->targetDecl = formTypeDecl;
+    ((CondExpression*)opd2)->targetCtx = ctx;
+    ((CondExpression*)opd2)->targetCat = formCat2;
+    ((CondExpression*)opd2)->callObjCat = callObjCat;
     ok &= ((SynObject*)opd2)->Check(ckd);
   }
   else {
@@ -2691,6 +2691,12 @@ bool BinaryOp::Check (CheckData &ckd)
     }
   }
 
+  chpFormOut = GetFirstOutput(&ckd.document->IDTable,tidOperatorFunc);
+  if (chpFormOut)
+    if (((LavaDECL*)chpFormOut->data)->TypeFlags.Contains(isOptional))
+      flags.INCL(isOptionalExpr);
+    else
+      flags.EXCL(isOptionalExpr);
 
 #ifdef INTERPRETER
   opd2->formVType = ckd.document->IDTable.GetDECL(formParmDecl->RefID, formParmDecl->inINCL);
@@ -2698,7 +2704,6 @@ bool BinaryOp::Check (CheckData &ckd)
   formTypeDecl = ckd.document->GetType(formTypeDecl);
   declOp2 = ckd.document->GetType(declOp2);
   opd2->sectionNumber = ckd.document->GetSectionNumber(ckd, declOp2,formTypeDecl);
-  chpFormOut = GetFirstOutput(&ckd.document->IDTable,tidOperatorFunc);
   if (chpFormOut) {
     formVType = (LavaDECL*)chpFormOut->data;
     formVType = ckd.document->IDTable.GetDECL(formVType->RefID, formVType->inINCL);
@@ -3597,6 +3602,9 @@ bool Assignment::Check (CheckData &ckd)
   }
 
   ok &= targObj->Check(ckd);
+  // important for NullAdmissible check on exprValue:
+  // check tarObj first (so targetObj/isOptionalExpr flag is updated)
+
   ckd.tempCtx = ckd.lpc;
   targObj->ExprGetFVType(ckd,declTarget,catTarget,ctxFlags);
   targetCtx = ckd.tempCtx;
@@ -3604,47 +3612,49 @@ bool Assignment::Check (CheckData &ckd)
     targetCtx.ContextFlags = ctxFlags;
   if (((SynObject*)exprValue.ptr)->IsIfStmExpr()) {
     targetDecl = ckd.document->GetType(declTarget);
-    ((IfExpression*)exprValue.ptr)->targetDecl = targetDecl;
-    ((IfExpression*)exprValue.ptr)->targetCtx = targetCtx;
-    ((IfExpression*)exprValue.ptr)->targetCat = catTarget;
-    ((IfExpression*)exprValue.ptr)->callObjCat = catTarget;
+    ((CondExpression*)exprValue.ptr)->targetDecl = targetDecl;
+    ((CondExpression*)exprValue.ptr)->targetCtx = targetCtx;
+    ((CondExpression*)exprValue.ptr)->targetCat = catTarget;
+    ((CondExpression*)exprValue.ptr)->callObjCat = catTarget;
   }
+
   ok &= ((SynObject*)exprValue.ptr)->Check(ckd);
+  if (((SynObject*)exprValue.ptr)->IsOptional(ckd)
+  && !targObj->IsOptional(ckd)) {
+    if (((SynObject*)exprValue.ptr)->primaryToken == ifx_T)
+      ((SynObject*)((CHE*)((IfExpression*)exprValue.ptr)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
+    else
+      ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_NotOptional);
+    ERROREXIT
+  }
   if (!ok)
     ERROREXIT
-  // important for NullAdmissible check on exprValue:
-  // check targetObj first (so targetObj/isOptionalExpr flag is updated)
 
   if (!((SynObject*)exprValue.ptr)->IsIfStmExpr()) {
     ckd.tempCtx = ckd.lpc;
     ((SynObject*)exprValue.ptr)->ExprGetFVType(ckd,declSource,catSource,ctxFlags);
-    if (declSource == (LavaDECL*)-1)
-      if (targObj->IsOptional(ckd)) // "nothing" admissible?
-        return true;
-      else {
-        ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_NotOptional);
+    if (declSource != (LavaDECL*)-1) {
+      if (!declSource || !declTarget)
         ERROREXIT
-      }
-    if (!declSource || !declTarget)
-      ERROREXIT
 
-    sourceCtx = ckd.tempCtx;
-    if (declTarget->TypeFlags.Contains(substitutable))
-      targetCtx.ContextFlags = SET(multiContext,-1);
-    if (ctxFlags.bits)
-      sourceCtx.ContextFlags = ctxFlags;
-    if (!compatibleTypes(ckd,declSource,sourceCtx,declTarget,targetCtx)) {
-      ((SynObject*)exprValue.ptr)->SetError(ckd,ckd.errorCode);
-      ok = false;
-    }
-    if (catSource != unknownCategory
-    && catTarget != unknownCategory
-    && catSource != catTarget) {
-      ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
-      ok = false;
-    }
-    if (NoPH(exprValue.ptr))
+      sourceCtx = ckd.tempCtx;
+      if (declTarget->TypeFlags.Contains(substitutable))
+        targetCtx.ContextFlags = SET(multiContext,-1);
+      if (ctxFlags.bits)
+        sourceCtx.ContextFlags = ctxFlags;
+      if (!compatibleTypes(ckd,declSource,sourceCtx,declTarget,targetCtx)) {
+        ((SynObject*)exprValue.ptr)->SetError(ckd,ckd.errorCode);
+        ok = false;
+      }
+      if (catSource != unknownCategory
+      && catTarget != unknownCategory
+      && catSource != catTarget) {
+        ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
+        ok = false;
+      }
+      if (NoPH(exprValue.ptr))
       ((Expression*)exprValue.ptr)->targetCat = catTarget;
+    }
   }
 
 #ifdef INTERPRETER
@@ -4010,11 +4020,6 @@ void FuncExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &ca
 #endif
 }
 
-bool FuncExpression::IsOptional (CheckData &ckd)
-{
-  return flags.Contains(isOptionalExpr);
-}
-
 bool FuncExpression::Check (CheckData &ckd)
 {
   CHE *chpActIn, *chpFormIn, *chpFormOut;
@@ -4188,22 +4193,19 @@ bool FuncExpression::Check (CheckData &ckd)
 
   chpFormIn = GetFirstInput(&ckd.document->IDTable,funcTid);
   chpFormOut = GetFirstOutput(&ckd.document->IDTable,funcTid);
-  switch (parentObject->primaryToken) {
-  case assignFX_T:
+  if (parentObject->primaryToken == assignFX_T) {
     if (!chpFormOut
     || (chpFormOut->successor
         && ((LavaDECL*)((CHE*)chpFormOut->successor)->data)->DeclType == OAttr)) {
       ((SynObject*)function.ptr)->SetError(ckd,&ERR_NotSingleOutput);
       ok = false;
     }
-    else if (((LavaDECL*)chpFormOut->data)->TypeFlags.Contains(isOptional))
+  }
+  if (chpFormOut)
+    if (((LavaDECL*)chpFormOut->data)->TypeFlags.Contains(isOptional))
       flags.INCL(isOptionalExpr);
     else
       flags.EXCL(isOptionalExpr);
-
-    break;
-  default: ;
-  }
 
   CContext callContext = callCtx;
   if (myCtxFlags.bits)
@@ -4880,7 +4882,7 @@ void IfExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat,
 
 bool IfExpression::Check (CheckData &ckd)
 {
-  CHE *chp;
+  CHE *chp, *chpFirst;
   IfxThen *opd;
   LavaDECL *currentBranchType;
   Category cat;
@@ -4902,17 +4904,21 @@ bool IfExpression::Check (CheckData &ckd)
   if (!targetDecl)
     return true;
 
-  for (chp = (CHE*)ifThens.first;
+  flags.EXCL(isOptionalExpr);
+  chpFirst = (CHE*)ifThens.first;
+  for (chp = chpFirst;
        chp;
        chp = (CHE*)chp->successor) {
     opd = (IfxThen*)chp->data;
     if (((SynObject*)opd->thenPart.ptr)->IsIfStmExpr()) {
-      ((IfExpression*)opd->thenPart.ptr)->targetDecl = targetDecl;
-      ((IfExpression*)opd->thenPart.ptr)->targetCtx = targetCtx;
-      ((IfExpression*)opd->thenPart.ptr)->targetCat = targetCat;
-      ((IfExpression*)opd->thenPart.ptr)->callObjCat = callObjCat;
+      ((CondExpression*)opd->thenPart.ptr)->targetDecl = targetDecl;
+      ((CondExpression*)opd->thenPart.ptr)->targetCtx = targetCtx;
+      ((CondExpression*)opd->thenPart.ptr)->targetCat = targetCat;
+      ((CondExpression*)opd->thenPart.ptr)->callObjCat = callObjCat;
     }
     ok &= opd->Check(ckd);
+    if (((SynObject*)opd->thenPart.ptr)->IsOptional(ckd))
+      flags.INCL(isOptionalExpr);
     if (!((SynObject*)opd->thenPart.ptr)->IsIfStmExpr()) {
       ckd.tempCtx = ckd.lpc;
       ((SynObject*)opd->thenPart.ptr)->ExprGetFVType(ckd,currentBranchType,cat,ctxFlags);
@@ -4945,10 +4951,10 @@ bool IfExpression::Check (CheckData &ckd)
 
   if (elsePart.ptr) {
     if (((SynObject*)elsePart.ptr)->IsIfStmExpr()) {
-      ((IfExpression*)elsePart.ptr)->targetDecl = targetDecl;
-      ((IfExpression*)elsePart.ptr)->targetCtx = targetCtx;
-      ((IfExpression*)elsePart.ptr)->targetCat = targetCat;
-      ((IfExpression*)elsePart.ptr)->callObjCat = callObjCat;
+      ((CondExpression*)elsePart.ptr)->targetDecl = targetDecl;
+      ((CondExpression*)elsePart.ptr)->targetCtx = targetCtx;
+      ((CondExpression*)elsePart.ptr)->targetCat = targetCat;
+      ((CondExpression*)elsePart.ptr)->callObjCat = callObjCat;
     }
     ok &= ((SynObject*)elsePart.ptr)->Check(ckd);
     if (!((SynObject*)elsePart.ptr)->IsIfStmExpr()) {
@@ -4962,6 +4968,8 @@ bool IfExpression::Check (CheckData &ckd)
           ERROREXIT
         }
       }
+      if (((SynObject*)elsePart.ptr)->IsOptional(ckd))
+        flags.INCL(isOptionalExpr);
       sourceCtx = ckd.tempCtx;
       if (ctxFlags.bits)
         sourceCtx.ContextFlags = ctxFlags;
@@ -4997,19 +5005,93 @@ void ElseExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &ca
 bool ElseExpression::Check (CheckData &ckd)
 {
   Expression *opd1, *opd2;
+  LavaDECL *currentBranchType;
+  Category cat;
+  SynFlags ctxFlags;
+  CContext sourceCtx;
 
   ENTRY
 
   opd1 = (Expression*)expr1.ptr;
   opd2 = (Expression*)expr2.ptr;
 
+  if (!targetDecl)
+    return true;
+
   if (opd1->IsIfStmExpr()) {
-    opd1->SetError(ckd,&ERR_IfxForbidden);
-    ERROREXIT
+    ((CondExpression*)opd1)->targetDecl = targetDecl;
+    ((CondExpression*)opd1)->targetCtx = targetCtx;
+    ((CondExpression*)opd1)->targetCat = targetCat;
+    ((CondExpression*)opd1)->callObjCat = callObjCat;
+  }
+  ok &= opd1->Check(ckd);
+  if (!opd1->IsIfStmExpr()) {
+    ckd.tempCtx = ckd.lpc;
+    opd1->ExprGetFVType(ckd,currentBranchType,cat,ctxFlags);
+    if (currentBranchType == (LavaDECL*)(-1)) {
+      if (opd1->NullAdmissible(ckd)) // "nothing" admissible?
+        return true;
+      else {
+        opd1->SetError(ckd,&ERR_NotOptional);
+        ERROREXIT
+      }
+    }
+    sourceCtx = ckd.tempCtx;
+    if (ctxFlags.bits)
+      sourceCtx.ContextFlags = ctxFlags;
+    if (!compatibleTypes(ckd,currentBranchType,sourceCtx,targetDecl,targetCtx)) {
+      opd1->SetError(ckd,ckd.errorCode);
+      ok = false;
+    }
+    if (cat != unknownCategory
+    && ((targetCat == sameAsSelfObj && cat != callObjCat)
+        || (targetCat != sameAsSelfObj && cat != targetCat))) {
+      opd1->SetError(ckd,&ERR_IncompatibleCategory);
+      ok = false;
+    }
+    if (NoPH(opd1))
+      opd1->targetCat = targetCat;
   }
 
-  ok &= opd1->Check(ckd);
+  if (opd2->IsIfStmExpr()) {
+    ((CondExpression*)opd2)->targetDecl = targetDecl;
+    ((CondExpression*)opd2)->targetCtx = targetCtx;
+    ((CondExpression*)opd2)->targetCat = targetCat;
+    ((CondExpression*)opd2)->callObjCat = callObjCat;
+  }
   ok &= opd2->Check(ckd);
+  if (!opd2->IsIfStmExpr()) {
+    ckd.tempCtx = ckd.lpc;
+    opd2->ExprGetFVType(ckd,currentBranchType,cat,ctxFlags);
+    if (currentBranchType == (LavaDECL*)(-1)) {
+      if (opd2->NullAdmissible(ckd)) // "nothing" admissible?
+        return true;
+      else {
+        opd2->SetError(ckd,&ERR_NotOptional);
+        ERROREXIT
+      }
+    }
+    sourceCtx = ckd.tempCtx;
+    if (ctxFlags.bits)
+      sourceCtx.ContextFlags = ctxFlags;
+    if (!compatibleTypes(ckd,currentBranchType,sourceCtx,targetDecl,targetCtx)) {
+      opd2->SetError(ckd,ckd.errorCode);
+      ok = false;
+    }
+    if (cat != unknownCategory
+    && ((targetCat == sameAsSelfObj && cat != callObjCat)
+        || (targetCat != sameAsSelfObj && cat != targetCat))) {
+      opd2->SetError(ckd,&ERR_IncompatibleCategory);
+      ok = false;
+    }
+    if (NoPH(opd1))
+      opd2->targetCat = targetCat;
+  }
+
+  if (!opd1->IsOptional(ckd) || !opd2->IsOptional(ckd))
+    flags.EXCL(isOptionalExpr);
+  else
+    flags.INCL(isOptionalExpr);
 
   EXIT
 }

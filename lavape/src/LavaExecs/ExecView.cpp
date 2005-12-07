@@ -303,7 +303,7 @@ void MyScrollView::SetTokenFormat (CHETokenNode *currToken) {
     if (currToken->data.flags.Contains(isOpt))
       fmt.color = QColor("#D1009E"); // pink
     else
-    fmt.color = QColor("#0000FF"); // blue
+      fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
       fmt.italic = true;
       fmt.color = QColor("#FF0000"); // red
@@ -1215,7 +1215,7 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
   if (EditOK()) {
     text->NewSel(&pos);
     if (!LBaseData->debugOn
-    &&text->newSelection == text->currentSelection
+    && text->newSelection == text->currentSelection
     && (text->currentSelection->data.synObject->primaryToken == VarPH_T
         || (text->currentSelection->data.synObject->primaryToken == Exp_T
             && !text->currentSelection->data.synObject->BoolAdmissibleOnly(text->ckd)
@@ -5427,6 +5427,7 @@ void CExecView::UpdateUI()
   OnUpdateSelect(LBaseData->selectButton);
   OnUpdateIn(LBaseData->elInSetButton);
   OnUpdateIf(LBaseData->ifButton);
+  OnUpdateIfdef(LBaseData->ifdefButton);
   OnUpdateIfExpr(LBaseData->ifxButton);
   OnUpdateElseExpr(LBaseData->elsexButton);
   OnUpdateSwitch(LBaseData->switchButton);
@@ -5533,6 +5534,7 @@ void CExecView::DisableKwdButtons() {
   LBaseData->selectButton->setEnabled(false);
   LBaseData->elInSetButton->setEnabled(false);
   LBaseData->ifButton->setEnabled(false);
+  LBaseData->ifdefButton->setEnabled(false);
   LBaseData->ifxButton->setEnabled(false);
   LBaseData->elsexButton->setEnabled(false);
   LBaseData->switchButton->setEnabled(false);
@@ -6262,6 +6264,7 @@ void CExecView::OnUpdateFalse(wxAction* action)
     && text->currentSynObj->ExpressionSelected(text->currentSelection)
     && (text->currentSynObj->BoolAdmissibleOnly(text->ckd)
         || text->currentSynObj->parentObject->primaryToken == elsif_T
+        || text->currentSynObj->parentObject->primaryToken == elseX_T
         || text->currentSynObj->parentObject->primaryToken == ifx_T));
 }
 
@@ -6293,12 +6296,20 @@ void CExecView::OnUpdateIf(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
+void CExecView::OnUpdateIfdef(QPushButton *pb) 
+{
+  // TODO: Add your command update UI handler code here
+  
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
 void CExecView::OnUpdateIfExpr(QPushButton *pb) 
 {
   // TODO: Add your command update UI handler code here
   
   pb->setEnabled(!Taboo()
     && text->currentSynObj->ExpressionSelected(text->currentSelection)
+    && text->currentSynObj->parentObject->primaryToken != elseX_T
     && (text->currentSynObj->parentObject->primaryToken == assign_T
         || (text->currentSynObj->parentObject->primaryToken == ObjRef_T
             && text->currentSynObj->parentObject->parentObject->primaryToken == assign_T)
@@ -6624,6 +6635,7 @@ void CExecView::OnUpdateTrue(wxAction* action)
     && text->currentSynObj->ExpressionSelected(text->currentSelection)
     && (text->currentSynObj->BoolAdmissibleOnly(text->ckd)
         || text->currentSynObj->parentObject->primaryToken == elsif_T
+        || text->currentSynObj->parentObject->primaryToken == elseX_T
         || text->currentSynObj->parentObject->primaryToken == ifx_T));
 }
 
@@ -6638,15 +6650,18 @@ void CExecView::OnUpdateXor(QPushButton *pb)
 void CExecView::UpdateErrMsg (QString &helpMsg) {
   CHAINX emptyChain;
   QString errorMsg;
+  SynObject *errorObj=text->currentSynObj;
 
   if (!active || !text->currentSelection/* || errMsgUpdated*/) return;
 
-  if (text->currentSynObj->lastError
+  if (text->currentSynObj->primaryToken == ifx_T)
+    errorObj = (IfxThen*)((CHE*)((IfExpression*)errorObj)->ifThens.first)->data;
+  if (errorObj->lastError
   && (text->currentSelection == text->currentSynObj->primaryTokenNode
       || text->currentSelection->data.token == Rbracket_T)) {
-    myDoc->SetPEError(text->currentSynObj->errorChain,nextError);
-    errorMsg = *((CLavaError*)((CHE*)text->currentSynObj->errorChain.first)->data)->IDS;
-    errorMsg = ((CLavaError*)((CHE*)text->currentSynObj->errorChain.first)->data)->textParam.c + errorMsg;
+    myDoc->SetPEError(errorObj->errorChain,nextError);
+    errorMsg = *((CLavaError*)((CHE*)errorObj->errorChain.first)->data)->IDS;
+    errorMsg = ((CLavaError*)((CHE*)errorObj->errorChain.first)->data)->textParam.c + errorMsg;
     statusBar->message(errorMsg);
     nextError = false;
     return;

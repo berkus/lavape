@@ -424,6 +424,7 @@ public:
   bool EnumAdmissibleOnly (CheckData &ckd);
   bool NullAdmissible (CheckData &ckd);
   bool ExpressionSelected (CHETokenNode *currentSelection);
+  bool IsOptional(CheckData &ckd) { return flags.Contains(isOptionalExpr); }
   bool HasOptionalParts ();
   virtual ROContext ReadOnlyContext();
 //  virtual bool InReadOnlyClause();
@@ -442,7 +443,6 @@ public:
   virtual bool IsEditableConstant () { return false; }
   virtual bool IsDeclare () { return false; }
   virtual bool IsExpression ();
-  virtual bool IsOptional (CheckData &ckd) { return true; };
   virtual bool IsIfStmExpr () {return false; }
   bool IsFuncHandle ();
   virtual bool IsFuncInvocation () { return false; }
@@ -496,7 +496,6 @@ struct TDOD : public SynObject {
 
   TDOD(); // required for InitCheck in Interpreter
   virtual bool IsPlaceHolder () { return false; };
-  virtual bool IsOptional (CheckData &ckd) { return flags.Contains(isOptionalExpr); }
   bool IsStateObject (CheckData &ckd);
   virtual bool IsExecutable() { return false; }
   bool accessTypeOK (SynFlags accessFlags);
@@ -555,7 +554,6 @@ public:
   EnumConst () {}
 
   virtual bool IsConstant () { return true; };
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual bool IsEditableConstant () { return false; };
   virtual void MakeTable (address,int inINCL,SynObjectBase *,TTableUpdate,address,CHAINX *,address);
   virtual bool Check (CheckData &ckd);
@@ -682,7 +680,6 @@ public:
 
   virtual bool Check (CheckData &ckd);
   virtual bool IsConstant () { return true; };
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual bool IsEditableConstant () { return true; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
 };
@@ -697,7 +694,6 @@ public:
 
   virtual bool Check (CheckData &ckd);
   virtual bool IsConstant () { return true; };
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual bool IsEditableConstant () { return false; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
 };
@@ -707,7 +703,6 @@ public:
 
   virtual bool Check (CheckData &ckd);
   virtual bool IsConstant () { return true; };
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual bool IsEditableConstant () { return true; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
 };
@@ -740,7 +735,6 @@ public:
   NESTEDANY<Expression> operand;
 
   virtual bool IsUnaryOp () { return true; };
-  virtual bool IsOptional (CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -750,9 +744,7 @@ class EvalExpression : public UnaryOp {
 public:
 
   virtual bool IsUnaryOp() { return false; }
-  virtual bool IsOptional (CheckData &ckd) { return false; };
-  virtual bool IsReadOnlyClause(SynObject *synObj) {
-    return true; }
+  virtual bool IsReadOnlyClause(SynObject *synObj) { return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -781,7 +773,6 @@ class InvertOp : public UnaryOp {
 class HandleOp : public Expression {
   NESTEDANY<ObjReference> operand;
 
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -795,7 +786,6 @@ class MinusOp : public UnaryOp {
 
 class LogicalNot : public UnaryOp {
 public:
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual bool IsReadOnlyClause(SynObject *synObj) {
     return true; }
   virtual bool Check (CheckData &ckd);
@@ -816,7 +806,6 @@ public:
   NESTEDANY<Expression> operand1, operand2;
 
   virtual bool IsBinaryOp () { return true; };
-  virtual bool IsOptional (CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -829,7 +818,6 @@ public:
   MultipleOp () {};
   void MultipleOpInit (TToken primToken);
 
-  virtual bool IsOptional (CheckData &ckd);
   virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsMultOp () { return true; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
@@ -914,7 +902,6 @@ public:
 //  bool-- isStateObj;
   SynFlags-- myCtxFlags;
 
-  virtual bool IsOptional (CheckData &ckd);
   virtual bool IsFuncInvocation () { return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
@@ -1016,30 +1003,36 @@ public:
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
 
-class IfExpression : public Expression {
+class CondExpression : public Expression {
 public:
-  CHAINX/*IfxThen*/ ifThens;
-  NESTEDANY<Expression> elsePart;
   LavaDECL-- *targetDecl;
   CContext-- targetCtx;
   Category-- callObjCat;
   bool-- isOpt;
 
-  IfExpression ();
+  CondExpression ();
+};
+
+class IfExpression : public CondExpression {
+public:
+  CHAINX/*IfxThen*/ ifThens;
+  NESTEDANY<Expression> elsePart;
+
+  IfExpression () {};
 
   virtual bool IsIfStmExpr () {return true; }
-  virtual bool IsOptional (CheckData &ckd) { return true; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
 
-class ElseExpression : public Expression {
+class ElseExpression : public CondExpression {
 public:
   NESTEDANY<Expression> expr1, expr2;
 
-  ElseExpression () {}
+  ElseExpression () {};
 
+  virtual bool IsIfStmExpr () {return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1121,7 +1114,6 @@ public:
   LavaDECL-- *typeDECL, *execDECL;
   Category-- attachCat;
 
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual bool NestedOptClause (SynObject *optClause);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1135,7 +1127,6 @@ public:
   NESTEDANY<Expression> butStatement;
   bool-- errorInInitializer;
 
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual bool NestedOptClause (SynObject *optClause);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
@@ -1203,7 +1194,6 @@ public:
   NESTEDANY<Reference> itf;
   NESTEDANY<ObjReference> givenObj;
 
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1213,7 +1203,6 @@ class GetUUID : public Expression {
 public:
   NESTEDANY<Reference> itf;
 
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1278,7 +1267,6 @@ class SelectExpression : public QuantStmOrExp {
 public:
   NESTEDANY<Expression> addObject, resultSet;
 
-  virtual bool IsOptional (CheckData &ckd) { return false; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1807,6 +1795,11 @@ public:
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
     return QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>");}
+};
+
+class CondExpressionV : public CondExpression {
+public:
+  CondExpressionV () {}
 };
 
 class IfExpressionV : public IfExpression {
@@ -2421,6 +2414,11 @@ public:
 class IfxThenX : public IfxThen {
 public:
   IfxThenX() {}
+};
+
+class CondExpressionX : public CondExpression {
+public:
+  CondExpressionX() {}
 };
 
 class IfExpressionX : public IfExpression {

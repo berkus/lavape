@@ -383,6 +383,9 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->ifButton,"&if",SLOT(ifStm()),
     QObject::tr("If-then-else statement: \"i\""),
     QObject::tr("<p><a href=\"IfStm.htm\">if-then-elsif-else</a> statement with optional\nelsif and else branches</p>"));
+  newKwdToolbutton(tb,LBaseData->ifdefButton,"&ifdef",SLOT(ifStm()),
+    QObject::tr("Ifdef statement"),
+    QObject::tr("<p><a href=\"IfStm.htm\">ifdef</a> statement: if variable != null then ...</p>"));
   newKwdToolbutton(tb,LBaseData->switchButton,"s&witch",SLOT(switchStm()),
     QObject::tr("Switch statement: \"w\""),
     QObject::tr("<p><a href=\"Switch.htm\">switch</a> statement with optional else branch</p>"));
@@ -431,12 +434,6 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 
   tb->addSeparator();
 
-  newKwdToolbutton(tb,LBaseData->elsexButton,"else-expr",SLOT(elseExpr()),
-    QObject::tr("else expression"),
-    QObject::tr("<p>\"x <a href=\"ElseExpr.htm\">else</a> y\" yields x if x != null, else y</p>"));
-  newKwdToolbutton(tb,LBaseData->ifxButton,"if-expr",SLOT(ifExpr()),
-    QObject::tr("If-then-else expression: \"x\""),
-    QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>"));
   newKwdToolbutton(tb,LBaseData->newButton,"&new",SLOT(newExpr()),
     QObject::tr("Create a new object: \"n\""),
     QObject::tr("<p>Create a <a href=\"New.htm\">new</a> object</p>"));
@@ -446,6 +443,12 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->cloneButton,"clone",SLOT(clone()),
     QObject::tr("Clone an object"),
     QObject::tr("<p><a href=\"Clone.htm\">Clone</a> an existing <b><i><font color=\"red\">Lava</font></i></b> object</p>"));
+  newKwdToolbutton(tb,LBaseData->elsexButton,"else-expr",SLOT(elseExpr()),
+    QObject::tr("else expression"),
+    QObject::tr("<p>\"x <a href=\"ElseExpr.htm\">else</a> y\" yields x if x != null, else y</p>"));
+  newKwdToolbutton(tb,LBaseData->ifxButton,"if-expr",SLOT(ifExpr()),
+    QObject::tr("If-then-else expression: \"x\""),
+    QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>"));
   newKwdToolbutton(tb,LBaseData->scaleButton,"scale",SLOT(scale()),
     QObject::tr("Add a scale (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters"),
     QObject::tr("<p>Add a <a href=\"Scale.htm\">scale</a> (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters</p>"));

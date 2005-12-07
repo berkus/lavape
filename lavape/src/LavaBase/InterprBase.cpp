@@ -1227,14 +1227,14 @@ bool CRuntimeException::SetLavaException(CheckData& ckd)
   LavaObjectPtr strObj, codeObj;
   int ii;
 
-  ckd.lastException = AllocateObject(ckd, ckd.document->DECLTab[B_LavaException], false);
+  ckd.lastException = AllocateObject(ckd, ckd.document->DECLTab[B_RTException], false);
   if (!ckd.lastException)
     return false;
   ((SynFlags*)(ckd.lastException+1))->INCL(finished);
   for (ii = 0; (ii < ckd.lastException[0][0].nSections) && (ckd.lastException[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
   ckd.lastException = ckd.lastException + ckd.lastException[0][ii].sectionOffset;
   strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString], false);
-  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_LavaException]->NestedDecls.first->successor)->data, false);
+  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_RTException]->NestedDecls.first->successor)->data, false);
   if (!ckd.lastException || !strObj || !codeObj) {
     ckd.exceptionThrown = true;
     return false;
@@ -1253,9 +1253,9 @@ bool SetLavaException(CheckData& ckd, int code, const QString& mess)
 {
   LavaObjectPtr ex, strObj, codeObj;
 
-  ex = AllocateObject(ckd, ckd.document->DECLTab[B_LavaException], false);
+  ex = AllocateObject(ckd, ckd.document->DECLTab[B_RTException], false);
   strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString], false);
-  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_LavaException]->NestedDecls.first->successor)->data, false);
+  codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_RTException]->NestedDecls.first->successor)->data, false);
   if (!ex || !strObj || !codeObj) {
     ckd.exceptionThrown = true;
     return false;

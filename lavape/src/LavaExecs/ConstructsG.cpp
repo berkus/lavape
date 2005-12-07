@@ -1017,7 +1017,23 @@ void CDPIfxThen (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPIfxThen
 
 
-IMPLEMENT_DYNAMIC_CLASS(IfExpression,Expression)
+IMPLEMENT_DYNAMIC_CLASS(CondExpression,Expression)
+
+
+void CDPCondExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
+                        bool baseCDP)
+
+{
+  CondExpression *vp = (CondExpression*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPCondExpression
+
+
+IMPLEMENT_DYNAMIC_CLASS(IfExpression,CondExpression)
 
 
 void CDPIfExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
@@ -1028,14 +1044,14 @@ void CDPIfExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPCondExpression(pgf,cid,(address)(CondExpression*)vp,true);
     vp->ifThens.CDP(pgf,cid);
     vp->elsePart.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPIfExpression
 
 
-IMPLEMENT_DYNAMIC_CLASS(ElseExpression,Expression)
+IMPLEMENT_DYNAMIC_CLASS(ElseExpression,CondExpression)
 
 
 void CDPElseExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
@@ -1046,7 +1062,7 @@ void CDPElseExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPCondExpression(pgf,cid,(address)(CondExpression*)vp,true);
     vp->expr1.CDP(pgf,cid);
     vp->expr2.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);

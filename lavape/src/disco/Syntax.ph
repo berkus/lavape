@@ -17,7 +17,7 @@
 #include "wx_obj.h"
 #include "qpixmap.h"
 
-#define RELEASE  1
+#define RELEASE  2
 
 #undef VIEW
 
@@ -160,7 +160,7 @@ $TYPE +CDP {
     ComponentObj,
 		B_Exception,
 		B_HWException,
-		B_LavaException,
+		B_RTException,
     Identifier //this must be the last
   };
 
