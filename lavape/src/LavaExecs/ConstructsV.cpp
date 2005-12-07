@@ -1818,11 +1818,18 @@ ElseExpressionV::ElseExpressionV (bool) {
 
 void ElseExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
+
+  bool parenth=parentObject->IsUnaryOp() || parentObject->IsBinaryOp() || parentObject->IsMultOp();
+
+  if (parenth)
+    t.Insert(Lparenth_T);
   DRAW(expr1.ptr);
   t.Blank();
   t.Insert(elseX_T,true);
   t.Blank();
   DRAW(expr2.ptr);
+  if (parenth)
+    t.Insert(Rparenth_T);
   EXIT
 }
 
