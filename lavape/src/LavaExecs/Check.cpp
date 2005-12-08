@@ -4901,11 +4901,11 @@ bool IfdefStatement::Check (CheckData &ckd)
        chp;
        chp = (CHE*)chp->successor) {
     opd = (ObjReference*)chp->data;
-    if (opd->flags.Contains(isOptionalExpr)) {
+    ok &= opd->Check(ckd);
+    if (!IsPH(opd) && !opd->flags.Contains(isOptionalExpr)) {
       ((SynObject*)((CHE*)opd->refIDs.last)->data)->SetError(ckd,&ERR_SuperfluousMandatory);
       ok = false;
     }
-    ok &= opd->Check(ckd);
   }
   ok &= ((SynObject*)thenPart.ptr)->Check(ckd);
 
