@@ -18,6 +18,7 @@
 
 
 #include "SYSTEM.h"
+#include "GUIres.h"
 #include "TEdit.h"
 #include "GUIProgBase.h"
 #include "GUIProg.h"
@@ -64,6 +65,12 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   setMargin(0);
+  if (myFormNode->data.IterFlags.Contains(Optional)) {
+    myMenu = new QPopupMenu(this);
+    myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
+    myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
+    myMenu->setItemEnabled(IDM_ITER_INSERT, false);
+  }
   int bord = ((QFrame*)parentWidget)->lineWidth();
   size = GUIProg->CalcTextRect(size.width(), 1, font());
   size.setWidth(size.width()+ 2*frameWidth());
@@ -103,15 +110,39 @@ void CTEdit::focusOutEvent(QFocusEvent *ev)
   QLineEdit::focusOutEvent(ev);
 }
 
+bool CTEdit::event(QEvent* ev)
+{
+  if (ev->type() == IDU_LavaGUIInsDel) {
+    if (myFormNode->data.IterFlags.Contains(Optional))
+      ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
+    return true;
+  }
+  else 
+    return QLineEdit::event(ev);
+}
+
 QPopupMenu* CTEdit::createPopupMenu()
 {
   QPopupMenu* pm = QLineEdit::createPopupMenu();
-  CFormWid* par = (CFormWid*)parentWidget();
-  if (par->iterData && par->myMenu) {
+  QWidget* par = parentWidget();
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (((CFormWid*)par)->iterData && ((CFormWid*)par)->myMenu) {
     pm->insertSeparator();
-    pm->insertItem("Iteration", par->myMenu);
+    pm->insertItem("Lava object", ((CFormWid*)par)->myMenu);
+  }
+  else {
+    if (myFormNode->data.IterFlags.Contains(Optional)) {
+      pm->insertSeparator();
+      pm->insertItem("Lava object", myMenu);
+    }
   }
   return pm;
+}
+
+void CTEdit::DelActivated()
+{
+  QApplication::postEvent(this, new QCustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }
 
 
@@ -131,6 +162,12 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   GUIProg->SetColor(this, myFormNode);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
+  if (myFormNode->data.IterFlags.Contains(Optional)) {
+    myMenu = new QPopupMenu(this);
+    myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
+    myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
+    myMenu->setItemEnabled(IDM_ITER_INSERT, false);
+  }
   setMargins(0, 0, 0, 0);
   int bord = ((QFrame*)parentWidget)->lineWidth();
   size = GUIProg->CalcTextRect(size.width(), size.height(), font());
@@ -175,41 +212,38 @@ void CMultiLineEdit::focusOutEvent(QFocusEvent *ev)
 }
 
 
+bool CMultiLineEdit::event(QEvent* ev)
+{
+  if (ev->type() == IDU_LavaGUIInsDel) {
+    if (myFormNode->data.IterFlags.Contains(Optional))
+      ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
+    return true;
+  }
+  else 
+    return QTextEdit::event(ev);
+}
+
 QPopupMenu* CMultiLineEdit::createPopupMenu()
 {
   QPopupMenu* pm = QTextEdit::createPopupMenu();
-  CFormWid* par = (CFormWid*)parentWidget();
-  if (par->iterData && par->myMenu) {
+  QWidget* par = parentWidget();
+  while (par && !par->inherits("CFormWid"))
+    par = parentWidget();
+  if (((CFormWid*)par)->iterData && ((CFormWid*)par)->myMenu) {
     pm->insertSeparator();
-    pm->insertItem("Iteration", par->myMenu);
+    pm->insertItem("Iteration", ((CFormWid*)par)->myMenu);
+  }
+  else {
+    if (myFormNode->data.IterFlags.Contains(Optional)) {
+      pm->insertSeparator();
+      pm->insertItem("Lava object", myMenu);
+    }
   }
   return pm;
 }
 
 
-/*
-void CMultiLineEdit::OnChange() 
+void CMultiLineEdit::DelActivated()
 {
-  changed = GUIProg->focNode == myFormNode;
-  if (changed) {
-
-    myFormNode->data.StringValue = DString(text());
-    if (LBaseData->inRuntime) {
-      inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
-      //if (inError)
-      //  SetSel(int(GUIProg->ErrPos), int(GUIProg->ErrPos));
-      //else
-        myFormNode->data.IoSigFlags.INCL(trueValue);
-      changed = false;
-    }
-  }
+  QApplication::postEvent(this, new QCustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }
-
-void CTEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
-{
-  if ((nChar == VK_TAB) && (!(GetStyle() & ES_MULTILINE)))
-    ((CGUIProg*)GUIProg)->OnTab(false, this);
-  else
-    CEdit::OnKeyDown(nChar, nRepCnt, nFlags);
-}
-*/

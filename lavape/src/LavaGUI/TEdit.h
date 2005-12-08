@@ -19,14 +19,15 @@ public:
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;
   QPoint CaretP;
-  //bool changed;
+  QPopupMenu* myMenu;
   bool inError;
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
   virtual QPopupMenu* createPopupMenu();
+  virtual bool event(QEvent* ev);
 
 public slots:
-//  void OnChange( const QString & newText);
+  void DelActivated();
 
 private:
   Q_OBJECT
@@ -46,13 +47,14 @@ public:
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;
   QPoint CaretP;
-  //bool changed;
+  QPopupMenu* myMenu;
   bool inError;
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
   virtual QPopupMenu* createPopupMenu();
+  virtual bool event(QEvent* ev);
 public slots:
-  //void OnChange();
+  void DelActivated();
 
 private:
   Q_OBJECT

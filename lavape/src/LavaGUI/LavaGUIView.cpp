@@ -457,7 +457,8 @@ bool CLavaGUIView::event(QEvent* ev)
 
 void CLavaGUIView::resetLastBrowseNode()
 {
-  if (LastBrowseNode && LastBrowseNode->data.FIP.widget) {
+  if (LastBrowseNode && LastBrowseNode->data.FIP.widget
+    && LastBrowseNode->data.FIP.widget->inherits("QFrame")) {
     ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShape(QFrame::NoFrame);
     ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(QFrame::Plain);
     ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(((CFormWid*)LastBrowseNode->data.FIP.widget)->ForegroundColor);

@@ -137,7 +137,7 @@ void GUIwidCLASS::CreatePopupWindow(bool isTextPopup, QWidget*& popupShell, QWid
     cap = cap + " - " + QString(label.c);
   popupShell->setCaption(cap);
   if (isTextPopup) 
-    CreateFormWidget(pane, ((CLavaGUIPopup*)popupShell)->view->qvbox, 0, 0, str, data);
+    CreateFormWidget(pane, ((CLavaGUIPopup*)popupShell)->view->qvbox, 0, str, data);
   else
     pane = ((CLavaGUIPopup*)popupShell)->view->qvbox;
 }
@@ -175,10 +175,10 @@ void GUIwidCLASS::AddPopupMenuItem (QWidget*& pos, QWidget* menu, DString& text,
 }
 
 
-void GUIwidCLASS::CreateFormWidget (QWidget*& formWidget, QWidget* parentWidget, int box, SynFlags iterFlags, DString& widgetName, CHEFormNode* data)
+void GUIwidCLASS::CreateFormWidget (QWidget*& formWidget, QWidget* parentWidget, int box, DString& widgetName, CHEFormNode* data)
 
 {
-  formWidget = new CFormWid(GUIProg, data, parentWidget, box, iterFlags, widgetName.c);
+  formWidget = new CFormWid(GUIProg, data, parentWidget, box, widgetName.c);
 }
 
 void GUIwidCLASS::CreateTextWidget (QWidget*& textWidget, QWidget* parentWidget, DString& widgetName,

@@ -17,6 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
+#include "GUIres.h"
 #include "GUIProg.h"
 #include "TComboBox.h"
 #include "GUIProgBase.h"
@@ -56,6 +57,12 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
     setEnabled(false);
   listBox()->setVariableWidth(true);
   connect(this, SIGNAL(activated(int)), this, SLOT(OnSelendok(int)));
+  if (myFormNode->data.IterFlags.Contains(Optional)) {
+    myMenu = new QPopupMenu(this);
+    myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
+    myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
+    myMenu->setItemEnabled(IDM_ITER_INSERT, false);
+  }
 
   show();
 }
@@ -75,11 +82,15 @@ CTComboBox::~CTComboBox()
 
 void CTComboBox::mousePressEvent(QMouseEvent* ev)
 {
-  QComboBox::mousePressEvent(ev);
-  GUIProg->editNode = 0;
-  GUIProg->butNode = 0;
-  GUIProg->focNode = myFormNode;
-  GUIProg->SyncTree(myFormNode);
+  if ((ev->button() == RightButton) && myMenu) 
+    myMenu->popup(ev->globalPos());//QPoint(ev->x(), ev->y()));
+  else {
+    QComboBox::mousePressEvent(ev);
+    GUIProg->editNode = 0;
+    GUIProg->butNode = 0;
+    GUIProg->focNode = myFormNode;
+    GUIProg->SyncTree(myFormNode);
+  }
 }
 
 void CTComboBox::OnSelendok(int sel) 
@@ -112,12 +123,19 @@ void CTComboBox::focusInEvent(QFocusEvent *ev)
   GUIProg->SyncTree(myFormNode);
 }
 
-/*
-void CTComboBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+bool CTComboBox::event(QEvent* ev)
 {
-  if (nChar == VK_TAB)
-    ((CGUIProg*)GUIProg)->OnTab(false, this);
-  
-  CComboBox::OnKeyDown(nChar, nRepCnt, nFlags);
+  if (ev->type() == IDU_LavaGUIInsDel) {
+    if (myFormNode->data.IterFlags.Contains(Optional))
+      ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
+    return true;
+  }
+  else 
+    return QComboBox::event(ev);
 }
-*/
+
+void CTComboBox::DelActivated()
+{
+  QApplication::postEvent(this, new QCustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
+}
+

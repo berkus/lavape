@@ -179,6 +179,7 @@ void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
   fNode = (CHEFormNode*)parNode->data.SubTree.Uncouple(fNode); 
 
   CHEFormNode* elliNode = 0;
+
   LavaDECL* formSyn = parNode->data.FormSyntax;
   ((CGUIProg*)GUIProg)->LavaForm.CreateEllipsis(elliNode,formSyn);
   parNode->data.SubTree.Insert(fNode->predecessor, elliNode);
@@ -200,8 +201,8 @@ void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
   ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(elliNode);     
   ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(elliNode,false);
   if (LBaseData->inRuntime) {
-  //to do: delete the object *fNode->data.ResultVarPtr
-   *fNode->data.ResultVarPtr = 0;
+    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)fNode->data.ResultVarPtr);
+    *fNode->data.ResultVarPtr = 0;
     ((CGUIProg*)GUIProg)->OnModified();
   }
   delete fNode;

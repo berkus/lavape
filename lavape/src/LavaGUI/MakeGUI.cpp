@@ -128,7 +128,7 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
           && (chFrmNd->data.Annotation.ptr->FrameSpacing != -1))) {
     if (!context.currentFrame || !context.emptyFrame) { /* start a new frame */
       context.precedingFrame = context.currentFrame;
-      CreateFormWidget( context.currentFrame, parentWidget, 0, chFrmNd->data.IterFlags, parentWidgetName, chFrmNd);
+      CreateFormWidget( context.currentFrame, parentWidget, 0, parentWidgetName, chFrmNd);
       context.emptyFrame = true;
       /*if (context.currentFrame->parentWidget()->inherits("GUIVBox")) {
         QHBoxLayout* hb = new QHBoxLayout(context.currentFrame);
@@ -223,9 +223,9 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       else
         box = -1;
       if (chFrmNd->data.WidgetName.l)
-        CreateFormWidget(newWidget, context.currentFrame, box, chFrmNd->data.IterFlags, chFrmNd->data.WidgetName, chFrmNd );
+        CreateFormWidget(newWidget, context.currentFrame, box, chFrmNd->data.WidgetName, chFrmNd );
       else
-        CreateFormWidget(newWidget, context.currentFrame, box, chFrmNd->data.IterFlags, parentWidgetName, chFrmNd);
+        CreateFormWidget(newWidget, context.currentFrame, box, parentWidgetName, chFrmNd);
       if (!chFrmNd->data.Annotation.ptr ) {
         refWidget = context.precedingWidgetInFrame;
         widgetSpacing = 0;
@@ -558,7 +558,7 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
         CreateEllipsisWidget( newWidget, parent,widgetName, chFrmNd->data.StringValue ,INSERT,  chFrmNd);
     }
     else {
-      CreateFormWidget( newWidget, parent,0, SETpp(), str0, chFrmNd);
+      CreateFormWidget( newWidget, parent,0, str0, chFrmNd);
       CreateEllipsisWidget( insertButton, newWidget, widgetName ,
                            ((CHEFormNode*)chFrmNd->data.SubTree.first)->data.StringValue ,INSERT, chFrmNd);
       ((CHEFormNode*)chFrmNd->data.SubTree.first)->data.FIP.widget = insertButton;

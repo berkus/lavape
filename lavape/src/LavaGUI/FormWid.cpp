@@ -37,7 +37,7 @@ CFormWid::~CFormWid()
 }
 
 CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
-                QWidget* parent, int border, SynFlags iterFlags, const char* lpszWindowName)
+                QWidget* parent, int border, const char* lpszWindowName)
                 :QFrame(parent, "FormWid")
 {
   nRadio = 0;
@@ -48,6 +48,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
   origMenu = false;
   usedInFormNode = false;
   myFormNode = (CHEFormNode*)data;
+  
   if (border) { //the FIP.widget 
     myFormNode->data.ownLFont = GUIProg->SetLFont(0, myFormNode);
     myFormNode->data.ownTFont = GUIProg->SetTFont(0, myFormNode);
@@ -59,11 +60,11 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
   int bord = ((QFrame*)parent)->lineWidth();
   QRect rect(0,0,GUIProg->globalIndent,GUIProg->globalIndent);
   setGeometry(rect);
-  if (iterFlags.Contains(IteratedItem))
+  if (myFormNode->data.IterFlags.Contains(IteratedItem))
     IterFlags.INCL(IteratedItem);
-  if (iterFlags.Contains(FixedCount))
+  if (myFormNode->data.IterFlags.Contains(FixedCount))
     IterFlags.INCL(FixedCount);
-  if (iterFlags.Contains(Optional))
+  if (myFormNode->data.IterFlags.Contains(Optional))
     IterFlags.INCL(Optional);
   if (border > 0) {
     setFrameShape(QFrame::Box );
@@ -97,15 +98,21 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
       myMenu->insertItem("Delete chain element", this, SLOT(DelActivated()),0,IDM_ITER_DEL);
       myMenu->insertItem("Insert chain element", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     }
-    else 
+    else {
       myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
-//      myMenu->insertItem("Delete optional", this, "DelActivated()",0, IDM_ITER_DEL);
-  }
-  else
-    if (parent->inherits("CFormWid")) {
-      myMenu = ((CFormWid*)parent)->myMenu;
-      iterData = ((CFormWid*)parent)->iterData;
+      myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
+      myMenu->setItemEnabled(IDM_ITER_INSERT, false);
     }
+  }
+  else {
+    QWidget* par = parent;
+    while (par && !par->inherits("CFormWid"))
+      par = par->parentWidget();
+    if (par) {
+      myMenu = ((CFormWid*)par)->myMenu;
+      iterData = ((CFormWid*)par)->iterData;
+    }
+  }
 
   ForegroundColor = colorGroup().foreground();
 }

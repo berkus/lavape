@@ -212,8 +212,8 @@ void LavaFormCLASS::CreateEllipsis (CHEFormNode *&fNode, LavaDECL *DECLptr)
   fNode->data.Annotation.ptr = inheritAnnotation(DECLptr);
   if (fNode->data.Annotation.ptr) {
     fNode->data.Annotation.ptr = (TAnnotation*)fNode->data.Annotation.ptr->FA.ptr;
-    fNode->data.Annotation.ptr->FrameSpacing = DECLptr->Annotation.ptr->FrameSpacing;
-    fNode->data.Annotation.ptr->TabPosition = DECLptr->Annotation.ptr->TabPosition;
+//    fNode->data.Annotation.ptr->FrameSpacing = DECLptr->Annotation.ptr->FrameSpacing;
+//    fNode->data.Annotation.ptr->TabPosition = DECLptr->Annotation.ptr->TabPosition;
   }
   if (anno->IterFlags.Contains(Optional)) {
     fNode->data.Atomic = true;

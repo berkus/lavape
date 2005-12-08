@@ -29,7 +29,7 @@ void CreatePopupWindow (bool isTextPopup,
                                    QWidget*& pane, /* viewport widget returned */
                                    DString& label, CHEFormNode* data);
 
-void CreateFormWidget (QWidget*& formWidget, QWidget* parentWidget, int box, SynFlags iterFlags, DString& widgetName, CHEFormNode* data);
+void CreateFormWidget (QWidget*& formWidget, QWidget* parentWidget, int box, DString& widgetName, CHEFormNode* data);
 void CreateTextWidget (QWidget*& textWidget, QWidget* parentWidget, DString& widgetName,
                    int rows, int cols, 
                    bool echo, CHEFormNode* data);
