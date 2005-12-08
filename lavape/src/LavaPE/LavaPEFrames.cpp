@@ -1751,7 +1751,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     *it = 10;
     splitter->setSizes(list);
     lastActive = viewM;
-    if  ((oldWindowState == QEvent::ShowMaximized) && !isHidden())
+    if  ((oldWindowState == QEvent::ShowMaximized)/* && !isHidden()*/)
       showMaximized();
 		return true;
   }

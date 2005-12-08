@@ -121,7 +121,7 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
     m_docManager = new wxDocManager;
     inUpdateUI = false;
 		deletingMainFrame = false;
-		isChMaximized = false;
+		isChMaximized = true;
 
 //    SetVendorName("FhG-SIT");
 //    SetAppName("LavaPE");

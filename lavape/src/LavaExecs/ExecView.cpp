@@ -6362,7 +6362,9 @@ bool CExecView::EnableInsert()
     return false;
 
   return (
-    ( text->currentSynObj->ExpressionSelected(text->currentSelection)
+    ( (text->currentSynObj->ExpressionSelected(text->currentSelection)
+       || (text->currentSynObj->primaryToken == TDOD_T
+           && text->currentSynObj->parentObject->parentObject->primaryToken == ifdef_T))
       && (( text->currentSynObj->primaryToken == TDOD_T
              && text->currentSynObj->parentObject->containingChain)
           || (text->currentSynObj->primaryToken != TDOD_T
@@ -6423,7 +6425,9 @@ void CExecView::OnUpdateInsert(wxAction* action)
     return;
   }
   action->setEnabled(
-    ( text->currentSynObj->ExpressionSelected(text->currentSelection)
+    ( (text->currentSynObj->ExpressionSelected(text->currentSelection)
+       || (text->currentSynObj->primaryToken == TDOD_T
+           && text->currentSynObj->parentObject->parentObject->primaryToken == ifdef_T))
       && (( text->currentSynObj->primaryToken == TDOD_T
              && text->currentSynObj->parentObject->containingChain)
           || (text->currentSynObj->primaryToken != TDOD_T

@@ -3311,14 +3311,13 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
     delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
     ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
   }
-
-  if (/*!execChild->isMaximized()
-  && */wxDocManager::GetOpenDocCount() == 1
+/*
+  if (wxDocManager::GetOpenDocCount() == 1
 	&& GetViewCount() == 4
   && wxDocManager::GetDocumentManager()->GetActiveView()->GetParentFrame()->oldWindowState != QEvent::ShowMaximized
   && !MainView->GetParentFrame()->isMinimized())
 		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
-
+*/
   return true;
 }
 
