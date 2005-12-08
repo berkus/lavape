@@ -594,7 +594,14 @@ void IfxThen::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
 void IfdefStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
 {
   ENTRY
-  MTBL (ifCondition.ptr);
+
+  CHE *chp;
+
+  for (chp = (CHE*)ifCondition.first;
+       chp;
+       chp = (CHE*)chp->successor) {
+    MTBLCHE (chp,&ifCondition);
+  }
   MTBL (thenPart.ptr);
   if (elsePart.ptr)
     MTBL (elsePart.ptr);

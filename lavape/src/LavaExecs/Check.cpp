@@ -3567,6 +3567,7 @@ void NullConst::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, Sy
 
 bool NullConst::Check (CheckData &ckd) {
   ENTRY
+  flags.INCL(isOptionalExpr);
   EXIT
 }
 
@@ -4889,13 +4890,23 @@ bool IfxThen::Check (CheckData &ckd)
 
 bool IfdefStatement::Check (CheckData &ckd)
 {
-  CHE *branchStm, *precedingBranch;
+  CHE *chp, *branchStm, *precedingBranch;
+  ObjReference *opd;
 
   ENTRY
 
   ((RefTable*)ckd.refTable)->NewBranchStm(branchStm,precedingBranch);
 
-  ok &= ((SynObject*)ifCondition.ptr)->Check(ckd);
+  for (chp = (CHE*)ifCondition.first;
+       chp;
+       chp = (CHE*)chp->successor) {
+    opd = (ObjReference*)chp->data;
+    if (opd->flags.Contains(isOptionalExpr)) {
+      ((SynObject*)((CHE*)opd->refIDs.last)->data)->SetError(ckd,&ERR_SuperfluousMandatory);
+      ok = false;
+    }
+    ok &= opd->Check(ckd);
+  }
   ok &= ((SynObject*)thenPart.ptr)->Check(ckd);
 
   ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
@@ -5126,7 +5137,11 @@ bool ElseExpression::Check (CheckData &ckd)
       opd2->targetCat = targetCat;
   }
 
-  if (!opd1->IsOptional(ckd) || !opd2->IsOptional(ckd))
+  if (ok && !opd1->IsOptional(ckd)) {
+    opd1->SetError(ckd,&ERR_ElseExprObsolete);
+    ERROREXIT
+  }
+  if (IsPH(opd1) || !opd1->IsOptional(ckd) || IsPH(opd2) || !opd2->IsOptional(ckd))
     flags.EXCL(isOptionalExpr);
   else
     flags.INCL(isOptionalExpr);

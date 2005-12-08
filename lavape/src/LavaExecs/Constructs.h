@@ -2200,7 +2200,7 @@ class IfdefStatement : public Expression {
 
 
   public:
-  NESTEDANY/*ObjReference*/ ifCondition;
+  CHAINX ifCondition;
   NESTEDANY/*Expression*/ thenPart;
   NESTEDANY/*Expression*/ elsePart;
   virtual bool IsIfStmExpr()

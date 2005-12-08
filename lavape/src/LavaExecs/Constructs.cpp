@@ -566,6 +566,8 @@ bool TokenNode::OptionalClauseToken (SynObject *&optClause) {
   case else_T:
     if (synObject->primaryToken == if_T)
       optClause = (SynObject*)((IfStatement*)synObject)->elsePart.ptr;
+    else if (synObject->primaryToken == ifdef_T)
+      optClause = (SynObject*)((IfdefStatement*)synObject)->elsePart.ptr;
     else if (synObject->primaryToken == ifx_T)
       return false;
     else if (synObject->primaryToken == switch_T)
@@ -598,6 +600,7 @@ bool SynObject::HasOptionalParts ()
   case fail_T:
   case foreach_T:
   case if_T:
+  case ifdef_T:
   case new_T:
   case switch_T:
   case transaction_T:

@@ -1775,7 +1775,7 @@ IfdefStatementV::IfdefStatementV (bool) {
   type = Stm_T;
   replacedType = type;
   primaryToken = ifdef_T;
-  ifCondition.ptr = new SynObjectV(ObjPH_T);
+  ifCondition.Append(NewCHE(new SynObjectV(ObjPH_T)));
   thenPart.ptr = new SynObjectV(Stm_T);
   elsePart.ptr = new SynObjectV(Stm_T);
 }
@@ -1791,10 +1791,23 @@ void IfdefStatementV::InsertElsePart (SynObject *&elseP) {
 void IfdefStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
 
+  CHE *objRef;
+  bool isFirst=true;
+
   t.Insert(ifdef_T,true);
-  t.Blank();
-  DRAW(ifCondition.ptr);
-  t.Blank();
+  NLincIndent(t);
+  for (objRef = (CHE*)ifCondition.first;
+       objRef;
+       objRef = (CHE*)objRef->successor) {
+    if (!isFirst) {
+      t.Insert(Comma_T,false);
+      t.Blank();
+    }
+    else
+      isFirst = false;
+    DRAWCHE(objRef,&ifCondition);
+  }
+  NLdecIndent(t);
   t.Insert(then_T);
   NLincIndent(t);
   DRAW(thenPart.ptr);

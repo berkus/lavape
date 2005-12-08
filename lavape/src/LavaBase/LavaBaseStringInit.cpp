@@ -88,6 +88,8 @@ QString ERR_NoMemberFunction;
 QString ERR_SingleAssViol;
 QString ERR_PrevDescAssig;
 QString ERR_NotOptional;
+QString ERR_ElseExprObsolete;
+QString ERR_SuperfluousMandatory;
 QString ERR_AssigToLocal;
 QString ERR_NameInUse;
 QString ERR_OutOfScope;
@@ -318,6 +320,8 @@ void LavaBaseStringInit() {
   ERR_AbstrMemType  = QObject::tr("Do not use an abstract type for a member or formal parameter in a creatable interface");
   ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
   ERR_NotOptional  = QObject::tr("An expression whose value might be null may be assigned only to optional variables or function/main program parameters");
+  ERR_ElseExprObsolete  = QObject::tr("Else-expression superfluous: first operand is already mandatory");
+  ERR_SuperfluousMandatory  = QObject::tr("superfluous mandatory variable in ifdef");
   ERR_AssigToLocal  = QObject::tr("Single-assignment violation: forbidden assignment to initialized local variable");
   ERR_NameInUse  = QObject::tr("This name is already in use within the current scope; please choose a different name");
   ERR_OutOfScope  = QObject::tr("Variable is referenced outside its scope");

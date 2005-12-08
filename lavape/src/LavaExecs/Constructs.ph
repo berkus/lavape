@@ -1005,7 +1005,7 @@ public:
 
 class IfdefStatement : public Expression {
 public:
-  NESTEDANY<ObjReference> ifCondition;
+  CHAINX/*ObjReference*/ ifCondition;
   NESTEDANY<Expression> thenPart;
   NESTEDANY<Expression> elsePart;
 

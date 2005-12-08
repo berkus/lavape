@@ -2639,7 +2639,9 @@ void CExecView::OnDelete ()
   if (chx && chx->first == chx->last)
     if (text->currentSynObj->IsPlaceHolder()) {
       if (text->currentSynObj->parentObject->primaryToken == case_T
-        || text->currentSynObj->parentObject->primaryToken == quant_T)
+        || text->currentSynObj->parentObject->primaryToken == quant_T
+        || (text->currentSynObj->parentObject->primaryToken == ifdef_T
+            && chx == &((IfdefStatement*)text->currentSynObj->parentObject)->ifCondition))
         reject = true;
     }
     else if (text->currentSynObj->primaryToken == case_T
@@ -3647,6 +3649,13 @@ void CExecView::OnShowOptionals()
         PutDelFlagHint(SET(ignoreSynObj,-1),SET(lastHint,-1));
       else
         PutDelFlagHint(SET(ignoreSynObj,-1),SET());
+    }
+  }
+  else if (text->currentSynObj->primaryToken == ifdef_T) {
+    ((IfdefStatementV*)text->currentSynObj)->InsertElsePart(elsePart);
+    if (elsePart) {
+      text->currentSynObj = elsePart;
+      PutInsHint(elsePart,SET(firstHint,lastHint,-1));
     }
   }
   else { // if, [type]switch

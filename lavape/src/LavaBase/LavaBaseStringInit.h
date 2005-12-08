@@ -64,6 +64,8 @@ extern LAVABASE_DLL QString ERR_NoMemberFunction;
 extern LAVABASE_DLL QString ERR_SingleAssViol;
 extern LAVABASE_DLL QString ERR_PrevDescAssig;
 extern LAVABASE_DLL QString ERR_NotOptional;
+extern LAVABASE_DLL QString ERR_ElseExprObsolete;
+extern LAVABASE_DLL QString ERR_SuperfluousMandatory;
 extern LAVABASE_DLL QString ERR_AssigToLocal;
 extern LAVABASE_DLL QString ERR_NameInUse;
 extern LAVABASE_DLL QString ERR_OutOfScope;
