@@ -16,20 +16,11 @@ public:
   CGUIProgBase *GUIProg;
   ~LavaFormCLASS() {}
   void INIT (CGUIProgBase *guiPr);
-  bool Silent;
-  bool emptyInsertion;
   void MakeForm (LavaDECL* decl, LavaVariablePtr resultPtr, CHEFormNode *&empForm);
-
   void PartialForm ( LavaDECL* FormDecl, CHEFormNode *&fNode);
-  /* on input, fNode contains the address of the formNode node to which
-     the produced partial form is to be linked;
-     on output, fNode contains the address of the first formNode node
-     of the produced partial form */
 
   bool AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, bool emptyOpt = false);
-
   void AllocFNode (CHEFormNode *&formNode, LavaDECL *syn, LavaVariablePtr resultObjPtr);
-//  void UpdateFieldWidget (CHEFormNode *chFrmNd);
   void CreateEllipsis (CHEFormNode *&fNode, LavaDECL *syn);
   void DeleteForm (CHEFormNode *formNode);
   void DeletePopups(CHEFormNode *object_first);
@@ -42,8 +33,10 @@ public:
   LavaDECL* FinalFormDECL(LavaDECL* decl);
   LavaDECL* GetFinalIterType(LavaDECL* decl);
   CHEFormNode* BrowseForm(CHEFormNode *formNode, LavaDECL* formDECL);
-
   LavaVariablePtr NewLavaVarPtr(LavaObjectPtr val);
+
+  bool Silent;
+  bool emptyInsertion;
 
 private:
 
@@ -53,13 +46,10 @@ private:
 
   bool emptyForm, hasWidgets;
   unsigned level;
-  /* current depth of nesting of recursive partialForm invocations;
-     used to avoid infinite recursion caused by recursive syntactic
-     types with "Optional" flag */
   DString ellipsis, blank, selCode;
   DString blank2;
   DString blank4, questionMarks;
-  CHEFormNode *upNode; // , *fieldNode;
+  CHEFormNode *upNode;
   LavaDECL *currentIteration;
 
   TAnnotation *inheritAnnotation (LavaDECL *DECLptr);

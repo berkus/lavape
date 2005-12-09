@@ -234,15 +234,6 @@ void CPushButton::OnClicked()
       break;
 
     case isPop:
-      /*
-      iter = (CHEFormNode*)myFormNode->data.SubTree.first;
-      if (iter->data.IterFlags.Contains(Ellipsis))
-        if (myFormNode->data.IterFlags.Contains(Optional))
-          ((CGUIProg*)GUIProg)->CmdExec.InsertOptionalItem(iter);
-        else
-          ((CGUIProg*)GUIProg)->CmdExec.InsertIterItem(iter);
-        //((CGUIProg*)GUIProg)->CmdExec.InsertOptionalItem(iter);
-        */
       ((CGUIProg*)GUIProg)->CmdExec.HandlePopup(myFormNode);
       break;
     default: ;

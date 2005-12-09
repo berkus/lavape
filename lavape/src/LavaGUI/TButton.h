@@ -40,10 +40,6 @@ public:
   CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, const char* lpszWindowName, const QString& label, QWidget* radioBox, unsigned num);
   virtual ~CPushButton() {}
 
-  //bool CreateElli(LPCTSTR lpszWindowName, QWidget* pParentWnd, const QString& label, unsigned cmnd);
-  //bool CreatePop(LPCTSTR lpszWindowName, QWidget* pParentWnd, const QString& label, unsigned cmnd);
-  //bool CreatePush(LPCTSTR lpszWindowName, QWidget* pParentWnd, const QString& label, QWidget* radioBox, unsigned num);
-
   void focusInEvent(QFocusEvent *ev);
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;

@@ -739,128 +739,6 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
   return true;
 } // END OF setDefaultValue
 
-
-/*
-void LavaFormCLASS::UpdateFieldWidget (CHEFormNode *chFrmNd)
-{
-  CHEEnumSelId *items, *enumSel;
-  unsigned i, j, tog, selOrd;
-  CHEFormNode *enumNode, *selCodeNode, *buttonNode, *menuNode, *menuLineNode;
-  DString menuButtonLabel, str0;
-  
-  if (chFrmNd->data.Atomic) {
-    if (chFrmNd->data.BType == Bitmap) {
-      if ((chFrmNd->data.StringValue.Length() > 0)
-      && chFrmNd->data.FIP.widget)
-  ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,chFrmNd->data.StringValue,1);
-        //      chFrmNd^.data.FIP.modified := true 
-
-    }
-    else
-    if (chFrmNd->data.BasicFlags.Contains(BitmapLabel)
-         && chFrmNd->data.IoSigFlags.Contains(UnprotectedProg)) {
-      tog = chFrmNd->data.D;
-      j = 0;
-      items = (CHEEnumSelId*)chFrmNd->data.FormSyntax->Items.first;
-
-      // find current item: 
-      while (tog != j) {
-        items = (CHEEnumSelId*)items->successor;
-        j++;
-      }
-      if (chFrmNd->data.FIP.widget)
-        if (items->data.SelectionCode.Length() > 0)
-          ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,items->data.SelectionCode,1);
-        else
-          ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,questionMarks,0);
-
-    }
-    else if (chFrmNd->data.FIP.up
-      && (chFrmNd->data.FIP.up->data.BasicFlags.Contains(ButtonMenu)
-        || chFrmNd->data.FIP.up->data.BasicFlags.Contains(OptionMenu)
-        || chFrmNd->data.FIP.up->data.BasicFlags.Contains(PopUpMenu))) {
-      enumNode = chFrmNd;
-      chFrmNd = chFrmNd->data.FIP.up;
-      if (enumNode->data.IoSigFlags.Contains(Enter)
-          || enumNode->data.IoSigFlags.Contains(EnterAsIs))
-        return;
-      if (!enumNode->data.StringValue.c )
-        selCode.Destroy();
-      else {
-        selOrd = enumNode->data.D;
-        enumSel =
-          (CHEEnumSelId*)enumNode->data.FormSyntax->Items.first;
-        if (selOrd > 0)
-          for (i = 1; i <= selOrd; i++)
-            enumSel = (CHEEnumSelId*)enumSel->successor;
-        selCode = enumSel->data.SelectionCode;
-      }
-
-      menuNode = (CHEFormNode*)enumNode->successor;
-      menuLineNode =(CHEFormNode*)menuNode->data.SubTree.first;
-      while (menuLineNode) {
-        selCodeNode = (CHEFormNode*)menuLineNode->data.SubTree.first;
-        buttonNode = (CHEFormNode*)selCodeNode->successor;
-        if (buttonNode->data.FIP.widget)
-          if (selCode == selCodeNode->data.StringValue) {
-            if (chFrmNd->data.BasicFlags.Contains(ButtonMenu))
-              ((CGUIProg*)GUIProg)->MakeGUI.SetToggleState(buttonNode->data.FIP.widget,1);
-            else if (chFrmNd->data.BasicFlags.Contains(OptionMenu))
-              ((CGUIProg*)GUIProg)->MakeGUI.SetOptionDefault(menuNode->data.FIP.widget,
-                buttonNode->data.FIP.widget,
-                buttonNode->data.StringValue);
-            else if (chFrmNd->data.BasicFlags.Contains(PopUpMenu)) {
-              if (chFrmNd->data.Annotation.ptr)
-                menuButtonLabel = chFrmNd->data.Annotation.ptr->SigDef.SigID;
-              chFrmNd = (CHEFormNode*)chFrmNd->data.SubTree.first;
-              if (chFrmNd->data.FIP.widget)
-                if (menuButtonLabel.c)
-                  ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,menuButtonLabel,0);
-                else
-                  if (chFrmNd->data.StringValue.Length())
-                    ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,chFrmNd->data.StringValue,0);
-                  else
-                    ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,blank,0);
-            }
-          }
-          else if (chFrmNd->data.BasicFlags.Contains(ButtonMenu))
-            ((CGUIProg*)GUIProg)->MakeGUI.SetToggleState(buttonNode->data.FIP.widget,0);
-        menuLineNode = (CHEFormNode*)menuLineNode->successor;
-      }
-
-    }
-    else if (chFrmNd->data.IoSigFlags.Contains(UnprotectedUser)
-            || chFrmNd->data.IoSigFlags.Contains(UnprotectedProg)) {
-      if (chFrmNd->data.FIP.widget)
-      if ((chFrmNd->data.BType == B_Bool)
-           && chFrmNd->data.BasicFlags.Contains(Toggle))
-        ((CGUIProg*)GUIProg)->MakeGUI.SetToggleState(chFrmNd->data.FIP.widget,chFrmNd->data.B);
-      else
-        if (!chFrmNd->data.StringValue.Length())
-          ((CGUIProg*)GUIProg)->MakeGUI.SetText(chFrmNd->data.FIP.widget,str0);
-        else
-          ((CGUIProg*)GUIProg)->MakeGUI.SetText(chFrmNd->data.FIP.widget,chFrmNd->data.StringValue);
-    }
-  }
-  else
-    if (chFrmNd->data.IoSigFlags.Contains(Signature) && chFrmNd->data.FIP.widget)
-      if (chFrmNd->data.StringValue.Length())
-        ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,chFrmNd->data.StringValue,0);
-      else
-        ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,blank4,0);
-
-    else if (chFrmNd->data.BasicFlags.Contains(PopUp) && chFrmNd->data.FIP.widget)
-      if (((CHEFormNode*)chFrmNd->data.SubTree.first)->data.Atomic)
-        if (!((CHEFormNode*)chFrmNd->data.SubTree.first)->data.StringValue.l)
-     ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,blank2,0);
-        else
-          ((CGUIProg*)GUIProg)->MakeGUI.SetLabel(chFrmNd->data.FIP.widget,
-                   ((CHEFormNode*)chFrmNd->data.SubTree.first)
-                     ->data.StringValue,0);
-} // END OF UpdateFieldWidget
-*/
-
-
 void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure input*/
                                  LavaVariablePtr resultVarPtr,
                                  SynFlags defaultIOflags,
@@ -870,7 +748,7 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
                                  )
 
 {
-  CHEFormNode *newFNode=0, *variant=0, *variantParent=0, *popupButton=0; //, *oldFNode= 0
+  CHEFormNode *newFNode=0, *variant=0, *variantParent=0;
   LavaDECL *DECLptr, *finalVT;
   CHE *DECLCHptrAny;
   TEnumDescription *eDescPtr;
@@ -882,8 +760,6 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
 
   anno = FormDecl->Annotation.ptr;
   if (anno) {
-//    if (anno->IoSigFlags.Contains(DONTPUT))
-//      return;
   }
   else {
     anno = NewTAnnotation();
@@ -923,24 +799,6 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
 
       if (!defaultIOflags.Contains(Flag_INPUT) && LBaseData->inRuntime)
         resultFNode->data.IterFlags.INCL(FixedCount);
-      /* it does not make sense to allow the terminal user to create
-         this optional formNode if it is a pure output formNode; but
-         unfortunately this turns out only if the formNode is really
-         created; so the above IF expresses only an approximative
-         condition; actually the programmer must explicitly put a
-         fixed count annotation (">") behind the "NESTED" keyword. */
-      /*
-      if (resultFNode->data.ResultVarPtr && *resultFNode->data.ResultVarPtr) {
-        oldEmpty = emptyForm;
-        oldLevel = level;
-        emptyForm = false;
-        level = 0;
-        resultFNode->data.SubTree.Destroy();
-        PartialForm(FormDecl, resultFNode);
-        emptyForm = oldEmpty;
-        level = oldLevel;
-      }
-      else */  // generate only the Optional and possibly the Ellipsis node 
       if (!resultFNode->data.ResultVarPtr || !*resultFNode->data.ResultVarPtr) {
         if (!resultFNode->data.IterFlags.Contains(FixedCount)) {
           currentIteration = FormDecl;
@@ -986,57 +844,31 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
         level--;
         return;
     }
-    /*
-    if (anno->PopupNode.ptr) {
-      AllocFNode(popupButton, FormDecl, 0);
-      // popup button node
-      popupButton->data.Annotation.ptr = ((LavaDECL*)anno->PopupNode.ptr)->Annotation.ptr;
-      popupButton->data.WidgetName = ((LavaDECL*)anno->PopupNode.ptr)->Annotation.ptr->WidgetName;
-      popupButton->data.BasicFlags = ((LavaDECL*)anno->PopupNode.ptr)->Annotation.ptr->BasicFlags;
-      popupButton->data.BasicFlags.INCL(PopUp);
-      popupButton->data.IoSigFlags = ((LavaDECL*)anno->PopupNode.ptr)->Annotation.ptr->IoSigFlags+defaultIOflags;
-      popupButton->data.IterFlags = ((LavaDECL*)anno->PopupNode.ptr)->Annotation.ptr->IterFlags;
-//      popupButton->data.FIP.pred = (CHEFormNode *)resultFNode->data.SubTree.last;
-      SetIoFlags(resultFNode, popupButton);
-      resultFNode->data.SubTree.Append(popupButton);
-      popupButton->data.FIP.up = resultFNode;
-      partialForm(0, FormDecl, (LavaVariablePtr)popupButton->data.ResultVarPtr, defaultIOflags, newFNode, true, classChain);
+    if (((TAnnotation*)FormDecl->Annotation.ptr->FA.ptr)->IterFlags.Contains(Optional)
+        && (emptyForm || (level > 1)) 
+        && resultFNode->data.ResultVarPtr && *resultFNode->data.ResultVarPtr) {
+      oldEmpty = emptyForm;
+      oldLevel = level;
+      emptyForm = false;
+      level = 0;
+      resultFNode->data.SubTree.Destroy();
+      PartialForm(FormDecl, resultFNode);
+      emptyForm = oldEmpty;
+      level = oldLevel;
+      level--;
+      return;
+    }
+
+    else {
+      partialForm(0, FormDecl, (LavaVariablePtr)resultFNode->data.ResultVarPtr, defaultIOflags, newFNode, true, classChain);
       if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode) {
         level--;
         return;
       }
-      newFNode->data.FIP.up = popupButton;
-      SetIoFlags(popupButton, newFNode);
-      popupButton->data.SubTree.Append(newFNode);
+      newFNode->data.FIP.up = resultFNode;
+      SetIoFlags(resultFNode, newFNode);
+      resultFNode->data.SubTree.Append(newFNode);
     }
-    else {
-    */
-      if (((TAnnotation*)FormDecl->Annotation.ptr->FA.ptr)->IterFlags.Contains(Optional)
-        && (emptyForm || (level > 1)) 
-        && resultFNode->data.ResultVarPtr && *resultFNode->data.ResultVarPtr) {
-        oldEmpty = emptyForm;
-        oldLevel = level;
-        emptyForm = false;
-        level = 0;
-        resultFNode->data.SubTree.Destroy();
-        PartialForm(FormDecl, resultFNode);
-        emptyForm = oldEmpty;
-        level = oldLevel;
-        level--;
-        return;
-      }
-
-      else {
-        partialForm(0, FormDecl, (LavaVariablePtr)resultFNode->data.ResultVarPtr, defaultIOflags, newFNode, true, classChain);
-        if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode) {
-          level--;
-          return;
-        }
-        newFNode->data.FIP.up = resultFNode;
-        SetIoFlags(resultFNode, newFNode);
-        resultFNode->data.SubTree.Append(newFNode);
-      }
-   // }
     DECLCHptrAny = (CHE*)anno->Suffixes.first;
     exprList(DECLCHptrAny, defaultIOflags, resultFNode, true);
   }

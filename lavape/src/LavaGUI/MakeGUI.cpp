@@ -158,8 +158,8 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       || chFrmNd->data.BasicFlags.Contains(PopUp)
       || chFrmNd->data.IterFlags.Contains(Ellipsis)) {
     if (chFrmNd->data.BasicFlags.Contains(Groupbox)
-      //&& !chFrmNd->data.IterFlags.Contains(Ellipsis)
-      //&& !chFrmNd->data.IterFlags.Contains(Optional)
+      && (!chFrmNd->data.IterFlags.Contains(Optional)
+          || !chFrmNd->data.IterFlags.Contains(Ellipsis))
       ) {
       pred = (CHEFormNode*)chFrmNd->predecessor;
       if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
@@ -504,36 +504,7 @@ void MakeGUICLASS::makePopupMenu (CHEFormNode* chFrmNd)
   }
 } // END OF makePopupMenu
 
-/*
-void MakeGUICLASS::annotations (CHEFormNode* chFrmNd, address widget)
 
-{
-  if ((chFrmNd->data.Annotation.ptr->Box == FullBox)
-      && !chFrmNd->data.IterFlags.Contains(Ellipsis))
-//    SetBorderWidth( widget,1);
-} // END OF annotations
-
-void MakeGUICLASS::AppendIterWidget (CHEFormNode* chFrmNd)
-{
-  if (!chFrmNd) return;
-//  deleteSiblings(chFrmNd);
-  RemakeParent(chFrmNd);
-} // END OF AppendIterWidget
-*/
-
-/*
-void MakeGUICLASS::permute (CHEFormNode* chFrmNd)
-
-{
-  CHEFormNode* first, *second;
-  
-  first = (CHEFormNode*)chFrmNd->data.SubTree.Pop(0);
-  chFrmNd->data.SubTree.Append(first);
-  second = (CHEFormNode*)chFrmNd->data.SubTree.first;
-//  first->data.FIP.pred = second;
-//  second->data.FIP.pred = 0;
-}
-*/
 
 void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
                                   QWidget* parent,
@@ -552,10 +523,12 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
   if (chFrmNd->data.IterFlags.Contains(Ellipsis)) {
     if (chFrmNd->data.Atomic) {
       TAnnotation* anno = (TAnnotation*)chFrmNd->data.FormSyntax->Annotation.ptr->FA.ptr;
-      //if (!LBaseData->inRuntime && anno->IterFlags.Contains(NoEllipsis))
-      //  CreateExternalEllipsis(newWidget,widgetName, chFrmNd->data.FormSyntax->ParentDECL->FullName ,INSERT, chFrmNd);
-      //else
-        CreateEllipsisWidget( newWidget, parent,widgetName, chFrmNd->data.StringValue ,INSERT,  chFrmNd);
+      if (chFrmNd->data.IterFlags.Contains(Optional)) {
+        pred = (CHEFormNode*)chFrmNd->predecessor;
+        if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
+          chFrmNd->data.StringValue = pred->data.StringValue ;
+      }
+      CreateEllipsisWidget( newWidget, parent,widgetName, chFrmNd->data.StringValue ,INSERT,  chFrmNd);
     }
     else {
       CreateFormWidget( newWidget, parent,0, str0, chFrmNd);
@@ -697,15 +670,11 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
     else
       if (!chFrmNd->data.FormSyntax->Annotation.ptr->BasicFlags.Contains(Toggle)  //Checkbox label
           && ( !chFrmNd->successor
-              ||((CHEFormNode*)chFrmNd->successor)->data.IoSigFlags.Contains(Signature)
+              || ((CHEFormNode*)chFrmNd->successor)->data.IoSigFlags.Contains(Signature)
               || !((CHEFormNode*)chFrmNd->successor)->data.BasicFlags.Contains(Groupbox)
-                && !((CHEFormNode*)chFrmNd->successor)->data.BasicFlags.Contains(PopUp)))
-              /*
-          && (!chFrmNd->successor
-            || !((CHEFormNode*)chFrmNd->successor)->data.IoSigFlags.Contains(Signature)
-              && !((CHEFormNode*)chFrmNd->successor)->data.BasicFlags.Contains(PopUp)
-              && !((CHEFormNode*)chFrmNd->successor)->data.BasicFlags.Contains(Groupbox)
-              && !((CHEFormNode*)chFrmNd->successor)->data.IterFlags.Contains(Ellipsis)))*/
+                    && !((CHEFormNode*)chFrmNd->successor)->data.BasicFlags.Contains(PopUp)
+                    && (!((CHEFormNode*)chFrmNd->successor)->data.IterFlags.Contains(Optional)
+                        || !((CHEFormNode*)chFrmNd->successor)->data.IterFlags.Contains(Ellipsis))))
         CreateLabelWidget( newWidget, parent,chFrmNd->data.StringValue, widgetName,  chFrmNd );
       else {
         newWidget = 0;
