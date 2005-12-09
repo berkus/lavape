@@ -4065,7 +4065,7 @@ class IfdefStatementX : public IfdefStatement {
 public:
   IfdefStatementX() {}
 
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) { return true; };
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class CondExpressionX : public CondExpression {

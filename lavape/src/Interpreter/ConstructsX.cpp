@@ -1928,6 +1928,28 @@ bool IfStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned
     return true;
 }
 
+bool IfdefStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
+  CHE *opd;
+  LavaObjectPtr result=(LavaObjectPtr)-1;
+
+  STOP_AT_STM(ckd, stackFrame, true)
+
+  for ( opd=(CHE*)ifCondition.first;
+        opd;
+        opd = (CHE*)opd->successor) {
+    result = ((ObjReference*)opd->data)->Evaluate (ckd,stackFrame,oldExprLevel);
+    if (ckd.exceptionThrown || ckd.immediateReturn)
+      return (LavaObjectPtr)-1;
+    if (!result)
+      if (elsePart.ptr)
+        RETURN(((SynObject*)elsePart.ptr)->Execute(ckd,stackFrame,oldExprLevel))
+      else
+        return true;
+  }
+
+  RETURN(((SynObject*)thenPart.ptr)->Execute(ckd,stackFrame,oldExprLevel))
+}
+
 bool TryStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   CHE *opd;
   bool ok;
