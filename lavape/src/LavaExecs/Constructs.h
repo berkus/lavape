@@ -509,7 +509,7 @@ enum ExecFlags {
   unfinishedAllowed,
   free1,
   free2,
-  isUnsafeMandatory,
+  free3,
   isOptionalExpr,
   isReverseLink};
 
@@ -628,6 +628,7 @@ class SynObject : public SynObjectBase {
     return flags.Contains(isOptionalExpr);
   }
   bool HasOptionalParts();
+  bool IsDefChecked(CheckData &ckd);
   virtual ROContext ReadOnlyContext();
   virtual bool IsReadOnlyClause(SynObject *synObj)
   {

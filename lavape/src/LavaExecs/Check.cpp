@@ -1376,7 +1376,8 @@ bool MultipleOp::Check (CheckData &ckd)
       opd = (SynObject*)chpActIn->data;
       formInParmDecl = (LavaDECL*)chpFormIn->data;
       if (opd->IsOptional(ckd)
-        && !formInParmDecl->TypeFlags.Contains(isOptional)) {
+      && !formInParmDecl->TypeFlags.Contains(isOptional)
+      && !opd->IsDefChecked(ckd)) {
         if (opd->primaryToken == ifx_T)
           ((SynObject*)((CHE*)((IfExpression*)opd)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
         else
@@ -2618,10 +2619,6 @@ bool BinaryOp::Check (CheckData &ckd)
       opd1->SetError(ckd,&ERR_UndefType);
     ERROREXIT
   }
-/*  else if (declOp1->TypeFlags.Contains(isAbstract)) {
-    SetError(ckd,&ERR_OperatorUndefined);
-    ERROREXIT
-  }*/
   declFuncClass = ckd.document->GetTypeAndContext(declFuncClass,callCtx);
   ckd.document->NextContext(declFuncClass, callCtx);
   callObjCat = cat1;
@@ -2707,6 +2704,16 @@ bool BinaryOp::Check (CheckData &ckd)
       flags.INCL(isOptionalExpr);
     else
       flags.EXCL(isOptionalExpr);
+
+  if (opd2->IsOptional(ckd)
+  && !formParmDecl->TypeFlags.Contains(isOptional)
+  && !opd2->IsDefChecked(ckd)) {
+    if (opd2->primaryToken == ifx_T)
+      ((SynObject*)((CHE*)((IfExpression*)opd2)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
+    else
+      ((SynObject*)opd2)->SetError(ckd,&ERR_NotOptional);
+    ERROREXIT
+  }
 
 #ifdef INTERPRETER
   opd2->formVType = ckd.document->IDTable.GetDECL(formParmDecl->RefID, formParmDecl->inINCL);
@@ -3630,16 +3637,18 @@ bool Assignment::Check (CheckData &ckd)
   }
 
   ok &= ((SynObject*)exprValue.ptr)->Check(ckd);
+  if (!ok)
+    ERROREXIT
+
   if (((SynObject*)exprValue.ptr)->IsOptional(ckd)
-  && !targObj->IsOptional(ckd)) {
+  && !targObj->IsOptional(ckd)
+  && !((SynObject*)exprValue.ptr)->IsDefChecked(ckd)) {
     if (((SynObject*)exprValue.ptr)->primaryToken == ifx_T)
       ((SynObject*)((CHE*)((IfExpression*)exprValue.ptr)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
     else
       ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_NotOptional);
     ERROREXIT
   }
-  if (!ok)
-    ERROREXIT
 
   if (!((SynObject*)exprValue.ptr)->IsIfStmExpr()) {
     ckd.tempCtx = ckd.lpc;
@@ -3670,9 +3679,6 @@ bool Assignment::Check (CheckData &ckd)
 
 #ifdef INTERPRETER
   declTarget = ckd.document->GetType(declTarget);
-  if (!targObj->IsOptional(ckd)
-  && ((SynObject*)exprValue.ptr)->IsOptional(ckd))
-    ((SynObject*)targetObj.ptr)->flags.INCL(isUnsafeMandatory);
   if (!((SynObject*)exprValue.ptr)->IsIfStmExpr() && declSource != (LavaDECL*)-1) {
     declSource = ckd.document->GetType(declSource);
     ((Expression*)exprValue.ptr)->sectionNumber = ckd.document->GetSectionNumber(ckd, declSource,declTarget);
@@ -4237,7 +4243,8 @@ bool FuncExpression::Check (CheckData &ckd)
   //  parm = (SynObject*)((Parameter*)chpActIn->data)->parameter.ptr;
       formInParmDecl = (LavaDECL*)chpFormIn->data;
       if (opd->IsOptional(ckd)
-        && !formInParmDecl->TypeFlags.Contains(isOptional)) {
+      && !formInParmDecl->TypeFlags.Contains(isOptional)
+      && !opd->IsDefChecked(ckd)) {
         if (opd->primaryToken == ifx_T)
           ((SynObject*)((CHE*)((IfExpression*)opd)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
         else
@@ -4246,9 +4253,6 @@ bool FuncExpression::Check (CheckData &ckd)
       } 
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
-      if (!formInParmDecl->TypeFlags.Contains(isOptional)
-      && ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->IsOptional(ckd))
-        ((SynObject*)((Parameter*)chpActIn->data)->parameter.ptr)->flags.INCL(isUnsafeMandatory);
       ckd.tempCtx = callContext;
       ((Expression*)chpActIn->data)->formVType = ckd.document->IDTable.GetDECL(formInParmDecl->RefID,formInParmDecl->inINCL);
       ((Expression*)chpActIn->data)->vSectionNumber = ckd.document->GetVTSectionNumber(ckd, callCtx, ((Expression*)chpActIn->data)->formVType, ((Expression*)chpActIn->data)->isOuter);
@@ -4341,9 +4345,6 @@ bool FuncStatement::Check (CheckData &ckd)
         if (actDecl != (LavaDECL*)-1) {
           actDecl = ckd.document->GetType(actDecl);
           formTypeDecl = (LavaDECL*)chpFormOut->data;
-          if (!targetObj->IsOptional(ckd)
-          && formTypeDecl->TypeFlags.Contains(isOptional))
-            targetObj->flags.INCL(isUnsafeMandatory);
           ckd.tempCtx = callContext;
           ((Expression*)chpActOut->data)->formVType = ckd.document->IDTable.GetDECL(formTypeDecl->RefID,formTypeDecl->inINCL);
           ((Expression*)chpActOut->data)->vSectionNumber = ckd.document->GetVTSectionNumber(ckd, callCtx, ((Expression*)chpActOut->data)->formVType, ((Expression*)chpActOut->data)->isOuter);
@@ -5279,7 +5280,7 @@ bool TryStatement::Check (CheckData &ckd)
   for (chp = (CHE*)catchClauses.first;
        chp;
        chp = (CHE*)chp->successor) {
-    if (chp != (CHE*)catchClauses.first)
+//    if (chp != (CHE*)catchClauses.first)
       ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
     opd = (SynObject*)chp->data;
     ok &= opd->Check(ckd);
@@ -6109,34 +6110,37 @@ bool CopyStatement::Check (CheckData &ckd)
 
   ok &= source->Check(ckd);
   ok &= target->Check(ckd);
-  if (ok) {
-    source->ExprGetFVType(ckd,fromTypeDecl,cat,ctxFlags);
-    CContext fromCtx = ckd.tempCtx;
-    if (ctxFlags.bits)
-      fromCtx.ContextFlags = ctxFlags;
-    target->ExprGetFVType(ckd,ontoTypeDecl,cat,ctxFlags);
-    if (ctxFlags.bits)
-      ckd.tempCtx.ContextFlags = ctxFlags;
-/*    if (!compatibleTypes(ckd,ontoTypeDecl,ckd.tempCtx,fromTypeDecl,fromCtx)
-    && !compatibleTypes(ckd,fromTypeDecl,fromCtx,ontoTypeDecl,ckd.tempCtx)) {
-      source->SetError(ckd,ckd.errorCode);
-      ok = false;
-    }*/
-    ontoTypeDecl = ckd.document->GetType(ontoTypeDecl);
-    if (target->IsOptional(ckd)
-    && ontoTypeDecl
-    && ontoTypeDecl->inINCL != 1
-    && !ontoTypeDecl->HasDefaultInitializer()) {
-      target->SetError(ckd,&ERR_HasNoDftIni);
-      ok = false;
-    }
+  if (!ok)
+    ERROREXIT
+
+  source->ExprGetFVType(ckd,fromTypeDecl,cat,ctxFlags);
+  CContext fromCtx = ckd.tempCtx;
+  if (ctxFlags.bits)
+    fromCtx.ContextFlags = ctxFlags;
+  target->ExprGetFVType(ckd,ontoTypeDecl,cat,ctxFlags);
+  if (ctxFlags.bits)
+    ckd.tempCtx.ContextFlags = ctxFlags;
+  ontoTypeDecl = ckd.document->GetType(ontoTypeDecl);
+  if (target->IsOptional(ckd)
+  && ontoTypeDecl
+  && ontoTypeDecl->inINCL != 1
+  && !ontoTypeDecl->HasDefaultInitializer()) {
+    target->SetError(ckd,&ERR_HasNoDftIni);
+    ok = false;
   }
+  if (source->IsOptional(ckd)
+  && !target->IsOptional(ckd)
+  && !source->IsDefChecked(ckd)) {
+    if (source->primaryToken == ifx_T)
+      ((SynObject*)((CHE*)((IfExpression*)source)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
+    else
+      source->SetError(ckd,&ERR_NotOptional);
+    ERROREXIT
+  }
+
 #ifdef INTERPRETER
   this->ontoTypeDecl = ontoTypeDecl;
   fromTypeDecl = ckd.document->GetType(fromTypeDecl);
-  if (!target->IsOptional(ckd)
-  && source->IsOptional(ckd))
-    target->flags.INCL(isUnsafeMandatory);
   if (target->primaryToken == arrayAtIndex_T)
     kindOfTarget = arrayElem;
   else {

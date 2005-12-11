@@ -694,6 +694,12 @@ bool SynObject::IsObjRef () {
     return false;
 }
 
+bool SynObject::IsDefChecked(CheckData &ckd) {
+  if (primaryToken != ObjRef_T)
+    return false;
+  return true;
+}
+
 bool SynObject::InHiddenIniClause (CheckData &ckd, SynObject *&typeRef) {
   SynObject *obj=this, *parent= parentObject;
 

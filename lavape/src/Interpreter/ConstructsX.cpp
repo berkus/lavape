@@ -2481,11 +2481,6 @@ bool ObjReferenceX::assign (SynObject *source,
   SynObjectBase *mySelfVar=ckd.selfVar;
   bool ok=true;
 
-  if (flags.Contains(isUnsafeMandatory) && !object) {
-    SetRTError(ckd,&ERR_NullMandatory,stackFrame);
-    return false;
-  }
-
   switch (targetType) {
   case field:
 fieldCase:
@@ -2984,12 +2979,6 @@ bool CopyStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
     return false;
   }
   nullTarget = copyOfObj?false:true;
-  if (((SynObject*)ontoObj.ptr)->flags.Contains(isUnsafeMandatory) && !copyOfObj) {
-    ((SynObject*)ontoObj.ptr)->SetRTError(ckd,&ERR_NullMandatory,stackFrame);
-    if (obj)
-      DFC(obj);
-    return false;
-  }
   if (nullTarget)
     ex = CopyObject(ckd,&obj,&copyOfObj,((ObjReferenceX*)ontoObj.ptr)->myCategory == stateObj,ontoTypeDecl);
   else

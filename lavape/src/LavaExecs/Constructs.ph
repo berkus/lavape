@@ -371,7 +371,7 @@ enum ExecFlags {
   unfinishedAllowed,  //24
   free1,              //25
   free2,              //26
-  isUnsafeMandatory,  //27
+  free3,              //27
   isOptionalExpr,     //28
   isReverseLink       //29
 };
@@ -426,6 +426,7 @@ public:
   bool ExpressionSelected (CHETokenNode *currentSelection);
   virtual bool IsOptional(CheckData &ckd) { return flags.Contains(isOptionalExpr); }
   bool HasOptionalParts ();
+  bool IsDefChecked(CheckData &ckd);
   virtual ROContext ReadOnlyContext();
 //  virtual bool InReadOnlyClause();
   virtual bool IsReadOnlyClause(SynObject *synObj) {
