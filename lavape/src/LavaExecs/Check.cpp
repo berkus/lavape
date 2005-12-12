@@ -202,10 +202,13 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
     synObj = (SynObject*)((FuncExpression*)synObj)->function.ptr;
   else if (synObj->primaryToken == parameter_T)
     synObj = (SynObject*)((Parameter*)synObj)->parameter.ptr;
-  else if (synObj->primaryToken == ObjRef_T)
-    synObj = (SynObject*)((CHE*)((ObjReference*)synObj)->refIDs.last)->data;
   else if (synObj->primaryToken == qua_T)
     synObj = (SynObject*)((ExtendExpression*)synObj)->extendType.ptr;
+  else if (synObj->primaryToken == ifx_T)
+    synObj = (SynObject*)((CHE*)((IfExpression*)synObj)->ifThens.first)->data;
+
+  if (synObj->primaryToken == ObjRef_T)
+    synObj = (SynObject*)((CHE*)((ObjReference*)synObj)->refIDs.last)->data;
 
 #ifdef INTERPRETER
   msgText = *errorCode;
@@ -1378,11 +1381,8 @@ bool MultipleOp::Check (CheckData &ckd)
       if (opd->IsOptional(ckd)
       && !formInParmDecl->TypeFlags.Contains(isOptional)
       && !opd->IsDefChecked(ckd)) {
-        if (opd->primaryToken == ifx_T)
-          ((SynObject*)((CHE*)((IfExpression*)opd)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
-        else
-          ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
-        ERROREXIT
+        ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
+        ok = false;
       }
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
@@ -2363,17 +2363,25 @@ bool UnaryOp::Check (CheckData &ckd)
   Category cat;
   SynFlags ctxFlags;
   CHE *chpFormOut;
+  SynObject *opd;
 #ifdef INTERPRETER
   LavaDECL *formDecl;
 #endif
 
   ENTRY
-  if (((SynObject*)operand.ptr)->primaryToken == ifx_T) {
-    ((SynObject*)operand.ptr)->SetError(ckd,&ERR_IfxForbidden);
-    ERROREXIT
+
+  opd = (SynObject*)operand.ptr;
+  if (opd->primaryToken == ifx_T) {
+    opd->SetError(ckd,&ERR_IfxForbidden);
+    ok = false;
   }
 
-  ok &= ((SynObject*)operand.ptr)->Check(ckd);
+  ok &= opd->Check(ckd);
+  if (opd->IsOptional(ckd)
+  && (opd->primaryToken != ObjRef_T || !opd->IsDefChecked(ckd))) {
+    opd->SetError(ckd,&ERR_NotOptional);
+    ok = false;
+  }
 
   ckd.tempCtx = ckd.lpc;
   ((SynObject*)operand.ptr)->ExprGetFVType(ckd,declOp1,cat,ctxFlags);
@@ -2595,6 +2603,12 @@ bool BinaryOp::Check (CheckData &ckd)
   }
 
   ok &= opd1ok = opd1->Check(ckd);
+  if (opd1->IsOptional(ckd)
+  && (primaryToken != Equal_T && primaryToken != NotEqual_T)
+  && (opd1->primaryToken != ObjRef_T || !opd1->IsDefChecked(ckd))) {
+    ((SynObject*)opd1)->SetError(ckd,&ERR_NotOptional);
+    ok = false;
+  }
 
   if (!opd2->IsIfStmExpr())
     ok &= opd2->Check(ckd);
@@ -2708,11 +2722,8 @@ bool BinaryOp::Check (CheckData &ckd)
   if (opd2->IsOptional(ckd)
   && !formParmDecl->TypeFlags.Contains(isOptional)
   && !opd2->IsDefChecked(ckd)) {
-    if (opd2->primaryToken == ifx_T)
-      ((SynObject*)((CHE*)((IfExpression*)opd2)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
-    else
-      ((SynObject*)opd2)->SetError(ckd,&ERR_NotOptional);
-    ERROREXIT
+    ((SynObject*)opd2)->SetError(ckd,&ERR_NotOptional);
+    ok = false;
   }
 
 #ifdef INTERPRETER
@@ -3643,11 +3654,8 @@ bool Assignment::Check (CheckData &ckd)
   if (((SynObject*)exprValue.ptr)->IsOptional(ckd)
   && !targObj->IsOptional(ckd)
   && !((SynObject*)exprValue.ptr)->IsDefChecked(ckd)) {
-    if (((SynObject*)exprValue.ptr)->primaryToken == ifx_T)
-      ((SynObject*)((CHE*)((IfExpression*)exprValue.ptr)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
-    else
-      ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_NotOptional);
-    ERROREXIT
+    ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_NotOptional);
+    ok = false;
   }
 
   if (!((SynObject*)exprValue.ptr)->IsIfStmExpr()) {
@@ -4058,8 +4066,14 @@ bool FuncExpression::Check (CheckData &ckd)
 //  ((SynObject*)function.ptr)->Check(ckd);
 
   callExpr = (Expression*)handle.ptr;
-  if (callExpr)
+  if (callExpr) {
     ok &= callExpr->Check(ckd);
+    if (callExpr->IsOptional(ckd)
+    && (callExpr->primaryToken != ObjRef_T || !callExpr->IsDefChecked(ckd))) {
+      ((SynObject*)callExpr)->SetError(ckd,&ERR_NotOptional);
+      ok = false;
+    }
+  }
 #ifndef INTERPRETER
   if (callExpr) {
     if (!ok) {
@@ -4245,11 +4259,8 @@ bool FuncExpression::Check (CheckData &ckd)
       if (opd->IsOptional(ckd)
       && !formInParmDecl->TypeFlags.Contains(isOptional)
       && !opd->IsDefChecked(ckd)) {
-        if (opd->primaryToken == ifx_T)
-          ((SynObject*)((CHE*)((IfExpression*)opd)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
-        else
-          ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
-        ERROREXIT
+        ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
+        ok = false;
       } 
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
@@ -4302,6 +4313,7 @@ bool FuncStatement::Check (CheckData &ckd)
   SynFlags ctxFlags;
 	bool visibleParms=false;
   TID funcTid;
+  LavaDECL *formOutParmDecl;
 #ifdef INTERPRETER
   Category cat;
   LavaDECL *actDecl, *formTypeDecl, *declTarget;
@@ -4338,7 +4350,12 @@ bool FuncStatement::Check (CheckData &ckd)
         ok &= rc;
       // check act.parm/form.parm. type compatibility:
         ok &= compatibleOutput(ckd,chpActOut,chpFormOut,callContext,callObjCat);
-
+        formOutParmDecl = (LavaDECL*)chpFormOut->data;
+        if (formOutParmDecl->TypeFlags.Contains(isOptional)
+        && !opd->IsOptional(ckd)) {
+          ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
+          ok = false;
+        } 
 #ifdef INTERPRETER
         targetObj = (SynObject*)((Parameter*)chpActOut->data)->parameter.ptr;
         targetObj->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
@@ -6131,11 +6148,8 @@ bool CopyStatement::Check (CheckData &ckd)
   if (source->IsOptional(ckd)
   && !target->IsOptional(ckd)
   && !source->IsDefChecked(ckd)) {
-    if (source->primaryToken == ifx_T)
-      ((SynObject*)((CHE*)((IfExpression*)source)->ifThens.first)->data)->SetError(ckd,&ERR_NotOptional);
-    else
-      source->SetError(ckd,&ERR_NotOptional);
-    ERROREXIT
+    source->SetError(ckd,&ERR_NotOptional);
+    ok = false;
   }
 
 #ifdef INTERPRETER
