@@ -969,7 +969,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
           }
       }
     }
-    else {
+    else { // global var.
       decl = *(LavaDECL**)dw;
       if ((decl->DeclType == IAttr || decl->DeclType == OAttr)
       && decl->ParentDECL != ckd.myDECL->ParentDECL
@@ -982,11 +982,19 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         decl->WorkFlags.INCL(isReferenced);
       }
       objRef->refName.Reset(0);
+      if (decl->TypeFlags.Contains(isOptionalExpr)) {
+        objRef->flags.INCL(isOptionalExpr);
+        ((TDOD*)che->data)->flags.INCL(isOptionalExpr);
+      }
+      else {
+        objRef->flags.EXCL(isOptionalExpr);
+        ((TDOD*)che->data)->flags.EXCL(isOptionalExpr);
+      }
       if (!VerifyObj(ckd,che,objRef->refName,objRef)) {
         objRef->flags.INCL(brokenRef);
         ok = false;
       }
-    }
+     }
 
 #ifndef INTERPRETER
     if (!objRef->flags.Contains(brokenRef)) {
