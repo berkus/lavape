@@ -1305,10 +1305,10 @@ bool MultipleOp::Check (CheckData &ckd)
   if (IsPH(opd1))
     ERROREXIT
 
-  if (opd1->IsIfStmExpr()) {
+/*  if (opd1->IsIfStmExpr()) {
     opd1->SetError(ckd,&ERR_IfxForbidden);
     ERROREXIT
-  }
+  }*/
 
   if (!opd1ok)
     ERROREXIT
@@ -2371,25 +2371,26 @@ bool UnaryOp::Check (CheckData &ckd)
   ENTRY
 
   opd = (SynObject*)operand.ptr;
-  if (opd->primaryToken == ifx_T) {
+/*  if (opd->primaryToken == ifx_T) {
     opd->SetError(ckd,&ERR_IfxForbidden);
     ok = false;
-  }
+  }*/
 
   ok &= opd->Check(ckd);
-  if (opd->IsOptional(ckd)
-  && (opd->primaryToken != ObjRef_T || !opd->IsDefChecked(ckd))) {
-    opd->SetError(ckd,&ERR_NotOptional);
-    ok = false;
-  }
 
   ckd.tempCtx = ckd.lpc;
-  ((SynObject*)operand.ptr)->ExprGetFVType(ckd,declOp1,cat,ctxFlags);
+  opd->ExprGetFVType(ckd,declOp1,cat,ctxFlags);
   if (!declOp1)
     ERROREXIT
   if (declOp1->TypeFlags.Contains(isAbstract)) {
     SetError(ckd,&ERR_OperatorUndefined);
     ERROREXIT
+  }
+
+  if (opd->IsOptional(ckd)
+  && (opd->primaryToken != ObjRef_T || !opd->IsDefChecked(ckd))) {
+    opd->SetError(ckd,&ERR_NotOptional);
+    ok = false;
   }
   declOp1 = ckd.document->GetTypeAndContext(declOp1,ckd.tempCtx);
   callCtx = ckd.tempCtx;
@@ -2597,10 +2598,10 @@ bool BinaryOp::Check (CheckData &ckd)
   opd1 = (Expression*)operand1.ptr;
   opd2 = (Expression*)operand2.ptr;
 
-  if (opd1->IsIfStmExpr()) {
+/*  if (opd1->IsIfStmExpr()) {
     opd1->SetError(ckd,&ERR_IfxForbidden);
     ERROREXIT
-  }
+  }*/
 
   ok &= opd1ok = opd1->Check(ckd);
   if (opd1->IsOptional(ckd)
@@ -2882,6 +2883,40 @@ bool ObjReference::InConstituent (CheckData &ckd) {
       return false;
   }
   return true;
+}
+
+bool SynObject::IsDefChecked(CheckData &ckd) {
+  SynObject *synObj, *parent;
+
+  if (primaryToken != ObjRef_T)
+    return false;
+
+  synObj = this;
+  for (parent=synObj->parentObject; parent; parent=parent->parentObject) {
+    if (parent->parentObject
+    && parent->parentObject->primaryToken == ifdef_T
+    && parent->whereInParent == (address)&((IfdefStatement*)parent->parentObject)->thenPart.ptr)
+      if (((IfdefStatement*)parent->parentObject)->Checks(*(ObjReference*)synObj))
+        return true;
+  }
+  return false;
+}
+
+bool ObjReference::operator== (ObjReference &objRef) {
+  CHE *chp, *chp2;
+
+  chp = (CHE*)refIDs.first;
+  chp2 = (CHE*)objRef.refIDs.first;
+  do {
+    if(((TDOD*)chp->data)->ID != ((TDOD*)chp2->data)->ID)
+      return false;
+    chp = (CHE*)chp->successor;
+    chp2 = (CHE*)chp2->successor;
+  } while (chp && chp2);
+  if (!chp && !chp2)
+    return true;
+
+  return false;
 }
 
 bool SynObject::InInitializer (CheckData &ckd) {
@@ -4936,6 +4971,16 @@ bool IfdefStatement::Check (CheckData &ckd)
   EXIT
 }
 
+bool IfdefStatement::Checks (ObjReference &objRef) {
+  CHE *chp;
+
+  for (chp=(CHE*)ifCondition.first; chp; chp=(CHE*)chp->successor)
+    if (*(ObjReference*)chp->data == objRef)
+      return true;
+
+  return false;
+}
+
 void IfExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags)
 {
   decl = 0;
@@ -4959,14 +5004,14 @@ bool IfExpression::Check (CheckData &ckd)
 
   ENTRY
 
-  if (parentObject->primaryToken != assign_T
+/*  if (parentObject->primaryToken != assign_T
   && parentObject->primaryToken != elsif_T
   && parentObject->primaryToken != parameter_T
   && !parentObject->IsBinaryOp()
   && !parentObject->IsMultOp()) {
     SetError(ckd,&ERR_IfxForbidden);
     ERROREXIT
-  }
+  }*/
 
   if (!targetDecl)
     return true;
@@ -5081,6 +5126,12 @@ bool ElseExpression::Check (CheckData &ckd)
 
   opd1 = (Expression*)expr1.ptr;
   opd2 = (Expression*)expr2.ptr;
+  ok &= opd1->Check(ckd);
+  ok &= opd2->Check(ckd);
+  if (IsPH(opd1) || !opd1->IsOptional(ckd) || IsPH(opd2) || !opd2->IsOptional(ckd))
+    flags.EXCL(isOptionalExpr);
+  else
+    flags.INCL(isOptionalExpr);
 
   if (!targetDecl)
     return true;
@@ -5091,7 +5142,6 @@ bool ElseExpression::Check (CheckData &ckd)
     ((CondExpression*)opd1)->targetCat = targetCat;
     ((CondExpression*)opd1)->callObjCat = callObjCat;
   }
-  ok &= opd1->Check(ckd);
   if (!opd1->IsIfStmExpr()) {
     ckd.tempCtx = ckd.lpc;
     opd1->ExprGetFVType(ckd,currentBranchType,cat,ctxFlags);
@@ -5126,7 +5176,6 @@ bool ElseExpression::Check (CheckData &ckd)
     ((CondExpression*)opd2)->targetCat = targetCat;
     ((CondExpression*)opd2)->callObjCat = callObjCat;
   }
-  ok &= opd2->Check(ckd);
   if (!opd2->IsIfStmExpr()) {
     ckd.tempCtx = ckd.lpc;
     opd2->ExprGetFVType(ckd,currentBranchType,cat,ctxFlags);
@@ -5159,10 +5208,6 @@ bool ElseExpression::Check (CheckData &ckd)
     opd1->SetError(ckd,&ERR_ElseExprObsolete);
     ERROREXIT
   }
-  if (IsPH(opd1) || !opd1->IsOptional(ckd) || IsPH(opd2) || !opd2->IsOptional(ckd))
-    flags.EXCL(isOptionalExpr);
-  else
-    flags.INCL(isOptionalExpr);
 
   EXIT
 }

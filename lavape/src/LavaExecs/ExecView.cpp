@@ -6324,29 +6324,35 @@ void CExecView::OnUpdateIfdef(QPushButton *pb)
 void CExecView::OnUpdateIfExpr(QPushButton *pb) 
 {
   // TODO: Add your command update UI handler code here
-  
+  SynObject *synObj=
+    text->currentSynObj->primaryToken == TDOD_T?text->currentSynObj->parentObject:text->currentSynObj;
+
   pb->setEnabled(!Taboo()
-    && text->currentSynObj->ExpressionSelected(text->currentSelection)
-    && text->currentSynObj->parentObject->primaryToken != elseX_T
-    && (text->currentSynObj->parentObject->primaryToken == assign_T
-        || (text->currentSynObj->parentObject->primaryToken == ObjRef_T
-            && text->currentSynObj->parentObject->parentObject->primaryToken == assign_T)
-        || text->currentSynObj->parentObject->primaryToken == parameter_T
-        || text->currentSynObj->parentObject->IsBinaryOp()
-        || text->currentSynObj->parentObject->IsMultOp())
-    && !text->currentSynObj->parentObject->IsUnaryOp()
-    && (!text->currentSynObj->parentObject->IsBinaryOp()
-        || text->currentSynObj->whereInParent != (address)&((BinaryOp*)text->currentSynObj->parentObject)->operand1.ptr)
-    && (!text->currentSynObj->parentObject->IsMultOp()
-        || text->currentSynObj->whereInParent != (address)((MultipleOp*)text->currentSynObj->parentObject)->operands.first));
+    && synObj->ExpressionSelected(text->currentSelection)
+    && !synObj->parentObject->IsUnaryOp()
+    && (!synObj->parentObject->IsBinaryOp()
+        || synObj->whereInParent != (address)&((BinaryOp*)synObj->parentObject)->operand1.ptr)
+    && (!synObj->parentObject->IsMultOp()
+        || synObj->whereInParent != (address)((MultipleOp*)synObj->parentObject)->operands.first)
+    && (!synObj->parentObject->IsFuncInvocation()
+        || synObj->whereInParent != (address)&((FuncExpression*)synObj->parentObject)->handle.ptr));
 }
 
 void CExecView::OnUpdateElseExpr(QPushButton *pb) 
 {
   // TODO: Add your command update UI handler code here
-  
+  SynObject *synObj=
+    text->currentSynObj->primaryToken == TDOD_T?text->currentSynObj->parentObject:text->currentSynObj;
+
   pb->setEnabled(!Taboo()
-    && text->currentSynObj->ExpressionSelected(text->currentSelection));
+    && synObj->ExpressionSelected(text->currentSelection)
+    && !synObj->parentObject->IsUnaryOp()
+    && (!synObj->parentObject->IsBinaryOp()
+        || synObj->whereInParent != (address)&((BinaryOp*)synObj->parentObject)->operand1.ptr)
+    && (!synObj->parentObject->IsMultOp()
+        || synObj->whereInParent != (address)((MultipleOp*)synObj->parentObject)->operands.first)
+    && (!synObj->parentObject->IsFuncInvocation()
+        || synObj->whereInParent != (address)&((FuncExpression*)synObj->parentObject)->handle.ptr));
 }
 
 void CExecView::OnUpdateIn(QPushButton *pb) 

@@ -574,6 +574,8 @@ public:
   ObjReference (){}
   ObjReference (TDODC &refIDs,const char *refName); // required for InitCheck in Interpreter
   virtual ~ObjReference() {}
+
+  bool operator== (ObjReference &objRef);
   virtual bool IsPlaceHolder () { return false; }
   virtual bool IsOptional (CheckData &ckd);
   bool InConstituent (CheckData &ckd);
@@ -1010,6 +1012,7 @@ public:
   NESTEDANY<Expression> thenPart;
   NESTEDANY<Expression> elsePart;
 
+  bool Checks (ObjReference &objRef);
   virtual bool IsIfStmExpr () {return true; }
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);

@@ -962,6 +962,7 @@ class ObjReference : public Expression {
   virtual ~ObjReference()
   {
   }
+  bool operator == (ObjReference &objRef);
   virtual bool IsPlaceHolder()
   {
     return false;
@@ -2204,6 +2205,7 @@ class IfdefStatement : public Expression {
   CHAINX ifCondition;
   NESTEDANY/*Expression*/ thenPart;
   NESTEDANY/*Expression*/ elsePart;
+  bool Checks(ObjReference &objRef);
   virtual bool IsIfStmExpr()
   {
     return true;

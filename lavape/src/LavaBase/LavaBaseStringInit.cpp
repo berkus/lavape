@@ -319,7 +319,7 @@ void LavaBaseStringInit() {
   ERR_CorruptObject  = QObject::tr("Cannot read lava object with this lava component program");
   ERR_AbstrMemType  = QObject::tr("Do not use an abstract type for a member or formal parameter in a creatable interface");
   ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
-  ERR_NotOptional  = QObject::tr("Expected: An expression whose value is mandatory (= not null)");
+  ERR_NotOptional  = QObject::tr("Expected: An expression whose value is mandatory (= not null in any case)");
   ERR_ElseExprObsolete  = QObject::tr("Else-expression superfluous: first operand is already mandatory");
   ERR_SuperfluousMandatory  = QObject::tr("superfluous mandatory variable in ifdef");
   ERR_AssigToLocal  = QObject::tr("Single-assignment violation: forbidden assignment to initialized local variable");
