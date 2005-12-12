@@ -133,7 +133,6 @@ void LavaFormCLASS::AllocFNode (CHEFormNode *&formNode,
     formNode->data.ResultVarPtr = 0;
   else {
     formNode->data.ResultVarPtr = (CSecTabBase***)resultObjPtr;
-  //  if (resultObjPtr && !*resultObjPtr && !syn->TypeFlags.Contains(isOptional)) 
     if (resultObjPtr)
       AllocResultObj(syn, resultObjPtr, syn->TypeFlags.Contains(isOptional));
   }
@@ -141,9 +140,7 @@ void LavaFormCLASS::AllocFNode (CHEFormNode *&formNode,
   formNode->data.FIP.widget = 0;
   formNode->data.FIP.frameWidget = 0;
   formNode->data.FIP.popupShell = 0;
-//  formNode->data.FIP.basePane = 0;
   formNode->data.FIP.borderWidth = 0;
-//  formNode->data.FIP.beg = 0;
   formNode->data.FIP.leng = 0;
   formNode->data.FIP.visible = 0;
   formNode->data.FIP.poppedUp = false;
@@ -322,7 +319,7 @@ void LavaFormCLASS::MakeForm ( LavaDECL* formDECL, LavaVariablePtr resultPtr,
   if (ClassChain)
     delete ClassChain;
   emptyForm = false;
-  if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode)
+  if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode || ((CGUIProg*)GUIProg)->ex)
     return ;
   empForm->successor = newFNode;
 //  newFNode->data.FIP.pred = empForm;
@@ -836,7 +833,7 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
     resultFNode->data.Atomic = false;
     DECLCHptrAny = (CHE*)anno->Prefixes.first;
     exprList(DECLCHptrAny, defaultIOflags, resultFNode, true);
-    if (((CGUIProg*)GUIProg)->ckd.exceptionThrown) {
+    if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex) {
       level--;
       return;
     }
@@ -861,7 +858,7 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
 
     else {
       partialForm(0, FormDecl, (LavaVariablePtr)resultFNode->data.ResultVarPtr, defaultIOflags, newFNode, true, classChain);
-      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode) {
+      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode || ((CGUIProg*)GUIProg)->ex) {
         level--;
         return;
       }
@@ -940,7 +937,7 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
                 partialForm(DECLptr, DECLptr, (LavaVariablePtr)resultFNode->data.ResultVarPtr, defaultIOflags, resultFNode, true, classChain);
               else
                 partialForm(DECLptr, DECLptr, resultVarPtr, defaultIOflags, resultFNode, true, classChain);
-              if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !resultFNode)
+              if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !resultFNode || ((CGUIProg*)GUIProg)->ex)
                 break;
               if (anno->WidgetName.l)
                 resultFNode->data.Annotation.ptr->WidgetName = anno->WidgetName;
@@ -973,7 +970,7 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
             upNode = resultFNode; // for option menu setDefaultValue
             eDescPtr = (TEnumDescription*)FormDecl->EnumDesc.ptr;
             partialForm(0, &eDescPtr->EnumField, 0, defaultIOflags, newFNode, true, 0);
-            if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode)
+            if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode || ((CGUIProg*)GUIProg)->ex)
               break;
             /*
             if (fieldNode) {
@@ -986,7 +983,7 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
             SetIoFlags(resultFNode, newFNode);
             resultFNode->data.SubTree.Append(newFNode);
             partialForm(0, &eDescPtr->MenuTree, 0, defaultIOflags, newFNode, true, 0);
-            if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode)
+            if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode || ((CGUIProg*)GUIProg)->ex)
               break;
             newFNode->data.FIP.up = resultFNode;
 //            newFNode->data.FIP.pred = (CHEFormNode*)resultFNode->data.SubTree.last;
@@ -1069,12 +1066,6 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
          chainNode = chainNode->data.FIP.up);
     if (chainNode && !chainNode->data.IoSigFlags.Contains(DONTPUT)) {
       multiObj = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
-      /*
-      if (!((SynFlags*)(multiObj+1))->Contains(stateObjFlag)
-        && ((SynFlags*)(multiObj-(*multiObj)->sectionOffset+1))->Contains(finished)) {
-        resultFNode->data.IterFlags.INCL(FixedCount);
-        resultFNode->data.IterFlags.INCL(NoEllipsis);
-      }*/
       if (FormDecl->SecondTFlags.Contains(isSet)) {
         newStackFrame[0] = 0;
         newStackFrame[1] = 0;
@@ -1128,7 +1119,7 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
                   ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
                 return false;
               }
-              if (((CGUIProg*)GUIProg)->ckd.exceptionThrown)
+              if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
                 return false;
             }
             ii++;
@@ -1136,7 +1127,7 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
           elemObj = elemObj - elemObj[0][0].sectionOffset;
           elDataVarPtr = NewLavaVarPtr(elemObj + elemObj[0][GUIProg->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, elemObj[0][0].classDECL, iterDECL->RelatedDECL->RuntimeDECL)].sectionOffset);
           partialForm(0, iterDECL, elDataVarPtr,  defaultIOflags, newFNode, false/*true, 11.09.01*/, classChain);
-          if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode)
+          if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode || ((CGUIProg*)GUIProg)->ex)
             break;
           newFNode->data.FIP.up = resultFNode;
           newFNode->data.IterFlags.INCL(IteratedItem);
@@ -1185,84 +1176,20 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
     if (FormDecl->SecondTFlags.Contains(isArray)
       &&  FormDecl->Annotation.ptr->Length.DecPoint) {
       arrayLen = FormDecl->Annotation.ptr->Length.DecPoint;
-
-/*
-    for (chainNode = resultFNode;
-         chainNode && !chainNode->data.ResultVarPtr;
-         chainNode = chainNode->data.FIP.up);
-    if (chainNode && !chainNode->data.IoSigFlags.Contains(DONTPUT)) {
-      multiObj = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
-      if (FormDecl->SecondTFlags.Contains(isSet)) {
-        newStackFrame[2] = 0;
-        newStackFrame[SFH] = multiObj;
-        newStackFrame[SFH+1] = 0;
-        if (!HSetFirst(((CGUIProg*)GUIProg)->ckd, newStackFrame))
-        return false; 
-        handle = newStackFrame[SFH+1];
-        arrayLen = 0;
-        iterations = 0;
-      }
-      else {
-        arrayLen = HArrayGetLen(multiObj);
-        if (!arrayLen) {
-          arrayLen = FormDecl->Annotation.ptr->Length.DecPoint;
-          HArrayMakeLen(multiObj, arrayLen);
-        }
-        iterations = arrayLen;
-        handle = 0;
-      }
-      */
       ii = 0;
       while (ii < arrayLen) {
-        /*
-        if (!handle || !((SynFlags*)(handle+1))->Contains(deletedItem)) {
-          if (FormDecl->SecondTFlags.Contains(isSet)) {
-            newStackFrame[2] = 0;
-            newStackFrame[SFH] = multiObj;
-            newStackFrame[SFH+2] = 0;
-            newStackFrame[SFH+1] = handle;
-            if (!SetGet(((CGUIProg*)GUIProg)->ckd, newStackFrame))
-              return false;
-            elemObj = newStackFrame[SFH+2];
-            if (elemObj)
-              DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,elemObj); //nicht nochmal zählen
-          }
-          else {
-            elemObj = HArrayGetEl(multiObj, ii);
-            if (!elemObj) {
-              elemObj = AllocateObject(((CGUIProg*)GUIProg)->ckd, iterDECL->RelatedDECL->RuntimeDECL, iterDECL->RelatedDECL->TypeFlags.Contains(stateObject));
-              if (elemObj) {
-  //              ((SynFlags*)(elemObj+1))->INCL(notFromSource);
-                ((SynFlags*)(elemObj+1))->INCL(useDefaults);
-  //              CallDefaultInit(((CGUIProg*)GUIProg)->ckd, elemObj);
-                HArraySetEl(((CGUIProg*)GUIProg)->ckd, multiObj, elemObj, ii);
-                DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,elemObj); //nicht nochmal zählen
-              }
-              else {
-                if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-                  ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-                return false;
-              }
-              if (((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-                return false;
-            }
-            ii++;
-          }
-          elemObj = elemObj - elemObj[0][0].sectionOffset;
-          elDataVarPtr = NewLavaVarPtr(elemObj + elemObj[0][GUIProg->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, elemObj[0][0].classDECL, iterDECL->RelatedDECL->RuntimeDECL)].sectionOffset);
-*/
-          partialForm(0, iterDECL, 0,  defaultIOflags, newFNode, false/*true, 11.09.01*/, classChain);
-          if (!newFNode)
-            break;
-          newFNode->data.FIP.up = resultFNode;
-          newFNode->data.IterFlags.INCL(IteratedItem);
-          newFNode->data.IterFlags.INCL(Inserted);
-          if (FormDecl->SecondTFlags.Contains(isArray))
-            newFNode->data.IterFlags.INCL(FixedCount);
-          resultFNode->data.SubTree.Append(newFNode);
-          setDefaultValue(newFNode);
-          ii++;
-      //  }
+        partialForm(0, iterDECL, 0,  defaultIOflags, newFNode, false/*true, 11.09.01*/, classChain);
+        if (!newFNode)
+          break;
+        newFNode->data.FIP.up = resultFNode;
+        newFNode->data.IterFlags.INCL(IteratedItem);
+        newFNode->data.IterFlags.INCL(Inserted);
+        if (FormDecl->SecondTFlags.Contains(isArray))
+          newFNode->data.IterFlags.INCL(FixedCount);
+        resultFNode->data.SubTree.Append(newFNode);
+        setDefaultValue(newFNode);
+        iterations++;
+        ii++;
       }//while
     }//if (chainNode &...
   }
@@ -1275,7 +1202,7 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
     iterations = ((TIteration*)FormDecl->Annotation.ptr->IterOrig.ptr)->Bound;
     for (ii = 0; ii < iterations; ii++) {
       partialForm(0, iterDECL, 0, defaultIOflags, newFNode, true, classChain);
-      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode)
+      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || !newFNode || ((CGUIProg*)GUIProg)->ex)
         break;
       newFNode->data.IterFlags.INCL(IteratedItem);
       newFNode->data.IterFlags.INCL(Inserted);
@@ -1388,7 +1315,7 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
     if (( ((LavaDECL*)cheMem->data)->DeclDescType == LiteralString) 
     && ((LavaDECL*)cheMem->data)->Annotation.ptr->BasicFlags.Contains(beforeBaseType)) {
       partialForm(0, (LavaDECL*)cheMem->data, 0, defaultIOflags, newFNode, nowField, classChain);
-      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown) {
+      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex) {
         ReduceClassChain(classChain);
         return;
       }
@@ -1403,7 +1330,7 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
     formDECL = IDTable->GetDECL(formEl->data.VTClss); //remember: TIDs in VElems are already adjusted
     if (formDECL && (formDECL->DeclDescType == EnumType)) {
       partialForm(0, (LavaDECL*)formDECL->Annotation.ptr->MenuDECL.ptr, (LavaVariablePtr)resultFNode->data.ResultVarPtr,  defaultIOflags, newFNode, true, 0);
-      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown) {
+      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex) {
         ReduceClassChain(classChain);
         return;
       }
@@ -1465,13 +1392,8 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
               if (memDECL->SecondTFlags.Contains(isArray))
                 resultMemVar = NewLavaVarPtr(CastArrayType(((CGUIProg*)GUIProg)->ckd, *resultObjPtr));
         }
-        /*
-        if (resultMemVar && *resultMemVar
-          && ((SynFlags*)((*resultObjPtr)-(*(*resultObjPtr))->sectionOffset+1))->Contains(finished)
-          && ((SynFlags*)((*resultObjPtr)+1))->Contains(stateObjFlag))
-          ((SynFlags*)((*resultMemVar)+1))->INCL(dontReplace);*/
         partialForm(0, memDECL, resultMemVar, defaultIOflags, newFNode, nowField, classChain);
-        if (((CGUIProg*)GUIProg)->ckd.exceptionThrown) {
+        if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex) {
           ReduceClassChain(classChain);
           return;
         }
@@ -1564,7 +1486,7 @@ void LavaFormCLASS::exprList (CHE *DECLCHptrAny,
   CHEFormNode *newFNode=0; 
   for (;DECLCHptrAny; DECLCHptrAny = (CHE*)DECLCHptrAny->successor) {
     partialForm(0, (LavaDECL*)DECLCHptrAny->data, 0, defaultIOflags, newFNode, nowField, 0);
-    if (((CGUIProg*)GUIProg)->ckd.exceptionThrown)
+    if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
       return;
     if (newFNode) {
       newFNode->data.FIP.up = resultFNode;

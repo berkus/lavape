@@ -27,110 +27,6 @@
 #include "LavaBaseStringInit.h"
 #include "TButton.h"
 
-/*
-bool CmdExecCLASS::okBType (TBasicType btype,int in)
-{
-  bool ok, b=false;
-  CHEEnumSelId *items;
-  unsigned j;
-  DString str;
-
-  if (GUIProg->MPTR == 0) return false;
-  ok = true;
-  if (GUIProg->MPTR->data.Atomic == false)
-    ok = false;
-  else {
-    switch (GUIProg->MPTR->data.BType) {
-
-    case Enumeration:
-      ok = false;
-      GUIProg->MPTR->data.D  = unsigned(in);
-      j = 0;
-      items = (CHEEnumSelId*)GUIProg->MPTR->data.FormSyntax->Items.first;
-      while (items && !ok)
-        if (GUIProg->MPTR->data.D == j) {
-          if (items->data.SelectionCode.c
-              && (items->data.SelectionCode.l == 1)
-              && (items->data.SelectionCode.c[0] == ' '))   {
-            GUIProg->MPTR->data.StringValue.Reset(1); 
-             
-            Conv.FieldLength(GUIProg->MPTR,0);
-          }
-          else {
-            if (items->data.SelectionCode.c == 0) {
-
-              GUIProg->MPTR->data.StringValue = STRING(" ");
-            }
-            else
-              GUIProg->MPTR->data.StringValue = items->data.SelectionCode;
-            Conv.FieldLength(GUIProg->MPTR,0);
-          }
-          ok = true;
-        }
-        else {
-          items = (CHEEnumSelId*)items->successor;
-          j++;
-        }
-      if (!ok)
-        if (GUIProg->MPTR->data.IoSigFlags.Contains(UnprotectedProg)
-            && !GUIProg->MPTR->data.IoSigFlags.Contains(UnprotectedUser))
-          ok = Conv.DataLengthOK(GUIProg->MPTR);
-      break;
-
-    case Integer:
-      j = 0;
-      Conv.IntToString(in,str,j);
-      GUIProg->MPTR->data.I  = in;
-      GUIProg->MPTR->data.StringValue = str;
-      Conv.FieldLength(GUIProg->MPTR, 0);
-      if (GUIProg->MPTR->data.IoSigFlags.Contains(UnprotectedProg)
-          && !GUIProg->MPTR->data.IoSigFlags.Contains(UnprotectedUser))
-        ok = Conv.DataLengthOK(GUIProg->MPTR);
-      break;
-
-    case B_Bool:
-      if (btype != B_Bool)
-        ok = false;
-      else {
-        Conv.BoolToString(b,str,ok);
-        if (GUIProg->MPTR->data.IoSigFlags.Contains(UnprotectedProg)
-            && !GUIProg->MPTR->data.IoSigFlags.Contains(UnprotectedUser)
-            && ok)
-          ok = Conv.DataLengthOK(GUIProg->MPTR);
-        if (ok)
-          GUIProg->MPTR->data.B   = b;
-        else ok = false;
-      }
-      break;
-
-    
-    case Float:
-      if (btype != Float)
-        ok = false;
-      break;
-    
-    case Double:
-      if (btype != Double)
-        ok = false;
-      break;
-    case Identifier:
-      if (btype != Identifier)
-        ok = false;
-      break;
-
-    case Char:
-      if (btype != Char)
-        ok = false;
-      break;
-
-    default:
-      ;
-    }
-  }
-  return ok;
-} // END OF okBType
-*/
-
 CHEFormNode* CmdExecCLASS::InPopupShell(CHEFormNode* node)
 {
   CHEFormNode* upNode;
@@ -259,7 +155,7 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
         newStackFrame[SFH+1] =  0;
       newStackFrame[SFH+2] = *(LavaVariablePtr)insertedNode->data.ResultVarPtr; //new data
       newStackFrame[SFH+2] = newStackFrame[SFH+2] + newStackFrame[SFH+2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
-      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown)
+      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
         return;
       ((CGUIProg*)GUIProg)->ex = HSetInsertBefore(((CGUIProg*)GUIProg)->ckd, newStackFrame);
       ((SynFlags*)(newStackFrame[SFH+2]+1))->INCL(insertedItem);
@@ -369,55 +265,17 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
   }
 } // END OF DeleteIterItem
 
-/*
-bool CmdExecCLASS::ChangeAtomicObject(LavaVariablePtr resultVarPtr)
-{
-  LavaObjectPtr objectPtr;
-
-
-  objectPtr = 0;
-  if (!((SynFlags*)((*resultVarPtr) - (*resultVarPtr)[0][0].sectionOffset+1))->Contains(notFromSource)) {
-    try {
-#ifndef WIN32
-      if (setjmp(contOnHWexception)) throw hwException;
-#endif
-      ((CGUIProg*)GUIProg)->ex = CopyObject(((CGUIProg*)GUIProg)->ckd, resultVarPtr, &objectPtr, false);
-      if (((CGUIProg*)GUIProg)->ex)
-        return false;
-      if (((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-        return false;
-    }
-    catch (CRuntimeException* ex) {
-      if (!ex->SetLavaException(((CGUIProg*)GUIProg)->ckd)) 
-        throw;
-      return false;
-    }
-    catch (CHWException* ex) {
-      if (!ex->SetLavaException(((CGUIProg*)GUIProg)->ckd)) 
-        throw;
-      return false;
-    }
-    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, *resultVarPtr);
-    *resultVarPtr = objectPtr;
-    ((SynFlags*)(objectPtr - objectPtr[0][0].sectionOffset+1))->INCL(notFromSource);
-  }
-  return true;
-}
-*/
-
 bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
 {
   CHEEnumSelId *enumItem;
-  //unsigned c, width, digits;
   unsigned j;
   int i;
-//  bool b; 
   bool Done = true;
-  DString strx;
-  DString str0;
+  DString strx, str0;
   QString *pstr, msg;
   LavaVariablePtr enumvarPtr;
   LavaObjectPtr enumPtr;
+
   if (trp->data.Atomic) {
     GUIProg->ErrorCode = NONE;
 
@@ -453,8 +311,6 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
               enumvarPtr = (LavaVariablePtr)(trp->data.FIP.up->data.ResultVarPtr);
             if (!(*enumvarPtr))
               return false;
-//            if (!ChangeAtomicObject(enumvarPtr))
-//              return false;
             enumPtr = *enumvarPtr;
             enumPtr = CastEnumType(((CGUIProg*)GUIProg)->ckd, enumPtr);
             if (!enumPtr)
@@ -465,13 +321,10 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
               *pstr = QString(enumItem->data.Id.c);
             else
               NewQString(pstr, enumItem->data.Id.c);
-            //((CGUIProg*)GUIProg)->OnModified(); done below
           }
           Done = true;
         }
         if (!Done) {
-          //msg.LoadString(&ERR_Odd_char);
-          //AfxMessageBox(msg,MB_OK|MB_ICONERROR);
           QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
           if (Conv.DataLengthOK(trp)) {
             if (trp->data.StringValue.c)
@@ -489,64 +342,34 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
       if (Done) {
         trp->data.I = i;
         if (LBaseData->inRuntime) {
-//          if (!ChangeAtomicObject((LavaVariablePtr)trp->data.ResultVarPtr))
-//            return false;
           *(int*)(*(trp->data.ResultVarPtr)+LSH) = i;
         }
       }
       else {
-        //msg.LoadString(&ERR_Odd_char);
-        //AfxMessageBox(msg,MB_OK|MB_ICONERROR);
         QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         ((CGUIProg*)GUIProg)->MakeGUI.setFocus(GUIProg->ErrPos,trp);
       }
       break;
 
     case B_Bool:
-      /*
-      Done = trp->data.BasicFlags.Contains(Toggle);
-      Conv.StringToBool(trp->data.StringValue,b,Done);
-      if (Done) {
-        trp->data.B = b;
-        if (LBaseData->inRuntime)
-          *(bool*)(*(trp->data.ResultVarPtr)+LSH) = b;
-      }
-      else {
-        msg.LoadString(&ERR_Odd_char);
-        AfxMessageBox(msg,MB_OK|MB_ICONERROR);
-        ((CGUIProg*)GUIProg)->MakeGUI.setFocus(GUIProg->ErrPos,trp);
-      }
-      */
-      break;
+     break;
 
     case Float:
       trp->data.F = (float)atof(trp->data.StringValue.c);
       if (LBaseData->inRuntime) {
-//        if (!ChangeAtomicObject((LavaVariablePtr)trp->data.ResultVarPtr))
-//          return false;
         *(float*)(*(trp->data.ResultVarPtr)+LSH) = trp->data.F;
       }
-      /*
-      else {
-        msg.LoadString(&ERR_Odd_char);
-        AfxMessageBox(msg,MB_OK|MB_ICONERROR);
-        ((CGUIProg*)GUIProg)->MakeGUI.setFocus(GUIProg->ErrPos,trp);
-      }*/
       break;
 
     case Double:
       trp->data.Db = atof(trp->data.StringValue.c);
       if (LBaseData->inRuntime) {
         *(double*)(*(trp->data.ResultVarPtr)+LSH) = trp->data.Db;
-//        if (!ChangeAtomicObject((LavaVariablePtr)trp->data.ResultVarPtr))
-//          return false;
       }
       break;
 
     case Char:
       if (LBaseData->inRuntime) {
-//        if (!ChangeAtomicObject((LavaVariablePtr)trp->data.ResultVarPtr))
-//          return false;
         pstr = (QString*)(*(trp->data.ResultVarPtr)+LSH);
         *(char*)(*(trp->data.ResultVarPtr)+LSH) = trp->data.StringValue[0];
       }
@@ -558,9 +381,6 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
       break;
     case VLString:
       if (LBaseData->inRuntime) {
-        
-//        if (!ChangeAtomicObject((LavaVariablePtr)trp->data.ResultVarPtr))
-//          return false;
         pstr = (QString*)(*(trp->data.ResultVarPtr)+LSH);
         if (*pstr) 
           *pstr = QString(trp->data.StringValue.c);
@@ -574,7 +394,7 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
   }
   if (LBaseData->inRuntime) 
     ((CGUIProg*)GUIProg)->OnModified();
-  return Done && !((CGUIProg*)GUIProg)->ckd.exceptionThrown;
+  return Done && !((CGUIProg*)GUIProg)->ckd.exceptionThrown && !((CGUIProg*)GUIProg)->ex;
 } // END OF ConvertAndStore
 
 
@@ -591,12 +411,6 @@ bool CmdExecCLASS::Toggl (CHEFormNode* trp)
   if (trp->data.Atomic) {
     switch (trp->data.BType) {
     case B_Bool:
-      /*
-      if (!trp->data.StringValue.l || !trp->data.B)
-        trp->data.StringValue = STRING("x");
-      else
-        trp->data.StringValue = STRING(" ");
-        */
       break;
     case Enumeration:
       tog = trp->data.D;
@@ -634,7 +448,7 @@ bool CmdExecCLASS::Toggl (CHEFormNode* trp)
 
     }
   } /* IF Atomic = true */
-  return Done && !((CGUIProg*)GUIProg)->ckd.exceptionThrown;
+  return Done && !((CGUIProg*)GUIProg)->ckd.exceptionThrown && !((CGUIProg*)GUIProg)->ex;
 } // END OF Toggl
 
 

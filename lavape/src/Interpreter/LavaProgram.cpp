@@ -2388,11 +2388,10 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
   }
   else {
     ((CLavaBaseDoc*)hint->fromDoc)->LavaDialog = new LavaGUIDialog(qApp->mainWidget(), hint); 
-    int result = ((QDialog*)((CLavaBaseDoc*)hint->fromDoc)->LavaDialog)->exec();
-    if (result == QDialog::Accepted) {}
-    else {}
-
+    if (((QDialog*)((CLavaBaseDoc*)hint->fromDoc)->LavaDialog)->exec() != QDialog::Accepted)
+      ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
   }
+
   if (ckd.document->throwError) {
     ckd.document->throwError = false;
 		throw CUserException();

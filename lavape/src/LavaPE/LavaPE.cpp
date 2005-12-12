@@ -1136,7 +1136,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
 {
   CLavaPEDoc *doc;
   LavaDECL *declsel = 0, *formDECL = 0;
-  bool popUp = false;
+  bool popUp = false, activateMainView = false;
   CLavaBaseView *view;
   CTreeItem *item, *itemOld;
   POSITION pos;
@@ -1182,14 +1182,14 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
         view = doc->MainView; //find the documents main view
       }
       if (view) {
+        popUp = (view == doc->MainView) && formDECL;
         if (wxDocManager::GetDocumentManager()->GetActiveView() == view)
           view->OnActivateView();
         else 
-          view->ActivateView(true);
-        if ((view == doc->MainView) && formDECL) {
-          popUp = true;
+          if (!popUp)
+            view->ActivateView(true);
+        if (popUp) 
           item = ((CLavaPEView*)view)->BrowseTree(formDECL, (CTreeItem*)((CLavaPEView*)view)->GetListView()->firstChild(), enumID);
-        }
         else
           item = ((CLavaPEView*)view)->BrowseTree(declsel, (CTreeItem*)((CLavaPEView*)view)->GetListView()->firstChild(), enumID);
         if (item) {

@@ -92,7 +92,8 @@ void MakeGUICLASS::SetScrollSizes(QScrollView* view)
     size.setHeight(view->visibleHeight());
   ((GUIScrollView*)view)->qvbox->resize(size);
 
-  if (GUIProg->ViewWin->inherits("LavaGUIDialog"))
+  if (GUIProg->ViewWin->inherits("LavaGUIDialog")
+    && (view == ((LavaGUIDialog*)GUIProg->ViewWin)->scrollView()))
     ((LavaGUIDialog*)GUIProg->ViewWin)->setpropSize(((GUIScrollView*)view)->MaxBottomRight.size());
   view->resizeContents(size.width(),size.height());
   view->setContentsPos(0,0);
@@ -889,7 +890,10 @@ void MakeGUICLASS::Popup (CHEFormNode* popupNode,
       isTextPopup = true;
 
     CreatePopupWindow(isTextPopup, (QWidget*&)popupNode->data.FIP.popupShell, pane, explanText, popupNode);
-    pMaxBottomRight = &((CLavaGUIPopup*)popupNode->data.FIP.popupShell)->view->MaxBottomRight;
+    if (GUIProg->isView)
+      pMaxBottomRight = &((CLavaGUIPopup*)popupNode->data.FIP.popupShell)->view->MaxBottomRight;
+    else
+      pMaxBottomRight = &((CLavaGUIPopupD*)popupNode->data.FIP.popupShell)->view->MaxBottomRight;
     if (isTextPopup) {
       AtomicWidget((CHEFormNode*)popupNode->data.SubTree.first, pane,popupTextWidget,str0);
       ((CHEFormNode*)popupNode->data.SubTree.first)->data.FIP.widget = popupTextWidget;
@@ -913,8 +917,10 @@ void MakeGUICLASS::Popup (CHEFormNode* popupNode,
         popupNode->data.FormSyntax->SectionInfo1 );
       popupNode->data.FormSyntax->SectionInfo1 = -1;
     }
-    
-    SetScrollSizes(((CLavaGUIPopup*)popupNode->data.FIP.popupShell)->view);
+    if (GUIProg->isView)
+      SetScrollSizes(((CLavaGUIPopup*)popupNode->data.FIP.popupShell)->view);
+    else
+      SetScrollSizes(((CLavaGUIPopupD*)popupNode->data.FIP.popupShell)->view);
   }
 
   if (popupWindow) {

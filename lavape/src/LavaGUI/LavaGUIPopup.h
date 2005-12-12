@@ -21,7 +21,27 @@ public:
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;
   void closeEvent(QCloseEvent *e);
-  void moveEvent(QMoveEvent* ev);
+private:
+  Q_OBJECT
+
+};
+
+class CLavaGUIPopupD : public QDialog
+{
+public:
+  CLavaGUIPopupD(QWidget *parent, CGUIProgBase *guiPr, CHEFormNode* data);
+  virtual ~CLavaGUIPopupD();
+  bool hasFocNode(CHEFormNode *actFNode);
+  GUIScrollView * view;
+  CGUIProgBase *GUIProg;
+  CHEFormNode* myFormNode;
+  void closeEvent(QCloseEvent *e);
+  LavaVariablePtr StartDataPtr;
+  LavaVariablePtr ResultDPtr;
+
+public slots:
+  void OnClose();
+//  void OnCancel();
 private:
   Q_OBJECT
 

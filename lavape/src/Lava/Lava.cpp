@@ -348,7 +348,6 @@ bool CLavaApp::event(QEvent *e)
         if (!thr->pContExecEvent->ex)
           ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
           thr->pContExecEvent->ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
-          //SetLavaException(ckd, CanceledForm_ex, ERR_CanceledForm);
       }
       (*thr->pContExecEvent)--;
     }

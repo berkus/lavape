@@ -128,18 +128,32 @@ void GUIwidCLASS::DeleteWindow (QWidget* window)
 void GUIwidCLASS::CreatePopupWindow(bool isTextPopup, QWidget*& popupShell, QWidget*& pane, DString& label, CHEFormNode* data)
 {
   DString str = ("TextPopupwidget");
+  QWidget* parent;
   if (!popupShell) {
-    QWidget* parent = ((wxMainFrame*)qApp->mainWidget())->GetClientWindow();
-    popupShell = new CLavaGUIPopup(parent, GUIProg, data);
+    if (GUIProg->isView) {
+      parent = ((wxMainFrame*)qApp->mainWidget())->GetClientWindow();
+      popupShell = new CLavaGUIPopup(parent, GUIProg, data);
+    }
+    else {
+      parent = qApp->mainWidget();
+      popupShell = new CLavaGUIPopupD(parent, GUIProg, data);
+    }
   }
   QString cap = GUIProg->winCaption();
   if (label.l)
     cap = cap + " - " + QString(label.c);
   popupShell->setCaption(cap);
-  if (isTextPopup) 
-    CreateFormWidget(pane, ((CLavaGUIPopup*)popupShell)->view->qvbox, 0, str, data);
+  if (GUIProg->isView) 
+    if (isTextPopup) 
+      CreateFormWidget(pane, ((CLavaGUIPopup*)popupShell)->view->qvbox, 0, str, data);
+    else
+      pane = ((CLavaGUIPopup*)popupShell)->view->qvbox;
   else
-    pane = ((CLavaGUIPopup*)popupShell)->view->qvbox;
+    if (isTextPopup) 
+      CreateFormWidget(pane, ((CLavaGUIPopupD*)popupShell)->view->qvbox, 0, str, data);
+    else
+      pane = ((CLavaGUIPopupD*)popupShell)->view->qvbox;
+
 }
 
 void GUIwidCLASS::AddOptionMenuItem (QWidget*& pos, QWidget* menu, DString& text, CHEFormNode* data)
