@@ -1818,7 +1818,7 @@ public:
   IfdefStatementV () {}
   IfdefStatementV (bool);
 
-  virtual void InsertElsePart (SynObject *&elsePart);
+  virtual void Insert2Optionals (SynObject *&thenPart,SynObject *&elsePart);
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
     return QObject::tr("<p><a href=\"IfdefStm.htm\">ifdef</a> statement with optional else branch: if variable != null then ...</p>"); }

@@ -602,7 +602,8 @@ void IfdefStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,T
        chp = (CHE*)chp->successor) {
     MTBLCHE (chp,&ifCondition);
   }
-  MTBL (thenPart.ptr);
+  if (thenPart.ptr)
+    MTBL (thenPart.ptr);
   if (elsePart.ptr)
     MTBL (elsePart.ptr);
 }

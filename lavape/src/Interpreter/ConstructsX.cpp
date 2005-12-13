@@ -1947,7 +1947,10 @@ bool IfdefStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsig
         return true;
   }
 
-  RETURN(((SynObject*)thenPart.ptr)->Execute(ckd,stackFrame,oldExprLevel))
+  if (thenPart.ptr)
+    RETURN(((SynObject*)thenPart.ptr)->Execute(ckd,stackFrame,oldExprLevel))
+  else
+    return true;
 }
 
 bool TryStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {

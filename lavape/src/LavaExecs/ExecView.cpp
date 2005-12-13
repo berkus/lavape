@@ -2636,7 +2636,7 @@ void CExecView::OnDelete ()
   }
 
   chx = text->currentSynObj->containingChain;
-  if (chx && chx->first == chx->last)
+  if (chx && chx->first == chx->last) {
     if (text->currentSynObj->IsPlaceHolder()) {
       if (text->currentSynObj->parentObject->primaryToken == case_T
         || text->currentSynObj->parentObject->primaryToken == quant_T
@@ -2649,6 +2649,13 @@ void CExecView::OnDelete ()
     || text->currentSynObj->primaryToken == catch_T
     || text->currentSynObj->primaryToken == elsif_T
     || text->currentSynObj->primaryToken == quant_T)
+      reject = true;
+  }
+  else if (text->currentSynObj->primaryToken == ifdef_T
+  && ((text->currentSelection->data.token == then_T
+      || text->currentSelection->data.token == else_T)
+      && (!((IfdefStatement*)text->currentSynObj)->thenPart.ptr
+          || !((IfdefStatement*)text->currentSynObj)->elsePart.ptr)))
       reject = true;
 
   if (reject) {
@@ -3441,7 +3448,7 @@ void CExecView::OnRshift()
 
 void CExecView::OnShowOptionals() 
 {
-  SynObject *delObj=0, *insObj=0, *elsePart=0, *branch=0, *orgunit=0, *oid=0, *iid=0,
+  SynObject *delObj=0, *insObj=0, *thenPart=0, *elsePart=0, *branch=0, *orgunit=0, *oid=0, *iid=0,
             *statement=0, *updateStatement=0;
   CHAINX *chx;
   CHE *outParm;
@@ -3652,10 +3659,22 @@ void CExecView::OnShowOptionals()
     }
   }
   else if (text->currentSynObj->primaryToken == ifdef_T) {
-    ((IfdefStatementV*)text->currentSynObj)->InsertElsePart(elsePart);
-    if (elsePart) {
-      text->currentSynObj = elsePart;
-      PutInsHint(elsePart,SET(firstHint,lastHint,-1));
+    ((IfdefStatementV*)text->currentSynObj)->Insert2Optionals(thenPart,elsePart);
+    if (thenPart || elsePart) {
+      if (thenPart && elsePart) {
+        text->currentSynObj = thenPart;
+        PutInsHint(thenPart,SET(firstHint,-1));
+        text->currentSynObj = elsePart;
+        PutInsHint(elsePart,SET(lastHint,-1));
+      }
+      else if (thenPart) {
+        text->currentSynObj = thenPart;
+        PutInsHint(thenPart,SET(firstHint,lastHint,-1));
+      }
+      else {
+        text->currentSynObj = elsePart;
+        PutInsHint(elsePart,SET(firstHint,lastHint,-1));
+      }
     }
   }
   else { // if, [type]switch

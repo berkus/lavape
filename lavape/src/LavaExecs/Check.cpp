@@ -982,9 +982,9 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         decl->WorkFlags.INCL(isReferenced);
       }
       objRef->refName.Reset(0);
-      if (decl->TypeFlags.Contains(isOptionalExpr)) {
+      if (decl->TypeFlags.Contains(isOptional)) {
         objRef->flags.INCL(isOptionalExpr);
-        ((TDOD*)che->data)->flags.INCL(isOptionalExpr);
+        ((TDOD*)che->data)->flags.INCL(isOptional);
       }
       else {
         objRef->flags.EXCL(isOptionalExpr);
@@ -4968,7 +4968,8 @@ bool IfdefStatement::Check (CheckData &ckd)
       ok = false;
     }
   }
-  ok &= ((SynObject*)thenPart.ptr)->Check(ckd);
+  if (thenPart.ptr)
+    ok &= ((SynObject*)thenPart.ptr)->Check(ckd);
 
   ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
   if (elsePart.ptr)
@@ -4983,7 +4984,7 @@ bool IfdefStatement::Checks (ObjReference &objRef) {
   CHE *chp;
 
   for (chp=(CHE*)ifCondition.first; chp; chp=(CHE*)chp->successor)
-    if (*(ObjReference*)chp->data == objRef)
+    if (((SynObject*)chp->data)->primaryToken == ObjRef_T && *(ObjReference*)chp->data == objRef)
       return true;
 
   return false;

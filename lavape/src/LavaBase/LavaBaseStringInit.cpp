@@ -321,7 +321,7 @@ void LavaBaseStringInit() {
   ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
   ERR_NotOptional  = QObject::tr("Expected: An expression whose value is mandatory (= not null in any case)");
   ERR_ElseExprObsolete  = QObject::tr("Else-expression superfluous: first operand is already mandatory");
-  ERR_SuperfluousMandatory  = QObject::tr("superfluous mandatory variable in ifdef");
+  ERR_SuperfluousMandatory  = QObject::tr("superfluous mandatory variable in ifdef condition");
   ERR_AssigToLocal  = QObject::tr("Single-assignment violation: forbidden assignment to initialized local variable");
   ERR_NameInUse  = QObject::tr("This name is already in use within the current scope; please choose a different name");
   ERR_OutOfScope  = QObject::tr("Variable is referenced outside its scope");

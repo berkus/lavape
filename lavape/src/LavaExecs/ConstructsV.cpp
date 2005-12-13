@@ -1780,7 +1780,12 @@ IfdefStatementV::IfdefStatementV (bool) {
   elsePart.ptr = new SynObjectV(Stm_T);
 }
 
-void IfdefStatementV::InsertElsePart (SynObject *&elseP) {
+void IfdefStatementV::Insert2Optionals (SynObject *&thenP,SynObject *&elseP) {
+  if (!thenPart.ptr) {
+    thenP = new SynObjectV(Stm_T);
+    thenP->parentObject = this;
+    thenP->whereInParent = (address)&thenPart.ptr;
+  }
   if (!elsePart.ptr) {
     elseP = new SynObjectV(Stm_T);
     elseP->parentObject = this;
@@ -1808,10 +1813,12 @@ void IfdefStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ign
     DRAWCHE(objRef,&ifCondition);
   }
   NLdecIndent(t);
-  t.Insert(then_T);
-  NLincIndent(t);
-  DRAW(thenPart.ptr);
-  NLdecIndent(t);
+  if (thenPart.ptr) {
+    t.Insert(then_T,false,true);
+    NLincIndent(t);
+    DRAW(thenPart.ptr);
+    NLdecIndent(t);
+  }
 
   if (elsePart.ptr) {
     t.Insert(else_T,false,true);

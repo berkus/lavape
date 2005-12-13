@@ -564,6 +564,12 @@ bool TokenNode::OptionalClauseToken (SynObject *&optClause) {
       return true;
     }
     break;
+  case then_T:
+    if (synObject->primaryToken == ifdef_T) {
+      optClause = (SynObject*)((IfdefStatement*)synObject)->thenPart.ptr;
+      return true;
+    }
+    break;
   case else_T:
     if (synObject->primaryToken == if_T)
       optClause = (SynObject*)((IfStatement*)synObject)->elsePart.ptr;
