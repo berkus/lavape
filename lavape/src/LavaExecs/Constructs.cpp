@@ -579,6 +579,8 @@ bool TokenNode::OptionalClauseToken (SynObject *&optClause) {
       return false;
     else if (synObject->primaryToken == switch_T)
       optClause = (SynObject*)((SwitchStatement*)synObject)->elsePart.ptr;
+    else if (synObject->primaryToken == try_T)
+      optClause = (SynObject*)((TryStatement*)synObject)->elsePart.ptr;
     else if (synObject->primaryToken == type_T)
       optClause = (SynObject*)((TypeSwitchStatement*)synObject)->elsePart.ptr;
     return true;
@@ -612,6 +614,7 @@ bool SynObject::HasOptionalParts ()
   case switch_T:
   case transaction_T:
   case type_T:
+  case try_T:
     return true;
   case assignFS_T:
     if (((FuncStatement*)this)->outputs.first)
@@ -883,6 +886,13 @@ bool IfxThen::IsRepeatableClause (CHAINX *&chx) {
 
 bool IfxThen::IsReadOnlyClause(SynObject *synObj) {
   if (synObj->whereInParent == (address)&ifCondition.ptr)
+    return true;
+  else
+    return false;
+}
+
+bool TryStatement::NestedOptClause (SynObject *optClause) {
+  if (optClause->whereInParent == (address)&elsePart.ptr)
     return true;
   else
     return false;

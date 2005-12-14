@@ -32,7 +32,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
+
 #include "Syntax.h"
+
 
 #include "qwidget.h"
 #include "qscrollview.h"
@@ -2371,7 +2373,10 @@ class CatchClause : public Expression {
 
 
   public:
+  NESTEDANY/*Reference*/ exprType;
+  NESTEDANY/*VarName*/ varName;
   NESTEDANY/*Expression*/ catchClause;
+  LavaDECL *typeDecl;
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual bool IsRepeatableClause(CHAINX *&chx);
@@ -2401,6 +2406,8 @@ class TryStatement : public Expression {
   public:
   NESTEDANY/*Expression*/ tryStatement;
   CHAINX catchClauses;
+  NESTEDANY/*Expression*/ elsePart;
+  virtual bool NestedOptClause(SynObject *optClause);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 

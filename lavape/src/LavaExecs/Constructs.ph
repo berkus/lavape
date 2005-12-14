@@ -1078,7 +1078,10 @@ public:
 
 class CatchClause : public Expression {
 public:
+  NESTEDANY<Reference> exprType;
+  NESTEDANY<VarName> varName;
   NESTEDANY<Expression> catchClause;
+  LavaDECL-- *typeDecl;
 
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
@@ -1089,8 +1092,10 @@ public:
 class TryStatement : public Expression {
 public:
   NESTEDANY<Expression> tryStatement;
-  CHAINX/*Expression*/ catchClauses;
+  CHAINX/*CatchClause*/ catchClauses;
+  NESTEDANY<Expression> elsePart;
 
+  virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };

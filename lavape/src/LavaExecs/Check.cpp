@@ -1534,6 +1534,17 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
         }
       }
       break;
+    case catch_T:
+      if (((SynObject*)((CatchClause*)synObj)->varName.ptr)->primaryToken == VarName_T) {
+        varName = (VarName*)((CatchClause*)synObj)->varName.ptr;
+        if (((SynObject*)((CatchClause*)synObj)->exprType.ptr)->primaryToken == TypeRef_T) {
+          elemTypePtr = (Reference*)((CatchClause*)synObj)->exprType.ptr;
+          typeID = elemTypePtr->refID;
+          ADJUST4(typeID);
+          if (Action(ckd,varName,typeID)) return;
+        }
+      }
+      break;
     case new_T:
       if (!((NewExpression*)synObj)->itf.ptr) {
         tempNo++;
@@ -5356,6 +5367,10 @@ bool TryStatement::Check (CheckData &ckd)
     opd = (SynObject*)chp->data;
     ok &= opd->Check(ckd);
   }
+
+  ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
+  if (elsePart.ptr)
+    ((SynObject*)elsePart.ptr)->Check(ckd);
 
   ((RefTable*)ckd.refTable)->EndBranchStm(branchStm,precedingBranch);
 

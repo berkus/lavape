@@ -1997,6 +1997,7 @@ TryStatementV::TryStatementV (bool) {
   primaryToken = try_T;
   tryStatement.ptr = new SynObjectV(Stm_T);
   catchClauses.Append(NewCHE(new CatchClauseV(true)));
+  elsePart.ptr = new SynObjectV(Stm_T);
 }
 
 void TryStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
@@ -2014,6 +2015,13 @@ void TryStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignor
     t.NewLine();
   }
 
+  if (elsePart.ptr) {
+    t.Insert(else_T,false,true);
+    NLincIndent(t);
+    DRAW(elsePart.ptr);
+    NLdecIndent(t);
+  }
+
   t.Insert(ENDtry_T);
   EXIT
 }
@@ -2022,12 +2030,19 @@ CatchClauseV::CatchClauseV (bool) {
   type = catch_T;
   replacedType = type;
   primaryToken = catch_T;
+  exprType.ptr = new SynObjectV(TypePH_T);
+  varName.ptr = new SynObjectV(VarPH_T);
   catchClause.ptr = new SynObjectV(Stm_T);
 }
 
 void CatchClauseV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
   t.Insert(catch_T,true);
+  t.Blank();
+  DRAW(exprType.ptr);
+  t.Blank();
+  DRAW(varName.ptr);
+  t.Insert(Colon_T);
   NLincIndent(t);
   DRAW(catchClause.ptr);
   EXIT
@@ -2087,8 +2102,6 @@ TypeBranchV::TypeBranchV (bool) {
 }
 
 void TypeBranchV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
-  bool isFirst=true;
-
   ENTRY
   t.Insert(caseType_T,true);
   t.Blank();

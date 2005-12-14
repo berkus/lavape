@@ -3457,6 +3457,7 @@ void CExecView::OnShowOptionals()
   AttachObject *attachObject;
   Foreach *foreachStm;
   Exists *existsStm;
+  TryStatement *tryStm;
   Quantifier *quant;
   FailStatement *failStm;
   FuncStatement *funcStm;
@@ -3523,28 +3524,6 @@ void CExecView::OnShowOptionals()
         }
       }
 
-/*    if (hasOpt && !attachObject->orgunit.ptr) {
-      insObj = new SynObjectV(Exp_T);
-      text->currentSynObj = insObj;
-      insObj->parentObject = attachObject;
-      insObj->whereInParent = (address)&attachObject->orgunit.ptr;
-        if (isFirst) {
-          isFirst = false;
-          --nOpt;
-          if (nOpt)
-            PutInsHint(insObj,SET(firstHint,-1));
-          else
-            PutInsHint(insObj,SET(firstHint,lastHint,-1));
-        }
-        else {
-          --nOpt;
-          if (nOpt)
-            PutInsHint(insObj,SET());
-          else
-            PutInsHint(insObj,SET(lastHint,-1));
-        }
-    }*/
-
     if (hasOpt && !attachObject->url.ptr) {
       insObj = new SynObjectV(Exp_T);
       text->currentSynObj = insObj;
@@ -3609,6 +3588,16 @@ void CExecView::OnShowOptionals()
       text->currentSynObj = insObj;
       insObj->parentObject = existsStm;
       insObj->whereInParent = (address)&existsStm->updateStatement.ptr;
+      PutInsHint(insObj,SET(firstHint,lastHint,-1));
+    }
+  }
+  else if (text->currentSynObj->primaryToken == try_T) {
+    tryStm = (TryStatement*)text->currentSynObj;
+    if (!tryStm->elsePart.ptr) {
+      insObj = new SynObjectV(Stm_T);
+      text->currentSynObj = insObj;
+      insObj->parentObject = tryStm;
+      insObj->whereInParent = (address)&tryStm->elsePart.ptr;
       PutInsHint(insObj,SET(firstHint,lastHint,-1));
     }
   }

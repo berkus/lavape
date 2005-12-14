@@ -252,7 +252,7 @@ void Tokens_INIT ()
   ATO("connect");
   ATO("case");
   ATO("case");
-  ATO("or if exception:");
+  ATO("catch");
   ATO("clone");
   ATO("complete");
   ATO("concurrent");

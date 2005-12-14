@@ -1137,6 +1137,8 @@ void CDPCatchClause (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    vp->exprType.CDP(pgf,cid);
+    vp->varName.CDP(pgf,cid);
     vp->catchClause.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPCatchClause
@@ -1156,6 +1158,7 @@ void CDPTryStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
     CDPExpression(pgf,cid,(address)(Expression*)vp,true);
     vp->tryStatement.CDP(pgf,cid);
     vp->catchClauses.CDP(pgf,cid);
+    vp->elsePart.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTryStatement
 
