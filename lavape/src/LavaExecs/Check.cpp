@@ -2270,7 +2270,10 @@ bool FailStatement::Check (CheckData &ckd)
   }
 
   ((SynObject*)exception.ptr)->ExprGetFVType(ckd,declError,cat,ctxFlags);
-  if (cat != unknownCategory && cat != valueObj) {
+  if (!declError)
+    ERROREXIT
+
+  if (/*cat != unknownCategory &&*/ cat != valueObj) {
     ((SynObject*)exception.ptr)->SetError(ckd,&ERR_InadmissibleCategory);
     ok = false;
   }
@@ -3532,6 +3535,9 @@ void VarName::ExprGetFVType (CheckData &ckd, LavaDECL *&decl, Category &cat, Syn
     break;
   case caseType_T:
     ((SynObject*)((TypeBranch*)parentObject)->exprType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
+    break;
+  case catch_T:
+    ((SynObject*)((CatchClause*)parentObject)->exprType.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
     break;
   case run_T:
     ((SynObject*)((Run*)parentObject)->initiator.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
@@ -5343,6 +5349,32 @@ bool SwitchStatement::Check (CheckData &ckd)
 bool CatchClause::Check (CheckData &ckd)
 {
   ENTRY
+  LavaDECL *declBranchType;
+  Category catBranchType;
+  CContext context;
+  SynFlags ctxFlags;
+
+  ok &= ((SynObject*)exprType.ptr)->Check(ckd);
+  ok &= ((SynObject*)varName.ptr)->Check(ckd);
+  ((SynObject*)exprType.ptr)->ExprGetFVType(ckd,declBranchType,catBranchType,ctxFlags);
+
+  if (!declBranchType)
+    ERROREXIT
+
+  if (!declBranchType->SecondTFlags.Contains(isException)) {
+    ((SynObject*)exprType.ptr)->SetError(ckd,&ERR_FailNoException);
+    ERROREXIT
+  }
+#ifdef INTERPRETER
+  ((VarName*)varName.ptr)->stackPos = ckd.currentStackLevel;
+  typeDecl = ckd.document->GetType(declBranchType);
+//  declSwitchExpression = ckd.document->GetType(declSwitchExpression);
+#endif
+  if (catBranchType != valueObj) {
+    ((SynObject*)exprType.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
+    ok = false;
+  }
+
   if (catchClause.ptr)
     ok &= ((SynObject*)catchClause.ptr)->Check(ckd);
   EXIT
@@ -5356,24 +5388,29 @@ bool TryStatement::Check (CheckData &ckd)
   ENTRY
 
   ((RefTable*)ckd.refTable)->NewBranchStm(branchStm,precedingBranch);
+#ifdef INTERPRETER
+  ckd.currentStackLevel++;
+#endif
 
   ((Expression*)tryStatement.ptr)->Check(ckd);
 
+  ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
   for (chp = (CHE*)catchClauses.first;
        chp;
        chp = (CHE*)chp->successor) {
-//    if (chp != (CHE*)catchClauses.first)
+    if (chp != (CHE*)catchClauses.first)
       ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
     opd = (SynObject*)chp->data;
     ok &= opd->Check(ckd);
   }
 
-  ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
-  if (elsePart.ptr)
-    ((SynObject*)elsePart.ptr)->Check(ckd);
-
   ((RefTable*)ckd.refTable)->EndBranchStm(branchStm,precedingBranch);
 
+#ifdef INTERPRETER
+  if (ckd.currentStackLevel > ckd.stackFrameSize)
+    ckd.stackFrameSize = ckd.currentStackLevel;
+  ckd.currentStackLevel--;
+#endif
   EXIT
 }
 
@@ -5424,35 +5461,6 @@ bool AssertStatement::Check (CheckData &ckd)
   ENTRY
   ok &= ((SynObject*)statement.ptr)->Check(ckd);
   EXIT
-}
-
-bool ThrowStatement::Check (CheckData &ckd)
-{
-  LavaDECL *declError, *funcDecl, *declExceptType;
-  CHETID *chpTID;
-  Category cat;
-  SynFlags ctxFlags;
-
-  ENTRY
-  ok &= ((SynObject*)error.ptr)->Check(ckd);
-  if (((SynObject*)error.ptr)->IsPlaceHolder())
-    ERROREXIT
-
-  ((SynObject*)error.ptr)->ExprGetFVType(ckd,declError,cat,ctxFlags);
-  CContext errCtx = ckd.tempCtx;
-  if (ctxFlags.bits)
-    errCtx.ContextFlags = ctxFlags;
-  funcDecl = ckd.myDECL->ParentDECL;
-  for ( chpTID = (CHETID*)funcDecl->Inherits.first;
-        chpTID;
-        chpTID = (CHETID*)chpTID->successor) {
-    ckd.tempCtx = ckd.lpc;
-    declExceptType = ckd.document->GetFinalMVType(chpTID->data,ckd.inINCL,ckd.tempCtx,cat,&ckd);
-    if (compatibleTypes(ckd,declError,errCtx,declExceptType,ckd.tempCtx))
-      EXIT
-  }
-  ((SynObject*)error.ptr)->SetError(ckd,&ERR_InadmissibleThrow);
-  ERROREXIT
 }
 
 void AttachObject::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {

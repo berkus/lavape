@@ -962,15 +962,6 @@ public:
     return true; }
 };
 
-class ThrowStatement : public Expression {
-public:
-  NESTEDANY<Expression> error;
-
-  virtual bool IsThrow () { return true; }
-  virtual bool Check (CheckData &ckd);
-  virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
-};
-
 class IfThen : public Expression {
 public:
   NESTEDANY<Expression> ifCondition;
@@ -1093,9 +1084,9 @@ class TryStatement : public Expression {
 public:
   NESTEDANY<Expression> tryStatement;
   CHAINX/*CatchClause*/ catchClauses;
-  NESTEDANY<Expression> elsePart;
+//  NESTEDANY<Expression> elsePart;
 
-  virtual bool NestedOptClause (SynObject *optClause);
+//  virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
@@ -1781,14 +1772,6 @@ public:
     " and throws a specific exception in case of violation</p>"); }
 };
 
-class ThrowStatementV : public ThrowStatement {
-public:
-  ThrowStatementV () {}
-  ThrowStatementV (bool);
-
-  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
-};
-
 class IfThenV : public IfThen {
 public:
   IfThenV () {}
@@ -1889,6 +1872,7 @@ public:
   TryStatementV () {}
   TryStatementV (bool);
 
+  void InsertBranch (SynObject *&branch, CHAINX *&chx);
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
     return QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"); }
@@ -2424,13 +2408,6 @@ public:
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
-class ThrowStatementX : public ThrowStatement {
-public:
-  ThrowStatementX() {}
-
-  //virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
-};
-
 class IfThenX : public IfThen {
 public:
   IfThenX() {}
@@ -2501,6 +2478,8 @@ public:
 class CatchClauseX : public CatchClause {
 public:
   CatchClauseX() {}
+
+//  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class TryStatementX : public TryStatement {

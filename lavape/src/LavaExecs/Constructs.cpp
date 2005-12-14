@@ -579,8 +579,8 @@ bool TokenNode::OptionalClauseToken (SynObject *&optClause) {
       return false;
     else if (synObject->primaryToken == switch_T)
       optClause = (SynObject*)((SwitchStatement*)synObject)->elsePart.ptr;
-    else if (synObject->primaryToken == try_T)
-      optClause = (SynObject*)((TryStatement*)synObject)->elsePart.ptr;
+/*    else if (synObject->primaryToken == try_T)
+      optClause = (SynObject*)((TryStatement*)synObject)->elsePart.ptr;*/
     else if (synObject->primaryToken == type_T)
       optClause = (SynObject*)((TypeSwitchStatement*)synObject)->elsePart.ptr;
     return true;
@@ -890,14 +890,14 @@ bool IfxThen::IsReadOnlyClause(SynObject *synObj) {
   else
     return false;
 }
-
+/*
 bool TryStatement::NestedOptClause (SynObject *optClause) {
   if (optClause->whereInParent == (address)&elsePart.ptr)
     return true;
   else
     return false;
 }
-
+*/
 bool SwitchStatement::NestedOptClause (SynObject *optClause) {
   if (optClause->whereInParent == (address)&elsePart.ptr)
     return true;

@@ -346,7 +346,7 @@ void LavaBaseStringInit() {
   ERR_NoViewImpl  = QObject::tr("Invalid implementation of the select view");
   ERR_OperatorUndefined  = QObject::tr("First operand has no such operator");
   ERR_UndefinedSetElemType  = QObject::tr("Undefined set element type");
-  ERR_InadmissibleThrow  = QObject::tr("The current function doesn't allow exceptions at all or exceptions of this type");
+  ERR_InadmissibleThrow  = QObject::tr("The exception specification of the current function is empty or doesn\'t contain this exception type");
   ERR_ArrOperatorUndefined  = QObject::tr("No array access operator defined");
   ERR_TempUnfinished  = QObject::tr("""temp"" must not be passed as a parameter (unless to initializers) since it counts as ""still unfinished""");
   ERR_SelfUnfinished  = QObject::tr("From within an initializer ""self"" may be passed only to initializers as a parameter");

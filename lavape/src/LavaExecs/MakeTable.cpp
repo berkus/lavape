@@ -671,6 +671,8 @@ void SwitchStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,
 void CatchClause::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
 {
   ENTRY
+  MTBL (exprType.ptr);
+  MTBL (varName.ptr);
   if (catchClause.ptr)
     MTBL (catchClause.ptr);
 }
@@ -707,13 +709,6 @@ void AssertStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,
 {
   ENTRY
   MTBL (statement.ptr);
-}
-
-void ThrowStatement::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
-{
-  ENTRY
-  if (error.ptr)
-    MTBL (error.ptr);
 }
 
 void AttachObject::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)

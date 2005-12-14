@@ -2087,33 +2087,6 @@ class AssertStatement : public Expression {
   { CDPAssertStatement(pgf,cid,(address)this,baseCDP); }
 };
 
-class ThrowStatement : public Expression {
-  DECLARE_DYNAMIC_CLASS(ThrowStatement)
-
-
-  public:
-  NESTEDANY/*Expression*/ error;
-  virtual bool IsThrow()
-  {
-    return true;
-  }
-  virtual bool Check(CheckData &ckd);
-  virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
-
-  ThrowStatement () {}
-
-  virtual void CopyData (AnyType *from) {
-    *this = *(ThrowStatement*)from;
-  }
-
-  friend void CDPThrowStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
-
-  virtual void CDP (PutGetFlag pgf, ASN1* cid,
-                    bool baseCDP=false)
-  { CDPThrowStatement(pgf,cid,(address)this,baseCDP); }
-};
-
 class IfThen : public Expression {
   DECLARE_DYNAMIC_CLASS(IfThen)
 
@@ -2406,8 +2379,6 @@ class TryStatement : public Expression {
   public:
   NESTEDANY/*Expression*/ tryStatement;
   CHAINX catchClauses;
-  NESTEDANY/*Expression*/ elsePart;
-  virtual bool NestedOptClause(SynObject *optClause);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 
@@ -3402,14 +3373,6 @@ public:
     " and throws a specific exception in case of violation</p>"); }
 };
 
-class ThrowStatementV : public ThrowStatement {
-public:
-  ThrowStatementV () {}
-  ThrowStatementV (bool);
-
-  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
-};
-
 class IfThenV : public IfThen {
 public:
   IfThenV () {}
@@ -3510,6 +3473,7 @@ public:
   TryStatementV () {}
   TryStatementV (bool);
 
+  void InsertBranch (SynObject *&branch, CHAINX *&chx);
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
     return QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"); }
@@ -4045,13 +4009,6 @@ public:
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
-class ThrowStatementX : public ThrowStatement {
-public:
-  ThrowStatementX() {}
-
-  //virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
-};
-
 class IfThenX : public IfThen {
 public:
   IfThenX() {}
@@ -4122,6 +4079,8 @@ public:
 class CatchClauseX : public CatchClause {
 public:
   CatchClauseX() {}
+
+//  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
 class TryStatementX : public TryStatement {

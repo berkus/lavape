@@ -900,23 +900,6 @@ void AssertStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ig
   EXIT
 }
 
-ThrowStatementV::ThrowStatementV (bool) {
-  type = Stm_T;
-  replacedType = type;
-  primaryToken = throw_T;
-  error.ptr = new SynObjectV(Exp_T);
-}
-
-void ThrowStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
-  ENTRY
-  t.Insert(primaryToken,true);
-  if (error.ptr) {
-    t.Blank();
-    DRAW(error.ptr);
-  }
-  EXIT
-}
-
 AttachObjectV::AttachObjectV (bool) {
   type = Exp_T;
   //type = attach_T;
@@ -1997,7 +1980,7 @@ TryStatementV::TryStatementV (bool) {
   primaryToken = try_T;
   tryStatement.ptr = new SynObjectV(Stm_T);
   catchClauses.Append(NewCHE(new CatchClauseV(true)));
-  elsePart.ptr = new SynObjectV(Stm_T);
+//  elsePart.ptr = new SynObjectV(Stm_T);
 }
 
 void TryStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
@@ -2015,15 +1998,20 @@ void TryStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignor
     t.NewLine();
   }
 
-  if (elsePart.ptr) {
+/*  if (elsePart.ptr) {
     t.Insert(else_T,false,true);
     NLincIndent(t);
     DRAW(elsePart.ptr);
     NLdecIndent(t);
-  }
+  }*/
 
   t.Insert(ENDtry_T);
   EXIT
+}
+
+void TryStatementV::InsertBranch (SynObject *&branch, CHAINX *&chx) {
+    branch = new CatchClauseV(true);
+    chx = &catchClauses;
 }
 
 CatchClauseV::CatchClauseV (bool) {
@@ -2042,7 +2030,6 @@ void CatchClauseV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignore
   DRAW(exprType.ptr);
   t.Blank();
   DRAW(varName.ptr);
-  t.Insert(Colon_T);
   NLincIndent(t);
   DRAW(catchClause.ptr);
   EXIT

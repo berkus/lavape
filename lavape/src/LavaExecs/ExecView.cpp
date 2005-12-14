@@ -2284,7 +2284,8 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
   SynObject *placeHdr=0;
 
   if (chx
-  && ((!delObj->IsExpression() && chx->first != chx->last)
+  && ((!delObj->IsExpression()
+       && (chx->first != chx->last || delObj->primaryToken == catch_T))
       || delObj->IsPlaceHolder())) {
     che = (CHE*)delObj->whereInParent;
     bool delMult
@@ -2646,7 +2647,7 @@ void CExecView::OnDelete ()
     }
     else if (text->currentSynObj->primaryToken == case_T
     || text->currentSynObj->primaryToken == caseType_T
-    || text->currentSynObj->primaryToken == catch_T
+//    || text->currentSynObj->primaryToken == catch_T
     || text->currentSynObj->primaryToken == elsif_T
     || text->currentSynObj->primaryToken == quant_T)
       reject = true;
@@ -3593,13 +3594,17 @@ void CExecView::OnShowOptionals()
   }
   else if (text->currentSynObj->primaryToken == try_T) {
     tryStm = (TryStatement*)text->currentSynObj;
-    if (!tryStm->elsePart.ptr) {
+    if (!tryStm->catchClauses.first) {
+      text->currentSynObj->InsertBranch(branch,chx);
+      PutInsChainHint(NewCHE(branch),chx,(CHE*)chx->first,SET(firstHint,lastHint,-1));
+    }
+/*  if (!tryStm->elsePart.ptr) {
       insObj = new SynObjectV(Stm_T);
       text->currentSynObj = insObj;
       insObj->parentObject = tryStm;
       insObj->whereInParent = (address)&tryStm->elsePart.ptr;
       PutInsHint(insObj,SET(firstHint,lastHint,-1));
-    }
+    }*/
   }
   else if (text->currentSynObj->primaryToken == quant_T
   && ((Quantifier*)text->currentSynObj)->set.ptr) {
@@ -5124,8 +5129,9 @@ bool CExecView::ToggleCatEnabled()
     }
     break;
   case TypeRef_T:
-    if (text->currentSynObj->parentObject->primaryToken == quant_T
-    && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
+    if ((text->currentSynObj->parentObject->primaryToken == quant_T
+        && ((Quantifier*)text->currentSynObj->parentObject)->set.ptr)
+    || text->currentSynObj->parentObject->primaryToken == catch_T)
       return false;
     text->currentSynObj->ExprGetFVType(text->ckd,decl,cat,ctxFlags);
     if (decl && decl->DeclType == VirtualType && decl->TypeFlags.Contains(definesObjCat))

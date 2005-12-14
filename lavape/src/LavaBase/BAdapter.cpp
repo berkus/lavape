@@ -1956,9 +1956,9 @@ void MakeStdAdapter()
   ExceptionAdapter[4] = 0;
   ExceptionAdapter[5] = 0; //ExceptionDecFunc;
   ExceptionAdapter[6] = 0;
-  ExceptionAdapter[LAH] = LastException;
-  ExceptionAdapter[LAH+1] = DropException;
-  ExceptionAdapter[LAH+2] = ExceptionCallStack;
+//  ExceptionAdapter[LAH] = LastException;
+  ExceptionAdapter[LAH] = DropException;
+  ExceptionAdapter[LAH+1] = ExceptionCallStack;
 
   HW_L_ExceptionAdapter[0] = (TAdapterFunc)2; //code and message
   HW_L_ExceptionAdapter[1] = 0;

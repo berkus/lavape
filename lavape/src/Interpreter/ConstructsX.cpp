@@ -1954,8 +1954,11 @@ bool IfdefStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsig
 }
 
 bool TryStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
-  CHE *opd;
-  bool ok;
+  CHE *branchp;
+  CatchClause *branch;
+  LavaObjectPtr currExc, currExcCasted;
+  bool ok=true;
+  int secN;
 
   STOP_AT_STM(ckd, stackFrame, true)
 
@@ -1963,17 +1966,32 @@ bool TryStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigne
   if (!ckd.exceptionThrown)
     return ok;
 
-  for ( opd=(CHE*)catchClauses.first;
-        opd;
-        opd = (CHE*)opd->successor) {
+  ckd.currentStackLevel++;
+  for ( branchp=(CHE*)catchClauses.first;
+        branchp;
+        branchp = (CHE*)branchp->successor) {
+    branch = (CatchClause*)branchp->data;
     ckd.exceptionThrown = false;
-    ok = ((SynObject*)((CatchClauseX*)opd->data)->catchClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
-    if (!ckd.exceptionThrown) {
-      DropException(ckd,0);
-			return ok;
+    currExc = ckd.lastException;
+    currExcCasted = currExc-currExc[0][0].sectionOffset;
+    secN = ckd.document->GetSectionNumber(ckd, currExcCasted[0][0].classDECL, branch->typeDecl, false);
+    if ( secN >= 0) {
+      currExcCasted = CASTOBJECT(currExcCasted,secN);
+      stackFrame[((VarName*)branch->varName.ptr)->stackPos] = currExcCasted;
+      ok = ((SynObject*)branch->catchClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+      if (!ckd.exceptionThrown) {
+        ckd.lastException = 0;
+        ckd.callStack.setLength(0);
+        ckd.currentStackLevel--;
+			  return ok;
+      }
     }
   }
-	return false;
+
+  ckd.lastException = 0;
+  ckd.callStack.setLength(0);
+  ckd.currentStackLevel--;
+	return ok;
 }
  
 LavaObjectPtr IfExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
