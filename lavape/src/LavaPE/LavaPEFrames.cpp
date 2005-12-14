@@ -1751,7 +1751,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     *it = 10;
     splitter->setSizes(list);
     lastActive = viewM;
-    if  ((oldWindowState == QEvent::ShowMaximized)/* && !isHidden()*/)
+    if  ((oldWindowState == QEvent::ShowMaximized) && showIt)
       showMaximized();
 		return true;
   }
@@ -1767,8 +1767,10 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 void CTreeFrame::InitialUpdate()
 
 {
-  wxMDIChildFrame::InitialUpdate();
-  wxDocManager::GetDocumentManager()->SetActiveView(viewM, true);
+  if (showIt) {
+    wxMDIChildFrame::InitialUpdate();
+    wxDocManager::GetDocumentManager()->SetActiveView(viewM, true);
+  }
 }
 
 CTreeFrame::~CTreeFrame()

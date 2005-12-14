@@ -3191,7 +3191,6 @@ void CLavaPEDoc::OnTotalCheck()
 {
   int ii, nErrBoxShown = 0;
   DString absName, absName2, messStr, nstr;
-  bool docopen;
   CLavaPEDoc *doc;
   wxDocManager* mana = wxDocManager::GetDocumentManager();
   POSITION pos = 0;
@@ -3209,36 +3208,30 @@ void CLavaPEDoc::OnTotalCheck()
       absName  = IDTable.IDTab[ii]->FileName;
       AbsPathName(absName, IDTable.DocDir);
       absName2.Reset(0);
-      docopen = false;
       pos = mana->GetFirstDocPos();
       while (pos && !SameFile(absName, absName2)) {
         doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
         absName2  = doc->IDTable.IDTab[0]->FileName;
         AbsPathName(absName2, doc->IDTable.DocDir);
       }
-      if (SameFile(absName, absName2)) {
-        docopen = true;
+      if (SameFile(absName, absName2)) 
+        doc->openInTotalCheck = false;
+      else {
+        doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(absName.c);
+        if (doc)
+          doc->openInTotalCheck = true;
       }
-      if (docopen && !doc->checkedInTotalCheck) {
+      if (doc && !doc->checkedInTotalCheck) {
         CExecChecks* ch = new CExecChecks(doc);
         doc->checkedInTotalCheck = true;
         delete ch;
-      }
-      else 
-        doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(absName.c);
-      if (doc && (/*doc->nTreeErrors ||*/ doc->nErrors || doc->nPlaceholders)) {
-        nErrBoxShown++;
-        if (docopen) {
-          doc->MainView->GetParentFrame()->Activate(true);
+        if (doc->nErrors || doc->nPlaceholders) {
+          nErrBoxShown++;
+          //if (!doc->openInTotalCheck) 
+          //  doc->MainView->GetParentFrame()->Activate(true);
           doc->ShowErrorBox(true);
         }
-        doc->openInTotalCheck = false;
       }
-      else 
-        if (doc && !docopen) {
-          doc->openInTotalCheck = true;
-          doc->OnCloseDocument(); //dies führte in einem mfc-Programm zum Absturz
-        }
     }
   }
   messStr = DString("Total check finished: ");

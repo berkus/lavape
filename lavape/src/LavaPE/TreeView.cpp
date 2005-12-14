@@ -84,9 +84,11 @@ CTreeItem::~CTreeItem()
 
 void CTreeItem::startRename(int col)
 {
-  inRename = true;
-  ((MyListView*)listView())->lavaView->RenameStart(this);
-  QListViewItem::startRename(col);
+  if (!inRename) {
+    inRename = true;
+    ((MyListView*)listView())->lavaView->RenameStart(this);
+    QListViewItem::startRename(col);
+  }
 }
 
 void CTreeItem::okRename(int col)
