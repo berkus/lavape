@@ -1980,14 +1980,16 @@ bool TryStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigne
       stackFrame[((VarName*)branch->varName.ptr)->stackPos] = currExcCasted;
       ok = ((SynObject*)branch->catchClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
       if (!ckd.exceptionThrown) {
+        DFC(currExc);
         ckd.lastException = 0;
         ckd.callStack.setLength(0);
         ckd.currentStackLevel--;
-			  return ok;
+	return ok;
       }
     }
   }
 
+  DFC(currExc);
   ckd.lastException = 0;
   ckd.callStack.setLength(0);
   ckd.currentStackLevel--;
