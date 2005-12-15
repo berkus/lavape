@@ -22,12 +22,12 @@
 
 
 #define UNDEF_VARIABLE (LavaObjectPtr)0
-#define LSH 2 //Lenght of section header in object
-#define SFH 3 //Lenght of stack frame header (function calls)
+#define LSH 2 //Length of section header in object
+#define SFH 3 //Length of stack frame header (function calls)
   //LavaObjectPtr : pointer to section in section table
   //LavaObjectPtr+1: objects section flags
 
-#define LOH 2 //Lenght of header in object:
+#define LOH 2 //Length of header in object:
   // LavaObjectPtr-1: reference counts (2 x unsigned short);
   // changed: use LavaObjectPtr+1 in the main section of the object
   // instead of LavaObjectPtr-2 for object-global flags;

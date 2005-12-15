@@ -5260,7 +5260,7 @@ bool TypeBranch::Check (CheckData &ckd)
     ok = false;
   }
 #ifdef INTERPRETER
-  ((VarName*)varName.ptr)->stackPos = ckd.currentStackLevel;
+  ((VarName*)varName.ptr)->stackPos = ckd.currentStackLevel-1;
   typeDecl = ckd.document->GetType(declBranchType);
   declSwitchExpression = ckd.document->GetType(declSwitchExpression);
 #endif
@@ -5366,7 +5366,7 @@ bool CatchClause::Check (CheckData &ckd)
     ERROREXIT
   }
 #ifdef INTERPRETER
-  ((VarName*)varName.ptr)->stackPos = ckd.currentStackLevel;
+  ((VarName*)varName.ptr)->stackPos = ckd.currentStackLevel-1;
   typeDecl = ckd.document->GetType(declBranchType);
 //  declSwitchExpression = ckd.document->GetType(declSwitchExpression);
 #endif
@@ -5387,10 +5387,12 @@ bool TryStatement::Check (CheckData &ckd)
 
   ENTRY
 
-  ((RefTable*)ckd.refTable)->NewBranchStm(branchStm,precedingBranch);
 #ifdef INTERPRETER
-  ckd.currentStackLevel++;
+  if (catchClauses.first)
+    ckd.currentStackLevel++;
 #endif
+
+  ((RefTable*)ckd.refTable)->NewBranchStm(branchStm,precedingBranch);
 
   ((Expression*)tryStatement.ptr)->Check(ckd);
 
@@ -5409,7 +5411,8 @@ bool TryStatement::Check (CheckData &ckd)
 #ifdef INTERPRETER
   if (ckd.currentStackLevel > ckd.stackFrameSize)
     ckd.stackFrameSize = ckd.currentStackLevel;
-  ckd.currentStackLevel--;
+  if (catchClauses.first)
+    ckd.currentStackLevel--;
 #endif
   EXIT
 }
@@ -5422,11 +5425,12 @@ bool TypeSwitchStatement::Check (CheckData &ckd)
 
   ENTRY
 
-  ((RefTable*)ckd.refTable)->NewBranchStm(branchStm,precedingBranch);
-
 #ifdef INTERPRETER
   ckd.currentStackLevel++;
 #endif
+
+  ((RefTable*)ckd.refTable)->NewBranchStm(branchStm,precedingBranch);
+
   ((SynObject*)caseExpression.ptr)->Check(ckd);
   ((SynObject*)caseExpression.ptr)->ExprGetFVType(ckd,declSwitchExpression,catSwitchExpression,ctxFlags);
   CContext swCtx = ckd.tempCtx;
