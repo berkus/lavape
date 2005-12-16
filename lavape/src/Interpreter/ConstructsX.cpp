@@ -1183,7 +1183,7 @@ bool FailStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
     }
     ((SynFlags*)(object+1))->INCL(finished);
     for (ii = 0; (ii < object[0][0].nSections) && (object[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
-    ckd.callStack = DebugStop(ckd,stackFrame,"Exception thrown by \"fail\" statement");
+    ckd.callStack = DebugStop(ckd,stackFrame,"Exception thrown by \"throw\" statement");
     ckd.lastException = object + object[0][ii].sectionOffset;
     ckd.exceptionThrown = true;
   }
@@ -1978,10 +1978,10 @@ bool TryStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigne
     if ( secN >= 0) {
       currExcCasted = CASTOBJECT(currExcCasted,secN);
       stackFrame[((VarName*)branch->varName.ptr)->stackPos] = currExcCasted;
-      IFC(currExc);
+      IFC(currExc); // for the local exception variable
       ok = ((SynObject*)branch->catchClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+      DFC(currExc); // release the local exception variable
       if (!ckd.exceptionThrown) {
-        DFC(currExc);
         ckd.lastException = 0;
         ckd.callStack.setLength(0);
         ckd.currentStackLevel--;
@@ -2842,7 +2842,8 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
     }
     IFC(value); // for permanent ref from Constant
     allocatedObjects--;
-    // is released only when syntax is released
+    // constants aren't counted as allocated objects
+    // and released only when syntax is released
   }
   return value; 
 }

@@ -5368,7 +5368,6 @@ bool CatchClause::Check (CheckData &ckd)
 #ifdef INTERPRETER
   ((VarName*)varName.ptr)->stackPos = ckd.currentStackLevel-1;
   typeDecl = ckd.document->GetType(declBranchType);
-//  declSwitchExpression = ckd.document->GetType(declSwitchExpression);
 #endif
   if (catBranchType != valueObj) {
     ((SynObject*)exprType.ptr)->SetError(ckd,&ERR_IncompatibleCategory);
