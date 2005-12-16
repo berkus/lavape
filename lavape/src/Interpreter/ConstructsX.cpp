@@ -1978,24 +1978,21 @@ bool TryStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigne
     if ( secN >= 0) {
       currExcCasted = CASTOBJECT(currExcCasted,secN);
       stackFrame[((VarName*)branch->varName.ptr)->stackPos] = currExcCasted;
-      IFC(currExc); // for the local exception variable
       ok = ((SynObject*)branch->catchClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
       DFC(currExc); // release the local exception variable
+      ckd.currentStackLevel--;
       if (!ckd.exceptionThrown) {
         ckd.lastException = 0;
         ckd.callStack.setLength(0);
-        ckd.currentStackLevel--;
 	      return ok;
       }
+      else
+ 	     return false;
     }
   }
 
-  DFC(ckd.lastException);
-  ckd.lastException = 0;
-  ckd.exceptionThrown = false;
-  ckd.callStack.setLength(0);
   ckd.currentStackLevel--;
-	return true;
+	return false;
 }
  
 LavaObjectPtr IfExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
