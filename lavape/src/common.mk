@@ -1,4 +1,5 @@
 SHELL=/usr/bin/env bash
+DBG=-g
 
 ph_files=$(wildcard *.ph)
 h_ph_files=$(ph_files:.ph=.h)
