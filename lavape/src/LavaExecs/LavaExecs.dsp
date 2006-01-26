@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /Yu"stdafx.h" /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I ".\res\TOOLBUTTONS" /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaPE" /I "..\LavaPE\Generated" /I "..\LavaPE\res" /I "..\LavaPE\res\TreeIcons" /I "..\LavaPE\res\Toolbuttons" /I "..\LavaBase" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /I "$(QTDIR)\include" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "EXECVIEW" /D "WIN32" /D "QT_THREAD_SUPPORT" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I ".\res\TOOLBUTTONS" /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaPE" /I "..\LavaPE\Generated" /I "..\LavaPE\res" /I "..\LavaPE\res\TreeIcons" /I "..\LavaPE\res\Toolbuttons" /I "..\LavaBase" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /I "$(QT3DIR)\include" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "EXECVIEW" /D "WIN32" /D "QT_THREAD_SUPPORT" /FR /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /win32
 # ADD MTL /nologo /mktyplib203 /win32
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386
-# ADD LINK32 ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib $(QTDIR)\lib\qt-mt$(QTR).lib advapi32.lib wsock32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"..\LavaPE\Debug\LavaExecs.dll"
+# ADD LINK32 ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib $(QT3DIR)\lib\qt-mt$(QTR).lib advapi32.lib wsock32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"..\LavaPE\Debug\LavaExecs.dll"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "LavaExecs - Win32 Release"
@@ -74,7 +74,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /Gi /Zi /Od /Gf /Gy /I "..\disco" /I "..\LavaPE" /I "..\LavaBase" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_MBCS" /D "EXECS_EXPORT" /FR /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\res\TOOLBUTTONS" /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaPE" /I "..\LavaPE\Generated" /I "..\LavaPE\res" /I "..\LavaPE\res\TreeIcons" /I "..\LavaPE\res\Toolbuttons" /I "..\LavaBase" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "EXECVIEW" /D "QT_THREAD_SUPPORT" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\res\TOOLBUTTONS" /I ".\Generated" /I "..\disco" /I "..\wxqDocView" /I "..\LavaPE" /I "..\LavaPE\Generated" /I "..\LavaPE\res" /I "..\LavaPE\res\TreeIcons" /I "..\LavaPE\res\Toolbuttons" /I "..\LavaBase" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /I "$(QT3DIR)\include" /D "WIN32" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "EXECVIEW" /D "QT_THREAD_SUPPORT" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
@@ -85,7 +85,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"..\LavaPE\Debug\LavaExecs.dll"
-# ADD LINK32 ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib $(QTDIR)\librel\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /dll /incremental:no /machine:I386 /out:"..\LavaPE\Release\LavaExecs.dll"
+# ADD LINK32 ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib $(QT3DIR)\librel\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /dll /incremental:no /machine:I386 /out:"..\LavaPE\Release\LavaExecs.dll"
 # SUBTRACT LINK32 /debug
 
 !ENDIF 
@@ -202,7 +202,7 @@ InputPath=.\ComboBar.h
 InputName=ComboBar
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -286,7 +286,7 @@ InputPath=.\ExecView.h
 InputName=ExecView
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -368,7 +368,7 @@ InputPath=.\Generated\ComboBarDlg.h
 InputName=ComboBarDlg
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -392,7 +392,7 @@ InputPath=.\Generated\Comment.h
 InputName=Comment
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -424,8 +424,8 @@ InputPath=ComboBarDlg.ui
 InputName=ComboBarDlg
 
 BuildCmds= \
-	$(QTDIR)\bin\uic.exe $(InputPath) -o Generated\$(InputName).h \
-	$(QTDIR)\bin\uic.exe -impl Generated\$(InputName).h $(InputPath) -o Generated\$(InputName).cpp \
+	$(QT3DIR)\bin\uic.exe $(InputPath) -o Generated\$(InputName).h \
+	$(QT3DIR)\bin\uic.exe -impl Generated\$(InputName).h $(InputPath) -o Generated\$(InputName).cpp \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -452,8 +452,8 @@ InputPath=Comment.ui
 InputName=Comment
 
 BuildCmds= \
-	$(QTDIR)\bin\uic.exe $(InputPath) -o Generated\$(InputName).h \
-	$(QTDIR)\bin\uic.exe -impl Generated\$(InputName).h $(InputPath) -o Generated\$(InputName).cpp \
+	$(QT3DIR)\bin\uic.exe $(InputPath) -o Generated\$(InputName).h \
+	$(QT3DIR)\bin\uic.exe -impl Generated\$(InputName).h $(InputPath) -o Generated\$(InputName).cpp \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"

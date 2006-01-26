@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "..\wxqDocView" /I "..\LavaPE_UI" /I "$(QTDIR)\include" /D "WIN32" /D "LAVABASE_EXPORT" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "." /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "..\wxqDocView" /I "..\LavaPE_UI" /I "$(QT3DIR)\include" /D "WIN32" /D "LAVABASE_EXPORT" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 ..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib $(QTDIR)\librel\qassistantclient.lib $(QTDIR)\librel\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib winspool.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comdlg32.lib wsock32.lib /nologo /subsystem:windows /dll /machine:I386 /out:"..\LavaPE\Release\LavaBase.dll"
+# ADD LINK32 ..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib $(QT3DIR)\librel\qassistantclient.lib $(QT3DIR)\librel\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib winspool.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comdlg32.lib wsock32.lib /nologo /subsystem:windows /dll /machine:I386 /out:"..\LavaPE\Release\LavaBase.dll"
 # SUBTRACT LINK32 /debug
 
 !ELSEIF  "$(CFG)" == "LavaBase - Win32 Debug"
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "..\wxqDocView" /I "..\LavaPE_UI" /I "$(QTDIR)\include" /D "WIN32" /D "LAVABASE_EXPORT" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "..\wxqDocView" /I "..\LavaPE_UI" /I "$(QT3DIR)\include" /D "WIN32" /D "LAVABASE_EXPORT" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FR /FD /c
 # SUBTRACT CPP /WX /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /mktyplib203 /o "NUL" /win32
@@ -84,7 +84,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib winspool.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comdlg32.lib wsock32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"../LavaPE/Debug/LavaBase.dll" /libpath:"../wxqDocView/Debug" /libpath:"$(QTDIR)/lib"
+# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib $(QT3DIR)\lib\qassistantclient.lib $(QT3DIR)\lib\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib winspool.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comdlg32.lib wsock32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"../LavaPE/Debug/LavaBase.dll" /libpath:"../wxqDocView/Debug" /libpath:"$(QT3DIR)/lib"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ENDIF 
@@ -238,7 +238,7 @@ InputPath=.\AboutBox.h
 InputName=AboutBox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -262,7 +262,7 @@ InputPath=.\DumpView.h
 InputName=DumpView
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -282,7 +282,7 @@ InputPath=.\LavaAppBase.h
 InputName=LavaAppBase
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -302,7 +302,7 @@ InputPath=.\LavaBaseDoc.h
 InputName=LavaBaseDoc
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -334,7 +334,7 @@ InputPath=.\PEBaseDoc.h
 InputName=PEBaseDoc
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -386,7 +386,7 @@ InputPath=.\Generated\idd_aboutbox.h
 InputName=idd_aboutbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -449,8 +449,8 @@ InputPath=.\idd_aboutbox.ui
 InputName=idd_aboutbox
 
 BuildCmds= \
-	$(QTDIR)\bin\uic.exe $(InputPath) -o Generated\$(InputName).h \
-	$(QTDIR)\bin\uic.exe -impl $(InputName).h $(InputPath) -o Generated\$(InputName).cpp \
+	$(QT3DIR)\bin\uic.exe $(InputPath) -o Generated\$(InputName).h \
+	$(QT3DIR)\bin\uic.exe -impl $(InputName).h $(InputPath) -o Generated\$(InputName).cpp \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"

@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /YX /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\wxqDocView" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "DISCO_EXPORT" /D "QT_DLL" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\wxqDocView" /I "..\SFLsockets" /I "$(QT3DIR)\include" /D "WIN32" /D "DISCO_EXPORT" /D "QT_DLL" /FR /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /win32
 # ADD MTL /nologo /mktyplib203 /win32
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386
-# ADD LINK32 ..\SFLsockets\Debug\SFLsockets.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"..\LavaPE\Debug\disco.dll" /libpath:"$(QTDIR)/lib"
+# ADD LINK32 ..\SFLsockets\Debug\SFLsockets.lib $(QT3DIR)\lib\qt-mt$(QTR).lib kernel32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"..\LavaPE\Debug\disco.dll" /libpath:"$(QT3DIR)/lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "disco - Win32 Release"
@@ -74,7 +74,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "NDEBUG" /D "WIN32" /D "DISCO_EXPORT" /FR /Yu"disco.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "..\wxqDocView" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "DISCO_EXPORT" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "..\wxqDocView" /I "..\SFLsockets" /I "$(QT3DIR)\include" /D "WIN32" /D "DISCO_EXPORT" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
@@ -85,7 +85,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"..\LavaPE\Debug\disco.dll"
-# ADD LINK32 ..\SFLsockets\Release\SFLsockets.lib $(QTDIR)\librel\qt-mt$(QTR).lib kernel32.lib /nologo /subsystem:windows /dll /pdb:none /machine:I386 /out:"..\LavaPE\Release\disco.dll"
+# ADD LINK32 ..\SFLsockets\Release\SFLsockets.lib $(QT3DIR)\librel\qt-mt$(QTR).lib kernel32.lib /nologo /subsystem:windows /dll /pdb:none /machine:I386 /out:"..\LavaPE\Release\disco.dll"
 # SUBTRACT LINK32 /debug
 
 !ENDIF 

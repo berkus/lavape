@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QT3DIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 ..\wxqDocView\Release\wxqDocView.lib ..\LavaGUI\Release\LavaGUI.lib ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\LavaExecs\Release\LavaExecs.lib ..\SFLsockets\Release\SFLsockets.lib $(QTDIR)\librel\qtmain.lib $(QTDIR)\librel\qassistantclient.lib $(QTDIR)\librel\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /machine:I386
+# ADD LINK32 ..\wxqDocView\Release\wxqDocView.lib ..\LavaGUI\Release\LavaGUI.lib ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\LavaExecs\Release\LavaExecs.lib ..\SFLsockets\Release\SFLsockets.lib $(QT3DIR)\librel\qtmain.lib $(QT3DIR)\librel\qassistantclient.lib $(QT3DIR)\librel\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /machine:I386
 
 !ELSEIF  "$(CFG)" == "LavaPE - Win32 Debug"
 
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I ".\Generated" /I "..\wxqDocView" /I "..\disco" /I "..\SFLsockets" /I "$(QT3DIR)\include" /I "..\LavaBase" /I "..\LavaBase\Generated" /I "..\LavaGUI" /I "..\LavaExecs" /I "..\LavaExecs\Generated" /I "res" /I "res\ToolButtons" /I "res\TreeIcons" /I "..\LavaPE_UI" /I "..\LavaPE_UI\Generated" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /FR /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /mktyplib203 /o "NUL" /win32
@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\wxqDocView\Debug\wxqDocView.lib ..\LavaGUI\Debug\LavaGUI.lib ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaExecs\Debug\LavaExecs.lib ..\SFLsockets\Debug\SFLsockets.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /pdbtype:sept /libpath:"../wxqDocView/Debug" /libpath:"$(QTDIR)/lib"
+# ADD LINK32 ..\wxqDocView\Debug\wxqDocView.lib ..\LavaGUI\Debug\LavaGUI.lib ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaExecs\Debug\LavaExecs.lib ..\SFLsockets\Debug\SFLsockets.lib $(QT3DIR)\lib\qtmain.lib $(QT3DIR)\lib\qassistantclient.lib $(QT3DIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /pdbtype:sept /libpath:"../wxqDocView/Debug" /libpath:"$(QT3DIR)/lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -171,7 +171,7 @@ InputPath=.\Bars.h
 InputName=Bars
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -191,7 +191,7 @@ InputPath=.\Boxes.h
 InputName=Boxes
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -219,7 +219,7 @@ InputPath=.\FindRefsBox.h
 InputName=FindRefsBox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -240,7 +240,7 @@ InputPath=.\InclView.h
 InputName=InclView
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -261,7 +261,7 @@ InputPath=.\LavaPE.h
 InputName=LavaPE
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -282,7 +282,7 @@ InputPath=.\LavaPEDoc.h
 InputName=LavaPEDoc
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -302,7 +302,7 @@ InputPath=.\LavaPEFrames.h
 InputName=LavaPEFrames
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -327,7 +327,7 @@ InputPath=.\LavaPEView.h
 InputName=LavaPEView
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -347,7 +347,7 @@ InputPath=.\LavaPEWizard.h
 InputName=LavaPEWizard
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -372,7 +372,7 @@ InputPath=.\TreeView.h
 InputName=TreeView
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -393,7 +393,7 @@ InputPath=.\VTView.h
 InputName=VTView
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 

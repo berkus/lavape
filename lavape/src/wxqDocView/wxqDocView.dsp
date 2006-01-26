@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "WXQDOCVIEW_EXPORTS" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /W3 /GX /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "$(QT3DIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 ..\disco\Release\disco.lib $(QTDIR)\librel\qt-mt$(QTR).lib ole32.lib /nologo /dll /machine:I386 /out:"..\LavaPE\Release\wxqDocView.dll"
+# ADD LINK32 ..\disco\Release\disco.lib $(QT3DIR)\librel\qt-mt$(QTR).lib ole32.lib /nologo /dll /machine:I386 /out:"..\LavaPE\Release\wxqDocView.dll"
 
 !ELSEIF  "$(CFG)" == "wxqDocView - Win32 Debug"
 
@@ -72,8 +72,8 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 LIB32=link.exe -lib
-# ADD BASE CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "..\disco" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /FR /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /FR /FD /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "..\disco" /I "$(QT3DIR)\include" /D "WIN32" /D "QT_DLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /FR /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /Gi /GX /ZI /Od /I "Generated" /I "..\disco" /I "..\SFLsockets" /I "$(QT3DIR)\include" /D "WIN32" /D "QT_DLL" /D "WXMAKINGDLL" /D "__WXMSW__" /D "INCLUDE_MENUITEM_DEF" /D "QT_THREAD_SUPPORT" /FR /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
@@ -83,8 +83,8 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 ..\disco\Debug\disco.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qui.lib $(QTDIR)\lib\qt-mt321.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\disco\Debug\disco.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /out:"..\LavaPE\Debug\wxqDocView.dll" /pdbtype:sept
+# ADD BASE LINK32 ..\disco\Debug\disco.lib $(QT3DIR)\lib\qtmain.lib $(QT3DIR)\lib\qui.lib $(QT3DIR)\lib\qt-mt321.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 ..\disco\Debug\disco.lib $(QT3DIR)\lib\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /out:"..\LavaPE\Debug\wxqDocView.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -126,7 +126,7 @@ InputPath=.\docview.h
 InputName=docview
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -148,7 +148,7 @@ InputPath=.\mdiframes.h
 InputName=mdiframes
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
