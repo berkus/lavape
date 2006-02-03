@@ -9,15 +9,18 @@
 #include "LavaAppBase.h"
 #include "DbgThreadPE.h"
 #include "ExecUpdate.h"
-#include "prelude.h"
-#include "sflsock.h"
+//#include "prelude.h"
+#include <QTcpSocket>
 #include "ASN1File.h"
 
-#include "qcombobox.h"
+#include "q3combobox.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QEvent>
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "qprocess.h"
+#include "q3process.h"
 
 
 class CLavaPEBrowse : public CPEBaseBrowse
@@ -50,7 +53,7 @@ public:
   CExecUpdate ExecUpdate;
   CLavaBaseData LBaseData;
   QString CMDLine;
-  QProcess interpreter;
+  Q3Process interpreter;
   CLavaPEDebugThread debugThread;
   //CLavaPEPMdumpThread pmDumpThread;
 
@@ -81,10 +84,10 @@ public:
   void OnSaveAll();
   void OnImport();
   void OnFindByName();
-  void OnUpdateEditUndo(wxAction* action);
-  void OnUpdatePopcontext(wxAction* action);
-  void OnUpdateEditRedo(wxAction* action);
-  void OnUpdateSaveAll(wxAction* action);
+  void OnUpdateEditUndo(QAction* action);
+  void OnUpdatePopcontext(QAction* action);
+  void OnUpdateEditRedo(QAction* action);
+  void OnUpdateSaveAll(QAction* action);
   void saveSettings();
   QString InitWebBrowser ();
 private:
@@ -102,6 +105,6 @@ extern  int xcomBM;
 extern  int xerrcomBM;
 extern  int overRidesBM;
 
-extern bool Q_EXPORT qt_use_native_dialogs;
+//???extern bool Q_EXPORT qt_use_native_dialogs;
 
 #endif

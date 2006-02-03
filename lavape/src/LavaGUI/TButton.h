@@ -7,6 +7,8 @@
 #include "qpushbutton.h"
 #include "qcheckbox.h"
 #include "qevent.h"
+//Added by qt3to4:
+#include <QFocusEvent>
 
 
 /////////////////////////////////////////////////////////////////////////////

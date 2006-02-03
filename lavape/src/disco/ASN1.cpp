@@ -26,12 +26,11 @@
 #include "ASN1.h"
 #include "MachDep.h"
 #include "Halt.h"
+
+#include <qglobal.h>
 #include <qapplication.h>
 #include <qmessagebox.h>
 
-#ifdef WIN32x
-#include <winsock.h>
-#endif
 
 using namespace std;
 
@@ -94,14 +93,12 @@ ASN1::~ASN1 ()
 
 /**********************************************************************/
 
-//private:
-
 
 void ASN1::error (ErrCode errCode,
                   char *callingProcedure)
 
 {
-  QString errMsg=QString("Error in input file:\n\nDetails:\n+++++ ")+callingProcedure+": "+ASN1Emsg[errCode].c;
+  QString errMsg=QString("Error in input file:\n\nDetails:\n+++++ ")+QString(callingProcedure)+QString(": ")+QString(ASN1Emsg[errCode].c);
   if ((errCode == WrongElRep)
       && !wrongElemStop) {
     wrongElem = true;
@@ -110,7 +107,7 @@ void ASN1::error (ErrCode errCode,
   }
   if (!Silent) {
     qDebug(errMsg);
-    QMessageBox::critical(qApp->mainWidget(),qApp->name(),errMsg,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),errMsg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
   }
   errorExitProc();
   skip = true;
@@ -1514,7 +1511,7 @@ void ASN1::GETstring (DString& s)
     s[s.l] = '\0';
   }
   if (HeaderTrace)
-    qDebug(QString("::: ASN1.GetSTRING: \"")+s.c+"\"");
+    qDebug(QString("::: ASN1.GetSTRING: \"")+QString(s.c)+QString("\""));
 }
 
 
@@ -1758,13 +1755,13 @@ QString ASN1::toHex (QString sIn)
   unsigned char uch;
   QString sOut;
 
-  for (unsigned i = 0; i < sIn.length(); i++) {
-    uch = QChar(sIn.at(i));
+  for (unsigned i = 0; (int)i < sIn.length(); i++) {
+	uch = QChar(sIn.at(i)).toAscii();
     uch = uch>>4;
     uch = (uch < 10 ? '0'+uch : 'A'+(uch-10));
     sOut += uch;
     
-    uch = QChar(sIn.at(i));
+    uch = QChar(sIn.at(i)).toAscii();
     uch = uch & '\x0f';
     uch = (uch < 10 ? '0'+uch : 'A'+(uch-10));
     sOut += uch;

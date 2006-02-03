@@ -28,8 +28,12 @@
 #include "Boxes.h"
 #include "qtabbar.h"
 #include "qstatusbar.h"
-#include "qheader.h"
+#include "q3header.h"
 #include "qmessagebox.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <Q3ValueList>
+#include <QCustomEvent>
 
 /////////////////////////////////////////////////////////////////////////////
 // CSizeDlgBar
@@ -44,25 +48,25 @@ CUtilityView::CUtilityView(QWidget *parent)
 {
 	QString emptyString;
 	
-  FindPage = new QListView(this);
+  FindPage = new Q3ListView(this);
   FindPage->setSorting(-1);
   FindPage->addColumn(emptyString);
   FindPage->setRootIsDecorated(false);
   FindPage->header()->hide();
-  FindPage->setSelectionMode(QListView::Single);//Extended); 
-  CommentPage = new QTextEdit(this);
+  FindPage->setSelectionMode(Q3ListView::Single);//Extended); 
+  CommentPage = new Q3TextEdit(this);
   CommentPage->setReadOnly(true);
 //  QTextEdit *CommentPage2 = new QTextEdit(this);
 //  CommentPage2->setReadOnly(true);
-  ErrorPage = new QTextEdit(this);
+  ErrorPage = new Q3TextEdit(this);
   ErrorPage->setReadOnly(true);
   DebugPage = new QSplitter(this);
   DebugPage->setOrientation(Qt::Horizontal);
   VarView = new VarListView(DebugPage, this, false);
   ParamView = new VarListView(DebugPage, this, true);
   StackView = new StackListView(DebugPage, this);
-  QValueList<int> list = DebugPage->sizes();
-  QValueList<int>::Iterator it = list.begin();
+  Q3ValueList<int> list = DebugPage->sizes();
+  Q3ValueList<int>::Iterator it = list.begin();
   int totalW = *it;
   ++it;
   totalW += *it;
@@ -75,10 +79,10 @@ CUtilityView::CUtilityView(QWidget *parent)
   ++it;
   *it = totalW/5;
   DebugPage->setSizes(list);
-  QIconSet icoFind = QIconSet(QPixmap((const char**)PX_findtab));
-  QIconSet icoErr = QIconSet(QPixmap((const char**)PX_errtab));
-  QIconSet icoCom = QIconSet(QPixmap((const char**)PX_commentt));
-  QIconSet icoDebug = QIconSet(QPixmap((const char**)PX_debugTab));
+  QIcon icoFind = QIcon(QPixmap((const char**)PX_findtab));
+  QIcon icoErr = QIcon(QPixmap((const char**)PX_errtab));
+  QIcon icoCom = QIcon(QPixmap((const char**)PX_commentt));
+  QIcon icoDebug = QIcon(QPixmap((const char**)PX_debugTab));
   setTabPosition(Bottom);
 //  addTab (CommentPage, icoCom, "Comment" ); 
   addTab (CommentPage, icoCom, "Comment" ); 
@@ -90,7 +94,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   ActTab = tabComment;
   setCurrentPage((int)ActTab);
   connect(this,SIGNAL(currentChanged(QWidget*)), SLOT(OnTabChange(QWidget*)));
-  connect(FindPage,SIGNAL(doubleClicked(QListViewItem*)), SLOT(OnDblclk(QListViewItem*)));
+  connect(FindPage,SIGNAL(doubleClicked(Q3ListViewItem*)), SLOT(OnDblclk(Q3ListViewItem*)));
   ErrorEmpty = true;
   CommentEmpty = true;
   firstDebug = true;
@@ -166,7 +170,7 @@ void CUtilityView::SetFindText(const DString& text, CFindData* data)
   item->setItemData((TItemData*)data);
 }
 
-void CUtilityView::OnDblclk(QListViewItem* item)
+void CUtilityView::OnDblclk(Q3ListViewItem* item)
 {
   CFindData *data;
   TID tid;
@@ -184,7 +188,7 @@ void CUtilityView::OnDblclk(QListViewItem* item)
         if (doc->TrueReference(decl, data->refCase, data->refTid))
           ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, tid, true, &data->enumID);
         else
-          QMessageBox::critical(this, qApp->name(), IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->name(), IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       }
       else if (data->index == 2)
         ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, tid, true, &data->enumID);
@@ -450,7 +454,7 @@ void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
 
 
 VarItem::VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListView* view)
-  :QListViewItem(parent, afterItem) 
+  :Q3ListViewItem(parent, afterItem) 
 {
   myView = view;
   setMultiLinesEnabled(true);
@@ -467,7 +471,7 @@ VarItem::VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListV
 }
 
 VarItem::VarItem(VarItem* parent, DDItemData* data, VarListView* view)
-  :QListViewItem(parent) 
+  :Q3ListViewItem(parent) 
 {
   myView = view;
   setMultiLinesEnabled(true);
@@ -484,7 +488,7 @@ VarItem::VarItem(VarItem* parent, DDItemData* data, VarListView* view)
 }
 
 VarItem::VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data)
-  :QListViewItem(parent, afterItem) 
+  :Q3ListViewItem(parent, afterItem) 
 {
   setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
@@ -501,7 +505,7 @@ VarItem::VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data)
 }
 
 VarItem::VarItem(VarListView* parent, DDItemData* data)
-  :QListViewItem(parent) 
+  :Q3ListViewItem(parent) 
 {
   setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
@@ -539,11 +543,11 @@ void VarItem::paintCell( QPainter * p, const QColorGroup & cg,
 {
   if (!column && isPriv) {
     QColorGroup cgN ( cg);
-    cgN.setColor(QColorGroup::Text,red);
-    QListViewItem::paintCell( p, cgN, column, width, align );
+    cgN.setColor(QColorGroup::Text,Qt::red);
+    Q3ListViewItem::paintCell( p, cgN, column, width, align );
   }
   else
-    QListViewItem::paintCell( p, cg, column, width, align );
+    Q3ListViewItem::paintCell( p, cg, column, width, align );
 }
 
 
@@ -564,7 +568,7 @@ void VarItem::setOpen(bool O)
       return;
     }
   }
-  QListViewItem::setOpen(O);
+  Q3ListViewItem::setOpen(O);
 }
 
 void VarItem::makeNrs(ChObjRq *rqs)
@@ -577,14 +581,14 @@ void VarItem::makeNrs(ChObjRq *rqs)
 }
 
 VarListView::VarListView(QWidget *parent, CUtilityView* bar, bool forParams)
-:QListView(parent, "VarListView")
+:Q3ListView(parent, "VarListView")
 {
   QString label;
 
   myUtilityView = bar;
 //  itemToOpen = 0;
   setRootIsDecorated(true);
-  setFocusPolicy(QWidget::StrongFocus);
+  setFocusPolicy(Qt::StrongFocus);
   setSorting(-1);
   if (forParams)
     addColumn("func.params. (type[/RT type])");
@@ -595,7 +599,7 @@ VarListView::VarListView(QWidget *parent, CUtilityView* bar, bool forParams)
   //setRootIsDecorated(true);
   header()->show();
   setShowToolTips(true);
-  setSelectionMode(QListView::Single);
+  setSelectionMode(Q3ListView::Single);
   width0 = columnWidth(0);
   width1 = columnWidth(1);
   width2 = columnWidth(2);
@@ -624,7 +628,7 @@ void VarListView::makeItems(const CHAINX& objChain) //DbgStopData* data)
 
 
 StackListView::StackListView(QWidget *parent, CUtilityView* bar)
-:QListView(parent, "StackListView")
+:Q3ListView(parent, "StackListView")
 {
   QString label, emptyString;
 
@@ -633,16 +637,16 @@ StackListView::StackListView(QWidget *parent, CUtilityView* bar)
   addColumn(emptyString);
   setRootIsDecorated(false);
   header()->hide();
-  setFocusPolicy(QWidget::StrongFocus);
+  setFocusPolicy(Qt::StrongFocus);
   setSorting(-1);
   setShowToolTips(true);
-  setSelectionMode(QListView::Single);
+  setSelectionMode(Q3ListView::Single);
   allDrawn = false;
-  connect(this,SIGNAL(clicked(QListViewItem*)), SLOT(itemClicked(QListViewItem*)));
+  connect(this,SIGNAL(clicked(Q3ListViewItem*)), SLOT(itemClicked(Q3ListViewItem*)));
   connect(this,SIGNAL(selectionChanged()), SLOT(selChanged()));
 }
 
-void StackListView::itemClicked(QListViewItem *item)
+void StackListView::itemClicked(Q3ListViewItem *item)
 {
   selChanged();
 }

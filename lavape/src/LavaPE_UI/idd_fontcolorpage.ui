@@ -1,836 +1,656 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
-<class>idd_fontcolorpage</class>
-<widget class="QWidget">
-    <property name="name">
-        <cstring>idd_fontcolorpage</cstring>
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>idd_fontcolorpage</class>
+  <widget class="QWidget" name="idd_fontcolorpage" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>275</width>
+        <height>403</height>
+      </rect>
     </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>275</width>
-            <height>403</height>
-        </rect>
+    <property name="windowTitle" >
+      <string>Font and color</string>
     </property>
-    <property name="caption">
-        <string>Font and color</string>
-    </property>
-    <vbox>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <widget class="QGroupBox">
-            <property name="name">
-                <cstring>groupBox6</cstring>
-            </property>
-            <property name="title">
-                <string>Fonts</string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
+    <layout class="QVBoxLayout" >
+      <item>
+        <widget class="Q3GroupBox" name="groupBox6" >
+          <property name="title" >
+            <string>Fonts</string>
+          </property>
+          <layout class="QGridLayout" >
+            <item row="0" column="0" >
+              <widget class="QLabel" name="textLabel1" >
+                <property name="text" >
+                  <string>Text font</string>
                 </property>
-                <widget class="QLabel" row="0" column="0">
-                    <property name="name">
-                        <cstring>textLabel1</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Text font</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="0" column="3">
-                    <property name="name">
-                        <cstring>fontNameT</cstring>
-                    </property>
-                    <property name="text">
-                        <string></string>
-                    </property>
-                </widget>
-                <spacer row="0" column="4">
-                    <property name="name">
-                        <cstring>spacer6</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>30</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="1" column="4">
-                    <property name="name">
-                        <cstring>spacer6_2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>30</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="QLabel" row="1" column="3">
-                    <property name="name">
-                        <cstring>fontNameL</cstring>
-                    </property>
-                    <property name="text">
-                        <string></string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="1" column="0">
-                    <property name="name">
-                        <cstring>textLabel1_2</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Label font</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="0" column="1">
-                    <property name="name">
-                        <cstring>defaultFontT</cstring>
-                    </property>
-                    <property name="text">
-                        <string>default</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="1" column="1">
-                    <property name="name">
-                        <cstring>defaultFontL</cstring>
-                    </property>
-                    <property name="text">
-                        <string>default</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="0" column="2">
-                    <property name="name">
-                        <cstring>fontButtonT</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>20</width>
-                            <height>32767</height>
-                        </size>
-                    </property>
-                    <property name="text">
-                        <string>...</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="1" column="2">
-                    <property name="name">
-                        <cstring>fontButtonL</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>20</width>
-                            <height>32767</height>
-                        </size>
-                    </property>
-                    <property name="text">
-                        <string>...</string>
-                    </property>
-                </widget>
-            </grid>
-        </widget>
-        <widget class="QGroupBox">
-            <property name="name">
-                <cstring>groupBox6_2</cstring>
-            </property>
-            <property name="title">
-                <string>Colors</string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
+              </widget>
+            </item>
+            <item row="0" column="3" >
+              <widget class="QLabel" name="fontNameT" >
+                <property name="text" >
+                  <string/>
                 </property>
-                <widget class="QLabel" row="0" column="0">
-                    <property name="name">
-                        <cstring>textLabel1_3</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Foreground color</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="1" column="0">
-                    <property name="name">
-                        <cstring>textLabel1_2_2</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Background color</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="1" column="1">
-                    <property name="name">
-                        <cstring>defaultBackground</cstring>
-                    </property>
-                    <property name="text">
-                        <string>default</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="0" column="1">
-                    <property name="name">
-                        <cstring>defaultForeground</cstring>
-                    </property>
-                    <property name="text">
-                        <string>default</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="1" column="2">
-                    <property name="name">
-                        <cstring>colorButtonB</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>20</width>
-                            <height>32767</height>
-                        </size>
-                    </property>
-                    <property name="text">
-                        <string>...</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="0" column="2">
-                    <property name="name">
-                        <cstring>colorButtonF</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>20</width>
-                            <height>32767</height>
-                        </size>
-                    </property>
-                    <property name="text">
-                        <string>...</string>
-                    </property>
-                </widget>
-                <widget class="QFrame" row="0" column="3">
-                    <property name="name">
-                        <cstring>ForeColor</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>0</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="frameShape">
-                        <enum>StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Plain</enum>
-                    </property>
-                </widget>
-                <widget class="QFrame" row="1" column="3">
-                    <property name="name">
-                        <cstring>BackColor</cstring>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="frameShape">
-                        <enum>StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Plain</enum>
-                    </property>
-                </widget>
-                <spacer row="1" column="4">
-                    <property name="name">
-                        <cstring>spacer6_2_2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>30</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="0" column="4">
-                    <property name="name">
-                        <cstring>spacer6_3</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>30</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-            </grid>
-        </widget>
-        <widget class="QGroupBox">
-            <property name="name">
-                <cstring>groupBoxT</cstring>
-            </property>
-            <property name="title">
-                <string>Text colors</string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QLabel" row="0" column="0">
-                    <property name="name">
-                        <cstring>textLabel1_3_2</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Foreground color</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="1" column="0">
-                    <property name="name">
-                        <cstring>textLabel1_2_2_2</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Background color</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="1" column="1">
-                    <property name="name">
-                        <cstring>defaultTBackground</cstring>
-                    </property>
-                    <property name="text">
-                        <string>default</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="0" column="1">
-                    <property name="name">
-                        <cstring>defaultTForeground</cstring>
-                    </property>
-                    <property name="text">
-                        <string>default</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="1" column="2">
-                    <property name="name">
-                        <cstring>TColorButtonB</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>20</width>
-                            <height>32767</height>
-                        </size>
-                    </property>
-                    <property name="text">
-                        <string>...</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="0" column="2">
-                    <property name="name">
-                        <cstring>TColorButtonF</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>20</width>
-                            <height>32767</height>
-                        </size>
-                    </property>
-                    <property name="text">
-                        <string>...</string>
-                    </property>
-                </widget>
-                <widget class="QFrame" row="0" column="3">
-                    <property name="name">
-                        <cstring>ForeTColor</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>0</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="frameShape">
-                        <enum>StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Plain</enum>
-                    </property>
-                </widget>
-                <widget class="QFrame" row="1" column="3">
-                    <property name="name">
-                        <cstring>BackTColor</cstring>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="frameShape">
-                        <enum>StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Plain</enum>
-                    </property>
-                </widget>
-                <spacer row="1" column="4">
-                    <property name="name">
-                        <cstring>spacer6_2_2_2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>30</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="0" column="4">
-                    <property name="name">
-                        <cstring>spacer6_3_2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>30</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-            </grid>
-        </widget>
-        <widget class="QGroupBox">
-            <property name="name">
-                <cstring>groupBoxPB</cstring>
-            </property>
-            <property name="enabled">
-                <bool>true</bool>
-            </property>
-            <property name="title">
-                <string>Push button colors</string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QLabel" row="0" column="0">
-                    <property name="name">
-                        <cstring>textLabel1_3_3</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Foreground color</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="1" column="0">
-                    <property name="name">
-                        <cstring>textLabel1_2_2_3</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Background color</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="1" column="1">
-                    <property name="name">
-                        <cstring>defaultPBBackground</cstring>
-                    </property>
-                    <property name="text">
-                        <string>default</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox" row="0" column="1">
-                    <property name="name">
-                        <cstring>defaultPBForeground</cstring>
-                    </property>
-                    <property name="text">
-                        <string>default</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="1" column="2">
-                    <property name="name">
-                        <cstring>PBColorButtonB</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>20</width>
-                            <height>32767</height>
-                        </size>
-                    </property>
-                    <property name="text">
-                        <string>...</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="0" column="2">
-                    <property name="name">
-                        <cstring>PBColorButtonF</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>1</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>20</width>
-                            <height>32767</height>
-                        </size>
-                    </property>
-                    <property name="text">
-                        <string>...</string>
-                    </property>
-                </widget>
-                <widget class="QFrame" row="0" column="3">
-                    <property name="name">
-                        <cstring>ForePBColor</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>0</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="frameShape">
-                        <enum>StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Plain</enum>
-                    </property>
-                </widget>
-                <widget class="QFrame" row="1" column="3">
-                    <property name="name">
-                        <cstring>BackPBColor</cstring>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="maximumSize">
-                        <size>
-                            <width>24</width>
-                            <height>24</height>
-                        </size>
-                    </property>
-                    <property name="frameShape">
-                        <enum>StyledPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Plain</enum>
-                    </property>
-                </widget>
-                <spacer row="1" column="4">
-                    <property name="name">
-                        <cstring>spacer6_2_2_3</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>30</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="0" column="4">
-                    <property name="name">
-                        <cstring>spacer6_3_3</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>30</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-            </grid>
-        </widget>
-        <spacer>
-            <property name="name">
-                <cstring>spacer10</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Vertical</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>20</width>
+              </widget>
+            </item>
+            <item row="0" column="4" >
+              <spacer name="spacer6" >
+                <property name="sizeHint" >
+                  <size>
+                    <width>30</width>
                     <height>20</height>
-                </size>
-            </property>
+                  </size>
+                </property>
+                <property name="sizeType" >
+                  <enum>Expanding</enum>
+                </property>
+                <property name="orientation" >
+                  <enum>Horizontal</enum>
+                </property>
+              </spacer>
+            </item>
+            <item row="1" column="4" >
+              <spacer name="spacer6_2" >
+                <property name="sizeHint" >
+                  <size>
+                    <width>30</width>
+                    <height>20</height>
+                  </size>
+                </property>
+                <property name="sizeType" >
+                  <enum>Expanding</enum>
+                </property>
+                <property name="orientation" >
+                  <enum>Horizontal</enum>
+                </property>
+              </spacer>
+            </item>
+            <item row="1" column="3" >
+              <widget class="QLabel" name="fontNameL" >
+                <property name="text" >
+                  <string/>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="0" >
+              <widget class="QLabel" name="textLabel1_2" >
+                <property name="text" >
+                  <string>Label font</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="1" >
+              <widget class="QCheckBox" name="defaultFontT" >
+                <property name="text" >
+                  <string>default</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="1" >
+              <widget class="QCheckBox" name="defaultFontL" >
+                <property name="text" >
+                  <string>default</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="2" >
+              <widget class="QPushButton" name="fontButtonT" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>20</width>
+                    <height>32767</height>
+                  </size>
+                </property>
+                <property name="text" >
+                  <string>...</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="2" >
+              <widget class="QPushButton" name="fontButtonL" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>20</width>
+                    <height>32767</height>
+                  </size>
+                </property>
+                <property name="text" >
+                  <string>...</string>
+                </property>
+              </widget>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <widget class="Q3GroupBox" name="groupBox6_2" >
+          <property name="title" >
+            <string>Colors</string>
+          </property>
+          <layout class="QGridLayout" >
+            <item row="0" column="0" >
+              <widget class="QLabel" name="textLabel1_3" >
+                <property name="text" >
+                  <string>Foreground color</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="0" >
+              <widget class="QLabel" name="textLabel1_2_2" >
+                <property name="text" >
+                  <string>Background color</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="1" >
+              <widget class="QCheckBox" name="defaultBackground" >
+                <property name="text" >
+                  <string>default</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="1" >
+              <widget class="QCheckBox" name="defaultForeground" >
+                <property name="text" >
+                  <string>default</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="2" >
+              <widget class="QPushButton" name="colorButtonB" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>20</width>
+                    <height>32767</height>
+                  </size>
+                </property>
+                <property name="text" >
+                  <string>...</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="2" >
+              <widget class="QPushButton" name="colorButtonF" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>20</width>
+                    <height>32767</height>
+                  </size>
+                </property>
+                <property name="text" >
+                  <string>...</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="3" >
+              <widget class="Q3Frame" name="ForeColor" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>0</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="minimumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="frameShape" >
+                  <enum>StyledPanel</enum>
+                </property>
+                <property name="frameShadow" >
+                  <enum>Plain</enum>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="3" >
+              <widget class="Q3Frame" name="BackColor" >
+                <property name="minimumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="frameShape" >
+                  <enum>StyledPanel</enum>
+                </property>
+                <property name="frameShadow" >
+                  <enum>Plain</enum>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="4" >
+              <spacer name="spacer6_2_2" >
+                <property name="sizeHint" >
+                  <size>
+                    <width>30</width>
+                    <height>20</height>
+                  </size>
+                </property>
+                <property name="sizeType" >
+                  <enum>Expanding</enum>
+                </property>
+                <property name="orientation" >
+                  <enum>Horizontal</enum>
+                </property>
+              </spacer>
+            </item>
+            <item row="0" column="4" >
+              <spacer name="spacer6_3" >
+                <property name="sizeHint" >
+                  <size>
+                    <width>30</width>
+                    <height>20</height>
+                  </size>
+                </property>
+                <property name="sizeType" >
+                  <enum>Expanding</enum>
+                </property>
+                <property name="orientation" >
+                  <enum>Horizontal</enum>
+                </property>
+              </spacer>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <widget class="Q3GroupBox" name="groupBoxT" >
+          <property name="title" >
+            <string>Text colors</string>
+          </property>
+          <layout class="QGridLayout" >
+            <item row="0" column="0" >
+              <widget class="QLabel" name="textLabel1_3_2" >
+                <property name="text" >
+                  <string>Foreground color</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="0" >
+              <widget class="QLabel" name="textLabel1_2_2_2" >
+                <property name="text" >
+                  <string>Background color</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="1" >
+              <widget class="QCheckBox" name="defaultTBackground" >
+                <property name="text" >
+                  <string>default</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="1" >
+              <widget class="QCheckBox" name="defaultTForeground" >
+                <property name="text" >
+                  <string>default</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="2" >
+              <widget class="QPushButton" name="TColorButtonB" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>20</width>
+                    <height>32767</height>
+                  </size>
+                </property>
+                <property name="text" >
+                  <string>...</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="2" >
+              <widget class="QPushButton" name="TColorButtonF" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>20</width>
+                    <height>32767</height>
+                  </size>
+                </property>
+                <property name="text" >
+                  <string>...</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="3" >
+              <widget class="Q3Frame" name="ForeTColor" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>0</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="minimumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="frameShape" >
+                  <enum>StyledPanel</enum>
+                </property>
+                <property name="frameShadow" >
+                  <enum>Plain</enum>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="3" >
+              <widget class="Q3Frame" name="BackTColor" >
+                <property name="minimumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="frameShape" >
+                  <enum>StyledPanel</enum>
+                </property>
+                <property name="frameShadow" >
+                  <enum>Plain</enum>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="4" >
+              <spacer name="spacer6_2_2_2" >
+                <property name="sizeHint" >
+                  <size>
+                    <width>30</width>
+                    <height>20</height>
+                  </size>
+                </property>
+                <property name="sizeType" >
+                  <enum>Expanding</enum>
+                </property>
+                <property name="orientation" >
+                  <enum>Horizontal</enum>
+                </property>
+              </spacer>
+            </item>
+            <item row="0" column="4" >
+              <spacer name="spacer6_3_2" >
+                <property name="sizeHint" >
+                  <size>
+                    <width>30</width>
+                    <height>20</height>
+                  </size>
+                </property>
+                <property name="sizeType" >
+                  <enum>Expanding</enum>
+                </property>
+                <property name="orientation" >
+                  <enum>Horizontal</enum>
+                </property>
+              </spacer>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <widget class="Q3GroupBox" name="groupBoxPB" >
+          <property name="enabled" >
+            <bool>true</bool>
+          </property>
+          <property name="title" >
+            <string>Push button colors</string>
+          </property>
+          <layout class="QGridLayout" >
+            <item row="0" column="0" >
+              <widget class="QLabel" name="textLabel1_3_3" >
+                <property name="text" >
+                  <string>Foreground color</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="0" >
+              <widget class="QLabel" name="textLabel1_2_2_3" >
+                <property name="text" >
+                  <string>Background color</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="1" >
+              <widget class="QCheckBox" name="defaultPBBackground" >
+                <property name="text" >
+                  <string>default</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="1" >
+              <widget class="QCheckBox" name="defaultPBForeground" >
+                <property name="text" >
+                  <string>default</string>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="2" >
+              <widget class="QPushButton" name="PBColorButtonB" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>20</width>
+                    <height>32767</height>
+                  </size>
+                </property>
+                <property name="text" >
+                  <string>...</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="2" >
+              <widget class="QPushButton" name="PBColorButtonF" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>20</width>
+                    <height>32767</height>
+                  </size>
+                </property>
+                <property name="text" >
+                  <string>...</string>
+                </property>
+              </widget>
+            </item>
+            <item row="0" column="3" >
+              <widget class="Q3Frame" name="ForePBColor" >
+                <property name="sizePolicy" >
+                  <sizepolicy>
+                    <hsizetype>0</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                  </sizepolicy>
+                </property>
+                <property name="minimumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="frameShape" >
+                  <enum>StyledPanel</enum>
+                </property>
+                <property name="frameShadow" >
+                  <enum>Plain</enum>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="3" >
+              <widget class="Q3Frame" name="BackPBColor" >
+                <property name="minimumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="maximumSize" >
+                  <size>
+                    <width>24</width>
+                    <height>24</height>
+                  </size>
+                </property>
+                <property name="frameShape" >
+                  <enum>StyledPanel</enum>
+                </property>
+                <property name="frameShadow" >
+                  <enum>Plain</enum>
+                </property>
+              </widget>
+            </item>
+            <item row="1" column="4" >
+              <spacer name="spacer6_2_2_3" >
+                <property name="sizeHint" >
+                  <size>
+                    <width>30</width>
+                    <height>20</height>
+                  </size>
+                </property>
+                <property name="sizeType" >
+                  <enum>Expanding</enum>
+                </property>
+                <property name="orientation" >
+                  <enum>Horizontal</enum>
+                </property>
+              </spacer>
+            </item>
+            <item row="0" column="4" >
+              <spacer name="spacer6_3_3" >
+                <property name="sizeHint" >
+                  <size>
+                    <width>30</width>
+                    <height>20</height>
+                  </size>
+                </property>
+                <property name="sizeType" >
+                  <enum>Expanding</enum>
+                </property>
+                <property name="orientation" >
+                  <enum>Horizontal</enum>
+                </property>
+              </spacer>
+            </item>
+          </layout>
+        </widget>
+      </item>
+      <item>
+        <spacer name="spacer10" >
+          <property name="sizeHint" >
+            <size>
+              <width>20</width>
+              <height>20</height>
+            </size>
+          </property>
+          <property name="sizeType" >
+            <enum>Expanding</enum>
+          </property>
+          <property name="orientation" >
+            <enum>Vertical</enum>
+          </property>
         </spacer>
-    </vbox>
-</widget>
-<connections>
-    <connection>
-        <sender>defaultFontT</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>defaultFontT_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>defaultFontL</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>defaultFontL_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>fontButtonT</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>fontButtonT_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>fontButtonL</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>fontButtonL_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>defaultForeground</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>defaultForeground_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>defaultBackground</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>defaultBackground_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>colorButtonF</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>colorButtonF_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>colorButtonB</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>colorButtonB_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>defaultTForeground</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>defaultTForeground_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>TColorButtonF</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>TColorButtonF_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>TColorButtonB</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>TColorButtonB_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>defaultTBackground</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>defaultTBackground_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>defaultPBForeground</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>defaultPBForeground_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>PBColorButtonF</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>PBColorButtonF_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>defaultPBBackground</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>defaultPBBackground_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>PBColorButtonB</sender>
-        <signal>clicked()</signal>
-        <receiver>idd_fontcolorpage</receiver>
-        <slot>PBColorButtonB_clicked()</slot>
-    </connection>
-</connections>
-<includes>
-    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
-    <include location="local" impldecl="in implementation">idd_fontcolorpage.ui.h</include>
-</includes>
-<slots>
-    <slot>defaultFontT_clicked()</slot>
-    <slot>defaultFontL_clicked()</slot>
-    <slot>fontButtonT_clicked()</slot>
-    <slot>fontButtonL_clicked()</slot>
-    <slot>defaultForeground_clicked()</slot>
-    <slot>defaultBackground_clicked()</slot>
-    <slot>colorButtonF_clicked()</slot>
-    <slot>colorButtonB_clicked()</slot>
-    <slot>defaultTForeground_clicked()</slot>
-    <slot>TColorButtonF_clicked()</slot>
-    <slot>TColorButtonB_clicked()</slot>
-    <slot>defaultTBackground_clicked()</slot>
-    <slot>defaultPBForeground_clicked()</slot>
-    <slot>PBColorButtonF_clicked()</slot>
-    <slot>defaultPBBackground_clicked()</slot>
-    <slot>PBColorButtonB_clicked()</slot>
-</slots>
-<exportmacro>LAVAPEUI_DLL</exportmacro>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+</ui>

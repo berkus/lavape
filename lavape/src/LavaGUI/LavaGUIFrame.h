@@ -4,10 +4,12 @@
 
 #include "GUIProgBase.h"
 #include "qstring.h"
+//Added by qt3to4:
+#include <QCloseEvent>
 #include "docview.h"
 #include "mdiframes.h"
-#include "qframe.h"
-#include "qtoolbar.h"
+#include "q3frame.h"
+#include "q3toolbar.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

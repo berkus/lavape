@@ -4,7 +4,7 @@
 
 #include "SYSTEM.h"
 
-const unsigned MaxLenAtom = 14;
+const unsigned MaxLenAtom = 20;
 const unsigned MaxAtomStore = 200000;
 
 enum AtomType {

@@ -27,6 +27,7 @@
 #include "MachDep.h"
 #include "OSDep.h"
 #include "Convert.h"
+#include <SYS/Stat.h>
 
 
 bool openInAppendMode=false;
@@ -41,7 +42,7 @@ bool openInAppendMode=false;
 OutFile::OutFile (const char *filename)
 {
   int result, openMode;
-  int err;
+  errno_t err;
 
   Buffer = 0;
   if (filename[0] == '\0') {
@@ -56,7 +57,7 @@ OutFile::OutFile (const char *filename)
   else openMode = O_TRUNC | O_CREAT | O_WRONLY | O_BINARY;
 
   do {
-    result = open(filename,openMode,0644);
+    err = _sopen_s(&result,filename,openMode,_SH_DENYRW,_S_IWRITE);
     err = errno;
   } while ((result == -1) && (errno == EINTR));
 
@@ -95,7 +96,7 @@ OutFile::~OutFile ()
   if (fileref <= 2) return;
   
   do
-    result = close(fileref);
+    result = _close(fileref);
   while ((result == -1) && (errno == EINTR));
 
   delete [] Buffer;
@@ -215,7 +216,7 @@ void OutFile::Flush ()
   if (BufPos > 0) {
     BytesToWrite = BufPos;
     do
-      result = write(fileref,Buffer,BytesToWrite);
+      result = _write(fileref,Buffer,BytesToWrite);
     while ((result == -1) && (errno == EINTR));
     if (result < 0) {
       printf("++++ error in OutFile::Flush, errno=%d\n",errno);

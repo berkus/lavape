@@ -6,7 +6,7 @@
 #endif
 */
 
-#include "SFLsockets_all.h"
+#include <QtNetwork/QTcpSocket>
 
 #include "qstring.h"
 #include "ASN1.h"
@@ -93,7 +93,7 @@ public:
      (= default) */
 
 
-  ASN1InSock (sock_t socket, bool silent=true);
+  ASN1InSock (QTcpSocket *socket, bool silent=true);
 
   ~ASN1InSock ();
 
@@ -108,7 +108,7 @@ public:
 
 private:
 
-  sock_t fildes;
+  QTcpSocket *fildes;
   unsigned bufferPos, bufferSize;
   int charsRead;
   char *bufferPtr;
@@ -128,7 +128,7 @@ public:
      (= default) */
 
 
-  ASN1OutSock (sock_t socket, bool silent=true);
+  ASN1OutSock (QTcpSocket *socket, bool silent=true);
 
   ~ASN1OutSock ();
 
@@ -145,7 +145,7 @@ public:
 
 private:
 
-  sock_t fildes;
+  QTcpSocket *fildes;
   unsigned bufferPos, bufferSize;
   int charsRead;
   char *bufferPtr;

@@ -17,8 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#include "prelude.h"
-#include "sflsock.h"
 #include "mdiframes.h"
 #include "DbgThread.h"
 #include "ASN1File.h"
@@ -32,12 +30,14 @@
 #include "LavaBaseStringInit.h"
 #include "Tokens.h"
 #include "qclipboard.h"
-#include "qfiledialog.h"
+#include "q3filedialog.h"
 #include "qfontdialog.h"
 #include "qmessagebox.h"
+//Added by qt3to4:
+#include <QCustomEvent>
 #include <signal.h>
 #include "qassistantclient.h"
-#include "qprocess.h"
+#include "q3process.h"
 #include <stdlib.h>
 
 #ifndef WIN32
@@ -63,9 +63,9 @@ CLavaDebugThread::CLavaDebugThread() {
   debugOn = false;
   pContDebugEvent = new CEventEx();
   if (pContDebugEvent->available())
-    (*pContDebugEvent)++;
+    pContDebugEvent->acquire();
   if (pContExecEvent->available())
-    (*pContExecEvent)++;
+    pContExecEvent->acquire();
 }
 
 
@@ -84,7 +84,7 @@ CLavaDebugThread::~CLavaDebugThread()
   dbgStopData = 0;
   if (varAction) delete varAction;
   varAction = 0;
-  (*pContDebugEvent)--; 
+  pContDebugEvent->release(); 
   wait();
   delete pContDebugEvent;
 }
@@ -92,14 +92,11 @@ CLavaDebugThread::~CLavaDebugThread()
 
 void CLavaDebugThread::run() {
 
-  QProcess lavape;
-  fd_set read_fds;
-  int nReady;
+  Q3Process lavape;
   ASN1InSock *get_cid;
   ASN1OutSock *put_cid;
 	QString lavapePath, buf;
-  sockaddr_in sa;
-  socklen_t sz_sa = sizeof(sockaddr_in); 
+  quint16 locPort; 
   DDItemData * oid;
   bool fin = false;
 
@@ -107,8 +104,11 @@ void CLavaDebugThread::run() {
   CThreadData *td = new CThreadData(this);
 	threadStg()->setLocalData(td);
   
-  if (debugOn) 
-    workSocket = connect_TCP(remoteIPAddress,remotePort);
+  if (debugOn) {
+    workSocket = new QTcpSocket;
+    workSocket->connectToHost(remoteIPAddress,remotePort);
+    workSocket->waitForConnected();
+  }
   else { //PMDump
 
 #ifdef WIN32
@@ -117,33 +117,25 @@ void CLavaDebugThread::run() {
     lavapePath = ExeDir + "/LavaPE";
 #endif
 	
-    sock_init();
-    if (!listenSocket)
-      listenSocket = passive_TCP("0",20);
+    if (!listenSocket) {
+      listenSocket = new QTcpServer;
+      listenSocket->listen();
+    }
 
-    memset(&sa,0,sizeof(sockaddr_in));
-    int rc = getsockname((int)listenSocket,(struct sockaddr*)&sa,&sz_sa);
+    locPort = listenSocket->serverPort();
     QString host_addr = "127.0.0.1";
 	  QStringList args;
-	  args << lavapePath << myDoc->GetFilename() << host_addr << QString("%1").arg(ntohs(sa.sin_port));
+	  args << lavapePath << myDoc->GetFilename() << host_addr << QString("%1").arg(locPort);
 	  lavape.setArguments(args);
 	  if (!lavape.launch(buf)) {
       QMessageBox::critical(qApp->mainWidget(),qApp->name(),ERR_LavaPEStartFailed.arg(errno),QMessageBox::Ok,0,0);
 		  return;
 	  }
 
-    FD_ZERO(&read_fds);
-    FD_SET(listenSocket,&read_fds);
-
-    while (true) {
-      nReady = sock_select(FD_SETSIZE,&read_fds,NULL,NULL,NULL);
-      if (nReady == -1 && errno == EINTR) continue;
-      if (FD_ISSET(listenSocket,&read_fds)) {
-        workSocket = accept_socket(listenSocket);
-        break;
-      }
-    }
   }
+
+  listenSocket->waitForNewConnection();
+  workSocket = listenSocket->nextPendingConnection();
 
   put_cid = new ASN1OutSock (workSocket);
   if (!put_cid->Done) {
@@ -159,7 +151,7 @@ void CLavaDebugThread::run() {
   }
 //  get_cid = in_cid;
   if (debugOn) 
-    (*pContDebugEvent)++;  //DebugThread wait until ExecuteLava has finished initialisation
+    pContDebugEvent->acquire();  //DebugThread wait until ExecuteLava has finished initialisation
   else {
     varAction->run();
     addCalleeParams();
@@ -205,8 +197,8 @@ void CLavaDebugThread::run() {
             dbgStopData->ParamChain.Destroy();
           }
         }
-        (*pContExecEvent)--;    //continue ExecuteLava
-        (*pContDebugEvent)++;  //DebugThread wait for next stop with new dbgStopData
+        pContExecEvent->release();    //continue ExecuteLava
+        pContDebugEvent->acquire();  //DebugThread wait for next stop with new dbgStopData
         if (!varAction) {
           fin = true;
           break;

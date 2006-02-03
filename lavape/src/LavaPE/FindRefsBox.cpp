@@ -26,7 +26,7 @@
 #include "qpushbutton.h"
 #include "qlabel.h"
 #include "qlineedit.h"
-#include "qbuttongroup.h"
+#include "q3buttongroup.h"
 #include "qcheckbox.h"
 #include "qradiobutton.h"
 
@@ -36,19 +36,19 @@
 
 
 CGotoBox::CGotoBox(QWidget* pParent)
-  : IDD_GotoDeclSel(pParent, "GotoBox")
+  : QDialog(pParent)
 {
 }
 
 CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
-  : IDD_GotoDeclSel(parent, "GotoBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
 
   SelID.nID = -1;
   myDECL = fromDECL;
   myDoc = doc;
   bool notAll = false;
-  CListItem *item;
+  CComboBoxItem *item;
 
   CHETID *cheS = (CHETID*)myDECL->Supports.first;
   LavaDECL *decl;
@@ -58,19 +58,19 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
     if (decl) {
       if (decl->DeclType == FormDef)
         decl = decl->ParentDECL;
-      item = new CListItem(decl->LocalName, rID);
-      m_GotoCombo->listBox()->insertItem(item);
+      item = new CComboBoxItem(rID);
+      m_GotoCombo->addItem(QString(decl->LocalName.c), QVariant::fromValue(item));
     }
   }
   while (cheS) {
     if (cheS->data.nID >= 0) {
       decl = myDoc->IDTable.GetDECL(cheS->data);
       if (decl) {
+        item = new CComboBoxItem(cheS->data);
         if (decl->LocalName == myDECL->LocalName)
-          item = new CListItem(decl->FullName, cheS->data);
+          m_GotoCombo->addItem(QString(decl->FullName.c), QVariant::fromValue(item));
         else
-          item = new CListItem(decl->LocalName, cheS->data);
-        m_GotoCombo->listBox()->insertItem(item); 
+          m_GotoCombo->addItem(QString(decl->LocalName.c), QVariant::fromValue(item)); 
       }
       else {
         notAll = true;
@@ -83,8 +83,8 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
     if (cheS->data.nID >= 0) {
       decl = myDoc->IDTable.GetDECL(cheS->data);
       if (decl) {
-        item = new CListItem(decl->LocalName, cheS->data);
-        m_GotoCombo->listBox()->insertItem(item);
+        item = new CComboBoxItem(cheS->data);
+        m_GotoCombo->addItem(QString(decl->LocalName.c), QVariant::fromValue(item));
       }
       else 
         notAll = true;
@@ -155,13 +155,13 @@ void CFindRefsBox::UpdateData(bool getData)
 }
 
 CFindRefsBox::CFindRefsBox(QWidget* pParent /*=NULL*/)
-	: IDD_FindRefsBox( pParent)
+	: QDialog( pParent)
 {
 
 }
 
 CFindRefsBox::CFindRefsBox(LavaDECL* decl, bool inExec, CFindData* fw, QWidget* pParent)
-	: IDD_FindRefsBox(pParent, "FindRefsBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+	: QDialog(pParent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
   myDECL = decl;
   setExec = inExec;
@@ -169,7 +169,8 @@ CFindRefsBox::CFindRefsBox(LavaDECL* decl, bool inExec, CFindData* fw, QWidget* 
 
   if (myDECL) {
     if (findWhat->enumID.l)
-      valRefName = QString(myDECL->FullName.c) + " / enumeration item " + findWhat->enumID.c;
+      valRefName = QString(myDECL->FullName.c)
+        + QString(" / enumeration item ") + QString(findWhat->enumID.c);
     else
       valRefName = QString(myDECL->FullName.c);
   }
@@ -247,12 +248,12 @@ void CFindRefsBox::OnOK()
 
 
 CFindByNameBox::CFindByNameBox(QWidget* pParent)
-	: IDD_FindByNameBox(pParent)
+	: QDialog(pParent)
 {
 }
 
 CFindByNameBox::CFindByNameBox(CFindData* fw, QWidget* pParent)
-	: IDD_FindByNameBox(pParent, "FindByNameBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+	: QDialog(pParent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
   findWhat = fw;
 

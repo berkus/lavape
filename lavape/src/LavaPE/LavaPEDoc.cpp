@@ -35,10 +35,10 @@
 #include "qmessagebox.h"
 #include "qpixmapcache.h"
 #include "qfileinfo.h"
-#include "qprocess.h"
-#include "qptrlist.h"
-#include "prelude.h"
-#include "sflsock.h"
+#include "q3process.h"
+#include "q3ptrlist.h"
+//Added by qt3to4:
+#include <QPixmap>
 
 
 CLavaPEDoc::CLavaPEDoc()
@@ -3124,7 +3124,7 @@ void CLavaPEDoc::OnRunLava()
 	
 	QStringList args;
 	args << interpreterPath << lavaFile;
-	QProcess interpreter(args);
+	Q3Process interpreter(args);
 
 	if (!interpreter.launch(buf)) {
     QMessageBox::critical(qApp->mainWidget(),qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
@@ -3157,14 +3157,14 @@ void CLavaPEDoc::OnDebugLava()
   interpreterPath = ExeDir + "/Lava";
 #endif
 	
-  sock_init();
-  ((CLavaPEApp*)qApp)->debugThread.listenSocket = passive_TCP("0",20);
-  memset(&sa,0,sizeof(sockaddr_in));
-  int rc = getsockname((int)((CLavaPEApp*)qApp)->debugThread.listenSocket,(struct sockaddr*)&sa,&sz_sa);
+  ((CLavaPEApp*)qApp)->debugThread.listenSocket = new QTcpServer;
+  ((CLavaPEApp*)qApp)->debugThread.listenSocket->listen();
+  locPort = listenSocket->serverPort();
+
   QString host_addr = "127.0.0.1";
 
 	QStringList args;
-	args << interpreterPath << lavaFile << host_addr << QString("%1").arg(ntohs(sa.sin_port));
+	args << interpreterPath << lavaFile << host_addr << QString("%1").arg(locPort);
 	((CLavaPEApp*)qApp)->interpreter.setArguments(args);
   debugOn = true;
   changeNothing = true;
@@ -3260,7 +3260,7 @@ void CLavaPEDoc::OnTotalCheck()
   mana->SetActiveView(actView, true);
 }
 
-void CLavaPEDoc::OnUpdateRunLava(wxAction* action) 
+void CLavaPEDoc::OnUpdateRunLava(QAction* action) 
 {
   if (!mySynDef) 
     return;

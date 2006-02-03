@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "..\disco" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Interpreter" /I "../SFLsockets" /I "..\LavaExecs" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /I "res" /I "$(QT3DIR)\include" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "..\disco" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Interpreter" /I "../SFLsockets" /I "..\LavaExecs" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /I "res" /I "$(QTDIR)\include" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 ..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib ..\Interpreter\Release\Interpreter.lib ..\LavaBase\Release\LavaBase.lib ..\LavaGUI\Release\LavaGUI.lib $(QT3DIR)\librel\qtmain.lib $(QT3DIR)\librel\qassistantclient.lib $(QT3DIR)\librel\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /machine:I386 /out:"..\LavaPE\Release\Lava.exe"
+# ADD LINK32 ..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib ..\Interpreter\Release\Interpreter.lib ..\LavaBase\Release\LavaBase.lib ..\LavaGUI\Release\LavaGUI.lib $(QTDIR)\librel\qtmain.lib $(QTDIR)\librel\qassistantclient.lib $(QTDIR)\librel\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /machine:I386 /out:"..\LavaPE\Release\Lava.exe"
 # SUBTRACT LINK32 /debug
 
 !ELSEIF  "$(CFG)" == "Lava - Win32 Debug"
@@ -71,7 +71,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\disco" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Interpreter" /I "../SFLsockets" /I "..\LavaExecs" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /I "res" /I "$(QT3DIR)\include" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\disco" /I "..\LavaBase" /I "..\wxqDocView" /I "..\Interpreter" /I "../SFLsockets" /I "..\LavaExecs" /I "..\LavaGUI" /I "..\LavaBase\Generated" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /I "res" /I "$(QTDIR)\include" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /D "QT_DLL" /FR /FD /c
 # SUBTRACT CPP /X /YX
 # ADD BASE MTL /nologo /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /mktyplib203 /o "NUL" /win32
@@ -82,7 +82,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\Interpreter\Debug\Interpreter.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaGUI\Debug\LavaGUI.lib $(QT3DIR)\lib\qtmain.lib $(QT3DIR)\lib\qassistantclient.lib $(QT3DIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"../LavaPE/Debug/Lava.exe"
+# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\Interpreter\Debug\Interpreter.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaGUI\Debug\LavaGUI.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib advapi32.lib user32.lib gdi32.lib wsock32.lib winspool.lib comdlg32.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libc.lib" /out:"../LavaPE/Debug/Lava.exe"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -123,7 +123,7 @@ InputPath=.\Lava.h
 InputName=Lava
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -143,7 +143,7 @@ InputPath=.\LavaDoc.h
 InputName=LavaDoc
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -163,7 +163,7 @@ InputPath=.\MainFrm.h
 InputName=MainFrm
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 

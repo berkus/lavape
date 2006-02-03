@@ -30,6 +30,8 @@
 #include "qobject.h"
 #include "qstring.h"
 #include "qmessagebox.h"
+//Added by qt3to4:
+#include <QCustomEvent>
 #include <float.h>
 #include <stdio.h>
 #include <limits>
@@ -193,7 +195,7 @@ bool ObjectDump(CheckData& ckd, LavaVariablePtr stack)
   //currentThread->pContExecEvent->lastException = 0;
   DumpEventData* data = new DumpEventData(ckd.document, stack, currentThread);
 	QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaDump,(void*)data));
-  (*currentThread->pContExecEvent)++;
+  currentThread->pContExecEvent->acquire();
   ckd.document->DumpFrame = 0;
   return true;
 }
@@ -743,7 +745,7 @@ bool StringBox(CheckData& ckd, LavaVariablePtr stack)
 
   qApp->mainWidget()->setActiveWindow();
   qApp->mainWidget()->raise();
-  int rc=QMessageBox::NoButton;
+  int rc=Qt::NoButton;
   if ((QString*)(stack[SFH]+LSH)) 
     rc = information(
       parent,qApp->name(),*(QString*)(stack[SFH]+LSH),
@@ -774,7 +776,8 @@ bool HEnumSetVal(CheckData& ckd, LavaObjectPtr obj, unsigned num)
 {
   TEnumDescription *enumDesc;
   CHEEnumSelId *enumSel;
-  unsigned ii, ee, nn;
+  int ii, ee;
+  unsigned nn;
   LavaObjectPtr totalObj = obj - obj[0][0].sectionOffset;
   for (ii = 0; (ii < totalObj[0][0].nSections) && (totalObj[0][ii].classDECL->DeclDescType != EnumType); ii++);
   for (ee = 0; (ee < totalObj[0][0].nSections) && (totalObj[0][ee].classDECL != ckd.document->DECLTab[Enumeration]); ee++);

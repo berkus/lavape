@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 rm -f bin/lavape bin/lava
 echo "#!/bin/bash">bin/lavape

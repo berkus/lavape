@@ -25,6 +25,9 @@
 #include "LavaAppBase.h"
 #include "Boxes.h"
 #include "qpixmapcache.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QCustomEvent>
 
 
 CVTItemData::CVTItemData(TNodeType t, CHETVElem* V, int A)
@@ -456,7 +459,7 @@ CTreeItem* CVTView::BrowseTree(TID id, CTreeItem* start, int browseCase)
 
 }
 
-void CVTView::OnUpdateGotoImpl(wxAction* action) 
+void CVTView::OnUpdateGotoImpl(QAction* action) 
 {
   CVTItemData * itd;
   LavaDECL* decl;
@@ -476,7 +479,7 @@ void CVTView::OnUpdateGotoImpl(wxAction* action)
     action->setEnabled(false);
 }
 
-void CVTView::OnUpdateGotodef(wxAction* action) 
+void CVTView::OnUpdateGotodef(QAction* action) 
 {
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
   if (item) {
@@ -535,7 +538,7 @@ bool CVTView::EnableOverride(CTreeItem* item)
   return false;
 }
 
-void CVTView::OnUpdateOverride(wxAction* action) 
+void CVTView::OnUpdateOverride(QAction* action) 
 {  
   action->setEnabled(!multiSelectCanceled && (!GetDocument()->changeNothing) &&
         EnableOverride((CTreeItem*)GetListView()->currentItem()));
@@ -773,7 +776,7 @@ void CVTView::DeleteExChain(bool inSel)
   }
 }
 
-void CVTView::setSelPost(QListViewItem* selItem)
+void CVTView::setSelPost(Q3ListViewItem* selItem)
 {
   GetListView()->selectAll(false);
   GetListView()->setCurAndSel(selItem);

@@ -14,8 +14,8 @@
 #include "docview.h"
 #include "LavaThread.h"
 #include "wxExport.h"
-#include "qcombobox.h"
-#include "qlistview.h" 
+#include "q3combobox.h"
+#include "q3listview.h" 
 #include "qfont.h"
 #include "qsize.h"
 #include "qobject.h"
@@ -25,7 +25,7 @@
 #include "qpushbutton.h"
 #include "qtoolbutton.h"
 #include "qassistantclient.h"
-#include "qwhatsthis.h"
+#include "q3whatsthis.h"
 
 
 #ifdef WIN32
@@ -392,74 +392,74 @@ public:
   QString m_myWebBrowser;
   QString m_style;
 
-  wxAction* additionActionPtr;
-  wxAction* bitAndActionPtr;
-  wxAction* bitOrActionPtr;
-  wxAction* bitXorActionPtr;
-  wxAction* commentOutActionPtr;
-  wxAction* conflictingAssigActionPtr;
-  wxAction* delActionPtr;
-  wxAction* deleteActionPtr;
-  wxAction* divideActionPtr;
-  wxAction* editCommentActionPtr;
-  wxAction* editCopyActionPtr;
-  wxAction* editCutActionPtr;
-  wxAction* editPasteActionPtr;
-  wxAction* editSelItemActionPtr;
-  wxAction* editRedoActionPtr;
-  wxAction* editUndoActionPtr;
-  wxAction* equalActionPtr;
-  wxAction* evaluateActionPtr;
-  wxAction* falseActionPtr;
-  wxAction* findRefsActionPtr;
-  wxAction* functionCallActionPtr;
-  wxAction* gotoDeclActionPtr;
-  wxAction* gotoImplActionPtr;
-  wxAction* greaterEqualActionPtr;
-  wxAction* greaterThanActionPtr;
-  wxAction* handleActionPtr;
-  wxAction* insActionPtr;
-  wxAction* insertActionPtr;
-  wxAction* insertBeforeActionPtr;
-  wxAction* intervalActionPtr;
-  wxAction* invertActionPtr;
-  wxAction* leftShiftActionPtr;
-  wxAction* lessEqualActionPtr;
-  wxAction* lessThanActionPtr;
-  wxAction* modulusActionPtr;
-  wxAction* multiplicationActionPtr;
-  wxAction* newLineActionPtr;
-  wxAction* nextCommentActionPtr;
-  wxAction* nextErrorActionPtr;
-  wxAction* notEqualActionPtr;
-  wxAction* nullActionPtr;
-//  wxAction* okActionPtr;        
-	wxAction* optLocalVarActionPtr;
-	wxAction* ordActionPtr;
-  wxAction* prevCommentActionPtr;
-  wxAction* prevErrorActionPtr;
-  wxAction* rightShiftActionPtr;
-  wxAction* showOptsActionPtr;
-  wxAction* staticCallActionPtr;
-  wxAction* toggleArrowsActionPtr;
-  wxAction* toggleCatActionPtr;      //Lava.exe
-  wxAction* toggleCategoryActionPtr; //LavaPE.exe
-  wxAction* toggleCommentsActionPtr;
-  wxAction* toggleInputArrowsActionPtr;
-  wxAction* toggleSignActionPtr;
-  wxAction* toggleSubstTypeActionPtr;
-  wxAction* trueActionPtr;
-  wxAction* updateCancelActionPtr;
+  QAction* additionActionPtr;
+  QAction* bitAndActionPtr;
+  QAction* bitOrActionPtr;
+  QAction* bitXorActionPtr;
+  QAction* commentOutActionPtr;
+  QAction* conflictingAssigActionPtr;
+  QAction* delActionPtr;
+  QAction* deleteActionPtr;
+  QAction* divideActionPtr;
+  QAction* editCommentActionPtr;
+  QAction* editCopyActionPtr;
+  QAction* editCutActionPtr;
+  QAction* editPasteActionPtr;
+  QAction* editSelItemActionPtr;
+  QAction* editRedoActionPtr;
+  QAction* editUndoActionPtr;
+  QAction* equalActionPtr;
+  QAction* evaluateActionPtr;
+  QAction* falseActionPtr;
+  QAction* findRefsActionPtr;
+  QAction* functionCallActionPtr;
+  QAction* gotoDeclActionPtr;
+  QAction* gotoImplActionPtr;
+  QAction* greaterEqualActionPtr;
+  QAction* greaterThanActionPtr;
+  QAction* handleActionPtr;
+  QAction* insActionPtr;
+  QAction* insertActionPtr;
+  QAction* insertBeforeActionPtr;
+  QAction* intervalActionPtr;
+  QAction* invertActionPtr;
+  QAction* leftShiftActionPtr;
+  QAction* lessEqualActionPtr;
+  QAction* lessThanActionPtr;
+  QAction* modulusActionPtr;
+  QAction* multiplicationActionPtr;
+  QAction* newLineActionPtr;
+  QAction* nextCommentActionPtr;
+  QAction* nextErrorActionPtr;
+  QAction* notEqualActionPtr;
+  QAction* nullActionPtr;
+//  QAction* okActionPtr;        
+	QAction* optLocalVarActionPtr;
+	QAction* ordActionPtr;
+  QAction* prevCommentActionPtr;
+  QAction* prevErrorActionPtr;
+  QAction* rightShiftActionPtr;
+  QAction* showOptsActionPtr;
+  QAction* staticCallActionPtr;
+  QAction* toggleArrowsActionPtr;
+  QAction* toggleCatActionPtr;      //Lava.exe
+  QAction* toggleCategoryActionPtr; //LavaPE.exe
+  QAction* toggleCommentsActionPtr;
+  QAction* toggleInputArrowsActionPtr;
+  QAction* toggleSignActionPtr;
+  QAction* toggleSubstTypeActionPtr;
+  QAction* trueActionPtr;
+  QAction* updateCancelActionPtr;
 
-  wxAction* DbgActionPtr;
-  wxAction* DbgStepNextActPtr;
-  wxAction* DbgStepNextFunctionActPtr;
-  wxAction* DbgStepintoActPtr;
-  wxAction* DbgStepoutActPtr;
-  wxAction* DbgRunToSelActPtr;
-  wxAction* DbgClearBreakpointsActPtr;
-  wxAction* DbgBreakpointActPtr;
-  wxAction* DbgStopActionPtr;
+  QAction* DbgActionPtr;
+  QAction* DbgStepNextActPtr;
+  QAction* DbgStepNextFunctionActPtr;
+  QAction* DbgStepintoActPtr;
+  QAction* DbgStepoutActPtr;
+  QAction* DbgRunToSelActPtr;
+  QAction* DbgClearBreakpointsActPtr;
+  QAction* DbgBreakpointActPtr;
+  QAction* DbgStopActionPtr;
 
   QPushButton 
     *declareButton, *existsButton, *foreachButton,
@@ -565,7 +565,7 @@ public:
 	int button0, button1, button2, result;
 };
 
-class LAVABASE_DLL WhatsThis : public QObject, public QWhatsThis
+class LAVABASE_DLL WhatsThis : public Q3WhatsThis
 {
 public:
   WhatsThis(QString text,QWidget *w);

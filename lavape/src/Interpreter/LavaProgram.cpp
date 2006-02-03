@@ -30,6 +30,8 @@
 
 #include "qstring.h"
 #include "qmessagebox.h"
+//Added by qt3to4:
+#include <QCustomEvent>
 
 #ifdef WIN32
 #include <shlobj.h>
@@ -106,7 +108,7 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
       }
       if (putErr || reDef) 
 //        AfxMessageBox(str.c, MB_OK+MB_ICONSTOP);
-        critical(qApp->mainWidget(),qApp->name(),tr(str),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(qApp->mainWidget(),qApp->name(),tr(str),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     }
     else {
       if (reDef) {
@@ -122,7 +124,7 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
         if (putErr) {
           str = QString("File '") + fn + "' not found";
 //          AfxMessageBox(str.c, MB_OK+MB_ICONSTOP);
-          critical(qApp->mainWidget(),qApp->name(),tr(str),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          critical(qApp->mainWidget(),qApp->name(),tr(str),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         }
       }
     }
@@ -2247,7 +2249,7 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
         ckd.myDECL = topDECL;
         ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
         if (!ok) {
-          critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
           goto stop;
         }
         sData.nextFreeID = 0;
@@ -2272,9 +2274,9 @@ unsigned ExecuteLava(CLavaBaseDoc *doc)
           newStackFrame[pos] = 0;
         if (LBaseData->debugOn) {
           doc->debugOn = true;
-          (*((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent)--; 
+          ((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent->release(); 
           //debug thread continue, now initialisation is finished 
-          (*((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent)++; 
+          ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent->acquire(); 
           //execution thread wait until debug thread has received first message from LavaPE
         }
         if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel)) {
@@ -2299,13 +2301,13 @@ stop:     ckd.document->throwError = false;
         }
       }
       catch (CHWException ex) {
-        critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
       }
       catch (CRuntimeException ex) {
-        critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(qApp->mainWidget(),qApp->name(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
@@ -2319,7 +2321,7 @@ stop:     ckd.document->throwError = false;
       }
       catch(CException) {
         // For other exception types, notify user here.
-        critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
 					QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaEnd,(void*)hint));
@@ -2328,7 +2330,7 @@ stop:     ckd.document->throwError = false;
       }
       catch(int) {
         // For stack overflow, notify user here.
-        critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(qApp->mainWidget(),qApp->name(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
 					QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaEnd,(void*)hint));
@@ -2344,20 +2346,20 @@ stop:     ckd.document->throwError = false;
         delete [] newStackFrame;
 #endif
       }
-      information(qApp->mainWidget(),qApp->name(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      information(qApp->mainWidget(),qApp->name(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
       QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaEnd,(void*)hint));
       return 1;
     }
     else {
-      critical(qApp->mainWidget(),qApp->name(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      critical(qApp->mainWidget(),qApp->name(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       ckd.document->throwError = false; //07.05.2002
       LavaEnd(ckd.document, true);  //07.05.2002
       return 0;
     }
   }
   else {
-    critical(qApp->mainWidget(),qApp->name(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    critical(qApp->mainWidget(),qApp->name(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     ckd.document->throwError = false;  //07.05.2002
     LavaEnd(ckd.document, true);  //07.05.2002
     return 0;
@@ -2372,7 +2374,7 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
   if (currentThread) {
     currentThread->pContExecEvent->lastException = 0;
 	  QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaShow,(void*)hint));
-    (*currentThread->pContExecEvent)++;
+    currentThread->pContExecEvent->acquire();
     if (currentThread->pContExecEvent->lastException) {
       if (ckd.lastException)
         DEC_FWD_CNT(ckd, ckd.lastException);

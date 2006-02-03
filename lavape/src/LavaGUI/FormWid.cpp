@@ -23,6 +23,12 @@
 #include "GUIProg.h"
 #include "LavaGUIView.h"
 #include "qtooltip.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QCustomEvent>
+#include <Q3Frame>
+#include <QEvent>
+#include <Q3PopupMenu>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -38,7 +44,7 @@ CFormWid::~CFormWid()
 
 CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
                 QWidget* parent, int border, const char* lpszWindowName)
-                :QFrame(parent, "FormWid")
+                :Q3Frame(parent, "FormWid")
 {
   nRadio = 0;
   myMenu = 0;
@@ -57,7 +63,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
       parentWidget()->parentWidget()->setPaletteBackgroundColor(colorGroup().background());
   }
   show();
-  int bord = ((QFrame*)parent)->lineWidth();
+  int bord = ((Q3Frame*)parent)->lineWidth();
   QRect rect(0,0,GUIProg->globalIndent,GUIProg->globalIndent);
   setGeometry(rect);
   if (myFormNode->data.IterFlags.Contains(IteratedItem))
@@ -67,8 +73,8 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
   if (myFormNode->data.IterFlags.Contains(Optional))
     IterFlags.INCL(Optional);
   if (border > 0) {
-    setFrameShape(QFrame::Box );
-    setFrameShadow(QFrame::Plain);
+    setFrameShape(Q3Frame::Box );
+    setFrameShadow(Q3Frame::Plain);
     setLineWidth(1);
     setMidLineWidth(1);
   }  
@@ -91,7 +97,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
       && myFormNode->data.IoSigFlags.Contains(Flag_INPUT)) {
     iterData = myFormNode;
 
-    myMenu = new QPopupMenu(this);
+    myMenu = new Q3PopupMenu(this);
 
     origMenu = true;
     if (IterFlags.Contains(IteratedItem)) {
@@ -118,7 +124,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
 }
  
 
-void CFormWid::AddRadio(QButton* radio)
+void CFormWid::AddRadio(Q3Button* radio)
 {
   Radio[nRadio] = radio;
   nRadio++;
@@ -161,7 +167,7 @@ bool CFormWid::event(QEvent* ev)
   else {
     if ((ev->type() == QEvent::Enter) && GUIProg->isView)
       ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
-    return QFrame::event(ev);
+    return Q3Frame::event(ev);
   }
 }
 

@@ -27,15 +27,15 @@
 #include "LavaPEWizard.h"
 
 #include "qlineedit.h"
-#include "qbutton.h"
+#include "q3button.h"
 #include "qradiobutton.h"
 #include "qpushbutton.h"
-#include "qbuttongroup.h"
+#include "q3buttongroup.h"
 #include "qcheckbox.h"
 #include "qstring.h"
 #include "qlabel.h"
 #include "qmessagebox.h"
-#include "qfiledialog.h"
+#include "q3filedialog.h"
 #include "qassistantclient.h"
 
 
@@ -45,13 +45,14 @@
 
 
 CAttrBox::CAttrBox(QWidget*  parent)
-  : IDD_AttrBox(parent, "AttrBox", true)
+  : QDialog(parent)
 {
 }
 
 CAttrBox::CAttrBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : IDD_AttrBox(parent, "AttrBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
   onNew = isNew;
@@ -568,13 +569,14 @@ void CAttrBox::OnOK()
 
 
 CCompSpecBox::CCompSpecBox(QWidget* parent /*=NULL*/)
-  : IDD_CompSpecBox(parent, "CompSpecBox")
+  : QDialog(parent)
 {
 }
 
 CCompSpecBox::CCompSpecBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_CompSpecBox(parent, "CompSpecBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
   onNew = isNew;
@@ -592,7 +594,7 @@ void CCompSpecBox::UpdateData(bool getData)
 ValOnInit CCompSpecBox::OnInitDialog() 
 {
   CHEEnumSelId* enumsel;
-  CListItem *item;
+  CListBoxItem *item;
 
   if (myDoc->changeNothing) {
     PushButton_IDOK13->setEnabled(false);
@@ -609,7 +611,7 @@ ValOnInit CCompSpecBox::OnInitDialog()
       if (cheS->data.nID >= 0) {
         decl = myDoc->IDTable.GetDECL(cheS->data);
         if (decl) {
-          item = new CListItem(decl->FullName, cheS->data);
+          item = new CListBoxItem(decl->FullName, cheS->data);
           m_Extends->insertItem(item);
           cheS = (CHETID*)cheS->successor;
         }
@@ -641,7 +643,7 @@ ValOnInit CCompSpecBox::OnInitDialog()
       m_EnumEdit1->setEnabled(true);
       for (enumsel = (CHEEnumSelId*)myDECL->Items.first; enumsel;
       enumsel = (CHEEnumSelId*)enumsel->successor) {
-        item = new CListItem(enumsel->data.Id, TID(-1,-1));
+        item = new CListBoxItem(enumsel->data.Id, TID(-1,-1));
         m_EnumItems1->insertItem(item);
       }
     }
@@ -705,7 +707,7 @@ void CCompSpecBox::m_EnumAdd1_clicked()
   QString iT, fileName, dir;
   DString linkName, dstrDir;
   int dd=0, ss;
-  CListItem *item;
+  CListBoxItem *item;
 
   UpdateData(true);
   ss = m_EnumItems1->currentItem();
@@ -741,7 +743,7 @@ void CCompSpecBox::m_EnumAdd1_clicked()
     else {
       CEnumItem *cm = new CEnumItem(&iT, 0, 0, false, this);
       if (cm->exec() == QDialog::Accepted) {
-        item = new CListItem(iT, TID(-1,-1));
+        item = new CListBoxItem(iT, TID(-1,-1));
         m_EnumItems1->insertItem(item, 0);
         m_EnumItems1->setSelected(0, true);
         m_EnumDel1->setEnabled(true);
@@ -753,7 +755,7 @@ void CCompSpecBox::m_EnumAdd1_clicked()
   else {
     CEnumItem *cm = new CEnumItem(&iT, 0, 0, false, this);
     if (cm->exec() == QDialog::Accepted) {
-      item = new CListItem(iT, TID(-1,-1));
+      item = new CListBoxItem(iT, TID(-1,-1));
       m_EnumItems1->insertItem(item, ss);
       m_EnumItems1->setSelected(ss, true);
       m_EnumDel1->setEnabled(true);
@@ -779,11 +781,11 @@ void CCompSpecBox::m_EnumEdit1_clicked()
   QString iT, dir, fileName;
   DString linkName, dstrDir;
   int dd=0, ss;
-  CListItem *item;
+  CListBoxItem *item;
 
   ss = m_EnumItems1->currentItem();
   if (ss >= 0) {
-    item = (CListItem*)m_EnumItems1->item(ss);
+    item = (CListBoxItem*)m_EnumItems1->item(ss);
     if (myDECL->nOutput == PROT_LAVA) {
       dir = ExeDir + ComponentLinkDir;
       fileName = dir + item->text();
@@ -818,7 +820,7 @@ void CCompSpecBox::m_EnumEdit1_clicked()
       CEnumItem* cm = new CEnumItem(&iT, m_EnumItems1, 0, false, this);//parentWidget());   
       if (cm->exec() == QDialog::Accepted) {
         m_EnumItems1->removeItem(ss);
-        item = new CListItem(iT, TID(-1,-1));
+        item = new CListBoxItem(iT, TID(-1,-1));
         m_EnumItems1->insertItem(item, ss);
       }
       delete cm;
@@ -827,7 +829,7 @@ void CCompSpecBox::m_EnumEdit1_clicked()
 }
 
 
-void CCompSpecBox::m_EnumItems1_selectionChanged(QListBoxItem* selItem) 
+void CCompSpecBox::m_EnumItems1_selectionChanged(Q3ListBoxItem* selItem) 
 {
   int ss = m_EnumItems1->currentItem();
   SetButtons(ss);
@@ -893,7 +895,7 @@ void CCompSpecBox::OnOK()
   CHEEnumSelId * enumsel;
   while (ipos < maxi) {
     enumsel =  new CHEEnumSelId;
-    CListItem* it = (CListItem*)m_EnumItems1->item(ipos);
+    CListBoxItem* it = (CListBoxItem*)m_EnumItems1->item(ipos);
     enumsel->data.Id = DString(it->text());
     myDECL->Items.Append(enumsel);
     ipos++;
@@ -907,13 +909,14 @@ void CCompSpecBox::OnOK()
 
 
 CCorrOverBox::CCorrOverBox(QWidget* parent )
- : IDD_CorrOverBox(parent, "CorrOverBox")
+ : QDialog(parent)
 {
 }
 
 CCorrOverBox::CCorrOverBox(LavaDECL* decl, CLavaPEDoc* doc, QWidget* parent)
- : IDD_CorrOverBox(parent, "CorrOverBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+ : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
 }
@@ -922,7 +925,7 @@ ValOnInit CCorrOverBox::OnInitDialog()
 {
   CHETVElem* che;
   LavaDECL *vtDecl;
-  CListItem* item;
+  CComboBoxItem* item;
 
   myDoc->MakeVElems(myDECL->ParentDECL);
   //the reference that must be corrected
@@ -937,8 +940,8 @@ ValOnInit CCorrOverBox::OnInitDialog()
     vtDecl = myDoc->IDTable.GetDECL(che->data.VTEl);
     if (vtDecl->ParentDECL != myDECL->ParentDECL)
       if (PossibleOver(vtDecl)) {
-        item = new CListItem(vtDecl->FullName, TID(vtDecl->OwnID, vtDecl->inINCL));
-        m_PossibleOvers->listBox()->insertItem(item);//sort
+        item = new CComboBoxItem(TID(vtDecl->OwnID, vtDecl->inINCL));
+        m_PossibleOvers->addItem(QString(vtDecl->FullName.c),QVariant::fromValue(item));
       }
   }
   if (m_PossibleOvers->count() > 1) {
@@ -1030,13 +1033,15 @@ void CCorrOverBox::m_NoOver_clicked()
 void CCorrOverBox::OnOK() 
 {
   int pos;
-  TID newID;
-  CListItem *item;
+  QVariant var;
+  //TID newID;
+  //CListBoxItem *item;
   
   if (m_NewOver->isOn()) {
     pos = m_PossibleOvers->currentItem();
-    item = (CListItem*)m_PossibleOvers->listBox()->item(pos);
-    CheTID->data = item->itemData();
+    //item = (CComboBoxItem*)m_PossibleOvers->listBox()->item(pos);
+    var = m_PossibleOvers->itemData(pos);
+    CheTID->data = var.value<CComboBoxItem*>()->itemData();
   }
   else {
     myDECL->Supports.Delete(CheTID);
@@ -1051,13 +1056,14 @@ void CCorrOverBox::OnOK()
 // CEnumBox
 
 CEnumBox::CEnumBox(QWidget* parent)
-  : IDD_EnumBox( parent, "EnumBox")
+  : QDialog( parent)
 {
 }
 
 CEnumBox::CEnumBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_EnumBox( parent, "EnumBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog( parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
   onNew = isNew;
@@ -1087,7 +1093,7 @@ ValOnInit CEnumBox::OnInitDialog()
 {
   CHEEnumSelId* enumsel;
   CHETID* cheID;
-  CListItem *item;
+  CListBoxItem *item;
 
   if (myDoc->changeNothing) {
     PushButton_IDOK5->setEnabled(false);
@@ -1114,7 +1120,7 @@ ValOnInit CEnumBox::OnInitDialog()
     valNewName = QString(myDECL->LocalName.c);
     for (enumsel = (CHEEnumSelId*)((TEnumDescription*)myDECL->EnumDesc.ptr)->EnumField.Items.first;
     enumsel; enumsel = (CHEEnumSelId*)enumsel->successor) {
-      item = new CListItem(enumsel->data.Id, TID(-1,-1));
+      item = new CListBoxItem(enumsel->data.Id, TID(-1,-1));
       m_EnumItems->insertItem(item);
     }
     m_BuildSet->setEnabled(false);
@@ -1143,7 +1149,7 @@ void CEnumBox::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CEnumBox::m_EnumAdd_clicked() 
 {
-  CListItem *item;
+  CListBoxItem *item;
   int ss = m_EnumItems->currentItem();
   if (ss < 0)
     ss = 0;
@@ -1152,7 +1158,7 @@ void CEnumBox::m_EnumAdd_clicked()
   QString iT("");
   CEnumItem *cm = new CEnumItem(&iT, m_EnumItems, 0, true, this);//parentWidget());
   if (cm->exec() == QDialog::Accepted) {
-    item = new CListItem(iT, TID(-1,-1));
+    item = new CListBoxItem(iT, TID(-1,-1));
     m_EnumItems->insertItem(item, ss);
     m_EnumItems->setSelected(ss, true);
     m_EnumDel->setEnabled(true);
@@ -1173,16 +1179,16 @@ void CEnumBox::m_EnumDel_clicked()
 
 void CEnumBox::m_EnumEdit_clicked() 
 {
-  CListItem *item;
+  CListBoxItem *item;
   QString txt;
   int ss = m_EnumItems->currentItem();
   if (ss >= 0) {
-    item = (CListItem*)m_EnumItems->item(ss);
+    item = (CListBoxItem*)m_EnumItems->item(ss);
     txt = item->text();
     CEnumItem* cm = new CEnumItem(&txt, m_EnumItems, 0, true, this );//parentWidget());   
     if (cm->exec() == QDialog::Accepted) {
       m_EnumItems->removeItem(ss);
-      item = new CListItem(txt, TID(-1,-1));
+      item = new CListBoxItem(txt, TID(-1,-1));
       m_EnumItems->insertItem(item, ss);
     }
     delete cm;
@@ -1190,7 +1196,7 @@ void CEnumBox::m_EnumEdit_clicked()
 }
 
 
-void CEnumBox::m_EnumItems_selectionChanged(QListBoxItem *selItem) 
+void CEnumBox::m_EnumItems_selectionChanged(Q3ListBoxItem *selItem) 
 {
   int ss = m_EnumItems->currentItem();
   SetButtons(ss);
@@ -1211,7 +1217,7 @@ void CEnumBox::SetButtons(int sel)
 
 void CEnumBox::OnOK() 
 {
-  CListItem *item;
+  CListBoxItem *item;
   QString str;
 
   UpdateData(true);
@@ -1234,7 +1240,7 @@ void CEnumBox::OnOK()
   CHEEnumSelId * enumsel;
   while (ipos < maxi) {
     enumsel =  new CHEEnumSelId;
-    item = (CListItem*)m_EnumItems->item(ipos);
+    item = (CListBoxItem*)m_EnumItems->item(ipos);
     str = item->text();
     enumsel->data.Id = DString(str);
     inEl->Items.Append(enumsel);
@@ -1251,13 +1257,14 @@ void CEnumBox::OnOK()
 
 // This box is also used for component IDs
 CEnumItem::CEnumItem(QWidget* parent)
-  : IDD_EnumItem(parent, "EnumItem")
+  : QDialog(parent)
 {
 }
 
-CEnumItem::CEnumItem(QString *enumItem, QListBox* itemsBox, ChainAny0* items, bool isId, QWidget* parent)
-  : IDD_EnumItem(parent, "EnumItem", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+CEnumItem::CEnumItem(QString *enumItem, Q3ListBox* itemsBox, ChainAny0* items, bool isId, QWidget* parent)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   m_ItemAdr = enumItem;
   StartText = *enumItem;
   m_EnumItem->setText(StartText);
@@ -1274,7 +1281,7 @@ void CEnumItem::OnOK()
   CHEEnumSelId *che;
   DString str;
   QString txt, newText;
-  CListItem *item;
+  CListBoxItem *item;
 
   if ((Items || ItemsBox) && isID && !((CLavaPEApp*)wxTheApp)->LBaseData.isIdentifier(m_EnumItem->text()))
     QMessageBox::critical(this,qApp->name(),IDP_IsNoID,QMessageBox::Ok,0,0);
@@ -1284,7 +1291,7 @@ void CEnumItem::OnOK()
       newText = m_EnumItem->text();
       if (newText != StartText) {
         for (ipos = 0; (ipos < maxi) && (newText != txt); ipos++) {
-          item = (CListItem*)ItemsBox->item(ipos);
+          item = (CListBoxItem*)ItemsBox->item(ipos);
           txt = item->text();
         }
         if (newText == txt) 
@@ -1324,13 +1331,14 @@ void CEnumItem::OnOK()
 
 
 CFuncBox::CFuncBox(QWidget* parent /*=NULL*/)
-  : IDD_FuncBox(parent)
+  : QDialog(parent)
 {
 }
 
 CFuncBox::CFuncBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_FuncBox(parent, "FuncBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
   onNew = isNew;
@@ -1362,7 +1370,7 @@ ValOnInit CFuncBox::OnInitDialog()
   SynFlags typeflag;
   LavaDECL *decl,  *baseDECL;
   CHETID *ncheS, *cheS;
-  CListItem *listItem;
+  CListBoxItem *listItem;
 
   if (myDoc->changeNothing) {
     PushButton_IDOK11->setEnabled(false);
@@ -1527,7 +1535,7 @@ ValOnInit CFuncBox::OnInitDialog()
       if (myDoc->AllowThrowType(myDECL, cheS->data, 0)) {
         decl = myDoc->IDTable.GetDECL(cheS->data);
         if (decl && decl->SecondTFlags.Contains(isException)) {
-          listItem = new CListItem(decl->LocalName, cheS->data);
+          listItem = new CListBoxItem(decl->LocalName, cheS->data);
           m_Inherits1->insertItem(listItem);
           cheS = (CHETID*)cheS->successor;
         }
@@ -1654,7 +1662,7 @@ void CFuncBox::CalcOpBox()
 {
   TID id;
   int high, iop;
-  CListItem *listItem;
+  CComboBoxItem *listItem;
   high = m_CMBOperator->count();
   if (high)
     for (iop = 1; iop < high; iop++)
@@ -1668,8 +1676,9 @@ void CFuncBox::CalcOpBox()
     id.nID = -1;
     if (!myDoc->getOperatorID(myDECL->ParentDECL, (TOperator) iop, id)
         || (id.nID == myDECL->OwnID) && (id.nINCL == 0)) {
-      listItem = new CListItem(LBaseData->OperatorNames [iop], TID(iop, 0));
-      m_CMBOperator->listBox()->insertItem(listItem);//sort
+      listItem = new CComboBoxItem(TID(iop, 0));
+      m_CMBOperator->addItem(QString(LBaseData->OperatorNames [iop].c),QVariant::fromValue(listItem));
+//      m_CMBOperator->listBox()->insertItem(listItem);//sort
       if ((id.nID == myDECL->OwnID) && (id.nINCL == 0))
         m_CMBOperator->setCurrentText(QString(LBaseData->OperatorNames [myDECL->op ].c));
     }
@@ -1978,14 +1987,15 @@ void CFuncBox::OnOK()
 
 
 CImplBox::CImplBox(QWidget* parent /*=NULL*/)
-  : IDD_ImplBox(parent, "ImplBox", true)
+  : QDialog(parent)
 {
 
 }
 
 CImplBox::CImplBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_ImplBox(parent, "ImplBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
   onNew = isNew;
@@ -2007,6 +2017,7 @@ ValOnInit CImplBox::OnInitDialog()
   int pos, icount;
   TID id;
   bool ex=false;
+  QVariant var;
 
   if (myDoc->changeNothing) {
     PushButton_IDOK7->setEnabled(false);
@@ -2027,7 +2038,8 @@ ValOnInit CImplBox::OnInitDialog()
           valImplSel = QString("??: ");
           Convert.IntToString(cheS->data.nINCL, strINCL);
           Convert.IntToString(cheS->data.nID, strID);
-          valImplSel = valImplSel + "(" + strINCL.c + "," + strID.c + ")";
+          valImplSel = valImplSel + QString("(") 
+            + QString(strINCL.c) + QString(",") + QString(strID.c) + QString(")");
         }
       }
     }
@@ -2040,7 +2052,9 @@ ValOnInit CImplBox::OnInitDialog()
   if (!onNew) {
     icount = m_ImplTypes->count();
     for (pos=1; (pos < icount) && !ex; pos++) {
-      id = ((CListItem*)m_ImplTypes->listBox()->item(pos))->itemData();
+      var = m_ImplTypes->itemData(pos);
+      id = var.value<CComboBoxItem*>()->itemData();
+//      id = ((CComboBoxItem*)m_ImplTypes->listBox()->item(pos))->itemData();
       if (id == ((CHETID*)myDECL->Supports.first)->data)
         ex = true;
     }
@@ -2127,13 +2141,14 @@ void CImplBox::OnOK()
 
 
 CIncludeBox::CIncludeBox(QWidget* parent /*=NULL*/)
-  : IDD_IncludeBox(parent, "IncludeBox", true)
+  : QDialog(parent)
 {
 }
 
 CIncludeBox::CIncludeBox(CLavaPEDoc* myDoc, CHESimpleSyntax* newChe, CHESimpleSyntax* oldChe, QWidget* parent)
-  : IDD_IncludeBox(parent, "IncludeBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   NewChe = newChe;
   OldChe = oldChe;
   MyDoc = myDoc;
@@ -2192,13 +2207,14 @@ void CIncludeBox::m_OtherPath_clicked()
 
 
 CInitBox::CInitBox(QWidget* parent)
-  : IDD_InitBox(parent)
+  : QDialog(parent)
 {
 }
 
 CInitBox::CInitBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
- : IDD_InitBox(parent, "InitBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+ : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
   onNew = isNew;
@@ -2305,13 +2321,14 @@ void CInitBox::OnOK()
 
 
 CInterfaceBox::CInterfaceBox(QWidget* parent /*=NULL*/)
-  : IDD_InterfaceBox(parent)
+  : QDialog(parent)
 {
 }
 
 CInterfaceBox::CInterfaceBox(LavaDECL* mydecl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_InterfaceBox(parent, "InterfaceBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   valNewName = QString("");
   valIfaceID = QString("");
   valBuildSet = false;
@@ -2357,10 +2374,11 @@ ValOnInit CInterfaceBox::OnInitDialog()
   int pos, icount;
   QString * err;
   CExecAllDefs * execAllPatt;
+  QVariant var;
 //  CHETID *ncheS, *cheS;
 //  LavaDECL* decl;
   bool found=false;
-//  CListItem *listItem;
+//  CComboBoxItem *listItem;
 
 
 //  GetDlgItem(IDC_StatIDLabel)->SetWindowText("CLSID of implementation DLL");
@@ -2397,7 +2415,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
       if (cheS->data.nID >= 0) {
         decl = myDoc->IDTable.GetDECL(cheS->data);
         if (decl) {
-          listItem = new CListItem(decl->LocalName, cheS->data);
+          listItem = new CComboBoxItem(decl->LocalName, cheS->data);
           m_Inherits->insertItem(listItem);
           cheS = (CHETID*)cheS->successor;
         }
@@ -2442,9 +2460,10 @@ ValOnInit CInterfaceBox::OnInitDialog()
     for (pos=1;
          (pos < icount)
            && !ex;
-        // && (myDECL->RefID != ((CListItem*)m_GUIStructs->listBox()->item(pos))->itemData());
+        // && (myDECL->RefID != ((CComboBoxItem*)m_GUIStructs->listBox()->item(pos))->itemData());
          pos++) {
-           id = ((CListItem*)m_GUIStructs->listBox()->item(pos))->itemData();
+           var = m_GUIStructs->itemData(pos);
+           id = var.value<CComboBoxItem*>()->itemData();
            if (id == myDECL->RefID)
              ex = true;}
     if (pos <= icount)
@@ -2458,7 +2477,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
 void CInterfaceBox::SupportsToList()
 {
   LavaDECL* decl;
-  CListItem* listItem;
+  CListBoxItem* listItem;
   CHETID *ncheS, *cheS = (CHETID*)myDECL->Supports.first; //extends
   DString str;
   m_Extends->clear();
@@ -2472,10 +2491,10 @@ void CInterfaceBox::SupportsToList()
         if (decl) {
           if (decl->DeclType == VirtualType) {
             str = lthen + decl->FullName + grthen;
-            listItem = new CListItem(str, cheS->data);
+            listItem = new CListBoxItem(str, cheS->data);
           }
           else 
-            listItem = new CListItem(decl->FullName, cheS->data);
+            listItem = new CListBoxItem(decl->FullName, cheS->data);
           m_Extends->insertItem(listItem);
           cheS = (CHETID*)cheS->successor;
         }
@@ -2501,7 +2520,7 @@ void CInterfaceBox::m_DelSupport_clicked()
   int pos;
 
   UpdateData(true);
-  CListItem *listItem = (CListItem*)m_Extends->selectedItem();
+  CListBoxItem *listItem = (CListBoxItem*)m_Extends->selectedItem();
   if (listItem) {
     pos = m_Extends->index(listItem);
     m_Extends->removeItem(pos);
@@ -2515,9 +2534,12 @@ void CInterfaceBox::m_DelSupport_clicked()
 
 void CInterfaceBox::m_ExtTypes_activated(int pos) 
 {
+  QVariant var;
+
   if (!pos) return;
   UpdateData(true);
-  CListItem *listItem = (CListItem*)m_ExtTypes->listBox()->item(pos);
+  var = m_ExtTypes->itemData(pos);
+  CComboBoxItem *listItem = var.value<CComboBoxItem*>();
   if (listItem) {
     if (myDoc->IDTable.InsertBase(myDECL, myDoc->IDTable.GetDECL(listItem->itemData(), 0), ContextDECL, true)) {
       SupportsToList();
@@ -2533,9 +2555,12 @@ void CInterfaceBox::m_ExtTypes_activated(int pos)
 
 void CInterfaceBox::m_BasicTypes1_activated(int pos) 
 {
+  QVariant var;
+
   if (!pos) return;
   UpdateData(true);
-  CListItem *listItem = (CListItem*)m_BasicTypes->listBox()->item(pos);
+  var = m_BasicTypes->itemData(pos);
+  CComboBoxItem *listItem = var.value<CComboBoxItem*>();
   if (listItem) {
     if (myDoc->IDTable.InsertBase(myDECL, myDoc->IDTable.GetDECL(listItem->itemData(), 0), ContextDECL, true)) {
       SupportsToList();
@@ -2550,7 +2575,7 @@ void CInterfaceBox::m_BasicTypes1_activated(int pos)
 void CInterfaceBox::m_DelInherits_clicked() 
 {
   int pos;
-  CListItem *listItem = (CListItem*)m_Inherits->selectedItem();
+  CComboBoxItem *listItem = (CComboBoxItem*)m_Inherits->selectedItem();
   if (listItem) {
     pos = m_Inherits->index(listItem);
     m_Inherits->removeItem(pos);
@@ -2739,8 +2764,9 @@ CIOBox::CIOBox(QWidget*  /*=NULL*/)
 }
 
 CIOBox::CIOBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : IDD_IOBox(parent, "IOBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
   onNew = isNew;
@@ -2769,7 +2795,7 @@ void CIOBox::BaseClassesToCombo(LavaDECL *decl)
   LavaDECL *baseDECL;
   CHETVElem*  El;
   TID id1 = TID(-1, 0);
-  CListItem *item;
+  CComboBoxItem *item;
 
   myDoc->MakeVElems(decl);
   El = (CHETVElem*)decl->VElems.VElems.first;
@@ -2778,12 +2804,13 @@ void CIOBox::BaseClassesToCombo(LavaDECL *decl)
       baseDECL = myDoc->IDTable.GetDECL(El->data.VTClss);
       if (baseDECL) {
         if (baseDECL->fromBType == NonBasic) {
-          item = new CListItem(baseDECL->FullName, TID(baseDECL->OwnID, baseDECL->inINCL));
-          m_NamedTypes->listBox()->insertItem(item);//sort
+          item = new CComboBoxItem(TID(baseDECL->OwnID, baseDECL->inINCL));
+      m_NamedTypes->addItem(QString(baseDECL->FullName.c),QVariant::fromValue(item));
+//          m_NamedTypes->listBox()->insertItem(item);//sort
         }     
         else 
-          item = new CListItem(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[baseDECL->fromBType], TID(baseDECL->OwnID, 1));
-          m_BasicTypes->listBox()->insertItem(item);//sort
+          item = new CComboBoxItem(/*((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[baseDECL->fromBType],*/ TID(baseDECL->OwnID, 1));
+          m_BasicTypes->addItem(QString(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[baseDECL->fromBType]), QVariant::fromValue(item));//sort
       }
       id1 = El->data.VTClss;
     }
@@ -3109,14 +3136,15 @@ void CIOBox::OnOK()
 
 
 CPackageBox::CPackageBox(QWidget* parent /*=NULL*/)
-  : IDD_PackageBox(parent, "PackageBox", true)
+  : QDialog(parent)
 {
 }
 
 CPackageBox::CPackageBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : IDD_PackageBox(parent, "PackageBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
-  myDECL = decl;
+   setupUi(this);
+ myDECL = decl;
   myDoc = doc;
   onNew = isNew;
   OrigDECL = origDECL;
@@ -3137,7 +3165,7 @@ ValOnInit CPackageBox::OnInitDialog()
 {
   CHETID *ncheS, *cheS;
   LavaDECL* decl;
-  CListItem *item;
+  CListBoxItem *item;
 
   if (myDoc->changeNothing) {
     PushButton_IDOK10->setEnabled(false);
@@ -3156,7 +3184,7 @@ ValOnInit CPackageBox::OnInitDialog()
       if (cheS->data.nID >= 0) {
         decl = myDoc->IDTable.GetDECL(cheS->data);
         if (decl) {
-          item = new CListItem(decl->FullName, cheS->data);
+          item = new CListBoxItem(decl->FullName, cheS->data);
           m_Extends->insertItem(item);
           cheS = (CHETID*)cheS->successor;
         }
@@ -3225,13 +3253,14 @@ void CPackageBox::OnOK()
 
 
 CSetBox::CSetBox(QWidget* parent )
-  : IDD_SetBox(parent, "SetBox", true)
+  : QDialog(parent)
 {
 }
 
 CSetBox::CSetBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : IDD_SetBox(parent, "SetBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
   onNew = isNew;
@@ -3334,13 +3363,14 @@ void CSetBox::OnOK()
 
 
 CVTypeBox::CVTypeBox(QWidget* parent)
-  : IDD_VTypeBox(parent, "VTypeBox", true)
+  : QDialog(parent)
 {
 }
 
 CVTypeBox::CVTypeBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : IDD_VTypeBox(parent, "VTypeBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   myDoc = doc;
   onNew = isNew;
@@ -4013,21 +4043,25 @@ void ResetComboItems(QComboBox* box)
 
 bool SetSelections(QComboBox* basics, QComboBox* types, const QString& name)
 {
-  CListItem *listItem;
-  listItem = (CListItem*)basics->listBox()->findItem(name, Qt::ExactMatch | Qt::CaseSensitive);
+  int pos;
+  /*CComboBoxItem *listItem;
+  listItem = (CComboBoxItem*)basics->listBox()->findItem(name, Qt::ExactMatch | Qt::CaseSensitive);
   if (listItem) {
-    basics->setCurrentText(listItem->text());
-    types->setCurrentItem(0);
+    basics->setCurrentText(listItem->text());*/
+  pos = basics->findText(name, Qt::MatchExactly | Qt::MatchCaseSensitive);
+  if (pos > 0) {
+    basics->setCurrentIndex(pos);
+    types->setCurrentIndex(0);
     return true;
   }
-  listItem = (CListItem*)types->listBox()->findItem(name, Qt::ExactMatch | Qt::CaseSensitive);
-  if (listItem) {
-    types->setCurrentText(listItem->text());
-    basics->setCurrentItem(0);
+  pos = types->findText(name, Qt::MatchExactly | Qt::MatchCaseSensitive);
+  if (pos > 0) {
+    types->setCurrentIndex(pos);
+    basics->setCurrentIndex(0);
     return true;
   }
-  types->setCurrentItem(0);
-  basics->setCurrentItem(0);
+  types->setCurrentIndex(0);
+  basics->setCurrentIndex(0);
   return false;
 }
 
@@ -4050,19 +4084,22 @@ QString*  CheckNewName(const QString& valNewName, LavaDECL *myDECL, CLavaPEDoc* 
 }
 
 
-int SelEndOKToList(QComboBox* cbox, QListBox* list, int chpos)
+int SelEndOKToList(QComboBox* cbox, Q3ListBox* list, int chpos)
 {
-  CListItem *listItem;
-  QListBoxItem *comboItem = cbox->listBox()->selectedItem();
-  if ((cbox->listBox()->index(comboItem) > 0) && comboItem ) {
-    listItem = (CListItem*)list->findItem(((CListItem*)comboItem)->text(), Qt::ExactMatch | Qt::CaseSensitive);
+  CListBoxItem *listItem;
+  QVariant var;
+  //CComboBoxItem *comboItem = cbox->listBox()->selectedItem();
+  int pos = cbox->currentIndex();
+  if (pos > 0) {
+    listItem = (CListBoxItem*)list->findItem(cbox->currentText());
     if (listItem) {
       list->setSelected(listItem, true);
       return -1;
     }
     if (chpos >= 0) 
       list->removeItem(chpos);
-    listItem = new CListItem(comboItem->text(), ((CListItem*)comboItem)->itemData());
+    var = cbox->itemData(pos);
+    listItem = new CListBoxItem(cbox->currentText(), var.value<CComboBoxItem*>()->itemData());
     list->insertItem(listItem);
     return 1;
   }
@@ -4071,27 +4108,31 @@ int SelEndOKToList(QComboBox* cbox, QListBox* list, int chpos)
 
 int SelEndOKToStr(QComboBox* cbox, QString* editStr, TID* exID)
 {
-  QListBoxItem *comboItem = cbox->listBox()->selectedItem();
-  if (cbox->listBox()->index(comboItem) > 0)
-    if (comboItem) {
-      *editStr = ((CListItem*)comboItem)->text();
-      if (exID)
-        *exID = ((CListItem*)comboItem)->itemData();
+  QVariant var;
+  //CComboBoxItem *comboItem = (CComboBoxItem*)cbox->listBox()->selectedItem();
+  //if (cbox->listBox()->index(comboItem) > 0)
+  int pos = cbox->currentIndex();
+  if (pos > 0) {
+    *editStr = cbox->currentText();
+    if (exID) {
+      var = cbox->itemData(pos);
+      *exID = var.value<CComboBoxItem*>()->itemData();
     }
-  return cbox->listBox()->index(comboItem);
+  }
+  return pos;
 }
 
 
-void ListToChain(QListBox* list, TSupports* supports)
+void ListToChain(Q3ListBox* list, TSupports* supports)
 {
   int pos, icount;
   CHETID *cheS;
-  CListItem *listItem;
+  CListBoxItem *listItem;
 
   supports->Destroy();
   icount = list->count();
   for (pos = 0; pos < icount; pos++) {
-    listItem = (CListItem*)list->item(pos);
+    listItem = (CListBoxItem*)list->item(pos);
     cheS = new CHETID;
     supports->Append(cheS);
     cheS->data = listItem->itemData();
@@ -4243,10 +4284,10 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
   return okBox;
 }
 
-CExecExtensions::CExecExtensions(CLavaPEDoc* doc, QComboBox* list, QComboBox* basicList, LavaDECL* startDECL, LavaDECL* origDECL)
+CExecExtensions::CExecExtensions(CLavaPEDoc* doc, QComboBox* combo, QComboBox* basicCombo, LavaDECL* startDECL, LavaDECL* origDECL)
 {
-  List = list;
-  BasicList = basicList;
+  Combo = combo;
+  BasicCombo = basicCombo;
   myDECL = startDECL;
   OrigDECL = origDECL;
   myDoc = doc;
@@ -4267,13 +4308,13 @@ CExecExtensions::CExecExtensions(CLavaPEDoc* doc, QComboBox* list, QComboBox* ba
     }
     che = (CHETID*)che->successor;
   }
-  //CFont* font = List->GetFont();
-  //dc = new CClientDC(List->GetParent());
+  //CFont* font = Combo->GetFont();
+  //dc = new CClientDC(Combo->GetParent());
   //dc->SelectObject (font);
   TabTravers = new CTabTraversal(this, myDoc->mySynDef);
   TabTravers->Run(true, true);
-  SortCombo(List);
-  //List->SetDroppedWidth(maxWidth+6);
+  SortCombo(Combo);
+  //Combo->SetDroppedWidth(maxWidth+6);
 }
 
 
@@ -4285,7 +4326,7 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
   TDeclType elType = elDef->DeclType;
   bool sameContext = false;
   CContext context, con;
-  CListItem *item;
+  CComboBoxItem *item;
 
   myDoc->IDTable.GetPattern(elDef, con);
   if (elDef->usableIn(myDECL)
@@ -4302,8 +4343,10 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
                || (id == myDoc->GetMappedVType(id, context,0))
                   && (myDECL->TypeFlags.Contains(stateObject) == elDef->TypeFlags.Contains(stateObject))
                )) {
-          item = new CListItem(elDef->FullName, TID(elDef->OwnID, elDef->inINCL));
-          List->listBox()->insertItem(item);//sort
+          //item = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, elDef->inINCL));
+          //Combo->listBox()->insertItem(item);//sort
+          item = new CComboBoxItem(TID(elDef->OwnID, elDef->inINCL));
+          Combo->addItem(QString(elDef->FullName.c), QVariant::fromValue(item));//sort
         }
       }
       else {
@@ -4313,8 +4356,10 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
             incl = 0;
           else
             incl = 1;
-          item = new CListItem(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it], TID(elDef->OwnID, incl));
-          List->listBox()->insertItem(item);//sort
+//          item = new CComboBoxItem(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it], TID(elDef->OwnID, incl));
+//          Combo->listBox()->insertItem(item);//sort
+          item = new CComboBoxItem(TID(elDef->OwnID, incl));
+          Combo->addItem(QString(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it]), QVariant::fromValue(item));//sort
         }
       }
     }
@@ -4327,8 +4372,10 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
           if ((elDef != OrigDECL)
             //  && ((myDECL->DeclType != VirtualType) || (elDef->DeclType != VirtualType))
         ) {
-            item = new CListItem(elDef->FullName, TID(elDef->OwnID, elDef->inINCL));
-          List->listBox()->insertItem(item);//sort
+          //item = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, elDef->inINCL));
+          //Combo->listBox()->insertItem(item);//sort
+            item = new CComboBoxItem(TID(elDef->OwnID, elDef->inINCL));
+            Combo->addItem(QString(elDef->FullName.c), QVariant::fromValue(item));//sort
           }
         }
         else {
@@ -4337,8 +4384,10 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
             incl = 0;
           else
             incl = 1;
-          item = new CListItem(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it], TID(elDef->OwnID, incl));
-          List->listBox()->insertItem(item);//sort
+//          item = new CComboBoxItem(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it], TID(elDef->OwnID, incl));
+//          Combo->listBox()->insertItem(item);//sort
+          item = new CComboBoxItem(TID(elDef->OwnID, incl));
+          Combo->addItem(QString(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it]), QVariant::fromValue(item));//sort
         }
       }
 }
@@ -4360,7 +4409,7 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
   DString lab;
   bool sameContext;
   CContext con;
-  CListItem *listItem;
+  CComboBoxItem *listItem;
 
   if ((elDef->DeclType != Interface) && (elDef->DeclType != VirtualType))
     return;
@@ -4380,27 +4429,29 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
       lab.Insert(grthen, lab.l);
       lab.Insert(lthen, 0);
     }
-    listItem = new CListItem(lab, TID(elDef->OwnID, elDef->inINCL));
-    IBox->m_ExtTypes->listBox()->insertItem(listItem);//sort
+    //listItem = new CComboBoxItem(lab, TID(elDef->OwnID, elDef->inINCL));
+    //IBox->m_ExtTypes->listBox()->insertItem(listItem);//sort
+    listItem = new CComboBoxItem(TID(elDef->OwnID, elDef->inINCL));
+    IBox->m_ExtTypes->addItem(QString(lab.c), QVariant::fromValue(listItem));//sort
     //sz = dc->GetTextExtent(lab.c, lab.l);
     //maxWidth = lmax(maxWidth, sz.cx);
   }
 }
   
-CExecDefs::CExecDefs(CLavaPEDoc* doc, QComboBox* list, LavaDECL* decl)
+CExecDefs::CExecDefs(CLavaPEDoc* doc, QComboBox* combo, LavaDECL* decl)
 {
-  List = list;
+  Combo = combo;
   myDECL = decl;
   myDoc = doc;
   TabTravers = new CTabTraversal(this, myDoc->mySynDef);
   TabTravers->Run(true, true);
-  SortCombo(List);
+  SortCombo(Combo);
 }
 
 
 void CExecDefs::ExecDefs (LavaDECL ** pelDef, int )
 {
-  CListItem *listItem;
+  CComboBoxItem *listItem;
 
   if ( ((*pelDef)->DeclType == Package)
       && (*pelDef)->LocalName.l
@@ -4408,22 +4459,24 @@ void CExecDefs::ExecDefs (LavaDECL ** pelDef, int )
       && !(*pelDef)->isInSubTree(myDECL)) {
     CHE* che = (CHE*)(*pelDef)->NestedDecls.first;
     if (che && (((LavaDECL*)che->data)->DeclType == VirtualType)) { 
-      listItem = new CListItem((*pelDef)->FullName, TID((*pelDef)->OwnID, (*pelDef)->inINCL));
-      List->listBox()->insertItem(listItem);//sort
+//      listItem = new CComboBoxItem((*pelDef)->FullName, TID((*pelDef)->OwnID, (*pelDef)->inINCL));
+//      Combo->listBox()->insertItem(listItem);//sort
+      listItem = new CComboBoxItem(TID((*pelDef)->OwnID, (*pelDef)->inINCL));
+      Combo->addItem(QString((*pelDef)->FullName.c), QVariant::fromValue(listItem));//sort
     }
   }
 } 
 
 
 CExecAllDefs::CExecAllDefs(CLavaPEDoc* doc, 
-                           QComboBox* list, QComboBox* list2, //QComboBox* list3,
+                           QComboBox* combo, QComboBox* combo2, //QComboBox* list3,
                            LavaDECL *parentDECL, LavaDECL *callingDECL,
                            TDeclType deftype, SynFlags typeFlag)
 {
 //  CFont* font;
 
-  List = list;
-  List2 = list2;
+  Combo = combo;
+  Combo2 = combo2;
   //List3 = list3;
   CallingDECL = callingDECL;
   ParentDECL = parentDECL;
@@ -4442,10 +4495,10 @@ CExecAllDefs::CExecAllDefs(CLavaPEDoc* doc,
 //  Flag = flag;
   TabTravers = new CTabTraversal(this, myDoc->mySynDef);
   TabTravers->Run(true, true);
-  if (List) 
-    FitBox(List, 0); 
-  if (List2)
-    FitBox(List2, 0); //GUI-Box only
+  if (Combo) 
+    FitBox(Combo, 0); 
+  if (Combo2)
+    FitBox(Combo2, 0); //GUI-Box only
   /*
   if (List3)
     FitBox(List3, 0);
@@ -4454,41 +4507,49 @@ CExecAllDefs::CExecAllDefs(CLavaPEDoc* doc,
 }
 
 
-void CExecAllDefs::FitBox(QComboBox* list, int maxWidth)
+void CExecAllDefs::FitBox(QComboBox* combo, int maxWidth)
 {
   QString strA, strB;
   bool nowB = false;
-  CListItem *listItemA, *listItemB;
+  CComboBoxItem *listItemA, *listItemB;
   LavaDECL* decl;
-  int pos, posA, posB, icount = list->count();
+  int pos, posA, posB, icount = combo->count();
+  QVariant var;
 
   for (pos = 2; pos < icount; pos++) {
     if (nowB) {
-      listItemB = (CListItem*)list->listBox()->item(pos);
-      strB = list->listBox()->text(pos);
+      var = combo->itemData(pos);
+      listItemB = var.value<CComboBoxItem*>();
+      strB = combo->itemText(pos);
       posB = pos;
     }
     else {
-      listItemA = (CListItem*)list->listBox()->item(pos);
-      strA = list->listBox()->text(pos);
+      var = combo->itemData(pos);
+      listItemA = var.value<CComboBoxItem*>();
+      strA = combo->itemText(pos);
       posA = pos;
     }
     if (strB == strA) {
       decl = myDoc->IDTable.GetDECL(listItemA->itemData());
-      listItemA = new CListItem(decl->FullName, listItemA->itemData());
-      list->listBox()->changeItem(listItemA, posA);
+      listItemA = new CComboBoxItem(listItemA->itemData());
+      combo->setItemText(posA, QString(decl->FullName.c));
+      combo->setItemData(posA, QVariant::fromValue(listItemA));
+      //combo->listBox()->changeItem(listItemA, posA);
       //sz = dc->GetTextExtent(decl->FullName.c, decl->FullName.l);
       //maxWidth = lmax(maxWidth, sz.cx);
       decl = myDoc->IDTable.GetDECL(listItemB->itemData());
-      listItemB = new CListItem(decl->FullName, listItemB->itemData());
-      list->listBox()->changeItem(listItemB, posB);
+      //listItemB = new CComboBoxItem(decl->FullName, listItemB->itemData());
+      //combo->listBox()->changeItem(listItemB, posB);
+      listItemB = new CComboBoxItem(listItemB->itemData());
+      combo->setItemText(posB, QString(decl->FullName.c));
+      combo->setItemData(posB, QVariant::fromValue(listItemB));
       //sz = dc->GetTextExtent(decl->FullName.c, decl->FullName.l);
       //maxWidth = lmax(maxWidth, sz.cx);
     }
     nowB = !nowB;
   }
-  SortCombo(list);
-  list->setCurrentItem(0);
+  SortCombo(combo);
+  combo->setCurrentItem(0);
   //if (maxWidth)
   //  list->SetDroppedWidth(maxWidth+6);
   
@@ -4506,7 +4567,7 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
   TID pID;
   bool putIt = false, sameContext;
   CContext con;
-  CListItem *listItem;
+  CComboBoxItem *listItem;
   TDeclType elType = elDef->DeclType;
   DString lab, LocalName;
 
@@ -4574,7 +4635,7 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
     putIt = elDef->TypeFlags.Contains(isComponent);
   else
     putIt = (DeclType == CompObj) && (elType == CompObjSpec);
-  if (putIt && List) {
+  if (putIt && Combo) {
     if (ParentDECL && ParentDECL->FullName.l) 
       lab = ((CLavaPEApp*)wxTheApp)->LBaseData.calcRelName (elDef->FullName, ParentDECL->FullName);
     else 
@@ -4583,29 +4644,33 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
       lab.Insert(grthen, lab.l);
       lab.Insert(lthen, 0);
     }
-    listItem = new CListItem(lab, TID(elDef->OwnID, incl));
-    List->listBox()->insertItem(listItem);//sort
+    //listItem = new CComboBoxItem(lab, TID(elDef->OwnID, incl));
+    //Combo->listBox()->insertItem(listItem);//sort
+    listItem = new CComboBoxItem(TID(elDef->OwnID, incl));
+    Combo->addItem(QString(lab.c), QVariant::fromValue(listItem));//sort
   }
   /*
   if (((DeclType == Interface) || (DeclType == CompObjSpec))
-    && List2  && elDef->SecondTFlags.Contains(isEnum)) {
-    listItem = new CListItem(elDef->FullName, TID(elDef->OwnID, incl));
-    List2->listBox()->insertItem(listItem);//sort
+    && Combo2  && elDef->SecondTFlags.Contains(isEnum)) {
+    listItem = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, incl));
+    Combo2->listBox()->insertItem(listItem);//sort
   }
   */
   if (elType == VirtualType) 
     decl = myDoc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
-  if (List2 && //List3 && 
+  if (Combo2 && //List3 && 
        (elType == Interface) && !elDef->TypeFlags.Contains(isGUI)
      ) {
     if (ParentDECL && ParentDECL->FullName.l) {
       LocalName = ((CLavaPEApp*)wxTheApp)->LBaseData.calcRelName (elDef->FullName, ParentDECL->FullName);
-      listItem = new CListItem(LocalName, TID(elDef->OwnID, incl));
-      List2->listBox()->insertItem(listItem);//sort
+//      listItem = new CComboBoxItem(LocalName, TID(elDef->OwnID, incl));
+//      Combo2->listBox()->insertItem(listItem);//sort
+      listItem = new CComboBoxItem(TID(elDef->OwnID, incl));
+      Combo2->addItem(QString(LocalName.c), QVariant::fromValue(listItem));//sort
     }
     else {
-      listItem = new CListItem(elDef->FullName, TID(elDef->OwnID, incl));
-      List2->listBox()->insertItem(listItem);//sort
+      listItem = new CComboBoxItem(TID(elDef->OwnID, incl));
+      Combo2->addItem(QString(elDef->FullName.c), QVariant::fromValue(listItem));//sort
     }
   }
 }
@@ -4619,16 +4684,16 @@ void CExecAllDefs::ExecFormDef (LavaDECL ** pelDef, int incl)
     if ((DeclType == Alias) || (DeclType == Attr)) {
       if (ParentDECL && ParentDECL->FullName.l) {
         DString LocalName = ((CLavaPEApp*)wxTheApp)->LBaseData.calcRelName ((*pelDef)->FullName, ParentDECL->FullName);
-        pos = List->AddString(LocalName.c);
+        pos = Combo->AddString(LocalName.c);
         sz = dc->GetTextExtent(LocalName.c, LocalName.l);
         maxWidth = lmax(maxWidth, sz.cx);
       }
       else {
-        pos = List->AddString((*pelDef)->FullName.c);
+        pos = Combo->AddString((*pelDef)->FullName.c);
         sz = dc->GetTextExtent((*pelDef)->FullName.c, (*pelDef)->FullName.l);
         maxWidth = lmax(maxWidth, sz.cx);
       }
-      List->SetItemData(pos, MAKELONG((*pelDef)->OwnID, incl));
+      Combo->SetItemData(pos, MAKELONG((*pelDef)->OwnID, incl));
     }
   }
 }

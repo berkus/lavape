@@ -57,14 +57,14 @@ bool IsOK (QString &txt,TToken &token,int &pos,QString *&msg, CComboBar *comboBa
 
   init();
 
-  if (isalpha((int)(unsigned char)currentChar)) {
+  if (currentChar.isLetter()) {
     if (token == Const_T) {
       *msgp = &ERR_const_expected;
       return false;
     }
     nextChar();
     for (;;) {
-      if (isalnum((int)(unsigned char)currentChar) || (currentChar == '_')) nextChar();
+      if (currentChar.isLetterOrNumber() || (currentChar == '_')) nextChar();
       else break;
     }
     token = Identifier_T;
@@ -110,7 +110,7 @@ bool IsOK (QString &txt,TToken &token,int &pos,QString *&msg, CComboBar *comboBa
       *msgp = &ERR_Var_expected;
       return false;
     }
-    switch (currentChar) {
+    switch (currentChar.toAscii()) {
     case '.':
       return number();
 
@@ -121,7 +121,7 @@ bool IsOK (QString &txt,TToken &token,int &pos,QString *&msg, CComboBar *comboBa
       return strConst();
 
     default:
-      if (isdigit(currentChar))
+      if (currentChar.isDigit())
         return number();
       else {
         *msgp = &ERR_Odd_char;
@@ -137,7 +137,7 @@ static bool specialChar ()
 
 {
   nextChar();
-  switch (currentChar) {
+  switch (currentChar.toAscii()) {
   case 'n':
   case 't':
   case 'v':
@@ -153,19 +153,19 @@ static bool specialChar ()
     
   case 'x':
     nextChar();
-    if (!isxdigit(currentChar)) {
+    if (!isxdigit(currentChar.toAscii())) {
       *msgp = &ERR_Wrong_spcl_char;
       return false;
     }
-    while (isxdigit(currentChar)) nextChar();
+    while (isxdigit(currentChar.toAscii())) nextChar();
     break;
   
   default:
-    if (!isdigit(currentChar) || (currentChar>='8')) {
+    if (!currentChar.isDigit() || (currentChar>='8')) {
       *msgp = &ERR_Wrong_spcl_char;
       return false;
     }
-    while (isdigit(currentChar) && (currentChar<'8')) nextChar();
+    while (currentChar.isDigit() && (currentChar<'8')) nextChar();
   }
   return true;
 }
@@ -177,7 +177,7 @@ static bool charConst ()
   char oldCh;
 
   *tokenp = CharConst_T;
-  oldCh = currentChar;
+  oldCh = currentChar.toAscii();
   nextChar();
   if (currentChar == '\\' && !specialChar())
     return false;
@@ -201,10 +201,10 @@ static bool strConst ()
   char oldCh;
 
   *tokenp = StringConst_T;
-  oldCh = currentChar;
+  oldCh = currentChar.toAscii();
   nextChar();
   for (; currentChar != '\0';) {
-    switch (currentChar) {
+    switch (currentChar.toAscii()) {
     case '\\':
       if (!specialChar())
         return false;
@@ -236,18 +236,18 @@ static bool number ()
   float f;
   double d;
 
-  switch (currentChar) {
+  switch (currentChar.toAscii()) {
   case '0':
     nextChar();
     if ((currentChar == 'x')
     || (currentChar == 'X')) {
       *tokenp = HexConst_T;
       nextChar();
-      if (!isxdigit(currentChar)) {
+      if (!isxdigit(currentChar.toAscii())) {
         *msgp = &ERR_Wrong_hex;
         return false;
       }
-      while (isxdigit(currentChar)) nextChar();
+      while (isxdigit(currentChar.toAscii())) nextChar();
       if (strp->length()-2 > 2*sizeof(unsigned)) {
         *msgp = &ERR_HexTooLong;
         return false;
@@ -257,11 +257,11 @@ static bool number ()
     || (currentChar == 'Y')) {
       *tokenp = BitConst_T;
       nextChar();
-      if (!isxdigit(currentChar)) {
+      if (!isxdigit(currentChar.toAscii())) {
         *msgp = &ERR_Wrong_hex;
         return false;
       }
-      while (isxdigit(currentChar)) nextChar();
+      while (isxdigit(currentChar.toAscii())) nextChar();
       if (currentChar != '\0') {
         *msgp = &ERR_Odd_char;
         return false;
@@ -272,9 +272,9 @@ static bool number ()
       }
       return true; // overflow check not required
     }
-    else if (isdigit(currentChar)) {
+    else if (currentChar.isDigit()) {
       *tokenp = OctalConst_T;
-      while (isdigit(currentChar)) {
+      while (currentChar.isDigit()) {
         if (currentChar >= '8') {
           *msgp = &ERR_Wrong_oct;
           return false;
@@ -321,9 +321,9 @@ static bool number ()
     break;
 
   default:
-    while (currentChar != '\0' && isdigit(currentChar))
+    while (currentChar != '\0' && currentChar.isDigit())
       nextChar();
-    switch (currentChar) {
+    switch (currentChar.toAscii()) {
     case '.':
       if (!fractionPart())
         return false;
@@ -376,7 +376,7 @@ static bool fractionPart ()
 {
   *tokenp = DoubleConst_T;
   nextChar();
-  while (isdigit(currentChar)) nextChar();
+  while (currentChar.isDigit()) nextChar();
   if (currentChar == '\0')
     return true;
   if (currentChar == 'e'
@@ -385,15 +385,15 @@ static bool fractionPart ()
     if (currentChar == '+'
     || currentChar == '-')
       nextChar();
-    if (!isdigit(currentChar)) {
+    if (!currentChar.isDigit()) {
       *msgp = &ERR_Wrong_exp;
       return false;
     }
-    while (isdigit(currentChar)) nextChar(); // exponent digits
+    while (currentChar.isDigit()) nextChar(); // exponent digits
   }
   if (currentChar == '\0')
     return true;
-  switch (currentChar) {
+  switch (currentChar.toAscii()) {
 //  case 'l':
 //  case 'L': LongDouble_T
   case 'f':

@@ -23,6 +23,7 @@
 */
 
 #include <stdlib.h>
+#include <sys/stat.h>
 #include "UNIX.h"
 #include "OSDep.h"
 #include "MACROS.h"
@@ -35,6 +36,7 @@
 InFile::InFile (const DString& filename)
 {
   int result;
+  errno_t err;
 
   Buffer = 0;
   if (filename.Length() == 0) {
@@ -43,8 +45,8 @@ InFile::InFile (const DString& filename)
   }
 
   do
-    result = open((const char *)filename.c,O_RDONLY|O_BINARY);
-  while ((result == -1) && (errno == EINTR));
+    err = _sopen_s(&result,(const char *)filename.c,O_RDONLY|O_BINARY,_SH_DENYWR,_S_IREAD);
+  while ((result == -1) && (err == EINTR));
 
   if (result < 0)
     Done = false;
@@ -80,7 +82,7 @@ InFile::~InFile ()
   }
 
   do
-    result = close(fileref);
+    result = _close(fileref);
   while ((result == -1) && (errno == EINTR));
 
   delete [] Buffer;
@@ -330,7 +332,7 @@ static void ReadBytes (const unsigned fileref,
   int result;
   
   do
-    result = read(fileref,buf,BytesToRead);
+    result = _read(fileref,buf,BytesToRead);
   while ((result == -1) && (errno == EINTR));
   
   if (result == -1) BytesRead = 0;

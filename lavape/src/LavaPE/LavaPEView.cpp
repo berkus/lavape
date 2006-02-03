@@ -24,7 +24,7 @@
 #include "LavaPEView.h"
 #include "VTView.h"
 #include "LavaPEFrames.h"
-//#include "LavaGUIView.h"
+#include "ExecView.h"
 #include "ExecTree.h"
 #include "DString.h"
 #include "Comment.h"
@@ -32,22 +32,30 @@
 #include "LavaPEWizard.h"
 #include "Boxes.h"
 #include "FindRefsBox.h"
-//#include "wxExport.h"
 #include "docview.h"
 #include "qlineedit.h"
 #include "qobject.h"
 #include "qstring.h"
 #include "qstatusbar.h"
 #include "qcheckbox.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QDragLeaveEvent>
+#include <QEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QResizeEvent>
+#include <QDragEnterEvent>
+#include <QCustomEvent>
 #include "cmainframe.h"
 #include "qpixmapcache.h"
 #include "qclipboard.h"
-#include "qdragobject.h"
+#include "q3dragobject.h"
 #include "qdatastream.h"
 #include "qmessagebox.h"
 #include "qassistantclient.h"
-#include "qlistview.h"
-#include "qheader.h"
+#include "q3listview.h"
+#include "q3header.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaPEView
@@ -79,10 +87,10 @@ static int ContainTab [FormDef+1] [DragIO+1] = {
 void CMainItemData::Serialize(QDataStream& ar)
 {
   if (ar.device()->isWritable()) {
-    ar << (Q_ULONG)type;
-    ar << ( Q_ULONG)((LavaDECL*)synEl)->DeclType;
-    ar << ( Q_ULONG)((LavaDECL*)synEl)->TreeFlags.bits;
-    ar << ( Q_ULONG)((LavaDECL*)synEl)->SecondTFlags.bits;
+    ar << (quint64)type;
+    ar << (quint64)((LavaDECL*)synEl)->DeclType;
+    ar << (quint64)((LavaDECL*)synEl)->TreeFlags.bits;
+    ar << (quint64)((LavaDECL*)synEl)->SecondTFlags.bits;
     ar << docPathName->c;
     ASN1tofromAr* cid = new ASN1tofromAr(&ar);
     cid->Release = RELEASE;
@@ -91,7 +99,7 @@ void CMainItemData::Serialize(QDataStream& ar)
     delete cid;
   }
   else {
-    Q_ULONG wt;
+    quint64 wt;
     char* str;
     ar >> wt;
     type = (TIType)wt;
@@ -112,16 +120,18 @@ void CMainItemData::Serialize(QDataStream& ar)
  
 TDeclType CMainItemData::Spick( QByteArray& ar, SynFlags& treeflags, SynFlags& secondtflags)
 {
-  QDataStream stream(ar, IO_ReadOnly);
-  Q_ULONG wt;
+  QDataStream stream(ar/*, QIODevice::ReadOnly*/);
+  quint64 wt;
   char* str;
   TDeclType defType;
   stream >> wt;
   type = (TIType)wt;
   stream >> wt;
   defType = (TDeclType)wt;
-  stream >> treeflags.bits;
-  stream >> secondtflags.bits;
+  stream >> wt;
+  treeflags.bits = (unsigned long int)wt;
+  stream >> wt;
+  secondtflags.bits = (unsigned long int)wt;
   stream >> str;
   docPathName = new DString(str);
   return (TDeclType)defType;
@@ -179,10 +189,10 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
   if (!GetDocument()->MainView) 
     GetDocument()->MainView = this;
   connect(m_tree,SIGNAL(selectionChanged()), SLOT(OnSelchanged()));
-  connect(m_tree,SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), SLOT(OnDblclk(QListViewItem*, const QPoint&, int)));
+  connect(m_tree,SIGNAL(doubleClicked(Q3ListViewItem*, const QPoint&, int)), SLOT(OnDblclk(Q3ListViewItem*, const QPoint&, int)));
   //connect(m_tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
-  connect(m_tree,SIGNAL(expanded(QListViewItem*)), SLOT(OnItemexpanded(QListViewItem*)));
-  connect(m_tree,SIGNAL(collapsed(QListViewItem*)), SLOT(OnItemcollapsed(QListViewItem*)));
+  connect(m_tree,SIGNAL(expanded(Q3ListViewItem*)), SLOT(OnItemexpanded(Q3ListViewItem*)));
+  connect(m_tree,SIGNAL(collapsed(Q3ListViewItem*)), SLOT(OnItemcollapsed(Q3ListViewItem*)));
 
   if (!GetDocument()->MainView) 
     GetDocument()->MainView = this;
@@ -202,12 +212,12 @@ void CLavaPEView::CleanListView()
   m_tree->addColumn("");
   m_tree->setRootIsDecorated(true);
   m_tree->header()->hide();
-  m_tree->setSelectionMode(QListView::Extended);//Single); 
+  m_tree->setSelectionMode(Q3ListView::Extended);//Single); 
   connect(m_tree,SIGNAL(selectionChanged()), SLOT(OnSelchanged()));
-  connect(m_tree,SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), SLOT(OnDblclk(QListViewItem*, const QPoint&, int)));
+  connect(m_tree,SIGNAL(doubleClicked(Q3ListViewItem*, const QPoint&, int)), SLOT(OnDblclk(Q3ListViewItem*, const QPoint&, int)));
   //connect(m_tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
-  connect(m_tree,SIGNAL(expanded(QListViewItem*)), SLOT(OnItemexpanded(QListViewItem*)));
-  connect(m_tree,SIGNAL(collapsed(QListViewItem*)), SLOT(OnItemcollapsed(QListViewItem*)));
+  connect(m_tree,SIGNAL(expanded(Q3ListViewItem*)), SLOT(OnItemexpanded(Q3ListViewItem*)));
+  connect(m_tree,SIGNAL(collapsed(Q3ListViewItem*)), SLOT(OnItemcollapsed(Q3ListViewItem*)));
 
   m_tree->setAcceptDrops(true);
   m_tree->show();
@@ -1196,7 +1206,7 @@ bool CLavaPEView::event(QEvent *ev)
     return true;
   }
   else if (ev->type() == IDU_LavaPE_setSel) {
-    setSelPost((QListViewItem*)((QCustomEvent*)ev)->data());
+    setSelPost((Q3ListViewItem*)((QCustomEvent*)ev)->data());
     return true;
   }
   else
@@ -1800,7 +1810,7 @@ void CLavaPEView::IOnEditCopy()
     if (data && (decl && !decl->TypeFlags.Contains(thisComponent) && !decl->TypeFlags.Contains(thisCompoForm)
                  || (data->type == TIType_CHEEnumSel))) {
       QByteArray ba;
-			QDataStream ar(ba,IO_WriteOnly);
+			QDataStream ar(&ba,QIODevice::WriteOnly);
       CMainItemData clipData(data->type, 0);
       clipData.synEl = (unsigned long) NewLavaDECL();  //the Clipdata synEl is LavaDECL*
       if (!CollectDECL) {
@@ -1898,7 +1908,7 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
   }
 }
 
-void CLavaPEView::OnDblclk(QListViewItem* itemHit, const QPoint&, int) 
+void CLavaPEView::OnDblclk(Q3ListViewItem* itemHit, const QPoint&, int) 
 {
   if (itemHit) {
     CMainItemData* data = (CMainItemData*)((CTreeItem*)itemHit)->getItemData();
@@ -2041,7 +2051,7 @@ void CLavaPEView::OnDelete()
   }
 }
 
-QDragObject*  CLavaPEView::OnDragBegin()
+Q3DragObject*  CLavaPEView::OnDragBegin()
 {
   CMainItemData *ddrag;
   CMainItemData clipdata;
@@ -2085,7 +2095,7 @@ QDragObject*  CLavaPEView::OnDragBegin()
     pDeclDragP = (LavaDECL**)((CMainItemData*)m_hitemDragPP->getItemData())->synEl;
 
 	QByteArray ba;
-  QDataStream ar(ba,IO_WriteOnly);
+  QDataStream ar(&ba,QIODevice::WriteOnly);
   //Clipdata  = new CMainItemData(ddrag->type, 0);
   clipdata.type = ddrag->type;
   clipdata.synEl = (unsigned long) NewLavaDECL();  //the Clipdata synEl is LavaDECL*
@@ -2122,7 +2132,7 @@ void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
 
   if (ev->provides(m_nIDClipFormat)) {
     QByteArray ba = ev->encodedData(m_nIDClipFormat);
-		QDataStream ar(ba,IO_ReadOnly);
+		QDataStream ar(ba/*,QIODevice::ReadOnly*/);
     if (Clipdata) {
       Clipdata->Destroy();
       delete Clipdata;
@@ -3031,12 +3041,12 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
   return true;
 }
 
-void CLavaPEView::OnItemcollapsed(QListViewItem* item) 
+void CLavaPEView::OnItemcollapsed(Q3ListViewItem* item) 
 {
   SetTreeFlags((CTreeItem*)item, false); 
 }
 
-void CLavaPEView::OnItemexpanded(QListViewItem* item) 
+void CLavaPEView::OnItemexpanded(Q3ListViewItem* item) 
 {
   SetTreeFlags((CTreeItem*)item, true); 
 }
@@ -3153,7 +3163,7 @@ void CLavaPEView::OnPrevEC(CTreeItem* itemStart, bool onErr)
   }
 }
 
-void CLavaPEView::OnRclick(QListViewItem* itemHit)  
+void CLavaPEView::OnRclick(Q3ListViewItem* itemHit)  
 {
   
   if (itemHit) {
@@ -3162,7 +3172,7 @@ void CLavaPEView::OnRclick(QListViewItem* itemHit)
   }
 }
 
-void CLavaPEView::setSelPost(QListViewItem* selItem)
+void CLavaPEView::setSelPost(Q3ListViewItem* selItem)
 {
   GetListView()->selectAll(false);
   GetListView()->setCurAndSel(selItem);
@@ -3175,7 +3185,7 @@ void CLavaPEView::OnSelchanged()
   CTreeItem *itemDrag, *item;
   LavaDECL *itemDECL;
 
-  QListViewItem* selItem = GetListView()->currentItem();
+  Q3ListViewItem* selItem = GetListView()->currentItem();
   if (!selItem)
     return;
   if (!selItem->isSelected())
@@ -4382,7 +4392,7 @@ bool CLavaPEView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
 
 void CLavaPEView::whatNext() 
 {
-  QWhatsThis::display(QString(QObject::tr("<p>You may <b>delete</b> this item"
+  Q3WhatsThis::display(QString(QObject::tr("<p>You may <b>delete</b> this item"
     " (DEL key or scissors button),<br>or you may <b>insert</b> another item after this one"
     " (click any enabled button on the declaration toolbar),"
     "<br>or you may <b>view/edit the properties</b> of this item (spectacles button),"
@@ -4419,7 +4429,7 @@ void CLavaPEView::OnComment()
 
   if (item) {
     data = (CMainItemData*)item->getItemData();
-    pComment = new CComment(this, "Comment", true);
+    pComment = new CComment(this);
 
     if (data->type == TIType_DECL) {
       ptrComment = (*(LavaDECL**)data->synEl)->DECLComment.ptr;
@@ -4569,7 +4579,7 @@ void CLavaPEView::OnEditPaste()
 //  if (wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat)) {
   if (clipboard_lava_notEmpty) {
     QByteArray ba = ((LavaSource*)wxTheApp->clipboard()->data(QClipboard::Clipboard))->encodedData(m_nIDClipFormat);
-		QDataStream ar(ba,IO_ReadOnly);
+		QDataStream ar(ba/*,QIODevice::ReadOnly*/);
     item = (CTreeItem*)GetListView()->currentItem();
     clipdata.Serialize(ar);
     declClip = (LavaDECL*)clipdata.synEl;
@@ -5006,7 +5016,7 @@ void CLavaPEView::OnShowOverridables()
 //Toolbutton update handler--------------------------------------------------
 
 
-void CLavaPEView::OnUpdateComment(wxAction* action) 
+void CLavaPEView::OnUpdateComment(QAction* action) 
 {
   LavaDECL* decl;
   bool enable = !GetDocument()->changeNothing;
@@ -5033,7 +5043,7 @@ void CLavaPEView::OnUpdateComment(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateEditCopy(wxAction* action) 
+void CLavaPEView::OnUpdateEditCopy(QAction* action) 
 {
   LavaDECL *decl = 0;
   if (DataSel && (DataSel->type == TIType_DECL))
@@ -5046,7 +5056,7 @@ void CLavaPEView::OnUpdateEditCopy(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateEditCut(wxAction* action) 
+void CLavaPEView::OnUpdateEditCut(QAction* action) 
 {
   bool enable = !GetDocument()->changeNothing;
   if (enable) {
@@ -5060,7 +5070,7 @@ void CLavaPEView::OnUpdateEditCut(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateEditPaste(wxAction* action) 
+void CLavaPEView::OnUpdateEditPaste(QAction* action) 
 {
   bool enable = !GetDocument()->changeNothing;
   if (enable) {
@@ -5072,7 +5082,7 @@ void CLavaPEView::OnUpdateEditPaste(wxAction* action)
 }
 
 
-void CLavaPEView::OnUpdateEditSel(wxAction* action) 
+void CLavaPEView::OnUpdateEditSel(QAction* action) 
 {
   bool enable = false;
   if (myInclView) {
@@ -5085,18 +5095,18 @@ void CLavaPEView::OnUpdateEditSel(wxAction* action)
 }
 
 
-void CLavaPEView::OnUpdateFindreferences(wxAction* action) 
+void CLavaPEView::OnUpdateFindreferences(QAction* action) 
 {
   action->setEnabled((DataSel->type == TIType_DECL) || (DataSel->type == TIType_CHEEnumSel)); 
 }
 
-void CLavaPEView::OnUpdateGotodef(wxAction* action) 
+void CLavaPEView::OnUpdateGotodef(QAction* action) 
 {
   action->setEnabled((DataSel->type == TIType_DECL)
                && ((CLavaPEApp*)wxTheApp)->Browser.CanBrowse(*(LavaDECL**)DataSel->synEl));  
 }
 
-void CLavaPEView::OnUpdateGotoImpl(wxAction* action) 
+void CLavaPEView::OnUpdateGotoImpl(QAction* action) 
 {
   bool canBrowse = false;
   LavaDECL* DECL;
@@ -5116,7 +5126,7 @@ void CLavaPEView::OnUpdateGotoImpl(wxAction* action)
   action->setEnabled(canBrowse);  
 }
 
-void CLavaPEView::OnUpdateMakeGUI(wxAction* action)
+void CLavaPEView::OnUpdateMakeGUI(QAction* action)
 {
   LavaDECL* DECL;
   CContext context;
@@ -5143,61 +5153,61 @@ void CLavaPEView::OnUpdateMakeGUI(wxAction* action)
   action->setEnabled(false);  
 }
 
-void CLavaPEView::OnUpdateNewComponent(wxAction* action) 
+void CLavaPEView::OnUpdateNewComponent(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
      (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ CompObj] != 0));
 }
 
-void CLavaPEView::OnUpdateNewCSpec(wxAction* action) 
+void CLavaPEView::OnUpdateNewCSpec(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
      (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ CompObjSpec] != 0));
 }
 
 
-void CLavaPEView::OnUpdateNewenum(wxAction* action) 
+void CLavaPEView::OnUpdateNewenum(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
 }
 
-void CLavaPEView::OnUpdateNewEnumItem(wxAction* action) 
+void CLavaPEView::OnUpdateNewEnumItem(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
        ( (GroupType == TIType_EnumItems) || (GroupType == TIType_CHEEnumSel))); 	
 }
 
-void CLavaPEView::OnUpdateNewfunction(wxAction* action) 
+void CLavaPEView::OnUpdateNewfunction(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
      (GroupType == TIType_Features) && (ContainTab[DefTypeSel] [ Function] != 0));
 }
 
-void CLavaPEView::OnUpdateNewImpl(wxAction* action) 
+void CLavaPEView::OnUpdateNewImpl(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Impl] != 0));
 }
 
-void CLavaPEView::OnUpdateNewinitiator(wxAction* action) 
+void CLavaPEView::OnUpdateNewinitiator(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Initiator] != 0));
 }
 
-void CLavaPEView::OnUpdateNewInterface(wxAction* action) 
+void CLavaPEView::OnUpdateNewInterface(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
 }
 
-void CLavaPEView::OnUpdateNewLitStr(wxAction* action) 
+void CLavaPEView::OnUpdateNewLitStr(QAction* action) 
 {
   action->setEnabled(!myInclView && (GetListView()->currentItem() != GetListView()->firstChild()));
 }
 
-void CLavaPEView::OnUpdateNewmember(wxAction* action) 
+void CLavaPEView::OnUpdateNewmember(QAction* action) 
 {
   action->setEnabled( (!GetDocument()->changeNothing) 
                  && ( (GroupType == TIType_Features)
@@ -5211,26 +5221,26 @@ void CLavaPEView::OnUpdateNewmember(wxAction* action)
 
 }
 
-void CLavaPEView::OnUpdateNewPackage(wxAction* action) 
+void CLavaPEView::OnUpdateNewPackage(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Package] != 0));
 }
 
 
-void CLavaPEView::OnUpdateNewset(wxAction* action) 
+void CLavaPEView::OnUpdateNewset(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
 }
 
-void CLavaPEView::OnUpdateNewVirtualType(wxAction* action) 
+void CLavaPEView::OnUpdateNewVirtualType(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_VTypes) && (ContainTab[DefTypeSel] [ VirtualType] != 0)); 
 }
 
-void CLavaPEView::OnUpdateOverride(wxAction* action) 
+void CLavaPEView::OnUpdateOverride(QAction* action) 
 {
   bool enable = !GetDocument()->changeNothing;
   if ( enable) {
@@ -5244,7 +5254,7 @@ void CLavaPEView::OnUpdateOverride(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateShowformview(wxAction* action) 
+void CLavaPEView::OnUpdateShowformview(QAction* action) 
 {
   bool enable = false;
   if (!myInclView) 
@@ -5256,7 +5266,7 @@ void CLavaPEView::OnUpdateShowformview(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateShowOptionals(wxAction* action) 
+void CLavaPEView::OnUpdateShowOptionals(QAction* action) 
 {
   if (DataSel->type == TIType_DECL) 
     if ((*(LavaDECL**)DataSel->synEl)->TreeFlags.Contains(hasEmptyOpt)

@@ -7,7 +7,7 @@
 #include "Syntax.h"
 #include "GUIProgBase.h"
 #include "GUIwid.h"
-#include "qscrollview.h"
+#include "q3scrollview.h"
 
 
 enum TMenu {
@@ -25,7 +25,7 @@ public:
   virtual void INIT (CGUIProgBase *guiPr);
 
   void DisplayScreen (bool suppressed);
-  void SetScrollSizes(QScrollView* view);
+  void SetScrollSizes(Q3ScrollView* view);
   void RemakeParent (CHEFormNode* chFrmNd);
   //void DeleteWidget (CHEFormNode* chFrmNd);
   void AppendIterWidget (CHEFormNode* firstnode);

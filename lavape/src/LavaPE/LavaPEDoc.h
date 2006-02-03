@@ -7,13 +7,13 @@
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
 #include "LavaPE.h"
-#include "qcombobox.h"
+#include "q3combobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "qprocess.h"
-#include "prelude.h"
-#include "sflsock.h"
+#include "q3process.h"
+//#include "prelude.h"
+#include <QTcpSocket>
 
 
 class CLavaPEDoc : public CPEBaseDoc
@@ -70,7 +70,7 @@ public:
   void OnRunLava();
   void OnDebugLava();
   void OnTotalCheck();
-  void OnUpdateRunLava(wxAction* action);
+  void OnUpdateRunLava(QAction* action);
   bool OpenGUIView(LavaDECL** pdecl);
   bool OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate);
   virtual bool OpenExecView(LavaDECL* execDecl);
@@ -105,7 +105,7 @@ protected:
                                      LavaDECL* propDecl, int checkLevel);
   bool MakeSetAndGets(LavaDECL* implDECL, LavaDECL* iFaceDECL, int checkLevel);
   bool OnEmptyDoc(const QString& Name);
-  void OnUpdateFilePrint(wxAction* action);
+  void OnUpdateFilePrint(QAction* action);
   bool openInTotalCheck;
   void ShrinkCollectDECL(LavaDECL* decl);
 

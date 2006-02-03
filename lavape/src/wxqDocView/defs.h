@@ -17,7 +17,7 @@
 #endif
 
 #include "qobject.h"
-#include "qptrlist.h"
+#include "q3ptrlist.h"
 //#include "SYSTEM.h"
 
 
@@ -1854,7 +1854,7 @@ typedef unsigned long   WXMSGID;
 typedef void*           WXRESULT;
 // typedef WXRESULT        (*WXFARPROC)(WXHWND, WXMSGID, WXMPARAM, WXMPARAM);
 // some windows handles not defined by PM
-typedef unsigned long   HANDLE;
+typedef unsigned long   Qt::HANDLE;
 typedef unsigned long   HICON;
 typedef unsigned long   HFONT;
 typedef unsigned long   HMENU;

@@ -673,7 +673,7 @@ void ConvCLASS::StringLengthOK (CHEFormNode* trp,
 
 void ConvCLASS::ErrorMessage(QWidget* errWin, DString errText)
 {
-  QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), errText.c,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), errText.c,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
   //AfxMessageBox(errText.c, MB_ICONINFORMATION + MB_OK);
   if (errWin)
     errWin->setFocus();

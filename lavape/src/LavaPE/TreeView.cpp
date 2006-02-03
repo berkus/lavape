@@ -20,15 +20,23 @@
 #include "docview.h"
 #include "mdiframes.h"
 #include "qapplication.h"
-#include "qframe.h"
-#include "qtoolbar.h"
-#include "qcombobox.h"
-#include "qpopupmenu.h"
-#include "qlistview.h"
+#include "q3frame.h"
+#include "q3toolbar.h"
+#include "q3combobox.h"
+#include "q3popupmenu.h"
+#include "q3listview.h"
 #include "qsplitter.h"
-#include "qvbox.h"
+#include "q3vbox.h"
 #include "qevent.h"
-#include "qheader.h"
+#include "q3header.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QDragEnterEvent>
+#include <QDragLeaveEvent>
+#include <QDragMoveEvent>
+#include <QFocusEvent>
+#include <QKeyEvent>
+#include <QDropEvent>
 #include "TreeView.h"
 #include "Resource.h"
 #include "qpixmap.h"
@@ -37,7 +45,7 @@
 
 
 CTreeItem::CTreeItem (QString label, QPixmap* pix, CTreeItem* parent, CTreeItem* afterItem)
-  :QListViewItem(parent, afterItem) 
+  :Q3ListViewItem(parent, afterItem) 
 { 
   nPix = pix; 
   normalPix = pix;
@@ -49,8 +57,8 @@ CTreeItem::CTreeItem (QString label, QPixmap* pix, CTreeItem* parent, CTreeItem*
   inRename = false;
 }
 
-CTreeItem::CTreeItem(QString label, QListView* parent, CTreeItem* afterItem)
-  :QListViewItem(parent, afterItem) 
+CTreeItem::CTreeItem(QString label, Q3ListView* parent, CTreeItem* afterItem)
+  :Q3ListViewItem(parent, afterItem) 
 { 
   delPix = false;
   nPix = 0;
@@ -62,8 +70,8 @@ CTreeItem::CTreeItem(QString label, QListView* parent, CTreeItem* afterItem)
   inRename = false;
 }
 
-CTreeItem::CTreeItem (QString label, QPixmap* pix, QListView* parent)
-  :QListViewItem(parent) 
+CTreeItem::CTreeItem (QString label, QPixmap* pix, Q3ListView* parent)
+  :Q3ListViewItem(parent) 
 { 
   nPix = pix;
   normalPix = pix;
@@ -87,13 +95,13 @@ void CTreeItem::startRename(int col)
   if (!inRename) {
     inRename = true;
     ((MyListView*)listView())->lavaView->RenameStart(this);
-    QListViewItem::startRename(col);
+    Q3ListViewItem::startRename(col);
   }
 }
 
 void CTreeItem::okRename(int col)
 {
-  QListViewItem::okRename(col);
+  Q3ListViewItem::okRename(col);
   ((MyListView*)listView())->lavaView->RenameOk(this);
   inRename = false;
 }
@@ -101,7 +109,7 @@ void CTreeItem::okRename(int col)
 void CTreeItem::cancelRename(int col)
 {
   ((MyListView*)listView())->lavaView->RenameCancel(this);
-  QListViewItem::cancelRename(col);
+  Q3ListViewItem::cancelRename(col);
   inRename = false;
 }
 
@@ -143,7 +151,7 @@ void CTreeItem::SetItemMask(QPixmap* pixMask) {
 
 
 MyListView::MyListView(CTreeView* view)
-:QListView(view, "MyListView")
+:Q3ListView(view, "MyListView")
 {
   withShift = false;
   withControl = false;
@@ -153,9 +161,9 @@ MyListView::MyListView(CTreeView* view)
   setDragAutoScroll(true);
 }
 
-void MyListView::setCurAndSel(QListViewItem* item, bool singleSel)
+void MyListView::setCurAndSel(Q3ListViewItem* item, bool singleSel)
 {
-  QListViewItem *oldi = currentItem();
+  Q3ListViewItem *oldi = currentItem();
   if (oldi != item) {
     if (oldi && singleSel && oldi->isSelected())
       setSelected(oldi, false);
@@ -174,9 +182,9 @@ void MyListView::keyPressEvent(QKeyEvent *ev)
   else if ((ev->key() == Qt::Key_Return) && !((CTreeItem*)currentItem())->inRename)
     lavaView->OnVkreturn();
   else {
-    withShift = ev->state() & ShiftButton;
-    withControl = ev->state() & ControlButton;
-    QListView::keyPressEvent(ev);
+    withShift = ev->state() & Qt::ShiftModifier;
+    withControl = ev->state() & Qt::ControlModifier;
+    Q3ListView::keyPressEvent(ev);
     withShift = false;
     withControl = false;
   }
@@ -184,13 +192,13 @@ void MyListView::keyPressEvent(QKeyEvent *ev)
 
 void MyListView::contentsMouseMoveEvent(QMouseEvent *ev)
 {
-  QListViewItem* item2, *item = currentItem();
+  Q3ListViewItem* item2, *item = currentItem();
   if (!lavaView->multiSelectCanceled && item && item->dragEnabled())
-    QListView::contentsMouseMoveEvent(ev);
+    Q3ListView::contentsMouseMoveEvent(ev);
   else {
     QPoint p = contentsToViewport(ev->pos());
     item2 = itemAt(p);
-    if (!lavaView->multiSelectCanceled && (ev->state() == LeftButton)) {
+    if (!lavaView->multiSelectCanceled && (ev->state() == Qt::LeftButton)) {
       if (item2 != item) {
         withControl = true;
         setCurrentItem(item2);
@@ -209,17 +217,17 @@ void MyListView::contentsMouseMoveEvent(QMouseEvent *ev)
 void MyListView::contentsMouseReleaseEvent(QMouseEvent *ev)
 {
   lavaView->multiSelectCanceled = false;
-  QListView::contentsMouseReleaseEvent(ev);
+  Q3ListView::contentsMouseReleaseEvent(ev);
 }
 
 
 void MyListView::contentsMousePressEvent(QMouseEvent *ev)
 {
-  withShift = ev->state() & ShiftButton;
-  withControl = ev->state() & ControlButton;
+  withShift = ev->state() & Qt::ShiftModifier;
+  withControl = ev->state() & Qt::ControlModifier;
   QPoint p = contentsToViewport(ev->pos());
   if(itemAt(p)) 
-    QListView::contentsMousePressEvent(ev);
+    Q3ListView::contentsMousePressEvent(ev);
   withShift = false;
   withControl = false;
   if(!itemAt(p)) {
@@ -230,7 +238,7 @@ void MyListView::contentsMousePressEvent(QMouseEvent *ev)
 }
 
 
-QDragObject* MyListView::dragObject()
+Q3DragObject* MyListView::dragObject()
 {
   return lavaView->OnDragBegin();
 }
@@ -272,7 +280,7 @@ CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name): CLavaBa
   m_tree->addColumn("");
   m_tree->setRootIsDecorated(true);
   m_tree->header()->hide();
-  m_tree->setSelectionMode(QListView::Extended);//Single);
+  m_tree->setSelectionMode(Q3ListView::Extended);//Single);
   CollectDECL = 0;
   multiSelectCanceled = false;
 }

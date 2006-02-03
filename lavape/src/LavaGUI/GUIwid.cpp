@@ -31,6 +31,8 @@
 #include "LavaGUIView.h"
 #include "LavaGUIPopup.h"
 #include "GUIProg.h"
+//Added by qt3to4:
+#include <Q3Frame>
 
 
 //enum {helpEvent,localEvent,popupMenuEvent,sigEvent} EventLocType;
@@ -231,7 +233,7 @@ void GUIwidCLASS::CreateButtonMenuButton (QWidget*& toggleWidget, QWidget* paren
       widgetName = DString("PushButton");
     else
       widgetName = DString("RadioButton");
-  ASSERT(radioBox);
+  Q_ASSERT(radioBox);
   if (((CFormWid*)radioBox)->myFormNode->data.BasicFlags.Contains(RadioButtons)) 
     toggleWidget =  new CRadioButton(GUIProg, node, parentWidget, widgetName.c, text.c,
                                           radioBox, ((CFormWid*)radioBox)->nRadio+1);
@@ -244,7 +246,7 @@ void GUIwidCLASS::CreateButtonMenuButton (QWidget*& toggleWidget, QWidget* paren
                                            radioBox, ((CFormWid*)radioBox)->nRadio+1);
     //if (((CFormWid*)radioBox)->nRadio == 1)
     //  ((CFormWid*)radioBox)->ModifyStyleEx(NULL, WS_EX_CLIENTEDGE);
-  ((CFormWid*)radioBox)->AddRadio((CRadioButton*)toggleWidget);
+  ((CFormWid*)radioBox)->AddRadio((Q3Button*)toggleWidget);
 }
 
 
@@ -348,21 +350,21 @@ void GUIwidCLASS::SetTopLeft (QWidget* widget, QWidget* leftNeighbour, int horiz
   wrect = widget->geometry(); //calc the displacement of the widget
   if (widget->parentWidget()->inherits("QFrame"))
     if (widget->parentWidget()->inherits("QGroupBox")) {
-      pbordx = ((QFrame*)widget->parentWidget())->lineWidth() + GUIProg->xMargin;
-      size = GUIProg->CalcStringRect(((QGroupBox*)widget->parentWidget())->title(), ((QGroupBox*)widget->parentWidget())->font());
+      pbordx = ((Q3Frame*)widget->parentWidget())->lineWidth() + GUIProg->xMargin;
+      size = GUIProg->CalcStringRect(((Q3GroupBox*)widget->parentWidget())->title(), ((Q3GroupBox*)widget->parentWidget())->font());
       //pbordy = ((QFrame*)widget->parentWidget())->lineWidth() + size.height() + GUIProg->yMargin +1;
       pbordy = size.height() /*+ GUIProg->yMargin + 1*/;
     }
     else {
-      pbordx = ((QFrame*)widget->parentWidget())->lineWidth();
-      pbordy = ((QFrame*)widget->parentWidget())->lineWidth();
+      pbordx = ((Q3Frame*)widget->parentWidget())->lineWidth();
+      pbordy = ((Q3Frame*)widget->parentWidget())->lineWidth();
       if (widget->parentWidget()->inherits("GUIVBox")) {
         pbordx += GUIProg->xMargin;
         pbordy += GUIProg->yMargin;
       }
     }
   if (widget->inherits("QFrame"))
-    bord = ((QFrame*)widget)->lineWidth();
+    bord = ((Q3Frame*)widget)->lineWidth();
   else
     bord = 0;
   disx = wrect.left();
@@ -397,30 +399,30 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
   
   QRect rect, wrect, newParentRect;
   QSize sz, wsz, strSz;
-  QScrollView* view;
+  Q3ScrollView* view;
   QWidget *grandparent, *parent;
-  QGroupBox *gb;
+  Q3GroupBox *gb;
   int bord, wid;
   parent = widget->parentWidget();
   if (!parent->inherits("GUIVBox")) {
     wrect = widget->geometry();
     wsz = widget->size();
     if (parent->inherits("QGroupBox")) {
-      gb = (QGroupBox*)parent;
+      gb = (Q3GroupBox*)parent;
       sz = gb->size();
       strSz = GUIProg->CalcStringRect(gb->title(), gb->font()) + GUIProg->CalcTextRect(2,1, gb->font());
-      bord = ((QFrame*)gb)->lineWidth();
-      wid = lmax(sz.width(), wrect.left()+wsz.width()+2*bord + GUIProg->xMargin);
+      bord = ((Q3Frame*)gb)->lineWidth();
+      wid = lmax(sz.width(), wrect.left()+wsz.width()+2*bord + (int)GUIProg->xMargin);
       wid = lmax(wid, strSz.width()+2*bord );
-      gb->resize(wid, lmax(sz.height(), wrect.top()+wsz.height()+2*bord + GUIProg->yMargin));
+      gb->resize(wid, lmax(sz.height(), wrect.top()+wsz.height()+2*bord + (int)GUIProg->yMargin));
       wrect = gb->geometry();
       wsz = gb->size();
       parent = gb->parentWidget();
     }
     sz = parent->size();
-    bord = ((QFrame*)parent)->lineWidth();
+    bord = ((Q3Frame*)parent)->lineWidth();
     if (parent->parentWidget()->inherits("GUIVBox")) 
-      parent->resize(lmax(sz.width(), wrect.left()+wsz.width()+2*bord + GUIProg->xMargin), lmax(sz.height(), wrect.top()+wsz.height()+2*bord + GUIProg->yMargin));
+      parent->resize(lmax(sz.width(), wrect.left()+wsz.width()+2*bord + (int)GUIProg->xMargin), lmax(sz.height(), wrect.top()+wsz.height()+2*bord + (int)GUIProg->yMargin));
     else
       parent->resize(lmax(sz.width(), wrect.left()+wsz.width()+2*bord), lmax(sz.height(), wrect.top()+wsz.height()+2*bord));
     newParentRect = parent->geometry();
@@ -429,23 +431,23 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
       rect = parent->geometry(); 
       wsz = parent->size();
       if (grandparent->inherits("QGroupBox")) {
-        gb = (QGroupBox*)grandparent;
+        gb = (Q3GroupBox*)grandparent;
         rect = parent->geometry();
         wsz = parent->size();
         sz = gb->size();
         strSz = GUIProg->CalcStringRect(gb->title(), gb->font()) + GUIProg->CalcTextRect(2,1, gb->font());
-        bord = ((QFrame*)gb)->lineWidth();
-        wid = lmax(sz.width(), rect.left()+wsz.width()+2*bord + GUIProg->xMargin);
+        bord = ((Q3Frame*)gb)->lineWidth();
+        wid = lmax(sz.width(), rect.left()+wsz.width()+2*bord + (int)GUIProg->xMargin);
         wid = lmax(wid, strSz.width()+2*bord);
-        gb->resize(wid, lmax(sz.height(), rect.top()+wsz.height() + GUIProg->yMargin));
+        gb->resize(wid, lmax(sz.height(), rect.top()+wsz.height() + (int)GUIProg->yMargin));
         rect = gb->geometry();
         wsz = gb->size();
         grandparent = gb->parentWidget();
       }
-      bord = ((QFrame*)grandparent)->lineWidth();
+      bord = ((Q3Frame*)grandparent)->lineWidth();
       sz = grandparent->size();
       if (grandparent->parentWidget()->inherits("GUIVBox")) 
-        grandparent->resize(lmax(sz.width(), rect.left()+wsz.width()+2*bord + GUIProg->xMargin), lmax(sz.height(), rect.top()+wsz.height()+2*bord + GUIProg->yMargin));
+        grandparent->resize(lmax(sz.width(), rect.left()+wsz.width()+2*bord + (int)GUIProg->xMargin), lmax(sz.height(), rect.top()+wsz.height()+2*bord + (int)GUIProg->yMargin));
       else
         grandparent->resize(lmax(sz.width(), rect.left()+wsz.width()+2*bord), lmax(sz.height(), rect.top()+wsz.height()+2*bord));
       newParentRect = grandparent->geometry();
@@ -453,9 +455,9 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
     else if (((GUIVBox*)grandparent)->FromPopup) {
       rect = parent->geometry(); 
       wsz = parent->size();
-      bord = ((QFrame*)grandparent)->lineWidth() + GUIProg->globalIndent;
+      bord = ((Q3Frame*)grandparent)->lineWidth() + GUIProg->globalIndent;
       grandparent->resize(rect.left()+wsz.width()+2*bord, rect.top()+wsz.height()+2*bord);
-      view = (QScrollView*)grandparent->parent();
+      view = (Q3ScrollView*)grandparent->parent();
       view->resize(rect.left()+wsz.width()+2*bord, rect.top()+wsz.height()+2*bord);
     }
     rect = *pMaxBottomRight;
@@ -478,15 +480,17 @@ void GUIwidCLASS::SetCursor (address widget, unsigned ind)
 void GUIwidCLASS::SetOptionDefault (QWidget* menuWidget, const QWidget* entry, DString& labelText)
 {
   int ientry = int(entry);
-  CComboItem *item;
+  QAbstractItemModel *mod=((CTComboBox*)menuWidget)->model();
+  QModelIndexList matches;
+
   if (!menuWidget->inherits("CTComboBox"))
     return;
   if (ientry) 
     ((CTComboBox*)menuWidget)->setCurrentItem(ientry);
   else {
-    item = (CComboItem*)((CTComboBox*)menuWidget)->listBox()->findItem(labelText.c, Qt::ExactMatch | Qt::CaseSensitive);
-    if (item) 
-      ((CTComboBox*)menuWidget)->setCurrentText(item->text());
+    matches = mod->match(mod->index(0,0),Qt::DisplayRole,QVariant(labelText.c),1,Qt::MatchFlags(Qt::MatchCaseSensitive|Qt::MatchExactly));
+    if (!matches.isEmpty()) 
+      ((CTComboBox*)menuWidget)->setCurrentText(mod->data(matches.first()).toString());
     else
       ((CTComboBox*)menuWidget)->setCurrentItem(0);
   }
@@ -601,7 +605,7 @@ void GUIwidCLASS::SetPointer (QWidget* newWidget, unsigned isWindow)
       return;
     }
     if (newWidget->inherits("CMultiLineEdit")) 
-      ((CMultiLineEdit*)newWidget)->moveCursor(QTextEdit::MoveEnd, false);
+      ((CMultiLineEdit*)newWidget)->moveCursor(Q3TextEdit::MoveEnd, false);
       /*
      if (!(((CTEdit*)newWidget)->GetStyle() & ES_MULTILINE))
       ((CTEdit*)newWidget)->SetSel(0,-1,false);

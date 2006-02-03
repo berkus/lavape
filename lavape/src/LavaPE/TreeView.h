@@ -5,8 +5,16 @@
 #include "PEBaseDoc.h"
 //#include "wxExport.h"
 #include "docview.h" 
-#include "qlistview.h" 
+#include "q3listview.h" 
 #include "qpixmap.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QDragEnterEvent>
+#include <QDragLeaveEvent>
+#include <QFocusEvent>
+#include <QDragMoveEvent>
+#include <QKeyEvent>
+#include <QDropEvent>
 
 #define TVI_ROOT                ((CTreeItem*)0xFFFF0000)
 #define TVI_FIRST               ((CTreeItem*)0xFFFF0001)
@@ -21,14 +29,14 @@ public:
 };
 
 
-class CTreeItem :public QListViewItem 
+class CTreeItem :public Q3ListViewItem 
 {
 public:
     friend class CTreeView;
 
   CTreeItem(QString label, QPixmap* pix, CTreeItem* parent, CTreeItem* afterItem);
-  CTreeItem(QString label, QListView* parent, CTreeItem* afterItem);
-  CTreeItem(QString label, QPixmap* pix, QListView* parent);
+  CTreeItem(QString label, Q3ListView* parent, CTreeItem* afterItem);
+  CTreeItem(QString label, QPixmap* pix, Q3ListView* parent);
 
   ~CTreeItem();
   void setItemData(TItemData* dat) {data = dat;}
@@ -54,17 +62,17 @@ protected:
 
 class CTreeView;
 
-class MyListView: public QListView
+class MyListView: public Q3ListView
 {
 public:
   MyListView(CTreeView* view);
-  void setCurAndSel(QListViewItem* item, bool singleSel = true);
+  void setCurAndSel(Q3ListViewItem* item, bool singleSel = true);
   void keyPressEvent(QKeyEvent* ev);
   void contentsMousePressEvent(QMouseEvent *ev);
   void contentsMouseReleaseEvent(QMouseEvent *ev);
   void contentsMouseMoveEvent(QMouseEvent *ev);
   void focusInEvent ( QFocusEvent * e );
-  QDragObject* dragObject();
+  Q3DragObject* dragObject();
   void contentsDragMoveEvent(QDragMoveEvent *ev);
   void contentsDragEnterEvent(QDragEnterEvent *ev);
   void contentsDragLeaveEvent(QDragLeaveEvent *ev);
@@ -93,7 +101,7 @@ public:
   CTreeItem* InsertItem(QString label, QPixmap* nPix, CTreeItem* parent, CTreeItem* afterItem=TVI_LAST);
   QLineEdit* GetEditControl() {return labelEditWid;}
   QLineEdit *labelEditWid;
-  virtual QDragObject* OnDragBegin() {return 0;}
+  virtual Q3DragObject* OnDragBegin() {return 0;}
   virtual void OnDelete() {}
   virtual void RenameStart(CTreeItem* item) {}
   virtual void RenameOk(CTreeItem* item) {}

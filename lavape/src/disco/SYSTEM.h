@@ -17,6 +17,9 @@
 #define DISCO_DLL
 #endif
 
+#undef _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES
+#define _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES 1
+
 
 typedef unsigned char *address;
 typedef unsigned char byte;

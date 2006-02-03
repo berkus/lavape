@@ -31,6 +31,8 @@
 #include "Convert.h"
 #include "MACROS.h"
 
+#include <q3toolbar.h>
+
 
 #define ENTRY \
   if (!execView) execView=ckd.execView; \
@@ -216,7 +218,7 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
     msgText = QString(textParam) + msgText;
 
   if (ckd.myDECL->ParentDECL->DeclType == Interface)
-    cExecName = QString("invariant of ") + ckd.myDECL->ParentDECL->FullName.c;
+    cExecName = QString("invariant of ") + QString(ckd.myDECL->ParentDECL->FullName.c);
   else
     cExecName = ckd.myDECL->ParentDECL->FullName.c;
   if (synObj->type == implementation_T)

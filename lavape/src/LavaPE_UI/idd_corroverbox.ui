@@ -1,188 +1,143 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
-<class>IDD_CorrOverBox</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>IDD_CorrOverBox</cstring>
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>IDD_CorrOverBox</class>
+  <widget class="QDialog" name="IDD_CorrOverBox" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>351</width>
+        <height>167</height>
+      </rect>
     </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>351</width>
-            <height>167</height>
-        </rect>
+    <property name="font" >
+      <font>
+        <family></family>
+        <pointsize>0</pointsize>
+        <weight>0</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+      </font>
     </property>
-    <property name="font">
-        <font>
-        </font>
+    <property name="windowTitle" >
+      <string>Overridden feature or virtual type not found in base interface </string>
     </property>
-    <property name="caption">
-        <string>Overridden feature or virtual type not found in base interface </string>
-    </property>
-    <vbox>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <property name="resizeMode">
-            <enum>Fixed</enum>
-        </property>
-        <widget class="QButtonGroup">
-            <property name="name">
-                <cstring>buttonGroup6</cstring>
-            </property>
-            <property name="title">
-                <string>Correct overridden declaration</string>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
+    <layout class="QVBoxLayout" >
+      <property name="resizeMode" >
+        <enum>Fixed</enum>
+      </property>
+      <item>
+        <widget class="Q3ButtonGroup" name="buttonGroup6" >
+          <property name="title" >
+            <string>Correct overridden declaration</string>
+          </property>
+          <layout class="QVBoxLayout" >
+            <item>
+              <widget class="QRadioButton" name="m_NoOver" >
+                <property name="focusPolicy" >
+                  <enum>Qt::StrongFocus</enum>
                 </property>
-                <widget class="QRadioButton">
-                    <property name="name">
-                        <cstring>m_NoOver</cstring>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>StrongFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Remove the undefined reference </string>
-                    </property>
-                </widget>
-                <widget class="QRadioButton">
-                    <property name="name">
-                        <cstring>m_NewOver</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>StrongFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Replace the undefined reference by the following selection :</string>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <item>
-                        <property name="text">
-                            <string>(Select reference)</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>m_PossibleOvers</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-            </vbox>
-        </widget>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>layout26</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
+                <property name="text" >
+                  <string>Remove the undefined reference </string>
                 </property>
-                <spacer>
-                    <property name="name">
-                        <cstring>spacer3</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>40</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>m_IDCANCEL21</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>0</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Cancel</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>m_IDOK21</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>0</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>OK</string>
-                    </property>
-                    <property name="default">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-            </hbox>
+              </widget>
+            </item>
+            <item>
+              <widget class="QRadioButton" name="m_NewOver" >
+                <property name="enabled" >
+                  <bool>false</bool>
+                </property>
+                <property name="focusPolicy" >
+                  <enum>Qt::StrongFocus</enum>
+                </property>
+                <property name="text" >
+                  <string>Replace the undefined reference by the following selection :</string>
+                </property>
+              </widget>
+            </item>
+            <item>
+              <widget class="QComboBox" name="m_PossibleOvers" >
+                <property name="enabled" >
+                  <bool>false</bool>
+                </property>
+                <item>
+                  <property name="text" >
+                    <string>(Select reference)</string>
+                  </property>
+                </item>
+              </widget>
+            </item>
+          </layout>
         </widget>
-    </vbox>
-</widget>
-<connections>
-    <connection>
-        <sender>m_IDCANCEL21</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_CorrOverBox</receiver>
-        <slot>PushButton_IDCANCEL21_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>m_IDOK21</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_CorrOverBox</receiver>
-        <slot>OnOK()</slot>
-    </connection>
-    <connection>
-        <sender>m_NoOver</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_CorrOverBox</receiver>
-        <slot>m_NoOver_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>m_NewOver</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_CorrOverBox</receiver>
-        <slot>m_NewOver_clicked()</slot>
-    </connection>
-</connections>
-<includes>
-    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
-    <include location="local" impldecl="in implementation">idd_corroverbox.ui.h</include>
-</includes>
-<slots>
-    <slot>m_NoOver_clicked()</slot>
-    <slot>m_NewOver_clicked()</slot>
-    <slot>PushButton_IDCANCEL21_clicked()</slot>
-    <slot>OnOK()</slot>
-</slots>
-<exportmacro>LAVAPEUI_DLL</exportmacro>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+      </item>
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <spacer name="spacer3" >
+              <property name="sizeHint" >
+                <size>
+                  <width>40</width>
+                  <height>20</height>
+                </size>
+              </property>
+              <property name="sizeType" >
+                <enum>Expanding</enum>
+              </property>
+              <property name="orientation" >
+                <enum>Horizontal</enum>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QPushButton" name="m_IDCANCEL21" >
+              <property name="sizePolicy" >
+                <sizepolicy>
+                  <hsizetype>0</hsizetype>
+                  <vsizetype>0</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                </sizepolicy>
+              </property>
+              <property name="focusPolicy" >
+                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text" >
+                <string>Cancel</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="m_IDOK21" >
+              <property name="sizePolicy" >
+                <sizepolicy>
+                  <hsizetype>0</hsizetype>
+                  <vsizetype>0</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                </sizepolicy>
+              </property>
+              <property name="focusPolicy" >
+                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text" >
+                <string>OK</string>
+              </property>
+              <property name="default" >
+                <bool>true</bool>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+</ui>

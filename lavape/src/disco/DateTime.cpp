@@ -35,8 +35,12 @@ static time_t tval;
 DateTimePtr dateTime ()
 
 {
+  tm *my_time=new tm;
+  errno_t e;
+
   tval = time(0);
-  return (DateTimePtr)localtime(&tval);
+  e= localtime_s(my_time,&tval);
+  return (DateTimePtr)my_time;
 }
 
 

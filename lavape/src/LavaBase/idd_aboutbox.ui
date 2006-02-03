@@ -1,257 +1,227 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
-<class>IDD_AboutBox</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>IDD_AboutBox</cstring>
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>IDD_AboutBox</class>
+ <widget class="QDialog" name="IDD_AboutBox" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>275</width>
+    <height>234</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>About LavaPE</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset/>
+  </property>
+  <property name="sizeGripEnabled" >
+   <bool>false</bool>
+  </property>
+  <property name="modal" >
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="layout4" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>250</width>
+     <height>210</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" >
+    <property name="margin" >
+     <number>0</number>
     </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>275</width>
-            <height>234</height>
-        </rect>
+    <property name="spacing" >
+     <number>6</number>
     </property>
-    <property name="caption">
-        <string>About LavaPE</string>
-    </property>
-    <property name="icon">
-        <pixmap>image0</pixmap>
-    </property>
-    <property name="sizeGripEnabled">
-        <bool>false</bool>
-    </property>
-    <property name="modal">
-        <bool>true</bool>
-    </property>
-    <widget class="QLayoutWidget">
-        <property name="name">
-            <cstring>layout4</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>250</width>
-                <height>210</height>
-            </rect>
-        </property>
-        <vbox>
-            <property name="name">
-                <cstring>unnamed</cstring>
-            </property>
-            <widget class="QLabel">
-                <property name="name">
-                    <cstring>textLabel2</cstring>
-                </property>
-                <property name="sizePolicy">
-                    <sizepolicy>
-                        <hsizetype>1</hsizetype>
-                        <vsizetype>5</vsizetype>
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                    </sizepolicy>
-                </property>
-                <property name="font">
-                    <font>
-                        <bold>1</bold>
-                    </font>
-                </property>
-                <property name="text">
-                    <string>&lt;center&gt;Lava Preview Release 0.8.4&lt;/center&gt;</string>
-                </property>
-                <property name="textFormat">
-                    <enum>RichText</enum>
-                </property>
-            </widget>
-            <widget class="QPushButton">
-                <property name="name">
-                    <cstring>pushButton15</cstring>
-                </property>
-                <property name="font">
-                    <font>
-                        <bold>1</bold>
-                    </font>
-                </property>
-                <property name="cursor">
-                    <cursor>13</cursor>
-                </property>
-                <property name="text">
-                    <string>Visit the Lava Home Page
+    <item>
+     <widget class="QLabel" name="textLabel2" >
+      <property name="sizePolicy" >
+       <sizepolicy>
+        <hsizetype>1</hsizetype>
+        <vsizetype>5</vsizetype>
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font" >
+       <font>
+        <family>MS Shell Dlg</family>
+        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+       </font>
+      </property>
+      <property name="text" >
+       <string>&lt;center>Lava Preview Release 0.8.4&lt;/center></string>
+      </property>
+      <property name="textFormat" >
+       <enum>Qt::RichText</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton15" >
+      <property name="font" >
+       <font>
+        <family>MS Shell Dlg</family>
+        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+       </font>
+      </property>
+      <property name="cursor" >
+       <cursor>13</cursor>
+      </property>
+      <property name="text" >
+       <string>Visit the Lava Home Page
+
+
 
 at http://lavape.sourceforge.net</string>
-                </property>
-                <property name="autoDefault">
-                    <bool>false</bool>
-                </property>
-            </widget>
-            <widget class="QLabel">
-                <property name="name">
-                    <cstring>textLabel1</cstring>
-                </property>
-                <property name="font">
-                    <font>
-                        <bold>1</bold>
-                    </font>
-                </property>
-                <property name="text">
-                    <string>&lt;center&gt;using your favorite web browser:&lt;/center&gt;</string>
-                </property>
-            </widget>
-            <widget class="QLayoutWidget">
-                <property name="name">
-                    <cstring>layout3</cstring>
-                </property>
-                <hbox>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <widget class="QLineEdit">
-                        <property name="name">
-                            <cstring>lineEdit1</cstring>
-                        </property>
-                        <property name="frameShape">
-                            <enum>LineEditPanel</enum>
-                        </property>
-                        <property name="frameShadow">
-                            <enum>Sunken</enum>
-                        </property>
-                        <property name="text">
-                            <string></string>
-                        </property>
-                        <property name="toolTip" stdset="0">
-                            <string>Specify your favorite web browser</string>
-                        </property>
-                        <property name="whatsThis" stdset="0">
-                            <string>Specify your favorite web browser</string>
-                        </property>
-                    </widget>
-                    <widget class="QPushButton">
-                        <property name="name">
-                            <cstring>pushButton3</cstring>
-                        </property>
-                        <property name="text">
-                            <string></string>
-                        </property>
-                        <property name="pixmap">
-                            <pixmap>image1</pixmap>
-                        </property>
-                        <property name="toolTip" stdset="0">
-                            <string>Choose your favorite web browser</string>
-                        </property>
-                        <property name="whatsThis" stdset="0">
-                            <string>Choose your favorite web browser</string>
-                        </property>
-                    </widget>
-                </hbox>
-            </widget>
-            <widget class="QLayoutWidget">
-                <property name="name">
-                    <cstring>layout31</cstring>
-                </property>
-                <hbox>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <spacer>
-                        <property name="name">
-                            <cstring>spacer6</cstring>
-                        </property>
-                        <property name="orientation">
-                            <enum>Horizontal</enum>
-                        </property>
-                        <property name="sizeType">
-                            <enum>Expanding</enum>
-                        </property>
-                        <property name="sizeHint">
-                            <size>
-                                <width>20</width>
-                                <height>20</height>
-                            </size>
-                        </property>
-                    </spacer>
-                    <widget class="QPushButton">
-                        <property name="name">
-                            <cstring>buttonCancel</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Close</string>
-                        </property>
-                        <property name="accel">
-                            <string></string>
-                        </property>
-                        <property name="autoDefault">
-                            <bool>true</bool>
-                        </property>
-                        <property name="default">
-                            <bool>true</bool>
-                        </property>
-                    </widget>
-                    <spacer>
-                        <property name="name">
-                            <cstring>spacer5</cstring>
-                        </property>
-                        <property name="orientation">
-                            <enum>Horizontal</enum>
-                        </property>
-                        <property name="sizeType">
-                            <enum>Expanding</enum>
-                        </property>
-                        <property name="sizeHint">
-                            <size>
-                                <width>20</width>
-                                <height>20</height>
-                            </size>
-                        </property>
-                    </spacer>
-                </hbox>
-            </widget>
-        </vbox>
-    </widget>
-</widget>
-<images>
-    <image name="image0">
-        <data format="PNG" length="246">89504e470d0a1a0a0000000d49484452000000150000000f08060000000b5a846b000000bd49444154789ca594bb0ec3200c45af33b3f0ff7fd5ee7464ccc2ee0ec1aa3198871a09450273391c1208cc8c3f9ef4fe100a8000dce5460c11972ee0c30600b964203cef182272c9204d7a8a4c95540885f8b245ab10dd8454088598464e47c4de824ba75ec06c074ba7bf14276650ba746ae733af0f6fcf69a5d49d0db729df766a53193ef1dca9f2280164c01ad575e0c869933c397edfa9a6e427447aecb6addfad7fbf9b2803b5d945c64e551d73ff89761703b58ba657ea9c7e016221b4f72fb1b4f70000000049454e44ae426082</data>
-    </image>
-    <image name="image1">
-        <data format="PNG" length="311">89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000fe49444154789c9d93b171c3300c451f7c2ad9a864cb01dcb8a3d7f10619209701b281d79106d0006859aa618f1494644ba2ec73d0fcfb04497c7e80a28342061c8c79a4756d9587188c29b45799f3a79413384839d1ba961a0f3158d777a2834ad7771262b0392f3ae8cbca47fc122fa6bd4a9372c23b4f383f491c54e6f51a5ee3b5ec751405e11ccccc00010c11e12874507956523c80e530086686193b04761e9dbcf3d305b6baa48ee09d67cc23de79c8d0d414ac9fb1c6ad574d4d818870ff8594c1bb63ac7a2022dc7fcaa6f266f0ecf9ed8bbd074b654a0526dcf2dbf7a31b8b824f2acf73b29a83a3be6f633b074dcae9ede4bdc27fff8599ff01242efeca0054c3c00000000049454e44ae426082</data>
-    </image>
-</images>
-<connections>
-    <connection>
-        <sender>pushButton3</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_AboutBox</receiver>
-        <slot>OnSelectBrowser()</slot>
-    </connection>
-    <connection>
-        <sender>buttonCancel</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_AboutBox</receiver>
-        <slot>OnClose()</slot>
-    </connection>
-    <connection>
-        <sender>pushButton15</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_AboutBox</receiver>
-        <slot>OnLavaHomePage()</slot>
-    </connection>
-    <connection>
-        <sender>lineEdit1</sender>
-        <signal>textChanged(const QString&amp;)</signal>
-        <receiver>IDD_AboutBox</receiver>
-        <slot>OnTextChanged(const QString&amp;)</slot>
-    </connection>
-</connections>
-<includes>
-    <include location="local" impldecl="in declaration">SynIDTable.h</include>
-</includes>
-<slots>
-    <slot>OnSelectBrowser()</slot>
-    <slot>OnClose()</slot>
-    <slot>OnLavaHomePage()</slot>
-    <slot>OnTextChanged( const QString &amp; )</slot>
-</slots>
-<exportmacro>LAVABASE_DLL</exportmacro>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+      </property>
+      <property name="autoDefault" >
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="textLabel1" >
+      <property name="font" >
+       <font>
+        <family>MS Shell Dlg</family>
+        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+       </font>
+      </property>
+      <property name="text" >
+       <string>&lt;center>using your favorite web browser:&lt;/center></string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" >
+      <property name="margin" >
+       <number>0</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="lineEdit1" >
+        <property name="toolTip" >
+         <string>Specify your favorite web browser</string>
+        </property>
+        <property name="whatsThis" >
+         <string>Specify your favorite web browser</string>
+        </property>
+        <property name="text" >
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton3" >
+        <property name="toolTip" >
+         <string>Choose your favorite web browser</string>
+        </property>
+        <property name="whatsThis" >
+         <string>Choose your favorite web browser</string>
+        </property>
+        <property name="text" >
+         <string/>
+        </property>
+        <property name="icon" >
+         <iconset resource="..\LavaPEresources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" >
+      <property name="margin" >
+       <number>0</number>
+      </property>
+      <property name="spacing" >
+       <number>6</number>
+      </property>
+      <item>
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType" >
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonCancel" >
+        <property name="text" >
+         <string>Close</string>
+        </property>
+        <property name="shortcut" >
+         <string/>
+        </property>
+        <property name="autoDefault" >
+         <bool>true</bool>
+        </property>
+        <property name="default" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType" >
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <includes>
+  <include location="local" >SynIDTable.h</include>
+ </includes>
+ <resources>
+  <include location="../LavaPEresources.qrc" />
+ </resources>
+ <connections/>
+</ui>

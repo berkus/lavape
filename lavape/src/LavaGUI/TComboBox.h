@@ -2,15 +2,20 @@
 #define __TComboBox
 
 #include "GUIProgBase.h"
-#include "qcombobox.h"
-#include "qlistbox.h"
+#include "q3combobox.h"
+#include "q3listbox.h"
 #include "qevent.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QFocusEvent>
+#include <Q3PopupMenu>
+#include <QComboBox>
 
 
 /////////////////////////////////////////////////////////////////////////////
 // CTComboBox window
 
-class CComboItem: public QListBoxText
+class CComboItem: public Q3ListBoxText
 {
 public:
   CComboItem(const DString& text, CHEFormNode* data) {setText(QString(text.c)); Data = data;}
@@ -30,7 +35,7 @@ public:
   bool isEnter;
   CHEFormNode* myFormNode;
   DString DefaultSel;
-  QPopupMenu* myMenu;
+  Q3PopupMenu* myMenu;
 
   void AddItem(const DString& label, CHEFormNode* data);
   virtual void focusInEvent(QFocusEvent *ev);

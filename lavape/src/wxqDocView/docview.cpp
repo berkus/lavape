@@ -49,20 +49,25 @@
 #include "mdiframes.h"
 
 #include "qmetaobject.h"
-#include "qptrlist.h"
+#include "q3ptrlist.h"
 #include "qstring.h"
 #include "qfile.h"
 #include "qfileinfo.h"
-#include "qfiledialog.h"
+#include "q3filedialog.h"
 #include "qapplication.h"
 #include "qmessagebox.h"
 #include "qinputdialog.h"
-#include "qpopupmenu.h"
+#include "q3popupmenu.h"
 #include "qstatusbar.h"
 #include "qmenudata.h"
 #include "qdatastream.h"
 #include "qtimer.h"
 #include "qsettings.h"
+//Added by qt3to4:
+#include <QFocusEvent>
+#include <QMouseEvent>
+#include <QCustomEvent>
+#include <QAbstractEventDispatcher>
 
 
 #if wxUSE_PRINTING_ARCHITECTURE
@@ -113,9 +118,6 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 {
     wxTheApp = this;
     m_appName = argv[0];
-#ifdef WIN322
-    processHeap = GetProcessHeap();
-#endif
 
     //// Create a document manager
     m_docManager = new wxDocManager;
@@ -127,16 +129,16 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 //    SetAppName("LavaPE");
     SetClassName(argv[0]);
 
-    QApplication::connect((const QObject*)QApplication::eventLoop(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
+    QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
     connect(this,SIGNAL(guiThreadAwake()),SLOT(onGuiThreadAwake()));
     appExit = false;
 }
 
 wxApp::~wxApp() {
-  QSettings settings(QSettings::Native);
+  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
   appExit = true;
-  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+//  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //  settings.beginGroup(GetSettingsPath());
   m_docManager->FileHistorySave(settings);
   delete m_docManager;
@@ -177,7 +179,7 @@ void wxApp::customEvent(QCustomEvent *e)
 
 void wxApp::onUpdateUI()
 {
-  wxAction* act;
+//  QAction* act;
   QWidget *focView; //, *fw;
   char **argv=qApp->argv();
 
@@ -186,8 +188,8 @@ void wxApp::onUpdateUI()
 		
 	inUpdateUI = true;
 
-  for (act = actionList.first(); act; act = actionList.next())
-    act->enable = false;
+ /* for (act = actionList.first(); act; act = actionList.next())
+    act->enable = false;*/
 
   UpdateUI();
   if (m_appWindow)
@@ -213,7 +215,7 @@ void wxApp::histFile(int histFileIndex) {
 }
 
 void wxApp::hfStatusText(int itemId) {
-  ((QMainWindow*)mainWidget())->statusBar()->message(tr("Open and raise this window"));
+  ((Q3MainWindow*)mainWidget())->statusBar()->message(tr("Open and raise this window"));
 }
 
 wxView *wxApp::activeView() {
@@ -232,22 +234,23 @@ void wxApp::about()
 {
     QMessageBox::about(m_appWindow,"Qt Application Example","Qt Application Example");
 }
-
-wxAction::wxAction (QObject *parent, const char *name, bool toggle)
-    : QAction(parent,name,toggle) {
+/*
+QAction::QAction (QObject *parent, const char *name)
+    : QAction(name,parent) {
     enable = false;
-}
+}*/
 
-wxAction::wxAction (const QString &text, const QIconSet &icon, const QString &menuText, int accel, QObject *parent, const char *name, bool toggle)
+/*
+QAction::QAction (const QString &text, const QIcon &icon, const QString &menuText, int accel, QObject *parent, const char *name, bool toggle)
     : QAction(text,icon,menuText,accel,parent,name,toggle) {
     enable = false;
 }
 
-wxAction::wxAction (const QString &text, const QString &menuText, int accel, QObject *parent, const char *name, bool toggle)
+QAction::QAction (const QString &text, const QString &menuText, int accel, QObject *parent, const char *name, bool toggle)
     : QAction(text,menuText,accel,parent,name,toggle) {
     enable = false;
 }
-
+*/
 static QString FindExtension(const char *path)
 {
     QFileInfo fi(path);
@@ -334,7 +337,7 @@ wxView *wxDocument::GetFirstView() const
 
 POSITION wxDocument::GetFirstViewPos()
 {
-  QPtrListIterator<wxView>* iter = new QPtrListIterator<wxView> (m_documentViews);
+  Q3PtrListIterator<wxView>* iter = new Q3PtrListIterator<wxView> (m_documentViews);
   iter->toFirst();
   return (POSITION)iter;
 }
@@ -343,7 +346,7 @@ wxView* wxDocument::GetNextView(POSITION& pos)
 {
   if (!pos)
     return 0;
-  QPtrListIterator<wxView>* iter = (QPtrListIterator<wxView>*)pos;
+  Q3PtrListIterator<wxView>* iter = (Q3PtrListIterator<wxView>*)pos;
   wxView* view = iter->current();
   ++(*iter);
   if (view) {
@@ -364,7 +367,7 @@ wxView* wxDocument::GetNextView(POSITION& pos)
 void wxDocument::ViewPosRelease(POSITION pos)
 {
   if (pos) {
-    QPtrListIterator<wxView>* iter = (QPtrListIterator<wxView>*)pos;
+    Q3PtrListIterator<wxView>* iter = (Q3PtrListIterator<wxView>*)pos;
     delete iter;
   }
 
@@ -419,7 +422,7 @@ bool wxDocument::SaveAs()
     if (!docTemplate)
         return false;
   
-    QString fn = QFileDialog::getSaveFileName(GetFilename(), docTemplate->GetFileFilter());
+    QString fn = Q3FileDialog::getSaveFileName(GetFilename(), docTemplate->GetFileFilter());
 
 #ifdef WIN32
     QString driveLetter = QString(fn[0].upper());
@@ -463,7 +466,7 @@ bool wxDocument::SaveAs()
 
 bool wxDocument::OnSaveDocument(const QString& file)
 {
-    if ( !file )
+  if ( !file.length() )
         return false;
 
     QString msgTitle;
@@ -473,7 +476,7 @@ bool wxDocument::OnSaveDocument(const QString& file)
         msgTitle = tr("File error");
 
     QFile f(file);
-    if (!f.open(IO_WriteOnly))
+    if (!f.open(QIODevice::WriteOnly))
     {
         QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("Sorry, couldn't open this file for saving."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         return false;
@@ -501,7 +504,7 @@ bool wxDocument::OnOpenDocument(const QString& file)
         msgTitle = tr("File error");
 
     QFile f(file);
-    if (!f.open(IO_ReadOnly))
+    if (!f.open(QIODevice::ReadOnly))
     {
         QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         return false;
@@ -673,13 +676,13 @@ void wxDocument::SetFilename(const QString& filename, bool notifyViews)
 // Document view
 // ----------------------------------------------------------------------------
 
-wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QHBox(parent, name)
+wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : Q3HBox(parent, name)
 {
     deleting = false;;
     m_viewDocument = doc;
     m_viewFrame = CalcParentFrame();
     if (parent->inherits("QMainWindow"))
-      ((QMainWindow*)parent)->setCentralWidget(this);
+      ((Q3MainWindow*)parent)->setCentralWidget(this);
     m_viewFrame->AddView(this);
 }
 
@@ -1096,7 +1099,7 @@ POSITION wxDocManager::GetFirstDocPos()
   if (m_docs.isEmpty())
     return 0;
   else {
-    QPtrListIterator<wxDocument>* iter = new QPtrListIterator<wxDocument> (m_docs);
+    Q3PtrListIterator<wxDocument>* iter = new Q3PtrListIterator<wxDocument> (m_docs);
     iter->toFirst();
     return (POSITION)iter;
   }
@@ -1106,7 +1109,7 @@ wxDocument* wxDocManager::GetNextDoc(POSITION& pos)
 {
   if (!pos)
     return 0;
-  QPtrListIterator<wxDocument>* iter = (QPtrListIterator<wxDocument>*)pos;
+  Q3PtrListIterator<wxDocument>* iter = (Q3PtrListIterator<wxDocument>*)pos;
   wxDocument* doc = iter->current();
   if (doc) {
     ++(*iter);
@@ -1127,7 +1130,7 @@ wxDocument* wxDocManager::GetNextDoc(POSITION& pos)
 void wxDocManager::DocPosRelease(POSITION pos)
 {
   if (pos) {
-    QPtrListIterator<wxDocument>* iter = (QPtrListIterator<wxDocument>*)pos;
+    Q3PtrListIterator<wxDocument>* iter = (Q3PtrListIterator<wxDocument>*)pos;
     delete iter;
   }
 
@@ -1330,10 +1333,11 @@ wxDocTemplate *wxDocManager::MatchTemplate(const QString& WXUNUSED(path))
 // File history management
 void wxDocManager::AddFileToHistory(QString& file)
 {
-  QSettings settings(QSettings::Native);
+  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
+//  QSettings settings(QSettings::Native);
 
   if (m_fileHistory) {
-    settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+    settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //    settings.beginGroup(wxTheApp->GetSettingsPath());
     m_fileHistory->AddToHistory(new DString(file.ascii()),wxTheApp);
     m_fileHistory->Save(settings);
@@ -1474,9 +1478,9 @@ wxDocTemplate *wxDocManager::SelectDocumentPath(wxDocTemplate **templates,
     }
   parent = wxFindSuitableParent();
     if (save)
-        pathTmp = QFileDialog::getSaveFileName(m_lastDirectory);
+        pathTmp = Q3FileDialog::getSaveFileName(m_lastDirectory);
     else
-        pathTmp = QFileDialog::getOpenFileName(m_lastDirectory, QString::null,0,0,QString::null,0,false);        
+        pathTmp = Q3FileDialog::getOpenFileName(m_lastDirectory, QString::null,0,0,QString::null,0,false);        
 
   theTemplate = (wxDocTemplate *)NULL;
   if (!pathTmp.isEmpty()) {
@@ -1901,7 +1905,7 @@ wxCommandProcessor::wxCommandProcessor(int maxCommands)
 {
     m_maxNoCommands = maxCommands;
     m_currentCommand = 0;
-    m_commandEditMenu = (QPopupMenu *) NULL;
+    m_commandEditMenu = (Q3PopupMenu *) NULL;
 }
 
 wxCommandProcessor::~wxCommandProcessor()
@@ -2101,7 +2105,7 @@ void wxCommandProcessor::ClearCommands()
 // File history processor
 // ----------------------------------------------------------------------------
 
-wxHistory::wxHistory(int maxFiles, QPopupMenu *m)
+wxHistory::wxHistory(int maxFiles, Q3PopupMenu *m)
 {
     m_maxHistItems = maxFiles;
 		m_menu = m;
@@ -2238,7 +2242,7 @@ void wxHistory::RemoveItemFromHistory(QString name)
 void wxHistory::RemoveItemFromHistory(int i)
 {
     if (i >= m_historyN) {
-       QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("invalid index in wxHistory::RemoveFileFromHistory"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+       QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("invalid index in wxHistory::RemoveFileFromHistory"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
        return;
     }
 //!!!    wxCHECK_RET( i < m_historyN,
@@ -2261,7 +2265,7 @@ void wxHistory::RemoveItemFromHistory(int i)
         for ( j = i; j < m_historyN - 1; j++ )
         {
             buf = s_MRUEntryFormat.arg(j+1).arg(m_history[j]->c);
-            m_menu->changeItem(buf,wxID_FILE1 + j);
+            m_menu->changeItem(wxID_FILE1 + j,buf);
         }
 
         // delete the last menu item which is unused now
@@ -2388,7 +2392,7 @@ void wxHistory::AddFilesToMenu()
     }
 }
 
-void wxHistory::AddFilesToMenu(QPopupMenu* menu)
+void wxHistory::AddFilesToMenu(Q3PopupMenu* menu)
 {
     if (m_historyN > 0)
     {
@@ -2431,7 +2435,7 @@ static bool ResolveShortCut (HWND hwnd, QString pszLink, QString &resolved)
 
     if (SUCCEEDED (hres))
     {
-      WORD wsz [MAX_PATH]; // buffer for Unicode string
+      WCHAR wsz [MAX_PATH]; // buffer for Unicode string
 
       // Ensure that the string consists of Unicode characters.
       MultiByteToWideChar (CP_ACP, 0, pszLink, -1, wsz, MAX_PATH);
@@ -2450,18 +2454,18 @@ static bool ResolveShortCut (HWND hwnd, QString pszLink, QString &resolved)
           hres = psl->GetPath (szGotPath, MAX_PATH,(WIN32_FIND_DATA *)&wfd, SLGP_UNCPRIORITY /*SLGP_SHORTPATH*/);
           if (! SUCCEEDED (hres)) {
             mm = QString("Resolving shortcut ") + pszLink + " failed!";
-            QMessageBox::critical(qApp->mainWidget(), qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+            QMessageBox::critical(qApp->mainWidget(), qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
           }
           resolved = szGotPath;
         }
         else {
           mm = QString("Resolving shortcut ") + pszLink + " failed!";
-          QMessageBox::critical(qApp->mainWidget(), qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(qApp->mainWidget(), qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         }
       }
       else {
         mm = QString("Loading shortcut ") + pszLink + " failed!";
-        QMessageBox::critical(qApp->mainWidget(), qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(qApp->mainWidget(), qApp->name(), mm /*ERR_ResolvingShortcutFailed.arg(pszLink)*/,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       }
       // Release the pointer to IPersistFile.
       ppf->Release ();

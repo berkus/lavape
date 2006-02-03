@@ -26,6 +26,8 @@
 
 #include "TEdit.h"
 #include "mdiframes.h"
+//Added by qt3to4:
+#include <QCustomEvent>
 
 
 CGUIProg::CGUIProg() : CGUIProgBase()

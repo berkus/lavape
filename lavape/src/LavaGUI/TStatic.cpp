@@ -20,6 +20,9 @@
 #include "TStatic.h"
 #include "GUIProgBase.h"
 #include "qwidget.h"
+//Added by qt3to4:
+#include <QLabel>
+#include <Q3Frame>
 #include "FormWid.h"
 
 
@@ -38,7 +41,7 @@ CTStatic::CTStatic(CGUIProgBase *guiPr, CHEFormNode* data,
 {
   myFormNode = data;
   GUIProg = guiPr;
-  int bord = ((QFrame*)parentWidget)->lineWidth();
+  int bord = ((Q3Frame*)parentWidget)->lineWidth();
   myFormNode->data.ownLFont = GUIProg->SetLFont(this, myFormNode);
   QSize size = GUIProg->CalcStringRect(label, font());
   setGeometry(bord,bord, size.width(), size.height());

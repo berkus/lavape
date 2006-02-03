@@ -29,13 +29,16 @@
 #include "qpushbutton.h"
 #include "qradiobutton.h"
 #include "qspinbox.h"
-#include "qbuttongroup.h"
+#include "q3buttongroup.h"
 #include "qmessagebox.h"
 #include "qtabbar.h"
 #include "qsizepolicy.h"
 #include "qfontdialog.h"
 #include "qcolordialog.h"
-#include "qfiledialog.h"
+#include "q3filedialog.h"
+//Added by qt3to4:
+#include <Q3Frame>
+#include <QCustomEvent>
 
 static void SetSpace(TAnnotation* anno, unsigned& m_tab, unsigned& m_space, unsigned& m_frmSpace)
 {
@@ -74,8 +77,8 @@ CWizardView::CWizardView(QWidget* parent, wxDocument* doc)
   : CLavaBaseView(parent,doc, "WizardView")
 { 
   //setFont(LBaseData->m_TreeFont);
-  QVBox* qvbox = new QVBox(this);
-  QHBox* qhbox = new QHBox(qvbox);
+  Q3VBox* qvbox = new Q3VBox(this);
+  Q3HBox* qhbox = new Q3HBox(qvbox);
   resetButton = new QPushButton("Reset", qhbox);
   applyButton = new QPushButton("Apply", qhbox);
   helpButton = new QPushButton("Help", qhbox);
@@ -718,7 +721,7 @@ CFormTextPage::CFormTextPage(LavaDECL * litEl, CLavaPEWizard *wizard)
   }
   QFont lf;
   if (myDecl->Annotation.ptr->String1.l && lf.fromString(myDecl->Annotation.ptr->String1.c)) {
-    QString nn = lf.family() + komma.c +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontName->setText(nn);
     fontName->show();
     fontButton->show();
@@ -762,7 +765,7 @@ void CFormTextPage::fontButton_clicked()
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormLabelFont,this);
   if (ok) {
     myDecl->Annotation.ptr->String1 = DString(lf.toString());
-    QString nn = lf.family() + komma.c +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontName->setText(nn);
     fontName->show();
     myWizard->setModified(modify);
@@ -857,7 +860,7 @@ void CFormTextBox::UpdateData(bool getData)
 
 
 CFormTextBox::CFormTextBox(LavaDECL * litEl, QWidget* pParent, bool asFirst)  
-  : IDD_LiteralItem(pParent, "FormTextBox", true, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu)
+  : IDD_LiteralItem(pParent, "FormTextBox", true, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
   m_lit = "";
   myDecl = litEl;
@@ -944,8 +947,8 @@ CGeneralPage::CGeneralPage(CLavaPEWizard *wizard)
     CExecLike * execLike = new CExecLike(myWizard->myDoc, m_NamedTypes, decl);
     delete execLike;
   }
-  CListItem *listItem;
-  listItem = (CListItem*)m_NamedTypes->listBox()->findItem(m_NewType, Qt::ExactMatch | Qt::CaseSensitive);
+  CComboBoxItem *listItem;
+  listItem = (CComboBoxItem*)m_NamedTypes->listBox()->findItem(m_NewType, Qt::ExactMatch | Qt::CaseSensitive);
   if (listItem) 
     m_NamedTypes->setCurrentText(listItem->text());
   
@@ -971,8 +974,8 @@ void ColorSetting::Init(AnnoExType role, LavaDECL* decl, QCheckBox* defaultB,
                                QCheckBox* defaultF,
                                QPushButton* ButtonB,
                                QPushButton* ButtonF,
-                               QFrame* Fore,
-                               QFrame* Back)
+                               Q3Frame* Fore,
+                               Q3Frame* Back)
 {
   Role = role;
   FormDECL = decl;
@@ -1095,7 +1098,7 @@ CFontColorPage::CFontColorPage(CLavaPEWizard *wizard, LavaDECL *formDECL)
   FormDECL = formDECL;
   QFont lf;
   if (FormDECL->Annotation.ptr->String1.l && lf.fromString(FormDECL->Annotation.ptr->String1.c)) {
-    QString nn = lf.family() + komma.c +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontNameL->setText(nn);
     fontNameL->show();
     fontButtonL->show();
@@ -1108,7 +1111,7 @@ CFontColorPage::CFontColorPage(CLavaPEWizard *wizard, LavaDECL *formDECL)
     defaultFontL->setChecked(true);
   }
   if (FormDECL->Annotation.ptr->String2.l && lf.fromString(FormDECL->Annotation.ptr->String2.c)) {
-    QString nn = lf.family() + komma.c +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontNameT->setText(nn);
     fontNameT->show();
     fontButtonT->show();
@@ -1173,7 +1176,7 @@ void CFontColorPage::fontButtonL_clicked()
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormLabelFont,this);
   if (ok) {
     FormDECL->Annotation.ptr->String1 = DString(lf.toString());
-    QString nn = lf.family() + komma.c +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontNameL->setText(nn);
     fontNameL->show();
     myWizard->setModified(true);
@@ -1717,7 +1720,7 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
   CHEEnumSelId* enumsel;
   CHE *inDefEl;
   bool atomic;
-  CListItem *item;
+  CComboBoxItem *item;
   TID tid0;
 
   if ((FormDECL->DeclType == VirtualType) && !ForChainElem)
@@ -1748,7 +1751,7 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
     }
     enumsel = (CHEEnumSelId*)enumEl->Items.first;
     while (enumsel) {   
-      item = new CListItem(enumsel->data.Id, tid0);
+      item = new CComboBoxItem(enumsel->data.Id, tid0);
       m_EnumDefault->listBox()->insertItem(item);
       enumsel = (CHEEnumSelId*)enumsel->successor;
     }
@@ -1805,13 +1808,13 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
   }
   inDefEl = (CHE*)FormDECL->Annotation.ptr->Prefixes.first;
   while (inDefEl /*&& !((LavaDECL*)inDefEl->data)->Annotation.ptr->BasicFlags.Contains(Toggle)*/) {
-    item = new CListItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
+    item = new CComboBoxItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
     m_Prefixe->insertItem(item);
     inDefEl = (CHE*)inDefEl->successor;
   }
   inDefEl = (CHE*)FormDECL->Annotation.ptr->Suffixes.first;
   while (inDefEl) {
-    item = new CListItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
+    item = new CComboBoxItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
     m_Suffixe->insertItem(item);
     inDefEl = (CHE*)inDefEl->successor;
   }
@@ -1917,7 +1920,7 @@ void CLiteralsPage::GetProps()
 }
 
 
-bool CLiteralsPage::OnAdd(ChainAny0* chain, QListBox* m_list/*, int transpos*/) 
+bool CLiteralsPage::OnAdd(ChainAny0* chain, Q3ListBox* m_list/*, int transpos*/) 
 {
   int ins = m_list->currentItem();
   LavaDECL* Decl = NewLavaDECL();
@@ -1996,7 +1999,7 @@ void CLiteralsPage::OnDELETESuf()
 }
 
 
-bool CLiteralsPage::OnEdit(ChainAny0 * chain, QListBox* m_list/*, int transpos*/)
+bool CLiteralsPage::OnEdit(ChainAny0 * chain, Q3ListBox* m_list/*, int transpos*/)
 {
   int ins = m_list->currentItem();
   CHE* cheDecl = (CHE*)chain->GetNth(ins+1/*+transpos*/);
@@ -2053,13 +2056,13 @@ void CLiteralsPage::OnEditSuf()
 }
 
 
-void CLiteralsPage::m_Prefixe_doubleClicked( QListBoxItem * )
+void CLiteralsPage::m_Prefixe_doubleClicked( Q3ListBoxItem * )
 {
   OnEDITPre(); 
 }
 
 
-void CLiteralsPage::m_Suffixe_doubleClicked( QListBoxItem * )
+void CLiteralsPage::m_Suffixe_doubleClicked( Q3ListBoxItem * )
 {
   OnEditSuf();
 }
@@ -2161,7 +2164,7 @@ void CLiteralItem::UpdateData(bool getData)
 }
 
 
-CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, QListBox *litList, LavaDECL * litEl)  
+CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, Q3ListBox *litList, LavaDECL * litEl)  
   : IDD_LiteralItem(page, "LiteralsItem", true)
 {
   m_lit = "";
@@ -2264,7 +2267,7 @@ void CLiteralItem::OnOK()
   TID tid0;
   if (!insert)
     LitList->removeItem(litPos);
-  CListItem* item = new CListItem(m_lit, tid0);
+  CComboBoxItem* item = new CComboBoxItem(m_lit, tid0);
   LitList->insertItem(item, litPos);//-1);
   //LitList->InsertString(litPos, m_lit);
   GetSpace((TAnnotation**)&myDecl->Annotation.ptr->FA.ptr, m_LiTab, m_LiSpace, m_LiFrmSpace);
@@ -2385,8 +2388,8 @@ void CMenuPage::SetEProps()
   LavaDECL *inEl;
   CHEEnumSelId * enumsel;
   TAnnotation* anno;
-  CListItem *item;
-  QListBoxItem *pixItem;
+  CComboBoxItem *item;
+  Q3ListBoxItem *pixItem;
 
   inEl = (LavaDECL*)myWizard->FormDECL->Annotation.ptr->MenuDECL.ptr;
   if (inEl) {
@@ -2467,11 +2470,11 @@ void CMenuPage::SetEProps()
         *labpix = ex->data.xpmFile;
       inDefEl = (CHE*)inDefEl->successor;
     }
-    item = new CListItem(*labe, mflags);
+    item = new CComboBoxItem(*labe, mflags);
     m_Menuitems->insertItem(item);
-    item = new CListItem(*labb, mflags);
+    item = new CComboBoxItem(*labb, mflags);
     m_LButtonText->insertItem(item);
-    pixItem = new CListItem(*labpix, mflags);
+    pixItem = new CComboBoxItem(*labpix, mflags);
     m_Pixmap->insertItem(pixItem);
     delete labe;
     delete labb;
@@ -2519,7 +2522,7 @@ void CMenuPage::GetEProps()
   ((TEnumDescription*)myWizard->FormDECL->EnumDesc.ptr)->MenuTree.NestedDecls.Destroy();
   maxi = QMAX(m_Menuitems->count(), m_LButtonText->count());
   while (ipos < maxi) {
-   mflags = ((CListItem*)m_Menuitems->item(ipos))->flags();
+   mflags = ((CComboBoxItem*)m_Menuitems->item(ipos))->flags();
     if (mflags[0] != 3) { //not static MenuText
       if (!enumsel)
         enumsel = (CHEEnumSelId*)inEl->Items.first;
@@ -2621,7 +2624,7 @@ void CMenuPage::SetButtons(int sel)
     m_EditButton->setEnabled(false);
   }
   else {
-    unsigned *mflags = ((CListItem*)m_Menuitems->item(sel))->flags();
+    unsigned *mflags = ((CComboBoxItem*)m_Menuitems->item(sel))->flags();
     m_DeleteButton->setEnabled(mflags[0] == 3);
     m_EditButton->setEnabled(true);
   }
@@ -2661,7 +2664,7 @@ void CMenuPage::OnAddButton()
   if (MItem->exec() == QDialog::Accepted) {
     m_LButtonText->setCurrentItem(ss);
     m_Menuitems->setCurrentItem(ss);
-    unsigned *mflags1 = ((CListItem*)m_Menuitems->item(ss))->flags();
+    unsigned *mflags1 = ((CComboBoxItem*)m_Menuitems->item(ss))->flags();
     m_DeleteButton->setEnabled(mflags1[0] == 3);
     m_EditButton->setEnabled(true);
     myWizard->setModified(true);
@@ -2683,7 +2686,7 @@ void CMenuPage::OnEditButton()
   bT = m_LButtonText->text(ss);
   pT = m_Pixmap->text(ss);
   unsigned  *mflags;
-  mflags = ((CListItem*)m_Menuitems->item(ss))->flags();
+  mflags = ((CComboBoxItem*)m_Menuitems->item(ss))->flags();
   CMenuItem* cm = new CMenuItem(this, false, ss, iT, bT, pT, mflags);   
   if (cm->exec() == QDialog::Accepted) {
     myWizard->setModified(true);
@@ -2697,14 +2700,14 @@ void CMenuPage::OnDeleteButton()
 {
   int ss = m_Menuitems->currentItem();
   if (ss >= 0) {
-    unsigned *mflags = ((CListItem*)m_Menuitems->item(ss))->flags();
+    unsigned *mflags = ((CComboBoxItem*)m_Menuitems->item(ss))->flags();
     if (mflags[0] == 3) {
       m_Menuitems->removeItem(ss);
       m_LButtonText->removeItem(ss);
       if (ss) 
         ss = ss-1;
       m_Menuitems->setCurrentItem(ss);
-      mflags = ((CListItem*)m_Menuitems->item(ss))->flags();
+      mflags = ((CComboBoxItem*)m_Menuitems->item(ss))->flags();
       m_DeleteButton->setEnabled(mflags[0] == 3);
       m_EditButton->setEnabled(true);
       myWizard->setModified(true);
@@ -2738,7 +2741,7 @@ void CMenuPage::SetDefaults(EMenuType newMenuT, EMenuType oldMenuT)
        || (newMenuT == isOMenu) && (oldMenuT != isOMenu)) {
     int cc = m_Menuitems->count();
     int rr;
-    CListItem* item;
+    CComboBoxItem* item;
     TID tid0;
     QString iT, bT, pT;
     for (int ss = cc-1; ss >= 0; ss--) {
@@ -2748,14 +2751,14 @@ void CMenuPage::SetDefaults(EMenuType newMenuT, EMenuType oldMenuT)
         if (rr == 0) 
           m_LButtonText->removeItem(ss);
         if ((rr == 0) || (rr < 0)) {
-          item = new CListItem(iT, tid0);
+          item = new CComboBoxItem(iT, tid0);
           m_LButtonText->insertItem(item, ss-1);
         }
       }
       if ((newMenuT == isOMenu) && (m_Menuitems->text(ss).length() > 0)) {
         bT = m_LButtonText->text(ss);
         if ((rr == 0) || (rr < 0)) {
-          item = new CListItem(bT, tid0);
+          item = new CComboBoxItem(bT, tid0);
           m_LButtonText->insertItem(item, ss-1);
         }
       }
@@ -2909,7 +2912,7 @@ void CMenuItem::button_browse_clicked()
 
 void CMenuItem::OnOK() 
 {
-  CListItem *item;
+  CComboBoxItem *item;
   UpdateData(true);
   /*
   if (m_flags) {
@@ -2922,16 +2925,16 @@ void CMenuItem::OnOK()
     menuPage->m_Pixmap->removeItem(iPos);
   }
   if (m_flags == 3) {
-    item = new CListItem(m_MenuText->text(), mflags);
+    item = new CComboBoxItem(m_MenuText->text(), mflags);
     menuPage->m_LButtonText->insertItem(item, iPos);
   }
   else {
-    item = new CListItem(m_Buttontext->text(), mflags);
+    item = new CComboBoxItem(m_Buttontext->text(), mflags);
     menuPage->m_LButtonText->insertItem(item, iPos);
   }
   /*
   if (menuPage->v_Menutype == isBMenu) {
-    item = new CListItem(m_Pixmap->text(), mflags);
+    item = new CComboBoxItem(m_Pixmap->text(), mflags);
     menuPage->m_Pixmap->insertItem(item, iPos);
   }
   */
@@ -2939,9 +2942,9 @@ void CMenuItem::OnOK()
   mflags[1] = m_Menutab ;
   mflags[2] = m_Menuspace ;
   mflags[3] = m_MenuFrmspace ;
-  item = new CListItem(m_Enumsel->text(), mflags);
+  item = new CComboBoxItem(m_Enumsel->text(), mflags);
   menuPage->m_Menuitems->insertItem(item, iPos);
-  item = new CListItem(m_Pixmap->text(), mflags);
+  item = new CComboBoxItem(m_Pixmap->text(), mflags);
   menuPage->m_Pixmap->insertItem(item, iPos);
   menuPage->UpdateData(false);
   QDialog::accept();
@@ -2970,7 +2973,7 @@ CSupportPage::CSupportPage(CLavaPEWizard* wizard)
  : IDD_SupportPage(wizard, "SupportPage", false)
 {
   int count = 0;
-  CListItem *item;
+  CComboBoxItem *item;
 
   //v_FormClass = "";
 
@@ -2992,7 +2995,7 @@ CSupportPage::CSupportPage(CLavaPEWizard* wizard)
         basefDECL = IDTab->GetFinalDef(cheS->data, fclassDECL->inINCL);
         if (basefDECL && basefDECL->TypeFlags.Contains(isGUI)) {
           if (IDTab->IsAnc(myWizard->FormDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL)) {
-            item = new CListItem(basefDECL->LocalName, TID(basefDECL->OwnID, basefDECL->inINCL));
+            item = new CComboBoxItem(basefDECL->LocalName, TID(basefDECL->OwnID, basefDECL->inINCL));
             m_Supports->insertItem(item);
           }
         }
@@ -3056,7 +3059,7 @@ void CExecLike::ExecFormDef(LavaDECL ** pelDef, int incl)
   else
     if (!myDoc->IDTable.EQEQ((*pelDef)->RefID, (*pelDef)->inINCL, TID(myDECL->OwnID,myDECL->inINCL), 0))
       return;
-  CListItem *item = new CListItem((*pelDef)->ParentDECL->FullName, TID((*pelDef)->OwnID, incl));
+  CComboBoxItem *item = new CComboBoxItem((*pelDef)->ParentDECL->FullName, TID((*pelDef)->OwnID, incl));
   List->listBox()->insertItem(item); //sort
 }
 
@@ -3072,7 +3075,7 @@ void CExecLike::ExecDefs (LavaDECL ** pelDef, int incl)
   if ( (elDef == myDECL)
        || (myDECL->DeclType == FormDef)
           &&  myDoc->IDTable.EQEQ(id, elDef->inINCL, myDECL->RefID, myDECL->inINCL)) {
-    CListItem *item = new CListItem(elDef->FullName, TID(elDef->OwnID, incl));
+    CComboBoxItem *item = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, incl));
     List->listBox()->insertItem(item);
   }
 }

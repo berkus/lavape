@@ -426,8 +426,8 @@ static void PutLink(TIDTable *IDTable,TID &refID,bool singleFile)
 		}
 		code("<FONT color=#000000>");
 		if (pnode->DeclType == VirtualType) {
-			link = QString("&lt;") + pnode->FullName.c + ">";
-			code(QString("&lt;") + pnode->FullName.c + ">");
+			link = QString("&lt;") + QString(pnode->FullName.c) + QString(">");
+			code(QString("&lt;") + QString(pnode->FullName.c) + QString(">"));
 		}
 		else {
 				symName = pnode->FullName.c;

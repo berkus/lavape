@@ -8,11 +8,13 @@
 #include "LavaAppBase.h"
 #include "LavaThread.h"
 #include "docview.h"
-#include "qcstring.h"
+#include "q3cstring.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "qptrlist.h"
-#include "qptrdict.h"
+#include "q3ptrlist.h"
+#include "q3ptrdict.h"
+//Added by qt3to4:
+#include <QMouseEvent>
 #ifndef WIN32
 #include <setjmp.h>
 #include <signal.h>
@@ -699,8 +701,8 @@ public:
   bool callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel, SynObjectBase *sCall);
 };
 
-typedef QPtrList<Receiver> ReceiverList;
-typedef QPtrList<CSectionDesc*> LavaObjectList;
+typedef Q3PtrList<Receiver> ReceiverList;
+typedef Q3PtrList<CSectionDesc*> LavaObjectList;
 
 class Callback {
 public:
@@ -716,7 +718,7 @@ public:
   LavaDECL *senderClass, *callbackDecl;
 };
 
-typedef QPtrList<Callback> CallbackList;
+typedef Q3PtrList<Callback> CallbackList;
 
 class RunTimeData {
 public:
@@ -728,8 +730,8 @@ public:
 
   LavaObjectPtr urlObj;
 
-  QPtrDict<ReceiverList> receiverDict;  // key = LavaDECL *signalDecl
-  QPtrDict<CallbackList> callbackDict;  // key = LavaDECL *signalDecl
+  Q3PtrDict<ReceiverList> receiverDict;  // key = LavaDECL *signalDecl
+  Q3PtrDict<CallbackList> callbackDict;  // key = LavaDECL *signalDecl
 };
 
 #endif

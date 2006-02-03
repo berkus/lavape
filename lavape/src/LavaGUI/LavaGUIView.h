@@ -8,24 +8,30 @@
 #include "LavaBaseDoc.h"
 #include "PEBaseDoc.h"
 #include "docview.h"
-#include "qscrollview.h"
-#include "qvbox.h"
+#include "q3scrollview.h"
+#include "q3vbox.h"
 #include "qdialog.h" 
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <Q3Frame>
+#include <QResizeEvent>
+#include <QEvent>
+#include <QCloseEvent>
 
-class LAVAGUI_DLL GUIVBox : public QFrame
+class LAVAGUI_DLL GUIVBox : public Q3Frame
 {
 public:
-  GUIVBox(QWidget* parent, bool fromPopup, QScrollView* view):QFrame(parent, "GUIVBox") 
+  GUIVBox(QWidget* parent, bool fromPopup, Q3ScrollView* view):Q3Frame(parent, "GUIVBox") 
     {View = view; FromPopup = fromPopup;}
   QSize sizeHint() { return size();}
   bool FromPopup;
-  QScrollView * View;
+  Q3ScrollView * View;
   
 private:
   Q_OBJECT
 };
 
-class LAVAGUI_DLL GUIScrollView : public QScrollView {
+class LAVAGUI_DLL GUIScrollView : public Q3ScrollView {
 public:
   GUIScrollView (QWidget *parent, bool fromPopup);
   void viewportResizeEvent(QResizeEvent* ev);
@@ -55,7 +61,7 @@ public:
   LavaVariablePtr ServicePtr;
   LavaVariablePtr IniDataPtr;
   LavaVariablePtr ResultDPtr;
-  QVBoxLayout *qvbl;
+  Q3VBoxLayout *qvbl;
   bool returned;
 
   void closeEvent(QCloseEvent *e);
@@ -121,15 +127,15 @@ public:
   void OnEditPaste();
   void OnGotoDecl();
 
-  void OnUpdateGotodef(wxAction* action);
-	void OnUpdateTogglestate(wxAction* action);
-  void OnUpdateEditPaste(wxAction* action);
-  void OnUpdateEditCopy(wxAction* action);
-  void OnUpdateEditCut(wxAction* action);
-  void OnUpdateCancel(wxAction* action);
-  void OnUpdateOk(wxAction* action);
-  void OnUpdateDeleteopt(wxAction* action);
-  void OnUpdateInsertopt(wxAction* action);
+  void OnUpdateGotodef(QAction* action);
+	void OnUpdateTogglestate(QAction* action);
+  void OnUpdateEditPaste(QAction* action);
+  void OnUpdateEditCopy(QAction* action);
+  void OnUpdateEditCut(QAction* action);
+  void OnUpdateCancel(QAction* action);
+  void OnUpdateOk(QAction* action);
+  void OnUpdateDeleteopt(QAction* action);
+  void OnUpdateInsertopt(QAction* action);
   void OnChoosefont();
   void setNewLabelFont();
 //  void setNewButtonFont();

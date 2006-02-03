@@ -6,10 +6,14 @@
 
 
 
-#ifdef Q_WS_WIN
-# define LAVASTREAM_DLL __declspec(dllexport)
+#ifdef WIN32
+#ifdef LAVASTREAM_EXPORT
+#define LAVASTREAM_DLL __declspec(dllexport)
 #else
-# define LAVASTREAM_DLL
+#define LAVASTREAM_DLL __declspec(dllimport)
+#endif
+#else
+#define LAVASTREAM_DLL
 #endif
 
 

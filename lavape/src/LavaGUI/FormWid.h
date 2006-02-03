@@ -5,13 +5,19 @@
 #include "GUIProgBase.h"
 #include "qwidget.h"
 #include "qpainter.h"
-#include "qgroupbox.h"
+#include "q3groupbox.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <Q3Frame>
+#include <QEvent>
+#include <Q3PopupMenu>
+#include <Q3Button>
 
 
 /////////////////////////////////////////////////////////////////////////////
 // CFormWid window
 
-class CFormWid : public QFrame//QWidget
+class CFormWid : public Q3Frame//QWidget
 {
 public:
   CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
@@ -28,13 +34,13 @@ public:
 
  //the FormWidget may be used as a (radio) button menu box
   int nRadio;
-  QButton *Radio [100];
-  QGroupBox *BGroup;
+  Q3Button *Radio [100];
+  Q3GroupBox *BGroup;
 
-  void AddRadio(QButton* radio);
+  void AddRadio(Q3Button* radio);
 
   //the FormWidget may be a chain element widget which has a popup menu
-  QPopupMenu* myMenu;
+  Q3PopupMenu* myMenu;
   bool origMenu;
   bool usedInFormNode;
 public slots:

@@ -104,14 +104,14 @@ void ASN1tofromAr::PUTCString (QString* s)
   header.Id = PrintableString;
   // PrintableString 
   header.LengthForm = DefiniteLength;
-  if (*s)
+  if (s->length())
     header.Len = s->length();
   else
     header.Len = 0;
   PutHeader(header);
   if (header.Len > 0)
     for (i = 0; i <= header.Len-1; i++) {
-      outChar = MachDep.ToASCII[(QChar)s->at(i)];
+      outChar = MachDep.ToASCII[s->at(i).ascii()];
       putChar(outChar);
     }
     

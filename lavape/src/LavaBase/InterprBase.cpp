@@ -28,6 +28,8 @@
 #include "qobject.h"
 #include "qstring.h"
 #include "qlibrary.h"
+//Added by qt3to4:
+#include <QCustomEvent>
 #ifdef WIN32
 #include <windows.h>
 #else
@@ -451,7 +453,7 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
   case PROT_LAVA:
 //    object = ckd.document->OpenObject(ckd, urlObj);
 		QApplication::postEvent(ckd.document,new QCustomEvent(IDU_OpenObject,&oop));
-    (*currentThread->pContExecEvent)++;
+    currentThread->pContExecEvent->acquire();
 		object = oop.obj;
 		
     if (!object)

@@ -4,9 +4,9 @@ DLL = DISCO
 
 EXEC = disco.so
 
-SUBPRO = SFLsockets
+SUBPRO = 
 
-CPP_INCLUDES = -I. -I../SFLsockets -I$(QTDIR)/include
+CPP_INCLUDES = -I. -I$(QTDIR)/include -I$(QTDIR)/include/Qt -I$(QTDIR)/include/QtCore -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/Qt3Support
 
 include ../common.mk
 

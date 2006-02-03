@@ -6,8 +6,8 @@
 #include "LavaPEDoc.h"
 //#include "Resource.h"
 //#include "wxExport.h"
-#include "qcombobox.h"
-#include "qlistbox.h"
+#include "q3combobox.h"
+#include "q3listbox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
@@ -29,10 +29,28 @@
 
 enum ValOnInit {BoxContinue, BoxOK, BoxCancel};
 
+
+class CListBoxItem: public Q3ListBoxText
+{
+public:
+  CListBoxItem(const QString& txt, const TID& id) { setText(txt); ID = id;}
+  CListBoxItem(const DString& text, const TID& id) {setText(QString(text.c)); ID = id;}
+  CListBoxItem(const QString& text, unsigned* flags) {setText(text); Flags = flags;}
+  CListBoxItem() {}
+  TID itemData() {return ID;}
+  unsigned* flags() {return Flags;}
+  void setText(const QString &txt) { myText = txt; }
+  QString text() { return myText; }
+protected:
+  TID ID;
+  unsigned* Flags;
+  QString myText;
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // CAttrBox dialog
 
-class CAttrBox : public IDD_AttrBox
+class CAttrBox : public QDialog, public Ui_IDD_AttrBox
 {
 // Construction
 public:
@@ -77,7 +95,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // Dialogfeld CCompSpecBox 
 
-class CCompSpecBox : public IDD_CompSpecBox
+class CCompSpecBox : public QDialog, public Ui_IDD_CompSpecBox
 {
 // Konstruktion
 public:
@@ -103,7 +121,7 @@ public slots:
     virtual void m_EnumAdd1_clicked();
     virtual void m_EnumEdit1_clicked();
     virtual void m_EnumDel1_clicked();
-    virtual void m_EnumItems1_selectionChanged( QListBoxItem * );
+    virtual void m_EnumItems1_selectionChanged( Q3ListBoxItem * );
     virtual void OnOK();
     virtual void m_CANCEL13_clicked() {QDialog::reject();}
     virtual void ID_HELP10_clicked();
@@ -115,7 +133,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CCorrOverBox dialog
 
-class CCorrOverBox : public IDD_CorrOverBox
+class CCorrOverBox : public QDialog, public Ui_IDD_CorrOverBox
 {
 // Construction
 public:
@@ -139,7 +157,7 @@ private:
 
 
 
-class CEnumBox : public IDD_EnumBox
+class CEnumBox : public QDialog, public Ui_IDD_EnumBox
 {
 
 // Construction
@@ -164,7 +182,7 @@ public slots:
     virtual void m_EnumAdd_clicked();
     virtual void m_EnumEdit_clicked();
     virtual void m_EnumDel_clicked();
-    virtual void m_EnumItems_selectionChanged( QListBoxItem * );
+    virtual void m_EnumItems_selectionChanged( Q3ListBoxItem * );
 
     virtual void OnOK();
     virtual void ID_HELP3_clicked();
@@ -177,14 +195,14 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CEnumItem dialog
 
-class CEnumItem : public IDD_EnumItem
+class CEnumItem : public QDialog, public Ui_IDD_EnumItem
 {
 public:
   CEnumItem(QWidget* parent = NULL);   // standard constructor
-  CEnumItem(QString * enumItem, QListBox* itemsBox, ChainAny0* items, bool isId, QWidget* parent =NULL);
+  CEnumItem(QString * enumItem, Q3ListBox* itemsBox, ChainAny0* items, bool isId, QWidget* parent =NULL);
 
   QString *m_ItemAdr;
-  QListBox* ItemsBox;
+  Q3ListBox* ItemsBox;
   QString StartText;
   ChainAny0* Items;
   bool isID;
@@ -201,7 +219,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // Dialogfeld CFuncBox 
 
-class CFuncBox : public IDD_FuncBox
+class CFuncBox : public QDialog, public Ui_IDD_FuncBox
 {
 public:
   CFuncBox(QWidget* pParent = NULL);   // Standardkonstruktor
@@ -247,7 +265,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CImplBox dialog
 
-class CImplBox : public IDD_ImplBox
+class CImplBox : public QDialog, public Ui_IDD_ImplBox
 {
 public:
   CImplBox(QWidget* pParent = NULL);   // standard constructor
@@ -277,7 +295,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // Dialogfeld CIncludeBox 
 
-class CIncludeBox : public IDD_IncludeBox
+class CIncludeBox : public QDialog, public Ui_IDD_IncludeBox
 {
 public:
   CIncludeBox(QWidget* pParent = NULL);   // Standardkonstruktor
@@ -307,7 +325,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CInitBox dialog
 
-class CInitBox : public IDD_InitBox
+class CInitBox : public QDialog, public Ui_IDD_InitBox
 {
 public:
   CInitBox(QWidget* pParent = NULL);   // standard constructor
@@ -338,7 +356,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CInterfaceBox dialog
 
-class CInterfaceBox : public IDD_InterfaceBox
+class CInterfaceBox : public QDialog, public Ui_IDD_InterfaceBox
 {
 public:
   CInterfaceBox(QWidget* pParent = NULL);   // standard constructor
@@ -384,7 +402,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CIOBox dialog
 
-class CIOBox : public IDD_IOBox
+class CIOBox : public QDialog, public Ui_IDD_IOBox
 {
 public:
   CIOBox(QWidget* pParent = NULL);   // standard constructor
@@ -420,7 +438,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CPackageBox dialog
 
-class CPackageBox : public IDD_PackageBox
+class CPackageBox : public QDialog, public Ui_IDD_PackageBox
 {
 public:
   CPackageBox(QWidget* parent = NULL);   // standard constructor
@@ -451,7 +469,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CSetBox dialog
 
-class CSetBox : public IDD_SetBox
+class CSetBox : public QDialog, public Ui_IDD_SetBox
 {
 // Construction
 public:
@@ -485,7 +503,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CVTypeBox dialog
 
-class CVTypeBox : public IDD_VTypeBox
+class CVTypeBox : public QDialog, public Ui_IDD_VTypeBox
 {
 public:
   CVTypeBox(QWidget* pParent = NULL);   // standard constructor
@@ -533,7 +551,7 @@ extern bool SetSelections(QComboBox* basics, QComboBox* types, const QString& na
 extern QString* CheckNewName(const QString& m_NewName, LavaDECL* myDECL, CLavaPEDoc* myDoc/*, LavaDECL* OrigDECL*/);
 
 
-extern int SelEndOKToList(QComboBox* cbox, QListBox* list, int chpos = -1);
+extern int SelEndOKToList(QComboBox* cbox, Q3ListBox* list, int chpos = -1);
 extern int SelEndOKToStr(QComboBox* cbox, QString* editStr, TID* exID);
 
 
@@ -556,30 +574,30 @@ protected:
 class CExecExtensions: public CExec
 {
 public:
-  CExecExtensions(CLavaPEDoc* doc, QComboBox* list, QComboBox* basicList, LavaDECL* decl, LavaDECL* origDECL);
+  CExecExtensions(CLavaPEDoc* doc, QComboBox* combo, QComboBox* basicCombo, LavaDECL* decl, LavaDECL* origDECL);
   void ExecDefs (LavaDECL ** pelDef, int level);
   CLavaPEDoc* myDoc;
   TIDs BasicIDs;
   LavaDECL* myDECL;
   LavaDECL* OrigDECL;
-  QComboBox *List;
-  QComboBox *BasicList;
+  QComboBox *Combo;
+  QComboBox *BasicCombo;
   //CDC* dc;
   //QSize sz;
   //int maxWidth;
 };
 
 
-extern void ListToChain(QListBox* list, TSupports* supports);
+extern void ListToChain(Q3ListBox* list, TSupports* supports);
 
 class CExecDefs: public CExec
 { //Package with virtual types
 public:
-  CExecDefs(CLavaPEDoc* doc, QComboBox* list, LavaDECL *decl);
+  CExecDefs(CLavaPEDoc* doc, QComboBox* combo, LavaDECL *decl);
   void ExecDefs (LavaDECL ** pelDef, int level);
   CLavaPEDoc* myDoc;
   LavaDECL *myDECL;
-  QComboBox *List;
+  QComboBox *Combo;
   //CDC* dc;
   //QSize sz;
   //int maxWidth;
@@ -600,13 +618,13 @@ public:
 class CExecAllDefs: public CExec
 {
 public:
-  CExecAllDefs(CLavaPEDoc* doc, QComboBox* list, QComboBox* list2, //QComboBox* list3,
+  CExecAllDefs(CLavaPEDoc* doc, QComboBox* combo, QComboBox* combo2, //QComboBox* list3,
       LavaDECL *parentDECL, LavaDECL *callingDECL, TDeclType deftype, SynFlags typeFlag);
   void ExecDefs (LavaDECL ** pelDef, int level);
-  void FitBox(QComboBox* list, int maxWidth);
+  void FitBox(QComboBox* combo, int maxWidth);
   CLavaPEDoc* myDoc;
-  QComboBox *List;
-  QComboBox *List2;
+  QComboBox *Combo;
+  QComboBox *Combo2;
   //QComboBox *List3;
   LavaDECL *ParentDECL;
   LavaDECL *CallingDECL;

@@ -78,7 +78,7 @@ int SynIOCLASS::ReadSynDef (const QString& fileName, SynDef *&syntax, ASN1* strg
       return -1;
     }
     else {
-      if (access(fileName,W_OK) != 0) //FILE_ATTRIBUTE_READONLY & GetFileAttributes(fileName.c))
+      if (_access(fileName,W_OK) != 0) //FILE_ATTRIBUTE_READONLY & GetFileAttributes(fileName.c))
         ret = 1;
     }
     pcid = icid;

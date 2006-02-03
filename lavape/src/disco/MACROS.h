@@ -23,7 +23,7 @@
 
 
 #ifdef WIN32
-#define strcasecmp stricmp
+#define strcasecmp _stricmp
 #else
 #define O_BINARY 0
 #endif

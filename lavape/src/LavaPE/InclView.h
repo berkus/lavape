@@ -6,7 +6,9 @@
 #include "LavaPEDoc.h"
 #include "TreeView.h"
 //#include "wxExport.h"
-#include "qcombobox.h"
+#include "q3combobox.h"
+//Added by qt3to4:
+#include <QCustomEvent>
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
@@ -37,11 +39,11 @@ public:
   virtual void whatNext();
 
 protected:
-  void OnUpdateDelete(wxAction* action);
-  void OnUpdateEditSel(wxAction* action);
+  void OnUpdateDelete(QAction* action);
+  void OnUpdateEditSel(QAction* action);
 
 public slots:
-  void OnDblclk(QListViewItem* onItem, const QPoint&, int);
+  void OnDblclk(Q3ListViewItem* onItem, const QPoint&, int);
   //void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 private:
     Q_OBJECT;

@@ -257,7 +257,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
 		while (true) {
 			loc = str.find('\n',ind);
 			if (loc != -1) {
-			  maxLine = QMAX(maxLine,loc-ind);
+			  maxLine = QMAX((int)maxLine,loc-ind);
 				ind = loc+1;
 			}
 			else {

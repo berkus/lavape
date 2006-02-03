@@ -8,10 +8,12 @@
 #include "LavaGUIView.h"
 #include "GUIProgBase.h"
 #include "mdiframes.h"
+//Added by qt3to4:
+#include <QCloseEvent>
 
-#undef QMainWindow
+#undef Q3MainWindow
 
-class CLavaGUIPopup : public QMainWindow 
+class CLavaGUIPopup : public Q3MainWindow 
 {
 public:
   CLavaGUIPopup(QWidget *parent, CGUIProgBase *guiPr, CHEFormNode* data);

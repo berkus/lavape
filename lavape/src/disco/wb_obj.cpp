@@ -48,13 +48,13 @@
 #include "wx_obj.h"
 #include "string.h"
 #include "qapplication.h"
-#include "qdict.h"
+#include "q3dict.h"
 
 
 // Hand-coded IMPLEMENT... macro for wxObject (define static data)
 wxClassInfo wxObject::classwxObject("wxObject", NULL, NULL, sizeof(wxObject), NULL);
 
-static QDict<wxClassInfo> *classDict=0;
+static Q3Dict<wxClassInfo> *classDict=0;
 
 
 // Useful buffer, initialized in wxCommonInit
@@ -86,7 +86,7 @@ wxObject::~wxObject(void)
 wxClassInfo::wxClassInfo(char *cName, char *baseName1, char *baseName2, int sz, wxObjectConstructorFn constr)
 {
   if (!classDict)
-    classDict = new QDict<wxClassInfo>(311);
+    classDict = new Q3Dict<wxClassInfo>(311);
 
   className = cName;
   baseClassName1 = baseName1;

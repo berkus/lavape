@@ -1,149 +1,121 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
-<class>IDD_GotoDeclSel</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>IDD_GotoDeclSel</cstring>
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>IDD_GotoDeclSel</class>
+  <widget class="QDialog" name="IDD_GotoDeclSel" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>277</width>
+        <height>86</height>
+      </rect>
     </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>277</width>
-            <height>86</height>
-        </rect>
+    <property name="font" >
+      <font>
+        <family></family>
+        <pointsize>0</pointsize>
+        <weight>0</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+      </font>
     </property>
-    <property name="font">
-        <font>
-        </font>
+    <property name="windowTitle" >
+      <string>Goto</string>
     </property>
-    <property name="caption">
-        <string>Goto</string>
-    </property>
-    <grid>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <property name="resizeMode">
-            <enum>Fixed</enum>
-        </property>
-        <widget class="QComboBox" row="1" column="0">
-            <item>
-                <property name="text">
-                    <string>(Select where to go to)</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>m_GotoCombo</cstring>
+    <layout class="QGridLayout" >
+      <property name="resizeMode" >
+        <enum>Fixed</enum>
+      </property>
+      <item row="1" column="0" >
+        <widget class="QComboBox" name="m_GotoCombo" >
+          <item>
+            <property name="text" >
+              <string>(Select where to go to)</string>
             </property>
+          </item>
         </widget>
-        <widget class="QLabel" row="0" column="0">
-            <property name="name">
-                <cstring>IDC_STATIC_NotAllRefs</cstring>
-            </property>
-            <property name="enabled">
-                <bool>true</bool>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>0</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>1</width>
-                    <height>0</height>
-                </size>
-            </property>
-            <property name="focusPolicy">
-                <enum>NoFocus</enum>
-            </property>
-            <property name="text">
-                <string>Cannot show all referenced types</string>
-            </property>
-            <property name="alignment">
-                <set>AlignTop|AlignLeft</set>
-            </property>
+      </item>
+      <item row="0" column="0" >
+        <widget class="QLabel" name="IDC_STATIC_NotAllRefs" >
+          <property name="enabled" >
+            <bool>true</bool>
+          </property>
+          <property name="sizePolicy" >
+            <sizepolicy>
+              <hsizetype>0</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+            <size>
+              <width>1</width>
+              <height>0</height>
+            </size>
+          </property>
+          <property name="focusPolicy" >
+            <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="text" >
+            <string>Cannot show all referenced types</string>
+          </property>
+          <property name="alignment" >
+            <set>Qt::AlignTop|Qt::AlignLeft</set>
+          </property>
         </widget>
-        <widget class="QPushButton" row="0" column="1">
-            <property name="name">
-                <cstring>PushButton_IDOK12</cstring>
-            </property>
-            <property name="enabled">
-                <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>0</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>1</width>
-                    <height>0</height>
-                </size>
-            </property>
-            <property name="text">
-                <string>OK</string>
-            </property>
+      </item>
+      <item row="0" column="1" >
+        <widget class="QPushButton" name="PushButton_IDOK12" >
+          <property name="enabled" >
+            <bool>false</bool>
+          </property>
+          <property name="sizePolicy" >
+            <sizepolicy>
+              <hsizetype>0</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+            <size>
+              <width>1</width>
+              <height>0</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string>OK</string>
+          </property>
         </widget>
-        <widget class="QPushButton" row="1" column="1">
-            <property name="name">
-                <cstring>PushButton_IDCANCEL12</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>0</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-            <property name="minimumSize">
-                <size>
-                    <width>1</width>
-                    <height>0</height>
-                </size>
-            </property>
-            <property name="text">
-                <string>Cancel</string>
-            </property>
+      </item>
+      <item row="1" column="1" >
+        <widget class="QPushButton" name="PushButton_IDCANCEL12" >
+          <property name="sizePolicy" >
+            <sizepolicy>
+              <hsizetype>0</hsizetype>
+              <vsizetype>0</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="minimumSize" >
+            <size>
+              <width>1</width>
+              <height>0</height>
+            </size>
+          </property>
+          <property name="text" >
+            <string>Cancel</string>
+          </property>
         </widget>
-    </grid>
-</widget>
-<connections>
-    <connection>
-        <sender>m_GotoCombo</sender>
-        <signal>activated(int)</signal>
-        <receiver>IDD_GotoDeclSel</receiver>
-        <slot>m_GotoCombo_activated(int)</slot>
-    </connection>
-    <connection>
-        <sender>PushButton_IDOK12</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_GotoDeclSel</receiver>
-        <slot>OnOK()</slot>
-    </connection>
-    <connection>
-        <sender>PushButton_IDCANCEL12</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_GotoDeclSel</receiver>
-        <slot>OnCancel()</slot>
-    </connection>
-</connections>
-<includes>
-    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
-</includes>
-<slots>
-    <slot>OnCancel()</slot>
-    <slot>OnOK()</slot>
-    <slot>m_GotoCombo_activated( int )</slot>
-</slots>
-<exportmacro>LAVAPEUI_DLL</exportmacro>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+</ui>

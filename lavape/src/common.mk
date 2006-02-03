@@ -1,4 +1,5 @@
-SHELL=/usr/bin/env bash
+SHELL=/usr/bin/env sh
+
 DBG=-g
 
 ph_files=$(wildcard *.ph)
@@ -83,7 +84,7 @@ else
   ifeq ($(OPSYS),SunOS)
     OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG)
   else
-    OSCPPFLAGS = -D__$(OPSYS) $(DBG)
+    OSCPPFLAGS = -D__$(OPSYS) $(DBG) -DQT3_SUPPORT
   endif
 endif
 

@@ -3,8 +3,8 @@
 
 
 #include "qevent.h"
-#include "qscrollview.h"
-#include "qtoolbar.h"
+#include "q3scrollview.h"
+#include "q3toolbar.h"
 #include "qpainter.h"
 #include "qwidget.h"
 #include "qdialog.h"
@@ -14,12 +14,18 @@
 #include "qfont.h"
 #include "qfontmetrics.h"
 #include "qrect.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QPixmap>
+#include <QFocusEvent>
+#include <QKeyEvent>
 #include "Constructs.h"
 #include "docview.h"
 #include "mdiframes.h"
 #include "LavaAppBase.h"
 #include "PEBaseDoc.h"
 #include "ComboBar.h"
+#include "Comment.h"
 #include "Check.h"
 #include "Resource.h"
 
@@ -234,72 +240,72 @@ public:
 //  void OnKillFocus(QWidget* pNewWnd);
   void OnChar(QKeyEvent *e);
 
-	void OnUpdateOrd(wxAction* action);
-	void OnUpdateOptLocalVar(wxAction* action);
-  void OnUpdateHandle(wxAction* action);
-  void OnUpdateInputArrow(wxAction* action);
-  void OnUpdateEditSel(wxAction* action);
-  void OnUpdateEvaluate(wxAction* action);
-  void OnUpdateToggleSubstitutable(wxAction* action);
-  void OnUpdateConflict(wxAction* action);
-  void OnUpdateToggleCategory(wxAction* action);
-  void OnUpdateNextComment(wxAction* action);
-  void OnUpdatePrevComment(wxAction* action);
-  void OnUpdateNextError(wxAction* action);
-  void OnUpdatePrevError(wxAction* action);
-  void OnUpdateInterval(wxAction* action);
-  void OnUpdateStaticCall(wxAction* action);
-  void OnUpdateIgnore(wxAction* action);
-  void OnUpdateModulus(wxAction* action);
-  void OnUpdateNewLine(wxAction* action);
-  void OnUpdateShowOptionals(wxAction* action);
-  void OnUpdateGotoDecl(wxAction* action);
-  void OnUpdateGotoImpl(wxAction* action);
-  void OnUpdateFindReferences(wxAction* action);
-  void OnUpdateToggleArrows(wxAction* action);
-  void OnUpdateComment(wxAction* action);
+	void OnUpdateOrd(QAction* action);
+	void OnUpdateOptLocalVar(QAction* action);
+  void OnUpdateHandle(QAction* action);
+  void OnUpdateInputArrow(QAction* action);
+  void OnUpdateEditSel(QAction* action);
+  void OnUpdateEvaluate(QAction* action);
+  void OnUpdateToggleSubstitutable(QAction* action);
+  void OnUpdateConflict(QAction* action);
+  void OnUpdateToggleCategory(QAction* action);
+  void OnUpdateNextComment(QAction* action);
+  void OnUpdatePrevComment(QAction* action);
+  void OnUpdateNextError(QAction* action);
+  void OnUpdatePrevError(QAction* action);
+  void OnUpdateInterval(QAction* action);
+  void OnUpdateStaticCall(QAction* action);
+  void OnUpdateIgnore(QAction* action);
+  void OnUpdateModulus(QAction* action);
+  void OnUpdateNewLine(QAction* action);
+  void OnUpdateShowOptionals(QAction* action);
+  void OnUpdateGotoDecl(QAction* action);
+  void OnUpdateGotoImpl(QAction* action);
+  void OnUpdateFindReferences(QAction* action);
+  void OnUpdateToggleArrows(QAction* action);
+  void OnUpdateComment(QAction* action);
   void OnUpdateButtonEnum();
   void OnUpdateNewFunc();
   void OnUpdateNewPFunc();
-  void OnUpdateEditCut(wxAction* action);
-  void OnUpdateEditCopy(wxAction* action);
-  void OnUpdateEditPaste(wxAction* action);
-  void OnUpdateEditUndo(wxAction* action);
-  void OnUpdateEditRedo(wxAction* action);
-  void OnUpdateBitOr(wxAction* action);
-  void OnUpdateBitAnd(wxAction* action);
-  void OnUpdateBitXor(wxAction* action);
-  void OnUpdateDelete(wxAction* action);
-  void OnUpdateDivide(wxAction* action);
-  void OnUpdateEq(wxAction* action);
-  void OnUpdateFalse(wxAction* action);
-  void OnUpdateFunctionCall(wxAction* action);
-  void OnUpdateGe(wxAction* action);
-  void OnUpdateGt(wxAction* action);
-  void OnUpdateInsert(wxAction* action);
-  void OnUpdateInsertBefore(wxAction* action);
-  void OnUpdateInvert(wxAction* action);
-  void OnUpdateLe(wxAction* action);
-  void OnUpdateLshift(wxAction* action);
-  void OnUpdateLt(wxAction* action);
-  void OnUpdatePlusMinus(wxAction* action);
-  void OnUpdateMult(wxAction* action);
-  void OnUpdateNe(wxAction* action);
-  void OnUpdateShowComments(wxAction* action);
-  void OnUpdateNull(wxAction* action);
-  void OnUpdatePlus(wxAction* action);
-  void OnUpdateRshift(wxAction* action);
-  void OnUpdateTrue(wxAction* action);
+  void OnUpdateEditCut(QAction* action);
+  void OnUpdateEditCopy(QAction* action);
+  void OnUpdateEditPaste(QAction* action);
+  void OnUpdateEditUndo(QAction* action);
+  void OnUpdateEditRedo(QAction* action);
+  void OnUpdateBitOr(QAction* action);
+  void OnUpdateBitAnd(QAction* action);
+  void OnUpdateBitXor(QAction* action);
+  void OnUpdateDelete(QAction* action);
+  void OnUpdateDivide(QAction* action);
+  void OnUpdateEq(QAction* action);
+  void OnUpdateFalse(QAction* action);
+  void OnUpdateFunctionCall(QAction* action);
+  void OnUpdateGe(QAction* action);
+  void OnUpdateGt(QAction* action);
+  void OnUpdateInsert(QAction* action);
+  void OnUpdateInsertBefore(QAction* action);
+  void OnUpdateInvert(QAction* action);
+  void OnUpdateLe(QAction* action);
+  void OnUpdateLshift(QAction* action);
+  void OnUpdateLt(QAction* action);
+  void OnUpdatePlusMinus(QAction* action);
+  void OnUpdateMult(QAction* action);
+  void OnUpdateNe(QAction* action);
+  void OnUpdateShowComments(QAction* action);
+  void OnUpdateNull(QAction* action);
+  void OnUpdatePlus(QAction* action);
+  void OnUpdateRshift(QAction* action);
+  void OnUpdateTrue(QAction* action);
 
-  void OnUpdateDbgStart(wxAction* action);
-  void OnUpdateDbgStepNext(wxAction* action);
-  void OnUpdateDbgStepNextFunction(wxAction* action);
-  void OnUpdateDbgStepinto(wxAction* action);
-  void OnUpdateDbgStepout(wxAction* action);
-  void OnUpdateDbgRunToSel(wxAction* action);
-  void OnUpdateDbgBreakpoint(wxAction* action);
-  void OnUpdateDbgClearBreakpoints(wxAction* action);
-  void OnUpdateDbgStop(wxAction* action);
+  void OnUpdateDbgStart(QAction* action);
+  void OnUpdateDbgStepNext(QAction* action);
+  void OnUpdateDbgStepNextFunction(QAction* action);
+  void OnUpdateDbgStepinto(QAction* action);
+  void OnUpdateDbgStepout(QAction* action);
+  void OnUpdateDbgRunToSel(QAction* action);
+  void OnUpdateDbgBreakpoint(QAction* action);
+  void OnUpdateDbgClearBreakpoints(QAction* action);
+  void OnUpdateDbgStop(QAction* action);
 
 	void OnUpdateTry(QPushButton *pb);
 	void OnUpdateFail(QPushButton *pb);
@@ -346,7 +352,7 @@ struct Format {
 };
 
 
-class MyScrollView : public QScrollView {
+class MyScrollView : public Q3ScrollView {
 public:
   MyScrollView (QWidget *parent);
   ~MyScrollView () { 
@@ -400,6 +406,7 @@ public:
   MiniEdit(CExecView *execView);
   void keyPressEvent (QKeyEvent *ev);
   VarConstCheck InputIsCorrect(TToken &token, CComboBar *comboBar) ;
+  int frameWidth();
 
   CExecView *conView;
   bool returnPressed;
@@ -421,6 +428,16 @@ public:
 
 private:
   CExecView *execView;
+};
+
+class CComment : public QDialog, public Ui_CComment {
+
+public:
+  CComment(QWidget* parent = 0) : QDialog(parent) {
+    setupUi(this);
+  }
+
+public slots:
 };
 
 #endif

@@ -2,9 +2,10 @@
 #define __MainFrame
 
 #include "cmainframe.h"
+#include "mdiframes.h"
 
 
-class CLavaMainFrame : public CMainFrame
+class CLavaMainFrame : public wxMainFrame, public Ui_CMainFrame
 {
 public:
   CLavaMainFrame();
@@ -22,7 +23,7 @@ public:
 
 public slots:
   virtual void fileNew();
-  virtual void fileOpen();
+  virtual void on_fileOpenAction_activated();//fileOpen();
 
   virtual void fileSave();
   virtual void fileSaveAs();
@@ -51,9 +52,4 @@ private:
   Q_OBJECT
 };
 
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio fügt zusätzliche Deklarationen unmittelbar vor der vorhergehenden Zeile ein.
-
-#endif // !defined(AFX_MAINFRM_H__EF6A882E_2475_11D3_B7B1_000000000000__INCLUDED_)
+#endif

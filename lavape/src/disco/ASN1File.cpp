@@ -29,6 +29,8 @@
 #include "Halt.h"
 #include "qapplication.h"
 
+#include <sys/stat.h>
+
 
 
 void ASN1InFile::errorExitProc ()
@@ -75,6 +77,7 @@ void ASN1OutFile::error (QString msgText)
 ASN1InFile::ASN1InFile (const QString& fileName, bool silent)
 {
   int rc;
+  errno_t err;
   
   IO.INIT();
   
@@ -82,7 +85,7 @@ ASN1InFile::ASN1InFile (const QString& fileName, bool silent)
   Silent = silent;
   bufferPtr = 0;
 
-  rc = open(fileName,O_RDONLY|O_BINARY,0644);
+  err = _sopen_s(&rc,fileName,O_RDONLY|O_BINARY,_SH_DENYWR,_S_IREAD);
   if (rc < 0) {
     error("UNIX.open, file \""+fileName+"\"");
     Done = false;
@@ -101,6 +104,7 @@ ASN1InFile::ASN1InFile (const QString& fileName, bool silent)
 ASN1OutFile::ASN1OutFile (const QString& fileName, bool silent)
 {
   int rc;
+  errno_t err;
   
   IO.INIT();
   
@@ -108,7 +112,7 @@ ASN1OutFile::ASN1OutFile (const QString& fileName, bool silent)
   Silent = silent;
   bufferPtr = 0;
   
-  rc = open(fileName,O_TRUNC | O_CREAT | O_WRONLY | O_BINARY,0644);
+  err = _sopen_s(&rc,fileName,O_TRUNC | O_CREAT | O_WRONLY | O_BINARY,_SH_DENYWR,_S_IWRITE);
   if (rc < 0) {
     error("UNIX.open, file \""+fileName+"\"");
     Done = false;
@@ -128,7 +132,7 @@ ASN1InFile::~ASN1InFile ()
 
 {
   if (bufferPtr) {
-    close(fildes);
+    _close(fildes);
     delete [] bufferPtr;
   }
 } // END OF ~ASN1InFile
@@ -140,12 +144,12 @@ ASN1OutFile::~ASN1OutFile ()
   int rc;
   
   if (openForOutput && (bufferPos > 0)) {
-    rc = write(fildes,bufferPtr,bufferPos);
+    rc = _write(fildes,bufferPtr,bufferPos);
     if ((rc < 0) || (rc != (int)bufferPos))
       error("~ASN1File: UNIX.write");
   }
   if (bufferPtr) {
-    close(fildes);
+    _close(fildes);
     delete [] bufferPtr;
   }
 } // END OF ~ASN1OutFile
@@ -157,7 +161,7 @@ void ASN1OutFile::putChar (const unsigned char& c)
   int rc;
   
   if (bufferPos == bufferSize) {
-    rc = write(fildes,bufferPtr,bufferSize);
+    rc = _write(fildes,bufferPtr,bufferSize);
     if ((rc < 0) || (rc != (int)bufferSize)) {
       error("putChar: UNIX.write");
       return;
@@ -172,7 +176,7 @@ void ASN1InFile::getChar (unsigned char& c)
 
 {
   if (bufferPos == (unsigned)charsRead) {
-    charsRead = read(fildes,bufferPtr,bufferSize);
+    charsRead = _read(fildes,bufferPtr,bufferSize);
     if (charsRead < 0) {
       error("getChar: UNIX.read");
       return;
@@ -188,7 +192,7 @@ void ASN1InFile::getChar (unsigned char& c)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Now the same with sockets:
+// Now the same for sockets:
 
 
 void ASN1InSock::errorExitProc ()
@@ -234,7 +238,7 @@ void ASN1OutSock::error (QString msgText)
   skip = true;
 } // END OF error
 
-ASN1InSock::ASN1InSock (sock_t socket, bool silent)
+ASN1InSock::ASN1InSock (QTcpSocket *socket, bool silent)
 {    
   BufferSize = 20000;
   Silent = silent;
@@ -250,7 +254,7 @@ ASN1InSock::ASN1InSock (sock_t socket, bool silent)
 } // END OF ASN1InFile
 
 
-ASN1OutSock::ASN1OutSock (sock_t socket, bool silent)
+ASN1OutSock::ASN1OutSock (QTcpSocket *socket, bool silent)
 {  
   IO.INIT();
   
@@ -272,7 +276,7 @@ ASN1InSock::~ASN1InSock ()
 
 {
   if (bufferPtr) {
-    close_socket(fildes);
+    fildes->close();
     delete [] bufferPtr;
   }
 } // END OF ~ASN1InFile
@@ -284,7 +288,7 @@ void ASN1OutSock::flush ()
   int rc;
   
   if (openForOutput && (bufferPos > 0)) {
-    rc = write_TCP(fildes,bufferPtr,bufferPos);
+    rc = fildes->write(bufferPtr,bufferPos);
     if ((rc < 0) || (rc != (int)bufferPos))
       error("~ASN1OutSock: write_TCP");
     bufferPos = 0;
@@ -297,7 +301,7 @@ ASN1OutSock::~ASN1OutSock ()
   flush();
 
   if (bufferPtr) {
-    close_socket(fildes);
+    fildes->close();
     delete [] bufferPtr;
   }
 } // END OF ~ASN1OutFile
@@ -309,7 +313,8 @@ void ASN1OutSock::putChar (const unsigned char& c)
   int rc;
   
   if (bufferPos == bufferSize) {
-    rc = write_TCP(fildes,bufferPtr,bufferSize);
+    fildes->waitForBytesWritten(-1);
+    rc = fildes->write(bufferPtr,bufferSize);
     if ((rc < 0) || (rc != (int)bufferSize)) {
       error("putChar: write_TCP");
       return;
@@ -324,7 +329,8 @@ void ASN1InSock::getChar (unsigned char& c)
 
 {
   if (bufferPos == (unsigned)charsRead) {
-    charsRead = read_TCP(fildes,bufferPtr,bufferSize);
+    fildes->waitForReadyRead(-1);
+    charsRead = fildes->read(bufferPtr,bufferSize);
     if (charsRead <= 0) {
       error("getChar: UNIX.read_TCP");
       return;

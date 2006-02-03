@@ -5,7 +5,9 @@
 #include "LavaPEView.h"
 #include "ExecTree.h"
 //#include "wxExport.h"
-#include "qcombobox.h"
+#include "q3combobox.h"
+//Added by qt3to4:
+#include <QPixmap>
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
@@ -50,7 +52,7 @@ public:
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
   //virtual bool PreCreateWindow(CREATESTRUCT& cs);
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
-  void setSelPost(QListViewItem* selItem);
+  void setSelPost(Q3ListViewItem* selItem);
   CLavaPEView* myMainView;
   LavaDECL * myDECL; //=the decl from which it was initiated
   TID myID;
@@ -81,9 +83,9 @@ protected:
   virtual ~CVTView();
   virtual void destroy();
 
-  void OnUpdateGotodef(wxAction* action);
-  void OnUpdateGotoImpl(wxAction* action);
-  void OnUpdateOverride(wxAction* action);
+  void OnUpdateGotodef(QAction* action);
+  void OnUpdateGotoImpl(QAction* action);
+  void OnUpdateOverride(QAction* action);
 
 public:
   void OnGotoDecl();

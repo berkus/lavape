@@ -23,10 +23,13 @@
 #include "SylTraversal.h"
 #include "LavaPEFrames.h"
 #include "qfileinfo.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QCustomEvent>
 #include "Boxes.h"
 #include "qdir.h"
 #include "qpixmapcache.h"
-#include "qfiledialog.h"
+#include "q3filedialog.h"
 #include "qmessagebox.h"
 #include "LavaBaseStringInit.h"
 #include "LavaPEStringInit.h"
@@ -39,10 +42,10 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
 : CTreeView(parent, doc, "InclView")
 {
   InitComplete = false;
-  connect(m_tree,SIGNAL(doubleClicked(QListViewItem*,const QPoint&,int)), SLOT(OnDblclk(QListViewItem*,const QPoint&,int)));
+  connect(m_tree,SIGNAL(doubleClicked(Q3ListViewItem*,const QPoint&,int)), SLOT(OnDblclk(Q3ListViewItem*,const QPoint&,int)));
   setFont(LBaseData->m_TreeFont);
   new InclWhatsThis(m_tree);
-  GetListView()->setSelectionMode(QListView::Single);
+  GetListView()->setSelectionMode(Q3ListView::Single);
 }
 
 CInclView::~CInclView()
@@ -174,7 +177,7 @@ void CInclView::OnNewInclude()
     }
     else
       if (firstLast == 1)
-        QMessageBox::critical(this, qApp->name(),IDP_AlreadyIncluded,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton); 
+        QMessageBox::critical(this, qApp->name(),IDP_AlreadyIncluded,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton); 
  }
  if (!firstLast)
    GetDocument()->SetLastHint();
@@ -190,13 +193,13 @@ void CInclView::OnDelete()
   if (item && (item != GetListView()->firstChild())) {
     CHESimpleSyntax* cheSyn = (CHESimpleSyntax*)item->getItemData();
     if (cheSyn->data.nINCL == 1) { 
-      QMessageBox::critical(this, qApp->name(),ERR_StdNotRemovable, QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(this, qApp->name(),ERR_StdNotRemovable, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       return;
     }
     in = GetDocument()->IDTable.IsFileInherited(cheSyn->data.SyntaxName);
     if (in) {
-      errStr = IDP_InclInherited + GetDocument()->IDTable.IDTab[in]->FileName.c;
-      QMessageBox::critical(this, qApp->name(), errStr, QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      errStr = IDP_InclInherited + QString(GetDocument()->IDTable.IDTab[in]->FileName.c);
+      QMessageBox::critical(this, qApp->name(), errStr, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       return;
     }
     else {
@@ -209,7 +212,7 @@ void CInclView::OnDelete()
 }
 
 
-void CInclView::OnDblclk(QListViewItem* item, const QPoint&, int) 
+void CInclView::OnDblclk(Q3ListViewItem* item, const QPoint&, int) 
 {
   if (item && (item != GetListView()->firstChild())) {
     DString *fn = new DString(((CHESimpleSyntax*)((CTreeItem*)item)->getItemData())->data.UsersName); //.SyntaxName);
@@ -241,7 +244,7 @@ void CInclView::customEvent(QCustomEvent *ev)
   }
 }
 
-void CInclView::OnUpdateDelete(wxAction* action) 
+void CInclView::OnUpdateDelete(QAction* action) 
 {
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
   action->setEnabled((!GetDocument()->changeNothing) &&
@@ -354,7 +357,7 @@ void CInclView::OnEditSel()
   }
 }
 
-void CInclView::OnUpdateEditSel(wxAction* action) 
+void CInclView::OnUpdateEditSel(QAction* action) 
 {
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
   bool enable = (item && (item != GetListView()->firstChild()));
@@ -396,7 +399,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
 
 void CInclView::whatNext() 
 {
-  QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 

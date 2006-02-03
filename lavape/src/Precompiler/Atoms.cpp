@@ -70,7 +70,6 @@ unsigned hashCode (const char * const s)
   }
 }
 
-
 void ATO (const char * const s)
 
 {
@@ -79,7 +78,7 @@ void ATO (const char * const s)
 
   if (iAtom < NoAtom)
     iAtom = AtomType(iAtom+1);
-  strcpy(ATOMSTR[iAtom],s);
+  strcpy_s(ATOMSTR[iAtom],MaxLenAtom,s);
 
   if (iAtom < EndOfReservedWords) {
     newEntry = new entry;

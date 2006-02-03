@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I "$(QT3DIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\LavaPE" /I "..\LavaGUI" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\LavaPE" /I "..\LavaGUI" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 ..\disco\Release\disco.lib ..\SFLsockets\Release\SFLsockets.lib ..\LavaBase\Release\LavaBase.lib ..\wxqDocView\Release\wxqDocView.lib $(QT3DIR)\librel\qt-mt$(QTR).lib ole32.lib /nologo /subsystem:windows /dll /machine:I386 /out:"..\LavaPE\Release\Interpreter.dll"
+# ADD LINK32 ..\disco\Release\disco.lib ..\SFLsockets\Release\SFLsockets.lib ..\LavaBase\Release\LavaBase.lib ..\wxqDocView\Release\wxqDocView.lib $(QTDIR)\librel\qt-mt$(QTR).lib ole32.lib /nologo /subsystem:windows /dll /machine:I386 /out:"..\LavaPE\Release\Interpreter.dll"
 # SUBTRACT LINK32 /debug
 
 !ELSEIF  "$(CFG)" == "Interpreter - Win32 Debug"
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\LavaPE" /I "..\LavaGUI" /I "." /I "$(QT3DIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\LavaPE" /I "..\LavaGUI" /I "." /I "$(QTDIR)\include" /I "..\disco" /I "..\SFLsockets" /I "..\LavaBase" /I "..\LavaExecs" /I "..\wxqDocView" /I "..\Lava_UI" /I "..\Lava_UI\Generated" /D "QT_DLL" /D "LAVAEXECS_EXPORT" /D "WIN32" /D "INTERPRETER" /D "QT_THREAD_SUPPORT" /FR /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /mktyplib203 /o "NUL" /win32
@@ -84,7 +84,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\disco\Debug\disco.lib ..\SFLsockets\Debug\SFLsockets.lib ..\LavaBase\Debug\LavaBase.lib ..\wxqDocView\Debug\wxqDocView.lib $(QT3DIR)\lib\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"..\LavaPE\Debug\Interpreter.dll"
+# ADD LINK32 ..\disco\Debug\disco.lib ..\SFLsockets\Debug\SFLsockets.lib ..\LavaBase\Debug\LavaBase.lib ..\wxqDocView\Debug\wxqDocView.lib $(QTDIR)\lib\qt-mt$(QTR).lib kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"..\LavaPE\Debug\Interpreter.dll"
 
 !ENDIF 
 

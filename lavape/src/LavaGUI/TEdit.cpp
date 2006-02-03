@@ -23,6 +23,12 @@
 #include "GUIProgBase.h"
 #include "GUIProg.h"
 #include "qvalidator.h"
+//Added by qt3to4:
+#include <QCustomEvent>
+#include <Q3Frame>
+#include <QFocusEvent>
+#include <QEvent>
+#include <Q3PopupMenu>
 #include "FormWid.h"
 
 
@@ -49,7 +55,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
       setReadOnly(true);
       if (!myFormNode->data.ColorBValid)
         setPaletteBackgroundColor(parentWidget->paletteBackgroundColor());
-      setFocusPolicy(QWidget::NoFocus);
+      setFocusPolicy(Qt::NoFocus);
   }
   else {
     if (!myFormNode->data.IoSigFlags.Contains(Flag_INPUT) || GUIProg->FrozenObject)
@@ -64,17 +70,17 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
-  setMargin(0);
+  setContentsMargins(0,0,0,0);
   if (myFormNode->data.IterFlags.Contains(Optional)) {
-    myMenu = new QPopupMenu(this);
+    myMenu = new Q3PopupMenu(this);
     myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
     myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     myMenu->setItemEnabled(IDM_ITER_INSERT, false);
   }
-  int bord = ((QFrame*)parentWidget)->lineWidth();
+  int bord = ((Q3Frame*)parentWidget)->lineWidth();
   size = GUIProg->CalcTextRect(size.width(), 1, font());
-  size.setWidth(size.width()+ 2*frameWidth());
-  size.setHeight(size.height()+ 2*frameWidth());
+//???  size.setFixedWidth(size.width());
+//???  size.setFixedHeight(size.height());
   setGeometry(bord,bord, size.width(), size.height());
   clearModified();
   show();
@@ -121,9 +127,10 @@ bool CTEdit::event(QEvent* ev)
     return QLineEdit::event(ev);
 }
 
-QPopupMenu* CTEdit::createPopupMenu()
+Q3PopupMenu* CTEdit::createPopupMenu()
 {
-  QPopupMenu* pm = QLineEdit::createPopupMenu();
+//  Q3PopupMenu* pm = QLineEdit::createPopupMenu();
+  Q3PopupMenu* pm = new Q3PopupMenu(this);
   QWidget* par = parentWidget();
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
@@ -148,7 +155,7 @@ void CTEdit::DelActivated()
 
 CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
           QWidget* parentWidget, const char* name, QSize size, bool withEcho)
-:QTextEdit(parentWidget, "MultiLineEdit")
+:Q3TextEdit(parentWidget, "MultiLineEdit")
 {
   myFormNode = data;
   GUIProg = guiPr;
@@ -163,13 +170,13 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   if (myFormNode->data.IterFlags.Contains(Optional)) {
-    myMenu = new QPopupMenu(this);
+    myMenu = new Q3PopupMenu(this);
     myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
     myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     myMenu->setItemEnabled(IDM_ITER_INSERT, false);
   }
   setMargins(0, 0, 0, 0);
-  int bord = ((QFrame*)parentWidget)->lineWidth();
+  int bord = ((Q3Frame*)parentWidget)->lineWidth();
   size = GUIProg->CalcTextRect(size.width(), size.height(), font());
   size.setWidth(size.width()+ 2*frameWidth());
   size.setHeight(size.height()+ 2*frameWidth());
@@ -189,7 +196,7 @@ void CMultiLineEdit::focusInEvent(QFocusEvent *ev)
   GUIProg->ScrollIntoFrame(this);
   //if (inError)
   //  setCursorPosition(int(GUIProg->ErrPos), int(GUIProg->ErrPos)); 
-  QTextEdit::focusInEvent(ev);
+  Q3TextEdit::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
 }
 
@@ -208,7 +215,7 @@ void CMultiLineEdit::focusOutEvent(QFocusEvent *ev)
 
     }
   }
-  QTextEdit::focusOutEvent(ev);
+  Q3TextEdit::focusOutEvent(ev);
 }
 
 
@@ -220,12 +227,12 @@ bool CMultiLineEdit::event(QEvent* ev)
     return true;
   }
   else 
-    return QTextEdit::event(ev);
+    return Q3TextEdit::event(ev);
 }
 
-QPopupMenu* CMultiLineEdit::createPopupMenu()
+Q3PopupMenu* CMultiLineEdit::createPopupMenu()
 {
-  QPopupMenu* pm = QTextEdit::createPopupMenu();
+  Q3PopupMenu* pm = Q3TextEdit::createPopupMenu();
   QWidget* par = parentWidget();
   while (par && !par->inherits("CFormWid"))
     par = parentWidget();

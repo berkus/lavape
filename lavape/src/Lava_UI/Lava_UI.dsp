@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LAVA_UI_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /I "." /I "..\disco" /I "..\wxqDocView" /I "$(QT3DIR)\include" /D "WIN32" /D "QT_DLL" /D "LAVAUI_EXPORT" /D "QT_THREAD_SUPPORT" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /I "." /I "..\disco" /I "..\wxqDocView" /I "$(QTDIR)\include" /D "WIN32" /D "QT_DLL" /D "LAVAUI_EXPORT" /D "QT_THREAD_SUPPORT" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 ..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib ..\LavaBase\Release\LavaBase.lib $(QT3DIR)\librel\qt-mt$(QTR).lib /nologo /dll /machine:I386 /out:"..\LavaPE\Release\Lava_UI.dll"
+# ADD LINK32 ..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib ..\LavaBase\Release\LavaBase.lib $(QTDIR)\librel\qt-mt$(QTR).lib /nologo /dll /machine:I386 /out:"..\LavaPE\Release\Lava_UI.dll"
 
 !ELSEIF  "$(CFG)" == "Lava_UI - Win32 Debug"
 
@@ -72,7 +72,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_WINDOWS" /D "_USRDLL" /D "LAVA_UI_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "." /I "..\disco" /I "..\wxqDocView" /I "$(QT3DIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAUI_EXPORT" /D "QT_THREAD_SUPPORT" /FR /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "." /I "..\disco" /I "..\wxqDocView" /I "$(QTDIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAUI_EXPORT" /D "QT_THREAD_SUPPORT" /FR /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\LavaBase\Debug\LavaBase.lib $(QT3DIR)\lib\qt-mt$(QTR).lib /nologo /dll /debug /machine:I386 /out:"..\LavaPE\Debug\Lava_UI.dll" /pdbtype:sept
+# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\LavaBase\Debug\LavaBase.lib $(QTDIR)\lib\qt-mt$(QTR).lib /nologo /dll /debug /machine:I386 /out:"..\LavaPE\Debug\Lava_UI.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -123,8 +123,8 @@ InputPath=.\cmainframe.ui
 InputName=cmainframe
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -166,7 +166,7 @@ InputPath=.\Generated\cmainframe.h
 InputName=cmainframe
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 

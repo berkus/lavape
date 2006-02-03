@@ -30,8 +30,8 @@
 #endif
 #include <errno.h>
 
-#include <prelude.h>
-#include <sflsock.h>
+//#include <prelude.h>
+#include <QTcpSocket>
 #include "LavaBaseStringInit.h"
 #include "LavaPEFrames.h"
 #include "LavaPEDoc.h"
@@ -49,12 +49,16 @@
 
 #include "qdir.h"
 #include "qfont.h"
-#include "qfiledialog.h"
+#include "q3filedialog.h"
 #include "qfontdialog.h"
 #include "qsettings.h"
 #include "qpixmapcache.h"
 #include "qmessagebox.h"
-#include "qprocess.h"
+#include "q3process.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QCustomEvent>
+#include <QEvent>
 
 #include "AboutBox.h"
 #include "qassistantclient.h"
@@ -77,7 +81,7 @@ static char slash='/';
 // CLavaPEApp
 int main( int argc, char ** argv ) {
   CLavaPEApp ap(argc,argv);
-  ap.m_appWindow = new CLavaMainFrame(0, "LavaMainFrame");
+  ap.m_appWindow = new CLavaMainFrame(0);
   if (ap.m_appWindow->OnCreate())
 		ap.m_appWindow->showMaximized();
 	else
@@ -103,7 +107,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 :wxApp(argc, argv )
 {
   bool ok;
-  QSettings settings(QSettings::Native);
+  QSettings settings(QSettings::NativeFormat);
 
   LBaseData.stdUpdate = 0; 
   //stop here and set stdUpdate = 1 to allow updates in std.lava
@@ -113,11 +117,11 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   SynIO.INIT();
   InitGlobalStrings();
   LavaPEStringInit();
-  qt_use_native_dialogs = false;
+//  qt_use_native_dialogs = false;
 
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
-  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //  settings.beginGroup(GetSettingsPath());
   inTotalCheck = false;;
   LBaseData.theApp = this;
@@ -276,17 +280,17 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((QCustomEvent*)e)->data(), debugThread.myDoc);
     LBaseData.enableBreakpoints = true;
     if (((QCustomEvent*)e)->data()) {
-      ((CMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
-      ((CMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(true);
-      ((CMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(true);
-      ((CMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(true);
-      ((CMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(true);
+      ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
+      ((CLavaMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(true);
+      ((CLavaMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(true);
+      ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(true);
+      ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(true);
     }
     else {
-      ((CMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
-      ((CMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
-      ((CMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
-      ((CMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
+      ((CLavaMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
+      ((CLavaMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
+      ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
+      ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
     }
     m_appWindow->setActiveWindow();
     m_appWindow->raise();
@@ -297,20 +301,20 @@ bool CLavaPEApp::event(QEvent *e)
       debugThread.dbgRequest = 0;
     }
     debugThread.dbgRequest = (DbgMessage*)((QCustomEvent*)e)->data();
-//    ((CMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(false);
-//    ((CMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(false);
+//    ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(false);
+//    ((CLavaMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(false);
     LBaseData.enableBreakpoints = false;
-    ((CMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(false);
-    ((CMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
-    ((CMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
-    ((CMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
-    ((CMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
+    ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(false);
+    ((CLavaMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
+    ((CLavaMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
+    ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
+    ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
 
     (*debugThread.pContExecEvent)--;
   }
   else if (e->type() == IDU_LavaDebugW) {
-    ((CMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
-    ((CMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
+    ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
+    ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
   }
 	else
 		wxApp::event(e);
@@ -729,7 +733,7 @@ void CLavaPEApp::OnImport()
 {
   // TODO: Add your command handler code here
   
-  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), name(), "Not yet implemented!",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), name(), "Not yet implemented!",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 void CLavaPEApp::OnFindByName() 
@@ -747,7 +751,7 @@ void CLavaPEApp::UpdateUI()
   OnUpdateSaveAll(((CLavaMainFrame*)m_appWindow)->fileSaveAllAction);
 }
 
-void CLavaPEApp::OnUpdateEditUndo(wxAction* action) 
+void CLavaPEApp::OnUpdateEditUndo(QAction* action) 
 {
   CLavaPEDoc* doc = (CLavaPEDoc*)m_docManager->GetActiveDocument();
   if (doc)
@@ -757,7 +761,7 @@ void CLavaPEApp::OnUpdateEditUndo(wxAction* action)
 }
 
 
-void CLavaPEApp::OnUpdateEditRedo(wxAction* action) 
+void CLavaPEApp::OnUpdateEditRedo(QAction* action) 
 {
   CLavaPEDoc* doc = (CLavaPEDoc*)m_docManager->GetActiveDocument();
   if (doc)
@@ -766,12 +770,12 @@ void CLavaPEApp::OnUpdateEditRedo(wxAction* action)
     action->setEnabled(false);
 }
 
-void CLavaPEApp::OnUpdatePopcontext(wxAction* action) 
+void CLavaPEApp::OnUpdatePopcontext(QAction* action) 
 {
   action->setEnabled((Browser.LastBrowseContext != 0) && wxDocManager::GetDocumentManager()->GetOpenDocCount()); 
 }
 
-void CLavaPEApp::OnUpdateSaveAll(wxAction* action) 
+void CLavaPEApp::OnUpdateSaveAll(QAction* action) 
 {
   action->setEnabled(wxDocManager::GetDocumentManager()->GetOpenDocCount());
 }
@@ -787,9 +791,9 @@ CLavaPEApp::~CLavaPEApp()
 
 void CLavaPEApp::saveSettings()
 {
-  QSettings settings(QSettings::Native);
+  QSettings settings(QSettings::NativeFormat);
 
-  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //  settings.beginGroup(GetSettingsPath());
 
   settings.beginGroup("/generalSettings");
@@ -1216,18 +1220,18 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
       }
       else {
         if (sendMess)
-          QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         else
-          QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         return false;
       }
     }
   }
   else {
     if (sendMess)
-      QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     else
-      QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return false;
   }
 }

@@ -5,7 +5,9 @@
 #include "SylTraversal.h"
 #include "LavaPEView.h"
 //#include "Constructs.h"
-#include "qcombobox.h"
+#include "q3combobox.h"
+//Added by qt3to4:
+#include <QPixmap>
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"

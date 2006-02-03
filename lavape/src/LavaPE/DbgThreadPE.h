@@ -3,8 +3,9 @@
 
 
 #include "LavaAppBase.h"
-#include "prelude.h"
-#include "sflsock.h"
+//#include "prelude.h"
+#include <QTcpSocket>
+#include <QTcpServer>
 #include "ASN1File.h"
 #include "CHAINANY.h"
 #include "Syntax.h"
@@ -27,8 +28,10 @@ class CLavaPEDebugThread : public CLavaThread
 public:
   CLavaPEDebugThread() 
     {dbgRequest=0; get_cid=0; put_cid=0; interpreterWaits = false; myDoc=0;}
-  QString remoteIPAddress, remotePort;
-  sock_t listenSocket, workSocket;
+  QString remoteIPAddress;
+  quint16 remotePort;
+  QTcpServer *listenSocket;
+  QTcpSocket *workSocket;
   ASN1InSock *get_cid;
   ASN1OutSock *put_cid;
   DbgMessage* dbgRequest;

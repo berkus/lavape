@@ -18,7 +18,7 @@
 
 
 #include "Constructs.h"
-#include "cmainframe.h"
+#include "LavaMainFrameBase.h"
 #include "Check.h"
 #include "DbgThread.h"
 #include "BAdapter.h"
@@ -447,8 +447,8 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
         switch (oldSynObj->primaryToken) {
         case invariant_T:
           path = QString("\n| invariant of ")
-                 + ((SelfVar*)oldSynObj)->execDECL->FullName.c
-                 + ", file " + cFileName + "\n" + path;
+                 + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                 + QString(", file ") + QString(cFileName) + QString("\n") + QString(path);
           break;
         case function_T:
         case initializer_T:
@@ -538,7 +538,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
       else {
         rc = QMessageBox::Yes;
         pmMsg = excMsg + "\n\n" + msg;
-        information(qApp->mainWidget(),qApp->name(),QApplication::tr(pmMsg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton,QMessageBox::NoButton);
+        information(qApp->mainWidget(),qApp->name(),QApplication::tr(pmMsg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton,Qt::NoButton);
       }
     else
       rc = QMessageBox::Yes;
@@ -546,12 +546,12 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
       if (debug && !ckd.document->debugOn) {
         ((CLavaDebugThread*)LBaseData->debugThread)->wait();
         if (((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent->available())
-          (*((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent)++;
+          ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent->acquire();
         ((CLavaDebugThread*)LBaseData->debugThread)->start();
       }
       else
-        (*((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent)--; //debug thread continue
-      (*((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent)++;   //execution thread wait
+        ((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent->release(); //debug thread continue
+      ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent->acquire();   //execution thread wait
     }
     else
       if (rc == QMessageBox::NoAll) {
@@ -619,7 +619,7 @@ void SynObject::SetRTError(CheckData &ckd,QString *errorCode,LavaVariablePtr sta
     msgText = QString(textParam) + ": " + msgText;
   else if (errorCode == &ERR_AssertionViolation
   && comment.ptr)
-    msgText = msgText + ": " + comment.ptr->str.c;
+    msgText = msgText + QString(": ") + QString(comment.ptr->str.c);
 
   ckd.callStack = DebugStop(ckd,stackFrame,msgText);
 
@@ -1574,9 +1574,9 @@ bool InSetStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsig
 bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   LavaObjectPtr object, sender=0, receiver;
   RunTimeData *runTimeData;
-  QPtrDict<ReceiverList> *rcvDict;
+  Q3PtrDict<ReceiverList> *rcvDict;
   ReceiverList *rcvListPtr;
-  QPtrDict<CallbackList> *cbDict;
+  Q3PtrDict<CallbackList> *cbDict;
   CallbackList *cbListPtr;
   LavaDECL *signalDecl, *senderClass=0, *callbackDecl;
 
@@ -1615,9 +1615,9 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
   }
   else {
     senderClass = ((Reference*)signalSenderClass.ptr)->refDecl;
-    rcvDict = (QPtrDict<ReceiverList>*)senderClass->runTimeData;
+    rcvDict = (Q3PtrDict<ReceiverList>*)senderClass->runTimeData;
     if (!rcvDict)
-      rcvDict = new QPtrDict<ReceiverList>;
+      rcvDict = new Q3PtrDict<ReceiverList>;
     rcvListPtr = (*rcvDict)[signalDecl];
     if (!rcvListPtr) {
       rcvListPtr = new ReceiverList;
@@ -1651,8 +1651,8 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
 bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   LavaObjectPtr sender=0, senderObj, receiver=0, receiverObj;
   RunTimeData *runTimeData;
-  QPtrDict<ReceiverList> *rcvDict;
-  QPtrDict<CallbackList> *sdrDict;
+  Q3PtrDict<ReceiverList> *rcvDict;
+  Q3PtrDict<CallbackList> *sdrDict;
   ReceiverList *rcvListPtr;
   Receiver *receiverEntry;
   CallbackList *sdrListPtr;
@@ -1703,7 +1703,7 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
               receiverEntry = rcvListPtr->next();
       }
       else { // all signals
-        QPtrDictIterator<ReceiverList> it(*rcvDict);
+        Q3PtrDictIterator<ReceiverList> it(*rcvDict);
         for( ; it.current(); ++it ) {
           rcvListPtr = it.current();
           for (receiverEntry = rcvListPtr->first();
@@ -1736,7 +1736,7 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
               senderEntry = sdrListPtr->next();
       }
       else { // all signals
-        QPtrDictIterator<CallbackList> it(*sdrDict);
+        Q3PtrDictIterator<CallbackList> it(*sdrDict);
         for( ; it.current(); ++it ) {
           sdrListPtr = it.current();
           for (senderEntry = sdrListPtr->first();
@@ -1759,7 +1759,7 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
 bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   LavaObjectPtr selfObj=stackFrame[SFH];
   RunTimeData *runTimeData;
-  QPtrDict<ReceiverList> *rcvDict;
+  Q3PtrDict<ReceiverList> *rcvDict;
   ReceiverList *rcvListPtr;
   Receiver *receiverEntry;
   LavaDECL *signalDecl;

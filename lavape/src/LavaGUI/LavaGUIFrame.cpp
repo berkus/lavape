@@ -23,6 +23,9 @@
 #include "LavaGUIView.h"
 #include "LavaGUIFrame.h"
 #include "Lava.xpm"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QCloseEvent>
 
 
 CLavaGUIFrame::CLavaGUIFrame(QWidget *parent) : wxMDIChildFrame(parent, "LavaGUIFrame")

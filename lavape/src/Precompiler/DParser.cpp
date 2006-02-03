@@ -103,14 +103,14 @@ bool DParserCLASS::notYetIncluded (const DString& filename)
     
   if (filename[0] == '/') {
     fullName = filename;
-    accessible = access(fullName.c,R_OK);
+    accessible = _access(fullName.c,R_OK);
   }
   else
     for (nextDir = (CHEString*)CmdParms.IncludeDirectories.first;
          nextDir;
          nextDir = (CHEString*)nextDir->successor) {
       fullName = nextDir->data + slash + filename;
-      accessible = access(fullName.c,R_OK);
+      accessible = _access(fullName.c,R_OK);
       if (accessible == 0) break;
     }
 

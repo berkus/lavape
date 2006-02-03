@@ -16,6 +16,7 @@
 #include "qwidget.h"
 #include "wx_obj.h"
 #include "qpixmap.h"
+#include "qmetatype.h"
 
 #define RELEASE  2
 
@@ -1054,6 +1055,7 @@ $TYPE {
   unsigned GetLengthDecPoint();
 };
 }
+Q_DECLARE_METATYPE(CHEFormNode*)
 
 extern DISCO_DLL LavaDECL *NewLavaDECL();
 extern DISCO_DLL bool RemoveErrCode(CHAINX* errors, QString* ids);

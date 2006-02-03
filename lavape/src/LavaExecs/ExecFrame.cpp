@@ -23,6 +23,8 @@
 #include "ComboBar.h"
 #include "LavaAppBase.h"
 #include "qlayout.h"
+//Added by qt3to4:
+#include <QPixmap>
 #include "execframe.xpm"
 
 

@@ -2,9 +2,11 @@
 #define __CLavaThread
 
 #include "SynIDTable.h"
-#include "qsemaphore.h"
 #include "qthread.h"
 #include "qthreadstorage.h"
+//Added by qt3to4:
+#include <Q3PtrList>
+#include <QSemaphore>
 
 
 class CLavaBaseDoc;
@@ -17,7 +19,7 @@ public:
   CEventEx() : QSemaphore(1) {
 		lastException = 0; 
 		ex = 0; 
-		(*this)++;
+		acquire();
 	}
   CSectionDesc **lastException;
   CRuntimeException* ex;
@@ -54,7 +56,7 @@ public:
 
 extern LAVABASE_DLL QThreadStorage<CThreadData*>* threadStg();
 
-typedef QPtrList<CLavaThread> CThreadList;
+typedef Q3PtrList<CLavaThread> CThreadList;
 
 
 #endif

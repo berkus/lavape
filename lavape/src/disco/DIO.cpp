@@ -181,7 +181,7 @@ void IOCLASS::Remove (const char *filename)
   }
 
   do
-    result = unlink(filename);
+    result = _unlink(filename);
   while ((result == -1) && (errno == EINTR));
 
   if (result < 0) Done = false;

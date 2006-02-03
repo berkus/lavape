@@ -2,12 +2,14 @@
 #define __ComboBar
 
 
-#include "qcombobox.h"
+#include "q3combobox.h"
 #include "qpushbutton.h"
-#include "qtoolbar.h"
-#include "qpopupmenu.h"
+#include "q3toolbar.h"
+#include "q3popupmenu.h"
 #include "qstring.h"
 #include "qpainter.h"
+//Added by qt3to4:
+#include <QPixmap>
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
 #include "Constructs.h"
@@ -19,24 +21,26 @@ extern LAVAEXECS_DLL void ResetComboItems(QComboBox* box);
 
 class CFieldsItem: public CListItem {
 public:
-  CFieldsItem(const DString& text) {setText(QString(text.c)); withClass = false;}
+  CFieldsItem(/*const DString& text*/) { /*setText(QString(text.c));*/ withClass = false;}
   CFieldsItem(CFieldsItem* item)
-    {setText(item->text()); withClass = false; QName = item->QName; IDs = item->IDs;}
+    { /*setText(item->text());*/ withClass = false; QName = item->QName; IDs = item->IDs; }
   DString QName;
   TDODC IDs;
   bool withClass;
 };
+Q_DECLARE_METATYPE(CFieldsItem*)
 
 class CStatFuncItem: public CListItem {
 public:
   TID funcID;
   TID vtypeID;
 
-  CStatFuncItem(const DString& text, int fID, int fINCL)
-   {setText(QString(text.c)); funcID.nID = fID; funcID.nINCL = fINCL;}
-  CStatFuncItem(const DString& text, int fID, int fINCL, int vID, int vINCL)
-   {setText(QString(text.c)); funcID.nID = fID; funcID.nINCL = fINCL; vtypeID.nID = vID; vtypeID.nINCL = vINCL;}
+  CStatFuncItem(int fID, int fINCL)
+   { funcID.nID = fID; funcID.nINCL = fINCL;}
+  CStatFuncItem(int fID, int fINCL, int vID, int vINCL)
+   { funcID.nID = fID; funcID.nINCL = fINCL; vtypeID.nID = vID; vtypeID.nINCL = vINCL; }
 };
+Q_DECLARE_METATYPE(CStatFuncItem*)
 
 enum TShowCombo {
   disableCombo,
@@ -57,13 +61,18 @@ enum TShowCombo {
 
 /////////////////////////////////////////////////////////////////////////////
 // CComboBar dialog
+class LAVAEXECS_DLL MyComboBarDlg : public QDialog
+{
+public:
+  MyComboBarDlg(QWidget *parent) : QDialog(parent) {}
+};
 
-#undef QMainWindow
-class LAVAEXECS_DLL CComboBar : public QDockWindow//QToolBar
+//#undef Q3MainWindow
+class LAVAEXECS_DLL CComboBar : public Q3DockWindow//QToolBar
 {
 public:
   CComboBar();   // standard constructor
-  CComboBar(LavaDECL* execDecl, CPEBaseDoc* doc, QMainWindow* parent);  
+  CComboBar(LavaDECL* execDecl, CPEBaseDoc* doc, Q3MainWindow* parent);  
   ~CComboBar() {}
 
   LavaDECL *ExecDECL;
@@ -73,7 +82,7 @@ public:
   LavaDECL *FuncParentDecl;
   CPEBaseDoc *myDoc;
 
-  virtual QSize sizeHint() const {return m_ComboBarDlg->size();}
+  virtual QSize sizeHint() const {return myComboBarDlg->size();}
   void DeleteObjData(bool setCombo = true);
 
   void ShowCombos(TShowCombo what, TID* pID=0); 
@@ -91,9 +100,11 @@ public:
   bool UsedName(const DString& name);
   void TrackEnum();
 
-  ComboBarDlg* m_ComboBarDlg;
+  MyComboBarDlg *myComboBarDlg;
+  Ui_ComboBarDlg *m_ComboBarDlg;
+
   //static boxes
-  QComboBox*  m_TypesCtrl;        
+  QComboBox*  m_TypesCtrl;
   QComboBox*  m_SetTypesCtrl;  
   //QComboBox*  m_SignalsCtrl;   
   QComboBox*  m_BasicTypesCtrl;  
@@ -121,7 +132,7 @@ public:
   QPixmap BitmapEnums;
   QPixmap BmNewCFunc;
   QPixmap BmNewPFunc;
-  QPopupMenu EnumMenu;
+  Q3PopupMenu EnumMenu;
 
   enum combosEnum {v_Types, v_SetTypes/*, v_Signals*/, v_BasicTypes, v_Enums, v_New, v_SNew,
         v_Objects, v_SetObjects, v_Attach, v_CallInt, v_CompoObjInt, v_ClassFuncs,

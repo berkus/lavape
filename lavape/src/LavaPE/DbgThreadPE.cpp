@@ -34,10 +34,12 @@
 #endif
 #include <errno.h>
 
-#include <prelude.h>
-#include <sflsock.h>
+//#include <prelude.h>
+#include <QTcpSocket>
 #include "MACROS.h"
 #include "ASN1File.h"
+//Added by qt3to4:
+#include <QCustomEvent>
 
 
 void CLavaPEDebugThread::reset(bool final)
@@ -159,37 +161,18 @@ void CLavaPEDebugThread::checkBrkPnts2()
 void CLavaPEDebugThread::run() {
 
   CThreadData *td = new CThreadData(this);
-
-  fd_set read_fds;
-  int nReady;
   
 	threadStg()->setLocalData(td);
   if (myDoc->debugOn) { 
-    FD_ZERO(&read_fds);
-    FD_SET(listenSocket,&read_fds);
-    while (true) {
-      nReady = sock_select(FD_SETSIZE,&read_fds,NULL,NULL,NULL);
-      if (nReady == -1)
-        if (errno == EINTR)
-          continue;
-        else {
-#ifdef WIN32
-          qDebug("last select error: %d",WSAGetLastError());
-#endif
-          reset(false);
-          ((CLavaPEApp*)qApp)->interpreter.kill();
-          return;
-        }
-      if (FD_ISSET(listenSocket,&read_fds)) {
-        workSocket = accept_socket(listenSocket);
-        break;
-      }
-    }//while
+    listenSocket->waitForNewConnection();
+    workSocket = listenSocket->nextPendingConnection();
   }
   else {
-    sock_init();
-    workSocket = connect_TCP(remoteIPAddress,remotePort);
+    workSocket = new QTcpSocket;
+    workSocket->connectToHost(remoteIPAddress,remotePort);
+    workSocket->waitForConnected();
   }
+
   put_cid = new ASN1OutSock (workSocket);
   if (!put_cid->Done) {
     delete put_cid;
@@ -244,12 +227,12 @@ void CLavaPEDebugThread::run() {
     if (get_cid->Done) {
       interpreterWaits = true;
       if (pContExecEvent->available())
-        (*pContExecEvent)++;
+        pContExecEvent->acquire();
 
 		  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebug,(void*)&dbgReceived));
       if (wxTheApp->appExit)
         break;
-      (*pContExecEvent)++;
+      pContExecEvent->acquire();
       if (!dbgRequest)
         break;
       if (dbgRequest->Command == Dbg_Continue)

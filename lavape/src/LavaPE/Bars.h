@@ -8,12 +8,12 @@
 #include "Resource.h"
 #include "Syntax.h"
 #include "wxExport.h"
-#include "qcombobox.h"
+#include "q3combobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "qtabdialog.h"
-#include "qtextview.h"
+#include "q3tabdialog.h"
+#include "q3textview.h"
 #include "qtabwidget.h"
 #include "qsplitter.h"
 
@@ -22,7 +22,7 @@ enum UtilityTabs { /*tabBuild,*/ tabComment, tabError, tabFind, tabDebug };
 
 class CUtilityView;
 
-class StackListView: public QListView
+class StackListView: public Q3ListView
 {
 public:
   StackListView(QWidget *parent, CUtilityView* util);
@@ -34,7 +34,7 @@ public:
 
 public slots:
   void selChanged();
-  void itemClicked(QListViewItem *item);
+  void itemClicked(Q3ListViewItem *item);
 
 private:
   Q_OBJECT
@@ -43,7 +43,7 @@ private:
 
 class VarItem;
 
-class VarListView: public QListView
+class VarListView: public Q3ListView
 {
 public:
   VarListView(QWidget *parent, CUtilityView* util, bool forParams);
@@ -57,7 +57,7 @@ private:
 };
 
 
-class VarItem  :public QListViewItem {
+class VarItem  :public Q3ListViewItem {
 public:
   VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListView* view);
   VarItem(VarItem* parent, DDItemData* data, VarListView* view);
@@ -106,16 +106,16 @@ public:
   VarItem *itemToOpen;
 
 protected:
-  QListView* FindPage;
-  QTextEdit* CommentPage;
-  QTextEdit* ErrorPage;
+  Q3ListView* FindPage;
+  Q3TextEdit* CommentPage;
+  Q3TextEdit* ErrorPage;
   QSplitter *DebugPage;
   LavaDECL *stopExecDECL;
   bool firstDebug;
   //void OnSize(UINT nType, int cx, int cy);
   //HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 public slots:
-  void OnDblclk(QListViewItem*);
+  void OnDblclk(Q3ListViewItem*);
   void OnTabChange(QWidget* curPage);
 //  void OnSelChange();
 private:

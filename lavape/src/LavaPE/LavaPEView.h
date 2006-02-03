@@ -6,13 +6,20 @@
 #include "LavaGUIView.h"
 #include "LavaPEDoc.h"
 #include "Syntax.h"
-#include "qcombobox.h"
+#include "q3combobox.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QDragLeaveEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QResizeEvent>
+#include <QDragEnterEvent>
 #include "docview.h"
 #include "qobject.h"
 #include "qevent.h"
 #include "qstring.h"
 #include "qclipboard.h"
-#include "qdragobject.h"
+#include "q3dragobject.h"
 
 
 class TreeWhatsThis : public WhatsThis
@@ -51,11 +58,11 @@ enum TisOnWhat {  //CLavaPEWizard creation cause
 
 enum PMFlag {emptyPM, invariantPM};
 
-class LavaSource: public QStoredDrag
+class LavaSource: public Q3StoredDrag
 {
 public:
-  LavaSource(QWidget* dragSource) :QStoredDrag ( "QLavaTreeView", dragSource, "LavaSource_Drag") {}
-  LavaSource() :QStoredDrag ( "QLavaTreeView",0,"LavaSource_Copy") {}
+  LavaSource(QWidget* dragSource) :Q3StoredDrag ( "QLavaTreeView", dragSource, "LavaSource_Drag") {}
+  LavaSource() :Q3StoredDrag ( "QLavaTreeView",0,"LavaSource_Copy") {}
 
   virtual const char* format( int i = 0 ) const;
 private:
@@ -158,7 +165,7 @@ public:
   bool IsChildNodeOf(CTreeItem* hitemChild, CTreeItem* hitemSuspectedParent);
   CMainItemData* Navigate(bool all, CTreeItem*& item, int& level);
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
-  QDragObject*  OnDragBegin();
+  Q3DragObject*  OnDragBegin();
   void OnDragEnter(QDragEnterEvent* ev);
   void OnDragLeave(QDragLeaveEvent* ev);
   void OnDragOver(QDragMoveEvent* ev);
@@ -182,7 +189,7 @@ public:
   virtual void RenameStart(CTreeItem* item);
   virtual void resizeEvent(QResizeEvent * );
 //  void SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask, bool inPattern);
-  void setSelPost(QListViewItem* selItem);
+  void setSelPost(Q3ListViewItem* selItem);
   void SetErrAndCom(CTreeItem* item);
   void SetTreeFlags(CTreeItem* item, bool exp);
   virtual void UpdateUI();
@@ -193,35 +200,35 @@ protected:
   virtual void destroy();
 
     //Toolbutton update handler
-  void OnUpdateComment(wxAction* action);
-  void OnUpdateEditCopy(wxAction* action);
-  void OnUpdateEditCut(wxAction* action);
-  void OnUpdateEditPaste(wxAction* action);
-  void OnUpdateEditSel(wxAction* action);
-	void OnUpdateFindreferences(wxAction* action);
-  void OnUpdateGotodef(wxAction* action);
-	void OnUpdateGotoImpl(wxAction* action);
-  void OnUpdateMakeGUI(wxAction* action);
-  void OnUpdateNewComponent(wxAction* action);
-  void OnUpdateNewCSpec(wxAction* action);
-  void OnUpdateNewenum(wxAction* action);
-	void OnUpdateNewEnumItem(wxAction* action);
-  void OnUpdateNewfunction(wxAction* action);
-  void OnUpdateNewinitiator(wxAction* action);
-  void OnUpdateNewInterface(wxAction* action);
-  void OnUpdateNewImpl(wxAction* action);
-  void OnUpdateNewLitStr(wxAction* action);
-  void OnUpdateNewmember(wxAction* action);
-  void OnUpdateNewPackage(wxAction* action);
-  void OnUpdateNewVirtualType(wxAction* action);
-  void OnUpdateNewset(wxAction* action);
-  void OnUpdateOverride(wxAction* action);
-  void OnUpdateShowformview(wxAction* action);
-  void OnUpdateShowOptionals(wxAction* action);
-  //void OnUpdateNewalias(wxAction* action);
-  //void OnUpdateNewform(wxAction* action);
-  //void OnUpdateShowPattern(wxAction* action);
-  //void OnUpdateDefaultForm(wxAction* action);
+  void OnUpdateComment(QAction* action);
+  void OnUpdateEditCopy(QAction* action);
+  void OnUpdateEditCut(QAction* action);
+  void OnUpdateEditPaste(QAction* action);
+  void OnUpdateEditSel(QAction* action);
+	void OnUpdateFindreferences(QAction* action);
+  void OnUpdateGotodef(QAction* action);
+	void OnUpdateGotoImpl(QAction* action);
+  void OnUpdateMakeGUI(QAction* action);
+  void OnUpdateNewComponent(QAction* action);
+  void OnUpdateNewCSpec(QAction* action);
+  void OnUpdateNewenum(QAction* action);
+	void OnUpdateNewEnumItem(QAction* action);
+  void OnUpdateNewfunction(QAction* action);
+  void OnUpdateNewinitiator(QAction* action);
+  void OnUpdateNewInterface(QAction* action);
+  void OnUpdateNewImpl(QAction* action);
+  void OnUpdateNewLitStr(QAction* action);
+  void OnUpdateNewmember(QAction* action);
+  void OnUpdateNewPackage(QAction* action);
+  void OnUpdateNewVirtualType(QAction* action);
+  void OnUpdateNewset(QAction* action);
+  void OnUpdateOverride(QAction* action);
+  void OnUpdateShowformview(QAction* action);
+  void OnUpdateShowOptionals(QAction* action);
+  //void OnUpdateNewalias(QAction* action);
+  //void OnUpdateNewform(QAction* action);
+  //void OnUpdateShowPattern(QAction* action);
+  //void OnUpdateDefaultForm(QAction* action);
 
 public:
 //Toolbutton/menu item handler  
@@ -265,11 +272,11 @@ public:
 //  void OnShowPattern();
 
 public slots: 
-  void OnDblclk(QListViewItem* onItem, const QPoint&, int);
+  void OnDblclk(Q3ListViewItem* onItem, const QPoint&, int);
   void OnSelchanged();
-  void OnRclick(QListViewItem* item);
-  void OnItemexpanded(QListViewItem* item);
-  void OnItemcollapsed(QListViewItem* item);
+  void OnRclick(Q3ListViewItem* item);
+  void OnItemexpanded(Q3ListViewItem* item);
+  void OnItemcollapsed(Q3ListViewItem* item);
 
   //void OnLButtonDown(UINT nFlags, QPoint point);
   //void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);

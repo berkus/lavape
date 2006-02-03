@@ -67,12 +67,13 @@ static char slash='/';
 int main( int argc, char ** argv ) {
 	CLavaApp ap(argc,argv);
   QString componentPath;
+  size_t requiredSize;
+  char myPath[1000];
 
 //  DebugBreak();
-  if (sock_init())
-    qDebug("sock_init failed");
 
-  componentPath = getenv("PATH");
+  getenv_s(&requiredSize,myPath,1000,"PATH");
+  componentPath = myPath;
 #ifdef WIN32
   if (componentPath.isEmpty())
     componentPath = ExeDir + "\\Components";
@@ -122,12 +123,12 @@ CLavaApp::CLavaApp(int argc, char ** argv )
 #endif
   SynIO.INIT();
   InitGlobalStrings();
-  qt_use_native_dialogs = false;
+//  qt_use_native_dialogs = false;
 
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
-  QSettings settings(QSettings::Native);
-  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,"FhG-SIT","LavaPE");
+//  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
 //  settings.beginGroup(GetSettingsPath());
   LBaseData.theApp = this;
   LBaseData.inRuntime = true;
@@ -322,17 +323,17 @@ bool CLavaApp::event(QEvent *e)
 		case 0:
 			mbp->result =	QMessageBox::critical(
 				mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-			(*mbp->thr->pContExecEvent)--;
+      mbp->thr->pContExecEvent->release();
 			break;
 		case 1:
 			mbp->result =	QMessageBox::information(
 				mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-			(*mbp->thr->pContExecEvent)--;
+      mbp->thr->pContExecEvent->release();
 			break;
 		case 2:
 			mbp->result =	QMessageBox::question(
 				mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-			(*mbp->thr->pContExecEvent)--;
+      mbp->thr->pContExecEvent->release();
 			break;
 		}
     break;
@@ -349,7 +350,7 @@ bool CLavaApp::event(QEvent *e)
           ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
           thr->pContExecEvent->ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
       }
-      (*thr->pContExecEvent)--;
+      thr->pContExecEvent->release();
     }
     delete (CLavaPEHint*)((QCustomEvent*)e)->data();
 		break;
@@ -359,7 +360,7 @@ bool CLavaApp::event(QEvent *e)
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
     delete dumpdata->doc->DumpFrame;
     dumpdata->doc->DumpFrame = 0;
-    (*((DumpEventData*)((QCustomEvent*)e)->data())->currentThread->pContExecEvent)--;
+    ((DumpEventData*)((QCustomEvent*)e)->data())->currentThread->pContExecEvent->release();
     delete (DumpEventData*)((QCustomEvent*)e)->data();
 		break;
 	default:
@@ -393,7 +394,7 @@ void CLavaApp::OnFileOpen()
 
 void CLavaApp::OpenDocumentFile(const QString& lpszFileName) 
 {
-  QString name;
+  QString name, port;
   QDir cwd;
   CLavaDoc* doc;
 
@@ -404,7 +405,8 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
   LBaseData.lastFileOpen = name;
   if (argc() > 2) {
     debugThread.remoteIPAddress = QString(argv()[2]);
-    debugThread.remotePort = QString(argv()[3]);
+    port = QString(argv()[3]);
+    debugThread.remotePort = (quint16)port.toUShort();
 
     //QMessageBox::critical(/*qApp->*/mainWidget(),qApp->name(),"Lava Interpreter: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     debugThread.debugOn = true;
@@ -455,9 +457,9 @@ void CLavaApp::OnAppAbout()
 
 void CLavaApp::saveSettings()
 {
-  QSettings settings(QSettings::Native);
+  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,"FhG-SIT","LavaPE");
 
-  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
+//  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
 //  settings.beginGroup(GetSettingsPath());
 
   settings.beginGroup("/generalSettings");

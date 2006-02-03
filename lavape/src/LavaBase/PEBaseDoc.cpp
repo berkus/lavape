@@ -31,13 +31,15 @@
 #include "mdiframes.h"
 
 #include "qmessagebox.h"
-#include "qcstring.h"
+#include "q3cstring.h"
 #include "qobject.h"
 #include "qstring.h"
 #include "qlineedit.h"
 #include "qfileinfo.h"
 #include "qdir.h"
 #include "UNIX.h"
+
+#include <QComboBox>
 
 
 //static HRESULT CreateShortCut (LPCSTR pszShortcutFile, LPSTR pszLink);
@@ -191,8 +193,8 @@ void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bo
     if (with  || (it != B_Object) 
         && ((defType == NoDef) || (decl->DeclType == defType))
         && (!skipServices || (decl->DeclType != Interface))) {
-      listItem = new CListItem(LBaseData->BasicNames[it], TID(IDTable.BasicTypesID[it], incl));
-      cbox->listBox()->insertItem(listItem);//sort
+      listItem = new CListItem(/*LBaseData->BasicNames[it],*/ TID(IDTable.BasicTypesID[it], incl));
+      cbox->addItem(QString(LBaseData->BasicNames[it]),QVariant::fromValue(listItem));
     }
   }
   SortCombo(cbox);
@@ -945,7 +947,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   fn = DString(lpszPathName);
   if (fi.exists() && !fi.isWritable()) {
     str = DString("Lava file '") + fn + DString("' couldn't be opened for writing");
-    QMessageBox::critical(qApp->mainWidget(),qApp->name(),str.c ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),str.c ,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return false;
   }
   isReadOnly = false;
@@ -1009,7 +1011,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   isyntax->FreeINCL = IDTable.freeINCL;
   if (!SynIO.WriteSynDef(fn.c, isyntax)) {
     str = DString("Error on writing the lava file '") + fn + "'";
-    QMessageBox::critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return false;
   }
   if (hasIncludes)
@@ -1079,11 +1081,13 @@ bool CPEBaseDoc::OnSaveModified()
 
 void SortCombo(QComboBox* lbox)
 {
-  CListItem* item = (CListItem*)lbox->listBox()->item(0);
-  QString tt = item->text();
-  item->setText("\0");
-  lbox->listBox()->sort(true);
-  item->setText(tt);
+  QVariant itemData0=lbox->itemData(0);
+  QString itemText0=lbox->itemText(0);
+
+  lbox->removeItem(0);// remove headline item
+  QAbstractItemModel *mod=lbox->model();
+  mod->sort(/*column*/0);
+  lbox->insertItem(0,itemText0,itemData0); // re-insert headline item
 }
 
 /*
@@ -1140,10 +1144,10 @@ static HRESULT CreateShortCut (LPCSTR pszShortcutFile, LPSTR pszLink)
 
 void CLavaBaseView::whatNext()
 {
-  QMessageBox::critical(qApp->mainWidget(),qApp->name(),"\"What next\" help not yet available for this selection",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  QMessageBox::critical(qApp->mainWidget(),qApp->name(),"\"What next\" help not yet available for this selection",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 void CLavaBaseView::howTo()
 {
-  QMessageBox::critical(qApp->mainWidget(),qApp->name(),"\"How to\" help not yet available for this view type",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  QMessageBox::critical(qApp->mainWidget(),qApp->name(),"\"How to\" help not yet available for this view type",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }

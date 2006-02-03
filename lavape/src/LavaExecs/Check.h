@@ -5,7 +5,7 @@
 #include "Constructs.h"
 #include "SynIDTable.h"
 #include "LavaBaseDoc.h"
-#include "qptrlist.h"
+#include "q3ptrlist.h"
 
 extern unsigned GetNumInputs(TIDTable *idt, const TID &tid);
 extern CHE *GetFirstInput(LavaDECL *funcDecl);

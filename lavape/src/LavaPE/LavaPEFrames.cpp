@@ -37,16 +37,16 @@
 
 #include "qpixmap.h"
 #include "qpushbutton.h"
-#include "qiconset.h"
-#include "qmainwindow.h"
+#include "qicon.h"
+#include "q3mainwindow.h"
 #include "qmenubar.h"
 #include "qmessagebox.h"
-#include "qcanvas.h"
+#include "q3canvas.h"
 #include "qcursor.h"
-#include "qpopupmenu.h"
-#include "qlistview.h"
-#include "qvbox.h"
-#include "qwhatsthis.h"
+#include "q3popupmenu.h"
+#include "q3listview.h"
+#include "q3vbox.h"
+#include "q3whatsthis.h"
 #include "qworkspace.h"
 #include "qstatusbar.h"
 #include "qaction.h"
@@ -58,39 +58,45 @@
 #include "qpalette.h"
 #include "qaction.h"
 #include "qsignalmapper.h"
-#include "qdict.h"
+#include "q3dict.h"
 #include "qevent.h"
 #include "qtooltip.h"
 #include "qassistantclient.h"
+//Added by qt3to4:
+#include <Q3ActionGroup>
+#include <QCloseEvent>
+#include <Q3ValueList>
+#include <QCustomEvent>
 
 typedef QMap<QString,QString> HelpTextMap;
 
 
-CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
-:CMainFrame(parent, name, fl)
+CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
+  setupUi(this);
+
   theActiveFrame = 0;
 
 	makeStyle(LBaseData->m_style);
 
   m_UtilityView = 0;
 	lastTile = 0;
-  QPopupMenu *style = new QPopupMenu(this);
+  Q3PopupMenu *style = new Q3PopupMenu(this);
   style->setCheckable( TRUE );
   optionMenu->insertItem( "Set st&yle" , style );
-  QActionGroup *ag = new QActionGroup( this, 0 );
+  Q3ActionGroup *ag = new Q3ActionGroup( this, 0 );
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
   connect( styleMapper, SIGNAL( mapped( const QString& ) ), this, SLOT( makeStyle( const QString& ) ) );
   QStringList list = QStyleFactory::keys();
   list.sort();
-  QDict<int> stylesDict( 17, FALSE );
+  Q3Dict<int> stylesDict( 17, FALSE );
   for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
 		QString styleStr = *it;
 //    qDebug("style=%s",styleStr.ascii());
 		QString styleAccel = styleStr;
 		if ( stylesDict[styleAccel.left(1)] ) {
-			for ( uint i = 0; i < styleAccel.length(); i++ ) {
+			for ( int i = 0; i < styleAccel.length(); i++ ) {
 				if ( !stylesDict[styleAccel.mid( i, 1 )] ) {
 					stylesDict.insert(styleAccel.mid( i, 1 ), (const int *)1);
 					styleAccel = styleAccel.insert( i, '&' );
@@ -102,7 +108,7 @@ CLavaMainFrame::CLavaMainFrame(QWidget* parent, const char* name, WFlags fl)
 			stylesDict.insert(styleAccel.left(1), (const int *)1);
 			styleAccel = "&"+styleAccel;
  		}
-		QAction *a = new QAction( styleStr, QIconSet(), styleAccel, 0, ag, 0, ag->isExclusive() );
+		QAction *a = new QAction( styleStr, QIcon(), styleAccel, 0, ag, 0, ag->isExclusive() );
 		connect( a, SIGNAL( activated() ), styleMapper, SLOT(map()) );
 		styleMapper->setMapping(a,a->text() );
 		if (LBaseData->m_style == styleStr)
@@ -188,17 +194,17 @@ void CLavaMainFrame::makeStyle(const QString &style)
     LBaseData->m_style = style;
     wxTheApp->saveSettings();
 	  qApp->setStyle(style);
-	  if(style == "Motif" || style == "MotifPlus") {
+/*	  if(style == "Motif" || style == "MotifPlus") {
 	    QPalette p( QColor( 192, 192, 192 ) );
 	    qApp->setPalette( p, TRUE );
 	    qApp->setFont( LBaseData->m_GlobalFont, TRUE );
-	  }
+	  }*/
   }
 
   isVisible = Toolbar_7->isVisible();
   if (LBaseData->declareButton) {
     delete Toolbar_7;
-    Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
+    Toolbar_7 = new Q3ToolBar( QString(""), this, DockLeft );
     Toolbar_7->setLabel(tr("Keyword toolbar"));
   }
   else
@@ -294,7 +300,7 @@ void CLavaMainFrame::UpdateUI()
     runAction->setEnabled(false);
 }
 
-void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip,QString whatsThis)
+void CLavaMainFrame::newKwdToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip,QString whatsThis)
 {
   QFont f;
 
@@ -314,7 +320,7 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   pb->show();
 }
 
-void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
+void CLavaMainFrame::newHelpToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
 {
   QFont f;
 
@@ -336,10 +342,10 @@ void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,
   pb->show();
 }
 
-void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
+void CLavaMainFrame::fillHelpToolbar(Q3ToolBar *tb)
 {
-  LBaseData->myWhatsThisButton = QWhatsThis::whatsThisButton(HelpToolbar);
-  QWhatsThis::add(LBaseData->myWhatsThisButton,"<p>Drag the \"What's this?\" cursor to any user interface object"
+  LBaseData->myWhatsThisButton = Q3WhatsThis::whatsThisButton(HelpToolbar);
+  Q3WhatsThis::add(LBaseData->myWhatsThisButton,"<p>Drag the \"What's this?\" cursor to any user interface object"
     " and drop it there to see a <b>little popup info (but usually more than a tooltip)</b> on that object.</p>");
   newHelpToolbutton(tb,LBaseData->whatNextButton,"What next?",SLOT(whatNext_clicked()),
     "What can I do next at the current selection?",
@@ -347,7 +353,7 @@ void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
     "that you can perform <b>at the current selection</b></p>");
 }
 
-void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
+void CLavaMainFrame::fillKwdToolbar(Q3ToolBar *tb)
 {
 	QColorGroup cgDis(tb->palette().disabled());
 	cgDis.setColor(QColorGroup::ButtonText,darkGray);
@@ -362,7 +368,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->existsButton,"&exists",SLOT(exists()),
     QObject::tr("Existential quantifier: \"e\""),
     QObject::tr("<p><a href=\"Exists.htm\">Existential quantifier</a> ranging \nover a finite set</p>"));
-  newKwdToolbutton(tb,LBaseData->foreachButton,"&foreach",SLOT(foreach()),
+  newKwdToolbutton(tb,LBaseData->foreachButton,"&foreach",SLOT(foreachStm()),
     QObject::tr("Universal quantifier: \"f\""),
     QObject::tr("<p><a href=\"Foreach.htm\">Universal quantifier</a> ranging \nover a finite set</p>"));
   newKwdToolbutton(tb,LBaseData->selectButton,"se&lect",SLOT(select()),
@@ -1204,7 +1210,7 @@ void CLavaMainFrame::exists(){
     view->OnExists();
 }
 
-void CLavaMainFrame::foreach(){
+void CLavaMainFrame::foreachStm(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnForeach();
@@ -1391,7 +1397,7 @@ void CLavaMainFrame::adjustToolbar_7 () {
 
 	delete Toolbar_7;
   Toolbar_7 = 0;
-  Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
+  Toolbar_7 = new Q3ToolBar( QString(""), this, DockLeft );
   Toolbar_7->setLabel(tr("Keyword toolbar"));
   fillKwdToolbar(Toolbar_7);
 	if (isVisible)
@@ -1557,7 +1563,7 @@ void CLavaMainFrame::showUtilWindow()
   UtilitiesHidden = !UtilitiesHidden;
 }
 
-void CLavaMainFrame::OnUpdateshowUtil(wxAction* action) 
+void CLavaMainFrame::OnUpdateshowUtil(QAction* action) 
 {
   action->setOn(!UtilitiesHidden);
 }
@@ -1736,8 +1742,8 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     doc->AddView(viewR);
     doc->AddView(viewL);
     doc->AddView(viewM);
-    QValueList<int> list = splitter->sizes();
-    QValueList<int>::Iterator it = list.begin();
+    Q3ValueList<int> list = splitter->sizes();
+    Q3ValueList<int>::Iterator it = list.begin();
     int totalW = *it;
     ++it;
     totalW += *it;
@@ -1794,8 +1800,8 @@ void CTreeFrame::Activate(bool activate, bool windowMenuAction)
 
 void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)
 {
-  QValueList<int> list = splitter->sizes();
-  QValueList<int>::Iterator it = list.begin();
+  Q3ValueList<int> list = splitter->sizes();
+  Q3ValueList<int>::Iterator it = list.begin();
   int wl, wr, totalW = *it;
   ++it;
   totalW += *it;
@@ -1877,8 +1883,8 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     doc->AddView(viewR);
     doc->AddView(viewL);
     doc->AddView(wizardView);
-    QValueList<int> list = splitter->sizes();
-    QValueList<int>::Iterator it = list.begin();
+    Q3ValueList<int> list = splitter->sizes();
+    Q3ValueList<int>::Iterator it = list.begin();
     int totalW = *it;
     ++it;
     totalW += *it;

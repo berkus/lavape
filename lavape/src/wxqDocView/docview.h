@@ -18,13 +18,18 @@
 #include "qapplication.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "qiconset.h"
-#include "qhbox.h"
-#include "qptrlist.h"
+#include "qicon.h"
+#include "q3hbox.h"
+#include "q3ptrlist.h"
 #include "qaction.h"
 #include "qsettings.h"
 #include "qthread.h"
 #include "qfileinfo.h"
+//Added by qt3to4:
+#include <QFocusEvent>
+#include <Q3PopupMenu>
+#include <QMouseEvent>
+#include <QCustomEvent>
 
 #if wxUSE_PRINTING_ARCHITECTURE
     #include "print.h"
@@ -54,20 +59,18 @@ enum
 
 class WXDLLEXPORT wxDocManager;
 class WXDLLEXPORT wxMainFrame;
-class WXDLLEXPORT wxAction;
-
-class WXDLLEXPORT wxAction : public QAction {
+//class WXDLLEXPORT QAction;
+/*
+class WXDLLEXPORT QAction : public QAction {
 public:
-    wxAction (QObject *parent = 0, const char *name = 0, bool toggle = FALSE );
-    wxAction (const QString &text, const QIconSet &icon, const QString &menuText, int accel, QObject *parent, const char *name = 0, bool toggle = FALSE );
-    wxAction (const QString &text, const QString &menuText, int accel, QObject *parent, const char *name = 0, bool toggle = FALSE );
-    virtual ~wxAction() {}
+    QAction (QObject *parent = 0, const char *name = 0);
+    virtual ~QAction() {}
     bool enable, deletingMainFrame;
 
 private:
     Q_OBJECT
 };
-
+*/
 class WXDLLEXPORT wxApp : public QApplication
 {
 public:
@@ -84,7 +87,7 @@ public:
     virtual void UpdateUI() {}
 		virtual void onUpdateUI();
     virtual void customEvent(QCustomEvent *e);
-    void addAction(wxAction* act) {actionList.append(act);}
+//    void addAction(QAction* act) {actionList.append(act);}
     // application info: name, description, vendor
     // -------------------------------------------
 
@@ -95,7 +98,7 @@ public:
         // set/get the application name
     QString GetAppName() const
     {
-        if ( !m_appName )
+      if ( !m_appName.length() )
             return m_className;
         else
             return m_appName;
@@ -127,7 +130,7 @@ public slots:
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
-    QPtrList<wxAction> actionList;
+//    Q3PtrList<QAction> actionList;
     bool inUpdateUI;
 
     Q_OBJECT
@@ -198,7 +201,7 @@ public:
 
     virtual bool AddView(wxView *view);
     virtual bool RemoveView(wxView *view);
-    QPtrList<wxView>& GetViews() const { return (QPtrList<wxView>&) m_documentViews; }
+    Q3PtrList<wxView>& GetViews() const { return (Q3PtrList<wxView>&) m_documentViews; }
     wxView *GetFirstView() const;
     POSITION GetFirstViewPos();
     wxView* GetNextView(POSITION& pos);
@@ -223,7 +226,7 @@ public:
 			return m_documentViews.count(); }
 
 protected:
-    QPtrList<wxView>        m_documentViews;
+    Q3PtrList<wxView>        m_documentViews;
     QString              m_documentFile; //all links are resolved
     QString              m_userFilename; //no link resolved
     QString              m_documentTitle, m_oldTitle; //the used name
@@ -240,7 +243,7 @@ private:
 
 class WXDLLEXPORT wxMDIChildFrame;
 
-class WXDLLEXPORT wxView : public QHBox
+class WXDLLEXPORT wxView : public Q3HBox
 {
 public:
     wxView(QWidget *parent, wxDocument *doc, const char* name);
@@ -431,7 +434,7 @@ public:
     virtual void SetActiveView(wxView *view, bool activate = true);
     virtual wxView *GetActiveView();// const;
 
-    virtual QPtrList<wxDocument>& GetDocuments() const { return (QPtrList<wxDocument>&) m_docs; }
+    virtual Q3PtrList<wxDocument>& GetDocuments() const { return (Q3PtrList<wxDocument>&) m_docs; }
 
     POSITION GetFirstDocPos();
     wxDocument* GetNextDoc(POSITION& pos);
@@ -473,8 +476,8 @@ protected:
     long              m_flags;
     int               m_defaultDocumentNameCounter;
     unsigned               m_maxDocsOpen;
-    QPtrList<wxDocument>            m_docs;
-    QPtrList<wxDocTemplate>            m_templates;
+    Q3PtrList<wxDocument>            m_docs;
+    Q3PtrList<wxDocTemplate>            m_templates;
     wxView*           m_activeView;
     QString          m_lastDirectory;
     static wxDocManager* sm_docManager;
@@ -564,20 +567,20 @@ public:
     virtual bool CanRedo() const;
 
     // Call this to manage an edit menu.
-    void SetEditMenu(QPopupMenu *menu) { m_commandEditMenu = menu; }
-    QPopupMenu *GetEditMenu() const { return m_commandEditMenu; }
+    void SetEditMenu(Q3PopupMenu *menu) { m_commandEditMenu = menu; }
+    Q3PopupMenu *GetEditMenu() const { return m_commandEditMenu; }
     virtual void SetMenuStrings();
     virtual void Initialize();
 
-    QPtrList<wxCommand>& GetCommands() const { return (QPtrList<wxCommand>&) m_commands; }
+    Q3PtrList<wxCommand>& GetCommands() const { return (Q3PtrList<wxCommand>&) m_commands; }
     int GetMaxCommands() const { return m_maxNoCommands; }
     virtual void ClearCommands();
 
 protected:
     unsigned           m_maxNoCommands;
-    QPtrList<wxCommand>        m_commands;
+    Q3PtrList<wxCommand>        m_commands;
     /*QLNode*/wxCommand*       m_currentCommand;
-    QPopupMenu*       m_commandEditMenu;
+    Q3PopupMenu*       m_commandEditMenu;
 
 private:
     Q_OBJECT
@@ -590,7 +593,7 @@ private:
 class WXDLLEXPORT wxHistory : public QObject
 {
 public:
-    wxHistory(int maxFiles = 9, QPopupMenu *m=0);
+    wxHistory(int maxFiles = 9, Q3PopupMenu *m=0);
     virtual ~wxHistory();
 
     // Operations
@@ -611,7 +614,7 @@ public:
 #endif // wxUSE_CONFIG
 
     virtual void AddFilesToMenu();
-    virtual void AddFilesToMenu(QPopupMenu* menu); // Single menu
+    virtual void AddFilesToMenu(Q3PopupMenu* menu); // Single menu
 
     // Accessors
     virtual DString *GetHistoryItem(int i) const;
@@ -619,9 +622,9 @@ public:
     virtual int GetCount() const { return m_historyN; }
     int GetMaxNoHistItems() const { return m_maxHistItems; }
 
-//    QPtrList<QPopupMenu>& GetMenus() const { return (QPtrList<QPopupMenu>&) m_fileMenus; }
+//    Q3PtrList<QPopupMenu>& GetMenus() const { return (Q3PtrList<QPopupMenu>&) m_fileMenus; }
 
-    QPopupMenu        *m_menu;
+    QMenu/*Q3PopupMenu*/        *m_menu;
 
 protected:
     // Max files to maintain

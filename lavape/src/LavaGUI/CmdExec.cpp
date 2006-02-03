@@ -56,7 +56,7 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
   ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, optNode); 
   if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
     if (!LBaseData->inRuntime) 
-      QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return;
   }
   GUIProg->focNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode);
@@ -186,7 +186,7 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
   if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
     delete insertedNode;
     if (!LBaseData->inRuntime) 
-      QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), "Empty chain element",  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), "Empty chain element",  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return;
   }
   insertedNode->data.HandleObjPtr = (CSecTabBase**)handle;
@@ -317,7 +317,7 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
               return false;
             *(int*)(enumPtr + LSH) = j;
             pstr = (QString*)(enumPtr+LSH+1);
-            if (*pstr) 
+            if (!pstr->isEmpty()) 
               *pstr = QString(enumItem->data.Id.c);
             else
               NewQString(pstr, enumItem->data.Id.c);
@@ -325,7 +325,7 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
           Done = true;
         }
         if (!Done) {
-          QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
           if (Conv.DataLengthOK(trp)) {
             if (trp->data.StringValue.c)
               GUIProg->ErrPos = trp->data.StringValue.l;
@@ -346,7 +346,7 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
         }
       }
       else {
-        QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         ((CGUIProg*)GUIProg)->MakeGUI.setFocus(GUIProg->ErrPos,trp);
       }
       break;
@@ -382,7 +382,7 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
     case VLString:
       if (LBaseData->inRuntime) {
         pstr = (QString*)(*(trp->data.ResultVarPtr)+LSH);
-        if (*pstr) 
+        if (!pstr->isEmpty()) 
           *pstr = QString(trp->data.StringValue.c);
         else
           NewQString(pstr, trp->data.StringValue.c);

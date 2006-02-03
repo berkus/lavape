@@ -23,6 +23,9 @@
 #include "GUIProgBase.h"
 #include "FormWid.h"
 #include "qlineedit.h"
+//Added by qt3to4:
+#include <Q3Frame>
+#include <Q3PopupMenu>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -50,7 +53,7 @@ CLavaMenu::CLavaMenu(CGUIProgBase *guiPr, CHEFormNode* data,
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   QSize size = GUIProg->CalcTextRect(cx, 1, font());
-  int bord = ((QFrame*)pParentWnd)->lineWidth();
+  int bord = ((Q3Frame*)pParentWnd)->lineWidth();
   setGeometry(QRect(QPoint(bord,bord), size));
   setReadOnly(true);
   show();
@@ -58,7 +61,7 @@ CLavaMenu::CLavaMenu(CGUIProgBase *guiPr, CHEFormNode* data,
       || !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
   else {
-    myMenu = new QPopupMenu(this);
+    myMenu = new Q3PopupMenu(this);
     //myMenu->CreatePopupMenu();
   }
 }

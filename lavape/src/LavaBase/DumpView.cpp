@@ -25,12 +25,15 @@
 #include "DumpView.h"
 
 #include "qapplication.h"
-#include "qframe.h"
-#include "qlistview.h"
-#include "qheader.h"
+#include "q3frame.h"
+#include "q3listview.h"
+#include "q3header.h"
 #include "qpushbutton.h"
-#include "qvbox.h"
+#include "q3vbox.h"
 #include "qlayout.h"
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <QCloseEvent>
 
 
 QString DDMakeClass::getValue0(const QString& stdLabel)
@@ -330,13 +333,13 @@ void DDSetClass::makeChildren()
 }
 
 LavaDumpFrame::LavaDumpFrame( QWidget* parent, DumpEventData* data)
-: QDialog(parent, "Dump", true, WType_TopLevel | WStyle_MinMax)
+: QDialog(parent, "Dump", true, Qt::WType_TopLevel | Qt::WStyle_MinMax)
  //   : QMainWindow(parent,"Dump",WDestructiveClose)
 {
   resize(200, 300);
   view = new DumpListView(this, data->doc, data->object, data->name);
   QPushButton* okButton = new QPushButton("Ok", this);
-  QVBoxLayout* qvbox = new QVBoxLayout(this);
+  Q3VBoxLayout* qvbox = new Q3VBoxLayout(this);
   qvbox->addWidget(view);
   qvbox->addWidget(okButton);
   QSize sz = size();
@@ -391,7 +394,7 @@ DDItem* DumpItem::createChild(DDMakeClass* dd, DDItem* afterItem, CLavaBaseDoc* 
 }
 
 DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv)
-  :QListViewItem(parent, afterItem) 
+  :Q3ListViewItem(parent, afterItem) 
 { 
   DD = dd;
   DD->myItem = this;
@@ -416,7 +419,7 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLava
 }
 
 DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv)
-  :QListViewItem(parent) 
+  :Q3ListViewItem(parent) 
 { 
   DD = dd;
   DD->myItem = this;
@@ -441,7 +444,7 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObj
 
 
 DumpItem::DumpItem (DDMakeClass* dd, DumpListView* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName)
-  :QListViewItem(parent) 
+  :Q3ListViewItem(parent) 
 { 
   DD = dd;
   DD->myItem = this;
@@ -476,10 +479,10 @@ void DumpItem::setOpen(bool O)
   if (O && withChildren) {
     DD->makeChildren();
     childrenDrawn = true;
-    QListViewItem::setOpen(O);
+    Q3ListViewItem::setOpen(O);
   }
   else
-    QListViewItem::setOpen(O);
+    Q3ListViewItem::setOpen(O);
 }
 
 
@@ -488,11 +491,11 @@ void DumpItem::paintCell( QPainter * p, const QColorGroup & cg,
 {
   if (!column && isPriv) {
     QColorGroup cgN ( cg);
-    cgN.setColor(QColorGroup::Text,red);
-    QListViewItem::paintCell( p, cgN, column, width, align );
+    cgN.setColor(QColorGroup::Text,Qt::red);
+    Q3ListViewItem::paintCell( p, cgN, column, width, align );
   }
   else
-    QListViewItem::paintCell( p, cg, column, width, align );
+    Q3ListViewItem::paintCell( p, cg, column, width, align );
 }
 
 
@@ -501,20 +504,20 @@ void DumpItem::paintCell( QPainter * p, const QColorGroup & cg,
 
 
 DumpListView::DumpListView(QWidget *parent,CLavaBaseDoc* doc, LavaObjectPtr object, QString varName)
-:QListView(parent, "DumpListView")
+:Q3ListView(parent, "DumpListView")
 {
   QString label;
   LavaObjectPtr myObject = object;
 
   myDoc = doc;
-  setFocusPolicy(QWidget::StrongFocus);
+  setFocusPolicy(Qt::StrongFocus);
   setSorting(-1);
   addColumn("varName (static type [/ runtime type])");
   addColumn("address");
   addColumn("value");
   setRootIsDecorated(true);
   header()->show();
-  setSelectionMode(QListView::Single);
+  setSelectionMode(Q3ListView::Single);
   setShowToolTips(true);
   if (myObject && myObject[0]) {
     myObject = myObject - myObject[0][0].sectionOffset; 

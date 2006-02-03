@@ -26,10 +26,10 @@
 
 #include "qobject.h"
 #include "qstring.h"
-#include "qfiledialog.h"
+#include "q3filedialog.h"
 #include "qmessagebox.h"
 #include "qapplication.h"
-#include "qprocess.h"
+#include "q3process.h"
 
 #ifdef WIN32
 #include <process.h>
@@ -41,7 +41,8 @@
 // CAboutBox dialog
 
 CAboutBox::CAboutBox(QWidget* parent, const char* name, bool modal) :
-	  IDD_AboutBox(parent,name,modal, WStyle_Customize | WStyle_NormalBorder | WStyle_Title | WStyle_SysMenu) {
+	  QDialog(parent,name,modal, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu) {
+  setupUi(this);
   lineEdit1->setText(LBaseData->m_myWebBrowser);
 } 
 
@@ -58,7 +59,7 @@ void CAboutBox::OnSelectBrowser() {
 	filter = "Executable Programs (*)";
 #endif
 
-  QString s = QFileDialog::getOpenFileName(
+  QString s = Q3FileDialog::getOpenFileName(
                   progDir,
                   filter,
                   this,
@@ -82,15 +83,15 @@ void CAboutBox::OnLavaHomePage()
 	QString buf;
 
 	if (lineEdit1->text().isEmpty()) {
-    QMessageBox::critical(this,qApp->name(),ERR_MissingBrowserPath,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this,qApp->name(),ERR_MissingBrowserPath,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 		return;
 	}
 
 	args << LBaseData->m_myWebBrowser << "http://lavape.sourceforge.net/";
-	QProcess browser(args);
+	Q3Process browser(args);
 
 	if (!browser.launch(buf)) {
-    QMessageBox::critical(this,qApp->name(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this,qApp->name(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 		return;
 	}
 }

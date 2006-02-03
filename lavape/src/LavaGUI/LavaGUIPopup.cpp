@@ -10,8 +10,12 @@
 #include "LavaGUIPopup.h"
 #include "GUIProgBase.h"
 #include "qpushbutton.h"
-#include "qvbox.h"
+#include "q3vbox.h"
 #include "qlayout.h"
+//Added by qt3to4:
+#include <Q3VBoxLayout>
+#include <Q3HBoxLayout>
+#include <QCloseEvent>
 
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
@@ -22,7 +26,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CLavaGUIPopup::CLavaGUIPopup(QWidget* parent, CGUIProgBase *guiPr, CHEFormNode* data)
-    : QMainWindow(parent,"LavaGUIPopup",WDestructiveClose)// | WType_TopLevel)
+    : Q3MainWindow(parent,"LavaGUIPopup",Qt::WDestructiveClose)// | WType_TopLevel)
 {
   myFormNode = data;
   GUIProg = guiPr;
@@ -75,17 +79,17 @@ void CLavaGUIPopup::closeEvent(QCloseEvent *e)
 
 
 CLavaGUIPopupD::CLavaGUIPopupD(QWidget* parent, CGUIProgBase *guiPr, CHEFormNode* data)
-: QDialog(parent, "LavaGUIPopupD", true, WType_TopLevel | WStyle_MinMax)
+: QDialog(parent, "LavaGUIPopupD", true, Qt::WType_TopLevel | Qt::WStyle_MinMax)
 {
   myFormNode = data;
   GUIProg = guiPr;
   setPaletteBackgroundColor(GUIProg->ViewWin->paletteBackgroundColor());
   view = new GUIScrollView(this, true);
-  QHBox* hb = new QHBox(this);
+  Q3HBox* hb = new Q3HBox(this);
   QPushButton* okButton = new QPushButton("Close", hb);
   //QPushButton* cancelButton = new QPushButton("Cancel", hb);
-  QVBoxLayout* qvbl = new QVBoxLayout(this);
-  QHBoxLayout* hbl = new QHBoxLayout(hb);
+  Q3VBoxLayout* qvbl = new Q3VBoxLayout(this);
+  Q3HBoxLayout* hbl = new Q3HBoxLayout(hb);
   qvbl->addWidget(view);
   qvbl->addWidget(hb);
   hbl->addWidget(okButton);

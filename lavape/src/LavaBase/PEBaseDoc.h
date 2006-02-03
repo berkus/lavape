@@ -8,30 +8,34 @@
 #include "LavaBaseDoc.h"
 #include "SylTraversal.h"
 #include "SynIDTable.h"
-#include "qcstring.h"
+#include "q3cstring.h"
 #include "wxExport.h"
-#include "qcombobox.h"
+#include "q3combobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "qlistbox.h"
+#include "q3listbox.h"
 
-class CListItem: public QListBoxText
+class CListItem//: public Q3ListBoxText
 {
 public:
-  CListItem(const QString& text, const TID& id) {setText(text); ID = id;}
-  CListItem(const DString& text, const TID& id) {setText(QString(text.c)); ID = id;}
-  CListItem(char* text, const TID& id) {setText(QString(text)); ID = id;}
-  CListItem(const DString& text, unsigned* flags) {setText(QString(text.c)); Flags = flags;}
-  CListItem(const QString& text, unsigned* flags) {setText(text); Flags = flags;}
+//  CListItem(const QString& txt, const TID& id) { setText(txt); ID = id;}
+//  CListItem(const DString& text, const TID& id) {setText(QString(text.c)); ID = id;}
+  CListItem(/*char* text,*/ const TID& id) {/*setText(QString(text));*/ ID = id;}
+  CListItem(/*const DString& text,*/ unsigned* flags) {/*setText(QString(text.c));*/ Flags = flags;}
+//  CListItem(const QString& text, unsigned* flags) {setText(text); Flags = flags;}
   CListItem() {}
   TID itemData() {return ID;}
   unsigned* flags() {return Flags;}
-  virtual void setText(const QString& text) {QListBoxText::setText(text);}
+//  void setText(const QString &txt) { myText = txt; }
+//  QString text() { return myText; }
+//  virtual void setText(const QString& text) {Q3ListBoxText::setText(text);}
 protected:
   TID ID;
   unsigned* Flags;
+//  QString myText;
 };
+Q_DECLARE_METATYPE(CListItem*)
 
 class CLavaBaseView;
 class LAVABASE_DLL CPEBaseDoc : public CLavaBaseDoc
@@ -87,7 +91,7 @@ public:
   bool InSection(CHE* el);
   virtual void IncludeHint(const QString& fullfn, CHESimpleSyntax* cheSyn);
   virtual void OnDebugLava() {}
-  virtual void OnUpdateRunLava(wxAction *action) {}
+  virtual void OnUpdateRunLava(QAction *action) {}
 private:
     Q_OBJECT
 

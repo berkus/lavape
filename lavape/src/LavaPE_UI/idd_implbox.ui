@@ -1,178 +1,133 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
-<class>IDD_ImplBox</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>IDD_ImplBox</cstring>
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>IDD_ImplBox</class>
+  <widget class="QDialog" name="IDD_ImplBox" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>282</width>
+        <height>139</height>
+      </rect>
     </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>282</width>
-            <height>139</height>
-        </rect>
+    <property name="sizePolicy" >
+      <sizepolicy>
+        <hsizetype>1</hsizetype>
+        <vsizetype>1</vsizetype>
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+      </sizepolicy>
     </property>
-    <property name="sizePolicy">
-        <sizepolicy>
-            <hsizetype>1</hsizetype>
-            <vsizetype>1</vsizetype>
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-        </sizepolicy>
+    <property name="font" >
+      <font>
+        <family>MS Sans Serif</family>
+        <pointsize>0</pointsize>
+        <weight>0</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+      </font>
     </property>
-    <property name="font">
-        <font>
-            <family>MS Sans Serif</family>
-        </font>
+    <property name="windowTitle" >
+      <string>Implementation</string>
     </property>
-    <property name="caption">
-        <string>Implementation</string>
-    </property>
-    <vbox>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <property name="spacing">
-            <number>15</number>
-        </property>
-        <property name="resizeMode">
-            <enum>Fixed</enum>
-        </property>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>layout22</cstring>
-            </property>
-            <vbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
+    <layout class="QVBoxLayout" >
+      <property name="spacing" >
+        <number>15</number>
+      </property>
+      <property name="resizeMode" >
+        <enum>Fixed</enum>
+      </property>
+      <item>
+        <layout class="QVBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <widget class="QLabel" name="Label_IDC_ComboEx" >
+              <property name="focusPolicy" >
+                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text" >
+                <string>Interface to be implemented</string>
+              </property>
+              <property name="alignment" >
+                <set>Qt::AlignVCenter</set>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QLineEdit" name="m_ImplSel" >
+              <property name="enabled" >
+                <bool>false</bool>
+              </property>
+              <property name="focusPolicy" >
+                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="alignment" >
+                <set>Qt::AlignLeft</set>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QComboBox" name="m_ImplTypes" >
+              <item>
+                <property name="text" >
+                  <string>(Select interface to be implemented)</string>
                 </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>Label_IDC_ComboEx</cstring>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Interface to be implemented</string>
-                    </property>
-                    <property name="alignment">
-                        <set>AlignVCenter</set>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>m_ImplSel</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="alignment">
-                        <set>AlignLeft</set>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <item>
-                        <property name="text">
-                            <string>(Select interface to be implemented)</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>m_ImplTypes</cstring>
-                    </property>
-                </widget>
-            </vbox>
-        </widget>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>layout31</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>PushButton_IDOK7</cstring>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>OK</string>
-                    </property>
-                    <property name="default">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>PushButton_IDCANCEL7</cstring>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Cancel</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>ID_HELP5</cstring>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Help</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-    </vbox>
-</widget>
-<connections>
-    <connection>
-        <sender>m_ImplTypes</sender>
-        <signal>activated(int)</signal>
-        <receiver>IDD_ImplBox</receiver>
-        <slot>m_ImplTypes_activated(int)</slot>
-    </connection>
-    <connection>
-        <sender>PushButton_IDOK7</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_ImplBox</receiver>
-        <slot>OnOK()</slot>
-    </connection>
-    <connection>
-        <sender>PushButton_IDCANCEL7</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_ImplBox</receiver>
-        <slot>PushButton_IDCANCEL7_clicked()</slot>
-    </connection>
-    <connection>
-        <sender>ID_HELP5</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_ImplBox</receiver>
-        <slot>ID_HELP5_clicked()</slot>
-    </connection>
-</connections>
-<tabstops>
+              </item>
+            </widget>
+          </item>
+        </layout>
+      </item>
+      <item>
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <widget class="QPushButton" name="PushButton_IDOK7" >
+              <property name="focusPolicy" >
+                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text" >
+                <string>OK</string>
+              </property>
+              <property name="default" >
+                <bool>true</bool>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="PushButton_IDCANCEL7" >
+              <property name="focusPolicy" >
+                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text" >
+                <string>Cancel</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="ID_HELP5" >
+              <property name="focusPolicy" >
+                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text" >
+                <string>Help</string>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+  <tabstops>
     <tabstop>m_ImplTypes</tabstop>
-</tabstops>
-<includes>
-    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
-    <include location="local" impldecl="in implementation">idd_implbox.ui.h</include>
-</includes>
-<slots>
-    <slot>m_ImplTypes_activated( int )</slot>
-    <slot>OnOK()</slot>
-    <slot>PushButton_IDCANCEL7_clicked()</slot>
-    <slot>ID_HELP5_clicked()</slot>
-</slots>
-<exportmacro>LAVAPEUI_DLL</exportmacro>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+  </tabstops>
+</ui>

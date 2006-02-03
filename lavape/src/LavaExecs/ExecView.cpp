@@ -21,14 +21,21 @@
 #include "qstring.h"
 #include "qstatusbar.h"
 #include "qfontmetrics.h"
-#include "qscrollview.h"
+#include "q3scrollview.h"
 #include "qapplication.h"
 #include "qnamespace.h"
 #include "qmessagebox.h"
 #include "qcheckbox.h"
-#include "qpopupmenu.h"
+#include "q3popupmenu.h"
 #include "qwidget.h"
 #include "qevent.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QFocusEvent>
+#include <QKeyEvent>
+#include <Q3ValueList>
+#include <QMouseEvent>
+#include <QCustomEvent>
 #include "Constructs.h"
 #include "Check.h"
 #include "Comment.h"
@@ -40,7 +47,7 @@
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
 #include "ExecFrame.h"
-#include "qtextedit.h"
+#include "q3textedit.h"
 #include "qassistantclient.h"
 #include "LavaBaseStringInit.h"
 #include "Resource.h"
@@ -116,10 +123,10 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 	active = false;
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
-  sv->setFocusPolicy(QWidget::StrongFocus);
-  sv->setResizePolicy(QScrollView::AutoOneFit);
+  sv->setFocusPolicy(Qt::StrongFocus);
+  sv->setResizePolicy(Q3ScrollView::AutoOneFit);
   redCtl = sv->viewport();
-  redCtl->setBackgroundColor(white);
+  redCtl->setBackgroundColor(Qt::white);
   text = new CProgText;
   sv->text = text;
 	m_ComboBar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
@@ -477,14 +484,14 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
 	delete fm;
 }
 
-typedef QValueList<int> BreakPointList;
+typedef Q3ValueList<int> BreakPointList;
 
 void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, int cliph)
 {
   CHETokenNode *currentToken;
   bool inSelection=false, debugStopOccurred=false;
   QRect vr=visibleRect(), vr_vpt=viewport()->visibleRect(), gmt=viewport()->geometry(), cr=childrenRect();
-  QPen myPen(QPen::NoPen);
+  QPen myPen(Qt::NoPen);
   QFontMetrics *fm;
   BreakPointList bpl;
   BreakPointList::iterator it;
@@ -549,7 +556,7 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
     }
     else if (inSelection && !inDebugStop) {
       p->setBackgroundMode(Qt::OpaqueMode);
-      p->setBackgroundColor(black);
+      p->setBackgroundColor(Qt::black);
     }
 
     DrawToken(text,currentToken,inSelection);
@@ -563,15 +570,15 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
         if (currentToken == execView->selEndPos) {
           inSelection = false;
           p->setBackgroundMode(Qt::TransparentMode);
-          p->setBackgroundColor(white);
+          p->setBackgroundColor(Qt::white);
         }
         else {
           p->setBackgroundMode(Qt::OpaqueMode);
-          p->setBackgroundColor(black);
+          p->setBackgroundColor(Qt::black);
         }
       else {
         p->setBackgroundMode(Qt::TransparentMode);
-        p->setBackgroundColor(white);
+        p->setBackgroundColor(Qt::white);
       }
     }
     else if (inBreakPoint) {
@@ -580,22 +587,22 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
         if (currentToken == execView->selEndPos) {
           inSelection = false;
           p->setBackgroundMode(Qt::TransparentMode);
-          p->setBackgroundColor(white);
+          p->setBackgroundColor(Qt::white);
         }
         else {
           p->setBackgroundMode(Qt::OpaqueMode);
-          p->setBackgroundColor(black);
+          p->setBackgroundColor(Qt::black);
         }
       else {
         p->setBackgroundMode(Qt::TransparentMode);
-        p->setBackgroundColor(white);
+        p->setBackgroundColor(Qt::white);
       }
     }
     else if (inSelection)
       if (currentToken == execView->selEndPos) {
         inSelection = false;
         p->setBackgroundMode(Qt::TransparentMode);
-        p->setBackgroundColor(white);
+        p->setBackgroundColor(Qt::white);
       }
   }
 
@@ -829,14 +836,14 @@ void CExecView::OnChar(QKeyEvent *e)
 {
   // TODO: Add your message handler code here and/or call default
   int key=e->key();
-  ButtonState state=e->state();
-	ctrlPressed = (state & Qt::ControlButton);
+  Qt::ButtonState state=e->state();
+	ctrlPressed = (state & Qt::ControlModifier);
   SynObject *currentSynObj, *parent/*, *ocl*/;
 
   if (LBaseData->debugOn)
     switch (key) {
     case Qt::Key_Tab:
-      if (state & Qt::ShiftButton) // Shift key down ==> BACKTAB
+      if (state & Qt::ShiftModifier) // Shift key down ==> BACKTAB
         text->newSelection = text->FindPrecedingPlaceholder();
       else // TAB
         text->newSelection = text->FindNextPlaceholder();
@@ -1097,7 +1104,7 @@ void CExecView::OnChar(QKeyEvent *e)
       OnDelete();
       return;
     case Qt::Key_Tab:
-      if (state & Qt::ShiftButton) // Shift key down ==> BACKTAB
+      if (state & Qt::ShiftModifier) // Shift key down ==> BACKTAB
         text->newSelection = text->FindPrecedingPlaceholder();
       else // TAB
         text->newSelection = text->FindNextPlaceholder();
@@ -1197,7 +1204,7 @@ void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
   execView->OnLButtonDblClk(e);
 }
 
-MyScrollView::MyScrollView (QWidget *parent) : QScrollView(parent) {
+MyScrollView::MyScrollView (QWidget *parent) : Q3ScrollView(parent) {
   execView = (CExecView*)parent;
   debugStop = new QPixmap((const char**)debugStop_xpm);
   debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
@@ -2510,7 +2517,7 @@ void CExecView::OnClone()
   mcln = new CloneExpressionV(true);
   varNamePtr = (VarName*)mcln->varName.ptr;
   if (tempNo > 0) {
-		sprintf(buffer,"%u",++tempNo);
+		sprintf_s(buffer,10,"%u",++tempNo);
     varNamePtr->varName += buffer;
 //    varNamePtr->varName += _ultoa(++tempNo,buffer,10);
 	}
@@ -2534,7 +2541,7 @@ void CExecView::OnComment()
   if (!EditOK()) return;
   clicked = false;
 //!!!  setUpdatesEnabled(true);
-  CComment *pComment = new CComment(this,"Comment",true);
+  CComment *pComment = new CComment(this);
 
   if (synObj->comment.ptr) {
     pComment->inline_comment->setChecked(synObj->comment.ptr->inLine);
@@ -2660,7 +2667,7 @@ void CExecView::OnDelete ()
       reject = true;
 
   if (reject) {
-    QMessageBox::critical(this,qApp->name(),ERR_One_must_remain,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this,qApp->name(),ERR_One_must_remain,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     text->currentSynObj = oldCurrentSynObj;
     return;
   }
@@ -3894,20 +3901,20 @@ void CExecView::OnGotoImpl()
   case FuncRef_T:
     decl = GetDocument()->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID);
     if (decl && (decl->TypeFlags.Contains(isAbstract) || decl->TypeFlags.Contains(isNative))) {
-      QMessageBox::information(this, qApp->name(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::information(this, qApp->name(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       Base->Browser->DestroyLastBrsContext();
     }
     else
       if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
   //      AfxMessageBox(&ERR_NoFuncImpl, MB_OK+MB_ICONINFORMATION);
-        QMessageBox::critical(this,qApp->name(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(this,qApp->name(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         Base->Browser->DestroyLastBrsContext();
       }
     break;
   case TypeRef_T:
     if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
 //      AfxMessageBox(&ERR_NoClassImpl, MB_OK+MB_ICONINFORMATION);
-        QMessageBox::critical(this,qApp->name(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(this,qApp->name(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       Base->Browser->DestroyLastBrsContext();
     }
     break;
@@ -3916,7 +3923,7 @@ void CExecView::OnGotoImpl()
     || text->currentSynObj->parentObject->primaryToken == new_T)
     if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
 //        AfxMessageBox(&ERR_NoClassImpl, MB_OK+MB_ICONINFORMATION);
-        QMessageBox::critical(this,qApp->name(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(this,qApp->name(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         Base->Browser->DestroyLastBrsContext();
       }
     break;
@@ -4495,7 +4502,7 @@ crtbl:
           true);
         varNamePtr = (VarName*)newExp->varName.ptr;
         if (tempNo > 1) {
-					sprintf(buffer,"%u",tempNo);
+					sprintf_s(buffer,10,"%u",tempNo);
           varNamePtr->varName += buffer;
 //          varNamePtr->varName += _ultoa(tempNo,buffer,10);
 				}
@@ -4507,7 +4514,7 @@ crtbl:
           false);
         varNamePtr = (VarName*)newExp->varName.ptr;
         if (tempNo > 1) {
-					sprintf(buffer,"%u",tempNo);
+					sprintf_s(buffer,10,"%u",tempNo);
           varNamePtr->varName += buffer;
 //          varNamePtr->varName += _ultoa(tempNo,buffer,10);
 				}
@@ -4581,7 +4588,7 @@ crtbl:
           funcStm->parentObject = newExp;
           varNamePtr = (VarName*)newExp->varName.ptr;
           if (tempNo > 1) {
-						sprintf(buffer,"%u",tempNo);
+						sprintf_s(buffer,10,"%u",tempNo);
 						varNamePtr->varName += buffer;
 //						varNamePtr->varName += _ultoa(tempNo,buffer,10);
 					}
@@ -4758,7 +4765,7 @@ void CExecView::OnAssign()
 void CExecView::OnConnect() 
 {
   // TODO: Code für Befehlsbehandlungsroutine hier einfügen
-  QPopupMenu connectMenu;
+  Q3PopupMenu connectMenu;
   int rc;
 
   connectMenu.insertItem("signal sender object",0);
@@ -4935,7 +4942,7 @@ void CExecView::OnNextError()
     }
   }
   else
-    QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 void CExecView::OnPrevError()
@@ -4986,7 +4993,7 @@ void CExecView::OnPrevError()
     }
   }
   else
-    QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 void CExecView::OnNextComment()
@@ -5595,7 +5602,7 @@ void CExecView::DisableKwdButtons() {
 }
 
 
-void CExecView::OnUpdateGotoImpl(wxAction* action) 
+void CExecView::OnUpdateGotoImpl(QAction* action) 
 {
   switch (text->currentSelection->data.token) {
   case FuncRef_T:
@@ -5612,14 +5619,14 @@ void CExecView::OnUpdateGotoImpl(wxAction* action)
   action->setEnabled(false);
 }
 
-void CExecView::OnUpdateModulus(wxAction* action) 
+void CExecView::OnUpdateModulus(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateFindReferences(wxAction* action) 
+void CExecView::OnUpdateFindReferences(QAction* action) 
 {
   switch (text->currentSelection->data.token) {
   case VarName_T:
@@ -5635,12 +5642,12 @@ void CExecView::OnUpdateFindReferences(wxAction* action)
   action->setEnabled(false);
 }
 
-void CExecView::OnUpdateGotoDecl(wxAction* action) 
+void CExecView::OnUpdateGotoDecl(QAction* action) 
 {
   action->setEnabled(EnableGotoDecl());
 }
 
-void CExecView::OnUpdateEditSel(wxAction* action) 
+void CExecView::OnUpdateEditSel(QAction* action) 
 {
   // TODO: Add your message handler code here and/or call default
   
@@ -5694,7 +5701,7 @@ bool CExecView::EnableCut()
         && text->currentSynObj->parentObject->primaryToken != parameter_T));
 }
 
-void CExecView::OnUpdateEditCut(wxAction* action) 
+void CExecView::OnUpdateEditCut(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -5738,21 +5745,21 @@ void CExecView::OnUpdateAnd(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateBitAnd(wxAction* action) 
+void CExecView::OnUpdateBitAnd(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
 
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateBitOr(wxAction* action) 
+void CExecView::OnUpdateBitOr(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateBitXor(wxAction* action) 
+void CExecView::OnUpdateBitXor(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -5773,7 +5780,7 @@ void CExecView::OnUpdateSelect(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateComment(wxAction* action) 
+void CExecView::OnUpdateComment(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
 
@@ -5783,21 +5790,21 @@ void CExecView::OnUpdateComment(wxAction* action)
     action->setEnabled(!editCtlVisible && IsTopLevelToken());
 }
 
-void CExecView::OnUpdateDelete(wxAction* action) 
+void CExecView::OnUpdateDelete(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   OnUpdateEditCut(action);
 }
 
-void CExecView::OnUpdateDivide(wxAction* action) 
+void CExecView::OnUpdateDivide(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateOptLocalVar(wxAction* action) 
+void CExecView::OnUpdateOptLocalVar(QAction* action) 
 {
 	// TODO: Add your command update UI handler code here
 	bool isDeclareVar;
@@ -5816,14 +5823,14 @@ void CExecView::OnUpdateOptLocalVar(wxAction* action)
 //    ((QToolBar*)action->m_pOther)->GetToolBarCtrl().PressButton(action->m_nID,showArrow);
 }
 
-void CExecView::OnUpdateHandle(wxAction* action) 
+void CExecView::OnUpdateHandle(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateFunctionCall(wxAction* action) 
+void CExecView::OnUpdateFunctionCall(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -5831,7 +5838,7 @@ void CExecView::OnUpdateFunctionCall(wxAction* action)
     || (text->currentSynObj->ExpressionSelected(text->currentSelection))));
 }
 
-void CExecView::OnUpdateInputArrow(wxAction* action) 
+void CExecView::OnUpdateInputArrow(QAction* action) 
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflüche hier einfügen
   bool showArrow;
@@ -5847,7 +5854,7 @@ void CExecView::OnUpdateInputArrow(wxAction* action)
   action->setOn(showArrow);
 }
 
-void CExecView::OnUpdateEvaluate(wxAction* action) 
+void CExecView::OnUpdateEvaluate(QAction* action) 
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflüche hier einfügen
   
@@ -5864,7 +5871,7 @@ void CExecView::OnUpdateCopy(QPushButton *pb)
     && text->currentSynObj->ReadOnlyContext() != roClause); 
 }
 
-void CExecView::OnUpdateToggleSubstitutable(wxAction* action) 
+void CExecView::OnUpdateToggleSubstitutable(QAction* action) 
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflüche hier einfügen
 
@@ -5872,7 +5879,7 @@ void CExecView::OnUpdateToggleSubstitutable(wxAction* action)
   action->setOn(text->currentSynObj->flags.Contains(isSubstitutable));
 }
 
-void CExecView::OnUpdateToggleCategory(wxAction* action) 
+void CExecView::OnUpdateToggleCategory(QAction* action) 
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflüche hier einfügen
 
@@ -5884,35 +5891,35 @@ void CExecView::OnUpdateToggleCategory(wxAction* action)
   action->setEnabled(ToggleCatEnabled());
 }
 
-void CExecView::OnUpdateConflict(wxAction* action) 
+void CExecView::OnUpdateConflict(QAction* action) 
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflüche hier einfügen
 
   action->setEnabled(ConflictSelected());
 }
 
-void CExecView::OnUpdateNextComment(wxAction* action)
+void CExecView::OnUpdateNextComment(QAction* action)
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(text->showComments);
 }
 
-void CExecView::OnUpdatePrevComment(wxAction* action)
+void CExecView::OnUpdatePrevComment(QAction* action)
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(text->showComments);
 }
 
-void CExecView::OnUpdateNextError(wxAction* action)
+void CExecView::OnUpdateNextError(QAction* action)
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(true);
 }
 
-void CExecView::OnUpdatePrevError(wxAction* action)
+void CExecView::OnUpdatePrevError(QAction* action)
 {
   // TODO: Add your command update UI handler code here
   
@@ -5961,7 +5968,7 @@ void CExecView::OnUpdateUuid(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 */
-void CExecView::OnUpdateStaticCall(wxAction* action) 
+void CExecView::OnUpdateStaticCall(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -5989,7 +5996,7 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
 	}
 }
 
-void CExecView::OnUpdateInterval(wxAction* action) 
+void CExecView::OnUpdateInterval(QAction* action) 
 {
   // TODO: Code für die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflüche hier einfügen
 
@@ -6064,7 +6071,7 @@ void CExecView::OnUpdateQueryItf(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateIgnore(wxAction* action) 
+void CExecView::OnUpdateIgnore(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   SynObject *synObj=text->currentSynObj;
@@ -6111,7 +6118,7 @@ void CExecView::OnUpdateItem(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateNewLine(wxAction* action) 
+void CExecView::OnUpdateNewLine(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   CHETokenNode *startToken, *predToken;
@@ -6161,7 +6168,7 @@ void CExecView::OnUpdateNewLine(wxAction* action)
   action->setOn(nl);
 }
 
-void CExecView::OnUpdateToggleArrows(wxAction* action) 
+void CExecView::OnUpdateToggleArrows(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
 
@@ -6193,7 +6200,7 @@ bool CExecView::EnableCopy()
         && text->currentSynObj->parentObject->IsFuncInvocation()));
 }
 
-void CExecView::OnUpdateEditCopy(wxAction* action)
+void CExecView::OnUpdateEditCopy(QAction* action)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6239,7 +6246,7 @@ void CExecView::OnUpdateSucceed(QPushButton *pb)
     /*&& !text->currentSynObj->InReadOnlyContext()*/);
 }
 
-void CExecView::OnUpdateEditPaste(wxAction* action) 
+void CExecView::OnUpdateEditPaste(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -6251,7 +6258,7 @@ bool CExecView::EnableUndo ()
   return (GetDocument()->UndoMem.EnableUndo());
 }
 
-void CExecView::OnUpdateEditUndo (wxAction* action) 
+void CExecView::OnUpdateEditUndo (QAction* action) 
 {
 
   // TODO: Add your command handler code here
@@ -6262,7 +6269,7 @@ void CExecView::OnUpdateEditUndo (wxAction* action)
     GetDocument()->UndoMem.OnUpdateEditUndo(action);
 }
 
-void CExecView::OnUpdateEditRedo (wxAction* action) 
+void CExecView::OnUpdateEditRedo (QAction* action) 
 {
 
   // TODO: Add your command handler code here
@@ -6273,7 +6280,7 @@ void CExecView::OnUpdateEditRedo (wxAction* action)
     GetDocument()->UndoMem.OnUpdateEditRedo(action);
 }
 
-void CExecView::OnUpdateEq(wxAction* action) 
+void CExecView::OnUpdateEq(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -6288,7 +6295,7 @@ void CExecView::OnUpdateDeclare(QPushButton *pb)
     && text->currentSynObj->ReadOnlyContext() != roClause);
 }
 
-void CExecView::OnUpdateFalse(wxAction* action) 
+void CExecView::OnUpdateFalse(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -6307,14 +6314,14 @@ void CExecView::OnUpdateForeach(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateGe(wxAction* action) 
+void CExecView::OnUpdateGe(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateGt(wxAction* action) 
+void CExecView::OnUpdateGt(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -6436,7 +6443,7 @@ bool CExecView::EnableInsert()
   );
 }
 
-void CExecView::OnUpdateInsert(wxAction* action) 
+void CExecView::OnUpdateInsert(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -6494,7 +6501,7 @@ void CExecView::OnUpdateInsert(wxAction* action)
   );
 }
 
-void CExecView::OnUpdateInsertBefore(wxAction* action) 
+void CExecView::OnUpdateInsertBefore(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -6502,49 +6509,49 @@ void CExecView::OnUpdateInsertBefore(wxAction* action)
   action->setOn(insertBefore);
 }
 
-void CExecView::OnUpdateInvert(wxAction* action) 
+void CExecView::OnUpdateInvert(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateLe(wxAction* action) 
+void CExecView::OnUpdateLe(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateLshift(wxAction* action) 
+void CExecView::OnUpdateLshift(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateLt(wxAction* action) 
+void CExecView::OnUpdateLt(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateMult(wxAction* action) 
+void CExecView::OnUpdateMult(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateNe(wxAction* action) 
+void CExecView::OnUpdateNe(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateShowComments(wxAction* action) 
+void CExecView::OnUpdateShowComments(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
 
@@ -6564,7 +6571,7 @@ void CExecView::OnUpdateNot(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateNull(wxAction* action) 
+void CExecView::OnUpdateNull(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -6583,21 +6590,21 @@ void CExecView::OnUpdateOr(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdatePlus(wxAction* action) 
+void CExecView::OnUpdatePlus(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdatePlusMinus(wxAction* action) 
+void CExecView::OnUpdatePlusMinus(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateOrd(wxAction* action) 
+void CExecView::OnUpdateOrd(QAction* action) 
 {
 	// TODO: Add your command update UI handler code here
 	
@@ -6605,14 +6612,14 @@ void CExecView::OnUpdateOrd(wxAction* action)
     && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateRshift(wxAction* action) 
+void CExecView::OnUpdateRshift(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateShowOptionals(wxAction* action) 
+void CExecView::OnUpdateShowOptionals(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -6669,7 +6676,7 @@ void CExecView::OnUpdateSwitch(QPushButton *pb)
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateTrue(wxAction* action) 
+void CExecView::OnUpdateTrue(QAction* action) 
 {
   // TODO: Add your command update UI handler code here
   
@@ -6703,7 +6710,7 @@ void CExecView::UpdateErrMsg (QString &helpMsg) {
       || text->currentSelection->data.token == Rbracket_T)) {
     myDoc->SetPEError(errorObj->errorChain,nextError);
     errorMsg = *((CLavaError*)((CHE*)errorObj->errorChain.first)->data)->IDS;
-    errorMsg = ((CLavaError*)((CHE*)errorObj->errorChain.first)->data)->textParam.c + errorMsg;
+    errorMsg = QString(((CLavaError*)((CHE*)errorObj->errorChain.first)->data)->textParam.c) + errorMsg;
     statusBar->message(errorMsg);
     nextError = false;
     return;
@@ -6819,7 +6826,7 @@ void CExecView::DbgRunToSel() {
   pp->FuncID.nINCL = LBaseData->debugThread->myDoc->IDTable.GetINCL(pp->FuncDocName,pp->FuncDocDir);
   if (pp->FuncID.nINCL < 0) {
     LBaseData->ContData->RunToPnt.Destroy();
-    QMessageBox::critical(this,qApp->name(),"This run-to-selection is not part of the debugged lava program",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this,qApp->name(),"This run-to-selection is not part of the debugged lava program",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return;
   }
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
@@ -6827,7 +6834,7 @@ void CExecView::DbgRunToSel() {
 }
 
 
-void CExecView::OnUpdateDbgStart(wxAction* action) {
+void CExecView::OnUpdateDbgStart(QAction* action) {
   if (!myDoc->mySynDef) 
     return;
   if (LBaseData->debugOn) {
@@ -6837,30 +6844,30 @@ void CExecView::OnUpdateDbgStart(wxAction* action) {
   ((CPEBaseDoc*)myDoc)->OnUpdateRunLava(action);
 }
 
-void CExecView::OnUpdateDbgStepNext(wxAction* action) {
+void CExecView::OnUpdateDbgStepNext(QAction* action) {
   action->setEnabled(LBaseData->enableBreakpoints);
 }
 
-void CExecView::OnUpdateDbgStepNextFunction(wxAction* action) {
+void CExecView::OnUpdateDbgStepNextFunction(QAction* action) {
   action->setEnabled(LBaseData->enableBreakpoints);
 }
 
-void CExecView::OnUpdateDbgStepinto(wxAction* action) {
+void CExecView::OnUpdateDbgStepinto(QAction* action) {
   action->setEnabled(LBaseData->enableBreakpoints);
 }
 
-void CExecView::OnUpdateDbgStepout(wxAction* action) {
+void CExecView::OnUpdateDbgStepout(QAction* action) {
   action->setEnabled(LBaseData->enableBreakpoints);
 }
 
-void CExecView::OnUpdateDbgRunToSel(wxAction* action) 
+void CExecView::OnUpdateDbgRunToSel(QAction* action) 
 {
   action->setEnabled(!Taboo(true)
     && text->currentSynObj->IsExecutable()
     && LBaseData->enableBreakpoints);
 }
 
-void CExecView::OnUpdateDbgBreakpoint(wxAction* action) 
+void CExecView::OnUpdateDbgBreakpoint(QAction* action) 
 {
   action->setEnabled(!Taboo(true)
     && text->currentSynObj->IsExecutable()
@@ -6871,11 +6878,11 @@ void CExecView::OnUpdateDbgBreakpoint(wxAction* action)
     && (LBaseData->enableBreakpoints || !LBaseData->debugOn));
 }
 
-void CExecView::OnUpdateDbgClearBreakpoints(wxAction* action) {
+void CExecView::OnUpdateDbgClearBreakpoints(QAction* action) {
   action->setEnabled(LBaseData->enableBreakpoints || !LBaseData->debugOn);
 }
 
-void CExecView::OnUpdateDbgStop(wxAction* action) {
+void CExecView::OnUpdateDbgStop(QAction* action) {
   action->setEnabled(LBaseData->enableBreakpoints);
 }
 

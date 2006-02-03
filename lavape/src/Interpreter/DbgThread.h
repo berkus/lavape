@@ -7,10 +7,9 @@
 #include "Syntax.h"       // Hauptsymbole
 #include "docview.h"
 #include "qstring.h"
-#include "qprocess.h"
-#include "prelude.h"
-#include "sflsock.h"
-
+#include "q3process.h"
+#include <QTcpSocket>
+#include <QTcpServer>
 
 class LocalDebugVar : public VarAction {
 public:
@@ -29,8 +28,10 @@ public:
   ~CLavaDebugThread();
 
   void initData(CLavaBaseDoc* d);
-  sock_t listenSocket, workSocket;
-  QString remoteIPAddress, remotePort;
+  QTcpServer *listenSocket;
+  QTcpSocket *workSocket;
+  QString remoteIPAddress;
+  quint16 remotePort;
 
   DbgStopData* dbgStopData;
   LocalDebugVar *varAction;

@@ -24,6 +24,9 @@
 #include "qmessagebox.h"
 #include "qapplication.h"
 #include "qlayout.h"
+//Added by qt3to4:
+#include <QFocusEvent>
+#include <QKeyEvent>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -36,6 +39,12 @@ extern bool isExecView;
 MiniEdit::MiniEdit(CExecView *execView) : QLineEdit(execView->sv,"MiniEdit") {  
   conView = execView;
   returnPressed = false;
+}
+
+int MiniEdit::frameWidth() {
+  QSize frSize=frameSize(), totalSize=size();
+
+  return totalSize.width() - frSize.width();
 }
 
 
@@ -57,7 +66,7 @@ VarConstCheck MiniEdit::InputIsCorrect(TToken &token, CComboBar *comboBar)
 
   if (!IsOK(txt,token,pos,msgID,comboBar)) {
     setCursorPosition(pos);
-    QMessageBox::critical(this,qApp->name(),*msgID,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(this,qApp->name(),*msgID,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     rc = wrong;
   }
 
@@ -102,7 +111,7 @@ void MiniEdit::keyPressEvent (QKeyEvent *ev)
     QLineEdit::keyPressEvent(ev);
     int w = fontMetrics().width(text()+" ");
     if (w > width()) {
-      setFixedWidth(w+2*frameWidth());
+      setFixedWidth(w+2*1);//frameWidth());
       QRect mw_rect = geometry();
       int c_x, c_y;
       conView->sv->viewportToContents(mw_rect.right(),mw_rect.top(),c_x,c_y);

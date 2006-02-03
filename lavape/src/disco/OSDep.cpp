@@ -109,12 +109,14 @@ void OSDepCLASS::ProgSyl (DString& progFile,
 void OSDepCLASS::INIT ()
 {
   char *discoPtr;
+  errno_t err;
+  size_t len;
   
   if (__INITstarted) return;
   __INITstarted = true;
 
-  discoPtr = getenv("DISCO");
-  if ((discoPtr == 0) || (discoPtr[0] != '/'))
+  err = _dupenv_s(&discoPtr,&len,"DISCO");
+  if ((err) || (discoPtr[0] != '/'))
     discoPtr = "/disco";
   VertikalDirectory = DString(discoPtr) + "/";
 

@@ -17,6 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
+
 #include "BAdapter.h"
 #include "DumpView.h"
 #include "LavaBaseDoc.h"
@@ -24,8 +25,11 @@
 #include "qglobal.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "qdatastream.h"
 #include "qmessagebox.h"
+//Added by qt3to4:
+#include <QTextStream>
+#include <QDataStream>
+#include <QFocusEvent>
 #include "LavaAppBase.h"
 #include "LavaStream.h"
 
@@ -52,8 +56,8 @@ QString ERR_OpenOutFailed(QObject::tr("Open for output failed for file "));
 
 #define OPENIN(CKD, OBJ) {\
   QFile* qf = (QFile*)(OBJ+LSH+1);\
-  if (!(qf->mode() & IO_ReadOnly)) \
-    if (!qf->open(IO_ReadOnly) && !CKD.exceptionThrown) {\
+  if (!(qf->mode() & QIODevice::ReadOnly)) \
+    if (!qf->open(QIODevice::ReadOnly) && !CKD.exceptionThrown) {\
       QFileInfo qfi(*qf);\
       QString str = ERR_OpenInFailed + qfi.absFilePath();\
       throw CRuntimeException(memory_ex ,&str);\
@@ -62,12 +66,12 @@ QString ERR_OpenOutFailed(QObject::tr("Open for output failed for file "));
 
 #define OPENOUT(CKD, OBJ) {\
   QFile* qf = (QFile*)(OBJ+LSH+1);\
-  int mode; \
+  QIODevice::OpenMode mode; \
   LavaObjectPtr appendObj = *(LavaVariablePtr)(stack[SFH]+LSH); \
   if (*(bool*)(appendObj+LSH))   \
-    mode = IO_Append | IO_WriteOnly; \
+    mode = QIODevice::Append | QIODevice::WriteOnly; \
   else \
-    mode = IO_WriteOnly;\
+    mode = QIODevice::WriteOnly;\
   if (!(qf->mode() & mode)) \
     if (!qf->open(mode) && !CKD.exceptionThrown) {\
       QFileInfo qfi(*qf);\
@@ -444,14 +448,14 @@ void DDStreamClass::makeChildren()
 
   dd = new DDStreamClass(isDStream);
   if (qf) {
-    if (qf->mode() & IO_ReadOnly)
+    if (qf->mode() & QIODevice::ReadOnly)
       dd->value2 = "read only";
-    else if (qf->mode() & IO_WriteOnly) {
+    else if (qf->mode() & QIODevice::WriteOnly) {
       dd->value2 = dd->value2 + "write only";
-      if (qf->mode() & IO_Append)
+      if (qf->mode() & QIODevice::Append)
         dd->value2 = dd->value2 + " | append mode";
     }
-    else if(qf->mode() & IO_ReadWrite)
+    else if(qf->mode() & QIODevice::ReadWrite)
        dd->value2 = "read and write";
     else
       dd->value2 = "not opened";

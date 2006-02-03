@@ -23,7 +23,11 @@
 #include "FormWid.h"
 #include "CmdExec.h"
 #include "qstyle.h"
+//Added by qt3to4:
+#include <Q3Frame>
+#include <QFocusEvent>
 #include "MACROS.h"
+#include <QStyleOptionButton>
 
 
 CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, 
@@ -33,13 +37,14 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
   DISCOButtonType = isToggle;
   myFormNode = data;
   GUIProg = guiPr;
+  QStyleOptionButton qsob=QStyleOptionButton();
 
   myFormNode->data.ownLFont = GUIProg->SetLFont(this, myFormNode);
 //  if (GUIProg->Font)
 //    setFont(*GUIProg->Font);
   QSize size = GUIProg->CalcStringRect(label, font());
-  int bord = ((QFrame*)parent)->lineWidth();
-  size = qApp->style().sizeFromContents(QStyle::CT_CheckBox, this, size);
+  int bord = ((Q3Frame*)parent)->lineWidth();
+  size = qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &qsob, size, this);
   setGeometry(bord,bord, size.width(), size.height());
   //setWFlags(GUIProg->checkBoxStyle);
   setChecked(myFormNode->data.B);
@@ -90,6 +95,8 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
           const char* lpszWindowName , const QString& label, QWidget* radioBox, unsigned num)
 :QPushButton(label, parent, lpszWindowName)
 {
+  QStyleOptionButton qsob=QStyleOptionButton();
+
   myFormNode = data;
   GUIProg = guiPr;
   DISCOButtonType = isPush;
@@ -99,9 +106,9 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   GUIProg->SetColor(this, ((CFormWid*)Radio)->myFormNode);//myFormNode);
   QSize size = GUIProg->CalcStringRect(label, font());
-  int bord = ((QFrame*)parent)->lineWidth();
-  int iw1 = ((wxApp*)wxTheApp)->style().pixelMetric(QStyle::PM_ButtonMargin, this);
-  int iw2 = ((wxApp*)wxTheApp)->style().pixelMetric(QStyle::PM_DefaultFrameWidth, this)*2;
+  int bord = ((Q3Frame*)parent)->lineWidth();
+  int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob,  this);
+  int iw2 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &qsob, this)*2;
   setGeometry(bord,bord, size.width() + iw1 + iw2, size.height() + iw1 + iw2);
   //size = qApp->style().sizeFromContents(QStyle::CT_PushButton, this, size);
   //setGeometry(bord,bord, size.width(), size.height());
@@ -117,6 +124,8 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
           const char* lpszWindowName , const QString& label, QWidget* radioBox, unsigned num)
 :QPushButton(*data->data.Pixmap, label, parent, lpszWindowName)
 {
+  QStyleOptionButton qsob=QStyleOptionButton();
+
   myFormNode = data;
   GUIProg = guiPr;
   DISCOButtonType = isPush;
@@ -127,9 +136,9 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
   GUIProg->SetColor(this, ((CFormWid*)Radio)->myFormNode);//myFormNode);
   QSize size = GUIProg->CalcStringRect(label, font());
   size.setHeight(lmax(size.height(), myFormNode->data.Pixmap->height()));
-  int bord = ((QFrame*)parent)->lineWidth();
-  int iw1 = ((wxApp*)wxTheApp)->style().pixelMetric(QStyle::PM_ButtonMargin, this);
-  int iw2 = ((wxApp*)wxTheApp)->style().pixelMetric(QStyle::PM_DefaultFrameWidth, this)*2;
+  int bord = ((Q3Frame*)parent)->lineWidth();
+  int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob, this);
+  int iw2 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &qsob, this)*2;
   setGeometry(bord,bord, size.width() + iw1 + iw2 + myFormNode->data.Pixmap->width(), size.height() + iw1 + iw2);
   if (GUIProg->FrozenObject || ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
       || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
@@ -143,6 +152,8 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
        const char* lpszWindowName, const QString& label, unsigned cmnd) 
 :QPushButton(label, parent, lpszWindowName)
 {
+  QStyleOptionButton qsob=QStyleOptionButton();
+
   Cmnd = cmnd;
   Radio = 0;
   IterNode = 0;
@@ -164,10 +175,10 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   GUIProg->SetColor(this, myFormNode);
-  int bord = ((QFrame*)parent)->lineWidth();
+  int bord = ((Q3Frame*)parent)->lineWidth();
   QSize size = GUIProg->CalcStringRect(label, font());
-  int iw1 = ((wxApp*)wxTheApp)->style().pixelMetric(QStyle::PM_ButtonMargin, this);
-  int iw2 = ((wxApp*)wxTheApp)->style().pixelMetric(QStyle::PM_DefaultFrameWidth, this)*2;
+  int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob, this);
+  int iw2 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &qsob, this)*2;
   setGeometry(bord,bord, size.width() + iw1 + iw2, size.height() + iw1 + iw2);
   /*
   QRect r = qApp->style().subRect(QStyle::SR_PushButtonContents, this);
@@ -245,19 +256,21 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
              const QString& label, QWidget* radioBox, unsigned num)
 :QRadioButton(label, parent, "RadioButton")
 {
+  QStyleOptionButton qsob=QStyleOptionButton();
+
   DISCOButtonType = isRadio;
   myFormNode = data;
   GUIProg = guiPr;
   Radio = radioBox;
-  setFocusPolicy(QWidget::StrongFocus);
+  setFocusPolicy(Qt::StrongFocus);
   setChecked(false);
   EnumNode = (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first;
   myFormNode->data.ownLFont = GUIProg->SetLFont(this, myFormNode);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   QSize size = GUIProg->CalcStringRect(label, font());
-  int bord = ((QFrame*)parent)->lineWidth();
-  size = qApp->style().sizeFromContents(QStyle::CT_RadioButton, this, size);
+  int bord = ((Q3Frame*)parent)->lineWidth();
+  size = qApp->style()->sizeFromContents(QStyle::CT_RadioButton, &qsob, size, this);
   setGeometry(bord,bord, size.width(), size.height());
   if (!myFormNode->data.IoSigFlags.Contains(DONTPUT)) 
     setChecked(num == EnumNode->data.D+1);
@@ -282,7 +295,7 @@ void CRadioButton::OnClicked()
   GUIProg->CurPTR = myFormNode;
   int ii;
   for (ii = 0; ii < ((CFormWid*)Radio)->nRadio; ii++) {
-    if (((CFormWid*)Radio)->Radio[ii] == this) {
+    if (((CFormWid*)Radio)->Radio[ii] == (Q3Button*)this) {
       setChecked(true);
       EnumNode->data.D = ii;
       EnumNode->data.StringValue = myFormNode->data.StringValue;

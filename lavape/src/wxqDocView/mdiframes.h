@@ -14,6 +14,10 @@
 
 #include "DString.h"
 #include "qglobal.h"
+//Added by qt3to4:
+#include <QCustomEvent>
+#include <QResizeEvent>
+#include <QCloseEvent>
 #include "setup.h"
 #include "defs.h"
 #include "qobject.h"
@@ -21,9 +25,9 @@
 #include "docview.h"
 #include "mdiframes.h"
 #include "defs.h"
-#include "qmainwindow.h"
-#include "qvbox.h"
-#include "qptrlist.h"
+#include "q3mainwindow.h"
+#include "q3vbox.h"
+#include "q3ptrlist.h"
 #include "qworkspace.h"
 
 
@@ -34,11 +38,12 @@ public:
 	wxMDIChildFrame *window;
 };
 
-class WXDLLEXPORT wxMainFrame: public QMainWindow
+class WXDLLEXPORT wxMainFrame: public Q3MainWindow
 {
     //friend class WXDLLEXPORT wxMDIChildFrame;
 public:
-  wxMainFrame( QWidget* parent, const char* name, WFlags fl);
+  wxMainFrame() {}
+  wxMainFrame( QWidget* parent, const char* name, Qt::WFlags fl=0);
   virtual ~wxMainFrame();
 
   virtual bool OnCreate();
@@ -61,10 +66,10 @@ public:
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);
-  QVBox *m_CentralWidget;
+  Q3VBox *m_CentralWidget;
   QWorkspace *m_workspace;
 	wxHistory *m_childFrameHistory;
-  QMainWindow *theActiveFrame;
+  Q3MainWindow *theActiveFrame;
 	bool completelyCreated;
   void Cascade();
   void TileVertic(QMenuBar *menubar, int& lastTile);
@@ -85,7 +90,7 @@ private:
  * Use this instead of wxMDIChildFrame
  */
 
-class WXDLLEXPORT wxMDIChildFrame: public QMainWindow
+class WXDLLEXPORT wxMDIChildFrame: public Q3MainWindow
 {
 public:
   wxMDIChildFrame(QWidget *parent, const char* name);
@@ -107,12 +112,12 @@ public:
   //virtual void Activate(bool activate=true,bool windowMenuAction=false);
 
 //  FRAMEFACTORY(wxMDIChildFrame)
-	QEvent::Type oldWindowState;
+	Qt::WindowState oldWindowState;
 
 protected:
   virtual bool event ( QEvent * e );
   unsigned m_viewCount;
-  QPtrList<wxView> m_viewList;
+  Q3PtrList<wxView> m_viewList;
   QWidget *m_clientWindow;
   wxView* lastActive;
 

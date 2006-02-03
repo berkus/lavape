@@ -1,143 +1,118 @@
-<!DOCTYPE UI><UI version="3.0" stdsetdef="1">
-<class>IDD_FindByNameBox</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>IDD_FindByNameBox</cstring>
+<ui version="4.0" stdsetdef="1" >
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>IDD_FindByNameBox</class>
+  <widget class="QDialog" name="IDD_FindByNameBox" >
+    <property name="geometry" >
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>226</width>
+        <height>132</height>
+      </rect>
     </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>226</width>
-            <height>132</height>
-        </rect>
+    <property name="font" >
+      <font>
+        <family></family>
+        <pointsize>0</pointsize>
+        <weight>0</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+        <underline>false</underline>
+        <strikeout>false</strikeout>
+      </font>
     </property>
-    <property name="font">
-        <font>
-        </font>
+    <property name="windowTitle" >
+      <string>Find declaration by name</string>
     </property>
-    <property name="caption">
-        <string>Find declaration by name</string>
-    </property>
-    <grid>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <widget class="QComboBox" row="0" column="0">
-            <item>
-                <property name="text">
-                    <string>(What name)</string>
-                </property>
-            </item>
-            <property name="name">
-                <cstring>m_SearchName</cstring>
+    <layout class="QGridLayout" >
+      <item row="0" column="0" >
+        <widget class="QComboBox" name="m_SearchName" >
+          <property name="editable" >
+            <bool>true</bool>
+          </property>
+          <item>
+            <property name="text" >
+              <string>(What name)</string>
             </property>
-            <property name="editable">
+          </item>
+        </widget>
+      </item>
+      <item row="2" column="0" >
+        <widget class="QCheckBox" name="m_SearchCase" >
+          <property name="text" >
+            <string>Match case</string>
+          </property>
+        </widget>
+      </item>
+      <item row="3" column="0" >
+        <layout class="QHBoxLayout" >
+          <property name="margin" >
+            <number>0</number>
+          </property>
+          <item>
+            <widget class="QPushButton" name="PushButton_IDOK1" >
+              <property name="sizePolicy" >
+                <sizepolicy>
+                  <hsizetype>0</hsizetype>
+                  <vsizetype>0</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+                <size>
+                  <width>1</width>
+                  <height>0</height>
+                </size>
+              </property>
+              <property name="focusPolicy" >
+                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text" >
+                <string>OK</string>
+              </property>
+              <property name="default" >
                 <bool>true</bool>
-            </property>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="PushButton_IDCANCEL1" >
+              <property name="sizePolicy" >
+                <sizepolicy>
+                  <hsizetype>0</hsizetype>
+                  <vsizetype>0</vsizetype>
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                </sizepolicy>
+              </property>
+              <property name="minimumSize" >
+                <size>
+                  <width>1</width>
+                  <height>0</height>
+                </size>
+              </property>
+              <property name="focusPolicy" >
+                <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text" >
+                <string>Cancel</string>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+      <item row="1" column="0" >
+        <widget class="QCheckBox" name="m_SearchWholeName" >
+          <property name="text" >
+            <string>Match whole name only</string>
+          </property>
         </widget>
-        <widget class="QCheckBox" row="2" column="0">
-            <property name="name">
-                <cstring>m_SearchCase</cstring>
-            </property>
-            <property name="text">
-                <string>Match case</string>
-            </property>
-        </widget>
-        <widget class="QLayoutWidget" row="3" column="0">
-            <property name="name">
-                <cstring>layout7</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>PushButton_IDOK1</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>0</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>1</width>
-                            <height>0</height>
-                        </size>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>OK</string>
-                    </property>
-                    <property name="default">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>PushButton_IDCANCEL1</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>0</hsizetype>
-                            <vsizetype>0</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                        <size>
-                            <width>1</width>
-                            <height>0</height>
-                        </size>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Cancel</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-        <widget class="QCheckBox" row="1" column="0">
-            <property name="name">
-                <cstring>m_SearchWholeName</cstring>
-            </property>
-            <property name="text">
-                <string>Match whole name only</string>
-            </property>
-        </widget>
-    </grid>
-</widget>
-<connections>
-    <connection>
-        <sender>PushButton_IDOK1</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_FindByNameBox</receiver>
-        <slot>OnOK()</slot>
-    </connection>
-    <connection>
-        <sender>PushButton_IDCANCEL1</sender>
-        <signal>clicked()</signal>
-        <receiver>IDD_FindByNameBox</receiver>
-        <slot>OnCancel()</slot>
-    </connection>
-</connections>
-<includes>
-    <include location="local" impldecl="in declaration">LavaPE_UI_export.h</include>
-</includes>
-<slots>
-    <slot>OnOK()</slot>
-    <slot>OnCancel()</slot>
-</slots>
-<exportmacro>LAVAPEUI_DLL</exportmacro>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+      </item>
+    </layout>
+  </widget>
+  <layoutdefault spacing="6" margin="11" />
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+</ui>

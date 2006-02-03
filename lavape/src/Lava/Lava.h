@@ -8,8 +8,7 @@
 #include "docview.h"
 #include "qstring.h"
 #include "DbgThread.h"
-#include "prelude.h"
-#include "sflsock.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaApp:
@@ -56,7 +55,7 @@ private:
 };
 
 
-extern bool Q_EXPORT qt_use_native_dialogs;
+//extern bool Q_EXPORT qt_use_native_dialogs;
 
 extern QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing);
 

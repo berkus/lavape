@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "LAVAPE_UI_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /I "." /I "..\disco" /I "..\wxqDocView" /I "..\LavaBase" /I "$(QT3DIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAPEUI_EXPORT" /D "QT_THREAD_SUPPORT" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /I "." /I "..\disco" /I "..\wxqDocView" /I "..\LavaBase" /I "$(QTDIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAPEUI_EXPORT" /D "QT_THREAD_SUPPORT" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 ..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib ..\LavaBase\Release\LavaBase.lib $(QT3DIR)\librel\qt-mt$(QTR).lib /nologo /dll /machine:I386 /out:"..\LavaPE\Release\LavaPE_UI.dll"
+# ADD LINK32 ..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib ..\LavaBase\Release\LavaBase.lib $(QTDIR)\librel\qt-mt$(QTR).lib /nologo /dll /machine:I386 /out:"..\LavaPE\Release\LavaPE_UI.dll"
 
 !ELSEIF  "$(CFG)" == "LavaPE_UI - Win32 Debug"
 
@@ -72,7 +72,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_WINDOWS" /D "_USRDLL" /D "LAVAPE_UI_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\LavaBase" /I "." /I "..\disco" /I "..\wxqDocView" /I "$(QT3DIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAPEUI_EXPORT" /D "QT_THREAD_SUPPORT" /FR /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\LavaBase" /I "." /I "..\disco" /I "..\wxqDocView" /I "$(QTDIR)\include" /D "QT_DLL" /D "WIN32" /D "LAVAPEUI_EXPORT" /D "QT_THREAD_SUPPORT" /FR /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
@@ -83,7 +83,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\LavaBase\Debug\LavaBase.lib $(QT3DIR)\lib\qt-mt$(QTR).lib /nologo /dll /debug /machine:I386 /out:"..\LavaPE\Debug\LavaPE_UI.dll" /pdbtype:sept
+# ADD LINK32 ..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\LavaBase\Debug\LavaBase.lib $(QTDIR)\lib\qt-mt$(QTR).lib /nologo /dll /debug /machine:I386 /out:"..\LavaPE\Debug\LavaPE_UI.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -107,8 +107,8 @@ InputPath=.\cmainframe.ui
 InputName=cmainframe
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -134,8 +134,8 @@ InputPath=.\idd_attrbox.ui
 InputName=idd_attrbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -161,8 +161,8 @@ InputPath=.\idd_chainformpage.ui
 InputName=idd_chainformpage
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -188,8 +188,8 @@ InputPath=.\idd_compspecbox.ui
 InputName=idd_compspecbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -215,8 +215,8 @@ InputPath=.\idd_corroverbox.ui
 InputName=idd_corroverbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -242,8 +242,8 @@ InputPath=.\idd_enumbox.ui
 InputName=idd_enumbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -269,8 +269,8 @@ InputPath=.\idd_enumitem.ui
 InputName=idd_enumitem
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -296,8 +296,8 @@ InputPath=.\idd_findbynamebox.ui
 InputName=idd_findbynamebox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -323,8 +323,8 @@ InputPath=.\idd_findrefsbox.ui
 InputName=idd_findrefsbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -350,8 +350,8 @@ InputPath=.\idd_fontcolorpage.ui
 InputName=idd_fontcolorpage
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -377,8 +377,8 @@ InputPath=.\idd_formbox.ui
 InputName=idd_formbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -404,8 +404,8 @@ InputPath=.\idd_formview.ui
 InputName=idd_formview
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -431,8 +431,8 @@ InputPath=.\idd_ftextpage.ui
 InputName=idd_ftextpage
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -458,8 +458,8 @@ InputPath=.\idd_funcbox.ui
 InputName=idd_funcbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -485,8 +485,8 @@ InputPath=.\idd_generalpage.ui
 InputName=idd_generalpage
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -512,8 +512,8 @@ InputPath=.\idd_gotodeclsel.ui
 InputName=idd_gotodeclsel
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -539,8 +539,8 @@ InputPath=.\idd_implbox.ui
 InputName=idd_implbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -566,8 +566,8 @@ InputPath=.\idd_includebox.ui
 InputName=idd_includebox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -593,8 +593,8 @@ InputPath=.\idd_initbox.ui
 InputName=idd_initbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -620,8 +620,8 @@ InputPath=.\idd_interfacebox.ui
 InputName=idd_interfacebox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -647,8 +647,8 @@ InputPath=.\idd_iobox.ui
 InputName=idd_iobox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -674,8 +674,8 @@ InputPath=.\idd_iopage.ui
 InputName=idd_iopage
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -701,8 +701,8 @@ InputPath=.\idd_literalitem.ui
 InputName=idd_literalitem
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -728,8 +728,8 @@ InputPath=.\idd_literalspage.ui
 InputName=idd_literalspage
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -755,8 +755,8 @@ InputPath=.\idd_menuitem.ui
 InputName=idd_menuitem
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -782,8 +782,8 @@ InputPath=.\idd_menupage.ui
 InputName=idd_menupage
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -809,8 +809,8 @@ InputPath=.\idd_packagebox.ui
 InputName=idd_packagebox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -836,8 +836,8 @@ InputPath=.\idd_setbox.ui
 InputName=idd_setbox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -863,8 +863,8 @@ InputPath=.\idd_supportpage.ui
 InputName=idd_supportpage
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -890,8 +890,8 @@ InputPath=.\idd_vtypebox.ui
 InputName=idd_vtypebox
 
 BuildCmds= \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
-	$(QT3DIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath) \
+	$(QTDIR)\bin\uic.exe -o Generated\$(InputName).cpp -impl Generated\$(InputName).h $(InputPath) \
 	
 
 "Generated\$(InputName).h" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -969,7 +969,7 @@ InputPath=.\Generated\cmainframe.h
 InputName=cmainframe
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -993,7 +993,7 @@ InputPath=.\Generated\idd_attrbox.h
 InputName=idd_attrbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1017,7 +1017,7 @@ InputPath=.\Generated\idd_chainformpage.h
 InputName=idd_chainformpage
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1041,7 +1041,7 @@ InputPath=.\Generated\idd_compspecbox.h
 InputName=idd_compspecbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1065,7 +1065,7 @@ InputPath=.\Generated\idd_corroverbox.h
 InputName=idd_corroverbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1089,7 +1089,7 @@ InputPath=.\Generated\idd_enumbox.h
 InputName=idd_enumbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1113,7 +1113,7 @@ InputPath=.\Generated\idd_enumitem.h
 InputName=idd_enumitem
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1137,7 +1137,7 @@ InputPath=.\Generated\idd_findbynamebox.h
 InputName=idd_findbynamebox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1161,7 +1161,7 @@ InputPath=.\Generated\idd_findrefsbox.h
 InputName=idd_findrefsbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1185,7 +1185,7 @@ InputPath=.\Generated\idd_fontcolorpage.h
 InputName=idd_fontcolorpage
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1209,7 +1209,7 @@ InputPath=.\Generated\idd_formbox.h
 InputName=idd_formbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1233,7 +1233,7 @@ InputPath=.\Generated\idd_formview.h
 InputName=idd_formview
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1257,7 +1257,7 @@ InputPath=.\Generated\idd_ftextpage.h
 InputName=idd_ftextpage
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1281,7 +1281,7 @@ InputPath=.\Generated\idd_funcbox.h
 InputName=idd_funcbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1305,7 +1305,7 @@ InputPath=.\Generated\idd_generalpage.h
 InputName=idd_generalpage
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1329,7 +1329,7 @@ InputPath=.\Generated\idd_gotodeclsel.h
 InputName=idd_gotodeclsel
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1353,7 +1353,7 @@ InputPath=.\Generated\idd_implbox.h
 InputName=idd_implbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1377,7 +1377,7 @@ InputPath=.\Generated\idd_includebox.h
 InputName=idd_includebox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1401,7 +1401,7 @@ InputPath=.\Generated\idd_initbox.h
 InputName=idd_initbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1425,7 +1425,7 @@ InputPath=.\Generated\idd_interfacebox.h
 InputName=idd_interfacebox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1449,7 +1449,7 @@ InputPath=.\Generated\idd_iobox.h
 InputName=idd_iobox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1473,7 +1473,7 @@ InputPath=.\Generated\idd_iopage.h
 InputName=idd_iopage
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1497,7 +1497,7 @@ InputPath=.\Generated\idd_literalitem.h
 InputName=idd_literalitem
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1521,7 +1521,7 @@ InputPath=.\Generated\idd_literalspage.h
 InputName=idd_literalspage
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1545,7 +1545,7 @@ InputPath=.\Generated\idd_menuitem.h
 InputName=idd_menuitem
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1569,7 +1569,7 @@ InputPath=.\Generated\idd_menupage.h
 InputName=idd_menupage
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1593,7 +1593,7 @@ InputPath=.\Generated\idd_packagebox.h
 InputName=idd_packagebox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1617,7 +1617,7 @@ InputPath=.\Generated\idd_setbox.h
 InputName=idd_setbox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1641,7 +1641,7 @@ InputPath=.\Generated\idd_supportpage.h
 InputName=idd_supportpage
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -1665,7 +1665,7 @@ InputPath=.\Generated\idd_vtypebox.h
 InputName=idd_vtypebox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 

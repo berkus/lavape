@@ -3,7 +3,6 @@
 
 
 #include "disco_all.h"
-#include "SFLsockets_all.h"
 #include "wxqDocView_all.h"
 
 #include "idd_aboutbox.h"

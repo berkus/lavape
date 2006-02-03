@@ -5,7 +5,7 @@
 #include "LavaAppBase.h"
 #include "LavaPEDoc.h"
 //#include "wxExport.h"
-#include "qcombobox.h"
+#include "q3combobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
@@ -18,7 +18,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CGotoBox dialog
 
-class CGotoBox : public IDD_GotoDeclSel
+class CGotoBox : public QDialog, public Ui_IDD_GotoDeclSel
 {
 public:
   CGotoBox(QWidget* pParent = 0); 
@@ -39,7 +39,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CFindRefsBox dialog
 
-class CFindRefsBox : public IDD_FindRefsBox
+class CFindRefsBox : public QDialog, public Ui_IDD_FindRefsBox
 {
 public:
   CFindRefsBox(QWidget* pParent =0);   // standard constructor
@@ -66,7 +66,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CFindByNameBox dialog
 
-class CFindByNameBox : public IDD_FindByNameBox
+class CFindByNameBox : public QDialog, public Ui_IDD_FindByNameBox
 {
 public:
 	CFindByNameBox(QWidget* pParent = 0);

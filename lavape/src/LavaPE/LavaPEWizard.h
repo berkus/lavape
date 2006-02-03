@@ -5,14 +5,17 @@
 #include "LavaPEView.h"
 #include "SylTraversal.h"
 #include "Syntax.h"
-#include "qcombobox.h"
+#include "q3combobox.h"
+//Added by qt3to4:
+#include <Q3Frame>
+#include <QCustomEvent>
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "qtabdialog.h"
-#include "qlistbox.h"
+#include "q3tabdialog.h"
+#include "q3listbox.h"
 #include "qlineedit.h"
-#include "qbutton.h"
+#include "q3button.h"
 #include "qspinbox.h"
 #include "qtabwidget.h"
 #include "LavaGUIView.h"
@@ -119,8 +122,8 @@ public:
                                QCheckBox* defaultF,
                                QPushButton* ButtonB,
                                QPushButton* ButtonF,
-                               QFrame* Fore,
-                               QFrame* Back);
+                               Q3Frame* Fore,
+                               Q3Frame* Back);
   ~ColorSetting() {}
   LavaDECL * FormDECL;
   QColor BColor;
@@ -130,8 +133,8 @@ public:
   QCheckBox* defaultForeground;
   QPushButton* colorButtonB;
   QPushButton* colorButtonF;
-  QFrame* ForeColor;
-  QFrame* BackColor;
+  Q3Frame* ForeColor;
+  Q3Frame* BackColor;
 
   bool defaultForeground_clicked();
   bool defaultBackground_clicked();
@@ -142,7 +145,7 @@ public:
 
 
 
-class CChainFormPage : public IDD_ChainFormPage
+class CChainFormPage : public QDialog, public Ui_IDD_ChainFormPage
 {
 public:
   CChainFormPage(CLavaPEWizard *wizard);
@@ -195,7 +198,7 @@ private:
 };
 
 
-class CFormTextPage : public FormtextPage
+class CFormTextPage : public QDialog, public Ui_FormtextPage
 {
 public:
   CFormTextPage(LavaDECL * litEl,  CLavaPEWizard *wizard);  
@@ -236,7 +239,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralPage dialog
 
-class CGeneralPage : public IDD_GeneralPage
+class CGeneralPage : public QDialog, public Ui_IDD_GeneralPage
 {
 public:
   CGeneralPage(CLavaPEWizard *wizard);
@@ -257,7 +260,7 @@ private:
 
 };
 
-class CFontColorPage : public idd_fontcolorpage
+class CFontColorPage : public QDialog, public Ui_idd_fontcolorpage
 {
 public:
   CFontColorPage(CLavaPEWizard *wizard, LavaDECL *formDECL);
@@ -293,7 +296,7 @@ private:
 };
 
 
-class CIOPage : public IDD_IOPage
+class CIOPage : public QDialog, public Ui_IDD_IOPage
 {
 
 public:
@@ -375,7 +378,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CLiteralsPage dialog
 
-class CLiteralsPage : public LiteralsPage
+class CLiteralsPage : public QDialog, public Ui_LiteralsPage
 {
 public:
   CLiteralsPage(CLavaPEWizard *wizard, LavaDECL *formDECL, bool forChElem);
@@ -383,8 +386,8 @@ public:
   ~CLiteralsPage();
   void SetProps();
   void GetProps();
-  bool OnAdd(ChainAny0* chain, QListBox* m_list/*, int transpos=0*/);
-  bool OnEdit(ChainAny0* chain, QListBox* m_list/*, int transpos=0*/); 
+  bool OnAdd(ChainAny0* chain, Q3ListBox* m_list/*, int transpos=0*/);
+  bool OnEdit(ChainAny0* chain, Q3ListBox* m_list/*, int transpos=0*/); 
 
   CLavaPEWizard *myWizard;
   LavaDECL *FormDECL;
@@ -422,8 +425,8 @@ public:
   virtual void OnDELETESuf();
   virtual void OnEDITPre();
   virtual void OnEditSuf();
-  virtual void m_Prefixe_doubleClicked( QListBoxItem * );
-  virtual void m_Suffixe_doubleClicked( QListBoxItem * );
+  virtual void m_Prefixe_doubleClicked( Q3ListBoxItem * );
+  virtual void m_Suffixe_doubleClicked( Q3ListBoxItem * );
   virtual void OnSelchangePrefixe();
   virtual void OnSelchangeSuffixe();
   virtual void OnLButtonDown(unsigned nFlags, QPoint point);
@@ -445,7 +448,7 @@ enum EMenuType {isOMenu, isRMenu, isBMenu, isPMenu, isNoMenu};
 /////////////////////////////////////////////////////////////////////////////
 // CMenuPage dialog
 
-class CMenuPage : public IDD_MenuPage
+class CMenuPage : public QDialog, public Ui_IDD_MenuPage
 {
 public:
   CMenuPage(CLavaPEWizard *wizard);
@@ -503,7 +506,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CSupportPage dialog
 
-class CSupportPage : public IDD_SupportPage
+class CSupportPage : public QDialog, public Ui_IDD_SupportPage
 {
 public:
   CSupportPage(CLavaPEWizard* wizard);
@@ -532,14 +535,14 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CLiteralItem dialog
 
-class CLiteralItem : public IDD_LiteralItem
+class CLiteralItem : public QDialog, public Ui_IDD_LiteralItem
 {
 public:
-  CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, QListBox *litList,
+  CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, Q3ListBox *litList,
                LavaDECL * litEl);  
   void UpdateData(bool getData);
   CLiteralsPage *LitPage;
-  QListBox *LitList;
+  Q3ListBox *LitList;
   LavaDECL * myDecl;
   int litPos;
   bool insert;
@@ -572,7 +575,7 @@ private:
 };
 
 
-class CFormTextBox : public IDD_LiteralItem
+class CFormTextBox : public QDialog, public Ui_IDD_LiteralItem
 {
 public:
   CFormTextBox(LavaDECL * litEl, QWidget* pParent = NULL, bool asFirst=false);  
@@ -599,7 +602,7 @@ private:
   Q_OBJECT
 };
 
-class CMenuItem : public IDD_Menuitem
+class CMenuItem : public QDialog, public Ui_IDD_Menuitem
 {
 public:
   CMenuItem(CMenuPage* mpage, bool isNew, int ipos, QString enumsel,

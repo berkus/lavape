@@ -83,7 +83,7 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
 } // END OF DisplayScreen
 
 
-void MakeGUICLASS::SetScrollSizes(QScrollView* view)
+void MakeGUICLASS::SetScrollSizes(Q3ScrollView* view)
 {
   QSize size = ((GUIScrollView*)view)->MaxBottomRight.size(), size2;
   if (size.width() < view->visibleWidth() )
@@ -165,9 +165,9 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       ) {
       pred = (CHEFormNode*)chFrmNd->predecessor;
       if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
-        ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(pred->data.StringValue.c, context.currentFrame);
+        ((CFormWid*)context.currentFrame)->BGroup = new Q3GroupBox(pred->data.StringValue.c, context.currentFrame);
       else  
-        ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(context.currentFrame);
+        ((CFormWid*)context.currentFrame)->BGroup = new Q3GroupBox(context.currentFrame);
       ((CFormWid*)context.currentFrame)->BGroup->setPaletteForegroundColor(context.currentFrame->foregroundColor());
       if (pred)
         GUIProg->SetLFont(((CFormWid*)context.currentFrame)->BGroup, pred);
@@ -252,9 +252,9 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       if (chFrmNd->data.BasicFlags.Contains(Groupbox)) {
         pred = (CHEFormNode*)chFrmNd->predecessor;
         if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
-          ((CFormWid*)newWidget)->BGroup = new QGroupBox(pred->data.StringValue.c, newWidget);
+          ((CFormWid*)newWidget)->BGroup = new Q3GroupBox(pred->data.StringValue.c, newWidget);
         else  
-          ((CFormWid*)newWidget)->BGroup = new QGroupBox(newWidget);
+          ((CFormWid*)newWidget)->BGroup = new Q3GroupBox(newWidget);
         ((CFormWid*)newWidget)->BGroup->setPaletteForegroundColor(newWidget->foregroundColor());
         if (pred)
           GUIProg->SetLFont(((CFormWid*)newWidget)->BGroup, pred);

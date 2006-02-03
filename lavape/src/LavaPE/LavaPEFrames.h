@@ -11,16 +11,19 @@
 #include "mdiframes.h"
 #include "cmainframe.h"
 #include "qapplication.h"
-#include "qframe.h"
-#include "qtoolbar.h"
-#include "qcombobox.h"
-#include "qpopupmenu.h"
-#include "qlistview.h"
+#include "q3frame.h"
+#include "q3toolbar.h"
+#include "q3combobox.h"
+#include "q3popupmenu.h"
+#include "q3listview.h"
 #include "qsplitter.h"
-#include "qvbox.h"
+#include "q3vbox.h"
 #include "qevent.h"
 #include "qstring.h"
 #include "qfont.h"
+//Added by qt3to4:
+#include <QCustomEvent>
+#include <QCloseEvent>
 
 
 typedef QMap<QString,QString> HelpTextMap;
@@ -28,21 +31,21 @@ typedef QMap<QString,QString> HelpTextMap;
 class ToolbarWhatsThis : public WhatsThis
 {
 public:
-  ToolbarWhatsThis(QToolBar *tb):WhatsThis(0,tb) { toolbar = tb; }
+  ToolbarWhatsThis(Q3ToolBar *tb):WhatsThis(0,tb) { toolbar = tb; }
 
 //  bool clicked(const QString &whatsThisHref);
   QString text(const QPoint&);
   HelpTextMap helpTextMap;
 
 private:
-  QToolBar *toolbar;
+  Q3ToolBar *toolbar;
 };
 
 
-class CLavaMainFrame : public CMainFrame
+class CLavaMainFrame : public wxMainFrame, public Ui_CMainFrame
 {
 public:
-  CLavaMainFrame(QWidget* parent = 0, const char* name = 0, WFlags fl = WType_TopLevel);
+  CLavaMainFrame();
   virtual ~CLavaMainFrame();
 
   bool OnCreate();
@@ -51,10 +54,10 @@ public:
   bool UtilitiesHidden;
   int LastUtilitiesState; //-1:hidden, else: ActTab of m_UtilityView
 //  void ShowUtilitiesTab(UtilityTabs tab);
-  void fillKwdToolbar(QToolBar *tb);
-  void fillHelpToolbar(QToolBar *tb);
-  void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
-  void newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
+  void fillKwdToolbar(Q3ToolBar *tb);
+  void fillHelpToolbar(Q3ToolBar *tb);
+  void newKwdToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
+  void newHelpToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
 	void customEvent(QCustomEvent *ev);
   void fillHelpMap1(ToolbarWhatsThis *tbw);
   void fillHelpMap2(ToolbarWhatsThis *tbw);
@@ -66,11 +69,11 @@ public:
 private:
 	int	lastTile;
 
-  void OnUpdateshowUtil(wxAction* action);
-//  void OnUpdateViewToolbar1(wxAction* action);
-//  void OnUpdateViewToolbar2(wxAction* action);
-//  void OnUpdateViewToolbar4(wxAction* action);
-//  void OnUpdateViewToolbar3(wxAction* action);
+  void OnUpdateshowUtil(QAction* action);
+//  void OnUpdateViewToolbar1(QAction* action);
+//  void OnUpdateViewToolbar2(QAction* action);
+//  void OnUpdateViewToolbar4(QAction* action);
+//  void OnUpdateViewToolbar3(QAction* action);
 //	bool event(QEvent *ev);
 
 public slots:
@@ -201,7 +204,7 @@ public slots:
 // Exec handlers (keyword push buttons):
     virtual void declare();
     virtual void exists();
-    virtual void foreach();
+    virtual void foreachStm();
     virtual void select();
     virtual void elInSet();
     virtual void ifStm();
@@ -263,7 +266,7 @@ public:
   void CalcSplitters(bool showVT = false, bool showINCL=false);
 
   QSplitter* splitter;
-  QVBox *vb;
+  Q3VBox *vb;
   CLavaBaseView* viewL;
   CLavaBaseView* viewM;
   CLavaBaseView* viewR;

@@ -25,7 +25,12 @@
 #include "Lava.xpm"
 #include "qsignalmapper.h"
 #include "qstylefactory.h"
-#include "qdict.h"
+#include "q3dict.h"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QCustomEvent>
+#include <Q3ActionGroup>
+#include <Q3PopupMenu>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -40,25 +45,27 @@ static UINT indicators[] =
 };
 */
 
-CLavaMainFrame::CLavaMainFrame() : CMainFrame(0, "LavaMainFrame")
+CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
+  setupUi(this); // populate this main frame
+
 	makeStyle(LBaseData->m_style);
 
-  QPopupMenu *style = new QPopupMenu(this);
+  Q3PopupMenu *style = new Q3PopupMenu(this);
   style->setCheckable( TRUE );
   viewMenu->insertItem( "Set st&yle" , style );
-  QActionGroup *ag = new QActionGroup( this, 0 );
+  Q3ActionGroup *ag = new Q3ActionGroup( this, 0 );
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
   connect( styleMapper, SIGNAL( mapped(const QString&) ), this, SLOT( makeStyle(const QString&) ) );
   QStringList list = QStyleFactory::keys();
   list.sort();
-  QDict<int> stylesDict( 17, FALSE );
+  Q3Dict<int> stylesDict( 17, FALSE );
   for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
 		QString styleStr = *it;
 		QString styleAccel = styleStr;
 		if ( stylesDict[styleAccel.left(1)] ) {
-			for ( uint i = 0; i < styleAccel.length(); i++ ) {
+			for ( int i = 0; i < styleAccel.length(); i++ ) {
 				if ( !stylesDict[styleAccel.mid( i, 1 )] ) {
 					stylesDict.insert(styleAccel.mid( i, 1 ), (const int *)1);
 					styleAccel = styleAccel.insert( i, '&' );
@@ -70,7 +77,8 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame(0, "LavaMainFrame")
 			stylesDict.insert(styleAccel.left(1), (const int *)1);
 			styleAccel = "&"+styleAccel;
  		}
-		QAction *a = new QAction( styleStr, QIconSet(), styleAccel, 0, ag, 0, ag->isExclusive() );
+//		QAction *a = new QAction( styleStr, QIcon(), styleAccel, 0, ag, 0, ag->isExclusive() );
+		QAction *a = new QAction( styleStr,ag);
 		connect( a, SIGNAL( activated() ), styleMapper, SLOT(map()) );
 		styleMapper->setMapping(a,a->text() );
 		if (LBaseData->m_style == styleStr)
@@ -157,7 +165,7 @@ void CLavaMainFrame::fileNew()
   ((CLavaApp*)wxTheApp)->OnFileNew();
 }
 
-void CLavaMainFrame::fileOpen()
+void CLavaMainFrame::on_fileOpenAction_activated()
 {
   ((CLavaApp*)wxTheApp)->OnFileOpen();
 }
@@ -194,7 +202,7 @@ void CLavaMainFrame::fileExit()
   wxView *view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view && view->inherits("CLavaGUIView"))
     ((CLavaGUIView*)view)->NoteLastModified();
-  CMainFrame::fileExit();
+  wxMainFrame::fileExit();
 }
 
 void CLavaMainFrame::tileVertic()

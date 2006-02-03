@@ -25,12 +25,12 @@ $INCLUDE "Tokens.ph"
 $INCLUDE "Syntax.ph"
 
 #include "qwidget.h"
-#include "qscrollview.h"
+#include "q3scrollview.h"
 #include "qstring.h"
 #include "qmessagebox.h"
 #include "qpainter.h"
-#include "qptrlist.h"
-#include "qptrdict.h"
+#include "q3ptrlist.h"
+#include "q3ptrdict.h"
 #include "LavaBaseDoc.h"
 #include "SynIDTable.h"
 #include "wx_obj.h"
@@ -124,7 +124,7 @@ public:
   }
 };
 
-typedef QPtrDict<RTAssertionData> RTAssDataDict;
+typedef Q3PtrDict<RTAssertionData> RTAssDataDict;
 
 class AssertionData : public AnyType { // check time assertion data
 public:
@@ -132,8 +132,8 @@ public:
   bool hasOrInheritsPreconditions, hasOrInheritsPostconditions, hasOrInheritsInvariants;
   LavaDECL *funcDECL, *requireDECL, *ensureDECL, *requireDECLimpl, *ensureDECLimpl,
            *invariantDECL, *invariantDECLimpl;
-  QPtrList<AssertionData> overridden;
-  QPtrList<class OldExpression> oldExpressions; // pointers to OldExpression for eval.on method entry
+  Q3PtrList<AssertionData> overridden;
+  Q3PtrList<class OldExpression> oldExpressions; // pointers to OldExpression for eval.on method entry
 
   AssertionData(CheckData &ckd, LavaDECL *funcDECL);
 
@@ -144,7 +144,7 @@ public:
 };
 
 
-typedef QPtrDict<LavaDECL> RTInvDataDict;
+typedef Q3PtrDict<LavaDECL> RTInvDataDict;
 // run time invariant dict;
 // is used only to recognize if an ivariant has already been checked
 
@@ -153,7 +153,7 @@ public:
   unsigned maxFrameSize, stackFrameSize;
   LavaDECL *itfDECL, *invariantDECL, *invariantDECLimpl;
   bool hasOrInheritsInvariants;
-  QPtrList<InvarData> overridden;
+  Q3PtrList<InvarData> overridden;
 
   InvarData(CheckData &ckd, LavaDECL *itfDECL);
 
@@ -1318,7 +1318,7 @@ public:
 	bool insBlank;
 
   QWidget *redCtl;
-	QScrollView *sv;
+	Q3ScrollView *sv;
 
 
   void Insert(TToken token,bool isPrimToken=false,bool isOpt=false);

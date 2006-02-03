@@ -27,10 +27,18 @@
 #include "qpainter.h"
 #include "qmessagebox.h"
 #include "qclipboard.h"
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QEvent>
+#include <Q3Frame>
+#include <Q3HBoxLayout>
+#include <QResizeEvent>
+#include <Q3VBoxLayout>
+#include <QCustomEvent>
 #include "LavaBaseStringInit.h"
 #include "qstatusbar.h"
 #include "qpushbutton.h"
-#include "qvbox.h"
+#include "q3vbox.h"
 #include "qlayout.h"
 #include "Lava.xpm"
 
@@ -39,12 +47,12 @@
 /////////////////////////////////////////////////////////////////////////////
 // CLavaGUIView
 
-GUIScrollView::GUIScrollView(QWidget *parent, bool fromPopup) : QScrollView(parent, "GUIScrollView")
+GUIScrollView::GUIScrollView(QWidget *parent, bool fromPopup) : Q3ScrollView(parent, "GUIScrollView")
 {
-  setFocusPolicy(QWidget::StrongFocus);
+  setFocusPolicy(Qt::StrongFocus);
   qvbox = new GUIVBox(0, fromPopup, this);//myScrv->viewport());
   addChild(qvbox);
-  setResizePolicy(QScrollView::AutoOne);
+  setResizePolicy(Q3ScrollView::AutoOne);
   MaxBottomRight = QRect(0,0,0,0);
   
 }
@@ -60,21 +68,21 @@ void GUIScrollView::viewportResizeEvent(QResizeEvent* ev)
   qvbox->resize(sz);
   resizeContents(sz.width(),sz.height());
 
-  QScrollView::viewportResizeEvent(ev);
+  Q3ScrollView::viewportResizeEvent(ev);
 }
 
 LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
-: QDialog(parent, "", true, WType_TopLevel | WStyle_MinMax)
+: QDialog(parent, "", true, Qt::WType_TopLevel | Qt::WStyle_MinMax)
 {
   returned = false;
   resize(700,500);
   myScrv = new GUIScrollView(this, false);
-  QHBox* hb = new QHBox(this);
+  Q3HBox* hb = new Q3HBox(this);
   QPushButton* okButton = new QPushButton("Ok", hb);
   QPushButton* resetButton = new QPushButton("Reset", hb);
   QPushButton* cancelButton = new QPushButton("Cancel", hb);
-  qvbl = new QVBoxLayout(this);
-  QHBoxLayout* hbl = new QHBoxLayout(hb);
+  qvbl = new Q3VBoxLayout(this);
+  Q3HBoxLayout* hbl = new Q3HBoxLayout(hb);
   qvbl->addWidget(myScrv);
   qvbl->addWidget(hb);
   hbl->addWidget(okButton);
@@ -240,10 +248,10 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
    : CLavaBaseView(parent,doc,"LavaGUIView")
 { 
   released = false;
-  QVBox *qvb = new QVBox(this);
+  Q3VBox *qvb = new Q3VBox(this);
   myScrv = new GUIScrollView(qvb, false);
   if (LBaseData->inRuntime && !((CLavaBaseDoc*)doc)->isObject) {
-    QHBox* hb = new QHBox(qvb);
+    Q3HBox* hb = new Q3HBox(qvb);
     QPushButton* okButton = new QPushButton("Ok", hb);
     QPushButton* resetButton = new QPushButton("Reset", hb);
     connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
@@ -459,10 +467,10 @@ void CLavaGUIView::resetLastBrowseNode()
 {
   if (LastBrowseNode && LastBrowseNode->data.FIP.widget
     && LastBrowseNode->data.FIP.widget->inherits("QFrame")) {
-    ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShape(QFrame::NoFrame);
-    ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(QFrame::Plain);
-    ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(((CFormWid*)LastBrowseNode->data.FIP.widget)->ForegroundColor);
-    ((QFrame*)LastBrowseNode->data.FIP.widget)->repaint();
+    ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setFrameShape(Q3Frame::NoFrame);
+    ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(Q3Frame::Plain);
+    ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(((CFormWid*)LastBrowseNode->data.FIP.widget)->ForegroundColor);
+    ((Q3Frame*)LastBrowseNode->data.FIP.widget)->repaint();
     LastBrowseNode = 0;
   }
 
@@ -477,11 +485,11 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
       if (LastBrowseNode) {
         if (LastBrowseNode->data.FIP.widget && LastBrowseNode->data.FIP.widget->inherits("CFormWid")) {
           //myGUIProg->focNode = myGUIProg->TreeSrch.NextUnprotected (LastBrowseNode, LastBrowseNode);
-          ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShape(QFrame::Box );
-          ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(QFrame::Plain);
-     ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(QColor("#FF0000"));
+          ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setFrameShape(Q3Frame::Box );
+          ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(Q3Frame::Plain);
+     ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(QColor("#FF0000"));
          myGUIProg->ScrollIntoFrame(LastBrowseNode->data.FIP.widget);
-          ((QFrame*)LastBrowseNode->data.FIP.widget)->repaint();
+          ((Q3Frame*)LastBrowseNode->data.FIP.widget)->repaint();
           //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode); 
         }
       }
@@ -497,7 +505,7 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
 }
 
 
-void CLavaGUIView::OnUpdateGotodef(wxAction* action)
+void CLavaGUIView::OnUpdateGotodef(QAction* action)
 {
   action->setEnabled(myGUIProg && myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget
                     && myGUIProg->focNode->data.FIP.widget->hasFocus());
@@ -572,7 +580,7 @@ void CLavaGUIView::OnCancel()
 }
 
 
-void CLavaGUIView::OnUpdateCancel(wxAction* action) 
+void CLavaGUIView::OnUpdateCancel(QAction* action) 
 {
   action->setEnabled(LBaseData->inRuntime && GetDocument()->isObject); // && !GetDocument()->IsEmbedded());
 }
@@ -605,7 +613,7 @@ void CLavaGUIView::OnDeleteOpt()
 }
 
 
-void CLavaGUIView::OnUpdateDeleteopt(wxAction* action) 
+void CLavaGUIView::OnUpdateDeleteopt(QAction* action) 
 {
   if (myGUIProg && myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
       && myGUIProg->focNode->data.FIP.widget
@@ -640,7 +648,7 @@ void CLavaGUIView::OnInsertOpt()
 }
 
 
-void CLavaGUIView::OnUpdateInsertopt(wxAction* action) 
+void CLavaGUIView::OnUpdateInsertopt(QAction* action) 
 {
   if (myGUIProg) {
     if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
@@ -676,7 +684,7 @@ void CLavaGUIView::OnTogglestate()
   }
 }
 
-void CLavaGUIView::OnUpdateTogglestate(wxAction* action) 
+void CLavaGUIView::OnUpdateTogglestate(QAction* action) 
 {
   action->setOn(CurrentCategory);
   action->setEnabled(LBaseData->inRuntime && GetDocument()->isObject); // && !GetDocument()->IsEmbedded());
@@ -817,7 +825,7 @@ void CLavaGUIView::OnEditPaste()
 }
 
 
-void CLavaGUIView::OnUpdateEditPaste(wxAction* action) 
+void CLavaGUIView::OnUpdateEditPaste(QAction* action) 
 {
   action->setEnabled (myGUIProg && myGUIProg->editNode
                      && (myGUIProg->editNode == myGUIProg->focNode)
@@ -825,7 +833,7 @@ void CLavaGUIView::OnUpdateEditPaste(wxAction* action)
                      && clipboard_text_notEmpty);
 }
 
-void CLavaGUIView::OnUpdateEditCut(wxAction* action) 
+void CLavaGUIView::OnUpdateEditCut(QAction* action) 
 {
   action->setEnabled (myGUIProg && myGUIProg->editNode
                      && (myGUIProg->editNode == myGUIProg->focNode)
@@ -834,7 +842,7 @@ void CLavaGUIView::OnUpdateEditCut(wxAction* action)
                      );
 }
 
-void CLavaGUIView::OnUpdateEditCopy(wxAction* action) 
+void CLavaGUIView::OnUpdateEditCopy(QAction* action) 
 {
   action->setEnabled (myGUIProg && myGUIProg->editNode
                      && (myGUIProg->editNode == myGUIProg->focNode)

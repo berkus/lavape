@@ -124,11 +124,11 @@ void CmdParmsCLASS::INIT ()
 
       HasImplMod = false;
       pCfile = SynDefFile + ".cpp";
-      if (access(pCfile.c,R_OK) == 0)
+      if (_access(pCfile.c,R_OK) == 0)
         HasImplMod = true;
       else {
   pCfile = SynDefFile + ".pC";
-  if (access(pCfile.c,R_OK) == 0) HasImplMod = true;
+  if (_access(pCfile.c,R_OK) == 0) HasImplMod = true;
       }
     }
     else

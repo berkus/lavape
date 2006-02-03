@@ -44,7 +44,7 @@ RSC=rc.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /Yu"stdafx.h" /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "..\disco" /I "$(QT3DIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /FR /FD /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /FR /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /win32
 # ADD MTL /nologo /mktyplib203 /win32
@@ -55,7 +55,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386
-# ADD LINK32 ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib $(QT3DIR)\lib\qt-mt$(QTR).lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../LavaPE/Debug/LavaGUI.dll"
+# ADD LINK32 ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib $(QTDIR)\lib\qt-mt$(QTR).lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../LavaPE/Debug/LavaGUI.dll"
 
 !ELSEIF  "$(CFG)" == "LavaGUI - Win32 Release"
 
@@ -73,7 +73,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 LIB32=link.exe -lib
 # ADD BASE CPP /nologo /MDd /W3 /Gm /Gi /GX /Zi /Od /Gf /Gy /I "..\disco" /I "..\LavaBase" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXEXT" /D "LavaGUI_EXPORT" /FR /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /I "." /I "..\disco" /I "$(QT3DIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /I "." /I "..\disco" /I "$(QTDIR)\include" /I "..\LavaBase" /I "..\LavaPE\res" /I "..\wxqDocView" /D "WIN32" /D "EXECVIEW" /D "QT_DLL" /D "QT_THREAD_SUPPORT" /D "LAVAGUI_EXPORT" /FD /c
 # SUBTRACT CPP /Fr /YX
 # ADD BASE MTL /nologo /mktyplib203 /win32
 # ADD MTL /nologo /mktyplib203 /win32
@@ -84,7 +84,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"..\Lava\Lava___W\LavaGUI.dll"
-# ADD LINK32 ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib $(QT3DIR)\librel\qt-mt$(QTR).lib /nologo /subsystem:windows /dll /pdb:none /machine:I386 /out:"..\LavaPE\Release\LavaGUI.dll"
+# ADD LINK32 ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib $(QTDIR)\librel\qt-mt$(QTR).lib /nologo /subsystem:windows /dll /pdb:none /machine:I386 /out:"..\LavaPE\Release\LavaGUI.dll"
 # SUBTRACT LINK32 /debug
 
 !ENDIF 
@@ -187,7 +187,7 @@ InputPath=.\FormWid.h
 InputName=FormWid
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -227,7 +227,7 @@ InputPath=.\LavaGUIFrame.h
 InputName=LavaGUIFrame
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -247,7 +247,7 @@ InputPath=.\LavaGUIPopup.h
 InputName=LavaGUIPopup
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -267,7 +267,7 @@ InputPath=.\LavaGUIView.h
 InputName=LavaGUIView
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -287,7 +287,7 @@ InputPath=.\LavaMenu.h
 InputName=LavaMenu
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -311,7 +311,7 @@ InputPath=.\TButton.h
 InputName=TButton
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -331,7 +331,7 @@ InputPath=.\TComboBox.h
 InputName=TComboBox
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -351,7 +351,7 @@ InputPath=.\TEdit.h
 InputName=TEdit
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 
@@ -375,7 +375,7 @@ InputPath=.\TStatic.h
 InputName=TStatic
 
 "Generated\moc_$(InputName).cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	$(QT3DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
+	$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp
 
 # End Custom Build
 

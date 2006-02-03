@@ -24,6 +24,14 @@
 #include "FormWid.h"
 #include "MACROS.h"
 #include "qstyle.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QCustomEvent>
+#include <Q3Frame>
+#include <QFocusEvent>
+#include <QEvent>
+#include <Q3PopupMenu>
+#include <QListView>
 
 
 CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentWnd, char* WindowName, DString& defaultSel, unsigned width)
@@ -33,15 +41,17 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   CHEEnumSelId *enumSel;
   myFormNode = data;
   GUIProg = guiPr;
+  QStyleOptionButton qsob=QStyleOptionButton();
+
 
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   GUIProg->SetColor(this, myFormNode);
   QSize size = GUIProg->CalcTextRect(width, 1, font());
-  size = qApp->style().sizeFromContents(QStyle::CT_ComboBox, this, size);
+  size = qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &qsob, size, this);
   size.setWidth(lmax(size.width(), GUIProg->MinSizeComboBox(font()).width() + GUIProg->ArrowSize(font()).width()));
-  int bord = ((QFrame*)pParentWnd)->lineWidth();
+  int bord = ((Q3Frame*)pParentWnd)->lineWidth();
   setGeometry(bord,bord, size.width(), size.height());
   DefaultSel = defaultSel;
   if (myFormNode->data.EnumField) {
@@ -55,10 +65,10 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   if (myFormNode->data.IoSigFlags.Contains(DONTPUT)
       || !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
-  listBox()->setVariableWidth(true);
+  ((QListView*)view())->setResizeMode(QListView::Adjust);
   connect(this, SIGNAL(activated(int)), this, SLOT(OnSelendok(int)));
   if (myFormNode->data.IterFlags.Contains(Optional)) {
-    myMenu = new QPopupMenu(this);
+    myMenu = new Q3PopupMenu(this);
     myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
     myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     myMenu->setItemEnabled(IDM_ITER_INSERT, false);
@@ -69,10 +79,11 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
 
 void CTComboBox::AddItem(const DString& label, CHEFormNode* data)
 {
-  CComboItem* item = new CComboItem(label, data);
-  listBox()->insertItem(item);
+/*  CComboItem* item = new CComboItem(label, data);
+  listBox()->insertItem(item);*/
+  addItem(QString(label.c),QVariant::fromValue(data));
   if (DefaultSel.l && (label == DefaultSel))
-    setCurrentItem(count()-1);
+    setCurrentIndex(count()-1);
 
 }
 
@@ -82,7 +93,7 @@ CTComboBox::~CTComboBox()
 
 void CTComboBox::mousePressEvent(QMouseEvent* ev)
 {
-  if ((ev->button() == RightButton) && myMenu) 
+  if ((ev->button() == Qt::RightButton) && myMenu) 
     myMenu->popup(ev->globalPos());//QPoint(ev->x(), ev->y()));
   else {
     QComboBox::mousePressEvent(ev);
@@ -98,11 +109,15 @@ void CTComboBox::OnSelendok(int sel)
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
   GUIProg->focNode = myFormNode;
-  CComboItem *comboItem;
+//  CComboItem *comboItem;
+  QAbstractItemModel *mod=model();
+  QVariant var;
+
   if (!GUIProg->FrozenObject && sel >= 0) {
-    comboItem = (CComboItem*)listBox()->item(sel);
-    if (comboItem) {
-      myFormNode->data.StringValue = DString(comboItem->text());
+//    comboItem = (CComboItem*)listBox()->item(sel);
+    if (mod->hasIndex(sel,1)) {
+      var = mod->data(mod->index(sel,1));
+      myFormNode->data.StringValue = DString(var.toString().toAscii().data()); //DString(comboItem->text());
       myFormNode->data.D = sel;
       if (LBaseData->inRuntime) {
         ((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);

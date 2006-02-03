@@ -65,8 +65,8 @@ CLavaDoc::~CLavaDoc()
   else
     if (!((wxApp*)qApp)->appExit && debugOn && this == ((CLavaApp*)wxTheApp)->debugThread.myDoc) {
       ((CLavaApp*)wxTheApp)->debugThread.myDoc = 0;
-      close_socket(((CLavaApp*)wxTheApp)->debugThread.workSocket);
-      (*((CLavaApp*)wxTheApp)->debugThread.pContDebugEvent)--;
+      delete ((CLavaApp*)wxTheApp)->debugThread.workSocket;
+      ((CLavaApp*)wxTheApp)->debugThread.pContDebugEvent->release();
     }
 }
 
@@ -289,7 +289,7 @@ void CLavaDoc::customEvent(QCustomEvent *ev)
 
   if (ev->type() == IDU_OpenObject) 
     oop->obj = OpenObject(*oop->ckdPtr,oop->urlObj);
-	(*oop->thr->pContExecEvent)--;
+  oop->thr->pContExecEvent->release();
 }
 
 LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj) 
@@ -902,7 +902,7 @@ void CLavaDoc::LObjectError(CheckData& ckd, const QString& ldocName, const QStri
         Convert.IntToString(id->nID, strID);
         msg += "\nBroken reference: (";
         msg += strID.c;
-        msg = msg + "," + strINCL.c + ")";
+        msg = msg + QString(",") + QString(strINCL.c) + QString(")");
       }
       if (moreText == 1) {
         msg += "\nType of object (implementation) not found. Type of last readable object has name ";

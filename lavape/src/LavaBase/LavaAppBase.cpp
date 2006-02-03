@@ -31,13 +31,15 @@
 #include "qobject.h"
 #include "qstring.h"
 #include "qmessagebox.h"
+//Added by qt3to4:
+#include <QCustomEvent>
 #include <errno.h>
 
 #ifdef WIN32
 #include <windows.h>
 #include <shlobj.h>
 #else
-#include "qfiledialog.h"
+#include "q3filedialog.h"
 #endif
 
 
@@ -211,7 +213,7 @@ CLavaPEHint* CUndoMem::DoFromMem(int& pos)
     pos = undoMemPosition-1 ;
     while ((pos >= 0) && !UndoMemory[pos]->FirstLast.Contains(firstHint))
       pos = pos-1;
-    ASSERT (pos >=  0); 
+    Q_ASSERT (pos >=  0); 
   }
   else
     if (pos == (undoMemPosition - 1))
@@ -266,7 +268,7 @@ CLavaPEHint* CUndoMem::RedoFromMem(int& pos)
     if ((pos == 0) || RedoMemory[pos-1]->FirstLast.Contains(firstHint))
       return NULL;  //finished
     pos = pos--;
-    ASSERT (pos >=  0); 
+    Q_ASSERT (pos >=  0); 
   }
   if (RedoMemory[pos]) {
     UndoMemory[undoMemPosition] = RedoMemory[pos];
@@ -501,7 +503,7 @@ bool CMultiUndoMem::Undo(CLavaPEHint *withLastHint)
         }
       }
       else
-        critical(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         //QMessageBox(mess);
     }
   }
@@ -594,7 +596,7 @@ bool CMultiUndoMem::Redo(CLavaPEHint *withFirstHint)
         }
       }
       else
-        critical(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         //QMessageBox();//mess);
     }
   }
@@ -899,10 +901,10 @@ bool CLavaBaseData::isIdentifier(const QString& ident)
 {
   int len = ident.length();
 
-  if (len && (isalpha((int)(unsigned char)ident[0]) || (ident[0] == '_'))) {
+  if (len && (ident[0].isLetter() || (ident[0] == '_'))) {
     int ii = 1;
     while (ii < len) {
-      if (isalnum((int)(unsigned char)ident[ii]) || (ident[ii] == '_')) 
+      if (ident[ii].isLetterOrNumber() || (ident[ii] == '_')) 
         ii += 1;
       else
         return FALSE;
@@ -943,7 +945,7 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
         thr = thrL->first();
         while (thr) {
           if (thr->pContExecEvent)
-            (*thr->pContExecEvent)--;
+            thr->pContExecEvent->release();
 					thr = thrL->next();
         }
         return;
@@ -977,7 +979,7 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
       thr = thrL->first();
       while (thr) {
 				if ((thr != curThr) && thr->pContExecEvent) 
-					(*thr->pContExecEvent)--;
+					thr->pContExecEvent->release();
 				thr = thrL->next();
 			}
 		}
@@ -1030,7 +1032,7 @@ int critical(QWidget *parent, const QString &caption,
 
 //  currentThread->pContExecEvent->lastException = 0;
 	QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaMsgBox,&params));
-  (*currentThread->pContExecEvent)++;
+  currentThread->pContExecEvent->acquire();
 /*
   if (currentThread->pContExecEvent->lastException) {
     if (ckd.lastException)
@@ -1056,7 +1058,7 @@ int information(QWidget *parent, const QString &caption,
 
 //  currentThread->pContExecEvent->lastException = 0;
 	QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaMsgBox,&params));
-  (*currentThread->pContExecEvent)++;
+  currentThread->pContExecEvent->acquire();
 /*
   if (currentThread->pContExecEvent->lastException) {
     if (ckd.lastException)
@@ -1082,7 +1084,7 @@ int question(QWidget *parent, const QString &caption,
 
 //  currentThread->pContExecEvent->lastException = 0;
 	QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaMsgBox,&params));
-  (*currentThread->pContExecEvent)++;
+  currentThread->pContExecEvent->acquire();
 /*
   if (currentThread->pContExecEvent->lastException) {
     if (ckd.lastException)
@@ -1109,7 +1111,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   QString fileName;
   QString currentFilter;
   QString initialDir;
-  if (startFileName.at(startFileName.length()-1) !='/') {
+  if (!startFileName.isEmpty() && startFileName.at(startFileName.length()-1) !='/') {
     qf = QFileInfo(startFileName);
     fileName = qf.fileName();
     QFileInfo qfresolved(ResolveLinks(qf));
@@ -1122,7 +1124,8 @@ QString L_GetOpenFileName(const QString& startFileName,
   OPENFILENAME ofn;                    // common dialog box structure
   char szFile[260]; // buffer for filename
   if (fileName != QString::null)
-    strcpy(szFile, fileName.latin1()); 
+//    strcpy(szFile,fileName.ascii()); 
+    strcpy_s(szFile,260,fileName.latin1()); 
   else
     szFile[0] = '\0'; 
   HWND hwnd = parent->winId();         // owner window
@@ -1165,7 +1168,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   return resultName;
 
 #else
-  QFileDialog *fd = new QFileDialog(parent, "lavafileDialog", true);
+  Q3FileDialog *fd = new Q3FileDialog(parent, "lavafileDialog", true);
 	
   fd->addFilter(filter);
   if (filter2 != QString::null)
@@ -1177,8 +1180,8 @@ QString L_GetOpenFileName(const QString& startFileName,
   currentFilter = "*." + currentFilter;
   fd->setSelectedFilter(currentFilter);
   fd->setSelection(startFileName);
-  fd->setMode( QFileDialog::ExistingFile );
-  fd->setViewMode( QFileDialog::List );
+  fd->setMode( Q3FileDialog::ExistingFile );
+  fd->setViewMode( Q3FileDialog::List );
   fd->setFilter(filter);
   if (fd->exec() == QDialog::Accepted ) {
     fileName = fd->selectedFile();
@@ -1302,7 +1305,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   return resultNames;
 
 #else
-  QFileDialog *fd = new QFileDialog(parent, "lavafileDialog", true);
+  Q3FileDialog *fd = new Q3FileDialog(parent, "lavafileDialog", true);
   fd->addFilter(filter);
   if (filter2 != QString::null)
     fd->addFilter( filter2);
@@ -1313,8 +1316,8 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   currentFilter = "*." + currentFilter;
   fd->setSelectedFilter(currentFilter);
   fd->setSelection(startFileName);
-  fd->setMode( QFileDialog::ExistingFiles );
-  fd->setViewMode( QFileDialog::List );
+  fd->setMode( Q3FileDialog::ExistingFiles );
+  fd->setViewMode( Q3FileDialog::List );
   fd->setFilter(filter);
   if (fd->exec() == QDialog::Accepted ) {
     resultNames = fd->selectedFiles();
@@ -1351,9 +1354,9 @@ unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,
 
 
 
-WhatsThis::WhatsThis(QString text,QWidget *w) : QWhatsThis(w)
+WhatsThis::WhatsThis(QString text,QWidget *w) : Q3WhatsThis(w)
 {
-  if (text)
+  if (!text.isEmpty())
     whatsThisText = text;
 }
 
@@ -1384,7 +1387,7 @@ QString WhatsThis::text(const QPoint&)
 }
 
 void ShowPage(char *file) {
-  QString fileName=ExeDir+"/../doc/html/"+file;
+  QString fileName=ExeDir+QString("/../doc/html/")+QString(file);
 	QString path(ExeDir);
 	QStringList args;
 
