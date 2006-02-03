@@ -1898,66 +1898,7 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="res\bitmap1.bmp"
-			>
-		</File>
-		<File
-			RelativePath="res\LavaCom.ico"
-			>
-		</File>
-		<File
-			RelativePath="res\lavape.ico"
-			>
-		</File>
-		<File
 			RelativePath="LavaPE.reg"
-			>
-		</File>
-		<File
-			RelativePath="..\LavaPE_Resources.qrc"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="Invoking rcc on$(InputPath)"
-					CommandLine="rcc -o Generated\$(InputName).cpp $(InputPath)"
-					Outputs="Generated\$(InputName).cpp"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="res\lavatask.ico"
-			>
-		</File>
-		<File
-			RelativePath="res\Q4_DebugStop.bmp"
-			>
-		</File>
-		<File
-			RelativePath="ReadMe.txt"
-			>
-		</File>
-		<File
-			RelativePath="res\startDebug.bmp"
-			>
-		</File>
-		<File
-			RelativePath="Debug\std.lava"
-			>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="copy $(InputPath) Release\$(InputName).lava&#x0D;&#x0A;"
-					Outputs="Release\$(InputName).lava"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="res\stopDebug.bmp"
 			>
 		</File>
 	</Files>
