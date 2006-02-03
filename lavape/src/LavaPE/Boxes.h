@@ -558,19 +558,6 @@ extern int SelEndOKToStr(QComboBox* cbox, QString* editStr, TID* exID);
 extern int CallBox( LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
             bool& buildSet, QWidget* parent, bool asFirst=false); 
 
-/*verlegt nach PEBaseDoc.h
-class CListItem: public QListBoxText
-{
-public:
-  CListItem(const QString& text, const TID& id) {setText(text); ID = id;}
-  CListItem(const DString& text, const TID& id) {setText(QString(text.c)); ID = id;}
-  CListItem(char* text, const TID& id) {setText(QString(text)); ID = id;}
-  TID itemData() {return ID;}
-protected:
-  TID ID;
-};
-*/
-
 class CExecExtensions: public CExec
 {
 public:
