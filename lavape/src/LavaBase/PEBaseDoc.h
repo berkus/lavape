@@ -16,15 +16,15 @@
 #include "qstring.h"
 #include "q3listbox.h"
 
-class CListItem//: public Q3ListBoxText
+class CComboBoxItem//: public Q3ListBoxText
 {
 public:
-//  CListItem(const QString& txt, const TID& id) { setText(txt); ID = id;}
-//  CListItem(const DString& text, const TID& id) {setText(QString(text.c)); ID = id;}
-  CListItem(/*char* text,*/ const TID& id) {/*setText(QString(text));*/ ID = id;}
-  CListItem(/*const DString& text,*/ unsigned* flags) {/*setText(QString(text.c));*/ Flags = flags;}
-//  CListItem(const QString& text, unsigned* flags) {setText(text); Flags = flags;}
-  CListItem() {}
+//  CComboBoxItem(const QString& txt, const TID& id) { setText(txt); ID = id;}
+//  CComboBoxItem(const DString& text, const TID& id) {setText(QString(text.c)); ID = id;}
+  CComboBoxItem(/*char* text,*/ const TID& id) {/*setText(QString(text));*/ ID = id;}
+  CComboBoxItem(/*const DString& text,*/ unsigned* flags) {/*setText(QString(text.c));*/ Flags = flags;}
+//  CComboBoxItem(const QString& text, unsigned* flags) {setText(text); Flags = flags;}
+  CComboBoxItem() {}
   TID itemData() {return ID;}
   unsigned* flags() {return Flags;}
 //  void setText(const QString &txt) { myText = txt; }
@@ -35,7 +35,7 @@ protected:
   unsigned* Flags;
 //  QString myText;
 };
-Q_DECLARE_METATYPE(CListItem*)
+Q_DECLARE_METATYPE(CComboBoxItem*)
 
 class CLavaBaseView;
 class LAVABASE_DLL CPEBaseDoc : public CLavaBaseDoc

@@ -36,7 +36,7 @@ int SelEndOKToStr(int pos, QComboBox* cbox, QString* editStr, TID* exID)
   if (!editStr->isNull()) {
     if (exID) {
       var = cbox->itemData(pos);
-      *exID = var.value<CListItem*>()->itemData();
+      *exID = var.value<CComboBoxItem*>()->itemData();
     }
   }
   else
@@ -1347,9 +1347,9 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
     typeID.nINCL = HIWORD(wID);
     */
     var = m_TypesCtrl->itemData(pos);
-    typeDecl = ckd.document->IDTable.GetDECL(var.value<CListItem*>()->itemData());
+    typeDecl = ckd.document->IDTable.GetDECL(var.value<CComboBoxItem*>()->itemData());
     if (compatibleTypes(ckd, typeDecl, compContext, decl, context)) {
-//     itemComp = new CListItem(item->text(), item->itemData());
+//     itemComp = new CComboBoxItem(item->text(), item->itemData());
       m_CompaTypesCtrl->addItem(m_TypesCtrl->itemText(pos),m_TypesCtrl->itemData(pos));//sort#
       withTypes = true;
     }
@@ -1358,9 +1358,9 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
   cnt = m_BasicTypesCtrl->count();
   for (pos = 1; pos < cnt; pos++) {
     var = m_BasicTypesCtrl->itemData(pos);
-    typeDecl = ckd.document->IDTable.GetDECL(var.value<CListItem*>()->itemData());
+    typeDecl = ckd.document->IDTable.GetDECL(var.value<CComboBoxItem*>()->itemData());
     if (compatibleTypes(ckd, typeDecl, compContext, decl, context)) {
-//      itemComp = new CListItem(item->text(), item->itemData());
+//      itemComp = new CComboBoxItem(item->text(), item->itemData());
       m_CompaBTypesCtrl->addItem(m_BasicTypesCtrl->itemText(pos),m_BasicTypesCtrl->itemData(pos));//sort#
       withBTypes = true;
     }
@@ -1445,7 +1445,7 @@ void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface
   LavaDECL *decl, *elDECL;
   DString vStr;
   CHE* che;
-  CListItem* item;
+  CComboBoxItem* item;
   ResetComboItems(m_BaseInisCtrl);
   /*Q
   int pos = m_BaseInisCtrl->GetCount();
@@ -1461,7 +1461,7 @@ void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface
     if ((elDECL->DeclType == Function) 
         && !elDECL->SecondTFlags.Contains(funcImpl)
         && elDECL->TypeFlags.Contains(isInitializer)) {
-      item = new CListItem(TID(elDECL->OwnID, elDECL->inINCL));
+      item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
       m_BaseInisCtrl->addItem(QString(elDECL->FullName.c),QVariant::fromValue(item));//sort#
     }
   }
@@ -1488,7 +1488,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
   LavaDECL *elDECL, *conDECL, *oC=0;
   CHE* che;
   CStatFuncItem *idata;
-  CListItem *item;
+  CComboBoxItem *item;
   bool sameName=false, allowProtected=true;
 
   if (!decl)
@@ -1520,11 +1520,11 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
             && (!signalDecl || slotFunction(ckd, elDECL, callCtx, signalDecl,signalCtx))
             && !IsInBox(funcBox,elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
           if (sameName) {
-            item = new CListItem(TID(elDECL->OwnID, elDECL->inINCL));
+            item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
             funcBox->addItem(QString(elDECL->FullName.c),QVariant::fromValue(item));//sort#
           }
           else {
-            item = new CListItem(TID(elDECL->OwnID, elDECL->inINCL));
+            item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
             funcBox->addItem(QString(elDECL->LocalName.c),QVariant::fromValue(item));//sort#
           }
         }
@@ -1568,11 +1568,11 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
           && (!signalDecl || slotFunction(ckd, elDECL, callCtx, signalDecl,signalCtx))
           && !IsInBox(funcBox, elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
         if (sameName) {
-          item = new CListItem(TID(elDECL->OwnID, elDECL->inINCL));
+          item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
           funcBox->addItem(QString(elDECL->FullName.c),QVariant::fromValue(item));//sort#
         }
         else {
-          item = new CListItem(TID(elDECL->OwnID, elDECL->inINCL));
+          item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
           funcBox->addItem(QString(elDECL->LocalName.c),QVariant::fromValue(item));
         }
       }
@@ -1690,7 +1690,7 @@ void CComboBar::showIFFuncs()
 {
   LavaDECL *decl, *elDECL;
   CHE* che;
-  CListItem *item;
+  CComboBoxItem *item;
 
   SetCombos(true, true);
   onShowStatic = true;
@@ -1702,7 +1702,7 @@ void CComboBar::showIFFuncs()
       if ((elDECL->DeclType == Function) 
         && !elDECL->SecondTFlags.Contains(funcImpl)
         && elDECL->TypeFlags.Contains(isStatic)) {
-          item = new CListItem(TID(elDECL->OwnID, elDECL->inINCL));
+          item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
           m_StaticFuncsCtrl->addItem(QString(elDECL->LocalName.c),QVariant::fromValue(item));
       }
     }
@@ -1733,14 +1733,14 @@ bool CComboBar::IsInBox(QComboBox* combo, const DString& name, int id, int incl,
   //DWORD wID;
   LavaDECL* idecl;
   DString istr;
-  CListItem *item, *nitem;
+  CComboBoxItem *item, *nitem;
   QVariant var;
 
   sameName = false;
   cnt = combo->count();
   for (pos = 1; (pos < cnt) && !inBox; pos++) {
     var = combo->itemData(pos);
-    item = var.value<CListItem*>();
+    item = var.value<CComboBoxItem*>();
     if ((item->itemData().nID == id) && (item->itemData().nINCL == incl)) 
       inBox = true;
     else {
@@ -1749,7 +1749,7 @@ bool CComboBar::IsInBox(QComboBox* combo, const DString& name, int id, int incl,
       if (QString(name.c) == combo->itemText(pos)) {
         idecl = myDoc->IDTable.GetDECL(item->itemData(), 0);
         if (idecl && (name == idecl->LocalName)) {
-          nitem = new CListItem(item->itemData());
+          nitem = new CComboBoxItem(item->itemData());
           combo->setItemText(pos,QString(idecl->FullName.c));
           combo->setItemData(pos,QVariant::fromValue(nitem));
           //combo->DeleteString(pos);
@@ -1774,7 +1774,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
   CContext context;
   DString vStr;
   CStatFuncItem *idata;
-  CListItem *item;
+  CComboBoxItem *item;
   bool sameName, allowProtected=true;
 
 //  allowProtected = myDoc->IDTable.IsAn(SelfTypeDECL, TID(decl->OwnID,decl->inINCL), 0);
@@ -1802,11 +1802,11 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
             && (!signalDecl || slotFunction(ckd, cheDECL, callCtx, signalDecl,signalCtx))
             && !IsInBox(funcBox,cheDECL->LocalName, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
           if (sameName) {
-            item = new CListItem(TID(cheDECL->OwnID, cheDECL->inINCL));
+            item = new CComboBoxItem(TID(cheDECL->OwnID, cheDECL->inINCL));
             funcBox->addItem(QString(cheDECL->FullName.c),QVariant::fromValue(item));//sort#
           }
           else {
-            item = new CListItem(TID(cheDECL->OwnID, cheDECL->inINCL));
+            item = new CComboBoxItem(TID(cheDECL->OwnID, cheDECL->inINCL));
             funcBox->addItem(QString(cheDECL->LocalName.c),QVariant::fromValue(item));          }
         }//function
         che = (CHE*)che->successor;
@@ -1843,11 +1843,11 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
               && (!cheDECL->TypeFlags.Contains(isProtected) || allowProtected)
               && !IsInBox(funcBox,cheDECL->LocalName/*FullName*/, cheDECL->OwnID, cheDECL->inINCL, sameName)) {
               if (sameName) {
-                item = new CListItem(TID(cheDECL->OwnID, cheDECL->inINCL));
+                item = new CComboBoxItem(TID(cheDECL->OwnID, cheDECL->inINCL));
                 funcBox->addItem(QString(cheDECL->FullName.c),QVariant::fromValue(item));//sort#
               }
               else {
-                item = new CListItem(TID(cheDECL->OwnID, cheDECL->inINCL));
+                item = new CComboBoxItem(TID(cheDECL->OwnID, cheDECL->inINCL));
                 funcBox->addItem(QString(cheDECL->LocalName.c),QVariant::fromValue(item));              
               }
             }
@@ -1878,11 +1878,11 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
               && !ElDECL->TypeFlags.Contains(isInitializer) 
               && !IsInBox(funcBox, ElDECL->LocalName, ElDECL->OwnID, ElDECL->inINCL, sameName)) {
             if (sameName) {
-              item = new CListItem(TID(ElDECL->OwnID, ElDECL->inINCL));
+              item = new CComboBoxItem(TID(ElDECL->OwnID, ElDECL->inINCL));
               funcBox->addItem(QString(ElDECL->FullName.c),QVariant::fromValue(item));
             }
             else {
-              item = new CListItem(TID(ElDECL->OwnID, ElDECL->inINCL));
+              item = new CComboBoxItem(TID(ElDECL->OwnID, ElDECL->inINCL));
               funcBox->addItem(QString(ElDECL->LocalName.c),QVariant::fromValue(item));
             }
             /*
@@ -1929,7 +1929,7 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
   unsigned loc;
   DString Label;
   bool setClassName;
-  CListItem *item;
+  CComboBoxItem *item;
 
   if (elDef->fromBType != NonBasic)
     return;
@@ -2015,14 +2015,14 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
       Label.Insert(lthen, 0);
       Label += grthen;
     }
-    item = new CListItem(TID(elDef->OwnID, incl));
+    item = new CComboBoxItem(TID(elDef->OwnID, incl));
     combo->addItem(QString(Label.c),QVariant::fromValue(item));//sort#
     if (combo2) {
-      item = new CListItem(item->itemData());
+      item = new CComboBoxItem(item->itemData());
       combo2->addItem(QString(Label.c),QVariant::fromValue(item));//sort#
     }
     if (combo3) {
-      item = new CListItem(item->itemData());
+      item = new CComboBoxItem(item->itemData());
       combo3->addItem(QString(Label.c),QVariant::fromValue(item));//sort#
     }
   }

@@ -19,7 +19,7 @@
 
 extern LAVAEXECS_DLL void ResetComboItems(QComboBox* box);
 
-class CFieldsItem: public CListItem {
+class CFieldsItem: public CComboBoxItem {
 public:
   CFieldsItem(/*const DString& text*/) { /*setText(QString(text.c));*/ withClass = false;}
   CFieldsItem(CFieldsItem* item)
@@ -30,7 +30,7 @@ public:
 };
 Q_DECLARE_METATYPE(CFieldsItem*)
 
-class CStatFuncItem: public CListItem {
+class CStatFuncItem: public CComboBoxItem {
 public:
   TID funcID;
   TID vtypeID;
