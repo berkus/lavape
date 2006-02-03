@@ -217,10 +217,6 @@ SOURCE=.\Comment.ui.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Generated\Comment.ui.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Constructs.h
 # End Source File
 # Begin Source File
