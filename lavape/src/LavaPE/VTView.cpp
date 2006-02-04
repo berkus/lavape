@@ -459,7 +459,7 @@ CTreeItem* CVTView::BrowseTree(TID id, CTreeItem* start, int browseCase)
 
 }
 
-void CVTView::OnUpdateGotoImpl(QAction* action) 
+void CVTView::OnUpdateGotoImpl(wxAction* action) 
 {
   CVTItemData * itd;
   LavaDECL* decl;
@@ -479,7 +479,7 @@ void CVTView::OnUpdateGotoImpl(QAction* action)
     action->setEnabled(false);
 }
 
-void CVTView::OnUpdateGotodef(QAction* action) 
+void CVTView::OnUpdateGotodef(wxAction* action) 
 {
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
   if (item) {
@@ -538,7 +538,7 @@ bool CVTView::EnableOverride(CTreeItem* item)
   return false;
 }
 
-void CVTView::OnUpdateOverride(QAction* action) 
+void CVTView::OnUpdateOverride(wxAction* action) 
 {  
   action->setEnabled(!multiSelectCanceled && (!GetDocument()->changeNothing) &&
         EnableOverride((CTreeItem*)GetListView()->currentItem()));

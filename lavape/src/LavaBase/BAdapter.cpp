@@ -744,7 +744,7 @@ bool StringBox(CheckData& ckd, LavaVariablePtr stack)
   QWidget *parent=qApp->mainWidget();
 
   qApp->mainWidget()->setActiveWindow();
-  qApp->mainWidget()->raise();
+//???  qApp->mainWidget()->raise();
   int rc=Qt::NoButton;
   if ((QString*)(stack[SFH]+LSH)) 
     rc = information(

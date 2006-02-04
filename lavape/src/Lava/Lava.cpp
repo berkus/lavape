@@ -91,7 +91,7 @@ int main( int argc, char ** argv ) {
 
   ap.m_appWindow = new CLavaMainFrame;
   if (ap.m_appWindow->OnCreate()) {
-    ap.m_appWindow->resize(350,300);
+    ap.m_appWindow->resize(500,300);
     ap.m_appWindow->show();
 		//ap.m_appWindow->showMaximized();
   }
@@ -403,9 +403,9 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
 	if (!name.contains('.'))
 		return;
   LBaseData.lastFileOpen = name;
-  if (argc() > 2) {
-    debugThread.remoteIPAddress = QString(argv()[2]);
-    port = QString(argv()[3]);
+  if (QCoreApplication::arguments().size() > 2) {
+    debugThread.remoteIPAddress = QCoreApplication::arguments().at(2);
+    port = QCoreApplication::arguments().at(3);
     debugThread.remotePort = (quint16)port.toUShort();
 
     //QMessageBox::critical(/*qApp->*/mainWidget(),qApp->name(),"Lava Interpreter: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);

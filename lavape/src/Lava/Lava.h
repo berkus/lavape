@@ -30,7 +30,7 @@ public:
   //CLavaPMdumpThread pmDumpThread;
   CLavaDebugThread debugThread;
 
-  QString CMDLine;
+//  QString CMDLine;
   public:
   bool event(QEvent *e);
   virtual void OpenDocumentFile(const QString& lpszFileName);

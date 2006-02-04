@@ -372,7 +372,7 @@ wxMDIChildFrame::~wxMDIChildFrame()
 	QString title;
 
 	title = caption();
-	if (title.at(title.length()-1) == '*')
+  if (!title.isEmpty() && title.at(title.length()-1) == '*')
 		title = title.left(title.length()-1);
   deleting = true;
 	wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);

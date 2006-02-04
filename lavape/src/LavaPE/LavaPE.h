@@ -52,7 +52,7 @@ public:
   CLavaPEBrowse Browser;
   CExecUpdate ExecUpdate;
   CLavaBaseData LBaseData;
-  QString CMDLine;
+//  QString CMDLine;
   Q3Process interpreter;
   CLavaPEDebugThread debugThread;
   //CLavaPEPMdumpThread pmDumpThread;

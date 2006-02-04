@@ -116,22 +116,20 @@ WXDLLEXPORT_DATA(wxApp*) wxTheApp;
 
 wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 {
-    wxTheApp = this;
-    m_appName = argv[0];
+  wxTheApp = this;
+  m_appName = argv[0];
 
-    //// Create a document manager
-    m_docManager = new wxDocManager;
-    inUpdateUI = false;
-		deletingMainFrame = false;
-		isChMaximized = true;
+  //// Create a document manager
+  m_docManager = new wxDocManager;
+  inUpdateUI = false;
+	deletingMainFrame = false;
+	isChMaximized = true;
 
-//    SetVendorName("FhG-SIT");
-//    SetAppName("LavaPE");
-    SetClassName(argv[0]);
+  SetClassName(argv[0]);
 
-    QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
-    connect(this,SIGNAL(guiThreadAwake()),SLOT(onGuiThreadAwake()));
-    appExit = false;
+  QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
+  connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(awake()),SLOT(onGuiThreadAwake()));
+  appExit = false;
 }
 
 wxApp::~wxApp() {
