@@ -966,95 +966,7 @@
 			Name="Resource Files"
 			>
 			<File
-				RelativePath="res\alias.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\basicat1.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\basicatt.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\BasicType.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\bitmap2.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\bitmap3.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\classAttr.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\classimpl.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\classint.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\coimpl.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\commentt.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\constrai.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\constrempty.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\cospec.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\definitions.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\enum.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\enumattr.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\enumsel.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\errtab.bmp"
-				>
-			</File>
-			<File
 				RelativePath="res\execfram.ico"
-				>
-			</File>
-			<File
-				RelativePath="res\findtab.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\form.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\formAt.bmp"
 				>
 			</File>
 			<File
@@ -1062,27 +974,7 @@
 				>
 			</File>
 			<File
-				RelativePath="res\formimpl.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\function.bmp"
-				>
-			</File>
-			<File
 				RelativePath="res\idr_lava.ico"
-				>
-			</File>
-			<File
-				RelativePath="res\initiato.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\inputs.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\IToolbar.bmp"
 				>
 			</File>
 			<File
@@ -1095,10 +987,6 @@
 			</File>
 			<File
 				RelativePath="res\LavaDoc.ico"
-				>
-			</File>
-			<File
-				RelativePath="res\lavafile.bmp"
 				>
 			</File>
 			<File
@@ -1121,86 +1009,6 @@
 						AdditionalIncludeDirectories="res"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="res\literal.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\mainfram.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\members.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\menutest.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\Namespace.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\outputs.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\overwrit.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\paramatt.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\params.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\patpara.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\setatt.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\settyp.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\tb_treen.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\tbnew.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\toolb_detai.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\toolbar1.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\undefine.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\xcommask.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\xerrcommask.bmp"
-				>
-			</File>
-			<File
-				RelativePath="res\xerrmask.bmp"
-				>
 			</File>
 			<Filter
 				Name="ToolButtons"
@@ -1796,106 +1604,6 @@
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Help Files"
-			>
-			<File
-				RelativePath="hlp\AppExit.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\Bullet.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\CurArw2.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\CurArw4.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\CurHelp.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\EditCopy.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\EditCut.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\EditPast.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\EditUndo.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\FileNew.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\FileOpen.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\FilePrnt.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\FileSave.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\HlpSBar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\HlpTBar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\LavaPE.cnt"
-				>
-			</File>
-			<File
-				RelativePath="MakeHelp.bat"
-				>
-			</File>
-			<File
-				RelativePath="hlp\RecFirst.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\RecLast.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\RecNext.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\RecPrev.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\Scmax.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\ScMenu.bmp"
-				>
-			</File>
-			<File
-				RelativePath="hlp\Scmin.bmp"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath="LavaPE.reg"

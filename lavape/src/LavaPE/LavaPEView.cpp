@@ -5016,7 +5016,7 @@ void CLavaPEView::OnShowOverridables()
 //Toolbutton update handler--------------------------------------------------
 
 
-void CLavaPEView::OnUpdateComment(wxAction* action) 
+void CLavaPEView::OnUpdateComment(QAction* action) 
 {
   LavaDECL* decl;
   bool enable = !GetDocument()->changeNothing;
@@ -5043,7 +5043,7 @@ void CLavaPEView::OnUpdateComment(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateEditCopy(wxAction* action) 
+void CLavaPEView::OnUpdateEditCopy(QAction* action) 
 {
   LavaDECL *decl = 0;
   if (DataSel && (DataSel->type == TIType_DECL))
@@ -5056,7 +5056,7 @@ void CLavaPEView::OnUpdateEditCopy(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateEditCut(wxAction* action) 
+void CLavaPEView::OnUpdateEditCut(QAction* action) 
 {
   bool enable = !GetDocument()->changeNothing;
   if (enable) {
@@ -5070,7 +5070,7 @@ void CLavaPEView::OnUpdateEditCut(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateEditPaste(wxAction* action) 
+void CLavaPEView::OnUpdateEditPaste(QAction* action) 
 {
   bool enable = !GetDocument()->changeNothing;
   if (enable) {
@@ -5082,7 +5082,7 @@ void CLavaPEView::OnUpdateEditPaste(wxAction* action)
 }
 
 
-void CLavaPEView::OnUpdateEditSel(wxAction* action) 
+void CLavaPEView::OnUpdateEditSel(QAction* action) 
 {
   bool enable = false;
   if (myInclView) {
@@ -5095,18 +5095,18 @@ void CLavaPEView::OnUpdateEditSel(wxAction* action)
 }
 
 
-void CLavaPEView::OnUpdateFindreferences(wxAction* action) 
+void CLavaPEView::OnUpdateFindreferences(QAction* action) 
 {
   action->setEnabled((DataSel->type == TIType_DECL) || (DataSel->type == TIType_CHEEnumSel)); 
 }
 
-void CLavaPEView::OnUpdateGotodef(wxAction* action) 
+void CLavaPEView::OnUpdateGotodef(QAction* action) 
 {
   action->setEnabled((DataSel->type == TIType_DECL)
                && ((CLavaPEApp*)wxTheApp)->Browser.CanBrowse(*(LavaDECL**)DataSel->synEl));  
 }
 
-void CLavaPEView::OnUpdateGotoImpl(wxAction* action) 
+void CLavaPEView::OnUpdateGotoImpl(QAction* action) 
 {
   bool canBrowse = false;
   LavaDECL* DECL;
@@ -5126,7 +5126,7 @@ void CLavaPEView::OnUpdateGotoImpl(wxAction* action)
   action->setEnabled(canBrowse);  
 }
 
-void CLavaPEView::OnUpdateMakeGUI(wxAction* action)
+void CLavaPEView::OnUpdateMakeGUI(QAction* action)
 {
   LavaDECL* DECL;
   CContext context;
@@ -5153,61 +5153,61 @@ void CLavaPEView::OnUpdateMakeGUI(wxAction* action)
   action->setEnabled(false);  
 }
 
-void CLavaPEView::OnUpdateNewComponent(wxAction* action) 
+void CLavaPEView::OnUpdateNewComponent(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
      (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ CompObj] != 0));
 }
 
-void CLavaPEView::OnUpdateNewCSpec(wxAction* action) 
+void CLavaPEView::OnUpdateNewCSpec(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
      (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ CompObjSpec] != 0));
 }
 
 
-void CLavaPEView::OnUpdateNewenum(wxAction* action) 
+void CLavaPEView::OnUpdateNewenum(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
 }
 
-void CLavaPEView::OnUpdateNewEnumItem(wxAction* action) 
+void CLavaPEView::OnUpdateNewEnumItem(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
        ( (GroupType == TIType_EnumItems) || (GroupType == TIType_CHEEnumSel))); 	
 }
 
-void CLavaPEView::OnUpdateNewfunction(wxAction* action) 
+void CLavaPEView::OnUpdateNewfunction(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
      (GroupType == TIType_Features) && (ContainTab[DefTypeSel] [ Function] != 0));
 }
 
-void CLavaPEView::OnUpdateNewImpl(wxAction* action) 
+void CLavaPEView::OnUpdateNewImpl(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Impl] != 0));
 }
 
-void CLavaPEView::OnUpdateNewinitiator(wxAction* action) 
+void CLavaPEView::OnUpdateNewinitiator(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Initiator] != 0));
 }
 
-void CLavaPEView::OnUpdateNewInterface(wxAction* action) 
+void CLavaPEView::OnUpdateNewInterface(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
 }
 
-void CLavaPEView::OnUpdateNewLitStr(wxAction* action) 
+void CLavaPEView::OnUpdateNewLitStr(QAction* action) 
 {
   action->setEnabled(!myInclView && (GetListView()->currentItem() != GetListView()->firstChild()));
 }
 
-void CLavaPEView::OnUpdateNewmember(wxAction* action) 
+void CLavaPEView::OnUpdateNewmember(QAction* action) 
 {
   action->setEnabled( (!GetDocument()->changeNothing) 
                  && ( (GroupType == TIType_Features)
@@ -5221,26 +5221,26 @@ void CLavaPEView::OnUpdateNewmember(wxAction* action)
 
 }
 
-void CLavaPEView::OnUpdateNewPackage(wxAction* action) 
+void CLavaPEView::OnUpdateNewPackage(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Package] != 0));
 }
 
 
-void CLavaPEView::OnUpdateNewset(wxAction* action) 
+void CLavaPEView::OnUpdateNewset(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_Defs) && (ContainTab[DefTypeSel] [ Interface] != 0));
 }
 
-void CLavaPEView::OnUpdateNewVirtualType(wxAction* action) 
+void CLavaPEView::OnUpdateNewVirtualType(QAction* action) 
 {
   action->setEnabled((!GetDocument()->changeNothing) &&
     (GroupType == TIType_VTypes) && (ContainTab[DefTypeSel] [ VirtualType] != 0)); 
 }
 
-void CLavaPEView::OnUpdateOverride(wxAction* action) 
+void CLavaPEView::OnUpdateOverride(QAction* action) 
 {
   bool enable = !GetDocument()->changeNothing;
   if ( enable) {
@@ -5254,7 +5254,7 @@ void CLavaPEView::OnUpdateOverride(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateShowformview(wxAction* action) 
+void CLavaPEView::OnUpdateShowformview(QAction* action) 
 {
   bool enable = false;
   if (!myInclView) 
@@ -5266,7 +5266,7 @@ void CLavaPEView::OnUpdateShowformview(wxAction* action)
   action->setEnabled(enable);
 }
 
-void CLavaPEView::OnUpdateShowOptionals(wxAction* action) 
+void CLavaPEView::OnUpdateShowOptionals(QAction* action) 
 {
   if (DataSel->type == TIType_DECL) 
     if ((*(LavaDECL**)DataSel->synEl)->TreeFlags.Contains(hasEmptyOpt)

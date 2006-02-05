@@ -310,7 +310,7 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
     ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
 
-    (*debugThread.pContExecEvent)--;
+    debugThread.pContExecEvent->release();
   }
   else if (e->type() == IDU_LavaDebugW) {
     ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
@@ -636,8 +636,8 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 #endif
   ((CLavaPEApp*)qApp)->debugThread.myDoc = (CLavaBaseDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
   if (argc() > 2) {
-    ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = QString(argv()[2]);
-    ((CLavaPEApp*)qApp)->debugThread.remotePort = QString(argv()[3]);
+    ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = QCoreApplication::arguments().at(2);
+    ((CLavaPEApp*)qApp)->debugThread.remotePort = (quint16)QCoreApplication::arguments().at(3).toUShort();
 
     //QMessageBox::critical(qApp->mainWidget(),qApp->name(),"LavaPE: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     ((CLavaPEApp*)qApp)->debugThread.start();

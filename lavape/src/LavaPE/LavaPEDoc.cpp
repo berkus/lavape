@@ -2983,10 +2983,10 @@ bool CLavaPEDoc::OnCloseDocument()
         ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived->DbgData.ptr, this);
       if (((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived) 
         ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived->DbgData.ptr, this);
-      close_socket(((CLavaPEApp*)wxTheApp)->debugThread.workSocket);
+      delete ((CLavaPEApp*)wxTheApp)->debugThread.workSocket;
       ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->setDebugData(0, this);
       ((CLavaPEApp*)wxTheApp)->debugThread.myDoc = 0;
-      (*((CLavaPEApp*)wxTheApp)->debugThread.pContExecEvent)--;
+      ((CLavaPEApp*)wxTheApp)->debugThread.pContExecEvent->release();
     }
     else
       ((CLavaPEApp*)wxTheApp)->debugThread.cleanBrkPoints(this);
@@ -2999,9 +2999,9 @@ bool CLavaPEDoc::OnCloseDocument()
 void CLavaPEDoc::OnCloseLastExecView()
 {
 	if (wxTheApp->deletingMainFrame) return;
-  ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->hide();
-  ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->hide();
-  ((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->hide();
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->hide();
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->hide();
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->hide();
 }
 
 bool CLavaPEDoc::OnEmptyDoc(const QString& Name)
@@ -3136,13 +3136,14 @@ void CLavaPEDoc::OnRunLava()
 void CLavaPEDoc::OnDebugLava() 
 {
 	QString interpreterPath, lavaFile = GetFilename(), buf;
-  sockaddr_in sa;
-  socklen_t sz_sa=sizeof(sockaddr_in); 
+  quint16 locPort;
+//  sockaddr_in sa;
+//  socklen_t sz_sa=sizeof(sockaddr_in); 
   
   if (IsModified()
     && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
     && (QMessageBox::Cancel == QMessageBox::question(qApp->mainWidget(),qApp->name(),ERR_SaveFailed, 
-                    QMessageBox::Ok,QMessageBox::Cancel,0)))
+    QMessageBox::Ok,QMessageBox::Cancel,0)))
     return;
   lavaFile = GetFilename();
 /*
@@ -3159,7 +3160,7 @@ void CLavaPEDoc::OnDebugLava()
 	
   ((CLavaPEApp*)qApp)->debugThread.listenSocket = new QTcpServer;
   ((CLavaPEApp*)qApp)->debugThread.listenSocket->listen();
-  locPort = listenSocket->serverPort();
+  locPort = ((CLavaPEApp*)qApp)->debugThread.listenSocket->serverPort();
 
   QString host_addr = "127.0.0.1";
 
@@ -3182,8 +3183,8 @@ void CLavaPEDoc::OnDebugLava()
 }
 
 void CLavaPEDoc::interpreterExited () {
-  close_socket(((CLavaPEApp*)wxTheApp)->debugThread.workSocket);
-  (*((CLavaPEApp*)qApp)->debugThread.pContExecEvent)--;
+  delete ((CLavaPEApp*)wxTheApp)->debugThread.workSocket;
+  ((CLavaPEApp*)qApp)->debugThread.pContExecEvent->release();
 }
 
 //check all included documents
@@ -3291,9 +3292,9 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
     execChild = ((CLavaPEApp*)wxTheApp)->pExecTemplate->CreateChildFrame(this);
     active = (execChild !=0);
     execChild->InitialUpdate();
-		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->show();
-		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->show();
-		((CMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->show();
+		((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->show();
+		((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->show();
+		((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->show();
 
     if (!eDECL->Exec.ptr)
       SetExecItemImage(eDECL, false, false);

@@ -1211,7 +1211,7 @@ void CFontColorPage::fontButtonT_clicked()
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormFont,this);
   if (ok) {
     FormDECL->Annotation.ptr->String2 = DString(lf.toString());
-    QString nn = lf.family() + komma.c +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontNameT->setText(nn);
     fontNameT->show();
     myWizard->setModified(true);
@@ -2190,7 +2190,7 @@ CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, Q3ListBox 
   }
   QFont lf;
   if (myDecl->Annotation.ptr->String1.l && lf.fromString(myDecl->Annotation.ptr->String1.c)) {
-    QString nn = lf.family() + komma.c +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontName->setText(nn);
     fontName->show();
     fontButton->show();
@@ -2233,7 +2233,7 @@ void CLiteralItem::fontButton_clicked()
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormLabelFont,this);
   if (ok) {
     myDecl->Annotation.ptr->String1 = DString(lf.toString());
-    QString nn = lf.family() + komma.c +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontName->setText(nn);
     fontName->show();
   }

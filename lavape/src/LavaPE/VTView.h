@@ -83,9 +83,9 @@ protected:
   virtual ~CVTView();
   virtual void destroy();
 
-  void OnUpdateGotodef(wxAction* action);
-  void OnUpdateGotoImpl(wxAction* action);
-  void OnUpdateOverride(wxAction* action);
+  void OnUpdateGotodef(QAction* action);
+  void OnUpdateGotoImpl(QAction* action);
+  void OnUpdateOverride(QAction* action);
 
 public:
   void OnGotoDecl();

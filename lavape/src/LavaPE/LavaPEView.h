@@ -200,35 +200,35 @@ protected:
   virtual void destroy();
 
     //Toolbutton update handler
-  void OnUpdateComment(wxAction* action);
-  void OnUpdateEditCopy(wxAction* action);
-  void OnUpdateEditCut(wxAction* action);
-  void OnUpdateEditPaste(wxAction* action);
-  void OnUpdateEditSel(wxAction* action);
-	void OnUpdateFindreferences(wxAction* action);
-  void OnUpdateGotodef(wxAction* action);
-	void OnUpdateGotoImpl(wxAction* action);
-  void OnUpdateMakeGUI(wxAction* action);
-  void OnUpdateNewComponent(wxAction* action);
-  void OnUpdateNewCSpec(wxAction* action);
-  void OnUpdateNewenum(wxAction* action);
-	void OnUpdateNewEnumItem(wxAction* action);
-  void OnUpdateNewfunction(wxAction* action);
-  void OnUpdateNewinitiator(wxAction* action);
-  void OnUpdateNewInterface(wxAction* action);
-  void OnUpdateNewImpl(wxAction* action);
-  void OnUpdateNewLitStr(wxAction* action);
-  void OnUpdateNewmember(wxAction* action);
-  void OnUpdateNewPackage(wxAction* action);
-  void OnUpdateNewVirtualType(wxAction* action);
-  void OnUpdateNewset(wxAction* action);
-  void OnUpdateOverride(wxAction* action);
-  void OnUpdateShowformview(wxAction* action);
-  void OnUpdateShowOptionals(wxAction* action);
-  //void OnUpdateNewalias(wxAction* action);
-  //void OnUpdateNewform(wxAction* action);
-  //void OnUpdateShowPattern(wxAction* action);
-  //void OnUpdateDefaultForm(wxAction* action);
+  void OnUpdateComment(QAction* action);
+  void OnUpdateEditCopy(QAction* action);
+  void OnUpdateEditCut(QAction* action);
+  void OnUpdateEditPaste(QAction* action);
+  void OnUpdateEditSel(QAction* action);
+	void OnUpdateFindreferences(QAction* action);
+  void OnUpdateGotodef(QAction* action);
+	void OnUpdateGotoImpl(QAction* action);
+  void OnUpdateMakeGUI(QAction* action);
+  void OnUpdateNewComponent(QAction* action);
+  void OnUpdateNewCSpec(QAction* action);
+  void OnUpdateNewenum(QAction* action);
+	void OnUpdateNewEnumItem(QAction* action);
+  void OnUpdateNewfunction(QAction* action);
+  void OnUpdateNewinitiator(QAction* action);
+  void OnUpdateNewInterface(QAction* action);
+  void OnUpdateNewImpl(QAction* action);
+  void OnUpdateNewLitStr(QAction* action);
+  void OnUpdateNewmember(QAction* action);
+  void OnUpdateNewPackage(QAction* action);
+  void OnUpdateNewVirtualType(QAction* action);
+  void OnUpdateNewset(QAction* action);
+  void OnUpdateOverride(QAction* action);
+  void OnUpdateShowformview(QAction* action);
+  void OnUpdateShowOptionals(QAction* action);
+  //void OnUpdateNewalias(QAction* action);
+  //void OnUpdateNewform(QAction* action);
+  //void OnUpdateShowPattern(QAction* action);
+  //void OnUpdateDefaultForm(QAction* action);
 
 public:
 //Toolbutton/menu item handler  

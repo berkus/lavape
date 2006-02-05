@@ -315,7 +315,7 @@ void CLavaMainFrame::newKwdToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,
   pb->setMaximumWidth(pb->fontMetrics().width("el. in set")+6);
   if (tooltip)
     QToolTip::add(pb,tooltip);
-  if (whatsThis)
+  if (!whatsThis.isEmpty())
     new WhatsThis(whatsThis,pb);
   pb->show();
 }
