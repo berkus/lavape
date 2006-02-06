@@ -2434,7 +2434,7 @@ void CMenuPage::SetEProps()
       && !((LavaDECL*)inDefEl->data)->Annotation.ptr->BasicFlags.Contains(hasPixmap))
       mflags[0] = 2;
     else {
-      ASSERT (inDefEl);
+      Q_ASSERT (inDefEl);
       if (((LavaDECL*)inDefEl->data)->Annotation.ptr->BasicFlags.Contains(BlankSelCode))
         mflags[0] = 1;
       if (((LavaDECL*)inDefEl->data)->Annotation.ptr->BasicFlags.Contains(MenuText))
@@ -2452,16 +2452,16 @@ void CMenuPage::SetEProps()
     labb->Reset(0);
     labpix->Reset(0);
     if (mflags[0] != 3) {
-      ASSERT (enumsel);
+      Q_ASSERT (enumsel);
       *labe = enumsel->data.Id;
 //      *labs = enumsel->data.SelectionCode;
       enumsel = (CHEEnumSelId*)enumsel->successor;
     }
     if (mflags[0] != 2) {  //not -FIO, 0,1,3 
-      ASSERT(inDefEl);
+      Q_ASSERT(inDefEl);
       ininDefEl = (CHE*)((LavaDECL*)inDefEl->data)->Annotation.ptr->Prefixes.first;
       if (mflags[0] == 0) {
-        ASSERT(ininDefEl->successor);  //0
+        Q_ASSERT(ininDefEl->successor);  //0
         ininDefEl = (CHE*)ininDefEl->successor;
       }
       *labb = ((LavaDECL*)ininDefEl->data)->LitStr; //0,3

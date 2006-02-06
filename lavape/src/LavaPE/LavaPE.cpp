@@ -81,7 +81,7 @@ static char slash='/';
 // CLavaPEApp
 int main( int argc, char ** argv ) {
   CLavaPEApp ap(argc,argv);
-  ap.m_appWindow = new CLavaMainFrame(0);
+  ap.m_appWindow = new CLavaMainFrame();
   if (ap.m_appWindow->OnCreate())
 		ap.m_appWindow->showMaximized();
 	else
@@ -107,7 +107,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 :wxApp(argc, argv )
 {
   bool ok;
-  QSettings settings(QSettings::NativeFormat);
+  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
   LBaseData.stdUpdate = 0; 
   //stop here and set stdUpdate = 1 to allow updates in std.lava
@@ -791,7 +791,7 @@ CLavaPEApp::~CLavaPEApp()
 
 void CLavaPEApp::saveSettings()
 {
-  QSettings settings(QSettings::NativeFormat);
+  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
   settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //  settings.beginGroup(GetSettingsPath());

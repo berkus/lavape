@@ -156,7 +156,7 @@ MyListView::MyListView(CTreeView* view)
   withShift = false;
   withControl = false;
   lavaView = view;
-  setFocusPolicy(QWidget::StrongFocus);
+  setFocusPolicy(Qt::StrongFocus);
   viewport()->setAcceptDrops(true);
   setDragAutoScroll(true);
 }

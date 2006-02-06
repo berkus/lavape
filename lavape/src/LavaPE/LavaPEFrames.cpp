@@ -313,7 +313,7 @@ void CLavaMainFrame::newKwdToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,
   pb->setAutoDefault(false);
   pb->setMinimumHeight(pb->fontInfo().pointSize()+4);
   pb->setMaximumWidth(pb->fontMetrics().width("el. in set")+6);
-  if (tooltip)
+  if (!tooltip.isEmpty())
     QToolTip::add(pb,tooltip);
   if (!whatsThis.isEmpty())
     new WhatsThis(whatsThis,pb);
@@ -942,7 +942,7 @@ void CLavaMainFrame::DbgStop()
   }
   else 
     if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava) 
-      close_socket(((CLavaPEDebugThread*)LBaseData->debugThread)->workSocket);
+      delete ((CLavaPEDebugThread*)LBaseData->debugThread)->workSocket;
     else 
       ((CLavaPEApp*)qApp)->interpreter.kill();
 }

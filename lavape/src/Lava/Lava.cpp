@@ -127,7 +127,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
 
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
-  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,"FhG-SIT","LavaPE");
+  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 //  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
 //  settings.beginGroup(GetSettingsPath());
   LBaseData.theApp = this;
@@ -457,7 +457,7 @@ void CLavaApp::OnAppAbout()
 
 void CLavaApp::saveSettings()
 {
-  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,"FhG-SIT","LavaPE");
+  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
 //  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
 //  settings.beginGroup(GetSettingsPath());
