@@ -47,6 +47,8 @@ static UINT indicators[] =
 
 CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
+  m_CentralWidget->setMinimumSize(400,300);
+
   setupUi(this); // populate this main frame
 
 	makeStyle(LBaseData->m_style);
@@ -160,7 +162,7 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
 		}
 }
 
-void CLavaMainFrame::fileNew()
+void CLavaMainFrame::on_fileNewAction_activated()
 {
   ((CLavaApp*)wxTheApp)->OnFileNew();
 }
@@ -171,22 +173,22 @@ void CLavaMainFrame::on_fileOpenAction_activated()
 }
 
 
-void CLavaMainFrame::fileSave()
+void CLavaMainFrame::on_fileSaveAction_activated()
 {
   wxDocManager::GetDocumentManager()->OnFileSave();
 }
 
-void CLavaMainFrame::fileSaveAs()
+void CLavaMainFrame::on_fileSaveAsAction_activated()
 {
   wxDocManager::GetDocumentManager()->OnFileSaveAs();
 }
 
-void CLavaMainFrame::fileSaveAll()
+void CLavaMainFrame::on_fileSaveAll_activated()
 {
   ((CLavaApp*)wxTheApp)->OnSaveAll();
 }
 
-void CLavaMainFrame::fileClose()
+void CLavaMainFrame::on_fileClose_activated()
 {
   wxDocManager::GetDocumentManager()->OnFileClose();
 }
@@ -197,7 +199,7 @@ void CLavaMainFrame::helpAbout()
 }
 
 
-void CLavaMainFrame::fileExit()
+void CLavaMainFrame::on_fileExitAction_activated()
 {
   wxView *view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view && view->inherits("CLavaGUIView"))

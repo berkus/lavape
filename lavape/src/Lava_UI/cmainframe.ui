@@ -1,702 +1,559 @@
-<ui version="4.0" stdsetdef="1" >
-  <author></author>
-  <comment></comment>
-  <exportmacro></exportmacro>
-  <class>CMainFrame</class>
-  <widget class="Q3MainWindow" name="CMainFrame" >
-    <property name="geometry" >
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>350</width>
-        <height>694</height>
-      </rect>
-    </property>
-    <property name="windowTitle" >
-      <string>Lava Interpreter</string>
-    </property>
-    <widget class="QWidget" />
-    <widget class="Q3ToolBar" name="Toolbar_1" >
-      <property name="enabled" >
-        <bool>true</bool>
-      </property>
-      <property name="label" >
-        <string>File toolbar</string>
-      </property>
-      <addaction name="fileOpenAction" />
-      <addaction name="fileSaveAction" />
-      <addaction name="fileSaveAllAction" />
-      <addaction name="separator" />
-      <addaction name="editCutAction" />
-      <addaction name="editCopyAction" />
-      <addaction name="editPasteAction" />
-      <addaction name="separator" />
-      <addaction name="tileHorizAction" />
-      <addaction name="tileVerticAction" />
-      <addaction name="cascadeAction" />
-      <addaction name="separator" />
-      <addaction name="editUndoAction" />
-      <addaction name="insAction" />
-      <addaction name="delAction" />
-      <addaction name="toggleCategoryAction" />
-    </widget>
-    <widget class="QMenuBar" name="menubar" >
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>350</width>
-          <height>29</height>
-        </rect>
-      </property>
-      <widget class="QMenu" name="fileMenu" >
-        <property name="title" >
-          <string>&amp;File</string>
-        </property>
-        <addaction name="fileNewAction" />
-        <addaction name="fileOpenAction" />
-        <addaction name="fileCloseAction" />
-        <addaction name="fileSaveAction" />
-        <addaction name="fileSaveAsAction" />
-        <addaction name="fileSaveAllAction" />
-        <addaction name="separator" />
-        <addaction name="fileExitAction" />
-      </widget>
-      <widget class="QMenu" name="viewMenu" >
-        <property name="title" >
-          <string>&amp;View</string>
-        </property>
-        <widget class="QMenu" name="popupMenu_12" >
-          <property name="title" >
-            <string>Set form font</string>
-          </property>
-          <addaction name="setFormTextFontAction" />
-          <addaction name="setFormLabelFontAction" />
-        </widget>
-        <addaction name="viewTB2Action" />
-        <addaction name="viewTB1Action" />
-        <addaction name="separator" />
-        <addaction name="setFormFontAction" />
-        <addaction name="popupMenu_12" />
-        <addaction name="setGlobalFontAction" />
-      </widget>
-      <widget class="QMenu" name="Options" >
-        <property name="title" >
-          <string>Options</string>
-        </property>
-        <addaction name="pmDumpAction" />
-        <addaction name="PreconditionsAction" />
-        <addaction name="PostconditionsAction" />
-        <addaction name="InvariantsAction" />
-      </widget>
-      <widget class="QMenu" name="windowMenu" >
-        <property name="title" >
-          <string>Window</string>
-        </property>
-        <addaction name="tileHorizAction" />
-        <addaction name="tileVerticAction" />
-        <addaction name="cascadeAction" />
-      </widget>
-      <widget class="QMenu" name="helpMenu" >
-        <property name="title" >
-          <string>&amp;Help</string>
-        </property>
-        <addaction name="helpContentsAction" />
-        <addaction name="editingLavaProgsAction" />
-        <addaction name="learningLavaAction" />
-        <addaction name="separator" />
-        <addaction name="helpAboutAction" />
-      </widget>
-      <addaction name="fileMenu" />
-      <addaction name="viewMenu" />
-      <addaction name="Options" />
-      <addaction name="windowMenu" />
-      <addaction name="helpMenu" />
-    </widget>
-    <action name="fileNewAction" >
-      <property name="name" >
-        <cstring>fileNewAction</cstring>
-      </property>
-      <property name="icon" >
-        <iconset>image0</iconset>
-      </property>
-      <property name="iconText" >
-        <string>New...</string>
-      </property>
-      <property name="text" >
-        <string>&amp;New...</string>
-      </property>
-      <property name="toolTip" >
-        <string>New Lava file</string>
-      </property>
-      <property name="shortcut" >
-        <string>Ctrl+N</string>
-      </property>
-    </action>
-    <action name="fileOpenAction" >
-      <property name="name" >
-        <cstring>fileOpenAction</cstring>
-      </property>
-      <property name="icon" >
-        <iconset>image1</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Open</string>
-      </property>
-      <property name="text" >
-        <string>&amp;Open...</string>
-      </property>
-      <property name="shortcut" >
-        <string>Ctrl+O</string>
-      </property>
-    </action>
-    <action name="fileSaveAction" >
-      <property name="name" >
-        <cstring>fileSaveAction</cstring>
-      </property>
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="icon" >
-        <iconset>image2</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Save</string>
-      </property>
-      <property name="text" >
-        <string>&amp;Save</string>
-      </property>
-      <property name="shortcut" >
-        <string>Ctrl+S</string>
-      </property>
-    </action>
-    <action name="fileSaveAsAction" >
-      <property name="name" >
-        <cstring>fileSaveAsAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Save As</string>
-      </property>
-      <property name="text" >
-        <string>Save &amp;As...</string>
-      </property>
-      <property name="shortcut" >
-        <string/>
-      </property>
-    </action>
-    <action name="fileExitAction" >
-      <property name="name" >
-        <cstring>fileExitAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Exit</string>
-      </property>
-      <property name="text" >
-        <string>E&amp;xit</string>
-      </property>
-      <property name="shortcut" >
-        <string/>
-      </property>
-    </action>
-    <action name="editUndoAction" >
-      <property name="name" >
-        <cstring>editUndoAction</cstring>
-      </property>
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="icon" >
-        <iconset>image3</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Reset</string>
-      </property>
-      <property name="text" >
-        <string>&amp;Reset</string>
-      </property>
-      <property name="shortcut" >
-        <string>Ctrl+Z</string>
-      </property>
-    </action>
-    <action name="editRedoAction" >
-      <property name="name" >
-        <cstring>editRedoAction</cstring>
-      </property>
-      <property name="icon" >
-        <iconset>image4</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Redo</string>
-      </property>
-      <property name="text" >
-        <string>&amp;Redo</string>
-      </property>
-      <property name="shortcut" >
-        <string>Ctrl+Y</string>
-      </property>
-    </action>
-    <action name="editCutAction" >
-      <property name="name" >
-        <cstring>editCutAction</cstring>
-      </property>
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="icon" >
-        <iconset>image5</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Cut</string>
-      </property>
-      <property name="text" >
-        <string>&amp;Cut</string>
-      </property>
-      <property name="shortcut" >
-        <string>Ctrl+X</string>
-      </property>
-    </action>
-    <action name="editCopyAction" >
-      <property name="name" >
-        <cstring>editCopyAction</cstring>
-      </property>
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="icon" >
-        <iconset>image6</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Copy</string>
-      </property>
-      <property name="text" >
-        <string>C&amp;opy</string>
-      </property>
-      <property name="shortcut" >
-        <string>Ctrl+C</string>
-      </property>
-    </action>
-    <action name="editPasteAction" >
-      <property name="name" >
-        <cstring>editPasteAction</cstring>
-      </property>
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="icon" >
-        <iconset>image7</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Paste</string>
-      </property>
-      <property name="text" >
-        <string>&amp;Paste</string>
-      </property>
-      <property name="shortcut" >
-        <string>Ctrl+V</string>
-      </property>
-    </action>
-    <action name="helpContentsAction" >
-      <property name="name" >
-        <cstring>helpContentsAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Help topics</string>
-      </property>
-      <property name="text" >
-        <string>&amp;Help topics</string>
-      </property>
-      <property name="shortcut" >
-        <string/>
-      </property>
-    </action>
-    <action name="helpIndexAction" >
-      <property name="name" >
-        <cstring>helpIndexAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Help index</string>
-      </property>
-      <property name="text" >
-        <string>Help index</string>
-      </property>
-      <property name="shortcut" >
-        <string/>
-      </property>
-    </action>
-    <action name="helpAboutAction" >
-      <property name="name" >
-        <cstring>helpAboutAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>About Lava</string>
-      </property>
-      <property name="text" >
-        <string>&amp;About Lava...</string>
-      </property>
-      <property name="toolTip" >
-        <string>About Lava...</string>
-      </property>
-      <property name="shortcut" >
-        <string/>
-      </property>
-    </action>
-    <action name="tileHorizAction" >
-      <property name="name" >
-        <cstring>tileHorizAction</cstring>
-      </property>
-      <property name="icon" >
-        <iconset>image8</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Action</string>
-      </property>
-      <property name="text" >
-        <string>Tile horizontal</string>
-      </property>
-      <property name="toolTip" >
-        <string>Tile horizontal</string>
-      </property>
-    </action>
-    <action name="tileVerticAction" >
-      <property name="name" >
-        <cstring>tileVerticAction</cstring>
-      </property>
-      <property name="icon" >
-        <iconset>image9</iconset>
-      </property>
-      <property name="iconText" >
-        <string>TileVertical</string>
-      </property>
-      <property name="text" >
-        <string>Tile Vertical</string>
-      </property>
-      <property name="toolTip" >
-        <string>Tile Vertical</string>
-      </property>
-    </action>
-    <action name="cascadeAction" >
-      <property name="name" >
-        <cstring>cascadeAction</cstring>
-      </property>
-      <property name="icon" >
-        <iconset>image10</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Cascade</string>
-      </property>
-      <property name="text" >
-        <string>Cascade</string>
-      </property>
-    </action>
-    <action name="fileSaveAllAction" >
-      <property name="name" >
-        <cstring>fileSaveAllAction</cstring>
-      </property>
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="icon" >
-        <iconset>image11</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Save all</string>
-      </property>
-      <property name="text" >
-        <string>Save all</string>
-      </property>
-    </action>
-    <action name="fileCloseAction" >
-      <property name="name" >
-        <cstring>fileCloseAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Close</string>
-      </property>
-      <property name="text" >
-        <string>Close</string>
-      </property>
-    </action>
-    <action name="viewTB2Action" >
-      <property name="name" >
-        <cstring>viewTB2Action</cstring>
-      </property>
-      <property name="checkable" >
-        <bool>true</bool>
-      </property>
-      <property name="checked" >
-        <bool>true</bool>
-      </property>
-      <property name="iconText" >
-        <string>Status bar</string>
-      </property>
-      <property name="text" >
-        <string>Status bar</string>
-      </property>
-      <property name="toolTip" >
-        <string>Status bar</string>
-      </property>
-    </action>
-    <action name="viewTB1Action" >
-      <property name="name" >
-        <cstring>viewTB1Action</cstring>
-      </property>
-      <property name="checkable" >
-        <bool>true</bool>
-      </property>
-      <property name="checked" >
-        <bool>true</bool>
-      </property>
-      <property name="iconText" >
-        <string>Toolbar</string>
-      </property>
-      <property name="text" >
-        <string>Toolbar</string>
-      </property>
-    </action>
-    <action name="faqAction" >
-      <property name="name" >
-        <cstring>faqAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Frequently asked questions</string>
-      </property>
-      <property name="text" >
-        <string>Frequently asked questions</string>
-      </property>
-    </action>
-    <action name="editingLavaProgsAction" >
-      <property name="name" >
-        <cstring>editingLavaProgsAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Editing Lava Progs</string>
-      </property>
-      <property name="text" >
-        <string>Editing Lava Programs</string>
-      </property>
-      <property name="toolTip" >
-        <string>Editing Lava Programs</string>
-      </property>
-    </action>
-    <action name="toggleCategoryAction" >
-      <property name="name" >
-        <cstring>toggleCategoryAction</cstring>
-      </property>
-      <property name="checkable" >
-        <bool>true</bool>
-      </property>
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="icon" >
-        <iconset>image12</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Toggle category</string>
-      </property>
-      <property name="text" >
-        <string>Toggle category</string>
-      </property>
-    </action>
-    <action name="learningLavaAction" >
-      <property name="name" >
-        <cstring>learningLavaAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Learning Lava by samples</string>
-      </property>
-      <property name="text" >
-        <string>Learning Lava by samples</string>
-      </property>
-    </action>
-    <action name="insAction" >
-      <property name="name" >
-        <cstring>insAction</cstring>
-      </property>
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="icon" >
-        <iconset>image13</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Insert</string>
-      </property>
-      <property name="text" >
-        <string>Insert</string>
-      </property>
-    </action>
-    <action name="delAction" >
-      <property name="name" >
-        <cstring>delAction</cstring>
-      </property>
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="icon" >
-        <iconset>image14</iconset>
-      </property>
-      <property name="iconText" >
-        <string>Delete</string>
-      </property>
-      <property name="text" >
-        <string>Delete</string>
-      </property>
-    </action>
-    <action name="setFormFontAction" >
-      <property name="name" >
-        <cstring>setFormFontAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Set form font</string>
-      </property>
-      <property name="text" >
-        <string>Set form font</string>
-      </property>
-    </action>
-    <action name="setGlobalFontAction" >
-      <property name="name" >
-        <cstring>setGlobalFontAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Set global font</string>
-      </property>
-      <property name="text" >
-        <string>Set global font</string>
-      </property>
-    </action>
-    <action name="setFormTextFontAction" >
-      <property name="name" >
-        <cstring>setFormTextFontAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Text font</string>
-      </property>
-      <property name="text" >
-        <string>Text font</string>
-      </property>
-    </action>
-    <action name="setFormLabelFontAction" >
-      <property name="name" >
-        <cstring>setFormLabelFontAction</cstring>
-      </property>
-      <property name="iconText" >
-        <string>Label font</string>
-      </property>
-      <property name="text" >
-        <string>Label font</string>
-      </property>
-    </action>
-    <action name="PreconditionsAction" >
-      <property name="name" >
-        <cstring>PreconditionsAction</cstring>
-      </property>
-      <property name="checkable" >
-        <bool>true</bool>
-      </property>
-      <property name="checked" >
-        <bool>true</bool>
-      </property>
-      <property name="iconText" >
-        <string>Check preconditions</string>
-      </property>
-      <property name="text" >
-        <string>Check preconditions</string>
-      </property>
-    </action>
-    <action name="PostconditionsAction" >
-      <property name="name" >
-        <cstring>PostconditionsAction</cstring>
-      </property>
-      <property name="checkable" >
-        <bool>true</bool>
-      </property>
-      <property name="iconText" >
-        <string>Check pre- and postconditions</string>
-      </property>
-      <property name="text" >
-        <string>Check pre- and postconditions</string>
-      </property>
-    </action>
-    <action name="InvariantsAction" >
-      <property name="name" >
-        <cstring>InvariantsAction</cstring>
-      </property>
-      <property name="checkable" >
-        <bool>true</bool>
-      </property>
-      <property name="iconText" >
-        <string>Check invariants</string>
-      </property>
-      <property name="text" >
-        <string>Check invariants</string>
-      </property>
-    </action>
-    <action name="pmDumpAction" >
-      <property name="name" >
-        <cstring>pmDumpAction</cstring>
-      </property>
-      <property name="checkable" >
-        <bool>true</bool>
-      </property>
-      <property name="checked" >
-        <bool>true</bool>
-      </property>
-      <property name="iconText" >
-        <string>post-mortem dump support</string>
-      </property>
-      <property name="text" >
-        <string>post-mortem dump support</string>
-      </property>
-    </action>
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>CMainFrame</class>
+ <widget class="QMainWindow" name="CMainFrame" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>443</width>
+    <height>297</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Lava Interpreter</string>
+  </property>
+  <widget class="QWidget" name="widget" />
+  <widget class="QToolBar" name="Toolbar_1" >
+   <property name="enabled" >
+    <bool>true</bool>
+   </property>
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
+   <addaction name="fileOpenAction" />
+   <addaction name="fileSaveAction" />
+   <addaction name="fileSaveAllAction" />
+   <addaction name="separator" />
+   <addaction name="editCutAction" />
+   <addaction name="editCopyAction" />
+   <addaction name="editPasteAction" />
+   <addaction name="separator" />
+   <addaction name="tileHorizAction" />
+   <addaction name="tileVerticAction" />
+   <addaction name="cascadeAction" />
+   <addaction name="separator" />
+   <addaction name="editUndoAction" />
+   <addaction name="insAction" />
+   <addaction name="delAction" />
   </widget>
-  <layoutdefault spacing="6" margin="11" />
-  <pixmapfunction></pixmapfunction>
-  <images>
-    <image name="image0" >
-      <data format="PNG" length="151" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005e49444154789cedd3c10ec010100450d3f8aafafef55be3d04b3b598becb59338101e56c0ba954ceabbd3ee466f9275c30cb87480e4a745b00b78213945b68008d9020014e0298322d55d213b2b767c82283fe0bc82567915643f53fa0a03e0eb24769e00e52a0000000049454e44ae426082</data>
-    </image>
-    <image name="image1" >
-      <data format="PNG" length="198" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008d49444154789c9d9251128020084417c753e5d99aa6e96c782dfa68283434737f40c7b782429c19234a4b12cd3933691e47610bd9358d56d0328d76c32bb1056b4e9c196949222200088080a8cdd7e6e60d2e182058331b3ddff0a43e54c6b7dc0aca36ca58bf953128e163772fecb5f00f5eb797c13f587fe3369881816a94b5ac9eea39981e6555f83ed2d70902214b18d557fc390000000049454e44ae426082</data>
-    </image>
-    <image name="image2" >
-      <data format="PNG" length="176" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007749444154789cc5935d0a84300c0627e2a9ecd964293ddb976bd50775ad6ca96c5e1c28a41086e6a7c8055023472e660e4a86f503721903d292aa5c96965401a651f24872c62141c9571c12b4bc2f98db4bc9f706f568ebff11f412fe7a01ecbbf044680a72596fc9de9f821d9fe9b1fb3de4b2af20ca06a6f9336544566a4d0000000049454e44ae426082</data>
-    </image>
-    <image name="image3" >
-      <data format="PNG" length="209" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000009849444154789c9552d10ac02008acd857adb7609f35c6e8b306bed56fb9972922bab98388ca3bf52c8f399207b800f763e7733f7b6a5bcb32267b0275ad28895268ccc122a6009165a0f75674b637b2bc870b900534b99fdd6c4b825a6201598536ea0d455f78a58705ea5a5156f385e56f56328f7c72ff8107738cd1ccd68897089146667de5f4b480d145f1b47fb640e57a46ff3651e3061d226b825108f6890000000049454e44ae426082</data>
-    </image>
-    <image name="image4" >
-      <data format="PNG" length="215" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000009e49444154789c95934b0ac3300c44a5d05335bb408f154af0b10ad9c9d772371d310e562a0f84fcace7912651ab26acf373b6fdbdfb7d398a6caf4d259032607dae8d0b1964d5861007a078b4f0eedd02db77bbe0393bc4f522229dd548e5285d61e720231e2443d20091718b8f6cf1d53aa456cdb3ff977908e01da22422f90c382ac43a0500045fe00ca8fddaf073f6b06ae318d14e661e7afd1b67f505611e6f488d0b13bf0000000049454e44ae426082</data>
-    </image>
-    <image name="image5" >
-      <data format="PNG" length="175" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007649444154789cb593410ac03008046be9abf49687e766be654f161b361129dd8b11ccac0b09e9d00349584c87d2aa779df07641ff0284c5622d01e6bc287fba41e69e02dc75e59e0284bbc55a064477e16e0874ed9cdfa0f680fc0c37f08138b4d3e7870423ccd2d1c863cd9b11fa4cab612408a8e80635a04016bc33a8e90000000049454e44ae426082</data>
-    </image>
-    <image name="image6" >
-      <data format="PNG" length="217" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000a049444154789c9593410e84200c457f0da792dd9ccb9d9ecb5db9566731015ae7a3f893062bf8fadb886851e4351b88b4a8b0f75e4b7d30b3100086600a6032b34748f28988b40f7ff90160475ecf00d1f269ad0507de7e5fb710000230004424c4b8b5ad41a803efc4837b7edccfa06b0fedd4ea0e64af1cb0f696994357b0872760fcc7d541b1815648fadb21f215af7a04f889d37d2d3a6362a8dbbb30a32f7afb76f3d1e856190000000049454e44ae426082</data>
-    </image>
-    <image name="image7" >
-      <data format="PNG" length="242" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f000000b949444154789c9553410ec3200c73a6be0abe363455d9bb7a4bf6acec40535a9ad2cd120a84d8310848541021a76cfbb5a85054472ed01300c0d60c0554179c9ccc3303280018e55560d6883ee719006a5d4ed94485a6a6d9c8a242fa0144eb8ecf6ba3b2896c0e2a5a323a4e54d70954e56387bb183ad8df85e7a378e1a08f66cfd32188de0018392df6183918c1856f1db48e47a2e78677d0932291bf1d9c444505eb73b6f3601b0160a3abcf0400392d8307553114f8055f5fda8f6a6838501c0000000049454e44ae426082</data>
-    </image>
-    <image name="image8" >
-      <data format="PNG" length="184" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007f49444154789cdd93410e80200c04b7c64f596ebe4b4ff82e6fadcfaa072422318a7073124248dacdd2051215d4c0039b6e4a3d00385eedab801903003a00101de9bd654ed649171cb81b077376f6d97e202a0873f0564aac1595e0a08566814b0a444b9d83b2141e046ade41a48f0e1caf66361535a557fd410a54fb1b233bea0659dc284e8a660000000049454e44ae426082</data>
-    </image>
-    <image name="image9" >
-      <data format="PNG" length="144" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005749444154789c633c7aec2803258085818181c1da6adf7f72341f3de6c4c804e3fcff5f83532142ae160923b9808181818191b105a70108b9660c39b801d85c00d3884f8e09438644306ac0b03080c49488458ed2dc0800f01017cb4ac19dec0000000049454e44ae426082</data>
-    </image>
-    <image name="image10" >
-      <data format="PNG" length="180" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000007b49444154789ca591d111c0200843c5732a07702daf6b3940d6a25ff1aad616da7ce989813c0440c8b969300a2872bd471e54abd563503710393e1924cf04774dd25bc12cf2228b381778592c065e163d023f7a5908807ec9b9a96a354f011459225056165b06d629863572358cf22436d846b0eab741da3d58199c30b32bd72f4c08520000000049454e44ae426082</data>
-    </image>
-    <image name="image11" >
-      <data format="PNG" length="194" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008949444154789ca5936f0e802008c57dce53d5d95aebcfd5f05af4c14156a859bfcd3181bd876c8222b99c7118d9bd8422c15b856d4991991f47f242b09ca7394500a6f3be9ef9cb043dce3a418fb395f73dced2f7106891bff993408ddf0221bf94967747967d11b016548222a9930ae4aa02333b002a6ef58452a1e52c782b29c84e6a06b8ffc65e0e4d515afd712269670000000049454e44ae426082</data>
-    </image>
-    <image name="image12" >
-      <data format="PNG" length="151" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000005e49444154789cdd51410ac0200c4bc557b9f7b7dfda4e010d7363ab2703058da426ad793832284a1cad9dac2721dfcb1da9cd666200304678fb51e1110600b517939c3952f11041c5e494d7bb2ddfc257541efe0e31ed203d830d22a41d5c3d65366896759c690000000049454e44ae426082</data>
-    </image>
-    <image name="image13" >
-      <data format="PNG" length="198" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008d49444154789cc592410ac34008459fa5a7caec8439562883c70accceb9d6ef26812e024d3b85ba12c5c7f7abe54866e23635fd0b800102c891f61560d6037605da4102142df49ae748722467f553c031f0ae172d74d9c4680140598afad6152df0ea76bf0af0eae6d5e95b17c0fa5801ae2be85b57598a76901d908f14002a4bd1b19257b7e933feff95a7014fe2f55cc10ee4662f0000000049454e44ae426082</data>
-    </image>
-    <image name="image14" >
-      <data format="PNG" length="199" >89504e470d0a1a0a0000000d49484452000000100000000f0806000000ed734f2f0000008e49444154789cd5523b0ac520101c434ee576811c4b82ecb10276ebb5e6356f83f1993449f3062cdcf9c08e06ab8627981eb9df0898fb8144210058b5706774dd3b2b94bd50a2b0ec85bdc0b92b1e9a950068d5f07d91e33ee2342b5bddc9d00734a2d369b99f1247b82b74d2ac9746e77cf7510ff3b22e0100250afb30e7d29690b644cdeab303e1ffbff2e3800f9eb768768f584dea0000000049454e44ae426082</data>
-    </image>
-  </images>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>443</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="fileMenu" >
+    <property name="title" >
+     <string>&amp;File</string>
+    </property>
+    <addaction name="fileNewAction" />
+    <addaction name="fileOpenAction" />
+    <addaction name="fileCloseAction" />
+    <addaction name="fileSaveAction" />
+    <addaction name="fileSaveAsAction" />
+    <addaction name="fileSaveAllAction" />
+    <addaction name="separator" />
+    <addaction name="fileExitAction" />
+   </widget>
+   <widget class="QMenu" name="viewMenu" >
+    <property name="title" >
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="popupMenu_12" >
+     <property name="title" >
+      <string>Set form font</string>
+     </property>
+     <addaction name="setFormTextFontAction" />
+     <addaction name="setFormLabelFontAction" />
+    </widget>
+    <addaction name="viewTB2Action" />
+    <addaction name="viewTB1Action" />
+    <addaction name="separator" />
+    <addaction name="setFormFontAction" />
+    <addaction name="popupMenu_12" />
+    <addaction name="setGlobalFontAction" />
+   </widget>
+   <widget class="QMenu" name="Options" >
+    <property name="title" >
+     <string>Options</string>
+    </property>
+    <addaction name="pmDumpAction" />
+    <addaction name="PreconditionsAction" />
+    <addaction name="PostconditionsAction" />
+    <addaction name="InvariantsAction" />
+   </widget>
+   <widget class="QMenu" name="windowMenu" >
+    <property name="title" >
+     <string>Window</string>
+    </property>
+    <addaction name="tileHorizAction" />
+    <addaction name="tileVerticAction" />
+    <addaction name="cascadeAction" />
+   </widget>
+   <widget class="QMenu" name="helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="helpContentsAction" />
+    <addaction name="editingLavaProgsAction" />
+    <addaction name="learningLavaAction" />
+    <addaction name="separator" />
+    <addaction name="helpAboutAction" />
+   </widget>
+   <addaction name="fileMenu" />
+   <addaction name="viewMenu" />
+   <addaction name="Options" />
+   <addaction name="windowMenu" />
+   <addaction name="helpMenu" />
+  </widget>
+  <action name="fileNewAction" >
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;New...</string>
+   </property>
+   <property name="iconText" >
+    <string>New...</string>
+   </property>
+   <property name="toolTip" >
+    <string>New Lava file</string>
+   </property>
+   <property name="shortcut" >
+    <string>Strg+N</string>
+   </property>
+  </action>
+  <action name="fileOpenAction" >
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Open...</string>
+   </property>
+   <property name="iconText" >
+    <string>Open</string>
+   </property>
+   <property name="shortcut" >
+    <string>Strg+O</string>
+   </property>
+  </action>
+  <action name="fileSaveAction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Save.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Save</string>
+   </property>
+   <property name="iconText" >
+    <string>Save</string>
+   </property>
+   <property name="shortcut" >
+    <string>Strg+S</string>
+   </property>
+  </action>
+  <action name="fileSaveAsAction" >
+   <property name="text" >
+    <string>Save &amp;As...</string>
+   </property>
+   <property name="iconText" >
+    <string>Save As</string>
+   </property>
+   <property name="shortcut" >
+    <string/>
+   </property>
+  </action>
+  <action name="fileExitAction" >
+   <property name="text" >
+    <string>E&amp;xit</string>
+   </property>
+   <property name="iconText" >
+    <string>Exit</string>
+   </property>
+   <property name="shortcut" >
+    <string/>
+   </property>
+  </action>
+  <action name="editUndoAction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Reset</string>
+   </property>
+   <property name="iconText" >
+    <string>Reset</string>
+   </property>
+   <property name="shortcut" >
+    <string>Strg+Z</string>
+   </property>
+  </action>
+  <action name="editRedoAction" >
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Redo.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Redo</string>
+   </property>
+   <property name="iconText" >
+    <string>Redo</string>
+   </property>
+   <property name="shortcut" >
+    <string>Strg+Y</string>
+   </property>
+  </action>
+  <action name="editCutAction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Cut.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Cut</string>
+   </property>
+   <property name="iconText" >
+    <string>Cut</string>
+   </property>
+   <property name="shortcut" >
+    <string>Strg+X</string>
+   </property>
+  </action>
+  <action name="editCopyAction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Copy.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>C&amp;opy</string>
+   </property>
+   <property name="iconText" >
+    <string>Copy</string>
+   </property>
+   <property name="shortcut" >
+    <string>Strg+C</string>
+   </property>
+  </action>
+  <action name="editPasteAction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Paste.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Paste</string>
+   </property>
+   <property name="iconText" >
+    <string>Paste</string>
+   </property>
+   <property name="shortcut" >
+    <string>Strg+V</string>
+   </property>
+  </action>
+  <action name="helpContentsAction" >
+   <property name="text" >
+    <string>&amp;Help topics</string>
+   </property>
+   <property name="iconText" >
+    <string>Help topics</string>
+   </property>
+   <property name="shortcut" >
+    <string/>
+   </property>
+  </action>
+  <action name="helpIndexAction" >
+   <property name="text" >
+    <string>Help index</string>
+   </property>
+   <property name="iconText" >
+    <string>Help index</string>
+   </property>
+   <property name="shortcut" >
+    <string/>
+   </property>
+  </action>
+  <action name="helpAboutAction" >
+   <property name="text" >
+    <string>&amp;About Lava...</string>
+   </property>
+   <property name="iconText" >
+    <string>About Lava</string>
+   </property>
+   <property name="toolTip" >
+    <string>About Lava...</string>
+   </property>
+   <property name="shortcut" >
+    <string/>
+   </property>
+  </action>
+  <action name="tileHorizAction" >
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_TileHori.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>Tile horizontal</string>
+   </property>
+   <property name="iconText" >
+    <string>Action</string>
+   </property>
+   <property name="toolTip" >
+    <string>Tile horizontal</string>
+   </property>
+  </action>
+  <action name="tileVerticAction" >
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>Tile Vertical</string>
+   </property>
+   <property name="iconText" >
+    <string>TileVertical</string>
+   </property>
+   <property name="toolTip" >
+    <string>Tile Vertical</string>
+   </property>
+  </action>
+  <action name="cascadeAction" >
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Cascade.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>Cascade</string>
+   </property>
+   <property name="iconText" >
+    <string>Cascade</string>
+   </property>
+  </action>
+  <action name="fileSaveAllAction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_SaveAll.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>Save all</string>
+   </property>
+   <property name="iconText" >
+    <string>Save all</string>
+   </property>
+  </action>
+  <action name="fileCloseAction" >
+   <property name="text" >
+    <string>Close</string>
+   </property>
+   <property name="iconText" >
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="viewTB2Action" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Status bar</string>
+   </property>
+   <property name="iconText" >
+    <string>Status bar</string>
+   </property>
+   <property name="toolTip" >
+    <string>Status bar</string>
+   </property>
+  </action>
+  <action name="viewTB1Action" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Toolbar</string>
+   </property>
+   <property name="iconText" >
+    <string>Toolbar</string>
+   </property>
+  </action>
+  <action name="faqAction" >
+   <property name="text" >
+    <string>Frequently asked questions</string>
+   </property>
+   <property name="iconText" >
+    <string>Frequently asked questions</string>
+   </property>
+  </action>
+  <action name="editingLavaProgsAction" >
+   <property name="text" >
+    <string>Editing Lava Programs</string>
+   </property>
+   <property name="iconText" >
+    <string>Editing Lava Progs</string>
+   </property>
+   <property name="toolTip" >
+    <string>Editing Lava Programs</string>
+   </property>
+  </action>
+  <action name="toggleCategoryAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset>image12</iconset>
+   </property>
+   <property name="text" >
+    <string>Toggle category</string>
+   </property>
+   <property name="iconText" >
+    <string>Toggle category</string>
+   </property>
+  </action>
+  <action name="learningLavaAction" >
+   <property name="text" >
+    <string>Learning Lava by samples</string>
+   </property>
+   <property name="iconText" >
+    <string>Learning Lava by samples</string>
+   </property>
+  </action>
+  <action name="insAction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/Lava/res/TOOLBUTTONS/Q_ins.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>Insert</string>
+   </property>
+   <property name="iconText" >
+    <string>Insert</string>
+   </property>
+  </action>
+  <action name="delAction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/Lava/res/TOOLBUTTONS/Q_del.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>Delete</string>
+   </property>
+   <property name="iconText" >
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="setFormFontAction" >
+   <property name="text" >
+    <string>Set form font</string>
+   </property>
+   <property name="iconText" >
+    <string>Set form font</string>
+   </property>
+  </action>
+  <action name="setGlobalFontAction" >
+   <property name="text" >
+    <string>Set global font</string>
+   </property>
+   <property name="iconText" >
+    <string>Set global font</string>
+   </property>
+  </action>
+  <action name="setFormTextFontAction" >
+   <property name="text" >
+    <string>Text font</string>
+   </property>
+   <property name="iconText" >
+    <string>Text font</string>
+   </property>
+  </action>
+  <action name="setFormLabelFontAction" >
+   <property name="text" >
+    <string>Label font</string>
+   </property>
+   <property name="iconText" >
+    <string>Label font</string>
+   </property>
+  </action>
+  <action name="PreconditionsAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Check preconditions</string>
+   </property>
+   <property name="iconText" >
+    <string>Check preconditions</string>
+   </property>
+  </action>
+  <action name="PostconditionsAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Check pre- and postconditions</string>
+   </property>
+   <property name="iconText" >
+    <string>Check pre- and postconditions</string>
+   </property>
+  </action>
+  <action name="InvariantsAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Check invariants</string>
+   </property>
+   <property name="iconText" >
+    <string>Check invariants</string>
+   </property>
+  </action>
+  <action name="pmDumpAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>post-mortem dump support</string>
+   </property>
+   <property name="iconText" >
+    <string>post-mortem dump support</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <resources>
+  <include location="../Lava_Resources.qrc" />
+ </resources>
+ <connections/>
 </ui>

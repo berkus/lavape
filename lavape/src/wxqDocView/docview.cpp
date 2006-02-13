@@ -679,7 +679,7 @@ wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : Q3HBox(pare
     deleting = false;;
     m_viewDocument = doc;
     m_viewFrame = CalcParentFrame();
-    if (parent->inherits("QMainWindow"))
+    if (parent->inherits("Q3MainWindow"))
       ((Q3MainWindow*)parent)->setCentralWidget(this);
     m_viewFrame->AddView(this);
 }

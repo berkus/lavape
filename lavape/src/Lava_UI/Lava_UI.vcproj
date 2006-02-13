@@ -4,6 +4,7 @@
 	Version="8,00"
 	Name="Lava_UI"
 	ProjectGUID="{657E6398-B5E9-464A-BA12-D05859F9D42A}"
+	RootNamespace="Lava_UI"
 	>
 	<Platforms>
 		<Platform
@@ -11,6 +12,9 @@
 		/>
 	</Platforms>
 	<ToolFiles>
+		<ToolFile
+			RelativePath="..\ui-rule.rules"
+		/>
 	</ToolFiles>
 	<Configurations>
 		<Configuration
@@ -27,6 +31,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="ui-rule"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -123,6 +130,9 @@
 				Outputs=""
 			/>
 			<Tool
+				Name="ui-rule"
+			/>
+			<Tool
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
@@ -217,7 +227,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -237,6 +247,20 @@
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputPath)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
+						Outputs="Generated\$(InputName).h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\untitled.ui"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying uic to $(InputPath)"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)"
 						Outputs="Generated\$(InputName).h"
 					/>
 				</FileConfiguration>

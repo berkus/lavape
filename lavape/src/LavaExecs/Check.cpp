@@ -202,8 +202,11 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
 
   if (IsFuncInvocation())
     synObj = (SynObject*)((FuncExpression*)synObj)->function.ptr;
-  else if (synObj->primaryToken == parameter_T)
+  else if (synObj->primaryToken == parameter_T) {
     synObj = (SynObject*)((Parameter*)synObj)->parameter.ptr;
+    if (synObj->primaryToken == assignFX_T || synObj->primaryToken == FuncDisabled_T)
+      synObj = (SynObject*)((FuncExpression*)synObj)->function.ptr;
+  }
   else if (synObj->primaryToken == qua_T)
     synObj = (SynObject*)((ExtendExpression*)synObj)->extendType.ptr;
   else if (synObj->primaryToken == ifx_T)
@@ -2910,12 +2913,13 @@ bool ObjReference::InConstituent (CheckData &ckd) {
 }
 
 bool SynObject::IsDefChecked(CheckData &ckd) {
-  SynObject *synObj, *parent;
+  SynObject *synObj=this, *parent;
 
-  if (primaryToken != ObjRef_T)
+  if (primaryToken == parameter_T)
+    synObj = (SynObject*)((Parameter*)synObj)->parameter.ptr;
+  if (synObj->primaryToken != ObjRef_T)
     return false;
 
-  synObj = this;
   for (parent=synObj->parentObject; parent; parent=parent->parentObject) {
     if (parent->parentObject
     && parent->parentObject->primaryToken == ifdef_T

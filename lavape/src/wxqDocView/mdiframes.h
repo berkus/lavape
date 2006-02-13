@@ -25,7 +25,7 @@
 #include "docview.h"
 #include "mdiframes.h"
 #include "defs.h"
-#include "q3mainwindow.h"
+#include "qmainwindow.h"
 #include "q3vbox.h"
 #include "q3ptrlist.h"
 #include "qworkspace.h"
@@ -38,7 +38,7 @@ public:
 	wxMDIChildFrame *window;
 };
 
-class WXDLLEXPORT wxMainFrame: public Q3MainWindow
+class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
     //friend class WXDLLEXPORT wxMDIChildFrame;
 public:

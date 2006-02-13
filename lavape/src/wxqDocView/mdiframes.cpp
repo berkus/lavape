@@ -53,7 +53,7 @@
  */
 
 wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
- : Q3MainWindow(parent,name,Qt::WDestructiveClose)
+ : QMainWindow(parent,name,Qt::WDestructiveClose | Qt::WType_TopLevel)
 {
 	completelyCreated = false;
   m_CentralWidget = new Q3VBox(this);
@@ -198,7 +198,7 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
   widthForEach = m_workspace->width() / cc;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) {
+    if (!((Q3MainWindow*)window)->isMinimized()) {
       preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
       actWidth = QMAX(widthForEach, preferredWidth);
       if (window == theActiveFrame) 

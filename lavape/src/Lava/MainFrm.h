@@ -22,14 +22,14 @@ public:
   void PmDumpsToggled(bool on);
 
 public slots:
-  virtual void fileNew();
-  virtual void on_fileOpenAction_activated();//fileOpen();
+  virtual void on_fileNewAction_activated();
+  virtual void on_fileOpenAction_activated();
 
-  virtual void fileSave();
-  virtual void fileSaveAs();
-  virtual void fileSaveAll();
-  virtual void fileClose();
-  virtual void fileExit();
+  virtual void on_fileSaveAction_activated();
+  virtual void on_fileSaveAsAction_activated();
+  virtual void on_fileSaveAll_activated();
+  virtual void on_fileClose_activated();
+  virtual void on_fileExitAction_activated();
   void makeStyle(const QString &style);
   void helpAbout();
   void okAction_activated();

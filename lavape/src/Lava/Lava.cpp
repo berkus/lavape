@@ -91,9 +91,9 @@ int main( int argc, char ** argv ) {
 
   ap.m_appWindow = new CLavaMainFrame;
   if (ap.m_appWindow->OnCreate()) {
-    ap.m_appWindow->resize(500,300);
+//    ap.m_appWindow->resize(500,300);
     ap.m_appWindow->show();
-		//ap.m_appWindow->showMaximized();
+//		ap.m_appWindow->showMaximized();
   }
 	else
 		return 1;

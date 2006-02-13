@@ -1423,7 +1423,7 @@ void CLavaMainFrame::cascade()
   m_workspace->cascade();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) 
+    if (!((Q3MainWindow*)window)->isMinimized()) 
       if (window->inherits("wxMDIChildFrame"))
         ((wxMDIChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
   }
@@ -1446,7 +1446,7 @@ void CLavaMainFrame::tileVertic()
   cc = (int)windows.count();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (((QMainWindow*)window)->isMinimized()) {
+    if (((Q3MainWindow*)window)->isMinimized()) {
       cc--;
       minHeight = menubar->height();
     }
@@ -1464,12 +1464,12 @@ void CLavaMainFrame::tileVertic()
   widthForEach = m_workspace->width() / cc;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) {
+    if (!((Q3MainWindow*)window)->isMinimized()) {
       preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
       actWidth = QMAX(widthForEach, preferredWidth);
       window->parentWidget()->setGeometry( x, 0, actWidth, allHeight );
       x += actWidth;
-      if (!((QMainWindow*)window)->isMaximized()) 
+      if (!((Q3MainWindow*)window)->isMaximized()) 
         window->showNormal();
     }
   }
@@ -1491,7 +1491,7 @@ void CLavaMainFrame::tileHoriz()
   cc = (int)windows.count();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (((QMainWindow*)window)->isMinimized()) {
+    if (((Q3MainWindow*)window)->isMinimized()) {
       cc--;
       minHeight = menubar->height();
     }
@@ -1508,12 +1508,12 @@ void CLavaMainFrame::tileHoriz()
   heightForEach = (m_workspace->height() - minHeight) / cc;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) {
+    if (!((Q3MainWindow*)window)->isMinimized()) {
       preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
       actHeight = QMAX(heightForEach, preferredHeight);
       window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
       y += actHeight;
-      if (!((QMainWindow*)window)->isMaximized()) 
+      if (!((Q3MainWindow*)window)->isMaximized()) 
         window->showNormal();
     }
   }
