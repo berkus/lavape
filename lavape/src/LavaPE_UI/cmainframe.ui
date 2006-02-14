@@ -3,7 +3,7 @@
  <comment></comment>
  <exportmacro></exportmacro>
  <class>CMainFrame</class>
- <widget class="Q3MainWindow" name="CMainFrame" >
+ <widget class="QMainWindow" name="CMainFrame" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -15,28 +15,20 @@
   <property name="windowTitle" >
    <string>Lava Programming Environment</string>
   </property>
-  <widget class="QWidget" name="widget" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>246</y>
-     <width>721</width>
-     <height>439</height>
-    </rect>
+  <widget class="QWidget" name="widget" />
+  <widget class="QToolBar" name="Toolbar_1" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
    </property>
-  </widget>
-  <widget class="Q3ToolBar" name="Toolbar_1" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>477</width>
-     <height>35</height>
-    </rect>
+   <property name="iconSize" >
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
    </property>
-   <property name="label" >
-    <string>File toolbar</string>
-   </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
    <addaction name="fileNewAction" />
    <addaction name="newCompoAction" />
    <addaction name="fileOpenAction" />
@@ -53,18 +45,19 @@
    <addaction name="tileVerticAction" />
    <addaction name="cascadeAction" />
   </widget>
-  <widget class="Q3ToolBar" name="Toolbar_2" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>35</y>
-     <width>467</width>
-     <height>35</height>
-    </rect>
+  <widget class="QToolBar" name="Toolbar_2" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
    </property>
-   <property name="label" >
-    <string>Tree op. toolbar</string>
+   <property name="iconSize" >
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
    </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
    <addaction name="expandAction" />
    <addaction name="collapseAction" />
    <addaction name="showOptsAction" />
@@ -80,31 +73,33 @@
    <addaction name="checkAllAction" />
    <addaction name="runAction" />
   </widget>
-  <widget class="Q3ToolBar" name="HelpToolbar" >
-   <property name="geometry" >
-    <rect>
-     <x>467</x>
-     <y>35</y>
-     <width>20</width>
-     <height>35</height>
-    </rect>
+  <widget class="QToolBar" name="HelpToolbar" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
    </property>
-   <property name="label" >
-    <string>Help toolbar</string>
+   <property name="iconSize" >
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
    </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
   </widget>
-  <widget class="Q3ToolBar" name="Toolbar_3" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>70</y>
-     <width>541</width>
-     <height>35</height>
-    </rect>
+  <widget class="QToolBar" name="Toolbar_3" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
    </property>
-   <property name="label" >
-    <string>Declaration toolbar</string>
+   <property name="iconSize" >
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
    </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
    <addaction name="newIncludeAction" />
    <addaction name="separator" />
    <addaction name="newPackageAction" />
@@ -125,18 +120,19 @@
    <addaction name="newEnumItemAction" />
    <addaction name="makeGUIAction" />
   </widget>
-  <widget class="Q3ToolBar" name="Toolbar_4" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>105</y>
-     <width>487</width>
-     <height>35</height>
-    </rect>
+  <widget class="QToolBar" name="Toolbar_4" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
    </property>
-   <property name="label" >
-    <string>Details toolbar</string>
+   <property name="iconSize" >
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
    </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
    <addaction name="editSelItemAction" />
    <addaction name="editCommentAction" />
    <addaction name="gotoDeclAction" />
@@ -154,18 +150,19 @@
    <addaction name="insAction" />
    <addaction name="delAction" />
   </widget>
-  <widget class="Q3ToolBar" name="ToolbarDbg" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>140</y>
-     <width>321</width>
-     <height>35</height>
-    </rect>
+  <widget class="QToolBar" name="ToolbarDbg" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
    </property>
-   <property name="label" >
-    <string>Debug toolbar</string>
+   <property name="iconSize" >
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
    </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
    <addaction name="DbgAction" />
    <addaction name="DbgStepNextAct" />
    <addaction name="DbgStepNextFunctionAct" />
@@ -176,18 +173,19 @@
    <addaction name="DbgClearBreakpointsAct" />
    <addaction name="DbgStopAction" />
   </widget>
-  <widget class="Q3ToolBar" name="Toolbar_5" >
-   <property name="geometry" >
-    <rect>
-     <x>321</x>
-     <y>140</y>
-     <width>389</width>
-     <height>35</height>
-    </rect>
+  <widget class="QToolBar" name="Toolbar_5" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
    </property>
-   <property name="label" >
-    <string>Exec switches toolbar</string>
+   <property name="iconSize" >
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
    </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
    <addaction name="toggleCategoryAction" />
    <addaction name="toggleSubstTypeAction" />
    <addaction name="optLocalVarAction" />
@@ -200,18 +198,19 @@
    <addaction name="commentOutAction" />
    <addaction name="toggleCommentsAction" />
   </widget>
-  <widget class="Q3ToolBar" name="Toolbar_6" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>175</y>
-     <width>915</width>
-     <height>35</height>
-    </rect>
+  <widget class="QToolBar" name="Toolbar_6" >
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
    </property>
-   <property name="label" >
-    <string>Exec op. toolbar</string>
+   <property name="iconSize" >
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
    </property>
+   <attribute name="toolBarArea" >
+    <number>4</number>
+   </attribute>
    <addaction name="lessThanAction" />
    <addaction name="lessEqualAction" />
    <addaction name="equalAction" />
@@ -241,18 +240,19 @@
    <addaction name="handleAction" />
    <addaction name="ordAction" />
   </widget>
-  <widget class="Q3ToolBar" name="Toolbar_7" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>210</y>
-     <width>20</width>
-     <height>16</height>
-    </rect>
+  <widget class="QToolBar" name="Toolbar_7" >
+   <property name="orientation" >
+    <enum>Qt::Vertical</enum>
    </property>
-   <property name="label" >
-    <string>Keyword toolbar</string>
+   <property name="iconSize" >
+    <size>
+     <width>16</width>
+     <height>15</height>
+    </size>
    </property>
+   <attribute name="toolBarArea" >
+    <number>1</number>
+   </attribute>
   </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
@@ -263,6 +263,24 @@
      <height>19</height>
     </rect>
    </property>
+   <widget class="QMenu" name="windowMenu" >
+    <property name="title" >
+     <string>&amp;Window</string>
+    </property>
+    <addaction name="tileHorizAction" />
+    <addaction name="tileVerticAction" />
+    <addaction name="cascadeAction" />
+   </widget>
+   <widget class="QMenu" name="helpMenu" >
+    <property name="title" >
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="helpContentsAction" />
+    <addaction name="editingLavaProgsAction" />
+    <addaction name="learningLavaAction" />
+    <addaction name="separator" />
+    <addaction name="helpAboutAction" />
+   </widget>
    <widget class="QMenu" name="fileMenu" >
     <property name="title" >
      <string>&amp;File</string>
@@ -281,6 +299,19 @@
     <addaction name="genSingleHtmlAction" />
     <addaction name="separator" />
     <addaction name="fileExitAction" />
+   </widget>
+   <widget class="QMenu" name="editMenu" >
+    <property name="title" >
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="editSelItemAction" />
+    <addaction name="editCutAction" />
+    <addaction name="editCopyAction" />
+    <addaction name="editPasteAction" />
+    <addaction name="deleteAction" />
+    <addaction name="separator" />
+    <addaction name="editUndoAction" />
+    <addaction name="editRedoAction" />
    </widget>
    <widget class="QMenu" name="findMenu" >
     <property name="title" >
@@ -349,37 +380,6 @@
     <addaction name="popupMenu_65" />
     <addaction name="setExecFontAction" />
     <addaction name="setGlobalFontAction" />
-   </widget>
-   <widget class="QMenu" name="windowMenu" >
-    <property name="title" >
-     <string>&amp;Window</string>
-    </property>
-    <addaction name="tileHorizAction" />
-    <addaction name="tileVerticAction" />
-    <addaction name="cascadeAction" />
-   </widget>
-   <widget class="QMenu" name="helpMenu" >
-    <property name="title" >
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="helpContentsAction" />
-    <addaction name="editingLavaProgsAction" />
-    <addaction name="learningLavaAction" />
-    <addaction name="separator" />
-    <addaction name="helpAboutAction" />
-   </widget>
-   <widget class="QMenu" name="editMenu" >
-    <property name="title" >
-     <string>&amp;Edit</string>
-    </property>
-    <addaction name="editSelItemAction" />
-    <addaction name="editCutAction" />
-    <addaction name="editCopyAction" />
-    <addaction name="editPasteAction" />
-    <addaction name="deleteAction" />
-    <addaction name="separator" />
-    <addaction name="editUndoAction" />
-    <addaction name="editRedoAction" />
    </widget>
    <addaction name="fileMenu" />
    <addaction name="editMenu" />
@@ -2561,22 +2561,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <pixmapfunction></pixmapfunction>
- <customwidgets>
-  <customwidget>
-   <class>Q3MainWindow</class>
-   <extends></extends>
-   <header>q3mainwindow.h</header>
-   <container>1</container>
-   <pixmap></pixmap>
-  </customwidget>
-  <customwidget>
-   <class>Q3ToolBar</class>
-   <extends></extends>
-   <header>q3listview.h</header>
-   <container>0</container>
-   <pixmap></pixmap>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../LavaPE_Resources.qrc" />
  </resources>

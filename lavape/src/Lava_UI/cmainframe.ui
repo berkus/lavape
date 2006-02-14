@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>443</width>
+    <width>509</width>
     <height>297</height>
    </rect>
   </property>
@@ -41,13 +41,14 @@
    <addaction name="editUndoAction" />
    <addaction name="insAction" />
    <addaction name="delAction" />
+   <addaction name="toggleCategoryAction" />
   </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>443</width>
+     <width>509</width>
      <height>19</height>
     </rect>
    </property>
@@ -190,7 +191,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</iconset>
+    <iconset/>
    </property>
    <property name="text" >
     <string>&amp;Reset</string>
@@ -422,7 +423,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>image12</iconset>
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</iconset>
    </property>
    <property name="text" >
     <string>Toggle category</string>
@@ -547,6 +548,14 @@
    </property>
    <property name="iconText" >
     <string>post-mortem dump support</string>
+   </property>
+  </action>
+  <action name="editUndoAction" >
+   <property name="icon" >
+    <iconset resource="..\Lava_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Reset</string>
    </property>
   </action>
  </widget>

@@ -14,7 +14,7 @@
 #endif
 
 
-class LAVAPEUI_DLL CMainFrame : public Q3MainWindow, public Ui_CMainFrame  {
+class LAVAPEUI_DLL CMainFrame : public QMainWindow, public Ui_CMainFrame  {
 public:
   CMainFrame(); 
 
