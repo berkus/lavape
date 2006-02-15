@@ -24,7 +24,7 @@
 #include "FormWid.h"
 #include "qlineedit.h"
 //Added by qt3to4:
-#include <Q3Frame>
+#include <QFrame>
 #include <Q3PopupMenu>
 
 
@@ -53,7 +53,7 @@ CLavaMenu::CLavaMenu(CGUIProgBase *guiPr, CHEFormNode* data,
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   QSize size = GUIProg->CalcTextRect(cx, 1, font());
-  int bord = ((Q3Frame*)pParentWnd)->lineWidth();
+  int bord = ((QFrame*)pParentWnd)->lineWidth();
   setGeometry(QRect(QPoint(bord,bord), size));
   setReadOnly(true);
   show();

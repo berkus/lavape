@@ -83,7 +83,7 @@
 #include "qthread.h"
 #include "qthreadstorage.h"
 #include "qtimer.h"
-#include "q3toolbar.h"
+#include "qtoolbar.h"
 #include "qtoolbutton.h"
 #include "qtooltip.h"
 #include "qtranslator.h"

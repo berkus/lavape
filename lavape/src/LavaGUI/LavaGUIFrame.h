@@ -9,7 +9,7 @@
 #include "docview.h"
 #include "mdiframes.h"
 #include "q3frame.h"
-#include "q3toolbar.h"
+#include "qtoolbar.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

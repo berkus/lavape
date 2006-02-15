@@ -204,7 +204,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
   isVisible = Toolbar_7->isVisible();
   if (LBaseData->declareButton) {
     delete Toolbar_7;
-    Toolbar_7 = new Q3ToolBar( QString(""), this, DockLeft );
+    Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
     Toolbar_7->setLabel(tr("Keyword toolbar"));
   }
   else
@@ -300,7 +300,7 @@ void CLavaMainFrame::UpdateUI()
     runAction->setEnabled(false);
 }
 
-void CLavaMainFrame::newKwdToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip,QString whatsThis)
+void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip,QString whatsThis)
 {
   QFont f;
 
@@ -320,7 +320,7 @@ void CLavaMainFrame::newKwdToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,
   pb->show();
 }
 
-void CLavaMainFrame::newHelpToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
+void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
 {
   QFont f;
 
@@ -342,7 +342,7 @@ void CLavaMainFrame::newHelpToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text
   pb->show();
 }
 
-void CLavaMainFrame::fillHelpToolbar(Q3ToolBar *tb)
+void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
 {
   LBaseData->myWhatsThisButton = Q3WhatsThis::whatsThisButton(HelpToolbar);
   Q3WhatsThis::add(LBaseData->myWhatsThisButton,"<p>Drag the \"What's this?\" cursor to any user interface object"
@@ -353,7 +353,7 @@ void CLavaMainFrame::fillHelpToolbar(Q3ToolBar *tb)
     "that you can perform <b>at the current selection</b></p>");
 }
 
-void CLavaMainFrame::fillKwdToolbar(Q3ToolBar *tb)
+void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 {
 	QColorGroup cgDis(tb->palette().disabled());
 	cgDis.setColor(QColorGroup::ButtonText,darkGray);
@@ -1397,7 +1397,7 @@ void CLavaMainFrame::adjustToolbar_7 () {
 
 	delete Toolbar_7;
   Toolbar_7 = 0;
-  Toolbar_7 = new Q3ToolBar( QString(""), this, DockLeft );
+  Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
   Toolbar_7->setLabel(tr("Keyword toolbar"));
   fillKwdToolbar(Toolbar_7);
 	if (isVisible)
@@ -1423,7 +1423,7 @@ void CLavaMainFrame::cascade()
   m_workspace->cascade();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((Q3MainWindow*)window)->isMinimized()) 
+    if (!((QMainWindow*)window)->isMinimized()) 
       if (window->inherits("wxMDIChildFrame"))
         ((wxMDIChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
   }
@@ -1446,7 +1446,7 @@ void CLavaMainFrame::tileVertic()
   cc = (int)windows.count();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (((Q3MainWindow*)window)->isMinimized()) {
+    if (((QMainWindow*)window)->isMinimized()) {
       cc--;
       minHeight = menubar->height();
     }
@@ -1464,12 +1464,12 @@ void CLavaMainFrame::tileVertic()
   widthForEach = m_workspace->width() / cc;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((Q3MainWindow*)window)->isMinimized()) {
+    if (!((QMainWindow*)window)->isMinimized()) {
       preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
       actWidth = QMAX(widthForEach, preferredWidth);
       window->parentWidget()->setGeometry( x, 0, actWidth, allHeight );
       x += actWidth;
-      if (!((Q3MainWindow*)window)->isMaximized()) 
+      if (!((QMainWindow*)window)->isMaximized()) 
         window->showNormal();
     }
   }
@@ -1491,7 +1491,7 @@ void CLavaMainFrame::tileHoriz()
   cc = (int)windows.count();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (((Q3MainWindow*)window)->isMinimized()) {
+    if (((QMainWindow*)window)->isMinimized()) {
       cc--;
       minHeight = menubar->height();
     }
@@ -1508,12 +1508,12 @@ void CLavaMainFrame::tileHoriz()
   heightForEach = (m_workspace->height() - minHeight) / cc;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((Q3MainWindow*)window)->isMinimized()) {
+    if (!((QMainWindow*)window)->isMinimized()) {
       preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
       actHeight = QMAX(heightForEach, preferredHeight);
       window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
       y += actHeight;
-      if (!((Q3MainWindow*)window)->isMaximized()) 
+      if (!((QMainWindow*)window)->isMaximized()) 
         window->showNormal();
     }
   }

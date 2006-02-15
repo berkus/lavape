@@ -11,9 +11,9 @@
 //Added by qt3to4:
 #include <QCloseEvent>
 
-#undef Q3MainWindow
+#undef QMainWindow
 
-class CLavaGUIPopup : public Q3MainWindow 
+class CLavaGUIPopup : public QMainWindow 
 {
 public:
   CLavaGUIPopup(QWidget *parent, CGUIProgBase *guiPr, CHEFormNode* data);

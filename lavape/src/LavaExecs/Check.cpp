@@ -31,7 +31,7 @@
 #include "Convert.h"
 #include "MACROS.h"
 
-#include <q3toolbar.h>
+#include <qtoolbar.h>
 
 
 #define ENTRY \

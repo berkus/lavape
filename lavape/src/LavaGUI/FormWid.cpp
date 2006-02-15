@@ -26,7 +26,7 @@
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QCustomEvent>
-#include <Q3Frame>
+#include <QFrame>
 #include <QEvent>
 #include <Q3PopupMenu>
 
@@ -44,7 +44,7 @@ CFormWid::~CFormWid()
 
 CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
                 QWidget* parent, int border, const char* lpszWindowName)
-                :Q3Frame(parent, "FormWid")
+                :QFrame(parent, "FormWid")
 {
   nRadio = 0;
   myMenu = 0;
@@ -63,7 +63,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
       parentWidget()->parentWidget()->setPaletteBackgroundColor(colorGroup().background());
   }
   show();
-  int bord = ((Q3Frame*)parent)->lineWidth();
+  int bord = ((QFrame*)parent)->lineWidth();
   QRect rect(0,0,GUIProg->globalIndent,GUIProg->globalIndent);
   setGeometry(rect);
   if (myFormNode->data.IterFlags.Contains(IteratedItem))
@@ -73,8 +73,8 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
   if (myFormNode->data.IterFlags.Contains(Optional))
     IterFlags.INCL(Optional);
   if (border > 0) {
-    setFrameShape(Q3Frame::Box );
-    setFrameShadow(Q3Frame::Plain);
+    setFrameShape(QFrame::Box );
+    setFrameShadow(QFrame::Plain);
     setLineWidth(1);
     setMidLineWidth(1);
   }  
@@ -167,7 +167,7 @@ bool CFormWid::event(QEvent* ev)
   else {
     if ((ev->type() == QEvent::Enter) && GUIProg->isView)
       ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
-    return Q3Frame::event(ev);
+    return QFrame::event(ev);
   }
 }
 

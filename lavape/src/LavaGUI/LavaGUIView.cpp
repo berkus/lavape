@@ -30,7 +30,7 @@
 //Added by qt3to4:
 #include <QCloseEvent>
 #include <QEvent>
-#include <Q3Frame>
+#include <QFrame>
 #include <Q3HBoxLayout>
 #include <QResizeEvent>
 #include <Q3VBoxLayout>
@@ -77,12 +77,12 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
   returned = false;
   resize(700,500);
   myScrv = new GUIScrollView(this, false);
-  Q3HBox* hb = new Q3HBox(this);
+  QWidget* hb = new QWidget(this); // horiz. box
   QPushButton* okButton = new QPushButton("Ok", hb);
   QPushButton* resetButton = new QPushButton("Reset", hb);
   QPushButton* cancelButton = new QPushButton("Cancel", hb);
-  qvbl = new Q3VBoxLayout(this);
-  Q3HBoxLayout* hbl = new Q3HBoxLayout(hb);
+  qvbl = new QVBoxLayout(this);
+  QHBoxLayout* hbl = new QHBoxLayout(hb);
   qvbl->addWidget(myScrv);
   qvbl->addWidget(hb);
   hbl->addWidget(okButton);
@@ -467,10 +467,10 @@ void CLavaGUIView::resetLastBrowseNode()
 {
   if (LastBrowseNode && LastBrowseNode->data.FIP.widget
     && LastBrowseNode->data.FIP.widget->inherits("QFrame")) {
-    ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setFrameShape(Q3Frame::NoFrame);
-    ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(Q3Frame::Plain);
-    ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(((CFormWid*)LastBrowseNode->data.FIP.widget)->ForegroundColor);
-    ((Q3Frame*)LastBrowseNode->data.FIP.widget)->repaint();
+    ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShape(QFrame::NoFrame);
+    ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(QFrame::Plain);
+    ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(((CFormWid*)LastBrowseNode->data.FIP.widget)->ForegroundColor);
+    ((QFrame*)LastBrowseNode->data.FIP.widget)->repaint();
     LastBrowseNode = 0;
   }
 
@@ -485,11 +485,11 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
       if (LastBrowseNode) {
         if (LastBrowseNode->data.FIP.widget && LastBrowseNode->data.FIP.widget->inherits("CFormWid")) {
           //myGUIProg->focNode = myGUIProg->TreeSrch.NextUnprotected (LastBrowseNode, LastBrowseNode);
-          ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setFrameShape(Q3Frame::Box );
-          ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(Q3Frame::Plain);
-     ((Q3Frame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(QColor("#FF0000"));
+          ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShape(QFrame::Box );
+          ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(QFrame::Plain);
+     ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(QColor("#FF0000"));
          myGUIProg->ScrollIntoFrame(LastBrowseNode->data.FIP.widget);
-          ((Q3Frame*)LastBrowseNode->data.FIP.widget)->repaint();
+          ((QFrame*)LastBrowseNode->data.FIP.widget)->repaint();
           //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode); 
         }
       }

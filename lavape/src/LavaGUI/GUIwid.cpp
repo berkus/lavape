@@ -32,7 +32,7 @@
 #include "LavaGUIPopup.h"
 #include "GUIProg.h"
 //Added by qt3to4:
-#include <Q3Frame>
+#include <QFrame>
 
 
 //enum {helpEvent,localEvent,popupMenuEvent,sigEvent} EventLocType;
@@ -350,21 +350,21 @@ void GUIwidCLASS::SetTopLeft (QWidget* widget, QWidget* leftNeighbour, int horiz
   wrect = widget->geometry(); //calc the displacement of the widget
   if (widget->parentWidget()->inherits("QFrame"))
     if (widget->parentWidget()->inherits("QGroupBox")) {
-      pbordx = ((Q3Frame*)widget->parentWidget())->lineWidth() + GUIProg->xMargin;
+      pbordx = ((QFrame*)widget->parentWidget())->lineWidth() + GUIProg->xMargin;
       size = GUIProg->CalcStringRect(((Q3GroupBox*)widget->parentWidget())->title(), ((Q3GroupBox*)widget->parentWidget())->font());
       //pbordy = ((QFrame*)widget->parentWidget())->lineWidth() + size.height() + GUIProg->yMargin +1;
       pbordy = size.height() /*+ GUIProg->yMargin + 1*/;
     }
     else {
-      pbordx = ((Q3Frame*)widget->parentWidget())->lineWidth();
-      pbordy = ((Q3Frame*)widget->parentWidget())->lineWidth();
+      pbordx = ((QFrame*)widget->parentWidget())->lineWidth();
+      pbordy = ((QFrame*)widget->parentWidget())->lineWidth();
       if (widget->parentWidget()->inherits("GUIVBox")) {
         pbordx += GUIProg->xMargin;
         pbordy += GUIProg->yMargin;
       }
     }
   if (widget->inherits("QFrame"))
-    bord = ((Q3Frame*)widget)->lineWidth();
+    bord = ((QFrame*)widget)->lineWidth();
   else
     bord = 0;
   disx = wrect.left();
@@ -411,7 +411,7 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
       gb = (Q3GroupBox*)parent;
       sz = gb->size();
       strSz = GUIProg->CalcStringRect(gb->title(), gb->font()) + GUIProg->CalcTextRect(2,1, gb->font());
-      bord = ((Q3Frame*)gb)->lineWidth();
+      bord = ((QFrame*)gb)->lineWidth();
       wid = lmax(sz.width(), wrect.left()+wsz.width()+2*bord + (int)GUIProg->xMargin);
       wid = lmax(wid, strSz.width()+2*bord );
       gb->resize(wid, lmax(sz.height(), wrect.top()+wsz.height()+2*bord + (int)GUIProg->yMargin));
@@ -420,7 +420,7 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
       parent = gb->parentWidget();
     }
     sz = parent->size();
-    bord = ((Q3Frame*)parent)->lineWidth();
+    bord = ((QFrame*)parent)->lineWidth();
     if (parent->parentWidget()->inherits("GUIVBox")) 
       parent->resize(lmax(sz.width(), wrect.left()+wsz.width()+2*bord + (int)GUIProg->xMargin), lmax(sz.height(), wrect.top()+wsz.height()+2*bord + (int)GUIProg->yMargin));
     else
@@ -436,7 +436,7 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
         wsz = parent->size();
         sz = gb->size();
         strSz = GUIProg->CalcStringRect(gb->title(), gb->font()) + GUIProg->CalcTextRect(2,1, gb->font());
-        bord = ((Q3Frame*)gb)->lineWidth();
+        bord = ((QFrame*)gb)->lineWidth();
         wid = lmax(sz.width(), rect.left()+wsz.width()+2*bord + (int)GUIProg->xMargin);
         wid = lmax(wid, strSz.width()+2*bord);
         gb->resize(wid, lmax(sz.height(), rect.top()+wsz.height() + (int)GUIProg->yMargin));
@@ -444,7 +444,7 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
         wsz = gb->size();
         grandparent = gb->parentWidget();
       }
-      bord = ((Q3Frame*)grandparent)->lineWidth();
+      bord = ((QFrame*)grandparent)->lineWidth();
       sz = grandparent->size();
       if (grandparent->parentWidget()->inherits("GUIVBox")) 
         grandparent->resize(lmax(sz.width(), rect.left()+wsz.width()+2*bord + (int)GUIProg->xMargin), lmax(sz.height(), rect.top()+wsz.height()+2*bord + (int)GUIProg->yMargin));
@@ -455,7 +455,7 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
     else if (((GUIVBox*)grandparent)->FromPopup) {
       rect = parent->geometry(); 
       wsz = parent->size();
-      bord = ((Q3Frame*)grandparent)->lineWidth() + GUIProg->globalIndent;
+      bord = ((QFrame*)grandparent)->lineWidth() + GUIProg->globalIndent;
       grandparent->resize(rect.left()+wsz.width()+2*bord, rect.top()+wsz.height()+2*bord);
       view = (Q3ScrollView*)grandparent->parent();
       view->resize(rect.left()+wsz.width()+2*bord, rect.top()+wsz.height()+2*bord);

@@ -26,7 +26,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CLavaGUIPopup::CLavaGUIPopup(QWidget* parent, CGUIProgBase *guiPr, CHEFormNode* data)
-    : Q3MainWindow(parent,"LavaGUIPopup",Qt::WDestructiveClose)// | WType_TopLevel)
+    : QMainWindow(parent,"LavaGUIPopup",Qt::WDestructiveClose)// | WType_TopLevel)
 {
   myFormNode = data;
   GUIProg = guiPr;

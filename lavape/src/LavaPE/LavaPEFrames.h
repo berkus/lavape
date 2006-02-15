@@ -12,7 +12,7 @@
 #include "cmainframe.h"
 #include "qapplication.h"
 #include "q3frame.h"
-#include "q3toolbar.h"
+#include "qtoolbar.h"
 #include "q3combobox.h"
 #include "q3popupmenu.h"
 #include "q3listview.h"
@@ -31,14 +31,14 @@ typedef QMap<QString,QString> HelpTextMap;
 class ToolbarWhatsThis : public WhatsThis
 {
 public:
-  ToolbarWhatsThis(Q3ToolBar *tb):WhatsThis(0,tb) { toolbar = tb; }
+  ToolbarWhatsThis(QToolBar *tb):WhatsThis(0,tb) { toolbar = tb; }
 
 //  bool clicked(const QString &whatsThisHref);
   QString text(const QPoint&);
   HelpTextMap helpTextMap;
 
 private:
-  Q3ToolBar *toolbar;
+  QToolBar *toolbar;
 };
 
 
@@ -54,10 +54,10 @@ public:
   bool UtilitiesHidden;
   int LastUtilitiesState; //-1:hidden, else: ActTab of m_UtilityView
 //  void ShowUtilitiesTab(UtilityTabs tab);
-  void fillKwdToolbar(Q3ToolBar *tb);
-  void fillHelpToolbar(Q3ToolBar *tb);
-  void newKwdToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
-  void newHelpToolbutton(Q3ToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
+  void fillKwdToolbar(QToolBar *tb);
+  void fillHelpToolbar(QToolBar *tb);
+  void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
+  void newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
 	void customEvent(QCustomEvent *ev);
   void fillHelpMap1(ToolbarWhatsThis *tbw);
   void fillHelpMap2(ToolbarWhatsThis *tbw);

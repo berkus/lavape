@@ -8,7 +8,7 @@
 #include "q3groupbox.h"
 //Added by qt3to4:
 #include <QMouseEvent>
-#include <Q3Frame>
+#include <QFrame>
 #include <QEvent>
 #include <Q3PopupMenu>
 #include <Q3Button>
@@ -17,7 +17,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CFormWid window
 
-class CFormWid : public Q3Frame//QWidget
+class CFormWid : public QFrame//QWidget
 {
 public:
   CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,

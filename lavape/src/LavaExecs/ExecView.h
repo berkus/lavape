@@ -4,7 +4,7 @@
 
 #include "qevent.h"
 #include "q3scrollview.h"
-#include "q3toolbar.h"
+#include "qtoolbar.h"
 #include "qpainter.h"
 #include "qwidget.h"
 #include "qdialog.h"

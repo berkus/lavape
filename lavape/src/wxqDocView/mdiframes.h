@@ -26,7 +26,8 @@
 #include "mdiframes.h"
 #include "defs.h"
 #include "qmainwindow.h"
-#include "q3vbox.h"
+#include <QVBoxLayout>
+#include <QTextEdit>
 #include "q3ptrlist.h"
 #include "qworkspace.h"
 
@@ -66,10 +67,11 @@ public:
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);
-  Q3VBox *m_CentralWidget;
+  QFrame *m_CentralWidget;
+  QVBoxLayout *m_layout;
   QWorkspace *m_workspace;
 	wxHistory *m_childFrameHistory;
-  Q3MainWindow *theActiveFrame;
+  QMainWindow *theActiveFrame;
 	bool completelyCreated;
   void Cascade();
   void TileVertic(QMenuBar *menubar, int& lastTile);
@@ -90,7 +92,7 @@ private:
  * Use this instead of wxMDIChildFrame
  */
 
-class WXDLLEXPORT wxMDIChildFrame: public Q3MainWindow
+class WXDLLEXPORT wxMDIChildFrame  : public QWidget
 {
 public:
   wxMDIChildFrame(QWidget *parent, const char* name);

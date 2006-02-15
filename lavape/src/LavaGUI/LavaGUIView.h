@@ -13,15 +13,15 @@
 #include "qdialog.h" 
 //Added by qt3to4:
 #include <Q3VBoxLayout>
-#include <Q3Frame>
+#include <QFrame>
 #include <QResizeEvent>
 #include <QEvent>
 #include <QCloseEvent>
 
-class LAVAGUI_DLL GUIVBox : public Q3Frame
+class LAVAGUI_DLL GUIVBox : public QFrame
 {
 public:
-  GUIVBox(QWidget* parent, bool fromPopup, Q3ScrollView* view):Q3Frame(parent, "GUIVBox") 
+  GUIVBox(QWidget* parent, bool fromPopup, Q3ScrollView* view):QFrame(parent, "GUIVBox") 
     {View = view; FromPopup = fromPopup;}
   QSize sizeHint() { return size();}
   bool FromPopup;
@@ -61,7 +61,7 @@ public:
   LavaVariablePtr ServicePtr;
   LavaVariablePtr IniDataPtr;
   LavaVariablePtr ResultDPtr;
-  Q3VBoxLayout *qvbl;
+  QVBoxLayout *qvbl;
   bool returned;
 
   void closeEvent(QCloseEvent *e);

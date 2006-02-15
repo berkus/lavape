@@ -25,7 +25,7 @@
 #include "qvalidator.h"
 //Added by qt3to4:
 #include <QCustomEvent>
-#include <Q3Frame>
+#include <QFrame>
 #include <QFocusEvent>
 #include <QEvent>
 #include <Q3PopupMenu>
@@ -77,7 +77,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
     myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     myMenu->setItemEnabled(IDM_ITER_INSERT, false);
   }
-  int bord = ((Q3Frame*)parentWidget)->lineWidth();
+  int bord = ((QFrame*)parentWidget)->lineWidth();
   size = GUIProg->CalcTextRect(size.width(), 1, font());
 //???  size.setFixedWidth(size.width());
 //???  size.setFixedHeight(size.height());
@@ -176,7 +176,7 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
     myMenu->setItemEnabled(IDM_ITER_INSERT, false);
   }
   setMargins(0, 0, 0, 0);
-  int bord = ((Q3Frame*)parentWidget)->lineWidth();
+  int bord = ((QFrame*)parentWidget)->lineWidth();
   size = GUIProg->CalcTextRect(size.width(), size.height(), font());
   size.setWidth(size.width()+ 2*frameWidth());
   size.setHeight(size.height()+ 2*frameWidth());

@@ -24,7 +24,7 @@
 #include "CmdExec.h"
 #include "qstyle.h"
 //Added by qt3to4:
-#include <Q3Frame>
+#include <QFrame>
 #include <QFocusEvent>
 #include "MACROS.h"
 #include <QStyleOptionButton>
@@ -43,7 +43,7 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
 //  if (GUIProg->Font)
 //    setFont(*GUIProg->Font);
   QSize size = GUIProg->CalcStringRect(label, font());
-  int bord = ((Q3Frame*)parent)->lineWidth();
+  int bord = ((QFrame*)parent)->lineWidth();
   size = qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &qsob, size, this);
   setGeometry(bord,bord, size.width(), size.height());
   //setWFlags(GUIProg->checkBoxStyle);
@@ -106,7 +106,7 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   GUIProg->SetColor(this, ((CFormWid*)Radio)->myFormNode);//myFormNode);
   QSize size = GUIProg->CalcStringRect(label, font());
-  int bord = ((Q3Frame*)parent)->lineWidth();
+  int bord = ((QFrame*)parent)->lineWidth();
   int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob,  this);
   int iw2 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &qsob, this)*2;
   setGeometry(bord,bord, size.width() + iw1 + iw2, size.height() + iw1 + iw2);
@@ -136,7 +136,7 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
   GUIProg->SetColor(this, ((CFormWid*)Radio)->myFormNode);//myFormNode);
   QSize size = GUIProg->CalcStringRect(label, font());
   size.setHeight(lmax(size.height(), myFormNode->data.Pixmap->height()));
-  int bord = ((Q3Frame*)parent)->lineWidth();
+  int bord = ((QFrame*)parent)->lineWidth();
   int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob, this);
   int iw2 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &qsob, this)*2;
   setGeometry(bord,bord, size.width() + iw1 + iw2 + myFormNode->data.Pixmap->width(), size.height() + iw1 + iw2);
@@ -175,7 +175,7 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   GUIProg->SetColor(this, myFormNode);
-  int bord = ((Q3Frame*)parent)->lineWidth();
+  int bord = ((QFrame*)parent)->lineWidth();
   QSize size = GUIProg->CalcStringRect(label, font());
   int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob, this);
   int iw2 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &qsob, this)*2;
@@ -269,7 +269,7 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   QSize size = GUIProg->CalcStringRect(label, font());
-  int bord = ((Q3Frame*)parent)->lineWidth();
+  int bord = ((QFrame*)parent)->lineWidth();
   size = qApp->style()->sizeFromContents(QStyle::CT_RadioButton, &qsob, size, this);
   setGeometry(bord,bord, size.width(), size.height());
   if (!myFormNode->data.IoSigFlags.Contains(DONTPUT)) 

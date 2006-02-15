@@ -47,8 +47,9 @@ static UINT indicators[] =
 
 CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
-  m_CentralWidget->setMinimumSize(400,300);
+  m_CentralWidget->setMinimumSize(500,300);
 
+  setIconSize(QSize(16,15));
   setupUi(this); // populate this main frame
 
 	makeStyle(LBaseData->m_style);

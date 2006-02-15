@@ -2032,16 +2032,24 @@ LavaObjectPtr ElseExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
   STOP_AT_BPT(ckd,stackFrame)
 
   result = ((Expression*)expr1.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
-  if (ckd.exceptionThrown) {
+  if (ckd.exceptionThrown || ckd.immediateReturn) {
 //    DFC(result);
     return (LavaObjectPtr)-1;
   }
+  if (((Expression*)expr1.ptr)->IsIfStmExpr())
+    sectionNumber = ((Expression*)expr1.ptr)->sectionNumber;
+  else if (((Expression*)expr1.ptr)->primaryToken != nil_T)
+    sectionNumber = ckd.document->GetSectionNumber(ckd, ((Expression*)expr1.ptr)->finalType,targetDecl);
   if (result) return result;
   result = ((Expression*)expr2.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
-  if (ckd.exceptionThrown) {
+  if (ckd.exceptionThrown || ckd.immediateReturn) {
 //    DFC(result);
     return (LavaObjectPtr)-1;
   }
+  if (((Expression*)expr2.ptr)->IsIfStmExpr())
+    sectionNumber = ((Expression*)expr2.ptr)->sectionNumber;
+  else if (((Expression*)expr2.ptr)->primaryToken != nil_T)
+    sectionNumber = ckd.document->GetSectionNumber(ckd, ((Expression*)expr2.ptr)->finalType,targetDecl);
 
   return result;
 }

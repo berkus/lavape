@@ -4,7 +4,7 @@
 
 #include "q3combobox.h"
 #include "qpushbutton.h"
-#include "q3toolbar.h"
+#include "qtoolbar.h"
 #include "q3popupmenu.h"
 #include "qstring.h"
 #include "qpainter.h"
@@ -67,12 +67,12 @@ public:
   MyComboBarDlg(QWidget *parent) : QDialog(parent) {}
 };
 
-//#undef Q3MainWindow
+//#undef QMainWindow
 class LAVAEXECS_DLL CComboBar : public Q3DockWindow//QToolBar
 {
 public:
   CComboBar();   // standard constructor
-  CComboBar(LavaDECL* execDecl, CPEBaseDoc* doc, Q3MainWindow* parent);  
+  CComboBar(LavaDECL* execDecl, CPEBaseDoc* doc, QWidget* parent);  
   ~CComboBar() {}
 
   LavaDECL *ExecDECL;

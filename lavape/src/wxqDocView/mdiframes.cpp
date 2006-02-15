@@ -55,10 +55,13 @@
 wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
  : QMainWindow(parent,name,Qt::WDestructiveClose | Qt::WType_TopLevel)
 {
+
 	completelyCreated = false;
-  m_CentralWidget = new Q3VBox(this);
-  m_CentralWidget->setFrameStyle( Q3Frame::StyledPanel | Q3Frame::Sunken );
+
+  m_CentralWidget = new QFrame(this);
+//  m_CentralWidget->setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
   setCentralWidget(m_CentralWidget);
+//  m_layout = new QVBoxLayout(m_CentralWidget);
   ((wxApp*)qApp)->m_appWindow = this;
   qApp->setMainWidget(this);
 	m_childFrameHistory = new wxHistory;
@@ -89,7 +92,7 @@ QWorkspace* wxMainFrame::CreateWorkspace(QWidget* parent)
 
 void wxMainFrame::windowActivated(QWidget* w)
 {
-  theActiveFrame = (Q3MainWindow*)w;
+  theActiveFrame = (QMainWindow*)w;
   if (w && w->inherits("wxMDIChildFrame")) {
     ((wxMDIChildFrame*)w)->Activate();
   }
@@ -158,7 +161,7 @@ void wxMainFrame::Cascade()
   wxTheApp->isChMaximized = false;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((Q3MainWindow*)window)->isMinimized()) 
+    if (!((QMainWindow*)window)->isMinimized()) 
       if (window->inherits("wxMDIChildFrame")) {
         ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
         window->resize(sz.width()*7/10, sz.height()*7/10);
@@ -180,7 +183,7 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
   cc = (int)windows.count();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (((Q3MainWindow*)window)->isMinimized()) {
+    if (((QMainWindow*)window)->isMinimized()) {
       cc--;
       minHeight = menubar->height();
     }
@@ -198,7 +201,7 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
   widthForEach = m_workspace->width() / cc;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((Q3MainWindow*)window)->isMinimized()) {
+    if (!((QMainWindow*)window)->isMinimized()) {
       preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
       actWidth = QMAX(widthForEach, preferredWidth);
       if (window == theActiveFrame) 
@@ -223,7 +226,7 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
   cc = (int)windows.count();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (((Q3MainWindow*)window)->isMinimized()) {
+    if (((QMainWindow*)window)->isMinimized()) {
       cc--;
       minHeight = menubar->height();
     }
@@ -240,7 +243,7 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
   heightForEach = (m_workspace->height() - minHeight) / cc;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((Q3MainWindow*)window)->isMinimized()) {
+    if (!((QMainWindow*)window)->isMinimized()) {
       preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
       actHeight = QMAX(heightForEach, preferredHeight);
       if (window == theActiveFrame) 
@@ -257,7 +260,7 @@ void wxMainFrame::OnCloseWindow()
 }
 
 wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
-    : Q3MainWindow(parent,name,Qt::WDestructiveClose)
+    : QWidget(parent,name,Qt::WDestructiveClose)
 {
   QSize sz = ((wxMainFrame*)qApp->mainWidget())->GetClientWindow()->size();
 
@@ -278,7 +281,7 @@ bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   if (!temp->m_viewClassInfo)
     return false;
   wxView *view = (wxView *)temp->m_viewClassInfo(GetClientWindow(),doc);
-  setCentralWidget(view);
+//  setCentralWidget(view);
   view->SetDocument(doc);
   if (oldWindowState == Qt::WindowMaximized)
     showMaximized();
@@ -354,7 +357,7 @@ bool wxMDIChildFrame::event(QEvent * e )
     break;
 	default: ;
   }
-  return Q3MainWindow::event(e);
+  return QWidget::event(e);
 }
 
 void wxMDIChildFrame::RemoveView(wxView *view)

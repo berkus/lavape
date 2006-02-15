@@ -21,7 +21,7 @@
 #include "mdiframes.h"
 #include "qapplication.h"
 #include "q3frame.h"
-#include "q3toolbar.h"
+#include "qtoolbar.h"
 #include "q3combobox.h"
 #include "q3popupmenu.h"
 #include "q3listview.h"

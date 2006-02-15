@@ -63,9 +63,9 @@ CComboBar::CComboBar()
 
 /////////////////////////////////////////////////////////////////////////////
 
-//#undef Q3MainWindow
+//#undef QMainWindow
 
-CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, Q3MainWindow* parent)
+CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
 :Q3DockWindow(parent, "ComboBar")//:QToolBar( parent ) 
 {
   myComboBarDlg = new MyComboBarDlg(this);

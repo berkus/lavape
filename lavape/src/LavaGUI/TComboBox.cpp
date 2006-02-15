@@ -27,7 +27,7 @@
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QCustomEvent>
-#include <Q3Frame>
+#include <QFrame>
 #include <QFocusEvent>
 #include <QEvent>
 #include <Q3PopupMenu>
@@ -51,7 +51,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   QSize size = GUIProg->CalcTextRect(width, 1, font());
   size = qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &qsob, size, this);
   size.setWidth(lmax(size.width(), GUIProg->MinSizeComboBox(font()).width() + GUIProg->ArrowSize(font()).width()));
-  int bord = ((Q3Frame*)pParentWnd)->lineWidth();
+  int bord = ((QFrame*)pParentWnd)->lineWidth();
   setGeometry(bord,bord, size.width(), size.height());
   DefaultSel = defaultSel;
   if (myFormNode->data.EnumField) {

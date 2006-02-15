@@ -213,7 +213,7 @@ void wxApp::histFile(int histFileIndex) {
 }
 
 void wxApp::hfStatusText(int itemId) {
-  ((Q3MainWindow*)mainWidget())->statusBar()->message(tr("Open and raise this window"));
+  ((QMainWindow*)mainWidget())->statusBar()->message(tr("Open and raise this window"));
 }
 
 wxView *wxApp::activeView() {
@@ -679,8 +679,8 @@ wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : Q3HBox(pare
     deleting = false;;
     m_viewDocument = doc;
     m_viewFrame = CalcParentFrame();
-    if (parent->inherits("Q3MainWindow"))
-      ((Q3MainWindow*)parent)->setCentralWidget(this);
+    if (parent->inherits("QMainWindow"))
+      ((QMainWindow*)parent)->setCentralWidget(this);
     m_viewFrame->AddView(this);
 }
 

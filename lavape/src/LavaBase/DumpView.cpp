@@ -334,7 +334,7 @@ void DDSetClass::makeChildren()
 
 LavaDumpFrame::LavaDumpFrame( QWidget* parent, DumpEventData* data)
 : QDialog(parent, "Dump", true, Qt::WType_TopLevel | Qt::WStyle_MinMax)
- //   : Q3MainWindow(parent,"Dump",WDestructiveClose)
+ //   : QMainWindow(parent,"Dump",WDestructiveClose)
 {
   resize(200, 300);
   view = new DumpListView(this, data->doc, data->object, data->name);

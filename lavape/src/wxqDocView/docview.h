@@ -59,18 +59,7 @@ enum
 
 class WXDLLEXPORT wxDocManager;
 class WXDLLEXPORT wxMainFrame;
-//class WXDLLEXPORT QAction;
-/*
-class WXDLLEXPORT QAction : public QAction {
-public:
-    QAction (QObject *parent = 0, const char *name = 0);
-    virtual ~QAction() {}
-    bool enable, deletingMainFrame;
 
-private:
-    Q_OBJECT
-};
-*/
 class WXDLLEXPORT wxApp : public QApplication
 {
 public:
