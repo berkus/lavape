@@ -336,6 +336,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						ExceptionHandling="2"
 					/>
 				</FileConfiguration>
 			</File>

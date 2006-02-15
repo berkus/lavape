@@ -349,7 +349,7 @@ void GUIwidCLASS::SetTopLeft (QWidget* widget, QWidget* leftNeighbour, int horiz
   //size = widget->size();  //the size of the widget
   wrect = widget->geometry(); //calc the displacement of the widget
   if (widget->parentWidget()->inherits("QFrame"))
-    if (widget->parentWidget()->inherits("QGroupBox")) {
+    if (widget->parentWidget()->inherits("Q3GroupBox")) {
       pbordx = ((QFrame*)widget->parentWidget())->lineWidth() + GUIProg->xMargin;
       size = GUIProg->CalcStringRect(((Q3GroupBox*)widget->parentWidget())->title(), ((Q3GroupBox*)widget->parentWidget())->font());
       //pbordy = ((QFrame*)widget->parentWidget())->lineWidth() + size.height() + GUIProg->yMargin +1;
@@ -407,7 +407,7 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
   if (!parent->inherits("GUIVBox")) {
     wrect = widget->geometry();
     wsz = widget->size();
-    if (parent->inherits("QGroupBox")) {
+    if (parent->inherits("Q3GroupBox")) {
       gb = (Q3GroupBox*)parent;
       sz = gb->size();
       strSz = GUIProg->CalcStringRect(gb->title(), gb->font()) + GUIProg->CalcTextRect(2,1, gb->font());
@@ -430,7 +430,7 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
     if (!grandparent->inherits("GUIVBox")) {
       rect = parent->geometry(); 
       wsz = parent->size();
-      if (grandparent->inherits("QGroupBox")) {
+      if (grandparent->inherits("Q3GroupBox")) {
         gb = (Q3GroupBox*)grandparent;
         rect = parent->geometry();
         wsz = parent->size();
