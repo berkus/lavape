@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>434</width>
+    <width>501</width>
     <height>312</height>
    </rect>
   </property>
@@ -29,8 +29,8 @@
    </property>
    <property name="minimumSize" >
     <size>
-     <width>50</width>
-     <height>29</height>
+     <width>48</width>
+     <height>31</height>
     </size>
    </property>
    <property name="maximumSize" >
@@ -73,7 +73,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>434</width>
+     <width>501</width>
      <height>19</height>
     </rect>
    </property>
@@ -578,9 +578,6 @@
  </widget>
  <layoutdefault spacing="1" margin="1" />
  <pixmapfunction></pixmapfunction>
- <includes/>
- <resources>
-  <include location="../Lava_Resources.qrc" />
- </resources>
+ <resources/>
  <connections/>
 </ui>

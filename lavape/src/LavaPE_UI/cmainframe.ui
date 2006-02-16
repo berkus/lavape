@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>721</width>
+    <width>740</width>
     <height>685</height>
    </rect>
   </property>
@@ -259,7 +259,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>721</width>
+     <width>740</width>
      <height>19</height>
     </rect>
    </property>
@@ -391,7 +391,7 @@
   </widget>
   <action name="fileNewAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_fileNew.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;New Lava file</string>
@@ -408,7 +408,7 @@
   </action>
   <action name="fileOpenAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_FileOpen.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Open...</string>
@@ -425,7 +425,7 @@
   </action>
   <action name="fileSaveAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Save.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Save.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Save</string>
@@ -470,7 +470,7 @@
   </action>
   <action name="editUndoAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Undo.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Undo</string>
@@ -487,7 +487,7 @@
   </action>
   <action name="editRedoAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Redo.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Redo.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Redo</string>
@@ -507,7 +507,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Cut.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Cut.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Cut</string>
@@ -527,7 +527,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Copy.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Copy.xpm</iconset>
    </property>
    <property name="text" >
     <string>C&amp;opy</string>
@@ -547,7 +547,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Paste.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Paste.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Paste</string>
@@ -567,7 +567,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_FindRefs.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_FindRefs.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Find references...</string>
@@ -635,7 +635,7 @@
   </action>
   <action name="tileHorizAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_TileHori.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_TileHori.xpm</iconset>
    </property>
    <property name="text" >
     <string>Tile horizontal</string>
@@ -652,7 +652,7 @@
   </action>
   <action name="tileVerticAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_TileVert.xpm</iconset>
    </property>
    <property name="text" >
     <string>Tile Vertical</string>
@@ -669,7 +669,7 @@
   </action>
   <action name="cascadeAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Cascade.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Cascade.xpm</iconset>
    </property>
    <property name="text" >
     <string>Cascade</string>
@@ -686,7 +686,7 @@
   </action>
   <action name="newCompoAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewCompo.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewCompo.xpm</iconset>
    </property>
    <property name="text" >
     <string>New component...</string>
@@ -697,7 +697,7 @@
   </action>
   <action name="fileSaveAllAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_SaveAll.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_SaveAll.xpm</iconset>
    </property>
    <property name="text" >
     <string>Save all</string>
@@ -808,7 +808,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_Expand.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_Expand.xpm</iconset>
    </property>
    <property name="text" >
     <string>Expand subtree</string>
@@ -825,7 +825,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_Collaps.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_Collaps.xpm</iconset>
    </property>
    <property name="text" >
     <string>Collapse subtree</string>
@@ -845,7 +845,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_ShowOpts.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_ShowOpts.xpm</iconset>
    </property>
    <property name="text" >
     <string>Show/hide optionals</string>
@@ -868,7 +868,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_ShowAllOpts.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_ShowAllOpts.xpm</iconset>
    </property>
    <property name="text" >
     <string>Show all optionals</string>
@@ -891,7 +891,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_HideEmptyOpts.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_HideEmptyOpts.xpm</iconset>
    </property>
    <property name="text" >
     <string>Hide empty optionals</string>
@@ -914,7 +914,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_NextComment.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_NextComment.xpm</iconset>
    </property>
    <property name="text" >
     <string>Next comment</string>
@@ -934,7 +934,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_PrevComment.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_PrevComment.xpm</iconset>
    </property>
    <property name="text" >
     <string>Preceding comment</string>
@@ -951,7 +951,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_NextError.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_NextError.xpm</iconset>
    </property>
    <property name="text" >
     <string>Next error</string>
@@ -971,7 +971,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_PrevError.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_PrevError.xpm</iconset>
    </property>
    <property name="text" >
     <string>Preceding error</string>
@@ -988,7 +988,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_Check.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_Check.xpm</iconset>
    </property>
    <property name="text" >
     <string>Check</string>
@@ -1011,7 +1011,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_CheckAll.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_CheckAll.xpm</iconset>
    </property>
    <property name="text" >
     <string>Check also included files</string>
@@ -1025,7 +1025,7 @@
   </action>
   <action name="runAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_Run.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_Run.xpm</iconset>
    </property>
    <property name="text" >
     <string>Check and run Lava program</string>
@@ -1045,7 +1045,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_Include.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_Include.xpm</iconset>
    </property>
    <property name="text" >
     <string>Include...</string>
@@ -1062,7 +1062,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewPackage.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewPackage.xpm</iconset>
    </property>
    <property name="text" >
     <string>New package...</string>
@@ -1079,7 +1079,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewInitiator.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewInitiator.xpm</iconset>
    </property>
    <property name="text" >
     <string>New main program...</string>
@@ -1096,7 +1096,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewInterface.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewInterface.xpm</iconset>
    </property>
    <property name="text" >
     <string>New interface...</string>
@@ -1113,7 +1113,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewImpl.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewImpl.xpm</iconset>
    </property>
    <property name="text" >
     <string>New implementation...</string>
@@ -1130,7 +1130,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewCompoSpec.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewCompoSpec.xpm</iconset>
    </property>
    <property name="text" >
     <string>New component object spec. ...</string>
@@ -1147,7 +1147,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewCompo.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewCompo.xpm</iconset>
    </property>
    <property name="text" >
     <string>New component object impl. ...</string>
@@ -1164,7 +1164,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewSet.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewSet.xpm</iconset>
    </property>
    <property name="text" >
     <string>New set</string>
@@ -1181,7 +1181,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewEnum.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewEnum.xpm</iconset>
    </property>
    <property name="text" >
     <string>New enumeration...</string>
@@ -1198,7 +1198,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewVT.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewVT.xpm</iconset>
    </property>
    <property name="text" >
     <string>New virtual type</string>
@@ -1215,7 +1215,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewFunc.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewFunc.xpm</iconset>
    </property>
    <property name="text" >
     <string>New member function...</string>
@@ -1232,7 +1232,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewMember.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewMember.xpm</iconset>
    </property>
    <property name="text" >
     <string>New member variable...</string>
@@ -1249,7 +1249,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q3_NewEnumItem.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q3_NewEnumItem.xpm</iconset>
    </property>
    <property name="text" >
     <string>New enumerated item...</string>
@@ -1266,7 +1266,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_EditSel.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_EditSel.xpm</iconset>
    </property>
    <property name="text" >
     <string>Edit selected item</string>
@@ -1286,7 +1286,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_Comment.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_Comment.xpm</iconset>
    </property>
    <property name="text" >
     <string>Add/edit comment</string>
@@ -1303,7 +1303,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_GotoDecl.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_GotoDecl.xpm</iconset>
    </property>
    <property name="text" >
     <string>Go to declaration</string>
@@ -1320,7 +1320,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_GotoImpl.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_GotoImpl.xpm</iconset>
    </property>
    <property name="text" >
     <string>Go to implementation</string>
@@ -1337,7 +1337,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_Return.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_Return.xpm</iconset>
    </property>
    <property name="text" >
     <string>Return to reference</string>
@@ -1354,7 +1354,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_FindByName.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_FindByName.xpm</iconset>
    </property>
    <property name="text" >
     <string>Find decl. by name...</string>
@@ -1374,7 +1374,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_ShowOvers.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_ShowOvers.xpm</iconset>
    </property>
    <property name="text" >
     <string>Show overridables</string>
@@ -1391,7 +1391,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_Override.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_Override.xpm</iconset>
    </property>
    <property name="text" >
     <string>Override</string>
@@ -1408,7 +1408,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_ShowForm.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_ShowForm.xpm</iconset>
    </property>
    <property name="text" >
     <string>Open form view</string>
@@ -1425,7 +1425,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_MakeLitStr.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_MakeLitStr.xpm</iconset>
    </property>
    <property name="text" >
     <string>Insert a comment between fields of a form</string>
@@ -1478,7 +1478,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q_Delete.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Delete.xpm</iconset>
    </property>
    <property name="text" >
     <string>Delete</string>
@@ -1517,7 +1517,7 @@
   </action>
   <action name="toggleCategoryAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_toggle.xpm</iconset>
    </property>
    <property name="text" >
     <string>Toggle category</string>
@@ -1534,7 +1534,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_optLocalVar.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_optLocalVar.xpm</iconset>
    </property>
    <property name="text" >
     <string>Optional local variable</string>
@@ -1551,7 +1551,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_toggleSubstType.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_toggleSubstType.xpm</iconset>
    </property>
    <property name="text" >
     <string>Toggle substitutable type</string>
@@ -1568,7 +1568,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_insertBefore.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_insertBefore.xpm</iconset>
    </property>
    <property name="text" >
     <string>Insert before</string>
@@ -1582,7 +1582,7 @@
   </action>
   <action name="insertAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_insert.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_insert.xpm</iconset>
    </property>
    <property name="text" >
     <string>Insert</string>
@@ -1599,7 +1599,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_toggleArrows.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_toggleArrows.xpm</iconset>
    </property>
    <property name="text" >
     <string>Toggle arrow direction</string>
@@ -1613,7 +1613,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_inputArrow.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_inputArrow.xpm</iconset>
    </property>
    <property name="text" >
     <string>Toggle input arrows</string>
@@ -1627,7 +1627,7 @@
   </action>
   <action name="conflictingAssigAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_conflict.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_conflict.xpm</iconset>
    </property>
    <property name="text" >
     <string>Show conflicting assignment</string>
@@ -1644,7 +1644,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_newLine.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_newLine.xpm</iconset>
    </property>
    <property name="text" >
     <string>Put on a new line</string>
@@ -1661,7 +1661,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_ignore.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_ignore.xpm</iconset>
    </property>
    <property name="text" >
     <string>Skip/comment out</string>
@@ -1681,7 +1681,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q5_showComments.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_showComments.xpm</iconset>
    </property>
    <property name="text" >
     <string>Show/hide comments</string>
@@ -1695,7 +1695,7 @@
   </action>
   <action name="lessThanAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_lessThan.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_lessThan.xpm</iconset>
    </property>
    <property name="text" >
     <string>Less than</string>
@@ -1729,7 +1729,7 @@
   </action>
   <action name="lessEqualAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_lessEqual.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_lessEqual.xpm</iconset>
    </property>
    <property name="text" >
     <string>Less than or equal</string>
@@ -1743,7 +1743,7 @@
   </action>
   <action name="equalAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_equal.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_equal.xpm</iconset>
    </property>
    <property name="text" >
     <string>Equal</string>
@@ -1757,7 +1757,7 @@
   </action>
   <action name="notEqualAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_notEqual.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_notEqual.xpm</iconset>
    </property>
    <property name="text" >
     <string>Not equal</string>
@@ -1771,7 +1771,7 @@
   </action>
   <action name="greaterEqualAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_gtEqual.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_gtEqual.xpm</iconset>
    </property>
    <property name="text" >
     <string>Greater or equal</string>
@@ -1785,7 +1785,7 @@
   </action>
   <action name="greaterThanAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_greater.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_greater.xpm</iconset>
    </property>
    <property name="text" >
     <string>Greater than</string>
@@ -1799,7 +1799,7 @@
   </action>
   <action name="functionCallAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_vFuncCall.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_vFuncCall.xpm</iconset>
    </property>
    <property name="text" >
     <string>Virtual function call</string>
@@ -1813,7 +1813,7 @@
   </action>
   <action name="staticCallAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_staticCall.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_staticCall.xpm</iconset>
    </property>
    <property name="text" >
     <string>Static function call</string>
@@ -1827,7 +1827,7 @@
   </action>
   <action name="trueAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_true.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_true.xpm</iconset>
    </property>
    <property name="text" >
     <string>True</string>
@@ -1844,7 +1844,7 @@
   </action>
   <action name="falseAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_false.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_false.xpm</iconset>
    </property>
    <property name="text" >
     <string>False</string>
@@ -1861,7 +1861,7 @@
   </action>
   <action name="evaluateAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_evaluate.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_evaluate.xpm</iconset>
    </property>
    <property name="text" >
     <string>Evaluate stm/expr</string>
@@ -1875,7 +1875,7 @@
   </action>
   <action name="nullAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_null.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_null.xpm</iconset>
    </property>
    <property name="text" >
     <string>Null/undefined, or * (wildcard)</string>
@@ -1895,7 +1895,7 @@
   </action>
   <action name="intervalAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_interval.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_interval.xpm</iconset>
    </property>
    <property name="text" >
     <string>Interval / array element</string>
@@ -1909,7 +1909,7 @@
   </action>
   <action name="toggleSignAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_plusMinus.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_plusMinus.xpm</iconset>
    </property>
    <property name="text" >
     <string>Toggle sign</string>
@@ -1923,7 +1923,7 @@
   </action>
   <action name="additionAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_plus.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_plus.xpm</iconset>
    </property>
    <property name="text" >
     <string>Addition</string>
@@ -1940,7 +1940,7 @@
   </action>
   <action name="multiplicationAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_mult.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_mult.xpm</iconset>
    </property>
    <property name="text" >
     <string>Multiplication</string>
@@ -1957,7 +1957,7 @@
   </action>
   <action name="divideAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_divide.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_divide.xpm</iconset>
    </property>
    <property name="text" >
     <string>Divide</string>
@@ -1974,7 +1974,7 @@
   </action>
   <action name="modulusAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_modulus.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_modulus.xpm</iconset>
    </property>
    <property name="text" >
     <string>Modulus</string>
@@ -1988,7 +1988,7 @@
   </action>
   <action name="leftShiftAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_lshift.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_lshift.xpm</iconset>
    </property>
    <property name="text" >
     <string>Left shift</string>
@@ -2002,7 +2002,7 @@
   </action>
   <action name="rightShiftAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_rshift.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_rshift.xpm</iconset>
    </property>
    <property name="text" >
     <string>Right shift</string>
@@ -2016,7 +2016,7 @@
   </action>
   <action name="bitAndAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_bitAnd.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_bitAnd.xpm</iconset>
    </property>
    <property name="text" >
     <string>Bitwise "and"</string>
@@ -2033,7 +2033,7 @@
   </action>
   <action name="bitOrAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_bitOr.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_bitOr.xpm</iconset>
    </property>
    <property name="text" >
     <string>Bitwise "or"</string>
@@ -2050,7 +2050,7 @@
   </action>
   <action name="bitXorAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_bitXor.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_bitXor.xpm</iconset>
    </property>
    <property name="text" >
     <string>Bitwise "exclusive or"</string>
@@ -2064,7 +2064,7 @@
   </action>
   <action name="invertAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_invert.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_invert.xpm</iconset>
    </property>
    <property name="text" >
     <string>Invert bits</string>
@@ -2078,7 +2078,7 @@
   </action>
   <action name="handleAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_handle.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_handle.xpm</iconset>
    </property>
    <property name="text" >
     <string>Handle of a set element</string>
@@ -2092,7 +2092,7 @@
   </action>
   <action name="ordAction" >
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/Q6_ord.xpm</iconset>
+    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q6_ord.xpm</iconset>
    </property>
    <property name="text" >
     <string>Ordinal of enum. item</string>
@@ -2177,7 +2177,7 @@
     <bool>true</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_ShowBar.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_ShowBar.xpm</iconset>
    </property>
    <property name="text" >
     <string>Show utility window</string>
@@ -2205,7 +2205,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaGUI/res/TOOLBUTTONS/Q_Insert.xpm</iconset>
+    <iconset>..\LavaGUI\res\TOOLBUTTONS\Q_Insert.xpm</iconset>
    </property>
    <property name="text" >
     <string>Insert optional item</string>
@@ -2222,7 +2222,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaGUI/res/TOOLBUTTONS/Q_Delete.xpm</iconset>
+    <iconset>..\LavaGUI\res\TOOLBUTTONS\Q_Delete.xpm</iconset>
    </property>
    <property name="text" >
     <string>Delete optional item</string>
@@ -2366,7 +2366,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q2_MakeGUI.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q2_MakeGUI.xpm</iconset>
    </property>
    <property name="text" >
     <string>Make GUI-service for selected interface</string>
@@ -2386,7 +2386,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_Debug.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_Debug.xpm</iconset>
    </property>
    <property name="text" >
     <string>Start/continue debugging</string>
@@ -2406,7 +2406,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q5_BreakPoint.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q5_BreakPoint.xpm</iconset>
    </property>
    <property name="text" >
     <string>Set/reset breakpoint</string>
@@ -2426,7 +2426,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q5_ClearBreakpoints.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q5_ClearBreakpoints.xpm</iconset>
    </property>
    <property name="text" >
     <string>Clear all breakpoints</string>
@@ -2443,7 +2443,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q5_Stepnext.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q5_Stepnext.xpm</iconset>
    </property>
    <property name="text" >
     <string>Stop at next statement</string>
@@ -2463,7 +2463,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q5_Stepdown.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q5_Stepdown.xpm</iconset>
    </property>
    <property name="text" >
     <string>Step into next function</string>
@@ -2483,7 +2483,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q5_Stepout.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q5_Stepout.xpm</iconset>
    </property>
    <property name="text" >
     <string>Step out of innermost function</string>
@@ -2503,7 +2503,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q5_RuntoSelection.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q5_RuntoSelection.xpm</iconset>
    </property>
    <property name="text" >
     <string>Stop at selection</string>
@@ -2523,7 +2523,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q4_DebugStop.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q4_DebugStop.xpm</iconset>
    </property>
    <property name="text" >
     <string>Stop debugging</string>
@@ -2543,7 +2543,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="..\LavaPE_Resources.qrc" >:/LavaPE/res/TOOLBUTTONS/Q5_StepNextFunc.xpm</iconset>
+    <iconset>..\LavaPE\res\TOOLBUTTONS\Q5_StepNextFunc.xpm</iconset>
    </property>
    <property name="text" >
     <string>Stop at next function/operator</string>
@@ -2561,8 +2561,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11" />
  <pixmapfunction></pixmapfunction>
- <resources>
-  <include location="../LavaPE_Resources.qrc" />
- </resources>
+ <resources/>
  <connections/>
 </ui>
