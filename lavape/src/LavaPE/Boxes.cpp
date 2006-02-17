@@ -378,7 +378,7 @@ void CAttrBox::m_DownC1_clicked()
   UpdateData(false);
 }
 
-void CAttrBox::m_NamedTypes5_activated(int pos) 
+void CAttrBox::m_NamedTypes5_triggered(int pos) 
 {
   
   if (!pos) return;
@@ -421,7 +421,7 @@ void CAttrBox::m_NamedTypes5_activated(int pos)
   UpdateData(false);
 }
 
-void CAttrBox::m_BasicTypes5_activated(int pos) 
+void CAttrBox::m_BasicTypes5_triggered(int pos) 
 {
   if (!pos) return;
   LavaDECL* decl;
@@ -673,13 +673,13 @@ void CCompSpecBox::m_DelSupport2_clicked()
     m_Extends->removeItem(pos);
 }
 
-void CCompSpecBox::m_ExtTypes2_activated(int pos) 
+void CCompSpecBox::m_ExtTypes2_triggered(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_ExtTypes, m_Extends);
 }
 
-void CCompSpecBox::m_CompoProt_activated(int pos) 
+void CCompSpecBox::m_CompoProt_triggered(int pos) 
 {
   if (!pos) return;
   myDECL->nOutput = m_CompoProt->currentItem() - 1;
@@ -1721,7 +1721,7 @@ void CFuncBox::m_DelInherits1_clicked()
 }
 
   
-void CFuncBox::m_NamedTypes1_activated(int pos) 
+void CFuncBox::m_NamedTypes1_triggered(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_NamedTypes1, m_Inherits1);
@@ -1803,7 +1803,7 @@ void CFuncBox::m_Initializer_clicked()
   UpdateData(false);  
 }
 
-void CFuncBox::m_CMBOperator_activated(int pos) 
+void CFuncBox::m_CMBOperator_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -2068,7 +2068,7 @@ ValOnInit CImplBox::OnInitDialog()
 }
 
 
-void CImplBox::m_ImplTypes_activated(int pos) 
+void CImplBox::m_ImplTypes_triggered(int pos) 
 {
   if (!pos) return;
   CHETID* che;
@@ -2532,7 +2532,7 @@ void CInterfaceBox::m_DelSupport_clicked()
   }
 }
 
-void CInterfaceBox::m_ExtTypes_activated(int pos) 
+void CInterfaceBox::m_ExtTypes_triggered(int pos) 
 {
   QVariant var;
 
@@ -2553,7 +2553,7 @@ void CInterfaceBox::m_ExtTypes_activated(int pos)
 }
 
 
-void CInterfaceBox::m_BasicTypes1_activated(int pos) 
+void CInterfaceBox::m_BasicTypes1_triggered(int pos) 
 {
   QVariant var;
 
@@ -2581,7 +2581,7 @@ void CInterfaceBox::m_DelInherits_clicked()
     m_Inherits->removeItem(pos);
   }  
 }
-void CInterfaceBox::m_InheritTypes_activated(int pos) 
+void CInterfaceBox::m_InheritTypes_triggered(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_InheritTypes, m_Inherits);
@@ -2626,7 +2626,7 @@ void CInterfaceBox::m_IsGUI_clicked()
   
 }
 
-void CInterfaceBox::m_GUIStructs_activated(int pos) 
+void CInterfaceBox::m_GUIStructs_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -2991,7 +2991,7 @@ ValOnInit CIOBox::OnInitDialog()
   return BoxContinue;
 }
 
-void CIOBox::m_NamedTypes4_activated(int pos) 
+void CIOBox::m_NamedTypes4_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3038,7 +3038,7 @@ void CIOBox::m_NamedTypes4_activated(int pos)
   UpdateData(false);
 }
 
-void CIOBox::m_BasicTypes4_activated(int pos) 
+void CIOBox::m_BasicTypes4_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3218,7 +3218,7 @@ void CPackageBox::m_DelSupport1_clicked()
     m_Extends->removeItem(pos);
 }
 
-void CPackageBox::m_ExtTypes1_activated(int pos) 
+void CPackageBox::m_ExtTypes1_triggered(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_ExtTypes, m_Extends);
@@ -3302,7 +3302,7 @@ ValOnInit CSetBox::OnInitDialog()
 }
 
 
-void CSetBox::m_ExTypes_activated(int pos) 
+void CSetBox::m_ExTypes_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3316,7 +3316,7 @@ void CSetBox::m_ExTypes_activated(int pos)
       m_ExTypes->setCurrentText(valExtend);
 }
 
-void CSetBox::m_BasicTypes_activated(int pos) 
+void CSetBox::m_BasicTypes_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3609,7 +3609,7 @@ void CVTypeBox::m_RMOverrides1_clicked()
   OnInitDialog();
 }
 
-void CVTypeBox::m_NamedTypes2_activated(int pos) 
+void CVTypeBox::m_NamedTypes2_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3632,7 +3632,7 @@ void CVTypeBox::m_NamedTypes2_activated(int pos)
   UpdateData(false);
 }
 
-void CVTypeBox::m_BasicTypes2_activated(int pos) 
+void CVTypeBox::m_BasicTypes2_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);

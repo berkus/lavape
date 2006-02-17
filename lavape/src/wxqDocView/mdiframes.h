@@ -63,7 +63,7 @@ public:
   virtual void fileExit();
   void LoadFileHistory();
 	wxHistory *GetWindowHistory () { return m_childFrameHistory; }
-  virtual void helpContents() {};
+  virtual void on_helpContentsAction_triggered() {};
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);
@@ -73,11 +73,11 @@ protected:
 	wxHistory *m_childFrameHistory;
   QMainWindow *theActiveFrame;
 	bool completelyCreated;
-  void Cascade();
   void TileVertic(QMenuBar *menubar, int& lastTile);
   void TileHoriz(QMenuBar *menubar, int& lastTile);
 
 public slots:
+  void on_cascadeAction_triggered();
   void windowActivated(QWidget*);
   void histFile(int histFileIndex);
   void hfStatusText(int itemId);

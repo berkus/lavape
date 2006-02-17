@@ -2096,12 +2096,12 @@ void CLiteralsPage::m_Default_textChanged( const QString & )
   myWizard->setModified(modify);
 }
 
-void CLiteralsPage::m_EnumDefault_activated(int )
+void CLiteralsPage::m_EnumDefault_triggered(int )
 {
   myWizard->setModified(true);
 }
 
-void CLiteralsPage::m_BoolDefault_activated(int )
+void CLiteralsPage::m_BoolDefault_triggered(int )
 {
   myWizard->setModified(true);
 }

@@ -73,8 +73,8 @@ public:
   int valkindOfRef;
 
 public slots:
-    virtual void m_BasicTypes5_activated( int );
-    virtual void m_NamedTypes5_activated( int );
+    virtual void m_BasicTypes5_triggered( int );
+    virtual void m_NamedTypes5_triggered( int );
     virtual void m_EnableName2_clicked();
     virtual void m_DownC1_clicked();
     virtual void m_DownInd1_clicked();
@@ -116,8 +116,8 @@ public:
 
 public slots:
     virtual void m_DelSupport2_clicked();
-    virtual void m_ExtTypes2_activated( int );
-    virtual void m_CompoProt_activated( int );
+    virtual void m_ExtTypes2_triggered( int );
+    virtual void m_CompoProt_triggered( int );
     virtual void m_EnumAdd1_clicked();
     virtual void m_EnumEdit1_clicked();
     virtual void m_EnumDel1_clicked();
@@ -242,8 +242,8 @@ public:
 public slots:
     virtual void m_EnableName_clicked();
     virtual void m_DelInherits1_clicked();
-    virtual void m_NamedTypes1_activated( int );
-    virtual void m_CMBOperator_activated( int );
+    virtual void m_NamedTypes1_triggered( int );
+    virtual void m_CMBOperator_triggered( int );
     virtual void m_CHECKOp_clicked();
     virtual void m_Abstract_clicked();
     virtual void m_Native1_clicked();
@@ -281,7 +281,7 @@ public:
   QString valImplSel;
 
 public slots:
-    virtual void m_ImplTypes_activated( int );
+    virtual void m_ImplTypes_triggered( int );
     virtual void OnOK();
     virtual void PushButton_IDCANCEL7_clicked() {QDialog::reject();}
     virtual void ID_HELP5_clicked();
@@ -381,15 +381,15 @@ public:
 
 public slots:
     virtual void m_DelSupport_clicked();
-    virtual void m_BasicTypes1_activated( int );
-    virtual void m_ExtTypes_activated( int );
+    virtual void m_BasicTypes1_triggered( int );
+    virtual void m_ExtTypes_triggered( int );
 //    virtual void m_DelInherits_clicked();
-//    virtual void m_InheritTypes_activated( int );
+//    virtual void m_InheritTypes_triggered( int );
     virtual void m_IsComponent_clicked();
     virtual void m_NonCreatable_clicked();
     virtual void m_Creatable_clicked();
     virtual void m_IsGUI_clicked();
-    virtual void m_GUIStructs_activated( int );
+    virtual void m_GUIStructs_triggered( int );
     virtual void OnOK();
     virtual void m_CANCEL9_clicked() {QDialog::reject();}
     virtual void ID_HELP7_clicked();
@@ -424,8 +424,8 @@ public:
 
 
 public slots:
-    virtual void m_BasicTypes4_activated( int );
-    virtual void m_NamedTypes4_activated( int );
+    virtual void m_BasicTypes4_triggered( int );
+    virtual void m_NamedTypes4_triggered( int );
     virtual void m_Substitutable1_clicked();
     virtual void OnOK();
     virtual void PushButton_IDCANCEL18_clicked() {QDialog::reject();}
@@ -457,7 +457,7 @@ public:
 
 public slots:
     virtual void m_DelSupport1_clicked();
-    virtual void m_ExtTypes1_activated( int );
+    virtual void m_ExtTypes1_triggered( int );
     virtual void OnOK();
     virtual void mANCEL10_clicked() {QDialog::reject();}
     virtual void ID_HELP8_clicked();
@@ -490,8 +490,8 @@ public:
 
 
 public slots:
-    virtual void m_BasicTypes_activated( int );
-    virtual void m_ExTypes_activated( int );
+    virtual void m_BasicTypes_triggered( int );
+    virtual void m_ExTypes_triggered( int );
     virtual void OnOK();
     virtual void PushButton_IDCANCEL3_clicked() {QDialog::reject();}
     virtual void ID_HELP1_clicked();
@@ -526,8 +526,8 @@ public:
 	int	valkindOfLink;
 
 public slots:
-    virtual void m_BasicTypes2_activated( int );
-    virtual void m_NamedTypes2_activated( int );
+    virtual void m_BasicTypes2_triggered( int );
+    virtual void m_NamedTypes2_triggered( int );
     virtual void m_RMOverrides1_clicked();
     virtual void m_StateObject_clicked();
     virtual void m_ValueObject_clicked();

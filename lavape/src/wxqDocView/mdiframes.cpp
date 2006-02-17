@@ -150,7 +150,7 @@ void wxMainFrame::OnMRUWindow(int histWindowIndex)
 
 
 
-void wxMainFrame::Cascade()
+void wxMainFrame::on_cascadeAction_triggered()
 {
   int ii;
   QWidget *window;

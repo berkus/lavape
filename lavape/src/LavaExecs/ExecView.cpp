@@ -911,7 +911,7 @@ void CExecView::OnChar(QKeyEvent *e)
         OnAnd();
       break;
     case Qt::Key_F1:
-	    ((wxMainFrame*)wxTheApp->mainWidget())->helpContents();
+	    ((wxMainFrame*)wxTheApp->mainWidget())->on_helpContentsAction_triggered();
       break;
     case Qt::Key_Escape:
       break;
@@ -1100,7 +1100,7 @@ void CExecView::OnChar(QKeyEvent *e)
       if (!text->currentSynObj->parentObject->parentObject
       && text->currentSynObj->IsPlaceHolder())
         return;
-      editCut = false;
+      on_editCutAction_triggered = false;
       OnDelete();
       return;
     case Qt::Key_Tab:
@@ -1183,7 +1183,7 @@ void CExecView::OnChar(QKeyEvent *e)
         OnAnd();
       break;
     case Qt::Key_F1:
-	    ((wxMainFrame*)wxTheApp->mainWidget())->helpContents();
+	    ((wxMainFrame*)wxTheApp->mainWidget())->on_helpContentsAction_triggered();
       break;
     case Qt::Key_Escape:
       break;
@@ -2638,7 +2638,7 @@ void CExecView::OnDelete ()
       text->currentSynObj = text->currentSynObj->parentObject;
   }
 
-  if (editCut) {
+  if (on_editCutAction_triggered) {
     clipBoardObject = (SynObject*)text->currentSynObj->Clone();
     clipBoardDoc = myDoc;
   }
@@ -2796,7 +2796,7 @@ void CExecView::OnEditCut()
   if (!EditOK()) return;
   if (clipBoardObject)
     delete clipBoardObject;
-  editCut = true;
+  on_editCutAction_triggered = true;
   OnDelete();
 }
 

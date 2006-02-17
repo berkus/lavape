@@ -94,12 +94,12 @@ CLavaGUIPopupD::CLavaGUIPopupD(QWidget* parent, CGUIProgBase *guiPr, CHEFormNode
   qvbl->addWidget(hb);
   hbl->addWidget(okButton);
 //  hbl->addWidget(cancelButton);
-  connect(okButton, SIGNAL(clicked()), this, SLOT(OnClose()));
+  connect(okButton, SIGNAL(clicked()), this, SLOT(on_cancelButton_clicked()));
 //  connect(cancelButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
   hide();
 }
 
-void CLavaGUIPopupD::OnClose()
+void CLavaGUIPopupD::on_cancelButton_clicked()
 {
   myFormNode->data.FormSyntax->WorkFlags.EXCL(poppedUp);
   QDialog::accept();

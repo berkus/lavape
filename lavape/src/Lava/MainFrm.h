@@ -13,40 +13,38 @@ public:
   virtual void UpdateUI();
   int lastTile;
   virtual void customEvent(QCustomEvent *ev);
-  virtual void helpContents();
-  virtual void editingLavaProgs();
-  virtual void learningLava();
-  void PreconditionsToggled(bool on);
-  void PostconditionsToggled(bool on);
-  void InvariantsToggled(bool on);
-  void PmDumpsToggled(bool on);
 
 public slots:
-  virtual void on_fileNewAction_activated();
-  virtual void on_fileOpenAction_activated();
+  virtual void on_helpContentsAction_triggered();
+  virtual void on_editingLavaProgsAction_triggered();
+  virtual void on_learningLavaAction_triggered();
+  virtual void on_preconditionsAction_triggered(bool on);
+  virtual void on_postconditionsAction_triggered(bool on);
+  virtual void on_invariantsAction_triggered(bool on);
+  virtual void on_pmDumpAction_triggered(bool on);
+  virtual void on_fileNewAction_triggered();
+  virtual void on_fileOpenAction_triggered();
 
-  virtual void on_fileSaveAction_activated();
-  virtual void on_fileSaveAsAction_activated();
-  virtual void on_fileSaveAll_activated();
-  virtual void on_fileClose_activated();
-  virtual void on_fileExitAction_activated();
-  void makeStyle(const QString &style);
-  void helpAbout();
-  void okAction_activated();
-  void toggleCategoryAction_activated();
-  void editUndoAction_activated();
-  void insAction_activated();
-  void delAction_activated();
-  void editCut();
-  void editCopy();
-  void editPaste();
-  virtual void setFormTextFont();
-  virtual void setFormLabelFont();
+  virtual void on_fileSaveAction_triggered();
+  virtual void on_fileSaveAsAction_triggered();
+  virtual void on_fileSaveAllAction_triggered();
+  virtual void on_fileCloseAction_triggered();
+  virtual void on_fileExitAction_triggered();
+  virtual void makeStyle(const QString &style);
+  virtual void on_helpAboutAction_triggered();
+  virtual void on_toggleCategoryAction_triggered();
+  virtual void on_editUndoAction_triggered();
+  virtual void on_insAction_triggered();
+  virtual void on_delAction_triggered();
+  virtual void on_editCutAction_triggered();
+  virtual void on_editCutCopy_triggered();
+  virtual void on_editPasteAction_triggered();
+  virtual void on_setFormTextFontAction_triggered();
+  virtual void on_setFormLabelFontAction_triggered();
 //  virtual void setFormButtonFont();
-  virtual void setGlobalFont();
-  virtual void tileHoriz();
-  virtual void tileVertic();
-  virtual void cascade();
+  virtual void on_setGlobalFontAction_triggered();
+  virtual void on_tileHorizAction_triggered();
+  virtual void on_tileVerticAction_triggered();
 
 private:
   Q_OBJECT

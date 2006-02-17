@@ -99,11 +99,11 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   LBaseData->editCopyActionPtr = editCopyAction;
   LBaseData->editCutActionPtr = editCutAction;
   LBaseData->editPasteActionPtr = editPasteAction;
-//  connect( okAction, SIGNAL( activated() ), this, SLOT( okAction_activated() ) );
-  connect( toggleCategoryAction, SIGNAL( activated() ), this, SLOT( toggleCategoryAction_activated() ) );
-  connect( editUndoAction, SIGNAL( activated() ), this, SLOT( editUndoAction_activated() ) );
-  connect( insAction, SIGNAL( activated() ), this, SLOT( insAction_activated() ) );
-  connect( delAction, SIGNAL( activated() ), this, SLOT( delAction_activated() ) );
+//  connect( okAction, SIGNAL( activated() ), this, SLOT( okAction_triggered() ) );
+  connect( toggleCategoryAction, SIGNAL( activated() ), this, SLOT( on_toggleCategoryAction_triggered() ) );
+  connect( editUndoAction, SIGNAL( activated() ), this, SLOT( on_editUndoAction_triggered() ) );
+  connect( insAction, SIGNAL( activated() ), this, SLOT( on_insAction_triggered() ) );
+  connect( delAction, SIGNAL( activated() ), this, SLOT( on_delAction_triggered() ) );
   setIcon(QPixmap((const char**) Lava));
   lastTile = 0;
 }
@@ -128,10 +128,10 @@ void CLavaMainFrame::UpdateUI()
 {
   CLavaDoc* doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
   bool enable = doc && doc->isObject;
-  PreconditionsAction->setEnabled(!LBaseData->m_checkPostconditions);  
-  PreconditionsAction->setOn(LBaseData->m_checkPreconditions);  
-  PostconditionsAction->setOn(LBaseData->m_checkPostconditions);  
-  InvariantsAction->setOn(LBaseData->m_checkInvariants); 
+  preconditionsAction->setEnabled(!LBaseData->m_checkPostconditions);  
+  preconditionsAction->setOn(LBaseData->m_checkPreconditions);  
+  postconditionsAction->setOn(LBaseData->m_checkPostconditions);  
+  invariantsAction->setOn(LBaseData->m_checkInvariants); 
   pmDumpAction->setOn(LBaseData->m_pmDumps);
   fileCloseAction->setEnabled(enable);
   fileSaveAction->setEnabled(enable);
@@ -156,51 +156,51 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
 		switch (lastTile) {
 		case 0:
 		case 1:
-			tileVertic();
+			on_tileVerticAction_triggered();
 			break;
 		case 2:
-			tileHoriz();
+			on_tileHorizAction_triggered();
 		}
 }
 
-void CLavaMainFrame::on_fileNewAction_activated()
+void CLavaMainFrame::on_fileNewAction_triggered()
 {
   ((CLavaApp*)wxTheApp)->OnFileNew();
 }
 
-void CLavaMainFrame::on_fileOpenAction_activated()
+void CLavaMainFrame::on_fileOpenAction_triggered()
 {
   ((CLavaApp*)wxTheApp)->OnFileOpen();
 }
 
 
-void CLavaMainFrame::on_fileSaveAction_activated()
+void CLavaMainFrame::on_fileSaveAction_triggered()
 {
   wxDocManager::GetDocumentManager()->OnFileSave();
 }
 
-void CLavaMainFrame::on_fileSaveAsAction_activated()
+void CLavaMainFrame::on_fileSaveAsAction_triggered()
 {
   wxDocManager::GetDocumentManager()->OnFileSaveAs();
 }
 
-void CLavaMainFrame::on_fileSaveAll_activated()
+void CLavaMainFrame::on_fileSaveAllAction_triggered()
 {
   ((CLavaApp*)wxTheApp)->OnSaveAll();
 }
 
-void CLavaMainFrame::on_fileClose_activated()
+void CLavaMainFrame::on_fileCloseAction_triggered()
 {
   wxDocManager::GetDocumentManager()->OnFileClose();
 }
 
-void CLavaMainFrame::helpAbout()
+void CLavaMainFrame::on_helpAboutAction_triggered()
 {
   ((CLavaApp*)wxTheApp)->OnAppAbout();
 }
 
 
-void CLavaMainFrame::on_fileExitAction_activated()
+void CLavaMainFrame::on_fileExitAction_triggered()
 {
   wxView *view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view && view->inherits("CLavaGUIView"))
@@ -208,18 +208,14 @@ void CLavaMainFrame::on_fileExitAction_activated()
   wxMainFrame::fileExit();
 }
 
-void CLavaMainFrame::tileVertic()
+void CLavaMainFrame::on_tileVerticAction_triggered()
 {
   TileVertic(menubar, lastTile);
 }
 
-void CLavaMainFrame::tileHoriz()
+void CLavaMainFrame::on_tileHorizAction_triggered()
 {
   TileHoriz(menubar, lastTile);
-}
-void CLavaMainFrame::cascade()
-{
-  Cascade();
 }
 
 CLavaMainFrame::~CLavaMainFrame()
@@ -227,8 +223,8 @@ CLavaMainFrame::~CLavaMainFrame()
 
 }
 
-
-void CLavaMainFrame::okAction_activated()
+/*
+void CLavaMainFrame::okAction_triggered()
 {
   if (((CLavaBaseDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->DumpFrame)
     ((LavaDumpFrame*)((CLavaBaseDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->DumpFrame)->OnOK();
@@ -236,29 +232,29 @@ void CLavaMainFrame::okAction_activated()
   if (view)
     view->OnOK();
 }
-
-void CLavaMainFrame::toggleCategoryAction_activated()
+*/
+void CLavaMainFrame::on_toggleCategoryAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnTogglestate();
 }
 
-void CLavaMainFrame::editUndoAction_activated()
+void CLavaMainFrame::on_editUndoAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnCancel();
 }
 
-void CLavaMainFrame::insAction_activated()
+void CLavaMainFrame::on_insAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnInsertOpt();
 }
 
-void CLavaMainFrame::delAction_activated()
+void CLavaMainFrame::on_delAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
@@ -266,33 +262,33 @@ void CLavaMainFrame::delAction_activated()
 }
 
 
-void CLavaMainFrame::editCut()
+void CLavaMainFrame::on_editCutAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnEditCut();
 }
 
-void CLavaMainFrame::editCopy()
+void CLavaMainFrame::on_editCutCopy_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnEditCopy();
 }
 
-void CLavaMainFrame::editPaste()
+void CLavaMainFrame::on_editPasteAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnEditPaste();
 }
 
-void CLavaMainFrame::setFormTextFont()
+void CLavaMainFrame::on_setFormTextFontAction_triggered()
 {
   ((CLavaApp*)wxTheApp)->OnChooseFormFont(0);
 }
 
-void CLavaMainFrame::setFormLabelFont()
+void CLavaMainFrame::on_setFormLabelFontAction_triggered()
 {
   LBaseData->useLabelFont = true;
   ((CLavaApp*)wxTheApp)->OnChooseFormFont(1);
@@ -306,27 +302,27 @@ void CLavaMainFrame::setFormButtonFont()
 }
 */
 
-void CLavaMainFrame::setGlobalFont()
+void CLavaMainFrame::on_setGlobalFontAction_triggered()
 {
   ((CLavaApp*)wxTheApp)->OnChooseGlobalFont();
 }
 
-void CLavaMainFrame::helpContents()
+void CLavaMainFrame::on_helpContentsAction_triggered()
 {
 	((CLavaApp*)wxTheApp)->HtmlHelp();
 }
 
-void CLavaMainFrame::editingLavaProgs()
+void CLavaMainFrame::on_editingLavaProgsAction_triggered()
 {
 	((CLavaApp*)wxTheApp)->EditingLavaProgs();
 }
 
-void CLavaMainFrame::learningLava()
+void CLavaMainFrame::on_learningLavaAction_triggered()
 {
 	((CLavaApp*)wxTheApp)->LearningLava();
 }
 
-void CLavaMainFrame::PreconditionsToggled(bool on)
+void CLavaMainFrame::on_preconditionsAction_triggered(bool on)
 {
   if (on) {
     LBaseData->m_checkPreconditions = true;
@@ -339,7 +335,7 @@ void CLavaMainFrame::PreconditionsToggled(bool on)
   ((CLavaApp*)wxTheApp)->saveSettings();
 }
 
-void CLavaMainFrame::PostconditionsToggled(bool on)
+void CLavaMainFrame::on_postconditionsAction_triggered(bool on)
 {
   if (on) {
     LBaseData->m_checkPostconditions = true;
@@ -354,7 +350,7 @@ void CLavaMainFrame::PostconditionsToggled(bool on)
   ((CLavaApp*)wxTheApp)->saveSettings();
 }
 
-void CLavaMainFrame::InvariantsToggled(bool on)
+void CLavaMainFrame::on_invariantsAction_triggered(bool on)
 {
   if (on) {
     LBaseData->m_checkInvariants = true;
@@ -367,7 +363,7 @@ void CLavaMainFrame::InvariantsToggled(bool on)
   ((CLavaApp*)wxTheApp)->saveSettings();
 }
 
-void CLavaMainFrame::PmDumpsToggled(bool on)
+void CLavaMainFrame::on_pmDumpAction_triggered(bool on)
 {
   if (on) {
     LBaseData->m_pmDumps = true;

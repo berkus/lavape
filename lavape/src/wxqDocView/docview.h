@@ -265,7 +265,7 @@ public:
     virtual bool Close(/*bool deleteWindow = true*/);
 
     // Override to do cleanup/veto close
-    virtual bool OnClose(/*bool deleteWindow*/);
+    virtual bool on_cancelButton_clicked(/*bool deleteWindow*/);
 
     // Extend event processing to search the document's event table
 //    virtual bool ProcessEvent(wxEvent& event);

@@ -43,12 +43,12 @@
 CAboutBox::CAboutBox(QWidget* parent, const char* name, bool modal) :
 	  QDialog(parent,name,modal, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu) {
   setupUi(this);
-  lineEdit1->setText(LBaseData->m_myWebBrowser);
+  browserPath->setText(LBaseData->m_myWebBrowser);
 } 
 
 //CAboutBox::~CAboutBox() {}
 
-void CAboutBox::OnSelectBrowser() {
+void CAboutBox::on_selectBrowser_clicked() {
 	QString progDir, filter;
 
 #ifdef WIN32
@@ -66,23 +66,23 @@ void CAboutBox::OnSelectBrowser() {
                   "open file dialog",
                   "Choose your favorite web browser" );
 	if (s != QString::null) {
-		lineEdit1->setText(s);
+		browserPath->setText(s);
 		LBaseData->m_myWebBrowser = s;
     wxTheApp->saveSettings();
 	}
 }
 
-void CAboutBox::OnTextChanged (const QString &s) {
+void CAboutBox::on_browserPath_textChanged (const QString &s) {
 	LBaseData->m_myWebBrowser = s;
   wxTheApp->saveSettings();
 }
 
-void CAboutBox::OnLavaHomePage() 
+void CAboutBox::on_LavaHomePage_clicked() 
 {
 	QStringList args;
 	QString buf;
 
-	if (lineEdit1->text().isEmpty()) {
+	if (browserPath->text().isEmpty()) {
     QMessageBox::critical(this,qApp->name(),ERR_MissingBrowserPath,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 		return;
 	}

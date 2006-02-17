@@ -502,17 +502,17 @@ void CLavaMainFrame::fileSaveAs()
   wxDocManager::GetDocumentManager()->OnFileSaveAs();
 }
 
-void CLavaMainFrame::fileSaveAll()
+void CLavaMainFrame::on_fileSaveAllAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnSaveAll();
 }
 
-void CLavaMainFrame::fileClose()
+void CLavaMainFrame::on_fileCloseAction_triggered()
 {
   wxDocManager::GetDocumentManager()->OnFileClose();
 }
 
-void CLavaMainFrame::editUndo()
+void CLavaMainFrame::on_editUndoAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnEditUndo();
 }
@@ -547,22 +547,22 @@ void CLavaMainFrame::checkAll()
   ((CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->OnTotalCheck();
 }
 
-void CLavaMainFrame::helpContents()
+void CLavaMainFrame::on_helpContentsAction_triggered()
 {
 	((CLavaPEApp*)wxTheApp)->HtmlHelp();
 }
 
-void CLavaMainFrame::editingLavaProgs()
+void CLavaMainFrame::on_editingLavaProgsAction_triggered()
 {
 	((CLavaPEApp*)wxTheApp)->EditingLavaProgs();
 }
 
-void CLavaMainFrame::learningLava()
+void CLavaMainFrame::on_learningLavaAction_triggered()
 {
 	((CLavaPEApp*)wxTheApp)->LearningLava();
 }
 
-void CLavaMainFrame::helpAbout()
+void CLavaMainFrame::on_helpAboutAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnAppAbout();
 }
@@ -574,12 +574,12 @@ void CLavaMainFrame::setTreeFont()
   ((CLavaPEApp*)wxTheApp)->OnChooseTreeFont();
 }
 
-void CLavaMainFrame::setFormTextFont()
+void CLavaMainFrame::on_setFormTextFontAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnChooseFormFont(0);
 }
 
-void CLavaMainFrame::setFormLabelFont()
+void CLavaMainFrame::on_setFormLabelFontAction_triggered()
 {
   LBaseData->useLabelFont = true;
   ((CLavaPEApp*)wxTheApp)->OnChooseFormFont(1);
@@ -598,26 +598,26 @@ void CLavaMainFrame::setExecFont()
   ((CLavaPEApp*)wxTheApp)->OnChooseExecFont();
 }
 
-void CLavaMainFrame::setGlobalFont()
+void CLavaMainFrame::on_setGlobalFontAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnChooseGlobalFont();
 }
 
-void CLavaMainFrame::editCut()
+void CLavaMainFrame::on_editCutAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnEditCut();
 }
 
-void CLavaMainFrame::editCopy()
+void CLavaMainFrame::on_editCutCopy_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnEditCopy();
 }
 
-void CLavaMainFrame::editPaste()
+void CLavaMainFrame::on_editPasteAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
@@ -840,14 +840,14 @@ void CLavaMainFrame::insertText()
     view->OnNewLitStr();
 }
 
-void CLavaMainFrame::insAction_activated()
+void CLavaMainFrame::on_insAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnInsertOpt();
 }
 
-void CLavaMainFrame::delAction_activated()
+void CLavaMainFrame::on_delAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
@@ -974,7 +974,7 @@ void CLavaMainFrame::genSingleHtml()
 //////////////////////////////////////////////////////////
 // Exec handlers (tool buttons):
 
-void CLavaMainFrame::toggleCategory(){
+void CLavaMainFrame::on_toggleCategoryAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnToggleCategory();
@@ -1410,27 +1410,27 @@ void CLavaMainFrame::adjustToolbar_7 () {
   fillHelpToolbar(HelpToolbar);
 }
 
-
-void CLavaMainFrame::cascade()
+/*
+void CLavaMainFrame::on_cascadeAction_triggered()
 {
   Cascade();
-  /*
+  
   int ii;
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
 
   wxTheApp->isChMaximized = false;
-  m_workspace->cascade();
+  m_workspace->on_cascadeAction_triggered();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
     if (!((QMainWindow*)window)->isMinimized()) 
       if (window->inherits("wxMDIChildFrame"))
         ((wxMDIChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
   }
-  */
 }
+*/
 
-void CLavaMainFrame::tileVertic()
+void CLavaMainFrame::on_tileVerticAction_triggered()
 {
   TileVertic(menubar, lastTile);
   /*
@@ -1476,7 +1476,7 @@ void CLavaMainFrame::tileVertic()
   */
 }
     
-void CLavaMainFrame::tileHoriz()
+void CLavaMainFrame::on_tileHorizAction_triggered()
 {
   TileHoriz(menubar, lastTile);
   /*
@@ -1538,11 +1538,11 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
 	else
 		switch (lastTile) {
 		case 1:
-			tileVertic();
+			on_tileVerticAction_triggered();
 			break;
 		case 0:
 		case 2:
-			tileHoriz();
+			on_tileHorizAction_triggered();
 		}
 }
 

@@ -85,21 +85,20 @@ public slots:
     virtual void fileSaveAs();
     virtual void filePrint();
 //    virtual void fileExit();
-    virtual void editUndo();
+    virtual void on_editUndoAction_triggered();
     virtual void editRedo();
-    virtual void editCut();
-    virtual void editCopy();
-    virtual void editPaste();
+    virtual void on_editCutAction_triggered();
+    virtual void on_editCutCopy_triggered();
+    virtual void on_editPasteAction_triggered();
     virtual void editFind();
-    virtual void helpContents();
-    virtual void editingLavaProgs();
-    virtual void learningLava();
-    virtual void helpAbout();
-    virtual void tileHoriz();
-    virtual void tileVertic();
-    virtual void cascade();
-    virtual void fileSaveAll();
-    virtual void fileClose();
+    virtual void on_helpContentsAction_triggered();
+    virtual void on_editingLavaProgsAction_triggered();
+    virtual void on_learningLavaAction_triggered();
+    virtual void on_helpAboutAction_triggered();
+    virtual void on_tileHorizAction_triggered();
+    virtual void on_tileVerticAction_triggered();
+    virtual void on_fileSaveAllAction_triggered();
+    virtual void on_fileCloseAction_triggered();
     virtual void saveEveryChange(bool);
     virtual void viewTB1();
     virtual void viewTB2();
@@ -145,8 +144,8 @@ public slots:
     virtual void openFormView();
     virtual void makeGUI();
     virtual void insertText();
-    virtual void insAction_activated();
-    virtual void delAction_activated();
+    virtual void on_insAction_triggered();
+    virtual void on_delAction_triggered();
     virtual void importComponent();
     virtual void genLinkedHtml();
     virtual void genSingleHtml();
@@ -162,7 +161,7 @@ public slots:
     virtual void DbgBreakpoint();
     virtual void DbgClearBreakpoints();
     virtual void DbgStop();
-    virtual void toggleCategory();
+    virtual void on_toggleCategoryAction_triggered();
     virtual void optLocalVar();
     virtual void toggleSubstType();
     virtual void insertBefore();
@@ -240,11 +239,11 @@ public slots:
     virtual void viewTB7();
     virtual void adjustToolbar_7 ();
     virtual void setTreeFont();
-    virtual void setFormTextFont();
-    virtual void setFormLabelFont();
+    virtual void on_setFormTextFontAction_triggered();
+    virtual void on_setFormLabelFontAction_triggered();
 //    virtual void setFormButtonFont();
     virtual void setExecFont();
-    virtual void setGlobalFont();
+    virtual void on_setGlobalFontAction_triggered();
     virtual void newCompo();
 
 private:

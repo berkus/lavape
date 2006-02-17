@@ -16,10 +16,12 @@ public:
 //  ~CAboutBox();
 
 public slots:
-	void OnLavaHomePage();
-	void OnSelectBrowser();
-	void OnTextChanged(const QString &);
-  void OnClose()  {QDialog::reject();}
+	void on_LavaHomePage_clicked();
+	void on_selectBrowser_clicked();
+	void on_browserPath_textChanged(const QString &);
+  void on_cancelButton_clicked()  {
+    QDialog::reject();
+  }
 };
 
 

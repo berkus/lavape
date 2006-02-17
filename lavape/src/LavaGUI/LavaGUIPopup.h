@@ -42,7 +42,7 @@ public:
   LavaVariablePtr ResultDPtr;
 
 public slots:
-  void OnClose();
+  void on_cancelButton_clicked();
 //  void OnCancel();
 private:
   Q_OBJECT

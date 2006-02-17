@@ -431,8 +431,8 @@ public:
   virtual void OnSelchangeSuffixe();
   virtual void OnLButtonDown(unsigned nFlags, QPoint point);
   virtual void m_Default_textChanged( const QString & );
-  virtual void m_EnumDefault_activated( int );
-  virtual void m_BoolDefault_activated( int );
+  virtual void m_EnumDefault_triggered( int );
+  virtual void m_BoolDefault_triggered( int );
 
 
 private:

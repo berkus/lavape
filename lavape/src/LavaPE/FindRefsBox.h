@@ -30,7 +30,7 @@ public:
 public slots:
   virtual void OnOK() {QDialog::accept();}
   virtual void OnCancel() {QDialog::reject();}
-  virtual void m_GotoCombo_activated(int);
+  virtual void m_GotoCombo_triggered(int);
 private:
   Q_OBJECT
 };

@@ -165,7 +165,8 @@ void wxApp::onIdle()
 	// make sure that UpdateUI is invoked only once between two wait states
 	if (!inUpdateUI) {
 //    inUpdateUI = true;
-		QApplication::postEvent(this,new QCustomEvent(IDU_Idle,0));
+//		QApplication::postEvent(this,new QCustomEvent(IDU_Idle,0));
+    onUpdateUI();
 	}
 }
 
@@ -736,7 +737,7 @@ void wxView::SetDocument(wxDocument *doc)
 
 bool wxView::Close()
 {
-  if (OnClose()) {
+  if (on_cancelButton_clicked()) {
       delete this;
       return true;
   }
@@ -756,7 +757,7 @@ void wxView::OnActivateView(bool activate, wxView *deactiveView)
     setFocus();
 }
 
-bool wxView::OnClose()
+bool wxView::on_cancelButton_clicked()
 {
   return true;
 }
