@@ -472,7 +472,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 /////////////////////////////////////////////////////////////////////////////
 // handlers:
 
-void CLavaMainFrame::fileNew()
+void CLavaMainFrame::on_fileNewAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnFileNew();
 }
@@ -482,7 +482,7 @@ void CLavaMainFrame::newCompo()
   ((CLavaPEApp*)wxTheApp)->OnNewComponent();
 }
 
-void CLavaMainFrame::fileOpen()
+void CLavaMainFrame::on_fileOpenAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnFileOpen();
 }
@@ -492,12 +492,12 @@ void CLavaMainFrame::importComponent()
   ((CLavaPEApp*)wxTheApp)->OnImport();
 }
 
-void CLavaMainFrame::fileSave()
+void CLavaMainFrame::on_fileSaveAction_triggered()
 {
   wxDocManager::GetDocumentManager()->OnFileSave();
 }
 
-void CLavaMainFrame::fileSaveAs()
+void CLavaMainFrame::on_fileSaveAsAction_triggered()
 {
   wxDocManager::GetDocumentManager()->OnFileSaveAs();
 }
@@ -517,7 +517,7 @@ void CLavaMainFrame::on_editUndoAction_triggered()
   ((CLavaPEApp*)wxTheApp)->OnEditUndo();
 }
 
-void CLavaMainFrame::editRedo()
+void CLavaMainFrame::on_editRedoAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnEditRedo();
 }
@@ -1432,7 +1432,7 @@ void CLavaMainFrame::on_cascadeAction_triggered()
 
 void CLavaMainFrame::on_tileVerticAction_triggered()
 {
-  TileVertic(menubar, lastTile);
+  on_tileVerticAction_triggered(menubar, lastTile);
   /*
   int ii, cc = 0, x = 0, widthForEach, preferredWidth, actWidth, minHeight=0, allHeight;
   QWidget *window;
@@ -1478,7 +1478,7 @@ void CLavaMainFrame::on_tileVerticAction_triggered()
     
 void CLavaMainFrame::on_tileHorizAction_triggered()
 {
-  TileHoriz(menubar, lastTile);
+  on_tileHorizAction_triggered(menubar, lastTile);
   /*
   int ii, cc = 0, y = 0, heightForEach, preferredHeight, actHeight, minHeight=0;
   QWidget *window;

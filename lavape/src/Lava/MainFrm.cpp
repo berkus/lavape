@@ -210,12 +210,12 @@ void CLavaMainFrame::on_fileExitAction_triggered()
 
 void CLavaMainFrame::on_tileVerticAction_triggered()
 {
-  TileVertic(menubar, lastTile);
+  on_tileVerticAction_triggered(menubar, lastTile);
 }
 
 void CLavaMainFrame::on_tileHorizAction_triggered()
 {
-  TileHoriz(menubar, lastTile);
+  on_tileHorizAction_triggered(menubar, lastTile);
 }
 
 CLavaMainFrame::~CLavaMainFrame()

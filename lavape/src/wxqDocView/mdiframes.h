@@ -60,10 +60,8 @@ public:
   void OnMRUFile(int histFileIndex);
   void OnMRUWindow(int histWindowIndex);
   void OnCloseWindow();
-  virtual void fileExit();
   void LoadFileHistory();
 	wxHistory *GetWindowHistory () { return m_childFrameHistory; }
-  virtual void on_helpContentsAction_triggered() {};
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);
@@ -73,11 +71,13 @@ protected:
 	wxHistory *m_childFrameHistory;
   QMainWindow *theActiveFrame;
 	bool completelyCreated;
-  void TileVertic(QMenuBar *menubar, int& lastTile);
-  void TileHoriz(QMenuBar *menubar, int& lastTile);
 
 public slots:
+  virtual void fileExit();
   void on_cascadeAction_triggered();
+  void on_tileVerticAction_triggered(QMenuBar *menubar, int& lastTile);
+  void on_tileHorizAction_triggered(QMenuBar *menubar, int& lastTile);
+  virtual void on_helpContentsAction_triggered() {};
   void windowActivated(QWidget*);
   void histFile(int histFileIndex);
   void hfStatusText(int itemId);

@@ -79,14 +79,14 @@ private:
 public slots:
     void makeStyle(const QString &style);
 
-    virtual void fileNew();
-    virtual void fileOpen();
-    virtual void fileSave();
-    virtual void fileSaveAs();
+    virtual void on_fileNewAction_triggered();
+    virtual void on_fileOpenAction_triggered();
+    virtual void on_fileSaveAction_triggered();
+    virtual void on_fileSaveAsAction_triggered();
     virtual void filePrint();
 //    virtual void fileExit();
     virtual void on_editUndoAction_triggered();
-    virtual void editRedo();
+    virtual void on_editRedoAction_triggered();
     virtual void on_editCutAction_triggered();
     virtual void on_editCutCopy_triggered();
     virtual void on_editPasteAction_triggered();

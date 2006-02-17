@@ -169,7 +169,7 @@ void wxMainFrame::on_cascadeAction_triggered()
   }
 }
 
-void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
+void wxMainFrame::on_tileVerticAction_triggered(QMenuBar *menubar, int& lastTile)
 {
   int ii, cc = 0, x = 0, minHeight=0;
   QWidget *window;
@@ -213,7 +213,7 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
   }*/
 }
     
-void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
+void wxMainFrame::on_tileHorizAction_triggered(QMenuBar *menubar, int& lastTile)
 {
   int ii, cc = 0, y = 0, heightForEach, preferredHeight, actHeight, minHeight=0;
   QWidget *window;
