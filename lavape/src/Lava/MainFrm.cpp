@@ -35,19 +35,10 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
-/*
-static UINT indicators[] =
-{
-  ID_SEPARATOR,           // Statusleistenanzeige
-  ID_INDICATOR_CAPS,
-  ID_INDICATOR_NUM,
-  ID_INDICATOR_SCRL,
-};
-*/
 
 CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
-  m_CentralWidget->setMinimumSize(500,300);
+  m_CentralWidget->setMinimumSize(400,300);
 
   setIconSize(QSize(16,16));
   setupUi(this); // populate this main frame
