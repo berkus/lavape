@@ -29,8 +29,8 @@
 //Added by qt3to4:
 #include <QPixmap>
 #include <QCustomEvent>
-#include <Q3ActionGroup>
-#include <Q3PopupMenu>
+#include <QActionGroup>
+#include <QMenu>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -49,15 +49,15 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
   m_CentralWidget->setMinimumSize(500,300);
 
-  setIconSize(QSize(16,15));
+  setIconSize(QSize(16,16));
   setupUi(this); // populate this main frame
 
 	makeStyle(LBaseData->m_style);
 
-  Q3PopupMenu *style = new Q3PopupMenu(this);
-  style->setCheckable( TRUE );
-  viewMenu->insertItem( "Set st&yle" , style );
-  Q3ActionGroup *ag = new Q3ActionGroup( this, 0 );
+  QMenu *styleMenu = new QMenu(this);
+  styleMenu->setCheckable( TRUE );
+  viewMenu->insertItem( "Set st&yle" , styleMenu );
+  QActionGroup *ag = new QActionGroup( this);
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
   connect( styleMapper, SIGNAL( mapped(const QString&) ), this, SLOT( makeStyle(const QString&) ) );
@@ -87,7 +87,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 		if (LBaseData->m_style == styleStr)
 		  a->setOn(true);
   }
-  ag->addTo(style);
+  ag->addTo(styleMenu);
 
 	m_childFrameHistory->m_menu = windowMenu;
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
@@ -114,16 +114,37 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
   LBaseData->m_style = style;
   wxTheApp->saveSettings();
-	qApp->setStyle(style);
+  if (style == "Windows")
+    QApplication::setStyle(new MyWindowsStyle);
+  else
+	  QApplication::setStyle(style);
+/*
 	if(style == "Motif" || style == "MotifPlus") {
 	  QPalette p( QColor( 192, 192, 192 ) );
 	  qApp->setPalette( p, TRUE );
 	  qApp->setFont( LBaseData->m_GlobalFont, TRUE );
 	}
+*/
 	if (completelyCreated)
 		repaint();
 }
 
+int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const
+{
+  int px = QWindowsStyle::pixelMetric( pm, option, widget);
+  
+  switch( pm )
+  {
+    case PM_ToolBarItemMargin:
+    case PM_ToolBarItemSpacing:
+      px = 0; break;
+    case PM_ToolBarIconSize:
+      px = 16; break;
+    default: break;
+  }
+  
+  return px;
+}
 void CLavaMainFrame::UpdateUI()
 {
   CLavaDoc* doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
@@ -210,12 +231,12 @@ void CLavaMainFrame::on_fileExitAction_triggered()
 
 void CLavaMainFrame::on_tileVerticAction_triggered()
 {
-  on_tileVerticAction_triggered(menubar, lastTile);
+  wxMainFrame::on_tileVerticAction_triggered(menubar, lastTile);
 }
 
 void CLavaMainFrame::on_tileHorizAction_triggered()
 {
-  on_tileHorizAction_triggered(menubar, lastTile);
+  wxMainFrame::on_tileHorizAction_triggered(menubar, lastTile);
 }
 
 CLavaMainFrame::~CLavaMainFrame()

@@ -69,6 +69,7 @@ wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
 
 bool wxMainFrame::OnCreate()
 {
+  setIconSize(QSize(16,16));
   CreateWorkspace(m_CentralWidget);
 //  resize(800,600);
   LoadFileHistory();
