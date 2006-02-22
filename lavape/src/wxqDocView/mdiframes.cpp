@@ -55,13 +55,12 @@
 wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
  : QMainWindow(parent,name,Qt::WDestructiveClose | Qt::WType_TopLevel)
 {
-
+  QStatusBar *stb=new QStatusBar(this);
 	completelyCreated = false;
 
-  m_CentralWidget = new QFrame(this);
-//  m_CentralWidget->setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
+  m_CentralWidget = CreateWorkspace(this);
   setCentralWidget(m_CentralWidget);
-//  m_layout = new QVBoxLayout(m_CentralWidget);
+  setStatusBar(stb);
   ((wxApp*)qApp)->m_appWindow = this;
   qApp->setMainWidget(this);
 	m_childFrameHistory = new wxHistory;
@@ -69,7 +68,6 @@ wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
 
 bool wxMainFrame::OnCreate()
 {
-  CreateWorkspace(m_CentralWidget);
 //  resize(800,600);
   LoadFileHistory();
 	completelyCreated = true;

@@ -65,7 +65,7 @@ public:
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);
-  QFrame *m_CentralWidget;
+  QWorkspace *m_CentralWidget;
   QVBoxLayout *m_layout;
   QWorkspace *m_workspace;
 	wxHistory *m_childFrameHistory;

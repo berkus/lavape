@@ -9,11 +9,14 @@
     <x>0</x>
     <y>0</y>
     <width>301</width>
-    <height>202</height>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Lava Interpreter</string>
+  </property>
+  <property name="statusTip" >
+   <string>Ready</string>
   </property>
   <property name="iconSize" >
    <size>

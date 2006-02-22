@@ -38,9 +38,8 @@
 
 CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
-  m_CentralWidget->setMinimumSize(250,250);
+  m_CentralWidget->setMinimumSize(350,200);
 
-//  setIconSize(QSize(16,16));
   setupUi(this); // populate this main frame
 
 	makeStyle(LBaseData->m_style);
@@ -73,6 +72,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
  		}
 //		QAction *a = new QAction( styleStr, QIcon(), styleAccel, 0, ag, 0, ag->isExclusive() );
 		QAction *a = new QAction( styleStr,ag);
+    a->setCheckable(true);
 		connect( a, SIGNAL( activated() ), styleMapper, SLOT(map()) );
 		styleMapper->setMapping(a,a->text() );
 		if (LBaseData->m_style == styleStr)
