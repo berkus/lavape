@@ -41,7 +41,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   CHEEnumSelId *enumSel;
   myFormNode = data;
   GUIProg = guiPr;
-  QStyleOptionButton qsob=QStyleOptionButton();
+  QStyleOptionComboBox qsob=QStyleOptionComboBox();
 
 
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
@@ -109,20 +109,13 @@ void CTComboBox::OnSelendok(int sel)
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
   GUIProg->focNode = myFormNode;
-//  CComboItem *comboItem;
-  QAbstractItemModel *mod=model();
-  QVariant var;
 
   if (!GUIProg->FrozenObject && sel >= 0) {
-//    comboItem = (CComboItem*)listBox()->item(sel);
-    if (mod->hasIndex(sel,1)) {
-      var = mod->data(mod->index(sel,1));
-      myFormNode->data.StringValue = DString(var.toString().toAscii().data()); //DString(comboItem->text());
-      myFormNode->data.D = sel;
-      if (LBaseData->inRuntime) {
-        ((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
-        myFormNode->data.IoSigFlags.INCL(trueValue);
-      }
+    myFormNode->data.StringValue = DString(currentText());
+    myFormNode->data.D = sel;
+    if (LBaseData->inRuntime) {
+      ((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
+      myFormNode->data.IoSigFlags.INCL(trueValue);
     }
   }
 }

@@ -605,7 +605,7 @@ void GUIwidCLASS::SetPointer (QWidget* newWidget, unsigned isWindow)
       return;
     }
     if (newWidget->inherits("CMultiLineEdit")) 
-      ((CMultiLineEdit*)newWidget)->moveCursor(Q3TextEdit::MoveEnd, false);
+      ((CMultiLineEdit*)newWidget)->moveCursor(QTextEdit::MoveEnd, false);
       /*
      if (!(((CTEdit*)newWidget)->GetStyle() & ES_MULTILINE))
       ((CTEdit*)newWidget)->SetSel(0,-1,false);

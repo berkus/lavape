@@ -40,7 +40,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
   m_CentralWidget->setMinimumSize(400,300);
 
-  setIconSize(QSize(16,16));
+//  setIconSize(QSize(16,16));
   setupUi(this); // populate this main frame
 
 	makeStyle(LBaseData->m_style);

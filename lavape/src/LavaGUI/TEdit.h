@@ -3,11 +3,11 @@
 
 #include "GUIProgBase.h"
 #include "qlineedit.h"
-#include "q3textedit.h"
+#include <QTextEdit>
 //Added by qt3to4:
 #include <QFocusEvent>
 #include <QEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -23,11 +23,11 @@ public:
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;
   QPoint CaretP;
-  Q3PopupMenu* myMenu;
+  QMenu* myMenu;
   bool inError;
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
-  virtual Q3PopupMenu* createPopupMenu();
+  virtual QMenu* createStandardContextMenu();
   virtual bool event(QEvent* ev);
 
 public slots:
@@ -41,7 +41,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CTEdit window
 
-class CMultiLineEdit : public Q3TextEdit
+class CMultiLineEdit : public QTextEdit
 {
 public:
   CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
@@ -51,11 +51,11 @@ public:
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;
   QPoint CaretP;
-  Q3PopupMenu* myMenu;
+  QMenu* myMenu;
   bool inError;
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
-  virtual Q3PopupMenu* createPopupMenu();
+  virtual QMenu* createStandardContextMenu();
   virtual bool event(QEvent* ev);
 public slots:
   void DelActivated();

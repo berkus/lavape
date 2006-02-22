@@ -115,8 +115,8 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
 void LavaGUIDialog::setpropSize(QSize& scrSize)
 {
   QSize sizeF = size();
-  sizeF.setWidth(lmin(sizeF.width(), scrSize.width() + 20));
-  sizeF.setHeight(lmin(sizeF.height(), scrSize.height() + 60));
+  sizeF.setWidth(lmin(sizeF.width(), scrSize.width() + 40));
+  sizeF.setHeight(lmin(sizeF.height(), scrSize.height() + 90));
   resize(sizeF);
 }
 
