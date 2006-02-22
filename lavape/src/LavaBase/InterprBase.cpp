@@ -38,7 +38,6 @@
 #include <unistd.h>
 #endif
 
-int allocatedObjects=0;
 
 bool INC_FWD_CNT(CheckData &ckd, LavaObjectPtr object) {
   //(*(((unsigned short *)(object - (*object)->sectionOffset))-1))++;

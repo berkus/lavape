@@ -3855,7 +3855,7 @@ void CAttrBox::ID_HELP15_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3869,7 +3869,7 @@ void CCompSpecBox::ID_HELP10_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3883,7 +3883,7 @@ void CEnumBox::ID_HELP3_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3897,7 +3897,7 @@ void CEnumItem::ID_HELP4_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3911,7 +3911,7 @@ void CFuncBox::ID_HELP9_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3925,7 +3925,7 @@ void CImplBox::ID_HELP5_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3939,7 +3939,7 @@ void CIncludeBox::ID_HELP12_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3953,7 +3953,7 @@ void CInitBox::ID_HELP11_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3967,7 +3967,7 @@ void CInterfaceBox::ID_HELP7_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3981,7 +3981,7 @@ void CIOBox::ID_HELP14_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -3995,7 +3995,7 @@ void CPackageBox::ID_HELP8_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -4009,7 +4009,7 @@ void CSetBox::ID_HELP1_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 
@@ -4023,7 +4023,7 @@ void CVTypeBox::ID_HELP13_clicked()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 

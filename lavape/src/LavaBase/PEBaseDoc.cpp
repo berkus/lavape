@@ -947,7 +947,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   fn = DString(lpszPathName);
   if (fi.exists() && !fi.isWritable()) {
     str = DString("Lava file '") + fn + DString("' couldn't be opened for writing");
-    QMessageBox::critical(qApp->mainWidget(),qApp->name(),str.c ,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),str.c ,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return false;
   }
   isReadOnly = false;
@@ -1011,7 +1011,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   isyntax->FreeINCL = IDTable.freeINCL;
   if (!SynIO.WriteSynDef(fn.c, isyntax)) {
     str = DString("Error on writing the lava file '") + fn + "'";
-    QMessageBox::critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),str.c,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return false;
   }
   if (hasIncludes)
@@ -1019,7 +1019,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   if (mySynDef->SynDefTree.first == mySynDef->SynDefTree.last) {
     if (!isStd) {
       str = DString("File '") + fn + "' is not a valid lava file";
-      critical(qApp->mainWidget(),qApp->name(),str.c,QMessageBox::Ok,0,0);
+      critical(wxTheApp->m_appWindow,qApp->name(),str.c,QMessageBox::Ok,0,0);
     }
     changeNothing = !isStd || !LBaseData->stdUpdate;
   }
@@ -1144,10 +1144,10 @@ static HRESULT CreateShortCut (LPCSTR pszShortcutFile, LPSTR pszLink)
 
 void CLavaBaseView::whatNext()
 {
-  QMessageBox::critical(qApp->mainWidget(),qApp->name(),"\"What next\" help not yet available for this selection",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),"\"What next\" help not yet available for this selection",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 void CLavaBaseView::howTo()
 {
-  QMessageBox::critical(qApp->mainWidget(),qApp->name(),"\"How to\" help not yet available for this view type",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),"\"How to\" help not yet available for this view type",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }

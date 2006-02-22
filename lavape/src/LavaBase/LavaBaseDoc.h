@@ -441,10 +441,6 @@ public:
 };
 
 
-
-
-extern LAVABASE_DLL int allocatedObjects;
-
 extern LAVABASE_DLL bool INC_FWD_CNT(CheckData &ckd, LavaObjectPtr object);
 extern LAVABASE_DLL bool INC_REV_CNT(CheckData &ckd, LavaObjectPtr object);
 extern LAVABASE_DLL bool DEC_FWD_CNT(CheckData &ckd, LavaObjectPtr object);

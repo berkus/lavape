@@ -101,10 +101,9 @@ int main( int argc, char ** argv ) {
 
 	int res = ap.exec();
   
-  if (allocatedObjects) {
+  if (allocatedObjects)
     qDebug("\n\nMemory leak: %x orphaned Lava object(s)\n\n",allocatedObjects);
-    QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), QString("Memory leak: %1 orphaned Lava object(s)").arg(allocatedObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-  }
+ 
 	return res;
 }
 
@@ -315,8 +314,8 @@ bool CLavaApp::event(QEvent *e)
 		  doc->OnCloseDocument();
     return true;
 	case IDU_LavaMsgBox:
-    mainWidget()->setActiveWindow();
-    mainWidget()->raise();
+    m_appWindow->setActiveWindow();
+    m_appWindow->raise();
 		mbp = (CMsgBoxParams*)((QCustomEvent*)e)->data();
 		switch (mbp->funcSpec) {
 		case 0:
@@ -338,7 +337,7 @@ bool CLavaApp::event(QEvent *e)
     break;
 	case IDU_LavaShow:
     pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
-    ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(((wxMainFrame*)mainWidget()), pHint); 
+    ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(m_appWindow, pHint); 
     result = ((QDialog*)((CLavaDoc*)pHint->fromDoc)->LavaDialog)->exec();
     delete ((CLavaDoc*)pHint->fromDoc)->LavaDialog;
     ((CLavaDoc*)pHint->fromDoc)->LavaDialog = 0;
@@ -355,7 +354,7 @@ bool CLavaApp::event(QEvent *e)
 		break;
   case IDU_LavaDump:
     dumpdata = (DumpEventData*)((QCustomEvent*)e)->data();
-    dumpdata->doc->DumpFrame = new LavaDumpFrame(((wxMainFrame*)mainWidget()), dumpdata); 
+    dumpdata->doc->DumpFrame = new LavaDumpFrame(m_appWindow, dumpdata); 
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
     delete dumpdata->doc->DumpFrame;
     dumpdata->doc->DumpFrame = 0;
@@ -450,7 +449,7 @@ bool CLavaApp::DoSaveAll()
 
 void CLavaApp::OnAppAbout()
 {
-  CAboutBox aboutDlg(mainWidget(),"About Lava",true);
+  CAboutBox aboutDlg(m_appWindow,"About Lava",true);
   aboutDlg.exec();
 }
 

@@ -361,7 +361,7 @@ QString CLavaPEApp::InitWebBrowser () {
 
 void CLavaPEApp::OnAppAbout()
 {
-  CAboutBox aboutDlg(mainWidget(),"About LavaPE",true);
+  CAboutBox aboutDlg(m_appWindow,"About LavaPE",true);
   aboutDlg.exec();
 }
 
@@ -603,7 +603,7 @@ void CLavaPEApp::OnChooseGlobalFont()
     LBaseData.m_GlobalFont = lf;
     LBaseData.m_lfDefGlobalFont = lf.toString();
 	  setFont(LBaseData.m_GlobalFont,true);
-    ((CLavaMainFrame*)wxTheApp->mainWidget())->adjustToolbar_7();
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->adjustToolbar_7();
     saveSettings();
   }
 }
@@ -639,7 +639,7 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
     ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = QCoreApplication::arguments().at(2);
     ((CLavaPEApp*)qApp)->debugThread.remotePort = (quint16)QCoreApplication::arguments().at(3).toUShort();
 
-    //QMessageBox::critical(qApp->mainWidget(),qApp->name(),"LavaPE: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    //QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),"LavaPE: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     ((CLavaPEApp*)qApp)->debugThread.start();
   }
 }
@@ -1247,7 +1247,7 @@ bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& f
 
   if (fw.index) {//by name 
     fw.FWhere = findInIncl;
-    CFindByNameBox* box = new CFindByNameBox(&fw, wxTheApp->mainWidget());
+    CFindByNameBox* box = new CFindByNameBox(&fw, wxTheApp->m_appWindow);
     if ((box->exec() != QDialog::Accepted) || !fw.searchName.l) {
       delete box;
       return false;
@@ -1255,7 +1255,7 @@ bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& f
     delete box;
   }
   else {
-    CFindRefsBox* box = new CFindRefsBox(decl, (fw.FWhere == findInThisView), &fw, wxTheApp->mainWidget());
+    CFindRefsBox* box = new CFindRefsBox(decl, (fw.FWhere == findInThisView), &fw, wxTheApp->m_appWindow);
     if (box->exec() != QDialog::Accepted) {
       delete box;
       return false;

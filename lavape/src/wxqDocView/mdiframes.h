@@ -83,7 +83,7 @@ public slots:
   void hfStatusText(int itemId);
 
 private:
-	void customEvent(QCustomEvent *ev){}
+	virtual void customEvent(QCustomEvent *ev){}
 
   Q_OBJECT
 };

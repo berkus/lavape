@@ -23,6 +23,7 @@
 #include "GUIProg.h"
 #include "Conv.h"
 #include "qmessagebox.h"
+#include "mdiframes.h"
 
 
 /***************************************************************************/
@@ -673,7 +674,7 @@ void ConvCLASS::StringLengthOK (CHEFormNode* trp,
 
 void ConvCLASS::ErrorMessage(QWidget* errWin, DString errText)
 {
-  QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), errText.c,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), errText.c,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
   //AfxMessageBox(errText.c, MB_ICONINFORMATION + MB_OK);
   if (errWin)
     errWin->setFocus();

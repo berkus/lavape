@@ -128,7 +128,7 @@ void CLavaDebugThread::run() {
 	  args << lavapePath << myDoc->GetFilename() << host_addr << QString("%1").arg(locPort);
 	  lavape.setArguments(args);
 	  if (!lavape.launch(buf)) {
-      QMessageBox::critical(qApp->mainWidget(),qApp->name(),ERR_LavaPEStartFailed.arg(errno),QMessageBox::Ok,0,0);
+      QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaPEStartFailed.arg(errno),QMessageBox::Ok,0,0);
 		  return;
 	  }
 

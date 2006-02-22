@@ -300,7 +300,7 @@ void CLavaPEDebugThread::adjustBrkPnts(CHAINANY* brkPntsChain)
       chePP = (CHEProgPoint*)chePP->successor;
       brkPntsChain->Remove(rmPP->predecessor);
       if (doMess)
-        QMessageBox::information(qApp->mainWidget(), qApp->name(),"One or more breakpoints cannot not be set and have been removed",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::information(wxTheApp->m_appWindow, qApp->name(),"One or more breakpoints cannot not be set and have been removed",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     }
     else {
       if (!myDoc->IDTable.GetDECL(chePP->data.FuncID)) 

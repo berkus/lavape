@@ -630,6 +630,7 @@ private:
 extern WXDLLEXPORT QString ResolveLinks(QFileInfo &qf);
 
 extern WXDLLEXPORT_DATA(wxApp*) wxTheApp;
+extern WXDLLEXPORT_DATA(int) allocatedObjects;
 
 
 /*

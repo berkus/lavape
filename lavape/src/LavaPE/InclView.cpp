@@ -399,7 +399,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
 
 void CInclView::whatNext() 
 {
-  QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 

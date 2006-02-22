@@ -61,8 +61,8 @@ wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
   m_CentralWidget = CreateWorkspace(this);
   setCentralWidget(m_CentralWidget);
   setStatusBar(stb);
-  ((wxApp*)qApp)->m_appWindow = this;
-  qApp->setMainWidget(this);
+  wxTheApp->m_appWindow = this;
+//  qApp->setMainWidget(this);
 	m_childFrameHistory = new wxHistory;
 }
 
@@ -105,8 +105,12 @@ void wxMainFrame::closeEvent (QCloseEvent*)
 void wxMainFrame::fileExit()
 {
   ((wxApp*)qApp)->appExit = true;
-  if ( wxDocManager::GetDocumentManager()->Clear(false))
+  if ( wxDocManager::GetDocumentManager()->Clear(false)) {
+    if (allocatedObjects) {
+      QMessageBox::critical(this, wxTheApp->name(), QString("Memory leak: %1 orphaned Lava object(s)").arg(allocatedObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    }
 	  qApp->quit();
+  }
 	else
 		((wxApp*)qApp)->appExit = false;
 }
@@ -130,7 +134,7 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
     if (!f.open(QIODevice::ReadOnly))
     {
         wxDocManager::GetDocumentManager()->RemoveFileFromHistory(histFileIndex);
-        QMessageBox::critical(qApp->mainWidget(),qApp->name(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 				delete file;
         return;
     }
@@ -260,7 +264,7 @@ void wxMainFrame::OnCloseWindow()
 wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
     : QWidget(parent,name,Qt::WDestructiveClose)
 {
-  QSize sz = ((wxMainFrame*)qApp->mainWidget())->GetClientWindow()->size();
+  QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
 
   m_viewCount = 0;
   deleting = false;
@@ -271,7 +275,7 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
   else
     oldWindowState = Qt::WindowNoState;
   lastActive = 0;
-  QApplication::postEvent(qApp->mainWidget(),new QCustomEvent(QEvent::User,this));
+  QApplication::postEvent(wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,this));
 }
 
 bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
@@ -320,7 +324,7 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
       showMaximized();
     else
       showNormal();
-	if (title.at(title.length()-1) == '*')
+  if (title.length() && title.at(title.length()-1) == '*')
 		title = title.left(title.length()-1);
 	wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
   if (activate && m_viewCount)

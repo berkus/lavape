@@ -219,7 +219,7 @@ void CWizardView::Help()
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
 	if (!qacl) {
-		qacl = new QAssistantClient(path,qApp->mainWidget());
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
 	}
 

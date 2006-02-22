@@ -134,7 +134,7 @@ void LavaGUIDialog::closeEvent(QCloseEvent *e)
 {
   if (myGUIProg && ResultDPtr && *ResultDPtr) {
     if (QMessageBox::question(
-          qApp->mainWidget(),qApp->name(),"Do you really want to cancel this Lava dialog?",
+          wxTheApp->m_appWindow,qApp->name(),"Do you really want to cancel this Lava dialog?",
           QMessageBox::Yes,
           QMessageBox::No) == QMessageBox::Yes) {
       OnCancel();      
@@ -708,7 +708,7 @@ bool CLavaGUIView::OnKill()
   if (myGUIProg && LBaseData->inRuntime && !GetDocument()->isObject) {
     if (ResultDPtr && *ResultDPtr) {
       if (QMessageBox::question(
-            qApp->mainWidget(),qApp->name(),"Do you really want to abort this Lava program?",
+            wxTheApp->m_appWindow,qApp->name(),"Do you really want to abort this Lava program?",
             QMessageBox::Yes,
             QMessageBox::No) == QMessageBox::Yes) {
         

@@ -532,13 +532,13 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
     if (isEx) 
       if (debug && !ckd.document->debugOn) {
         pmMsg = excMsg + "\n\n" + msg + "\n\nDebug this exception?\n\nClick \"No to all\" to disable debugging perpetually";
-        rc = information(qApp->mainWidget(),qApp->name(),QApplication::tr(pmMsg),QMessageBox::Yes|QMessageBox::Default,QMessageBox::No,QMessageBox::NoAll);
+        rc = information(wxTheApp->m_appWindow,qApp->name(),QApplication::tr(pmMsg),QMessageBox::Yes|QMessageBox::Default,QMessageBox::No,QMessageBox::NoAll);
     
       }
       else {
         rc = QMessageBox::Yes;
         pmMsg = excMsg + "\n\n" + msg;
-        information(qApp->mainWidget(),qApp->name(),QApplication::tr(pmMsg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton,Qt::NoButton);
+        information(wxTheApp->m_appWindow,qApp->name(),QApplication::tr(pmMsg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton,Qt::NoButton);
       }
     else
       rc = QMessageBox::Yes;
@@ -557,7 +557,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
       if (rc == QMessageBox::NoAll) {
         LBaseData->m_pmDumps = false;
         LBaseData->m_strPmDumps = "false";
-        ((CMainFrame*)qApp->mainWidget())->pmDumpAction->setOn(false);
+        ((CMainFrame*)wxTheApp->m_appWindow)->pmDumpAction->setOn(false);
       }
   }
   return msg;

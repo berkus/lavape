@@ -32,6 +32,8 @@
 #include "LavaGUIView.h"
 #include "qdir.h"
 #include "qfileinfo.h"
+#include "mdiframes.h"
+
 
 
 
@@ -1256,7 +1258,7 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
     else {
       msg = ERR_Broken_ref;
       msg = msg + QString(" in : ")  + QString(parDECL->FullName.c);
-      QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     }
     return;
   }
@@ -1283,7 +1285,7 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
           msg += " -> ";
         }
         msg = msg + QString(classDECL->FullName.c);
-        QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         return;
       }
       else {
@@ -1305,7 +1307,7 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
     else {
       msg = ERR_NoIFforForm;
       msg = msg + QString(" : ")  + QString(parDECL->ParentDECL->FullName.c);
-      QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       return;
     }
   if (!classDECL->VElems.VElems.first || !LBaseData->inRuntime)
@@ -1610,7 +1612,7 @@ bool LavaFormCLASS::OnOK(CHEFormNode *object_first)
           && !((CGUIProg*)GUIProg)->FrozenObject) {
           //show MessageBox and
           //SetFocus
-          QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), ERR_EnterValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), ERR_EnterValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
           if (((CGUIProg*)GUIProg)->MakeGUI.setFocus(1,actFNode)) 
             if (GUIProg->focNode) 
               ((CGUIProg*)GUIProg)->MakeGUI.SetPointer((QWidget*)GUIProg->focNode->data.FIP.widget, 1);
@@ -1626,7 +1628,7 @@ bool LavaFormCLASS::OnOK(CHEFormNode *object_first)
           if (!enumFNode->data.IoSigFlags.Contains(trueValue)) {
             //show MessageBox and
             //SetFocus
-            QMessageBox::critical(wxTheApp->mainWidget(), wxTheApp->name(), ERR_SelectValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+            QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), ERR_SelectValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
             if (((CGUIProg*)GUIProg)->MakeGUI.setFocus(1,actFNode)) 
               if (actFNode) 
                 ((CGUIProg*)GUIProg)->MakeGUI.SetPointer((QWidget*)actFNode->data.FIP.widget, 1);           return false;

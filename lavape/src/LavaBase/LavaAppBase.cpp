@@ -476,7 +476,7 @@ bool CMultiUndoMem::Undo(CLavaPEHint *withLastHint)
       if (result == 2) {
         mess += QString("\n\nWould you like to undo the update nevertheless in those documents where it is possible?\nPress Yes-button if you like, press No otherwise");
       if (QMessageBox::question(
-        qApp->mainWidget(),qApp->name(),mess,
+        wxTheApp->m_appWindow,qApp->name(),mess,
         QMessageBox::Yes,
         QMessageBox::No) == QMessageBox::Yes) {
         //if (QMessageBox() == QMessageBox::Yes) {//mess, MB_YESNO|MB_ICONQUESTION) == IDYES) {
@@ -503,7 +503,7 @@ bool CMultiUndoMem::Undo(CLavaPEHint *withLastHint)
         }
       }
       else
-        critical(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         //QMessageBox(mess);
     }
   }
@@ -569,7 +569,7 @@ bool CMultiUndoMem::Redo(CLavaPEHint *withFirstHint)
       if (result == 2) {
         mess += QString("\n\nWould you like to redo the update nevertheless in those documents where it is possible?\nPress Yes-button if you like, press No otherwise");
       if (QMessageBox::question(
-        qApp->mainWidget(),qApp->name(),mess,
+        wxTheApp->m_appWindow,qApp->name(),mess,
         QMessageBox::Yes,
         QMessageBox::No) == QMessageBox::Yes) {
         //if (QMessageBox()) {//mess, MB_YESNO|MB_ICONQUESTION) == IDYES) {
@@ -596,7 +596,7 @@ bool CMultiUndoMem::Redo(CLavaPEHint *withFirstHint)
         }
       }
       else
-        critical(qApp->mainWidget(),qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         //QMessageBox();//mess);
     }
   }

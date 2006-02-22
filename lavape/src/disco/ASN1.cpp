@@ -107,7 +107,7 @@ void ASN1::error (ErrCode errCode,
   }
   if (!Silent) {
     qDebug(errMsg);
-    QMessageBox::critical(qApp->mainWidget(),qApp->name(),errMsg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+//    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),errMsg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
   }
   errorExitProc();
   skip = true;
