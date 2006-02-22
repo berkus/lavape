@@ -8,7 +8,7 @@
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QFocusEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 #include <QComboBox>
 
 
@@ -35,7 +35,7 @@ public:
   bool isEnter;
   CHEFormNode* myFormNode;
   DString DefaultSel;
-  Q3PopupMenu* myMenu;
+  QMenu* myMenu;
 
   void AddItem(const DString& label, CHEFormNode* data);
   virtual void focusInEvent(QFocusEvent *ev);

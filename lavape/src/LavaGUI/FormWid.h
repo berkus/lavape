@@ -10,7 +10,7 @@
 #include <QMouseEvent>
 #include <QFrame>
 #include <QEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 #include <Q3Button>
 
 
@@ -40,7 +40,7 @@ public:
   void AddRadio(Q3Button* radio);
 
   //the FormWidget may be a chain element widget which has a popup menu
-  Q3PopupMenu* myMenu;
+  QMenu* myMenu;
   bool origMenu;
   bool usedInFormNode;
 public slots:

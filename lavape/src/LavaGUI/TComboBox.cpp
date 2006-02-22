@@ -30,7 +30,7 @@
 #include <QFrame>
 #include <QFocusEvent>
 #include <QEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 #include <QListView>
 
 
@@ -68,7 +68,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   ((QListView*)view())->setResizeMode(QListView::Adjust);
   connect(this, SIGNAL(activated(int)), this, SLOT(OnSelendok(int)));
   if (myFormNode->data.IterFlags.Contains(Optional)) {
-    myMenu = new Q3PopupMenu(this);
+    myMenu = new QMenu(this);
     myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
     myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     myMenu->setItemEnabled(IDM_ITER_INSERT, false);

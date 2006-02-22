@@ -28,7 +28,7 @@
 #include <QCustomEvent>
 #include <QFrame>
 #include <QEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
       && myFormNode->data.IoSigFlags.Contains(Flag_INPUT)) {
     iterData = myFormNode;
 
-    myMenu = new Q3PopupMenu(this);
+    myMenu = new QMenu(this);
 
     origMenu = true;
     if (IterFlags.Contains(IteratedItem)) {

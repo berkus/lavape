@@ -25,7 +25,7 @@
 #include "qlineedit.h"
 //Added by qt3to4:
 #include <QFrame>
-#include <Q3PopupMenu>
+#include <QMenu>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ CLavaMenu::CLavaMenu(CGUIProgBase *guiPr, CHEFormNode* data,
       || !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
   else {
-    myMenu = new Q3PopupMenu(this);
+    myMenu = new QMenu(this);
     //myMenu->CreatePopupMenu();
   }
 }

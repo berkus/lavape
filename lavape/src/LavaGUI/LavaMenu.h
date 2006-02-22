@@ -5,7 +5,7 @@
 #include "GUIProgBase.h"
 #include "qlineedit.h"
 //Added by qt3to4:
-#include <Q3PopupMenu>
+#include <QMenu>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -23,7 +23,7 @@ public:
   void SetItemData(unsigned pos, CHEFormNode* data);
     
   CGUIProgBase *GUIProg;
-  Q3PopupMenu *myMenu;
+  QMenu *myMenu;
   CHEFormNode* myFormNode;
   CHEFormNode* userItemData[100];
   bool isEnter;
