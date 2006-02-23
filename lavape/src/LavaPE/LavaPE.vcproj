@@ -387,28 +387,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\LavaPE_resources.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="LavaPEDoc.cpp"
 				>
 				<FileConfiguration
@@ -738,7 +716,7 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\generated\LavaPE_Resources.cpp"
+				RelativePath=".\Generated\LavaPE_resources.cpp"
 				>
 			</File>
 			<File
@@ -1640,8 +1618,8 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QTDIR)\bin\rcc.exe -o $(InputName).cpp $(InputPath)"
-					Outputs="$(InputName).cpp"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)"
+					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>
 		</File>

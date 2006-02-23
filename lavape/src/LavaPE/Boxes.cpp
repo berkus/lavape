@@ -25,6 +25,7 @@
 #include "LavaPEStringInit.h"
 #include "ComboBar.h"
 #include "LavaPEWizard.h"
+#include "mdiframes.h"
 
 #include "qlineedit.h"
 #include "q3button.h"

@@ -280,10 +280,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Lava_resources.cpp"
-				>
-			</File>
-			<File
 				RelativePath="LavaDoc.cpp"
 				>
 				<FileConfiguration
@@ -313,6 +309,10 @@
 		<Filter
 			Name="Generated"
 			>
+			<File
+				RelativePath=".\Generated\Lava_resources.cpp"
+				>
+			</File>
 			<File
 				RelativePath="Generated\moc_Lava.cpp"
 				>
@@ -463,8 +463,8 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QTDIR)\bin\rcc.exe -o $(InputName).cpp $(InputPath)&#x0D;&#x0A;"
-					Outputs="$(InputName).cpp"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
+					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>
 		</File>
