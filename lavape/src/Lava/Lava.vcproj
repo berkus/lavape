@@ -280,6 +280,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Lava_resources.cpp"
+				>
+			</File>
+			<File
 				RelativePath="LavaDoc.cpp"
 				>
 				<FileConfiguration
@@ -449,6 +453,20 @@
 		<File
 			RelativePath="Lava.reg"
 			>
+		</File>
+		<File
+			RelativePath="..\Lava_resources.qrc"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Applying rcc to $(InputPath)"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o $(InputName).cpp $(InputPath)&#x0D;&#x0A;"
+					Outputs="$(InputName).cpp"
+				/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

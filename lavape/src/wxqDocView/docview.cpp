@@ -88,7 +88,6 @@
 
 
 QString wxEmptyString;
-int allocatedObjects=0;
 
 static inline QString FindExtension(const char *path);
 static const QString s_MRUEntryFormat("&%1 %2");

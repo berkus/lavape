@@ -610,7 +610,7 @@ void CLavaMainFrame::on_editCutAction_triggered()
     view->OnEditCut();
 }
 
-void CLavaMainFrame::on_editCutCopy_triggered()
+void CLavaMainFrame::on_editCopyAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)

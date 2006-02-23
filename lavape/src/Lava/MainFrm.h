@@ -38,7 +38,7 @@ public slots:
   virtual void on_insAction_triggered();
   virtual void on_delAction_triggered();
   virtual void on_editCutAction_triggered();
-  virtual void on_editCutCopy_triggered();
+  virtual void on_editCopyAction_triggered();
   virtual void on_editPasteAction_triggered();
   virtual void on_setFormTextFontAction_triggered();
   virtual void on_setFormLabelFontAction_triggered();

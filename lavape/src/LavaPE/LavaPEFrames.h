@@ -84,11 +84,11 @@ public slots:
     virtual void on_fileSaveAction_triggered();
     virtual void on_fileSaveAsAction_triggered();
     virtual void filePrint();
-//    virtual void fileExit();
+//    virtual void on_fileExitAction_triggered();
     virtual void on_editUndoAction_triggered();
     virtual void on_editRedoAction_triggered();
     virtual void on_editCutAction_triggered();
-    virtual void on_editCutCopy_triggered();
+    virtual void on_editCopyAction_triggered();
     virtual void on_editPasteAction_triggered();
     virtual void editFind();
     virtual void on_helpContentsAction_triggered();

@@ -99,16 +99,13 @@ void wxMainFrame::windowActivated(QWidget* w)
 
 void wxMainFrame::closeEvent (QCloseEvent*)
 {
-  fileExit();
+  on_fileExitAction_triggered();
 }
 
-void wxMainFrame::fileExit()
+void wxMainFrame::on_fileExitAction_triggered()
 {
   ((wxApp*)qApp)->appExit = true;
   if ( wxDocManager::GetDocumentManager()->Clear(false)) {
-    if (allocatedObjects) {
-      QMessageBox::critical(this, wxTheApp->name(), QString("Memory leak: %1 orphaned Lava object(s)").arg(allocatedObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-    }
 	  qApp->quit();
   }
 	else
@@ -171,7 +168,7 @@ void wxMainFrame::on_cascadeAction_triggered()
   }
 }
 
-void wxMainFrame::on_tileVerticAction_triggered(QMenuBar *menubar, int& lastTile)
+void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
 {
   int ii, cc = 0, x = 0, minHeight=0;
   QWidget *window;
@@ -215,7 +212,7 @@ void wxMainFrame::on_tileVerticAction_triggered(QMenuBar *menubar, int& lastTile
   }*/
 }
     
-void wxMainFrame::on_tileHorizAction_triggered(QMenuBar *menubar, int& lastTile)
+void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
 {
   int ii, cc = 0, y = 0, heightForEach, preferredHeight, actHeight, minHeight=0;
   QWidget *window;

@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>301</width>
+    <width>325</width>
     <height>210</height>
    </rect>
   </property>
@@ -38,8 +38,8 @@
    </property>
    <property name="minimumSize" >
     <size>
-     <width>60</width>
-     <height>31</height>
+     <width>68</width>
+     <height>21</height>
     </size>
    </property>
    <property name="maximumSize" >
@@ -76,7 +76,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>301</width>
+     <width>325</width>
      <height>19</height>
     </rect>
    </property>
@@ -142,7 +142,7 @@
   </widget>
   <action name="fileNewAction" >
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_fileNew.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;New...</string>
@@ -159,7 +159,7 @@
   </action>
   <action name="fileOpenAction" >
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_FileOpen.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Open...</string>
@@ -176,7 +176,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Save.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_Save.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Save</string>
@@ -215,7 +215,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Undo.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Reset</string>
@@ -232,7 +232,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Cut.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_Cut.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Cut</string>
@@ -249,7 +249,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Copy.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_Copy.xpm</iconset>
    </property>
    <property name="text" >
     <string>C&amp;opy</string>
@@ -266,7 +266,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Paste.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_Paste.xpm</iconset>
    </property>
    <property name="text" >
     <string>&amp;Paste</string>
@@ -305,7 +305,7 @@
   </action>
   <action name="tileHorizAction" >
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_TileHori.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_TileHori.xpm</iconset>
    </property>
    <property name="text" >
     <string>Tile horizontal</string>
@@ -319,21 +319,21 @@
   </action>
   <action name="tileVerticAction" >
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_TileVert.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Tile Vertical</string>
+    <string>Tile vertical</string>
    </property>
    <property name="iconText" >
-    <string>TileVertical</string>
+    <string>Tile vertical</string>
    </property>
    <property name="toolTip" >
-    <string>Tile Vertical</string>
+    <string>Tile vertical</string>
    </property>
   </action>
   <action name="cascadeAction" >
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_Cascade.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_Cascade.xpm</iconset>
    </property>
    <property name="text" >
     <string>Cascade</string>
@@ -347,7 +347,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>..\LavaPE\res\TOOLBUTTONS\Q_SaveAll.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_SaveAll.xpm</iconset>
    </property>
    <property name="text" >
     <string>Save all</string>
@@ -383,7 +383,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>..\LavaExecs\res\TOOLBUTTONS\Q5_toggle.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</iconset>
    </property>
    <property name="text" >
     <string>Toggle category</string>
@@ -405,7 +405,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>..\Lava\res\TOOLBUTTONS\Q_ins.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/Lava/res/TOOLBUTTONS/Lava/res/TOOLBUTTONS/Q_ins.xpm</iconset>
    </property>
    <property name="text" >
     <string>Insert</string>
@@ -419,7 +419,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset>..\Lava\res\TOOLBUTTONS\Q_del.xpm</iconset>
+    <iconset resource="..\Lava_resources.qrc" >:/Lava/res/TOOLBUTTONS/Lava/res/TOOLBUTTONS/Q_del.xpm</iconset>
    </property>
    <property name="text" >
     <string>Delete</string>
@@ -513,6 +513,8 @@
  </widget>
  <layoutdefault spacing="1" margin="1" />
  <pixmapfunction></pixmapfunction>
- <resources/>
+ <resources>
+  <include location="../Lava_resources.qrc" />
+ </resources>
  <connections/>
 </ui>

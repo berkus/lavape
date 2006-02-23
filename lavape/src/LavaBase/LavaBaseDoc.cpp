@@ -34,6 +34,7 @@
 #include "qstring.h"
 #include "qdir.h"
 
+int allocatedObjects=0;
 
 DebugStep nextDebugStep=noStep;
 

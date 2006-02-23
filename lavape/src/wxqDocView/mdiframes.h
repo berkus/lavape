@@ -62,6 +62,8 @@ public:
   void OnCloseWindow();
   void LoadFileHistory();
 	wxHistory *GetWindowHistory () { return m_childFrameHistory; }
+  void TileVertic(QMenuBar *menubar, int& lastTile);
+  void TileHoriz(QMenuBar *menubar, int& lastTile);
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);
@@ -73,10 +75,8 @@ protected:
 	bool completelyCreated;
 
 public slots:
-  virtual void fileExit();
+  virtual void on_fileExitAction_triggered();
   void on_cascadeAction_triggered();
-  void on_tileVerticAction_triggered(QMenuBar *menubar, int& lastTile);
-  void on_tileHorizAction_triggered(QMenuBar *menubar, int& lastTile);
   virtual void on_helpContentsAction_triggered() {};
   void windowActivated(QWidget*);
   void histFile(int histFileIndex);

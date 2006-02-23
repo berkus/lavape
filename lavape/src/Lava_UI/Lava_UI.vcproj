@@ -251,20 +251,14 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\untitled.ui"
+			<Filter
+				Name="Source Files"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
+				<File
+					RelativePath=".\LavaMainFrameBase.cpp"
 					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
-						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)"
-						Outputs="Generated\$(InputName).h"
-					/>
-				</FileConfiguration>
-			</File>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Generated"
@@ -275,14 +269,6 @@
 			</File>
 			<File
 				RelativePath=".\generated\moc_LavaMainFrameBase.cpp"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Source Files"
-			>
-			<File
-				RelativePath=".\LavaMainFrameBase.cpp"
 				>
 			</File>
 		</Filter>

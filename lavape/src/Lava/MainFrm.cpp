@@ -217,17 +217,20 @@ void CLavaMainFrame::on_fileExitAction_triggered()
   wxView *view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view && view->inherits("CLavaGUIView"))
     ((CLavaGUIView*)view)->NoteLastModified();
-  wxMainFrame::fileExit();
+    if (allocatedObjects) {
+      QMessageBox::critical(this, wxTheApp->name(), QString("Memory leak: %1 orphaned Lava object(s)").arg(allocatedObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    }
+  wxMainFrame::on_fileExitAction_triggered();
 }
 
 void CLavaMainFrame::on_tileVerticAction_triggered()
 {
-  wxMainFrame::on_tileVerticAction_triggered(menubar, lastTile);
+  TileVertic(menubar, lastTile);
 }
 
 void CLavaMainFrame::on_tileHorizAction_triggered()
 {
-  wxMainFrame::on_tileHorizAction_triggered(menubar, lastTile);
+  TileHoriz(menubar, lastTile);
 }
 
 CLavaMainFrame::~CLavaMainFrame()
@@ -281,7 +284,7 @@ void CLavaMainFrame::on_editCutAction_triggered()
     view->OnEditCut();
 }
 
-void CLavaMainFrame::on_editCutCopy_triggered()
+void CLavaMainFrame::on_editCopyAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)

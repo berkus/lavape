@@ -27,7 +27,7 @@
 #define FPE_INTDIV FPE_FLTDIV
 #endif
 
-
+extern LAVABASE_DLL int allocatedObjects;
 
 struct CheckData;
 
