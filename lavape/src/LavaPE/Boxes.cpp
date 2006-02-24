@@ -299,7 +299,7 @@ ValOnInit CAttrBox::OnInitDialog()
 
 
 
-void CAttrBox::m_SetGet_clicked() 
+void CAttrBox::on_m_SetGet_clicked() 
 {
   UpdateData(true);
   if (m_SetGet->isOn())
@@ -311,7 +311,7 @@ void CAttrBox::m_SetGet_clicked()
   UpdateData(false);
 }
 
-void CAttrBox::m_RMOverrides2_clicked() 
+void CAttrBox::on_m_RMOverrides2_clicked() 
 {
   UpdateData(true);
   m_RMOverrides2->setEnabled(false);
@@ -333,7 +333,7 @@ void CAttrBox::m_RMOverrides2_clicked()
 }
 
 
-void CAttrBox::m_DownInd1_clicked() 
+void CAttrBox::on_m_DownInd1_clicked() 
 {
   UpdateData(true);
   if (valkindOfRef && TypeFlags.Contains(constituent)) {
@@ -350,7 +350,7 @@ void CAttrBox::m_DownInd1_clicked()
   UpdateData(false);
 }
 
-void CAttrBox::m_DownC1_clicked() 
+void CAttrBox::on_m_DownC1_clicked() 
 {
   UpdateData(true);
   if (!valkindOfRef) {
@@ -379,7 +379,7 @@ void CAttrBox::m_DownC1_clicked()
   UpdateData(false);
 }
 
-void CAttrBox::m_NamedTypes5_triggered(int pos) 
+void CAttrBox::on_m_NamedTypes5_triggered(int pos) 
 {
   
   if (!pos) return;
@@ -422,7 +422,7 @@ void CAttrBox::m_NamedTypes5_triggered(int pos)
   UpdateData(false);
 }
 
-void CAttrBox::m_BasicTypes5_triggered(int pos) 
+void CAttrBox::on_m_BasicTypes5_triggered(int pos) 
 {
   if (!pos) return;
   LavaDECL* decl;
@@ -451,7 +451,7 @@ bool CAttrBox::SetSelections()
   return true;//(cb1 != CB_ERR) || (cb2 != CB_ERR);
 }*/
 
-void CAttrBox::m_Substitutable2_clicked() 
+void CAttrBox::on_m_Substitutable2_clicked() 
 {
   UpdateData(true);
   if (m_Substitutable2->isOn())
@@ -470,7 +470,7 @@ void CAttrBox::m_Substitutable2_clicked()
 }
 
 
-void CAttrBox::m_EnableName2_clicked() 
+void CAttrBox::on_m_EnableName2_clicked() 
 {
   UpdateData(true);
   if (m_EnableName2->isOn()) 
@@ -667,20 +667,20 @@ ValOnInit CCompSpecBox::OnInitDialog()
                 // EXCEPTION: OCX-Eigenschaftenseiten sollten false zurückgeben
 }
 
-void CCompSpecBox::m_DelSupport2_clicked() 
+void CCompSpecBox::on_m_DelSupport2_clicked() 
 {
   int pos = m_Extends->currentItem();
   if (pos >= 0) 
     m_Extends->removeItem(pos);
 }
 
-void CCompSpecBox::m_ExtTypes2_triggered(int pos) 
+void CCompSpecBox::on_m_ExtTypes2_triggered(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_ExtTypes, m_Extends);
 }
 
-void CCompSpecBox::m_CompoProt_triggered(int pos) 
+void CCompSpecBox::on_m_CompoProt_triggered(int pos) 
 {
   if (!pos) return;
   myDECL->nOutput = m_CompoProt->currentItem() - 1;
@@ -703,7 +703,7 @@ void CCompSpecBox::OnLButtonDown(UINT nFlags, CPoint point)
 }*/
 
 
-void CCompSpecBox::m_EnumAdd1_clicked() 
+void CCompSpecBox::on_m_EnumAdd1_clicked() 
 {
   QString iT, fileName, dir;
   DString linkName, dstrDir;
@@ -767,7 +767,7 @@ void CCompSpecBox::m_EnumAdd1_clicked()
   UpdateData(false);
 }
 
-void CCompSpecBox::m_EnumDel1_clicked() 
+void CCompSpecBox::on_m_EnumDel1_clicked() 
 {
   int ss = m_EnumItems1->currentItem();
   if (ss >= 0) {
@@ -777,7 +777,7 @@ void CCompSpecBox::m_EnumDel1_clicked()
   } 
 }
 
-void CCompSpecBox::m_EnumEdit1_clicked() 
+void CCompSpecBox::on_m_EnumEdit1_clicked() 
 {
   QString iT, dir, fileName;
   DString linkName, dstrDir;
@@ -1021,12 +1021,12 @@ bool CCorrOverBox::PossibleOver(LavaDECL* vtDecl)
   return !myChe && !vtChe;
 }
 
-void CCorrOverBox::m_NewOver_clicked() 
+void CCorrOverBox::on_m_NewOver_clicked() 
 {
   m_PossibleOvers->setEnabled(true);
 }
 
-void CCorrOverBox::m_NoOver_clicked() 
+void CCorrOverBox::on_m_NoOver_clicked() 
 {
   m_PossibleOvers->setEnabled(false);
 }
@@ -1148,7 +1148,7 @@ void CEnumBox::OnLButtonDown(UINT nFlags, CPoint point)
 }
 */
 
-void CEnumBox::m_EnumAdd_clicked() 
+void CEnumBox::on_m_EnumAdd_clicked() 
 {
   CListBoxItem *item;
   int ss = m_EnumItems->currentItem();
@@ -1168,7 +1168,7 @@ void CEnumBox::m_EnumAdd_clicked()
   delete cm;
 }
 
-void CEnumBox::m_EnumDel_clicked() 
+void CEnumBox::on_m_EnumDel_clicked() 
 {
   int ss = m_EnumItems->currentItem();
   if (ss >= 0) {
@@ -1178,7 +1178,7 @@ void CEnumBox::m_EnumDel_clicked()
   } 
 }
 
-void CEnumBox::m_EnumEdit_clicked() 
+void CEnumBox::on_m_EnumEdit_clicked() 
 {
   CListBoxItem *item;
   QString txt;
@@ -1688,7 +1688,7 @@ void CFuncBox::CalcOpBox()
 }
 
 
-void CFuncBox::m_RMOverrides_clicked() 
+void CFuncBox::on_m_RMOverrides_clicked() 
 {
   UpdateData(true);
   m_RMOverrides->setEnabled(false);
@@ -1714,7 +1714,7 @@ void CFuncBox::OnSelendokBasicTypes()
 }
 */
 
-void CFuncBox::m_DelInherits1_clicked() 
+void CFuncBox::on_m_DelInherits1_clicked() 
 {
   int pos = m_Inherits1->currentItem();
   if (pos >= 0)
@@ -1722,7 +1722,7 @@ void CFuncBox::m_DelInherits1_clicked()
 }
 
   
-void CFuncBox::m_NamedTypes1_triggered(int pos) 
+void CFuncBox::on_m_NamedTypes1_triggered(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_NamedTypes1, m_Inherits1);
@@ -1730,7 +1730,7 @@ void CFuncBox::m_NamedTypes1_triggered(int pos)
 }
 
 
-void CFuncBox::m_CHECKOp_clicked() 
+void CFuncBox::on_m_CHECKOp_clicked() 
 {
   UpdateData(true);
   if (m_CHECKOp->isOn()) {
@@ -1750,7 +1750,7 @@ void CFuncBox::m_CHECKOp_clicked()
 }
 
 
-void CFuncBox::m_StaticFunc_clicked() 
+void CFuncBox::on_m_StaticFunc_clicked() 
 {
   UpdateData(true);
   if (m_StaticFunc->isOn()) {
@@ -1777,7 +1777,7 @@ void CFuncBox::m_StaticFunc_clicked()
   UpdateData(false);
 }
 
-void CFuncBox::m_Initializer_clicked() 
+void CFuncBox::on_m_Initializer_clicked() 
 {
   UpdateData(true);
   bool ini = m_Initializer->isOn();
@@ -1804,7 +1804,7 @@ void CFuncBox::m_Initializer_clicked()
   UpdateData(false);  
 }
 
-void CFuncBox::m_CMBOperator_triggered(int pos) 
+void CFuncBox::on_m_CMBOperator_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -1828,7 +1828,7 @@ void CFuncBox::OnInheritsBody()
 }
 */
 
-void CFuncBox::m_Abstract_clicked() 
+void CFuncBox::on_m_Abstract_clicked() 
 {
   UpdateData(true);
   if (m_Abstract->isOn()) {
@@ -1844,7 +1844,7 @@ void CFuncBox::m_Abstract_clicked()
   UpdateData(false);
 }
 
-void CFuncBox::m_Native1_clicked() 
+void CFuncBox::on_m_Native1_clicked() 
 {
   UpdateData(true);
   if (m_Native1->isOn()) {
@@ -1856,7 +1856,7 @@ void CFuncBox::m_Native1_clicked()
   UpdateData(false);
 }
 
-void CFuncBox::m_Signal_clicked()
+void CFuncBox::on_m_Signal_clicked()
 {
   if (m_Signal->isOn()) {
     m_ConstFunc->setChecked(true); 
@@ -1887,7 +1887,7 @@ void CFuncBox::m_Signal_clicked()
   }
 }
 
-void CFuncBox::m_EnableName_clicked() 
+void CFuncBox::on_m_EnableName_clicked() 
 {
   UpdateData(true);
   if (m_EnableName->isOn()) 
@@ -2069,7 +2069,7 @@ ValOnInit CImplBox::OnInitDialog()
 }
 
 
-void CImplBox::m_ImplTypes_triggered(int pos) 
+void CImplBox::on_m_ImplTypes_triggered(int pos) 
 {
   if (!pos) return;
   CHETID* che;
@@ -2189,7 +2189,7 @@ void CIncludeBox::OnOK()
   QDialog::accept();
 }
 
-void CIncludeBox::m_OtherPath_clicked() 
+void CIncludeBox::on_m_OtherPath_clicked() 
 {
   UpdateData(true);
   valFullPathName = L_GetOpenFileName(
@@ -2516,7 +2516,7 @@ void CInterfaceBox::SupportsToList()
   }
 }
 
-void CInterfaceBox::m_DelSupport_clicked() 
+void CInterfaceBox::on_m_DelSupport_clicked() 
 {
   int pos;
 
@@ -2533,7 +2533,7 @@ void CInterfaceBox::m_DelSupport_clicked()
   }
 }
 
-void CInterfaceBox::m_ExtTypes_triggered(int pos) 
+void CInterfaceBox::on_m_ExtTypes_triggered(int pos) 
 {
   QVariant var;
 
@@ -2554,7 +2554,7 @@ void CInterfaceBox::m_ExtTypes_triggered(int pos)
 }
 
 
-void CInterfaceBox::m_BasicTypes1_triggered(int pos) 
+void CInterfaceBox::on_m_BasicTypes1_triggered(int pos) 
 {
   QVariant var;
 
@@ -2573,7 +2573,7 @@ void CInterfaceBox::m_BasicTypes1_triggered(int pos)
 }
 
 /*
-void CInterfaceBox::m_DelInherits_clicked() 
+void CInterfaceBox::on_m_DelInherits_clicked() 
 {
   int pos;
   CComboBoxItem *listItem = (CComboBoxItem*)m_Inherits->selectedItem();
@@ -2582,7 +2582,7 @@ void CInterfaceBox::m_DelInherits_clicked()
     m_Inherits->removeItem(pos);
   }  
 }
-void CInterfaceBox::m_InheritTypes_triggered(int pos) 
+void CInterfaceBox::on_m_InheritTypes_triggered(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_InheritTypes, m_Inherits);
@@ -2590,7 +2590,7 @@ void CInterfaceBox::m_InheritTypes_triggered(int pos)
 
 */
 
-void CInterfaceBox::m_IsComponent_clicked() 
+void CInterfaceBox::on_m_IsComponent_clicked() 
 {
   UpdateData(true);
   if  (valKindOfInterface == 2) 
@@ -2608,26 +2608,26 @@ void CInterfaceBox::m_IsComponent_clicked()
   UpdateData(false);
 }
 
-void CInterfaceBox::m_NonCreatable_clicked() 
+void CInterfaceBox::on_m_NonCreatable_clicked() 
 {
   m_InterfaceID->setEnabled(false);
   m_Native->setEnabled(true);
 }
 
-void CInterfaceBox::m_Creatable_clicked() 
+void CInterfaceBox::on_m_Creatable_clicked() 
 {
   m_InterfaceID->setEnabled(false);
   m_Native->setEnabled(true);
 }
 
-void CInterfaceBox::m_IsGUI_clicked() 
+void CInterfaceBox::on_m_IsGUI_clicked() 
 {
   UpdateData(true);
   m_GUIStructs->setEnabled(valIsGUI && onNew);
   
 }
 
-void CInterfaceBox::m_GUIStructs_triggered(int pos) 
+void CInterfaceBox::on_m_GUIStructs_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -2992,7 +2992,7 @@ ValOnInit CIOBox::OnInitDialog()
   return BoxContinue;
 }
 
-void CIOBox::m_NamedTypes4_triggered(int pos) 
+void CIOBox::on_m_NamedTypes4_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3039,7 +3039,7 @@ void CIOBox::m_NamedTypes4_triggered(int pos)
   UpdateData(false);
 }
 
-void CIOBox::m_BasicTypes4_triggered(int pos) 
+void CIOBox::on_m_BasicTypes4_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3069,7 +3069,7 @@ bool CIOBox::SetSelections()
 }*/
 
 
-void CIOBox::m_Substitutable1_clicked() 
+void CIOBox::on_m_Substitutable1_clicked() 
 {
   UpdateData(true);
   if (m_Substitutable1->isOn())
@@ -3212,14 +3212,14 @@ ValOnInit CPackageBox::OnInitDialog()
 }
 
 
-void CPackageBox::m_DelSupport1_clicked() 
+void CPackageBox::on_m_DelSupport1_clicked() 
 {
   int pos = m_Extends->currentItem();
   if (pos >= 0) 
     m_Extends->removeItem(pos);
 }
 
-void CPackageBox::m_ExtTypes1_triggered(int pos) 
+void CPackageBox::on_m_ExtTypes1_triggered(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(m_ExtTypes, m_Extends);
@@ -3303,7 +3303,7 @@ ValOnInit CSetBox::OnInitDialog()
 }
 
 
-void CSetBox::m_ExTypes_triggered(int pos) 
+void CSetBox::on_m_ExTypes_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3317,7 +3317,7 @@ void CSetBox::m_ExTypes_triggered(int pos)
       m_ExTypes->setCurrentText(valExtend);
 }
 
-void CSetBox::m_BasicTypes_triggered(int pos) 
+void CSetBox::on_m_BasicTypes_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3600,7 +3600,7 @@ void CVTypeBox::SetCategoryChecks()
 }
 
 
-void CVTypeBox::m_RMOverrides1_clicked() 
+void CVTypeBox::on_m_RMOverrides1_clicked() 
 {
   UpdateData(true);
   m_RMOverrides1->setEnabled(false);
@@ -3610,7 +3610,7 @@ void CVTypeBox::m_RMOverrides1_clicked()
   OnInitDialog();
 }
 
-void CVTypeBox::m_NamedTypes2_triggered(int pos) 
+void CVTypeBox::on_m_NamedTypes2_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3633,7 +3633,7 @@ void CVTypeBox::m_NamedTypes2_triggered(int pos)
   UpdateData(false);
 }
 
-void CVTypeBox::m_BasicTypes2_triggered(int pos) 
+void CVTypeBox::on_m_BasicTypes2_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3659,7 +3659,7 @@ void CVTypeBox::m_BasicTypes2_triggered(int pos)
 }
 
 
-void CVTypeBox::m_isAbstract_clicked() 
+void CVTypeBox::on_m_isAbstract_clicked() 
 {
   UpdateData(true);
   bool abs = m_isAbstract->isOn();
@@ -3685,7 +3685,7 @@ void CVTypeBox::m_isAbstract_clicked()
 }
 
 
-void CVTypeBox::m_DefCat_clicked() 
+void CVTypeBox::on_m_DefCat_clicked() 
 {
   UpdateData(true);
   bool defCat = m_DefCat->isOn()
@@ -3707,7 +3707,7 @@ void CVTypeBox::m_DefCat_clicked()
 }
 
 
-void CVTypeBox::m_StateObject_clicked() 
+void CVTypeBox::on_m_StateObject_clicked() 
 {
   UpdateData(true);
   if (m_StateObject->isOn())
@@ -3717,7 +3717,7 @@ void CVTypeBox::m_StateObject_clicked()
 }
 
 
-void CVTypeBox::m_Substitutable_clicked() 
+void CVTypeBox::on_m_Substitutable_clicked() 
 {
   UpdateData(true);
   bool sbst = m_Substitutable->isOn();
@@ -3735,14 +3735,14 @@ void CVTypeBox::m_Substitutable_clicked()
   UpdateData(false);
 }
 
-void CVTypeBox::m_ValueObject_clicked() 
+void CVTypeBox::on_m_ValueObject_clicked() 
 {
   UpdateData(true);
   if (m_ValueObject->isOn())
     myDECL->TypeFlags.EXCL(stateObject);
 }
 
-void CVTypeBox::m_EnableName1_clicked() 
+void CVTypeBox::on_m_EnableName1_clicked() 
 {
   UpdateData(true);
   bool enabl = m_EnableName1->isOn();
@@ -3849,7 +3849,7 @@ void CVTypeBox::OnOK()
 
 
 
-void CAttrBox::ID_HELP15_clicked()
+void CAttrBox::on_ID_HELP15_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3863,7 +3863,7 @@ void CAttrBox::ID_HELP15_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/MemVarBox.htm");
 }
 
-void CCompSpecBox::ID_HELP10_clicked()
+void CCompSpecBox::on_ID_HELP10_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3877,7 +3877,7 @@ void CCompSpecBox::ID_HELP10_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/COSpecBox.htm");
 }
 
-void CEnumBox::ID_HELP3_clicked()
+void CEnumBox::on_ID_HELP3_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3891,7 +3891,7 @@ void CEnumBox::ID_HELP3_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/EnumBox.htm");
 }
 
-void CEnumItem::ID_HELP4_clicked()
+void CEnumItem::on_ID_HELP4_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3905,7 +3905,7 @@ void CEnumItem::ID_HELP4_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/EnumItemBox.htm");
 }
 
-void CFuncBox::ID_HELP9_clicked()
+void CFuncBox::on_ID_HELP9_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3919,7 +3919,7 @@ void CFuncBox::ID_HELP9_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/FunctionBox.htm");
 }
 
-void CImplBox::ID_HELP5_clicked()
+void CImplBox::on_ID_HELP5_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3933,7 +3933,7 @@ void CImplBox::ID_HELP5_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/ImplementationBox.htm");
 }
 
-void CIncludeBox::ID_HELP12_clicked()
+void CIncludeBox::on_ID_HELP12_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3947,7 +3947,7 @@ void CIncludeBox::ID_HELP12_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/IncludeBox.htm");
 }
 
-void CInitBox::ID_HELP11_clicked()
+void CInitBox::on_ID_HELP11_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3961,7 +3961,7 @@ void CInitBox::ID_HELP11_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/InitiatorBox.htm");
 }
 
-void CInterfaceBox::ID_HELP7_clicked()
+void CInterfaceBox::on_ID_HELP7_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3975,7 +3975,7 @@ void CInterfaceBox::ID_HELP7_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/InterfaceBox.htm");
 }
 
-void CIOBox::ID_HELP14_clicked()
+void CIOBox::on_ID_HELP14_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -3989,7 +3989,7 @@ void CIOBox::ID_HELP14_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/FuncParmBox.htm");
 }
 
-void CPackageBox::ID_HELP8_clicked()
+void CPackageBox::on_ID_HELP8_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -4003,7 +4003,7 @@ void CPackageBox::ID_HELP8_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/PackageBox.htm");
 }
 
-void CSetBox::ID_HELP1_clicked()
+void CSetBox::on_ID_HELP1_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;
@@ -4017,7 +4017,7 @@ void CSetBox::ID_HELP1_clicked()
 	qacl->showPage(ExeDir + "/../doc/html/dialogs/SetBox.htm");
 }
 
-void CVTypeBox::ID_HELP13_clicked()
+void CVTypeBox::on_ID_HELP13_clicked()
 {
 	QString path(ExeDir);
 	QStringList args;

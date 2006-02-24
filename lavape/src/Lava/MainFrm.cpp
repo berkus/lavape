@@ -90,7 +90,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   LBaseData->editCopyActionPtr = editCopyAction;
   LBaseData->editCutActionPtr = editCutAction;
   LBaseData->editPasteActionPtr = editPasteAction;
-//  connect( okAction, SIGNAL( activated() ), this, SLOT( okAction_triggered() ) );
+//  connect( okAction, SIGNAL( activated() ), this, SLOT( on_okAction_triggered() ) );
   connect( toggleCategoryAction, SIGNAL( activated() ), this, SLOT( on_toggleCategoryAction_triggered() ) );
   connect( editUndoAction, SIGNAL( activated() ), this, SLOT( on_editUndoAction_triggered() ) );
   connect( insAction, SIGNAL( activated() ), this, SLOT( on_insAction_triggered() ) );
@@ -239,7 +239,7 @@ CLavaMainFrame::~CLavaMainFrame()
 }
 
 /*
-void CLavaMainFrame::okAction_triggered()
+void CLavaMainFrame::on_okAction_triggered()
 {
   if (((CLavaBaseDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->DumpFrame)
     ((LavaDumpFrame*)((CLavaBaseDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->DumpFrame)->OnOK();

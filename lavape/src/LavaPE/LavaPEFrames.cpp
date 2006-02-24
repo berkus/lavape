@@ -349,7 +349,7 @@ void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
   LBaseData->myWhatsThisButton = Q3WhatsThis::whatsThisButton(HelpToolbar);
   Q3WhatsThis::add(LBaseData->myWhatsThisButton,"<p>Drag the \"What's this?\" cursor to any user interface object"
     " and drop it there to see a <b>little popup info (but usually more than a tooltip)</b> on that object.</p>");
-  newHelpToolbutton(tb,LBaseData->whatNextButton,"What next?",SLOT(whatNext_clicked()),
+  newHelpToolbutton(tb,LBaseData->whatNextButton,"What next?",SLOT(on_whatNext_clicked()),
     "What can I do next at the current selection?",
     "<p>Provides online help which lists the most important operations "
     "that you can perform <b>at the current selection</b></p>");
@@ -1672,7 +1672,7 @@ void CLavaMainFrame::viewTB7()
     Toolbar_7->show();
 }
 
-void CLavaMainFrame::whatNext_clicked() 
+void CLavaMainFrame::on_whatNext_clicked() 
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   QString fileName=ExeDir+"/../doc/html/whatNext/GlobalWhatNext.htm";
@@ -1693,7 +1693,7 @@ void CLavaMainFrame::whatNext_clicked()
   }
 }
 
-void CLavaMainFrame::howTo_clicked() 
+void CLavaMainFrame::on_howTo_clicked() 
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   QString fileName=ExeDir+"/../doc/html/howTo/HowToContents.htm";

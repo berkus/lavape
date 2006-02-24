@@ -136,10 +136,10 @@ public:
   Q3Frame* ForeColor;
   Q3Frame* BackColor;
 
-  bool defaultForeground_clicked();
-  bool defaultBackground_clicked();
-  bool colorButtonF_clicked();
-  bool colorButtonB_clicked();
+  bool on_defaultForeground_clicked();
+  bool on_defaultBackground_clicked();
+  bool on_colorButtonF_clicked();
+  bool on_colorButtonB_clicked();
 
 };
 
@@ -189,9 +189,9 @@ public:
   virtual void OnSelendokChElemFormTypes(int);
   virtual void OnConstChain();
   virtual void OnHasButtons();
-  virtual void m_EditInsertButton_textChanged( const QString & );
-  virtual void m_EDITDelButton_textChanged( const QString & );
-  virtual void m_DefaultLength_valueChanged( int );
+  virtual void on_m_EditInsertButton_textChanged( const QString & );
+  virtual void on_m_EDITDelButton_textChanged( const QString & );
+  virtual void on_m_DefaultLength_valueChanged( int );
 
 private:
   Q_OBJECT
@@ -221,16 +221,16 @@ public:
   ColorSetting colorSetting;
 
 public slots:
-  virtual void m_EditLiteral_textChanged( const QString & );
-  virtual void m_HorizTab_valueChanged( int );
-  virtual void m_HorizSpace_valueChanged( int );
-  virtual void m_VertSpace_valueChanged( int );
-  virtual void defaultFont_clicked();
-  virtual void fontButton_clicked();
-  virtual void defaultForeground_clicked();
-  virtual void defaultBackground_clicked();
-  virtual void colorButtonF_clicked();
-  virtual void colorButtonB_clicked();
+  virtual void on_m_EditLiteral_textChanged( const QString & );
+  virtual void on_m_HorizTab_valueChanged( int );
+  virtual void on_m_HorizSpace_valueChanged( int );
+  virtual void on_m_VertSpace_valueChanged( int );
+  virtual void on_defaultFont_clicked();
+  virtual void on_fontButton_clicked();
+  virtual void on_defaultForeground_clicked();
+  virtual void on_defaultBackground_clicked();
+  virtual void on_colorButtonF_clicked();
+  virtual void on_colorButtonB_clicked();
 
 private:
   Q_OBJECT
@@ -273,22 +273,22 @@ public:
   ColorSetting PBColorSetting;
 
 public slots:
-  virtual void defaultFontT_clicked();
-  virtual void defaultFontL_clicked();
-  virtual void fontButtonT_clicked();
-  virtual void fontButtonL_clicked();
-  virtual void defaultForeground_clicked();
-  virtual void defaultBackground_clicked();
-  virtual void colorButtonF_clicked();
-  virtual void colorButtonB_clicked();
-  virtual void defaultTForeground_clicked();
-  virtual void TColorButtonF_clicked();
-  virtual void TColorButtonB_clicked();
-  virtual void defaultTBackground_clicked();
-  virtual void defaultPBForeground_clicked();
-  virtual void PBColorButtonF_clicked();
-  virtual void defaultPBBackground_clicked();
-  virtual void PBColorButtonB_clicked();
+  virtual void on_defaultFontT_clicked();
+  virtual void on_defaultFontL_clicked();
+  virtual void on_fontButtonT_clicked();
+  virtual void on_fontButtonL_clicked();
+  virtual void on_defaultForeground_clicked();
+  virtual void on_defaultBackground_clicked();
+  virtual void on_colorButtonF_clicked();
+  virtual void on_colorButtonB_clicked();
+  virtual void on_defaultTForeground_clicked();
+  virtual void on_TColorButtonF_clicked();
+  virtual void on_TColorButtonB_clicked();
+  virtual void on_defaultTBackground_clicked();
+  virtual void on_defaultPBForeground_clicked();
+  virtual void on_PBColorButtonF_clicked();
+  virtual void on_defaultPBBackground_clicked();
+  virtual void on_PBColorButtonB_clicked();
 
 private:
   Q_OBJECT
@@ -361,13 +361,13 @@ public slots:
   virtual void OnUseDefault();
   virtual void OnPopupw();
   virtual void OnMultiLine();
-  virtual void m_Echo_clicked();
+  virtual void on_m_Echo_clicked();
   virtual void horizTabChanged( int );
   virtual void horizSpaceChanged( int );
   virtual void vertSpaceChanged( int );
   virtual void colsChanged( int );
   virtual void rowsChanged( int );
-  virtual void m_groupbox_clicked();
+  virtual void on_m_groupbox_clicked();
 
 private:
   Q_OBJECT
@@ -425,14 +425,14 @@ public:
   virtual void OnDELETESuf();
   virtual void OnEDITPre();
   virtual void OnEditSuf();
-  virtual void m_Prefixe_doubleClicked( Q3ListBoxItem * );
-  virtual void m_Suffixe_doubleClicked( Q3ListBoxItem * );
+  virtual void on_m_Prefixe_doubleClicked( Q3ListBoxItem * );
+  virtual void on_m_Suffixe_doubleClicked( Q3ListBoxItem * );
   virtual void OnSelchangePrefixe();
   virtual void OnSelchangeSuffixe();
   virtual void OnLButtonDown(unsigned nFlags, QPoint point);
-  virtual void m_Default_textChanged( const QString & );
-  virtual void m_EnumDefault_triggered( int );
-  virtual void m_BoolDefault_triggered( int );
+  virtual void on_m_Default_textChanged( const QString & );
+  virtual void on_m_EnumDefault_triggered( int );
+  virtual void on_m_BoolDefault_triggered( int );
 
 
 private:
@@ -495,8 +495,8 @@ public slots:
   virtual void OnEditButton();
   virtual void OnSelendokMenutype(int current);
   virtual void OnLButtonDown(unsigned nFlags, QPoint point);
-  virtual void m_ToggleLabel_textChanged( const QString & );
-  virtual void m_LeftLabel_clicked();
+  virtual void on_m_ToggleLabel_textChanged( const QString & );
+  virtual void on_m_LeftLabel_clicked();
 
 private:
   Q_OBJECT
@@ -563,12 +563,12 @@ public:
 public slots:
   virtual void OnOK();
   virtual void OnCancel()  {QDialog::reject();}
-  virtual void defaultFont_clicked();
-  virtual void fontButton_clicked();
-  virtual void defaultForeground_clicked();
-  virtual void defaultBackground_clicked();
-  virtual void colorButtonF_clicked();
-  virtual void colorButtonB_clicked();
+  virtual void on_defaultFont_clicked();
+  virtual void on_fontButton_clicked();
+  virtual void on_defaultForeground_clicked();
+  virtual void on_defaultBackground_clicked();
+  virtual void on_colorButtonF_clicked();
+  virtual void on_colorButtonB_clicked();
 
 private:
   Q_OBJECT
@@ -638,7 +638,7 @@ public:
   virtual void OnNoFIO(bool);
   virtual void OnisButton(bool);
   virtual void OnisMenuText(bool);
-  virtual void button_browse_clicked();
+  virtual void on_button_browse_clicked();
   virtual void OnOK();
   virtual void OnCancel()  {QDialog::reject();}
 

@@ -73,18 +73,18 @@ public:
   int valkindOfRef;
 
 public slots:
-    virtual void m_BasicTypes5_triggered( int );
-    virtual void m_NamedTypes5_triggered( int );
-    virtual void m_EnableName2_clicked();
-    virtual void m_DownC1_clicked();
-    virtual void m_DownInd1_clicked();
-    virtual void m_SetGet_clicked();
+    virtual void on_m_BasicTypes5_triggered( int );
+    virtual void on_m_NamedTypes5_triggered( int );
+    virtual void on_m_EnableName2_clicked();
+    virtual void on_m_DownC1_clicked();
+    virtual void on_m_DownInd1_clicked();
+    virtual void on_m_SetGet_clicked();
     virtual void OnOK();
-    virtual void IDCANCEL18_clicked() {QDialog::reject();}
-    virtual void ID_HELP15_clicked();
-    virtual void m_RMOverrides2_clicked();
-    virtual void m_Substitutable2_clicked();
-    virtual void m_ValueObject_clicked() {}
+    virtual void on_IDCANCEL18_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP15_clicked();
+    virtual void on_m_RMOverrides2_clicked();
+    virtual void on_m_Substitutable2_clicked();
+    virtual void on_m_ValueObject_clicked() {}
 
  
 private:
@@ -115,16 +115,16 @@ public:
    void SetButtons(int sel);
 
 public slots:
-    virtual void m_DelSupport2_clicked();
-    virtual void m_ExtTypes2_triggered( int );
-    virtual void m_CompoProt_triggered( int );
-    virtual void m_EnumAdd1_clicked();
-    virtual void m_EnumEdit1_clicked();
-    virtual void m_EnumDel1_clicked();
+    virtual void on_m_DelSupport2_clicked();
+    virtual void on_m_ExtTypes2_triggered( int );
+    virtual void on_m_CompoProt_triggered( int );
+    virtual void on_m_EnumAdd1_clicked();
+    virtual void on_m_EnumEdit1_clicked();
+    virtual void on_m_EnumDel1_clicked();
     virtual void m_EnumItems1_selectionChanged( Q3ListBoxItem * );
     virtual void OnOK();
-    virtual void m_CANCEL13_clicked() {QDialog::reject();}
-    virtual void ID_HELP10_clicked();
+    virtual void on_m_CANCEL13_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP10_clicked();
 
 private:
   Q_OBJECT
@@ -147,9 +147,9 @@ public:
   CHETID* CheTID;
 
 public slots:
-    virtual void m_NoOver_clicked();
-    virtual void m_NewOver_clicked();
-    virtual void PushButton_IDCANCEL21_clicked() {QDialog::reject();}
+    virtual void on_m_NoOver_clicked();
+    virtual void on_m_NewOver_clicked();
+    virtual void on_PushButton_IDCANCEL21_clicked() {QDialog::reject();}
     virtual void OnOK();
 private:
   Q_OBJECT
@@ -179,14 +179,14 @@ public:
  void SetButtons(int sel);
   
 public slots:
-    virtual void m_EnumAdd_clicked();
-    virtual void m_EnumEdit_clicked();
-    virtual void m_EnumDel_clicked();
+    virtual void on_m_EnumAdd_clicked();
+    virtual void on_m_EnumEdit_clicked();
+    virtual void on_m_EnumDel_clicked();
     virtual void m_EnumItems_selectionChanged( Q3ListBoxItem * );
 
     virtual void OnOK();
-    virtual void ID_HELP3_clicked();
-    virtual void m_CANCEL5_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP3_clicked();
+    virtual void on_m_CANCEL5_clicked() {QDialog::reject();}
 private:
   Q_OBJECT
 };
@@ -209,8 +209,8 @@ public:
   
 public slots:
     virtual void OnOK();
-    virtual void PushButton_IDCANCEL6_clicked() {QDialog::reject();}
-    virtual void ID_HELP4_clicked();
+    virtual void on_PushButton_IDCANCEL6_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP4_clicked();
 private:
   Q_OBJECT
 };
@@ -240,20 +240,20 @@ public:
   int valSynch;
 
 public slots:
-    virtual void m_EnableName_clicked();
-    virtual void m_DelInherits1_clicked();
-    virtual void m_NamedTypes1_triggered( int );
-    virtual void m_CMBOperator_triggered( int );
-    virtual void m_CHECKOp_clicked();
-    virtual void m_Abstract_clicked();
-    virtual void m_Native1_clicked();
-    virtual void m_Signal_clicked();
-    virtual void m_StaticFunc_clicked();
-    virtual void m_RMOverrides_clicked();
-    virtual void m_Initializer_clicked();
+    virtual void on_m_EnableName_clicked();
+    virtual void on_m_DelInherits1_clicked();
+    virtual void on_m_NamedTypes1_triggered( int );
+    virtual void on_m_CMBOperator_triggered( int );
+    virtual void on_m_CHECKOp_clicked();
+    virtual void on_m_Abstract_clicked();
+    virtual void on_m_Native1_clicked();
+    virtual void on_m_Signal_clicked();
+    virtual void on_m_StaticFunc_clicked();
+    virtual void on_m_RMOverrides_clicked();
+    virtual void on_m_Initializer_clicked();
     virtual void OnOK();
-    virtual void m_CANCEL_clicked() {QDialog::reject();}
-    virtual void ID_HELP9_clicked();
+    virtual void on_m_CANCEL_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP9_clicked();
 
 private:
   Q_OBJECT
@@ -281,10 +281,10 @@ public:
   QString valImplSel;
 
 public slots:
-    virtual void m_ImplTypes_triggered( int );
+    virtual void on_m_ImplTypes_triggered( int );
     virtual void OnOK();
-    virtual void PushButton_IDCANCEL7_clicked() {QDialog::reject();}
-    virtual void ID_HELP5_clicked();
+    virtual void on_PushButton_IDCANCEL7_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP5_clicked();
 private:
   Q_OBJECT
 
@@ -312,10 +312,10 @@ public:
 
   
 public slots:
-    virtual void m_OtherPath_clicked();
+    virtual void on_m_OtherPath_clicked();
     virtual void OnOK();
-    virtual void mANCEL15_clicked() {QDialog::reject();}
-    virtual void ID_HELP12_clicked();
+    virtual void on_mANCEL15_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP12_clicked();
 private:
   Q_OBJECT
 
@@ -343,10 +343,10 @@ public:
 
 
 public slots:
-//  virtual void m_Transaction1_clicked() {}
+//  virtual void on_m_Transaction1_clicked() {}
   virtual void OnOK();
-  virtual void PushButton_IDCANCEL14_clicked() {QDialog::reject();}
-  virtual void ID_HELP11_clicked();
+  virtual void on_PushButton_IDCANCEL14_clicked() {QDialog::reject();}
+  virtual void on_ID_HELP11_clicked();
 private:
   Q_OBJECT
 
@@ -380,19 +380,19 @@ public:
   int   valKindOfInterface;
 
 public slots:
-    virtual void m_DelSupport_clicked();
-    virtual void m_BasicTypes1_triggered( int );
-    virtual void m_ExtTypes_triggered( int );
-//    virtual void m_DelInherits_clicked();
-//    virtual void m_InheritTypes_triggered( int );
-    virtual void m_IsComponent_clicked();
-    virtual void m_NonCreatable_clicked();
-    virtual void m_Creatable_clicked();
-    virtual void m_IsGUI_clicked();
-    virtual void m_GUIStructs_triggered( int );
+    virtual void on_m_DelSupport_clicked();
+    virtual void on_m_BasicTypes1_triggered( int );
+    virtual void on_m_ExtTypes_triggered( int );
+//    virtual void on_m_DelInherits_clicked();
+//    virtual void on_m_InheritTypes_triggered( int );
+    virtual void on_m_IsComponent_clicked();
+    virtual void on_m_NonCreatable_clicked();
+    virtual void on_m_Creatable_clicked();
+    virtual void on_m_IsGUI_clicked();
+    virtual void on_m_GUIStructs_triggered( int );
     virtual void OnOK();
-    virtual void m_CANCEL9_clicked() {QDialog::reject();}
-    virtual void ID_HELP7_clicked();
+    virtual void on_m_CANCEL9_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP7_clicked();
 private:
   Q_OBJECT
 
@@ -424,12 +424,12 @@ public:
 
 
 public slots:
-    virtual void m_BasicTypes4_triggered( int );
-    virtual void m_NamedTypes4_triggered( int );
-    virtual void m_Substitutable1_clicked();
+    virtual void on_m_BasicTypes4_triggered( int );
+    virtual void on_m_NamedTypes4_triggered( int );
+    virtual void on_m_Substitutable1_clicked();
     virtual void OnOK();
-    virtual void PushButton_IDCANCEL18_clicked() {QDialog::reject();}
-    virtual void ID_HELP14_clicked();
+    virtual void on_PushButton_IDCANCEL18_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP14_clicked();
 private:
   Q_OBJECT
 
@@ -456,11 +456,11 @@ public:
 
 
 public slots:
-    virtual void m_DelSupport1_clicked();
-    virtual void m_ExtTypes1_triggered( int );
+    virtual void on_m_DelSupport1_clicked();
+    virtual void on_m_ExtTypes1_triggered( int );
     virtual void OnOK();
-    virtual void mANCEL10_clicked() {QDialog::reject();}
-    virtual void ID_HELP8_clicked();
+    virtual void on_mANCEL10_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP8_clicked();
 private:
   Q_OBJECT
 };
@@ -490,11 +490,11 @@ public:
 
 
 public slots:
-    virtual void m_BasicTypes_triggered( int );
-    virtual void m_ExTypes_triggered( int );
+    virtual void on_m_BasicTypes_triggered( int );
+    virtual void on_m_ExTypes_triggered( int );
     virtual void OnOK();
-    virtual void PushButton_IDCANCEL3_clicked() {QDialog::reject();}
-    virtual void ID_HELP1_clicked();
+    virtual void on_PushButton_IDCANCEL3_clicked() {QDialog::reject();}
+    virtual void on_ID_HELP1_clicked();
 private:
   Q_OBJECT
 };
@@ -526,18 +526,18 @@ public:
 	int	valkindOfLink;
 
 public slots:
-    virtual void m_BasicTypes2_triggered( int );
-    virtual void m_NamedTypes2_triggered( int );
-    virtual void m_RMOverrides1_clicked();
-    virtual void m_StateObject_clicked();
-    virtual void m_ValueObject_clicked();
+    virtual void on_m_BasicTypes2_triggered( int );
+    virtual void on_m_NamedTypes2_triggered( int );
+    virtual void on_m_RMOverrides1_clicked();
+    virtual void on_m_StateObject_clicked();
+    virtual void on_m_ValueObject_clicked();
     virtual void OnOK();
-    virtual void PushButton_IDCANCEL16_clicked()  {QDialog::reject();}
-    virtual void ID_HELP13_clicked();
-    virtual void m_EnableName1_clicked();
-    virtual void m_isAbstract_clicked();
-    virtual void m_DefCat_clicked();
-    virtual void m_Substitutable_clicked();
+    virtual void on_PushButton_IDCANCEL16_clicked()  {QDialog::reject();}
+    virtual void on_ID_HELP13_clicked();
+    virtual void on_m_EnableName1_clicked();
+    virtual void on_m_isAbstract_clicked();
+    virtual void on_m_DefCat_clicked();
+    virtual void on_m_Substitutable_clicked();
 
 
 private:

@@ -622,17 +622,17 @@ void CChainFormPage::OnHasButtons()
 }
 
 
-void CChainFormPage::m_EditInsertButton_textChanged( const QString & )
+void CChainFormPage::on_m_EditInsertButton_textChanged( const QString & )
 {
   myWizard->setModified(modify);
 }
 
-void CChainFormPage::m_EDITDelButton_textChanged( const QString & )
+void CChainFormPage::on_m_EDITDelButton_textChanged( const QString & )
 {
   myWizard->setModified(modify);
 }
 
-void CChainFormPage::m_DefaultLength_valueChanged( int )
+void CChainFormPage::on_m_DefaultLength_valueChanged( int )
 {
   myWizard->setModified(modify);
 }
@@ -739,7 +739,7 @@ CFormTextPage::CFormTextPage(LavaDECL * litEl, CLavaPEWizard *wizard)
 }
 
 
-void CFormTextPage::defaultFont_clicked()
+void CFormTextPage::on_defaultFont_clicked()
 {
   if (defaultFont->isChecked()) {
     myDecl->Annotation.ptr->String1.Reset(0);
@@ -753,7 +753,7 @@ void CFormTextPage::defaultFont_clicked()
   myWizard->setModified(modify);
 }
 
-void CFormTextPage::fontButton_clicked()
+void CFormTextPage::on_fontButton_clicked()
 {
   bool ok;
   QFont lf;
@@ -775,30 +775,30 @@ void CFormTextPage::fontButton_clicked()
 }
 
 
-void CFormTextPage::defaultForeground_clicked()
+void CFormTextPage::on_defaultForeground_clicked()
 {
-  if (colorSetting.defaultForeground_clicked())
+  if (colorSetting.on_defaultForeground_clicked())
     myWizard->setModified(modify);
 
 }
 
-void CFormTextPage::defaultBackground_clicked()
+void CFormTextPage::on_defaultBackground_clicked()
 {
-  if (colorSetting.defaultBackground_clicked())
+  if (colorSetting.on_defaultBackground_clicked())
     myWizard->setModified(modify);
 }
 
-void CFormTextPage::colorButtonF_clicked()
+void CFormTextPage::on_colorButtonF_clicked()
 {
-  if (colorSetting.colorButtonF_clicked() && modify) {
+  if (colorSetting.on_colorButtonF_clicked() && modify) {
     myWizard->setModified(true);
     myWizard->myView->PostApplyHint();
   }
 }
 
-void CFormTextPage::colorButtonB_clicked()
+void CFormTextPage::on_colorButtonB_clicked()
 {
-  if (colorSetting.colorButtonB_clicked() && modify) {
+  if (colorSetting.on_colorButtonB_clicked() && modify) {
     myWizard->setModified(true);
     myWizard->myView->PostApplyHint();
   }
@@ -806,22 +806,22 @@ void CFormTextPage::colorButtonB_clicked()
 
 
 
-void CFormTextPage::m_EditLiteral_textChanged( const QString & )
+void CFormTextPage::on_m_EditLiteral_textChanged( const QString & )
 {
   myWizard->setModified(modify);
 }
 
-void CFormTextPage::m_HorizTab_valueChanged( int )
+void CFormTextPage::on_m_HorizTab_valueChanged( int )
 {
   myWizard->setModified(modify);
 }
 
-void CFormTextPage::m_HorizSpace_valueChanged( int )
+void CFormTextPage::on_m_HorizSpace_valueChanged( int )
 {
   myWizard->setModified(modify);
 }
 
-void CFormTextPage::m_VertSpace_valueChanged( int )
+void CFormTextPage::on_m_VertSpace_valueChanged( int )
 {
   myWizard->setModified(modify);
 }
@@ -1013,7 +1013,7 @@ void ColorSetting::Init(AnnoExType role, LavaDECL* decl, QCheckBox* defaultB,
 }
 
 
-bool ColorSetting::defaultForeground_clicked()
+bool ColorSetting::on_defaultForeground_clicked()
 {
   CHETAnnoEx* ex = FormDECL->Annotation.ptr->GetAnnoEx(Role);
   if (defaultForeground->isChecked()) {
@@ -1031,7 +1031,7 @@ bool ColorSetting::defaultForeground_clicked()
   return false;
 }
 
-bool ColorSetting::defaultBackground_clicked()
+bool ColorSetting::on_defaultBackground_clicked()
 {
   CHETAnnoEx* ex = FormDECL->Annotation.ptr->GetAnnoEx(Role);
   if (defaultBackground->isChecked()) {
@@ -1049,7 +1049,7 @@ bool ColorSetting::defaultBackground_clicked()
   return false;
 }
 
-bool ColorSetting::colorButtonF_clicked()
+bool ColorSetting::on_colorButtonF_clicked()
 {
   CHETAnnoEx* ex = FormDECL->Annotation.ptr->GetAnnoEx(Role);
   QColor cl;
@@ -1069,7 +1069,7 @@ bool ColorSetting::colorButtonF_clicked()
   return false;
 }
 
-bool ColorSetting::colorButtonB_clicked()
+bool ColorSetting::on_colorButtonB_clicked()
 {
   CHETAnnoEx* ex = FormDECL->Annotation.ptr->GetAnnoEx(Role);
   QColor cl;
@@ -1150,7 +1150,7 @@ bool CFontColorPage::OnApply()
 }
 
 
-void CFontColorPage::defaultFontL_clicked()
+void CFontColorPage::on_defaultFontL_clicked()
 {
   if (defaultFontL->isChecked()) {
     FormDECL->Annotation.ptr->String1.Reset(0);
@@ -1164,7 +1164,7 @@ void CFontColorPage::defaultFontL_clicked()
   }
 }
 
-void CFontColorPage::fontButtonL_clicked()
+void CFontColorPage::on_fontButtonL_clicked()
 {
   bool ok;
   QFont lf;
@@ -1185,7 +1185,7 @@ void CFontColorPage::fontButtonL_clicked()
 
 }
 
-void CFontColorPage::defaultFontT_clicked()
+void CFontColorPage::on_defaultFontT_clicked()
 {
   if (defaultFontT->isChecked()) {
     FormDECL->Annotation.ptr->String2.Reset(0);
@@ -1199,7 +1199,7 @@ void CFontColorPage::defaultFontT_clicked()
   }
 }
 
-void CFontColorPage::fontButtonT_clicked()
+void CFontColorPage::on_fontButtonT_clicked()
 {
   bool ok;
   QFont lf;
@@ -1220,86 +1220,86 @@ void CFontColorPage::fontButtonT_clicked()
 
 }
 
-void CFontColorPage::defaultForeground_clicked()
+void CFontColorPage::on_defaultForeground_clicked()
 {
-  if (colorSetting.defaultForeground_clicked())
+  if (colorSetting.on_defaultForeground_clicked())
     myWizard->setModified(true);
 }
 
-void CFontColorPage::defaultBackground_clicked()
+void CFontColorPage::on_defaultBackground_clicked()
 {
-  if (colorSetting.defaultBackground_clicked())
+  if (colorSetting.on_defaultBackground_clicked())
     myWizard->setModified(true);
 }
 
-void CFontColorPage::colorButtonF_clicked()
+void CFontColorPage::on_colorButtonF_clicked()
 {
-  if (colorSetting.colorButtonF_clicked()) {
-    myWizard->setModified(true);
-    myWizard->myView->PostApplyHint();
-  }
-}
-
-void CFontColorPage::colorButtonB_clicked()
-{
-  if (colorSetting.colorButtonB_clicked()) {
-    myWizard->setModified(true);
-    myWizard->myView->PostApplyHint();
-  }
-
-}
-
-void CFontColorPage::defaultTForeground_clicked()
-{
-  if (TextColorSetting.defaultForeground_clicked())
-    myWizard->setModified(true);
-}
-
-void CFontColorPage::TColorButtonF_clicked()
-{
-  if (TextColorSetting.colorButtonF_clicked()) {
+  if (colorSetting.on_colorButtonF_clicked()) {
     myWizard->setModified(true);
     myWizard->myView->PostApplyHint();
   }
 }
 
-void CFontColorPage::TColorButtonB_clicked()
+void CFontColorPage::on_colorButtonB_clicked()
 {
-  if (TextColorSetting.colorButtonB_clicked()) {
+  if (colorSetting.on_colorButtonB_clicked()) {
+    myWizard->setModified(true);
+    myWizard->myView->PostApplyHint();
+  }
+
+}
+
+void CFontColorPage::on_defaultTForeground_clicked()
+{
+  if (TextColorSetting.on_defaultForeground_clicked())
+    myWizard->setModified(true);
+}
+
+void CFontColorPage::on_TColorButtonF_clicked()
+{
+  if (TextColorSetting.on_colorButtonF_clicked()) {
     myWizard->setModified(true);
     myWizard->myView->PostApplyHint();
   }
 }
 
-void CFontColorPage::defaultTBackground_clicked()
+void CFontColorPage::on_TColorButtonB_clicked()
 {
-  if (TextColorSetting.defaultBackground_clicked())
-    myWizard->setModified(true);
-}
-
-void CFontColorPage::defaultPBForeground_clicked()
-{
-  if (PBColorSetting.defaultForeground_clicked())
-    myWizard->setModified(true);
-}
-
-void CFontColorPage::PBColorButtonF_clicked()
-{
-  if (PBColorSetting.colorButtonF_clicked()) {
+  if (TextColorSetting.on_colorButtonB_clicked()) {
     myWizard->setModified(true);
     myWizard->myView->PostApplyHint();
   }
 }
 
-void CFontColorPage::defaultPBBackground_clicked()
+void CFontColorPage::on_defaultTBackground_clicked()
 {
-  if (PBColorSetting.defaultBackground_clicked())
+  if (TextColorSetting.on_defaultBackground_clicked())
     myWizard->setModified(true);
 }
 
-void CFontColorPage::PBColorButtonB_clicked()
+void CFontColorPage::on_defaultPBForeground_clicked()
 {
-  if (PBColorSetting.colorButtonB_clicked()) {
+  if (PBColorSetting.on_defaultForeground_clicked())
+    myWizard->setModified(true);
+}
+
+void CFontColorPage::on_PBColorButtonF_clicked()
+{
+  if (PBColorSetting.on_colorButtonF_clicked()) {
+    myWizard->setModified(true);
+    myWizard->myView->PostApplyHint();
+  }
+}
+
+void CFontColorPage::on_defaultPBBackground_clicked()
+{
+  if (PBColorSetting.on_defaultBackground_clicked())
+    myWizard->setModified(true);
+}
+
+void CFontColorPage::on_PBColorButtonB_clicked()
+{
+  if (PBColorSetting.on_colorButtonB_clicked()) {
     myWizard->setModified(true);
     myWizard->myView->PostApplyHint();
   }
@@ -1609,7 +1609,7 @@ void CIOPage::OnMultiLine()
   myWizard->setModified(true);
 }
 
-void CIOPage::m_Echo_clicked()
+void CIOPage::on_m_Echo_clicked()
 {
   myWizard->setModified(true);
 }
@@ -1639,7 +1639,7 @@ void CIOPage::rowsChanged( int )
   myWizard->setModified(modify);
 }
 
-void CIOPage::m_groupbox_clicked()
+void CIOPage::on_m_groupbox_clicked()
 {
   myWizard->setModified(modify);
 }
@@ -2056,13 +2056,13 @@ void CLiteralsPage::OnEditSuf()
 }
 
 
-void CLiteralsPage::m_Prefixe_doubleClicked( Q3ListBoxItem * )
+void CLiteralsPage::on_m_Prefixe_doubleClicked( Q3ListBoxItem * )
 {
   OnEDITPre(); 
 }
 
 
-void CLiteralsPage::m_Suffixe_doubleClicked( Q3ListBoxItem * )
+void CLiteralsPage::on_m_Suffixe_doubleClicked( Q3ListBoxItem * )
 {
   OnEditSuf();
 }
@@ -2091,17 +2091,17 @@ void CLiteralsPage::OnSelchangeSuffixe()
   }
 }
 
-void CLiteralsPage::m_Default_textChanged( const QString & )
+void CLiteralsPage::on_m_Default_textChanged( const QString & )
 {
   myWizard->setModified(modify);
 }
 
-void CLiteralsPage::m_EnumDefault_triggered(int )
+void CLiteralsPage::on_m_EnumDefault_triggered(int )
 {
   myWizard->setModified(true);
 }
 
-void CLiteralsPage::m_BoolDefault_triggered(int )
+void CLiteralsPage::on_m_BoolDefault_triggered(int )
 {
   myWizard->setModified(true);
 }
@@ -2208,7 +2208,7 @@ CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, Q3ListBox 
 }
 
 
-void CLiteralItem::defaultFont_clicked()
+void CLiteralItem::on_defaultFont_clicked()
 {
   if (defaultFont->isChecked()) {
     myDecl->Annotation.ptr->String1.Reset(0);
@@ -2221,7 +2221,7 @@ void CLiteralItem::defaultFont_clicked()
   }
 }
 
-void CLiteralItem::fontButton_clicked()
+void CLiteralItem::on_fontButton_clicked()
 {
   bool ok;
   QFont lf;
@@ -2240,24 +2240,24 @@ void CLiteralItem::fontButton_clicked()
 }
 
 
-void CLiteralItem::defaultForeground_clicked()
+void CLiteralItem::on_defaultForeground_clicked()
 {
-  colorSetting.defaultForeground_clicked();
+  colorSetting.on_defaultForeground_clicked();
 }
 
-void CLiteralItem::defaultBackground_clicked()
+void CLiteralItem::on_defaultBackground_clicked()
 {
-  colorSetting.defaultBackground_clicked();
+  colorSetting.on_defaultBackground_clicked();
 }
 
-void CLiteralItem::colorButtonF_clicked()
+void CLiteralItem::on_colorButtonF_clicked()
 {
-  colorSetting.colorButtonF_clicked();
+  colorSetting.on_colorButtonF_clicked();
 }
 
-void CLiteralItem::colorButtonB_clicked()
+void CLiteralItem::on_colorButtonB_clicked()
 {
-  colorSetting.colorButtonB_clicked();
+  colorSetting.on_colorButtonB_clicked();
 }
 
 
@@ -2766,12 +2766,12 @@ void CMenuPage::SetDefaults(EMenuType newMenuT, EMenuType oldMenuT)
   }
 }
 
-void CMenuPage::m_ToggleLabel_textChanged( const QString & )
+void CMenuPage::on_m_ToggleLabel_textChanged( const QString & )
 {
   myWizard->setModified(modify);
 }
 
-void CMenuPage::m_LeftLabel_clicked()
+void CMenuPage::on_m_LeftLabel_clicked()
 {
   myWizard->setModified(true);
 }
@@ -2890,7 +2890,7 @@ void CMenuItem::OnisMenuText(bool)
     EnableTextWindows();
 }
 
-void CMenuItem::button_browse_clicked()
+void CMenuItem::on_button_browse_clicked()
 {
   QDir dir(menuPage->myWizard->myDoc->IDTable.DocDir.c);
   QFileInfo qf(dir, m_Pixmap->text());
