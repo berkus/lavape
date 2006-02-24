@@ -72,7 +72,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\wxqDocView\Debug\wxqDocView.lib ..\LavaGUI\Debug\LavaGUI.lib ..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaExecs\Debug\LavaExecs.lib ..\SFLsockets\Debug\SFLsockets.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\qassistantclient.lib $(QTDIR)\lib\qt-mt$(QTR).lib wsock32.lib"
+				AdditionalDependencies="..\disco\Debug\disco.lib ..\wxqDocView\Debug\wxqDocView.lib ..\LavaExecs\Debug\LavaExecs.lib ..\LavaBase\Debug\LavaBase.lib ..\LavaGUI\Debug\LavaGUI.lib ..\LavaPE_UI\Debug\LavaPE_UI.lib $(QTDIR)\lib\QtAssistantClientd.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\qtmaind.lib $(QTDIR)\lib\QtNetworkd4.lib $(QTDIR)\lib\Qt3Supportd4.lib wsock32.lib"
 				OutputFile=".\Debug/LavaPE.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -1618,7 +1618,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
 					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>

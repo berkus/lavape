@@ -947,10 +947,9 @@ CGeneralPage::CGeneralPage(CLavaPEWizard *wizard)
     CExecLike * execLike = new CExecLike(myWizard->myDoc, m_NamedTypes, decl);
     delete execLike;
   }
-  CComboBoxItem *listItem;
-  listItem = (CComboBoxItem*)m_NamedTypes->listBox()->findItem(m_NewType, Qt::ExactMatch | Qt::CaseSensitive);
+  int listItem = m_NamedTypes->findText(m_NewType);
   if (listItem) 
-    m_NamedTypes->setCurrentText(listItem->text());
+    m_NamedTypes->setItemText(m_NamedTypes->currentIndex(),m_NamedTypes->itemText(listItem));
   
   UpdateData(false);
 }
@@ -1720,7 +1719,8 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
   CHEEnumSelId* enumsel;
   CHE *inDefEl;
   bool atomic;
-  CComboBoxItem *item;
+  CListItem *item;
+  CComboBoxItem *cbitem;
   TID tid0;
 
   if ((FormDECL->DeclType == VirtualType) && !ForChainElem)
@@ -1751,8 +1751,8 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
     }
     enumsel = (CHEEnumSelId*)enumEl->Items.first;
     while (enumsel) {   
-      item = new CComboBoxItem(enumsel->data.Id, tid0);
-      m_EnumDefault->listBox()->insertItem(item);
+      cbitem = new CComboBoxItem(tid0);
+      m_EnumDefault->addItem(QString(enumsel->data.Id.c),QVariant::fromValue(item));
       enumsel = (CHEEnumSelId*)enumsel->successor;
     }
     if (inEl->Annotation.ptr && inEl->Annotation.ptr->FA.ptr)
@@ -1808,13 +1808,13 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
   }
   inDefEl = (CHE*)FormDECL->Annotation.ptr->Prefixes.first;
   while (inDefEl /*&& !((LavaDECL*)inDefEl->data)->Annotation.ptr->BasicFlags.Contains(Toggle)*/) {
-    item = new CComboBoxItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
+    item = new CListItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
     m_Prefixe->insertItem(item);
     inDefEl = (CHE*)inDefEl->successor;
   }
   inDefEl = (CHE*)FormDECL->Annotation.ptr->Suffixes.first;
   while (inDefEl) {
-    item = new CComboBoxItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
+    item = new CListItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
     m_Suffixe->insertItem(item);
     inDefEl = (CHE*)inDefEl->successor;
   }
@@ -2267,7 +2267,7 @@ void CLiteralItem::OnOK()
   TID tid0;
   if (!insert)
     LitList->removeItem(litPos);
-  CComboBoxItem* item = new CComboBoxItem(m_lit, tid0);
+  CListItem* item = new CListItem(m_lit, tid0);
   LitList->insertItem(item, litPos);//-1);
   //LitList->InsertString(litPos, m_lit);
   GetSpace((TAnnotation**)&myDecl->Annotation.ptr->FA.ptr, m_LiTab, m_LiSpace, m_LiFrmSpace);
@@ -2388,7 +2388,7 @@ void CMenuPage::SetEProps()
   LavaDECL *inEl;
   CHEEnumSelId * enumsel;
   TAnnotation* anno;
-  CComboBoxItem *item;
+  CListItem *item;
   Q3ListBoxItem *pixItem;
 
   inEl = (LavaDECL*)myWizard->FormDECL->Annotation.ptr->MenuDECL.ptr;
@@ -2470,11 +2470,11 @@ void CMenuPage::SetEProps()
         *labpix = ex->data.xpmFile;
       inDefEl = (CHE*)inDefEl->successor;
     }
-    item = new CComboBoxItem(*labe, mflags);
+    item = new CListItem(*labe, mflags);
     m_Menuitems->insertItem(item);
-    item = new CComboBoxItem(*labb, mflags);
+    item = new CListItem(*labb, mflags);
     m_LButtonText->insertItem(item);
-    pixItem = new CComboBoxItem(*labpix, mflags);
+    pixItem = new CListItem(*labpix, mflags);
     m_Pixmap->insertItem(pixItem);
     delete labe;
     delete labb;
@@ -2741,7 +2741,7 @@ void CMenuPage::SetDefaults(EMenuType newMenuT, EMenuType oldMenuT)
        || (newMenuT == isOMenu) && (oldMenuT != isOMenu)) {
     int cc = m_Menuitems->count();
     int rr;
-    CComboBoxItem* item;
+    CListItem* item;
     TID tid0;
     QString iT, bT, pT;
     for (int ss = cc-1; ss >= 0; ss--) {
@@ -2751,14 +2751,14 @@ void CMenuPage::SetDefaults(EMenuType newMenuT, EMenuType oldMenuT)
         if (rr == 0) 
           m_LButtonText->removeItem(ss);
         if ((rr == 0) || (rr < 0)) {
-          item = new CComboBoxItem(iT, tid0);
+          item = new CListItem(iT, tid0);
           m_LButtonText->insertItem(item, ss-1);
         }
       }
       if ((newMenuT == isOMenu) && (m_Menuitems->text(ss).length() > 0)) {
         bT = m_LButtonText->text(ss);
         if ((rr == 0) || (rr < 0)) {
-          item = new CComboBoxItem(bT, tid0);
+          item = new CListItem(bT, tid0);
           m_LButtonText->insertItem(item, ss-1);
         }
       }
@@ -2912,7 +2912,7 @@ void CMenuItem::on_button_browse_clicked()
 
 void CMenuItem::OnOK() 
 {
-  CComboBoxItem *item;
+  CListItem *item;
   UpdateData(true);
   /*
   if (m_flags) {
@@ -2925,11 +2925,11 @@ void CMenuItem::OnOK()
     menuPage->m_Pixmap->removeItem(iPos);
   }
   if (m_flags == 3) {
-    item = new CComboBoxItem(m_MenuText->text(), mflags);
+    item = new CListItem(m_MenuText->text(), mflags);
     menuPage->m_LButtonText->insertItem(item, iPos);
   }
   else {
-    item = new CComboBoxItem(m_Buttontext->text(), mflags);
+    item = new CListItem(m_Buttontext->text(), mflags);
     menuPage->m_LButtonText->insertItem(item, iPos);
   }
   /*
@@ -2942,9 +2942,9 @@ void CMenuItem::OnOK()
   mflags[1] = m_Menutab ;
   mflags[2] = m_Menuspace ;
   mflags[3] = m_MenuFrmspace ;
-  item = new CComboBoxItem(m_Enumsel->text(), mflags);
+  item = new CListItem(m_Enumsel->text(), mflags);
   menuPage->m_Menuitems->insertItem(item, iPos);
-  item = new CComboBoxItem(m_Pixmap->text(), mflags);
+  item = new CListItem(m_Pixmap->text(), mflags);
   menuPage->m_Pixmap->insertItem(item, iPos);
   menuPage->UpdateData(false);
   QDialog::accept();
@@ -2973,7 +2973,7 @@ CSupportPage::CSupportPage(CLavaPEWizard* wizard)
  : Ui_IDD_SupportPage()
 {
   int count = 0;
-  CComboBoxItem *item;
+  CListItem *item;
 
   //v_FormClass = "";
 
@@ -2995,7 +2995,7 @@ CSupportPage::CSupportPage(CLavaPEWizard* wizard)
         basefDECL = IDTab->GetFinalDef(cheS->data, fclassDECL->inINCL);
         if (basefDECL && basefDECL->TypeFlags.Contains(isGUI)) {
           if (IDTab->IsAnc(myWizard->FormDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL)) {
-            item = new CComboBoxItem(basefDECL->LocalName, TID(basefDECL->OwnID, basefDECL->inINCL));
+            item = new CListItem(basefDECL->LocalName, TID(basefDECL->OwnID, basefDECL->inINCL));
             m_Supports->insertItem(item);
           }
         }
@@ -3059,8 +3059,8 @@ void CExecLike::ExecFormDef(LavaDECL ** pelDef, int incl)
   else
     if (!myDoc->IDTable.EQEQ((*pelDef)->RefID, (*pelDef)->inINCL, TID(myDECL->OwnID,myDECL->inINCL), 0))
       return;
-  CComboBoxItem *item = new CComboBoxItem((*pelDef)->ParentDECL->FullName, TID((*pelDef)->OwnID, incl));
-  List->listBox()->insertItem(item); //sort
+  CComboBoxItem *item = new CComboBoxItem(TID((*pelDef)->OwnID, incl));
+  List->addItem(QString((*pelDef)->ParentDECL->FullName.c),QVariant::fromValue(item)); //sort
 }
 
 void CExecLike::ExecDefs (LavaDECL ** pelDef, int incl)
@@ -3075,7 +3075,7 @@ void CExecLike::ExecDefs (LavaDECL ** pelDef, int incl)
   if ( (elDef == myDECL)
        || (myDECL->DeclType == FormDef)
           &&  myDoc->IDTable.EQEQ(id, elDef->inINCL, myDECL->RefID, myDECL->inINCL)) {
-    CComboBoxItem *item = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, incl));
-    List->listBox()->insertItem(item);
+    CComboBoxItem *item = new CComboBoxItem(TID(elDef->OwnID, incl));
+    List->addItem(QString(elDef->FullName.c), QVariant::fromValue(item));
   }
 }

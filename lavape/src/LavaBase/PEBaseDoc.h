@@ -16,24 +16,36 @@
 #include "qstring.h"
 #include "q3listbox.h"
 
-class CComboBoxItem//: public Q3ListBoxText
+
+class CListItem: public Q3ListBoxText
 {
 public:
-//  CComboBoxItem(const QString& txt, const TID& id) { setText(txt); ID = id;}
-//  CComboBoxItem(const DString& text, const TID& id) {setText(QString(text.c)); ID = id;}
-  CComboBoxItem(/*char* text,*/ const TID& id) {/*setText(QString(text));*/ ID = id;}
-  CComboBoxItem(/*const DString& text,*/ unsigned* flags) {/*setText(QString(text.c));*/ Flags = flags;}
-//  CComboBoxItem(const QString& text, unsigned* flags) {setText(text); Flags = flags;}
-  CComboBoxItem() {}
+  CListItem(const QString& text, const TID& id) {setText(text); ID = id;}
+  CListItem(const DString& text, const TID& id) {setText(QString(text.c)); ID = id;}
+  CListItem(char* text, const TID& id) {setText(QString(text)); ID = id;}
+  CListItem(const DString& text, unsigned* flags) {setText(QString(text.c)); Flags = flags;}
+  CListItem(const QString& text, unsigned* flags) {setText(text); Flags = flags;}
+  CListItem() {}
   TID itemData() {return ID;}
   unsigned* flags() {return Flags;}
-//  void setText(const QString &txt) { myText = txt; }
-//  QString text() { return myText; }
-//  virtual void setText(const QString& text) {Q3ListBoxText::setText(text);}
+  virtual void setText(const QString& text) {Q3ListBoxText::setText(text);}
 protected:
   TID ID;
   unsigned* Flags;
-//  QString myText;
+};
+Q_DECLARE_METATYPE(CListItem*)
+
+class CComboBoxItem//: public Q3ListBoxText
+{
+public:
+  CComboBoxItem(/*char* text,*/ const TID& id) {/*setText(QString(text));*/ ID = id;}
+  CComboBoxItem(/*const DString& text,*/ unsigned* flags) {/*setText(QString(text.c));*/ Flags = flags;}
+  CComboBoxItem() {}
+  TID itemData() {return ID;}
+  unsigned* flags() {return Flags;}
+protected:
+  TID ID;
+  unsigned* Flags;
 };
 Q_DECLARE_METATYPE(CComboBoxItem*)
 
