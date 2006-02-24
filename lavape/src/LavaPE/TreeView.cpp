@@ -139,8 +139,8 @@ void CTreeItem::SetItemMask(QPixmap* pixMask) {
   //pixMask wird oben und rechts bündig in nPix kopiert
   QPixmap* mPix = new QPixmap(nPix->width(), nPix->height());
   mPix->fill();
-  bitBlt (mPix, 0, 0, nPix, 0, 0, 16, pixMask->height(), Qt::CopyROP, true);
-  bitBlt (mPix, 16, 0, pixMask, 16, 0, 5, pixMask->height(), Qt::CopyROP, true);
+  bitBlt (mPix, 0, 0, nPix, 0, 0, 16, pixMask->height());
+  bitBlt (mPix, 16, 0, pixMask, 16, 0, 5, pixMask->height());
   if (delPix) 
     delete nPix;
   nPix = mPix;

@@ -3308,7 +3308,7 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
 /*
   if (wxDocManager::GetOpenDocCount() == 1
 	&& GetViewCount() == 4
-  && wxDocManager::GetDocumentManager()->GetActiveView()->GetParentFrame()->oldWindowState != QEvent::ShowMaximized
+  && wxDocManager::GetDocumentManager()->GetActiveView()->GetParentFrame()->oldWindowState != Qt::WindowMaximized
   && !MainView->GetParentFrame()->isMinimized())
 		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
 */

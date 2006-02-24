@@ -81,19 +81,18 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 
   m_UtilityView = 0;
 	lastTile = 0;
-  Q3PopupMenu *style = new Q3PopupMenu(this);
-  style->setCheckable( TRUE );
-  optionMenu->insertItem( "Set st&yle" , style );
-  Q3ActionGroup *ag = new Q3ActionGroup( this, 0 );
+  QMenu *styleMenu = new QMenu(this);
+  styleMenu->setCheckable( TRUE );
+  optionMenu->insertItem( "Set st&yle" , styleMenu );
+  QActionGroup *ag = new QActionGroup( this);
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
-  connect( styleMapper, SIGNAL( mapped( const QString& ) ), this, SLOT( makeStyle( const QString& ) ) );
+  connect( styleMapper, SIGNAL( mapped(const QString&) ), this, SLOT( makeStyle(const QString&) ) );
   QStringList list = QStyleFactory::keys();
   list.sort();
   Q3Dict<int> stylesDict( 17, FALSE );
   for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
 		QString styleStr = *it;
-//    qDebug("style=%s",styleStr.ascii());
 		QString styleAccel = styleStr;
 		if ( stylesDict[styleAccel.left(1)] ) {
 			for ( int i = 0; i < styleAccel.length(); i++ ) {
@@ -108,13 +107,15 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 			stylesDict.insert(styleAccel.left(1), (const int *)1);
 			styleAccel = "&"+styleAccel;
  		}
-		QAction *a = new QAction( styleStr, QIcon(), styleAccel, 0, ag, 0, ag->isExclusive() );
+//		QAction *a = new QAction( styleStr, QIcon(), styleAccel, 0, ag, 0, ag->isExclusive() );
+		QAction *a = new QAction( styleStr,ag);
+    a->setCheckable(true);
 		connect( a, SIGNAL( activated() ), styleMapper, SLOT(map()) );
 		styleMapper->setMapping(a,a->text() );
 		if (LBaseData->m_style == styleStr)
 		  a->setOn(true);
   }
-  ag->addTo(style);
+  ag->addTo(styleMenu);
 
   LBaseData->insActionPtr = insAction;
   LBaseData->delActionPtr = delAction;
@@ -147,7 +148,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   LBaseData->greaterEqualActionPtr = greaterEqualAction;
   LBaseData->greaterThanActionPtr = greaterThanAction;
   LBaseData->handleActionPtr = handleAction;
-  LBaseData->insertActionPtr = insertAction;
+  LBaseData->insertActionPtr = execInsAction;
   LBaseData->insertBeforeActionPtr = insertBeforeAction;
   LBaseData->intervalActionPtr = intervalAction;
   LBaseData->invertActionPtr = invertAction;
@@ -204,7 +205,8 @@ void CLavaMainFrame::makeStyle(const QString &style)
   isVisible = Toolbar_7->isVisible();
   if (LBaseData->declareButton) {
     delete Toolbar_7;
-    Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
+    Toolbar_7 = new QToolBar( QString(""), this);
+    Toolbar_7->setAllowedAreas(Qt::LeftToolBarArea);
     Toolbar_7->setLabel(tr("Keyword toolbar"));
   }
   else
@@ -258,10 +260,10 @@ bool CLavaMainFrame::OnCreate()
   m_UtilityView = new CUtilityView(split);
   LoadFileHistory();
   m_UtilityView->hide();
-  HelpToolbar->setOffset(100000);
-  Toolbar_3->setNewLine(true);
+//  HelpToolbar->setOffset(100000);
+//  Toolbar_3->setNewLine(true);
   Toolbar_5->hide();
-  Toolbar_5->setNewLine(true);
+//  Toolbar_5->setNewLine(true);
   Toolbar_5->hide();
   Toolbar_6->hide();
   Toolbar_7->hide();
@@ -329,7 +331,7 @@ void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,
   f = pb->font();
   f.setBold(true);
   pb->setFont(f);
-  pb->setPaletteForegroundColor(QColor(blue));
+  pb->setPaletteForegroundColor(QColor(Qt::blue));
 //  pb->setFlat(true);
   pb->setAutoDefault(false);
 //  pb->setMinimumHeight(pb->fontInfo().pointSize()+6);
@@ -356,9 +358,9 @@ void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
 void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 {
 	QColorGroup cgDis(tb->palette().disabled());
-	cgDis.setColor(QColorGroup::ButtonText,darkGray);
+  cgDis.setColor(QColorGroup::ButtonText,Qt::darkGray);
 	QColorGroup cgAct(tb->palette().active());
-	cgAct.setColor(QColorGroup::ButtonText,blue);
+  cgAct.setColor(QColorGroup::ButtonText,Qt::blue);
 	QPalette pal(cgAct,cgDis,tb->palette().inactive());
 	tb->setPalette(pal);
 
@@ -1397,7 +1399,8 @@ void CLavaMainFrame::adjustToolbar_7 () {
 
 	delete Toolbar_7;
   Toolbar_7 = 0;
-  Toolbar_7 = new QToolBar( QString(""), this, DockLeft );
+  Toolbar_7 = new QToolBar( QString(""), this);
+  Toolbar_7->setAllowedAreas(Qt::LeftToolBarArea);
   Toolbar_7->setLabel(tr("Keyword toolbar"));
   fillKwdToolbar(Toolbar_7);
 	if (isVisible)
@@ -1432,7 +1435,7 @@ void CLavaMainFrame::on_cascadeAction_triggered()
 
 void CLavaMainFrame::on_tileVerticAction_triggered()
 {
-  on_tileVerticAction_triggered(menubar, lastTile);
+  TileVertic(menubar, lastTile);
   /*
   int ii, cc = 0, x = 0, widthForEach, preferredWidth, actWidth, minHeight=0, allHeight;
   QWidget *window;
@@ -1478,7 +1481,7 @@ void CLavaMainFrame::on_tileVerticAction_triggered()
     
 void CLavaMainFrame::on_tileHorizAction_triggered()
 {
-  on_tileHorizAction_triggered(menubar, lastTile);
+  TileHoriz(menubar, lastTile);
   /*
   int ii, cc = 0, y = 0, heightForEach, preferredHeight, actHeight, minHeight=0;
   QWidget *window;
@@ -1723,12 +1726,12 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   setIcon(QPixmap((const char**) Lava));
   QSize sz;
-//  if (oldWindowState != QEvent::ShowMaximized) {
+//  if (oldWindowState != Qt::WindowMaximized) {
     sz = parentWidget()->size();
     resize(sz.width()*7/10, sz.height()*7/10);
 //  }
   splitter = new QSplitter(this);//vb);
-  setCentralWidget(splitter);
+//  setCentralWidget(splitter);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
   viewL = new CInclView(splitter, doc);
@@ -1757,7 +1760,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     *it = 10;
     splitter->setSizes(list);
     lastActive = viewM;
-    if  ((oldWindowState == QEvent::ShowMaximized) && showIt)
+    if  ((oldWindowState == Qt::WindowMaximized) && showIt)
       showMaximized();
 		return true;
   }
@@ -1863,13 +1866,13 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   DString title = CalcTitle( (LavaDECL*)((CLavaPEApp*)wxTheApp)->LBaseData.actHint->CommandData1, ((CLavaBaseDoc*)LBaseData->actHint->fromDoc)->IDTable.DocName);
   setCaption(title.c);
   setIcon(QPixmap((const char**) Lava));
-//  if (oldWindowState != QEvent::ShowMaximized) {
+//  if (oldWindowState != Qt::WindowMaximized) {
     sz = parentWidget()->size();
     resize(sz.width()*7/10, sz.height()*7/10); 
 //  }
   myDoc = (CLavaBaseDoc*)doc;
   splitter = new QSplitter(this);
-  setCentralWidget(splitter);
+//  setCentralWidget(splitter);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
   viewL = new CLavaGUIView(splitter, doc);
@@ -1894,7 +1897,7 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     *it = totalW/4;
     splitter->setSizes(list);
     lastActive = viewR;
-    if (oldWindowState == QEvent::ShowMaximized) 
+    if (oldWindowState == Qt::WindowMaximized) 
       showMaximized();
     return true;
   }

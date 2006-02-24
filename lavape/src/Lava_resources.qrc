@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/Lava/res/TOOLBUTTONS" >
+        <file>Lava/res/TOOLBUTTONS/Q_del.xpm</file>
+        <file>Lava/res/TOOLBUTTONS/Q_ins.xpm</file>
+    </qresource>
+    <qresource prefix="/LavaExecs/res/TOOLBUTTONS" >
+        <file>LavaExecs/res/TOOLBUTTONS/Q5_toggle.xpm</file>
+    </qresource>
+    <qresource prefix="/LavaPE/res/TOOLBUTTONS" >
+        <file>LavaPE/res/TOOLBUTTONS/Q_Cascade.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_Copy.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_Cut.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_Paste.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_Save.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_SaveAll.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_TileHori.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</file>
+		<file>LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</file>
+    </qresource>
+</RCC>

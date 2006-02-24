@@ -479,7 +479,7 @@ void CChainFormPage::UpdateData(bool getData)
 }
 
 CChainFormPage::CChainFormPage(CLavaPEWizard* wizard)
- : IDD_ChainFormPage(wizard, "ChainFormPage", false)
+ : Ui_IDD_ChainFormPage()
 {
   LavaDECL *formDecl, *classDecl;
   TAnnotation* anno;
@@ -684,7 +684,7 @@ void CFormTextPage::UpdateData(bool getData)
 
 
 CFormTextPage::CFormTextPage(LavaDECL * litEl, CLavaPEWizard *wizard)  
-  : FormtextPage(wizard, "Formtext", false)
+  : Ui_FormtextPage()
 {
   myWizard = wizard;
   m_lit = "";
@@ -860,7 +860,7 @@ void CFormTextBox::UpdateData(bool getData)
 
 
 CFormTextBox::CFormTextBox(LavaDECL * litEl, QWidget* pParent, bool asFirst)  
-  : IDD_LiteralItem(pParent, "FormTextBox", true, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : Ui_IDD_LiteralItem()
 {
   m_lit = "";
   myDecl = litEl;
@@ -928,7 +928,7 @@ void CGeneralPage::UpdateData(bool getData)
 }
 
 CGeneralPage::CGeneralPage(CLavaPEWizard *wizard) 
-: IDD_GeneralPage(wizard, "GeneralPage", false)
+: Ui_IDD_GeneralPage()
 {
   DString dstr;
   LavaDECL *classDecl, *decl=0;
@@ -1092,7 +1092,7 @@ bool ColorSetting::colorButtonB_clicked()
 
 
 CFontColorPage::CFontColorPage(CLavaPEWizard *wizard, LavaDECL *formDECL)
-: idd_fontcolorpage(wizard, "FontColorPage", false)
+: Ui_idd_fontcolorpage()
 {
   myWizard = wizard;
   FormDECL = formDECL;
@@ -1352,7 +1352,7 @@ void CIOPage::UpdateData(bool getData)
 }
 
 CIOPage::CIOPage(CLavaPEWizard *wizard, LavaDECL *formDECL, bool forChElem)
- : IDD_IOPage(wizard, "IOPage", false)
+ : Ui_IDD_IOPage()
 {
   v_Input = false;
   v_Output = false;
@@ -1686,7 +1686,7 @@ void CLiteralsPage::UpdateData(bool getData)
 }
 
 CLiteralsPage::CLiteralsPage(CLavaPEWizard *wizard, LavaDECL* formDECL, bool forChElem)
-   : LiteralsPage(wizard, "LiteralsPage", false)
+   : Ui_LiteralsPage()
 {
   v_Default = "";
   v_EnumDefault = "";
@@ -2165,7 +2165,7 @@ void CLiteralItem::UpdateData(bool getData)
 
 
 CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, Q3ListBox *litList, LavaDECL * litEl)  
-  : IDD_LiteralItem(page, "LiteralsItem", true)
+  : Ui_IDD_LiteralItem()
 {
   m_lit = "";
   m_beforeBase->hide();
@@ -2300,7 +2300,7 @@ void CMenuPage::UpdateData(bool getData)
 
 
 CMenuPage::CMenuPage(CLavaPEWizard *wizard)
- : IDD_MenuPage(wizard, "MenuPage", false)
+ : Ui_IDD_MenuPage()
 {
   v_Menutype = -1;
   m_ItemNr = -1;
@@ -2816,7 +2816,7 @@ void CMenuItem::UpdateData(bool getData)
 CMenuItem::CMenuItem(CMenuPage* mpage, bool isNew, int ipos,
                      QString enumsel, QString btext, QString stext,
                      unsigned *itemData)
-  : IDD_Menuitem(mpage, "MenuItem", true)
+  : Ui_IDD_Menuitem()
 {
   mflags = itemData;
 
@@ -2970,7 +2970,7 @@ void CSupportPage::UpdateData(bool getData)
 */
 
 CSupportPage::CSupportPage(CLavaPEWizard* wizard)
- : IDD_SupportPage(wizard, "SupportPage", false)
+ : Ui_IDD_SupportPage()
 {
   int count = 0;
   CComboBoxItem *item;

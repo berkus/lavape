@@ -154,7 +154,7 @@
    <addaction name="toggleSubstTypeAction" />
    <addaction name="optLocalVarAction" />
    <addaction name="insertBeforeAction" />
-   <addaction name="insertAction" />
+   <addaction name="execInsAction" />
    <addaction name="toggleArrowsAction" />
    <addaction name="toggleInputArrowsAction" />
    <addaction name="conflictingAssigAction" />
@@ -1532,7 +1532,7 @@
     <string>If depressed, insert new items before the selected item, else after the selected item</string>
    </property>
   </action>
-  <action name="insertAction" >
+  <action name="execInsAction" >
    <property name="icon" >
     <iconset resource="..\LavaPE_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/Q5_insert.xpm</iconset>
    </property>
