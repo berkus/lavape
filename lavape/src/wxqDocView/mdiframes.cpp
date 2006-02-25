@@ -58,8 +58,6 @@ wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
   QStatusBar *stb=new QStatusBar(this);
 	completelyCreated = false;
 
-  m_CentralWidget = CreateWorkspace(this);
-  setCentralWidget(m_CentralWidget);
   setStatusBar(stb);
   wxTheApp->m_appWindow = this;
 //  qApp->setMainWidget(this);
@@ -69,6 +67,8 @@ wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
 bool wxMainFrame::OnCreate()
 {
 //  resize(800,600);
+  m_CentralWidget = CreateWorkspace(this);
+  setCentralWidget(m_CentralWidget);
   LoadFileHistory();
 	completelyCreated = true;
   return true;

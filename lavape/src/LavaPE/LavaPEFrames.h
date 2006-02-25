@@ -24,6 +24,7 @@
 //Added by qt3to4:
 #include <QCustomEvent>
 #include <QCloseEvent>
+#include <QWindowsStyle>
 
 
 typedef QMap<QString,QString> HelpTextMap;
@@ -303,6 +304,11 @@ public:
   void CalcSplitters();
 private:
     Q_OBJECT;
+};
+
+class MyWindowsStyle : public QWindowsStyle {
+public:
+  int pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const;
 };
 
 

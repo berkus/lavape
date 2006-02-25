@@ -14,7 +14,7 @@
 #include "qobject.h"
 #include "qglobal.h"
 #include "qstring.h"
-#include "q3mainwindow.h"
+#include "qmainwindow.h"
 #include "q3popupmenu.h"
 
 class WXDLLEXPORT wxView;

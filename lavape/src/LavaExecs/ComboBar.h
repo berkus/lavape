@@ -3,6 +3,7 @@
 
 
 #include "q3combobox.h"
+#include "q3dockwindow.h"
 #include "qpushbutton.h"
 #include "qtoolbar.h"
 #include "q3popupmenu.h"

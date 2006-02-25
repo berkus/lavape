@@ -38,7 +38,7 @@
 #include "qpixmap.h"
 #include "qpushbutton.h"
 #include "qicon.h"
-#include "q3mainwindow.h"
+#include "qmainwindow.h"
 #include "qmenubar.h"
 #include "qmessagebox.h"
 #include "q3canvas.h"
@@ -191,10 +191,14 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 void CLavaMainFrame::makeStyle(const QString &style)
 {
   bool isVisible, firstTime=false;
+
   if (!style.isEmpty()) {
     LBaseData->m_style = style;
     wxTheApp->saveSettings();
-	  qApp->setStyle(style);
+    if (style == "Windows")
+      QApplication::setStyle(new MyWindowsStyle);
+    else
+	    QApplication::setStyle(style);
 /*	  if(style == "Motif" || style == "MotifPlus") {
 	    QPalette p( QColor( 192, 192, 192 ) );
 	    qApp->setPalette( p, TRUE );
@@ -254,7 +258,9 @@ bool CLavaMainFrame::OnCreate()
 	m_childFrameHistory->m_menu = windowMenu;
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
   setIcon(QPixmap((const char**) Lava));
-  QSplitter* split = new QSplitter(m_CentralWidget);
+  QSplitter* split = new QSplitter(this);
+  m_CentralWidget = split;
+  setCentralWidget(m_CentralWidget);
   split->setOrientation(Qt::Vertical);
   CreateWorkspace(split);
   m_UtilityView = new CUtilityView(split);
@@ -1964,4 +1970,21 @@ void CLavaMainFrame::fillHelpMap5(ToolbarWhatsThis *tbw) {
 }
 
 void CLavaMainFrame::fillHelpMap6(ToolbarWhatsThis *tbw) {
+}
+
+int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const
+{
+  int px = QWindowsStyle::pixelMetric( pm, option, widget);
+  
+  switch( pm )
+  {
+    case PM_ToolBarItemMargin:
+    case PM_ToolBarItemSpacing:
+      px = 0; break;
+    case PM_ToolBarIconSize:
+      px = 16; break;
+    default: break;
+  }
+  
+  return px;
 }

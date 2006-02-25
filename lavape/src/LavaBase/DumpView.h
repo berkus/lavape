@@ -4,7 +4,7 @@
 #include "LavaBaseDoc.h"
 #include "Syntax.h"
 #include "wxExport.h"
-#include "q3mainwindow.h" 
+#include "qmainwindow.h" 
 #include "q3listview.h" 
 #include "qdialog.h" 
 //Added by qt3to4:

@@ -42,7 +42,7 @@
 #include "qlineedit.h"
 #include "q3listbox.h"
 #include "q3listview.h"
-#include "q3mainwindow.h"
+#include "qmainwindow.h"
 #include "qmap.h"
 #include "qmenubar.h"
 #include "qmenudata.h"

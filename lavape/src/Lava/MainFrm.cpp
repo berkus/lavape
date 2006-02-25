@@ -105,19 +105,21 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
   LBaseData->m_style = style;
   wxTheApp->saveSettings();
-  if (style == "Windows")
-    QApplication::setStyle(new MyWindowsStyle);
-  else
-	  QApplication::setStyle(style);
-/*
-	if(style == "Motif" || style == "MotifPlus") {
-	  QPalette p( QColor( 192, 192, 192 ) );
-	  qApp->setPalette( p, TRUE );
-	  qApp->setFont( LBaseData->m_GlobalFont, TRUE );
-	}
-*/
-	if (completelyCreated)
-		repaint();
+  if (!style.isEmpty()) {
+    if (style == "Windows")
+      QApplication::setStyle(new MyWindowsStyle);
+    else
+	    QApplication::setStyle(style);
+  /*
+	  if(style == "Motif" || style == "MotifPlus") {
+	    QPalette p( QColor( 192, 192, 192 ) );
+	    qApp->setPalette( p, TRUE );
+	    qApp->setFont( LBaseData->m_GlobalFont, TRUE );
+	  }
+  */
+	  if (completelyCreated)
+		  repaint();
+  }
 }
 
 int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const
@@ -136,6 +138,7 @@ int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, cons
   
   return px;
 }
+
 void CLavaMainFrame::UpdateUI()
 {
   CLavaDoc* doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
