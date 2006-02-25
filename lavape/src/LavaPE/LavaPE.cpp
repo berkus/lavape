@@ -40,7 +40,6 @@
 #include "FindRefsBox.h"
 #include "SylTraversal.h"
 #include "ExecView.h"
-//#include "cmainframe.h"
 #include "VTView.h"
 #include "SynIO.h"
 #include "LavaPEStringInit.h"

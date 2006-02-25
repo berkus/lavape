@@ -23,6 +23,15 @@
   </property>
   <widget class="QWidget" name="widget" />
   <widget class="QToolBar" name="Toolbar_1" >
+   <property name="windowTitle" >
+    <string>General toolbar</string>
+   </property>
+   <property name="toolTip" >
+    <string>General toolbar</string>
+   </property>
+   <property name="whatsThis" >
+    <string>General file, edit and view operations</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -46,6 +55,15 @@
    <addaction name="cascadeAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_2" >
+   <property name="windowTitle" >
+    <string>Tree op. tooolbar</string>
+   </property>
+   <property name="toolTip" >
+    <string>Tree op. tooolbar</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Tree transformation, check and run operations</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -68,14 +86,33 @@
    <addaction name="runAction" />
   </widget>
   <widget class="QToolBar" name="HelpToolbar" >
+   <property name="windowTitle" >
+    <string>Help toolbar</string>
+   </property>
+   <property name="toolTip" >
+    <string>Help toolbar</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Help toolbar</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
     <number>4</number>
    </attribute>
+   <addaction name="actionWhatNext" />
   </widget>
   <widget class="QToolBar" name="Toolbar_3" >
+   <property name="windowTitle" >
+    <string>Declaration toolbar</string>
+   </property>
+   <property name="toolTip" >
+    <string>Declaration toolbar</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Create new nodes in the declaration tree</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -103,6 +140,15 @@
    <addaction name="makeGUIAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_4" >
+   <property name="windowTitle" >
+    <string>Details toolbar</string>
+   </property>
+   <property name="toolTip" >
+    <string>Details toolbar</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Edit the details of declarations and forms</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -127,6 +173,15 @@
    <addaction name="delAction" />
   </widget>
   <widget class="QToolBar" name="ToolbarDbg" >
+   <property name="windowTitle" >
+    <string>Debugging toolbar</string>
+   </property>
+   <property name="toolTip" >
+    <string>Debugging toolbar</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Debugging toolbar: Set/delete breakoints\nand step through Lava programs</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -144,6 +199,15 @@
    <addaction name="DbgStopAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_5" >
+   <property name="windowTitle" >
+    <string>Exec switches toolbar</string>
+   </property>
+   <property name="toolTip" >
+    <string>Exec switches toolbar</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Exec switches toolbar</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -163,6 +227,15 @@
    <addaction name="toggleCommentsAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_6" >
+   <property name="windowTitle" >
+    <string>Exec operations toolbar</string>
+   </property>
+   <property name="toolTip" >
+    <string>Exec operations toolbar</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Insert predefined constants, operations,\nand statements into executable code</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
@@ -199,6 +272,15 @@
    <addaction name="ordAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_7" >
+   <property name="windowTitle" >
+    <string>Keyword toolbar</string>
+   </property>
+   <property name="toolTip" >
+    <string>Keyword toolbar</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Insert keyword expressions and statements\ninto executable code</string>
+   </property>
    <property name="orientation" >
     <enum>Qt::Vertical</enum>
    </property>
@@ -2508,6 +2590,20 @@
    </property>
    <property name="whatsThis" >
     <string>Stop at next function/operator</string>
+   </property>
+  </action>
+  <action name="actionWhatNext" >
+   <property name="icon" >
+    <iconset resource="..\LavaPE_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/WhatNext.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>WhatNext</string>
+   </property>
+   <property name="toolTip" >
+    <string>What next?</string>
+   </property>
+   <property name="whatsThis" >
+    <string>What can I do next at the current selection?</string>
    </property>
   </action>
  </widget>

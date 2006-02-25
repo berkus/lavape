@@ -259,10 +259,11 @@ void wxMainFrame::OnCloseWindow()
 }
 
 wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
-    : QWidget(parent,name,Qt::WDestructiveClose)
+    : QMainWindow(parent,name,Qt::WDestructiveClose)
 {
-  QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
+ ((QWorkspace*)parent)->addWindow(this);
 
+  QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
   m_viewCount = 0;
   deleting = false;
   m_clientWindow = this;

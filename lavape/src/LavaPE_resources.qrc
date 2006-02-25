@@ -1,4 +1,5 @@
 <RCC>
+    <qresource prefix="/" />
     <qresource prefix="/LavaExecs/res/TOOLBUTTONS" >
         <file>LavaExecs/res/TOOLBUTTONS/Q5_conflict.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/Q5_ignore.xpm</file>
@@ -43,6 +44,10 @@
         <file>LavaExecs/res/TOOLBUTTONS/breakPoint.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/debugStop.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/debugStopGreen.xpm</file>
+    </qresource>
+    <qresource prefix="/LavaGUI/res/TOOLBUTTONS" >
+        <file>LavaGUI/res/TOOLBUTTONS/Q_Delete.xpm</file>
+        <file>LavaGUI/res/TOOLBUTTONS/Q_Insert.xpm</file>
     </qresource>
     <qresource prefix="/LavaPE/res/TOOLBUTTONS" >
         <file>LavaPE/res/TOOLBUTTONS/Q2_Comment.xpm</file>
@@ -107,9 +112,6 @@
         <file>LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/WhatNext.xpm</file>
     </qresource>
-	<qresource prefix="/LavaGUI/res/TOOLBUTTONS" >
-		<file>LavaGUI/res/TOOLBUTTONS/Q_Insert.xpm</file>
-		<file>LavaGUI/res/TOOLBUTTONS/Q_Delete.xpm</file>
-	</qresource>
 </RCC>

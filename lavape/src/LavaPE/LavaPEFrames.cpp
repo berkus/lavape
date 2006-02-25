@@ -75,6 +75,34 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
   setupUi(this);
 
+  removeToolBar(Toolbar_1);
+  removeToolBar(Toolbar_2);
+  removeToolBar(HelpToolbar);
+  removeToolBar(Toolbar_3);
+  removeToolBar(Toolbar_4);
+  removeToolBar(ToolbarDbg);
+  removeToolBar(Toolbar_5);
+  removeToolBar(Toolbar_6);
+
+  addToolBar(Toolbar_1);
+  Toolbar_1->show();
+  addToolBar(Toolbar_2);
+  Toolbar_2->show();
+  addToolBar(HelpToolbar);
+  HelpToolbar->show();
+  addToolBarBreak();
+  addToolBar(Toolbar_3);
+  Toolbar_3->show();
+  addToolBar(Toolbar_4);
+  Toolbar_4->show();
+  addToolBar(ToolbarDbg);
+  ToolbarDbg->show();
+  addToolBarBreak();
+  addToolBar(Toolbar_5);
+  Toolbar_5->show();
+  addToolBar(Toolbar_6);
+  Toolbar_6->show();
+
   theActiveFrame = 0;
 
 	makeStyle(LBaseData->m_style);
@@ -223,7 +251,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
   if (!firstTime) {
     delete LBaseData->whatNextButton;
-    delete LBaseData->myWhatsThisButton;
+    delete LBaseData->myWhatsThisAction;
   }
   fillHelpToolbar(HelpToolbar);
 
@@ -352,13 +380,17 @@ void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,
 
 void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
 {
-  LBaseData->myWhatsThisButton = Q3WhatsThis::whatsThisButton(HelpToolbar);
-  Q3WhatsThis::add(LBaseData->myWhatsThisButton,"<p>Drag the \"What's this?\" cursor to any user interface object"
-    " and drop it there to see a <b>little popup info (but usually more than a tooltip)</b> on that object.</p>");
+  /*
   newHelpToolbutton(tb,LBaseData->whatNextButton,"What next?",SLOT(on_whatNext_clicked()),
     "What can I do next at the current selection?",
     "<p>Provides online help which lists the most important operations "
-    "that you can perform <b>at the current selection</b></p>");
+    "that you can carry out <b>at the current selection</b></p>");
+*/
+  LBaseData->myWhatsThisAction = QWhatsThis::createAction(HelpToolbar);
+  HelpToolbar->addAction(LBaseData->myWhatsThisAction);
+  LBaseData->myWhatsThisAction->setWhatsThis("<p>Drag the \"What's this?\" cursor to any user interface object"
+    " and drop it there to see a <b>little popup info (but usually more than a tooltip)</b> on that object.</p>");
+  LBaseData->myWhatsThisAction->setToolTip("Enter \"WhatsThis help\" mode");
 }
 
 void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
@@ -1415,7 +1447,7 @@ void CLavaMainFrame::adjustToolbar_7 () {
 	  Toolbar_7->hide();
 
   delete LBaseData->whatNextButton;
-  delete LBaseData->myWhatsThisButton;
+  delete LBaseData->myWhatsThisAction;
   fillHelpToolbar(HelpToolbar);
 }
 
@@ -1737,7 +1769,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     resize(sz.width()*7/10, sz.height()*7/10);
 //  }
   splitter = new QSplitter(this);//vb);
-//  setCentralWidget(splitter);
+  setCentralWidget(splitter);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
   viewL = new CInclView(splitter, doc);
@@ -1929,7 +1961,7 @@ void CFormFrame::CalcSplitters()
 QString ToolbarWhatsThis::text(const QPoint &point) {
   QToolButton *button;
 
-  button = (QToolButton*)toolbar->childAt(point.x(),point.y());//execView->sv->viewportToContents(point.x(),point.y(),xc,yc);
+  button = (QToolButton*)toolbar->childAt(point.x(),point.y());
   if (!button)
     return QString::null;
   return helpTextMap[button->textLabel()];

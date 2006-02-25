@@ -474,7 +474,7 @@ public:
 
     *whatNextButton;
 
-  QToolButton *myWhatsThisButton;
+  QAction *myWhatsThisAction;
 
   char* BasicNames[30];
   DString OperatorNames [OP_high];

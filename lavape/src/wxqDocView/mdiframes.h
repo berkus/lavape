@@ -92,7 +92,7 @@ private:
  * Use this instead of wxMDIChildFrame
  */
 
-class WXDLLEXPORT wxMDIChildFrame  : public QWidget
+class WXDLLEXPORT wxMDIChildFrame  : public QMainWindow
 {
 public:
   wxMDIChildFrame(QWidget *parent, const char* name);
