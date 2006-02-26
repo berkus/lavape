@@ -341,6 +341,7 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   QFont f;
 
   pb = new QPushButton(QString(text),tb);
+  tb->addWidget(pb);
   connect(pb,SIGNAL(clicked()),this,slotParm);
   f = pb->font();
   f.setBold(true);
@@ -1783,20 +1784,19 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     doc->AddView(viewR);
     doc->AddView(viewL);
     doc->AddView(viewM);
-    Q3ValueList<int> list = splitter->sizes();
-    Q3ValueList<int>::Iterator it = list.begin();
-    int totalW = *it;
-    ++it;
-    totalW += *it;
-    ++it;
+/*
+    QList<int> list=splitter->sizes();
+    QList<int>::iterator it;
+    it = list.begin();
+    int totalW = *it++;
+    totalW += *it++;
     totalW += *it;
     it = list.begin();
-    *it = 10;
-    ++it;
-    *it = totalW-20;
-    ++it;
+    *it++ = 10;
+    *it++ = 40;//totalW-20;
     *it = 10;
     splitter->setSizes(list);
+*/
     lastActive = viewM;
     if  ((oldWindowState == Qt::WindowMaximized) && showIt)
       showMaximized();
