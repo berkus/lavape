@@ -82,8 +82,6 @@ OutFile::OutFile (const unsigned fref)
 OutFile::~OutFile ()
 
 {
-  int result;
-
   Done = true;
   Flush();
   if (!Buffer) return;

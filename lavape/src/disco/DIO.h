@@ -61,11 +61,11 @@ public:
   void FROpenInput (InFile **f, const DString& filename)
   { FOpenInput (f,filename.c); }
 
-  void FOpenInputString (InFile **f,
+/*  void FOpenInputString (InFile **f,
        char * const buffer,
                          const unsigned length,
                          BufferProc bufferProc);
-
+*/
   void SwitchInput (InFile *f);
 
   void CurrentInput (InFile **f);
@@ -76,12 +76,12 @@ public:
   { FOpenOutput(f,filename.c); }
 
   void FROpenOutput (OutFile ** f,const unsigned fileref);
-
+/*
   void FOpenOutputString (OutFile **f,
         char * const buffer,
                           const unsigned length,
                           const BufferProc bufferProc);
-
+*/
   void SwitchOutput (OutFile *f);
 
   void CurrentOutput (OutFile **f);

@@ -61,8 +61,8 @@ void IOCLASS::OpenOutput (const char *filename)
 void IOCLASS::CloseInput ()
 
 {
-  if (CurrentInFile->fileref > 0)
-    delete CurrentInFile;
+//  if (CurrentInFile->fileref > 0)
+//    delete CurrentInFile;
   CurrentInFile = StdIn;
   Done = true;
 }
@@ -71,8 +71,8 @@ void IOCLASS::CloseInput ()
 void IOCLASS::CloseOutput ()
 
 {
-  if (CurrentOutFile->fileref > 2)
-    delete CurrentOutFile;
+//  if (CurrentOutFile->fileref > 2)
+//    delete CurrentOutFile;
   CurrentOutFile = StdOut;
   Done = true;
 }
@@ -95,7 +95,7 @@ void IOCLASS::FROpenInput (InFile **f,const unsigned fileref)
   Done = CurrentInFile->Done;
 }
 
-
+/*
 void IOCLASS::FOpenInputString (InFile **f,
         char * const buffer,
         const unsigned length,
@@ -106,7 +106,7 @@ void IOCLASS::FOpenInputString (InFile **f,
   *f = CurrentInFile;
   Done = CurrentInFile->Done;
 }
-
+*/
 
 void IOCLASS::SwitchInput (InFile *f)
 {
@@ -141,7 +141,7 @@ void IOCLASS::FROpenOutput (OutFile **f,const unsigned fileref)
   Done = CurrentOutFile->Done;
 }
 
-
+/*
 void IOCLASS::FOpenOutputString (OutFile **f,
          char * const buffer,
          const unsigned length,
@@ -152,7 +152,7 @@ void IOCLASS::FOpenOutputString (OutFile **f,
   *f = CurrentOutFile;
   Done = CurrentOutFile->Done;
 }
-
+*/
 
 void IOCLASS::SwitchOutput (OutFile *f)
 {
@@ -173,8 +173,6 @@ void IOCLASS::CurrentOutput (OutFile **f)
 void IOCLASS::Remove (const char *filename)
 
 {
-  int result;
-
   if (filename[0] == '\0') {
     Done = false;
     return;

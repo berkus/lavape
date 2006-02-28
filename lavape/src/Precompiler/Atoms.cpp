@@ -19,6 +19,7 @@
 
 #include "Atoms.h"
 #include <string.h>
+#include "qbytearray.h"
 
 
 AtomType Atom;

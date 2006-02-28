@@ -10,6 +10,7 @@
 
 #include "qstring.h"
 #include "ASN1.h"
+#include "qfile.h"
 
 
 

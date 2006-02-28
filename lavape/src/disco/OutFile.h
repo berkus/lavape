@@ -10,6 +10,7 @@
 
 #include "TextFile.h"
 #include "DString.h"
+#include "qfile.h"
 
 
 
