@@ -4,7 +4,7 @@
 #include "qaction.h"
 #include "qapplication.h"
 #include "q3asciidict.h"
-#include "qassistantclient.h"
+#include "QtAssistant/qassistantclient.h"
 #include "q3button.h"
 #include "q3buttongroup.h"
 #include "q3canvas.h"

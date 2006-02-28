@@ -48,7 +48,7 @@
 #include "PEBaseDoc.h"
 #include "ExecFrame.h"
 #include "q3textedit.h"
-#include "qassistantclient.h"
+#include "QtAssistant/qassistantclient.h"
 #include "LavaBaseStringInit.h"
 //#include "Resource.h"
 #include "LavaExecsStringInit.h"

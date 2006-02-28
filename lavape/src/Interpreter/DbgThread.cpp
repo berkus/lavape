@@ -36,7 +36,7 @@
 //Added by qt3to4:
 #include <QCustomEvent>
 #include <signal.h>
-#include "qassistantclient.h"
+#include "QtAssistant/qassistantclient.h"
 #include "q3process.h"
 #include <stdlib.h>
 

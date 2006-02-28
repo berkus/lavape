@@ -61,7 +61,7 @@
 #include "q3dict.h"
 #include "qevent.h"
 #include "qtooltip.h"
-#include "qassistantclient.h"
+#include "QtAssistant/qassistantclient.h"
 //Added by qt3to4:
 #include <Q3ActionGroup>
 #include <QCloseEvent>
@@ -1765,6 +1765,8 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   setIcon(QPixmap((const char**) Lava));
   QSize sz;
+  int totalW=0;
+
 //  if (oldWindowState != Qt::WindowMaximized) {
     sz = parentWidget()->size();
     resize(sz.width()*7/10, sz.height()*7/10);
@@ -1784,22 +1786,28 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     doc->AddView(viewR);
     doc->AddView(viewL);
     doc->AddView(viewM);
-/*
+
     QList<int> list=splitter->sizes();
-    QList<int>::iterator it;
-    it = list.begin();
-    int totalW = *it++;
-    totalW += *it++;
-    totalW += *it;
-    it = list.begin();
-    *it++ = 10;
-    *it++ = 40;//totalW-20;
-    *it = 10;
-    splitter->setSizes(list);
+
+    splitter->setMinimumSize(600,400);
+/*    for (i=0; i<3; i++)
+      totalW += list.at(i);
 */
+    totalW = 600;
+/*
+    splitter->setStretchFactor(0,1);
+    splitter->setStretchFactor(1,1);
+    splitter->setStretchFactor(2,1);
+*/
+    list.replace(0,totalW * 0.1);
+    list.replace(1,totalW * 0.8);
+    list.replace(2,totalW * 0.1);
+    splitter->setSizes(list);
+
     lastActive = viewM;
     if  ((oldWindowState == Qt::WindowMaximized) && showIt)
       showMaximized();
+
 		return true;
   }
   else {

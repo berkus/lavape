@@ -172,8 +172,8 @@ void wxApp::onIdle()
 
 void wxApp::customEvent(QCustomEvent *e)
 {
-	if (e->type() == IDU_Idle)
-	  	onUpdateUI();
+//	if (e->type() == IDU_Idle)
+//	  	onUpdateUI();
 }
 
 void wxApp::onUpdateUI()

@@ -39,7 +39,7 @@
 #include "qfontdialog.h"
 #include "qmessagebox.h"
 #include <signal.h>
-#include "qassistantclient.h"
+#include "QtAssistant/qassistantclient.h"
 #include "qprocess.h"
 #include <stdlib.h>
 

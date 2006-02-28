@@ -24,7 +24,7 @@
 #include "qfileinfo.h"
 #include "qpushbutton.h"
 #include "qtoolbutton.h"
-#include "qassistantclient.h"
+#include "QtAssistant/qassistantclient.h"
 #include "q3whatsthis.h"
 
 

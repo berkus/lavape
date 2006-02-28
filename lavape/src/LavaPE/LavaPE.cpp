@@ -60,7 +60,7 @@
 #include <QEvent>
 
 #include "AboutBox.h"
-#include "qassistantclient.h"
+#include "QtAssistant/qassistantclient.h"
 
 static QString szSaveEveryChange = "/SaveEveryChange";
 static QString szExecFont = "/ExecFont";

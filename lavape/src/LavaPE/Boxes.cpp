@@ -37,7 +37,7 @@
 #include "qlabel.h"
 #include "qmessagebox.h"
 #include "q3filedialog.h"
-#include "qassistantclient.h"
+#include "QtAssistant/qassistantclient.h"
 
 
 
