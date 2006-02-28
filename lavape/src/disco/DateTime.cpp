@@ -32,6 +32,8 @@
 
 
 static time_t tval;
+
+/*
 DateTimePtr dateTime ()
 
 {
@@ -42,7 +44,7 @@ DateTimePtr dateTime ()
   e= localtime_s(my_time,&tval);
   return (DateTimePtr)my_time;
 }
-
+*/
 
 DATE_::DATE_(const DString& str)
 {

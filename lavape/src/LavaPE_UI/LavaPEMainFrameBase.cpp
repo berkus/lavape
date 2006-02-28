@@ -3,3 +3,4 @@
   CMainFrame::CMainFrame() {
 //    setupUi(this);
   }
+	

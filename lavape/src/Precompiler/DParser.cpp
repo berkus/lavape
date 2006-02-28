@@ -22,6 +22,7 @@
 #include "ContxtCK.h"
 #include "ChString.h"
 #include "UNIX.h"
+#include "qfile.h"
 
 
 DParserCLASS DParser;
@@ -99,22 +100,25 @@ bool DParserCLASS::notYetIncluded (const DString& filename)
 {
   CHEString *nextDir;
   DString fullName;
-  int accessible;
+  bool accessible;
+	QFile file;
     
   if (filename[0] == '/') {
     fullName = filename;
-    accessible = _access(fullName.c,R_OK);
+		file.setFileName(fullName.c);
+    accessible = file.isReadable();
   }
   else
     for (nextDir = (CHEString*)CmdParms.IncludeDirectories.first;
          nextDir;
          nextDir = (CHEString*)nextDir->successor) {
       fullName = nextDir->data + slash + filename;
-      accessible = _access(fullName.c,R_OK);
-      if (accessible == 0) break;
+			file.setFileName(fullName.c);
+      accessible = file.isReadable();
+      if (accessible) break;
     }
 
-  if (accessible == 0) {
+  if (accessible) {
     if (!IncludedFiles.AppendIfMissing(fullName))
       return false;
     IO.OpenInput(fullName);

@@ -8,9 +8,9 @@ SUBPRO=disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI
 
 CPP_INCLUDES = -I. -Ires/TreeIcons -Ires/TOOLBUTTONS -Ires -I../LavaBase/Generated \
 	-I../LavaExecs/Generated -I../LavaPE_UI -I../LavaPE_UI/Generated -I../LavaGUI -I../LavaExecs \
-	-I../wxqDocView -I../disco -I../LavaBase -I../SFLsockets -I$(QTDIR)/include
+	-I../wxqDocView -I../disco -I../LavaBase -I$(QTDIR)/include
 
-CPP_FLAGS = -DEXECVIEW
+CPP_FLAGS = -DEXECVIEW -DQT3_SUPPORT
 
 include ../common.mk
 

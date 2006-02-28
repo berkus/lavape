@@ -74,7 +74,7 @@ public:
 
 protected:
 
-  unsigned fileref;
+  QFile file;
   unsigned Size;
   bool bigBuffer;
   

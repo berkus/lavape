@@ -52,7 +52,7 @@ void SynIOCLASS::InitSyntax(SynDef *syntax, QString name)
   CHESimpleSyntax *simpleSyntax = (CHESimpleSyntax*)syntax->SynDefTree.first;
   if (!simpleSyntax) {
     simpleSyntax = new CHESimpleSyntax;
-    simpleSyntax->data.SyntaxName = DString(name);
+    simpleSyntax->data.SyntaxName = DString(qPrintable(name));
     simpleSyntax->data.nINCL = 0;
     syntax->SynDefTree.Insert(0, simpleSyntax);
     syntax->IDTable = 0;
@@ -67,6 +67,7 @@ int SynIOCLASS::ReadSynDef (const QString& fileName, SynDef *&syntax, ASN1* strg
   //returns -1 : read failed, 0: read ok, write ok, 1: read ok write failed
   ASN1* pcid;
   int ret = 0;
+	QFile file(fileName);
 
   if (strgCid)
     pcid = strgCid;
@@ -78,7 +79,7 @@ int SynIOCLASS::ReadSynDef (const QString& fileName, SynDef *&syntax, ASN1* strg
       return -1;
     }
     else {
-      if (_access(fileName,W_OK) != 0) //FILE_ATTRIBUTE_READONLY & GetFileAttributes(fileName.c))
+      if (!file.isWritable())
         ret = 1;
     }
     pcid = icid;

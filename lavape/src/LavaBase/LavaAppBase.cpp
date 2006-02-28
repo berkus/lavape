@@ -1326,7 +1326,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   }
   else {
     delete fd;
-    return 0;
+    return QStringList();
   }
   /*
   return QFileDialog::getOpenFileNames( initialDir,

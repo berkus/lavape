@@ -3191,9 +3191,6 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   FuncExpression *funcExpr;
   Operation *op;
 
-//  if (flags.Contains(isLocalVar))
-//    OutOfScope(ckd);
-
   if (flags.Contains(isSelfVar)
   && refIDs.first == refIDs.last
   && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)

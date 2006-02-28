@@ -225,7 +225,7 @@ int CLavaBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1* cid)
     cheSyn->data.SyntaxName = cheSyn->data.UsersName;
     fi.setFile(dir, cheSyn->data.SyntaxName.c);
     qfn = ResolveLinks(fi);
-    cheSyn->data.SyntaxName = DString(qfn);
+    cheSyn->data.SyntaxName = DString(qPrintable(qfn));
     RelPathName(cheSyn->data.SyntaxName, docDir);
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   }
@@ -235,7 +235,7 @@ int CLavaBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1* cid)
     if (sntx->SynDefTree.first->successor) {
       //stdName = ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.SyntaxName;
       //if (!SameFile(stdName, docDir, DString(StdLava))) {
-        stdName = DString(StdLavaLog);
+        stdName = DString(qPrintable(StdLavaLog));
         RelPathName(stdName, docDir);
         ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.SyntaxName = stdName;
         ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.UsersName = stdName;

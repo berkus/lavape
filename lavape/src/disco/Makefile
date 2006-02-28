@@ -6,7 +6,9 @@ EXEC = disco.so
 
 SUBPRO = 
 
-CPP_INCLUDES = -I. -I$(QTDIR)/include -I$(QTDIR)/include/Qt -I$(QTDIR)/include/QtCore -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/Qt3Support
+CPP_INCLUDES = -I. -I$(QTDIR)/include -I$(QTDIR)/include/Qt
+
+CPP_FLAGS = -DQT3_SUPPORT
 
 include ../common.mk
 

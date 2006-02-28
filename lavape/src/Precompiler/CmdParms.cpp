@@ -25,6 +25,7 @@
 #include "STR.h"
 
 #include "DIO.h"
+#include "qfile.h"
 
 
 CmdParmsCLASS CmdParms;
@@ -38,6 +39,7 @@ void CmdParmsCLASS::INIT ()
 {
   bool genSpecified=false;
   DString arg;
+	QFile file;
 
   if (__INITstarted) return;
   __INITstarted = true;
@@ -124,11 +126,13 @@ void CmdParmsCLASS::INIT ()
 
       HasImplMod = false;
       pCfile = SynDefFile + ".cpp";
-      if (_access(pCfile.c,R_OK) == 0)
+			file.setFileName(pCfile.c);
+      if (file.isReadable())
         HasImplMod = true;
       else {
-  pCfile = SynDefFile + ".pC";
-  if (_access(pCfile.c,R_OK) == 0) HasImplMod = true;
+				pCfile = SynDefFile + ".pC";
+				file.setFileName(pCfile.c);
+				if ((file.isReadable()) == 0) HasImplMod = true;
       }
     }
     else

@@ -180,12 +180,10 @@ void IOCLASS::Remove (const char *filename)
     return;
   }
 
-  do
-    result = _unlink(filename);
-  while ((result == -1) && (errno == EINTR));
-
-  if (result < 0) Done = false;
-  else Done = true;
+  if (QFile::remove(filename))
+	  Done = true;
+  else
+		Done = false;
 }
 
 

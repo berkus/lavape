@@ -38,7 +38,8 @@ public:
 
 private:
 
-  unsigned fildes;
+//  int fildes;
+	QFile file;
   unsigned bufferPos, bufferSize;
   int charsRead;
   char *bufferPtr;
@@ -73,7 +74,9 @@ public:
 
 private:
 
-  unsigned fildes;
+//  unsigned fildes;
+	QFile file;
+
   unsigned bufferPos, bufferSize;
   int charsRead;
   char *bufferPtr;

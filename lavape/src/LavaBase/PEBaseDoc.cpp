@@ -135,7 +135,7 @@ int CPEBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1*)
     cheSyn->data.SyntaxName = cheSyn->data.UsersName;
     fi.setFile(dir, cheSyn->data.SyntaxName.c);
     qfn = ResolveLinks(fi);
-    cheSyn->data.SyntaxName = DString(qfn);
+    cheSyn->data.SyntaxName = DString(qPrintable(qfn));
     RelPathName(cheSyn->data.SyntaxName, docDir);
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   }
@@ -143,7 +143,7 @@ int CPEBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1*)
     ((CHESimpleSyntax*)sntx->SynDefTree.first)->data.SyntaxName = DString("std.lava");
   else {
     if (sntx->SynDefTree.first->successor) {
-      stdName = DString(StdLavaLog);
+      stdName = DString(qPrintable(StdLavaLog));
       RelPathName(stdName, docDir);
       ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.SyntaxName = stdName;
       ((CHESimpleSyntax*)sntx->SynDefTree.first->successor)->data.UsersName = stdName;
@@ -944,7 +944,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   SynDef *isyntax;
 
   QFileInfo fi(lpszPathName);
-  fn = DString(lpszPathName);
+  fn = DString(qPrintable(lpszPathName));
   if (fi.exists() && !fi.isWritable()) {
     str = DString("Lava file '") + fn + DString("' couldn't be opened for writing");
     QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),str.c ,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
@@ -954,7 +954,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   oldDocDir = IDTable.DocDir;
   oldDocName = IDTable.DocName;
   oldFileExtension = IDTable.FileExtension;
-  IDTable.DocDir = DString(fi.dirPath()) + "/";
+  IDTable.DocDir = DString(qPrintable(fi.dirPath())) + "/";
   relFn = fn;
   RelPathName(relFn, IDTable.DocDir);
   simpleSyntax = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
@@ -963,7 +963,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
     isnew = !SameFile(simpleSyntax->data.SyntaxName, IDTable.DocDir, fn);
     if (isnew ) 
       CalcNames(lpszPathName);
-    simpleSyntax->data.UsersName = DString(GetUserFilename());
+    simpleSyntax->data.UsersName = DString(qPrintable(GetUserFilename()));
     simpleSyntax->data.SyntaxName = relFn; 
     if (!SameDir(IDTable.DocDir, oldDocDir)) {
       simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor;

@@ -78,7 +78,7 @@ void ATO (const char * const s)
 
   if (iAtom < NoAtom)
     iAtom = AtomType(iAtom+1);
-  strcpy_s(ATOMSTR[iAtom],MaxLenAtom,s);
+  qstrcpy(ATOMSTR[iAtom],s);
 
   if (iAtom < EndOfReservedWords) {
     newEntry = new entry;

@@ -80,10 +80,10 @@ public:
 
 protected:
 
-  unsigned fileref;
+  QFile file;
   unsigned CharsRead;
   
-  virtual void BufferEmpty ();
+//  virtual void BufferEmpty ();
 };
 
 #endif

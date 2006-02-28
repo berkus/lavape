@@ -30,7 +30,6 @@ StringInFile::StringInFile (char * const buffer,
                 const unsigned bufferLength,
                 const BufferProc bufProc)
 {
-  fileref = 0;
   Buffer = buffer;
   bufferProc = bufProc;
   BufPos = 0;
@@ -41,8 +40,9 @@ StringInFile::StringInFile (char * const buffer,
   else Done = true;
 }
 
-
+/*
 void StringInFile::BufferEmpty ()
 {
   bufferProc(Buffer,CharsRead);
 }
+*/

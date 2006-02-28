@@ -25,9 +25,9 @@
 #include "UNIX.h"
 #include "OutFile.h"
 #include "MachDep.h"
-#include "OSDep.h"
+//#include "OSDep.h"
 #include "Convert.h"
-#include <SYS/Stat.h>
+//#include <SYS/Stat.h>
 
 
 bool openInAppendMode=false;
@@ -35,14 +35,11 @@ bool openInAppendMode=false;
 
 /************************************************************************/
 
-#ifndef WIN32
-#define O_BINARY 0
-#endif
 
 OutFile::OutFile (const char *filename)
 {
-  int result, openMode;
-  errno_t err;
+	file.setFileName(filename);
+  QIODevice::OpenMode openMode;
 
   Buffer = 0;
   if (filename[0] == '\0') {
@@ -51,20 +48,15 @@ OutFile::OutFile (const char *filename)
   }
   
   if (openInAppendMode) {
-    openMode = O_CREAT | O_APPEND | O_RDWR | O_BINARY;
+    openMode = QIODevice::Append | QIODevice::ReadWrite;
     openInAppendMode = false;
   }
-  else openMode = O_TRUNC | O_CREAT | O_WRONLY | O_BINARY;
+  else
+		openMode =QIODevice::WriteOnly;
 
-  do {
-    err = _sopen_s(&result,filename,openMode,_SH_DENYRW,_S_IWRITE);
-    err = errno;
-  } while ((result == -1) && (errno == EINTR));
-
-  if (result < 0)
+  if (!file.open(openMode))
     Done = false;
   else {
-    fileref = result;
     Buffer = new char [BufferSize];
     BufPos = 0;
     Size = BufferSize;
@@ -76,12 +68,14 @@ OutFile::OutFile (const char *filename)
 
 OutFile::OutFile (const unsigned fref)
 {
-  fileref = fref;
+  if (!file.open(fref,QIODevice::WriteOnly))
+		Done = false;
+		else 
+			Done = true;
   Buffer = new char[BufferSize];
   BufPos = 0;
   Size = BufferSize;
   bigBuffer = false;
-  Done = true;
 }
 
 
@@ -93,14 +87,12 @@ OutFile::~OutFile ()
   Done = true;
   Flush();
   if (!Buffer) return;
-  if (fileref <= 2) return;
+//  if (fileref <= 2) return;
   
-  do
-    result = _close(fileref);
-  while ((result == -1) && (errno == EINTR));
+  file.close();
 
   delete [] Buffer;
-  if (result == -1) Done = false;
+//  if (result == -1) Done = false;
 }
 
 
@@ -215,9 +207,7 @@ void OutFile::Flush ()
   
   if (BufPos > 0) {
     BytesToWrite = BufPos;
-    do
-      result = _write(fileref,Buffer,BytesToWrite);
-    while ((result == -1) && (errno == EINTR));
+    result = file.write(Buffer,BytesToWrite);
     if (result < 0) {
       printf("++++ error in OutFile::Flush, errno=%d\n",errno);
       Done = false;

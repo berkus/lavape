@@ -7,7 +7,8 @@ SUBPRO=SFLsockets disco wxqDocView LavaBase
 
 CPP_INCLUDES =  -I../disco -I../LavaPE/res/TreeIcons -I../LavaPE/res -I../LavaPE/res/TOOLBUTTONS -I. -I../LavaBase/Generated -IGenerated -I../wxqDocView -I../SFLsockets -I../LavaBase -I../Lava -I$(QTDIR)/include
 
-CPP_FLAGS = -DNEEDS_INT_DEFINED
+CPP_FLAGS = -DNEEDS_INT_DEFINED -DQT3_SUPPORT
+
 
 include ../common.mk
 

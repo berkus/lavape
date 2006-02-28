@@ -1,6 +1,6 @@
 /* LavaPE -- Lava Programming Environment
    Copyright (C) 2002 Fraunhofer-Gesellschaft
-	 (http://www.sit.fraunhofer.de/english/)
+         (http://www.sit.fraunhofer.de/english/)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -76,23 +76,20 @@ void ASN1OutFile::error (QString msgText)
 
 ASN1InFile::ASN1InFile (const QString& fileName, bool silent)
 {
-  int rc;
-  errno_t err;
-  
+	file.setFileName(fileName);
+
   IO.INIT();
-  
+
   BufferSize = 20000;
   Silent = silent;
   bufferPtr = 0;
 
-  err = _sopen_s(&rc,fileName,O_RDONLY|O_BINARY,_SH_DENYWR,_S_IREAD);
-  if (rc < 0) {
+	if (!file.open(QIODevice::ReadOnly)) {
     error("UNIX.open, file \""+fileName+"\"");
     Done = false;
     return;
   }
   bufferPtr = new char [BufferSize];
-  fildes = rc;
   bufferPos = 0;
   bufferSize = BufferSize;
   charsRead = 0;
@@ -103,23 +100,20 @@ ASN1InFile::ASN1InFile (const QString& fileName, bool silent)
 
 ASN1OutFile::ASN1OutFile (const QString& fileName, bool silent)
 {
-  int rc;
-  errno_t err;
-  
+	file.setFileName(fileName);
+
   IO.INIT();
-  
+
   BufferSize = 20000;
   Silent = silent;
   bufferPtr = 0;
-  
-  err = _sopen_s(&rc,fileName,O_TRUNC | O_CREAT | O_WRONLY | O_BINARY,_SH_DENYWR,_S_IWRITE);
-  if (rc < 0) {
+
+	if (!file.open(QIODevice::ReadOnly)) {
     error("UNIX.open, file \""+fileName+"\"");
     Done = false;
     return;
   }
   bufferPtr = new char [BufferSize];
-  fildes = rc;
   bufferPos = 0;
   bufferSize = BufferSize;
   charsRead = 0;
@@ -132,7 +126,7 @@ ASN1InFile::~ASN1InFile ()
 
 {
   if (bufferPtr) {
-    _close(fildes);
+    file.close();
     delete [] bufferPtr;
   }
 } // END OF ~ASN1InFile
@@ -141,15 +135,15 @@ ASN1InFile::~ASN1InFile ()
 ASN1OutFile::~ASN1OutFile ()
 
 {
-  int rc;
-  
+  qint64 rc;
+
   if (openForOutput && (bufferPos > 0)) {
-    rc = _write(fildes,bufferPtr,bufferPos);
-    if ((rc < 0) || (rc != (int)bufferPos))
+    rc = file.write(bufferPtr,bufferPos);
+    if ((rc < 0) || (rc != (qint64)bufferPos))
       error("~ASN1File: UNIX.write");
   }
   if (bufferPtr) {
-    _close(fildes);
+    file.close();
     delete [] bufferPtr;
   }
 } // END OF ~ASN1OutFile
@@ -158,11 +152,11 @@ ASN1OutFile::~ASN1OutFile ()
 void ASN1OutFile::putChar (const unsigned char& c)
 
 {
-  int rc;
-  
+  qint64 rc;
+
   if (bufferPos == bufferSize) {
-    rc = _write(fildes,bufferPtr,bufferSize);
-    if ((rc < 0) || (rc != (int)bufferSize)) {
+    rc = file.write(bufferPtr,bufferSize);
+    if ((rc < 0) || (rc != (qint64)bufferSize)) {
       error("putChar: UNIX.write");
       return;
     }
@@ -176,7 +170,7 @@ void ASN1InFile::getChar (unsigned char& c)
 
 {
   if (bufferPos == (unsigned)charsRead) {
-    charsRead = _read(fildes,bufferPtr,bufferSize);
+    charsRead = file.read(bufferPtr,bufferSize);
     if (charsRead < 0) {
       error("getChar: UNIX.read");
       return;
@@ -239,7 +233,7 @@ void ASN1OutSock::error (QString msgText)
 } // END OF error
 
 ASN1InSock::ASN1InSock (QTcpSocket *socket, bool silent)
-{    
+{
   BufferSize = 20000;
   Silent = silent;
   bufferPtr = 0;
@@ -255,13 +249,13 @@ ASN1InSock::ASN1InSock (QTcpSocket *socket, bool silent)
 
 
 ASN1OutSock::ASN1OutSock (QTcpSocket *socket, bool silent)
-{  
+{
   IO.INIT();
-  
+
   BufferSize = 20000;
   Silent = silent;
   bufferPtr = 0;
-  
+
   bufferPtr = new char [BufferSize];
   fildes = socket;
   bufferPos = 0;
@@ -286,7 +280,7 @@ void ASN1OutSock::flush ()
 
 {
   int rc;
-  
+
   if (openForOutput && (bufferPos > 0)) {
     rc = fildes->write(bufferPtr,bufferPos);
     if ((rc < 0) || (rc != (int)bufferPos))
@@ -311,7 +305,7 @@ void ASN1OutSock::putChar (const unsigned char& c)
 
 {
   int rc;
-  
+
   if (bufferPos == bufferSize) {
     fildes->waitForBytesWritten(-1);
     rc = fildes->write(bufferPtr,bufferSize);

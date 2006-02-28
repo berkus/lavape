@@ -550,9 +550,9 @@ DebugItem::DebugItem(DDMakeClass* dd, DebugItem* parent, CLavaBaseDoc* doc, Lava
   HasChildren = withChildren;
   if (!DD->myObject && parent)
     varName = varName + ")";
-  Column0 = DString(DD->getValue0(varName));
-  Column1 = DString(DD->getValue1());
-  Column2 = DString(DD->getValue2());
+  Column0 = DString(qPrintable(DD->getValue0(varName)));
+  Column1 = DString(qPrintable(DD->getValue1()));
+  Column2 = DString(qPrintable(DD->getValue2()));
   if (drawChildren) {
     DD->makeChildren();
     childrenDrawn = true;

@@ -87,7 +87,7 @@ struct DISCO_DLL TDateTime {
 typedef TDateTime *DateTimePtr;
 
 
-extern DISCO_DLL DateTimePtr dateTime ();
+//extern DISCO_DLL DateTimePtr dateTime ();
 
 
 #endif

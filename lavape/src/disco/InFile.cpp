@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "UNIX.h"
-#include "OSDep.h"
+//#include "OSDep.h"
 #include "MACROS.h"
 
 #include "InFile.h"
@@ -35,23 +35,16 @@
 
 InFile::InFile (const DString& filename)
 {
-  int result;
-  errno_t err;
-
+	file.setFileName(filename.c);
   Buffer = 0;
   if (filename.Length() == 0) {
     Done = false;
     return;
   }
 
-  do
-    err = _sopen_s(&result,(const char *)filename.c,O_RDONLY|O_BINARY,_SH_DENYWR,_S_IREAD);
-  while ((result == -1) && (err == EINTR));
-
-  if (result < 0)
+  if (!file.open(QIODevice::ReadOnly))
     Done = false;
   else {
-    fileref = result;
     Buffer = new char[BufferSize];
     BufPos = 0;
     CharsRead = 0;
@@ -62,18 +55,18 @@ InFile::InFile (const DString& filename)
 
 InFile::InFile (const unsigned fref)
 {
-  fileref = fref;
+  if (!file.open(fref,QIODevice::ReadOnly))
+    Done = false;
+	else
+  	Done = true;
   Buffer = new char[BufferSize];
   BufPos = 0;
   CharsRead = 0;
-  Done = true;
 }
 
 
 InFile::~InFile ()
 {
-  int result;
-
   Done = true;
   if (!Buffer) {
     CharsRead = 0;
@@ -81,19 +74,16 @@ InFile::~InFile ()
     return;
   }
 
-  do
-    result = _close(fileref);
-  while ((result == -1) && (errno == EINTR));
+	file.close();
 
   delete [] Buffer;
-  if (result == -1) Done = false;
 }
 
 
 void InFile::Read (char& ch)
 {
   if (BufPos >= CharsRead) {
-    BufferEmpty();
+    CharsRead = file.read(Buffer,BufferSize);
     if (CharsRead == 0) {
       Done = false;
       ch = EOF;
@@ -323,7 +313,7 @@ void InFile::ReadHex (unsigned& x)
   Length = l;
 }
 
-
+/*
 static void ReadBytes (const unsigned fileref,
            char *buf,
            const unsigned BytesToRead,
@@ -331,16 +321,15 @@ static void ReadBytes (const unsigned fileref,
 {
   int result;
   
-  do
     result = _read(fileref,buf,BytesToRead);
-  while ((result == -1) && (errno == EINTR));
   
   if (result == -1) BytesRead = 0;
   else BytesRead = result;
 }
 
-
 void InFile::BufferEmpty ()
 {
   ReadBytes(fileref,Buffer,BufferSize,CharsRead);
 }
+*/
+

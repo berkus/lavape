@@ -27,7 +27,7 @@ private:
 
   BufferProc bufferProc;
 
-  void BufferEmpty ();
+//  void BufferEmpty ();
 };
 
 #endif
