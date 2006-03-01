@@ -23,8 +23,8 @@
 */
 
 #include "DIO.h"
-#include "StrIFile.h"
-#include "StrOFile.h"
+//#include "StrIFile.h"
+//#include "StrOFile.h"
 #include "UNIX.h"
 
 
@@ -62,7 +62,7 @@ void IOCLASS::CloseInput ()
 
 {
 //  if (CurrentInFile->fileref > 0)
-//    delete CurrentInFile;
+  delete CurrentInFile;
   CurrentInFile = StdIn;
   Done = true;
 }
@@ -72,7 +72,7 @@ void IOCLASS::CloseOutput ()
 
 {
 //  if (CurrentOutFile->fileref > 2)
-//    delete CurrentOutFile;
+  delete CurrentOutFile;
   CurrentOutFile = StdOut;
   Done = true;
 }
