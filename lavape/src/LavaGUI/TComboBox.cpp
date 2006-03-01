@@ -111,7 +111,7 @@ void CTComboBox::OnSelendok(int sel)
   GUIProg->focNode = myFormNode;
 
   if (!GUIProg->FrozenObject && sel >= 0) {
-    myFormNode->data.StringValue = DString(currentText());
+    myFormNode->data.StringValue = STRING(qPrintable(currentText()));
     myFormNode->data.D = sel;
     if (LBaseData->inRuntime) {
       ((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);

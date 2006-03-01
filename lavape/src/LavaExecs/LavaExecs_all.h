@@ -2,7 +2,6 @@
 #define _LavaExecs_PCH
 
 #include "disco_all.h"
-#include "SFLsockets_all.h"
 #include "wxqDocView_all.h"
 #include "LavaBase_all.h"
 

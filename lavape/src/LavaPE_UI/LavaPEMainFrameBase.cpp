@@ -1,6 +1,6 @@
 #include "LavaPEMainFrameBase.h"
 
   CMainFrame::CMainFrame() {
-//    setupUi(this);
+   int i = 1;
   }
 	

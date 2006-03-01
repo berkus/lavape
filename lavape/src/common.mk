@@ -82,7 +82,7 @@ else
     CC = g++
   endif
   ifeq ($(OPSYS),SunOS)
-    OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG)
+    OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG) -DQT3_SUPPORT
   else
     OSCPPFLAGS = -D__$(OPSYS) $(DBG) -DQT3_SUPPORT
   endif

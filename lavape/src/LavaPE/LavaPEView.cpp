@@ -4003,7 +4003,7 @@ void CLavaPEView::RenameOk(CTreeItem *item)
   CHAINANY* enumItems;
   CHEEnumSelId *relEl;
   QString *err = 0;
-  DString *name,  *newLab, *oldLab, lab = DString(item->text(0)) ;
+  DString *name,  *newLab, *oldLab, lab = DString(qPrintable(item->text(0))) ;
 
   if (lab.l) {
     if (!((CLavaPEApp*)wxTheApp)->LBaseData.isIdentifier(lab.c)) {
@@ -4480,7 +4480,7 @@ void CLavaPEView::OnComment()
         //  ptr->PrintFlags.INCL(trailingComment);
         //else
           ptr->PrintFlags.EXCL(trailingComment);
-        ptr->Comment = STRING(pComment->text->text());
+        ptr->Comment = STRING(qPrintable(pComment->text->text()));
       }
       hint = new CLavaPEHint(CPECommand_Comment, GetDocument(), (const unsigned long)3, d1, (DWORD)ptr, d3);
       GetDocument()->UndoMem.AddToMem(hint);
@@ -4825,7 +4825,7 @@ void CLavaPEView::OnNewEnumItem()
     newDECL = NewLavaDECL();
     *newDECL = *oldDECL;
     newEl = new CHEEnumSelId;
-    newEl->data.Id = DString(iT);
+    newEl->data.Id = DString(qPrintable(iT));
     newItems = &((TEnumDescription*)newDECL->EnumDesc.ptr)->EnumField.Items;
     newEl->data.selItem = true;
     if  (data->type == TIType_EnumItems)

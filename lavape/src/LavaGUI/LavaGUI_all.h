@@ -1,7 +1,6 @@
 #ifndef _LavaGUI_PCH
 #define _LavaGUI_PCH
 
-#include "SFLsockets_all.h"
 #include "disco_all.h"
 #include "wxqDocView_all.h"
 #include "LavaBase_all.h"

@@ -3,11 +3,11 @@ PRJ = LavaGUI
 MOCABLES = FormWid.h LavaGUIFrame.h LavaGUIPopup.h LavaGUIView.h LavaMenu.h TButton.h TComboBox.h TEdit.h TStatic.h
 
 EXEC = LavaGUI.so
-SUBPRO=SFLsockets disco wxqDocView LavaBase
+SUBPRO=disco wxqDocView LavaBase
 
-CPP_INCLUDES =  -I../disco -I../LavaPE/res/TreeIcons -I../LavaPE/res -I../LavaPE/res/TOOLBUTTONS -I. -I../LavaBase/Generated -IGenerated -I../wxqDocView -I../SFLsockets -I../LavaBase -I../Lava -I$(QTDIR)/include
+CPP_INCLUDES =  -I../disco -I../LavaPE/res/TreeIcons -I../LavaPE/res -I../LavaPE/res/TOOLBUTTONS -I. -I../LavaBase/Generated -IGenerated -I../wxqDocView -I../LavaBase -I../Lava -I$(QTDIR)/include -I$(QTDIR)/include/Qt -I$(QTDIR)/include/QtCore -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/Qt3Support
 
-CPP_FLAGS = -DNEEDS_INT_DEFINED -DQT3_SUPPORT
+CPP_FLAGS = -DNEEDS_INT_DEFINED
 
 
 include ../common.mk

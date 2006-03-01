@@ -897,7 +897,7 @@ void CCompSpecBox::OnOK()
   while (ipos < maxi) {
     enumsel =  new CHEEnumSelId;
     CListBoxItem* it = (CListBoxItem*)m_EnumItems1->item(ipos);
-    enumsel->data.Id = DString(it->text());
+    enumsel->data.Id = STRING(qPrintable(it->text()));
     myDECL->Items.Append(enumsel);
     ipos++;
   }//while  
@@ -1243,7 +1243,7 @@ void CEnumBox::OnOK()
     enumsel =  new CHEEnumSelId;
     item = (CListBoxItem*)m_EnumItems->item(ipos);
     str = item->text();
-    enumsel->data.Id = DString(str);
+    enumsel->data.Id = STRING(qPrintable(str));
     inEl->Items.Append(enumsel);
     ipos = ipos+1;
   }//while
@@ -1309,7 +1309,7 @@ void CEnumItem::OnOK()
     }
     else {
       if (Items) {
-        str = DString(m_EnumItem->text());
+        str = qPrintable(m_EnumItem->text());
         for (che = (CHEEnumSelId*)Items->first; che && (che->data.Id != str); che = (CHEEnumSelId*)che->successor);
         if (che)
           QMessageBox::critical(this,qApp->name(),ERR_NameInUse,QMessageBox::Ok,0,0);
@@ -2179,13 +2179,13 @@ void CIncludeBox::UpdateData(bool getData)
 void CIncludeBox::OnOK() 
 {
   UpdateData(true);
-  NewChe->data.UsersName = DString(valFullPathName);
+  NewChe->data.UsersName = STRING(qPrintable(valFullPathName));
   QFileInfo fi(valFullPathName);
   QString qfn = ResolveLinks(fi);
-  NewChe->data.SyntaxName = DString(qfn);
+  NewChe->data.SyntaxName = STRING(qPrintable(qfn));
   RelPathName(NewChe->data.SyntaxName, MyDoc->IDTable.DocDir); 
   RelPathName(NewChe->data.UsersName, MyDoc->IDTable.DocDir);   
-  NewChe->data.LocalTopName = DString(valUseAs); 
+  NewChe->data.LocalTopName = STRING(qPrintable(valUseAs)); 
   QDialog::accept();
 }
 
@@ -2663,7 +2663,7 @@ void CInterfaceBox::OnOK()
     if  (valKindOfInterface == 2) {
       myDECL->TypeFlags.EXCL(isAbstract);
       if (valIfaceID.length() > 0)
-        myDECL->LitStr = DString(valIfaceID);
+        myDECL->LitStr = STRING(qPrintable(valIfaceID));
       myDECL->TypeFlags.INCL(isComponent);
       if (!onNew) {
         CHE* che = (CHE*)myDECL->NestedDecls.first;
@@ -4076,9 +4076,9 @@ QString*  CheckNewName(const QString& valNewName, LavaDECL *myDECL, CLavaPEDoc* 
     fullName = myDECL->ParentDECL->FullName;
   parDECL = myDECL->ParentDECL;
   myDECL->FullName = fullName;
-  myDECL->LocalName = DString(valNewName);
+  myDECL->LocalName = STRING(qPrintable(valNewName));
   myDECL->CompleteFullName();
-  if (myDoc->FindInSupports(DString(valNewName), myDECL, parDECL, (myDECL->DeclType == Attr) || (myDECL->DeclType == Function)))
+  if (myDoc->FindInSupports(qPrintable(valNewName), myDECL, parDECL, (myDECL->DeclType == Attr) || (myDECL->DeclType == Function)))
     return &ERR_NameInUse;
   else
     return 0;

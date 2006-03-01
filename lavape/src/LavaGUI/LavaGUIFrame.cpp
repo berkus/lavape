@@ -121,7 +121,7 @@ void CLavaGUIFrame::NewTitle(LavaDECL *decl, const DString& lavaName)
 
 void CLavaGUIFrame::SetModified(const QString& lavaName, bool changed)
 {
-  DString title = DString(lavaName);
+  DString title = qPrintable(lavaName);
   if (title.l && (title[title.l-1] == '*')) {
     if (!changed)
       title.Delete(title.l-1, 1);

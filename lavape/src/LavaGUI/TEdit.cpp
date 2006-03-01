@@ -103,7 +103,7 @@ void CTEdit::focusInEvent(QFocusEvent *ev)
 void CTEdit::focusOutEvent(QFocusEvent *ev)
 {
   if (isModified()) {
-    myFormNode->data.StringValue = DString(text());
+    myFormNode->data.StringValue = STRING(qPrintable(text()));
     if (LBaseData->inRuntime) {
       inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
       if (inError)
@@ -203,7 +203,7 @@ void CMultiLineEdit::focusInEvent(QFocusEvent *ev)
 void CMultiLineEdit::focusOutEvent(QFocusEvent *ev)
 {
   if (isModified()) {
-    myFormNode->data.StringValue = DString(text());
+    myFormNode->data.StringValue = STRING(qPrintable(text()));
     if (LBaseData->inRuntime) {
       inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
       //if (inError)

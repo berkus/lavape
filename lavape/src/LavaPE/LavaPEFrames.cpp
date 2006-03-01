@@ -1568,7 +1568,7 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
 	
   if (ev->data()) {
     if ( !((CLavaPEApp*)wxTheApp)->inTotalCheck) { //to prevent crash if mdi-frame already closed
-		  title = DString(((QWidget*)ev->data())->caption());
+		  title = DString(qPrintable(((QWidget*)ev->data())->caption()));
 		  if (title.l) {
 			  if (title[title.l-1] == '*')
 				  title = title.Substr(0,title.l-1);
@@ -1799,9 +1799,9 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     splitter->setStretchFactor(1,1);
     splitter->setStretchFactor(2,1);
 */
-    list.replace(0,totalW * 0.1);
-    list.replace(1,totalW * 0.8);
-    list.replace(2,totalW * 0.1);
+    list.replace(0,int(totalW * 0.1));
+    list.replace(1,int(totalW * 0.8));
+    list.replace(2,int(totalW * 0.1));
     splitter->setSizes(list);
 
     lastActive = viewM;

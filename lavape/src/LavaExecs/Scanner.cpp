@@ -98,7 +98,7 @@ bool IsOK (QString &txt,TToken &token,int &pos,QString *&msg, CComboBar *comboBa
           }
         }
       }
-      else if (comboBar->UsedName(DString(txt))) {
+      else if (comboBar->UsedName(qPrintable(txt))) {
         *msgp = &ERR_NameInUse;
         return false;
       }

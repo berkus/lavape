@@ -543,7 +543,7 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
           resultFNode->data.F = *(float*)((*rPtr)+LSH);
           qstr.setNum(resultFNode->data.F);
           qstr = qstr.rightJustify(anno->Length.Field,' ',true);
-          resultFNode->data.StringValue = DString(qstr);
+          resultFNode->data.StringValue = STRING(qPrintable(qstr));
       //    Conv.RealToString(resultFNode->data.F, 0, anno->Length.Field, resultFNode->data.StringValue, ok);
         }
         else {
@@ -551,7 +551,7 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
           resultFNode->data.F = *(float*)((*rPtr)+LSH);
           qstr.setNum(resultFNode->data.Db);
           qstr = qstr.rightJustify(anno->Length.Field,' ',true);
-          resultFNode->data.StringValue = DString(qstr);
+          resultFNode->data.StringValue = STRING(qPrintable(qstr));
 //          Conv.RealToString(resultFNode->data.Db, 0, anno->Length.Field, resultFNode->data.StringValue, ok);
         }
         resultFNode->data.FIP.leng = resultFNode->data.StringValue.l;
@@ -584,7 +584,7 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
       if (rPtr) {
         pstr = (QString*)((*rPtr)+LSH);
         if (!pstr->isEmpty()) {
-          resultFNode->data.StringValue = DString( (*pstr));
+          resultFNode->data.StringValue = STRING(qPrintable((*pstr)));
           resultFNode->data.FIP.leng = resultFNode->data.StringValue.l;
           resultFNode->data.IoSigFlags.INCL(trueValue);
         }
@@ -657,7 +657,7 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
         pstr = (QString*)(enumPtr+LSH+1);
         if (!pstr->isEmpty()) {
           iVal = *(int*)(enumPtr+LSH);
-          resultFNode->data.StringValue = DString( *pstr);
+          resultFNode->data.StringValue = STRING(qPrintable(*pstr));
           resultFNode->data.FIP.leng = resultFNode->data.StringValue.l;
           resultFNode->data.IoSigFlags.INCL(trueValue);
           for (enumSel = (CHEEnumSelId*)enumSyntax->Items.first;

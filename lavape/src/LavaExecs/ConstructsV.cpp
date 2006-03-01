@@ -451,7 +451,7 @@ EnumConstV::EnumConstV (TToken,TID &tid,QString &name) {
   primaryToken = enumConst_T;
   replacedType = type;
   refID = tid;
-  Id = STRING(name);
+  Id = STRING(qPrintable(name));
 }
 
 void EnumConstV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {

@@ -1346,7 +1346,7 @@ void CExecView::Select (SynObject *selObj)
         TComment *pCmt = new TCommentV;
         pCmt->inLine = pComment->inline_comment->isChecked();
         pCmt->trailing = pComment->trailing_comment->isChecked();
-        pCmt->str = STRING(pComment->text->text());
+        pCmt->str = STRING(qPrintable(pComment->text->text()));
         text->currentSynObj = synObj;
         PutChgCommentHint(pCmt);
         if (synObj->comment.ptr) {
@@ -2509,7 +2509,7 @@ void CExecView::OnClone()
 {
   CloneExpressionV *mcln;
   VarName *varNamePtr;
-  char buffer[10];
+//  char buffer[10];
   // TODO: Add your command handler code here
   
   if (!EditOK()) return;
@@ -2517,8 +2517,8 @@ void CExecView::OnClone()
   mcln = new CloneExpressionV(true);
   varNamePtr = (VarName*)mcln->varName.ptr;
   if (tempNo > 0) {
-		sprintf_s(buffer,10,"%u",++tempNo);
-    varNamePtr->varName += buffer;
+//		qsprintf(buffer,"%u",++tempNo);
+    varNamePtr->varName += qPrintable(QString::number(++tempNo));
 //    varNamePtr->varName += _ultoa(++tempNo,buffer,10);
 	}
   InsertOrReplace(mcln);
@@ -2554,7 +2554,7 @@ void CExecView::OnComment()
     TComment *pCmt = new TCommentV;
     pCmt->inLine = pComment->inline_comment->isChecked();
     pCmt->trailing = pComment->trailing_comment->isChecked();
-    pCmt->str = STRING(pComment->text->text());
+    pCmt->str = STRING(qPrintable(pComment->text->text()));
     text->currentSynObj = synObj;
     text->showComments = true;
     myDECL->TreeFlags.INCL(ShowExecComments);
@@ -4502,8 +4502,8 @@ crtbl:
           true);
         varNamePtr = (VarName*)newExp->varName.ptr;
         if (tempNo > 1) {
-					sprintf_s(buffer,10,"%u",tempNo);
-          varNamePtr->varName += buffer;
+//					sprintf_s(buffer,"%u",tempNo);
+          varNamePtr->varName += qPrintable(QString::number(tempNo));
 //          varNamePtr->varName += _ultoa(tempNo,buffer,10);
 				}
         break;
@@ -4514,8 +4514,8 @@ crtbl:
           false);
         varNamePtr = (VarName*)newExp->varName.ptr;
         if (tempNo > 1) {
-					sprintf_s(buffer,10,"%u",tempNo);
-          varNamePtr->varName += buffer;
+//					sprintf_s(buffer,10,"%u",tempNo);
+          varNamePtr->varName += qPrintable(QString::number(tempNo));
 //          varNamePtr->varName += _ultoa(tempNo,buffer,10);
 				}
         break;
@@ -4588,8 +4588,8 @@ crtbl:
           funcStm->parentObject = newExp;
           varNamePtr = (VarName*)newExp->varName.ptr;
           if (tempNo > 1) {
-						sprintf_s(buffer,10,"%u",tempNo);
-						varNamePtr->varName += buffer;
+//						sprintf_s(buffer,10,"%u",tempNo);
+						varNamePtr->varName += qPrintable(QString::number(tempNo));
 //						varNamePtr->varName += _ultoa(tempNo,buffer,10);
 					}
           newExp->objType.ptr = new ReferenceV(CrtblPH_T,tid,str);
@@ -4653,7 +4653,7 @@ void CExecView::OnInsertObjRef (QString &refName, TDODC &refIDs, bool append)
     newRef->type = oldRef->type;
     newRef->replacedType = oldRef->replacedType;
     CopyUntil(oldRef,chp,newRef);
-    newRef->refName += DString(refName);
+    newRef->refName += qPrintable(refName);
     newRef->refIDs.last->successor = refCopy->first;
     refCopy->first->predecessor = newRef->refIDs.last;
     newRef->refIDs.last = refCopy->last;

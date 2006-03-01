@@ -279,7 +279,7 @@ void CFindByNameBox::OnOK()
     findWhat->FindRefFlags.INCL(wholeWord);
   else
     findWhat->FindRefFlags.EXCL(wholeWord);
-  findWhat->searchName = DString(m_SearchName->currentText());
+  findWhat->searchName = qPrintable(m_SearchName->currentText());
   CHEString* next;
   if (findWhat->searchName.l) {
     for (next = (CHEString*)((CLavaPEApp*)wxTheApp)->FindList.first;

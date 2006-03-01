@@ -3048,7 +3048,7 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
 {
 //  AfxDebugBreak();
   bool errEx;
-  DString str0, str, newTopName, *toINCL = 0, fn(filename);
+  DString str0, str, newTopName, *toINCL = 0, fn(qPrintable(filename));
 	QString fName(filename);
   int readResult;
 

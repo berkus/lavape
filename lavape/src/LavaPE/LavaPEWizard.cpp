@@ -653,9 +653,9 @@ bool CChainFormPage::OnApply()
       myWizard->FormDECL->Annotation.ptr->FA.ptr = new TAnnotation;
     anno =  (TAnnotation*)myWizard->FormDECL->Annotation.ptr->FA.ptr;
     if (il)
-      anno->String1 = DString(m_InsText);
+      anno->String1 = STRING(qPrintable(m_InsText));
     if (dl)
-      anno->String2 = DString(m_DelText);
+      anno->String2 = STRING(qPrintable(m_DelText));
   }
   if (myWizard->VFormDECL->SecondTFlags.Contains(isArray))
     myWizard->FormDECL->Annotation.ptr->Length.DecPoint = m_Len;
@@ -764,7 +764,7 @@ void CFormTextPage::on_fontButton_clicked()
   else
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormLabelFont,this);
   if (ok) {
-    myDecl->Annotation.ptr->String1 = DString(lf.toString());
+    myDecl->Annotation.ptr->String1 = STRING(qPrintable(lf.toString()));
     QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontName->setText(nn);
     fontName->show();
@@ -831,7 +831,7 @@ void CFormTextPage::OnApply()
   UpdateData(true);
   if (!myDecl->LocalName.l)
     myDecl->LocalName = DString("_Text");
-  myDecl->LitStr = DString(m_lit);
+  myDecl->LitStr = STRING(qPrintable(m_lit));
   GetSpace(&myDecl->Annotation.ptr, m_LiTab, m_LiSpace, m_LiFrmSpace);
   if (m_beforeBase->isChecked())
     myDecl->Annotation.ptr->BasicFlags.INCL(beforeBaseType);
@@ -901,7 +901,7 @@ void CFormTextBox::OnOK()
   UpdateData(true);
   if (!myDecl->LocalName.l)
     myDecl->LocalName = DString("_Text");
-  myDecl->LitStr = DString(m_lit);
+  myDecl->LitStr = STRING(qPrintable(m_lit));
   GetSpace(&myDecl->Annotation.ptr, m_LiTab, m_LiSpace, m_LiFrmSpace);
   if (m_beforeBase->isChecked())
     myDecl->Annotation.ptr->BasicFlags.INCL(beforeBaseType);
@@ -1174,7 +1174,7 @@ void CFontColorPage::on_fontButtonL_clicked()
   else
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormLabelFont,this);
   if (ok) {
-    FormDECL->Annotation.ptr->String1 = DString(lf.toString());
+    FormDECL->Annotation.ptr->String1 = STRING(qPrintable(lf.toString()));
     QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontNameL->setText(nn);
     fontNameL->show();
@@ -1209,7 +1209,7 @@ void CFontColorPage::on_fontButtonT_clicked()
   else
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormFont,this);
   if (ok) {
-    FormDECL->Annotation.ptr->String2 = DString(lf.toString());
+    FormDECL->Annotation.ptr->String2 = STRING(qPrintable(lf.toString()));
     QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontNameT->setText(nn);
     fontNameT->show();
@@ -1853,7 +1853,7 @@ void CLiteralsPage::GetProps()
       if (isEnumera) {
         (*p_anno)->BType = Identifier;
         if (selPos && (selPos > 0))
-          (*p_anno)->StringValue = DString(v_EnumDefault);
+          (*p_anno)->StringValue = STRING(qPrintable(v_EnumDefault));
         else
           (*p_anno)->StringValue.Reset(0);
       }
@@ -1861,7 +1861,7 @@ void CLiteralsPage::GetProps()
         (*p_anno)->BType = B_Bool;
         if (selPos && (selPos > 0)) {
           (*p_anno)->IoSigFlags.INCL(trueValue);
-          (*p_anno)->StringValue = DString(v_BoolDefault);
+          (*p_anno)->StringValue = STRING(qPrintable(v_BoolDefault));
           if (selPos == 1)
             (*p_anno)->B = false;
           else
@@ -1888,12 +1888,12 @@ void CLiteralsPage::GetProps()
       } 
       else  if ((inEl->BType == VLString) || (inEl->BType == Char)) {
         (*p_anno)->BType = VLString;
-        (*p_anno)->StringValue = DString(v_Default);
+        (*p_anno)->StringValue = STRING(qPrintable(v_Default));
       }
       else  if (inEl->BType == Integer) {
         char * endptr;
         (*p_anno)->BType = Integer;
-        (*p_anno)->StringValue = DString(v_Default);
+        (*p_anno)->StringValue = STRING(qPrintable(v_Default));
         if ((*p_anno)->StringValue.l) {
           (*p_anno)->IoSigFlags.INCL(trueValue);
           (*p_anno)->I = strtol( v_Default, &endptr, 10);
@@ -1904,7 +1904,7 @@ void CLiteralsPage::GetProps()
       }
       else {
         if (atomic) {
-          (*p_anno)->StringValue = DString(v_Default);
+          (*p_anno)->StringValue = STRING(qPrintable(v_Default));
           (*p_anno)->BType = VLString;
           if ((*p_anno)->StringValue.l)
             (*p_anno)->IoSigFlags.INCL(trueValue);
@@ -1935,7 +1935,7 @@ bool CLiteralsPage::OnAdd(ChainAny0* chain, Q3ListBox* m_list/*, int transpos*/)
   CLiteralItem *lItem = new CLiteralItem(this, true, ins, m_list, Decl);
   if (lItem->exec() == QDialog::Accepted) {
     QString qs = m_list->item(ins)->text();
-    Decl->LitStr = DString(qs);
+    Decl->LitStr = STRING(qPrintable(qs));
     if (Decl->LitStr.l != 0) {
       cheDecl = NewCHE(Decl);
       chain->AddNth(ins+1/*+transpos*/, cheDecl);
@@ -2007,7 +2007,7 @@ bool CLiteralsPage::OnEdit(ChainAny0 * chain, Q3ListBox* m_list/*, int transpos*
   if (ins >= 0) {
     CLiteralItem *lItem = new CLiteralItem(this, false, ins, m_list, Decl);
     if (lItem->exec() == QDialog::Accepted) {
-      Decl->LitStr = DString(m_list->item(ins)->text());
+      Decl->LitStr = STRING(qPrintable(m_list->item(ins)->text()));
       if (Decl->LitStr.l == 0) {
         if (chain->Uncouple(cheDecl))
           delete cheDecl;
@@ -2232,7 +2232,7 @@ void CLiteralItem::on_fontButton_clicked()
   else
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormLabelFont,this);
   if (ok) {
-    myDecl->Annotation.ptr->String1 = DString(lf.toString());
+    myDecl->Annotation.ptr->String1 = STRING(qPrintable(lf.toString()));
     QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
     fontName->setText(nn);
     fontName->show();
@@ -2339,7 +2339,7 @@ void CMenuPage::SetBProps()
 
 void CMenuPage::GetBProps() 
 {
-  DString label = DString(v_ToggleLabel);
+  DString label = DString(qPrintable(v_ToggleLabel));
   CHE *litElL = (CHE *)myWizard->FormDECL->Annotation.ptr->Prefixes.last;
   CHE *litElR = (CHE *)myWizard->FormDECL->Annotation.ptr->Suffixes.first;
   LavaDECL* Decl;
@@ -2552,7 +2552,7 @@ void CMenuPage::GetEProps()
         if (mflags[0] == 0) {
           if ((EMenuType)v_Menutype != isOMenu) {
             qs = m_LButtonText->item(ipos)->text();
-            enumsel->data.SelectionCode = DString(qs);
+            enumsel->data.SelectionCode = STRING(qPrintable(qs));
           }
           else {
             if (!enumsel->data.SelectionCode.l)
@@ -2567,10 +2567,10 @@ void CMenuPage::GetEProps()
           ininDefEl = NewCHE(inDecl);
         }
         qs = m_LButtonText->item(ipos)->text();
-        ((LavaDECL*)ininDefEl->data)->LitStr = DString(qs);
+        ((LavaDECL*)ininDefEl->data)->LitStr = STRING(qPrintable(qs));
         if (m_Pixmap->item(ipos)->text().length()) {
           CHETAnnoEx* ex = ((LavaDECL*)ininDefEl->data)->Annotation.ptr->GetAnnoEx(anno_Pixmap, true);
-          ex->data.xpmFile = DString(m_Pixmap->item(ipos)->text());
+          ex->data.xpmFile = DString(qPrintable(m_Pixmap->item(ipos)->text()));
           ((LavaDECL*)ininDefEl->data)->Annotation.ptr->BasicFlags.INCL(hasPixmap);
           ((LavaDECL*)inDefEl->data)->Annotation.ptr->BasicFlags.INCL(hasPixmap);
         }
@@ -2904,7 +2904,7 @@ void CMenuItem::on_button_browse_clicked()
                     "xpm"
                     );
   if (pix.length()) {
-    DString rpfn = DString(pix);
+    DString rpfn = DString(qPrintable(pix));
     RelPathName(rpfn,menuPage->myWizard->myDoc->IDTable.DocDir);
     m_Pixmap->setText(rpfn.c);
   }

@@ -161,9 +161,9 @@ void CInclView::OnNewInclude()
   for ( ii = 0; ii < fileNames.count(); ii++) {
     LBaseData->lastFileOpen = fileNames[ii]; 
     finfo.setFile(LBaseData->lastFileOpen);
-    openfilename = DString(ResolveLinks(finfo));
+    openfilename = qPrintable(ResolveLinks(finfo));
     pfn = new DString(openfilename);
-    pUsers = new DString(LBaseData->lastFileOpen);
+    pUsers = new DString(qPrintable(LBaseData->lastFileOpen));
     //RelPathName(rpfn, GetDocument()->IDTable.DocDir);
     for (cheSyn = (CHESimpleSyntax*)GetDocument()->mySynDef->SynDefTree.first;
          cheSyn && !SameFile(cheSyn->data.SyntaxName, GetDocument()->IDTable.DocDir,openfilename); 

@@ -196,7 +196,7 @@ static void printCommentLines (DString comment) {
 
   str = str.replace('<',"&lt;");
   str = str.replace('\n'," ");
-  comm = DString(str);
+  comm = qPrintable(str);
   code(comm.c);
 }
 
@@ -1226,7 +1226,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
 			code("<DIV class=\"Category\">"); 
 			// just to simulate a category DIV which will be terminated on the calling GenHTML level
 
-      PutExecLink(DString(baseName) + "/" + fullName + "_" + ownID + ".htm");
+      PutExecLink(DString(qPrintable(baseName)) + "/" + fullName + "_" + ownID + ".htm");
     }
 
     if (singleFile) {
@@ -1250,7 +1250,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
       code(">\n\n<HR><PRE>");
     }
     else {
-      DString ef(DString(baseFile) + "/" + fullName + "_" + ownID + ".htm");
+      DString ef(DString(qPrintable(baseFile)) + "/" + fullName + "_" + ownID + ".htm");
       execFile = QString(ef.c);
 			QDir dir(baseFile);
 			if (!dir.exists()) {

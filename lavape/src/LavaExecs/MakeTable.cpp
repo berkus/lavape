@@ -113,7 +113,7 @@ void EnumConst::MakeTable (address table,int,SynObjectBase *parent,TTableUpdate 
     if (refID == ((CSearchData*)searchData)->findRefs.refTid
     && Id == ((CSearchData*)searchData)->findRefs.enumID) {
       ((CSearchData*)searchData)->synObjectID = synObjectID;
-      ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
+      ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
       ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
     }
     break;
@@ -182,7 +182,7 @@ void Reference::MakeTable (address table,int,SynObjectBase *parent,TTableUpdate 
     if (refID == ((CSearchData*)searchData)->findRefs.refTid
     && ((CSearchData*)searchData)->findRefs.enumID.l == 0) {
       ((CSearchData*)searchData)->synObjectID = synObjectID;
-      ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
+      ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
       ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
     }
     break;
@@ -202,7 +202,7 @@ void TDOD::MakeTable (address,int,SynObjectBase *parent,TTableUpdate update,addr
     if (ID == ((CSearchData*)searchData)->findRefs.refTid
     && accessTypeOK(((CSearchData*)searchData)->findRefs.FindRefFlags)) {
       ((CSearchData*)searchData)->synObjectID = synObjectID;
-      ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
+      ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
       ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
     }
     break;
@@ -468,7 +468,7 @@ void VarName::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
     if (!((CSearchData*)searchData)->findRefs.index) {
       if (varID == ((CSearchData*)searchData)->findRefs.refTid) {
         ((CSearchData*)searchData)->synObjectID = synObjectID;
-        ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
+        ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
         ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
       }
     }
@@ -478,7 +478,7 @@ void VarName::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUp
             ((CSearchData*)searchData)->findRefs.FindRefFlags.Contains(matchCase),
             ((CSearchData*)searchData)->findRefs.FindRefFlags.Contains(wholeWord))) {
         ((CSearchData*)searchData)->synObjectID = synObjectID;
-        ((CSearchData*)searchData)->constructNesting = DString(LocationOfConstruct());
+        ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
         ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
       }
     }
