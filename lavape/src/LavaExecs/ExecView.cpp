@@ -383,6 +383,7 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
     b = 255 - b;
     currentColor.setRgb(r,g,b);
     p->setPen(currentColor);
+    p->setBackground(QBrush(Qt::black));
   }
   else
     p->setPen(fmt.color);
@@ -532,9 +533,9 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
       inDebugStop = true;
       p->setBackgroundMode(Qt::OpaqueMode);
       if (innermostStop && (stopReason == Stop_StepOut))
-        p->setBackgroundColor(QColor(180,180,255));
+        p->setBackground(QBrush(QColor(180,180,255)));
       else
-        p->setBackgroundColor(QColor(255,255,0));
+        p->setBackground(QBrush(QColor(255,255,0)));
     }
     if (currentToken->data.synObject->workFlags.Contains(isBrkPnt)
     && (currentToken->data.flags.Contains(primToken)
@@ -543,7 +544,7 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
       inBreakPoint = true;
       if (!inDebugStop) {
         p->setBackgroundMode(Qt::OpaqueMode);
-        p->setBackgroundColor(QColor(255,150,150));
+        p->setBackground(QBrush(QColor(255,150,150)));
       }
     }
     else if (currentToken->data.token == if_T
@@ -551,12 +552,12 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
       inBreakPoint = true;
       if (!inDebugStop) {
         p->setBackgroundMode(Qt::OpaqueMode);
-        p->setBackgroundColor(QColor(255,130,180));
+        p->setBackground(QBrush(QColor(255,130,180)));
       }
     }
     else if (inSelection && !inDebugStop) {
       p->setBackgroundMode(Qt::OpaqueMode);
-      p->setBackgroundColor(Qt::black);
+      p->setBackground(QBrush(Qt::black));
     }
 
     DrawToken(text,currentToken,inSelection);
@@ -570,15 +571,15 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
         if (currentToken == execView->selEndPos) {
           inSelection = false;
           p->setBackgroundMode(Qt::TransparentMode);
-          p->setBackgroundColor(Qt::white);
+          p->setBackground(QBrush(Qt::white));
         }
         else {
           p->setBackgroundMode(Qt::OpaqueMode);
-          p->setBackgroundColor(Qt::black);
+          p->setBackground(QBrush(Qt::black));
         }
       else {
         p->setBackgroundMode(Qt::TransparentMode);
-        p->setBackgroundColor(Qt::white);
+        p->setBackground(QBrush(Qt::white));
       }
     }
     else if (inBreakPoint) {
@@ -587,22 +588,22 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
         if (currentToken == execView->selEndPos) {
           inSelection = false;
           p->setBackgroundMode(Qt::TransparentMode);
-          p->setBackgroundColor(Qt::white);
+          p->setBackground(QBrush(Qt::white));
         }
         else {
           p->setBackgroundMode(Qt::OpaqueMode);
-          p->setBackgroundColor(Qt::black);
+          p->setBackground(QBrush(Qt::black));
         }
       else {
         p->setBackgroundMode(Qt::TransparentMode);
-        p->setBackgroundColor(Qt::white);
+        p->setBackground(QBrush(Qt::white));
       }
     }
     else if (inSelection)
       if (currentToken == execView->selEndPos) {
         inSelection = false;
         p->setBackgroundMode(Qt::TransparentMode);
-        p->setBackgroundColor(Qt::white);
+        p->setBackground(QBrush(Qt::white));
       }
   }
 
@@ -4338,7 +4339,6 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
   ParameterV *param;
   bool first = true;
   QString str = "";
-  char buffer[10];
 
   decl = myDoc->IDTable.GetDECL(refID);
   switch (text->currentSynObj->primaryToken) {
