@@ -500,6 +500,7 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
 	if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
 		return;
   p = pt;
+  p->setBackgroundMode(Qt::OpaqueMode);
 
   viewport()->setUpdatesEnabled(false);
 
@@ -531,7 +532,6 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
 
     if (currentToken == debugStopToken || currentToken == callerStopToken) {
       inDebugStop = true;
-      p->setBackgroundMode(Qt::OpaqueMode);
       if (innermostStop && (stopReason == Stop_StepOut))
         p->setBackground(QBrush(QColor(180,180,255)));
       else
@@ -543,7 +543,6 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
         || currentToken->data.token == if_T)) {
       inBreakPoint = true;
       if (!inDebugStop) {
-        p->setBackgroundMode(Qt::OpaqueMode);
         p->setBackground(QBrush(QColor(255,150,150)));
       }
     }
@@ -551,12 +550,10 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
     && currentToken->data.synObject->parentObject->workFlags.Contains(isBrkPnt)) {
       inBreakPoint = true;
       if (!inDebugStop) {
-        p->setBackgroundMode(Qt::OpaqueMode);
         p->setBackground(QBrush(QColor(255,130,180)));
       }
     }
     else if (inSelection && !inDebugStop) {
-      p->setBackgroundMode(Qt::OpaqueMode);
       p->setBackground(QBrush(Qt::black));
     }
 
@@ -570,15 +567,12 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
       if (inSelection)
         if (currentToken == execView->selEndPos) {
           inSelection = false;
-          p->setBackgroundMode(Qt::TransparentMode);
           p->setBackground(QBrush(Qt::white));
         }
         else {
-          p->setBackgroundMode(Qt::OpaqueMode);
           p->setBackground(QBrush(Qt::black));
         }
       else {
-        p->setBackgroundMode(Qt::TransparentMode);
         p->setBackground(QBrush(Qt::white));
       }
     }
@@ -587,22 +581,18 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
       if (inSelection)
         if (currentToken == execView->selEndPos) {
           inSelection = false;
-          p->setBackgroundMode(Qt::TransparentMode);
           p->setBackground(QBrush(Qt::white));
         }
         else {
-          p->setBackgroundMode(Qt::OpaqueMode);
           p->setBackground(QBrush(Qt::black));
         }
       else {
-        p->setBackgroundMode(Qt::TransparentMode);
         p->setBackground(QBrush(Qt::white));
       }
     }
     else if (inSelection)
       if (currentToken == execView->selEndPos) {
         inSelection = false;
-        p->setBackgroundMode(Qt::TransparentMode);
         p->setBackground(QBrush(Qt::white));
       }
   }
