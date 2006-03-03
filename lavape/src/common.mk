@@ -17,6 +17,10 @@ h_ui_files=$(addprefix Generated/,$(h_ui_files1))
 #moc_ui_files=$(addprefix Generated/moc_,$(cpp_ui_files1))
 #o_moc_ui_files=$(moc_ui_files:.cpp=.o)
 
+rc_file=$(QRC)
+cpp_rc_file=$(rc_file:.qrc=.cpp)
+o_rc_file=$(rc_file:.qrc=.o)
+
 cpp_files=$(wildcard *.cpp)
 c_files=$(wildcard *.c)
 o_files=$(cpp_files:.cpp=.o) $(c_files:.c=.o)
@@ -26,8 +30,11 @@ basenames_mocable_G=$(addprefix Generated/moc_,$(basenames_mocable))
 moc_mocable_G=$(addsuffix .cpp,$(basenames_mocable_G))
 o_mocable_G=$(moc_mocable_G:.cpp=.o)
 
-gen_files=$(sort $(h_ph_files) $(h_ui_files) $(cpp_ph_files) $(moc_mocable_G))
-all_o_files=$(sort $(o_files) $(o_ph_files) $(o_mocable_G))
+gen_files=$(sort $(h_ph_files) $(h_ui_files) $(cpp_ph_files) $(moc_mocable_G) $(cpp_rc_file))
+all_o_files=$(sort $(o_files) $(o_ph_files) $(o_mocable_G) $(o_rc_file))
+
+gen_files=$(sort $(h_ph_files) $(h_ui_files) $(cpp_ph_files) $(moc_mocable_G) $(cpp_rc_file))
+all_o_files=$(sort $(o_files) $(o_ph_files) $(o_mocable_G) $(o_rc_file))
 
 make_subpro=$(addsuffix .rec,$(SUBPRO))
 clean_subpro=$(addsuffix .cln,$(SUBPRO))
@@ -142,6 +149,9 @@ endif
 
 %.h %G.cpp: %.ph
 	../../bin/LPC -I. -I../disco $(impex) $<
+
+%.cpp: %.qrc
+	$(QTDIR)/bin/rcc -o $@ $<
 
 ifeq ($(suffix $(EXEC)),)
 run:

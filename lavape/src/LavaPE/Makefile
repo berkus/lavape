@@ -4,6 +4,8 @@ MOCABLES=Bars.h Boxes.h FindRefsBox.h LavaPE.h LavaPEFrames.h LavaPEView.h LavaP
 
 EXEC = LavaPE
 
+QRC = ../LavaPE_resources.qrc
+
 SUBPRO=disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI
 
 CPP_INCLUDES = -I. -Ires/TreeIcons -Ires/TOOLBUTTONS -Ires -I../LavaBase/Generated \
