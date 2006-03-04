@@ -1801,7 +1801,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 */
     list.replace(0,int(totalW * 0.1));
     list.replace(1,int(totalW * 0.8));
-    list.replace(2,int(totalW * 0.1));
+    list.replace(2,totalW - list.at(0) - list.at(1));
     splitter->setSizes(list);
 
     lastActive = viewM;
@@ -1849,6 +1849,20 @@ void CTreeFrame::Activate(bool activate, bool windowMenuAction)
 
 void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)
 {
+  int i, wl, wr, totalW=0, r=10;
+    QList<int> list=splitter->sizes();
+
+    for (i=0; i<3; i++)
+      totalW += list.at(i);
+    wl = list.at(0);
+    wr = list.at(2);
+    if (showINCL && (wl < 20)) 
+      list.replace(0,int(totalW * 0.3));
+    if (showVT && (wr < 20)) 
+      list.replace(2,int(totalW * 0.3));
+    list.replace(1,totalW - list.at(0) - list.at(2));
+    splitter->setSizes(list);
+/*
   Q3ValueList<int> list = splitter->sizes();
   Q3ValueList<int>::Iterator it = list.begin();
   int wl, wr, totalW = *it;
@@ -1872,6 +1886,7 @@ void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)
   *it = totalW-wl-wr;
   it--;
   splitter->setSizes(list);
+  */
 }
 
 void CTreeFrame::SetModified(bool changed)
