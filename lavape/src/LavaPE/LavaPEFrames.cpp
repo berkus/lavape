@@ -1789,7 +1789,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 
     QList<int> list=splitter->sizes();
 
-    splitter->setMinimumSize(600,400);
+    splitter->resize(300,200);
 /*    for (i=0; i<3; i++)
       totalW += list.at(i);
 */
