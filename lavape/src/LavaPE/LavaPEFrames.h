@@ -239,11 +239,11 @@ public slots:
     virtual void viewTB6();
     virtual void viewTB7();
     virtual void adjustToolbar_7 ();
-    virtual void setTreeFont();
+    virtual void on_setTreeFontAction_triggered();
     virtual void on_setFormTextFontAction_triggered();
     virtual void on_setFormLabelFontAction_triggered();
 //    virtual void setFormButtonFont();
-    virtual void setExecFont();
+    virtual void on_setExecFontAction_triggered();
     virtual void on_setGlobalFontAction_triggered();
     virtual void newCompo();
 

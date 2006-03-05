@@ -410,7 +410,6 @@
     <addaction name="openFormViewAction" />
     <addaction name="separator" />
     <addaction name="setTreeFontAction" />
-    <addaction name="SetFormFontsAction" />
     <addaction name="popupMenu_65" />
     <addaction name="setExecFontAction" />
     <addaction name="setGlobalFontAction" />

@@ -387,6 +387,7 @@ void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
     "<p>Provides online help which lists the most important operations "
     "that you can carry out <b>at the current selection</b></p>");
 */
+  LBaseData->whatNextButton = wha;
   LBaseData->myWhatsThisAction = QWhatsThis::createAction(HelpToolbar);
   HelpToolbar->addAction(LBaseData->myWhatsThisAction);
   LBaseData->myWhatsThisAction->setWhatsThis("<p>Drag the \"What's this?\" cursor to any user interface object"
@@ -610,7 +611,7 @@ void CLavaMainFrame::on_helpAboutAction_triggered()
 
 void CLavaMainFrame::filePrint(){}
 
-void CLavaMainFrame::setTreeFont()
+void CLavaMainFrame::on_setTreeFontAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnChooseTreeFont();
 }
@@ -634,7 +635,7 @@ void CLavaMainFrame::setFormButtonFont()
 }
 */
 
-void CLavaMainFrame::setExecFont()
+void CLavaMainFrame::on_setExecFontAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnChooseExecFont();
 }
