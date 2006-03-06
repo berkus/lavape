@@ -42,7 +42,7 @@ void NESTEDANY0::CDP (PutGetFlag pgf, ASN1* cid)//,
   if (pgf == PUT)
     if (ptr == 0) cid->PutOptionalAbsent();
     else {
-      cid->PUTstring(ptr->GetWxClassInfo()->className);
+      cid->PUTstring(qPrintable(ptr->GetWxClassInfo()->className));
       oPtr = (DObject*)ptr;
       oPtr->CDP(PUT,cid,false);
     }

@@ -36,7 +36,7 @@ public:
   void OnEditSel();
   bool Expanded;
   bool InitComplete;
-  virtual void whatNext();
+  virtual void on_whatNextAction_triggered();
 
 protected:
   void OnUpdateDelete(QAction* action);

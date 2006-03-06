@@ -16,7 +16,7 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-	 /* This file has been taken over from www.wxwindows.org
+	 /* This file has been taken over from www.wxwidgets.org
    and adapted to the needs of LavaPE */
 
 
@@ -28,7 +28,7 @@
 // Created:     01/02/97
 // RCS-ID:      $Id$
 // Copyright:   (c) Julian Smart
-// Licence:     wxWindows licence
+// Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -40,12 +40,10 @@
 #include "qmenubar.h"
 #include "qstatusbar.h"
 #include "qmessagebox.h"
-#include "q3vbox.h"
 #include "qfile.h"
 //Added by qt3to4:
 #include <QCloseEvent>
 #include <QEvent>
-#include <Q3Frame>
 #include <QCustomEvent>
 
 /*
@@ -305,11 +303,9 @@ void wxMDIChildFrame::AddView(wxView *view)
 
 void wxMDIChildFrame::InitialUpdate()
 {
-  wxView *view = m_viewList.first();
-  while (view) {
-    view->OnInitialUpdate();
-		view->show();
-    view = m_viewList.next();
+  for (int i=0; i<m_viewList.size(); i++) {
+    m_viewList.at(i)->OnInitialUpdate();
+		m_viewList.at(i)->show();
   }
   show();
 }

@@ -106,7 +106,7 @@ public slots:
     virtual void viewTB3();
     virtual void viewTB4();
     virtual void viewHelpTB();
-    virtual void on_whatNext_clicked();
+    virtual void on_whatNextAction_triggered();
     virtual void on_howTo_clicked();
     virtual void showUtilWindow();
     virtual void expandSubtree();

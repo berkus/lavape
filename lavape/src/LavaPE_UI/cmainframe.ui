@@ -101,7 +101,7 @@
    <attribute name="toolBarArea" >
     <number>4</number>
    </attribute>
-   <addaction name="actionWhatNext" />
+   <addaction name="whatNextAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_3" >
    <property name="windowTitle" >
@@ -400,9 +400,10 @@
     <addaction name="separator" />
     <addaction name="viewTB1Action" />
     <addaction name="viewTB2Action" />
+    <addaction name="viewHelpTBAction" />
     <addaction name="viewTB3Action" />
-    <addaction name="viewWhatNextTBAction" />
     <addaction name="viewTB4Action" />
+    <addaction name="viewDebugTBAction" />
     <addaction name="viewTB5Action" />
     <addaction name="viewTB6Action" />
     <addaction name="viewTB7Action" />
@@ -2340,7 +2341,7 @@
     <string>Form button font...</string>
    </property>
   </action>
-  <action name="viewWhatNextTBAction" >
+  <action name="viewHelpTBAction" >
    <property name="checkable" >
     <bool>true</bool>
    </property>
@@ -2591,7 +2592,7 @@
     <string>Stop at next function/operator</string>
    </property>
   </action>
-  <action name="actionWhatNext" >
+  <action name="whatNextAction" >
    <property name="icon" >
     <iconset resource="../LavaPE_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/WhatNext.xpm</iconset>
    </property>
@@ -2603,6 +2604,17 @@
    </property>
    <property name="whatsThis" >
     <string>What can I do next at the current selection?</string>
+   </property>
+  </action>
+  <action name="viewDebugTBAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Show debug toolbar</string>
    </property>
   </action>
  </widget>

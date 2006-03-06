@@ -113,7 +113,7 @@ void CHAINX::CDP (PutGetFlag pgf, ASN1* cid, bool)
     cid->PutSEQUENCE();
     for (elem = (CHE*)first; elem; elem = (CHE*)elem->successor) {
       if (elem->data)
-        cid->PUTstring(elem->data->GetWxClassInfo()->className);
+        cid->PUTstring(qPrintable(elem->data->GetWxClassInfo()->className));
       else
         cid->PutNULL();
       elem->data->CDP(pgf,cid,false);

@@ -750,7 +750,7 @@ class SynObject : public SynObjectBase {
   {
     return false;
   }
-  virtual void whatNext();
+  virtual void on_whatNextAction_triggered();
   virtual QString whatsThisText();
 
   virtual void CopyData (AnyType *from) {

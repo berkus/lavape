@@ -48,19 +48,19 @@ CUtilityView::CUtilityView(QWidget *parent)
 {
 	QString emptyString;
 	
-  FindPage = new Q3ListView(this);
+  FindPage = new Q3ListView(0);
   FindPage->setSorting(-1);
   FindPage->addColumn(emptyString);
   FindPage->setRootIsDecorated(false);
   FindPage->header()->hide();
   FindPage->setSelectionMode(Q3ListView::Single);//Extended); 
-  CommentPage = new Q3TextEdit(this);
+  CommentPage = new Q3TextEdit(0);
   CommentPage->setReadOnly(true);
 //  QTextEdit *CommentPage2 = new QTextEdit(this);
 //  CommentPage2->setReadOnly(true);
-  ErrorPage = new Q3TextEdit(this);
+  ErrorPage = new Q3TextEdit(0);
   ErrorPage->setReadOnly(true);
-  DebugPage = new QSplitter(this);
+  DebugPage = new QSplitter(0);
   DebugPage->setOrientation(Qt::Horizontal);
   VarView = new VarListView(DebugPage, this, false);
   ParamView = new VarListView(DebugPage, this, true);

@@ -275,6 +275,7 @@ void MyListView::focusInEvent ( QFocusEvent * e )
 CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name): CLavaBaseView(parent,doc,name)
 { 
   m_tree = new MyListView(this);
+  layout->addWidget(m_tree);
 	//setFocusProxy(m_tree);
   m_tree->setSorting(-1);
   m_tree->addColumn("");

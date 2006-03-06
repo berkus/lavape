@@ -6,7 +6,7 @@
 // Created:     01/02/97
 // RCS-ID:      $Id$
 // Copyright:   (c)
-// Licence:     wxWindows licence
+// Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
 #ifndef _WX_DOCH__
@@ -19,15 +19,15 @@
 #include "qobject.h"
 #include "qstring.h"
 #include "qicon.h"
-#include "q3hbox.h"
-#include "q3ptrlist.h"
+#include <QHBoxLayout>
+#include "qlist.h"
 #include "qaction.h"
 #include "qsettings.h"
 #include "qthread.h"
 #include "qfileinfo.h"
 //Added by qt3to4:
 #include <QFocusEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QCustomEvent>
 
@@ -118,7 +118,6 @@ public slots:
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
-//    Q3PtrList<QAction> actionList;
     bool inUpdateUI;
 
     Q_OBJECT
@@ -155,7 +154,7 @@ public:
     virtual QDataStream& SaveObject(QDataStream& stream);
     virtual QDataStream& LoadObject(QDataStream& stream);
 
-    // Called by wxWindows
+    // Called by wxWidgets
     virtual bool OnSaveDocument(const QString& filename); //all links resolved
     virtual bool OnOpenDocument(const QString& filename); //all links resolved
     virtual bool OnNewDocument();
@@ -172,9 +171,9 @@ public:
     virtual bool OnCreate(const QString& path) { return true; } //all links resolved
 
     // By default, creates a base wxCommandProcessor.
-    virtual wxCommandProcessor *OnCreateCommandProcessor();
-    virtual wxCommandProcessor *GetCommandProcessor() const { return m_commandProcessor; }
-    virtual void SetCommandProcessor(wxCommandProcessor *proc) { m_commandProcessor = proc; }
+//    virtual wxCommandProcessor *OnCreateCommandProcessor();
+//    virtual wxCommandProcessor *GetCommandProcessor() const { return m_commandProcessor; }
+//    virtual void SetCommandProcessor(wxCommandProcessor *proc) { m_commandProcessor = proc; }
 
     // Called after a view is added or removed. The default implementation
     // deletes the document if this is there are no more views.
@@ -189,7 +188,7 @@ public:
 
     virtual bool AddView(wxView *view);
     virtual bool RemoveView(wxView *view);
-    Q3PtrList<wxView>& GetViews() const { return (Q3PtrList<wxView>&) m_documentViews; }
+    QList<wxView*>& GetViews() const { return (QList<wxView*>&) m_documentViews; }
     wxView *GetFirstView() const;
     POSITION GetFirstViewPos();
     wxView* GetNextView(POSITION& pos);
@@ -214,7 +213,7 @@ public:
 			return m_documentViews.count(); }
 
 protected:
-    Q3PtrList<wxView>        m_documentViews;
+    QList<wxView*>       m_documentViews;
     QString              m_documentFile; //all links are resolved
     QString              m_userFilename; //no link resolved
     QString              m_documentTitle, m_oldTitle; //the used name
@@ -222,7 +221,7 @@ protected:
     wxDocTemplate*        m_documentTemplate;
     bool                  m_documentModified;
     wxDocument*           m_documentParent;
-    wxCommandProcessor*   m_commandProcessor;
+//    wxCommandProcessor*   m_commandProcessor;
     bool                  m_savedYet;
 
 private:
@@ -231,7 +230,7 @@ private:
 
 class WXDLLEXPORT wxMDIChildFrame;
 
-class WXDLLEXPORT wxView : public Q3HBox
+class WXDLLEXPORT wxView : public QWidget
 {
 public:
     wxView(QWidget *parent, wxDocument *doc, const char* name);
@@ -239,6 +238,7 @@ public:
     virtual void OnInitialUpdate() {}
     virtual ~wxView();
     bool deleting;
+    QHBoxLayout *layout;
 
     virtual void UpdateUI() {}
     virtual void focusInEvent ( QFocusEvent * e );
@@ -422,7 +422,7 @@ public:
     virtual void SetActiveView(wxView *view, bool activate = true);
     virtual wxView *GetActiveView();// const;
 
-    virtual Q3PtrList<wxDocument>& GetDocuments() const { return (Q3PtrList<wxDocument>&) m_docs; }
+    virtual QList<wxDocument*>& GetDocuments() const { return (QList<wxDocument*>&) m_docs; }
 
     POSITION GetFirstDocPos();
     wxDocument* GetNextDoc(POSITION& pos);
@@ -463,9 +463,9 @@ public:
 protected:
     long              m_flags;
     int               m_defaultDocumentNameCounter;
-    unsigned               m_maxDocsOpen;
-    Q3PtrList<wxDocument>            m_docs;
-    Q3PtrList<wxDocTemplate>            m_templates;
+    int               m_maxDocsOpen;
+    QList<wxDocument*>     m_docs;
+    QList<wxDocTemplate*>  m_templates;
     wxView*           m_activeView;
     QString          m_lastDirectory;
     static wxDocManager* sm_docManager;
@@ -516,7 +516,7 @@ private:
 // ----------------------------------------------------------------------------
 // Command processing framework
 // ----------------------------------------------------------------------------
-
+/*
 class WXDLLEXPORT wxCommand : public QObject
 {
 public:
@@ -524,10 +524,10 @@ public:
     virtual ~wxCommand();
 
     // Override this to perform a command
-    virtual bool Do() = 0;
+    virtual bool Do() =0;
 
     // Override this to undo a command
-    virtual bool Undo() = 0;
+    virtual bool Undo() =0;
 
     virtual bool CanUndo() const { return m_canUndo; }
     virtual QString GetName() const { return m_commandName; }
@@ -555,25 +555,25 @@ public:
     virtual bool CanRedo() const;
 
     // Call this to manage an edit menu.
-    void SetEditMenu(Q3PopupMenu *menu) { m_commandEditMenu = menu; }
-    Q3PopupMenu *GetEditMenu() const { return m_commandEditMenu; }
+    void SetEditMenu(QMenu *menu) { m_commandEditMenu = menu; }
+    QMenu *GetEditMenu() const { return m_commandEditMenu; }
     virtual void SetMenuStrings();
     virtual void Initialize();
 
-    Q3PtrList<wxCommand>& GetCommands() const { return (Q3PtrList<wxCommand>&) m_commands; }
+    QList<wxCommand*>& GetCommands() const { return (QList<wxCommand*>&) m_commands; }
     int GetMaxCommands() const { return m_maxNoCommands; }
     virtual void ClearCommands();
 
 protected:
     unsigned           m_maxNoCommands;
-    Q3PtrList<wxCommand>        m_commands;
-    /*QLNode*/wxCommand*       m_currentCommand;
-    Q3PopupMenu*       m_commandEditMenu;
+    QList<wxCommand*>        m_commands;
+    QList<wxCommand*>::iterator       m_currentCommand;
+    QMenu*       m_commandEditMenu;
 
 private:
     Q_OBJECT
 };
-
+*/
 // ----------------------------------------------------------------------------
 // File history management
 // ----------------------------------------------------------------------------
@@ -581,7 +581,7 @@ private:
 class WXDLLEXPORT wxHistory : public QObject
 {
 public:
-    wxHistory(int maxFiles = 9, Q3PopupMenu *m=0);
+    wxHistory(int maxFiles = 9, QMenu *m=0);
     virtual ~wxHistory();
 
     // Operations
@@ -602,7 +602,7 @@ public:
 #endif // wxUSE_CONFIG
 
     virtual void AddFilesToMenu();
-    virtual void AddFilesToMenu(Q3PopupMenu* menu); // Single menu
+    virtual void AddFilesToMenu(QMenu* menu); // Single menu
 
     // Accessors
     virtual DString *GetHistoryItem(int i) const;
@@ -610,9 +610,7 @@ public:
     virtual int GetCount() const { return m_historyN; }
     int GetMaxNoHistItems() const { return m_maxHistItems; }
 
-//    Q3PtrList<QPopupMenu>& GetMenus() const { return (Q3PtrList<QPopupMenu>&) m_fileMenus; }
-
-    QMenu/*Q3PopupMenu*/        *m_menu;
+    QMenu             *m_menu;
 
 protected:
     // Max files to maintain

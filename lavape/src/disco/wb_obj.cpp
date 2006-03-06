@@ -16,7 +16,7 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-/* This file has been taken over from www.wxwindows.org
+/* This file has been taken over from www.wxwidgets.org
    and adapted to the needs of LavaPE */
 
 /*
@@ -47,24 +47,25 @@
 
 #include "wx_obj.h"
 #include "string.h"
+#include "qstring.h"
 #include "qapplication.h"
-#include "q3dict.h"
+#include "qhash.h"
 
 
 // Hand-coded IMPLEMENT... macro for wxObject (define static data)
 wxClassInfo wxObject::classwxObject("wxObject", NULL, NULL, sizeof(wxObject), NULL);
 
-static Q3Dict<wxClassInfo> *classDict=0;
+static QHash<QString,wxClassInfo*> *classDict=0;
 
 
 // Useful buffer, initialized in wxCommonInit
 char *wxBuffer = NULL;
 
-const char *wxFatalErrorStr = "wxWindows Fatal Error";
+const char *wxFatalErrorStr = "wxWidgets Fatal Error";
 
 
 /*
- * wxWindows root object.
+ * wxWidgets root object.
  */
 
 wxObject::wxObject(void)
@@ -86,7 +87,7 @@ wxObject::~wxObject(void)
 wxClassInfo::wxClassInfo(char *cName, char *baseName1, char *baseName2, int sz, wxObjectConstructorFn constr)
 {
   if (!classDict)
-    classDict = new Q3Dict<wxClassInfo>(311);
+    classDict = new QHash<QString,wxClassInfo*>();
 
   className = cName;
   baseClassName1 = baseName1;
@@ -94,7 +95,7 @@ wxClassInfo::wxClassInfo(char *cName, char *baseName1, char *baseName2, int sz, 
 
   objectSize = sz;
   objectConstructor = constr;
-  if (!(*classDict)[className])
+  if (!classDict->contains(className))
     classDict->insert(className,this);
   baseInfo1 = NULL;
   baseInfo2 = NULL;
@@ -110,12 +111,12 @@ wxObject *wxClassInfo::CreateObject(void)
 
 wxClassInfo *wxClassInfo::FindClass(char *c)
 {
-  return (*classDict)[c];
+  return classDict->value(c,0);
 }
 
 wxObject *wxCreateDynamicObject(char *name)
 {
-  wxClassInfo *info = (*classDict)[name];
+  wxClassInfo *info = classDict->value(name,0);
 
   if (info)
     return info->CreateObject();

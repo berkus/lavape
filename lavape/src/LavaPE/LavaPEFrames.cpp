@@ -250,7 +250,6 @@ void CLavaMainFrame::makeStyle(const QString &style)
 		Toolbar_7->hide();
 
   if (!firstTime) {
-    delete LBaseData->whatNextButton;
     delete LBaseData->myWhatsThisAction;
   }
   fillHelpToolbar(HelpToolbar);
@@ -314,7 +313,7 @@ void CLavaMainFrame::UpdateUI()
   saveEveryChangeAction->setOn(LBaseData->m_saveEveryChange);  
   viewTB1Action->setOn(Toolbar_1->isVisible());  
   viewTB2Action->setOn(Toolbar_2->isVisible());
-  viewWhatNextTBAction->setOn(HelpToolbar->isVisible());
+  viewHelpTBAction->setOn(HelpToolbar->isVisible());
   viewTB3Action->setOn(Toolbar_3->isVisible());  
   viewTB4Action->setOn(Toolbar_4->isVisible());  
   viewTB5Action->setOn(Toolbar_5->isVisible());
@@ -387,7 +386,6 @@ void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
     "<p>Provides online help which lists the most important operations "
     "that you can carry out <b>at the current selection</b></p>");
 */
-  LBaseData->whatNextButton = wha;
   LBaseData->myWhatsThisAction = QWhatsThis::createAction(HelpToolbar);
   HelpToolbar->addAction(LBaseData->myWhatsThisAction);
   LBaseData->myWhatsThisAction->setWhatsThis("<p>Drag the \"What's this?\" cursor to any user interface object"
@@ -1448,7 +1446,6 @@ void CLavaMainFrame::adjustToolbar_7 () {
 	else
 	  Toolbar_7->hide();
 
-  delete LBaseData->whatNextButton;
   delete LBaseData->myWhatsThisAction;
   fillHelpToolbar(HelpToolbar);
 }
@@ -1712,15 +1709,15 @@ void CLavaMainFrame::viewTB7()
     Toolbar_7->show();
 }
 
-void CLavaMainFrame::on_whatNext_clicked() 
+void CLavaMainFrame::on_whatNextAction_triggered() 
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  QString fileName=ExeDir+"/../doc/html/whatNext/GlobalWhatNext.htm";
+  QString fileName=ExeDir+"/../doc/html/on_whatNextAction_triggered/GlobalWhatNext.htm";
 	QString path(ExeDir);
 	QStringList args;
 
   if (view)
-    view->whatNext();
+    view->on_whatNextAction_triggered();
   else {
 	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	  

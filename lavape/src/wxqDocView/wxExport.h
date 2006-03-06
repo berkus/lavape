@@ -9,13 +9,13 @@
 #include "defs.h"
 #include "qglobal.h"
 #include "setup.h"
-#include "q3ptrlist.h"
+#include "qlist.h"
 #include "qaction.h"
 #include "qobject.h"
 #include "qglobal.h"
 #include "qstring.h"
 #include "qmainwindow.h"
-#include "q3popupmenu.h"
+#include "qmenu.h"
 
 class WXDLLEXPORT wxView;
 class WXDLLEXPORT wxDocument;
@@ -28,12 +28,14 @@ class WXDLLEXPORT wxHistory;
 class WXDLLEXPORT QAction;
 
 #ifdef WIN32
-template class WXDLLEXPORT Q3PtrList<wxView>;
-template class WXDLLEXPORT Q3PtrList<wxDocument>;
-template class WXDLLEXPORT Q3PtrList<wxDocTemplate>;
-template class WXDLLEXPORT Q3PtrList<wxCommand>;
-template class WXDLLEXPORT Q3PtrList<Q3PopupMenu>;
-template class WXDLLEXPORT Q3PtrList<QAction>;
+/*
+template class WXDLLEXPORT QList<wxView>;
+template class WXDLLEXPORT QList<wxDocument>;
+template class WXDLLEXPORT QList<wxDocTemplate>;
+template class WXDLLEXPORT QList<wxCommand>;
+template class WXDLLEXPORT QList<QMenu>;
+template class WXDLLEXPORT QList<QAction>;
+*/
 #endif
 
 #endif //_WX_export__

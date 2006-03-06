@@ -1142,7 +1142,7 @@ static HRESULT CreateShortCut (LPCSTR pszShortcutFile, LPSTR pszLink)
 } 
 */
 
-void CLavaBaseView::whatNext()
+void CLavaBaseView::on_whatNextAction_triggered()
 {
   QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),"\"What next\" help not yet available for this selection",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }

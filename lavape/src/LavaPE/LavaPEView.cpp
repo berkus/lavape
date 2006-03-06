@@ -4390,13 +4390,13 @@ bool CLavaPEView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
 }
 
 
-void CLavaPEView::whatNext() 
+void CLavaPEView::on_whatNextAction_triggered() 
 {
   Q3WhatsThis::display(QString(QObject::tr("<p>You may <b>delete</b> this item"
     " (DEL key or scissors button),<br>or you may <b>insert</b> another item after this one"
     " (click any enabled button on the declaration toolbar),"
     "<br>or you may <b>view/edit the properties</b> of this item (spectacles button),"
-    "<br><a href=\"../whatNext/DeclViewWhatNext.htm\">or...</a></p>")),
+    "<br><a href=\"../on_whatNextAction_triggered/DeclViewWhatNext.htm\">or...</a></p>")),
       GetListView()->viewport()->mapToGlobal(GetListView()->itemRect(GetListView()->currentItem()).topLeft())+QPoint(200,20),GetListView());
 }
 

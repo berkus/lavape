@@ -6745,9 +6745,9 @@ bool ObjComboUpdate::Action (CheckData &ckd, VarName *varName, TID &tid) {
 //What next? help:
 
 
-void CExecView::whatNext() 
+void CExecView::on_whatNextAction_triggered() 
 {
-  text->currentSynObj->whatNext();
+  text->currentSynObj->on_whatNextAction_triggered();
 }
 
 

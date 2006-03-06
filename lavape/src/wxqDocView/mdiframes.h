@@ -6,7 +6,7 @@
 // Created:     01/02/97
 // RCS-ID:      $Id$
 // Copyright:   (c)
-// Licence:   	wxWindows licence
+// Licence:   	wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
 #ifndef _WX_DOCMDI_H_
@@ -28,7 +28,7 @@
 #include "qmainwindow.h"
 #include <QVBoxLayout>
 #include <QTextEdit>
-#include "q3ptrlist.h"
+#include "qlist.h"
 #include "qworkspace.h"
 
 
@@ -119,7 +119,7 @@ public:
 protected:
   virtual bool event ( QEvent * e );
   unsigned m_viewCount;
-  Q3PtrList<wxView> m_viewList;
+  QList<wxView*> m_viewList;
   QWidget *m_clientWindow;
   wxView* lastActive;
 

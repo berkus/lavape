@@ -3,7 +3,7 @@
 
 /*
  * File:  wx_obj.h
- * Purpose: Top level object for wxWindows
+ * Purpose: Top level object for wxWidgets
  * Author:  Julian Smart
  * Created: 1993
  * Updated:
@@ -15,6 +15,8 @@
 
 
 #include "SYSTEM.h"
+#include "qstring.h"
+
 
 #ifdef IN_CPROTO
 typedef       void    *wxObject ;
@@ -36,9 +38,9 @@ typedef wxObject * (*wxObjectConstructorFn) (void);
 class DISCO_DLL wxClassInfo
 {
  public:
-   char *className;
-   char *baseClassName1;
-   char *baseClassName2;
+   QString className;
+   QString baseClassName1;
+   QString baseClassName2;
    int objectSize;
 
    wxObjectConstructorFn objectConstructor;
@@ -50,9 +52,9 @@ class DISCO_DLL wxClassInfo
    wxClassInfo(char *cName, char *baseName1, char *baseName2, int sz, wxObjectConstructorFn fn);
 
    wxObject *CreateObject(void);
-   inline char *GetClassName(void) { return className; }
-   inline char *GetBaseClassName1(void) { return baseClassName1; }
-   inline char *GetBaseClassName2(void) { return baseClassName2; }
+   inline QString GetClassName(void) { return className; }
+   inline QString GetBaseClassName1(void) { return baseClassName1; }
+   inline QString GetBaseClassName2(void) { return baseClassName2; }
    inline int GetSize(void) { return objectSize; }
    static wxClassInfo *FindClass(char *c);
 

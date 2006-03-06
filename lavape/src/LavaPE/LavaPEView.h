@@ -194,7 +194,7 @@ public:
   void SetTreeFlags(CTreeItem* item, bool exp);
   virtual void UpdateUI();
   bool VerifyItem(CTreeItem* item, CTreeItem* topItem = 0);
-  void whatNext();
+  void on_whatNextAction_triggered();
 
 protected:
   virtual void destroy();

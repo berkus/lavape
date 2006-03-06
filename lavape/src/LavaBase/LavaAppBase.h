@@ -470,9 +470,7 @@ public:
     *tryButton, *succeedButton, *failButton, *runButton,
     *setButton, *newButton, *oldButton, *cloneButton,
     *copyButton, *attachButton, *qryItfButton,
-    *scaleButton, *itemButton, *connectButton, *disconnectButton, *emitButton,
-
-    *whatNextButton;
+    *scaleButton, *itemButton, *connectButton, *disconnectButton, *emitButton;
 
   QAction *myWhatsThisAction;
 

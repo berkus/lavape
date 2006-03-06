@@ -51,11 +51,8 @@ bool CLavaGUIFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 
 void CLavaGUIFrame::InitialUpdate()
 {
-  wxView *view = m_viewList.first();
-  while (view) {
-    view->OnInitialUpdate();
-    view = m_viewList.next();
-  }
+  for (int i=0; i<m_viewList.size(); i++)
+    m_viewList.at(i)->OnInitialUpdate();
 }
 
 void CLavaGUIFrame::closeEvent(QCloseEvent *e)

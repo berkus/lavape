@@ -93,7 +93,7 @@ public:
   void Check ();
   void Redraw (SynObject *newObject);
   void RedrawExec (SynObject *selectAt=0);
-  virtual void whatNext();
+  virtual void on_whatNextAction_triggered();
 
   void OnInsertEnum (QString &refName, TID &refTID, unsigned pos);
   void OnInsertObjRef (QString &refName, TDODC &refTIDs, bool append);

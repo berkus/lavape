@@ -6,7 +6,7 @@
 // Created:     01/02/97
 // RCS-ID:      $Id$
 // Copyright:   (c)
-// Licence:     wxWindows licence
+// Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
 #ifndef _WX_DEFS_H_
@@ -17,7 +17,7 @@
 #endif
 
 #include "qobject.h"
-#include "q3ptrlist.h"
+//#include "q3ptrlist.h"
 //#include "SYSTEM.h"
 
 
@@ -116,9 +116,9 @@
 #    define wxStricmp strcasecmp
 #    define wxStrnicmp strncasecmp
 #  elif defined(__MWERKS__) && !defined(__INTEL__)
-     // use wxWindows' implementation
+     // use wxWidgets' implementation
 #  else
-     // if you leave wxStricmp undefined, wxWindows' implementation will be used
+     // if you leave wxStricmp undefined, wxWidgets' implementation will be used
 #    error  "Please define string case-insensitive compare for your OS/compiler"
 #  endif
 #endif
@@ -247,7 +247,7 @@
 #endif
 */
 // ----------------------------------------------------------------------------
-// wxWindows options
+// wxWidgets options
 // ----------------------------------------------------------------------------
 
 //#include <stddef.h>
@@ -429,7 +429,7 @@ class wxDocument;
 
 
 // ----------------------------------------------------------------------------
-// Making or using wxWindows as a Windows DLL
+// Making or using wxWidgets as a Windows DLL
 // ----------------------------------------------------------------------------
 
 #if defined(WIN32) //__WXMSW__)
@@ -624,7 +624,7 @@ enum
 };
 
 // ----------------------------------------------------------------------------
-// standard wxWindows types
+// standard wxWidgets types
 // ----------------------------------------------------------------------------
 
 // the type for screen and DC coordinates
@@ -1748,7 +1748,7 @@ typedef enum {
 #   define wxALL_FILES           gettext_noop("All files (*)|*")
 #endif
 // ---------------------------------------------------------------------------
-// macros that enable wxWindows apps to be compiled in absence of the
+// macros that enable wxWidgets apps to be compiled in absence of the
 // sytem headers, although some platform specific types are used in the
 // platform specific (implementation) parts of the headers
 // ---------------------------------------------------------------------------
@@ -2007,8 +2007,8 @@ typedef struct _PangoFontDescription PangoFontDescription;
 #endif // GTK
 
 // This is required because of clashing macros in windows.h, which may be
-// included before or after wxWindows classes, and therefore must be
-// disabled here before any significant wxWindows headers are included.
+// included before or after wxWidgets classes, and therefore must be
+// disabled here before any significant wxWidgets headers are included.
 #ifdef __WXMSW__
 #ifdef GetClassInfo
 #undef GetClassInfo

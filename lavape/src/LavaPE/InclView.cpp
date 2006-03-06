@@ -397,7 +397,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
 }
 
 
-void CInclView::whatNext() 
+void CInclView::on_whatNextAction_triggered() 
 {
   QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }

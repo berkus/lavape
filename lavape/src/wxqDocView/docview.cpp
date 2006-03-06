@@ -16,7 +16,7 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-/* This file has been taken over from www.wxwindows.org
+/* This file has been taken over from www.wxwidgets.org
    and adapted to the needs of LavaPE */
 
 
@@ -29,7 +29,7 @@
 // Created:     01/02/97
 // RCS-ID:      $Id$
 // Copyright:   (c) Julian Smart and Markus Holzem
-// Licence:     wxWindows licence
+// Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
 
 // ============================================================================
@@ -49,15 +49,15 @@
 #include "mdiframes.h"
 
 #include "qmetaobject.h"
-#include "q3ptrlist.h"
+#include "qlist.h"
 #include "qstring.h"
 #include "qfile.h"
 #include "qfileinfo.h"
-#include "q3filedialog.h"
+#include "qfiledialog.h"
 #include "qapplication.h"
 #include "qmessagebox.h"
 #include "qinputdialog.h"
-#include "q3popupmenu.h"
+#include "qmenu.h"
 #include "qstatusbar.h"
 #include "qmenudata.h"
 #include "qdatastream.h"
@@ -266,7 +266,7 @@ wxDocument::wxDocument(wxDocument *parent)
     m_documentModified = false;
     m_documentParent = parent;
     m_documentTemplate = (wxDocTemplate *) NULL;
-    m_commandProcessor = (wxCommandProcessor*) NULL;
+//    m_commandProcessor = (wxCommandProcessor*) NULL;
     m_savedYet = false;
     deleting = false;
 //    m_documentViews.setAutoDelete(true);
@@ -280,8 +280,8 @@ bool wxDocument::DeleteContents()
 wxDocument::~wxDocument()
 {
   deleting = true;
-  if (m_commandProcessor)
-      delete m_commandProcessor;
+/*  if (m_commandProcessor)
+      delete m_commandProcessor;*/
   if (wxDocManager::GetDocumentManager())
     wxDocManager::GetDocumentManager()->RemoveDocument(this);
 }
@@ -331,13 +331,16 @@ bool wxDocument::DeleteAllViews()
 
 wxView *wxDocument::GetFirstView() const
 {
-    return m_documentViews.getFirst();
+  if (m_documentViews.isEmpty())
+    return 0;
+  return m_documentViews.first();
 }
 
 POSITION wxDocument::GetFirstViewPos()
 {
-  Q3PtrListIterator<wxView>* iter = new Q3PtrListIterator<wxView> (m_documentViews);
-  iter->toFirst();
+  if (m_documentViews.isEmpty())
+    return 0;
+  QList<wxView*>::iterator* iter = new QList<wxView*>::iterator(m_documentViews.begin());
   return (POSITION)iter;
 }
 
@@ -345,31 +348,20 @@ wxView* wxDocument::GetNextView(POSITION& pos)
 {
   if (!pos)
     return 0;
-  Q3PtrListIterator<wxView>* iter = (Q3PtrListIterator<wxView>*)pos;
-  wxView* view = iter->current();
+  QList<wxView*>::iterator* iter = (QList<wxView*>::iterator*)pos;
+  wxView *view = **iter;
   ++(*iter);
-  if (view) {
-    if (iter->current())
-      pos = (POSITION)iter;
-    else {
-      delete iter;
-      pos = 0;
-    }
-  }
-  else {
-    delete iter;
+  if (*iter == m_documentViews.end())
     pos = 0;
-  }
   return view;
 }
 
 void wxDocument::ViewPosRelease(POSITION pos)
 {
   if (pos) {
-    Q3PtrListIterator<wxView>* iter = (Q3PtrListIterator<wxView>*)pos;
-    delete iter;
+    QList<wxView*>::iterator iter = *(QList<wxView*>::iterator*)pos;
+    m_documentViews.erase(iter);
   }
-
 }
 
 bool wxDocument::OnNewDocument()
@@ -421,7 +413,7 @@ bool wxDocument::SaveAs()
     if (!docTemplate)
         return false;
   
-    QString fn = Q3FileDialog::getSaveFileName(GetFilename(), docTemplate->GetFileFilter());
+    QString fn = QFileDialog::getSaveFileName(GetFilename(), docTemplate->GetFileFilter());
 
 #ifdef WIN32
     QString driveLetter = QString(fn[0].upper());
@@ -453,10 +445,8 @@ bool wxDocument::SaveAs()
 
     // Notify the views that the filename has changed
     wxView *view = m_documentViews.first();
-    while (view)
-    {
-        view->OnChangeFilename();
-        view = m_documentViews.next();
+    for (int i = 0; i < m_documentViews.size(); ++i) {
+        m_documentViews.at(i)->OnChangeFilename();
     }
 
 		SetDocumentSaved(true);
@@ -566,12 +556,12 @@ QWidget *wxDocument::GetDocumentWindow()// const
     else
         return wxTheApp->m_appWindow;
 }
-
+/*
 wxCommandProcessor *wxDocument::OnCreateCommandProcessor()
 {
     return new wxCommandProcessor;
 }
-
+*/
 // true if safe to close
 bool wxDocument::OnSaveModified()
 {
@@ -608,7 +598,7 @@ bool wxDocument::OnSaveModified()
 
 bool wxDocument::AddView(wxView *view)
 {
-    if (m_documentViews.findRef(view) == -1)
+    if (m_documentViews.indexOf(view) == -1)
     {
         m_documentViews.append(view);
         OnChangedViewList();
@@ -662,12 +652,8 @@ void wxDocument::SetFilename(const QString& filename, bool notifyViews)
     if ( notifyViews )
     {
         // Notify the views that the filename has changed
-        wxView *view = m_documentViews.first();
-        while (view)
-        {
-          view->OnChangeFilename();
-          view = m_documentViews.next();
-        }
+      for (int i=0; i<m_documentViews.size(); i++)
+        m_documentViews.at(i)->OnChangeFilename();
     }
 }
 
@@ -675,9 +661,13 @@ void wxDocument::SetFilename(const QString& filename, bool notifyViews)
 // Document view
 // ----------------------------------------------------------------------------
 
-wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : Q3HBox(parent, name)
+wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QWidget(parent, name)
 {
-    deleting = false;;
+    deleting = false;
+    layout = new QHBoxLayout;
+    layout->setMargin(0);
+    setLayout(layout);
+
     m_viewDocument = doc;
     m_viewFrame = CalcParentFrame();
     if (parent->inherits("QMainWindow"))
@@ -835,7 +825,7 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
   doc->SetFilename(fn);
   doc->SetDocumentTemplate(this);
   wxDocManager::GetDocumentManager()->AddDocument(doc);
-  doc->SetCommandProcessor(doc->OnCreateCommandProcessor());
+//  doc->SetCommandProcessor(doc->OnCreateCommandProcessor());
   doc->SetDocTypeName(m_docTypeName);
   if (doc->OnCreate(fn)) {
     if (flags == wxDOC_NEW)
@@ -856,7 +846,7 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
     }
   }
   else {
-    if (wxDocManager::GetDocumentManager()->GetDocuments().findRef(doc) != -1) {
+    if (wxDocManager::GetDocumentManager()->GetDocuments().indexOf(doc) != -1) {
       doc->deleting = true;
       doc->DeleteAllViews();
       delete doc;
@@ -915,14 +905,13 @@ wxDocManager::~wxDocManager()
 
 bool wxDocManager::Clear(bool force)
 {
-  wxDocument *doc, *next;
-  wxDocTemplate *templ, *nextTemp;
+  wxDocument *doc;
 
-  doc = m_docs.first();
-  while (doc) {
-    next = m_docs.next();
+  for (int i=0; i>m_docs.size(); i++) {
+    doc = m_docs.takeAt(i);
     if (!doc->Close() && !force)
         return false;
+//    delete doc;
 
     // Implicitly deletes the document when the last
     // view is removed (deleted)
@@ -935,15 +924,12 @@ bool wxDocManager::Clear(bool force)
     // This assumes that documents are not connected in
     // any way, i.e. deleting one document does NOT
     // delete another.
-    doc = next;
   }
-  templ = m_templates.first();
-  while (templ) {
-    nextTemp = m_templates.next();
-        delete templ;
-    templ = nextTemp;
-    }
-    return true;
+  while (!m_templates.isEmpty()) {
+    wxDocTemplate *templ = m_templates.takeFirst();
+    delete templ;
+  }
+  return true;
 }
 
 bool wxDocManager::Initialize()
@@ -1000,8 +986,8 @@ void wxDocManager::OnUndo()
     wxDocument *doc = GetActiveDocument();
     if (!doc)
         return;
-    if (doc->GetCommandProcessor())
-        doc->GetCommandProcessor()->Undo();
+/*    if (doc->GetCommandProcessor())
+        doc->GetCommandProcessor()->Undo();*/
 }
 
 void wxDocManager::OnRedo()
@@ -1009,8 +995,8 @@ void wxDocManager::OnRedo()
     wxDocument *doc = GetActiveDocument();
     if (!doc)
         return;
-    if (doc->GetCommandProcessor())
-        doc->GetCommandProcessor()->Redo();
+/*    if (doc->GetCommandProcessor())
+        doc->GetCommandProcessor()->Redo();*/
 }
 
 // Handlers for UI update commands
@@ -1052,13 +1038,13 @@ void wxDocManager::OnUpdateFileSaveAs(QAction *action)
 void wxDocManager::OnUpdateUndo(QAction *action)
 {
     wxDocument *doc = GetActiveDocument();
-    action->setEnabled( (doc && doc->GetCommandProcessor() && doc->GetCommandProcessor()->CanUndo()) );
+//    action->setEnabled( (doc && doc->GetCommandProcessor() && doc->GetCommandProcessor()->CanUndo()) );
 }
 
 void wxDocManager::OnUpdateRedo(QAction *action)
 {
-    wxDocument *doc = GetActiveDocument();
-    action->setEnabled( (doc && doc->GetCommandProcessor() && doc->GetCommandProcessor()->CanRedo()) );
+//    wxDocument *doc = GetActiveDocument();
+//    action->setEnabled( (doc && doc->GetCommandProcessor() && doc->GetCommandProcessor()->CanRedo()) );
 }
 
 /*
@@ -1097,47 +1083,33 @@ POSITION wxDocManager::GetFirstDocPos()
 {
   if (m_docs.isEmpty())
     return 0;
-  else {
-    Q3PtrListIterator<wxDocument>* iter = new Q3PtrListIterator<wxDocument> (m_docs);
-    iter->toFirst();
-    return (POSITION)iter;
-  }
+  QList<wxDocument*>::iterator* iter = new QList<wxDocument*>::iterator(m_docs.begin());
+  return (POSITION)iter;
 }
 
 wxDocument* wxDocManager::GetNextDoc(POSITION& pos)
 {
   if (!pos)
     return 0;
-  Q3PtrListIterator<wxDocument>* iter = (Q3PtrListIterator<wxDocument>*)pos;
-  wxDocument* doc = iter->current();
-  if (doc) {
-    ++(*iter);
-    if (iter->current())
-      pos = (POSITION)iter;
-    else {
-      delete iter;
-      pos = 0;
-    }
-  }
-  else {
-    delete iter;
+  QList<wxDocument*>::iterator* iter = (QList<wxDocument*>::iterator*)pos;
+  wxDocument *doc = **iter;
+  ++(*iter);
+  if (*iter == m_docs.end())
     pos = 0;
-  }
   return doc;
 }
 
 void wxDocManager::DocPosRelease(POSITION pos)
 {
   if (pos) {
-    Q3PtrListIterator<wxDocument>* iter = (Q3PtrListIterator<wxDocument>*)pos;
-    delete iter;
+    QList<wxDocument*>::iterator iter = *(QList<wxDocument*>::iterator*)pos;
+    m_docs.erase(iter);
   }
-
 }
 
 wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
 {
-  unsigned i, n = 0;
+  int i, n = 0;
   wxDocument *doc, *newDoc;
   POSITION pos;
   wxDocTemplate *temp, **templates = new wxDocTemplate *[m_templates.count()];
@@ -1159,7 +1131,7 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
     doc = (wxDocument *)GetDocuments().first();
     if (doc->Close()) {
       doc->DeleteAllViews();  // Implicitly deletes the document when the last view is deleted
-      if (m_docs.findRef(doc) != -1) //Check we're really deleted
+      if (m_docs.indexOf(doc) != -1) //Check we're really deleted
                 delete doc;
         }
         else
@@ -1243,8 +1215,7 @@ wxDocument *wxDocManager::FindOpenDocument(const QString& path)
 
 bool wxDocManager::CreateView(wxDocument *doc)
 {
-    unsigned n =0;
-    unsigned i;
+  int i, n =0;
   wxDocTemplate *temp, **templates = new wxDocTemplate *[m_templates.count()];
 
   for (i = 0; i < m_templates.count(); i++) {
@@ -1413,7 +1384,7 @@ wxDocTemplate *wxDocManager::FindTemplateForPath(const QString& path)
     wxDocTemplate *theTemplate = (wxDocTemplate *) NULL;
 
     // Find the template which this extension corresponds to
-    unsigned i;
+    int i;
     for (i = 0; i < m_templates.count(); i++)
     {
         wxDocTemplate *temp = (wxDocTemplate *)m_templates.at(i);
@@ -1448,7 +1419,7 @@ static QWidget* wxFindSuitableParent()
 }
 
 // Prompts user to open a file, using file specs in templates.
-// How to implement in wxWindows? Must extend the file selector
+// How to implement in wxWidgets? Must extend the file selector
 // dialog or implement own; OR match the extension to the
 // template extension.
 
@@ -1477,9 +1448,9 @@ wxDocTemplate *wxDocManager::SelectDocumentPath(wxDocTemplate **templates,
     }
   parent = wxFindSuitableParent();
     if (save)
-        pathTmp = Q3FileDialog::getSaveFileName(m_lastDirectory);
+        pathTmp = QFileDialog::getSaveFileName(m_lastDirectory);
     else
-        pathTmp = Q3FileDialog::getOpenFileName(m_lastDirectory, QString::null,0,0,QString::null,0,false);        
+        pathTmp = QFileDialog::getOpenFileName(m_lastDirectory, QString::null,0,0,QString::null,0,false);        
 
   theTemplate = (wxDocTemplate *)NULL;
   if (!pathTmp.isEmpty()) {
@@ -1621,7 +1592,7 @@ wxDocTemplate *wxDocManager::SelectViewType(wxDocTemplate **templates,
 
 void wxDocManager::AssociateTemplate(wxDocTemplate *temp)
 {
-    if (m_templates.findRef(temp) == -1)
+    if (m_templates.indexOf(temp) == -1)
         m_templates.append(temp);
 }
 
@@ -1633,7 +1604,7 @@ void wxDocManager::DisassociateTemplate(wxDocTemplate *temp)
 // Add and remove a document from the manager's list
 void wxDocManager::AddDocument(wxDocument *doc)
 {
-    if (m_docs.findRef(doc) == -1)
+    if (m_docs.indexOf(doc) == -1)
         m_docs.append(doc);
 }
 
@@ -1888,7 +1859,7 @@ void wxDocPrintout::GetPageInfo(int *minPage, int *maxPage, int *selPageFrom, in
 // ----------------------------------------------------------------------------
 // Command processing framework
 // ----------------------------------------------------------------------------
-
+/*
 wxCommand::wxCommand(bool canUndoIt, const QString& name)
 {
     m_canUndo = canUndoIt;
@@ -1901,10 +1872,10 @@ wxCommand::~wxCommand()
 
 // Command processor
 wxCommandProcessor::wxCommandProcessor(int maxCommands)
+: m_currentCommand(QList<wxCommand*>::iterator(m_commands))
 {
     m_maxNoCommands = maxCommands;
-    m_currentCommand = 0;
-    m_commandEditMenu = (Q3PopupMenu *) NULL;
+    m_commandEditMenu = (QMenu *) NULL;
 }
 
 wxCommandProcessor::~wxCommandProcessor()
@@ -1917,49 +1888,46 @@ wxCommandProcessor::~wxCommandProcessor()
 // storeIt is false.
 bool wxCommandProcessor::Submit(wxCommand *command, bool storeIt)
 {
-    bool success = command->Do();
-    if (success && storeIt)
+  bool success = command->Do();
+
+  if (success && storeIt)
+  {
+    if (m_commands.count() == m_maxNoCommands)
     {
-        if (m_commands.count() == m_maxNoCommands)
-        {
-            wxCommand *firstCommand = m_commands.first();
-            delete firstCommand;
-            m_commands.remove();
-        }
-
-        // Correct a bug: we must chop off the current 'branch'
-        // so that we're at the end of the command list.
-        if (!m_currentCommand)
-            ClearCommands();
-        else
-        {
-            wxCommand *node = m_commands.next();
-            while (node)
-            {
-                wxCommand *next = m_commands.next();
-                delete next;
-                node = next;
-            }
-        }
-
-        m_commands.append(command);
-        m_currentCommand = m_commands.last();
-        SetMenuStrings();
+      delete m_commands.first();
+      m_commands.removeFirst();
     }
-    return success;
+
+    // Correct a bug: we must chop off the current 'branch'
+    // so that we're at the end of the command list.
+    if (!m_currentCommand.hasNext())
+      ClearCommands();
+    else {
+      while (m_currentCommand.hasNext()) {
+        delete m_currentCommand.next();
+        m_currentCommand.remove();
+      }
+    }
+
+    m_commands.append(command);
+    m_currentCommand.toBack();
+    m_currentCommand.previous();
+    SetMenuStrings();
+  }
+  return success;
 }
 
 bool wxCommandProcessor::Undo()
 {
-    if (m_currentCommand)
+    if (m_currentCommand.hasNext())
     {
-        wxCommand *command = (wxCommand *)m_currentCommand;
+        wxCommand *command = m_currentCommand.next();
         if (command->CanUndo())
         {
             bool success = command->Undo();
             if (success)
             {
-                m_currentCommand = m_commands.prev();
+                m_currentCommand.previous();
                 SetMenuStrings();
                 return true;
             }
@@ -2005,7 +1973,7 @@ bool wxCommandProcessor::CanUndo() const
 
 bool wxCommandProcessor::CanRedo() const
 {
-/*    if (m_currentCommand && (m_currentCommand->Next() == (wxNode*) NULL))
+    if (m_currentCommand && (m_currentCommand->Next() == (wxNode*) NULL))
         return false;
 
     if ((m_currentCommand != (wxNode*) NULL) && (m_currentCommand->Next() != (wxNode*) NULL))
@@ -2013,7 +1981,7 @@ bool wxCommandProcessor::CanRedo() const
 
     if ((m_currentCommand == (wxNode*) NULL) && (m_commands.count() > 0))
         return true;
-*/
+
     if (m_commands.count() == 1)
       return false;
     if (m_commands.count() > 1)
@@ -2099,12 +2067,12 @@ void wxCommandProcessor::ClearCommands()
     }
     m_currentCommand = 0;
 }
-
+*/
 // ----------------------------------------------------------------------------
 // File history processor
 // ----------------------------------------------------------------------------
 
-wxHistory::wxHistory(int maxFiles, Q3PopupMenu *m)
+wxHistory::wxHistory(int maxFiles, QMenu *m)
 {
     m_maxHistItems = maxFiles;
 		m_menu = m;
@@ -2391,7 +2359,7 @@ void wxHistory::AddFilesToMenu()
     }
 }
 
-void wxHistory::AddFilesToMenu(Q3PopupMenu* menu)
+void wxHistory::AddFilesToMenu(QMenu* menu)
 {
     if (m_historyN > 0)
     {

@@ -214,7 +214,7 @@ class LAVABASE_DLL CLavaBaseView : public wxView
 public:
 //  VIEWFACTORY(CLavaBaseView)
   CLavaBaseView(QWidget *parent,wxDocument *doc, const char*  name): wxView(parent,doc,name) {}
-  virtual void whatNext();
+  virtual void on_whatNextAction_triggered();
   virtual void howTo();
 
   virtual void OnEditCut() {}
