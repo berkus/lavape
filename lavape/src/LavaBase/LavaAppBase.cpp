@@ -39,7 +39,7 @@
 #include <windows.h>
 #include <shlobj.h>
 #else
-#include "q3filedialog.h"
+#include "qfiledialog.h"
 #endif
 
 
@@ -935,18 +935,16 @@ DString CLavaBaseData::calcRelName(const DString& qname, const DString& scopeNam
 void LavaEnd(wxDocument* fromDoc, bool doClose)
 {
   CThreadList *thrL;
-  CLavaThread *thr, *curThr;
+  CLavaThread *curThr;
 
 	curThr = CLavaThread::currentThread();
   if (!curThr) { // mainThread!
     if (((CLavaBaseDoc*)fromDoc)->throwError) {
       if (((CLavaBaseDoc*)fromDoc)->ThreadList) {
         thrL = ((CLavaBaseDoc*)fromDoc)->ThreadList;
-        thr = thrL->first();
-        while (thr) {
-          if (thr->pContExecEvent)
-            thr->pContExecEvent->release();
-					thr = thrL->next();
+        for (int i=0; i<thrL->size(); i++) {
+          if (thrL->at(i)->pContExecEvent)
+            thrL->at(i)->pContExecEvent->release();
         }
         return;
       }
@@ -976,12 +974,10 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
 		QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaEnd,(void*)hint));
     if (((CLavaBaseDoc*)fromDoc)->ThreadList) {
       thrL = ((CLavaBaseDoc*)fromDoc)->ThreadList;
-      thr = thrL->first();
-      while (thr) {
-				if ((thr != curThr) && thr->pContExecEvent) 
-					thr->pContExecEvent->release();
-				thr = thrL->next();
-			}
+      for (int i=0; i<thrL->size(); i++) {
+				if ((thrL->at(i) != curThr) && thrL->at(i)->pContExecEvent) 
+          thrL->at(i)->pContExecEvent->release();
+      }
 		}
 		if (err) 
 			throw CUserException();
@@ -1168,7 +1164,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   return resultName;
 
 #else
-  Q3FileDialog *fd = new Q3FileDialog(parent, "lavafileDialog", true);
+  QFileDialog *fd = new QFileDialog(parent, "lavafileDialog", true);
 	
   fd->addFilter(filter);
   if (filter2 != QString::null)
@@ -1180,8 +1176,8 @@ QString L_GetOpenFileName(const QString& startFileName,
   currentFilter = "*." + currentFilter;
   fd->setSelectedFilter(currentFilter);
   fd->setSelection(startFileName);
-  fd->setMode( Q3FileDialog::ExistingFile );
-  fd->setViewMode( Q3FileDialog::List );
+  fd->setMode( QFileDialog::ExistingFile );
+  fd->setViewMode( QFileDialog::List );
   fd->setFilter(filter);
   if (fd->exec() == QDialog::Accepted ) {
     fileName = fd->selectedFile();
@@ -1305,7 +1301,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   return resultNames;
 
 #else
-  Q3FileDialog *fd = new Q3FileDialog(parent, "lavafileDialog", true);
+  QFileDialog *fd = new QFileDialog(parent, "lavafileDialog", true);
   fd->addFilter(filter);
   if (filter2 != QString::null)
     fd->addFilter( filter2);
@@ -1316,8 +1312,8 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   currentFilter = "*." + currentFilter;
   fd->setSelectedFilter(currentFilter);
   fd->setSelection(startFileName);
-  fd->setMode( Q3FileDialog::ExistingFiles );
-  fd->setViewMode( Q3FileDialog::List );
+  fd->setMode( QFileDialog::ExistingFiles );
+  fd->setViewMode( QFileDialog::List );
   fd->setFilter(filter);
   if (fd->exec() == QDialog::Accepted ) {
     resultNames = fd->selectedFiles();
@@ -1354,10 +1350,12 @@ unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,
 
 
 
-WhatsThis::WhatsThis(QString text,QWidget *w) : Q3WhatsThis(w)
+WhatsThis::WhatsThis(QString text,QWidget *w)
 {
-  if (!text.isEmpty())
+  if (!text.isEmpty()) {
     whatsThisText = text;
+    w->setWhatsThis(text);
+  }
 }
 
 bool WhatsThis::clicked(const QString &whatsThisHref)

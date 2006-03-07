@@ -8,16 +8,15 @@
 #include "LavaBaseDoc.h"
 #include "SylTraversal.h"
 #include "SynIDTable.h"
-#include "q3cstring.h"
 #include "wxExport.h"
-#include "q3combobox.h"
+#include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "q3listbox.h"
+#include <QListWidgetItem>
 
 
-class CListItem: public Q3ListBoxText
+class CListItem: public QListWidgetItem
 {
 public:
   CListItem(const QString& text, const TID& id) {setText(text); ID = id;}
@@ -28,7 +27,7 @@ public:
   CListItem() {}
   TID itemData() {return ID;}
   unsigned* flags() {return Flags;}
-  virtual void setText(const QString& text) {Q3ListBoxText::setText(text);}
+  virtual void setText(const QString& text) {QListWidgetItem::setText(text);}
 protected:
   TID ID;
   unsigned* Flags;

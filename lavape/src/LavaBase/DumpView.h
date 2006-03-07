@@ -5,7 +5,8 @@
 #include "Syntax.h"
 #include "wxExport.h"
 #include "qmainwindow.h" 
-#include "q3listview.h" 
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 #include "qdialog.h" 
 //Added by qt3to4:
 #include <QCloseEvent>
@@ -77,7 +78,7 @@ public:
   ~DDItem() {delete DD;}
 };
 
-class LAVABASE_DLL DumpItem :public Q3ListViewItem, public DDItem 
+class LAVABASE_DLL DumpItem :public QTreeWidgetItem, public DDItem 
 {
 public:
   DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false);
@@ -91,7 +92,7 @@ public:
 			       int column, int width, int align );
 };
 
-class LAVABASE_DLL DumpListView: public Q3ListView
+class LAVABASE_DLL DumpListView: public QTreeWidget
 {
 public:
   DumpListView(QWidget *parent,CLavaBaseDoc* doc, LavaObjectPtr object, QString varName);

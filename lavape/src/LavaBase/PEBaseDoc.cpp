@@ -31,7 +31,6 @@
 #include "mdiframes.h"
 
 #include "qmessagebox.h"
-#include "q3cstring.h"
 #include "qobject.h"
 #include "qstring.h"
 #include "qlineedit.h"

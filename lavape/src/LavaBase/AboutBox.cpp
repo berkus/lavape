@@ -26,10 +26,10 @@
 
 #include "qobject.h"
 #include "qstring.h"
-#include "q3filedialog.h"
+#include "qfiledialog.h"
 #include "qmessagebox.h"
 #include "qapplication.h"
-#include "q3process.h"
+#include "qprocess.h"
 
 #ifdef WIN32
 #include <process.h>
@@ -59,7 +59,7 @@ void CAboutBox::on_selectBrowser_clicked() {
 	filter = "Executable Programs (*)";
 #endif
 
-  QString s = Q3FileDialog::getOpenFileName(
+  QString s = QFileDialog::getOpenFileName(
                   progDir,
                   filter,
                   this,
@@ -80,17 +80,15 @@ void CAboutBox::on_browserPath_textChanged (const QString &s) {
 void CAboutBox::on_LavaHomePage_clicked() 
 {
 	QStringList args;
-	QString buf;
 
 	if (browserPath->text().isEmpty()) {
     QMessageBox::critical(this,qApp->name(),ERR_MissingBrowserPath,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 		return;
 	}
 
-	args << LBaseData->m_myWebBrowser << "http://lavape.sourceforge.net/";
-	Q3Process browser(args);
+	args << "http://lavape.sourceforge.net/";
 
-	if (!browser.launch(buf)) {
+  if (!QProcess::startDetached(LBaseData->m_myWebBrowser,args)) {
     QMessageBox::critical(this,qApp->name(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 		return;
 	}

@@ -5,7 +5,7 @@
 #include "qthread.h"
 #include "qthreadstorage.h"
 //Added by qt3to4:
-#include <Q3PtrList>
+#include <QList>
 #include <QSemaphore>
 
 
@@ -56,7 +56,7 @@ public:
 
 extern LAVABASE_DLL QThreadStorage<CThreadData*>* threadStg();
 
-typedef Q3PtrList<CLavaThread> CThreadList;
+typedef QList<CLavaThread*> CThreadList;
 
 
 #endif

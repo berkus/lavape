@@ -40,7 +40,7 @@ CLavaThread::CLavaThread(unsigned (*fp)(CLavaBaseDoc *), CLavaBaseDoc* docu)
 
   if (!myDoc->ThreadList) {
 		myDoc->ThreadList = new CThreadList;
-    myDoc->ThreadList->setAutoDelete(true);
+//    myDoc->ThreadList->setAutoDelete(true);
   }
 }
 

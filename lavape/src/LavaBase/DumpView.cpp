@@ -26,13 +26,11 @@
 
 #include "qapplication.h"
 #include "q3frame.h"
-#include "q3listview.h"
-#include "q3header.h"
+#include <QHeaderView>
 #include "qpushbutton.h"
-#include "q3vbox.h"
 #include "qlayout.h"
 //Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <QCloseEvent>
 
 
@@ -339,7 +337,7 @@ LavaDumpFrame::LavaDumpFrame( QWidget* parent, DumpEventData* data)
   resize(200, 300);
   view = new DumpListView(this, data->doc, data->object, data->name);
   QPushButton* okButton = new QPushButton("Ok", this);
-  Q3VBoxLayout* qvbox = new Q3VBoxLayout(this);
+  QVBoxLayout* qvbox = new QVBoxLayout(this);
   qvbox->addWidget(view);
   qvbox->addWidget(okButton);
   QSize sz = size();
@@ -394,7 +392,7 @@ DDItem* DumpItem::createChild(DDMakeClass* dd, DDItem* afterItem, CLavaBaseDoc* 
 }
 
 DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv)
-  :Q3ListViewItem(parent, afterItem) 
+  :QTreeWidgetItem(parent, afterItem) 
 { 
   DD = dd;
   DD->myItem = this;
@@ -409,9 +407,9 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLava
   DD->myDoc = doc;
   childrenDrawn = false;
   withChildren = DD->hasChildren();
-  setExpandable(withChildren);
-  setHeight(16);
-  setMultiLinesEnabled(true);
+//???  setExpandable(withChildren);
+//???  setHeight(16);
+//???  setMultiLinesEnabled(true);
   setText(0,DD->getValue0(varName));
   setText(1, DD->getValue1());
   setText(2, DD->getValue2());
@@ -419,7 +417,7 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLava
 }
 
 DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec, bool priv)
-  :Q3ListViewItem(parent) 
+  :QTreeWidgetItem(parent) 
 { 
   DD = dd;
   DD->myItem = this;
@@ -434,9 +432,9 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObj
   DD->myDoc = doc;
   childrenDrawn = false;
   withChildren = DD->hasChildren();
-  setExpandable(withChildren);
-  setHeight(16);
-  setMultiLinesEnabled(true);
+//???  setExpandable(withChildren);
+//???  setHeight(16);
+//???  setMultiLinesEnabled(true);
   setText(0, DD->getValue0(varName));
   setText(1, DD->getValue1());
   setText(2, DD->getValue2());
@@ -444,7 +442,7 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObj
 
 
 DumpItem::DumpItem (DDMakeClass* dd, DumpListView* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName)
-  :Q3ListViewItem(parent) 
+  :QTreeWidgetItem(parent) 
 { 
   DD = dd;
   DD->myItem = this;
@@ -459,9 +457,9 @@ DumpItem::DumpItem (DDMakeClass* dd, DumpListView* parent, CLavaBaseDoc* doc, La
   DD->myDoc = doc;
   childrenDrawn = false;
   withChildren = DD->hasChildren();
-  setExpandable(withChildren);
-  setHeight(16);
-  setMultiLinesEnabled(true);
+//???  setExpandable(withChildren);
+//???  setHeight(16);
+//???  setMultiLinesEnabled(true);
   varName = varName + "   ";
   setText(0,varName);
   setText(1, DD->getValue1());
@@ -479,10 +477,10 @@ void DumpItem::setOpen(bool O)
   if (O && withChildren) {
     DD->makeChildren();
     childrenDrawn = true;
-    Q3ListViewItem::setOpen(O);
+//???    QTreeWidgetItem::setOpen(O);
   }
   else
-    Q3ListViewItem::setOpen(O);
+    ;//???QTreeWidgetItem::setOpen(O);
 }
 
 
@@ -492,10 +490,10 @@ void DumpItem::paintCell( QPainter * p, const QColorGroup & cg,
   if (!column && isPriv) {
     QColorGroup cgN ( cg);
     cgN.setColor(QColorGroup::Text,Qt::red);
-    Q3ListViewItem::paintCell( p, cgN, column, width, align );
+//???    QTreeWidgetItem::paintCell( p, cgN, column, width, align );
   }
   else
-    Q3ListViewItem::paintCell( p, cg, column, width, align );
+    ;//???    QTreeWidgetItem::paintCell( p, cg, column, width, align );
 }
 
 
@@ -504,21 +502,23 @@ void DumpItem::paintCell( QPainter * p, const QColorGroup & cg,
 
 
 DumpListView::DumpListView(QWidget *parent,CLavaBaseDoc* doc, LavaObjectPtr object, QString varName)
-:Q3ListView(parent, "DumpListView")
+:QTreeWidget(parent/*, "DumpListView"*/)
 {
   QString label;
   LavaObjectPtr myObject = object;
 
   myDoc = doc;
   setFocusPolicy(Qt::StrongFocus);
-  setSorting(-1);
-  addColumn("varName (static type [/ runtime type])");
-  addColumn("address");
-  addColumn("value");
+  setSortingEnabled(true);
+  setColumnCount(3);
+  setHeaderLabels(QStringList() << "varName (static type [/ runtime type])" << "address" << "value");
+//???  addColumn("varName (static type [/ runtime type])");
+//???  addColumn("address");
+//???  addColumn("value");
   setRootIsDecorated(true);
   header()->show();
-  setSelectionMode(Q3ListView::Single);
-  setShowToolTips(true);
+  setSelectionMode(QAbstractItemView::SingleSelection);
+//???  setShowToolTips(true);
   if (myObject && myObject[0]) {
     myObject = myObject - myObject[0][0].sectionOffset; 
     label = varName + "   (" + QString(myObject[0][0].classDECL->FullName.c) + ")";

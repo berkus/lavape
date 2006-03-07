@@ -8,11 +8,10 @@
 #include "LavaAppBase.h"
 #include "LavaThread.h"
 #include "docview.h"
-#include "q3cstring.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "q3ptrlist.h"
-#include "q3ptrdict.h"
+#include "qlist.h"
+#include "qhash.h"
 //Added by qt3to4:
 #include <QMouseEvent>
 #ifndef WIN32
@@ -697,8 +696,8 @@ public:
   bool callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel, SynObjectBase *sCall);
 };
 
-typedef Q3PtrList<Receiver> ReceiverList;
-typedef Q3PtrList<CSectionDesc*> LavaObjectList;
+typedef QList<Receiver*> ReceiverList;
+typedef QList<CSectionDesc**> LavaObjectList;
 
 class Callback {
 public:
@@ -714,20 +713,20 @@ public:
   LavaDECL *senderClass, *callbackDecl;
 };
 
-typedef Q3PtrList<Callback> CallbackList;
+typedef QList<Callback*> CallbackList;
 
 class RunTimeData {
 public:
   RunTimeData() {
     urlObj = 0;
-    receiverDict.setAutoDelete(true);
-    callbackDict.setAutoDelete(true);
+//    receiverDict.setAutoDelete(true);
+//    callbackDict.setAutoDelete(true);
   }
 
   LavaObjectPtr urlObj;
 
-  Q3PtrDict<ReceiverList> receiverDict;  // key = LavaDECL *signalDecl
-  Q3PtrDict<CallbackList> callbackDict;  // key = LavaDECL *signalDecl
+  QHash<LavaDECL*,ReceiverList*> receiverDict;  // key = LavaDECL *signalDecl
+  QHash<LavaDECL*,CallbackList> callbackDict;  // key = LavaDECL *signalDecl
 };
 
 #endif

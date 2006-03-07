@@ -17,9 +17,6 @@
 #endif
 
 #include "qobject.h"
-//#include "q3ptrlist.h"
-//#include "SYSTEM.h"
-
 
 
 #define IDU_Idle (QEvent::Type)QEvent::User

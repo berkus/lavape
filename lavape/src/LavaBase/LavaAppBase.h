@@ -14,8 +14,7 @@
 #include "docview.h"
 #include "LavaThread.h"
 #include "wxExport.h"
-#include "q3combobox.h"
-#include "q3listview.h" 
+#include "qcombobox.h"
 #include "qfont.h"
 #include "qsize.h"
 #include "qobject.h"
@@ -25,7 +24,7 @@
 #include "qpushbutton.h"
 #include "qtoolbutton.h"
 #include "QtAssistant/qassistantclient.h"
-#include "q3whatsthis.h"
+#include "qwhatsthis.h"
 
 
 #ifdef WIN32
@@ -563,7 +562,7 @@ public:
 	int button0, button1, button2, result;
 };
 
-class LAVABASE_DLL WhatsThis : public Q3WhatsThis
+class LAVABASE_DLL WhatsThis
 {
 public:
   WhatsThis(QString text,QWidget *w);
