@@ -406,7 +406,7 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLava
   DD->myDoc = doc;
   childrenDrawn = false;
   withChildren = DD->hasChildren();
-//???  setExpandable(withChildren);
+  setExpandable(withChildren);
 //???  setHeight(16);
 //???  setMultiLinesEnabled(true);
   setText(0,DD->getValue0(varName));
@@ -431,7 +431,7 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObj
   DD->myDoc = doc;
   childrenDrawn = false;
   withChildren = DD->hasChildren();
-//???  setExpandable(withChildren);
+  setExpandable(withChildren);
 //???  setHeight(16);
 //???  setMultiLinesEnabled(true);
   setText(0, DD->getValue0(varName));
@@ -456,7 +456,7 @@ DumpItem::DumpItem (DDMakeClass* dd, DumpListView* parent, CLavaBaseDoc* doc, La
   DD->myDoc = doc;
   childrenDrawn = false;
   withChildren = DD->hasChildren();
-//???  setExpandable(withChildren);
+  setExpandable(withChildren);
 //???  setHeight(16);
 //???  setMultiLinesEnabled(true);
   varName = varName + "   ";
@@ -465,22 +465,30 @@ DumpItem::DumpItem (DDMakeClass* dd, DumpListView* parent, CLavaBaseDoc* doc, La
   setText(2, DD->getValue2());
 }
 
+void DumpItem::setExpandable(bool withChildren)
+{
+  if (withChildren && !childrenDrawn) {
+    QTreeWidgetItem* it = new QTreeWidgetItem(this);
+  }
+}
 
 DumpItem::~DumpItem()
 {
 }
 
 
-void DumpItem::setOpen(bool O)
+/*void DumpItem::setOpen(bool O)
 {
   if (O && withChildren) {
+    if (!childrenDrawn) {
+      QTreeWidgetItem* it = takeChild(0);
+      delete it;
+    }
     DD->makeChildren();
     childrenDrawn = true;
-//???    QTreeWidgetItem::setOpen(O);
   }
-  else
-    ;//???QTreeWidgetItem::setOpen(O);
-}
+  //treeWidget()->expandItem(this); 
+}*/
 
 
 void DumpItem::paintCell( QPainter * p, const QColorGroup & cg,
@@ -524,8 +532,23 @@ DumpListView::DumpListView(QWidget *parent,CLavaBaseDoc* doc, LavaObjectPtr obje
   }
   else
     label = varName;
+  connect(this, SIGNAL(itemExpanded (QTreeWidgetItem*)), this, SLOT(expandedItem(QTreeWidgetItem*)));
   rootItem = new DumpItem(new DDMakeClass, this, myDoc, object, label);
-  rootItem->setOpen(true);
+  setItemExpanded(rootItem, true);
+}
+
+void DumpListView::expandedItem(QTreeWidgetItem* item)
+{
+  DumpItem* dItem = (DumpItem*)item;
+  if (dItem->withChildren) {
+    if (!dItem->childrenDrawn) {
+      QTreeWidgetItem* it = dItem->takeChild(0);
+      if (it) 
+        delete it;
+    }
+    dItem->DD->makeChildren();
+    dItem->childrenDrawn = true;
+  }
 }
 
 /* Lava *******************************************************************************/

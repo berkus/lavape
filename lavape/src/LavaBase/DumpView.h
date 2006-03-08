@@ -85,7 +85,8 @@ public:
   DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false);
   DumpItem(DDMakeClass* dd, DumpListView* parent, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName);
   virtual DDItem* createChild(DDMakeClass* dd, DDItem* afterItem, CLavaBaseDoc* doc, LavaObjectPtr object, QString varName, bool isSec=true, bool isPriv=false);
-  void setOpen(bool o);
+  //void setOpen(bool o);
+  void setExpandable(bool withChildren);
   ~DumpItem();
 
   virtual void paintCell( QPainter * p, const QColorGroup & cg,
@@ -99,7 +100,9 @@ public:
   ~DumpListView() {}
   DumpItem *rootItem;
   CLavaBaseDoc *myDoc;
-
+public slots: 
+  void expandedItem(QTreeWidgetItem* item);
+  //void collapsedItem(const QTreeWidgetItem* item) {((DumpItem*)item)->setOpen(false);}
 private:
   Q_OBJECT
 
