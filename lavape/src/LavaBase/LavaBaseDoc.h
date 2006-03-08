@@ -726,7 +726,7 @@ public:
   LavaObjectPtr urlObj;
 
   QHash<LavaDECL*,ReceiverList*> receiverDict;  // key = LavaDECL *signalDecl
-  QHash<LavaDECL*,CallbackList> callbackDict;  // key = LavaDECL *signalDecl
+  QHash<LavaDECL*,CallbackList*> callbackDict;  // key = LavaDECL *signalDecl
 };
 
 #endif

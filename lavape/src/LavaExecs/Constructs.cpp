@@ -34,6 +34,7 @@
 #include "mdiframes.h"
 #include "DIO.h"
 #include <Q3MimeSourceFactory>
+#include <Q3WhatsThis>
 
 
 #define ADJUST(nnn,decl) \

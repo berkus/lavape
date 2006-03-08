@@ -1574,9 +1574,9 @@ bool InSetStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsig
 bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   LavaObjectPtr object, sender=0, receiver;
   RunTimeData *runTimeData;
-  Q3PtrDict<ReceiverList> *rcvDict;
+  QHash<LavaDECL*,ReceiverList*> *rcvDict;
   ReceiverList *rcvListPtr;
-  Q3PtrDict<CallbackList> *cbDict;
+  QHash<LavaDECL*,CallbackList*> *cbDict;
   CallbackList *cbListPtr;
   LavaDECL *signalDecl, *senderClass=0, *callbackDecl;
 
@@ -1608,20 +1608,20 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
     rcvListPtr = (*rcvDict)[signalDecl];
     if (!rcvListPtr) {
       rcvListPtr = new ReceiverList;
-      rcvListPtr->setAutoDelete(true);
+//???      rcvListPtr->setAutoDelete(true);
       rcvDict->insert(signalDecl,rcvListPtr);
     }
     rcvListPtr->append(new Receiver(receiver,callbackDecl,(FuncStatement*)callback.ptr));
   }
   else {
     senderClass = ((Reference*)signalSenderClass.ptr)->refDecl;
-    rcvDict = (Q3PtrDict<ReceiverList>*)senderClass->runTimeData;
+    rcvDict = (QHash<LavaDECL*,ReceiverList*>*)senderClass->runTimeData;
     if (!rcvDict)
-      rcvDict = new Q3PtrDict<ReceiverList>;
+      rcvDict = new QHash<LavaDECL*,ReceiverList*>;
     rcvListPtr = (*rcvDict)[signalDecl];
     if (!rcvListPtr) {
       rcvListPtr = new ReceiverList;
-      rcvListPtr->setAutoDelete(true);
+//???      rcvListPtr->setAutoDelete(true);
       rcvDict->insert(signalDecl,rcvListPtr);
     }
     rcvListPtr->append(new Receiver(receiver,callbackDecl,(FuncStatement*)callback.ptr));
@@ -1639,7 +1639,7 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
     cbListPtr->append(new Callback(sender,senderClass,callbackDecl));
   else {
     cbListPtr = new CallbackList;
-    cbListPtr->setAutoDelete(true);
+//???    cbListPtr->setAutoDelete(true);
     cbListPtr->append(new Callback(sender,senderClass,callbackDecl));
     cbDict->insert(signalDecl,cbListPtr);
   }
@@ -1651,8 +1651,8 @@ bool ConnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
 bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   LavaObjectPtr sender=0, senderObj, receiver=0, receiverObj;
   RunTimeData *runTimeData;
-  Q3PtrDict<ReceiverList> *rcvDict;
-  Q3PtrDict<CallbackList> *sdrDict;
+  QHash<LavaDECL*,ReceiverList*> *rcvDict;
+  QHash<LavaDECL*,CallbackList*> *sdrDict;
   ReceiverList *rcvListPtr;
   Receiver *receiverEntry;
   CallbackList *sdrListPtr;
@@ -1689,33 +1689,35 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
     if (runTimeData) {
       rcvDict = &runTimeData->receiverDict;
       if (signalDecl) { // specific signal
-        rcvListPtr = (*rcvDict)[signalDecl];
-        if (rcvListPtr)
-          for (receiverEntry = rcvListPtr->first();
-               receiverEntry;)
+        if (rcvDict->contains(signalDecl)) {
+          rcvListPtr = (*rcvDict)[signalDecl];
+          for (QList<Receiver*>::iterator it=rcvListPtr->begin();
+               it != rcvListPtr->end();) {
+            receiverEntry = *it;
             if (receiverEntry->matches(receiver,callbackDecl)) {
               if (!receiver) {
               }
-              rcvListPtr->remove();
-              receiverEntry = rcvListPtr->current();
+              it = rcvListPtr->erase(it);
             }
             else
-              receiverEntry = rcvListPtr->next();
-      }
-      else { // all signals
-        Q3PtrDictIterator<ReceiverList> it(*rcvDict);
-        for( ; it.current(); ++it ) {
-          rcvListPtr = it.current();
-          for (receiverEntry = rcvListPtr->first();
-               receiverEntry;)
-            if (receiverEntry->matches(receiver,callbackDecl)) {
-              rcvListPtr->remove();
-              receiverEntry = rcvListPtr->current();
-            }
-            else
-              receiverEntry = rcvListPtr->next();
+              it++;
+          }
         }
       }
+      else /* all signals */ if (!rcvDict->isEmpty())
+        for(QHash<LavaDECL*,ReceiverList*>::iterator dit=rcvDict->begin();
+            dit!=rcvDict->end();
+            ++dit) {
+          rcvListPtr = *dit;
+          for (QList<Receiver*>::iterator it=rcvListPtr->begin();
+               it != rcvListPtr->end();) {
+            receiverEntry = *it;
+            if (receiverEntry->matches(receiver,callbackDecl))
+              it = rcvListPtr->erase(it);
+            else
+              it++;
+          }
+        }
     }
   }
 
@@ -1724,31 +1726,32 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
     if (runTimeData) {
       sdrDict = &runTimeData->callbackDict;
       if (signalDecl) { // specific signal
-        sdrListPtr = (*sdrDict)[signalDecl];
-        if (sdrListPtr)
-          for (senderEntry = sdrListPtr->first();
-               senderEntry;)
-            if (senderEntry->matches(sender,callbackDecl)) {
-              sdrListPtr->remove();
-              senderEntry = sdrListPtr->current();
-            }
+        if (sdrDict->contains(signalDecl)) {
+          sdrListPtr = (*sdrDict)[signalDecl];
+          for (QList<Callback*>::iterator it=sdrListPtr->begin();
+               it != sdrListPtr->end();) {
+            senderEntry = *it;
+            if (senderEntry->matches(sender,callbackDecl))
+              it = sdrListPtr->erase(it);
             else
-              senderEntry = sdrListPtr->next();
-      }
-      else { // all signals
-        Q3PtrDictIterator<CallbackList> it(*sdrDict);
-        for( ; it.current(); ++it ) {
-          sdrListPtr = it.current();
-          for (senderEntry = sdrListPtr->first();
-               senderEntry;)
-            if (senderEntry->matches(sender,callbackDecl)) {
-              sdrListPtr->remove();
-              senderEntry = sdrListPtr->current();
-            }
-            else
-              senderEntry = sdrListPtr->next();
+              it++;
+          }
         }
       }
+      else /* all signals */ if (!sdrDict->isEmpty())
+        for(QHash<LavaDECL*,CallbackList*>::iterator dit=sdrDict->begin();
+            dit!=sdrDict->end();
+            ++dit ) {
+          sdrListPtr = *dit;
+          for (QList<Callback*>::iterator it=sdrListPtr->begin();
+               it != sdrListPtr->end();) {
+            senderEntry = *it;
+            if (senderEntry->matches(sender,callbackDecl))
+              it = sdrListPtr->erase(it);
+            else
+              it++;
+          }
+        }
     }
   }
 
@@ -1759,7 +1762,7 @@ bool DisconnectX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned 
 bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   LavaObjectPtr selfObj=stackFrame[SFH];
   RunTimeData *runTimeData;
-  Q3PtrDict<ReceiverList> *rcvDict;
+  QHash<LavaDECL*,ReceiverList*> *rcvDict;
   ReceiverList *rcvListPtr;
   Receiver *receiverEntry;
   LavaDECL *signalDecl;
@@ -1772,12 +1775,14 @@ bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldE
   if (!runTimeData) return true;
 
   rcvDict = &runTimeData->receiverDict;
-  rcvListPtr = (*rcvDict)[signalDecl];
-  if (rcvListPtr)
-    for (receiverEntry = rcvListPtr->first();
-         receiverEntry;
-         receiverEntry = rcvListPtr->next())
+  if (rcvDict->contains(signalDecl)) {
+    rcvListPtr = (*rcvDict)[signalDecl];
+    for (QList<Receiver*>::iterator it=rcvListPtr->begin();
+         it != rcvListPtr->end();) {
+      receiverEntry = *it;
       receiverEntry->callCallback(ckd,stackFrame,oldExprLevel,(SynObjectBase*)sCall.ptr);
+    }
+  }
 
   return true;
 }

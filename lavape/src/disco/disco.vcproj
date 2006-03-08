@@ -561,28 +561,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="OSDep.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="OutFile.cpp"
 				>
 				<FileConfiguration
@@ -889,10 +867,6 @@
 			</File>
 			<File
 				RelativePath="NESTANY.h"
-				>
-			</File>
-			<File
-				RelativePath="OSDep.h"
 				>
 			</File>
 			<File

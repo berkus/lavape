@@ -26,6 +26,7 @@
 #include "PEBaseDoc.h"
 #include "q3popupmenu.h"
 #include "qlayout.h"
+#include <Q3ListBoxItem>
 
 
 int SelEndOKToStr(int pos, QComboBox* cbox, QString* editStr, TID* exID)
