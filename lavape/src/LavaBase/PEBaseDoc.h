@@ -34,7 +34,7 @@ protected:
 };
 Q_DECLARE_METATYPE(CListItem*)
 
-class CComboBoxItem//: public Q3ListBoxText
+class CComboBoxItem
 {
 public:
   CComboBoxItem(/*char* text,*/ const TID& id) {/*setText(QString(text));*/ ID = id;}
