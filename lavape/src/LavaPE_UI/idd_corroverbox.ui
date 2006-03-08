@@ -31,7 +31,7 @@
         <enum>Fixed</enum>
       </property>
       <item>
-        <widget class="Q3ButtonGroup" name="buttonGroup6" >
+        <widget class="QGroupBox" name="buttonGroup6" >
           <property name="title" >
             <string>Correct overridden declaration</string>
           </property>
@@ -139,5 +139,4 @@
     </layout>
   </widget>
   <layoutdefault spacing="6" margin="11" />
-  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
 </ui>

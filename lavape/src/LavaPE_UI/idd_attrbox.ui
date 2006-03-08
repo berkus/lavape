@@ -1,543 +1,476 @@
-<ui version="4.0" stdsetdef="1" >
-  <author></author>
-  <comment></comment>
-  <exportmacro></exportmacro>
-  <class>IDD_AttrBox</class>
-  <widget class="QDialog" name="IDD_AttrBox" >
-    <property name="geometry" >
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>377</width>
-        <height>437</height>
-      </rect>
-    </property>
-    <property name="sizePolicy" >
-      <sizepolicy>
-        <hsizetype>1</hsizetype>
-        <vsizetype>1</vsizetype>
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-      </sizepolicy>
-    </property>
-    <property name="windowTitle" >
-      <string>Member variable</string>
-    </property>
-    <layout class="QVBoxLayout" >
-      <item>
-        <layout class="QGridLayout" >
-          <property name="margin" >
-            <number>0</number>
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>IDD_AttrBox</class>
+ <widget class="QDialog" name="IDD_AttrBox" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>377</width>
+    <height>437</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Member variable</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>11</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <layout class="QGridLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item rowspan="2" row="1" column="0" >
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QCheckBox" name="m_Substitutable2" >
+         <property name="text" >
+          <string>Substitutable type</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_RMOverrides2" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="text" >
+          <string>Remove overrides</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="4" column="1" >
+      <widget class="QGroupBox" name="BGroup_Mode" >
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>11</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="m_Mandatory" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
           </property>
-          <item rowspan="2" row="1" column="0" colspan="1" >
-            <layout class="QVBoxLayout" >
-              <property name="margin" >
-                <number>0</number>
-              </property>
-              <item>
-                <widget class="QCheckBox" name="m_Substitutable2" >
-                  <property name="text" >
-                    <string>Substitutable type</string>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QCheckBox" name="m_RMOverrides2" >
-                  <property name="enabled" >
-                    <bool>false</bool>
-                  </property>
-                  <property name="text" >
-                    <string>Remove overrides</string>
-                  </property>
-                </widget>
-              </item>
-            </layout>
+          <property name="text" >
+           <string>Mandatory</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="m_Optional" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Optional</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="m_Placeholder" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Placeholder</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="3" column="0" >
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="Label_IDC_STATIC68" >
+         <property name="focusPolicy" >
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Type</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="m_NewTypeType" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy" >
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="GroupBox_IDC_STATIC36" >
+         <property name="focusPolicy" >
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="title" >
+          <string>Select type of member variable</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter|Qt::AlignHCenter|Qt::AlignJustify|Qt::AlignLeading|Qt::AlignLeft|Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>11</number>
+          </property>
+          <property name="spacing" >
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QComboBox" name="m_BasicTypes" >
+            <item>
+             <property name="text" >
+              <string>(Basic types)</string>
+             </property>
+            </item>
+           </widget>
           </item>
-          <item row="4" column="1" >
-            <widget class="Q3ButtonGroup" name="BGroup_Mode" >
-              <property name="sizePolicy" >
-                <sizepolicy>
-                  <hsizetype>1</hsizetype>
-                  <vsizetype>1</vsizetype>
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                </sizepolicy>
-              </property>
-              <property name="title" >
-                <string>Mode</string>
-              </property>
-              <layout class="QVBoxLayout" >
-                <item>
-                  <widget class="QRadioButton" name="m_Mandatory" >
-                    <property name="focusPolicy" >
-                      <enum>Qt::StrongFocus</enum>
-                    </property>
-                    <property name="text" >
-                      <string>Mandatory</string>
-                    </property>
-                  </widget>
-                </item>
-                <item>
-                  <widget class="QRadioButton" name="m_Optional" >
-                    <property name="focusPolicy" >
-                      <enum>Qt::StrongFocus</enum>
-                    </property>
-                    <property name="text" >
-                      <string>Optional</string>
-                    </property>
-                  </widget>
-                </item>
-                <item>
-                  <widget class="QRadioButton" name="m_Placeholder" >
-                    <property name="focusPolicy" >
-                      <enum>Qt::StrongFocus</enum>
-                    </property>
-                    <property name="text" >
-                      <string>Placeholder</string>
-                    </property>
-                  </widget>
-                </item>
-              </layout>
-            </widget>
+          <item>
+           <widget class="QComboBox" name="m_NamedTypes" >
+            <item>
+             <property name="text" >
+              <string>(Other types)</string>
+             </property>
+            </item>
+           </widget>
           </item>
-          <item row="3" column="0" >
-            <layout class="QVBoxLayout" >
-              <property name="margin" >
-                <number>0</number>
-              </property>
-              <item>
-                <widget class="QLabel" name="Label_IDC_STATIC68" >
-                  <property name="sizePolicy" >
-                    <sizepolicy>
-                      <hsizetype>3</hsizetype>
-                      <vsizetype>1</vsizetype>
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                    </sizepolicy>
-                  </property>
-                  <property name="focusPolicy" >
-                    <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="text" >
-                    <string>Type</string>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QLineEdit" name="m_NewTypeType" >
-                  <property name="enabled" >
-                    <bool>false</bool>
-                  </property>
-                  <property name="focusPolicy" >
-                    <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="alignment" >
-                    <set>Qt::AlignLeft</set>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="Q3GroupBox" name="GroupBox_IDC_STATIC36" >
-                  <property name="sizePolicy" >
-                    <sizepolicy>
-                      <hsizetype>1</hsizetype>
-                      <vsizetype>1</vsizetype>
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                    </sizepolicy>
-                  </property>
-                  <property name="focusPolicy" >
-                    <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="title" >
-                    <string>Select type of member variable</string>
-                  </property>
-                  <property name="alignment" >
-                    <set>Qt::AlignJustify|Qt::AlignCenter|Qt::AlignRight|Qt::AlignLeft</set>
-                  </property>
-                  <layout class="QVBoxLayout" >
-                    <item>
-                      <widget class="QComboBox" name="m_BasicTypes" >
-                        <item>
-                          <property name="text" >
-                            <string>(Basic types)</string>
-                          </property>
-                        </item>
-                      </widget>
-                    </item>
-                    <item>
-                      <widget class="QComboBox" name="m_NamedTypes" >
-                        <item>
-                          <property name="text" >
-                            <string>(Other types)</string>
-                          </property>
-                        </item>
-                      </widget>
-                    </item>
-                  </layout>
-                </widget>
-              </item>
-            </layout>
-          </item>
-          <item rowspan="2" row="2" column="1" colspan="1" >
-            <layout class="QVBoxLayout" >
-              <property name="margin" >
-                <number>11</number>
-              </property>
-              <item>
-                <widget class="QCheckBox" name="m_Protected" >
-                  <property name="focusPolicy" >
-                    <enum>Qt::StrongFocus</enum>
-                  </property>
-                  <property name="text" >
-                    <string>Protected</string>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QCheckBox" name="m_ConstProp" >
-                  <property name="focusPolicy" >
-                    <enum>Qt::StrongFocus</enum>
-                  </property>
-                  <property name="text" >
-                    <string>Read-only</string>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QCheckBox" name="m_PassByValue" >
-                  <property name="focusPolicy" >
-                    <enum>Qt::StrongFocus</enum>
-                  </property>
-                  <property name="text" >
-                    <string>Copy on access</string>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QCheckBox" name="m_Abstract" >
-                  <property name="enabled" >
-                    <bool>false</bool>
-                  </property>
-                  <property name="focusPolicy" >
-                    <enum>Qt::StrongFocus</enum>
-                  </property>
-                  <property name="text" >
-                    <string>Abstract</string>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QCheckBox" name="m_SetGet" >
-                  <property name="focusPolicy" >
-                    <enum>Qt::StrongFocus</enum>
-                  </property>
-                  <property name="text" >
-                    <string>Access via set/get functions</string>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <widget class="QCheckBox" name="m_Consumable" >
-                  <property name="enabled" >
-                    <bool>false</bool>
-                  </property>
-                  <property name="focusPolicy" >
-                    <enum>Qt::StrongFocus</enum>
-                  </property>
-                  <property name="text" >
-                    <string>Consumable</string>
-                  </property>
-                </widget>
-              </item>
-            </layout>
-          </item>
-          <item row="4" column="0" >
-            <widget class="Q3ButtonGroup" name="BGroup_KindOfRef" >
-              <property name="sizePolicy" >
-                <sizepolicy>
-                  <hsizetype>1</hsizetype>
-                  <vsizetype>1</vsizetype>
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                </sizepolicy>
-              </property>
-              <property name="title" >
-                <string>Kind of reference</string>
-              </property>
-              <layout class="QVBoxLayout" >
-                <item>
-                  <widget class="QRadioButton" name="m_DownC" >
-                    <property name="sizePolicy" >
-                      <sizepolicy>
-                        <hsizetype>3</hsizetype>
-                        <vsizetype>1</vsizetype>
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                      </sizepolicy>
-                    </property>
-                    <property name="focusPolicy" >
-                      <enum>Qt::StrongFocus</enum>
-                    </property>
-                    <property name="text" >
-                      <string>Constituent</string>
-                    </property>
-                    <property name="buttonGroupId" >
-                      <number>0</number>
-                    </property>
-                  </widget>
-                </item>
-                <item>
-                  <widget class="QRadioButton" name="m_DownInd" >
-                    <property name="focusPolicy" >
-                      <enum>Qt::StrongFocus</enum>
-                    </property>
-                    <property name="text" >
-                      <string>Acquaintance</string>
-                    </property>
-                  </widget>
-                </item>
-                <item>
-                  <widget class="QRadioButton" name="m_Back" >
-                    <property name="focusPolicy" >
-                      <enum>Qt::StrongFocus</enum>
-                    </property>
-                    <property name="text" >
-                      <string>Reverse (back or up link)</string>
-                    </property>
-                    <property name="buttonGroupId" >
-                      <number>2</number>
-                    </property>
-                  </widget>
-                </item>
-              </layout>
-            </widget>
-          </item>
-          <item row="0" column="0" >
-            <layout class="QVBoxLayout" >
-              <property name="margin" >
-                <number>0</number>
-              </property>
-              <item>
-                <layout class="QHBoxLayout" >
-                  <property name="margin" >
-                    <number>0</number>
-                  </property>
-                  <item>
-                    <widget class="QLabel" name="Label_IDC_STATIC67" >
-                      <property name="sizePolicy" >
-                        <sizepolicy>
-                          <hsizetype>1</hsizetype>
-                          <vsizetype>1</vsizetype>
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                        </sizepolicy>
-                      </property>
-                      <property name="focusPolicy" >
-                        <enum>Qt::NoFocus</enum>
-                      </property>
-                      <property name="text" >
-                        <string>Name</string>
-                      </property>
-                    </widget>
-                  </item>
-                  <item>
-                    <widget class="QCheckBox" name="m_EnableName2" >
-                      <property name="enabled" >
-                        <bool>false</bool>
-                      </property>
-                      <property name="sizePolicy" >
-                        <sizepolicy>
-                          <hsizetype>1</hsizetype>
-                          <vsizetype>1</vsizetype>
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                        </sizepolicy>
-                      </property>
-                      <property name="text" >
-                        <string>enable renaming</string>
-                      </property>
-                    </widget>
-                  </item>
-                </layout>
-              </item>
-              <item>
-                <widget class="QLineEdit" name="m_NewName" >
-                  <property name="focusPolicy" >
-                    <enum>Qt::StrongFocus</enum>
-                  </property>
-                  <property name="alignment" >
-                    <set>Qt::AlignLeft</set>
-                  </property>
-                </widget>
-              </item>
-            </layout>
-          </item>
-          <item rowspan="2" row="0" column="1" colspan="1" >
-            <widget class="Q3ButtonGroup" name="BGroup_ObjCat" >
-              <property name="sizePolicy" >
-                <sizepolicy>
-                  <hsizetype>1</hsizetype>
-                  <vsizetype>1</vsizetype>
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                </sizepolicy>
-              </property>
-              <property name="title" >
-                <string>Object category</string>
-              </property>
-              <layout class="QVBoxLayout" >
-                <item>
-                  <widget class="QRadioButton" name="m_ValueObject" >
-                    <property name="sizePolicy" >
-                      <sizepolicy>
-                        <hsizetype>3</hsizetype>
-                        <vsizetype>1</vsizetype>
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                      </sizepolicy>
-                    </property>
-                    <property name="focusPolicy" >
-                      <enum>Qt::StrongFocus</enum>
-                    </property>
-                    <property name="text" >
-                      <string>Value object</string>
-                    </property>
-                  </widget>
-                </item>
-                <item>
-                  <widget class="QRadioButton" name="m_StateObject" >
-                    <property name="focusPolicy" >
-                      <enum>Qt::StrongFocus</enum>
-                    </property>
-                    <property name="text" >
-                      <string>State object</string>
-                    </property>
-                  </widget>
-                </item>
-                <item>
-                  <widget class="QRadioButton" name="m_AnyCategory" >
-                    <property name="text" >
-                      <string>Any object category</string>
-                    </property>
-                  </widget>
-                </item>
-              </layout>
-            </widget>
-          </item>
-        </layout>
-      </item>
-      <item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item rowspan="2" row="2" column="1" >
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>11</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QCheckBox" name="m_Protected" >
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Protected</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_ConstProp" >
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Read-only</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_PassByValue" >
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Copy on access</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_Abstract" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Abstract</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_SetGet" >
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Access via set/get functions</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="m_Consumable" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text" >
+          <string>Consumable</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="4" column="0" >
+      <widget class="QGroupBox" name="BGroup_KindOfRef" >
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>11</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="m_DownC" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Constituent</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="m_DownInd" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Acquaintance</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="m_Back" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Reverse (back or up link)</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="0" >
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
         <layout class="QHBoxLayout" >
-          <property name="margin" >
-            <number>0</number>
-          </property>
-          <item>
-            <spacer name="spacer1" >
-              <property name="sizeHint" >
-                <size>
-                  <width>150</width>
-                  <height>16</height>
-                </size>
-              </property>
-              <property name="sizeType" >
-                <enum>Expanding</enum>
-              </property>
-              <property name="orientation" >
-                <enum>Horizontal</enum>
-              </property>
-            </spacer>
-          </item>
-          <item>
-            <widget class="QPushButton" name="IDOK18" >
-              <property name="sizePolicy" >
-                <sizepolicy>
-                  <hsizetype>1</hsizetype>
-                  <vsizetype>1</vsizetype>
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                </sizepolicy>
-              </property>
-              <property name="focusPolicy" >
-                <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="text" >
-                <string>OK</string>
-              </property>
-              <property name="default" >
-                <bool>true</bool>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QPushButton" name="IDCANCEL18" >
-              <property name="sizePolicy" >
-                <sizepolicy>
-                  <hsizetype>1</hsizetype>
-                  <vsizetype>1</vsizetype>
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                </sizepolicy>
-              </property>
-              <property name="focusPolicy" >
-                <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="text" >
-                <string>Cancel</string>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QPushButton" name="ID_HELP15" >
-              <property name="sizePolicy" >
-                <sizepolicy>
-                  <hsizetype>1</hsizetype>
-                  <vsizetype>1</vsizetype>
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                </sizepolicy>
-              </property>
-              <property name="focusPolicy" >
-                <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="text" >
-                <string>Help</string>
-              </property>
-              <property name="autoDefault" >
-                <bool>true</bool>
-              </property>
-              <property name="default" >
-                <bool>false</bool>
-              </property>
-            </widget>
-          </item>
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="Label_IDC_STATIC67" >
+           <property name="focusPolicy" >
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text" >
+            <string>Name</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="m_EnableName2" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+           <property name="text" >
+            <string>enable renaming</string>
+           </property>
+          </widget>
+         </item>
         </layout>
-      </item>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="m_NewName" >
+         <property name="focusPolicy" >
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignLeading</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item rowspan="2" row="0" column="1" >
+      <widget class="QGroupBox" name="BGroup_ObjCat" >
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>11</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="m_ValueObject" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Value object</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="m_StateObject" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>State object</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="m_AnyCategory" >
+          <property name="text" >
+           <string>Any object category</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
     </layout>
-  </widget>
-  <layoutdefault spacing="6" margin="11" />
-  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
-  <tabstops>
-    <tabstop>m_EnableName2</tabstop>
-    <tabstop>m_NewName</tabstop>
-    <tabstop>m_Substitutable2</tabstop>
-    <tabstop>m_RMOverrides2</tabstop>
-    <tabstop>m_BasicTypes</tabstop>
-    <tabstop>m_NamedTypes</tabstop>
-    <tabstop>m_DownC</tabstop>
-    <tabstop>m_DownInd</tabstop>
-    <tabstop>m_Back</tabstop>
-    <tabstop>m_ValueObject</tabstop>
-    <tabstop>m_StateObject</tabstop>
-    <tabstop>m_AnyCategory</tabstop>
-    <tabstop>m_Protected</tabstop>
-    <tabstop>m_ConstProp</tabstop>
-    <tabstop>m_PassByValue</tabstop>
-    <tabstop>m_Abstract</tabstop>
-    <tabstop>m_SetGet</tabstop>
-    <tabstop>m_Consumable</tabstop>
-    <tabstop>m_Mandatory</tabstop>
-    <tabstop>m_Optional</tabstop>
-    <tabstop>m_Placeholder</tabstop>
-  </tabstops>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>150</width>
+         <height>16</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="IDOK18" >
+       <property name="focusPolicy" >
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text" >
+        <string>OK</string>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="IDCANCEL18" >
+       <property name="focusPolicy" >
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text" >
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ID_HELP15" >
+       <property name="focusPolicy" >
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text" >
+        <string>Help</string>
+       </property>
+       <property name="autoDefault" >
+        <bool>true</bool>
+       </property>
+       <property name="default" >
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <tabstops>
+  <tabstop>m_EnableName2</tabstop>
+  <tabstop>m_NewName</tabstop>
+  <tabstop>m_Substitutable2</tabstop>
+  <tabstop>m_RMOverrides2</tabstop>
+  <tabstop>m_BasicTypes</tabstop>
+  <tabstop>m_NamedTypes</tabstop>
+  <tabstop>m_DownC</tabstop>
+  <tabstop>m_DownInd</tabstop>
+  <tabstop>m_Back</tabstop>
+  <tabstop>m_ValueObject</tabstop>
+  <tabstop>m_StateObject</tabstop>
+  <tabstop>m_AnyCategory</tabstop>
+  <tabstop>m_Protected</tabstop>
+  <tabstop>m_ConstProp</tabstop>
+  <tabstop>m_PassByValue</tabstop>
+  <tabstop>m_Abstract</tabstop>
+  <tabstop>m_SetGet</tabstop>
+  <tabstop>m_Consumable</tabstop>
+  <tabstop>m_Mandatory</tabstop>
+  <tabstop>m_Optional</tabstop>
+  <tabstop>m_Placeholder</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
 </ui>
