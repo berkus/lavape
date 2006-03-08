@@ -25,7 +25,6 @@
 #include "DumpView.h"
 
 #include "qapplication.h"
-#include "q3frame.h"
 #include <QHeaderView>
 #include "qpushbutton.h"
 #include "qlayout.h"

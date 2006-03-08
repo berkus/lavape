@@ -7,7 +7,7 @@
 #include "Syntax.h"       // Hauptsymbole
 #include "docview.h"
 #include "qstring.h"
-#include "q3process.h"
+#include <QProcess>
 #include <QTcpSocket>
 #include <QTcpServer>
 

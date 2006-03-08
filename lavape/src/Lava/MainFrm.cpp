@@ -25,7 +25,7 @@
 #include "Lava.xpm"
 #include "qsignalmapper.h"
 #include "qstylefactory.h"
-#include "q3dict.h"
+#include "qhash.h"
 //Added by qt3to4:
 #include <QPixmap>
 #include <QCustomEvent>
@@ -53,21 +53,21 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   connect( styleMapper, SIGNAL( mapped(const QString&) ), this, SLOT( makeStyle(const QString&) ) );
   QStringList list = QStyleFactory::keys();
   list.sort();
-  Q3Dict<int> stylesDict( 17, FALSE );
+  QHash<QString,int> stylesDict;
   for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
 		QString styleStr = *it;
 		QString styleAccel = styleStr;
 		if ( stylesDict[styleAccel.left(1)] ) {
 			for ( int i = 0; i < styleAccel.length(); i++ ) {
 				if ( !stylesDict[styleAccel.mid( i, 1 )] ) {
-					stylesDict.insert(styleAccel.mid( i, 1 ), (const int *)1);
+					stylesDict.insert(styleAccel.mid( i, 1 ), 1);
 					styleAccel = styleAccel.insert( i, '&' );
 					break;
 				}
 			}
 		}
 		else {
-			stylesDict.insert(styleAccel.left(1), (const int *)1);
+			stylesDict.insert(styleAccel.left(1), 1);
 			styleAccel = "&"+styleAccel;
  		}
 //		QAction *a = new QAction( styleStr, QIcon(), styleAccel, 0, ag, 0, ag->isExclusive() );

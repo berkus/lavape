@@ -30,14 +30,13 @@
 #include "LavaBaseStringInit.h"
 #include "Tokens.h"
 #include "qclipboard.h"
-#include "q3filedialog.h"
+//#include "qfiledialog.h"
 #include "qfontdialog.h"
 #include "qmessagebox.h"
 //Added by qt3to4:
 #include <QCustomEvent>
 #include <signal.h>
 #include "QtAssistant/qassistantclient.h"
-#include "q3process.h"
 #include <stdlib.h>
 
 #ifndef WIN32
@@ -92,7 +91,7 @@ CLavaDebugThread::~CLavaDebugThread()
 
 void CLavaDebugThread::run() {
 
-  Q3Process lavape;
+  QProcess lavape;
   ASN1InSock *get_cid;
   ASN1OutSock *put_cid;
 	QString lavapePath, buf;
@@ -125,9 +124,8 @@ void CLavaDebugThread::run() {
     locPort = listenSocket->serverPort();
     QString host_addr = "127.0.0.1";
 	  QStringList args;
-	  args << lavapePath << myDoc->GetFilename() << host_addr << QString("%1").arg(locPort);
-	  lavape.setArguments(args);
-	  if (!lavape.launch(buf)) {
+	  args << myDoc->GetFilename() << host_addr << QString("%1").arg(locPort);
+    if (!QProcess::startDetached(lavapePath,args)) {
       QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaPEStartFailed.arg(errno),QMessageBox::Ok,0,0);
 		  return;
 	  }
