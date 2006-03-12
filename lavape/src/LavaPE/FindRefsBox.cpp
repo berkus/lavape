@@ -130,27 +130,51 @@ void CFindRefsBox::UpdateData(bool getData)
 {
   if (getData) {
     valRefName = m_Reference->text();
-    if (BGroup_Where->find(0)->isOn())
+    if (m_FindInView->isOn())
       valFindWhere = 0;
-    else if (BGroup_Where->find(1)->isOn())
+    else if (m_InCurrentDoc->isOn())
       valFindWhere = 1;
-    else if (BGroup_Where->find(2)->isOn())
+    else if (m_InDocs->isOn())
       valFindWhere = 2;
     else 
       valFindWhere = 3;
-    if (BGroup_What->find(0)->isOn())
+    if (m_FindAll->isOn())
       valFindWhat = 0;
-    else if (BGroup_What->find(1)->isOn())
+    else if (m_FindRead->isOn())
       valFindWhat = 1;
-    else if (BGroup_What->find(2)->isOn())
+    else if (m_FindWrite->isOn())
       valFindWhat = 2;
     else 
       valFindWhat = 3;
   }
   else {
     m_Reference->setText(valRefName);
-    BGroup_Where->setButton(valFindWhere);
-    BGroup_What->setButton(valFindWhat);
+    switch (valFindWhere) {
+    case 0:
+      m_FindInView->setChecked(true);
+      break;
+    case 1:
+      m_InCurrentDoc->setChecked(true);
+      break;
+    case 2:
+      m_InDocs->setChecked(true);
+      break;
+    default:
+      m_InIncls->setChecked(true);
+    }
+    switch (valFindWhat) {
+    case 0:
+      m_FindAll->setChecked(true);
+      break;
+    case 1:
+      m_FindRead->setChecked(true);
+      break;
+    case 2:
+      m_FindWrite->setChecked(true);
+      break;
+    default:
+      m_FindDerivs->setChecked(true);
+    }
   }
 }
 

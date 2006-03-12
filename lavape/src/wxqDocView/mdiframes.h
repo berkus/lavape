@@ -92,7 +92,7 @@ private:
  * Use this instead of wxMDIChildFrame
  */
 
-class WXDLLEXPORT wxMDIChildFrame  : public QMainWindow
+class WXDLLEXPORT wxMDIChildFrame  : public QWidget
 {
 public:
   wxMDIChildFrame(QWidget *parent, const char* name);
@@ -122,6 +122,7 @@ protected:
   QList<wxView*> m_viewList;
   QWidget *m_clientWindow;
   wxView* lastActive;
+  QHBoxLayout layout;
 
 private:
   Q_OBJECT

@@ -1,5 +1,5 @@
-#ifndef __MACROS
-#define __MACROS
+#ifndef __LBMACROS
+#define __LBMACROS
 
 #ifdef WIN32
 #ifdef LAVABASE_EXPORT

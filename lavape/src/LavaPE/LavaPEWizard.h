@@ -122,8 +122,8 @@ public:
                                QCheckBox* defaultF,
                                QPushButton* ButtonB,
                                QPushButton* ButtonF,
-                               Q3Frame* Fore,
-                               Q3Frame* Back);
+                               QFrame* Fore,
+                               QFrame* Back);
   ~ColorSetting() {}
   LavaDECL * FormDECL;
   QColor BColor;
@@ -133,8 +133,8 @@ public:
   QCheckBox* defaultForeground;
   QPushButton* colorButtonB;
   QPushButton* colorButtonF;
-  Q3Frame* ForeColor;
-  Q3Frame* BackColor;
+  QFrame* ForeColor;
+  QFrame* BackColor;
 
   bool on_defaultForeground_clicked();
   bool on_defaultBackground_clicked();
@@ -386,8 +386,8 @@ public:
   ~CLiteralsPage();
   void SetProps();
   void GetProps();
-  bool OnAdd(ChainAny0* chain, Q3ListBox* m_list/*, int transpos=0*/);
-  bool OnEdit(ChainAny0* chain, Q3ListBox* m_list/*, int transpos=0*/); 
+  bool OnAdd(ChainAny0* chain, QListWidget* m_list/*, int transpos=0*/);
+  bool OnEdit(ChainAny0* chain, QListWidget* m_list/*, int transpos=0*/); 
 
   CLavaPEWizard *myWizard;
   LavaDECL *FormDECL;
@@ -538,11 +538,11 @@ private:
 class CLiteralItem : public QDialog, public Ui_IDD_LiteralItem
 {
 public:
-  CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, Q3ListBox *litList,
+  CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, QListWidget *litList,
                LavaDECL * litEl);  
   void UpdateData(bool getData);
   CLiteralsPage *LitPage;
-  Q3ListBox *LitList;
+  QListWidget *LitList;
   LavaDECL * myDecl;
   int litPos;
   bool insert;

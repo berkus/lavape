@@ -30,7 +30,7 @@
 enum ValOnInit {BoxContinue, BoxOK, BoxCancel};
 
 
-class CListBoxItem: public Q3ListBoxText
+class CListBoxItem: public QListWidgetItem
 {
 public:
   CListBoxItem(const QString& txt, const TID& id) { setText(txt); ID = id;}
@@ -199,10 +199,10 @@ class CEnumItem : public QDialog, public Ui_IDD_EnumItem
 {
 public:
   CEnumItem(QWidget* parent = NULL);   // standard constructor
-  CEnumItem(QString * enumItem, Q3ListBox* itemsBox, ChainAny0* items, bool isId, QWidget* parent =NULL);
+  CEnumItem(QString * enumItem, QListWidget* itemsBox, ChainAny0* items, bool isId, QWidget* parent =NULL);
 
   QString *m_ItemAdr;
-  Q3ListBox* ItemsBox;
+  QListWidget* ItemsBox;
   QString StartText;
   ChainAny0* Items;
   bool isID;
@@ -551,7 +551,7 @@ extern bool SetSelections(QComboBox* basics, QComboBox* types, const QString& na
 extern QString* CheckNewName(const QString& m_NewName, LavaDECL* myDECL, CLavaPEDoc* myDoc/*, LavaDECL* OrigDECL*/);
 
 
-extern int SelEndOKToList(QComboBox* cbox, Q3ListBox* list, int chpos = -1);
+extern int SelEndOKToList(QComboBox* cbox, QListWidget* list, int chpos = -1);
 extern int SelEndOKToStr(QComboBox* cbox, QString* editStr, TID* exID);
 
 
@@ -575,7 +575,7 @@ public:
 };
 
 
-extern void ListToChain(Q3ListBox* list, TSupports* supports);
+extern void ListToChain(QListWidget *list, TSupports* supports);
 
 class CExecDefs: public CExec
 { //Package with virtual types

@@ -71,11 +71,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(QTDIR)\lib\Qt3Supportd4.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib"
+				AdditionalDependencies="$(QT4DIR)\lib\Qt3Supportd4.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib"
 				OutputFile="..\LavaPE\Debug\disco.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="$(QTDIR)/lib"
+				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="libc.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/disco.pdb"

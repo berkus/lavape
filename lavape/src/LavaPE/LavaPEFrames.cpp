@@ -1766,11 +1766,11 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   int totalW=0;
 
 //  if (oldWindowState != Qt::WindowMaximized) {
-    sz = parentWidget()->size();
-    resize(sz.width()*7/10, sz.height()*7/10);
+//    sz = parentWidget()->size();
+//    resize(sz.width()*7/10, sz.height()*7/10);
 //  }
   splitter = new QSplitter(this);//vb);
-  setCentralWidget(splitter);
+  layout.addWidget(splitter);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
   viewL = new CInclView(splitter, doc);

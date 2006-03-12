@@ -2380,7 +2380,7 @@ void wxHistory::AddFilesToMenu(QMenu* menu)
 }
 
 
-#ifdef WIN32
+#ifdef WIN32_
 
 static bool ResolveShortCut (HWND hwnd, QString pszLink, QString &resolved)
 {
@@ -2450,7 +2450,7 @@ static bool ResolveShortCut (HWND hwnd, QString pszLink, QString &resolved)
 QString ResolveLinks(QFileInfo &qf)
 {
   QString abslnkName=qf.absFilePath();
-#ifdef WIN32
+#ifdef WIN32_
   QString synName;
 
   if (qf.isSymLink()) {

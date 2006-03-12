@@ -8,6 +8,7 @@
 #include "LavaAppBase.h"
 #include "LavaThread.h"
 #include "docview.h"
+#include "MACROS.h"
 #include "qobject.h"
 #include "qstring.h"
 #include "qlist.h"

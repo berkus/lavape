@@ -109,7 +109,7 @@
 #  elif defined(__SC__) || defined(__VISUALC__) || (defined(__MWERKS__) && defined(__INTEL__))
 #    define wxStricmp _stricmp
 #    define wxStrnicmp _strnicmp
-#  elif defined(__UNIX__) || defined(__GNUWIN32__)
+#  elif defined(__UNIX__) || defined(__MINGW32)
 #    define wxStricmp strcasecmp
 #    define wxStrnicmp strncasecmp
 #  elif defined(__MWERKS__) && !defined(__INTEL__)

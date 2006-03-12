@@ -19,6 +19,7 @@
 #include <QPixmap>
 #include <QFocusEvent>
 #include <QKeyEvent>
+#include <QScrollArea>
 #include "Constructs.h"
 #include "docview.h"
 #include "mdiframes.h"
@@ -352,7 +353,7 @@ struct Format {
 };
 
 
-class MyScrollView : public Q3ScrollView {
+class MyScrollView : public QScrollArea {
 public:
   MyScrollView (QWidget *parent);
   ~MyScrollView () { 

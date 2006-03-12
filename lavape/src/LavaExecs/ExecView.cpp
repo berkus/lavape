@@ -21,7 +21,7 @@
 #include "qstring.h"
 #include "qstatusbar.h"
 #include "qfontmetrics.h"
-#include "q3scrollview.h"
+#include <QScrollArea>
 #include "qapplication.h"
 #include "qnamespace.h"
 #include "qmessagebox.h"
@@ -1195,7 +1195,7 @@ void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
   execView->OnLButtonDblClk(e);
 }
 
-MyScrollView::MyScrollView (QWidget *parent) : Q3ScrollView(parent) {
+MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
   execView = (CExecView*)parent;
   debugStop = new QPixmap((const char**)debugStop_xpm);
   debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);

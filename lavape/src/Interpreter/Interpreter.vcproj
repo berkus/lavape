@@ -137,7 +137,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\LavaPE;..\LavaGUI;.;..\disco;..\LavaBase;..\LavaExecs;..\wxqDocView;..\Lava_UI;..\Lava_UI\Generated;&quot;$(QTDIR)\include&quot;;&quot;$(QTDIR)\include\Qt&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtNetwork&quot;;&quot;$(QTDIR)\include\Qt3Support&quot;"
+				AdditionalIncludeDirectories="..\LavaPE;..\LavaGUI;.;..\disco;..\LavaBase;..\LavaExecs;..\wxqDocView;..\Lava_UI;..\Lava_UI\Generated"
 				PreprocessorDefinitions="QT_DLL;QT3_SUPPORT;LAVAEXECS_EXPORT;WIN32;INTERPRETER;QT_THREAD_SUPPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
@@ -162,7 +162,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib ..\wxqDocView\Debug\wxqDocView.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\QtNetworkd4.lib $(QTDIR)\lib\Qt3Supportd4.lib"
+				AdditionalDependencies="..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib ..\wxqDocView\Debug\wxqDocView.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\QtNetworkd4.lib $(QT4DIR)\lib\Qt3Supportd4.lib"
 				OutputFile="..\LavaPE\Debug\Interpreter.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

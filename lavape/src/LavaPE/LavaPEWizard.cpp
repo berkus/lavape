@@ -973,8 +973,8 @@ void ColorSetting::Init(AnnoExType role, LavaDECL* decl, QCheckBox* defaultB,
                                QCheckBox* defaultF,
                                QPushButton* ButtonB,
                                QPushButton* ButtonF,
-                               Q3Frame* Fore,
-                               Q3Frame* Back)
+                               QFrame* Fore,
+                               QFrame* Back)
 {
   Role = role;
   FormDECL = decl;
@@ -1809,13 +1809,13 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
   inDefEl = (CHE*)FormDECL->Annotation.ptr->Prefixes.first;
   while (inDefEl /*&& !((LavaDECL*)inDefEl->data)->Annotation.ptr->BasicFlags.Contains(Toggle)*/) {
     item = new CListItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
-    m_Prefixe->insertItem(item);
+    m_Prefixe->addItem(item);
     inDefEl = (CHE*)inDefEl->successor;
   }
   inDefEl = (CHE*)FormDECL->Annotation.ptr->Suffixes.first;
   while (inDefEl) {
     item = new CListItem(((LavaDECL*)inDefEl->data)->LitStr, tid0);
-    m_Suffixe->insertItem(item);
+    m_Suffixe->addItem(item);
     inDefEl = (CHE*)inDefEl->successor;
   }
 }
@@ -1920,9 +1920,9 @@ void CLiteralsPage::GetProps()
 }
 
 
-bool CLiteralsPage::OnAdd(ChainAny0* chain, Q3ListBox* m_list/*, int transpos*/) 
+bool CLiteralsPage::OnAdd(ChainAny0* chain, QListWidget* m_list/*, int transpos*/) 
 {
-  int ins = m_list->currentItem();
+  int ins = m_list->currentRow();
   LavaDECL* Decl = NewLavaDECL();
   CHE* cheDecl;
 
@@ -1939,7 +1939,7 @@ bool CLiteralsPage::OnAdd(ChainAny0* chain, Q3ListBox* m_list/*, int transpos*/)
     if (Decl->LitStr.l != 0) {
       cheDecl = NewCHE(Decl);
       chain->AddNth(ins+1/*+transpos*/, cheDecl);
-      m_list->setCurrentItem(ins);
+      m_list->setCurrentRow(ins);
       delete lItem;
       myWizard->setModified(true);
       myWizard->myView->PostApplyHint();
@@ -1970,12 +1970,12 @@ void CLiteralsPage::OnADDSuf()
 
 void CLiteralsPage::OnDELETEPre() 
 {
-  int idel = m_Prefixe->currentItem();
+  int idel = m_Prefixe->currentRow();
   if (idel >= 0) {
     CHE* cheDecl = (CHE*)FormDECL->Annotation.ptr->Prefixes.UncoupleNth(idel+1);
     if (cheDecl) {
       delete cheDecl;
-      m_Prefixe->removeItem(idel);
+      delete m_Prefixe->takeItem(idel);
       m_DELETEPre->setEnabled((m_Prefixe->count() > 0));
       m_EDITPre->setEnabled((m_Prefixe->count() > 0));
       myWizard->setModified(true);
@@ -1985,12 +1985,12 @@ void CLiteralsPage::OnDELETEPre()
 
 void CLiteralsPage::OnDELETESuf() 
 {
-  int idel = m_Suffixe->currentItem();
+  int idel = m_Suffixe->currentRow();
   if (idel >= 0) {
     CHE * cheDecl = (CHE *)FormDECL->Annotation.ptr->Suffixes.UncoupleNth(idel+1/*+sufTranspos*/);
     if (cheDecl) {
       delete cheDecl;
-      m_Suffixe->removeItem(idel);
+      delete m_Suffixe->takeItem(idel);
       m_DELETESuf->setEnabled((m_Suffixe->count() > 0));
       m_EDITSuf->setEnabled((m_Suffixe->count() > 0));
       myWizard->setModified(true);
@@ -1999,9 +1999,9 @@ void CLiteralsPage::OnDELETESuf()
 }
 
 
-bool CLiteralsPage::OnEdit(ChainAny0 * chain, Q3ListBox* m_list/*, int transpos*/)
+bool CLiteralsPage::OnEdit(ChainAny0 * chain, QListWidget* m_list/*, int transpos*/)
 {
-  int ins = m_list->currentItem();
+  int ins = m_list->currentRow();
   CHE* cheDecl = (CHE*)chain->GetNth(ins+1/*+transpos*/);
   LavaDECL* Decl = (LavaDECL*) cheDecl->data;
   if (ins >= 0) {
@@ -2011,15 +2011,15 @@ bool CLiteralsPage::OnEdit(ChainAny0 * chain, Q3ListBox* m_list/*, int transpos*
       if (Decl->LitStr.l == 0) {
         if (chain->Uncouple(cheDecl))
           delete cheDecl;
-        m_list->removeItem(ins);
-        m_list->setCurrentItem(ins-1);
+        delete m_list->takeItem(ins);
+        m_list->setCurrentRow(ins-1);
         delete lItem;
         myWizard->setModified(true);
         myWizard->myView->PostApplyHint();
         return false;
       }
       else {
-        m_list->setCurrentItem(ins);
+        m_list->setCurrentRow(ins);
         delete lItem;
         myWizard->setModified(true);
         myWizard->myView->PostApplyHint();
@@ -2120,8 +2120,8 @@ bool CLiteralsPage::OnSetActive()
   m_Suffixe->setEnabled(enabled);
   m_Prefixe->setEnabled(enabled);
   if (enabled) {
-    m_Prefixe->setCurrentItem(-1);
-    m_Suffixe->setCurrentItem(-1);
+    m_Prefixe->setCurrentRow(-1);
+    m_Suffixe->setCurrentRow(-1);
   }
   return true;
 }
@@ -2129,8 +2129,8 @@ bool CLiteralsPage::OnSetActive()
 
 void CLiteralsPage::OnLButtonDown(unsigned nFlags, QPoint point) 
 {
-  m_Prefixe->setCurrentItem(-1);
-  m_Suffixe->setCurrentItem(-1);
+  m_Prefixe->setCurrentRow(-1);
+  m_Suffixe->setCurrentRow(-1);
   m_DELETEPre->setEnabled(false);
   m_EDITPre->setEnabled(false);
   m_DELETESuf->setEnabled(false);
@@ -2164,7 +2164,7 @@ void CLiteralItem::UpdateData(bool getData)
 }
 
 
-CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, Q3ListBox *litList, LavaDECL * litEl)  
+CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, QListWidget *litList, LavaDECL * litEl)  
   : Ui_IDD_LiteralItem()
 {
   m_lit = "";
@@ -2266,9 +2266,9 @@ void CLiteralItem::OnOK()
   UpdateData(true);
   TID tid0;
   if (!insert)
-    LitList->removeItem(litPos);
+    delete LitList->takeItem(litPos);
   CListItem* item = new CListItem(m_lit, tid0);
-  LitList->insertItem(item, litPos);//-1);
+  LitList->insertItem(litPos,item);//-1);
   //LitList->InsertString(litPos, m_lit);
   GetSpace((TAnnotation**)&myDecl->Annotation.ptr->FA.ptr, m_LiTab, m_LiSpace, m_LiFrmSpace);
   LitPage->UpdateData(false);
@@ -2284,14 +2284,14 @@ void CMenuPage::UpdateData(bool getData)
 {
   if (getData) {
     v_Menutype = m_Menutype->currentItem();
-    m_ItemNr = m_Menuitems->currentItem();
+    m_ItemNr = m_Menuitems->currentRow();
     v_LeftLabel = m_LeftLabel->isOn();
     v_ToggleLabel = m_ToggleLabel->text();
   }
   else {
     modify = false;
     m_Menutype->setCurrentItem(v_Menutype);
-    m_Menuitems->setCurrentItem(m_ItemNr);
+    m_Menuitems->setCurrentRow(m_ItemNr);
     m_LeftLabel->setChecked(v_LeftLabel);
     m_ToggleLabel->setText(v_ToggleLabel);
     modify = true;
@@ -2389,7 +2389,7 @@ void CMenuPage::SetEProps()
   CHEEnumSelId * enumsel;
   TAnnotation* anno;
   CListItem *item;
-  Q3ListBoxItem *pixItem;
+  QListWidgetItem *pixItem;
 
   inEl = (LavaDECL*)myWizard->FormDECL->Annotation.ptr->MenuDECL.ptr;
   if (inEl) {
@@ -2471,11 +2471,11 @@ void CMenuPage::SetEProps()
       inDefEl = (CHE*)inDefEl->successor;
     }
     item = new CListItem(*labe, mflags);
-    m_Menuitems->insertItem(item);
+    m_Menuitems->addItem(item);
     item = new CListItem(*labb, mflags);
-    m_LButtonText->insertItem(item);
+    m_LButtonText->addItem(item);
     pixItem = new CListItem(*labpix, mflags);
-    m_Pixmap->insertItem(pixItem);
+    m_Pixmap->addItem(pixItem);
     delete labe;
     delete labb;
     delete labpix;
@@ -2594,25 +2594,25 @@ void CMenuPage::GetEProps()
 
 void CMenuPage::OnSelchangeMenuitems() 
 {
-  int ss = m_Menuitems->currentItem();
-  m_LButtonText->setCurrentItem(ss);
-  m_Pixmap->setCurrentItem(ss);
+  int ss = m_Menuitems->currentRow();
+  m_LButtonText->setCurrentRow(ss);
+  m_Pixmap->setCurrentRow(ss);
   SetButtons(ss);
 }
 
 void CMenuPage::OnSelchangeLButtonText() 
 {
-  int ss = m_LButtonText->currentItem();
-  m_Menuitems->setCurrentItem(ss);
-  m_Pixmap->setCurrentItem(ss);
+  int ss = m_LButtonText->currentRow();
+  m_Menuitems->setCurrentRow(ss);
+  m_Pixmap->setCurrentRow(ss);
   SetButtons(ss);
 }
 
 void CMenuPage::m_Pixmap_selectionChanged()
 {
-  int ss = m_LButtonText->currentItem();
-  m_Menuitems->setCurrentItem(ss);
-  m_LButtonText->setCurrentItem(ss);
+  int ss = m_LButtonText->currentRow();
+  m_Menuitems->setCurrentRow(ss);
+  m_LButtonText->setCurrentRow(ss);
   SetButtons(ss);
 }
 
@@ -2642,15 +2642,15 @@ bool CMenuPage::OnSetActive()
   m_DeleteButton->setEnabled(false);
   m_AddButton->setEnabled(isEnumera && (v_Menutype != int(isOMenu)));
   if (isEnumera) {
-    m_LButtonText->setCurrentItem(-1);
-    m_Menuitems->setCurrentItem(-1);
+    m_LButtonText->setCurrentRow(-1);
+    m_Menuitems->setCurrentRow(-1);
   }
   return true;
 }
 
 void CMenuPage::OnAddButton() 
 {
-  int ss = m_Menuitems->currentItem();
+  int ss = m_Menuitems->currentRow();
   if (ss < 0)
     ss = 0;
   else
@@ -2662,8 +2662,8 @@ void CMenuPage::OnAddButton()
   mflags[3] = 0;
   CMenuItem *MItem = new CMenuItem(this, true, ss, "", "", "", mflags);
   if (MItem->exec() == QDialog::Accepted) {
-    m_LButtonText->setCurrentItem(ss);
-    m_Menuitems->setCurrentItem(ss);
+    m_LButtonText->setCurrentRow(ss);
+    m_Menuitems->setCurrentRow(ss);
     unsigned *mflags1 = ((CComboBoxItem*)m_Menuitems->item(ss))->flags();
     m_DeleteButton->setEnabled(mflags1[0] == 3);
     m_EditButton->setEnabled(true);
@@ -2677,14 +2677,14 @@ void CMenuPage::OnAddButton()
 
 void CMenuPage::OnEditButton()
 {
-  int ss = m_LButtonText->currentItem();
+  int ss = m_LButtonText->currentRow();
 
   if (ss < 0)
     return;
   QString iT, bT, pT;
-  iT = m_Menuitems->text(ss);
-  bT = m_LButtonText->text(ss);
-  pT = m_Pixmap->text(ss);
+  iT = m_Menuitems->item(ss)->text();
+  bT = m_LButtonText->item(ss)->text();
+  pT = m_Pixmap->item(ss)->text();
   unsigned  *mflags;
   mflags = ((CComboBoxItem*)m_Menuitems->item(ss))->flags();
   CMenuItem* cm = new CMenuItem(this, false, ss, iT, bT, pT, mflags);   
@@ -2698,15 +2698,15 @@ void CMenuPage::OnEditButton()
 
 void CMenuPage::OnDeleteButton() 
 {
-  int ss = m_Menuitems->currentItem();
+  int ss = m_Menuitems->currentRow();
   if (ss >= 0) {
     unsigned *mflags = ((CComboBoxItem*)m_Menuitems->item(ss))->flags();
     if (mflags[0] == 3) {
-      m_Menuitems->removeItem(ss);
-      m_LButtonText->removeItem(ss);
+      delete m_Menuitems->takeItem(ss);
+      delete m_LButtonText->takeItem(ss);
       if (ss) 
         ss = ss-1;
-      m_Menuitems->setCurrentItem(ss);
+      m_Menuitems->setCurrentRow(ss);
       mflags = ((CComboBoxItem*)m_Menuitems->item(ss))->flags();
       m_DeleteButton->setEnabled(mflags[0] == 3);
       m_EditButton->setEnabled(true);
@@ -2718,8 +2718,8 @@ void CMenuPage::OnDeleteButton()
 
 void CMenuPage::OnLButtonDown(unsigned nFlags, QPoint point) 
 {
-  m_LButtonText->setCurrentItem(-1);
-  m_Menuitems->setCurrentItem(-1);
+  m_LButtonText->setCurrentRow(-1);
+  m_Menuitems->setCurrentRow(-1);
   m_DeleteButton->setEnabled(false);
   m_EditButton->setEnabled(false);
 
@@ -2746,20 +2746,20 @@ void CMenuPage::SetDefaults(EMenuType newMenuT, EMenuType oldMenuT)
     QString iT, bT, pT;
     for (int ss = cc-1; ss >= 0; ss--) {
       if (oldMenuT == isNoMenu) {
-        iT = m_Menuitems->text(ss);
-        rr = m_LButtonText->text(ss).length();
+        iT = m_Menuitems->item(ss)->text();
+        rr = m_LButtonText->item(ss)->text().length();
         if (rr == 0) 
-          m_LButtonText->removeItem(ss);
+          delete m_LButtonText->takeItem(ss);
         if ((rr == 0) || (rr < 0)) {
           item = new CListItem(iT, tid0);
-          m_LButtonText->insertItem(item, ss-1);
+          m_LButtonText->insertItem(ss-1,item);
         }
       }
-      if ((newMenuT == isOMenu) && (m_Menuitems->text(ss).length() > 0)) {
-        bT = m_LButtonText->text(ss);
+      if ((newMenuT == isOMenu) && (m_Menuitems->item(ss)->text().length() > 0)) {
+        bT = m_LButtonText->item(ss)->text();
         if ((rr == 0) || (rr < 0)) {
           item = new CListItem(bT, tid0);
-          m_LButtonText->insertItem(item, ss-1);
+          m_LButtonText->insertItem(ss-1,item);
         }
       }
     }//for
@@ -2795,11 +2795,11 @@ void CMenuItem::UpdateData(bool getData)
     m_MenuFrmspace = m_MenuSPIN3->value();
     m_Menuspace = m_MenuSPIN1->value();
     m_Menutab = m_MenuSPIN2->value();
-    if (BGroup_Style->find(0)->isOn())
+    if (m_isButton->isOn())
       m_flags = 0;
-    else if (BGroup_Style->find(1)->isOn())
+    else if (m_noButton->isOn())
       m_flags = 1;
-    else if (BGroup_Style->find(2)->isOn())
+    else if (m_NoFIO->isOn())
       m_flags = 2;
     else
       m_flags = 3;
@@ -2808,7 +2808,19 @@ void CMenuItem::UpdateData(bool getData)
     m_MenuSPIN3->setValue(m_MenuFrmspace);
     m_MenuSPIN1->setValue(m_Menuspace);
     m_MenuSPIN2->setValue(m_Menutab);
-    BGroup_Style->setButton(m_flags);
+    switch (m_flags) {
+    case 0:
+      m_isButton->setChecked(true);
+      break;
+    case 1:
+      m_noButton->setChecked(true);
+      break;
+    case 2:
+      m_NoFIO->setChecked(true);
+      break;
+    default:
+      m_isMenuText->setChecked(true);
+    }
   }
 }
 
@@ -2920,17 +2932,17 @@ void CMenuItem::OnOK()
   }
   */
   if (!insert) {
-    menuPage->m_LButtonText->removeItem(iPos);
-    menuPage->m_Menuitems->removeItem(iPos);
-    menuPage->m_Pixmap->removeItem(iPos);
+    delete menuPage->m_LButtonText->takeItem(iPos);
+    delete menuPage->m_Menuitems->takeItem(iPos);
+    delete menuPage->m_Pixmap->takeItem(iPos);
   }
   if (m_flags == 3) {
     item = new CListItem(m_MenuText->text(), mflags);
-    menuPage->m_LButtonText->insertItem(item, iPos);
+    menuPage->m_LButtonText->insertItem(iPos,item);
   }
   else {
     item = new CListItem(m_Buttontext->text(), mflags);
-    menuPage->m_LButtonText->insertItem(item, iPos);
+    menuPage->m_LButtonText->insertItem(iPos,item);
   }
   /*
   if (menuPage->v_Menutype == isBMenu) {
@@ -2943,9 +2955,9 @@ void CMenuItem::OnOK()
   mflags[2] = m_Menuspace ;
   mflags[3] = m_MenuFrmspace ;
   item = new CListItem(m_Enumsel->text(), mflags);
-  menuPage->m_Menuitems->insertItem(item, iPos);
+  menuPage->m_Menuitems->insertItem(iPos,item);
   item = new CListItem(m_Pixmap->text(), mflags);
-  menuPage->m_Pixmap->insertItem(item, iPos);
+  menuPage->m_Pixmap->insertItem(iPos,item);
   menuPage->UpdateData(false);
   QDialog::accept();
 }
@@ -2996,7 +3008,7 @@ CSupportPage::CSupportPage(CLavaPEWizard* wizard)
         if (basefDECL && basefDECL->TypeFlags.Contains(isGUI)) {
           if (IDTab->IsAnc(myWizard->FormDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL)) {
             item = new CListItem(basefDECL->LocalName, TID(basefDECL->OwnID, basefDECL->inINCL));
-            m_Supports->insertItem(item);
+            m_Supports->addItem(item);
           }
         }
         cheS = (CHETID*)cheS->successor;

@@ -67,15 +67,15 @@ void CAttrBox::UpdateData(bool getData)
   if (getData) {
     valNewName = m_NewName->text();
     valNewTypeType = m_NewTypeType->text();
-    if (BGroup_KindOfRef->find(0)->isOn())
+    if (m_DownC->isOn())
       valkindOfRef = 0;
-    else if (BGroup_KindOfRef->find(1)->isOn())
+    else if (m_DownInd->isOn())
       valkindOfRef = 1;
     else
       valkindOfRef = 2;
-    if (BGroup_Mode->find(0)->isOn())
+    if (m_Mandatory->isOn())
       valkindOfField = 0;
-    else if (BGroup_Mode->find(1)->isOn())
+    else if (m_Optional->isOn())
       valkindOfField = 1;
     else
       valkindOfField = 2;
@@ -83,8 +83,26 @@ void CAttrBox::UpdateData(bool getData)
   else {
     m_NewName->setText(valNewName);
     m_NewTypeType->setText(valNewTypeType);
-    BGroup_KindOfRef->setButton(valkindOfRef);
-    BGroup_Mode->setButton(valkindOfField);
+    switch (valkindOfRef) {
+    case 0:
+      m_DownC->setChecked(true);
+      break;
+    case 1:
+      m_DownInd->setChecked(true);
+      break;
+    default:
+      m_Back->setChecked(true);
+    }
+    switch (valkindOfField) {
+    case 0:
+      m_Mandatory->setChecked(true);
+      break;
+    case 1:
+      m_Optional->setChecked(true);
+      break;
+    default:
+      m_Placeholder->setChecked(true);
+    }
   }
 }
 
@@ -613,7 +631,7 @@ ValOnInit CCompSpecBox::OnInitDialog()
         decl = myDoc->IDTable.GetDECL(cheS->data);
         if (decl) {
           item = new CListBoxItem(decl->FullName, cheS->data);
-          m_Extends->insertItem(item);
+          m_Extends->addItem(item);
           cheS = (CHETID*)cheS->successor;
         }
         else {
@@ -645,7 +663,7 @@ ValOnInit CCompSpecBox::OnInitDialog()
       for (enumsel = (CHEEnumSelId*)myDECL->Items.first; enumsel;
       enumsel = (CHEEnumSelId*)enumsel->successor) {
         item = new CListBoxItem(enumsel->data.Id, TID(-1,-1));
-        m_EnumItems1->insertItem(item);
+        m_EnumItems1->addItem(item);
       }
     }
     m_Persistent->setChecked(myDECL->TypeFlags.Contains(isPersistent));
@@ -669,9 +687,9 @@ ValOnInit CCompSpecBox::OnInitDialog()
 
 void CCompSpecBox::on_m_DelSupport2_clicked() 
 {
-  int pos = m_Extends->currentItem();
+  int pos = m_Extends->currentRow();
   if (pos >= 0) 
-    m_Extends->removeItem(pos);
+    delete m_Extends->takeItem(pos);
 }
 
 void CCompSpecBox::on_m_ExtTypes2_triggered(int pos) 
@@ -711,7 +729,7 @@ void CCompSpecBox::on_m_EnumAdd1_clicked()
   CListBoxItem *item;
 
   UpdateData(true);
-  ss = m_EnumItems1->currentItem();
+  ss = m_EnumItems1->currentRow();
   if (ss >= 0)
     ss = 0;
   else
@@ -732,8 +750,8 @@ void CCompSpecBox::on_m_EnumAdd1_clicked()
 #ifdef WIN32
       fileName.truncate(fileName.length()-4);
 #endif
-      m_EnumItems1->insertItem(fileName, 0);
-      m_EnumItems1->setSelected(0, true);
+      m_EnumItems1->insertItem(0,fileName);
+      m_EnumItems1->setItemSelected(m_EnumItems1->item(0), true);
       m_EnumDel1->setEnabled(true);
       m_EnumEdit1->setEnabled(true);
     }
@@ -745,8 +763,8 @@ void CCompSpecBox::on_m_EnumAdd1_clicked()
       CEnumItem *cm = new CEnumItem(&iT, 0, 0, false, this);
       if (cm->exec() == QDialog::Accepted) {
         item = new CListBoxItem(iT, TID(-1,-1));
-        m_EnumItems1->insertItem(item, 0);
-        m_EnumItems1->setSelected(0, true);
+        m_EnumItems1->insertItem(0,item);
+        m_EnumItems1->setItemSelected(m_EnumItems1->item(0), true);
         m_EnumDel1->setEnabled(true);
         m_EnumEdit1->setEnabled(true);
       } 
@@ -757,8 +775,8 @@ void CCompSpecBox::on_m_EnumAdd1_clicked()
     CEnumItem *cm = new CEnumItem(&iT, 0, 0, false, this);
     if (cm->exec() == QDialog::Accepted) {
       item = new CListBoxItem(iT, TID(-1,-1));
-      m_EnumItems1->insertItem(item, ss);
-      m_EnumItems1->setSelected(ss, true);
+      m_EnumItems1->insertItem(ss,item);
+      m_EnumItems1->setItemSelected(m_EnumItems1->item(ss), true);
       m_EnumDel1->setEnabled(true);
       m_EnumEdit1->setEnabled(true);
     } 
@@ -769,9 +787,9 @@ void CCompSpecBox::on_m_EnumAdd1_clicked()
 
 void CCompSpecBox::on_m_EnumDel1_clicked() 
 {
-  int ss = m_EnumItems1->currentItem();
+  int ss = m_EnumItems1->currentRow();
   if (ss >= 0) {
-    m_EnumItems1->removeItem(ss);
+    delete m_EnumItems1->takeItem(ss);
     m_EnumDel1->setEnabled(false);
     m_EnumEdit1->setEnabled(false);
   } 
@@ -784,7 +802,7 @@ void CCompSpecBox::on_m_EnumEdit1_clicked()
   int dd=0, ss;
   CListBoxItem *item;
 
-  ss = m_EnumItems1->currentItem();
+  ss = m_EnumItems1->currentRow();
   if (ss >= 0) {
     item = (CListBoxItem*)m_EnumItems1->item(ss);
     if (myDECL->nOutput == PROT_LAVA) {
@@ -805,14 +823,14 @@ void CCompSpecBox::on_m_EnumEdit1_clicked()
       fileName.truncate(fileName.length()-4);
 #endif
       item->setText(fileName);
-      m_EnumItems1->setSelected(0, true);
+      m_EnumItems1->setItemSelected(m_EnumItems1->item(0), true);
     }
     else if (myDECL->nOutput == PROT_NATIVE) {
       iT = item->text();
       CEnumItem *cm = new CEnumItem(&iT, m_EnumItems1, 0, false, this);
       if (cm->exec() == QDialog::Accepted) {
         item->setText(iT);
-        m_EnumItems1->setSelected(0, true);
+        m_EnumItems1->setItemSelected(m_EnumItems1->item(0), true);
       } 
       delete cm;
     }
@@ -820,9 +838,9 @@ void CCompSpecBox::on_m_EnumEdit1_clicked()
       iT = item->text();
       CEnumItem* cm = new CEnumItem(&iT, m_EnumItems1, 0, false, this);//parentWidget());   
       if (cm->exec() == QDialog::Accepted) {
-        m_EnumItems1->removeItem(ss);
+        delete m_EnumItems1->takeItem(ss);
         item = new CListBoxItem(iT, TID(-1,-1));
-        m_EnumItems1->insertItem(item, ss);
+        m_EnumItems1->insertItem(ss,item);
       }
       delete cm;
     }
@@ -832,7 +850,7 @@ void CCompSpecBox::on_m_EnumEdit1_clicked()
 
 void CCompSpecBox::m_EnumItems1_selectionChanged(Q3ListBoxItem* selItem) 
 {
-  int ss = m_EnumItems1->currentItem();
+  int ss = m_EnumItems1->currentRow();
   SetButtons(ss);
 }
 
@@ -1079,12 +1097,12 @@ CEnumBox::~CEnumBox()
 void CEnumBox::UpdateData(bool getData)
 {
   if (getData) {
-    valItemNr = m_EnumItems->currentItem();
+    valItemNr = m_EnumItems->currentRow();
     valNewName = m_NewName->text();
     valBuildSet = m_BuildSet->isOn();
   }
   else {
-    m_EnumItems->setSelected(valItemNr, true);
+    m_EnumItems->setItemSelected(m_EnumItems->item(valItemNr), true);
     m_NewName->setText(valNewName);
     m_BuildSet->setChecked(valBuildSet);
   }
@@ -1122,7 +1140,7 @@ ValOnInit CEnumBox::OnInitDialog()
     for (enumsel = (CHEEnumSelId*)((TEnumDescription*)myDECL->EnumDesc.ptr)->EnumField.Items.first;
     enumsel; enumsel = (CHEEnumSelId*)enumsel->successor) {
       item = new CListBoxItem(enumsel->data.Id, TID(-1,-1));
-      m_EnumItems->insertItem(item);
+      m_EnumItems->addItem(item);
     }
     m_BuildSet->setEnabled(false);
   }
@@ -1151,7 +1169,7 @@ void CEnumBox::OnLButtonDown(UINT nFlags, CPoint point)
 void CEnumBox::on_m_EnumAdd_clicked() 
 {
   CListBoxItem *item;
-  int ss = m_EnumItems->currentItem();
+  int ss = m_EnumItems->currentRow();
   if (ss < 0)
     ss = 0;
   else
@@ -1160,8 +1178,8 @@ void CEnumBox::on_m_EnumAdd_clicked()
   CEnumItem *cm = new CEnumItem(&iT, m_EnumItems, 0, true, this);//parentWidget());
   if (cm->exec() == QDialog::Accepted) {
     item = new CListBoxItem(iT, TID(-1,-1));
-    m_EnumItems->insertItem(item, ss);
-    m_EnumItems->setSelected(ss, true);
+    m_EnumItems->insertItem(ss,item);
+    m_EnumItems->setItemSelected(m_EnumItems->item(ss), true);
     m_EnumDel->setEnabled(true);
     m_EnumEdit->setEnabled(true);
   } 
@@ -1170,9 +1188,9 @@ void CEnumBox::on_m_EnumAdd_clicked()
 
 void CEnumBox::on_m_EnumDel_clicked() 
 {
-  int ss = m_EnumItems->currentItem();
+  int ss = m_EnumItems->currentRow();
   if (ss >= 0) {
-    m_EnumItems->removeItem(ss);
+    delete m_EnumItems->takeItem(ss);
     m_EnumDel->setEnabled(false);
     m_EnumEdit->setEnabled(false);
   } 
@@ -1182,15 +1200,15 @@ void CEnumBox::on_m_EnumEdit_clicked()
 {
   CListBoxItem *item;
   QString txt;
-  int ss = m_EnumItems->currentItem();
+  int ss = m_EnumItems->currentRow();
   if (ss >= 0) {
     item = (CListBoxItem*)m_EnumItems->item(ss);
     txt = item->text();
     CEnumItem* cm = new CEnumItem(&txt, m_EnumItems, 0, true, this );//parentWidget());   
     if (cm->exec() == QDialog::Accepted) {
-      m_EnumItems->removeItem(ss);
+      delete m_EnumItems->takeItem(ss);
       item = new CListBoxItem(txt, TID(-1,-1));
-      m_EnumItems->insertItem(item, ss);
+      m_EnumItems->insertItem(ss,item);
     }
     delete cm;
   }
@@ -1199,7 +1217,7 @@ void CEnumBox::on_m_EnumEdit_clicked()
 
 void CEnumBox::m_EnumItems_selectionChanged(Q3ListBoxItem *selItem) 
 {
-  int ss = m_EnumItems->currentItem();
+  int ss = m_EnumItems->currentRow();
   SetButtons(ss);
 }
 
@@ -1262,7 +1280,7 @@ CEnumItem::CEnumItem(QWidget* parent)
 {
 }
 
-CEnumItem::CEnumItem(QString *enumItem, Q3ListBox* itemsBox, ChainAny0* items, bool isId, QWidget* parent)
+CEnumItem::CEnumItem(QString *enumItem, QListWidget* itemsBox, ChainAny0* items, bool isId, QWidget* parent)
   : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
   setupUi(this);
@@ -1352,16 +1370,25 @@ void CFuncBox::UpdateData(bool getData)
 {
   if (getData) {
     valNewName = m_NewName->text();
-    if (BGroup_ExecMode->find(0)->isOn())
+    if (m_Synch->isOn())
       valSynch = 0;
-    else if (BGroup_ExecMode->find(1)->isOn())
+    else if (m_Concurrent->isOn())
       valSynch = 1;
     else
       valSynch = 2;
   }
   else {
     m_NewName->setText(valNewName);
-    BGroup_ExecMode->setButton(valSynch);
+    switch (valSynch) {
+    case 0:
+      m_Synch->setChecked(true);
+      break;
+    case 1:
+      m_Concurrent->setChecked(true);
+      break;
+    default:
+      m_Independent->setChecked(true);
+    }
   }
 }
 
@@ -1537,7 +1564,7 @@ ValOnInit CFuncBox::OnInitDialog()
         decl = myDoc->IDTable.GetDECL(cheS->data);
         if (decl && decl->SecondTFlags.Contains(isException)) {
           listItem = new CListBoxItem(decl->LocalName, cheS->data);
-          m_Inherits1->insertItem(listItem);
+          m_Inherits1->addItem(listItem);
           cheS = (CHETID*)cheS->successor;
         }
         else {
@@ -1716,9 +1743,9 @@ void CFuncBox::OnSelendokBasicTypes()
 
 void CFuncBox::on_m_DelInherits1_clicked() 
 {
-  int pos = m_Inherits1->currentItem();
+  int pos = m_Inherits1->currentRow();
   if (pos >= 0)
-    m_Inherits1->removeItem(pos); 
+    delete m_Inherits1->takeItem(pos); 
 }
 
   
@@ -2227,14 +2254,19 @@ void CInitBox::UpdateData(bool getData)
 {
   if (getData) {
     valNewName = m_NewName->text();
-    if (BGroup_ExecMode->find(0)->isOn())
+    if (m_Synch1->isOn())
       valSynch = 0;
     else
       valSynch = 1;
   }
   else {
     m_NewName->setText(valNewName);
-    BGroup_ExecMode->setButton(valSynch);
+    switch (valSynch) {
+    case 0:
+      m_Synch1->setChecked(true);
+    default:
+      m_Concurrent1->setChecked(true);
+    }
   }
 }
 
@@ -2352,9 +2384,9 @@ void CInterfaceBox::UpdateData(bool getData)
     valIfaceID = m_InterfaceID->text();
     valBuildSet = m_BuildSet1->isOn();
     valIsGUI = m_IsGUI->isOn();
-    if (BGroup_KindOfInterface->find(0)->isOn())
+    if (m_Creatable->isOn())
       valKindOfInterface = 0;
-    else if (BGroup_KindOfInterface->find(1)->isOn())
+    else if (m_NonCreatable->isOn())
       valKindOfInterface = 1;
     else
       valKindOfInterface = 2;
@@ -2364,7 +2396,16 @@ void CInterfaceBox::UpdateData(bool getData)
     m_InterfaceID->setText(valIfaceID);
     m_BuildSet1->setChecked(valBuildSet);
     m_IsGUI->setChecked(valIsGUI);
-    BGroup_KindOfInterface->setButton(valKindOfInterface);
+    switch (valKindOfInterface) {
+    case 0:
+      m_Creatable->setChecked(true);
+      break;
+    case 1:
+      m_NonCreatable->setChecked(true);
+      break;
+    default:
+      m_IsComponent->setChecked(true);
+    }
   }
 }
 
@@ -2496,7 +2537,7 @@ void CInterfaceBox::SupportsToList()
           }
           else 
             listItem = new CListBoxItem(decl->FullName, cheS->data);
-          m_Extends->insertItem(listItem);
+          m_Extends->addItem(listItem);
           cheS = (CHETID*)cheS->successor;
         }
         else {
@@ -2521,10 +2562,10 @@ void CInterfaceBox::on_m_DelSupport_clicked()
   int pos;
 
   UpdateData(true);
-  CListBoxItem *listItem = (CListBoxItem*)m_Extends->selectedItem();
+  CListBoxItem *listItem = (CListBoxItem*)m_Extends->currentItem();
   if (listItem) {
-    pos = m_Extends->index(listItem);
-    m_Extends->removeItem(pos);
+    pos = m_Extends->row(listItem);
+    delete m_Extends->takeItem(pos);
     ListToChain(m_Extends, &myDECL->Supports);
     ResetComboItems(m_ExtTypes);
     CExecBase *execBase = new CExecBase(this);
@@ -2779,7 +2820,7 @@ void CIOBox::UpdateData(bool getData)
   if (getData) {
     valNewName = m_NewName->text();
     valNewTypeType = m_NewTypeType->text();
-    if (BGroup_Mode->find(0)->isOn())
+    if (m_Mandatory->isOn())
       valkindOfField = 0;
     else 
       valkindOfField = 1;
@@ -2787,7 +2828,13 @@ void CIOBox::UpdateData(bool getData)
   else {
     m_NewName->setText(valNewName);
     m_NewTypeType->setText(valNewTypeType);
-    BGroup_Mode->setButton(valkindOfField);
+    switch (valkindOfField) {
+    case 0:
+      m_Mandatory->setChecked(true);
+      break;
+    default:
+      m_Optional->setChecked(true);
+    }
   }
 }
 
@@ -3186,7 +3233,7 @@ ValOnInit CPackageBox::OnInitDialog()
         decl = myDoc->IDTable.GetDECL(cheS->data);
         if (decl) {
           item = new CListBoxItem(decl->FullName, cheS->data);
-          m_Extends->insertItem(item);
+          m_Extends->addItem(item);
           cheS = (CHETID*)cheS->successor;
         }
         else {
@@ -3214,9 +3261,9 @@ ValOnInit CPackageBox::OnInitDialog()
 
 void CPackageBox::on_m_DelSupport1_clicked() 
 {
-  int pos = m_Extends->currentItem();
+  int pos = m_Extends->currentRow();
   if (pos >= 0) 
-    m_Extends->removeItem(pos);
+    delete m_Extends->takeItem(pos);
 }
 
 void CPackageBox::on_m_ExtTypes1_triggered(int pos) 
@@ -3384,9 +3431,9 @@ void CVTypeBox::UpdateData(bool getData)
   if (getData) {
     valNewName = m_NewName->text();
     valNewTypeType = m_NewTypeType1->text();
-    if (BGroup_KindOfRef->find(0)->isOn())
+    if (m_DownC->isOn())
       valkindOfLink = 0;
-    else if (BGroup_KindOfRef->find(1)->isOn())
+    else if (m_DownInd->isOn())
       valkindOfLink = 1;
     else
       valkindOfLink = 2;
@@ -3394,7 +3441,16 @@ void CVTypeBox::UpdateData(bool getData)
   else {
     m_NewName->setText(valNewName);
     m_NewTypeType1->setText(valNewTypeType);
-    BGroup_KindOfRef->setButton(valkindOfLink);
+    switch (valkindOfLink) {
+    case 0:
+      m_DownC->setChecked(true);
+      break;
+    case 1:
+      m_DownInd->setChecked(true);
+      break;
+    default:
+      m_Back->setChecked(true);
+    }
   }
 }
 
@@ -4085,23 +4141,24 @@ QString*  CheckNewName(const QString& valNewName, LavaDECL *myDECL, CLavaPEDoc* 
 }
 
 
-int SelEndOKToList(QComboBox* cbox, Q3ListBox* list, int chpos)
+int SelEndOKToList(QComboBox* cbox, QListWidget* list, int chpos)
 {
+  QList<QListWidgetItem*> found;
   CListBoxItem *listItem;
   QVariant var;
   //CComboBoxItem *comboItem = cbox->listBox()->selectedItem();
   int pos = cbox->currentIndex();
   if (pos > 0) {
-    listItem = (CListBoxItem*)list->findItem(cbox->currentText());
-    if (listItem) {
-      list->setSelected(listItem, true);
+    found = list->findItems(cbox->currentText(),Qt::MatchExactly);
+    if (!found.isEmpty()) {
+      list->setItemSelected(found.first(), true);
       return -1;
     }
     if (chpos >= 0) 
-      list->removeItem(chpos);
+      delete list->takeItem(chpos);
     var = cbox->itemData(pos);
     listItem = new CListBoxItem(cbox->currentText(), var.value<CComboBoxItem*>()->itemData());
-    list->insertItem(listItem);
+    list->addItem(listItem);
     return 1;
   }
   return -1;
@@ -4124,7 +4181,7 @@ int SelEndOKToStr(QComboBox* cbox, QString* editStr, TID* exID)
 }
 
 
-void ListToChain(Q3ListBox* list, TSupports* supports)
+void ListToChain(QListWidget* list, TSupports* supports)
 {
   int pos, icount;
   CHETID *cheS;
