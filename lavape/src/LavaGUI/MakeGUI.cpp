@@ -50,7 +50,8 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
       firstnode = ((CGUIProg*)GUIProg)->TreeSrch.FirstNode();
       size = ((GUIScrollView*)GUIProg->scrollView)->MaxBottomRight.size();
       if (size.width() && size.height()) 
-        ((GUIScrollView*)GUIProg->scrollView)->resizeContents(size.width(),size.height());
+        //((GUIScrollView*)GUIProg->scrollView)->resizeContents(size.width(),size.height());
+        ((GUIScrollView*)GUIProg->scrollView)->widget()->resize(size.width(),size.height());
       if (!firstnode || !GUIProg->refresh)
         return;
 
@@ -83,21 +84,33 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
 } // END OF DisplayScreen
 
 
-void MakeGUICLASS::SetScrollSizes(Q3ScrollView* view)
+//void MakeGUICLASS::SetScrollSizes(Q3ScrollView* view)
+void MakeGUICLASS::SetScrollSizes(QScrollArea* view)
 {
   QSize size = ((GUIScrollView*)view)->MaxBottomRight.size(), size2;
+  /*
   if (size.width() < view->visibleWidth() )
     size.setWidth(view->visibleWidth());
   if (size.height() < view->visibleHeight() )
     size.setHeight(view->visibleHeight());
   ((GUIScrollView*)view)->qvbox->resize(size);
+  */
+  if (size.width() < view->viewport()->width() )
+    size.setWidth(view->viewport()->width());
+  if (size.height() < view->viewport()->height() )
+    size.setHeight(view->viewport()->height());
+  //((GUIScrollView*)view)->qvbox->resize(size);
 
   if (GUIProg->ViewWin->inherits("LavaGUIDialog")) {
     size2 = ((GUIScrollView*)view)->MaxBottomRight.size();
     ((LavaGUIDialog*)GUIProg->ViewWin)->setpropSize(size2);
   }
-  view->resizeContents(size.width(),size.height());
-  view->setContentsPos(0,0);
+  //view->resizeContents(size.width(),size.height());
+  //view->widget()->resize(size.width(),size.height());
+  view->setWidget(((GUIScrollView*)view)->qvbox);
+  //view->setContentsPos(0,0);
+  view->horizontalScrollBar()->setValue(0);
+  view->verticalScrollBar()->setValue(0);
 }
 
 void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
@@ -165,9 +178,9 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       ) {
       pred = (CHEFormNode*)chFrmNd->predecessor;
       if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
-        ((CFormWid*)context.currentFrame)->BGroup = new Q3GroupBox(pred->data.StringValue.c, context.currentFrame);
+        ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(pred->data.StringValue.c, context.currentFrame);
       else  
-        ((CFormWid*)context.currentFrame)->BGroup = new Q3GroupBox(context.currentFrame);
+        ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(context.currentFrame);
       ((CFormWid*)context.currentFrame)->BGroup->setPaletteForegroundColor(context.currentFrame->foregroundColor());
       if (pred)
         GUIProg->SetLFont(((CFormWid*)context.currentFrame)->BGroup, pred);
@@ -252,9 +265,9 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       if (chFrmNd->data.BasicFlags.Contains(Groupbox)) {
         pred = (CHEFormNode*)chFrmNd->predecessor;
         if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
-          ((CFormWid*)newWidget)->BGroup = new Q3GroupBox(pred->data.StringValue.c, newWidget);
+          ((CFormWid*)newWidget)->BGroup = new QGroupBox(pred->data.StringValue.c, newWidget);
         else  
-          ((CFormWid*)newWidget)->BGroup = new Q3GroupBox(newWidget);
+          ((CFormWid*)newWidget)->BGroup = new QGroupBox(newWidget);
         ((CFormWid*)newWidget)->BGroup->setPaletteForegroundColor(newWidget->foregroundColor());
         if (pred)
           GUIProg->SetLFont(((CFormWid*)newWidget)->BGroup, pred);

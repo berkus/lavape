@@ -5,7 +5,7 @@
 #include "GUIProgBase.h"
 #include "qwidget.h"
 #include "qpainter.h"
-#include "q3groupbox.h"
+#include "qgroupbox.h"
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QFrame>
@@ -35,7 +35,7 @@ public:
  //the FormWidget may be used as a (radio) button menu box
   int nRadio;
   Q3Button *Radio [100];
-  Q3GroupBox *BGroup;
+  QGroupBox *BGroup;
 
   void AddRadio(Q3Button* radio);
 

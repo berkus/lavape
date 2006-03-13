@@ -8,7 +8,8 @@
 #include "SynIDTable.h"
 #include "qsize.h"
 #include "qwidget.h"
-#include "q3scrollview.h"
+//#include "q3scrollview.h"
+#include "qscrollarea.h"
 
 #ifdef WIN32
 #ifdef LAVAGUI_EXPORT
@@ -27,7 +28,8 @@ class  LAVAGUI_DLL CGUIMet : public QObject
 
   QWidget* ViewWin;  //CLavaGUIView or LavaGUIDialog
   bool isView;
-  Q3ScrollView* scrollView;
+  //Q3ScrollView* scrollView;
+  QScrollArea* scrollView;
   CHEFormNode* DelNode;
   CHEFormNode* InsertNode;
   CLavaBaseDoc *myDoc;
@@ -62,6 +64,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
   QSize CalcStringRect(const QString& label, const QFont& font);
   QSize CalcTextRect(int xcols, int yrows, const QFont& font);
   void ScrollIntoFrame(QWidget *win);
+  int GetLineWidth(QWidget *win);
 };
 
 

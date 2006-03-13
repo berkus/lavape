@@ -63,7 +63,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
       parentWidget()->parentWidget()->setPaletteBackgroundColor(colorGroup().background());
   }
   show();
-  int bord = ((QFrame*)parent)->lineWidth();
+  int bord = GUIProg->GetLineWidth(parent);//((QFrame*)parent)->lineWidth();
   QRect rect(0,0,GUIProg->globalIndent,GUIProg->globalIndent);
   setGeometry(rect);
   if (myFormNode->data.IterFlags.Contains(IteratedItem))

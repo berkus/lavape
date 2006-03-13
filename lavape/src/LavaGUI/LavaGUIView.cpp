@@ -47,35 +47,48 @@
 /////////////////////////////////////////////////////////////////////////////
 // CLavaGUIView
 
-GUIScrollView::GUIScrollView(QWidget *parent, bool fromPopup) : Q3ScrollView(parent, "GUIScrollView")
+GUIScrollView::GUIScrollView(QWidget *parent, bool fromPopup)
+    //: Q3ScrollView(parent, "GUIScrollView") 
+    : QScrollArea(parent) 
 {
+  setObjectName("GUIScrollView");
   setFocusPolicy(Qt::StrongFocus);
   qvbox = new GUIVBox(0, fromPopup, this);//myScrv->viewport());
-  addChild(qvbox);
-  setResizePolicy(Q3ScrollView::AutoOne);
+  setWidget(qvbox);
+  //setWidgetResizable(true);
+  //setResizePolicy(QScrollArea::AutoOne);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   MaxBottomRight = QRect(0,0,0,0);
   
 }
 
 
-void GUIScrollView::viewportResizeEvent(QResizeEvent* ev)
+void GUIScrollView::/*viewportR*/resizeEvent(QResizeEvent* ev)
 {  
   QSize sz = MaxBottomRight.size();
-  if (sz.width() < ev->size().width() )
+  QSize evsz = ev->size();
+  QSize sx = qvbox->size();
+  bool ch = false;
+  if (sz.width() < ev->size().width() ) {
     sz.setWidth(ev->size().width());
-  if (sz.height() < ev->size().height() )
+    ch = true;
+  }
+  if (sz.height() < ev->size().height() ) {
     sz.setHeight(ev->size().height());
-  qvbox->resize(sz);
-  resizeContents(sz.width(),sz.height());
-
-  Q3ScrollView::viewportResizeEvent(ev);
+    ch = true;
+  }
+  if (ch)
+    qvbox->resize(sz);
+  //resizeContents(sz.width(),sz.height());
+  //viewport()->update();
+  QScrollArea::resizeEvent(ev);
 }
 
 LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
 : QDialog(parent, "", true, Qt::WType_TopLevel | Qt::WStyle_MinMax)
 {
   returned = false;
-  resize(700,500);
   myScrv = new GUIScrollView(this, false);
   QWidget* hb = new QWidget(this); // horiz. box
   QPushButton* okButton = new QPushButton("Ok", hb);
@@ -88,6 +101,7 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
   hbl->addWidget(okButton);
   hbl->addWidget(resetButton);
   hbl->addWidget(cancelButton);
+  resize(700,500);
   connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
   connect(resetButton, SIGNAL(clicked()), this, SLOT(OnReset()));
   connect(cancelButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
@@ -110,6 +124,8 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
     myGUIProg->OnUpdate( myDECL, ResultDPtr);
     myGUIProg->MakeGUI.DisplayScreen(false);
   }
+  myScrv->show();
+  myScrv->ensureVisible(20, 1200);
 }
 
 void LavaGUIDialog::setpropSize(QSize& scrSize)

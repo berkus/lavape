@@ -188,6 +188,14 @@ QSize CGUIMet::CalcTextRect(int xcols, int yrows, const QFont& font)
   QSize size(xcols * maxCharWidth(font), yrows * fm.lineSpacing());
   return size;
 }
+int CGUIMet::GetLineWidth(QWidget *win)
+{
+  if (win->inherits("QFrame"))
+    return ((QFrame*)win)->lineWidth();
+  if (win->inherits("QGroupBox"))
+    return 1;
+  return 0;
+}
 
 QString CGUIMet::winCaption()
 {

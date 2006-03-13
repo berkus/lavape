@@ -8,7 +8,8 @@
 #include "LavaBaseDoc.h"
 #include "PEBaseDoc.h"
 #include "docview.h"
-#include "q3scrollview.h"
+//#include "q3scrollview.h"
+#include "qscrollarea.h"
 #include "q3vbox.h"
 #include "qdialog.h" 
 //Added by qt3to4:
@@ -21,20 +22,22 @@
 class LAVAGUI_DLL GUIVBox : public QFrame
 {
 public:
-  GUIVBox(QWidget* parent, bool fromPopup, Q3ScrollView* view):QFrame(parent, "GUIVBox") 
-    {View = view; FromPopup = fromPopup;}
+  GUIVBox(QWidget* parent, bool fromPopup, QScrollArea* /*Q3ScrollView**/ view)
+    :QFrame(parent) 
+    {View = view; FromPopup = fromPopup; setObjectName("GUIVBox"); }
   QSize sizeHint() { return size();}
   bool FromPopup;
-  Q3ScrollView * View;
+  //->Q3ScrollView * View;
+  QScrollArea * View;
   
 private:
   Q_OBJECT
 };
 
-class LAVAGUI_DLL GUIScrollView : public Q3ScrollView {
+class LAVAGUI_DLL GUIScrollView : public QScrollArea {
 public:
   GUIScrollView (QWidget *parent, bool fromPopup);
-  void viewportResizeEvent(QResizeEvent* ev);
+  void resizeEvent(QResizeEvent* ev);
   GUIVBox* qvbox;
   QRect MaxBottomRight;
   

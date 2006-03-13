@@ -145,15 +145,18 @@ void CGUIProg::RedrawForm()
   //QPoint vpoint, tPoint;
   int sx, sy;
   if (Root) {
-    sx = ((GUIScrollView*)scrollView)->contentsX();
-    sy = ((GUIScrollView*)scrollView)->contentsY();
+    sx = ((GUIScrollView*)scrollView)->horizontalScrollBar()->value();//contentsX();
+    sy = ((GUIScrollView*)scrollView)->verticalScrollBar()->value();//contentsY();
     refresh = false;
     LavaForm.DeleteWindows(Root, true);
   }
   refresh = true;
   MakeGUI.DisplayScreen(false);
-  ((GUIScrollView*)scrollView)->setContentsPos(sx, sy);
-  ((GUIScrollView*)scrollView)->updateContents();
+  //((GUIScrollView*)scrollView)->setContentsPos(sx, sy);
+  ((GUIScrollView*)scrollView)->horizontalScrollBar()->setValue(sx);
+  ((GUIScrollView*)scrollView)->verticalScrollBar()->setValue(sy);
+  //((GUIScrollView*)scrollView)->updateContents();
+  ((GUIScrollView*)scrollView)->viewport()->update();
 }
 
 CGUIProg::~CGUIProg()

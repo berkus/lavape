@@ -53,7 +53,7 @@ CLavaMenu::CLavaMenu(CGUIProgBase *guiPr, CHEFormNode* data,
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   QSize size = GUIProg->CalcTextRect(cx, 1, font());
-  int bord = ((QFrame*)pParentWnd)->lineWidth();
+  int bord = GUIProg->GetLineWidth(pParentWnd);
   setGeometry(QRect(QPoint(bord,bord), size));
   setReadOnly(true);
   show();

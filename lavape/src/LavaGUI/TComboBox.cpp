@@ -51,7 +51,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   QSize size = GUIProg->CalcTextRect(width, 1, font());
   size = qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &qsob, size, this);
   size.setWidth(lmax(size.width(), GUIProg->MinSizeComboBox(font()).width() + GUIProg->ArrowSize(font()).width()));
-  int bord = ((QFrame*)pParentWnd)->lineWidth();
+  int bord = GUIProg->GetLineWidth(pParentWnd);
   setGeometry(bord,bord, size.width(), size.height());
   DefaultSel = defaultSel;
   if (myFormNode->data.EnumField) {

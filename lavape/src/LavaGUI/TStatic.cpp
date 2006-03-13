@@ -41,7 +41,7 @@ CTStatic::CTStatic(CGUIProgBase *guiPr, CHEFormNode* data,
 {
   myFormNode = data;
   GUIProg = guiPr;
-  int bord = ((QFrame*)parentWidget)->lineWidth();
+  int bord = GUIProg->GetLineWidth(parentWidget);
   myFormNode->data.ownLFont = GUIProg->SetLFont(this, myFormNode);
   QSize size = GUIProg->CalcStringRect(label, font());
   setGeometry(bord,bord, size.width(), size.height());
