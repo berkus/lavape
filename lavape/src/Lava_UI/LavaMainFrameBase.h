@@ -2,6 +2,7 @@
 #define _LavaMainFrameBase
 
 #include "cmainframe.h"
+#include "mdiframes.h"
 
 #ifdef WIN32
 #ifdef LAVAUI_EXPORT
