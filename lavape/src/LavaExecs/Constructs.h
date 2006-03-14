@@ -37,7 +37,7 @@
 
 
 #include "qwidget.h"
-#include "q3scrollview.h"
+#include <QScrollArea>
 #include "qstring.h"
 #include "qmessagebox.h"
 #include "qpainter.h"

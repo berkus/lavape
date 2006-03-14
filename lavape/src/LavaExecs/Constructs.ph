@@ -25,7 +25,7 @@ $INCLUDE "Tokens.ph"
 $INCLUDE "Syntax.ph"
 
 #include "qwidget.h"
-#include "q3scrollview.h"
+#include <QScrollArea>
 #include "qstring.h"
 #include "qmessagebox.h"
 #include "qpainter.h"
@@ -1318,7 +1318,7 @@ public:
 	bool insBlank;
 
   QWidget *redCtl;
-	Q3ScrollView *sv;
+	QScrollArea *sv;
 
 
   void Insert(TToken token,bool isPrimToken=false,bool isOpt=false);
