@@ -85,11 +85,11 @@ CLavaGUIPopupD::CLavaGUIPopupD(QWidget* parent, CGUIProgBase *guiPr, CHEFormNode
   GUIProg = guiPr;
   setPaletteBackgroundColor(GUIProg->ViewWin->paletteBackgroundColor());
   view = new GUIScrollView(this, true);
-  Q3HBox* hb = new Q3HBox(this);
+  QWidget* hb = new QWidget(this);
   QPushButton* okButton = new QPushButton("Close", hb);
   //QPushButton* cancelButton = new QPushButton("Cancel", hb);
-  Q3VBoxLayout* qvbl = new Q3VBoxLayout(this);
-  Q3HBoxLayout* hbl = new Q3HBoxLayout(hb);
+  QVBoxLayout* qvbl = new QVBoxLayout(this);
+  QHBoxLayout* hbl = new QHBoxLayout(hb);
   qvbl->addWidget(view);
   qvbl->addWidget(hb);
   hbl->addWidget(okButton);

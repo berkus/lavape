@@ -8,7 +8,7 @@
 #include <QFocusEvent>
 #include <QEvent>
 #include <QMenu>
-
+#include <QContextMenuEvent>
 
 /////////////////////////////////////////////////////////////////////////////
 // CTEdit window
@@ -27,7 +27,7 @@ public:
   bool inError;
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
-  virtual QMenu* createStandardContextMenu();
+  virtual void contextMenuEvent(QContextMenuEvent * e);
   virtual bool event(QEvent* ev);
 
 public slots:

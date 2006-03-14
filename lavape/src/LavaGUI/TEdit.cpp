@@ -72,7 +72,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   //  setFont(*GUIProg->Font);
   setContentsMargins(0,0,0,0);
   if (myFormNode->data.IterFlags.Contains(Optional)) {
-    myMenu = new QMenu(this);
+    myMenu = new QMenu("Lava object", this);
     myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
     myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     myMenu->setItemEnabled(IDM_ITER_INSERT, false);
@@ -85,7 +85,6 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   clearModified();
   show();
 }
-
 
 void CTEdit::focusInEvent(QFocusEvent *ev)
 {
@@ -127,24 +126,23 @@ bool CTEdit::event(QEvent* ev)
     return QLineEdit::event(ev);
 }
 
-QMenu* CTEdit::createStandardContextMenu()
-{
-//  QMenu* pm = QLineEdit::createStandardContextMenu();
-  QMenu* pm = new QMenu(this);
+void CTEdit::contextMenuEvent(QContextMenuEvent * e) {
+  QMenu *pm = createStandardContextMenu();
   QWidget* par = parentWidget();
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (((CFormWid*)par)->iterData && ((CFormWid*)par)->myMenu) {
     pm->insertSeparator();
-    pm->insertItem("Lava object", ((CFormWid*)par)->myMenu);
+    pm->addMenu(((CFormWid*)par)->myMenu);
   }
   else {
     if (myFormNode->data.IterFlags.Contains(Optional)) {
       pm->insertSeparator();
-      pm->insertItem("Lava object", myMenu);
+      pm->addMenu(myMenu);
     }
   }
-  return pm;
+  pm->exec(e->globalPos());
+  //delete pm;
 }
 
 void CTEdit::DelActivated()

@@ -88,27 +88,17 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
 void MakeGUICLASS::SetScrollSizes(QScrollArea* view)
 {
   QSize size = ((GUIScrollView*)view)->MaxBottomRight.size(), size2;
-  /*
-  if (size.width() < view->visibleWidth() )
-    size.setWidth(view->visibleWidth());
-  if (size.height() < view->visibleHeight() )
-    size.setHeight(view->visibleHeight());
-  ((GUIScrollView*)view)->qvbox->resize(size);
-  */
+
   if (size.width() < view->viewport()->width() )
     size.setWidth(view->viewport()->width());
   if (size.height() < view->viewport()->height() )
     size.setHeight(view->viewport()->height());
-  //((GUIScrollView*)view)->qvbox->resize(size);
 
-  if (GUIProg->ViewWin->inherits("LavaGUIDialog")) {
+  if (!((GUIScrollView*)view)->qvbox->FromPopup && GUIProg->ViewWin->inherits("LavaGUIDialog")) {
     size2 = ((GUIScrollView*)view)->MaxBottomRight.size();
     ((LavaGUIDialog*)GUIProg->ViewWin)->setpropSize(size2);
   }
-  //view->resizeContents(size.width(),size.height());
-  //view->widget()->resize(size.width(),size.height());
   view->setWidget(((GUIScrollView*)view)->qvbox);
-  //view->setContentsPos(0,0);
   view->horizontalScrollBar()->setValue(0);
   view->verticalScrollBar()->setValue(0);
 }

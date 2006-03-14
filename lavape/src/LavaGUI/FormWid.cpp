@@ -97,7 +97,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
       && myFormNode->data.IoSigFlags.Contains(Flag_INPUT)) {
     iterData = myFormNode;
 
-    myMenu = new QMenu(this);
+    myMenu = new QMenu("Lava object", this);
 
     origMenu = true;
     if (IterFlags.Contains(IteratedItem)) {
