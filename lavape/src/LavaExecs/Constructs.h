@@ -2919,7 +2919,7 @@ public:
 	bool insBlank;
 
   QWidget *redCtl;
-	Q3ScrollView *sv;
+	QScrollArea *sv;
 
 
   void Insert(TToken token,bool isPrimToken=false,bool isOpt=false);

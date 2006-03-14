@@ -520,6 +520,7 @@ extern DISCO_DLL void CDPIterFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
 
 
 
+
 struct TAnnotation;
 
 
@@ -1510,6 +1511,7 @@ struct DISCO_DLL DbgMessage : public DObject  {
   { CDPDbgMessage(pgf,cid,(address)this,baseCDP); }
 };
 
+
 /*************************************************************************/
 /* Concrete syntactic objects: */
 
@@ -1620,6 +1622,7 @@ struct DISCO_DLL CHEFormNode : ChainAnyElem {
 };
 
 extern DISCO_DLL ChainAnyElem* NewCHEFormNode ();
+
 Q_DECLARE_METATYPE(CHEFormNode*)
 
 extern DISCO_DLL LavaDECL *NewLavaDECL();
