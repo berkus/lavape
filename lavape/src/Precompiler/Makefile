@@ -1,7 +1,7 @@
 PRJ = Precompiler
 
 EXEC = LPC
-SUBPRO=disco
+SUBPRO = disco
 
 CPP_INCLUDES = -I. -I../disco -I$(QTDIR)/include  -I$(QTDIR)/include/Qt
 

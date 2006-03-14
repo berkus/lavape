@@ -81,6 +81,7 @@ ifeq ($(OPSYS),Darwin)
     CC = c++
   endif
 else
+  DLLSUFFIX = .so
   OSDLLFLAGS = -shared $(SONAME)lib$(EXEC2) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
   OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
   ifeq ($(PRJ),SFLsockets)
@@ -107,12 +108,14 @@ ifeq ($(suffix $(EXEC)),.so)
   ifeq ($(OPSYS),MINGW32)
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
     IMPLIB = -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
+		QtS = d4
   else
     DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
+		QtS = _debug
   endif
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib -lQt3Supportd4 -lQtCored4 -lQtGuid4 -lQtNetworkd4 -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+	$(CC) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib -lQt3Support$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
 else
   ifeq ($(OPSYS),MINGW32)
     EXEC2 = $(EXEC).exe
@@ -121,11 +124,11 @@ this: ../../bin/$(EXEC2)
 	$(CC) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lQtAssistantClient -lQt3Supportd4 -lQtCored4 -lQtGuid4 -lQtNetworkd4 $(OSLIBFLAGS)
   else
     EXEC2 = $(EXEC)
+		QtS = _debug
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
-	$(CC) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(addsuffix .a,$(SUBPRO))) -lQtAssistantClient -lQt3Support -lQtCore -lQtGui -lQtNetwork $(OSLIBFLAGS) -lpthread -lc
+	$(CC) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -lQtAssistantClient$(QtS) -lQt3Support$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   endif
-
 endif
 
 .cpp.o:

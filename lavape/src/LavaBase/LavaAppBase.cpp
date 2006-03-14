@@ -1164,21 +1164,25 @@ QString L_GetOpenFileName(const QString& startFileName,
   return resultName;
 
 #else
-  QFileDialog *fd = new QFileDialog(parent, "lavafileDialog", true);
+  QFileDialog *fd = new QFileDialog(parent);
+	QStringList filters;
 	
-  fd->addFilter(filter);
+	filters << filter;
+//  fd->addFilter(filter);
   if (filter2 != QString::null)
-    fd->addFilter( filter2);
+    filters << filter2; // fd->addFilter( filter2);
+	fd->setFilters(filters);
   fd->setCaption(caption);
   fd->setDir(qf.dirPath(true));
   if (currentFilter.isEmpty())
     currentFilter = "lava";
   currentFilter = "*." + currentFilter;
-  fd->setSelectedFilter(currentFilter);
-  fd->setSelection(startFileName);
+//  fd->setSelectedFilter(currentFilter);
+  fd->selectFile(startFileName);
   fd->setMode( QFileDialog::ExistingFile );
   fd->setViewMode( QFileDialog::List );
-  fd->setFilter(filter);
+//  fd->setFilter(filter);
+  fd->selectFilter(currentFilter);
   if (fd->exec() == QDialog::Accepted ) {
     fileName = fd->selectedFile();
     delete fd;
@@ -1301,20 +1305,24 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   return resultNames;
 
 #else
-  QFileDialog *fd = new QFileDialog(parent, "lavafileDialog", true);
-  fd->addFilter(filter);
+  QFileDialog *fd = new QFileDialog(parent);
+	QStringList filters;
+	
+	filters << filter;
+//  fd->addFilter(filter);
   if (filter2 != QString::null)
-    fd->addFilter( filter2);
+    filters << filter2; // fd->addFilter( filter2);
+	fd->setFilters(filters);
   fd->setCaption(caption);
   fd->setDir(qf.dirPath(true));
   if (currentFilter.isEmpty())
     currentFilter = "lava";
   currentFilter = "*." + currentFilter;
-  fd->setSelectedFilter(currentFilter);
-  fd->setSelection(startFileName);
+//  fd->setSelectedFilter(currentFilter);
+  fd->selectFile(startFileName);
   fd->setMode( QFileDialog::ExistingFiles );
   fd->setViewMode( QFileDialog::List );
-  fd->setFilter(filter);
+  fd->selectFilter(filter);
   if (fd->exec() == QDialog::Accepted ) {
     resultNames = fd->selectedFiles();
     delete fd;
