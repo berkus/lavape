@@ -1,4 +1,5 @@
 #include "LavaMainFrameBase.h"
 
-  CMainFrame::CMainFrame() {
-  }
+ CMainFrame::CMainFrame() {
+   int i = 1;
+ }

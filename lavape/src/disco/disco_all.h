@@ -94,7 +94,15 @@
 #include "qwidget.h"
 //#include "qwinexport.h"
 #include "qworkspace.h"
-
+#include <QHBoxLayout>
+#include <QFocusEvent>
+#include <QMenu>
+#include <QMouseEvent>
+#include <QCustomEvent>
+#include <QResizeEvent>
+#include <QCloseEvent>
+#include <QVBoxLayout>
+#include <QTextEdit>
 
 #include <string.h>
 //#include <stdlib.h>

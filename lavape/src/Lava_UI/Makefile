@@ -1,13 +1,12 @@
 PRJ = Lava_UI
 
-MOCABLES=
+MOCABLES=LavaMainFrameBase.h
 
 EXEC = Lava_UI.so
 SUBPRO=disco wxqDocView LavaBase
 
-CPP_INCLUDES = -I. -IGenerated -I../disco -I../wxqDocView -I$(QTDIR)/include
+CPP_INCLUDES = -I. -IGenerated -I../disco -I../wxqDocView
 
-CPP_FLAGS =
+CPP_FLAGS = -DLAVAUI_EXPORT
 
 include ../common.mk
-

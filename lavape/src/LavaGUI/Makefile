@@ -5,7 +5,7 @@ MOCABLES = FormWid.h LavaGUIFrame.h LavaGUIPopup.h LavaGUIView.h LavaMenu.h TBut
 EXEC = LavaGUI.so
 SUBPRO=disco wxqDocView LavaBase
 
-CPP_INCLUDES =  -I../disco -I../LavaPE/res/TreeIcons -I../LavaPE/res -I../LavaPE/res/TOOLBUTTONS -I. -I../LavaBase/Generated -IGenerated -I../wxqDocView -I../LavaBase -I../Lava -I$(QTDIR)/include -I$(QTDIR)/include/Qt -I$(QTDIR)/include/QtCore -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/Qt3Support
+CPP_INCLUDES =  -I../disco -I../LavaPE/res/TreeIcons -I../LavaPE/res -I../LavaPE/res/TOOLBUTTONS -I. -I../LavaBase/Generated -IGenerated -I../wxqDocView -I../LavaBase -I../Lava
 
 CPP_FLAGS = -DNEEDS_INT_DEFINED
 

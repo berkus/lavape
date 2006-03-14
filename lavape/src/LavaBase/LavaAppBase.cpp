@@ -35,7 +35,7 @@
 #include <QCustomEvent>
 #include <errno.h>
 
-#ifdef WIN32
+#ifndef __GNUC__
 #include <windows.h>
 #include <shlobj.h>
 #else
@@ -1116,7 +1116,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   }
   else
     initialDir = startFileName;
-#ifdef WIN32
+#ifndef __GNUC__
   OPENFILENAME ofn;                    // common dialog box structure
   char szFile[260]; // buffer for filename
   if (fileName != QString::null)
@@ -1164,6 +1164,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   return resultName;
 
 #else
+
   QFileDialog *fd = new QFileDialog(parent);
 	QStringList filters;
 	
@@ -1218,7 +1219,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   QString currentFilter = qfresolved.extension();
   QString initialDir = qf.dirPath(true);
 
-#ifdef WIN32
+#ifdef WIN32_
   OPENFILENAME ofn;                    // common dialog box structure
   char szFile[260];                    // buffer for filename
   HWND hwnd = parent->winId();         // owner window

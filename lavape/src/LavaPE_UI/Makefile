@@ -5,9 +5,9 @@ MOCABLES=LavaPEMainFrameBase.h
 EXEC = LavaPE_UI.so
 SUBPRO=disco wxqDocView LavaBase
 
-CPP_INCLUDES = -I. -I../disco -I../LavaBase -I../LavaBase/Generated -I../wxqDocView -IGenerated -I$(QTDIR)/include
+CPP_INCLUDES = -I. -I../disco -I../LavaBase -I../LavaBase/Generated -I../wxqDocView -IGenerated
 
-CPP_FLAGS =
+CPP_FLAGS = -DLAVAPEUI_EXPORT
 
 include ../common.mk
 

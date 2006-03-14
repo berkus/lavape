@@ -1,5 +1,5 @@
 #ifndef _LavaPEMainFrameBase
-#define __LavaPEMainFrameBase
+#define _LavaPEMainFrameBase
 
 #include "cmainframe.h"
 

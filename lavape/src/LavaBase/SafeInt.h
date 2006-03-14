@@ -1257,7 +1257,7 @@ private:
 				//upper 33 bits must be the same
 				//most common case is likely that both are positive - test first
 
-#ifdef WIN32
+#ifndef __GNUC__
 				if( (tmp & 0xffffffff80000000I64) == 0 || 
 					(tmp & 0xffffffff80000000I64) == 0xffffffff80000000I64)
 #else
@@ -1276,7 +1276,7 @@ private:
 			else
 			{
 				unsigned _int64 tmp = (unsigned _int64)lhs * (unsigned _int64)rhs;
-#ifdef WIN32
+#ifndef __GNUC__
 				if (tmp & 0xffffffff00000000UI64) //overflow
 #else
 				if (tmp & 0xffffffff00000000ULL) //overflow

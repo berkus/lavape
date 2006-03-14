@@ -348,7 +348,7 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
   fDesc = &object[0]->funcDesc[0];
   fsize = fDesc->stackFrameSize;
   if (fDesc && fsize) {
-#ifdef WIN32
+#ifndef __GNUC__
     fsizeBytes = fsize<<2;
     __asm {
       sub esp, fsizeBytes
@@ -371,7 +371,7 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
     
     if (!((unsigned)newStackFrame[2] & 2))
       nextDebugStep = oldDebugStep;
-#ifdef WIN32
+#ifndef __GNUC__
     __asm {
       add esp, fsizeBytes
       mov newStackFrame, esp
@@ -589,7 +589,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
         if (/*(*resultSectionPtr)->classDECL*/secClassDECL->TypeFlags.Contains(isNative)) { //native base class
           funcAdapter = GetAdapterTable(ckd, secClassDECL,0);
           if (funcAdapter[1]) { //section has copy function
-#ifdef WIN32
+#ifndef __GNUC__
             __asm {
               sub esp, 20
               mov newStackFrame, esp
@@ -603,7 +603,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
             newStackFrame[SFH] = sourceSectionPtr;
             newStackFrame[SFH+1] = resultSectionPtr;
             funcAdapter[1](ckd, newStackFrame);
-#ifdef WIN32
+#ifndef __GNUC__
             __asm {
               add esp, 20
               mov newStackFrame, esp
@@ -695,7 +695,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
           if (fDesc && fDesc->stackFrameSize) {
             if (fDesc->isNative) {
               fsize = fDesc->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
               fsizeBytes = fsize<<2;
               __asm {
                 sub esp, fsizeBytes
@@ -710,7 +710,7 @@ CRuntimeException* CopyObject(CheckData &ckd, LavaVariablePtr sourceVarPtr, Lava
               newStackFrame[SFH] = resultObjPtr;
               //TRY_FUNCCALL(ckd, (*fDesc->funcPtr), newStackFrame, (fsize), ok)
               ok = (*fDesc->funcPtr)(ckd, newStackFrame);
-#ifdef WIN32
+#ifndef __GNUC__
               __asm {
                 add esp, fsizeBytes
                 mov newStackFrame, esp
@@ -778,7 +778,7 @@ bool EqualObjects(CheckData &ckd, LavaObjectPtr leftPtr, LavaObjectPtr rightPtr,
         funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
         if (funcAdapter) {
           if (funcAdapter[2]) { //section has compare function
-  #ifdef WIN32
+#ifndef __GNUC__
             __asm {
               sub esp, 20
               mov newStackFrame, esp
@@ -792,7 +792,7 @@ bool EqualObjects(CheckData &ckd, LavaObjectPtr leftPtr, LavaObjectPtr rightPtr,
             newStackFrame[SFH] = leftSectionPtr;
             newStackFrame[SFH+1] = rightSectionPtr;
             equ = funcAdapter[2](ckd, newStackFrame);
-  #ifdef WIN32
+#ifndef __GNUC__
             __asm {
               add esp, 20
               mov newStackFrame, esp
@@ -934,7 +934,7 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
         }
         else {
           if (funcAdapter && funcAdapter[2]) { //section has compare function
-#ifdef WIN32
+#ifndef __GNUC__
             __asm {
               sub esp, 20
               mov newStackFrame, esp
@@ -948,7 +948,7 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
             newStackFrame[SFH] = origSectionPtr;
             newStackFrame[SFH+1] = updateSectionPtr;
             equ = funcAdapter[2](ckd, newStackFrame);
-#ifdef WIN32
+#ifndef __GNUC__
             __asm {
               add esp, 20
               mov newStackFrame, esp

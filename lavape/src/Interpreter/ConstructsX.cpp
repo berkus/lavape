@@ -43,7 +43,7 @@
 
 #define RETURN(OK) {if (!(OK) || ckd.exceptionThrown) return false; else return true;}
 
-#ifdef WIN32
+#ifndef __GNUC__
 #define FCALL(CKD, CALLEDSELF, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
   bool caught=false; \
   unsigned newOldExprLevel=FRAMESIZE-1, fSizeBytes = FRAMESIZE<<2;\
@@ -163,7 +163,7 @@
 }
 #endif
 
-#ifdef WIN32
+#ifndef __GNUC__
 #define NATIVE_FCALL(CKD, FUNC, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
   bool caught=false; \
   QString myExMessage; \
@@ -950,7 +950,7 @@ bool SelfVarX::ExecBaseInits (CheckData &ckd, LavaVariablePtr stackFrame, unsign
       fDesc = &(*callObj)[secN].funcDesc[0];
       frameSize = fDesc->stackFrameSize;
       if (frameSize) {
-#ifdef WIN32
+#ifndef __GNUC__
         frameSizeBytes = frameSize<<2;
         __asm {
           sub esp, frameSizeBytes
@@ -966,7 +966,7 @@ bool SelfVarX::ExecBaseInits (CheckData &ckd, LavaVariablePtr stackFrame, unsign
         }
         else
           FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
-#ifdef WIN32
+#ifndef __GNUC__
         __asm {
           add esp, frameSizeBytes
         }
@@ -1223,7 +1223,7 @@ LavaObjectPtr UnaryOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, un
   funcSect = &(*object)[funcSectionNumber + funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
   frameSize = fDesc->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
   frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
@@ -1246,7 +1246,7 @@ LavaObjectPtr UnaryOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, un
 
   DFC(object);
   object = newStackFrame[SFH+1];
-#ifdef WIN32
+#ifndef __GNUC__
   __asm {
     add esp, frameSizeBytes
   }
@@ -1297,7 +1297,7 @@ bool BinaryOpX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned ol
   funcSect = &(*object)[funcSectionNumber + funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
   frameSize = fDesc->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
   frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
@@ -1331,7 +1331,7 @@ bool BinaryOpX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned ol
     DFC(newStackFrame[SFH+1]);  // release input parameter
 ret:
   DFC(newStackFrame[SFH]);  // release self
-#ifdef WIN32
+#ifndef __GNUC__
   __asm {
     add esp, frameSizeBytes
   }
@@ -1362,7 +1362,7 @@ LavaObjectPtr MultipleOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame,
   funcSect = &(*object)[funcSectionNumber + funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
   frameSize = fDesc->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
   frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
@@ -1424,7 +1424,7 @@ ret0:
     }
   }
 ret:
-#ifdef WIN32
+#ifndef __GNUC__
   __asm {
     add esp, frameSizeBytes
   }
@@ -1807,7 +1807,7 @@ bool Receiver::callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned
   funcSect = &(*callObj)[callbackCall->funcSectionNumber + callbackCall->funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[callbackCall->funcDecl->SectionInfo1];
   frameSize = fDesc->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
   frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
@@ -1873,7 +1873,7 @@ ret:
 //  if (callObj)
 //  DFC(callObj); 
     // don't release self since there wasn't an explicit call expression here
-#ifdef WIN32
+#ifndef __GNUC__
   __asm {
     add esp, frameSizeBytes
   }
@@ -2447,7 +2447,7 @@ bool SelectExpressionX::Recursion (CheckData &ckd, LavaVariablePtr stackFrame, u
       if (((SynObject*)statement.ptr)->Execute(ckd,stackFrame,oldExprLevel)) { // add resultObj to rSet
         resultObj = ((Expression*)addObject.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
         frameSize = 8;
-#ifdef WIN32
+#ifndef __GNUC__
         frameSizeBytes = frameSize<<2;
         __asm {
           sub esp, frameSizeBytes
@@ -2461,7 +2461,7 @@ bool SelectExpressionX::Recursion (CheckData &ckd, LavaVariablePtr stackFrame, u
         SetAdd(ckd, newStackFrame);
         DFC(resultObj); // release new object
         // release stackFrame frame
-#ifdef WIN32
+#ifndef __GNUC__
         __asm {
           add esp, frameSizeBytes
         }
@@ -2569,7 +2569,7 @@ fieldCase:
       return false;
     }
     frameSize = ((SelfVar*)setExec->Exec.ptr)->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
     frameSizeBytes = frameSize<<2;
     __asm {
       sub esp, frameSizeBytes
@@ -2603,7 +2603,7 @@ fieldCase:
     DFC(newStackFrame[SFH]);  // release self
     if (newStackFrame[SFH+1])
       DFC(newStackFrame[SFH+1]);  // release input parameter
-#ifdef WIN32
+#ifndef __GNUC__
     __asm {
       add esp, frameSizeBytes
     }
@@ -2622,7 +2622,7 @@ fieldCase:
     }
     funcSect = &(*arrayObj)[aai->funcSectionNumber + aai->funcDecl->SectionInfo2];
     fDesc = &funcSect->funcDesc[aai->funcDecl->SectionInfo1];
-#ifdef WIN32
+#ifndef __GNUC__
     __asm {
       sub esp, 24
       mov newStackFrame, esp
@@ -2660,7 +2660,7 @@ fieldCase:
     DFC(newStackFrame[SFH+1]);  // release input parameter 1
 ret0: DFC(newStackFrame[SFH]);  // release self
 
-#ifdef WIN32
+#ifndef __GNUC__
     __asm {
       add esp, 24
     }
@@ -2708,7 +2708,7 @@ LavaObjectPtr ArrayAtIndexX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
   }
   funcSect = &(*callObj)[funcSectionNumber + funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
-#ifdef WIN32
+#ifndef __GNUC__
   __asm {
     sub esp, 20
     mov newStackFrame, esp
@@ -2744,7 +2744,7 @@ LavaObjectPtr ArrayAtIndexX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
 ret:
   DFC(callObj); // release call object
   DFC(newStackFrame[SFH+1]); // release input parameter (= array index)
-#ifdef WIN32
+#ifndef __GNUC__
   __asm { // not earlier, since newStackFrame[SFH+1] is still used in the preceding statement
     add esp, 20
   }
@@ -2825,13 +2825,13 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       }
       break;
     case Float:
-#ifdef WIN32
+#ifndef __GNUC__
 //      _clearfp();
 #endif
       *(float*)(value+LSH) = (float)strtod(str.c,0); //(float)atof(str.c);
       break;
     case Double:
-#ifdef WIN32
+#ifndef __GNUC__
 //      _clearfp();
 #endif
       *(double*)(value+LSH) = strtod(str.c,0); //atof(str.c);
@@ -2865,7 +2865,7 @@ ConstantX::~ConstantX () {
   if (!value) return;
   switch (constType) {
   case VLString:
-#ifdef WIN32
+#ifndef __GNUC__
     __asm {
       sub esp, 12
       mov newStackFrame, esp
@@ -2875,7 +2875,7 @@ ConstantX::~ConstantX () {
 #endif
     newStackFrame[SFH] = value;
     StringDecFunc(ckd, newStackFrame);
-#ifdef WIN32
+#ifndef __GNUC__
     __asm {
       add esp, 12
     }
@@ -3200,7 +3200,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
       fDesc = object[0]->funcDesc;
       if (fDesc->funcExec) {
         frameSize = fDesc->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
         frameSizeBytes = frameSize<<2;
         __asm {
           sub esp, frameSizeBytes
@@ -3227,7 +3227,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
           }
         }
 
-#ifdef WIN32
+#ifndef __GNUC__
         __asm {
           add esp, frameSizeBytes
         }
@@ -3252,7 +3252,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
     && idp
     && idp->hasOrInheritsInvariants) { // invoke invariant if it exists
       frameSize=idp->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
@@ -3272,7 +3272,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
       ok = idp->EvalInvariants(ckd,rtidDict,newStackFrame);
 
       nextDebugStep = oldDebugStep;
-#ifdef WIN32
+#ifndef __GNUC__
       __asm {
         add esp, frameSizeBytes
       }
@@ -3359,7 +3359,7 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
         frameSize = funcDecl->nInput + funcDecl->nOutput + 1 + SFH;
       else*/
         frameSize = fDesc->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
@@ -3377,7 +3377,7 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
         frameSize = funcDecl->nInput + funcDecl->nOutput + 1 + SFH;
       else*/
         frameSize = fDesc->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
@@ -3397,7 +3397,7 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
       staticExec = (SelfVar*)funcDecl->RuntimeDECL->Exec.ptr;
       frameSize = staticExec->stackFrameSize;
     }
-#ifdef WIN32
+#ifndef __GNUC__
     frameSizeBytes = frameSize<<2;
     __asm {
       sub esp, frameSizeBytes
@@ -3504,7 +3504,7 @@ ret:
     DFC(callObj); 
     // release self after input parameters since it might be needed for releasing
     // the inputs in case "set.Remove(#elem)"; see CheDecFunc in BAdapter.cpp
-#ifdef WIN32
+#ifndef __GNUC__
   __asm {
     add esp, frameSizeBytes
   }
@@ -3558,7 +3558,7 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
       fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
       frameSize = fDesc->stackFrameSize;
       newOldExprLevel = frameSize - 3;
-#ifdef WIN32
+#ifndef __GNUC__
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
@@ -3573,7 +3573,7 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
       funcSect = &(*callObj)[funcSectionNumber + funcDecl->SectionInfo2];
       fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
       frameSize = fDesc->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
@@ -3593,7 +3593,7 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
       staticExec = (SelfVar*)funcDecl->RuntimeDECL->Exec.ptr;
       frameSize = staticExec->stackFrameSize;
     }
-#ifdef WIN32
+#ifndef __GNUC__
     frameSizeBytes = frameSize<<2;
     __asm {
       sub esp, frameSizeBytes
@@ -3673,7 +3673,7 @@ ret:
     DFC(callObj);  // release self
     // release self after input parameters since it might be needed for releasing
     // the inputs in case "set.Remove(#elem)"; see CheDecFunc in BAdapter.cpp
-#ifdef WIN32
+#ifndef __GNUC__
   __asm {
     add esp, frameSizeBytes
   }
@@ -3709,7 +3709,7 @@ bool RunX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExpr
     execDECL->WorkFlags.INCL(runTimeOK);
   }
   frameSize = ((SelfVar*)execDECL->Exec.ptr)->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
     frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
@@ -3734,7 +3734,7 @@ bool RunX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExpr
   ckd.selfVar = mySelfVar;
 
 ret:
-#ifdef WIN32
+#ifndef __GNUC__
   __asm {
     add esp, frameSizeBytes
   }
@@ -3810,7 +3810,7 @@ LavaVariablePtr ObjReferenceX::GetMemberVarPtr(CheckData &ckd, LavaVariablePtr s
         }
         else {
           frameSize = ((SelfVar*)aDesc->getExec->Exec.ptr)->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
           frameSizeBytes = frameSize<<2;
           __asm {
             sub esp, frameSizeBytes
@@ -3822,7 +3822,7 @@ LavaVariablePtr ObjReferenceX::GetMemberVarPtr(CheckData &ckd, LavaVariablePtr s
           newStackFrame[SFH] = memObj - (*memObj)->sectionOffset
                          + (*(memObj - (*memObj)->sectionOffset))[aDesc->delta].sectionOffset;
           if (!newStackFrame[SFH]) {
-#ifdef WIN32
+#ifndef __GNUC__
             __asm {
               add esp, frameSizeBytes
             }
@@ -3836,7 +3836,7 @@ LavaVariablePtr ObjReferenceX::GetMemberVarPtr(CheckData &ckd, LavaVariablePtr s
           ((SynObject*)aDesc->getExec->Exec.ptr)->Execute(ckd,newStackFrame,oldExprLevel);
           ckd.selfVar = mySelfVar;
           memObj = newStackFrame[SFH+1];
-#ifdef WIN32
+#ifndef __GNUC__
           __asm {
             add esp, frameSizeBytes
           }
@@ -3944,7 +3944,7 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
         }
         else {
           frameSize = ((SelfVar*)aDesc->getExec->Exec.ptr)->stackFrameSize;
-#ifdef WIN32
+#ifndef __GNUC__
           frameSizeBytes = frameSize<<2;
           __asm {
             sub esp, frameSizeBytes
@@ -3956,7 +3956,7 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
           newStackFrame[SFH] = memObj - (*memObj)->sectionOffset
                          + (*(memObj - (*memObj)->sectionOffset))[aDesc->delta].sectionOffset;
           if (!newStackFrame[SFH]) {
-#ifdef WIN32
+#ifndef __GNUC__
             __asm {
               add esp, frameSizeBytes
             }
@@ -3970,7 +3970,7 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
           ((SynObject*)aDesc->getExec->Exec.ptr)->Execute(ckd,newStackFrame,oldExprLevel);
           ckd.selfVar = mySelfVar;
           if (ckd.exceptionThrown) {
-#ifdef WIN32
+#ifndef __GNUC__
             __asm {
               add esp, frameSizeBytes
             }
@@ -3980,7 +3980,7 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
             return 0;
           }
           memObj = newStackFrame[SFH+1];
-#ifdef WIN32
+#ifndef __GNUC__
           __asm {
             add esp, frameSizeBytes
           }

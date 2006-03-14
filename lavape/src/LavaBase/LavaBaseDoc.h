@@ -510,7 +510,7 @@ public:
 
 //"typedef CVFuncDesc FuncTab[]";
 
-enum LAVABASE_DLL SectionFlag {
+enum SectionFlag {
   SectPrimary, // this is the first appearance of the section in the entire section table
   ElemsConstituent,  //used in set/array section
   ElemsAcquaintance, //used in set/array section
@@ -624,7 +624,7 @@ extern LAVABASE_DLL bool isPartOf(const DString& qname, const DString& ancestorN
 //Functions in InterprBase.cpp
 
 
-enum LAVABASE_DLL ObjectStateFlag {
+enum ObjectStateFlag {
    sectEstablished,
    finished,        //global object flag (in object+1)
    stateObjFlag,

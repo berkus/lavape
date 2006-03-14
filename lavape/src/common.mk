@@ -65,29 +65,41 @@ endif
 ifeq ($(OPSYS),MINGW32_NT-5.1)
   OPSYS = MINGW32
   OSCAT = WIN32
-	LN = cp
+  LN = cp
 else
   OSCAT = __UNIX__
-	LN = ln -s
+  LN = ln -s
 endif
 
+CC = g++
+  
 ifeq ($(OPSYS),Darwin)
   DLLSUFFIX = .dylib
   OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
   OSCPPFLAGS = -D__$(OPSYS) $(DBG)
-  ifeq ($(PRJ),SFLsockets)
-    CC = cc
-  else
-    CC = c++
-  endif
+  CC = c++
 else
   DLLSUFFIX = .so
-  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC2) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
-  OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
-  ifeq ($(PRJ),SFLsockets)
-    CC = gcc
+  ifeq ($(OPSYS),MINGW32)
+    DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
+    IMPLIB = -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
+    OSDLLFLAGS = -shared
+    OSEXECFLAGS = -fstack-check 
+    EXEC2 = $(EXEC).exe
+    ifneq ($(DBG),)
+	  QtS = d4
+	  ACL = d
+	else
+	  QtS = 4
+	  ACL =
+	endif
   else
-    CC = g++
+    DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
+    OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
+    OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
+    EXEC2 = $(EXEC)
+  	QtS = _debug
+	ACL = _debug
   endif
   ifeq ($(OPSYS),SunOS)
     OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG) -DQT3_SUPPORT
@@ -95,6 +107,8 @@ else
     OSCPPFLAGS = -D__$(OPSYS) $(DBG) -DQT3_SUPPORT
   endif  
 endif
+
+ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QTDIR)/include -I$(QTDIR)/include/Qt -I$(QTDIR)/include/QtCore -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/QtNetwork -I$(QTDIR)/include/Qt3Support
 
 asscli=-lqassistantclient
 ifeq ($(QTDIR),)
@@ -105,40 +119,29 @@ endif
 rec_make: $(make_subpro) this
 
 ifeq ($(suffix $(EXEC)),.so)
-  ifeq ($(OPSYS),MINGW32)
-    DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
-    IMPLIB = -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
-		QtS = d4
-  else
-    DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
-		QtS = _debug
-  endif
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib -lQt3Support$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+	$(CC) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib  -lQtAssistantClient$(ACL) -lQt3Support$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
 else
   ifeq ($(OPSYS),MINGW32)
-    EXEC2 = $(EXEC).exe
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addsuffix .dll,$(SUBPRO)))
-	$(CC) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lQtAssistantClient -lQt3Supportd4 -lQtCored4 -lQtGuid4 -lQtNetworkd4 $(OSLIBFLAGS)
+	$(CC) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(ACL) -lQt3Support$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
-    EXEC2 = $(EXEC)
-		QtS = _debug
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
-	$(CC) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -lQtAssistantClient$(QtS) -lQt3Support$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -lQtAssistantClient$(ACL) -lQt3Support$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   endif
 endif
 
 .cpp.o:
-	$(CC) -c -pipe -MMD $(PCH_WARN) $(OSCPPFLAGS) -D$(OSCAT) -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -MMD $(PCH_WARN) $(OSCPPFLAGS) -D$(OSCAT) -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
 .c.o:
-	$(CC) -c -pipe -MMD $(PCH_WARN) $(OSCPPFLAGS) -D$(OSCAT) $(CPP_FLAGS) $(PCH_INCL) $(CPP_INCLUDES) -o $@ $<
+	$(CC) -c -pipe -MMD $(PCH_WARN) $(OSCPPFLAGS) -D$(OSCAT) $(CPP_FLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h
-	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D$(OSCAT) -DQT_THREAD_SUPPORT $(OSCPPFLAGS) $(CPP_FLAGS) $(CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D$(OSCAT) -DQT_THREAD_SUPPORT $(OSCPPFLAGS) $(CPP_FLAGS) $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
