@@ -35,11 +35,10 @@
 #include <QCustomEvent>
 #include <errno.h>
 
+#include "qfiledialog.h"
 #ifndef __GNUC__
 #include <windows.h>
 #include <shlobj.h>
-#else
-#include "qfiledialog.h"
 #endif
 
 
