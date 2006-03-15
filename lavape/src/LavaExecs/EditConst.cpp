@@ -36,8 +36,8 @@ extern void *focusWindow;
 extern bool isExecView;
 
 
-MiniEdit::MiniEdit(CExecView *execView) : QLineEdit(execView->sv,"MiniEdit") {  
-  conView = execView;
+MiniEdit::MiniEdit(ExecContents *execCnt) : QLineEdit(execCnt,"MiniEdit") {  
+  conView = execCnt->execView;
   returnPressed = false;
 }
 
@@ -114,9 +114,9 @@ void MiniEdit::keyPressEvent (QKeyEvent *ev)
       setFixedWidth(w+2*1);//frameWidth());
       QRect mw_rect = geometry();
       int c_x, c_y;
-      conView->sv->viewportToContents(mw_rect.right(),mw_rect.top(),c_x,c_y);
+//???      conView->sv->viewportToContents(mw_rect.right(),mw_rect.top(),c_x,c_y);
       conView->sv->contentsWidth = QMAX(conView->sv->contentsWidth,c_x);
-      conView->sv->resizeContents(conView->sv->contentsWidth,conView->sv->contentsHeight);
+      conView->sv->execCont->resize(conView->sv->contentsWidth,conView->sv->contentsHeight);
       conView->sv->viewport()->update();
       conView->sv->update();
     }

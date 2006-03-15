@@ -35,6 +35,7 @@
 // MiniEdit window
 class MiniEdit;
 class MyScrollView;
+class ExecContents;
 
 
 class LAVAEXECS_DLL CExecView : public CLavaBaseView
@@ -56,7 +57,7 @@ public:
 
   VIEWFACTORY(CExecView);
   MyScrollView *sv;
-  QWidget *redCtl;
+  ExecContents *redCtl;
   CPEBaseDoc *myDoc;
   wxView *myMainView;
   TID myID;
@@ -354,12 +355,22 @@ struct Format {
 
 class ExecContents : public QWidget {
 public:
-  ExecContents ();
-  ~ExecContents () {
+  CExecView *execView;
+  ExecContents () {};
+};
+
+class MyScrollView : public QScrollArea {
+public:
+  MyScrollView (QWidget *parent);
+  ~MyScrollView () {
 	  delete debugStop; 
 	  delete debugStopGreen; 
 		delete breakPoint; 
   }
+
+  CProgText *text;
+  CExecView *execView;
+  ExecContents *execCont;
 
   Format fmt;
 	int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent, widthOfBlank, contentsWidth, contentsHeight;
@@ -381,15 +392,6 @@ public:
   void DrawToken (CProgText *text, CHETokenNode *tNode, bool inSelection);
 };
 
-class MyScrollView : public QScrollArea {
-public:
-  MyScrollView (QWidget *parent);
-
-  CProgText *text;
-  CExecView *execView;
-  ExecContents *svChild;
-};
-
 enum VarConstCheck {
   correct,
   wrong,
@@ -407,7 +409,7 @@ public:
 class  MiniEdit : public QLineEdit
 {
 public:
-  MiniEdit(CExecView *execView);
+  MiniEdit(ExecContents *execCnt);
   void keyPressEvent (QKeyEvent *ev);
   VarConstCheck InputIsCorrect(TToken &token, CComboBar *comboBar) ;
   int frameWidth();
