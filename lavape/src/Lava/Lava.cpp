@@ -68,26 +68,24 @@ int main( int argc, char ** argv ) {
 //  QApplication::setStyle(new MyWindowsStyle);
 	CLavaApp ap(argc,argv);
   QString componentPath;
-  size_t requiredSize;
-  char *myPath;
+  QByteArray myPath;
 
 //  DebugBreak();
 
-  myPath = getenv("PATH");
+  myPath = qgetenv("PATH");
   componentPath = myPath;
 #ifdef WIN32
   if (componentPath.isEmpty())
     componentPath = ExeDir + "\\Components";
   else
     componentPath = componentPath + ";" + ExeDir + "\\Components";
-  _putenv((QString("PATH=")+componentPath).latin1());
+  _putenv(qPrintable(QString("PATH=")+componentPath));
 #else
   if (componentPath.isEmpty())
     componentPath = ExeDir + "/Components";
   else
     componentPath = componentPath + ";" + ExeDir + "/Components";
-  putenv((char *)(QString("PATH=")+componentPath).latin1());
-//  setenv("PATH",componentPath.latin1(),1);
+  putenv(qPrintable(QString("PATH=")+componentPath));
 #endif
 
   ap.m_appWindow = new CLavaMainFrame;

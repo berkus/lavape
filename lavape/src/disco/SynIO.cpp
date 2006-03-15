@@ -135,7 +135,7 @@ bool SynIOCLASS::WriteSynDef (const QString& fileName,
 
 {
   ASN1* pcid;
-  DString str=fileName.latin1();
+  DString str=qPrintable(fileName);
 
   if (synDef.first == 0) {
     Done = false;

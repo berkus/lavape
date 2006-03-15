@@ -352,21 +352,15 @@ struct Format {
   QFont font;
 };
 
-
-class MyScrollView : public QScrollArea {
+class ExecContents : public QWidget {
 public:
-  MyScrollView (QWidget *parent);
-  ~MyScrollView () { 
+  ExecContents ();
+  ~ExecContents () {
 	  delete debugStop; 
 	  delete debugStopGreen; 
 		delete breakPoint; 
-//		delete fm;
-	}
+  }
 
-	int calcIndent(CHETokenNode *currentToken);
-
-  CProgText *text;
-  CExecView *execView;
   Format fmt;
 	int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent, widthOfBlank, contentsWidth, contentsHeight;
 //  QFontMetrics *fm;
@@ -377,6 +371,7 @@ public:
   CHETokenNode *callerStopToken;
   StopReason stopReason;
 
+	int calcIndent(CHETokenNode *currentToken);
   void keyPressEvent (QKeyEvent *e);
   void focusInEvent(QFocusEvent *ev);
   void contentsMousePressEvent (QMouseEvent *e);
@@ -386,6 +381,14 @@ public:
   void DrawToken (CProgText *text, CHETokenNode *tNode, bool inSelection);
 };
 
+class MyScrollView : public QScrollArea {
+public:
+  MyScrollView (QWidget *parent);
+
+  CProgText *text;
+  CExecView *execView;
+  ExecContents *svChild;
+};
 
 enum VarConstCheck {
   correct,

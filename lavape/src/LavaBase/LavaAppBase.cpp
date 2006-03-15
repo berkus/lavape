@@ -1117,10 +1117,10 @@ QString L_GetOpenFileName(const QString& startFileName,
     initialDir = startFileName;
 #ifndef __GNUC__
   OPENFILENAME ofn;                    // common dialog box structure
-  char szFile[260]; // buffer for filename
+  char szFile[260], cfilter[500]; // buffer for filename
   if (fileName != QString::null)
 //    strcpy(szFile,fileName.ascii()); 
-    strcpy_s(szFile,260,fileName.latin1()); 
+    strcpy_s(szFile,260,qPrintable(fileName)); 
   else
     szFile[0] = '\0'; 
   HWND hwnd = parent->winId();         // owner window
@@ -1130,7 +1130,7 @@ QString L_GetOpenFileName(const QString& startFileName,
     filt = filt + "?" + filter2 + "?*." + exten2;
   }
   filt = filt + "?All (*.*)?*.*?";
-  char* cfilter = (char*)filt.latin1();
+  strcpy_s(cfilter,500,qPrintable(filt));
   for (int ii = 0; ii< filt.length(); ii++)
     if (cfilter[ii] == '?') cfilter[ii] = '\0';
   // Initialize OPENFILENAME
@@ -1229,7 +1229,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
     filt = filt + "?" + filter2 + "?*." + exten2;
   }
   filt = filt + "?All (*.*)?*.*?";
-  char* cfilter = (char*)filt.latin1();
+  char* cfilter = qPrintable(filt);
   for (ii = 0; ii< filt.length(); ii++)
     if (cfilter[ii] == '?') cfilter[ii] = '\0';
   // Initialize OPENFILENAME

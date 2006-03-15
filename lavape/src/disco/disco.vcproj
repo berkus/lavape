@@ -4,6 +4,7 @@
 	Version="8,00"
 	Name="disco"
 	ProjectGUID="{5EC4E4E1-7851-45F7-AE0B-A2BE02E0BBE7}"
+	RootNamespace="disco"
 	>
 	<Platforms>
 		<Platform

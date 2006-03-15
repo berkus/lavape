@@ -70,13 +70,13 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
   QString /* *toINCL,*/ str;
   CheckData ckd;
 
-  PathName = fn.latin1();
+  PathName = qPrintable(fn);
   readResult = ReadSynDef(fn, sntx);
   if (readResult < 0)
     sntx = 0;
 //  toINCL = 0;
   if (sntx) {
-    PathName = fn.latin1();
+    PathName = qPrintable(fn);
     isStd = SameFile(PathName, StdLava.ascii());
     CalcNames(fn);
     sntx->IDTable = (address)&IDTable;

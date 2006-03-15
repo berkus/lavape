@@ -207,7 +207,7 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
     return OnEmptyObj(PathName, linkName);
   }
   else { //Lava task (*.lava)
-    PathName = filename.latin1();
+    PathName = qPrintable(filename);
     return OnOpenProgram(filename, true, false, true);
   }
 }

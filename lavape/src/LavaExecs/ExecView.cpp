@@ -123,8 +123,8 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 	active = false;
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
-  sv->setFocusPolicy(Qt::StrongFocus);
-  sv->setResizePolicy(Q3ScrollView::AutoOneFit);
+//  sv->setFocusPolicy(Qt::StrongFocus);
+//  sv->setResizePolicy(Q3ScrollView::AutoOneFit);
   redCtl = sv->viewport();
   redCtl->setBackgroundColor(Qt::white);
   text = new CProgText;
@@ -134,12 +134,13 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   Base = 0;
   myDoc = 0;
   new ExecWhatsThis(this);
+  sv->svChild->update();
 }
 
 CExecView::~CExecView()
 {
   setFocusProxy(0);
-  if (sv->debugStopToken)
+  if (sv->svChild->debugStopToken)
     lastDebugStopExec = 0;
   OnCloseExec();
   delete text;
@@ -227,8 +228,8 @@ void CExecView::OnInitialUpdate()
   QString family = fi.family();
   int ptSize = fi.pointSize();
   QFontMetrics fm(redCtl->fontMetrics());
-  sv->widthOfBlank = fm.width(" ");
-  sv->widthOfIndent = fm.width("nn");
+  sv->svChild->widthOfBlank = fm.width(" ");
+  sv->svChild->widthOfIndent = fm.width("nn");
   text->showComments = myDECL->TreeFlags.Contains(ShowExecComments);
   text->ignored = false;
   if (myDECL->TreeFlags.Contains(leftArrows))
@@ -260,7 +261,7 @@ void CExecView::OnInitialUpdate()
   initialUpdateDone = true;
 }
 
-void MyScrollView::SetTokenFormat (CHETokenNode *currToken) {
+void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
   TToken token = currToken->data.token;
 
   fmt.bold = false;
@@ -349,7 +350,7 @@ void MyScrollView::SetTokenFormat (CHETokenNode *currToken) {
   }
 }
 
-int MyScrollView::calcIndent (CHETokenNode *currentToken) {
+int ExecContents::calcIndent (CHETokenNode *currentToken) {
   SynObject *ancestor=currentToken->data.synObject;
 	unsigned ind;
 
@@ -363,7 +364,7 @@ int MyScrollView::calcIndent (CHETokenNode *currentToken) {
 	return ind;
 }
 
-void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool inSelection) {
+void ExecContents::DrawToken (CProgText *text, CHETokenNode *currentToken, bool inSelection) {
   int width, lineWidth=0, oldCW=contentsWidth, oldCH=contentsHeight;
   QPen currentPen;
   QColor currentColor;
@@ -481,17 +482,17 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
     contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
   }
   if (contentsWidth > oldCW || contentsHeight > oldCH)
-    resizeContents(contentsWidth,contentsHeight);
+    resize(contentsWidth,contentsHeight);
 	delete fm;
 }
 
 typedef Q3ValueList<int> BreakPointList;
 
-void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, int cliph)
+void ExecContents::drawContents (QPainter *pt, int clipx, int clipy, int clipw, int cliph)
 {
   CHETokenNode *currentToken;
   bool inSelection=false, debugStopOccurred=false;
-  QRect vr=visibleRect(), vr_vpt=viewport()->visibleRect(), gmt=viewport()->geometry(), cr=childrenRect();
+//  QRect vr=visibleRect(), vr_vpt=viewport()->visibleRect(), gmt=viewport()->geometry(), cr=childrenRect();
   QPen myPen(Qt::NoPen);
   QFontMetrics *fm;
   BreakPointList bpl;
@@ -812,14 +813,14 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
   }
 }
 
-void MyScrollView::focusInEvent(QFocusEvent *ev) {
+void ExecContents::focusInEvent(QFocusEvent *ev) {
   if (execView->initialUpdateDone
   && !execView->myDoc->deleting)
     execView->SetHelpText();
   execView->wxView::focusInEvent(ev);
 }
 
-void MyScrollView::keyPressEvent (QKeyEvent *e) {
+void ExecContents::keyPressEvent (QKeyEvent *e) {
   execView->OnChar(e);
 }
 
@@ -1183,13 +1184,13 @@ void CExecView::OnChar(QKeyEvent *e)
     }
 }
 
-void MyScrollView::contentsMousePressEvent (QMouseEvent *e) {
+void ExecContents::contentsMousePressEvent (QMouseEvent *e) {
   if (e->button() != Qt::LeftButton)
     return;
   execView->OnLButtonDown(e);
 }
 
-void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
+void ExecContents::contentsMouseDoubleClickEvent (QMouseEvent *e) {
   if (e->button() != Qt::LeftButton)
     return;
   execView->OnLButtonDblClk(e);
@@ -1197,6 +1198,16 @@ void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
 
 MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
   execView = (CExecView*)parent;
+  svChild = new ExecContents;
+  setWidget(svChild);
+  debugStop = new QPixmap((const char**)debugStop_xpm);
+  debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
+  breakPoint = new QPixmap((const char**)breakPoint_xpm);
+  debugStopToken = 0;
+  callerStopToken = 0;
+}
+
+ExecContents::ExecContents () {
   debugStop = new QPixmap((const char**)debugStop_xpm);
   debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
   breakPoint = new QPixmap((const char**)breakPoint_xpm);

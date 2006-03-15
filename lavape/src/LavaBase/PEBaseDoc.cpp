@@ -105,7 +105,7 @@ int CPEBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1*)
   int fmode = 0;
   QFileInfo fi;
   QString qfn;
-  DString docDir = fn.latin1(), stdName;
+  DString docDir = qPrintable(fn), stdName;
 
   CPEBaseDoc* doc = (CPEBaseDoc*)FindOpenDoc(fn);
   if (doc) {
@@ -125,9 +125,9 @@ int CPEBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1*)
   QDir dir(docDir.c);
   cheSyn = (CHESimpleSyntax*)sntx->SynDefTree.first;
   if (!cheSyn->data.UsersName.l)
-    cheSyn->data.UsersName = DString(fn.latin1());
+    cheSyn->data.UsersName = DString(qPrintable(fn));
   RelPathName(cheSyn->data.UsersName, IDTable.DocDir); //final value
-  cheSyn->data.SyntaxName = DString(fn.latin1());
+  cheSyn->data.SyntaxName = DString(qPrintable(fn));
   RelPathName(cheSyn->data.SyntaxName, docDir);
   cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   while (cheSyn) {
@@ -138,7 +138,7 @@ int CPEBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1*)
     RelPathName(cheSyn->data.SyntaxName, docDir);
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   }
-  if (SameFile(fn.latin1(), StdLava.ascii()))
+  if (SameFile(qPrintable(fn), qPrintable(StdLava)))
     ((CHESimpleSyntax*)sntx->SynDefTree.first)->data.SyntaxName = DString("std.lava");
   else {
     if (sntx->SynDefTree.first->successor) {

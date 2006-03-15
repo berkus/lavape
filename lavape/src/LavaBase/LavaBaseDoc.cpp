@@ -181,8 +181,8 @@ void CLavaBaseDoc::CalcNames(const QString& FileName)
 {
   int il;
 
-  IDTable.DocName = FileName.latin1();
-  IDTable.FileExtension = FileName.latin1();
+  IDTable.DocName = qPrintable(FileName);
+  IDTable.FileExtension = qPrintable(FileName);
   IDTable.mySynDef = mySynDef;
   for (il = IDTable.DocName.l-1; il && (IDTable.DocName[il] != '.'); il--);
   if (il) {
@@ -192,7 +192,7 @@ void CLavaBaseDoc::CalcNames(const QString& FileName)
   for (il = IDTable.DocName.l-1; il && (IDTable.DocName[il] != '\\') && (IDTable.DocName[il] != '/'); il--);
   if (il) {
     IDTable.DocName.Delete(0, il+1);
-    IDTable.DocDir = FileName.latin1();
+    IDTable.DocDir = qPrintable(FileName);
     IDTable.DocDir.Delete(il+1, IDTable.DocDir.l);
   }
   else
@@ -213,10 +213,10 @@ int CLavaBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1* cid)
   QString qfn;
   cheSyn = (CHESimpleSyntax*)sntx->SynDefTree.first;
   if (!cheSyn->data.UsersName.l)
-    cheSyn->data.UsersName = DString(fn.latin1());
+    cheSyn->data.UsersName = DString(qPrintable(fn));
   RelPathName(cheSyn->data.UsersName, IDTable.DocDir);
-  cheSyn->data.SyntaxName = DString(fn.latin1());
-  docDir = DString(fn.latin1());
+  cheSyn->data.SyntaxName = DString(qPrintable(fn));
+  docDir = qPrintable(fn);
   CalcDirName(docDir);
   RelPathName(cheSyn->data.SyntaxName, docDir);
   cheSyn = (CHESimpleSyntax*)cheSyn->successor;
@@ -229,7 +229,7 @@ int CLavaBaseDoc::ReadSynDef(const QString& fn, SynDef* &sntx, ASN1* cid)
     RelPathName(cheSyn->data.SyntaxName, docDir);
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   }
-  if (SameFile(fn.latin1(), StdLava.ascii()))
+  if (SameFile(qPrintable(fn), qPrintable(StdLava)))
     ((CHESimpleSyntax*)sntx->SynDefTree.first)->data.SyntaxName = DString("std.lava");
   else {
     if (sntx->SynDefTree.first->successor) {
@@ -278,7 +278,7 @@ CHESimpleSyntax* CLavaBaseDoc::IncludeSyntax(const QString& fn, bool& isNew, int
   //is mySynDef really new?
   isNew = false;
   for (cheSyn = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
-       cheSyn && !SameFile(cheSyn->data.SyntaxName, IDTable.DocDir, fn.latin1() /*str, IDTable.DocDir*/);
+       cheSyn && !SameFile(cheSyn->data.SyntaxName, IDTable.DocDir, qPrintable(fn) /*str, IDTable.DocDir*/);
        cheSyn = (CHESimpleSyntax*)cheSyn->successor);
   if (!cheSyn || !cheSyn->data.TopDef.ptr) {
     isNew = true;
@@ -295,10 +295,10 @@ CHESimpleSyntax* CLavaBaseDoc::IncludeSyntax(const QString& fn, bool& isNew, int
       SynIO.DeleteSynDef(isyntax);
       return 0;
     }
-    DString docDir = fn.latin1();
+    DString docDir = qPrintable(fn);
     CalcDirName(docDir);
 //    str = fn;
-    DString dstr=fn.latin1();
+    DString dstr=qPrintable(fn);
     RelPathName(dstr, docDir);
     ((CHESimpleSyntax*)isyntax->SynDefTree.first)->data.SyntaxName = dstr;
     hasIncludes = TRUE;
@@ -324,7 +324,7 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, const QString& fn, 
     return 0;
   int in = 0;
   bool inherited = (syntaxIncl != mySynDef);
-  DString docDir = fn.latin1();
+  DString docDir = qPrintable(fn);
   CalcDirName(docDir);
   if (!inherited) {
     cheSynIncl->data.SyntaxName = IDTable.DocName + IDTable.FileExtension;
@@ -332,10 +332,10 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, const QString& fn, 
   }
   else {//not the mySynDef of this document?
     //has the new mySynDef allready an entry or dummy entry?
-    DString relFn = fn.latin1();
+    DString relFn = qPrintable(fn);
     RelPathName(relFn, IDTable.DocDir);
     for (plusSyn = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
-         plusSyn && !SameFile(plusSyn->data.SyntaxName, IDTable.DocDir, fn.latin1() );//relFn, IDTable.DocDir);
+         plusSyn && !SameFile(plusSyn->data.SyntaxName, IDTable.DocDir, qPrintable(fn));//relFn, IDTable.DocDir);
          plusSyn = (CHESimpleSyntax*)plusSyn->successor);
     if (!plusSyn) {
       plusSyn = new CHESimpleSyntax;
@@ -366,7 +366,7 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, const QString& fn, 
         IDTable.SetAsName(plusSyn->data.nINCL, plusSyn->data.LocalTopName, oldTopName, plusSyn->data.TopDef.ptr);
       if (hint == 3) {
         for (nplusSyn = ((CHESimpleSyntax*)plusSyn->successor);
-             nplusSyn && !SameFile(nplusSyn->data.SyntaxName, IDTable.DocDir, fn.latin1()); //relFn, IDTable.DocDir);
+             nplusSyn && !SameFile(nplusSyn->data.SyntaxName, IDTable.DocDir, qPrintable(fn)); //relFn, IDTable.DocDir);
              nplusSyn = (CHESimpleSyntax*)nplusSyn->successor);
         if (nplusSyn) 
           DelSyntax(nplusSyn);
