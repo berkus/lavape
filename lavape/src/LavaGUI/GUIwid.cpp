@@ -291,17 +291,17 @@ void GUIwidCLASS::SetTopLeft (QWidget* widget, QWidget* leftNeighbour, int horiz
     else {
       neighbourRect = leftNeighbour->geometry();
       x = neighbourRect.right() + 1 + disx + GUIProg->aveCharWidth(widget->font()) * horizDist;
-      y = disy + vertDist * GUIProg->itemHight(widget->font()) + pbordy; 
+      y = disy + vertDist * GUIProg->itemHeight(widget->font()) + pbordy; 
     }
   else
     if (upperNeighbour) {
       neighbourRect = upperNeighbour->geometry();
       x = disx + pbordx + horizDist * GUIProg->aveCharWidth(widget->font());
-      y = neighbourRect.bottom() + 1 +  disy + vertDist * GUIProg->itemHight(widget->font());
+      y = neighbourRect.bottom() + 1 +  disy + vertDist * GUIProg->itemHeight(widget->font());
     }
     else {  
       x = disx + pbordx + horizDist * GUIProg->aveCharWidth(widget->font());
-      y = disy + pbordy + vertDist * GUIProg->itemHight(widget->font());
+      y = disy + pbordy + vertDist * GUIProg->itemHeight(widget->font());
    }
   //now set the final coordinates of the widget relative to its parent
   widget->move(x, y);

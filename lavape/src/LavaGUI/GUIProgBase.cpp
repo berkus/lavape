@@ -161,7 +161,7 @@ QSize CGUIMet::MinSizeComboBox(const QFont& font)
   return CalcTextRect(6,1,font);
 }
 
-unsigned CGUIMet::itemHight(const QFont& font)
+unsigned CGUIMet::itemHeight(const QFont& font)
 {
   QFontMetrics metric(font);
   return metric.height();

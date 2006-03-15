@@ -55,7 +55,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
   void SetColor(QWidget* w, CHEFormNode * node);
   virtual void Create();
 //  void SetDC(QWidget* win);
-  unsigned itemHight(const QFont& font);
+  unsigned itemHeight(const QFont& font);
 //  unsigned itemDist(const QFont& font); //the y-distance
   unsigned aveCharWidth(const QFont& font);
   unsigned maxCharWidth(const QFont& font);
