@@ -489,7 +489,7 @@ void LavaBaseStringInit() {
 	ERR_BrowserStartFailed = QObject::tr("Browser couldn't be started, errno=%1");
 	ERR_ResolvingShortcutFailed = QObject::tr("Resolving shortcut %1 failed");
 	ERR_LavaStartFailed = QObject::tr("The Lava interpreter couldn't be started, errno=%1");
-	ERR_LavaPEStartFailed = QObject::tr("LavaPE couldn't be started, errno=%1");
+	ERR_LavaPEStartFailed = QObject::tr("LavaPE couldn't be started");
 	ERR_SaveFailed = QObject::tr("Changes couldn't be saved to read-only Lava file.\nRun unchanged program?");
 	ERR_LookForCompoObj = QObject::tr("Implementation of this  component object interface or specification not found. \n(Expected in a corresponding *.lcom file)");
 	ERR_LookForCompoObjF = QObject::tr("Implementation of the attribute or function of the component object interface not found. \n(Expected in a corresponding *.lcom file");

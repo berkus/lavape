@@ -1,7 +1,7 @@
 PRJ = LavaStream
 
 EXEC = LavaStream.so
-SUBPRO=SFLsockets disco wxqDocView LavaBase
+SUBPRO=disco wxqDocView LavaBase
 
 CPP_INCLUDES = -I. -I../wxqDocView -I../LavaBase -I../disco
 

@@ -94,7 +94,7 @@ bool CLavaDoc::OnEmptyObj(const DString& lcomName, const DString& linkName)
     isObject = true;
     IDTable.IDTab[0]->LinkName = linkName;
     QString str = GetTitle();
-    ObjectPathName = DString(str);
+    ObjectPathName = DString(qPrintable(str));
     Modify(true);
     newLdoc = true;
     return ExecuteLavaObject();
@@ -135,11 +135,11 @@ bool CLavaDoc::SelectLcom(bool emptyDoc)
     qf.setFile(fileName);
     LBaseData->lastFileOpen = fileName;
     QString fn = ResolveLinks(qf);
-    PathName = DString(fn);
+    PathName = DString(qPrintable(fn));
     if (qf.dirPath() + "/" == ExeDir + ComponentLinkDir) 
-      linkName = DString(qf.fileName());
+      linkName = DString(qPrintable(qf.fileName()));
     else 
-      linkName = DString(fileName);
+      linkName = DString(qPrintable(fileName));
 
   }
   if (PathName.l) {
@@ -169,7 +169,7 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
   wxDocManager::GetDocumentManager()->AddFileToHistory(filename);
   if (((CLavaApp*)wxTheApp)->pLavaLdocTemplate == GetDocumentTemplate()) {
     QFile fn(filename); 
-    ObjectPathName = DString(filename);
+    ObjectPathName = DString(qPrintable(filename));
     if( !fn.open(IO_ReadOnly))
       return false;
     QDataStream ar(&fn);
@@ -189,7 +189,7 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
     if (!ObjectPathName.l) {
       emptyName = GetTitle();
       //((CLavaApp*)wxTheApp)->pLavaLdocTemplate->GetDocString(emptyName, CDocTemplate::docName);
-      ObjectPathName = DString(emptyName);   
+      ObjectPathName = DString(qPrintable(emptyName));   
     }
     return ExecuteLavaObject();
   }
@@ -199,11 +199,11 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
     isObject = true;
     qf.setFile(filename);
     if (qf.dirPath() + "/" == ExeDir + ComponentLinkDir) 
-      linkName = DString(qf.fileName());
+      linkName = DString(qPrintable(qf.fileName()));
     else 
-      linkName = DString(filename);
+      linkName = DString(qPrintable(filename));
     QString fn = ResolveLinks(qf);
-    PathName = DString(fn);
+    PathName = DString(qPrintable(fn));
     return OnEmptyObj(PathName, linkName);
   }
   else { //Lava task (*.lava)
@@ -231,7 +231,7 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
   }
   ckd.document = this;
   if (isObject) {
-    ObjectPathName = DString(lpszPathName);
+    ObjectPathName = DString(qPrintable(lpszPathName));
     ((CLavaGUIView*)RuntimeView)->GetParentFrame()->setCaption(GetTitle());
     if (DocObjects[2]) {
       if (RuntimeView) {
@@ -684,7 +684,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
         LObjectError(ckd, cid->FileName, dPN, &ERR_lcomNotOpened);
         return false;
       }
-      linkName = DString(dPN);
+      linkName = DString(qPrintable(dPN));
       QFileInfo qf(dPN);
       lcomPur = !qf.isRelative();
       if (!lcomPur) 
@@ -699,7 +699,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
       driveLetter = QString(fn[0].upper());
       fn.replace(0,1,driveLetter);
 #endif
-      synName = DString(fn);
+      synName = DString(qPrintable(fn));
       if (!synName.l) {
         LObjectError(ckd, cid->FileName, dPN, &ERR_lcomNotOpened);
         return false;
@@ -784,7 +784,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
                 if ((secClassDECL->inINCL == 1) && (secClassDECL->fromBType == Enumeration)
                   && enumDesc) {
                   iEnum = 0;
-                  enumStr = DString((*(QString*)(sectionPtr+LSH+1)));
+                  enumStr = DString(qPrintable((*(QString*)(sectionPtr+LSH+1))));
                   for (cheItem = (CHEEnumSelId*)enumDesc->EnumField.Items.first;
                        cheItem && (cheItem->data.Id != enumStr);
                        cheItem = (CHEEnumSelId*)cheItem->successor) 

@@ -159,7 +159,7 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
 	DString title;
 	
 	if (ev->data()) {
-		title = DString(((QWidget*)ev->data())->caption());
+		title = DString(qPrintable(((QWidget*)ev->data())->caption()));
 		if (title.l) {
 			if (title[title.l-1] == '*')
 				title = title.Substr(0,title.l-1);

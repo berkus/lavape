@@ -69,11 +69,11 @@ int main( int argc, char ** argv ) {
 	CLavaApp ap(argc,argv);
   QString componentPath;
   size_t requiredSize;
-  char myPath[1000];
+  char *myPath;
 
 //  DebugBreak();
 
-  getenv_s(&requiredSize,myPath,1000,"PATH");
+  myPath = getenv("PATH");
   componentPath = myPath;
 #ifdef WIN32
   if (componentPath.isEmpty())
