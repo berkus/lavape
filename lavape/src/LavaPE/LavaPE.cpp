@@ -1,6 +1,6 @@
 /* LavaPE -- Lava Programming Environment
    Copyright (C) 2002 Fraunhofer-Gesellschaft
-	 (http://www.sit.fraunhofer.de/english/)
+         (http://www.sit.fraunhofer.de/english/)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -82,14 +82,14 @@ int main( int argc, char ** argv ) {
   CLavaPEApp ap(argc,argv);
   ap.m_appWindow = new CLavaMainFrame();
   if (ap.m_appWindow->OnCreate())
-		ap.m_appWindow->showMaximized();
-	else
-		return 1;
-		
-	threadStg()->setLocalData(new CThreadData(0)); 
-		
-	int res = ap.exec();
-	return res;
+                ap.m_appWindow->showMaximized();
+        else
+                return 1;
+
+        threadStg()->setLocalData(new CThreadData(0));
+
+        int res = ap.exec();
+        return res;
 }
 
 int enumBM = 10;
@@ -108,7 +108,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   bool ok;
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
-  LBaseData.stdUpdate = 0; 
+  LBaseData.stdUpdate = 0;
   //stop here and set stdUpdate = 1 to allow updates in std.lava
 
   Browser.LastBrowseContext = 0;
@@ -143,7 +143,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   settings.endGroup();
 
   settings.beginGroup("/fontSettings");
-  
+
   LBaseData.m_lfDefExecFont = settings.readEntry(szExecFont, 0, &ok);
   if (ok)
     LBaseData.m_ExecFont.fromString(LBaseData.m_lfDefExecFont);
@@ -197,11 +197,11 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 #ifndef WIN32
   if (LBaseData.m_myWebBrowser.isEmpty())
 #endif
-	LBaseData.m_myWebBrowser = InitWebBrowser();
+        LBaseData.m_myWebBrowser = InitWebBrowser();
 
   LavaPixmaps[ 0] = new QPixmap((const char**)PX_basicatt);;
   LavaPixmaps[ 1] = new QPixmap((const char**)PX_BasicType);
-  LavaPixmaps[ 2] = new QPixmap((const char**)PX_paramatt); 
+  LavaPixmaps[ 2] = new QPixmap((const char**)PX_paramatt);
   LavaPixmaps[ 3] = new QPixmap((const char**)PX_patpara);
   LavaPixmaps[ 4] = new QPixmap((const char**)PX_classimpl);
   LavaPixmaps[ 5] = new QPixmap((const char**)PX_classAttr);
@@ -261,20 +261,20 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
     &CLavaPEDoc::CreateObject, &CFormFrame::CreateObject, &CLavaGUIView::CreateObject);//&CLavaGUIView::CreateObject);
   m_docManager->AssociateTemplate(pFormTemplate);
 
-	ExeDir = applicationDirPath();
+        ExeDir = applicationDirPath();
 #ifdef WIN32
   QString driveLetter = QString(ExeDir[0].upper());
   ExeDir.replace(0,1,driveLetter);
 #endif
   StdLavaLog = ExeDir + "/std.lava";
   QFileInfo qf = QFileInfo(StdLavaLog);
-	StdLava = ResolveLinks(qf);
+        StdLava = ResolveLinks(qf);
   Tokens_INIT();
 }
 
 bool CLavaPEApp::event(QEvent *e)
 {
-  
+
   if (e->type() == IDU_LavaDebug) {
     ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((QCustomEvent*)e)->data(), debugThread.myDoc);
     LBaseData.enableBreakpoints = true;
@@ -315,21 +315,21 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
     ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
   }
-	else
-		wxApp::event(e);
-	return QApplication::event(e);
+        else
+                wxApp::event(e);
+        return QApplication::event(e);
 }
 
 QString CLavaPEApp::InitWebBrowser () {
   QString prog;
-  
+
 #ifdef WIN32
 
   QString str, arg1;
   HKEY hkey=0;
   DWORD valType=0, dataSize=100;
   BYTE data[100];
-	char *datap=(char*)&data[0];
+        char *datap=(char*)&data[0];
   LONG rc=0;
   unsigned pos=0;
 
@@ -350,12 +350,12 @@ QString CLavaPEApp::InitWebBrowser () {
     if (pos = str.find(' ',1))
       prog = str.mid(0,pos);
     else
-			prog = str;
+                        prog = str;
   }
 #else
-	prog = "firefox";
+        prog = "firefox";
 #endif
-	return prog;
+        return prog;
 }
 
 void CLavaPEApp::OnAppAbout()
@@ -364,28 +364,28 @@ void CLavaPEApp::OnAppAbout()
   aboutDlg.exec();
 }
 
-void CLavaPEApp::OnEditUndo() 
+void CLavaPEApp::OnEditUndo()
 {
   CLavaPEDoc* doc = (CLavaPEDoc*)m_docManager->GetActiveDocument();
-  if (doc)  
+  if (doc)
     doc->UndoMem.OnEditUndo();
 }
 
 
 
-void CLavaPEApp::OnFileNew() 
+void CLavaPEApp::OnFileNew()
 {
   pLavaTemplate->CreateDocument(NULL, wxDOC_NEW);
 }
 
 
-void CLavaPEApp::OnNewComponent() 
+void CLavaPEApp::OnNewComponent()
 {
   pLComTemplate->CreateDocument(NULL, wxDOC_NEW);
 }
 
 
-void CLavaPEApp::OnPopcontext() 
+void CLavaPEApp::OnPopcontext()
 {
   CLavaPEDoc* doc;
   LavaDECL *decl;
@@ -395,9 +395,9 @@ void CLavaPEApp::OnPopcontext()
     return;
   ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = back->prev;
   wxView *backView = back->fromView;
-  if (backView->inherits("CExecView")) 
+  if (backView->inherits("CExecView"))
     ((CExecView*)backView)->Select((SynObject*)back->synObjSel);
-  else if (backView->inherits("CLavaGUIView")) 
+  else if (backView->inherits("CLavaGUIView"))
     back->formNode->data.FIP.widget->setFocus();
   else {
     if (back->id.nID != -1) {
@@ -406,17 +406,17 @@ void CLavaPEApp::OnPopcontext()
         decl = doc->IDTable.GetDECL(back->id);
         if (!decl)
         decl = doc->IDTable.GetDECL(back->parentID);
-        if (decl) 
+        if (decl)
           item = ((CLavaPEView*)backView)->BrowseTree(decl, (CTreeItem*)((CLavaPEView*)backView)->GetListView()->firstChild());
         else
           item = 0;
       }
-      else 
-        if (backView->inherits("CVTView")) 
+      else
+        if (backView->inherits("CVTView"))
           item =((CVTView*)backView)->BrowseTree(back->id, 0, back->type);
         else
           item = 0;
-      if (item) 
+      if (item)
         ((CTreeView*)backView)->GetListView()->setCurAndSel(item);
     }
   }
@@ -427,15 +427,15 @@ void CLavaPEApp::OnPopcontext()
     backView->ActivateView(true);
 }
 
-void CLavaPEApp::OnEditRedo() 
+void CLavaPEApp::OnEditRedo()
 {
   CLavaPEDoc* doc = (CLavaPEDoc*)m_docManager->GetActiveDocument();
-  if (doc)  
+  if (doc)
     doc->UndoMem.OnEditRedo();
 }
 
 
-void CLavaPEApp::OnChooseTreeFont() 
+void CLavaPEApp::OnChooseTreeFont()
 {
   CLavaPEDoc* doc;
   POSITION posD, posV;
@@ -468,8 +468,8 @@ void CLavaPEApp::OnChooseTreeFont()
     saveSettings();
   }
 }
-    
-void CLavaPEApp::OnChooseExecFont() 
+
+void CLavaPEApp::OnChooseExecFont()
 {
   CLavaPEDoc* doc;
   POSITION posD, posV;
@@ -501,7 +501,7 @@ void CLavaPEApp::OnChooseExecFont()
 }
 
 
-void CLavaPEApp::OnChooseFormFont(int font_case) 
+void CLavaPEApp::OnChooseFormFont(int font_case)
 {
   CLavaPEDoc* doc;
   POSITION posD, posV;
@@ -558,7 +558,7 @@ void CLavaPEApp::OnChooseFormFont(int font_case)
         posV = doc->GetFirstViewPos();
         while (posV) {
           view = doc->GetNextView(posV);
-          if (view->inherits("CLavaGUIView")) 
+          if (view->inherits("CLavaGUIView"))
             ((CLavaGUIView*)view)->setNewLabelFont();//LBaseData.m_FormLabelFont);
         }
       }
@@ -581,7 +581,7 @@ void CLavaPEApp::OnChooseFormFont(int font_case)
         posV = doc->GetFirstViewPos();
         while (posV) {
           view = doc->GetNextView(posV);
-          if (view->inherits("CLavaGUIView")) 
+          if (view->inherits("CLavaGUIView"))
             ((CLavaGUIView*)view)->setNewButtonFont();//LBaseData.m_FormLabelFont);
         }
       }
@@ -592,7 +592,7 @@ void CLavaPEApp::OnChooseFormFont(int font_case)
 }
 
 
-void CLavaPEApp::OnChooseGlobalFont() 
+void CLavaPEApp::OnChooseGlobalFont()
 {
   QFont lf;
   bool ok;
@@ -601,14 +601,14 @@ void CLavaPEApp::OnChooseGlobalFont()
   if (ok) {
     LBaseData.m_GlobalFont = lf;
     LBaseData.m_lfDefGlobalFont = lf.toString();
-	  setFont(LBaseData.m_GlobalFont,true);
+          setFont(LBaseData.m_GlobalFont,true);
     ((CLavaMainFrame*)wxTheApp->m_appWindow)->adjustToolbar_7();
     saveSettings();
   }
 }
 
 
-void CLavaPEApp::OnFileOpen() 
+void CLavaPEApp::OnFileOpen()
 {
   QString fileName = lavaFileDialog(LBaseData.lastFileOpen, m_appWindow, "Select a file to open", true);
   if (fileName.isEmpty())
@@ -620,23 +620,23 @@ void CLavaPEApp::OnFileOpen()
   OpenDocumentFile(fileName);
 }
 
-void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName) 
+void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 {
   QString name;
   QDir cwd;
-	name = cwd.absFilePath(lpszFileName);
-	name = cwd.cleanDirPath(name);
-	if (!name.contains('.'))
-		return;
+        name = cwd.absFilePath(lpszFileName);
+        name = cwd.cleanDirPath(name);
+        if (!name.contains('.'))
+                return;
   LBaseData.lastFileOpen = name;
 #ifdef WIN32
   QString driveLetter = QString(name[0].upper());
   name.replace(0,1,driveLetter);
 #endif
   ((CLavaPEApp*)qApp)->debugThread.myDoc = (CLavaBaseDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
-  if (argc() > 2) {
-    ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = QCoreApplication::arguments().at(2);
-    ((CLavaPEApp*)qApp)->debugThread.remotePort = (quint16)QCoreApplication::arguments().at(3).toUShort();
+  if (argc > 2) {
+    ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = argv[2];
+    ((CLavaPEApp*)qApp)->debugThread.remotePort = (quint16)QString(argv[3]).toUShort();
 
     //QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),"LavaPE: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     ((CLavaPEApp*)qApp)->debugThread.start();
@@ -646,68 +646,68 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 
 void CLavaPEApp::HtmlHelp()
 {
-	QString path(ExeDir);
-	QStringList args;
+        QString path(ExeDir);
+        QStringList args;
 
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	if (!qacl) {
-		qacl = new QAssistantClient(path,m_appWindow);
-		qacl->setArguments(args);
-	}
+        args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+        if (!qacl) {
+                qacl = new QAssistantClient(path,m_appWindow);
+                qacl->setArguments(args);
+        }
 
-	qacl->showPage(ExeDir + "/../doc/html/FAQ.htm");
+        qacl->showPage(ExeDir + "/../doc/html/FAQ.htm");
 }
 
 void CLavaPEApp::EditingLavaProgs()
 {
-	QString path(ExeDir);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,m_appWindow);
-		qacl->setArguments(args);
-	}
+        QString path(ExeDir);
+        QStringList args;
+        args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 
-	qacl->showPage(ExeDir + "/../doc/html/BasicEditing.htm");
+        if (!qacl) {
+                qacl = new QAssistantClient(path,m_appWindow);
+                qacl->setArguments(args);
+        }
+
+        qacl->showPage(ExeDir + "/../doc/html/BasicEditing.htm");
 }
 
 void CLavaPEApp::LearningLava()
 {
-	QString path(ExeDir);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,m_appWindow);
-		qacl->setArguments(args);
-	}
+        QString path(ExeDir);
+        QStringList args;
+        args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 
-	qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
-/*	QString buf;
+        if (!qacl) {
+                qacl = new QAssistantClient(path,m_appWindow);
+                qacl->setArguments(args);
+        }
 
-	if (LBaseData.m_myWebBrowser.isEmpty()) {
+        qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
+/*      QString buf;
+
+        if (LBaseData.m_myWebBrowser.isEmpty()) {
     QMessageBox::critical(m_appWindow,name(),ERR_MissingBrowserPath,QMessageBox::Ok,0,0);
-		return;
-	}
-	
-	QStringList args;
-	args << LBaseData.m_myWebBrowser << "file://" + ExeDir+"/../doc/html/LavaBySamples.htm";
-	QProcess browser(args);
+                return;
+        }
 
-	if (!browser.launch(buf)) {
+        QStringList args;
+        args << LBaseData.m_myWebBrowser << "file://" + ExeDir+"/../doc/html/LavaBySamples.htm";
+        QProcess browser(args);
+
+        if (!browser.launch(buf)) {
     QMessageBox::critical(m_appWindow,name(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok,0,0);
-		return;
-	}
+                return;
+        }
 */
 }
 
-void CLavaPEApp::OnSaveAll() 
+void CLavaPEApp::OnSaveAll()
 {
   DoSaveAll();
 }
 
-bool CLavaPEApp::DoSaveAll() 
+bool CLavaPEApp::DoSaveAll()
 {
   bool ret = true;
   CLavaPEDoc* doc;
@@ -728,14 +728,14 @@ bool CLavaPEApp::DoSaveAll()
   return ret;
 }
 
-void CLavaPEApp::OnImport() 
+void CLavaPEApp::OnImport()
 {
   // TODO: Add your command handler code here
-  
+
   QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), name(), "Not yet implemented!",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
-void CLavaPEApp::OnFindByName() 
+void CLavaPEApp::OnFindByName()
 {
   CFindData fw;
   fw.index = 2;
@@ -750,7 +750,7 @@ void CLavaPEApp::UpdateUI()
   OnUpdateSaveAll(((CLavaMainFrame*)m_appWindow)->fileSaveAllAction);
 }
 
-void CLavaPEApp::OnUpdateEditUndo(QAction* action) 
+void CLavaPEApp::OnUpdateEditUndo(QAction* action)
 {
   CLavaPEDoc* doc = (CLavaPEDoc*)m_docManager->GetActiveDocument();
   if (doc)
@@ -760,7 +760,7 @@ void CLavaPEApp::OnUpdateEditUndo(QAction* action)
 }
 
 
-void CLavaPEApp::OnUpdateEditRedo(QAction* action) 
+void CLavaPEApp::OnUpdateEditRedo(QAction* action)
 {
   CLavaPEDoc* doc = (CLavaPEDoc*)m_docManager->GetActiveDocument();
   if (doc)
@@ -769,12 +769,12 @@ void CLavaPEApp::OnUpdateEditRedo(QAction* action)
     action->setEnabled(false);
 }
 
-void CLavaPEApp::OnUpdatePopcontext(QAction* action) 
+void CLavaPEApp::OnUpdatePopcontext(QAction* action)
 {
-  action->setEnabled((Browser.LastBrowseContext != 0) && wxDocManager::GetDocumentManager()->GetOpenDocCount()); 
+  action->setEnabled((Browser.LastBrowseContext != 0) && wxDocManager::GetDocumentManager()->GetOpenDocCount());
 }
 
-void CLavaPEApp::OnUpdateSaveAll(QAction* action) 
+void CLavaPEApp::OnUpdateSaveAll(QAction* action)
 {
   action->setEnabled(wxDocManager::GetDocumentManager()->GetOpenDocCount());
 }
@@ -814,7 +814,7 @@ void CLavaPEApp::saveSettings()
   settings.endGroup();
 }
 
-int CLavaPEApp::ExitInstance() 
+int CLavaPEApp::ExitInstance()
 {
   saveSettings();
   delete [] TOKENSTR;
@@ -871,9 +871,9 @@ int CLavaPEBrowse::findAnyForm(LavaDECL * decl, TID& refID, SynDef *lavaCode)
             decl->Annotation.ptr->Length.Field = 3;
           break;
 
-        default: 
+        default:
           rr = -1;;
-      } 
+      }
     }
   }
   return rr;
@@ -887,7 +887,7 @@ int CLavaPEBrowse::HasDefaultForm(LavaDECL* decl, LavaDECL* patDECL, SynDef *lav
   bool newForm = false;
   CHETID * cheSup;
   TAnnotation* anno;
- 
+
   if (!decl->Annotation.ptr) {
     decl->Annotation.ptr = new TAnnotation;
     newForm = true;
@@ -917,12 +917,12 @@ int CLavaPEBrowse::HasDefaultForm(LavaDECL* decl, LavaDECL* patDECL, SynDef *lav
   if (LFirst && ((decl->DeclDescType != BasicType) ||  (decl->BType != B_Bool))) {
     anno->BasicFlags.EXCL(Toggle);
     ((LavaDECL*)LFirst->data)->Annotation.ptr->BasicFlags.EXCL(Toggle);
-  } 
-  if ((decl->DeclType == VirtualType) 
+  }
+  if ((decl->DeclType == VirtualType)
       && (decl->SecondTFlags.Contains(isSet) || decl->SecondTFlags.Contains(isArray))) {
     for (finalDecl = decl;
          finalDecl && (finalDecl->DeclDescType != BasicType)
-                   && ((finalDecl->DeclType == VirtualType) || (finalDecl->DeclType == PatternDef)); 
+                   && ((finalDecl->DeclType == VirtualType) || (finalDecl->DeclType == PatternDef));
          finalDecl = ((TIDTable*)lavaCode->IDTable)->GetDECL(finalDecl->RefID, finalDecl->inINCL));
     if (finalDecl && (finalDecl->DeclDescType == BasicType)) {
       decl->DeclDescType = BasicType;
@@ -967,7 +967,7 @@ int CLavaPEBrowse::HasDefaultForm(LavaDECL* decl, LavaDECL* patDECL, SynDef *lav
     if (decl->DeclDescType == NamedType) {
       for (finalDecl = ((TIDTable*)lavaCode->IDTable)->GetDECL(decl->RefID, decl->inINCL);
            finalDecl && (finalDecl->DeclDescType != BasicType)
-                     && ((finalDecl->DeclType == VirtualType) || (finalDecl->DeclType == PatternDef)); 
+                     && ((finalDecl->DeclType == VirtualType) || (finalDecl->DeclType == PatternDef));
            finalDecl = ((TIDTable*)lavaCode->IDTable)->GetDECL(finalDecl->RefID, finalDecl->inINCL));
       if (finalDecl && (finalDecl->DeclDescType == BasicType)) {
         decl->DeclDescType = BasicType;
@@ -1025,7 +1025,7 @@ int CLavaPEBrowse::HasDefaultForm(LavaDECL* decl, LavaDECL* patDECL, SynDef *lav
               rr = nrr;
           }
           else {
-            if ((elDECL->DeclType == VirtualType) 
+            if ((elDECL->DeclType == VirtualType)
                 && (elDECL->SecondTFlags.Contains(isSet) || elDECL->SecondTFlags.Contains(isArray))) {
               rr = HasDefaultForm(elDECL, patDECL, lavaCode);
             }//pattern
@@ -1037,7 +1037,7 @@ int CLavaPEBrowse::HasDefaultForm(LavaDECL* decl, LavaDECL* patDECL, SynDef *lav
         inCheEl = (CHE*)decl->NestedDecls.first;
         while (inCheEl) {
           elDECL = (LavaDECL*)inCheEl->data;
-          if ( (elDECL->DeclType != Attr) 
+          if ( (elDECL->DeclType != Attr)
             && ((elDECL->DeclType != VirtualType)
                 || !elDECL->SecondTFlags.Contains(isSet) && !elDECL->SecondTFlags.Contains(isArray))) {
             toRemove = inCheEl;
@@ -1092,7 +1092,7 @@ void CLavaPEBrowse::makeDefaultMenu(LavaDECL* decl)
     enumAnno = new TAnnotation;
     ((TEnumDescription*)decl->EnumDesc.ptr)->EnumField.Annotation.ptr = enumAnno;
   }
-  if (!enumAnno->FA.ptr) 
+  if (!enumAnno->FA.ptr)
     enumAnno->FA.ptr = new TAnnotation;
   enumAnno = (TAnnotation*)enumAnno->FA.ptr;
   enumAnno->IoSigFlags.INCL(Enter);
@@ -1149,7 +1149,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
     DString fn = ((CLavaPEDoc*)fromDoc)->IDTable.GetRelSynFileName(id);
     AbsPathName(fn, ((CLavaPEDoc*)fromDoc)->IDTable.DocDir);
     doc = (CLavaPEDoc*)wxTheApp->m_docManager->FindOpenDocument(fn.c);
-    if (doc) 
+    if (doc)
       declsel = doc->IDTable.GetDECL(0, id.nID);
   }
   else {
@@ -1168,7 +1168,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
       else
         if (declsel->ParentDECL->DeclType == FormDef)
           formDECL = declsel->ParentDECL->ParentDECL;
-      while ( pos 
+      while ( pos
            && ( !view->inherits("CLavaPEView")
                || !((CLavaPEView*)view)->myInclView && !formDECL
                || ((CLavaPEView*)view)->myInclView && formDECL
@@ -1188,10 +1188,10 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
         popUp = (view == doc->MainView) && formDECL;
         if (wxDocManager::GetDocumentManager()->GetActiveView() == view)
           view->OnActivateView();
-        else 
+        else
           if (!popUp)
             view->ActivateView(true);
-        if (popUp) 
+        if (popUp)
           item = ((CLavaPEView*)view)->BrowseTree(formDECL, (CTreeItem*)((CLavaPEView*)view)->GetListView()->firstChild(), enumID);
         else
           item = ((CLavaPEView*)view)->BrowseTree(declsel, (CTreeItem*)((CLavaPEView*)view)->GetListView()->firstChild(), enumID);
@@ -1212,7 +1212,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
               ((CLavaPEView*)view)->ExpandItem(item);
               ((CLavaPEView*)view)->GetListView()->ensureItemVisible(item);
             }
-          else 
+          else
             ((CLavaPEView*)view)->GetListView()->ensureItemVisible(item);
         }
         return true;
@@ -1240,11 +1240,11 @@ bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& f
   CHESimpleSyntax* cheSyn;
   CLavaPEDoc* doc;
   DString  fromAbsName; //fromRelName, relInclFile;
-  POSITION pos; 
+  POSITION pos;
   TID fromID;
   DString allNames = komma;
 
-  if (fw.index) {//by name 
+  if (fw.index) {//by name
     fw.FWhere = findInIncl;
     CFindByNameBox* box = new CFindByNameBox(&fw, wxTheApp->m_appWindow);
     if ((box->exec() != QDialog::Accepted) || !fw.searchName.l) {
@@ -1315,7 +1315,7 @@ bool CLavaPEBrowse::FindImpl(wxDocument* fromDoc, LavaDECL* decl, wxDocument*& i
   CHESimpleSyntax* cheSyn;
   CLavaPEDoc* doc;
   DString implAbsName, fromAbsName; //fromRelName, relInclFile;
-  POSITION pos; 
+  POSITION pos;
   TID fromID, toID;
   int funcnID;
   TIDType type;
@@ -1387,18 +1387,18 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
   CHESimpleSyntax* cheSyn;
   CLavaPEDoc* doc;
   DString fromAbsName; //,fromRelName, relInclFile;
-  POSITION pos; 
+  POSITION pos;
   TID fromID, toID;
   int funcnID;
   LavaDECL *fromDecl, *implDecl;
-  
+
   if (decl->DeclType == Initiator) {
     if (decl->inINCL > 0) {
       fromAbsName = ((CLavaPEDoc*)fromDoc)->IDTable.IDTab[decl->inINCL]->FileName;
       AbsPathName(fromAbsName, ((CLavaPEDoc*)fromDoc)->IDTable.DocDir);
       doc = (CLavaPEDoc*)wxTheApp->m_docManager->FindOpenDocument(fromAbsName.c);
     }
-    else 
+    else
       doc = (CLavaPEDoc*)fromDoc;
     if (doc) {
       implDecl = doc->IDTable.GetDECL(0,decl->OwnID);
@@ -1429,13 +1429,13 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
       implDecl = ((CLavaPEDoc*)fromDoc)->IDTable.GetDECL(toID);
       if (implDecl->TypeFlags.Contains(isPropSet) || implDecl->TypeFlags.Contains(isPropGet))
         implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID);
-      else 
+      else
         if (toID.nINCL)
           implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID, 0, true);
         else
           ((CLavaPEDoc*)fromDoc)->OpenExecView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
     }
-    else 
+    else
       implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID);
     return true;
   }
@@ -1470,7 +1470,7 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
               else
                 doc->OpenExecView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
           }
-          else 
+          else
             implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID);
           mana->DocPosRelease(pos);
           return true;
@@ -1483,7 +1483,7 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
 
 
 QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing)
-{    
+{
   return L_GetOpenFileName(startFileName, parent, caption,
           "Lava file (*.lava)", "lava", "LavaCom file (*.lcom)", "lcom");
 

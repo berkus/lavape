@@ -1,6 +1,6 @@
 /* LavaPE -- Lava Programming Environment
    Copyright (C) 2002 Fraunhofer-Gesellschaft
-	 (http://www.sit.fraunhofer.de/english/)
+         (http://www.sit.fraunhofer.de/english/)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ static char slash='/';
 
 int main( int argc, char ** argv ) {
 //  QApplication::setStyle(new MyWindowsStyle);
-	CLavaApp ap(argc,argv);
+  CLavaApp ap(argc,argv);
   QString componentPath;
   QByteArray myPath;
 
@@ -85,24 +85,24 @@ int main( int argc, char ** argv ) {
     componentPath = ExeDir + "/Components";
   else
     componentPath = componentPath + ";" + ExeDir + "/Components";
-  putenv(qPrintable(QString("PATH=")+componentPath));
+  putenv((char*)qPrintable(QString("PATH=")+componentPath));
 #endif
 
   ap.m_appWindow = new CLavaMainFrame;
   if (ap.m_appWindow->OnCreate()) {
     ap.m_appWindow->show();
   }
-	else
-		return 1;
-	
-	threadStg()->setLocalData(new CThreadData(0)); 
+        else
+                return 1;
 
-	int res = ap.exec();
-  
+        threadStg()->setLocalData(new CThreadData(0));
+
+        int res = ap.exec();
+
   if (allocatedObjects)
     qDebug("\n\nMemory leak: %x orphaned Lava object(s)\n\n",allocatedObjects);
- 
-	return res;
+
+        return res;
 }
 
 
@@ -215,7 +215,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
 #ifndef WIN32
   if (LBaseData.m_myWebBrowser.isEmpty())
 #endif
-	LBaseData.m_myWebBrowser = InitWebBrowser();
+        LBaseData.m_myWebBrowser = InitWebBrowser();
 
 
   pLavaTaskTemplate = new wxDocTemplate(m_docManager,
@@ -233,7 +233,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
     "Lava Component", "*.lcom","", "lcom", "Lava Component", "Lava Frame", "Lava GUI View",
     &CLavaDoc::CreateObject, &CLavaGUIFrame::CreateObject, &CLavaGUIView::CreateObject);
   m_docManager->AssociateTemplate(pLavaLcomTemplate);
-  
+
   ExeDir = applicationDirPath();
 #ifdef WIN32
   QString driveLetter = QString(ExeDir[0].upper());
@@ -241,21 +241,21 @@ CLavaApp::CLavaApp(int argc, char ** argv )
 #endif
   StdLavaLog = ExeDir + "/std.lava";
   QFileInfo qf = QFileInfo(StdLavaLog);
-	StdLava = ResolveLinks(qf);
+        StdLava = ResolveLinks(qf);
   Tokens_INIT();
 }
 
 
 QString CLavaApp::InitWebBrowser () {
   QString prog;
-  
+
 #ifdef WIN32
 
   QString str, arg1;
   HKEY hkey=0;
   DWORD valType=0, dataSize=100;
   BYTE data[100];
-	char *datap=(char*)&data[0];
+        char *datap=(char*)&data[0];
   LONG rc=0;
   unsigned pos=0;
 
@@ -276,66 +276,66 @@ QString CLavaApp::InitWebBrowser () {
     if (pos = str.find(' ',1))
       prog = str.mid(0,pos);
     else
-			prog = str;
+                        prog = str;
   }
 #else
-	prog = "firefox";
+        prog = "firefox";
 #endif
-	return prog;
+        return prog;
 }
 
 bool CLavaApp::event(QEvent *e)
 {
-	CLavaDoc *doc;
-	CMsgBoxParams *mbp;
-	CLavaPEHint *pHint;
-	CLavaThread *thr;
+        CLavaDoc *doc;
+        CMsgBoxParams *mbp;
+        CLavaPEHint *pHint;
+        CLavaThread *thr;
   DumpEventData* dumpdata;
   int result;
   CheckData ckd;
 
-	switch (e->type()) {
+        switch (e->type()) {
   case IDU_LavaStart:
     thr = new CLavaThread(ExecuteLava,(CLavaDoc*)((QCustomEvent*)e)->data());
     thr->start();
     break;
-	case IDU_LavaEnd:
-	  pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
-		doc = (CLavaDoc*)pHint->fromDoc;
-/*		thr = (CLavaThread*)pHint->CommandData1;
+        case IDU_LavaEnd:
+          pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
+                doc = (CLavaDoc*)pHint->fromDoc;
+/*              thr = (CLavaThread*)pHint->CommandData1;
     if (thr) {
-		  thr->wait();
-		 // delete thr;
+                  thr->wait();
+                 // delete thr;
     }*/
-		delete (CLavaPEHint*)pHint;
+                delete (CLavaPEHint*)pHint;
     if (doc)
-		  doc->OnCloseDocument();
+                  doc->OnCloseDocument();
     return true;
-	case IDU_LavaMsgBox:
+        case IDU_LavaMsgBox:
     m_appWindow->setActiveWindow();
     m_appWindow->raise();
-		mbp = (CMsgBoxParams*)((QCustomEvent*)e)->data();
-		switch (mbp->funcSpec) {
-		case 0:
-			mbp->result =	QMessageBox::critical(
-				mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+                mbp = (CMsgBoxParams*)((QCustomEvent*)e)->data();
+                switch (mbp->funcSpec) {
+                case 0:
+                        mbp->result =   QMessageBox::critical(
+                                mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
       mbp->thr->pContExecEvent->release();
-			break;
-		case 1:
-			mbp->result =	QMessageBox::information(
-				mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+                        break;
+                case 1:
+                        mbp->result =   QMessageBox::information(
+                                mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
       mbp->thr->pContExecEvent->release();
-			break;
-		case 2:
-			mbp->result =	QMessageBox::question(
-				mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+                        break;
+                case 2:
+                        mbp->result =   QMessageBox::question(
+                                mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
       mbp->thr->pContExecEvent->release();
-			break;
-		}
+                        break;
+                }
     break;
-	case IDU_LavaShow:
+        case IDU_LavaShow:
     pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
-    ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(m_appWindow, pHint); 
+    ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(m_appWindow, pHint);
     result = ((QDialog*)((CLavaDoc*)pHint->fromDoc)->LavaDialog)->exec();
     delete ((CLavaDoc*)pHint->fromDoc)->LavaDialog;
     ((CLavaDoc*)pHint->fromDoc)->LavaDialog = 0;
@@ -349,34 +349,34 @@ bool CLavaApp::event(QEvent *e)
       thr->pContExecEvent->release();
     }
     delete (CLavaPEHint*)((QCustomEvent*)e)->data();
-		break;
+                break;
   case IDU_LavaDump:
     dumpdata = (DumpEventData*)((QCustomEvent*)e)->data();
-    dumpdata->doc->DumpFrame = new LavaDumpFrame(m_appWindow, dumpdata); 
+    dumpdata->doc->DumpFrame = new LavaDumpFrame(m_appWindow, dumpdata);
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
     delete dumpdata->doc->DumpFrame;
     dumpdata->doc->DumpFrame = 0;
     ((DumpEventData*)((QCustomEvent*)e)->data())->currentThread->pContExecEvent->release();
     delete (DumpEventData*)((QCustomEvent*)e)->data();
-		break;
-	default:
-		wxApp::event(e);
-	}
-	return QApplication::event(e);
+                break;
+        default:
+                wxApp::event(e);
+        }
+        return QApplication::event(e);
 }
 
 
 
 QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing)
 {
-    
+
   return L_GetOpenFileName(startFileName, parent, caption,
           "Lava file (*.lava)", "lava", "Lava object file (*.ldoc)", "ldoc");
 
 
 }
 
-void CLavaApp::OnFileOpen() 
+void CLavaApp::OnFileOpen()
 {
   QString fileName = lavaFileDialog(LBaseData.lastFileOpen, m_appWindow, "Select a file to open", true);
   if (fileName.isEmpty())
@@ -388,20 +388,20 @@ void CLavaApp::OnFileOpen()
   OpenDocumentFile(fileName);
 }
 
-void CLavaApp::OpenDocumentFile(const QString& lpszFileName) 
+void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
 {
   QString name, port;
   QDir cwd;
   CLavaDoc* doc;
 
-	name = cwd.absFilePath(lpszFileName);
-	name = cwd.cleanDirPath(name);
-	if (!name.contains('.'))
-		return;
+  name = cwd.absFilePath(lpszFileName);
+  name = cwd.cleanDirPath(name);
+  if (!name.contains('.'))
+    return;
   LBaseData.lastFileOpen = name;
-  if (QCoreApplication::arguments().size() > 2) {
-    debugThread.remoteIPAddress = QCoreApplication::arguments().at(2);
-    port = QCoreApplication::arguments().at(3);
+  if (argc > 2) {
+    debugThread.remoteIPAddress = argv[2];
+    port = QString(argv[3]);
     debugThread.remotePort = (quint16)port.toUShort();
 
     //QMessageBox::critical(/*qApp->*/mainWidget(),qApp->name(),"Lava Interpreter: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
@@ -419,19 +419,19 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
   }
 }
 
-void CLavaApp::OnFileNew() 
+void CLavaApp::OnFileNew()
 {
   SyntaxToOpen.Reset(0);
   pLavaLdocTemplate->CreateDocument(NULL, wxDOC_NEW);
 }
 
 
-void CLavaApp::OnSaveAll() 
+void CLavaApp::OnSaveAll()
 {
   DoSaveAll();
 }
 
-bool CLavaApp::DoSaveAll() 
+bool CLavaApp::DoSaveAll()
 {
   bool ret = true;
   CLavaDoc* doc;
@@ -478,7 +478,7 @@ void CLavaApp::saveSettings()
   settings.endGroup();
 }
 
-int CLavaApp::ExitInstance() 
+int CLavaApp::ExitInstance()
 {
   saveSettings();
   delete [] TOKENSTR;
@@ -486,7 +486,7 @@ int CLavaApp::ExitInstance()
 }
 
 
-void CLavaApp::OnChooseFormFont(int font_case) 
+void CLavaApp::OnChooseFormFont(int font_case)
 {
   CLavaDoc* doc;
   POSITION posD, posV;
@@ -537,7 +537,7 @@ void CLavaApp::OnChooseFormFont(int font_case)
         posV = doc->GetFirstViewPos();
         while (posV) {
           view = doc->GetNextView(posV);
-          if (view->inherits("CLavaGUIView")) 
+          if (view->inherits("CLavaGUIView"))
             ((CLavaGUIView*)view)->setNewLabelFont();
         }
       }
@@ -548,7 +548,7 @@ void CLavaApp::OnChooseFormFont(int font_case)
 }
 
 
-void CLavaApp::OnChooseGlobalFont() 
+void CLavaApp::OnChooseGlobalFont()
 {
   QFont lf;
   bool ok;
@@ -559,7 +559,7 @@ void CLavaApp::OnChooseGlobalFont()
   if (ok) {
     LBaseData.m_GlobalFont = lf;
     LBaseData.m_lfDefGlobalFont = lf.toString();
-	  setFont(LBaseData.m_GlobalFont,true);
+          setFont(LBaseData.m_GlobalFont,true);
     saveSettings();
   }
 }
@@ -567,41 +567,41 @@ void CLavaApp::OnChooseGlobalFont()
 
 void CLavaApp::HtmlHelp()
 {
-	QString path(ExeDir);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	if (!qacl) {
-		qacl = new QAssistantClient(path,m_appWindow);
-		qacl->setArguments(args);
-	}
+        QString path(ExeDir);
+        QStringList args;
+        args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+        if (!qacl) {
+                qacl = new QAssistantClient(path,m_appWindow);
+                qacl->setArguments(args);
+        }
 
-	qacl->showPage(ExeDir + "/../doc/html/FAQ.htm");
+        qacl->showPage(ExeDir + "/../doc/html/FAQ.htm");
 }
 
 void CLavaApp::EditingLavaProgs()
 {
-	QString path(ExeDir);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,m_appWindow);
-		qacl->setArguments(args);
-	}
+        QString path(ExeDir);
+        QStringList args;
+        args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 
-	qacl->showPage(ExeDir + "/../doc/html/BasicEditing.htm");
+        if (!qacl) {
+                qacl = new QAssistantClient(path,m_appWindow);
+                qacl->setArguments(args);
+        }
+
+        qacl->showPage(ExeDir + "/../doc/html/BasicEditing.htm");
 }
 
 void CLavaApp::LearningLava()
 {
-	QString path(ExeDir);
-	QStringList args;
-	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
-	if (!qacl) {
-		qacl = new QAssistantClient(path,m_appWindow);
-		qacl->setArguments(args);
-	}
+        QString path(ExeDir);
+        QStringList args;
+        args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 
-	qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
+        if (!qacl) {
+                qacl = new QAssistantClient(path,m_appWindow);
+                qacl->setArguments(args);
+        }
+
+        qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
 }

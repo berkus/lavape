@@ -66,14 +66,16 @@ public:
     wxApp(int & argc, char ** argv);
     virtual ~wxApp();
 
-		QThread *mainThread;
-		bool deletingMainFrame;
+    QThread *mainThread;
+    bool deletingMainFrame;
     bool isChMaximized;
     bool appExit;
+    int argc;
+    char **argv;
 
     virtual void saveSettings() {}
     virtual void UpdateUI() {}
-		virtual void onUpdateUI();
+                virtual void onUpdateUI();
     virtual void customEvent(QCustomEvent *e);
 //    void addAction(QAction* act) {actionList.append(act);}
     // application info: name, description, vendor
@@ -209,8 +211,8 @@ public:
     // Returns a window that can be used as a parent for document-related
     // dialogs. Override if necessary.
     virtual QWidget *GetDocumentWindow();// const;
-    virtual  int GetViewCount() { 
-			return m_documentViews.count(); }
+    virtual  int GetViewCount() {
+                        return m_documentViews.count(); }
 
 protected:
     QList<wxView*>       m_documentViews;

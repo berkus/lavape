@@ -1,6 +1,6 @@
 /* LavaPE -- Lava Programming Environment
    Copyright (C) 2002 Fraunhofer-Gesellschaft
-	 (http://www.sit.fraunhofer.de/english/)
+         (http://www.sit.fraunhofer.de/english/)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -117,13 +117,15 @@ WXDLLEXPORT_DATA(wxApp*) wxTheApp;
 wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 {
   wxTheApp = this;
+  this->argc = argc;
+  this->argv = argv;
   m_appName = argv[0];
 
   //// Create a document manager
   m_docManager = new wxDocManager;
   inUpdateUI = false;
-	deletingMainFrame = false;
-	isChMaximized = true;
+        deletingMainFrame = false;
+        isChMaximized = true;
 
   SetClassName(argv[0]);
 
@@ -144,7 +146,7 @@ wxApp::~wxApp() {
 }
 
 void wxApp::SetVendorName(const QString& name) {
-  m_vendorName = name; 
+  m_vendorName = name;
   m_settingsPath = "/" + name;
 }
 
@@ -154,7 +156,7 @@ void wxApp::SetAppName(const QString& name) {
 }
 
 void wxApp::onGuiThreadAwake() {
-	// make sure that UpdateUI is invoked only once between two wait states
+        // make sure that UpdateUI is invoked only once between two wait states
   inUpdateUI = false;
 }
 
@@ -162,18 +164,18 @@ static bool cmdLineEvaluated=false;
 
 void wxApp::onIdle()
 {
-	// make sure that UpdateUI is invoked only once between two wait states
-	if (!inUpdateUI) {
+        // make sure that UpdateUI is invoked only once between two wait states
+        if (!inUpdateUI) {
 //    inUpdateUI = true;
-//		QApplication::postEvent(this,new QCustomEvent(IDU_Idle,0));
+//              QApplication::postEvent(this,new QCustomEvent(IDU_Idle,0));
     onUpdateUI();
-	}
+        }
 }
 
 void wxApp::customEvent(QCustomEvent *e)
 {
-//	if (e->type() == IDU_Idle)
-//	  	onUpdateUI();
+//      if (e->type() == IDU_Idle)
+//              onUpdateUI();
 }
 
 void wxApp::onUpdateUI()
@@ -182,10 +184,10 @@ void wxApp::onUpdateUI()
   QWidget *focView; //, *fw;
   char **argv=qApp->argv();
 
-	if (appExit /*deletingMainFrame*/)
-		return;
-		
-	inUpdateUI = true;
+        if (appExit /*deletingMainFrame*/)
+                return;
+
+        inUpdateUI = true;
 
  /* for (act = actionList.first(); act; act = actionList.next())
     act->enable = false;*/
@@ -194,19 +196,19 @@ void wxApp::onUpdateUI()
   if (m_appWindow)
     m_appWindow->UpdateUI();
 
-	focView = m_docManager->GetActiveView();
+        focView = m_docManager->GetActiveView();
   if (focView) {
     ((wxView*)focView)->GetParentFrame()->UpdateUI();
     ((wxView*)focView)->UpdateUI();
-	}
+        }
 
-	if (!cmdLineEvaluated && qApp->argc() > 1) {
-		cmdLineEvaluated = true;
+        if (!cmdLineEvaluated && qApp->argc() > 1) {
+                cmdLineEvaluated = true;
 //    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),QString(argv[0])+" "+QString(argv[1]),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 //    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),QString("CWD = ")+QDir::currentDirPath(),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-		wxTheApp->OpenDocumentFile(argv[1]);
-	}
-	
+                wxTheApp->OpenDocumentFile(argv[1]);
+        }
+
 }
 
 void wxApp::histFile(int histFileIndex) {
@@ -316,8 +318,8 @@ bool wxDocument::DeleteAllViews()
       if (view->GetParentFrame()->GetViewCount() == 1 // last view in child frame
       && !view->GetParentFrame()->deleting) {
         delete view->GetParentFrame();
-			  if (!wxDocManager::GetDocumentManager()->GetActiveDocument())
-				  return true;
+                          if (!wxDocManager::GetDocumentManager()->GetActiveDocument())
+                                  return true;
       }
       else {
         if (!view->Close())
@@ -376,7 +378,7 @@ bool wxDocument::OnNewDocument()
 
   QString name;
   wxDocManager::GetDocumentManager()->MakeDefaultName(name);
-	name += "." + m_documentTemplate->GetDefaultExtension();
+        name += "." + m_documentTemplate->GetDefaultExtension();
   SetTitle(name);
   SetFilename(name, true);
   SetUserFilename(name);
@@ -412,7 +414,7 @@ bool wxDocument::SaveAs()
     wxDocTemplate *docTemplate = GetDocumentTemplate();
     if (!docTemplate)
         return false;
-  
+
     QString fn = QFileDialog::getSaveFileName(GetFilename(), docTemplate->GetFileFilter());
 
 #ifdef WIN32
@@ -438,7 +440,7 @@ bool wxDocument::SaveAs()
 
     SetUserFilename(fn);
     wxDocManager::GetDocumentManager()->AddFileToHistory(fn);
-    SetTitle(fileInfo.filePath()); 
+    SetTitle(fileInfo.filePath());
     fn = ResolveLinks(fileInfo);
     SetFilename(fn);
 
@@ -449,7 +451,7 @@ bool wxDocument::SaveAs()
         m_documentViews.at(i)->OnChangeFilename();
     }
 
-		SetDocumentSaved(true);
+                SetDocumentSaved(true);
     return OnSaveDocument(m_documentFile);
 }
 
@@ -631,19 +633,19 @@ void wxDocument::UpdateAllViews(wxView *sender, unsigned param, QObject *hint)
   wxView *view;
   POSITION pos = GetFirstViewPos();
   while (pos) {
-    view = GetNextView(pos); 
+    view = GetNextView(pos);
     view->OnUpdate(sender, param, hint);
   }
 }
 
 void wxDocument::SetTitle(const QString& title)
-{ 
-	if (m_documentTitle == title)
-		return;
-	m_oldTitle = m_documentTitle;
-	m_documentTitle = title;
-	if (!m_oldTitle.isEmpty())
-		wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(m_oldTitle,m_documentTitle);
+{
+        if (m_documentTitle == title)
+                return;
+        m_oldTitle = m_documentTitle;
+        m_documentTitle = title;
+        if (!m_oldTitle.isEmpty())
+                wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(m_oldTitle,m_documentTitle);
 }
 
 void wxDocument::SetFilename(const QString& filename, bool notifyViews)
@@ -830,7 +832,7 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
   if (doc->OnCreate(fn)) {
     if (flags == wxDOC_NEW)
       ok = doc->OnNewDocument();
-    else 
+    else
       ok = doc->OnOpenDocument(fn);
     if (ok) {
       wxMDIChildFrame* newFrame = CreateChildFrame(doc);
@@ -1160,7 +1162,7 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
   temp = (wxDocTemplate *) NULL;
 
   QString fn, path2;
-	QFileInfo qfi;
+        QFileInfo qfi;
   if (path != QString("")) {
     path2 = path;
 #ifdef WIN32
@@ -1168,11 +1170,11 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
     path2.replace(0,1,driveLetter);
 #endif
   }
-	qfi.setFile(path2);
+        qfi.setFile(path2);
   if (!path2.isEmpty())
     fn = ResolveLinks(qfi);
-  
-  if (flags == wxDOC_SILENT) 
+
+  if (flags == wxDOC_SILENT)
     temp = FindTemplateForPath(fn);
   else {
     temp = SelectDocumentPath(templates, n, path2, flags);
@@ -1192,7 +1194,7 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
     }
     newDoc = temp->CreateDocument(path2);
     if (newDoc) {
-			newDoc->SetDocumentSaved();
+                        newDoc->SetDocumentSaved();
       return newDoc;
     }
   }
@@ -1450,7 +1452,7 @@ wxDocTemplate *wxDocManager::SelectDocumentPath(wxDocTemplate **templates,
     if (save)
         pathTmp = QFileDialog::getSaveFileName(m_lastDirectory);
     else
-        pathTmp = QFileDialog::getOpenFileName(m_lastDirectory, QString::null,0,0,QString::null,0,false);        
+        pathTmp = QFileDialog::getOpenFileName(m_lastDirectory, QString::null,0,0,QString::null,0,false);
 
   theTemplate = (wxDocTemplate *)NULL;
   if (!pathTmp.isEmpty()) {
@@ -2075,7 +2077,7 @@ void wxCommandProcessor::ClearCommands()
 wxHistory::wxHistory(int maxFiles, QMenu *m)
 {
     m_maxHistItems = maxFiles;
-		m_menu = m;
+                m_menu = m;
     m_historyN = 0;
     m_history = new DString*[m_maxHistItems];
 }
@@ -2135,7 +2137,7 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
     {
         if (m_history[i] && (*m_history[i] == *item)) {
             SetFirstInHistory(i);
-						delete item;
+                                                delete item;
             return;
         }
     }
@@ -2196,14 +2198,14 @@ DString *wxHistory::GetHistoryItem(int i) const
 
 void wxHistory::RemoveItemFromHistory(QString name)
 {
-	int i;
+        int i;
 
-	for (i=0; i<m_historyN; i++)
-		if (name == m_history[i]->c) {
-			RemoveItemFromHistory(i);
-			return;
-		}
-	return;
+        for (i=0; i<m_historyN; i++)
+                if (name == m_history[i]->c) {
+                        RemoveItemFromHistory(i);
+                        return;
+                }
+        return;
 }
 
 void wxHistory::RemoveItemFromHistory(int i)
@@ -2261,21 +2263,21 @@ void wxHistory::RemoveItemFromHistory(int i)
 
 void wxHistory::OnChangeOfWindowTitle(QString &oldName, QString &newName)
 {
-	int i;
-	DString str(newName.ascii()); 
+        int i;
+        DString str(newName.ascii());
 
-	for (i=0; i<m_historyN; i++)
-		if (oldName == m_history[i]->c) {
-			m_history[i]->Destroy();
-			m_history[i]->c = str.c;
-			m_history[i]->l = str.l;
-			m_history[i]->m = str.m;
-			str.c = 0;
-			str.l = 0;
-			m_menu->changeItem(wxID_FILE1+i,newName);
-			return;
-		}
-	return;
+        for (i=0; i<m_historyN; i++)
+                if (oldName == m_history[i]->c) {
+                        m_history[i]->Destroy();
+                        m_history[i]->c = str.c;
+                        m_history[i]->l = str.l;
+                        m_history[i]->m = str.m;
+                        str.c = 0;
+                        str.l = 0;
+                        m_menu->changeItem(wxID_FILE1+i,newName);
+                        return;
+                }
+        return;
 }
 /*
 void wxHistory::UseMenu(QPopupMenu *menu)
@@ -2299,11 +2301,11 @@ void wxHistory::Load(QSettings& config)
     config.beginGroup("/fileHistory");
     m_historyN = 0;
     buf.sprintf(QString("/file%d"), m_historyN+1);
-    
+
     while (m_historyN <= m_maxHistItems) {
       historyFile = config.readEntry(buf, def, &ok);
       if (!ok) break;
-			if (historyFile.isEmpty()) break;
+                        if (historyFile.isEmpty()) break;
       m_history[m_historyN++] = new DString(historyFile.ascii());
       buf.sprintf(QString("/file%d"), m_historyN+1);
     }
@@ -2441,8 +2443,8 @@ static bool ResolveShortCut (HWND hwnd, QString pszLink, QString &resolved)
       psl->Release ();
     }
   if (SUCCEEDED(hres))
-		return true;
-	else
+                return true;
+        else
     return false;
 }
 #endif
@@ -2456,28 +2458,28 @@ QString ResolveLinks(QFileInfo &qf)
   if (qf.isSymLink()) {
     while (QFileInfo(abslnkName).isSymLink()) {
       if (!ResolveShortCut(0, abslnkName, synName))
-				return QString::null;
+                                return QString::null;
       abslnkName = synName;
     }
   }
   else
     synName = qf.absFilePath();
-	synName.replace('\\',"/");
+        synName.replace('\\',"/");
   return synName;
   //QFileInfo qf1(synName);
   //return qf1.dir().canonicalPath() + "/" + qf1.fileName();
 #else
   QFileInfo qf1(abslnkName), qflink;
-	QString link;
+        QString link;
   while (qf1.isSymLink()) {
-		link = qf1.readLink();
-		qflink = QFileInfo(link);
-		if (qflink.isRelative())
-    	abslnkName = qf1.dirPath() + "/" + link;
-		else
-		  abslnkName = link;
-		qf1 = QFileInfo(abslnkName);
-	}
+                link = qf1.readLink();
+                qflink = QFileInfo(link);
+                if (qflink.isRelative())
+        abslnkName = qf1.dirPath() + "/" + link;
+                else
+                  abslnkName = link;
+                qf1 = QFileInfo(abslnkName);
+        }
   return qf1.dir().canonicalPath() + "/" + qf1.fileName();
 #endif
 }
