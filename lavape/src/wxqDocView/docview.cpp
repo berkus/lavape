@@ -2338,27 +2338,22 @@ void wxHistory::Save(QSettings& config)
 
 void wxHistory::AddFilesToMenu()
 {
-    if (m_historyN > 0)
+  if (m_historyN > 0)
+  {
+    m_menu->insertSeparator();
+    int i;
+    for (i = 0; i < m_historyN; i++)
     {
-//        QPopupMenu* menu = m_fileMenus.first();
-//        while (menu)
-//        {
-            m_menu->insertSeparator();
-            int i;
-            for (i = 0; i < m_historyN; i++)
-            {
-                if (m_history[i])
-                {
-                    QString buf;
-                    buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
-                    m_menu->insertItem(buf,wxTheApp,SLOT(histFile(int)),0,wxID_FILE1+i);
-                    connect(m_menu,SIGNAL(highlighted(int)),wxTheApp,SLOT(hfStatusText(int)));
-                    m_menu->setItemParameter(wxID_FILE1+i,i);
-                }
-            }
-//            menu = m_fileMenus.next();
-//        }
+      if (m_history[i])
+      {
+        QString buf;
+        buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
+        m_menu->insertItem(buf,wxTheApp,SLOT(histFile(int)),0,wxID_FILE1+i);
+        connect(m_menu,SIGNAL(highlighted(int)),wxTheApp,SLOT(hfStatusText(int)));
+        m_menu->setItemParameter(wxID_FILE1+i,i);
+      }
     }
+  }
 }
 
 void wxHistory::AddFilesToMenu(QMenu* menu)

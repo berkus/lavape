@@ -1,6 +1,6 @@
 /* LavaPE -- Lava Programming Environment
    Copyright (C) 2002 Fraunhofer-Gesellschaft
-	 (http://www.sit.fraunhofer.de/english/)
+         (http://www.sit.fraunhofer.de/english/)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-	 /* This file has been taken over from www.wxwidgets.org
+         /* This file has been taken over from www.wxwidgets.org
    and adapted to the needs of LavaPE */
 
 
@@ -54,12 +54,12 @@ wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
  : QMainWindow(parent,name,Qt::WDestructiveClose | Qt::WType_TopLevel)
 {
   QStatusBar *stb=new QStatusBar(this);
-	completelyCreated = false;
+        completelyCreated = false;
 
   setStatusBar(stb);
   wxTheApp->m_appWindow = this;
 //  qApp->setMainWidget(this);
-	m_childFrameHistory = new wxHistory;
+  m_childFrameHistory = new wxHistory;
 }
 
 bool wxMainFrame::OnCreate()
@@ -68,7 +68,7 @@ bool wxMainFrame::OnCreate()
   m_CentralWidget = CreateWorkspace(this);
   setCentralWidget(m_CentralWidget);
   LoadFileHistory();
-	completelyCreated = true;
+        completelyCreated = true;
   return true;
 }
 
@@ -104,10 +104,10 @@ void wxMainFrame::on_fileExitAction_triggered()
 {
   ((wxApp*)qApp)->appExit = true;
   if ( wxDocManager::GetDocumentManager()->Clear(false)) {
-	  qApp->quit();
+          qApp->quit();
   }
-	else
-		((wxApp*)qApp)->appExit = false;
+        else
+                ((wxApp*)qApp)->appExit = false;
 }
 
 void wxMainFrame::LoadFileHistory() {
@@ -122,7 +122,7 @@ void wxMainFrame::LoadFileHistory() {
 void wxMainFrame::OnMRUFile(int histFileIndex)
 {
     QString *file=wxDocManager::GetDocumentManager()->GetHistoryFile(histFileIndex);
-		
+
     if (file->isEmpty())
         return;
     QFile f(*file);
@@ -130,19 +130,19 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
     {
         wxDocManager::GetDocumentManager()->RemoveFileFromHistory(histFileIndex);
         QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-				delete file;
+                                delete file;
         return;
     }
 
     if (!wxDocManager::GetDocumentManager()->CreateDocument(*file, wxDOC_SILENT))
         wxDocManager::GetDocumentManager()->RemoveFileFromHistory(histFileIndex);
-		delete file;
+                delete file;
 }
 
 void wxMainFrame::OnMRUWindow(int histWindowIndex)
 {
-	HistWindow *hw = (HistWindow*)m_childFrameHistory->GetHistoryItem(histWindowIndex);
-	hw->window->Activate(true,true);
+        HistWindow *hw = (HistWindow*)m_childFrameHistory->GetHistoryItem(histWindowIndex);
+        hw->window->Activate(true,true);
 }
 
 
@@ -158,7 +158,7 @@ void wxMainFrame::on_cascadeAction_triggered()
   wxTheApp->isChMaximized = false;
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) 
+    if (!((QMainWindow*)window)->isMinimized())
       if (window->inherits("wxMDIChildFrame")) {
         ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
         window->resize(sz.width()*7/10, sz.height()*7/10);
@@ -172,8 +172,8 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
 
-	wxTheApp->isChMaximized = false;
-	lastTile = 1;
+        wxTheApp->isChMaximized = false;
+        lastTile = 1;
 
   if (!windows.count() )
       return;
@@ -201,7 +201,7 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
     if (!((QMainWindow*)window)->isMinimized()) {
       preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
       actWidth = QMAX(widthForEach, preferredWidth);
-      if (window == theActiveFrame) 
+      if (window == theActiveFrame)
         window->showNormal();
       window->parentWidget()->resize(actWidth, allHeight );
       window->parentWidget()->move( x, 0);
@@ -209,14 +209,14 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
     }
   }*/
 }
-    
+
 void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
 {
   int ii, cc = 0, y = 0, heightForEach, preferredHeight, actHeight, minHeight=0;
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
 
-	lastTile = 2;
+        lastTile = 2;
 
   if (!windows.count() )
       return;
@@ -243,7 +243,7 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
     if (!((QMainWindow*)window)->isMinimized()) {
       preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
       actHeight = QMAX(heightForEach, preferredHeight);
-      if (window == theActiveFrame) 
+      if (window == theActiveFrame)
         window->showNormal();
       window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
       y += actHeight;
@@ -268,7 +268,7 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
   m_clientWindow = this;
   resize(sz.width()*7/10, sz.height()*7/10);
   if (wxTheApp->isChMaximized)
-	  oldWindowState = Qt::WindowMaximized;
+          oldWindowState = Qt::WindowMaximized;
   else
     oldWindowState = Qt::WindowNoState;
   lastActive = 0;
@@ -306,22 +306,22 @@ void wxMDIChildFrame::InitialUpdate()
 {
   for (int i=0; i<m_viewList.size(); i++) {
     m_viewList.at(i)->OnInitialUpdate();
-		m_viewList.at(i)->show();
+                m_viewList.at(i)->show();
   }
   show();
 }
 
 void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
 {
-	QString title=caption();
-	if (isMinimized() && windowMenuAction)
+        QString title=caption();
+        if (isMinimized() && windowMenuAction)
     if (oldWindowState == Qt::WindowMaximized)
       showMaximized();
     else
       showNormal();
   if (title.length() && title.at(title.length()-1) == '*')
-		title = title.left(title.length()-1);
-	wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
+                title = title.left(title.length()-1);
+        wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
   if (activate && m_viewCount)
     if (lastActive) {
       wxDocManager::GetDocumentManager()->SetActiveView(lastActive, activate);
@@ -332,27 +332,27 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
 
 void wxMDIChildFrame::SetTitle(QString &title)
 {
-	QString oldTitle=parentWidget()->caption(), newTitle=title;
+        QString oldTitle=parentWidget()->caption(), newTitle=title;
 
-	setCaption(title);
-	if (newTitle.at(newTitle.length()-1) == '*')
-		newTitle = newTitle.left(newTitle.length()-1);
-	if (!oldTitle.isEmpty())
-		wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
+        setCaption(title);
+        if (newTitle.at(newTitle.length()-1) == '*')
+                newTitle = newTitle.left(newTitle.length()-1);
+        if (!oldTitle.isEmpty())
+                wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
 
 bool wxMDIChildFrame::event(QEvent * e )
 {
   switch (e->type()) {
-	case Qt::WindowNoState:
-		oldWindowState = Qt::WindowNoState;
-		wxTheApp->isChMaximized = false;
+        case Qt::WindowNoState:
+                oldWindowState = Qt::WindowNoState;
+                wxTheApp->isChMaximized = false;
     break;
-	case Qt::WindowMaximized:
-		oldWindowState = Qt::WindowMaximized;
-		wxTheApp->isChMaximized = true;
+        case Qt::WindowMaximized:
+                oldWindowState = Qt::WindowMaximized;
+                wxTheApp->isChMaximized = true;
     break;
-	default: ;
+        default: ;
   }
   return QWidget::event(e);
 }
@@ -369,11 +369,11 @@ void wxMDIChildFrame::RemoveView(wxView *view)
 
 wxMDIChildFrame::~wxMDIChildFrame()
 {
-	QString title;
+        QString title;
 
-	title = caption();
+        title = caption();
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
-		title = title.left(title.length()-1);
+                title = title.left(title.length()-1);
   deleting = true;
-	wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
+        wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
 }

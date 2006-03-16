@@ -1,6 +1,6 @@
 /* LavaPE -- Lava Programming Environment
    Copyright (C) 2002 Fraunhofer-Gesellschaft
-	 (http://www.sit.fraunhofer.de/english/)
+         (http://www.sit.fraunhofer.de/english/)
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -48,8 +48,8 @@
 // CLavaGUIView
 
 GUIScrollView::GUIScrollView(QWidget *parent, bool fromPopup)
-    //: Q3ScrollView(parent, "GUIScrollView") 
-    : QScrollArea(parent) 
+    //: Q3ScrollView(parent, "GUIScrollView")
+    : QScrollArea(parent)
 {
   setObjectName("GUIScrollView");
   setFocusPolicy(Qt::StrongFocus);
@@ -60,12 +60,12 @@ GUIScrollView::GUIScrollView(QWidget *parent, bool fromPopup)
   setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   MaxBottomRight = QRect(0,0,0,0);
-  
+
 }
 
 
 void GUIScrollView::/*viewportR*/resizeEvent(QResizeEvent* ev)
-{  
+{
   QSize sz = MaxBottomRight.size();
   QSize evsz = ev->size();
   QSize sx = qvbox->size();
@@ -105,12 +105,12 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
   connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
   connect(resetButton, SIGNAL(clicked()), this, SLOT(OnReset()));
   connect(cancelButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
-  qvbox = myScrv->qvbox; 
+  qvbox = myScrv->qvbox;
   myDoc = (CLavaBaseDoc*)pHint->fromDoc;
   if (myDoc->mySynDef) {
     myGUIProg = new CGUIProg;
     myGUIProg->Create(myDoc, this);
-    myGUIProg->SetFont(&LBaseData->m_FormFont);  
+    myGUIProg->SetFont(&LBaseData->m_FormFont);
     ServicePtr = (LavaVariablePtr)pHint->CommandData1;
     IniDataPtr = (LavaVariablePtr)pHint->CommandData2;
     ResultDPtr = (LavaVariablePtr)pHint->CommandData3;
@@ -142,7 +142,7 @@ LavaGUIDialog::~LavaGUIDialog()
   if (myGUIProg) {
     if (!wxTheApp->appExit)
       myGUIProg->LavaForm.DeletePopups(myGUIProg->Root);
-    delete myGUIProg;   
+    delete myGUIProg;
   }
 }
 
@@ -153,7 +153,7 @@ void LavaGUIDialog::closeEvent(QCloseEvent *e)
           wxTheApp->m_appWindow,qApp->name(),"Do you really want to cancel this Lava dialog?",
           QMessageBox::Yes,
           QMessageBox::No) == QMessageBox::Yes) {
-      OnCancel();      
+      OnCancel();
     }
     else
       return;
@@ -203,7 +203,7 @@ void LavaGUIDialog::OnReset()
       DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
       *ResultDPtr = 0;
     }
-    if (myGUIProg->fromFillIn) 
+    if (myGUIProg->fromFillIn)
       *ResultDPtr = AllocateObject(myGUIProg->ckd, (*ServicePtr)[0][0].classDECL->RelatedDECL, false);
     if ((*ResultDPtr || !myGUIProg->fromFillIn) && !myGUIProg->ckd.exceptionThrown) {
       if (*IniDataPtr) {
@@ -211,7 +211,7 @@ void LavaGUIDialog::OnReset()
 #ifndef WIN32
           if (setjmp(contOnHWexception)) throw hwException;
 #endif
-          if (myGUIProg->fromFillIn) 
+          if (myGUIProg->fromFillIn)
             myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag), (*ServicePtr)[0][0].classDECL->RelatedDECL);
           else
             myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag));
@@ -221,12 +221,12 @@ void LavaGUIDialog::OnReset()
             ok = false;
         }
         catch (CRuntimeException ex) {
-          if (!ex.SetLavaException(myGUIProg->ckd)) 
+          if (!ex.SetLavaException(myGUIProg->ckd))
             //throw;
           ok = false;
         }
         catch (CHWException ex) {
-          if (!ex.SetLavaException(myGUIProg->ckd)) 
+          if (!ex.SetLavaException(myGUIProg->ckd))
             //throw;
           ok = false;
         }
@@ -262,7 +262,7 @@ void LavaGUIDialog::NewTitle(LavaDECL *decl, const DString& lavaName)
 
 CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
    : CLavaBaseView(parent,doc,"LavaGUIView")
-{ 
+{
   released = false;
   Q3VBox *qvb = new Q3VBox(this);
   myScrv = new GUIScrollView(qvb, false);
@@ -273,7 +273,7 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
     connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
     connect(resetButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
   }
-  qvbox = myScrv->qvbox; 
+  qvbox = myScrv->qvbox;
   myDECL = 0;
   myGUIProg = 0;
   ServicePtr = 0;
@@ -296,10 +296,10 @@ CLavaGUIView::~CLavaGUIView()
   if (myGUIProg) {
     if (!wxTheApp->appExit)
       myGUIProg->LavaForm.DeletePopups(myGUIProg->Root);
-    delete myGUIProg;   
+    delete myGUIProg;
   }
   if (!wxTheApp->appExit) {
-    QString msg("");
+    QString msg("Document is being closed");
     wxTheApp->m_appWindow->statusBar()->message(msg);
   }
   GetDocument()->RuntimeView = 0;
@@ -320,11 +320,11 @@ void CLavaGUIView::UpdateUI()
   OnUpdateEditCopy(LBaseData->editCopyActionPtr);
   OnUpdateEditCut(LBaseData->editCutActionPtr);
   if (LBaseData->updateCancelActionPtr) {
-	  OnUpdateTogglestate(LBaseData->toggleCatActionPtr);
+          OnUpdateTogglestate(LBaseData->toggleCatActionPtr);
     OnUpdateCancel(LBaseData->updateCancelActionPtr);
     //OnUpdateOk(LBaseData->okActionPtr);
   }
-  if (!LBaseData->inRuntime) 
+  if (!LBaseData->inRuntime)
     OnUpdateGotodef(LBaseData->gotoDeclActionPtr);
 }
 
@@ -336,16 +336,16 @@ void CLavaGUIView::DisableActions()
   LBaseData->editCopyActionPtr->setEnabled(false);
   LBaseData->editPasteActionPtr->setEnabled(false);
   if (LBaseData->updateCancelActionPtr) {
-	  LBaseData->toggleCatActionPtr->setEnabled(false);
+          LBaseData->toggleCatActionPtr->setEnabled(false);
     LBaseData->updateCancelActionPtr->setEnabled(false);
     //LBaseData->okActionPtr->setEnabled(false);
   }
-  if (!LBaseData->inRuntime) 
+  if (!LBaseData->inRuntime)
     LBaseData->gotoDeclActionPtr->setEnabled(false);
 }
 
 
-void CLavaGUIView::OnInitialUpdate() 
+void CLavaGUIView::OnInitialUpdate()
 {
   CLavaPEHint *pHint = LBaseData->actHint;
   wxMDIChildFrame *pChild = (wxMDIChildFrame*)GetParentFrame();
@@ -355,14 +355,14 @@ void CLavaGUIView::OnInitialUpdate()
   if (GetDocument()->mySynDef) {
     myGUIProg = new CGUIProg;
     myGUIProg->Create(GetDocument(), this);
-    myGUIProg->SetFont(&LBaseData->m_FormFont);  
+    myGUIProg->SetFont(&LBaseData->m_FormFont);
     if (pHint && LBaseData->actHint->com == CPECommand_OpenFormView) {
-      if (!LBaseData->inRuntime) { 
+      if (!LBaseData->inRuntime) {
         //LavaPE only
         myDECL = (LavaDECL*)pHint->CommandData1;
         for ( ; myDECL && (myDECL->DeclType == VirtualType); myDECL = GetDocument()->IDTable.GetDECL(myDECL->RefID, myDECL->inINCL));
         myID = TID(myDECL->OwnID, myDECL->inINCL);
-        mainTree = (CLavaBaseView*)pHint->CommandData2; 
+        mainTree = (CLavaBaseView*)pHint->CommandData2;
         LastBrowseNode = 0;
         myGUIProg->myDECL = myDECL;
         myGUIProg->selDECL = myDECL;
@@ -413,20 +413,20 @@ void CLavaGUIView::OnInitialUpdate()
       myGUIProg->OnUpdate( myDECL, ResultDPtr);
       myGUIProg->MakeGUI.DisplayScreen(false);
     }
-  } 
+  }
 }
 
-void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint) 
-{ 
+void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
+{
   GetParentFrame()->show();
   inUpdate = true;
   CLavaPEHint* Hint = (CLavaPEHint*)pHint;
-  if (Hint 
+  if (Hint
         && ((Hint->com == CPECommand_Delete)
         ||  (Hint->com == CPECommand_Insert)
         ||  (Hint->com == CPECommand_Change)
         ||  (Hint->com == CPECommand_FromOtherDoc))
-        || (undoRedoCheck == 3) || (undoRedoCheck > CHLV_showError)) { 
+        || (undoRedoCheck == 3) || (undoRedoCheck > CHLV_showError)) {
     //LavaPE
     if ((undoRedoCheck == 1) && Hint && Hint->FirstLast.Contains(firstHint)
         || (undoRedoCheck != 1) && Hint && Hint->FirstLast.Contains(lastHint)
@@ -443,7 +443,7 @@ void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
   }
   else
     if (Hint && (Hint->com == CPECommand_OpenFormView)) {
-      if (!LBaseData->inRuntime) { 
+      if (!LBaseData->inRuntime) {
         //LavaPE
         ServicePtr = 0;
         myDECL = (LavaDECL*)Hint->CommandData1;
@@ -464,7 +464,7 @@ bool CLavaGUIView::event(QEvent* ev)
     wxDocManager::GetDocumentManager()->SetActiveView(this);
     if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget)
       myGUIProg->focNode->data.FIP.widget->setFocus();
-    //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode); 
+    //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode);
     myGUIProg->inSynchTree = false;
     return true;
   }
@@ -473,9 +473,9 @@ bool CLavaGUIView::event(QEvent* ev)
     return true;
   }
   else {
-    if (ev->type() == QEvent::Enter) 
+    if (ev->type() == QEvent::Enter)
       MessToStatusbar();
-		return wxView::event(ev);
+                return wxView::event(ev);
   }
 }
 
@@ -506,7 +506,7 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
      ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(QColor("#FF0000"));
          myGUIProg->ScrollIntoFrame(LastBrowseNode->data.FIP.widget);
           ((QFrame*)LastBrowseNode->data.FIP.widget)->repaint();
-          //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode); 
+          //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode);
         }
       }
       else
@@ -541,7 +541,7 @@ void CLavaGUIView::OnGotoDecl()
         radio = (CFormWid*)((CPushButton*)myGUIProg->focNode->data.FIP.widget)->Radio;
         iterNode = ((CPushButton*)myGUIProg->focNode->data.FIP.widget)->IterNode;
       }
-      else if (myGUIProg->focNode->data.FIP.widget->inherits("CRadioButton")) 
+      else if (myGUIProg->focNode->data.FIP.widget->inherits("CRadioButton"))
         radio = (CFormWid*)((CRadioButton*)myGUIProg->focNode->data.FIP.widget)->Radio;
       if (radio) {
         for (node = radio->myFormNode;
@@ -582,7 +582,7 @@ void CLavaGUIView::OnCancel()
     return;
   bool ok = true;;
   if (myGUIProg && LBaseData->inRuntime) {
-    if (GetDocument()->isObject) { 
+    if (GetDocument()->isObject) {
       ((CLavaGUIFrame*)GetParentFrame())->SetModified(GetDocument()->GetTitle(), false);
       GetDocument()->Modify(false);
     }
@@ -596,7 +596,7 @@ void CLavaGUIView::OnCancel()
 }
 
 
-void CLavaGUIView::OnUpdateCancel(QAction* action) 
+void CLavaGUIView::OnUpdateCancel(QAction* action)
 {
   action->setEnabled(LBaseData->inRuntime && GetDocument()->isObject); // && !GetDocument()->IsEmbedded());
 }
@@ -615,21 +615,21 @@ void CLavaGUIView::NoteNewObj(LavaObjectPtr obj)
 }
 
 
-void CLavaGUIView::OnDeleteOpt() 
+void CLavaGUIView::OnDeleteOpt()
 {
   if (released)
     return;
   if (myGUIProg && myGUIProg->DelNode) {
     if (myGUIProg->DelNode->data.IterFlags.Contains(Optional))
-      myGUIProg->CmdExec.DeleteOptionalItem(myGUIProg->DelNode);  
+      myGUIProg->CmdExec.DeleteOptionalItem(myGUIProg->DelNode);
     else
-      myGUIProg->CmdExec.DeleteIterItem(myGUIProg->DelNode);  
+      myGUIProg->CmdExec.DeleteIterItem(myGUIProg->DelNode);
     myGUIProg->DelNode = 0;
   }
 }
 
 
-void CLavaGUIView::OnUpdateDeleteopt(QAction* action) 
+void CLavaGUIView::OnUpdateDeleteopt(QAction* action)
 {
   if (myGUIProg && myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
       && myGUIProg->focNode->data.FIP.widget
@@ -654,7 +654,7 @@ void CLavaGUIView::OnUpdateDeleteopt(QAction* action)
 }
 
 
-void CLavaGUIView::OnInsertOpt() 
+void CLavaGUIView::OnInsertOpt()
 {
   if (released)
     return;
@@ -664,7 +664,7 @@ void CLavaGUIView::OnInsertOpt()
 }
 
 
-void CLavaGUIView::OnUpdateInsertopt(QAction* action) 
+void CLavaGUIView::OnUpdateInsertopt(QAction* action)
 {
   if (myGUIProg) {
     if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
@@ -689,7 +689,7 @@ void CLavaGUIView::OnUpdateInsertopt(QAction* action)
 }
 
 
-void CLavaGUIView::OnTogglestate() 
+void CLavaGUIView::OnTogglestate()
 {
   if (LBaseData->inRuntime && GetDocument()->isObject) { // && !GetDocument()->IsEmbedded()) {
     if (*ResultDPtr)
@@ -700,7 +700,7 @@ void CLavaGUIView::OnTogglestate()
   }
 }
 
-void CLavaGUIView::OnUpdateTogglestate(QAction* action) 
+void CLavaGUIView::OnUpdateTogglestate(QAction* action)
 {
   action->setOn(CurrentCategory);
   action->setEnabled(LBaseData->inRuntime && GetDocument()->isObject); // && !GetDocument()->IsEmbedded());
@@ -727,10 +727,10 @@ bool CLavaGUIView::OnKill()
             wxTheApp->m_appWindow,qApp->name(),"Do you really want to abort this Lava program?",
             QMessageBox::Yes,
             QMessageBox::No) == QMessageBox::Yes) {
-        
+
         //DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
         //*ResultDPtr = 0;
-        
+
         if (myThread && myThread->pContExecEvent) {
           if (!myGUIProg->ckd.lastException)
             SetLavaException(myGUIProg->ckd, CanceledForm_ex, ERR_CanceledForm);
@@ -763,7 +763,7 @@ void CLavaGUIView::MessToStatusbar()
   }
 }
 
-void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView) 
+void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
 {
   if (myGUIProg) {
     if (bActivate) {
@@ -786,7 +786,7 @@ void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
 }
 
 
-void CLavaGUIView::OnChoosefont() 
+void CLavaGUIView::OnChoosefont()
 {
   if (myGUIProg) {
     myGUIProg->SetFont(&LBaseData->m_FormFont);
@@ -797,7 +797,7 @@ void CLavaGUIView::OnChoosefont()
 
 void CLavaGUIView::setNewLabelFont()
 {
-  if (myGUIProg) 
+  if (myGUIProg)
     myGUIProg->RedrawForm();
 }
 
@@ -835,13 +835,13 @@ void CLavaGUIView::OnEditPaste()
     return;
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
-    if (focw ) 
+    if (focw )
       ((CTEdit*)focw)->paste();
   }
 }
 
 
-void CLavaGUIView::OnUpdateEditPaste(QAction* action) 
+void CLavaGUIView::OnUpdateEditPaste(QAction* action)
 {
   action->setEnabled (myGUIProg && myGUIProg->editNode
                      && (myGUIProg->editNode == myGUIProg->focNode)
@@ -849,7 +849,7 @@ void CLavaGUIView::OnUpdateEditPaste(QAction* action)
                      && clipboard_text_notEmpty);
 }
 
-void CLavaGUIView::OnUpdateEditCut(QAction* action) 
+void CLavaGUIView::OnUpdateEditCut(QAction* action)
 {
   action->setEnabled (myGUIProg && myGUIProg->editNode
                      && (myGUIProg->editNode == myGUIProg->focNode)
@@ -858,12 +858,12 @@ void CLavaGUIView::OnUpdateEditCut(QAction* action)
                      );
 }
 
-void CLavaGUIView::OnUpdateEditCopy(QAction* action) 
+void CLavaGUIView::OnUpdateEditCopy(QAction* action)
 {
   action->setEnabled (myGUIProg && myGUIProg->editNode
                      && (myGUIProg->editNode == myGUIProg->focNode)
                      && ((CTEdit*)myGUIProg->editNode->data.FIP.widget)->hasSelectedText()
                      );
 }
-  
+
 
