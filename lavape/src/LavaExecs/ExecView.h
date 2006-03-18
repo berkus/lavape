@@ -68,7 +68,7 @@ public:
   CProgText *text;
   CLavaPEHint *multHint, *nextHint;
   MiniEdit *editCtl;
-	CComboBar *m_ComboBar;
+        CComboBar *m_ComboBar;
 
   bool editCtlVisible, insertBefore, on_editCutAction_triggered, doubleClick,
        clicked, escapePressed, active, forcePrimTokenSelect, deletePending,
@@ -196,10 +196,10 @@ public:
   void OnEvaluate();
   void OnInputArrow();
   void OnHandle();
-	void OnOptLocalVar();
-	void OnTrue();
-	void OnFalse();
-	void OnOrd();
+        void OnOptLocalVar();
+        void OnTrue();
+        void OnFalse();
+        void OnOrd();
 
 // keyword bar:
   void OnDeclare();
@@ -215,13 +215,13 @@ public:
   void OnTypeSwitch();
   void OnAnd();
   void OnOr();
-	void OnTryStatement();
+        void OnTryStatement();
   void OnXor();
   void OnNot();
   void OnAssert();
-	void OnSucceed();
-	void OnFail();
-	void OnOld();
+        void OnSucceed();
+        void OnFail();
+        void OnOld();
   void OnCall();
   void OnAssign();
   void OnCreateObject();
@@ -229,8 +229,8 @@ public:
   void OnCopy();
   void OnAttach();
   void OnQueryItf();
-	void OnQua();
-	void OnItem();
+        void OnQua();
+        void OnItem();
   void OnConnect();
   void OnDisconnect();
   void OnEmitSignal();
@@ -242,8 +242,8 @@ public:
 //  void OnKillFocus(QWidget* pNewWnd);
   void OnChar(QKeyEvent *e);
 
-	void OnUpdateOrd(QAction* action);
-	void OnUpdateOptLocalVar(QAction* action);
+        void OnUpdateOrd(QAction* action);
+        void OnUpdateOptLocalVar(QAction* action);
   void OnUpdateHandle(QAction* action);
   void OnUpdateInputArrow(QAction* action);
   void OnUpdateEditSel(QAction* action);
@@ -309,11 +309,11 @@ public:
   void OnUpdateDbgClearBreakpoints(QAction* action);
   void OnUpdateDbgStop(QAction* action);
 
-	void OnUpdateTry(QPushButton *pb);
-	void OnUpdateFail(QPushButton *pb);
-	void OnUpdateSucceed(QPushButton *pb);
-	void OnUpdateQua(QPushButton *pb);
-	void OnUpdateItem(QPushButton *pb);
+  void OnUpdateTry(QPushButton *pb);
+  void OnUpdateFail(QPushButton *pb);
+  void OnUpdateSucceed(QPushButton *pb);
+  void OnUpdateQua(QPushButton *pb);
+  void OnUpdateItem(QPushButton *pb);
   void OnUpdateCopy(QPushButton *pb);
   void OnUpdateAssert(QPushButton *pb);
   void OnUpdateCreate(QPushButton *pb);
@@ -363,9 +363,9 @@ class MyScrollView : public QScrollArea {
 public:
   MyScrollView (QWidget *parent);
   ~MyScrollView () {
-	  delete debugStop; 
-	  delete debugStopGreen; 
-		delete breakPoint; 
+    delete debugStop;
+    delete debugStopGreen;
+    delete breakPoint;
   }
 
   CProgText *text;
@@ -373,16 +373,16 @@ public:
   ExecContents *execCont;
 
   Format fmt;
-	int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent, widthOfBlank, contentsWidth, contentsHeight;
-//  QFontMetrics *fm;
-	QPainter *p;
+  int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent,
+  widthOfBlank, contentsWidth, contentsHeight;
+  QPainter *p;
   QPixmap *debugStop, *debugStopGreen, *breakPoint;
   bool inDebugStop, inBreakPoint, innermostStop;
   CHETokenNode *debugStopToken;
   CHETokenNode *callerStopToken;
   StopReason stopReason;
 
-	int calcIndent(CHETokenNode *currentToken);
+  int calcIndent(CHETokenNode *currentToken);
   void keyPressEvent (QKeyEvent *e);
   void focusInEvent(QFocusEvent *ev);
   void contentsMousePressEvent (QMouseEvent *e);
@@ -442,8 +442,6 @@ public:
   CComment(QWidget* parent = 0) : QDialog(parent) {
     setupUi(this);
   }
-
-public slots:
 };
 
 #endif
