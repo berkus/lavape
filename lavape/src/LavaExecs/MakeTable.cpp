@@ -53,20 +53,20 @@
   else if (update == onSelect) { \
     if (synObjectID == ((CSearchData*)searchData)->synObjectID) { \
       if (((CSearchData*)searchData)->debugStop) { \
-        ((CExecView*)((CSearchData*)searchData)->execView)->sv->stopReason = ((CSearchData*)searchData)->stopReason; \
+        ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->stopReason = ((CSearchData*)searchData)->stopReason; \
         if (((CSearchData*)searchData)->innermostStop) \
           if (primaryToken == assignFS_T) \
-            ((CExecView*)((CSearchData*)searchData)->execView)->sv->debugStopToken = startToken; \
+            ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->debugStopToken = startToken; \
           else \
-            ((CExecView*)((CSearchData*)searchData)->execView)->sv->debugStopToken = primaryTokenNode; \
+            ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->debugStopToken = primaryTokenNode; \
         else \
           if (primaryToken == assignFS_T) \
             if (startToken) \
-              ((CExecView*)((CSearchData*)searchData)->execView)->sv->callerStopToken = startToken; \
+              ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->callerStopToken = startToken; \
             else /*new with hidden dft ini call */ \
-              ((CExecView*)((CSearchData*)searchData)->execView)->sv->callerStopToken = parentObject->primaryTokenNode; \
+              ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->callerStopToken = parentObject->primaryTokenNode; \
           else \
-            ((CExecView*)((CSearchData*)searchData)->execView)->sv->callerStopToken = primaryTokenNode; \
+            ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->callerStopToken = primaryTokenNode; \
         ((CExecView*)((CSearchData*)searchData)->execView)->autoScroll = true; \
         ((CExecView*)((CSearchData*)searchData)->execView)->sv->viewport()->update(); \
       } \

@@ -355,23 +355,15 @@ struct Format {
 
 class ExecContents : public QWidget {
 public:
-  CExecView *execView;
-  ExecContents () {};
-};
-
-class MyScrollView : public QScrollArea {
-public:
-  MyScrollView (QWidget *parent);
-  ~MyScrollView () {
+  ExecContents (MyScrollView *sv);
+  ~ExecContents () {
     delete debugStop;
     delete debugStopGreen;
     delete breakPoint;
   }
 
-  CProgText *text;
   CExecView *execView;
-  ExecContents *execCont;
-
+	MyScrollView *sv;
   Format fmt;
   int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent,
   widthOfBlank, contentsWidth, contentsHeight;
@@ -382,14 +374,24 @@ public:
   CHETokenNode *callerStopToken;
   StopReason stopReason;
 
+  void paintEvent (QPaintEvent *ev);
+  void DrawToken (CProgText *text, CHETokenNode *tNode, bool inSelection);
+  void SetTokenFormat (CHETokenNode *currToken);
   int calcIndent(CHETokenNode *currentToken);
+};
+
+class MyScrollView : public QScrollArea {
+public:
+  MyScrollView (QWidget *parent);
+
+  CProgText *text;
+  CExecView *execView;
+  ExecContents *execCont;
+
   void keyPressEvent (QKeyEvent *e);
   void focusInEvent(QFocusEvent *ev);
   void contentsMousePressEvent (QMouseEvent *e);
   void contentsMouseDoubleClickEvent (QMouseEvent *e);
-  void drawContents (QPainter *p, int clipx, int clipy, int clipw, int cliph);
-  void SetTokenFormat (CHETokenNode *currToken);
-  void DrawToken (CProgText *text, CHETokenNode *tNode, bool inSelection);
 };
 
 enum VarConstCheck {

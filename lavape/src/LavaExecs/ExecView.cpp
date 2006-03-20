@@ -139,7 +139,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
 CExecView::~CExecView()
 {
   setFocusProxy(0);
-  if (sv->debugStopToken)
+  if (sv->execCont->debugStopToken)
     lastDebugStopExec = 0;
   OnCloseExec();
   delete text;
@@ -227,8 +227,8 @@ void CExecView::OnInitialUpdate()
   QString family = fi.family();
   int ptSize = fi.pointSize();
   QFontMetrics fm(redCtl->fontMetrics());
-  sv->widthOfBlank = fm.width(" ");
-  sv->widthOfIndent = fm.width("nn");
+  sv->execCont->widthOfBlank = fm.width(" ");
+  sv->execCont->widthOfIndent = fm.width("nn");
   text->showComments = myDECL->TreeFlags.Contains(ShowExecComments);
   text->ignored = false;
   if (myDECL->TreeFlags.Contains(leftArrows))
@@ -260,7 +260,7 @@ void CExecView::OnInitialUpdate()
   initialUpdateDone = true;
 }
 
-void MyScrollView::SetTokenFormat (CHETokenNode *currToken) {
+void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
   TToken token = currToken->data.token;
 
   fmt.bold = false;
@@ -349,7 +349,7 @@ void MyScrollView::SetTokenFormat (CHETokenNode *currToken) {
   }
 }
 
-int MyScrollView::calcIndent (CHETokenNode *currentToken) {
+int ExecContents::calcIndent (CHETokenNode *currentToken) {
   SynObject *ancestor=currentToken->data.synObject;
         unsigned ind;
 
@@ -363,7 +363,7 @@ int MyScrollView::calcIndent (CHETokenNode *currentToken) {
         return ind;
 }
 
-void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool inSelection) {
+void ExecContents::DrawToken (CProgText *text, CHETokenNode *currentToken, bool inSelection) {
   int width, lineWidth=0, oldCW=contentsWidth, oldCH=contentsHeight;
   QPen currentPen;
   QColor currentColor;
@@ -487,8 +487,10 @@ void MyScrollView::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
 
 typedef Q3ValueList<int> BreakPointList;
 
-void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, int cliph)
+void ExecContents::paintEvent (QPaintEvent *ev)
 {
+  QPainter p(this);
+
   CHETokenNode *currentToken;
   bool inSelection=false, debugStopOccurred=false;
 //  QRect vr=visibleRect(), vr_vpt=viewport()->visibleRect(), gmt=viewport()->geometry(), cr=childrenRect();
@@ -499,14 +501,13 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
 
         if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
                 return;
-  p = pt;
-  p->setBackgroundMode(Qt::OpaqueMode);
+  p.setBackgroundMode(Qt::OpaqueMode);
 
-  viewport()->setUpdatesEnabled(false);
+//  viewport()->setUpdatesEnabled(false);
 
   contentsWidth = 0;
   contentsHeight = 0;
-  p->eraseRect(0,0,contentsWidth,contentsHeight);
+  p.eraseRect(0,0,contentsWidth,contentsHeight);
   fmt.font = font();
   fm = new QFontMetrics(fontMetrics());//fmp;
   QFontInfo fi(fmt.font);
@@ -515,7 +516,7 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
   currentX = LEFTMARGIN;
   currentY = fm->ascent();
 
-  for (currentToken = (CHETokenNode*)text->tokenChain.first;
+  for (currentToken = (CHETokenNode*)execView->text->tokenChain.first;
        currentToken;
        currentToken = (CHETokenNode*)currentToken->successor) {
 
@@ -523,7 +524,7 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
     inBreakPoint = false;
 
     if (currentToken->data.flags.Contains(insertBlank)) {
-      p->drawText(currentX,currentY," ",0,-1);
+      p.drawText(currentX,currentY," ",0,-1);
       currentX += widthOfBlank;
     }
 
@@ -533,9 +534,9 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
     if (currentToken == debugStopToken || currentToken == callerStopToken) {
       inDebugStop = true;
       if (innermostStop && (stopReason == Stop_StepOut))
-        p->setBackground(QBrush(QColor(180,180,255)));
+        p.setBackground(QBrush(QColor(180,180,255)));
       else
-        p->setBackground(QBrush(QColor(255,255,0)));
+        p.setBackground(QBrush(QColor(255,255,0)));
     }
     if (currentToken->data.synObject->workFlags.Contains(isBrkPnt)
     && (currentToken->data.flags.Contains(primToken)
@@ -543,21 +544,21 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
         || currentToken->data.token == if_T)) {
       inBreakPoint = true;
       if (!inDebugStop) {
-        p->setBackground(QBrush(QColor(255,150,150)));
+        p.setBackground(QBrush(QColor(255,150,150)));
       }
     }
     else if (currentToken->data.token == if_T
     && currentToken->data.synObject->parentObject->workFlags.Contains(isBrkPnt)) {
       inBreakPoint = true;
       if (!inDebugStop) {
-        p->setBackground(QBrush(QColor(255,130,180)));
+        p.setBackground(QBrush(QColor(255,130,180)));
       }
     }
     else if (inSelection && !inDebugStop) {
-      p->setBackground(QBrush(Qt::black));
+      p.setBackground(QBrush(Qt::black));
     }
 
-    DrawToken(text,currentToken,inSelection);
+    DrawToken(execView->text,currentToken,inSelection);
 
     if (inBreakPoint)
       bpl.append(breakPointY);
@@ -567,13 +568,13 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
       if (inSelection)
         if (currentToken == execView->selEndPos) {
           inSelection = false;
-          p->setBackground(QBrush(Qt::white));
+          p.setBackground(QBrush(Qt::white));
         }
         else {
-          p->setBackground(QBrush(Qt::black));
+          p.setBackground(QBrush(Qt::black));
         }
       else {
-        p->setBackground(QBrush(Qt::white));
+        p.setBackground(QBrush(Qt::white));
       }
     }
     else if (inBreakPoint) {
@@ -581,49 +582,49 @@ void MyScrollView::drawContents (QPainter *pt, int clipx, int clipy, int clipw, 
       if (inSelection)
         if (currentToken == execView->selEndPos) {
           inSelection = false;
-          p->setBackground(QBrush(Qt::white));
+          p.setBackground(QBrush(Qt::white));
         }
         else {
-          p->setBackground(QBrush(Qt::black));
+          p.setBackground(QBrush(Qt::black));
         }
       else {
-        p->setBackground(QBrush(Qt::white));
+        p.setBackground(QBrush(Qt::white));
       }
     }
     else if (inSelection)
       if (currentToken == execView->selEndPos) {
         inSelection = false;
-        p->setBackground(QBrush(Qt::white));
+        p.setBackground(QBrush(Qt::white));
       }
   }
 
-  p->setBrush(QColor(210,210,210));
-  p->setPen(myPen);
-  p->drawRect(0,0,15,contentsHeight>=viewport()->height()?contentsHeight:viewport()->height());
+  p.setBrush(QColor(210,210,210));
+  p.setPen(myPen);
+  p.drawRect(0,0,15,contentsHeight>=sv->viewport()->height()?contentsHeight:sv->viewport()->height());
 
   for ( it = bpl.begin(); it != bpl.end(); ++it )
-   p->drawPixmap(0,*it+(fm->ascent()>14?fm->ascent()-14:0),*breakPoint);
+   p.drawPixmap(0,*it+(fm->ascent()>14?fm->ascent()-14:0),*breakPoint);
 
   if (debugStopToken)
-    p->drawPixmap(0,debugStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStop);
+    p.drawPixmap(0,debugStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStop);
   if (callerStopToken)
-    p->drawPixmap(0,callerStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStopGreen);
+    p.drawPixmap(0,callerStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStopGreen);
 
-  viewport()->setUpdatesEnabled(true);
+  sv->viewport()->setUpdatesEnabled(true);
 
   if (execView->makeSelectionVisible) {
     execView->makeSelectionVisible = false;
     if (execView->autoScroll) {
-      ensureVisible(execView->selStartPos->data.rect.left(),execView->selStartPos->data.rect.top(),50,50);
+      sv->ensureVisible(execView->selStartPos->data.rect.left(),execView->selStartPos->data.rect.top(),50,50);
       execView->autoScroll = false;
     }
   }
   else if (debugStopToken && execView->autoScroll) {
-    ensureVisible(debugStopToken->data.rect.left(),debugStopToken->data.rect.top(),50,50);
+    sv->ensureVisible(debugStopToken->data.rect.left(),debugStopToken->data.rect.top(),50,50);
     execView->autoScroll = false;
   }
   else if (callerStopToken && execView->autoScroll) {
-    ensureVisible(callerStopToken->data.rect.left(),callerStopToken->data.rect.top(),50,50);
+    sv->ensureVisible(callerStopToken->data.rect.left(),callerStopToken->data.rect.top(),50,50);
     execView->autoScroll = false;
   }
   delete fm;
@@ -1197,14 +1198,19 @@ void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
 
 MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
   execView = (CExecView*)parent;
-  execCont = new ExecContents;
+  execCont = new ExecContents(this);
   setWidget(execCont);
-  debugStop = new QPixmap((const char**)debugStop_xpm);
-  debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
-  breakPoint = new QPixmap((const char**)breakPoint_xpm);
-  debugStopToken = 0;
-  callerStopToken = 0;
 }
+
+ExecContents::ExecContents (MyScrollView *sv) {
+		this->sv = sv;
+    debugStop = new QPixmap((const char**)debugStop_xpm);
+    debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
+    breakPoint = new QPixmap((const char**)breakPoint_xpm);
+    debugStopToken = 0;
+    callerStopToken = 0;
+}
+
 
 void CExecView::OnLButtonDown(QMouseEvent *e)
 {
@@ -1904,7 +1910,7 @@ exp: // Const_T
     editCtl->setFixedWidth(text->currentSelection->data.rect.width()+2*editCtl->frameWidth()+10);
     editCtl->setFixedHeight(text->currentSelection->data.rect.height()+2*editCtl->frameWidth());
     int r=text->currentSelection->data.rect.right();
-    sv->contentsWidth = QMAX(sv->contentsWidth,r);
+    sv->execCont->contentsWidth = QMAX(sv->execCont->contentsWidth,r);
     editCtl->setCursorPosition(str.length());
     editCtl->setFocus();
     editCtl->show();
@@ -2571,7 +2577,7 @@ void CExecView::OnConst()
   editCtl->setFixedWidth(fom.width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
   editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());
   int r=text->currentSelection->data.rect.right();
-  sv->contentsWidth = QMAX(sv->contentsWidth,r);
+  sv->execCont->contentsWidth = QMAX(sv->execCont->contentsWidth,r);
   editCtl->setFocus();
   editCtl->show();
   editCtl->selectAll();

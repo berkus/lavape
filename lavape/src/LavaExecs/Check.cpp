@@ -384,7 +384,7 @@ QString *RefTable::findMatchingAccess (
     else if (((CRefEntry*)chp->data)->IsEndBranchStm()) {
       if (chp->predecessor && ((CRefEntry*)((CHE*)chp->predecessor)->data)->IsFailSucceed())
         totalBranches--;
-        
+
       while (chp->predecessor && ((CRefEntry*)((CHE*)chp->predecessor)->data)->IsFailSucceed())
         chp = ((CBranch*)chp->data)->precedingBranch;
 
@@ -743,7 +743,7 @@ bool slotFunction(CheckData &ckd, LavaDECL *callbackDecl, const CContext &callba
   }
   chSlot = GetFirstInput(callbackDecl);
   chSignal = GetFirstInput(signalDecl);
-  while (chSlot && chSignal 
+  while (chSlot && chSignal
         && (((LavaDECL*)chSlot->data)->DeclType == IAttr)
         && (((LavaDECL*)chSignal->data)->DeclType == IAttr)) {
     ckd.tempCtx = callbackCtx;
@@ -764,9 +764,9 @@ bool slotFunction(CheckData &ckd, LavaDECL *callbackDecl, const CContext &callba
     chSlot = (CHE*)chSlot->successor;
     chSignal = (CHE*)chSignal->successor;
     iArg++;
-    if (chSlot && ((LavaDECL*)chSlot->data)->DeclType != IAttr) 
+    if (chSlot && ((LavaDECL*)chSlot->data)->DeclType != IAttr)
       chSlot = 0;
-    if (chSignal && ((LavaDECL*)chSignal->data)->DeclType != IAttr) 
+    if (chSignal && ((LavaDECL*)chSignal->data)->DeclType != IAttr)
       chSignal = 0;
   }
   if (chSignal) {
@@ -4324,7 +4324,7 @@ bool FuncExpression::Check (CheckData &ckd)
       && !opd->IsDefChecked(ckd)) {
         ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
         ok = false;
-      } 
+      }
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
       ckd.tempCtx = callContext;
@@ -4418,7 +4418,7 @@ bool FuncStatement::Check (CheckData &ckd)
         && !opd->IsOptional(ckd)) {
           ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
           ok = false;
-        } 
+        }
 #ifdef INTERPRETER
         targetObj = (SynObject*)((Parameter*)chpActOut->data)->parameter.ptr;
         targetObj->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
@@ -6704,7 +6704,7 @@ unsigned InvarData::PrepareInvariants(CheckData &ckd, SelfVar *selfVar) {
       hasOrInheritsInvariants = true;
     }
   }
-  else { // Impl 
+  else { // Impl
     if (itfDECL->NestedDecls.last
       && ((LavaDECL*)((CHE*)itfDECL->NestedDecls.last)->data)->DeclType == ExecDef) {
       invariantDECLimpl = (LavaDECL*)((CHE*)itfDECL->NestedDecls.last)->data;

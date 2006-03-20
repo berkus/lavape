@@ -36,7 +36,7 @@ private:
 
 enum TIType {
   TIType_DECL,         // LavaDECL node
-  TIType_CHEEnumSel,   // enum item node 
+  TIType_CHEEnumSel,   // enum item node
   TIType_EnumItems,    // enum items node    //this is not a node in syntax
   TIType_VTypes,       // virtual type node  //this is not a node in syntax
   TIType_Input,        // input node         //this is not a node in syntax
@@ -45,7 +45,7 @@ enum TIType {
   TIType_Features,     // local member node  //this is not a node in syntax
   TIType_Require,
   TIType_Ensure,
-  TIType_Exec,   // invariant/exec node     
+  TIType_Exec,   // invariant/exec node
   TIType_Refac,        // only used as return value
   TIType_NoType
 };
@@ -93,7 +93,7 @@ class CLavaPEView : public CTreeView
 {
 public:
   CLavaPEView(QWidget* parent, wxDocument* doc);
-  VIEWFACTORY(CLavaPEView)
+  VIEWFACTORY(CLavaPEView);
   virtual ~CLavaPEView();
   void CleanListView();
 
@@ -171,13 +171,13 @@ public:
   void OnDragOver(QDragMoveEvent* ev);
   virtual void OnDrop(QDropEvent* ev);
   void OnDropPost(void* act);
-  void OnEditSelItem(CTreeItem* item, bool clickedOnIcon); 
+  void OnEditSelItem(CTreeItem* item, bool clickedOnIcon);
   void OnGenHtmlI();
   virtual void OnInitialUpdate(); // called first time after construct
   bool OnInsert(TDeclType eType, LavaDECL* iDECL = NULL);
   void OnNextEC(CTreeItem* itemStart, bool onErr);
   void OnPrevEC(CTreeItem* itemStart, bool onErr);
-  void OnShowSpecialView(TDeclType exprType); 
+  void OnShowSpecialView(TDeclType exprType);
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
   virtual void OnVkreturn();
   bool PutEC(CTreeItem* item, bool onErr);
@@ -231,7 +231,7 @@ protected:
   //void OnUpdateDefaultForm(QAction* action);
 
 public:
-//Toolbutton/menu item handler  
+//Toolbutton/menu item handler
   void OnCollapsAll();//
   void OnComment();//
   virtual void OnDelete();//
@@ -271,7 +271,7 @@ public:
   void OnShowOverridables();//
 //  void OnShowPattern();
 
-public slots: 
+public slots:
   void OnDblclk(Q3ListViewItem* onItem, const QPoint&, int);
   void OnSelchanged();
   void OnRclick(Q3ListViewItem* item);

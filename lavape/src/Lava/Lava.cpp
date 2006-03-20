@@ -64,7 +64,7 @@ static char slash='/';
 // CLavaApp
 
 
-int main( int argc, char ** argv ) {
+int main( int argc, char ** argv ) {xxx
 //  QApplication::setStyle(new MyWindowsStyle);
   CLavaApp ap(argc,argv);
   QString componentPath;

@@ -350,9 +350,9 @@ void CUtilityView::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
           else
             view = 0;
         }
-        if (view && (((CExecView*)view)->sv->debugStopToken || ((CExecView*)view)->sv->callerStopToken) ) {
-          ((CExecView*)view)->sv->debugStopToken = 0;
-          ((CExecView*)view)->sv->callerStopToken = 0;
+        if (view && (((CExecView*)view)->sv->execCont->debugStopToken || ((CExecView*)view)->sv->execCont->callerStopToken) ) {
+          ((CExecView*)view)->sv->execCont->debugStopToken = 0;
+          ((CExecView*)view)->sv->execCont->callerStopToken = 0;
           ((CExecView*)view)->sv->viewport()->update();
         }
       }
@@ -429,11 +429,11 @@ void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
               sData.finished = false;
               ((SynObjectBase*)stopExecDECL->Exec.ptr)->MakeTable((address)&stopDoc->IDTable, 0, (SynObjectBase*)stopExecDECL, onSelect, 0,0, (address)&sData);
               ((CExecView*)sData.execView)->sv->viewport()->update();
-              ((CExecView*)sData.execView)->sv->innermostStop = sData.innermostStop;
+              ((CExecView*)sData.execView)->sv->execCont->innermostStop = sData.innermostStop;
             }
             else 
-              if (((CExecView*)sData.execView)->sv->callerStopToken) {
-                ((CExecView*)sData.execView)->sv->callerStopToken = 0;
+              if (((CExecView*)sData.execView)->sv->execCont->callerStopToken) {
+                ((CExecView*)sData.execView)->sv->execCont->callerStopToken = 0;
                 ((CExecView*)sData.execView)->sv->viewport()->update();
               }
           }
