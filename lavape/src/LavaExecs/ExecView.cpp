@@ -133,13 +133,13 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   Base = 0;
   myDoc = 0;
   new ExecWhatsThis(this);
-  sv->execCont->update();
+  redCtl->update();
 }
 
 CExecView::~CExecView()
 {
   setFocusProxy(0);
-  if (sv->execCont->debugStopToken)
+  if (redCtl->debugStopToken)
     lastDebugStopExec = 0;
   OnCloseExec();
   delete text;
@@ -227,8 +227,8 @@ void CExecView::OnInitialUpdate()
   QString family = fi.family();
   int ptSize = fi.pointSize();
   QFontMetrics fm(redCtl->fontMetrics());
-  sv->execCont->widthOfBlank = fm.width(" ");
-  sv->execCont->widthOfIndent = fm.width("nn");
+  redCtl->widthOfBlank = fm.width(" ");
+  redCtl->widthOfIndent = fm.width("nn");
   text->showComments = myDECL->TreeFlags.Contains(ShowExecComments);
   text->ignored = false;
   if (myDECL->TreeFlags.Contains(leftArrows))
@@ -363,7 +363,7 @@ int ExecContents::calcIndent (CHETokenNode *currentToken) {
         return ind;
 }
 
-void ExecContents::DrawToken (CProgText *text, CHETokenNode *currentToken, bool inSelection) {
+void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *currentToken, bool inSelection) {
   int width, lineWidth=0, oldCW=contentsWidth, oldCH=contentsHeight;
   QPen currentPen;
   QColor currentColor;
@@ -382,11 +382,11 @@ void ExecContents::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
     g = 255 - g;
     b = 255 - b;
     currentColor.setRgb(r,g,b);
-    p->setPen(currentColor);
-    p->setBackground(QBrush(Qt::black));
+    p.setPen(currentColor);
+    p.setBackground(QBrush(Qt::black));
   }
   else
-    p->setPen(fmt.color);
+    p.setPen(fmt.color);
 
   if (fmt.bold)
     fmt.font.setBold(true);
@@ -397,16 +397,16 @@ void ExecContents::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
   else
     fmt.font.setItalic(false);
 
-  p->setFont(fmt.font);
+  p.setFont(fmt.font);
   QFontInfo fi(fmt.font);
   QString family = fi.family();
   int ptSize = fi.pointSize();
-  fm = new QFontMetrics(p->fontMetrics());
+  fm = new QFontMetrics(p.fontMetrics());
 
-        if (currentToken == ancestor->startToken)
-                ancestor->startPos = -1;
+  if (currentToken == ancestor->startToken)
+          ancestor->startPos = -1;
 
-        if (currentToken->data.newLines) {
+  if (currentToken->data.newLines) {
     currentY += currentToken->data.newLines*fm->height();
 
     if (currentToken == currentToken->data.synObject->startToken)
@@ -423,15 +423,15 @@ void ExecContents::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
   if (inBreakPoint)
     breakPointY = currentY-fm->ascent();
 
-        if (currentToken == currentToken->data.synObject->startToken)
-                while (ancestor && ancestor->startPos == -1) {
-                        if (currentToken->data.token != Comment_T
-                                        || ((TComment*)currentToken->data.synObject->comment.ptr)->trailing
-                                        || !((TComment*)currentToken->data.synObject->comment.ptr)->inLine
-                                        || ancestor != currentToken->data.synObject)
-                        ancestor->startPos = currentX;
-                        ancestor = ancestor->parentObject;
-                }
+  if (currentToken == currentToken->data.synObject->startToken)
+    while (ancestor && ancestor->startPos == -1) {
+      if (currentToken->data.token != Comment_T
+      || ((TComment*)currentToken->data.synObject->comment.ptr)->trailing
+      || !((TComment*)currentToken->data.synObject->comment.ptr)->inLine
+      || ancestor != currentToken->data.synObject)
+        ancestor->startPos = currentX;
+      ancestor = ancestor->parentObject;
+    }
 
   if (currentToken->data.token == Comment_T) {
     startY = currentY-fm->ascent();
@@ -450,7 +450,7 @@ void ExecContents::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
       if (nl_pos == -1) {
         line = currentToken->data.str.mid(old_nl_pos+1);
         if (line.length()) {
-          p->drawText(currentX,currentY,line,0,-1);
+          p.drawText(currentX,currentY,line,0,-1);
           lineWidth=fm->width(line);
           contentsWidth = QMAX(contentsWidth,currentX+lineWidth);
           cmtWidth = QMAX(cmtWidth,lineWidth);
@@ -461,7 +461,7 @@ void ExecContents::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
       else {
         line = currentToken->data.str.mid(old_nl_pos+1,nl_pos - old_nl_pos - 1);
         if (line.length()) {
-          p->drawText(currentX,currentY,line,0,-1);
+          p.drawText(currentX,currentY,line,0,-1);
           lineWidth=fm->width(line);
           contentsWidth = QMAX(contentsWidth,currentX+lineWidth);
           cmtWidth = QMAX(cmtWidth,lineWidth);
@@ -473,16 +473,16 @@ void ExecContents::DrawToken (CProgText *text, CHETokenNode *currentToken, bool 
   }
 
   else { // no comment token
-    p->drawText(currentX,currentY,currentToken->data.str,0,-1);
+    p.drawText(currentX,currentY,currentToken->data.str,0,-1);
     width=fm->width(currentToken->data.str);
     currentToken->data.rect.setRect(currentX,currentY-fm->ascent(),width,fm->height());
     currentX += width;
     contentsWidth = QMAX(contentsWidth,currentX);
     contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
   }
-  if (contentsWidth > oldCW || contentsHeight > oldCH)
-    resize(contentsWidth,contentsHeight);
-        delete fm;
+//  if (contentsWidth > oldCW || contentsHeight > oldCH)
+//    resize(contentsWidth,contentsHeight);
+  delete fm;
 }
 
 typedef Q3ValueList<int> BreakPointList;
@@ -499,8 +499,8 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   BreakPointList bpl;
   BreakPointList::iterator it;
 
-        if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
-                return;
+  if (!execView || !execView->myDoc || !execView->myDoc->mySynDef)
+    return;
   p.setBackgroundMode(Qt::OpaqueMode);
 
 //  viewport()->setUpdatesEnabled(false);
@@ -558,7 +558,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
       p.setBackground(QBrush(Qt::black));
     }
 
-    DrawToken(execView->text,currentToken,inSelection);
+    DrawToken(p,execView->text,currentToken,inSelection);
 
     if (inBreakPoint)
       bpl.append(breakPointY);
@@ -610,7 +610,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   if (callerStopToken)
     p.drawPixmap(0,callerStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStopGreen);
 
-  sv->viewport()->setUpdatesEnabled(true);
+//  sv->viewport()->setUpdatesEnabled(true);
 
   if (execView->makeSelectionVisible) {
     execView->makeSelectionVisible = false;
@@ -628,6 +628,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     execView->autoScroll = false;
   }
   delete fm;
+  resize(contentsWidth,contentsHeight);
 }
 
 void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
@@ -1203,12 +1204,14 @@ MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
 }
 
 ExecContents::ExecContents (MyScrollView *sv) {
-		this->sv = sv;
-    debugStop = new QPixmap((const char**)debugStop_xpm);
-    debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
-    breakPoint = new QPixmap((const char**)breakPoint_xpm);
-    debugStopToken = 0;
-    callerStopToken = 0;
+	this->sv = sv;
+  execView = sv->execView;
+  debugStop = new QPixmap((const char**)debugStop_xpm);
+  debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
+  breakPoint = new QPixmap((const char**)breakPoint_xpm);
+  debugStopToken = 0;
+  callerStopToken = 0;
+  resize(100,100);
 }
 
 
@@ -1234,7 +1237,7 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
       doubleClick = true;
     }
     Select();
-    sv->viewport()->update();
+//    sv->viewport()->update();
   }
   doubleClick = false;
   clicked = false;
@@ -1323,7 +1326,7 @@ void CExecView::Select (SynObject *selObj)
   inForeach = ocUpd.inForeach;
 
   SetHelpText();
-  sv->viewport()->update();
+//  sv->viewport()->update();
 
   if (text->currentSelection->data.token == Comment_T) {
     if (!EditOK() || !clicked) return;
@@ -1371,7 +1374,7 @@ void CExecView::Select (SynObject *selObj)
       doubleClick = false;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       OnGotoDecl();
-      sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
 
@@ -1381,7 +1384,7 @@ void CExecView::Select (SynObject *selObj)
     && text->currentSynObj->parentObject->whereInParent
        == (address)&((NewExpression*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newCombo);
-      sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
 
@@ -1458,7 +1461,7 @@ void CExecView::Select (SynObject *selObj)
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowBaseInis(tid);
         else
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-        sv->viewport()->update();
+//        sv->viewport()->update();
         return;
       }
       if (callExpr) {
@@ -1559,7 +1562,7 @@ disconn:
       }
     }
 
-    sv->viewport()->update();
+//    sv->viewport()->update();
     return;
 
   case nil_T:
@@ -1590,7 +1593,7 @@ obj:
           if (decl->TypeFlags.Contains(substitutable))
             text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,finalDecl,text->ckd.tempCtx,cat,false);
-          sv->viewport()->update();
+//          sv->viewport()->update();
           return;
         }
       }
@@ -1602,7 +1605,7 @@ obj:
         if (ctxFlags.bits)
           text->ckd.tempCtx.ContextFlags = ctxFlags;
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,false);
-        sv->viewport()->update();
+//        sv->viewport()->update();
         return;
       }
     }
@@ -1618,7 +1621,7 @@ obj:
       }
     }*/
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objCombo);
-    sv->viewport()->update();
+//    sv->viewport()->update();
     return;
 
   case Exp_T:
@@ -1733,21 +1736,21 @@ exp: // Const_T
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
     if (text->currentSelection->data.token == true_T
     || text->currentSelection->data.token == false_T) {
-      sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
     break;
 
   case SetPH_T:
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetEnumCombo);
-    sv->viewport()->update();
+//    sv->viewport()->update();
     return;
 
   case TDOD_T:
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
       OnGotoDecl();
-      sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
     objRef = (ObjReference*)text->currentSynObj->parentObject;
@@ -1780,7 +1783,7 @@ exp: // Const_T
       }
     }
     doubleClick = false;
-    sv->viewport()->update();
+//    sv->viewport()->update();
     return;
 
   case TypePH_T:
@@ -1788,7 +1791,7 @@ exp: // Const_T
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
       OnGotoDecl();
-      sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
     if (text->currentSelection->data.token == TypeRef_T
@@ -1820,7 +1823,7 @@ exp: // Const_T
     else
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(typeCombo);
     doubleClick = false;
-    sv->viewport()->update();
+//    sv->viewport()->update();
     return;
 
   case CrtblPH_T:
@@ -1830,7 +1833,7 @@ exp: // Const_T
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
       OnGotoDecl();
-      sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
     if (text->currentSynObj->parentObject->primaryToken == attach_T)
@@ -1845,7 +1848,7 @@ exp: // Const_T
     else // "call" statement
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(callCombo);
     doubleClick = false;
-    sv->viewport()->update();
+//    sv->viewport()->update();
     return;
 
   case VarPH_T:
@@ -1885,12 +1888,12 @@ exp: // Const_T
     if (text->currentSynObj->replacedType == Exp_T)
       goto exp;
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-    sv->viewport()->update();
+//    sv->viewport()->update();
     return;
   }
 
   if (!doubleClick) {
-    sv->viewport()->update();
+//    sv->viewport()->update();
     return;
   }
 
@@ -1903,14 +1906,14 @@ exp: // Const_T
     OnConst();
   else {
     if (!editCtl)
-      editCtl = new MiniEdit(sv->execCont);
+      editCtl = new MiniEdit(redCtl);
 //???    sv->addChild(editCtl,text->currentSelection->data.rect.left()-editCtl->frameWidth(),text->currentSelection->data.rect.top()-editCtl->frameWidth());
     editCtl->setFont(sv->viewport()->font());
     editCtl->setText(str);
     editCtl->setFixedWidth(text->currentSelection->data.rect.width()+2*editCtl->frameWidth()+10);
     editCtl->setFixedHeight(text->currentSelection->data.rect.height()+2*editCtl->frameWidth());
     int r=text->currentSelection->data.rect.right();
-    sv->execCont->contentsWidth = QMAX(sv->execCont->contentsWidth,r);
+    redCtl->contentsWidth = QMAX(redCtl->contentsWidth,r);
     editCtl->setCursorPosition(str.length());
     editCtl->setFocus();
     editCtl->show();
@@ -1989,6 +1992,7 @@ void CExecView::RedrawExec(SynObject *selectAt)
   text->tokenChain.Destroy();
   text->INIT();
   replacedObj = 0;
+  redCtl->setUpdatesEnabled(false);
   if (myDECL->TreeFlags.Contains(leftArrows))
     text->leftArrows = true;
   else
@@ -2010,8 +2014,9 @@ void CExecView::RedrawExec(SynObject *selectAt)
   if (execReplaced)
     execReplaced = false;
 
-  sv->viewport()->update();
-//  sv->update();
+//  sv->viewport()->update();
+  redCtl->setUpdatesEnabled(true);
+  redCtl->update();
 //      GetParentFrame()->update();
 }
 
@@ -2577,7 +2582,7 @@ void CExecView::OnConst()
   editCtl->setFixedWidth(fom.width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
   editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());
   int r=text->currentSelection->data.rect.right();
-  sv->execCont->contentsWidth = QMAX(sv->execCont->contentsWidth,r);
+  redCtl->contentsWidth = QMAX(redCtl->contentsWidth,r);
   editCtl->setFocus();
   editCtl->show();
   editCtl->selectAll();
@@ -5006,7 +5011,7 @@ void CExecView::OnNextComment()
       text->newSelection = currToken;
       text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-                        sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
   }
@@ -5018,7 +5023,7 @@ void CExecView::OnNextComment()
       text->newSelection = currToken;
       text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-                        sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
   }
@@ -5036,7 +5041,7 @@ void CExecView::OnPrevComment()
       text->newSelection = currToken;
       text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-                        sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
   }
@@ -5048,7 +5053,7 @@ void CExecView::OnPrevComment()
       text->newSelection = currToken;
       text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-                        sv->viewport()->update();
+//      sv->viewport()->update();
       return;
     }
   }

@@ -367,7 +367,6 @@ public:
   Format fmt;
   int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent,
   widthOfBlank, contentsWidth, contentsHeight;
-  QPainter *p;
   QPixmap *debugStop, *debugStopGreen, *breakPoint;
   bool inDebugStop, inBreakPoint, innermostStop;
   CHETokenNode *debugStopToken;
@@ -375,7 +374,7 @@ public:
   StopReason stopReason;
 
   void paintEvent (QPaintEvent *ev);
-  void DrawToken (CProgText *text, CHETokenNode *tNode, bool inSelection);
+  void DrawToken (QPainter &p,CProgText *text,CHETokenNode *tNode,bool inSelection);
   void SetTokenFormat (CHETokenNode *currToken);
   int calcIndent(CHETokenNode *currentToken);
 };
