@@ -19,11 +19,6 @@
 /* This file has been taken over from www.wxwidgets.org
    and adapted to the needs of LavaPE */
 
-/*
-#ifdef __GNUC__
-#pragma implementation "wx_obj.h"
-#endif
-*/
 
 /*
  * File:  wb_obj.cc
@@ -41,15 +36,13 @@
 // For compilers that support precompilation, includes "wx.h".
 //#include "wx_prec.h"
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
 
 #include "wx_obj.h"
 #include "string.h"
 #include "qstring.h"
 #include "qapplication.h"
 #include "qhash.h"
+#pragma hdrstop
 
 
 // Hand-coded IMPLEMENT... macro for wxObject (define static data)

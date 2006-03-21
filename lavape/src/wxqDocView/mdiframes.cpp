@@ -344,15 +344,15 @@ void wxMDIChildFrame::SetTitle(QString &title)
 bool wxMDIChildFrame::event(QEvent * e )
 {
   switch (e->type()) {
-        case Qt::WindowNoState:
-                oldWindowState = Qt::WindowNoState;
-                wxTheApp->isChMaximized = false;
+  case Qt::WindowNoState:
+    oldWindowState = Qt::WindowNoState;
+    wxTheApp->isChMaximized = false;
     break;
-        case Qt::WindowMaximized:
-                oldWindowState = Qt::WindowMaximized;
-                wxTheApp->isChMaximized = true;
+  case Qt::WindowMaximized:
+    oldWindowState = Qt::WindowMaximized;
+    wxTheApp->isChMaximized = true;
     break;
-        default: ;
+  default: ;
   }
   return QWidget::event(e);
 }
@@ -369,11 +369,11 @@ void wxMDIChildFrame::RemoveView(wxView *view)
 
 wxMDIChildFrame::~wxMDIChildFrame()
 {
-        QString title;
+  QString title;
 
-        title = caption();
+  title = caption();
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
-                title = title.left(title.length()-1);
+    title = title.left(title.length()-1);
   deleting = true;
-        wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
+  wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
 }

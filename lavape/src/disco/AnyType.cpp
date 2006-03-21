@@ -16,13 +16,9 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-/*
-#ifdef __GNUC__
-#pragma implementation
-#endif
-*/
 
 #include "AnyType.h"
+#pragma hdrstop
 
 AnyType* AnyType::Clone () {
   AnyType *result;

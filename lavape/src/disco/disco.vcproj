@@ -219,6 +219,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -241,6 +244,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -263,6 +269,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -285,6 +294,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -307,6 +319,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -329,6 +344,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -351,6 +369,34 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ChString.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -373,6 +419,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -395,6 +444,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -417,6 +469,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -430,6 +485,20 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\disco_all.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="DString.cpp"
 				>
 				<FileConfiguration
@@ -439,6 +508,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -461,6 +533,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -483,6 +558,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -505,6 +583,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -527,6 +608,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -549,6 +633,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -571,6 +658,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -593,6 +683,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -615,6 +708,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -637,6 +733,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -659,6 +758,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -681,6 +783,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -703,6 +808,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -725,6 +833,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="0"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -738,6 +849,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="UNIX.h"
+				>
+			</File>
+			<File
 				RelativePath="wb_obj.cpp"
 				>
 				<FileConfiguration
@@ -747,6 +862,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -791,28 +909,6 @@
 			<File
 				RelativePath="CHAINANY.h"
 				>
-			</File>
-			<File
-				RelativePath="ChString.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="ChString.h"
@@ -923,10 +1019,6 @@
 			</File>
 			<File
 				RelativePath="TextFile.h"
-				>
-			</File>
-			<File
-				RelativePath="UNIX.h"
 				>
 			</File>
 			<File
