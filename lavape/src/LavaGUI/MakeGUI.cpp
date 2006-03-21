@@ -37,21 +37,21 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
   CHEFormNode* suffix, *formnode, *firstnode;
   bool empty;
   DString str0;
-  QRect rect; 
+  QRect rect;
   QSize size;
   //QPoint point = QPoint(0,0);
 
   str0.Reset(0);
   if (GUIProg->refresh) {
     refreshWidgets = GUIProg->selDECL == 0;
-      
+
     if (!suppressed) {
       firstnode = 0;
       firstnode = ((CGUIProg*)GUIProg)->TreeSrch.FirstNode();
-      size = ((GUIScrollView*)GUIProg->scrollView)->MaxBottomRight.size();
-      if (size.width() && size.height()) 
+      size = ((GUIScrollView*)GUIProg->scrView)->MaxBottomRight.size();
+      if (size.width() && size.height())
         //((GUIScrollView*)GUIProg->scrollView)->resizeContents(size.width(),size.height());
-        ((GUIScrollView*)GUIProg->scrollView)->widget()->resize(size.width(),size.height());
+        ((GUIScrollView*)GUIProg->scrView)->widget()->resize(size.width(),size.height());
       if (!firstnode || !GUIProg->refresh)
         return;
 
@@ -61,16 +61,16 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
         formnode->successor = 0;
       else
         suffix = 0;
-      ((GUIScrollView*)GUIProg->scrollView)->MaxBottomRight = QRect(0,0,0,0);
-      pMaxBottomRight = &((GUIScrollView*)GUIProg->scrollView)->MaxBottomRight;
-      makeWidgets(firstnode,((GUIScrollView*)GUIProg->scrollView)->qvbox,str0,empty);
+      ((GUIScrollView*)GUIProg->scrView)->MaxBottomRight = QRect(0,0,0,0);
+      pMaxBottomRight = &((GUIScrollView*)GUIProg->scrView)->MaxBottomRight;
+      makeWidgets(firstnode,((GUIScrollView*)GUIProg->scrView)->qvbox,str0,empty);
       pMaxBottomRight->setRight(pMaxBottomRight->right()+1);
       pMaxBottomRight->setBottom(pMaxBottomRight->bottom()+1);
-      ((GUIScrollView*)GUIProg->scrollView)->qvbox->resize(pMaxBottomRight->size());
+      ((GUIScrollView*)GUIProg->scrView)->qvbox->resize(pMaxBottomRight->size());
       if (suffix)
         formnode->successor = suffix;
     }
-      
+
   }
   GUIProg->refresh = false;
   if (refreshWidgets  ) {
@@ -79,7 +79,7 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
   }
   GUIProg->Warning = 0;
   GUIProg->InCommandAgent = true;
-  SetScrollSizes(((GUIScrollView*)GUIProg->scrollView));
+  SetScrollSizes(((GUIScrollView*)GUIProg->scrView));
 
 } // END OF DisplayScreen
 
@@ -128,7 +128,7 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
 //  chFrmNd->data.FIP.beg = context.indent;
 
   /* make new frame if necessary: */
-  if (!context.currentFrame 
+  if (!context.currentFrame
       || (chFrmNd->data.Annotation.ptr
           && (chFrmNd->data.Annotation.ptr->FrameSpacing != -1))) {
     if (!context.currentFrame || !context.emptyFrame) { /* start a new frame */
@@ -169,7 +169,7 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       pred = (CHEFormNode*)chFrmNd->predecessor;
       if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
         ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(pred->data.StringValue.c, context.currentFrame);
-      else  
+      else
         ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(context.currentFrame);
       ((CFormWid*)context.currentFrame)->BGroup->setPaletteForegroundColor(context.currentFrame->foregroundColor());
       if (pred)
@@ -188,7 +188,7 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
         AtomicWidget(chFrmNd, parent, newWidget, parentWidgetName);
       else
         AtomicWidget(chFrmNd, parent, newWidget, str0);
-    if (newWidget) 
+    if (newWidget)
       emptyWidget = (newWidget == 0);
     chFrmNd->data.FIP.widget = newWidget;
     chFrmNd->data.FIP.frameWidget = context.currentFrame;
@@ -256,7 +256,7 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
         pred = (CHEFormNode*)chFrmNd->predecessor;
         if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
           ((CFormWid*)newWidget)->BGroup = new QGroupBox(pred->data.StringValue.c, newWidget);
-        else  
+        else
           ((CFormWid*)newWidget)->BGroup = new QGroupBox(newWidget);
         ((CFormWid*)newWidget)->BGroup->setPaletteForegroundColor(newWidget->foregroundColor());
         if (pred)
@@ -267,7 +267,7 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
         //QVBoxLayout* vb = new QVBoxLayout(((CFormWid*)newWidget)->BGroup);
         //vb->setAutoAdd(true);
       }
-      /*else 
+      /*else
         if (newWidget->parentWidget()->parentWidget()->inherits("GUIVBox")) {
           QVBoxLayout* vb = new QVBoxLayout(newWidget);
           vb->setAutoAdd(true);
@@ -381,7 +381,7 @@ void MakeGUICLASS::makeWidgets (CHEFormNode* chFrmNd,
       && !chFrmNd->data.SubTree.first)
         continue;
     if (chFrmNd->data.BasicFlags.Contains(Invisible))
-        continue;     
+        continue;
     switch (makingMenu) {
     case none:
       if (!chFrmNd->data.BasicFlags.Contains(BlankSelCode)) {
@@ -440,7 +440,7 @@ void MakeGUICLASS::makeWidgets (CHEFormNode* chFrmNd,
 
   } exit: ;
 
-  if ((context.currentFrame) && context.emptyFrame) 
+  if ((context.currentFrame) && context.emptyFrame)
     ReallyDestroyWidget(context.currentFrame);
 
   if (!context.precedingFrame && context.emptyFrame)
@@ -456,7 +456,7 @@ void MakeGUICLASS::makeOptionMenu (CHEFormNode* chFrmNd)
   CHEFormNode* selCodeNode, *explanTextNode, *fieldNode,
           *firstExplanTextNode=0, *firstSelCodeNode;
   bool defaultDefined=false;
-  
+
   while (chFrmNd) {
     if (!chFrmNd->data.BasicFlags.Contains(MenuText)
     && !chFrmNd->data.BasicFlags.Contains(BlankSelCode)) {
@@ -491,7 +491,7 @@ void MakeGUICLASS::makeOptionMenu (CHEFormNode* chFrmNd)
 void MakeGUICLASS::makePopupMenu (CHEFormNode* chFrmNd)
 {
   CHEFormNode* selCodeNode, *explanTextNode;
-  
+
   while (chFrmNd) {
     if (!chFrmNd->data.BasicFlags.Contains(MenuText)
         && !chFrmNd->data.BasicFlags.Contains(BlankSelCode)) {
@@ -568,10 +568,10 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
           length = chFrmNd->data.GetLengthField();
         if (menuButtonLabel.c)
           CreatePopupMenuWidget( newWidget, menuWidget, parent, widgetName ,menuButtonLabel ,length, chFrmNd);
-        else 
+        else
           if (chFrmNd->data.StringValue.Length())
             CreatePopupMenuWidget( newWidget, menuWidget, parent, widgetName ,chFrmNd->data.StringValue ,length, chFrmNd);
-           
+
           else
             CreatePopupMenuWidget( newWidget, menuWidget, parent, widgetName, str0,length,  chFrmNd);
       }
@@ -588,7 +588,7 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
         bool leftLabel;
         if (pred && (pred->data.FormSyntax->DeclDescType == LiteralString)
 //            && pred->data.BasicFlags.Contains(Toggle)) {
-              && pred->data.FormSyntax->Annotation.ptr->BasicFlags.Contains(Toggle)) {      
+              && pred->data.FormSyntax->Annotation.ptr->BasicFlags.Contains(Toggle)) {
           explanText = pred->data.StringValue ;
           leftLabel = true;
         }
@@ -597,7 +597,7 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
           pred = (CHEFormNode*)chFrmNd->successor;
           if (pred && (pred->data.FormSyntax->DeclDescType == LiteralString)
 //              && pred->data.BasicFlags.Contains(Toggle))
-            && pred->data.FormSyntax->Annotation.ptr->BasicFlags.Contains(Toggle) )          
+            && pred->data.FormSyntax->Annotation.ptr->BasicFlags.Contains(Toggle) )
           explanText = pred->data.StringValue;
         }
         CreateToggleWidget( newWidget, parent, widgetName, explanText, leftLabel,  chFrmNd);
@@ -624,7 +624,7 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
         if ((chFrmNd->data.BType == Enumeration)
             && !chFrmNd->data.IoSigFlags.Contains(UnprotectedUser))
           cols = 1;
-        else 
+        else
           cols = chFrmNd->data.GetLengthField();
         maxTextLength = cols;
         chFrmNd->data.FIP.leng = cols;
@@ -685,7 +685,7 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
         newWidget = 0;
         return;
       }
-  else if (chFrmNd->data.BasicFlags.Contains(PopUp)) {    
+  else if (chFrmNd->data.BasicFlags.Contains(PopUp)) {
     pred = (CHEFormNode*)chFrmNd->predecessor;
     if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
       explanText = pred->data.StringValue ;
@@ -714,7 +714,7 @@ void MakeGUICLASS::ShowDeleteButton (CHEFormNode* ellipsisNode, bool yes)
     buttonNode = (CHEFormNode*)ellipsisNode->data.SubTree.first->successor;
   if (yes)
     SetSensitive((QWidget*)buttonNode->data.FIP.widget,1);
-  else 
+  else
     SetSensitive((QWidget*)buttonNode->data.FIP.widget,0);
 } // END OF ShowDeleteButton
 
@@ -839,11 +839,11 @@ void MakeGUICLASS::VisibleDeleteButton (CHEFormNode* trp, bool maWi)
   CHEFormNode* itrp, *elltrp;
   bool setDeleteButton; /* optionaler Fall noch ausgeschlossen!! */
   if (((CGUIProg*)GUIProg)->LavaForm.IsIteration(trp)
-    || trp->data.IterFlags.Contains(Optional)) 
+    || trp->data.IterFlags.Contains(Optional))
     itrp = trp;
   else
     itrp = trp->data.FIP.up;
-  if (!itrp || itrp->data.IterFlags.Contains(NoEllipsis)) 
+  if (!itrp || itrp->data.IterFlags.Contains(NoEllipsis))
     return;
   setDeleteButton = false;
   setDeleteButton = ((CGUIProg*)GUIProg)->LavaForm.IsAdmissibleIteration(itrp, setDeleteButton, 0);
@@ -856,7 +856,7 @@ void MakeGUICLASS::VisibleDeleteButton (CHEFormNode* trp, bool maWi)
   }
   elltrp = 0; /* called from Append/Delete-IterItem */
   elltrp = CursorToEllipsis( itrp);
-  if (elltrp && elltrp->data.IterFlags.Contains(Ellipsis)) 
+  if (elltrp && elltrp->data.IterFlags.Contains(Ellipsis))
     ShowDeleteButton(elltrp,setDeleteButton);
   return;
 } // END OF VisibleDeleteButton
@@ -864,7 +864,7 @@ void MakeGUICLASS::VisibleDeleteButton (CHEFormNode* trp, bool maWi)
 
 void MakeGUICLASS::Popup (CHEFormNode* popupNode,
                            bool popupWindow,
-                           bool cursorOnField, 
+                           bool cursorOnField,
                            bool redraw)
 
 {
@@ -933,7 +933,7 @@ void MakeGUICLASS::Popup (CHEFormNode* popupNode,
     popupNode->data.FormSyntax->WorkFlags.INCL(poppedUp);
   }
 
-  if (firstCall) 
+  if (firstCall)
     GUIProg->popUps++;
   if (cursorOnField)
     CursorOnField(popupNode);
@@ -985,11 +985,11 @@ void MakeGUICLASS::PopDown (CHEFormNode* fmno,
       if (GUIProg->FocusPopup == chFrmNd)
         GUIProg->FocusPopup = 0;
     }
-    
+
     ((CGUIProg*)GUIProg)->TreeSrch.NextNodeNotIGNORED(chFrmNd,syo);
     if (syo)
       PopDown(syo,popdownNode,ok);
-      
+
     if (fmno == popdownNode) {
       SetFIPwidgetNULL(fmno);
       pred = (CHEFormNode*)fmno->predecessor;
@@ -1011,7 +1011,7 @@ void MakeGUICLASS::SetFIPwidgetNULL (CHEFormNode* chFrmNd)
 
 {
   if (!chFrmNd || chFrmNd->data.Atomic) return;
-  
+
   for (chFrmNd = (CHEFormNode*)chFrmNd->data.SubTree.first;
        chFrmNd;
        chFrmNd = (CHEFormNode*)chFrmNd->successor) {
@@ -1065,7 +1065,7 @@ bool MakeGUICLASS::setFocus (unsigned pos, CHEFormNode* trpn)
     while (!ready && popup && popup->data.FIP.up) {
       popup = popup->data.FIP.up;
       if (popup->data.BasicFlags.Contains(PopUp)) {
-//          && !popup->data.FIP.poppedUp) 
+//          && !popup->data.FIP.poppedUp)
         ready = true;
         containingPopup = popup;
 //        ImplicitPopup(popup,true);
@@ -1074,7 +1074,7 @@ bool MakeGUICLASS::setFocus (unsigned pos, CHEFormNode* trpn)
     if (GUIProg->FocusPopup && (GUIProg->FocusPopup != containingPopup)
        && !GUIProg->InCommandAgent)  // ==> program request, no terminal request
       PopDown(GUIProg->FocusPopup,GUIProg->FocusPopup,ok);
-    if (containingPopup) 
+    if (containingPopup)
       if (!containingPopup->data.FIP.poppedUp)
         ImplicitPopup(containingPopup,true);
       else
@@ -1094,7 +1094,7 @@ bool MakeGUICLASS::setFocus (unsigned pos, CHEFormNode* trpn)
             butt = (CHEFormNode*)((CHEFormNode*)button->data.SubTree.first)->successor;
             if (!butt0)
               butt0 = butt;
-            if (Compare(trpn->data.StringValue,butt->data.StringValue) == 0) 
+            if (Compare(trpn->data.StringValue,butt->data.StringValue) == 0)
               ok = true;
             else
               button = (CHEFormNode*) button->successor;
@@ -1106,14 +1106,14 @@ bool MakeGUICLASS::setFocus (unsigned pos, CHEFormNode* trpn)
           butt0 = 0;
           button = butt;
         }
-        else 
+        else
           button = butt0;
       }
       else {
         ok = false;
         while (button &&  !ok) {
           butt = (CHEFormNode*)button->data.SubTree.first;
-          if (Compare(trpn->data.StringValue,butt->data.StringValue) == 0) 
+          if (Compare(trpn->data.StringValue,butt->data.StringValue) == 0)
             ok = true;
           else
             button = (CHEFormNode*)button->successor;
@@ -1139,7 +1139,7 @@ bool MakeGUICLASS::setFocus (unsigned pos, CHEFormNode* trpn)
       }
       return false;
     }
-    else 
+    else
       if (trpn->data.IterFlags.Contains(Ellipsis)) {
         if (trpn->data.Atomic)
           widN = (QWidget*)trpn->data.FIP.widget;
@@ -1213,7 +1213,7 @@ void MakeGUICLASS::ImplicitPopup (CHEFormNode* popup, bool show)
     }
     popup = popup->data.FIP.up;
   }
-  if (!popNode) 
+  if (!popNode)
     return;
   /* Popup top down ..........................*/
   oldpopNode = popNode;

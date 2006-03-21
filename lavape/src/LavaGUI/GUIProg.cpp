@@ -42,8 +42,8 @@ CGUIProg::CGUIProg() : CGUIProgBase()
   FocusPopup = 0;
   popUps = 0;
   CurPos = 0;
-  refresh = true;              
-  Warning = 0;                 
+  refresh = true;
+  Warning = 0;
   InCommandAgent = false;
   allowIncompleteForms = false;
   ErrorCode = NONE;
@@ -68,16 +68,16 @@ void CGUIProg::Create(CLavaBaseDoc* doc, QWidget* view)
   ViewWin = view;
   isView = view->inherits("CLavaGUIView");
   if (view->inherits("CLavaGUIView"))
-    scrollView = ((CLavaGUIView*)view)->scrollView();
+    scrView = ((CLavaGUIView*)view)->scrollView();
   else
-    scrollView = ((LavaGUIDialog*)view)->scrollView();
+    scrView = ((LavaGUIDialog*)view)->scrollView();
   CGUIProgBase::Create();
 }
 
 void CGUIProg::OnUpdate( LavaDECL* decl, LavaVariablePtr resultPtr)
 {
   newFocus = 0;
-  FormName = decl->FullName;  // forS in RequestEval  
+  FormName = decl->FullName;  // forS in RequestEval
   if (Root) {
     LavaForm.DeleteWindows(Root, false);
     LavaForm.DeleteForm(Root);
@@ -91,8 +91,8 @@ void CGUIProg::OnUpdate( LavaDECL* decl, LavaVariablePtr resultPtr)
   FocusPopup = 0;
   popUps = 0;
   CurPos = 0;
-  refresh = true;              
-  Warning = 0;                 
+  refresh = true;
+  Warning = 0;
   InCommandAgent = false;
   allowIncompleteForms = false;
   ErrorCode = NONE;
@@ -116,7 +116,7 @@ void CGUIProg::SyncTree(CHEFormNode *node)
   CHEFormNode *upNode;
   if (!LBaseData->inRuntime && !inSynchTree && !((CLavaGUIFrame*)((CLavaGUIView*)ViewWin)->GetParentFrame())->onClose)
     if (!inSyncForm) {
-      if (((CLavaGUIView*)ViewWin)->LastBrowseNode) 
+      if (((CLavaGUIView*)ViewWin)->LastBrowseNode)
         ((CLavaGUIView*)ViewWin)->resetLastBrowseNode();
       for (upNode = node; upNode && !upNode->data.FormSyntax->ParentDECL;upNode = upNode->data.FIP.up);
       for (;
@@ -138,25 +138,25 @@ void CGUIProg::OnModified()
 {
   if (isView)
     ((CLavaGUIView*)ViewWin)->OnModified();
-}  
+}
 
 void CGUIProg::RedrawForm()
 {
   //QPoint vpoint, tPoint;
   int sx, sy;
   if (Root) {
-    sx = ((GUIScrollView*)scrollView)->horizontalScrollBar()->value();//contentsX();
-    sy = ((GUIScrollView*)scrollView)->verticalScrollBar()->value();//contentsY();
+    sx = ((GUIScrollView*)scrView)->horizontalScrollBar()->value();//contentsX();
+    sy = ((GUIScrollView*)scrView)->verticalScrollBar()->value();//contentsY();
     refresh = false;
     LavaForm.DeleteWindows(Root, true);
   }
   refresh = true;
   MakeGUI.DisplayScreen(false);
   //((GUIScrollView*)scrollView)->setContentsPos(sx, sy);
-  ((GUIScrollView*)scrollView)->horizontalScrollBar()->setValue(sx);
-  ((GUIScrollView*)scrollView)->verticalScrollBar()->setValue(sy);
+  ((GUIScrollView*)scrView)->horizontalScrollBar()->setValue(sx);
+  ((GUIScrollView*)scrView)->verticalScrollBar()->setValue(sy);
   //((GUIScrollView*)scrollView)->updateContents();
-  ((GUIScrollView*)scrollView)->viewport()->update();
+  ((GUIScrollView*)scrView)->viewport()->update();
 }
 
 CGUIProg::~CGUIProg()
@@ -170,12 +170,12 @@ void CGUIProg::OnTab(bool back, QWidget* win)
   CHEFormNode *frmPtr, *trp = 0;
   QWidget* parentWin;
 
-  if (!butNode) 
+  if (!butNode)
     MPTR = focNode;
-  else 
+  else
     MPTR = butNode;
   for (parentWin = win->parentWidget(); !parentWin->inherits("GUIVBox"); parentWin = parentWin->parentWidget());
-  if (((GUIScrollView*)scrollView)->qvbox == parentWin)
+  if (((GUIScrollView*)scrView)->qvbox == parentWin)
     frmPtr = Root;
   else
     frmPtr = ((CLavaGUIPopup*)parentWin)->myFormNode;
@@ -200,7 +200,7 @@ void CGUIProg::OnTab(bool back, QWidget* win)
         else
           MakeGUI.SetPointer((QWidget*)focNode->data.FIP.widget, 1);
         /*
-        if (!inSyncForm) 
+        if (!inSyncForm)
           SyncTree(focNode);
         else
           inSyncForm = false;

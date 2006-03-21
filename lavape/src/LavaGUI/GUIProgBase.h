@@ -29,7 +29,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
   QWidget* ViewWin;  //CLavaGUIView or LavaGUIDialog
   bool isView;
   //Q3ScrollView* scrollView;
-  QScrollArea* scrollView;
+  QScrollArea* scrView;
   CHEFormNode* DelNode;
   CHEFormNode* InsertNode;
   CLavaBaseDoc *myDoc;
@@ -42,7 +42,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
   unsigned globalIndent;
   unsigned xMargin;
   unsigned yMargin;
-   
+
   QWidget* oldFocus;
   QWidget* newFocus;
 
@@ -59,7 +59,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
 //  unsigned itemDist(const QFont& font); //the y-distance
   unsigned aveCharWidth(const QFont& font);
   unsigned maxCharWidth(const QFont& font);
-  QSize ArrowSize(const QFont& font);       //the arrow size add on to combobox size 
+  QSize ArrowSize(const QFont& font);       //the arrow size add on to combobox size
   QSize MinSizeComboBox(const QFont& font); //the CEdit and a minimum Listbox size
   QSize CalcStringRect(const QString& label, const QFont& font);
   QSize CalcTextRect(int xcols, int yrows, const QFont& font);
@@ -100,15 +100,15 @@ public:
   CGUIProgBase() {inSyncForm = false; inSynchTree = false; selDECL = 0;}
   SynDef *mySynDef;
   DString FormName;
-  CHEFormNode  *Root; 
-  CHEFormNode* MPTR; 
-  bool InCommandAgent; 
+  CHEFormNode  *Root;
+  CHEFormNode* MPTR;
+  bool InCommandAgent;
   LavaDECL* selDECL;
 
-  unsigned  popUps, CurPos; 
-  CHEFormNode* butNode, *focNode, *CurPTR, *FocusPopup, *editNode;                                           
-  bool refresh;         
-  unsigned Warning; 
+  unsigned  popUps, CurPos;
+  CHEFormNode* butNode, *focNode, *CurPTR, *FocusPopup, *editNode;
+  bool refresh;
+  unsigned Warning;
   bool allowIncompleteForms;
   unsigned ErrPos;
   ErrorCodes ErrorCode;
@@ -141,7 +141,7 @@ enum MSGCodes {
   NoFurIns,
   NoInsert,
   NoExpand,
-  ProgToLong       
+  ProgToLong
 
 };
 
