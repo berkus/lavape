@@ -122,6 +122,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
         active = false;
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
+  layout->addWidget(sv);
 //  sv->setFocusPolicy(Qt::StrongFocus);
 //  sv->setResizePolicy(Q3ScrollView::AutoOneFit);
   redCtl = sv->execCont;
@@ -1204,7 +1205,7 @@ MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
 }
 
 ExecContents::ExecContents (MyScrollView *sv) {
-	this->sv = sv;
+  this->sv = sv;
   execView = sv->execView;
   debugStop = new QPixmap((const char**)debugStop_xpm);
   debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);

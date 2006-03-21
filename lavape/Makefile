@@ -5,9 +5,32 @@ export ASSISTANT
 
 all: dirs links build
 
-SUBPRO=Precompiler SFLsockets disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
+SUBPRO=Precompiler disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
 
 include src/common.mk
+
+disco:
+	cd src/disco; $(MAKE)
+wxqDocView:
+	cd src/wxqDocView; $(MAKE)
+Precompiler:
+	cd src/Precompiler; $(MAKE)
+LavaBase:
+	cd src/LavaBase; $(MAKE)
+LavaGUI:
+	cd src/LavaGUI; $(MAKE)
+LavaExecs:
+	cd src/LavaExecs; $(MAKE)
+LavaPE_UI:
+	cd src/LavaPE_UI; $(MAKE)
+LavaPE:
+	cd src/LavaPE; $(MAKE)
+Lava_UI:
+	cd src/Lava_UI; $(MAKE)
+Interpreter:
+	cd src/Interpreter; $(MAKE)
+Lava:
+	cd src/Lava; $(MAKE)
 
 dirs:
 	if [ ! -e bin ] ; then mkdir bin; fi; \
