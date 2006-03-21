@@ -466,17 +466,17 @@ void CProgText::NewSel (const QPoint *point) {
   CHETokenNode *chep = (CHETokenNode*)tokenChain.first;
   int x, y, rt, rl, rb, rr;
 
+  x = point->x();
+  y = point->y();
   while (chep) {
-    x = point->x();
-    y = point->y();
     rl = chep->data.rect.left();
     rt = chep->data.rect.top();
     rb = chep->data.rect.bottom();
     rr = chep->data.rect.right();
-    if (chep->data.rect.top() <= point->y()
-    &&  chep->data.rect.left() <= point->x()
-    &&  chep->data.rect.bottom() > point->y()
-    &&  chep->data.rect.right() > point->x())
+    if (rt <= point->y()
+    &&  rl <= point->x()
+    &&  rb > point->y()
+    &&  rr > point->x())
       break;
     chep = (CHETokenNode*)chep->successor;
   }

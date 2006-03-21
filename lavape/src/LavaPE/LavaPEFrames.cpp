@@ -1770,7 +1770,9 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 //    resize(sz.width()*7/10, sz.height()*7/10);
 //  }
   splitter = new QSplitter(this);//vb);
+  splitter->setHandleWidth(3);
   layout.addWidget(splitter);
+  layout.setMargin(0);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
   viewL = new CInclView(splitter, doc);

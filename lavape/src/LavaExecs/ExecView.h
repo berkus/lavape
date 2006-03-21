@@ -389,8 +389,8 @@ public:
 
   void keyPressEvent (QKeyEvent *e);
   void focusInEvent(QFocusEvent *ev);
-  void contentsMousePressEvent (QMouseEvent *e);
-  void contentsMouseDoubleClickEvent (QMouseEvent *e);
+  void mousePressEvent (QMouseEvent *e);
+  void mouseDoubleClickEvent (QMouseEvent *e);
 };
 
 enum VarConstCheck {

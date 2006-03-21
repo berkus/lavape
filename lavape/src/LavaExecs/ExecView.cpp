@@ -123,6 +123,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
   layout->addWidget(sv);
+  layout->setMargin(0);
 //  sv->setFocusPolicy(Qt::StrongFocus);
 //  sv->setResizePolicy(Q3ScrollView::AutoOneFit);
   redCtl = sv->execCont;
@@ -201,9 +202,9 @@ void CExecView::OnInitialUpdate()
   statusBar = wxTheApp->m_appWindow->statusBar();
   myID = TID(myDECL->ParentDECL->OwnID, 0);
   editCtlVisible = false;
-  insertBefore = false;
   forcePrimTokenSelect = false;
   clicked = false;
+  insertBefore = false;
   escapePressed = false;
   doubleClick = false;
   multHint = 0;
@@ -481,8 +482,6 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
     contentsWidth = QMAX(contentsWidth,currentX);
     contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
   }
-//  if (contentsWidth > oldCW || contentsHeight > oldCH)
-//    resize(contentsWidth,contentsHeight);
   delete fm;
 }
 
@@ -1186,13 +1185,13 @@ void CExecView::OnChar(QKeyEvent *e)
     }
 }
 
-void MyScrollView::contentsMousePressEvent (QMouseEvent *e) {
+void MyScrollView::mousePressEvent (QMouseEvent *e) {
   if (e->button() != Qt::LeftButton)
     return;
   execView->OnLButtonDown(e);
 }
 
-void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
+void MyScrollView::mouseDoubleClickEvent (QMouseEvent *e) {
   if (e->button() != Qt::LeftButton)
     return;
   execView->OnLButtonDblClk(e);
@@ -1201,6 +1200,7 @@ void MyScrollView::contentsMouseDoubleClickEvent (QMouseEvent *e) {
 MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
   execView = (CExecView*)parent;
   execCont = new ExecContents(this);
+  setBackgroundRole(QPalette::Base);
   setWidget(execCont);
 }
 
@@ -1238,7 +1238,7 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
       doubleClick = true;
     }
     Select();
-//    sv->viewport()->update();
+    redCtl->update();
   }
   doubleClick = false;
   clicked = false;
@@ -1327,7 +1327,7 @@ void CExecView::Select (SynObject *selObj)
   inForeach = ocUpd.inForeach;
 
   SetHelpText();
-//  sv->viewport()->update();
+  redCtl->update();
 
   if (text->currentSelection->data.token == Comment_T) {
     if (!EditOK() || !clicked) return;
@@ -1375,7 +1375,7 @@ void CExecView::Select (SynObject *selObj)
       doubleClick = false;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       OnGotoDecl();
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
 
@@ -1385,7 +1385,7 @@ void CExecView::Select (SynObject *selObj)
     && text->currentSynObj->parentObject->whereInParent
        == (address)&((NewExpression*)text->currentSynObj->parentObject->parentObject)->initializerCall.ptr) {
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newCombo);
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
 
@@ -1453,7 +1453,7 @@ void CExecView::Select (SynObject *selObj)
       callExpr = (Expression*)funcExpr->handle.ptr;
       if (!funcExpr->parentObject) {
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-        sv->viewport()->update();
+        redCtl->update();
         return;
       }
       if (funcExpr->parentObject->primaryToken == initializing_T) { // base initializer call
@@ -1462,7 +1462,7 @@ void CExecView::Select (SynObject *selObj)
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowBaseInis(tid);
         else
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-//        sv->viewport()->update();
+        redCtl->update();
         return;
       }
       if (callExpr) {
@@ -1563,7 +1563,7 @@ disconn:
       }
     }
 
-//    sv->viewport()->update();
+    redCtl->update();
     return;
 
   case nil_T:
@@ -1594,7 +1594,7 @@ obj:
           if (decl->TypeFlags.Contains(substitutable))
             text->ckd.tempCtx.ContextFlags = SET(multiContext,-1);
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,finalDecl,text->ckd.tempCtx,cat,false);
-//          sv->viewport()->update();
+          redCtl->update();
           return;
         }
       }
@@ -1606,7 +1606,7 @@ obj:
         if (ctxFlags.bits)
           text->ckd.tempCtx.ContextFlags = ctxFlags;
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,false);
-//        sv->viewport()->update();
+        redCtl->update();
         return;
       }
     }
@@ -1617,12 +1617,12 @@ obj:
         if (ctxFlags.bits)
           text->ckd.tempCtx.ContextFlags = ctxFlags;
         ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCompObjects(text->ckd,decl,text->ckd.tempCtx,cat,false,true);
-        sv->viewport()->update();
+        redCtl->update();
         return;
       }
     }*/
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objCombo);
-//    sv->viewport()->update();
+    redCtl->update();
     return;
 
   case Exp_T:
@@ -1737,21 +1737,21 @@ exp: // Const_T
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
     if (text->currentSelection->data.token == true_T
     || text->currentSelection->data.token == false_T) {
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
     break;
 
   case SetPH_T:
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objSetEnumCombo);
-//    sv->viewport()->update();
+    redCtl->update();
     return;
 
   case TDOD_T:
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
       OnGotoDecl();
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
     objRef = (ObjReference*)text->currentSynObj->parentObject;
@@ -1784,7 +1784,7 @@ exp: // Const_T
       }
     }
     doubleClick = false;
-//    sv->viewport()->update();
+    redCtl->update();
     return;
 
   case TypePH_T:
@@ -1792,7 +1792,7 @@ exp: // Const_T
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
       OnGotoDecl();
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
     if (text->currentSelection->data.token == TypeRef_T
@@ -1824,7 +1824,7 @@ exp: // Const_T
     else
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(typeCombo);
     doubleClick = false;
-//    sv->viewport()->update();
+    redCtl->update();
     return;
 
   case CrtblPH_T:
@@ -1834,7 +1834,7 @@ exp: // Const_T
     if (doubleClick && EnableGotoDecl()) {
       doubleClick = false;
       OnGotoDecl();
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
     if (text->currentSynObj->parentObject->primaryToken == attach_T)
@@ -1849,7 +1849,7 @@ exp: // Const_T
     else // "call" statement
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(callCombo);
     doubleClick = false;
-//    sv->viewport()->update();
+    redCtl->update();
     return;
 
   case VarPH_T:
@@ -1889,12 +1889,12 @@ exp: // Const_T
     if (text->currentSynObj->replacedType == Exp_T)
       goto exp;
     ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-//    sv->viewport()->update();
+    redCtl->update();
     return;
   }
 
   if (!doubleClick) {
-//    sv->viewport()->update();
+    redCtl->update();
     return;
   }
 
@@ -2015,10 +2015,8 @@ void CExecView::RedrawExec(SynObject *selectAt)
   if (execReplaced)
     execReplaced = false;
 
-//  sv->viewport()->update();
-  redCtl->setUpdatesEnabled(true);
   redCtl->update();
-//      GetParentFrame()->update();
+  redCtl->setUpdatesEnabled(true);
 }
 
 
@@ -4926,7 +4924,7 @@ void CExecView::OnNextError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-//                        sv->viewport()->update();
+        redCtl->update();
         return;
       }
     }
@@ -4940,7 +4938,7 @@ void CExecView::OnNextError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-//                        sv->viewport()->update();
+        redCtl->update();
         return;
       }
     }
@@ -4977,7 +4975,7 @@ void CExecView::OnPrevError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-//                        sv->viewport()->update();
+        redCtl->update();
         return;
       }
     }
@@ -4991,7 +4989,7 @@ void CExecView::OnPrevError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-//                        sv->viewport()->update();
+        redCtl->update();
         return;
       }
     }
@@ -5012,7 +5010,7 @@ void CExecView::OnNextComment()
       text->newSelection = currToken;
       text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
   }
@@ -5024,7 +5022,7 @@ void CExecView::OnNextComment()
       text->newSelection = currToken;
       text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
   }
@@ -5042,7 +5040,7 @@ void CExecView::OnPrevComment()
       text->newSelection = currToken;
       text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
   }
@@ -5054,7 +5052,7 @@ void CExecView::OnPrevComment()
       text->newSelection = currToken;
       text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-//      sv->viewport()->update();
+      redCtl->update();
       return;
     }
   }
@@ -6811,7 +6809,7 @@ void CExecView::DbgBreakpoint() {
     cheBreak->data.Activate = stopObj->workFlags.Contains(isBrkPnt);
     LBaseData->ContData->BrkPnts.Append(cheBreak);
   }
-  sv->viewport()->update();
+  redCtl->update();
 }
 
 void CExecView::DbgRunToSel() {
