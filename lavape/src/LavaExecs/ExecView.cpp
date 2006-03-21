@@ -1220,6 +1220,8 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
 {
   // TODO: Add your message handler code here and/or call default
   QPoint pos=e->pos();
+  pos = sv->viewport()->mapTo(sv,pos);
+  pos = redCtl->mapFrom(sv,pos);
 
   clicked = true;
   if (EditOK()) {

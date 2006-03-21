@@ -347,7 +347,7 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   pb->setFont(f);
   pb->setFlat(true);
   pb->setAutoDefault(false);
-  pb->setMinimumHeight(pb->fontInfo().pointSize()+4);
+//  pb->setMaximumHeight(pb->fontInfo().pointSize()+4);
   pb->setMaximumWidth(pb->fontMetrics().width("el. in set")+6);
   if (!tooltip.isEmpty())
     QToolTip::add(pb,tooltip);
@@ -1440,6 +1440,7 @@ void CLavaMainFrame::adjustToolbar_7 () {
   Toolbar_7 = new QToolBar( QString(""), this);
   Toolbar_7->setAllowedAreas(Qt::LeftToolBarArea);
   Toolbar_7->setLabel(tr("Keyword toolbar"));
+  Toolbar_7->setContentsMargins(0,0,0,0);
   fillKwdToolbar(Toolbar_7);
 	if (isVisible)
 	  Toolbar_7->show();

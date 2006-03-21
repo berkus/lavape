@@ -73,7 +73,7 @@ int SynIOCLASS::ReadSynDef (const QString& fileName, SynDef *&syntax, ASN1* strg
       return -1;
     }
     else {
-      if (!file.isWritable())
+      if (file.permissions()&=(QFile::WriteUser|QFile::WriteGroup|QFile::WriteOther) == QFile::Permissions(0))
         ret = 1;
     }
     pcid = icid;
