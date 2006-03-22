@@ -34,7 +34,7 @@
 #include <QPixmap>
 #include <Q3ValueList>
 #include <QCustomEvent>
-
+#include <QHeaderView>
 /////////////////////////////////////////////////////////////////////////////
 // CSizeDlgBar
 // The base class for resizable dialog bars. In the dialog template choose the 
@@ -48,12 +48,13 @@ CUtilityView::CUtilityView(QWidget *parent)
 {
 	QString emptyString;
 	
-  FindPage = new Q3ListView(0);
-  FindPage->setSorting(-1);
-  FindPage->addColumn(emptyString);
+  FindPage = new QTreeWidget(0);
+//  FindPage->setSorting(-1);
+  FindPage->setColumnCount(1);
+  //FindPage->addColumn(emptyString);
   FindPage->setRootIsDecorated(false);
-  FindPage->header()->hide();
-  FindPage->setSelectionMode(Q3ListView::Single);//Extended); 
+//  FindPage->header()->hide();
+  FindPage->setSelectionMode(QAbstractItemView::SingleSelection);//Extended); 
   CommentPage = new Q3TextEdit(0);
   CommentPage->setReadOnly(true);
 //  QTextEdit *CommentPage2 = new QTextEdit(this);
@@ -94,7 +95,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   ActTab = tabComment;
   setCurrentPage((int)ActTab);
   connect(this,SIGNAL(currentChanged(QWidget*)), SLOT(OnTabChange(QWidget*)));
-  connect(FindPage,SIGNAL(doubleClicked(Q3ListViewItem*)), SLOT(OnDblclk(Q3ListViewItem*)));
+  connect(FindPage,SIGNAL(doubleClicked(QTreeWidgetItem*)), SLOT(OnDblclk(QTreeWidgetItem*)));
   ErrorEmpty = true;
   CommentEmpty = true;
   firstDebug = true;
@@ -170,7 +171,7 @@ void CUtilityView::SetFindText(const DString& text, CFindData* data)
   item->setItemData((TItemData*)data);
 }
 
-void CUtilityView::OnDblclk(Q3ListViewItem* item)
+void CUtilityView::OnDblclk(QTreeWidgetItem* item)
 {
   CFindData *data;
   TID tid;
@@ -215,9 +216,11 @@ void CUtilityView::DeleteAllFindItems()
 {
   CTreeItem* item;
   CFindData * itd;
-  for (item = (CTreeItem*)FindPage->firstChild();
+  int ii=0;
+  for (item = (CTreeItem*)FindPage->topLevelItem(ii); //firstChild();
        item;
        item = (CTreeItem*)item->nextSibling()) {
+    ii++;
     itd = (CFindData*)item->getItemData();
     if (itd)
       delete itd;
@@ -265,7 +268,7 @@ void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
       if (itemToOpen) {
         itemToOpen->makeChildren(((DDItemData*)dbgReceived->newReceived->ObjData.ptr)->Children);
         itemToOpen->setOpen(true);
-        itemToOpen->myView->setSelected(itemToOpen, true);
+        itemToOpen->myView->setItemSelected(itemToOpen, true);
         itemToOpen = 0;
       }
       break;
@@ -289,18 +292,18 @@ void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
       dbgReceived->lastReceived = 0;
     }
     StackView->allDrawn = false;
-    while (VarView->firstChild())
-      delete VarView->firstChild();
-    while (ParamView->firstChild())
-      delete ParamView->firstChild();
-    while (StackView->firstChild())
-      delete StackView->firstChild();
-    VarView->setColumnWidth(0, VarView->width0);
+    while (VarView->topLevelItem(0)) //firstChild())
+      delete VarView->takeTopLevelItem(0);
+    while (ParamView->topLevelItem(0))
+      delete ParamView->takeTopLevelItem(0);
+    while (StackView->topLevelItem(0))
+      delete StackView->takeTopLevelItem(0);
+/*    VarView->setColumnWidth(0, VarView->width0);
     VarView->setColumnWidth(1, VarView->width1);
     VarView->setColumnWidth(2, VarView->width2);
     ParamView->setColumnWidth(0, ParamView->width0);
     ParamView->setColumnWidth(1, ParamView->width1);
-    ParamView->setColumnWidth(2, ParamView->width2);
+    ParamView->setColumnWidth(2, ParamView->width2);*/
   }
 
 }
@@ -454,43 +457,43 @@ void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
 
 
 VarItem::VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListView* view)
-  :Q3ListViewItem(parent, afterItem) 
+  :QTreeWidgetItem(parent, afterItem) 
 {
   myView = view;
-  setMultiLinesEnabled(true);
+//  setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
   isPriv = data->isPrivate;
   childrenDrawn = false;
   hasChildren = data->HasChildren;
-  setExpandable(hasChildren);
+//  setExpandable(hasChildren);
   //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
 }
 
 VarItem::VarItem(VarItem* parent, DDItemData* data, VarListView* view)
-  :Q3ListViewItem(parent) 
+  :QTreeWidgetItem(parent) 
 {
   myView = view;
-  setMultiLinesEnabled(true);
+//  setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
   isPriv = data->isPrivate;
   childrenDrawn = false;
   hasChildren = data->HasChildren;
-  setExpandable(hasChildren);
+//  setExpandable(hasChildren);
   //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
 }
 
 VarItem::VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data)
-  :Q3ListViewItem(parent, afterItem) 
+  :QTreeWidgetItem(parent, afterItem) 
 {
-  setMultiLinesEnabled(true);
+//  setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
@@ -498,16 +501,16 @@ VarItem::VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data)
   myView = parent;
   childrenDrawn = false;
   hasChildren = data->HasChildren;
-  setExpandable(hasChildren);
+//  setExpandable(hasChildren);
   //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
 }
 
 VarItem::VarItem(VarListView* parent, DDItemData* data)
-  :Q3ListViewItem(parent) 
+  :QTreeWidgetItem(parent) 
 {
-  setMultiLinesEnabled(true);
+//  setMultiLinesEnabled(true);
   setText(0, data->Column0.c);
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
@@ -515,7 +518,7 @@ VarItem::VarItem(VarListView* parent, DDItemData* data)
   isPriv = data->isPrivate;
   childrenDrawn = false;
   hasChildren = data->HasChildren;
-  setExpandable(hasChildren);
+//  setExpandable(hasChildren);
   //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
@@ -541,13 +544,14 @@ void VarItem::makeChildren(const CHAINX& data)
 void VarItem::paintCell( QPainter * p, const QColorGroup & cg,
 			       int column, int width, int align )
 {
-  if (!column && isPriv) {
+  /*if (!column && isPriv) {
     QColorGroup cgN ( cg);
     cgN.setColor(QColorGroup::Text,Qt::red);
-    Q3ListViewItem::paintCell( p, cgN, column, width, align );
+    QTreeWidgetItem::paintCell( p, cgN, column, width, align );
   }
   else
-    Q3ListViewItem::paintCell( p, cg, column, width, align );
+    QTreeWidgetItem::paintCell( p, cg, column, width, align );
+    */
 }
 
 
@@ -568,7 +572,11 @@ void VarItem::setOpen(bool O)
       return;
     }
   }
-  Q3ListViewItem::setOpen(O);
+  if (O)
+    myView->expandItem(this);
+  else
+    myView->collapseItem(this);
+    //QTreeWidgetItem::setOpen(O);
 }
 
 void VarItem::makeNrs(ChObjRq *rqs)
@@ -581,7 +589,7 @@ void VarItem::makeNrs(ChObjRq *rqs)
 }
 
 VarListView::VarListView(QWidget *parent, CUtilityView* bar, bool forParams)
-:Q3ListView(parent, "VarListView")
+:QTreeWidget(parent)
 {
   QString label;
 
@@ -589,20 +597,28 @@ VarListView::VarListView(QWidget *parent, CUtilityView* bar, bool forParams)
 //  itemToOpen = 0;
   setRootIsDecorated(true);
   setFocusPolicy(Qt::StrongFocus);
-  setSorting(-1);
-  if (forParams)
+//  setSorting(-1);
+  setColumnCount(3);
+ if (forParams)
+    setHeaderLabels(QStringList() << "vfunc.params. (type[/RT type])" << "address" << "value");
+ else
+    setHeaderLabels(QStringList() << "variables (type[/RT type])" << "address" << "value");
+ /*
+ if (forParams)
     addColumn("func.params. (type[/RT type])");
   else
     addColumn("variables (type[/RT type])");
   addColumn("address");
   addColumn("value");
-  //setRootIsDecorated(true);
+  */
   header()->show();
-  setShowToolTips(true);
-  setSelectionMode(Q3ListView::Single);
+//  setShowToolTips(true);
+  setSelectionMode(QAbstractItemView::SingleSelection);
+  /*
   width0 = columnWidth(0);
   width1 = columnWidth(1);
   width2 = columnWidth(2);
+  */
 }
 
 void VarListView::makeItems(const CHAINX& objChain) //DbgStopData* data)
@@ -610,11 +626,13 @@ void VarListView::makeItems(const CHAINX& objChain) //DbgStopData* data)
   CHE* chData;
   VarItem* item=0;
   int cc=0;
-  while (firstChild())
-    delete firstChild();
+  while (topLevelItem(0))
+    delete takeTopLevelItem(0);
+  /*
   setColumnWidth(0, width0);
   setColumnWidth(1, width1);
   setColumnWidth(2, width2);
+  */
   for (chData = (CHE*)objChain.first; chData; chData = (CHE*)chData->successor) {
     if (item) 
       item = new VarItem(this, item, (DDItemData*)chData->data);
@@ -628,25 +646,26 @@ void VarListView::makeItems(const CHAINX& objChain) //DbgStopData* data)
 
 
 StackListView::StackListView(QWidget *parent, CUtilityView* bar)
-:Q3ListView(parent, "StackListView")
+:QTreeWidget(parent)
 {
   QString label, emptyString;
 
   myUtilityView = bar;
   lastSelected = 0;
-  addColumn(emptyString);
+//  addColumn(emptyString);
+  setColumnCount(1);
   setRootIsDecorated(false);
   header()->hide();
   setFocusPolicy(Qt::StrongFocus);
-  setSorting(-1);
-  setShowToolTips(true);
-  setSelectionMode(Q3ListView::Single);
+//  setSorting(-1);
+//  setShowToolTips(true);
+  setSelectionMode(QAbstractItemView::SingleSelection);
   allDrawn = false;
-  connect(this,SIGNAL(clicked(Q3ListViewItem*)), SLOT(itemClicked(Q3ListViewItem*)));
+  connect(this,SIGNAL(clicked(QTreeWidgetItem*)), SLOT(itemClicked(QTreeWidgetItem*)));
   connect(this,SIGNAL(selectionChanged()), SLOT(selChanged()));
 }
 
-void StackListView::itemClicked(Q3ListViewItem *item)
+void StackListView::itemClicked(QTreeWidgetItem *item)
 {
   selChanged();
 }
@@ -670,8 +689,8 @@ void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
   int ii = 0;
 
   allDrawn = false;
-  while (firstChild())
-    delete firstChild();
+  while (topLevelItem(0))
+    delete takeTopLevelItem(0);
   for (chData = (CHEStackData*)data->StackChain.first; 
        chData; chData = (CHEStackData*)chData->successor) {
     funcDecl = doc->IDTable.GetDECL(chData->data.FuncID);
@@ -718,6 +737,6 @@ void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
 
 
   }
-  lastSelected->setSelected(true);
+  setItemSelected(lastSelected, true);
   allDrawn = true;
 }

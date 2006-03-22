@@ -5,9 +5,11 @@
 #include "PEBaseDoc.h"
 //#include "wxExport.h"
 #include "docview.h" 
-#include "q3listview.h" 
+//#include "q3listview.h" 
 #include "qpixmap.h"
 //Added by qt3to4:
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 #include <QMouseEvent>
 #include <QDragEnterEvent>
 #include <QDragLeaveEvent>
@@ -21,6 +23,8 @@
 #define TVI_LAST                ((CTreeItem*)0xFFFF0002)
 
 class CTreeView;
+class MyListView;
+
 class TItemData
 {
 public:
@@ -29,14 +33,14 @@ public:
 };
 
 
-class CTreeItem :public Q3ListViewItem 
+class CTreeItem :public QTreeWidgetItem //Q3ListViewItem 
 {
 public:
     friend class CTreeView;
 
   CTreeItem(QString label, QPixmap* pix, CTreeItem* parent, CTreeItem* afterItem);
-  CTreeItem(QString label, Q3ListView* parent, CTreeItem* afterItem);
-  CTreeItem(QString label, QPixmap* pix, Q3ListView* parent);
+  CTreeItem(QString label, QTreeWidget* parent, CTreeItem* afterItem);
+  CTreeItem(QString label, QPixmap* pix, MyListView* parent);
 
   ~CTreeItem();
   void setItemData(TItemData* dat) {data = dat;}
@@ -44,10 +48,16 @@ public:
   void setPix(QPixmap* pix);
   void SetItemMask(bool hasErr, bool hasCom);
   void SetItemMask(QPixmap* pixMask);
+  void setRenameEnabled(int col, bool enable);
+  bool renameEnabled(int col);
   virtual const QPixmap *pixmap(int i) const { if (i) return 0; return nPix; }
+  CTreeItem* nextSibling();
+  
   virtual void startRename(int col);
+  /*
   virtual void okRename(int col);
   virtual void cancelRename(int col);
+  */
   QString completeText;
   DString actLab;
   bool inRename;
@@ -62,21 +72,30 @@ protected:
 
 class CTreeView;
 
-class MyListView: public Q3ListView
+class MyListView: public QTreeWidget //Q3ListView
 {
 public:
   MyListView(CTreeView* view);
-  void setCurAndSel(Q3ListViewItem* item, bool singleSel = true);
+  CTreeItem* itemAbove(CTreeItem* item);
+  CTreeItem* itemAtIndex(const QModelIndex& index);
+  void setCurAndSel(QTreeWidgetItem* item, bool singleSel = true);
   void keyPressEvent(QKeyEvent* ev);
-  void contentsMousePressEvent(QMouseEvent *ev);
-  void contentsMouseReleaseEvent(QMouseEvent *ev);
-  void contentsMouseMoveEvent(QMouseEvent *ev);
+  void mousePressEvent(QMouseEvent *ev);
+  void mouseReleaseEvent(QMouseEvent *ev);
+  void mouseMoveEvent(QMouseEvent *ev);
   void focusInEvent ( QFocusEvent * e );
-  Q3DragObject* dragObject();
-  void contentsDragMoveEvent(QDragMoveEvent *ev);
-  void contentsDragEnterEvent(QDragEnterEvent *ev);
-  void contentsDragLeaveEvent(QDragLeaveEvent *ev);
-  void contentsDropEvent(QDropEvent* ev);
+  void ResetSelections();
+  QDrag* dragObject();
+  void editItem ( QTreeWidgetItem * item, int column = 0 );
+  
+  void dragMoveEvent(QDragMoveEvent *ev);
+  void dragEnterEvent(QDragEnterEvent *ev);
+  void dragLeaveEvent(QDragLeaveEvent *ev);
+  void dropEvent(QDropEvent* ev);
+
+//  CTreeItem* firstChild() {return topLevelItem(0)); }
+  
+  CTreeItem* RootItem;
   CTreeView* lavaView;
   bool withShift;
   bool withControl;
@@ -95,13 +114,12 @@ public:
 //  VIEWFACTORY(CTreeView);
 
   MyListView *m_tree;
-
   CTreeItem* GetPrevSiblingItem(CTreeItem* item);
 //  CTreeItem* HitTest(QPoint qp);
   CTreeItem* InsertItem(QString label, QPixmap* nPix, CTreeItem* parent, CTreeItem* afterItem=TVI_LAST);
   QLineEdit* GetEditControl() {return labelEditWid;}
   QLineEdit *labelEditWid;
-  virtual Q3DragObject* OnDragBegin() {return 0;}
+  virtual QDrag* OnDragBegin() {return 0;}
   virtual void OnDelete() {}
   virtual void RenameStart(CTreeItem* item) {}
   virtual void RenameOk(CTreeItem* item) {}

@@ -52,7 +52,7 @@ public:
   virtual void OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint);
   //virtual bool PreCreateWindow(CREATESTRUCT& cs);
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
-  void setSelPost(Q3ListViewItem* selItem);
+  void setSelPost(QTreeWidgetItem* selItem);
   CLavaPEView* myMainView;
   LavaDECL * myDECL; //=the decl from which it was initiated
   TID myID;

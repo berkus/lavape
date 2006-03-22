@@ -98,8 +98,8 @@ void CWizardView::setFont(const QFont& font)
   CLavaBaseView::setFont(font);
   int pageI = 0;
   if (wizard && !wizard->isActive) {
-//???    int x = myScrv->contentsX();
-//???    int y = myScrv->contentsY();
+    int x = myScrv->horizontalScrollBar()->value();
+    int y = myScrv->verticalScrollBar()->value();
     wizard->UpdateData();
     LavaDECL** synEl = wizard->synEl;
     LavaDECL* FormDECL = wizard->FormDECL;
@@ -111,7 +111,9 @@ void CWizardView::setFont(const QFont& font)
     wizard->setModified(mod);
     myScrv->MaxBottomRight = wizard->rect();
     Resize();
-//???    myScrv->setContentsPos(x,y);
+    myScrv->horizontalScrollBar()->setValue(x);
+    myScrv->verticalScrollBar()->setValue(y);
+    //myScrv->setContentsPos(x,y);
     if (pageI < wizard->count())
       wizard->setCurrentPage(pageI);
     myScrv->MaxBottomRight = wizard->rect();
@@ -131,7 +133,7 @@ void CWizardView::customEvent(QCustomEvent *ev)
   if(delayedID) {
     TIDType itype;
     LavaDECL** synEl = (LavaDECL**)((CLavaPEDoc*)GetDocument())->IDTable.GetVar(TID(delayedID,0), itype);
-    CTreeItem* item = myTree->BrowseTree(*synEl, (CTreeItem*)myTree->GetListView()->firstChild());
+    CTreeItem* item = myTree->BrowseTree(*synEl, (CTreeItem*)myTree->GetListView()->RootItem);
     if (item)
       myTree->GetListView()->setCurAndSel(item);
     delayedID = 0;
@@ -139,7 +141,9 @@ void CWizardView::customEvent(QCustomEvent *ev)
       wizard = new CLavaPEWizard(synEl, 0, this, guibox);
       myScrv->MaxBottomRight = wizard->rect();
       Resize();
-//???      myScrv->setContentsPos(0,0);
+      myScrv->horizontalScrollBar()->setValue(0);
+      myScrv->verticalScrollBar()->setValue(0);
+//      myScrv->setContentsPos(0,0);
       if (postedPage < wizard->count())
         wizard->setCurrentPage(postedPage);
       postedPage = 0;
@@ -181,7 +185,9 @@ void CWizardView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
                                this, guibox);
     myScrv->MaxBottomRight = wizard->rect();
     Resize();
-//???    myScrv->setContentsPos(0,0);
+    myScrv->horizontalScrollBar()->setValue(0);
+    myScrv->verticalScrollBar()->setValue(0);
+//    myScrv->setContentsPos(0,0);
     if (pageI < wizard->count())
       wizard->setCurrentPage(pageI);
 
@@ -201,7 +207,7 @@ void CWizardView::Resize()
 {
   QSize size = myScrv->MaxBottomRight.size();
   ((GUIScrollView*)myScrv)->qvbox->resize(size);
-//???  myScrv->resizeContents(size.width(),size.height());
+//  myScrv->resizeContents(size.width(),size.height());
 }
 
 
@@ -236,7 +242,9 @@ void CWizardView::Reset()
     wizard = new CLavaPEWizard(synEl, 0, this, guibox);
     myScrv->MaxBottomRight = wizard->rect();
     Resize();
-//???    myScrv->setContentsPos(0,0);
+    myScrv->horizontalScrollBar()->setValue(0);
+    myScrv->verticalScrollBar()->setValue(0);
+//    myScrv->setContentsPos(0,0);
     if (pageI < wizard->count())
       wizard->setCurrentPage(pageI);
   }

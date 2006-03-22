@@ -3497,7 +3497,7 @@ void CLavaPEDoc::SetExecItemImage(LavaDECL* execDECL, bool empty, bool hasErrors
     flags.INCL(invariantPM);
   if (empty)
     flags.INCL(emptyPM);
-  CTreeItem* item = view->BrowseTree(execDECL->ParentDECL, (CTreeItem*)view->GetListView()->firstChild());
+  CTreeItem* item = view->BrowseTree(execDECL->ParentDECL, (CTreeItem*)view->GetListView()->RootItem);
   item = view->getSectionNode(item, execDECL->DeclType);
   bm = view->GetPixmap(true,true,execDECL->DeclType,flags);
   /*
@@ -3510,7 +3510,7 @@ void CLavaPEDoc::SetExecItemImage(LavaDECL* execDECL, bool empty, bool hasErrors
   if (item) {
     item->setPix(bm); 
     item->SetItemMask(hasErrors, hasCom);
-    item->repaint();
+//    item->repaint();
   }
 }
 
@@ -3727,10 +3727,10 @@ void CLavaPEDoc::SetPEError(const CHAINX& ErrChain, bool andShow)
 void CLavaPEDoc::SetTreeItemImage(LavaDECL* errDECL, bool hasErr)
 { 
   CLavaPEView* view = (CLavaPEView*)MainView;
-  CTreeItem* item = view->BrowseTree(errDECL, (CTreeItem*)view->GetListView()->firstChild());
+  CTreeItem* item = view->BrowseTree(errDECL, (CTreeItem*)view->GetListView()->RootItem);
   if (item) {
     item->SetItemMask(hasErr, errDECL->DECLComment.ptr);
-    item->repaint();
+//    item->repaint();
   }
 }
 

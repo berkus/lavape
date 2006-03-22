@@ -45,6 +45,7 @@
 #include "qcursor.h"
 #include "q3popupmenu.h"
 #include "q3listview.h"
+#include "qtreewidget.h"
 #include "q3vbox.h"
 #include "q3whatsthis.h"
 #include "qworkspace.h"
@@ -1779,6 +1780,9 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   viewL = new CInclView(splitter, doc);
   viewM = new CLavaPEView(splitter, doc);
   viewR = new CVTView(splitter, doc);
+  splitter->addWidget(viewL);
+  splitter->addWidget(viewM);
+  splitter->addWidget(viewR);
   if (viewM->OnCreate() && viewL->OnCreate() && viewR->OnCreate()) {
     ((CInclView*)viewL)->myTree = (CTreeView*)viewM;
     ((CVTView*)viewR)->myMainView = (CLavaPEView*)viewM;
@@ -1804,7 +1808,6 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     list.replace(1,int(totalW * 0.8));
     list.replace(2,totalW - list.at(0) - list.at(1));
     splitter->setSizes(list);
-
     lastActive = viewM;
     if  ((oldWindowState == Qt::WindowMaximized) && showIt)
       showMaximized();
@@ -1863,7 +1866,7 @@ void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)
       list.replace(2,int(totalW * 0.3));
     list.replace(1,totalW - list.at(0) - list.at(2));
     splitter->setSizes(list);
-/*
+    /*
   Q3ValueList<int> list = splitter->sizes();
   Q3ValueList<int>::Iterator it = list.begin();
   int wl, wr, totalW = *it;

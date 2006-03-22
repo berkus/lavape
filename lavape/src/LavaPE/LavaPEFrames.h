@@ -15,7 +15,7 @@
 #include "qtoolbar.h"
 #include "q3combobox.h"
 #include "q3popupmenu.h"
-#include "q3listview.h"
+//#include "q3listview.h"
 #include "qsplitter.h"
 #include "q3vbox.h"
 #include "qevent.h"
@@ -25,6 +25,7 @@
 #include <QCustomEvent>
 #include <QCloseEvent>
 #include <QWindowsStyle>
+#include <QTreeWidget>
 
 
 typedef QMap<QString,QString> HelpTextMap;

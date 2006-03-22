@@ -9,6 +9,7 @@
 #include "q3combobox.h"
 //Added by qt3to4:
 #include <QPixmap>
+#include <QDrag>
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
@@ -19,7 +20,7 @@
 #include "qevent.h"
 #include "qstring.h"
 #include "qclipboard.h"
-#include "q3dragobject.h"
+//#include "q3dragobject.h"
 
 
 class TreeWhatsThis : public WhatsThis
@@ -58,11 +59,12 @@ enum TisOnWhat {  //CLavaPEWizard creation cause
 
 enum PMFlag {emptyPM, invariantPM};
 
-class LavaSource: public Q3StoredDrag
+
+class LavaSource: public QMimeData//Q3StoredDrag
 {
 public:
-  LavaSource(QWidget* dragSource) :Q3StoredDrag ( "QLavaTreeView", dragSource, "LavaSource_Drag") {}
-  LavaSource() :Q3StoredDrag ( "QLavaTreeView",0,"LavaSource_Copy") {}
+  LavaSource(QWidget* dragSource) :QMimeData() {}//!!Q3StoredDrag ( "QLavaTreeView", dragSource, "LavaSource_Drag") {}
+  LavaSource() :QMimeData (){}//!! "QLavaTreeView",0,"LavaSource_Copy") {}
 
   virtual const char* format( int i = 0 ) const;
 private:
@@ -165,7 +167,7 @@ public:
   bool IsChildNodeOf(CTreeItem* hitemChild, CTreeItem* hitemSuspectedParent);
   CMainItemData* Navigate(bool all, CTreeItem*& item, int& level);
   virtual void OnActivateView(bool bActivate=true, wxView *deactiveView=0);
-  Q3DragObject*  OnDragBegin();
+  QDrag*  OnDragBegin();
   void OnDragEnter(QDragEnterEvent* ev);
   void OnDragLeave(QDragLeaveEvent* ev);
   void OnDragOver(QDragMoveEvent* ev);
@@ -189,7 +191,7 @@ public:
   virtual void RenameStart(CTreeItem* item);
   virtual void resizeEvent(QResizeEvent * );
 //  void SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask, bool inPattern);
-  void setSelPost(Q3ListViewItem* selItem);
+  void setSelPost(QTreeWidgetItem* selItem);
   void SetErrAndCom(CTreeItem* item);
   void SetTreeFlags(CTreeItem* item, bool exp);
   virtual void UpdateUI();
@@ -271,12 +273,12 @@ public:
   void OnShowOverridables();//
 //  void OnShowPattern();
 
-public slots:
-  void OnDblclk(Q3ListViewItem* onItem, const QPoint&, int);
+public slots: 
+  void OnDblclk( const QModelIndex & index);//QTreeWidgetItem* onItem, const QPoint&, int);
   void OnSelchanged();
-  void OnRclick(Q3ListViewItem* item);
-  void OnItemexpanded(Q3ListViewItem* item);
-  void OnItemcollapsed(Q3ListViewItem* item);
+  void OnRclick(QTreeWidgetItem* item);
+  void OnItemexpanded(QTreeWidgetItem* item);
+  void OnItemcollapsed(QTreeWidgetItem* item);
 
   //void OnLButtonDown(UINT nFlags, QPoint point);
   //void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);

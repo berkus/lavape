@@ -42,10 +42,10 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
 : CTreeView(parent, doc, "InclView")
 {
   InitComplete = false;
-  connect(m_tree,SIGNAL(doubleClicked(Q3ListViewItem*,const QPoint&,int)), SLOT(OnDblclk(Q3ListViewItem*,const QPoint&,int)));
+  connect(m_tree,SIGNAL(doubleClicked(QTreeWidgetItem*,const QPoint&,int)), SLOT(OnDblclk(QTreeWidgetItem*,const QPoint&,int)));
   setFont(LBaseData->m_TreeFont);
   new InclWhatsThis(m_tree);
-  GetListView()->setSelectionMode(Q3ListView::Single);
+  GetListView()->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 CInclView::~CInclView()
@@ -83,9 +83,9 @@ void CInclView::OnInitialUpdate()
   if (pDoc && pDoc->mySynDef) {
     Expanded = true;
     OnUpdate(NULL, 0, 0);
-    GetListView()->firstChild()->setOpen(true);
-    GetListView()->setCurrentItem(GetListView()->firstChild());
-    GetListView()->setSelected(GetListView()->firstChild(), true);
+    GetListView()->expandItem(GetListView()->RootItem);//firstChild()->setOpen(true);
+    GetListView()->setCurrentItem(GetListView()->RootItem);
+    GetListView()->setItemSelected(GetListView()->RootItem, true);
     InitComplete = true;
   }
 }
@@ -106,10 +106,12 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
      && ( ( ((CLavaPEHint*)pHint)->com != CPECommand_Change)
           || ((CLavaPEHint*)pHint)->CommandData1 )) 
     return;
-  parent = (CTreeItem*)GetListView()->firstChild();
-  if (parent)
-    Expanded = parent->isOpen();
-  delete GetListView()->firstChild();//DGetListView()->DeleteAllItems();
+  parent = (CTreeItem*)GetListView()->RootItem;
+  if (parent) {
+    Expanded = GetListView()->isItemExpanded(parent);//parent->isOpen();
+    delete GetListView()->RootItem;//DGetListView()->DeleteAllItems();
+    GetListView()->RootItem = 0;
+  }
   doc = GetDocument();
   parent = InsertItem(doc->IDTable.IDTab[0]->FileName.c, bm, TVI_ROOT);
     //TVIF_TEXT | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_STATE,
@@ -134,11 +136,14 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   }
   if (hasErr) {
-    GetListView()->firstChild()->setOpen(true);
+    GetListView()->expandItem(GetListView()->RootItem);//child(0)->setOpen(true);
     ((CTreeFrame*)GetParentFrame())->CalcSplitters(false, true);
   }
   else
-    GetListView()->firstChild()->setOpen(Expanded);
+    if (Expanded)
+      GetListView()->expandItem(GetListView()->RootItem);//->setOpen(Expanded);
+    else
+      GetListView()->collapseItem(GetListView()->RootItem);
   GetListView()->update();
 
 }
@@ -190,7 +195,7 @@ void CInclView::OnDelete()
   if (GetDocument()->changeNothing)
     return;
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  if (item && (item != GetListView()->firstChild())) {
+  if (item && (item != GetListView()->RootItem)) {
     CHESimpleSyntax* cheSyn = (CHESimpleSyntax*)item->getItemData();
     if (cheSyn->data.nINCL == 1) { 
       QMessageBox::critical(this, qApp->name(),ERR_StdNotRemovable, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
@@ -212,9 +217,9 @@ void CInclView::OnDelete()
 }
 
 
-void CInclView::OnDblclk(Q3ListViewItem* item, const QPoint&, int) 
+void CInclView::OnDblclk(QTreeWidgetItem* item, const QPoint&, int) 
 {
-  if (item && (item != GetListView()->firstChild())) {
+  if (item && (item != GetListView()->RootItem)) {
     DString *fn = new DString(((CHESimpleSyntax*)((CTreeItem*)item)->getItemData())->data.UsersName); //.SyntaxName);
     QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_CalledView,(void*)fn));
 
@@ -248,7 +253,7 @@ void CInclView::OnUpdateDelete(QAction* action)
 {
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
   action->setEnabled((!GetDocument()->changeNothing) &&
-                     item && (item != GetListView()->firstChild()));
+                     item && (item != GetListView()->RootItem));
 //                 && !((CHESimpleSyntax*) item->getItemData())->data.Inherited);
 }
 
@@ -264,7 +269,7 @@ void CInclView::OnEditSel()
   bool multi = false;
 
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  if (item && (item != GetListView()->firstChild())) {
+  if (item && (item != GetListView()->RootItem)) {
     che = (CHESimpleSyntax*)item->getItemData();
     if (che->data.nINCL != 1) {
       newChe = new CHESimpleSyntax;
@@ -360,7 +365,7 @@ void CInclView::OnEditSel()
 void CInclView::OnUpdateEditSel(QAction* action) 
 {
   CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  bool enable = (item && (item != GetListView()->firstChild()));
+  bool enable = (item && (item != GetListView()->RootItem));
   if (enable) {
     CHESimpleSyntax* che = (CHESimpleSyntax*)item->getItemData();
     enable = che->data.nINCL != 1;
@@ -389,7 +394,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
       frame->m_UtilityView->ResetError(); 
       if (!GetListView()->hasFocus())
         GetListView()->setFocus();
-      GetListView()->currentItem()->repaint();
+//      GetListView()->currentItem()->repaint();
     }
     else 
       DisableActions();
@@ -412,7 +417,7 @@ InclWhatsThis::InclWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
 QString InclWhatsThis::text(const QPoint &point) {
   CTreeItem *item=(CTreeItem*)listView->itemAt(point);
 
-  if (item == listView->firstChild())
+  if (item == listView->RootItem)
     return QString(QObject::tr("This is the current <b><i><font color=red>Lava</font></i></b> file; it may <a href=\"../Packages.htm#include\">include</a> other <b><i><font color=red>Lava</font></i></b> files"));
   else
     return QString(QObject::tr("This is an <a href=\"../Packages.htm#include\">included</a> <b><i><font color=red>Lava</font></i></b> file"));

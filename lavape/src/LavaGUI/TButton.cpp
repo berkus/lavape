@@ -313,7 +313,7 @@ void CRadioButton::OnClicked()
 
 void CRadioButton::focusInEvent(QFocusEvent *ev) 
 {
-  if (ev->reason() != QFocusEvent::Mouse) {
+  if (ev->reason() != Qt::MouseFocusReason) {
     GUIProg->editNode = 0;
     GUIProg->focNode = myFormNode;
     GUIProg->butNode = myFormNode;

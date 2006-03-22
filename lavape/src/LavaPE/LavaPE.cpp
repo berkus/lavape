@@ -406,8 +406,8 @@ void CLavaPEApp::OnPopcontext()
         decl = doc->IDTable.GetDECL(back->id);
         if (!decl)
         decl = doc->IDTable.GetDECL(back->parentID);
-        if (decl)
-          item = ((CLavaPEView*)backView)->BrowseTree(decl, (CTreeItem*)((CLavaPEView*)backView)->GetListView()->firstChild());
+        if (decl) 
+          item = ((CLavaPEView*)backView)->BrowseTree(decl, (CTreeItem*)((CLavaPEView*)backView)->GetListView()->RootItem);
         else
           item = 0;
       }
@@ -1191,16 +1191,16 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
         else
           if (!popUp)
             view->ActivateView(true);
-        if (popUp)
-          item = ((CLavaPEView*)view)->BrowseTree(formDECL, (CTreeItem*)((CLavaPEView*)view)->GetListView()->firstChild(), enumID);
+        if (popUp) 
+          item = ((CLavaPEView*)view)->BrowseTree(formDECL, (CTreeItem*)((CLavaPEView*)view)->GetListView()->RootItem, enumID);
         else
-          item = ((CLavaPEView*)view)->BrowseTree(declsel, (CTreeItem*)((CLavaPEView*)view)->GetListView()->firstChild(), enumID);
+          item = ((CLavaPEView*)view)->BrowseTree(declsel, (CTreeItem*)((CLavaPEView*)view)->GetListView()->RootItem, enumID);
         if (item) {
           itemOld = (CTreeItem*)((CLavaPEView*)view)->GetListView()->currentItem();
           if (itemOld)
-            itemOld->setSelected(false);
+            ((CLavaPEView*)view)->GetListView()->setItemSelected(itemOld, false);//->setSelected(false);
           ((CLavaPEView*)view)->GetListView()->setCurAndSel(item);
-          if (((CLavaPEView*)view)->myFormView && (item != ((CLavaPEView*)view)->GetListView()->firstChild()))
+          if (((CLavaPEView*)view)->myFormView && (item != ((CLavaPEView*)view)->GetListView()->RootItem))
             ((CLavaGUIView*)((CLavaPEView*)view)->myFormView)->SyncForm(declsel);
           if (popUp)
             if (formDECL) {
@@ -1210,10 +1210,10 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
             }
             else {
               ((CLavaPEView*)view)->ExpandItem(item);
-              ((CLavaPEView*)view)->GetListView()->ensureItemVisible(item);
+              ((CLavaPEView*)view)->GetListView()->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
             }
-          else
-            ((CLavaPEView*)view)->GetListView()->ensureItemVisible(item);
+          else 
+            ((CLavaPEView*)view)->GetListView()->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
         }
         return true;
       }

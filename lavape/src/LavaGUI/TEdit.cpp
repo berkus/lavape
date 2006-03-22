@@ -81,8 +81,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   size = GUIProg->CalcTextRect(size.width(), 1, font());
 //???  size.setFixedWidth(size.width());
 //???  size.setFixedHeight(size.height());
-  int h = minimumSizeHint().height();
-  setGeometry(bord,bord, size.width(), h);//size.height());
+  setGeometry(bord,bord, size.width(), minimumSizeHint().height());
   clearModified();
   show();
 }

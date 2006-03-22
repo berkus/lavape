@@ -68,7 +68,7 @@ bool CExecTree::CalcPos(int level)
   //  CTreeItem* item = getSectionNode(ParItem, ExecDef);
   CMainItemData *data;
   if (downAwaited && (level<= ActLevel))  {
-    if (!ParItem->firstChild()) {
+    if (!ParItem->child(0)) {
       data = (CMainItemData*)ParItem->getItemData();
       if ((*(LavaDECL**)data->synEl)->TreeFlags.Contains(hasEmptyOpt))
         CTreeItem* item = getSectionNode(ParItem, ExecDef);
@@ -635,15 +635,15 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
       ActItem = (CTreeItem*)ActItem->nextSibling();
     if (!ActItem)
       if (parent)
-        ActItem = (CTreeItem*)parent->firstChild();
+        ActItem = (CTreeItem*)parent->child(0);
       else
-        ActItem = (CTreeItem*)viewTree->GetListView()->firstChild();
+        ActItem = (CTreeItem*)viewTree->GetListView()->RootItem;
     ActItem->setText(0, label.c);
     ActItem->setPix(bm);
     //ActItem->setPixmap(0, *bm);
     oldItd = (CMainItemData*)ActItem->getItemData();
     delete oldItd;
-    for (item = (CTreeItem*)ActItem->firstChild(); item; item = (CTreeItem*)item->nextSibling()) {
+    for (item = (CTreeItem*)ActItem->child(0); item; item = (CTreeItem*)item->nextSibling()) {
       itd = (CMainItemData*)item->getItemData();
       if ((itd->type != TIType_Require) 
         && (itd->type != TIType_Ensure)
@@ -665,9 +665,12 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
   bool enableDrag = !elDef->TypeFlags.Contains(thisComponent)
                     && !elDef->TypeFlags.Contains(thisCompoForm);
   if (viewTree->drawTree && FinalUpdate)
-    ActItem->setDragEnabled(enableDrag);
-  //else 
-  //  ActItem->setDragEnabled(false);
+    if (enableDrag)
+      ActItem->setFlags(ActItem->flags() | Qt::ItemIsDragEnabled);
+    else
+      ActItem->setFlags(ActItem->flags() ^ Qt::ItemIsDragEnabled);
+//    ActItem->setDragEnabled(enableDrag); Qt::ItemIsDragEnabled
+  
   if (elDef->WorkFlags.Contains(selAfter)) {
     viewTree->SelItem = ActItem;
     elDef->WorkFlags.EXCL(selAfter);
@@ -904,7 +907,7 @@ void CExecTree::ExecFormDef(LavaDECL ** pelDef, int level)
         Doc->hasErrorsInTree = true;
       }
     }
-    if (downAwaited && !ActItem->firstChild()) {
+    if (downAwaited && !ActItem->child(0)) {
       data = (CMainItemData*)ActItem->getItemData();
       if ((*(LavaDECL**)data->synEl)->TreeFlags.Contains(hasEmptyOpt))
         item = getSectionNode(ActItem, ExecDef);
@@ -1015,8 +1018,8 @@ void CExecTree::ExecEnum(LavaDECL** pinEl, DString fieldID)
   QPixmap* bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[enumBM];//QPixmapCache::find("l_enum"); 
   if ((*pinEl)->Items.first)
     ParItem = ActItem;
-  if (!viewTree->drawTree && ActItem->firstChild()) {
-    item = (CTreeItem*)ActItem->firstChild();
+  if (!viewTree->drawTree && ActItem->child(0)) {
+    item = (CTreeItem*)ActItem->child(0);
     viewTree->DeleteItemData(item);
     delete item;
   }
@@ -1033,7 +1036,7 @@ void CExecTree::ExecEnumItem(CHEEnumSelId * enumsel, int level)
   if (!CalcPos(level))
     return;
   QPixmap* bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[enumselBM];//QPixmapCache::find("l_enumsel");
-  CTreeItem* section = (CTreeItem*)ParItem->firstChild();
+  CTreeItem* section = (CTreeItem*)ParItem->child(0);
   ActItem = viewTree->InsertItem(enumsel->data.Id.c, bm, section, ActItem);
 //  if (enumsel->data.DECLComment.ptr && enumsel->data.DECLComment.ptr->Comment.l)
 //    viewTree->SetItemState( ActItem, INDEXTOOVERLAYMASK(1), TVIS_OVERLAYMASK );
@@ -1042,7 +1045,8 @@ void CExecTree::ExecEnumItem(CHEEnumSelId * enumsel, int level)
   CMainItemData *itd = new CMainItemData(TIType_CHEEnumSel, (unsigned long) enumsel);
   ActItem->setRenameEnabled(0, true);
   ActItem->setItemData( itd);
-  ActItem->setDragEnabled(true);
+  ActItem->setFlags(ActItem->flags() | Qt::ItemIsDragEnabled);
+//  ActItem->setDragEnabled(true);
   if (viewTree->drawTree && FinalUpdate) {
     if (enumsel->data.selItem) {
       viewTree->GetListView()->setCurAndSel(ActItem);

@@ -16,13 +16,15 @@
 #include "q3textview.h"
 #include "qtabwidget.h"
 #include "qsplitter.h"
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 
 enum UtilityTabs { /*tabBuild,*/ tabComment, tabError, tabFind, tabDebug };
 
 class CUtilityView;
 
-class StackListView: public Q3ListView
+class StackListView: public QTreeWidget
 {
 public:
   StackListView(QWidget *parent, CUtilityView* util);
@@ -31,10 +33,11 @@ public:
   CUtilityView* myUtilityView;
   CTreeItem* lastSelected;
   bool allDrawn;
+  //CTreeItem* firstChild() {return (CTreeItem*)itemFromIndex(rootIndex().child(0,0)); }
 
 public slots:
   void selChanged();
-  void itemClicked(Q3ListViewItem *item);
+  void itemClicked(QTreeWidgetItem *item);
 
 private:
   Q_OBJECT
@@ -43,7 +46,7 @@ private:
 
 class VarItem;
 
-class VarListView: public Q3ListView
+class VarListView: public QTreeWidget
 {
 public:
   VarListView(QWidget *parent, CUtilityView* util, bool forParams);
@@ -51,13 +54,15 @@ public:
   void makeItems(const CHAINX& objChain);
   CUtilityView* myUtilityView;
   int width0, width1, width2;
+ // VarItem* firstChild() {return (VarItem*)itemFromIndex(rootIndex().child(0,0)); }
+
 private:
   Q_OBJECT
 
 };
 
 
-class VarItem  :public Q3ListViewItem {
+class VarItem  :public QTreeWidgetItem {
 public:
   VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListView* view);
   VarItem(VarItem* parent, DDItemData* data, VarListView* view);
@@ -106,7 +111,7 @@ public:
   VarItem *itemToOpen;
 
 protected:
-  Q3ListView* FindPage;
+  QTreeWidget* FindPage;
   Q3TextEdit* CommentPage;
   Q3TextEdit* ErrorPage;
   QSplitter *DebugPage;
@@ -115,7 +120,7 @@ protected:
   //void OnSize(UINT nType, int cx, int cy);
   //HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 public slots:
-  void OnDblclk(Q3ListViewItem*);
+  void OnDblclk(QTreeWidgetItem*);
   void OnTabChange(QWidget* curPage);
 //  void OnSelChange();
 private:

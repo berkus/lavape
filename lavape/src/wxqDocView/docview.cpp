@@ -666,7 +666,7 @@ void wxDocument::SetFilename(const QString& filename, bool notifyViews)
 wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QWidget(parent, name)
 {
     deleting = false;
-    layout = new QHBoxLayout;
+    layout = new QHBoxLayout(this);
     layout->setMargin(0);
     setLayout(layout);
 
