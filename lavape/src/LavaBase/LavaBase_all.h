@@ -19,6 +19,11 @@
 //#include "SafeInt.h"
 #include "SylTraversal.h"
 #include "SynIDTable.h"
+#include "SafeInt.h"
+#include <float.h>
+#include <stdio.h>
+#include <limits>
+#include <QHeaderView>
 
 #endif
 

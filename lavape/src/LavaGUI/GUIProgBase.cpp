@@ -25,6 +25,7 @@
 #include "FormWid.h"
 #include "mdiframes.h"
 
+#pragma hdrstop
 
 
 void CGUIMet::Create()

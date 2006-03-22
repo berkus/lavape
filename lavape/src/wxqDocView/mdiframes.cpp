@@ -46,6 +46,8 @@
 #include <QEvent>
 #include <QCustomEvent>
 
+#pragma hdrstop
+
 /*
  * Docview MDI parent frame
  */

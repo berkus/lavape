@@ -23,6 +23,7 @@
 #include "LavaThread.h"
 #include "LavaBaseDoc.h"
 
+#pragma hdrstop
 
 
 static QThreadStorage<CThreadData*> myThreadStg;

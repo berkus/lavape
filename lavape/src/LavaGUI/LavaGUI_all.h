@@ -4,9 +4,6 @@
 #include "disco_all.h"
 #include "wxqDocView_all.h"
 #include "LavaBase_all.h"
-//#include "LavaPE_all.h"
-//#include "LavaPE_UI_all.h"
-//#include "Lava_all.h"
 
 #include "CmdExec.h"
 #include "Conv.h"
@@ -26,6 +23,7 @@
 #include "TEdit.h"
 #include "TreeSrch.h"
 #include "TStatic.h"
+//#include "Lava.xpm"
 
 #endif
 

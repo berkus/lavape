@@ -34,9 +34,7 @@
 //Added by qt3to4:
 #include <QFrame>
 
-
-//enum {helpEvent,localEvent,popupMenuEvent,sigEvent} EventLocType;
-
+#pragma hdrstop
 
 
 void GUIwidCLASS::ReallyDestroyWidget(QWidget* widget)

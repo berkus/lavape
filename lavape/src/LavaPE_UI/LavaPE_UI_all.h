@@ -1,10 +1,8 @@
 #ifndef _LavaPE_UI_PCH
 #define _LavaPE_UI_PCH
 
-//#include "LavaPE_UI_export.h"
-//#include "redefines.h"
-
-//#include "cmainframe.h" omitted because of redefines.h: QAction --> wxAction
+#include "LavaPEMainFrameBase.h"
+#include "cmainframe.h"
 #include "idd_attrbox.h"
 #include "idd_chainformpage.h"
 #include "idd_compspecbox.h"

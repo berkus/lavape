@@ -27,6 +27,9 @@
 #include <ctype.h>
 #include <errno.h>
 
+#pragma hdrstop
+
+
 using namespace std;
 
 

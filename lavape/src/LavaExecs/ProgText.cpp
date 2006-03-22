@@ -26,6 +26,7 @@
 #include "qfont.h"
 #include <locale.h>
 
+#pragma hdrstop
 
 
 static inline void code (const char *text)

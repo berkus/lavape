@@ -25,6 +25,8 @@
 #include "qmessagebox.h"
 #include "mdiframes.h"
 
+#pragma hdrstop
+
 
 /***************************************************************************/
 /* Convert from  DString to Integer                                         */

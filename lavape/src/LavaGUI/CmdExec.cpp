@@ -28,6 +28,9 @@
 #include "TButton.h"
 #include "mdiframes.h"
 
+#pragma hdrstop
+
+
 CHEFormNode* CmdExecCLASS::InPopupShell(CHEFormNode* node)
 {
   CHEFormNode* upNode;

@@ -27,6 +27,7 @@
 #include "qobject.h"
 #include "qstring.h"
 
+#pragma hdrstop
 
 
 CSylTraversal::CSylTraversal(CExec *execSyl, SynDef *syn)

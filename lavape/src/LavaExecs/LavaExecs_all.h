@@ -5,6 +5,16 @@
 #include "wxqDocView_all.h"
 #include "LavaBase_all.h"
 
+#ifndef INTERPRETER
+#include "ExecView.h"
+#include "Q6_null.xpm"
+#include <QPixmap>
+#endif
+#include "execframe.xpm"
+#include "debugStop.xpm"
+#include "debugStopGreen.xpm"
+#include "breakPoint.xpm"
+
 #include "Check.h"
 #include "ComboBar.h"
 #include "Constructs.h"

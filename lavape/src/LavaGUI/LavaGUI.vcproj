@@ -139,7 +139,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".;..\disco;..\LavaBase;..\LavaPE\res;..\wxqDocView"
+				AdditionalIncludeDirectories=".;..\disco;..\LavaBase\Generated;..\LavaBase;..\LavaPE\res;..\wxqDocView"
 				PreprocessorDefinitions="WIN32;EXECVIEW;QT_DLL;QT3_SUPPORT;QT_THREAD_SUPPORT;LAVAGUI_EXPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
@@ -229,6 +229,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -251,6 +254,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -273,6 +279,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -295,6 +304,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -317,6 +329,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -339,6 +354,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -361,6 +379,23 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\LavaGUI_all.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -383,6 +418,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -405,6 +443,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -427,6 +468,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -449,6 +493,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -471,6 +518,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -493,6 +543,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -515,6 +568,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -537,6 +593,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -559,6 +618,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -581,6 +643,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -633,6 +698,10 @@
 			</File>
 			<File
 				RelativePath="LavaForm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LavaGUI_all.h"
 				>
 			</File>
 			<File
@@ -844,6 +913,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\FormWid.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -866,6 +938,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaGUIFrame.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -888,6 +963,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaGUIPopup.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -910,6 +988,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaGUIView.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -932,6 +1013,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaMenu.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -954,6 +1038,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\TButton.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -976,6 +1063,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\TComboBox.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -998,6 +1088,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\TEdit.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1020,6 +1113,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\TStatic.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 			</File>

@@ -27,6 +27,8 @@
 #include <QPixmap>
 #include "execframe.xpm"
 
+#pragma hdrstop
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CExecFrame construction/destruction

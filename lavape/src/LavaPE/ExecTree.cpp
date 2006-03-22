@@ -33,6 +33,7 @@
 //Added by qt3to4:
 #include <QPixmap>
 
+#pragma hdrstop
 
 
 CExecTree::CExecTree(CLavaPEView *tree, bool autoBox, bool finalUpdate, int check)

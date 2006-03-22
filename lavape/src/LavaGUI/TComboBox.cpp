@@ -33,6 +33,8 @@
 #include <QMenu>
 #include <QListView>
 
+#pragma hdrstop
+
 
 CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentWnd, char* WindowName, DString& defaultSel, unsigned width)
 :QComboBox(false, pParentWnd, "TComboBox")

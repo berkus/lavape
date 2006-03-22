@@ -33,6 +33,8 @@
 
 #include <qtoolbar.h>
 
+#pragma hdrstop
+
 
 #define ENTRY \
   if (!execView) execView=ckd.execView; \

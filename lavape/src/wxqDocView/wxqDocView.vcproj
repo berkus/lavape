@@ -216,6 +216,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -238,6 +241,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -247,6 +253,20 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\wxqDocView_all.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -313,6 +333,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories="."
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\docview.h"
+						PrecompiledHeaderFile="PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -335,6 +358,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories="."
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\mdiframes.h"
+						PrecompiledHeaderFile="PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration

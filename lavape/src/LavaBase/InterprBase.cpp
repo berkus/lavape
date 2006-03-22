@@ -38,6 +38,8 @@
 #include <unistd.h>
 #endif
 
+#pragma hdrstop
+
 
 bool INC_FWD_CNT(CheckData &ckd, LavaObjectPtr object) {
   //(*(((unsigned short *)(object - (*object)->sectionOffset))-1))++;

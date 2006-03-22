@@ -17,6 +17,9 @@
 #include <Q3HBoxLayout>
 #include <QCloseEvent>
 
+#pragma hdrstop
+
+
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 

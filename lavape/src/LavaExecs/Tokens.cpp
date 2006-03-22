@@ -23,6 +23,8 @@
 #include "SYSTEM.h"
 #include <string.h>
 
+#pragma hdrstop
+
 
 const unsigned MaxLenToken = 20;
 const unsigned MaxString = 1000;

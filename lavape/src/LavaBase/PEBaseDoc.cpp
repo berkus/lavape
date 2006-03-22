@@ -37,25 +37,10 @@
 #include "qfileinfo.h"
 #include "qdir.h"
 #include "UNIX.h"
-
 #include <QComboBox>
 
+#pragma hdrstop
 
-//static HRESULT CreateShortCut (LPCSTR pszShortcutFile, LPSTR pszLink);
-
-/////////////////////////////////////////////////////////////////////////////
-// CPEBaseDoc
-/*
-IMPLEMENT_DYNCREATE(CPEBaseDoc, CLavaBaseDoc)
-
-BEGIN_MESSAGE_MAP(CPEBaseDoc, CLavaBaseDoc)
-  //{{AFX_MSG_MAP(CPEBaseDoc)
-  ON_UPDATE_COMMAND_UI(ID_FILE_PRINT, OnUpdateFilePrint)
-  //}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-*/
-/////////////////////////////////////////////////////////////////////////////
-// CPEBaseDoc construction/destruction
 
 CPEBaseDoc::CPEBaseDoc()
 {

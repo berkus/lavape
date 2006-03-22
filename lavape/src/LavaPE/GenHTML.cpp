@@ -41,6 +41,9 @@
 //#include <errno.h>
 //#include "stdafx.h"
 
+#pragma hdrstop
+
+
 static inline void code (const char *text);
 static inline void codeNl (const char *text);
 static inline void codeDIV ();

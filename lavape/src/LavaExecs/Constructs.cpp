@@ -36,6 +36,8 @@
 #include <Q3MimeSourceFactory>
 #include <Q3WhatsThis>
 
+#pragma hdrstop
+
 
 #define ADJUST(nnn,decl) \
   nnn.nINCL = ckd.document->IDTable.IDTab[decl->inINCL]->nINCLTrans[nnn.nINCL].nINCL

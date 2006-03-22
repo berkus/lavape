@@ -34,6 +34,8 @@
 #include "qstring.h"
 #include "qdir.h"
 
+#pragma hdrstop
+
 int allocatedObjects=0;
 
 DebugStep nextDebugStep=noStep;

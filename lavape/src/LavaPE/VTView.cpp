@@ -29,6 +29,8 @@
 #include <QPixmap>
 #include <QCustomEvent>
 
+#pragma hdrstop
+
 
 CVTItemData::CVTItemData(TNodeType t, CHETVElem* V, int A)
 {

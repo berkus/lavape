@@ -30,6 +30,7 @@
 #include "LavaGUIPopup.h"
 #include "qlayout.h"
 
+#pragma hdrstop
 
 
 void MakeGUICLASS::DisplayScreen (bool suppressed)

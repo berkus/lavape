@@ -25,6 +25,8 @@
 #include "LavaAppBase.h"
 #include "qstring.h"
 
+#pragma hdrstop
+
 
 #define IsPH(PTR) ((SynObject*)PTR)->IsPlaceHolder()
 

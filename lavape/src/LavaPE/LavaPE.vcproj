@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".;.\Generated;..\wxqDocView;..\disco;..\LavaBase;..\LavaBase\Generated;..\LavaGUI;..\LavaExecs;..\LavaExecs\Generated;res;res\ToolButtons;res\TreeIcons;..\LavaPE_UI;..\LavaPE_UI\Generated"
+				AdditionalIncludeDirectories=".;.\Generated;..\wxqDocView;..\disco;..\LavaBase;..\LavaBase\Generated;..\LavaGUI;..\LavaExecs;..\LavaExecs\Generated;..\LavaExecs\res\ToolButtons;res;res\ToolButtons;res\TreeIcons;..\LavaPE_UI;..\LavaPE_UI\Generated"
 				PreprocessorDefinitions="WIN32;EXECVIEW;QT_DLL;QT3_SUPPORT;QT_THREAD_SUPPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
@@ -220,6 +220,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -242,6 +245,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -264,6 +270,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -286,6 +295,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -308,6 +320,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -330,6 +345,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -352,6 +370,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -374,6 +395,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -387,6 +411,20 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\LavaPE_all.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="LavaPEDoc.cpp"
 				>
 				<FileConfiguration
@@ -396,6 +434,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -418,6 +459,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -440,6 +484,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -462,6 +509,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -484,6 +534,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -506,6 +559,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -528,6 +584,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -608,6 +667,10 @@
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\LavaPE_all.h"
+				>
 			</File>
 			<File
 				RelativePath="LavaPEDoc.h"
@@ -704,6 +767,16 @@
 			<File
 				RelativePath=".\Generated\LavaPE_resources.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="QtCore/qglobal.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="Generated\moc_Bars.cpp"
@@ -715,6 +788,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=".."
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\Bars.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -737,6 +813,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\Boxes.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -759,6 +838,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\FindRefsBox.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -781,6 +863,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=".."
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\InclView.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -803,6 +888,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=".."
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaPE.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -825,6 +913,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=".."
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaPEDoc.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -847,6 +938,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaPEFrames.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -869,6 +963,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=".."
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaPEView.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -891,6 +988,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaPEWizard.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -913,6 +1013,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=".."
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\TreeView.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -935,6 +1038,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=".."
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\VTView.h"
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration

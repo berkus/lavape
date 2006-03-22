@@ -55,6 +55,8 @@
 #include "debugStopGreen.xpm"
 #include "breakPoint.xpm"
 
+#pragma hdrstop
+
 
 #define IsPH(PTR) (!PTR || ((SynObject*)PTR)->IsPlaceHolder())
 #define ADJUST(nnn,decl) \

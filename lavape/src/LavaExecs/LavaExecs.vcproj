@@ -221,6 +221,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -243,6 +246,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -265,6 +271,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -287,6 +296,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="CDPpp.h"
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -309,6 +321,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -331,6 +346,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -353,6 +371,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -375,6 +396,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -397,6 +421,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -410,6 +437,20 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\LavaExecs_all.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="LavaExecsStringInit.cpp"
 				>
 				<FileConfiguration
@@ -419,6 +460,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -441,50 +485,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Generated\moc_ComboBar.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Generated\moc_ExecView.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -507,6 +510,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -533,6 +539,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -555,6 +564,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -577,6 +589,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="CDPpp.h"
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -663,6 +678,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\LavaExecs_all.h"
+				>
+			</File>
+			<File
 				RelativePath="LavaExecsStringInit.h"
 				>
 			</File>
@@ -731,7 +750,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="Generated\moc_ComboBarDlg.cpp"
+				RelativePath="Generated\moc_ComboBar.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -740,6 +759,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\ComboBar.h"
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -753,7 +775,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="Generated\moc_Comment.cpp"
+				RelativePath="Generated\moc_ExecView.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -762,6 +784,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\ExecView.h"
+						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -771,39 +796,6 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="UI Files"
-			Filter="ui"
-			>
-			<File
-				RelativePath="ComboBarDlg.ui"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
-						Outputs="Generated\$(InputName).h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Comment.ui"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
-						Outputs="Generated\$(InputName).h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1005,6 +997,39 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="UI Files"
+			Filter="ui"
+			>
+			<File
+				RelativePath="ComboBarDlg.ui"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying uic to $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
+						Outputs="Generated\$(InputName).h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Comment.ui"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying uic to $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
+						Outputs="Generated\$(InputName).h"
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

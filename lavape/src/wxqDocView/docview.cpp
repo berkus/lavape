@@ -85,7 +85,7 @@
 #include <winbase.h>
 #endif
 
-
+#pragma hdrstop
 
 QString wxEmptyString;
 

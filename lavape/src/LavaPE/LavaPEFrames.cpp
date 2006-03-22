@@ -69,6 +69,9 @@
 #include <Q3ValueList>
 #include <QCustomEvent>
 
+#pragma hdrstop
+
+
 typedef QMap<QString,QString> HelpTextMap;
 
 

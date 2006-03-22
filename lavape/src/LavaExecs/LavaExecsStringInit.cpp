@@ -20,6 +20,8 @@
 #include "LavaExecsStringInit.h"
 #include "qapplication.h"
 
+#pragma hdrstop
+
 
 
 QString ID_ENTER_CONST = QObject::tr("Click once or click spectacles or press ""cursor down"" key to enter or change constant");

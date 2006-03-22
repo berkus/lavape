@@ -28,6 +28,8 @@
 #include "qlayout.h"
 #include <Q3ListBoxItem>
 
+#pragma hdrstop
+
 
 int SelEndOKToStr(int pos, QComboBox* cbox, QString* editStr, TID* exID)
 {

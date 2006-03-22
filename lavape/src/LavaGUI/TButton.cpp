@@ -29,6 +29,8 @@
 #include "MACROS.h"
 #include <QStyleOptionButton>
 
+#pragma hdrstop
+
 
 CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, 
               const char* lpszWindowName , const QString& label, bool leftText)

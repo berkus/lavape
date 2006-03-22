@@ -41,6 +41,8 @@
 #include <shlobj.h>
 #endif
 
+#pragma hdrstop
+
 
 QAssistantClient *qacl=0;
 

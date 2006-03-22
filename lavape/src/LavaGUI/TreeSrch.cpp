@@ -21,6 +21,8 @@
 #include "GUIProg.h"
 #include "TreeSrch.h"
 
+#pragma hdrstop
+
 
 CHEFormNode* TreeSrchCLASS::FirstNode ()
 {

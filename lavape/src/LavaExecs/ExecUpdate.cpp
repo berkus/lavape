@@ -26,6 +26,8 @@
 #include "PEBaseDoc.h"
 #include "NESTANY.h"
 
+#pragma hdrstop
+
 
 #define IsPH(PTR) ((SynObject*)PTR)->IsPlaceHolder()
 

@@ -6,5 +6,7 @@
 #include "docview.h"
 #include "mdiframes.h"
 #include "wxExport.h"
+#include <QAbstractEventDispatcher>
+#include "qfiledialog.h"
 
 #endif

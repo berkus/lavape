@@ -1086,11 +1086,25 @@
 			<File
 				RelativePath=".\Generated\moc_LavaPEMainFrameBase.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaPEMainFrameBase.h"
+						PrecompiledHeaderFile="PCH\LavaPE_UI_all.pch"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			>
+			<File
+				RelativePath=".\LavaPE_UI_all.h"
+				>
+			</File>
 			<File
 				RelativePath=".\LavaPEMainFrameBase.h"
 				>
@@ -1110,8 +1124,32 @@
 			Name="Source Files"
 			>
 			<File
+				RelativePath=".\LavaPE_UI_all.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_UI_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\LavaPEMainFrameBase.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH/LavaPE_UI_all.pch"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>

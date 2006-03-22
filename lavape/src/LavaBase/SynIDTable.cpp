@@ -31,6 +31,8 @@
 #include "SYSTEM.h"
 #include "MACROS.h"
 
+#pragma hdrstop
+
 
 TSimpleTable::TSimpleTable(int minimum)
 {

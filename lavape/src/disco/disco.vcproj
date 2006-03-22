@@ -833,8 +833,8 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
-						PrecompiledHeaderThrough=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="CDPpp.h"
 						PrecompiledHeaderFile="PCH\disco_all.pch"
 					/>
 				</FileConfiguration>

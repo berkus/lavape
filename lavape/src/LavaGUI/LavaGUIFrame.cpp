@@ -22,11 +22,12 @@
 #include "DumpView.h"
 #include "LavaGUIView.h"
 #include "LavaGUIFrame.h"
-#include "Lava.xpm"
 //Added by qt3to4:
 #include <QPixmap>
 #include <QCloseEvent>
 
+#pragma hdrstop
+#include "Lava.xpm"
 
 CLavaGUIFrame::CLavaGUIFrame(QWidget *parent) : wxMDIChildFrame(parent, "LavaGUIFrame")
 {

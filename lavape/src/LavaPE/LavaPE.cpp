@@ -62,6 +62,9 @@
 #include "AboutBox.h"
 #include "QtAssistant/qassistantclient.h"
 
+#pragma hdrstop
+
+
 static QString szSaveEveryChange = "/SaveEveryChange";
 static QString szExecFont = "/ExecFont";
 static QString szFormFont = "/FormFont";

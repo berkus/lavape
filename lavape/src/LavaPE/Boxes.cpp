@@ -39,6 +39,7 @@
 #include "q3filedialog.h"
 #include "QtAssistant/qassistantclient.h"
 
+#pragma hdrstop
 
 
 /////////////////////////////////////////////////////////////////////////////

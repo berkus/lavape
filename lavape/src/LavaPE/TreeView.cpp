@@ -43,6 +43,8 @@
 #include "qpixmapcache.h"
 #include "LavaPE.h"
 
+#pragma hdrstop
+
 
 CTreeItem::CTreeItem (QString label, QPixmap* pix, CTreeItem* parent, CTreeItem* afterItem)
   :QTreeWidgetItem(parent, afterItem) 

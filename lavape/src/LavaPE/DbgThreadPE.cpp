@@ -41,6 +41,8 @@
 //Added by qt3to4:
 #include <QCustomEvent>
 
+#pragma hdrstop
+
 
 void CLavaPEDebugThread::reset(bool final)
 {

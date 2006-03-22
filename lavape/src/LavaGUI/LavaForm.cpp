@@ -34,7 +34,7 @@
 #include "qfileinfo.h"
 #include "mdiframes.h"
 
-
+#pragma hdrstop
 
 
 bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, 

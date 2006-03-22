@@ -23,7 +23,8 @@
 #endif
 #include "LavaAppBase.h"
 #include "PEBaseDoc.h"
-//#include "stdafx.h"
+
+#pragma hdrstop
 
 
 #ifdef INTERPRETER

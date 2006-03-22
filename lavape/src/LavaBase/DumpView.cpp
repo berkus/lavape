@@ -32,6 +32,8 @@
 #include <QVBoxLayout>
 #include <QCloseEvent>
 
+#pragma hdrstop
+
 
 QString DDMakeClass::getValue0(const QString& stdLabel)
 {

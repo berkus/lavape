@@ -35,12 +35,8 @@
 #include <Q3ValueList>
 #include <QCustomEvent>
 #include <QHeaderView>
-/////////////////////////////////////////////////////////////////////////////
-// CSizeDlgBar
-// The base class for resizable dialog bars. In the dialog template choose the 
-// resize border style. Use the WM_SIZE message to arrange the control items on the
-// dialog bar after the size of the bar has changed (first call CSizeBar::OnSize).
-//
+
+#pragma hdrstop
 
 
 CUtilityView::CUtilityView(QWidget *parent)

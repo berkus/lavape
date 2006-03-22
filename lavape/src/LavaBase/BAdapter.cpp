@@ -36,6 +36,8 @@
 #include <stdio.h>
 #include <limits>
 
+#pragma hdrstop
+
 using namespace std;
 
 

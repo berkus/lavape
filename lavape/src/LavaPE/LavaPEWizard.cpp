@@ -40,6 +40,9 @@
 #include <Q3Frame>
 #include <QCustomEvent>
 
+#pragma hdrstop
+
+
 static void SetSpace(TAnnotation* anno, unsigned& m_tab, unsigned& m_space, unsigned& m_frmSpace)
 {
   if (anno) {
