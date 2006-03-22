@@ -51,11 +51,11 @@
 #include "LavaBaseStringInit.h"
 //#include "Resource.h"
 #include "LavaExecsStringInit.h"
+
+#pragma hdrstop
 #include "debugStop.xpm"
 #include "debugStopGreen.xpm"
 #include "breakPoint.xpm"
-
-#pragma hdrstop
 
 
 #define IsPH(PTR) (!PTR || ((SynObject*)PTR)->IsPlaceHolder())
