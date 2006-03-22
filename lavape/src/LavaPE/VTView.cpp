@@ -67,7 +67,7 @@ CLavaPEDoc* CVTView::GetDocument() // non-debug version is inline
 
 bool CVTView::OnCreate() 
 {
-  connect(m_tree,SIGNAL(selectionChanged()), SLOT(OnSelchanged()));
+  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
   //connect(m_tree,SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), SLOT(OnDblclk(QListViewItem*, const QPoint&, int)));
   return true;
 }

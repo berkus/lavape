@@ -45,7 +45,7 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
 : CTreeView(parent, doc, "InclView")
 {
   InitComplete = false;
-  connect(m_tree,SIGNAL(doubleClicked(QTreeWidgetItem*,const QPoint&,int)), SLOT(OnDblclk(QTreeWidgetItem*,const QPoint&,int)));
+  connect(m_tree,SIGNAL(doubleClicked(const QModelIndex &)), SLOT(OnDblclk(const QModelIndex &)));
   setFont(LBaseData->m_TreeFont);
   new InclWhatsThis(m_tree);
   GetListView()->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -220,9 +220,10 @@ void CInclView::OnDelete()
 }
 
 
-void CInclView::OnDblclk(QTreeWidgetItem* item, const QPoint&, int) 
+void CInclView::OnDblclk(const QModelIndex & index) 
 {
-  if (item && (item != GetListView()->RootItem)) {
+ CTreeItem* item = (CTreeItem*)m_tree->itemAtIndex(index);
+ if (item && (item != GetListView()->RootItem)) {
     DString *fn = new DString(((CHESimpleSyntax*)((CTreeItem*)item)->getItemData())->data.UsersName); //.SyntaxName);
     QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_CalledView,(void*)fn));
 

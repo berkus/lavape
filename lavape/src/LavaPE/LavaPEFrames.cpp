@@ -1780,9 +1780,14 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   layout.setMargin(0);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
+  /*
   viewL = new CInclView(splitter, doc);
   viewM = new CLavaPEView(splitter, doc);
   viewR = new CVTView(splitter, doc);
+  */
+  viewL = new CInclView(this, doc);
+  viewM = new CLavaPEView(this, doc);
+  viewR = new CVTView(this, doc);
   splitter->addWidget(viewL);
   splitter->addWidget(viewM);
   splitter->addWidget(viewR);
@@ -1814,7 +1819,11 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     lastActive = viewM;
     if  ((oldWindowState == Qt::WindowMaximized) && showIt)
       showMaximized();
-
+    QSize szM = viewM->size();
+    QSize szL = viewL->size();
+    QSize szR = viewR->size();
+    QSize szx = ((CTreeView*)viewM)->GetListView()->size();
+    QSize szv = ((CTreeView*)viewM)->GetListView()->viewport()->size();
 		return true;
   }
   else {

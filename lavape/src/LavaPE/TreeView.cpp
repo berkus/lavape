@@ -37,6 +37,7 @@
 #include <QFocusEvent>
 #include <QKeyEvent>
 #include <QDropEvent>
+#include <QHeaderView>
 #include "TreeView.h"
 #include "Resource.h"
 #include "qpixmap.h"
@@ -196,6 +197,10 @@ void MyListView::setCurAndSel(QTreeWidgetItem* item, bool singleSel)
   }
   if (!isItemSelected(item)) //->isSelected())
     setItemSelected(item, true);
+  QSize s1 = size();
+  QSize s2 = viewport()->size();
+  QSize s3 = lavaView->size();
+
 }
 
 void MyListView::ResetSelections()
@@ -324,13 +329,12 @@ CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name)
    : CLavaBaseView(parent,doc,name)
 {
   m_tree = new MyListView(this);
-  QWidget* hb = new QWidget(this); // horiz. box
   layout->addWidget(m_tree);
   //  setFocusProxy(m_tree);
 //  m_tree->setSorting(-1);
   m_tree->setColumnCount(1);
   m_tree->setRootIsDecorated(true);
-//  m_tree->header()->hide();
+  m_tree->header()->hide();
   m_tree->setSelectionMode(QAbstractItemView::ExtendedSelection);//Single);
   CollectDECL = 0;
   multiSelectCanceled = false;

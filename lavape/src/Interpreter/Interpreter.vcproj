@@ -137,7 +137,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\LavaPE;..\LavaGUI;.;..\disco;..\LavaBase\Generated;..\LavaBase;..\LavaExecs;..\wxqDocView;..\Lava_UI;..\Lava_UI\Generated"
+				AdditionalIncludeDirectories="..\LavaPE;..\LavaGUI;.;..\disco;..\LavaBase\Generated;..\LavaBase;..\LavaExecs\res\TOOLBUTTONS;..\LavaExecs;..\wxqDocView;..\Lava_UI;..\Lava_UI\Generated"
 				PreprocessorDefinitions="QT3_SUPPORT;LAVAEXECS_EXPORT;WIN32;INTERPRETER;QT_THREAD_SUPPORT"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
