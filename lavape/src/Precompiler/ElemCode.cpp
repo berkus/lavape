@@ -24,6 +24,8 @@
 #include "DString.h"
 #include "MachDep.h"
 
+#pragma hdrstop
+
 
 DString designator(200);
 unsigned sourceLine, sourceCol;

@@ -22,7 +22,6 @@
 #include "LavaDoc.h"
 #include "LavaGUIView.h"
 #include "LavaGUIFrame.h"
-#include "Lava.xpm"
 #include "qsignalmapper.h"
 #include "qstylefactory.h"
 #include "qhash.h"
@@ -31,6 +30,9 @@
 #include <QCustomEvent>
 #include <QActionGroup>
 #include <QMenu>
+
+#pragma hdrstop
+#include "Lava.xpm"
 
 
 /////////////////////////////////////////////////////////////////////////////

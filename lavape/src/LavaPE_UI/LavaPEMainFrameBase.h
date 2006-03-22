@@ -2,6 +2,7 @@
 #define _LavaPEMainFrameBase
 
 #include "cmainframe.h"
+#include "mdiframes.h"
 
 #ifdef WIN32
 #ifdef LAVAPEUI_EXPORT
@@ -14,7 +15,7 @@
 #endif
 
 
-class LAVAPEUI_DLL CMainFrame : public QMainWindow, public Ui_CMainFrame  {
+class LAVAPEUI_DLL CMainFrame : public wxMainFrame, public Ui_CMainFrame  {
 public:
   CMainFrame(); 
 

@@ -27,6 +27,8 @@
 #include "DIO.h"
 #include "qfileinfo.h"
 
+#pragma hdrstop
+
 
 CmdParmsCLASS CmdParms;
 static bool __INITstarted=false;

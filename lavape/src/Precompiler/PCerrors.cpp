@@ -19,6 +19,8 @@
 
 #include "PCerrors.h"
 
+#pragma hdrstop
+
 
 PCerrorsCLASS PCerrors;
 static bool __INITstarted=false;

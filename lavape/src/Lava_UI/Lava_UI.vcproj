@@ -149,8 +149,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".;Generated;..\disco;..\wxqDocView;..\LavaBase;..\LavaGUI"
-				PreprocessorDefinitions="QT_DLL;WIN32;LAVAUI_EXPORT;QT3_SUPPORT;QT_THREAD_SUPPORT"
+				AdditionalIncludeDirectories="Generated;.;..\LavaGUI;..\LavaBase;..\wxqDocView;..\disco"
+				PreprocessorDefinitions="WIN32;LAVAUI_EXPORT;QT3_SUPPORT;QT_THREAD_SUPPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -219,6 +219,10 @@
 			Name="Header Files"
 			>
 			<File
+				RelativePath=".\Lava_UI_all.h"
+				>
+			</File>
+			<File
 				RelativePath=".\LavaMainFrameBase.h"
 				>
 				<FileConfiguration
@@ -262,14 +266,48 @@
 			<File
 				RelativePath=".\generated\moc_LavaMainFrameBase.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;Generated;..\disco;..\wxqDocView;..\LavaBase;..\LavaGUI"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaMainFrameBase.h"
+						PrecompiledHeaderFile="PCH\Lava_UI_all.pch"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
 			Name="Source Files"
 			>
 			<File
+				RelativePath=".\Lava_UI_all.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;Generated;..\disco;..\wxqDocView;..\LavaBase;..\LavaGUI"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Lava_UI_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\LavaMainFrameBase.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;Generated;..\disco;..\wxqDocView;..\LavaBase;..\LavaGUI"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>

@@ -47,6 +47,8 @@
 #include <locale.h>
 #endif
 
+#pragma hdrstop
+
 
 static QString szCheckPreconditions = "/CheckPreconditions";
 static QString szCheckPostconditions = "/CheckPostconditions";

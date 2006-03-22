@@ -140,7 +140,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;..\disco;..\LavaBase\Generated;..\LavaBase;..\LavaPE\res;..\wxqDocView"
-				PreprocessorDefinitions="WIN32;EXECVIEW;QT_DLL;QT3_SUPPORT;QT_THREAD_SUPPORT;LAVAGUI_EXPORT"
+				PreprocessorDefinitions="WIN32;EXECVIEW;QT3_SUPPORT;QT_THREAD_SUPPORT;LAVAGUI_EXPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/LavaGUI.pch"

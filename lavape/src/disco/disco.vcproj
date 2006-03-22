@@ -47,7 +47,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\wxqDocView"
-				PreprocessorDefinitions="WIN32;DISCO_EXPORT;QT_DLL;QT3_SUPPORT"
+				PreprocessorDefinitions="WIN32;DISCO_EXPORT;QT3_SUPPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=""

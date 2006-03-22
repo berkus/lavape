@@ -23,6 +23,8 @@
 #include "FioCoder.h"
 #include "SigCoder.h"
 
+#pragma hdrstop
+
 
 TypCoderCLASS TypCoder;
 static bool __INITstarted=false;

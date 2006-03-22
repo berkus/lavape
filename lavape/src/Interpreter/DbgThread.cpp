@@ -43,6 +43,9 @@
 #include <locale.h>
 #endif
 
+#pragma hdrstop
+
+
 #define CHECKIMPL(FUNCDECL) \
   if (FUNCDECL->DeclType == Function) \
     classDecl = FUNCDECL->ParentDECL; \

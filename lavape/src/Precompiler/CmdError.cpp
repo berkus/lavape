@@ -19,6 +19,8 @@
 
 #include "CmdError.h"
 
+#pragma hdrstop
+
 
 CmdErrorCLASS CmdError;
 static bool __INITstarted=false;

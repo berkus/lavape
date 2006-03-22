@@ -21,6 +21,8 @@
 #include <string.h>
 #include "qbytearray.h"
 
+#pragma hdrstop
+
 
 AtomType Atom;
 char StringBuffer[MaxAtomStore];

@@ -25,6 +25,9 @@
 #include "FioCoder.h"
 #include "SigCoder.h"
 
+#pragma hdrstop
+
+
 ProcCoderCLASS ProcCoder;
 
 

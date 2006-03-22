@@ -19,6 +19,8 @@
 
 #include "Parser.h"
 
+#pragma hdrstop
+
 
 ParserCLASS Parser;
 static bool __INITstarted=false;

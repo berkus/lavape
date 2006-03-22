@@ -20,6 +20,8 @@
 
 #include "Args.h"
 
+#pragma hdrstop
+
 
 ArgumentsCLASS Arguments;
 static bool __INITstarted=false;

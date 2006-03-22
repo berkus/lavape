@@ -24,6 +24,8 @@
 #include "UNIX.h"
 #include "qfileinfo.h"
 
+#pragma hdrstop
+
 
 DParserCLASS DParser;
 static bool __INITstarted=false;

@@ -137,7 +137,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;.\Generated;..\disco;..\wxqDocView;..\LavaBase;..\LavaBase\Generated"
-				PreprocessorDefinitions="WIN32;LAVASTREAM_EXPORT;QT_DLL;QT3_SUPPORT;QT_THREAD_SUPPORT"
+				PreprocessorDefinitions="WIN32;LAVASTREAM_EXPORT;QT3_SUPPORT;QT_THREAD_SUPPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"

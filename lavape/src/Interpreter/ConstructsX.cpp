@@ -36,7 +36,10 @@
 #ifndef WIN32
 #include <setjmp.h>
 #endif
- 
+
+#pragma hdrstop
+
+
 #define IsPH(PTR) ((SynObject*)PTR)->IsPlaceHolder()
 
 #define SUCCEED {if (ckd.exceptionThrown || ckd.immediateReturn) return false; else return true;}

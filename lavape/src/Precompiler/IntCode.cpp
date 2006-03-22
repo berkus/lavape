@@ -20,6 +20,8 @@
 
 #include "IntCode.h"
 
+#pragma hdrstop
+
 
 IntCodeCLASS IntCode;
 static bool __INITstarted=false;

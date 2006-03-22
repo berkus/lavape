@@ -47,7 +47,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;.\Generated;..\wxqDocView;..\disco;..\LavaBase;..\LavaBase\Generated;..\LavaGUI;..\LavaExecs;..\LavaExecs\Generated;..\LavaExecs\res\ToolButtons;res;res\ToolButtons;res\TreeIcons;..\LavaPE_UI;..\LavaPE_UI\Generated"
-				PreprocessorDefinitions="WIN32;EXECVIEW;QT_DLL;QT3_SUPPORT;QT_THREAD_SUPPORT"
+				PreprocessorDefinitions="WIN32;EXECVIEW;QT3_SUPPORT;QT_THREAD_SUPPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/LavaPE.pch"

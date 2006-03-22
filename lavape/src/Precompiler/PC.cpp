@@ -25,6 +25,8 @@
 #include "Coder.h"
 #include "PCerrors.h"
 
+#pragma hdrstop
+
 
 
 int main (unsigned argc, char **argv)

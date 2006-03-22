@@ -137,9 +137,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\LavaPE;..\LavaGUI;.;..\disco;..\LavaBase;..\LavaExecs;..\wxqDocView;..\Lava_UI;..\Lava_UI\Generated"
-				PreprocessorDefinitions="QT_DLL;QT3_SUPPORT;LAVAEXECS_EXPORT;WIN32;INTERPRETER;QT_THREAD_SUPPORT"
+				AdditionalIncludeDirectories="..\LavaPE;..\LavaGUI;.;..\disco;..\LavaBase\Generated;..\LavaBase;..\LavaExecs;..\wxqDocView;..\Lava_UI;..\Lava_UI\Generated"
+				PreprocessorDefinitions="QT3_SUPPORT;LAVAEXECS_EXPORT;WIN32;INTERPRETER;QT_THREAD_SUPPORT"
 				MinimalRebuild="true"
+				ExceptionHandling="2"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/Interpreter.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -226,6 +227,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -248,6 +252,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -270,6 +277,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="CDPpp.h"
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -292,6 +302,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -314,6 +327,23 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Interpreter_all.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -336,7 +366,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						ExceptionHandling="2"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -359,6 +391,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -381,6 +416,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -403,6 +441,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="CDPpp.h"
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -425,6 +466,10 @@
 			</File>
 			<File
 				RelativePath="DbgThread.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Interpreter_all.h"
 				>
 			</File>
 			<File

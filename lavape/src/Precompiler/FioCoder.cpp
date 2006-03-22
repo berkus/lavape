@@ -25,6 +25,8 @@
 #include "ElemCode.h"
 #include "Convert.h"
 
+#pragma hdrstop
+
 
 FioCoderCLASS FioCoder;
 static bool __INITstarted=false;

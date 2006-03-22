@@ -28,6 +28,8 @@
 #include "DString.h"
 #include <ctype.h>
 
+#pragma hdrstop
+
 
 static bool __INITstarted=false;
 

@@ -41,6 +41,8 @@
 #endif
 #include <sys/stat.h>
 
+#pragma hdrstop
+
 
 static ChainOfString included;
 

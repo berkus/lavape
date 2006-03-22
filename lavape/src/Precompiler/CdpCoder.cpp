@@ -28,6 +28,7 @@
 #include "DIO.h"
 #include "Convert.h"
 
+#pragma hdrstop
 
 
 CdpCoderCLASS CdpCoder;

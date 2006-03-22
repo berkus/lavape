@@ -19,6 +19,8 @@
 
 #include "XParser.h"
 
+#pragma hdrstop
+
 
 XParserCLASS XParser;
 static bool __INITstarted=false;

@@ -49,7 +49,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;Generated;..\disco;..\wxqDocView"
-				PreprocessorDefinitions="WIN32;LAVABASE_EXPORT;QT_DLL;QT3_SUPPORT;QT_THREAD_SUPPORT"
+				PreprocessorDefinitions="WIN32;LAVABASE_EXPORT;QT3_SUPPORT;QT_THREAD_SUPPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/LavaBase.pch"

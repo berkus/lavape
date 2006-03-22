@@ -19,6 +19,8 @@
 
 #include "ContxtCK.h"
 
+#pragma hdrstop
+
 
 ContextCKCLASS ContextCK;
 static bool __INITstarted=false;

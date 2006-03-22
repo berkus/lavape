@@ -24,6 +24,8 @@
 #include"ProCoder.h"
 #include"CdpCoder.h"
 
+#pragma hdrstop
+
 
 SigCoderCLASS SigCoder;
 static bool __INITstarted=false;

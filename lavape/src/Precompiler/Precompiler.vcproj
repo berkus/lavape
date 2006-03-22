@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\disco"
-				PreprocessorDefinitions="WIN32;DISCO_IMPORT;QT_DLL;QT3_SUPPORT"
+				PreprocessorDefinitions="WIN32;DISCO_IMPORT;QT3_SUPPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -213,6 +213,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -235,6 +238,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -257,6 +263,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -279,6 +288,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -301,6 +313,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -323,6 +338,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -345,6 +363,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -367,6 +388,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -389,6 +413,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -411,6 +438,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -433,6 +463,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -455,6 +488,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -477,6 +513,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -499,6 +538,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -512,6 +554,20 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Precompiler_all.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath="ProCoder.cpp"
 				>
 				<FileConfiguration
@@ -521,6 +577,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -543,6 +602,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -565,6 +627,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -587,6 +652,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -609,6 +677,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -676,6 +747,10 @@
 			</File>
 			<File
 				RelativePath="PCerrors.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Precompiler_all.h"
 				>
 			</File>
 			<File

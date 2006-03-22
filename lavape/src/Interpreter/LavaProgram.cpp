@@ -47,6 +47,8 @@
 #endif
 #endif
 
+#pragma hdrstop
+
 
 #define ADJUST(nnn,decl) \
   nnn.nINCL = IDTable.IDTab[decl->inINCL]->nINCLTrans[nnn.nINCL].nINCL
