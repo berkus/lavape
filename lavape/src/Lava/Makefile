@@ -12,7 +12,7 @@ CPP_INCLUDES = -I. -Ires -I../LavaBase/Generated \
 	-I../Interpreter -I../Lava_UI -I../Lava_UI/Generated -I../LavaGUI \
 	-I../wxqDocView -I../disco -I../LavaBase
 
-CPP_FLAGS = -DINTERPRETER
+CPP_FLAGS = -DINTERPRETER -DNEEDS_INT_DEFINED
 
 
 include ../common.mk

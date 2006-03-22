@@ -13,7 +13,7 @@ CPP_INCLUDES = -I. -Ires/TreeIcons -Ires/TOOLBUTTONS -Ires -I../LavaBase/Generat
 	-I../wxqDocView -I../disco -I../LavaBase
 
 
-CPP_FLAGS = -DEXECVIEW
+CPP_FLAGS = -DEXECVIEW -DNEEDS_INT_DEFINED
 
 include ../common.mk
 

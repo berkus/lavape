@@ -25,10 +25,9 @@
 #include "qlayout.h"
 //Added by qt3to4:
 #include <QPixmap>
-#include "execframe.xpm"
 
 #pragma hdrstop
-
+#include "execframe.xpm"
 
 /////////////////////////////////////////////////////////////////////////////
 // CExecFrame construction/destruction

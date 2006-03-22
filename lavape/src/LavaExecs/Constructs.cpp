@@ -22,7 +22,6 @@
 #include "Check.h"
 #else
 #include "ExecView.h"
-#include "Q6_null.xpm"
 //Added by qt3to4:
 #include <QPixmap>
 #endif
@@ -37,7 +36,7 @@
 #include <Q3WhatsThis>
 
 #pragma hdrstop
-
+#include "Q6_null.xpm"
 
 #define ADJUST(nnn,decl) \
   nnn.nINCL = ckd.document->IDTable.IDTab[decl->inINCL]->nINCLTrans[nnn.nINCL].nINCL
@@ -607,7 +606,7 @@ bool TokenNode::OptionalClauseToken (SynObject *&optClause) {
   return false;
 }
 
-bool SynObject::HasOptionalParts () 
+bool SynObject::HasOptionalParts ()
 {
   switch (primaryToken) {
   case attach_T:

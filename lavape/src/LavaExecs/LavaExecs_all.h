@@ -7,13 +7,13 @@
 
 #ifndef INTERPRETER
 #include "ExecView.h"
-#include "Q6_null.xpm"
+//#include "Q6_null.xpm"
 #include <QPixmap>
 #endif
-#include "execframe.xpm"
-#include "debugStop.xpm"
-#include "debugStopGreen.xpm"
-#include "breakPoint.xpm"
+//#include "execframe.xpm"
+//#include "debugStop.xpm"
+//#include "debugStopGreen.xpm"
+//#include "breakPoint.xpm"
 
 #include "Check.h"
 #include "ComboBar.h"

@@ -23,7 +23,6 @@
 #include <float.h>
 #include <stdio.h>
 #include <limits>
-#include <QHeaderView>
 
 #endif
 

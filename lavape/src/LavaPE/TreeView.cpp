@@ -24,7 +24,7 @@
 #include "qtoolbar.h"
 #include "q3combobox.h"
 #include "q3popupmenu.h"
-#include "QTreeWidget.h"
+#include <QTreeWidget>
 #include "qsplitter.h"
 #include "q3vbox.h"
 #include "qevent.h"
@@ -47,12 +47,12 @@
 
 
 CTreeItem::CTreeItem (QString label, QPixmap* pix, CTreeItem* parent, CTreeItem* afterItem)
-  :QTreeWidgetItem(parent, afterItem) 
-{ 
-  nPix = pix; 
+  :QTreeWidgetItem(parent, afterItem)
+{
+  nPix = pix;
   normalPix = pix;
   delPix = false;
-  data = 0; 
+  data = 0;
 //  setHeight(16);
   setText(0,label);
 //  setVisible(true);
@@ -60,12 +60,12 @@ CTreeItem::CTreeItem (QString label, QPixmap* pix, CTreeItem* parent, CTreeItem*
 }
 
 CTreeItem::CTreeItem(QString label, QTreeWidget* parent, CTreeItem* afterItem)
-  :QTreeWidgetItem(parent, afterItem) 
-{ 
+  :QTreeWidgetItem(parent, afterItem)
+{
   delPix = false;
   nPix = 0;
   normalPix = 0;
-  data = 0; 
+  data = 0;
   //setHeight(16);
   setText(0,label);
 //  setVisible(true);
@@ -73,12 +73,12 @@ CTreeItem::CTreeItem(QString label, QTreeWidget* parent, CTreeItem* afterItem)
 }
 
 CTreeItem::CTreeItem (QString label, QPixmap* pix, MyListView* parent)
-  :QTreeWidgetItem(parent) 
-{ 
+  :QTreeWidgetItem(parent)
+{
   nPix = pix;
   normalPix = pix;
   delPix = false;
-  data = 0; 
+  data = 0;
 //  setHeight(16);
   setText(0,label);
 //  setVisible(true);
@@ -90,7 +90,7 @@ CTreeItem::~CTreeItem()
 {
   if (delPix) {
     delete nPix;
-  } 
+  }
 }
 
 
@@ -122,7 +122,7 @@ void CTreeItem::setPix(QPixmap* pix)
   if (delPix) {
     delete nPix;
     delPix = false;
-  } 
+  }
   nPix = pix;
   normalPix = pix;
 }
@@ -135,17 +135,17 @@ void CTreeItem::SetItemMask(bool hasErr, bool hasCom)
     SetItemMask(((CLavaPEApp*)wxTheApp)->LavaPixmaps[xerrBM]);//QPixmapCache::find("l_xerrmask"));
   else if (hasCom)
     SetItemMask(((CLavaPEApp*)wxTheApp)->LavaPixmaps[xcomBM]);//QPixmapCache::find("l_xcommask"));
-  else 
+  else
     setPix(normalPix);
 }
 
 void CTreeItem::SetItemMask(QPixmap* pixMask) {
-  //pixMask wird oben und rechts bündig in nPix kopiert
+  //pixMask wird oben und rechts bndig in nPix kopiert
   QPixmap* mPix = new QPixmap(nPix->width(), nPix->height());
   mPix->fill();
   bitBlt (mPix, 0, 0, nPix, 0, 0, 16, pixMask->height());
   bitBlt (mPix, 16, 0, pixMask, 16, 0, 5, pixMask->height());
-  if (delPix) 
+  if (delPix)
     delete nPix;
   nPix = mPix;
   delPix = true;
@@ -236,11 +236,11 @@ void MyListView::mouseMoveEvent(QMouseEvent *ev)
         withControl = false;
       }
     }
-    else 
+    else
       if (lavaView->multiSelectCanceled) {
         ResetSelections();
         setCurAndSel(item2);
-      } 
+      }
   }
 }
 
@@ -256,7 +256,7 @@ void MyListView::mousePressEvent(QMouseEvent *ev)
   withShift = ev->state() & Qt::ShiftModifier;
   withControl = ev->state() & Qt::ControlModifier;
   QPoint p = /*contentsToViewport(*/ev->pos();//);
-  if(itemAt(p)) 
+  if(itemAt(p))
     QTreeWidget::mousePressEvent(ev);
   withShift = false;
   withControl = false;
@@ -322,7 +322,7 @@ void MyListView::editItem(QTreeWidgetItem *item, int column)
 
 CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name)
    : CLavaBaseView(parent,doc,name)
-{ 
+{
   m_tree = new MyListView(this);
   QWidget* hb = new QWidget(this); // horiz. box
   layout->addWidget(m_tree);

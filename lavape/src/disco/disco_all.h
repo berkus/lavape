@@ -103,6 +103,10 @@
 #include <QCloseEvent>
 #include <QVBoxLayout>
 #include <QTextEdit>
+#include <QTreeWidget>
+#include <QHeaderView>
+#include <QAbstractEventDispatcher>
+#include "qfiledialog.h"
 
 #include <string.h>
 //#include <stdlib.h>
