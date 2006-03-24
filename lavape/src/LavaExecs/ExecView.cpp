@@ -509,12 +509,12 @@ void ExecContents::paintEvent (QPaintEvent *ev)
 
   contentsWidth = 0;
   contentsHeight = 0;
-  p.eraseRect(0,0,contentsWidth,contentsHeight);
+//  p.eraseRect(0,0,contentsWidth,contentsHeight);
   fmt.font = font();
   fm = new QFontMetrics(fontMetrics());//fmp;
   QFontInfo fi(fmt.font);
-  int ps = fi.pointSize();
-  QString fam = fi.family();
+//  int ps = fi.pixelSize();
+//  QString fam = fi.family();
   currentX = LEFTMARGIN;
   currentY = fm->ascent();
 
@@ -602,6 +602,8 @@ void ExecContents::paintEvent (QPaintEvent *ev)
 
   p.setBrush(QColor(210,210,210));
   p.setPen(myPen);
+  contentsHeight = qMax(contentsHeight,sv->viewport()->height());
+  resize(contentsWidth,contentsHeight);
   p.drawRect(0,0,15,contentsHeight>=sv->viewport()->height()?contentsHeight:sv->viewport()->height());
 
   for ( it = bpl.begin(); it != bpl.end(); ++it )
@@ -630,7 +632,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     execView->autoScroll = false;
   }
   delete fm;
-  resize(contentsWidth,contentsHeight);
 }
 
 void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)

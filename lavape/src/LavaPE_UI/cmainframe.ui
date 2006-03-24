@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>894</width>
+    <width>516</width>
     <height>685</height>
    </rect>
   </property>
@@ -281,11 +281,14 @@
    <property name="whatsThis" >
     <string>Insert keyword expressions and statements\ninto executable code</string>
    </property>
+   <property name="movable" >
+    <bool>false</bool>
+   </property>
    <property name="orientation" >
     <enum>Qt::Vertical</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>1</number>
+    <number>2</number>
    </attribute>
   </widget>
   <widget class="QMenuBar" name="menubar" >
@@ -293,7 +296,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>894</width>
+     <width>516</width>
      <height>19</height>
     </rect>
    </property>
