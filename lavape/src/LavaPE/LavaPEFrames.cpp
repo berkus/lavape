@@ -357,6 +357,7 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   pb->setFont(f);
   pb->setFlat(true);
   pb->setAutoDefault(false);
+  pb->setMinimumHeight(pb->fontInfo().pixelSize());
   pb->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding);
   if (!tooltip.isEmpty())
     QToolTip::add(pb,tooltip);
@@ -377,7 +378,7 @@ void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,
   pb->setPaletteForegroundColor(QColor(Qt::blue));
 //  pb->setFlat(true);
   pb->setAutoDefault(false);
-//  pb->setMinimumHeight(pb->fontInfo().pointSize()+6);
+//  pb->setMinimumHeight(pb->fontInfo().pixelSize()+6);
 //  pb->setMaximumWidth(pb->fontMetrics().width("What's this?")+6);
   if (tooltip)
     QToolTip::add(pb,tooltip);
