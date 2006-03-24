@@ -22,7 +22,8 @@ rc_file=$(QRC)
 cpp_rc_file=$(rc_file:.qrc=.cpp)
 o_rc_file=$(rc_file:.qrc=.o)
 
-cpp_files=$(wildcard *.cpp)
+cpp_files0=$(wildcard *.cpp)
+cpp_files=$(filter-out %_all.cpp,$(cpp_files0))
 c_files=$(wildcard *.c)
 o_files=$(cpp_files:.cpp=.o) $(c_files:.c=.o)
 
@@ -72,7 +73,7 @@ else
 endif
 
 CC = g++
-  
+
 ifeq ($(OPSYS),Darwin)
   DLLSUFFIX = .dylib
   OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
@@ -84,7 +85,7 @@ else
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
     IMPLIB = -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
     OSDLLFLAGS = -shared
-    OSEXECFLAGS = -fstack-check 
+    OSEXECFLAGS = -fstack-check
     EXEC2 = $(EXEC).exe
     ifneq ($(DBG),)
 	  QtS = d4
@@ -105,7 +106,7 @@ else
     OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG) -DQT3_SUPPORT
   else
     OSCPPFLAGS = -D__$(OPSYS) $(DBG) -DQT3_SUPPORT
-  endif  
+  endif
 endif
 
 ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QTDIR)/include -I$(QTDIR)/include/Qt -I$(QTDIR)/include/QtCore -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/QtNetwork -I$(QTDIR)/include/Qt3Support
