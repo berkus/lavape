@@ -246,7 +246,7 @@ void LavaGUIDialog::OnReset()
 
 void LavaGUIDialog::NewTitle(LavaDECL *decl, const DString& lavaName)
 {
-  QString /*oldTitle=caption(),*/ newTitle;
+  QString oldTitle=caption(), newTitle;
 
   if (decl) {
     DString title = lavaName;
@@ -257,8 +257,8 @@ void LavaGUIDialog::NewTitle(LavaDECL *decl, const DString& lavaName)
   else
     newTitle = QString(lavaName.c);
   setCaption(newTitle);
-  //if (!oldTitle.isEmpty() && newTitle != oldTitle)
-  //  wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
+  if (!oldTitle.isEmpty() && newTitle != oldTitle)
+    wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
 
 CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)

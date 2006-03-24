@@ -838,7 +838,8 @@ void CLavaPEView::DeleteItemData(CTreeItem* parent)
 
 void CLavaPEView::destroy()
 {
-  DisableActions();
+  if (!wxTheApp->deletingMainFrame)
+    DisableActions();
   if (((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext)
     ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext->RemoveView(this);
   DeleteItemData();

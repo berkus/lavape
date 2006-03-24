@@ -162,7 +162,8 @@ void CExecView::OnCloseExec()
   LavaDECL *parent;
   CHE *chp;
 
-        DisableActions();
+  if (!wxTheApp->deletingMainFrame)
+    DisableActions();
   --ExecCount;
   if (myDoc->mySynDef)
     ((SelfVar*)text->ckd.selfVar)->execView = 0;
@@ -5509,7 +5510,7 @@ void CExecView::DisableActions()
   //CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
 
   //LBaseData->editPasteActionPtr->setEnabled(false);
-        LBaseData->optLocalVarActionPtr->setEnabled(false);
+  LBaseData->optLocalVarActionPtr->setEnabled(false);
   LBaseData->handleActionPtr->setEnabled(false);
   LBaseData->toggleInputArrowsActionPtr->setEnabled(false);
   LBaseData->editSelItemActionPtr->setEnabled(false);

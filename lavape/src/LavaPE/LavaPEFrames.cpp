@@ -267,6 +267,12 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
 CLavaMainFrame::~CLavaMainFrame()
 {
+/*  QObjectList childList=children();
+
+  for (int i=0; i<childList.size(); i++)
+    if (childList.at(i)->isWidgetType())
+      delete childList.takeAt(i);
+*/
   //delete m_UtilityView;
 }
 
@@ -351,8 +357,7 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   pb->setFont(f);
   pb->setFlat(true);
   pb->setAutoDefault(false);
-//  pb->setMaximumHeight(pb->fontInfo().pointSize()+4);
-  pb->setMaximumWidth(pb->fontMetrics().width("el. in set")+6);
+  pb->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding);
   if (!tooltip.isEmpty())
     QToolTip::add(pb,tooltip);
   if (!whatsThis.isEmpty())

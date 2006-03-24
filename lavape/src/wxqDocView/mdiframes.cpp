@@ -106,10 +106,10 @@ void wxMainFrame::on_fileExitAction_triggered()
 {
   ((wxApp*)qApp)->appExit = true;
   if ( wxDocManager::GetDocumentManager()->Clear(false)) {
-          qApp->quit();
+    qApp->quit();
   }
-        else
-                ((wxApp*)qApp)->appExit = false;
+  else
+    ((wxApp*)qApp)->appExit = false;
 }
 
 void wxMainFrame::LoadFileHistory() {
@@ -379,5 +379,6 @@ wxMDIChildFrame::~wxMDIChildFrame()
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   deleting = true;
-  wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
+  if (!wxTheApp->deletingMainFrame)
+    wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
 }

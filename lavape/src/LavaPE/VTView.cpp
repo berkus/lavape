@@ -56,7 +56,8 @@ CVTView::CVTView(QWidget* parent, wxDocument *doc)
 
 CVTView::~CVTView()
 {
-  DisableActions();
+  if (!wxTheApp->deletingMainFrame)
+    DisableActions();
 }
 
 
