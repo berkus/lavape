@@ -204,7 +204,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 
   LavaPixmaps[ 0] = new QPixmap((const char**)PX_basicatt);;
   LavaPixmaps[ 1] = new QPixmap((const char**)PX_BasicType);
-  LavaPixmaps[ 2] = new QPixmap((const char**)PX_paramatt);
+  LavaPixmaps[ 2] = new QPixmap((const char**)PX_paramatt); 
   LavaPixmaps[ 3] = new QPixmap((const char**)PX_patpara);
   LavaPixmaps[ 4] = new QPixmap((const char**)PX_classimpl);
   LavaPixmaps[ 5] = new QPixmap((const char**)PX_classAttr);
@@ -243,6 +243,48 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   LavaPixmaps[38] = new QPixmap((const char**)PX_require);
   LavaPixmaps[39] = new QPixmap((const char**)PX_requireDis);
   LavaPixmaps[40] = 0;
+
+  LavaIcons[ 0] = new QIcon(*LavaPixmaps[0]);
+  LavaIcons[ 1] = new QIcon(*LavaPixmaps[1]);
+  LavaIcons[ 2] = new QIcon(*LavaPixmaps[2]);
+  LavaIcons[ 3] = new QIcon(*LavaPixmaps[3]);
+  LavaIcons[ 4] = new QIcon(*LavaPixmaps[4]);
+  LavaIcons[ 5] = new QIcon(*LavaPixmaps[5]);
+  LavaIcons[ 6] = new QIcon(*LavaPixmaps[6]);
+  LavaIcons[ 7] = new QIcon(*LavaPixmaps[7]);
+  LavaIcons[ 8] = new QIcon(*LavaPixmaps[8]);
+  LavaIcons[ 9] = new QIcon(*LavaPixmaps[9]);//all types
+  LavaIcons[10] = new QIcon(*LavaPixmaps[10]);
+  LavaIcons[11] = new QIcon(*LavaPixmaps[11]);
+  LavaIcons[12] = new QIcon(*LavaPixmaps[12]);
+  LavaIcons[13] = new QIcon(*LavaPixmaps[13]);
+  LavaIcons[14] = new QIcon(*LavaPixmaps[14]);
+  LavaIcons[15] = new QIcon(*LavaPixmaps[15]);
+  LavaIcons[16] = new QIcon(*LavaPixmaps[16]);
+  LavaIcons[17] = new QIcon(*LavaPixmaps[17]);
+  LavaIcons[18] = new QIcon(*LavaPixmaps[18]);
+  LavaIcons[19] = new QIcon(*LavaPixmaps[19]);
+  LavaIcons[20] = new QIcon(*LavaPixmaps[20]);
+  LavaIcons[21] = new QIcon(*LavaPixmaps[21]);
+  LavaIcons[22] = new QIcon(*LavaPixmaps[22]);
+  LavaIcons[23] = new QIcon(*LavaPixmaps[23]);
+  LavaIcons[24] = new QIcon(*LavaPixmaps[24]);
+  LavaIcons[25] = new QIcon(*LavaPixmaps[25]);
+  LavaIcons[26] = new QIcon(*LavaPixmaps[26]);
+  LavaIcons[27] = new QIcon(*LavaPixmaps[27]);
+  LavaIcons[28] = new QIcon(*LavaPixmaps[28]);
+  LavaIcons[29] = new QIcon(*LavaPixmaps[29]);
+  LavaIcons[30] = new QIcon(*LavaPixmaps[30]);
+  LavaIcons[31] = new QIcon(*LavaPixmaps[31]);
+  LavaIcons[32] = new QIcon(*LavaPixmaps[32]);
+  LavaIcons[33] = new QIcon(*LavaPixmaps[33]);
+  LavaIcons[34] = new QIcon(*LavaPixmaps[34]);
+  LavaIcons[35] = new QIcon(*LavaPixmaps[35]);
+  LavaIcons[36] = new QIcon(*LavaPixmaps[36]);
+  LavaIcons[37] = new QIcon(*LavaPixmaps[37]);
+  LavaIcons[38] = new QIcon(*LavaPixmaps[38]);
+  LavaIcons[39] = new QIcon(*LavaPixmaps[39]);
+  LavaIcons[40] = 0;
 
   pLavaTemplate = new wxDocTemplate(m_docManager,
     "LavaPE", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava Tree View",
@@ -787,8 +829,8 @@ CLavaPEApp::~CLavaPEApp()
 {
   ExitInstance();
   FindList.Destroy();
-  for (int i = 0; LavaPixmaps[i] != 0; i++)
-    delete LavaPixmaps[i];
+  for (int i = 0; LavaIcons[i] != 0; i++)
+    delete LavaIcons[i];
 }
 
 void CLavaPEApp::saveSettings()

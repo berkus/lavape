@@ -85,6 +85,8 @@ public slots:
     virtual void on_fileOpenAction_triggered();
     virtual void on_fileSaveAction_triggered();
     virtual void on_fileSaveAsAction_triggered();
+    virtual void on_fileSaveAllAction_triggered();
+    virtual void on_fileCloseAction_triggered();
     virtual void filePrint();
 //    virtual void on_fileExitAction_triggered();
     virtual void on_editUndoAction_triggered();
@@ -92,15 +94,12 @@ public slots:
     virtual void on_editCutAction_triggered();
     virtual void on_editCopyAction_triggered();
     virtual void on_editPasteAction_triggered();
-    virtual void editFind();
     virtual void on_helpContentsAction_triggered();
     virtual void on_editingLavaProgsAction_triggered();
     virtual void on_learningLavaAction_triggered();
     virtual void on_helpAboutAction_triggered();
     virtual void on_tileHorizAction_triggered();
     virtual void on_tileVerticAction_triggered();
-    virtual void on_fileSaveAllAction_triggered();
-    virtual void on_fileCloseAction_triggered();
     virtual void saveEveryChange(bool);
     virtual void viewTB1();
     virtual void viewTB2();
@@ -109,6 +108,50 @@ public slots:
     virtual void viewHelpTB();
     virtual void on_whatNextAction_triggered();
     virtual void on_howTo_clicked();
+
+    virtual void on_findRefsAction_triggered();
+
+    virtual void on_newCompoAction_triggered();
+    virtual void on_importComponentAction_triggered();
+    virtual void on_expandAction_triggered();
+    virtual void on_collapseAction_triggered();
+    virtual void on_showOptsAction_triggered();
+    virtual void on_showAllOptsAction_triggered();
+    virtual void on_hideEmptyOptsAction_triggered();
+    virtual void on_nextCommentAction_triggered();
+    virtual void on_prevCommentAction_triggered();
+    virtual void on_nextErrorAction_triggered();
+    virtual void on_prevErrorAction_triggered();
+    virtual void on_checkAction_triggered();
+    virtual void on_checkAllAction_triggered();
+    virtual void on_runAction_triggered();
+    virtual void on_newIncludeAction_triggered();
+    virtual void on_newPackageAction_triggered();
+    virtual void on_newInitiatorAction_triggered();
+    virtual void on_newInterfaceAction_triggered();
+    virtual void on_newImplAction_triggered();
+    virtual void on_newCOspecAction_triggered();
+    virtual void on_newCOimplAction_triggered();
+    virtual void on_newSetAction_triggered();
+    virtual void on_newEnumAction_triggered();
+    virtual void on_newVTAction_triggered();
+    virtual void on_newFuncAction_triggered();
+    virtual void on_newMemVarAction_triggered();
+    virtual void on_newEnumItemAction_triggered();
+    virtual void on_editSelItemAction_triggered();
+    virtual void on_editCommentAction_triggered();
+    virtual void on_gotoDeclAction_triggered();
+    virtual void on_gotoImplAction_triggered();
+    virtual void on_returnToRefAction_triggered();
+    virtual void on_findByNameAction_triggered();
+    virtual void on_showOverridablesAction_triggered();
+    virtual void on_overrideAction_triggered();
+    virtual void on_openFormViewAction_triggered();
+    virtual void on_insertTextAction_triggered();
+    virtual void on_showUtilWindowAction_triggered();
+    virtual void on_makeGUIAction_triggered();
+/*
+    virtual void newCompo();
     virtual void showUtilWindow();
     virtual void expandSubtree();
     virtual void collapseSubtree();
@@ -146,9 +189,10 @@ public slots:
     virtual void openFormView();
     virtual void makeGUI();
     virtual void insertText();
+    virtual void importComponent();
+*/
     virtual void on_insAction_triggered();
     virtual void on_delAction_triggered();
-    virtual void importComponent();
     virtual void genLinkedHtml();
     virtual void genSingleHtml();
     virtual void deleteOp();
@@ -246,7 +290,6 @@ public slots:
 //    virtual void setFormButtonFont();
     virtual void on_setExecFontAction_triggered();
     virtual void on_setGlobalFontAction_triggered();
-    virtual void newCompo();
 
 private:
     Q_OBJECT

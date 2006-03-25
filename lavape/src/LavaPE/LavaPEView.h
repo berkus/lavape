@@ -159,7 +159,7 @@ public:
   void GenHTML(LavaDECL *pnode,TDeclType &category, bool &firstChild);
   CLavaPEDoc* GetDocument();
   LavaDECL* GetExecDECL(CTreeItem* item);
-  QPixmap* GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const SynFlags flag=(const unsigned long)0);
+  int GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const SynFlags flag=(const unsigned long)0);
   int GetPos(CTreeItem* item, CTreeItem* prev=0);
   CTreeItem* getSectionNode(CTreeItem* parent, TDeclType ncase);
   void Gotodef(CTreeItem* item);

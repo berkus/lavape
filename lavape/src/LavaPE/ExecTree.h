@@ -42,9 +42,9 @@ public:
   void ExecStruct(LavaDECL ** pinEl, DString fieldID);
   void AddExtends(LavaDECL* elDef, DString* lab);
   bool CalcPos(int level);
-  void MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDECL** pelDef);
+  void MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** pelDef);
   CTreeItem* getSectionNode(CTreeItem* parent, TDeclType ncase);
-  QPixmap* GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const SynFlags flag = (const unsigned long)0);
+  int GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const SynFlags flag = (const unsigned long)0);
 };
 
 class CExecImpls : public CExec

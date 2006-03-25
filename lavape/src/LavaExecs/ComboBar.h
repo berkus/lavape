@@ -130,9 +130,9 @@ public:
   QPushButton *m_NewFunc;
   QPushButton *m_NewPFunc;
   QPushButton *m_ButtonEnum;
-  QPixmap BitmapEnums;
-  QPixmap BmNewCFunc;
-  QPixmap BmNewPFunc;
+  QIcon BitmapEnums;
+  QIcon BmNewCFunc;
+  QIcon BmNewPFunc;
   Q3PopupMenu EnumMenu;
 
   enum combosEnum {v_Types, v_SetTypes/*, v_Signals*/, v_BasicTypes, v_Enums, v_New, v_SNew,

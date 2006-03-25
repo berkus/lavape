@@ -531,19 +531,9 @@ void CLavaMainFrame::on_fileNewAction_triggered()
   ((CLavaPEApp*)wxTheApp)->OnFileNew();
 }
 
-void CLavaMainFrame::newCompo()
-{
-  ((CLavaPEApp*)wxTheApp)->OnNewComponent();
-}
-
 void CLavaMainFrame::on_fileOpenAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnFileOpen();
-}
-
-void CLavaMainFrame::importComponent()
-{
-  ((CLavaPEApp*)wxTheApp)->OnImport();
 }
 
 void CLavaMainFrame::on_fileSaveAction_triggered()
@@ -576,27 +566,38 @@ void CLavaMainFrame::on_editRedoAction_triggered()
   ((CLavaPEApp*)wxTheApp)->OnEditRedo();
 }
 
-void CLavaMainFrame::returnToRef()
+
+void CLavaMainFrame::on_newCompoAction_triggered()
+{
+  ((CLavaPEApp*)wxTheApp)->OnNewComponent();
+}
+
+void CLavaMainFrame::on_importComponentAction_triggered()
+{
+  ((CLavaPEApp*)wxTheApp)->OnImport();
+}
+
+void CLavaMainFrame::on_returnToRefAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnPopcontext();
 }
 
-void CLavaMainFrame::findByName()
+void CLavaMainFrame::on_findByNameAction_triggered()
 {
   ((CLavaPEApp*)wxTheApp)->OnFindByName();
 }
 
-void CLavaMainFrame::run()
+void CLavaMainFrame::on_runAction_triggered()
 {
   ((CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->OnRunLava();
 }
 
-void CLavaMainFrame::check()
+void CLavaMainFrame::on_checkAction_triggered()
 {
   ((CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->OnCheck();
 }
 
-void CLavaMainFrame::checkAll()
+void CLavaMainFrame::on_checkAllAction_triggered()
 {
   ((CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument())->OnTotalCheck();
 }
@@ -678,216 +679,216 @@ void CLavaMainFrame::on_editPasteAction_triggered()
     view->OnEditPaste();
 }
 
-void CLavaMainFrame::editFind()
+void CLavaMainFrame::on_findRefsAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnFindReferences();
 }
 
-void CLavaMainFrame::expandSubtree()
+void CLavaMainFrame::on_expandAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnExpandAll();
 }
 
-void CLavaMainFrame::collapseSubtree()
+void CLavaMainFrame::on_collapseAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnCollapsAll();
 }
 
-void CLavaMainFrame::showOpts()
+void CLavaMainFrame::on_showOptsAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnShowOptionals();
 }
 
-void CLavaMainFrame::showAllOpts()
+void CLavaMainFrame::on_showAllOptsAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnShowAllEmptyOpt();
 }
 
-void CLavaMainFrame::hideEmptyOpts()
+void CLavaMainFrame::on_hideEmptyOptsAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnRemoveAllEmptyOpt();
 }
 
-void CLavaMainFrame::nextComment()
+void CLavaMainFrame::on_nextCommentAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNextComment();
 }
 
-void CLavaMainFrame::prevComment()
+void CLavaMainFrame::on_prevCommentAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnPrevComment();
 }
 
-void CLavaMainFrame::nextError()
+void CLavaMainFrame::on_nextErrorAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNextError();
 }
 
-void CLavaMainFrame::prevError()
+void CLavaMainFrame::on_prevErrorAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnPrevError();
 }
-void CLavaMainFrame::newInclude()
+void CLavaMainFrame::on_newIncludeAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewInclude();
 }
 
-void CLavaMainFrame::newPackage()
+void CLavaMainFrame::on_newPackageAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewPackage();
 }
 
-void CLavaMainFrame::newInitiator()
+void CLavaMainFrame::on_newInitiatorAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewinitiator();
 }
 
-void CLavaMainFrame::new_Interface()
+void CLavaMainFrame::on_newInterfaceAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewInterface();
 }
 
-void CLavaMainFrame::newImpl()
+void CLavaMainFrame::on_newImplAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewImpl();
 }
 
-void CLavaMainFrame::newCOspec()
+void CLavaMainFrame::on_newCOspecAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewCSpec();
 }
 
-void CLavaMainFrame::newCOimpl()
+void CLavaMainFrame::on_newCOimplAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewComponent();
 }
 
-void CLavaMainFrame::newSet()
+void CLavaMainFrame::on_newSetAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewset();
 }
 
-void CLavaMainFrame::newEnum()
+void CLavaMainFrame::on_newEnumAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewenum();
 }
 
-void CLavaMainFrame::newVT()
+void CLavaMainFrame::on_newVTAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewVirtualType();
 }
 
-void CLavaMainFrame::newFunc()
+void CLavaMainFrame::on_newFuncAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewfunction();
 }
 
-void CLavaMainFrame::newMemVar()
+void CLavaMainFrame::on_newMemVarAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewmember();
 }
 
-void CLavaMainFrame::newEnumItem()
+void CLavaMainFrame::on_newEnumItemAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewEnumItem();
 }
 
-void CLavaMainFrame::editSelItem()
+void CLavaMainFrame::on_editSelItemAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnEditSel();
 }
 
-void CLavaMainFrame::editComment()
+void CLavaMainFrame::on_editCommentAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnComment();
 }
 
-void CLavaMainFrame::gotoDec()
+void CLavaMainFrame::on_gotoDeclAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnGotoDecl();
 }
 
-void CLavaMainFrame::gotoImpl()
+void CLavaMainFrame::on_gotoImplAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnGotoImpl();
 }
 
-void CLavaMainFrame::showOverridables()
+void CLavaMainFrame::on_showOverridablesAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnShowOverridables();
 }
 
-void CLavaMainFrame::openFormView()
+void CLavaMainFrame::on_openFormViewAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnShowGUIview();
 }
 
-void CLavaMainFrame::makeGUI()
+void CLavaMainFrame::on_makeGUIAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnMakeGUI();
 }
 
-void CLavaMainFrame::insertText()
+void CLavaMainFrame::on_insertTextAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
@@ -916,7 +917,7 @@ void CLavaMainFrame::deleteOp()
     view->OnDelete();
 }
 
-void CLavaMainFrame::override()
+void CLavaMainFrame::on_overrideAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
@@ -1601,7 +1602,7 @@ void CLavaMainFrame::customEvent(QCustomEvent *ev){
 		}
 }
 
-void CLavaMainFrame::showUtilWindow() 
+void CLavaMainFrame::on_showUtilWindowAction_triggered() 
 {
   if (UtilitiesHidden) {
     if ((m_UtilityView->ActTab == tabError) && !m_UtilityView->CommentEmpty && m_UtilityView->ErrorEmpty )

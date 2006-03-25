@@ -122,7 +122,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
     return;
   LavaDECL *decl, *decl2, *elDef = *pelDef;
   QString* errCode;
-  QPixmap *bm=0;
+  int bm=0;
   DString lName, lab1, lab = elDef->LocalName;
   QString cstr;
   bool catErr;
@@ -617,7 +617,7 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
     elDef->WorkFlags.EXCL(allowDEL);
 }
 
-void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDECL** pelDef)
+void CExecTree::MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** pelDef)
 {
   CMainItemData *itd, *oldItd;
   LavaDECL *elDef = *pelDef;
@@ -640,7 +640,7 @@ void CExecTree::MakeItem(DString& label, QPixmap* bm, CTreeItem* parent, LavaDEC
       else
         ActItem = (CTreeItem*)viewTree->GetListView()->RootItem;
     ActItem->setText(0, label.c);
-    ActItem->setPix(bm);
+    ActItem->setPixmapIndex(bm);
     //ActItem->setPixmap(0, *bm);
     oldItd = (CMainItemData*)ActItem->getItemData();
     delete oldItd;
@@ -709,7 +709,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
   TDeclType defType = NoDef;
   SynFlags typeFlags, flags;
   QString* errCode;
-  QPixmap* bm;
+  int bm;
   TID refID;
   CTreeItem* parent;
 
@@ -855,7 +855,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
 
 void CExecTree::ExecFText(LavaDECL ** pelDef, int level)
 {
-  QPixmap* bm;
+  int bm;
   DString lab;
 
   (*pelDef)->DECLError1.Destroy();
@@ -891,7 +891,7 @@ void CExecTree::ExecFormDef(LavaDECL ** pelDef, int level)
   LavaDECL *pp, *elDef = *pelDef;
   QString cstr;
   DString lab;
-  QPixmap* bm;
+  int bm;
   CMainItemData* data;
   CTreeItem *item, *parent;
   bool changed = false;
@@ -962,7 +962,7 @@ void CExecTree::ExecFormDef(LavaDECL ** pelDef, int level)
 
 void CExecTree::ExecExec(LavaDECL ** pelDef, int level)
 {
-  QPixmap *sm = 0, *bm;
+  int bm;
   LavaDECL *elDef = *pelDef;
   SynFlags flag; 
   if (elDef->Exec.ptr) {
@@ -986,7 +986,7 @@ void CExecTree::ExecExec(LavaDECL ** pelDef, int level)
     }
     else
       bm = GetPixmap(true, false, elDef->DeclType, flag);
-    ActItem->setPix(bm); //viewTree->SetItemImage(ActItem, bm, bm);
+    ActItem->setPixmapIndex(bm); //viewTree->SetItemImage(ActItem, bm, bm);
     ActItem->SetItemMask(elDef->DECLError1.first || elDef->DECLError2.first, 
         elDef->DECLComment.ptr && elDef->DECLComment.ptr->Comment.l);
   }
@@ -1016,7 +1016,7 @@ void CExecTree::ExecEnum(LavaDECL** pinEl, DString fieldID)
     return;
   }
   downAwaited = true;
-  QPixmap* bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[enumBM];//QPixmapCache::find("l_enum"); 
+  int bm = enumBM;//QPixmapCache::find("l_enum"); 
   if ((*pinEl)->Items.first)
     ParItem = ActItem;
   if (!viewTree->drawTree && ActItem->child(0)) {
@@ -1036,7 +1036,7 @@ void CExecTree::ExecEnumItem(CHEEnumSelId * enumsel, int level)
 {
   if (!CalcPos(level))
     return;
-  QPixmap* bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[enumselBM];//QPixmapCache::find("l_enumsel");
+  int bm = enumselBM;//QPixmapCache::find("l_enumsel");
   CTreeItem* section = (CTreeItem*)ParItem->child(0);
   ActItem = viewTree->InsertItem(enumsel->data.Id.c, bm, section, ActItem);
 //  if (enumsel->data.DECLComment.ptr && enumsel->data.DECLComment.ptr->Comment.l)
@@ -1064,7 +1064,7 @@ CTreeItem* CExecTree::getSectionNode(CTreeItem* parent, TDeclType ncase)
 } 
 
 
-QPixmap* CExecTree::GetPixmap(bool isParent, bool isAttr, TDeclType ptype, const SynFlags flag) 
+int CExecTree::GetPixmap(bool isParent, bool isAttr, TDeclType ptype, const SynFlags flag) 
 {  
   return ((CLavaPEView*)Doc->MainView)->GetPixmap(isParent, isAttr, ptype, flag);
 }

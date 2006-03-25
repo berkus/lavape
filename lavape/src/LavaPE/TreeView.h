@@ -38,19 +38,20 @@ class CTreeItem :public QTreeWidgetItem //Q3ListViewItem
 public:
     friend class CTreeView;
 
-  CTreeItem(QString label, QPixmap* pix, CTreeItem* parent, CTreeItem* afterItem);
+  CTreeItem(QString label, int ipix, CTreeItem* parent, CTreeItem* afterItem);
   CTreeItem(QString label, QTreeWidget* parent, CTreeItem* afterItem);
-  CTreeItem(QString label, QPixmap* pix, MyListView* parent);
+  CTreeItem(QString label, int ipix, MyListView* parent);
 
   ~CTreeItem();
   void setItemData(TItemData* dat) {data = dat;}
   TItemData* getItemData() { return data;}
-  void setPix(QPixmap* pix);
+  void setPixmapIndex(int index);
+  void SetIcon(QIcon* icon);
   void SetItemMask(bool hasErr, bool hasCom);
-  void SetItemMask(QPixmap* pixMask);
+  void SetItemMask(int maskIndex);
   void setRenameEnabled(int col, bool enable);
   bool renameEnabled(int col);
-  virtual const QPixmap *pixmap(int i) const { if (i) return 0; return nPix; }
+  //virtual const QIcon* icon(int i) const { if (i) return 0; return nPix; }
   CTreeItem* nextSibling();
   
   virtual void startRename(int col);
@@ -64,8 +65,9 @@ public:
   int itemCount; //0 - based
 protected:
   TItemData *data;
-  QPixmap *nPix;
-  QPixmap *normalPix;
+  int pixmapIndex;
+  QIcon *nPix;
+  QIcon *normalPix;
   bool delPix;
 
 };
@@ -116,7 +118,7 @@ public:
   MyListView *m_tree;
   CTreeItem* GetPrevSiblingItem(CTreeItem* item);
 //  CTreeItem* HitTest(QPoint qp);
-  CTreeItem* InsertItem(QString label, QPixmap* nPix, CTreeItem* parent, CTreeItem* afterItem=TVI_LAST);
+  CTreeItem* InsertItem(QString label, int nPix, CTreeItem* parent, CTreeItem* afterItem=TVI_LAST);
   QLineEdit* GetEditControl() {return labelEditWid;}
   QLineEdit *labelEditWid;
   virtual QDrag* OnDragBegin() {return 0;}

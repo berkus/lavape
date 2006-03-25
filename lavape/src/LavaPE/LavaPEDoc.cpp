@@ -3492,7 +3492,7 @@ void CLavaPEDoc::SetExecItemImage(LavaDECL* execDECL, bool empty, bool hasErrors
   if (!MainView)
     return;
   CLavaPEView* view = (CLavaPEView*)MainView;
-  QPixmap *bm, *sm = 0;
+  int bm;
   bool hasCom;
   SynFlags flags;
   if ((execDECL->ParentDECL->DeclType == Interface) || (execDECL->ParentDECL->DeclType == Impl))
@@ -3504,13 +3504,13 @@ void CLavaPEDoc::SetExecItemImage(LavaDECL* execDECL, bool empty, bool hasErrors
   bm = view->GetPixmap(true,true,execDECL->DeclType,flags);
   /*
   if (empty) 
-    bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[7];
+    bm = ((CLavaPEApp*)wxTheApp)->LavaIcons[7];
   else
-    bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[8];
+    bm = ((CLavaPEApp*)wxTheApp)->LavaIcons[8];
   */
   hasCom = execDECL && execDECL->DECLComment.ptr && execDECL->DECLComment.ptr->Comment.l;
   if (item) {
-    item->setPix(bm); 
+    item->setPixmapIndex(bm); 
     item->SetItemMask(hasErrors, hasCom);
 //    item->repaint();
   }

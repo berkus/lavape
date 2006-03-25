@@ -47,15 +47,17 @@
 #pragma hdrstop
 
 
-CTreeItem::CTreeItem (QString label, QPixmap* pix, CTreeItem* parent, CTreeItem* afterItem)
+CTreeItem::CTreeItem (QString label, int ipix, CTreeItem* parent, CTreeItem* afterItem)
   :QTreeWidgetItem(parent, afterItem)
 {
-  nPix = pix;
-  normalPix = pix;
+  pixmapIndex = ipix;
+  nPix = ((CLavaPEApp*)wxTheApp)->LavaIcons[ipix];
+  normalPix = nPix;
   delPix = false;
   data = 0;
-//  setHeight(16);
   setText(0,label);
+  setIcon(0, *nPix);
+//  setHeight(16);
 //  setVisible(true);
   inRename = false;
 }
@@ -73,15 +75,17 @@ CTreeItem::CTreeItem(QString label, QTreeWidget* parent, CTreeItem* afterItem)
   inRename = false;
 }
 
-CTreeItem::CTreeItem (QString label, QPixmap* pix, MyListView* parent)
+CTreeItem::CTreeItem (QString label, int ipix, MyListView* parent)
   :QTreeWidgetItem(parent)
 {
-  nPix = pix;
-  normalPix = pix;
+  pixmapIndex = ipix;
+  nPix = ((CLavaPEApp*)wxTheApp)->LavaIcons[ipix];
+  normalPix = nPix;
   delPix = false;
   data = 0;
-//  setHeight(16);
   setText(0,label);
+  setIcon(0, *nPix);
+//  setHeight(16);
 //  setVisible(true);
   inRename = false;
   parent->RootItem = this;
@@ -118,39 +122,50 @@ void CTreeItem::cancelRename(int col)
   inRename = false;
 }*/
 
-void CTreeItem::setPix(QPixmap* pix)
+
+void CTreeItem::setPixmapIndex(int ipix)
+{
+  pixmapIndex = ipix;
+  SetIcon(((CLavaPEApp*)wxTheApp)->LavaIcons[ipix]);
+}
+
+void CTreeItem::SetIcon(QIcon* icon)
 {
   if (delPix) {
     delete nPix;
     delPix = false;
   }
-  nPix = pix;
-  normalPix = pix;
+  nPix = icon;
+  normalPix = icon;
+  setIcon(0, *nPix);
 }
+
 
 void CTreeItem::SetItemMask(bool hasErr, bool hasCom)
 {
   if (hasErr && hasCom)
-    SetItemMask(((CLavaPEApp*)wxTheApp)->LavaPixmaps[xerrcomBM]);//QPixmapCache::find("l_xerrcommask"));
+    SetItemMask(xerrcomBM);//QPixmapCache::find("l_xerrcommask"));
   else if (hasErr)
-    SetItemMask(((CLavaPEApp*)wxTheApp)->LavaPixmaps[xerrBM]);//QPixmapCache::find("l_xerrmask"));
+    SetItemMask(xerrBM);//QPixmapCache::find("l_xerrmask"));
   else if (hasCom)
-    SetItemMask(((CLavaPEApp*)wxTheApp)->LavaPixmaps[xcomBM]);//QPixmapCache::find("l_xcommask"));
+    SetItemMask(xcomBM);//QPixmapCache::find("l_xcommask"));
   else
-    setPix(normalPix);
+    SetIcon(normalPix);
 }
 
-void CTreeItem::SetItemMask(QPixmap* pixMask) {
+void CTreeItem::SetItemMask(int maskIndex) {
   //pixMask wird oben und rechts bndig in nPix kopiert
-  QPixmap* mPix = new QPixmap(nPix->width(), nPix->height());
+  QPixmap* mPix = new QPixmap(((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->width(), ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
   mPix->fill();
-  bitBlt (mPix, 0, 0, nPix, 0, 0, 16, pixMask->height());
-  bitBlt (mPix, 16, 0, pixMask, 16, 0, 5, pixMask->height());
+  bitBlt (mPix, 0, 0, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[pixmapIndex], 0, 0, 16, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
+  bitBlt (mPix, 16, 0, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex], 16, 0, 5, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
   if (delPix)
     delete nPix;
-  nPix = mPix;
+  nPix = new QIcon(*mPix);
   delPix = true;
+  setIcon(0, *nPix);
 }
+
 CTreeItem* CTreeItem::nextSibling()
 {
   int ind = parent()->indexOfChild(this);
@@ -360,7 +375,7 @@ CTreeItem* CTreeView::HitTest(QPoint qp)
 }
 */
 
-CTreeItem* CTreeView::InsertItem(QString label, QPixmap* nPix, CTreeItem* parent, CTreeItem* afterItem)
+CTreeItem* CTreeView::InsertItem(QString label, int nPix, CTreeItem* parent, CTreeItem* afterItem)
 {
   if (parent == TVI_ROOT)
     return new CTreeItem(label, nPix, m_tree);

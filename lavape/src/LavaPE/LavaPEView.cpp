@@ -898,7 +898,7 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
   TIType  ptype = TIType_NoType;
   TDeclType gpt = Impl;
   DString Fields, ExecLabel;
-  QPixmap* bm;
+  int bm;
   SynFlags flags;
 
   flags.INCL(emptyPM);
@@ -929,7 +929,7 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     ptype = ((CMainItemData*)pitem->getItemData())->type;
   if ((ptype != TIType_EnumItems) && ((*(LavaDECL**)synEl)->DeclDescType == EnumType) ) {
     itd = new CMainItemData(TIType_EnumItems, synEl, (*(LavaDECL**)synEl)->TreeFlags.Contains(ItemsExpanded));
-    bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[enumBM];
+    bm = enumBM;//((CLavaPEApp*)wxTheApp)->LavaIcons[enumBM];
     item = InsertItem("Enumeration",  bm, parent, item);
     item->setItemData(itd);
     if (!down)
@@ -1333,130 +1333,130 @@ LavaDECL* CLavaPEView::GetExecDECL(CTreeItem* item)
   return itemDECL;
 }
 
-QPixmap* CLavaPEView::GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const SynFlags flag)
+int CLavaPEView::GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const SynFlags flag)
 {
-  QPixmap *pm;
+  int pm;
   if (isParent) {
     switch (deftype) {
     case VirtualType:
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[27];
+      return 27;//((CLavaPEApp*)wxTheApp)->LavaIcons[27];
     case IAttr:
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[17];
+      return 17;//((CLavaPEApp*)wxTheApp)->LavaIcons[17];
     case OAttr:
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[20];
+      return 20;//((CLavaPEApp*)wxTheApp)->LavaIcons[20];
     case Attr:
     case FormText:
     case Function:
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[19];
+      return 19;//((CLavaPEApp*)wxTheApp)->LavaIcons[19];
     case ExecDef:
       if (flag.Contains(invariantPM))
         if (flag.Contains(emptyPM))
-          return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[37];
+          return 37;//((CLavaPEApp*)wxTheApp)->LavaIcons[37];
         else
-          return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[36];
+          return 36;//((CLavaPEApp*)wxTheApp)->LavaIcons[36];
       else
         if (flag.Contains(emptyPM))
-          return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[7];
+          return 7;//((CLavaPEApp*)wxTheApp)->LavaIcons[7];
         else
-          return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[8];
+          return 8;//((CLavaPEApp*)wxTheApp)->LavaIcons[8];
     case Ensure:
       if (flag.Contains(emptyPM))
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[35];
+        return 35;//((CLavaPEApp*)wxTheApp)->LavaIcons[35];
       else
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[34];
+        return 34;//((CLavaPEApp*)wxTheApp)->LavaIcons[34];
     case Require:
       if (flag.Contains(emptyPM))
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[39];
+        return 39;//((CLavaPEApp*)wxTheApp)->LavaIcons[39];
       else
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[38];
+        return 38;//((CLavaPEApp*)wxTheApp)->LavaIcons[38];
     default:
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[9];//all types
+      return 9;//((CLavaPEApp*)wxTheApp)->LavaIcons[9];//all types
     }
   }
   switch (deftype) {
   case NoDef:
   case UnDef:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[26];
+    return 26;//((CLavaPEApp*)wxTheApp)->LavaIcons[26];
   case VirtualType:
     if (isAttr)
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[2];
+      return 2;//((CLavaPEApp*)wxTheApp)->LavaIcons[2];
     else
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[3];
+      return 3;//((CLavaPEApp*)wxTheApp)->LavaIcons[3];
   case Impl:
     if (flag.Contains(isGUI))
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[30];
+      return 30;//((CLavaPEApp*)wxTheApp)->LavaIcons[30];
     else
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[4];
+      return 4;//((CLavaPEApp*)wxTheApp)->LavaIcons[4];
   case Interface:
     if (flag.Contains(isSet))
       if (isAttr)
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[29];
+        return 29;//((CLavaPEApp*)wxTheApp)->LavaIcons[29];
       else
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[28];
+        return 28;//((CLavaPEApp*)wxTheApp)->LavaIcons[28];
     else
       if (isAttr)
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[5];
+        return 5;//((CLavaPEApp*)wxTheApp)->LavaIcons[5];
       else
         if (flag.Contains(isGUI))
-          return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[13];
+          return 13;//((CLavaPEApp*)wxTheApp)->LavaIcons[13];
         else
-          return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[6];
+          return 6;//((CLavaPEApp*)wxTheApp)->LavaIcons[6];
   case CompObjSpec:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[23];
+    return 23;//((CLavaPEApp*)wxTheApp)->LavaIcons[23];
   case CompObj:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[24];
+    return 24;//((CLavaPEApp*)wxTheApp)->LavaIcons[24];
 
   case Initiator:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[16];
+    return 16;//((CLavaPEApp*)wxTheApp)->LavaIcons[16];
   case Function:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[15];
+    return 15;//((CLavaPEApp*)wxTheApp)->LavaIcons[15];
   case Package:
   case Component:
-    pm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[22];
+    pm = 22;//((CLavaPEApp*)wxTheApp)->LavaIcons[22];
     return pm;
   case Attr:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[0];
+    return 0;//((CLavaPEApp*)wxTheApp)->LavaIcons[0];
   case FormText:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[18];
+    return 18;//((CLavaPEApp*)wxTheApp)->LavaIcons[18];
   case IAttr:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[0];
+    return 0;//((CLavaPEApp*)wxTheApp)->LavaIcons[0];
   case OAttr:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[0];
+    return 0;//((CLavaPEApp*)wxTheApp)->LavaIcons[0];
   case FormDef:
     if (isAttr)
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[14];
+      return 14;//((CLavaPEApp*)wxTheApp)->LavaIcons[14];
     else
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[30];
+      return 30;//((CLavaPEApp*)wxTheApp)->LavaIcons[30];
   case ExecDef:
     if (flag.Contains(invariantPM))
       if (flag.Contains(emptyPM))
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[37];
+        return 37;//((CLavaPEApp*)wxTheApp)->LavaIcons[37];
       else
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[36];
+        return 36;//((CLavaPEApp*)wxTheApp)->LavaIcons[36];
     else
       if (flag.Contains(emptyPM))
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[8];
+        return 8;//((CLavaPEApp*)wxTheApp)->LavaIcons[8];
       else
-        return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[7];
+        return 7;//((CLavaPEApp*)wxTheApp)->LavaIcons[7];
   case Ensure:
     if (flag.Contains(emptyPM))
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[35];
+      return 35;//((CLavaPEApp*)wxTheApp)->LavaIcons[35];
     else
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[34];
+      return 34;//((CLavaPEApp*)wxTheApp)->LavaIcons[34];
   case Require:
     if (flag.Contains(emptyPM))
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[39];
+      return 39;//((CLavaPEApp*)wxTheApp)->LavaIcons[39];
     else
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[38];
+      return 38;//((CLavaPEApp*)wxTheApp)->LavaIcons[38];
   case BasicDef:
     if (isAttr)
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[0];
+      return 0;//((CLavaPEApp*)wxTheApp)->LavaIcons[0];
     else
-      return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[1];
+      return 1;//((CLavaPEApp*)wxTheApp)->LavaIcons[1];
   default:
-    return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[26];
+    return 26;//((CLavaPEApp*)wxTheApp)->LavaIcons[26];
   }
-  return ((CLavaPEApp*)wxTheApp)->LavaPixmaps[26];
+  return 26;//((CLavaPEApp*)wxTheApp)->LavaIcons[26];
 }
 
 int CLavaPEView::GetPos(CTreeItem* item, CTreeItem* prev)
@@ -1535,7 +1535,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
       else
         node = (CTreeItem*)node->nextSibling();
     }
-  QPixmap* bm;
+  int bm;
   SynFlags flags;
   flags.INCL(emptyPM);
   DString Fields, ExecLabel;

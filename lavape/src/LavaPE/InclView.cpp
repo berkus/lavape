@@ -98,7 +98,7 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
   CTreeItem* parent, *item;
   DString lab;
   CHESimpleSyntax* cheSyn;
-  QPixmap* bm = ((CLavaPEApp*)wxTheApp)->LavaPixmaps[lavafileBM];//QPixmapCache::find("l_lavafile");
+  int bm = lavafileBM;//QPixmapCache::find("l_lavafile");
   CLavaPEDoc *doc;
   bool hasErr= false;
 

@@ -17,6 +17,7 @@
 //Added by qt3to4:
 #include <QPixmap>
 #include <QEvent>
+#include <QIcon>
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
@@ -60,6 +61,7 @@ public:
   bool DoSaveAll();
   bool inTotalCheck;
   ChainOfString FindList;
+  QIcon* LavaIcons[50];
   QPixmap* LavaPixmaps[50];
 
   public:
