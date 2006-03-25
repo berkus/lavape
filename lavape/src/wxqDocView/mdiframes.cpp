@@ -41,10 +41,10 @@
 #include "qstatusbar.h"
 #include "qmessagebox.h"
 #include "qfile.h"
+#include "LavaAppBase.h"
 //Added by qt3to4:
 #include <QCloseEvent>
 #include <QEvent>
-#include <QCustomEvent>
 
 #pragma hdrstop
 
@@ -276,7 +276,7 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
   else
     oldWindowState = Qt::WindowNoState;
   lastActive = 0;
-  QApplication::postEvent(wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,this));
+  QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(QEvent::User,this));
 }
 
 bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)

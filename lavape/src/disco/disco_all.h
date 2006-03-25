@@ -98,7 +98,6 @@
 #include <QFocusEvent>
 #include <QMenu>
 #include <QMouseEvent>
-#include <QCustomEvent>
 #include <QResizeEvent>
 #include <QCloseEvent>
 #include <QVBoxLayout>

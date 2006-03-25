@@ -298,11 +298,11 @@ bool CLavaApp::event(QEvent *e)
 
         switch (e->type()) {
   case IDU_LavaStart:
-    thr = new CLavaThread(ExecuteLava,(CLavaDoc*)((QCustomEvent*)e)->data());
+    thr = new CLavaThread(ExecuteLava,(CLavaDoc*)((CustomEvent*)e)->data());
     thr->start();
     break;
         case IDU_LavaEnd:
-          pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
+          pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
                 doc = (CLavaDoc*)pHint->fromDoc;
 /*              thr = (CLavaThread*)pHint->CommandData1;
     if (thr) {
@@ -316,7 +316,7 @@ bool CLavaApp::event(QEvent *e)
         case IDU_LavaMsgBox:
     m_appWindow->setActiveWindow();
     m_appWindow->raise();
-                mbp = (CMsgBoxParams*)((QCustomEvent*)e)->data();
+                mbp = (CMsgBoxParams*)((CustomEvent*)e)->data();
                 switch (mbp->funcSpec) {
                 case 0:
                         mbp->result =   QMessageBox::critical(
@@ -336,13 +336,13 @@ bool CLavaApp::event(QEvent *e)
                 }
     break;
         case IDU_LavaShow:
-    pHint = (CLavaPEHint*)((QCustomEvent*)e)->data();
+    pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(m_appWindow, pHint);
     result = ((QDialog*)((CLavaDoc*)pHint->fromDoc)->LavaDialog)->exec();
     delete ((CLavaDoc*)pHint->fromDoc)->LavaDialog;
     ((CLavaDoc*)pHint->fromDoc)->LavaDialog = 0;
     if (pHint->CommandData5) {
-      thr = (CLavaThread*)((CLavaPEHint*)((QCustomEvent*)e)->data())->CommandData5;
+      thr = (CLavaThread*)((CLavaPEHint*)((CustomEvent*)e)->data())->CommandData5;
       if (result == QDialog::Rejected) {
         if (!thr->pContExecEvent->ex)
           ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
@@ -350,16 +350,16 @@ bool CLavaApp::event(QEvent *e)
       }
       thr->pContExecEvent->release();
     }
-    delete (CLavaPEHint*)((QCustomEvent*)e)->data();
+    delete (CLavaPEHint*)((CustomEvent*)e)->data();
                 break;
   case IDU_LavaDump:
-    dumpdata = (DumpEventData*)((QCustomEvent*)e)->data();
+    dumpdata = (DumpEventData*)((CustomEvent*)e)->data();
     dumpdata->doc->DumpFrame = new LavaDumpFrame(m_appWindow, dumpdata);
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
     delete dumpdata->doc->DumpFrame;
     dumpdata->doc->DumpFrame = 0;
-    ((DumpEventData*)((QCustomEvent*)e)->data())->currentThread->pContExecEvent->release();
-    delete (DumpEventData*)((QCustomEvent*)e)->data();
+    ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->pContExecEvent->release();
+    delete (DumpEventData*)((CustomEvent*)e)->data();
                 break;
         default:
                 wxApp::event(e);

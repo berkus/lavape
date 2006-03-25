@@ -29,7 +29,6 @@
 #include <QFocusEvent>
 #include <QMenu>
 #include <QMouseEvent>
-#include <QCustomEvent>
 
 #if wxUSE_PRINTING_ARCHITECTURE
     #include "print.h"
@@ -76,7 +75,7 @@ public:
     virtual void saveSettings() {}
     virtual void UpdateUI() {}
                 virtual void onUpdateUI();
-    virtual void customEvent(QCustomEvent *e);
+    virtual void customEvent(QEvent *e);
 //    void addAction(QAction* act) {actionList.append(act);}
     // application info: name, description, vendor
     // -------------------------------------------

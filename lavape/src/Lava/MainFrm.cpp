@@ -27,7 +27,6 @@
 #include "qhash.h"
 //Added by qt3to4:
 #include <QPixmap>
-#include <QCustomEvent>
 #include <QActionGroup>
 #include <QMenu>
 
@@ -156,9 +155,10 @@ void CLavaMainFrame::UpdateUI()
   fileSaveAllAction->setEnabled(enable);
 }
 
-void CLavaMainFrame::customEvent(QCustomEvent *ev){
+void CLavaMainFrame::customEvent(QEvent *ev0){
 	HistWindow *hw;
 	DString title;
+  CustomEvent *ev=(CustomEvent*)ev0;
 	
 	if (ev->data()) {
 		title = DString(qPrintable(((QWidget*)ev->data())->caption()));

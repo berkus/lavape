@@ -15,7 +15,6 @@
 #include "DString.h"
 #include "qglobal.h"
 //Added by qt3to4:
-#include <QCustomEvent>
 #include <QResizeEvent>
 #include <QCloseEvent>
 #include "setup.h"
@@ -83,7 +82,7 @@ public slots:
   void hfStatusText(int itemId);
 
 private:
-	virtual void customEvent(QCustomEvent *ev){}
+	virtual void customEvent(QEvent *ev){}
 
   Q_OBJECT
 };

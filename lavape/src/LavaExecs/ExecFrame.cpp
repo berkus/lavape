@@ -41,6 +41,12 @@ CExecFrame::CExecFrame(QWidget *parent) : wxMDIChildFrame(parent, "ExecFrame")
   myDECL = decl->ParentDECL;
 }
 
+void CExecFrame::closeEvent(QCloseEvent *e)
+{
+  deleteLater();
+// QWidget::closeEvent(e);
+}
+
 void CExecFrame::InitialUpdate()
 {
   wxMDIChildFrame::InitialUpdate();

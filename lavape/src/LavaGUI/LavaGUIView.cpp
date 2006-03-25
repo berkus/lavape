@@ -34,7 +34,6 @@
 #include <Q3HBoxLayout>
 #include <QResizeEvent>
 #include <Q3VBoxLayout>
-#include <QCustomEvent>
 #include "LavaBaseStringInit.h"
 #include "qstatusbar.h"
 #include "qpushbutton.h"
@@ -470,7 +469,7 @@ bool CLavaGUIView::event(QEvent* ev)
     return true;
   }
   else if (ev->type() == IDU_LavaPE_SyncForm) {
-    SyncForm((LavaDECL*)((QCustomEvent*)ev)->data());
+    SyncForm((LavaDECL*)((CustomEvent*)ev)->data());
     return true;
   }
   else {

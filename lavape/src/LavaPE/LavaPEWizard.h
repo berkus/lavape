@@ -8,7 +8,6 @@
 #include "q3combobox.h"
 //Added by qt3to4:
 #include <Q3Frame>
-#include <QCustomEvent>
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
@@ -51,7 +50,7 @@ public:
   ~CWizardView() {}
   void OnUpdate(wxView* , unsigned undoRedo, QObject* pHint); 
   void PostApplyHint();
-  void customEvent(QCustomEvent *ev);
+  void customEvent(QEvent *ev);
   void Resize();
   GUIScrollView* myScrv;
   CLavaPEWizard* wizard;

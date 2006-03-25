@@ -22,7 +22,6 @@
 #include "qstring.h"
 #include "qfont.h"
 //Added by qt3to4:
-#include <QCustomEvent>
 #include <QCloseEvent>
 #include <QWindowsStyle>
 #include <QTreeWidget>
@@ -60,7 +59,7 @@ public:
   void fillHelpToolbar(QToolBar *tb);
   void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
   void newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
-	void customEvent(QCustomEvent *ev);
+	void customEvent(QEvent *ev);
   void fillHelpMap1(ToolbarWhatsThis *tbw);
   void fillHelpMap2(ToolbarWhatsThis *tbw);
   void fillHelpMap3(ToolbarWhatsThis *tbw);

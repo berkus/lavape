@@ -34,7 +34,6 @@
 #include "qfontdialog.h"
 #include "qmessagebox.h"
 //Added by qt3to4:
-#include <QCustomEvent>
 #include <signal.h>
 #include "QtAssistant/qassistantclient.h"
 #include <stdlib.h>
@@ -238,7 +237,7 @@ void CLavaDebugThread::run() {
   if (myDoc)
     if (myDoc->startedFromLavaPE) {
       CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
-      QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaEnd,(void*)hint));
+      QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
 //      qApp->quit();
     }
     else 

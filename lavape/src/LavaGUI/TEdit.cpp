@@ -24,7 +24,6 @@
 #include "GUIProg.h"
 #include "qvalidator.h"
 //Added by qt3to4:
-#include <QCustomEvent>
 #include <QFrame>
 #include <QFocusEvent>
 #include <QEvent>
@@ -149,7 +148,7 @@ void CTEdit::contextMenuEvent(QContextMenuEvent * e) {
 
 void CTEdit::DelActivated()
 {
-  QApplication::postEvent(this, new QCustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
+  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }
 
 
@@ -252,5 +251,5 @@ QMenu* CMultiLineEdit::createStandardContextMenu()
 
 void CMultiLineEdit::DelActivated()
 {
-  QApplication::postEvent(this, new QCustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
+  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }

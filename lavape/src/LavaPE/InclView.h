@@ -8,7 +8,6 @@
 //#include "wxExport.h"
 #include "q3combobox.h"
 //Added by qt3to4:
-#include <QCustomEvent>
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
@@ -30,7 +29,7 @@ public:
   CTreeView *myTree;
 
   //Toolbutton/menu item  handler:
-  void customEvent(QCustomEvent *ev);
+  void customEvent(QEvent *ev);
   void OnNewInclude();
   void OnDelete();
   void OnEditSel();

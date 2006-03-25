@@ -56,7 +56,6 @@
 #include "q3process.h"
 //Added by qt3to4:
 #include <QPixmap>
-#include <QCustomEvent>
 #include <QEvent>
 
 #include "AboutBox.h"
@@ -321,9 +320,9 @@ bool CLavaPEApp::event(QEvent *e)
 {
 
   if (e->type() == IDU_LavaDebug) {
-    ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((QCustomEvent*)e)->data(), debugThread.myDoc);
+    ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((CustomEvent*)e)->data(), debugThread.myDoc);
     LBaseData.enableBreakpoints = true;
-    if (((QCustomEvent*)e)->data()) {
+    if (((CustomEvent*)e)->data()) {
       ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
       ((CLavaMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(true);
       ((CLavaMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(true);
@@ -344,7 +343,7 @@ bool CLavaPEApp::event(QEvent *e)
       delete debugThread.dbgRequest;
       debugThread.dbgRequest = 0;
     }
-    debugThread.dbgRequest = (DbgMessage*)((QCustomEvent*)e)->data();
+    debugThread.dbgRequest = (DbgMessage*)((CustomEvent*)e)->data();
 //    ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(false);
 //    ((CLavaMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(false);
     LBaseData.enableBreakpoints = false;

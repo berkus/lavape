@@ -66,7 +66,6 @@
 //Added by qt3to4:
 #include <QFocusEvent>
 #include <QMouseEvent>
-#include <QCustomEvent>
 #include <QAbstractEventDispatcher>
 
 
@@ -167,12 +166,12 @@ void wxApp::onIdle()
         // make sure that UpdateUI is invoked only once between two wait states
         if (!inUpdateUI) {
 //    inUpdateUI = true;
-//              QApplication::postEvent(this,new QCustomEvent(IDU_Idle,0));
+//              QApplication::postEvent(this,new CustomEvent(IDU_Idle,0));
     onUpdateUI();
         }
 }
 
-void wxApp::customEvent(QCustomEvent *e)
+void wxApp::customEvent(QEvent *e)
 {
 //      if (e->type() == IDU_Idle)
 //              onUpdateUI();

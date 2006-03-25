@@ -39,7 +39,6 @@
 #include "MACROS.h"
 #include "ASN1File.h"
 //Added by qt3to4:
-#include <QCustomEvent>
 
 #pragma hdrstop
 
@@ -65,9 +64,9 @@ void CLavaPEDebugThread::reset(bool final)
     }
     interpreterWaits = false;
     if (dbgReceived.lastReceived)
-	    QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebug,(void*)&dbgReceived));
+	    QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebug,(void*)&dbgReceived));
     else
-	    QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebug,(void*)0));
+	    QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebug,(void*)0));
   }
 }
 
@@ -224,14 +223,14 @@ void CLavaPEDebugThread::run() {
       delete dbgReceived.lastReceived;
     dbgReceived.lastReceived = dbgReceived.newReceived;
     dbgReceived.newReceived = new DbgMessage;
-		//QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugW,(void*)0));
+		//QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugW,(void*)0));
     CDPDbgMessage(GET, get_cid, (address)dbgReceived.newReceived);
     if (get_cid->Done) {
       interpreterWaits = true;
       if (pContExecEvent->available())
         pContExecEvent->acquire();
 
-		  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebug,(void*)&dbgReceived));
+		  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebug,(void*)&dbgReceived));
       if (wxTheApp->appExit)
         break;
       pContExecEvent->acquire();

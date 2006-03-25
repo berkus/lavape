@@ -31,7 +31,6 @@
 #include "qstring.h"
 #include "qmessagebox.h"
 //Added by qt3to4:
-#include <QCustomEvent>
 #include <float.h>
 #include <stdio.h>
 #include <limits>
@@ -196,7 +195,7 @@ bool ObjectDump(CheckData& ckd, LavaVariablePtr stack)
   CLavaThread *currentThread = CLavaThread::currentThread();
   //currentThread->pContExecEvent->lastException = 0;
   DumpEventData* data = new DumpEventData(ckd.document, stack, currentThread);
-	QApplication::postEvent(LBaseData->theApp, new QCustomEvent(IDU_LavaDump,(void*)data));
+	QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaDump,(void*)data));
   currentThread->pContExecEvent->acquire();
   ckd.document->DumpFrame = 0;
   return true;

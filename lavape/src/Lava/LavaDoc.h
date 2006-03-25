@@ -25,7 +25,7 @@ public:
   virtual bool OnNewDocument();
   virtual bool OnSaveDocument(const QString& lpszPathName);
   virtual bool SelectLcom(bool emptyDoc);
-	virtual void customEvent(QCustomEvent *e);
+	virtual void customEvent(QEvent *e);
   virtual bool SaveAs();
 
 protected:

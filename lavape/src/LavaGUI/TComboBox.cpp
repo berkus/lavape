@@ -26,7 +26,6 @@
 #include "qstyle.h"
 //Added by qt3to4:
 #include <QMouseEvent>
-#include <QCustomEvent>
 #include <QFrame>
 #include <QFocusEvent>
 #include <QEvent>
@@ -146,6 +145,6 @@ bool CTComboBox::event(QEvent* ev)
 
 void CTComboBox::DelActivated()
 {
-  QApplication::postEvent(this, new QCustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
+  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }
 

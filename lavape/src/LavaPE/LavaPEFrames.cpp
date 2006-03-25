@@ -67,7 +67,6 @@
 #include <Q3ActionGroup>
 #include <QCloseEvent>
 #include <Q3ValueList>
-#include <QCustomEvent>
 
 #pragma hdrstop
 
@@ -929,7 +928,7 @@ void CLavaMainFrame::DbgStart()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->running()) {
     DbgMessage* mess = new DbgMessage(Dbg_Continue);
-    QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+    QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
   else {
     CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
@@ -959,7 +958,7 @@ void CLavaMainFrame::DbgStepNext()
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_Step;
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::DbgStepNextFunction()
@@ -968,7 +967,7 @@ void CLavaMainFrame::DbgStepNextFunction()
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_StepFunc;
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::DbgStepinto()
@@ -977,7 +976,7 @@ void CLavaMainFrame::DbgStepinto()
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_StepInto;
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::DbgStepout()
@@ -986,14 +985,14 @@ void CLavaMainFrame::DbgStepout()
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_StepOut;
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::DbgStop()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->interpreterWaits) {
     DbgMessage* mess = new DbgMessage(Dbg_Exit);
-    QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+    QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
   else 
     if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava) 
@@ -1576,9 +1575,10 @@ void CLavaMainFrame::on_tileHorizAction_triggered()
   */
 }
 
-void CLavaMainFrame::customEvent(QCustomEvent *ev){
+void CLavaMainFrame::customEvent(QEvent *ev0){
 	HistWindow *hw;
 	DString title;
+  CustomEvent *ev=(CustomEvent*)ev0;
 	
   if (ev->data()) {
     if ( !((CLavaPEApp*)wxTheApp)->inTotalCheck) { //to prevent crash if mdi-frame already closed

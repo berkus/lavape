@@ -25,7 +25,6 @@
 #include "qtooltip.h"
 //Added by qt3to4:
 #include <QMouseEvent>
-#include <QCustomEvent>
 #include <QFrame>
 #include <QEvent>
 #include <QMenu>
@@ -145,18 +144,18 @@ void CFormWid::mousePressEvent(QMouseEvent* ev)
 
 void CFormWid::InsActivated()
 {
-  QApplication::postEvent(this, new QCustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_INSERT));
+  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_INSERT));
 }
 
 void CFormWid::DelActivated()
 {
-  QApplication::postEvent(this, new QCustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
+  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }
 
 bool CFormWid::event(QEvent* ev)
 {
   if (ev->type() == IDU_LavaGUIInsDel) {
-    int id = (int)((QCustomEvent*)ev)->data();
+    int id = (int)((CustomEvent*)ev)->data();
     if (id == IDM_ITER_DEL) 
       if (iterData->data.IterFlags.Contains(Optional))
         ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(iterData);

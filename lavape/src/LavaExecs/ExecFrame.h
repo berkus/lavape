@@ -24,6 +24,7 @@ public:
   CExecFrame(QWidget *parent);
   FRAMEFACTORY(CExecFrame)
   virtual void InitialUpdate();
+  void closeEvent (QCloseEvent *ev);
 
 // Attributes
 public:

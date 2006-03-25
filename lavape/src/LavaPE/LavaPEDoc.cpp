@@ -3312,7 +3312,7 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
 	&& GetViewCount() == 4
   && wxDocManager::GetDocumentManager()->GetActiveView()->GetParentFrame()->oldWindowState != Qt::WindowMaximized
   && !MainView->GetParentFrame()->isMinimized())
-		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
+		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new CustomEvent(QEvent::User,0));
 */
   return true;
 }
@@ -3343,7 +3343,7 @@ bool CLavaPEDoc::OpenGUIView(LavaDECL** pdecl)
   if (active) {
     formChild->Activate(true);
 	 // if (wxDocManager::GetOpenDocCount() == 1)
-	 //	  QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new QCustomEvent(QEvent::User,0));
+	 //	  QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new CustomEvent(QEvent::User,0));
   }
   return true;
 }//OpenGUIView

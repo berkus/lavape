@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <stddef.h>
 #include <new>
+#include "qevent.h"
 
 
 #ifdef WIN32
@@ -119,6 +120,18 @@ extern "C" DISCO_DLL void bcopy (const unsigned char* const,unsigned char*,unsig
   bcopy((unsigned char*)&fromVariable, \
         (unsigned char*)&toVariable, \
         sizeof(toVariable));
-//#endif
+
+class DISCO_DLL CustomEvent : public  QEvent {
+public:
+  CustomEvent(int type, void *data = 0):QEvent(static_cast<QEvent::Type>(type)) {
+    d = reinterpret_cast<QEventPrivate *>(data);
+  }
+  void *data() const {
+    return d;
+  }
+  void setData(void* data) {
+    d = reinterpret_cast<QEventPrivate *>(data);
+  }
+};
 
 #endif

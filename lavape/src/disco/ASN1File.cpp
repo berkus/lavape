@@ -104,7 +104,7 @@ ASN1OutFile::ASN1OutFile (const QString& fileName, bool silent)
   Silent = silent;
   bufferPtr = 0;
 
-	if (!file.open(QIODevice::ReadOnly)) {
+	if (!file.open(QIODevice::WriteOnly)) {
     error("UNIX.open, file \""+fileName+"\"");
     Done = false;
     return;

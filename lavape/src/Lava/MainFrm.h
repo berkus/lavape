@@ -13,7 +13,7 @@ public:
   virtual ~CLavaMainFrame();
   virtual void UpdateUI();
   int lastTile;
-  virtual void customEvent(QCustomEvent *ev);
+  virtual void customEvent(QEvent *ev);
 
 public slots:
   virtual void on_helpContentsAction_triggered();

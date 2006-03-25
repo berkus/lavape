@@ -34,7 +34,6 @@
 #include <QKeyEvent>
 #include <Q3ValueList>
 #include <QMouseEvent>
-#include <QCustomEvent>
 #include "Constructs.h"
 #include "Check.h"
 #include "Comment.h"
@@ -6837,7 +6836,7 @@ void CExecView::DbgRunToSel() {
     return;
   }
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
 

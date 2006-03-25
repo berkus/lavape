@@ -285,8 +285,10 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaDoc Serialisierung
-void CLavaDoc::customEvent(QCustomEvent *ev)
+void CLavaDoc::customEvent(QEvent *ev0)
 {
+  CustomEvent *ev=(CustomEvent*)ev0;
+
 	COpenObjectParms *oop = (COpenObjectParms*)ev->data();
 
   if (ev->type() == IDU_OpenObject) 

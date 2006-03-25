@@ -27,7 +27,6 @@
 #include "qpixmapcache.h"
 //Added by qt3to4:
 #include <QPixmap>
-#include <QCustomEvent>
 
 #pragma hdrstop
 
@@ -810,7 +809,7 @@ void CVTView::OnSelchanged()
           multiSelectCanceled = true;
           DeleteExChain(false);
           GetListView()->withShift = false;
-          QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+          QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
           /*GetListView()->ResetSelections();
           GetListView()->setCurAndSel(selItem);*/
         }
@@ -821,7 +820,7 @@ void CVTView::OnSelchanged()
           multiSelectCanceled = true;
           DeleteExChain(false);
           GetListView()->withControl = false;
-          QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+          QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
           /*GetListView()->ResetSelections();
           GetListView()->setCurAndSel(selItem);*/
         }
@@ -832,7 +831,7 @@ void CVTView::OnSelchanged()
       DeleteExChain(false);
       GetListView()->withShift = false;
       GetListView()->withControl = false;
-      QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+      QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
       /*GetListView()->ResetSelections();
       GetListView()->setCurAndSel(selItem);*/
     }

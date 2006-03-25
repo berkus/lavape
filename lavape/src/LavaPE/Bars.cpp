@@ -33,7 +33,6 @@
 //Added by qt3to4:
 #include <QPixmap>
 #include <Q3ValueList>
-#include <QCustomEvent>
 #include <QHeaderView>
 
 #pragma hdrstop
@@ -564,7 +563,7 @@ void VarItem::setOpen(bool O)
       mess = new DbgMessage(Dbg_MemberDataRq);
       mess->ObjNr.ptr = rqs;
       mess->fromParams = myView->myUtilityView->ParamView == myView;
-      QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+      QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
       return;
     }
   }
@@ -672,7 +671,7 @@ void StackListView::selChanged()
   if (allDrawn) {
     DbgMessage* mess = new DbgMessage(Dbg_StackRq);
     mess->CallStackLevel = lastSelected->itemCount;
-    QApplication::postEvent(wxTheApp,new QCustomEvent(IDU_LavaDebugRq,(void*)mess));
+    QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
 }
 

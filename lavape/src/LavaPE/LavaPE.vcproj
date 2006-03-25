@@ -619,6 +619,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\Boxes.h"
+				>
+			</File>
+			<File
 				RelativePath="DbgThreadPE.h"
 				>
 			</File>

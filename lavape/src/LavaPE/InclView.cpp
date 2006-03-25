@@ -25,7 +25,6 @@
 #include "qfileinfo.h"
 //Added by qt3to4:
 #include <QPixmap>
-#include <QCustomEvent>
 #include "Boxes.h"
 #include "qdir.h"
 #include "qpixmapcache.h"
@@ -225,13 +224,15 @@ void CInclView::OnDblclk(const QModelIndex & index)
  CTreeItem* item = (CTreeItem*)m_tree->itemAtIndex(index);
  if (item && (item != GetListView()->RootItem)) {
     DString *fn = new DString(((CHESimpleSyntax*)((CTreeItem*)item)->getItemData())->data.UsersName); //.SyntaxName);
-    QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_CalledView,(void*)fn));
+    QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_CalledView,(void*)fn));
 
   }
 }
 
-void CInclView::customEvent(QCustomEvent *ev)
+void CInclView::customEvent(QEvent *ev0)
 {
+  CustomEvent *ev=(CustomEvent*)ev0;
+
   if (ev->type() == IDU_LavaPE_CalledView) {
     DString* usersFn = (DString*)ev->data();
     QDir dir(GetDocument()->IDTable.DocDir.c);

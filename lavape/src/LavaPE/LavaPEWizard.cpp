@@ -38,7 +38,6 @@
 #include "q3filedialog.h"
 //Added by qt3to4:
 #include <Q3Frame>
-#include <QCustomEvent>
 
 #pragma hdrstop
 
@@ -125,8 +124,10 @@ void CWizardView::setFont(const QFont& font)
 }
 
 
-void CWizardView::customEvent(QCustomEvent *ev)
+void CWizardView::customEvent(QEvent *ev0)
 {
+  CustomEvent *ev=(CustomEvent*)ev0;
+
   if (ev->type() == IDU_LavaPE_CalledView) {
     CLavaPEHint* hint = (CLavaPEHint*)ev->data();
     ((CLavaPEDoc*)hint->fromDoc)->UndoMem.AddToMem(hint);
@@ -176,7 +177,7 @@ void CWizardView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
           if (delayed)
             delayedID = decl->OwnID;
           wizard->FormDECL = 0;
-          QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_CalledView,(void*)hint));
+          QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_CalledView,(void*)hint));
         }
       //}
       delete wizard;
@@ -203,7 +204,7 @@ void CWizardView::PostApplyHint()
   CLavaPEHint* hint = wizard->ApplyHint();
   wizard->FormDECL = 0;
   wizard->modified = false;
-  QApplication::postEvent(this, new QCustomEvent(IDU_LavaPE_CalledView,(void*)hint));
+  QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_CalledView,(void*)hint));
 }
 
 void CWizardView::Resize()
