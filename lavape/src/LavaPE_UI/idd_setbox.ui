@@ -60,7 +60,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="m_NewName" >
+        <widget class="QLineEdit" name="NewName" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
          </property>
@@ -90,7 +90,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="m_Extend" >
+        <widget class="QLineEdit" name="Extend" >
          <property name="enabled" >
           <bool>false</bool>
          </property>
@@ -120,7 +120,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QComboBox" name="m_BasicTypes" >
+         <widget class="QComboBox" name="BasicTypes" >
           <item>
            <property name="text" >
             <string>(Basic types)</string>
@@ -129,7 +129,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="m_ExTypes" >
+         <widget class="QComboBox" name="ExTypes" >
           <item>
            <property name="text" >
             <string>(Other types)</string>
@@ -151,7 +151,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK3" >
+      <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -178,7 +178,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDCANCEL3" >
+      <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -202,7 +202,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_HELP1" >
+      <widget class="QPushButton" name="ID_HELP" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -230,6 +230,7 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

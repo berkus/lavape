@@ -63,7 +63,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="m_NewName" >
+      <widget class="QLineEdit" name="NewName" >
        <property name="focusPolicy" >
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -104,7 +104,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QListWidget" name="m_EnumItems" >
+      <widget class="QListWidget" name="EnumItems" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>7</hsizetype>
@@ -130,7 +130,7 @@
         <number>6</number>
        </property>
        <item>
-        <widget class="QPushButton" name="m_EnumAdd" >
+        <widget class="QPushButton" name="EnumAdd" >
          <property name="sizePolicy" >
           <sizepolicy>
            <hsizetype>0</hsizetype>
@@ -157,7 +157,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="m_EnumEdit" >
+        <widget class="QPushButton" name="EnumEdit" >
          <property name="sizePolicy" >
           <sizepolicy>
            <hsizetype>0</hsizetype>
@@ -181,7 +181,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="m_EnumDel" >
+        <widget class="QPushButton" name="EnumDel" >
          <property name="sizePolicy" >
           <sizepolicy>
            <hsizetype>0</hsizetype>
@@ -209,7 +209,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QCheckBox" name="m_BuildSet" >
+    <widget class="QCheckBox" name="BuildSet" >
      <property name="text" >
       <string>Declare also ""Set"" of ...</string>
      </property>
@@ -224,7 +224,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK5" >
+      <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>3</hsizetype>
@@ -248,7 +248,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="m_CANCEL5" >
+      <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>3</hsizetype>
@@ -272,7 +272,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_HELP3" >
+      <widget class="QPushButton" name="ID_HELP" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -300,10 +300,11 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <tabstops>
-  <tabstop>m_NewName</tabstop>
-  <tabstop>m_EnumItems</tabstop>
-  <tabstop>m_BuildSet</tabstop>
+  <tabstop>NewName</tabstop>
+  <tabstop>EnumItems</tabstop>
+  <tabstop>BuildSet</tabstop>
  </tabstops>
  <resources/>
  <connections/>

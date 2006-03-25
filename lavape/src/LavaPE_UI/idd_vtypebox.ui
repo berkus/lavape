@@ -109,7 +109,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QCheckBox" name="m_EnableName1" >
+          <widget class="QCheckBox" name="EnableName" >
            <property name="enabled" >
             <bool>false</bool>
            </property>
@@ -124,7 +124,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QLineEdit" name="m_NewName" >
+        <widget class="QLineEdit" name="NewName" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
          </property>
@@ -159,7 +159,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QComboBox" name="m_BasicTypes" >
+         <widget class="QComboBox" name="BasicTypes" >
           <item>
            <property name="text" >
             <string>(Basic Types)</string>
@@ -168,7 +168,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="m_NamedTypes" >
+         <widget class="QComboBox" name="NamedTypes" >
           <item>
            <property name="text" >
             <string>(Other Types)</string>
@@ -197,7 +197,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="m_ValueObject" >
+         <widget class="QRadioButton" name="ValueObject" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -210,7 +210,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_StateObject" >
+         <widget class="QRadioButton" name="StateObject" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -223,7 +223,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_AnyCategory" >
+         <widget class="QRadioButton" name="AnyCategory" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -253,7 +253,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="m_DownC" >
+         <widget class="QRadioButton" name="DownC" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -266,7 +266,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_DownInd" >
+         <widget class="QRadioButton" name="DownInd" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -282,7 +282,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_Back" >
+         <widget class="QRadioButton" name="Back" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -306,7 +306,7 @@
         <number>6</number>
        </property>
        <item>
-        <widget class="QCheckBox" name="m_RMOverrides1" >
+        <widget class="QCheckBox" name="RMOverrides" >
          <property name="enabled" >
           <bool>false</bool>
          </property>
@@ -319,7 +319,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="m_isAbstract" >
+        <widget class="QCheckBox" name="VTAbstract" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
          </property>
@@ -329,7 +329,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="m_DefCat" >
+        <widget class="QCheckBox" name="DefCat" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
          </property>
@@ -375,7 +375,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="m_NewTypeType1" >
+          <widget class="QLineEdit" name="NewTypeType" >
            <property name="enabled" >
             <bool>false</bool>
            </property>
@@ -390,7 +390,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QCheckBox" name="m_Substitutable" >
+        <widget class="QCheckBox" name="Substitutable" >
          <property name="text" >
           <string>Is a substitutable type</string>
          </property>
@@ -425,7 +425,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK16" >
+      <widget class="QPushButton" name="ID_OK" >
        <property name="minimumSize" >
         <size>
          <width>1</width>
@@ -444,7 +444,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDCANCEL16" >
+      <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -468,7 +468,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_HELP13" >
+      <widget class="QPushButton" name="ID_HELP" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -496,21 +496,22 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <tabstops>
-  <tabstop>m_EnableName1</tabstop>
-  <tabstop>m_NewName</tabstop>
-  <tabstop>m_Substitutable</tabstop>
-  <tabstop>m_BasicTypes</tabstop>
-  <tabstop>m_NamedTypes</tabstop>
-  <tabstop>m_RMOverrides1</tabstop>
-  <tabstop>m_isAbstract</tabstop>
-  <tabstop>m_DefCat</tabstop>
-  <tabstop>m_ValueObject</tabstop>
-  <tabstop>m_StateObject</tabstop>
-  <tabstop>m_AnyCategory</tabstop>
-  <tabstop>m_DownC</tabstop>
-  <tabstop>m_DownInd</tabstop>
-  <tabstop>m_Back</tabstop>
+  <tabstop>EnableName</tabstop>
+  <tabstop>NewName</tabstop>
+  <tabstop>Substitutable</tabstop>
+  <tabstop>BasicTypes</tabstop>
+  <tabstop>NamedTypes</tabstop>
+  <tabstop>RMOverrides</tabstop>
+  <tabstop>VTAbstract</tabstop>
+  <tabstop>DefCat</tabstop>
+  <tabstop>ValueObject</tabstop>
+  <tabstop>StateObject</tabstop>
+  <tabstop>AnyCategory</tabstop>
+  <tabstop>DownC</tabstop>
+  <tabstop>DownInd</tabstop>
+  <tabstop>Back</tabstop>
  </tabstops>
  <resources/>
  <connections/>

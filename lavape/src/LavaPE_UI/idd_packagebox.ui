@@ -63,7 +63,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="m_NewName" >
+      <widget class="QLineEdit" name="NewName" >
        <property name="focusPolicy" >
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -73,7 +73,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="m_Opaque" >
+      <widget class="QCheckBox" name="Opaque" >
        <property name="focusPolicy" >
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -98,10 +98,10 @@
          <number>15</number>
         </property>
         <item>
-         <widget class="QListWidget" name="m_Extends" />
+         <widget class="QListWidget" name="Extends" />
         </item>
         <item>
-         <widget class="QPushButton" name="m_DelSupport1" >
+         <widget class="QPushButton" name="DelSupport" >
           <property name="focusPolicy" >
            <enum>Qt::NoFocus</enum>
           </property>
@@ -111,7 +111,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="m_ExtTypes" >
+         <widget class="QComboBox" name="ExtTypes" >
           <item>
            <property name="text" >
             <string>(Select package to be extended)</string>
@@ -133,7 +133,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK10" >
+      <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -160,7 +160,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mANCEL10" >
+      <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -184,7 +184,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_HELP8" >
+      <widget class="QPushButton" name="ID_HELP" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -212,6 +212,7 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

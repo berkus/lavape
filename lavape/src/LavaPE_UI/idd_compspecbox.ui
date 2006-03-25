@@ -71,7 +71,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="m_NewName" >
+      <widget class="QLineEdit" name="NewName" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>3</hsizetype>
@@ -114,7 +114,7 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QListWidget" name="m_Extends" >
+       <widget class="QListWidget" name="Extends" >
         <property name="enabled" >
          <bool>true</bool>
         </property>
@@ -135,7 +135,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="m_DelSupport2" >
+       <widget class="QPushButton" name="DelSupport" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>3</hsizetype>
@@ -153,7 +153,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="m_ExtTypes" >
+       <widget class="QComboBox" name="ExtTypes" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>3</hsizetype>
@@ -187,7 +187,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QCheckBox" name="m_Persistent" >
+      <widget class="QCheckBox" name="Persistent" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>1</hsizetype>
@@ -205,7 +205,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="m_CompoProt" >
+      <widget class="QComboBox" name="CompoProt" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>1</hsizetype>
@@ -242,7 +242,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK13" >
+      <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -269,7 +269,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="m_CANCEL13" >
+      <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -293,7 +293,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_HELP10" >
+      <widget class="QPushButton" name="ID_HELP" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -358,7 +358,7 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QListWidget" name="m_EnumItems1" >
+       <widget class="QListWidget" name="EnumItems" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>3</hsizetype>
@@ -384,7 +384,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QPushButton" name="m_EnumAdd1" >
+         <widget class="QPushButton" name="EnumAdd" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>0</hsizetype>
@@ -408,7 +408,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="m_EnumEdit1" >
+         <widget class="QPushButton" name="EnumEdit" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>0</hsizetype>
@@ -432,7 +432,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="m_EnumDel1" >
+         <widget class="QPushButton" name="EnumDel" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>0</hsizetype>
@@ -463,13 +463,14 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <tabstops>
-  <tabstop>m_NewName</tabstop>
-  <tabstop>m_Extends</tabstop>
-  <tabstop>m_ExtTypes</tabstop>
-  <tabstop>m_Persistent</tabstop>
-  <tabstop>m_CompoProt</tabstop>
-  <tabstop>m_EnumItems1</tabstop>
+  <tabstop>NewName</tabstop>
+  <tabstop>Extends</tabstop>
+  <tabstop>ExtTypes</tabstop>
+  <tabstop>Persistent</tabstop>
+  <tabstop>CompoProt</tabstop>
+  <tabstop>EnumItems</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -61,7 +61,7 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
       if (decl->DeclType == FormDef)
         decl = decl->ParentDECL;
       item = new CComboBoxItem(rID);
-      m_GotoCombo->addItem(QString(decl->LocalName.c), QVariant::fromValue(item));
+      GotoCombo->addItem(QString(decl->LocalName.c), QVariant::fromValue(item));
     }
   }
   while (cheS) {
@@ -70,9 +70,9 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
       if (decl) {
         item = new CComboBoxItem(cheS->data);
         if (decl->LocalName == myDECL->LocalName)
-          m_GotoCombo->addItem(QString(decl->FullName.c), QVariant::fromValue(item));
+          GotoCombo->addItem(QString(decl->FullName.c), QVariant::fromValue(item));
         else
-          m_GotoCombo->addItem(QString(decl->LocalName.c), QVariant::fromValue(item)); 
+          GotoCombo->addItem(QString(decl->LocalName.c), QVariant::fromValue(item)); 
       }
       else {
         notAll = true;
@@ -86,7 +86,7 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
       decl = myDoc->IDTable.GetDECL(cheS->data);
       if (decl) {
         item = new CComboBoxItem(cheS->data);
-        m_GotoCombo->addItem(QString(decl->LocalName.c), QVariant::fromValue(item));
+        GotoCombo->addItem(QString(decl->LocalName.c), QVariant::fromValue(item));
       }
       else 
         notAll = true;
@@ -94,11 +94,11 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
     cheS = (CHETID*)cheS->successor;
   }
 
-  m_GotoCombo->setCurrentItem(1);
+  GotoCombo->setCurrentItem(1);
 
   QString cname;
-  if (SelEndOKToStr(m_GotoCombo, &cname, &SelID) > 0) 
-    PushButton_IDOK12->setEnabled(true);
+  if (SelEndOKToStr(GotoCombo, &cname, &SelID) > 0) 
+    ID_OK->setEnabled(true);
   if (notAll)
     IDC_STATIC_NotAllRefs->show();
   else
@@ -106,19 +106,19 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
 }
 
 
-void CGotoBox::on_m_GotoCombo_triggered(int pos) 
+void CGotoBox::on_GotoCombo_triggered(int pos) 
 {
   if (pos > 0) {
     QString cname;
-    if (SelEndOKToStr(m_GotoCombo, &cname, &SelID) <= 0) {
+    if (SelEndOKToStr(GotoCombo, &cname, &SelID) <= 0) {
       SelID.nID = -1;
-      PushButton_IDOK12->setEnabled(false);
+      ID_OK->setEnabled(false);
     }
     else
-      PushButton_IDOK12->setEnabled(true);
+      ID_OK->setEnabled(true);
   }
   else
-    PushButton_IDOK12->setEnabled(false);
+    ID_OK->setEnabled(false);
 }
 
 
@@ -131,51 +131,51 @@ void CGotoBox::on_m_GotoCombo_triggered(int pos)
 void CFindRefsBox::UpdateData(bool getData)
 {
   if (getData) {
-    valRefName = m_Reference->text();
-    if (m_FindInView->isOn())
+    valRefName = Reference->text();
+    if (FindInView->isOn())
       valFindWhere = 0;
-    else if (m_InCurrentDoc->isOn())
+    else if (InCurrentDoc->isOn())
       valFindWhere = 1;
-    else if (m_InDocs->isOn())
+    else if (InDocs->isOn())
       valFindWhere = 2;
     else 
       valFindWhere = 3;
-    if (m_FindAll->isOn())
+    if (FindAll->isOn())
       valFindWhat = 0;
-    else if (m_FindRead->isOn())
+    else if (FindRead->isOn())
       valFindWhat = 1;
-    else if (m_FindWrite->isOn())
+    else if (FindWrite->isOn())
       valFindWhat = 2;
     else 
       valFindWhat = 3;
   }
   else {
-    m_Reference->setText(valRefName);
+    Reference->setText(valRefName);
     switch (valFindWhere) {
     case 0:
-      m_FindInView->setChecked(true);
+      FindInView->setChecked(true);
       break;
     case 1:
-      m_InCurrentDoc->setChecked(true);
+      InCurrentDoc->setChecked(true);
       break;
     case 2:
-      m_InDocs->setChecked(true);
+      InDocs->setChecked(true);
       break;
     default:
-      m_InIncls->setChecked(true);
+      InIncls->setChecked(true);
     }
     switch (valFindWhat) {
     case 0:
-      m_FindAll->setChecked(true);
+      FindAll->setChecked(true);
       break;
     case 1:
-      m_FindRead->setChecked(true);
+      FindRead->setChecked(true);
       break;
     case 2:
-      m_FindWrite->setChecked(true);
+      FindWrite->setChecked(true);
       break;
     default:
-      m_FindDerivs->setChecked(true);
+      FindDerivs->setChecked(true);
     }
   }
 }
@@ -205,29 +205,29 @@ CFindRefsBox::CFindRefsBox(LavaDECL* decl, bool inExec, CFindData* fw, QWidget* 
       valRefName = QString(findWhat->enumID.c);
     else
       valRefName = QString(fw->searchName.c);
-    m_InCurrentDoc->setEnabled(false);
-    m_InDocs->setEnabled(false);
-    m_InIncls->setEnabled(false);
+    InCurrentDoc->setEnabled(false);
+    InDocs->setEnabled(false);
+    InIncls->setEnabled(false);
   }
   if (setExec)
     valFindWhere = 0;
   else {
     valFindWhere = 1;
-    m_FindInView->setEnabled(false);
+    FindInView->setEnabled(false);
   }
   valFindWhat = 0;
   if (myDECL && (myDECL->DeclType != Attr)
       && (myDECL->DeclType != IAttr)
       && (myDECL->DeclType != OAttr)) {
-    m_FindWrite->setEnabled(false);
-    m_FindRead->setEnabled(false);
+    FindWrite->setEnabled(false);
+    FindRead->setEnabled(false);
   }
   if (!myDECL || findWhat->enumID.l || (myDECL->DeclType != Interface) && (myDECL->DeclType != Function))
-    m_FindDerivs->setEnabled(false);
+    FindDerivs->setEnabled(false);
   UpdateData(false);
 }
 
-void CFindRefsBox::m_FindDerivs_toggled(bool on) 
+void CFindRefsBox::on_FindDerivs_toggled(bool on) 
 {
   if (on) {
     UpdateData(true);
@@ -237,7 +237,7 @@ void CFindRefsBox::m_FindDerivs_toggled(bool on)
   }
 }
 
-void CFindRefsBox::OnOK() 
+void CFindRefsBox::on_ID_OK_clicked() 
 {
   UpdateData(true);
   if (valFindWhat == 3) {
@@ -289,23 +289,23 @@ CFindByNameBox::CFindByNameBox(CFindData* fw, QWidget* pParent)
      next;
      next = (CHEString*)next->successor) {
     pos++;
-	  m_SearchName->insertItem(QString(next->data.c), pos);
+	  SearchName->insertItem(QString(next->data.c), pos);
   }
   if (pos)
-    m_SearchName->setCurrentItem(1);
+    SearchName->setCurrentItem(1);
 }
 
-void CFindByNameBox::OnOK() 
+void CFindByNameBox::on_ID_OK_clicked() 
 {
-	if (m_SearchCase->isOn())
+	if (SearchCase->isOn())
     findWhat->FindRefFlags.INCL(matchCase);
   else
     findWhat->FindRefFlags.EXCL(matchCase);
-	if (m_SearchWholeName->isOn())
+	if (SearchWholeName->isOn())
     findWhat->FindRefFlags.INCL(wholeWord);
   else
     findWhat->FindRefFlags.EXCL(wholeWord);
-  findWhat->searchName = qPrintable(m_SearchName->currentText());
+  findWhat->searchName = qPrintable(SearchName->currentText());
   CHEString* next;
   if (findWhat->searchName.l) {
     for (next = (CHEString*)((CLavaPEApp*)wxTheApp)->FindList.first;

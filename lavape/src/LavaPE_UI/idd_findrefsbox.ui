@@ -95,7 +95,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="m_Reference" >
+      <widget class="QLineEdit" name="Reference" >
        <property name="focusPolicy" >
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -148,28 +148,28 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QRadioButton" name="m_FindInView" >
+       <widget class="QRadioButton" name="FindInView" >
         <property name="text" >
          <string>In this exec only</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="m_InCurrentDoc" >
+       <widget class="QRadioButton" name="InCurrentDoc" >
         <property name="text" >
          <string>In this entire Lava file</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="m_InDocs" >
+       <widget class="QRadioButton" name="InDocs" >
         <property name="text" >
          <string>In all open Lava files</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="m_InIncls" >
+       <widget class="QRadioButton" name="InIncls" >
         <property name="text" >
          <string>... and all included files</string>
         </property>
@@ -188,28 +188,28 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QRadioButton" name="m_FindAll" >
+       <widget class="QRadioButton" name="FindAll" >
         <property name="text" >
          <string>All references</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="m_FindRead" >
+       <widget class="QRadioButton" name="FindRead" >
         <property name="text" >
          <string>Read references</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="m_FindWrite" >
+       <widget class="QRadioButton" name="FindWrite" >
         <property name="text" >
          <string>Write references</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="m_FindDerivs" >
+       <widget class="QRadioButton" name="FindDerivs" >
         <property name="text" >
          <string>Derivations/implementations</string>
         </property>
@@ -227,7 +227,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK20" >
+      <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -254,7 +254,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDCANCEL20" >
+      <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -282,6 +282,7 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

@@ -28,9 +28,9 @@ public:
   LavaDECL *myDECL;
 
 public slots:
-  virtual void OnOK() {QDialog::accept();}
-  virtual void OnCancel() {QDialog::reject();}
-  virtual void on_m_GotoCombo_triggered(int);
+  virtual void on_ID_OK_clicked() {QDialog::accept();}
+  virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
+  virtual void on_GotoCombo_triggered(int);
 private:
   Q_OBJECT
 };
@@ -55,9 +55,9 @@ public:
 
 
 public slots:
-	virtual void OnOK();
-  virtual void OnCancel() {QDialog::reject();}
-	virtual void m_FindDerivs_toggled(bool);
+	virtual void on_ID_OK_clicked();
+  virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
+	virtual void on_FindDerivs_toggled(bool);
 private:
   Q_OBJECT
 };
@@ -74,8 +74,8 @@ public:
   CFindData *findWhat;
 
 public slots:
-	virtual void OnOK();
-  virtual void OnCancel() {QDialog::reject();}
+	virtual void on_ID_OK_clicked();
+  virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
 private:
   Q_OBJECT
 };

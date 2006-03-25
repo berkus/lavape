@@ -59,7 +59,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="m_Mandatory" >
+         <widget class="QRadioButton" name="Mandatory" >
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -69,7 +69,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_Optional" >
+         <widget class="QRadioButton" name="Optional" >
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -97,7 +97,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QComboBox" name="m_BasicTypes" >
+         <widget class="QComboBox" name="BasicTypes" >
           <item>
            <property name="text" >
             <string>(Basic types)</string>
@@ -106,7 +106,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="m_NamedTypes" >
+         <widget class="QComboBox" name="NamedTypes" >
           <item>
            <property name="text" >
             <string>(Other types)</string>
@@ -139,7 +139,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="m_NewName" >
+        <widget class="QLineEdit" name="NewName" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
          </property>
@@ -162,7 +162,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="m_NewTypeType" >
+        <widget class="QLineEdit" name="NewTypeType" >
          <property name="enabled" >
           <bool>false</bool>
          </property>
@@ -175,7 +175,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="m_Substitutable1" >
+        <widget class="QCheckBox" name="Substitutable" >
          <property name="focusPolicy" >
           <enum>Qt::StrongFocus</enum>
          </property>
@@ -196,7 +196,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="m_ValueObject1" >
+         <widget class="QRadioButton" name="ValueObject" >
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -206,7 +206,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_StateObject1" >
+         <widget class="QRadioButton" name="StateObject" >
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -216,7 +216,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_SameAsSelf" >
+         <widget class="QRadioButton" name="SameAsSelf" >
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -226,7 +226,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_AnyCategory" >
+         <widget class="QRadioButton" name="AnyCategory" >
           <property name="text" >
            <string>Any object category</string>
           </property>
@@ -262,7 +262,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK18" >
+      <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -289,7 +289,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDCANCEL18" >
+      <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -313,7 +313,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_HELP14" >
+      <widget class="QPushButton" name="ID_HELP" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -341,17 +341,18 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <tabstops>
-  <tabstop>m_NewName</tabstop>
-  <tabstop>m_Substitutable1</tabstop>
-  <tabstop>m_BasicTypes</tabstop>
-  <tabstop>m_NamedTypes</tabstop>
-  <tabstop>m_ValueObject1</tabstop>
-  <tabstop>m_StateObject1</tabstop>
-  <tabstop>m_SameAsSelf</tabstop>
-  <tabstop>m_AnyCategory</tabstop>
-  <tabstop>m_Mandatory</tabstop>
-  <tabstop>m_Optional</tabstop>
+  <tabstop>NewName</tabstop>
+  <tabstop>Substitutable</tabstop>
+  <tabstop>BasicTypes</tabstop>
+  <tabstop>NamedTypes</tabstop>
+  <tabstop>ValueObject</tabstop>
+  <tabstop>StateObject</tabstop>
+  <tabstop>SameAsSelf</tabstop>
+  <tabstop>AnyCategory</tabstop>
+  <tabstop>Mandatory</tabstop>
+  <tabstop>Optional</tabstop>
  </tabstops>
  <resources/>
  <connections/>

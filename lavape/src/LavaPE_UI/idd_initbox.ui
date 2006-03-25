@@ -73,7 +73,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="m_NewName" >
+        <widget class="QLineEdit" name="NewName" >
          <property name="sizePolicy" >
           <sizepolicy>
            <hsizetype>3</hsizetype>
@@ -93,7 +93,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QCheckBox" name="m_const" >
+      <widget class="QCheckBox" name="ReadOnly" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -111,7 +111,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="m_Transaction1" >
+      <widget class="QCheckBox" name="Transaction" >
        <property name="focusPolicy" >
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -138,7 +138,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="m_Synch1" >
+         <widget class="QRadioButton" name="Synch" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>3</hsizetype>
@@ -162,7 +162,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_Concurrent1" >
+         <widget class="QRadioButton" name="Concurrent" >
           <property name="toolTip" >
            <string>Caller doesn't wait for completion</string>
           </property>
@@ -185,7 +185,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK14" >
+      <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -212,7 +212,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDCANCEL14" >
+      <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -250,7 +250,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_HELP11" >
+      <widget class="QPushButton" name="ID_HELP" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -278,15 +278,16 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <tabstops>
-  <tabstop>m_NewName</tabstop>
-  <tabstop>m_const</tabstop>
-  <tabstop>m_Transaction1</tabstop>
-  <tabstop>m_Synch1</tabstop>
-  <tabstop>m_Concurrent1</tabstop>
-  <tabstop>PushButton_IDOK14</tabstop>
-  <tabstop>PushButton_IDCANCEL14</tabstop>
-  <tabstop>ID_HELP11</tabstop>
+  <tabstop>NewName</tabstop>
+  <tabstop>ReadOnly</tabstop>
+  <tabstop>Transaction</tabstop>
+  <tabstop>Synch</tabstop>
+  <tabstop>Concurrent</tabstop>
+  <tabstop>ID_OK</tabstop>
+  <tabstop>ID_CANCEL</tabstop>
+  <tabstop>ID_HELP</tabstop>
  </tabstops>
  <resources/>
  <connections/>

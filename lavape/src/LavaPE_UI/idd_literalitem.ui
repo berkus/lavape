@@ -390,7 +390,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK4" >
+      <widget class="QPushButton" name="PushButton_ID_OK4" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -417,7 +417,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDCANCEL4" >
+      <widget class="QPushButton" name="PushButton_ID_CANCEL4" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>

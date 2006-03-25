@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>432</width>
-    <height>493</height>
+    <width>648</width>
+    <height>586</height>
    </rect>
   </property>
   <property name="font" >
@@ -70,7 +70,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="m_EnableName" >
+         <widget class="QCheckBox" name="EnableName" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -93,7 +93,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QCheckBox" name="m_CHECKOp" >
+         <widget class="QCheckBox" name="CHECKOp" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -106,7 +106,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="m_CMBOperator" >
+         <widget class="QComboBox" name="CMBOperator" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -168,7 +168,7 @@
        </spacer>
       </item>
       <item row="1" column="0" >
-       <widget class="QLineEdit" name="m_NewName" >
+       <widget class="QLineEdit" name="NewName" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>0</hsizetype>
@@ -232,7 +232,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QCheckBox" name="m_Protected" >
+         <widget class="QCheckBox" name="Protected" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>0</hsizetype>
@@ -250,7 +250,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="m_ConstFunc" >
+         <widget class="QCheckBox" name="ConstFunc" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>0</hsizetype>
@@ -268,7 +268,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="m_StaticFunc" >
+         <widget class="QCheckBox" name="StaticFunc" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>0</hsizetype>
@@ -294,7 +294,7 @@
            <number>6</number>
           </property>
           <item>
-           <widget class="QCheckBox" name="m_Initializer" >
+           <widget class="QCheckBox" name="Initializer" >
             <property name="focusPolicy" >
              <enum>Qt::StrongFocus</enum>
             </property>
@@ -304,7 +304,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="m_DefaultIni" >
+           <widget class="QCheckBox" name="DefaultIni" >
             <property name="enabled" >
              <bool>false</bool>
             </property>
@@ -319,7 +319,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QCheckBox" name="m_Abstract" >
+         <widget class="QCheckBox" name="Abstract" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>0</hsizetype>
@@ -337,7 +337,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="m_Native1" >
+         <widget class="QCheckBox" name="Native" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>0</hsizetype>
@@ -355,7 +355,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="m_Signal" >
+         <widget class="QCheckBox" name="Signal" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>0</hsizetype>
@@ -408,7 +408,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QCheckBox" name="m_RMOverrides" >
+         <widget class="QCheckBox" name="RMOverrides" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -421,7 +421,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="m_EnforceOver" >
+         <widget class="QCheckBox" name="EnforceOver" >
           <property name="enabled" >
            <bool>false</bool>
           </property>
@@ -460,7 +460,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="m_Synch" >
+         <widget class="QRadioButton" name="Synch" >
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -470,7 +470,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_Concurrent" >
+         <widget class="QRadioButton" name="Concurrent" >
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -480,7 +480,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="m_Independent" >
+         <widget class="QRadioButton" name="Independent" >
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -525,7 +525,7 @@
          <number>20</number>
         </property>
         <item>
-         <widget class="QListWidget" name="m_Inherits1" >
+         <widget class="QListWidget" name="Inherits" >
           <property name="enabled" >
            <bool>true</bool>
           </property>
@@ -540,7 +540,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="m_DelInherits1" >
+         <widget class="QPushButton" name="DelInherits" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>1</hsizetype>
@@ -558,7 +558,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="m_NamedTypes1" >
+         <widget class="QComboBox" name="NamedTypes" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>1</hsizetype>
@@ -604,7 +604,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="PushButton_IDOK11" >
+      <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -631,7 +631,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="m_CANCEL11" >
+      <widget class="QPushButton" name="ID_CANCEL" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -655,7 +655,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_HELP9" >
+      <widget class="QPushButton" name="ID_HELP" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -683,26 +683,27 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <tabstops>
-  <tabstop>m_NewName</tabstop>
-  <tabstop>m_EnableName</tabstop>
-  <tabstop>m_CHECKOp</tabstop>
-  <tabstop>m_CMBOperator</tabstop>
-  <tabstop>m_Protected</tabstop>
-  <tabstop>m_ConstFunc</tabstop>
-  <tabstop>m_StaticFunc</tabstop>
-  <tabstop>m_Initializer</tabstop>
-  <tabstop>m_DefaultIni</tabstop>
-  <tabstop>m_Abstract</tabstop>
-  <tabstop>m_Native1</tabstop>
-  <tabstop>m_Signal</tabstop>
-  <tabstop>m_Synch</tabstop>
-  <tabstop>m_Concurrent</tabstop>
-  <tabstop>m_Independent</tabstop>
-  <tabstop>m_Inherits1</tabstop>
-  <tabstop>m_NamedTypes1</tabstop>
-  <tabstop>m_RMOverrides</tabstop>
-  <tabstop>m_EnforceOver</tabstop>
+  <tabstop>NewName</tabstop>
+  <tabstop>EnableName</tabstop>
+  <tabstop>CHECKOp</tabstop>
+  <tabstop>CMBOperator</tabstop>
+  <tabstop>Protected</tabstop>
+  <tabstop>ConstFunc</tabstop>
+  <tabstop>StaticFunc</tabstop>
+  <tabstop>Initializer</tabstop>
+  <tabstop>DefaultIni</tabstop>
+  <tabstop>Abstract</tabstop>
+  <tabstop>Native</tabstop>
+  <tabstop>Signal</tabstop>
+  <tabstop>Synch</tabstop>
+  <tabstop>Concurrent</tabstop>
+  <tabstop>Independent</tabstop>
+  <tabstop>Inherits</tabstop>
+  <tabstop>NamedTypes</tabstop>
+  <tabstop>RMOverrides</tabstop>
+  <tabstop>EnforceOver</tabstop>
  </tabstops>
  <resources/>
  <connections/>
