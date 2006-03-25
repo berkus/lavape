@@ -41,7 +41,6 @@
 #include "qstatusbar.h"
 #include "qmessagebox.h"
 #include "qfile.h"
-#include "LavaAppBase.h"
 //Added by qt3to4:
 #include <QCloseEvent>
 #include <QEvent>
