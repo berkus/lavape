@@ -92,7 +92,7 @@ public:
   void OnOverride();
   void OnGotoImpl();
 public slots:
-  void OnSelchanged();
+  void OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*);
   //void OnDblclk(QListViewItem* onItem, const QPoint&, int);
 private:
   Q_OBJECT

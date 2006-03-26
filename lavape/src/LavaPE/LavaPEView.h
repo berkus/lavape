@@ -275,7 +275,7 @@ public:
 
 public slots: 
   void OnDblclk( const QModelIndex & index);//QTreeWidgetItem* onItem, const QPoint&, int);
-  void OnSelchanged();
+  void OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* );
   void OnRclick(QTreeWidgetItem* item);
   void OnItemexpanded(QTreeWidgetItem* item);
   void OnItemcollapsed(QTreeWidgetItem* item);

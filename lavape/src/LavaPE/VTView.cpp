@@ -67,7 +67,8 @@ CLavaPEDoc* CVTView::GetDocument() // non-debug version is inline
 
 bool CVTView::OnCreate() 
 {
-  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
+//  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
+  connect(m_tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT    (OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
   //connect(m_tree,SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), SLOT(OnDblclk(QListViewItem*, const QPoint&, int)));
   return true;
 }
@@ -785,13 +786,13 @@ void CVTView::setSelPost(QTreeWidgetItem* selItem)
 }
 
 
-void CVTView::OnSelchanged() 
+void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*) 
 {
   bool ok = true;
-  CTreeItem *itemOver = lastCurrent, *selItem = (CTreeItem*)GetListView()->currentItem();
+  CTreeItem *itemOver = lastCurrent;// *selItem = (CTreeItem*)GetListView()->currentItem();
   if (!selItem)
     return;
-  SetVTError(selItem);
+  SetVTError((CTreeItem*)selItem);
   if (itemOver && (GetListView()->withControl && !GetListView()->withShift || GetListView()->withShift && !GetListView()->withControl)) {
     if (!CollectDECL) {
       CollectDECL = NewLavaDECL();
@@ -815,7 +816,7 @@ void CVTView::OnSelchanged()
         }
       }
       else { //Control
-        itemOver = selItem;
+        itemOver = (CTreeItem*)selItem;
         if (itemOver && !AddToExChain(itemOver)) {
           multiSelectCanceled = true;
           DeleteExChain(false);
@@ -840,7 +841,7 @@ void CVTView::OnSelchanged()
     if (!itemOver) 
       DeleteExChain(false);
   }
-  lastCurrent = selItem;
+  lastCurrent = (CTreeItem*)selItem;
   CVTItemData * itd = (CVTItemData*)lastCurrent->getItemData();
   if (itd) {
     if (itd->type == TNodeType_Class) {

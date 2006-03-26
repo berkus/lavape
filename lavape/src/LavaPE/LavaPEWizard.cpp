@@ -79,13 +79,21 @@ CWizardView::CWizardView(QWidget* parent, wxDocument* doc)
   : CLavaBaseView(parent,doc, "WizardView")
 { 
   //setFont(LBaseData->m_TreeFont);
-  Q3VBox* qvbox = new Q3VBox(this);
-  Q3HBox* qhbox = new Q3HBox(qvbox);
+  //Q3VBox* qvbox = new Q3VBox(this);
+  //Q3HBox* qhbox = new Q3HBox(qvbox);
+  QWidget* qhbox = new QWidget(this);
+  QHBoxLayout* qhl = new QHBoxLayout(qhbox);
   resetButton = new QPushButton("Reset", qhbox);
   applyButton = new QPushButton("Apply", qhbox);
   helpButton = new QPushButton("Help", qhbox);
-  myScrv = new GUIScrollView(qvbox, false);
+  qhl->addWidget(resetButton);
+  qhl->addWidget(applyButton);
+  qhl->addWidget(helpButton);
+  myScrv = new GUIScrollView(this, false);
   guibox = myScrv->qvbox; 
+  QVBoxLayout* qvl = new QVBoxLayout(this);
+  qvl->addWidget(myScrv);
+  qvl->addWidget(qhbox);
   connect (applyButton, SIGNAL(clicked()), this, SLOT(Apply()));
   connect (resetButton, SIGNAL(clicked()), this, SLOT(Reset()));
   connect (helpButton, SIGNAL(clicked()), this, SLOT(Help()));

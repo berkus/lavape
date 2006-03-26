@@ -220,7 +220,9 @@ void MyListView::setCurAndSel(QTreeWidgetItem* item, bool singleSel)
 
 void MyListView::ResetSelections()
 {
-
+  QList<QTreeWidgetItem *> list = selectedItems ();
+  for (int ii = 0; ii < list.size(); ii++)
+     setItemSelected(list.at(ii), false);
 }
 
 void MyListView::keyPressEvent(QKeyEvent *ev)

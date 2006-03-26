@@ -194,7 +194,8 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
 
   if (!GetDocument()->MainView)
     GetDocument()->MainView = this;
-  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
+  connect(m_tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT(OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+//  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
   connect(m_tree,SIGNAL(doubleClicked( const QModelIndex &)), SLOT(OnDblclk( const QModelIndex &)));
   //connect(m_tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
   connect(m_tree,SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(OnItemexpanded(QTreeWidgetItem*)));
@@ -221,7 +222,8 @@ void CLavaPEView::CleanListView()
   m_tree->setRootIsDecorated(true);
   m_tree->header()->hide();
   m_tree->setSelectionMode(QAbstractItemView::ExtendedSelection);//Single);
-  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
+  connect(m_tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT    (OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+//  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
   connect(m_tree,SIGNAL(doubleClicked(const QModelIndex&)), SLOT(OnDblclk(const QModelIndex&)));
   //connect(m_tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
   connect(m_tree,SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(OnItemexpanded(QTreeWidgetItem*)));
@@ -3222,13 +3224,14 @@ void CLavaPEView::setSelPost(QTreeWidgetItem* selItem)
 }
 
 
-void CLavaPEView::OnSelchanged()
+void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
 {
   bool ok = true, sameCat, collected = false;
   CTreeItem *itemDrag, *item;
   LavaDECL *itemDECL;
 
-  QTreeWidgetItem* selItem = m_tree->currentItem();
+  
+//  QTreeWidgetItem* selItem = m_tree->currentItem();
   if (!selItem)
     return;
   if (!m_tree->isItemSelected(selItem)) //selItem->isSelected())
