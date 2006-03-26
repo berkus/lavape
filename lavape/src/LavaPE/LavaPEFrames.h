@@ -197,15 +197,15 @@ public slots:
     virtual void deleteOp();
 
 // Exec handlers (tool buttons):
-    virtual void DbgStart();
-    virtual void DbgStepNext();
-    virtual void DbgStepNextFunction();
-    virtual void DbgStepinto();
-    virtual void DbgStepout();
-    virtual void DbgRunToSel();
-    virtual void DbgBreakpoint();
-    virtual void DbgClearBreakpoints();
-    virtual void DbgStop();
+    virtual void on_DbgAction_triggered();
+    virtual void on_DbgStepNextAct_triggered();
+    virtual void on_DbgStepNextFunctionAct_triggered();
+    virtual void on_DbgStepintoAct_triggered();
+    virtual void on_DbgStepoutAct_triggered();
+    virtual void on_DbgRunToSelAct_triggered();
+    virtual void on_DbgBreakpointAct_triggered();
+    virtual void on_DbgClearBreakpointsAct_triggered();
+    virtual void on_DbgStopAction_triggered();
     virtual void on_toggleCategoryAction_triggered();
     virtual void optLocalVar();
     virtual void toggleSubstType();

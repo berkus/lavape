@@ -162,10 +162,11 @@ void CLavaPEDebugThread::checkBrkPnts2()
 void CLavaPEDebugThread::run() {
 
   CThreadData *td = new CThreadData(this);
+  bool ok, timedOut=false;
   
 	threadStg()->setLocalData(td);
   if (myDoc->debugOn) { 
-    listenSocket->waitForNewConnection();
+    ok = listenSocket->waitForNewConnection(0,&timedOut);
     workSocket = listenSocket->nextPendingConnection();
   }
   else {
@@ -421,7 +422,7 @@ void CLavaPEDebugThread::clearBrkPnts()
     while (viewPos) {
       view = (CLavaBaseView*)doc->GetNextView(viewPos);
       if (view->inherits("CExecView")) 
-        ((CExecView*)view)->sv->viewport()->update();
+        ((CExecView*)view)->redCtl->update();
     }
   }
   if (LBaseData->ContData)

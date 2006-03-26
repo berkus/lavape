@@ -924,7 +924,7 @@ void CLavaMainFrame::on_overrideAction_triggered()
 }
 
 
-void CLavaMainFrame::DbgStart()
+void CLavaMainFrame::on_DbgAction_triggered()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->running()) {
     DbgMessage* mess = new DbgMessage(Dbg_Continue);
@@ -937,7 +937,7 @@ void CLavaMainFrame::DbgStart()
 }
 
 
-void CLavaMainFrame::DbgClearBreakpoints()
+void CLavaMainFrame::on_DbgClearBreakpointsAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -945,14 +945,14 @@ void CLavaMainFrame::DbgClearBreakpoints()
   ((CLavaPEDebugThread*)LBaseData->debugThread)->clearBrkPnts();
 }
 
-void CLavaMainFrame::DbgBreakpoint()
+void CLavaMainFrame::on_DbgBreakpointAct_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->DbgBreakpoint();
+    view->on_DbgBreakpointAct_triggered();
 }
 
-void CLavaMainFrame::DbgStepNext()
+void CLavaMainFrame::on_DbgStepNextAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -961,7 +961,7 @@ void CLavaMainFrame::DbgStepNext()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStepNextFunction()
+void CLavaMainFrame::on_DbgStepNextFunctionAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -970,7 +970,7 @@ void CLavaMainFrame::DbgStepNextFunction()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStepinto()
+void CLavaMainFrame::on_DbgStepintoAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -979,7 +979,7 @@ void CLavaMainFrame::DbgStepinto()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStepout()
+void CLavaMainFrame::on_DbgStepoutAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -988,7 +988,7 @@ void CLavaMainFrame::DbgStepout()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStop()
+void CLavaMainFrame::on_DbgStopAction_triggered()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->interpreterWaits) {
     DbgMessage* mess = new DbgMessage(Dbg_Exit);
@@ -1001,11 +1001,11 @@ void CLavaMainFrame::DbgStop()
       ((CLavaPEApp*)qApp)->interpreter.kill();
 }
 
-void CLavaMainFrame::DbgRunToSel()
+void CLavaMainFrame::on_DbgRunToSelAct_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->DbgRunToSel();
+    view->on_DbgRunToSelAct_triggered();
 
 }
 

@@ -3137,10 +3137,8 @@ void CLavaPEDoc::OnRunLava()
 
 void CLavaPEDoc::OnDebugLava() 
 {
-	QString interpreterPath, lavaFile = GetFilename(), buf;
+	QString interpreterPath, lavaFile = GetFilename();
   quint16 locPort;
-//  sockaddr_in sa;
-//  socklen_t sz_sa=sizeof(sockaddr_in); 
   
   if (IsModified()
     && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
@@ -3167,21 +3165,22 @@ void CLavaPEDoc::OnDebugLava()
   QString host_addr = "127.0.0.1";
 
 	QStringList args;
-	args << interpreterPath << lavaFile << host_addr << QString("%1").arg(locPort);
-	((CLavaPEApp*)qApp)->interpreter.setArguments(args);
+	args << lavaFile << host_addr << QString("%1").arg(locPort);
+//	((CLavaPEApp*)qApp)->interpreter.setArguments(args);
   debugOn = true;
   changeNothing = true;
 
   ((CLavaPEApp*)qApp)->debugThread.myDoc = this;
   ((CLavaPEApp*)qApp)->debugThread.adjustBrkPnts();
   ((CLavaPEApp*)qApp)->debugThread.start();
-	if (!((CLavaPEApp*)qApp)->interpreter.launch(buf)) {
+  ((CLavaPEApp*)qApp)->interpreter.start(interpreterPath,args);
+  if (!((CLavaPEApp*)qApp)->interpreter.waitForStarted(8000)) {
     ((CLavaPEApp*)qApp)->debugThread.terminate();
     ((CLavaPEApp*)qApp)->debugThread.wait();
     QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
 		return;
 	}
-  connect(&((CLavaPEApp*)qApp)->interpreter,SIGNAL(processExited()),SLOT(interpreterExited()));
+  connect(&((CLavaPEApp*)qApp)->interpreter,SIGNAL(error()),SLOT(interpreterExited()));
 }
 
 void CLavaPEDoc::interpreterExited () {
