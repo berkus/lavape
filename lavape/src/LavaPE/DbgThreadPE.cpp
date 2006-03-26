@@ -166,7 +166,7 @@ void CLavaPEDebugThread::run() {
   
 	threadStg()->setLocalData(td);
   if (myDoc->debugOn) { 
-    ok = listenSocket->waitForNewConnection(0,&timedOut);
+    ok = listenSocket->waitForNewConnection(5000,&timedOut);
     workSocket = listenSocket->nextPendingConnection();
   }
   else {

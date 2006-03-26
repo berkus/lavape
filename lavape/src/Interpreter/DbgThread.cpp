@@ -131,11 +131,9 @@ void CLavaDebugThread::run() {
       QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
 		  return;
 	  }
-
+    listenSocket->waitForNewConnection(5000);
+    workSocket = listenSocket->nextPendingConnection();
   }
-
-  listenSocket->waitForNewConnection();
-  workSocket = listenSocket->nextPendingConnection();
 
   put_cid = new ASN1OutSock (workSocket);
   if (!put_cid->Done) {

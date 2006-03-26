@@ -42,6 +42,7 @@
 #include "QtAssistant/qassistantclient.h"
 #include "qprocess.h"
 #include <stdlib.h>
+#include <QTextStream>
 
 #ifndef WIN32
 #include <locale.h>
@@ -67,8 +68,8 @@ static char slash='/';
 
 
 int main( int argc, char ** argv ) {
-//  QApplication::setStyle(new MyWindowsStyle);
   CLavaApp ap(argc,argv);
+
   QString componentPath;
   QByteArray myPath;
 
@@ -91,6 +92,9 @@ int main( int argc, char ** argv ) {
 #endif
 
   ap.m_appWindow = new CLavaMainFrame;
+
+ // QMessageBox::information(ap.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok);
+
   if (ap.m_appWindow->OnCreate()) {
     ap.m_appWindow->show();
   }

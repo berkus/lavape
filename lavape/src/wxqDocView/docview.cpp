@@ -201,7 +201,7 @@ void wxApp::onUpdateUI()
     ((wxView*)focView)->UpdateUI();
         }
 
-        if (!cmdLineEvaluated && qApp->argc() > 1) {
+        if (!cmdLineEvaluated && wxTheApp->argc > 1) {
                 cmdLineEvaluated = true;
 //    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),QString(argv[0])+" "+QString(argv[1]),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 //    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),QString("CWD = ")+QDir::currentDirPath(),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
@@ -300,7 +300,7 @@ bool wxDocument::OnCloseDocument()
   deleting = true;
   DeleteContents();
   DeleteAllViews();
-  delete this;
+  deleteLater();
   return true;
 }
 

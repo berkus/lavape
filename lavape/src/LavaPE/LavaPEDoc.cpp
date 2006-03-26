@@ -3108,8 +3108,7 @@ void CLavaPEDoc::OnRunLava()
 
   if (IsModified()
     && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
-    && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),ERR_SaveFailed, 
-                    QMessageBox::Ok,QMessageBox::Cancel,0)))
+    && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),ERR_SaveFailed,QMessageBox::Ok,QMessageBox::Cancel,0)))
     return;
   lavaFile = GetFilename();
   /*
@@ -3125,10 +3124,10 @@ void CLavaPEDoc::OnRunLava()
 #endif
 	
 	QStringList args;
-	args << interpreterPath << lavaFile;
-	Q3Process interpreter(args);
+	args << lavaFile;
+	QProcess interpreter;
 
-	if (!interpreter.launch(buf)) {
+  if (!((CLavaPEApp*)qApp)->interpreter.startDetached(interpreterPath,args)) {
     QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
 		return;
 	}
@@ -3160,21 +3159,20 @@ void CLavaPEDoc::OnDebugLava()
 	
   ((CLavaPEApp*)qApp)->debugThread.listenSocket = new QTcpServer;
   ((CLavaPEApp*)qApp)->debugThread.listenSocket->listen();
+  ((CLavaPEApp*)qApp)->debugThread.listenSocket->moveToThread(&((CLavaPEApp*)qApp)->debugThread);
   locPort = ((CLavaPEApp*)qApp)->debugThread.listenSocket->serverPort();
 
   QString host_addr = "127.0.0.1";
 
 	QStringList args;
 	args << lavaFile << host_addr << QString("%1").arg(locPort);
-//	((CLavaPEApp*)qApp)->interpreter.setArguments(args);
   debugOn = true;
   changeNothing = true;
 
   ((CLavaPEApp*)qApp)->debugThread.myDoc = this;
   ((CLavaPEApp*)qApp)->debugThread.adjustBrkPnts();
   ((CLavaPEApp*)qApp)->debugThread.start();
-  ((CLavaPEApp*)qApp)->interpreter.start(interpreterPath,args);
-  if (!((CLavaPEApp*)qApp)->interpreter.waitForStarted(8000)) {
+  if (!((CLavaPEApp*)qApp)->interpreter.startDetached(interpreterPath,args)) {
     ((CLavaPEApp*)qApp)->debugThread.terminate();
     ((CLavaPEApp*)qApp)->debugThread.wait();
     QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
