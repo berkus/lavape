@@ -3135,50 +3135,25 @@ void CLavaPEDoc::OnRunLava()
 
 
 void CLavaPEDoc::OnDebugLava() 
-{
-	QString interpreterPath, lavaFile = GetFilename();
-  quint16 locPort;
-  
+{  
   if (IsModified()
     && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
     && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),ERR_SaveFailed, 
     QMessageBox::Ok,QMessageBox::Cancel,0)))
     return;
-  lavaFile = GetFilename();
 /*
   if (lavaFile.isEmpty()) {
     QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),IDP_SaveFirst,QMessageBox::Ok,0,0);
     return;
   }
   */
-#ifdef WIN32
-  interpreterPath = ExeDir + "/Lava.exe";
-#else
-  interpreterPath = ExeDir + "/Lava";
-#endif
 	
-  ((CLavaPEApp*)qApp)->debugThread.listenSocket = new QTcpServer;
-  ((CLavaPEApp*)qApp)->debugThread.listenSocket->listen();
-  ((CLavaPEApp*)qApp)->debugThread.listenSocket->moveToThread(&((CLavaPEApp*)qApp)->debugThread);
-  locPort = ((CLavaPEApp*)qApp)->debugThread.listenSocket->serverPort();
-
-  QString host_addr = "127.0.0.1";
-
-	QStringList args;
-	args << lavaFile << host_addr << QString("%1").arg(locPort);
   debugOn = true;
   changeNothing = true;
 
   ((CLavaPEApp*)qApp)->debugThread.myDoc = this;
   ((CLavaPEApp*)qApp)->debugThread.adjustBrkPnts();
   ((CLavaPEApp*)qApp)->debugThread.start();
-  if (!((CLavaPEApp*)qApp)->interpreter.startDetached(interpreterPath,args)) {
-    ((CLavaPEApp*)qApp)->debugThread.terminate();
-    ((CLavaPEApp*)qApp)->debugThread.wait();
-    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
-		return;
-	}
-  connect(&((CLavaPEApp*)qApp)->interpreter,SIGNAL(error()),SLOT(interpreterExited()));
 }
 
 void CLavaPEDoc::interpreterExited () {

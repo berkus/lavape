@@ -61,6 +61,7 @@ CLavaDebugThread::CLavaDebugThread() {
   dbgStopData=0; 
   varAction=0; 
   listenSocket = 0;
+  workSocket = 0;
   debugOn = false;
   pContDebugEvent = new CEventEx();
   if (pContDebugEvent->available())
@@ -93,14 +94,12 @@ CLavaDebugThread::~CLavaDebugThread()
 
 void CLavaDebugThread::run() {
 
-  QProcess lavape;
   ASN1InSock *get_cid;
   ASN1OutSock *put_cid;
 	QString lavapePath, buf;
   quint16 locPort; 
   DDItemData * oid;
   bool fin = false;
-
 
   CThreadData *td = new CThreadData(this);
 	threadStg()->setLocalData(td);
@@ -230,16 +229,16 @@ void CLavaDebugThread::run() {
   varAction=0;
   delete put_cid;
   delete get_cid;
+  delete workSocket;
+  workSocket = 0;
+  if (listenSocket) {
+    delete listenSocket;
+    listenSocket = 0;
+  }
   LBaseData->debugOn = false;
   debugOn = false;
-  if (myDoc)
-    if (myDoc->startedFromLavaPE) {
-      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
-      QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
-//      qApp->quit();
-    }
-    else 
-      myDoc->Close();
+  CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
+  QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
 }
 
 void CLavaDebugThread::setBrkPnts()

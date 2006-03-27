@@ -359,9 +359,9 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
     ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
   }
-        else
-                wxApp::event(e);
-        return QApplication::event(e);
+  else
+    wxApp::event(e);
+  return QApplication::event(e);
 }
 
 QString CLavaPEApp::InitWebBrowser () {

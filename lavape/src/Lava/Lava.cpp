@@ -292,54 +292,54 @@ QString CLavaApp::InitWebBrowser () {
 
 bool CLavaApp::event(QEvent *e)
 {
-        CLavaDoc *doc;
-        CMsgBoxParams *mbp;
-        CLavaPEHint *pHint;
-        CLavaThread *thr;
+  CLavaDoc *doc;
+  CMsgBoxParams *mbp;
+  CLavaPEHint *pHint;
+  CLavaThread *thr;
   DumpEventData* dumpdata;
   int result;
   CheckData ckd;
 
-        switch (e->type()) {
+  switch (e->type()) {
   case IDU_LavaStart:
     thr = new CLavaThread(ExecuteLava,(CLavaDoc*)((CustomEvent*)e)->data());
     thr->start();
     break;
-        case IDU_LavaEnd:
-          pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
-                doc = (CLavaDoc*)pHint->fromDoc;
-/*              thr = (CLavaThread*)pHint->CommandData1;
+  case IDU_LavaEnd:
+    pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
+    doc = (CLavaDoc*)pHint->fromDoc;
+/*  thr = (CLavaThread*)pHint->CommandData1;
     if (thr) {
-                  thr->wait();
-                 // delete thr;
+       thr->wait();
+       // delete thr;
     }*/
-                delete (CLavaPEHint*)pHint;
+    delete (CLavaPEHint*)pHint;
     if (doc)
-                  doc->OnCloseDocument();
+      doc->OnCloseDocument();
     return true;
-        case IDU_LavaMsgBox:
+  case IDU_LavaMsgBox:
     m_appWindow->setActiveWindow();
     m_appWindow->raise();
-                mbp = (CMsgBoxParams*)((CustomEvent*)e)->data();
-                switch (mbp->funcSpec) {
-                case 0:
-                        mbp->result =   QMessageBox::critical(
-                                mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+    mbp = (CMsgBoxParams*)((CustomEvent*)e)->data();
+    switch (mbp->funcSpec) {
+    case 0:
+      mbp->result =   QMessageBox::critical(
+              mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
       mbp->thr->pContExecEvent->release();
-                        break;
-                case 1:
-                        mbp->result =   QMessageBox::information(
-                                mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+      break;
+    case 1:
+      mbp->result =   QMessageBox::information(
+        mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
       mbp->thr->pContExecEvent->release();
-                        break;
-                case 2:
-                        mbp->result =   QMessageBox::question(
-                                mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+      break;
+    case 2:
+      mbp->result =   QMessageBox::question(
+        mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
       mbp->thr->pContExecEvent->release();
-                        break;
-                }
+      break;
+    }
     break;
-        case IDU_LavaShow:
+  case IDU_LavaShow:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(m_appWindow, pHint);
     result = ((QDialog*)((CLavaDoc*)pHint->fromDoc)->LavaDialog)->exec();
@@ -355,7 +355,7 @@ bool CLavaApp::event(QEvent *e)
       thr->pContExecEvent->release();
     }
     delete (CLavaPEHint*)((CustomEvent*)e)->data();
-                break;
+    break;
   case IDU_LavaDump:
     dumpdata = (DumpEventData*)((CustomEvent*)e)->data();
     dumpdata->doc->DumpFrame = new LavaDumpFrame(m_appWindow, dumpdata);
@@ -364,11 +364,11 @@ bool CLavaApp::event(QEvent *e)
     dumpdata->doc->DumpFrame = 0;
     ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->pContExecEvent->release();
     delete (DumpEventData*)((CustomEvent*)e)->data();
-                break;
-        default:
-                wxApp::event(e);
-        }
-        return QApplication::event(e);
+    break;
+  default:
+    wxApp::event(e);
+  }
+  return QApplication::event(e);
 }
 
 

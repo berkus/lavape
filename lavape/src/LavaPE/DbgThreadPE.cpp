@@ -160,12 +160,32 @@ void CLavaPEDebugThread::checkBrkPnts2()
 
 
 void CLavaPEDebugThread::run() {
-
+	QString interpreterPath, lavaFile = myDoc->GetFilename();
+  quint16 locPort;
   CThreadData *td = new CThreadData(this);
   bool ok, timedOut=false;
   
+#ifdef WIN32
+    interpreterPath = ExeDir + "/Lava.exe";
+#else
+    interpreterPath = ExeDir + "/Lava";
+#endif
+
 	threadStg()->setLocalData(td);
   if (myDoc->debugOn) { 
+    if (!listenSocket) {
+      listenSocket = new QTcpServer;
+      listenSocket->listen();
+    }
+    locPort = listenSocket->serverPort();
+    QString host_addr = "127.0.0.1";
+    QStringList args;
+	  args << lavaFile << host_addr << QString("%1").arg(locPort);
+    if (!QProcess::startDetached(interpreterPath,args)) {
+      QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaStartFailed,QMessageBox::Ok,0,0);
+		  return;
+	  }
+
     ok = listenSocket->waitForNewConnection(5000,&timedOut);
     workSocket = listenSocket->nextPendingConnection();
   }
