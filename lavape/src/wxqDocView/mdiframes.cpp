@@ -271,7 +271,7 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
   deleting = false;
   m_clientWindow = this;
   if (wxTheApp->isChMaximized)
-          oldWindowState = Qt::WindowMaximized;
+    oldWindowState = Qt::WindowMaximized;
   else
     oldWindowState = Qt::WindowNoState;
   lastActive = 0;
@@ -280,23 +280,12 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
 
 bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
-  if (!temp->m_viewClassInfo)
-    return false;
-  wxView *view = (wxView *)temp->m_viewClassInfo(GetClientWindow(),doc);
-  layout.addWidget(view);
-  view->SetDocument(doc);
+  doc->m_docChildFrames.append(this);
   if (oldWindowState == Qt::WindowMaximized)
     showMaximized();
   else
     showNormal();
-  if (view->OnCreate()) {
-    wxDocManager::GetDocumentManager()->SetActiveView(view, true);
-    return true;
-  }
-  else {
-    delete view;
-    return false;
-  }
+  return true;
 }
 
 void wxMDIChildFrame::AddView(wxView *view)
@@ -367,7 +356,7 @@ void wxMDIChildFrame::RemoveView(wxView *view)
 
   m_viewCount--;
   if (!m_viewCount)
-    delete this;
+    deleteLater();
 }
 
 wxMDIChildFrame::~wxMDIChildFrame()

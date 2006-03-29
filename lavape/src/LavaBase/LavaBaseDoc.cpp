@@ -1388,7 +1388,7 @@ bool CLavaBaseDoc::DeleteContents()
   if (mySynDef)
     SynIO.DeleteSynDef(mySynDef); 
   IDTable.DestroyTable(); 
-  return wxDocument::DeleteContents();
+  return true;
 }
 
 

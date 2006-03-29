@@ -3279,13 +3279,6 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
     delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
     ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
   }
-/*
-  if (wxDocManager::GetOpenDocCount() == 1
-	&& GetViewCount() == 4
-  && wxDocManager::GetDocumentManager()->GetActiveView()->GetParentFrame()->oldWindowState != Qt::WindowMaximized
-  && !MainView->GetParentFrame()->isMinimized())
-		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new CustomEvent(QEvent::User,0));
-*/
   return true;
 }
 

@@ -56,10 +56,22 @@ void CExecFrame::InitialUpdate()
 
 bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
-  setIcon(QPixmap((const char**) execframe));
   LavaDECL *decl = (LavaDECL*)LBaseData->actHint->CommandData1;
-  NewTitle(decl);
+
+  if (!temp->m_viewClassInfo)
+    return false;
   m_ComboBar = new CComboBar(decl, (CPEBaseDoc*)myDoc, this);
+  wxView *view = (wxView *)temp->m_viewClassInfo(GetClientWindow(),doc);
+  if (view->OnCreate())
+    wxDocManager::GetDocumentManager()->SetActiveView(view, true);
+  else {
+    delete view;
+    return false;
+  }
+  view->SetDocument(doc);
+  layout.addWidget(view);
+  setIcon(QPixmap((const char**) execframe));
+  NewTitle(decl);
   return wxMDIChildFrame::OnCreate(temp,doc);
 }
 

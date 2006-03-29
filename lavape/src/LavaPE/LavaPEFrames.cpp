@@ -1784,11 +1784,6 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   layout.setMargin(0);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
-  /*
-  viewL = new CInclView(splitter, doc);
-  viewM = new CLavaPEView(splitter, doc);
-  viewR = new CVTView(splitter, doc);
-  */
   viewL = new CInclView(this, doc);
   viewM = new CLavaPEView(this, doc);
   viewR = new CVTView(this, doc);
@@ -1796,6 +1791,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   splitter->addWidget(viewM);
   splitter->addWidget(viewR);
   if (viewM->OnCreate() && viewL->OnCreate() && viewR->OnCreate()) {
+    wxMDIChildFrame::OnCreate(temp,doc);
     ((CInclView*)viewL)->myTree = (CTreeView*)viewM;
     ((CVTView*)viewR)->myMainView = (CLavaPEView*)viewM;
     ((CLavaPEView*)viewM)->myInclView = (CTreeView*)viewL;
@@ -1831,9 +1827,10 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 		return true;
   }
   else {
-    delete viewL;
+/*    delete viewL;
     delete viewR;
-    delete viewM;
+    delete viewM;*/
+    deleteLater();
     return false;
   }
 }

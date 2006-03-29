@@ -102,7 +102,6 @@ public:
 
   bool deleting;
   virtual void UpdateUI() {}
-  unsigned GetViewCount() const { return m_viewCount; }
   QWidget *GetClientWindow() const { return m_clientWindow; }
   virtual void SetTitle(QString &title);
   void AddView(wxView *v);

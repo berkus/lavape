@@ -273,16 +273,9 @@ wxDocument::wxDocument(wxDocument *parent)
 //    m_documentViews.setAutoDelete(true);
 }
 
-bool wxDocument::DeleteContents()
-{
-  return true;
-}
-
 wxDocument::~wxDocument()
 {
   deleting = true;
-/*  if (m_commandProcessor)
-      delete m_commandProcessor;*/
   if (wxDocManager::GetDocumentManager())
     wxDocManager::GetDocumentManager()->RemoveDocument(this);
 }
@@ -298,29 +291,22 @@ bool wxDocument::Close()
 bool wxDocument::OnCloseDocument()
 {
   deleting = true;
-  DeleteContents();
-  DeleteAllViews();
+  DeleteAllChildFrames();
   deleteLater();
   return true;
 }
 
 // Note that this implicitly deletes the document when the last view is
 // deleted.
-bool wxDocument::DeleteAllViews()
+bool wxDocument::DeleteAllChildFrames()
 {
-  wxView *view;
-  for (int i=0; i<m_documentViews.size(); i++) {
-    view = m_documentViews.at(i);
-    m_documentViews.removeAt(i);
-    if (view->GetParentFrame()->GetViewCount() == 1
-      // last view in child frame
-    && !view->GetParentFrame()->deleting) {
-      delete view->GetParentFrame();
-      if (!wxDocManager::GetDocumentManager()->GetActiveDocument())
-        return true;
-    }
-    else
-      view->Close();
+  wxMDIChildFrame *chf;
+  for (int i=0; i<m_docChildFrames.size(); i++) {
+    chf = m_docChildFrames.at(i);
+    m_docChildFrames.removeAt(i);
+    chf->deleteLater();
+    if (!wxDocManager::GetDocumentManager()->GetActiveDocument())
+      return true;
   }
   return true;
 }
@@ -362,11 +348,6 @@ void wxDocument::ViewPosRelease(POSITION pos)
 
 bool wxDocument::OnNewDocument()
 {
-  /*if (!OnSaveModified())
-      return false;
-
-  if (OnCloseDocument()==false) return false;
-  DeleteContents();*/
   Modify(false);
   SetDocumentSaved(false);
 
@@ -445,7 +426,7 @@ bool wxDocument::SaveAs()
         m_documentViews.at(i)->OnChangeFilename();
     }
 
-                SetDocumentSaved(true);
+    SetDocumentSaved(true);
     return OnSaveDocument(m_documentFile);
 }
 
@@ -544,20 +525,6 @@ bool wxDocument::GetPrintableName(QString& buf) const
     }
 }
 
-QWidget *wxDocument::GetDocumentWindow()// const
-{
-    wxView *view = GetFirstView();
-    if (view)
-        return view->GetParentFrame();
-    else
-        return wxTheApp->m_appWindow;
-}
-/*
-wxCommandProcessor *wxDocument::OnCreateCommandProcessor()
-{
-    return new wxCommandProcessor;
-}
-*/
 // true if safe to close
 bool wxDocument::OnSaveModified()
 {
@@ -832,7 +799,7 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
     }
     else {
       doc->deleting = true;
-      doc->DeleteAllViews();
+      doc->DeleteAllChildFrames();
       delete doc;
       return (wxDocument *) NULL;
     }
@@ -840,7 +807,7 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
   else {
     if (wxDocManager::GetDocumentManager()->GetDocuments().indexOf(doc) != -1) {
       doc->deleting = true;
-      doc->DeleteAllViews();
+      doc->DeleteAllChildFrames();
       delete doc;
     }
     return (wxDocument *) NULL;
@@ -907,7 +874,7 @@ bool wxDocManager::Clear(bool force)
 
     // Implicitly deletes the document when the last
     // view is removed (deleted)
-    //doc->DeleteAllViews();
+    //doc->DeleteAllChildFrames();
 
     // Check document is deleted
     //if (m_docs.findRef(doc) != -1)
@@ -1122,13 +1089,14 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
   if (GetDocuments().count() >= m_maxDocsOpen) {
     doc = (wxDocument *)GetDocuments().first();
     if (doc->Close()) {
-      doc->DeleteAllViews();  // Implicitly deletes the document when the last view is deleted
+      doc->DeleteAllChildFrames();
+        // Implicitly deletes the document when the last childFrame is deleted
       if (m_docs.indexOf(doc) != -1) //Check we're really deleted
-                delete doc;
-        }
-        else
-            return (wxDocument *) NULL;
+        delete doc;
     }
+    else
+      return (wxDocument *) NULL;
+  }
 
   // New document: user chooses a template, unless there's only one.
   if (flags == wxDOC_NEW) {
