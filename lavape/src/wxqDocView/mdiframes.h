@@ -120,6 +120,7 @@ protected:
   QList<wxView*> m_viewList;
   QWidget *m_clientWindow;
   wxView* lastActive;
+  wxDocument *m_document;
   QHBoxLayout layout;
 
 private:

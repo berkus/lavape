@@ -280,7 +280,8 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
 
 bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
-  doc->m_docChildFrames.append(this);
+  doc->AddChildFrame(this);
+  m_document = doc;
   if (oldWindowState == Qt::WindowMaximized)
     showMaximized();
   else
@@ -367,6 +368,7 @@ wxMDIChildFrame::~wxMDIChildFrame()
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   deleting = true;
+  m_document->RemoveChildFrame(this);
   if (!wxTheApp->deletingMainFrame)
     wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
 }

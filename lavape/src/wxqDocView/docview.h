@@ -181,6 +181,9 @@ public:
         { return m_documentModified; }
     virtual void Modify(bool mod) { m_documentModified = mod; }
 
+    virtual void AddChildFrame(wxMDIChildFrame *chf);
+    virtual void RemoveChildFrame(wxMDIChildFrame *chf);
+
     virtual bool AddView(wxView *view);
     virtual bool RemoveView(wxView *view);
     QList<wxView*>& GetViews() const { return (QList<wxView*>&) m_documentViews; }
@@ -205,9 +208,9 @@ public:
       return m_docChildFrames.count();
     }
 
-    QList<wxMDIChildFrame*> m_docChildFrames;
 
 protected:
+    QList<wxMDIChildFrame*> m_docChildFrames;
     QList<wxView*>       m_documentViews;
     QString              m_documentFile; //all links are resolved
     QString              m_userFilename; //no link resolved

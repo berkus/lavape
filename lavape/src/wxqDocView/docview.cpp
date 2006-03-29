@@ -571,9 +571,17 @@ bool wxDocument::AddView(wxView *view)
 
 bool wxDocument::RemoveView(wxView *view)
 {
-    (void)m_documentViews.remove(view);
+    m_documentViews.remove(view);
     OnChangedViewList();
     return true;
+}
+
+void wxDocument::AddChildFrame(wxMDIChildFrame *chf) {
+  m_docChildFrames.append(chf);
+}
+
+void wxDocument::RemoveChildFrame(wxMDIChildFrame *chf) {
+  m_docChildFrames.removeAt(m_docChildFrames.indexOf(chf));
 }
 
 // Called after a view is added or removed.
