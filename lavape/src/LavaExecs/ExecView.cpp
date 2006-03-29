@@ -2332,10 +2332,8 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
     }
   }
   else {
-    if (delObj->primaryToken != TypePH_T
-    && (delObj->primaryToken != Exp_T
-        || delObj->parentObject->primaryToken != fail_T))
-        // optional type in set quantifier or optional exception expression in fail stm
+    if (delObj->primaryToken != TypePH_T)
+        // optional type in set quantifier
       placeHdr = new SynObjectV(delObj->replacedType);
     else
       text->currentSynObjID = 0;

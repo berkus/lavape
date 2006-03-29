@@ -98,17 +98,17 @@ int main( int argc, char ** argv ) {
   if (ap.m_appWindow->OnCreate()) {
     ap.m_appWindow->show();
   }
-        else
-                return 1;
+  else
+    return 1;
 
-        threadStg()->setLocalData(new CThreadData(0));
+//  threadStg()->setLocalData(new CThreadData(0));
 
-        int res = ap.exec();
+  int res = ap.exec();
 
   if (allocatedObjects)
     qDebug("\n\nMemory leak: %x orphaned Lava object(s)\n\n",allocatedObjects);
 
-        return res;
+  return res;
 }
 
 
@@ -302,17 +302,18 @@ bool CLavaApp::event(QEvent *e)
 
   switch (e->type()) {
   case IDU_LavaStart:
-    thr = new CLavaThread(ExecuteLava,(CLavaDoc*)((CustomEvent*)e)->data());
+    thr = new CLavaExecThread((CLavaDoc*)((CustomEvent*)e)->data());
     thr->start();
     break;
   case IDU_LavaEnd:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     doc = (CLavaDoc*)pHint->fromDoc;
-/*  thr = (CLavaThread*)pHint->CommandData1;
-    if (thr) {
-       thr->wait();
-       // delete thr;
-    }*/
+    thr = (CLavaThread*)pHint->CommandData1;
+    if (thr && !thr->isFinished()) {
+      thr->terminate();
+      thr->wait();
+      delete thr;
+    }
     delete (CLavaPEHint*)pHint;
     if (doc)
       doc->OnCloseDocument();
@@ -417,7 +418,7 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
     doc->startedFromLavaPE = true;
     ((CLavaMainFrame*)m_appWindow)->fileOpenAction->setEnabled(false);
     ((CLavaMainFrame*)m_appWindow)->fileNewAction->setEnabled(false);
-    debugThread.initData(doc);
+    debugThread.initData(doc,0);
     debugThread.start();
   }
   else {

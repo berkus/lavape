@@ -264,7 +264,7 @@ public slots:
     virtual void assert_stm();
     virtual void try_stm();
     virtual void succeed();
-    virtual void fail();
+    virtual void throwEx();
     virtual void call();
     virtual void set();
     virtual void newExpr();

@@ -268,13 +268,6 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
 CLavaMainFrame::~CLavaMainFrame()
 {
-/*  QObjectList childList=children();
-
-  for (int i=0; i<childList.size(); i++)
-    if (childList.at(i)->isWidgetType())
-      delete childList.takeAt(i);
-*/
-  //delete m_UtilityView;
 }
 
 bool CLavaMainFrame::OnCreate()
@@ -463,10 +456,6 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->notButton,"not",SLOT(not_stm()),
     QObject::tr("Negation of a statement"),
     QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
-  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(fail()),
-    QObject::tr("Immediate negative/unsuccessful return, optionally throw exception"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
-    " optionally throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),
     QObject::tr("Immediate affirmative/successful return"),
     QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
@@ -475,6 +464,10 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
     " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
     " and throws a specific exception in case of violation</p>"));
+  newKwdToolbutton(tb,LBaseData->failButton,"throw",SLOT(throwEx()),
+    QObject::tr("Throw an exception"),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Throw</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    " throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
     QObject::tr("Try a statement, catch exceptions: \"y\""),
     QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
@@ -1360,7 +1353,7 @@ void CLavaMainFrame::succeed(){
     view->OnSucceed();
 }
 
-void CLavaMainFrame::fail(){
+void CLavaMainFrame::throwEx(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnFail();

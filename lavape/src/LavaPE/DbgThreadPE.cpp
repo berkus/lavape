@@ -171,7 +171,7 @@ void CLavaPEDebugThread::run() {
     interpreterPath = ExeDir + "/Lava";
 #endif
 
-	threadStg()->setLocalData(td);
+//	threadStg()->setLocalData(td);
   if (myDoc->debugOn) { 
     if (!listenSocket) {
       listenSocket = new QTcpServer;

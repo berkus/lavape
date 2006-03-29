@@ -309,23 +309,18 @@ bool wxDocument::OnCloseDocument()
 bool wxDocument::DeleteAllViews()
 {
   wxView *view;
-  if (!m_documentViews.isEmpty()) {
-    for (view = m_documentViews.first();
-         view;
-         view = m_documentViews.first())
-    {
-      if (view->GetParentFrame()->GetViewCount() == 1 // last view in child frame
-      && !view->GetParentFrame()->deleting) {
-        delete view->GetParentFrame();
-                          if (!wxDocManager::GetDocumentManager()->GetActiveDocument())
-                                  return true;
-      }
-      else {
-        if (!view->Close())
-          return false;
-      }
-
+  for (int i=0; i<m_documentViews.size(); i++) {
+    view = m_documentViews.at(i);
+    m_documentViews.removeAt(i);
+    if (view->GetParentFrame()->GetViewCount() == 1
+      // last view in child frame
+    && !view->GetParentFrame()->deleting) {
+      delete view->GetParentFrame();
+      if (!wxDocManager::GetDocumentManager()->GetActiveDocument())
+        return true;
     }
+    else
+      view->Close();
   }
   return true;
 }
@@ -728,12 +723,8 @@ void wxView::SetDocument(wxDocument *doc)
 
 bool wxView::Close()
 {
-  if (on_cancelButton_clicked()) {
-      delete this;
-      return true;
-  }
-  else
-      return false;
+  deleteLater();
+  return true;
 }
 
 void wxView::ActivateView(bool activate)

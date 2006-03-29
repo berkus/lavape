@@ -83,15 +83,18 @@ static char slash='/';
 int main( int argc, char ** argv ) {
   CLavaPEApp ap(argc,argv);
   ap.m_appWindow = new CLavaMainFrame();
+
+ // QMessageBox::information(ap.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok)
+
   if (ap.m_appWindow->OnCreate())
-                ap.m_appWindow->showMaximized();
-        else
-                return 1;
+    ap.m_appWindow->showMaximized();
+  else
+    return 1;
 
-        threadStg()->setLocalData(new CThreadData(0));
+//  threadStg()->setLocalData(new CThreadData(0));
 
-        int res = ap.exec();
-        return res;
+  int res = ap.exec();
+  return res;
 }
 
 int enumBM = 10;
@@ -101,7 +104,6 @@ int lavafileBM = 25;
 int xcomBM = 31;
 int xerrBM = 32;
 int xerrcomBM = 33;
-
 
 
 CLavaPEApp::CLavaPEApp(int argc, char ** argv )

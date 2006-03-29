@@ -203,7 +203,7 @@ QString ERR_ldocNotStored;
 QString ERR_ExactlyOneLcom;
 QString ERR_AllocObjectFailed;
 QString ERR_ImmutableArray;
-QString ERR_ThrowInInitiator;
+//QString ERR_ThrowInInitiator;
 QString ERR_ForceOver;
 QString ERR_IsntEnum;
 QString ERR_AssigToMultiArray;
@@ -301,7 +301,7 @@ void LavaBaseStringInit() {
   ERR_ExactlyOneLcom  = QObject::tr("Exactly one name of a  *.lcom file or link to a *.lcom file expected");
   ERR_AllocObjectFailed  = QObject::tr("Object allocation failed");
   ERR_ImmutableArray  = QObject::tr("This array is a frozen, immutable value object");
-  ERR_ThrowInInitiator  = QObject::tr("In main programs, ""fail"" must not throw a non-null exception ");
+//  ERR_ThrowInInitiator  = QObject::tr("In main programs, ""fail"" must not throw a non-null exception ");
   ERR_SecondImpl  = QObject::tr("Interface with more than one implementation");
   ERR_inStd  = QObject::tr("std.lava corrupted");
   ERR_SecondDefaultIni  = QObject::tr("Second default initializer");
@@ -360,7 +360,7 @@ void LavaBaseStringInit() {
   ERR_FaultyArrayObj  = QObject::tr("Only variables and array refs allowed");
   ERR_HasNoDftIni  = QObject::tr("Target class of extend/copy must have a default initializer");
   ERR_CompoNotFound  = QObject::tr("Cannot attach lava object: loaded component object is not an implementation of the requested component specification");
-  ERR_MustThrowExc  = QObject::tr("Functions with output parameters and initializers must succeed or throw an exception");
+  ERR_MustThrowExc  = QObject::tr("Initializers and functions with output parameters must succeed or throw an exception");
   ERR_OIDrequired  = QObject::tr("Object ID required");
   ERR_URLrequired  = QObject::tr("URL required for this kind of components");
   ERR_NullCallObject  = QObject::tr("Function call: Call object is null");
@@ -441,7 +441,7 @@ void LavaBaseStringInit() {
   ERR_WrongContext  = QObject::tr("Type cannot be referenced from the current pattern context");
   ERR_ImmutableCallObj  = QObject::tr("Frozen value object is used to call non-read-only member function");
   ERR_NonROCallInROClause = "Forbidden call of non-read-only function/main program in read-only clause or exec";
-  ERR_SuccFailNotLast  = QObject::tr("Succeed/fail returns control; therefore there must not follow any further statement");
+  ERR_SuccFailNotLast  = QObject::tr("Succeed/throw returns control; therefore there must not follow any further statement");
   ERR_NoNativeImpl  = QObject::tr("Implementation of native function not found/no adapter table");
   ERR_NoFuncImpl  = QObject::tr("Implementation of this function not found");
   ERR_NoClassFunc  = QObject::tr("No corresponding function in interface declaration");
@@ -474,7 +474,7 @@ void LavaBaseStringInit() {
   ERR_MissingExceptionDef  = QObject::tr("The exception type is missing");
   ERR_NoException  = QObject::tr("One of the throw types isn't derived from ""Exception""");
   ERR_OverThrow  = QObject::tr("Only exceptions already thrown by the overwridden function should be thrown");
-  ERR_SuccFailNotNot  = QObject::tr("Succedd/fail must not be negated");
+  ERR_SuccFailNotNot  = QObject::tr("Succeed/throw must not be negated");
   ERR_FailNoException  = QObject::tr("Type isn't derived from Exception");
   ERR_InadmissibleCategory  = QObject::tr("Inadmissible category: should be value object");
   ERR_ElemNotInSet  = QObject::tr("Element is not member of set");

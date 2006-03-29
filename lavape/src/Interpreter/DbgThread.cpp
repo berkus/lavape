@@ -71,9 +71,10 @@ CLavaDebugThread::CLavaDebugThread() {
 }
 
 
-void CLavaDebugThread::initData(CLavaBaseDoc* d) {
+void CLavaDebugThread::initData(CLavaBaseDoc* d, CLavaExecThread *execThr) {
   if (!dbgStopData) {
     myDoc = d;
+    myExecThread = execThr;
     dbgStopData = new DbgStopData;
     varAction = new LocalDebugVar(dbgStopData, myDoc);
   }
@@ -101,8 +102,8 @@ void CLavaDebugThread::run() {
   DDItemData * oid;
   bool fin = false;
 
-  CThreadData *td = new CThreadData(this);
-	threadStg()->setLocalData(td);
+//  CThreadData *td = new CThreadData(this);
+//	threadStg()->setLocalData(td);
   
   if (debugOn) {
     workSocket = new QTcpSocket;
@@ -221,12 +222,13 @@ void CLavaDebugThread::run() {
       break;
   }
   delete dbgStopData;
+  dbgStopData = 0;
   delete varAction;
+  varAction=0;
+   
   mSend.Destroy();
   mReceive.Destroy();
   brkPnts.Destroy();
-  dbgStopData=0;
-  varAction=0;
   delete put_cid;
   delete get_cid;
   delete workSocket;
@@ -237,7 +239,7 @@ void CLavaDebugThread::run() {
   }
   LBaseData->debugOn = false;
   debugOn = false;
-  CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
+  CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)myExecThread);
   QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
 }
 
