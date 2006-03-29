@@ -32,7 +32,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExecFrame construction/destruction
 
-CExecFrame::CExecFrame(QWidget *parent) : wxMDIChildFrame(parent, "ExecFrame")
+CExecFrame::CExecFrame(QWidget *parent) : wxMDIChildFrame(parent)
 {
   // TODO: add member initialization code here
 //  m_ComboBar = 0;

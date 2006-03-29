@@ -184,7 +184,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   LBaseData->intervalActionPtr = intervalAction;
   LBaseData->invertActionPtr = invertAction;
   LBaseData->leftShiftActionPtr = leftShiftAction;
-  LBaseData->lessEqualActionPtr = lessEqualAction; 
+  LBaseData->lessEqualActionPtr = lessEqualAction;
   LBaseData->lessThanActionPtr = lessThanAction;
   LBaseData->modulusActionPtr = modulusAction;
   LBaseData->multiplicationActionPtr = multiplicationAction;
@@ -201,7 +201,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   LBaseData->showOptsActionPtr = showOptsAction;
   LBaseData->staticCallActionPtr = staticCallAction;
   LBaseData->toggleArrowsActionPtr = toggleArrowsAction;
-  LBaseData->toggleCategoryActionPtr = toggleCategoryAction; 
+  LBaseData->toggleCategoryActionPtr = toggleCategoryAction;
   LBaseData->toggleCommentsActionPtr = toggleCommentsAction;
   LBaseData->toggleInputArrowsActionPtr = toggleInputArrowsAction;
   LBaseData->toggleSignActionPtr = toggleSignAction;
@@ -307,19 +307,19 @@ bool CLavaMainFrame::OnCreate()
   UtilitiesHidden = true;
 
 	completelyCreated = true;
-	
+
   return true;
 }
 
 void CLavaMainFrame::UpdateUI()
 {
   OnUpdateshowUtil(showUtilWindowAction);
-  saveEveryChangeAction->setOn(LBaseData->m_saveEveryChange);  
-  viewTB1Action->setOn(Toolbar_1->isVisible());  
+  saveEveryChangeAction->setOn(LBaseData->m_saveEveryChange);
+  viewTB1Action->setOn(Toolbar_1->isVisible());
   viewTB2Action->setOn(Toolbar_2->isVisible());
   viewHelpTBAction->setOn(HelpToolbar->isVisible());
-  viewTB3Action->setOn(Toolbar_3->isVisible());  
-  viewTB4Action->setOn(Toolbar_4->isVisible());  
+  viewTB3Action->setOn(Toolbar_3->isVisible());
+  viewTB4Action->setOn(Toolbar_4->isVisible());
   viewTB5Action->setOn(Toolbar_5->isVisible());
   viewTB6Action->setOn(Toolbar_6->isVisible());
   viewTB7Action->setOn(Toolbar_7->isVisible());
@@ -331,7 +331,7 @@ void CLavaMainFrame::UpdateUI()
 	genLinkedHtmlAction->setEnabled(enable);
 	genSingleHtmlAction->setEnabled(enable);
   findByNameAction->setEnabled(enable);
-  checkAction->setEnabled(enable); 
+  checkAction->setEnabled(enable);
   checkAllAction->setEnabled(enable);
   if (doc)
     doc->OnUpdateRunLava(runAction);
@@ -987,10 +987,10 @@ void CLavaMainFrame::on_DbgStopAction_triggered()
     DbgMessage* mess = new DbgMessage(Dbg_Exit);
     QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
-  else 
-    if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava) 
+  else
+    if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava)
       delete ((CLavaPEDebugThread*)LBaseData->debugThread)->workSocket;
-    else 
+    else
       ((CLavaPEApp*)qApp)->interpreter.kill();
 }
 
@@ -1462,7 +1462,7 @@ void CLavaMainFrame::adjustToolbar_7 () {
 void CLavaMainFrame::on_cascadeAction_triggered()
 {
   Cascade();
-  
+
   int ii;
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
@@ -1471,7 +1471,7 @@ void CLavaMainFrame::on_cascadeAction_triggered()
   m_workspace->on_cascadeAction_triggered();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) 
+    if (!((QMainWindow*)window)->isMinimized())
       if (window->inherits("wxMDIChildFrame"))
         ((wxMDIChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
   }
@@ -1517,13 +1517,13 @@ void CLavaMainFrame::on_tileVerticAction_triggered()
       actWidth = QMAX(widthForEach, preferredWidth);
       window->parentWidget()->setGeometry( x, 0, actWidth, allHeight );
       x += actWidth;
-      if (!((QMainWindow*)window)->isMaximized()) 
+      if (!((QMainWindow*)window)->isMaximized())
         window->showNormal();
     }
   }
   */
 }
-    
+
 void CLavaMainFrame::on_tileHorizAction_triggered()
 {
   TileHoriz(menubar, lastTile);
@@ -1561,7 +1561,7 @@ void CLavaMainFrame::on_tileHorizAction_triggered()
       actHeight = QMAX(heightForEach, preferredHeight);
       window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
       y += actHeight;
-      if (!((QMainWindow*)window)->isMaximized()) 
+      if (!((QMainWindow*)window)->isMaximized())
         window->showNormal();
     }
   }
@@ -1572,7 +1572,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 	HistWindow *hw;
 	DString title;
   CustomEvent *ev=(CustomEvent*)ev0;
-	
+
   if (ev->data()) {
     if ( !((CLavaPEApp*)wxTheApp)->inTotalCheck) { //to prevent crash if mdi-frame already closed
 		  title = DString(qPrintable(((QWidget*)ev->data())->caption()));
@@ -1595,7 +1595,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 		}
 }
 
-void CLavaMainFrame::on_showUtilWindowAction_triggered() 
+void CLavaMainFrame::on_showUtilWindowAction_triggered()
 {
   if (UtilitiesHidden) {
     if ((m_UtilityView->ActTab == tabError) && !m_UtilityView->CommentEmpty && m_UtilityView->ErrorEmpty )
@@ -1612,7 +1612,7 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
   UtilitiesHidden = !UtilitiesHidden;
 }
 
-void CLavaMainFrame::OnUpdateshowUtil(QAction* action) 
+void CLavaMainFrame::OnUpdateshowUtil(QAction* action)
 {
   action->setOn(!UtilitiesHidden);
 }
@@ -1620,14 +1620,14 @@ void CLavaMainFrame::OnUpdateshowUtil(QAction* action)
 /*
 void CLavaMainFrame::ShowUtilitiesTab(UtilityTabs tab)
 {
-  if (UtilitiesHidden || (((CUtilityView*)m_UtilityView)->ActTab != tab)) 
+  if (UtilitiesHidden || (((CUtilityView*)m_UtilityView)->ActTab != tab))
     ;//m_UtilityView->SetTab(tab);
   else {
     if ((LastUtilitiesState < 0) || (((CUtilityView*)m_UtilityView)->ActTab == tab)) {
       m_UtilityView->hide();
       UtilitiesHidden = TRUE;
     }
-    else 
+    else
      ;// m_UtilityView->SetTab((UtilityTabs)LastUtilitiesState);
     LastUtilitiesState = (int)tab;
   }
@@ -1635,7 +1635,7 @@ void CLavaMainFrame::ShowUtilitiesTab(UtilityTabs tab)
 }
 */
 
-void CLavaMainFrame::saveEveryChange(bool on) 
+void CLavaMainFrame::saveEveryChange(bool on)
 {
   if (on) {
     LBaseData->m_saveEveryChange = true;
@@ -1648,7 +1648,7 @@ void CLavaMainFrame::saveEveryChange(bool on)
   ((CLavaPEApp*)wxTheApp)->saveSettings();
 }
 
-void CLavaMainFrame::viewTB1() 
+void CLavaMainFrame::viewTB1()
 {
   if (Toolbar_1->isVisible())
     Toolbar_1->hide();
@@ -1656,7 +1656,7 @@ void CLavaMainFrame::viewTB1()
     Toolbar_1->show();
 }
 
-void CLavaMainFrame::viewTB2() 
+void CLavaMainFrame::viewTB2()
 {
   if (Toolbar_2->isVisible())
     Toolbar_2->hide();
@@ -1664,7 +1664,7 @@ void CLavaMainFrame::viewTB2()
     Toolbar_2->show();
 }
 
-void CLavaMainFrame::viewHelpTB() 
+void CLavaMainFrame::viewHelpTB()
 {
   if (HelpToolbar->isVisible())
     HelpToolbar->hide();
@@ -1673,7 +1673,7 @@ void CLavaMainFrame::viewHelpTB()
 }
 
 
-void CLavaMainFrame::viewTB3() 
+void CLavaMainFrame::viewTB3()
 {
   if (Toolbar_3->isVisible())
     Toolbar_3->hide();
@@ -1682,7 +1682,7 @@ void CLavaMainFrame::viewTB3()
 }
 
 
-void CLavaMainFrame::viewTB4() 
+void CLavaMainFrame::viewTB4()
 {
   if (Toolbar_4->isVisible())
     Toolbar_4->hide();
@@ -1691,7 +1691,7 @@ void CLavaMainFrame::viewTB4()
 }
 
 
-void CLavaMainFrame::viewTB5() 
+void CLavaMainFrame::viewTB5()
 {
   if (Toolbar_5->isVisible())
     Toolbar_5->hide();
@@ -1701,7 +1701,7 @@ void CLavaMainFrame::viewTB5()
 
 
 
-void CLavaMainFrame::viewTB6() 
+void CLavaMainFrame::viewTB6()
 {
   if (Toolbar_6->isVisible())
     Toolbar_6->hide();
@@ -1710,7 +1710,7 @@ void CLavaMainFrame::viewTB6()
 }
 
 
-void CLavaMainFrame::viewTB7() 
+void CLavaMainFrame::viewTB7()
 {
   if (Toolbar_7->isVisible())
     Toolbar_7->hide();
@@ -1718,7 +1718,7 @@ void CLavaMainFrame::viewTB7()
     Toolbar_7->show();
 }
 
-void CLavaMainFrame::on_whatNextAction_triggered() 
+void CLavaMainFrame::on_whatNextAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   QString fileName=ExeDir+"/../doc/html/on_whatNextAction_triggered/GlobalWhatNext.htm";
@@ -1729,7 +1729,7 @@ void CLavaMainFrame::on_whatNextAction_triggered()
     view->on_whatNextAction_triggered();
   else {
 	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	  
+
 	  if (!qacl) {
 		  qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		  qacl->setArguments(args);
@@ -1739,7 +1739,7 @@ void CLavaMainFrame::on_whatNextAction_triggered()
   }
 }
 
-void CLavaMainFrame::on_howTo_clicked() 
+void CLavaMainFrame::on_howTo_clicked()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   QString fileName=ExeDir+"/../doc/html/howTo/HowToContents.htm";
@@ -1750,7 +1750,7 @@ void CLavaMainFrame::on_howTo_clicked()
     view->howTo();
   else {
 	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	  
+
 	  if (!qacl) {
 		  qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		  qacl->setArguments(args);
@@ -1761,7 +1761,7 @@ void CLavaMainFrame::on_howTo_clicked()
 }
 
 
-CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent, "TreeFrame") 
+CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent)
 {
   viewR = 0;
   showIt = !((CLavaPEApp*)wxTheApp)->inTotalCheck;
@@ -1855,13 +1855,13 @@ void CTreeFrame::closeEvent(QCloseEvent *e)
 		QWidget::closeEvent(e);
 }
 
-void CTreeFrame::Activate(bool activate, bool windowMenuAction) 
+void CTreeFrame::Activate(bool activate, bool windowMenuAction)
 {
   showIt = activate && (showIt || !((CLavaPEApp*)wxTheApp)->inTotalCheck);
   if (showIt)
     wxMDIChildFrame::Activate(showIt,windowMenuAction);
-  else 
-    hide(); 
+  else
+    hide();
 }
 
 void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)
@@ -1873,9 +1873,9 @@ void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)
       totalW += list.at(i);
     wl = list.at(0);
     wr = list.at(2);
-    if (showINCL && (wl < 20)) 
+    if (showINCL && (wl < 20))
       list.replace(0,int(totalW * 0.3));
-    if (showVT && (wr < 20)) 
+    if (showVT && (wr < 20))
       list.replace(2,int(totalW * 0.3));
     list.replace(1,totalW - list.at(0) - list.at(2));
     splitter->setSizes(list);
@@ -1896,7 +1896,7 @@ void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)
   ++it;
   ++it;
   wr = *it;
-  if (showVT && (wr < 20)) 
+  if (showVT && (wr < 20))
     wr = totalW/3;
   *it = wr;
   it--;
@@ -1922,10 +1922,10 @@ void CTreeFrame::SetModified(bool changed)
     if (changed)
       title += "*";
   SetTitle(title);
-} 
+}
 
 
-CFormFrame::CFormFrame(QWidget* parent):CLavaGUIFrame(parent) 
+CFormFrame::CFormFrame(QWidget* parent):CLavaGUIFrame(parent)
 {
   viewL = 0;
   viewR = 0;
@@ -1946,7 +1946,7 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   setIcon(QPixmap((const char**) Lava));
 //  if (oldWindowState != Qt::WindowMaximized) {
     sz = parentWidget()->size();
-    resize(sz.width()*7/10, sz.height()*7/10); 
+    resize(sz.width()*7/10, sz.height()*7/10);
 //  }
   myDoc = (CLavaBaseDoc*)doc;
   splitter = new QSplitter(this);
@@ -1975,7 +1975,7 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     *it = totalW/4;
     splitter->setSizes(list);
     lastActive = viewR;
-    if (oldWindowState == Qt::WindowMaximized) 
+    if (oldWindowState == Qt::WindowMaximized)
       showMaximized();
     return true;
   }
@@ -2047,7 +2047,7 @@ void CLavaMainFrame::fillHelpMap6(ToolbarWhatsThis *tbw) {
 int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const
 {
   int px = QWindowsStyle::pixelMetric( pm, option, widget);
-  
+
   switch( pm )
   {
     case PM_ToolBarItemMargin:
@@ -2057,6 +2057,6 @@ int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, cons
       px = 16; break;
     default: break;
   }
-  
+
   return px;
 }

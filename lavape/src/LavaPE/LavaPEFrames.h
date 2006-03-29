@@ -313,8 +313,9 @@ public:
   CLavaBaseView* viewL;
   CLavaBaseView* viewM;
   CLavaBaseView* viewR;
-  int widthPrev;
   bool showIt;
+  int widthPrev;
+
   void SetModified(bool changed);
 private:
     Q_OBJECT;
@@ -332,10 +333,10 @@ private:
 
 class CFormFrame : public CLavaGUIFrame
 {
-public: 
+public:
   CFormFrame(QWidget* parent);
   FRAMEFACTORY(CFormFrame)
-  
+
   QSplitter *splitter;
   CLavaGUIView* viewL;
   CLavaBaseView* viewR;

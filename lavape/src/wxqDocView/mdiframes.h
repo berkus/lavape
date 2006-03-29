@@ -94,7 +94,7 @@ private:
 class WXDLLEXPORT wxMDIChildFrame  : public QWidget
 {
 public:
-  wxMDIChildFrame(QWidget *parent, const char* name);
+  wxMDIChildFrame(QWidget *parent);
   virtual bool OnCreate(wxDocTemplate *temp, wxDocument *doc);
   virtual void InitialUpdate();
 

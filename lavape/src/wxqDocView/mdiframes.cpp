@@ -257,8 +257,8 @@ void wxMainFrame::OnCloseWindow()
     destroy();
 }
 
-wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
-    : QWidget(parent,name)
+wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
+    : QWidget(parent)
 {
   resize(500,300);
   ((QWorkspace*)parent)->addWindow(this);
