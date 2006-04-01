@@ -3108,8 +3108,7 @@ void CLavaPEDoc::OnRunLava()
 
   if (IsModified()
     && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
-    && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),ERR_SaveFailed, 
-                    QMessageBox::Ok,QMessageBox::Cancel,0)))
+    && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),ERR_SaveFailed,QMessageBox::Ok,QMessageBox::Cancel,0)))
     return;
   lavaFile = GetFilename();
   /*
@@ -3125,10 +3124,10 @@ void CLavaPEDoc::OnRunLava()
 #endif
 	
 	QStringList args;
-	args << interpreterPath << lavaFile;
-	Q3Process interpreter(args);
+	args << lavaFile;
+	QProcess interpreter;
 
-	if (!interpreter.launch(buf)) {
+  if (!((CLavaPEApp*)qApp)->interpreter.startDetached(interpreterPath,args)) {
     QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
 		return;
 	}
@@ -3136,52 +3135,25 @@ void CLavaPEDoc::OnRunLava()
 
 
 void CLavaPEDoc::OnDebugLava() 
-{
-	QString interpreterPath, lavaFile = GetFilename(), buf;
-  quint16 locPort;
-//  sockaddr_in sa;
-//  socklen_t sz_sa=sizeof(sockaddr_in); 
-  
+{  
   if (IsModified()
     && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
     && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),ERR_SaveFailed, 
     QMessageBox::Ok,QMessageBox::Cancel,0)))
     return;
-  lavaFile = GetFilename();
 /*
   if (lavaFile.isEmpty()) {
     QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),IDP_SaveFirst,QMessageBox::Ok,0,0);
     return;
   }
   */
-#ifdef WIN32
-  interpreterPath = ExeDir + "/Lava.exe";
-#else
-  interpreterPath = ExeDir + "/Lava";
-#endif
 	
-  ((CLavaPEApp*)qApp)->debugThread.listenSocket = new QTcpServer;
-  ((CLavaPEApp*)qApp)->debugThread.listenSocket->listen();
-  locPort = ((CLavaPEApp*)qApp)->debugThread.listenSocket->serverPort();
-
-  QString host_addr = "127.0.0.1";
-
-	QStringList args;
-	args << interpreterPath << lavaFile << host_addr << QString("%1").arg(locPort);
-	((CLavaPEApp*)qApp)->interpreter.setArguments(args);
   debugOn = true;
   changeNothing = true;
 
   ((CLavaPEApp*)qApp)->debugThread.myDoc = this;
   ((CLavaPEApp*)qApp)->debugThread.adjustBrkPnts();
   ((CLavaPEApp*)qApp)->debugThread.start();
-	if (!((CLavaPEApp*)qApp)->interpreter.launch(buf)) {
-    ((CLavaPEApp*)qApp)->debugThread.terminate();
-    ((CLavaPEApp*)qApp)->debugThread.wait();
-    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
-		return;
-	}
-  connect(&((CLavaPEApp*)qApp)->interpreter,SIGNAL(processExited()),SLOT(interpreterExited()));
 }
 
 void CLavaPEDoc::interpreterExited () {
@@ -3307,13 +3279,6 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
     delete ((CLavaPEApp*)wxTheApp)->LBaseData.actHint; 
     ((CLavaPEApp*)wxTheApp)->LBaseData.actHint = 0; 
   }
-/*
-  if (wxDocManager::GetOpenDocCount() == 1
-	&& GetViewCount() == 4
-  && wxDocManager::GetDocumentManager()->GetActiveView()->GetParentFrame()->oldWindowState != Qt::WindowMaximized
-  && !MainView->GetParentFrame()->isMinimized())
-		QApplication::postEvent((CMainFrame*)wxTheApp->m_appWindow,new CustomEvent(QEvent::User,0));
-*/
   return true;
 }
 

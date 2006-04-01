@@ -25,17 +25,16 @@
 
 #pragma hdrstop
 
-
+/*
 static QThreadStorage<CThreadData*> myThreadStg;
 
 QThreadStorage<CThreadData*>* threadStg() {
   return &myThreadStg;
 }
+*/
 
-
-CLavaThread::CLavaThread(unsigned (*fp)(CLavaBaseDoc *), CLavaBaseDoc* docu)
+CLavaThread::CLavaThread(CLavaBaseDoc* docu)
 {
-  exec = fp;
 	myDoc = docu;
   pContExecEvent = new CEventEx();
 
@@ -56,14 +55,8 @@ CThreadData::CThreadData(CLavaThread *thr)
 {
   threadPtr = thr;
 }
-
-CLavaThread *CLavaThread::currentThread() {
+/*
+CLavaThread *QThread::currentThread() {
 	return threadStg()->localData()->threadPtr; 
 }
-
-void CLavaThread::run() {
-  CThreadData *td = new CThreadData(this);
-	threadStg()->setLocalData(td);
-  myDoc->ThreadList->append(this);
-	(*exec)(myDoc);
-}
+*/

@@ -54,35 +54,35 @@
        <number>6</number>
       </property>
       <item row="0" column="2" >
-       <widget class="QCheckBox" name="UseDefault" >
+       <widget class="QCheckBox" name="m_UseDefault" >
         <property name="text" >
          <string>default</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1" >
-       <widget class="QCheckBox" name="isOutput" >
+       <widget class="QCheckBox" name="m_isOutput" >
         <property name="text" >
          <string>Output</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0" >
-       <widget class="QCheckBox" name="noEcho" >
+       <widget class="QCheckBox" name="m_Echo" >
         <property name="text" >
          <string>No echo</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1" colspan="2" >
-       <widget class="QCheckBox" name="NoFIO" >
+       <widget class="QCheckBox" name="m_NoFIO" >
         <property name="text" >
          <string>Unused (placeholder)</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0" >
-       <widget class="QCheckBox" name="isInput" >
+       <widget class="QCheckBox" name="m_isInput" >
         <property name="text" >
          <string>Input</string>
         </property>
@@ -115,14 +115,14 @@
        <number>6</number>
       </property>
       <item row="1" column="2" >
-       <widget class="QSpinBox" name="FVSpaceSPIN" >
+       <widget class="QSpinBox" name="m_SPIN3" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
        </widget>
       </item>
       <item row="1" column="0" >
-       <widget class="QSpinBox" name="FHTabSPIN" >
+       <widget class="QSpinBox" name="m_SPIN2" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
@@ -155,14 +155,14 @@
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="QSpinBox" name="FHSpaceSPIN" >
+       <widget class="QSpinBox" name="m_SPIN1" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
        </widget>
       </item>
       <item row="2" column="0" colspan="2" >
-       <widget class="QCheckBox" name="groupbox" >
+       <widget class="QCheckBox" name="m_groupbox" >
         <property name="text" >
          <string>Use group box</string>
         </property>
@@ -208,14 +208,14 @@
        <number>6</number>
       </property>
       <item row="1" column="0" >
-       <widget class="QSpinBox" name="DHTabSPIN" >
+       <widget class="QSpinBox" name="m_SPIN5" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
        </widget>
       </item>
       <item row="1" column="3" >
-       <widget class="QSpinBox" name="DVSpaceSPIN" >
+       <widget class="QSpinBox" name="m_SPIN6" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
@@ -261,14 +261,14 @@
        </widget>
       </item>
       <item row="3" column="1" colspan="2" >
-       <widget class="QSpinBox" name="RowsSPIN" >
+       <widget class="QSpinBox" name="m_SPIN8" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
        </widget>
       </item>
       <item row="1" column="1" colspan="2" >
-       <widget class="QSpinBox" name="DHSpaceSPIN" >
+       <widget class="QSpinBox" name="m_SPIN4" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
@@ -301,21 +301,21 @@
        </widget>
       </item>
       <item row="4" column="0" colspan="2" >
-       <widget class="QCheckBox" name="Popupw" >
+       <widget class="QCheckBox" name="m_Popupw" >
         <property name="text" >
          <string>Popup window</string>
         </property>
        </widget>
       </item>
       <item row="4" column="2" colspan="2" >
-       <widget class="QCheckBox" name="MultiLine" >
+       <widget class="QCheckBox" name="m_MultiLine" >
         <property name="text" >
          <string>Multiline text</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0" >
-       <widget class="QSpinBox" name="ColsSPIN" >
+       <widget class="QSpinBox" name="m_SPIN7" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
@@ -327,7 +327,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

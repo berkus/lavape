@@ -117,10 +117,10 @@ void MiniEdit::keyPressEvent (QKeyEvent *ev)
       QRect mw_rect = geometry();
       int c_x, c_y;
 //???      conView->sv->viewportToContents(mw_rect.right(),mw_rect.top(),c_x,c_y);
-      conView->sv->execCont->contentsWidth = QMAX(conView->sv->execCont->contentsWidth,c_x);
-      conView->sv->execCont->resize(conView->sv->execCont->contentsWidth,conView->sv->execCont->contentsHeight);
-//      conView->sv->viewport()->update();
-      conView->sv->execCont->update();
+      conView->redCtl->contentsWidth = QMAX(conView->redCtl->contentsWidth,c_x);
+      conView->redCtl->resize(conView->redCtl->contentsWidth,conView->redCtl->contentsHeight);
+//      conView->redCtl->update();
+      conView->redCtl->update();
     }
   }
 }

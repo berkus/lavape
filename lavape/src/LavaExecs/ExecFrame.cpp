@@ -32,7 +32,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExecFrame construction/destruction
 
-CExecFrame::CExecFrame(QWidget *parent) : wxMDIChildFrame(parent, "ExecFrame")
+CExecFrame::CExecFrame(QWidget *parent) : wxMDIChildFrame(parent)
 {
   // TODO: add member initialization code here
 //  m_ComboBar = 0;
@@ -56,10 +56,25 @@ void CExecFrame::InitialUpdate()
 
 bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
-  setIcon(QPixmap((const char**) execframe));
   LavaDECL *decl = (LavaDECL*)LBaseData->actHint->CommandData1;
+
+  if (!temp->m_viewClassInfo)
+    return false;
+  m_ComboBar = new CComboBar(decl, (CPEBaseDoc*)myDoc, GetClientWindow());
+  wxView *view = (wxView *)temp->m_viewClassInfo(GetClientWindow(),doc);
+  if (view->OnCreate())
+    wxDocManager::GetDocumentManager()->SetActiveView(view, true);
+  else {
+    delete view;
+    return false;
+  }
+  view->SetDocument(doc);
+  layout->setSpacing(1);
+  layout->addWidget(m_ComboBar);
+  layout->addWidget(view);
+//  m_ComboBar->show();
+  setIcon(QPixmap((const char**) execframe));
   NewTitle(decl);
-  m_ComboBar = new CComboBar(decl, (CPEBaseDoc*)myDoc, this);
   return wxMDIChildFrame::OnCreate(temp,doc);
 }
 

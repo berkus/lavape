@@ -11,6 +11,7 @@
 #include "LavaBase_all.h"
 #include "LavaGUI_all.h"
 #include "Interpreter_all.h"
+#include <QTextStream>
 
 #endif
 

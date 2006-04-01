@@ -257,13 +257,14 @@ void wxMainFrame::OnCloseWindow()
     destroy();
 }
 
-wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
-    : QWidget(parent,name)
+wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
+    : QWidget(parent)
 {
   resize(500,300);
   ((QWorkspace*)parent)->addWindow(this);
-  setLayout(&layout);
-  layout.setMargin(0);
+  layout = new QVBoxLayout(this);
+  setLayout(layout);
+  layout->setMargin(0);
 
   QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
   resize(sz.width()*7/10, sz.height()*7/10);
@@ -271,7 +272,7 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
   deleting = false;
   m_clientWindow = this;
   if (wxTheApp->isChMaximized)
-          oldWindowState = Qt::WindowMaximized;
+    oldWindowState = Qt::WindowMaximized;
   else
     oldWindowState = Qt::WindowNoState;
   lastActive = 0;
@@ -280,23 +281,13 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent, const char* name)
 
 bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
-  if (!temp->m_viewClassInfo)
-    return false;
-  wxView *view = (wxView *)temp->m_viewClassInfo(GetClientWindow(),doc);
-  layout.addWidget(view);
-  view->SetDocument(doc);
+  doc->AddChildFrame(this);
+  m_document = doc;
   if (oldWindowState == Qt::WindowMaximized)
     showMaximized();
   else
     showNormal();
-  if (view->OnCreate()) {
-    wxDocManager::GetDocumentManager()->SetActiveView(view, true);
-    return true;
-  }
-  else {
-    delete view;
-    return false;
-  }
+  return true;
 }
 
 void wxMDIChildFrame::AddView(wxView *view)
@@ -367,7 +358,7 @@ void wxMDIChildFrame::RemoveView(wxView *view)
 
   m_viewCount--;
   if (!m_viewCount)
-    delete this;
+    deleteLater();
 }
 
 wxMDIChildFrame::~wxMDIChildFrame()
@@ -378,6 +369,29 @@ wxMDIChildFrame::~wxMDIChildFrame()
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   deleting = true;
+  m_document->RemoveChildFrame(this);
   if (!wxTheApp->deletingMainFrame)
     wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
 }
+
+#define MYSTYLEIMP(sty)\
+  int My##sty##Style::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const\
+{\
+  int px = Q##sty##Style::pixelMetric( pm, option, widget);\
+  switch( pm )\
+  {\
+    case PM_ToolBarItemMargin:\
+    case PM_ToolBarItemSpacing:\
+      px = 0; break;\
+    case PM_ToolBarIconSize:\
+      px = 16; break;\
+    default: break;\
+  }\
+  return px;\
+}
+
+MYSTYLEIMP(Windows)
+MYSTYLEIMP(WindowsXP)
+MYSTYLEIMP(Plastique)
+MYSTYLEIMP(CDE)
+MYSTYLEIMP(Motif)

@@ -30,19 +30,22 @@ class CThreadData;
 class LAVABASE_DLL CLavaThread : public QThread
 {
 public:
-  CLavaThread() {   pContExecEvent = new CEventEx(); }
-  CLavaThread(unsigned (*fp)(CLavaBaseDoc *d),CLavaBaseDoc *d);
+  CLavaThread() { pContExecEvent = new CEventEx(); }
+  CLavaThread(CLavaBaseDoc *d);
   ~CLavaThread();
 
-	unsigned (*exec)(CLavaBaseDoc *d);
 	CLavaBaseDoc *myDoc;
 
   CEventEx *pContExecEvent;
 
-	static CLavaThread *currentThread();
+  virtual unsigned ExecuteLava(CLavaBaseDoc *doc){
+    return 0;
+  };
+
+//	static CLavaThread *currentThread();
   virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc) {return false;}
   virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc) {}
-	void run();
+  void run(){};
 }; 
 
 class LAVABASE_DLL CThreadData {
@@ -54,7 +57,7 @@ public:
 
 //template class LAVABASE_DLL QThreadStorage<class CThreadData *>;
 
-extern LAVABASE_DLL QThreadStorage<CThreadData*>* threadStg();
+//extern LAVABASE_DLL QThreadStorage<CThreadData*>* threadStg();
 
 typedef QList<CLavaThread*> CThreadList;
 

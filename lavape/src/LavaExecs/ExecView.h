@@ -140,8 +140,8 @@ public:
   SynObject *RightSibling ();
   SynObject * AdjacentSynObj (SynObject *currentSynObj, CHETokenNode *nextTokenNode);
 
-  void DbgBreakpoint();
-  void DbgRunToSel();
+  void on_DbgBreakpointAct_triggered();
+  void on_DbgRunToSelAct_triggered();
 
 // tool buttons:
   void OnBitAnd();

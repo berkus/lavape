@@ -46,7 +46,17 @@
      <property name="title" >
       <string>Prefix text</string>
      </property>
-     <widget class="QWidget" name="layoutWidget" >
+     <widget class="QListWidget" name="m_Prefixe" >
+      <property name="geometry" >
+       <rect>
+        <x>13</x>
+        <y>27</y>
+        <width>228</width>
+        <height>61</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="" >
       <property name="geometry" >
        <rect>
         <x>10</x>
@@ -63,7 +73,7 @@
         <number>6</number>
        </property>
        <item>
-        <widget class="QPushButton" name="ADDPre" >
+        <widget class="QPushButton" name="m_ADDPre" >
          <property name="sizePolicy" >
           <sizepolicy>
            <hsizetype>0</hsizetype>
@@ -87,7 +97,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="EDITPre" >
+        <widget class="QPushButton" name="m_EDITPre" >
          <property name="enabled" >
           <bool>false</bool>
          </property>
@@ -114,7 +124,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="DELETEPre" >
+        <widget class="QPushButton" name="m_DELETEPre" >
          <property name="enabled" >
           <bool>false</bool>
          </property>
@@ -141,16 +151,6 @@
         </widget>
        </item>
       </layout>
-     </widget>
-     <widget class="QListWidget" name="Prefixe" >
-      <property name="geometry" >
-       <rect>
-        <x>13</x>
-        <y>27</y>
-        <width>228</width>
-        <height>61</height>
-       </rect>
-      </property>
      </widget>
     </widget>
    </item>
@@ -213,7 +213,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="Default" >
+         <widget class="QLineEdit" name="m_Default" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>1</hsizetype>
@@ -262,7 +262,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="EnumDefault" >
+         <widget class="QComboBox" name="m_EnumDefault" >
           <property name="sizePolicy" >
            <sizepolicy>
             <hsizetype>1</hsizetype>
@@ -313,7 +313,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="BoolDefault" >
+         <widget class="QComboBox" name="m_BoolDefault" >
           <item>
            <property name="text" >
             <string>- no default -</string>
@@ -352,7 +352,17 @@
      <property name="title" >
       <string>Suffix text</string>
      </property>
-     <widget class="QWidget" name="layoutWidget" >
+     <widget class="QListWidget" name="m_Suffixe" >
+      <property name="geometry" >
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>224</width>
+        <height>61</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="" >
       <property name="geometry" >
        <rect>
         <x>10</x>
@@ -369,7 +379,7 @@
         <number>6</number>
        </property>
        <item>
-        <widget class="QPushButton" name="ADDSuf" >
+        <widget class="QPushButton" name="m_ADDSuf" >
          <property name="sizePolicy" >
           <sizepolicy>
            <hsizetype>0</hsizetype>
@@ -393,7 +403,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="EDITSuf" >
+        <widget class="QPushButton" name="m_EDITSuf" >
          <property name="enabled" >
           <bool>false</bool>
          </property>
@@ -420,7 +430,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="DELETESuf" >
+        <widget class="QPushButton" name="m_DELETESuf" >
          <property name="enabled" >
           <bool>false</bool>
          </property>
@@ -448,22 +458,11 @@
        </item>
       </layout>
      </widget>
-     <widget class="QListWidget" name="Suffixe" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>224</width>
-        <height>61</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

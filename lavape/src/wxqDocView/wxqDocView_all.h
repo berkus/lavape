@@ -6,5 +6,10 @@
 #include "docview.h"
 #include "mdiframes.h"
 #include "wxExport.h"
+#include <QWindowsStyle>
+#include <QWindowsXPStyle>
+#include <QPlastiqueStyle>
+#include <QMotifStyle>
+#include <QCDEStyle>
 
 #endif

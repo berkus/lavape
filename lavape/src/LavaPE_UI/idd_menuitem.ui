@@ -60,7 +60,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="Enumsel" >
+      <widget class="QLineEdit" name="m_Enumsel" >
        <property name="focusPolicy" >
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -81,28 +81,28 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QRadioButton" name="isButton" >
+       <widget class="QRadioButton" name="m_isButton" >
         <property name="text" >
          <string>Visible</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="noButton" >
+       <widget class="QRadioButton" name="m_noButton" >
         <property name="text" >
          <string>Unvisible default value</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="NoFIO" >
+       <widget class="QRadioButton" name="m_NoFIO" >
         <property name="text" >
          <string>Not used</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="isMenuText" >
+       <widget class="QRadioButton" name="m_isMenuText" >
         <property name="text" >
          <string>Static text (=no menu item)</string>
         </property>
@@ -134,7 +134,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="Buttontext" >
+       <widget class="QLineEdit" name="m_Buttontext" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -154,7 +154,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="StaticText" >
+       <widget class="QLineEdit" name="m_MenuText" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -179,7 +179,7 @@
          <number>6</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="Pixmap" />
+         <widget class="QLineEdit" name="m_Pixmap" />
         </item>
         <item>
          <widget class="QPushButton" name="button_browse" >
@@ -236,7 +236,7 @@
        </widget>
       </item>
       <item row="1" column="0" >
-       <widget class="QSpinBox" name="HTabSPIN" >
+       <widget class="QSpinBox" name="m_MenuSPIN2" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -256,7 +256,7 @@
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="QSpinBox" name="HSpaceSPIN" >
+       <widget class="QSpinBox" name="m_MenuSPIN1" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -276,7 +276,7 @@
        </widget>
       </item>
       <item row="1" column="2" >
-       <widget class="QSpinBox" name="VSpaceSPIN" >
+       <widget class="QSpinBox" name="m_MenuSPIN3" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -294,7 +294,7 @@
       <number>6</number>
      </property>
      <item>
-      <widget class="QPushButton" name="ID_OK" >
+      <widget class="QPushButton" name="PushButton_ID_OK2" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -321,7 +321,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_CANCEL" >
+      <widget class="QPushButton" name="PushButton_ID_CANCEL2" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -373,7 +373,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

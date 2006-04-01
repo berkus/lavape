@@ -42,7 +42,7 @@
     <number>15</number>
    </property>
    <item>
-    <widget class="QLineEdit" name="EditLiteral" >
+    <widget class="QLineEdit" name="m_EditLiteral" >
      <property name="focusPolicy" >
       <enum>Qt::StrongFocus</enum>
      </property>
@@ -80,14 +80,14 @@
        </widget>
       </item>
       <item row="1" column="0" >
-       <widget class="QSpinBox" name="HTabSPIN" >
+       <widget class="QSpinBox" name="m_LiSPIN2" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="QSpinBox" name="HSpaceSPIN" >
+       <widget class="QSpinBox" name="m_LiSPIN1" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -107,7 +107,7 @@
        </widget>
       </item>
       <item row="1" column="2" >
-       <widget class="QSpinBox" name="VSpaceSPIN" >
+       <widget class="QSpinBox" name="m_LiSPIN3" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -127,7 +127,7 @@
        </widget>
       </item>
       <item row="2" column="0" colspan="2" >
-       <widget class="QCheckBox" name="beforeBase" >
+       <widget class="QCheckBox" name="m_beforeBase" >
         <property name="text" >
          <string>before fields inherited from base type</string>
         </property>
@@ -141,49 +141,59 @@
      <property name="title" >
       <string>Font</string>
      </property>
-     <layout class="QHBoxLayout" >
-      <property name="margin" >
-       <number>9</number>
+     <widget class="QCheckBox" name="defaultFont" >
+      <property name="geometry" >
+       <rect>
+        <x>11</x>
+        <y>23</y>
+        <width>56</width>
+        <height>19</height>
+       </rect>
       </property>
-      <property name="spacing" >
-       <number>6</number>
+      <property name="text" >
+       <string>default</string>
       </property>
-      <item>
-       <widget class="QCheckBox" name="defaultFont" >
-        <property name="text" >
-         <string>default</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="fontButton" >
-        <property name="sizePolicy" >
-         <sizepolicy>
-          <hsizetype>1</hsizetype>
-          <vsizetype>0</vsizetype>
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize" >
-         <size>
-          <width>20</width>
-          <height>32767</height>
-         </size>
-        </property>
-        <property name="text" >
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="fontName" >
-        <property name="text" >
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     </widget>
+     <widget class="QPushButton" name="fontButton" >
+      <property name="geometry" >
+       <rect>
+        <x>73</x>
+        <y>20</y>
+        <width>20</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="sizePolicy" >
+       <sizepolicy>
+        <hsizetype>1</hsizetype>
+        <vsizetype>0</vsizetype>
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize" >
+       <size>
+        <width>20</width>
+        <height>32767</height>
+       </size>
+      </property>
+      <property name="text" >
+       <string>...</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="fontName" >
+      <property name="geometry" >
+       <rect>
+        <x>99</x>
+        <y>20</y>
+        <width>16</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <property name="text" >
+       <string/>
+      </property>
+     </widget>
     </widget>
    </item>
    <item>
@@ -380,7 +390,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_OK" >
+      <widget class="QPushButton" name="PushButton_ID_OK4" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -407,7 +417,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="ID_CANCEL" >
+      <widget class="QPushButton" name="PushButton_ID_CANCEL4" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>0</hsizetype>
@@ -459,7 +469,6 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

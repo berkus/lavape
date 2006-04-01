@@ -29,7 +29,7 @@
 #pragma hdrstop
 #include "Lava.xpm"
 
-CLavaGUIFrame::CLavaGUIFrame(QWidget *parent) : wxMDIChildFrame(parent, "LavaGUIFrame")
+CLavaGUIFrame::CLavaGUIFrame(QWidget *parent) : wxMDIChildFrame(parent)
 {
   myView = 0;
   onClose = false;
@@ -87,7 +87,7 @@ void CLavaGUIFrame::closeEvent(QCloseEvent *e)
 CLavaGUIFrame::~CLavaGUIFrame()
 {
   if (!wxTheApp->appExit && !wxTheApp->deletingMainFrame
-    && myDoc->DumpFrame) 
+    && myDoc->DumpFrame)
     ((LavaDumpFrame*)myDoc->DumpFrame)->returned = true;
   deleting = true;
 }
