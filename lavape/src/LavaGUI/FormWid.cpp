@@ -45,7 +45,7 @@ CFormWid::~CFormWid()
 
 CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
                 QWidget* parent, int border, const char* lpszWindowName)
-                :QFrame(parent, "FormWid")
+                :QFrame(parent)
 {
   nRadio = 0;
   myMenu = 0;
@@ -60,9 +60,22 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
     myFormNode->data.ownLFont = GUIProg->SetLFont(0, myFormNode);
     myFormNode->data.ownTFont = GUIProg->SetTFont(0, myFormNode);
     GUIProg->SetColor(this, myFormNode);
-    if (parentWidget()->parentWidget()->inherits("GUIVBox")) 
-      parentWidget()->parentWidget()->setPaletteBackgroundColor(colorGroup().background());
+    if (parent->parentWidget()->inherits("GUIVBox")) {
+      QPalette pp = parent->parentWidget()->palette();
+      pp.setColor(QPalette::Active, QPalette::Window, palette().color(QPalette::Active, QPalette::Window));
+      pp.setColor(QPalette::Inactive, QPalette::Window, palette().color(QPalette::Active, QPalette::Window));
+      parent->parentWidget()->setPalette(pp);
+      //parentWidget()->parentWidget()->setPaletteBackgroundColor(colorGroup().background());
+    }
   }
+  else
+    if (parent->inherits("GUIVBox")) {
+      QPalette p = parent->palette();
+      p.setColor(QPalette::Active, QPalette::Window, palette().color(QPalette::Active, QPalette::Window));
+      p.setColor(QPalette::Inactive, QPalette::Window, palette().color(QPalette::Active, QPalette::Window));
+      parent->setPalette(p);
+      //parentWidget()->parentWidget()->setPaletteBackgroundColor(colorGroup().background());
+    }
   show();
   int bord = GUIProg->GetLineWidth(parent);//((QFrame*)parent)->lineWidth();
   QRect rect(0,0,GUIProg->globalIndent,GUIProg->globalIndent);

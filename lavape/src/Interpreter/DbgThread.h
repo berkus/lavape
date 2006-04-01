@@ -10,7 +10,6 @@
 #include <QProcess>
 #include <QTcpSocket>
 #include <QTcpServer>
-#include "LavaProgram.h"
 
 class LocalDebugVar : public VarAction {
 public:
@@ -28,13 +27,12 @@ public:
   CLavaDebugThread();
   ~CLavaDebugThread();
 
-  void initData(CLavaBaseDoc* d, CLavaExecThread *execThr);
+  void initData(CLavaBaseDoc* d);
   QTcpServer *listenSocket;
   QTcpSocket *workSocket;
   QString remoteIPAddress;
   quint16 remotePort;
 
-  CLavaExecThread *myExecThread;
   DbgStopData* dbgStopData;
   LocalDebugVar *varAction;
   bool debugOn;

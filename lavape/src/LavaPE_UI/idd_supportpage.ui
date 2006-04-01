@@ -49,7 +49,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="m_Name" >
+      <widget class="QLineEdit" name="Name" >
        <property name="enabled" >
         <bool>false</bool>
        </property>
@@ -85,7 +85,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="m_FormsClass" >
+      <widget class="QLineEdit" name="FormsClass" >
        <property name="enabled" >
         <bool>false</bool>
        </property>
@@ -115,7 +115,7 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QListWidget" name="m_Supports" >
+       <widget class="QListWidget" name="Supports" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
@@ -149,6 +149,7 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

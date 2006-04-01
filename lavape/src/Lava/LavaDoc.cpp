@@ -65,8 +65,9 @@ CLavaDoc::~CLavaDoc()
   if (startedFromLavaPE) 
     qApp->exit(0);
   else
-    if ((!((wxApp*)qApp)->appExit) && debugOn && (this == ((CLavaApp*)wxTheApp)->debugThread.myDoc)) {
+    if (!((wxApp*)qApp)->appExit && debugOn && this == ((CLavaApp*)wxTheApp)->debugThread.myDoc) {
       ((CLavaApp*)wxTheApp)->debugThread.myDoc = 0;
+      delete ((CLavaApp*)wxTheApp)->debugThread.workSocket;
       ((CLavaApp*)wxTheApp)->debugThread.pContDebugEvent->release();
     }
 }

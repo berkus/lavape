@@ -27,11 +27,6 @@
 #include "qmainwindow.h"
 #include <QVBoxLayout>
 #include <QTextEdit>
-#include <QWindowsStyle>
-#include <QWindowsXPStyle>
-#include <QMotifStyle>
-#include <QCDEStyle>
-#include <QPlastiqueStyle>
 #include "qlist.h"
 #include "qworkspace.h"
 
@@ -99,7 +94,7 @@ private:
 class WXDLLEXPORT wxMDIChildFrame  : public QWidget
 {
 public:
-  wxMDIChildFrame(QWidget *parent);
+  wxMDIChildFrame(QWidget *parent, const char* name);
   virtual bool OnCreate(wxDocTemplate *temp, wxDocument *doc);
   virtual void InitialUpdate();
 
@@ -107,6 +102,7 @@ public:
 
   bool deleting;
   virtual void UpdateUI() {}
+  unsigned GetViewCount() const { return m_viewCount; }
   QWidget *GetClientWindow() const { return m_clientWindow; }
   virtual void SetTitle(QString &title);
   void AddView(wxView *v);
@@ -125,24 +121,11 @@ protected:
   QList<wxView*> m_viewList;
   QWidget *m_clientWindow;
   wxView* lastActive;
-  wxDocument *m_document;
-  QVBoxLayout *layout;
+  QHBoxLayout layout;
 
 private:
   Q_OBJECT
 };
-
-#define MYSTYLE(sty) \
-class WXDLLEXPORT My##sty##Style : public Q##sty##Style {\
-public:\
-  int pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const;\
-};
-
-MYSTYLE(Windows)
-MYSTYLE(WindowsXP)
-MYSTYLE(Plastique)
-MYSTYLE(Motif)
-MYSTYLE(CDE)
 
 #endif
     // _WX_DOCMDI_H_

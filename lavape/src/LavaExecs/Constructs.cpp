@@ -987,7 +987,7 @@ QString SynObject::whatsThisText() {
     break;
   case Exp_T:
     if (parentObject->primaryToken == fail_T)
-      return QString(QObject::tr("<p>This is a placeholder for an <b>executable <font color=red><i>Lava</i></font> expression</b> in a throw statement."
+      return QString(QObject::tr("<p>This is a placeholder for an <b>optional executable <font color=red><i>Lava</i></font> expression</b> in a fail statement."
       "<br><br>Press the Delete key to remove it.</p>"));
     else
       return QString(QObject::tr("<p>This is a placeholder for an <b>executable <font color=red><i>Lava</i></font> expression</b></p>"));

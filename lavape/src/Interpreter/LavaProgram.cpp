@@ -2217,14 +2217,7 @@ void sigEnable() {
 #endif
 
 
-void CLavaExecThread::run() {
-  CThreadData *td = new CThreadData(this);
-//	threadStg()->setLocalData(td);
-  myDoc->ThreadList->append(this);
-	ExecuteLava(myDoc);
-}
-
-unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
+unsigned ExecuteLava(CLavaBaseDoc *doc)
 {
   CheckData ckd;
   CSearchData sData;
@@ -2238,8 +2231,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 
   CoInitialize(0);
 #endif
-  ((CLavaDebugThread*)LBaseData->debugThread)->myExecThread = this;
-  QThread::setTerminationEnabled();
+
   ckd.document = (CLavaProgram*)doc;
   LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)ckd.document->mySynDef->SynDefTree.first)->data.TopDef.ptr;
   CHE* che;
@@ -2305,7 +2297,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
           }
           ((CLavaProgram*)ckd.document)->HCatch(ckd);
 stop:     ckd.document->throwError = false;
-          CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+          CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
           QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
 //          ckd.document->LavaEnd(true);
           return 0;
@@ -2334,7 +2326,7 @@ stop:     ckd.document->throwError = false;
         // For other exception types, notify user here.
         critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
-          CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+          CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
 					QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
         }
         return 0;
@@ -2343,7 +2335,7 @@ stop:     ckd.document->throwError = false;
         // For stack overflow, notify user here.
         critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
-          CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+          CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
 					QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
         }
         return 0;
@@ -2358,7 +2350,7 @@ stop:     ckd.document->throwError = false;
 #endif
       }
       information(wxTheApp->m_appWindow,qApp->name(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
-      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
       QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
       return 1;
     }
@@ -2380,9 +2372,9 @@ stop:     ckd.document->throwError = false;
 CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
 {
   CRuntimeException* ex=0;
-  CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
+  CLavaThread *currentThread = CLavaThread::currentThread();
   CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, (DWORD)&stack[SFH], (DWORD)&stack[SFH+1], (DWORD)&stack[SFH+2], (DWORD)frozen, (DWORD)currentThread, (DWORD)fromFillIn);
-  if (currentThread != wxTheApp->mainThread) {
+  if (currentThread) {
     currentThread->pContExecEvent->lastException = 0;
 	  QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaShow,(void*)hint));
     currentThread->pContExecEvent->acquire();

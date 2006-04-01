@@ -2266,11 +2266,11 @@ bool FailStatement::Check (CheckData &ckd)
 
   if (IsPH(exception.ptr))
     ERROREXIT
-/*
+
   if (ckd.myDECL->ParentDECL->DeclType == Initiator) {
     ((SynObject*)exception.ptr)->SetError(ckd,&ERR_ThrowInInitiator);
     ERROREXIT
-  }*/
+  }
   if (ckd.myDECL->ParentDECL->TypeFlags.Contains(execIndependent)) {
     ((SynObject*)exception.ptr)->SetError(ckd,&ERR_InadmissibleThrow);
     ERROREXIT

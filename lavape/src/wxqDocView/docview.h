@@ -124,8 +124,6 @@ private:
     Q_OBJECT
 };
 
-class wxMDIChildFrame;
-
 class WXDLLEXPORT wxDocument : public QObject
 {
 public:
@@ -173,16 +171,21 @@ public:
     // view
     virtual bool OnCreate(const QString& path) { return true; } //all links resolved
 
+    // By default, creates a base wxCommandProcessor.
+//    virtual wxCommandProcessor *OnCreateCommandProcessor();
+//    virtual wxCommandProcessor *GetCommandProcessor() const { return m_commandProcessor; }
+//    virtual void SetCommandProcessor(wxCommandProcessor *proc) { m_commandProcessor = proc; }
+
     // Called after a view is added or removed. The default implementation
     // deletes the document if this is there are no more views.
     virtual void OnChangedViewList();
 
+    virtual bool DeleteContents();
+
+//!!!    virtual bool Draw(wxDC&);
     virtual bool IsModified() const
         { return m_documentModified; }
     virtual void Modify(bool mod) { m_documentModified = mod; }
-
-    virtual void AddChildFrame(wxMDIChildFrame *chf);
-    virtual void RemoveChildFrame(wxMDIChildFrame *chf);
 
     virtual bool AddView(wxView *view);
     virtual bool RemoveView(wxView *view);
@@ -194,8 +197,8 @@ public:
 
     virtual void UpdateAllViews(wxView *sender = (wxView *) NULL, unsigned param = 0, QObject *hint = (QObject *) NULL);
 
-    // Remove all MDI child frames (because we're closing the document)
-    virtual bool DeleteAllChildFrames();
+    // Remove all views (because we're closing the document)
+    virtual bool DeleteAllViews();
 
     // Other stuff
     virtual wxDocTemplate *GetDocumentTemplate() const { return m_documentTemplate; }
@@ -204,22 +207,23 @@ public:
     // Get title, or filename if no title, else [unnamed]
     virtual bool GetPrintableName(QString& buf) const;
 
-    virtual  int GetChildFrameCount() {
-      return m_docChildFrames.count();
-    }
-
+    // Returns a window that can be used as a parent for document-related
+    // dialogs. Override if necessary.
+    virtual QWidget *GetDocumentWindow();// const;
+    virtual  int GetViewCount() {
+                        return m_documentViews.count(); }
 
 protected:
-    QList<wxMDIChildFrame*> m_docChildFrames;
     QList<wxView*>       m_documentViews;
     QString              m_documentFile; //all links are resolved
     QString              m_userFilename; //no link resolved
     QString              m_documentTitle, m_oldTitle; //the used name
     QString              m_documentTypeName;
-    wxDocTemplate*       m_documentTemplate;
-    bool                 m_documentModified;
-    wxDocument*          m_documentParent;
-    bool                 m_savedYet;
+    wxDocTemplate*        m_documentTemplate;
+    bool                  m_documentModified;
+    wxDocument*           m_documentParent;
+//    wxCommandProcessor*   m_commandProcessor;
+    bool                  m_savedYet;
 
 private:
     Q_OBJECT
@@ -334,7 +338,7 @@ public:
 
     virtual bool FileMatchesTemplate(const QString& path); //all links resolved
 
-//protected:
+protected:
     long              m_flags;
     QString          m_fileFilter;
     QString          m_directory;

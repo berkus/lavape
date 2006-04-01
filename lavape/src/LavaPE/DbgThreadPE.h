@@ -26,14 +26,8 @@ public:
 class CLavaPEDebugThread : public CLavaThread
 {
 public:
-  CLavaPEDebugThread() {
-    dbgRequest=0;
-    get_cid=0;
-    put_cid=0;
-    interpreterWaits = false;
-    myDoc=0;
-    listenSocket = 0;
-  }
+  CLavaPEDebugThread() 
+    {dbgRequest=0; get_cid=0; put_cid=0; interpreterWaits = false; myDoc=0;}
   QString remoteIPAddress;
   quint16 remotePort;
   QTcpServer *listenSocket;

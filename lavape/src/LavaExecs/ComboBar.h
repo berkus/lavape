@@ -69,7 +69,7 @@ public:
 };
 
 //#undef QMainWindow
-class LAVAEXECS_DLL CComboBar : public QWidget, public Ui_ComboBarDlg
+class LAVAEXECS_DLL CComboBar : public Q3DockWindow//QToolBar
 {
 public:
   CComboBar();   // standard constructor
@@ -83,7 +83,7 @@ public:
   LavaDECL *FuncParentDecl;
   CPEBaseDoc *myDoc;
 
-  virtual QSize sizeHint() const {return size();}
+  virtual QSize sizeHint() const {return myComboBarDlg->size();}
   void DeleteObjData(bool setCombo = true);
 
   void ShowCombos(TShowCombo what, TID* pID=0); 
@@ -100,6 +100,9 @@ public:
   void OnUpdate(LavaDECL *execDecl, bool externalHint);
   bool UsedName(const DString& name);
   void TrackEnum();
+
+  MyComboBarDlg *myComboBarDlg;
+  Ui_ComboBarDlg *m_ComboBarDlg;
 
   //static boxes
   QComboBox*  m_TypesCtrl;

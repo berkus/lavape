@@ -357,7 +357,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
 
   debug = ckd.document->debugOn || LBaseData->m_pmDumps && !((CLavaDebugThread*)LBaseData->debugThread)->running();
   if (debug && !ckd.document->debugOn) 
-    ((CLavaDebugThread*)LBaseData->debugThread)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
+    ((CLavaDebugThread*)LBaseData->debugThread)->initData(ckd.document);
   if (debug) {
     stopStack[2] = (LavaObjectPtr)((unsigned)stopStack[2] | 2);
       // set flag: breakpoint encountered
@@ -1181,7 +1181,7 @@ bool FailStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
     if (ckd.exceptionThrown)
       return false;
     if (!object) {
-      ((SynObject*)exception.ptr)->SetRTError(ckd,&ERR_NullException,stackFrame,"throw statement: exception object =0");
+      ((SynObject*)exception.ptr)->SetRTError(ckd,&ERR_NullException,stackFrame,"fail statement: exception object =0");
       return false;
     }
     ((SynFlags*)(object+1))->INCL(finished);

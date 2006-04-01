@@ -42,7 +42,7 @@ protected:
   void OnUpdateEditSel(QAction* action);
 
 public slots:
-  void OnDblclk(const QModelIndex & index);
+  void OnDblclk(QTreeWidgetItem* item, int col);
   //void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 private:
     Q_OBJECT;
