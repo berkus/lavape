@@ -18,7 +18,7 @@
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops;$(VCInstallDir)VCProjectDefaults\CoreWin.vsprops"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops;..\..\..\Programme\Microsoft Visual Studio 8\VC\VCProjectDefaults\CoreWin.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
@@ -77,7 +77,6 @@
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/Lava.pdb"
-				GenerateMapFile="false"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
