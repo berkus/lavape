@@ -5716,31 +5716,31 @@ void CExecView::OnUpdateEditCut(QAction* action)
 void CExecView::OnUpdateButtonEnum()
 {
   CComboBar* bar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
-  bar->m_ComboBarDlg->IDC_ButtonEnum->setEnabled(bar->EnumsEnable);
+  bar->IDC_ButtonEnum->setEnabled(bar->EnumsEnable);
   if (bar->EnumsShow)
-    bar->m_ComboBarDlg->IDC_ButtonEnum->show();
+    bar->IDC_ButtonEnum->show();
   else
-    bar->m_ComboBarDlg->IDC_ButtonEnum->hide();
+    bar->IDC_ButtonEnum->hide();
 }
 
 void CExecView::OnUpdateNewFunc()
 {
   CComboBar* bar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
-  bar->m_ComboBarDlg->IDC_NewFunc->setEnabled(bar->NewFuncEnable);
+  bar->IDC_NewFunc->setEnabled(bar->NewFuncEnable);
   if (bar->NewFuncShow)
-    bar->m_ComboBarDlg->IDC_NewFunc->show();
+    bar->IDC_NewFunc->show();
   else
-    bar->m_ComboBarDlg->IDC_NewFunc->hide();
+    bar->IDC_NewFunc->hide();
 }
 
 void CExecView::OnUpdateNewPFunc()
 {
   CComboBar* bar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
-  bar->m_ComboBarDlg->IDC_NewPFunc->setEnabled(bar->NewPFuncEnable);
+  bar->IDC_NewPFunc->setEnabled(bar->NewPFuncEnable);
   if (bar->NewFuncShow)
-    bar->m_ComboBarDlg->IDC_NewPFunc->show();
+    bar->IDC_NewPFunc->show();
   else
-    bar->m_ComboBarDlg->IDC_NewPFunc->hide();
+    bar->IDC_NewPFunc->hide();
 }
 
 void CExecView::OnUpdateAnd(QPushButton *pb)

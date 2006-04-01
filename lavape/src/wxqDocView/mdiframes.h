@@ -27,6 +27,11 @@
 #include "qmainwindow.h"
 #include <QVBoxLayout>
 #include <QTextEdit>
+#include <QWindowsStyle>
+#include <QWindowsXPStyle>
+#include <QMotifStyle>
+#include <QCDEStyle>
+#include <QPlastiqueStyle>
 #include "qlist.h"
 #include "qworkspace.h"
 
@@ -121,11 +126,23 @@ protected:
   QWidget *m_clientWindow;
   wxView* lastActive;
   wxDocument *m_document;
-  QHBoxLayout layout;
+  QVBoxLayout *layout;
 
 private:
   Q_OBJECT
 };
+
+#define MYSTYLE(sty) \
+class WXDLLEXPORT My##sty##Style : public Q##sty##Style {\
+public:\
+  int pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const;\
+};
+
+MYSTYLE(Windows)
+MYSTYLE(WindowsXP)
+MYSTYLE(Plastique)
+MYSTYLE(Motif)
+MYSTYLE(CDE)
 
 #endif
     // _WX_DOCMDI_H_

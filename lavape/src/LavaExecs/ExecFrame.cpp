@@ -60,7 +60,7 @@ bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 
   if (!temp->m_viewClassInfo)
     return false;
-  m_ComboBar = new CComboBar(decl, (CPEBaseDoc*)myDoc, this);
+  m_ComboBar = new CComboBar(decl, (CPEBaseDoc*)myDoc, GetClientWindow());
   wxView *view = (wxView *)temp->m_viewClassInfo(GetClientWindow(),doc);
   if (view->OnCreate())
     wxDocManager::GetDocumentManager()->SetActiveView(view, true);
@@ -69,7 +69,10 @@ bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     return false;
   }
   view->SetDocument(doc);
-  layout.addWidget(view);
+  layout->setSpacing(1);
+  layout->addWidget(m_ComboBar);
+  layout->addWidget(view);
+//  m_ComboBar->show();
   setIcon(QPixmap((const char**) execframe));
   NewTitle(decl);
   return wxMDIChildFrame::OnCreate(temp,doc);

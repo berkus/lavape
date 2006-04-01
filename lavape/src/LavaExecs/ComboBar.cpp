@@ -69,11 +69,9 @@ CComboBar::CComboBar()
 //#undef QMainWindow
 
 CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
-:Q3DockWindow(parent, "ComboBar")//:QToolBar( parent ) 
+:QWidget(parent, "ComboBar")//:QToolBar( parent ) 
 {
-  myComboBarDlg = new MyComboBarDlg(this);
-  m_ComboBarDlg = new Ui_ComboBarDlg();
-  m_ComboBarDlg->setupUi(myComboBarDlg);
+  setupUi(this);
 
   ExecDECL = execDecl;
   myDECL = execDecl->ParentDECL;
@@ -87,10 +85,7 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
   else
     IntfDECL = SelfTypeDECL;
   FuncParentDecl = 0;
-	NewFuncShow = false;
-//  m_ComboBarDlg = new ComboBarDlg(this);
-  myComboBarDlg->adjustSize();
-  adjustSize();
+	NewFuncShow = false;  adjustSize();
   SetCombos(true, false);
   myDoc->MakeBasicBox(m_BasicTypesCtrl, NoDef, true);
   m_BasicTypesCtrl->setCurrentItem(0);
@@ -146,29 +141,29 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
   ((SelfVar*)ExecDECL->Exec.ptr)->selfCtx = context;
   OnUpdate(ExecDECL,true);   //calculates all other boxes
   connect (&EnumMenu, SIGNAL(activated(int)), this, SLOT(OnEnumMenu(int )));
-  connect (m_ComboBarDlg->IDC_ComboObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboObjects(int)));
-  connect (m_ComboBarDlg->IDC_ComboSetObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSetObjects(int)));
-  connect (m_ComboBarDlg->IDC_ComboCompObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboCompObjects(int)));
-  connect (m_ComboBarDlg->IDC_ComboSubObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSubObjects(int)));
-  connect (m_ComboBarDlg->IDC_ComboTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokComboTypes(int)));
-  connect (m_ComboBarDlg->IDC_CompaTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokCompaTypes(int)));
-  connect (m_ComboBarDlg->IDC_ComboFuncs, SIGNAL(activated(int)), this, SLOT(OnSelendokComboFuncs(int)));
-  connect (m_ComboBarDlg->IDC_ComboBaseInis, SIGNAL(activated(int)), this, SLOT(OnSelendokComboBaseInis(int)));
-  connect (m_ComboBarDlg->IDC_BasicTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokBasicTypes(int)));
-  connect (m_ComboBarDlg->IDC_CompaBTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokCompaBTypes(int)));
-  connect (m_ComboBarDlg->IDC_ComboClassFuncs, SIGNAL(activated(int)), this, SLOT(OnSelendokComboClassFuncs(int)));
-  connect (m_ComboBarDlg->IDC_ComboNew, SIGNAL(activated(int)), this, SLOT(OnSelendokComboNew(int)));
-  connect (m_ComboBarDlg->IDC_ComboSNew, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSNew(int)));
-  connect (m_ComboBarDlg->IDC_ComboAttach, SIGNAL(activated(int)), this, SLOT(OnSelendokComboAttach(int)));
-  connect (m_ComboBarDlg->IDC_ComboEnums, SIGNAL(activated(int)), this, SLOT(OnSelendokComboEnums(int)));
-  connect (m_ComboBarDlg->IDC_ComboSetTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSetTypes(int)));
-  connect (m_ComboBarDlg->IDC_CompoInterf, SIGNAL(activated(int)), this, SLOT(OnSelendokCompoInterf(int)));
-  connect (m_ComboBarDlg->IDC_COMBOCall, SIGNAL(activated(int)), this, SLOT(OnSelendokCOMBOCall(int)));
-  //connect (m_ComboBarDlg->IDC_COMBOSignals, SIGNAL(activated(int)), this, SLOT(OnSelendokCOMBOSignals(int)));
-  connect (m_ComboBarDlg->IDC_StaticFuncs, SIGNAL(activated(int)), this, SLOT(OnSelendokStaticFuncs(int)));
-  connect (m_ComboBarDlg->IDC_ButtonEnum, SIGNAL(clicked()), this, SLOT(OnButtonEnum()));
-  connect (m_ComboBarDlg->IDC_NewFunc, SIGNAL(clicked()), this, SLOT(OnNewFunc()));
-  connect (m_ComboBarDlg->IDC_NewPFunc, SIGNAL(clicked()), this, SLOT(OnNewPFunc()));
+  connect (IDC_ComboObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboObjects(int)));
+  connect (IDC_ComboSetObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSetObjects(int)));
+  connect (IDC_ComboCompObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboCompObjects(int)));
+  connect (IDC_ComboSubObjects, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSubObjects(int)));
+  connect (IDC_ComboTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokComboTypes(int)));
+  connect (IDC_CompaTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokCompaTypes(int)));
+  connect (IDC_ComboFuncs, SIGNAL(activated(int)), this, SLOT(OnSelendokComboFuncs(int)));
+  connect (IDC_ComboBaseInis, SIGNAL(activated(int)), this, SLOT(OnSelendokComboBaseInis(int)));
+  connect (IDC_BasicTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokBasicTypes(int)));
+  connect (IDC_CompaBTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokCompaBTypes(int)));
+  connect (IDC_ComboClassFuncs, SIGNAL(activated(int)), this, SLOT(OnSelendokComboClassFuncs(int)));
+  connect (IDC_ComboNew, SIGNAL(activated(int)), this, SLOT(OnSelendokComboNew(int)));
+  connect (IDC_ComboSNew, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSNew(int)));
+  connect (IDC_ComboAttach, SIGNAL(activated(int)), this, SLOT(OnSelendokComboAttach(int)));
+  connect (IDC_ComboEnums, SIGNAL(activated(int)), this, SLOT(OnSelendokComboEnums(int)));
+  connect (IDC_ComboSetTypes, SIGNAL(activated(int)), this, SLOT(OnSelendokComboSetTypes(int)));
+  connect (IDC_CompoInterf, SIGNAL(activated(int)), this, SLOT(OnSelendokCompoInterf(int)));
+  connect (IDC_COMBOCall, SIGNAL(activated(int)), this, SLOT(OnSelendokCOMBOCall(int)));
+  //connect (IDC_COMBOSignals, SIGNAL(activated(int)), this, SLOT(OnSelendokCOMBOSignals(int)));
+  connect (IDC_StaticFuncs, SIGNAL(activated(int)), this, SLOT(OnSelendokStaticFuncs(int)));
+  connect (IDC_ButtonEnum, SIGNAL(clicked()), this, SLOT(OnButtonEnum()));
+  connect (IDC_NewFunc, SIGNAL(clicked()), this, SLOT(OnNewFunc()));
+  connect (IDC_NewPFunc, SIGNAL(clicked()), this, SLOT(OnNewPFunc()));
  
 }
 
@@ -225,10 +220,10 @@ void CComboBar::OnUpdate(LavaDECL *execDecl, bool externalHint)
 void CComboBar::DeleteObjData(bool setCombo)
 {
   if (setCombo) {
-    m_ObjectsCtrl = m_ComboBarDlg->IDC_ComboObjects;
-    m_SubObjectsCtrl = m_ComboBarDlg->IDC_ComboSubObjects;
-    m_SetObjectsCtrl = m_ComboBarDlg->IDC_ComboSetObjects;
-    m_CompaObjectsCtrl = m_ComboBarDlg->IDC_ComboCompObjects;
+    m_ObjectsCtrl = IDC_ComboObjects;
+    m_SubObjectsCtrl = IDC_ComboSubObjects;
+    m_SetObjectsCtrl = IDC_ComboSetObjects;
+    m_CompaObjectsCtrl = IDC_ComboCompObjects;
   }
 
   ResetComboItems(m_SubObjectsCtrl);
@@ -242,7 +237,7 @@ void CComboBar::OnSelendokComboObjects(int pos)
 {
   QVariant var;
 
-  m_ObjectsCtrl = m_ComboBarDlg->IDC_ComboObjects;
+  m_ObjectsCtrl = IDC_ComboObjects;
   lastOK = pos > 0;
   if (lastOK) {
     var = m_ObjectsCtrl->itemData(pos);
@@ -258,7 +253,7 @@ void CComboBar::OnSelendokComboCompObjects(int pos)
 {
   QVariant var;
 
-  m_CompaObjectsCtrl = m_ComboBarDlg->IDC_ComboCompObjects;
+  m_CompaObjectsCtrl = IDC_ComboCompObjects;
   lastOK = pos > 0;
   if (lastOK) {
     var = m_CompaObjectsCtrl->itemData(pos);
@@ -275,7 +270,7 @@ void CComboBar::OnSelendokComboSetObjects(int pos)
 {
   QVariant var;
 
-  m_SetObjectsCtrl = m_ComboBarDlg->IDC_ComboSetObjects;
+  m_SetObjectsCtrl = IDC_ComboSetObjects;
   lastOK = pos > 0;
   if (lastOK) {
     var = m_SetObjectsCtrl->itemData(pos);
@@ -293,7 +288,7 @@ void CComboBar::OnSelendokComboEnums(int pos)
   CHEEnumSelId* enumsel;
   LavaDECL* decl;
 
-  m_EnumsCtrl = m_ComboBarDlg->IDC_ComboEnums;
+  m_EnumsCtrl = IDC_ComboEnums;
   pos = SelEndOKToStr(pos, m_EnumsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
@@ -301,7 +296,7 @@ void CComboBar::OnSelendokComboEnums(int pos)
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
     else {
       EnumMenu.clear();//DestroyMenu( );
-      m_ButtonEnum = m_ComboBarDlg->IDC_ButtonEnum;
+      m_ButtonEnum = IDC_ButtonEnum;
       decl = myDoc->IDTable.GetDECL(lastSelTID);
       if (decl && (decl->DeclDescType == EnumType)) {
         pos = 0;
@@ -323,14 +318,14 @@ void CComboBar::OnSelendokComboEnums(int pos)
 
 void CComboBar::TrackEnum()
 {
-  QPushButton* button = m_ComboBarDlg->IDC_ButtonEnum;
+  QPushButton* button = IDC_ButtonEnum;
   button->setFocus();
   EnumMenu.popup (button->mapToGlobal(QPoint(0, 0)) );
 }
 
 void CComboBar::OnButtonEnum() 
 {
-  QPushButton* button = m_ComboBarDlg->IDC_ButtonEnum;
+  QPushButton* button = IDC_ButtonEnum;
   EnumMenu.popup (button->mapToGlobal(QPoint(0, 0)) );
 }
 
@@ -386,7 +381,7 @@ void CComboBar::OnNewFunc()
 void CComboBar::OnEnumMenu(int id) 
 {
   lastSelStr = EnumMenu.text(id);
-  m_ComboBarDlg->IDC_ComboEnums->setFocus();
+  IDC_ComboEnums->setFocus();
   ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertEnum(lastSelStr, lastSelTID, id);
 }
 
@@ -395,7 +390,7 @@ void CComboBar::OnSelendokComboSubObjects(int pos)
 {
   QVariant var;
 
-  m_SubObjectsCtrl = m_ComboBarDlg->IDC_ComboSubObjects;
+  m_SubObjectsCtrl = IDC_ComboSubObjects;
   lastOK = pos > 0;
   if (lastOK) {
     var = m_SubObjectsCtrl->itemData(pos);
@@ -410,7 +405,7 @@ void CComboBar::OnSelendokComboSubObjects(int pos)
 void CComboBar::OnSelendokBasicTypes(int pos) 
 {
   LavaDECL* decl;
-  m_BasicTypesCtrl = m_ComboBarDlg->IDC_BasicTypes;
+  m_BasicTypesCtrl = IDC_BasicTypes;
   pos = SelEndOKToStr(pos, m_BasicTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
@@ -430,8 +425,8 @@ void CComboBar::OnSelendokBasicTypes(int pos)
       m_StaticFuncsCtrl->setCurrentItem(0);
       if (!LBaseData->debugOn)
         m_StaticFuncsCtrl->setEnabled(true);
-      RightCombo = m_ComboBarDlg->IDC_BasicTypes;
-      ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
+      RightCombo = IDC_BasicTypes;
+      ThirdCombo = IDC_StaticFuncs;
     }
     else if (onShowSlots) {
       decl = myDoc->IDTable.GetDECL(lastSelTID);
@@ -447,12 +442,12 @@ void CComboBar::OnSelendokBasicTypes(int pos)
       m_StaticFuncsCtrl->setCurrentItem(0);
       if (!LBaseData->debugOn)
         m_StaticFuncsCtrl->setEnabled(true);
-      RightCombo = m_ComboBarDlg->IDC_BasicTypes;
-      ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
+      RightCombo = IDC_BasicTypes;
+      ThirdCombo = IDC_StaticFuncs;
     }
     else
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-    m_ComboBarDlg->IDC_ComboTypes->setCurrentItem(0);
+    IDC_ComboTypes->setCurrentItem(0);
   }
   else 
     m_BasicTypesCtrl->setCurrentItem(0);
@@ -461,7 +456,7 @@ void CComboBar::OnSelendokBasicTypes(int pos)
 void CComboBar::OnSelendokCompaBTypes(int pos) 
 {
   LavaDECL *decl;
-  m_CompaBTypesCtrl = m_ComboBarDlg->IDC_CompaBTypes;
+  m_CompaBTypesCtrl = IDC_CompaBTypes;
   pos = SelEndOKToStr(pos, m_CompaBTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
@@ -481,8 +476,8 @@ void CComboBar::OnSelendokCompaBTypes(int pos)
       m_StaticFuncsCtrl->setCurrentItem(0);
       if (!LBaseData->debugOn)
         m_StaticFuncsCtrl->setEnabled(true);
-      RightCombo = m_ComboBarDlg->IDC_BasicTypes;
-      ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
+      RightCombo = IDC_BasicTypes;
+      ThirdCombo = IDC_StaticFuncs;
     }
     else if (onShowSlots) {
       decl = myDoc->IDTable.GetDECL(lastSelTID);
@@ -498,12 +493,12 @@ void CComboBar::OnSelendokCompaBTypes(int pos)
       m_StaticFuncsCtrl->setCurrentItem(0);
       if (!LBaseData->debugOn)
         m_StaticFuncsCtrl->setEnabled(true);
-      RightCombo = m_ComboBarDlg->IDC_BasicTypes;
-      ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
+      RightCombo = IDC_BasicTypes;
+      ThirdCombo = IDC_StaticFuncs;
     }
     else 
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-    m_ComboBarDlg->IDC_CompaTypes->setCurrentItem(0);
+    IDC_CompaTypes->setCurrentItem(0);
   }
   else 
     m_CompaBTypesCtrl->setCurrentItem(0);
@@ -512,7 +507,7 @@ void CComboBar::OnSelendokCompaBTypes(int pos)
 void CComboBar::OnSelendokComboTypes(int pos) 
 {
   LavaDECL *decl;
-  m_TypesCtrl = m_ComboBarDlg->IDC_ComboTypes;
+  m_TypesCtrl = IDC_ComboTypes;
   pos = SelEndOKToStr(pos, m_TypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
@@ -532,8 +527,8 @@ void CComboBar::OnSelendokComboTypes(int pos)
       m_StaticFuncsCtrl->setCurrentItem(0);
       if (!LBaseData->debugOn)
         m_StaticFuncsCtrl->setEnabled(true);
-      RightCombo = m_ComboBarDlg->IDC_BasicTypes;
-      ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
+      RightCombo = IDC_BasicTypes;
+      ThirdCombo = IDC_StaticFuncs;
     }
     else if (onShowSlots) {
       decl = myDoc->IDTable.GetDECL(lastSelTID);
@@ -549,12 +544,12 @@ void CComboBar::OnSelendokComboTypes(int pos)
       m_StaticFuncsCtrl->setCurrentItem(0);
       if (!LBaseData->debugOn)
         m_StaticFuncsCtrl->setEnabled(true);
-      RightCombo = m_ComboBarDlg->IDC_BasicTypes;
-      ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
+      RightCombo = IDC_BasicTypes;
+      ThirdCombo = IDC_StaticFuncs;
     }
     else
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-    m_ComboBarDlg->IDC_BasicTypes->setCurrentItem(0);
+    IDC_BasicTypes->setCurrentItem(0);
   }
   else 
     m_TypesCtrl->setCurrentItem(0);
@@ -563,7 +558,7 @@ void CComboBar::OnSelendokComboTypes(int pos)
 void CComboBar::OnSelendokCompaTypes(int pos) 
 {
   LavaDECL *decl;
-  m_CompaTypesCtrl = m_ComboBarDlg->IDC_CompaTypes;
+  m_CompaTypesCtrl = IDC_CompaTypes;
   pos = SelEndOKToStr(pos, m_CompaTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
@@ -583,8 +578,8 @@ void CComboBar::OnSelendokCompaTypes(int pos)
       m_StaticFuncsCtrl->setCurrentItem(0);
       if (!LBaseData->debugOn)
         m_StaticFuncsCtrl->setEnabled(true);
-      RightCombo = m_ComboBarDlg->IDC_BasicTypes;
-      ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
+      RightCombo = IDC_BasicTypes;
+      ThirdCombo = IDC_StaticFuncs;
     }
     else if (onShowSlots) {
       decl = myDoc->IDTable.GetDECL(lastSelTID);
@@ -600,12 +595,12 @@ void CComboBar::OnSelendokCompaTypes(int pos)
       m_StaticFuncsCtrl->setCurrentItem(0);
       if (!LBaseData->debugOn)
         m_StaticFuncsCtrl->setEnabled(true);
-      RightCombo = m_ComboBarDlg->IDC_BasicTypes;
-      ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
+      RightCombo = IDC_BasicTypes;
+      ThirdCombo = IDC_StaticFuncs;
     }
     else
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-    m_ComboBarDlg->IDC_CompaBTypes->setCurrentItem(0);
+    IDC_CompaBTypes->setCurrentItem(0);
   }
   else 
     m_CompaTypesCtrl->setCurrentItem(0);
@@ -614,7 +609,7 @@ void CComboBar::OnSelendokCompaTypes(int pos)
 
 void CComboBar::OnSelendokComboSetTypes(int pos) 
 {
-  m_SetTypesCtrl = m_ComboBarDlg->IDC_ComboSetTypes;
+  m_SetTypesCtrl = IDC_ComboSetTypes;
   pos = SelEndOKToStr(pos, m_SetTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -626,7 +621,7 @@ void CComboBar::OnSelendokComboSetTypes(int pos)
 
 void CComboBar::OnSelendokComboFuncs(int pos) 
 { //Virtual functions
-  m_VFuncsCtrl = m_ComboBarDlg->IDC_ComboFuncs;
+  m_VFuncsCtrl = IDC_ComboFuncs;
   pos = SelEndOKToStr(pos, m_VFuncsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -640,7 +635,7 @@ void CComboBar::OnSelendokComboClassFuncs(int pos)
 {
   QVariant var;
 
-  m_ClassFuncsCtrl = m_ComboBarDlg->IDC_ComboClassFuncs;
+  m_ClassFuncsCtrl = IDC_ComboClassFuncs;
   CStatFuncItem *idata;
   lastOK = pos > 0;
   if (lastOK) {
@@ -656,7 +651,7 @@ void CComboBar::OnSelendokComboClassFuncs(int pos)
 
 void CComboBar::OnSelendokComboBaseInis(int pos) 
 {
-  m_BaseInisCtrl = m_ComboBarDlg->IDC_ComboBaseInis;
+  m_BaseInisCtrl = IDC_ComboBaseInis;
   pos = SelEndOKToStr(pos, m_BaseInisCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -668,7 +663,7 @@ void CComboBar::OnSelendokComboBaseInis(int pos)
 
 void CComboBar::OnSelendokComboNew(int pos) 
 {
-  m_NewCtrl = m_ComboBarDlg->IDC_ComboNew;
+  m_NewCtrl = IDC_ComboNew;
   pos = SelEndOKToStr(pos, m_NewCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -679,7 +674,7 @@ void CComboBar::OnSelendokComboNew(int pos)
 
 void CComboBar::OnSelendokComboSNew(int pos) 
 {
-  m_SNewCtrl = m_ComboBarDlg->IDC_ComboSNew;
+  m_SNewCtrl = IDC_ComboSNew;
   pos = SelEndOKToStr(pos, m_SNewCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -690,7 +685,7 @@ void CComboBar::OnSelendokComboSNew(int pos)
 
 void CComboBar::OnSelendokComboAttach(int pos) 
 {
-  m_AttachCtrl = m_ComboBarDlg->IDC_ComboAttach;
+  m_AttachCtrl = IDC_ComboAttach;
   pos = SelEndOKToStr(pos, m_AttachCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -702,7 +697,7 @@ void CComboBar::OnSelendokComboAttach(int pos)
 
 void CComboBar::OnSelendokCOMBOCall(int pos) 
 {
-  m_CallIntCtrl = m_ComboBarDlg->IDC_COMBOCall;
+  m_CallIntCtrl = IDC_COMBOCall;
   pos = SelEndOKToStr(pos, m_CallIntCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -714,7 +709,7 @@ void CComboBar::OnSelendokCOMBOCall(int pos)
 
 void CComboBar::OnSelendokCompoInterf(int pos) 
 {
-  m_CompoObjIntCtrl = m_ComboBarDlg->IDC_CompoInterf;
+  m_CompoObjIntCtrl = IDC_CompoInterf;
   pos = SelEndOKToStr(pos, m_CompoObjIntCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -726,7 +721,7 @@ void CComboBar::OnSelendokCompoInterf(int pos)
 
 void CComboBar::OnSelendokStaticFuncs(int pos) 
 {
-  m_StaticFuncsCtrl = m_ComboBarDlg->IDC_StaticFuncs;
+  m_StaticFuncsCtrl = IDC_StaticFuncs;
   pos = SelEndOKToStr(pos, m_StaticFuncsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -739,7 +734,7 @@ void CComboBar::OnSelendokStaticFuncs(int pos)
 /*
 void CComboBar::OnSelendokCOMBOSignals(int pos) 
 {
-  m_SignalsCtrl = m_ComboBarDlg->IDC_COMBOSignals;
+  m_SignalsCtrl = IDC_COMBOSignals;
   pos = SelEndOKToStr(pos, m_SignalsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -752,7 +747,7 @@ void CComboBar::OnSelendokCOMBOSignals(int pos)
 /*
 void CComboBar::OnSelendokComboUpcasts() 
 {
-  m_UpcastsCtrl = m_ComboBarDlg->IDC_ComboUpcasts;
+  m_UpcastsCtrl = IDC_ComboUpcasts;
   int pos = SelEndOKToStr(m_UpcastsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
@@ -765,7 +760,7 @@ void CComboBar::OnSelendokComboUpcasts()
 /*
 void CComboBar::OnSelendokComboBasicUpcasts() 
 {
-  m_BasicUpcastsCtrl = m_ComboBarDlg->IDC_ComboBasicUpcasts;
+  m_BasicUpcastsCtrl = IDC_ComboBasicUpcasts;
   int pos = SelEndOKToStr(m_BasicUpcastsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) 
@@ -781,8 +776,8 @@ void CComboBar::RemoveLocals()
   CHE *firstID;
   TIDType idtype;
 
-  m_ObjectsCtrl = m_ComboBarDlg->IDC_ComboObjects;
-  m_SetObjectsCtrl = m_ComboBarDlg->IDC_ComboSetObjects;
+  m_ObjectsCtrl = IDC_ComboObjects;
+  m_SetObjectsCtrl = IDC_ComboSetObjects;
   int pos = 1;
   int cnt = m_ObjectsCtrl->count();
   while ( pos < cnt) {
@@ -823,8 +818,8 @@ void CComboBar::AddLocal(const TID& id, const DString& name, const TID& typeID, 
   CHE *che;
   DString accuName;
 
-  m_ObjectsCtrl = m_ComboBarDlg->IDC_ComboObjects;
-  m_SetObjectsCtrl = m_ComboBarDlg->IDC_ComboSetObjects;
+  m_ObjectsCtrl = IDC_ComboObjects;
+  m_SetObjectsCtrl = IDC_ComboSetObjects;
   tdod->ID = id;
   tdod->name = name;
   tdod->context = ((SelfVar*)ExecDECL->Exec.ptr)->selfCtx;
@@ -857,7 +852,7 @@ void CComboBar::AddLocal(const TID& id, const DString& name, const TID& typeID, 
 
 bool CComboBar::UsedName(const DString& name)
 {
-  m_ObjectsCtrl = m_ComboBarDlg->IDC_ComboObjects;
+  m_ObjectsCtrl = IDC_ComboObjects;
   return m_ObjectsCtrl->findText(QString(name.c)) >= 0;
 }
 
@@ -906,14 +901,14 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_ObjectsCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_ObjectsCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_ComboObjects;
+        LeftCombo = IDC_ComboObjects;
         if (what == objEnumCombo) {
           m_EnumsCtrl->show();
           if (!VisibleList[v_Enums])
             m_EnumsCtrl->setCurrentItem(0);
           if (!LBaseData->debugOn)
             m_EnumsCtrl->setEnabled(true);
-          RightCombo = m_ComboBarDlg->IDC_ComboEnums;
+          RightCombo = IDC_ComboEnums;
           m_ButtonEnum->show();
           EnumsShow = true;
           if (pID) {
@@ -933,11 +928,11 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_SetObjectsCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_SetObjectsCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_ComboSetObjects;
+        LeftCombo = IDC_ComboSetObjects;
         m_EnumsCtrl->hide();
         m_EnumsCtrl->setCurrentItem(0);
         m_EnumsCtrl->setEnabled(false);
-        RightCombo = m_ComboBarDlg->IDC_ComboEnums;
+        RightCombo = IDC_ComboEnums;
         m_ButtonEnum->hide();
         EnumsShow = false;
         break;
@@ -947,13 +942,13 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_SetObjectsCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_SetObjectsCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_ComboSetObjects;
+        LeftCombo = IDC_ComboSetObjects;
         m_EnumsCtrl->show();
         if (!VisibleList[v_Enums])
           m_EnumsCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_EnumsCtrl->setEnabled(true);
-        RightCombo = m_ComboBarDlg->IDC_ComboEnums;
+        RightCombo = IDC_ComboEnums;
         m_ButtonEnum->hide();
         EnumsShow = false;
         break;
@@ -963,13 +958,13 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_TypesCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_TypesCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_ComboTypes;
+        LeftCombo = IDC_ComboTypes;
         m_BasicTypesCtrl->show();
         if (!VisibleList[v_BasicTypes])
           m_BasicTypesCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_BasicTypesCtrl->setEnabled(true);
-        RightCombo = m_ComboBarDlg->IDC_BasicTypes;
+        RightCombo = IDC_BasicTypes;
         break;
       case setTypeCombo:
         m_SetTypesCtrl->show();
@@ -977,7 +972,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_SetTypesCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_SetTypesCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_ComboSetTypes;
+        LeftCombo = IDC_ComboSetTypes;
         break;
         /*
       case signalsCombo:
@@ -986,7 +981,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_SignalsCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_SignalsCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_COMBOSignals;
+        LeftCombo = IDC_COMBOSignals;
         break;
         */
       case newCombo:
@@ -995,7 +990,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_NewCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_NewCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_ComboNew;
+        LeftCombo = IDC_ComboNew;
         break;
       case newAndCObjCombo:
         m_NewCtrl->show();
@@ -1003,13 +998,13 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_NewCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_NewCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_ComboNew;
+        LeftCombo = IDC_ComboNew;
         m_SNewCtrl->show();
         if (!VisibleList[v_SNew])
           m_SNewCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_SNewCtrl->setEnabled(true);
-        RightCombo = m_ComboBarDlg->IDC_ComboSNew;
+        RightCombo = IDC_ComboSNew;
         break;
       case attachCombo:
         m_AttachCtrl->show();
@@ -1017,7 +1012,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_AttachCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_AttachCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_ComboAttach;
+        LeftCombo = IDC_ComboAttach;
         break;
       case coiCombo:
         m_CompoObjIntCtrl->show();
@@ -1025,7 +1020,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_CompoObjIntCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_CompoObjIntCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_CompoInterf;
+        LeftCombo = IDC_CompoInterf;
         break;
       case callCombo:
         m_CallIntCtrl->show();
@@ -1033,7 +1028,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
           m_CallIntCtrl->setCurrentItem(0);
         if (!LBaseData->debugOn)
           m_CallIntCtrl->setEnabled(true);
-        LeftCombo = m_ComboBarDlg->IDC_COMBOCall;
+        LeftCombo = IDC_COMBOCall;
         break;
       default: ;
       }
@@ -1044,31 +1039,31 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
 void CComboBar::SetCombos(bool setVar, bool hideCombo)
 {
   if (setVar) {
-    m_TypesCtrl = m_ComboBarDlg->IDC_ComboTypes;
-    m_CompaTypesCtrl = m_ComboBarDlg->IDC_CompaTypes;
-    m_SetTypesCtrl = m_ComboBarDlg->IDC_ComboSetTypes;
-    //m_SignalsCtrl = m_ComboBarDlg->IDC_COMBOSignals;
-    m_BasicTypesCtrl = m_ComboBarDlg->IDC_BasicTypes;
-    m_CompaBTypesCtrl = m_ComboBarDlg->IDC_CompaBTypes;
-    m_EnumsCtrl = m_ComboBarDlg->IDC_ComboEnums;
-    m_ButtonEnum = m_ComboBarDlg->IDC_ButtonEnum;
-    m_NewCtrl = m_ComboBarDlg->IDC_ComboNew;
-    m_SNewCtrl = m_ComboBarDlg->IDC_ComboSNew;
-    m_ObjectsCtrl = m_ComboBarDlg->IDC_ComboObjects;
-    m_SetObjectsCtrl = m_ComboBarDlg->IDC_ComboSetObjects;
-    m_AttachCtrl = m_ComboBarDlg->IDC_ComboAttach;
-    m_CallIntCtrl = m_ComboBarDlg->IDC_COMBOCall;
-    m_CompoObjIntCtrl = m_ComboBarDlg->IDC_CompoInterf;
-    m_VFuncsCtrl = m_ComboBarDlg->IDC_ComboFuncs;
-    m_NewFunc = m_ComboBarDlg->IDC_NewFunc;
-    m_NewPFunc = m_ComboBarDlg->IDC_NewPFunc;
-    m_ClassFuncsCtrl = m_ComboBarDlg->IDC_ComboClassFuncs;
-    m_SubObjectsCtrl = m_ComboBarDlg->IDC_ComboSubObjects;
-    m_CompaObjectsCtrl = m_ComboBarDlg->IDC_ComboCompObjects;
-    m_CompaTypesCtrl = m_ComboBarDlg->IDC_CompaTypes;
-    m_CompaBTypesCtrl = m_ComboBarDlg->IDC_CompaBTypes;
-    m_BaseInisCtrl = m_ComboBarDlg->IDC_ComboBaseInis;
-    m_StaticFuncsCtrl = m_ComboBarDlg->IDC_StaticFuncs;
+    m_TypesCtrl = IDC_ComboTypes;
+    m_CompaTypesCtrl = IDC_CompaTypes;
+    m_SetTypesCtrl = IDC_ComboSetTypes;
+    //m_SignalsCtrl = IDC_COMBOSignals;
+    m_BasicTypesCtrl = IDC_BasicTypes;
+    m_CompaBTypesCtrl = IDC_CompaBTypes;
+    m_EnumsCtrl = IDC_ComboEnums;
+    m_ButtonEnum = IDC_ButtonEnum;
+    m_NewCtrl = IDC_ComboNew;
+    m_SNewCtrl = IDC_ComboSNew;
+    m_ObjectsCtrl = IDC_ComboObjects;
+    m_SetObjectsCtrl = IDC_ComboSetObjects;
+    m_AttachCtrl = IDC_ComboAttach;
+    m_CallIntCtrl = IDC_COMBOCall;
+    m_CompoObjIntCtrl = IDC_CompoInterf;
+    m_VFuncsCtrl = IDC_ComboFuncs;
+    m_NewFunc = IDC_NewFunc;
+    m_NewPFunc = IDC_NewPFunc;
+    m_ClassFuncsCtrl = IDC_ComboClassFuncs;
+    m_SubObjectsCtrl = IDC_ComboSubObjects;
+    m_CompaObjectsCtrl = IDC_ComboCompObjects;
+    m_CompaTypesCtrl = IDC_CompaTypes;
+    m_CompaBTypesCtrl = IDC_CompaBTypes;
+    m_BaseInisCtrl = IDC_ComboBaseInis;
+    m_StaticFuncsCtrl = IDC_StaticFuncs;
   }
   if (hideCombo) {
     LeftCombo = 0;
@@ -1133,7 +1128,7 @@ void CComboBar::ShowUpcasts(const TID& id, bool theTop)
   LavaDECL* decl = myDoc->IDTable.GetDECL(id);
   if (decl) {
     if (theTop)
-      m_UpcastsCtrl = m_ComboBarDlg->IDC_ComboUpcasts;
+      m_UpcastsCtrl = IDC_ComboUpcasts;
     else {
       int pos = m_UpcastsCtrl->AddString(decl->LocalName.c);
       m_UpcastsCtrl->SetItemData(pos, MAKELONG(id.nID, id.nINCL));
@@ -1167,8 +1162,8 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
   QSize sz;
   QVariant vari;
 
-  m_CompaObjectsCtrl = m_ComboBarDlg->IDC_ComboCompObjects;
-  m_EnumsCtrl = m_ComboBarDlg->IDC_ComboEnums;
+  m_CompaObjectsCtrl = IDC_ComboCompObjects;
+  m_EnumsCtrl = IDC_ComboEnums;
   ResetComboItems(m_CompaObjectsCtrl);
   /*Q
   pos = m_CompaObjectsCtrl->GetCount();
@@ -1256,7 +1251,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
       if (item) { //epos && (epos != LB_ERR)) {
         lastSelTID = TID(enumDecl->OwnID, enumDecl->inINCL);
         EnumMenu.clear();//DestroyMenu( );
-        m_ButtonEnum = m_ComboBarDlg->IDC_ButtonEnum;
+        m_ButtonEnum = IDC_ButtonEnum;
         pos = 0;
         for (enumsel = (CHEEnumSelId*)((TEnumDescription*)enumDecl->EnumDesc.ptr)->EnumField.Items.first;
              enumsel;
@@ -1278,7 +1273,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
 //      m_CompaObjectsCtrl->SetDroppedWidth(maxW+6);
       if (!LBaseData->debugOn)
         m_CompaObjectsCtrl->setEnabled(true);
-      LeftCombo = m_ComboBarDlg->IDC_ComboCompObjects;
+      LeftCombo = IDC_ComboCompObjects;
     }
     else 
       m_CompaObjectsCtrl->setEnabled(false);
@@ -1298,7 +1293,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
 				m_EnumsCtrl->setCurrentItem(0);
       if (!LBaseData->debugOn)
 			  m_EnumsCtrl->setEnabled(true);
-			RightCombo = m_ComboBarDlg->IDC_ComboEnums;
+			RightCombo = IDC_ComboEnums;
 			m_ButtonEnum->show();
 			if (m_EnumsCtrl->currentItem()) {
         if (!LBaseData->debugOn)
@@ -1324,10 +1319,10 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
   bool withBTypes=false, withTypes=false;
   QVariant var;
 
-  m_TypesCtrl = m_ComboBarDlg->IDC_ComboTypes;
-  m_BasicTypesCtrl = m_ComboBarDlg->IDC_BasicTypes;
-  m_CompaTypesCtrl = m_ComboBarDlg->IDC_CompaTypes;
-  m_CompaBTypesCtrl = m_ComboBarDlg->IDC_CompaBTypes;
+  m_TypesCtrl = IDC_ComboTypes;
+  m_BasicTypesCtrl = IDC_BasicTypes;
+  m_CompaTypesCtrl = IDC_CompaTypes;
+  m_CompaBTypesCtrl = IDC_CompaBTypes;
 
   ResetComboItems(m_CompaTypesCtrl);
   ResetComboItems(m_CompaBTypesCtrl);
@@ -1376,7 +1371,7 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
     //m_CompaTypesCtrl->SetDroppedWidth(maxW+6);
     if (!LBaseData->debugOn)
       m_CompaTypesCtrl->setEnabled(true);
-    LeftCombo = m_ComboBarDlg->IDC_CompaTypes;
+    LeftCombo = IDC_CompaTypes;
   }
   else 
     m_CompaTypesCtrl->setEnabled(false);
@@ -1386,7 +1381,7 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
     //m_CompaBTypesCtrl->SetDroppedWidth(maxBW+6);
     if (!LBaseData->debugOn)
       m_CompaBTypesCtrl->setEnabled(true);
-    RightCombo = m_ComboBarDlg->IDC_CompaBTypes;
+    RightCombo = IDC_CompaBTypes;
   }
   else 
     m_CompaBTypesCtrl->setEnabled(false);
@@ -1402,7 +1397,7 @@ void CComboBar::ShowSubObjects(LavaDECL* decl, const CContext &context)
   DString accuName = pkt;
 //  int pos;
 
-  m_SubObjectsCtrl = m_ComboBarDlg->IDC_ComboSubObjects;
+  m_SubObjectsCtrl = IDC_ComboSubObjects;
   ResetComboItems(m_SubObjectsCtrl);
   /*Q
   pos = m_SubObjectsCtrl->GetCount();
@@ -1438,7 +1433,7 @@ void CComboBar::ShowSubObjects(LavaDECL* decl, const CContext &context)
     m_SubObjectsCtrl->setCurrentItem(0);
     if (!LBaseData->debugOn)
       m_SubObjectsCtrl->setEnabled(true);
-    LeftCombo = m_ComboBarDlg->IDC_ComboSubObjects;
+    LeftCombo = IDC_ComboSubObjects;
   }
 }
 
@@ -1473,7 +1468,7 @@ void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface
   m_BaseInisCtrl->setCurrentItem(0);
   if (!LBaseData->debugOn)
     m_BaseInisCtrl->setEnabled(true);
-  LeftCombo = m_ComboBarDlg->IDC_ComboBaseInis;
+  LeftCombo = IDC_ComboBaseInis;
   lastCombo = invalidateLast;
 }
 
@@ -1586,8 +1581,8 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
   funcBox->setCurrentItem(0);
   if (!LBaseData->debugOn)
     funcBox->setEnabled(true);
-  m_NewFunc = m_ComboBarDlg->IDC_NewFunc;
-  m_NewPFunc = m_ComboBarDlg->IDC_NewPFunc;
+  m_NewFunc = IDC_NewFunc;
+  m_NewPFunc = IDC_NewPFunc;
   m_NewFunc->show();
   //m_NewFunc->setEnabled(true);
   m_NewPFunc->show();
@@ -1601,7 +1596,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
       NewPFuncEnable = true;
     else
       NewPFuncEnable = false;
-  LeftCombo = m_ComboBarDlg->IDC_ComboFuncs;
+  LeftCombo = IDC_ComboFuncs;
   m_ClassFuncsCtrl->show();
   m_ClassFuncsCtrl->setCurrentItem(0);
   if (signalDecl || !withStatic)
@@ -1609,7 +1604,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
   else {
     if (!LBaseData->debugOn)
       m_ClassFuncsCtrl->setEnabled(true);
-    RightCombo = m_ComboBarDlg->IDC_ComboClassFuncs;
+    RightCombo = IDC_ComboClassFuncs;
   }
   lastCombo = invalidateLast;
 }
@@ -1625,13 +1620,13 @@ void CComboBar::ShowStaticFuncs(CheckData &ckd)
   m_TypesCtrl->setCurrentItem(0);
   if (!LBaseData->debugOn)
     m_TypesCtrl->setEnabled(true);
-  LeftCombo = m_ComboBarDlg->IDC_ComboTypes;
+  LeftCombo = IDC_ComboTypes;
   m_BasicTypesCtrl->show();
 //  if (!VisibleList[v_Types])
   m_BasicTypesCtrl->setCurrentItem(0);
   if (!LBaseData->debugOn)
     m_BasicTypesCtrl->setEnabled(true);
-  RightCombo = m_ComboBarDlg->IDC_BasicTypes;
+  RightCombo = IDC_BasicTypes;
   m_StaticFuncsCtrl->show();
 //  if (!VisibleList[v_StaticFuncs])
   m_StaticFuncsCtrl->removeItem(0);
@@ -1651,12 +1646,12 @@ void CComboBar::ShowSignalFuncs(CheckData &ckd)
   m_TypesCtrl->setCurrentItem(0);
   if (!LBaseData->debugOn)
     m_TypesCtrl->setEnabled(true);
-  LeftCombo = m_ComboBarDlg->IDC_ComboTypes;
+  LeftCombo = IDC_ComboTypes;
   m_BasicTypesCtrl->show();
   m_BasicTypesCtrl->setCurrentItem(0);
   if (!LBaseData->debugOn)
     m_BasicTypesCtrl->setEnabled(true);
-  RightCombo = m_ComboBarDlg->IDC_BasicTypes;
+  RightCombo = IDC_BasicTypes;
   m_StaticFuncsCtrl->removeItem(0);
   m_StaticFuncsCtrl->insertItem( tr( " (Signals) " ),0 );
   m_StaticFuncsCtrl->setCurrentItem(0);
@@ -1675,12 +1670,12 @@ void CComboBar::ShowSlotFuncs(CheckData &ckd, LavaDECL* signalDecl)
   m_TypesCtrl->setCurrentItem(0);
   if (!LBaseData->debugOn)
     m_TypesCtrl->setEnabled(true);
-  LeftCombo = m_ComboBarDlg->IDC_ComboTypes;
+  LeftCombo = IDC_ComboTypes;
   m_BasicTypesCtrl->show();
   m_BasicTypesCtrl->setCurrentItem(0);
   if (!LBaseData->debugOn)
     m_BasicTypesCtrl->setEnabled(true);
-  RightCombo = m_ComboBarDlg->IDC_BasicTypes;
+  RightCombo = IDC_BasicTypes;
   m_StaticFuncsCtrl->removeItem(0);
   m_StaticFuncsCtrl->insertItem( tr( " (Handler) " ),0 );
   m_StaticFuncsCtrl->setCurrentItem(0);
@@ -1723,8 +1718,8 @@ void CComboBar::showIFFuncs()
   m_StaticFuncsCtrl->setCurrentItem(0);
   if (!LBaseData->debugOn)
     m_StaticFuncsCtrl->setEnabled(true);
-  RightCombo = m_ComboBarDlg->IDC_BasicTypes;
-  ThirdCombo = m_ComboBarDlg->IDC_StaticFuncs;
+  RightCombo = IDC_BasicTypes;
+  ThirdCombo = IDC_StaticFuncs;
   lastCombo = invalidateLast;
 }
 

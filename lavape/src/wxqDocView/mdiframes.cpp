@@ -262,8 +262,9 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
 {
   resize(500,300);
   ((QWorkspace*)parent)->addWindow(this);
-  setLayout(&layout);
-  layout.setMargin(0);
+  layout = new QVBoxLayout(this);
+  setLayout(layout);
+  layout->setMargin(0);
 
   QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
   resize(sz.width()*7/10, sz.height()*7/10);
@@ -372,3 +373,25 @@ wxMDIChildFrame::~wxMDIChildFrame()
   if (!wxTheApp->deletingMainFrame)
     wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
 }
+
+#define MYSTYLEIMP(sty)\
+  int My##sty##Style::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const\
+{\
+  int px = Q##sty##Style::pixelMetric( pm, option, widget);\
+  switch( pm )\
+  {\
+    case PM_ToolBarItemMargin:\
+    case PM_ToolBarItemSpacing:\
+      px = 0; break;\
+    case PM_ToolBarIconSize:\
+      px = 16; break;\
+    default: break;\
+  }\
+  return px;\
+}
+
+MYSTYLEIMP(Windows)
+MYSTYLEIMP(WindowsXP)
+MYSTYLEIMP(Plastique)
+MYSTYLEIMP(CDE)
+MYSTYLEIMP(Motif)

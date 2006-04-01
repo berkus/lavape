@@ -1,431 +1,422 @@
-<ui version="4.0" stdsetdef="1" >
-  <author></author>
-  <comment></comment>
-  <exportmacro></exportmacro>
-  <class>ComboBarDlg</class>
-  <widget class="QWidget" name="ComboBarDlg" >
-    <property name="geometry" >
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>403</width>
-        <height>21</height>
-      </rect>
-    </property>
-    <property name="windowTitle" >
-      <string>ComboBarDlg</string>
-    </property>
-    <widget class="QPushButton" name="IDC_ButtonEnum" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>280</x>
-          <y>0</y>
-          <width>30</width>
-          <height>21</height>
-        </rect>
-      </property>
-      <property name="text" >
-        <string/>
-      </property>
-      <property name="icon" >
-        <pixmap>image0</pixmap>
-      </property>
-    </widget>
-    <widget class="QPushButton" name="IDC_NewPFunc" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>310</x>
-          <y>0</y>
-          <width>31</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <property name="text" >
-        <string/>
-      </property>
-      <property name="icon" >
-        <pixmap>image1</pixmap>
-      </property>
-      <property name="toolTip" stdset="0" >
-        <string>New private member function</string>
-      </property>
-      <property name="whatsThis" stdset="0" >
-        <string>&lt;p>&lt;b>Function creation shortcut:&lt;/b>&lt;br>&lt;br>Creates a new private member function in the (implementation of the) current class and replaces the current &lt;font color=red>&amp;lt;func&amp;gt;&lt;/font> placeholder with a reference to it.&lt;/p></string>
-      </property>
-    </widget>
-    <widget class="QComboBox" name="IDC_CompaBTypes" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>141</x>
-          <y>1</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string> (Basic types)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QPushButton" name="IDC_NewFunc" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>280</x>
-          <y>0</y>
-          <width>30</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <property name="text" >
-        <string/>
-      </property>
-      <property name="icon" >
-        <pixmap>image2</pixmap>
-      </property>
-      <property name="toolTip" stdset="0" >
-        <string>New public member function</string>
-      </property>
-      <property name="whatsThis" stdset="0" >
-        <string>&lt;p>&lt;b>Function creation shortcut:&lt;/b>&lt;br>&lt;br>Creates a new public member function in the current class and replaces the current &lt;font color=red>&amp;lt;func&amp;gt;&lt;/font> placeholder with a reference to it.&lt;/p></string>
-      </property>
-    </widget>
-    <widget class="QComboBox" name="IDC_CompaTypes" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Types)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboFuncs" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string> (Virtual calls) </string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboTypes" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Types)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboSubObjects" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Members)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboNew" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Initializers)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboSetObjects" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Set variables)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboCompObjects" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Variables)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboSetTypes" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Set types)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboAttach" >
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Persistent comp. objs.)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_CompoInterf" >
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string> (Comp. obj. interfaces)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_COMBOCall" >
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string> (Main programs)  </string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboBaseInis" >
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Base initializers)  </string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_BasicTypes" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>140</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string> (Basic types)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboClassFuncs" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>140</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string> (Non-virtual calls)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboSNew" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>140</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string> (Compon. obj. specs.)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboEnums" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>140</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string> (Enumeration types)  </string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_ComboObjects" >
-      <property name="enabled" >
-        <bool>true</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>138</width>
-          <height>20</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string>(Variables)</string>
-        </property>
-      </item>
-    </widget>
-    <widget class="QComboBox" name="IDC_StaticFuncs" >
-      <property name="enabled" >
-        <bool>false</bool>
-      </property>
-      <property name="geometry" >
-        <rect>
-          <x>280</x>
-          <y>0</y>
-          <width>120</width>
-          <height>21</height>
-        </rect>
-      </property>
-      <item>
-        <property name="text" >
-          <string> (Static functions)</string>
-        </property>
-      </item>
-    </widget>
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>ComboBarDlg</class>
+ <widget class="QWidget" name="ComboBarDlg" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>403</width>
+    <height>20</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>ComboBarDlg</string>
+  </property>
+  <widget class="QPushButton" name="IDC_ButtonEnum" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>280</x>
+     <y>0</y>
+     <width>30</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+   <property name="icon" >
+    <iconset/>
+   </property>
   </widget>
-  <layoutdefault spacing="6" margin="11" />
-  <pixmapfunction></pixmapfunction>
-  <images>
-    <image name="image0" >
-      <data format="XPM.GZ" length="557" >789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade65232325330345330523054d2e152525648565036000310570fc44d0303301727204a565919268060c165959561820816922c188165e12c145904204d164512591a61af3214e929839d06761e91b22806432571f908ea6d5ca101218909495c80806cad35170094c861d9</data>
-    </image>
-    <image name="image1" >
-      <data format="XPM.GZ" length="474" >789c9590410ac2301045f739c5d0d905b186a204c423082e0571f1331274d18db60b11ef6ea6a5d8d25af0cfeabdf96420b9a5e3614f36378f0ad54d48aeb893bdd465f93c9d772f93394f6e436b72d9c264818478d54451147de19d2f14978a31765b6e5185223a8cb1298f3267193a08210880be552969be16cc5a15499b5e57930c63a29b0c30e8828306c36bad1c5860ea85ff2cf0cb7699ff9d917d6fcd07a3327284</data>
-    </image>
-    <image name="image2" >
-      <data format="XPM.GZ" length="459" >789c9590c10ac2300c86ef7d8ab0dc8a38cb440ae223081e05f1f07752f4b08b6e0711dfddb465685919f8e7f47d4d1348ade978d893aed5a3477f6ba9bde24efa3274ddf374debd54652c990dadc9540b552da9255ec50474016d638d6d0272402f49af18d1fbf8779239cb9062083b00991572525f2b8d2ce49c98dc865e46a1570c7ee78ae4b81df9b624330b9426fc671395ec98f9eb4cec7bab3e03c66828</data>
-    </image>
-  </images>
+  <widget class="QPushButton" name="IDC_NewPFunc" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>310</x>
+     <y>0</y>
+     <width>31</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="toolTip" >
+    <string>New private member function</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;p>&lt;b>Function creation shortcut:&lt;/b>&lt;br>&lt;br>Creates a new private member function in the (implementation of the) current class and replaces the current &lt;font color=red>&amp;lt;func&amp;gt;&lt;/font> placeholder with a reference to it.&lt;/p></string>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+   <property name="icon" >
+    <iconset/>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="IDC_CompaBTypes" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>141</x>
+     <y>1</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string> (Basic types)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="IDC_NewFunc" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>280</x>
+     <y>0</y>
+     <width>30</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="toolTip" >
+    <string>New public member function</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;p>&lt;b>Function creation shortcut:&lt;/b>&lt;br>&lt;br>Creates a new public member function in the current class and replaces the current &lt;font color=red>&amp;lt;func&amp;gt;&lt;/font> placeholder with a reference to it.&lt;/p></string>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+   <property name="icon" >
+    <iconset/>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="IDC_CompaTypes" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Types)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboFuncs" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string> (Virtual calls) </string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboTypes" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Types)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboSubObjects" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Members)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboNew" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Initializers)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboSetObjects" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Set variables)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboCompObjects" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Variables)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboSetTypes" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Set types)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboAttach" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Persistent comp. objs.)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_CompoInterf" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string> (Comp. obj. interfaces)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_COMBOCall" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string> (Main programs)  </string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboBaseInis" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Base initializers)  </string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_BasicTypes" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>140</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string> (Basic types)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboClassFuncs" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>140</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string> (Non-virtual calls)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboSNew" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>140</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string> (Compon. obj. specs.)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_StaticFuncs" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>280</x>
+     <y>0</y>
+     <width>120</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string> (Static functions)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboEnums" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>140</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string> (Enumeration types)  </string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="IDC_ComboObjects" >
+   <property name="enabled" >
+    <bool>true</bool>
+   </property>
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>138</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text" >
+     <string>(Variables)</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <resources/>
+ <connections/>
 </ui>

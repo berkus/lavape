@@ -228,6 +228,14 @@ void CLavaMainFrame::makeStyle(const QString &style)
     wxTheApp->saveSettings();
     if (style == "Windows")
       QApplication::setStyle(new MyWindowsStyle);
+    else if (style == "WindowsXP")
+      QApplication::setStyle(new MyWindowsXPStyle);
+    else if (style == "CDE")
+      QApplication::setStyle(new MyCDEStyle);
+    else if (style == "Motif")
+      QApplication::setStyle(new MyMotifStyle);
+    else if (style == "Plastique")
+      QApplication::setStyle(new MyPlastiqueStyle);
     else
 	    QApplication::setStyle(style);
 /*	  if(style == "Motif" || style == "MotifPlus") {
@@ -1780,8 +1788,8 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 //  }
   splitter = new QSplitter(this);//vb);
   splitter->setHandleWidth(3);
-  layout.addWidget(splitter);
-  layout.setMargin(0);
+  layout->addWidget(splitter);
+  layout->setMargin(0);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
   viewL = new CInclView(this, doc);
@@ -2042,21 +2050,4 @@ void CLavaMainFrame::fillHelpMap5(ToolbarWhatsThis *tbw) {
 }
 
 void CLavaMainFrame::fillHelpMap6(ToolbarWhatsThis *tbw) {
-}
-
-int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const
-{
-  int px = QWindowsStyle::pixelMetric( pm, option, widget);
-
-  switch( pm )
-  {
-    case PM_ToolBarItemMargin:
-    case PM_ToolBarItemSpacing:
-      px = 0; break;
-    case PM_ToolBarIconSize:
-      px = 16; break;
-    default: break;
-  }
-
-  return px;
 }
