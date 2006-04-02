@@ -23,6 +23,7 @@
 #include "qfont.h"
 //Added by qt3to4:
 #include <QCloseEvent>
+#include <QWindowsStyle>
 #include <QTreeWidget>
 
 
@@ -196,15 +197,15 @@ public slots:
     virtual void deleteOp();
 
 // Exec handlers (tool buttons):
-    virtual void on_DbgAction_triggered();
-    virtual void on_DbgStepNextAct_triggered();
-    virtual void on_DbgStepNextFunctionAct_triggered();
-    virtual void on_DbgStepintoAct_triggered();
-    virtual void on_DbgStepoutAct_triggered();
-    virtual void on_DbgRunToSelAct_triggered();
-    virtual void on_DbgBreakpointAct_triggered();
-    virtual void on_DbgClearBreakpointsAct_triggered();
-    virtual void on_DbgStopAction_triggered();
+    virtual void DbgStart();
+    virtual void DbgStepNext();
+    virtual void DbgStepNextFunction();
+    virtual void DbgStepinto();
+    virtual void DbgStepout();
+    virtual void DbgRunToSel();
+    virtual void DbgBreakpoint();
+    virtual void DbgClearBreakpoints();
+    virtual void DbgStop();
     virtual void on_toggleCategoryAction_triggered();
     virtual void optLocalVar();
     virtual void toggleSubstType();
@@ -263,7 +264,7 @@ public slots:
     virtual void assert_stm();
     virtual void try_stm();
     virtual void succeed();
-    virtual void throwEx();
+    virtual void fail();
     virtual void call();
     virtual void set();
     virtual void newExpr();
@@ -312,9 +313,8 @@ public:
   CLavaBaseView* viewL;
   CLavaBaseView* viewM;
   CLavaBaseView* viewR;
-  bool showIt;
   int widthPrev;
-
+  bool showIt;
   void SetModified(bool changed);
 private:
     Q_OBJECT;
@@ -332,10 +332,10 @@ private:
 
 class CFormFrame : public CLavaGUIFrame
 {
-public:
+public: 
   CFormFrame(QWidget* parent);
   FRAMEFACTORY(CFormFrame)
-
+  
   QSplitter *splitter;
   CLavaGUIView* viewL;
   CLavaBaseView* viewR;
@@ -347,6 +347,11 @@ public:
   void CalcSplitters();
 private:
     Q_OBJECT;
+};
+
+class MyWindowsStyle : public QWindowsStyle {
+public:
+  int pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const;
 };
 
 

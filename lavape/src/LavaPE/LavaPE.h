@@ -54,7 +54,7 @@ public:
   CExecUpdate ExecUpdate;
   CLavaBaseData LBaseData;
 //  QString CMDLine;
-  QProcess interpreter;
+  Q3Process interpreter;
   CLavaPEDebugThread debugThread;
   //CLavaPEPMdumpThread pmDumpThread;
 

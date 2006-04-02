@@ -937,8 +937,8 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
   CThreadList *thrL;
   CLavaThread *curThr;
 
-	curThr = (CLavaThread*)QThread::currentThread();
-  if (curThr == wxTheApp->mainThread) { // mainThread!
+	curThr = CLavaThread::currentThread();
+  if (!curThr) { // mainThread!
     if (((CLavaBaseDoc*)fromDoc)->throwError) {
       if (((CLavaBaseDoc*)fromDoc)->ThreadList) {
         thrL = ((CLavaBaseDoc*)fromDoc)->ThreadList;
@@ -1018,9 +1018,9 @@ int FindStringCaseExact(QComboBox* box, const DString& str, int start)
 int critical(QWidget *parent, const QString &caption,
 	  const QString &text,
 		int button0, int button1, int button2) {
-  CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
+  CLavaThread *currentThread = CLavaThread::currentThread();
 
-	if (currentThread == wxTheApp->mainThread) // mainThread!
+	if (!currentThread) // mainThread!
 		return QMessageBox::critical(parent,caption,text,button0,button1,button2);
 
   CMsgBoxParams params(
@@ -1044,9 +1044,9 @@ int critical(QWidget *parent, const QString &caption,
 int information(QWidget *parent, const QString &caption,
 		const QString& text,
 		int button0, int button1, int button2) {
-  CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
+  CLavaThread *currentThread = CLavaThread::currentThread();
 
-	if (currentThread == wxTheApp->mainThread) // mainThread!
+	if (!currentThread) // mainThread!
 		return QMessageBox::information(parent,caption,text,button0,button1,button2);
 
   CMsgBoxParams params(
@@ -1070,9 +1070,9 @@ int information(QWidget *parent, const QString &caption,
 int question(QWidget *parent, const QString &caption,
 		const QString& text,
 		int button0, int button1, int button2) {
-  CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
+  CLavaThread *currentThread = CLavaThread::currentThread();
 
-	if (currentThread == wxTheApp->mainThread) // mainThread!
+	if (!currentThread) // mainThread!
 		return QMessageBox::question(parent,caption,text,button0,button1,button2);
 
   CMsgBoxParams params(

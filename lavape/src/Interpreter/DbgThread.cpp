@@ -61,7 +61,6 @@ CLavaDebugThread::CLavaDebugThread() {
   dbgStopData=0; 
   varAction=0; 
   listenSocket = 0;
-  workSocket = 0;
   debugOn = false;
   pContDebugEvent = new CEventEx();
   if (pContDebugEvent->available())
@@ -71,10 +70,9 @@ CLavaDebugThread::CLavaDebugThread() {
 }
 
 
-void CLavaDebugThread::initData(CLavaBaseDoc* d, CLavaExecThread *execThr) {
+void CLavaDebugThread::initData(CLavaBaseDoc* d) {
   if (!dbgStopData) {
     myDoc = d;
-    myExecThread = execThr;
     dbgStopData = new DbgStopData;
     varAction = new LocalDebugVar(dbgStopData, myDoc);
   }
@@ -95,6 +93,7 @@ CLavaDebugThread::~CLavaDebugThread()
 
 void CLavaDebugThread::run() {
 
+  QProcess lavape;
   ASN1InSock *get_cid;
   ASN1OutSock *put_cid;
 	QString lavapePath, buf;
@@ -102,8 +101,9 @@ void CLavaDebugThread::run() {
   DDItemData * oid;
   bool fin = false;
 
-//  CThreadData *td = new CThreadData(this);
-//	threadStg()->setLocalData(td);
+
+  CThreadData *td = new CThreadData(this);
+	threadStg()->setLocalData(td);
   
   if (debugOn) {
     workSocket = new QTcpSocket;
@@ -131,9 +131,11 @@ void CLavaDebugThread::run() {
       QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
 		  return;
 	  }
-    listenSocket->waitForNewConnection(5000);
-    workSocket = listenSocket->nextPendingConnection();
+
   }
+
+  listenSocket->waitForNewConnection();
+  workSocket = listenSocket->nextPendingConnection();
 
   put_cid = new ASN1OutSock (workSocket);
   if (!put_cid->Done) {
@@ -222,25 +224,24 @@ void CLavaDebugThread::run() {
       break;
   }
   delete dbgStopData;
-  dbgStopData = 0;
   delete varAction;
-  varAction=0;
-   
   mSend.Destroy();
   mReceive.Destroy();
   brkPnts.Destroy();
+  dbgStopData=0;
+  varAction=0;
   delete put_cid;
   delete get_cid;
-  delete workSocket;
-  workSocket = 0;
-  if (listenSocket) {
-    delete listenSocket;
-    listenSocket = 0;
-  }
   LBaseData->debugOn = false;
   debugOn = false;
-  CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)myExecThread);
-  QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
+  if (myDoc)
+    if (myDoc->startedFromLavaPE) {
+      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)CLavaThread::currentThread());
+      QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
+//      qApp->quit();
+    }
+    else 
+      myDoc->Close();
 }
 
 void CLavaDebugThread::setBrkPnts()

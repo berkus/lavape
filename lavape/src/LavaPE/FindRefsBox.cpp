@@ -46,6 +46,7 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
   : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
 
+  setupUi(this);
   SelID.nID = -1;
   myDECL = fromDECL;
   myDoc = doc;
@@ -189,6 +190,7 @@ CFindRefsBox::CFindRefsBox(QWidget* pParent /*=NULL*/)
 CFindRefsBox::CFindRefsBox(LavaDECL* decl, bool inExec, CFindData* fw, QWidget* pParent)
 	: QDialog(pParent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   myDECL = decl;
   setExec = inExec;
   findWhat = fw;
@@ -281,6 +283,7 @@ CFindByNameBox::CFindByNameBox(QWidget* pParent)
 CFindByNameBox::CFindByNameBox(CFindData* fw, QWidget* pParent)
 	: QDialog(pParent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
 {
+  setupUi(this);
   findWhat = fw;
 
   CHEString* next;

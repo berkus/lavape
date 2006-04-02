@@ -54,8 +54,13 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   GUIProg->SetColor(this, myFormNode);
   if (myFormNode->data.IoSigFlags.Contains(DONTPUT)) {
       setReadOnly(true);
-      if (!myFormNode->data.ColorBValid)
-        setPaletteBackgroundColor(parentWidget->paletteBackgroundColor());
+      if (!myFormNode->data.ColorBValid) {
+        QPalette p = palette();
+        p.setColor(QPalette::Active, QPalette::Base, parentWidget->palette().color(QPalette::Active, QPalette::Window));
+        p.setColor(QPalette::Inactive, QPalette::Base, parentWidget->palette().color(QPalette::Active, QPalette::Window));
+        //setPaletteBackgroundColor(parentWidget->paletteBackgroundColor());
+        setPalette(p);
+      }
       setFocusPolicy(Qt::NoFocus);
   }
   else {

@@ -31,7 +31,7 @@
     <number>6</number>
    </property>
    <item>
-    <widget class="QLineEdit" name="m_EditLiteral" >
+    <widget class="QLineEdit" name="EditLiteral" >
      <property name="sizePolicy" >
       <sizepolicy>
        <hsizetype>1</hsizetype>
@@ -77,7 +77,7 @@
        </widget>
       </item>
       <item row="1" column="0" >
-       <widget class="QSpinBox" name="m_LiSPIN2" >
+       <widget class="QSpinBox" name="HTabSPIN" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -97,7 +97,7 @@
        </widget>
       </item>
       <item row="1" column="1" >
-       <widget class="QSpinBox" name="m_LiSPIN1" >
+       <widget class="QSpinBox" name="HSpaceSPIN" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -117,14 +117,14 @@
        </widget>
       </item>
       <item row="1" column="2" >
-       <widget class="QSpinBox" name="m_LiSPIN3" >
+       <widget class="QSpinBox" name="VSpaceSPIN" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
        </widget>
       </item>
       <item row="2" column="0" colspan="2" >
-       <widget class="QCheckBox" name="m_beforeBase" >
+       <widget class="QCheckBox" name="beforeBase" >
         <property name="text" >
          <string>before fields inherited from base type</string>
         </property>
@@ -371,6 +371,7 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

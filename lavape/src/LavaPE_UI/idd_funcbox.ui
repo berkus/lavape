@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>383</width>
-    <height>550</height>
+    <width>429</width>
+    <height>599</height>
    </rect>
   </property>
   <property name="font" >
@@ -28,21 +28,13 @@
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
-    <number>9</number>
+    <number>11</number>
    </property>
    <property name="spacing" >
     <number>6</number>
    </property>
    <item>
     <widget class="QGroupBox" name="GroupBox_IDC_STATIC21" >
-     <property name="sizePolicy" >
-      <sizepolicy>
-       <hsizetype>5</hsizetype>
-       <vsizetype>0</vsizetype>
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="focusPolicy" >
       <enum>Qt::NoFocus</enum>
      </property>
@@ -66,14 +58,6 @@
         </property>
         <item>
          <widget class="QLabel" name="Label_IDC_STATIC46" >
-          <property name="sizePolicy" >
-           <sizepolicy>
-            <hsizetype>5</hsizetype>
-            <vsizetype>0</vsizetype>
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="focusPolicy" >
            <enum>Qt::NoFocus</enum>
           </property>
@@ -167,6 +151,22 @@
         </property>
        </spacer>
       </item>
+      <item row="1" column="1" >
+       <spacer>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType" >
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" >
+         <size>
+          <width>40</width>
+          <height>16</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item row="1" column="0" >
        <widget class="QLineEdit" name="NewName" >
         <property name="sizePolicy" >
@@ -195,14 +195,14 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" >
+    <layout class="QGridLayout" >
      <property name="margin" >
       <number>0</number>
      </property>
      <property name="spacing" >
       <number>6</number>
      </property>
-     <item>
+     <item row="0" column="0" >
       <widget class="QGroupBox" name="GroupBox_IDC_STATIC22" >
        <property name="sizePolicy" >
         <sizepolicy>
@@ -226,7 +226,7 @@
        </property>
        <layout class="QVBoxLayout" >
         <property name="margin" >
-         <number>9</number>
+         <number>11</number>
         </property>
         <property name="spacing" >
          <number>6</number>
@@ -375,8 +375,8 @@
        </layout>
       </widget>
      </item>
-     <item>
-      <widget class="QGroupBox" name="GroupBox_IDC_STATIC24" >
+     <item row="1" column="1" >
+      <widget class="QGroupBox" name="GroupBox_IDC_STATIC25" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>1</hsizetype>
@@ -395,74 +395,48 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="title" >
-        <string>Throwable exceptions</string>
+        <string>Overrides</string>
        </property>
        <property name="alignment" >
-        <set>Qt::AlignTop</set>
+        <set>Qt::AlignVCenter</set>
        </property>
        <layout class="QVBoxLayout" >
         <property name="margin" >
-         <number>9</number>
+         <number>11</number>
         </property>
         <property name="spacing" >
          <number>6</number>
         </property>
         <item>
-         <widget class="QListWidget" name="Inherits" >
+         <widget class="QCheckBox" name="RMOverrides" >
           <property name="enabled" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="DelInherits" >
-          <property name="sizePolicy" >
-           <sizepolicy>
-            <hsizetype>1</hsizetype>
-            <vsizetype>0</vsizetype>
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+           <bool>false</bool>
           </property>
           <property name="focusPolicy" >
-           <enum>Qt::NoFocus</enum>
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="text" >
-           <string>Remove from list</string>
+           <string>Remove overrides</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="NamedTypes" >
-          <property name="sizePolicy" >
-           <sizepolicy>
-            <hsizetype>1</hsizetype>
-            <vsizetype>0</vsizetype>
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <widget class="QCheckBox" name="EnforceOver" >
+          <property name="enabled" >
+           <bool>false</bool>
           </property>
-          <item>
-           <property name="text" >
-            <string>(Exception types)</string>
-           </property>
-          </item>
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Callable only from this VT context</string>
+          </property>
          </widget>
         </item>
        </layout>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <item>
+     <item row="1" column="0" >
       <widget class="QGroupBox" name="BGroup_ExecMode" >
        <property name="sizePolicy" >
         <sizepolicy>
@@ -521,8 +495,8 @@
        </layout>
       </widget>
      </item>
-     <item>
-      <widget class="QGroupBox" name="GroupBox_IDC_STATIC25" >
+     <item row="0" column="1" >
+      <widget class="QGroupBox" name="GroupBox_IDC_STATIC24" >
        <property name="sizePolicy" >
         <sizepolicy>
          <hsizetype>1</hsizetype>
@@ -541,42 +515,66 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="title" >
-        <string>Overrides</string>
+        <string>Throwable exceptions</string>
        </property>
        <property name="alignment" >
-        <set>Qt::AlignVCenter</set>
+        <set>Qt::AlignTop</set>
        </property>
        <layout class="QVBoxLayout" >
         <property name="margin" >
          <number>11</number>
         </property>
         <property name="spacing" >
-         <number>6</number>
+         <number>20</number>
         </property>
         <item>
-         <widget class="QCheckBox" name="RMOverrides" >
+         <widget class="QListWidget" name="Inherits" >
           <property name="enabled" >
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
-          <property name="focusPolicy" >
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text" >
-           <string>Remove overrides</string>
+          <property name="sizePolicy" >
+           <sizepolicy>
+            <hsizetype>1</hsizetype>
+            <vsizetype>0</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="EnforceOver" >
-          <property name="enabled" >
-           <bool>false</bool>
+         <widget class="QPushButton" name="DelInherits" >
+          <property name="sizePolicy" >
+           <sizepolicy>
+            <hsizetype>1</hsizetype>
+            <vsizetype>0</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
           <property name="focusPolicy" >
-           <enum>Qt::StrongFocus</enum>
+           <enum>Qt::NoFocus</enum>
           </property>
           <property name="text" >
-           <string>Callable only from this VT context</string>
+           <string>Remove from list</string>
           </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="NamedTypes" >
+          <property name="sizePolicy" >
+           <sizepolicy>
+            <hsizetype>1</hsizetype>
+            <vsizetype>0</vsizetype>
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <item>
+           <property name="text" >
+            <string>(Exception types)</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

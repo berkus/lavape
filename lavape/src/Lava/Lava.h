@@ -26,6 +26,8 @@ public:
   DString SyntaxToOpen;
   DString NameToStore;
 
+  QProcess lavape;
+  //CLavaPMdumpThread pmDumpThread;
   CLavaDebugThread debugThread;
 
 //  QString CMDLine;

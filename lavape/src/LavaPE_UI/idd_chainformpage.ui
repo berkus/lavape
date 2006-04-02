@@ -67,7 +67,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="m_NewName2" >
+       <widget class="QLineEdit" name="NewName" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
@@ -96,7 +96,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="m_ChFormElem" >
+       <widget class="QLineEdit" name="ChFormElem" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
@@ -109,7 +109,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="m_ChElemFormTypes" >
+       <widget class="QComboBox" name="ChElemFormTypes" >
         <item>
          <property name="text" >
           <string>(Types/forms also available)</string>
@@ -144,7 +144,7 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QCheckBox" name="m_HasButtons" >
+       <widget class="QCheckBox" name="HasButtons" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>1</hsizetype>
@@ -162,7 +162,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="m_ConstChain" >
+       <widget class="QCheckBox" name="ConstChain" >
         <property name="sizePolicy" >
          <sizepolicy>
           <hsizetype>1</hsizetype>
@@ -193,7 +193,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="m_EditInsertButton" >
+       <widget class="QLineEdit" name="EditInsertButton" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -216,7 +216,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="m_EDITDelButton" >
+       <widget class="QLineEdit" name="EDITDelButton" >
         <property name="focusPolicy" >
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -239,7 +239,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="SpinBox_IDC_SPINAR" >
+       <widget class="QSpinBox" name="LengthSPIN" >
         <property name="enabled" >
          <bool>false</bool>
         </property>
@@ -254,6 +254,7 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

@@ -168,8 +168,12 @@ void CTreeItem::SetItemMask(int maskIndex) {
 
 CTreeItem* CTreeItem::nextSibling()
 {
-  int ind = parent()->indexOfChild(this);
-  return (CTreeItem*)parent()->child(ind+1);
+  if (parent()) {
+    int ind = parent()->indexOfChild(this);
+    return (CTreeItem*)parent()->child(ind+1);
+  }
+  else
+    return 0;
 }
 
 void CTreeItem::setRenameEnabled(int col, bool enable)

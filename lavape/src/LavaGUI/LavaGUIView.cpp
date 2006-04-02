@@ -264,12 +264,15 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
    : CLavaBaseView(parent,doc,"LavaGUIView")
 {
   released = false;
-  Q3VBox *qvb = new Q3VBox(this);
-  myScrv = new GUIScrollView(qvb, false);
+  myScrv = new GUIScrollView(this, false);
+  layout->addWidget(myScrv);
   if (LBaseData->inRuntime && !((CLavaBaseDoc*)doc)->isObject) {
-    Q3HBox* hb = new Q3HBox(qvb);
+    QWidget* hb = new QWidget(this);
+    QHBoxLayout* hbl = new QHBoxLayout(hb);
     QPushButton* okButton = new QPushButton("Ok", hb);
     QPushButton* resetButton = new QPushButton("Reset", hb);
+    hbl->addWidget(okButton);
+    hbl->addWidget(resetButton);
     connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
     connect(resetButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
   }
@@ -286,13 +289,13 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
   inUpdate = true;
   StatusbarMess = "";
   clipboard_text_notEmpty = false;
-
 }
 
 
 CLavaGUIView::~CLavaGUIView()
 {
-  DisableActions();
+  if (!wxTheApp->deletingMainFrame)
+    DisableActions();
   if (myGUIProg) {
     if (!wxTheApp->appExit)
       myGUIProg->LavaForm.DeletePopups(myGUIProg->Root);
@@ -809,7 +812,10 @@ void CLavaGUIView::OnEditCopy()
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
     if (focw ) {
-      ((CTEdit*)focw)->copy();
+      if (myGUIProg->editNode->data.BasicFlags.Contains(Text))
+        ((CMultiLineEdit*)focw)->copy();
+      else
+        ((CTEdit*)focw)->copy();
       clipboard_text_notEmpty = !QApplication::clipboard()->text().isEmpty();
     }
   }
@@ -823,7 +829,10 @@ void CLavaGUIView::OnEditCut()
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
     if (focw ) {
-      ((CTEdit*)focw)->cut();
+      if (myGUIProg->editNode->data.BasicFlags.Contains(Text))
+        ((CMultiLineEdit*)focw)->cut();
+      else
+        ((CTEdit*)focw)->cut();
       clipboard_text_notEmpty = !QApplication::clipboard()->text().isEmpty();
     }
   }
@@ -836,7 +845,11 @@ void CLavaGUIView::OnEditPaste()
   if (myGUIProg && myGUIProg->editNode && (myGUIProg->editNode == myGUIProg->focNode)) {
     QWidget* focw = myGUIProg->focNode->data.FIP.widget;
     if (focw )
-      ((CTEdit*)focw)->paste();
+      if (myGUIProg->editNode->data.BasicFlags.Contains(Text))
+        ((CMultiLineEdit*)focw)->paste();
+      else
+        ((CTEdit*)focw)->paste();
+//      ((CTEdit*)focw)->paste();
   }
 }
 
@@ -844,25 +857,37 @@ void CLavaGUIView::OnEditPaste()
 void CLavaGUIView::OnUpdateEditPaste(QAction* action)
 {
   action->setEnabled (myGUIProg && myGUIProg->editNode
-                     && (myGUIProg->editNode == myGUIProg->focNode)
+                   && (myGUIProg->editNode == myGUIProg->focNode)
+                   && ((myGUIProg->editNode->data.BasicFlags.Contains(Text)
+                     && !((CMultiLineEdit*)myGUIProg->editNode->data.FIP.widget)->isReadOnly()
+                     && clipboard_text_notEmpty
+                   || !myGUIProg->editNode->data.BasicFlags.Contains(Text)
                      && !((CTEdit*)myGUIProg->editNode->data.FIP.widget)->isReadOnly()
-                     && clipboard_text_notEmpty);
+                     && clipboard_text_notEmpty)));
 }
 
 void CLavaGUIView::OnUpdateEditCut(QAction* action)
 {
   action->setEnabled (myGUIProg && myGUIProg->editNode
-                     && (myGUIProg->editNode == myGUIProg->focNode)
+                   && (myGUIProg->editNode == myGUIProg->focNode)
+                   && (myGUIProg->editNode->data.BasicFlags.Contains(Text)
+                     && !((CMultiLineEdit*)myGUIProg->editNode->data.FIP.widget)->isReadOnly()
+                     && ((CMultiLineEdit*)myGUIProg->editNode->data.FIP.widget)->textCursor().hasSelection()
+                   || !myGUIProg->editNode->data.BasicFlags.Contains(Text)
                      && !((CTEdit*)myGUIProg->editNode->data.FIP.widget)->isReadOnly()
-                     && ((CTEdit*)myGUIProg->editNode->data.FIP.widget)->hasSelectedText()
-                     );
+                     && ((CTEdit*)myGUIProg->editNode->data.FIP.widget)->hasSelectedText())
+                   );
 }
 
 void CLavaGUIView::OnUpdateEditCopy(QAction* action)
 {
   action->setEnabled (myGUIProg && myGUIProg->editNode
-                     && (myGUIProg->editNode == myGUIProg->focNode)
-                     && ((CTEdit*)myGUIProg->editNode->data.FIP.widget)->hasSelectedText()
+         && (myGUIProg->editNode == myGUIProg->focNode)
+         && (myGUIProg->editNode->data.BasicFlags.Contains(Text)
+           && ((CMultiLineEdit*)myGUIProg->editNode->data.FIP.widget)->textCursor().hasSelection()
+         || !myGUIProg->editNode->data.BasicFlags.Contains(Text)
+           && ((CTEdit*)myGUIProg->editNode->data.FIP.widget)->hasSelectedText())
+
                      );
 }
 
