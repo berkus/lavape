@@ -228,6 +228,14 @@ void CLavaMainFrame::makeStyle(const QString &style)
     wxTheApp->saveSettings();
     if (style == "Windows")
       QApplication::setStyle(new MyWindowsStyle);
+    else if (style == "WindowsXP")
+      QApplication::setStyle(new MyWindowsXPStyle);
+    else if (style == "CDE")
+      QApplication::setStyle(new MyCDEStyle);
+    else if (style == "Motif")
+      QApplication::setStyle(new MyMotifStyle);
+    else if (style == "Plastique")
+      QApplication::setStyle(new MyPlastiqueStyle);
     else
 	    QApplication::setStyle(style);
 /*	  if(style == "Motif" || style == "MotifPlus") {
@@ -268,13 +276,6 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
 CLavaMainFrame::~CLavaMainFrame()
 {
-/*  QObjectList childList=children();
-
-  for (int i=0; i<childList.size(); i++)
-    if (childList.at(i)->isWidgetType())
-      delete childList.takeAt(i);
-*/
-  //delete m_UtilityView;
 }
 
 bool CLavaMainFrame::OnCreate()
@@ -463,10 +464,6 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->notButton,"not",SLOT(not_stm()),
     QObject::tr("Negation of a statement"),
     QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
-  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(fail()),
-    QObject::tr("Immediate negative/unsuccessful return, optionally throw exception"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
-    " optionally throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),
     QObject::tr("Immediate affirmative/successful return"),
     QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
@@ -475,6 +472,10 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
     " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
     " and throws a specific exception in case of violation</p>"));
+  newKwdToolbutton(tb,LBaseData->failButton,"throw",SLOT(throwEx()),
+    QObject::tr("Throw an exception"),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Throw</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    " throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
     QObject::tr("Try a statement, catch exceptions: \"y\""),
     QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
@@ -924,7 +925,7 @@ void CLavaMainFrame::on_overrideAction_triggered()
 }
 
 
-void CLavaMainFrame::DbgStart()
+void CLavaMainFrame::on_DbgAction_triggered()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->running()) {
     DbgMessage* mess = new DbgMessage(Dbg_Continue);
@@ -937,7 +938,7 @@ void CLavaMainFrame::DbgStart()
 }
 
 
-void CLavaMainFrame::DbgClearBreakpoints()
+void CLavaMainFrame::on_DbgClearBreakpointsAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -945,14 +946,14 @@ void CLavaMainFrame::DbgClearBreakpoints()
   ((CLavaPEDebugThread*)LBaseData->debugThread)->clearBrkPnts();
 }
 
-void CLavaMainFrame::DbgBreakpoint()
+void CLavaMainFrame::on_DbgBreakpointAct_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->DbgBreakpoint();
+    view->on_DbgBreakpointAct_triggered();
 }
 
-void CLavaMainFrame::DbgStepNext()
+void CLavaMainFrame::on_DbgStepNextAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -961,7 +962,7 @@ void CLavaMainFrame::DbgStepNext()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStepNextFunction()
+void CLavaMainFrame::on_DbgStepNextFunctionAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -970,7 +971,7 @@ void CLavaMainFrame::DbgStepNextFunction()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStepinto()
+void CLavaMainFrame::on_DbgStepintoAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -979,7 +980,7 @@ void CLavaMainFrame::DbgStepinto()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStepout()
+void CLavaMainFrame::on_DbgStepoutAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -988,24 +989,24 @@ void CLavaMainFrame::DbgStepout()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStop()
+void CLavaMainFrame::on_DbgStopAction_triggered()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->interpreterWaits) {
     DbgMessage* mess = new DbgMessage(Dbg_Exit);
     QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
-  else 
-    if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava) 
+  else
+    if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava)
       delete ((CLavaPEDebugThread*)LBaseData->debugThread)->workSocket;
     else 
       ((CLavaPEApp*)qApp)->interpreter.kill();
 }
 
-void CLavaMainFrame::DbgRunToSel()
+void CLavaMainFrame::on_DbgRunToSelAct_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->DbgRunToSel();
+    view->on_DbgRunToSelAct_triggered();
 
 }
 
@@ -1360,7 +1361,7 @@ void CLavaMainFrame::succeed(){
     view->OnSucceed();
 }
 
-void CLavaMainFrame::fail(){
+void CLavaMainFrame::throwEx(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnFail();
@@ -1768,7 +1769,7 @@ void CLavaMainFrame::on_howTo_clicked()
 }
 
 
-CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent, "TreeFrame") 
+CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent)
 {
   viewR = 0;
   showIt = !((CLavaPEApp*)wxTheApp)->inTotalCheck;
@@ -1783,8 +1784,8 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 
   splitter = new QSplitter(this);//vb);
   splitter->setHandleWidth(3);
-  layout.addWidget(splitter);
-  layout.setMargin(0);
+  layout->addWidget(splitter);
+  layout->setMargin(0);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
   viewL = new CInclView(this, doc);
@@ -1794,6 +1795,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   splitter->addWidget(viewM);
   splitter->addWidget(viewR);
   if (viewM->OnCreate() && viewL->OnCreate() && viewR->OnCreate()) {
+    wxMDIChildFrame::OnCreate(temp,doc);
     ((CInclView*)viewL)->myTree = (CTreeView*)viewM;
     ((CVTView*)viewR)->myMainView = (CLavaPEView*)viewM;
     ((CLavaPEView*)viewM)->myInclView = (CTreeView*)viewL;
@@ -1816,9 +1818,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 		return true;
   }
   else {
-    delete viewL;
-    delete viewR;
-    delete viewM;
+    deleteLater();
     return false;
   }
 }
@@ -1912,8 +1912,8 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 
   splitter = new QSplitter(this);
   splitter->setHandleWidth(3);
-  layout.addWidget(splitter);
-  layout.setMargin(0);
+  layout->addWidget(splitter);
+  layout->setMargin(0);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
 
@@ -2010,21 +2010,4 @@ void CLavaMainFrame::fillHelpMap5(ToolbarWhatsThis *tbw) {
 }
 
 void CLavaMainFrame::fillHelpMap6(ToolbarWhatsThis *tbw) {
-}
-
-int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const
-{
-  int px = QWindowsStyle::pixelMetric( pm, option, widget);
-  
-  switch( pm )
-  {
-    case PM_ToolBarItemMargin:
-    case PM_ToolBarItemSpacing:
-      px = 0; break;
-    case PM_ToolBarIconSize:
-      px = 16; break;
-    default: break;
-  }
-  
-  return px;
 }
