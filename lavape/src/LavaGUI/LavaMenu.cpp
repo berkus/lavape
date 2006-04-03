@@ -80,6 +80,14 @@ void CLavaMenu::SetItemData(unsigned pos, CHEFormNode* data)
 }
 
 /*
+BEGIN_MESSAGE_MAP(CLavaMenu, CEdit)
+  //{{AFX_MSG_MAP(CLavaMenu)
+  ON_WM_LBUTTONDOWN()
+  ON_WM_RBUTTONDOWN()
+  ON_WM_SETFOCUS()
+  ON_WM_KEYDOWN()
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaMenu message handlers

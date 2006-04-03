@@ -109,6 +109,14 @@ void CLavaMainFrame::makeStyle(const QString &style)
   if (!style.isEmpty()) {
     if (style == "Windows")
       QApplication::setStyle(new MyWindowsStyle);
+    else if (style == "WindowsXP")
+      QApplication::setStyle(new MyWindowsXPStyle);
+    else if (style == "CDE")
+      QApplication::setStyle(new MyCDEStyle);
+    else if (style == "Motif")
+      QApplication::setStyle(new MyMotifStyle);
+    else if (style == "Plastique")
+      QApplication::setStyle(new MyPlastiqueStyle);
     else
 	    QApplication::setStyle(style);
   /*
@@ -121,23 +129,6 @@ void CLavaMainFrame::makeStyle(const QString &style)
 	  if (completelyCreated)
 		  repaint();
   }
-}
-
-int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const
-{
-  int px = QWindowsStyle::pixelMetric( pm, option, widget);
-  
-  switch( pm )
-  {
-    case PM_ToolBarItemMargin:
-    case PM_ToolBarItemSpacing:
-      px = 0; break;
-    case PM_ToolBarIconSize:
-      px = 16; break;
-    default: break;
-  }
-  
-  return px;
 }
 
 void CLavaMainFrame::UpdateUI()

@@ -120,7 +120,7 @@ protected:
   //void OnSize(UINT nType, int cx, int cy);
   //HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 public slots:
-  void OnDblclk(QTreeWidgetItem* item, int col);
+  void OnDblclk(QTreeWidgetItem*);
   void OnTabChange(QWidget* curPage);
 //  void OnSelChange();
 private:

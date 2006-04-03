@@ -54,22 +54,22 @@
   else if (update == onSelect) { \
     if (synObjectID == ((CSearchData*)searchData)->synObjectID) { \
       if (((CSearchData*)searchData)->debugStop) { \
-        ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->stopReason = ((CSearchData*)searchData)->stopReason; \
+        ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->stopReason = ((CSearchData*)searchData)->stopReason; \
         if (((CSearchData*)searchData)->innermostStop) \
           if (primaryToken == assignFS_T) \
-            ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->debugStopToken = startToken; \
+            ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->debugStopToken = startToken; \
           else \
-            ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->debugStopToken = primaryTokenNode; \
+            ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->debugStopToken = primaryTokenNode; \
         else \
           if (primaryToken == assignFS_T) \
             if (startToken) \
-              ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->callerStopToken = startToken; \
+              ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->callerStopToken = startToken; \
             else /*new with hidden dft ini call */ \
-              ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->callerStopToken = parentObject->primaryTokenNode; \
+              ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->callerStopToken = parentObject->primaryTokenNode; \
           else \
-            ((CExecView*)((CSearchData*)searchData)->execView)->sv->execCont->callerStopToken = primaryTokenNode; \
+            ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->callerStopToken = primaryTokenNode; \
         ((CExecView*)((CSearchData*)searchData)->execView)->autoScroll = true; \
-        ((CExecView*)((CSearchData*)searchData)->execView)->sv->viewport()->update(); \
+        ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->update();\
       } \
       else \
         ((CExecView*)((CSearchData*)searchData)->execView)->Select(this); \

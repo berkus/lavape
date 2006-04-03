@@ -3,7 +3,6 @@
 
 #include "cmainframe.h"
 #include "mdiframes.h"
-#include <QWindowsStyle>
 
 
 class CLavaMainFrame : public wxMainFrame, public Ui_CMainFrame
@@ -49,11 +48,6 @@ public slots:
 
 private:
   Q_OBJECT
-};
-
-class MyWindowsStyle : public QWindowsStyle {
-public:
-  int pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const;
 };
 
 #endif

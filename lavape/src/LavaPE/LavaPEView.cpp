@@ -196,7 +196,7 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
     GetDocument()->MainView = this;
   connect(m_tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT(OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
 //  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
-  connect(m_tree,SIGNAL(itemDoubleClicked(  QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
+  connect(m_tree,SIGNAL(doubleClicked( const QModelIndex &)), SLOT(OnDblclk( const QModelIndex &)));
   //connect(m_tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
   connect(m_tree,SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(OnItemexpanded(QTreeWidgetItem*)));
   connect(m_tree,SIGNAL(itemCollapsed(QTreeWidgetItem*)), SLOT(OnItemcollapsed(QTreeWidgetItem*)));
@@ -224,7 +224,7 @@ void CLavaPEView::CleanListView()
   m_tree->setSelectionMode(QAbstractItemView::ExtendedSelection);//Single);
   connect(m_tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT    (OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
 //  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
-  connect(m_tree,SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
+  connect(m_tree,SIGNAL(doubleClicked(const QModelIndex&)), SLOT(OnDblclk(const QModelIndex&)));
   //connect(m_tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
   connect(m_tree,SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(OnItemexpanded(QTreeWidgetItem*)));
   connect(m_tree,SIGNAL(itemCollapsed(QTreeWidgetItem*)), SLOT(OnItemcollapsed(QTreeWidgetItem*)));
@@ -1137,7 +1137,6 @@ void CLavaPEView::DrawTree(LavaDECL ** pDECL, bool inUndoRedo, bool finalUpdate,
     CTreeItem* item = (CTreeItem*)m_tree->takeTopLevelItem (0);
     if (m_tree->RootItem)
       delete m_tree->RootItem;
-    m_tree->RootItem = 0;
     //CleanListView();
     ItemSel = 0;
     SelItem = 0;
@@ -1470,18 +1469,15 @@ int CLavaPEView::GetPos(CTreeItem* item, CTreeItem* prev)
       if prev != 0 : the new item will be inserted as sibling after the prev item,
       otherwise result = 1, i.e. the new item will be inserted as first child of the parent item.
   */
-//  CTreeItem* htree;
-//  int ii;
+  CTreeItem* htree;
+  int ii;
   if (item)
-    return item->parent()->indexOfChild(item)+1;
-    //htree = item;
+    htree = item;
   else
     if (prev)
-      return prev->parent()->indexOfChild(prev)+2;
-      //htree = prev;
+      htree = prev;
     else
       return 1;
-  /*
   CTreeItem* parhtree = (CTreeItem*)htree->parent();
   if (prev)
     ii = 2;
@@ -1493,7 +1489,7 @@ int CLavaPEView::GetPos(CTreeItem* item, CTreeItem* prev)
     elh = (CTreeItem*)elh->nextSibling();
   }
   return ii;
-  */
+
 }//GetPos
 
 
@@ -1941,9 +1937,9 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
   }
 }
 
-void CLavaPEView::OnDblclk(  QTreeWidgetItem * itemHit, int col )
+void CLavaPEView::OnDblclk( const QModelIndex & index)
 {
-  //CTreeItem* itemHit = (CTreeItem*)m_tree->itemAtIndex(index);
+  CTreeItem* itemHit = (CTreeItem*)m_tree->itemAtIndex(index);
   if (itemHit) {
     CMainItemData* data = (CMainItemData*)((CTreeItem*)itemHit)->getItemData();
     if (data->type == TIType_Exec)

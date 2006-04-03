@@ -49,6 +49,17 @@ public slots:
 private:
   Q_OBJECT
 
+/*
+  // Generated message map functions
+protected:
+  //{{AFX_MSG(CTComboBox)
+  afx_msg void OnSelendok();
+  afx_msg void OnSetFocus(QWidget* pOldWnd);
+  afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+*/
 };
 
 /////////////////////////////////////////////////////////////////////////////

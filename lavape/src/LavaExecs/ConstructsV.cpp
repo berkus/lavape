@@ -139,9 +139,9 @@ void SynObjectV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored)
   && parentObject->primaryToken == quant_T
   && !parentObject->parentObject->IsDeclare())
     t.Insert(TypePHopt_T);
-  else if (primaryToken == Exp_T
+/*  else if (primaryToken == Exp_T
   && parentObject->primaryToken == fail_T)
-    t.Insert(ExpOpt_T);
+    t.Insert(ExpOpt_T);*/
   else if (primaryToken == ObjPH_T
     && parentObject->primaryToken == parameter_T) {
     if (!flags.Contains(ignoreSynObj))

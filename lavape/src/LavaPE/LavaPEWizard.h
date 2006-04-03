@@ -144,7 +144,7 @@ public:
 
 
 
-class CChainFormPage : public QWidget, public Ui_IDD_ChainFormPage
+class CChainFormPage : public QDialog, public Ui_IDD_ChainFormPage
 {
 public:
   CChainFormPage(CLavaPEWizard *wizard);
@@ -155,6 +155,26 @@ public:
   CLavaPEWizard *myWizard;
   LavaDECL * CHEEl;
 
+	/*
+    QCheckBox* m_HasButtons;
+    QCheckBox* m_ConstChain;
+    QLineEdit* m_EditInsertButton;
+    QLineEdit* m_EDITDelButton;
+    QLineEdit* m_ArrayLen;
+    QSpinBox* SpinBox_IDC_SPINAR;
+    QComboBox* m_ChElemFormTypes;
+    QLineEdit* m_ChFormElem;
+    QLineEdit* m_NewName2;
+
+  QLineEdit	m_ArrayLen;
+	QSpinBox	m_SpinAr;
+  QLineEdit m_InsTextCtrl;
+  QLineEdit m_DelTextCtrl;
+  QButton m_ConstChain;
+  QButton m_HasButtons;
+  QComboBox m_ElemselCtrl;
+
+  */
   QString m_ElemSel;
   QString m_ChFormElemStr;
   QString m_DelText;
@@ -165,19 +185,19 @@ public:
 
 
   public slots:
-  virtual void on_ChElemFormTypes_activated(int);
-  virtual void on_ConstChain_clicked();
-  virtual void on_HasButtons_clicked();
-  virtual void on_EditInsertButton_textChanged( const QString & );
-  virtual void on_EDITDelButton_textChanged( const QString & );
-  virtual void on_DefaultLength_valueChanged( int );
+  virtual void OnSelendokChElemFormTypes(int);
+  virtual void OnConstChain();
+  virtual void OnHasButtons();
+  virtual void on_m_EditInsertButton_textChanged( const QString & );
+  virtual void on_m_EDITDelButton_textChanged( const QString & );
+  virtual void on_m_DefaultLength_valueChanged( int );
 
 private:
   Q_OBJECT
 };
 
 
-class CFormTextPage : public QWidget, public Ui_FormtextPage
+class CFormTextPage : public QDialog, public Ui_FormtextPage
 {
 public:
   CFormTextPage(LavaDECL * litEl,  CLavaPEWizard *wizard);  
@@ -200,10 +220,10 @@ public:
   ColorSetting colorSetting;
 
 public slots:
-  virtual void on_EditLiteral_textChanged( const QString & );
-  virtual void on_HorizTab_valueChanged( int );
-  virtual void on_HorizSpace_valueChanged( int );
-  virtual void on_VertSpace_valueChanged( int );
+  virtual void on_m_EditLiteral_textChanged( const QString & );
+  virtual void on_m_HorizTab_valueChanged( int );
+  virtual void on_m_HorizSpace_valueChanged( int );
+  virtual void on_m_VertSpace_valueChanged( int );
   virtual void on_defaultFont_clicked();
   virtual void on_fontButton_clicked();
   virtual void on_defaultForeground_clicked();
@@ -218,7 +238,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralPage dialog
 
-class CGeneralPage : public QWidget, public Ui_IDD_GeneralPage
+class CGeneralPage : public QDialog, public Ui_IDD_GeneralPage
 {
 public:
   CGeneralPage(CLavaPEWizard *wizard);
@@ -232,14 +252,14 @@ public:
   QString m_NewType;
 
   public slots:
-  virtual void on_NamedTypes_activated(int);
+  virtual void OnSelendokNamedTypes(int);
 
 private:
   Q_OBJECT
 
 };
 
-class CFontColorPage : public QWidget, public Ui_idd_fontcolorpage
+class CFontColorPage : public QDialog, public Ui_idd_fontcolorpage
 {
 public:
   CFontColorPage(CLavaPEWizard *wizard, LavaDECL *formDECL);
@@ -275,7 +295,7 @@ private:
 };
 
 
-class CIOPage : public QWidget, public Ui_IDD_IOPage
+class CIOPage : public QDialog, public Ui_IDD_IOPage
 {
 
 public:
@@ -334,22 +354,19 @@ public:
   unsigned  m_Rows;
 
 public slots:
-  virtual void on_isInput_clicked();
-  virtual void on_isOutput_clicked();
-  virtual void on_NoFIO_clicked();
-  virtual void on_UseDefault_clicked();
-  virtual void on_Popupw_clicked();
-  virtual void on_MultiLine_clicked();
-  virtual void on_noEcho_clicked();
-  virtual void on_groupbox_clicked();
-  virtual void on_FHTabSPIN_valueChanged( int );
-  virtual void on_FHSpaceSPIN_valueChanged( int );
-  virtual void on_FVSpaceSPIN_valueChanged( int );
-  virtual void on_DHTabSPIN_valueChanged( int );
-  virtual void on_DHSpaceSPIN_valueChanged( int );
-  virtual void on_DVSpaceSPIN_valueChanged( int );
-  virtual void on_ColsSPIN_valueChanged( int );
-  virtual void on_RowsSPIN_valueChanged( int );
+  virtual void OnisInput();
+  virtual void OnisOutput();
+  virtual void OnNoFIO();
+  virtual void OnUseDefault();
+  virtual void OnPopupw();
+  virtual void OnMultiLine();
+  virtual void on_m_Echo_clicked();
+  virtual void horizTabChanged( int );
+  virtual void horizSpaceChanged( int );
+  virtual void vertSpaceChanged( int );
+  virtual void colsChanged( int );
+  virtual void rowsChanged( int );
+  virtual void on_m_groupbox_clicked();
 
 private:
   Q_OBJECT
@@ -360,7 +377,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CLiteralsPage dialog
 
-class CLiteralsPage : public QWidget, public Ui_LiteralsPage
+class CLiteralsPage : public QDialog, public Ui_LiteralsPage
 {
 public:
   CLiteralsPage(CLavaPEWizard *wizard, LavaDECL *formDECL, bool forChElem);
@@ -401,20 +418,20 @@ public:
 
 
   public slots:
-  virtual void on_ADDPre_clicked();
-  virtual void on_ADDSuf_clicked();
-  virtual void on_DELETEPre_clicked();
-  virtual void on_DELETESuf_clicked();
-  virtual void on_EDITPre_clicked();
-  virtual void on_EDITSuf_clicked();
-  virtual void on_Prefixe_itemDoubleClicked( QListWidgetItem * );
-  virtual void on_Suffixe_itemDoubleClicked( QListWidgetItem * );
-  virtual void on_Prefixe_currentItemChanged(QListWidgetItem* current,QListWidgetItem* previous);
-  virtual void on_Suffixe_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous);
-//  virtual void OnLButtonDown(QMouseEvent *e);
-  virtual void on_Default_textChanged( const QString & );
-  virtual void on_EnumDefault_activated( int );
-  virtual void on_BoolDefault_activated( int );
+  virtual void OnADDPre();
+  virtual void OnADDSuf();
+  virtual void OnDELETEPre();
+  virtual void OnDELETESuf();
+  virtual void OnEDITPre();
+  virtual void OnEditSuf();
+  virtual void on_m_Prefixe_doubleClicked( Q3ListBoxItem * );
+  virtual void on_m_Suffixe_doubleClicked( Q3ListBoxItem * );
+  virtual void OnSelchangePrefixe();
+  virtual void OnSelchangeSuffixe();
+  virtual void OnLButtonDown(unsigned nFlags, QPoint point);
+  virtual void on_m_Default_textChanged( const QString & );
+  virtual void on_m_EnumDefault_triggered( int );
+  virtual void on_m_BoolDefault_triggered( int );
 
 
 private:
@@ -430,7 +447,7 @@ enum EMenuType {isOMenu, isRMenu, isBMenu, isPMenu, isNoMenu};
 /////////////////////////////////////////////////////////////////////////////
 // CMenuPage dialog
 
-class CMenuPage : public QWidget, public Ui_IDD_MenuPage
+class CMenuPage : public QDialog, public Ui_IDD_MenuPage
 {
 public:
   CMenuPage(CLavaPEWizard *wizard);
@@ -469,16 +486,16 @@ public:
   QString v_ToggleLabel;
 
 public slots:
-  virtual void on_Menuitems_currentItemChanged(QListWidgetItem* current, QListWidgetItem * previous );//OnSelchangeMenuitems();
-  virtual void on_LButtonText_currentItemChanged(QListWidgetItem* current, QListWidgetItem* previous );
-  virtual void on_Pixmap_currentItemChanged (QListWidgetItem* current, QListWidgetItem* previous );
-  virtual void on_AddButton_clicked();
-  virtual void on_DeleteButton_clicked();
-  virtual void on_EditButton_clicked();
-  virtual void on_Menutype_activated(int current);
-//  virtual void OnLButtonDown(QMouseEvent *e);
-  virtual void on_ToggleLabel_textChanged( const QString & );
-  virtual void on_LeftLabel_clicked();
+  virtual void OnSelchangeMenuitems();
+  virtual void OnSelchangeLButtonText();
+  virtual void m_Pixmap_selectionChanged();
+  virtual void OnAddButton();
+  virtual void OnDeleteButton();
+  virtual void OnEditButton();
+  virtual void OnSelendokMenutype(int current);
+  virtual void OnLButtonDown(unsigned nFlags, QPoint point);
+  virtual void on_m_ToggleLabel_textChanged( const QString & );
+  virtual void on_m_LeftLabel_clicked();
 
 private:
   Q_OBJECT
@@ -488,7 +505,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CSupportPage dialog
 
-class CSupportPage : public QWidget, public Ui_IDD_SupportPage
+class CSupportPage : public QDialog, public Ui_IDD_SupportPage
 {
 public:
   CSupportPage(CLavaPEWizard* wizard);
@@ -529,15 +546,22 @@ public:
   int litPos;
   bool insert;
 
+  /*
+  QSpinBox m_spin3;
+  QSpinBox m_spin2;
+  QSpinBox m_spin1;
+*/
   QString m_lit;
   unsigned  m_LiFrmSpace; //3
   unsigned  m_LiSpace;    //1
   unsigned  m_LiTab;      //2
+  //QColor BColor;
+  //QColor FColor;
   ColorSetting colorSetting;
 
 public slots:
-  virtual void on_ID_OK_clicked();
-  virtual void on_ID_CANCEL_clicked()  {QDialog::reject();}
+  virtual void OnOK();
+  virtual void OnCancel()  {QDialog::reject();}
   virtual void on_defaultFont_clicked();
   virtual void on_fontButton_clicked();
   virtual void on_defaultForeground_clicked();
@@ -557,6 +581,11 @@ public:
   void UpdateData(bool getData);
   LavaDECL * myDecl;
 
+  /*
+  QSpinBox m_spin3;
+  QSpinBox m_spin2;
+  QSpinBox m_spin1;
+  */
   QString m_lit;
   unsigned  m_LiFrmSpace;
   unsigned  m_LiSpace;
@@ -564,8 +593,8 @@ public:
 
 
 public slots:
-  virtual void on_ID_OK_clicked();
-  virtual void on_ID_CANCEL_clicked()  {QDialog::reject();}
+  virtual void OnOK();
+  virtual void OnCancel()  {QDialog::reject();}
 
 
 private:
@@ -586,6 +615,17 @@ public:
   unsigned *mflags;
   void EnableTextWindows();
 
+  /*
+  QSpinBox m_spin3; m_MenuSPIN3  -frSpace
+  QSpinBox m_spin2; m_MenuSPIN2  -tab
+  QSpinBox m_spin1; m_MenuSPIN1  -space
+  QButton m_isButtonCtrl; BGroup_Style
+  QLineEdit m_MenuTextCtrl; m_MenuText
+  QLineEdit m_SelcodeCtrl; m_EDITSelcode
+  QLineEdit m_ButtontextCtrl; m_EDITButtontext
+  QLineEdit m_EnumselCtrl; m_Enumsel
+  */
+
   int   m_flags;
   unsigned  m_MenuFrmspace;
   unsigned  m_Menuspace;
@@ -593,13 +633,13 @@ public:
 
 
   public slots:
-  virtual void on_noButton_clicked(bool);
-  virtual void on_NoFIO_clicked(bool);
-  virtual void on_isButton_clicked(bool);
-  virtual void on_isMenuText_clicked(bool);
+  virtual void OnnoButton(bool);
+  virtual void OnNoFIO(bool);
+  virtual void OnisButton(bool);
+  virtual void OnisMenuText(bool);
   virtual void on_button_browse_clicked();
-  virtual void on_ID_OK_clicked();
-  virtual void on_ID_CANCEL_clicked()  {QDialog::reject();}
+  virtual void OnOK();
+  virtual void OnCancel()  {QDialog::reject();}
 
 
 private:

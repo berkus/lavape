@@ -7,7 +7,7 @@
 #include "qlineedit.h"
 
 
-class LAVABASE_DLL CAboutBox : public QDialog, public Ui::IDD_AboutBox
+class LAVABASE_DLL CAboutBox : public QDialog, public Ui_IDD_AboutBox
 {
 	Q_OBJECT
 

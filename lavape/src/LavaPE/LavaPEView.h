@@ -274,7 +274,7 @@ public:
 //  void OnShowPattern();
 
 public slots: 
-  void OnDblclk( QTreeWidgetItem* item, int col);//QTreeWidgetItem* onItem, const QPoint&, int);
+  void OnDblclk( const QModelIndex & index);//QTreeWidgetItem* onItem, const QPoint&, int);
   void OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* );
   void OnRclick(QTreeWidgetItem* item);
   void OnItemexpanded(QTreeWidgetItem* item);

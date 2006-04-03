@@ -184,7 +184,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   LBaseData->intervalActionPtr = intervalAction;
   LBaseData->invertActionPtr = invertAction;
   LBaseData->leftShiftActionPtr = leftShiftAction;
-  LBaseData->lessEqualActionPtr = lessEqualAction; 
+  LBaseData->lessEqualActionPtr = lessEqualAction;
   LBaseData->lessThanActionPtr = lessThanAction;
   LBaseData->modulusActionPtr = modulusAction;
   LBaseData->multiplicationActionPtr = multiplicationAction;
@@ -201,7 +201,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   LBaseData->showOptsActionPtr = showOptsAction;
   LBaseData->staticCallActionPtr = staticCallAction;
   LBaseData->toggleArrowsActionPtr = toggleArrowsAction;
-  LBaseData->toggleCategoryActionPtr = toggleCategoryAction; 
+  LBaseData->toggleCategoryActionPtr = toggleCategoryAction;
   LBaseData->toggleCommentsActionPtr = toggleCommentsAction;
   LBaseData->toggleInputArrowsActionPtr = toggleInputArrowsAction;
   LBaseData->toggleSignActionPtr = toggleSignAction;
@@ -228,6 +228,14 @@ void CLavaMainFrame::makeStyle(const QString &style)
     wxTheApp->saveSettings();
     if (style == "Windows")
       QApplication::setStyle(new MyWindowsStyle);
+    else if (style == "WindowsXP")
+      QApplication::setStyle(new MyWindowsXPStyle);
+    else if (style == "CDE")
+      QApplication::setStyle(new MyCDEStyle);
+    else if (style == "Motif")
+      QApplication::setStyle(new MyMotifStyle);
+    else if (style == "Plastique")
+      QApplication::setStyle(new MyPlastiqueStyle);
     else
 	    QApplication::setStyle(style);
 /*	  if(style == "Motif" || style == "MotifPlus") {
@@ -268,13 +276,6 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
 CLavaMainFrame::~CLavaMainFrame()
 {
-/*  QObjectList childList=children();
-
-  for (int i=0; i<childList.size(); i++)
-    if (childList.at(i)->isWidgetType())
-      delete childList.takeAt(i);
-*/
-  //delete m_UtilityView;
 }
 
 bool CLavaMainFrame::OnCreate()
@@ -314,19 +315,19 @@ bool CLavaMainFrame::OnCreate()
   UtilitiesHidden = true;
 
 	completelyCreated = true;
-	
+
   return true;
 }
 
 void CLavaMainFrame::UpdateUI()
 {
   OnUpdateshowUtil(showUtilWindowAction);
-  saveEveryChangeAction->setOn(LBaseData->m_saveEveryChange);  
-  viewTB1Action->setOn(Toolbar_1->isVisible());  
+  saveEveryChangeAction->setOn(LBaseData->m_saveEveryChange);
+  viewTB1Action->setOn(Toolbar_1->isVisible());
   viewTB2Action->setOn(Toolbar_2->isVisible());
   viewHelpTBAction->setOn(HelpToolbar->isVisible());
-  viewTB3Action->setOn(Toolbar_3->isVisible());  
-  viewTB4Action->setOn(Toolbar_4->isVisible());  
+  viewTB3Action->setOn(Toolbar_3->isVisible());
+  viewTB4Action->setOn(Toolbar_4->isVisible());
   viewTB5Action->setOn(Toolbar_5->isVisible());
   viewTB6Action->setOn(Toolbar_6->isVisible());
   viewTB7Action->setOn(Toolbar_7->isVisible());
@@ -338,7 +339,7 @@ void CLavaMainFrame::UpdateUI()
 	genLinkedHtmlAction->setEnabled(enable);
 	genSingleHtmlAction->setEnabled(enable);
   findByNameAction->setEnabled(enable);
-  checkAction->setEnabled(enable); 
+  checkAction->setEnabled(enable);
   checkAllAction->setEnabled(enable);
   if (doc)
     doc->OnUpdateRunLava(runAction);
@@ -463,10 +464,6 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->notButton,"not",SLOT(not_stm()),
     QObject::tr("Negation of a statement"),
     QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
-  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(fail()),
-    QObject::tr("Immediate negative/unsuccessful return, optionally throw exception"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
-    " optionally throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),
     QObject::tr("Immediate affirmative/successful return"),
     QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
@@ -475,6 +472,10 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
     " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
     " and throws a specific exception in case of violation</p>"));
+  newKwdToolbutton(tb,LBaseData->failButton,"throw",SLOT(throwEx()),
+    QObject::tr("Throw an exception"),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Throw</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    " throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
     QObject::tr("Try a statement, catch exceptions: \"y\""),
     QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
@@ -924,7 +925,7 @@ void CLavaMainFrame::on_overrideAction_triggered()
 }
 
 
-void CLavaMainFrame::DbgStart()
+void CLavaMainFrame::on_DbgAction_triggered()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->running()) {
     DbgMessage* mess = new DbgMessage(Dbg_Continue);
@@ -937,7 +938,7 @@ void CLavaMainFrame::DbgStart()
 }
 
 
-void CLavaMainFrame::DbgClearBreakpoints()
+void CLavaMainFrame::on_DbgClearBreakpointsAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -945,14 +946,14 @@ void CLavaMainFrame::DbgClearBreakpoints()
   ((CLavaPEDebugThread*)LBaseData->debugThread)->clearBrkPnts();
 }
 
-void CLavaMainFrame::DbgBreakpoint()
+void CLavaMainFrame::on_DbgBreakpointAct_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->DbgBreakpoint();
+    view->on_DbgBreakpointAct_triggered();
 }
 
-void CLavaMainFrame::DbgStepNext()
+void CLavaMainFrame::on_DbgStepNextAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -961,7 +962,7 @@ void CLavaMainFrame::DbgStepNext()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStepNextFunction()
+void CLavaMainFrame::on_DbgStepNextFunctionAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -970,7 +971,7 @@ void CLavaMainFrame::DbgStepNextFunction()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStepinto()
+void CLavaMainFrame::on_DbgStepintoAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -979,7 +980,7 @@ void CLavaMainFrame::DbgStepinto()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStepout()
+void CLavaMainFrame::on_DbgStepoutAct_triggered()
 {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
@@ -988,24 +989,24 @@ void CLavaMainFrame::DbgStepout()
   QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
 }
 
-void CLavaMainFrame::DbgStop()
+void CLavaMainFrame::on_DbgStopAction_triggered()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->interpreterWaits) {
     DbgMessage* mess = new DbgMessage(Dbg_Exit);
     QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
   }
-  else 
-    if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava) 
+  else
+    if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava)
       delete ((CLavaPEDebugThread*)LBaseData->debugThread)->workSocket;
-    else 
+    else
       ((CLavaPEApp*)qApp)->interpreter.kill();
 }
 
-void CLavaMainFrame::DbgRunToSel()
+void CLavaMainFrame::on_DbgRunToSelAct_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->DbgRunToSel();
+    view->on_DbgRunToSelAct_triggered();
 
 }
 
@@ -1360,7 +1361,7 @@ void CLavaMainFrame::succeed(){
     view->OnSucceed();
 }
 
-void CLavaMainFrame::fail(){
+void CLavaMainFrame::throwEx(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnFail();
@@ -1469,7 +1470,7 @@ void CLavaMainFrame::adjustToolbar_7 () {
 void CLavaMainFrame::on_cascadeAction_triggered()
 {
   Cascade();
-  
+
   int ii;
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
@@ -1478,7 +1479,7 @@ void CLavaMainFrame::on_cascadeAction_triggered()
   m_workspace->on_cascadeAction_triggered();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) 
+    if (!((QMainWindow*)window)->isMinimized())
       if (window->inherits("wxMDIChildFrame"))
         ((wxMDIChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
   }
@@ -1524,13 +1525,13 @@ void CLavaMainFrame::on_tileVerticAction_triggered()
       actWidth = QMAX(widthForEach, preferredWidth);
       window->parentWidget()->setGeometry( x, 0, actWidth, allHeight );
       x += actWidth;
-      if (!((QMainWindow*)window)->isMaximized()) 
+      if (!((QMainWindow*)window)->isMaximized())
         window->showNormal();
     }
   }
   */
 }
-    
+
 void CLavaMainFrame::on_tileHorizAction_triggered()
 {
   TileHoriz(menubar, lastTile);
@@ -1568,7 +1569,7 @@ void CLavaMainFrame::on_tileHorizAction_triggered()
       actHeight = QMAX(heightForEach, preferredHeight);
       window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
       y += actHeight;
-      if (!((QMainWindow*)window)->isMaximized()) 
+      if (!((QMainWindow*)window)->isMaximized())
         window->showNormal();
     }
   }
@@ -1579,7 +1580,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 	HistWindow *hw;
 	DString title;
   CustomEvent *ev=(CustomEvent*)ev0;
-	
+
   if (ev->data()) {
     if ( !((CLavaPEApp*)wxTheApp)->inTotalCheck) { //to prevent crash if mdi-frame already closed
 		  title = DString(qPrintable(((QWidget*)ev->data())->caption()));
@@ -1602,7 +1603,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 		}
 }
 
-void CLavaMainFrame::on_showUtilWindowAction_triggered() 
+void CLavaMainFrame::on_showUtilWindowAction_triggered()
 {
   if (UtilitiesHidden) {
     if ((m_UtilityView->ActTab == tabError) && !m_UtilityView->CommentEmpty && m_UtilityView->ErrorEmpty )
@@ -1619,7 +1620,7 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
   UtilitiesHidden = !UtilitiesHidden;
 }
 
-void CLavaMainFrame::OnUpdateshowUtil(QAction* action) 
+void CLavaMainFrame::OnUpdateshowUtil(QAction* action)
 {
   action->setOn(!UtilitiesHidden);
 }
@@ -1627,14 +1628,14 @@ void CLavaMainFrame::OnUpdateshowUtil(QAction* action)
 /*
 void CLavaMainFrame::ShowUtilitiesTab(UtilityTabs tab)
 {
-  if (UtilitiesHidden || (((CUtilityView*)m_UtilityView)->ActTab != tab)) 
+  if (UtilitiesHidden || (((CUtilityView*)m_UtilityView)->ActTab != tab))
     ;//m_UtilityView->SetTab(tab);
   else {
     if ((LastUtilitiesState < 0) || (((CUtilityView*)m_UtilityView)->ActTab == tab)) {
       m_UtilityView->hide();
       UtilitiesHidden = TRUE;
     }
-    else 
+    else
      ;// m_UtilityView->SetTab((UtilityTabs)LastUtilitiesState);
     LastUtilitiesState = (int)tab;
   }
@@ -1642,7 +1643,7 @@ void CLavaMainFrame::ShowUtilitiesTab(UtilityTabs tab)
 }
 */
 
-void CLavaMainFrame::saveEveryChange(bool on) 
+void CLavaMainFrame::saveEveryChange(bool on)
 {
   if (on) {
     LBaseData->m_saveEveryChange = true;
@@ -1655,7 +1656,7 @@ void CLavaMainFrame::saveEveryChange(bool on)
   ((CLavaPEApp*)wxTheApp)->saveSettings();
 }
 
-void CLavaMainFrame::viewTB1() 
+void CLavaMainFrame::viewTB1()
 {
   if (Toolbar_1->isVisible())
     Toolbar_1->hide();
@@ -1663,7 +1664,7 @@ void CLavaMainFrame::viewTB1()
     Toolbar_1->show();
 }
 
-void CLavaMainFrame::viewTB2() 
+void CLavaMainFrame::viewTB2()
 {
   if (Toolbar_2->isVisible())
     Toolbar_2->hide();
@@ -1671,7 +1672,7 @@ void CLavaMainFrame::viewTB2()
     Toolbar_2->show();
 }
 
-void CLavaMainFrame::viewHelpTB() 
+void CLavaMainFrame::viewHelpTB()
 {
   if (HelpToolbar->isVisible())
     HelpToolbar->hide();
@@ -1680,7 +1681,7 @@ void CLavaMainFrame::viewHelpTB()
 }
 
 
-void CLavaMainFrame::viewTB3() 
+void CLavaMainFrame::viewTB3()
 {
   if (Toolbar_3->isVisible())
     Toolbar_3->hide();
@@ -1689,7 +1690,7 @@ void CLavaMainFrame::viewTB3()
 }
 
 
-void CLavaMainFrame::viewTB4() 
+void CLavaMainFrame::viewTB4()
 {
   if (Toolbar_4->isVisible())
     Toolbar_4->hide();
@@ -1698,7 +1699,7 @@ void CLavaMainFrame::viewTB4()
 }
 
 
-void CLavaMainFrame::viewTB5() 
+void CLavaMainFrame::viewTB5()
 {
   if (Toolbar_5->isVisible())
     Toolbar_5->hide();
@@ -1708,7 +1709,7 @@ void CLavaMainFrame::viewTB5()
 
 
 
-void CLavaMainFrame::viewTB6() 
+void CLavaMainFrame::viewTB6()
 {
   if (Toolbar_6->isVisible())
     Toolbar_6->hide();
@@ -1717,7 +1718,7 @@ void CLavaMainFrame::viewTB6()
 }
 
 
-void CLavaMainFrame::viewTB7() 
+void CLavaMainFrame::viewTB7()
 {
   if (Toolbar_7->isVisible())
     Toolbar_7->hide();
@@ -1725,7 +1726,7 @@ void CLavaMainFrame::viewTB7()
     Toolbar_7->show();
 }
 
-void CLavaMainFrame::on_whatNextAction_triggered() 
+void CLavaMainFrame::on_whatNextAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   QString fileName=ExeDir+"/../doc/html/on_whatNextAction_triggered/GlobalWhatNext.htm";
@@ -1736,7 +1737,7 @@ void CLavaMainFrame::on_whatNextAction_triggered()
     view->on_whatNextAction_triggered();
   else {
 	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	  
+
 	  if (!qacl) {
 		  qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		  qacl->setArguments(args);
@@ -1746,7 +1747,7 @@ void CLavaMainFrame::on_whatNextAction_triggered()
   }
 }
 
-void CLavaMainFrame::on_howTo_clicked() 
+void CLavaMainFrame::on_howTo_clicked()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   QString fileName=ExeDir+"/../doc/html/howTo/HowToContents.htm";
@@ -1757,7 +1758,7 @@ void CLavaMainFrame::on_howTo_clicked()
     view->howTo();
   else {
 	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	  
+
 	  if (!qacl) {
 		  qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		  qacl->setArguments(args);
@@ -1768,7 +1769,7 @@ void CLavaMainFrame::on_howTo_clicked()
 }
 
 
-CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent, "TreeFrame") 
+CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent)
 {
   viewR = 0;
   showIt = !((CLavaPEApp*)wxTheApp)->inTotalCheck;
@@ -1781,10 +1782,14 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   QSize sz;
   int totalW=0;
 
+//  if (oldWindowState != Qt::WindowMaximized) {
+//    sz = parentWidget()->size();
+//    resize(sz.width()*7/10, sz.height()*7/10);
+//  }
   splitter = new QSplitter(this);//vb);
   splitter->setHandleWidth(3);
-  layout.addWidget(splitter);
-  layout.setMargin(0);
+  layout->addWidget(splitter);
+  layout->setMargin(0);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
   viewL = new CInclView(this, doc);
@@ -1794,6 +1799,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   splitter->addWidget(viewM);
   splitter->addWidget(viewR);
   if (viewM->OnCreate() && viewL->OnCreate() && viewR->OnCreate()) {
+    wxMDIChildFrame::OnCreate(temp,doc);
     ((CInclView*)viewL)->myTree = (CTreeView*)viewM;
     ((CVTView*)viewR)->myMainView = (CLavaPEView*)viewM;
     ((CLavaPEView*)viewM)->myInclView = (CTreeView*)viewL;
@@ -1802,10 +1808,18 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     doc->AddView(viewL);
     doc->AddView(viewM);
 
-
     QList<int> list=splitter->sizes();
+
     splitter->resize(300,200);
+/*    for (i=0; i<3; i++)
+      totalW += list.at(i);
+*/
     totalW = 600;
+/*
+    splitter->setStretchFactor(0,1);
+    splitter->setStretchFactor(1,1);
+    splitter->setStretchFactor(2,1);
+*/
     list.replace(0,int(totalW * 0.1));
     list.replace(1,int(totalW * 0.8));
     list.replace(2,totalW - list.at(0) - list.at(1));
@@ -1813,12 +1827,18 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     lastActive = viewM;
     if  ((oldWindowState == Qt::WindowMaximized) && showIt)
       showMaximized();
+    QSize szM = viewM->size();
+    QSize szL = viewL->size();
+    QSize szR = viewR->size();
+    QSize szx = ((CTreeView*)viewM)->GetListView()->size();
+    QSize szv = ((CTreeView*)viewM)->GetListView()->viewport()->size();
 		return true;
   }
   else {
-    delete viewL;
+/*    delete viewL;
     delete viewR;
-    delete viewM;
+    delete viewM;*/
+    deleteLater();
     return false;
   }
 }
@@ -1843,13 +1863,13 @@ void CTreeFrame::closeEvent(QCloseEvent *e)
 		QWidget::closeEvent(e);
 }
 
-void CTreeFrame::Activate(bool activate, bool windowMenuAction) 
+void CTreeFrame::Activate(bool activate, bool windowMenuAction)
 {
   showIt = activate && (showIt || !((CLavaPEApp*)wxTheApp)->inTotalCheck);
   if (showIt)
     wxMDIChildFrame::Activate(showIt,windowMenuAction);
-  else 
-    hide(); 
+  else
+    hide();
 }
 
 void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)
@@ -1861,13 +1881,37 @@ void CTreeFrame::CalcSplitters(bool showVT, bool showINCL)
       totalW += list.at(i);
     wl = list.at(0);
     wr = list.at(2);
-    if (showINCL && (wl < 20)) 
+    if (showINCL && (wl < 20))
       list.replace(0,int(totalW * 0.3));
-    if (showVT && (wr < 20)) 
+    if (showVT && (wr < 20))
       list.replace(2,int(totalW * 0.3));
     list.replace(1,totalW - list.at(0) - list.at(2));
     splitter->setSizes(list);
-
+    /*
+  Q3ValueList<int> list = splitter->sizes();
+  Q3ValueList<int>::Iterator it = list.begin();
+  int wl, wr, totalW = *it;
+  ++it;
+  totalW += *it;
+  ++it;
+  totalW += *it;
+  it = list.begin();
+  wl = *it;
+  if (showINCL && (wl < 20))
+    wl = totalW/3;
+  it = list.begin();;
+  *it = wl;
+  ++it;
+  ++it;
+  wr = *it;
+  if (showVT && (wr < 20))
+    wr = totalW/3;
+  *it = wr;
+  it--;
+  *it = totalW-wl-wr;
+  it--;
+  splitter->setSizes(list);
+  */
 }
 
 void CTreeFrame::SetModified(bool changed)
@@ -1886,10 +1930,10 @@ void CTreeFrame::SetModified(bool changed)
     if (changed)
       title += "*";
   SetTitle(title);
-} 
+}
 
 
-CFormFrame::CFormFrame(QWidget* parent):CLavaGUIFrame(parent) 
+CFormFrame::CFormFrame(QWidget* parent):CLavaGUIFrame(parent)
 {
   viewL = 0;
   viewR = 0;
@@ -1908,42 +1952,38 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   DString title = CalcTitle( (LavaDECL*)((CLavaPEApp*)wxTheApp)->LBaseData.actHint->CommandData1, ((CLavaBaseDoc*)LBaseData->actHint->fromDoc)->IDTable.DocName);
   setCaption(title.c);
   setIcon(QPixmap((const char**) Lava));
+//  if (oldWindowState != Qt::WindowMaximized) {
+    sz = parentWidget()->size();
+    resize(sz.width()*7/10, sz.height()*7/10);
+//  }
   myDoc = (CLavaBaseDoc*)doc;
-
   splitter = new QSplitter(this);
-  splitter->setHandleWidth(3);
-  layout.addWidget(splitter);
-  layout.setMargin(0);
+//  setCentralWidget(splitter);
   splitter->setOrientation(Qt::Horizontal);
   m_clientWindow = splitter;
-
-  viewL = new CLavaGUIView(this, doc);
-  QSplitter* split = new QSplitter(this);
-  splitter->addWidget(viewL);
-  splitter->addWidget(split);
+  viewL = new CLavaGUIView(splitter, doc);
+  QSplitter* split = new QSplitter(splitter);
   split->setOrientation(Qt::Vertical);
   viewR = new CLavaPEView(split, doc);
   wizardView = new CWizardView(split, doc);
-  split->addWidget(viewR);
-  split->addWidget(wizardView);
   ((CLavaGUIView*)viewL)->myTree = (CTreeView*)viewR;
   ((CLavaPEView*)viewR)->myFormView = (CLavaGUIView*)viewL;
   if (viewL->OnCreate() && viewR->OnCreate()) {
     doc->AddView(viewR);
     doc->AddView(viewL);
     doc->AddView(wizardView);
-    QList<int> list=splitter->sizes();
-    int totalW = 500;
-    list.replace(0,totalW * 0.7);
-    list.replace(1,totalW * 0.3);
+    Q3ValueList<int> list = splitter->sizes();
+    Q3ValueList<int>::Iterator it = list.begin();
+    int totalW = *it;
+    ++it;
+    totalW += *it;
+    it = list.begin();
+    *it = totalW/4 * 3;
+    ++it;
+    *it = totalW/4;
     splitter->setSizes(list);
     lastActive = viewR;
-    QList<int> listH=split->sizes();
-    int totalH = 300;
-    listH.replace(0,totalH * 0.3);
-    listH.replace(1,totalH * 0.7);
-    split->setSizes(listH);
-    if (oldWindowState == Qt::WindowMaximized) 
+    if (oldWindowState == Qt::WindowMaximized)
       showMaximized();
     return true;
   }
@@ -2010,21 +2050,4 @@ void CLavaMainFrame::fillHelpMap5(ToolbarWhatsThis *tbw) {
 }
 
 void CLavaMainFrame::fillHelpMap6(ToolbarWhatsThis *tbw) {
-}
-
-int MyWindowsStyle::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const
-{
-  int px = QWindowsStyle::pixelMetric( pm, option, widget);
-  
-  switch( pm )
-  {
-    case PM_ToolBarItemMargin:
-    case PM_ToolBarItemSpacing:
-      px = 0; break;
-    case PM_ToolBarIconSize:
-      px = 16; break;
-    default: break;
-  }
-  
-  return px;
 }

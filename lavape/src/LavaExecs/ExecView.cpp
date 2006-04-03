@@ -131,7 +131,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   redCtl->setBackgroundColor(Qt::white);
   text = new CProgText;
   sv->text = text;
-        m_ComboBar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
+  m_ComboBar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
   destroying = false;
   Base = 0;
   myDoc = 0;
@@ -225,7 +225,7 @@ void CExecView::OnInitialUpdate()
 // text:
 
   text->htmlGen = false;
-  text->redCtl = sv->viewport();
+  text->redCtl = sv->execCont;
   text->sv = sv;
   QFontInfo fi = redCtl->fontInfo();
   QString family = fi.family();
@@ -613,7 +613,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   if (callerStopToken)
     p.drawPixmap(0,callerStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStopGreen);
 
-//  sv->viewport()->setUpdatesEnabled(true);
+//  redCtl->setUpdatesEnabled(true);
 
   if (execView->makeSelectionVisible) {
     execView->makeSelectionVisible = false;
@@ -1202,6 +1202,7 @@ void MyScrollView::mouseDoubleClickEvent (QMouseEvent *e) {
 MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
   execView = (CExecView*)parent;
   execCont = new ExecContents(this);
+//  execCont->setAttribute(Qt::WA_OpaquePaintEvent);
   setBackgroundRole(QPalette::Base);
   setWidget(execCont);
 }
@@ -1903,7 +1904,7 @@ exp: // Const_T
   }
 
   doubleClick = false;
-  sv->viewport()->repaint();
+  redCtl->repaint();
         // otherwise the MiniEdit's position would be unknown in the following code
 
   if (text->currentSelection->data.token == Exp_T
@@ -1912,8 +1913,8 @@ exp: // Const_T
   else {
     if (!editCtl)
       editCtl = new MiniEdit(redCtl);
-//???    sv->addChild(editCtl,text->currentSelection->data.rect.left()-editCtl->frameWidth(),text->currentSelection->data.rect.top()-editCtl->frameWidth());
-    editCtl->setFont(sv->viewport()->font());
+    editCtl->setGeometry(text->currentSelection->data.rect);
+//    editCtl->setFont(sv->viewport()->font());
     editCtl->setText(str);
     editCtl->setFixedWidth(text->currentSelection->data.rect.width()+2*editCtl->frameWidth()+10);
     editCtl->setFixedHeight(text->currentSelection->data.rect.height()+2*editCtl->frameWidth());
@@ -2331,10 +2332,8 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
     }
   }
   else {
-    if (delObj->primaryToken != TypePH_T
-    && (delObj->primaryToken != Exp_T
-        || delObj->parentObject->primaryToken != fail_T))
-        // optional type in set quantifier or optional exception expression in fail stm
+    if (delObj->primaryToken != TypePH_T)
+        // optional type in set quantifier
       placeHdr = new SynObjectV(delObj->replacedType);
     else
       text->currentSynObjID = 0;
@@ -2578,8 +2577,8 @@ void CExecView::OnConst()
 
   if (!editCtl)
     editCtl = new MiniEdit(redCtl);
-//???  sv->addChild(editCtl,text->currentSelection->data.rect.left()-editCtl->frameWidth(),text->currentSelection->data.rect.top()-editCtl->frameWidth());
-  editCtl->setFont(sv->viewport()->font());
+    editCtl->setGeometry(text->currentSelection->data.rect);
+//  editCtl->setFont(sv->viewport()->font());
   editCtl->setText(TOKENSTR[Const_T]);
         QFontMetrics fom(editCtl->font());
   editCtl->setFixedWidth(fom.width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
@@ -4967,7 +4966,7 @@ void CExecView::OnPrevError()
     else {
       nextError = true;
       Select(currToken->data.synObject);
-//                      sv->viewport()->update();
+//                      redCtl->update();
       return;
     }
 
@@ -5395,10 +5394,10 @@ void CExecView::OnInsertEnum (QString &itemName, TID &typeID, unsigned pos)
 
 void CExecView::UpdateUI()
 {
-        if (!initialUpdateDone)
-                return;
+  if (!initialUpdateDone)
+          return;
 
-        OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
+  OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
   OnUpdateHandle(LBaseData->handleActionPtr);
   OnUpdateInputArrow(LBaseData->toggleInputArrowsActionPtr);
   OnUpdateEditSel(LBaseData->editSelItemActionPtr);
@@ -5717,31 +5716,31 @@ void CExecView::OnUpdateEditCut(QAction* action)
 void CExecView::OnUpdateButtonEnum()
 {
   CComboBar* bar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
-  bar->m_ComboBarDlg->IDC_ButtonEnum->setEnabled(bar->EnumsEnable);
+  bar->IDC_ButtonEnum->setEnabled(bar->EnumsEnable);
   if (bar->EnumsShow)
-    bar->m_ComboBarDlg->IDC_ButtonEnum->show();
+    bar->IDC_ButtonEnum->show();
   else
-    bar->m_ComboBarDlg->IDC_ButtonEnum->hide();
+    bar->IDC_ButtonEnum->hide();
 }
 
 void CExecView::OnUpdateNewFunc()
 {
   CComboBar* bar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
-  bar->m_ComboBarDlg->IDC_NewFunc->setEnabled(bar->NewFuncEnable);
+  bar->IDC_NewFunc->setEnabled(bar->NewFuncEnable);
   if (bar->NewFuncShow)
-    bar->m_ComboBarDlg->IDC_NewFunc->show();
+    bar->IDC_NewFunc->show();
   else
-    bar->m_ComboBarDlg->IDC_NewFunc->hide();
+    bar->IDC_NewFunc->hide();
 }
 
 void CExecView::OnUpdateNewPFunc()
 {
   CComboBar* bar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
-  bar->m_ComboBarDlg->IDC_NewPFunc->setEnabled(bar->NewPFuncEnable);
+  bar->IDC_NewPFunc->setEnabled(bar->NewPFuncEnable);
   if (bar->NewFuncShow)
-    bar->m_ComboBarDlg->IDC_NewPFunc->show();
+    bar->IDC_NewPFunc->show();
   else
-    bar->m_ComboBarDlg->IDC_NewPFunc->hide();
+    bar->IDC_NewPFunc->hide();
 }
 
 void CExecView::OnUpdateAnd(QPushButton *pb)
@@ -6781,7 +6780,7 @@ QString ExecWhatsThis::text(const QPoint &point) {
   return QString::null;
 }
 
-void CExecView::DbgBreakpoint() {
+void CExecView::on_DbgBreakpointAct_triggered() {
   CHEProgPoint* cheBreak;
   SynObject *stopObj=text->currentSynObj;
 
@@ -6816,7 +6815,7 @@ void CExecView::DbgBreakpoint() {
   redCtl->update();
 }
 
-void CExecView::DbgRunToSel() {
+void CExecView::on_DbgRunToSelAct_triggered() {
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_RunTo;

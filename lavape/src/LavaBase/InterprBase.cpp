@@ -446,7 +446,7 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
 {
   int secn;
   LavaObjectPtr object;
-  CLavaThread *currentThread = CLavaThread::currentThread();
+  CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
 	COpenObjectParms oop(&ckd,urlObj,currentThread);
 
   switch ((TCompoProt)specDECL->nOutput) {

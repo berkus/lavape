@@ -55,13 +55,8 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
     setEnabled(false);
   myFormNode->data.IoSigFlags.INCL(trueValue);
   GUIProg->SetColor(this, myFormNode);
-  if (!myFormNode->data.ColorFValid) {
-    QPalette p = palette();
-    p.setColor(QPalette::Active, QPalette::WindowText, parentWidget()->palette().color(QPalette::Active, QPalette::WindowText));
-    p.setColor(QPalette::Inactive, QPalette::WindowText, parentWidget()->palette().color(QPalette::Active, QPalette::WindowText));
-    setPalette(p);
-  }
-    //setPaletteForegroundColor(parent->colorGroup().foreground());
+  if (!myFormNode->data.ColorFValid)
+    setPaletteForegroundColor(parent->colorGroup().foreground());
   show();
   connect(this, SIGNAL(clicked()), this, SLOT(OnClicked()));
 }
@@ -287,13 +282,8 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
 //  else
 //    myFormNode->data.IoSigFlags.INCL(UnprotectedUser);
   GUIProg->SetColor(this, myFormNode);
-  if (!myFormNode->data.ColorFValid) {
-    QPalette p = palette();
-        p.setColor(QPalette::Active, QPalette::WindowText, parentWidget()->palette().color(QPalette::Active, QPalette::WindowText));
-        p.setColor(QPalette::Inactive, QPalette::WindowText, parentWidget()->palette().color(QPalette::Active, QPalette::WindowText));
-    setPalette(p);
-  }
-    //setPaletteForegroundColor(parent->colorGroup().foreground());
+  if (!myFormNode->data.ColorFValid)
+    setPaletteForegroundColor(parent->colorGroup().foreground());
   show();
   connect(this, SIGNAL(clicked()), this, SLOT(OnClicked()));
 }
