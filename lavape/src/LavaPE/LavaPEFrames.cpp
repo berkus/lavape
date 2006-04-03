@@ -222,6 +222,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 void CLavaMainFrame::makeStyle(const QString &style)
 {
   bool isVisible, firstTime=false;
+  MyWindowsStyle *winStyle;
 
   if (!style.isEmpty()) {
     LBaseData->m_style = style;
@@ -243,6 +244,12 @@ void CLavaMainFrame::makeStyle(const QString &style)
 	    qApp->setPalette( p, TRUE );
 	    qApp->setFont( LBaseData->m_GlobalFont, TRUE );
 	  }*/
+  }
+  else {
+    winStyle = new MyWindowsStyle;
+    LBaseData->m_style = "Windows";
+    wxTheApp->saveSettings();
+    QApplication::setStyle(winStyle);
   }
 
   isVisible = Toolbar_7->isVisible();
