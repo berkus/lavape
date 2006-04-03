@@ -488,7 +488,13 @@ void CLavaGUIView::resetLastBrowseNode()
     && LastBrowseNode->data.FIP.widget->inherits("QFrame")) {
     ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShape(QFrame::NoFrame);
     ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(QFrame::Plain);
-    ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(((CFormWid*)LastBrowseNode->data.FIP.widget)->ForegroundColor);
+
+    QPalette p = ((QFrame*)LastBrowseNode->data.FIP.widget)->palette();
+    p.setColor(QPalette::Active, QPalette::WindowText, ((CFormWid*)LastBrowseNode->data.FIP.widget)->palette().color(QPalette::Active, QPalette::WindowText));
+    p.setColor(QPalette::Inactive, QPalette::WindowText, ((CFormWid*)LastBrowseNode->data.FIP.widget)->palette().color(QPalette::Active, QPalette::WindowText));
+    ((QFrame*)LastBrowseNode->data.FIP.widget)->setPalette(p);
+//    ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(((CFormWid*)LastBrowseNode->data.FIP.widget)->ForegroundColor);
+
     ((QFrame*)LastBrowseNode->data.FIP.widget)->repaint();
     LastBrowseNode = 0;
   }
@@ -506,7 +512,13 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
           //myGUIProg->focNode = myGUIProg->TreeSrch.NextUnprotected (LastBrowseNode, LastBrowseNode);
           ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShape(QFrame::Box );
           ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(QFrame::Plain);
-     ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(QColor("#FF0000"));
+
+          QPalette p = ((QFrame*)LastBrowseNode->data.FIP.widget)->palette();
+          p.setColor(QPalette::Active, QPalette::WindowText, QColor("#FF0000"));
+          p.setColor(QPalette::Inactive, QPalette::WindowText,QColor("#FF0000"));
+          ((QFrame*)LastBrowseNode->data.FIP.widget)->setPalette(p);
+
+//     ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(QColor("#FF0000"));
          myGUIProg->ScrollIntoFrame(LastBrowseNode->data.FIP.widget);
           ((QFrame*)LastBrowseNode->data.FIP.widget)->repaint();
           //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode);

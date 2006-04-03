@@ -1905,6 +1905,8 @@ CFormFrame::~CFormFrame()
 bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   QSize sz;
+  if (!wxMDIChildFrame::OnCreate(temp, doc))
+    return false;
   DString title = CalcTitle( (LavaDECL*)((CLavaPEApp*)wxTheApp)->LBaseData.actHint->CommandData1, ((CLavaBaseDoc*)LBaseData->actHint->fromDoc)->IDTable.DocName);
   setCaption(title.c);
   setIcon(QPixmap((const char**) Lava));
