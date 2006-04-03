@@ -59,9 +59,6 @@
      </item>
      <item row="4" column="1" >
       <widget class="QGroupBox" name="BGroup_Mode" >
-       <property name="title" >
-        <string>Mode</string>
-       </property>
        <layout class="QVBoxLayout" >
         <property name="margin" >
          <number>11</number>
@@ -252,9 +249,6 @@
      </item>
      <item row="4" column="0" >
       <widget class="QGroupBox" name="BGroup_KindOfRef" >
-       <property name="title" >
-        <string>Kind of reference</string>
-       </property>
        <layout class="QVBoxLayout" >
         <property name="margin" >
          <number>11</number>

@@ -31,26 +31,7 @@ public:
 private:
   Q_OBJECT
 
-/*
-// Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CLavaMenu)
-  protected:
-  virtual bool OnCommand(WPARAM wParam, LPARAM lParam);
-  //}}AFX_VIRTUAL
 
-protected:
-  //{{AFX_MSG(CLavaMenu)
-  afx_msg void OnLButtonDown(UINT nFlags, QPoint point);
-  afx_msg void OnRButtonDown(UINT nFlags, QPoint point);
-  afx_msg void OnSetFocus(QWidget* pOldWnd);
-  afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-  //}}AFX_MSG
 
-  DECLARE_MESSAGE_MAP()
-  */
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
 #endif

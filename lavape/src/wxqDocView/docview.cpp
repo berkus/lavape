@@ -698,8 +698,12 @@ void wxView::SetDocument(wxDocument *doc)
 
 bool wxView::Close()
 {
-  deleteLater();
-  return true;
+  if (on_cancelButton_clicked()) {
+      deleteLater();
+      return true;
+  }
+  else
+      return false;
 }
 
 void wxView::ActivateView(bool activate)

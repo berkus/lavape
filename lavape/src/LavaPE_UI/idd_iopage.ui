@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
-    <height>391</height>
+    <width>291</width>
+    <height>419</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -25,7 +25,7 @@
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >
-    <number>11</number>
+    <number>9</number>
    </property>
    <property name="spacing" >
     <number>6</number>
@@ -34,8 +34,8 @@
     <widget class="QGroupBox" name="GroupBox_IDC_STATIC" >
      <property name="sizePolicy" >
       <sizepolicy>
-       <hsizetype>7</hsizetype>
-       <vsizetype>7</vsizetype>
+       <hsizetype>1</hsizetype>
+       <vsizetype>1</vsizetype>
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -48,41 +48,41 @@
      </property>
      <layout class="QGridLayout" >
       <property name="margin" >
-       <number>11</number>
+       <number>9</number>
       </property>
       <property name="spacing" >
        <number>6</number>
       </property>
       <item row="0" column="2" >
-       <widget class="QCheckBox" name="m_UseDefault" >
+       <widget class="QCheckBox" name="UseDefault" >
         <property name="text" >
          <string>default</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1" >
-       <widget class="QCheckBox" name="m_isOutput" >
+       <widget class="QCheckBox" name="isOutput" >
         <property name="text" >
          <string>Output</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0" >
-       <widget class="QCheckBox" name="m_Echo" >
+       <widget class="QCheckBox" name="noEcho" >
         <property name="text" >
          <string>No echo</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1" colspan="2" >
-       <widget class="QCheckBox" name="m_NoFIO" >
+       <widget class="QCheckBox" name="NoFIO" >
         <property name="text" >
          <string>Unused (placeholder)</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0" >
-       <widget class="QCheckBox" name="m_isInput" >
+       <widget class="QCheckBox" name="isInput" >
         <property name="text" >
          <string>Input</string>
         </property>
@@ -109,20 +109,27 @@
      </property>
      <layout class="QGridLayout" >
       <property name="margin" >
-       <number>11</number>
+       <number>9</number>
       </property>
       <property name="spacing" >
        <number>6</number>
       </property>
+      <item row="2" column="0" colspan="2" >
+       <widget class="QCheckBox" name="groupbox" >
+        <property name="text" >
+         <string>Use group box</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="2" >
-       <widget class="QSpinBox" name="m_SPIN3" >
+       <widget class="QSpinBox" name="FVSpaceSPIN" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" >
-       <widget class="QSpinBox" name="m_SPIN2" >
+      <item row="1" column="1" >
+       <widget class="QSpinBox" name="FHSpaceSPIN" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
@@ -130,6 +137,14 @@
       </item>
       <item row="0" column="2" >
        <widget class="QLabel" name="Label_IDC_STATIC4" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>5</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
@@ -141,8 +156,37 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1" >
+       <widget class="QLabel" name="Label_IDC_STATIC3" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>5</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy" >
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text" >
+         <string>Horizontal space</string>
+        </property>
+        <property name="alignment" >
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0" >
        <widget class="QLabel" name="Label_IDC_STATIC2" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>5</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
@@ -154,30 +198,10 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1" >
-       <widget class="QSpinBox" name="m_SPIN1" >
+      <item row="1" column="0" >
+       <widget class="QSpinBox" name="FHTabSPIN" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2" >
-       <widget class="QCheckBox" name="m_groupbox" >
-        <property name="text" >
-         <string>Use group box</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" >
-       <widget class="QLabel" name="Label_IDC_STATIC3" >
-        <property name="focusPolicy" >
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text" >
-         <string>Horizontal space</string>
-        </property>
-        <property name="alignment" >
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
@@ -202,32 +226,95 @@
      </property>
      <layout class="QGridLayout" >
       <property name="margin" >
-       <number>11</number>
+       <number>9</number>
       </property>
       <property name="spacing" >
        <number>6</number>
       </property>
-      <item row="1" column="0" >
-       <widget class="QSpinBox" name="m_SPIN5" >
+      <item row="3" column="0" >
+       <widget class="QSpinBox" name="ColsSPIN" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
        </widget>
       </item>
-      <item row="1" column="3" >
-       <widget class="QSpinBox" name="m_SPIN6" >
-        <property name="focusPolicy" >
-         <enum>Qt::NoFocus</enum>
+      <item row="4" column="2" colspan="2" >
+       <widget class="QCheckBox" name="MultiLine" >
+        <property name="text" >
+         <string>Multiline text</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="3" >
-       <widget class="QLabel" name="Label_IDC_STATIC7" >
+      <item row="4" column="0" colspan="2" >
+       <widget class="QCheckBox" name="Popupw" >
+        <property name="text" >
+         <string>Popup window</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2" >
+       <widget class="QLabel" name="Label_IDC_STATIC9" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>5</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="text" >
-         <string>Vertical space</string>
+         <string>Rows</string>
+        </property>
+        <property name="alignment" >
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="Label_IDC_STATIC5" >
+        <property name="focusPolicy" >
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text" >
+         <string>Horizontal tab</string>
+        </property>
+        <property name="alignment" >
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2" >
+       <widget class="QSpinBox" name="DHSpaceSPIN" >
+        <property name="focusPolicy" >
+         <enum>Qt::NoFocus</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="2" >
+       <widget class="QSpinBox" name="RowsSPIN" >
+        <property name="focusPolicy" >
+         <enum>Qt::NoFocus</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" >
+       <widget class="QLabel" name="Label_IDC_STATIC8" >
+        <property name="sizePolicy" >
+         <sizepolicy>
+          <hsizetype>5</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="focusPolicy" >
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text" >
+         <string>Columns</string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -247,75 +334,28 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
-       <widget class="QLabel" name="Label_IDC_STATIC8" >
+      <item row="0" column="3" >
+       <widget class="QLabel" name="Label_IDC_STATIC7" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="text" >
-         <string>Columns</string>
+         <string>Vertical space</string>
         </property>
         <property name="alignment" >
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
-      <item row="3" column="1" colspan="2" >
-       <widget class="QSpinBox" name="m_SPIN8" >
+      <item row="1" column="3" >
+       <widget class="QSpinBox" name="DVSpaceSPIN" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" colspan="2" >
-       <widget class="QSpinBox" name="m_SPIN4" >
-        <property name="focusPolicy" >
-         <enum>Qt::NoFocus</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" >
-       <widget class="QLabel" name="Label_IDC_STATIC5" >
-        <property name="focusPolicy" >
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text" >
-         <string>Horizontal tab</string>
-        </property>
-        <property name="alignment" >
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="2" >
-       <widget class="QLabel" name="Label_IDC_STATIC9" >
-        <property name="focusPolicy" >
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text" >
-         <string>Rows</string>
-        </property>
-        <property name="alignment" >
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2" >
-       <widget class="QCheckBox" name="m_Popupw" >
-        <property name="text" >
-         <string>Popup window</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2" colspan="2" >
-       <widget class="QCheckBox" name="m_MultiLine" >
-        <property name="text" >
-         <string>Multiline text</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" >
-       <widget class="QSpinBox" name="m_SPIN7" >
+      <item row="1" column="0" >
+       <widget class="QSpinBox" name="DHTabSPIN" >
         <property name="focusPolicy" >
          <enum>Qt::NoFocus</enum>
         </property>
@@ -327,6 +367,7 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
  <resources/>
  <connections/>
 </ui>

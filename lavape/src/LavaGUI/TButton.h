@@ -78,19 +78,6 @@ public slots:
 private:
   Q_OBJECT
 
-
-/*
-  // Generated message map functions
-protected:
-  //{{AFX_MSG(CTButton)
-  afx_msg void OnClicked();
-  afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-  afx_msg void OnKillFocus(QWidget* pNewWnd);
-  afx_msg void OnSetFocus(QWidget* pOldWnd);
-  //}}AFX_MSG
-
-  DECLARE_MESSAGE_MAP()
-  */
 };
 
 /////////////////////////////////////////////////////////////////////////////

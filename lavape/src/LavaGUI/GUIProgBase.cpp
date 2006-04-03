@@ -110,30 +110,45 @@ TFontCase CGUIMet::SetTFont(QWidget* win, CHEFormNode* myFormNode)
 
 void CGUIMet::SetColor(QWidget* w, CHEFormNode * node)
 {
-  if (node->data.ColorBValid)
-    w->setPaletteBackgroundColor(node->data.ColorB);
-  if (node->data.ColorFValid)
-    w->setPaletteForegroundColor(node->data.ColorF);
+  QPalette p = w->palette();
+  if (node->data.ColorBValid) {
+    p.setColor(QPalette::Active, QPalette::Window, node->data.ColorB);
+    p.setColor(QPalette::Inactive, QPalette::Window, node->data.ColorB);
+    //w->setPaletteBackgroundColor(node->data.ColorB);
+  }
+  if (node->data.ColorFValid) {
+    p.setColor(QPalette::Active, QPalette::WindowText, node->data.ColorF);
+    p.setColor(QPalette::Inactive, QPalette::WindowText, node->data.ColorF);
+    //w->setPaletteForegroundColor(node->data.ColorF);
+  }
+  QPalette p1 = w->palette();
   CHETAnnoEx *exT, *exPB;
   exT = node->data.FormSyntax->Annotation.ptr->GetAnnoEx(anno_TextColor);
   exPB = node->data.FormSyntax->Annotation.ptr->GetAnnoEx(anno_PBColor);
   if (exT && (exT->data.RgbBackValid || exT->data.RgbForeValid)
     || exPB && (exPB->data.RgbBackValid || exPB->data.RgbForeValid)) {
-    QPalette p = w->palette();
     if (exT) {
-      if (exT->data.RgbBackValid) 
-        p.setColor( QPalette::Active, QColorGroup::Base, QColor(exT->data.RgbBackColor));
-      if (exT->data.RgbForeValid) 
-        p.setColor( QPalette::Active, QColorGroup::Text, QColor(exT->data.RgbForeColor));
+      if (exT->data.RgbBackValid) {
+        p1.setColor( QPalette::Active, QPalette::Base, QColor(exT->data.RgbBackColor));
+        p1.setColor( QPalette::Inactive, QPalette::Base, QColor(exT->data.RgbBackColor));
+      }
+      if (exT->data.RgbForeValid) {
+        p1.setColor( QPalette::Active, QPalette::Text, QColor(exT->data.RgbForeColor));
+        p1.setColor( QPalette::Inactive, QPalette::Text, QColor(exT->data.RgbForeColor));
+      }
     }
     exPB = node->data.FormSyntax->Annotation.ptr->GetAnnoEx(anno_PBColor);
     if (exPB) {
-      if (exPB->data.RgbBackValid) 
-        p.setColor( QPalette::Active, QColorGroup::Button, QColor(exPB->data.RgbBackColor));
-      if (exPB->data.RgbForeValid) 
-        p.setColor( QPalette::Active, QColorGroup::ButtonText, QColor(exPB->data.RgbForeColor));
+      if (exPB->data.RgbBackValid) {
+        p1.setColor( QPalette::Active, QPalette::Button, QColor(exPB->data.RgbBackColor));
+        p1.setColor( QPalette::Inactive, QPalette::Button, QColor(exPB->data.RgbBackColor));
+      }
+      if (exPB->data.RgbForeValid) {
+        p1.setColor( QPalette::Active, QPalette::ButtonText, QColor(exPB->data.RgbForeColor));
+        p1.setColor( QPalette::Inactive, QPalette::ButtonText, QColor(exPB->data.RgbForeColor));
+      }
     }
-    w->setPalette(p);
+    w->setPalette(p1);
   }
 }
 

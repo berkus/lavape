@@ -48,8 +48,13 @@ CTStatic::CTStatic(CGUIProgBase *guiPr, CHEFormNode* data,
   QSize size = GUIProg->CalcStringRect(label, font());
   setGeometry(bord,bord, size.width(), size.height());
   GUIProg->SetColor(this, myFormNode);
-  if (!myFormNode->data.ColorFValid)
-    setPaletteForegroundColor(parentWidget->parentWidget()->colorGroup().foreground());
+  if (!myFormNode->data.ColorFValid) {
+    QPalette p = palette();
+    p.setColor(QPalette::Active, QPalette::WindowText, parentWidget->palette().color(QPalette::Active, QPalette::WindowText));
+    p.setColor(QPalette::Inactive, QPalette::WindowText, parentWidget->palette().color(QPalette::Active, QPalette::WindowText));
+    setPalette(p);
+    //setPaletteForegroundColor(parentWidget->parentWidget()->colorGroup().foreground());
+  }
   show();
 }
 
