@@ -98,14 +98,15 @@ public slots:
     virtual void on_helpAboutAction_triggered();
     virtual void on_tileHorizAction_triggered();
     virtual void on_tileVerticAction_triggered();
-    virtual void saveEveryChange(bool);
-    virtual void viewTB1();
-    virtual void viewTB2();
-    virtual void viewTB3();
-    virtual void viewTB4();
-    virtual void viewHelpTB();
+    virtual void on_saveEveryChangeAction_triggered(bool);
+    virtual void on_viewTB1Action_triggered();
+    virtual void on_viewTB2Action_triggered();
+    virtual void on_viewTB3Action_triggered();
+    virtual void on_viewTB4Action_triggered();
+    virtual void on_viewHelpTBAction_triggered();
+    virtual void on_viewDebugTBAction_triggered();
     virtual void on_whatNextAction_triggered();
-    virtual void on_howTo_clicked();
+//    virtual void on_howTo_clicked();
 
     virtual void on_findRefsAction_triggered();
 
@@ -191,8 +192,8 @@ public slots:
 */
     virtual void on_insAction_triggered();
     virtual void on_delAction_triggered();
-    virtual void genLinkedHtml();
-    virtual void genSingleHtml();
+    virtual void on_genLinkedHtmlAction_triggered();
+    virtual void on_genSingleHtmlAction_triggered();
     virtual void deleteOp();
 
 // Exec handlers (tool buttons):
@@ -217,7 +218,7 @@ public slots:
     virtual void commentOut();
     virtual void toggleComments();
     virtual void lessThan();
-    virtual void viewTB5();
+    virtual void on_viewTB5Action_triggered();
     virtual void lessEqua();
     virtual void equal();
     virtual void notEqual();
@@ -279,8 +280,8 @@ public slots:
     virtual void emitSignal();
 // end of exec handlers
 
-    virtual void viewTB6();
-    virtual void viewTB7();
+    virtual void on_viewTB6Action_triggered();
+    virtual void on_viewTB7Action_triggered();
     virtual void adjustToolbar_7 ();
     virtual void on_setTreeFontAction_triggered();
     virtual void on_setFormTextFontAction_triggered();

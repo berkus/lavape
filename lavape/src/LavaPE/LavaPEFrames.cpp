@@ -1018,14 +1018,14 @@ void CLavaMainFrame::on_DbgRunToSelAct_triggered()
 }
 
 
-void CLavaMainFrame::genLinkedHtml()
+void CLavaMainFrame::on_genLinkedHtmlAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     ((CLavaPEView*)((CPEBaseDoc*)view->GetDocument())->MainView)->OnGenHtml();
 }
 
-void CLavaMainFrame::genSingleHtml()
+void CLavaMainFrame::on_genSingleHtmlAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
@@ -1650,7 +1650,7 @@ void CLavaMainFrame::ShowUtilitiesTab(UtilityTabs tab)
 }
 */
 
-void CLavaMainFrame::saveEveryChange(bool on) 
+void CLavaMainFrame::on_saveEveryChangeAction_triggered(bool on) 
 {
   if (on) {
     LBaseData->m_saveEveryChange = true;
@@ -1663,7 +1663,7 @@ void CLavaMainFrame::saveEveryChange(bool on)
   ((CLavaPEApp*)wxTheApp)->saveSettings();
 }
 
-void CLavaMainFrame::viewTB1() 
+void CLavaMainFrame::on_viewTB1Action_triggered() 
 {
   if (Toolbar_1->isVisible())
     Toolbar_1->hide();
@@ -1671,7 +1671,7 @@ void CLavaMainFrame::viewTB1()
     Toolbar_1->show();
 }
 
-void CLavaMainFrame::viewTB2() 
+void CLavaMainFrame::on_viewTB2Action_triggered() 
 {
   if (Toolbar_2->isVisible())
     Toolbar_2->hide();
@@ -1679,16 +1679,23 @@ void CLavaMainFrame::viewTB2()
     Toolbar_2->show();
 }
 
-void CLavaMainFrame::viewHelpTB() 
+void CLavaMainFrame::on_viewHelpTBAction_triggered() 
 {
   if (HelpToolbar->isVisible())
     HelpToolbar->hide();
   else
     HelpToolbar->show();
 }
+void CLavaMainFrame::on_viewDebugTBAction_triggered() 
+{
+  if (ToolbarDbg->isVisible())
+    ToolbarDbg->hide();
+  else
+    ToolbarDbg->show();
+}
 
 
-void CLavaMainFrame::viewTB3() 
+void CLavaMainFrame::on_viewTB3Action_triggered() 
 {
   if (Toolbar_3->isVisible())
     Toolbar_3->hide();
@@ -1697,7 +1704,7 @@ void CLavaMainFrame::viewTB3()
 }
 
 
-void CLavaMainFrame::viewTB4() 
+void CLavaMainFrame::on_viewTB4Action_triggered() 
 {
   if (Toolbar_4->isVisible())
     Toolbar_4->hide();
@@ -1706,7 +1713,7 @@ void CLavaMainFrame::viewTB4()
 }
 
 
-void CLavaMainFrame::viewTB5() 
+void CLavaMainFrame::on_viewTB5Action_triggered() 
 {
   if (Toolbar_5->isVisible())
     Toolbar_5->hide();
@@ -1716,7 +1723,7 @@ void CLavaMainFrame::viewTB5()
 
 
 
-void CLavaMainFrame::viewTB6() 
+void CLavaMainFrame::on_viewTB6Action_triggered() 
 {
   if (Toolbar_6->isVisible())
     Toolbar_6->hide();
@@ -1725,7 +1732,7 @@ void CLavaMainFrame::viewTB6()
 }
 
 
-void CLavaMainFrame::viewTB7() 
+void CLavaMainFrame::on_viewTB7Action_triggered() 
 {
   if (Toolbar_7->isVisible())
     Toolbar_7->hide();
@@ -1753,7 +1760,7 @@ void CLavaMainFrame::on_whatNextAction_triggered()
 	  qacl->showPage(fileName);
   }
 }
-
+/*
 void CLavaMainFrame::on_howTo_clicked() 
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
@@ -1774,7 +1781,7 @@ void CLavaMainFrame::on_howTo_clicked()
 	  qacl->showPage(fileName);
   }
 }
-
+*/
 
 CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent)
 {
