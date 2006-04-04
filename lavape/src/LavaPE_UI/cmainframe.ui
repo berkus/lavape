@@ -435,8 +435,8 @@
    <addaction name="editMenu" />
    <addaction name="findMenu" />
    <addaction name="insertMenu" />
-   <addaction name="viewMenu" />
    <addaction name="optionMenu" />
+   <addaction name="viewMenu" />
    <addaction name="windowMenu" />
    <addaction name="helpMenu" />
   </widget>
