@@ -176,6 +176,15 @@ CTreeItem* CTreeItem::nextSibling()
     return 0;
 }
 
+void CTreeItem::setDropEnabled(bool enable)
+{
+  if (enable)
+    setFlags(flags() | Qt::ItemIsDropEnabled);
+  else
+    setFlags(flags() ^ Qt::ItemIsDropEnabled);
+}
+
+
 void CTreeItem::setRenameEnabled(int col, bool enable)
 {
   if (enable)
@@ -203,7 +212,7 @@ MyListView::MyListView(CTreeView* view)
   setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   viewport()->setAcceptDrops(true);
-//  setDragAutoScroll(true);
+  setAutoScroll(true);
 }
 
 void MyListView::setCurAndSel(QTreeWidgetItem* item, bool singleSel)
@@ -249,7 +258,7 @@ void MyListView::keyPressEvent(QKeyEvent *ev)
 void MyListView::mouseMoveEvent(QMouseEvent *ev)
 {
   QTreeWidgetItem* item2, *item = currentItem();
-  if (!lavaView->multiSelectCanceled && item && item->flags() & Qt::ItemIsDragEnabled)
+  if (!lavaView->multiSelectCanceled && item && (item->flags() & Qt::ItemIsDragEnabled))
     QTreeWidget::mouseMoveEvent(ev);
   else {
     QPoint p = /*contentsToViewport(*/ev->pos();//);
@@ -295,30 +304,45 @@ void MyListView::mousePressEvent(QMouseEvent *ev)
 
 
 
-void startDrag(Qt::DropActions supportedActions);
-QDrag* MyListView::dragObject()
+void MyListView::startDrag(Qt::DropActions supportedActions)
 {
-  return lavaView->OnDragBegin();
+  lavaView->OnDragBegin();
 }
 
 void MyListView::dragMoveEvent(QDragMoveEvent *ev)
 {
+  if (Qt::ShiftModifier == ev->keyboardModifiers())
+    ev->setDropAction(Qt::MoveAction);
+  else
+    ev->setDropAction(Qt::CopyAction);
+  QAbstractItemView::dragMoveEvent(ev);
   lavaView->OnDragOver(ev);
 }
 
 void MyListView::dragEnterEvent(QDragEnterEvent *ev)
 {
+  if (Qt::ShiftModifier == ev->keyboardModifiers())
+    ev->setDropAction(Qt::MoveAction);
+  else
+    ev->setDropAction(Qt::CopyAction);
   lavaView->OnDragEnter(ev);
 }
 
 void MyListView::dragLeaveEvent(QDragLeaveEvent *ev)
 {
   lavaView->OnDragLeave(ev);
+  QAbstractItemView::dragLeaveEvent(ev);
 }
 
 void MyListView::dropEvent(QDropEvent* ev)
 {
+  if (Qt::ShiftModifier == ev->keyboardModifiers())
+    ev->setDropAction(Qt::MoveAction);
+  else
+    ev->setDropAction(Qt::CopyAction);
   lavaView->OnDrop(ev);
+  stopAutoScroll();
+  setState(NoState);
 }
 
 

@@ -77,6 +77,7 @@ public:
 //  void SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask);
   void gotoDef(CTreeItem* item, bool toImpl);
   CTreeItem* BrowseTree(TID id, CTreeItem* start, int browseCase);
+  virtual bool event(QEvent* ev);
 
 
 protected:

@@ -3331,13 +3331,15 @@ bool CLavaPEDoc::OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate)
       ((CTreeFrame*)view->GetParentFrame())->CalcSplitters(true); //make it visible
   }
   else {
- //   UpdateVElems(*pdecl);
     hint = new CLavaPEHint(CPECommand_OpenSelView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, autoUpdate,(DWORD)pdecl);
-    //UpdateAllViews(MainView,0,hint);
-    ((CLavaPEView*)MainView)->myVTView->OnUpdate(MainView, 0, hint);
-    delete hint;
+    if (autoUpdate)
+      QApplication::postEvent(((CLavaPEView*)MainView)->myVTView, new QCustomEvent(IDU_LavaPE_SyncTree, (void*)hint));
+    else {
+      ((CLavaPEView*)MainView)->myVTView->OnUpdate(MainView, 0, hint);
+      delete hint;
+    }
   }
-  return TRUE;
+  return true;
 }//openVTView
 
 bool CLavaPEDoc::OpenWizardView(CLavaBaseView* formView, LavaDECL** pdecl/*, unsigned long autoUpdate*/)

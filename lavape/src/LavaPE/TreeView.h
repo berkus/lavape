@@ -53,6 +53,7 @@ public:
   bool renameEnabled(int col);
   //virtual const QIcon* icon(int i) const { if (i) return 0; return nPix; }
   CTreeItem* nextSibling();
+  void setDropEnabled(bool enable);
   
   virtual void startRename(int col);
   /*
@@ -87,7 +88,8 @@ public:
   void mouseMoveEvent(QMouseEvent *ev);
   void focusInEvent ( QFocusEvent * e );
   void ResetSelections();
-  QDrag* dragObject();
+  //QDrag* dragObject();
+  virtual void startDrag(Qt::DropActions supportedActions);
   void editItem ( QTreeWidgetItem * item, int column = 0 );
   
   void dragMoveEvent(QDragMoveEvent *ev);

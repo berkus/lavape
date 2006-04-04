@@ -83,6 +83,17 @@ void CVTView::UpdateUI()
   OnUpdateGotoImpl(frame->gotoImplAction);
 }
 
+bool CVTView::event(QEvent* ev)
+{
+ if (ev->type() == IDU_LavaPE_SyncTree) {
+   CLavaPEHint* hint = (CLavaPEHint*)((CustomEvent*)ev)->data();
+   OnUpdate(myMainView, 0, hint);
+   delete hint;
+ }
+ return true;
+}
+
+
 void CVTView::OnInitialUpdate()
 {
   OnUpdate(this, 0, 0);
@@ -111,6 +122,7 @@ void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
     else {
       DeleteItemData(0);
       delete GetListView()->RootItem;
+      GetListView()->RootItem = 0;
       return;
     }
   }
@@ -122,11 +134,13 @@ void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
       setUpdatesEnabled(false);
 			if (GetDocument()->MakeVElems(myDECL) )
 				myDECL->WorkFlags.EXCL(recalcVT);
-      DeleteItemData(0);
-      delete GetListView()->RootItem;
+        DeleteItemData(0);
+        delete GetListView()->RootItem;
+        GetListView()->RootItem = 0;
       if (DrawTreeAgain()) {
         DeleteItemData(0);
         delete GetListView()->RootItem;
+        GetListView()->RootItem = 0;
         DrawTreeAgain();
       }
       ExpandItem((CTreeItem*)GetListView()->RootItem, 5);
@@ -289,9 +303,12 @@ void CVTView::DeleteItemData(CTreeItem* parent)
   if (!parent)
     parent = (CTreeItem*)GetListView()->RootItem;
   if (parent) {
-    CVTItemData * itd = (CVTItemData*)parent->getItemData();
-    if (itd) 
-      delete itd;
+    if (parent != GetListView()->RootItem) {
+      CVTItemData * itd = (CVTItemData*)parent->getItemData();
+      parent->setItemData(0);
+      if (itd) 
+        delete itd;
+    }
     CTreeItem* item = (CTreeItem*)parent->child(0);
     while (item) {
       DeleteItemData(item);

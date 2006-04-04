@@ -51,12 +51,12 @@
 #include "cmainframe.h"
 #include "qpixmapcache.h"
 #include "qclipboard.h"
-#include "q3dragobject.h"
+//#include "q3dragobject.h"
 #include "qdatastream.h"
 #include "qmessagebox.h"
 #include "QtAssistant/qassistantclient.h"
 #include <QTreeWidget>
-#include "q3header.h"
+//#include "q3header.h"
 
 #pragma hdrstop
 
@@ -158,6 +158,7 @@ CMainItemData::~CMainItemData()
 
 
 
+/*
 const char * LavaSource::format (int i) const
 {
   if (i==0)
@@ -165,7 +166,7 @@ const char * LavaSource::format (int i) const
   else
     return 0;
 }
-
+*/
 
 CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
 : CTreeView(parent, doc, "LavaPEView")
@@ -206,6 +207,7 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
 //  if (LBaseData->m_lfDefTreeFont.lfHeight != 0)
   setFont(LBaseData->m_TreeFont);
   m_tree->setAcceptDrops(true);
+  m_tree->setDragEnabled(true);
   sz = size();
 }
 
@@ -1470,30 +1472,15 @@ int CLavaPEView::GetPos(CTreeItem* item, CTreeItem* prev)
       if prev != 0 : the new item will be inserted as sibling after the prev item,
       otherwise result = 1, i.e. the new item will be inserted as first child of the parent item.
   */
-//  CTreeItem* htree;
-//  int ii;
-  if (item)
+  if (item && item->parent())
     return item->parent()->indexOfChild(item)+1;
     //htree = item;
   else
-    if (prev)
+    if (prev && prev->parent())
       return prev->parent()->indexOfChild(prev)+2;
       //htree = prev;
     else
       return 1;
-  /*
-  CTreeItem* parhtree = (CTreeItem*)htree->parent();
-  if (prev)
-    ii = 2;
-  else
-    ii = 1;
-  CTreeItem* elh = (CTreeItem*)parhtree->child(0);
-  while (elh && (elh != htree)) {
-    ii +=1;
-    elh = (CTreeItem*)elh->nextSibling();
-  }
-  return ii;
-  */
 }//GetPos
 
 
@@ -1860,7 +1847,7 @@ void CLavaPEView::IOnEditCopy()
       secondtflagsSpicked = ((LavaDECL*)clipData.synEl)->SecondTFlags;
 
       LavaSource *ls = new LavaSource();
-//      ls->setEncodedData(ba);
+      ls->setData(m_nIDClipFormat, ba);
       wxTheApp->clipboard()->setMimeData(ls, QClipboard::Clipboard);
       clipboard_lava_notEmpty = wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat);
     }
@@ -2088,7 +2075,7 @@ void CLavaPEView::OnDelete()
 QDrag*  CLavaPEView::OnDragBegin()
 {
 
-  /*
+  
   CMainItemData *ddrag;
   CMainItemData clipdata;
 
@@ -2139,11 +2126,16 @@ QDrag*  CLavaPEView::OnDragBegin()
   *(LavaDECL*)clipdata.synEl = *declDrag;
   clipdata.docPathName = new DString(GetDocument()->GetAbsSynFileName());
   clipdata.Serialize(ar);
-  dragSource = new LavaSource(m_tree);
-  dragSource->setEncodedData(ba);
+  dragSource = new LavaSource();
+  dragSource->setData(m_nIDClipFormat, ba);
+  QDrag* drag = new QDrag(m_tree);
+  drag->setMimeData(dragSource);
+
+
   GetDocument()->DragView = this;
   DragDoc = GetDocument();
-  dragSource->drag();
+  //Q3dragSource->drag();
+  drag->start(Qt::CopyAction | Qt::MoveAction);
   if (clipdata.synEl)
     delete (LavaDECL*)clipdata.synEl;
   //if (m_hitemDrop)
@@ -2155,14 +2147,13 @@ QDrag*  CLavaPEView::OnDragBegin()
     if (CollectDECL)
       DeleteDragChain();
   }
-  */
   return 0;
 }
 
 
 void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
 {
-  /*
+  
   CLavaPEDoc *dropDoc = GetDocument();
   CHESimpleSyntax *cheSyn;
   SynFlags treeflags, secondtflags;
@@ -2211,22 +2202,18 @@ void CLavaPEView::OnDragEnter(QDragEnterEvent* ev)
           DragDoc = 0;
       }//DragDoc != dropDoc
     }//Features
+    ev->accept();
   }
   else
     ev->ignore();
-  */
+  
 }
 
 void CLavaPEView::OnDragLeave(QDragLeaveEvent* ev)
 {
-  /*
-<<<<<<< LavaPEView.cpp
+  
   if (m_hitemDrop) 
     m_tree->setItemSelected(m_hitemDrop, false);
-=======
-  if (m_hitemDrop)
-    GetListView()->setItemSelected(m_hitemDrop, false);
->>>>>>> 1.31
   m_hitemDrop = 0;
   if (Clipdata) {
     Clipdata->Destroy();
@@ -2234,18 +2221,18 @@ void CLavaPEView::OnDragLeave(QDragLeaveEvent* ev)
     Clipdata = 0;
     DragDoc = 0;
   }
-  */
+  
 }
 
 void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
 {
-  /*
+  
   CLavaPEView* dragView;
   TIType tiType;
   CTreeItem* item;
 
   if (ev->provides(m_nIDClipFormat) && (!GetDocument()->changeNothing)) {
-    item = (CTreeItem*)m_tree->itemAt(m_tree->contentsToViewport(ev->pos()));
+    item = (CTreeItem*)m_tree->itemAt(ev->pos());//(m_tree->contentsToViewport(ev->pos()));
     if (m_hitemDrop && (item != m_hitemDrop))
       m_tree->setItemSelected(m_hitemDrop, false);
     m_hitemDrop = item;
@@ -2263,17 +2250,17 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
                 || (CollectPos == 1) && (m_hitemDrop == m_hitemDrag->parent())
                 || (m_hitemDrop == GetPrevSiblingItem(m_hitemDrag) ))) {
             m_hitemDrop->setDropEnabled(false);
-            ev->ignore(m_tree->itemRect(m_hitemDrop));
-            ev->acceptAction(false);
+            ev->ignore(m_tree->visualItemRect(m_hitemDrop));
+            //ev->acceptAction(false);
             m_hitemDrop = 0;
             return;
           }
           else {
             if (ev->action() == QDropEvent::Copy) {
               m_tree->setCurAndSel(m_hitemDrop, false);
-              ev->accept(m_tree->itemRect(m_hitemDrop));
+              ev->accept(m_tree->visualItemRect(m_hitemDrop));
               m_hitemDrop->setDropEnabled(true);
-              ev->acceptAction(true);
+              //ev->acceptAction(true);
               return;
             }
             if ((((LavaDECL*)Clipdata->synEl)->DeclType == DragFeature)
@@ -2284,9 +2271,9 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
               if ( (m_hitemDrop == m_hitemDrag->parent())
                  || (m_hitemDrop->parent() == m_hitemDrag->parent())) {
                 m_tree->setCurAndSel(m_hitemDrop, false);
-                ev->accept(m_tree->itemRect(m_hitemDrop));
+                ev->accept(m_tree->visualItemRect(m_hitemDrop));
                 m_hitemDrop->setDropEnabled(true);
-                ev->acceptAction(true);
+                //ev->acceptAction(true);
                 return;
               }
               else {
@@ -2295,14 +2282,14 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
                     && RefacMove(m_hitemDrop)) {
                   m_tree->setCurAndSel(m_hitemDrop, false);
                   m_hitemDrop->setDropEnabled(true);
-                  ev->accept(m_tree->itemRect(m_hitemDrop));
-                  ev->acceptAction(true);
+                  ev->accept(m_tree->visualItemRect(m_hitemDrop));
+                  //ev->acceptAction(true);
                   return;
                 }
                 else {
                   m_hitemDrop->setDropEnabled(false);
-                  ev->ignore(m_tree->itemRect(m_hitemDrop));
-                  ev->acceptAction(false);
+                  ev->ignore(m_tree->visualItemRect(m_hitemDrop));
+                  //ev->acceptAction(false);
                   m_hitemDrop = 0;
                   return;
                 }
@@ -2311,8 +2298,8 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
             else { //DragDef
               m_hitemDrop->setDropEnabled(true);
               m_tree->setCurAndSel(m_hitemDrop, false);
-              ev->accept(m_tree->itemRect(m_hitemDrop));
-              ev->acceptAction(true);
+              ev->accept(m_tree->visualItemRect(m_hitemDrop));
+              //ev->acceptAction();
               return;
             }
           }
@@ -2322,8 +2309,8 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
             || (((LavaDECL*)Clipdata->synEl)->DeclType == DragFText)) {
             m_hitemDrop->setDropEnabled(true);
             m_tree->setCurAndSel(m_hitemDrop);
-            ev->accept(m_tree->itemRect(m_hitemDrop));
-            ev->acceptAction(true);
+            ev->accept(m_tree->visualItemRect(m_hitemDrop));
+            //ev->acceptAction(true);
             return;
           }
           else {
@@ -2332,15 +2319,15 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
                 || RefacMove(m_hitemDrop)) {
               m_hitemDrop->setDropEnabled(true);
               m_tree->setCurAndSel(m_hitemDrop);
-              ev->accept(m_tree->itemRect(m_hitemDrop));
-              ev->acceptAction(true);
+              ev->accept(m_tree->visualItemRect(m_hitemDrop));
+              //ev->acceptAction(true);
               return;
             }
             else {
               m_hitemDrop->setDropEnabled(false);
-              ev->ignore(m_tree->itemRect(m_hitemDrop));
+              ev->ignore(m_tree->visualItemRect(m_hitemDrop));
               m_hitemDrop = 0;
-              ev->acceptAction(false);
+              ev->ignore();//acceptAction(false);
               return;
             }
           }
@@ -2348,23 +2335,23 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
       }
       else {
         m_hitemDrop->setDropEnabled(false);
-        ev->ignore(m_tree->itemRect(m_hitemDrop));
+        ev->ignore(m_tree->visualItemRect(m_hitemDrop));
         m_hitemDrop = 0;
-        ev->acceptAction(false);
+        //acceptAction(false);
         return;
       }
     }//CanPaste
   }//HitTest
   ev->ignore();
-  ev->acceptAction(false);
+  //ev->acceptAction(false);
   m_hitemDrop = 0;
-  */
+  
 }
 
 void CLavaPEView::OnDrop(QDropEvent* ev)
-{/*
+{
   if (ev->provides(m_nIDClipFormat)) {
-    m_hitemDrop = (CTreeItem*)m_tree->itemAt(m_tree->contentsToViewport(ev->pos()));
+    m_hitemDrop = (CTreeItem*)m_tree->itemAt(ev->pos());//(m_tree->contentsToViewport(ev->pos()));
     if (m_hitemDrop) {
       lastDropped = m_hitemDrop;
       //m_tree->setItemSelected(m_hitemDrop, false);
@@ -2381,10 +2368,13 @@ void CLavaPEView::OnDrop(QDropEvent* ev)
         delete Clipdata;
       }
     }
-    ev->accept(m_hitemDrop != 0);
+    if (m_hitemDrop)
+      ev->accept();
+    else
+      ev->ignore();
   }
   else
-    ev->ignore();*/
+    ev->ignore();
 }
 
 
@@ -3506,7 +3496,8 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
                                                 || GetDocument()->nPlaceholders;
       drawTree = drawTree || GetDocument()->UndoMem.DrawTree;
       DrawTree(0, inUndoRedo, true, undoRedoCheck);
-      m_tree->update();
+      setUpdatesEnabled(true);
+      m_tree->viewport()->update();
       //if ((undoRedoCheck == CHLV_fit)  //the initial open
       //  && (GetDocument()->nTreeErrors || GetDocument()->nErrors || GetDocument()->nPlaceholders))
       //  GetDocument()->ShowErrorBox(true);
@@ -4441,7 +4432,7 @@ bool CLavaPEView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
 void CLavaPEView::on_whatNextAction_triggered()
 {
 /*
-  QWhatsThis::showText(m_tree->viewport()->mapToGlobal(m_tree->itemRect(m_tree->currentItem()).topLeft())+QPoint(200,20),
+  QWhatsThis::showText(m_tree->viewport()->mapToGlobal(m_tree->visualItemRect(m_tree->currentItem()).topLeft())+QPoint(200,20),
     QString(QObject::tr("<p>You may <b>delete</b> this item"
     " (DEL key or scissors button),<br>or you may <b>insert</b> another item after this one"
     " (click any enabled button on the declaration toolbar),"

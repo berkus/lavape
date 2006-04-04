@@ -66,7 +66,7 @@ public:
   LavaSource(QWidget* dragSource) :QMimeData() {}//!!Q3StoredDrag ( "QLavaTreeView", dragSource, "LavaSource_Drag") {}
   LavaSource() :QMimeData (){}//!! "QLavaTreeView",0,"LavaSource_Copy") {}
 
-  virtual const char* format( int i = 0 ) const;
+  //virtual const char* format( int i = 0 ) const;
 private:
   Q_OBJECT
 };
