@@ -198,6 +198,7 @@ static void printCommentLines (DString comment) {
   QString str(comment.c);
 
   str = str.replace('<',"&lt;");
+  str = str.replace('\r',"");
   str = str.replace('\n'," ");
   comm = qPrintable(str);
   code(comm.c);
