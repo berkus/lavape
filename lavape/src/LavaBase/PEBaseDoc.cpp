@@ -1130,8 +1130,9 @@ void CLavaBaseView::on_whatNextAction_triggered()
 {
   QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),"\"What next\" help not yet available for this selection",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
-
+/*
 void CLavaBaseView::howTo()
 {
   QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),"\"How to\" help not yet available for this view type",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
+*/
