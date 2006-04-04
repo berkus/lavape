@@ -56,25 +56,23 @@ operator "!=" := <B>read-only</B> <B>function</B>
 <DIV class="Element"><A NAME="5"></A><IMG SRC="LavaIcons/basicatt.png">
 op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
 <DIV class="Element"><A NAME="181"></A><I><FONT COLOR=#009000>
-Checks if "self" and op1 are identical
- (in the same way as state objects are compared)</FONT></I><BR>
+Checks if "self" and op1 are identical (in the same way as state objects are compared)</FONT></I><BR>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S181')">
 isSameAs := <B>read-only</B> <B>function</B>
 <DIV ID="S181">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I182')">Inputs:</DIV>
 <DIV ID="I182">
 <DIV class="Element"><A NAME="182"></A><IMG SRC="LavaIcons/basicatt.png">
-op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></DIV></DIV></DIV></DIV>
+op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
 <DIV class="Element"><A NAME="183"></A><I><FONT COLOR=#009000>
-Compares "self" and op1 constituent by constituent
- (in the same way as value objects are compared)</FONT></I><BR>
+Compares "self" and op1 constituent by constituent (in the same way as value objects are compared)</FONT></I><BR>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S183')">
 isEqualTo := <B>read-only</B> <B>function</B>
 <DIV ID="S183">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I184')">Inputs:</DIV>
 <DIV ID="I184">
 <DIV class="Element"><A NAME="184"></A><IMG SRC="LavaIcons/basicatt.png">
-op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></DIV></DIV></DIV></DIV>
+op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
 <DIV class="Element"><A NAME="489"></A><I><FONT COLOR=#009000>
 Outputs a value object that is equal to "self".  Applied primarily to state objects to get a "snapshot" of their current state.</FONT></I><BR>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S489')">
@@ -85,9 +83,7 @@ snapShot := <B>read-only</B> <B>function</B>
 <DIV class="Element"><A NAME="490"></A><IMG SRC="LavaIcons/basicatt.png">
 result : <A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></DIV></DIV></DIV></DIV>
 <DIV class="Element"><A NAME="399"></A><I><FONT COLOR=#009000>
-Call "DontSave" to prevent a Lava component object
- from being saved automatically when it isn't
- referenced any longer.</FONT></I><BR>
+Call "DontSave" to prevent a Lava component object from being saved automatically when it isn't referenced any longer.</FONT></I><BR>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S399')">
 dontSave := <B>read-only</B> <B>function</B>
 <DIV ID="S399">
@@ -829,39 +825,15 @@ ERRORCODE = <A HREF="javascript:gotoTarget('#97','S97')"><FONT color=#000000>Enu
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F413')">Features:</DIV>
 <DIV ID="F413">
 <DIV class="Element"><A NAME="413"></A><I><FONT COLOR=#009000>
-Indicates the reason of the exception by an item
- of an enumeration type</FONT></I><BR>
+Indicates the reason of the exception by an item of an enumeration type</FONT></I><BR>
 <IMG SRC="LavaIcons/paramatt.png">
 code : <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV>
 <DIV class="Element"><A NAME="414"></A><I><FONT COLOR=#009000>
-Associates a message text with this exception
- (may be empty)</FONT></I><BR>
+Associates a message text with this exception (may be empty)</FONT></I><BR>
 <IMG SRC="LavaIcons/basicatt.png">
-message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A><B>, optional</B></DIV>
-<DIV class="Element"><A NAME="410"></A><I><FONT COLOR=#009000>
-Delivers the last exception </FONT></I><BR>
-<IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S410')">
-last := <B>function</B>
-<DIV ID="S410">
-<DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O411')">Outputs:</DIV>
-<DIV ID="O411">
-<DIV class="Element"><A NAME="411"></A><I><FONT COLOR=#009000>
-substitutable type, since exception types are
- generally p-derived (but not c-derived) from "Exception":
- They arise by specializing the "ERRORCODE"
- virtual type of "Exception".</FONT></I><BR>
-<IMG SRC="LavaIcons/basicatt.png">
-last : {<A HREF="javascript:gotoTarget('#407','S407')"><FONT color=#000000>Exception</FONT></A>}<B>, optional</B></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="412"></A><I><FONT COLOR=#009000>
-Deactivate/remove the last exception.
- Not really required, since this happens
- automatically on successful exit from an
- "or if exception" branch.</FONT></I><BR>
-<IMG SRC="LavaIcons/function.png">
-drop := <B>function</B></DIV>
+message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV>
 <DIV class="Element"><A NAME="474"></A><I><FONT COLOR=#009000>
-Delivers the call stack of the last exception,
- or null, if no exception pending</FONT></I><BR>
+Delivers the call stack of the last exception, or null, if no exception pending</FONT></I><BR>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S474')">
 callStack := <B>read-only</B> <B>function</B>
 <DIV ID="S474">
@@ -881,7 +853,7 @@ initialize := <B>initializer</B>
 <DIV class="Element"><A NAME="427"></A><IMG SRC="LavaIcons/paramatt.png">
 code : <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV>
 <DIV class="Element"><A NAME="429"></A><IMG SRC="LavaIcons/basicatt.png">
-message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
+message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV></DIV></DIV>
 <DIV class="Element"><A NAME="415"></A><I><FONT COLOR=#009000>
 Default Catch function which simply calls "Show"</FONT></I><BR>
 <IMG SRC="LavaIcons/function.png">
@@ -983,16 +955,16 @@ initialize := <B>initializer</B>
 <DIV class="Element"><A NAME="428"></A><IMG SRC="LavaIcons/paramatt.png">
 code : <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV>
 <DIV class="Element"><A NAME="430"></A><IMG SRC="LavaIcons/basicatt.png">
-message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A><B>, optional</B></DIV></DIV>
+message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV>
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('X425')">Exec:</DIV><DIV ID=X425>
 
 <HR><PRE><FONT color=#0000FF>initializer</FONT> <B><FONT color=#000000>initialize</FONT></B>
 <FONT color=#0000FF>inputs</FONT><FONT color=#0000FF>:</FONT>
     <FONT color=#000000>&lt;Exception::ERRORCODE></FONT> <FONT color=#000000>code</FONT>,
-    <FONT color=#000000>String</FONT> <FONT color=#D1009E>message</FONT>
+    <FONT color=#000000>String</FONT> <FONT color=#000000>message</FONT>
 
 <FONT color=#0000FF>set</FONT> <FONT color=#000000>self</FONT>.<FONT color=#000000>code</FONT> <FONT color=#0000FF>&lt;==</FONT> <FONT color=#000000>code</FONT>;
-<FONT color=#0000FF>set</FONT> <FONT color=#000000>self</FONT>.<FONT color=#D1009E>message</FONT> <FONT color=#0000FF>&lt;==</FONT> <FONT color=#D1009E>message</FONT></PRE><HR>
+<FONT color=#0000FF>set</FONT> <FONT color=#000000>self</FONT>.<FONT color=#000000>message</FONT> <FONT color=#0000FF>&lt;==</FONT> <FONT color=#000000>message</FONT></PRE><HR>
 
 </DIV></DIV></DIV>
 <DIV class="Element"><A NAME="420"></A><IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S420')">
@@ -1012,30 +984,7 @@ show := <B>read-only</B> <B>function</B>
 
 <HR><PRE><FONT color=#0000FF>function</FONT> <B><FONT color=#000000>show</FONT></B>
 
-<FONT color=#0000FF>declare</FONT>
-   <FONT color=#000000>String</FONT> <A NAME="476"</A><FONT color=#D1009E>callStack</FONT>
-<FONT color=#0000FF>do</FONT>
-   <FONT color=#0000FF>set</FONT> <FONT color=#D1009E>callStack</FONT> <FONT color=#0000FF>&lt;==</FONT> <B><FONT color=#000000>Exception::callStack</FONT></B>;
-   <FONT color=#0000FF>if</FONT>
-      <FONT color=#000000>self</FONT>.<FONT color=#D1009E>message</FONT> = <FONT color=#0000FF>Ø</FONT>
-   <FONT color=#0000FF>then</FONT>
-      <FONT color=#0000FF>if</FONT>
-         <FONT color=#D1009E>callStack</FONT> = <FONT color=#0000FF>Ø</FONT>
-      <FONT color=#0000FF>then</FONT>
-         <FONT color=#0000FF>call</FONT> <FONT color=#000000>self</FONT>.<FONT color=#000000>code</FONT>.<B><FONT color=#000000>string</FONT></B>.<B><FONT color=#000000>messageBox</FONT></B>
-      <FONT color=#D1009E>else</FONT>
-         <FONT color=#0000FF>call</FONT> ( <FONT color=#000000>self</FONT>.<FONT color=#000000>code</FONT>.<B><FONT color=#000000>string</FONT></B> + "\n\n" + <B><FONT color=#000000>Exception::callStack</FONT></B> ).<B><FONT color=#000000>messageBox</FONT></B>
-      <FONT color=#0000FF>#if</FONT>
-   <FONT color=#D1009E>else</FONT>
-      <FONT color=#0000FF>if</FONT>
-         <FONT color=#D1009E>callStack</FONT> = <FONT color=#0000FF>Ø</FONT>
-      <FONT color=#0000FF>then</FONT>
-         <FONT color=#0000FF>call</FONT> ( <FONT color=#000000>self</FONT>.<FONT color=#000000>code</FONT>.<B><FONT color=#000000>string</FONT></B> + ":\n" + <FONT color=#000000>self</FONT>.<FONT color=#D1009E>message</FONT> ).<B><FONT color=#000000>messageBox</FONT></B>
-      <FONT color=#D1009E>else</FONT>
-         <FONT color=#0000FF>call</FONT> ( <FONT color=#000000>self</FONT>.<FONT color=#000000>code</FONT>.<B><FONT color=#000000>string</FONT></B> + ":\n" + <FONT color=#000000>self</FONT>.<FONT color=#D1009E>message</FONT> + "\n\n" + <B><FONT color=#000000>Exception::callStack</FONT></B> ).<B><FONT color=#000000>messageBox</FONT></B>
-      <FONT color=#0000FF>#if</FONT>
-   <FONT color=#0000FF>#if</FONT>
-<FONT color=#0000FF>#declare</FONT></PRE><HR>
+<FONT color=#0000FF>call</FONT> ( <FONT color=#000000>self</FONT>.<FONT color=#000000>code</FONT>.<B><FONT color=#000000>string</FONT></B> + ":\n" + <FONT color=#000000>self</FONT>.<FONT color=#000000>message</FONT> + "\n\n" + (<B><FONT color=#000000>Exception::callStack</FONT></B> <FONT color=#0000FF>else</FONT> "") ).<B><FONT color=#000000>messageBox</FONT></B></PRE><HR>
 
 </DIV></DIV></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
 
@@ -1215,187 +1164,182 @@ capital letters before small letters)</P>
 <TR><TD><A HREF="javascript:gotoTarget('#420','S420')"><FONT color=#000000>Exception::catch::impl</FONT></A></TD>
 <TD><A HREF="javascript:gotoTarget('#413','S413')"><FONT color=#000000>Exception::code</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#412','S412')"><FONT color=#000000>Exception::drop</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#419','S419')"><FONT color=#000000>Exception::impl</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#419','S419')"><FONT color=#000000>Exception::impl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#424','S424')"><FONT color=#000000>Exception::initialize</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#424','S424')"><FONT color=#000000>Exception::initialize</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#427','S427')"><FONT color=#000000>Exception::initialize::code</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#427','S427')"><FONT color=#000000>Exception::initialize::code</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#428','S428')"><FONT color=#000000>Exception::initialize::code::impl</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#428','S428')"><FONT color=#000000>Exception::initialize::code::impl</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#425','S425')"><FONT color=#000000>Exception::initialize::impl</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#425','S425')"><FONT color=#000000>Exception::initialize::impl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#429','S429')"><FONT color=#000000>Exception::initialize::message</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#429','S429')"><FONT color=#000000>Exception::initialize::message</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#430','S430')"><FONT color=#000000>Exception::initialize::message::impl</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#430','S430')"><FONT color=#000000>Exception::initialize::message::impl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#414','S414')"><FONT color=#000000>Exception::message</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#410','S410')"><FONT color=#000000>Exception::last</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#411','S411')"><FONT color=#000000>Exception::last::last</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#416','S416')"><FONT color=#000000>Exception::show</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#422','S422')"><FONT color=#000000>Exception::show::impl</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#414','S414')"><FONT color=#000000>Exception::message</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#416','S416')"><FONT color=#000000>Exception::show</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#493','S493')"><FONT color=#000000>Float::incBy</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#422','S422')"><FONT color=#000000>Exception::show::impl</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#494','S494')"><FONT color=#000000>Float::incBy::by</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#502','S502')"><FONT color=#000000>Float::multBy</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#493','S493')"><FONT color=#000000>Float::incBy</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#494','S494')"><FONT color=#000000>Float::incBy::by</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#503','S503')"><FONT color=#000000>Float::multBy::by</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#65','S65')"><FONT color=#000000>Float::operator "*"</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#502','S502')"><FONT color=#000000>Float::multBy</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#503','S503')"><FONT color=#000000>Float::multBy::by</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#66','S66')"><FONT color=#000000>Float::operator "*"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#67','S67')"><FONT color=#000000>Float::operator "*"::result</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#65','S65')"><FONT color=#000000>Float::operator "*"</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#66','S66')"><FONT color=#000000>Float::operator "*"::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#59','S59')"><FONT color=#000000>Float::operator "+"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#60','S60')"><FONT color=#000000>Float::operator "+"::op1</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#67','S67')"><FONT color=#000000>Float::operator "*"::result</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#59','S59')"><FONT color=#000000>Float::operator "+"</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#61','S61')"><FONT color=#000000>Float::operator "+"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#163','S163')"><FONT color=#000000>Float::operator "-"</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#60','S60')"><FONT color=#000000>Float::operator "+"::op1</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#61','S61')"><FONT color=#000000>Float::operator "+"::result</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#164','S164')"><FONT color=#000000>Float::operator "-"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#68','S68')"><FONT color=#000000>Float::operator "/"</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#163','S163')"><FONT color=#000000>Float::operator "-"</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#164','S164')"><FONT color=#000000>Float::operator "-"::result</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#69','S69')"><FONT color=#000000>Float::operator "/"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#70','S70')"><FONT color=#000000>Float::operator "/"::result</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#68','S68')"><FONT color=#000000>Float::operator "/"</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#69','S69')"><FONT color=#000000>Float::operator "/"::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#51','S51')"><FONT color=#000000>Float::operator "&lt;"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#52','S52')"><FONT color=#000000>Float::operator "&lt;"::op1</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#70','S70')"><FONT color=#000000>Float::operator "/"::result</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#51','S51')"><FONT color=#000000>Float::operator "&lt;"</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#55','S55')"><FONT color=#000000>Float::operator "&lt;="</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#56','S56')"><FONT color=#000000>Float::operator "&lt;="::op1</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#52','S52')"><FONT color=#000000>Float::operator "&lt;"::op1</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#55','S55')"><FONT color=#000000>Float::operator "&lt;="</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#53','S53')"><FONT color=#000000>Float::operator ">"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#54','S54')"><FONT color=#000000>Float::operator ">"::op1</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#56','S56')"><FONT color=#000000>Float::operator "&lt;="::op1</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#53','S53')"><FONT color=#000000>Float::operator ">"</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#57','S57')"><FONT color=#000000>Float::operator ">="</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#58','S58')"><FONT color=#000000>Float::operator ">="::op1</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#54','S54')"><FONT color=#000000>Float::operator ">"::op1</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#57','S57')"><FONT color=#000000>Float::operator ">="</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#483','S483')"><FONT color=#000000>Float::string</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#484','S484')"><FONT color=#000000>Float::string::str</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#58','S58')"><FONT color=#000000>Float::operator ">="::op1</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#483','S483')"><FONT color=#000000>Float::string</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#452','S452')"><FONT color=#000000>HardwareException</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#484','S484')"><FONT color=#000000>Float::string::str</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#456','S456')"><FONT color=#000000>&lt;HardwareException::ERRORCODE></FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#454','S454')"><FONT color=#000000>HardwareException::ErrorCode</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#452','S452')"><FONT color=#000000>HardwareException</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#456','S456')"><FONT color=#000000>&lt;HardwareException::ERRORCODE></FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#491','S491')"><FONT color=#000000>Integer::incBy</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#454','S454')"><FONT color=#000000>HardwareException::ErrorCode</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#492','S492')"><FONT color=#000000>Integer::incBy::by</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#500','S500')"><FONT color=#000000>Integer::multBy</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#491','S491')"><FONT color=#000000>Integer::incBy</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#492','S492')"><FONT color=#000000>Integer::incBy::by</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#501','S501')"><FONT color=#000000>Integer::multBy::by</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#47','S47')"><FONT color=#000000>Integer::operator "%"</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#500','S500')"><FONT color=#000000>Integer::multBy</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#501','S501')"><FONT color=#000000>Integer::multBy::by</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#48','S48')"><FONT color=#000000>Integer::operator "%"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#49','S49')"><FONT color=#000000>Integer::operator "%"::result</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#47','S47')"><FONT color=#000000>Integer::operator "%"</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#48','S48')"><FONT color=#000000>Integer::operator "%"::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#41','S41')"><FONT color=#000000>Integer::operator "*"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#42','S42')"><FONT color=#000000>Integer::operator "*"::op1</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#49','S49')"><FONT color=#000000>Integer::operator "%"::result</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#41','S41')"><FONT color=#000000>Integer::operator "*"</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#43','S43')"><FONT color=#000000>Integer::operator "*"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#35','S35')"><FONT color=#000000>Integer::operator "+"</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#42','S42')"><FONT color=#000000>Integer::operator "*"::op1</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#43','S43')"><FONT color=#000000>Integer::operator "*"::result</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#36','S36')"><FONT color=#000000>Integer::operator "+"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#37','S37')"><FONT color=#000000>Integer::operator "+"::result</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#35','S35')"><FONT color=#000000>Integer::operator "+"</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#36','S36')"><FONT color=#000000>Integer::operator "+"::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#161','S161')"><FONT color=#000000>Integer::operator "-"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#162','S162')"><FONT color=#000000>Integer::operator "-"::result</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#37','S37')"><FONT color=#000000>Integer::operator "+"::result</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#161','S161')"><FONT color=#000000>Integer::operator "-"</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#44','S44')"><FONT color=#000000>Integer::operator "/"</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#45','S45')"><FONT color=#000000>Integer::operator "/"::op1</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#162','S162')"><FONT color=#000000>Integer::operator "-"::result</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#44','S44')"><FONT color=#000000>Integer::operator "/"</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#46','S46')"><FONT color=#000000>Integer::operator "/"::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#27','S27')"><FONT color=#000000>Integer::operator "&lt;"</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#45','S45')"><FONT color=#000000>Integer::operator "/"::op1</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#46','S46')"><FONT color=#000000>Integer::operator "/"::result</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#28','S28')"><FONT color=#000000>Integer::operator "&lt;"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#31','S31')"><FONT color=#000000>Integer::operator "&lt;="</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#27','S27')"><FONT color=#000000>Integer::operator "&lt;"</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#28','S28')"><FONT color=#000000>Integer::operator "&lt;"::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#32','S32')"><FONT color=#000000>Integer::operator "&lt;="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#29','S29')"><FONT color=#000000>Integer::operator ">"</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#31','S31')"><FONT color=#000000>Integer::operator "&lt;="</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#32','S32')"><FONT color=#000000>Integer::operator "&lt;="::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#30','S30')"><FONT color=#000000>Integer::operator ">"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#33','S33')"><FONT color=#000000>Integer::operator ">="</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#29','S29')"><FONT color=#000000>Integer::operator ">"</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#30','S30')"><FONT color=#000000>Integer::operator ">"::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#34','S34')"><FONT color=#000000>Integer::operator ">="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#260','S260')"><FONT color=#000000>Integer::string</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#33','S33')"><FONT color=#000000>Integer::operator ">="</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#34','S34')"><FONT color=#000000>Integer::operator ">="::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#261','S261')"><FONT color=#000000>Integer::string::str</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#260','S260')"><FONT color=#000000>Integer::string</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#261','S261')"><FONT color=#000000>Integer::string::str</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#399','S399')"><FONT color=#000000>Object::dontSave</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#404','S404')"><FONT color=#000000>Object::dontSave::dontSave</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#399','S399')"><FONT color=#000000>Object::dontSave</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#487','S487')"><FONT color=#000000>Object::dump</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#488','S488')"><FONT color=#000000>Object::dump::name</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#404','S404')"><FONT color=#000000>Object::dontSave::dontSave</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#487','S487')"><FONT color=#000000>Object::dump</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#385','S385')"><FONT color=#000000>Object::finalize</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#183','S183')"><FONT color=#000000>Object::isEqualTo</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#488','S488')"><FONT color=#000000>Object::dump::name</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#385','S385')"><FONT color=#000000>Object::finalize</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#184','S184')"><FONT color=#000000>Object::isEqualTo::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#181','S181')"><FONT color=#000000>Object::isSameAs</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#183','S183')"><FONT color=#000000>Object::isEqualTo</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#184','S184')"><FONT color=#000000>Object::isEqualTo::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#182','S182')"><FONT color=#000000>Object::isSameAs::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#4','S4')"><FONT color=#000000>Object::operator "!="</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#181','S181')"><FONT color=#000000>Object::isSameAs</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#182','S182')"><FONT color=#000000>Object::isSameAs::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#5','S5')"><FONT color=#000000>Object::operator "!="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#2','S2')"><FONT color=#000000>Object::operator "="</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#4','S4')"><FONT color=#000000>Object::operator "!="</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#5','S5')"><FONT color=#000000>Object::operator "!="::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#3','S3')"><FONT color=#000000>Object::operator "="::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#506','S506')"><FONT color=#000000>Object::setState</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#2','S2')"><FONT color=#000000>Object::operator "="</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#3','S3')"><FONT color=#000000>Object::operator "="::op1</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#507','S507')"><FONT color=#000000>Object::setState::value</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#489','S489')"><FONT color=#000000>Object::snapShot</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#506','S506')"><FONT color=#000000>Object::setState</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#507','S507')"><FONT color=#000000>Object::setState::value</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#490','S490')"><FONT color=#000000>Object::snapShot::result</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#524','S524')"><FONT color=#000000>Object::zombifyRec</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#489','S489')"><FONT color=#000000>Object::snapShot</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#490','S490')"><FONT color=#000000>Object::snapShot::result</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#525','S525')"><FONT color=#000000>Object::zombifyRec::acquaintancesToo</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#520','S520')"><FONT color=#000000>RTS</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#524','S524')"><FONT color=#000000>Object::zombifyRec</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#525','S525')"><FONT color=#000000>Object::zombifyRec::acquaintancesToo</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#522','S522')"><FONT color=#000000>RTS::caller</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#523','S523')"><FONT color=#000000>RTS::caller::caller</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#520','S520')"><FONT color=#000000>RTS</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#522','S522')"><FONT color=#000000>RTS::caller</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#462','S462')"><FONT color=#000000>RuntimeException</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#466','S466')"><FONT color=#000000>&lt;RuntimeException::ERRORCODE></FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#523','S523')"><FONT color=#000000>RTS::caller::caller</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#462','S462')"><FONT color=#000000>RuntimeException</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#464','S464')"><FONT color=#000000>RuntimeException::ErrorCode</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#98','S98')"><FONT color=#000000>Set</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#466','S466')"><FONT color=#000000>&lt;RuntimeException::ERRORCODE></FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#464','S464')"><FONT color=#000000>RuntimeException::ErrorCode</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#100','S100')"><FONT color=#000000>Set::add</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#98','S98')"><FONT color=#000000>Set</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#101','S101')"><FONT color=#000000>Set::add::data</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#216','S216')"><FONT color=#000000>Set::addGetHandle</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#100','S100')"><FONT color=#000000>Set::add</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#101','S101')"><FONT color=#000000>Set::add::data</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#218','S218')"><FONT color=#000000>Set::addGetHandle::add_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#217','S217')"><FONT color=#000000>Set::addGetHandle::data</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#216','S216')"><FONT color=#000000>Set::addGetHandle</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#218','S218')"><FONT color=#000000>Set::addGetHandle::add_hdl</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#390','S390')"><FONT color=#000000>Set::count</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#392','S392')"><FONT color=#000000>Set::count::count</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#217','S217')"><FONT color=#000000>Set::addGetHandle::data</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#390','S390')"><FONT color=#000000>Set::count</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#391','S391')"><FONT color=#000000>Set::count::data</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#231','S231')"><FONT color=#000000>Set::get</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#392','S392')"><FONT color=#000000>Set::count::count</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#391','S391')"><FONT color=#000000>Set::count::data</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#233','S233')"><FONT color=#000000>Set::get::data</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#232','S232')"><FONT color=#000000>Set::get::get_hdl</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#231','S231')"><FONT color=#000000>Set::get</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#233','S233')"><FONT color=#000000>Set::get::data</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#228','S228')"><FONT color=#000000>Set::getAndRemove</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#230','S230')"><FONT color=#000000>Set::getAndRemove::data</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#232','S232')"><FONT color=#000000>Set::get::get_hdl</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#228','S228')"><FONT color=#000000>Set::getAndRemove</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#229','S229')"><FONT color=#000000>Set::getAndRemove::remove_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#225','S225')"><FONT color=#000000>Set::remove</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#230','S230')"><FONT color=#000000>Set::getAndRemove::data</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#229','S229')"><FONT color=#000000>Set::getAndRemove::remove_hdl</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#226','S226')"><FONT color=#000000>Set::remove::remove_hdl</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#225','S225')"><FONT color=#000000>Set::remove</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#226','S226')"><FONT color=#000000>Set::remove::remove_hdl</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#96','S96')"><FONT color=#000000>String::messageBox</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#93','S93')"><FONT color=#000000>String::operator "+"</FONT></A></TD>
 </TR>
-<TR><TD><A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#96','S96')"><FONT color=#000000>String::messageBox</FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#93','S93')"><FONT color=#000000>String::operator "+"</FONT></A></TD>
-<TD><A HREF="javascript:gotoTarget('#94','S94')"><FONT color=#000000>String::operator "+"::op1</FONT></A></TD>
-</TR>
-<TR><TD><A HREF="javascript:gotoTarget('#95','S95')"><FONT color=#000000>String::operator "+"::result</FONT></A></TD>
+<TR><TD><A HREF="javascript:gotoTarget('#94','S94')"><FONT color=#000000>String::operator "+"::op1</FONT></A></TD>
+<TD><A HREF="javascript:gotoTarget('#95','S95')"><FONT color=#000000>String::operator "+"::result</FONT></A></TD>
 </TR>
 </TABLE></FONT>
 </DIV></BODY></HTML>
