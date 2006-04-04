@@ -109,8 +109,10 @@ void CLavaMainFrame::makeStyle(const QString &style)
   if (!style.isEmpty()) {
     if (style == "Windows")
       QApplication::setStyle(new MyWindowsStyle);
+#ifdef WIN32
     else if (style == "WindowsXP")
       QApplication::setStyle(new MyWindowsXPStyle);
+#endif
     else if (style == "CDE")
       QApplication::setStyle(new MyCDEStyle);
     else if (style == "Motif")
@@ -135,10 +137,10 @@ void CLavaMainFrame::UpdateUI()
 {
   CLavaDoc* doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
   bool enable = doc && doc->isObject;
-  preconditionsAction->setEnabled(!LBaseData->m_checkPostconditions);  
-  preconditionsAction->setOn(LBaseData->m_checkPreconditions);  
-  postconditionsAction->setOn(LBaseData->m_checkPostconditions);  
-  invariantsAction->setOn(LBaseData->m_checkInvariants); 
+  preconditionsAction->setEnabled(!LBaseData->m_checkPostconditions);
+  preconditionsAction->setOn(LBaseData->m_checkPreconditions);
+  postconditionsAction->setOn(LBaseData->m_checkPostconditions);
+  invariantsAction->setOn(LBaseData->m_checkInvariants);
   pmDumpAction->setOn(LBaseData->m_pmDumps);
   fileCloseAction->setEnabled(enable);
   fileSaveAction->setEnabled(enable);
@@ -150,7 +152,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 	HistWindow *hw;
 	DString title;
   CustomEvent *ev=(CustomEvent*)ev0;
-	
+
 	if (ev->data()) {
 		title = DString(qPrintable(((QWidget*)ev->data())->caption()));
 		if (title.l) {

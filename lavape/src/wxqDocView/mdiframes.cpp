@@ -390,8 +390,11 @@ wxMDIChildFrame::~wxMDIChildFrame()
   return px;\
 }
 
-MYSTYLEIMP(Windows)
+#ifdef WIN32
 MYSTYLEIMP(WindowsXP)
+#endif
+
+MYSTYLEIMP(Windows)
 MYSTYLEIMP(Plastique)
 MYSTYLEIMP(CDE)
 MYSTYLEIMP(Motif)

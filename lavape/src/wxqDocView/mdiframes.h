@@ -138,8 +138,10 @@ public:\
   int pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const;\
 };
 
-MYSTYLE(Windows)
+#ifdef WIN32
 MYSTYLE(WindowsXP)
+#endif
+MYSTYLE(Windows)
 MYSTYLE(Plastique)
 MYSTYLE(Motif)
 MYSTYLE(CDE)
