@@ -437,12 +437,19 @@ private:
   CExecView *execView;
 };
 
-class CComment : public QDialog, public Ui_CComment {
+class LAVAEXECS_DLL CComment : public QDialog, public Ui_CComment {
 
 public:
   CComment(QWidget* parent = 0) : QDialog(parent) {
     setupUi(this);
   }
+
+public slots:
+  virtual void on_okButton_clicked();
+  virtual void on_cancelButton_clicked();
+
+private:
+  Q_OBJECT
 };
 
 #endif

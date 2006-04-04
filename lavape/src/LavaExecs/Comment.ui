@@ -1,132 +1,134 @@
-<ui version="4.0" stdsetdef="1" >
-  <author></author>
-  <comment></comment>
-  <exportmacro></exportmacro>
-  <class>CComment</class>
-  <widget class="QDialog" name="CComment" >
-    <property name="geometry" >
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>491</width>
-        <height>303</height>
-      </rect>
-    </property>
-    <property name="sizePolicy" >
-      <sizepolicy>
-        <hsizetype>7</hsizetype>
-        <vsizetype>7</vsizetype>
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-      </sizepolicy>
-    </property>
-    <property name="windowTitle" >
-      <string>Comment</string>
-    </property>
-    <property name="windowIcon" >
-      <pixmap>image0</pixmap>
-    </property>
-    <widget class="QWidget" name="layout4" >
-      <property name="geometry" >
-        <rect>
-          <x>20</x>
-          <y>10</y>
-          <width>452</width>
-          <height>280</height>
-        </rect>
-      </property>
-      <layout class="QVBoxLayout" >
-        <property name="margin" >
-          <number>0</number>
-        </property>
-        <item>
-          <widget class="Q3TextEdit" name="text" >
-            <property name="wordWrap" >
-              <enum>NoWrap</enum>
-            </property>
-          </widget>
-        </item>
-        <item>
-          <spacer name="spacer2" >
-            <property name="sizeHint" >
-              <size>
-                <width>20</width>
-                <height>5</height>
-              </size>
-            </property>
-            <property name="sizeType" >
-              <enum>Maximum</enum>
-            </property>
-            <property name="orientation" >
-              <enum>Vertical</enum>
-            </property>
-          </spacer>
-        </item>
-        <item>
-          <layout class="QHBoxLayout" >
-            <property name="margin" >
-              <number>0</number>
-            </property>
-            <item>
-              <widget class="QCheckBox" name="trailing_comment" >
-                <property name="text" >
-                  <string>Trailing comment</string>
-                </property>
-              </widget>
-            </item>
-            <item>
-              <widget class="QCheckBox" name="inline_comment" >
-                <property name="text" >
-                  <string>Inline comment</string>
-                </property>
-              </widget>
-            </item>
-            <item>
-              <spacer name="spacer1" >
-                <property name="sizeHint" >
-                  <size>
-                    <width>40</width>
-                    <height>20</height>
-                  </size>
-                </property>
-                <property name="sizeType" >
-                  <enum>Expanding</enum>
-                </property>
-                <property name="orientation" >
-                  <enum>Horizontal</enum>
-                </property>
-              </spacer>
-            </item>
-            <item>
-              <widget class="QPushButton" name="pushButton1" >
-                <property name="text" >
-                  <string>OK</string>
-                </property>
-                <property name="default" >
-                  <bool>true</bool>
-                </property>
-              </widget>
-            </item>
-            <item>
-              <widget class="QPushButton" name="pushButton2" >
-                <property name="text" >
-                  <string>Cancel</string>
-                </property>
-              </widget>
-            </item>
-          </layout>
-        </item>
-      </layout>
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>CComment</class>
+ <widget class="QDialog" name="CComment" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>491</width>
+    <height>303</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy>
+    <hsizetype>7</hsizetype>
+    <vsizetype>7</vsizetype>
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Comment</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset/>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item>
+    <widget class="Q3TextEdit" name="text" >
+     <property name="wordWrap" >
+      <enum>Q3TextEdit::NoWrap</enum>
+     </property>
     </widget>
-  </widget>
-  <layoutdefault spacing="6" margin="11" />
-  <pixmapfunction></pixmapfunction>
-  <images>
-    <image name="image0" >
-      <data format="XPM.GZ" length="422" >789c9d8e3d0e022110467b4e31613a62d8a5581be3114c2c4d8c058c215a6ca36bb131dedd197e14b5f34108df6318e80cecb61b309dba4e7e3a13d0c95fc01c6fe338ef0febbbd26e096e80019c5e281d8000fb8444aa3146895622f53224a2c4186bb1cf51442a66b0c2fbecb0a138445f11993ab30a21e48565756d61767cfe9ad9b5fd7ce9c7efa63b1fefdaf6276f671b8ab33f8e327fb92ff463a59e3ac15b22</data>
-    </image>
-  </images>
-  <includes>
-    <include location="local" >ComboBar.h</include>
-  </includes>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Maximum</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>450</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QCheckBox" name="trailing_comment" >
+       <property name="text" >
+        <string>Trailing comment</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="inline_comment" >
+       <property name="text" >
+        <string>Inline comment</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType" >
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="okButton" >
+       <property name="text" >
+        <string>OK</string>
+       </property>
+       <property name="default" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton" >
+       <property name="text" >
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>Q3TextEdit</class>
+   <extends>Q3Frame</extends>
+   <header>q3textedit.h</header>
+   <container>0</container>
+   <pixmap></pixmap>
+  </customwidget>
+ </customwidgets>
+ <includes>
+  <include location="local" >ComboBar.h</include>
+ </includes>
+ <resources/>
+ <connections/>
 </ui>

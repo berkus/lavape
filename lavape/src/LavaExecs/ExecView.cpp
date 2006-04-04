@@ -2118,7 +2118,7 @@ bool CExecView::IsTopLevelToken ()
     || text->currentSelection->data.token == Larrow_T
     || text->currentSelection->data.token == Rarrow_T
     || text->currentSynObj->primaryToken == arrayAtIndex_T
-                || selStartPos == text->currentSynObj->startToken);
+    || selStartPos == text->currentSynObj->startToken);
 }
 
 bool CExecView::IsDeletablePrimary () {
@@ -6891,3 +6891,13 @@ void CExecView::OnUpdateDbgStop(QAction* action) {
   action->setEnabled(LBaseData->enableBreakpoints);
 }
 
+void CComment::on_okButton_clicked()
+{
+  accept();
+}
+
+
+void CComment::on_cancelButton_clicked()
+{
+  reject();
+}
