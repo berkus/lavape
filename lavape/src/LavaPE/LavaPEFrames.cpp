@@ -257,19 +257,20 @@ void CLavaMainFrame::makeStyle(const QString &style)
   isVisible = Toolbar_7->isVisible();
   if (LBaseData->declareButton) {
     delete Toolbar_7;
-    Toolbar_7 = new QToolBar( QString(""), this);
+    Toolbar_7 = new QToolBar(this);
+    if (!isVisible)
+   		Toolbar_7->hide();
+    Toolbar_7->setObjectName(QString::fromUtf8("Toolbar_7"));
+    Toolbar_7->setOrientation(Qt::Vertical);
+    addToolBar(Qt::RightToolBarArea,Toolbar_7);
     Toolbar_7->setAllowedAreas(Qt::RightToolBarArea);
   }
   else
     firstTime = true;
-  Toolbar_7->setLabel(tr("Keyword toolbar"));
+  Toolbar_7->setToolTip(tr("Keyword toolbar"));
   int w = Toolbar_7->width();
   Toolbar_7->setContentsMargins(0,0,0,0);
   fillKwdToolbar(Toolbar_7);
-	if (isVisible)
-		Toolbar_7->show();
-	else
-		Toolbar_7->hide();
 
   if (!firstTime) {
     delete LBaseData->myWhatsThisAction;
@@ -279,8 +280,8 @@ void CLavaMainFrame::makeStyle(const QString &style)
   if (theActiveFrame && QString(theActiveFrame->name()) != "ExecFrame")
     CExecView::DisableKwdButtons();
 
-	if (completelyCreated)
-		repaint();
+//	if (completelyCreated)
+//		repaint();
 }
 
 CLavaMainFrame::~CLavaMainFrame()
@@ -369,14 +370,12 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   pb->setFlat(true);
   pb->setAutoDefault(false);
   pb->setMinimumHeight(pb->fontInfo().pixelSize());
-//  pb->setMaximumWidth(pb->fontMetrics().width("else-expr")+6);
   pb->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding);
   int w = pb->width();
   if (!tooltip.isEmpty())
     QToolTip::add(pb,tooltip);
   if (!whatsThis.isEmpty())
     new WhatsThis(whatsThis,pb);
-  pb->show();
 }
 
 void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
