@@ -255,22 +255,13 @@ void CLavaMainFrame::makeStyle(const QString &style)
   }
 
   isVisible = Toolbar_7->isVisible();
-  if (LBaseData->declareButton) {
-    delete Toolbar_7;
-    Toolbar_7 = new QToolBar(this);
-    if (!isVisible)
-   		Toolbar_7->hide();
-    Toolbar_7->setObjectName(QString::fromUtf8("Toolbar_7"));
-    Toolbar_7->setOrientation(Qt::Vertical);
-    addToolBar(Qt::RightToolBarArea,Toolbar_7);
-    Toolbar_7->setAllowedAreas(Qt::RightToolBarArea);
-  }
-  else
+  if (!LBaseData->declareButton) {
     firstTime = true;
-  Toolbar_7->setToolTip(tr("Keyword toolbar"));
+    fillKwdToolbar(Toolbar_7);
+  }
+  Toolbar_7->setAllowedAreas(Qt::RightToolBarArea|Qt::LeftToolBarArea);
   int w = Toolbar_7->width();
   Toolbar_7->setContentsMargins(0,0,0,0);
-  fillKwdToolbar(Toolbar_7);
 
   if (!firstTime) {
     delete LBaseData->myWhatsThisAction;
@@ -279,9 +270,6 @@ void CLavaMainFrame::makeStyle(const QString &style)
 
   if (theActiveFrame && QString(theActiveFrame->name()) != "ExecFrame")
     CExecView::DisableKwdButtons();
-
-//	if (completelyCreated)
-//		repaint();
 }
 
 CLavaMainFrame::~CLavaMainFrame()
@@ -1455,24 +1443,6 @@ void CLavaMainFrame::emitSignal(){
 
 // end of exec handlers
 /////////////////////////////////////////////
-void CLavaMainFrame::adjustToolbar_7 () {
-  bool isVisible=Toolbar_7->isVisible();
-
-	delete Toolbar_7;
-  Toolbar_7 = 0;
-  Toolbar_7 = new QToolBar( QString(""), this);
-  Toolbar_7->setAllowedAreas(Qt::RightToolBarArea);
-  Toolbar_7->setLabel(tr("Keyword toolbar"));
-  Toolbar_7->setContentsMargins(0,0,0,0);
-  fillKwdToolbar(Toolbar_7);
-	if (isVisible)
-	  Toolbar_7->show();
-	else
-	  Toolbar_7->hide();
-
-  delete LBaseData->myWhatsThisAction;
-  fillHelpToolbar(HelpToolbar);
-}
 
 /*
 void CLavaMainFrame::on_cascadeAction_triggered()

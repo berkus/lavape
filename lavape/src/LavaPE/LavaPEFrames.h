@@ -282,7 +282,6 @@ public slots:
 
     virtual void on_viewTB6Action_triggered();
     virtual void on_viewTB7Action_triggered();
-    virtual void adjustToolbar_7 ();
     virtual void on_setTreeFontAction_triggered();
     virtual void on_setFormTextFontAction_triggered();
     virtual void on_setFormLabelFontAction_triggered();

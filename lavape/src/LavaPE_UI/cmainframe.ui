@@ -281,9 +281,6 @@
    <property name="whatsThis" >
     <string>Insert keyword expressions and statements\ninto executable code</string>
    </property>
-   <property name="movable" >
-    <bool>false</bool>
-   </property>
    <property name="orientation" >
     <enum>Qt::Vertical</enum>
    </property>

@@ -647,8 +647,7 @@ void CLavaPEApp::OnChooseGlobalFont()
   if (ok) {
     LBaseData.m_GlobalFont = lf;
     LBaseData.m_lfDefGlobalFont = lf.toString();
-          setFont(LBaseData.m_GlobalFont,true);
-    ((CLavaMainFrame*)wxTheApp->m_appWindow)->adjustToolbar_7();
+    setFont(LBaseData.m_GlobalFont,true);
     saveSettings();
   }
 }
