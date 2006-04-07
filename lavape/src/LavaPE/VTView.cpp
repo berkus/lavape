@@ -899,11 +899,11 @@ void CVTView::DisableActions()
   frame->gotoImplAction->setEnabled(false);
 }
 
-
+/*
 VTWhatsThis::VTWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
   listView = lv;
 }
-
+*/
 
 QString VTWhatsThis::text(const QPoint &point) {
   CTreeItem *item=(CTreeItem*)listView->itemAt(point);

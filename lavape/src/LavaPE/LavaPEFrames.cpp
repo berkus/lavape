@@ -361,8 +361,9 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   int w = pb->width();
   if (!tooltip.isEmpty())
     QToolTip::add(pb,tooltip);
-  if (!whatsThis.isEmpty())
+/*  if (!whatsThis.isEmpty())
     new WhatsThis(whatsThis,pb);
+*/
 }
 
 void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
@@ -381,8 +382,9 @@ void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,
 //  pb->setMaximumWidth(pb->fontMetrics().width("What's this?")+6);
   if (tooltip)
     QToolTip::add(pb,tooltip);
-  if (whatsThis)
+ /* if (whatsThis)
     new WhatsThis(whatsThis,pb);
+*/
   pb->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
   pb->show();
 }

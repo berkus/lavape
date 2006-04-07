@@ -23,7 +23,7 @@
 //#include "q3dragobject.h"
 
 
-class TreeWhatsThis : public WhatsThis
+class TreeWhatsThis// : public WhatsThis
 {
 public:
   TreeWhatsThis(MyListView *lv);

@@ -413,11 +413,11 @@ void CInclView::on_whatNextAction_triggered()
 }
 
 
-
+/*
 InclWhatsThis::InclWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
   listView = lv;
 }
-
+*/
 
 QString InclWhatsThis::text(const QPoint &point) {
   CTreeItem *item=(CTreeItem*)listView->itemAt(point);

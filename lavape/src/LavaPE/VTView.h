@@ -13,7 +13,7 @@
 #include "qstring.h"
 
 
-class VTWhatsThis : public WhatsThis
+class VTWhatsThis// : public WhatsThis
 {
 public:
   VTWhatsThis(MyListView *lv);

@@ -48,7 +48,7 @@ private:
     Q_OBJECT;
 };
 
-class InclWhatsThis : public WhatsThis
+class InclWhatsThis// : public WhatsThis
 {
 public:
   InclWhatsThis(MyListView *lv);

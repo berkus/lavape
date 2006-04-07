@@ -5324,11 +5324,11 @@ void CLavaPEView::OnUpdateShowOptionals(QAction* action)
 
 //--------------------------------------------------------------------------
 
-
+/*
 TreeWhatsThis::TreeWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
   listView = lv;
 }
-
+*/
 
 QString TreeWhatsThis::text(const QPoint &point) {
   CTreeItem *item=(CTreeItem*)listView->itemAt(point);

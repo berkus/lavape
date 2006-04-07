@@ -1357,8 +1357,7 @@ unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,
 
 #endif
 
-
-
+/*
 WhatsThis::WhatsThis(QString text,QWidget *w)
 {
   if (!text.isEmpty()) {
@@ -1392,7 +1391,7 @@ QString WhatsThis::text(const QPoint&)
 {
   return whatsThisText;
 }
-
+*/
 void ShowPage(char *file) {
   QString fileName=ExeDir+QString("/../doc/html/")+QString(file);
 	QString path(ExeDir);
