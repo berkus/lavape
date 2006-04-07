@@ -50,7 +50,7 @@ CVTView::CVTView(QWidget* parent, wxDocument *doc)
   activeInt = false;
   currentBrType = findTID;
   setFont(LBaseData->m_TreeFont);
-  new VTWhatsThis(m_tree);
+//  new VTWhatsThis(m_tree);
 }
 
 CVTView::~CVTView()
@@ -904,7 +904,7 @@ VTWhatsThis::VTWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
   listView = lv;
 }
 */
-
+/*
 QString VTWhatsThis::text(const QPoint &point) {
   CTreeItem *item=(CTreeItem*)listView->itemAt(point);
   CVTItemData *itd=(CVTItemData*)item->getItemData();
@@ -932,3 +932,4 @@ QString VTWhatsThis::text(const QPoint &point) {
     }
   return QString(QObject::tr("<p>No specific help available for this tree node</p>"));
 }
+*/

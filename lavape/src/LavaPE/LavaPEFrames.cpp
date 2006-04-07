@@ -1955,7 +1955,7 @@ void CFormFrame::InitialUpdate()
 void CFormFrame::CalcSplitters()
 {
 }
-
+/*
 QString ToolbarWhatsThis::text(const QPoint &point) {
   QToolButton *button;
 
@@ -2001,3 +2001,4 @@ void CLavaMainFrame::fillHelpMap5(ToolbarWhatsThis *tbw) {
 
 void CLavaMainFrame::fillHelpMap6(ToolbarWhatsThis *tbw) {
 }
+*/

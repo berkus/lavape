@@ -95,7 +95,7 @@ void wxMainFrame::windowActivated(QWidget* w)
   }
 }
 
-bool eventFilter(QObject *obj, QEvent *ev) {
+bool wxMainFrame::eventFilter(QObject *obj, QEvent *ev) {
   return false;
 }
 

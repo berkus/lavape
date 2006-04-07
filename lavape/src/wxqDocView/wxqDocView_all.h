@@ -6,5 +6,7 @@
 #include "docview.h"
 #include "mdiframes.h"
 #include "wxExport.h"
+#include "defs.h"
+#include "setup.h"
 
 #endif

@@ -5,15 +5,10 @@
 #include "wxqDocView_all.h"
 #include "LavaBase_all.h"
 
-#ifndef INTERPRETER
+//#ifndef INTERPRETER
 #include "ExecView.h"
-//#include "Q6_null.xpm"
 #include <QPixmap>
-#endif
-//#include "execframe.xpm"
-//#include "debugStop.xpm"
-//#include "debugStopGreen.xpm"
-//#include "breakPoint.xpm"
+//#endif
 
 #include "Check.h"
 #include "ComboBar.h"

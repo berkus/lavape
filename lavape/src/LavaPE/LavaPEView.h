@@ -22,7 +22,7 @@
 #include "qclipboard.h"
 //#include "q3dragobject.h"
 
-
+/*
 class TreeWhatsThis// : public WhatsThis
 {
 public:
@@ -33,7 +33,7 @@ public:
 private:
   MyListView *listView;
 };
-
+*/
 
 enum TIType {
   TIType_DECL,         // LavaDECL node

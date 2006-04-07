@@ -426,11 +426,11 @@ protected:
   void focusOutEvent(QFocusEvent *ev);
 
 };
-
+/*
 class ExecWhatsThis// : public WhatsThis
 {
 public:
-  ExecWhatsThis(CExecView *ev)/* : WhatsThis(0,ev)*/ { execView = ev; }
+  ExecWhatsThis(CExecView *ev) : WhatsThis(0,ev) { execView = ev; }
 
 //  bool clicked(const QString &whatsThisHref);
   QString text(const QPoint&);
@@ -438,7 +438,7 @@ public:
 private:
   CExecView *execView;
 };
-
+*/
 class LAVAEXECS_DLL CComment : public QDialog, public Ui_CComment {
 
 public:

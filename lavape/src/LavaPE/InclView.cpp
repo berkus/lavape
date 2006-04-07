@@ -46,7 +46,7 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
   InitComplete = false;
   connect(m_tree,SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
   setFont(LBaseData->m_TreeFont);
-  new InclWhatsThis(m_tree);
+//  new InclWhatsThis(m_tree);
   GetListView()->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
@@ -418,7 +418,7 @@ InclWhatsThis::InclWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
   listView = lv;
 }
 */
-
+/*
 QString InclWhatsThis::text(const QPoint &point) {
   CTreeItem *item=(CTreeItem*)listView->itemAt(point);
 
@@ -427,3 +427,4 @@ QString InclWhatsThis::text(const QPoint &point) {
   else
     return QString(QObject::tr("This is an <a href=\"../Packages.htm#include\">included</a> <b><i><font color=red>Lava</font></i></b> file"));
 }
+*/

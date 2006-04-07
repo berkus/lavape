@@ -217,8 +217,8 @@ void CLavaPEView::CleanListView()
   delete m_tree;
   m_tree = new MyListView(this);
   layout->addWidget(m_tree);
-  new TreeWhatsThis(m_tree);
-	//setFocusProxy(m_tree);
+//  new TreeWhatsThis(m_tree);
+//  setFocusProxy(m_tree);
 //  m_tree->setSorting(-1);
   m_tree->setColumnCount(1);
   m_tree->setRootIsDecorated(true);
@@ -5329,7 +5329,7 @@ TreeWhatsThis::TreeWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
   listView = lv;
 }
 */
-
+/*
 QString TreeWhatsThis::text(const QPoint &point) {
   CTreeItem *item=(CTreeItem*)listView->itemAt(point);
   CMainItemData *itd=(CMainItemData*)item->getItemData();
@@ -5409,3 +5409,4 @@ QString TreeWhatsThis::text(const QPoint &point) {
   }
   return QString(QObject::tr("<p>No specific help available for this declaration item</p>"));
 }
+*/

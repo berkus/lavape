@@ -59,13 +59,14 @@ public:
   void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
   void newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
 	void customEvent(QEvent *ev);
+/*
   void fillHelpMap1(ToolbarWhatsThis *tbw);
   void fillHelpMap2(ToolbarWhatsThis *tbw);
   void fillHelpMap3(ToolbarWhatsThis *tbw);
   void fillHelpMap4(ToolbarWhatsThis *tbw);
   void fillHelpMap5(ToolbarWhatsThis *tbw);
   void fillHelpMap6(ToolbarWhatsThis *tbw);
-
+*/
 private:
 	int	lastTile;
 

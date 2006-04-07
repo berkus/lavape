@@ -135,7 +135,7 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   destroying = false;
   Base = 0;
   myDoc = 0;
-  new ExecWhatsThis(this);
+//  new ExecWhatsThis(this);
   redCtl->update();
 }
 
@@ -499,15 +499,12 @@ bool ExecContents::event(QEvent *ev) {
   else if (ev->type() == QEvent::WhatsThisClicked) {
     return true;
   }
-  else return false;
+  else
+    return QWidget::event(ev);
 }
 
 QString ExecContents::text(const QPoint &point) {
-  int xc, yc;
-
-//???  execView->sv->viewportToContents(point.x(),point.y(),xc,yc);
-  QPoint pc = QPoint(xc-2,yc-2); // -2 seems to be necessary, don't know why
-  execView->text->NewSel(&pc);
+  execView->text->NewSel(&point);
   if (execView->text->newSelection) {
     wxDocManager::GetDocumentManager()->SetActiveView(execView,true);
     execView->Select();

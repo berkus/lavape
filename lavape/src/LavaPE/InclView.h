@@ -47,7 +47,7 @@ public slots:
 private:
     Q_OBJECT;
 };
-
+/*
 class InclWhatsThis// : public WhatsThis
 {
 public:
@@ -58,5 +58,5 @@ public:
 private:
   MyListView *listView;
 };
-
+*/
 #endif

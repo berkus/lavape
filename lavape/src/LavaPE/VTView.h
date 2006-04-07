@@ -12,7 +12,7 @@
 #include "qobject.h"
 #include "qstring.h"
 
-
+/*
 class VTWhatsThis// : public WhatsThis
 {
 public:
@@ -23,7 +23,7 @@ public:
 private:
   MyListView *listView;
 };
-
+*/
 
 enum TNodeType { TNodeType_Class, TNodeType_VT, TNodeType_Feature };
 enum TBrowseCase { findBaseTID, findTID, findInterfaceVTs, findInterfaceFeatures};
