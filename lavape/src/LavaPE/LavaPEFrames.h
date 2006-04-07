@@ -25,7 +25,7 @@
 #include <QCloseEvent>
 #include <QTreeWidget>
 
-
+/*
 typedef QMap<QString,QString> HelpTextMap;
 
 class ToolbarWhatsThis : public WhatsThis
@@ -40,7 +40,7 @@ public:
 private:
   QToolBar *toolbar;
 };
-
+*/
 
 class CLavaMainFrame : public wxMainFrame, public Ui_CMainFrame
 {

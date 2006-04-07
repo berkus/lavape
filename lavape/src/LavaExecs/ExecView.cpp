@@ -488,6 +488,34 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
 
 typedef Q3ValueList<int> BreakPointList;
 
+bool ExecContents::event(QEvent *ev) {
+  QHelpEvent *hev;
+
+  if (ev->type() == QEvent::WhatsThis) {
+    hev = (QHelpEvent*)ev;
+    QWhatsThis::showText(mapToGlobal(hev->pos()),text(hev->pos()));
+    return true;
+  }
+  else if (ev->type() == QEvent::WhatsThisClicked) {
+    return true;
+  }
+  else return false;
+}
+
+QString ExecContents::text(const QPoint &point) {
+  int xc, yc;
+
+//???  execView->sv->viewportToContents(point.x(),point.y(),xc,yc);
+  QPoint pc = QPoint(xc-2,yc-2); // -2 seems to be necessary, don't know why
+  execView->text->NewSel(&pc);
+  if (execView->text->newSelection) {
+    wxDocManager::GetDocumentManager()->SetActiveView(execView,true);
+    execView->Select();
+    return execView->text->currentSynObj->whatsThisText();
+  }
+  return QString(tr(QString("No specific help available here")));
+}
+
 void ExecContents::paintEvent (QPaintEvent *ev)
 {
   QPainter p(this);
@@ -1210,6 +1238,7 @@ MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
 ExecContents::ExecContents (MyScrollView *sv) {
   this->sv = sv;
   execView = sv->execView;
+  setWhatsThis(tr(QString("No specific help available here")));
   debugStop = new QPixmap((const char**)debugStop_xpm);
   debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
   breakPoint = new QPixmap((const char**)breakPoint_xpm);
@@ -6765,20 +6794,6 @@ void CExecView::on_whatNextAction_triggered()
   text->currentSynObj->on_whatNextAction_triggered();
 }
 
-
-QString ExecWhatsThis::text(const QPoint &point) {
-  int xc, yc;
-
-//???  execView->sv->viewportToContents(point.x(),point.y(),xc,yc);
-  QPoint pc = QPoint(xc-2,yc-2); // -2 seems to be necessary, don't know why
-  execView->text->NewSel(&pc);
-  if (execView->text->newSelection) {
-    wxDocManager::GetDocumentManager()->SetActiveView(execView,true);
-    execView->Select();
-    return execView->text->currentSynObj->whatsThisText();
-  }
-  return QString::null;
-}
 
 void CExecView::on_DbgBreakpointAct_triggered() {
   CHEProgPoint* cheBreak;

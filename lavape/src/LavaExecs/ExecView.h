@@ -373,6 +373,8 @@ public:
   CHETokenNode *callerStopToken;
   StopReason stopReason;
 
+  bool event(QEvent *ev);
+  QString text(const QPoint &point);
   void paintEvent (QPaintEvent *ev);
   void DrawToken (QPainter &p,CProgText *text,CHETokenNode *tNode,bool inSelection);
   void SetTokenFormat (CHETokenNode *currToken);

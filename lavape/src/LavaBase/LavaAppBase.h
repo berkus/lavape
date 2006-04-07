@@ -561,7 +561,7 @@ public:
 	const QString *caption, *text;
 	int button0, button1, button2, result;
 };
-
+/*
 class LAVABASE_DLL WhatsThis
 {
 public:
@@ -573,7 +573,7 @@ public:
 private:
   QString whatsThisText;
 };
-
+*/
 extern LAVABASE_DLL int critical(QWidget *parent, const QString &caption,
 			 const QString& text,
 			 int button0, int button1=0, int button2=0);

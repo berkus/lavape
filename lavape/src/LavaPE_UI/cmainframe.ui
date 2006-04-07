@@ -1084,6 +1084,9 @@
    <property name="toolTip" >
     <string>Include..</string>
    </property>
+   <property name="whatsThis" >
+    <string>&lt;p>&lt;a href=\"../Packages.htm#include\">Include&lt;/a> another &lt;font color=\"red\">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> file&lt;/p></string>
+   </property>
   </action>
   <action name="newPackageAction" >
    <property name="enabled" >
@@ -1100,6 +1103,9 @@
    </property>
    <property name="toolTip" >
     <string>New package...</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Create a new &lt;a href=\"../Packages.htm#packages\">package&lt;/a> (= group of declarations/implementations that belong closely together)&lt;/p></string>
    </property>
   </action>
   <action name="newInitiatorAction" >
@@ -1118,6 +1124,9 @@
    <property name="toolTip" >
     <string>New main program...</string>
    </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Create a new &lt;a href=\"../Packages.htm#initiator\">main program&lt;/a> (= &lt;font color=\"red\">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> main program)&lt;/p></string>
+   </property>
   </action>
   <action name="newInterfaceAction" >
    <property name="enabled" >
@@ -1134,6 +1143,9 @@
    </property>
    <property name="toolTip" >
     <string>New interface...</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Create a new &lt;a href=\"../SepItfImpl.htm\">interface&lt;/a> (= the public part of a &lt;font color=\"red\">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> class)&lt;/p></string>
    </property>
   </action>
   <action name="newImplAction" >
@@ -1152,6 +1164,9 @@
    <property name="toolTip" >
     <string>New implementation...</string>
    </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Create a new &lt;a href=\"../SepItfImpl.htm\">implementation&lt;/a>&lt;/p> (= the private part of a &lt;font color=\"red\">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> class)&lt;/p></string>
+   </property>
   </action>
   <action name="newCOspecAction" >
    <property name="enabled" >
@@ -1168,6 +1183,9 @@
    </property>
    <property name="toolTip" >
     <string>New component object spec. ...</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Create a new &lt;a href=\"../Components.htm\">component object&lt;/a> specification&lt;/p></string>
    </property>
   </action>
   <action name="newCOimplAction" >
@@ -1186,6 +1204,9 @@
    <property name="toolTip" >
     <string>New component object impl. ...</string>
    </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Create a new &lt;a href=\"../Components.htm\">component object&lt;/a> implementation&lt;/p></string>
+   </property>
   </action>
   <action name="newSetAction" >
    <property name="enabled" >
@@ -1202,6 +1223,9 @@
    </property>
    <property name="toolTip" >
     <string>New set...</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Create a new finite &lt;a href=\"SetChain.htm\">set&lt;/a> of &lt;font color=\"red\">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> objects&lt;/p></string>
    </property>
   </action>
   <action name="newEnumAction" >
@@ -1220,6 +1244,9 @@
    <property name="toolTip" >
     <string>New enumeration...</string>
    </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Create a new &lt;a href=\"Enumeration.htm\">enumeration type&lt;/a>&lt;/p></string>
+   </property>
   </action>
   <action name="newVTAction" >
    <property name="enabled" >
@@ -1236,6 +1263,9 @@
    </property>
    <property name="toolTip" >
     <string>New virtual type...</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Add a new &lt;a href=\"../PatternsFrameworks.htm\">virtual type&lt;/a> to an interface or package&lt;/p></string>
    </property>
   </action>
   <action name="newFuncAction" >
@@ -1254,6 +1284,9 @@
    <property name="toolTip" >
     <string>New member function...</string>
    </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Add a new virtual or static &lt;a href=\"../dialogs/FunctionBox.htm\">member function&lt;/a> to the current interface or implementation&lt;/p></string>
+   </property>
   </action>
   <action name="newMemVarAction" >
    <property name="enabled" >
@@ -1271,6 +1304,9 @@
    <property name="toolTip" >
     <string>New member variable...</string>
    </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Add a new &lt;a href=\"../dialogs/MemVarBox.htm\">member variable&lt;/a> to the current interface or implementation&lt;/p></string>
+   </property>
   </action>
   <action name="newEnumItemAction" >
    <property name="enabled" >
@@ -1287,6 +1323,9 @@
    </property>
    <property name="toolTip" >
     <string>New enumerated item...</string>
+   </property>
+   <property name="whatsThis" >
+    <string>&lt;p>Add a new &lt;a href=\"Enumeration.htm\">enumerated item&lt;/a> to the current enumeration&lt;/p></string>
    </property>
   </action>
   <action name="editSelItemAction" >
@@ -2406,7 +2445,7 @@
     <string>Make GUI-service for selected interface</string>
    </property>
    <property name="whatsThis" >
-    <string>Make GUI-service for selected interface</string>
+    <string>&lt;p>Generate a &lt;a href=\"../EditForm.htm#GUI\">GUI service interface&lt;/a> from the selected interface&lt;/p></string>
    </property>
   </action>
   <action name="DbgAction" >

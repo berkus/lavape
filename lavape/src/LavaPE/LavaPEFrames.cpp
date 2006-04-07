@@ -78,6 +78,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 {
   setupUi(this);
 
+  // workaround because insertToolBarBreak is broken:
   removeToolBar(Toolbar_1);
   removeToolBar(Toolbar_2);
   removeToolBar(HelpToolbar);
@@ -278,7 +279,7 @@ CLavaMainFrame::~CLavaMainFrame()
 
 bool CLavaMainFrame::OnCreate()
 {
-  ToolbarWhatsThis *tbw1, *tbw2, *tbw3, *tbw4, *tbw5, *tbw6;
+/*  ToolbarWhatsThis *tbw1, *tbw2, *tbw3, *tbw4, *tbw5, *tbw6;
 
   tbw1 = new ToolbarWhatsThis(Toolbar_1);
   fillHelpMap1(tbw1);
@@ -292,6 +293,7 @@ bool CLavaMainFrame::OnCreate()
   fillHelpMap5(tbw5);
   tbw6 = new ToolbarWhatsThis(Toolbar_6);
   fillHelpMap6(tbw6);
+*/
 	m_childFrameHistory->m_menu = windowMenu;
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
   setIcon(QPixmap((const char**) Lava));
@@ -303,10 +305,7 @@ bool CLavaMainFrame::OnCreate()
   m_UtilityView = new CUtilityView(split);
   LoadFileHistory();
   m_UtilityView->hide();
-//  HelpToolbar->setOffset(100000);
-//  Toolbar_3->setNewLine(true);
   Toolbar_5->hide();
-//  Toolbar_5->setNewLine(true);
   Toolbar_5->hide();
   Toolbar_6->hide();
   Toolbar_7->hide();
@@ -1760,7 +1759,6 @@ CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent)
   showIt = !((CLavaPEApp*)wxTheApp)->inTotalCheck;
 }
 
-
 bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   setIcon(QPixmap((const char**) Lava));
@@ -1779,6 +1777,9 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   splitter->addWidget(viewL);
   splitter->addWidget(viewM);
   splitter->addWidget(viewR);
+  viewL->setWhatsThis(QString(tr("No specific help available here")));
+  viewM->setWhatsThis(QString(tr("No specific help available here")));
+  viewR->setWhatsThis(QString(tr("No specific help available here")));
   if (viewM->OnCreate() && viewL->OnCreate() && viewR->OnCreate()) {
     wxMDIChildFrame::OnCreate(temp,doc);
     ((CInclView*)viewL)->myTree = (CTreeView*)viewM;
@@ -1975,7 +1976,7 @@ void CLavaMainFrame::fillHelpMap3(ToolbarWhatsThis *tbw) {
     " (= group of declarations/implementations that belong closely together)</p>");
   tbw->helpTextMap["initiator"] = QString("<p>Create a new <a href=\"../Packages.htm#initiator\">main program</a>"
     " (= <font color=\"red\"><b><i>Lava</i></b></font> main program)</p>");
-  tbw->helpTextMap["interface"] = QString("<p>Create a new <a href=\"../SepItfImpl.htm\">interface</a></p>"
+  tbw->helpTextMap["interface"] = QString("<p>Create a new <a href=\"../SepItfImpl.htm\">interface</a>"
     " (= the public part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>");
   tbw->helpTextMap["implementation"] = QString("<p>Create a new <a href=\"../SepItfImpl.htm\">implementation</a></p>"
     " (= the private part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>");

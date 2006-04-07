@@ -95,6 +95,9 @@ void wxMainFrame::windowActivated(QWidget* w)
   }
 }
 
+bool eventFilter(QObject *obj, QEvent *ev) {
+  return false;
+}
 
 void wxMainFrame::closeEvent (QCloseEvent*)
 {
