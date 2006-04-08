@@ -73,7 +73,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="$(QT4DIR)\lib\Qt3Supportd4.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib"
-				OutputFile="..\LavaPE\Debug\disco.dll"
+				OutputFile="..\..\bin\disco.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories=""
@@ -81,7 +81,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/disco.pdb"
 				SubSystem="2"
-				ImportLibrary=".\Debug/disco.lib"
+				ImportLibrary="..\..\bin\disco.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -999,7 +999,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\Precompiler\LPC.exe -X DISCO -I. $(InputPath)&#x0D;&#x0A;"
+						CommandLine="..\..\bin\LPC.exe -X DISCO -I. $(InputPath)&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>

@@ -71,8 +71,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Debug\disco.lib $(QT4DIR)\lib\QtCored4.lib"
-				OutputFile="LPC.exe"
+				AdditionalDependencies="..\..\bin\disco.lib $(QT4DIR)\lib\QtCored4.lib"
+				OutputFile="..\..\bin\LPC.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
@@ -783,7 +783,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="copying disco.dll"
-					CommandLine="copy ..\LavaPE\Debug\disco.dll .&#x0D;&#x0A;"
+					CommandLine="copy ..\..\bin\disco.dll .&#x0D;&#x0A;"
 					Outputs="disco.dll"
 				/>
 			</FileConfiguration>

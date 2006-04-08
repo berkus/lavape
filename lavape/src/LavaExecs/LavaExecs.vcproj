@@ -74,14 +74,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Debug\disco.lib ..\LavaBase\Debug\LavaBase.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\Qt3Supportd4.lib"
-				OutputFile="..\LavaPE\Debug\LavaExecs.dll"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\Qt3Supportd4.lib"
+				OutputFile="..\..\bin\LavaExecs.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/LavaExecs.pdb"
 				SubSystem="2"
-				ImportLibrary=".\Debug/LavaExecs.lib"
+				ImportLibrary="..\..\bin\LavaExecs.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -640,7 +640,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\Precompiler\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
+						CommandLine="..\..\bin\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
@@ -650,7 +650,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\Precompiler\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
+						CommandLine="..\..\bin\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
@@ -702,7 +702,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\Precompiler\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
+						CommandLine="..\..\bin\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
@@ -712,7 +712,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\Precompiler\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
+						CommandLine="..\..\bin\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
