@@ -1,0 +1,20 @@
+#!/bin/sh
+#echo $1, $2, $3
+if test .$3 == .std ; then
+  exit
+fi
+cd $2
+if test -h LavaIcons ; then
+  rm -f LavaIcons
+fi
+ln -s $1/LavaIcons .
+if test -h std; then
+  rm -f std
+fi
+ln -s $1/std .
+ln -s $1/std_m.htm .
+ln -s $1/std.htm .
+ln -s $1/std_1.htm .
+
+
+
