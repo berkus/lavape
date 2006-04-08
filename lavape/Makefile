@@ -35,11 +35,7 @@ Lava:
 dirs:
 	if [ ! -e bin ] ; then mkdir bin; fi; \
 	if [ ! -e lib ] ; then mkdir lib; fi; \
-	cd bin; \
-	if [ ! -e Components ] ; then mkdir Components; fi; \
-	if [ ! -e std ]; then $(LN) ../src/LavaPE/Debug/std .; fi; \
-	if [ ! -e LavaIcons ]; then $(LN) ../src/LavaPE/Debug/LavaIcons .; fi; \
-	cd ../src/Lava; if [ ! -e Generated ]; then mkdir Generated; fi ; \
+	cd src/Lava; if [ ! -e Generated ]; then mkdir Generated; fi ; \
 	cd ../LavaBase; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaExecs; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaGUI; if [ ! -e Generated ]; then mkdir Generated; fi; \
@@ -48,7 +44,7 @@ dirs:
 	cd ../LavaPE; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../wxqDocView; if [ ! -e Generated ]; then mkdir Generated; fi;
 
-links: bin/std.lava bin/std_1.htm bin/std_m.htm bin/std.htm bin/cp_icons_std \
+links: \
 	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
 	bin/Components/libLavaStream.so \
@@ -69,14 +65,7 @@ bin/Components/libLavaStream.so: lib/libLavaStream.so
 	rm -f $@; $(LN) ../../$< $@
 lib/libLavaStream.so:
 	cd src/LavaStream; $(MAKE)
-bin/std.lava: src/LavaPE/Debug/std.lava
-	rm -f $@; $(LN) ../$< $@
-bin/std_1.htm: src/LavaPE/Debug/std_1.htm
-	rm -f $@; $(LN) ../$< $@
-bin/std_m.htm: src/LavaPE/Debug/std_m.htm
-	rm -f $@; $(LN) ../$< $@
-bin/std.htm: src/LavaPE/Debug/std.htm
-	rm -f $@; $(LN) ../$< $@
+
 bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 	rm -f $@; $(LN) ../$< $@
 bin/assistant:
