@@ -691,59 +691,59 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 
 void CLavaPEApp::HtmlHelp()
 {
-        QString path(ExeDir);
-        QStringList args;
+  QString path(ExeDir);
+  QStringList args;
 
-        args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-        if (!qacl) {
-                qacl = new QAssistantClient(path,m_appWindow);
-                qacl->setArguments(args);
-        }
+  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+  if (!qacl) {
+    qacl = new QAssistantClient(path,m_appWindow);
+    qacl->setArguments(args);
+  }
 
-        qacl->showPage(ExeDir + "/../doc/html/FAQ.htm");
+  qacl->showPage(ExeDir + "/../doc/html/FAQ.htm");
 }
 
 void CLavaPEApp::EditingLavaProgs()
 {
-        QString path(ExeDir);
-        QStringList args;
-        args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+  QString path(ExeDir);
+  QStringList args;
+  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 
-        if (!qacl) {
-                qacl = new QAssistantClient(path,m_appWindow);
-                qacl->setArguments(args);
-        }
+  if (!qacl) {
+    qacl = new QAssistantClient(path,m_appWindow);
+    qacl->setArguments(args);
+  }
 
-        qacl->showPage(ExeDir + "/../doc/html/BasicEditing.htm");
+  qacl->showPage(ExeDir + "/../doc/html/BasicEditing.htm");
 }
 
 void CLavaPEApp::LearningLava()
 {
-        QString path(ExeDir);
-        QStringList args;
-        args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+  QString path(ExeDir);
+  QStringList args;
+  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 
-        if (!qacl) {
-                qacl = new QAssistantClient(path,m_appWindow);
-                qacl->setArguments(args);
-        }
+  if (!qacl) {
+    qacl = new QAssistantClient(path,m_appWindow);
+    qacl->setArguments(args);
+  }
 
-        qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
+  qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
 /*      QString buf;
 
-        if (LBaseData.m_myWebBrowser.isEmpty()) {
-    QMessageBox::critical(m_appWindow,name(),ERR_MissingBrowserPath,QMessageBox::Ok,0,0);
-                return;
-        }
+  if (LBaseData.m_myWebBrowser.isEmpty()) {
+QMessageBox::critical(m_appWindow,name(),ERR_MissingBrowserPath,QMessageBox::Ok,0,0);
+          return;
+  }
 
-        QStringList args;
-        args << LBaseData.m_myWebBrowser << "file://" + ExeDir+"/../doc/html/LavaBySamples.htm";
-        QProcess browser(args);
+  QStringList args;
+  args << LBaseData.m_myWebBrowser << "file://" + ExeDir+"/../doc/html/LavaBySamples.htm";
+  QProcess browser(args);
 
-        if (!browser.launch(buf)) {
-    QMessageBox::critical(m_appWindow,name(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok,0,0);
-                return;
-        }
+  if (!browser.launch(buf)) {
+QMessageBox::critical(m_appWindow,name(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok,0,0);
+          return;
+  }
 */
 }
 
