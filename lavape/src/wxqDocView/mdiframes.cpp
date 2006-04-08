@@ -101,10 +101,10 @@ bool wxMainFrame::eventFilter(QObject *obj, QEvent *ev) {
 
 void wxMainFrame::closeEvent (QCloseEvent*)
 {
-  on_fileExitAction_triggered();
+  OnFileExit();
 }
 
-void wxMainFrame::on_fileExitAction_triggered()
+void wxMainFrame::OnFileExit()
 {
   ((wxApp*)qApp)->appExit = true;
   if ( wxDocManager::GetDocumentManager()->Clear(false)) {

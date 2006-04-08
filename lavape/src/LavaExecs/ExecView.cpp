@@ -931,7 +931,7 @@ void CExecView::OnChar(QKeyEvent *e)
         OnAnd();
       break;
     case Qt::Key_F1:
-            ((wxMainFrame*)wxTheApp->m_appWindow)->on_helpContentsAction_triggered();
+      ((wxMainFrame*)wxTheApp->m_appWindow)->on_helpContentsAction_triggered();
       break;
     case Qt::Key_Escape:
       break;
@@ -1203,7 +1203,7 @@ void CExecView::OnChar(QKeyEvent *e)
         OnAnd();
       break;
     case Qt::Key_F1:
-            ((wxMainFrame*)wxTheApp->m_appWindow)->on_helpContentsAction_triggered();
+      ((wxMainFrame*)wxTheApp->m_appWindow)->on_helpContentsAction_triggered();
       break;
     case Qt::Key_Escape:
       break;

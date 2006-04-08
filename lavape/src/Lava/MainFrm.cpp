@@ -218,7 +218,7 @@ void CLavaMainFrame::on_fileExitAction_triggered()
     if (allocatedObjects) {
       QMessageBox::critical(this, wxTheApp->name(), QString("Memory leak: %1 orphaned Lava object(s)").arg(allocatedObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     }
-  wxMainFrame::on_fileExitAction_triggered();
+  OnFileExit();
 }
 
 void CLavaMainFrame::on_tileVerticAction_triggered()

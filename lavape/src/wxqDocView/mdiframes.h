@@ -80,9 +80,8 @@ protected:
 	bool completelyCreated;
 
 public slots:
-  virtual void on_fileExitAction_triggered();
+  virtual void OnFileExit();
   void on_cascadeAction_triggered();
-  virtual void on_helpContentsAction_triggered() {};
   void windowActivated(QWidget*);
   void histFile(int histFileIndex);
   void hfStatusText(int itemId);

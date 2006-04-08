@@ -87,7 +87,7 @@ public slots:
     virtual void on_fileSaveAllAction_triggered();
     virtual void on_fileCloseAction_triggered();
     virtual void filePrint();
-//    virtual void on_fileExitAction_triggered();
+    virtual void on_fileExitAction_triggered() { OnFileExit(); }
     virtual void on_editUndoAction_triggered();
     virtual void on_editRedoAction_triggered();
     virtual void on_editCutAction_triggered();
