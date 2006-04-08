@@ -69,6 +69,7 @@ public:
 	wxHistory *GetWindowHistory () { return m_childFrameHistory; }
   void TileVertic(QMenuBar *menubar, int& lastTile);
   void TileHoriz(QMenuBar *menubar, int& lastTile);
+  virtual void helpContents(){}
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);

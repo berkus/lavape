@@ -374,6 +374,7 @@ public:
   StopReason stopReason;
 
   bool event(QEvent *ev);
+  void keyPressEvent (QKeyEvent *e);
   QString text(const QPoint &point);
   void paintEvent (QPaintEvent *ev);
   void DrawToken (QPainter &p,CProgText *text,CHETokenNode *tNode,bool inSelection);
@@ -389,7 +390,6 @@ public:
   CExecView *execView;
   ExecContents *execCont;
 
-  void keyPressEvent (QKeyEvent *e);
   void focusInEvent(QFocusEvent *ev);
   void mousePressEvent (QMouseEvent *e);
   void mouseDoubleClickEvent (QMouseEvent *e);

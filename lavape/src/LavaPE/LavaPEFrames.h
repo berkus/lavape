@@ -54,6 +54,7 @@ public:
   bool UtilitiesHidden;
   int LastUtilitiesState; //-1:hidden, else: ActTab of m_UtilityView
 //  void ShowUtilitiesTab(UtilityTabs tab);
+  void helpContents() { on_helpContentsAction_triggered(); }
   void fillKwdToolbar(QToolBar *tb);
   void fillHelpToolbar(QToolBar *tb);
   void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
