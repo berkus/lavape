@@ -52,7 +52,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
   void SetFont(QFont *font);
   TFontCase SetTFont(QWidget* win, CHEFormNode* myFormNode);
   TFontCase SetLFont(QWidget* win, CHEFormNode* myFormNode);
-  void SetColor(QWidget* w, CHEFormNode * node);
+  void SetColor(QWidget* w, CHEFormNode * node, QPalette::ColorRole brol, QPalette::ColorRole frol);
   virtual void Create();
 //  void SetDC(QWidget* win);
   unsigned itemHeight(const QFont& font);

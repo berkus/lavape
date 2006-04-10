@@ -89,8 +89,8 @@ public:
   void setExpandable(bool withChildren);
   ~DumpItem();
 
-  virtual void paintCell( QPainter * p, const QColorGroup & cg,
-			       int column, int width, int align );
+  //virtual void paintCell( QPainter * p, const QColorGroup & cg,
+	//		       int column, int width, int align );
 };
 
 class LAVABASE_DLL DumpListView: public QTreeWidget

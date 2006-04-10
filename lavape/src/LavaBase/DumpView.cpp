@@ -405,6 +405,8 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, DumpItem* afterItem, CLava
   DD->isCasted = DD->myObject != object;
   isTop = false;
   isPriv = priv;
+  if (isPriv)
+    setTextColor(0, QColor(Qt::red));
   DD->myDoc = doc;
   childrenDrawn = false;
   withChildren = DD->hasChildren();
@@ -430,6 +432,8 @@ DumpItem::DumpItem(DDMakeClass* dd, DumpItem* parent, CLavaBaseDoc* doc, LavaObj
   DD->isCasted = DD->myObject != object;
   isTop = false;
   isPriv = priv;
+  if (isPriv)
+    setTextColor(0, QColor(Qt::red));
   DD->myDoc = doc;
   childrenDrawn = false;
   withChildren = DD->hasChildren();
@@ -490,7 +494,7 @@ DumpItem::~DumpItem()
     childrenDrawn = true;
   }
   //treeWidget()->expandItem(this); 
-}*/
+}
 
 
 void DumpItem::paintCell( QPainter * p, const QColorGroup & cg,
@@ -499,11 +503,11 @@ void DumpItem::paintCell( QPainter * p, const QColorGroup & cg,
   if (!column && isPriv) {
     QColorGroup cgN ( cg);
     cgN.setColor(QColorGroup::Text,Qt::red);
-//???    QTreeWidgetItem::paintCell( p, cgN, column, width, align );
+    QTreeWidgetItem::paintCell( p, cgN, column, width, align );
   }
   else
-    ;//???    QTreeWidgetItem::paintCell( p, cg, column, width, align );
-}
+    QTreeWidgetItem::paintCell( p, cg, column, width, align );
+}*/
 
 
 

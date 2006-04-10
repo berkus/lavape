@@ -55,11 +55,11 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
   origMenu = false;
   usedInFormNode = false;
   myFormNode = (CHEFormNode*)data;
-  
+  setAutoFillBackground(true);
+  GUIProg->SetColor(this, myFormNode, QPalette::Window, QPalette::WindowText);
   if (border) { //the FIP.widget 
     myFormNode->data.ownLFont = GUIProg->SetLFont(0, myFormNode);
     myFormNode->data.ownTFont = GUIProg->SetTFont(0, myFormNode);
-    GUIProg->SetColor(this, myFormNode);
     if (parent->parentWidget()->inherits("GUIVBox")) {
       QPalette pp = parent->parentWidget()->palette();
       pp.setColor(QPalette::Active, QPalette::Window, palette().color(QPalette::Active, QPalette::Window));

@@ -48,7 +48,8 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
-  GUIProg->SetColor(this, myFormNode);
+  setAutoFillBackground(true);
+  GUIProg->SetColor(this, myFormNode, QPalette::Base, QPalette::Text);
   QSize size = GUIProg->CalcTextRect(width, 1, font());
   size = qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &qsob, size, this);
   size.setWidth(lmax(size.width(), GUIProg->MinSizeComboBox(font()).width() + GUIProg->ArrowSize(font()).width()));

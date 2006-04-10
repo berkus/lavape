@@ -108,19 +108,20 @@ TFontCase CGUIMet::SetTFont(QWidget* win, CHEFormNode* myFormNode)
   return mainFont;
 } 
 
-void CGUIMet::SetColor(QWidget* w, CHEFormNode * node)
+void CGUIMet::SetColor(QWidget* w, CHEFormNode * node, QPalette::ColorRole brol, QPalette::ColorRole frol)
 {
   QPalette p = w->palette();
   if (node->data.ColorBValid) {
-    p.setColor(QPalette::Active, QPalette::Window, node->data.ColorB);
-    p.setColor(QPalette::Inactive, QPalette::Window, node->data.ColorB);
+    p.setColor(QPalette::Active, brol, node->data.ColorB);
+    p.setColor(QPalette::Inactive, brol, node->data.ColorB);
     //w->setPaletteBackgroundColor(node->data.ColorB);
   }
   if (node->data.ColorFValid) {
-    p.setColor(QPalette::Active, QPalette::WindowText, node->data.ColorF);
-    p.setColor(QPalette::Inactive, QPalette::WindowText, node->data.ColorF);
+    p.setColor(QPalette::Active, frol, node->data.ColorF);
+    p.setColor(QPalette::Inactive, frol, node->data.ColorF);
     //w->setPaletteForegroundColor(node->data.ColorF);
   }
+  w->setPalette(p);
   QPalette p1 = w->palette();
   CHETAnnoEx *exT, *exPB;
   exT = node->data.FormSyntax->Annotation.ptr->GetAnnoEx(anno_TextColor);

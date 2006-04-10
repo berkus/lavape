@@ -50,11 +50,12 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
   setGeometry(bord,bord, size.width(), size.height());
   //setWFlags(GUIProg->checkBoxStyle);
   setChecked(myFormNode->data.B);
+  setAutoFillBackground(true);
   if (GUIProg->FrozenObject || myFormNode->data.IoSigFlags.Contains(DONTPUT)
       || !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
   myFormNode->data.IoSigFlags.INCL(trueValue);
-  GUIProg->SetColor(this, myFormNode);
+  GUIProg->SetColor(this, myFormNode, QPalette::Window, QPalette::WindowText);
   if (!myFormNode->data.ColorFValid) {
     QPalette p = palette();
     p.setColor(QPalette::Active, QPalette::WindowText, parentWidget()->palette().color(QPalette::Active, QPalette::WindowText));
@@ -111,7 +112,7 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   Radio = radioBox;
   EnumNode = (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first;
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
-  GUIProg->SetColor(this, ((CFormWid*)Radio)->myFormNode);//myFormNode);
+  GUIProg->SetColor(this, myFormNode, QPalette::Button, QPalette::ButtonText);
   QSize size = GUIProg->CalcStringRect(label, font());
   int bord = GUIProg->GetLineWidth(parent);
   int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob,  this);
@@ -140,7 +141,7 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
   Radio = radioBox;
   EnumNode = (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first;
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
-  GUIProg->SetColor(this, ((CFormWid*)Radio)->myFormNode);//myFormNode);
+  GUIProg->SetColor(this, myFormNode, QPalette::Button, QPalette::ButtonText);
   QSize size = GUIProg->CalcStringRect(label, font());
   size.setHeight(lmax(size.height(), myFormNode->data.Pixmap->height()));
   int bord = GUIProg->GetLineWidth(parent);
@@ -181,7 +182,7 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
-  GUIProg->SetColor(this, myFormNode);
+  GUIProg->SetColor(this, myFormNode, QPalette::Button, QPalette::ButtonText);
   int bord = GUIProg->GetLineWidth(parent);
   QSize size = GUIProg->CalcStringRect(label, font());
   int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob, this);
@@ -286,7 +287,8 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
     setEnabled(false);
 //  else
 //    myFormNode->data.IoSigFlags.INCL(UnprotectedUser);
-  GUIProg->SetColor(this, myFormNode);
+  GUIProg->SetColor(this, myFormNode, QPalette::Window, QPalette::WindowText);
+  setAutoFillBackground(true);
   if (!myFormNode->data.ColorFValid) {
     QPalette p = palette();
         p.setColor(QPalette::Active, QPalette::WindowText, parentWidget()->palette().color(QPalette::Active, QPalette::WindowText));

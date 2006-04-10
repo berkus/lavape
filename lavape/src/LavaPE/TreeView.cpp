@@ -213,6 +213,7 @@ MyListView::MyListView(CTreeView* view)
   setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   viewport()->setAcceptDrops(true);
   setAutoScroll(true);
+  setEditTriggers(QAbstractItemView::SelectedClicked);
 }
 
 void MyListView::setCurAndSel(QTreeWidgetItem* item, bool singleSel)

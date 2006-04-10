@@ -51,7 +51,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   CaretP.setX(0);
   CaretP.setY(0);
   inError = false;
-  GUIProg->SetColor(this, myFormNode);
+  GUIProg->SetColor(this, myFormNode, QPalette::Base, QPalette::Text);
   if (myFormNode->data.IoSigFlags.Contains(DONTPUT)) {
       setReadOnly(true);
       if (!myFormNode->data.ColorBValid) {
@@ -170,7 +170,7 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   else
     setEnabled(true);
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
-  GUIProg->SetColor(this, myFormNode);
+  GUIProg->SetColor(this, myFormNode, QPalette::Base, QPalette::Text);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   if (myFormNode->data.IterFlags.Contains(Optional)) {

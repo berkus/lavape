@@ -8,12 +8,12 @@
 #include "Resource.h"
 #include "Syntax.h"
 #include "wxExport.h"
-#include "q3combobox.h"
+//#include "q3combobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "q3tabdialog.h"
-#include "q3textview.h"
+//#include "q3tabdialog.h"
+//#include "q3textview.h"
 #include "qtabwidget.h"
 #include "qsplitter.h"
 #include <QTreeWidget>
@@ -37,7 +37,7 @@ public:
 
 public slots:
   void selChanged();
-  void itemClicked(QTreeWidgetItem *item);
+  void itemClicked(QTreeWidgetItem *item, int );
 
 private:
   Q_OBJECT
@@ -54,6 +54,9 @@ public:
   void makeItems(const CHAINX& objChain);
   CUtilityView* myUtilityView;
   int width0, width1, width2;
+
+public slots:
+  virtual void expandedItem(QTreeWidgetItem* item);
  // VarItem* firstChild() {return (VarItem*)itemFromIndex(rootIndex().child(0,0)); }
 
 private:
@@ -69,8 +72,9 @@ public:
   VarItem(VarListView* parent, DDItemData* data);
   VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data);
   void makeChildren(const CHAINX& children);
-  virtual void paintCell( QPainter * p, const QColorGroup & cg,
-			       int column, int width, int align );
+  void setExpandable(bool withChildren);
+  //virtual void paintCell( QPainter * p, const QColorGroup & cg,
+	//		       int column, int width, int align );
   virtual void setOpen(bool O);
   void makeNrs(ChObjRq *rqs);
   VarListView* myView;
@@ -112,9 +116,10 @@ public:
 
 protected:
   QTreeWidget* FindPage;
-  Q3TextEdit* CommentPage;
-  Q3TextEdit* ErrorPage;
-  QSplitter *DebugPage;
+  QTextEdit* CommentPage;
+  QTextEdit* ErrorPage;
+  QFrame *DebugPage;
+  //QSplitter *DebugPage;
   LavaDECL *stopExecDECL;
   bool firstDebug;
   //void OnSize(UINT nType, int cx, int cy);

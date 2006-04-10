@@ -51,7 +51,7 @@ CLavaMenu::CLavaMenu(CGUIProgBase *guiPr, CHEFormNode* data,
   GUIProg = guiPr;
   myMenu = 0;
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
-  GUIProg->SetColor(this, myFormNode);
+  GUIProg->SetColor(this, myFormNode, QPalette::Base, QPalette::Text);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
   QSize size = GUIProg->CalcTextRect(cx, 1, font());

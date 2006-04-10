@@ -47,7 +47,8 @@ CTStatic::CTStatic(CGUIProgBase *guiPr, CHEFormNode* data,
   myFormNode->data.ownLFont = GUIProg->SetLFont(this, myFormNode);
   QSize size = GUIProg->CalcStringRect(label, font());
   setGeometry(bord,bord, size.width(), size.height());
-  GUIProg->SetColor(this, myFormNode);
+  GUIProg->SetColor(this, myFormNode, QPalette::Window, QPalette::WindowText);
+  setAutoFillBackground(true);
   if (!myFormNode->data.ColorFValid) {
     QPalette p = palette();
     p.setColor(QPalette::Active, QPalette::WindowText, parentWidget->palette().color(QPalette::Active, QPalette::WindowText));

@@ -28,11 +28,11 @@
 #include "Boxes.h"
 #include "qtabbar.h"
 #include "qstatusbar.h"
-#include "q3header.h"
+//#include "q3header.h"
 #include "qmessagebox.h"
 //Added by qt3to4:
 #include <QPixmap>
-#include <Q3ValueList>
+//#include <Q3ValueList>
 #include <QHeaderView>
 
 #pragma hdrstop
@@ -50,31 +50,36 @@ CUtilityView::CUtilityView(QWidget *parent)
   FindPage->setRootIsDecorated(false);
 //  FindPage->header()->hide();
   FindPage->setSelectionMode(QAbstractItemView::SingleSelection);//Extended); 
-  CommentPage = new Q3TextEdit(0);
+  CommentPage = new QTextEdit(0);
   CommentPage->setReadOnly(true);
 //  QTextEdit *CommentPage2 = new QTextEdit(this);
 //  CommentPage2->setReadOnly(true);
-  ErrorPage = new Q3TextEdit(0);
+  ErrorPage = new QTextEdit(0);
   ErrorPage->setReadOnly(true);
-  DebugPage = new QSplitter(0);
-  DebugPage->setOrientation(Qt::Horizontal);
-  VarView = new VarListView(DebugPage, this, false);
-  ParamView = new VarListView(DebugPage, this, true);
-  StackView = new StackListView(DebugPage, this);
-  Q3ValueList<int> list = DebugPage->sizes();
-  Q3ValueList<int>::Iterator it = list.begin();
-  int totalW = *it;
-  ++it;
-  totalW += *it;
-  ++it;
-  totalW += *it;
-  it = list.begin();
-  *it = totalW/5 * 2;
-  ++it;
-  *it = totalW/5 * 2;
-  ++it;
-  *it = totalW/5;
-  DebugPage->setSizes(list);
+  DebugPage = new QFrame(0);
+  QSplitter *splitter = new QSplitter(DebugPage);
+  splitter->setOrientation(Qt::Horizontal);
+  splitter->setHandleWidth(3);
+  QVBoxLayout* layout = new QVBoxLayout(DebugPage);
+  DebugPage->setLayout(layout);
+  layout->addWidget(splitter);
+  layout->setMargin(0);
+  DebugPage->show();
+  VarView = new VarListView(0, this, false);
+  ParamView = new VarListView(0, this, true);
+  StackView = new StackListView(0, this);
+  splitter->addWidget(VarView);
+  splitter->addWidget(ParamView);
+  splitter->addWidget(StackView);
+  QList<int> list=splitter->sizes();
+  int totalW = 0;
+  for (int i=0; i<3; i++)
+    totalW += list.at(i);
+  list.replace(0,totalW/5 * 2);
+  list.replace(1,totalW/5 * 2);
+  list.replace(2,totalW/5);
+  splitter->setSizes(list);
+
   QIcon icoFind = QIcon(QPixmap((const char**)PX_findtab));
   QIcon icoErr = QIcon(QPixmap((const char**)PX_errtab));
   QIcon icoCom = QIcon(QPixmap((const char**)PX_commentt));
@@ -460,6 +465,8 @@ VarItem::VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListV
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
   isPriv = data->isPrivate;
+  if (isPriv)
+    setTextColor(0, QColor(Qt::red));
   childrenDrawn = false;
   hasChildren = data->HasChildren;
 //  setExpandable(hasChildren);
@@ -477,6 +484,8 @@ VarItem::VarItem(VarItem* parent, DDItemData* data, VarListView* view)
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
   isPriv = data->isPrivate;
+  if (isPriv)
+    setTextColor(0, QColor(Qt::red));
   childrenDrawn = false;
   hasChildren = data->HasChildren;
 //  setExpandable(hasChildren);
@@ -493,10 +502,12 @@ VarItem::VarItem(VarListView* parent, VarItem* afterItem, DDItemData* data)
   setText(1, data->Column1.c);
   setText(2, data->Column2.c);
   isPriv = data->isPrivate;
+  if (isPriv)
+    setTextColor(0, QColor(Qt::red));
   myView = parent;
   childrenDrawn = false;
   hasChildren = data->HasChildren;
-//  setExpandable(hasChildren);
+  setExpandable(hasChildren);
   //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
@@ -511,20 +522,34 @@ VarItem::VarItem(VarListView* parent, DDItemData* data)
   setText(2, data->Column2.c);
   myView = parent;
   isPriv = data->isPrivate;
+  if (isPriv)
+    setTextColor(0, QColor(Qt::red));
   childrenDrawn = false;
   hasChildren = data->HasChildren;
-//  setExpandable(hasChildren);
+  setExpandable(hasChildren);
   //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
 }
 
 
+void VarItem::setExpandable(bool withChildren)
+{
+  if (withChildren && !childrenDrawn) {
+    QTreeWidgetItem* it = new QTreeWidgetItem(this);
+  }
+}
+
 void VarItem::makeChildren(const CHAINX& data)
 {
   CHE* chData;
   VarItem* item=0;
   int cc = 0;
+  if (!childrenDrawn) {
+    QTreeWidgetItem* it = takeChild(0);
+    if (it) 
+      delete it;
+  }
   for (chData = (CHE*)data.first; chData; chData = (CHE*)chData->successor) {
     if (item)
       item = new VarItem(this, item, (DDItemData*)chData->data, myView);
@@ -536,18 +561,19 @@ void VarItem::makeChildren(const CHAINX& data)
   childrenDrawn = true;
 }
 
+/*
 void VarItem::paintCell( QPainter * p, const QColorGroup & cg,
 			       int column, int width, int align )
 {
-  /*if (!column && isPriv) {
+  if (!column && isPriv) {
     QColorGroup cgN ( cg);
     cgN.setColor(QColorGroup::Text,Qt::red);
     QTreeWidgetItem::paintCell( p, cgN, column, width, align );
   }
   else
     QTreeWidgetItem::paintCell( p, cg, column, width, align );
-    */
-}
+    
+}*/
 
 
 void VarItem::setOpen(bool O)
@@ -594,10 +620,13 @@ VarListView::VarListView(QWidget *parent, CUtilityView* bar, bool forParams)
   setFocusPolicy(Qt::StrongFocus);
 //  setSorting(-1);
   setColumnCount(3);
+  connect(this, SIGNAL(itemExpanded (QTreeWidgetItem*)), this, SLOT(expandedItem(QTreeWidgetItem*)));
  if (forParams)
     setHeaderLabels(QStringList() << "vfunc.params. (type[/RT type])" << "address" << "value");
  else
     setHeaderLabels(QStringList() << "variables (type[/RT type])" << "address" << "value");
+ resizeColumnToContents(0);
+ resizeColumnToContents(1);
  /*
  if (forParams)
     addColumn("func.params. (type[/RT type])");
@@ -639,6 +668,11 @@ void VarListView::makeItems(const CHAINX& objChain) //DbgStopData* data)
   myUtilityView->SetTab(tabDebug);
 }
 
+void VarListView::expandedItem(QTreeWidgetItem* item)
+{
+  ((VarItem*)item)->setOpen(true);
+}
+
 
 StackListView::StackListView(QWidget *parent, CUtilityView* bar)
 :QTreeWidget(parent)
@@ -656,11 +690,11 @@ StackListView::StackListView(QWidget *parent, CUtilityView* bar)
 //  setShowToolTips(true);
   setSelectionMode(QAbstractItemView::SingleSelection);
   allDrawn = false;
-  connect(this,SIGNAL(clicked(QTreeWidgetItem*)), SLOT(itemClicked(QTreeWidgetItem*)));
-  connect(this,SIGNAL(selectionChanged()), SLOT(selChanged()));
+  connect(this,SIGNAL(itemClicked(QTreeWidgetItem*, int)), SLOT(itemClicked(QTreeWidgetItem*, int)));
+  connect(this,SIGNAL(itemSelectionChanged()), SLOT(selChanged()));
 }
 
-void StackListView::itemClicked(QTreeWidgetItem *item)
+void StackListView::itemClicked(QTreeWidgetItem *item, int)
 {
   selChanged();
 }
@@ -735,3 +769,4 @@ void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
   setItemSelected(lastSelected, true);
   allDrawn = true;
 }
+
