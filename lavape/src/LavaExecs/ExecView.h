@@ -375,6 +375,7 @@ public:
 
   bool event(QEvent *ev);
   void keyPressEvent (QKeyEvent *e);
+  bool eventFilter(QObject *obj,QEvent *ev);
   QString text(const QPoint &point);
   void paintEvent (QPaintEvent *ev);
   void DrawToken (QPainter &p,CProgText *text,CHETokenNode *tNode,bool inSelection);

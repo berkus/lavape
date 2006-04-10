@@ -588,6 +588,6 @@ extern LAVABASE_DLL int question(QWidget *parent, const QString &caption,
 
 extern LAVABASE_DLL QAssistantClient *qacl;
 
-extern LAVABASE_DLL void ShowPage(char *file);
+extern LAVABASE_DLL void ShowPage(const QString &file);
 
 #endif

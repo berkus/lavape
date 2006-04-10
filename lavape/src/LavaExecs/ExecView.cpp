@@ -259,7 +259,7 @@ void CExecView::OnInitialUpdate()
   text->ckd.inInitialUpdate = true;
   active = true;
   OnUpdate((wxView*)pHint->CommandData2, 0, pHint);
-        sv->setFocus();
+  sv->setFocusProxy(redCtl);
   text->ckd.inInitialUpdate = false;
   initialUpdateDone = true;
 }
@@ -490,13 +490,19 @@ typedef Q3ValueList<int> BreakPointList;
 
 bool ExecContents::event(QEvent *ev) {
   QHelpEvent *hev;
+  QWhatsThisClickedEvent *wtcEv;
+  QString href;
 
   if (ev->type() == QEvent::WhatsThis) {
     hev = (QHelpEvent*)ev;
-    QWhatsThis::showText(mapToGlobal(hev->pos()),text(hev->pos()));
-    return true;
+    setWhatsThis(text(hev->pos()));
+//    QWhatsThis::showText(mapToGlobal(hev->pos()),text(hev->pos()));
+    return QWidget::event(ev);
   }
   else if (ev->type() == QEvent::WhatsThisClicked) {
+    wtcEv = (QWhatsThisClickedEvent*)ev;
+    href = wtcEv->href();
+    ShowPage(QString("whatsThis/")+href);
     return true;
   }
   else
@@ -850,6 +856,17 @@ void MyScrollView::focusInEvent(QFocusEvent *ev) {
 
 void ExecContents::keyPressEvent (QKeyEvent *e) {
   execView->OnChar(e);
+}
+
+bool ExecContents::eventFilter(QObject *obj,QEvent *ev) {
+  if (ev->type() == QEvent::WhatsThisClicked) {
+    QWhatsThisClickedEvent *wtc = static_cast<QWhatsThisClickedEvent *>(ev);
+    return true;
+  }
+  else {
+    // standard event processing
+    return QObject::eventFilter(obj, ev);
+  }
 }
 
 void CExecView::OnChar(QKeyEvent *e)
@@ -1227,7 +1244,6 @@ void MyScrollView::mouseDoubleClickEvent (QMouseEvent *e) {
 MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
   execView = (CExecView*)parent;
   execCont = new ExecContents(this);
-//  execCont->setAttribute(Qt::WA_OpaquePaintEvent);
   setBackgroundRole(QPalette::Base);
   setWidget(execCont);
 }
@@ -1235,6 +1251,7 @@ MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
 ExecContents::ExecContents (MyScrollView *sv) {
   this->sv = sv;
   execView = sv->execView;
+  sv->installEventFilter(this);
   setWhatsThis(tr(QString("No specific help available here")));
   debugStop = new QPixmap((const char**)debugStop_xpm);
   debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
@@ -1947,7 +1964,7 @@ exp: // Const_T
     int r=text->currentSelection->data.rect.right();
     redCtl->contentsWidth = QMAX(redCtl->contentsWidth,r);
     editCtl->setCursorPosition(str.length());
-    editCtl->setFocus();
+    sv->setFocus();
     editCtl->show();
     if (text->currentSynObj->IsPlaceHolder())
       editCtl->selectAll();
@@ -2611,7 +2628,7 @@ void CExecView::OnConst()
   editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());
   int r=text->currentSelection->data.rect.right();
   redCtl->contentsWidth = QMAX(redCtl->contentsWidth,r);
-  editCtl->setFocus();
+  sv->setFocus();
   editCtl->show();
   editCtl->selectAll();
   editCtlVisible = true;

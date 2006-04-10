@@ -1392,7 +1392,7 @@ QString WhatsThis::text(const QPoint&)
   return whatsThisText;
 }
 */
-void ShowPage(char *file) {
+void ShowPage(const QString &file) {
   QString fileName=ExeDir+QString("/../doc/html/")+QString(file);
 	QString path(ExeDir);
 	QStringList args;
