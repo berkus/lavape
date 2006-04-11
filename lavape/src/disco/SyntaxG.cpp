@@ -1,10 +1,10 @@
 //*******************************************************************
 //
-//   public procedures of structs/classes defined in Syntax.h
+//   public procedures of structs/classes defined in ../src/disco/Syntax.h
 //
 //*******************************************************************
 
-#include "Syntax.h"
+#include "../src/disco/Syntax.h"
 
 
 #include "CDPpp.h"
