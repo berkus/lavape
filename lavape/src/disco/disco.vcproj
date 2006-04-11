@@ -774,81 +774,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="SynIO.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough=""
-						PrecompiledHeaderFile="PCH\disco_all.pch"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Syntax.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough=""
-						PrecompiledHeaderFile="PCH\disco_all.pch"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="SyntaxG.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough="CDPpp.h"
-						PrecompiledHeaderFile="PCH\disco_all.pch"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="UNIX.h"
 				>
 			</File>
@@ -981,37 +906,6 @@
 			<File
 				RelativePath="STR.h"
 				>
-			</File>
-			<File
-				RelativePath="SynIO.h"
-				>
-			</File>
-			<File
-				RelativePath="Syntax.h"
-				>
-			</File>
-			<File
-				RelativePath="Syntax.ph"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC.exe -X DISCO -I. $(InputPath)&#x0D;&#x0A;"
-						Outputs="$(InputName).h;$(InputName)G.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="PCdir\pp -I..\disco -I. -X DISCO $(InputPath)&#x0D;&#x0A;"
-						Outputs="$(InputName).h;$(InputName)G.cpp"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="SYSTEM.h"

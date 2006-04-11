@@ -774,29 +774,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\LavaPE\Debug\disco.dll"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="copying disco.dll"
-					CommandLine="copy ..\..\bin\disco.dll .&#x0D;&#x0A;"
-					Outputs="disco.dll"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					CommandLine="copy $(InputPath) .&#x0D;&#x0A;"
-					Outputs="$(InputName).dll"
-				/>
-			</FileConfiguration>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

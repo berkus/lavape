@@ -502,6 +502,48 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\SynIO.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaBase_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Syntax.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaBase_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\SyntaxG.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="CDPpp.h"
+						PrecompiledHeaderFile="PCH\LavaBase_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -608,6 +650,37 @@
 			<File
 				RelativePath="SynIDTable.h"
 				>
+			</File>
+			<File
+				RelativePath=".\SynIO.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Syntax.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Syntax.ph"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying LPC to $(InputPath)"
+						CommandLine="..\..\bin\LPC -X LAVABASE -I..\disco -I. $(InputName).ph"
+						Outputs="$(InputName).h;$(InputName)G.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter

@@ -139,8 +139,6 @@
 #include "STR.h"
 //#include "StrIFile.h"
 //#include "StrOFile.h"
-#include "SynIO.h"
-#include "Syntax.h"
 #include "SYSTEM.h"
 #include "TextFile.h"
 #include "UNIX.h"

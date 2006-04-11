@@ -89,86 +89,76 @@ extern DISCO_DLL CDPppCLASS CDPpp;
 /* CODING/DECODING PROCEDURES USED BY THE DISCO PRE-PROCESSOR */
 
 
-void CDPbool (PutGetFlag pgf,
+extern DISCO_DLL void CDPbool (PutGetFlag pgf,
               ASN1 *cid,
               address a,
               bool baseCDP=false);
 
 
-void CDPbyte (PutGetFlag pgf,
+extern DISCO_DLL void CDPbyte (PutGetFlag pgf,
               ASN1 *cid,
               address a,
               bool baseCDP=false);
 
 
-void CDPchar (PutGetFlag pgf,
+extern DISCO_DLL void CDPchar (PutGetFlag pgf,
               ASN1 *cid,
               address a,
               bool baseCDP=false);
 
 
-void CDPint (PutGetFlag pgf,
+extern DISCO_DLL void CDPint (PutGetFlag pgf,
              ASN1 *cid,
              address a,
              bool baseCDP=false);
 
 
-void CDPfloat (PutGetFlag pgf,
+extern DISCO_DLL void CDPfloat (PutGetFlag pgf,
                ASN1 *cid,
                address a,
                bool baseCDP=false);
 
 
-void CDPdouble (PutGetFlag pgf,
+extern DISCO_DLL void CDPdouble (PutGetFlag pgf,
                ASN1 *cid,
                address a,
                bool baseCDP=false);
 
 
-void CDPunsigned (PutGetFlag pgf,
+extern DISCO_DLL void CDPunsigned (PutGetFlag pgf,
                   ASN1 *cid,
                   address a,
                   bool baseCDP=false);
 
 
-void CDPARBITRARY (PutGetFlag pgf,
+extern DISCO_DLL void CDPARBITRARY (PutGetFlag pgf,
                    ASN1 *cid,
                    address a,
                    bool baseCDP=false);
 
 
-void CDPBYTES (PutGetFlag pgf,
+extern DISCO_DLL void CDPBYTES (PutGetFlag pgf,
                ASN1 *cid,
                address a,
                bool baseCDP=false);
 
 
-void CDPSET (PutGetFlag pgf,
+extern DISCO_DLL void CDPSET (PutGetFlag pgf,
              ASN1 *cid,
              address a,
              bool baseCDP=false);
 
 
-void CDPSTRING (PutGetFlag pgf,
+extern DISCO_DLL void CDPSTRING (PutGetFlag pgf,
                 ASN1 *cid,
                 address a,
                 bool baseCDP=false);
 
 
-void CDPBITSTRING (PutGetFlag pgf,
+extern DISCO_DLL void CDPBITSTRING (PutGetFlag pgf,
                    ASN1 *cid,
                    address a,
                    bool baseCDP=false);
-
-
-
-/*
-void CDPSigCerts (PutGetFlag pgf,
-                  ASN1 *cid,
-                  address a,
-                  bool baseCDP=false);
-*/
-
 
 
 /**********************************************************************/

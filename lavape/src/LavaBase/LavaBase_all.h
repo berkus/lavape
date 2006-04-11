@@ -20,6 +20,8 @@
 #include "SylTraversal.h"
 #include "SynIDTable.h"
 #include "SafeInt.h"
+#include "SynIO.h"
+#include "Syntax.h"
 #include <float.h>
 #include <stdio.h>
 #include <limits>
