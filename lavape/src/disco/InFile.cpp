@@ -164,6 +164,8 @@ void InFile::ReadLn (char *s)
         || (termCH == EOL)
         || (termCH == EOF))
       break;
+    else if (termCH == CR)
+      ; // ignore
     else {
       s[pos] = termCH;
       pos++;

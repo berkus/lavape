@@ -91,6 +91,9 @@ OutFile::~OutFile ()
 void OutFile::WriteLn ()
 
 {
+#ifdef WIN32
+  Write(CR);
+#endif
   Write(EOL);
   if (!Done) return;
   if (!bigBuffer) Flush();

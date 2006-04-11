@@ -496,7 +496,6 @@ bool ExecContents::event(QEvent *ev) {
   if (ev->type() == QEvent::WhatsThis) {
     hev = (QHelpEvent*)ev;
     setWhatsThis(text(hev->pos()));
-//    QWhatsThis::showText(mapToGlobal(hev->pos()),text(hev->pos()));
     return QWidget::event(ev);
   }
   else if (ev->type() == QEvent::WhatsThisClicked) {
