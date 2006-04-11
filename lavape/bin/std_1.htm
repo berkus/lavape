@@ -22,38 +22,34 @@ Object := <B>interface</B>
 <DIV ID="S1">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F385')">Features:</DIV>
 <DIV ID="F385">
-<DIV class="Element"><A NAME="385"></A><pre><I><FONT COLOR=#009000>
-Default finalization function; causes immediate
+<DIV class="Element"><A NAME="385"></A><pre>Default finalization function; causes immediate
 "zombification/invalidation" of the respective object
 if called explicitly. May be overridden
 in derived classes. Is called automatically
 when an object isn't referenced any longer
 by forward pointers (see "pointers" in the
-online help index).</FONT></I></pre><BR>
+online help index).</pre>
 <IMG SRC="LavaIcons/function.png">
 finalize := <B>function</B></DIV>
-<DIV class="Element"><A NAME="524"></A><pre><I><FONT COLOR=#009000>
-Zombifies the current object like "finalize",
+<DIV class="Element"><A NAME="524"></A><pre>Zombifies the current object like "finalize",
 but also all its (direct and indirect) constituents,
 and also its (direct and indirect) acquaintances,
 if its input parameter "acquaintancesToo" is
-"true".</FONT></I></pre><BR>
+"true".</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S524')">
 zombifyRec := <B>function</B>
 <DIV ID="S524">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('I525')">Inputs:</DIV>
 <DIV ID="I525">
-<DIV class="Element"><A NAME="525"></A><pre><I><FONT COLOR=#009000>
-If "true", then all direct and indirect acquaintances
-of the current object are zombified, too.</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="525"></A><pre>If "true", then all direct and indirect acquaintances
+of the current object are zombified, too.</pre>
 <IMG SRC="LavaIcons/basicatt.png">
 acquaintancesToo : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="2"></A><pre><I><FONT COLOR=#009000>
-If "self" and "op1" are value objects
+<DIV class="Element"><A NAME="2"></A><pre>If "self" and "op1" are value objects
 then they are compared constituent-wise
 (like with "IsEqualTo");
 if they are state objects then they are
-compared for identity (like with "IsSameAs").</FONT></I></pre><BR>
+compared for identity (like with "IsSameAs").</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S2')">
 operator "=" := <B>read-only</B> <B>function</B>
 <DIV ID="S2">
@@ -61,12 +57,11 @@ operator "=" := <B>read-only</B> <B>function</B>
 <DIV ID="I3">
 <DIV class="Element"><A NAME="3"></A><IMG SRC="LavaIcons/basicatt.png">
 op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="4"></A><pre><I><FONT COLOR=#009000>
-If "self" and "op1" are value objects
+<DIV class="Element"><A NAME="4"></A><pre>If "self" and "op1" are value objects
 then they are compared constituent-wise
 (like with "IsEqualTo");
 if they are state objects then they are
-compared for identity (like with "IsSameAs").</FONT></I></pre><BR>
+compared for identity (like with "IsSameAs").</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S4')">
 operator "!=" := <B>read-only</B> <B>function</B>
 <DIV ID="S4">
@@ -74,9 +69,8 @@ operator "!=" := <B>read-only</B> <B>function</B>
 <DIV ID="I5">
 <DIV class="Element"><A NAME="5"></A><IMG SRC="LavaIcons/basicatt.png">
 op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="181"></A><pre><I><FONT COLOR=#009000>
-Checks if "self" and op1 are identical
-(in the same way as state objects are compared)</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="181"></A><pre>Checks if "self" and op1 are identical
+(in the same way as state objects are compared)</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S181')">
 isSameAs := <B>read-only</B> <B>function</B>
 <DIV ID="S181">
@@ -84,9 +78,8 @@ isSameAs := <B>read-only</B> <B>function</B>
 <DIV ID="I182">
 <DIV class="Element"><A NAME="182"></A><IMG SRC="LavaIcons/basicatt.png">
 op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="183"></A><pre><I><FONT COLOR=#009000>
-Compares "self" and op1 constituent by constituent
-(in the same way as value objects are compared)</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="183"></A><pre>Compares "self" and op1 constituent by constituent
+(in the same way as value objects are compared)</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S183')">
 isEqualTo := <B>read-only</B> <B>function</B>
 <DIV ID="S183">
@@ -94,11 +87,10 @@ isEqualTo := <B>read-only</B> <B>function</B>
 <DIV ID="I184">
 <DIV class="Element"><A NAME="184"></A><IMG SRC="LavaIcons/basicatt.png">
 op1 : =<A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="489"></A><pre><I><FONT COLOR=#009000>
-Outputs a value object that is equal to "self".
+<DIV class="Element"><A NAME="489"></A><pre>Outputs a value object that is equal to "self".
 
 Applied primarily to state objects to get a
-"snapshot" of their current state.</FONT></I></pre><BR>
+"snapshot" of their current state.</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S489')">
 snapShot := <B>read-only</B> <B>function</B>
 <DIV ID="S489">
@@ -106,10 +98,9 @@ snapShot := <B>read-only</B> <B>function</B>
 <DIV ID="O490">
 <DIV class="Element"><A NAME="490"></A><IMG SRC="LavaIcons/basicatt.png">
 result : <A HREF="javascript:gotoTarget('#1','S1')"><FONT color=#000000>Object</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="399"></A><pre><I><FONT COLOR=#009000>
-Call "DontSave" to prevent a Lava component object
+<DIV class="Element"><A NAME="399"></A><pre>Call "DontSave" to prevent a Lava component object
 from being saved automatically when it isn't
-referenced any longer.</FONT></I></pre><BR>
+referenced any longer.</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S399')">
 dontSave := <B>read-only</B> <B>function</B>
 <DIV ID="S399">
@@ -117,9 +108,8 @@ dontSave := <B>read-only</B> <B>function</B>
 <DIV ID="I404">
 <DIV class="Element"><A NAME="404"></A><IMG SRC="LavaIcons/basicatt.png">
 dontSave : <A HREF="javascript:gotoTarget('#24','S24')"><FONT color=#000000>Boolean</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="487"></A><pre><I><FONT COLOR=#009000>
-Presents a tree-view of the object structure of
-the "self" object. (The latter may be of any class.)</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="487"></A><pre>Presents a tree-view of the object structure of
+the "self" object. (The latter may be of any class.)</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S487')">
 dump := <B>read-only</B> <B>function</B>
 <DIV ID="S487">
@@ -127,10 +117,9 @@ dump := <B>read-only</B> <B>function</B>
 <DIV ID="I488">
 <DIV class="Element"><A NAME="488"></A><IMG SRC="LavaIcons/basicatt.png">
 name : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="506"></A><pre><I><FONT COLOR=#009000>
-Sets a new state of a state object by copying the "value" parameter
+<DIV class="Element"><A NAME="506"></A><pre>Sets a new state of a state object by copying the "value" parameter
 onto the "self" object. Used primarily to change the state of an existing
-state object of one of the basic, built-in, atomic types.</FONT></I></pre><BR>
+state object of one of the basic, built-in, atomic types.</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S506')">
 setState := <B>function</B>
 <DIV ID="S506">
@@ -327,8 +316,7 @@ op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</
 <DIV ID="O37">
 <DIV class="Element"><A NAME="37"></A><IMG SRC="LavaIcons/basicatt.png">
 result : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="491"></A><pre><I><FONT COLOR=#009000>
-This method is used to increment a state object of type Integer
+<DIV class="Element"><A NAME="491"></A><pre>This method is used to increment a state object of type Integer
 by a certain amount (1. parameter) in order to avoid a
 single-assignment violation.
 
@@ -347,7 +335,7 @@ do
    set n  &lt;==  ~1;        // ~1 is an Integer 1 of category "state object"
    ...
    n.incBy(1)               // no single-assignment violation!
-#do</FONT></I></pre><BR>
+#do</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S491')">
 incBy := <B>function</B>
 <DIV ID="S491">
@@ -366,8 +354,7 @@ op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</
 <DIV ID="O43">
 <DIV class="Element"><A NAME="43"></A><IMG SRC="LavaIcons/basicatt.png">
 result : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="500"></A><pre><I><FONT COLOR=#009000>
-This method is used to multiply a state object of type Integer
+<DIV class="Element"><A NAME="500"></A><pre>This method is used to multiply a state object of type Integer
 by a certain amount (1. parameter) in order to avoid a
 single-assignment violation.
 
@@ -386,7 +373,7 @@ do
    set n  &lt;==  ~1;          // ~1 is an Integer 1 of category "state object"
    ...
    n.multBy(10)              // no single-assignment violation!
-#do</FONT></I></pre><BR>
+#do</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S500')">
 multBy := <B>function</B>
 <DIV ID="S500">
@@ -474,8 +461,7 @@ op1 : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FO
 <DIV ID="O61">
 <DIV class="Element"><A NAME="61"></A><IMG SRC="LavaIcons/basicatt.png">
 result : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="493"></A><pre><I><FONT COLOR=#009000>
-This method is used to increment a state object of type Float
+<DIV class="Element"><A NAME="493"></A><pre>This method is used to increment a state object of type Float
 by a certain amount (1. parameter) in order to avoid a
 single-assignment violation.
 
@@ -494,7 +480,7 @@ do
    set flt  &lt;==  ~1.0f;        // ~1.0f is a Float 1.0f of category "state object"
    ...
    flt.incBy(1.0f)                // no single-assignment violation!
-#do</FONT></I></pre><BR>
+#do</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S493')">
 incBy := <B>function</B>
 <DIV ID="S493">
@@ -513,8 +499,7 @@ op1 : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FO
 <DIV ID="O67">
 <DIV class="Element"><A NAME="67"></A><IMG SRC="LavaIcons/basicatt.png">
 result : <A HREF="javascript:gotoTarget('#50','S50')"><FONT color=#000000>Float</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="502"></A><pre><I><FONT COLOR=#009000>
-This method is used to multiply a state object of type Float
+<DIV class="Element"><A NAME="502"></A><pre>This method is used to multiply a state object of type Float
 by a certain amount (1. parameter) in order to avoid a
 single-assignment violation.
 
@@ -533,7 +518,7 @@ do
    set flt  &lt;==  ~1.0f;         // ~1.0f is a Float 1.0f of category "state object"
    ...
    flt.multBy(1.0f)               // no single-assignment violation!
-#do</FONT></I></pre><BR>
+#do</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S502')">
 multBy := <B>function</B>
 <DIV ID="S502">
@@ -610,8 +595,7 @@ op1 : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</F
 <DIV ID="O82">
 <DIV class="Element"><A NAME="82"></A><IMG SRC="LavaIcons/basicatt.png">
 result : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="498"></A><pre><I><FONT COLOR=#009000>
-This method is used to increment a state object of type Double
+<DIV class="Element"><A NAME="498"></A><pre>This method is used to increment a state object of type Double
 by a certain amount (1. parameter) in order to avoid a
 single-assignment violation.
 
@@ -630,7 +614,7 @@ do
    set dbl  &lt;==  ~1.0;           // ~1.0 is a Double 1.0 of category "state object"
    ...
    dbl.incBy(1.0)                  // no single-assignment violation!
-#do</FONT></I></pre><BR>
+#do</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S498')">
 incBy := <B>function</B>
 <DIV ID="S498">
@@ -649,8 +633,7 @@ op1 : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</F
 <DIV ID="O88">
 <DIV class="Element"><A NAME="88"></A><IMG SRC="LavaIcons/basicatt.png">
 result : <A HREF="javascript:gotoTarget('#71','S71')"><FONT color=#000000>Double</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="504"></A><pre><I><FONT COLOR=#009000>
-This method is used to increment a state object of type Double
+<DIV class="Element"><A NAME="504"></A><pre>This method is used to increment a state object of type Double
 by a certain amount (1. parameter) in order to avoid a
 single-assignment violation.
 
@@ -669,7 +652,7 @@ do
    set dbl  &lt;==  ~1.0;           // ~1.0 is a Double 1.0 of category "state object"
    ...
    dbl.multBy(1.0)                // no single-assignment violation!
-#do</FONT></I></pre><BR>
+#do</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S504')">
 multBy := <B>function</B>
 <DIV ID="S504">
@@ -718,8 +701,7 @@ Enumeration := <B>interface</B>
 <DIV ID="S97">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F405')">Features:</DIV>
 <DIV ID="F405">
-<DIV class="Element"><A NAME="405"></A><pre><I><FONT COLOR=#009000>
-ordinal number of an enumerated item</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="405"></A><pre>ordinal number of an enumerated item</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S405')">
 operator "#" := <B>read-only</B> <B>function</B>
 <DIV ID="S405">
@@ -727,8 +709,7 @@ operator "#" := <B>read-only</B> <B>function</B>
 <DIV ID="O406">
 <DIV class="Element"><A NAME="406"></A><IMG SRC="LavaIcons/basicatt.png">
 ord : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="393"></A><pre><I><FONT COLOR=#009000>
-ordinal number of an enumerated item</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="393"></A><pre>ordinal number of an enumerated item</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S393')">
 Ord := <B>read-only</B> <B>function</B>
 <DIV ID="S393">
@@ -750,15 +731,14 @@ comment := <B>read-only</B> <B>function</B>
 <DIV ID="O450">
 <DIV class="Element"><A NAME="450"></A><IMG SRC="LavaIcons/basicatt.png">
 str : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="98"></A><pre><I><FONT COLOR=#009000>
-A Lava Set is actually a "multi-set" which may contain
+<DIV class="Element"><A NAME="98"></A><pre>A Lava Set is actually a "multi-set" which may contain
 the same object more than once.
 
 ("Contains" counts how often an object is contained
 in the set.)
 
 You can use the "foreach", "exists" and "select" quantifiers
-to run through and process the elements of a set.</FONT></I></pre><BR>
+to run through and process the elements of a set.</pre>
 <IMG SRC="LavaIcons/settyp.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S98')">
 Set := <B>interface</B>
 <DIV ID="S98">
@@ -775,12 +755,11 @@ add := <B>function</B>
 <DIV ID="I101">
 <DIV class="Element"><A NAME="101"></A><IMG SRC="LavaIcons/paramatt.png">
 data : <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="216"></A><pre><I><FONT COLOR=#009000>
-Add the input object to the set and return
+<DIV class="Element"><A NAME="216"></A><pre>Add the input object to the set and return
 a handle to it as output parameter.
 
 Afterwards you can use the "Get" function to get the
-object belonging to this handle.</FONT></I></pre><BR>
+object belonging to this handle.</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S216')">
 addGetHandle := <B>function</B>
 <DIV ID="S216">
@@ -792,12 +771,11 @@ data : <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set:
 <DIV ID="O218">
 <DIV class="Element"><A NAME="218"></A><IMG SRC="LavaIcons/basicatt.png">
 add_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="231"></A><pre><I><FONT COLOR=#009000>
-Get the object belonging to the handle which is
+<DIV class="Element"><A NAME="231"></A><pre>Get the object belonging to the handle which is
 passed as input parameter.
 
 (An exception will occur if the handle doesn't correspond
-to a set element.)</FONT></I></pre><BR>
+to a set element.)</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S231')">
 get := <B>read-only</B> <B>function</B>
 <DIV ID="S231">
@@ -827,14 +805,13 @@ remove_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>
 <DIV ID="O230">
 <DIV class="Element"><A NAME="230"></A><IMG SRC="LavaIcons/paramatt.png">
 data : <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set::ELEMTYPE></FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="390"></A><pre><I><FONT COLOR=#009000>
-Returns the number of times the input object is contained in the set.
+<DIV class="Element"><A NAME="390"></A><pre>Returns the number of times the input object is contained in the set.
 
 If the set elements are state objects, 'count' is based on the identity of objects,
 for value objects on equality (= same contents).
 
 If the input parameter is 0, 'count' returns the total count of all set elements,
-where identical state objects / equal value objects count as different.</FONT></I></pre><BR>
+where identical state objects / equal value objects count as different.</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S390')">
 count := <B>read-only</B> <B>function</B>
 <DIV ID="S390">
@@ -846,9 +823,8 @@ data : <A HREF="javascript:gotoTarget('#99','S99')"><FONT color=#000000>&lt;Set:
 <DIV ID="O392">
 <DIV class="Element"><A NAME="392"></A><IMG SRC="LavaIcons/basicatt.png">
 count : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="102"></A><pre><I><FONT COLOR=#009000>
-A Lava Chain is a doubly-linked list of elements whose type
-is specified by the virtual type ELEMTYPE.</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="102"></A><pre>A Lava Chain is a doubly-linked list of elements whose type
+is specified by the virtual type ELEMTYPE.</pre>
 <IMG SRC="LavaIcons/settyp.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S102')">
 Chain := <B>interface</B>, <B>extends</B> <A HREF="javascript:gotoTarget('#98','S98')"><FONT color=#000000>Set</FONT></A>
 <DIV ID="S102">
@@ -927,14 +903,13 @@ act_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Han
 <DIV ID="O193">
 <DIV class="Element"><A NAME="193"></A><IMG SRC="LavaIcons/basicatt.png">
 pred_hdl : <A HREF="javascript:gotoTarget('#104','S104')"><FONT color=#000000>Handle</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="104"></A><pre><I><FONT COLOR=#009000>
-Sets/Chains and derived classes are "multi-sets": The same object may be
+<DIV class="Element"><A NAME="104"></A><pre>Sets/Chains and derived classes are "multi-sets": The same object may be
 contained more than once in a set. Elements of Sets/Chains and derived classes may be
 distinguished/identified by a "Handle".
 
 See the pertaining member functions and the Handle-operator "@",
 which may be used in the quantification constructs "foreach", "exists"
-and "select" to</FONT></I></pre><BR>
+and "select" to</pre>
 <IMG SRC="LavaIcons/classint.png">
 Handle := <B>interface</B></DIV>
 <DIV class="Element"><A NAME="127"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S127')">
@@ -980,12 +955,10 @@ operator "[]&lt;-" := <B>function</B>
 op1 : <A HREF="javascript:gotoTarget('#26','S26')"><FONT color=#000000>Integer</FONT></A></DIV>
 <DIV class="Element"><A NAME="135"></A><IMG SRC="LavaIcons/paramatt.png">
 op2 : <A HREF="javascript:gotoTarget('#128','S128')"><FONT color=#000000>&lt;Array::ELEMTYPE></FONT></A></DIV></DIV></DIV></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="145"></A><pre><I><FONT COLOR=#009000>
-Placeholder for any type of embedded "in-place active" Document"</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="145"></A><pre>Placeholder for any type of embedded "in-place active" Document"</pre>
 <IMG SRC="LavaIcons/classint.png">
 ComponentObj := <B>interface</B></DIV>
-<DIV class="Element"><A NAME="407"></A><pre><I><FONT COLOR=#009000>
-Non-creatable common base class for all kinds of exceptions</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="407"></A><pre>Non-creatable common base class for all kinds of exceptions</pre>
 <IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S407')">
 Exception := <B>interface</B>
 <DIV ID="S407">
@@ -995,30 +968,25 @@ Exception := <B>interface</B>
 ERRORCODE = <A HREF="javascript:gotoTarget('#97','S97')"><FONT color=#000000>Enumeration</FONT></A></DIV></DIV>
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F413')">Features:</DIV>
 <DIV ID="F413">
-<DIV class="Element"><A NAME="413"></A><pre><I><FONT COLOR=#009000>
-Indicates the reason of the exception by an item
-of an enumeration type</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="413"></A><pre>Indicates the reason of the exception by an item
+of an enumeration type</pre>
 <IMG SRC="LavaIcons/paramatt.png">
 code : <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV>
-<DIV class="Element"><A NAME="414"></A><pre><I><FONT COLOR=#009000>
-Associates a message text with this exception
-(may be empty)</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="414"></A><pre>Associates a message text with this exception
+(may be empty)</pre>
 <IMG SRC="LavaIcons/basicatt.png">
 message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV>
-<DIV class="Element"><A NAME="474"></A><pre><I><FONT COLOR=#009000>
-Delivers the call stack of the last exception,
-or null, if no exception pending</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="474"></A><pre>Delivers the call stack of the last exception,
+or null, if no exception pending</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S474')">
 callStack := <B>read-only</B> <B>function</B>
 <DIV ID="S474">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('O475')">Outputs:</DIV>
 <DIV ID="O475">
-<DIV class="Element"><A NAME="475"></A><pre><I><FONT COLOR=#009000>
-null if no exception pending</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="475"></A><pre>null if no exception pending</pre>
 <IMG SRC="LavaIcons/basicatt.png">
 callStack : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A><B>, optional</B></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="424"></A><pre><I><FONT COLOR=#009000>
-Initializer with two parameters (exception code and message text)</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="424"></A><pre>Initializer with two parameters (exception code and message text)</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S424')">
 initialize := <B>initializer</B>
 <DIV ID="S424">
@@ -1028,12 +996,10 @@ initialize := <B>initializer</B>
 code : <A HREF="javascript:gotoTarget('#451','S451')"><FONT color=#000000>&lt;Exception::ERRORCODE></FONT></A></DIV>
 <DIV class="Element"><A NAME="429"></A><IMG SRC="LavaIcons/basicatt.png">
 message : <A HREF="javascript:gotoTarget('#92','S92')"><FONT color=#000000>String</FONT></A></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="415"></A><pre><I><FONT COLOR=#009000>
-Default Catch function which simply calls "Show"</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="415"></A><pre>Default Catch function which simply calls "Show"</pre>
 <IMG SRC="LavaIcons/function.png">
 catch := <B>read-only</B> <B>function</B></DIV>
-<DIV class="Element"><A NAME="416"></A><pre><I><FONT COLOR=#009000>
-Displays the exception code and the associated message text in a message box</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="416"></A><pre>Displays the exception code and the associated message text in a message box</pre>
 <IMG SRC="LavaIcons/function.png">
 show := <B>read-only</B> <B>function</B></DIV></DIV></DIV></DIV>
 <DIV class="Element"><A NAME="452"></A><IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S452')">
@@ -1100,19 +1066,17 @@ ErrorCode := <B>enumeration</B>, <B>extends</B> <A HREF="javascript:gotoTarget('
 <IMG SRC="LavaIcons/enumsel.png"> unfinished_object<BR>
 <IMG SRC="LavaIcons/enumsel.png"> execution_failed<BR>
 <IMG SRC="LavaIcons/enumsel.png"> out_function_failed</DIV></DIV></DIV></DIV></DIV>
-<DIV class="Element"><A NAME="520"></A><pre><I><FONT COLOR=#009000>
-RTS stands for "Run Time System" and provides access
+<DIV class="Element"><A NAME="520"></A><pre>RTS stands for "Run Time System" and provides access
 to states and functions of the Lava run time system
 through a number of specific member variables and
-static member functions.</FONT></I></pre><BR>
+static member functions.</pre>
 <IMG SRC="LavaIcons/classint.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S520')">
 RTS := <B>interface</B>
 <DIV ID="S520">
 <DIV CLASS="Category" TITLE="click to hide/show details" ONCLICK="toggleDisplay('F522')">Features:</DIV>
 <DIV ID="F522">
-<DIV class="Element"><A NAME="522"></A><pre><I><FONT COLOR=#009000>
-Delivers the caller object of the current class member function,
-or null if invoked from within an initiator.</FONT></I></pre><BR>
+<DIV class="Element"><A NAME="522"></A><pre>Delivers the caller object of the current class member function,
+or null if invoked from within an initiator.</pre>
 <IMG SRC="LavaIcons/function.png" ALT="" TITLE="click to hide/show details" STYLE="cursor:pointer" ONCLICK="toggleDisplay('S522')">
 caller := <B>read-only</B> <B>function</B>
 <DIV ID="S522">

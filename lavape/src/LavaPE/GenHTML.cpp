@@ -197,13 +197,13 @@ static void printCommentLines (DString comment) {
   DString comm;
   QString str(comment.c);
 
-  code("<pre><I><FONT COLOR=#009000>\n");
+  code("<pre>");
   str = str.replace('<',"&lt;");
   str = str.replace('\r',"");
 //  str = str.replace('\n'," ");
   comm = qPrintable(str);
   code(comm.c);
-  code("</FONT></I></pre>");
+  code("</pre>");
 }
 
 
@@ -376,7 +376,7 @@ static void PutComment(LavaDECL *pnode,bool isTrailing,bool isInLine)
     }
   else
     printCommentLines(pnode->DECLComment.ptr->Comment);
-	code("<BR>\n");
+	code("\n");
 }
 
 
