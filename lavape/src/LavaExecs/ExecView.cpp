@@ -50,6 +50,7 @@
 #include "LavaBaseStringInit.h"
 //#include "Resource.h"
 #include "LavaExecsStringInit.h"
+#include "BASEMACROS.h"
 
 #pragma hdrstop
 #include "debugStop.xpm"
@@ -491,12 +492,19 @@ typedef Q3ValueList<int> BreakPointList;
 bool ExecContents::event(QEvent *ev) {
   QHelpEvent *hev;
   QWhatsThisClickedEvent *wtcEv;
+  QHelpEvent *hevWT;
+  WhatNextEvent *wnev;
   QString href;
 
   if (ev->type() == QEvent::WhatsThis) {
     hev = (QHelpEvent*)ev;
     setWhatsThis(text(hev->pos()));
     return QWidget::event(ev);
+  }
+  else if (ev->type() == IDU_WhatNext) {
+    wnev = (WhatNextEvent*)ev;
+    hevWT = new QHelpEvent(QEvent::WhatsThis,wnev->pos,wnev->globalPos);
+    return QWidget::event(hevWT);
   }
   else if (ev->type() == QEvent::WhatsThisClicked) {
     wtcEv = (QWhatsThisClickedEvent*)ev;
@@ -6804,7 +6812,11 @@ bool ObjComboUpdate::Action (CheckData &ckd, VarName *varName, TID &tid) {
 
 void CExecView::on_whatNextAction_triggered()
 {
-  text->currentSynObj->on_whatNextAction_triggered();
+  redCtl->setWhatsThis(text->currentSynObj->whatNextText());
+  QCoreApplication::sendEvent(redCtl,
+    new WhatNextEvent(IDU_WhatNext,
+    text->currentSynObj->startToken->data.rect.topLeft(),
+    redCtl->mapToGlobal(text->currentSynObj->startToken->data.rect.topLeft())));
 }
 
 

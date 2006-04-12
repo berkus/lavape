@@ -68,6 +68,7 @@
 #define IDU_LavaDebugRq (QEvent::Type)(QEvent::User+14)
 #define IDU_LavaDebugW (QEvent::Type)(QEvent::User+15)
 #define IDU_LavaPE_setSel (QEvent::Type)(QEvent::User+16)
+#define IDU_WhatNext (QEvent::Type)(QEvent::User+17)
 
 #define IFC(OBJ) {if (!INC_FWD_CNT(ckd,OBJ)) return false;}
 #define IRC(OBJ) {if (!INC_REV_CNT(ckd,OBJ)) return false;}

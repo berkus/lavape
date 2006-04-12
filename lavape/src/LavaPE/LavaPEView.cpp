@@ -4437,7 +4437,7 @@ void CLavaPEView::on_whatNextAction_triggered()
     " (DEL key or scissors button),<br>or you may <b>insert</b> another item after this one"
     " (click any enabled button on the declaration toolbar),"
     "<br>or you may <b>view/edit the properties</b> of this item (spectacles button),"
-    "<br><a href=\"../on_whatNextAction_triggered/DeclViewWhatNext.htm\">or...</a></p>")),
+    "<br><a href=\"../whatNext/DeclViewWhatNext.htm\">or...</a></p>")),
       m_tree);
       */
 }

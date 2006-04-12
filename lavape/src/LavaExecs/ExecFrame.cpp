@@ -44,7 +44,6 @@ CExecFrame::CExecFrame(QWidget *parent) : wxMDIChildFrame(parent)
 void CExecFrame::closeEvent(QCloseEvent *e)
 {
   deleteLater();
-// QWidget::closeEvent(e);
 }
 
 void CExecFrame::InitialUpdate()

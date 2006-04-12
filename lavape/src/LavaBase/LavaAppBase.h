@@ -561,19 +561,18 @@ public:
 	const QString *caption, *text;
 	int button0, button1, button2, result;
 };
-/*
-class LAVABASE_DLL WhatsThis
-{
+
+class LAVABASE_DLL WhatNextEvent : public QEvent {
 public:
-  WhatsThis(QString text,QWidget *w);
+  WhatNextEvent(QEvent::Type t,const QPoint &pos, const QPoint &globalPos)
+    : QEvent(t) {
+    this->pos = pos;
+    this->globalPos = globalPos;
+  }
 
-  bool clicked(const QString & href);
-  QString text(const QPoint&);
-
-private:
-  QString whatsThisText;
+  QPoint pos, globalPos;
 };
-*/
+
 extern LAVABASE_DLL int critical(QWidget *parent, const QString &caption,
 			 const QString& text,
 			 int button0, int button1=0, int button2=0);

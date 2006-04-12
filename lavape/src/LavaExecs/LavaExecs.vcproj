@@ -640,7 +640,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
@@ -702,7 +702,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>

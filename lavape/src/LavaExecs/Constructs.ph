@@ -480,6 +480,9 @@ public:
   virtual bool Recursion (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel, CHE *cheQuant, CHE *cheVar, LavaObjectPtr rSet=0) { return false;};
   virtual void on_whatNextAction_triggered();
   virtual QString whatsThisText();
+  virtual QString whatNextText() {
+    return QString("No specific \"what next\" text available here");
+  }
 };
 
 

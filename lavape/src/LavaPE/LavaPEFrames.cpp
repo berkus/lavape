@@ -1715,7 +1715,7 @@ void CLavaMainFrame::on_viewTB7Action_triggered()
 void CLavaMainFrame::on_whatNextAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  QString fileName=ExeDir+"/../doc/html/on_whatNextAction_triggered/GlobalWhatNext.htm";
+  QString fileName=ExeDir+"/../doc/html/whatNext/GlobalWhatNext.htm";
 	QString path(ExeDir);
 	QStringList args;
 
