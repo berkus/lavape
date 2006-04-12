@@ -102,7 +102,7 @@ void TSimpleTable::AddLocalID(DWORD pvar, int id)
 void TSimpleTable::NewID(LavaDECL ** pdecl)
 {
   (*pdecl)->OwnID = freeID;
-  AddID(pdecl); 
+  AddID(pdecl);
 }
 
 int TSimpleTable::NewLocalID(DWORD pvar)
@@ -175,20 +175,20 @@ void TIDTable::AddID(LavaDECL ** pdecl, int incl)
   (*pdecl)->inINCL = incl;
   IDTab[incl]->AddID(pdecl);
   (*pdecl)->VElems.UpdateNo = 0;
-  if (((*pdecl)->DeclType == Impl) || ((*pdecl)->DeclType == CompObj)) { 
+  if (((*pdecl)->DeclType == Impl) || ((*pdecl)->DeclType == CompObj)) {
     (*pdecl)->RuntimeDECL = lastImpl;
     lastImpl = *pdecl;
   }
-  if (((*pdecl)->DeclType == Function) 
+  if (((*pdecl)->DeclType == Function)
            && !(*pdecl)->TypeFlags.Contains(isAbstract)
            && !(*pdecl)->TypeFlags.Contains(isNative)
-      || ((*pdecl)->DeclType == Attr) 
+      || ((*pdecl)->DeclType == Attr)
          && (*pdecl)->TypeFlags.Contains(hasSetGet)
          && !(*pdecl)->TypeFlags.Contains(isAbstract)
-         && !(*pdecl)->TypeFlags.Contains(isNative) 
+         && !(*pdecl)->TypeFlags.Contains(isNative)
         /* && !(*pdecl)->ParentDECL->TypeFlags.Contains(isComponent)*/)
     (*pdecl)->ParentDECL->WorkFlags.INCL(implRequired);
-  
+
   Down(*pdecl, onAddID, incl);
 }
 
@@ -207,7 +207,7 @@ int TIDTable::GetINCL(const DString& otherSytaxName, const DString& otherDocDir)
        cheSyn = (CHESimpleSyntax*)cheSyn->successor);
   if (cheSyn)
     return cheSyn->data.nINCL;
-  else 
+  else
     return -1;
 }
 
@@ -218,7 +218,7 @@ void TIDTable::NewID(LavaDECL ** pdecl)
   bool copyStart = !inPattern && ((*pdecl)->inINCL != 0)
                     || ((*pdecl)->DeclType == PatternDef)
                     || ((*pdecl)->DeclType == DragDef);
-  if (copyStart) 
+  if (copyStart)
     inPattern = ((*pdecl)->DeclType == PatternDef);
   if (copyStart || InCopy) {  //the DECL is copied from another document or is a collection of pattern definitions
     if (((*pdecl)->DeclType != PatternDef)
@@ -232,7 +232,7 @@ void TIDTable::NewID(LavaDECL ** pdecl)
       ChangeTab.Append(che);
       if (inPattern && che->data.nID >= 0) {
         cheID = new CHETID;
-        cheID->data = TID(che->data.nID, (*pdecl)->inINCL);  
+        cheID->data = TID(che->data.nID, (*pdecl)->inINCL);
         (*pdecl)->Supports.Prepend(cheID);
         if ((*pdecl)->DeclType != Interface)
           (*pdecl)->SecondTFlags.INCL(overrides);
@@ -243,9 +243,9 @@ void TIDTable::NewID(LavaDECL ** pdecl)
       if (!ClipTree)
         useInINCL = (*pdecl)->inINCL;
     InCopy = true;
-    (*pdecl)->inINCL = 0; 
+    (*pdecl)->inINCL = 0;
   }
-  else 
+  else
     if (((*pdecl)->DeclType != PatternDef)
         && ((*pdecl)->DeclType != DragDef)) {
       IDTab[0]->NewID(pdecl);
@@ -269,7 +269,7 @@ void TIDTable::NewID(LavaDECL ** pdecl)
              cheSyn = (CHESimpleSyntax*)cheSyn->successor);
         if (cheSyn)
           clipChe->data.clipIncl = cheSyn->data.nINCL;
-        else 
+        else
           if (clipChe->data.nINCL == 1)
             clipChe->data.clipIncl = 1;
           else
@@ -287,7 +287,7 @@ void TIDTable::NewID(LavaDECL ** pdecl)
       ClipTree = 0;
     }
     else
-      if ((*pdecl)->WorkFlags.Contains(ImplFromBaseToEx)) 
+      if ((*pdecl)->WorkFlags.Contains(ImplFromBaseToEx))
         ClipTree = 0;
     useInINCL = -1;
     inPattern = false;
@@ -314,7 +314,7 @@ void TIDTable::NewLocalID(DWORD pvar, int& id, bool execCopy)
 void TIDTable::ChangeIDFromTab(int& id)
 {
   CHETID *che;
-  for (che = (CHETID*)ChangeTab.first; 
+  for (che = (CHETID*)ChangeTab.first;
        che && (che->data.nID != id);
        che = (CHETID*)che->successor);
   if (che)
@@ -336,8 +336,8 @@ bool TIDTable::ChangeFromTab(TID& id)
     }
   }
   //only in the the copied subtree:
-  if ((id.nID >= 0) && (id.nINCL == DropINCL)) { 
-    //special: public function to private: 
+  if ((id.nID >= 0) && (id.nINCL == DropINCL)) {
+    //special: public function to private:
     //map the id of the old implementation io to the mapped old interface io
     for ( che = (CHETID*)ChangeTab.first;
       che && (che->data.nID != -id.nID);
@@ -347,7 +347,7 @@ bool TIDTable::ChangeFromTab(TID& id)
       return ChangeFromTab(id);
     }
   }
-  if (DropINCL < 0) { 
+  if (DropINCL < 0) {
     if ((id.nID >= 0) && ClipTree) {
       for (clipChe = (CHESimpleSyntax*)ClipTree->first;
            clipChe && (clipChe->data.nINCL != id.nINCL);
@@ -358,7 +358,7 @@ bool TIDTable::ChangeFromTab(TID& id)
        id.nID = -1;
     }
     else
-      if ((id.nID >= 0) && (useInINCL >= 0)) 
+      if ((id.nID >= 0) && (useInINCL >= 0))
         id.nINCL = IDTab[useInINCL]->nINCLTrans[id.nINCL].nINCL;
       else
         id.nID = -1;
@@ -378,7 +378,7 @@ void TIDTable::CopiedToDoc(LavaDECL ** pnewDECL)
     che = (CHETID*)decl->Supports.first;
     if (inPattern && che)
       che = (CHETID*)che->successor; //skip the first which is the overwritten
-    for (; che; che = (CHETID*)che->successor) 
+    for (; che; che = (CHETID*)che->successor)
       ChangeFromTab(che->data);
   }
   else
@@ -425,11 +425,11 @@ void TIDTable::ChangeRefsToClipIDs(LavaDECL *decl)
   */
   ChangeRefToClipID(decl->RefID);
   if (!decl->WorkFlags.Contains(fromPrivToPub) && !decl->WorkFlags.Contains(SupportsReady))
-    for (che = (CHETID*)decl->Supports.first; che; che = (CHETID*)che->successor) 
+    for (che = (CHETID*)decl->Supports.first; che; che = (CHETID*)che->successor)
       ChangeRefToClipID(che->data);
   else
     decl->WorkFlags.EXCL(SupportsReady);
-  for (che = (CHETID*)decl->Inherits.first; che; che = (CHETID*)che->successor) 
+  for (che = (CHETID*)decl->Inherits.first; che; che = (CHETID*)che->successor)
     ChangeRefToClipID(che->data);
   if ((decl->DeclType == VirtualType) && (decl->ParentDECL->DeclType == FormDef)
     && decl->Annotation.ptr
@@ -535,7 +535,7 @@ void TIDTable::UndoDeleteID(int delID)
 
 void TIDTable::UndoDeleteLocalID(int delID)
 {
-  if (delID>=0) 
+  if (delID>=0)
     IDTab[0]->UndoDeleteLocalID(delID);
   //Down(*IDTab[0]->SimpleIDTab[delID]->pDECL, -2);
 }
@@ -544,7 +544,7 @@ void TIDTable::UndoDeleteLocalID(int delID)
 void TIDTable::AddINCL(const DString& name, int incl)
 {
   if (incl >= maxINCL) {
-    int usedINCL = min(maxINCL,freeINCL);
+    int usedINCL = lmin(maxINCL,freeINCL);
     for (; incl >= maxINCL; maxINCL += 5);
     TSimpleTable **idTab = new  TSimpleTable* [maxINCL];
     int ii;
@@ -552,7 +552,7 @@ void TIDTable::AddINCL(const DString& name, int incl)
       idTab[ii] = IDTab[ii];
     for (ii = usedINCL; ii < maxINCL; ii++)
       idTab[ii] = new TSimpleTable();
-    if (IDTab) 
+    if (IDTab)
       delete [] IDTab;
     IDTab = idTab;
   }
@@ -561,7 +561,7 @@ void TIDTable::AddINCL(const DString& name, int incl)
   if (incl >= freeINCL)
     freeINCL = incl+1;
   if (IDTab[0]->nINCLTrans) {
-    IDTab[0]->maxTrans = min(IDTab[0]->maxTrans, incl)+1;
+    IDTab[0]->maxTrans = lmin(IDTab[0]->maxTrans, incl)+1;
     IDTab[0]->nINCLTrans[incl].nINCL = incl;
     IDTab[0]->nINCLTrans[incl].isValid = true;
     IDTab[0]->nINCLTrans[incl].FileName = name;
@@ -602,7 +602,7 @@ LavaDECL* TIDTable::GetDECL(int incl, int id, int fromIncl)
   }
   else
     inc = incl;
-  if ((inc >= 0) &&  IDTab[inc]->isValid && (id < IDTab[inc]->maxID) && (IDTab[inc]->SimpleIDTab[id]->idType == globalID)) 
+  if ((inc >= 0) &&  IDTab[inc]->isValid && (id < IDTab[inc]->maxID) && (IDTab[inc]->SimpleIDTab[id]->idType == globalID))
     return *IDTab[inc]->SimpleIDTab[id]->pDECL;
   else
     return 0;
@@ -622,7 +622,7 @@ DWORD TIDTable::GetVar(const TID& id, TIDType& idtype, int fromIncl)
   else
     incl = id.nINCL;
   if ((incl >= 0) && IDTab[incl]->isValid && (id.nID < IDTab[incl]->maxID)) {
-    idtype = IDTab[incl]->SimpleIDTab[id.nID]->idType; 
+    idtype = IDTab[incl]->SimpleIDTab[id.nID]->idType;
     switch (idtype) {
       case noID:
         return 0;
@@ -641,26 +641,26 @@ DWORD TIDTable::GetVar(const TID& id, TIDType& idtype, int fromIncl)
 
 void TIDTable::SetVar(const TID& id, DWORD data)
 {
-  if ((id.nID >= 0) 
-      && IDTab[id.nINCL]->isValid 
-      && (id.nID < IDTab[id.nINCL]->freeID ) ) 
+  if ((id.nID >= 0)
+      && IDTab[id.nINCL]->isValid
+      && (id.nID < IDTab[id.nINCL]->freeID ) )
     IDTab[id.nINCL]->SimpleIDTab[id.nID]->pDECL = (LavaDECL**)data;
 }
 
 
 DString TIDTable::GetRelSynFileName(const TID& id)
 {
-  if ((id.nID >= 0) && IDTab[id.nINCL]->isValid ) 
+  if ((id.nID >= 0) && IDTab[id.nINCL]->isValid )
     return IDTab[id.nINCL]->FileName;
   else {
     DString str;
     return str;
   }
 }
-  
+
 bool TIDTable::EQEQ(const TID& id1, int inINC1, const TID& id2, int inINC2)
 {
-  return (id1.nID == id2.nID) 
+  return (id1.nID == id2.nID)
          && IDTab[inINC1]->nINCLTrans[id1.nINCL].isValid
          && IDTab[inINC2]->nINCLTrans[id2.nINCL].isValid
          && ( IDTab[inINC1]->nINCLTrans[id1.nINCL].nINCL == IDTab[inINC2]->nINCLTrans[id2.nINCL].nINCL );
@@ -701,11 +701,11 @@ int TIDTable::AddSimpleSyntax(SynDef *isyntax, const DString& idocDir, bool relo
 {
   CHESimpleSyntax *simpleSyntax = (CHESimpleSyntax*)isyntax->SynDefTree.first;
   DString relFn = simpleSyntax->data.SyntaxName;
-  int incl, in, is = 1, usedINCL = min(maxINCL, freeINCL);
+  int incl, in, is = 1, usedINCL = lmin(maxINCL, freeINCL);
 
   AbsPathName(relFn, idocDir);
   RelPathName(relFn, DocDir);
-  for ( incl = 0; 
+  for ( incl = 0;
         (incl < usedINCL)
           && (!IDTab[incl]->isValid || !SameFile(IDTab[incl]->FileName, DocDir, relFn, DocDir));
         incl++);
@@ -714,9 +714,9 @@ int TIDTable::AddSimpleSyntax(SynDef *isyntax, const DString& idocDir, bool relo
       reload = true;
     AddINCL(relFn, incl);
   }
-  else 
+  else
     incl = NewINCL(relFn);
-  if (incl == 1) 
+  if (incl == 1)
     FillBasicTypesID(simpleSyntax);
   if (reload) {
     for (int ii = 0; ii < IDTab[incl]->freeID; ii++)
@@ -737,7 +737,7 @@ int TIDTable::AddSimpleSyntax(SynDef *isyntax, const DString& idocDir, bool relo
   if (incl) {
     for (simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor;
          simpleSyntax;
-         simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor) 
+         simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor)
       is = lmax(is,simpleSyntax->data.nINCL+1);
   }
   else
@@ -762,13 +762,13 @@ int TIDTable::AddSimpleSyntax(SynDef *isyntax, const DString& idocDir, bool relo
     relFn = simpleSyntax->data.SyntaxName;
     AbsPathName(relFn, idocDir);
     RelPathName(relFn, DocDir);
-    for ( in = 0; 
+    for ( in = 0;
           (in < freeINCL) && (!IDTab[in]->isValid || !SameFile(IDTab[in]->FileName, DocDir, relFn, DocDir));
           in++);
     if (in < freeINCL)
       IDTab[incl]->nINCLTrans[simpleSyntax->data.nINCL].nINCL = in;
     else {
-      in = NewINCL(relFn); //not yet in mySynDef, 
+      in = NewINCL(relFn); //not yet in mySynDef,
       IDTab[incl]->nINCLTrans[simpleSyntax->data.nINCL].nINCL = in;
     }
     IDTab[incl]->nINCLTrans[simpleSyntax->data.nINCL].FileName = relFn;
@@ -790,7 +790,7 @@ void TIDTable::RemoveFromInclTrans(int incl, const DString& fileName)
 int TIDTable::IsFileInherited(const DString& fileName)
 {
   int in, ii;
-  for (in = 1; in < freeINCL; in++) 
+  for (in = 1; in < freeINCL; in++)
     if (IDTab[in]->isValid) {
       for (ii = 2; (ii < IDTab[in]->maxTrans)
                    && (!IDTab[in]->nINCLTrans[ii].isValid
@@ -824,13 +824,13 @@ void TIDTable::SetInclTransValid(int incl, const DString& fileName, int newINCL)
     is = IDTab[incl]->maxTrans;
     IDTab[incl]->maxTrans = newINCL + 5;
     IDTab[incl]->nINCLTrans = new TINCLTrans [IDTab[incl]->maxTrans];
-    for (ii = 0;  ii < is; ii++) 
+    for (ii = 0;  ii < is; ii++)
       IDTab[incl]->nINCLTrans[ii] = nTrans[ii];
     delete [] nTrans;
   }
   IDTab[incl]->nINCLTrans[newINCL].isValid = true;
   IDTab[incl]->nINCLTrans[newINCL].FileName = fileName;
-  for (ii = 0; 
+  for (ii = 0;
       (ii < freeINCL) && (!IDTab[ii]->isValid || !SameFile(IDTab[ii]->FileName, DocDir, fileName, DocDir));
        ii++);
   if (ii < freeINCL)
@@ -890,7 +890,7 @@ void TIDTable::FillBasicTypesID(CHESimpleSyntax* stdSyntax, bool isstd)
 
 
 void TIDTable::MakeTable(SynDef *syn, bool isstd)
-{  
+{
   int incl = 1, ii;
   mySynDef = syn;
   CHESimpleSyntax *simpleSyntax = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
@@ -937,19 +937,19 @@ TID TIDTable::FindImpl(TID interID, int funcnID)
       return TID(funcnID, interID.nINCL);
     else
       return interID;
-  for (incl = 0; incl < freeINCL; incl++) 
-    if (IDTab[incl]->isValid) 
-      for (id = 0; id < IDTab[incl]->freeID; id++) 
+  for (incl = 0; incl < freeINCL; incl++)
+    if (IDTab[incl]->isValid)
+      for (id = 0; id < IDTab[incl]->freeID; id++)
         if (IDTab[incl]->SimpleIDTab[id]->idType == globalID) {
           decl = *IDTab[incl]->SimpleIDTab[id]->pDECL;
           if (((decl->DeclType == Impl) || (decl->DeclType == CompObj))
                && EQEQ(((CHETID*)decl->Supports.first)->data, incl, interID, 0)) {
             if (funcnID) {
               for (che = (CHE*)decl->NestedDecls.first;
-                   che && (!((LavaDECL*)che->data)->Supports.first 
+                   che && (!((LavaDECL*)che->data)->Supports.first
                           || (funcnID != ((CHETID*)((LavaDECL*)che->data)->Supports.first)->data.nID));
                    che = (CHE*)che->successor);
-              if (che) 
+              if (che)
                 return TID(((LavaDECL*)che->data)->OwnID, incl);
             }
             else
@@ -969,9 +969,9 @@ QString* TIDTable::SetImplDECLs(LavaDECL*& errDECL) //returns error code
       classDECL->RuntimeDECL = nextImpl;
     else {
       errDECL = nextImpl;
-      if (classDECL) 
+      if (classDECL)
         return &ERR_SecondImpl;
-      else 
+      else
         return &ERR_Broken_ref;
     }
     nextImpl = nextImpl->RuntimeDECL;
@@ -1043,7 +1043,7 @@ void TIDTable::Down(LavaDECL *elDef, TTableUpdate onWhat, int nINCL)
   CSearchData sData;
   TTableUpdate execOnWhat;
 
-  if ((elDef->DeclDescType != ExecDesc) 
+  if ((elDef->DeclDescType != ExecDesc)
       && (elDef->DeclType != PatternDef)
       && (elDef->DeclType != DragDef) ) {
     if (elDef->ParentDECL && elDef->ParentDECL->FullName.l) {
@@ -1053,7 +1053,7 @@ void TIDTable::Down(LavaDECL *elDef, TTableUpdate onWhat, int nINCL)
     else
       elDef->FullName = elDef->LocalName;
   }
-  else 
+  else
     if ((elDef->ParentDECL) && elDef->ParentDECL->FullName.l)
       elDef->FullName = elDef->ParentDECL->FullName;
   if ((elDef->DeclDescType == StructDesc) || (elDef->DeclDescType == EnumType)) {
@@ -1139,7 +1139,7 @@ void TIDTable::Down(LavaDECL *elDef, TTableUpdate onWhat, int nINCL)
 
 
 bool TIDTable::GetParamRefID(LavaDECL* decl, TID& ElID, SecondTFlag flag)
-{ 
+{
   //get the set element type
   if (!decl)
     return true;
@@ -1164,8 +1164,8 @@ bool TIDTable::GetParamRefID(LavaDECL* decl, TID& ElID, SecondTFlag flag)
 }
 
 bool TIDTable::GetParamID(LavaDECL* decl, TID& ElID, SecondTFlag flag)
-{ 
-  //get the setelem virtual type  
+{
+  //get the setelem virtual type
   CHE *che;
   CHETID *cheID;
   LavaDECL* patternDECL;
@@ -1192,7 +1192,7 @@ bool TIDTable::GetParamID(LavaDECL* decl, TID& ElID, SecondTFlag flag)
 }
 
 void TIDTable::GetPattern(LavaDECL* decl, CContext& context, bool start)
-{ 
+{
   LavaDECL* pdecl;
   context.iContext = 0;
   context.oContext = 0;
@@ -1200,12 +1200,12 @@ void TIDTable::GetPattern(LavaDECL* decl, CContext& context, bool start)
   if (!decl)
     return;
   CContext con;
-//  if (decl->WorkFlags.Contains(isPattern)) 
+//  if (decl->WorkFlags.Contains(isPattern))
   if (decl && decl->NestedDecls.first
     && (((LavaDECL*)((CHE*)decl->NestedDecls.first)->data)->DeclType == VirtualType))
     context.oContext = decl;
   else {
-    if (decl->DeclType == Impl) 
+    if (decl->DeclType == Impl)
       decl = GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL);
     if (decl && ((decl->DeclType == Interface) || (decl->DeclType == Package))) {
       jump = false;
@@ -1242,7 +1242,7 @@ void TIDTable::GetPattern(LavaDECL* decl, CContext& context, bool start)
       GetPattern(pdecl, con, false);
     jump = jump && (decl->DeclType != Interface) && (decl->DeclType != Package);
     if (con.oContext) {
-      if (context.oContext) 
+      if (context.oContext)
         context.iContext = context.oContext;
       context.oContext = con.oContext;
       if (context.iContext)
@@ -1260,7 +1260,7 @@ void TIDTable::GetPattern(LavaDECL* decl, CContext& context, bool start)
 
 
 void TIDTable::GetContextDECLs(LavaDECL* decl, CContext& context, bool start)
-{ 
+{
   LavaDECL* pdecl;
   context.iContext = 0;
   context.oContext = 0;
@@ -1268,12 +1268,12 @@ void TIDTable::GetContextDECLs(LavaDECL* decl, CContext& context, bool start)
   if (!decl)
     return;
   CContext con;
-//  if (decl->WorkFlags.Contains(isPattern)) 
+//  if (decl->WorkFlags.Contains(isPattern))
   if (decl && decl->NestedDecls.first
     && (((LavaDECL*)((CHE*)decl->NestedDecls.first)->data)->DeclType == VirtualType))
     context.oContext = decl;
   else {
-    if (decl->DeclType == Impl) 
+    if (decl->DeclType == Impl)
       decl = GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL);
     if (decl && (decl->DeclType == Interface) || (decl->DeclType == Package)) {
       jump = false;
@@ -1310,7 +1310,7 @@ void TIDTable::GetContextDECLs(LavaDECL* decl, CContext& context, bool start)
       GetContextDECLs(pdecl, con, false);
     jump = jump && (decl->DeclType != Interface) && (decl->DeclType != Package);
     if (con.oContext) {
-      if (context.oContext) 
+      if (context.oContext)
         context.iContext = context.oContext;
       context.oContext = con.oContext;
       if (context.iContext)
@@ -1356,12 +1356,12 @@ bool TIDTable::IsAn(const TID& upId, int upinINCL, const TID& id, int inINCL )
 }
 
 bool TIDTable::IsAnc(const TID& upId, int upinINCL, const TID& id, int inINCL, LavaDECL* conDECL, bool isI )
-{ 
+{
   return IsAnc(GetDECL(upId, upinINCL), id, inINCL, conDECL, isI );
 }
 
 bool TIDTable::IsAnc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDECL, bool isI, bool cheStart)
-{ 
+{
   CHETID* cheID;
   LavaDECL *baseDecl, *baseDecl0;
   CHE *che;
@@ -1394,7 +1394,7 @@ bool TIDTable::IsAnc(LavaDECL *decl, const TID& id, int inINCL, LavaDECL* conDEC
     return true;
   if (!baseDecl0)
     return false;
-  
+
   for (cheID = (CHETID*)decl->Supports.first;
        cheID && (isI && (GetFinalBasicType(cheID->data, decl->inINCL, conDECL) != baseDecl0)
                 || !isI && (GetDECL(cheID->data, decl->inINCL) != baseDecl0));
@@ -1499,7 +1499,7 @@ bool TIDTable::Overrides(const TID& upId, int upinINCL, const TID& id, int inINC
   // overrides upId (id of a function or member or virtual type) the element with TID id
   // in the virtual table?
   LavaDECL* decl;
-  for (decl = GetDECL(id, inINCL);   
+  for (decl = GetDECL(id, inINCL);
        decl && decl->Supports.first;
        decl = GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL));
   if (decl && IsAnc(upId, upinINCL, TID(decl->OwnID, decl->inINCL), 0))
@@ -1515,7 +1515,7 @@ bool TIDTable::Overrides(LavaDECL* decl1, LavaDECL* decl2)
   LavaDECL* decl;
   if (!decl1)
     return false;
-  for (decl = decl2;   
+  for (decl = decl2;
        decl && decl->Supports.first;
        decl = GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL));
   if (decl && IsAnc(decl1, TID(decl->OwnID, decl->inINCL), 0))
@@ -1550,13 +1550,13 @@ CHETVElem* TIDTable::FindSamePosInVT(CHETVElem *ElFind, CHETVElem *ElTable, CHET
       if (decl)
         cheID = (CHETID*)decl->Supports.first;
     }
-    if (decl) 
+    if (decl)
       id = TID(decl->OwnID, decl->inINCL);
     El = ElTable;
     declEl = GetDECL(El->data.VTEl, 0);
-    if (declEl) 
+    if (declEl)
       idEl = TID(declEl->OwnID, declEl->inINCL);
-    while (El && (id != idEl)) { 
+    while (El && (id != idEl)) {
       declEl = GetDECL(El->data.VTEl, 0);
       if (declEl)
         cheIDEl = (CHETID*)declEl->Supports.first;
@@ -1565,7 +1565,7 @@ CHETVElem* TIDTable::FindSamePosInVT(CHETVElem *ElFind, CHETVElem *ElTable, CHET
         if (declEl)
           cheIDEl = (CHETID*)declEl->Supports.first;
       }
-      if (declEl) 
+      if (declEl)
         idEl = TID(declEl->OwnID, declEl->inINCL);
       if ((id != idEl)) {
         if (El == ElLast)
@@ -1662,7 +1662,7 @@ bool TIDTable::CheckValOfVirtual(LavaDECL* VTDecl, bool cor)
 }
 
 bool TIDTable::otherOContext(LavaDECL* decl1, LavaDECL *decl2)
-{  
+{
   CContext con1, con2;
   if (!decl1 || !decl2)
     return true;
@@ -1678,7 +1678,7 @@ bool TIDTable::otherOContext(LavaDECL* decl1, LavaDECL *decl2)
     if (!con1.iContext && con2.iContext)
       if (IsAn(con1.oContext,TID(con2.iContext->OwnID, con2.iContext->inINCL),0))
         return false;
-  
+
   return !IsAn(con1.oContext,TID(con2.oContext->OwnID, con2.oContext->inINCL),0)
          && !IsAn(con2.oContext,TID(con1.oContext->OwnID, con1.oContext->inINCL),0);
 }
@@ -1721,8 +1721,8 @@ bool TIDTable::FindParamOfVal(LavaDECL *decl, LavaDECL *pat, LavaDECL*& paramDEC
       if (paramDECL->DeclType == VirtualType) {
         valDECL = GetDECL(paramDECL->RefID,paramDECL->inINCL);
         if (valDECL
-            && (valDECL->DeclType == Interface) 
-            && valDECL->isInSubTree(pat) 
+            && (valDECL->DeclType == Interface)
+            && valDECL->isInSubTree(pat)
             && EQEQ(TID(decl->OwnID,0), decl->inINCL, paramDECL->RefID,paramDECL->inINCL))
           return true;
         che = (CHE*)che->successor;
@@ -1738,8 +1738,8 @@ bool TIDTable::FindParamOfVal(LavaDECL *decl, LavaDECL *pat, LavaDECL*& paramDEC
       valDECL = GetDECL(paramDECL->RefID,paramDECL->inINCL);
       if ((pDECL != paramDECL)
           && valDECL
-          && (valDECL->DeclType == Interface) 
-          && valDECL->isInSubTree(pat) 
+          && (valDECL->DeclType == Interface)
+          && valDECL->isInSubTree(pat)
           && IsAn(decl,paramDECL->RefID,paramDECL->inINCL))
         return true;
       che = (CHE*)che->successor;
@@ -1763,7 +1763,7 @@ QString* TIDTable::CleanSupports(LavaDECL *decl, LavaDECL* contDECL)
   chain.first = decl->Supports.first;
   chain.last = decl->Supports.last;
   decl->Supports.first = 0;
-  decl->Supports.last = 0;  
+  decl->Supports.last = 0;
   for (che = (CHETID*)chain.first; che; che = (CHETID*)che->successor) {
     basedecl = GetDECL(che->data);
     if (basedecl) {
@@ -1771,7 +1771,7 @@ QString* TIDTable::CleanSupports(LavaDECL *decl, LavaDECL* contDECL)
       if (!ret1 && (ret2 != 1))
         ret1 = &ERR_CleanSupports;
     }
-    else 
+    else
       ret1 = &ERR_NoBaseIF;
   }
   return ret1;
@@ -1779,7 +1779,7 @@ QString* TIDTable::CleanSupports(LavaDECL *decl, LavaDECL* contDECL)
 
 int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDECL, bool putBase)
 {
-  //returns 0 : type already contained, 1 : type realy new, -1 : overrides an already contained type 
+  //returns 0 : type already contained, 1 : type realy new, -1 : overrides an already contained type
   LavaDECL* findecl, *finalnewBasedecl, *bdecl;
   CHETID *che;
   if (!decl || !newbasedecl || !contDECL)
@@ -1789,7 +1789,7 @@ int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDE
         || IsAnc(newbasedecl, TID(contDECL->OwnID, contDECL->inINCL),0,contDECL,true)))
     return 0;
   TID newbaseID = TID(newbasedecl->OwnID, newbasedecl->inINCL);
-  if (newbasedecl->DeclType == VirtualType) 
+  if (newbasedecl->DeclType == VirtualType)
     finalnewBasedecl = GetFinalBasicType(newbaseID, decl->inINCL, contDECL);
   else
     finalnewBasedecl = newbasedecl;
@@ -1806,10 +1806,10 @@ int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDE
         findecl = GetFinalBasicType(che->data, decl->inINCL, contDECL);
         if (finalnewBasedecl == findecl)
           return 0;
-        if (newbasedecl->DeclType != VirtualType) 
+        if (newbasedecl->DeclType != VirtualType)
           if (IsAnc(findecl, finalBaseID, decl->inINCL, contDECL, true))
             return 0;
-          else 
+          else
             if (HasVBase(finalnewBasedecl, che->data, 0)) {
               if (putBase)
                 che->data = newbaseID;
@@ -1823,7 +1823,7 @@ int TIDTable::InsertBase(LavaDECL *decl, LavaDECL* newbasedecl, LavaDECL* contDE
             return 0;
         }
         else {
-          if (IsAnc(bdecl, finalBaseID, 0, contDECL, true)) 
+          if (IsAnc(bdecl, finalBaseID, 0, contDECL, true))
             return 0;
         }
         if ((finalnewBasedecl == bdecl)
@@ -1860,7 +1860,7 @@ bool TIDTable::isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL)
         return false;
   }
   else
-    if (con.oContext) 
+    if (con.oContext)
       if (!FindParamOfVal(decl, con.oContext, param))
         return false;
   if (baseDECL) {
@@ -1871,7 +1871,7 @@ bool TIDTable::isValOfVirtual(LavaDECL *decl, LavaDECL* baseDECL)
           return false;
     }
     else
-      if (bcon.oContext) 
+      if (bcon.oContext)
         if (!FindParamOfVal(baseDECL, bcon.oContext, bparam))
           return false;
     if (IsAn(param,TID(bparam->OwnID, bparam->inINCL),0))
@@ -1901,7 +1901,7 @@ bool TIDTable::isValOfOtherVirtual(LavaDECL *decl, LavaDECL* vdecl)
     }
   }
   else
-    if (con.oContext) 
+    if (con.oContext)
       if (FindParamOfVal(decl, con.oContext, param))
         return true;
 

@@ -112,7 +112,6 @@
 #include <time.h>
 #include <ctype.h>
 #include <signal.h>
-//#include <stdarg.h>
 
 #include "AnyType.h"
 #include "ASN1File.h"
@@ -132,13 +131,10 @@
 #include "MACROS.h"
 #include "NestA.h"
 #include "NESTANY.h"
-//#include "OSDep.h"
 #include "OutFile.h"
 #include "PMDump.h"
 #include "SETpp.h"
 #include "STR.h"
-//#include "StrIFile.h"
-//#include "StrOFile.h"
 #include "SYSTEM.h"
 #include "TextFile.h"
 #include "UNIX.h"
