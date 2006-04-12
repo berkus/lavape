@@ -200,10 +200,9 @@ static void printCommentLines (DString comment) {
   code("<pre>");
   str = str.replace('<',"&lt;");
   str = str.replace('\r',"");
-//  str = str.replace('\n'," ");
   comm = qPrintable(str);
   code(comm.c);
-  code("</pre>");
+  code(":</pre>");
 }
 
 
@@ -364,7 +363,7 @@ static void PutComment(LavaDECL *pnode,bool isTrailing,bool isInLine)
     return;
 
   commentOut = pnode->DECLComment.ptr->Comment;
-
+/*
   if (isInLine)
     if (isTrailing) {
       code(" ");
@@ -374,7 +373,7 @@ static void PutComment(LavaDECL *pnode,bool isTrailing,bool isInLine)
       printCommentLines(pnode->DECLComment.ptr->Comment);
       code(" ");
     }
-  else
+  else*/
     printCommentLines(pnode->DECLComment.ptr->Comment);
 	code("\n");
 }
