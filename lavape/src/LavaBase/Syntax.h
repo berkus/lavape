@@ -11,6 +11,7 @@
    "license.txt" in the top level directory. */
 
 
+#include "BASEMACROS.h"
 #include "qstring.h"
 #include "qfont.h"
 #include "qwidget.h"

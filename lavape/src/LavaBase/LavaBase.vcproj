@@ -568,6 +568,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BASEMACROS.h"
+				>
+			</File>
+			<File
 				RelativePath="DumpView.h"
 				>
 				<FileConfiguration
@@ -622,10 +626,6 @@
 				>
 			</File>
 			<File
-				RelativePath="MACROS.h"
-				>
-			</File>
-			<File
 				RelativePath="PEBaseDoc.h"
 				>
 				<FileConfiguration
@@ -668,7 +668,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -X LAVABASE -I..\disco -I. $(InputName).ph"
+						CommandLine="..\..\bin\LPC -X LAVABASE -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>

@@ -18,7 +18,7 @@
 
 
 #include "LavaBase_all.h"
-#include "MACROS.h"
+#include "BASEMACROS.h"
 
 #include "LavaBaseStringInit.h"
 #include "LavaAppBase.h"

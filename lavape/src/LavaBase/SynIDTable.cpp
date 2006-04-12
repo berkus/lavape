@@ -18,7 +18,7 @@
 
 
 #include "LavaBase_all.h"
-#include "MACROS.h"
+#include "BASEMACROS.h"
 
 #include "SynIDTable.h"
 #include "SynIO.h"
@@ -29,7 +29,6 @@
 #include "qobject.h"
 #include "qstring.h"
 #include "SYSTEM.h"
-#include "MACROS.h"
 
 #pragma hdrstop
 

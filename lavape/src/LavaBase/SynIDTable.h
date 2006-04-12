@@ -2,7 +2,7 @@
 #define __SynIDTable
 
 
-#include "MACROS.h"
+#include "BASEMACROS.h"
 #include "DString.h"
 #include "SynIO.h"
 #include "Syntax.h"

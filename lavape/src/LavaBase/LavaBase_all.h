@@ -14,7 +14,7 @@
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
 #include "LavaThread.h"
-#include "MACROS.h"
+#include "BASEMACROS.h"
 #include "PEBaseDoc.h"
 //#include "SafeInt.h"
 #include "SylTraversal.h"
