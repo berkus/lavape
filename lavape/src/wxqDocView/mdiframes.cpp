@@ -372,7 +372,8 @@ wxMDIChildFrame::~wxMDIChildFrame()
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   deleting = true;
-  m_document->RemoveChildFrame(this);
+  if (!m_document->deleting)
+    m_document->RemoveChildFrame(this);
   if (!wxTheApp->deletingMainFrame)
     wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
 }

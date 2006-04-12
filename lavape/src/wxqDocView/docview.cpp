@@ -671,7 +671,8 @@ wxView::~wxView()
     deleting = true;
     wxDocManager::GetDocumentManager()->SetActiveView(this, false);
     m_viewFrame->RemoveView(this);
-    m_viewDocument->RemoveView(this);
+    if (!m_viewDocument->deleting)
+      m_viewDocument->RemoveView(this);
 }
 
 
