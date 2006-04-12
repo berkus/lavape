@@ -268,6 +268,7 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
   layout = new QVBoxLayout(this);
   setLayout(layout);
   layout->setMargin(0);
+  setAttribute(Qt::WA_DeleteOnClose);
 
   QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
   resize(sz.width()*7/10, sz.height()*7/10);
