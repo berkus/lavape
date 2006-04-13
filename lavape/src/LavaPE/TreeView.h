@@ -55,11 +55,9 @@ public:
   CTreeItem* nextSibling();
   void setDropEnabled(bool enable);
   
-  virtual void startRename(int col);
-  /*
-  virtual void okRename(int col);
+  virtual void startRename(QLineEdit* editor, int col);
+  virtual void okRename(QLineEdit* editor, int col);
   virtual void cancelRename(int col);
-  */
   QString completeText;
   DString actLab;
   bool inRename;
@@ -103,6 +101,12 @@ public:
   CTreeView* lavaView;
   bool withShift;
   bool withControl;
+  bool committed;
+
+public slots:
+   virtual void closeEditor(QWidget* , QAbstractItemDelegate::EndEditHint );
+   virtual void commitData(QWidget* );
+
 private:
   Q_OBJECT
 
@@ -113,20 +117,18 @@ class CTreeView: public CLavaBaseView {
 public:
   CTreeView(QWidget *parent,wxDocument *doc, const char* name);
   ~CTreeView() {}
-  MyListView* GetListView() {return m_tree;}
+  MyListView* GetListView() {return Tree;}
 
 //  VIEWFACTORY(CTreeView);
 
-  MyListView *m_tree;
+  MyListView *Tree;
   CTreeItem* GetPrevSiblingItem(CTreeItem* item);
 //  CTreeItem* HitTest(QPoint qp);
   CTreeItem* InsertItem(QString label, int nPix, CTreeItem* parent, CTreeItem* afterItem=TVI_LAST);
-  QLineEdit* GetEditControl() {return labelEditWid;}
-  QLineEdit *labelEditWid;
   virtual QDrag* OnDragBegin() {return 0;}
   virtual void OnDelete() {}
-  virtual void RenameStart(CTreeItem* item) {}
-  virtual void RenameOk(CTreeItem* item) {}
+  virtual void RenameStart(QLineEdit* editor, CTreeItem* item) {}
+  virtual void RenameOk(QLineEdit* editor, CTreeItem* item) {}
   virtual void RenameCancel(CTreeItem* item) {}
   virtual void OnDragOver(QDragMoveEvent* ev) {ev->ignore();}
   virtual void OnDragEnter(QDragEnterEvent* ev) {ev->ignore();}
@@ -135,6 +137,20 @@ public:
   virtual void OnVkreturn() {}
   LavaDECL* CollectDECL;
   bool multiSelectCanceled;
+private:
+  Q_OBJECT
+
+};
+
+
+class CTreeItemDelg: public QItemDelegate
+{
+public:
+  CTreeItemDelg(MyListView* tree);
+  virtual void setEditorData ( QWidget * editor, const QModelIndex & index ) const;
+  virtual QWidget* createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const ;
+  MyListView* Tree;
+
 private:
   Q_OBJECT
 

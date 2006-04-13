@@ -195,46 +195,47 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
 
   if (!GetDocument()->MainView)
     GetDocument()->MainView = this;
-  connect(m_tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT(OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-//  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
-  connect(m_tree,SIGNAL(itemDoubleClicked(  QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
-  //connect(m_tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
-  connect(m_tree,SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(OnItemexpanded(QTreeWidgetItem*)));
-  connect(m_tree,SIGNAL(itemCollapsed(QTreeWidgetItem*)), SLOT(OnItemcollapsed(QTreeWidgetItem*)));
+  connect(Tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT(OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+//  connect(Tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
+  connect(Tree,SIGNAL(itemDoubleClicked(  QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
+  //connect(Tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
+  connect(Tree,SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(OnItemexpanded(QTreeWidgetItem*)));
+  connect(Tree,SIGNAL(itemCollapsed(QTreeWidgetItem*)), SLOT(OnItemcollapsed(QTreeWidgetItem*)));
 
   if (!GetDocument()->MainView)
     GetDocument()->MainView = this;
 //  if (LBaseData->m_lfDefTreeFont.lfHeight != 0)
   setFont(LBaseData->m_TreeFont);
-  m_tree->setAcceptDrops(true);
-  m_tree->setDragEnabled(true);
+  Tree->setAcceptDrops(true);
+  Tree->setDragEnabled(true);
+  Tree->setItemDelegate (new CTreeItemDelg(Tree));
   sz = size();
 }
 
 
 void CLavaPEView::CleanListView()
 {
-  delete m_tree;
-  m_tree = new MyListView(this);
-  layout->addWidget(m_tree);
-//  new TreeWhatsThis(m_tree);
-//  setFocusProxy(m_tree);
-//  m_tree->setSorting(-1);
-  m_tree->setColumnCount(1);
-  m_tree->setRootIsDecorated(true);
-  m_tree->header()->hide();
-  m_tree->setSelectionMode(QAbstractItemView::ExtendedSelection);//Single);
-  connect(m_tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT    (OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-//  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
-  connect(m_tree,SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
-  //connect(m_tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
-  connect(m_tree,SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(OnItemexpanded(QTreeWidgetItem*)));
-  connect(m_tree,SIGNAL(itemCollapsed(QTreeWidgetItem*)), SLOT(OnItemcollapsed(QTreeWidgetItem*)));
+  delete Tree;
+  Tree = new MyListView(this);
+  layout->addWidget(Tree);
+//  new TreeWhatsThis(Tree);
+//  setFocusProxy(Tree);
+//  Tree->setSorting(-1);
+  Tree->setColumnCount(1);
+  Tree->setRootIsDecorated(true);
+  Tree->header()->hide();
+  Tree->setSelectionMode(QAbstractItemView::ExtendedSelection);//Single);
+  connect(Tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT    (OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+//  connect(Tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
+  connect(Tree,SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
+  //connect(Tree,SIGNAL(rightButtonClicked(QListViewItem*)), SLOT(OnRclick(QListViewItem*)));
+  connect(Tree,SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(OnItemexpanded(QTreeWidgetItem*)));
+  connect(Tree,SIGNAL(itemCollapsed(QTreeWidgetItem*)), SLOT(OnItemcollapsed(QTreeWidgetItem*)));
 
-  m_tree->setAcceptDrops(true);
-  m_tree->show();
+  Tree->setAcceptDrops(true);
+  Tree->show();
   if (wxDocManager::GetDocumentManager()->GetActiveView() == this)
-    m_tree->setFocus();
+    Tree->setFocus();
 }
 
 CLavaPEView::~CLavaPEView()
@@ -270,7 +271,7 @@ bool CLavaPEView::AddToDragChain(CTreeItem* itemDrag, bool vkControl, bool sameC
           itemPP = (CTreeItem*)itemP->parent();
         if (itemPP)
           itdPP = (CMainItemData*)itemPP->getItemData();
-        if (itemDrag == m_tree->RootItem)
+        if (itemDrag == Tree->RootItem)
           CollectDECL->DeclType = DragDef;
         else {
           if (itemDECL->DeclType == FormText)
@@ -463,7 +464,7 @@ CTreeItem* CLavaPEView::BrowseTree(LavaDECL* decl, CTreeItem* startItem, DString
 
 TIType CLavaPEView::CanPaste (TDeclType defType, SynFlags treeFlags, SynFlags secondtflags, CTreeItem* toItem)
 {
-  if (toItem == m_tree->RootItem)
+  if (toItem == Tree->RootItem)
     return TIType_NoType;
   CMainItemData *pardata, *toData;
   CTreeItem* parItem=0;
@@ -471,7 +472,7 @@ TIType CLavaPEView::CanPaste (TDeclType defType, SynFlags treeFlags, SynFlags se
 
   toData = (CMainItemData*)toItem->getItemData();
   if (defType == DragFText) {
-    if (!myInclView && (toItem != m_tree->RootItem))
+    if (!myInclView && (toItem != Tree->RootItem))
       return TIType_Features;
     else
       return TIType_NoType;
@@ -811,7 +812,7 @@ void CLavaPEView::CorrVT_ExToBase(LavaDECL *dragParent, LavaDECL *dropParent, La
 
 void CLavaPEView::DeleteDragChain()
 {
-//  CTreeItem* item = (CTreeItem*)m_tree->child(0);
+//  CTreeItem* item = (CTreeItem*)Tree->child(0);
 //  unsigned nStateMask=0;// = TVIS_DROPHILITED; 
 //  unsigned nState = 0;
 //  SetAllStates(item, nState, nStateMask, false);
@@ -824,7 +825,7 @@ void CLavaPEView::DeleteDragChain()
 void CLavaPEView::DeleteItemData(CTreeItem* parent)
 {
   if (!parent)
-    parent = (CTreeItem*)m_tree->RootItem;
+    parent = (CTreeItem*)Tree->RootItem;
   if (parent) {
     CMainItemData * itd = (CMainItemData*)parent->getItemData();
     parent->setItemData(0);
@@ -936,8 +937,8 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     item = InsertItem("Enumeration",  bm, parent, item);
     item->setItemData(itd);
     if (!down)
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-      //m_tree->ensureItemVisible(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+      //Tree->ensureItemVisible(item);
   }
   else {
     if (ptype == TIType_EnumItems) {
@@ -957,8 +958,8 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     item = InsertItem("Virtual types",  bm, parent, item);
     item->setItemData( itd);
     if (!down)
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-      //m_tree->ensureItemVisible(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+      //Tree->ensureItemVisible(item);
   }
   else {
     if (ptype == TIType_VTypes) {
@@ -978,8 +979,8 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     item = InsertItem("Inputs",  bm, parent, item);
     item->setItemData( itd);
     if (!down)
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-      //m_tree->ensureItemVisible(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+      //Tree->ensureItemVisible(item);
   }
   else {
     if (ptype == TIType_Input) {
@@ -1004,8 +1005,8 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     item = InsertItem("Outputs",  bm, parent, item);
     item->setItemData( itd);
     if (!down)
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-      //m_tree->ensureItemVisible(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+      //Tree->ensureItemVisible(item);
   }
   else {
     if (ptype == TIType_Output) {
@@ -1023,8 +1024,8 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     item = InsertItem("Declarations",  bm, parent, item);
     item->setItemData( itd);
     if (!down)
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-      //m_tree->ensureItemVisible(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+      //Tree->ensureItemVisible(item);
   }
   else {
     if (ptype == TIType_Defs) {
@@ -1045,7 +1046,7 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     ExecLabel = DString("Exec");
   else
     ExecLabel = DString("Invariant");
-  if ((parentType == Function) && (parent != m_tree->RootItem)) {
+  if ((parentType == Function) && (parent != Tree->RootItem)) {
     gp = (CTreeItem*)parent->parent();
     gp = (CTreeItem*)gp->parent();
     CMainItemData *gpdata = (CMainItemData*)gp->getItemData();
@@ -1058,8 +1059,8 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
       item = InsertItem(Fields.c,  bm, parent, item);
       item->setItemData( itd);
       if (!down)
-        m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-        //m_tree->ensureItemVisible(item);
+        Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+        //Tree->ensureItemVisible(item);
     }
   }
   else {
@@ -1078,8 +1079,8 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     item = InsertItem("Require" ,bm, parent, item);
     item->setItemData( itd);
     if (!down)
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-      //m_tree->ensureItemVisible(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+      //Tree->ensureItemVisible(item);
   }
   else {
     if (ptype == TIType_Require) {
@@ -1097,8 +1098,8 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     item = InsertItem("Ensure" ,bm, parent, item);
     item->setItemData( itd);
     if (!down)
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-//      m_tree->ensureItemVisible(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+//      Tree->ensureItemVisible(item);
   }
   else {
     if (ptype == TIType_Ensure) {
@@ -1120,8 +1121,8 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
     item = InsertItem(ExecLabel.c ,bm, parent, item);
     item->setItemData( itd);
     if (!down)
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-//      m_tree->ensureItemVisible(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+//      Tree->ensureItemVisible(item);
   }
   return true;
 }
@@ -1136,17 +1137,17 @@ void CLavaPEView::DrawTree(LavaDECL ** pDECL, bool inUndoRedo, bool finalUpdate,
   setUpdatesEnabled(false);
   if (drawTree) {
     DeleteItemData();
-    CTreeItem* item = (CTreeItem*)m_tree->takeTopLevelItem (0);
-    if (m_tree->RootItem)
-      delete m_tree->RootItem;
-    m_tree->RootItem = 0;
+    CTreeItem* item = (CTreeItem*)Tree->takeTopLevelItem (0);
+    if (Tree->RootItem)
+      delete Tree->RootItem;
+    Tree->RootItem = 0;
     //CleanListView();
     ItemSel = 0;
     SelItem = 0;
     SelType = NoDef;
   }
   else
-    SelItem = (CTreeItem*)m_tree->currentItem();
+    SelItem = (CTreeItem*)Tree->currentItem();
   CExecTree* execTree = new CExecTree(this, !inUndoRedo, finalUpdate, checkLevel);
   execTree->Travers->FillOut = (pDECL == 0);
   execTree->Travers->DownTree(pDECL,0,str);
@@ -1163,7 +1164,7 @@ void CLavaPEView::DrawTree(LavaDECL ** pDECL, bool inUndoRedo, bool finalUpdate,
         SelItem = getSectionNode(SelItem, SelType);
     }
     else {
-      SelItem = (CTreeItem*)m_tree->RootItem;
+      SelItem = (CTreeItem*)Tree->RootItem;
       firstVisible = SelItem;
       data = (CMainItemData*)SelItem->getItemData();
       if ( (*((LavaDECL**)data->synEl))->NestedDecls.first) {
@@ -1179,18 +1180,18 @@ void CLavaPEView::DrawTree(LavaDECL ** pDECL, bool inUndoRedo, bool finalUpdate,
     }
 
     if (drawn) {
-      m_tree->setCurAndSel(SelItem);
+      Tree->setCurAndSel(SelItem);
       if (VisibleDECL)
-        firstVisible = BrowseTree(VisibleDECL, (CTreeItem*)m_tree->RootItem);
+        firstVisible = BrowseTree(VisibleDECL, (CTreeItem*)Tree->RootItem);
       if (firstVisible)
-        m_tree->scrollToItem(firstVisible, QAbstractItemView::EnsureVisible );
-//        m_tree->ensureItemVisible(firstVisible);
+        Tree->scrollToItem(firstVisible, QAbstractItemView::EnsureVisible );
+//        Tree->ensureItemVisible(firstVisible);
       else
-        m_tree->scrollToItem(SelItem, QAbstractItemView::EnsureVisible );
-//        m_tree->ensureItemVisible(SelItem);
+        Tree->scrollToItem(SelItem, QAbstractItemView::EnsureVisible );
+//        Tree->ensureItemVisible(SelItem);
     }
     setUpdatesEnabled(true);
-    m_tree->update();
+    Tree->update();
   }
 }//DrawTree
 
@@ -1213,12 +1214,12 @@ bool CLavaPEView::event(QEvent *ev)
     return true;
   }
   else if (ev->type() == IDU_LavaPE_SyncTree) {
-    CTreeItem* item = BrowseTree((LavaDECL*)((CustomEvent*)ev)->data(), (CTreeItem*)m_tree->RootItem);
-    if (item && (item != (CTreeItem*)m_tree->currentItem())) {
+    CTreeItem* item = BrowseTree((LavaDECL*)((CustomEvent*)ev)->data(), (CTreeItem*)Tree->RootItem);
+    if (item && (item != (CTreeItem*)Tree->currentItem())) {
       inSync = true;
-      m_tree->setCurAndSel(item);
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-//      m_tree->ensureItemVisible(item);
+      Tree->setCurAndSel(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+//      Tree->ensureItemVisible(item);
       QApplication::postEvent(myFormView, new CustomEvent(IDU_LavaPE_CalledView));
       return true;
     }
@@ -1249,7 +1250,7 @@ bool CLavaPEView::ExpandItem(CTreeItem* item, int level/*=-1*/)
   CTreeItem* htr = item;
   htr = (CTreeItem*)item->child(0);
   if (htr) {
-    m_tree->expandItem(item); //->setOpen(true);
+    Tree->expandItem(item); //->setOpen(true);
     SetTreeFlags(item, true);
   }
   else
@@ -1286,24 +1287,24 @@ void CLavaPEView::ExpandTree(CTreeItem* top)
         if (itd->type == TIType_CHEEnumSel)
           item->SetItemMask(false, ((CHEEnumSelId*)itd->synEl)->data.DECLComment.ptr!=0);
       if (((CMainItemData*)item->getItemData())->toExpand)
-        m_tree->expandItem(item);
+        Tree->expandItem(item);
       else
-        m_tree->collapseItem(item);
+        Tree->collapseItem(item);
       //item->setOpen(((CMainItemData*)item->getItemData())->toExpand);
       ExpandTree(item);
       item = (CTreeItem*)item->nextSibling();
     }
   }
   else {
-    item = (CTreeItem*)m_tree->RootItem;
+    item = (CTreeItem*)Tree->RootItem;
     itd = (CMainItemData*)item->getItemData();
     itemDECL = *((LavaDECL**)itd->synEl);
     item->SetItemMask(itemDECL->DECLError1.first || itemDECL->DECLError2.first,
               itemDECL->DECLComment.ptr && itemDECL->DECLComment.ptr->Comment.l);
-    m_tree->expandItem(item); //->setOpen(true);
+    Tree->expandItem(item); //->setOpen(true);
     item = (CTreeItem*)item->child(0);
     while (item) {
-      m_tree->expandItem(item); //->setOpen(true);
+      Tree->expandItem(item); //->setOpen(true);
       SetTreeFlags(item, true);
       ExpandTree(item);
       item = (CTreeItem*)item->nextSibling();
@@ -1490,7 +1491,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
     return NULL;
   CMainItemData *data = (CMainItemData*)parent->getItemData();
   TDeclType parentType;
-//  if ((parent != m_tree->child(0)) || !myInclView) {
+//  if ((parent != Tree->child(0)) || !myInclView) {
     parentType = (*(LavaDECL**)data->synEl)->DeclType;
     if ((data->type == TIType_DECL)
         //&& (  (*(LavaDECL**)data->synEl)->DeclDescType == DefDesc)
@@ -1543,7 +1544,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
   if (!node) {
     if ((*(LavaDECL**)synEl)->TreeFlags.Contains(hasEmptyOpt)) {
       TDeclType gpt = Impl;
-      if ((parentType == Function) && (parent != m_tree->RootItem) ) {
+      if ((parentType == Function) && (parent != Tree->RootItem) ) {
         CTreeItem* gp = (CTreeItem*)parent->parent();
         gp = (CTreeItem*)gp->parent();
         CMainItemData *gpdata = (CMainItemData*)gp->getItemData();
@@ -1822,7 +1823,7 @@ void CLavaPEView::IOnEditCopy()
 {
   CMainItemData *data, *newClipdata = 0;
   LavaDECL *decl = 0;
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (item) {
     data = (CMainItemData*)item->getItemData();
     if (data && (data->type == TIType_DECL))
@@ -1869,7 +1870,7 @@ CMainItemData* CLavaPEView::Navigate(bool all, CTreeItem*& item, int& level)
   CTreeItem *nextItem=0, *parItem;
 
   if (item) {
-    if (all || m_tree->isItemExpanded(item)) //->isOpen())
+    if (all || Tree->isItemExpanded(item)) //->isOpen())
       nextItem = (CTreeItem*)item->child(0);
     if (nextItem)
       level = level+1;
@@ -1892,7 +1893,7 @@ CMainItemData* CLavaPEView::Navigate(bool all, CTreeItem*& item, int& level)
   }
   else {
     level = 0;
-    nextItem = (CTreeItem*)m_tree->RootItem;
+    nextItem = (CTreeItem*)Tree->RootItem;
   }
   if (nextItem) {
     item = nextItem;
@@ -1910,10 +1911,10 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
   CTreeItem* sel;
   if (GetDocument()->mySynDef && !((CLavaPEApp*)wxTheApp)->inTotalCheck) {
     if (bActivate) {
-      sel = (CTreeItem*)m_tree->currentItem();
+      sel = (CTreeItem*)Tree->currentItem();
       SetErrAndCom(sel);
-      if (!m_tree->hasFocus())
-        m_tree->setFocus();
+      if (!Tree->hasFocus())
+        Tree->setFocus();
 //??      sel->repaint();
       clipboard_lava_notEmpty = wxTheApp->clipboard()->data(QClipboard::Clipboard)->provides(m_nIDClipFormat);
       if (clipboard_lava_notEmpty) {
@@ -1930,7 +1931,7 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
 
 void CLavaPEView::OnDblclk(  QTreeWidgetItem * itemHit, int col )
 {
-  //CTreeItem* itemHit = (CTreeItem*)m_tree->itemAtIndex(index);
+  //CTreeItem* itemHit = (CTreeItem*)Tree->itemAtIndex(index);
   if (itemHit) {
     CMainItemData* data = (CMainItemData*)((CTreeItem*)itemHit)->getItemData();
     if (data->type == TIType_Exec)
@@ -1957,8 +1958,8 @@ void CLavaPEView::OnDelete()
 
   if (GetDocument()->changeNothing)
     return;
-  item = (CTreeItem*)m_tree->currentItem();
-  if (!item || (item == m_tree->RootItem))
+  item = (CTreeItem*)Tree->currentItem();
+  if (!item || (item == Tree->RootItem))
     return;
   data = (CMainItemData*)item->getItemData();
   if (data && (data->type != TIType_DECL)
@@ -2006,7 +2007,7 @@ void CLavaPEView::OnDelete()
       cutDECL = *(LavaDECL**)data->synEl;
       if (EnableDelete(cutDECL)) {
         d4 = parData->synEl;
-        if (par != m_tree->RootItem) {
+        if (par != Tree->RootItem) {
           str2 = new DString(cutDECL->FullName);
           pos = GetPos(item, 0);
         }
@@ -2016,7 +2017,7 @@ void CLavaPEView::OnDelete()
             if (cutDECL->DeclType == FormText)
               pos = GetPos(item);
             else {
-              item = myMainView->BrowseTree(cutDECL, (CTreeItem*)myMainView->m_tree->RootItem);
+              item = myMainView->BrowseTree(cutDECL, (CTreeItem*)myMainView->Tree->RootItem);
               pos = myMainView->GetPos(item);
             }
           }
@@ -2083,10 +2084,10 @@ QDrag*  CLavaPEView::OnDragBegin()
     return 0;
   DropPosted = 0;
   m_hitemDrop = 0;
-  m_hitemDrag = (CTreeItem*)m_tree->currentItem();
+  m_hitemDrag = (CTreeItem*)Tree->currentItem();
   ddrag = (CMainItemData*)m_hitemDrag->getItemData();
   if ((ddrag->type != TIType_DECL) && (ddrag->type != TIType_CHEEnumSel)
-      || (m_hitemDrag == (CTreeItem*)m_tree->RootItem)
+      || (m_hitemDrag == (CTreeItem*)Tree->RootItem)
       || (ddrag->type == TIType_DECL)
           && ((*(LavaDECL**)ddrag->synEl)->TypeFlags.Contains(thisComponent)
               || (*(LavaDECL**)ddrag->synEl)->TypeFlags.Contains(thisCompoForm) ) ) {
@@ -2128,7 +2129,7 @@ QDrag*  CLavaPEView::OnDragBegin()
   clipdata.Serialize(ar);
   dragSource = new LavaSource();
   dragSource->setData(m_nIDClipFormat, ba);
-  QDrag* drag = new QDrag(m_tree);
+  QDrag* drag = new QDrag(Tree);
   drag->setMimeData(dragSource);
 
 
@@ -2139,7 +2140,7 @@ QDrag*  CLavaPEView::OnDragBegin()
   if (clipdata.synEl)
     delete (LavaDECL*)clipdata.synEl;
   //if (m_hitemDrop)
-  //  m_tree->setItemSelected(m_hitemDrop, false);
+  //  Tree->setItemSelected(m_hitemDrop, false);
   if (!DropPosted) {
     m_hitemDrag = 0;
     m_hitemDrop = 0;
@@ -2213,7 +2214,7 @@ void CLavaPEView::OnDragLeave(QDragLeaveEvent* ev)
 {
   
   if (m_hitemDrop) 
-    m_tree->setItemSelected(m_hitemDrop, false);
+    Tree->setItemSelected(m_hitemDrop, false);
   m_hitemDrop = 0;
   if (Clipdata) {
     Clipdata->Destroy();
@@ -2232,9 +2233,9 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
   CTreeItem* item;
 
   if (ev->provides(m_nIDClipFormat) && (!GetDocument()->changeNothing)) {
-    item = (CTreeItem*)m_tree->itemAt(ev->pos());//(m_tree->contentsToViewport(ev->pos()));
+    item = (CTreeItem*)Tree->itemAt(ev->pos());//(Tree->contentsToViewport(ev->pos()));
     if (m_hitemDrop && (item != m_hitemDrop))
-      m_tree->setItemSelected(m_hitemDrop, false);
+      Tree->setItemSelected(m_hitemDrop, false);
     m_hitemDrop = item;
     if (m_hitemDrop) {
       RefacCase = noRefac;
@@ -2245,20 +2246,20 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
           dragView = (CLavaPEView*)GetDocument()->DragView;
           if ((dragView == this) &&
               ((m_hitemDrag == m_hitemDrop)
-                || (m_hitemDrag == (CTreeItem*)m_tree->RootItem)
+                || (m_hitemDrag == (CTreeItem*)Tree->RootItem)
                 || IsChildNodeOf(m_hitemDrop, m_hitemDrag)
                 || (CollectPos == 1) && (m_hitemDrop == m_hitemDrag->parent())
                 || (m_hitemDrop == GetPrevSiblingItem(m_hitemDrag) ))) {
             m_hitemDrop->setDropEnabled(false);
-            ev->ignore(m_tree->visualItemRect(m_hitemDrop));
+            ev->ignore(Tree->visualItemRect(m_hitemDrop));
             //ev->acceptAction(false);
             m_hitemDrop = 0;
             return;
           }
           else {
             if (ev->action() == QDropEvent::Copy) {
-              m_tree->setCurAndSel(m_hitemDrop, false);
-              ev->accept(m_tree->visualItemRect(m_hitemDrop));
+              Tree->setCurAndSel(m_hitemDrop, false);
+              ev->accept(Tree->visualItemRect(m_hitemDrop));
               m_hitemDrop->setDropEnabled(true);
               //ev->acceptAction(true);
               return;
@@ -2270,8 +2271,8 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
                 || (((LavaDECL*)Clipdata->synEl)->DeclType == DragEnum)) {
               if ( (m_hitemDrop == m_hitemDrag->parent())
                  || (m_hitemDrop->parent() == m_hitemDrag->parent())) {
-                m_tree->setCurAndSel(m_hitemDrop, false);
-                ev->accept(m_tree->visualItemRect(m_hitemDrop));
+                Tree->setCurAndSel(m_hitemDrop, false);
+                ev->accept(Tree->visualItemRect(m_hitemDrop));
                 m_hitemDrop->setDropEnabled(true);
                 //ev->acceptAction(true);
                 return;
@@ -2280,15 +2281,15 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
                 if ( ((((LavaDECL*)Clipdata->synEl)->DeclType == DragFeature)
                     || (((LavaDECL*)Clipdata->synEl)->DeclType == DragFeatureF))
                     && RefacMove(m_hitemDrop)) {
-                  m_tree->setCurAndSel(m_hitemDrop, false);
+                  Tree->setCurAndSel(m_hitemDrop, false);
                   m_hitemDrop->setDropEnabled(true);
-                  ev->accept(m_tree->visualItemRect(m_hitemDrop));
+                  ev->accept(Tree->visualItemRect(m_hitemDrop));
                   //ev->acceptAction(true);
                   return;
                 }
                 else {
                   m_hitemDrop->setDropEnabled(false);
-                  ev->ignore(m_tree->visualItemRect(m_hitemDrop));
+                  ev->ignore(Tree->visualItemRect(m_hitemDrop));
                   //ev->acceptAction(false);
                   m_hitemDrop = 0;
                   return;
@@ -2297,8 +2298,8 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
             }
             else { //DragDef
               m_hitemDrop->setDropEnabled(true);
-              m_tree->setCurAndSel(m_hitemDrop, false);
-              ev->accept(m_tree->visualItemRect(m_hitemDrop));
+              Tree->setCurAndSel(m_hitemDrop, false);
+              ev->accept(Tree->visualItemRect(m_hitemDrop));
               //ev->acceptAction();
               return;
             }
@@ -2308,8 +2309,8 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
           if ((((LavaDECL*)Clipdata->synEl)->DeclType == DragDef)
             || (((LavaDECL*)Clipdata->synEl)->DeclType == DragFText)) {
             m_hitemDrop->setDropEnabled(true);
-            m_tree->setCurAndSel(m_hitemDrop);
-            ev->accept(m_tree->visualItemRect(m_hitemDrop));
+            Tree->setCurAndSel(m_hitemDrop);
+            ev->accept(Tree->visualItemRect(m_hitemDrop));
             //ev->acceptAction(true);
             return;
           }
@@ -2318,14 +2319,14 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
                 && (((LavaDECL*)Clipdata->synEl)->DeclType != DragFeatureF)
                 || RefacMove(m_hitemDrop)) {
               m_hitemDrop->setDropEnabled(true);
-              m_tree->setCurAndSel(m_hitemDrop);
-              ev->accept(m_tree->visualItemRect(m_hitemDrop));
+              Tree->setCurAndSel(m_hitemDrop);
+              ev->accept(Tree->visualItemRect(m_hitemDrop));
               //ev->acceptAction(true);
               return;
             }
             else {
               m_hitemDrop->setDropEnabled(false);
-              ev->ignore(m_tree->visualItemRect(m_hitemDrop));
+              ev->ignore(Tree->visualItemRect(m_hitemDrop));
               m_hitemDrop = 0;
               ev->ignore();//acceptAction(false);
               return;
@@ -2335,7 +2336,7 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
       }
       else {
         m_hitemDrop->setDropEnabled(false);
-        ev->ignore(m_tree->visualItemRect(m_hitemDrop));
+        ev->ignore(Tree->visualItemRect(m_hitemDrop));
         m_hitemDrop = 0;
         //acceptAction(false);
         return;
@@ -2351,10 +2352,10 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
 void CLavaPEView::OnDrop(QDropEvent* ev)
 {
   if (ev->provides(m_nIDClipFormat)) {
-    m_hitemDrop = (CTreeItem*)m_tree->itemAt(ev->pos());//(m_tree->contentsToViewport(ev->pos()));
+    m_hitemDrop = (CTreeItem*)Tree->itemAt(ev->pos());//(Tree->contentsToViewport(ev->pos()));
     if (m_hitemDrop) {
       lastDropped = m_hitemDrop;
-      //m_tree->setItemSelected(m_hitemDrop, false);
+      //Tree->setItemSelected(m_hitemDrop, false);
       //QDropData *ddata = new QDropData(m_hitemDrop, ev->action());
       DropPosted = true;
       DragDoc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(Clipdata->docPathName->c);
@@ -2591,7 +2592,7 @@ void CLavaPEView::OnDropPost(void* act)
   if (canDrag)
     /*dragView->*/m_hitemDrag = 0;
   //if (m_hitemDrop)
-  //  m_tree->setItemSelected(m_hitemDrop, false);
+  //  Tree->setItemSelected(m_hitemDrop, false);
   m_hitemDrop = 0;
   if (DragDoc && (DragDoc != GetDocument())) {
     ((CLavaPEView*)DragDoc->MainView)->m_hitemDrag = 0;
@@ -2668,7 +2669,7 @@ void CLavaPEView::OnEditSelItem(CTreeItem* item, bool clickedOnIcon)
     *decl = *itdDECL;
     decl->DECLError1.Destroy();
     ppDECL = decl->ParentDECL;
-    m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
+    Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
     if (isonwhat == isOnFormProps) {
       if (decl->DeclType == FormText) {
         CFormTextBox* fbox = new CFormTextBox(decl, this);
@@ -2759,12 +2760,12 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
   int pos;
   TID setID;
 
-  item = (CTreeItem*)m_tree->currentItem();
+  item = (CTreeItem*)Tree->currentItem();
   if (!item) {
     QMessageBox::critical(this, qApp->name(),IDP_NoInsertionPos,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
-  if (myInclView && (item == m_tree->RootItem)) {
+  if (myInclView && (item == Tree->RootItem)) {
     QMessageBox::critical(this, qApp->name(),IDP_NoFieldInsertion,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
@@ -2842,7 +2843,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
     }
     else {
       par = item;
-      while ((par != m_tree->RootItem) 
+      while ((par != Tree->RootItem) 
             && !((data->type == TIType_DECL)
             && ( ( (*(LavaDECL**)data->synEl)->DeclDescType == StructDesc)
                || ( (*(LavaDECL**)data->synEl)->DeclDescType == EnumType)
@@ -2852,7 +2853,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
       }
       if (myInclView && (eType == ExecDef)
           && ( (*(LavaDECL**)data->synEl)->DeclType == FormDef)) {
-        m_tree->setCurAndSel(par);
+        Tree->setCurAndSel(par);
         OnShowGUIview();
         return true;
       }
@@ -2924,7 +2925,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
     }
     else {
       delete decl;
-      m_tree->setCurAndSel(par);
+      Tree->setCurAndSel(par);
       OnShowExec(eType);
     }
     return true;
@@ -2944,14 +2945,14 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
       return false;
     }
   }
-  if ((ppdata->type != TIType_DECL) && (ppar != m_tree->RootItem)) {
+  if ((ppdata->type != TIType_DECL) && (ppar != Tree->RootItem)) {
       delete decl;
       QMessageBox::critical(this, qApp->name(),IDP_NoFieldInsertion,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       return false;
   }
   decl->ParentDECL = *(LavaDECL**)ppdata->synEl;
-  if (!myInclView || (ppar != m_tree->RootItem)
-       && (ppar->parent() != m_tree->RootItem)) {
+  if (!myInclView || (ppar != Tree->RootItem)
+       && (ppar->parent() != Tree->RootItem)) {
     decl->FullName = (*(LavaDECL**)ppdata->synEl)->FullName;
     if (iDECL) {
       decl->FullName += ddppkt;
@@ -3111,7 +3112,7 @@ void CLavaPEView::OnNextEC(CTreeItem* itemStart, bool onErr)
       item1 = (CTreeItem*)item2->nextSibling();
   }
   if (!item1)
-    item1 = (CTreeItem*)m_tree->RootItem;
+    item1 = (CTreeItem*)Tree->RootItem;
   while (item1) {
     if (item1 == itemStart) {
       if (onErr)
@@ -3146,7 +3147,7 @@ void CLavaPEView::OnNextEC(CTreeItem* itemStart, bool onErr)
         item1 = (CTreeItem*)item2->nextSibling();
     }
     if (!item1) 
-      item1 = (CTreeItem*)m_tree->RootItem;
+      item1 = (CTreeItem*)Tree->RootItem;
   }
 
 }
@@ -3157,7 +3158,7 @@ void CLavaPEView::OnPrevEC(CTreeItem* itemStart, bool onErr)
   while (!item2 && item1) {
     item2 = GetPrevSiblingItem(item1);
     if (!item2) { //if first child then go up to parent
-      if (item1 != m_tree->RootItem) {
+      if (item1 != Tree->RootItem) {
         item1 = (CTreeItem*)item1->parent();
         if (item1 == itemStart) {
           if (onErr)
@@ -3206,15 +3207,15 @@ void CLavaPEView::OnRclick(QTreeWidgetItem* itemHit)
 {
 
   if (itemHit) {
-    m_tree->setItemSelected(itemHit, true);
+    Tree->setItemSelected(itemHit, true);
     //PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, ptAction.x, ptAction.y, this);
   }
 }
 
 void CLavaPEView::setSelPost(QTreeWidgetItem* selItem)
 {
-  m_tree->ResetSelections();
-  m_tree->setCurAndSel(selItem);
+  Tree->ResetSelections();
+  Tree->setCurAndSel(selItem);
 }
 
 
@@ -3225,12 +3226,12 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
   LavaDECL *itemDECL;
 
   
-//  QTreeWidgetItem* selItem = m_tree->currentItem();
+//  QTreeWidgetItem* selItem = Tree->currentItem();
   if (!selItem)
     return;
-  if (!m_tree->isItemSelected(selItem)) //selItem->isSelected())
+  if (!Tree->isItemSelected(selItem)) //selItem->isSelected())
     return;
-  if (lastCurrent && (m_tree->withControl && !m_tree->withShift || m_tree->withShift && !m_tree->withControl)) {
+  if (lastCurrent && (Tree->withControl && !Tree->withShift || Tree->withShift && !Tree->withControl)) {
     if (!CollectDECL) {
       CanDelete = true;
       CollectDECL = NewLavaDECL();
@@ -3238,7 +3239,7 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
       multiSelectCanceled = !AddToDragChain(lastCurrent);
       CollectPos = GetPos(lastCurrent, 0);
     }
-    if (m_tree->withShift) {
+    if (Tree->withShift) {
       itemDrag = lastCurrent;
       while (itemDrag && (itemDrag != selItem)) {
         itemDrag = (CTreeItem*)itemDrag->nextSibling();
@@ -3253,10 +3254,10 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
         multiSelectCanceled = true;
         QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
         DeleteDragChain();
-        m_tree->withShift = false;
+        Tree->withShift = false;
         QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
-        /*m_tree->ResetSelections();
-        m_tree->setCurAndSel(selItem);*/
+        /*Tree->ResetSelections();
+        Tree->setCurAndSel(selItem);*/
       }
       else
         collected = true;
@@ -3266,10 +3267,10 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
       if (multiSelectCanceled || !AddToDragChain((CTreeItem*)selItem, true, sameCat)) {
         multiSelectCanceled = true;
         DeleteDragChain();
-        m_tree->withControl = false;
+        Tree->withControl = false;
         QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
-        /*m_tree->ResetSelections();
-        m_tree->setCurAndSel(selItem);*/
+        /*Tree->ResetSelections();
+        Tree->setCurAndSel(selItem);*/
       }
       else
         collected = true;
@@ -3303,12 +3304,12 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
           }
           else
             ((CVTView*)myVTView)->activeInt = itemDECL->isInSubTree(((CVTView*)myVTView)->myDECL);
-          if (ItemSel != m_tree->RootItem) {
+          if (ItemSel != Tree->RootItem) {
             ItemSel = (CTreeItem*)ItemSel->parent();
             DataSel = (CMainItemData*)ItemSel->getItemData();
           }
         }
-        if (ItemSel != m_tree->RootItem) {
+        if (ItemSel != Tree->RootItem) {
           GroupType = DataSel->type;
           ItemSel = (CTreeItem*)ItemSel->parent();
           DataSel = (CMainItemData*)ItemSel->getItemData();
@@ -3327,7 +3328,7 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
         if ((DataSel->type == TIType_DECL))
           GetDocument()->OpenWizardView(this, (LavaDECL**)DataSel->synEl/*, (unsigned long)1*/);
         if (!inSync && myFormView && (DataSel->type == TIType_DECL)) {
-          //if (ItemSel != m_tree->child(0)) 
+          //if (ItemSel != Tree->child(0)) 
             ((CLavaGUIView*)myFormView)->SyncForm(*(LavaDECL**)DataSel->synEl);
         }
         else
@@ -3349,14 +3350,14 @@ void CLavaPEView::OnShowSpecialView(TDeclType exprType)
 {
   bool hasView = false;
   CMainItemData * itd;
-  CTreeItem* root = (CTreeItem*)m_tree->RootItem;
+  CTreeItem* root = (CTreeItem*)Tree->RootItem;
   CTreeItem* item;
   if (!myInclView && (exprType == FormDef)) {
     item = root;
     hasView = true;
   }
   else {
-    item = (CTreeItem*)m_tree->currentItem();
+    item = (CTreeItem*)Tree->currentItem();
     if (!item && !myInclView)
       item = root;
   }
@@ -3469,7 +3470,7 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
       drawTree = drawTree || GetDocument()->UndoMem.DrawTree;
       DrawTree(GetDocument()->GetFormpDECL(myDECL), inUndoRedo);
       if (!drawTree) {
-        CTreeItem* item = (CTreeItem*)m_tree->currentItem();
+        CTreeItem* item = (CTreeItem*)Tree->currentItem();
         if (item) {
           QApplication::postEvent(myFormView, new CustomEvent(IDU_LavaPE_SyncForm, (void*)*(LavaDECL**)((CMainItemData*)item->getItemData())->synEl));
           GetDocument()->OpenWizardView(this, (LavaDECL**)((CMainItemData*)item->getItemData())->synEl/*, (unsigned long)1*/);
@@ -3497,7 +3498,7 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
       drawTree = drawTree || GetDocument()->UndoMem.DrawTree;
       DrawTree(0, inUndoRedo, true, undoRedoCheck);
       setUpdatesEnabled(true);
-      m_tree->viewport()->update();
+      Tree->viewport()->update();
       //if ((undoRedoCheck == CHLV_fit)  //the initial open
       //  && (GetDocument()->nTreeErrors || GetDocument()->nErrors || GetDocument()->nPlaceholders))
       //  GetDocument()->ShowErrorBox(true);
@@ -3508,7 +3509,7 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
 
 void CLavaPEView::OnVkreturn()
 {
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (item) {
     CMainItemData* data = (CMainItemData*)item->getItemData();
     TDeclType etype;
@@ -3562,8 +3563,8 @@ bool CLavaPEView::PutEC(CTreeItem* item, bool onErr)
       errDECL = GetExecDECL(item);
     if (errDECL) {
       if (onErr && (errDECL->DECLError1.first || errDECL->DECLError2.first)) {
-        m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
-        m_tree->setCurAndSel(item);
+        Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
+        Tree->setCurAndSel(item);
         CheckAutoCorr(errDECL);
         ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetErrorOnUtil(errDECL);
         ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetTab(tabError);
@@ -3573,8 +3574,8 @@ bool CLavaPEView::PutEC(CTreeItem* item, bool onErr)
         if (!onErr && errDECL->DECLComment.ptr) {
           ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetComment(errDECL->DECLComment.ptr->Comment, !errDECL->DECLError1.first && !errDECL->DECLError2.first);
           ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetTab(tabComment);
-          m_tree->setCurAndSel(item);
-          m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
+          Tree->setCurAndSel(item);
+          Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
           return true;
         }
     }
@@ -4036,7 +4037,7 @@ void CLavaPEView::RenameCancel(CTreeItem *item)
   item->setText(0, item->completeText);
 }
 
-void CLavaPEView::RenameOk(CTreeItem *item)
+void CLavaPEView::RenameOk(QLineEdit* editor, CTreeItem *item)
 {
   CMainItemData *pdata, *itd = (CMainItemData*)item->getItemData();
   LavaDECL *decl, *labelDECL, *ppDECL;
@@ -4045,11 +4046,11 @@ void CLavaPEView::RenameOk(CTreeItem *item)
   CHAINANY* enumItems;
   CHEEnumSelId *relEl;
   QString *err = 0;
-  DString *name,  *newLab, *oldLab, lab = DString(qPrintable(item->text(0))) ;
+  DString *name,  *newLab, *oldLab, lab = DString(qPrintable(editor->text())) ;
 
   if (lab.l) {
     if (!((CLavaPEApp*)wxTheApp)->LBaseData.isIdentifier(lab.c)) {
-      if ((item != m_tree->RootItem)
+      if ((item != Tree->RootItem)
           || (*(LavaDECL**)itd->synEl)->Supports.first)
         err = &IDP_IsNoID;
       else {
@@ -4117,7 +4118,7 @@ void CLavaPEView::RenameOk(CTreeItem *item)
     }//isIdentifier
   }//len > 0
   else {
-    if ((item == m_tree->RootItem) && !(*(LavaDECL**)itd->synEl)->Supports.first) {
+    if ((item == Tree->RootItem) && !(*(LavaDECL**)itd->synEl)->Supports.first) {
       decl = NewLavaDECL();
       *decl = **(LavaDECL**)itd->synEl;
       decl->FullName.Destroy();
@@ -4149,7 +4150,7 @@ void CLavaPEView::RenameOk(CTreeItem *item)
     if (err) {
       QMessageBox::critical(this, qApp->name(),*err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       item->actLab = lab;
-      item->startRename(0);
+//!!!!!      item->startRename(0);
     }
     else {
       item->setText(0, item->completeText);
@@ -4157,7 +4158,7 @@ void CLavaPEView::RenameOk(CTreeItem *item)
   }
 }
 
-void CLavaPEView::RenameStart(CTreeItem *item)
+void CLavaPEView::RenameStart(QLineEdit* editor, CTreeItem *item)
 {
   if (!item->renameEnabled(0))
     return;
@@ -4165,17 +4166,20 @@ void CLavaPEView::RenameStart(CTreeItem *item)
   LavaDECL* decl;
   QString str;
   if (item->actLab.l) {
-    item->setText(0, item->actLab.c);
+    //item->setText(0, item->actLab.c);
+    editor->setText(item->actLab.c);
     item->actLab.Reset(0);
   }
   else {
     item->completeText = item->text(0);
     if (itd->type == TIType_DECL) {
       decl = *(LavaDECL**)itd->synEl;
-      item->setText(0, decl->LocalName.c);
+      //item->setText(0, decl->LocalName.c);
+      editor->setText(decl->LocalName.c);
     }
     else if (itd->type == TIType_CHEEnumSel)
-      item->setText(0, ((CHEEnumSelId*)itd->synEl)->data.Id.c);
+      //item->setText(0, ((CHEEnumSelId*)itd->synEl)->data.Id.c);
+      editor->setText(((CHEEnumSelId*)itd->synEl)->data.Id.c);
   }
 }
 
@@ -4298,17 +4302,17 @@ void CLavaPEView::UpdateUI()
   frame->prevCommentAction->setEnabled(true);
   frame->nextErrorAction->setEnabled(true);
   frame->prevErrorAction->setEnabled(true);
-  ItemSel = (CTreeItem*)m_tree->currentItem();
+  ItemSel = (CTreeItem*)Tree->currentItem();
   if (ItemSel) {
     DataSel = (CMainItemData*)ItemSel->getItemData();
     if (DataSel) {
       if (DataSel->type == TIType_DECL) {
-        if (ItemSel != m_tree->RootItem) {
+        if (ItemSel != Tree->RootItem) {
           ItemSel = (CTreeItem*)ItemSel->parent();
           DataSel = (CMainItemData*)ItemSel->getItemData();
         }
       }
-      if (ItemSel != m_tree->RootItem) {
+      if (ItemSel != Tree->RootItem) {
         GroupType = DataSel->type;
         ItemSel = (CTreeItem*)ItemSel->parent();
         DataSel = (CMainItemData*)ItemSel->getItemData();
@@ -4327,7 +4331,7 @@ void CLavaPEView::UpdateUI()
     ItemSel = 0;
 
   if (ItemSel) {
-    ItemSel = (CTreeItem*)m_tree->currentItem();
+    ItemSel = (CTreeItem*)Tree->currentItem();
     DataSel = (CMainItemData*)ItemSel->getItemData();
     OnUpdateEditCopy(frame->editCopyAction);
     OnUpdateEditCut(frame->editCutAction);
@@ -4415,7 +4419,7 @@ void CLavaPEView::UpdateUI()
 bool CLavaPEView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
 {
   if (!topItem)
-    topItem = (CTreeItem*)m_tree->RootItem;
+    topItem = (CTreeItem*)Tree->RootItem;
   CTreeItem* nitem;
   bool isValid = false;
   while (topItem && (topItem != item) && !isValid) {
@@ -4432,13 +4436,13 @@ bool CLavaPEView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
 void CLavaPEView::on_whatNextAction_triggered()
 {
 /*
-  QWhatsThis::showText(m_tree->viewport()->mapToGlobal(m_tree->visualItemRect(m_tree->currentItem()).topLeft())+QPoint(200,20),
+  QWhatsThis::showText(Tree->viewport()->mapToGlobal(Tree->visualItemRect(Tree->currentItem()).topLeft())+QPoint(200,20),
     QString(QObject::tr("<p>You may <b>delete</b> this item"
     " (DEL key or scissors button),<br>or you may <b>insert</b> another item after this one"
     " (click any enabled button on the declaration toolbar),"
     "<br>or you may <b>view/edit the properties</b> of this item (spectacles button),"
     "<br><a href=\"../whatNext/DeclViewWhatNext.htm\">or...</a></p>")),
-      m_tree);
+      Tree);
       */
 }
 
@@ -4446,22 +4450,22 @@ void CLavaPEView::on_whatNextAction_triggered()
 
 void CLavaPEView::OnCollapsAll()
 {
-  CTreeItem* htr0 = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* htr0 = (CTreeItem*)Tree->currentItem();
   CTreeItem* htr = htr0;
   int level = 0;
   while (htr) {
-    m_tree->collapseItem(htr); //->setOpen(false);
+    Tree->collapseItem(htr); //->setOpen(false);
     SetTreeFlags(htr, false);
     Navigate(true, htr, level);
   } 
-  m_tree->scrollToItem(htr0, QAbstractItemView::EnsureVisible );
-  //m_tree->ensureItemVisible(htr0);
+  Tree->scrollToItem(htr0, QAbstractItemView::EnsureVisible );
+  //Tree->ensureItemVisible(htr0);
 }
 
 
 void CLavaPEView::OnComment()
 {
-  CTreeItem *pItem, *item = (CTreeItem*)m_tree->currentItem();
+  CTreeItem *pItem, *item = (CTreeItem*)Tree->currentItem();
   TDECLComment* ptrComment=0, *ptr = 0;
   DWORD d1, d3 = 0;
   CComment *pComment;
@@ -4544,9 +4548,9 @@ void CLavaPEView::OnEditCopy()
   IOnEditCopy();
   if (CollectDECL) {
     DeleteDragChain();
-    m_tree->ResetSelections();
+    Tree->ResetSelections();
     if (lastCurrent) {
-      m_tree->setCurAndSel(lastCurrent);
+      Tree->setCurAndSel(lastCurrent);
     }
 
   }
@@ -4557,8 +4561,8 @@ void CLavaPEView::OnEditCut()
   if (GetDocument()->changeNothing)
     return;
 
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
-  if (!item || (item == m_tree->RootItem))
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
+  if (!item || (item == Tree->RootItem))
     return;
   int pos;
   if (!CollectDECL)
@@ -4623,7 +4627,7 @@ void CLavaPEView::OnEditPaste()
   if (clipboard_lava_notEmpty) {
     QByteArray ba = ((LavaSource*)wxTheApp->clipboard()->data(QClipboard::Clipboard))->data/*encodedData*/(m_nIDClipFormat);
 		QDataStream ar(ba/*,QIODevice::ReadOnly*/);
-    item = (CTreeItem*)m_tree->currentItem();
+    item = (CTreeItem*)Tree->currentItem();
     clipdata.Serialize(ar);
     declClip = (LavaDECL*)clipdata.synEl;
     pasteType = CanPaste(declClip->DeclType, declClip->TreeFlags, declClip->SecondTFlags, item);
@@ -4649,7 +4653,7 @@ void CLavaPEView::OnEditPaste()
           che = (CHE*)che->successor;
         }
       }
-      item = (CTreeItem*)m_tree->currentItem();
+      item = (CTreeItem*)Tree->currentItem();
       itemData = (CMainItemData*)item->getItemData();
       DString fn = GetDocument()->GetAbsSynFileName();
       if (fn != *clipdata.docPathName)
@@ -4703,8 +4707,8 @@ void CLavaPEView::OnEditPaste()
 
 void CLavaPEView::OnEditSel()
 {
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
-  if (!item ) { //||  (myInclView && (item == m_tree->child(0)))) {
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
+  if (!item ) { //||  (myInclView && (item == Tree->child(0)))) {
     QMessageBox::critical(this, qApp->name(),IDP_NoElemSel,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return;
   }
@@ -4714,17 +4718,17 @@ void CLavaPEView::OnEditSel()
 
 void CLavaPEView::OnExpandAll()
 {
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (item )
     ExpandItem(item);
-  m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-  //m_tree->ensureItemVisible(item);
+  Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+  //Tree->ensureItemVisible(item);
 }
 
 
 void CLavaPEView::OnFindReferences()
 {
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   CFindData fw;
   fw.FWhere = findInThisDoc;
   if (item) {
@@ -4746,13 +4750,13 @@ void CLavaPEView::OnFindReferences()
 
 void CLavaPEView::OnGotoDecl()
 {
-  Gotodef((CTreeItem*)m_tree->currentItem());
+  Gotodef((CTreeItem*)Tree->currentItem());
 }
 
 void CLavaPEView::OnGotoImpl()
 {
   LavaDECL *DECL;
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   TID id;
   TDeclType exprType;
   if (item) {
@@ -4813,14 +4817,14 @@ void CLavaPEView::OnGotoImpl()
 
 void CLavaPEView::OnMakeGUI()
 {
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   CTreeItem* pitem;
   int pos=0;
   if (item) {
     if (myInclView)
       pitem = (CTreeItem*)item->parent();
     else 
-      pitem = myMainView->BrowseTree(myDECL, (CTreeItem*)myMainView->m_tree->child(0));
+      pitem = myMainView->BrowseTree(myDECL, (CTreeItem*)myMainView->Tree->child(0));
     GetDocument()->MakeGUI(*(LavaDECL**)((CMainItemData*)item->getItemData())->synEl, (LavaDECL**)((CMainItemData*)pitem->getItemData())->synEl, pos);
   }
 }
@@ -4851,7 +4855,7 @@ void CLavaPEView::OnNewEnumItem()
   QString iT;
   CLavaPEHint *hint;
 
-  item = (CTreeItem*)m_tree->currentItem();
+  item = (CTreeItem*)Tree->currentItem();
   if (!item)
     return;
   data = (CMainItemData*)item->getItemData();
@@ -4942,33 +4946,33 @@ void CLavaPEView::OnNewVirtualType()
 
 void CLavaPEView::OnNextComment()
 {
-  CTreeItem* itemStart = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* itemStart = (CTreeItem*)Tree->currentItem();
   OnNextEC(itemStart, false);
 
 }
 
 void CLavaPEView::OnNextError()
 {
-  CTreeItem* itemStart = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* itemStart = (CTreeItem*)Tree->currentItem();
   OnNextEC(itemStart, true);
 }
 
 void CLavaPEView::OnPrevComment()
 {
-  CTreeItem* itemStart = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* itemStart = (CTreeItem*)Tree->currentItem();
   OnPrevEC(itemStart, false); 
 }
 
 
 void CLavaPEView::OnPrevError()
 {
-  CTreeItem* itemStart = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* itemStart = (CTreeItem*)Tree->currentItem();
   OnPrevEC(itemStart, true);
 }
 
 void CLavaPEView::OnRemoveAllEmptyOpt()
 {
-  CTreeItem* startItem = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* startItem = (CTreeItem*)Tree->currentItem();
   if (!startItem)
     return;
   CMainItemData *dataD = (CMainItemData*)startItem->getItemData();
@@ -4989,7 +4993,7 @@ void CLavaPEView::OnRemoveAllEmptyOpt()
 
 void CLavaPEView::OnShowAllEmptyOpt()
 {
-  CTreeItem* startItem = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* startItem = (CTreeItem*)Tree->currentItem();
   if (!startItem)
     return;
   CMainItemData *dataD = (CMainItemData*)startItem->getItemData();
@@ -5021,7 +5025,7 @@ void CLavaPEView::OnShowGUIview()
 
 void CLavaPEView::OnShowOptionals()
 {
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (item) {
     CMainItemData* data = (CMainItemData*)item->getItemData();
     if (data->type == TIType_DECL) {
@@ -5036,15 +5040,15 @@ void CLavaPEView::OnShowOptionals()
             ExpandItem(item, 2);
         }
       }
-      m_tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-//      m_tree->ensureItemVisible(item);
+      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+//      Tree->ensureItemVisible(item);
     }
   }
 }
 
 void CLavaPEView::OnShowOverridables()
 {
-  CTreeItem* item = (CTreeItem*)m_tree->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (item != 0) {
     CMainItemData* itd = (CMainItemData*)item->getItemData();
     if (itd->type == TIType_DECL) {
@@ -5249,7 +5253,7 @@ void CLavaPEView::OnUpdateNewInterface(QAction* action)
 
 void CLavaPEView::OnUpdateNewLitStr(QAction* action)
 {
-  action->setEnabled(!myInclView && (m_tree->currentItem() != m_tree->RootItem));
+  action->setEnabled(!myInclView && (Tree->currentItem() != Tree->RootItem));
 }
 
 void CLavaPEView::OnUpdateNewmember(QAction* action)

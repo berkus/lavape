@@ -106,6 +106,7 @@
 #include <QHeaderView>
 #include <QAbstractEventDispatcher>
 #include "qfiledialog.h"
+#include <QItemDelegate>
 
 #include <string.h>
 //#include <stdlib.h>

@@ -99,28 +99,27 @@ CTreeItem::~CTreeItem()
 }
 
 
-void CTreeItem::startRename(int col)
+void CTreeItem::startRename(QLineEdit* editor, int col)
 {
   if (!inRename) {
     inRename = true;
-    ((MyListView*)treeWidget())->lavaView->RenameStart(this);
-    //QTreeWidgetItem::startRename(col);
+    ((MyListView*)treeWidget())->lavaView->RenameStart(editor, this);
   }
 }
-/*
-void CTreeItem::okRename(int col)
+
+void CTreeItem::okRename(QLineEdit* editor, int col)
 {
-  QTreeWidgetItem::okRename(col);
-  ((MyListView*)treeWidget())->lavaView->RenameOk(this);
+  if (inRename)
+    ((MyListView*)treeWidget())->lavaView->RenameOk(editor, this);
   inRename = false;
 }
 
 void CTreeItem::cancelRename(int col)
 {
-  ((MyListView*)treeWidget())->lavaView->RenameCancel(this);
-  QTreeWidgetItem::cancelRename(col);
+  if (inRename)
+    ((MyListView*)treeWidget())->lavaView->RenameCancel(this);
   inRename = false;
-}*/
+}
 
 
 void CTreeItem::setPixmapIndex(int ipix)
@@ -303,8 +302,6 @@ void MyListView::mousePressEvent(QMouseEvent *ev)
   }
 }
 
-
-
 void MyListView::startDrag(Qt::DropActions supportedActions)
 {
   lavaView->OnDragBegin();
@@ -364,24 +361,54 @@ CTreeItem* MyListView::itemAbove(CTreeItem* item)
   return (CTreeItem*)itemFromIndex(ind);
 }
 
-void MyListView::editItem(QTreeWidgetItem *item, int column)
+
+void MyListView::closeEditor(QWidget* editor, QAbstractItemDelegate::EndEditHint hint)
 {
-  ((CTreeItem*)item)->startRename(0);
-  QTreeWidget::editItem(item, column);
+  if (committed)
+    ((CTreeItem*)currentItem())->okRename((QLineEdit*)editor, 0);
+  else
+    ((CTreeItem*)currentItem())->cancelRename(0);
+  committed = false;
+  QAbstractItemView::closeEditor(editor, hint);
 }
+
+void MyListView::commitData(QWidget* editor)
+{
+  committed = true;
+}
+
+
+CTreeItemDelg::CTreeItemDelg(MyListView* tree)  
+{
+  Tree = tree;
+  Tree->committed = false;
+}
+
+void CTreeItemDelg::setEditorData(QWidget * editor, const QModelIndex & index ) const
+{
+  ((CTreeItem*)Tree->currentItem())->startRename((QLineEdit*)editor, 0);
+}
+
+QWidget* CTreeItemDelg::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+  QWidget* ed = QItemDelegate::createEditor(parent, option, index);
+  ((QLineEdit*)ed)->setFrame(true);
+  return ed;
+}
+
 //**********************************************************************************
 
 CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name)
    : CLavaBaseView(parent,doc,name)
 {
-  m_tree = new MyListView(this);
-  layout->addWidget(m_tree);
-  //  setFocusProxy(m_tree);
-//  m_tree->setSorting(-1);
-  m_tree->setColumnCount(1);
-  m_tree->setRootIsDecorated(true);
-  m_tree->header()->hide();
-  m_tree->setSelectionMode(QAbstractItemView::ExtendedSelection);//Single);
+  Tree = new MyListView(this);
+  layout->addWidget(Tree);
+  //  setFocusProxy(Tree);
+//  Tree->setSorting(-1);
+  Tree->setColumnCount(1);
+  Tree->setRootIsDecorated(true);
+  Tree->header()->hide();
+  Tree->setSelectionMode(QAbstractItemView::ExtendedSelection);//Single);
   CollectDECL = 0;
   multiSelectCanceled = false;
 }
@@ -389,12 +416,12 @@ CTreeView::CTreeView(QWidget *parent,wxDocument *doc, const char* name)
 
 CTreeItem* CTreeView::GetPrevSiblingItem(CTreeItem* item)
 {
-  CTreeItem* ib = (CTreeItem*)m_tree->itemAbove(item);
+  CTreeItem* ib = (CTreeItem*)Tree->itemAbove(item);
   CTreeItem* par = (CTreeItem*)item->parent();
   if (ib == par)
     return 0;
   else {
-    for ( ; ib && (par != ib->parent()); ib = (CTreeItem*)m_tree->itemAbove(ib));
+    for ( ; ib && (par != ib->parent()); ib = (CTreeItem*)Tree->itemAbove(ib));
     return ib;
   }
 }
@@ -402,14 +429,14 @@ CTreeItem* CTreeView::GetPrevSiblingItem(CTreeItem* item)
 /*
 CTreeItem* CTreeView::HitTest(QPoint qp)
 {
-  return (CTreeItem*)m_tree->itemAt(qp);
+  return (CTreeItem*)Tree->itemAt(qp);
 }
 */
 
 CTreeItem* CTreeView::InsertItem(QString label, int nPix, CTreeItem* parent, CTreeItem* afterItem)
 {
   if (parent == TVI_ROOT)
-    return new CTreeItem(label, nPix, m_tree);
+    return new CTreeItem(label, nPix, Tree);
   else {
     if (afterItem == TVI_FIRST)
       return new CTreeItem(label, nPix, parent, 0);

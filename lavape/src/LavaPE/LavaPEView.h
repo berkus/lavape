@@ -187,8 +187,8 @@ public:
   bool RefacMove(CTreeItem* dropItem);
   void RemoveEmptyOpt(CTreeItem* startItem, bool down);
   virtual void RenameCancel(CTreeItem* item);
-  virtual void RenameOk(CTreeItem* item);
-  virtual void RenameStart(CTreeItem* item);
+  virtual void RenameOk(QLineEdit* editor, CTreeItem* item);
+  virtual void RenameStart(QLineEdit* editor, CTreeItem* item);
  
 //  void SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask, bool inPattern);
   void setSelPost(QTreeWidgetItem* selItem);

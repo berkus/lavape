@@ -3466,7 +3466,7 @@ void CLavaPEDoc::SetExecItemImage(LavaDECL* execDECL, bool empty, bool hasErrors
     flags.INCL(invariantPM);
   if (empty)
     flags.INCL(emptyPM);
-  CTreeItem* item = view->BrowseTree(execDECL->ParentDECL, (CTreeItem*)view->GetListView()->RootItem);
+  CTreeItem* item = view->BrowseTree(execDECL->ParentDECL, (CTreeItem*)view->Tree->RootItem);
   item = view->getSectionNode(item, execDECL->DeclType);
   bm = view->GetPixmap(true,true,execDECL->DeclType,flags);
   /*
@@ -3696,7 +3696,7 @@ void CLavaPEDoc::SetPEError(const CHAINX& ErrChain, bool andShow)
 void CLavaPEDoc::SetTreeItemImage(LavaDECL* errDECL, bool hasErr)
 { 
   CLavaPEView* view = (CLavaPEView*)MainView;
-  CTreeItem* item = view->BrowseTree(errDECL, (CTreeItem*)view->GetListView()->RootItem);
+  CTreeItem* item = view->BrowseTree(errDECL, (CTreeItem*)view->Tree->RootItem);
   if (item) {
     item->SetItemMask(hasErr, errDECL->DECLComment.ptr);
 //    item->repaint();
@@ -3852,9 +3852,9 @@ void CLavaPEDoc::UpdateMoveInDocs(const DString& clipDocFn)
       view = (CLavaPEView*)doc->DragView;
       if (view && view->pDeclDragP && view->CollectDECL) {
         /*
-        CTreeItem* dragParent = view->GetListView()->GetParentItem(view->m_hitemDrag);
-        TItemData* dd = (TItemData*)view->GetListView()->GetItemData(dragParent);
-        DWORD d4 = ((TItemData*)view->GetListView()->GetItemData(dragParent))->synEl;
+        CTreeItem* dragParent = view->Tree->GetParentItem(view->m_hitemDrag);
+        TItemData* dd = (TItemData*)view->Tree->GetItemData(dragParent);
+        DWORD d4 = ((TItemData*)view->Tree->GetItemData(dragParent))->synEl;
         */
         FIRSTLAST(doc, firstLast);
         DWORD d4 = (DWORD)view->pDeclDragP;

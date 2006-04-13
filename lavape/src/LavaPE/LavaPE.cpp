@@ -453,7 +453,7 @@ void CLavaPEApp::OnPopcontext()
         if (!decl)
         decl = doc->IDTable.GetDECL(back->parentID);
         if (decl) 
-          item = ((CLavaPEView*)backView)->BrowseTree(decl, (CTreeItem*)((CLavaPEView*)backView)->GetListView()->RootItem);
+          item = ((CLavaPEView*)backView)->BrowseTree(decl, (CTreeItem*)((CLavaPEView*)backView)->Tree->RootItem);
         else
           item = 0;
       }
@@ -463,7 +463,7 @@ void CLavaPEApp::OnPopcontext()
         else
           item = 0;
       if (item)
-        ((CTreeView*)backView)->GetListView()->setCurAndSel(item);
+        ((CTreeView*)backView)->Tree->setCurAndSel(item);
     }
   }
   delete back;
@@ -1237,15 +1237,15 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
           if (!popUp)
             view->ActivateView(true);
         if (popUp) 
-          item = ((CLavaPEView*)view)->BrowseTree(formDECL, (CTreeItem*)((CLavaPEView*)view)->GetListView()->RootItem, enumID);
+          item = ((CLavaPEView*)view)->BrowseTree(formDECL, (CTreeItem*)((CLavaPEView*)view)->Tree->RootItem, enumID);
         else
-          item = ((CLavaPEView*)view)->BrowseTree(declsel, (CTreeItem*)((CLavaPEView*)view)->GetListView()->RootItem, enumID);
+          item = ((CLavaPEView*)view)->BrowseTree(declsel, (CTreeItem*)((CLavaPEView*)view)->Tree->RootItem, enumID);
         if (item) {
-          itemOld = (CTreeItem*)((CLavaPEView*)view)->GetListView()->currentItem();
+          itemOld = (CTreeItem*)((CLavaPEView*)view)->Tree->currentItem();
           if (itemOld)
-            ((CLavaPEView*)view)->GetListView()->setItemSelected(itemOld, false);//->setSelected(false);
-          ((CLavaPEView*)view)->GetListView()->setCurAndSel(item);
-          if (((CLavaPEView*)view)->myFormView && (item != ((CLavaPEView*)view)->GetListView()->RootItem))
+            ((CLavaPEView*)view)->Tree->setItemSelected(itemOld, false);//->setSelected(false);
+          ((CLavaPEView*)view)->Tree->setCurAndSel(item);
+          if (((CLavaPEView*)view)->myFormView && (item != ((CLavaPEView*)view)->Tree->RootItem))
             ((CLavaGUIView*)((CLavaPEView*)view)->myFormView)->SyncForm(declsel);
           if (popUp)
             if (formDECL) {
@@ -1255,10 +1255,10 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
             }
             else {
               ((CLavaPEView*)view)->ExpandItem(item);
-              ((CLavaPEView*)view)->GetListView()->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
+              ((CLavaPEView*)view)->Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
             }
           else 
-            ((CLavaPEView*)view)->GetListView()->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
+            ((CLavaPEView*)view)->Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
         }
         return true;
       }

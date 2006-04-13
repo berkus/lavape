@@ -32,8 +32,10 @@
 #include "qpixmapcache.h"
 //Added by qt3to4:
 #include <QPixmap>
-
+#include <QItemDelegate>
 #pragma hdrstop
+
+
 
 
 CExecTree::CExecTree(CLavaPEView *tree, bool autoBox, bool finalUpdate, int check)
@@ -638,7 +640,7 @@ void CExecTree::MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** p
       if (parent)
         ActItem = (CTreeItem*)parent->child(0);
       else
-        ActItem = (CTreeItem*)viewTree->GetListView()->RootItem;
+        ActItem = (CTreeItem*)viewTree->Tree->RootItem;
     ActItem->setText(0, QString(label.c));
     ActItem->setPixmapIndex(bm);
     //ActItem->setPixmap(0, *bm);
@@ -665,6 +667,12 @@ void CExecTree::MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** p
   ActItem->setRenameEnabled(0, labelEditEnable);
   bool enableDrag = !elDef->TypeFlags.Contains(thisComponent)
                     && !elDef->TypeFlags.Contains(thisCompoForm);
+  /*
+  QItemDelegate* delg = (QItemDelegate*)viewTree->Tree->itemDelegate ();
+  viewTree->Tree->setCurrentItem(ActItem);
+  QWidget* ed = delg->createEditor(viewTree->Tree, QStyleOptionViewItem(), viewTree->Tree->currentIndex());
+  ((QLineEdit*)ed)->setText("yyyy");
+  */
   if (viewTree->drawTree && FinalUpdate)
     if (enableDrag)
       ActItem->setFlags(ActItem->flags() | Qt::ItemIsDragEnabled);
@@ -1050,7 +1058,7 @@ void CExecTree::ExecEnumItem(CHEEnumSelId * enumsel, int level)
 //  ActItem->setDragEnabled(true);
   if (viewTree->drawTree && FinalUpdate) {
     if (enumsel->data.selItem) {
-      viewTree->GetListView()->setCurAndSel(ActItem);
+      viewTree->Tree->setCurAndSel(ActItem);
       viewTree->SelItem = ActItem;
       enumsel->data.selItem = false;
     }

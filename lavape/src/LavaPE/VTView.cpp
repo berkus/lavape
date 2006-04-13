@@ -50,7 +50,7 @@ CVTView::CVTView(QWidget* parent, wxDocument *doc)
   activeInt = false;
   currentBrType = findTID;
   setFont(LBaseData->m_TreeFont);
-//  new VTWhatsThis(m_tree);
+//  new VTWhatsThis(Tree);
 }
 
 CVTView::~CVTView()
@@ -67,9 +67,9 @@ CLavaPEDoc* CVTView::GetDocument() // non-debug version is inline
 
 bool CVTView::OnCreate() 
 {
-//  connect(m_tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
-  connect(m_tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT    (OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
-  //connect(m_tree,SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), SLOT(OnDblclk(QListViewItem*, const QPoint&, int)));
+//  connect(Tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
+  connect(Tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT    (OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+  //connect(Tree,SIGNAL(doubleClicked(QListViewItem*, const QPoint&, int)), SLOT(OnDblclk(QListViewItem*, const QPoint&, int)));
   return true;
 }
 
@@ -97,8 +97,8 @@ bool CVTView::event(QEvent* ev)
 void CVTView::OnInitialUpdate()
 {
   OnUpdate(this, 0, 0);
-  if (GetListView()->RootItem)
-    GetListView()->setCurAndSel(GetListView()->RootItem);
+  if (Tree->RootItem)
+    Tree->setCurAndSel(Tree->RootItem);
 }
 
 
@@ -121,8 +121,8 @@ void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
       bb = true;
     else {
       DeleteItemData(0);
-      delete GetListView()->RootItem;
-      GetListView()->RootItem = 0;
+      delete Tree->RootItem;
+      Tree->RootItem = 0;
       return;
     }
   }
@@ -135,23 +135,23 @@ void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
 			if (GetDocument()->MakeVElems(myDECL) )
 				myDECL->WorkFlags.EXCL(recalcVT);
         DeleteItemData(0);
-        delete GetListView()->RootItem;
-        GetListView()->RootItem = 0;
+        delete Tree->RootItem;
+        Tree->RootItem = 0;
       if (DrawTreeAgain()) {
         DeleteItemData(0);
-        delete GetListView()->RootItem;
-        GetListView()->RootItem = 0;
+        delete Tree->RootItem;
+        Tree->RootItem = 0;
         DrawTreeAgain();
       }
-      ExpandItem((CTreeItem*)GetListView()->RootItem, 5);
+      ExpandItem((CTreeItem*)Tree->RootItem, 5);
       setUpdatesEnabled(true);
-      GetListView()->update();
+      Tree->update();
       if (currentBaseID.nID != -1)
         lastCurrent = BrowseTree(currentBaseID,0,(int)currentBrType);
       if (lastCurrent)
-        GetListView()->setCurAndSel(lastCurrent);
+        Tree->setCurAndSel(lastCurrent);
       else
-        GetListView()->setCurAndSel(GetListView()->RootItem);
+        Tree->setCurAndSel(Tree->RootItem);
     }
     else {
       myDECL = 0;
@@ -301,9 +301,9 @@ bool CVTView::DrawTreeAgain()
 void CVTView::DeleteItemData(CTreeItem* parent)
 {
   if (!parent)
-    parent = (CTreeItem*)GetListView()->RootItem;
+    parent = (CTreeItem*)Tree->RootItem;
   if (parent) {
-    if (parent != GetListView()->RootItem) {
+    if (parent != Tree->RootItem) {
       CVTItemData * itd = (CVTItemData*)parent->getItemData();
       parent->setItemData(0);
       if (itd) 
@@ -324,7 +324,7 @@ void CVTView::ExpandItem(CTreeItem* item, int level)
     return;
   int count = level-1;
   CTreeItem* htr = item;
-  GetListView()->expandItem(item);//->setOpen(true);
+  Tree->expandItem(item);//->setOpen(true);
   htr = (CTreeItem*)item->child(0);
   while (htr) {
     ExpandItem(htr, count);
@@ -343,14 +343,14 @@ void CVTView::destroy()
 
 void CVTView::OnGotoImpl()
 {
-  gotoDef((CTreeItem*)GetListView()->currentItem(), true);
+  gotoDef((CTreeItem*)Tree->currentItem(), true);
  
 }
 
 
 void CVTView::OnGotoDecl() 
 {
-  gotoDef((CTreeItem*)GetListView()->currentItem(), false);
+  gotoDef((CTreeItem*)Tree->currentItem(), false);
 }
 
 void CVTView::gotoDef(CTreeItem* item, bool toImpl)
@@ -412,7 +412,7 @@ CTreeItem* CVTView::BrowseTree(TID id, CTreeItem* start, int browseCase)
   if (start)
     topItem = start;
   else
-    topItem = (CTreeItem*)GetListView()->RootItem;
+    topItem = (CTreeItem*)Tree->RootItem;
   if (!topItem)
     return 0;
   CVTItemData * itd = (CVTItemData*)topItem->getItemData();
@@ -485,7 +485,7 @@ void CVTView::OnUpdateGotoImpl(QAction* action)
   LavaDECL* decl;
   bool enable;
 
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (item) {
     itd = (CVTItemData*)item->getItemData();
     enable = itd && (itd->type != TNodeType_VT);
@@ -501,7 +501,7 @@ void CVTView::OnUpdateGotoImpl(QAction* action)
 
 void CVTView::OnUpdateGotodef(QAction* action) 
 {
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (item) {
     CVTItemData * itd = (CVTItemData*)item->getItemData();
     action->setEnabled(itd );
@@ -561,12 +561,12 @@ bool CVTView::EnableOverride(CTreeItem* item)
 void CVTView::OnUpdateOverride(QAction* action) 
 {  
   action->setEnabled(!multiSelectCanceled && (!GetDocument()->changeNothing) &&
-        EnableOverride((CTreeItem*)GetListView()->currentItem()));
+        EnableOverride((CTreeItem*)Tree->currentItem()));
 }
 
 void CVTView::OnOverride() 
 {
-  OnOverrideI((CTreeItem*)(CTreeItem*)GetListView()->currentItem());
+  OnOverrideI((CTreeItem*)(CTreeItem*)Tree->currentItem());
 }
 
 void CVTView::PrepareDECL(LavaDECL* decl, CVTItemData* itd)
@@ -686,7 +686,7 @@ void CVTView::OnOverrideI(CTreeItem* item)
       GetDocument()->SetLastHint();
       lastCurrent = BrowseTree(currentBaseID,0,(int)currentBrType);
       if (lastCurrent)
-        GetListView()->setCurAndSel(lastCurrent);
+        Tree->setCurAndSel(lastCurrent);
       myVT.Destroy();
       delete hint;
       delete hintConcern;
@@ -715,7 +715,7 @@ void CVTView::OnOverrideI(CTreeItem* item)
       GetDocument()->SetLastHint();
       lastCurrent = BrowseTree(currentBaseID,0,(int)currentBrType);
       if (lastCurrent)
-        GetListView()->setCurAndSel(lastCurrent);
+        Tree->setCurAndSel(lastCurrent);
     }
   }
   if (CollectDECL)
@@ -725,7 +725,7 @@ void CVTView::OnOverrideI(CTreeItem* item)
 bool CVTView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
 {
   if (!topItem)
-    topItem = (CTreeItem*)GetListView()->RootItem;
+    topItem = (CTreeItem*)Tree->RootItem;
   CTreeItem* nitem;
   bool isValid = false;
   while (topItem && (topItem != item) && !isValid) {
@@ -742,7 +742,7 @@ void CVTView::SetVTError(CTreeItem* item)
 {
   DString str0;
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetComment(str0, true);
-  if (item  && (item != GetListView()->RootItem)) {
+  if (item  && (item != Tree->RootItem)) {
     CVTItemData * itd = (CVTItemData*)item->getItemData();
     if (itd && ((itd->type == TNodeType_VT)
                || (itd->type == TNodeType_Feature))
@@ -789,7 +789,7 @@ void CVTView::DeleteExChain(bool inSel)
     El->data.ElDECL = 0;
     El = (CHETVElem*)El->successor;
   }
-  CTreeItem* item = (CTreeItem*)GetListView()->RootItem;
+  CTreeItem* item = (CTreeItem*)Tree->RootItem;
   if (CollectDECL) {
     delete CollectDECL;
     CollectDECL = 0;
@@ -798,27 +798,27 @@ void CVTView::DeleteExChain(bool inSel)
 
 void CVTView::setSelPost(QTreeWidgetItem* selItem)
 {
-  GetListView()->ResetSelections();
-  GetListView()->setCurAndSel(selItem);
+  Tree->ResetSelections();
+  Tree->setCurAndSel(selItem);
 }
 
 
 void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*) 
 {
   bool ok = true;
-  CTreeItem *itemOver = lastCurrent;// *selItem = (CTreeItem*)GetListView()->currentItem();
+  CTreeItem *itemOver = lastCurrent;// *selItem = (CTreeItem*)Tree->currentItem();
   if (!selItem)
     return;
   SetVTError((CTreeItem*)selItem);
-  if (itemOver && (GetListView()->withControl && !GetListView()->withShift || GetListView()->withShift && !GetListView()->withControl)) {
+  if (itemOver && (Tree->withControl && !Tree->withShift || Tree->withShift && !Tree->withControl)) {
     if (!CollectDECL) {
       CollectDECL = NewLavaDECL();
       collectParent = (CTreeItem*)itemOver->parent();
     }
     if (itemOver && AddToExChain(itemOver)) {
-      if (GetListView()->withShift) {
+      if (Tree->withShift) {
         while (itemOver && (itemOver != selItem)) {
-          itemOver = (CTreeItem*)itemOver->nextSibling();//GetListView()->GetNextSiblingItem(itemOver);
+          itemOver = (CTreeItem*)itemOver->nextSibling();//Tree->GetNextSiblingItem(itemOver);
           if (itemOver && !AddToExChain(itemOver)) 
             itemOver = 0;
           
@@ -826,10 +826,10 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
         if (!itemOver || !CollectDECL->NestedDecls.first || (itemOver != selItem)) {
           multiSelectCanceled = true;
           DeleteExChain(false);
-          GetListView()->withShift = false;
+          Tree->withShift = false;
           QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
-          /*GetListView()->ResetSelections();
-          GetListView()->setCurAndSel(selItem);*/
+          /*Tree->ResetSelections();
+          Tree->setCurAndSel(selItem);*/
         }
       }
       else { //Control
@@ -837,21 +837,21 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
         if (itemOver && !AddToExChain(itemOver)) {
           multiSelectCanceled = true;
           DeleteExChain(false);
-          GetListView()->withControl = false;
+          Tree->withControl = false;
           QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
-          /*GetListView()->ResetSelections();
-          GetListView()->setCurAndSel(selItem);*/
+          /*Tree->ResetSelections();
+          Tree->setCurAndSel(selItem);*/
         }
       }
     }
     else {
       multiSelectCanceled = true;
       DeleteExChain(false);
-      GetListView()->withShift = false;
-      GetListView()->withControl = false;
+      Tree->withShift = false;
+      Tree->withControl = false;
       QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
-      /*GetListView()->ResetSelections();
-      GetListView()->setCurAndSel(selItem);*/
+      /*Tree->ResetSelections();
+      Tree->setCurAndSel(selItem);*/
     }
   }
   else {
@@ -881,10 +881,10 @@ void CVTView::OnActivateView(bool bActivate, wxView *deactiveView)
   CTreeItem* sel;
   if (GetDocument()->mySynDef)
     if (bActivate) {
-      sel = (CTreeItem*)GetListView()->currentItem();
+      sel = (CTreeItem*)Tree->currentItem();
       SetVTError(sel);
-      if (!GetListView()->hasFocus())
-        GetListView()->setFocus();
+      if (!Tree->hasFocus())
+        Tree->setFocus();
 //      sel->repaint();
     }
     else 

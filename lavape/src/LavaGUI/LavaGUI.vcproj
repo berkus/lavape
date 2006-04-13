@@ -207,7 +207,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Quellcodedateien"
+			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90"
 			>
 			<File
@@ -651,7 +651,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Header-Dateien"
+			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;fi;fd"
 			>
 			<File

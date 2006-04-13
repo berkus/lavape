@@ -44,10 +44,10 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
 : CTreeView(parent, doc, "InclView")
 {
   InitComplete = false;
-  connect(m_tree,SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
+  connect(Tree,SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
   setFont(LBaseData->m_TreeFont);
-//  new InclWhatsThis(m_tree);
-  GetListView()->setSelectionMode(QAbstractItemView::SingleSelection);
+//  new InclWhatsThis(Tree);
+  Tree->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 CInclView::~CInclView()
@@ -85,9 +85,9 @@ void CInclView::OnInitialUpdate()
   if (pDoc && pDoc->mySynDef) {
     Expanded = true;
     OnUpdate(NULL, 0, 0);
-    GetListView()->expandItem(GetListView()->RootItem);//firstChild()->setOpen(true);
-    GetListView()->setCurrentItem(GetListView()->RootItem);
-    GetListView()->setItemSelected(GetListView()->RootItem, true);
+    Tree->expandItem(Tree->RootItem);//firstChild()->setOpen(true);
+    Tree->setCurrentItem(Tree->RootItem);
+    Tree->setItemSelected(Tree->RootItem, true);
     InitComplete = true;
   }
 }
@@ -108,11 +108,11 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
      && ( ( ((CLavaPEHint*)pHint)->com != CPECommand_Change)
           || ((CLavaPEHint*)pHint)->CommandData1 )) 
     return;
-  parent = (CTreeItem*)GetListView()->RootItem;
+  parent = (CTreeItem*)Tree->RootItem;
   if (parent) {
-    Expanded = GetListView()->isItemExpanded(parent);//parent->isOpen();
-    delete GetListView()->RootItem;//DGetListView()->DeleteAllItems();
-    GetListView()->RootItem = 0;
+    Expanded = Tree->isItemExpanded(parent);//parent->isOpen();
+    delete Tree->RootItem;//DGetListView()->DeleteAllItems();
+    Tree->RootItem = 0;
   }
   doc = GetDocument();
   parent = InsertItem(doc->IDTable.IDTab[0]->FileName.c, bm, TVI_ROOT);
@@ -132,21 +132,21 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
     item->setItemData( (TItemData*)cheSyn );
     if (cheSyn->data.notFound) {
       item->SetItemMask(true, false);
-      //GetListView()->SetItemState(item, INDEXTOOVERLAYMASK(2), TVIS_OVERLAYMASK );
+      //Tree->SetItemState(item, INDEXTOOVERLAYMASK(2), TVIS_OVERLAYMASK );
       hasErr = true;
     }
     cheSyn = (CHESimpleSyntax*)cheSyn->successor;
   }
   if (hasErr) {
-    GetListView()->expandItem(GetListView()->RootItem);//child(0)->setOpen(true);
+    Tree->expandItem(Tree->RootItem);//child(0)->setOpen(true);
     ((CTreeFrame*)GetParentFrame())->CalcSplitters(false, true);
   }
   else
     if (Expanded)
-      GetListView()->expandItem(GetListView()->RootItem);//->setOpen(Expanded);
+      Tree->expandItem(Tree->RootItem);//->setOpen(Expanded);
     else
-      GetListView()->collapseItem(GetListView()->RootItem);
-  GetListView()->update();
+      Tree->collapseItem(Tree->RootItem);
+  Tree->update();
 
 }
 
@@ -196,8 +196,8 @@ void CInclView::OnDelete()
   QString errStr;
   if (GetDocument()->changeNothing)
     return;
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  if (item && (item != GetListView()->RootItem)) {
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
+  if (item && (item != Tree->RootItem)) {
     CHESimpleSyntax* cheSyn = (CHESimpleSyntax*)item->getItemData();
     if (cheSyn->data.nINCL == 1) { 
       QMessageBox::critical(this, qApp->name(),ERR_StdNotRemovable, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
@@ -221,8 +221,8 @@ void CInclView::OnDelete()
 
 void CInclView::OnDblclk( QTreeWidgetItem * item, int col ) 
 {
- //CTreeItem* item = (CTreeItem*)m_tree->itemAtIndex(index);
- if (item && (item != GetListView()->RootItem)) {
+ //CTreeItem* item = (CTreeItem*)Tree->itemAtIndex(index);
+ if (item && (item != Tree->RootItem)) {
     DString *fn = new DString(((CHESimpleSyntax*)((CTreeItem*)item)->getItemData())->data.UsersName); //.SyntaxName);
     QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_CalledView,(void*)fn));
 
@@ -256,9 +256,9 @@ void CInclView::customEvent(QEvent *ev0)
 
 void CInclView::OnUpdateDelete(QAction* action) 
 {
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
   action->setEnabled((!GetDocument()->changeNothing) &&
-                     item && (item != GetListView()->RootItem));
+                     item && (item != Tree->RootItem));
 //                 && !((CHESimpleSyntax*) item->getItemData())->data.Inherited);
 }
 
@@ -273,8 +273,8 @@ void CInclView::OnEditSel()
   SynFlags firstlast;
   bool multi = false;
 
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  if (item && (item != GetListView()->RootItem)) {
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
+  if (item && (item != Tree->RootItem)) {
     che = (CHESimpleSyntax*)item->getItemData();
     if (che->data.nINCL != 1) {
       newChe = new CHESimpleSyntax;
@@ -369,8 +369,8 @@ void CInclView::OnEditSel()
 
 void CInclView::OnUpdateEditSel(QAction* action) 
 {
-  CTreeItem* item = (CTreeItem*)GetListView()->currentItem();
-  bool enable = (item && (item != GetListView()->RootItem));
+  CTreeItem* item = (CTreeItem*)Tree->currentItem();
+  bool enable = (item && (item != Tree->RootItem));
   if (enable) {
     CHESimpleSyntax* che = (CHESimpleSyntax*)item->getItemData();
     enable = che->data.nINCL != 1;
@@ -397,9 +397,9 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
       frame->newIncludeAction->setEnabled(!GetDocument()->changeNothing);
       frame->m_UtilityView->SetComment(str0, true);
       frame->m_UtilityView->ResetError(); 
-      if (!GetListView()->hasFocus())
-        GetListView()->setFocus();
-//      GetListView()->currentItem()->repaint();
+      if (!Tree->hasFocus())
+        Tree->setFocus();
+//      Tree->currentItem()->repaint();
     }
     else 
       DisableActions();

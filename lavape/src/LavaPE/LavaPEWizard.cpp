@@ -145,9 +145,9 @@ void CWizardView::customEvent(QEvent *ev0)
   if(delayedID) {
     TIDType itype;
     LavaDECL** synEl = (LavaDECL**)((CLavaPEDoc*)GetDocument())->IDTable.GetVar(TID(delayedID,0), itype);
-    CTreeItem* item = myTree->BrowseTree(*synEl, (CTreeItem*)myTree->GetListView()->RootItem);
+    CTreeItem* item = myTree->BrowseTree(*synEl, (CTreeItem*)myTree->Tree->RootItem);
     if (item)
-      myTree->GetListView()->setCurAndSel(item);
+      myTree->Tree->setCurAndSel(item);
     delayedID = 0;
     if (!wizard) {
       wizard = new CLavaPEWizard(synEl, 0, this, guibox);
