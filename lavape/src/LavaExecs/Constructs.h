@@ -750,12 +750,8 @@ class SynObject : public SynObjectBase {
   {
     return false;
   }
-  virtual void on_whatNextAction_triggered();
   virtual QString whatsThisText();
-  virtual QString whatNextText()
-  {
-    return QString("No specific \"what next\" text available here");
-  }
+  virtual QString whatNextText();
 
   virtual void CopyData (AnyType *from) {
     *this = *(SynObject*)from;

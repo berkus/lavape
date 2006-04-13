@@ -1070,51 +1070,36 @@ QString SynObject::whatsThisText() {
 #endif
 
 #ifdef INTERPRETER
-void SynObject::on_whatNextAction_triggered() {}
+QString SynObject::whatNextText() { return QString::null; }
 #else
-void SynObject::on_whatNextAction_triggered() {
+QString SynObject::whatNextText() {
   switch (primaryToken) {
   case CrtblPH_T:
     break;
   case Exp_T:
-    Q3WhatsThis::display(QString(QObject::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> expression "
+  case ExpOpt_T:
+    return QApplication::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> expression "
       "by clicking one of the enabled expression buttons on the keyword toolbar "
       "or on the operations toolbar. "
-      "<a href=\"../whatNext/Expr_wn.htm\">More...</a></p>")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
-    break;
-  case ExpDisabled_T:
-//    return QString(QObject::tr("<p>This is a disabled placeholder for an executable Lava expression</p>"));
-    break;
-  case ExpOpt_T:
-    break;
+      "<a href=\"../whatNext/Expr_wn.htm\">More...</a></p>");
   case FuncPH_T:
     if (((FuncExpression*)parentObject)->handle.ptr)
-      Q3WhatsThis::display(QString(QObject::tr("Select a function from the function combo-boxes at the top of the exec window.</p>")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+      return QApplication::tr("Select a function from the function combo-boxes at the top of the exec window.</p>");
     else
-      Q3WhatsThis::display(QString(QObject::tr("<p>This is a <b>placeholder for a reference to a static function</b>."
+      return QApplication::tr("<p>This is a <b>placeholder for a reference to a static function</b>."
       "<br><br>First select an interface containing the desired static function from the type combo-boxes "
       "at the top of the exec window.<br><br>Then select a static function from the function combo-box "
-      "which appears to the right of the type combo-boxes.</p>")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
-    break;
+      "which appears to the right of the type combo-boxes.</p>");
   case FuncDisabled_T:
-    Q3WhatsThis::display(QString(QObject::tr("<p>This is a <b>disabled placeholder for a function reference</b>."
-      "<br><br>Insert a call expression first to enable it.</p>")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
-    break;
+    return QApplication::tr("<p>This is a <b>disabled placeholder for a function reference</b>."
+      "<br><br>Insert a call expression first to enable it.</p>");
   case TDOD_T:
-    Q3WhatsThis::display(QString(QObject::tr("<p>Select a member variable from the \"Members\" "
+    return QApplication::tr("<p>Select a member variable from the \"Members\" "
       "combo-box at the top of this window (if a member of the required type exists!). "
-      "<a href=\"../whatNext/Var_wn.htm\">More...</a></p>")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
-    break;
+      "<a href=\"../whatNext/Var_wn.htm\">More...</a></p>");
   case ObjPH_T:
-    Q3WhatsThis::display(QString(QObject::tr("<p>Select a variable from the \"Variables\" "
-      "combo-box at the top of this window. ")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
-    break;
+    return QApplication::tr("<p>Select a variable from the \"Variables\" "
+      "combo-box at the top of this window. ");
   case ObjPHOpt_T:
     break;
   case ObjDisabled_T:
@@ -1124,45 +1109,38 @@ void SynObject::on_whatNextAction_triggered() {
   case SetAttribPH_T:
     break;
   case Stm_T:
-    Q3WhatsThis::display(QString(QObject::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> statement "
+    return QApplication::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> statement "
       "by clicking one of the enabled statement buttons on the keyword toolbar "
       "or on the operations toolbar. "
-      "<a href=\"../whatNext/Stm_wn.htm\">More...</a></p>")),execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
-    break;
+      "<a href=\"../whatNext/Stm_wn.htm\">More...</a></p>");
   case TypePH_T:
   case TypeRef_T:
-    Q3WhatsThis::display(QString(QObject::tr("<p>Select a type from the \"Types\" or "
+    return QApplication::tr("<p>Select a type from the \"Types\" or "
       "\"Basic types\" combo-boxes at the top of this window. "
-      "<a href=\"../whatNext/Type_wn.htm\">More...</a></p>")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
-    break;
+      "<a href=\"../whatNext/Type_wn.htm\">More...</a></p>");
   case VarPH_T:
-    Q3WhatsThis::display(QString(QObject::tr("<p>Enter a variable name  "
+    return QApplication::tr("<p>Enter a variable name  "
       "or insert another such placeholder; "
-      "<a href=\"../whatNext/VarPH_wn.htm\">details...</a></p>")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
-    break;
+      "<a href=\"../whatNext/VarPH_wn.htm\">details...</a></p>");
   case VarName_T:
-    Q3WhatsThis::display(QString(QObject::tr("<p>Edit this variable name  "
+    return QApplication::tr("<p>Edit this variable name  "
       "or insert another <font color=red>&lt;varName&gt;</font> placeholder; "
-      "<a href=\"../whatNext/VarName_wn.htm\">details...</a></p>")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
-    break;
+      "<a href=\"../whatNext/VarName_wn.htm\">details...</a></p>");
   default:
     if (((CExecView*)execView)->text->currentSynObj->StatementSelected(((CExecView*)execView)->text->currentSelection))
-      Q3WhatsThis::display(QString(QObject::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> statement "
+      return QApplication::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> statement "
       "before or after the selected statement "
       "by clicking one of the enabled statement buttons on the keyword toolbar "
         "or on the operations toolbar. "
-        "<a href=\"../whatNext/Statement_wn.htm\">More...</a></p>")),execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+        "<a href=\"../whatNext/Statement_wn.htm\">More...</a></p>");
     else if (((CExecView*)execView)->text->currentSynObj->ExpressionSelected(((CExecView*)execView)->text->currentSelection))
-      Q3WhatsThis::display(QString(QObject::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> expression "
+      return QApplication::tr("<p>Insert an executable <font color=red><i><b>Lava</b></i></font> expression "
         "by clicking one of the enabled expression buttons on the keyword toolbar "
         "or on the operations toolbar. "
-        "<a href=\"../whatNext/Expression_wn.htm\">More...</a></p>")),execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+        "<a href=\"../whatNext/Expression_wn.htm\">More...</a></p>");
     else
-      Q3WhatsThis::display(QString(QObject::tr("<p>No specific \"What next?\" help available for this selection")),
-      execView->mapToGlobal(startToken->data.rect.topLeft()+QPoint(70,18)),execView);
+      return QApplication::tr("<p>No specific \"What next?\" help available here</p>");
   }
+  return QApplication::tr("<p>No specific \"What next?\" help available here</p>");
 }
 #endif

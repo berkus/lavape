@@ -503,7 +503,9 @@ bool ExecContents::event(QEvent *ev) {
   }
   else if (ev->type() == IDU_WhatNext) {
     wnev = (WhatNextEvent*)ev;
-    hevWT = new QHelpEvent(QEvent::WhatsThis,wnev->pos,wnev->globalPos);
+    hevWT = new QHelpEvent(QEvent::WhatsThis,
+      wnev->pos+QPoint(70,10),
+      wnev->globalPos+QPoint(100,15));
     return QWidget::event(hevWT);
   }
   else if (ev->type() == QEvent::WhatsThisClicked) {
