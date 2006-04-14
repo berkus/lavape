@@ -94,11 +94,11 @@ void wxMainFrame::windowActivated(QWidget* w)
     ((wxMDIChildFrame*)w)->Activate();
   }
 }
-
+/*
 bool wxMainFrame::eventFilter(QObject *obj, QEvent *ev) {
   return false;
 }
-
+*/
 void wxMainFrame::closeEvent (QCloseEvent*)
 {
   OnFileExit();
@@ -176,11 +176,11 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
 
-        wxTheApp->isChMaximized = false;
-        lastTile = 1;
+  wxTheApp->isChMaximized = false;
+  lastTile = 1;
 
   if (!windows.count() )
-      return;
+    return;
   cc = (int)windows.count();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);
@@ -220,10 +220,10 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
 
-        lastTile = 2;
+  lastTile = 2;
 
   if (!windows.count() )
-      return;
+    return;
   cc = (int)windows.count();
   for (ii = 0; ii < int(windows.count()); ++ii ) {
     window = windows.at(ii);

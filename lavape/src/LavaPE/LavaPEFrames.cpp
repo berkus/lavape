@@ -361,9 +361,9 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   int w = pb->width();
   if (!tooltip.isEmpty())
     QToolTip::add(pb,tooltip);
-/*  if (!whatsThis.isEmpty())
-    new WhatsThis(whatsThis,pb);
-*/
+  if (!whatsThis.isEmpty())
+    pb->setWhatsThis(whatsThis);
+  pb->installEventFilter(this);
 }
 
 void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip,char *whatsThis)
@@ -1580,6 +1580,18 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 		case 2:
 			on_tileHorizAction_triggered();
 		}
+}
+
+bool CLavaMainFrame::eventFilter(QObject *obj,QEvent *ev) {
+  QWhatsThisClickedEvent *wtcEv;
+
+  if (ev->type() == QEvent::WhatsThisClicked) {
+    wtcEv = (QWhatsThisClickedEvent*)ev;
+    ShowPage(QString("whatsThis/")+wtcEv->href());
+    return true;
+  }
+  else
+    return false;
 }
 
 void CLavaMainFrame::on_showUtilWindowAction_triggered()

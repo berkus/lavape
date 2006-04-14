@@ -279,13 +279,13 @@
     <string>Keyword toolbar</string>
    </property>
    <property name="whatsThis" >
-    <string>Insert keyword expressions and statements\ninto executable code</string>
+    <string>Insert keyword expressions and statements into executable code</string>
    </property>
    <property name="orientation" >
     <enum>Qt::Vertical</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>2</number>
+    <number>1</number>
    </attribute>
   </widget>
   <widget class="QMenuBar" name="menubar" >

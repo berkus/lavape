@@ -504,8 +504,8 @@ bool ExecContents::event(QEvent *ev) {
   else if (ev->type() == IDU_WhatNext) {
     wnev = (WhatNextEvent*)ev;
     hevWT = new QHelpEvent(QEvent::WhatsThis,
-      wnev->pos+QPoint(70,10),
-      wnev->globalPos+QPoint(100,15));
+      wnev->pos+QPoint(100,18),
+      wnev->globalPos+QPoint(100,18));
     return QWidget::event(hevWT);
   }
   else if (ev->type() == QEvent::WhatsThisClicked) {
@@ -865,17 +865,6 @@ void MyScrollView::focusInEvent(QFocusEvent *ev) {
 
 void ExecContents::keyPressEvent (QKeyEvent *e) {
   execView->OnChar(e);
-}
-
-bool ExecContents::eventFilter(QObject *obj,QEvent *ev) {
-  if (ev->type() == QEvent::WhatsThisClicked) {
-    QWhatsThisClickedEvent *wtc = static_cast<QWhatsThisClickedEvent *>(ev);
-    return true;
-  }
-  else {
-    // standard event processing
-    return QObject::eventFilter(obj, ev);
-  }
 }
 
 void CExecView::OnChar(QKeyEvent *e)
@@ -1260,7 +1249,6 @@ MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
 ExecContents::ExecContents (MyScrollView *sv) {
   this->sv = sv;
   execView = sv->execView;
-  sv->installEventFilter(this);
   setWhatsThis(tr(QString("No specific help available here")));
   debugStop = new QPixmap((const char**)debugStop_xpm);
   debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);

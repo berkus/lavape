@@ -59,7 +59,7 @@ public:
   // Get the client window
   QWorkspace *GetClientWindow() const { return m_workspace; }
 
-  bool eventFilter(QObject *obj, QEvent *ev);
+//  bool eventFilter(QObject *obj, QEvent *ev);
   void resizeEvent(QResizeEvent& event);
   void closeEvent (QCloseEvent*);
   void OnMRUFile(int histFileIndex);
