@@ -145,19 +145,16 @@ assigned to it already <I>outside</I> this function).&nbsp;</b></p>
     and makes sure that a value is assigned to every non-optional output 
     parameter in this branch.</p>
     <p>A &quot;return point&quot; may be the end of the function body or a
-    <font color="#0000FF"><b>succeed</b></font> or <font color="#0000FF"><b>fail</b></font> 
-    statement. The <font color="#0000FF"><b>fail</b></font> statement may 
-    optionally specify an expression whose value designates an exception that is 
+    <font color="#0000FF"><b>succeed</b></font> or <font color="#0000FF"><b>
+    throw</b></font> 
+    statement. The <font color="#0000FF"><b>throw</b></font> statement  specifies an expression whose value designates an exception that is 
     to be thrown.</p>
-    <p>If a function has output parameters (see below) then it must not be left 
-    through a <font color="#0000FF"><b>fail</b></font> statement without 
-    throwing an exception (checked at programming time).</p>
-    <p>An exception-throwing <font color="#0000FF"><b>fail</b></font> statement 
+    <p>If a function has output parameters (see below) then it must not be left without 
+    throwing an exception (checked at programming time). This applies also to 
+    initializers of classes.</p>
+    <p>An exception-throwing <font color="#0000FF"><b>throw</b></font> statement 
     is the <i>only</i> way to exit from an initializer if you cannot assign a 
-    value to every non-optional output parameter. (Checked essentially at 
-    programming time. A <i>null-exception</i> exception is thrown if at run time 
-    if the exception expression in the <font color="#0000FF"><b>fail</b></font> 
-    statement yields a <i>null</i> value.)</p>
+    value to every non-optional output parameter. (Checked at programming time.)</p>
     <h3>3. Output parameters</h3>
     
     <p><b><font color="#FF0000"><i>Lava</i></font> doesn't support parameter 
@@ -182,12 +179,9 @@ assigned to it already <I>outside</I> this function).&nbsp;</b></p>
     checks for output parameters are performed at all return points of the 
     function body.</p>
     
-    <p>An exception-throwing <font color="#0000FF"><b>fail</b></font> statement 
+    <p>An exception-throwing <font color="#0000FF"><b>throw</b></font> statement 
     is again the <i>only</i> way to exit from a function if you cannot assign a 
-    value to every non-optional output parameter. (Checked essentially at 
-    programming time. A <i>null-exception</i> exception is thrown if at run time 
-    if the exception expression in the <font color="#0000FF"><b>fail</b></font> 
-    statement yields a <i>null</i> value.)</p>
+    value to every non-optional output parameter. (Checked at programming time.)</p>
     
     <p>In this way <font color="#FF0000"><i><b>Lava</b></i></font> makes sure 
     that undefined outputs cannot be used <i>inadvertently</i> by the caller of 
