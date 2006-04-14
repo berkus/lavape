@@ -1962,7 +1962,7 @@ exp: // Const_T
     int r=text->currentSelection->data.rect.right();
     redCtl->contentsWidth = qMax(redCtl->contentsWidth,r);
     editCtl->setCursorPosition(str.length());
-    sv->setFocus();
+    editCtl->setFocus();
     editCtl->show();
     if (text->currentSynObj->IsPlaceHolder())
       editCtl->selectAll();
@@ -2625,7 +2625,7 @@ void CExecView::OnConst()
   editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());
   int r=text->currentSelection->data.rect.right();
   redCtl->contentsWidth = qMax(redCtl->contentsWidth,r);
-  sv->setFocus();
+  editCtl->setFocus();
   editCtl->show();
   editCtl->selectAll();
   editCtlVisible = true;
