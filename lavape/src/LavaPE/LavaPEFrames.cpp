@@ -1501,7 +1501,7 @@ void CLavaMainFrame::on_tileVerticAction_triggered()
     window = windows.at(ii);
     if (!((QMainWindow*)window)->isMinimized()) {
       preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
-      actWidth = QMAX(widthForEach, preferredWidth);
+      actWidth = qMax(widthForEach, preferredWidth);
       window->parentWidget()->setGeometry( x, 0, actWidth, allHeight );
       x += actWidth;
       if (!((QMainWindow*)window)->isMaximized())
@@ -1545,7 +1545,7 @@ void CLavaMainFrame::on_tileHorizAction_triggered()
     window = windows.at(ii);
     if (!((QMainWindow*)window)->isMinimized()) {
       preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
-      actHeight = QMAX(heightForEach, preferredHeight);
+      actHeight = qMax(heightForEach, preferredHeight);
       window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
       y += actHeight;
       if (!((QMainWindow*)window)->isMaximized())

@@ -39,7 +39,7 @@ extern bool isExecView;
 
 
 MiniEdit::MiniEdit(ExecContents *execCnt) : QLineEdit(execCnt,"MiniEdit") {  
-  conView = execCnt->execView;
+  execView = execCnt->execView;
   returnPressed = false;
 }
 
@@ -92,36 +92,30 @@ void MiniEdit::keyPressEvent (QKeyEvent *ev)
 
   switch (ev->key()) {
   case Qt::Key_Escape:
-    conView->escapePressed = true;
-    conView->EditOK();
-    conView->escapePressed = false;
+    execView->escapePressed = true;
+    execView->EditOK();
+    execView->escapePressed = false;
+    execView->redCtl->miniEditRightEdge = 0;
     break;
   case Qt::Key_Up:
   case Qt::Key_Return:
     returnPressed = true;
-    conView->EditOK();
+    execView->EditOK();
     returnPressed = false;
+    execView->redCtl->miniEditRightEdge = 0;
+    break;
+  case Qt::Key_Left:
+  case Qt::Key_Right:
+    QLineEdit::keyPressEvent(ev);
     break;
   case Qt::Key_Backspace:
   case Qt::Key_Delete:
-    QLineEdit::keyPressEvent(ev);
-    break;
-  case Qt::Key_X:
-    QLineEdit::keyPressEvent(ev);
-    break;
   default:
     QLineEdit::keyPressEvent(ev);
-    int w = fontMetrics().width(text()+" ");
-    if (w > width()) {
-      setFixedWidth(w+2*1);//frameWidth());
-      QRect mw_rect = geometry();
-      int c_x, c_y;
-//???      conView->sv->viewportToContents(mw_rect.right(),mw_rect.top(),c_x,c_y);
-      conView->redCtl->contentsWidth = QMAX(conView->redCtl->contentsWidth,c_x);
-      conView->redCtl->resize(conView->redCtl->contentsWidth,conView->redCtl->contentsHeight);
-//      conView->redCtl->update();
-      conView->redCtl->update();
-    }
+    int w = fontMetrics().width(text()+"w");
+    setFixedWidth(w);
+    execView->redCtl->miniEditRightEdge = geometry().right();
+    execView->redCtl->update();
   }
 }
 

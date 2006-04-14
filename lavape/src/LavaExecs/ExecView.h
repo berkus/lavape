@@ -366,7 +366,7 @@ public:
 	MyScrollView *sv;
   Format fmt;
   int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent,
-  widthOfBlank, contentsWidth, contentsHeight;
+  widthOfBlank, contentsWidth, contentsHeight, miniEditRightEdge;
   QPixmap *debugStop, *debugStopGreen, *breakPoint;
   bool inDebugStop, inBreakPoint, innermostStop;
   CHETokenNode *debugStopToken;
@@ -417,7 +417,7 @@ public:
   VarConstCheck InputIsCorrect(TToken &token, CComboBar *comboBar) ;
   int frameWidth();
 
-  CExecView *conView;
+  CExecView *execView;
   bool returnPressed;
 
 protected:

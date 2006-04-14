@@ -456,10 +456,10 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
         if (line.length()) {
           p.drawText(currentX,currentY,line,0,-1);
           lineWidth=fm->width(line);
-          contentsWidth = QMAX(contentsWidth,currentX+lineWidth);
-          cmtWidth = QMAX(cmtWidth,lineWidth);
+          contentsWidth = qMax(contentsWidth,currentX+lineWidth);
+          cmtWidth = qMax(cmtWidth,lineWidth);
         }
-        contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
+        contentsHeight = qMax(contentsHeight,currentY+fm->descent());
         break;
       }
       else {
@@ -467,8 +467,8 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
         if (line.length()) {
           p.drawText(currentX,currentY,line,0,-1);
           lineWidth=fm->width(line);
-          contentsWidth = QMAX(contentsWidth,currentX+lineWidth);
-          cmtWidth = QMAX(cmtWidth,lineWidth);
+          contentsWidth = qMax(contentsWidth,currentX+lineWidth);
+          cmtWidth = qMax(cmtWidth,lineWidth);
         }
       }
     } while (true);
@@ -481,8 +481,8 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
     width=fm->width(currentToken->data.str);
     currentToken->data.rect.setRect(currentX,currentY-fm->ascent(),width,fm->height());
     currentX += width;
-    contentsWidth = QMAX(contentsWidth,currentX);
-    contentsHeight = QMAX(contentsHeight,currentY+fm->descent());
+    contentsWidth = qMax(contentsWidth,currentX);
+    contentsHeight = qMax(contentsHeight,currentY+fm->descent());
   }
   delete fm;
 }
@@ -642,6 +642,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   p.setBrush(QColor(210,210,210));
   p.setPen(myPen);
   contentsHeight = qMax(contentsHeight,sv->viewport()->height());
+  contentsWidth = qMax(contentsWidth,miniEditRightEdge);
   resize(contentsWidth,contentsHeight);
   p.drawRect(0,0,15,contentsHeight>=sv->viewport()->height()?contentsHeight:sv->viewport()->height());
 
@@ -1255,6 +1256,7 @@ ExecContents::ExecContents (MyScrollView *sv) {
   breakPoint = new QPixmap((const char**)breakPoint_xpm);
   debugStopToken = 0;
   callerStopToken = 0;
+  miniEditRightEdge = 0;
   resize(100,100);
 }
 
@@ -1954,12 +1956,11 @@ exp: // Const_T
     if (!editCtl)
       editCtl = new MiniEdit(redCtl);
     editCtl->setGeometry(text->currentSelection->data.rect);
-//    editCtl->setFont(sv->viewport()->font());
     editCtl->setText(str);
     editCtl->setFixedWidth(text->currentSelection->data.rect.width()+2*editCtl->frameWidth()+10);
-    editCtl->setFixedHeight(text->currentSelection->data.rect.height()+2*editCtl->frameWidth());
+    editCtl->setFixedHeight(text->currentSelection->data.rect.height()+4/**editCtl->frameWidth()*/);
     int r=text->currentSelection->data.rect.right();
-    redCtl->contentsWidth = QMAX(redCtl->contentsWidth,r);
+    redCtl->contentsWidth = qMax(redCtl->contentsWidth,r);
     editCtl->setCursorPosition(str.length());
     sv->setFocus();
     editCtl->show();
@@ -2617,14 +2618,13 @@ void CExecView::OnConst()
 
   if (!editCtl)
     editCtl = new MiniEdit(redCtl);
-    editCtl->setGeometry(text->currentSelection->data.rect);
-//  editCtl->setFont(sv->viewport()->font());
+  editCtl->setGeometry(text->currentSelection->data.rect);
   editCtl->setText(TOKENSTR[Const_T]);
-        QFontMetrics fom(editCtl->font());
+  QFontMetrics fom(editCtl->font());
   editCtl->setFixedWidth(fom.width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
   editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());
   int r=text->currentSelection->data.rect.right();
-  redCtl->contentsWidth = QMAX(redCtl->contentsWidth,r);
+  redCtl->contentsWidth = qMax(redCtl->contentsWidth,r);
   sv->setFocus();
   editCtl->show();
   editCtl->selectAll();

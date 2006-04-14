@@ -204,7 +204,7 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
     window = windows.at(ii);
     if (!((QMainWindow*)window)->isMinimized()) {
       preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
-      actWidth = QMAX(widthForEach, preferredWidth);
+      actWidth = qMax(widthForEach, preferredWidth);
       if (window == theActiveFrame)
         window->showNormal();
       window->parentWidget()->resize(actWidth, allHeight );
@@ -246,7 +246,7 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
     window = windows.at(ii);
     if (!((QMainWindow*)window)->isMinimized()) {
       preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
-      actHeight = QMAX(heightForEach, preferredHeight);
+      actHeight = qMax(heightForEach, preferredHeight);
       if (window == theActiveFrame)
         window->showNormal();
       window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );

@@ -2582,7 +2582,7 @@ void CMenuPage::GetEProps()
   inEl = &((TEnumDescription*)myWizard->FormDECL->EnumDesc.ptr)->EnumField;
 //  inEl->Items.Destroy();
   ((TEnumDescription*)myWizard->FormDECL->EnumDesc.ptr)->MenuTree.NestedDecls.Destroy();
-  maxi = QMAX(Menuitems->count(), LButtonText->count());
+  maxi = qMax(Menuitems->count(), LButtonText->count());
   while (ipos < maxi) {
    mflags = ((CComboBoxItem*)Menuitems->item(ipos))->flags();
     if (mflags[0] != 3) { //not static MenuText
