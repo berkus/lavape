@@ -1888,7 +1888,7 @@ IfxThenV::IfxThenV (bool) {
 void IfxThenV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
   if (ifPart)
-    t.Insert(if_T,true);
+    t.Insert(ifx_T,true);
   else
     t.Insert(elsif_T,true,true);
   ifPart = false;

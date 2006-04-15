@@ -74,17 +74,9 @@ public:
 
     virtual void saveSettings() {}
     virtual void UpdateUI() {}
-                virtual void onUpdateUI();
+    virtual void onUpdateUI();
     virtual void customEvent(QEvent *e);
-//    void addAction(QAction* act) {actionList.append(act);}
-    // application info: name, description, vendor
-    // -------------------------------------------
-
-    // NB: all these should be set by the application itself, there are no
-    //     reasonable default except for the application name which is taken to
-    //     be argv[0]
-
-        // set/get the application name
+    // set/get the application name
     QString GetAppName() const
     {
       if ( !m_appName.length() )

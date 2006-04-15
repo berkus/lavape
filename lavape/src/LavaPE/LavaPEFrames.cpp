@@ -1032,217 +1032,217 @@ void CLavaMainFrame::on_toggleCategoryAction_triggered(){
     view->OnToggleCategory();
 }
 
-void CLavaMainFrame::optLocalVar(){
+void CLavaMainFrame::on_optLocalVarAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnOptLocalVar();
 }
 
-void CLavaMainFrame::toggleSubstType(){
+void CLavaMainFrame::on_toggleSubstTypeAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnToggleSubstitutable();
 }
 
-void CLavaMainFrame::insertBefore(){
+void CLavaMainFrame::on_insertBeforeAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnInsertBefore();
 }
 
-void CLavaMainFrame::insert(){
+void CLavaMainFrame::on_execInsAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnInsert();
 }
 
-void CLavaMainFrame::toggleArrows(){
+void CLavaMainFrame::on_toggleArrowsAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnToggleArrows();
 }
 
-void CLavaMainFrame::toggleInputArrows(){
+void CLavaMainFrame::on_toggleInputArrowsAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnInputArrow();
 }
 
-void CLavaMainFrame::conflictingAssig(){
+void CLavaMainFrame::on_conflictingAssigAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnConflict();
 }
 
-void CLavaMainFrame::newLine(){
+void CLavaMainFrame::on_newLineAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNewLine();
 }
 
-void CLavaMainFrame::commentOut(){
+void CLavaMainFrame::on_commentOutAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnIgnore();
 }
 
-void CLavaMainFrame::toggleComments(){
+void CLavaMainFrame::on_toggleCommentsAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnShowComments();
 }
 
-void CLavaMainFrame::lessThan(){
+void CLavaMainFrame::on_lessThanAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnLt();
 }
 
-void CLavaMainFrame::lessEqua(){
+void CLavaMainFrame::on_lessEqualAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnLe();
 }
 
-void CLavaMainFrame::equal(){
+void CLavaMainFrame::on_equalAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnEq();
 }
 
-void CLavaMainFrame::notEqual(){
+void CLavaMainFrame::on_notEqualAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNe();
 }
 
-void CLavaMainFrame::greaterEqual(){
+void CLavaMainFrame::on_greaterEqualAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnGe();
 }
 
-void CLavaMainFrame::greaterThan(){
+void CLavaMainFrame::on_greaterThanAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnGt();
 }
 
-void CLavaMainFrame::functionCall(){
+void CLavaMainFrame::on_functionCallAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnFunctionCall();
 }
 
-void CLavaMainFrame::staticCall(){
+void CLavaMainFrame::on_staticCallAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnStaticCall();
 }
 
-void CLavaMainFrame::trueHandler(){
+void CLavaMainFrame::on_trueAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnTrue();
 }
 
-void CLavaMainFrame::falseHandler(){
+void CLavaMainFrame::on_falseAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnFalse();
 }
 
-void CLavaMainFrame::evaluate(){
+void CLavaMainFrame::on_evaluateAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnEvaluate();
 }
 
-void CLavaMainFrame::null(){
+void CLavaMainFrame::on_nullAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnNull();
 }
 
-void CLavaMainFrame::interval(){
+void CLavaMainFrame::on_intervalAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnInterval();
 }
 
-void CLavaMainFrame::toggleSign(){
+void CLavaMainFrame::on_toggleSignAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnPlusMinus();
 }
 
-void CLavaMainFrame::addition(){
+void CLavaMainFrame::on_additionAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnPlus();
 }
 
-void CLavaMainFrame::multiplication(){
+void CLavaMainFrame::on_multiplicationAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnMult();
 }
 
-void CLavaMainFrame::divide(){
+void CLavaMainFrame::on_divideAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnDivide();
 }
 
-void CLavaMainFrame::modulus(){
+void CLavaMainFrame::on_modulusAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnModulus();
 }
 
-void CLavaMainFrame::leftShift(){
+void CLavaMainFrame::on_leftShiftAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnLshift();
 }
 
-void CLavaMainFrame::rightShift(){
+void CLavaMainFrame::on_rightShiftAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnRshift();
 }
 
-void CLavaMainFrame::bitAnd(){
+void CLavaMainFrame::on_bitAndAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnBitAnd();
 }
 
-void CLavaMainFrame::bitOr(){
+void CLavaMainFrame::on_bitOrAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnBitOr();
 }
 
-void CLavaMainFrame::bitXor(){
+void CLavaMainFrame::on_bitXorAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnBitXor();
 }
 
-void CLavaMainFrame::invert(){
+void CLavaMainFrame::on_invertAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnInvert();
 }
 
-void CLavaMainFrame::handle(){
+void CLavaMainFrame::on_handleAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnHandle();
 }
 
-void CLavaMainFrame::ord(){
+void CLavaMainFrame::on_ordAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnOrd();
