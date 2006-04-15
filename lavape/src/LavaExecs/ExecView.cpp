@@ -1783,7 +1783,9 @@ exp: // Const_T
     else
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(objEnumCombo);
     if (text->currentSelection->data.token == true_T
-    || text->currentSelection->data.token == false_T) {
+    || text->currentSelection->data.token == false_T
+    || text->currentSelection->data.token == elseX_T
+    || text->currentSelection->data.token == ifx_T) {
       redCtl->update();
       return;
     }
