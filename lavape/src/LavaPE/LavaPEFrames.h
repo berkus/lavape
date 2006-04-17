@@ -277,7 +277,7 @@ public slots:
     virtual void attach();
     virtual void qryItf();
     virtual void scale();
-    virtual void item();
+    virtual void getEnumItem();
     virtual void connectSignal();
     virtual void disconnect();
     virtual void emitSignal();

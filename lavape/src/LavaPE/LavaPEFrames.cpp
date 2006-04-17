@@ -509,7 +509,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->scaleButton,"scale",SLOT(scale()),
     QObject::tr("Add a scale (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters"),
     QObject::tr("<p>Add a <a href=\"Scale.htm\">scale</a> (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters</p>"));
-  newKwdToolbutton(tb,LBaseData->itemButton,"item",SLOT(item()),
+  newKwdToolbutton(tb,LBaseData->itemButton,"item",SLOT(getEnumItem()),
     QObject::tr("Get an enumeration item from its index"),
     QObject::tr("<p>Get an enumeration <a href=\"EnumItem.htm\">item</a> from its index</p>"));
   newKwdToolbutton(tb,LBaseData->attachButton,"attach",SLOT(attach()),
@@ -1418,7 +1418,7 @@ void CLavaMainFrame::scale(){
     view->OnQua();
 }
 
-void CLavaMainFrame::item(){
+void CLavaMainFrame::getEnumItem(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnItem();

@@ -854,6 +854,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     externalHint = false;
     if (hint && hint->com == CPECommand_OpenExecView)
       delete hint;
+    redCtl->setFocus();
   }
 }
 
@@ -873,7 +874,7 @@ void CExecView::OnChar(QKeyEvent *e)
   // TODO: Add your message handler code here and/or call default
   int key=e->key();
   Qt::ButtonState state=e->state();
-        ctrlPressed = (state & Qt::ControlModifier);
+  ctrlPressed = (state & Qt::ControlModifier);
   SynObject *currentSynObj, *parent/*, *ocl*/;
 
   if (LBaseData->debugOn)
@@ -1949,10 +1950,11 @@ exp: // Const_T
 
   doubleClick = false;
   redCtl->repaint();
-        // otherwise the MiniEdit's position would be unknown in the following code
+    // otherwise the MiniEdit's position would be unknown in the following code
 
   if (text->currentSelection->data.token == Exp_T
-  || text->currentSelection->data.token == ExpOpt_T)
+  || text->currentSelection->data.token == ExpOpt_T
+  || text->currentSelection->data.token == Const_T)
     OnConst();
   else {
     if (!editCtl)
@@ -2627,8 +2629,8 @@ void CExecView::OnConst()
   editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());
   int r=text->currentSelection->data.rect.right();
   redCtl->contentsWidth = qMax(redCtl->contentsWidth,r);
-  editCtl->setFocus();
   editCtl->show();
+  editCtl->setFocus();
   editCtl->selectAll();
   editCtlVisible = true;
   editToken = Const_T;
@@ -5284,8 +5286,6 @@ void CExecView::focusInEvent(QFocusEvent *ev)
 
 void CExecView::focusOutEvent(QFocusEvent *ev)
 {
-//!!!  CRichEditView::focusOutEvent(ev);
-
   // TODO: Add your message handler code here
   focusWindow = 0;
 }
@@ -5523,9 +5523,9 @@ void CExecView::UpdateUI()
   OnUpdateXor(LBaseData->xorButton);
   OnUpdateNot(LBaseData->notButton);
   OnUpdateAssert(LBaseData->assertButton);
-        OnUpdateTry(LBaseData->tryButton);
-        OnUpdateSucceed(LBaseData->succeedButton);
-        OnUpdateFail(LBaseData->failButton);
+  OnUpdateTry(LBaseData->tryButton);
+  OnUpdateSucceed(LBaseData->succeedButton);
+  OnUpdateFail(LBaseData->failButton);
   OnUpdateCall(LBaseData->runButton);
   OnUpdateAssign(LBaseData->setButton);
   OnUpdateCreate(LBaseData->newButton);
@@ -5534,8 +5534,8 @@ void CExecView::UpdateUI()
   OnUpdateCopy(LBaseData->copyButton);
   OnUpdateAttach(LBaseData->attachButton);
   OnUpdateQueryItf(LBaseData->qryItfButton);
-        OnUpdateQua(LBaseData->scaleButton);
-        OnUpdateItem(LBaseData->itemButton);
+  OnUpdateQua(LBaseData->scaleButton);
+  OnUpdateItem(LBaseData->itemButton);
   OnUpdateConnect(LBaseData->connectButton);
   OnUpdateDisconnect(LBaseData->disconnectButton);
   OnUpdateEmitSignal(LBaseData->emitButton);
@@ -6030,17 +6030,17 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
   // TODO: Speziellen Code hier einfgen und/oder Basisklasse aufrufen
   QString empty;
 
-
-  if (Base && GetDocument()->mySynDef && !destroying && bActivate) {
+  if (GetDocument()->mySynDef && !destroying && bActivate) {
     active = true;
-    SetHelpText();
-    if (!sv->hasFocus())
-      sv->setFocus();
+    if (Base)
+      SetHelpText();
+    if (!hasFocus())
+      setFocus();
   }
   else if (!bActivate) {
     active = false;
     DisableActions();
-        }
+  }
 }
 
 void CExecView::OnUpdateInterval(QAction* action)

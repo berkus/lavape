@@ -311,32 +311,32 @@ void wxMDIChildFrame::InitialUpdate()
 
 void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
 {
-        QString title=caption();
-        if (isMinimized() && windowMenuAction)
-    if (oldWindowState == Qt::WindowMaximized)
-      showMaximized();
-    else
-      showNormal();
+ QString title=caption();
+
+ if (isMinimized() && windowMenuAction)
+  if (oldWindowState == Qt::WindowMaximized)
+    showMaximized();
+  else
+    showNormal();
   if (title.length() && title.at(title.length()-1) == '*')
-                title = title.left(title.length()-1);
-        wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
+    title = title.left(title.length()-1);
+  wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
   if (activate && m_viewCount)
-    if (lastActive) {
+    if (lastActive)
       wxDocManager::GetDocumentManager()->SetActiveView(lastActive, activate);
-    }
     else
       wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),activate);
 }
 
 void wxMDIChildFrame::SetTitle(QString &title)
 {
-        QString oldTitle=parentWidget()->caption(), newTitle=title;
+  QString oldTitle=parentWidget()->caption(), newTitle=title;
 
-        setCaption(title);
-        if (newTitle.at(newTitle.length()-1) == '*')
-                newTitle = newTitle.left(newTitle.length()-1);
-        if (!oldTitle.isEmpty())
-                wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
+  setCaption(title);
+  if (newTitle.at(newTitle.length()-1) == '*')
+          newTitle = newTitle.left(newTitle.length()-1);
+  if (!oldTitle.isEmpty())
+          wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
 
 bool wxMDIChildFrame::event(QEvent * e )

@@ -3640,7 +3640,7 @@ bool BoolConst::Check (CheckData &ckd) {
 }
 
 void NullConst::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
-  decl = (LavaDECL*)-1;
+  decl = 0;//(LavaDECL*)-1;
   cat = unknownCategory;
   ctxFlags.bits = 0;
 #ifdef INTERPRETER

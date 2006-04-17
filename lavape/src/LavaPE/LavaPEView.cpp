@@ -1909,6 +1909,7 @@ CMainItemData* CLavaPEView::Navigate(bool all, CTreeItem*& item, int& level)
 void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
 {
   CTreeItem* sel;
+
   if (GetDocument()->mySynDef && !((CLavaPEApp*)wxTheApp)->inTotalCheck) {
     if (bActivate) {
       sel = (CTreeItem*)Tree->currentItem();
