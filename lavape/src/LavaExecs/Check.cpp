@@ -1987,11 +1987,8 @@ bool SelfVar::Check (CheckData &ckd)
   ENTRY
 
   ckd.selfVar = this;
-
   ok &= ((SynObject*)execName.ptr)->Check(ckd);
-
   ckd.inINCL = ckd.myDECL->inINCL;
-
   ckd.document->NextContext(execDECL, ckd.lpc);
 
   if (execDECL->ParentDECL->DeclType == Function) {
@@ -3640,7 +3637,7 @@ bool BoolConst::Check (CheckData &ckd) {
 }
 
 void NullConst::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
-  decl = 0;//(LavaDECL*)-1;
+  decl = (LavaDECL*)-1;
   cat = unknownCategory;
   ctxFlags.bits = 0;
 #ifdef INTERPRETER
