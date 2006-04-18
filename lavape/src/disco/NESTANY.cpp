@@ -17,7 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#include "Syntax.h"
 #include "NESTANY.h"
 #include "AnyType.h"
 #pragma hdrstop
@@ -27,14 +26,14 @@
 void NESTEDANY0::CDP (PutGetFlag pgf, ASN1* cid)//,
                       //ConversionProc cdp,
                       //NestedAllocationProc allocNewElem)
-{ 
+{
   DObject *oPtr;
   wxClassInfo *cli;
   DString className;
 //  bool eoc;
 
   if (cid->Skip()) return;
-  
+
   if (pgf == PUT)
     if (ptr == 0) cid->PutOptionalAbsent();
     else {

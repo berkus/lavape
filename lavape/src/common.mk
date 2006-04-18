@@ -169,7 +169,7 @@ impex = -X $(DLL)
 endif
 
 %.h %G.cpp: %.ph
-	../../bin/LPC -I. -I../disco $(impex) $<
+	../../bin/LPC -I. -I../LavaBase $(impex) $<
 
 %.cpp: %.qrc
 	$(QTDIR)/bin/rcc -o $@ $<
