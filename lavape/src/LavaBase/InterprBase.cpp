@@ -452,7 +452,7 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
   switch ((TCompoProt)specDECL->nOutput) {
   case PROT_LAVA:
 //    object = ckd.document->OpenObject(ckd, urlObj);
-		QApplication::postEvent(ckd.document,new CustomEvent(IDU_OpenObject,&oop));
+		QApplication::postEvent(ckd.document,new CustomEvent(UEV_OpenObject,&oop));
     currentThread->pContExecEvent->acquire();
 		object = oop.obj;
 		

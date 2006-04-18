@@ -125,13 +125,13 @@ void CGUIProg::SyncTree(CHEFormNode *node)
         upNode = upNode->data.FIP.up);
       if (upNode) {
         inSynchTree = true;
-        CustomEvent syncev(IDU_LavaPE_SyncTree, (void*)upNode->data.FormSyntax);
+        CustomEvent syncev(UEV_LavaPE_SyncTree, (void*)upNode->data.FormSyntax);
         if (!QApplication::sendEvent(((CLavaGUIView*)ViewWin)->myTree, &syncev ))
           inSynchTree = false;
       }
     }
     else
-      QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree,new CustomEvent(IDU_LavaPE_CalledView));
+      QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree,new CustomEvent(UEV_LavaPE_CalledView));
 }
 
 

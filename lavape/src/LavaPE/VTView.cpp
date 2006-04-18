@@ -85,7 +85,7 @@ void CVTView::UpdateUI()
 
 bool CVTView::event(QEvent* ev)
 {
- if (ev->type() == IDU_LavaPE_SyncTree) {
+ if (ev->type() == UEV_LavaPE_SyncTree) {
    CLavaPEHint* hint = (CLavaPEHint*)((CustomEvent*)ev)->data();
    OnUpdate(myMainView, 0, hint);
    delete hint;
@@ -827,7 +827,7 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
           multiSelectCanceled = true;
           DeleteExChain(false);
           Tree->withShift = false;
-          QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+          QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_setSel, (void*)selItem));
           /*Tree->ResetSelections();
           Tree->setCurAndSel(selItem);*/
         }
@@ -838,7 +838,7 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
           multiSelectCanceled = true;
           DeleteExChain(false);
           Tree->withControl = false;
-          QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+          QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_setSel, (void*)selItem));
           /*Tree->ResetSelections();
           Tree->setCurAndSel(selItem);*/
         }
@@ -849,7 +849,7 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
       DeleteExChain(false);
       Tree->withShift = false;
       Tree->withControl = false;
-      QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+      QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_setSel, (void*)selItem));
       /*Tree->ResetSelections();
       Tree->setCurAndSel(selItem);*/
     }

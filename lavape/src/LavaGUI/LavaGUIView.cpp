@@ -463,7 +463,7 @@ void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
 
 bool CLavaGUIView::event(QEvent* ev)
 {
-  if (ev->type() == IDU_LavaPE_CalledView) {
+  if (ev->type() == UEV_LavaPE_CalledView) {
     wxDocManager::GetDocumentManager()->SetActiveView(this);
     if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget)
       myGUIProg->focNode->data.FIP.widget->setFocus();
@@ -471,7 +471,7 @@ bool CLavaGUIView::event(QEvent* ev)
     myGUIProg->inSynchTree = false;
     return true;
   }
-  else if (ev->type() == IDU_LavaPE_SyncForm) {
+  else if (ev->type() == UEV_LavaPE_SyncForm) {
     SyncForm((LavaDECL*)((CustomEvent*)ev)->data());
     return true;
   }

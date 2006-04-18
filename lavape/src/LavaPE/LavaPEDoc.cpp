@@ -3333,7 +3333,7 @@ bool CLavaPEDoc::OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate)
   else {
     hint = new CLavaPEHint(CPECommand_OpenSelView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, autoUpdate,(DWORD)pdecl);
     if (autoUpdate)
-      QApplication::postEvent(((CLavaPEView*)MainView)->myVTView, new QCustomEvent(IDU_LavaPE_SyncTree, (void*)hint));
+      QApplication::postEvent(((CLavaPEView*)MainView)->myVTView, new QCustomEvent(UEV_LavaPE_SyncTree, (void*)hint));
     else {
       ((CLavaPEView*)MainView)->myVTView->OnUpdate(MainView, 0, hint);
       delete hint;

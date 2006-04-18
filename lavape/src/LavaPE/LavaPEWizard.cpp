@@ -136,7 +136,7 @@ void CWizardView::customEvent(QEvent *ev0)
 {
   CustomEvent *ev=(CustomEvent*)ev0;
 
-  if (ev->type() == IDU_LavaPE_CalledView) {
+  if (ev->type() == UEV_LavaPE_CalledView) {
     CLavaPEHint* hint = (CLavaPEHint*)ev->data();
     ((CLavaPEDoc*)hint->fromDoc)->UndoMem.AddToMem(hint);
     ((CLavaPEDoc*)hint->fromDoc)->UpdateDoc(((CLavaPEDoc*)hint->fromDoc)->MainView, false, hint);
@@ -185,7 +185,7 @@ void CWizardView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
           if (delayed)
             delayedID = decl->OwnID;
           wizard->FormDECL = 0;
-          QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_CalledView,(void*)hint));
+          QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_CalledView,(void*)hint));
         }
       //}
       delete wizard;
@@ -212,7 +212,7 @@ void CWizardView::PostApplyHint()
   CLavaPEHint* hint = wizard->ApplyHint();
   wizard->FormDECL = 0;
   wizard->modified = false;
-  QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_CalledView,(void*)hint));
+  QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_CalledView,(void*)hint));
 }
 
 void CWizardView::Resize()

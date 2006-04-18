@@ -123,7 +123,7 @@ void CTEdit::focusOutEvent(QFocusEvent *ev)
 
 bool CTEdit::event(QEvent* ev)
 {
-  if (ev->type() == IDU_LavaGUIInsDel) {
+  if (ev->type() == UEV_LavaGUIInsDel) {
     if (myFormNode->data.IterFlags.Contains(Optional))
       ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
     return true;
@@ -153,7 +153,7 @@ void CTEdit::contextMenuEvent(QContextMenuEvent * e) {
 
 void CTEdit::DelActivated()
 {
-  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
+  QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }
 
 
@@ -225,7 +225,7 @@ void CMultiLineEdit::focusOutEvent(QFocusEvent *ev)
 
 bool CMultiLineEdit::event(QEvent* ev)
 {
-  if (ev->type() == IDU_LavaGUIInsDel) {
+  if (ev->type() == UEV_LavaGUIInsDel) {
     if (myFormNode->data.IterFlags.Contains(Optional))
       ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
     return true;
@@ -256,5 +256,5 @@ QMenu* CMultiLineEdit::createStandardContextMenu()
 
 void CMultiLineEdit::DelActivated()
 {
-  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
+  QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }

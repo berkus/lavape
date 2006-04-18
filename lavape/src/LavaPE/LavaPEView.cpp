@@ -1209,32 +1209,32 @@ bool CLavaPEView::EnableDelete(LavaDECL* decl)
 
 bool CLavaPEView::event(QEvent *ev)
 {
-  if (ev->type() == IDU_LavaPE_CalledView) {
+  if (ev->type() == UEV_LavaPE_CalledView) {
     wxDocManager::GetDocumentManager()->SetActiveView(this);
     return true;
   }
-  else if (ev->type() == IDU_LavaPE_SyncTree) {
+  else if (ev->type() == UEV_LavaPE_SyncTree) {
     CTreeItem* item = BrowseTree((LavaDECL*)((CustomEvent*)ev)->data(), (CTreeItem*)Tree->RootItem);
     if (item && (item != (CTreeItem*)Tree->currentItem())) {
       inSync = true;
       Tree->setCurAndSel(item);
       Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
 //      Tree->ensureItemVisible(item);
-      QApplication::postEvent(myFormView, new CustomEvent(IDU_LavaPE_CalledView));
+      QApplication::postEvent(myFormView, new CustomEvent(UEV_LavaPE_CalledView));
       return true;
     }
     else
       return false;
   }
-  else if (ev->type() == IDU_LavaPE_SetLastHint) {
+  else if (ev->type() == UEV_LavaPE_SetLastHint) {
     GetDocument()->SetLastHint();
     return true;
   }
-  else if (ev->type() == IDU_LavaPE_OnDrop) {
+  else if (ev->type() == UEV_LavaPE_OnDrop) {
     OnDropPost(((CustomEvent*)ev)->data());
     return true;
   }
-  else if (ev->type() == IDU_LavaPE_setSel) {
+  else if (ev->type() == UEV_LavaPE_setSel) {
     setSelPost((QTreeWidgetItem*)((CustomEvent*)ev)->data());
     return true;
   }
@@ -2362,7 +2362,7 @@ void CLavaPEView::OnDrop(QDropEvent* ev)
       DragDoc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(Clipdata->docPathName->c);
       if (DragDoc && (DragDoc != GetDocument()))
         ((CLavaPEView*)DragDoc->MainView)->DropPosted = true;
-      QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_OnDrop, (void*)ev->action()));
+      QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_OnDrop, (void*)ev->action()));
     }
     else {
       if (Clipdata) {
@@ -3253,10 +3253,10 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
           || !CollectDECL->NestedDecls.first
           && (!CollectDECL->EnumDesc.ptr || !((TEnumDescription*)CollectDECL->EnumDesc.ptr)->EnumField.Items.first)) {
         multiSelectCanceled = true;
-        QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+        QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_setSel, (void*)selItem));
         DeleteDragChain();
         Tree->withShift = false;
-        QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+        QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_setSel, (void*)selItem));
         /*Tree->ResetSelections();
         Tree->setCurAndSel(selItem);*/
       }
@@ -3269,7 +3269,7 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
         multiSelectCanceled = true;
         DeleteDragChain();
         Tree->withControl = false;
-        QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_setSel, (void*)selItem));
+        QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_setSel, (void*)selItem));
         /*Tree->ResetSelections();
         Tree->setCurAndSel(selItem);*/
       }
@@ -3473,7 +3473,7 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
       if (!drawTree) {
         CTreeItem* item = (CTreeItem*)Tree->currentItem();
         if (item) {
-          QApplication::postEvent(myFormView, new CustomEvent(IDU_LavaPE_SyncForm, (void*)*(LavaDECL**)((CMainItemData*)item->getItemData())->synEl));
+          QApplication::postEvent(myFormView, new CustomEvent(UEV_LavaPE_SyncForm, (void*)*(LavaDECL**)((CMainItemData*)item->getItemData())->synEl));
           GetDocument()->OpenWizardView(this, (LavaDECL**)((CMainItemData*)item->getItemData())->synEl/*, (unsigned long)1*/);
         }
       }
@@ -4142,7 +4142,7 @@ void CLavaPEView::RenameOk(QLineEdit* editor, CTreeItem *item)
     GetDocument()->ConcernImpls(hint, ppDECL);
     GetDocument()->ConcernExecs(hint);
     if (itd->type == TIType_CHEEnumSel) {
-      QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_SetLastHint));
+      QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_SetLastHint));
     }
     else
       GetDocument()->SetLastHint();

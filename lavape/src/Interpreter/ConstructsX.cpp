@@ -560,7 +560,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
       if (rc == QMessageBox::NoAll) {
         LBaseData->m_pmDumps = false;
         LBaseData->m_strPmDumps = "false";
-        ((CMainFrame*)wxTheApp->m_appWindow)->pmDumpAction->setOn(false);
+        QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_PMDumpOff,0));
       }
   }
   return msg;

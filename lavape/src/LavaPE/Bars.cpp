@@ -589,7 +589,7 @@ void VarItem::setOpen(bool O)
       mess = new DbgMessage(Dbg_MemberDataRq);
       mess->ObjNr.ptr = rqs;
       mess->fromParams = myView->myUtilityView->ParamView == myView;
-      QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
+      QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
       return;
     }
   }
@@ -705,7 +705,7 @@ void StackListView::selChanged()
   if (allDrawn) {
     DbgMessage* mess = new DbgMessage(Dbg_StackRq);
     mess->CallStackLevel = lastSelected->itemCount;
-    QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
+    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
   }
 }
 

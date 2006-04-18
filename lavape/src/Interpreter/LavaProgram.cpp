@@ -150,7 +150,7 @@ bool CLavaProgram::OnOpenProgram(const QString lpszPathName, bool imiExec, bool 
     return false;
 //  wxDocManager::GetDocumentManager()->AddFileToHistory(fName);
   if (imiExec) {
-    QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaStart, (void*)this));
+    QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaStart, (void*)this));
 
   }
   return true;
@@ -2306,7 +2306,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
           ((CLavaProgram*)ckd.document)->HCatch(ckd);
 stop:     ckd.document->throwError = false;
           CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
-          QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
+          QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
 //          ckd.document->LavaEnd(true);
           return 0;
         }
@@ -2335,7 +2335,7 @@ stop:     ckd.document->throwError = false;
         critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
-					QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
+					QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
         }
         return 0;
       }
@@ -2344,7 +2344,7 @@ stop:     ckd.document->throwError = false;
         critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
-					QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
+					QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
         }
         return 0;
       }
@@ -2359,7 +2359,7 @@ stop:     ckd.document->throwError = false;
       }
       information(wxTheApp->m_appWindow,qApp->name(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
-      QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
+      QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
       return 1;
     }
     else {
@@ -2384,7 +2384,7 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
   CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, (DWORD)&stack[SFH], (DWORD)&stack[SFH+1], (DWORD)&stack[SFH+2], (DWORD)frozen, (DWORD)currentThread, (DWORD)fromFillIn);
   if (currentThread != wxTheApp->mainThread) {
     currentThread->pContExecEvent->lastException = 0;
-	  QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaShow,(void*)hint));
+	  QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaShow,(void*)hint));
     currentThread->pContExecEvent->acquire();
     if (currentThread->pContExecEvent->lastException) {
       if (ckd.lastException)

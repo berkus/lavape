@@ -240,7 +240,7 @@ void CLavaDebugThread::run() {
   LBaseData->debugOn = false;
   debugOn = false;
   CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)myExecThread);
-  QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
+  QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
 }
 
 void CLavaDebugThread::setBrkPnts()

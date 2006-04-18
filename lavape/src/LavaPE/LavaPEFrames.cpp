@@ -926,7 +926,7 @@ void CLavaMainFrame::on_DbgAction_triggered()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->running()) {
     DbgMessage* mess = new DbgMessage(Dbg_Continue);
-    QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
+    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
   }
   else {
     CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
@@ -956,7 +956,7 @@ void CLavaMainFrame::on_DbgStepNextAct_triggered()
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_Step;
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::on_DbgStepNextFunctionAct_triggered()
@@ -965,7 +965,7 @@ void CLavaMainFrame::on_DbgStepNextFunctionAct_triggered()
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_StepFunc;
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::on_DbgStepintoAct_triggered()
@@ -974,7 +974,7 @@ void CLavaMainFrame::on_DbgStepintoAct_triggered()
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_StepInto;
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::on_DbgStepoutAct_triggered()
@@ -983,14 +983,14 @@ void CLavaMainFrame::on_DbgStepoutAct_triggered()
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ContType = dbg_StepOut;
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
 }
 
 void CLavaMainFrame::on_DbgStopAction_triggered()
 {
   if (((CLavaPEDebugThread*)LBaseData->debugThread)->interpreterWaits) {
     DbgMessage* mess = new DbgMessage(Dbg_Exit);
-    QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
+    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
   }
   else
     if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava)

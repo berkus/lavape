@@ -1214,6 +1214,7 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, S
   LavaDECL *declOutparm1;
   CHE *chpOutparm1;
 #ifndef INTERPRETER
+  SynObject *opd1;
   LavaDECL *declOp1;
   Category cat1;
 #endif
@@ -1228,7 +1229,12 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, S
     return;
   funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc);
 #else
+  opd1 = (SynObject*)((CHE*)operands.first)->data;
   ((SynObject*)((CHE*)operands.first)->data)->ExprGetFVType(ckd,declOp1,cat1,ctxFlags);
+  if (!declOp1 || declOp1 == (LavaDECL*)-1) {
+    opd1->SetError(ckd,&ERR_UndefType);
+    return;
+  }
   declOp1 = ckd.document->GetType(declOp1);
   if (declOp1)
     if (!ckd.document->GetOperatorID(declOp1,OPERATOR,tidOperatorFunc))
@@ -1330,7 +1336,7 @@ bool MultipleOp::Check (CheckData &ckd)
 
   ckd.tempCtx = ckd.lpc;
   opd1->ExprGetFVType(ckd,declOp1,cat,ctxFlags);
-  if (!declOp1) {
+  if (!declOp1 || declOp1 == (LavaDECL*)-1) {
     opd1->SetError(ckd,&ERR_UndefType);
     ERROREXIT
   }

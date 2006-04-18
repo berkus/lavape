@@ -501,7 +501,7 @@ bool ExecContents::event(QEvent *ev) {
     setWhatsThis(text(hev->pos()));
     return QWidget::event(ev);
   }
-  else if (ev->type() == IDU_WhatNext) {
+  else if (ev->type() == UEV_WhatNext) {
     wnev = (WhatNextEvent*)ev;
     hevWT = new QHelpEvent(QEvent::WhatsThis,
       wnev->pos+QPoint(100,18),
@@ -6806,7 +6806,7 @@ void CExecView::on_whatNextAction_triggered()
 {
   redCtl->setWhatsThis(text->currentSynObj->whatNextText());
   QCoreApplication::sendEvent(redCtl,
-    new WhatNextEvent(IDU_WhatNext,
+    new WhatNextEvent(UEV_WhatNext,
     text->currentSynObj->startToken->data.rect.topLeft(),
     redCtl->mapToGlobal(text->currentSynObj->startToken->data.rect.topLeft())));
 }
@@ -6867,7 +6867,7 @@ void CExecView::on_DbgRunToSelAct_triggered() {
     return;
   }
   DbgMessage* mess = new DbgMessage(Dbg_Continue);
-  QApplication::postEvent(wxTheApp,new CustomEvent(IDU_LavaDebugRq,(void*)mess));
+  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
 }
 
 

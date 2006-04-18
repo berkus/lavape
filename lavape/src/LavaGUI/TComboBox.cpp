@@ -135,7 +135,7 @@ void CTComboBox::focusInEvent(QFocusEvent *ev)
 
 bool CTComboBox::event(QEvent* ev)
 {
-  if (ev->type() == IDU_LavaGUIInsDel) {
+  if (ev->type() == UEV_LavaGUIInsDel) {
     if (myFormNode->data.IterFlags.Contains(Optional))
       ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
     return true;
@@ -146,6 +146,6 @@ bool CTComboBox::event(QEvent* ev)
 
 void CTComboBox::DelActivated()
 {
-  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
+  QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }
 

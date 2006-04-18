@@ -321,7 +321,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 bool CLavaPEApp::event(QEvent *e)
 {
 
-  if (e->type() == IDU_LavaDebug) {
+  if (e->type() == UEV_LavaDebug) {
     ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((CustomEvent*)e)->data(), debugThread.myDoc);
     LBaseData.enableBreakpoints = true;
     if (((CustomEvent*)e)->data()) {
@@ -340,7 +340,7 @@ bool CLavaPEApp::event(QEvent *e)
     m_appWindow->setActiveWindow();
     m_appWindow->raise();
   }
-  else if (e->type() == IDU_LavaDebugRq) {
+  else if (e->type() == UEV_LavaDebugRq) {
     if (debugThread.dbgRequest) {
       delete debugThread.dbgRequest;
       debugThread.dbgRequest = 0;
@@ -357,7 +357,7 @@ bool CLavaPEApp::event(QEvent *e)
 
     debugThread.pContExecEvent->release();
   }
-  else if (e->type() == IDU_LavaDebugW) {
+  else if (e->type() == UEV_LavaDebugW) {
     ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
     ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
   }

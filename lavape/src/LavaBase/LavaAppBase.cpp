@@ -971,7 +971,7 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
     bool err = ((CLavaBaseDoc*)fromDoc)->throwError;
     ((CLavaBaseDoc*)fromDoc)->throwError = false;
     CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, fromDoc, (const unsigned long)3,(const unsigned long)curThr);
-		QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaEnd,(void*)hint));
+		QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
     if (((CLavaBaseDoc*)fromDoc)->ThreadList) {
       thrL = ((CLavaBaseDoc*)fromDoc)->ThreadList;
       for (int i=0; i<thrL->size(); i++) {
@@ -1027,7 +1027,7 @@ int critical(QWidget *parent, const QString &caption,
 		currentThread,0,parent,caption,text,button0,button1,button2);
 
 //  currentThread->pContExecEvent->lastException = 0;
-	QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaMsgBox,&params));
+	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->pContExecEvent->acquire();
 /*
   if (currentThread->pContExecEvent->lastException) {
@@ -1053,7 +1053,7 @@ int information(QWidget *parent, const QString &caption,
 		currentThread,1,parent,caption,text,button0,button1,button2);
 
 //  currentThread->pContExecEvent->lastException = 0;
-	QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaMsgBox,&params));
+	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->pContExecEvent->acquire();
 /*
   if (currentThread->pContExecEvent->lastException) {
@@ -1079,7 +1079,7 @@ int question(QWidget *parent, const QString &caption,
 		currentThread,2,parent,caption,text,button0,button1,button2);
 
 //  currentThread->pContExecEvent->lastException = 0;
-	QApplication::postEvent(LBaseData->theApp, new CustomEvent(IDU_LavaMsgBox,&params));
+	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->pContExecEvent->acquire();
 /*
   if (currentThread->pContExecEvent->lastException) {

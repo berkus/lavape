@@ -224,7 +224,7 @@ void CInclView::OnDblclk( QTreeWidgetItem * item, int col )
  //CTreeItem* item = (CTreeItem*)Tree->itemAtIndex(index);
  if (item && (item != Tree->RootItem)) {
     DString *fn = new DString(((CHESimpleSyntax*)((CTreeItem*)item)->getItemData())->data.UsersName); //.SyntaxName);
-    QApplication::postEvent(this, new CustomEvent(IDU_LavaPE_CalledView,(void*)fn));
+    QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_CalledView,(void*)fn));
 
   }
 }
@@ -233,7 +233,7 @@ void CInclView::customEvent(QEvent *ev0)
 {
   CustomEvent *ev=(CustomEvent*)ev0;
 
-  if (ev->type() == IDU_LavaPE_CalledView) {
+  if (ev->type() == UEV_LavaPE_CalledView) {
     DString* usersFn = (DString*)ev->data();
     QDir dir(GetDocument()->IDTable.DocDir.c);
 	  QFileInfo fi(dir, usersFn->c);

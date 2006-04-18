@@ -51,24 +51,26 @@
 #define CHLV_showError     14
 #define CHLV_fit           15
 
-//User+0 is reserved for IDU_Idle
-#define IDU_LavaEnd (QEvent::Type)(QEvent::User+1)
-#define IDU_LavaShow (QEvent::Type)(QEvent::User+2)
-#define IDU_LavaPE_SyncTree (QEvent::Type)(QEvent::User+3)
-#define IDU_LavaPE_CalledView (QEvent::Type)(QEvent::User+4)
-#define IDU_LavaMsgBox (QEvent::Type)(QEvent::User+5)
-#define IDU_LavaGUIInsDel (QEvent::Type)(QEvent::User+6)
-#define IDU_LavaPE_SyncForm (QEvent::Type)(QEvent::User+7)
-#define IDU_LavaPE_SetLastHint (QEvent::Type)(QEvent::User+8)
-#define IDU_OpenObject (QEvent::Type)(QEvent::User+9)
-#define IDU_LavaPE_OnDrop (QEvent::Type)(QEvent::User+10)
-#define IDU_LavaDump (QEvent::Type)(QEvent::User+11)
-#define IDU_LavaStart (QEvent::Type)(QEvent::User+12)
-#define IDU_LavaDebug (QEvent::Type)(QEvent::User+13)
-#define IDU_LavaDebugRq (QEvent::Type)(QEvent::User+14)
-#define IDU_LavaDebugW (QEvent::Type)(QEvent::User+15)
-#define IDU_LavaPE_setSel (QEvent::Type)(QEvent::User+16)
-#define IDU_WhatNext (QEvent::Type)(QEvent::User+17)
+// User defined events:
+//User+0 is reserved for UEV_Idle
+#define UEV_LavaEnd (QEvent::Type)(QEvent::User+1)
+#define UEV_LavaShow (QEvent::Type)(QEvent::User+2)
+#define UEV_LavaPE_SyncTree (QEvent::Type)(QEvent::User+3)
+#define UEV_LavaPE_CalledView (QEvent::Type)(QEvent::User+4)
+#define UEV_LavaMsgBox (QEvent::Type)(QEvent::User+5)
+#define UEV_LavaGUIInsDel (QEvent::Type)(QEvent::User+6)
+#define UEV_LavaPE_SyncForm (QEvent::Type)(QEvent::User+7)
+#define UEV_LavaPE_SetLastHint (QEvent::Type)(QEvent::User+8)
+#define UEV_OpenObject (QEvent::Type)(QEvent::User+9)
+#define UEV_LavaPE_OnDrop (QEvent::Type)(QEvent::User+10)
+#define UEV_LavaDump (QEvent::Type)(QEvent::User+11)
+#define UEV_LavaStart (QEvent::Type)(QEvent::User+12)
+#define UEV_LavaDebug (QEvent::Type)(QEvent::User+13)
+#define UEV_LavaDebugRq (QEvent::Type)(QEvent::User+14)
+#define UEV_LavaDebugW (QEvent::Type)(QEvent::User+15)
+#define UEV_LavaPE_setSel (QEvent::Type)(QEvent::User+16)
+#define UEV_WhatNext (QEvent::Type)(QEvent::User+17)
+#define UEV_PMDumpOff (QEvent::Type)(QEvent::User+18)
 
 #define IFC(OBJ) {if (!INC_FWD_CNT(ckd,OBJ)) return false;}
 #define IRC(OBJ) {if (!INC_REV_CNT(ckd,OBJ)) return false;}

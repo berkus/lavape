@@ -290,7 +290,7 @@ void CLavaDoc::customEvent(QEvent *ev0)
 
 	COpenObjectParms *oop = (COpenObjectParms*)ev->data();
 
-  if (ev->type() == IDU_OpenObject) 
+  if (ev->type() == UEV_OpenObject) 
     oop->obj = OpenObject(*oop->ckdPtr,oop->urlObj);
   oop->thr->pContExecEvent->release();
 }

@@ -157,17 +157,17 @@ void CFormWid::mousePressEvent(QMouseEvent* ev)
 
 void CFormWid::InsActivated()
 {
-  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_INSERT));
+  QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_INSERT));
 }
 
 void CFormWid::DelActivated()
 {
-  QApplication::postEvent(this, new CustomEvent(IDU_LavaGUIInsDel,(void*)IDM_ITER_DEL));
+  QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 }
 
 bool CFormWid::event(QEvent* ev)
 {
-  if (ev->type() == IDU_LavaGUIInsDel) {
+  if (ev->type() == UEV_LavaGUIInsDel) {
     int id = (int)((CustomEvent*)ev)->data();
     if (id == IDM_ITER_DEL) 
       if (iterData->data.IterFlags.Contains(Optional))

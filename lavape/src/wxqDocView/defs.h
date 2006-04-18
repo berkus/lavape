@@ -19,8 +19,8 @@
 #include "qobject.h"
 
 
-#define IDU_Idle (QEvent::Type)QEvent::User
-// User+0 is reserved for IDU_Idle; cf LavaAppBase.h
+#define UEV_Idle (QEvent::Type)QEvent::User
+// User+0 is reserved for UEV_Idle; cf LavaAppBase.h
 
 
 // ----------------------------------------------------------------------------

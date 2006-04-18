@@ -301,11 +301,11 @@ bool CLavaApp::event(QEvent *e)
   CheckData ckd;
 
   switch (e->type()) {
-  case IDU_LavaStart:
+  case UEV_LavaStart:
     thr = new CLavaExecThread((CLavaDoc*)((CustomEvent*)e)->data());
     thr->start();
     break;
-  case IDU_LavaEnd:
+  case UEV_LavaEnd:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     doc = (CLavaDoc*)pHint->fromDoc;
     thr = (CLavaThread*)pHint->CommandData1;
@@ -318,7 +318,7 @@ bool CLavaApp::event(QEvent *e)
     if (doc)
       doc->OnCloseDocument();
     return true;
-  case IDU_LavaMsgBox:
+  case UEV_LavaMsgBox:
     m_appWindow->setActiveWindow();
     m_appWindow->raise();
     mbp = (CMsgBoxParams*)((CustomEvent*)e)->data();
@@ -340,7 +340,7 @@ bool CLavaApp::event(QEvent *e)
       break;
     }
     break;
-  case IDU_LavaShow:
+  case UEV_LavaShow:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(m_appWindow, pHint);
     result = ((QDialog*)((CLavaDoc*)pHint->fromDoc)->LavaDialog)->exec();
@@ -357,7 +357,7 @@ bool CLavaApp::event(QEvent *e)
     }
     delete (CLavaPEHint*)((CustomEvent*)e)->data();
     break;
-  case IDU_LavaDump:
+  case UEV_LavaDump:
     dumpdata = (DumpEventData*)((CustomEvent*)e)->data();
     dumpdata->doc->DumpFrame = new LavaDumpFrame(m_appWindow, dumpdata);
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
@@ -365,6 +365,9 @@ bool CLavaApp::event(QEvent *e)
     dumpdata->doc->DumpFrame = 0;
     ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->pContExecEvent->release();
     delete (DumpEventData*)((CustomEvent*)e)->data();
+    break;
+  case UEV_PMDumpOff:
+    ((CMainFrame*)wxTheApp->m_appWindow)->pmDumpAction->setOn(false);
     break;
   default:
     wxApp::event(e);
