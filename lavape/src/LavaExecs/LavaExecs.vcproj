@@ -49,7 +49,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;.\res\TOOLBUTTONS;.\Generated;..\disco;..\wxqDocView;..\LavaPE;..\LavaPE\Generated;..\LavaPE\res;..\LavaPE\res\TreeIcons;..\LavaPE\res\Toolbuttons;..\LavaBase;..\LavaGUI;..\LavaBase\Generated;..\LavaPE_UI;..\LavaPE_UI\Generated"
-				PreprocessorDefinitions="QT3_SUPPORT;LAVAEXECS_EXPORT;EXECVIEW;WIN32;QT_THREAD_SUPPORT"
+				PreprocessorDefinitions="LAVAEXECS_EXPORT;EXECVIEW;WIN32"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/LavaExecs.pch"
@@ -74,7 +74,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\Qt3Supportd4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib"
 				OutputFile="..\..\bin\LavaExecs.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

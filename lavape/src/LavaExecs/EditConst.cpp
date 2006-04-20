@@ -38,7 +38,7 @@ extern void *focusWindow;
 extern bool isExecView;
 
 
-MiniEdit::MiniEdit(ExecContents *execCnt) : QLineEdit(execCnt,"MiniEdit") {  
+MiniEdit::MiniEdit(ExecContents *execCnt) : QLineEdit("MiniEdit",execCnt) {  
   execView = execCnt->execView;
   returnPressed = false;
 }
@@ -59,7 +59,7 @@ VarConstCheck MiniEdit::InputIsCorrect(TToken &token, CComboBar *comboBar)
   int pos;
   QString *msgID;
 
-  if (!edited())
+  if (!isModified())
     return noChange;
 
   txt = text();
@@ -68,7 +68,7 @@ VarConstCheck MiniEdit::InputIsCorrect(TToken &token, CComboBar *comboBar)
 
   if (!IsOK(txt,token,pos,msgID,comboBar)) {
     setCursorPosition(pos);
-    QMessageBox::critical(this,qApp->name(),*msgID,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),*msgID,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     rc = wrong;
   }
 

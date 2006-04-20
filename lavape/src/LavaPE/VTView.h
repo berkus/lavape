@@ -5,7 +5,7 @@
 #include "LavaPEView.h"
 #include "ExecTree.h"
 //#include "wxExport.h"
-#include "q3combobox.h"
+#include "qcombobox.h"
 //Added by qt3to4:
 #include <QPixmap>
 #include "docview.h"

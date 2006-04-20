@@ -32,8 +32,8 @@
 #include "qmessagebox.h"
 #include "mdiframes.h"
 #include "DIO.h"
-#include <Q3MimeSourceFactory>
-#include <Q3WhatsThis>
+//#include <Q3MimeSourceFactory>
+#include <QWhatsThis>
 
 #pragma hdrstop
 #include "Q6_null.xpm"
@@ -1051,14 +1051,12 @@ QString SynObject::whatsThisText() {
   case nil_T:
     if (parentObject->primaryToken == disconnect_T
     || parentObject->primaryToken == connect_T) {
-      QPixmap nullIcon = QPixmap(Q6_null);
-      Q3MimeSourceFactory::defaultFactory()->setPixmap( "nullIcon", Q6_null );
       if (replacedType == Exp_T)
         return QString(QObject::tr("<p>This is a \"wildcard\", meaning \"any object\"; "
-        "produced by the <img src=\"nullIcon\"> (\"undefined\") tool button</p>"));
+        "produced by the <img src=\":\\LavaExecs\\res\\TOOLBUTTONS\\Q6_null\"> (\"undefined\") tool button</p>"));
       else
         return QString(QObject::tr("<p>This is a \"wildcard\", meaning \"any signal or callback, respectively\"; "
-        "produced by the <img src=\"nullIcon\"> (\"undefined\") tool button</p>"));
+        "produced by the <img src=\":\\LavaExecs\\res\\TOOLBUTTONS\\Q6_null\"> (\"undefined\") tool button</p>"));
     }
     else
       return QString(QObject::tr("<p>This is a \"null/nil/nothing/undefined\" constant</p>"));

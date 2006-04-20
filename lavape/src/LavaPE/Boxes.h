@@ -6,8 +6,8 @@
 #include "LavaPEDoc.h"
 //#include "Resource.h"
 //#include "wxExport.h"
-#include "q3combobox.h"
-#include "q3listbox.h"
+#include "qcombobox.h"
+//#include "q3listbox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
@@ -121,7 +121,7 @@ public slots:
     virtual void on_EnumAdd_clicked();
     virtual void on_EnumEdit_clicked();
     virtual void on_EnumDel_clicked();
-    virtual void on_EnumItems_selectionChanged( Q3ListBoxItem * );
+    virtual void on_EnumItems_itemSelectionChanged();
     virtual void on_ID_OK_clicked();
     virtual void on_CANCEL_clicked() {QDialog::reject();}
     virtual void on_ID_HELP_clicked();
@@ -182,7 +182,7 @@ public slots:
     virtual void on_EnumAdd_clicked();
     virtual void on_EnumEdit_clicked();
     virtual void on_EnumDel_clicked();
-    virtual void on_EnumItems_selectionChanged( Q3ListBoxItem * );
+    virtual void on_EnumItems_itemSelectionChanged();
 
     virtual void on_ID_OK_clicked();
     virtual void on_ID_HELP_clicked();

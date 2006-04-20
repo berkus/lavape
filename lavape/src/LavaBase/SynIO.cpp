@@ -36,7 +36,7 @@ void SynIOCLASS::error (QString errorMsg)
 {
   if (!Silent) {
     QString mess = QString("++++ SynIO: ") + errorMsg;
-    qDebug(mess);
+    qDebug(mess.toAscii());
   }
 
   Done = false;

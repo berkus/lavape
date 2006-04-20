@@ -28,15 +28,15 @@
 #include "mdiframes.h"
 
 #include "qlineedit.h"
-#include "q3button.h"
+#include "qpushbutton.h"
 #include "qradiobutton.h"
 #include "qpushbutton.h"
-#include "q3buttongroup.h"
+#include "qbuttongroup.h"
 #include "qcheckbox.h"
 #include "qstring.h"
 #include "qlabel.h"
 #include "qmessagebox.h"
-#include "q3filedialog.h"
+#include "qfiledialog.h"
 #include "QtAssistant/qassistantclient.h"
 
 #pragma hdrstop
@@ -52,7 +52,7 @@ CAttrBox::CAttrBox(QWidget*  parent)
 }
 
 CAttrBox::CAttrBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -68,15 +68,15 @@ void CAttrBox::UpdateData(bool getData)
   if (getData) {
     valNewName = NewName->text();
     valNewTypeType = NewTypeType->text();
-    if (DownC->isOn())
+    if (DownC->isChecked())
       valkindOfRef = 0;
-    else if (DownInd->isOn())
+    else if (DownInd->isChecked())
       valkindOfRef = 1;
     else
       valkindOfRef = 2;
-    if (Mandatory->isOn())
+    if (Mandatory->isChecked())
       valkindOfField = 0;
-    else if (Optional->isOn())
+    else if (Optional->isChecked())
       valkindOfField = 1;
     else
       valkindOfField = 2;
@@ -128,7 +128,7 @@ ValOnInit CAttrBox::OnInitDialog()
     myDoc->MakeBasicBox(BasicTypes, NoDef, true, TypeFlags.Contains(constituent));
     execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
     //BasicTypes->SelectString(-1, ((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
-    BasicTypes->setCurrentText(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
+    BasicTypes->setItemText(BasicTypes->currentIndex(),((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
     if (SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID) > 0) {
       myDECL->DeclDescType = BasicType;
       myDECL->BType = myDoc->IDTable.GetDECL(myDECL->RefID)->fromBType;
@@ -321,7 +321,7 @@ ValOnInit CAttrBox::OnInitDialog()
 void CAttrBox::on_SetGet_clicked() 
 {
   UpdateData(true);
-  if (SetGet->isOn())
+  if (SetGet->isChecked())
     Abstract->setEnabled(true);
   else {
     Abstract->setChecked(false);
@@ -403,7 +403,7 @@ void CAttrBox::on_NamedTypes_triggered(int pos)
   
   if (!pos) return;
   UpdateData(true);
-  BasicTypes->setCurrentItem(0);
+  BasicTypes->setCurrentIndex(0);
   bool catErr;
   if (SelEndOKToStr(NamedTypes, &valNewTypeType, &myDECL->RefID) > 0) {
     myDECL->DeclDescType = NamedType;
@@ -446,7 +446,7 @@ void CAttrBox::on_BasicTypes_triggered(int pos)
   if (!pos) return;
   LavaDECL* decl;
   UpdateData(true);
-  NamedTypes->setCurrentItem(0);
+  NamedTypes->setCurrentIndex(0);
   if (SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID) > 0 ) {
     decl = myDoc->IDTable.GetDECL(myDECL->RefID);
     myDECL->DeclDescType = BasicType;
@@ -460,8 +460,8 @@ void CAttrBox::on_BasicTypes_triggered(int pos)
 /*
 bool CAttrBox::SetSelections()
 {
-  BasicTypes->setCurrentItem(0);
-  NamedTypes->setCurrentItem(0);
+  BasicTypes->setCurrentIndex(0);
+  NamedTypes->setCurrentIndex(0);
   //int cb1= CB_ERR, cb2= CB_ERR;
   if (myDECL->DeclDescType == BasicType) 
     cb1 = BasicTypes->setCurrentText(valNewTypeType);   
@@ -473,7 +473,7 @@ bool CAttrBox::SetSelections()
 void CAttrBox::on_Substitutable_clicked() 
 {
   UpdateData(true);
-  if (Substitutable->isOn())
+  if (Substitutable->isChecked())
     TypeFlags.INCL(substitutable);
   else
     TypeFlags.EXCL(substitutable);
@@ -492,7 +492,7 @@ void CAttrBox::on_Substitutable_clicked()
 void CAttrBox::on_EnableName_clicked() 
 {
   UpdateData(true);
-  if (EnableName->isOn()) 
+  if (EnableName->isChecked()) 
     NewName->setEnabled(true);
   else {
     valNewName = QString(myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)->LocalName.c);
@@ -506,45 +506,45 @@ void CAttrBox::on_ID_OK_clicked()
   UpdateData(true);
   QString* ids = CheckNewName(valNewName, myDECL, myDoc/*, OrigDECL*/);
   if (ids) {
-    QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
     //NewName->SetCurSel(0, -1);
     NewName->setFocus();
     return;
   }
-  if (Substitutable->isOn()) 
+  if (Substitutable->isChecked()) 
     myDECL->TypeFlags.INCL(substitutable);
   else
     myDECL->TypeFlags.EXCL(substitutable);
-  if (EnableName->isOn()) 
+  if (EnableName->isChecked()) 
     myDECL->SecondTFlags.INCL(enableName);
   else
     myDECL->SecondTFlags.EXCL(enableName);
   if (!valNewTypeType.length()) {
-    QMessageBox::critical(this,qApp->name(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
     BasicTypes->setFocus();
     return;
   }
-  if (ConstProp->isOn())
+  if (ConstProp->isChecked())
     myDECL->TypeFlags.INCL(isConst);
   else
     myDECL->TypeFlags.EXCL(isConst);
-  if (PassByValue->isOn())
+  if (PassByValue->isChecked())
     myDECL->TypeFlags.INCL(copyOnAccess);
   else
     myDECL->TypeFlags.EXCL(copyOnAccess);
-  if (Protected->isOn())
+  if (Protected->isChecked())
     myDECL->TypeFlags.INCL(isProtected);
   else
     myDECL->TypeFlags.EXCL(isProtected);
-  if (Consumable->isOn())
+  if (Consumable->isChecked())
     myDECL->TypeFlags.INCL(consumable);
   else
     myDECL->TypeFlags.EXCL(consumable);
-  if (StateObject->isOn())
+  if (StateObject->isChecked())
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
-  if (SetGet->isOn()) {
+  if (SetGet->isChecked()) {
     myDECL->TypeFlags.INCL(hasSetGet);
     if (myDECL->ParentDECL && myDECL->ParentDECL->TypeFlags.Contains(isNative)
       || OrigDECL && OrigDECL->ParentDECL && OrigDECL->ParentDECL->TypeFlags.Contains(isNative))
@@ -554,12 +554,12 @@ void CAttrBox::on_ID_OK_clicked()
     myDECL->TypeFlags.EXCL(hasSetGet);
   
   if (!myDECL->ParentDECL->TypeFlags.Contains(isComponent)) {
-    if (Abstract->isOn())
+    if (Abstract->isChecked())
       myDECL->TypeFlags.INCL(isAbstract);
     else
       myDECL->TypeFlags.EXCL(isAbstract);
     /*
-    if (InheritsBody->isOn())
+    if (InheritsBody->isChecked())
       myDECL->TypeFlags.INCL(inheritsBody);
     else
       myDECL->TypeFlags.EXCL(inheritsBody);
@@ -594,7 +594,7 @@ CCompSpecBox::CCompSpecBox(QWidget* parent /*=NULL*/)
 }
 
 CCompSpecBox::CCompSpecBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -621,7 +621,7 @@ ValOnInit CCompSpecBox::OnInitDialog()
     ID_OK->setDefault( false );
     ID_CANCEL->setDefault( true );
   }
-  ExtTypes->setCurrentItem(0);
+  ExtTypes->setCurrentIndex(0);
   if (!onNew) {
     valNewName = QString(myDECL->LocalName.c);
     CHETID *cheS = (CHETID*)myDECL->Supports.first;
@@ -653,11 +653,11 @@ ValOnInit CCompSpecBox::OnInitDialog()
       EnumAdd->setEnabled(false);
       EnumDel->setEnabled(false);
       EnumEdit->setEnabled(false);
-      CompoProt->setCurrentItem(0);
+      CompoProt->setCurrentIndex(0);
       //CompoProt.SetCurSel(-1);
     }
     else {
-      CompoProt->setCurrentItem(myDECL->nOutput+1);
+      CompoProt->setCurrentIndex(myDECL->nOutput+1);
       EnumAdd->setEnabled(true);
       EnumDel->setEnabled(true);
       EnumEdit->setEnabled(true);
@@ -702,13 +702,13 @@ void CCompSpecBox::on_ExtTypes_triggered(int pos)
 void CCompSpecBox::on_CompoProt_triggered(int pos) 
 {
   if (!pos) return;
-  myDECL->nOutput = CompoProt->currentItem() - 1;
+  myDECL->nOutput = CompoProt->currentIndex() - 1;
   if (myDECL->nOutput >= 0) {
     EnumAdd->setEnabled(true);
     EnumDel->setEnabled(true);
     EnumEdit->setEnabled(true);
     if ((myDECL->nOutput != PROT_LAVA) && (myDECL->nOutput != PROT_NATIVE))
-      QMessageBox::critical(this,qApp->name(),ERR_NotYetImplemented,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_NotYetImplemented,QMessageBox::Ok,0,0);
   }
 }
 
@@ -737,7 +737,7 @@ void CCompSpecBox::on_EnumAdd_clicked()
     ss += 1;
   if (myDECL->nOutput == PROT_LAVA) {
     if (ss > 1)
-      QMessageBox::critical(this,qApp->name(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
     else {
       dir = ExeDir + ComponentLinkDir;
       fileName = L_GetOpenFileName(
@@ -759,7 +759,7 @@ void CCompSpecBox::on_EnumAdd_clicked()
   }
   else if (myDECL->nOutput == PROT_NATIVE) {
     if (ss > 1)
-      QMessageBox::critical(this,qApp->name(),ERR_OneLibName,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_OneLibName,QMessageBox::Ok,0,0);
     else {
       CEnumItem *cm = new CEnumItem(&iT, 0, 0, false, this);
       if (cm->exec() == QDialog::Accepted) {
@@ -849,7 +849,7 @@ void CCompSpecBox::on_EnumEdit_clicked()
 }
 
 
-void CCompSpecBox::on_EnumItems_selectionChanged(Q3ListBoxItem* selItem) 
+void CCompSpecBox::on_EnumItems_itemSelectionChanged() 
 {
   int ss = EnumItems->currentRow();
   SetButtons(ss);
@@ -873,40 +873,40 @@ void CCompSpecBox::on_ID_OK_clicked()
   UpdateData(true);
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
     //NewName->SetCurSel(0, -1);
     NewName->setFocus();
     return;
   }
   ListToChain(Extends, &myDECL->Supports);
   if (!myDECL->Supports.first) {
-    QMessageBox::critical(this,qApp->name(),IDP_SelInterface,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_SelInterface,QMessageBox::Ok,0,0);
     ExtTypes->setFocus();
     return;
   }
   myDECL->Items.Destroy();
   int ipos = 0;
   int maxi = EnumItems->count();
-  if (Persistent->isOn())
+  if (Persistent->isChecked())
     myDECL->TypeFlags.INCL(isPersistent);
   else
     myDECL->TypeFlags.EXCL(isPersistent);
   if (myDECL->nOutput < 0) {
-    QMessageBox::critical(this,qApp->name(),IDP_NoCompoProt,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoCompoProt,QMessageBox::Ok,0,0);
     CompoProt->setFocus();
     return;
   }
 
   if (myDECL->nOutput == PROT_LAVA) {
     if (EnumItems->count() > 1) {
-      QMessageBox::critical(this,qApp->name(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
       EnumItems->setFocus();
       return;
     }
   }
   else if (myDECL->nOutput == PROT_NATIVE) {
     if (EnumItems->count() > 1) {
-      QMessageBox::critical(this,qApp->name(),ERR_OneLibName,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),ERR_OneLibName,QMessageBox::Ok,0,0);
       EnumItems->setFocus();
       return;
     }
@@ -934,7 +934,7 @@ CCorrOverBox::CCorrOverBox(QWidget* parent )
 }
 
 CCorrOverBox::CCorrOverBox(LavaDECL* decl, CLavaPEDoc* doc, QWidget* parent)
- : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+ : QDialog(parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -972,7 +972,7 @@ ValOnInit CCorrOverBox::OnInitDialog()
     NewOver->setEnabled(false);
   }
   SortCombo(PossibleOvers);
-  PossibleOvers->setCurrentItem(0);
+  PossibleOvers->setCurrentIndex(0);
   return BoxContinue;
 }
 
@@ -1057,8 +1057,8 @@ void CCorrOverBox::on_ID_OK_clicked()
   //TID newID;
   //CListBoxItem *item;
   
-  if (NewOver->isOn()) {
-    pos = PossibleOvers->currentItem();
+  if (NewOver->isChecked()) {
+    pos = PossibleOvers->currentIndex();
     //item = (CComboBoxItem*)PossibleOvers->listBox()->item(pos);
     var = PossibleOvers->itemData(pos);
     CheTID->data = var.value<CComboBoxItem*>()->itemData();
@@ -1081,7 +1081,7 @@ CEnumBox::CEnumBox(QWidget* parent)
 }
 
 CEnumBox::CEnumBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : QDialog( parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog( parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -1100,7 +1100,7 @@ void CEnumBox::UpdateData(bool getData)
   if (getData) {
     valItemNr = EnumItems->currentRow();
     valNewName = NewName->text();
-    valBuildSet = BuildSet->isOn();
+    valBuildSet = BuildSet->isChecked();
   }
   else {
     EnumItems->setItemSelected(EnumItems->item(valItemNr), true);
@@ -1148,7 +1148,7 @@ ValOnInit CEnumBox::OnInitDialog()
   EnumEdit->setEnabled(false);
   EnumDel->setEnabled(false);
 //  EnumAdd->setEnabled(enabled);
-  //EnumItems->setCurrentItem(0);
+  //EnumItems->setCurrentIndex(0);
   UpdateData(false);
   NewName->setFocus();
   return BoxContinue;
@@ -1160,7 +1160,7 @@ ValOnInit CEnumBox::OnInitDialog()
 /*
 void CEnumBox::OnLButtonDown(UINT nFlags, CPoint point) 
 {
-  Enum->setCurrentItem(0);
+  Enum->setCurrentIndex(0);
   EnumDel->setEnabled(false);
   EnumEdit->setEnabled(false);
   CDialog::OnLButtonDown(nFlags, point);
@@ -1216,7 +1216,7 @@ void CEnumBox::on_EnumEdit_clicked()
 }
 
 
-void CEnumBox::on_EnumItems_selectionChanged(Q3ListBoxItem *selItem) 
+void CEnumBox::on_EnumItems_itemSelectionChanged() 
 {
   int ss = EnumItems->currentRow();
   SetButtons(ss);
@@ -1243,7 +1243,7 @@ void CEnumBox::on_ID_OK_clicked()
   UpdateData(true);
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
     NewName->setCursorPosition(0);
     NewName->setFocus();
     return;
@@ -1253,7 +1253,7 @@ void CEnumBox::on_ID_OK_clicked()
   int ipos = 0;
   int maxi = EnumItems->count();
   if (!maxi) {
-    QMessageBox::critical(this,qApp->name(),IDP_NoEnumItem,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoEnumItem,QMessageBox::Ok,0,0);
     EnumAdd->setFocus();
     return;
   }
@@ -1282,7 +1282,7 @@ CEnumItem::CEnumItem(QWidget* parent)
 }
 
 CEnumItem::CEnumItem(QString *enumItem, QListWidget* itemsBox, ChainAny0* items, bool isId, QWidget* parent)
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   m_ItemAdr = enumItem;
@@ -1292,7 +1292,7 @@ CEnumItem::CEnumItem(QString *enumItem, QListWidget* itemsBox, ChainAny0* items,
   Items = items;
   isID = isId;
   if (!ItemsBox && !Items)
-    setCaption("Component object ID");
+    setWindowTitle("Component object ID");
 }
 
 void CEnumItem::on_ID_OK_clicked() 
@@ -1304,7 +1304,7 @@ void CEnumItem::on_ID_OK_clicked()
   CListBoxItem *item;
 
   if ((Items || ItemsBox) && isID && !((CLavaPEApp*)wxTheApp)->LBaseData.isIdentifier(EnumItem->text()))
-    QMessageBox::critical(this,qApp->name(),IDP_IsNoID,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_IsNoID,QMessageBox::Ok,0,0);
   else {
     if (ItemsBox) {
       maxi = ItemsBox->count();
@@ -1315,7 +1315,7 @@ void CEnumItem::on_ID_OK_clicked()
           txt = item->text();
         }
         if (newText == txt) 
-          QMessageBox::critical(this,qApp->name(),ERR_NameInUse,QMessageBox::Ok,0,0);
+          QMessageBox::critical(this,qApp->applicationName(),ERR_NameInUse,QMessageBox::Ok,0,0);
         else {
           *m_ItemAdr = EnumItem->text();
           QDialog::accept();
@@ -1331,7 +1331,7 @@ void CEnumItem::on_ID_OK_clicked()
         str = qPrintable(EnumItem->text());
         for (che = (CHEEnumSelId*)Items->first; che && (che->data.Id != str); che = (CHEEnumSelId*)che->successor);
         if (che)
-          QMessageBox::critical(this,qApp->name(),ERR_NameInUse,QMessageBox::Ok,0,0);
+          QMessageBox::critical(this,qApp->applicationName(),ERR_NameInUse,QMessageBox::Ok,0,0);
         else {
           *m_ItemAdr = EnumItem->text();
           QDialog::accept();
@@ -1356,7 +1356,7 @@ CFuncBox::CFuncBox(QWidget* parent /*=NULL*/)
 }
 
 CFuncBox::CFuncBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -1371,9 +1371,9 @@ void CFuncBox::UpdateData(bool getData)
 {
   if (getData) {
     valNewName = NewName->text();
-    if (Synch->isOn())
+    if (Synch->isChecked())
       valSynch = 0;
-    else if (Concurrent->isOn())
+    else if (Concurrent->isChecked())
       valSynch = 1;
     else
       valSynch = 2;
@@ -1708,7 +1708,7 @@ void CFuncBox::CalcOpBox()
       CMBOperator->addItem(QString(LBaseData->OperatorNames [iop].c),QVariant::fromValue(listItem));
 //      CMBOperator->listBox()->insertItem(listItem);//sort
       if ((id.nID == myDECL->OwnID) && (id.nINCL == 0))
-        CMBOperator->setCurrentText(QString(LBaseData->OperatorNames [myDECL->op ].c));
+        CMBOperator->setItemText(CMBOperator->currentIndex(),QString(LBaseData->OperatorNames [myDECL->op ].c));
     }
   }
   SortCombo(CMBOperator);
@@ -1760,7 +1760,7 @@ void CFuncBox::on_NamedTypes_triggered(int pos)
 void CFuncBox::on_CHECKOp_clicked() 
 {
   UpdateData(true);
-  if (CHECKOp->isOn()) {
+  if (CHECKOp->isChecked()) {
     CMBOperator->setEnabled(true);
     NewName->setEnabled(false);
   }
@@ -1780,7 +1780,7 @@ void CFuncBox::on_CHECKOp_clicked()
 void CFuncBox::on_StaticFunc_clicked() 
 {
   UpdateData(true);
-  if (StaticFunc->isOn()) {
+  if (StaticFunc->isChecked()) {
     Protected->setChecked(false);
     Initializer->setChecked(false);
     Abstract->setChecked(false);
@@ -1807,7 +1807,7 @@ void CFuncBox::on_StaticFunc_clicked()
 void CFuncBox::on_Initializer_clicked() 
 {
   UpdateData(true);
-  bool ini = Initializer->isOn();
+  bool ini = Initializer->isChecked();
   DefaultIni->setEnabled(!hasParams
                             && ini
                             && (!myDECL->ParentDECL->WorkFlags.Contains(hasDefaultIni)
@@ -1845,7 +1845,7 @@ void CFuncBox::on_CMBOperator_triggered(int pos)
 void CFuncBox::OnInheritsBody() 
 {
   UpdateData(true);
-  if (InheritsBody->isOn()) {
+  if (InheritsBody->isChecked()) {
     Abstract->setChecked(false);
     Abstract->setEnabled(false); 
   }
@@ -1858,7 +1858,7 @@ void CFuncBox::OnInheritsBody()
 void CFuncBox::on_Abstract_clicked() 
 {
   UpdateData(true);
-  if (Abstract->isOn()) {
+  if (Abstract->isChecked()) {
     Native->setChecked(false);
     Native->setEnabled(false);
     StaticFunc->setEnabled(false);
@@ -1874,7 +1874,7 @@ void CFuncBox::on_Abstract_clicked()
 void CFuncBox::on_Native_clicked() 
 {
   UpdateData(true);
-  if (Native->isOn()) {
+  if (Native->isChecked()) {
     Abstract->setChecked(false);
     Abstract->setEnabled(false); 
   }
@@ -1885,7 +1885,7 @@ void CFuncBox::on_Native_clicked()
 
 void CFuncBox::on_Signal_clicked()
 {
-  if (Signal->isOn()) {
+  if (Signal->isChecked()) {
     ConstFunc->setChecked(true); 
     ConstFunc->setEnabled(false);
     myDECL->TypeFlags.INCL(isConst); 
@@ -1917,7 +1917,7 @@ void CFuncBox::on_Signal_clicked()
 void CFuncBox::on_EnableName_clicked() 
 {
   UpdateData(true);
-  if (EnableName->isOn()) 
+  if (EnableName->isChecked()) 
     NewName->setEnabled(true);
   else {
     valNewName = QString(myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)->LocalName.c);
@@ -1940,11 +1940,11 @@ void CFuncBox::on_ID_OK_clicked()
       myDECL->Supports.Destroy();
     }
   UpdateData(true);
-  if (EnableName->isOn()) 
+  if (EnableName->isChecked()) 
     myDECL->SecondTFlags.INCL(enableName);
   else
     myDECL->SecondTFlags.EXCL(enableName);
-  if (Initializer->isOn())
+  if (Initializer->isChecked())
     myDECL->TypeFlags.INCL(isInitializer); 
   else
     myDECL->TypeFlags.EXCL(isInitializer); 
@@ -1952,7 +1952,7 @@ void CFuncBox::on_ID_OK_clicked()
     if (myDECL->op == OP_noOp) {
       QString* ids = CheckNewName(valNewName, myDECL, myDoc);
       if (ids) {
-        QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+        QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
         NewName->setFocus();
         //NewName->SetSel(0, -1);
         return;
@@ -1962,7 +1962,7 @@ void CFuncBox::on_ID_OK_clicked()
       myDoc->MakeOperator(myDECL);
   }
   ListToChain(Inherits, &myDECL->Inherits);  //fires
-  if (Native->isOn())
+  if (Native->isChecked())
     myDECL->TypeFlags.INCL(isNative); 
   else
     myDECL->TypeFlags.EXCL(isNative); 
@@ -1970,31 +1970,31 @@ void CFuncBox::on_ID_OK_clicked()
     myDoc->GetExecDECL(myDECL, ExecDef);
   if (!myDECL->Supports.first) 
     myDECL->SecondTFlags.EXCL(overrides);
-  if (Abstract->isOn())
+  if (Abstract->isChecked())
     myDECL->TypeFlags.INCL(isAbstract); 
   else
     myDECL->TypeFlags.EXCL(isAbstract);
-  if (StaticFunc->isOn())
+  if (StaticFunc->isChecked())
     myDECL->TypeFlags.INCL(isStatic);
   else
     myDECL->TypeFlags.EXCL(isStatic);
-  if (Protected->isOn())
+  if (Protected->isChecked())
     myDECL->TypeFlags.INCL(isProtected);
   else
     myDECL->TypeFlags.EXCL(isProtected);
-  if (EnforceOver->isOn())
+  if (EnforceOver->isChecked())
     myDECL->TypeFlags.INCL(forceOverride);
   else
     myDECL->TypeFlags.EXCL(forceOverride);
-  if (ConstFunc->isOn())
+  if (ConstFunc->isChecked())
     myDECL->TypeFlags.INCL(isConst); 
   else
     myDECL->TypeFlags.EXCL(isConst); 
-  if (Signal->isOn())
+  if (Signal->isChecked())
     myDECL->SecondTFlags.INCL(isLavaSignal); 
   else
     myDECL->SecondTFlags.EXCL(isLavaSignal); 
-  if (DefaultIni->isOn())
+  if (DefaultIni->isChecked())
     myDECL->TypeFlags.INCL(defaultInitializer); 
   else
     myDECL->TypeFlags.EXCL(defaultInitializer); 
@@ -2021,7 +2021,7 @@ CImplBox::CImplBox(QWidget* parent /*=NULL*/)
 }
 
 CImplBox::CImplBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -2062,7 +2062,7 @@ ValOnInit CImplBox::OnInitDialog()
         if (decl) 
           valImplSel = QString(decl->LocalName.c); 
         else {
-          QMessageBox::critical(this, qApp->name(), ERR_NoImplIF,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), ERR_NoImplIF,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
           valImplSel = QString("??: ");
           Convert.IntToString(cheS->data.nINCL, strINCL);
           Convert.IntToString(cheS->data.nID, strID);
@@ -2074,7 +2074,7 @@ ValOnInit CImplBox::OnInitDialog()
   }
   execAllPatt = new CExecAllDefs(myDoc, ImplTypes, 0, myDECL->ParentDECL, OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   if (myDECL->DeclType == CompObj) {
-    setCaption("Component object implementation");
+    setWindowTitle("Component object implementation");
     Label_IDC_ComboEx->setText( "Component object to be implemented");
   }
   if (!onNew) {
@@ -2087,7 +2087,7 @@ ValOnInit CImplBox::OnInitDialog()
         ex = true;
     }
     if (pos < icount)
-      ImplTypes->setCurrentItem(pos-1);
+      ImplTypes->setCurrentIndex(pos-1);
     ImplTypes->setEnabled(false);
   }
   delete execAllPatt;
@@ -2119,7 +2119,7 @@ void CImplBox::on_ID_OK_clicked()
   
   UpdateData(true);
   if (!myDECL->Supports.first) {
-    QMessageBox::critical(this,qApp->name(),IDP_SelInterface,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_SelInterface,QMessageBox::Ok,0,0);
     ImplTypes->setFocus();
     return;
   }
@@ -2174,7 +2174,7 @@ CIncludeBox::CIncludeBox(QWidget* parent /*=NULL*/)
 }
 
 CIncludeBox::CIncludeBox(CLavaPEDoc* myDoc, CHESimpleSyntax* newChe, CHESimpleSyntax* oldChe, QWidget* parent)
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   NewChe = newChe;
@@ -2240,7 +2240,7 @@ CInitBox::CInitBox(QWidget* parent)
 }
 
 CInitBox::CInitBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
- : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+ : QDialog(parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -2254,7 +2254,7 @@ void CInitBox::UpdateData(bool getData)
 {
   if (getData) {
     valNewName = NewName->text();
-    if (Synch->isOn())
+    if (Synch->isChecked())
       valSynch = 0;
     else
       valSynch = 1;
@@ -2321,17 +2321,17 @@ void CInitBox::on_ID_OK_clicked()
   else  {
     QString* ids = CheckNewName(valNewName, myDECL, myDoc);
     if (ids) {
-      QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
       NewName->setFocus();
       return;
     }
   }
   myDoc->GetExecDECL(myDECL, ExecDef);
-  if (Transaction->isOn())
+  if (Transaction->isChecked())
     myDECL->TypeFlags.INCL(isTransaction); 
   else
     myDECL->TypeFlags.EXCL(isTransaction); 
-  if (ReadOnly->isOn())
+  if (ReadOnly->isChecked())
     myDECL->TypeFlags.INCL(isConst); 
   else
     myDECL->TypeFlags.EXCL(isConst); 
@@ -2359,7 +2359,7 @@ CInterfaceBox::CInterfaceBox(QWidget* parent /*=NULL*/)
 }
 
 CInterfaceBox::CInterfaceBox(LavaDECL* mydecl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   valNewName = QString("");
@@ -2382,11 +2382,11 @@ void CInterfaceBox::UpdateData(bool getData)
   if (getData) {
     valNewName = NewName->text();
     valIfaceID = InterfaceID->text();
-    valBuildSet = BuildSet->isOn();
-    valIsGUI = IsGUI->isOn();
-    if (Creatable->isOn())
+    valBuildSet = BuildSet->isChecked();
+    valIsGUI = IsGUI->isChecked();
+    if (Creatable->isChecked())
       valKindOfInterface = 0;
-    else if (NonCreatable->isOn())
+    else if (NonCreatable->isChecked())
       valKindOfInterface = 1;
     else
       valKindOfInterface = 2;
@@ -2492,8 +2492,8 @@ ValOnInit CInterfaceBox::OnInitDialog()
   execAllPatt = new CExecAllDefs(myDoc, ExtTypes, GUIStructs, 
                         myDECL->ParentDECL, OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   delete execAllPatt;
-  BasicTypes->setCurrentItem(0);
-  ExtTypes->setCurrentItem(0);
+  BasicTypes->setCurrentIndex(0);
+  ExtTypes->setCurrentIndex(0);
   TID id;
   if (!onNew && myDECL->TypeFlags.Contains(isGUI)) {
     valIsGUI = true; 
@@ -2509,7 +2509,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
            if (id == myDECL->RefID)
              ex = true;}
     if (pos <= icount)
-      GUIStructs->setCurrentItem(pos-1);
+      GUIStructs->setCurrentIndex(pos-1);
   }
   NewName->setFocus();
   UpdateData(false);
@@ -2588,7 +2588,7 @@ void CInterfaceBox::on_ExtTypes_triggered(int pos)
       ResetComboItems(ExtTypes);
       CExecBase *execBase = new CExecBase(this);
       delete execBase;
-      BasicTypes->setCurrentItem(0);
+      BasicTypes->setCurrentIndex(0);
       UpdateData(false);
     }
   }
@@ -2606,11 +2606,11 @@ void CInterfaceBox::on_BasicTypes_triggered(int pos)
   if (listItem) {
     if (myDoc->IDTable.InsertBase(myDECL, myDoc->IDTable.GetDECL(listItem->itemData(), 0), ContextDECL, true)) {
       SupportsToList();
-      ExtTypes->setCurrentItem(0);
+      ExtTypes->setCurrentIndex(0);
       UpdateData(false);
     }
   }
-  BasicTypes->setCurrentItem(0);
+  BasicTypes->setCurrentIndex(0);
 }
 
 /*
@@ -2642,7 +2642,7 @@ void CInterfaceBox::on_IsComponent_clicked()
   CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, ExtTypes,
                  GUIStructs, myDECL->ParentDECL,
                  OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
-  ExtTypes->setCurrentItem(0);
+  ExtTypes->setCurrentIndex(0);
   InterfaceID->setEnabled(true);
   //Native->setChecked(false);
   //Native->setEnabled(false);
@@ -2673,7 +2673,7 @@ void CInterfaceBox::on_GUIStructs_triggered(int pos)
   if (!pos) return;
   UpdateData(true);
   if (SelEndOKToStr(GUIStructs, &valGUIStruct, &exID) <= 0)
-    GUIStructs->setCurrentText(valGUIStruct);
+    GUIStructs->setItemText(GUIStructs->currentIndex(),valGUIStruct);
 }
 
 void CInterfaceBox::on_ID_OK_clicked() 
@@ -2686,13 +2686,13 @@ void CInterfaceBox::on_ID_OK_clicked()
     extendsException = false, extendsEnum = false;
 
   if (ids) {
-    QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
     NewName->setCursorPosition(0);
     NewName->setFocus();
     return;
   }
   myDECL->LitStr.Destroy();
-  if (Native->isOn())
+  if (Native->isChecked())
     myDECL->TypeFlags.INCL(isNative);
   else
     myDECL->TypeFlags.EXCL(isNative);
@@ -2727,7 +2727,7 @@ void CInterfaceBox::on_ID_OK_clicked()
         myDoc->MakeGUIFuncs(myDECL);
       }
       else {
-        QMessageBox::critical(this, qApp->name(), IDP_NoTypeSel, QMessageBox::Ok,0,0);
+        QMessageBox::critical(this, qApp->applicationName(), IDP_NoTypeSel, QMessageBox::Ok,0,0);
         GUIStructs->setFocus();
         return;
       }
@@ -2806,7 +2806,7 @@ CIOBox::CIOBox(QWidget*  /*=NULL*/)
 }
 
 CIOBox::CIOBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -2820,7 +2820,7 @@ void CIOBox::UpdateData(bool getData)
   if (getData) {
     valNewName = NewName->text();
     valNewTypeType = NewTypeType->text();
-    if (Mandatory->isOn())
+    if (Mandatory->isChecked())
       valkindOfField = 0;
     else 
       valkindOfField = 1;
@@ -2889,7 +2889,7 @@ ValOnInit CIOBox::OnInitDialog()
     myDECL->TypeFlags.INCL(trueObjCat);
     myDoc->MakeBasicBox(BasicTypes, NoDef, true);
     execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
-    BasicTypes->setCurrentText(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
+    BasicTypes->setItemText(BasicTypes->currentIndex(),((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
     int num = SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID);
     if (num > 0) {
       myDECL->DeclDescType = BasicType;
@@ -3045,7 +3045,7 @@ void CIOBox::on_NamedTypes_triggered(int pos)
   UpdateData(true);
   bool catErr;
 
-  BasicTypes->setCurrentItem(0);
+  BasicTypes->setCurrentIndex(0);
   if (SelEndOKToStr(NamedTypes, &valNewTypeType, &myDECL->RefID) > 0) {
     myDECL->DeclDescType = NamedType;
     SynFlags inheritedFlag = myDoc->GetCategoryFlags(myDECL, catErr); 
@@ -3090,7 +3090,7 @@ void CIOBox::on_BasicTypes_triggered(int pos)
 {
   if (!pos) return;
   UpdateData(true);
-  NamedTypes->setCurrentItem(0);
+  NamedTypes->setCurrentIndex(0);
   int num = SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID);
   if (num > 0) {
     myDECL->DeclDescType = BasicType;
@@ -3105,8 +3105,8 @@ void CIOBox::on_BasicTypes_triggered(int pos)
 /*
 bool CIOBox::SetSelections()
 {
-  BasicTypes->setCurrentItem(0);
-  NamedTypes->setCurrentItem(0);
+  BasicTypes->setCurrentIndex(0);
+  NamedTypes->setCurrentIndex(0);
   int cb1= CB_ERR, cb2= CB_ERR;
   if (myDECL->DeclDescType == BasicType) 
     cb1 = BasicTypes->setCurrentText(valNewTypeType);   
@@ -3119,7 +3119,7 @@ bool CIOBox::SetSelections()
 void CIOBox::on_Substitutable_clicked() 
 {
   UpdateData(true);
-  if (Substitutable->isOn())
+  if (Substitutable->isChecked())
     TypeFlags.INCL(substitutable);
   else
     TypeFlags.EXCL(substitutable);
@@ -3144,32 +3144,32 @@ void CIOBox::on_ID_OK_clicked()
   }
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
 //    NewName->SetSel(0, -1);
     NewName->setFocus();
     return;
   }
   if (!valNewTypeType.length()) {
-    QMessageBox::critical(this,qApp->name(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
     BasicTypes->setFocus();
     return;
   }
   myDECL->TypeFlags.EXCL(isOptional);
-  if (Substitutable->isOn()) 
+  if (Substitutable->isChecked()) 
     myDECL->TypeFlags.INCL(substitutable);
   else
     myDECL->TypeFlags.EXCL(substitutable);
   if (valkindOfField == 1) 
     myDECL->TypeFlags.INCL(isOptional);
-  if (StateObject->isOn())
+  if (StateObject->isChecked())
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
-  if (SameAsSelf->isOn())
+  if (SameAsSelf->isChecked())
     myDECL->TypeFlags.INCL(sameAsSelf);
   else
     myDECL->TypeFlags.EXCL(sameAsSelf);
-  if (AnyCategory->isOn())
+  if (AnyCategory->isChecked())
     myDECL->TypeFlags.INCL(isAnyCategory);
   else
     myDECL->TypeFlags.EXCL(isAnyCategory);
@@ -3189,7 +3189,7 @@ CPackageBox::CPackageBox(QWidget* parent /*=NULL*/)
 }
 
 CPackageBox::CPackageBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
    setupUi(this);
  myDECL = decl;
@@ -3276,7 +3276,7 @@ void CPackageBox::on_ID_OK_clicked()
 {
   UpdateData(true);
   ListToChain(Extends, &myDECL->Supports);
-  if (Opaque->isOn())
+  if (Opaque->isChecked())
     myDECL->TypeFlags.INCL(isProtected);
   else
     myDECL->TypeFlags.EXCL(isProtected);
@@ -3287,7 +3287,7 @@ void CPackageBox::on_ID_OK_clicked()
   else  {
     QString* ids = CheckNewName(valNewName, myDECL, myDoc);
     if (ids) {
-      QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+      QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
       //NewName->SetSel(0, -1);
       NewName->setFocus();
       return;
@@ -3306,7 +3306,7 @@ CSetBox::CSetBox(QWidget* parent )
 }
 
 CSetBox::CSetBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent)
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -3342,8 +3342,8 @@ ValOnInit CSetBox::OnInitDialog()
   /* 
     ---->remember: this box is used only in case of a new set
   */
-  BasicTypes->setCurrentItem(0);
-  ExTypes->setCurrentItem(0);
+  BasicTypes->setCurrentIndex(0);
+  ExTypes->setCurrentIndex(0);
   NewName->setFocus();
   UpdateData(false);
   return BoxContinue;
@@ -3354,28 +3354,28 @@ void CSetBox::on_ExTypes_triggered(int pos)
 {
   if (!pos) return;
   UpdateData(true);
-  BasicTypes->setCurrentItem(0);
+  BasicTypes->setCurrentIndex(0);
   if (SelEndOKToStr(ExTypes, &valExtend, &exID) > 0)
     UpdateData(false);
   else
     if (exID.nINCL == 1)
-      BasicTypes->setCurrentText(valExtend);
+      BasicTypes->setItemText(BasicTypes->currentIndex(),valExtend);
     else
-      ExTypes->setCurrentText(valExtend);
+      ExTypes->setItemText(ExTypes->currentIndex(),valExtend);
 }
 
 void CSetBox::on_BasicTypes_triggered(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
-  ExTypes->setCurrentItem(0);
+  ExTypes->setCurrentIndex(0);
   if (SelEndOKToStr(BasicTypes, &valExtend, &exID) > 0)
     UpdateData(false);
   else
     if ((exID.nINCL == 1) || myDoc->isStd)
-      BasicTypes->setCurrentText(valExtend);
+      BasicTypes->setItemText(BasicTypes->currentIndex(),valExtend);
     else
-      ExTypes->setCurrentText(valExtend);
+      ExTypes->setItemText(ExTypes->currentIndex(),valExtend);
 }
 
 
@@ -3384,7 +3384,7 @@ void CSetBox::on_ID_OK_clicked()
   UpdateData(true);
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
     NewName->setFocus();
     //NewName->SetSel(0, -1);
     return;
@@ -3395,10 +3395,10 @@ void CSetBox::on_ID_OK_clicked()
     myDECL->TreeFlags.INCL(ParaExpanded);
   }
   else {
-    QMessageBox::critical(this,qApp->name(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
     BasicTypes->setFocus();
-    ExTypes->setCurrentItem(0);
-    BasicTypes->setCurrentItem(0);
+    ExTypes->setCurrentIndex(0);
+    BasicTypes->setCurrentIndex(0);
     return;
   }
   myDECL->WorkFlags.INCL(recalcVT);
@@ -3416,7 +3416,7 @@ CVTypeBox::CVTypeBox(QWidget* parent)
 }
 
 CVTypeBox::CVTypeBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* parent) 
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
   setupUi(this);
   myDECL = decl;
@@ -3431,9 +3431,9 @@ void CVTypeBox::UpdateData(bool getData)
   if (getData) {
     valNewName = NewName->text();
     valNewTypeType = NewTypeType->text();
-    if (DownC->isOn())
+    if (DownC->isChecked())
       valkindOfLink = 0;
-    else if (DownInd->isOn())
+    else if (DownInd->isChecked())
       valkindOfLink = 1;
     else
       valkindOfLink = 2;
@@ -3670,7 +3670,7 @@ void CVTypeBox::on_NamedTypes_triggered(int pos)
 {
   if (!pos) return;
   UpdateData(true);
-  BasicTypes->setCurrentItem(0);
+  BasicTypes->setCurrentIndex(0);
   if (SelEndOKToStr(NamedTypes, &valNewTypeType, &myDECL->RefID) > 0) {
     if (myDECL->TypeFlags.Contains(isAbstract)) {
       myDECL->TypeFlags.EXCL(isAbstract);
@@ -3693,7 +3693,7 @@ void CVTypeBox::on_BasicTypes_triggered(int pos)
 {
   if (!pos) return;
   UpdateData(true);
-  NamedTypes->setCurrentItem(0);
+  NamedTypes->setCurrentIndex(0);
   int num = SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID);
   if (num > 0) {
     if (myDECL->TypeFlags.Contains(isAbstract)) {
@@ -3718,9 +3718,9 @@ void CVTypeBox::on_BasicTypes_triggered(int pos)
 void CVTypeBox::on_VTAbstract_clicked() 
 {
   UpdateData(true);
-  bool abs = VTAbstract->isOn();
-  BasicTypes->setCurrentItem(0);
-  NamedTypes->setCurrentItem(0);
+  bool abs = VTAbstract->isChecked();
+  BasicTypes->setCurrentIndex(0);
+  NamedTypes->setCurrentIndex(0);
   if (!abs) {
     myDECL->TypeFlags.EXCL(isAbstract);
     Substitutable->setEnabled(!myDECL->SecondTFlags.Contains(overrides) || baseAbstract);
@@ -3744,7 +3744,7 @@ void CVTypeBox::on_VTAbstract_clicked()
 void CVTypeBox::on_DefCat_clicked() 
 {
   UpdateData(true);
-  bool defCat = DefCat->isOn()
+  bool defCat = DefCat->isChecked()
                 && !inheritedFlag.Contains(trueObjCat)
                 && !myDECL->TypeFlags.Contains(isAbstract);
   StateObject->setEnabled(defCat);
@@ -3766,7 +3766,7 @@ void CVTypeBox::on_DefCat_clicked()
 void CVTypeBox::on_StateObject_clicked() 
 {
   UpdateData(true);
-  if (StateObject->isOn())
+  if (StateObject->isChecked())
     myDECL->TypeFlags.INCL(stateObject);
   else
     myDECL->TypeFlags.EXCL(stateObject);
@@ -3776,7 +3776,7 @@ void CVTypeBox::on_StateObject_clicked()
 void CVTypeBox::on_Substitutable_clicked() 
 {
   UpdateData(true);
-  bool sbst = Substitutable->isOn();
+  bool sbst = Substitutable->isChecked();
   if (sbst)
     myDECL->TypeFlags.INCL(substitutable);
   else
@@ -3794,14 +3794,14 @@ void CVTypeBox::on_Substitutable_clicked()
 void CVTypeBox::on_ValueObject_clicked() 
 {
   UpdateData(true);
-  if (ValueObject->isOn())
+  if (ValueObject->isChecked())
     myDECL->TypeFlags.EXCL(stateObject);
 }
 
 void CVTypeBox::on_EnableName_clicked() 
 {
   UpdateData(true);
-  bool enabl = EnableName->isOn();
+  bool enabl = EnableName->isChecked();
   if (enabl) 
     NewName->setEnabled(true);
   else {
@@ -3821,19 +3821,19 @@ void CVTypeBox::on_ID_OK_clicked()
 
   QString* ids = CheckNewName(valNewName, myDECL, myDoc);
   if (ids) {
-    QMessageBox::critical(this,qApp->name(),*ids,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
     //NewName->SetSel(0, -1);
     NewName->setFocus();
     return;
   }
-  if (EnableName->isOn()) 
+  if (EnableName->isChecked()) 
     myDECL->SecondTFlags.INCL(enableName);
   else
     myDECL->SecondTFlags.EXCL(enableName);
-  if (DefCat->isOn()) {
+  if (DefCat->isChecked()) {
     myDECL->TypeFlags.INCL(definesObjCat);
     myDECL->TypeFlags.INCL(trueObjCat);
-    if (StateObject->isOn()) 
+    if (StateObject->isChecked()) 
       myDECL->TypeFlags.INCL(stateObject);
     else 
       myDECL->TypeFlags.EXCL(stateObject);
@@ -3843,11 +3843,11 @@ void CVTypeBox::on_ID_OK_clicked()
     myDECL->TypeFlags.EXCL(definesObjCat);
     myDECL->TypeFlags.EXCL(trueObjCat);
   }
-  if (Substitutable->isOn()) 
+  if (Substitutable->isChecked()) 
     myDECL->TypeFlags.INCL(substitutable);
   else
     myDECL->TypeFlags.EXCL(substitutable);
-  if (VTAbstract->isOn()) {
+  if (VTAbstract->isChecked()) {
     myDECL->TypeFlags.INCL(isAbstract);
     myDECL->TypeFlags.EXCL(trueObjCat);
     myDECL->TypeFlags.EXCL(stateObject);
@@ -3857,7 +3857,7 @@ void CVTypeBox::on_ID_OK_clicked()
   else 
     myDECL->TypeFlags.EXCL(isAbstract);
   if (!valNewTypeType.length() && !myDECL->TypeFlags.Contains(isAbstract)) {
-    QMessageBox::critical(this,qApp->name(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
     BasicTypes->setFocus();
     return;
   }
@@ -4607,7 +4607,7 @@ void CExecAllDefs::FitBox(QComboBox* combo, int maxWidth)
     nowB = !nowB;
   }
   SortCombo(combo);
-  combo->setCurrentItem(0);
+  combo->setCurrentIndex(0);
   //if (maxWidth)
   //  list->SetDroppedWidth(maxWidth+6);
   

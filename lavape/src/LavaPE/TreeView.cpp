@@ -20,15 +20,15 @@
 #include "docview.h"
 #include "mdiframes.h"
 #include "qapplication.h"
-#include "q3frame.h"
+#include "qframe.h"
 #include "qtoolbar.h"
-#include "q3combobox.h"
-#include "q3popupmenu.h"
+#include "qcombobox.h"
+#include <QMenu>
 #include <QTreeWidget>
 #include "qsplitter.h"
-#include "q3vbox.h"
+#include "qvbox.h"
 #include "qevent.h"
-#include "q3header.h"
+//#include "q3header.h"
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QDragEnterEvent>
@@ -221,7 +221,7 @@ void MyListView::setCurAndSel(QTreeWidgetItem* item, bool singleSel)
   if (oldi != item) {
     if (oldi && singleSel && isItemSelected(oldi))//oldi->isSelected())
       setItemSelected(oldi, false);
-    setCurrentItem(item);
+    setCurrentIndex(item);
   }
   if (!isItemSelected(item)) //->isSelected())
     setItemSelected(item, true);
@@ -266,7 +266,7 @@ void MyListView::mouseMoveEvent(QMouseEvent *ev)
     if (!lavaView->multiSelectCanceled && (ev->state() == Qt::LeftButton)) {
       if (item2 != item) {
         withControl = true;
-        setCurrentItem(item2);
+        setCurrentIndex(item2);
         setItemSelected(item2, true);
         withControl = false;
       }

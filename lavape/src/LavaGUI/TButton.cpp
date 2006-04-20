@@ -34,8 +34,9 @@
 
 CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, 
               const char* lpszWindowName , const QString& label, bool leftText)
-:QCheckBox(label, parent, "ToggleButton")
+:QCheckBox(label, parent)
 {
+  setObjectName("ToggleButton");
   DISCOButtonType = isToggle;
   myFormNode = data;
   GUIProg = guiPr;
@@ -101,8 +102,9 @@ void CToggleButton::OnClicked()
 
 CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, 
           const char* lpszWindowName , const QString& label, QWidget* radioBox, unsigned num)
-:QPushButton(label, parent, lpszWindowName)
+:QPushButton(label, parent)
 {
+  setObjectName(lpszWindowName);
   QStyleOptionButton qsob=QStyleOptionButton();
 
   myFormNode = data;
@@ -130,8 +132,9 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
 
 CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, 
           const char* lpszWindowName , const QString& label, QWidget* radioBox, unsigned num)
-:QPushButton(*data->data.Pixmap, label, parent, lpszWindowName)
+:QPushButton(*data->data.Pixmap, label, parent)
 {
+  setObjectName(lpszWindowName);
   QStyleOptionButton qsob=QStyleOptionButton();
 
   myFormNode = data;
@@ -158,8 +161,9 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
 
 CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, 
        const char* lpszWindowName, const QString& label, unsigned cmnd) 
-:QPushButton(label, parent, lpszWindowName)
+:QPushButton(label, parent)
 {
+  setObjectName(lpszWindowName);
   QStyleOptionButton qsob=QStyleOptionButton();
 
   Cmnd = cmnd;
@@ -262,8 +266,9 @@ void CPushButton::OnClicked()
 
 CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, const char* lpszWindowName,
              const QString& label, QWidget* radioBox, unsigned num)
-:QRadioButton(label, parent, "RadioButton")
+:QRadioButton(label, parent)
 {
+  setObjectName("RadioButton");
   QStyleOptionButton qsob=QStyleOptionButton();
 
   DISCOButtonType = isRadio;
@@ -309,7 +314,7 @@ void CRadioButton::OnClicked()
   GUIProg->CurPTR = myFormNode;
   int ii;
   for (ii = 0; ii < ((CFormWid*)Radio)->nRadio; ii++) {
-    if (((CFormWid*)Radio)->Radio[ii] == (Q3Button*)this) {
+    if (((CFormWid*)Radio)->Radio[ii] == (QPushButton*)this) {
       setChecked(true);
       EnumNode->data.D = ii;
       EnumNode->data.StringValue = myFormNode->data.StringValue;

@@ -51,15 +51,15 @@
  * Docview MDI parent frame
  */
 
-wxMainFrame::wxMainFrame(QWidget* parent, const char* name, Qt::WFlags fl)
- : QMainWindow(parent,name,Qt::WDestructiveClose | Qt::WType_TopLevel)
+wxMainFrame::wxMainFrame(QWidget* parent, const char* name)
+ : QMainWindow(parent)
 {
+  setObjectName(name);
   QStatusBar *stb=new QStatusBar(this);
-        completelyCreated = false;
+  completelyCreated = false;
 
   setStatusBar(stb);
   wxTheApp->m_appWindow = this;
-//  qApp->setMainWidget(this);
   m_childFrameHistory = new wxHistory;
 }
 
@@ -115,11 +115,8 @@ void wxMainFrame::OnFileExit()
 }
 
 void wxMainFrame::LoadFileHistory() {
-//  QSettings settings(QSettings::Native);
-  QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
+  QSettings settings(QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
-  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
-//  settings.beginGroup(wxTheApp->GetSettingsPath());
   wxDocManager::GetDocumentManager()->FileHistoryLoad(settings);
 }
 
@@ -133,7 +130,7 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
     if (!f.open(QIODevice::ReadOnly))
     {
         wxDocManager::GetDocumentManager()->RemoveFileFromHistory(histFileIndex);
-        QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("Sorry, couldn't open this file."),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
                                 delete file;
         return;
     }
@@ -311,7 +308,7 @@ void wxMDIChildFrame::InitialUpdate()
 
 void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
 {
- QString title=caption();
+ QString title=windowTitle();
 
  if (isMinimized() && windowMenuAction)
   if (oldWindowState == Qt::WindowMaximized)
@@ -330,9 +327,9 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
 
 void wxMDIChildFrame::SetTitle(QString &title)
 {
-  QString oldTitle=parentWidget()->caption(), newTitle=title;
+  QString oldTitle=parentWidget()->windowTitle(), newTitle=title;
 
-  setCaption(title);
+  setWindowTitle(title);
   if (newTitle.at(newTitle.length()-1) == '*')
           newTitle = newTitle.left(newTitle.length()-1);
   if (!oldTitle.isEmpty())
@@ -369,7 +366,7 @@ wxMDIChildFrame::~wxMDIChildFrame()
 {
   QString title;
 
-  title = caption();
+  title = windowTitle();
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   deleting = true;

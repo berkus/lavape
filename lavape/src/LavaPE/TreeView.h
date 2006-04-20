@@ -33,7 +33,7 @@ public:
 };
 
 
-class CTreeItem :public QTreeWidgetItem //Q3ListViewItem 
+class CTreeItem :public QTreeWidgetItem 
 {
 public:
     friend class CTreeView;

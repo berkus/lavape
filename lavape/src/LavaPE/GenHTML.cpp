@@ -84,12 +84,12 @@ void CLavaPEView::OnGenHtmlI()
   bool firstChild=true;
 
   if (pathName.isEmpty()) {
-    QMessageBox::critical(this,qApp->name(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
+    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
     return;
   }
   QFileInfo fi(pathName);
-  iconPathTo = fi.dirPath(true);
-  baseName = fi.baseName(true);
+  iconPathTo = fi.path();
+  baseName = fi.baseName();
   pathName = pathName.left(pathName.length()-5);
   baseFile = pathName;
   copyCommand = ExeDir + "/cp_icons_std" + " " + ExeDir + " " + iconPathTo;
@@ -98,7 +98,7 @@ void CLavaPEView::OnGenHtmlI()
 #ifdef WIN32
   copyCommand.replace('/',"\\");
 #endif
-  system(copyCommand);
+  system(copyCommand.toAscii());
 
   if (singleFile)
     dclFile = baseFile + "_1.htm";
@@ -108,17 +108,17 @@ void CLavaPEView::OnGenHtmlI()
   }
 
 
-  IO.FOpenOutput(&dclFileRef,dclFile);
+  IO.FOpenOutput(&dclFileRef,dclFile.toAscii());
 
 	QFileInfo sf(dclFile);
-  shortFile = sf.baseName(true);
+  shortFile = sf.baseName();
 
   codeNl("<HTML>");
   codeNl("<HEAD>");
   codeNl("<META http-equiv=\"Content-Type\" CONTENT=\"text/html; charset=iso-8859-1\">");
   codeNl("<META NAME=\"GENERATOR\" CONTENT=\"Lava HTML Generator\">");
   code("<TITLE>");
-  code(shortFile);
+  code(shortFile.toAscii());
   codeNl("</TITLE>");
   codeNl("<LINK REL=\"STYLESHEET\" TYPE=\"text/css\" HREF=\"LavaIcons/LavaStyles.css\">");
   codeNl("<SCRIPT LANGUAGE=\"JavaScript\" SRC=\"LavaIcons/toggleDisplay.js\" TYPE=\"text/javascript\">");
@@ -129,9 +129,9 @@ void CLavaPEView::OnGenHtmlI()
   codeNl("<BODY>");
   code("<CENTER><H1>");
   if (baseName == "std")
-    code(shortFile);
+    code(shortFile.toAscii());
   else
-    code(dclFile);
+    code(dclFile.toAscii());
   codeNl("</H1>");
   if (!singleFile) {
     code("<A HREF=\"#index\">");
@@ -239,14 +239,14 @@ typedef /*QValueList*/list<SymEntry> SYMLIST;
 static void GenFramesHTML() {
   QString file = baseFile + ".htm";
 
-  IO.OpenOutput(file);
+  IO.OpenOutput(file.toAscii());
   codeNl("<HTML>");
   codeNl("<HEAD>");
   code("<META http-equiv=\"Content-Type\" ");
   codeNl("CONTENT=\"text/html; charset=iso-8859-1\">");
   codeNl("<META NAME=\"GENERATOR\" CONTENT=\"Lava HTML Generator\">");
   code("<TITLE>");
-  code(file);
+  code(file.toAscii());
   codeNl("</TITLE>");
   codeNl("<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\"LavaIcons/LavaStyles.css\">");
   codeNl("</head>");
@@ -254,7 +254,7 @@ static void GenFramesHTML() {
   codeNl("<FRAMESET COLS=\"50%,*\">");
   code("<FRAME SRC=\"");
   file = baseName + "_m.htm";
-  code(file);
+  code(file.toAscii());
   codeNl("\" NAME=\"frmLeft\">");
   codeNl("<FRAME SRC=\"LavaIcons/EmptyExec.htm\" NAME=\"frmRight\">");
   codeNl("<NOFRAMES>");
@@ -415,19 +415,19 @@ static void PutLink(TIDTable *IDTable,TID &refID,bool singleFile)
 		code("<A HREF=\"");
 		if (link[0] == '#') {
 			code("javascript:gotoTarget('");
-			code(link);
+			code(link.toAscii());
 			code("','");
-			code(QString("S%1").arg(refID.nID));
+			code(QString("S%1").arg(refID.nID).toAscii());
 			code("')\">");
 		}
 		else {
-			code(link);
+			code(link.toAscii());
 			code("\">");
 		}
 		code("<FONT color=#000000>");
 		if (pnode->DeclType == VirtualType) {
 			link = QString("&lt;") + QString(pnode->FullName.c) + QString(">");
-			code(QString("&lt;") + QString(pnode->FullName.c) + QString(">"));
+			code((QString("&lt;") + QString(pnode->FullName.c) + QString(">")).toAscii());
 		}
 		else {
 				symName = pnode->FullName.c;
@@ -438,13 +438,13 @@ static void PutLink(TIDTable *IDTable,TID &refID,bool singleFile)
             && pnode->ParentDECL->ParentDECL->DeclType == Impl))
           symName += "::impl";
 				symName.replace('<',"&lt;");
-				code(symName);
+				code(symName.toAscii());
 		}
 		code("</FONT></A>");
 	}
 	else {
 		code("<FONT color=#FF0000>");
-		code(QString("(%1,%2)").arg(nINCLstring).arg(nIDstring));
+		code(QString("(%1,%2)").arg(nINCLstring).arg(nIDstring).toAscii());
 		code("</FONT>");
 	}
 }
@@ -499,9 +499,9 @@ static void PutFileLink(QString fileName)
   }
 
   code("<A HREF=\"");
-  code(fileName);
+  code(fileName.toAscii());
   code("\">");
-  code(linkText);
+  code(linkText.toAscii());
   code("</A>");
 }
 
@@ -1257,7 +1257,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
 				bool rc = dir.mkdir(baseFile);
 				if (!rc) break;
 			}
-      IO.OpenOutput(execFile);
+      IO.OpenOutput(execFile.toAscii());
       if (!IO.Done) break;
     }
 

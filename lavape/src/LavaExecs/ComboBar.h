@@ -2,11 +2,11 @@
 #define __ComboBar
 
 
-#include "q3combobox.h"
-#include "q3dockwindow.h"
+#include "qcombobox.h"
+//#include "qdockwindow.h"
 #include "qpushbutton.h"
 #include "qtoolbar.h"
-#include "q3popupmenu.h"
+#include <QMenu>
 #include "qstring.h"
 #include "qpainter.h"
 //Added by qt3to4:
@@ -130,7 +130,7 @@ public:
   QIcon BitmapEnums;
   QIcon BmNewCFunc;
   QIcon BmNewPFunc;
-  Q3PopupMenu EnumMenu;
+  QMenu EnumMenu;
 
   enum combosEnum {v_Types, v_SetTypes/*, v_Signals*/, v_BasicTypes, v_Enums, v_New, v_SNew,
         v_Objects, v_SetObjects, v_Attach, v_CallInt, v_CompoObjInt, v_ClassFuncs,
@@ -192,7 +192,7 @@ protected:
 //  void OnSelendokComboStatFuncs();
 
 public slots:
-  void OnEnumMenu(int id);
+  void OnEnumMenu(QAction *action);
   void OnSelendokComboObjects(int pos);
   void OnSelendokComboSetObjects(int pos);
   void OnSelendokComboCompObjects(int pos);

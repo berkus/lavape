@@ -26,6 +26,9 @@
 
 #include "TEdit.h"
 #include "mdiframes.h"
+
+#include <QScrollBar>
+
 //Added by qt3to4:
 
 #pragma hdrstop

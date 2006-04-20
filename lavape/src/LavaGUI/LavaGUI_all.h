@@ -23,7 +23,6 @@
 #include "TEdit.h"
 #include "TreeSrch.h"
 #include "TStatic.h"
-//#include "Lava.xpm"
 
 #endif
 

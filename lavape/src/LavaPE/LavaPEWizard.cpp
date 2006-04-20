@@ -29,15 +29,15 @@
 #include "qpushbutton.h"
 #include "qradiobutton.h"
 #include "qspinbox.h"
-#include "q3buttongroup.h"
+#include "qbuttongroup.h"
 #include "qmessagebox.h"
 #include "qtabbar.h"
 #include "qsizepolicy.h"
 #include "qfontdialog.h"
 #include "qcolordialog.h"
-#include "q3filedialog.h"
+#include "qfiledialog.h"
 //Added by qt3to4:
-#include <Q3Frame>
+#include <QFrame>
 
 #pragma hdrstop
 
@@ -609,7 +609,7 @@ void CChainFormPage::on_ChElemFormTypes_activated(int)
 void CChainFormPage::on_ConstChain_clicked() 
 {
   TAnnotation* anno =  (TAnnotation*)myWizard->FormDECL->Annotation.ptr->FA.ptr;
-  if (ConstChain->isOn()) {
+  if (ConstChain->isChecked()) {
     anno->IterFlags.INCL(FixedCount);
     anno->IterFlags.INCL(NoEllipsis);
   }
@@ -626,7 +626,7 @@ void CChainFormPage::on_ConstChain_clicked()
 void CChainFormPage::on_HasButtons_clicked() 
 {
   TAnnotation* anno =  (TAnnotation*)myWizard->FormDECL->Annotation.ptr->FA.ptr;
-  bool has = (HasButtons->isOn());
+  bool has = (HasButtons->isChecked());
   EDITDelButton->setEnabled(has);
   EditInsertButton->setEnabled(has);
   if (has) {
@@ -1352,13 +1352,13 @@ CIOPage::~CIOPage()
 void CIOPage::UpdateData(bool getData)
 {
   if (getData) {
-    v_Input = isInput->isOn();
-    v_Output = isOutput->isOn();
-    v_DefaultIO = UseDefault->isOn();
-    v_noEcho = noEcho->isOn();
-    v_NoFIO = NoFIO->isOn();
-    v_MultiLine = MultiLine->isOn();
-    v_isPopupW = Popupw->isOn();
+    v_Input = isInput->isChecked();
+    v_Output = isOutput->isChecked();
+    v_DefaultIO = UseDefault->isChecked();
+    v_noEcho = noEcho->isChecked();
+    v_NoFIO = NoFIO->isChecked();
+    v_MultiLine = MultiLine->isChecked();
+    v_isPopupW = Popupw->isChecked();
 
     m_Space = FHSpaceSPIN->value();
     m_Tab = FHTabSPIN->value();
@@ -1523,7 +1523,7 @@ void CIOPage::GetProps()
     anno->BasicFlags.INCL(PopUp);
   else 
     anno->BasicFlags.EXCL(PopUp);
-  if (groupbox->isOn())
+  if (groupbox->isChecked())
     anno->BasicFlags.INCL(Groupbox);
   else 
     anno->BasicFlags.EXCL(Groupbox);
@@ -1566,14 +1566,14 @@ void CIOPage::GetProps()
 
 void CIOPage::on_isInput_clicked() 
 {
-  if (isInput->isOn()) {
+  if (isInput->isChecked()) {
     UseDefault->setChecked(0);
     NoFIO->setChecked(0);
     v_DefaultIO = false;
     v_NoFIO = false;
   }
   else
-    if (!(NoFIO->isOn() || isOutput->isOn())) {
+    if (!(NoFIO->isChecked() || isOutput->isChecked())) {
       UseDefault->setChecked(1);
       v_DefaultIO = true;
     }
@@ -1583,14 +1583,14 @@ void CIOPage::on_isInput_clicked()
 
 void CIOPage::on_isOutput_clicked() 
 {
-  if (isOutput->isOn())  {
+  if (isOutput->isChecked())  {
     UseDefault->setChecked(0);
     NoFIO->setChecked(0);
     v_DefaultIO = false;
     v_NoFIO = false;
   }
   else
-    if (!(isInput->isOn() || NoFIO->isOn())) {
+    if (!(isInput->isChecked() || NoFIO->isChecked())) {
       UseDefault->setChecked(1);
       v_DefaultIO = true;
     }
@@ -1601,7 +1601,7 @@ void CIOPage::on_isOutput_clicked()
 
 void CIOPage::on_NoFIO_clicked() 
 {
-  if (NoFIO->isOn()) {
+  if (NoFIO->isChecked()) {
     isInput->setChecked(0);
     isOutput->setChecked(0);
     noEcho->setChecked(0);
@@ -1613,7 +1613,7 @@ void CIOPage::on_NoFIO_clicked()
     UseDefault->setEnabled(true);
   }
   else
-    if (!(isInput->isOn() || isOutput->isOn())) {
+    if (!(isInput->isChecked() || isOutput->isChecked())) {
       UseDefault->setChecked(1);
       v_DefaultIO = true;
     }
@@ -1623,7 +1623,7 @@ void CIOPage::on_NoFIO_clicked()
 
 void CIOPage::on_UseDefault_clicked() 
 {
-  if (UseDefault->isOn()) {
+  if (UseDefault->isChecked()) {
     isInput->setChecked(0);
     isOutput->setChecked(0);
     NoFIO->setChecked(0);
@@ -1631,7 +1631,7 @@ void CIOPage::on_UseDefault_clicked()
     v_Output = false;
     v_NoFIO = false;
   }
-  UseDefault->setEnabled(!UseDefault->isOn());
+  UseDefault->setEnabled(!UseDefault->isChecked());
   myWizard->setModified(true);
 }
 
@@ -1733,11 +1733,11 @@ void CLiteralsPage::UpdateData(bool getData)
     if (v_EnumDefault.length())
       EnumDefault->setCurrentText(v_EnumDefault);
     else
-      EnumDefault->setCurrentItem(0);
+      EnumDefault->setCurrentIndex(0);
     if (v_BoolDefault.length())
       BoolDefault->setCurrentText(v_BoolDefault);
     else
-      BoolDefault->setCurrentItem(0);
+      BoolDefault->setCurrentIndex(0);
     modify = true;
   }
 }
@@ -1821,7 +1821,7 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
       EnumDefault->setCurrentText(v_EnumDefault);
     }
     else
-      EnumDefault->setCurrentItem(0);
+      EnumDefault->setCurrentIndex(0);
   }
   else {
     EnumDefault->setEnabled(false);
@@ -1840,7 +1840,7 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
             BoolDefault->setCurrentText(v_BoolDefault); //Defaultwert
           }
           else
-            BoolDefault->setCurrentItem(0);
+            BoolDefault->setCurrentIndex(0);
         }
         else {
           Default->setEnabled(true);
@@ -2346,12 +2346,12 @@ void CMenuPage::UpdateData(bool getData)
   if (getData) {
     v_Menutype = Menutype->currentItem();
     m_ItemNr = Menuitems->currentRow();
-    v_LeftLabel = LeftLabel->isOn();
+    v_LeftLabel = LeftLabel->isChecked();
     v_ToggleLabel = ToggleLabel->text();
   }
   else {
     modify = false;
-    Menutype->setCurrentItem(v_Menutype);
+    Menutype->setCurrentIndex(v_Menutype);
     Menuitems->setCurrentRow(m_ItemNr);
     LeftLabel->setChecked(v_LeftLabel);
     ToggleLabel->setText(v_ToggleLabel);
@@ -2857,11 +2857,11 @@ void CMenuItem::UpdateData(bool getData)
     m_MenuFrmspace = VSpaceSPIN->value();
     m_Menuspace = HSpaceSPIN->value();
     m_Menutab = HTabSPIN->value();
-    if (isButton->isOn())
+    if (isButton->isChecked())
       m_flags = 0;
-    else if (noButton->isOn())
+    else if (noButton->isChecked())
       m_flags = 1;
-    else if (NoFIO->isOn())
+    else if (NoFIO->isChecked())
       m_flags = 2;
     else
       m_flags = 3;

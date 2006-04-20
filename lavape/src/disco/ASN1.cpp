@@ -69,7 +69,8 @@ ASN1::ASN1 ()
   altTag = false;
   nestedCASEs = 0;
   contentsBuffer.Reset(100);
-  qSysInfo(&wordSize,&isBigEndian);
+  wordSize = QSysInfo::WordSize;
+  isBigEndian = (QSysInfo::ByteOrder == QSysInfo::BigEndian);
 }
 
 
@@ -101,7 +102,7 @@ void ASN1::error (ErrCode errCode,
     return;
   }
   if (!Silent) {
-    qDebug(errMsg);
+    qDebug(qPrintable(errMsg));
 //    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),errMsg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
   }
   errorExitProc();
@@ -904,7 +905,7 @@ void ASN1::PrintHeader ()
   msg += "::: ";
   if (EOC()) {
     msg += "EOC";
-    qDebug(msg);
+    qDebug(qPrintable(msg));
     return;
   }
 
@@ -944,7 +945,7 @@ void ASN1::PrintHeader ()
     msg += ", Length=";
     msg += QString("%1").arg(topOfStack->header.Len,1);
   }
-  qDebug(msg);
+  qDebug(qPrintable(msg));
 }
 
 
@@ -1232,7 +1233,7 @@ void ASN1::GETint (long int& x)
   if (skip) return;
   x = convLongInteger(contentsBuffer);
   if (HeaderTrace)
-    qDebug("::: ASN1.GETint: "+QString("%1").arg(int(x)));
+    qDebug(qPrintable(QString("::: ASN1.GETint: ")+QString("%1").arg(int(x))));
 }
 
 
@@ -1260,7 +1261,7 @@ void ASN1::GETint (int& x)
   if (skip) return;
   x = convInteger(contentsBuffer);
   if (HeaderTrace)
-    qDebug("::: ASN1.GETint: "+QString("%1").arg(int(x)));
+    qDebug(qPrintable(QString("::: ASN1.GETint: ")+QString("%1").arg(int(x))));
 }
 
 
@@ -1424,7 +1425,7 @@ void ASN1::GETbyte (unsigned char& c)
   c = (unsigned char)contentsBuffer[0];
   if (HeaderTrace) {
     msg = "::: ASN1.GetBYTE: " + toHex(contentsBuffer.c);
-    qDebug(msg);
+    qDebug(qPrintable(msg));
   }
 }
 
@@ -1440,7 +1441,7 @@ void ASN1::GETbytes (DString& s)
   getString(Universal,4,s,eoc,unusedBits);
   if (HeaderTrace) {
     msg = "::: ASN1.GetBYTES: " + toHex(s.c);
-    qDebug(msg);
+    qDebug(qPrintable(msg));
   }
 }
 
@@ -1460,7 +1461,7 @@ void ASN1::GETbits (Bitstring& s)
   s.l = nBits;
   if (HeaderTrace) {
     msg = "::: ASN1.GetBITS: " + toHex(s.c);
-    qDebug(msg);
+    qDebug(qPrintable(msg));
   }
 }
 
@@ -1486,7 +1487,7 @@ void ASN1::GETchar (char& c)
   GetContents(contentsBuffer,empty);
   c = MachDep.FromASCII[(unsigned char)contentsBuffer[0]];
   if (HeaderTrace)
-    qDebug(QString("::: ASN1.GetCHAR: \"")+c+"\"");
+    qDebug(qPrintable(QString("::: ASN1.GetCHAR: \"")+QString(c)+QString("\"")));
 }
 
 
@@ -1506,7 +1507,7 @@ void ASN1::GETstring (DString& s)
     s[s.l] = '\0';
   }
   if (HeaderTrace)
-    qDebug(QString("::: ASN1.GetSTRING: \"")+QString(s.c)+QString("\""));
+    qDebug(qPrintable(QString("::: ASN1.GetSTRING: \"")+QString(s.c)+QString("\"")));
 }
 
 

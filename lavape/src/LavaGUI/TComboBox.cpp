@@ -36,9 +36,10 @@
 
 
 CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentWnd, char* WindowName, DString& defaultSel, unsigned width)
-:QComboBox(false, pParentWnd, "TComboBox")
+:QComboBox(pParentWnd)
 
 {
+  setObjectName("TComboBox");
   CHEEnumSelId *enumSel;
   myFormNode = data;
   GUIProg = guiPr;
@@ -63,7 +64,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
       AddItem(enumSel->data.Id.c, myFormNode);        
   }
   else
-    setCurrentItem(0);
+    setCurrentIndex(0);
   if (myFormNode->data.IoSigFlags.Contains(DONTPUT)
       || !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
@@ -71,9 +72,15 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   connect(this, SIGNAL(activated(int)), this, SLOT(OnSelendok(int)));
   if (myFormNode->data.IterFlags.Contains(Optional)) {
     myMenu = new QMenu(this);
-    myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
-    myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
-    myMenu->setItemEnabled(IDM_ITER_INSERT, false);
+    QAction *DelAction= new QAction("Delete optional",this);
+    myMenu->addAction(DelAction);
+    connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
+    QAction *InsAction= new QAction("Insert optional",this);
+    myMenu->addAction(InsAction);
+    connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
+    InsAction->setEnabled(false);
+    //myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
+    //myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
   }
 
   show();

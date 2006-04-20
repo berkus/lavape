@@ -182,7 +182,7 @@ void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bo
     }
   }
   SortCombo(cbox);
-  cbox->setCurrentItem(0);
+  cbox->setCurrentIndex(0);
 }
 
 
@@ -931,14 +931,14 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   fn = DString(qPrintable(lpszPathName));
   if (fi.exists() && !fi.isWritable()) {
     str = DString("Lava file '") + fn + DString("' couldn't be opened for writing");
-    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),str.c ,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str.c ,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return false;
   }
   isReadOnly = false;
   oldDocDir = IDTable.DocDir;
   oldDocName = IDTable.DocName;
   oldFileExtension = IDTable.FileExtension;
-  IDTable.DocDir = DString(qPrintable(fi.dirPath())) + "/";
+  IDTable.DocDir = DString(fi.path().toAscii()) + "/";
   relFn = fn;
   RelPathName(relFn, IDTable.DocDir);
   simpleSyntax = (CHESimpleSyntax*)mySynDef->SynDefTree.first;
@@ -995,7 +995,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   isyntax->FreeINCL = IDTable.freeINCL;
   if (!SynIO.WriteSynDef(fn.c, isyntax)) {
     str = DString("Error on writing the lava file '") + fn + "'";
-    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),str.c,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str.c,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return false;
   }
   if (hasIncludes)
@@ -1003,7 +1003,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   if (mySynDef->SynDefTree.first == mySynDef->SynDefTree.last) {
     if (!isStd) {
       str = DString("File '") + fn + "' is not a valid lava file";
-      critical(wxTheApp->m_appWindow,qApp->name(),str.c,QMessageBox::Ok,0,0);
+      critical(wxTheApp->m_appWindow,qApp->applicationName(),str.c,QMessageBox::Ok,0,0);
     }
     changeNothing = !isStd || !LBaseData->stdUpdate;
   }
@@ -1128,7 +1128,7 @@ static HRESULT CreateShortCut (LPCSTR pszShortcutFile, LPSTR pszLink)
 
 void CLavaBaseView::on_whatNextAction_triggered()
 {
-  QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),"\"What next\" help not yet available for this selection",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),"\"What next\" help not yet available for this selection",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 /*
 void CLavaBaseView::howTo()

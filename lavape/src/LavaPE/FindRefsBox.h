@@ -5,7 +5,7 @@
 #include "LavaAppBase.h"
 #include "LavaPEDoc.h"
 //#include "wxExport.h"
-#include "q3combobox.h"
+#include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"

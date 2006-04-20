@@ -49,8 +49,10 @@ QAssistantClient *qacl=0;
 CLavaPEHint::CLavaPEHint(CPECommand cc, wxDocument* fromdoc, SynFlags first,
                        DWORD commandData1, DWORD commandData2,
                        DWORD commandData3, DWORD commandData4,
-                       DWORD commandData5, DWORD commandData6, DWORD commandData7, DWORD commandData8) :QObject(0, "LavaPEHint")
-{ com = cc; 
+                       DWORD commandData5, DWORD commandData6, DWORD commandData7, DWORD commandData8)
+{ 
+  setObjectName("LavaPEHint");
+  com = cc; 
   fromDoc = fromdoc;
   FirstLast = first;
   CommandData1 = commandData1; 
@@ -476,7 +478,7 @@ bool CMultiUndoMem::Undo(CLavaPEHint *withLastHint)
       if (result == 2) {
         mess += QString("\n\nWould you like to undo the update nevertheless in those documents where it is possible?\nPress Yes-button if you like, press No otherwise");
       if (QMessageBox::question(
-        wxTheApp->m_appWindow,qApp->name(),mess,
+        wxTheApp->m_appWindow,qApp->applicationName(),mess,
         QMessageBox::Yes,
         QMessageBox::No) == QMessageBox::Yes) {
         //if (QMessageBox() == QMessageBox::Yes) {//mess, MB_YESNO|MB_ICONQUESTION) == IDYES) {
@@ -503,7 +505,7 @@ bool CMultiUndoMem::Undo(CLavaPEHint *withLastHint)
         }
       }
       else
-        critical(wxTheApp->m_appWindow,qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         //QMessageBox(mess);
     }
   }
@@ -569,7 +571,7 @@ bool CMultiUndoMem::Redo(CLavaPEHint *withFirstHint)
       if (result == 2) {
         mess += QString("\n\nWould you like to redo the update nevertheless in those documents where it is possible?\nPress Yes-button if you like, press No otherwise");
       if (QMessageBox::question(
-        wxTheApp->m_appWindow,qApp->name(),mess,
+        wxTheApp->m_appWindow,qApp->applicationName(),mess,
         QMessageBox::Yes,
         QMessageBox::No) == QMessageBox::Yes) {
         //if (QMessageBox()) {//mess, MB_YESNO|MB_ICONQUESTION) == IDYES) {
@@ -596,7 +598,7 @@ bool CMultiUndoMem::Redo(CLavaPEHint *withFirstHint)
         }
       }
       else
-        critical(wxTheApp->m_appWindow,qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),mess,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         //QMessageBox();//mess);
     }
   }
@@ -615,8 +617,9 @@ void CMultiUndoMem::RemoveHint(CLavaPEHint *fHint)
   }
 }
 
-CBrowseContext::CBrowseContext(wxView* view, CHEFormNode* node):QObject(0, "BrowseContext")
+CBrowseContext::CBrowseContext(wxView* view, CHEFormNode* node)
 {
+  setObjectName("BrowseContext");
   prev = LBaseData->Browser->LastBrowseContext;
   fromView = view;
   synObjSel = 0;
@@ -625,8 +628,9 @@ CBrowseContext::CBrowseContext(wxView* view, CHEFormNode* node):QObject(0, "Brow
 }
 
 
-CBrowseContext::CBrowseContext(wxView* view, LavaDECL* decl, int t):QObject(0, "BrowseContext")
+CBrowseContext::CBrowseContext(wxView* view, LavaDECL* decl, int t)
 {
+  setObjectName("BrowseContext");
   prev = LBaseData->Browser->LastBrowseContext;
   fromView = view;
   synObjSel = 0;
@@ -638,8 +642,9 @@ CBrowseContext::CBrowseContext(wxView* view, LavaDECL* decl, int t):QObject(0, "
 }
 
 
-CBrowseContext::CBrowseContext(wxView* view, SynObjectBase* synObj):QObject(0, "BrowseContext")
+CBrowseContext::CBrowseContext(wxView* view, SynObjectBase* synObj)
 {
+  setObjectName("BrowseContext");
   prev = LBaseData->Browser->LastBrowseContext;
   fromView = view;
   synObjSel = synObj;
@@ -1111,8 +1116,8 @@ QString L_GetOpenFileName(const QString& startFileName,
     qf = QFileInfo(startFileName);
     fileName = qf.fileName();
     QFileInfo qfresolved(ResolveLinks(qf));
-    currentFilter = qfresolved.extension();
-    initialDir = qf.dirPath(true);
+    currentFilter = qfresolved.suffix();
+    initialDir = qf.path();
   }
   else
     initialDir = startFileName;
@@ -1141,7 +1146,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   ofn.lpstrFile = szFile;
   ofn.nMaxFile = sizeof(szFile);
   ofn.lpstrFilter = cfilter;
-  ofn.lpstrTitle = caption;
+  ofn.lpstrTitle = caption.toAscii();
   ofn.lpstrFileTitle = 0;
   ofn.nMaxFileTitle = 0;
   if ((filter2 != QString::null) && (currentFilter == exten2))
@@ -1150,8 +1155,7 @@ QString L_GetOpenFileName(const QString& startFileName,
     ofn.nFilterIndex = 1;
   QString str = initialDir;
   str.replace("/", "\\");
-  //str.truncate(initialDir.length()-1);
-  ofn.lpstrInitialDir = str;
+  ofn.lpstrInitialDir = str.toAscii();
   ofn.lpfnHook = myOFNHookProc;
   ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_READONLY | OFN_HIDEREADONLY
               | OFN_NODEREFERENCELINKS | OFN_ENABLEHOOK | OFN_EXPLORER | OFN_ENABLESIZING;
@@ -1216,8 +1220,8 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   QStringList resultNames; 
   QFileInfo qf = QFileInfo(startFileName);
   QFileInfo qfresolved(ResolveLinks(qf));
-  QString currentFilter = qfresolved.extension();
-  QString initialDir = qf.dirPath(true);
+  QString currentFilter = qfresolved.suffix();
+  QString initialDir = qf.path();
 
 #ifdef WIN32_
   OPENFILENAME ofn;                    // common dialog box structure
@@ -1314,14 +1318,14 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   if (filter2 != QString::null)
     filters << filter2; // fd->addFilter( filter2);
 	fd->setFilters(filters);
-  fd->setCaption(caption);
-  fd->setDir(qf.dirPath(true));
+  fd->setWindowTitle(caption);
+  fd->setDirectory(qf.path());
   if (currentFilter.isEmpty())
     currentFilter = "lava";
   currentFilter = "*." + currentFilter;
 //  fd->setSelectedFilter(currentFilter);
   fd->selectFile(startFileName);
-  fd->setMode( QFileDialog::ExistingFiles );
+  fd->setFileMode( QFileDialog::ExistingFiles );
   fd->setViewMode( QFileDialog::List );
   fd->selectFilter(filter);
   if (fd->exec() == QDialog::Accepted ) {

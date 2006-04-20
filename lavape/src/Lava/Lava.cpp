@@ -139,7 +139,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   LBaseData.Init(0, 0);
   LBaseData.debugThread = &debugThread;
 
-  settings.beginGroup("/generalSettings");
+  settings.beginGroup("generalSettings");
   LBaseData.m_strCheckPreconditions = settings.readEntry(szCheckPreconditions, 0, &ok);
   if (ok)
     if (LBaseData.m_strCheckPreconditions == "true")
@@ -182,7 +182,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   }
   settings.endGroup();
 
-  settings.beginGroup("/fontSettings");
+  settings.beginGroup("fontSettings");
 
   LBaseData.m_lfDefFormFont = settings.readEntry(szFormFont, 0, &ok);
   if (ok)
@@ -214,7 +214,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
 
   settings.endGroup();
 
-  settings.beginGroup("/otherSettings");
+  settings.beginGroup("otherSettings");
   LBaseData.m_myWebBrowser = settings.readEntry(favoriteBrowser, 0, &ok);
   LBaseData.m_style = settings.readEntry(gui_style, 0, &ok);
   settings.endGroup();
@@ -468,21 +468,21 @@ void CLavaApp::saveSettings()
 //  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::User);
 //  settings.beginGroup(GetSettingsPath());
 
-  settings.beginGroup("/generalSettings");
+  settings.beginGroup("generalSettings");
   settings.writeEntry(szCheckPreconditions,LBaseData.m_strCheckPreconditions);
   settings.writeEntry(szCheckPostconditions,LBaseData.m_strCheckPostconditions);
   settings.writeEntry(szCheckInvariants,LBaseData.m_strCheckInvariants);
   settings.writeEntry(szPmDumps,LBaseData.m_strPmDumps);
   settings.endGroup();
 
-  settings.beginGroup("/fontSettings");
+  settings.beginGroup("fontSettings");
   settings.writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
   if (LBaseData.useLabelFont)
     settings.writeEntry(szFormLabelFont,LBaseData.m_lfDefFormLabelFont);
   settings.writeEntry(szGlobalFont,LBaseData.m_lfDefGlobalFont);
   settings.endGroup();
 
-  settings.beginGroup("/otherSettings");
+  settings.beginGroup("otherSettings");
   settings.writeEntry(favoriteBrowser,LBaseData.m_myWebBrowser);
   settings.writeEntry(gui_style,LBaseData.m_style);
   settings.endGroup();

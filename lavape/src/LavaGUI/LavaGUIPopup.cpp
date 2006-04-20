@@ -10,11 +10,11 @@
 #include "LavaGUIPopup.h"
 #include "GUIProgBase.h"
 #include "qpushbutton.h"
-#include "q3vbox.h"
+//#include "q3vbox.h"
 #include "qlayout.h"
 //Added by qt3to4:
-#include <Q3VBoxLayout>
-#include <Q3HBoxLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QCloseEvent>
 
 #pragma hdrstop
@@ -29,11 +29,15 @@ static char THIS_FILE[] = __FILE__;
 
 
 CLavaGUIPopup::CLavaGUIPopup(QWidget* parent, CGUIProgBase *guiPr, CHEFormNode* data)
-    : QMainWindow(parent,"LavaGUIPopup",Qt::WDestructiveClose)// | WType_TopLevel)
+    : QMainWindow(parent)
 {
+  setObjectName("LavaGUIPopup");
   myFormNode = data;
   GUIProg = guiPr;
-  setPaletteBackgroundColor(GUIProg->ViewWin->paletteBackgroundColor());
+  QPalette palette;
+  palette.setColor(QPalette::Active,QPalette::Window, GUIProg->ViewWin->palette().window().color());
+  setPalette(palette);
+//  setPaletteBackgroundColor(GUIProg->ViewWin->paletteBackgroundColor());
   view = new GUIScrollView(this, true);
   setCentralWidget(view);
   hide();
@@ -82,11 +86,16 @@ void CLavaGUIPopup::closeEvent(QCloseEvent *e)
 
 
 CLavaGUIPopupD::CLavaGUIPopupD(QWidget* parent, CGUIProgBase *guiPr, CHEFormNode* data)
-: QDialog(parent, "LavaGUIPopupD", true, Qt::WType_TopLevel | Qt::WStyle_MinMax)
+: QDialog(parent)
 {
+  setModal(true);
+  setObjectName("LavaGUIPopupD");
   myFormNode = data;
   GUIProg = guiPr;
-  setPaletteBackgroundColor(GUIProg->ViewWin->paletteBackgroundColor());
+  QPalette palette;
+  palette.setColor(QPalette::Active,QPalette::Window, GUIProg->ViewWin->palette().window().color());
+  setPalette(palette);
+//  setPaletteBackgroundColor(GUIProg->ViewWin->palette().window().color());
   view = new GUIScrollView(this, true);
   QWidget* hb = new QWidget(this);
   QPushButton* okButton = new QPushButton("Close", hb);

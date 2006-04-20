@@ -11,7 +11,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CLavaMenu window
 
-//the DISCO Popup-menu is realized as CEdit-window wich has a popup CMenu-window
+//the DISCO Popup-menu is realized as CEdit-window which has a popup CMenu-window
 class CLavaMenu : public QLineEdit
 {
 public:
@@ -30,8 +30,5 @@ public:
   unsigned count;
 private:
   Q_OBJECT
-
-
-
 };
 #endif

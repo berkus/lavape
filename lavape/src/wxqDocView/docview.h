@@ -570,7 +570,7 @@ private:
 class WXDLLEXPORT wxHistory : public QObject
 {
 public:
-    wxHistory(int maxFiles = 9, QMenu *m=0);
+    wxHistory(int maxFiles = 9, QMenu *m=0, QObject *receiver=0);
     virtual ~wxHistory();
 
     // Operations
@@ -599,16 +599,17 @@ public:
     virtual int GetCount() const { return m_historyN; }
     int GetMaxNoHistItems() const { return m_maxHistItems; }
 
-    QMenu             *m_menu;
+    QMenu    *m_menu;
 
 protected:
     // Max files to maintain
-    int               m_maxHistItems;
+    int      m_maxHistItems;
 
-    DString           **m_history;
+    DString  **m_history;
+    QAction **action;
 
     // Number of files saved
-    int               m_historyN;
+    int      m_historyN;
 
 private:
     Q_OBJECT

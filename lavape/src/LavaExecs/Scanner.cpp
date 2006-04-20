@@ -81,7 +81,7 @@ bool IsOK (QString &txt,TToken &token,int &pos,QString *&msg, CComboBar *comboBa
     }
     else {
       QString cstr(txt);
-      if (cstr.find("temp") >= 0) {
+      if (cstr.indexOf("temp") >= 0) {
         cstr = cstr.mid(4);
         if (cstr.isEmpty()) {
           *msgp = &ERR_ReservedName;

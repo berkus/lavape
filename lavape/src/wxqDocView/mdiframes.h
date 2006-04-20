@@ -48,7 +48,7 @@ class WXDLLEXPORT wxMainFrame: public QMainWindow
     //friend class WXDLLEXPORT wxMDIChildFrame;
 public:
   wxMainFrame() {}
-  wxMainFrame( QWidget* parent, const char* name, Qt::WFlags fl=0);
+  wxMainFrame( QWidget* parent, const char* name);
   virtual ~wxMainFrame();
 
   virtual bool OnCreate();

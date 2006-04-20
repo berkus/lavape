@@ -6,7 +6,7 @@
 #include "LavaPEDoc.h"
 #include "TreeView.h"
 //#include "wxExport.h"
-#include "q3combobox.h"
+#include "qcombobox.h"
 //Added by qt3to4:
 #include "docview.h"
 #include "qobject.h"

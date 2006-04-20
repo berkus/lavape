@@ -732,11 +732,11 @@ bool StringPlus(CheckData& ckd, LavaVariablePtr stack)
 {
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[VLString], ((SynFlags*)(stack[SFH]+1))->Contains(stateObjFlag))
   if ((QString*)(stack[SFH]+LSH) && (QString*)(stack[SFH+1]+LSH)) 
-    NewQString((QString*)stack[SFH+2]+LSH, (*(QString*)(stack[SFH]+LSH) + *(QString*)(stack[SFH+1]+LSH)));
+    NewQString((QString*)stack[SFH+2]+LSH, (*(QString*)(stack[SFH]+LSH) + *(QString*)(stack[SFH+1]+LSH)).toAscii());
   else if ((QString*)(stack[SFH+1]+LSH)) 
-    NewQString((QString*)stack[SFH+2]+LSH, *(QString*)(stack[SFH+1]+LSH));
+    NewQString((QString*)stack[SFH+2]+LSH, ((QString*)(stack[SFH+1]+LSH))->toAscii());
   else if ((QString*)(stack[SFH]+LSH)) 
-    NewQString((QString*)stack[SFH+2]+LSH, *(QString*)(stack[SFH]+LSH));
+    NewQString((QString*)stack[SFH+2]+LSH, ((QString*)(stack[SFH]+LSH))->toAscii());
   return true;
 }
 
@@ -744,25 +744,25 @@ bool StringBox(CheckData& ckd, LavaVariablePtr stack)
 {
   QWidget *parent=wxTheApp->m_appWindow;
 
-  wxTheApp->m_appWindow->setActiveWindow();
-//???  wxTheApp->m_appWindow->raise();
+//???  wxTheApp->m_appWindow->setActiveWindow();
+  wxTheApp->m_appWindow->raise();
   int rc=Qt::NoButton;
   if ((QString*)(stack[SFH]+LSH)) 
     rc = information(
-      parent,qApp->name(),*(QString*)(stack[SFH]+LSH),
+      parent,qApp->applicationName(),*(QString*)(stack[SFH]+LSH),
       QMessageBox::Ok | QMessageBox::Default,
       0,
       0);
   else
     rc = information(
-      parent,qApp->name(),"     ",
+      parent,qApp->applicationName(),"     ",
       QMessageBox::Ok | QMessageBox::Default,
       QMessageBox::Abort,
       0);
 
   if (rc == QMessageBox::Abort)
 		if (question(
-			parent,qApp->name(),"Do you really want to abort this Lava program?",
+			parent,qApp->applicationName(),"Do you really want to abort this Lava program?",
 			QMessageBox::Yes | QMessageBox::Default,
 			QMessageBox::No,
 			0) == QMessageBox::Yes)
@@ -1717,7 +1717,7 @@ bool DropException(CheckData& ckd, LavaVariablePtr stack)
   if (ckd.lastException) {
     DFC(ckd.lastException);
     ckd.lastException = 0;
-    ckd.callStack.setLength(0);
+    ckd.callStack.resize(0);
     ckd.exceptionThrown = false;
   }
   return true;
@@ -1733,7 +1733,7 @@ bool ExceptionCallStack(CheckData& ckd, LavaVariablePtr stack)
       ckd.exceptionThrown = true;
       return false;
     }
-    NewQString((QString*)strObj+LSH, ckd.callStack);
+    NewQString((QString*)strObj+LSH, ckd.callStack.toAscii());
     stack[SFH+1] = strObj;
   }
   return true;

@@ -159,7 +159,7 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
     break;
   case Comment_T:
     currentToken->data.str = currentSynObj->comment.ptr->str.c;
-    while ((loc=currentToken->data.str.find("\r",start)) != -1) {
+    while ((loc=currentToken->data.str.indexOf("\r",start)) != -1) {
       currentToken->data.str.remove(loc,1);
       start = loc;
     }
@@ -256,7 +256,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     str = currentSynObj->comment.ptr->str.c;
 		str.replace('\r',"");
 		while (true) {
-			loc = str.find('\n',ind);
+			loc = str.indexOf('\n',ind);
 			if (loc != -1) {
 			  maxLine = qMax((int)maxLine,loc-ind);
 				ind = loc+1;
@@ -328,7 +328,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
       code("<FONT color=#0000FF>"); // blue
       color = true;
     }
-    code(str);
+    code(str.toAscii());
   }
   else if (token == FuncRef_T
   || token == TypeRef_T
@@ -340,12 +340,12 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
       italic = true;
       code("<FONT color=#FF0000>"); // red
       color = true;
-      code(str);
+      code(str.toAscii());
     }
     else if (TOKENSTR[token][0] == '(') { //currentSynObj->errorCode == &ERR_Broken_ref) {
       code("<FONT color=#FF0000>"); // red
       color = true;
-      code(str);
+      code(str.toAscii());
     }
     else if (token == enumConst_T)
       PutLink(&document->IDTable,((EnumConst*)currentSynObj)->refID,
@@ -398,7 +398,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
     italic = true;
     code("<FONT color=#009000>"); // green
     color = true;
-    code(str);
+    code(str.toAscii());
   }
   else if (TOKENSTR[token][0].isLetter()
   || TOKENSTR[token][0]=='@'
@@ -421,7 +421,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
         code("<FONT color=#0000FF>"); // blue
       color = true;
     }
-    code(str);
+    code(str.toAscii());
   }
   else if (currentSynObj->IsPlaceHolder()
     && token != FuncDisabled_T
@@ -438,7 +438,7 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
       code("<FONT color=#FF0000>"); // red
       color = true;
     }
-    code(str);
+    code(str.toAscii());
   }
   else {
     if (ignored) {
@@ -451,9 +451,8 @@ void CProgHTML::Insert (TToken token,bool isPrimToken,bool isOpt/*CHE *pred*/) {
       code("<FONT color=#FF0000>"); // red
       color = true;
     }
-    code(str);
+    code(str.toAscii());
   }
-
 
   if (color)
     code("</FONT>");

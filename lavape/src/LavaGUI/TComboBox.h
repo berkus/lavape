@@ -2,8 +2,8 @@
 #define __TComboBox
 
 #include "GUIProgBase.h"
-#include "q3combobox.h"
-#include "q3listbox.h"
+#include "qcombobox.h"
+//#include "q3listbox.h"
 #include "qevent.h"
 //Added by qt3to4:
 #include <QMouseEvent>
@@ -15,10 +15,10 @@
 /////////////////////////////////////////////////////////////////////////////
 // CTComboBox window
 
-class CComboItem: public Q3ListBoxText
+class CComboItem//: public Q3ListBoxText
 {
 public:
-  CComboItem(const DString& text, CHEFormNode* data) {setText(QString(text.c)); Data = data;}
+  CComboItem(/*const DString& text,*/ CHEFormNode* data) {/*setText(QString(text.c));*/ Data = data;}
   CHEFormNode* itemData() {return Data;}
 protected:
   CHEFormNode* Data;

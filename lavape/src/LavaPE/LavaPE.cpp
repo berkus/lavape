@@ -48,12 +48,12 @@
 
 #include "qdir.h"
 #include "qfont.h"
-#include "q3filedialog.h"
+#include "qfiledialog.h"
 #include "qfontdialog.h"
 #include "qsettings.h"
 #include "qpixmapcache.h"
 #include "qmessagebox.h"
-#include "q3process.h"
+#include "qprocess.h"
 //Added by qt3to4:
 #include <QPixmap>
 #include <QEvent>
@@ -124,7 +124,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
-  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
+//  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //  settings.beginGroup(GetSettingsPath());
   inTotalCheck = false;;
   LBaseData.theApp = this;
@@ -133,75 +133,43 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   clipboard()->clear();
 
 
-  settings.beginGroup("/generalSettings");
-  LBaseData.m_strSaveEveryChange = settings.readEntry(szSaveEveryChange, 0, &ok);
-  if (ok)
-    if (LBaseData.m_strSaveEveryChange == "true")
-      LBaseData.m_saveEveryChange = true;
-    else
-      LBaseData.m_saveEveryChange = false;
-  else {
+  settings.beginGroup("generalSettings");
+  LBaseData.m_strSaveEveryChange = settings.value(szSaveEveryChange,QVariant("true")).toString();
+  if (LBaseData.m_strSaveEveryChange == "true")
     LBaseData.m_saveEveryChange = true;
-    LBaseData.m_strSaveEveryChange = "true";
-  }
+  else
+    LBaseData.m_saveEveryChange = false;
   settings.endGroup();
 
-  settings.beginGroup("/fontSettings");
+  settings.beginGroup("fontSettings");
 
-  LBaseData.m_lfDefExecFont = settings.readEntry(szExecFont, 0, &ok);
-  if (ok)
-    LBaseData.m_ExecFont.fromString(LBaseData.m_lfDefExecFont);
-  else {
-    LBaseData.m_ExecFont = QApplication::font();
-    LBaseData.m_lfDefExecFont = LBaseData.m_ExecFont.toString();
-  }
+  LBaseData.m_lfDefExecFont = settings.value(szExecFont,QVariant(QApplication::font().toString())).toString();
+  LBaseData.m_ExecFont.fromString(LBaseData.m_lfDefExecFont);
 
-  LBaseData.m_lfDefFormFont = settings.readEntry(szFormFont, 0, &ok);
-  if (ok)
-    LBaseData.m_FormFont.fromString(LBaseData.m_lfDefFormFont);
-  else {
-    LBaseData.m_FormFont = QApplication::font();
-    LBaseData.m_lfDefFormFont = LBaseData.m_FormFont.toString();
-  }
+  LBaseData.m_lfDefFormFont = settings.value(szFormFont,QVariant(QApplication::font().toString()));
+  LBaseData.m_FormFont.fromString(LBaseData.m_lfDefFormFont);
 
-  LBaseData.m_lfDefFormLabelFont = settings.readEntry(szFormLabelFont, 0, &ok);
-  if (ok) {
-    LBaseData.m_FormLabelFont.fromString(LBaseData.m_lfDefFormLabelFont);
-    LBaseData.useLabelFont = true;
-  }
-  else {
-    LBaseData.m_FormLabelFont = LBaseData.m_FormFont;//QApplication::font();
-    LBaseData.m_lfDefFormLabelFont = LBaseData.m_lfDefFormFont;//LBaseData.m_FormFont.toString();
-    LBaseData.useLabelFont = false;
-  }
+  LBaseData.m_lfDefFormLabelFont = settings.value(szFormLabelFont,QVariant(QApplication::font().toString())).toString();
+  LBaseData.m_FormLabelFont.fromString(LBaseData.m_lfDefFormLabelFont);
 
-  LBaseData.m_lfDefTreeFont = settings.readEntry(szTreeFont, 0, &ok);
-  if (ok)
-    LBaseData.m_TreeFont.fromString(LBaseData.m_lfDefTreeFont);
-  else {
-    LBaseData.m_TreeFont = QApplication::font();
-    LBaseData.m_lfDefTreeFont = LBaseData.m_TreeFont.toString();
-  }
+  LBaseData.m_lfDefTreeFont = settings.value(szTreeFont,QVariant(QApplication::font().toString())).toString();
+  LBaseData.m_TreeFont.fromString(LBaseData.m_lfDefTreeFont);
 
-  LBaseData.m_lfDefGlobalFont = settings.readEntry(szGlobalFont, 0, &ok);
-  if (ok)
-    LBaseData.m_GlobalFont.fromString(LBaseData.m_lfDefGlobalFont);
-  else {
-    LBaseData.m_GlobalFont = QApplication::font();
-    LBaseData.m_lfDefGlobalFont = LBaseData.m_GlobalFont.toString();
-  }
+  LBaseData.m_lfDefGlobalFont = settings.value(szGlobalFont,QVariant(QApplication::font().toString())).toString();
+  LBaseData.m_GlobalFont.fromString(LBaseData.m_lfDefGlobalFont);
+
   setFont(LBaseData.m_GlobalFont,false);
 
   settings.endGroup();
 
-  settings.beginGroup("/otherSettings");
+  settings.beginGroup("otherSettings");
   LBaseData.m_myWebBrowser = settings.readEntry(favoriteBrowser, 0, &ok);
   LBaseData.m_style = settings.readEntry(gui_style, 0, &ok);
   settings.endGroup();
 #ifndef WIN32
   if (LBaseData.m_myWebBrowser.isEmpty())
 #endif
-        LBaseData.m_myWebBrowser = InitWebBrowser();
+  LBaseData.m_myWebBrowser = InitWebBrowser();
 
   LavaPixmaps[ 0] = new QPixmap((const char**)PX_basicatt);;
   LavaPixmaps[ 1] = new QPixmap((const char**)PX_BasicType);
@@ -683,7 +651,7 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
     ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = argv[2];
     ((CLavaPEApp*)qApp)->debugThread.remotePort = (quint16)QString(argv[3]).toUShort();
 
-    //QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),"LavaPE: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    //QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),"LavaPE: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     ((CLavaPEApp*)qApp)->debugThread.start();
   }
 }
@@ -732,7 +700,7 @@ void CLavaPEApp::LearningLava()
 /*      QString buf;
 
   if (LBaseData.m_myWebBrowser.isEmpty()) {
-QMessageBox::critical(m_appWindow,name(),ERR_MissingBrowserPath,QMessageBox::Ok,0,0);
+QMessageBox::critical(m_appWindow,applicationName(),ERR_MissingBrowserPath,QMessageBox::Ok,0,0);
           return;
   }
 
@@ -741,7 +709,7 @@ QMessageBox::critical(m_appWindow,name(),ERR_MissingBrowserPath,QMessageBox::Ok,
   QProcess browser(args);
 
   if (!browser.launch(buf)) {
-QMessageBox::critical(m_appWindow,name(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok,0,0);
+QMessageBox::critical(m_appWindow,applicationName(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok,0,0);
           return;
   }
 */
@@ -777,7 +745,7 @@ void CLavaPEApp::OnImport()
 {
   // TODO: Add your command handler code here
 
-  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), name(), "Not yet implemented!",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), applicationName(), "Not yet implemented!",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 void CLavaPEApp::OnFindByName()
@@ -840,11 +808,11 @@ void CLavaPEApp::saveSettings()
   settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //  settings.beginGroup(GetSettingsPath());
 
-  settings.beginGroup("/generalSettings");
+  settings.beginGroup("generalSettings");
   settings.writeEntry(szSaveEveryChange,LBaseData.m_strSaveEveryChange);
   settings.endGroup();
 
-  settings.beginGroup("/fontSettings");
+  settings.beginGroup("fontSettings");
   settings.writeEntry(szExecFont,LBaseData.m_lfDefExecFont);
   settings.writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
   if (LBaseData.useLabelFont)
@@ -853,7 +821,7 @@ void CLavaPEApp::saveSettings()
   settings.writeEntry(szGlobalFont,LBaseData.m_lfDefGlobalFont);
   settings.endGroup();
 
-  settings.beginGroup("/otherSettings");
+  settings.beginGroup("otherSettings");
   settings.writeEntry(favoriteBrowser,LBaseData.m_myWebBrowser);
   settings.writeEntry(gui_style,LBaseData.m_style);
   settings.endGroup();
@@ -1264,18 +1232,18 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
       }
       else {
         if (sendMess)
-          QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->applicationName(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         else
-          QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->applicationName(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         return false;
       }
     }
   }
   else {
     if (sendMess)
-      QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->name(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView, qApp->applicationName(),IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     else
-      QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->applicationName(),IDP_NoDefFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return false;
   }
 }

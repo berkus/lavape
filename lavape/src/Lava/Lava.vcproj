@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\disco;..\LavaBase;..\wxqDocView;..\Interpreter;..\LavaExecs;..\LavaGUI;..\LavaBase\Generated;..\Lava_UI;..\Lava_UI\Generated;res"
-				PreprocessorDefinitions="WIN32;INTERPRETER;QT3_SUPPORT;QT_THREAD_SUPPORT"
+				PreprocessorDefinitions="WIN32;INTERPRETER"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/Lava.pch"
@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\Interpreter.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\Lava_UI.lib $(QT4DIR)\lib\QtAssistantClientd.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\qtmaind.lib $(QT4DIR)\lib\QtNetworkd4.lib $(QT4DIR)\lib\Qt3Supportd4.lib wsock32.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\Interpreter.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\Lava_UI.lib $(QT4DIR)\lib\QtAssistantClientd.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\qtmaind.lib $(QT4DIR)\lib\QtNetworkd4.lib wsock32.lib"
 				OutputFile="..\..\bin\Lava.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

@@ -56,10 +56,10 @@ QString ERR_OpenOutFailed(QObject::tr("Open for output failed for file "));
 
 #define OPENIN(CKD, OBJ) {\
   QFile* qf = (QFile*)(OBJ+LSH+1);\
-  if (!(qf->mode() & QIODevice::ReadOnly)) \
+  if (!(qf->openMode() & QIODevice::ReadOnly)) \
     if (!qf->open(QIODevice::ReadOnly) && !CKD.exceptionThrown) {\
       QFileInfo qfi(*qf);\
-      QString str = ERR_OpenInFailed + qfi.absFilePath();\
+      QString str = ERR_OpenInFailed + qfi.absoluteFilePath();\
       throw CRuntimeException(memory_ex ,&str);\
     }\
 }
@@ -72,10 +72,10 @@ QString ERR_OpenOutFailed(QObject::tr("Open for output failed for file "));
     mode = QIODevice::Append | QIODevice::WriteOnly; \
   else \
     mode = QIODevice::WriteOnly;\
-  if (!(qf->mode() & mode)) \
+  if (!(qf->openMode() & mode)) \
     if (!qf->open(mode) && !CKD.exceptionThrown) {\
       QFileInfo qfi(*qf);\
-      QString str = ERR_OpenOutFailed + qfi.absFilePath();\
+      QString str = ERR_OpenOutFailed + qfi.absoluteFilePath();\
       throw CRuntimeException(memory_ex ,&str);\
     }\
 }
@@ -140,7 +140,7 @@ bool TReadTotal(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr object = stack[SFH];
   OPENIN(ckd,object);
   QString str;
-  str = (*(QTextStream*)(object+LSH+1+szQFile)).read();
+  str = (*(QTextStream*)(object+LSH+1+szQFile)).readAll();
   new(stack[SFH+1]+LSH) QString(str);
   return true;
 }
@@ -448,14 +448,14 @@ void DDStreamClass::makeChildren()
 
   dd = new DDStreamClass(isDStream);
   if (qf) {
-    if (qf->mode() & QIODevice::ReadOnly)
+    if (qf->openMode() & QIODevice::ReadOnly)
       dd->value2 = "read only";
-    else if (qf->mode() & QIODevice::WriteOnly) {
+    else if (qf->openMode() & QIODevice::WriteOnly) {
       dd->value2 = dd->value2 + "write only";
-      if (qf->mode() & QIODevice::Append)
+      if (qf->openMode() & QIODevice::Append)
         dd->value2 = dd->value2 + " | append mode";
     }
-    else if(qf->mode() & QIODevice::ReadWrite)
+    else if(qf->openMode() & QIODevice::ReadWrite)
        dd->value2 = "read and write";
     else
       dd->value2 = "not opened";
@@ -467,23 +467,23 @@ void DDStreamClass::makeChildren()
 
   dd = new DDStreamClass(isDStream);
   if (qf) {
-    switch (qf->status()) {
-    case IO_Ok:
+    switch (qf->error()) {
+    case QFile::NoError:
       dd->value2 = "ok";
       break;
-    case IO_ReadError:
-      dd->value2 = "read erroe";
+    case QFile::ReadError:
+      dd->value2 = "read error";
       break;
-    case IO_WriteError:
+    case QFile::WriteError:
        dd->value2 = "write error";
       break;
-    case IO_OpenError:
+    case QFile::OpenError:
       dd->value2 = "open error";
       break;
-    case IO_AbortError:
+    case QFile::AbortError:
       dd->value2 = "abort error";
       break;
-    case IO_TimeOutError:
+    case QFile::TimeOutError:
       dd->value2 = "time out error";
       break;
     default:;

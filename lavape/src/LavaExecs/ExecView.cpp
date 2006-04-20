@@ -25,14 +25,14 @@
 #include "qnamespace.h"
 #include "qmessagebox.h"
 #include "qcheckbox.h"
-#include "q3popupmenu.h"
+#include <QMenu>
 #include "qwidget.h"
 #include "qevent.h"
 //Added by qt3to4:
 #include <QPixmap>
 #include <QFocusEvent>
 #include <QKeyEvent>
-#include <Q3ValueList>
+//#include <Q3ValueList>
 #include <QMouseEvent>
 #include "Constructs.h"
 #include "Check.h"
@@ -45,7 +45,7 @@
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
 #include "ExecFrame.h"
-#include "q3textedit.h"
+#include "qtextedit.h"
 #include "QtAssistant/qassistantclient.h"
 #include "LavaBaseStringInit.h"
 //#include "Resource.h"
@@ -126,17 +126,16 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   sv = new MyScrollView(this);
   layout->addWidget(sv);
   layout->setMargin(0);
-//  sv->setFocusPolicy(Qt::StrongFocus);
-//  sv->setResizePolicy(Q3ScrollView::AutoOneFit);
   redCtl = sv->execCont;
-  redCtl->setBackgroundColor(Qt::white);
+  QPalette palette=redCtl->palette();
+  palette.setColor(QPalette::Active,QPalette::Window,Qt::white);
+  redCtl->setPalette(palette);
   text = new CProgText;
   sv->text = text;
   m_ComboBar = ((CExecFrame*)GetParentFrame())->m_ComboBar;
   destroying = false;
   Base = 0;
   myDoc = 0;
-//  new ExecWhatsThis(this);
   redCtl->update();
 }
 
@@ -382,7 +381,7 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
 
   if (inSelection && !inDebugStop) {
     currentColor = (QColor)fmt.color;
-    currentColor.rgb(&r,&g,&b);
+    currentColor.getRgb(&r,&g,&b);
     r = 255 - r;
     g = 255 - g;
     b = 255 - b;
@@ -450,11 +449,11 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
         old_nl_pos = nl_pos;
         currentY += fm->height();
       }
-      nl_pos = currentToken->data.str.find('\n',old_nl_pos+1);
+      nl_pos = currentToken->data.str.indexOf('\n',old_nl_pos+1);
       if (nl_pos == -1) {
         line = currentToken->data.str.mid(old_nl_pos+1);
         if (line.length()) {
-          p.drawText(currentX,currentY,line,0,-1);
+          p.drawText(QPoint(currentX,currentY),line);
           lineWidth=fm->width(line);
           contentsWidth = qMax(contentsWidth,currentX+lineWidth);
           cmtWidth = qMax(cmtWidth,lineWidth);
@@ -465,7 +464,7 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
       else {
         line = currentToken->data.str.mid(old_nl_pos+1,nl_pos - old_nl_pos - 1);
         if (line.length()) {
-          p.drawText(currentX,currentY,line,0,-1);
+          p.drawText(QPoint(currentX,currentY),line);
           lineWidth=fm->width(line);
           contentsWidth = qMax(contentsWidth,currentX+lineWidth);
           cmtWidth = qMax(cmtWidth,lineWidth);
@@ -477,7 +476,7 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
   }
 
   else { // no comment token
-    p.drawText(currentX,currentY,currentToken->data.str,0,-1);
+    p.drawText(QPoint(currentX,currentY),currentToken->data.str);
     width=fm->width(currentToken->data.str);
     currentToken->data.rect.setRect(currentX,currentY-fm->ascent(),width,fm->height());
     currentX += width;
@@ -487,7 +486,7 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
   delete fm;
 }
 
-typedef Q3ValueList<int> BreakPointList;
+typedef QList<int> BreakPointList;
 
 bool ExecContents::event(QEvent *ev) {
   QHelpEvent *hev;
@@ -525,7 +524,7 @@ QString ExecContents::text(const QPoint &point) {
     execView->Select();
     return execView->text->currentSynObj->whatsThisText();
   }
-  return QString(tr(QString("No specific help available here")));
+  return QString(tr("No specific help available here"));
 }
 
 void ExecContents::paintEvent (QPaintEvent *ev)
@@ -565,7 +564,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     inBreakPoint = false;
 
     if (currentToken->data.flags.Contains(insertBlank)) {
-      p.drawText(currentX,currentY," ",0,-1);
+      p.drawText(QPoint(currentX,currentY)," ");
       currentX += widthOfBlank;
     }
 
@@ -873,7 +872,7 @@ void CExecView::OnChar(QKeyEvent *e)
 {
   // TODO: Add your message handler code here and/or call default
   int key=e->key();
-  Qt::ButtonState state=e->state();
+  Qt::KeyboardModifiers state=e->modifiers();
   ctrlPressed = (state & Qt::ControlModifier);
   SynObject *currentSynObj, *parent/*, *ocl*/;
 
@@ -1081,14 +1080,14 @@ void CExecView::OnChar(QKeyEvent *e)
       if (ctrlPressed) {
         CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
         if (bar->LeftCombo)
-          bar->LeftCombo->popup();
+          bar->LeftCombo->showPopup();
       }
       break;
     case Qt::Key_2:
       if (ctrlPressed) {
         CComboBar* bar = (CComboBar*)((CExecFrame*)GetParentFrame())->m_ComboBar;
         if (bar->RightCombo)
-          bar->RightCombo->popup();
+          bar->RightCombo->showPopup();
       }
       break;
     case Qt::Key_3:
@@ -1099,7 +1098,7 @@ void CExecView::OnChar(QKeyEvent *e)
         }
         else {
           if (bar->RightCombo && bar->ThirdCombo)
-            bar->ThirdCombo->popup();
+            bar->ThirdCombo->showPopup();
         }
       }
       break;
@@ -1251,7 +1250,7 @@ MyScrollView::MyScrollView (QWidget *parent) : QScrollArea(parent) {
 ExecContents::ExecContents (MyScrollView *sv) {
   this->sv = sv;
   execView = sv->execView;
-  setWhatsThis(tr(QString("No specific help available here")));
+  setWhatsThis(tr("No specific help available here"));
   debugStop = new QPixmap((const char**)debugStop_xpm);
   debugStopGreen = new QPixmap((const char**)debugStopGreen_xpm);
   breakPoint = new QPixmap((const char**)breakPoint_xpm);
@@ -1389,7 +1388,7 @@ void CExecView::Select (SynObject *selObj)
       if (synObj->comment.ptr) {
         pComment->inline_comment->setChecked(synObj->comment.ptr->inLine);
         pComment->trailing_comment->setChecked(synObj->comment.ptr->trailing);
-        pComment->text->setText(synObj->comment.ptr->str.c);
+        pComment->text->setPlainText(synObj->comment.ptr->str.c);
       }
 
       pComment->exec();
@@ -1397,7 +1396,7 @@ void CExecView::Select (SynObject *selObj)
         TComment *pCmt = new TCommentV;
         pCmt->inLine = pComment->inline_comment->isChecked();
         pCmt->trailing = pComment->trailing_comment->isChecked();
-        pCmt->str = STRING(qPrintable(pComment->text->text()));
+        pCmt->str = STRING(qPrintable(pComment->text->document()->toPlainText()));
         text->currentSynObj = synObj;
         PutChgCommentHint(pCmt);
         if (synObj->comment.ptr) {
@@ -2597,7 +2596,7 @@ void CExecView::OnComment()
   if (synObj->comment.ptr) {
     pComment->inline_comment->setChecked(synObj->comment.ptr->inLine);
     pComment->trailing_comment->setChecked(synObj->comment.ptr->trailing);
-    pComment->text->setText(synObj->comment.ptr->str.c);
+    pComment->text->setPlainText(synObj->comment.ptr->str.c);
   }
 
   pComment->exec();
@@ -2605,7 +2604,7 @@ void CExecView::OnComment()
     TComment *pCmt = new TCommentV;
     pCmt->inLine = pComment->inline_comment->isChecked();
     pCmt->trailing = pComment->trailing_comment->isChecked();
-    pCmt->str = STRING(qPrintable(pComment->text->text()));
+    pCmt->str = STRING(qPrintable(pComment->text->document()->toPlainText()));
     text->currentSynObj = synObj;
     text->showComments = true;
     myDECL->TreeFlags.INCL(ShowExecComments);
@@ -2717,7 +2716,7 @@ void CExecView::OnDelete ()
       reject = true;
 
   if (reject) {
-    QMessageBox::critical(this,qApp->name(),ERR_One_must_remain,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),ERR_One_must_remain,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     text->currentSynObj = oldCurrentSynObj;
     return;
   }
@@ -3951,20 +3950,20 @@ void CExecView::OnGotoImpl()
   case FuncRef_T:
     decl = GetDocument()->IDTable.GetDECL(((Reference*)text->currentSynObj)->refID);
     if (decl && (decl->TypeFlags.Contains(isAbstract) || decl->TypeFlags.Contains(isNative))) {
-      QMessageBox::information(this, qApp->name(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::information(this, qApp->applicationName(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       Base->Browser->DestroyLastBrsContext();
     }
     else
       if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
   //      AfxMessageBox(&ERR_NoFuncImpl, MB_OK+MB_ICONINFORMATION);
-        QMessageBox::critical(this,qApp->name(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(this,qApp->applicationName(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         Base->Browser->DestroyLastBrsContext();
       }
     break;
   case TypeRef_T:
     if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
 //      AfxMessageBox(&ERR_NoClassImpl, MB_OK+MB_ICONINFORMATION);
-        QMessageBox::critical(this,qApp->name(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(this,qApp->applicationName(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       Base->Browser->DestroyLastBrsContext();
     }
     break;
@@ -3973,7 +3972,7 @@ void CExecView::OnGotoImpl()
     || text->currentSynObj->parentObject->primaryToken == new_T)
     if (!Base->Browser->GotoImpl(GetDocument(),((Reference*)text->currentSynObj)->refID)) {
 //        AfxMessageBox(&ERR_NoClassImpl, MB_OK+MB_ICONINFORMATION);
-        QMessageBox::critical(this,qApp->name(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(this,qApp->applicationName(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         Base->Browser->DestroyLastBrsContext();
       }
     break;
@@ -4097,12 +4096,12 @@ bool CExecView::EditOK()
       editCtl->hide();
       editCtlVisible = false;
       sv->setFocus();
-      if (escapePressed || !editCtl->edited())
+      if (escapePressed || !editCtl->isModified())
         return true;
-      editCtl->setEdited(false);
+      editCtl->setModified(false);
       str = editCtl->text();
       if (editToken == VarName_T) {
-        synObj = new VarNameV(str);
+        synObj = new VarNameV(str.toAscii());
         if (text->currentSynObj->primaryToken == VarName_T)
           ((VarName*)synObj)->varID = ((VarName*)text->currentSynObj)->varID;
         if (text->currentSynObj->parentObject
@@ -4112,7 +4111,7 @@ bool CExecView::EditOK()
         PutInsHint(synObj);
       }
       else {
-        synObj = new ConstantV(str);
+        synObj = new ConstantV(str.toAscii());
 
 
 //        B_Bool,Char,Integer,Float,Double,VLString,Any,ComponentObj,
@@ -4404,7 +4403,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
     if (text->currentSynObj->parentObject->primaryToken == assignFX_T) {
       text->currentSynObj = text->currentSynObj->parentObject;
       oldFuncExpr = (FuncExpression*)text->currentSynObj;
-      funcExpr = new FuncExpressionV(new ReferenceV(FuncPH_T,refID,refName));
+      funcExpr = new FuncExpressionV(new ReferenceV(FuncPH_T,refID,refName.toAscii()));
       if (isStaticCall) {
         funcExpr->flags.INCL(staticCall);
         if (vtypeID)
@@ -4445,7 +4444,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
     else if (text->currentSynObj->parentObject->primaryToken == assignFS_T) {
       text->currentSynObj = text->currentSynObj->parentObject;
       oldFuncStm = (FuncStatement*)text->currentSynObj;
-      funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName));
+      funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName.toAscii()));
       if (isStaticCall) {
         funcStm->flags.INCL(staticCall);
         if (vtypeID)
@@ -4502,7 +4501,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
     else if (text->currentSynObj->parentObject->primaryToken == connect_T
     || text->currentSynObj->parentObject->primaryToken == disconnect_T
     || text->currentSynObj->parentObject->primaryToken == signal_T) {
-      PutInsHint(new ReferenceV(FuncPH_T,refID,refName));
+      PutInsHint(new ReferenceV(FuncPH_T,refID,refName.toAscii()));
     }
     else if (text->currentSynObj->parentObject->primaryToken == disconnect_T) {
     }
@@ -4517,7 +4516,7 @@ crtbl:
       oldRunStm = (Run*)text->currentSynObj;
       switch (decl->DeclType) {
       case Initiator:
-        runStm = new RunV(new ReferenceV(CrtblPH_T,refID,refName));
+        runStm = new RunV(new ReferenceV(CrtblPH_T,refID,refName.toAscii()));
         chpFormParm = (CHE*)decl->NestedDecls.first;
         chpParam = (CHE*)oldRunStm->inputs.first;
         while (chpParam && chpFormParm && ((LavaDECL*)chpFormParm->data)->DeclType == IAttr) {
@@ -4544,7 +4543,7 @@ crtbl:
       decl = myDoc->IDTable.GetDECL(refID);
       switch (decl->DeclType) {
       case CompObjSpec:
-        ref = new ReferenceV(CrtblPH_T,refID,refName);
+        ref = new ReferenceV(CrtblPH_T,refID,refName.toAscii());
         newExp = new NewExpressionV(
           ref,
           true,
@@ -4558,7 +4557,7 @@ crtbl:
         break;
       case Interface:
         newExp = new NewExpressionV(
-          new ReferenceV(CrtblPH_T,refID,refName),
+          new ReferenceV(CrtblPH_T,refID,refName.toAscii()),
           false,
           false);
         varNamePtr = (VarName*)newExp->varName.ptr;
@@ -4571,7 +4570,7 @@ crtbl:
       case Function:
         newExp = (NewExpressionV*)text->currentSynObj;
         oldFuncStm = (FuncStatement*)newExp->initializerCall.ptr;
-        ref = new ReferenceV(FuncPH_T,refID,refName);
+        ref = new ReferenceV(FuncPH_T,refID,refName.toAscii());
         funcStm = new FuncStatementV(ref);
         funcStm->flags.INCL(staticCall);
         funcStm->replacedType = CrtblPH_T;
@@ -4619,7 +4618,7 @@ crtbl:
         str = decl2->LocalName.c;
         if (newExp->initializerCall.ptr) {
           text->currentSynObj = (SynObject*)newExp->objType.ptr;
-          ref = new ReferenceV(CrtblPH_T,tid,str);
+          ref = new ReferenceV(CrtblPH_T,tid,str.toAscii());
           PutInsHint(ref,SET(firstHint,-1));
           funcStm->handle.ptr
             = ((FuncStatement*)newExp->initializerCall.ptr)->handle.ptr->Clone();
@@ -4637,11 +4636,9 @@ crtbl:
           funcStm->parentObject = newExp;
           varNamePtr = (VarName*)newExp->varName.ptr;
           if (tempNo > 1) {
-//                                              sprintf_s(buffer,10,"%u",tempNo);
-                                                varNamePtr->varName += qPrintable(QString::number(tempNo));
-//                                              varNamePtr->varName += _ultoa(tempNo,buffer,10);
+            varNamePtr->varName += qPrintable(QString::number(tempNo));
                                         }
-          newExp->objType.ptr = new ReferenceV(CrtblPH_T,tid,str);
+          newExp->objType.ptr = new ReferenceV(CrtblPH_T,tid,str.toAscii());
           if (targetCat == stateObj)
             ((Reference*)newExp->objType.ptr)->flags.INCL(isVariable);
           tdod = new TDODV(true);
@@ -4668,12 +4665,12 @@ crtbl:
     else if (text->currentSynObj->primaryToken == attach_T) {
       oldAttachExp = (AttachObject*)text->currentSynObj;
       text->currentSynObj = (SynObject*)oldAttachExp->objType.ptr;
-      ref = new ReferenceV(CrtblPH_T,refID,refName);
+      ref = new ReferenceV(CrtblPH_T,refID,refName.toAscii());
       PutInsHint(ref);
     }
     break;
   default: // TypeRef
-    ref = new ReferenceV(text->currentSynObj->type,refID,refName);
+    ref = new ReferenceV(text->currentSynObj->type,refID,refName.toAscii());
     decl = myDoc->IDTable.GetDECL(refID);
     if (((Expression*)text->currentSynObj->parentObject)->targetCat == stateObj)
       ref->flags.INCL(isVariable);
@@ -4690,7 +4687,7 @@ void CExecView::OnInsertObjRef (QString &refName, TDODC &refIDs, bool append)
   ObjReference *newRef, *oldRef;
   CHE *chp;
   CHAINX *chx;
-  const char *name=refName;
+  const char *name=refName.toAscii();
 
   if (append) {
     chx = text->currentSynObj->containingChain;
@@ -4814,22 +4811,17 @@ void CExecView::OnAssign()
 void CExecView::OnConnect()
 {
   // TODO: Code fr Befehlsbehandlungsroutine hier einfgen
-  Q3PopupMenu connectMenu;
-  int rc;
+  QMenu connectMenu;
+  QAction *triggeredAction;
 
-  connectMenu.insertItem("signal sender object",0);
-  connectMenu.insertItem("signal sender class",1);
-  rc = connectMenu.exec(QCursor::pos());
+  QAction *sdrObjAction = connectMenu.addAction("signal sender object");
+  QAction *sdrClassAction = connectMenu.addAction("signal sender class");
+  triggeredAction = connectMenu.exec(QCursor::pos());
 
-  switch (rc) {
-  case 0:
+  if (triggeredAction == sdrObjAction)
     InsertOrReplace(new ConnectV(false));
-    break;
-  case 1:
+  else if (triggeredAction == sdrClassAction)
     InsertOrReplace(new ConnectV(true));
-     break;
-  default: ;
-  }
 }
 
 void CExecView::OnDisconnect()
@@ -4991,7 +4983,7 @@ void CExecView::OnNextError()
     }
   }
   else
-    QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 void CExecView::OnPrevError()
@@ -5042,7 +5034,7 @@ void CExecView::OnPrevError()
     }
   }
   else
-    QMessageBox::critical(this,qApp->name(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),ERR_NoErrors,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 void CExecView::OnNextComment()
@@ -5419,10 +5411,10 @@ void CExecView::SetHelpText () {
   if (!inIgnore)
     UpdateErrMsg(helpMsg);
   else
-    statusBar->message(helpMsg);
+    statusBar->showMessage(helpMsg);
 }
 
-void CExecView::OnInsertEnum (QString &itemName, TID &typeID, unsigned pos)
+void CExecView::OnInsertEnum (QString &itemName, TID &typeID)
 {
   EnumConst *item;
 
@@ -5865,7 +5857,7 @@ void CExecView::OnUpdateOptLocalVar(QAction* action)
     isDeclareVar = false;
   action->setEnabled(!Taboo() && isDeclareVar);
 
-  action->setOn(text->currentSynObj->flags.Contains(isOptionalExpr));
+  action->setChecked(text->currentSynObj->flags.Contains(isOptionalExpr));
 //  if (action->m_pOther)
 //    ((QToolBar*)action->m_pOther)->GetToolBarCtrl().PressButton(action->m_nID,showArrow);
 }
@@ -5898,7 +5890,7 @@ void CExecView::OnUpdateInputArrow(QAction* action)
     && synObj->flags.Contains(inputArrow);
   action->setEnabled(!Taboo() && (synObj->IsFuncInvocation() || synObj->primaryToken == run_T));
 
-  action->setOn(showArrow);
+  action->setChecked(showArrow);
 }
 
 void CExecView::OnUpdateEvaluate(QAction* action)
@@ -5923,7 +5915,7 @@ void CExecView::OnUpdateToggleSubstitutable(QAction* action)
   // TODO: Code fr die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflche hier einfgen
 
   action->setEnabled(ToggleSubstitutableEnabled());
-  action->setOn(text->currentSynObj->flags.Contains(isSubstitutable));
+  action->setChecked(text->currentSynObj->flags.Contains(isSubstitutable));
 }
 
 void CExecView::OnUpdateToggleCategory(QAction* action)
@@ -6139,7 +6131,7 @@ void CExecView::OnUpdateIgnore(QAction* action)
   action->setEnabled(true);
 
   bool ig = synObj->flags.Contains(ignoreSynObj);
-  action->setOn(ig);
+  action->setChecked(ig);
 }
 
 void CExecView::OnUpdateFail(QPushButton *pb)
@@ -6212,7 +6204,7 @@ void CExecView::OnUpdateNewLine(QAction* action)
     else
       action->setEnabled(true);
 
-  action->setOn(nl);
+  action->setChecked(nl);
 }
 
 void CExecView::OnUpdateToggleArrows(QAction* action)
@@ -6225,7 +6217,7 @@ void CExecView::OnUpdateToggleArrows(QAction* action)
   }
 
   action->setEnabled(true);
-  action->setOn(!myDECL->TreeFlags.Contains(leftArrows));
+  action->setChecked(!myDECL->TreeFlags.Contains(leftArrows));
 }
 
 bool CExecView::EnableCopy()
@@ -6553,7 +6545,7 @@ void CExecView::OnUpdateInsertBefore(QAction* action)
   // TODO: Add your command update UI handler code here
 
   action->setEnabled(true);
-  action->setOn(insertBefore);
+  action->setChecked(insertBefore);
 }
 
 void CExecView::OnUpdateInvert(QAction* action)
@@ -6608,7 +6600,7 @@ void CExecView::OnUpdateShowComments(QAction* action)
   }
 
   action->setEnabled(true);
-  action->setOn(text->showComments);
+  action->setChecked(text->showComments);
 }
 
 void CExecView::OnUpdateNot(QPushButton *pb)
@@ -6707,7 +6699,7 @@ void CExecView::OnUpdateShowOptionals(QAction* action)
     }
   }
 
-  action->setOn(false);
+  action->setChecked(false);
   if (lookAt->HasOptionalParts())
     action->setEnabled(true);
   else {
@@ -6758,7 +6750,7 @@ void CExecView::UpdateErrMsg (QString &helpMsg) {
     myDoc->SetPEError(errorObj->errorChain,nextError);
     errorMsg = *((CLavaError*)((CHE*)errorObj->errorChain.first)->data)->IDS;
     errorMsg = QString(((CLavaError*)((CHE*)errorObj->errorChain.first)->data)->textParam.c) + errorMsg;
-    statusBar->message(errorMsg);
+    statusBar->showMessage(errorMsg);
     nextError = false;
     return;
   }
@@ -6770,9 +6762,9 @@ void CExecView::UpdateErrMsg (QString &helpMsg) {
         }
 
   if (text->currentSynObj->comment.ptr)
-    statusBar->message(text->currentSynObj->comment.ptr->str.c);
+    statusBar->showMessage(text->currentSynObj->comment.ptr->str.c);
   else
-    statusBar->message(helpMsg);
+    statusBar->showMessage(helpMsg);
   errMsgUpdated = true;
 }
 
@@ -6863,7 +6855,7 @@ void CExecView::on_DbgRunToSelAct_triggered() {
   pp->FuncID.nINCL = LBaseData->debugThread->myDoc->IDTable.GetINCL(pp->FuncDocName,pp->FuncDocDir);
   if (pp->FuncID.nINCL < 0) {
     LBaseData->ContData->RunToPnt.Destroy();
-    QMessageBox::critical(this,qApp->name(),"This run-to-selection is not part of the debugged lava program",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),"This run-to-selection is not part of the debugged lava program",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return;
   }
   DbgMessage* mess = new DbgMessage(Dbg_Continue);

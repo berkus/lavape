@@ -309,7 +309,7 @@ class LAVABASE_DLL  CMultiUndoMem : public QObject
 public:
   CHAINX MultiUndo; //with CHE(CMultiDocEntry)
   bool StartUpdate;
-  CMultiUndoMem():QObject(0, "MultiUndoMem") {StartUpdate = false;}
+  CMultiUndoMem() { setObjectName("MultiUndoMem"); StartUpdate = false;}
   void StartMultiDocUpdate();
   void AddToMem(CLavaPEHint *hint);
   void SetLastHint(CLavaPEHint *hint);
@@ -332,7 +332,8 @@ public:
 class LAVABASE_DLL  CLavaBaseData : public QObject
 {
 public:
-  CLavaBaseData() :QObject(0, "LavaBaseData") {
+  CLavaBaseData() {
+    setObjectName("LavaBaseData");
     newNum = 0;
     declareButton = 0;
     ContData = 0;

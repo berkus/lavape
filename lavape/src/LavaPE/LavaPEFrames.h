@@ -6,18 +6,16 @@
 #include "PEBaseDoc.h"
 #include "Bars.h"
 #include "LavaGUIView.h"
-//#include "wxExport.h"
 #include "docview.h"
 #include "mdiframes.h"
 #include "cmainframe.h"
 #include "qapplication.h"
-#include "q3frame.h"
+#include "qframe.h"
 #include "qtoolbar.h"
-#include "q3combobox.h"
-#include "q3popupmenu.h"
-//#include "q3listview.h"
+#include "qcombobox.h"
+#include <QMenu>
 #include "qsplitter.h"
-#include "q3vbox.h"
+//#include "q3vbox.h"
 #include "qevent.h"
 #include "qstring.h"
 #include "qfont.h"
@@ -311,7 +309,7 @@ public:
   void CalcSplitters(bool showVT = false, bool showINCL=false);
 
   QSplitter* splitter;
-  Q3VBox *vb;
+//  QVBox *vb;
   CLavaBaseView* viewL;
   CLavaBaseView* viewM;
   CLavaBaseView* viewR;

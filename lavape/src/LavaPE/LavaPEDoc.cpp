@@ -35,8 +35,8 @@
 #include "qmessagebox.h"
 #include "qpixmapcache.h"
 #include "qfileinfo.h"
-#include "q3process.h"
-#include "q3ptrlist.h"
+#include "qprocess.h"
+#include <QList>
 //Added by qt3to4:
 #include <QPixmap>
 

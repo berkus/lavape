@@ -669,7 +669,7 @@ void CExecTree::MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** p
                     && !elDef->TypeFlags.Contains(thisCompoForm);
   /*
   QItemDelegate* delg = (QItemDelegate*)viewTree->Tree->itemDelegate ();
-  viewTree->Tree->setCurrentItem(ActItem);
+  viewTree->Tree->setCurrentIndex(ActItem);
   QWidget* ed = delg->createEditor(viewTree->Tree, QStyleOptionViewItem(), viewTree->Tree->currentIndex());
   ((QLineEdit*)ed)->setText("yyyy");
   */

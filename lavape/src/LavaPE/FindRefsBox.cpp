@@ -26,7 +26,7 @@
 #include "qpushbutton.h"
 #include "qlabel.h"
 #include "qlineedit.h"
-#include "q3buttongroup.h"
+#include "qbuttongroup.h"
 #include "qcheckbox.h"
 #include "qradiobutton.h"
 
@@ -43,7 +43,7 @@ CGotoBox::CGotoBox(QWidget* pParent)
 }
 
 CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
-  : QDialog(parent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+  : QDialog(parent)
 {
 
   setupUi(this);
@@ -95,7 +95,7 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
     cheS = (CHETID*)cheS->successor;
   }
 
-  GotoCombo->setCurrentItem(1);
+  GotoCombo->setCurrentIndex(1);
 
   QString cname;
   if (SelEndOKToStr(GotoCombo, &cname, &SelID) > 0) 
@@ -133,19 +133,19 @@ void CFindRefsBox::UpdateData(bool getData)
 {
   if (getData) {
     valRefName = Reference->text();
-    if (FindInView->isOn())
+    if (FindInView->isChecked())
       valFindWhere = 0;
-    else if (InCurrentDoc->isOn())
+    else if (InCurrentDoc->isChecked())
       valFindWhere = 1;
-    else if (InDocs->isOn())
+    else if (InDocs->isChecked())
       valFindWhere = 2;
     else 
       valFindWhere = 3;
-    if (FindAll->isOn())
+    if (FindAll->isChecked())
       valFindWhat = 0;
-    else if (FindRead->isOn())
+    else if (FindRead->isChecked())
       valFindWhat = 1;
-    else if (FindWrite->isOn())
+    else if (FindWrite->isChecked())
       valFindWhat = 2;
     else 
       valFindWhat = 3;
@@ -188,7 +188,7 @@ CFindRefsBox::CFindRefsBox(QWidget* pParent /*=NULL*/)
 }
 
 CFindRefsBox::CFindRefsBox(LavaDECL* decl, bool inExec, CFindData* fw, QWidget* pParent)
-	: QDialog(pParent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+	: QDialog(pParent)
 {
   setupUi(this);
   myDECL = decl;
@@ -281,7 +281,7 @@ CFindByNameBox::CFindByNameBox(QWidget* pParent)
 }
 
 CFindByNameBox::CFindByNameBox(CFindData* fw, QWidget* pParent)
-	: QDialog(pParent, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu)
+	: QDialog(pParent)
 {
   setupUi(this);
   findWhat = fw;
@@ -292,19 +292,19 @@ CFindByNameBox::CFindByNameBox(CFindData* fw, QWidget* pParent)
      next;
      next = (CHEString*)next->successor) {
     pos++;
-	  SearchName->insertItem(QString(next->data.c), pos);
+	  SearchName->insertItem(pos,QString(next->data.c));
   }
   if (pos)
-    SearchName->setCurrentItem(1);
+    SearchName->setCurrentIndex(1);
 }
 
 void CFindByNameBox::on_ID_OK_clicked() 
 {
-	if (SearchCase->isOn())
+	if (SearchCase->isChecked())
     findWhat->FindRefFlags.INCL(matchCase);
   else
     findWhat->FindRefFlags.EXCL(matchCase);
-	if (SearchWholeName->isOn())
+	if (SearchWholeName->isChecked())
     findWhat->FindRefFlags.INCL(wholeWord);
   else
     findWhat->FindRefFlags.EXCL(wholeWord);

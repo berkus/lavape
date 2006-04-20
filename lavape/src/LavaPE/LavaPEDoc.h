@@ -7,11 +7,11 @@
 #include "SylTraversal.h"
 #include "PEBaseDoc.h"
 #include "LavaPE.h"
-#include "q3combobox.h"
+#include "qcombobox.h"
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "q3process.h"
+#include "qprocess.h"
 //#include "prelude.h"
 #include <QTcpSocket>
 

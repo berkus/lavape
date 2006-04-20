@@ -11,7 +11,7 @@
 #include <QFrame>
 #include <QEvent>
 #include <QMenu>
-#include <Q3Button>
+#include <QPushButton>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -34,10 +34,10 @@ public:
 
  //the FormWidget may be used as a (radio) button menu box
   int nRadio;
-  Q3Button *Radio [100];
+  QPushButton *Radio [100];
   QGroupBox *BGroup;
 
-  void AddRadio(Q3Button* radio);
+  void AddRadio(QPushButton* radio);
 
   //the FormWidget may be a chain element widget which has a popup menu
   QMenu* myMenu;

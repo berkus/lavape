@@ -28,7 +28,7 @@
 #include "Boxes.h"
 #include "qdir.h"
 #include "qpixmapcache.h"
-#include "q3filedialog.h"
+#include "qfiledialog.h"
 #include "qmessagebox.h"
 #include "LavaBaseStringInit.h"
 #include "LavaPEStringInit.h"
@@ -184,7 +184,7 @@ void CInclView::OnNewInclude()
     }
     else
       if (firstLast == 1)
-        QMessageBox::critical(this, qApp->name(),IDP_AlreadyIncluded,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton); 
+        QMessageBox::critical(this, qApp->applicationName(),IDP_AlreadyIncluded,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton); 
  }
  if (!firstLast)
    GetDocument()->SetLastHint();
@@ -200,13 +200,13 @@ void CInclView::OnDelete()
   if (item && (item != Tree->RootItem)) {
     CHESimpleSyntax* cheSyn = (CHESimpleSyntax*)item->getItemData();
     if (cheSyn->data.nINCL == 1) { 
-      QMessageBox::critical(this, qApp->name(),ERR_StdNotRemovable, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(),ERR_StdNotRemovable, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       return;
     }
     in = GetDocument()->IDTable.IsFileInherited(cheSyn->data.SyntaxName);
     if (in) {
       errStr = IDP_InclInherited + QString(GetDocument()->IDTable.IDTab[in]->FileName.c);
-      QMessageBox::critical(this, qApp->name(), errStr, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(this, qApp->applicationName(), errStr, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       return;
     }
     else {
@@ -239,7 +239,7 @@ void CInclView::customEvent(QEvent *ev0)
 	  QFileInfo fi(dir, usersFn->c);
     QString fn = ResolveLinks(fi), abs_fn;
 #ifdef WIN32
-    QString driveLetter = QString(fn[0].upper());
+    QString driveLetter = QString(fn[0].toUpper());
     fn.replace(0,1,driveLetter);
 #endif
     CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(fn);
@@ -247,8 +247,8 @@ void CInclView::customEvent(QEvent *ev0)
     delete usersFn;
     if (doc) {
       doc->MainView->ActivateView(true);
-      doc->SetTitle( fi.absFilePath());
-			abs_fn = fi.absFilePath();
+      doc->SetTitle( fi.absoluteFilePath());
+			abs_fn = fi.absoluteFilePath();
       doc->MainView->GetParentFrame()->SetTitle(abs_fn);
     }
   }
@@ -409,7 +409,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
 
 void CInclView::on_whatNextAction_triggered() 
 {
-  QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
 

@@ -332,9 +332,10 @@ void DDSetClass::makeChildren()
 }
 
 LavaDumpFrame::LavaDumpFrame( QWidget* parent, DumpEventData* data)
-: QDialog(parent, "Dump", true, Qt::WType_TopLevel | Qt::WStyle_MinMax)
- //   : QMainWindow(parent,"Dump",WDestructiveClose)
+: QDialog(parent)
 {
+  setModal(true);
+  setObjectName("Dump");
   resize(200, 300);
   view = new DumpListView(this, data->doc, data->object, data->name);
   QPushButton* okButton = new QPushButton("Ok", this);

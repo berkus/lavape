@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="Generated;..\disco"
-				PreprocessorDefinitions="WIN32;QT3_SUPPORT;WXMAKINGDLL;__WXMSW__;INCLUDE_MENUITEM_DEF;QT_THREAD_SUPPORT"
+				PreprocessorDefinitions="WIN32;WXMAKINGDLL;__WXMSW__;INCLUDE_MENUITEM_DEF"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -71,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib $(QT4DIR)\lib\Qt3Supportd4.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib"
 				OutputFile="..\..\bin\wxqDocView.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

@@ -6,7 +6,7 @@
 #include "LavaGUIView.h"
 #include "LavaPEDoc.h"
 #include "Syntax.h"
-#include "q3combobox.h"
+#include "qcombobox.h"
 //Added by qt3to4:
 #include <QPixmap>
 #include <QDrag>

@@ -5,16 +5,16 @@
 #include "LavaPEView.h"
 #include "SylTraversal.h"
 #include "Syntax.h"
-#include "q3combobox.h"
+#include "qcombobox.h"
 //Added by qt3to4:
-#include <Q3Frame>
+#include <QFrame>
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "q3tabdialog.h"
-#include "q3listbox.h"
+//#include "qtabdialog.h"
+//#include "q3listbox.h"
 #include "qlineedit.h"
-#include "q3button.h"
+#include "qpushbutton.h"
 #include "qspinbox.h"
 #include "qtabwidget.h"
 #include "LavaGUIView.h"

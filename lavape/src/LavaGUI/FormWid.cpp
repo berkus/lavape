@@ -115,13 +115,25 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
 
     origMenu = true;
     if (IterFlags.Contains(IteratedItem)) {
-      myMenu->insertItem("Delete chain element", this, SLOT(DelActivated()),0,IDM_ITER_DEL);
-      myMenu->insertItem("Insert chain element", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
+      QAction *DelAction= new QAction("Delete chain element",this);
+      myMenu->addAction(DelAction);
+      connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
+      QAction *InsAction= new QAction("Insert chain element",this);
+      myMenu->addAction(InsAction);
+      connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
+      //myMenu->insertItem("Delete chain element", this, SLOT(DelActivated()),0,IDM_ITER_DEL);
+      //myMenu->insertItem("Insert chain element", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     }
     else {
-      myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
-      myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
-      myMenu->setItemEnabled(IDM_ITER_INSERT, false);
+      QAction *DelAction= new QAction("Delete optional",this);
+      myMenu->addAction(DelAction);
+      connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
+      QAction *InsAction= new QAction("Insert optional",this);
+      myMenu->addAction(InsAction);
+      connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
+      InsAction->setEnabled(false);
+      //myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
+      //myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     }
   }
   else {
@@ -134,11 +146,11 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
     }
   }
 
-  ForegroundColor = colorGroup().foreground();
+  ForegroundColor = palette().windowText().color();
 }
  
 
-void CFormWid::AddRadio(Q3Button* radio)
+void CFormWid::AddRadio(QPushButton* radio)
 {
   Radio[nRadio] = radio;
   nRadio++;

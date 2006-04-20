@@ -31,13 +31,13 @@
 #include <QCloseEvent>
 #include <QEvent>
 #include <QFrame>
-#include <Q3HBoxLayout>
+#include <QHBoxLayout>
 #include <QResizeEvent>
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include "LavaBaseStringInit.h"
 #include "qstatusbar.h"
 #include "qpushbutton.h"
-#include "q3vbox.h"
+//#include "q3vbox.h"
 #include "qlayout.h"
 #include "Lava.xpm"
 
@@ -48,7 +48,6 @@
 // CLavaGUIView
 
 GUIScrollView::GUIScrollView(QWidget *parent, bool fromPopup)
-    //: Q3ScrollView(parent, "GUIScrollView")
     : QScrollArea(parent)
 {
   setObjectName("GUIScrollView");
@@ -86,8 +85,10 @@ void GUIScrollView::/*viewportR*/resizeEvent(QResizeEvent* ev)
 }
 
 LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
-: QDialog(parent, "", true, Qt::WType_TopLevel | Qt::WStyle_MinMax)
+: QDialog(parent)
 {
+  setObjectName("LavaGUIDialog");
+  setModal(true);
   returned = false;
   myScrv = new GUIScrollView(this, false);
   QWidget* hb = new QWidget(this); // horiz. box
@@ -150,7 +151,7 @@ void LavaGUIDialog::closeEvent(QCloseEvent *e)
 {
   if (myGUIProg && ResultDPtr && *ResultDPtr) {
     if (QMessageBox::question(
-          wxTheApp->m_appWindow,qApp->name(),"Do you really want to cancel this Lava dialog?",
+          wxTheApp->m_appWindow,qApp->applicationName(),"Do you really want to cancel this Lava dialog?",
           QMessageBox::Yes,
           QMessageBox::No) == QMessageBox::Yes) {
       OnCancel();
@@ -245,7 +246,7 @@ void LavaGUIDialog::OnReset()
 
 void LavaGUIDialog::NewTitle(LavaDECL *decl, const DString& lavaName)
 {
-  QString oldTitle=caption(), newTitle;
+  QString oldTitle=windowTitle(), newTitle;
 
   if (decl) {
     DString title = lavaName;
@@ -255,7 +256,7 @@ void LavaGUIDialog::NewTitle(LavaDECL *decl, const DString& lavaName)
   }
   else
     newTitle = QString(lavaName.c);
-  setCaption(newTitle);
+  setWindowTitle(newTitle);
   if (!oldTitle.isEmpty() && newTitle != oldTitle)
     wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
@@ -303,7 +304,7 @@ CLavaGUIView::~CLavaGUIView()
   }
   if (!wxTheApp->appExit) {
     QString msg("Document is being closed");
-    wxTheApp->m_appWindow->statusBar()->message(msg);
+    wxTheApp->m_appWindow->statusBar()->showMessage(msg);
   }
   GetDocument()->RuntimeView = 0;
 }
@@ -383,7 +384,7 @@ void CLavaGUIView::OnInitialUpdate()
         myGUIProg->FrozenObject = 0;
         myGUIProg->fromFillIn = 1;
         myDECL = (*ServicePtr)[0][0].implDECL;
-        ((CLavaGUIFrame*)GetParentFrame())->setCaption(GetDocument()->GetTitle());
+        ((CLavaGUIFrame*)GetParentFrame())->setWindowTitle(GetDocument()->GetTitle());
         myID = TID(myDECL->OwnID, myDECL->inINCL);
         LastBrowseNode = 0;
         MessToStatusbar();
@@ -409,7 +410,7 @@ void CLavaGUIView::OnInitialUpdate()
       myGUIProg->fromFillIn = 1;
       myDECL = (*ServicePtr)[0][0].implDECL;
       //if (!GetDocument()->IsEmbedded())
-        ((CLavaGUIFrame*)GetParentFrame())->setCaption(GetDocument()->GetTitle());
+        ((CLavaGUIFrame*)GetParentFrame())->setWindowTitle(GetDocument()->GetTitle());
       myID = TID(myDECL->OwnID, myDECL->inINCL);
       LastBrowseNode = 0;
       myGUIProg->myDECL = myDECL;
@@ -717,7 +718,7 @@ void CLavaGUIView::OnTogglestate()
 
 void CLavaGUIView::OnUpdateTogglestate(QAction* action)
 {
-  action->setOn(CurrentCategory);
+  action->setChecked(CurrentCategory);
   action->setEnabled(LBaseData->inRuntime && GetDocument()->isObject); // && !GetDocument()->IsEmbedded());
 }
 
@@ -774,7 +775,7 @@ void CLavaGUIView::MessToStatusbar()
         StatusbarMess += GetDocument()->PathName.c;
       }
     }
-    wxTheApp->m_appWindow->statusBar()->message(StatusbarMess);
+    wxTheApp->m_appWindow->statusBar()->showMessage(StatusbarMess);
   }
 }
 
@@ -794,7 +795,7 @@ void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
     }
     else {
       QString msg("");
-      wxTheApp->m_appWindow->statusBar()->message(msg);
+      wxTheApp->m_appWindow->statusBar()->showMessage(msg);
       DisableActions();
     }
   }

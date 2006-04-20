@@ -31,8 +31,8 @@
 #include "LavaGUIView.h"
 #include "LavaGUIPopup.h"
 #include "GUIProg.h"
-//Added by qt3to4:
 #include <QFrame>
+#include <QTextCursor>
 
 #pragma hdrstop
 
@@ -69,7 +69,7 @@ void GUIwidCLASS::CreatePopupWindow(bool isTextPopup, QWidget*& popupShell, QWid
   QString cap = GUIProg->winCaption();
   if (label.l)
     cap = cap + " - " + QString(label.c);
-  popupShell->setCaption(cap);
+  popupShell->setWindowTitle(cap);
   if (GUIProg->isView) 
     if (isTextPopup) 
       CreateFormWidget(pane, ((CLavaGUIPopup*)popupShell)->view->qvbox, 0, str, data);
@@ -106,8 +106,8 @@ void GUIwidCLASS::AddPopupMenuItem (QWidget*& pos, QWidget* menu, DString& text,
   else
     str = text;
   if (((CLavaMenu*)menu)->myMenu) {
-    ipos = ((CLavaMenu*)menu)->myMenu->count();
-    ((CLavaMenu*)menu)->myMenu->insertItem (str.c, ipos, ipos);
+    ipos = ((CLavaMenu*)menu)->myMenu->actions().count();
+    ((CLavaMenu*)menu)->myMenu->addAction(str.c);
     if (data)
      ((CLavaMenu*)menu)->SetItemData(ipos, data);
     ((CLavaMenu*)menu)->isEnter = (data != 0);
@@ -169,7 +169,7 @@ void GUIwidCLASS::CreateButtonMenuButton (QWidget*& toggleWidget, QWidget* paren
     else
       toggleWidget =  new CPushButton(GUIProg, node, parentWidget, widgetName.c, text.c,
                                            radioBox, ((CFormWid*)radioBox)->nRadio+1);
-  ((CFormWid*)radioBox)->AddRadio((Q3Button*)toggleWidget);
+  ((CFormWid*)radioBox)->AddRadio((QPushButton*)toggleWidget);
 }
 
 
@@ -224,14 +224,14 @@ void GUIwidCLASS::SetText (QWidget* widget, DString& text)
   if (!widget)
     return;
   if (widget->inherits( "CTEdit")) {
-    ((CTEdit*)widget)->clearModified();
+    ((CTEdit*)widget)->setModified(false);
     if (text.l)
       ((CTEdit*)widget)->setText(text.c);
   }
   else if (widget->inherits( "CMultiLineEdit")) {
-    ((CMultiLineEdit*)widget)->setModified(false);
+    ((CMultiLineEdit*)widget)->document()->setModified(false);
     if (text.l)
-      ((CMultiLineEdit*)widget)->setText(text.c);
+      ((CMultiLineEdit*)widget)->setPlainText(text.c);
   }
 }
 
@@ -313,7 +313,6 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
   
   QRect rect, wrect, newParentRect;
   QSize sz, wsz, strSz;
-  //Q3ScrollView* view;
   QScrollArea* view;
   QWidget *grandparent, *parent;
   QGroupBox *gb;
@@ -372,7 +371,6 @@ void GUIwidCLASS::GrowParent(QWidget* widget)
       wsz = parent->size();
       bord = GUIProg->GetLineWidth(grandparent) + GUIProg->globalIndent;
       grandparent->resize(rect.left()+wsz.width()+2*bord, rect.top()+wsz.height()+2*bord);
-      //view = (Q3ScrollView*)grandparent->parent();
       view = (QScrollArea*)grandparent->parent();
       view->resize(rect.left()+wsz.width()+2*bord, rect.top()+wsz.height()+2*bord);
     }
@@ -395,13 +393,13 @@ void GUIwidCLASS::SetOptionDefault (QWidget* menuWidget, const QWidget* entry, D
   if (!menuWidget->inherits("CTComboBox"))
     return;
   if (ientry) 
-    ((CTComboBox*)menuWidget)->setCurrentItem(ientry);
+    ((CTComboBox*)menuWidget)->setCurrentIndex(ientry);
   else {
     matches = mod->match(mod->index(0,0),Qt::DisplayRole,QVariant(labelText.c),1,Qt::MatchFlags(Qt::MatchCaseSensitive|Qt::MatchExactly));
     if (!matches.isEmpty()) 
-      ((CTComboBox*)menuWidget)->setCurrentText(mod->data(matches.first()).toString());
+      ((CTComboBox*)menuWidget)->setItemText(((CTComboBox*)menuWidget)->currentIndex(),mod->data(matches.first()).toString());
     else
-      ((CTComboBox*)menuWidget)->setCurrentItem(0);
+      ((CTComboBox*)menuWidget)->setCurrentIndex(0);
   }
 }  
 
@@ -443,8 +441,11 @@ void GUIwidCLASS::SetPointer (QWidget* newWidget, unsigned isWindow)
       ((CTEdit*)newWidget)->setCursorPosition(len);
       return;
     }
-    if (newWidget->inherits("CMultiLineEdit")) 
-      ((CMultiLineEdit*)newWidget)->moveCursor(QTextEdit::MoveEnd, false);
+    if (newWidget->inherits("CMultiLineEdit")) {
+      QTextCursor tc=((CMultiLineEdit*)newWidget)->textCursor();
+      tc.movePosition(QTextCursor::End);
+      ((CMultiLineEdit*)newWidget)->setTextCursor(tc);
+    }
   }
 }
 

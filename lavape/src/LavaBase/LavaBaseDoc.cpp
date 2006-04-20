@@ -53,12 +53,12 @@ void ASN1tofromAr::getChar (unsigned char& c)
 {
   if (Ar->atEnd())
     SetSkip(true);
-  Ar->readRawBytes((char*)&c,1);
+  Ar->readRawData((char*)&c,1);
 }
  
 void ASN1tofromAr::putChar (const unsigned char& c)
 {
-  Ar->writeRawBytes((char*)&c,1);
+  Ar->writeRawData((char*)&c,1);
   /*
   if (actPos >= (int)Ar->size()) {
     actLen += 10000;
@@ -114,7 +114,7 @@ void ASN1tofromAr::PUTCString (QString* s)
   PutHeader(header);
   if (header.Len > 0)
     for (i = 0; i <= header.Len-1; i++) {
-      outChar = MachDep.ToASCII[s->at(i).ascii()];
+      outChar = MachDep.ToASCII[s->at(i).toAscii()];
       putChar(outChar);
     }
     
@@ -287,13 +287,13 @@ CHESimpleSyntax* CLavaBaseDoc::IncludeSyntax(const QString& fn, bool& isNew, int
     if ((ReadSynDef(fn, isyntax) < 0) || !isyntax) {
       if (!isyntax) {
         str = QString("File '") + fn + "' not found";
-        critical(wxTheApp->m_appWindow,qApp->name(),str,QMessageBox::Ok,0,0);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),str,QMessageBox::Ok,0,0);
       }
       return 0;
     }
     if (hint && (isyntax->SynDefTree.first == isyntax->SynDefTree.last)) {
       str = QString("File '") + fn + " is not a valid lava file";
-      critical(wxTheApp->m_appWindow,qApp->name(),str,QMessageBox::Ok,0,0);
+      critical(wxTheApp->m_appWindow,qApp->applicationName(),str,QMessageBox::Ok,0,0);
       SynIO.DeleteSynDef(isyntax);
       return 0;
     }
@@ -398,7 +398,7 @@ CHESimpleSyntax* CLavaBaseDoc::AddSyntax(SynDef *syntaxIncl, const QString& fn, 
         if (!LBaseData->inMultiDocUpdate) {
           DString str = DString("Include-file '") + fullfn/*cheSynIncl->data.SyntaxName*/ + DString("' not found");
           //QMessageBox();//str.c, MB_OK+MB_ICONSTOP);
-          critical(wxTheApp->m_appWindow,qApp->name(),str.c,QMessageBox::Ok,0,0);
+          critical(wxTheApp->m_appWindow,qApp->applicationName(),str.c,QMessageBox::Ok,0,0);
         }
         cheSynIncl->data.notFound = true;
         if (cheSyn)

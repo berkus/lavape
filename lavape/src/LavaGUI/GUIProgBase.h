@@ -8,7 +8,6 @@
 #include "SynIDTable.h"
 #include "qsize.h"
 #include "qwidget.h"
-//#include "q3scrollview.h"
 #include "qscrollarea.h"
 
 #ifdef WIN32
@@ -28,7 +27,6 @@ class  LAVAGUI_DLL CGUIMet : public QObject
 
   QWidget* ViewWin;  //CLavaGUIView or LavaGUIDialog
   bool isView;
-  //Q3ScrollView* scrollView;
   QScrollArea* scrView;
   CHEFormNode* DelNode;
   CHEFormNode* InsertNode;

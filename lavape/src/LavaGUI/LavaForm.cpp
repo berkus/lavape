@@ -154,7 +154,7 @@ void LavaFormCLASS::AllocFNode (CHEFormNode *&formNode,
     if (ex && ex->data.xpmFile.l) {
       QDir qdir(((TIDTable*)((CGUIProg*)GUIProg)->mySynDef->IDTable)->DocDir.c);
       QFileInfo qf(qdir, ex->data.xpmFile.c);
-      formNode->data.Pixmap = new QPixmap(qf.absFilePath());
+      formNode->data.Pixmap = new QPixmap(qf.absoluteFilePath());
     }
     if (syn->Annotation.ptr->String1.l && formNode->data.LFont.fromString(syn->Annotation.ptr->String1.c))
       formNode->data.ownLFont = ownFont;
@@ -542,7 +542,7 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
         if (resultFNode->data.BType == Float) {
           resultFNode->data.F = *(float*)((*rPtr)+LSH);
           qstr.setNum(resultFNode->data.F);
-          qstr = qstr.rightJustify(anno->Length.Field,' ',true);
+          qstr = qstr.rightJustified(anno->Length.Field,' ',true);
           resultFNode->data.StringValue = STRING(qPrintable(qstr));
       //    Conv.RealToString(resultFNode->data.F, 0, anno->Length.Field, resultFNode->data.StringValue, ok);
         }
@@ -550,7 +550,7 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
           resultFNode->data.Db = *(double*)((*rPtr)+LSH);
           resultFNode->data.F = *(float*)((*rPtr)+LSH);
           qstr.setNum(resultFNode->data.Db);
-          qstr = qstr.rightJustify(anno->Length.Field,' ',true);
+          qstr = qstr.rightJustified(anno->Length.Field,' ',true);
           resultFNode->data.StringValue = STRING(qPrintable(qstr));
 //          Conv.RealToString(resultFNode->data.Db, 0, anno->Length.Field, resultFNode->data.StringValue, ok);
         }
@@ -1258,7 +1258,7 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
     else {
       msg = ERR_Broken_ref;
       msg = msg + QString(" in : ")  + QString(parDECL->FullName.c);
-      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     }
     return;
   }
@@ -1285,7 +1285,7 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
           msg += " -> ";
         }
         msg = msg + QString(classDECL->FullName.c);
-        QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         return;
       }
       else {
@@ -1307,7 +1307,7 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
     else {
       msg = ERR_NoIFforForm;
       msg = msg + QString(" : ")  + QString(parDECL->ParentDECL->FullName.c);
-      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), msg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       return;
     }
   if (!classDECL->VElems.VElems.first || !LBaseData->inRuntime)
@@ -1612,7 +1612,7 @@ bool LavaFormCLASS::OnOK(CHEFormNode *object_first)
           && !((CGUIProg*)GUIProg)->FrozenObject) {
           //show MessageBox and
           //SetFocus
-          QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), ERR_EnterValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), ERR_EnterValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
           if (((CGUIProg*)GUIProg)->MakeGUI.setFocus(1,actFNode)) 
             if (GUIProg->focNode) 
               ((CGUIProg*)GUIProg)->MakeGUI.SetPointer((QWidget*)GUIProg->focNode->data.FIP.widget, 1);
@@ -1628,7 +1628,7 @@ bool LavaFormCLASS::OnOK(CHEFormNode *object_first)
           if (!enumFNode->data.IoSigFlags.Contains(trueValue)) {
             //show MessageBox and
             //SetFocus
-            QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), ERR_SelectValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+            QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), ERR_SelectValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
             if (((CGUIProg*)GUIProg)->MakeGUI.setFocus(1,actFNode)) 
               if (actFNode) 
                 ((CGUIProg*)GUIProg)->MakeGUI.SetPointer((QWidget*)actFNode->data.FIP.widget, 1);           return false;

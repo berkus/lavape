@@ -8,12 +8,11 @@
 #include "LavaBaseDoc.h"
 #include "PEBaseDoc.h"
 #include "docview.h"
-//#include "q3scrollview.h"
 #include "qscrollarea.h"
-#include "q3vbox.h"
+//#include "q3vbox.h"
 #include "qdialog.h" 
 //Added by qt3to4:
-#include <Q3VBoxLayout>
+#include <QVBoxLayout>
 #include <QFrame>
 #include <QResizeEvent>
 #include <QEvent>
@@ -22,12 +21,11 @@
 class LAVAGUI_DLL GUIVBox : public QFrame
 {
 public:
-  GUIVBox(QWidget* parent, bool fromPopup, QScrollArea* /*Q3ScrollView**/ view)
+  GUIVBox(QWidget* parent, bool fromPopup, QScrollArea* view)
     :QFrame(parent) 
     {View = view; FromPopup = fromPopup; setObjectName("GUIVBox"); }
   QSize sizeHint() { return size();}
   bool FromPopup;
-  //->Q3ScrollView * View;
   QScrollArea * View;
   
 private:

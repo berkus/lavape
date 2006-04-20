@@ -41,8 +41,9 @@
 /////////////////////////////////////////////////////////////////////////////
 // CAboutBox dialog
 
-CAboutBox::CAboutBox(QWidget* parent, const char* name, bool modal) :
-	  QDialog(parent,name,modal, Qt::WStyle_Customize | Qt::WStyle_NormalBorder | Qt::WStyle_Title | Qt::WStyle_SysMenu) {
+CAboutBox::CAboutBox(QWidget* parent, const char* name, bool modal) : QDialog(parent) {
+  setObjectName(name);
+  setModal(modal);
   setupUi(this);
   browserPath->setText(LBaseData->m_myWebBrowser);
 } 
@@ -61,11 +62,10 @@ void CAboutBox::on_selectBrowser_clicked() {
 #endif
 
   QString s = QFileDialog::getOpenFileName(
-                  progDir,
-                  filter,
                   this,
-                  "open file dialog",
-                  "Choose your favorite web browser" );
+                  "Choose your favorite web browser",
+                  progDir,
+                  filter);
 	if (s != QString::null) {
 		browserPath->setText(s);
 		LBaseData->m_myWebBrowser = s;
@@ -83,14 +83,14 @@ void CAboutBox::on_LavaHomePage_clicked()
 	QStringList args;
 
 	if (browserPath->text().isEmpty()) {
-    QMessageBox::critical(this,qApp->name(),ERR_MissingBrowserPath,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),ERR_MissingBrowserPath,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 		return;
 	}
 
 	args << "http://lavape.sourceforge.net/";
 
   if (!QProcess::startDetached(LBaseData->m_myWebBrowser,args)) {
-    QMessageBox::critical(this,qApp->name(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(this,qApp->applicationName(),ERR_BrowserStartFailed.arg(errno),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 		return;
 	}
 }

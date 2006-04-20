@@ -39,8 +39,9 @@ CTStatic::~CTStatic()
 
 CTStatic::CTStatic(CGUIProgBase *guiPr, CHEFormNode* data,
                    QWidget* parentWidget, const QString& label, const char* widgetName )
-:QLabel(label, parentWidget, "TStatic")
+:QLabel(label, parentWidget)
 {
+  setObjectName("TStatic");
   myFormNode = data;
   GUIProg = guiPr;
   int bord = GUIProg->GetLineWidth(parentWidget);

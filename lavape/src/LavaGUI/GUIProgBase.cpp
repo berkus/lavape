@@ -217,9 +217,9 @@ int CGUIMet::GetLineWidth(QWidget *win)
 QString CGUIMet::winCaption()
 {
   if (ViewWin->inherits("CLavaGUIView"))
-    return ((wxView*)ViewWin)->GetParentFrame()->caption();
+    return ((wxView*)ViewWin)->GetParentFrame()->windowTitle();
   else
-    return ((LavaGUIDialog*)ViewWin)->caption();
+    return ((LavaGUIDialog*)ViewWin)->windowTitle();
 }
 
  /*

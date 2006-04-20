@@ -85,7 +85,6 @@ void MakeGUICLASS::DisplayScreen (bool suppressed)
 } // END OF DisplayScreen
 
 
-//void MakeGUICLASS::SetScrollSizes(Q3ScrollView* view)
 void MakeGUICLASS::SetScrollSizes(QScrollArea* view)
 {
   QSize size = ((GUIScrollView*)view)->MaxBottomRight.size(), size2;
@@ -172,7 +171,10 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
         ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(pred->data.StringValue.c, context.currentFrame);
       else
         ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(context.currentFrame);
-      ((CFormWid*)context.currentFrame)->BGroup->setPaletteForegroundColor(context.currentFrame->foregroundColor());
+      QPalette palette;
+      palette.setColor(QPalette::Active,QPalette::WindowText, context.currentFrame->palette().windowText().color());
+      ((CFormWid*)context.currentFrame)->BGroup->setPalette(palette);
+//      ((CFormWid*)context.currentFrame)->BGroup->setPaletteForegroundColor(context.currentFrame->foregroundColor());
       if (pred)
         GUIProg->SetLFont(((CFormWid*)context.currentFrame)->BGroup, pred);
       else
@@ -259,7 +261,10 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
           ((CFormWid*)newWidget)->BGroup = new QGroupBox(pred->data.StringValue.c, newWidget);
         else
           ((CFormWid*)newWidget)->BGroup = new QGroupBox(newWidget);
-        ((CFormWid*)newWidget)->BGroup->setPaletteForegroundColor(newWidget->foregroundColor());
+        QPalette palette;
+        palette.setColor(QPalette::Active,QPalette::WindowText, newWidget->palette().windowText().color());
+        ((CFormWid*)newWidget)->BGroup->setPalette(palette);
+//        ((CFormWid*)newWidget)->BGroup->setPaletteForegroundColor(newWidget->foregroundColor());
         if (pred)
           GUIProg->SetLFont(((CFormWid*)newWidget)->BGroup, pred);
         else

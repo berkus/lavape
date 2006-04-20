@@ -13,7 +13,7 @@
 #include <QTcpSocket>
 #include "ASN1File.h"
 
-#include "q3combobox.h"
+#include "qcombobox.h"
 //Added by qt3to4:
 #include <QPixmap>
 #include <QEvent>
@@ -21,7 +21,7 @@
 #include "docview.h"
 #include "qobject.h"
 #include "qstring.h"
-#include "q3process.h"
+#include "qprocess.h"
 
 
 class CLavaPEBrowse : public CPEBaseBrowse

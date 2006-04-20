@@ -39,8 +39,9 @@
 
 
 CUtilityView::CUtilityView(QWidget *parent)
-: QTabWidget(parent, "UtilityView")
+: QTabWidget(parent)
 {
+  setObjectName("UtilityView");
 	QString emptyString;
 	
   FindPage = new QTreeWidget(0);
@@ -84,8 +85,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   QIcon icoErr = QIcon(QPixmap((const char**)PX_errtab));
   QIcon icoCom = QIcon(QPixmap((const char**)PX_commentt));
   QIcon icoDebug = QIcon(QPixmap((const char**)PX_debugTab));
-  setTabPosition(Bottom);
-//  addTab (CommentPage, icoCom, "Comment" ); 
+  setTabPosition(QTabWidget::South);
   addTab (CommentPage, icoCom, "Comment" ); 
   addTab (ErrorPage, icoErr, "Error" ); 
   addTab (FindPage, icoFind, "Find" ); 
@@ -93,7 +93,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   QSize sz = tabBar()->size();
   tabBar()->resize(sz.width(), 16);
   ActTab = tabComment;
-  setCurrentPage((int)ActTab);
+  setCurrentIndex((int)ActTab);
   connect(this,SIGNAL(currentChanged(QWidget*)), SLOT(OnTabChange(QWidget*)));
   connect(FindPage,SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int  )), SLOT(OnDblclk(QTreeWidgetItem*, int)));
   ErrorEmpty = true;
@@ -120,7 +120,7 @@ void CUtilityView::SetErrorOnUtil(LavaDECL* decl)
   QString cstrA;
   setError(decl->DECLError1, &cstrA);
   setError(decl->DECLError2, &cstrA);
-  ErrorPage->setText(cstrA);
+  ErrorPage->setPlainText(cstrA);
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
 }
 
@@ -128,7 +128,7 @@ void CUtilityView::SetErrorOnUtil(const CHAINX& ErrChain)
 {
   QString cstrA;
   setError(ErrChain, &cstrA);
-  ErrorPage->setText(cstrA);
+  ErrorPage->setPlainText(cstrA);
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
 }
 
@@ -143,7 +143,7 @@ void CUtilityView::setError(const CHAINX& ErrChain, QString* cstrA)
     if (cstrA->length())
       *cstrA += "\r\n";
     else
-      wxTheApp->m_appWindow->statusBar()->message(cstr);
+      wxTheApp->m_appWindow->statusBar()->showMessage(cstr);
     *cstrA += cstr;
     che = (CHE*)che->successor;
   }
@@ -152,14 +152,14 @@ void CUtilityView::setError(const CHAINX& ErrChain, QString* cstrA)
 void CUtilityView::SetComment(const DString& text, bool toStatebar)
 {
   if (text.l) {
-    CommentPage->setText(text.c);
+    CommentPage->setPlainText(text.c);
     if (toStatebar)
-      wxTheApp->m_appWindow->statusBar()->message(text.c);
+      wxTheApp->m_appWindow->statusBar()->showMessage(text.c);
   }
   else {
     CommentPage->clear();
     if (toStatebar)
-      wxTheApp->m_appWindow->statusBar()->message(IdlMsg);
+      wxTheApp->m_appWindow->statusBar()->showMessage(IdlMsg);
   }
   CommentEmpty = !text.l;
 }
@@ -189,7 +189,7 @@ void CUtilityView::OnDblclk(QTreeWidgetItem* item, int col)
         if (doc->TrueReference(decl, data->refCase, data->refTid))
           ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, tid, true, &data->enumID);
         else
-          QMessageBox::critical(this, qApp->name(), IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(this, qApp->applicationName(), IDP_RefNotFound,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       }
       else if (data->index == 2)
         ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, tid, true, &data->enumID);
@@ -231,7 +231,7 @@ void CUtilityView::DeleteAllFindItems()
 void CUtilityView::SetTab(UtilityTabs tab)
 {
 
-  setCurrentPage((int)tab);
+  setCurrentIndex((int)tab);
   if ((tab == tabDebug) && firstDebug) {
     QSize sz = ((CLavaMainFrame*)wxTheApp->m_appWindow)->size();
     int h = sz.height()/3;
@@ -251,7 +251,7 @@ void CUtilityView::SetTab(UtilityTabs tab)
 void CUtilityView::OnTabChange(QWidget* curPage)
 {
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastUtilitiesState = (int)ActTab;
-  ActTab = (UtilityTabs)currentPageIndex();
+  ActTab = (UtilityTabs)currentIndex();
   if (ActTab == tabFind) {
     FindPage->show();
     setUpdatesEnabled(true);

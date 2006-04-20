@@ -8,7 +8,7 @@
 #include <QCloseEvent>
 #include "docview.h"
 #include "mdiframes.h"
-#include "q3frame.h"
+#include "qframe.h"
 #include "qtoolbar.h"
 
 

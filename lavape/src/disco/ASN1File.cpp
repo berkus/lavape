@@ -51,7 +51,7 @@ void ASN1InFile::error (QString msgText)
   if (!Silent) {
     IO.WriteLn();
     IO.WriteString("++++ ASN1InFile, error in ");
-    IO.WriteString(msgText);
+    IO.WriteString(qPrintable(msgText));
     IO.WriteLn();
   }
   Done = false;
@@ -64,7 +64,7 @@ void ASN1OutFile::error (QString msgText)
   if (!Silent) {
     IO.WriteLn();
     IO.WriteString("++++ ASN1OutFile, error in ");
-    IO.WriteString(msgText);
+    IO.WriteString(qPrintable(msgText));
     IO.WriteLn();
   }
   Done = false;
@@ -207,7 +207,7 @@ void ASN1InSock::error (QString msgText)
   if (!Silent) {
     IO.WriteLn();
     IO.WriteString("++++ ASN1InSock, error in ");
-    IO.WriteString(msgText);
+    IO.WriteString(qPrintable(msgText));
     IO.WriteLn();
   }
   Done = false;
@@ -221,7 +221,7 @@ void ASN1OutSock::error (QString msgText)
   if (!Silent) {
     IO.WriteLn();
     IO.WriteString("++++ ASN1OutSock, error in ");
-    IO.WriteString(msgText);
+    IO.WriteString(qPrintable(msgText));
     IO.WriteLn();
   }
   Done = false;

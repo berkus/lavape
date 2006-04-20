@@ -43,8 +43,9 @@ CLavaMenu::~CLavaMenu()
 
 CLavaMenu::CLavaMenu(CGUIProgBase *guiPr, CHEFormNode* data,
        QWidget* pParentWnd, const char* WindowName, QString label, int cx)
-       :QLineEdit(label, pParentWnd, "LavaMenu")
+       :QLineEdit(label, pParentWnd)
 {
+  setObjectName("LavaMenu");
   myFormNode = data;
   isEnter = false;
   count = 0;

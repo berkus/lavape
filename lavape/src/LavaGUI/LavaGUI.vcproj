@@ -140,7 +140,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;..\disco;..\LavaBase\Generated;..\LavaBase;..\LavaPE\res;..\wxqDocView"
-				PreprocessorDefinitions="WIN32;EXECVIEW;QT3_SUPPORT;QT_THREAD_SUPPORT;LAVAGUI_EXPORT"
+				PreprocessorDefinitions="WIN32;EXECVIEW;LAVAGUI_EXPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				PrecompiledHeaderFile=".\Debug/LavaGUI.pch"
@@ -165,7 +165,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\Qt3Supportd4.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGUId4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGUId4.lib"
 				OutputFile="..\..\bin\LavaGUI.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

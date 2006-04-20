@@ -3,7 +3,7 @@
 
 
 #include "qevent.h"
-#include "q3scrollview.h"
+#include <QScrollArea>
 #include "qtoolbar.h"
 #include "qpainter.h"
 #include "qwidget.h"
@@ -97,7 +97,7 @@ public:
   void RedrawExec (SynObject *selectAt=0);
   virtual void on_whatNextAction_triggered();
 
-  void OnInsertEnum (QString &refName, TID &refTID, unsigned pos);
+  void OnInsertEnum (QString &refName, TID &refTID);
   void OnInsertObjRef (QString &refName, TDODC &refTIDs, bool append);
   void OnInsertRef (QString &refName, TID &refTID, bool isStatic=false, TID *vtypeID=0, bool fromNew=false);
   void SetRefTypeFlags (ObjReference *objRef);

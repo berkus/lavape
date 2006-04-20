@@ -41,13 +41,12 @@
 #include "qmainwindow.h"
 #include "qmenubar.h"
 #include "qmessagebox.h"
-#include "q3canvas.h"
+//#include "q3canvas.h"
 #include "qcursor.h"
-#include "q3popupmenu.h"
-#include "q3listview.h"
+#include <QMenu>
 #include "qtreewidget.h"
-#include "q3vbox.h"
-#include "q3whatsthis.h"
+#include "qvbox.h"
+#include "qwhatsthis.h"
 #include "qworkspace.h"
 #include "qstatusbar.h"
 #include "qaction.h"
@@ -59,14 +58,14 @@
 #include "qpalette.h"
 #include "qaction.h"
 #include "qsignalmapper.h"
-#include "q3dict.h"
+#include "qhash.h"
 #include "qevent.h"
 #include "qtooltip.h"
 #include "QtAssistant/qassistantclient.h"
 //Added by qt3to4:
-#include <Q3ActionGroup>
+#include <QActionGroup>
 #include <QCloseEvent>
-#include <Q3ValueList>
+//#include <Q3ValueList>
 
 #pragma hdrstop
 
@@ -120,26 +119,12 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
   connect( styleMapper, SIGNAL( mapped(const QString&) ), this, SLOT( makeStyle(const QString&) ) );
+
   QStringList list = QStyleFactory::keys();
   list.sort();
-  Q3Dict<int> stylesDict( 17, FALSE );
+  QHash<QString,int*> stylesDict;
   for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
 		QString styleStr = *it;
-		QString styleAccel = styleStr;
-		if ( stylesDict[styleAccel.left(1)] ) {
-			for ( int i = 0; i < styleAccel.length(); i++ ) {
-				if ( !stylesDict[styleAccel.mid( i, 1 )] ) {
-					stylesDict.insert(styleAccel.mid( i, 1 ), (const int *)1);
-					styleAccel = styleAccel.insert( i, '&' );
-					break;
-				}
-			}
-		}
-		else {
-			stylesDict.insert(styleAccel.left(1), (const int *)1);
-			styleAccel = "&"+styleAccel;
- 		}
-//		QAction *a = new QAction( styleStr, QIcon(), styleAccel, 0, ag, 0, ag->isExclusive() );
 		QAction *a = new QAction( styleStr,ag);
     a->setCheckable(true);
 		connect( a, SIGNAL( activated() ), styleMapper, SLOT(map()) );
@@ -151,7 +136,6 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 
   LBaseData->insActionPtr = insAction;
   LBaseData->delActionPtr = delAction;
-//  LBaseData->okActionPtr = 0;
   LBaseData->toggleCatActionPtr = 0;
   LBaseData->updateCancelActionPtr = 0;
 

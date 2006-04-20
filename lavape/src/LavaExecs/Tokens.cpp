@@ -80,11 +80,11 @@ static void ATO (QString s)
   newEntry->index = iToken;
   newEntry->nextEntry = 0;
 
-  hc = HashCode(s);
+  hc = HashCode(s.toAscii());
   for ( currentEntry = hashTable[hc].firstEntry;
         currentEntry;
         currentEntry = currentEntry->nextEntry) {
-    if (strcmp(TOKENSTR[currentEntry->index],s)==-1)
+          if (qstrcmp(TOKENSTR[currentEntry->index].toAscii(),s.toAscii())==-1)
       break;
   }
   if (currentEntry) {

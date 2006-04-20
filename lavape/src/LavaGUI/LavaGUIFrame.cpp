@@ -39,7 +39,7 @@ CLavaGUIFrame::CLavaGUIFrame(QWidget *parent) : wxMDIChildFrame(parent)
 bool CLavaGUIFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   if (wxMDIChildFrame::OnCreate(temp, doc)) {
-		setIcon(QPixmap((const char**) Lava));
+		setWindowIcon(QIcon(QPixmap((const char**) Lava)));
 		resize(500,300);
     if (LBaseData->inRuntime)
       hide();
@@ -103,7 +103,7 @@ DString CLavaGUIFrame::CalcTitle(LavaDECL* decl, const DString& lavaName)
 
 void CLavaGUIFrame::NewTitle(LavaDECL *decl, const DString& lavaName)
 {
-  QString oldTitle=caption(), newTitle;
+  QString oldTitle=windowTitle(), newTitle;
 
   if (decl) {
     DString title = CalcTitle(decl, lavaName);
@@ -111,7 +111,7 @@ void CLavaGUIFrame::NewTitle(LavaDECL *decl, const DString& lavaName)
   }
   else
     newTitle = QString(lavaName.c);
-  setCaption(newTitle);
+  setWindowTitle(newTitle);
   if (!oldTitle.isEmpty() && newTitle != oldTitle)
     wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
@@ -127,6 +127,6 @@ void CLavaGUIFrame::SetModified(const QString& lavaName, bool changed)
   else
     if (changed)
       title += "*";
-  setCaption(title.c);
+  setWindowTitle(title.c);
 }
 
