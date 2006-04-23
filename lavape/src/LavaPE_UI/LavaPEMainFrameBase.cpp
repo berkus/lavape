@@ -2,7 +2,7 @@
 
 #pragma hdrstop
 
-  CMainFrame::CMainFrame() {
+CMainFrame::CMainFrame() : wxMainFrame() {
    int i = 1;
   }
 	

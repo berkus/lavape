@@ -40,7 +40,7 @@ private:
 };
 */
 
-class CLavaMainFrame : public wxMainFrame, public Ui_CMainFrame
+class CLavaMainFrame : public CMainFrame
 {
 public:
   CLavaMainFrame();

@@ -111,7 +111,7 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
       }
       if (putErr || reDef) 
 //        AfxMessageBox(str.c, MB_OK+MB_ICONSTOP);
-        critical(wxTheApp->m_appWindow,qApp->name(),tr(str),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(str),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     }
     else {
       if (reDef) {
@@ -120,14 +120,14 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
         str += "\nDo you want to retry loading the lava document using another file name (*.lcom)?"; 
         str += "\n  ";
 //        if (AfxMessageBox(str.c, MB_RETRYCANCEL|MB_ICONQUESTION) == IDRETRY) 
-				if (question(wxTheApp->m_appWindow,qApp->name(),tr(str),QMessageBox::Retry,QMessageBox::Cancel,0)==QMessageBox::Retry)
+				if (question(wxTheApp->m_appWindow,qApp->applicationName(),tr(str),QMessageBox::Retry,QMessageBox::Cancel,0)==QMessageBox::Retry)
           return SelectLcom(false);
       }
       else {
         if (putErr) {
           str = QString("File '") + fn + "' not found";
 //          AfxMessageBox(str.c, MB_OK+MB_ICONSTOP);
-          critical(wxTheApp->m_appWindow,qApp->name(),tr(str),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(str),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         }
       }
     }
@@ -2128,7 +2128,7 @@ void CLavaProgram::LavaError(CheckData& ckd, bool setLavaEx, LavaDECL *decl, QSt
   else
     throw CRuntimeException(code, &msg);
   /*
-  critical(wxTheApp->m_appWindow,qApp->name(),tr(msg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(msg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   throwError = true;
   LavaEnd(true);
   */
@@ -2260,7 +2260,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
         ckd.myDECL = topDECL;
         ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
         if (!ok) {
-          critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
           goto stop;
         }
         sData.nextFreeID = 0;
@@ -2312,13 +2312,13 @@ stop:     ckd.document->throwError = false;
         }
       }
       catch (CHWException ex) {
-        critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
       }
       catch (CRuntimeException ex) {
-        critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
@@ -2332,7 +2332,7 @@ stop:     ckd.document->throwError = false;
       }
       catch(CException) {
         // For other exception types, notify user here.
-        critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
 					QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
@@ -2341,7 +2341,7 @@ stop:     ckd.document->throwError = false;
       }
       catch(int) {
         // For stack overflow, notify user here.
-        critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
 					QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
@@ -2357,20 +2357,20 @@ stop:     ckd.document->throwError = false;
         delete [] newStackFrame;
 #endif
       }
-      information(wxTheApp->m_appWindow,qApp->name(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
       QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
       return 1;
     }
     else {
-      critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       ckd.document->throwError = false; //07.05.2002
       LavaEnd(ckd.document, true);  //07.05.2002
       return 0;
     }
   }
   else {
-    critical(wxTheApp->m_appWindow,qApp->name(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     ckd.document->throwError = false;  //07.05.2002
     LavaEnd(ckd.document, true);  //07.05.2002
     return 0;

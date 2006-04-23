@@ -51,16 +51,24 @@
  * Docview MDI parent frame
  */
 
-wxMainFrame::wxMainFrame(QWidget* parent, const char* name)
- : QMainWindow(parent)
+wxMainFrame::wxMainFrame() : QMainWindow()
 {
-  setObjectName(name);
+  int i;
+  wxDocManager *docMan=wxDocManager::GetDocumentManager();
+
   QStatusBar *stb=new QStatusBar(this);
   completelyCreated = false;
 
   setStatusBar(stb);
   wxTheApp->m_appWindow = this;
-  m_childFrameHistory = new wxHistory;
+
+  docMan->m_fileHistory = new wxHistory(this);
+  for (i=0; i<docMan->m_fileHistory->m_maxHistItems; i++)
+    docMan->m_fileHistory->m_actions[i] = new QAction(this);
+
+  m_childFrameHistory = new wxHistory(this);
+  for (i=0; i<m_childFrameHistory->m_maxHistItems; i++)
+    m_childFrameHistory->m_actions[i] = new QAction(this);
 }
 
 bool wxMainFrame::OnCreate()

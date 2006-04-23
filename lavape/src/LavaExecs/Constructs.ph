@@ -124,7 +124,8 @@ public:
   }
 };
 
-typedef QHash<RTAssertionData*> RTAssDataDict;
+class AssertionData;
+typedef QHash<AssertionData*,RTAssertionData*> RTAssDataDict;
 
 class AssertionData : public AnyType { // check time assertion data
 public:
@@ -133,7 +134,7 @@ public:
   LavaDECL *funcDECL, *requireDECL, *ensureDECL, *requireDECLimpl, *ensureDECLimpl,
            *invariantDECL, *invariantDECLimpl;
   QList<AssertionData*> overridden;
-  QList<OldExpression*> oldExpressions; // pointers to OldExpression for eval.on method entry
+  QList<class OldExpression*> oldExpressions; // pointers to OldExpression for eval.on method entry
 
   AssertionData(CheckData &ckd, LavaDECL *funcDECL);
 
@@ -143,8 +144,8 @@ public:
   bool EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict, LavaVariablePtr stackFrame, AssertionData *parent);
 };
 
-
-typedef QHash<LavaDECL*> RTInvDataDict;
+class InvarData;
+typedef QHash<InvarData*,LavaDECL*> RTInvDataDict;
 // run time invariant dict;
 // is used only to recognize if an ivariant has already been checked
 

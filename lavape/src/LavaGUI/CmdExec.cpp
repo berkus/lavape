@@ -60,7 +60,7 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
   ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, optNode); 
   if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
     if (!LBaseData->inRuntime) 
-      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return;
   }
   GUIProg->focNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode);
@@ -190,7 +190,7 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
   if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
     delete insertedNode;
     if (!LBaseData->inRuntime) 
-      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), "Empty chain element",  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty chain element",  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return;
   }
   insertedNode->data.HandleObjPtr = (CSecTabBase**)handle;
@@ -329,7 +329,7 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
           Done = true;
         }
         if (!Done) {
-          QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
           if (Conv.DataLengthOK(trp)) {
             if (trp->data.StringValue.c)
               GUIProg->ErrPos = trp->data.StringValue.l;
@@ -350,7 +350,7 @@ bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
         }
       }
       else {
-        QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->name(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), ERR_Odd_char,  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         ((CGUIProg*)GUIProg)->MakeGUI.setFocus(GUIProg->ErrPos,trp);
       }
       break;

@@ -123,8 +123,8 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
   //// Create a document manager
   m_docManager = new wxDocManager;
   inUpdateUI = false;
-        deletingMainFrame = false;
-        isChMaximized = true;
+  deletingMainFrame = false;
+  isChMaximized = true;
 
   SetClassName(argv[0]);
 
@@ -209,12 +209,12 @@ void wxApp::onUpdateUI()
         }
 
 }
-
+/*
 void wxApp::histFile(int histFileIndex) {
   m_appWindow->OnMRUFile(histFileIndex);
 }
-
-void wxApp::hfStatusText(int itemId) {
+*/
+void wxApp::hfStatusText(QAction*) {
   wxTheApp->m_appWindow->statusBar()->showMessage(tr("Open and raise this window"));
 }
 
@@ -222,11 +222,11 @@ wxView *wxApp::activeView() {
   return wxDocManager::GetDocumentManager()->GetActiveView();
 }
 
-void wxMainFrame::histFile(int histFileIndex) {
-  OnMRUWindow(histFileIndex);
+void wxMainFrame::histFile(QAction *act) {
+  OnMRUFile(act->text().mid(1,1).toInt()-1);
 }
 
-void wxMainFrame::hfStatusText(int itemId) {
+void wxMainFrame::hfStatusText(QAction*) {
   statusBar()->showMessage(tr("Open this file"));
 }
 
@@ -856,7 +856,7 @@ bool wxDocTemplate::FileMatchesTemplate(const QString& path)
 
 wxDocManager* wxDocManager::sm_docManager = 0;
 
-wxDocManager::wxDocManager(long flags, bool initialize)
+wxDocManager::wxDocManager(long flags)
 {
   setObjectName(QString("wxDocManager"));
   m_defaultDocumentNameCounter = 1;
@@ -864,8 +864,6 @@ wxDocManager::wxDocManager(long flags, bool initialize)
   m_activeView = (wxView *) NULL;
   m_maxDocsOpen = 10000;
   m_fileHistory = (wxHistory *) NULL;
-  if (initialize)
-      Initialize();
   sm_docManager = this;
 }
 
@@ -904,12 +902,6 @@ bool wxDocManager::Clear(bool force)
     delete templ;
   }
   return true;
-}
-
-bool wxDocManager::Initialize()
-{
-    m_fileHistory = new wxHistory;
-    return true;
 }
 
 void wxDocManager::OnFileNew()
@@ -2047,14 +2039,13 @@ void wxCommandProcessor::ClearCommands()
 // File history processor
 // ----------------------------------------------------------------------------
 
-wxHistory::wxHistory(int maxFiles, QMenu *m, QObject *receiver)
+
+wxHistory::wxHistory(QObject *receiver, int maxItems)
 {
-    m_maxHistItems = maxFiles;
-    m_menu = m;
+    m_maxHistItems = maxItems;
     m_historyN = 0;
     m_history = new DString*[m_maxHistItems];
-    action = new QAction*[m_maxHistItems];
-    connect(m,SIGNAL(hovered(QAction*)),receiver,SLOT(hfStatusText(QAction*)));
+    m_actions = new QAction*[m_maxHistItems];
 }
 
 wxHistory::~wxHistory()
@@ -2095,7 +2086,7 @@ void wxHistory::SetFirstInHistory(int histFileIndex)
     for (i = 0; i <= histFileIndex; i++) {
         QString buf;
         buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
-        action[i]->setText(buf);
+        m_actions[i]->setText(buf);
     }
 }
 
@@ -2125,22 +2116,19 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
     {
         if (m_historyN == 0)
             m_menu->addSeparator();
-//        m_menu->insertItem(tr("[EMPTY]"),receiver,SLOT(histFile(int)),0, wxID_FILE1+m_historyN);
-//        m_menu->setItemParameter(wxID_FILE1+m_historyN,m_historyN);
-        m_historyN ++;
+        m_actions[m_historyN] = m_menu->addAction("xxx");
+        m_historyN++;
     }
     // Shuffle filenames down
     for (i = (m_historyN-1); i > 0; i--)
-    {
         m_history[i] = m_history[i-1];
-    }
 
     m_history[0] = item;
 
     for (i = 0; i < m_historyN; i++) {
         QString buf;
         buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
-        action[i]->setText(buf); //m_menu->changeItem(wxID_FILE1+i, buf);
+        m_actions[i]->setText(buf);
     }
 }
 
@@ -2193,11 +2181,11 @@ void wxHistory::RemoveItemFromHistory(int i)
         for ( j = i; j < m_historyN - 1; j++ )
         {
             buf = s_MRUEntryFormat.arg(j+1).arg(m_history[j]->c);
-            action[j]->setText(buf);//m_menu->changeItem(wxID_FILE1 + j,buf);
+            m_actions[j]->setText(buf);//m_menu->changeItem(wxID_FILE1 + j,buf);
         }
 
         // delete the last menu item which is unused now
-        m_menu->removeAction(action[m_historyN - 1]);
+        m_menu->removeAction(m_actions[m_historyN - 1]);
 
         // delete the last separator too if no more files are left
         if ( m_historyN == 1 )
@@ -2230,7 +2218,7 @@ void wxHistory::OnChangeOfWindowTitle(QString &oldName, QString &newName)
                         m_history[i]->m = str.m;
                         str.c = 0;
                         str.l = 0;
-                        action[i]->setText(newName);//m_menu->changeItem(wxID_FILE1+i,newName);
+                        m_actions[i]->setText(newName);//m_menu->changeItem(wxID_FILE1+i,newName);
                         return;
                 }
         return;
@@ -2255,7 +2243,7 @@ void wxHistory::Load(QSettings& config)
 
     config.beginGroup("fileHistory");
     m_historyN = 0;
-    buf.sprintf("/file%d", m_historyN+1);
+    buf.sprintf("file%d", m_historyN+1);
 
     while (m_historyN <= m_maxHistItems) {
       historyFile = config.value(buf).toString();
@@ -2289,21 +2277,22 @@ void wxHistory::AddFilesToMenu()
   if (m_historyN > 0)
   {
     m_menu->addSeparator();
+//    connect(m_menu,SIGNAL(hovered(QAction*)),wxTheApp->m_appWindow,SLOT(hfStatusText(QAction*)));
+    connect(m_menu,SIGNAL(triggered(QAction*)),wxTheApp->m_appWindow,SLOT(histFile(QAction*)));
+
     int i;
     for (i = 0; i < m_historyN; i++)
     {
-      if (m_history[i])
+      if (m_history[i]->l)
       {
         QString buf;
         buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
-//        m_menu->insertItem(buf,wxTheApp,SLOT(histFile(int)),0,wxID_FILE1+i);
-        connect(m_menu,SIGNAL(hovered(int)),wxTheApp,SLOT(hfStatusText(int)));
-//        m_menu->setItemParameter(wxID_FILE1+i,i);
+        m_actions[i] = m_menu->addAction(buf);
       }
     }
   }
 }
-
+/*
 void wxHistory::AddFilesToMenu(QMenu* menu)
 {
     m_menu = menu;
@@ -2323,7 +2312,7 @@ void wxHistory::AddFilesToMenu(QMenu* menu)
         }
     }
 }
-
+*/
 
 #ifdef WIN32_
 

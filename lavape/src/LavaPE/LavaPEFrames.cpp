@@ -73,8 +73,9 @@
 typedef QMap<QString,QString> HelpTextMap;
 
 
-CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
+CLavaMainFrame::CLavaMainFrame() : CMainFrame()
 {
+  setObjectName("LavaMainFrame");
   setupUi(this);
 
   // workaround because insertToolBarBreak is broken:
@@ -112,9 +113,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 
   m_UtilityView = 0;
 	lastTile = 0;
-  QMenu *styleMenu = new QMenu(this);
-  styleMenu->setCheckable( TRUE );
-  optionMenu->insertItem( "Set st&yle" , styleMenu );
+  QMenu *styleMenu = optionMenu->addMenu("Set st&yle");
   QActionGroup *ag = new QActionGroup( this);
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
@@ -130,9 +129,9 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
 		connect( a, SIGNAL( activated() ), styleMapper, SLOT(map()) );
 		styleMapper->setMapping(a,a->text() );
 		if (LBaseData->m_style == styleStr)
-		  a->setOn(true);
+		  a->setChecked(true);
   }
-  ag->addTo(styleMenu);
+  styleMenu->addActions(ag->actions());
 
   LBaseData->insActionPtr = insAction;
   LBaseData->delActionPtr = delAction;
@@ -253,7 +252,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
   }
   fillHelpToolbar(HelpToolbar);
 
-  if (theActiveFrame && QString(theActiveFrame->name()) != "ExecFrame")
+  if (theActiveFrame && QString(theActiveFrame->objectName()) != "ExecFrame")
     CExecView::DisableKwdButtons();
 }
 
@@ -280,7 +279,7 @@ bool CLavaMainFrame::OnCreate()
 */
 	m_childFrameHistory->m_menu = windowMenu;
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
-  setIcon(QPixmap((const char**) Lava));
+  setWindowIcon(QPixmap((const char**) Lava));
   QSplitter* split = new QSplitter(this);
   m_CentralWidget = split;
   setCentralWidget(m_CentralWidget);
@@ -303,15 +302,15 @@ bool CLavaMainFrame::OnCreate()
 void CLavaMainFrame::UpdateUI()
 {
   OnUpdateshowUtil(showUtilWindowAction);
-  saveEveryChangeAction->setOn(LBaseData->m_saveEveryChange);
-  viewTB1Action->setOn(Toolbar_1->isVisible());
-  viewTB2Action->setOn(Toolbar_2->isVisible());
-  viewHelpTBAction->setOn(HelpToolbar->isVisible());
-  viewTB3Action->setOn(Toolbar_3->isVisible());
-  viewTB4Action->setOn(Toolbar_4->isVisible());
-  viewTB5Action->setOn(Toolbar_5->isVisible());
-  viewTB6Action->setOn(Toolbar_6->isVisible());
-  viewTB7Action->setOn(Toolbar_7->isVisible());
+  saveEveryChangeAction->setChecked(LBaseData->m_saveEveryChange);
+  viewTB1Action->setChecked(Toolbar_1->isVisible());
+  viewTB2Action->setChecked(Toolbar_2->isVisible());
+  viewHelpTBAction->setChecked(HelpToolbar->isVisible());
+  viewTB3Action->setChecked(Toolbar_3->isVisible());
+  viewTB4Action->setChecked(Toolbar_4->isVisible());
+  viewTB5Action->setChecked(Toolbar_5->isVisible());
+  viewTB6Action->setChecked(Toolbar_6->isVisible());
+  viewTB7Action->setChecked(Toolbar_7->isVisible());
   CLavaPEDoc* doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
   bool enable = (doc != 0);
   fileCloseAction->setEnabled(enable);
@@ -333,18 +332,19 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   QFont f;
 
   pb = new QPushButton(QString(text),tb);
+
   tb->addWidget(pb);
   connect(pb,SIGNAL(clicked()),this,slotParm);
   f = pb->font();
   f.setBold(true);
   pb->setFont(f);
+
   pb->setFlat(true);
   pb->setAutoDefault(false);
   pb->setMinimumHeight(pb->fontInfo().pixelSize());
   pb->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding);
-  int w = pb->width();
   if (!tooltip.isEmpty())
-    QToolTip::add(pb,tooltip);
+    pb->setToolTip(tooltip);
   if (!whatsThis.isEmpty())
     pb->setWhatsThis(whatsThis);
   pb->installEventFilter(this);
@@ -359,16 +359,12 @@ void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,
   f = pb->font();
   f.setBold(true);
   pb->setFont(f);
-  pb->setPaletteForegroundColor(QColor(Qt::blue));
-//  pb->setFlat(true);
+  QPalette palette=pb->palette();
+  palette.setColor(QPalette::WindowText,Qt::blue);
+  pb->setPalette(palette);
   pb->setAutoDefault(false);
-//  pb->setMinimumHeight(pb->fontInfo().pixelSize()+6);
-//  pb->setMaximumWidth(pb->fontMetrics().width("What's this?")+6);
   if (tooltip)
-    QToolTip::add(pb,tooltip);
- /* if (whatsThis)
-    new WhatsThis(whatsThis,pb);
-*/
+    pb->setToolTip(tooltip);
   pb->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
   pb->show();
 }
@@ -390,12 +386,9 @@ void CLavaMainFrame::fillHelpToolbar(QToolBar *tb)
 
 void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
 {
-	QColorGroup cgDis(tb->palette().disabled());
-  cgDis.setColor(QColorGroup::ButtonText,Qt::darkGray);
-	QColorGroup cgAct(tb->palette().active());
-  cgAct.setColor(QColorGroup::ButtonText,Qt::blue);
-	QPalette pal(cgAct,cgDis,tb->palette().inactive());
-	tb->setPalette(pal);
+  QPalette palette=tb->palette();
+  palette.setColor(QPalette::Active,QPalette::ButtonText,Qt::blue);
+  tb->setPalette(palette);
 
   newKwdToolbutton(tb,LBaseData->declareButton,"&declare",SLOT(declare()),
     QObject::tr("Declare local variables: \"d\""),
@@ -908,7 +901,7 @@ void CLavaMainFrame::on_overrideAction_triggered()
 
 void CLavaMainFrame::on_DbgAction_triggered()
 {
-  if (((CLavaPEDebugThread*)LBaseData->debugThread)->running()) {
+  if (((CLavaPEDebugThread*)LBaseData->debugThread)->isRunning()) {
     DbgMessage* mess = new DbgMessage(Dbg_Continue);
     QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
   }
@@ -1546,7 +1539,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 
   if (ev->data()) {
     if ( !((CLavaPEApp*)wxTheApp)->inTotalCheck) { //to prevent crash if mdi-frame already closed
-		  title = DString(qPrintable(((QWidget*)ev->data())->caption()));
+		  title = DString(qPrintable(((QWidget*)ev->data())->windowTitle()));
 		  if (title.l) {
 			  if (title[title.l-1] == '*')
 				  title = title.Substr(0,title.l-1);
@@ -1597,7 +1590,7 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
 
 void CLavaMainFrame::OnUpdateshowUtil(QAction* action)
 {
-  action->setOn(!UtilitiesHidden);
+  action->setChecked(!UtilitiesHidden);
 }
 
 /*
@@ -1759,7 +1752,7 @@ CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent)
 
 bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
-  setIcon(QPixmap((const char**) Lava));
+  setWindowIcon(QPixmap((const char**) Lava));
   QSize sz;
   int totalW=0;
 
@@ -1892,8 +1885,8 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   if (!wxMDIChildFrame::OnCreate(temp, doc))
     return false;
   DString title = CalcTitle( (LavaDECL*)((CLavaPEApp*)wxTheApp)->LBaseData.actHint->CommandData1, ((CLavaBaseDoc*)LBaseData->actHint->fromDoc)->IDTable.DocName);
-  setCaption(title.c);
-  setIcon(QPixmap((const char**) Lava));
+  setWindowTitle(title.c);
+  setWindowIcon(QPixmap((const char**) Lava));
   myDoc = (CLavaBaseDoc*)doc;
 
   splitter = new QSplitter(this);

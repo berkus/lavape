@@ -355,7 +355,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
   int rc;
   DebugStep ds=nextDebugStep;
 
-  debug = ckd.document->debugOn || LBaseData->m_pmDumps && !((CLavaDebugThread*)LBaseData->debugThread)->running();
+  debug = ckd.document->debugOn || LBaseData->m_pmDumps && !((CLavaDebugThread*)LBaseData->debugThread)->isRunning();
   if (debug && !ckd.document->debugOn) 
     ((CLavaDebugThread*)LBaseData->debugThread)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
   if (debug) {
@@ -535,13 +535,13 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
     if (isEx) 
       if (debug && !ckd.document->debugOn) {
         pmMsg = excMsg + "\n\n" + msg + "\n\nDebug this exception?\n\nClick \"No to all\" to disable debugging perpetually";
-        rc = information(wxTheApp->m_appWindow,qApp->name(),QApplication::tr(pmMsg),QMessageBox::Yes|QMessageBox::Default,QMessageBox::No,QMessageBox::NoAll);
+        rc = information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg.toAscii()),QMessageBox::Yes|QMessageBox::Default,QMessageBox::No,QMessageBox::NoAll);
     
       }
       else {
         rc = QMessageBox::Yes;
         pmMsg = excMsg + "\n\n" + msg;
-        information(wxTheApp->m_appWindow,qApp->name(),QApplication::tr(pmMsg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton,Qt::NoButton);
+        information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton,Qt::NoButton);
       }
     else
       rc = QMessageBox::Yes;

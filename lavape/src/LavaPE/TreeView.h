@@ -68,7 +68,6 @@ protected:
   QIcon *nPix;
   QIcon *normalPix;
   bool delPix;
-
 };
 
 class CTreeView;

@@ -64,15 +64,14 @@
 #pragma hdrstop
 
 
-static QString szSaveEveryChange = "/SaveEveryChange";
-static QString szExecFont = "/ExecFont";
-static QString szFormFont = "/FormFont";
-static QString szFormLabelFont = "/FormLabelFont";
-//static QString szFormButtonFont = "/FormButtonFont";
-static QString szTreeFont = "/TreeFont";
-static QString szGlobalFont = "/GlobalFont";
-static QString favoriteBrowser = "/MyBrowser";
-static QString gui_style = "/Style";
+static QString szSaveEveryChange = "SaveEveryChange";
+static QString szExecFont = "ExecFont";
+static QString szFormFont = "FormFont";
+static QString szFormLabelFont = "FormLabelFont";
+static QString szTreeFont = "TreeFont";
+static QString szGlobalFont = "GlobalFont";
+static QString favoriteBrowser = "MyBrowser";
+static QString gui_style = "Style";
 
 static char slash='/';
 
@@ -109,7 +108,8 @@ int xerrcomBM = 33;
 CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 :wxApp(argc, argv )
 {
-  bool ok;
+  SetVendorName("Fraunhofer-SIT");
+  SetAppName("LavaPE");
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
   LBaseData.stdUpdate = 0;
@@ -122,10 +122,6 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   LavaPEStringInit();
 //  qt_use_native_dialogs = false;
 
-  SetVendorName("Fraunhofer-SIT");
-  SetAppName("LavaPE");
-//  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
-//  settings.beginGroup(GetSettingsPath());
   inTotalCheck = false;;
   LBaseData.theApp = this;
   LBaseData.inRuntime = false;
@@ -146,7 +142,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   LBaseData.m_lfDefExecFont = settings.value(szExecFont,QVariant(QApplication::font().toString())).toString();
   LBaseData.m_ExecFont.fromString(LBaseData.m_lfDefExecFont);
 
-  LBaseData.m_lfDefFormFont = settings.value(szFormFont,QVariant(QApplication::font().toString()));
+  LBaseData.m_lfDefFormFont = settings.value(szFormFont,QVariant(QApplication::font().toString())).toString();
   LBaseData.m_FormFont.fromString(LBaseData.m_lfDefFormFont);
 
   LBaseData.m_lfDefFormLabelFont = settings.value(szFormLabelFont,QVariant(QApplication::font().toString())).toString();
@@ -163,8 +159,8 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   settings.endGroup();
 
   settings.beginGroup("otherSettings");
-  LBaseData.m_myWebBrowser = settings.readEntry(favoriteBrowser, 0, &ok);
-  LBaseData.m_style = settings.readEntry(gui_style, 0, &ok);
+  LBaseData.m_myWebBrowser = settings.value(favoriteBrowser).toString();
+  LBaseData.m_style = settings.value(gui_style).toString();
   settings.endGroup();
 #ifndef WIN32
   if (LBaseData.m_myWebBrowser.isEmpty())
@@ -277,7 +273,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 
         ExeDir = applicationDirPath();
 #ifdef WIN32
-  QString driveLetter = QString(ExeDir[0].upper());
+  QString driveLetter = QString(ExeDir[0].toUpper());
   ExeDir.replace(0,1,driveLetter);
 #endif
   StdLavaLog = ExeDir + "/std.lava";
@@ -305,7 +301,7 @@ bool CLavaPEApp::event(QEvent *e)
       ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
       ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
     }
-    m_appWindow->setActiveWindow();
+//    m_appWindow->setActiveWindow();
     m_appWindow->raise();
   }
   else if (e->type() == UEV_LavaDebugRq) {
@@ -357,11 +353,11 @@ QString CLavaPEApp::InitWebBrowser () {
   rc = RegQueryValueEx(hkey,0,0,&valType,&data[0],&dataSize);
   str = QString(datap);
   if (str[0] == '"') {
-    pos = str.find('\"',1);
+    pos = str.indexOf('\"',1);
     prog = str.mid(1,pos-1);
   }
   else {
-    if (pos = str.find(' ',1))
+    if (pos = str.indexOf(' ',1))
       prog = str.mid(0,pos);
     else
                         prog = str;
@@ -615,7 +611,7 @@ void CLavaPEApp::OnChooseGlobalFont()
   if (ok) {
     LBaseData.m_GlobalFont = lf;
     LBaseData.m_lfDefGlobalFont = lf.toString();
-    setFont(LBaseData.m_GlobalFont,true);
+    setFont(LBaseData.m_GlobalFont);
     saveSettings();
   }
 }
@@ -627,7 +623,7 @@ void CLavaPEApp::OnFileOpen()
   if (fileName.isEmpty())
     return;
 #ifdef WIN32
-  QString driveLetter = QString(fileName[0].upper());
+  QString driveLetter = QString(fileName[0].toUpper());
   fileName.replace(0,1,driveLetter);
 #endif
   OpenDocumentFile(fileName);
@@ -637,13 +633,13 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 {
   QString name;
   QDir cwd;
-        name = cwd.absFilePath(lpszFileName);
-        name = cwd.cleanDirPath(name);
+        name = cwd.absoluteFilePath(lpszFileName);
+        name = cwd.cleanPath(name);
         if (!name.contains('.'))
                 return;
   LBaseData.lastFileOpen = name;
 #ifdef WIN32
-  QString driveLetter = QString(name[0].upper());
+  QString driveLetter = QString(name[0].toUpper());
   name.replace(0,1,driveLetter);
 #endif
   ((CLavaPEApp*)qApp)->debugThread.myDoc = (CLavaBaseDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
@@ -805,25 +801,25 @@ void CLavaPEApp::saveSettings()
 {
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
-  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
+//  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //  settings.beginGroup(GetSettingsPath());
 
   settings.beginGroup("generalSettings");
-  settings.writeEntry(szSaveEveryChange,LBaseData.m_strSaveEveryChange);
+  settings.setValue(szSaveEveryChange,LBaseData.m_strSaveEveryChange);
   settings.endGroup();
 
   settings.beginGroup("fontSettings");
-  settings.writeEntry(szExecFont,LBaseData.m_lfDefExecFont);
-  settings.writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
+  settings.setValue(szExecFont,LBaseData.m_lfDefExecFont);
+  settings.setValue(szFormFont,LBaseData.m_lfDefFormFont);
   if (LBaseData.useLabelFont)
-    settings.writeEntry(szFormLabelFont,LBaseData.m_lfDefFormLabelFont);
-  settings.writeEntry(szTreeFont,LBaseData.m_lfDefTreeFont);
-  settings.writeEntry(szGlobalFont,LBaseData.m_lfDefGlobalFont);
+    settings.setValue(szFormLabelFont,LBaseData.m_lfDefFormLabelFont);
+  settings.setValue(szTreeFont,LBaseData.m_lfDefTreeFont);
+  settings.setValue(szGlobalFont,LBaseData.m_lfDefGlobalFont);
   settings.endGroup();
 
   settings.beginGroup("otherSettings");
-  settings.writeEntry(favoriteBrowser,LBaseData.m_myWebBrowser);
-  settings.writeEntry(gui_style,LBaseData.m_style);
+  settings.setValue(favoriteBrowser,LBaseData.m_myWebBrowser);
+  settings.setValue(gui_style,LBaseData.m_style);
   settings.endGroup();
 }
 

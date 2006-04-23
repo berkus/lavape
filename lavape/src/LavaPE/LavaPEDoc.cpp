@@ -356,7 +356,7 @@ int CLavaPEDoc::AutoCorrBox(QString* errID)
     cstr += "Set the right types?  ";
   else
     cstr += "Remove this undefined reference?  ";
-  return QMessageBox::question(0,qApp->name(),cstr,QMessageBox::Ok,QMessageBox::Cancel,0);
+  return QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Ok,QMessageBox::Cancel,0);
   //return AfxMessageBox(cstr, MB_OKCANCEL+MB_ICONINFORMATION);
 }
 
@@ -2979,7 +2979,7 @@ void CLavaPEDoc::OnCheck()
 bool CLavaPEDoc::OnCloseDocument() 
 {
   if (!((wxApp*)qApp)->appExit ) {
-    if (debugOn && ((CLavaPEApp*)wxTheApp)->debugThread.running()) {
+    if (debugOn && ((CLavaPEApp*)wxTheApp)->debugThread.isRunning()) {
       ((CLavaPEApp*)wxTheApp)->debugThread.cleanBrkPoints(this);
       if (((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived) 
         ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived->DbgData.ptr, this);
@@ -3055,7 +3055,7 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
   int readResult;
 
   //LBaseData->lastFileOpen = QString(fn.c);
-  isStd = SameFile(fn.c, StdLava.ascii());
+  isStd = SameFile(fn.c, qPrintable(StdLava));
   CalcNames(filename);
   readResult = ReadSynDef(filename, mySynDef);
   isReadOnly = readResult > 0;
@@ -3068,7 +3068,7 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
   if (mySynDef->SynDefTree.first == mySynDef->SynDefTree.last) {
     if (!isStd) {
       str = DString("File '") + fn + " is not a valid lava file";
-      critical(wxTheApp->m_appWindow,qApp->name(),str.c,QMessageBox::Ok,0,0);
+      critical(wxTheApp->m_appWindow,qApp->applicationName(),str.c,QMessageBox::Ok,0,0);
     }
     changeNothing = !isStd || !LBaseData->stdUpdate;
   }
@@ -3096,7 +3096,7 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
     }
     else 
       str = DString("File '") + fn + DString("' not found");
-    QMessageBox::critical(wxTheApp->m_appWindow, qApp->name(), str.c,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(wxTheApp->m_appWindow, qApp->applicationName(), str.c,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
   return true;
@@ -3108,12 +3108,12 @@ void CLavaPEDoc::OnRunLava()
 
   if (IsModified()
     && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
-    && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),ERR_SaveFailed,QMessageBox::Ok,QMessageBox::Cancel,0)))
+    && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed,QMessageBox::Ok,QMessageBox::Cancel,0)))
     return;
   lavaFile = GetFilename();
   /*
   if (lavaFile.isEmpty()) {
-    QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),IDP_SaveFirst,QMessageBox::Ok,0,0);
+    QMessageBox::question(wxTheApp->m_appWindow,qApp->applicationName(),IDP_SaveFirst,QMessageBox::Ok,0,0);
     return;
   }
   */
@@ -3128,7 +3128,7 @@ void CLavaPEDoc::OnRunLava()
 	QProcess interpreter;
 
   if (!((CLavaPEApp*)qApp)->interpreter.startDetached(interpreterPath,args)) {
-    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
+    QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed.arg(errno),QMessageBox::Ok,0,0);
 		return;
 	}
 }
@@ -3138,12 +3138,12 @@ void CLavaPEDoc::OnDebugLava()
 {  
   if (IsModified()
     && !((CLavaPEApp*)wxTheApp)->DoSaveAll()
-    && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),ERR_SaveFailed, 
+    && (QMessageBox::Cancel == QMessageBox::question(wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed, 
     QMessageBox::Ok,QMessageBox::Cancel,0)))
     return;
 /*
   if (lavaFile.isEmpty()) {
-    QMessageBox::question(wxTheApp->m_appWindow,qApp->name(),IDP_SaveFirst,QMessageBox::Ok,0,0);
+    QMessageBox::question(wxTheApp->m_appWindow,qApp->applicationName(),IDP_SaveFirst,QMessageBox::Ok,0,0);
     return;
   }
   */
@@ -3222,7 +3222,7 @@ void CLavaPEDoc::OnTotalCheck()
       messStr += DString(" lava files");
     }
   }
-  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->name(), messStr.c,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->applicationName(), messStr.c,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 
   pos = mana->GetFirstDocPos();
   while (pos) {
@@ -3333,7 +3333,7 @@ bool CLavaPEDoc::OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate)
   else {
     hint = new CLavaPEHint(CPECommand_OpenSelView, this, (const unsigned long)3, (DWORD) *pdecl, (DWORD)MainView, autoUpdate,(DWORD)pdecl);
     if (autoUpdate)
-      QApplication::postEvent(((CLavaPEView*)MainView)->myVTView, new QCustomEvent(UEV_LavaPE_SyncTree, (void*)hint));
+      QApplication::postEvent(((CLavaPEView*)MainView)->myVTView, new CustomEvent(UEV_LavaPE_SyncTree, (void*)hint));
     else {
       ((CLavaPEView*)MainView)->myVTView->OnUpdate(MainView, 0, hint);
       delete hint;
@@ -3741,9 +3741,9 @@ void CLavaPEDoc::ShowErrorBox(bool inOpen)
   }
   mess += QString(pkt.c);
   if (nErrors + nPlaceholders)
-    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   else
-    QMessageBox::information(wxTheApp->m_appWindow,qApp->name(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    QMessageBox::information(wxTheApp->m_appWindow,qApp->applicationName(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 }
 
 void CLavaPEDoc::ShrinkCollectDECL(LavaDECL* decl)

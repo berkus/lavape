@@ -115,7 +115,7 @@ void CWizardView::setFont(const QFont& font)
     LavaDECL* FormDECL = wizard->FormDECL;
     bool mod = wizard->modified;
     wizard->FormDECL = 0;
-    pageI = wizard->currentPageIndex();
+    pageI = wizard->currentIndex();
     delete wizard;
     wizard = new CLavaPEWizard(synEl, FormDECL, this, guibox);
     wizard->setModified(mod);
@@ -125,7 +125,7 @@ void CWizardView::setFont(const QFont& font)
     myScrv->verticalScrollBar()->setValue(y);
     //myScrv->setContentsPos(x,y);
     if (pageI < wizard->count())
-      wizard->setCurrentPage(pageI);
+      wizard->setCurrentIndex(pageI);
     myScrv->MaxBottomRight = wizard->rect();
     Resize();
   }
@@ -157,7 +157,7 @@ void CWizardView::customEvent(QEvent *ev0)
       myScrv->verticalScrollBar()->setValue(0);
 //      myScrv->setContentsPos(0,0);
       if (postedPage < wizard->count())
-        wizard->setCurrentPage(postedPage);
+        wizard->setCurrentIndex(postedPage);
       postedPage = 0;
     }
   }
@@ -176,7 +176,7 @@ void CWizardView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
         postedPage = 0;
       }
       else
-        pageI = wizard->currentPageIndex();
+        pageI = wizard->currentIndex();
       if (wizard->modified) {
           CLavaPEHint* hint = wizard->ApplyHint();
           postedPage = pageI;
@@ -201,14 +201,14 @@ void CWizardView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
     myScrv->verticalScrollBar()->setValue(0);
 //    myScrv->setContentsPos(0,0);
     if (pageI < wizard->count())
-      wizard->setCurrentPage(pageI);
+      wizard->setCurrentIndex(pageI);
 
   }
 }
 
 void CWizardView::PostApplyHint()
 {
-  postedPage = wizard->currentPageIndex();
+  postedPage = wizard->currentIndex();
   CLavaPEHint* hint = wizard->ApplyHint();
   wizard->FormDECL = 0;
   wizard->modified = false;
@@ -249,7 +249,7 @@ void CWizardView::Reset()
   int pageI = 0;
   if (wizard && !wizard->isActive) {
     LavaDECL** synEl = wizard->synEl;
-    pageI = wizard->currentPageIndex();
+    pageI = wizard->currentIndex();
     delete wizard;
     wizard = new CLavaPEWizard(synEl, 0, this, guibox);
     myScrv->MaxBottomRight = wizard->rect();
@@ -258,7 +258,7 @@ void CWizardView::Reset()
     myScrv->verticalScrollBar()->setValue(0);
 //    myScrv->setContentsPos(0,0);
     if (pageI < wizard->count())
-      wizard->setCurrentPage(pageI);
+      wizard->setCurrentIndex(pageI);
   }
 }
 
@@ -267,8 +267,9 @@ void CWizardView::Reset()
 
 
 CLavaPEWizard::CLavaPEWizard(LavaDECL ** p_origDECL, LavaDECL* formDECL, CWizardView* view, QWidget* parent)
-  :QTabWidget(parent, "LavaPEWizard") 
+  :QTabWidget(parent) 
 {
+  setObjectName("LavaPEWizard");
   isActive = false;
   OrigDECL = *p_origDECL;
   synEl = p_origDECL;
@@ -522,8 +523,8 @@ CChainFormPage::CChainFormPage(CLavaPEWizard* wizard)
   if (isAr) {
 		//m_ArrayLen->setEnabled(true);
 		LengthSPIN->setEnabled(true);
-    LengthSPIN->setMinValue (1);
-    LengthSPIN->setMaxValue (10000);
+    LengthSPIN->setMinimum (1);
+    LengthSPIN->setMaximum (10000);
     m_Len = myWizard->FormDECL->Annotation.ptr->Length.DecPoint;
   }
   if (anno->IterFlags.Contains(FixedCount))
@@ -711,12 +712,12 @@ CFormTextPage::CFormTextPage(LavaDECL * litEl, CLavaPEWizard *wizard)
   m_lit = "";
   myDecl = litEl;
   modify = false;
-  HSpaceSPIN->setMinValue(0);
-  HSpaceSPIN->setMaxValue(100);
-  HTabSPIN->setMinValue(0);
-  HTabSPIN->setMaxValue(100);
-  VSpaceSPIN->setMinValue(0);
-  VSpaceSPIN->setMaxValue(100);
+  HSpaceSPIN->setMinimum(0);
+  HSpaceSPIN->setMaximum(100);
+  HTabSPIN->setMinimum(0);
+  HTabSPIN->setMaximum(100);
+  VSpaceSPIN->setMinimum(0);
+  VSpaceSPIN->setMaximum(100);
   m_LiFrmSpace = 0;
   m_LiSpace = 0;
   m_LiTab = 0;
@@ -742,7 +743,7 @@ CFormTextPage::CFormTextPage(LavaDECL * litEl, CLavaPEWizard *wizard)
   }
   QFont lf;
   if (myDecl->Annotation.ptr->String1.l && lf.fromString(myDecl->Annotation.ptr->String1.c)) {
-    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeF() );
     fontName->setText(nn);
     fontName->show();
     fontButton->show();
@@ -786,7 +787,7 @@ void CFormTextPage::on_fontButton_clicked()
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormLabelFont,this);
   if (ok) {
     myDecl->Annotation.ptr->String1 = STRING(qPrintable(lf.toString()));
-    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeF() );
     fontName->setText(nn);
     fontName->show();
     myWizard->setModified(modify);
@@ -886,12 +887,12 @@ CFormTextBox::CFormTextBox(LavaDECL * litEl, QWidget* pParent, bool asFirst)
   setupUi(this);
   m_lit = "";
   myDecl = litEl;
-  HSpaceSPIN->setMinValue(0);
-  HSpaceSPIN->setMaxValue(100);
-  HTabSPIN->setMinValue(0);
-  HTabSPIN->setMaxValue(100);
-  VSpaceSPIN->setMinValue(0);
-  VSpaceSPIN->setMaxValue(100);
+  HSpaceSPIN->setMinimum(0);
+  HSpaceSPIN->setMaximum(100);
+  HTabSPIN->setMinimum(0);
+  HTabSPIN->setMaximum(100);
+  VSpaceSPIN->setMinimum(0);
+  VSpaceSPIN->setMaximum(100);
   m_LiFrmSpace = 0;
   m_LiSpace = 0;
   m_LiTab = 0;
@@ -1138,7 +1139,7 @@ CFontColorPage::CFontColorPage(CLavaPEWizard *wizard, LavaDECL *formDECL)
   FormDECL = formDECL;
   QFont lf;
   if (FormDECL->Annotation.ptr->String1.l && lf.fromString(FormDECL->Annotation.ptr->String1.c)) {
-    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeF() );
     fontNameL->setText(nn);
     fontNameL->show();
     fontButtonL->show();
@@ -1151,7 +1152,7 @@ CFontColorPage::CFontColorPage(CLavaPEWizard *wizard, LavaDECL *formDECL)
     defaultFontL->setChecked(true);
   }
   if (FormDECL->Annotation.ptr->String2.l && lf.fromString(FormDECL->Annotation.ptr->String2.c)) {
-    QString nn = lf.family() + QString(komma.c) +	QString::number(lf.pointSizeFloat());
+    QString nn = lf.family() + QString(komma.c) +	QString::number(lf.pointSizeF());
     fontNameT->setText(nn);
     fontNameT->show();
     fontButtonT->show();
@@ -1216,7 +1217,7 @@ void CFontColorPage::on_fontButtonL_clicked()
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormLabelFont,this);
   if (ok) {
     FormDECL->Annotation.ptr->String1 = STRING(qPrintable(lf.toString()));
-    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeF() );
     fontNameL->setText(nn);
     fontNameL->show();
     myWizard->setModified(true);
@@ -1251,7 +1252,7 @@ void CFontColorPage::on_fontButtonT_clicked()
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormFont,this);
   if (ok) {
     FormDECL->Annotation.ptr->String2 = STRING(qPrintable(lf.toString()));
-    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeF() );
     fontNameT->setText(nn);
     fontNameT->show();
     myWizard->setModified(true);
@@ -1422,22 +1423,22 @@ CIOPage::CIOPage(CLavaPEWizard *wizard, LavaDECL *formDECL, bool forChElem)
 
 
   UpdateData(false);
-  FHTabSPIN->setMinValue (0);
-  FHSpaceSPIN->setMinValue (0);
-  FVSpaceSPIN->setMinValue (0);
-  DHTabSPIN->setMinValue (0);
-  DHSpaceSPIN->setMinValue (0);
-  DVSpaceSPIN->setMinValue (0);
-  ColsSPIN->setMinValue (0);
-  RowsSPIN->setMinValue (0);
-  FHTabSPIN->setMaxValue (100);
-  FHSpaceSPIN->setMaxValue (100);
-  FVSpaceSPIN->setMaxValue (100);
-  DHTabSPIN->setMaxValue (100);
-  DHSpaceSPIN->setMaxValue (100);
-  DVSpaceSPIN->setMaxValue (100);
-  ColsSPIN->setMaxValue (100);
-  RowsSPIN->setMaxValue (100);
+  FHTabSPIN->setMinimum (0);
+  FHSpaceSPIN->setMinimum (0);
+  FVSpaceSPIN->setMinimum (0);
+  DHTabSPIN->setMinimum (0);
+  DHSpaceSPIN->setMinimum (0);
+  DVSpaceSPIN->setMinimum (0);
+  ColsSPIN->setMinimum (0);
+  RowsSPIN->setMinimum (0);
+  FHTabSPIN->setMaximum (100);
+  FHSpaceSPIN->setMaximum (100);
+  FVSpaceSPIN->setMaximum (100);
+  DHTabSPIN->setMaximum (100);
+  DHSpaceSPIN->setMaximum (100);
+  DVSpaceSPIN->setMaximum (100);
+  ColsSPIN->setMaximum (100);
+  RowsSPIN->setMaximum (100);
   modify = true;
 }
 
@@ -1718,11 +1719,11 @@ void CLiteralsPage::UpdateData(bool getData)
 {
   if (getData) {
     v_Default = Default->text();
-    if (EnumDefault->currentItem())
+    if (EnumDefault->currentIndex())
       v_EnumDefault = EnumDefault->currentText();
     else
       v_EnumDefault = QString("");
-    if (BoolDefault->currentItem())
+    if (BoolDefault->currentIndex())
       v_BoolDefault = BoolDefault->currentText();
     else
       v_BoolDefault = QString("");
@@ -1731,11 +1732,11 @@ void CLiteralsPage::UpdateData(bool getData)
     modify = false;
     Default->setText(v_Default);
     if (v_EnumDefault.length())
-      EnumDefault->setCurrentText(v_EnumDefault);
+      EnumDefault->setItemText(EnumDefault->currentIndex(),v_EnumDefault);
     else
       EnumDefault->setCurrentIndex(0);
     if (v_BoolDefault.length())
-      BoolDefault->setCurrentText(v_BoolDefault);
+      BoolDefault->setItemText(BoolDefault->currentIndex(),v_BoolDefault);
     else
       BoolDefault->setCurrentIndex(0);
     modify = true;
@@ -1818,7 +1819,7 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
       str = ((TAnnotation*)inEl->Annotation.ptr->FA.ptr)->StringValue.c; //Defaultwert
     if (!str.isEmpty()) {
       v_EnumDefault = str;
-      EnumDefault->setCurrentText(v_EnumDefault);
+      EnumDefault->setItemText(EnumDefault->currentIndex(),v_EnumDefault);
     }
     else
       EnumDefault->setCurrentIndex(0);
@@ -1837,7 +1838,7 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
           BoolDefault->setEnabled(true);
           if (anno->IoSigFlags.Contains(trueValue)) {
             v_BoolDefault = anno->StringValue.c;
-            BoolDefault->setCurrentText(v_BoolDefault); //Defaultwert
+            BoolDefault->setItemText(BoolDefault->currentIndex(),v_BoolDefault); //Defaultwert
           }
           else
             BoolDefault->setCurrentIndex(0);
@@ -1896,12 +1897,12 @@ void CLiteralsPage::GetProps()
   atomic = (etype == B_Bool) || (etype == Char) || (etype ==  Integer) || (etype ==  Float) || (etype ==  Double) || (etype ==  VLString) || isEnumera;
   if ( atomic) {
     if (isEnumera) {
-      selPos = EnumDefault->currentItem();
+      selPos = EnumDefault->currentIndex();
       if ((*p_anno == 0) && selPos && (selPos > 0))
         *p_anno = new TAnnotation;
     }
     else if (inEl->BType == B_Bool) {
-      selPos = BoolDefault->currentItem();
+      selPos = BoolDefault->currentIndex();
       if ((*p_anno == 0) && selPos && (selPos > 0))
         *p_anno = new TAnnotation;
     }
@@ -1955,7 +1956,7 @@ void CLiteralsPage::GetProps()
         (*p_anno)->StringValue = STRING(qPrintable(v_Default));
         if ((*p_anno)->StringValue.l) {
           (*p_anno)->IoSigFlags.INCL(trueValue);
-          (*p_anno)->I = strtol( v_Default, &endptr, 10);
+          (*p_anno)->I = strtol(v_Default.toAscii(), &endptr, 10);
         }
         else
           (*p_anno)->IoSigFlags.EXCL(trueValue);
@@ -2235,12 +2236,12 @@ CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, QListWidge
   LitList = litList;
   insert = isNew;
   myDecl = litEl;
-  HSpaceSPIN->setMinValue (0);
-  HTabSPIN->setMinValue (0);
-  VSpaceSPIN->setMinValue (0);
-  HSpaceSPIN->setMaxValue (100);
-  HTabSPIN->setMaxValue (100);
-  VSpaceSPIN->setMaxValue (100);
+  HSpaceSPIN->setMinimum (0);
+  HTabSPIN->setMinimum (0);
+  VSpaceSPIN->setMinimum (0);
+  HSpaceSPIN->setMaximum (100);
+  HTabSPIN->setMaximum (100);
+  VSpaceSPIN->setMaximum (100);
   m_LiFrmSpace = 0;
   m_LiSpace = 0;
   m_LiTab = 0;
@@ -2251,7 +2252,7 @@ CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, QListWidge
   }
   QFont lf;
   if (myDecl->Annotation.ptr->String1.l && lf.fromString(myDecl->Annotation.ptr->String1.c)) {
-    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeF() );
     fontName->setText(nn);
     fontName->show();
     fontButton->show();
@@ -2294,7 +2295,7 @@ void CLiteralItem::on_fontButton_clicked()
     lf = QFontDialog::getFont(&ok,LBaseData->m_FormLabelFont,this);
   if (ok) {
     myDecl->Annotation.ptr->String1 = STRING(qPrintable(lf.toString()));
-    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeFloat() );
+    QString nn = lf.family() + QString(komma.c) +	QString::number(  lf.pointSizeF() );
     fontName->setText(nn);
     fontName->show();
   }
@@ -2344,7 +2345,7 @@ CMenuPage::~CMenuPage()
 void CMenuPage::UpdateData(bool getData)
 {
   if (getData) {
-    v_Menutype = Menutype->currentItem();
+    v_Menutype = Menutype->currentIndex();
     m_ItemNr = Menuitems->currentRow();
     v_LeftLabel = LeftLabel->isChecked();
     v_ToggleLabel = ToggleLabel->text();
@@ -2909,12 +2910,12 @@ CMenuItem::CMenuItem(CMenuPage* mpage, bool isNew, int ipos,
   insert = isNew;
   iPos = ipos;
 
-  HSpaceSPIN->setMinValue (0);
-  HTabSPIN->setMinValue (0);
-  VSpaceSPIN->setMinValue  (0);
-  HSpaceSPIN->setMaxValue (100);
-  HTabSPIN->setMaxValue (100);
-  VSpaceSPIN->setMaxValue  (100);
+  HSpaceSPIN->setMinimum (0);
+  HTabSPIN->setMinimum (0);
+  VSpaceSPIN->setMinimum  (0);
+  HSpaceSPIN->setMaximum (100);
+  HTabSPIN->setMaximum (100);
+  VSpaceSPIN->setMaximum  (100);
   EnableTextWindows();
   if (insert) {
     isButton->setEnabled(false);
@@ -2972,7 +2973,7 @@ void CMenuItem::on_button_browse_clicked()
   //QString pix = QFileDialog::getOpenFileName( qf.absFilePath(), "Pixmap (*.xpm)",
   //                  this,"open file dialog", "Choose a pixmap file", 0, false );
   QString pix = L_GetOpenFileName(
-                    qf.absFilePath(),
+                    qf.absoluteFilePath(),
                     this,
                     "Choose a pixmap file",
                     "Pixmap (*.xpm)",

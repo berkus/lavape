@@ -106,8 +106,8 @@ public slots:
     void about();
     void onGuiThreadAwake();
     void onIdle();
-    void histFile(int histFileIndex);
-    void hfStatusText(int itemId);
+//    void histFile(int histFileIndex);
+    void hfStatusText(QAction*);
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
@@ -351,10 +351,8 @@ private:
 class WXDLLEXPORT wxDocManager : public QObject //wxEvtHandler
 {
 public:
-    wxDocManager(long flags = wxDEFAULT_DOCMAN_FLAGS, bool initialize = true);
+    wxDocManager(long flags = wxDEFAULT_DOCMAN_FLAGS);
     virtual ~wxDocManager();
-
-    virtual bool Initialize();
 
 public:
     // Handlers for UI update commands
@@ -570,7 +568,7 @@ private:
 class WXDLLEXPORT wxHistory : public QObject
 {
 public:
-    wxHistory(int maxFiles = 9, QMenu *m=0, QObject *receiver=0);
+    wxHistory(QObject *receiver, int maxItems = 9);
     virtual ~wxHistory();
 
     // Operations
@@ -591,7 +589,7 @@ public:
 #endif // wxUSE_CONFIG
 
     virtual void AddFilesToMenu();
-    virtual void AddFilesToMenu(QMenu* menu); // Single menu
+//    virtual void AddFilesToMenu(QMenu* menu);
 
     // Accessors
     virtual DString *GetHistoryItem(int i) const;
@@ -601,12 +599,11 @@ public:
 
     QMenu    *m_menu;
 
-protected:
     // Max files to maintain
     int      m_maxHistItems;
 
     DString  **m_history;
-    QAction **action;
+    QAction **m_actions;
 
     // Number of files saved
     int      m_historyN;

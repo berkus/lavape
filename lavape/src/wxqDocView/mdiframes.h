@@ -47,8 +47,7 @@ class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
     //friend class WXDLLEXPORT wxMDIChildFrame;
 public:
-  wxMainFrame() {}
-  wxMainFrame( QWidget* parent, const char* name);
+  wxMainFrame();
   virtual ~wxMainFrame();
 
   virtual bool OnCreate();
@@ -84,8 +83,8 @@ public slots:
   virtual void OnFileExit();
   void on_cascadeAction_triggered();
   void windowActivated(QWidget*);
-  void histFile(int histFileIndex);
-  void hfStatusText(int itemId);
+  void histFile(QAction*);
+  void hfStatusText(QAction*);
 
 private:
 	virtual void customEvent(QEvent *ev){}

@@ -156,8 +156,11 @@ void CTreeItem::SetItemMask(int maskIndex) {
   //pixMask wird oben und rechts bndig in nPix kopiert
   QPixmap* mPix = new QPixmap(((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->width(), ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
   mPix->fill();
-  bitBlt (mPix, 0, 0, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[pixmapIndex], 0, 0, 16, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
-  bitBlt (mPix, 16, 0, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex], 16, 0, 5, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
+  QPainter painter(mPix);
+  painter.drawPixmap(0,0,*((CLavaPEApp*)wxTheApp)->LavaPixmaps[pixmapIndex]);
+  //bitBlt (mPix, 0, 0, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[pixmapIndex],0,0,16,((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
+  painter.drawPixmap(16,0,*((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex],16,0,5,((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
+  //bitBlt (mPix, 16, 0, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex],QRect(16,0,5,((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height()));
   if (delPix)
     delete nPix;
   nPix = new QIcon(*mPix);
@@ -221,7 +224,7 @@ void MyListView::setCurAndSel(QTreeWidgetItem* item, bool singleSel)
   if (oldi != item) {
     if (oldi && singleSel && isItemSelected(oldi))//oldi->isSelected())
       setItemSelected(oldi, false);
-    setCurrentIndex(item);
+    setCurrentItem(item);
   }
   if (!isItemSelected(item)) //->isSelected())
     setItemSelected(item, true);
@@ -247,8 +250,8 @@ void MyListView::keyPressEvent(QKeyEvent *ev)
   else if ((ev->key() == Qt::Key_Return) && !((CTreeItem*)currentItem())->inRename)
     lavaView->OnVkreturn();
   else {
-    withShift = ev->state() & Qt::ShiftModifier;
-    withControl = ev->state() & Qt::ControlModifier;
+    withShift = ev->modifiers() & Qt::ShiftModifier;
+    withControl = ev->modifiers() & Qt::ControlModifier;
     QTreeWidget::keyPressEvent(ev);
     withShift = false;
     withControl = false;
@@ -263,10 +266,10 @@ void MyListView::mouseMoveEvent(QMouseEvent *ev)
   else {
     QPoint p = /*contentsToViewport(*/ev->pos();//);
     item2 = itemAt(p);
-    if (!lavaView->multiSelectCanceled && (ev->state() == Qt::LeftButton)) {
+    if (!lavaView->multiSelectCanceled && (ev->modifiers() == Qt::LeftButton)) {
       if (item2 != item) {
         withControl = true;
-        setCurrentIndex(item2);
+        setCurrentItem(item2);
         setItemSelected(item2, true);
         withControl = false;
       }
@@ -288,8 +291,8 @@ void MyListView::mouseReleaseEvent(QMouseEvent *ev)
 
 void MyListView::mousePressEvent(QMouseEvent *ev)
 {
-  withShift = ev->state() & Qt::ShiftModifier;
-  withControl = ev->state() & Qt::ControlModifier;
+  withShift = ev->modifiers() & Qt::ShiftModifier;
+  withControl = ev->modifiers() & Qt::ControlModifier;
   QPoint p = /*contentsToViewport(*/ev->pos();//);
   if(itemAt(p))
     QTreeWidget::mousePressEvent(ev);
