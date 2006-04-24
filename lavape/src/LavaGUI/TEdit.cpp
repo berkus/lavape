@@ -67,7 +67,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   else {
     if (!myFormNode->data.IoSigFlags.Contains(Flag_INPUT) || GUIProg->FrozenObject)
       setReadOnly(true);
-    else 
+    else
       setEnabled(true);
     if (!withEcho)
       setEchoMode(QLineEdit::Password);
@@ -108,7 +108,7 @@ void CTEdit::focusInEvent(QFocusEvent *ev)
   GUIProg->butNode = 0;
   GUIProg->ScrollIntoFrame(this);
   if (inError)
-    setCursorPosition(int(GUIProg->ErrPos)); 
+    setCursorPosition(int(GUIProg->ErrPos));
   QLineEdit::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
 }
@@ -136,7 +136,7 @@ bool CTEdit::event(QEvent* ev)
       ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
     return true;
   }
-  else 
+  else
     return QLineEdit::event(ev);
 }
 
@@ -214,7 +214,7 @@ void CMultiLineEdit::focusInEvent(QFocusEvent *ev)
   GUIProg->butNode = 0;
   GUIProg->ScrollIntoFrame(this);
   //if (inError)
-  //  setCursorPosition(int(GUIProg->ErrPos), int(GUIProg->ErrPos)); 
+  //  setCursorPosition(int(GUIProg->ErrPos), int(GUIProg->ErrPos));
   QTextEdit::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
 }
@@ -222,7 +222,7 @@ void CMultiLineEdit::focusInEvent(QFocusEvent *ev)
 void CMultiLineEdit::focusOutEvent(QFocusEvent *ev)
 {
   if (document()->isModified()) {
-    myFormNode->data.StringValue = STRING(document()->toPlainText().toAscii());
+    myFormNode->data.StringValue = STRING(qPrintable(document()->toPlainText()));
     if (LBaseData->inRuntime) {
       inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
       //if (inError)
@@ -245,7 +245,7 @@ bool CMultiLineEdit::event(QEvent* ev)
       ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
     return true;
   }
-  else 
+  else
     return QTextEdit::event(ev);
 }
 

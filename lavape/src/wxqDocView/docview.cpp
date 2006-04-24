@@ -1276,7 +1276,7 @@ void wxDocManager::AddFileToHistory(QString& file)
   if (m_fileHistory) {
 //???    settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //    settings.beginGroup(wxTheApp->GetSettingsPath());
-    m_fileHistory->AddToHistory(new DString(file.toAscii()),wxTheApp);
+    m_fileHistory->AddToHistory(new DString(qPrintable(file)),wxTheApp);
     m_fileHistory->Save(settings);
   }
 }
@@ -2062,7 +2062,7 @@ void wxHistory::SetFirstInHistory(const QString& file)
 {
     int i;
     for (i = 0; i < m_historyN; i++)
-      if (*m_history[i] == DString(file.toAscii())) {
+      if (*m_history[i] == DString(qPrintable(file))) {
           SetFirstInHistory(i);
           return;
       }
@@ -2208,7 +2208,7 @@ void wxHistory::RemoveItemFromHistory(int i)
 void wxHistory::OnChangeOfWindowTitle(QString &oldName, QString &newName)
 {
         int i;
-        DString str(newName.toAscii());
+        DString str(qPrintable(newName));
 
         for (i=0; i<m_historyN; i++)
                 if (oldName == m_history[i]->c) {
@@ -2248,7 +2248,7 @@ void wxHistory::Load(QSettings& config)
     while (m_historyN <= m_maxHistItems) {
       historyFile = config.value(buf).toString();
       if (historyFile.isEmpty()) break;
-      m_history[m_historyN++] = new DString(historyFile.toAscii());
+      m_history[m_historyN++] = new DString(qPrintable(historyFile));
       buf.sprintf("file%d", m_historyN+1);
     }
     config.endGroup();
@@ -2259,7 +2259,7 @@ void wxHistory::Save(QSettings& config)
 {
     int i;
     QString buf;
-        
+
     config.beginGroup("fileHistory");
     config.remove("");
 

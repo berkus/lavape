@@ -26,7 +26,6 @@
 #include <QMenu>
 #include <QTreeWidget>
 #include "qsplitter.h"
-#include "qvbox.h"
 #include "qevent.h"
 //#include "q3header.h"
 //Added by qt3to4:
@@ -381,7 +380,7 @@ void MyListView::commitData(QWidget* editor)
 }
 
 
-CTreeItemDelg::CTreeItemDelg(MyListView* tree)  
+CTreeItemDelg::CTreeItemDelg(MyListView* tree)
 {
   Tree = tree;
   Tree->committed = false;

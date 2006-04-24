@@ -45,7 +45,6 @@
 #include "qcursor.h"
 #include <QMenu>
 #include "qtreewidget.h"
-#include "qvbox.h"
 #include "qwhatsthis.h"
 #include "qworkspace.h"
 #include "qstatusbar.h"

@@ -50,12 +50,12 @@ CLavaPEHint::CLavaPEHint(CPECommand cc, wxDocument* fromdoc, SynFlags first,
                        DWORD commandData1, DWORD commandData2,
                        DWORD commandData3, DWORD commandData4,
                        DWORD commandData5, DWORD commandData6, DWORD commandData7, DWORD commandData8)
-{ 
+{
   setObjectName("LavaPEHint");
-  com = cc; 
+  com = cc;
   fromDoc = fromdoc;
   FirstLast = first;
-  CommandData1 = commandData1; 
+  CommandData1 = commandData1;
   CommandData2 = commandData2;
   CommandData3 = commandData3;
   CommandData4 = commandData4;
@@ -76,13 +76,13 @@ CLavaPEHint::~CLavaPEHint()
        || (com == CPECommand_Exclude)
        || (com == CPECommand_ChangeInclude)
        || (com == CPECommand_Include)) {
-    if(CommandData2) 
+    if(CommandData2)
       delete (DString*)CommandData2;
   }
   else
     if (com == CPECommand_Exec)
       LBaseData->ExecUpdate->DeleteHint(this);
-  if(CommandData7 && (com != CPECommand_Change)) 
+  if(CommandData7 && (com != CPECommand_Change))
     delete (DString*)CommandData7;
 
 }
@@ -95,23 +95,23 @@ void CLavaPEHint::Destroy(bool inRedo) //call this function only from CleanUndoM
         delete (LavaDECL*)CommandData1;
         break;
       case CPECommand_Insert:
-        if (inRedo) 
+        if (inRedo)
           delete (CHE*)CommandData9;
         break;
       case CPECommand_Delete:
-        if (!inRedo) 
+        if (!inRedo)
           delete (CHE*)CommandData9;
         break;
       case CPECommand_Include:
-        if (inRedo) 
+        if (inRedo)
           delete (CHESimpleSyntax*)CommandData1;
         break;
       case CPECommand_ChangeInclude:
-        if (inRedo) 
+        if (inRedo)
           delete (CHESimpleSyntax*)CommandData1;
         break;
       case CPECommand_Exclude:
-        if (!inRedo) 
+        if (!inRedo)
           delete (CHESimpleSyntax*)CommandData1;
         break;
       default: ;
@@ -146,7 +146,7 @@ void CUndoMem::SetLastHint()
 
 CLavaPEHint* CUndoMem::GetLastHint()
 {
-  if (undoMemPosition > 0) 
+  if (undoMemPosition > 0)
     return UndoMemory[undoMemPosition-1];
   else
     return 0;
@@ -154,12 +154,12 @@ CLavaPEHint* CUndoMem::GetLastHint()
 
 CLavaPEHint* CUndoMem::GetLastRedo()
 {
-  if (redoMemPosition > 0) 
+  if (redoMemPosition > 0)
     return RedoMemory[redoMemPosition-1];
   else
     return 0;
 }
- 
+
 void CUndoMem::AddToMem(CLavaPEHint* hint)
 {
   while (redoMemPosition > 0) {
@@ -215,7 +215,7 @@ CLavaPEHint* CUndoMem::DoFromMem(int& pos)
     pos = undoMemPosition-1 ;
     while ((pos >= 0) && !UndoMemory[pos]->FirstLast.Contains(firstHint))
       pos = pos-1;
-    Q_ASSERT (pos >=  0); 
+    Q_ASSERT (pos >=  0);
   }
   else
     if (pos == (undoMemPosition - 1))
@@ -264,13 +264,13 @@ CLavaPEHint* CUndoMem::RedoFromMem(int& pos)
 {
   if (redoMemPosition <= 0)
     return NULL;
-  if (pos < 0) 
+  if (pos < 0)
     pos = redoMemPosition-1 ;
   else {
     if ((pos == 0) || RedoMemory[pos-1]->FirstLast.Contains(firstHint))
       return NULL;  //finished
     pos = pos--;
-    Q_ASSERT (pos >=  0); 
+    Q_ASSERT (pos >=  0);
   }
   if (RedoMemory[pos]) {
     UndoMemory[undoMemPosition] = RedoMemory[pos];
@@ -289,7 +289,7 @@ CLavaPEHint* CUndoMem::RedoFromMem(int& pos)
     return NULL;
 }
 
-void  CUndoMem::CleanUndoMem() 
+void  CUndoMem::CleanUndoMem()
 {
   while (undoMemPosition > 0) {
     undoMemPosition--;
@@ -313,7 +313,7 @@ void CUndoMem::SetCom8()
      && ((posDel == -1) || (posIns == -1))) {
     if ((((LavaDECL*)UndoMemory[pos]->CommandData1)->DeclType == Function)
         && (((LavaDECL*)UndoMemory[pos]->CommandData1)->ParentDECL->DeclType == Impl)) {
-      if (UndoMemory[pos]->com == CPECommand_Delete) 
+      if (UndoMemory[pos]->com == CPECommand_Delete)
         posDel = pos;
       else if ((UndoMemory[pos]->com == CPECommand_Insert)
                || (UndoMemory[pos]->com == CPECommand_Move))
@@ -325,7 +325,7 @@ void CUndoMem::SetCom8()
       pos--;
   }
   while ((posDel >= 0) && (posIns >= 0)
-      && (UndoMemory[posDel]->com == CPECommand_Delete) 
+      && (UndoMemory[posDel]->com == CPECommand_Delete)
       && (((LavaDECL*)UndoMemory[posDel]->CommandData1)->DeclType == Function)
       && (((LavaDECL*)UndoMemory[posDel]->CommandData1)->ParentDECL->DeclType == Impl)) {
     UndoMemory[posDel]->CommandData8 = (DWORD)((LavaDECL*)UndoMemory[posIns]->CommandData1)->OwnID;
@@ -347,12 +347,12 @@ bool CUndoMem::DocModified()
   return (undoMemPosition != saveMemPosition);
 }
 
-void CUndoMem::SetSavePos() 
+void CUndoMem::SetSavePos()
 {
   saveMemPosition = undoMemPosition;
 }
 
-void CUndoMem::OnEditUndo() 
+void CUndoMem::OnEditUndo()
 {
   if ((undoMemPosition > 0) && UndoMemory[undoMemPosition -1])
     if (UndoMemory[undoMemPosition -1]->FirstLast.Contains(multiDocHint))
@@ -361,17 +361,17 @@ void CUndoMem::OnEditUndo()
       ((CPEBaseDoc*)UndoMemory[undoMemPosition-1]->fromDoc)->Undo();
 }
 
-void CUndoMem::OnUpdateEditUndo(QAction *action) 
+void CUndoMem::OnUpdateEditUndo(QAction *action)
 {
   action->setEnabled((undoMemPosition > 0) && !UndoMemory[undoMemPosition-1]->FirstLast.Contains(blockedHint));
 }
 
-bool CUndoMem::EnableUndo() 
+bool CUndoMem::EnableUndo()
 {
   return ((undoMemPosition > 0) && !UndoMemory[undoMemPosition-1]->FirstLast.Contains(blockedHint));
 }
 
-void CUndoMem::OnEditRedo() 
+void CUndoMem::OnEditRedo()
 {
   if ((redoMemPosition > 0) && RedoMemory[redoMemPosition -1])
     if (RedoMemory[redoMemPosition-1]->FirstLast.Contains(multiDocHint))
@@ -380,7 +380,7 @@ void CUndoMem::OnEditRedo()
       ((CPEBaseDoc*)RedoMemory[redoMemPosition-1]->fromDoc)->Undo(TRUE);
 }
 
-void CUndoMem::OnUpdateEditRedo(QAction *action) 
+void CUndoMem::OnUpdateEditRedo(QAction *action)
 {
   action->setEnabled((redoMemPosition > 0) && !RedoMemory[redoMemPosition-1]->FirstLast.Contains(blockedHint));
 }
@@ -453,9 +453,9 @@ bool CMultiUndoMem::Undo(CLavaPEHint *withLastHint)
       }
     }
     if (!result) {
-      for (che = cheFin; che && (che != cheStart); che = (CHE*)che->predecessor) 
+      for (che = cheFin; che && (che != cheStart); che = (CHE*)che->predecessor)
         ((CPEBaseDoc*)((CMultiDocEntry*)che->data)->LastHint->fromDoc)->Undo();
-      for (che = cheFin; che && (che != cheStart); che = (CHE*)che->predecessor) 
+      for (che = cheFin; che && (che != cheStart); che = (CHE*)che->predecessor)
         ((CPEBaseDoc*)((CMultiDocEntry*)che->data)->LastHint->fromDoc)->UpdateOtherDocs(0, str0, 0, false);
       lHint = new CLavaPEHint(CPECommand_FromOtherDoc, 0, (const unsigned long) 0);
       for (che = cheFin; che && (che != cheStart); che = (CHE*)che->predecessor) {
@@ -548,7 +548,7 @@ bool CMultiUndoMem::Redo(CLavaPEHint *withFirstHint)
     if (!result) {
       for (che = cheStart; che != cheFin; che = (CHE*)che->successor)
          ((CPEBaseDoc*)((CMultiDocEntry*)che->data)->LastHint->fromDoc)->Undo(true);
-      for (che = cheStart; che != cheFin; che = (CHE*)che->successor) 
+      for (che = cheStart; che != cheFin; che = (CHE*)che->successor)
         ((CPEBaseDoc*)((CMultiDocEntry*)che->data)->LastHint->fromDoc)->UpdateOtherDocs(0, str0, 0, false);
       lHint = new CLavaPEHint(CPECommand_FromOtherDoc, 0, (const unsigned long) 0);
       for (che = cheStart; che != cheFin; che = (CHE*)che->successor) {
@@ -761,7 +761,7 @@ TBasicType CPEBaseBrowse::GetBasicType(SynDef *lavaCode, LavaDECL* decl)
         return Enumeration;
       case NamedType:
        return GetBasicType(lavaCode, ((TIDTable*)lavaCode->IDTable)->GetDECL(decl->RefID, decl->inINCL));
-      case StructDesc: 
+      case StructDesc:
       case Undefined:
         return NonBasic;
       default: ;
@@ -770,13 +770,13 @@ TBasicType CPEBaseBrowse::GetBasicType(SynDef *lavaCode, LavaDECL* decl)
 
 }
 
- 
+
 TDeclDescType CPEBaseBrowse::GetExprType(SynDef *lavaCode, LavaDECL *decl)
 {
   if (decl)
     switch (decl->DeclDescType) {
       case BasicType:
-      case StructDesc: 
+      case StructDesc:
       case EnumType:
       case LiteralString:
       case ExecDesc:
@@ -788,7 +788,7 @@ TDeclDescType CPEBaseBrowse::GetExprType(SynDef *lavaCode, LavaDECL *decl)
     }
   return UnknownDDT;
 }
- 
+
 TDeclType CPEBaseBrowse::GetCategory(SynDef *lavaCode, LavaDECL *decl, SynFlags& flags)
 {
   if (decl) {
@@ -845,39 +845,39 @@ void CLavaBaseData::Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate)
   BasicNames[B_RTException]  = "RuntimeException";
   BasicNames[Identifier]   = "Identifier";
 
-  OperatorNames [OP_equal ] =    DString("operator \"=\""); 
-  OperatorNames [OP_notequal ] = DString("operator \"¬=\""); 
-  OperatorNames [OP_lessthen ] = DString("operator \"<\""); 
-  OperatorNames [OP_greaterthen ] = DString("operator \">\""); 
-  OperatorNames [OP_lessequal] = DString("operator \"<=\""); 
-  OperatorNames [OP_greaterequal] = DString("operator \">=\""); 
-  OperatorNames [OP_plus ] =     DString("operator \"+\""); 
+  OperatorNames [OP_equal ] =    DString("operator \"=\"");
+  OperatorNames [OP_notequal ] = DString("operator \"=\"");
+  OperatorNames [OP_lessthen ] = DString("operator \"<\"");
+  OperatorNames [OP_greaterthen ] = DString("operator \">\"");
+  OperatorNames [OP_lessequal] = DString("operator \"<=\"");
+  OperatorNames [OP_greaterequal] = DString("operator \">=\"");
+  OperatorNames [OP_plus ] =     DString("operator \"+\"");
   OperatorNames [OP_minus ] =    DString("operator \"-\"");
   OperatorNames [OP_mult ]  =    DString("operator \"*\"");
   OperatorNames [OP_div ]  =     DString("operator \"/\"");
   OperatorNames [OP_mod ]   =    DString("operator \"%\"");
-  OperatorNames [OP_bwAnd ]  =   DString("operator \"&\""); 
+  OperatorNames [OP_bwAnd ]  =   DString("operator \"&\"");
   OperatorNames [OP_bwOr ] =     DString("operator \"|\"");
   OperatorNames [OP_bwXor ] =    DString("operator \"||\"");
-  OperatorNames [OP_invert ]   = DString("operator \"¬\"");
+  OperatorNames [OP_invert ]   = DString("operator \"\"");
   OperatorNames [OP_lshift ]   = DString("operator \"<<\"");
   OperatorNames [OP_rshift ]   = DString("operator \">>\"");
   OperatorNames [OP_arrayGet ] = DString("operator \"<-[]\"");
   OperatorNames [OP_arraySet ] = DString("operator \"[]<-\"");
   OperatorNames [OP_fis ] =      DString("operator \"#\"");
 
-  OpFuncNames [OP_equal ] =    DString("equal"); 
-  OpFuncNames [OP_notequal ] = DString("not_equal"); 
-  OpFuncNames [OP_lessthen ] = DString("less_then"); 
-  OpFuncNames [OP_greaterthen ] = DString("greater_then"); 
-  OpFuncNames [OP_lessequal] = DString("less_equal"); 
-  OpFuncNames [OP_greaterequal] = DString("greater_equal"); 
-  OpFuncNames [OP_plus ] =     DString("plus"); 
+  OpFuncNames [OP_equal ] =    DString("equal");
+  OpFuncNames [OP_notequal ] = DString("not_equal");
+  OpFuncNames [OP_lessthen ] = DString("less_then");
+  OpFuncNames [OP_greaterthen ] = DString("greater_then");
+  OpFuncNames [OP_lessequal] = DString("less_equal");
+  OpFuncNames [OP_greaterequal] = DString("greater_equal");
+  OpFuncNames [OP_plus ] =     DString("plus");
   OpFuncNames [OP_minus ] =    DString("minus");
   OpFuncNames [OP_mult ]  =    DString("mult");
   OpFuncNames [OP_div ]  =     DString("div");
   OpFuncNames [OP_mod ]   =    DString("mod");
-  OpFuncNames [OP_bwAnd ]  =   DString("and"); 
+  OpFuncNames [OP_bwAnd ]  =   DString("and");
   OpFuncNames [OP_bwOr ] =     DString("or");
   OpFuncNames [OP_bwXor ] =    DString("xor");
   OpFuncNames [OP_invert ]   = DString("invert");
@@ -887,7 +887,7 @@ void CLavaBaseData::Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate)
   OpFuncNames [OP_arraySet ] = DString("arraySet");
   OpFuncNames [OP_fis ] =      DString("ord");
 
- 
+
   maxb=((unsigned)Identifier);
   actHint = 0;
   inMultiDocUpdate = false;
@@ -909,7 +909,7 @@ bool CLavaBaseData::isIdentifier(const QString& ident)
   if (len && (ident[0].isLetter() || (ident[0] == '_'))) {
     int ii = 1;
     while (ii < len) {
-      if (ident[ii].isLetterOrNumber() || (ident[ii] == '_')) 
+      if (ident[ii].isLetterOrNumber() || (ident[ii] == '_'))
         ii += 1;
       else
         return FALSE;
@@ -925,9 +925,9 @@ DString CLavaBaseData::calcRelName(const DString& qname, const DString& scopeNam
 {
   int pPos=0, pos ;
   DString relName = qname;
-  for (pos = 0; 
-      (pos < qname.l) && (pos < scopeName.l) && qname[pos] == scopeName[pos]; pos++) 
-    if (qname[pos] == ':') 
+  for (pos = 0;
+      (pos < qname.l) && (pos < scopeName.l) && qname[pos] == scopeName[pos]; pos++)
+    if (qname[pos] == ':')
       pPos = pos;
   if ((scopeName.l == pos) && (qname.l > pos) && (qname[pos] == ':'))
     pPos = pos+1;  //auf dem zweite Doppelpunkt
@@ -980,11 +980,11 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
     if (((CLavaBaseDoc*)fromDoc)->ThreadList) {
       thrL = ((CLavaBaseDoc*)fromDoc)->ThreadList;
       for (int i=0; i<thrL->size(); i++) {
-				if ((thrL->at(i) != curThr) && thrL->at(i)->pContExecEvent) 
+				if ((thrL->at(i) != curThr) && thrL->at(i)->pContExecEvent)
           thrL->at(i)->pContExecEvent->release();
       }
 		}
-		if (err) 
+		if (err)
 			throw CUserException();
   }
 }
@@ -1125,12 +1125,12 @@ QString L_GetOpenFileName(const QString& startFileName,
   OPENFILENAME ofn;                    // common dialog box structure
   char szFile[260], cfilter[500]; // buffer for filename
   if (fileName != QString::null)
-//    strcpy(szFile,fileName.ascii()); 
-    strcpy_s(szFile,260,qPrintable(fileName)); 
+//    strcpy(szFile,fileName.ascii());
+    strcpy_s(szFile,260,qPrintable(fileName));
   else
-    szFile[0] = '\0'; 
+    szFile[0] = '\0';
   HWND hwnd = parent->winId();         // owner window
-  QString resultName = ""; 
+  QString resultName = "";
   QString filt = filter + "?*." + exten;
   if (filter2 != QString::null) {
     filt = filt + "?" + filter2 + "?*." + exten2;
@@ -1159,7 +1159,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   ofn.lpfnHook = myOFNHookProc;
   ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_READONLY | OFN_HIDEREADONLY
               | OFN_NODEREFERENCELINKS | OFN_ENABLEHOOK | OFN_EXPLORER | OFN_ENABLESIZING;
-  // Display the Open dialog box. 
+  // Display the Open dialog box.
 
   if (GetOpenFileName(&ofn)) {
     resultName = QString(ofn.lpstrFile);
@@ -1171,25 +1171,26 @@ QString L_GetOpenFileName(const QString& startFileName,
 
   QFileDialog *fd = new QFileDialog(parent);
 	QStringList filters;
-	
+
 	filters << filter;
 //  fd->addFilter(filter);
   if (filter2 != QString::null)
     filters << filter2; // fd->addFilter( filter2);
 	fd->setFilters(filters);
-  fd->setCaption(caption);
-  fd->setDir(qf.dirPath(true));
+  fd->setWindowTitle(caption);
+  fd->setDirectory(qf.absolutePath());
   if (currentFilter.isEmpty())
     currentFilter = "lava";
   currentFilter = "*." + currentFilter;
 //  fd->setSelectedFilter(currentFilter);
   fd->selectFile(startFileName);
-  fd->setMode( QFileDialog::ExistingFile );
+  fd->setFileMode( QFileDialog::ExistingFile );
   fd->setViewMode( QFileDialog::List );
 //  fd->setFilter(filter);
   fd->selectFilter(currentFilter);
   if (fd->exec() == QDialog::Accepted ) {
-    fileName = fd->selectedFile();
+    QStringList selFiles=fd->selectedFiles();
+    fileName = selFiles.first(); //fd->selectedFile();
     delete fd;
     return fileName;
   }
@@ -1217,7 +1218,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
               const QString& exten2
             )
 {
-  QStringList resultNames; 
+  QStringList resultNames;
   QFileInfo qf = QFileInfo(startFileName);
   QFileInfo qfresolved(ResolveLinks(qf));
   QString currentFilter = qfresolved.suffix();
@@ -1261,7 +1262,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_READONLY | OFN_HIDEREADONLY
               | OFN_NODEREFERENCELINKS | OFN_ENABLEHOOK | OFN_EXPLORER | OFN_ENABLESIZING
               | OFN_ALLOWMULTISELECT;
-  // Display the Open dialog box. 
+  // Display the Open dialog box.
 
   if (GetOpenFileName(&ofn)) {
     dir.Reset(256);
@@ -1288,7 +1289,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
       fn = dir;
       int jj = dir.l;
       for (; (ii<259) && ((ofn.lpstrFile[ii] != '\0') || (ofn.lpstrFile[ii+1] != '\0')); ii++) {
-        fn[jj] = ofn.lpstrFile[ii]; 
+        fn[jj] = ofn.lpstrFile[ii];
         if (fn[jj] == '\0') {
           fn.l = jj;
           resultNames.append(fn.c);
@@ -1312,7 +1313,7 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
 #else
   QFileDialog *fd = new QFileDialog(parent);
 	QStringList filters;
-	
+
 	filters << filter;
 //  fd->addFilter(filter);
   if (filter2 != QString::null)
@@ -1348,15 +1349,15 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
               */
 #endif
 }
- 
+
 
 #ifdef WIN32
 
 unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,
                                     WPARAM wParam, LPARAM lParam)
 {
-  //this hook procedure enables the "small" file box 
-  return 0; 
+  //this hook procedure enables the "small" file box
+  return 0;
 }
 
 #endif
@@ -1379,7 +1380,7 @@ bool WhatsThis::clicked(const QString &whatsThisHref)
 	QString path(ExeDir);
 	QStringList args;
 
-	
+
 	if (!qacl) {
 		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 	  args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
