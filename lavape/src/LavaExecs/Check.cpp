@@ -6646,9 +6646,8 @@ unsigned AssertionData::PrepareAssertions(CheckData &ckd, SelfVar *selfVar) {
     return stackFrameSize;
   }
 
-  for (adp=overridden.first();
-       adp;
-       adp=overridden.next()) {
+  for (i=0; i<overridden.size(); i++) {
+		adp = overridden.at(i);
     maxFrameSize = lmax(maxFrameSize,adp->maxFrameSize);
     nOvrOldExpr += adp->nTotalOldExpr;
     if (adp->hasOrInheritsPreconditions)
@@ -6717,9 +6716,8 @@ unsigned InvarData::PrepareInvariants(CheckData &ckd, SelfVar *selfVar) {
     }
   }
 
-  for (idp=overridden.first();
-       idp;
-       idp=overridden.next()) {
+  for (i=0; i<overridden.size(); i++) {
+		idp = overridden.at(i);
     maxFrameSize = lmax(maxFrameSize,idp->stackFrameSize);
     if (idp->hasOrInheritsInvariants)
       hasOrInheritsInvariants = true;

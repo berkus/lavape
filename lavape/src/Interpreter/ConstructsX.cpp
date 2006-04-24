@@ -541,7 +541,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
       else {
         rc = QMessageBox::Yes;
         pmMsg = excMsg + "\n\n" + msg;
-        information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton,Qt::NoButton);
+        information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(pmMsg)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton,Qt::NoButton);
       }
     else
       rc = QMessageBox::Yes;
@@ -640,15 +640,14 @@ bool AssertionData::EvalOldExpressions (CheckData &ckd, RTAssDataDict &rtadDict,
   AssertionData *adp;
   LavaObjectPtr obj=0, oldSelfObject;
   LavaDECL *objClassDECL;
-  int secn;
+  int secn, i;
   CRuntimeException *ex;
   unsigned iOldExpr=0;
   bool ok;
 
   oldSelfObject = stackFrame[SFH];
-  for (oep = oldExpressions.first();
-       oep;
-       oep = oldExpressions.next()) {
+  for (i=0; i<oldExpressions.size(); i++) {
+		oep = oldExpressions.at(i);
     objClassDECL = oldSelfObject[0][0].classDECL;
     if (objClassDECL != funcDECL->ParentDECL) {
       secn = ckd.document->GetSectionNumber(ckd, objClassDECL, funcDECL->ParentDECL);
@@ -676,9 +675,8 @@ bool AssertionData::EvalOldExpressions (CheckData &ckd, RTAssDataDict &rtadDict,
     oep->iOldExpr = iOldExpr++;
   }
 
-  for (adp=overridden.first();
-       adp;
-       adp=overridden.next()) {
+  for (i=0; i<overridden.size(); i++) {
+		adp = overridden.at(i);
     if (rtadDict.find(adp))
       continue;
     ok = adp->EvalOldExpressions(ckd,rtadDict,stackFrame,oldExprLevel);
@@ -695,7 +693,7 @@ bool AssertionData::EvalPreConditions (CheckData &ckd, RTAssDataDict &rtadDict, 
   RTAssertionData *rtad;
   LavaObjectPtr oldSelfObject=stackFrame[SFH], oldSF2=stackFrame[2];
   LavaDECL *objClassDECL;
-  int secn;
+  int secn, i;
   bool ok=true, thisOk;
   unsigned oldExprLevel=0;
 
@@ -749,9 +747,8 @@ bool AssertionData::EvalPreConditions (CheckData &ckd, RTAssDataDict &rtadDict, 
   rtad->requireChecked = true;
   rtad->requireOK = thisOk;
 
-  for (adp=overridden.first();
-       adp;
-       adp=overridden.next()) {
+	for (i=0; i<overridden.size(); i++) {
+		adp = overridden.at(i);
     rtad = rtadDict[adp];
     if (rtad) {
       if (rtad->requireChecked) {
@@ -778,7 +775,7 @@ bool AssertionData::EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict,
   RTAssertionData *rtad;
   LavaObjectPtr oldSelfObject=stackFrame[SFH], oldSF2=stackFrame[2];
   LavaDECL *objClassDECL;
-  int secn;
+  int secn, i;
   bool ok=true;
   unsigned oldExprLevel=0;
 
@@ -824,7 +821,7 @@ bool AssertionData::EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict,
     return ok;
 
   if (!ok && parent) { // !ok implies ensureDECL != 0
-    rtad = rtadDict.find(this);
+    rtad = rtadDict.find(this).value();
     if (rtad->requireOK) {
       ((SynObject*)ensureDECL->Exec.ptr)->SetRTError(ckd,&ERR_PostconditionConsistency,stackFrame);
       return false;
@@ -838,13 +835,12 @@ bool AssertionData::EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict,
     // previous precondition inconsistency had occurred (which would already
     // have triggered a corresponding exception, however!)
 
-  for (adp=overridden.first();
-       adp;
-       adp=overridden.next()) {
-    rtad = rtadDict.find(adp);
+	for (i=0; i<overridden.size(); i++) {
+		adp = overridden.at(i);
+    rtad = rtadDict.find(adp).value();
     if (rtad->ensureChecked)
       if (!rtad->ensureOK && rtad->requireOK) {
-        rtad = rtadDict.find(adp);
+        rtad = rtadDict.find(adp).value();
         if (rtad->requireOK) {
           ((SynObject*)adp->ensureDECL->Exec.ptr)->SetRTError(ckd,&ERR_PostconditionConsistency,stackFrame);
           return false;
@@ -855,7 +851,7 @@ bool AssertionData::EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict,
     ok = adp->EvalPostConditions(ckd,rtadDict,stackFrame,this);
     if (ckd.exceptionThrown)
       return false;
-    rtadDict.find(this)->ensureChecked = true;
+    rtadDict.find(this).value()->ensureChecked = true;
   }
   
   return true;
@@ -864,7 +860,7 @@ bool AssertionData::EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict,
 bool InvarData::EvalInvariants (CheckData &ckd, RTInvDataDict &rtidDict, LavaVariablePtr stackFrame) {
   InvarData *idp;
   LavaObjectPtr oldSelfObject=stackFrame[SFH], oldSF2=stackFrame[2];
-  int secn;
+  int secn, i;
   LavaDECL *rtid, *objClassDECL;
   bool ok=true, thisOk;
 
@@ -907,10 +903,9 @@ bool InvarData::EvalInvariants (CheckData &ckd, RTInvDataDict &rtidDict, LavaVar
   }
 
   thisOk = ok;
-  for (idp=overridden.first();
-       idp;
-       idp=overridden.next()) {
-    rtid = rtidDict.find(idp);
+	for (i=0; i<overridden.size(); i++) {
+		idp = overridden.at(i);
+    rtid = rtidDict.find(idp).value();
     if (rtid)
       continue;
     ok = idp->EvalInvariants(ckd,rtidDict,stackFrame);
@@ -1007,7 +1002,7 @@ bool SelfVarX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
     goto ret;
 
   if (isFuncBody && adp) {
-    rtadDict.setAutoDelete(true);
+//???    rtadDict.setAutoDelete(true);
     rtadDict.insert(adp,new RTAssertionData(oldExprLevel));
   }
 
@@ -1991,7 +1986,7 @@ bool TryStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigne
       ckd.currentStackLevel--;
       if (!ckd.exceptionThrown) {
         ckd.lastException = 0;
-        ckd.callStack.setLength(0);
+        ckd.callStack.resize(0);
 	      return ok;
       }
       else
@@ -3143,7 +3138,7 @@ LavaObjectPtr AttachObjectX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
     if (!rtObj && !ckd.exceptionThrown) {
       secn = ckd.document->GetSectionNumber(ckd, (*urlObj)->classDECL, ckd.document->DECLTab[VLString]);
       urlStr = (LavaObjectPtr)(urlObj - (*urlObj)->sectionOffset + (*urlObj)[secn].sectionOffset);
-      SetRTError(ckd,&ERR_ldocNotOpened,stackFrame, *(QString*)(urlStr + LSH));
+      SetRTError(ckd,&ERR_ldocNotOpened,stackFrame, qPrintable(*(QString*)(urlStr + LSH)));
     }
     return rtObj;
   }

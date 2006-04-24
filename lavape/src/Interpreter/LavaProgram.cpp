@@ -68,7 +68,7 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
   QString *errCode; 
   LavaDECL *errDECL=0;
   bool errEx;
-  QString /* *toINCL,*/ str;
+  QString str;
   CheckData ckd;
 
   PathName = qPrintable(fn);
@@ -78,7 +78,7 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
 //  toINCL = 0;
   if (sntx) {
     PathName = qPrintable(fn);
-    isStd = SameFile(PathName, StdLava.ascii());
+    isStd = SameFile(PathName, qPrintable(StdLava));
     CalcNames(fn);
     sntx->IDTable = (address)&IDTable;
     hasIncludes = FALSE;
@@ -111,7 +111,7 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
       }
       if (putErr || reDef) 
 //        AfxMessageBox(str.c, MB_OK+MB_ICONSTOP);
-        critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(str),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(qPrintable(str)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     }
     else {
       if (reDef) {
@@ -120,14 +120,14 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
         str += "\nDo you want to retry loading the lava document using another file name (*.lcom)?"; 
         str += "\n  ";
 //        if (AfxMessageBox(str.c, MB_RETRYCANCEL|MB_ICONQUESTION) == IDRETRY) 
-				if (question(wxTheApp->m_appWindow,qApp->applicationName(),tr(str),QMessageBox::Retry,QMessageBox::Cancel,0)==QMessageBox::Retry)
+				if (question(wxTheApp->m_appWindow,qApp->applicationName(),tr(qPrintable(str)),QMessageBox::Retry,QMessageBox::Cancel,0)==QMessageBox::Retry)
           return SelectLcom(false);
       }
       else {
         if (putErr) {
           str = QString("File '") + fn + "' not found";
 //          AfxMessageBox(str.c, MB_OK+MB_ICONSTOP);
-          critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(str),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+          critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(qPrintable(str)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         }
       }
     }
@@ -2312,13 +2312,13 @@ stop:     ckd.document->throwError = false;
         }
       }
       catch (CHWException ex) {
-        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(ex.message)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
       }
       catch (CRuntimeException ex) {
-        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(ex.message),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(ex.message)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
         return 0;
@@ -2357,7 +2357,7 @@ stop:     ckd.document->throwError = false;
         delete [] newStackFrame;
 #endif
       }
-      information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(msg),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(msg)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
       QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
       return 1;

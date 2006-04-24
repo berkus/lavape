@@ -128,7 +128,7 @@ void CLavaDebugThread::run() {
 	  QStringList args;
 	  args << myDoc->GetFilename() << host_addr << QString("%1").arg(locPort);
     if (!QProcess::startDetached(lavapePath,args)) {
-      QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
+      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
 		  return;
 	  }
     listenSocket->waitForNewConnection(5000);
