@@ -53,7 +53,6 @@
 
 wxMainFrame::wxMainFrame() : QMainWindow()
 {
-  int i;
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
   QStatusBar *stb=new QStatusBar(this);
