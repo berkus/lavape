@@ -300,7 +300,7 @@ CLavaPEWizard::CLavaPEWizard(LavaDECL ** p_origDECL, LavaDECL* formDECL, CWizard
   AddPages();
   resize(minimumSizeHint());
   show();
-  connect (this, SIGNAL(currentChanged(QWidget*)), this, SLOT(OnSetActive(QWidget*)));
+  connect (this, SIGNAL(currentChanged(int)), this, SLOT(OnSetActive(int)));
   modified = false;
   myView->applyButton->setEnabled(false);
   myView->resetButton->setEnabled(false);
@@ -461,11 +461,11 @@ CLavaPEWizard::~CLavaPEWizard()
 }
 
 
-void CLavaPEWizard::OnSetActive(QWidget *page)
+void CLavaPEWizard::OnSetActive(int i)
 {
-  if (LitPage == page)
+  if (LitPage == widget(i))
     LitPage->OnSetActive();
-  if (MenuPage == page)
+  if (MenuPage == widget(i))
     MenuPage->OnSetActive();
 
 }

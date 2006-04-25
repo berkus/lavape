@@ -209,25 +209,13 @@ void wxApp::onUpdateUI()
         }
 
 }
-/*
-void wxApp::histFile(int histFileIndex) {
-  m_appWindow->OnMRUFile(histFileIndex);
-}
-*/
-void wxApp::hfStatusText(QAction*) {
-  wxTheApp->m_appWindow->statusBar()->showMessage(tr("Open and raise this window"));
-}
 
 wxView *wxApp::activeView() {
   return wxDocManager::GetDocumentManager()->GetActiveView();
 }
 
-void wxMainFrame::histFile(QAction *act) {
-  OnMRUFile(act->text().mid(1,1).toInt()-1);
-}
-
-void wxMainFrame::hfStatusText(QAction*) {
-  statusBar()->showMessage(tr("Open this file"));
+void wxMainFrame::histFile(int i) {
+  OnMRUFile(i);
 }
 
 void wxApp::about()
@@ -2046,6 +2034,8 @@ wxHistory::wxHistory(QObject *receiver, int maxItems)
     m_historyN = 0;
     m_history = new DString*[m_maxHistItems];
     m_actions = new QAction*[m_maxHistItems];
+    m_signalMapper=new QSignalMapper(this);
+    connect(m_signalMapper,SIGNAL(mapped(int)),wxTheApp->m_appWindow,SLOT(histFile(int)));
 }
 
 wxHistory::~wxHistory()
@@ -2117,6 +2107,9 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
         if (m_historyN == 0)
             m_menu->addSeparator();
         m_actions[m_historyN] = m_menu->addAction("xxx");
+        connect(m_actions[m_historyN],SIGNAL(triggered()),m_signalMapper,SLOT(map()));
+        m_signalMapper->setMapping(m_actions[m_historyN],m_historyN);
+        m_actions[m_historyN]->setStatusTip("Open this file");
         m_historyN++;
     }
     // Shuffle filenames down
@@ -2274,13 +2267,11 @@ void wxHistory::Save(QSettings& config)
 
 void wxHistory::AddFilesToMenu()
 {
+  int i;
+
   if (m_historyN > 0)
   {
     m_menu->addSeparator();
-//    connect(m_menu,SIGNAL(hovered(QAction*)),wxTheApp->m_appWindow,SLOT(hfStatusText(QAction*)));
-    connect(m_menu,SIGNAL(triggered(QAction*)),wxTheApp->m_appWindow,SLOT(histFile(QAction*)));
-
-    int i;
     for (i = 0; i < m_historyN; i++)
     {
       if (m_history[i]->l)
@@ -2288,8 +2279,12 @@ void wxHistory::AddFilesToMenu()
         QString buf;
         buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
         m_actions[i] = m_menu->addAction(buf);
+        connect(m_actions[i],SIGNAL(triggered()),m_signalMapper,SLOT(map()));
+        m_signalMapper->setMapping(m_actions[i],i);
+        m_actions[i]->setStatusTip("Open this file");
       }
     }
+;
   }
 }
 /*

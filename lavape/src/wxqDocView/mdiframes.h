@@ -83,8 +83,7 @@ public slots:
   virtual void OnFileExit();
   void on_cascadeAction_triggered();
   void windowActivated(QWidget*);
-  void histFile(QAction*);
-  void hfStatusText(QAction*);
+  void histFile(int);
 
 private:
 	virtual void customEvent(QEvent *ev){}

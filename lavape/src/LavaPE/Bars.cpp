@@ -94,7 +94,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   tabBar()->resize(sz.width(), 16);
   ActTab = tabComment;
   setCurrentIndex((int)ActTab);
-  connect(this,SIGNAL(currentChanged(QWidget*)), SLOT(OnTabChange(QWidget*)));
+  connect(this,SIGNAL(currentChanged(int)), SLOT(OnTabChange(int)));
   connect(FindPage,SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int  )), SLOT(OnDblclk(QTreeWidgetItem*, int)));
   ErrorEmpty = true;
   CommentEmpty = true;
@@ -248,7 +248,7 @@ void CUtilityView::SetTab(UtilityTabs tab)
 }
 
 
-void CUtilityView::OnTabChange(QWidget* curPage)
+void CUtilityView::OnTabChange(int)
 {
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->LastUtilitiesState = (int)ActTab;
   ActTab = (UtilityTabs)currentIndex();

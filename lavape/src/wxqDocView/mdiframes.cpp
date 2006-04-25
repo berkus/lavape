@@ -63,12 +63,8 @@ wxMainFrame::wxMainFrame() : QMainWindow()
   wxTheApp->m_appWindow = this;
 
   docMan->m_fileHistory = new wxHistory(this);
-  for (i=0; i<docMan->m_fileHistory->m_maxHistItems; i++)
-    docMan->m_fileHistory->m_actions[i] = new QAction(this);
 
   m_childFrameHistory = new wxHistory(this);
-  for (i=0; i<m_childFrameHistory->m_maxHistItems; i++)
-    m_childFrameHistory->m_actions[i] = new QAction(this);
 }
 
 bool wxMainFrame::OnCreate()

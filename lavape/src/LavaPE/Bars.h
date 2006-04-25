@@ -126,7 +126,7 @@ protected:
   //HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 public slots:
   void OnDblclk(QTreeWidgetItem* item, int col);
-  void OnTabChange(QWidget* curPage);
+  void OnTabChange(int);
 //  void OnSelChange();
 private:
     Q_OBJECT;

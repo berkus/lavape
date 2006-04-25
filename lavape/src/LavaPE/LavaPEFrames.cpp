@@ -125,7 +125,7 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
 		QString styleStr = *it;
 		QAction *a = new QAction( styleStr,ag);
     a->setCheckable(true);
-		connect( a, SIGNAL( activated() ), styleMapper, SLOT(map()) );
+		connect( a, SIGNAL( triggered() ), styleMapper, SLOT(map()) );
 		styleMapper->setMapping(a,a->text() );
 		if (LBaseData->m_style == styleStr)
 		  a->setChecked(true);

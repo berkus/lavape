@@ -105,7 +105,7 @@ public:
   CFormTextPage  * FormTextPage;
 protected:
 public slots:
-  void OnSetActive(QWidget *);
+  void OnSetActive(int);
   void OnApply();
   virtual void OnCancel() {}//  {QDialog::reject();}
 private:

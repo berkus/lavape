@@ -95,6 +95,7 @@
 #include <QItemDelegate>
 #include <QScrollBar>
 #include <QTextCursor>
+#include <QSignalMapper>
 
 #include <string.h>
 //#include <stdlib.h>

@@ -29,6 +29,7 @@
 #include <QFocusEvent>
 #include <QMenu>
 #include <QMouseEvent>
+#include <QSignalMapper>
 
 #if wxUSE_PRINTING_ARCHITECTURE
     #include "print.h"
@@ -106,8 +107,6 @@ public slots:
     void about();
     void onGuiThreadAwake();
     void onIdle();
-//    void histFile(int histFileIndex);
-    void hfStatusText(QAction*);
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
@@ -604,6 +603,7 @@ public:
 
     DString  **m_history;
     QAction **m_actions;
+    QSignalMapper *m_signalMapper;
 
     // Number of files saved
     int      m_historyN;
