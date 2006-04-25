@@ -37,49 +37,32 @@
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
 
-CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
+CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
 {
-//  m_CentralWidget->setMinimumSize(350,200);
-
+  setObjectName("LavaMainFrame");
   setupUi(this); // populate this main frame
 
 	makeStyle(LBaseData->m_style);
 
-  QMenu *styleMenu = new QMenu(this);
-  styleMenu->setCheckable( TRUE );
-  viewMenu->insertItem( "Set st&yle" , styleMenu );
+  QMenu *styleMenu = viewMenu->addMenu("Set st&yle");
   QActionGroup *ag = new QActionGroup( this);
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
   connect( styleMapper, SIGNAL( mapped(const QString&) ), this, SLOT( makeStyle(const QString&) ) );
+
   QStringList list = QStyleFactory::keys();
   list.sort();
-  QHash<QString,int> stylesDict;
+  QHash<QString,int*> stylesDict;
   for ( QStringList::Iterator it = list.begin(); it != list.end(); ++it ) {
 		QString styleStr = *it;
-		QString styleAccel = styleStr;
-		if ( stylesDict[styleAccel.left(1)] ) {
-			for ( int i = 0; i < styleAccel.length(); i++ ) {
-				if ( !stylesDict[styleAccel.mid( i, 1 )] ) {
-					stylesDict.insert(styleAccel.mid( i, 1 ), 1);
-					styleAccel = styleAccel.insert( i, '&' );
-					break;
-				}
-			}
-		}
-		else {
-			stylesDict.insert(styleAccel.left(1), 1);
-			styleAccel = "&"+styleAccel;
- 		}
-//		QAction *a = new QAction( styleStr, QIcon(), styleAccel, 0, ag, 0, ag->isExclusive() );
 		QAction *a = new QAction( styleStr,ag);
     a->setCheckable(true);
 		connect( a, SIGNAL( activated() ), styleMapper, SLOT(map()) );
 		styleMapper->setMapping(a,a->text() );
 		if (LBaseData->m_style == styleStr)
-		  a->setOn(true);
+		  a->setChecked(true);
   }
-  ag->addTo(styleMenu);
+  styleMenu->addActions(ag->actions());
 
 	m_childFrameHistory->m_menu = windowMenu;
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
@@ -96,7 +79,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame(0, "LavaMainFrame")
   connect( editUndoAction, SIGNAL( activated() ), this, SLOT( on_editUndoAction_triggered() ) );
   connect( insAction, SIGNAL( activated() ), this, SLOT( on_insAction_triggered() ) );
   connect( delAction, SIGNAL( activated() ), this, SLOT( on_delAction_triggered() ) );
-  setIcon(QPixmap((const char**) Lava));
+  setWindowIcon(QPixmap((const char**) Lava));
   lastTile = 0;
 }
 
@@ -138,10 +121,10 @@ void CLavaMainFrame::UpdateUI()
   CLavaDoc* doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->GetActiveDocument();
   bool enable = doc && doc->isObject;
   preconditionsAction->setEnabled(!LBaseData->m_checkPostconditions);
-  preconditionsAction->setOn(LBaseData->m_checkPreconditions);
-  postconditionsAction->setOn(LBaseData->m_checkPostconditions);
-  invariantsAction->setOn(LBaseData->m_checkInvariants);
-  pmDumpAction->setOn(LBaseData->m_pmDumps);
+  preconditionsAction->setChecked(LBaseData->m_checkPreconditions);
+  postconditionsAction->setChecked(LBaseData->m_checkPostconditions);
+  invariantsAction->setChecked(LBaseData->m_checkInvariants);
+  pmDumpAction->setChecked(LBaseData->m_pmDumps);
   fileCloseAction->setEnabled(enable);
   fileSaveAction->setEnabled(enable);
   fileSaveAsAction->setEnabled(enable);
@@ -154,7 +137,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
   CustomEvent *ev=(CustomEvent*)ev0;
 
 	if (ev->data()) {
-		title = DString(qPrintable(((QWidget*)ev->data())->caption()));
+		title = DString(qPrintable(((QWidget*)ev->data())->windowTitle()));
 		if (title.l) {
 			if (title[title.l-1] == '*')
 				title = title.Substr(0,title.l-1);
@@ -216,7 +199,7 @@ void CLavaMainFrame::on_fileExitAction_triggered()
   if (view && view->inherits("CLavaGUIView"))
     ((CLavaGUIView*)view)->NoteLastModified();
     if (allocatedObjects) {
-      QMessageBox::critical(this, wxTheApp->name(), QString("Memory leak: %1 orphaned Lava object(s)").arg(allocatedObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      QMessageBox::critical(this, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(allocatedObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     }
   OnFileExit();
 }

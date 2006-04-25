@@ -118,7 +118,6 @@ int main( int argc, char ** argv ) {
 CLavaApp::CLavaApp(int argc, char ** argv )
 :wxApp(argc, argv )
 {
-  bool ok;
 #ifndef WIN32
   int rc;
   sigset_t sigs;
@@ -140,71 +139,51 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   LBaseData.debugThread = &debugThread;
 
   settings.beginGroup("generalSettings");
-  LBaseData.m_strCheckPreconditions = settings.readEntry(szCheckPreconditions, 0, &ok);
-  if (ok)
-    if (LBaseData.m_strCheckPreconditions == "true")
-      LBaseData.m_checkPreconditions = true;
-    else
-      LBaseData.m_checkPreconditions = false;
-  else {
+  LBaseData.m_strCheckPreconditions = settings.value(szCheckPreconditions,QVariant("true")).toString();
+  if (LBaseData.m_strCheckPreconditions == "true")
     LBaseData.m_checkPreconditions = true;
-    LBaseData.m_strCheckPreconditions = "true";
-  }
-  LBaseData.m_strCheckPostconditions = settings.readEntry(szCheckPostconditions, 0, &ok);
-  if (ok)
-    if (LBaseData.m_strCheckPostconditions == "true")
-      LBaseData.m_checkPostconditions = true;
-    else
-      LBaseData.m_checkPostconditions = false;
-  else {
+  else
+    LBaseData.m_checkPreconditions = false;
+  LBaseData.m_strCheckPostconditions = settings.value(szCheckPostconditions,QVariant("false")).toString();
+  if (LBaseData.m_strCheckPostconditions == "true")
+    LBaseData.m_checkPostconditions = true;
+  else
     LBaseData.m_checkPostconditions = false;
-    LBaseData.m_strCheckPostconditions = "false";
-  }
-  LBaseData.m_strCheckInvariants = settings.readEntry(szCheckInvariants, 0, &ok);
-  if (ok)
-    if (LBaseData.m_strCheckInvariants == "true")
-      LBaseData.m_checkInvariants = true;
-    else
-      LBaseData.m_checkInvariants = false;
-  else {
+  LBaseData.m_strCheckInvariants = settings.value(szCheckInvariants,QVariant("false")).toString();
+  if (LBaseData.m_strCheckInvariants == "true")
+    LBaseData.m_checkInvariants = true;
+  else
     LBaseData.m_checkInvariants = false;
-    LBaseData.m_strCheckInvariants = "false";
-  }
-  LBaseData.m_strPmDumps = settings.readEntry(szPmDumps, 0, &ok);
-  if (ok)
-    if (LBaseData.m_strPmDumps == "true")
-      LBaseData.m_pmDumps = true;
-    else
-      LBaseData.m_pmDumps = false;
-  else {
+  LBaseData.m_strPmDumps = settings.value(szPmDumps,QVariant("true")).toString();
+  if (LBaseData.m_strPmDumps == "true")
     LBaseData.m_pmDumps = true;
-    LBaseData.m_strPmDumps = "true";
-  }
+  else
+    LBaseData.m_pmDumps = false;
   settings.endGroup();
 
   settings.beginGroup("fontSettings");
 
-  LBaseData.m_lfDefFormFont = settings.readEntry(szFormFont, 0, &ok);
-  if (ok)
+  LBaseData.m_lfDefFormFont = settings.value(szFormFont).toString();
+  if (!LBaseData.m_lfDefFormFont.isEmpty())
     LBaseData.m_FormFont.fromString(LBaseData.m_lfDefFormFont);
   else {
     LBaseData.m_FormFont = QApplication::font();
     LBaseData.m_lfDefFormFont = LBaseData.m_FormFont.toString();
   }
 
-  LBaseData.m_lfDefFormLabelFont = settings.readEntry(szFormLabelFont, 0, &ok);
-  if (ok) {
+  LBaseData.m_lfDefFormLabelFont = settings.value(szFormLabelFont).toString();
+  if (!LBaseData.m_lfDefFormLabelFont.isEmpty()) {
     LBaseData.m_FormLabelFont.fromString(LBaseData.m_lfDefFormLabelFont);
     LBaseData.useLabelFont = true;
   }
   else {
-    LBaseData.m_FormLabelFont = LBaseData.m_FormFont;//QApplication::font();
-    LBaseData.m_lfDefFormLabelFont = LBaseData.m_lfDefFormFont;//LBaseData.m_FormFont.toString();
+    LBaseData.m_FormLabelFont = LBaseData.m_FormFont;
+    LBaseData.m_lfDefFormLabelFont = LBaseData.m_lfDefFormFont;
     LBaseData.useLabelFont = false;
   }
 
-  LBaseData.m_lfDefGlobalFont = settings.readEntry(szGlobalFont, 0, &ok);
-  if (ok)
+  LBaseData.m_lfDefGlobalFont = settings.value(szGlobalFont).toString();
+  if (!LBaseData.m_lfDefGlobalFont.isEmpty())
     LBaseData.m_GlobalFont.fromString(LBaseData.m_lfDefGlobalFont);
   else {
     LBaseData.m_GlobalFont = QApplication::font();
@@ -215,14 +194,13 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   settings.endGroup();
 
   settings.beginGroup("otherSettings");
-  LBaseData.m_myWebBrowser = settings.readEntry(favoriteBrowser, 0, &ok);
-  LBaseData.m_style = settings.readEntry(gui_style, 0, &ok);
+  LBaseData.m_myWebBrowser = settings.value(favoriteBrowser).toString();
+  LBaseData.m_style = settings.value(gui_style).toString();
   settings.endGroup();
 #ifndef WIN32
   if (LBaseData.m_myWebBrowser.isEmpty())
 #endif
-        LBaseData.m_myWebBrowser = InitWebBrowser();
-
+    LBaseData.m_myWebBrowser = InitWebBrowser();
 
   pLavaTaskTemplate = new wxDocTemplate(m_docManager,
     "Lava", "*.lava","", "lava", "Lava Doc", "Lava Frame", "Lava GUI View",
@@ -242,7 +220,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
 
   ExeDir = applicationDirPath();
 #ifdef WIN32
-  QString driveLetter = QString(ExeDir[0].upper());
+  QString driveLetter = QString(ExeDir[0].toUpper());
   ExeDir.replace(0,1,driveLetter);
 #endif
   StdLavaLog = ExeDir + "/std.lava";
@@ -275,11 +253,11 @@ QString CLavaApp::InitWebBrowser () {
   rc = RegQueryValueEx(hkey,0,0,&valType,&data[0],&dataSize);
   str = QString(datap);
   if (str[0] == '"') {
-    pos = str.find('\"',1);
+    pos = str.indexOf('\"',1);
     prog = str.mid(1,pos-1);
   }
   else {
-    if (pos = str.find(' ',1))
+    if (pos = str.indexOf(' ',1))
       prog = str.mid(0,pos);
     else
                         prog = str;
@@ -319,7 +297,7 @@ bool CLavaApp::event(QEvent *e)
       doc->OnCloseDocument();
     return true;
   case UEV_LavaMsgBox:
-    m_appWindow->setActiveWindow();
+    m_appWindow->activateWindow();
     m_appWindow->raise();
     mbp = (CMsgBoxParams*)((CustomEvent*)e)->data();
     switch (mbp->funcSpec) {
@@ -367,7 +345,7 @@ bool CLavaApp::event(QEvent *e)
     delete (DumpEventData*)((CustomEvent*)e)->data();
     break;
   case UEV_PMDumpOff:
-    ((CMainFrame*)wxTheApp->m_appWindow)->pmDumpAction->setOn(false);
+    ((CMainFrame*)wxTheApp->m_appWindow)->pmDumpAction->setChecked(false);
     break;
   default:
     wxApp::event(e);
@@ -392,7 +370,7 @@ void CLavaApp::OnFileOpen()
   if (fileName.isEmpty())
     return;
 #ifdef WIN32
-  QString driveLetter = QString(fileName[0].upper());
+  QString driveLetter = QString(fileName[0].toUpper());
   fileName.replace(0,1,driveLetter);
 #endif
   OpenDocumentFile(fileName);
@@ -404,8 +382,8 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
   QDir cwd;
   CLavaDoc* doc;
 
-  name = cwd.absFilePath(lpszFileName);
-  name = cwd.cleanDirPath(name);
+  name = cwd.absoluteFilePath(lpszFileName);
+  name = QDir::cleanPath(name);
   if (!name.contains('.'))
     return;
   LBaseData.lastFileOpen = name;
@@ -469,22 +447,22 @@ void CLavaApp::saveSettings()
 //  settings.beginGroup(GetSettingsPath());
 
   settings.beginGroup("generalSettings");
-  settings.writeEntry(szCheckPreconditions,LBaseData.m_strCheckPreconditions);
-  settings.writeEntry(szCheckPostconditions,LBaseData.m_strCheckPostconditions);
-  settings.writeEntry(szCheckInvariants,LBaseData.m_strCheckInvariants);
-  settings.writeEntry(szPmDumps,LBaseData.m_strPmDumps);
+  settings.setValue(szCheckPreconditions,LBaseData.m_strCheckPreconditions);
+  settings.setValue(szCheckPostconditions,LBaseData.m_strCheckPostconditions);
+  settings.setValue(szCheckInvariants,LBaseData.m_strCheckInvariants);
+  settings.setValue(szPmDumps,LBaseData.m_strPmDumps);
   settings.endGroup();
 
   settings.beginGroup("fontSettings");
-  settings.writeEntry(szFormFont,LBaseData.m_lfDefFormFont);
+  settings.setValue(szFormFont,LBaseData.m_lfDefFormFont);
   if (LBaseData.useLabelFont)
-    settings.writeEntry(szFormLabelFont,LBaseData.m_lfDefFormLabelFont);
-  settings.writeEntry(szGlobalFont,LBaseData.m_lfDefGlobalFont);
+    settings.setValue(szFormLabelFont,LBaseData.m_lfDefFormLabelFont);
+  settings.setValue(szGlobalFont,LBaseData.m_lfDefGlobalFont);
   settings.endGroup();
 
   settings.beginGroup("otherSettings");
-  settings.writeEntry(favoriteBrowser,LBaseData.m_myWebBrowser);
-  settings.writeEntry(gui_style,LBaseData.m_style);
+  settings.setValue(favoriteBrowser,LBaseData.m_myWebBrowser);
+  settings.setValue(gui_style,LBaseData.m_style);
   settings.endGroup();
 }
 
@@ -569,7 +547,7 @@ void CLavaApp::OnChooseGlobalFont()
   if (ok) {
     LBaseData.m_GlobalFont = lf;
     LBaseData.m_lfDefGlobalFont = lf.toString();
-          setFont(LBaseData.m_GlobalFont,true);
+    setFont(LBaseData.m_GlobalFont);
     saveSettings();
   }
 }

@@ -113,13 +113,13 @@ bool CLavaDoc::SelectLcom(bool emptyDoc)
   DString dir;
 
 #ifdef WIN32
-  if (qf.extension(false) == "lnk") {
+  if (qf.suffix() == "lnk") {
     fileName.remove(".lnk");
     qf.setFile(fileName);
   }
 #endif
-  if (qf.extension() == ((CLavaApp*)wxTheApp)->pLavaLcomTemplate->GetDefaultExtension())
-    iniFile = qf.absFilePath();
+  if (qf.suffix() == ((CLavaApp*)wxTheApp)->pLavaLcomTemplate->GetDefaultExtension())
+    iniFile = qf.absoluteFilePath();
   else
     iniFile = ExeDir + ComponentLinkDir;
   QString filter = ("LavaCom file (*.lcom)");
@@ -132,12 +132,12 @@ bool CLavaDoc::SelectLcom(bool emptyDoc)
               );
   if (!fileName.isEmpty()) {
     qf.setFile(fileName);
-    fileName = qf.absFilePath();
+    fileName = qf.absoluteFilePath();
     qf.setFile(fileName);
     LBaseData->lastFileOpen = fileName;
     QString fn = ResolveLinks(qf);
     PathName = DString(qPrintable(fn));
-    if (qf.dirPath() + "/" == ExeDir + ComponentLinkDir) 
+    if (qf.absolutePath() + "/" == ExeDir + ComponentLinkDir) 
       linkName = DString(qPrintable(qf.fileName()));
     else 
       linkName = DString(qPrintable(fileName));
@@ -166,19 +166,19 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
   if (fname.isEmpty()) 
     return OnNewDocument();
   QFileInfo qf = QFileInfo(fname);
-  filename = qf.absFilePath();
+  filename = qf.absoluteFilePath();
   wxDocManager::GetDocumentManager()->AddFileToHistory(filename);
   if (((CLavaApp*)wxTheApp)->pLavaLdocTemplate == GetDocumentTemplate()) {
     QFile fn(filename); 
     ObjectPathName = DString(qPrintable(filename));
-    if( !fn.open(IO_ReadOnly))
+    if( !fn.open(QIODevice::ReadOnly))
       return false;
     QDataStream ar(&fn);
     Serialize(ar);
-    if (!throwError && (!ar.atEnd() || (fn.status() != IO_Ok))) {
+    if (!throwError && (!ar.atEnd() || (fn.error() != QFile::NoError))) {
       QString err = fn.errorString();
-      fn.resetStatus();
-      critical(wxTheApp->m_appWindow, qApp->name(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      fn.unsetError();
+      critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       LObjectError(ckd, filename, emptyName, &ERR_ldocNotOpened);
       fn.close();
       return false;
@@ -199,7 +199,7 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
     CLavaProgram::OnNewDocument();
     isObject = true;
     qf.setFile(filename);
-    if (qf.dirPath() + "/" == ExeDir + ComponentLinkDir) 
+    if (qf.absolutePath() + "/" == ExeDir + ComponentLinkDir) 
       linkName = DString(qPrintable(qf.fileName()));
     else 
       linkName = DString(qPrintable(filename));
@@ -233,7 +233,7 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
   ckd.document = this;
   if (isObject) {
     ObjectPathName = DString(qPrintable(lpszPathName));
-    ((CLavaGUIView*)RuntimeView)->GetParentFrame()->setCaption(GetTitle());
+    ((CLavaGUIView*)RuntimeView)->GetParentFrame()->setWindowTitle(GetTitle());
     if (DocObjects[2]) {
       if (RuntimeView) {
         inSaveProc = true;
@@ -255,14 +255,14 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
     }
     if (lpszPathName.length()) {
       QFile file(lpszPathName); 
-      if( !file.open(IO_WriteOnly))
+      if( !file.open(QIODevice::WriteOnly))
         return false;
       QDataStream ar(&file);
       Serialize(ar);
-      if (file.status() != IO_Ok) {
+      if (file.error() != QFile::NoError) {
         QString err = file.errorString();
-        file.resetStatus();
-        critical(wxTheApp->m_appWindow, qApp->name(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        file.unsetError();
+        critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         LObjectError(ckd, lpszPathName, emptyName, &ERR_ldocNotStored);
         file.close();
         return false;
@@ -311,26 +311,25 @@ LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj)
       QFileInfo qf(*pfileName);
       if (qf.isRelative()) {
         qf.setFile(QDir(IDTable.DocDir.c), *pfileName);
-        *pfileName = qf.absFilePath();
+        *pfileName = qf.absoluteFilePath();
 #ifdef WIN32
-        QString driveLetter = QString((*pfileName)[0].upper());
+        QString driveLetter = QString((*pfileName)[0].toUpper());
         (*pfileName).replace(0,1,driveLetter);
 #endif
       }
       QFile file(*pfileName);
-      if( !file.open(IO_ReadOnly))
+      if( !file.open(QIODevice::ReadOnly))
         return 0;
       QDataStream ar(&file);
       SerializeObj(ckd, ar, &object, *pfileName);
       bool e = ar.atEnd();
-      int ok = file.status();
-      if (!ar.atEnd() || (file.status() != IO_Ok)) {
+      if (!ar.atEnd() || (file.error() != QFile::NoError)) {
         if (!ckd.exceptionThrown) {
-          err = file.name() + ": " + file.errorString();
-          critical(wxTheApp->m_appWindow, qApp->name(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+          err = file.fileName() + ": " + file.errorString();
+          critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
           LObjectError(ckd, *pfileName, noName, &ERR_ldocNotOpened);
         }
-        file.resetStatus();
+        file.unsetError();
         file.close();
         return 0;
       }
@@ -363,18 +362,18 @@ bool CLavaDoc::SaveObject(CheckData& ckd, LavaObjectPtr object)
       QFileInfo qf(*pfileName);
       if (qf.isRelative())
         qf.setFile(QString(IDTable.DocDir.c), *pfileName);
-      QFile file(qf.absFilePath());
-      if( !file.open(IO_WriteOnly)) {
+      QFile file(qf.absoluteFilePath());
+      if( !file.open(QIODevice::WriteOnly)) {
         QString str = QString("File '") + *pfileName + QString("' couldn't be opened for writing");
-        QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),str ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),str ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         return false;
       }
       QDataStream ar(&file);
-      SerializeObj(ckd, ar, &object, qf.absFilePath());
-      if (ar.atEnd() || (file.status() != IO_Ok)) {
+      SerializeObj(ckd, ar, &object, qf.absoluteFilePath());
+      if (ar.atEnd() || (file.error() != QFile::NoError)) {
         QString err = file.errorString();
-        file.resetStatus();
-        critical(wxTheApp->m_appWindow, qApp->name(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        file.unsetError();
+        critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
         LObjectError(ckd, *pfileName, noName, &ERR_ldocNotOpened);
         file.close();
         return false;
@@ -693,13 +692,13 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
       if (!lcomPur) 
         dPN = ExeDir + ComponentLinkDir + dPN;
 #ifdef WIN32
-      QString driveLetter = QString(dPN[0].upper());
+      QString driveLetter = QString(dPN[0].toUpper());
       dPN.replace(0,1,driveLetter);
 #endif
       qf.setFile(dPN);
       QString fn = ResolveLinks(qf);
 #ifdef WIN32
-      driveLetter = QString(fn[0].upper());
+      driveLetter = QString(fn[0].toUpper());
       fn.replace(0,1,driveLetter);
 #endif
       synName = DString(qPrintable(fn));
@@ -940,7 +939,7 @@ void CLavaDoc::LObjectError(CheckData& ckd, const QString& ldocName, const QStri
       else
         code = CorruptObject_ex;
       if (isObject && throwError)
-        critical(wxTheApp->m_appWindow, qApp->name(),msg,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+        critical(wxTheApp->m_appWindow, qApp->applicationName(),msg,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       else
         if (!SetLavaException(ckd, code, msg))
           throw CRuntimeException(code, &msg);
@@ -1047,7 +1046,7 @@ bool CLavaDoc::ExecuteLavaObject()
     return true;
   }
   else {
-    critical(wxTheApp->m_appWindow, qApp->name(),"No executable Lava-GUI-service",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    critical(wxTheApp->m_appWindow, qApp->applicationName(),"No executable Lava-GUI-service",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
 }

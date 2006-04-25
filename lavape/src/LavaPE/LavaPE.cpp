@@ -301,7 +301,7 @@ bool CLavaPEApp::event(QEvent *e)
       ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
       ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
     }
-//    m_appWindow->setActiveWindow();
+    m_appWindow->activateWindow();
     m_appWindow->raise();
   }
   else if (e->type() == UEV_LavaDebugRq) {

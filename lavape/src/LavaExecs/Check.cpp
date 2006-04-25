@@ -6592,7 +6592,7 @@ unsigned AssertionData::PrepareAssertions(CheckData &ckd, SelfVar *selfVar) {
   LavaDECL *implFuncDECL, *itfFuncDECL=0;
   TID itfFuncTID;
   AssertionData *adp;
-  unsigned i=0;
+  int i=0;
 
   nOwnOldExpr=oldExpressions.count();
   nOvrOldExpr=0;
@@ -6691,7 +6691,7 @@ unsigned InvarData::PrepareInvariants(CheckData &ckd, SelfVar *selfVar) {
   LavaDECL *implDECL;
   TID itfTID;
   InvarData *idp;
-  unsigned i=0;
+  int i=0;
 
   maxFrameSize=ckd.stackFrameSize;
 
