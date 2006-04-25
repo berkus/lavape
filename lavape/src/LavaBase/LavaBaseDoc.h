@@ -222,7 +222,7 @@ public:
   virtual void OnEditPaste(){}
   virtual void OnFindReferences() {}
   virtual void OnExpandAll() {}
-  virtual void OnCollapsAll() {}
+  virtual void OnCollapseAll() {}
   virtual void OnShowOptionals() {}
   virtual void OnShowAllEmptyOpt() {}
   virtual void OnRemoveAllEmptyOpt() {}

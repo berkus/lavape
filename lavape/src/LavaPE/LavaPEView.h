@@ -234,7 +234,7 @@ protected:
 
 public:
 //Toolbutton/menu item handler
-  void OnCollapsAll();//
+  void OnCollapseAll();//
   void OnComment();//
   virtual void OnDelete();//
   void OnExpandAll();//

@@ -670,7 +670,7 @@ void CLavaMainFrame::on_collapseAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnCollapsAll();
+    view->OnCollapseAll();
 }
 
 void CLavaMainFrame::on_showOptsAction_triggered()

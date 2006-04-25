@@ -62,7 +62,6 @@ wxMainFrame::wxMainFrame() : QMainWindow()
   wxTheApp->m_appWindow = this;
 
   docMan->m_fileHistory = new wxHistory(this);
-
   m_childFrameHistory = new wxHistory(this);
 }
 
@@ -97,11 +96,7 @@ void wxMainFrame::windowActivated(QWidget* w)
     ((wxMDIChildFrame*)w)->Activate();
   }
 }
-/*
-bool wxMainFrame::eventFilter(QObject *obj, QEvent *ev) {
-  return false;
-}
-*/
+
 void wxMainFrame::closeEvent (QCloseEvent*)
 {
   OnFileExit();

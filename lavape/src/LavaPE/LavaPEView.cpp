@@ -4449,7 +4449,7 @@ void CLavaPEView::on_whatNextAction_triggered()
 
 //Toolbutton handler--------------------------------------------------------
 
-void CLavaPEView::OnCollapsAll()
+void CLavaPEView::OnCollapseAll()
 {
   CTreeItem* htr0 = (CTreeItem*)Tree->currentItem();
   CTreeItem* htr = htr0;
