@@ -45,7 +45,7 @@ CTEdit::~CTEdit()
 
 CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
                QWidget* parentWidget, const char* name, QSize size,  bool withEcho)
-:QLineEdit("TEdit",parentWidget)
+:QLineEdit(parentWidget)
 {
   myFormNode = data;
   GUIProg = guiPr;
@@ -167,7 +167,7 @@ void CTEdit::DelActivated()
 
 CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
           QWidget* parentWidget, const char* name, QSize size, bool withEcho)
-:QTextEdit("MultiLineEdit",parentWidget)
+:QTextEdit(parentWidget)
 {
   myFormNode = data;
   GUIProg = guiPr;
