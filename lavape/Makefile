@@ -5,7 +5,7 @@ export ASSISTANT
 
 all: dirs links build
 
-SUBPRO=Precompiler disco wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
+SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
 
 include src/common.mk
 
@@ -42,12 +42,13 @@ dirs:
 	cd ../Lava_UI; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaPE_UI; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaPE; if [ ! -e Generated ]; then mkdir Generated; fi; \
-	cd ../wxqDocView; if [ ! -e Generated ]; then mkdir Generated; fi;
+	cd ../wxqDocView; if [ ! -e Generated ]; then mkdir Generated; fi; \
+	cd ../..
 
 links: \
 	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
-	bin/Components/libLavaStream.so \
+	bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX) \
 	bin/assistant \
 	src/Interpreter/Check.cpp \
 	src/Interpreter/Check.h \
@@ -58,13 +59,19 @@ links: \
 	src/Interpreter/Tokens.ph
 
 bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
-	rm -f $@; $(LN) ../../$< $@
+	rm -f $@; $(LN) $< $@
 bin/Components/LavaStream.lava: samples/LavaStream.lava
-	rm -f $@; $(LN) ../../$< $@
-bin/Components/libLavaStream.so: lib/libLavaStream.so
-	rm -f $@; $(LN) ../../$< $@
-lib/libLavaStream.so:
+	rm -f $@; $(LN) $< $@
+
+ifeq ($(OPSYS),MINGW32)
+bin/Components/LavaStream.dll: bin/LavaStream.dll
+	rm -f $@; $(LN) $< $@
+bin/LavaStream.dll:
 	cd src/LavaStream; $(MAKE)
+else
+bin/Components/libLavaStream$(DLLSUFFIX): lib/libLavaStream$(DLLSUFFIX)
+	rm -f $@; $(LN) $< $@
+endif
 
 bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 	rm -f $@; $(LN) ../$< $@
@@ -74,20 +81,19 @@ bin/assistant:
 	else echo ; echo ++++ error: Lava online help works only if Qt assistant is in your PATH!; echo ; exit 1; fi
 
 src/Interpreter/Check.cpp: src/LavaExecs/Check.cpp
-	rm -f $@; $(LN) ../LavaExecs/Check.cpp $@
+	rm -f $@; $(LN) $< $@
 src/Interpreter/Check.h: src/LavaExecs/Check.h
-	rm -f $@; $(LN) ../LavaExecs/Check.h $@
+	rm -f $@; $(LN) $< $@
 src/Interpreter/Constructs.cpp: src/LavaExecs/Constructs.cpp
-	rm -f $@; $(LN) ../LavaExecs/Constructs.cpp $@
+	rm -f $@; $(LN) $< $@
 src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
-	rm -f $@; $(LN) ../LavaExecs/Constructs.ph $@
+	rm -f $@; $(LN) $< $@
 src/Interpreter/MakeTable.cpp: src/LavaExecs/MakeTable.cpp
-	rm -f $@; $(LN) ../LavaExecs/MakeTable.cpp $@
+	rm -f $@; $(LN) $< $@
 src/Interpreter/Tokens.cpp: src/LavaExecs/Tokens.cpp
-	rm -f $@; $(LN) ../LavaExecs/Tokens.cpp $@
+	rm -f $@; $(LN) $< $@
 src/Interpreter/Tokens.ph: src/LavaExecs/Tokens.ph
-	rm -f $@; $(LN) ../LavaExecs/Tokens.ph $@
-
+	rm -f $@; $(LN) $< $@
 
 build:
 	cd src/Precompiler && $(MAKE) \

@@ -48,7 +48,7 @@ QString ERR_OpenOutFailed(QObject::tr("Open for output failed for file "));
 
 #define OBJALLOC(RESULT, CKD, DECL, ST) {\
   RESULT = AllocateObject(CKD, DECL, ST);\
-	((SynFlags*)(RESULT+1))->INCL(finished); \
+  ((SynFlags*)(RESULT+1))->INCL(finished); \
   if (!RESULT && !CKD.exceptionThrown) \
     throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
 }

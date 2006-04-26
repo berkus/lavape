@@ -7,7 +7,7 @@ SUBPRO=disco wxqDocView LavaBase
 
 CPP_INCLUDES =  -I../disco -I../LavaPE/res/TreeIcons -I../LavaPE/res -I../LavaPE/res/TOOLBUTTONS -I. -I../LavaBase/Generated -IGenerated -I../wxqDocView -I../LavaBase -I../Lava
 
-CPP_FLAGS = -DNEEDS_INT_DEFINED
+CPP_FLAGS = -DLAVAGUI_EXPORT -DNEEDS_INT_DEFINED
 
 
 include ../common.mk

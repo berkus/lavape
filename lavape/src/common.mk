@@ -80,28 +80,29 @@ ifeq ($(OPSYS),Darwin)
   OSCPPFLAGS = -D__$(OPSYS) $(DBG)
   CC = c++
 else
-  DLLSUFFIX = .so
   ifeq ($(OPSYS),MINGW32)
+    DLLSUFFIX = .dll
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
-    IMPLIB = -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
+    IMPLIB = -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
     OSDLLFLAGS = -shared
     OSEXECFLAGS = -fstack-check
     EXEC2 = $(EXEC).exe
     ifneq ($(DBG),)
-	  QtS = d4
-	  ACL = d
-	else
-	  QtS = 4
-	  ACL =
-	endif
+      QtS = d4
+      ACL = d
+    else
+      QtS = 4
+      ACL =
+    endif
   else
     DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
     OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
     OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
     EXEC2 = $(EXEC)
   	QtS = _debug
-	ACL = _debug
+    ACL = _debug
   endif
+
   ifeq ($(OPSYS),SunOS)
     OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG)
   else
@@ -120,14 +121,20 @@ endif
 rec_make: $(make_subpro) this
 
 ifeq ($(suffix $(EXEC)),.so)
+  ifeq ($(OPSYS),MINGW32)
+this: ../../bin/$(DLLNAME)
+../../bin/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
+	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../bin -L$(QTDIR)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+  else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
 	$(CC) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+  endif
 else
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(EXEC2)
-../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addsuffix .dll,$(SUBPRO)))
-	$(CC) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../bin/,$(addsuffix .dll,$(SUBPRO)))
+	$(CC) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) $(all_o_files) -L../../bin -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
