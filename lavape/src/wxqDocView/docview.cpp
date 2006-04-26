@@ -89,7 +89,7 @@
 QString wxEmptyString;
 
 static inline QString FindExtension(const char *path);
-static const QString s_MRUEntryFormat("&%1 %2");
+static const QString s_MRUEntryFormat("%1 %2");
 
 
 // break into the debugger
@@ -1259,11 +1259,8 @@ wxDocTemplate *wxDocManager::MatchTemplate(const QString& WXUNUSED(path))
 void wxDocManager::AddFileToHistory(QString& file)
 {
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
-//  QSettings settings(QSettings::Native);
 
   if (m_fileHistory) {
-//???    settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
-//    settings.beginGroup(wxTheApp->GetSettingsPath());
     m_fileHistory->AddToHistory(new DString(qPrintable(file)),wxTheApp);
     m_fileHistory->Save(settings);
   }
@@ -2127,12 +2124,12 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
 
 DString *wxHistory::GetHistoryItem(int i) const
 {
-    DString *s;
+    DString *s=new DString();
+		
     if ( i < m_historyN )
-        s = m_history[i];
-    else
-       QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("bad index in wxHistory::GetHistoryItem"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-
+      return m_history[i];
+    
+		QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("bad index in wxHistory::GetHistoryItem"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return s;
 }
 
@@ -2154,12 +2151,6 @@ void wxHistory::RemoveItemFromHistory(int i)
        QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("invalid index in wxHistory::RemoveFileFromHistory"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
        return;
     }
-//!!!    wxCHECK_RET( i < m_historyN,
-//                 QString("invalid index in wxHistory::RemoveFileFromHistory") );
-
-//    QPopupMenu* menu = m_fileMenus.first();
-//    while ( menu )
-//    {
         // delete the element from the array (could use memmove() too...)
         delete m_history[i];
 
@@ -2174,26 +2165,22 @@ void wxHistory::RemoveItemFromHistory(int i)
         for ( j = i; j < m_historyN - 1; j++ )
         {
             buf = s_MRUEntryFormat.arg(j+1).arg(m_history[j]->c);
-            m_actions[j]->setText(buf);//m_menu->changeItem(wxID_FILE1 + j,buf);
+            m_actions[j]->setText(buf);
         }
 
         // delete the last menu item which is unused now
         m_menu->removeAction(m_actions[m_historyN - 1]);
+				delete m_actions[m_historyN - 1];
 
         // delete the last separator too if no more files are left
         if ( m_historyN == 1 )
         {
             QList<QAction*> myActions = m_menu->actions();
-            QAction *menuItem = myActions.last();//m_menu->findItem(m_menu->idAt(m_menu->count()-1));
-            if ( menuItem )
-            {
-                if ( menuItem->isSeparator() )
-                {
-                    m_menu->removeAction(menuItem);
-                }
-                //else: should we search backwards for the last separator?
-            }
-            //else: menu is empty somehow
+            QAction *menuItem = myActions.last();
+						if ( menuItem && menuItem->isSeparator()) {
+              m_menu->removeAction(menuItem);
+							delete menuItem;
+						}
         }
     m_historyN--;
 }

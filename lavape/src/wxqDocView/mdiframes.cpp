@@ -135,13 +135,13 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
 
     if (!wxDocManager::GetDocumentManager()->CreateDocument(*file, wxDOC_SILENT))
         wxDocManager::GetDocumentManager()->RemoveFileFromHistory(histFileIndex);
-                delete file;
+        delete file;
 }
 
 void wxMainFrame::OnMRUWindow(int histWindowIndex)
 {
-        HistWindow *hw = (HistWindow*)m_childFrameHistory->GetHistoryItem(histWindowIndex);
-        hw->window->Activate(true,true);
+  HistWindow *hw = (HistWindow*)m_childFrameHistory->GetHistoryItem(histWindowIndex);
+  hw->window->Activate(true,true);
 }
 
 
