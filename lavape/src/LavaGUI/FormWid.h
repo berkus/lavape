@@ -43,9 +43,9 @@ public:
   QMenu* myMenu;
   bool origMenu;
   bool usedInFormNode;
-public slots:
+/*public slots:
   void InsActivated();
-  void DelActivated();
+  void DelActivated();*/
 private:
   Q_OBJECT
 

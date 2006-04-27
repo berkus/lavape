@@ -136,7 +136,11 @@ void LavaGUIDialog::setpropSize(QSize& scrSize)
   sizeF.setHeight(lmin(sizeF.height(), scrSize.height() + 90));
   resize(sizeF);
 }
-
+void LavaGUIDialog::UpdateUI()
+{
+  OnUpdateInsertopt(LBaseData->insActionPtr);
+  OnUpdateDeleteopt(LBaseData->delActionPtr);
+}
 
 LavaGUIDialog::~LavaGUIDialog()
 {
@@ -260,6 +264,78 @@ void LavaGUIDialog::NewTitle(LavaDECL *decl, const DString& lavaName)
   if (!oldTitle.isEmpty() && newTitle != oldTitle)
     wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
+
+
+void LavaGUIDialog::OnDeleteOpt()
+{
+  if (myGUIProg && myGUIProg->DelNode) {
+    if (myGUIProg->DelNode->data.IterFlags.Contains(Optional))
+      myGUIProg->CmdExec.DeleteOptionalItem(myGUIProg->DelNode);
+    else
+      myGUIProg->CmdExec.DeleteIterItem(myGUIProg->DelNode);
+    myGUIProg->DelNode = 0;
+  }
+}
+
+
+void LavaGUIDialog::OnUpdateDeleteopt(QAction* action)
+{
+  if (myGUIProg && myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
+      && myGUIProg->focNode->data.FIP.widget
+      && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
+      && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
+    QWidget* delWindow = myGUIProg->focNode->data.FIP.frameWidget;
+    myGUIProg->DelNode = myGUIProg->focNode;
+    while (myGUIProg->DelNode && (delWindow != this)) {// && (delWindow != frm)) {
+      delWindow = myGUIProg->DelNode->data.FIP.frameWidget;
+      if (myGUIProg->DelNode->data.IterFlags.Contains(Optional)
+          || myGUIProg->DelNode->data.IterFlags.Contains(IteratedItem)
+             && !myGUIProg->DelNode->data.IterFlags.Contains(FixedCount)) {
+        action->setEnabled(true);
+        return;
+      }
+      myGUIProg->DelNode = myGUIProg->DelNode->data.FIP.up;
+    }
+  }
+  if (myGUIProg)
+    myGUIProg->DelNode = 0;
+  action->setEnabled(false);
+}
+
+
+void LavaGUIDialog::OnInsertOpt()
+{
+  if (myGUIProg && myGUIProg->InsertNode) {
+    myGUIProg->CmdExec.InsertIterItem(myGUIProg->InsertNode);
+  }
+}
+
+
+void LavaGUIDialog::OnUpdateInsertopt(QAction* action)
+{
+  if (myGUIProg) {
+    if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
+      && myGUIProg->focNode->data.FIP.widget
+        && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
+        && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
+      QWidget* insertWindow = myGUIProg->focNode->data.FIP.frameWidget;
+      myGUIProg->InsertNode = myGUIProg->focNode;
+      while (myGUIProg->InsertNode && (insertWindow != this)) {// && (insertWindow != frm)) {
+        insertWindow = myGUIProg->InsertNode->data.FIP.frameWidget;
+        if (myGUIProg->InsertNode->data.IterFlags.Contains(IteratedItem)
+            && !myGUIProg->InsertNode->data.IterFlags.Contains(FixedCount)) {
+          action->setEnabled(true);
+          return;
+        }
+        myGUIProg->InsertNode = myGUIProg->InsertNode->data.FIP.up;
+      }
+    }
+    myGUIProg->InsertNode = 0;
+  }
+  action->setEnabled(false);
+}
+
+
 
 CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
    : CLavaBaseView(parent,doc,"LavaGUIView")

@@ -40,12 +40,11 @@ public:
   void AddItem(const DString& label, CHEFormNode* data);
   virtual void focusInEvent(QFocusEvent *ev);
   void mousePressEvent(QMouseEvent* ev);
-  virtual bool event(QEvent* ev);
-public slots:
+  //virtual bool event(QEvent* ev);
 
 public slots:
   void OnSelendok(int pos);
-  void DelActivated();
+  //void DelActivated();
 private:
   Q_OBJECT
 

@@ -58,7 +58,7 @@
 #define UEV_LavaPE_SyncTree (QEvent::Type)(QEvent::User+3)
 #define UEV_LavaPE_CalledView (QEvent::Type)(QEvent::User+4)
 #define UEV_LavaMsgBox (QEvent::Type)(QEvent::User+5)
-#define UEV_LavaGUIInsDel (QEvent::Type)(QEvent::User+6)
+//#define UEV_LavaGUIInsDel (QEvent::Type)(QEvent::User+6)
 #define UEV_LavaPE_SyncForm (QEvent::Type)(QEvent::User+7)
 #define UEV_LavaPE_SetLastHint (QEvent::Type)(QEvent::User+8)
 #define UEV_OpenObject (QEvent::Type)(QEvent::User+9)

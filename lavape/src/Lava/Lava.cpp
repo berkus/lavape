@@ -320,9 +320,11 @@ bool CLavaApp::event(QEvent *e)
     break;
   case UEV_LavaShow:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
+    ((CLavaMainFrame*)m_appWindow)->docModal = (CLavaDoc*)pHint->fromDoc;
     ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(m_appWindow, pHint);
     result = ((QDialog*)((CLavaDoc*)pHint->fromDoc)->LavaDialog)->exec();
     delete ((CLavaDoc*)pHint->fromDoc)->LavaDialog;
+    ((CLavaMainFrame*)m_appWindow)->docModal = 0;
     ((CLavaDoc*)pHint->fromDoc)->LavaDialog = 0;
     if (pHint->CommandData5) {
       thr = (CLavaThread*)((CLavaPEHint*)((CustomEvent*)e)->data())->CommandData5;

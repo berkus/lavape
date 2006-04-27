@@ -115,16 +115,24 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
 
     origMenu = true;
     if (IterFlags.Contains(IteratedItem)) {
+      myMenu->addAction(LBaseData->delActionPtr);//DelAction);
+      myMenu->addAction(LBaseData->insActionPtr);//InsAction);
+      /*
       QAction *DelAction= new QAction("Delete chain element",this);
       myMenu->addAction(DelAction);
       connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
       QAction *InsAction= new QAction("Insert chain element",this);
       myMenu->addAction(InsAction);
       connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
+      */
       //myMenu->insertItem("Delete chain element", this, SLOT(DelActivated()),0,IDM_ITER_DEL);
       //myMenu->insertItem("Insert chain element", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     }
     else {
+      myMenu->addAction(LBaseData->delActionPtr);//DelAction);
+      myMenu->addAction(LBaseData->insActionPtr);//InsAction);
+      LBaseData->insActionPtr->setEnabled(false);
+      /*
       QAction *DelAction= new QAction("Delete optional",this);
       myMenu->addAction(DelAction);
       connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
@@ -132,6 +140,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
       myMenu->addAction(InsAction);
       connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
       InsAction->setEnabled(false);
+      */
       //myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
       //myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     }
@@ -167,6 +176,7 @@ void CFormWid::mousePressEvent(QMouseEvent* ev)
       wxDocManager::GetDocumentManager()->SetActiveView((wxView*)GUIProg->ViewWin);
 }
 
+/*
 void CFormWid::InsActivated()
 {
   QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_INSERT));
@@ -175,11 +185,11 @@ void CFormWid::InsActivated()
 void CFormWid::DelActivated()
 {
   QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
-}
+}*/
 
 bool CFormWid::event(QEvent* ev)
 {
-  if (ev->type() == UEV_LavaGUIInsDel) {
+  /*if (ev->type() == UEV_LavaGUIInsDel) {
     int id = (int)((CustomEvent*)ev)->data();
     if (id == IDM_ITER_DEL) 
       if (iterData->data.IterFlags.Contains(Optional))
@@ -190,10 +200,10 @@ bool CFormWid::event(QEvent* ev)
       ((CGUIProg*)GUIProg)->CmdExec.InsertIterItem(iterData);
     return true;
   }
-  else {
+  else {*/
     if ((ev->type() == QEvent::Enter) && GUIProg->isView)
       ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
     return QFrame::event(ev);
-  }
+  //}
 }
 

@@ -72,6 +72,10 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   connect(this, SIGNAL(activated(int)), this, SLOT(OnSelendok(int)));
   if (myFormNode->data.IterFlags.Contains(Optional)) {
     myMenu = new QMenu(this);
+    myMenu->addAction(LBaseData->delActionPtr);//DelAction);
+    myMenu->addAction(LBaseData->insActionPtr);//InsAction);
+    LBaseData->insActionPtr->setEnabled(false);
+    /*
     QAction *DelAction= new QAction("Delete optional",this);
     myMenu->addAction(DelAction);
     connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
@@ -79,6 +83,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
     myMenu->addAction(InsAction);
     connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
     InsAction->setEnabled(false);
+    */
     //myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
     //myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
   }
@@ -140,6 +145,7 @@ void CTComboBox::focusInEvent(QFocusEvent *ev)
   GUIProg->SyncTree(myFormNode);
 }
 
+/*
 bool CTComboBox::event(QEvent* ev)
 {
   if (ev->type() == UEV_LavaGUIInsDel) {
@@ -149,10 +155,11 @@ bool CTComboBox::event(QEvent* ev)
   }
   else 
     return QComboBox::event(ev);
-}
+}*/
 
+/*
 void CTComboBox::DelActivated()
 {
   QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
-}
+}*/
 

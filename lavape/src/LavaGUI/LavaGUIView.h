@@ -49,6 +49,13 @@ public:
   LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint);           // protected constructor used by dynamic creation
   virtual ~LavaGUIDialog();
 
+  
+  void UpdateUI();
+  void OnUpdateDeleteopt(QAction* action);
+  void OnUpdateInsertopt(QAction* action);
+  void OnDeleteOpt();
+  void OnInsertOpt();
+
   GUIScrollView* scrollView() {return myScrv;}
   void NewTitle(LavaDECL *decl, const DString& lavaName);
   void setpropSize(QSize& scrSize);

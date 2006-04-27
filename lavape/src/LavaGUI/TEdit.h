@@ -28,10 +28,10 @@ public:
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
   virtual void contextMenuEvent(QContextMenuEvent * e);
-  virtual bool event(QEvent* ev);
-
+  //virtual bool event(QEvent* ev);
+/*
 public slots:
-  void DelActivated();
+  void DelActivated();*/
 
 private:
   Q_OBJECT
@@ -56,9 +56,9 @@ public:
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
   virtual QMenu* createStandardContextMenu();
-  virtual bool event(QEvent* ev);
-public slots:
-  void DelActivated();
+  //virtual bool event(QEvent* ev);
+/*public slots:
+  void DelActivated();*/
 
 private:
   Q_OBJECT

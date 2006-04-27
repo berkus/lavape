@@ -3,6 +3,7 @@
 
 #include "cmainframe.h"
 #include "mdiframes.h"
+#include "lavadoc.h"
 
 
 class CLavaMainFrame : public wxMainFrame, public Ui_CMainFrame
@@ -13,6 +14,7 @@ public:
   virtual void UpdateUI();
   int lastTile;
   virtual void customEvent(QEvent *ev);
+  CLavaDoc* docModal;
 
 public slots:
   virtual void on_helpContentsAction_triggered();

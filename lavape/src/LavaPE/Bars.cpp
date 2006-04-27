@@ -469,7 +469,7 @@ VarItem::VarItem(VarItem* parent, VarItem* afterItem, DDItemData* data, VarListV
     setTextColor(0, QColor(Qt::red));
   childrenDrawn = false;
   hasChildren = data->HasChildren;
-//  setExpandable(hasChildren);
+  setExpandable(hasChildren);
   //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);
@@ -488,7 +488,7 @@ VarItem::VarItem(VarItem* parent, DDItemData* data, VarListView* view)
     setTextColor(0, QColor(Qt::red));
   childrenDrawn = false;
   hasChildren = data->HasChildren;
-//  setExpandable(hasChildren);
+  setExpandable(hasChildren);
   //setHeight(16);
   if (data->Children.first)
     makeChildren(data->Children);

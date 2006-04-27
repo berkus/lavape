@@ -80,13 +80,9 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   setContentsMargins(0,0,0,0);
   if (myFormNode->data.IterFlags.Contains(Optional)) {
     myMenu = new QMenu("Lava object", this);
-    QAction *DelAction= new QAction("Delete optional",this);
-    myMenu->addAction(DelAction);
-    connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
-    QAction *InsAction= new QAction("Insert optional",this);
-    myMenu->addAction(InsAction);
-    connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
-    InsAction->setEnabled(false);
+    myMenu->addAction(LBaseData->delActionPtr);//DelAction);
+    myMenu->addAction(LBaseData->insActionPtr);//InsAction);
+    LBaseData->insActionPtr->setEnabled(false);
     //myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
     //myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     //myMenu->setItemEnabled(IDM_ITER_INSERT, false);
@@ -129,6 +125,7 @@ void CTEdit::focusOutEvent(QFocusEvent *ev)
   QLineEdit::focusOutEvent(ev);
 }
 
+/*
 bool CTEdit::event(QEvent* ev)
 {
   if (ev->type() == UEV_LavaGUIInsDel) {
@@ -138,7 +135,7 @@ bool CTEdit::event(QEvent* ev)
   }
   else
     return QLineEdit::event(ev);
-}
+}*/
 
 void CTEdit::contextMenuEvent(QContextMenuEvent * e) {
   QMenu *pm = createStandardContextMenu();
@@ -159,10 +156,11 @@ void CTEdit::contextMenuEvent(QContextMenuEvent * e) {
   //delete pm;
 }
 
+/*
 void CTEdit::DelActivated()
 {
   QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
-}
+}*/
 
 
 CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
@@ -183,6 +181,10 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   //  setFont(*GUIProg->Font);
   if (myFormNode->data.IterFlags.Contains(Optional)) {
     myMenu = new QMenu(this);
+    myMenu->addAction(LBaseData->delActionPtr);//DelAction);
+    myMenu->addAction(LBaseData->insActionPtr);//InsAction);
+    LBaseData->insActionPtr->setEnabled(false);
+    /*
     QAction *DelAction= new QAction("Delete optional",this);
     myMenu->addAction(DelAction);
     connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
@@ -190,6 +192,7 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
     myMenu->addAction(InsAction);
     connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
     InsAction->setEnabled(false);
+    */
     //myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
     //myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
     //myMenu->setItemEnabled(IDM_ITER_INSERT, false);
@@ -238,6 +241,7 @@ void CMultiLineEdit::focusOutEvent(QFocusEvent *ev)
 }
 
 
+/*
 bool CMultiLineEdit::event(QEvent* ev)
 {
   if (ev->type() == UEV_LavaGUIInsDel) {
@@ -247,7 +251,7 @@ bool CMultiLineEdit::event(QEvent* ev)
   }
   else
     return QTextEdit::event(ev);
-}
+}*/
 
 QMenu* CMultiLineEdit::createStandardContextMenu()
 {
@@ -269,7 +273,8 @@ QMenu* CMultiLineEdit::createStandardContextMenu()
 }
 
 
+/*
 void CMultiLineEdit::DelActivated()
 {
   QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
-}
+}*/
