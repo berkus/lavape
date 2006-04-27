@@ -35,6 +35,7 @@
 //Added by qt3to4:
 
 #ifdef WIN32
+#include <eh.h>
 #include <shlobj.h>
 #include <float.h>
 #else
@@ -2272,14 +2273,14 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 
         frameSize = ((SelfVar*)topDECL->Exec.ptr)->stackFrameSize;
         newOldExprLevel = frameSize - 1;
-#ifdef WIN32
+#ifdef __GNUC__
+				newStackFrame = new LavaObjectPtr[frameSize];
+#else
         frameSizeBytes = frameSize<<2;
         __asm {
           sub esp, frameSizeBytes
           mov newStackFrame, esp
         }
-#else
-				newStackFrame = new LavaObjectPtr[frameSize];
 #endif
         for (pos=0;pos<frameSize;pos++)
           newStackFrame[pos] = 0;
@@ -2295,12 +2296,12 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
             ((SelfVarX*)topDECL->Exec.ptr)->SetRTError(ckd, &ERR_ExecutionFailed,newStackFrame);
 
           if (newStackFrame) {
-#ifdef WIN32
+#ifdef __GNUC__
+						delete [] newStackFrame;
+#else
             __asm {
               add esp, frameSizeBytes
             }
-#else
-						delete [] newStackFrame;
 #endif
           }
           ((CLavaProgram*)ckd.document)->HCatch(ckd);
@@ -2349,12 +2350,12 @@ stop:     ckd.document->throwError = false;
         return 0;
       }
       if (newStackFrame) {
-#ifdef WIN32
+#ifdef __GNUC__
+        delete [] newStackFrame;
+#else
         __asm {
           add esp, frameSizeBytes
         }
-#else
-        delete [] newStackFrame;
 #endif
       }
       information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(msg)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);

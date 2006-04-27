@@ -105,6 +105,61 @@
       else \
         CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
 }
+#elif WIN32
+#define FCALL(CKD, CALLEDSELF, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
+  bool caught=false; \
+  unsigned newOldExprLevel=FRAMESIZE-1, fSizeBytes = FRAMESIZE<<2;\
+  DebugStep oldDebugStep=nextDebugStep; \
+  if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
+    nextDebugStep = noStep; \
+  if (primaryToken == ObjRef_T) /* set-function */ \
+    NEWSTACK[0] = (LavaObjectPtr)parentObject; \
+  else if (IsFuncInvocation()) \
+    NEWSTACK[0] = (LavaObjectPtr)SYNOBJ; \
+  else /* operator function */ \
+    NEWSTACK[0] = (LavaObjectPtr)this; \
+  NEWSTACK[1] = (LavaObjectPtr)stackFrame;\
+  NEWSTACK[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
+  try { RESULT = CALLEDSELF->Execute(CKD, NEWSTACK, newOldExprLevel); \
+    ckd.selfVar = mySelfVar;}\
+  catch (CHWException ex) {\
+    ckd.selfVar = mySelfVar;\
+    RESULT = false;\
+    if (IsFuncInvocation()) \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
+    if (ex.SetLavaException(CKD)) caught = true;\
+    else throw;\
+  }\
+  catch (CRuntimeException ex) {\
+    ckd.selfVar = mySelfVar; \
+    RESULT = false;\
+    if (IsFuncInvocation()) \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
+    if (ex.SetLavaException(CKD)) caught = true;\
+    else throw;\
+  }\
+  if (LBaseData->debugOn && !caught) {\
+    if (nextDebugStep == noStep) {\
+      stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
+      if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
+        nextDebugStep = oldDebugStep; }\
+    else if (nextDebugStep == stepOut) {\
+      if (currentStackDepth < stepOutStackDepth) { \
+        stepOutStackDepth = 0; \
+        if (IsFuncInvocation()) \
+          CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+        else \
+          CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
+    else { \
+      if (IsFuncInvocation()) \
+        CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      else \
+        CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
+}
 #else
 #define FCALL(CKD, CALLEDSELF, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
   bool caught=false; \
@@ -217,6 +272,71 @@
   if (caught) {\
   __asm {\
     sub esp, fSizeBytes}\
+  }\
+  if (LBaseData->debugOn && !caught) {\
+    if (nextDebugStep == noStep) {\
+      stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
+      if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
+        nextDebugStep = oldDebugStep; }\
+    else if (nextDebugStep == stepOut) {\
+      if (currentStackDepth < stepOutStackDepth) { \
+        stepOutStackDepth = 0; \
+        if (IsFuncInvocation()) \
+          CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+        else \
+          CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
+    else { \
+      if (IsFuncInvocation()) \
+        (SYNOBJ)->DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((FuncStatement*)this)->funcDecl); \
+      else \
+        DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
+}
+#elif WIN32
+#define NATIVE_FCALL(CKD, FUNC, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
+  bool caught=false; \
+  QString myExMessage; \
+  DebugStep oldDebugStep=nextDebugStep; \
+  if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
+    nextDebugStep = noStep; \
+  if (primaryToken == ObjRef_T) \
+    NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)parentObject; \
+  else if (IsFuncInvocation()) \
+    NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)SYNOBJ; \
+  else \
+    NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)this; \
+  NEWSTACK[1] = CKD.stackFrame[1] = (LavaObjectPtr)stackFrame; \
+  NEWSTACK[2] = CKD.stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
+  try { RESULT = FUNC(CKD, NEWSTACK); ckd.selfVar = mySelfVar;}\
+  catch (CHWException ex) {\
+    ckd.selfVar = mySelfVar;\
+    RESULT = false;\
+    if (IsFuncInvocation()) \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
+    if (ex.SetLavaException(CKD)) caught = true;\
+    else throw; \
+  }\
+  catch (SafeIntException ex) {\
+    CHWException exHW(ex.m_code == ERROR_ARITHMETIC_OVERFLOW?STATUS_INTEGER_OVERFLOW:STATUS_INTEGER_DIVIDE_BY_ZERO); \
+    ckd.selfVar = mySelfVar; \
+    RESULT = false;\
+    if (IsFuncInvocation()) \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,exHW.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
+    if (exHW.SetLavaException(CKD)) caught = true;\
+    else throw;\
+  }\
+  catch (CRuntimeException ex) {\
+    ckd.selfVar = mySelfVar; \
+    RESULT = false;\
+    if (IsFuncInvocation()) \
+      CKD.callStack = (SYNOBJ)->DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((FuncStatement*)this)->funcDecl); \
+    else \
+      CKD.callStack = DebugStop(CKD,stackFrame,ex.message,Stop_Exception,newStackFrame,((Operation*)this)->funcDecl); \
+    if (ex.SetLavaException(CKD)) caught = true;\
+    else throw;\
   }\
   if (LBaseData->debugOn && !caught) {\
     if (nextDebugStep == noStep) {\
@@ -948,14 +1068,14 @@ bool SelfVarX::ExecBaseInits (CheckData &ckd, LavaVariablePtr stackFrame, unsign
       fDesc = &(*callObj)[secN].funcDesc[0];
       frameSize = fDesc->stackFrameSize;
       if (frameSize) {
-#ifndef __GNUC__
+#ifdef __GNUC__
+        newStackFrame = new LavaObjectPtr[frameSize];
+#else
         frameSizeBytes = frameSize<<2;
         __asm {
           sub esp, frameSizeBytes
           mov newStackFrame, esp
         }
-#else
-        newStackFrame = new LavaObjectPtr[frameSize];
 #endif
         newStackFrame[SFH] = callObj + (*callObj)[secN].sectionOffset;
 
@@ -964,12 +1084,12 @@ bool SelfVarX::ExecBaseInits (CheckData &ckd, LavaVariablePtr stackFrame, unsign
         }
         else
           FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
-#ifndef __GNUC__
+#ifdef __GNUC__
+        delete [] newStackFrame;
+#else
         __asm {
           add esp, frameSizeBytes
         }
-#else
-        delete [] newStackFrame;
 #endif
         if (ckd.exceptionThrown)
           return false; // goto ret
@@ -1221,14 +1341,14 @@ LavaObjectPtr UnaryOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, un
   funcSect = &(*object)[funcSectionNumber + funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
   frameSize = fDesc->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+  newStackFrame = new LavaObjectPtr[frameSize];
+#else
   frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
     mov newStackFrame, esp
   }
-#else
-  newStackFrame = new LavaObjectPtr[frameSize];
 #endif
   newStackFrame[SFH] = object - (*object)->sectionOffset
                        + (*(object - (*object)->sectionOffset))[fDesc->delta].sectionOffset;
@@ -1244,12 +1364,12 @@ LavaObjectPtr UnaryOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, un
 
   DFC(object);
   object = newStackFrame[SFH+1];
-#ifndef __GNUC__
+#ifdef __GNUC__
+	delete [] newStackFrame;
+#else
   __asm {
     add esp, frameSizeBytes
   }
-#else
-	delete [] newStackFrame;
 #endif
   if (!ok)
     return (LavaObjectPtr)-1;
@@ -1295,14 +1415,14 @@ bool BinaryOpX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned ol
   funcSect = &(*object)[funcSectionNumber + funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
   frameSize = fDesc->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+  newStackFrame = new LavaObjectPtr[frameSize];
+#else
   frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
     mov newStackFrame, esp
   }
-#else
-  newStackFrame = new LavaObjectPtr[frameSize];
 #endif
   newStackFrame[SFH] = object - (*object)->sectionOffset
                        + (*(object - (*object)->sectionOffset))[fDesc->delta].sectionOffset;
@@ -1329,12 +1449,12 @@ bool BinaryOpX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned ol
     DFC(newStackFrame[SFH+1]);  // release input parameter
 ret:
   DFC(newStackFrame[SFH]);  // release self
-#ifndef __GNUC__
+#ifdef __GNUC__
+  delete [] newStackFrame;
+#else
   __asm {
     add esp, frameSizeBytes
   }
-#else
-  delete [] newStackFrame;
 #endif
   RETURN(ok)
 }
@@ -1360,14 +1480,14 @@ LavaObjectPtr MultipleOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame,
   funcSect = &(*object)[funcSectionNumber + funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
   frameSize = fDesc->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+  newStackFrame = new LavaObjectPtr[frameSize];
+#else
   frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
     mov newStackFrame, esp
   }
-#else
-  newStackFrame = new LavaObjectPtr[frameSize];
 #endif
   newStackFrame[SFH] = object - (*object)->sectionOffset
                        + (*(object - (*object)->sectionOffset))[fDesc->delta].sectionOffset;
@@ -1422,12 +1542,12 @@ ret0:
     }
   }
 ret:
-#ifndef __GNUC__
+#ifdef __GNUC__
+  delete [] newStackFrame;
+#else
   __asm {
     add esp, frameSizeBytes
   }
-#else
-  delete [] newStackFrame;
 #endif
   return object;
 }
@@ -1805,14 +1925,14 @@ bool Receiver::callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned
   funcSect = &(*callObj)[callbackCall->funcSectionNumber + callbackCall->funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[callbackCall->funcDecl->SectionInfo1];
   frameSize = fDesc->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+  newStackFrame = new LavaObjectPtr[frameSize];
+#else
   frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
     mov newStackFrame, esp
   }
-#else
-  newStackFrame = new LavaObjectPtr[frameSize];
 #endif
   newStackFrame[SFH] = callObj - (*callObj)->sectionOffset
                    + (*(callObj - (*callObj)->sectionOffset))[fDesc->delta].sectionOffset;
@@ -1871,12 +1991,12 @@ ret:
 //  if (callObj)
 //  DFC(callObj); 
     // don't release self since there wasn't an explicit call expression here
-#ifndef __GNUC__
+#ifdef __GNUC__
+	delete [] newStackFrame;
+#else
   __asm {
     add esp, frameSizeBytes
   }
-#else
-	delete [] newStackFrame;
 #endif
   RETURN(ok)
 }
@@ -2445,26 +2565,26 @@ bool SelectExpressionX::Recursion (CheckData &ckd, LavaVariablePtr stackFrame, u
       if (((SynObject*)statement.ptr)->Execute(ckd,stackFrame,oldExprLevel)) { // add resultObj to rSet
         resultObj = ((Expression*)addObject.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
         frameSize = 8;
-#ifndef __GNUC__
+#ifdef __GNUC__
+        newStackFrame = new LavaObjectPtr[frameSize];
+#else
         frameSizeBytes = frameSize<<2;
         __asm {
           sub esp, frameSizeBytes
           mov newStackFrame, esp
         }
-#else
-        newStackFrame = new LavaObjectPtr[frameSize];
 #endif
         newStackFrame[SFH] = CastSetType(ckd,rSet);
         newStackFrame[SFH+1] = ((CLavaProgram*)ckd.document)->CastVObj(ckd, resultObj,0);
         SetAdd(ckd, newStackFrame);
         DFC(resultObj); // release new object
         // release stackFrame frame
-#ifndef __GNUC__
+#ifdef __GNUC__
+				delete [] newStackFrame;
+#else
         __asm {
           add esp, frameSizeBytes
         }
-#else
-				delete [] newStackFrame;
 #endif
       }
   }
@@ -2567,14 +2687,14 @@ fieldCase:
       return false;
     }
     frameSize = ((SelfVar*)setExec->Exec.ptr)->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+    newStackFrame = new LavaObjectPtr[frameSize];
+#else
     frameSizeBytes = frameSize<<2;
     __asm {
       sub esp, frameSizeBytes
       mov newStackFrame, esp
     }
-#else
-    newStackFrame = new LavaObjectPtr[frameSize];
 #endif
     newStackFrame[SFH] = propertyInfo; // set self
     IFC(newStackFrame[SFH]); 
@@ -2601,12 +2721,12 @@ fieldCase:
     DFC(newStackFrame[SFH]);  // release self
     if (newStackFrame[SFH+1])
       DFC(newStackFrame[SFH+1]);  // release input parameter
-#ifndef __GNUC__
+#ifdef __GNUC__
+    delete [] newStackFrame;
+#else
     __asm {
       add esp, frameSizeBytes
     }
-#else
-    delete [] newStackFrame;
 #endif
     break;
 
@@ -2620,13 +2740,13 @@ fieldCase:
     }
     funcSect = &(*arrayObj)[aai->funcSectionNumber + aai->funcDecl->SectionInfo2];
     fDesc = &funcSect->funcDesc[aai->funcDecl->SectionInfo1];
-#ifndef __GNUC__
+#ifdef __GNUC__
+    newStackFrame = new LavaObjectPtr[SFH+3];
+#else
     __asm {
       sub esp, 24
       mov newStackFrame, esp
     }
-#else
-    newStackFrame = new LavaObjectPtr[SFH+3];
 #endif
     newStackFrame[SFH] = arrayObj - (*arrayObj)->sectionOffset
                        + (*(arrayObj - (*arrayObj)->sectionOffset))[fDesc->delta].sectionOffset;
@@ -2658,12 +2778,12 @@ fieldCase:
     DFC(newStackFrame[SFH+1]);  // release input parameter 1
 ret0: DFC(newStackFrame[SFH]);  // release self
 
-#ifndef __GNUC__
+#ifdef __GNUC__
+    delete [] newStackFrame;
+#else
     __asm {
       add esp, 24
     }
-#else
-    delete [] newStackFrame;
 #endif
     break;
   }
@@ -2706,13 +2826,13 @@ LavaObjectPtr ArrayAtIndexX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
   }
   funcSect = &(*callObj)[funcSectionNumber + funcDecl->SectionInfo2];
   fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
-#ifndef __GNUC__
+#ifdef __GNUC__
+  newStackFrame = new LavaObjectPtr[SFH+3];
+#else
   __asm {
     sub esp, 20
     mov newStackFrame, esp
   }
-#else
-  newStackFrame = new LavaObjectPtr[SFH+3];
 #endif
   newStackFrame[SFH] = callObj - (*callObj)->sectionOffset
                        + (*(callObj - (*callObj)->sectionOffset))[fDesc->delta].sectionOffset;
@@ -2742,12 +2862,12 @@ LavaObjectPtr ArrayAtIndexX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
 ret:
   DFC(callObj); // release call object
   DFC(newStackFrame[SFH+1]); // release input parameter (= array index)
-#ifndef __GNUC__
+#ifdef __GNUC__
+	delete [] newStackFrame;
+#else
   __asm { // not earlier, since newStackFrame[SFH+1] is still used in the preceding statement
     add esp, 20
   }
-#else
-	delete [] newStackFrame;
 #endif
   return object;
 }
@@ -2863,22 +2983,22 @@ ConstantX::~ConstantX () {
   if (!value) return;
   switch (constType) {
   case VLString:
-#ifndef __GNUC__
+#ifdef __GNUC__
+    newStackFrame = new LavaObjectPtr[SFH+1];
+#else
     __asm {
       sub esp, 12
       mov newStackFrame, esp
     }
-#else
-    newStackFrame = new LavaObjectPtr[SFH+1];
 #endif
     newStackFrame[SFH] = value;
     StringDecFunc(ckd, newStackFrame);
-#ifndef __GNUC__
+#ifdef __GNUC__
+		delete [] newStackFrame;
+#else
     __asm {
       add esp, 12
     }
-#else
-		delete [] newStackFrame;
 #endif
     break;
   }
@@ -3198,14 +3318,14 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
       fDesc = object[0]->funcDesc;
       if (fDesc->funcExec) {
         frameSize = fDesc->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+        newStackFrame = new LavaObjectPtr[frameSize];
+#else
         frameSizeBytes = frameSize<<2;
         __asm {
           sub esp, frameSizeBytes
           mov newStackFrame, esp
         }
-#else
-        newStackFrame = new LavaObjectPtr[frameSize];
 #endif
         newStackFrame[SFH] = object;
         if (fDesc->isNative) {
@@ -3225,12 +3345,12 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
           }
         }
 
-#ifndef __GNUC__
+#ifdef __GNUC__
+        delete [] newStackFrame;
+#else
         __asm {
           add esp, frameSizeBytes
         }
-#else
-        delete [] newStackFrame;
 #endif
       }
     }
@@ -3250,14 +3370,14 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
     && idp
     && idp->hasOrInheritsInvariants) { // invoke invariant if it exists
       frameSize=idp->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+      newStackFrame = new LavaObjectPtr[frameSize];
+#else
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
         mov newStackFrame, esp
       }
-#else
-      newStackFrame = new LavaObjectPtr[frameSize];
 #endif
       newStackFrame[0] = (LavaObjectPtr)this;
       newStackFrame[1] = (LavaObjectPtr)stackFrame;
@@ -3270,12 +3390,12 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
       ok = idp->EvalInvariants(ckd,rtidDict,newStackFrame);
 
       nextDebugStep = oldDebugStep;
-#ifndef __GNUC__
+#ifdef __GNUC__
+			delete [] newStackFrame;
+#else
       __asm {
         add esp, frameSizeBytes
       }
-#else
-			delete [] newStackFrame;
 #endif
       if (!ok) {
         if (!ckd.exceptionThrown)
@@ -3357,14 +3477,14 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
         frameSize = funcDecl->nInput + funcDecl->nOutput + 1 + SFH;
       else*/
         frameSize = fDesc->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+      newStackFrame = new LavaObjectPtr[frameSize];
+#else
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
         mov newStackFrame, esp
       }
-#else
-      newStackFrame = new LavaObjectPtr[frameSize];
 #endif
       newStackFrame[SFH] = callObj + ((CSectionDesc*)(*callObj)->classDECL->SectionTabPtr)[fDesc->delta].sectionOffset;
     }
@@ -3375,14 +3495,14 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
         frameSize = funcDecl->nInput + funcDecl->nOutput + 1 + SFH;
       else*/
         frameSize = fDesc->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+      newStackFrame = new LavaObjectPtr[frameSize];
+#else
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
         mov newStackFrame, esp
       }
-#else
-      newStackFrame = new LavaObjectPtr[frameSize];
 #endif
       newStackFrame[SFH] = callObj - (*callObj)->sectionOffset
                        + (*(callObj - (*callObj)->sectionOffset))[fDesc->delta].sectionOffset;
@@ -3395,14 +3515,14 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
       staticExec = (SelfVar*)funcDecl->RuntimeDECL->Exec.ptr;
       frameSize = staticExec->stackFrameSize;
     }
-#ifndef __GNUC__
+#ifdef __GNUC__
+    newStackFrame = new LavaObjectPtr[frameSize];
+#else
     frameSizeBytes = frameSize<<2;
     __asm {
       sub esp, frameSizeBytes
       mov newStackFrame, esp
     }
-#else
-    newStackFrame = new LavaObjectPtr[frameSize];
 #endif
     newStackFrame[SFH] = 0; // self=0 for static functions!
   }
@@ -3502,12 +3622,13 @@ ret:
     DFC(callObj); 
     // release self after input parameters since it might be needed for releasing
     // the inputs in case "set.Remove(#elem)"; see CheDecFunc in BAdapter.cpp
-#ifndef __GNUC__
-  __asm {
+#ifdef __GNUC__
+	delete [] newStackFrame;
+#else
+__asm {
     add esp, frameSizeBytes
   }
-#else
-	delete [] newStackFrame;
+
 #endif
   RETURN(ok)
 }
@@ -3556,14 +3677,14 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
       fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
       frameSize = fDesc->stackFrameSize;
       newOldExprLevel = frameSize - 3;
-#ifndef __GNUC__
+#ifdef __GNUC__
+      newStackFrame = new LavaObjectPtr[frameSize];
+#else
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
         mov newStackFrame, esp
       }
-#else
-      newStackFrame = new LavaObjectPtr[frameSize];
 #endif
       newStackFrame[SFH] = callObj + ((CSectionDesc*)(*callObj)->classDECL->SectionTabPtr)[fDesc->delta].sectionOffset;
     }
@@ -3571,14 +3692,14 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
       funcSect = &(*callObj)[funcSectionNumber + funcDecl->SectionInfo2];
       fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
       frameSize = fDesc->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+      newStackFrame = new LavaObjectPtr[frameSize];
+#else
       frameSizeBytes = frameSize<<2;
       __asm {
         sub esp, frameSizeBytes
         mov newStackFrame, esp
       }
-#else
-      newStackFrame = new LavaObjectPtr[frameSize];
 #endif
       newStackFrame[SFH] = callObj - (*callObj)->sectionOffset
                          + (*(callObj - (*callObj)->sectionOffset))[fDesc->delta].sectionOffset;
@@ -3591,14 +3712,14 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
       staticExec = (SelfVar*)funcDecl->RuntimeDECL->Exec.ptr;
       frameSize = staticExec->stackFrameSize;
     }
-#ifndef __GNUC__
+#ifdef __GNUC__
+    newStackFrame = new LavaObjectPtr[frameSize];
+#else
     frameSizeBytes = frameSize<<2;
     __asm {
       sub esp, frameSizeBytes
       mov newStackFrame, esp
     }
-#else
-    newStackFrame = new LavaObjectPtr[frameSize];
 #endif
     newStackFrame[SFH] = 0; // self=0 for static functions!
   }
@@ -3671,12 +3792,12 @@ ret:
     DFC(callObj);  // release self
     // release self after input parameters since it might be needed for releasing
     // the inputs in case "set.Remove(#elem)"; see CheDecFunc in BAdapter.cpp
-#ifndef __GNUC__
+#ifdef __GNUC__
+  delete [] newStackFrame;
+#else
   __asm {
     add esp, frameSizeBytes
   }
-#else
-  delete [] newStackFrame;
 #endif
   return object;
 }
@@ -3707,14 +3828,14 @@ bool RunX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExpr
     execDECL->WorkFlags.INCL(runTimeOK);
   }
   frameSize = ((SelfVar*)execDECL->Exec.ptr)->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+  newStackFrame = new LavaObjectPtr[frameSize];
+#else
     frameSizeBytes = frameSize<<2;
   __asm {
     sub esp, frameSizeBytes
     mov newStackFrame, esp
   }
-#else
-  newStackFrame = new LavaObjectPtr[frameSize];
 #endif
   newStackFrame[SFH] = 0;
 
@@ -3732,12 +3853,12 @@ bool RunX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExpr
   ckd.selfVar = mySelfVar;
 
 ret:
-#ifndef __GNUC__
+#ifdef __GNUC__
+  delete [] newStackFrame;
+#else
   __asm {
     add esp, frameSizeBytes
   }
-#else
-  delete [] newStackFrame;
 #endif
     SUCCEED  // initiators are autonomous, ==> initiator calls can only succeed
 }
@@ -3808,24 +3929,24 @@ LavaVariablePtr ObjReferenceX::GetMemberVarPtr(CheckData &ckd, LavaVariablePtr s
         }
         else {
           frameSize = ((SelfVar*)aDesc->getExec->Exec.ptr)->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+					newStackFrame = new LavaObjectPtr[frameSize];
+#else
           frameSizeBytes = frameSize<<2;
           __asm {
             sub esp, frameSizeBytes
             mov newStackFrame, esp
           }
-#else
-					newStackFrame = new LavaObjectPtr[frameSize];
 #endif
           newStackFrame[SFH] = memObj - (*memObj)->sectionOffset
                          + (*(memObj - (*memObj)->sectionOffset))[aDesc->delta].sectionOffset;
           if (!newStackFrame[SFH]) {
-#ifndef __GNUC__
+#ifdef __GNUC__
+						delete [] newStackFrame;
+#else
             __asm {
               add esp, frameSizeBytes
             }
-#else
-						delete [] newStackFrame;
 #endif
             ((TDOD*)oldCheo->data)->SetRTError(ckd,&ERR_NullParent,stackFrame);
             return 0;
@@ -3834,12 +3955,12 @@ LavaVariablePtr ObjReferenceX::GetMemberVarPtr(CheckData &ckd, LavaVariablePtr s
           ((SynObject*)aDesc->getExec->Exec.ptr)->Execute(ckd,newStackFrame,oldExprLevel);
           ckd.selfVar = mySelfVar;
           memObj = newStackFrame[SFH+1];
-#ifndef __GNUC__
+#ifdef __GNUC__
+					delete [] newStackFrame;
+#else
           __asm {
             add esp, frameSizeBytes
           }
-#else
-					delete [] newStackFrame;
 #endif
           if (dod->vType->DeclType == VirtualType) {
             memObj = ((CLavaProgram*)ckd.document)->CastVObj(ckd, memObj, dod->eType);
@@ -3942,24 +4063,24 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
         }
         else {
           frameSize = ((SelfVar*)aDesc->getExec->Exec.ptr)->stackFrameSize;
-#ifndef __GNUC__
+#ifdef __GNUC__
+					newStackFrame = new LavaObjectPtr[frameSize];
+#else
           frameSizeBytes = frameSize<<2;
           __asm {
             sub esp, frameSizeBytes
             mov newStackFrame, esp
           }
-#else
-					newStackFrame = new LavaObjectPtr[frameSize];
 #endif
           newStackFrame[SFH] = memObj - (*memObj)->sectionOffset
                          + (*(memObj - (*memObj)->sectionOffset))[aDesc->delta].sectionOffset;
           if (!newStackFrame[SFH]) {
-#ifndef __GNUC__
+#ifdef __GNUC__
+						delete [] newStackFrame;
+#else
             __asm {
               add esp, frameSizeBytes
             }
-#else
-						delete [] newStackFrame;
 #endif
             ((TDOD*)oldCheo->data)->SetRTError(ckd,&ERR_NullParent,stackFrame);
             return 0;
@@ -3968,22 +4089,22 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
           ((SynObject*)aDesc->getExec->Exec.ptr)->Execute(ckd,newStackFrame,oldExprLevel);
           ckd.selfVar = mySelfVar;
           if (ckd.exceptionThrown) {
-#ifndef __GNUC__
+#ifdef __GNUC__
+						delete [] newStackFrame;
+#else
             __asm {
               add esp, frameSizeBytes
             }
-#else
-						delete [] newStackFrame;
 #endif
             return 0;
           }
           memObj = newStackFrame[SFH+1];
-#ifndef __GNUC__
+#ifdef __GNUC__
+					delete [] newStackFrame;
+#else
           __asm {
             add esp, frameSizeBytes
           }
-#else
-					delete [] newStackFrame;
 #endif
           if (dod->vType->DeclType == VirtualType) {
             memObj = ((CLavaProgram*)ckd.document)->CastVObj(ckd, memObj, dod->eType);
