@@ -288,7 +288,6 @@ bool CLavaMainFrame::OnCreate()
   LoadFileHistory();
   m_UtilityView->hide();
   Toolbar_5->hide();
-  Toolbar_5->hide();
   Toolbar_6->hide();
   Toolbar_7->hide();
   UtilitiesHidden = true;

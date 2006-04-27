@@ -65,7 +65,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   DebugPage->setLayout(layout);
   layout->addWidget(splitter);
   layout->setMargin(0);
-  DebugPage->show();
+  //DebugPage->show();
   VarView = new VarListView(0, this, false);
   ParamView = new VarListView(0, this, true);
   StackView = new StackListView(0, this);
