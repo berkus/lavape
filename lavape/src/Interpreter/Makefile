@@ -3,7 +3,7 @@ PRJ = Interpreter
 MOCABLES=
 
 EXEC = Interpreter.so
-SUBPRO=disco wxqDocView LavaBase Lava_UI
+SUBPRO=disco wxqDocView LavaBase LavaGUI Lava_UI
 
 CPP_INCLUDES = -I. -I../disco -I../LavaBase -I../LavaBase/Generated -I../LavaExecs -I../LavaExecs/Generated -I../LavaExecs/res/TOOLBUTTONS -I../wxqDocView -I../Lava_UI/Generated -I../Lava_UI -I../LavaGUI
 

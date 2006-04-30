@@ -34,7 +34,8 @@
 #include "qmessagebox.h"
 //Added by qt3to4:
 
-#ifdef WIN32
+#ifdef __MINGW32
+#elif WIN32
 #include <eh.h>
 #include <shlobj.h>
 #include <float.h>
@@ -2153,7 +2154,8 @@ void CLavaProgram::HCatch(CheckData& ckd)
   }
 }
 
-#ifdef WIN32
+#ifdef __MINGW32
+#elif WIN32
 void trans_func( unsigned u, _EXCEPTION_POINTERS* pExp )
 {
   _clearfp();
@@ -2234,7 +2236,8 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
   unsigned frameSize, pos, newOldExprLevel;
   bool ok;
 
-#ifdef WIN32
+#ifdef __MINGW32
+#elif WIN32
   unsigned frameSizeBytes;
 
   CoInitialize(0);
@@ -2252,7 +2255,9 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
     ((CLavaProgram*)ckd.document)->InitBAdapter();
     topDECL = (LavaDECL*)((CHE*)((LavaDECL*)che->data)->NestedDecls.last)->data;
     if (topDECL && (topDECL->DeclType == ExecDef) && topDECL->Exec.ptr) {
+#ifndef __GNUC__
       sigEnable();
+#endif
 
       try {
 #ifndef WIN32

@@ -32,10 +32,7 @@ basenames_mocable_G=$(addprefix Generated/moc_,$(basenames_mocable))
 moc_mocable_G=$(addsuffix .cpp,$(basenames_mocable_G))
 o_mocable_G=$(moc_mocable_G:.cpp=.o)
 
-gen_files=$(sort $(h_ph_files) $(h_ui_files) $(cpp_ph_files) $(moc_mocable_G) $(cpp_rc_file))
-all_o_files=$(sort $(o_files) $(o_ph_files) $(o_mocable_G) $(o_rc_file))
-
-gen_files=$(sort $(h_ph_files) $(h_ui_files) $(cpp_ph_files) $(moc_mocable_G) $(cpp_rc_file))
+gen_files=$(sort $(h_ph_files) $(cpp_ph_files) $(cpp_rc_file))
 all_o_files=$(sort $(o_files) $(o_ph_files) $(o_mocable_G) $(o_rc_file))
 
 make_subpro=$(addsuffix .rec,$(SUBPRO))
@@ -195,7 +192,7 @@ endif
 	cd $(LAVADIR)/src/$(basename $@) && $(MAKE) clean
 
 clean:
-	rm -rf *.o *.d PCH/*.gch PCH/*.d Generated/*.o Generated/*.d
+	rm -rf *.o *.d PCH/*.gch PCH/*.d $(gen_files) Generated/*.cpp Generated/*.h Generated/*.o Generated/*.d
 #	rm -rf *.o *.d Generated/*.o Generated/*.d *.d Generated/*.cpp Generated/*.h $(gen_files)
 
 cleanall: $(clean_subpro) clean

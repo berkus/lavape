@@ -36,8 +36,21 @@
 #ifndef WIN32
 #include <setjmp.h>
 #endif
+#ifdef __MINGW32
+#include <excpt.h>
+#endif
 
 #pragma hdrstop
+
+#ifdef __MINGW32
+ inline
+ EXCEPTION_DISPOSITION
+ _catch1( _EXCEPTION_RECORD* exception_record,
+   void* err,
+   _CONTEXT* context,
+   void* par)
+ { throw exception_record; }
+#endif
 
 
 #define IsPH(PTR) ((SynObject*)PTR)->IsPlaceHolder()
@@ -105,10 +118,10 @@
       else \
         CKD.callStack = DebugStop(CKD,stackFrame,QString::null,Stop_StepOut,newStackFrame,((Operation*)this)->funcDecl); }} \
 }
-#elif WIN32
+#elif __MINGW32
 #define FCALL(CKD, CALLEDSELF, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
   bool caught=false; \
-  unsigned newOldExprLevel=FRAMESIZE-1, fSizeBytes = FRAMESIZE<<2;\
+  unsigned newOldExprLevel=FRAMESIZE-1; \
   DebugStep oldDebugStep=nextDebugStep; \
   if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
     nextDebugStep = noStep; \
@@ -120,9 +133,11 @@
     NEWSTACK[0] = (LavaObjectPtr)this; \
   NEWSTACK[1] = (LavaObjectPtr)stackFrame;\
   NEWSTACK[2] = (LavaObjectPtr)((unsigned)stackFrame[2] & ~2); \
-  try { RESULT = CALLEDSELF->Execute(CKD, NEWSTACK, newOldExprLevel); \
-    ckd.selfVar = mySelfVar;}\
-  catch (CHWException ex) {\
+  try { __try1(_catch1) RESULT = CALLEDSELF->Execute(CKD, NEWSTACK, newOldExprLevel); \
+    ckd.selfVar = mySelfVar;\
+  __except1 \
+  } catch(_EXCEPTION_RECORD* seh) { \
+		CHWException ex(seh->ExceptionCode); \
     ckd.selfVar = mySelfVar;\
     RESULT = false;\
     if (IsFuncInvocation()) \

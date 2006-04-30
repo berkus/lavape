@@ -243,7 +243,7 @@ QString CLavaApp::InitWebBrowser () {
   LONG rc=0;
   unsigned pos=0;
 
-  rc = RegOpenKeyEx(HKEY_CLASSES_ROOT,".htm",NULL,KEY_QUERY_VALUE,&hkey);
+  rc = RegOpenKeyEx(HKEY_CLASSES_ROOT,".htm",0,KEY_QUERY_VALUE,&hkey);
   rc = RegQueryValueEx(hkey,NULL,NULL,&valType,data,&dataSize);
   rc = RegOpenKeyEx(HKEY_CLASSES_ROOT,(LPCTSTR)&data[0],0,KEY_QUERY_VALUE,&hkey);
   rc = RegOpenKeyEx(hkey,"shell",0,KEY_QUERY_VALUE,&hkey);

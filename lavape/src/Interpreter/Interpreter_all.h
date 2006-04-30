@@ -13,5 +13,9 @@
 #include "LavaProgram.h"
 #include "Tokens.h"
 
+#ifdef __MINGW32
+#include <excpt.h>
+#endif
+
 #endif
 
