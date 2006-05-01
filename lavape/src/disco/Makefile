@@ -1,7 +1,5 @@
 PRJ = disco
 
-DLL = DISCO
-
 EXEC = disco.so
 
 SUBPRO = 

@@ -46,7 +46,8 @@ private:
 class LAVAGUI_DLL LavaGUIDialog : public QDialog
 {
 public:
-  LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint);           // protected constructor used by dynamic creation
+  LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint);
+    // protected constructor used by dynamic creation
   virtual ~LavaGUIDialog();
 
   

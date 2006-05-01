@@ -80,8 +80,8 @@ else
   ifeq ($(OPSYS),MINGW32)
     DLLSUFFIX = .dll
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
-    IMPLIB = -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
-		OSCPPFLAGS = -D__$(OPSYS) $(DBG)
+    IMPLIB = -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
+	OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions
     OSDLLFLAGS = -shared
     OSEXECFLAGS = -fstack-check
     EXEC2 = $(EXEC).exe
@@ -93,17 +93,17 @@ else
       ACL =
     endif
   else
-		ifeq ($(OPSYS),SunOS)
-			OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG)
-		else
-			OSCPPFLAGS = -D__$(OPSYS) $(DBG)
-			DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
-			OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
-			OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
-			EXEC2 = $(EXEC)
-			QtS = _debug
-			ACL = _debug
-		endif
+	ifeq ($(OPSYS),SunOS)
+		OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG)
+	else
+		OSCPPFLAGS = -D__$(OPSYS) $(DBG)
+		DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
+		OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
+		OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
+		EXEC2 = $(EXEC)
+		QtS = _debug
+		ACL = _debug
+	endif
   endif
 endif
 
@@ -121,7 +121,7 @@ ifeq ($(suffix $(EXEC)),.so)
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(DLLNAME)
 ../../bin/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../bin -L$(QTDIR)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
@@ -131,7 +131,7 @@ else
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../bin/,$(addsuffix .dll,$(SUBPRO)))
-	$(CC) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) -o ../../bin/$(EXEC2) $(OSEXECFLAGS)-mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../bin -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
@@ -173,7 +173,7 @@ impex = -X $(DLL)
 endif
 
 %.h %G.cpp: %.ph
-	../../bin/LPC -I. -I../LavaBase $(impex) $<
+	../../bin/LPC -I. $(impex) $<
 
 %.cpp: %.qrc
 	$(QTDIR)/bin/rcc -o $@ $<

@@ -2,6 +2,7 @@ PRJ = LavaBase
 
 MOCABLES=AboutBox.h LavaAppBase.h LavaBaseDoc.h PEBaseDoc.h DumpView.h
 
+DLL = LAVABASE
 EXEC = LavaBase.so
 SUBPRO=disco wxqDocView
 
