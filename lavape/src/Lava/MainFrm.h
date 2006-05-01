@@ -3,7 +3,7 @@
 
 #include "cmainframe.h"
 #include "mdiframes.h"
-#include "lavadoc.h"
+#include "LavaDoc.h"
 
 
 class CLavaMainFrame : public wxMainFrame, public Ui_CMainFrame

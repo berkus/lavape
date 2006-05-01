@@ -72,6 +72,7 @@ endif
 CC = g++
 
 ifeq ($(OPSYS),Darwin)
+  DLLPREFIX = lib
   DLLSUFFIX = .dylib
   OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
   OSCPPFLAGS = -D__$(OPSYS) $(DBG)
@@ -81,7 +82,7 @@ else
     DLLSUFFIX = .dll
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
     IMPLIB = -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
-	OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions
+	  OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions
     OSDLLFLAGS = -shared
     OSEXECFLAGS = -fstack-check
     EXEC2 = $(EXEC).exe
@@ -93,17 +94,19 @@ else
       ACL =
     endif
   else
-	ifeq ($(OPSYS),SunOS)
-		OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG)
-	else
-		OSCPPFLAGS = -D__$(OPSYS) $(DBG)
-		DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
-		OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
-		OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
-		EXEC2 = $(EXEC)
-		QtS = _debug
-		ACL = _debug
-	endif
+    DLLPREFIX = lib
+	  ifeq ($(OPSYS),SunOS)
+		  OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG)
+	  else
+		  OSCPPFLAGS = -D__$(OPSYS) $(DBG)
+		  DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
+      DLLSUFFIX = .so
+		  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
+		  OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
+		  EXEC2 = $(EXEC)
+		  QtS = _debug
+		  ACL = _debug
+	  endif
   endif
 endif
 
@@ -145,7 +148,7 @@ endif
 .c.o:
 	$(CC) -c -pipe -MMD $(PCH_WARN) $(OSCPPFLAGS) -D$(OSCAT) $(CPP_FLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
-PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h
+PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files)
 	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D$(OSCAT) -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(OSCPPFLAGS) $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
@@ -173,7 +176,7 @@ impex = -X $(DLL)
 endif
 
 %.h %G.cpp: %.ph
-	../../bin/LPC -I. $(impex) $<
+	../../bin/LPC -I. -I../LavaBase $(impex) $<
 
 %.cpp: %.qrc
 	$(QTDIR)/bin/rcc -o $@ $<

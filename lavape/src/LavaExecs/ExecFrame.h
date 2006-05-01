@@ -4,17 +4,7 @@
 #include "ComboBar.h"
 #include "docview.h"
 #include "mdiframes.h"
-
-
-#ifdef LAVAEXECS_EXPORT
-#define LAVAEXECS_DLL __declspec( dllexport )
-#undef AFX_DATA
-#define AFX_DATA
-#elif defined(LAVAEXECS_IMPORT)
-#define LAVAEXECS_DLL __declspec( dllimport )
-#undef AFX_DATA
-#define AFX_DATA
-#endif
+#include "Constructs.h"
 
 
 class LAVAEXECS_DLL CExecFrame : public wxMDIChildFrame
