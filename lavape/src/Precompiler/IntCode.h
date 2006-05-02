@@ -5,7 +5,7 @@
 #include "SYSTEM.h"
 
 #include "Atoms.h"
-#include "Scanner.h"
+#include "LexScanner.h"
 #include "ChainA.h"
 
 extern char slash[2];

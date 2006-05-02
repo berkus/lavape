@@ -1633,4 +1633,3 @@ extern LAVABASE_DLL bool RemoveErrCode(CHAINX* errors, QString* ids);
 extern LAVABASE_DLL TAnnotation *NewTAnnotation();
 
 #endif
-

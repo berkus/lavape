@@ -78,7 +78,7 @@ void InFile::Read (char& ch)
 {
   if (BufPos >= CharsRead) {
     CharsRead = file.read(Buffer,BufferSize);
-    if (CharsRead == 0) {
+    if (CharsRead <= 0) {
       Done = false;
       ch = EOF;
       Length = 0;

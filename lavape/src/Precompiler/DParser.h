@@ -5,7 +5,7 @@
 #include "ChString.h"
 #include "IntCode.h"
 #include "CmdError.h"
-#include "Scanner.h"
+#include "LexScanner.h"
 #include "Atoms.h"
 #include "ContxtCK.h"
 #include "PCerrors.h"

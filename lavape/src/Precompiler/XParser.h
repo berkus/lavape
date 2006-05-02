@@ -14,7 +14,7 @@
 
 #include "ContxtCK.h"
 #include "DParser.h"
-#include "Scanner.h"
+#include "LexScanner.h"
 #include "Atoms.h"
 #include "IntCode.h"
 #include "PCerrors.h"

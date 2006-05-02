@@ -82,7 +82,7 @@ public:
 protected:
 
   QFile file;
-  unsigned CharsRead;
+  int CharsRead;
   
 //  virtual void BufferEmpty ();
 };
