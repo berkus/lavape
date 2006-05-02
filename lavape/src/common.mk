@@ -32,7 +32,7 @@ basenames_mocable_G=$(addprefix Generated/moc_,$(basenames_mocable))
 moc_mocable_G=$(addsuffix .cpp,$(basenames_mocable_G))
 o_mocable_G=$(moc_mocable_G:.cpp=.o)
 
-gen_files=$(sort $(h_ph_files) $(cpp_ph_files) $(cpp_rc_file))
+gen_files=$(sort $(h_ph_files) $(cpp_ph_files) $(cpp_rc_file) $(moc_mocable_G))
 all_o_files=$(sort $(o_files) $(o_ph_files) $(o_mocable_G) $(o_rc_file))
 
 make_subpro=$(addsuffix .rec,$(SUBPRO))
@@ -81,7 +81,8 @@ else
   ifeq ($(OPSYS),MINGW32)
     DLLSUFFIX = .dll
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
-    IMPLIB = -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
+    IMPLIB = -mthreads -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
+#    IMPLIB = -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
 	  OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions
     OSDLLFLAGS = -shared
     OSEXECFLAGS = -fstack-check
@@ -117,7 +118,6 @@ ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt
 endif
 
-#all: this
 rec_make: $(make_subpro) this
 
 ifeq ($(suffix $(EXEC)),.so)
