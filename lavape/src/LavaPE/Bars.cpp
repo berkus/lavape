@@ -65,14 +65,13 @@ CUtilityView::CUtilityView(QWidget *parent)
   DebugPage->setLayout(layout);
   layout->addWidget(splitter);
   layout->setMargin(0);
-  //DebugPage->show();
   VarView = new VarListView(0, this, false);
   ParamView = new VarListView(0, this, true);
   StackView = new StackListView(0, this);
   splitter->addWidget(VarView);
   splitter->addWidget(ParamView);
   splitter->addWidget(StackView);
-  QList<int> list=splitter->sizes();
+/*  QList<int> list=splitter->sizes();
   int totalW = 0;
   for (int i=0; i<3; i++)
     totalW += list.at(i);
@@ -80,7 +79,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   list.replace(1,totalW/5 * 2);
   list.replace(2,totalW/5);
   splitter->setSizes(list);
-
+*/
   QIcon icoFind = QIcon(QPixmap((const char**)PX_findtab));
   QIcon icoErr = QIcon(QPixmap((const char**)PX_errtab));
   QIcon icoCom = QIcon(QPixmap((const char**)PX_commentt));
@@ -280,6 +279,8 @@ void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
       showExecStackPos((DbgStopData*)dbgReceived->newReceived->DbgData.ptr, doc);
       VarView->makeItems(((DbgStopData*)dbgReceived->newReceived->DbgData.ptr)->ObjectChain);
       ParamView->makeItems(((DbgStopData*)dbgReceived->newReceived->DbgData.ptr)->ParamChain);
+      //VarView->update();
+      //ParamView->update();
       break;
     default:;
     }
@@ -298,6 +299,9 @@ void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
       delete ParamView->takeTopLevelItem(0);
     while (StackView->topLevelItem(0))
       delete StackView->takeTopLevelItem(0);
+      //VarView->update();
+      //ParamView->update();
+      //StackView->update();
 /*    VarView->setColumnWidth(0, VarView->width0);
     VarView->setColumnWidth(1, VarView->width1);
     VarView->setColumnWidth(2, VarView->width2);

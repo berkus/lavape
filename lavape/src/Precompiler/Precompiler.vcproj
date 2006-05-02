@@ -479,6 +479,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\LexScanner.cpp"
+				>
+			</File>
+			<File
 				RelativePath="Parser.cpp"
 				>
 				<FileConfiguration
@@ -569,31 +573,6 @@
 			</File>
 			<File
 				RelativePath="ProCoder.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough=""
-						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Scanner.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -742,6 +721,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LexScanner.h"
+				>
+			</File>
+			<File
 				RelativePath="Parser.h"
 				>
 			</File>
@@ -755,10 +738,6 @@
 			</File>
 			<File
 				RelativePath="ProCoder.h"
-				>
-			</File>
-			<File
-				RelativePath="Scanner.h"
 				>
 			</File>
 			<File
