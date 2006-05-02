@@ -717,10 +717,12 @@ void nextChar ()
     currentChar = subsequentChar;
     while ((currentChar == CR) && IO.Done)
       IO.Read(currentChar);
-    if (!IO.Done) currentChar = EOF;
+    if (!IO.Done)
+      currentChar = EOF;
     else {
       IO.Read(subsequentChar);
-      if (!IO.Done) subsequentChar = EOF;
+      if (!IO.Done)
+      	subsequentChar = EOF;
     }
     if (currentChar == HT) {
       currentChar = ' ';
