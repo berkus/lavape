@@ -715,12 +715,9 @@ void StackListView::itemClicked(QTreeWidgetItem *item, int)
 
 void StackListView::selChanged()
 {
-  //QList<QTreeWidgetItem *> sel = selectedItems();
-
   lastSelected = (CTreeItem*)currentItem();
   if (!lastSelected)
     return;
-//    lastSelected = (CTreeItem*)sel.first();
   if (allDrawn) {
     DbgMessage* mess = new DbgMessage(Dbg_StackRq);
     mess->CallStackLevel = lastSelected->itemCount;

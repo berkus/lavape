@@ -130,6 +130,7 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 
   QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
   connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(awake()),SLOT(onGuiThreadAwake()));
+  connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(lastWindowClosed()),SLOT(onLastWindowClosed()));
   appExit = false;
 }
 
@@ -155,8 +156,11 @@ void wxApp::SetAppName(const QString& name) {
 }
 
 void wxApp::onGuiThreadAwake() {
-        // make sure that UpdateUI is invoked only once between two wait states
+  // make sure that UpdateUI is invoked only once between two wait states
   inUpdateUI = false;
+}
+
+void wxApp::onLastWindowClosed() {
 }
 
 static bool cmdLineEvaluated=false;
@@ -379,12 +383,12 @@ bool wxDocument::SaveAs()
 
     QString fn = QFileDialog::getSaveFileName(wxTheApp->m_appWindow,QString(),GetFilename(), docTemplate->GetFileFilter());
 
+    if (fn.isEmpty())
+        return false;
 #ifdef WIN32
     QString driveLetter = QString(fn[0].toUpper());
     fn.replace(0,1,driveLetter);
 #endif
-    if (fn.isEmpty())
-        return false;
 
     QFileInfo fileInfo(fn);
     if (fileInfo.exists() && !fileInfo.isWritable()) {
@@ -867,7 +871,7 @@ bool wxDocManager::Clear(bool force)
 {
   wxDocument *doc;
 
-  for (int i=0; i>m_docs.size(); i++) {
+  for (int i=0; i<m_docs.size(); i++) {
     doc = m_docs.takeAt(i);
     if (!doc->Close() && !force)
         return false;

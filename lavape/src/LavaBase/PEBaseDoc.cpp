@@ -890,7 +890,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
   IDTable.DropINCL = 0;
   if (localMove)
     LBaseData->debugThread->checkAndSetBrkPnts(this);
-  if (m_savedYet && LBaseData->m_saveEveryChange)
+  if (/*m_savedYet &&*/ LBaseData->m_saveEveryChange)
     wxDocManager::GetDocumentManager()->OnFileSave();
   return true;
 }
