@@ -58,11 +58,13 @@ CUtilityView::CUtilityView(QWidget *parent)
   ErrorPage = new QTextEdit(0);
   ErrorPage->setReadOnly(true);
   DebugPage = new QFrame(0);
-  QSplitter *splitter = new QSplitter(DebugPage);
+  splitter = new QSplitter(DebugPage);
   splitter->setOrientation(Qt::Horizontal);
   splitter->setHandleWidth(3);
   QVBoxLayout* layout = new QVBoxLayout(DebugPage);
   DebugPage->setLayout(layout);
+  DebugPage->installEventFilter(this);
+  firstTime = true;
   layout->addWidget(splitter);
   layout->setMargin(0);
   VarView = new VarListView(0, this, false);
@@ -71,15 +73,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   splitter->addWidget(VarView);
   splitter->addWidget(ParamView);
   splitter->addWidget(StackView);
-/*  QList<int> list=splitter->sizes();
-  int totalW = 0;
-  for (int i=0; i<3; i++)
-    totalW += list.at(i);
-  list.replace(0,totalW/5 * 2);
-  list.replace(1,totalW/5 * 2);
-  list.replace(2,totalW/5);
-  splitter->setSizes(list);
-*/
+
   QIcon icoFind = QIcon(QPixmap((const char**)PX_findtab));
   QIcon icoErr = QIcon(QPixmap((const char**)PX_errtab));
   QIcon icoCom = QIcon(QPixmap((const char**)PX_commentt));
@@ -129,6 +123,21 @@ void CUtilityView::SetErrorOnUtil(const CHAINX& ErrChain)
   setError(ErrChain, &cstrA);
   ErrorPage->setPlainText(cstrA);
   ErrorEmpty = (cstrA == QString::null) || !cstrA.length();
+}
+
+bool CUtilityView::eventFilter(QObject *watched,QEvent *ev) {
+  if (watched == DebugPage && ev->type() == QEvent::Paint && firstTime) {
+    QList<int> list=splitter->sizes();
+    int totalW = 0;
+    for (int i=0; i<3; i++)
+      totalW += list.at(i);
+    list.replace(0,totalW/5 * 2);
+    list.replace(1,totalW/5 * 2);
+    list.replace(2,totalW/5);
+    splitter->setSizes(list);
+    firstTime = false;
+  }
+  return false;
 }
 
 void CUtilityView::setError(const CHAINX& ErrChain, QString* cstrA)
@@ -705,7 +714,11 @@ void StackListView::itemClicked(QTreeWidgetItem *item, int)
 
 void StackListView::selChanged()
 {
+  QList<QTreeWidgetItem *> sel = selectedItems();
+
   lastSelected = (CTreeItem*)currentItem();
+  if (!lastSelected)
+    lastSelected = (CTreeItem*)sel.first();
   if (allDrawn) {
     DbgMessage* mess = new DbgMessage(Dbg_StackRq);
     mess->CallStackLevel = lastSelected->itemCount;

@@ -108,6 +108,8 @@ public:
   void showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc);
   void removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc);
   //void ChangeTab(UtilityTabs actTab);
+  QSplitter *splitter;
+  bool firstTime;
   VarListView* VarView;
   VarListView* ParamView;
   StackListView* StackView;
@@ -115,6 +117,7 @@ public:
   VarItem *itemToOpen;
 
 protected:
+  bool eventFilter(QObject *watched,QEvent *ev);
   QTreeWidget* FindPage;
   QTextEdit* CommentPage;
   QTextEdit* ErrorPage;
