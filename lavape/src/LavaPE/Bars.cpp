@@ -277,6 +277,7 @@ void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
         itemToOpen->makeChildren(((DDItemData*)dbgReceived->newReceived->ObjData.ptr)->Children);
         itemToOpen->setOpen(true);
         itemToOpen->myView->setItemSelected(itemToOpen, true);
+        itemToOpen->myView->setCurrentItem(itemToOpen);
         itemToOpen = 0;
       }
       break;
@@ -714,11 +715,12 @@ void StackListView::itemClicked(QTreeWidgetItem *item, int)
 
 void StackListView::selChanged()
 {
-  QList<QTreeWidgetItem *> sel = selectedItems();
+  //QList<QTreeWidgetItem *> sel = selectedItems();
 
   lastSelected = (CTreeItem*)currentItem();
   if (!lastSelected)
-    lastSelected = (CTreeItem*)sel.first();
+    return;
+//    lastSelected = (CTreeItem*)sel.first();
   if (allDrawn) {
     DbgMessage* mess = new DbgMessage(Dbg_StackRq);
     mess->CallStackLevel = lastSelected->itemCount;
@@ -784,6 +786,7 @@ void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
 
   }
   setItemSelected(lastSelected, true);
+  setCurrentItem(lastSelected);
   allDrawn = true;
 }
 
