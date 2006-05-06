@@ -1211,7 +1211,7 @@ CFPException::CFPException(bool isQuietNaN) {
     lavaCode = float_quietNAN_ex;
   }
   else {
-    message = QString("Hardware exception: Exceeding maximum positive exponent of floating-point type");
+    message = QString("Hardware exception: Exceeding maximum positive exponent of floating-point type; maybe division by zero");
     lavaCode = float_overflow_ex;
   }
 }
