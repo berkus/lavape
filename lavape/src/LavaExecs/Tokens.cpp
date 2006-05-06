@@ -136,7 +136,7 @@ void Tokens_INIT ()
   ATO("not");
 
   ATO("=");
-  ATO("¬=");
+  ATO("ï¿½=");
   ATO("<");
   ATO(">");
   ATO("<=");
@@ -150,7 +150,7 @@ void Tokens_INIT ()
   ATO("&");
   ATO("|");
   ATO("||");
-  ATO("¬");
+  ATO("ï¿½");
   ATO("<<");
   ATO(">>");
   ATO("[]");
@@ -294,7 +294,7 @@ void Tokens_INIT ()
   ATO("interface");
   ATO("old");
   ATO("new");
-  ATO("Ø");
+  ATO("ï¿½");
   ATO("of");
   ATO("url");
   ATO("on");
@@ -308,7 +308,7 @@ void Tokens_INIT ()
   ATO("succeed");
   ATO("switch");
   ATO("then");
-  ATO("fail");
+  ATO("throw");
   ATO("to");
   ATO("transaction");
   ATO("true");

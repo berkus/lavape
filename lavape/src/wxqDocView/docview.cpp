@@ -130,7 +130,6 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 
   QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
   connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(awake()),SLOT(onGuiThreadAwake()));
-  connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(lastWindowClosed()),SLOT(onLastWindowClosed()));
   appExit = false;
 }
 
@@ -158,9 +157,6 @@ void wxApp::SetAppName(const QString& name) {
 void wxApp::onGuiThreadAwake() {
   // make sure that UpdateUI is invoked only once between two wait states
   inUpdateUI = false;
-}
-
-void wxApp::onLastWindowClosed() {
 }
 
 static bool cmdLineEvaluated=false;
@@ -2129,10 +2125,10 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
 DString *wxHistory::GetHistoryItem(int i) const
 {
     DString *s=new DString();
-		
+
     if ( i < m_historyN )
       return m_history[i];
-    
+
 		QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("bad index in wxHistory::GetHistoryItem"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return s;
 }

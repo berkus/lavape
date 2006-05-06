@@ -63,8 +63,10 @@ bin/Components/LavaStream.dll: bin/LavaStream.dll
 bin/LavaStream.dll:
 	cd src/LavaStream; $(MAKE)
 else
-bin/Components/libLavaStream$(DLLSUFFIX): lib/libLavaStream$(DLLSUFFIX)
+bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX): lib/$(DLLPREFIX)LavaStream$(DLLSUFFIX)
 	rm -f $@; $(LN) $< $@
+lib/$(DLLPREFIX)LavaStream$(DLLSUFFIX):
+	cd src/LavaStream; $(MAKE)
 endif
 
 bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
