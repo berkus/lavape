@@ -436,21 +436,21 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
   newKwdToolbutton(tb,LBaseData->notButton,"not",SLOT(not_stm()),
     QObject::tr("Negation of a statement"),
     QObject::tr("<p><a href=\"LogOps.htm\">Logical conjunction</a></p>"));
-  newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),
-    QObject::tr("Immediate affirmative/successful return"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
   newKwdToolbutton(tb,LBaseData->assertButton,"assert",SLOT(assert_stm()),
     QObject::tr("Assertion"),
     QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
     " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
     " and throws a specific exception in case of violation</p>"));
-  newKwdToolbutton(tb,LBaseData->failButton,"throw",SLOT(throwEx()),
-    QObject::tr("Throw an exception"),
-    QObject::tr("<p><a href=\"FailSucceed.htm\">Throw</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
-    " throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
   newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
     QObject::tr("Try a statement, catch exceptions: \"y\""),
     QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
+  newKwdToolbutton(tb,LBaseData->failButton,"fail",SLOT(throwEx()),
+    QObject::tr("Fail or even throw an exception"),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Throw</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
+    " optionally throw an <a href=\"../ExceptionSamples.htm\">exception</a></p>"));
+  newKwdToolbutton(tb,LBaseData->succeedButton,"succeed",SLOT(succeed()),
+    QObject::tr("Immediate affirmative/successful return"),
+    QObject::tr("<p><a href=\"FailSucceed.htm\">Succeed</a>: immediate affirmative/successful return from an <a href=\"../EditExec.htm#exec\">exec</a></p>"));
   newKwdToolbutton(tb,LBaseData->connectButton,"connect",SLOT(connectSignal()),
     QObject::tr("Connect a signal to a handler (\"callback\")"),
     QObject::tr("<p>Connect a software signal to a <a href=\"../Callbacks.htm\">handler (\"callback\")</a></p>"));

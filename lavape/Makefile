@@ -3,7 +3,7 @@ export LAVADIR
 ASSISTANT=$(shell which assistant)
 export ASSISTANT
 
-all: dirs links build
+all: dirs links Precompiler LavaStream build
 
 SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
 
@@ -27,7 +27,7 @@ LavaPE:
 	cd src/LavaPE; $(MAKE)
 Lava_UI:
 	cd src/Lava_UI; $(MAKE)
-Interpreter:
+Interpreter: interpreter_links
 	cd src/Interpreter; $(MAKE)
 Lava:
 	cd src/Lava; $(MAKE)
@@ -48,20 +48,14 @@ dirs:
 links: \
 	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
-	bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX) \
-	bin/assistant \
-	src/Interpreter/Check.cpp \
-	src/Interpreter/Check.h \
-	src/Interpreter/Constructs.cpp \
-	src/Interpreter/Constructs.ph \
-	src/Interpreter/MakeTable.cpp \
-	src/Interpreter/Tokens.cpp \
-	src/Interpreter/Tokens.ph
+	bin/assistant
 
 bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
 	rm -f $@; $(LN) $< $@
 bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; $(LN) $< $@
+
+LavaStream: bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX)
 
 ifeq ($(OPSYS),MINGW32)
 bin/Components/LavaStream.dll: bin/LavaStream.dll
@@ -79,21 +73,6 @@ bin/assistant:
 	rm -f $@; \
 	if [ .$(ASSISTANT) != . ] ; then $(LN) $(ASSISTANT) $@ ; \
 	else echo ; echo ++++ error: Lava online help works only if Qt assistant is in your PATH!; echo ; exit 1; fi
-
-src/Interpreter/Check.cpp: src/LavaExecs/Check.cpp
-	rm -f $@; $(LN) $< $@
-src/Interpreter/Check.h: src/LavaExecs/Check.h
-	rm -f $@; $(LN) $< $@
-src/Interpreter/Constructs.cpp: src/LavaExecs/Constructs.cpp
-	rm -f $@; $(LN) $< $@
-src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
-	rm -f $@; $(LN) $< $@
-src/Interpreter/MakeTable.cpp: src/LavaExecs/MakeTable.cpp
-	rm -f $@; $(LN) $< $@
-src/Interpreter/Tokens.cpp: src/LavaExecs/Tokens.cpp
-	rm -f $@; $(LN) $< $@
-src/Interpreter/Tokens.ph: src/LavaExecs/Tokens.ph
-	rm -f $@; $(LN) $< $@
 
 build:
 	cd src/Precompiler && $(MAKE) \

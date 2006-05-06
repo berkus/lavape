@@ -308,7 +308,7 @@ void Tokens_INIT ()
   ATO("succeed");
   ATO("switch");
   ATO("then");
-  ATO("throw");
+  ATO("fail");
   ATO("to");
   ATO("transaction");
   ATO("true");

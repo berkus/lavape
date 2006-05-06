@@ -601,6 +601,9 @@ bool TokenNode::OptionalClauseToken (SynObject *&optClause) {
       return true;
     }
     break;
+  case ExpOpt_T:
+    optClause = synObject;
+    return true;
   default: ;
   }
   return false;

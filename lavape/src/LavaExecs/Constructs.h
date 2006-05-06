@@ -1292,6 +1292,10 @@ class FailStatement : public Expression {
   NESTEDANY/*Expression*/ exception;
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+  bool IsThrow()
+  {
+    return true;
+  }
 
   FailStatement () {}
 
@@ -3081,7 +3085,7 @@ public:
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
     return QObject::tr("<p><a href=\"FailSucceed.htm\">Fail</a>: immediate negative/unsuccessful return from an <a href=\"../EditExec.htm#exec\">exec</a>,"
-    " optionally throw exception</p>"); }
+    " optionally throw an exception</p>"); }
 };
 
 class OldExpressionV : public OldExpression {

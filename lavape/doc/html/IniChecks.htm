@@ -23,7 +23,7 @@
     <i><font color="#FF0000"><b>Lava</b></font></i> development. </p>
     
     <p>Our goal was to prevent missing initialization and use of undefined 
-    values by <i>static</i> checks (at programming time) wherever possible . 
+    values by <i>static</i> checks (i.e. at programming time) wherever possible . 
     However, this required a 
     major revision of the expressive means for executable code, in comparison 
     with more traditional wide-spread programming languages. In particular, we 
@@ -36,7 +36,17 @@
       containers&quot; by a &quot;<a href="SingleAssigLogSem.htm">single-assignment</a>&quot; 
       view of variable usage, and</li>
       <li>eliminated parameter passing &quot;by reference&quot; in favor of an unambiguous 
-      distinction between input and output parameters.</li>
+      distinction between input and output parameters of methods.</li>
+      <li>Moreover, expressions that yield an optional result (i.e., one that 
+      may assume the special value <font color="#0000FF"><b>Ø</b></font>), 
+      cannot be unconditionally assigned to a mandatory variable in
+      <font color="#FF0000"><b><i>Lava</i></b></font>, but you must either 
+      enclose the assignment in an <font color="#0000FF"><b>ifdef</b></font> 
+      statement (which tests whether the optional variable in the ifdef-condition 
+      has a non-null value), or you must use an <font color="#0000FF"><b>else</b></font> 
+      expression or a chain of <font color="#0000FF"><b>else</b></font> 
+      expressions (which finally provides an alternative expression that yields 
+      a non-optional value).</li>
     </ul>
     
     <p>More precisely, missing initialization and use of undefined values have 
@@ -98,9 +108,8 @@ assigned to it already <I>outside</I> this function).&nbsp;</b></p>
     <font color="#FF0000"><i><b>LavaPE</b></i></font> checks (statically, = at 
     programming time) if a value is assigned to this variable above the place of 
     reference in the same program&nbsp; branch and reports an error otherwise. A 
-    somewhat unusual consequence of this is that a newly declared (non-optional) 
-    local variable is always displayed bold and red initially, marking an error, 
-    since there has not yet been assigned a value to it.</p>
+    somewhat unusual consequence of this is that a newly declared  local variable is always displayed bold and red initially, marking an error, 
+    since there has not yet been assigned a value to it. </p>
     <h3>2. Member variables</h3>
     <p>In order to guarantee that all non-optional member variables of
     <font color="#FF0000"><i><b>Lava</b></i></font> objects are properly 
@@ -188,7 +197,8 @@ assigned to it already <I>outside</I> this function).&nbsp;</b></p>
     a failing function but only if the resulting exception is caught and the 
     respective output parameters are used nevertheless thereafter. </p>
     
-    <p>(The worst thing that may happen then is that such an output is null: 
+    <p>(The worst thing that may happen then is that such an output is 
+    <font color="#0000FF"><b>Ø</b></font>: 
     then a null-pointer-exception will be thrown in turn, or you use the output 
     although its value may be meaningless in this case: that's your own risk and 
     should be avoided without reliable knowledge about the function's 

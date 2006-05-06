@@ -663,6 +663,7 @@ bool DoubleMultBy(CheckData& ckd, LavaVariablePtr stack)
 bool DoubleDiv(CheckData& ckd, LavaVariablePtr stack)
 {
   register double result = *(double*)(stack[SFH]+LSH) / *(double*)(stack[SFH+1]+LSH);
+  TEST_AND_THROW(double)
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
   *(double*)(stack[SFH+2]+LSH) = result;
   return true;
