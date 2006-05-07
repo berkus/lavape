@@ -2264,11 +2264,19 @@ bool FailStatement::Check (CheckData &ckd)
       SetError(ckd,&ERR_MustThrowExc);
     EXIT
   }
-
-  ok &= ((SynObject*)exception.ptr)->Check(ckd);
-
+  if (!exception.ptr)
+    EXIT
   if (IsPH(exception.ptr))
     ERROREXIT
+  ok &= ((SynObject*)exception.ptr)->Check(ckd);
+  if (!ok)
+    ERROREXIT
+
+  if (((SynObject*)exception.ptr)->IsOptional(ckd)
+  && !((SynObject*)exception.ptr)->IsDefChecked(ckd)) {
+    ((SynObject*)exception.ptr)->SetError(ckd,&ERR_NotOptional);
+    ok = false;
+  }
 /*
   if (ckd.myDECL->ParentDECL->DeclType == Initiator) {
     ((SynObject*)exception.ptr)->SetError(ckd,&ERR_ThrowInInitiator);
