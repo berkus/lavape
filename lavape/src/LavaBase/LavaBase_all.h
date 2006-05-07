@@ -25,6 +25,7 @@
 #include <float.h>
 #include <stdio.h>
 #include <limits>
+#include <math.h>
 
 #endif
 

@@ -34,6 +34,7 @@
 #include <float.h>
 #include <stdio.h>
 #include <limits>
+#include <math.h>
 
 #pragma hdrstop
 
@@ -47,11 +48,15 @@ using namespace std;
     throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
 }
 
-#define TEST_AND_THROW(T) \
+#ifdef WIN32
+#define TEST_AND_THROW \
   if (!_finite(result)) throw CFPException(false); \
   else if (_isnan(result)) throw CFPException(true);
-  //if (result == numeric_limits<T>::infinity()) throw CFPException(false); \
-  //else if (result == numeric_limits<T>::quiet_NaN()) throw CFPException(true);
+#else
+#define TEST_AND_THROW \
+  if (!isfinite(result)) throw CFPException(false); \
+  else if (isnan(result)) throw CFPException(true);
+#endif
 
 
 void NewQString(QString* pstr, const char* str)
@@ -99,7 +104,7 @@ bool ObjectFinalize(CheckData& ckd, LavaVariablePtr stack)
   object = stack[SFH] - stack[SFH][0][0].sectionOffset;
   if (*(object - LOH) && ((RunTimeData*)*(object-LOH))->urlObj)  //url object?
     if (object[0][0].implDECL != object[0][0].classDECL) { //not native i.e. Lava component
-      if ( !((SynFlags*)(object + 1))->Contains(dontSave)) 
+      if ( !((SynFlags*)(object + 1))->Contains(dontSave))
         ckd.document->SaveObject(ckd, stack[SFH]);
     }
   if (!((SynFlags*)(object + 1))->Contains(zombified)) {// DEC members:
@@ -167,7 +172,7 @@ bool ObjectSameAs(CheckData& ckd, LavaVariablePtr stack)
 {
   return EqualObjects(ckd, stack[SFH], stack[SFH+1], 1);
 }
- 
+
 bool ObjectEquals(CheckData& ckd, LavaVariablePtr stack)
 {
   return EqualObjects(ckd, stack[SFH], stack[SFH+1], 2);
@@ -252,7 +257,7 @@ bool BsetBwInclOr(CheckData& ckd, LavaVariablePtr stack)
 
 bool BsetBwExclOr(CheckData& ckd, LavaVariablePtr stack)
 {
-  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Bitset], false)  
+  OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Bitset], false)
   *(unsigned*)(stack[SFH+2]+LSH) = *(unsigned*)(stack[SFH]+LSH) ^ *(unsigned*)(stack[SFH+1]+LSH);
   return true;
 }
@@ -522,7 +527,7 @@ bool FloatGET(CheckData& /*ckd*/, LavaVariablePtr stack)
 bool FloatPlus(CheckData& ckd, LavaVariablePtr stack)
 {
   register float result = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
-  TEST_AND_THROW(float)
+  TEST_AND_THROW
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
   *(float*)(stack[SFH+2]+LSH) = result;
   return true;
@@ -531,7 +536,7 @@ bool FloatPlus(CheckData& ckd, LavaVariablePtr stack)
 bool FloatIncBy(CheckData& ckd, LavaVariablePtr stack)
 {
   register float result = *(float*)(stack[SFH]+LSH) + *(float*)(stack[SFH+1]+LSH);
-  TEST_AND_THROW(float)
+  TEST_AND_THROW
   *(float*)(stack[SFH]+LSH) = result;
   return true;
 }
@@ -539,7 +544,7 @@ bool FloatIncBy(CheckData& ckd, LavaVariablePtr stack)
 bool FloatMinus(CheckData& ckd, LavaVariablePtr stack)
 {
   register float result = - *(float*)(stack[SFH]+LSH);
-  TEST_AND_THROW(float)
+  TEST_AND_THROW
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Float], false)
   *(float*)(stack[SFH+1]+LSH) = result;
   return true;
@@ -548,7 +553,7 @@ bool FloatMinus(CheckData& ckd, LavaVariablePtr stack)
 bool FloatMulti(CheckData& ckd, LavaVariablePtr stack)
 {
   register float result = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
-  TEST_AND_THROW(float)
+  TEST_AND_THROW
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
   *(float*)(stack[SFH+2]+LSH) = result;
   return true;
@@ -557,7 +562,7 @@ bool FloatMulti(CheckData& ckd, LavaVariablePtr stack)
 bool FloatMultBy(CheckData& ckd, LavaVariablePtr stack)
 {
   register float result = *(float*)(stack[SFH]+LSH) * (*(float*)(stack[SFH+1]+LSH));
-  TEST_AND_THROW(float)
+  TEST_AND_THROW
   *(float*)(stack[SFH]+LSH) = result;
   return true;
 }
@@ -565,7 +570,7 @@ bool FloatMultBy(CheckData& ckd, LavaVariablePtr stack)
 bool FloatDiv(CheckData& ckd, LavaVariablePtr stack)
 {
   register float result = *(float*)(stack[SFH]+LSH) / *(float*)(stack[SFH+1]+LSH);
-  TEST_AND_THROW(float)
+  TEST_AND_THROW
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Float], false)
   *(float*)(stack[SFH+2]+LSH) = result;
   return true;
@@ -622,7 +627,7 @@ bool DoubleGET(CheckData& /*ckd*/, LavaVariablePtr stack)
 bool DoublePlus(CheckData& ckd, LavaVariablePtr stack)
 {
   register double result =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
-  TEST_AND_THROW(double)
+  TEST_AND_THROW
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
   *(double*)(stack[SFH+2]+LSH) = result;
   return true;
@@ -631,7 +636,7 @@ bool DoublePlus(CheckData& ckd, LavaVariablePtr stack)
 bool DoubleIncBy(CheckData& ckd, LavaVariablePtr stack)
 {
   register double result =  *(double*)(stack[SFH]+LSH) + *(double*)(stack[SFH+1]+LSH);
-  TEST_AND_THROW(double)
+  TEST_AND_THROW
   *(double*)(stack[SFH]+LSH) = result;
   return true;
 }
@@ -639,7 +644,7 @@ bool DoubleIncBy(CheckData& ckd, LavaVariablePtr stack)
 bool DoubleMinus(CheckData& ckd, LavaVariablePtr stack)
 {
   register double result = - *(double*)(stack[SFH]+LSH);
-  TEST_AND_THROW(double)
+  TEST_AND_THROW
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[Double], false)
   *(double*)(stack[SFH+1]+LSH) = result;
   return true;
@@ -648,7 +653,7 @@ bool DoubleMinus(CheckData& ckd, LavaVariablePtr stack)
 bool DoubleMulti(CheckData& ckd, LavaVariablePtr stack)
 {
   double result = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
-  TEST_AND_THROW(double)
+  TEST_AND_THROW
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
   *(double*)(stack[SFH+2]+LSH) = result;
   return true;
@@ -657,7 +662,7 @@ bool DoubleMulti(CheckData& ckd, LavaVariablePtr stack)
 bool DoubleMultBy(CheckData& ckd, LavaVariablePtr stack)
 {
   register double result = *(double*)(stack[SFH]+LSH) * (*(double*)(stack[SFH+1]+LSH));
-  TEST_AND_THROW(double)
+  TEST_AND_THROW
   *(double*)(stack[SFH]+LSH) = result;
   return true;
 }
@@ -665,7 +670,7 @@ bool DoubleMultBy(CheckData& ckd, LavaVariablePtr stack)
 bool DoubleDiv(CheckData& ckd, LavaVariablePtr stack)
 {
   register double result = *(double*)(stack[SFH]+LSH) / *(double*)(stack[SFH+1]+LSH);
-  TEST_AND_THROW(double)
+  TEST_AND_THROW
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[Double], false)
   *(double*)(stack[SFH+2]+LSH) = result;
   return true;
@@ -692,7 +697,7 @@ bool StringNewFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 
 bool StringCopy(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  if ((QString*)(stack[SFH]+LSH)) 
+  if ((QString*)(stack[SFH]+LSH))
     new(stack[SFH+1]+LSH) QString(*(QString*)(stack[SFH]+LSH));
   return true;
 }
@@ -734,11 +739,11 @@ bool StringDecFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 bool StringPlus(CheckData& ckd, LavaVariablePtr stack)
 {
   OBJALLOC(stack[SFH+2], ckd, ckd.document->DECLTab[VLString], ((SynFlags*)(stack[SFH]+1))->Contains(stateObjFlag))
-  if ((QString*)(stack[SFH]+LSH) && (QString*)(stack[SFH+1]+LSH)) 
+  if ((QString*)(stack[SFH]+LSH) && (QString*)(stack[SFH+1]+LSH))
     NewQString((QString*)stack[SFH+2]+LSH, (*(QString*)(stack[SFH]+LSH) + *(QString*)(stack[SFH+1]+LSH)).toAscii());
-  else if ((QString*)(stack[SFH+1]+LSH)) 
+  else if ((QString*)(stack[SFH+1]+LSH))
     NewQString((QString*)stack[SFH+2]+LSH, ((QString*)(stack[SFH+1]+LSH))->toAscii());
-  else if ((QString*)(stack[SFH]+LSH)) 
+  else if ((QString*)(stack[SFH]+LSH))
     NewQString((QString*)stack[SFH+2]+LSH, ((QString*)(stack[SFH]+LSH))->toAscii());
   return true;
 }
@@ -750,7 +755,7 @@ bool StringBox(CheckData& ckd, LavaVariablePtr stack)
   wxTheApp->m_appWindow->activateWindow();
 //???  wxTheApp->m_appWindow->raise();
   int rc=Qt::NoButton;
-  if ((QString*)(stack[SFH]+LSH)) 
+  if ((QString*)(stack[SFH]+LSH))
     rc = information(
       parent,qApp->applicationName(),*(QString*)(stack[SFH]+LSH),
       QMessageBox::Ok | QMessageBox::Default,
@@ -967,7 +972,7 @@ bool SetEq(CheckData& ckd, LavaVariablePtr stack)
         if (!EqualObjects(ckd, (LavaObjectPtr)cheL->data, (LavaObjectPtr)cheR->data, 0))
           return false;
       }
-      else 
+      else
         if (cheL->data != cheR->data)
           return false;
       cheL = (CHE*)cheL->successor;
@@ -978,7 +983,7 @@ bool SetEq(CheckData& ckd, LavaVariablePtr stack)
   else {
     for (cheL = (CHE*)chainL->first; cheL; cheL = (CHE*)cheL->successor) {
       for (cheR = (CHE*)chainR->first;
-           cheR 
+           cheR
            && ((cheL->data != cheR->data) || ((SynFlags*)(cheR-LSH))->Contains(localCheckmark));
            cheR = (CHE*)cheR->successor);
       if (cheR)
@@ -1165,7 +1170,7 @@ bool HSetContains(LavaObjectPtr setObj, LavaObjectPtr elemObj)
 CRuntimeException* HSetInsertBefore(CheckData& ckd, LavaVariablePtr stack)
 {
   stack[SFH+3]  = AllocateObject(ckd, ckd.document->DECLTab[B_Che], false);
-  if (!stack[SFH+3]) 
+  if (!stack[SFH+3])
     return new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
   CHAINX* chain = (CHAINX*)(stack[SFH]+LSH);
   *(LavaVariablePtr)(stack[SFH+3]+LSH) = stack[SFH];
@@ -1200,7 +1205,7 @@ bool HSetFirst(CheckData& /*ckd*/, LavaVariablePtr stack)
 
 CRuntimeException* HSetSucc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == stack[SFH]) { 
+  if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == stack[SFH]) {
     if (stack[SFH+1] && (stack[SFH+1]+LSH+1) && ((CHE*)(stack[SFH+1]+LSH+1))->successor)
       stack[SFH+2] = (LavaObjectPtr)(((CHE*)(stack[SFH+1]+LSH+1))->successor)-LSH-1;
     else
@@ -1416,7 +1421,7 @@ bool ChainLast(CheckData& ckd, LavaVariablePtr stack)
 bool ChainSucc(CheckData& ckd, LavaVariablePtr stack)
 {
   LavaObjectPtr setObjPtr = stack[SFH] - stack[SFH][0][0].sectionOffset + stack[SFH][0][1].sectionOffset;
-  if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) { 
+  if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) {
     if (stack[SFH+1] && (stack[SFH+1]+LSH+1) && ((CHE*)(stack[SFH+1]+LSH+1))->successor) {
       stack[SFH+2] = (LavaObjectPtr)(((CHE*)(stack[SFH+1]+LSH+1))->successor)-LSH-1;
       if (stack[SFH+2])
@@ -1433,7 +1438,7 @@ bool ChainSucc(CheckData& ckd, LavaVariablePtr stack)
 bool ChainPrev(CheckData& ckd, LavaVariablePtr stack)
 {
   LavaObjectPtr setObjPtr = stack[SFH] - stack[SFH][0][0].sectionOffset + stack[SFH][0][1].sectionOffset;
-  if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) { 
+  if (*(LavaVariablePtr)(stack[SFH+1]+LSH) == setObjPtr) {
     if (stack[SFH+1] && (stack[SFH+1]+LSH+1) && ((CHE*)(stack[SFH+1]+LSH+1))->predecessor) {
       stack[SFH+2] = (LavaObjectPtr)(((CHE*)(stack[SFH+1]+LSH+1))->predecessor)-LSH-1;
       if (stack[SFH+2])
@@ -1491,17 +1496,17 @@ bool ArrayCopy(CheckData& ckd, LavaVariablePtr stack)
     }
     else {
       if ((*stack[SFH])->SectionFlags.Contains(ElemsAcquaintance)) {
-        if ( *resultElPtr) 
+        if ( *resultElPtr)
           DFC(*resultElPtr);
         *resultElPtr = (*(LavaVariablePtr*)(stack[SFH]+LSH+1))[ii];
-        if ( *resultElPtr) 
+        if ( *resultElPtr)
           IFC( *resultElPtr); // inc data
       }
       else {
-        if ( *resultElPtr) 
+        if ( *resultElPtr)
           DRC(  *resultElPtr);
         *resultElPtr = (*(LavaVariablePtr*)(stack[SFH]+LSH+1))[ii];
-        if ( *resultElPtr) 
+        if ( *resultElPtr)
           IRC( *resultElPtr); // inc data
       }
     }
@@ -1522,7 +1527,7 @@ bool ArrayEq(CheckData& ckd, LavaVariablePtr stack)
       if (!EqualObjects(ckd,(*(LavaVariablePtr*)(stack[SFH]+LSH+1))[ii], (*(LavaVariablePtr*)(stack[SFH+1]+LSH+1))[ii], 0))
         return false;
     }
-    else 
+    else
       if ((*(LavaVariablePtr*)(stack[SFH+1]+LSH+1))[ii] != (*(LavaVariablePtr*)(stack[SFH]+LSH+1))[ii])
         return false;
   }
@@ -1757,7 +1762,7 @@ bool ExceptionEq(CheckData& ckd, LavaVariablePtr stack)
   int ll, llast;
   llast = LSH+2;
   for (ll = LSH; ll < llast; ll++) {
-    if (*(stack[SFH] + ll) != *(stack[SFH+1] + ll)) 
+    if (*(stack[SFH] + ll) != *(stack[SFH+1] + ll))
       if (!EqualObjects(ckd, *(LavaVariablePtr)(stack[SFH+1] + ll), *(LavaVariablePtr)(stack[SFH] + ll), 0))
         return false;
   }
@@ -1901,8 +1906,8 @@ void MakeStdAdapter()
   EnumAdapter[6] = 0;
   EnumAdapter[LAH] = EnumOrdFunc;
   EnumAdapter[LAH+1] = EnumOrdFunc;
-  EnumAdapter[LAH+2] = EnumStringFunc; 
-  EnumAdapter[LAH+3] = EnumCommentFunc; 
+  EnumAdapter[LAH+2] = EnumStringFunc;
+  EnumAdapter[LAH+3] = EnumCommentFunc;
 
   SetAdapter[0] = (TAdapterFunc)((sizeof(CHAINX)+3)/4);
   SetAdapter[1] = SetCopy;
@@ -1922,11 +1927,11 @@ void MakeStdAdapter()
   ChainAdapter[0] = 0;
   ChainAdapter[1] = 0;
   ChainAdapter[2] = DefaultEq;
-  ChainAdapter[3] = 0; 
-  ChainAdapter[4] = 0; 
-  ChainAdapter[5] = 0; 
-  ChainAdapter[6] = 0; 
-  ChainAdapter[LAH]   = ChainAppend; 
+  ChainAdapter[3] = 0;
+  ChainAdapter[4] = 0;
+  ChainAdapter[5] = 0;
+  ChainAdapter[6] = 0;
+  ChainAdapter[LAH]   = ChainAppend;
   ChainAdapter[LAH+1] = ChainInsertBefore;
   ChainAdapter[LAH+2] = ChainInsertAfter;
   ChainAdapter[LAH+3] = ChainFirst;
@@ -1944,7 +1949,7 @@ void MakeStdAdapter()
   CheAdapter[5] = 0;
   CheAdapter[6] = 0;
 
-  ArrayAdapter[0] = (TAdapterFunc)2; //length and LavaVariablePtr 
+  ArrayAdapter[0] = (TAdapterFunc)2; //length and LavaVariablePtr
   ArrayAdapter[1] = ArrayCopy;
   ArrayAdapter[2] = ArrayEq;
   ArrayAdapter[3] = 0;
@@ -1974,7 +1979,7 @@ void MakeStdAdapter()
   HW_L_ExceptionAdapter[4] = 0;
   HW_L_ExceptionAdapter[5] = 0;
   HW_L_ExceptionAdapter[6] = 0;
-  
+
   StdAdapterTab[B_Object]     = &ObjectAdapter[0];
   StdAdapterTab[Bitset]       = &BitsetAdapter[0];
   StdAdapterTab[B_Bool]       = &BoolAdapter[0];
