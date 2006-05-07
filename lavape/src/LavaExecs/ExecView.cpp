@@ -2622,7 +2622,10 @@ void CExecView::OnConst()
   if (!editCtl)
     editCtl = new MiniEdit(redCtl);
   editCtl->setGeometry(text->currentSelection->data.rect);
-  editCtl->setText(TOKENSTR[Const_T]);
+  if (text->currentSelection->data.token == Const_T)
+    editCtl->setText(((Constant*)text->currentSynObj)->str.c);
+  else
+    editCtl->setText(TOKENSTR[text->currentSelection->data.token]);
   QFontMetrics fom(editCtl->font());
   editCtl->setFixedWidth(fom.width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
   editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());

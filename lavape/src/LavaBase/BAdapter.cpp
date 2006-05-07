@@ -48,8 +48,10 @@ using namespace std;
 }
 
 #define TEST_AND_THROW(T) \
-  if (result == numeric_limits<T>::infinity()) throw CFPException(false); \
-  else if (result == numeric_limits<T>::quiet_NaN()) throw CFPException(true);
+  if (!_finite(result)) throw CFPException(false); \
+  else if (_isnan(result)) throw CFPException(true);
+  //if (result == numeric_limits<T>::infinity()) throw CFPException(false); \
+  //else if (result == numeric_limits<T>::quiet_NaN()) throw CFPException(true);
 
 
 void NewQString(QString* pstr, const char* str)
