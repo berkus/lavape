@@ -90,6 +90,8 @@ bool CVTView::event(QEvent* ev)
    OnUpdate(myMainView, 0, hint);
    delete hint;
  }
+ else if (ev->type() == UEV_LavaPE_setSel) 
+   setSelPost((QTreeWidgetItem*)((CustomEvent*)ev)->data());
  return true;
 }
 
@@ -809,7 +811,8 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
   CTreeItem *itemOver = lastCurrent;// *selItem = (CTreeItem*)Tree->currentItem();
   if (!selItem)
     return;
-  SetVTError((CTreeItem*)selItem);
+  if (this == (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView())
+    SetVTError((CTreeItem*)selItem);
   if (itemOver && (Tree->withControl && !Tree->withShift || Tree->withShift && !Tree->withControl)) {
     if (!CollectDECL) {
       CollectDECL = NewLavaDECL();
