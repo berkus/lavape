@@ -4,9 +4,16 @@ Installation of Lava/LavaPE
 (Note that it may be easier and cheaper to
 keep your Lava installation up-to-date
 by checking it out and updating it from
-our SourceForge CVS repository, which
+our SourceForge SVN repository, which
 always reflects the current state of the
 Lava software development.)
+
+
+How to install the binary release of LavaPE on Windows
+======================================================
+
+Simply launch the downloaded lavape-<rel>-win32-bin.exe file and
+follow the instructions of the installer.
 
 
 How to install the LavaPE binary release for Linux
@@ -60,11 +67,13 @@ Read lavape/INSTALL.txt for the details
 and pre-requisites of a successfull
 installation. (In particular, you need
 to have GNU gcc/make and the developer version
-of TrollTech/Qt on your Linux box; install
+of TrollTech/Qt4 on your Linux box; install
 them from your Linux distribution CDs if necessary.
-If Qt isn't installed in /usr/lib/qt3 you have to
+If Qt isn't installed in /usr/lib/qt you have to
 provide an environment variable QTDIR that points
-to the Qt installation directory.
+to the Qt4 installation directory. (Alternatively
+you may also make /usr/lib/qt a symbolic link
+that points to the Qt4 installation directory.)
 
 Then build the LavaPE executables as follows:
 
@@ -96,47 +105,75 @@ on all platforms where we can build it successfully.
 (Btw: We use always the most recent Qt release.)
 
 
-How to install the binary release of LavaPE on Windows
-======================================================
-
-Simply launch the downloaded lavape-<rel>-win32.bin.exe file and
-follow the instructions of the installer.
-
-
 How to build Lava/LavaPE on Windows from the source tarball
 ===========================================================
 
-This makes sense only if you have MS DevStudio 6.0 and the
-(non-free, commercial) version of Qt. Set environment
-variables 
-   QTDIR=<Qt installation directory>
-   QTR=<(Qt release without dots, e.g.: 334>
-	 QTRDOT=<Qt release with dots, e.g.: 3.3.4>
-and add the Qt source, include, lib, and bin directories
-to the directory list under DevStudio/Options/Directories.
+Currently this requires that you have installed either
+the MinGW/MSYS software (see www.mingw.org) and the official
+OpenSource version of TrollTech's Qt4 for Windows, or the free
+MS VC++ 2005 Express IDE and the modified, inofficial
+OpenSource version of TrollTech's Qt4 for Windows.
 
-Use an appropriate unpacker program to unpack the Lava
-source tarball to a directory of your choice, say <lavape>.
+Windows/MinGW:
+=============
 
-Open the DevStudio workspace
-   <lavape>\src\LavaPE.dsw
-and build the projects "Precompiler", "LavaPE", and "Lava"
-in their debug configuration (build the "Precompiler" first).
+TrollTech offers a Qt 4 download package that also installs
+MinGW, or you can download and install MinGW separately
+from www.mingw.org and download the pure Qt4 version without
+MinGW.
 
-Thereafter you can start the LavaPE.exe/Lava.exe executables
-from DevStudio or from a file manager or DOS box. They are
-in directory <lavape>\src\LavaPE\Debug.
+Unpack Qt4, set the environment variable QTDIR=
+<Qt4 install directory> and set environment
+variable QMAKESPEC=win32-g++. Add %QTDIR%\bin to your PATH
+environment variable.
 
-Online help will work only if you copy the <lavape>\doc
-directory to <lavape>\src\LavaPE.
+Then open a DOS command window, cd to the Qt4 install
+directory and execute the configure.exe program, and,
+after successful configuration, the "nmake" command.
 
-The "AttacDemo.lava" and the corresponding Lava document file
-"AttachDemo.ldoc" can be opened successfully in the Lava
-interpreter only if you create a sub-directory "Components"
-in <lavape>\src\LavaPE and copy <lavape>\samples\LCompoImpl.lcom
-to this Components directory. (It suffices to create a
-"LcompoImpl.lcom.lnk" link that points to
-<lavape>\samples\LCompoImpl.lcom.)
+(Hint: During the Qt4 build process the MSYS and cygwin
+bin directories should not be in your PATH.)
+
+Unpack the Lava source package lavape-<release>-src.tar.bz2
+to a directory of your choice. Add the MSYS\1.0\bin
+directory to your PATH. Then open the MSYS command
+window. Cd to the Lava install directory and execute
+a "mingw32-make" command. This will build the entire
+Lava software and install the LavaPE.exe and Lava.exe
+executables in the lavape/bin directory.
+
+(Further remarks as in the Linux case.)
+
+Windows/VC++ 2005 Express:
+=========================
+
+Get the Qt4 OpenSource version for Windows from TrollTech
+and VC++ 2005 Express from Microsoft. Install VC++.
+
+Unpack Qt4 to a directory of your choice. Set QTDIR and
+PATH as in the MinGW case. QMAKESPEC need not be defined.
+
+Get the "Unofficial patches for Qt4" from the Q../Free
+project at SourceForge (formerly qt-win):
+
+  https://sourceforge.net/project/showfiles.php?group_id=49109
+  
+Unpack the contents of this zip file to the Qt4 install
+directory. 
+
+Launch VC++ and open the "Visual Studio 2005 Command Prompt"
+window from the "Tools" menu of VC++.
+
+Execute the "installpatch..." script.
+
+Execute "qconfigure msvc2005". This will completely install
+the "unofficial" Qt4-VC++ version.
+
+Open the "LavaPE.sln" file from the lavape\src directory
+in VC++. Execute "Build solution" from the "Build" menu.
+
+This will build the Lava software and install the Lava
+executables in the <lavape>\bin directory.
 
 
 Contents of the Lava source distribution
@@ -147,7 +184,7 @@ which are contained in the following sub-directories:
 
 disco ............. makes the disco shared library (Lava-unspecific basic functionality;
                     the wx... files have been taken from wxWindows
-										(see http://www.wxwidgets.org) and adapted to the needs of Lava)
+					(see http://www.wxwidgets.org) and adapted to the needs of Lava)
 Precompiler ....... makes the Lava precompiler LPC (see below)
 Interpreter ....... makes the Lava Interpreter shared library (the actual Lava interpreter classes)
 Lava .............. makes Lava.exe (MFC-wrapper for the interpreter)
@@ -163,12 +200,11 @@ LavaPE_UI ......... makes the user interface of LavaPE
 wxqDocView ........ makes the wxqDocView shared library serving for document/view support;
                     has been taken from the wxWidgets toolkit ( http://www.wxwidgets.org)
 										and adapted to the needs of Qt and Lava
-SFLsockets ........ makes the socket support library for the debugger communication between
-                    LavaPe and Lava; has been taken and adapted from the Standard Function Library
-										(see http://www.imatix.com/html/sfl/)
 
-The Lava Precompiler LPC
-========================
+
+
+Apendix: The Lava Precompiler LPC
+=================================
 
 This has been "inherited" from a precursor project "DISCO"
 (a development environment for distributed applications
@@ -206,4 +242,3 @@ as a safeguard against inadvertent replacement by LPC.exe.
 
 The new Qt-based portable version of Lava/LavaPE is still free of such
 migration code.
-

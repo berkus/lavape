@@ -1,137 +1,34 @@
-(Note that it may be easier and cheaper to
-keep your Lava installation up-to-date
-by checking it out and updating it from
-our SourceForge CVS repository, which
-always reflects the current state of the
-Lava software development.)
+Release notes for lavape-0.9
+============================
 
+Migration to Qt4:
+================
 
-How to install the LavaPE binary release for Linux
-==================================================
+In a big effort, the entire Lava software has been
+migrated to Trolltech's Qt4 package; all dependencies
+on Qt3 have been removed.
 
-Download the compressed tar file of the
-LavaPE source distribution and store it
-in the parent directory of the envisaged
-lavape installation directory.
+Checking optional-to-mandatory assignments:
+==========================================
 
-Uncompress it using the command
+As a further step towards complete variable
+initialization checks LavaPE now enforces already
+at programming time that optional variables and
+expressions have a non-null value if the latter is
+assigned to a mandatory variable.
 
-   tar xjvf lavape-<release>-linux-bin.tar.bz2
+The new LavaPE release accepts such an assignment
+only
 
-or, if your UNIX-tar command doesn't support
-the "j" option:
+a) if the source of the assignment is an (optional)
+variable that is checked by an "ifdef" conditional
+statement and if the assigment is contained in the
+"then" clause of the "ifdef" statement, or
 
-   bunzip2 lavape-<release>-linux-bin.tar.bz2
-   tar xf lavape-<release>-linux-bin.tar
+b) if the source of the assignment is an "else"
+expression "x else y" where at least one of x or y
+is mandatory.
 
-Then just execute the install script:
-
-   cd lavape
-   ./install
-
-This script generates two program launch scripts
-"lavape" and "lava" in lavape/bin which you can use
-then to launch the Lava Programming Environment or
-the Lava Interpreter.
-
-
-How to install LavaPE from the source distribution on UNIX
-==========================================================
-
-Download the compressed tar file of the
-LavaPE source distribution and store it
-in the parent directory of the envisaged
-lavape installation directory.
-
-Uncompress it using the command
-
-   tar xjvf lavape-<release>-src.tar.bz2
-
-or, if your UNIX-tar command doesn't support
-the "j" option:
-
-   bunzip2 lavape-<release>-src.tar.bz2
-   tar xf lavape-<release>-src.tar
-
-Read lavape/INSTALL.txt for the details
-and pre-requisites of a successfull
-installation. (In particular, you need
-to have GNU gcc/make and the developer version
-of TrollTech/Qt on your Linux box; install
-them from your Linux distribution CDs if necessary.
-If Qt isn't installed in /usr/lib/qt3 you have to
-provide an environment variable QTDIR that points
-to the Qt installation directory.
-
-Then build the LavaPE executables as follows:
-
-   cd lavape
-   make
-
-This will take quite a while.
-You will find the executables
-of the Lava Programming Environment
-in lavape/bin thereafter:
-"LavaPE", "Lava", and "LPC".
-(The Lava Precompiler "LPC" is needed
-only during the build process.)
-
-Launch "LavaPE", consult the Online Help,
-open some sample programs from the
-lavape/samples directory and enjoy the
-unique structure editing features of LavaPE.
-
-We'd appreciate very much if you would inform
-us (e-mail: guenthk@users.sourceforge.net)
-about any problems that you have encounterd
-during the installation or while using
-Lava/LavaPE.
-
-But let us also know if you could successfully
-install and use LavaPE. So far, we could not test Lava
-on all platforms where we can build it successfully.
-(Btw: We use always the most recent Qt release.)
-
-
-How to install the binary release of LavaPE on Windows
-======================================================
-
-Simply launch the downloaded lavape-<rel>-win32.bin.exe file and
-follow the instructions of the installer.
-
-
-How to build Lava/LavaPE on Windows from the source tarball
-===========================================================
-
-This makes sense only if you have MS DevStudio and the
-(non-free, commercial) version of Qt. Set environment
-variables 
-   QTDIR=<Qt installation directory>
-   QTR=<(Qt release without dots, e.g.: 334>
-	 QTRDOT=<Qt release with dots, e.g.: 3.3.4>
-and add the Qt source, include, lib, and bin directories
-to the directory list under DevStudio/Options/Directories.
-
-Use an appropriate unpacker program to unpack the Lava
-source tarball to a directory of your choice, say <lavape>.
-
-Open the DevStudio workspace
-   <lavape>\src\LavaPE.dsw
-and build the projects "Precompiler", "LavaPE", and "Lava"
-in their debug configuration (build the "Precompiler" first).
-
-Thereafter you can start the LavaPE.exe/Lava.exe executables
-from DevStudio or from a file manager or DOS box. They are
-in directory <lavape>\src\LavaPE\Debug.
-
-Online help will work only if you copy the <lavape>\doc
-directory to <lavape>\src\LavaPE.
-
-The "AttacDemo.lava" and the corresponding Lava document file
-"AttachDemo.ldoc" can be opened successfully in the Lava
-interpreter only if you create a sub-directory "Components"
-in <lavape>\src\LavaPE and copy <lavape>\samples\LCompoImpl.lcom
-to this Components directory. (It suffices to create a
-"LcompoImpl.lcom.lnk" link that points to
-<lavape>\samples\LCompoImpl.lcom.)
-
+"x else y" checks (at run time) whether x is null;
+if yes then the "else" expression yields y, if no then the
+expression yields x.
