@@ -1770,7 +1770,9 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   viewM->setWhatsThis(QString(tr("No specific help available here")));
   viewR->setWhatsThis(QString(tr("No specific help available here")));
   if (viewM->OnCreate() && viewL->OnCreate() && viewR->OnCreate()) {
-    wxMDIChildFrame::OnCreate(temp,doc);
+    doc->AddChildFrame(this);
+    m_document = doc;
+    //wxMDIChildFrame::OnCreate(temp,doc);
     ((CInclView*)viewL)->myTree = (CTreeView*)viewM;
     ((CVTView*)viewR)->myMainView = (CLavaPEView*)viewM;
     ((CLavaPEView*)viewM)->myInclView = (CTreeView*)viewL;
@@ -1880,8 +1882,10 @@ CFormFrame::~CFormFrame()
 bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   QSize sz;
-  if (!wxMDIChildFrame::OnCreate(temp, doc))
-    return false;
+  //if (!wxMDIChildFrame::OnCreate(temp, doc))
+  //  return false;
+  doc->AddChildFrame(this);
+  m_document = doc;
   DString title = CalcTitle( (LavaDECL*)((CLavaPEApp*)wxTheApp)->LBaseData.actHint->CommandData1, ((CLavaBaseDoc*)LBaseData->actHint->fromDoc)->IDTable.DocName);
   setWindowTitle(title.c);
   setWindowIcon(QPixmap((const char**) Lava));

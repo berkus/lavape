@@ -125,7 +125,7 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
     myGUIProg->OnUpdate( myDECL, ResultDPtr);
     myGUIProg->MakeGUI.DisplayScreen(false);
   }
-  myScrv->show();
+  //myScrv->show();
   myScrv->ensureVisible(20, 1200);
 }
 
@@ -498,7 +498,7 @@ void CLavaGUIView::OnInitialUpdate()
 
 void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
 {
-  GetParentFrame()->show();
+  //GetParentFrame()->show();
   inUpdate = true;
   CLavaPEHint* Hint = (CLavaPEHint*)pHint;
   if (Hint
