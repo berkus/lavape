@@ -70,8 +70,64 @@ counting. However, it could also happen that the failing function has already
 set certain outputs before it fails and that those outputs actually don't make 
 sense then. So the programmer will have to account on his/her own risk in 
 these cases.</p>
+<h4><font face="Arial"><a name="failStatement"></a>Using the
+<font color="#0000FF">throw </font>
+<font color="#FF0000">&lt;expr&gt;</font><font color="#0000FF"> </font>statement to 
+raise<span lang="de">/throw</span> exceptions</font></h4>
+<p>The <font color="#0000FF"><b>throw</b></font> statement of <b><i>
+<font color="#FF0000">Lava</font></i></b> is a special variant of the
+<font color="#0000FF"><b>fail</b></font> statement and is inserted by clicking 
+the <font color="#0000FF"><b>fail</b></font> button of then keyword toolbar. If 
+you delete the parameter after the inserted <font color="#0000FF"><b>throw</b></font> 
+keword then <font color="#0000FF"><b>throw</b></font> will be replaced by
+<font color="#0000FF"><b>fail</b></font>. The <font color="#0000FF"><b>fail</b></font> 
+statement may be used to terminate a function execution with result
+<font color="#0000FF"><b>false</b></font>. It may be used only if all mandatory 
+output parameters of the function have been set before.</p>
+<p>If this isn't possible 
+you must <font color="#0000FF"><b>throw</b></font> an exception. The parameter 
+of <font color="#0000FF"><b>throw</b></font> is an expression whose value provides the
+<i>exception object </i>of the throw statement. You may only throw exceptions 
+whose type is mentioned in the &quot;throws&quot; clause of the declaration of the 
+containing function and is derived from the basic built-in exception class <i>
+Exception</i> (see <i>std.lava</i>).</p>
+<p>An interesting alternative would be to associate such a throws clause with an 
+entire class or even <a href="PatternsFrameworks.htm">pattern</a> and to enforce 
+the translation of lower-level exceptions into exceptions of this class or 
+pattern in some way or other. The users of the class or pattern would then be 
+sure to get only such exceptions, rather than low-level exceptions that they 
+often won't understand anyway.</p>
+<h4><font face="Arial">Using the <font color="#0000FF">try ... catch</font> 
+statement to catch exceptions</font></h4>
+<p>The <font color="#0000FF"><b>try ... catch</b></font> statement of
+<font color="#FF0000"><i><b>Lava</b></i></font> has essentially the same 
+structure and semantics as that of <font color="#FF0000"><i><b>C++</b></i></font>:</p>
+<pre><font color="#0000FF"><b>try</b></font>
+  &lt;guarded compound statement&gt;
+<font color="#0000FF"><b>catch</b></font> &lt;exception class&gt; &lt;exception variable&gt;
+  &lt;compound statement&gt;
+<font color="#0000FF"><b>catch</b></font> &lt;exception class&gt; &lt;exception variable&gt;
+  &lt;compound statement&gt;
+...
+<font color="#0000FF"><b>catch</b></font> &lt;exception class&gt; &lt;exception variable&gt;
+  &lt;compound statement&gt;
+<font color="#0000FF"><b>#try</b></font></pre>
+<p>If an exception occurs deeply nested within the &lt;guarded compound statement&gt; 
+that isn't caught already on a lower level of the current call stack then it 
+will be caught and processed by the first <font color="#0000FF"><b>catch</b></font> 
+clause whose &lt;exception class&gt; is a base class (or the exact class) of the run 
+time class of the current exception object. All exception classes must be 
+derived from the basic built-in class <i>Exception</i>, and you can use the 
+members of <i>Exception</i> to display a meaningful exception message and the 
+current call stack.</p>
+<p>You may also throw a new exception from within a catch clause and in this way 
+raise the exception to a higher level which is possibly more meaningful for the 
+caller.</p>
+<p>You may also re-throw the original exception if you decide that the exception 
+should rather be processed on a higher level of the call stack.</p>
 <h4><font face="Arial">Class &quot;Exception&quot;</font></h4>
-<p>In <i> <font color="#FF0000"><b>Lava</b></font></i>, all exception classes are
+<p>In <i> <font color="#FF0000"><b>Lava</b></font></i>, all exception classes 
+are
 <a href="TypeSafety.htm#p-derived">p-derived</a> from the same base class <i>
 Exception</i>. Class <i>Exception</i> is non-creatable and has two member 
 variables <i>code</i> and <i>message</i>. The type <i>&lt;ERRORCODE&gt;</i> of <i>code</i> 
@@ -87,38 +143,23 @@ see below.</p>
 may be associated with an explanatory text/comment, which can also be accessed 
 and displayed as a <i>String</i> object. In the exception context this comment 
 is used as a default error text associated with the respective error code.</p>
-<p>Class <i>Exception</i> (declared in std.lava) has a static member function <i>
-CallStack.</i> It delivers the call stack at the time when the 
-  exception occurred as a String to the caller.</p>
+<p>Class <i>Exception</i> (declared in <i>std.lava</i>) has a static member 
+function <i>callStack.</i> It delivers the call stack at the time when the 
+exception occurred as a String to the caller.</p>
 <p>Exceptions may be raised also implicitly by the hardware (<i>hardware 
 exceptions</i>) or by the <b><i><font color="#FF0000">Lava</font></i></b> run 
 time system (<i>run time exceptions</i>). &quot;Division by zero&quot;,&nbsp; &quot;integer 
-overflow&quot;, &quot;access violation&quot; are typical hardware exceptions, &quot;mandatory object 
-is null&quot;, &quot;out-of-memory exception&quot;, &quot;assertion violation&quot; are typical run time 
-exceptions.</p>
+overflow&quot;, &quot;access violation&quot; are typical hardware exceptions, &quot;assertion 
+violation&quot;, &quot;array index out of range&quot;, &quot;out-of-memory exception&quot; are typical 
+run time exceptions.</p>
 <p>The common base class <i>Exception</i> for all types of exceptions provides a 
 default exception handler function <i>catch</i>, as well as a member function <i>
 show</i>, which simply displays the respective exception code and the associated 
 message text. <i>Catch</i> simply calls <i>show</i>, but may be overridden in 
 user-defined exception classes to exhibit a more specific behavior.</p>
 <p>The default <i>catch</i> function is called automatically if the respective 
-program doesn't handle the pending exception and is finally left &quot;at its upper 
+program doesn't handle the pending exception and its call stack is finally left &quot;at its upper 
 end&quot; as a consequence. </p>
-<h4><font face="Arial"><a name="failStatement"></a>Using the
-<font color="#0000FF">throw </font>
-<font color="#FF0000">&lt;expr&gt;</font><font color="#0000FF"> </font>statement to 
-raise<span lang="de">/throw</span> exceptions</font></h4>
-<p>The <font color="#0000FF"><b>throw</b></font> statement of <b><i>
-<font color="#FF0000">Lava</font></i></b> may be used to explicitly raise/throw 
-an exception. Its parameter is an expression whose value provides the
-<i>current exception object</i>. You may only throw exceptions whose type is mentioned in the &quot;throws&quot; clause of 
-the declaration of the containing function.</p>
-<p>An interesting alternative would be to associate such a throws clause with an 
-entire class or even <a href="PatternsFrameworks.htm">pattern</a> and to enforce 
-the translation of lower-level exceptions into exceptions of this class or 
-pattern in some way or other. The users of the class or pattern would then be 
-sure to get only such exceptions, rather than low-level exceptions that they 
-often won't understand anyway.</p>
 <h3>Where to look and what to do</h3>
 <p>
 Please open <b>Exception.lava</b> in
