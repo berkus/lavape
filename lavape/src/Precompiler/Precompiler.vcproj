@@ -75,6 +75,7 @@
 				OutputFile="..\..\bin\LPC.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/LPC.pdb"
 				SubSystem="1"

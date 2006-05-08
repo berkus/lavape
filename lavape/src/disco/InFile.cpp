@@ -76,7 +76,7 @@ InFile::~InFile ()
 
 void InFile::Read (char& ch)
 {
-  if (BufPos >= CharsRead) {
+  if ((int)BufPos >= CharsRead) {
     CharsRead = file.read(Buffer,BufferSize);
     if (CharsRead <= 0) {
       Done = false;

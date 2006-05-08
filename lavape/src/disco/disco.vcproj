@@ -77,7 +77,7 @@
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories=""
-				IgnoreDefaultLibraryNames="libc.lib"
+				IgnoreDefaultLibraryNames="libcmtd.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/disco.pdb"
 				SubSystem="2"

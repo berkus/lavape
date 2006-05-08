@@ -6869,6 +6869,12 @@ void CExecView::on_DbgRunToSelAct_triggered() {
 void CExecView::OnUpdateDbgStart(QAction* action) {
   if (!myDoc->mySynDef)
     return;
+  //LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)myDoc->mySynDef->SynDefTree.first)->data.TopDef.ptr;
+  //CHE* che;
+  //for (che = (CHE*)topDECL->NestedDecls.first;
+  //     che && (((LavaDECL*)che->data)->DeclType == VirtualType);
+  //     che = (CHE*) che->successor);
+  //action->setEnabled(che && (((LavaDECL*)che->data)->DeclType == Initiator));
   if (LBaseData->debugOn) {
     action->setEnabled(LBaseData->enableBreakpoints);
     return;

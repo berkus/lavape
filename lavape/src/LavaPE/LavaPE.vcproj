@@ -77,7 +77,7 @@
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../wxqDocView/Debug,$(QT4DIR)/lib"
-				IgnoreDefaultLibraryNames="libc.lib"
+				IgnoreDefaultLibraryNames="libcmtd.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/LavaPE.pdb"
 				SubSystem="2"

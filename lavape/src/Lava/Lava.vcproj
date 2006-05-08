@@ -74,7 +74,7 @@
 				OutputFile="..\..\bin\Lava.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames=""
+				IgnoreDefaultLibraryNames="libcmtd.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/Lava.pdb"
 				SubSystem="2"
