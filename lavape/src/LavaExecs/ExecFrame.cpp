@@ -73,7 +73,7 @@ bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   layout->addWidget(view);
 //  m_ComboBar->show();
   setWindowIcon(QIcon(QPixmap((const char**) execframe)));
-  NewTitle(decl);
+//  NewTitle(decl);
   return wxMDIChildFrame::OnCreate(temp,doc);
 }
 

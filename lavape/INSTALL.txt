@@ -157,9 +157,9 @@ Get the "Unofficial patches for Qt4" from the Q../Free
 project at SourceForge (formerly qt-win):
 
   https://sourceforge.net/project/showfiles.php?group_id=49109
-  
+
 Unpack the contents of this zip file to the Qt4 install
-directory. 
+directory.
 
 Launch VC++ and open the "Visual Studio 2005 Command Prompt"
 window from the "Tools" menu of VC++.
@@ -168,6 +168,15 @@ Execute the "installpatch..." script.
 
 Execute "qconfigure msvc2005". This will completely install
 the "unofficial" Qt4-VC++ version.
+
+Open "Tools"-->"Options..." in VC++, select "Projects and Solutions"
+--> "VC++ directories"--> "Include files". Add the primary
+Qt include directories:
+
+$(QTDIR)\Include
+$(QTDIR)\Include\QtCore
+$(QTDIR)\Include\QtGui
+$(QTDIR)\Include\QtNetwork
 
 Open the "LavaPE.sln" file from the lavape\src directory
 in VC++. Execute "Build solution" from the "Build" menu.

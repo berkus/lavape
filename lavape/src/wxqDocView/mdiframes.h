@@ -84,6 +84,7 @@ public slots:
   void on_cascadeAction_triggered();
   void windowActivated(QWidget*);
   void histFile(int);
+  void histWindow(int);
 
 private:
 	virtual void customEvent(QEvent *ev){}

@@ -195,7 +195,7 @@ void wxApp::onUpdateUI()
   if (m_appWindow)
     m_appWindow->UpdateUI();
 
-        focView = m_docManager->GetActiveView();
+  focView = m_docManager->GetActiveView();
   if (focView) {
     ((wxView*)focView)->GetParentFrame()->UpdateUI();
     ((wxView*)focView)->UpdateUI();
@@ -216,6 +216,10 @@ wxView *wxApp::activeView() {
 
 void wxMainFrame::histFile(int i) {
   OnMRUFile(i);
+}
+
+void wxMainFrame::histWindow(int i) {
+  OnMRUWindow(i);
 }
 
 void wxApp::about()
@@ -340,7 +344,7 @@ bool wxDocument::OnNewDocument()
 
   QString name;
   wxDocManager::GetDocumentManager()->MakeDefaultName(name);
-        name += "." + m_documentTemplate->GetDefaultExtension();
+  name += "." + m_documentTemplate->GetDefaultExtension();
   SetTitle(name);
   SetFilename(name, true);
   SetUserFilename(name);
@@ -596,23 +600,23 @@ void wxDocument::UpdateAllViews(wxView *sender, unsigned param, QObject *hint)
 
 void wxDocument::SetTitle(const QString& title)
 {
-        if (m_documentTitle == title)
-                return;
-        m_oldTitle = m_documentTitle;
-        m_documentTitle = title;
-        if (!m_oldTitle.isEmpty())
-                wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(m_oldTitle,m_documentTitle);
+  if (m_documentTitle == title)
+    return;
+  m_oldTitle = m_documentTitle;
+  m_documentTitle = title;
+  if (!m_oldTitle.isEmpty())
+    wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(m_oldTitle,m_documentTitle);
 }
 
 void wxDocument::SetFilename(const QString& filename, bool notifyViews)
 {
-    m_documentFile = filename;
-    if ( notifyViews )
-    {
-        // Notify the views that the filename has changed
-      for (int i=0; i<m_documentViews.size(); i++)
-        m_documentViews.at(i)->OnChangeFilename();
-    }
+  m_documentFile = filename;
+  if ( notifyViews )
+  {
+    // Notify the views that the filename has changed
+    for (int i=0; i<m_documentViews.size(); i++)
+      m_documentViews.at(i)->OnChangeFilename();
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -2032,7 +2036,6 @@ wxHistory::wxHistory(QObject *receiver, int maxItems)
     m_history = new DString*[m_maxHistItems];
     m_actions = new QAction*[m_maxHistItems];
     m_signalMapper=new QSignalMapper(this);
-    connect(m_signalMapper,SIGNAL(mapped(int)),wxTheApp->m_appWindow,SLOT(histFile(int)));
 }
 
 wxHistory::~wxHistory()
