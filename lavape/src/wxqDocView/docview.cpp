@@ -2187,21 +2187,21 @@ void wxHistory::RemoveItemFromHistory(int i)
 
 void wxHistory::OnChangeOfWindowTitle(QString &oldName, QString &newName)
 {
-        int i;
-        DString str(qPrintable(newName));
+  int i;
+  DString str(qPrintable(newName));
 
-        for (i=0; i<m_historyN; i++)
-                if (oldName == m_history[i]->c) {
-                        m_history[i]->Destroy();
-                        m_history[i]->c = str.c;
-                        m_history[i]->l = str.l;
-                        m_history[i]->m = str.m;
-                        str.c = 0;
-                        str.l = 0;
-                        m_actions[i]->setText(newName);//m_menu->changeItem(wxID_FILE1+i,newName);
-                        return;
-                }
-        return;
+  for (i=0; i<m_historyN; i++)
+    if (oldName == m_history[i]->c) {
+      m_history[i]->Destroy();
+      m_history[i]->c = str.c;
+      m_history[i]->l = str.l;
+      m_history[i]->m = str.m;
+      str.c = 0;
+      str.l = 0;
+      m_actions[i]->setText(newName);
+      return;
+    }
+  return;
 }
 /*
 void wxHistory::UseMenu(QPopupMenu *menu)

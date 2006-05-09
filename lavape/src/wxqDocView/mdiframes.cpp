@@ -329,9 +329,9 @@ void wxMDIChildFrame::SetTitle(QString &title)
 
   setWindowTitle(title);
   if (newTitle.at(newTitle.length()-1) == '*')
-          newTitle = newTitle.left(newTitle.length()-1);
+    newTitle = newTitle.left(newTitle.length()-1);
   if (!oldTitle.isEmpty())
-          wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
+    wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
 
 bool wxMDIChildFrame::event(QEvent * e )
