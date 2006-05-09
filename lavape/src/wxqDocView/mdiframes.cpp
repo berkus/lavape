@@ -311,18 +311,18 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
  QString title=windowTitle();
 
  if (isMinimized() && windowMenuAction)
-  if (oldWindowState == Qt::WindowMaximized)
-    showMaximized();
-  else
-    showNormal();
-  if (title.length() && title.at(title.length()-1) == '*')
-    title = title.left(title.length()-1);
-  wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
-  if (activate && m_viewCount)
-    if (lastActive)
-      wxDocManager::GetDocumentManager()->SetActiveView(lastActive, activate);
-    else
-      wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),activate);
+   if (oldWindowState == Qt::WindowMaximized)
+     showMaximized();
+   else
+     showNormal();
+ if (title.length() && title.at(title.length()-1) == '*')
+   title = title.left(title.length()-1);
+ wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
+ if (activate && m_viewCount)
+   if (lastActive)
+     wxDocManager::GetDocumentManager()->SetActiveView(lastActive, activate);
+   else
+     wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),activate);
 }
 
 void wxMDIChildFrame::SetTitle(QString &title)

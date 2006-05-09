@@ -180,16 +180,13 @@ void wxApp::customEvent(QEvent *e)
 void wxApp::onUpdateUI()
 {
 //  QAction* act;
-  QWidget *focView; //, *fw;
+  QWidget *focView;
   char **argv=qApp->argv();
 
-        if (appExit /*deletingMainFrame*/)
-                return;
+  if (appExit /*deletingMainFrame*/)
+    return;
 
-        inUpdateUI = true;
-
- /* for (act = actionList.first(); act; act = actionList.next())
-    act->enable = false;*/
+  inUpdateUI = true;
 
   UpdateUI();
   if (m_appWindow)
@@ -199,15 +196,12 @@ void wxApp::onUpdateUI()
   if (focView) {
     ((wxView*)focView)->GetParentFrame()->UpdateUI();
     ((wxView*)focView)->UpdateUI();
-        }
+  }
 
-        if (!cmdLineEvaluated && wxTheApp->argc > 1) {
-                cmdLineEvaluated = true;
-//    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),QString(argv[0])+" "+QString(argv[1]),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-//    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),QString("CWD = ")+QDir::currentDirPath(),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-                wxTheApp->OpenDocumentFile(argv[1]);
-        }
-
+  if (!cmdLineEvaluated && wxTheApp->argc > 1) {
+          cmdLineEvaluated = true;
+          wxTheApp->OpenDocumentFile(argv[1]);
+  }
 }
 
 wxView *wxApp::activeView() {
@@ -291,14 +285,8 @@ bool wxDocument::OnCloseDocument()
 // deleted.
 bool wxDocument::DeleteAllChildFrames()
 {
-  wxMDIChildFrame *chf;
-  for (int i=0; i<m_docChildFrames.size(); i++) {
-    chf = m_docChildFrames.at(i);
-    m_docChildFrames.removeAt(i);
-    chf->deleteLater();
-    if (!wxDocManager::GetDocumentManager()->GetActiveDocument())
-      return true;
-  }
+  while (m_docChildFrames.size())
+    m_docChildFrames.takeAt(0)->deleteLater();
   return true;
 }
 
@@ -1027,13 +1015,15 @@ void wxDocManager::OnUpdatePreview(wxUpdateUIEvent& event)
 
 wxView *wxDocManager::GetActiveView()
 {
-    if (m_activeView)
-        return m_activeView;
+  if (m_docs.isEmpty())
+    return 0;
+  if (m_activeView)
+    return m_activeView;
   if (m_docs.count() == 1) {
-        wxDocument* doc = (wxDocument*) m_docs.first();
-        return doc->GetFirstView();
-    }
-    return (wxView *) NULL;
+    wxDocument* doc = (wxDocument*) m_docs.first();
+    return doc->GetFirstView();
+  }
+  return 0;
 }
 
 
@@ -1220,11 +1210,13 @@ bool wxDocManager::FlushDoc(wxDocument *WXUNUSED(doc))
 
 wxDocument *wxDocManager::GetActiveDocument()
 {
-    wxView *view = GetActiveView();
-    if (view)
-        return view->GetDocument();
-    else
-        return (wxDocument *) NULL;
+  if (m_docs.isEmpty())
+    return 0;
+  wxView *view = GetActiveView();
+  if (view)
+    return view->GetDocument();
+  else
+    return 0;
 }
 
 // Make a default document name

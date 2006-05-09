@@ -5490,7 +5490,7 @@ void CExecView::UpdateUI()
   OnUpdateShowComments(LBaseData->toggleCommentsActionPtr);
   OnUpdateNull(LBaseData->nullActionPtr);
   OnUpdatePlus(LBaseData->additionActionPtr);
-        OnUpdateOrd(LBaseData->ordActionPtr);
+  OnUpdateOrd(LBaseData->ordActionPtr);
 
   OnUpdateDbgStart(LBaseData->DbgActionPtr);
   OnUpdateDbgStepNext(LBaseData->DbgStepNextActPtr);
