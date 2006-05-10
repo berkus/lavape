@@ -103,7 +103,7 @@ CWizardView::CWizardView(QWidget* parent, wxDocument* doc)
   myTree = (CLavaPEView*)((CFormFrame*)GetParentFrame())->viewR;
 }
 
-void CWizardView::setFont(const QFont& font)
+void CWizardView::SetFont(const QFont& font)
 {
   CLavaBaseView::setFont(font);
   int pageI = 0;
@@ -118,6 +118,7 @@ void CWizardView::setFont(const QFont& font)
     pageI = wizard->currentIndex();
     delete wizard;
     wizard = new CLavaPEWizard(synEl, FormDECL, this, guibox);
+    wizard->setFont(font);
     wizard->setModified(mod);
     myScrv->MaxBottomRight = wizard->rect();
     Resize();

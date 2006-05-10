@@ -3425,6 +3425,7 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
           }
           else
             ((LavaDECL*)hint->CommandData1)->WorkFlags.INCL(selAfter);
+          SetErrAndCom((CTreeItem*)Tree->currentItem());
           break;
         default: ;
       }
@@ -4478,6 +4479,8 @@ void CLavaPEView::OnComment()
   if (item) {
     data = (CMainItemData*)item->getItemData();
     pComment = new CComment(this);
+    pComment->trailing_comment->hide();
+    pComment->inline_comment->hide();
 
     if (data->type == TIType_DECL) {
       ptrComment = (*(LavaDECL**)data->synEl)->DECLComment.ptr;
@@ -4511,8 +4514,8 @@ void CLavaPEView::OnComment()
     if (ptrComment && ptrComment->Comment.l) {
       //pComment->inline_comment->setChecked(false);
       //pComment->trailing_comment->setChecked(false);
-      pComment->trailing_comment->hide();
-      pComment->inline_comment->hide();
+      //pComment->trailing_comment->hide();
+      //pComment->inline_comment->hide();
       //pComment->m_inline = ptrComment->PrintFlags.Contains(inLineComment);
       //pComment->m_trailing = ptrComment->PrintFlags.Contains(trailingComment);
       pComment->text->setPlainText(ptrComment->Comment.c);
@@ -4541,6 +4544,9 @@ void CLavaPEView::OnComment()
     else
       delete pComment;
   }
+  CUtilityView* bar = ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView;
+  bar->SetTab(tabComment);
+  bar->show();
 
 }
 

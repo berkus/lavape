@@ -61,7 +61,7 @@ public:
   QPushButton* resetButton;
   QPushButton* applyButton;
   QPushButton* helpButton;
-  virtual void setFont(const QFont& font);
+  virtual void SetFont(const QFont& font);
 public slots:
   void Apply();
   void Reset();

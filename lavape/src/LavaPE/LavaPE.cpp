@@ -36,6 +36,7 @@
 #include "LavaPEFrames.h"
 #include "LavaPEDoc.h"
 #include "LavaPEView.h"
+#include "LavaPEWizard.h"
 #include "ExecFrame.h"
 #include "FindRefsBox.h"
 #include "SylTraversal.h"
@@ -472,7 +473,10 @@ void CLavaPEApp::OnChooseTreeFont()
             || view->inherits("CVTView")
             || view->inherits("CWizardView")
             || view->inherits("CInclView"))
-          view->setFont(LBaseData.m_TreeFont);
+          if (view->inherits("CWizardView"))
+            ((CWizardView*)view)->SetFont(LBaseData.m_TreeFont);
+          else
+            view->setFont(LBaseData.m_TreeFont);
       }
     }
     saveSettings();
