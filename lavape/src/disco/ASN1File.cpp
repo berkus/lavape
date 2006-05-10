@@ -23,6 +23,7 @@
 #include "UNIX.h"
 #include "Halt.h"
 #include "qapplication.h"
+#include <QAbstractSocket>
 
 #include <sys/stat.h>
 #pragma hdrstop
@@ -266,7 +267,7 @@ ASN1InSock::~ASN1InSock ()
 
 {
   if (bufferPtr) {
-    fildes->close();
+    fildes->abort();
     delete [] bufferPtr;
   }
 } // END OF ~ASN1InFile
@@ -291,7 +292,7 @@ ASN1OutSock::~ASN1OutSock ()
   flush();
 
   if (bufferPtr) {
-    fildes->close();
+    fildes->abort();
     delete [] bufferPtr;
   }
 } // END OF ~ASN1OutFile

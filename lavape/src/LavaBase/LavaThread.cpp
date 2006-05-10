@@ -46,9 +46,9 @@ CLavaThread::CLavaThread(CLavaBaseDoc* docu)
 
 CLavaThread::~CLavaThread()
 {
-  terminate(); //(*pContExecEvent)--;
-  wait();
-  delete pContExecEvent;
+  //terminate(); //(*pContExecEvent)--;
+  //wait();
+  //delete pContExecEvent;
 }
 
 CThreadData::CThreadData(CLavaThread *thr)

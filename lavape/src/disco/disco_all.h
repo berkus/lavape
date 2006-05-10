@@ -96,6 +96,7 @@
 #include <QScrollBar>
 #include <QTextCursor>
 #include <QSignalMapper>
+#include <QAbstractSocket>
 
 #include <string.h>
 //#include <stdlib.h>
