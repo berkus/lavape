@@ -179,6 +179,7 @@ void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bo
         && (!skipServices || (decl->DeclType != Interface))) {
       listItem = new CComboBoxItem(/*LBaseData->BasicNames[it],*/ TID(IDTable.BasicTypesID[it], incl));
       cbox->addItem(QString(LBaseData->BasicNames[it]),QVariant::fromValue(listItem));
+      delete listItem;
     }
   }
   SortCombo(cbox);

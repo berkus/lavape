@@ -165,6 +165,7 @@ void CTreeItem::SetItemMask(int maskIndex) {
   nPix = new QIcon(*mPix);
   delPix = true;
   setIcon(0, *nPix);
+  delete mPix;
 }
 
 CTreeItem* CTreeItem::nextSibling()

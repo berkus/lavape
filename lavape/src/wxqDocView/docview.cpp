@@ -2036,6 +2036,9 @@ wxHistory::~wxHistory()
     for (i = 0; i < m_historyN; i++)
         delete m_history[i];
     delete [] m_history;
+    for (i = 0; i < m_historyN; i++)
+        delete m_actions[i];
+    delete [] m_actions;
 
 }
 

@@ -810,6 +810,8 @@ CLavaPEApp::~CLavaPEApp()
   FindList.Destroy();
   for (int i = 0; LavaIcons[i] != 0; i++)
     delete LavaIcons[i];
+  for (int i = 0; LavaPixmaps[i] != 0; i++)
+    delete LavaPixmaps[i];
   if (debugThread.workSocket)
     debugThread.workSocket->abort();
 //  debugThread.wait();

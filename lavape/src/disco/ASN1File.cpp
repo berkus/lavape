@@ -229,7 +229,7 @@ void ASN1OutSock::error (QString msgText)
   skip = true;
 } // END OF error
 
-ASN1InSock::ASN1InSock (QTcpSocket *socket, bool silent)
+ASN1InSock::ASN1InSock (QTcpSocket *socket, bool silent) : ASN1()
 {
   BufferSize = 20000;
   Silent = silent;
@@ -245,7 +245,7 @@ ASN1InSock::ASN1InSock (QTcpSocket *socket, bool silent)
 } // END OF ASN1InFile
 
 
-ASN1OutSock::ASN1OutSock (QTcpSocket *socket, bool silent)
+ASN1OutSock::ASN1OutSock (QTcpSocket *socket, bool silent) : ASN1()
 {
   IO.INIT();
 
@@ -319,10 +319,12 @@ void ASN1OutSock::putChar (const unsigned char& c)
 void ASN1InSock::getChar (unsigned char& c)
 
 {
+  bool ok;
+
   if (bufferPos == (unsigned)charsRead) {
     fildes->waitForReadyRead(-1);
-    charsRead = fildes->read(bufferPtr,bufferSize);
-    if (charsRead <= 0) {
+    ok = charsRead = fildes->read(bufferPtr,bufferSize);
+    if (!ok || charsRead <= 0) {
       error("getChar: UNIX.read_TCP");
       return;
     }
