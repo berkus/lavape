@@ -146,9 +146,20 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   LBaseData.m_lfDefFormFont = settings.value(szFormFont,QVariant(QApplication::font().toString())).toString();
   LBaseData.m_FormFont.fromString(LBaseData.m_lfDefFormFont);
 
+  LBaseData.m_lfDefFormLabelFont = settings.value(szFormLabelFont).toString();
+  if (!LBaseData.m_lfDefFormLabelFont.isEmpty()) {
+    LBaseData.m_FormLabelFont.fromString(LBaseData.m_lfDefFormLabelFont);
+    LBaseData.useLabelFont = true;
+  }
+  else {
+    LBaseData.m_FormLabelFont = LBaseData.m_FormFont;
+    LBaseData.m_lfDefFormLabelFont = LBaseData.m_lfDefFormFont;
+    LBaseData.useLabelFont = false;
+  }
+/*
   LBaseData.m_lfDefFormLabelFont = settings.value(szFormLabelFont,QVariant(QApplication::font().toString())).toString();
   LBaseData.m_FormLabelFont.fromString(LBaseData.m_lfDefFormLabelFont);
-
+*/
   LBaseData.m_lfDefTreeFont = settings.value(szTreeFont,QVariant(QApplication::font().toString())).toString();
   LBaseData.m_TreeFont.fromString(LBaseData.m_lfDefTreeFont);
 
@@ -170,7 +181,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 
   LavaPixmaps[ 0] = new QPixmap((const char**)PX_basicatt);;
   LavaPixmaps[ 1] = new QPixmap((const char**)PX_BasicType);
-  LavaPixmaps[ 2] = new QPixmap((const char**)PX_paramatt); 
+  LavaPixmaps[ 2] = new QPixmap((const char**)PX_paramatt);
   LavaPixmaps[ 3] = new QPixmap((const char**)PX_patpara);
   LavaPixmaps[ 4] = new QPixmap((const char**)PX_classimpl);
   LavaPixmaps[ 5] = new QPixmap((const char**)PX_classAttr);
@@ -417,7 +428,7 @@ void CLavaPEApp::OnPopcontext()
         decl = doc->IDTable.GetDECL(back->id);
         if (!decl)
         decl = doc->IDTable.GetDECL(back->parentID);
-        if (decl) 
+        if (decl)
           item = ((CLavaPEView*)backView)->BrowseTree(decl, (CTreeItem*)((CLavaPEView*)backView)->Tree->RootItem);
         else
           item = 0;
@@ -1207,7 +1218,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
         else
           if (!popUp)
             view->ActivateView(true);
-        if (popUp) 
+        if (popUp)
           item = ((CLavaPEView*)view)->BrowseTree(formDECL, (CTreeItem*)((CLavaPEView*)view)->Tree->RootItem, enumID);
         else
           item = ((CLavaPEView*)view)->BrowseTree(declsel, (CTreeItem*)((CLavaPEView*)view)->Tree->RootItem, enumID);
@@ -1228,7 +1239,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
               ((CLavaPEView*)view)->ExpandItem(item);
               ((CLavaPEView*)view)->Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
             }
-          else 
+          else
             ((CLavaPEView*)view)->Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
         }
         return true;

@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
+    <width>460</width>
     <height>210</height>
    </rect>
   </property>
@@ -38,8 +38,8 @@
    </property>
    <property name="minimumSize" >
     <size>
-     <width>37</width>
-     <height>25</height>
+     <width>43</width>
+     <height>30</height>
     </size>
    </property>
    <property name="maximumSize" >
@@ -76,8 +76,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>360</width>
-     <height>19</height>
+     <width>460</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="windowMenu" >
