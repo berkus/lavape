@@ -799,6 +799,9 @@ CLavaPEApp::~CLavaPEApp()
   FindList.Destroy();
   for (int i = 0; LavaIcons[i] != 0; i++)
     delete LavaIcons[i];
+  if (debugThread.workSocket)
+    debugThread.workSocket->abort();
+//  debugThread.wait();
 }
 
 void CLavaPEApp::saveSettings()

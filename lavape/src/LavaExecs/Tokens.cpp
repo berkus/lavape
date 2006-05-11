@@ -34,9 +34,7 @@ const unsigned MaxString = 1000;
 
 static bool __INITstarted=false;
 
-//QChar TOKENSTR[NoToken+1][MaxLenToken];
-QString TOKENSTR[NoToken+1];
-//QString *TOKENSTR;
+QString *TOKENSTR;
 
 static TToken iToken=TToken(0);
 
@@ -110,7 +108,6 @@ static void ATO (QString s)
 /**********************************************************************/
 /*           class constructor (the former "module body"):            */
 /**********************************************************************/
-//static QString TOSTR[NoToken+1];
 
 void Tokens_INIT ()
 {
@@ -125,7 +122,7 @@ void Tokens_INIT ()
     hashTable[i].lastEntry = 0;
   }
 
-//  TOKENSTR = &TOSTR;//new QString[NoToken+1];
+  TOKENSTR = new QString[NoToken+1];
 
   iToken = (TToken)0;
 

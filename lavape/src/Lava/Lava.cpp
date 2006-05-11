@@ -471,7 +471,9 @@ void CLavaApp::saveSettings()
 int CLavaApp::ExitInstance()
 {
   saveSettings();
-//  delete [] TOKENSTR;
+  delete [] TOKENSTR;
+  if (debugThread.workSocket)
+    debugThread.workSocket->abort();
   return 0;
 }
 

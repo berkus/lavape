@@ -293,9 +293,7 @@ enum TToken {
 }
 
 
-//extern QChar TOKENSTR[NoToken+1][MaxLenToken];
-extern LAVAEXECS_DLL QString TOKENSTR[NoToken+1];
-//extern LAVAEXECS_DLL QString *TOKENSTR;
+extern LAVAEXECS_DLL QString *TOKENSTR;
 extern unsigned priority[EndOfOperators];
 
 

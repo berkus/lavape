@@ -33,6 +33,7 @@ public:
     interpreterWaits = false;
     myDoc=0;
     listenSocket = 0;
+    workSocket = 0;
   }
   QString remoteIPAddress;
   quint16 remotePort;
@@ -53,12 +54,12 @@ public:
   virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc);
   virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc);
   ~CLavaPEDebugThread() {reset(true);}
+  void reset(bool final);
 
 protected:
   void checkBrkPnts0();
   void checkBrkPnts1();
   void checkBrkPnts2();
-  void reset(bool final);
 	void run();
 }; 
 
