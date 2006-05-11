@@ -46,9 +46,12 @@ CLavaThread::CLavaThread(CLavaBaseDoc* docu)
 
 CLavaThread::~CLavaThread()
 {
-  //terminate(); //(*pContExecEvent)--;
-  //wait();
-  //delete pContExecEvent;
+//  quit();
+//  terminate();
+//  pContExecEvent->release();
+
+//  wait();
+//  delete pContExecEvent;
 }
 
 CThreadData::CThreadData(CLavaThread *thr)
@@ -57,6 +60,6 @@ CThreadData::CThreadData(CLavaThread *thr)
 }
 /*
 CLavaThread *QThread::currentThread() {
-	return threadStg()->localData()->threadPtr; 
+	return threadStg()->localData()->threadPtr;
 }
 */

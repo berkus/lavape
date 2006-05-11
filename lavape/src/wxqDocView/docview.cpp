@@ -2117,15 +2117,16 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
     }
 }
 
+static DString ret;
 DString *wxHistory::GetHistoryItem(int i) const
 {
-    DString *s=new DString();
+//    DString *s=new DString();
 
     if ( i < m_historyN )
       return m_history[i];
 
 		QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("bad index in wxHistory::GetHistoryItem"),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-    return s;
+    return &ret;
 }
 
 void wxHistory::RemoveItemFromHistory(QString name)

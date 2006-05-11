@@ -35,8 +35,8 @@ const unsigned MaxString = 1000;
 static bool __INITstarted=false;
 
 //QChar TOKENSTR[NoToken+1][MaxLenToken];
-//QString TOKENSTR[NoToken+1];
-QString *TOKENSTR;
+QString TOKENSTR[NoToken+1];
+//QString *TOKENSTR;
 
 static TToken iToken=TToken(0);
 
@@ -110,11 +110,12 @@ static void ATO (QString s)
 /**********************************************************************/
 /*           class constructor (the former "module body"):            */
 /**********************************************************************/
+//static QString TOSTR[NoToken+1];
 
 void Tokens_INIT ()
 {
   unsigned i;
-  
+
   if (__INITstarted) return;
   __INITstarted = true;
 
@@ -124,10 +125,10 @@ void Tokens_INIT ()
     hashTable[i].lastEntry = 0;
   }
 
-  TOKENSTR = new QString[NoToken+1];
+//  TOKENSTR = &TOSTR;//new QString[NoToken+1];
 
   iToken = (TToken)0;
-  
+
   ATO(";");
   ATO("or");
   ATO("xor");
@@ -136,12 +137,12 @@ void Tokens_INIT ()
   ATO("not");
 
   ATO("=");
-  ATO("�=");
+  ATO("!=");
   ATO("<");
   ATO(">");
   ATO("<=");
   ATO(">=");
-  
+
   ATO("+");
   ATO("-");
   ATO("*");
@@ -238,7 +239,7 @@ void Tokens_INIT ()
   ATO("?");
   ATO("?");
   ATO("?");
-  
+
 // small initial letter:
   ATO("add");
   ATO("assert");
@@ -325,7 +326,7 @@ void Tokens_INIT ()
   ATO("ensures");
   ATO("implies");
   ATO("handler");
-  
+
   ATO("charConst");
   ATO("floatConst");
   ATO("hexConst");
@@ -381,7 +382,7 @@ void Tokens_INIT ()
   ATO("&lt;");
   ATO("&lt;=");
   ATO("&lt;&lt;");
- 
+
   ATO("end-of-file");
   ATO("no-Token");
 }

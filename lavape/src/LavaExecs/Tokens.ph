@@ -244,7 +244,7 @@ enum TToken {
   elseX_T,
   ifdef_T,
   FutureCONST5,
-  
+
   Callee_T,
   Comment_T,
   CompObj_T,
@@ -294,8 +294,8 @@ enum TToken {
 
 
 //extern QChar TOKENSTR[NoToken+1][MaxLenToken];
-//extern QString TOKENSTR[NoToken+1];
-extern LAVAEXECS_DLL QString *TOKENSTR;
+extern LAVAEXECS_DLL QString TOKENSTR[NoToken+1];
+//extern LAVAEXECS_DLL QString *TOKENSTR;
 extern unsigned priority[EndOfOperators];
 
 

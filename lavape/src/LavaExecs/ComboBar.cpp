@@ -92,13 +92,13 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
   m_ObjectsCtrl->show();
 
   /*???
-  m_TypesCtrl->listBox()->setVariableWidth(true);        
-  m_SetTypesCtrl->listBox()->setVariableWidth(true);  
-  //m_SignalsCtrl->listBox()->setVariableWidth(true);   
-  m_BasicTypesCtrl->listBox()->setVariableWidth(true);  
+  m_TypesCtrl->listBox()->setVariableWidth(true);
+  m_SetTypesCtrl->listBox()->setVariableWidth(true);
+  //m_SignalsCtrl->listBox()->setVariableWidth(true);
+  m_BasicTypesCtrl->listBox()->setVariableWidth(true);
   m_EnumsCtrl->listBox()->setVariableWidth(true);
-  m_NewCtrl->listBox()->setVariableWidth(true); 
-  m_SNewCtrl->listBox()->setVariableWidth(true); 
+  m_NewCtrl->listBox()->setVariableWidth(true);
+  m_SNewCtrl->listBox()->setVariableWidth(true);
   m_ObjectsCtrl->listBox()->setVariableWidth(true);
   m_SetObjectsCtrl->listBox()->setVariableWidth(true);
   m_AttachCtrl->listBox()->setVariableWidth(true);
@@ -164,7 +164,7 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
   connect (IDC_ButtonEnum, SIGNAL(clicked()), this, SLOT(OnButtonEnum()));
   connect (IDC_NewFunc, SIGNAL(clicked()), this, SLOT(OnNewFunc()));
   connect (IDC_NewPFunc, SIGNAL(clicked()), this, SLOT(OnNewPFunc()));
- 
+
 }
 
 void CComboBar::OnUpdate(LavaDECL *execDecl, bool externalHint)
@@ -233,7 +233,7 @@ void CComboBar::DeleteObjData(bool setCombo)
 }
 
 
-void CComboBar::OnSelendokComboObjects(int pos) 
+void CComboBar::OnSelendokComboObjects(int pos)
 {
   QVariant var;
 
@@ -249,7 +249,7 @@ void CComboBar::OnSelendokComboObjects(int pos)
     m_ObjectsCtrl->setCurrentIndex(0);
 }
 
-void CComboBar::OnSelendokComboCompObjects(int pos) 
+void CComboBar::OnSelendokComboCompObjects(int pos)
 {
   QVariant var;
 
@@ -261,12 +261,12 @@ void CComboBar::OnSelendokComboCompObjects(int pos)
     lastSelStr = m_CompaObjectsCtrl->itemText(pos);
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertObjRef(lastSelStr, data->IDs,false);
   }
-  else 
+  else
     m_CompaObjectsCtrl->setCurrentIndex(0);
 
 }
 
-void CComboBar::OnSelendokComboSetObjects(int pos) 
+void CComboBar::OnSelendokComboSetObjects(int pos)
 {
   QVariant var;
 
@@ -278,12 +278,12 @@ void CComboBar::OnSelendokComboSetObjects(int pos)
     lastSelStr = m_SetObjectsCtrl->itemText(pos);
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertObjRef(lastSelStr, data->IDs,false);
   }
-  else 
+  else
     m_SetObjectsCtrl->setCurrentIndex(0);
 }
 
 
-void CComboBar::OnSelendokComboEnums(int pos) 
+void CComboBar::OnSelendokComboEnums(int pos)
 {
   CHEEnumSelId* enumsel;
   LavaDECL* decl;
@@ -301,7 +301,7 @@ void CComboBar::OnSelendokComboEnums(int pos)
       if (decl && (decl->DeclDescType == EnumType)) {
         for (enumsel = (CHEEnumSelId*)((TEnumDescription*)decl->EnumDesc.ptr)->EnumField.Items.first;
              enumsel;
-             enumsel = (CHEEnumSelId*)enumsel->successor) {   
+             enumsel = (CHEEnumSelId*)enumsel->successor) {
           EnumMenu.addAction(enumsel->data.Id.c);
         }
         EnumsEnable = true;
@@ -321,7 +321,7 @@ void CComboBar::TrackEnum()
   EnumMenu.popup (button->mapToGlobal(QPoint(0, 0)) );
 }
 
-void CComboBar::OnButtonEnum() 
+void CComboBar::OnButtonEnum()
 {
   QPushButton* button = IDC_ButtonEnum;
   EnumMenu.popup (button->mapToGlobal(QPoint(0, 0)) );
@@ -357,14 +357,14 @@ void CComboBar::OnNewFunc()
     fn = myDoc->IDTable.GetRelSynFileName(id);
     AbsPathName(fn, myDoc->IDTable.DocDir);
     doc = (CPEBaseDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(fn.c);
-    if (doc) 
+    if (doc)
       destDECL = doc->IDTable.GetDECL(0, id.nID);
   }
   else {
     doc = myDoc;
     destDECL = FuncParentDecl;
   }
-  if (destDECL) 
+  if (destDECL)
     id.nID = doc->MakeFunc(destDECL, doc != myDoc, view);
   view->GetParentFrame()->Activate(true);
   if (id.nID > 0) {
@@ -376,7 +376,7 @@ void CComboBar::OnNewFunc()
 }
 
 
-void CComboBar::OnEnumMenu(QAction *action) 
+void CComboBar::OnEnumMenu(QAction *action)
 {
   lastSelStr = action->text();
   IDC_ComboEnums->setFocus();
@@ -384,7 +384,7 @@ void CComboBar::OnEnumMenu(QAction *action)
 }
 
 
-void CComboBar::OnSelendokComboSubObjects(int pos) 
+void CComboBar::OnSelendokComboSubObjects(int pos)
 {
   QVariant var;
 
@@ -396,18 +396,18 @@ void CComboBar::OnSelendokComboSubObjects(int pos)
     lastSelStr = m_SubObjectsCtrl->itemText(pos);
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertObjRef(lastSelStr, data->IDs,true);
   }
-  else 
+  else
     m_SubObjectsCtrl->setCurrentIndex(0);
 }
 
-void CComboBar::OnSelendokBasicTypes(int pos) 
+void CComboBar::OnSelendokBasicTypes(int pos)
 {
   LavaDECL* decl;
   m_BasicTypesCtrl = IDC_BasicTypes;
   pos = SelEndOKToStr(pos, m_BasicTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
-    if (onShowStatic) 
+    if (onShowStatic)
       showIFFuncs();
     else if (onShowSignals) {
       decl = myDoc->IDTable.GetDECL(lastSelTID);
@@ -447,18 +447,18 @@ void CComboBar::OnSelendokBasicTypes(int pos)
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
     IDC_ComboTypes->setCurrentIndex(0);
   }
-  else 
+  else
     m_BasicTypesCtrl->setCurrentIndex(0);
 }
 
-void CComboBar::OnSelendokCompaBTypes(int pos) 
+void CComboBar::OnSelendokCompaBTypes(int pos)
 {
   LavaDECL *decl;
   m_CompaBTypesCtrl = IDC_CompaBTypes;
   pos = SelEndOKToStr(pos, m_CompaBTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
-    if (onShowStatic) 
+    if (onShowStatic)
       showIFFuncs();
     else if (onShowSignals) {
       decl = myDoc->IDTable.GetDECL(lastSelTID);
@@ -494,22 +494,22 @@ void CComboBar::OnSelendokCompaBTypes(int pos)
       RightCombo = IDC_BasicTypes;
       ThirdCombo = IDC_StaticFuncs;
     }
-    else 
+    else
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
     IDC_CompaTypes->setCurrentIndex(0);
   }
-  else 
+  else
     m_CompaBTypesCtrl->setCurrentIndex(0);
 }
 
-void CComboBar::OnSelendokComboTypes(int pos) 
+void CComboBar::OnSelendokComboTypes(int pos)
 {
   LavaDECL *decl;
   m_TypesCtrl = IDC_ComboTypes;
   pos = SelEndOKToStr(pos, m_TypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
-    if (onShowStatic) 
+    if (onShowStatic)
       showIFFuncs();
     else if (onShowSignals) {
       decl = myDoc->IDTable.GetDECL(lastSelTID);
@@ -549,18 +549,18 @@ void CComboBar::OnSelendokComboTypes(int pos)
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
     IDC_BasicTypes->setCurrentIndex(0);
   }
-  else 
+  else
     m_TypesCtrl->setCurrentIndex(0);
 }
 
-void CComboBar::OnSelendokCompaTypes(int pos) 
+void CComboBar::OnSelendokCompaTypes(int pos)
 {
   LavaDECL *decl;
   m_CompaTypesCtrl = IDC_CompaTypes;
   pos = SelEndOKToStr(pos, m_CompaTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK) {
-    if (onShowStatic) 
+    if (onShowStatic)
       showIFFuncs();
     else if (onShowSignals) {
       decl = myDoc->IDTable.GetDECL(lastSelTID);
@@ -600,36 +600,36 @@ void CComboBar::OnSelendokCompaTypes(int pos)
       ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
     IDC_CompaBTypes->setCurrentIndex(0);
   }
-  else 
+  else
     m_CompaTypesCtrl->setCurrentIndex(0);
 }
 
 
-void CComboBar::OnSelendokComboSetTypes(int pos) 
+void CComboBar::OnSelendokComboSetTypes(int pos)
 {
   m_SetTypesCtrl = IDC_ComboSetTypes;
   pos = SelEndOKToStr(pos, m_SetTypesCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
-    m_SetTypesCtrl->setCurrentIndex(0); 
+  else
+    m_SetTypesCtrl->setCurrentIndex(0);
 }
 
 
-void CComboBar::OnSelendokComboFuncs(int pos) 
+void CComboBar::OnSelendokComboFuncs(int pos)
 { //Virtual functions
   m_VFuncsCtrl = IDC_ComboFuncs;
   pos = SelEndOKToStr(pos, m_VFuncsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
+  else
     m_VFuncsCtrl->setCurrentIndex(0);
 }
 
 
-void CComboBar::OnSelendokComboClassFuncs(int pos) 
+void CComboBar::OnSelendokComboClassFuncs(int pos)
 {
   QVariant var;
 
@@ -642,126 +642,126 @@ void CComboBar::OnSelendokComboClassFuncs(int pos)
     lastSelStr = m_ClassFuncsCtrl->itemText(pos);
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, idata->funcID, true, &idata->vtypeID);
   }
-  else 
+  else
     m_ClassFuncsCtrl->setCurrentIndex(0);
 }
 
 
-void CComboBar::OnSelendokComboBaseInis(int pos) 
+void CComboBar::OnSelendokComboBaseInis(int pos)
 {
   m_BaseInisCtrl = IDC_ComboBaseInis;
   pos = SelEndOKToStr(pos, m_BaseInisCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID, true);
-  else 
+  else
     m_BaseInisCtrl->setCurrentIndex(0);
 }
 
 
-void CComboBar::OnSelendokComboNew(int pos) 
+void CComboBar::OnSelendokComboNew(int pos)
 {
   m_NewCtrl = IDC_ComboNew;
   pos = SelEndOKToStr(pos, m_NewCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
+  else
     m_NewCtrl->setCurrentIndex(0);
 }
 
-void CComboBar::OnSelendokComboSNew(int pos) 
+void CComboBar::OnSelendokComboSNew(int pos)
 {
   m_SNewCtrl = IDC_ComboSNew;
   pos = SelEndOKToStr(pos, m_SNewCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
+  else
     m_SNewCtrl->setCurrentIndex(0);
 }
 
-void CComboBar::OnSelendokComboAttach(int pos) 
+void CComboBar::OnSelendokComboAttach(int pos)
 {
   m_AttachCtrl = IDC_ComboAttach;
   pos = SelEndOKToStr(pos, m_AttachCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
+  else
     m_AttachCtrl->setCurrentIndex(0);
 }
 
 
-void CComboBar::OnSelendokCOMBOCall(int pos) 
+void CComboBar::OnSelendokCOMBOCall(int pos)
 {
   m_CallIntCtrl = IDC_COMBOCall;
   pos = SelEndOKToStr(pos, m_CallIntCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
+  else
     m_CallIntCtrl->setCurrentIndex(0);
 }
 
 
-void CComboBar::OnSelendokCompoInterf(int pos) 
+void CComboBar::OnSelendokCompoInterf(int pos)
 {
   m_CompoObjIntCtrl = IDC_CompoInterf;
   pos = SelEndOKToStr(pos, m_CompoObjIntCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
+  else
     m_CompoObjIntCtrl->setCurrentIndex(0);
 }
 
 
-void CComboBar::OnSelendokStaticFuncs(int pos) 
+void CComboBar::OnSelendokStaticFuncs(int pos)
 {
   m_StaticFuncsCtrl = IDC_StaticFuncs;
   pos = SelEndOKToStr(pos, m_StaticFuncsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
-    m_StaticFuncsCtrl->setCurrentIndex(0);  
+  else
+    m_StaticFuncsCtrl->setCurrentIndex(0);
 }
 
 
 /*
-void CComboBar::OnSelendokCOMBOSignals(int pos) 
+void CComboBar::OnSelendokCOMBOSignals(int pos)
 {
   m_SignalsCtrl = IDC_COMBOSignals;
   pos = SelEndOKToStr(pos, m_SignalsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
+  else
     m_SignalsCtrl->setCurrentIndex(0);
 }
 */
 
 /*
-void CComboBar::OnSelendokComboUpcasts() 
+void CComboBar::OnSelendokComboUpcasts()
 {
   m_UpcastsCtrl = IDC_ComboUpcasts;
   int pos = SelEndOKToStr(m_UpcastsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
   if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
-  else 
+  else
     m_UpcastsCtrl->setCurrentIndex(0);
 }
 */
 
 /*
-void CComboBar::OnSelendokComboBasicUpcasts() 
+void CComboBar::OnSelendokComboBasicUpcasts()
 {
   m_BasicUpcastsCtrl = IDC_ComboBasicUpcasts;
   int pos = SelEndOKToStr(m_BasicUpcastsCtrl, &lastSelStr, &lastSelTID);
   lastOK = pos && (pos > 0);
-  if (lastOK) 
+  if (lastOK)
     ((CExecView*)wxDocManager::GetDocumentManager()->GetActiveView())->OnInsertRef(lastSelStr, lastSelTID);
   else
     m_BasicUpcastsCtrl->setCurrentIndex(0);
@@ -782,7 +782,7 @@ void CComboBar::RemoveLocals()
     var = m_ObjectsCtrl->itemData(pos);
     CFieldsItem *data = var.value<CFieldsItem*>();
     firstID = (CHE*)data->IDs.first;
-    myDoc->IDTable.GetVar(((TDOD*)firstID->data)->ID, idtype); 
+    myDoc->IDTable.GetVar(((TDOD*)firstID->data)->ID, idtype);
     if ((idtype == localID) || (idtype == noID)) {
       m_ObjectsCtrl->removeItem(pos);
       cnt--;
@@ -797,7 +797,7 @@ void CComboBar::RemoveLocals()
     CFieldsItem *data = var.value<CFieldsItem*>();
     firstID = (CHE*)data->IDs.first;
     if (firstID) {
-      if ((idtype == localID) || (idtype == noID)) { 
+      if ((idtype == localID) || (idtype == noID)) {
         m_SetObjectsCtrl->removeItem(pos);
         cnt--;
       }
@@ -831,7 +831,7 @@ void CComboBar::AddLocal(const TID& id, const DString& name, const TID& typeID, 
     accuName = name;
     typeDECL = myDoc->GetFinalMTypeAndContext(typeID, 0, con, 0);
     if (typeDECL) {
-      if (subst) 
+      if (subst)
         con.ContextFlags = SET(multiContext,-1);
       if (typeDECL->SecondTFlags.Contains(isSet)) {
         data = new CFieldsItem();
@@ -1119,7 +1119,7 @@ void CComboBar::SetCombos(bool setVar, bool hideCombo)
 }
 
 /* not used
-void CComboBar::ShowUpcasts(const TID& id, bool theTop)     
+void CComboBar::ShowUpcasts(const TID& id, bool theTop)
 //id is interface or implementation
 {
   LavaDECL* decl = myDoc->IDTable.GetDECL(id);
@@ -1131,7 +1131,7 @@ void CComboBar::ShowUpcasts(const TID& id, bool theTop)
       m_UpcastsCtrl->SetItemData(pos, MAKELONG(id.nID, id.nINCL));
     }
     cheID = (CHETID*)decl->Supports.first;
-    while (cheID) {     
+    while (cheID) {
       ShowUpcasts(cheID->data, false);
       cheID = (CHETID*)cheID->successor;
     }
@@ -1171,19 +1171,19 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
     data = vari.value<CFieldsItem*>();
     if (data && data->IDs.last) {
       lastDOD = (TDOD*)((CHE*)data->IDs.last)->data;
-      var = myDoc->IDTable.GetVar(lastDOD->ID, idtype); 
+      var = myDoc->IDTable.GetVar(lastDOD->ID, idtype);
       catComp = unknownCategory;
       if (var) {
         if (idtype == globalID) {
           memDECL = *(LavaDECL**)var;
           bContext = lastDOD->context;
-          if (memDECL->TypeFlags.Contains(trueObjCat)) 
+          if (memDECL->TypeFlags.Contains(trueObjCat))
             if (memDECL->TypeFlags.Contains(stateObject))
               catComp = stateObj;
-            else 
+            else
               if (memDECL->TypeFlags.Contains(sameAsSelf))
                 catComp = sameAsSelfObj;
-              else 
+              else
                 catComp = valueObj;
           myDoc->MemberTypeContext(memDECL, bContext,0);
           fmvType = myDoc->GetFinalMVType(memDECL->RefID, memDECL->inINCL, bContext, cat, 0);
@@ -1203,7 +1203,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
         if (catComp == unknownCategory)
           catComp = cat;
         if ((forHandle || fmvType) && (forCopy || catComp == category || catComp == unknownCategory || category == unknownCategory)) {
-          if (forHandle || !forHandle && 
+          if (forHandle || !forHandle &&
               (   (( forInput || forCopy)
                               && compatibleTypes(ckd, fmvType, bContext, decl, compContext))
                || ((!forInput || forCopy)
@@ -1242,7 +1242,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
         m_ButtonEnum = IDC_ButtonEnum;
         for (enumsel = (CHEEnumSelId*)((TEnumDescription*)enumDecl->EnumDesc.ptr)->EnumField.Items.first;
              enumsel;
-             enumsel = (CHEEnumSelId*)enumsel->successor) {   
+             enumsel = (CHEEnumSelId*)enumsel->successor) {
           EnumMenu.addAction(enumsel->data.Id.c);
         }
         showEnums = true;
@@ -1261,7 +1261,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
         m_CompaObjectsCtrl->setEnabled(true);
       LeftCombo = IDC_ComboCompObjects;
     }
-    else 
+    else
       m_CompaObjectsCtrl->setEnabled(false);
     if (showEnums) {
       EnumsShow = true;
@@ -1314,15 +1314,15 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
   ResetComboItems(m_CompaBTypesCtrl);
   /*Q
   pos = m_CompaTypesCtrl->GetCount();
-  while (pos > 1) 
+  while (pos > 1)
     pos = m_CompaTypesCtrl->DeleteString(1);
   pos = m_CompaBTypesCtrl->GetCount();
-  while (pos > 1) 
+  while (pos > 1)
     pos = m_CompaBTypesCtrl->DeleteString(1);
   */
   if (!decl)
     return;
- 
+
   cnt = m_TypesCtrl->count();
   for (pos = 1; pos < cnt; pos++) {
     /*
@@ -1359,7 +1359,7 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
       m_CompaTypesCtrl->setEnabled(true);
     LeftCombo = IDC_CompaTypes;
   }
-  else 
+  else
     m_CompaTypesCtrl->setEnabled(false);
   if (withBTypes) {
     m_CompaBTypesCtrl->show();
@@ -1369,7 +1369,7 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
       m_CompaBTypesCtrl->setEnabled(true);
     RightCombo = IDC_CompaBTypes;
   }
-  else 
+  else
     m_CompaBTypesCtrl->setEnabled(false);
 }
 
@@ -1404,14 +1404,14 @@ void CComboBar::ShowSubObjects(LavaDECL* decl, const CContext &context)
   }
   else
     decl = myDoc->GetTypeAndContext(mDECL, con);
-  if (mDECL->TypeFlags.Contains(substitutable)) 
+  if (mDECL->TypeFlags.Contains(substitutable))
     con.ContextFlags = SET(multiContext,-1);
   if (decl) {
     CExecFields *execF = new CExecFields(this, decl, con, true, &accuName, &accuIDs);
     delete execF;
-  }  
+  }
   lastCombo = invalidateLast;
-  if (m_SubObjectsCtrl->count() == 1) 
+  if (m_SubObjectsCtrl->count() == 1)
     ShowCombos(disableCombo);
   else {
     SetCombos(true, true);
@@ -1433,7 +1433,7 @@ void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface
   ResetComboItems(m_BaseInisCtrl);
   /*Q
   int pos = m_BaseInisCtrl->GetCount();
-  while (pos > 1) 
+  while (pos > 1)
     pos = m_BaseInisCtrl->DeleteString(1);
   */
   decl = myDoc->IDTable.GetDECL(id);
@@ -1442,7 +1442,7 @@ void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface
     return;
   for (che = (CHE*)decl->NestedDecls.first; che; che = (CHE*)che->successor) {
     elDECL = (LavaDECL*)che->data;
-    if ((elDECL->DeclType == Function) 
+    if ((elDECL->DeclType == Function)
         && !elDECL->SecondTFlags.Contains(funcImpl)
         && elDECL->TypeFlags.Contains(isInitializer)) {
       item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
@@ -1458,14 +1458,14 @@ void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface
   lastCombo = invalidateLast;
 }
 
-void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic, bool showSignals) 
+void CComboBar::ShowClassFuncs(CheckData &ckd, LavaDECL* decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic, bool showSignals)
 {
   SetCombos(true, true);
   showClassFuncs(ckd, m_VFuncsCtrl, decl, signalDecl, callCtx, withStatic, showSignals);
 
 }
 
-void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic, bool showSignals) 
+void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* decl, LavaDECL* signalDecl, const CContext &callCtx, bool withStatic, bool showSignals)
 //decl is the final static real type (interface or implementation)
 {
   CHETVElem* El;
@@ -1578,7 +1578,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
   if (FuncParentDecl->DeclType == Impl)
     NewPFuncEnable = true;
   else
-    if (SelfTypeDECL->Supports.first && (((CHETID*)SelfTypeDECL->Supports.first)->data == TID(FuncParentDecl->OwnID,FuncParentDecl->inINCL))) 
+    if (SelfTypeDECL->Supports.first && (((CHETID*)SelfTypeDECL->Supports.first)->data == TID(FuncParentDecl->OwnID,FuncParentDecl->inINCL)))
       NewPFuncEnable = true;
     else
       NewPFuncEnable = false;
@@ -1683,7 +1683,7 @@ void CComboBar::showIFFuncs()
   while (decl) {
     for (che = (CHE*)decl->NestedDecls.first; che; che = (CHE*)che->successor) {
       elDECL = (LavaDECL*)che->data;
-      if ((elDECL->DeclType == Function) 
+      if ((elDECL->DeclType == Function)
         && !elDECL->SecondTFlags.Contains(funcImpl)
         && elDECL->TypeFlags.Contains(isStatic)) {
           item = new CComboBoxItem(TID(elDECL->OwnID, elDECL->inINCL));
@@ -1725,7 +1725,7 @@ bool CComboBar::IsInBox(QComboBox* combo, const DString& name, int id, int incl,
   for (pos = 1; (pos < cnt) && !inBox; pos++) {
     var = combo->itemData(pos);
     item = var.value<CComboBoxItem*>();
-    if ((item->itemData().nID == id) && (item->itemData().nINCL == incl)) 
+    if ((item->itemData().nID == id) && (item->itemData().nINCL == incl))
       inBox = true;
     else {
       //istr.Reset(combo->GetLBTextLen(pos));
@@ -1775,7 +1775,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
   while (cheS ) {
     if (SelfTypeDECL->Supports.first && (((CHETID*)SelfTypeDECL->Supports.first)->data == cheS->data)) {
       che = (CHE*)SelfTypeDECL->NestedDecls.first;
-      while (che) { 
+      while (che) {
         cheDECL = (LavaDECL*)che->data;
         if ( (cheDECL->DeclType == Function)
             && !cheDECL->TypeFlags.Contains(isInitializer)
@@ -1805,7 +1805,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
       che = (CHE*)inDECL->NestedDecls.first;
       while (che) {
         cheDECL = (LavaDECL*)che->data;
-        if ( (cheDECL->DeclType == Function) 
+        if ( (cheDECL->DeclType == Function)
              && !cheDECL->TypeFlags.Contains(isInitializer)
              && !cheDECL->TypeFlags.Contains(isStatic)
              && (cheDECL->op == OP_noOp)) {
@@ -1832,7 +1832,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
               }
               else {
                 item = new CComboBoxItem(TID(cheDECL->OwnID, cheDECL->inINCL));
-                funcBox->addItem(QString(cheDECL->LocalName.c),QVariant::fromValue(item));              
+                funcBox->addItem(QString(cheDECL->LocalName.c),QVariant::fromValue(item));
               }
             }
           }
@@ -1859,7 +1859,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
               && (showSignals == ElDECL->SecondTFlags.Contains(isLavaSignal))
               && (!signalDecl || slotFunction(ckd, ElDECL, callCtx, signalDecl,signalCtx))
               && (!ElDECL->TypeFlags.Contains(isProtected) || allowProtected)
-              && !ElDECL->TypeFlags.Contains(isInitializer) 
+              && !ElDECL->TypeFlags.Contains(isInitializer)
               && !IsInBox(funcBox, ElDECL->LocalName, ElDECL->OwnID, ElDECL->inINCL, sameName)) {
             if (sameName) {
               item = new CComboBoxItem(TID(ElDECL->OwnID, ElDECL->inINCL));
@@ -1934,7 +1934,7 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
   setClassName = false;
   switch (elType) {
   case Function:
-    if (elDef->TypeFlags.Contains(isInitializer)) 
+    if (elDef->TypeFlags.Contains(isInitializer))
       if ( (elDef->ParentDECL->DeclType == Interface)
           && !elDef->ParentDECL->TypeFlags.Contains(isAbstract)) {
         combo = Bar->m_NewCtrl;
@@ -1944,7 +1944,7 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
         //pMax2 = &maxCallW;
       }
     break;
-  case Interface: 
+  case Interface:
     if (!Bar->myDoc->TypeForMem(Bar->SelfTypeDECL, elDef, 0)) {
       combo = Bar->m_TypesCtrl;
       //pMax = &maxTW;
@@ -1989,11 +1989,11 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
     if (Bar->myDECL && Bar->myDECL->FullName.l) {
       Label = LBaseData->calcRelName (elDef->FullName, Bar->myDECL->FullName);
       if (setClassName && !Label.Contains(ddppkt,1,loc)) {
-        Label.Insert( ddppkt, 0); 
+        Label.Insert( ddppkt, 0);
         Label.Insert( elDef->ParentDECL->LocalName, 0);
       }
     }
-    else 
+    else
       Label = elDef->FullName;
     if (elDef->DeclType == VirtualType) {
       Label.Insert(lthen, 0);
@@ -2001,13 +2001,16 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
     }
     item = new CComboBoxItem(TID(elDef->OwnID, incl));
     combo->addItem(QString(Label.c),QVariant::fromValue(item));//sort#
+    delete item;
     if (combo2) {
       item = new CComboBoxItem(item->itemData());
       combo2->addItem(QString(Label.c),QVariant::fromValue(item));//sort#
+      delete item;
     }
     if (combo3) {
       item = new CComboBoxItem(item->itemData());
       combo3->addItem(QString(Label.c),QVariant::fromValue(item));//sort#
+      delete item;
     }
   }
 }
@@ -2026,9 +2029,9 @@ CExecFields::CExecFields(CComboBar* bar, LavaDECL* startDECL, const CContext &co
   Bar = bar;
   CContext con = context;
   Bar->myDoc->NextContext(startDECL, con);
-  if (subO) 
+  if (subO)
     FieldList = Bar->m_SubObjectsCtrl;
-  else 
+  else
     FieldList = Bar->m_ObjectsCtrl;
   maxW = 0;
   maxSetW = 0;
@@ -2075,7 +2078,7 @@ bool CExecFields::SameField(TDODC& IDs1, TDODC& IDs2, bool& replace)
   replace = false;
   while (che1 && che2) {
     if ( ( ((TDOD*)che1->data)->ID.nID != ((TDOD*)che2->data)->ID.nID)
-         || ( ((TDOD*)che1->data)->ID.nINCL != ((TDOD*)che2->data)->ID.nINCL)) 
+         || ( ((TDOD*)che1->data)->ID.nINCL != ((TDOD*)che2->data)->ID.nINCL))
       if ( Bar->myDoc->IDTable.IsAnc(((TDOD*)che1->data)->ID, 0, ((TDOD*)che2->data)->ID, 0)) {
         replace = true;
         return false;
@@ -2101,7 +2104,7 @@ void CExecFields::AddToBox(LavaDECL** pdecl, DString& name, QComboBox* fieldList
   data->IDs = *pAccuIDs;
   if (pdecl)
     data->QName = (*pdecl)->FullName;
-  
+
   pos = fieldList->findText(QString(name.c));
   if (pos >= 0) {
     fdata = fieldList->itemData(pos).value<CFieldsItem*>();
@@ -2129,13 +2132,13 @@ void CExecFields::AddToBox(LavaDECL** pdecl, DString& name, QComboBox* fieldList
       }
     }
   }
-  if (found) 
+  if (found)
     delete data;
-  else 
+  else
     fieldList->addItem(QString(name.c),QVariant::fromValue(data));//sort#
 }
 
-void CExecFields::OnField(LavaDECL **pdecl, DString accuName, TDODC accuIDs, 
+void CExecFields::OnField(LavaDECL **pdecl, DString accuName, TDODC accuIDs,
                           TIDs typeIDs, const CContext &context)
 {
   DString nAccuName;
@@ -2164,17 +2167,17 @@ void CExecFields::OnField(LavaDECL **pdecl, DString accuName, TDODC accuIDs,
   CContext con = context;
   Bar->myDoc->MemberTypeContext(*pdecl, con,0);
   nnEl = Bar->myDoc->GetFinalMTypeAndContext((*pdecl)->RefID, (*pdecl)->inINCL, con, 0);
-  if ((*pdecl)->TypeFlags.Contains(substitutable)) 
+  if ((*pdecl)->TypeFlags.Contains(substitutable))
     con.ContextFlags = SET(multiContext,-1);
   if (nAccuName.l && (nAccuName != pkt))
     AddToBox(pdecl, nAccuName, FieldList);
   if (Bar->m_SetObjectsCtrl && nnEl && nnEl->SecondTFlags.Contains(isSet))
     AddToBox(pdecl, nAccuName, Bar->m_SetObjectsCtrl);
-  if (nnEl) 
+  if (nnEl)
     OnType(nnEl, nAccuName, accuIDs, typeIDs, con);
 }
 
-void CExecFields::OnType(LavaDECL *decl, DString accuName, TDODC accuIDs, 
+void CExecFields::OnType(LavaDECL *decl, DString accuName, TDODC accuIDs,
                          TIDs typeIDs, const CContext &context)
 {
   CHE *inCheEl;
@@ -2197,13 +2200,13 @@ void CExecFields::OnType(LavaDECL *decl, DString accuName, TDODC accuIDs,
     OnSupports(decl, accuName, accuIDs, typeIDs, context);
 
     if ((Bar->SelfTypeDECL->DeclType != Interface)
-        && Bar->SelfTypeDECL->Supports.first 
+        && Bar->SelfTypeDECL->Supports.first
         && (((CHETID*)Bar->SelfTypeDECL->Supports.first)->data == TID(decl->OwnID, decl->inINCL))) {
       for (inCheEl = (CHE*)Bar->SelfTypeDECL->NestedDecls.first; inCheEl;
-           inCheEl = (CHE*)inCheEl->successor) 
-        if ( (( ((LavaDECL*)inCheEl->data)->DeclType == Attr)  || 
-              ( ((LavaDECL*)inCheEl->data)->DeclType == IAttr)  || 
-              ( ((LavaDECL*)inCheEl->data)->DeclType == OAttr)  ))            
+           inCheEl = (CHE*)inCheEl->successor)
+        if ( (( ((LavaDECL*)inCheEl->data)->DeclType == Attr)  ||
+              ( ((LavaDECL*)inCheEl->data)->DeclType == IAttr)  ||
+              ( ((LavaDECL*)inCheEl->data)->DeclType == OAttr)  ))
           OnField((LavaDECL**)&inCheEl->data, accuName, accuIDs, typeIDs, context);
     }
 //    bool inOwn = Bar->myDoc->IDTable.IsAn(Bar->SelfTypeDECL, TID(decl->OwnID,decl->inINCL), 0);
@@ -2218,8 +2221,8 @@ void CExecFields::OnType(LavaDECL *decl, DString accuName, TDODC accuIDs,
     }*/
     for (inCheEl = (CHE*)decl->NestedDecls.first; inCheEl;
          inCheEl = (CHE*)inCheEl->successor ) {
-      if ( (( ((LavaDECL*)inCheEl->data)->DeclType == Attr)  || 
-            ( ((LavaDECL*)inCheEl->data)->DeclType == IAttr)  || 
+      if ( (( ((LavaDECL*)inCheEl->data)->DeclType == Attr)  ||
+            ( ((LavaDECL*)inCheEl->data)->DeclType == IAttr)  ||
             ( ((LavaDECL*)inCheEl->data)->DeclType == OAttr)  )
             ) {
         if (inOwn || !((LavaDECL*)inCheEl->data)->TypeFlags.Contains(isProtected))
@@ -2230,7 +2233,7 @@ void CExecFields::OnType(LavaDECL *decl, DString accuName, TDODC accuIDs,
 }
 
 
-void CExecFields::OnSupports(LavaDECL *decl, DString accuName, TDODC accuIDs, TIDs typeIDs,  
+void CExecFields::OnSupports(LavaDECL *decl, DString accuName, TDODC accuIDs, TIDs typeIDs,
                              const CContext &context)
 {
   if (decl->DeclType == Function)// && !decl->SecondTFlags.Contains(funcImpl))
@@ -2240,7 +2243,7 @@ void CExecFields::OnSupports(LavaDECL *decl, DString accuName, TDODC accuIDs, TI
   CContext con = context; //!!!
   for (cheSup = (CHETID*)decl->Supports.first; cheSup; cheSup = (CHETID*)cheSup->successor) {
     inDECL = Bar->myDoc->GetFinalMTypeAndContext(cheSup->data, decl->inINCL, con, 0);
-    if (inDECL)  
+    if (inDECL)
       OnType(inDECL, accuName, accuIDs, typeIDs, con);
   }
 }

@@ -1,6 +1,10 @@
 #SHELL=/usr/bin/env sh
 SHELL=/bin/sh
 
+ifeq ($(QTDIR),)
+QTDIR=/usr/lib/qt
+endif
+
 DBG=-g
 
 ph_files=$(wildcard *.ph)
@@ -114,9 +118,6 @@ endif
 ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QTDIR)/include -I$(QTDIR)/include/Qt -I$(QTDIR)/include/QtCore -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/QtNetwork
 
 asscli=-lqassistantclient
-ifeq ($(QTDIR),)
-QTDIR=/usr/lib/qt
-endif
 
 rec_make: $(make_subpro) this
 

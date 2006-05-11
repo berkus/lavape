@@ -471,7 +471,7 @@ void CLavaApp::saveSettings()
 int CLavaApp::ExitInstance()
 {
   saveSettings();
-  delete [] TOKENSTR;
+//  delete [] TOKENSTR;
   return 0;
 }
 
