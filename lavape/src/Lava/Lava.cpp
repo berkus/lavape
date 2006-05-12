@@ -303,7 +303,7 @@ bool CLavaApp::event(QEvent *e)
     switch (mbp->funcSpec) {
     case 0:
       mbp->result =   QMessageBox::critical(
-              mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+        mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
       mbp->thr->pContExecEvent->release();
       break;
     case 1:

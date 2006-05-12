@@ -101,9 +101,6 @@ void CLavaDebugThread::run() {
   quint16 locPort; 
   DDItemData * oid;
   bool fin = false;
-
-//  CThreadData *td = new CThreadData(this);
-//	threadStg()->setLocalData(td);
   
   if (debugOn) {
     workSocket = new QTcpSocket;

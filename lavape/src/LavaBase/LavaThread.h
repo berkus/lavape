@@ -19,13 +19,11 @@ public:
   CEventEx() : QSemaphore(1) {
 		lastException = 0; 
 		ex = 0; 
-		acquire();
+//		lock();
 	}
   CSectionDesc **lastException;
   CRuntimeException* ex;
 };
-
-class CThreadData;
 
 class LAVABASE_DLL CLavaThread : public QThread
 {

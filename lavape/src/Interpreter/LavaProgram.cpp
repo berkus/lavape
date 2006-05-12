@@ -2221,9 +2221,8 @@ void sigEnable() {
 
 
 void CLavaExecThread::run() {
-  CThreadData *td = new CThreadData(this);
-//	threadStg()->setLocalData(td);
   myDoc->ThreadList->append(this);
+  pContExecEvent->acquire();
 	ExecuteLava(myDoc);
 }
 
@@ -2243,7 +2242,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
   CoInitialize(0);
 #endif
   ((CLavaDebugThread*)LBaseData->debugThread)->myExecThread = this;
-  QThread::setTerminationEnabled();
+//  QThread::setTerminationEnabled();
   ckd.document = (CLavaProgram*)doc;
   LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)ckd.document->mySynDef->SynDefTree.first)->data.TopDef.ptr;
   CHE* che;

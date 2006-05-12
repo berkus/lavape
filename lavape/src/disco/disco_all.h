@@ -51,7 +51,6 @@
 #include "qsignalmapper.h"
 #include "qradiobutton.h"
 #include "qscrollarea.h"
-#include "qsemaphore.h"
 #include "qsettings.h"
 #include "qsize.h"
 #include "qsizepolicy.h"
@@ -67,7 +66,6 @@
 #include "qtabwidget.h"
 #include "qtextedit.h"
 #include "qthread.h"
-#include "qthreadstorage.h"
 #include "qtimer.h"
 #include "qtoolbar.h"
 #include "qtoolbutton.h"
@@ -97,6 +95,7 @@
 #include <QTextCursor>
 #include <QSignalMapper>
 #include <QAbstractSocket>
+#include <QSemaphore>
 
 #include <string.h>
 //#include <stdlib.h>

@@ -989,37 +989,6 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
   }
 }
 
-
-/*
-int FindStringCaseExact(QComboBox* box, const DString& str, int start)
-{
-  int npos, pos = box->FindStringExact(start, str.c);
-  int count = box->GetCount();
-  DString str2;
-
-  while (pos != CB_ERR) {
-    str2.Reset(box->GetLBTextLen(pos));
-    str2.l = box->GetLBText(pos, str2.c);
-    str2[str.l] = '\0';
-    if (str2 == str)
-      return pos;
-    else {
-      pos++;
-      if (pos < count) {
-        npos = box->FindStringExact(pos+1, str.c);
-        if (npos <= pos)
-          pos = CB_ERR;
-        else
-          pos = npos;
-      }
-      else
-        pos = CB_ERR;
-    }
-  }
-  return pos;
-}
-*/
-
 int critical(QWidget *parent, const QString &caption,
 	  const QString &text,
 		int button0, int button1, int button2) {
@@ -1034,15 +1003,6 @@ int critical(QWidget *parent, const QString &caption,
 //  currentThread->pContExecEvent->lastException = 0;
 	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->pContExecEvent->acquire();
-/*
-  if (currentThread->pContExecEvent->lastException) {
-    if (ckd.lastException)
-      DEC_FWD_CNT(ckd, ckd.lastException);
-    ckd.lastException = currentThread->pContExecEvent->lastException;
-    currentThread->pContExecEvent->lastException = 0;
-    ckd.exceptionThrown = true;
-	}
-*/
 	return params.result;
 }
 
@@ -1060,15 +1020,6 @@ int information(QWidget *parent, const QString &caption,
 //  currentThread->pContExecEvent->lastException = 0;
 	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->pContExecEvent->acquire();
-/*
-  if (currentThread->pContExecEvent->lastException) {
-    if (ckd.lastException)
-      DEC_FWD_CNT(ckd, ckd.lastException);
-    ckd.lastException = currentThread->pContExecEvent->lastException;
-    currentThread->pContExecEvent->lastException = 0;
-    ckd.exceptionThrown = true;
-	}
-*/
 	return params.result;
 }
 
@@ -1086,18 +1037,8 @@ int question(QWidget *parent, const QString &caption,
 //  currentThread->pContExecEvent->lastException = 0;
 	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->pContExecEvent->acquire();
-/*
-  if (currentThread->pContExecEvent->lastException) {
-    if (ckd.lastException)
-      DEC_FWD_CNT(ckd, ckd.lastException);
-    ckd.lastException = currentThread->pContExecEvent->lastException;
-    currentThread->pContExecEvent->lastException = 0;
-    ckd.exceptionThrown = true;
-	}
-*/
 	return params.result;
 }
-
 
 QString L_GetOpenFileName(const QString& startFileName,
 				      QWidget *parent,

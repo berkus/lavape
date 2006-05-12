@@ -103,7 +103,7 @@ void ASN1::error (ErrCode errCode,
   }
   if (!Silent) {
     qDebug(qPrintable(errMsg));
-//    QMessageBox::critical(wxTheApp->m_appWindow,qApp->name(),errMsg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    QMessageBox::critical(0,"Lava/LavaPE",errMsg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
   }
   errorExitProc();
   skip = true;
