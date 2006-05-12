@@ -312,8 +312,10 @@ wxView* wxDocument::GetNextView(POSITION& pos)
   QList<wxView*>::iterator* iter = (QList<wxView*>::iterator*)pos;
   wxView *view = **iter;
   ++(*iter);
-  if (*iter == m_documentViews.end())
+  if (*iter == m_documentViews.end()) {
+    delete iter;
     pos = 0;
+  }
   return view;
 }
 
@@ -1042,8 +1044,10 @@ wxDocument* wxDocManager::GetNextDoc(POSITION& pos)
   QList<wxDocument*>::iterator* iter = (QList<wxDocument*>::iterator*)pos;
   wxDocument *doc = **iter;
   ++(*iter);
-  if (*iter == m_docs.end())
+  if (*iter == m_docs.end()) {
+    delete iter;
     pos = 0;
+  }
   return doc;
 }
 
