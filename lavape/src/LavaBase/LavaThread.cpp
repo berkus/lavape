@@ -51,7 +51,7 @@ CLavaThread::~CLavaThread()
 //  pContExecEvent->release();
 
 //  wait();
-//  delete pContExecEvent;
+  delete pContExecEvent;
 }
 
 CThreadData::CThreadData(CLavaThread *thr)

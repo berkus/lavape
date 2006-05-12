@@ -474,6 +474,9 @@ int CLavaApp::ExitInstance()
   delete [] TOKENSTR;
   if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();
+//  debugThread.pContExecEvent->release();
+//  debugThread.pContDebugEvent->release();
+  debugThread.wait();
   return 0;
 }
 
