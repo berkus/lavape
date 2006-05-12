@@ -151,8 +151,9 @@ TIDTable::TIDTable()
 TIDTable::~TIDTable()
 {
   isAncChain.DestroyKeepElems();
-  if (IDTab)
-    delete [] IDTab;
+  DestroyTable();
+  //if (IDTab)
+  //  delete [] IDTab;
 }
 
 void TIDTable::DestroyTable()
