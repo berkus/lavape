@@ -812,9 +812,11 @@ CLavaPEApp::~CLavaPEApp()
     delete LavaIcons[i];
   for (int i = 0; LavaPixmaps[i] != 0; i++)
     delete LavaPixmaps[i];
-  if (debugThread.workSocket)
+  debugThread.dbgRequest = 0;
+  if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();
-//  debugThread.wait();
+  debugThread.pContExecEvent->release();
+  debugThread.wait();
 }
 
 void CLavaPEApp::saveSettings()

@@ -207,7 +207,9 @@ void CLavaPEDebugThread::run() {
     delete get_cid;
     qApp->exit(1);
   }
-//  get_cid = in_cid;
+
+  connect(workSocket,SIGNAL(disconnected()),wxTheApp,SLOT(on_worksocket_disconnected()));
+
   dbgRequest = 0;
   if (myDoc->debugOn) {
     dbgRequest = new DbgMessage(Dbg_Continue);

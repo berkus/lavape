@@ -147,7 +147,9 @@ void CLavaDebugThread::run() {
     delete get_cid;
     qApp->exit(1);
   }
-//  get_cid = in_cid;
+
+  connect(workSocket,SIGNAL(disconnected()),wxTheApp,SLOT(on_worksocket_disconnected()));
+
   if (debugOn) 
     pContDebugEvent->acquire();  //DebugThread wait until ExecuteLava has finished initialisation
   else {
