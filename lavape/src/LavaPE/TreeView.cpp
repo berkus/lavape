@@ -153,19 +153,19 @@ void CTreeItem::SetItemMask(bool hasErr, bool hasCom)
 
 void CTreeItem::SetItemMask(int maskIndex) {
   //pixMask wird oben und rechts bndig in nPix kopiert
-  QPixmap* mPix = new QPixmap(((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->width(), ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
-  mPix->fill();
-  QPainter painter(mPix);
+  QPixmap mPix = QPixmap(((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->width(), ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
+  mPix.fill();
+  QPainter painter(&mPix);
   painter.drawPixmap(0,0,*((CLavaPEApp*)wxTheApp)->LavaPixmaps[pixmapIndex]);
-  //bitBlt (mPix, 0, 0, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[pixmapIndex],0,0,16,((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
+//bitBlt (mPix, 0, 0, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[pixmapIndex],0,0,16,((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
   painter.drawPixmap(16,0,*((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex],16,0,5,((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height());
   //bitBlt (mPix, 16, 0, ((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex],QRect(16,0,5,((CLavaPEApp*)wxTheApp)->LavaPixmaps[maskIndex]->height()));
   if (delPix)
     delete nPix;
-  nPix = new QIcon(*mPix);
+  nPix = new QIcon(mPix);
   delPix = true;
   setIcon(0, *nPix);
-  delete mPix;
+//  delete mPix;
 }
 
 CTreeItem* CTreeItem::nextSibling()
