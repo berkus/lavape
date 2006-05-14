@@ -512,7 +512,8 @@ enum ExecFlags {
   free2,
   free3,
   isOptionalExpr,
-  isReverseLink};
+  isReverseLink,
+  isClosed};
 
 extern void CDPExecFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
                           bool baseCDP=false);

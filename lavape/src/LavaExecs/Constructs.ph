@@ -374,7 +374,8 @@ enum ExecFlags {
   free2,              //26
   free3,              //27
   isOptionalExpr,     //28
-  isReverseLink       //29
+  isReverseLink,      //29
+  isClosed          //30
 };
 
 enum WorkFlags {

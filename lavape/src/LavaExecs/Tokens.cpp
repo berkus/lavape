@@ -292,7 +292,7 @@ void Tokens_INIT ()
   ATO("interface");
   ATO("old");
   ATO("new");
-  ATO("�");
+  ATO("\xd8"); // null
   ATO("of");
   ATO("url");
   ATO("on");

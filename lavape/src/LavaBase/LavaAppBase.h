@@ -448,6 +448,7 @@ public:
   QAction* toggleInputArrowsActionPtr;
   QAction* toggleSignActionPtr;
   QAction* toggleSubstTypeActionPtr;
+  QAction* toggleClosedActionPtr;
   QAction* trueActionPtr;
   QAction* updateCancelActionPtr;
 

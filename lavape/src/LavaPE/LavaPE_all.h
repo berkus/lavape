@@ -1,6 +1,7 @@
 #ifndef _LavaPE_PCH
 #define _LavaPE_PCH
 
+#include "cmainframe.h"
 #include "LavaPE_UI_all.h"
 #include "disco_all.h"
 #include "wxqDocView_all.h"

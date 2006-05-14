@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
+    <width>661</width>
     <height>685</height>
    </rect>
   </property>
@@ -216,6 +216,7 @@
    </attribute>
    <addaction name="toggleCategoryAction" />
    <addaction name="toggleSubstTypeAction" />
+   <addaction name="toggleClosedAction" />
    <addaction name="optLocalVarAction" />
    <addaction name="insertBeforeAction" />
    <addaction name="execInsAction" />
@@ -293,7 +294,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>516</width>
+     <width>661</width>
      <height>19</height>
     </rect>
    </property>
@@ -1592,8 +1593,11 @@
    <property name="iconText" >
     <string>Toggle category</string>
    </property>
-   <property name="whatsThis" >
+   <property name="toolTip" >
     <string>Toggle category</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Toggle category: default: "constant value object", "~" means "variable state object", "=" means "same category as the self object, "*" means "any/unknown category"</string>
    </property>
   </action>
   <action name="optLocalVarAction" >
@@ -1608,6 +1612,9 @@
    </property>
    <property name="iconText" >
     <string>Optional local variable</string>
+   </property>
+   <property name="toolTip" >
+    <string>Toggle optional local variable</string>
    </property>
    <property name="whatsThis" >
     <string>Optional local variable: may assume the value "null"</string>
@@ -1642,6 +1649,9 @@
    </property>
    <property name="iconText" >
     <string>Insert before</string>
+   </property>
+   <property name="toolTip" >
+    <string>Toggle insert before</string>
    </property>
    <property name="whatsThis" >
     <string>If depressed, insert new items before the selected item, else after the selected item</string>
@@ -2659,6 +2669,23 @@
    </property>
    <property name="text" >
     <string>Show tree oper. toolbar</string>
+   </property>
+  </action>
+  <action name="toggleClosedAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../LavaPE_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/Q6_opaque.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>Toggle closed object</string>
+   </property>
+   <property name="toolTip" >
+    <string>Toggle closed object</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Potentially incomplete, not yet fully initialized object; member access is still disabled therefore</string>
    </property>
   </action>
  </widget>

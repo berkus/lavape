@@ -3025,6 +3025,7 @@ ValOnInit CIOBox::OnInitDialog()
     ValueObject->setEnabled(false);
     AnyCategory->setEnabled(false);
     Substitutable->setEnabled(false);
+    Unfinished->setEnabled(false);
   }
   if (myDECL->SecondTFlags.Contains(funcImpl)
       || (myDECL->ParentDECL->DeclType != Function)

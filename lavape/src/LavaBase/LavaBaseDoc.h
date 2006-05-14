@@ -345,6 +345,7 @@ public:
   virtual void OnRefresh() {}
   virtual void OnToggleCategory() {}
   virtual void OnToggleSubstitutable() {}
+  virtual void OnToggleClosed() {}
   virtual void OnCopy() {}
   virtual void OnEvaluate() {}
   virtual void OnInputArrow() {}

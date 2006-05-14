@@ -422,7 +422,7 @@ enum SecondTFlag {
   isSet,
   isChain,
   isArray,
-  FREE_FLAG17,
+  unfinished,
   isEventDesc,
   FREE_FLAG18,
   isException,

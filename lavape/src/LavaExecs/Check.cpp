@@ -943,6 +943,14 @@ bool SynObject::UpdateReference (CheckData &ckd) {
           ((TDOD*)che->data)->flags.INCL(isOptionalExpr);
         else
           ((TDOD*)che->data)->flags.EXCL(isOptionalExpr);
+        if (((VarName*)dw)->flags.Contains(isSubstitutable))
+          ((TDOD*)che->data)->flags.INCL(isSubstitutable);
+        else
+          ((TDOD*)che->data)->flags.EXCL(isSubstitutable);
+        if (((VarName*)dw)->flags.Contains(isClosed))
+          ((TDOD*)che->data)->flags.INCL(isClosed);
+        else
+          ((TDOD*)che->data)->flags.EXCL(isClosed);
         ((TDOD*)che->data)->parentObject = objRef;
         ((VarName*)dw)->ExprGetFVType(ckd,startDeclV,cat,ctxFlags);
         if (objRef->flags.Contains(isSelfVar))
@@ -967,6 +975,14 @@ bool SynObject::UpdateReference (CheckData &ckd) {
             objRef->flags.INCL(isOptionalExpr);
           else
             objRef->flags.EXCL(isOptionalExpr);
+          if (((VarName*)dw)->flags.Contains(isSubstitutable))
+            objRef->flags.INCL(isSubstitutable);
+          else
+            objRef->flags.EXCL(isSubstitutable);
+          if (((VarName*)dw)->flags.Contains(isClosed))
+            objRef->flags.INCL(isClosed);
+          else
+            objRef->flags.EXCL(isClosed);
         }
         che = (CHE*)che->successor;
         if (che)

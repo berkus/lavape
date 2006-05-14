@@ -139,7 +139,10 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
 
   switch (token) {
   case VarName_T:
-    currentToken->data.str = ((VarName*)currentSynObj)->varName.c;
+    if (currentSynObj->flags.Contains(isClosed))
+      currentToken->data.str = QString("(") + ((VarName*)currentSynObj)->varName.c + QString(")");
+    else
+      currentToken->data.str = ((VarName*)currentSynObj)->varName.c;
     break;
   case TDOD_T:
     currentToken->data.str = ((TDOD*)currentSynObj)->name.c;

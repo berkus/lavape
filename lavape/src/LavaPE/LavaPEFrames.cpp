@@ -35,6 +35,8 @@
 #include "docview.h"
 #include "mdiframes.h"
 
+#include "cmainframe.h"
+
 #include "qpixmap.h"
 #include "qpushbutton.h"
 #include "qicon.h"
@@ -189,6 +191,7 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   LBaseData->toggleInputArrowsActionPtr = toggleInputArrowsAction;
   LBaseData->toggleSignActionPtr = toggleSignAction;
   LBaseData->toggleSubstTypeActionPtr = toggleSubstTypeAction;
+  LBaseData->toggleClosedActionPtr = toggleClosedAction;
   LBaseData->trueActionPtr = trueAction;
 
   LBaseData->DbgActionPtr = DbgAction;
@@ -1017,6 +1020,12 @@ void CLavaMainFrame::on_toggleSubstTypeAction_triggered(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnToggleSubstitutable();
+}
+
+void CLavaMainFrame::on_toggleClosedAction_triggered(){
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnToggleClosed();
 }
 
 void CLavaMainFrame::on_insertBeforeAction_triggered(){

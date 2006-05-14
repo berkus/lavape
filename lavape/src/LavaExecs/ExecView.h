@@ -193,6 +193,7 @@ public:
   void OnConflict();
   void OnToggleCategory();
   void OnToggleSubstitutable();
+  void OnToggleClosed();
   void OnEvaluate();
   void OnInputArrow();
   void OnHandle();
@@ -249,6 +250,7 @@ public:
   void OnUpdateEditSel(QAction* action);
   void OnUpdateEvaluate(QAction* action);
   void OnUpdateToggleSubstitutable(QAction* action);
+  void OnUpdateToggleClosed(QAction* action);
   void OnUpdateConflict(QAction* action);
   void OnUpdateToggleCategory(QAction* action);
   void OnUpdateNextComment(QAction* action);

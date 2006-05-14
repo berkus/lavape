@@ -2621,13 +2621,16 @@ void CExecView::OnConst()
 
   if (!editCtl)
     editCtl = new MiniEdit(redCtl);
-  editCtl->setGeometry(text->currentSelection->data.rect);
-  if (text->currentSelection->data.token == Const_T)
-    editCtl->setText(((Constant*)text->currentSynObj)->str.c);
-  else
-    editCtl->setText(TOKENSTR[text->currentSelection->data.token]);
   QFontMetrics fom(editCtl->font());
-  editCtl->setFixedWidth(fom.width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
+  editCtl->setGeometry(text->currentSelection->data.rect);
+  if (text->currentSelection->data.token == Const_T) {
+    editCtl->setText(((Constant*)text->currentSynObj)->str.c);
+    editCtl->setFixedWidth(fom.width(QString(((Constant*)text->currentSynObj)->str.c)+2*editCtl->frameWidth()));
+  }
+  else {
+    editCtl->setText(TOKENSTR[text->currentSelection->data.token]);
+    editCtl->setFixedWidth(fom.width(QString(TOKENSTR[Const_T])+" ")+2*editCtl->frameWidth());
+  }
   editCtl->setFixedHeight(text->currentSelection->data.rect.height()+editCtl->frameWidth());
   int r=text->currentSelection->data.rect.right();
   redCtl->contentsWidth = qMax(redCtl->contentsWidth,r);
@@ -5229,6 +5232,17 @@ bool CExecView::ToggleSubstitutableEnabled()
     return false;
 }
 
+void CExecView::OnToggleClosed()
+{
+  if (!EditOK()) return;
+
+  if (text->currentSynObj->flags.Contains(isClosed)) {
+    PutDelFlagHint(SET(isClosed,-1));
+  }
+  else
+    PutInsFlagHint(SET(isClosed,-1));
+}
+
 void CExecView::OnCopy()
 {
   // TODO: Code fr Befehlsbehandlungsroutine hier einfgen
@@ -5440,6 +5454,7 @@ void CExecView::UpdateUI()
   OnUpdateEditSel(LBaseData->editSelItemActionPtr);
   OnUpdateEvaluate(LBaseData->evaluateActionPtr);
   OnUpdateToggleSubstitutable(LBaseData->toggleSubstTypeActionPtr);
+  OnUpdateToggleClosed(LBaseData->toggleClosedActionPtr);
   OnUpdateConflict(LBaseData->conflictingAssigActionPtr);
   OnUpdateToggleCategory(LBaseData->toggleCategoryActionPtr);
   OnUpdateNextComment(LBaseData->nextCommentActionPtr);
@@ -5551,6 +5566,7 @@ void CExecView::DisableActions()
   LBaseData->editSelItemActionPtr->setEnabled(false);
   LBaseData->evaluateActionPtr->setEnabled(false);
   LBaseData->toggleSubstTypeActionPtr->setEnabled(false);
+  LBaseData->toggleClosedActionPtr->setEnabled(false);
   LBaseData->conflictingAssigActionPtr->setEnabled(false);
   LBaseData->toggleCategoryActionPtr->setEnabled(false);
   LBaseData->intervalActionPtr->setEnabled(false);
@@ -5919,6 +5935,15 @@ void CExecView::OnUpdateToggleSubstitutable(QAction* action)
 
   action->setEnabled(ToggleSubstitutableEnabled());
   action->setChecked(text->currentSynObj->flags.Contains(isSubstitutable));
+}
+
+void CExecView::OnUpdateToggleClosed(QAction* action)
+{
+  // TODO: Code fr die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflche hier einfgen
+
+  action->setEnabled(text->currentSynObj->primaryToken == VarName_T
+    && text->currentSynObj->parentObject->parentObject->primaryToken == declare_T);
+  action->setChecked(text->currentSynObj->flags.Contains(isClosed));
 }
 
 void CExecView::OnUpdateToggleCategory(QAction* action)
