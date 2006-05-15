@@ -810,6 +810,8 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     if (elDef->TypeFlags.Contains(isPlaceholder))
       lab += DString(", placeholder ");
     else {
+      if (elDef->TypeFlags.Contains(closed))
+        lab += DString(", closed");
       if (elDef->TypeFlags.Contains(isOptional))
         lab += DString(", optional");
       if ( elDef->DeclType == Attr) {
