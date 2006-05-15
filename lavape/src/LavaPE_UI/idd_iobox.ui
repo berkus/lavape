@@ -137,7 +137,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="Unfinished" >
+        <widget class="QCheckBox" name="Closed" >
          <property name="toolTip" >
           <string>Possibly still incomplete object</string>
          </property>

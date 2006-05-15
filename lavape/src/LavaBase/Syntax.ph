@@ -327,7 +327,7 @@ $TYPE +CDP {
     isArray,
     //16, the LavaDECL defines an array or an interface which extends a array
     //    or is the array element virtual type
-    unfinished,
+    closed,
     //17, object may be not yet fully initialized; therefore: member access forbidden
     isEventDesc,
     //18 the decl is the event description virtual type of a callback pattern
