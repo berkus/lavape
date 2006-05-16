@@ -12,17 +12,6 @@
     <height>167</height>
    </rect>
   </property>
-  <property name="font" >
-   <font>
-    <family>MS Shell Dlg</family>
-    <pointsize>8</pointsize>
-    <weight>50</weight>
-    <italic>false</italic>
-    <bold>false</bold>
-    <underline>false</underline>
-    <strikeout>false</strikeout>
-   </font>
-  </property>
   <property name="windowTitle" >
    <string>Overridden feature or virtual type not found in base interface </string>
   </property>

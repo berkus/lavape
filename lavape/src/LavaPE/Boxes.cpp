@@ -1364,7 +1364,7 @@ CFuncBox::CFuncBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool is
   onNew = isNew;
   OrigDECL = origDECL;
   second = false;
-  setFont(LBaseData->m_TreeFont);
+//  setFont(LBaseData->m_TreeFont);
 }
 
 void CFuncBox::UpdateData(bool getData)

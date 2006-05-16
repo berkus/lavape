@@ -1,47 +1,39 @@
-<ui version="4.0" stdsetdef="1" >
-  <author></author>
-  <comment></comment>
-  <exportmacro></exportmacro>
-  <class>IDD_FORMVIEW</class>
-  <widget class="QWidget" name="IDD_FORMVIEW" >
-    <property name="geometry" >
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>318</width>
-        <height>356</height>
-      </rect>
-    </property>
-    <property name="font" >
-      <font>
-        <family>MS Sans Serif</family>
-        <pointsize>0</pointsize>
-        <weight>0</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-        <underline>false</underline>
-        <strikeout>false</strikeout>
-      </font>
-    </property>
-    <property name="windowTitle" >
-      <string>IDD_FORMVIEW</string>
-    </property>
-    <widget class="QPushButton" name="m_BUTTON1" >
-      <property name="geometry" >
-        <rect>
-          <x>232</x>
-          <y>321</y>
-          <width>75</width>
-          <height>23</height>
-        </rect>
-      </property>
-      <property name="focusPolicy" >
-        <enum>Qt::NoFocus</enum>
-      </property>
-      <property name="text" >
-        <string>Apply</string>
-      </property>
-    </widget>
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>IDD_FORMVIEW</class>
+ <widget class="QWidget" name="IDD_FORMVIEW" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>318</width>
+    <height>356</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>IDD_FORMVIEW</string>
+  </property>
+  <widget class="QPushButton" name="m_BUTTON1" >
+   <property name="geometry" >
+    <rect>
+     <x>232</x>
+     <y>321</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="focusPolicy" >
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="text" >
+    <string>Apply</string>
+   </property>
   </widget>
-  <layoutdefault spacing="6" margin="11" />
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <resources/>
+ <connections/>
 </ui>
