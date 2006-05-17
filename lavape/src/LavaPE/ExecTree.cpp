@@ -255,7 +255,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
         if (elDef->TypeFlags.Contains(isConst))
           lab1 += DString("read-only ");
         if (elDef->SecondTFlags.Contains(closed))
-          lab1 += DString("\"self\" closed ");
+          lab1 += DString("closed-self ");
         if (elDef->TypeFlags.Contains(defaultInitializer))
           lab1 += DString("default ");
         if (elDef->TypeFlags.Contains(isInitializer))
@@ -300,7 +300,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
           if (elDef->TypeFlags.Contains(isConst))
             lab1 += DString("read-only ");
           if (elDef->SecondTFlags.Contains(closed))
-            lab1 += DString("\"self\" closed ");
+            lab1 += DString("closed-self ");
         }
         if (elDef->TypeFlags.Contains(defaultInitializer)) {
           if ((elDef->ParentDECL->DeclType == Interface)

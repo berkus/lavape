@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
+    <width>512</width>
     <height>599</height>
    </rect>
   </property>
@@ -260,26 +260,10 @@
           <property name="enabled" >
            <bool>true</bool>
           </property>
-          <property name="sizePolicy" >
-           <sizepolicy>
-            <hsizetype>1</hsizetype>
-            <vsizetype>0</vsizetype>
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="DelInherits" >
-          <property name="sizePolicy" >
-           <sizepolicy>
-            <hsizetype>1</hsizetype>
-            <vsizetype>0</vsizetype>
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="focusPolicy" >
            <enum>Qt::NoFocus</enum>
           </property>
@@ -290,14 +274,6 @@
         </item>
         <item>
          <widget class="QComboBox" name="NamedTypes" >
-          <property name="sizePolicy" >
-           <sizepolicy>
-            <hsizetype>1</hsizetype>
-            <vsizetype>0</vsizetype>
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <item>
            <property name="text" >
             <string>(Exception types)</string>
@@ -472,6 +448,14 @@
            <widget class="QCheckBox" name="DefaultIni" >
             <property name="enabled" >
              <bool>false</bool>
+            </property>
+            <property name="sizePolicy" >
+             <sizepolicy>
+              <hsizetype>1</hsizetype>
+              <vsizetype>5</vsizetype>
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="focusPolicy" >
              <enum>Qt::StrongFocus</enum>

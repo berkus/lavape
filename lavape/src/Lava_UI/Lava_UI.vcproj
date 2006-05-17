@@ -149,7 +149,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="Generated;.;..\LavaGUI;..\LavaBase;..\wxqDocView;..\disco"
+				AdditionalIncludeDirectories="Generated;.;..\LavaGUI;..\LavaBase\Generated;..\LavaBase;..\wxqDocView;..\disco"
 				PreprocessorDefinitions="WIN32;LAVAUI_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

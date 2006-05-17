@@ -32,6 +32,9 @@
 #include <QMotifStyle>
 #include <QCDEStyle>
 #include <QPlastiqueStyle>
+#ifdef Darwin
+#include <QMacStyle>
+#endif
 #include "qlist.h"
 #include "qworkspace.h"
 
@@ -140,6 +143,9 @@ public:\
 
 #ifdef WIN32
 MYSTYLE(WindowsXP)
+#endif
+#ifdef Darwin
+MYSTYLE(Mac)
 #endif
 MYSTYLE(Windows)
 MYSTYLE(Plastique)

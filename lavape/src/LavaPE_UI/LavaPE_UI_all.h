@@ -1,6 +1,10 @@
 #ifndef _LavaPE_UI_PCH
 #define _LavaPE_UI_PCH
 
+#include "disco_all.h"
+#include "wxqDocView_all.h"
+#include "LavaBase_all.h"
+
 #include "LavaPEMainFrameBase.h"
 #include "cmainframe.h"
 #include "idd_attrbox.h"
@@ -34,4 +38,3 @@
 #include "idd_vtypebox.h"
 
 #endif
-
