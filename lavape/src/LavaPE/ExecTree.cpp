@@ -254,6 +254,8 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
       else {
         if (elDef->TypeFlags.Contains(isConst))
           lab1 += DString("read-only ");
+        if (elDef->SecondTFlags.Contains(closed))
+          lab1 += DString("\"self\" closed ");
         if (elDef->TypeFlags.Contains(defaultInitializer))
           lab1 += DString("default ");
         if (elDef->TypeFlags.Contains(isInitializer))
@@ -294,9 +296,12 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
           lab1 += DString("private ");
         if (elDef->TypeFlags.Contains(isStatic))
           lab1 += DString("static ");
-        else
+        else {
           if (elDef->TypeFlags.Contains(isConst))
             lab1 += DString("read-only ");
+          if (elDef->SecondTFlags.Contains(closed))
+            lab1 += DString("\"self\" closed ");
+        }
         if (elDef->TypeFlags.Contains(defaultInitializer)) {
           if ((elDef->ParentDECL->DeclType == Interface)
               && elDef->ParentDECL->WorkFlags.Contains(hasDefaultIni))
@@ -810,10 +815,10 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     if (elDef->TypeFlags.Contains(isPlaceholder))
       lab += DString(", placeholder ");
     else {
-      if (elDef->TypeFlags.Contains(closed))
-        lab += DString(", closed");
       if (elDef->TypeFlags.Contains(isOptional))
         lab += DString(", optional");
+      if (elDef->TypeFlags.Contains(closed))
+        lab += DString(", closed");
       if ( elDef->DeclType == Attr) {
         if (elDef->TypeFlags.Contains(isConst))
           lab += DString(", read-only ");

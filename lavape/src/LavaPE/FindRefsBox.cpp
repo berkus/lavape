@@ -107,7 +107,7 @@ CGotoBox::CGotoBox(LavaDECL * fromDECL, CLavaPEDoc* doc, QWidget* parent)
 }
 
 
-void CGotoBox::on_GotoCombo_triggered(int pos) 
+void CGotoBox::on_GotoCombo_activated(int pos) 
 {
   if (pos > 0) {
     QString cname;

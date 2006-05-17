@@ -33,18 +33,18 @@ enum ValOnInit {BoxContinue, BoxOK, BoxCancel};
 class CListBoxItem: public QListWidgetItem
 {
 public:
-  CListBoxItem(const QString& txt, const TID& id) { setText(txt); ID = id;}
-  CListBoxItem(const DString& text, const TID& id) {setText(QString(text.c)); ID = id;}
-  CListBoxItem(const QString& text, unsigned* flags) {setText(text); Flags = flags;}
+  CListBoxItem(const QString& txt, const TID& id):QListWidgetItem(txt) { setText(txt); ID = id;}
+  CListBoxItem(const DString& text, const TID& id):QListWidgetItem(QString(text.c)) {setText(QString(text.c)); ID = id;}
+  CListBoxItem(const QString& text, unsigned* flags):QListWidgetItem(text) {setText(text); Flags = flags;}
   CListBoxItem() {}
   TID itemData() {return ID;}
   unsigned* flags() {return Flags;}
-  void setText(const QString &txt) { myText = txt; }
-  QString text() { return myText; }
+  //void setItemText(const QString &txt) {setText(txt);  myText = txt; }
+  //QString text() { return myText; }
 protected:
   TID ID;
   unsigned* Flags;
-  QString myText;
+  //QString myText;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -73,8 +73,8 @@ public:
   int valkindOfRef;
 
 public slots:
-    virtual void on_BasicTypes_triggered( int );
-    virtual void on_NamedTypes_triggered( int );
+    virtual void on_BasicTypes_activated( int );
+    virtual void on_NamedTypes_activated( int );
     virtual void on_EnableName_clicked();
     virtual void on_DownC_clicked();
     virtual void on_DownInd_clicked();
@@ -116,8 +116,8 @@ public:
 
 public slots:
     virtual void on_DelSupport_clicked();
-    virtual void on_ExtTypes_triggered( int );
-    virtual void on_CompoProt_triggered( int );
+    virtual void on_ExtTypes_activated( int );
+    virtual void on_CompoProt_activated( int );
     virtual void on_EnumAdd_clicked();
     virtual void on_EnumEdit_clicked();
     virtual void on_EnumDel_clicked();
@@ -242,18 +242,19 @@ public:
 public slots:
     virtual void on_EnableName_clicked();
     virtual void on_DelInherits_clicked();
-    virtual void on_NamedTypes_triggered( int );
-    virtual void on_CMBOperator_triggered( int );
+    virtual void on_NamedTypes_activated( int );
+    virtual void on_CMBOperator_activated( int );
     virtual void on_CHECKOp_clicked();
     virtual void on_Abstract_clicked();
     virtual void on_Native_clicked();
     virtual void on_Signal_clicked();
-    virtual void on_StaticFunc_clicked();
     virtual void on_RMOverrides_clicked();
+    virtual void on_StaticFunc_clicked();
     virtual void on_Initializer_clicked();
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
     virtual void on_ID_HELP_clicked();
+    virtual void on_Closed_clicked();
 
 private:
   Q_OBJECT
@@ -281,7 +282,7 @@ public:
   QString valImplSel;
 
 public slots:
-    virtual void on_ImplTypes_triggered( int );
+    virtual void on_ImplTypes_activated( int );
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
     virtual void on_ID_HELP_clicked();
@@ -381,15 +382,15 @@ public:
 
 public slots:
     virtual void on_DelSupport_clicked();
-    virtual void on_BasicTypes_triggered( int );
-    virtual void on_ExtTypes_triggered( int );
+    virtual void on_BasicTypes_activated( int );
+    virtual void on_ExtTypes_activated( int );
 //    virtual void on_m_DelInherits_clicked();
-//    virtual void on_m_InheritTypes_triggered( int );
+//    virtual void on_m_InheritTypes_activated( int );
     virtual void on_IsComponent_clicked();
     virtual void on_NonCreatable_clicked();
     virtual void on_Creatable_clicked();
     virtual void on_IsGUI_clicked();
-    virtual void on_GUIStructs_triggered( int );
+    virtual void on_GUIStructs_activated( int );
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
     virtual void on_ID_HELP_clicked();
@@ -424,12 +425,13 @@ public:
 
 
 public slots:
-    virtual void on_BasicTypes_triggered( int );
-    virtual void on_NamedTypes_triggered( int );
+    virtual void on_BasicTypes_activated( int );
+    virtual void on_NamedTypes_activated( int );
     virtual void on_Substitutable_clicked();
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
     virtual void on_ID_HELP_clicked();
+    //virtual void on_Closed_clicked();
 private:
   Q_OBJECT
 
@@ -457,7 +459,7 @@ public:
 
 public slots:
     virtual void on_DelSupport_clicked();
-    virtual void on_ExtTypes_triggered( int );
+    virtual void on_ExtTypes_activated( int );
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
     virtual void on_ID_HELP_clicked();
@@ -490,8 +492,8 @@ public:
 
 
 public slots:
-    virtual void on_BasicTypes_triggered( int );
-    virtual void on_ExTypes_triggered( int );
+    virtual void on_BasicTypes_activated( int );
+    virtual void on_ExTypes_activated( int );
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
     virtual void on_ID_HELP_clicked();
@@ -526,8 +528,8 @@ public:
 	int	valkindOfLink;
 
 public slots:
-    virtual void on_BasicTypes_triggered( int );
-    virtual void on_NamedTypes_triggered( int );
+    virtual void on_BasicTypes_activated( int );
+    virtual void on_NamedTypes_activated( int );
     virtual void on_RMOverrides_clicked();
     virtual void on_StateObject_clicked();
     virtual void on_ValueObject_clicked();

@@ -127,8 +127,8 @@ ValOnInit CAttrBox::OnInitDialog()
     ValueObject->setChecked(true);
     myDoc->MakeBasicBox(BasicTypes, NoDef, true, TypeFlags.Contains(constituent));
     execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
-    //BasicTypes->SelectString(-1, ((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
-    BasicTypes->setItemText(BasicTypes->currentIndex(),((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
+    BasicTypes->setCurrentIndex((int)(VLString));
+    //BasicTypes->setItemText(BasicTypes->currentIndex(),((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
     if (SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID) > 0) {
       myDECL->DeclDescType = BasicType;
       myDECL->BType = myDoc->IDTable.GetDECL(myDECL->RefID)->fromBType;
@@ -238,40 +238,22 @@ ValOnInit CAttrBox::OnInitDialog()
   }
   if (TypeFlags.Contains(isComponent)) {
     myDECL->TypeFlags.INCL(hasSetGet);
-    SetGet->setChecked(1); 
+    SetGet->setChecked(true); 
     SetGet->setEnabled(false);
   }
   if (myDECL->ParentDECL->DeclType == Interface) {
     ConstProp->setEnabled(true);
-    if (myDECL->TypeFlags.Contains(isProtected))
-      Protected->setChecked(1);
-    else
-      Protected->setChecked(0);
-    if (myDECL->TypeFlags.Contains(isConst))
-      ConstProp->setChecked(1);
-    else
-      ConstProp->setChecked(0);
-    if (myDECL->TypeFlags.Contains(copyOnAccess))
-      PassByValue->setChecked(1);
-    else
-      PassByValue->setChecked(0);
+    Protected->setChecked(myDECL->TypeFlags.Contains(isProtected));
+    ConstProp->setChecked(myDECL->TypeFlags.Contains(isConst));
+    PassByValue->setChecked(myDECL->TypeFlags.Contains(copyOnAccess));
     PassByValue->setEnabled(true);
-    if (myDECL->TypeFlags.Contains(consumable))
-      Consumable->setChecked(true);
-    else
-      Consumable->setChecked(false);
-    if (myDECL->TypeFlags.Contains(hasSetGet)) 
-      SetGet->setChecked(true);
-    else
-      SetGet->setChecked(false);
+    Consumable->setChecked(myDECL->TypeFlags.Contains(consumable));
+    SetGet->setChecked(myDECL->TypeFlags.Contains(hasSetGet));
     Consumable->setEnabled(true);
     if (!myDECL->ParentDECL->TypeFlags.Contains(isComponent)
         && myDECL->TypeFlags.Contains(hasSetGet)
         && myDECL->ParentDECL->TypeFlags.Contains(isAbstract)) {
-      if (myDECL->TypeFlags.Contains(isAbstract)) 
-        Abstract->setChecked(true);
-      else
-        Abstract->setChecked(false);
+      Abstract->setChecked(myDECL->TypeFlags.Contains(isAbstract));
       Abstract->setEnabled(true);
     }
     else {
@@ -398,7 +380,7 @@ void CAttrBox::on_DownC_clicked()
   UpdateData(false);
 }
 
-void CAttrBox::on_NamedTypes_triggered(int pos) 
+void CAttrBox::on_NamedTypes_activated(int pos) 
 {
   
   if (!pos) return;
@@ -441,7 +423,7 @@ void CAttrBox::on_NamedTypes_triggered(int pos)
   UpdateData(false);
 }
 
-void CAttrBox::on_BasicTypes_triggered(int pos) 
+void CAttrBox::on_BasicTypes_activated(int pos) 
 {
   if (!pos) return;
   LavaDECL* decl;
@@ -693,13 +675,13 @@ void CCompSpecBox::on_DelSupport_clicked()
     delete Extends->takeItem(pos);
 }
 
-void CCompSpecBox::on_ExtTypes_triggered(int pos) 
+void CCompSpecBox::on_ExtTypes_activated(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(ExtTypes, Extends);
 }
 
-void CCompSpecBox::on_CompoProt_triggered(int pos) 
+void CCompSpecBox::on_CompoProt_activated(int pos) 
 {
   if (!pos) return;
   myDECL->nOutput = CompoProt->currentIndex() - 1;
@@ -1420,10 +1402,8 @@ ValOnInit CFuncBox::OnInitDialog()
       Protected->setEnabled(false);
   }
   else {
-    if (!myDECL->ParentDECL->TypeFlags.Contains(isAbstract) )
-      Abstract->setEnabled(false);
-    if (!myDECL->ParentDECL->TypeFlags.Contains(isNative))
-      Native->setEnabled(false);
+    Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
+    Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
   }
   if (onNew) {
     hasParams = 0;
@@ -1491,6 +1471,8 @@ ValOnInit CFuncBox::OnInitDialog()
       Abstract->setEnabled(false);
       EnforceOver->setEnabled(false);
       ConstFunc->setEnabled(false);
+      Closed->setEnabled(false);
+      Closed->setChecked(false);
     }
     else
       StaticFunc->setChecked(false);
@@ -1508,10 +1490,7 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     else
       EnforceOver->setChecked(false);
-    if (myDECL->TypeFlags.Contains(isConst)) 
-      ConstFunc->setChecked(true);
-    else
-      ConstFunc->setChecked(false);
+    ConstFunc->setChecked(myDECL->TypeFlags.Contains(isConst));
     if (myDECL->TypeFlags.Contains(isInitializer)) {
       ConstFunc->setEnabled(true); 
       Protected->setEnabled(false);
@@ -1528,19 +1507,13 @@ ValOnInit CFuncBox::OnInitDialog()
       Abstract->setEnabled(false);
       StaticFunc->setEnabled(false);
       StaticFunc->setChecked(false);
+      Closed->setEnabled(false);
+      Closed->setChecked(false);
     }
     else
       Initializer->setChecked(false);
-    if (myDECL->TypeFlags.Contains(isNative)) 
-      Native->setChecked(true);
-    else
-      Native->setChecked(false);
-    /*
-    if (myDECL->TypeFlags.Contains(isTransaction)) 
-      Transaction->setChecked(true);
-    else
-      Transaction->setChecked(false);
-    */
+    Native->setChecked(myDECL->TypeFlags.Contains(isNative));
+    //Transaction->setChecked(myDECL->TypeFlags.Contains(isTransaction));
     if (myDECL->TypeFlags.Contains(execIndependent)) 
       valSynch = 2;
     else
@@ -1680,6 +1653,13 @@ ValOnInit CFuncBox::OnInitDialog()
       CMBOperator->setEnabled(false);
 //      BasicTypes->setEnabled(false);
     }
+    if (myDECL->SecondTFlags.Contains(closed)) {
+      Initializer->setEnabled(false);
+      StaticFunc->setEnabled(false);
+      Closed->setChecked(true);
+    }
+    else
+      Closed->setChecked(false);
   }
   UpdateData(false); 
   NewName->setFocus();
@@ -1708,10 +1688,22 @@ void CFuncBox::CalcOpBox()
       CMBOperator->addItem(QString(LBaseData->OperatorNames [iop].c),QVariant::fromValue(listItem));
 //      CMBOperator->listBox()->insertItem(listItem);//sort
       if ((id.nID == myDECL->OwnID) && (id.nINCL == 0))
-        CMBOperator->setItemText(CMBOperator->currentIndex(),QString(LBaseData->OperatorNames [myDECL->op ].c));
+        CMBOperator->setCurrentIndex((int)myDECL->op);
     }
   }
   SortCombo(CMBOperator);
+}
+
+void CFuncBox::on_Closed_clicked()
+{
+  if (Closed->isChecked()) {
+    StaticFunc->setEnabled(false);
+    Initializer->setEnabled(false);
+  }
+  else {
+    StaticFunc->setEnabled(true);
+    Initializer->setEnabled(myDECL->ParentDECL->DeclType == Interface);
+  }
 }
 
 
@@ -1749,7 +1741,7 @@ void CFuncBox::on_DelInherits_clicked()
 }
 
   
-void CFuncBox::on_NamedTypes_triggered(int pos) 
+void CFuncBox::on_NamedTypes_activated(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(NamedTypes, Inherits);
@@ -1793,13 +1785,15 @@ void CFuncBox::on_StaticFunc_clicked()
     myDECL->TypeFlags.INCL(isConst); 
     ConstFunc->setChecked(true);
     ConstFunc->setEnabled(false);
+    Closed->setEnabled(false);
   }
   else {
     Protected->setEnabled(true);
-    Initializer->setEnabled(true);
-    Abstract->setEnabled(true);
-    EnforceOver->setEnabled(true);
+    Initializer->setEnabled(myDECL->ParentDECL->DeclType == Interface);
+    Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
+    EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     ConstFunc->setEnabled(true);
+    Closed->setEnabled(true);
   }
   UpdateData(false);
 }
@@ -1820,18 +1814,21 @@ void CFuncBox::on_Initializer_clicked()
     myDECL->TypeFlags.EXCL(isAbstract);
     Abstract->setChecked(false);
     Abstract->setEnabled(false);
+    Closed->setEnabled(false);
   }
   else {
     DefaultIni->setChecked(false);
-    Abstract->setEnabled(true);
+    StaticFunc->setEnabled(true);
+    Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     ConstFunc->setEnabled(true); 
     Protected->setEnabled(true);
+    Closed->setEnabled(true);
   }
   myDECL->TypeFlags.EXCL(isConst);
   UpdateData(false);  
 }
 
-void CFuncBox::on_CMBOperator_triggered(int pos) 
+void CFuncBox::on_CMBOperator_activated(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -1905,12 +1902,12 @@ void CFuncBox::on_Signal_clicked()
   else {
     ConstFunc->setEnabled(true);
     Protected->setEnabled(true);
-    Abstract->setEnabled(true);
+    Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     StaticFunc->setEnabled(true); 
-    Initializer->setEnabled(true);
+    Initializer->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
     Native->setChecked(myDECL->ParentDECL->TypeFlags.Contains(isNative));
-    EnforceOver->setEnabled(true);
+    EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
   }
 }
 
@@ -1998,6 +1995,10 @@ void CFuncBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(defaultInitializer); 
   else
     myDECL->TypeFlags.EXCL(defaultInitializer); 
+  if (Closed->isChecked())
+    myDECL->SecondTFlags.INCL(closed); 
+  else
+    myDECL->SecondTFlags.EXCL(closed); 
   myDECL->TypeFlags.EXCL(execIndependent);
   myDECL->TypeFlags.EXCL(execConcurrent);
   if (valSynch >= 1)
@@ -2096,7 +2097,7 @@ ValOnInit CImplBox::OnInitDialog()
 }
 
 
-void CImplBox::on_ImplTypes_triggered(int pos) 
+void CImplBox::on_ImplTypes_activated(int pos) 
 {
   if (!pos) return;
   CHETID* che;
@@ -2287,14 +2288,8 @@ ValOnInit CInitBox::OnInitDialog()
     valSynch = 0;
   }
   else {
-    if (myDECL->TypeFlags.Contains(isTransaction)) 
-      Transaction->setChecked(true);
-    else
-      Transaction->setChecked(false);
-    if (myDECL->TypeFlags.Contains(isConst)) 
-      ReadOnly->setChecked(true);
-    else
-      ReadOnly->setChecked(false);
+    Transaction->setChecked(myDECL->TypeFlags.Contains(isTransaction));
+    ReadOnly->setChecked(myDECL->TypeFlags.Contains(isConst));
     if (myDECL->TypeFlags.Contains(execConcurrent)) 
       valSynch = 1;
     /*
@@ -2574,7 +2569,7 @@ void CInterfaceBox::on_DelSupport_clicked()
   }
 }
 
-void CInterfaceBox::on_ExtTypes_triggered(int pos) 
+void CInterfaceBox::on_ExtTypes_activated(int pos) 
 {
   QVariant var;
 
@@ -2592,10 +2587,11 @@ void CInterfaceBox::on_ExtTypes_triggered(int pos)
       UpdateData(false);
     }
   }
+  ExtTypes->setCurrentIndex(0);
 }
 
 
-void CInterfaceBox::on_BasicTypes_triggered(int pos) 
+void CInterfaceBox::on_BasicTypes_activated(int pos) 
 {
   QVariant var;
 
@@ -2623,7 +2619,7 @@ void CInterfaceBox::on_DelInherits_clicked()
     Inherits->removeItem(pos);
   }  
 }
-void CInterfaceBox::on_InheritTypes_triggered(int pos) 
+void CInterfaceBox::on_InheritTypes_activated(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(InheritTypes, Inherits);
@@ -2668,12 +2664,16 @@ void CInterfaceBox::on_IsGUI_clicked()
   
 }
 
-void CInterfaceBox::on_GUIStructs_triggered(int pos) 
+void CInterfaceBox::on_GUIStructs_activated(int pos) 
 {
   if (!pos) return;
+  int oldPos;
   UpdateData(true);
-  if (SelEndOKToStr(GUIStructs, &valGUIStruct, &exID) <= 0)
-    GUIStructs->setItemText(GUIStructs->currentIndex(),valGUIStruct);
+  if (SelEndOKToStr(GUIStructs, &valGUIStruct, &exID) <= 0) {
+  //GUIStructs->setItemText(GUIStructs->currentIndex(),valGUIStruct);
+    oldPos = GUIStructs->findText(valGUIStruct, Qt::MatchExactly | Qt::MatchCaseSensitive );
+    GUIStructs->setCurrentIndex(oldPos);
+  }
 }
 
 void CInterfaceBox::on_ID_OK_clicked() 
@@ -2889,7 +2889,7 @@ ValOnInit CIOBox::OnInitDialog()
     myDECL->TypeFlags.INCL(trueObjCat);
     myDoc->MakeBasicBox(BasicTypes, NoDef, true);
     execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
-    BasicTypes->setItemText(BasicTypes->currentIndex(),((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
+    BasicTypes->setCurrentIndex((int)(VLString));
     int num = SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID);
     if (num > 0) {
       myDECL->DeclDescType = BasicType;
@@ -3040,7 +3040,7 @@ ValOnInit CIOBox::OnInitDialog()
   return BoxContinue;
 }
 
-void CIOBox::on_NamedTypes_triggered(int pos) 
+void CIOBox::on_NamedTypes_activated(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3054,6 +3054,7 @@ void CIOBox::on_NamedTypes_triggered(int pos)
     ValueObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
     SameAsSelf->setEnabled(!inheritedFlag.Contains(definesObjCat));
     AnyCategory->setEnabled(!inheritedFlag.Contains(definesObjCat));
+    Closed->setChecked(myDECL->SecondTFlags.Contains(closed));
     
     if (inheritedFlag.Contains(definesObjCat)) {
       SameAsSelf->setChecked(false);
@@ -3087,7 +3088,7 @@ void CIOBox::on_NamedTypes_triggered(int pos)
   UpdateData(false);
 }
 
-void CIOBox::on_BasicTypes_triggered(int pos) 
+void CIOBox::on_BasicTypes_activated(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3135,6 +3136,11 @@ void CIOBox::on_Substitutable_clicked()
   UpdateData(false);
 }
 
+/*
+void on_Closed_clicked()
+{
+}
+*/
 
 void CIOBox::on_ID_OK_clicked() 
 {
@@ -3174,6 +3180,10 @@ void CIOBox::on_ID_OK_clicked()
     myDECL->TypeFlags.INCL(isAnyCategory);
   else
     myDECL->TypeFlags.EXCL(isAnyCategory);
+  if (Closed->isChecked())
+    myDECL->SecondTFlags.INCL(closed); 
+  else
+    myDECL->SecondTFlags.EXCL(closed); 
 
   QDialog::accept();
 }
@@ -3224,10 +3234,7 @@ ValOnInit CPackageBox::OnInitDialog()
 
   if (!onNew && myDECL->LocalName.l) {
     valNewName = QString(myDECL->LocalName.c);
-    if (myDECL->TypeFlags.Contains(isProtected))
-      Opaque->setChecked(true);
-    else
-      Opaque->setChecked(false);
+    Opaque->setChecked(myDECL->TypeFlags.Contains(isProtected));
     cheS = (CHETID*)myDECL->Supports.first; //extends
     while (cheS) {
       if (cheS->data.nID >= 0) {
@@ -3267,7 +3274,7 @@ void CPackageBox::on_DelSupport_clicked()
     delete Extends->takeItem(pos);
 }
 
-void CPackageBox::on_ExtTypes_triggered(int pos) 
+void CPackageBox::on_ExtTypes_activated(int pos) 
 {
   if (!pos) return;
   SelEndOKToList(ExtTypes, Extends);
@@ -3351,32 +3358,42 @@ ValOnInit CSetBox::OnInitDialog()
 }
 
 
-void CSetBox::on_ExTypes_triggered(int pos) 
+void CSetBox::on_ExTypes_activated(int pos) 
 {
   if (!pos) return;
+  int oldPos;
   UpdateData(true);
   BasicTypes->setCurrentIndex(0);
   if (SelEndOKToStr(ExTypes, &valExtend, &exID) > 0)
     UpdateData(false);
   else
-    if (exID.nINCL == 1)
-      BasicTypes->setItemText(BasicTypes->currentIndex(),valExtend);
-    else
-      ExTypes->setItemText(ExTypes->currentIndex(),valExtend);
+    if (exID.nINCL == 1) {
+      oldPos = BasicTypes->findText(valExtend, Qt::MatchExactly | Qt::MatchCaseSensitive ); 
+      BasicTypes->setCurrentIndex(oldPos);
+    }
+    else {
+      oldPos = ExTypes->findText(valExtend, Qt::MatchExactly | Qt::MatchCaseSensitive ); 
+      ExTypes->setCurrentIndex(oldPos);
+    }
 }
 
-void CSetBox::on_BasicTypes_triggered(int pos) 
+void CSetBox::on_BasicTypes_activated(int pos) 
 {
   if (!pos) return;
+  int oldPos;
   UpdateData(true);
   ExTypes->setCurrentIndex(0);
   if (SelEndOKToStr(BasicTypes, &valExtend, &exID) > 0)
     UpdateData(false);
   else
-    if ((exID.nINCL == 1) || myDoc->isStd)
-      BasicTypes->setItemText(BasicTypes->currentIndex(),valExtend);
-    else
-      ExTypes->setItemText(ExTypes->currentIndex(),valExtend);
+    if ((exID.nINCL == 1) || myDoc->isStd) {
+      oldPos = BasicTypes->findText(valExtend, Qt::MatchExactly | Qt::MatchCaseSensitive );
+      BasicTypes->setCurrentIndex(oldPos);
+    }
+    else {
+      oldPos = ExTypes->findText(valExtend, Qt::MatchExactly | Qt::MatchCaseSensitive );
+      ExTypes->setCurrentIndex(oldPos);
+    }
 }
 
 
@@ -3590,10 +3607,7 @@ void CVTypeBox::SetCategoryChecks()
   else 
     DefCat->setChecked(false);
   inheritedFlag = myDoc->GetCategoryFlags(myDECL, catErr);;
-  if (inheritedFlag.Contains(definesObjCat))
-    DefCat->setEnabled(false);
-  else
-    DefCat->setEnabled(true);
+  DefCat->setEnabled(!inheritedFlag.Contains(definesObjCat));
   if (inheritedFlag.Contains(trueObjCat)) {
     if (myDECL->TypeFlags.Contains(stateObject)) {
       StateObject->setChecked(true);
@@ -3667,7 +3681,7 @@ void CVTypeBox::on_RMOverrides_clicked()
   OnInitDialog();
 }
 
-void CVTypeBox::on_NamedTypes_triggered(int pos) 
+void CVTypeBox::on_NamedTypes_activated(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3690,7 +3704,7 @@ void CVTypeBox::on_NamedTypes_triggered(int pos)
   UpdateData(false);
 }
 
-void CVTypeBox::on_BasicTypes_triggered(int pos) 
+void CVTypeBox::on_BasicTypes_activated(int pos) 
 {
   if (!pos) return;
   UpdateData(true);
@@ -3802,8 +3816,7 @@ void CVTypeBox::on_ValueObject_clicked()
 void CVTypeBox::on_EnableName_clicked() 
 {
   UpdateData(true);
-  bool enabl = EnableName->isChecked();
-  if (enabl) 
+  if (EnableName->isChecked()) 
     NewName->setEnabled(true);
   else {
     valNewName = QString(myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)->LocalName.c);
