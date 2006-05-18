@@ -227,7 +227,7 @@ ValOnInit CAttrBox::OnInitDialog()
       else {
         StateObject->setChecked(false);
         ValueObject->setChecked(true);
-        AnyCategory->setChecked(true);
+        AnyCategory->setChecked(false);
       }
     else {
       StateObject->setChecked(false);

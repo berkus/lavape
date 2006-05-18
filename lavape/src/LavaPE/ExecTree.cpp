@@ -382,6 +382,8 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
     lab += DString(" := ");
     if (elDef->TypeFlags.Contains(isNative))
       lab1 = DString("native ");
+    if (elDef->TypeFlags.Contains(isAbstract))
+      lab1 += DString("non-creatable ");
     if (elDef->TypeFlags.Contains(thisComponent))
       lab1 += DString("component assembly interface");
     else
