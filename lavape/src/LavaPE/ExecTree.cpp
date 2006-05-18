@@ -1027,24 +1027,33 @@ void CExecTree::ExecStruct(LavaDECL** pinEl, DString fieldID)
 void CExecTree::ExecEnum(LavaDECL** pinEl, DString fieldID)
 {
   CTreeItem* item;
+  CMainItemData * data, *parData;
+  bool exp = false;
 
   if (skipLevel <= ActLevel+2) {
     isOnSkip = true;
     return;
   }
+  parData = (CMainItemData*)ActItem->getItemData();
   downAwaited = true;
   int bm = enumBM;//QPixmapCache::find("l_enum");
   if ((*pinEl)->Items.first)
     ParItem = ActItem;
   if (!viewTree->drawTree && ActItem->child(0)) {
     item = (CTreeItem*)ActItem->child(0);
-    viewTree->DeleteItemData(item);
-    delete item;
+    data = (CMainItemData*)item->getItemData();
+    if (data->type == TIType_EnumItems) {
+      viewTree->DeleteItemData(item);
+      delete item;
+    }
+    else
+      exp = true;
   }
   item = viewTree->InsertItem("Enumeration", bm, ActItem, TVI_FIRST);
-  CMainItemData * data = (CMainItemData*)ActItem->getItemData();
-  CMainItemData * dd = new CMainItemData(TIType_EnumItems, data->synEl, (*(LavaDECL**)data->synEl)->TreeFlags.Contains(ItemsExpanded));
+  CMainItemData * dd = new CMainItemData(TIType_EnumItems, parData->synEl, (*(LavaDECL**)parData->synEl)->TreeFlags.Contains(ItemsExpanded));
   item->setItemData( dd);
+  if (exp)
+    viewTree->ExpandItem(ActItem, 1); 
   if (!CalcPos(ActLevel))
     return;
 }
