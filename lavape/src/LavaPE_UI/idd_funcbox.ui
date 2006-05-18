@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>512</width>
+    <width>500</width>
     <height>599</height>
    </rect>
   </property>
@@ -162,188 +162,7 @@
      <property name="spacing" >
       <number>6</number>
      </property>
-     <item row="1" column="1" colspan="2" >
-      <widget class="QGroupBox" name="GroupBox_IDC_STATIC25" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>1</hsizetype>
-         <vsizetype>1</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>1</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="focusPolicy" >
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="title" >
-        <string>Overrides</string>
-       </property>
-       <property name="alignment" >
-        <set>Qt::AlignVCenter</set>
-       </property>
-       <layout class="QVBoxLayout" >
-        <property name="margin" >
-         <number>11</number>
-        </property>
-        <property name="spacing" >
-         <number>6</number>
-        </property>
-        <item>
-         <widget class="QCheckBox" name="RMOverrides" >
-          <property name="enabled" >
-           <bool>false</bool>
-          </property>
-          <property name="focusPolicy" >
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text" >
-           <string>Remove overrides</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="EnforceOver" >
-          <property name="enabled" >
-           <bool>false</bool>
-          </property>
-          <property name="focusPolicy" >
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text" >
-           <string>Callable only from this VT context</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="2" >
-      <widget class="QGroupBox" name="GroupBox_IDC_STATIC24" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>1</hsizetype>
-         <vsizetype>1</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>1</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="focusPolicy" >
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="title" >
-        <string>Throwable exceptions</string>
-       </property>
-       <property name="alignment" >
-        <set>Qt::AlignTop</set>
-       </property>
-       <layout class="QVBoxLayout" >
-        <property name="margin" >
-         <number>11</number>
-        </property>
-        <property name="spacing" >
-         <number>20</number>
-        </property>
-        <item>
-         <widget class="QListWidget" name="Inherits" >
-          <property name="enabled" >
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="DelInherits" >
-          <property name="focusPolicy" >
-           <enum>Qt::NoFocus</enum>
-          </property>
-          <property name="text" >
-           <string>Remove from list</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="NamedTypes" >
-          <item>
-           <property name="text" >
-            <string>(Exception types)</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="1" column="0" >
-      <widget class="QGroupBox" name="BGroup_ExecMode" >
-       <property name="sizePolicy" >
-        <sizepolicy>
-         <hsizetype>1</hsizetype>
-         <vsizetype>1</vsizetype>
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>1</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="title" >
-        <string>Execution mode</string>
-       </property>
-       <layout class="QVBoxLayout" >
-        <property name="margin" >
-         <number>11</number>
-        </property>
-        <property name="spacing" >
-         <number>6</number>
-        </property>
-        <item>
-         <widget class="QRadioButton" name="Synch" >
-          <property name="focusPolicy" >
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text" >
-           <string>Synchronous</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="Concurrent" >
-          <property name="focusPolicy" >
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text" >
-           <string>Concurrent</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="Independent" >
-          <property name="focusPolicy" >
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="text" >
-           <string>Autonomous</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="0" colspan="2" >
+     <item row="0" column="0" >
       <widget class="QGroupBox" name="GroupBox_IDC_STATIC22" >
        <property name="sizePolicy" >
         <sizepolicy>
@@ -529,6 +348,187 @@
           <property name="text" >
            <string>Signal</string>
           </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="0" >
+      <widget class="QGroupBox" name="BGroup_ExecMode" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>1</hsizetype>
+         <vsizetype>1</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>1</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="title" >
+        <string>Execution mode</string>
+       </property>
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>11</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QRadioButton" name="Synch" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Synchronous</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="Concurrent" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Concurrent</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="Independent" >
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Autonomous</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="1" >
+      <widget class="QGroupBox" name="GroupBox_IDC_STATIC25" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>1</hsizetype>
+         <vsizetype>1</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>1</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="focusPolicy" >
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="title" >
+        <string>Overrides</string>
+       </property>
+       <property name="alignment" >
+        <set>Qt::AlignVCenter</set>
+       </property>
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>11</number>
+        </property>
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="RMOverrides" >
+          <property name="enabled" >
+           <bool>false</bool>
+          </property>
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Remove overrides</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="EnforceOver" >
+          <property name="enabled" >
+           <bool>false</bool>
+          </property>
+          <property name="focusPolicy" >
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Callable only from this VT context</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QGroupBox" name="GroupBox_IDC_STATIC24" >
+       <property name="sizePolicy" >
+        <sizepolicy>
+         <hsizetype>1</hsizetype>
+         <vsizetype>1</vsizetype>
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize" >
+        <size>
+         <width>1</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="focusPolicy" >
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="title" >
+        <string>Throwable exceptions</string>
+       </property>
+       <property name="alignment" >
+        <set>Qt::AlignTop</set>
+       </property>
+       <layout class="QVBoxLayout" >
+        <property name="margin" >
+         <number>11</number>
+        </property>
+        <property name="spacing" >
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QListWidget" name="Inherits" >
+          <property name="enabled" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="DelInherits" >
+          <property name="focusPolicy" >
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="text" >
+           <string>Remove from list</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="NamedTypes" >
+          <item>
+           <property name="text" >
+            <string>(Exception types)</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
