@@ -68,7 +68,7 @@
         resulting two objects would from this moment on proceed independently. <I>Cloning</I> would basically contradict the semantics and purpose of a state object like a bank account: You cannot
         multiply your money by duplicating your bank account. Moreover, a state object would in most cases have exclusive command over its internal state, which may be changed again and again, but
         only by calling the object's methods, and this state change has the nature of a <B>transaction</B> typically. State objects would provide various services grouped into one or several function
-        call interfaces. In particular, <FONT COLOR="#FF0000"><STRONG><I>CORBA</I></STRONG></FONT>objects and component objects in <FONT COLOR="#FF0000"><STRONG><I>COM</I></STRONG></FONT> are
+        call interfaces. In particular, <FONT COLOR="#FF0000"><STRONG><I>CORBA </I></STRONG></FONT>objects and component objects in <FONT COLOR="#FF0000"><STRONG><I>COM</I></STRONG></FONT> are
         state/service objects. State/service objects are typically used as <EM>shared memory</EM> between concurrent applications/processes/threads.<BR>
       </LI>
       <LI>
@@ -234,7 +234,8 @@
     </H3>
     <P>
       Inadvertent use of uninitialized data frequently causes programs to crash in a way that is hard and time-consuming to disentangle, which in turn gives rise to immense costs. So it's time to
-      undertake really serious efforts to prevent such situations wherever possible by static and run-time checks. Static initialization checks are preferable, of course, but may require a
+      undertake really serious efforts to prevent such situations wherever possible by static and run-time checks. Static initialization checks are preferable, of course, but 
+      will require a
       fundamental revision of expressive means for executable code in order to 
       make these checks as complete/comprehensive/effective as possible.
     </P>
@@ -254,7 +255,34 @@
       <B><A HREF="DatabaseIntegration.htm"><I><FONT COLOR="#FF0000">Lava</FONT></I> solution</A></B>
     </P>
     <H3>
-      <A NAME="synch"></A>11. Multi-threading, transactions, and synchronization should be treated in a purely declarative way
+      <A NAME="SQL"></A>11. Low-level user interface builders should be overcome
+    </H3>
+    <P>
+      The purpose of graphical user interfaces is to present a graphical 
+      representation of selected internal application data structures to the 
+      user and to allow her/him to manipulate these data structures by 
+      point-and-click and key-press operations. Present UI builders work on a 
+      very low level and require a great lot of manual work to establish this 
+      mapping between internal data structures and external visible 
+      representation and to add user interaction handlers to this 
+      representation. UI builders are big and complicated tools and they have 
+      little or no knowledge of the actual, complex application data structures. 
+      The programmer would have to construct intermediate auxiliary data 
+      structures that are required by the UI programming interface.</P>
+    <P>
+      Presently this entire UI construction process is very costly and very 
+      cumbersome. Our idea is to replace this process by a more direct, 
+      semi-automatic and annotation-controlled mapping from complex application 
+      data structures to complex visual representations: Annotations to the 
+      components and elements of an application data structure would specify the 
+      details of the associated visual representation, and a kind of &quot;user 
+      interface interpreter&quot; would read these annotations at run time and 
+      constructs the visual representations.</P>
+    <P>
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I> solution</B>: Under 
+      development.</P>
+    <H3>
+      <A NAME="synch"></A>12. Multi-threading, transactions, and synchronization should be treated in a purely declarative way
     </H3>
     <P>
       Transaction programming, multi-threading, inter-process communication / synchronization, distributed processing are inexhaustible sources of errors, frustration, and intricateness that should
@@ -266,7 +294,7 @@
       <B><A HREF="Transactions.htm"><I><FONT COLOR="#FF0000">Lava</FONT></I> solution</A></B>
     </P>
     <H3>
-      <A NAME="organization"></A>12. Programming languages should become "organization-aware"
+      <A NAME="organization"></A>13. Programming languages should become "organization-aware"
     </H3>
     <P>
       A language with all these characteristics should also be <STRONG>organization-aware</STRONG>: If you can talk about interfaces to persistent component objects then you should also be able to
@@ -275,10 +303,10 @@
       name space. The various types of conventional addressing schemes currently in use should be supported equally well, like file and computer names, ftp, http, e-mail addresses.
     </P>
     <P>
-      <A HREF="OrganizationAwareness.htm"><B><I><FONT COLOR="#FF0000">Lava</FONT></I> solution</B></A>
-    </P>
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I> solution</B>: For future 
+      research.</P>
     <H3>
-      <A NAME="security"></A>13. Programming languages should become "security-aware"
+      <A NAME="security"></A>14. Programming languages should become "security-aware"
     </H3>
     <P>
       Once you can talk about data ownership and interactive responsibilities of OU's it is obvious that you would also like to talk about security rules and policies. You would like to restrict the
@@ -300,8 +328,8 @@
       </LI>
     </UL>
     <P>
-      <B><A HREF="Security.htm"><I><FONT COLOR="#FF0000">Lava</FONT></I> solution</A></B>
-    </P>
+      <B><I><FONT COLOR="#FF0000">Lava</FONT></I> solution</B>: For future 
+      research.</P>
     <HR>
     <P>
       After all, the <FONT COLOR="#FF0000"><STRONG><I>Lava</I></STRONG></FONT> development can be viewed partly as an attempt to <A HREF="PicketFence.htm">capitalize on the gaps</A> and omissions

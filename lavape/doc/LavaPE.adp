@@ -14,7 +14,7 @@
 		<section ref="html/FAQ.htm" title="Frequently Asked Questions">
 			<section ref="html/FAQWhyAnotherPL.htm" title="Why yet another object-oriented programming language?"/>
 			<section ref="html/FAQLavaOrientation.htm" title="What's the principal orientation of the Lava development?"/>
-			<section ref="html/FAQfromSpaghettiToFractals.htm" title="Principal orientation in terms of spaghetti, tortellini and fractals."/>
+			<section ref="html/FAQfromSpaghettiToFractals.htm" title="Principal orientation in terms of spaghetti, tortellini and fractals"/>
 			<section ref="html/FAQWhoTakeLook.htm" title="Who might be interested in Lava?"/>
 			<section ref="html/FAQClassLibraries.htm" title="Will Lava provide the same wealth of class libraries as commercial languages?"/>
 			<section ref="html/Components.htm" title="Does Lava support component-based programming?"/>
@@ -62,7 +62,7 @@
 				<keyword ref="html/Unsolved.htm#stateValue">objects, two categories</keyword>
 				<keyword ref="html/Unsolved.htm">CORBA</keyword>
 				<keyword ref="html/Unsolved.htm#patterns">design patterns</keyword>
-				<keyword ref="html/Unsolved.htm#patterns">patterns</keyword>
+				<keyword ref="html/Unsolved.htm#patterns">patterns, frameworks</keyword>
 				<keyword ref="html/Unsolved.htm#synch">transactions</keyword>
 				<keyword ref="html/Unsolved.htm#synch">semaphores</keyword>
 				<keyword ref="html/Unsolved.htm">Unsolved problems</keyword>
@@ -81,14 +81,14 @@
 			<keyword ref="html/LavaOverview.htm#aesthetic">aesthetic vs. pragmatic value</keyword>
 			<section ref="html/PointAndClick.htm" title="Lava is perfectly &quot;point-and-click&quot;">
 				<keyword ref="html/PointAndClick.htm#constraint">constraint</keyword>
-				<keyword ref="html/PointAndClick.htm#htmldoc">documentation generator</keyword>
-				<keyword ref="html/PointAndClick.htm#htmldoc">point and click</keyword>
+				<keyword ref="html/PointAndClick.htm#HTMLdoc">documentation generator</keyword>
+				<keyword ref="html/PointAndClick.htm">point and click</keyword>
 				<keyword ref="html/PointAndClick.htm#exec">exec</keyword>
 				<keyword ref="html/PointAndClick.htm#exec">editing executable code</keyword>
 				<keyword ref="html/PointAndClick.htm#textualSyntax">textual syntax of Lava</keyword>
 				<keyword ref="html/PointAndClick.htm">textual programming</keyword>
 				<keyword ref="html/PointAndClick.htm">point and click</keyword>
-				<keyword ref="html/PointAndClick.htm">placeholder</keyword>
+				<keyword ref="html/PointAndClick.htm#placeholder">placeholder</keyword>
 			</section>
 			<section ref="html/StructEdAdvant.htm" title="Advantages of structure editing">
 				<keyword ref="html/StructEdAdvant.htm">combo boxes</keyword>
@@ -100,14 +100,11 @@
 				<keyword ref="html/LavaReadability.htm#declnesting">declarations, nesting of</keyword>
 				<keyword ref="html/LavaReadability.htm#declnesting">nesting of declarations</keyword>
 				<keyword ref="html/LavaReadability.htm#codeGeneration">multiple inheritance versus code generation wizards</keyword>
-				<keyword ref="html/LavaReadability.htm#declNesting">nesting</keyword>
 			</section>
-			<section ref="html/OOanalysis.htm" title="Object-oriented analysis and design">
-				<keyword ref="html/OOanalysis.htm">o-o analysis</keyword>
+			<section ref="html/OOanalysis.htm" title="object-oriented analysis and design">
 				<keyword ref="html/OOanalysis.htm#patternLanguage">pattern language</keyword>
 			</section>
 			<section ref="html/OOPS-MIMM.htm" title="Object-Oriented Problem Separation through Many Irreducible Mini-Methods (OOPS:MIMM)">
-				<keyword ref="html/OOPS-MIMM.htm">Object-Oriented Problem Separation (OOPS)</keyword>
 				<keyword ref="html/OOPS-MIMM.htm">Many Irreducible Mini-Methods (MIMM)</keyword>
 				<keyword ref="html/OOPS-MIMM.htm">OOPS:MIMM</keyword>
 			</section>
@@ -118,15 +115,14 @@
 			</section>
 			<section ref="html/SepItfImpl.htm" title="Strict separation of interfaces and implementations">
 				<keyword ref="html/SepItfImpl.htm">Ada</keyword>
-				<keyword ref="html/SepItfImpl.htm#classnotion">class notion</keyword>
+				<keyword ref="html/SepItfImpl.htm#classNotion">class notion</keyword>
 				<keyword ref="html/SepItfImpl.htm">COM</keyword>
 				<keyword ref="html/SepItfImpl.htm">CORBA</keyword>
 				<keyword ref="html/SepItfImpl.htm#objectCreation">creation of objects</keyword>
 				<keyword ref="html/SepItfImpl.htm#objectCreation">object creation</keyword>
-				<keyword ref="html/SepItfImpl.htm#infohiding">information hiding principle</keyword>
+				<keyword ref="html/SepItfImpl.htm#infoHiding">information hiding principle</keyword>
 				<keyword ref="html/SepItfImpl.htm">inheritance</keyword>
 				<keyword ref="html/SepItfImpl.htm#virtualBaseClasses">virtual base classes</keyword>
-				<keyword ref="html/SepItfImpl.htm#objectCreation">creation</keyword>
 				<keyword ref="html/SepItfImpl.htm#virtualBaseClasses">multiple inheritance with shared base classes</keyword>
 				<keyword ref="html/SepItfImpl.htm#multipleInheritance">multiple inheritance in Java</keyword>
 				<keyword ref="html/SepItfImpl.htm#implInheritance">inheritance of implementations</keyword>
@@ -136,7 +132,6 @@
 				<keyword ref="html/SepItfImpl.htm">members, private/public</keyword>
 				<keyword ref="html/SepItfImpl.htm#JavaInterfaces">Java interfaces</keyword>
 				<keyword ref="html/SepItfImpl.htm">interface</keyword>
-				<keyword ref="html/SepItfImpl.htm#infoHiding">information hiding principle</keyword>
 			</section>
 			<section ref="html/TwoObjectCategories.htm" title="Two object categories: state and value objects">
 				<keyword ref="html/TwoObjectCategories.htm">categories of objects</keyword>
@@ -144,7 +139,6 @@
 				<keyword ref="html/TwoObjectCategories.htm">objects, two categories</keyword>
 				<keyword ref="html/TwoObjectCategories.htm">two categories of objects</keyword>
 				<keyword ref="html/TwoObjectCategories.htm#database">objects, database</keyword>
-				<keyword ref="html/TwoObjectCategories.htm">CORBA</keyword>
 				<keyword ref="html/TwoObjectCategories.htm#declaration">Eiffel</keyword>
 				<keyword ref="html/TwoObjectCategories.htm">value object (structure)</keyword>
 				<keyword ref="html/TwoObjectCategories.htm">state object (service)</keyword>
@@ -166,7 +160,6 @@
 			<section ref="html/TypeSafety.htm" title="Lava is statically type-safe">
 				<keyword ref="html/TypeSafety.htm#Eiffel">Eiffel</keyword>
 				<keyword ref="html/TypeSafety.htm">type-safety of Lava</keyword>
-				<keyword ref="html/TypeSafety.htm">type-safe</keyword>
 				<keyword ref="html/TypeSafety.htm#substitutableType">substitutable types</keyword>
 			</section>
 			<section ref="html/TypeCasts.htm" title="Lava renders &quot;type casts&quot; superfluous">
@@ -225,12 +218,12 @@
 				<keyword ref="html/Callbacks.htm">event handling</keyword>
 				<keyword ref="html/Callbacks.htm">signals/handlers</keyword>
 				<keyword ref="html/Callbacks.htm">connect</keyword>
-        <keyword ref="html/Callbacks.htm">disconnect</keyword>
+        		<keyword ref="html/Callbacks.htm">disconnect</keyword>
 				<keyword ref="html/Callbacks.htm">connect</keyword>
 				<keyword ref="html/Callbacks.htm">software signals</keyword>
 				<keyword ref="html/Callbacks.htm">handlers</keyword>
 			</section>
-			<section ref="html/Packages.htm" title="Lava projects, programming in the large">
+			<section ref="html/Packages.htm" title="Lava projects, packages, programming in the large">
 				<keyword ref="html/Packages.htm#packages">packages</keyword>
 				<keyword ref="html/Packages.htm#include">include files</keyword>
 				<keyword ref="html/Packages.htm#initiator">initiator</keyword>
@@ -240,7 +233,7 @@
 				<keyword ref="html/ProtectedFriend.htm">protected features</keyword>
 				<keyword ref="html/ProtectedFriend.htm">opaque packages</keyword>
 			</section>
-			<section ref="html/ExecEnvironment.htm" title="Execution environments of Lava applications"/>
+			<section ref="html/ExecEnvironment.htm" title="Execution modes/environments of Lava applications"/>
 			<section ref="html/Interpreter.htm" title="The o-o Lava interpreter"/>
 		</section>
 		<section ref="html/LavaBySamples.htm" title="Learning Lava by samples">
@@ -265,7 +258,7 @@
 			<section ref="html/RepetComputSamples.htm" title="Replacing loops by recursion">
 				<section ref="html/RecursionSamples.htm" title="Recursion"/>
 				<section ref="html/CursorVisitorSamples.htm" title="Cursor/iterator/visitor"/>
-				<section ref="html/QuantifierSamples.htm" title="Quantifier and select"/>
+				<section ref="html/QuantifierSamples.htm" title="Quantifiers and select"/>
 			</section>
 			<section ref="html/PatternSamples.htm" title="Virtual type samples">
 				<keyword ref="html/PatternSamples.htm">Eiffel</keyword>
@@ -273,7 +266,7 @@
 				<keyword ref="html/PatternSamples.htm">virtual base classes</keyword>
 				<section ref="html/VTSamples.htm" title="Basic virtual type samples"/>
 				<section ref="html/IsSelfVirtualSample.htm" title="A type is either virtual or non-virtual"/>
-				<section ref="html/VirtualBaseSamples.htm" title="Virtual base types">
+				<section ref="html/VirtualBaseSamples.htm" title="Virtual base classes">
 					<keyword ref="html/VirtualBaseSamples.htm">virtual base classes</keyword>
 				</section>
 				<section ref="html/SubstitutableSamples.htm" title="Substitutable types">
@@ -285,7 +278,7 @@
 				</section>
 			</section>
 			<section ref="html/ComponentSamples.htm" title="Component objects"/>
-			<section ref="html/ExceptionSamples.htm" title="Exception handling">
+			<section ref="html/ExceptionSamples.htm" title="Exception handling in Lava">
 				<keyword ref="html/ExceptionSamples.htm">exception handling</keyword>
 			</section>
 			<section ref="html/CallbackSample.htm" title="Callback sample">
@@ -345,7 +338,7 @@
 			<section ref="html/CommandHelp.htm" title="Command help">
 				<section ref="html/commands/AboutCommand.htm" title="About (Help menu)"/>
 				<section ref="html/commands/CascadeCommand.htm" title="Cascade (Window menu)"/>
-				<section ref="html/commands/CheckAndRun.htm" title="Check and run Lava programs">
+				<section ref="html/commands/CheckAndRun.htm" title="Check and run Lava program">
 			 		 <keyword ref="html/commands/CheckAndRun.htm">execution of lava programs</keyword>
 			 		 <keyword ref="html/commands/CheckAndRun.htm">starting a Lava program</keyword>
 			 		 <keyword ref="html/commands/CheckAndRun.htm">launching a Lava program</keyword>
@@ -353,43 +346,17 @@
 				<section ref="html/commands/CloseCommand.htm" title="Close (File menu)"/>
 				<section ref="html/commands/Comment.htm" title="Comment"/>
 				<section ref="html/commands/ContextHelpCommand.htm" title="Context help"/>
-				<section ref="html/commands/CopyCommand.htm" title="Copy (Edit menu)"/>
-				<section ref="html/commands/CutCommand.htm" title="Cut (Edit menu)"/>
 				<section ref="html/commands/EditMenuCommands.htm" title="Edit menu commands"/>
-				<section ref="html/commands/File1,2,3,4Command.htm" title="File 1,2,3,4 (File menu)">
-			 		 <keyword ref="html/commands/File1,2,3,4Command.htm">File 1, 2, 3, 4 command</keyword>
-				</section>
-				<section ref="html/commands/FileCloseCommand.htm" title="File close (File menu)">
-			 		 <keyword ref="html/commands/FileCloseCommand.htm">File Close command</keyword>
-				</section>
-				<section ref="html/commands/FileExitCommand.htm" title="File exit (File menu)">
-			 		 <keyword ref="html/commands/FileExitCommand.htm">exit</keyword>
-			 		 <keyword ref="html/commands/FileExitCommand.htm">File Exit command</keyword>
-				</section>
 				<section ref="html/commands/FileMenuCommands.htm" title="File menu commands">
 			 		 <keyword ref="html/commands/FileMenuCommands.htm">File menu commands</keyword>
-				</section>
-				<section ref="html/commands/FileNewCommand.htm" title="File new (File menu)">
-			 		 <keyword ref="html/commands/FileNewCommand.htm">File New command</keyword>
-				</section>
-				<section ref="html/commands/FileOpenCommand.htm" title="File open (File menu)">
-			 		 <keyword ref="html/commands/FileOpenCommand.htm">files: managing</keyword>
-				</section>
-				<section ref="html/commands/FileSaveAsCommand.htm" title="File save as (File menu)">
-			 		 <keyword ref="html/commands/FileSaveAsCommand.htm">File Save As command</keyword>
-				</section>
-				<section ref="html/commands/FileSaveCommand.htm" title="File save (File menu)">
-			 		 <keyword ref="html/commands/FileSaveCommand.htm">File Save command</keyword>
-				</section>
-				<section ref="html/commands/GenHtmlCommand.htm" title="Generate HTML (File menu)">
 			 		 <keyword ref="html/commands/GenHtmlCommand.htm">documentation generator</keyword>
 			 		 <keyword ref="html/commands/GenHtmlCommand.htm">file print command</keyword>
 			 		 <keyword ref="html/commands/GenHtmlCommand.htm">HTML repr. of Lava programs</keyword>
 				</section>
-				<section ref="html/commands/GoToDeclaration.htm" title="Go to declaration"/>
 				<section ref="html/commands/ImportCommand.htm" title="Import component">
 			  		<keyword ref="html/commands/ImportCommand.htm">import</keyword>
 				</section>
+				<section ref="html/commands/GoToDeclaration.htm" title="Go to declaration"/>
 				<section ref="html/commands/InsertTextInForm.htm" title="Insert text in form"/>
 				<section ref="html/commands/NewCOImpl.htm" title="New component object implementation"/>
 				<section ref="html/commands/NewCOSpec.htm" title="New component object specification"/>
@@ -403,20 +370,11 @@
 				<section ref="html/commands/NewPackage.htm" title="New package"/>
 				<section ref="html/commands/NewSet.htm" title="New set"/>
 				<section ref="html/commands/NewVT.htm" title="New virtual type"/>
-				<section ref="html/commands/NextWindowCommand.htm" title="Next window"/>
 				<section ref="html/commands/OpenFormView.htm" title="Open form view"/>
-				<section ref="html/commands/Override.htm" title="Override"/>
-				<section ref="html/commands/PasteCommand.htm" title="Paste (Edit menu)"/>
-				<section ref="html/commands/PreviousWindowCommand.htm" title="Previous window"/>
+				<section ref="html/commands/Override.htm" title="Override a virtual type or class member"/>
 				<section ref="html/commands/ReturnToRef.htm" title="Return to reference"/>
 				<section ref="html/commands/ShowOverridables.htm" title="Show overridables"/>
-				<section ref="html/commands/Spectacles.htm" title="Spectacles"/>
-				<section ref="html/commands/TileHorizontalCommand.htm" title="Tile horizontal (Window menu)"/>
-				<section ref="html/commands/TileVerticalCommand.htm" title="Tile vertical (Window menu)"/>
-				<section ref="html/commands/UndoCommand.htm" title="Undo/redo (Edit menu)"/>
-				<section ref="html/commands/ViewMenuCommands.htm" title="View menu commands"/>
-				<section ref="html/commands/Window1,2,...Command.htm" title="Window 1,2,... (Window menu)"/>
-				<section ref="html/commands/WindowArrangeIcons.htm" title="Window arrange icons"/>
+				<section ref="html/commands/Spectacles.htm" title="eyeglasses"/>
 				<section ref="html/commands/WindowMenuCommands.htm" title="Window menu commands"/>
 			</section>
 		</section>

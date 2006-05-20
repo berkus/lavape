@@ -43,7 +43,7 @@ development. </p>
 
 
 <p>Our goal was to prevent missing initialization and use of
-undefined values by <i>static</i> checks (i.e. at
+undefined values by <b>static checks</b> (i.e. at
 programming time) wherever possible . However, this required a major
 revision of the expressive means for executable code, in comparison
 with more traditional wide-spread programming languages. In particular,
@@ -67,7 +67,7 @@ view of variable usage, and</li>
 unambiguous distinction between input and output parameters of methods.</li>
 
 
-  <li>Moreover, expressions that yield an optional result (i.e.,
+  <li>Moreover, an expression that yields an optional result (i.e.,
 one that may assume the special value <font color="#0000ff"><b>&Oslash;</b></font>),
 cannot be unconditionally assigned to a mandatory variable in <font color="#ff0000"><b><i>Lava</i></b></font>,
 but you must either enclose the assignment in an <font color="#0000ff"><b>ifdef</b></font>
@@ -76,6 +76,20 @@ ifdef-condition has a non-null value), or you must use an <font color="#0000ff">
 expression or a chain of <font color="#0000ff"><b>else</b></font>
 expressions (which finally provides an alternative expression that
 yields a non-optional value).</li>
+
+
+  <li>In cases where objects point to each other it is unavoidable that 
+  initializers of &quot;parent&quot; objects pass references to not yet completely 
+  initialized objects to initializers of child objects (which will then use 
+  these references to point to the parent object). This passing of unfinished 
+  objects as parameters, however, has to be secured against inadvertent access 
+  to not yet initialized sub-objects. For details see the dedicated section on
+  <a href="UnfinishedObjects.htm">unfinished objects</a>.<br>
+  <br>
+  This is the most recent, and admittedly, perhaps the most experimental measure 
+  of the <font color="#FF0000"><i><b>Lava</b></i></font> project to <b>
+  completely prevent access to uninitialized objects by purely static checks, 
+  i.e., already at programming time</b>.</li>
 
 
 </ul>
@@ -94,7 +108,7 @@ values have to be prevented with respect to</p>
   <li><b>member </b>variables of classes, and</li>
 
 
-  <li><b>output</b> parameters of function calls.</li>
+  <li><b>Output parameters</b> of function calls.</li>
 
 
 </ol>
@@ -103,7 +117,9 @@ values have to be prevented with respect to</p>
 <p>(Note that <i>global variables</i> have been
 abolished anyway in <font color="#ff0000"><i><b>Lava</b></i></font>
 in favor of a purely local, explicit data flow, in order to facilitate
-the analysis and comprehension of data flow in complex programs.)</p>
+the analysis and comprehension of data flow in complex programs and to avoid the 
+obfuscating and confusing effects of &quot;far-distance dependencies&quot; within complex 
+applications.)</p>
 
 
 <p>Before you proceed, you should have understood how <font color="#ff0000"> <i><b>Lava</b></i></font>
@@ -159,14 +175,18 @@ counterpart of the <font color="#ff0000"><i><b>SQL</b></i></font>
 select expression),</li>
 
 
-  <li><font color="#0000ff"><b>type</b></font>
-(branches over the run time type of an expression value).</li>
+  <li><font color="#0000ff"><b>type</b></font> (branches over the run time type 
+  of an expression value),</li>
+
+
+  <li><font color="#0000FF"><b>try ... catch</b></font> (branches over the type 
+  of an <a href="ExceptionSamples.htm">exception</a> object.</li>
 
 
 </ul>
 
 
-<p>which all assign values to the respective local variables that
+<p>which all assign completely initialized objects to the respective local variables that
 they introduce, except for the declare construct. So we need to
 consider only <i> declared</i> variables.</p>
 
@@ -200,9 +220,9 @@ associated with the new object's class.</li>
 
 
   <li><font color="#ff0000"><i><b>LavaPE</b></i></font>
-makes sure (by purely static checks) that every initializer assigns a
+makes sure (by purely static checks) that <b>every initializer assigns a
 value to every non-optional member variable of this class in each of
-its branches.</li>
+its branches</b>.</li>
 
 
   <li>You can modify these values within the (optional) <font color="#800080"><b>but</b></font> clause
@@ -222,8 +242,8 @@ clause) as an input parameter to any function.<br>
     <br>
 
 
-This enforces essentially a strict <i>bottom-up construction of
-new objects</i> from member objects that have to be constructed
+This enforces essentially a <b>strict bottom-up construction of
+new objects from member objects</b> that have to be constructed
 first.</li>
 
 
@@ -283,11 +303,7 @@ non-optional output parameter. (Checked at programming time.)</p>
 <h3>3. Output parameters</h3>
 
 
-<p><b><font color="#ff0000"><i>Lava</i></font>
-doesn't support parameter passing "by reference".</b></p>
-
-
-<p>In <i> <font color="#ff0000"><b>Lava</b></font></i><b>,</b>
+<p>First<font color="#ff0000"><b><i> </i></b></font>note that <font color="#ff0000"><i><b>Lava</b></i></font><b> </b>doesn't support parameter passing "by reference". In <i> <font color="#ff0000"><b>Lava</b></font></i><b>,</b>
 function parameters are either input or output parameters. For
 reference parameters it wouldn't be clear whether or not the function
 assigns a value to them, whereas a <font color="#ff0000"><i><b>Lava</b></i></font>&nbsp;
@@ -302,25 +318,24 @@ where a variable is initialized by being an actual output parameter of
 a function call.</p>
 
 
-<p>Assignment of optional to non-optional variables can be
-checked only at run time and may cause a null-pointer-exception to
-occur.</p>
+<p>(Note: Though function parameters aren't passed &quot;by reference&quot; in
+<font color="#FF0000"><i><b>Lava</b></i></font>, they are yet passed &quot;by 
+address&quot; and never &quot;by value&quot; (= copied)). </p>
 
 
-<p>Like the member initialization checks (see above), the
-initialization checks for output parameters are performed at all return
-points of the function body.</p>
+<p>Much like the member initialization checks (see above), the initialization 
+checks for output parameters are performed at all return points of the function 
+body.</p>
 
 
 <p>An exception-throwing <a href="whatsThis/FailSucceed.htm"><font color="#0000ff"><b>throw</b></font></a>
-statement is again the <i>only</i> way to exit from a
+statement is  the <i>only</i> way to exit from a
 function if you cannot assign a value to every non-optional output
 parameter. (Checked at programming time.)</p>
 
 
 <p>In this way <font color="#ff0000"><i><b>Lava</b></i></font>
-makes sure that undefined outputs cannot be used <i>inadvertently</i>
-by the caller of a failing function but only if the resulting exception
+makes sure that undefined outputs cannot be used <b>inadvertently </b>by the caller of a failing function but only if the resulting exception
 is caught and the respective output parameters are used nevertheless
 thereafter. </p>
 
