@@ -41,17 +41,18 @@
     
     <P><A HREF="Unsolved.htm#stateValue"><B>Problem statement</B></A> </P>
     
-    <H3>State objects </H3>
+    <H3><a name="stateObject"></a>State objects </H3>
     
     <P>The essence of a state object is that new values may be assigned to its
-      member variables again and again, and that two state objects are
+      member variables (<b>&quot;properties&quot;</b>) again and again, and that two state objects are
       considered to be &quot;equal&quot; if they are identical, i.e., the
       <FONT COLOR="#FF0000">same</FONT> object. Copying/cloning a state object
       contradicts their &quot;uniqueness semantics&quot;. </P>
     
     <H3>Value objects </H3>
     
-    <P>The essence of a value object is that its member variables are &quot;frozen&quot;
+    <P><a name="valueObject"></a>The essence of a value object is that its member variables 
+    (<b>&quot;attributes&quot;</b>) are &quot;frozen&quot;
       (= write-locked) when the object leaves the (executable) &quot;<FONT COLOR="#0000FF">new</FONT>&quot;
       construct (which creates new objects of some specifiable type and
       category). Comparing two value objects amounts to a recursive comparison

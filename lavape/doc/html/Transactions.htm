@@ -15,7 +15,9 @@
   <BODY>
     
     <H2 ALIGN="CENTER">Multi-threading, synchronization, and transactions in
-    <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> </H2>
+    <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B></H2>
+    
+    <p ALIGN="CENTER">(Not yet implemented)</p>
     
     <P><B><FONT COLOR="#FF0000"><I>Lava</I></FONT></B> is a sequential
       programming language with built-in multi-threading support. It treats
@@ -193,8 +195,9 @@
     
     <P>This is the typical symmetric <b>producer/consumer</b> relationship between
       concurrent threads. In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>,
-      this is handled by special <a href="dialogs/MemVarBox.htm#consumable">&quot;consumable&quot; member variables</a>
-      (properties) of <A HREF="TwoObjectCategories.htm">services</A>. Such an
+      this is handled by special <a href="dialogs/MemVarBox.htm#consumable">&quot;consumable&quot; member variables</a> of <A HREF="TwoObjectCategories.htm">services</A>. 
+    (Remember that member variables of services/state objects are called 
+    &quot;properties&quot;.) Such an
       object is &quot;consumed&quot; by every read access. Readers are blocked
       until a writer has assigned a new value to this property. Writers are
       blocked until the object has been consumed by all readers. Only one writer

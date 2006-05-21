@@ -132,6 +132,8 @@
 				<keyword ref="html/SepItfImpl.htm">members, private/public</keyword>
 				<keyword ref="html/SepItfImpl.htm#JavaInterfaces">Java interfaces</keyword>
 				<keyword ref="html/SepItfImpl.htm">interface</keyword>
+				<keyword ref="html/SepItfImpl.htm">member functions and variables</keyword>
+				<keyword ref="html/SepItfImpl.htm">methods</keyword>
 			</section>
 			<section ref="html/TwoObjectCategories.htm" title="Two object categories: state and value objects">
 				<keyword ref="html/TwoObjectCategories.htm">categories of objects</keyword>
@@ -144,6 +146,8 @@
 				<keyword ref="html/TwoObjectCategories.htm">state object (service)</keyword>
 				<keyword ref="html/TwoObjectCategories.htm#database">persistent data</keyword>
 				<keyword ref="html/TwoObjectCategories.htm">categories: state, value</keyword>
+				<keyword ref="html/TwoObjectCategories.htm#valueObject">attribute</keyword>
+				<keyword ref="html/TwoObjectCategories.htm">property</keyword>
 			</section>
 			<section ref="html/Components.htm" title="Lava as a component integration language">
 				<keyword ref="html/Components.htm">component objects</keyword>
@@ -171,7 +175,7 @@
 				<keyword ref="html/SingleAssigLogSem.htm">single assignment</keyword>
 			</section>
 			<section ref="html/ReadOnly.htm" title="Read-only Lava constructs and functions">
-			 	<keyword ref="html/ReadOnly.htm">read-only in general</keyword>
+			 	<keyword ref="html/ReadOnly.htm">read-only clauses/functions/invariants</keyword>
 			</section>
 			<section ref="html/ObjectLifeCycle.htm" title="Stages in the life of Lava objects">
 				<keyword ref="html/ObjectLifeCycle.htm#initializer">constructor</keyword>
@@ -203,7 +207,7 @@
 			</section>
 			<section ref="html/Transactions.htm" title="Multi-threading, synchronization, transactions">
 				<keyword ref="html/Transactions.htm#exception">abort transaction</keyword>
-				<keyword ref="html/Transactions.htm#exception">transaction</keyword>
+				<keyword ref="html/Transactions.htm">transaction</keyword>
 				<keyword ref="html/Transactions.htm#exception">transaction abort</keyword>
 				<keyword ref="html/Transactions.htm#exception">try block</keyword>
 				<keyword ref="html/Transactions.htm">synchronization</keyword>
@@ -218,10 +222,9 @@
 				<keyword ref="html/Callbacks.htm">event handling</keyword>
 				<keyword ref="html/Callbacks.htm">signals/handlers</keyword>
 				<keyword ref="html/Callbacks.htm">connect</keyword>
-        		<keyword ref="html/Callbacks.htm">disconnect</keyword>
-				<keyword ref="html/Callbacks.htm">connect</keyword>
+        <keyword ref="html/Callbacks.htm">disconnect</keyword>
 				<keyword ref="html/Callbacks.htm">software signals</keyword>
-				<keyword ref="html/Callbacks.htm">handlers</keyword>
+				<keyword ref="html/Callbacks.htm">handler</keyword>
 			</section>
 			<section ref="html/Packages.htm" title="Lava projects, packages, programming in the large">
 				<keyword ref="html/Packages.htm#packages">packages</keyword>
@@ -233,11 +236,12 @@
 				<keyword ref="html/ProtectedFriend.htm">protected features</keyword>
 				<keyword ref="html/ProtectedFriend.htm">opaque packages</keyword>
 			</section>
-			<section ref="html/ExecEnvironment.htm" title="Execution modes/environments of Lava applications"/>
+			<section ref="html/ExecEnvironment.htm" title="Execution modes/environments of Lava programs">
+				<keyword ref="html/ExecEnvironment.htm">Execution modes/environments of Lava programs</keyword>
+			</section>
 			<section ref="html/Interpreter.htm" title="The o-o Lava interpreter"/>
 		</section>
 		<section ref="html/LavaBySamples.htm" title="Learning Lava by samples">
-			<keyword ref="html/LavaBySamples.htm">documentation generator</keyword>
 			<keyword ref="html/LavaBySamples.htm">learning lava by samples</keyword>
 			<section ref="html/HelloWorldSample.htm" title="&quot;Hello World&quot;"/>
 			<section ref="html/FormSample.htm" title="Forms-oriented user interface"/>
@@ -254,6 +258,11 @@
 				<keyword ref="html/SingleAssigSample.htm">single assignment</keyword>
 			</section>
 			<section ref="html/ProtectedFriendSample.htm" title="Private / protected / friend"/>
+			<section ref="html/LavaStreamIO.htm" title="Stream input/output">
+				<keyword ref="html/LavaStreamIO.htm">input/output</keyword>
+				<keyword ref="html/LavaStreamIO.htm">file input/output</keyword>
+				<keyword ref="html/LavaStreamIO.htm">stream input/output</keyword>
+			</section>
 			<section ref="html/DatabaseSample.htm" title="Database access"/>
 			<section ref="html/RepetComputSamples.htm" title="Replacing loops by recursion">
 				<section ref="html/RecursionSamples.htm" title="Recursion"/>
@@ -271,7 +280,6 @@
 				</section>
 				<section ref="html/SubstitutableSamples.htm" title="Substitutable types">
 					<keyword ref="html/SubstitutableSamples.htm">substitutable types</keyword>
-					<keyword ref="html/SubstitutableSamples.htm">samples</keyword>
 				</section>
 				<section ref="html/CounterSamples.htm" title="Counter - counterexamples">
 					<keyword ref="html/CounterSamples.htm#StringList">multiple inheritance and virtual types</keyword>
@@ -283,7 +291,6 @@
 			</section>
 			<section ref="html/CallbackSample.htm" title="Callback sample">
 				<keyword ref="html/CallbackSample.htm">callbacks</keyword>
-				<keyword ref="html/CallbackSample.htm">callback sample</keyword>
 				<keyword ref="html/CallbackSample.htm">event handling</keyword>
 			</section>
 		</section>
@@ -291,15 +298,14 @@
 			<keyword ref="html/BasicEditing.htm">views of LavaPE</keyword>
 			<section ref="html/EditTree.htm" title="Editing the declaration tree">
 				<keyword ref="html/EditTree.htm">combo boxes</keyword>
-				<keyword ref="html/EditTree.htm">declaration</keyword>
+				<keyword ref="html/EditTree.htm">declarations</keyword>
 			</section>
 			<section ref="html/OverrideView.htm" title="Using the override view">
 				<keyword ref="html/OverrideView.htm">override view</keyword>
 			</section>
 			<section ref="html/EditInclude.htm" title="Editing the include file view"/>
 			<section ref="html/EditExec.htm" title="Editing executable code">
-				<keyword ref="html/EditExec.htm#constraint">constraint</keyword>
-				<keyword ref="html/EditExec.htm">exec</keyword>
+				<keyword ref="html/EditExec.htm#constraint">exec</keyword>
 				<keyword ref="html/EditExec.htm">placeholder</keyword>
 				<keyword ref="html/EditExec.htm#constraint">invariant</keyword>
 				<keyword ref="html/EditExec.htm#arithExpr">arithmetic expressions</keyword>
@@ -319,7 +325,8 @@
 				<section ref="html/dialogs/ContentBox.htm" title="Explan. texts / defaults in forms"/>
 				<section ref="html/dialogs/FieldLayoutBox.htm" title="Field layout in forms"/>
 				<section ref="html/dialogs/FunctionBox.htm" title="Function">
-			 		 <keyword ref="html/dialogs/FunctionBox.htm#static">functions</keyword>
+			 		 <keyword ref="html/dialogs/FunctionBox.htm">functions</keyword>
+			 		 <keyword ref="html/dialogs/FunctionBox.htm#static">static functions</keyword>
 			 		 <keyword ref="html/dialogs/FunctionBox.htm#readOnly">read-only functions</keyword>
 				</section>
 				<section ref="html/dialogs/FuncParmBox.htm" title="Function parameter"/>
@@ -339,7 +346,7 @@
 				<section ref="html/commands/AboutCommand.htm" title="About (Help menu)"/>
 				<section ref="html/commands/CascadeCommand.htm" title="Cascade (Window menu)"/>
 				<section ref="html/commands/CheckAndRun.htm" title="Check and run Lava program">
-			 		 <keyword ref="html/commands/CheckAndRun.htm">execution of lava programs</keyword>
+			 		 <keyword ref="html/commands/CheckAndRun.htm">execution of Lava programs</keyword>
 			 		 <keyword ref="html/commands/CheckAndRun.htm">starting a Lava program</keyword>
 			 		 <keyword ref="html/commands/CheckAndRun.htm">launching a Lava program</keyword>
 				</section>
@@ -348,15 +355,17 @@
 				<section ref="html/commands/ContextHelpCommand.htm" title="Context help"/>
 				<section ref="html/commands/EditMenuCommands.htm" title="Edit menu commands"/>
 				<section ref="html/commands/FileMenuCommands.htm" title="File menu commands">
-			 		 <keyword ref="html/commands/FileMenuCommands.htm">File menu commands</keyword>
-			 		 <keyword ref="html/commands/GenHtmlCommand.htm">documentation generator</keyword>
-			 		 <keyword ref="html/commands/GenHtmlCommand.htm">file print command</keyword>
-			 		 <keyword ref="html/commands/GenHtmlCommand.htm">HTML repr. of Lava programs</keyword>
-				</section>
-				<section ref="html/commands/ImportCommand.htm" title="Import component">
-			  		<keyword ref="html/commands/ImportCommand.htm">import</keyword>
+			 		 <keyword ref="html/commands/FileMenuCommands.htm">file menu commands</keyword>
 				</section>
 				<section ref="html/commands/GoToDeclaration.htm" title="Go to declaration"/>
+				<section ref="html/commands/GenHtmlCommand.htm" title="HTML generation commands">
+			 		 <keyword ref="html/commands/GenHtmlCommand.htm">documentation generator</keyword>
+			 		 <keyword ref="html/commands/GenHtmlCommand.htm">printing Lava source programs</keyword>
+			 		 <keyword ref="html/commands/GenHtmlCommand.htm">HTML repr. of Lava programs</keyword>
+				</section>
+				<section ref="html/commands/ImportCommand.htm" title="&quot;Import component&quot; command">
+			  		<keyword ref="html/commands/ImportCommand.htm">importing external copmponents</keyword>
+				</section>
 				<section ref="html/commands/InsertTextInForm.htm" title="Insert text in form"/>
 				<section ref="html/commands/NewCOImpl.htm" title="New component object implementation"/>
 				<section ref="html/commands/NewCOSpec.htm" title="New component object specification"/>
