@@ -185,6 +185,11 @@
 			</section>
 			<section ref="html/IniChecks.htm" title="Comprehensive initialization checks">
 				<keyword ref="html/ObjectLifeCycle.htm">initialization checks</keyword>
+				<section ref="html/UnfinishedObjects.htm" title="Unfinished/closed/quarantined objects">
+  				<keyword ref="html/UnfinishedObjects.htm">unfinished objects</keyword>
+  				<keyword ref="html/UnfinishedObjects.htm">closed objects</keyword>
+  				<keyword ref="html/UnfinishedObjects.htm">quarantined objects</keyword>
+				</section>
 			</section>
 			<section ref="html/PointersRefCounts.htm" title="Pointers, reference counts, storage management">
 				<keyword ref="html/PointersRefCounts.htm">application-level pointers</keyword>

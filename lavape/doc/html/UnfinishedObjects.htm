@@ -30,7 +30,10 @@
 <body>
 
 
-<h2 align="center"><strong>Unfinished and therefore &quot;closed&quot; objects</strong></h2>
+<h2 align="center"><strong>Unfinished/closed/opaque/quarantined objects</strong></h2>
+
+
+<p align="center">(On the way of implementation)</p>
 
 
 <p>Assume you want to initialize two objects <i>a</i> and <i>b</i> that point to 
@@ -54,29 +57,50 @@ reached only if we strictly avoid long-distance dependencies and strive for more
 &quot;locally comprehensible&quot; programs.</p>
 <p>In <font color="#FF0000"><i><b>Lava</b></i></font>, the basic idea on how to 
 solve the problem of improper use of still unfinished objects is to provide a 
-specific attribute <b>&quot;closed&quot;</b> that can be added to the declaration of local 
-variables, formal parameters and &quot;self&quot; objects of methods, and to disallow  access to the members of &quot;closed&quot; objects as well as method invocations with 
-these members as &quot;self&quot; objects: &quot;Closed&quot; objects are in a sense 
-<b>&quot;opaque&quot;</b> or <b>&quot;quarantined&quot;</b>.</p>
+specific attribute <b>&quot;closed&quot;</b> that can be added to the declaration of 
+a local 
+variable, formal parameter and <i>self</i> object of methods, and to disallow  
+all references to the members of &quot;closed&quot; objects: &quot;Closed&quot; objects are in 
+this sense 
+<b>&quot;opaque&quot;</b> or <b>&quot;quarantined&quot;</b>. (Use the
+<img border="0" src="../images/Closed.png" width="16" height="15"> tool button 
+to declare a local variable closed.)</p>
 <p>Furthermore, <font color="#FF0000"><i><b>LavaPE</b></i></font> restricts and 
 controls the propagation of such unfinished objects at programming time in order 
 to make completely clear which objects might be infected (possibly deeply nested 
 in their internal structure)&nbsp; at any place in a program with &quot;the bacillus of incomplete 
-initialization&quot; and will be treated as closed/quarantined in their entirety 
+initialization&quot; and will be treated as closed/opaque/quarantined in their entirety 
 therefore:</p>
-<ol>
-  <li>The primary kind of unfinished objects are the &quot;self&quot; objects in
-  <a href="ObjectLifeCycle.htm#creation">initializers</a>. <font color="#FF0000">
-  <i><b>LavaPE</b></i></font> <a href="IniChecks.htm">knows</a> whether values 
-  have already been assigned to all non-optional members of &quot;self&quot; at any point 
-  in the <a href="EditExec.htm#exec">exec</a> (= body) of an initializer. At 
+<ul>
+  <li>The actual origin of unfinished objects are the <i>self</i> objects in
+  <a href="ObjectLifeCycle.htm#creation">initializers</a>. At any point in the <a href="EditExec.htm#exec">exec</a>(=body) 
+  of an initializer <b> <font color="#FF0000">
+  <i>LavaPE</i></b></font> <a href="IniChecks.htm">knows</a> whether values 
+  have already been assigned to <b>all</b> non-optional members of <i>self</i> at 
+  this point. At 
   places in the <a href="ObjectLifeCycle.htm#creation">initializer's</a>
   <a href="EditExec.htm#exec">exec</a> where this condition is not yet 
-  fulfilled, &quot;self&quot; is treated as &quot;closed&quot; in the above sense.</li>
-  <li>You can assign closed objects only to local variables, output parameters 
-  of the containing initializer, or to input parameters of method invocations 
-  only if these have themselves the &quot;closed&quot; attribute.</li>
-</ol>
+  fulfilled, <i>self</i> is treated as &quot;closed&quot; in the above sense.</li>
+  <li>Any object that is already known as a closed object can be propagated in 
+  the following ways (but, of course) only if the target has also been declared 
+  &quot;closed&quot;:<ol>
+    <li>Within an initializer you can assign closed objects to (direct, 
+    top-level) members of the <i>self</i> object.</li>
+    <li>You can assign closed objects  to closed local variables and output parameters 
+  of the current <a href="EditExec.htm#exec">exec</a>.</li>
+    <li>You can use a closed object as an (actual) input parameter to a method 
+    invocation if the corresponding formal input parameter has been declared 
+    &quot;closed&quot;.</li>
+    <li>You can use a closed object <i>x</i> to call a method <i>m</i>: <i><br>
+&nbsp;&nbsp;&nbsp;&nbsp; </i><font color="#0000FF"><b>call</b></font> x.m(...),<br>
+    provided the <i>self</i> object of <i>m</i> has been
+    <a href="dialogs/FunctionBox.htm#selfClosed">declared &quot;closed</a>&quot;.</li>
+    <li>You can assign a closed object to a non-top-level member of <i>self</i> 
+    or to a (possibly nested) member of any other object x if self or x, 
+    respectively, has been declared closed explicitly.</li>
+  </ol>
+  </li>
+</ul>
 
 
 </body>

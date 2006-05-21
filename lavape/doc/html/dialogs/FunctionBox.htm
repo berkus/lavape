@@ -65,7 +65,7 @@
     <h3><a name="static"></a>Static</h3>
     
     <P>An interface may have static member functions. These are invoked without
-    call expression and have no &quot;self&quot;/&quot;this&quot; variable.
+    call expression and have no <i>self </i>/ <i>this</i> variable.
     Interfaces with static member functions are used primarily if you want to
     add further functions to an existing type T of objects without
     extending T. Example: Mathematical functions that can be applied to
@@ -127,17 +127,17 @@
     therefore the &quot;abstract&quot; check-box is disabled if the function
     belongs to a creatable interface.</P>
     
-    <H3>&quot;Self&quot; is closed</H3>
+    <H3><a name="selfClosed"></a><i>Self </i>&nbsp;is closed</H3>
     
-    <P>If checked, then this means that the &quot;self&quot; object of this method may be 
+    <P>If checked, then this means that the <i>self</i> object of this method may be 
     in a not yet fully initialized state. Although a method may be called only 
     if a non-null value has been assigned to all non-optional member variables 
-    of its &quot;self&quot; object within the object's initializer, these values might in 
+    of its <i>self</i> object within the object's initializer, these values might in 
     turn contain non-fully initialized nested members. <font color="#FF0000"><i>
     <b>LavaPE</b></i></font> guarantees that such
     <a href="../UnfinishedObjects.htm">unfinished objects</a> are in a sense 
     &quot;closed&quot; or &quot;opaque&quot;: A &quot;closed&quot; object may only be passed, assigned and 
-    referenced &quot;as a whole&quot;. Read and method call access to its member objects 
+    referenced &quot;as a whole&quot;. Referencing its member objects 
     is prohibited (and prevented by <font color="#FF0000"><i><b>LavaPE</b></i></font> 
     already at programming time!).</P>
     
