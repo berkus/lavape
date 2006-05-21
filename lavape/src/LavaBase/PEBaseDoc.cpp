@@ -351,6 +351,11 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
           elDECL->TypeFlags.EXCL(isNative);
           elDECL->TypeFlags.EXCL(defaultInitializer);
         }
+        if ((elDECL->DeclType == Function) && (decl4->DeclType == Interface) 
+          && elDECL->NestedDecls.last
+          && (((LavaDECL*)((CHE*)elDECL->NestedDecls.last)->data)->DeclType == ExecDef))
+          elDECL->NestedDecls.Delete(elDECL->NestedDecls.last);
+        
         if (!hint->CommandData5 && (hintDECL->DeclType == DragDef)
           && !hint->FirstLast.Contains(multiDocHint)
           && !elDECL->WorkFlags.Contains(fromPrivToPub)) { //not drag-drop, no pattern: paste or only drop

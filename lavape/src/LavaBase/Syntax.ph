@@ -168,137 +168,137 @@ $TYPE +CDP {
 
   enum TreeFlag {
     isExpanded,    
-    //0, 1
+    //0, 1, X0000 0001
     ItemsExpanded, 
-    //1, 2
+    //1, 2, X0000 0002
     ParaExpanded,  
-    //2, 4
+    //2, 4, X0000 0004
     InExpanded,    
-    //3, 8
+    //3, 8, X0000 0008
     OutExpanded,   
-    //4, 16
+    //4, 16, X0000 0010
     DefsExpanded,  
-    //5, 32
+    //5, 32, X0000 0020
     MemsExpanded,  
-    //6, 64
+    //6, 64, X0000 0040
     hasEmptyOpt,    
-    //7, 128
+    //7, 128, X0000 0080
     leftArrows,
-    //8, 256 in exec: assignment arrows from right to left
+    //8, 256, X0000 0100 in exec: assignment arrows from right to left
 
-    FREE_TREEFLAG9,
-    FREE_TREEFLAG10,
-    FREE_TREEFLAG11,
-    FREE_TREEFLAG12,
-    FREE_TREEFLAG13,
-    FREE_TREEFLAG14,
-    FREE_TREEFLAG15,
-    FREE_TREEFLAG16,
-    FREE_TREEFLAG17,
+    FREE_TREEFLAG9,//, X0000 0200
+    FREE_TREEFLAG10,//, X0000 0400
+    FREE_TREEFLAG11,//, X0000 0800
+    FREE_TREEFLAG12,//, X0000 1000
+    FREE_TREEFLAG13,//, X0000 20000
+    FREE_TREEFLAG14,//, X0000 4000
+    FREE_TREEFLAG15,//, X0000 8000
+    FREE_TREEFLAG16,//, X0001 0000
+    FREE_TREEFLAG17,//, X0002 0000
     dragOverrides,  //overrides on clipboard
-    //18,  
+    //18//, X0004 0000,  
     mixedDrag,
-    //19
+    //19//, X0008 0000
     dragVT,   //VirtualType on clipboard 
-    //20
+    //20//, X0010 0000
     dragInt,  //Interface on clipboard 
-    //21
+    //21//, X0020 0000
     dragImpl,  //Implementation on clipboard 
-    //22
+    //22//, X0040 0000
     dragIni,      //Initiator on clipboard 
-    //23
+    //23//, X0080 0000
     dragFuncDef,  //Function on clipboard 
-    //24
+    //24//, X0100 0000
     dragFuncImpl, //Function on clipboard 
-    //25
+    //25//, X0200 0000
     dragPack, //Package on clipboard 
-    //26
+    //26//, X0400 0000
     dragCompo,//Component on clipboard 
-    //27
+    //27//, X0800 0000
     dragCOS,  //CompObjSpec on clipboard 
-    //28
+    //28//, X1000 0000
     dragCO,   //CompObj on clipboard 
-    //29
+    //29//, X2000 0000
     dragInput, //input (from initiator) on clipboard
-    //30
+    //30//, X4000 0000
     ShowExecComments
-    //31
+    //31//, X8000 0000
   };  
 
 
   enum TypeFlag {
     isOptional,
-    // 0/1, optional input or output or attribute
+    // 0/1, X0000 0001, optional input or output or attribute
     isStatic,
-    // 1 , static function
-		thisComponent,
-		//2/4, the internal interface of the component object
+    // 1, X0000 0002 , static function
+    thisComponent,
+   //2/ X0000 0004, the internal interface of the component object
     isComponent,
-    // 3/8, Component object interface
+    // 3/ X0000 0008, Component object interface
     substitutable,
-    // 4/16 substitutable type (C- and P-derivations) of Attr, IAttr or OAttr
+    // 4/16, X0000 0010 substitutable type (C- and P-derivations) of Attr, IAttr or OAttr
     isProtected,
-    // 5/32, protected attr/function or opaque namespace
+    // 5/ X0000 0020, protected attr/function or opaque namespace
     isPlaceholder,
-    // 6/64, an attribute defines a placeHolder
+    // 6/, X0000 0040, an attribute defines a placeHolder
     isConst, 
-    // 7/128,  //const function or property
+    // 7/128, X0000 0080,  //const function or property
     thisCompoForm, 
-    // 8/256, the internal interface of the component objects GUI
+    // 8/256, X0000 0100, the internal interface of the component objects GUI
     isAbstract,
-    // 9/512, abstract function (always virtual abstract) 
+    // 9/512, X0000 0200, abstract function (always virtual abstract) 
     //        or abstract pattern parameter or non-creatable interface
     forceOverride, //
-    //10  1024 override function if class is extended
+    //10  1024, X0000 0400 override function if class is extended
     isPropGet,
-    //11/2048, get property function in a service implementation, the RefID is the ID of the property
+    //11/2048, X0000 0800, get property function in a service implementation, the RefID is the ID of the property
     isPropSet,
-    //12/4096, set property function in a service implementation, the RefID is the ID of the property
+    //12/4096, X0000 1000, set property function in a service implementation, the RefID is the ID of the property
     isAnyCategory,
-    //13/8192, indefinite object category (stateObject or valueObject)
+    //13/8192, X0000 2000, indefinite object category (stateObject or valueObject)
     constituent, 
-    //14/16384 an attribute defines a down link
+    //14/16384, X0000 4000 an attribute defines a down link
     acquaintance,
-    //15/32768 an attribute defines a  'follow on copy link'
+    //15/32768, X0000 8000 an attribute defines a  'follow on copy link'
     isInitializer,
-    //16/ initializer function
+    //16/, X0001 0000 initializer function
     isPersistent,
-    //17/ persistent component
+    //17/, X0002 0000 persistent component
     isGUIEdit,
-    //18/ the edit show function
+    //18/, X0004 0000 the edit show function
     isGUI,
-    //19/ form service, interface and implementation
+    //19, X0008 0000/ form service, interface and implementation
     // and its (not removable/changeable) input and output
     sameAsSelf, 
-    //20 IO parameter has same category as "self"
+    //20, X0010 0000 IO parameter has same category as "self"
     isNative,
-    //21         Function or interface has native implementation
+    //21, X0020 0000         Function or interface has native implementation
     defaultInitializer,
-    //22         Default initializer
+    //22, X0040 0000         Default initializer
     isTransaction, 
-    //23 Function or initiator is transaction
+    //23, X0080 0000 Function or initiator is transaction
     execConcurrent,
-    //24 Concurrent function or initiator
+    //24, X0100 0000 Concurrent function or initiator
     execIndependent,
-    //25 Independent function or initiator
+    //25, X0200 0000 Independent function or initiator
     copyOnAccess,
-    //26 
+    //26, X0400 0000 
     consumable,
-    //27
+    //27, X0800 0000
     stateObject,  //attribute references a state object
-    //28 
+    //28, X1000 0000 
     hasSetGet,    //attribute has set and get functions
-    //29
+    //29, X2000 0000
     definesObjCat, //pattern parameter defines object category
-    //30
+    //30, X4000 0000
     trueObjCat    //attribute/IO-category is defined
-    //31
+    //31, X8000 0000
   };//TypeFlag
 
 
 	enum SecondTFlag {
 	  isLavaSignal,
-      //0, function is Signal
+      //0,X0000 0001, function is Signal
 	  FREE_FLAG1,
 	  FREE_FLAG2,
 	  FREE_FLAG3,
@@ -306,35 +306,36 @@ $TYPE +CDP {
 	  FREE_FLAG5,
 	  FREE_FLAG6,
 	  FREE_FLAG7,
-	  FREE_FLAG8,
+	hasClosedInput,
+	//8,X0000 0100, function has closed input
     enableName, 
-    //9, 512, overriding function, virtual type or member does not inherit the name of the overridden
+    //9,X0000 0200, 512, overriding function, virtual type or member does not inherit the name of the overridden
     overrides,
-    //10, 1024 member or function overrides member or function of extended interface
+    //10,X0000 0400, 1024 member or function overrides member or function of extended interface
     funcImpl,
-    //11, 2048 function implementation
+    //11,X0000 0800, 2048 function implementation
     inComponent,
-    //12 4096 Used only in clipboard-data for drag/drop and paste:
+    //12, X0000 1000, 4096 Used only in clipboard-data for drag/drop and paste:
     //    All Attr-, IAttr- and OAttr-types are structures or component interfaces
     isEnum, 
-    //13, 8192 the LavaDECL defines an Enumeration or an interface which extends an Enumeration 
+    //13, X0000 2000, 8192 the LavaDECL defines an Enumeration or an interface which extends an Enumeration 
     isSet,
-    //14, 16384 the LavaDECL defines a set or an interface which extends a set
+    //14, X0000 4000, 16384 the LavaDECL defines a set or an interface which extends a set
     //    or is the set element virtual type
     isChain,
-    //15, 32768 the LavaDECL defines a chain or an interface which extends a chain
+    //15, X0000 8000, 32768 the LavaDECL defines a chain or an interface which extends a chain
     //    or is the chain element virtual type
     isArray,
-    //16, the LavaDECL defines an array or an interface which extends a array
+    //16, X0001 0000, the LavaDECL defines an array or an interface which extends a array
     //    or is the array element virtual type
     closed,
-    //17, object may be not yet fully initialized; therefore: member access forbidden
+    //17, X0002 0000, object may be not yet fully initialized; therefore: member access forbidden
     isEventDesc,
-    //18 the decl is the event description virtual type of a callback pattern
+    //18, X0004 0000 the decl is the event description virtual type of a callback pattern
     FREE_FLAG18,
-    //19 the decl is the event specification virtual type of a callback pattern
+    //19, X0008 0000 the decl is the event specification virtual type of a callback pattern
     isException,
-	//20, the LavaDECL defines an exception or an interface which extends an exception
+	//20, X0010 0000, the LavaDECL defines an exception or an interface which extends an exception
     //    or is the exception enumeration virtual type
     FREE_FLAG21
 	};

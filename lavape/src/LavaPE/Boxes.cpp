@@ -1398,8 +1398,11 @@ ValOnInit CFuncBox::OnInitDialog()
     Native->setEnabled(false);
     Abstract->setEnabled(false);
     Initializer->setEnabled(false);
-    if (myDECL->ParentDECL->DeclType == Impl)
+    if (myDECL->ParentDECL->DeclType == Impl) {
       Protected->setEnabled(false);
+      if (myDECL->SecondTFlags.Contains(funcImpl))
+        Closed->setEnabled(false);
+    }
   }
   else {
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
@@ -1507,6 +1510,8 @@ ValOnInit CFuncBox::OnInitDialog()
       Abstract->setEnabled(false);
       StaticFunc->setEnabled(false);
       StaticFunc->setChecked(false);
+      Signal->setEnabled(false);
+      Signal->setChecked(false);
       Closed->setEnabled(false);
       Closed->setChecked(false);
     }
@@ -1595,6 +1600,8 @@ ValOnInit CFuncBox::OnInitDialog()
       StaticFunc->setEnabled(false);
       RMOverrides->setEnabled(true);
       EnableName->setEnabled(true);
+      Closed->setEnabled(false);
+      Signal->setEnabled(false);
       if (myDECL->SecondTFlags.Contains(enableName)) {
         EnableName->setChecked(true);
         NewName->setEnabled(true);
@@ -1722,6 +1729,8 @@ void CFuncBox::on_RMOverrides_clicked()
   DelInherits->setEnabled(true);
   NamedTypes->setEnabled(true);
   Inherits->setEnabled(true);
+  Closed->setEnabled(true);
+  Signal->setEnabled(true);
 //  BasicTypes->setEnabled(true);
   OnInitDialog();
 }
@@ -1815,6 +1824,8 @@ void CFuncBox::on_Initializer_clicked()
     Abstract->setChecked(false);
     Abstract->setEnabled(false);
     Closed->setEnabled(false);
+    Signal->setEnabled(false);
+    Signal->setChecked(false);
   }
   else {
     DefaultIni->setChecked(false);
@@ -1823,6 +1834,7 @@ void CFuncBox::on_Initializer_clicked()
     ConstFunc->setEnabled(true); 
     Protected->setEnabled(true);
     Closed->setEnabled(true);
+    Signal->setEnabled(true);
   }
   myDECL->TypeFlags.EXCL(isConst);
   UpdateData(false);  
@@ -2930,6 +2942,7 @@ ValOnInit CIOBox::OnInitDialog()
         ValueObject->setEnabled(false);
         SameAsSelf->setEnabled(false);
         AnyCategory->setEnabled(false);
+        Closed->setEnabled(false);
       }
     if (myDECL->TypeFlags.Contains(trueObjCat))
       if (myDECL->TypeFlags.Contains(stateObject)) {
@@ -3027,6 +3040,7 @@ ValOnInit CIOBox::OnInitDialog()
     Substitutable->setEnabled(false);
     Closed->setEnabled(false);
   }
+  Closed->setChecked(myDECL->SecondTFlags.Contains(closed));
   if (myDECL->SecondTFlags.Contains(funcImpl)
       || (myDECL->ParentDECL->DeclType != Function)
       || myDECL->TypeFlags.Contains(isGUI)
@@ -3054,7 +3068,6 @@ void CIOBox::on_NamedTypes_activated(int pos)
     ValueObject->setEnabled(!inheritedFlag.Contains(definesObjCat));
     SameAsSelf->setEnabled(!inheritedFlag.Contains(definesObjCat));
     AnyCategory->setEnabled(!inheritedFlag.Contains(definesObjCat));
-    Closed->setChecked(myDECL->SecondTFlags.Contains(closed));
     
     if (inheritedFlag.Contains(definesObjCat)) {
       SameAsSelf->setChecked(false);

@@ -413,7 +413,7 @@ enum SecondTFlag {
   FREE_FLAG5,
   FREE_FLAG6,
   FREE_FLAG7,
-  FREE_FLAG8,
+  hasClosedInput,
   enableName,
   overrides,
   funcImpl,

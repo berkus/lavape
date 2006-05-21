@@ -595,6 +595,13 @@ bool CLavaPEDoc::CheckFuncImpl(LavaDECL* funcDECL, int checkLevel, bool& changed
     funcDECL->TypeFlags = classTypeFlags;
     funcDECL->SecondTFlags.INCL(funcImpl);
   }
+  if (funcDECL->SecondTFlags.Contains(closed) != classFuncDECL->SecondTFlags.Contains(closed)) {
+    changed = true;
+    if (classFuncDECL->SecondTFlags.Contains(closed))
+      funcDECL->SecondTFlags.INCL(closed);
+    else
+      funcDECL->SecondTFlags.EXCL(closed);
+  }
   if (checkLevel > CHLV_inUpdateLow) {
     chain.first = funcDECL->NestedDecls.first;
     chain.last = funcDECL->NestedDecls.last;
@@ -664,6 +671,13 @@ bool CLavaPEDoc::CheckFuncImpl(LavaDECL* funcDECL, int checkLevel, bool& changed
 //        typeFlags.EXCL(Overrides);
         changed = (IOEl->TypeFlags == typeFlags); //true; 20.05.01
         IOEl->TypeFlags = typeFlags;
+        if (IOEl->SecondTFlags.Contains(closed) != classIOEl->SecondTFlags.Contains(closed)) {
+          changed = true;
+          if (classIOEl->SecondTFlags.Contains(closed))
+            IOEl->SecondTFlags.INCL(closed);
+          else
+            IOEl->SecondTFlags.EXCL(closed);
+        }
         //IDTable.Change((LavaDECL**)&cheIOEl->data);
         //che = (CHE*)chain.Uncouple(elFound);
         //delete che;
@@ -863,6 +877,7 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         }
         */
         implElDecl->SecondTFlags.EXCL(funcImpl);     
+        implElDecl->SecondTFlags.EXCL(closed);     
         implElDecl->TypeFlags.EXCL(isProtected);
         implElDecl->TypeFlags.EXCL(isPropGet);    
         implElDecl->TypeFlags.EXCL(isPropSet);
@@ -876,6 +891,7 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         cheIOEl = (CHE*)((LavaDECL*)cheImplEl->data)->NestedDecls.first;
         while (cheIOEl) {
           ((LavaDECL*)cheIOEl->data)->SecondTFlags.EXCL(funcImpl);     
+          ((LavaDECL*)cheIOEl->data)->SecondTFlags.EXCL(closed);     
           ((LavaDECL*)cheIOEl->data)->TypeFlags.EXCL(isPropGet);    
           ((LavaDECL*)cheIOEl->data)->TypeFlags.EXCL(isPropSet);
           ((LavaDECL*)cheIOEl->data)->Supports.Destroy();

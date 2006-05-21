@@ -141,6 +141,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
   if (elDef->DeclType != CompObjSpec) {//save the component protocol
     elDef->nInput = 0;
     elDef->nOutput = 0;
+    elDef->SecondTFlags.EXCL(hasClosedInput);
   }
   switch (elDef->DeclType) {
 
@@ -819,7 +820,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     else {
       if (elDef->TypeFlags.Contains(isOptional))
         lab += DString(", optional");
-      if (elDef->TypeFlags.Contains(closed))
+      if (elDef->SecondTFlags.Contains(closed))
         lab += DString(", closed");
       if ( elDef->DeclType == Attr) {
         if (elDef->TypeFlags.Contains(isConst))
@@ -893,6 +894,8 @@ void CExecTree::ExecIn(LavaDECL ** pelDef, int level)
 {
   (*pelDef)->nInput = (*pelDef)->ParentDECL->nInput;
   (*pelDef)->ParentDECL->nInput++;
+  if ((*pelDef)->SecondTFlags.Contains(closed))
+    (*pelDef)->ParentDECL->SecondTFlags.INCL(hasClosedInput);
   ExecMember(pelDef, level);
 }
 
