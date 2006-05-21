@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN" "hmpro4.dtd">
+<html>
+<head>
+
+
+  
+  <meta http-equiv="Content-Language" content="en-us">
+
+
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+
+  
+  <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+
+
+  
+  <meta name="ProgId" content="FrontPage.Editor.Document">
+
+  
+
+
+  
+  <title>Unfinished objects</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css">
+</head>
+
+
+<body>
+
+
+<h2 align="center"><strong>Unfinished and therefore &quot;closed&quot; objects</strong></h2>
+
+
+<p>Assume you want to initialize two objects <i>a</i> and <i>b</i> that point to 
+each other. Then you cannot completely initialize <i>a</i> before creating <i>b,</i> 
+of course, and vice versa.</p>
+<p>Other object-oriented languages, like <i><font color="#FF0000"><b>C++</b></font></i> 
+or <font color="#FF0000"><i><b>Java</b></i></font>, solve this problem simply by 
+forgoing a complete initialization discipline:</p>
+<p>A <font color="#FF0000"><i><b>C++</b></i></font> 
+or <font color="#FF0000"><i><b>Java</b></i></font> constructor need not fully 
+initialize a new object. Rather, initialization of an object may be scattered 
+over large parts and various stages of an application run in these languages. 
+These long-distance dependencies will make it rather confusing and unclear 
+frequently, in which state of initialization an object is at a certain point in 
+a program and thereby increases the danger of inadvertent access to not yet initialized 
+members considerably.</p>
+<p>We consider this absence of a stringent and statically checked initialization 
+discipline as a major source of run time errors and as a serious obstacle on the 
+way to more comprehensible and maintainable programs. The latter goals can be 
+reached only if we strictly avoid long-distance dependencies and strive for more 
+&quot;locally comprehensible&quot; programs.</p>
+<p>In <font color="#FF0000"><i><b>Lava</b></i></font>, the basic idea on how to 
+solve the problem of improper use of still unfinished objects is to provide a 
+specific attribute <b>&quot;closed&quot;</b> that can be added to the declaration of local 
+variables, formal parameters and &quot;self&quot; objects of methods, and to disallow  access to the members of &quot;closed&quot; objects as well as method invocations with 
+these members as &quot;self&quot; objects: &quot;Closed&quot; objects are in a sense 
+<b>&quot;opaque&quot;</b> or <b>&quot;quarantined&quot;</b>.</p>
+<p>Furthermore, <font color="#FF0000"><i><b>LavaPE</b></i></font> restricts and 
+controls the propagation of such unfinished objects at programming time in order 
+to make completely clear which objects might be infected (possibly deeply nested 
+in their internal structure)&nbsp; at any place in a program with &quot;the bacillus of incomplete 
+initialization&quot; and will be treated as closed/quarantined in their entirety 
+therefore:</p>
+<ol>
+  <li>The primary kind of unfinished objects are the &quot;self&quot; objects in
+  <a href="ObjectLifeCycle.htm#creation">initializers</a>. <font color="#FF0000">
+  <i><b>LavaPE</b></i></font> <a href="IniChecks.htm">knows</a> whether values 
+  have already been assigned to all non-optional members of &quot;self&quot; at any point 
+  in the <a href="EditExec.htm#exec">exec</a> (= body) of an initializer. At 
+  places in the <a href="ObjectLifeCycle.htm#creation">initializer's</a>
+  <a href="EditExec.htm#exec">exec</a> where this condition is not yet 
+  fulfilled, &quot;self&quot; is treated as &quot;closed&quot; in the above sense.</li>
+  <li>You can assign closed objects only to local variables, output parameters 
+  of the containing initializer, or to input parameters of method invocations 
+  only if these have themselves the &quot;closed&quot; attribute.</li>
+</ol>
+
+
+</body>
+</html>
