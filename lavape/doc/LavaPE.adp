@@ -299,7 +299,8 @@
 				<keyword ref="html/CallbackSample.htm">event handling</keyword>
 			</section>
 		</section>
-		<section ref="html/BasicEditing.htm" title="How to edit and run Lava programs">
+		<section ref="html/BasicEditing.htm" title="Basic program editing procedures">
+			<keyword ref="html/BasicEditing.htm">editing Lava programs</keyword>
 			<keyword ref="html/BasicEditing.htm">views of LavaPE</keyword>
 			<section ref="html/EditTree.htm" title="Editing the declaration tree">
 				<keyword ref="html/EditTree.htm">combo boxes</keyword>

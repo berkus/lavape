@@ -64,7 +64,7 @@ all references to the members of &quot;closed&quot; objects: &quot;Closed&quot; 
 this sense 
 <b>&quot;opaque&quot;</b> or <b>&quot;quarantined&quot;</b>. (Use the
 <img border="0" src="../images/Closed.png" width="16" height="15"> tool button 
-to declare a local variable closed.)</p>
+on the &quot;Exec switches toolbar&quot; to declare a local variable &quot;closed&quot;.)</p>
 <p>Furthermore, <font color="#FF0000"><i><b>LavaPE</b></i></font> restricts and 
 controls the propagation of such unfinished objects at programming time in order 
 to make completely clear which objects might be infected (possibly deeply nested 
@@ -85,7 +85,9 @@ therefore:</p>
   the following ways (but, of course) only if the target has also been declared 
   &quot;closed&quot;:<ol>
     <li>Within an initializer you can assign closed objects to (direct, 
-    top-level) members of the <i>self</i> object.</li>
+    top-level) members of the <i>self</i> object. Read access to such members is 
+    granted if a value has been assigned in all preceding branches of the 
+    initializer's <a href="EditExec.htm#exec">exec</a>.</li>
     <li>You can assign closed objects  to closed local variables and output parameters 
   of the current <a href="EditExec.htm#exec">exec</a>.</li>
     <li>You can use a closed object as an (actual) input parameter to a method 
@@ -97,10 +99,20 @@ therefore:</p>
     <a href="dialogs/FunctionBox.htm#selfClosed">declared &quot;closed</a>&quot;.</li>
     <li>You can assign a closed object to a non-top-level member of <i>self</i> 
     or to a (possibly nested) member of any other object x if self or x, 
-    respectively, has been declared closed explicitly.</li>
+    respectively, has been declared &quot;closed&quot; explicitly. (Recall: Such an 
+    assignment is possible only if the receiving parent object is a
+    <a href="TwoObjectCategories.htm">state object</a>.)</li>
   </ol>
   </li>
 </ul>
+<p>These rules guarantee that unfinished objects are propagated only to &quot;closed&quot; 
+variables, and their members can never be referenced.</p>
+<p><b>An important consequence of all that is that a
+<a href="ObjectLifeCycle.htm#creation">newly created</a> object is always 
+guaranteed to be completely finished if you don't pass a closed object as an 
+actual input parameter to the respective initializer.</b></p>
+<p>Or in other words: Incompleteness can be propagated in upward direction in 
+the programs call stack only if it has been passed downward before.</p>
 
 
 </body>
