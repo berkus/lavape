@@ -299,13 +299,13 @@ $TYPE +CDP {
 	enum SecondTFlag {
 	  isLavaSignal,
       //0,X0000 0001, function is Signal
-	  FREE_FLAG1,
-	  FREE_FLAG2,
-	  FREE_FLAG3,
-	  FREE_FLAG4,
-	  FREE_FLAG5,
-	  FREE_FLAG6,
-	  FREE_FLAG7,
+	  FREE_FLAG1, //X0000 0002
+	  FREE_FLAG2, //X0000 0004
+	  FREE_FLAG3, //X0000 0008
+	  FREE_FLAG4, //X0000 0010
+	  FREE_FLAG5, //X0000 0020
+	  FREE_FLAG6, //X0000 0040
+	  FREE_FLAG7, //X0000 0080
 	hasClosedInput,
 	//8,X0000 0100, function has closed input
     enableName, 
@@ -342,59 +342,59 @@ $TYPE +CDP {
 	  
   enum WorkFlag {
     isPattern,
-    //0, the Package or Interface has pattern parameter
+    //0, X0000 0001, the Package or Interface has pattern parameter
     isPartOfPattern,
-    //1, the Interface is part of a pattern
+    //1, X0000 0002, the Interface is part of a pattern
     runTimeOK,
-    //2, run time checked
+    //2, X0000 0004, run time checked
     recalcVT,
-    //3, recalculate the vitual table after some changes
+    //3, X0000 0008, recalculate the vitual table after some changes
     flagDrag,
-    //4, used in drag and drop operations
+    //4, X0000 0010, used in drag and drop operations
     checkmark,
-    //5, temporary used for consistency checks
+    //5, X0000 0020, temporary used for consistency checks
     selAfter,
-    //6, select the tree item of this decl after update
+    //6, X0000 0040, select the tree item of this decl after update
     selEnum,
-    //7, select the Enumeratio section node
+    //7, X0000 0080, select the Enumeratio section node
     selPara,
-    //8, select the param section node
+    //8, X0000 0100, select the param section node
     selIn,
-    //9, select the input section node
+    //9, X0000 0200, select the input section node
     selOut,
-    //10, select the output section node
+    //10, X0000 0400, select the output section node
     selDefs,
-    //11, select the definitions section node
+    //11, X0000 0800, select the definitions section node
     selMems,
-    //12, select the features section node
+    //12, X0000 1000, select the features section node
     implRequired,
-    //13, interface must have an implementation
+    //13, X0000 2000, interface must have an implementation
     hasDefaultIni,
-    //14, interface has a default initializer
+    //14, X0000 4000, interface has a default initializer
     allowDEL,
-    //15, allow function implementation to be deleted
+    //15, X0000 8000, allow function implementation to be deleted
     nonEmptyInvariant,
-    //16, invariant was non-empty
+    //16, X0001 0000, invariant was non-empty
     isReferenced,
-    //17, formal parameter is referenced in exec body
+    //17, X0002 0000, formal parameter is referenced in exec body
     skipOnCopy,
-    //18, used in refactoring: skipped copy actions if move from public to private
+    //18, X0004 0000, used in refactoring: skipped copy actions if move from public to private
     skipOnDeleteID,
-    //19, used in refactoring: no delete of local id's if move from public to private
+    //19, X0008 0000, used in refactoring: no delete of local id's if move from public to private
     fromPrivToPub,
-    //20, used in refactoring: private to public
+    //20, X0010 0000, used in refactoring: private to public
     ImplFromBaseToEx,
-    //21, used in refactoring: base to extension
+    //21, X0020 0000, used in refactoring: base to extension
     SupportsReady,
-    //22, Supports are already from drop doc in clipEl
+    //22, X0040 0000, Supports are already from drop doc in clipEl
     poppedUp,
-    //23, used in LavaGUI: pop up after rebuilding the form
+    //23, X0080 0000, used in LavaGUI: pop up after rebuilding the form
     formVTOK,
-    //24, used at runtime
+    //24, X0100 0000, used at runtime
 	newTreeNode,
-	//25, used in updates
+	//25, X0200 0000, used in updates
     fromPubToPriv
-    //26, used in refactoring: public to private
+    //26, X0400 0000, used in refactoring: public to private
   };
 
   enum BasicFlag {
