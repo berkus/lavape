@@ -88,54 +88,58 @@ the programming process
 <P><IMG src="doc/images/BD14580_.png" 
 border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp; and if program quality, comprehensibility, 
 and, as a consequence, program maintainability</P>
-<P>can be decisively improved. (Cf. section 3.1.2 of the
-<a target="_blank" href="http://www.itrd.gov/pitac/report/">PITAC Report</a> to the American 
-government, which assigns maximum priority to these goals.) 
-<P>This means that we cannot stay with the presently popular programming 
+<P>can be decisively improved.<P>This means that we cannot stay with the presently popular programming 
 languages like <STRONG><I><FONT color=#ff0000>Java</FONT></I></STRONG>&nbsp; and 
 <B><I><FONT color=#ff0000>Visual Basic</FONT></I></B>. We have to aim for 
 greatly improved programming languages and <FONT color=#ff0000><B>RAD</B></FONT> 
-programming environments</P>
+programming environments that fulfill the following requirements:</P>
 <P align=left><IMG src="doc/images/BD14868_1.png" 
-border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that relieve programmers 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; They relieve programmers 
 from <FONT color=#ff0000><A href="doc/html/PointAndClick.htm">clerical and 
-error-prone<I> </I>work</A></FONT> and that in particular 
+error-prone<I> </I>work</A></FONT> and  in particular 
 <P align=left><IMG src="doc/images/BD14868_1.png" 
 border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; replace text-editing with 
 <FONT color=#ff0000><A 
-href="doc/html/StructEdAdvant.htm">structure-editing</A></FONT> throughout 
-the program development process, 
+href="doc/html/StructEdAdvant.htm">structure-editing</A></FONT> throughout the 
+program development process.<P align=left><IMG src="doc/images/BD14868_1.png" 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; They 
+prevent or detect errors already <font color="#FF0000">at programming time</font> 
+wherever possible, for instance the omnipresent dangers<ul>
+  <li> 
+<P align=left>of missing variable initialization caused by the absence of a
+<a href="doc/html/IniChecks.htm">stringent object initialization discipline</a>,</li>
+  <li> 
+<P align=left>of &quot;dangling&quot; pointers caused by erroneous manual
+<a href="doc/html/PointersRefCounts.htm">storage allocation and de-allocation</a>,</li>
+  <li> 
+<P align=left>and of mismatching data types caused by erroneous &quot;<a href="doc/html/Unsolved.htm#typeCasts">type 
+casts</a>&quot;.</li>
+</ul>
 <P><IMG src="doc/images/BD14868_1.png" 
-border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that are easy to learn and 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; They are easy to learn and 
 get along with a <FONT color=#ff0000>minimum number of orthogonal 
-concepts</FONT>, 
-<P><IMG src="doc/images/BD14868_1.png" 
-border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that support <FONT 
+concepts</FONT>.<P><IMG src="doc/images/BD14868_1.png" 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; They support <FONT 
 color=#ff0000>Lego-like composition</FONT> and
-<a href="doc/html/Refactoring.htm">restructuring/refactoring of programs</a>, 
-<P><IMG src="doc/images/BD14868_1.png" 
-border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that compose programs from 
-<A href="doc/html/LavaReadability.htm#smallFunctions">small functions</A> / 
-<A href="doc/html/LavaReadability.htm#smallInterfaces">classes</A> that can 
-be understood by themselves, 
-<P><IMG src="doc/images/BD14868_1.png" 
-border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that decisively <FONT 
+<a href="doc/html/Refactoring.htm">restructuring/refactoring of programs</a>.<P><IMG src="doc/images/BD14868_1.png" 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; They 
+allow us to compose programs from 
+<A href="doc/html/LavaReadability.htm#smallFunctions">small functions</A> and 
+<A href="doc/html/LavaReadability.htm#smallInterfaces">classes</A> that can be 
+understood by themselves<P><IMG src="doc/images/BD14868_1.png" 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and decisively <FONT 
 color=#ff0000><A href="doc/html/LavaReadability.htm">facilitate program 
-comprehension</A></FONT> in this way, 
-<P><IMG src="doc/images/BD14868_1.png" 
-border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that support <FONT 
+comprehension</A></FONT> in this way.<P><IMG src="doc/images/BD14868_1.png" 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; They support <FONT 
 color=#ff0000><A href="doc/html/OOanalysis.htm">smooth incremental 
-transition</A></FONT> from OO analysis to OO design and implementation, 
-<P><IMG src="doc/images/BD14868_1.png" 
-border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that <FONT 
+transition</A></FONT> from OO analysis to OO design and implementation.<P><IMG src="doc/images/BD14868_1.png" 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; They <FONT 
 color=#ff0000>unify</FONT> what should not be separated ("<A 
-href="doc/html/DatabaseIntegration.htm">embedded SQL</A>"), 
-<P><IMG src="doc/images/BD14868_1.png" 
-border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that <FONT 
+href="doc/html/DatabaseIntegration.htm">embedded SQL</A>&quot;)<P><IMG src="doc/images/BD14868_1.png" 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and <FONT 
 color=#ff0000>separate</FONT> what should not be intermingled ("<A 
-href="doc/html/SepItfImpl.htm">interfaces and implementations</A>"), 
-<P><IMG src="doc/images/BD14868_1.png" 
-border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; that facilitate <FONT 
+href="doc/html/SepItfImpl.htm">interfaces and implementations</A>&quot;).<P><IMG src="doc/images/BD14868_1.png" 
+border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; They facilitate <FONT 
 color=#ff0000>reuse of </FONT>certified <FONT color=#ff0000><A 
 href="doc/html/Components.htm">components</A> and</FONT> proven <FONT 
 color=#ff0000><A href="doc/html/PatternSamples.htm">design 
@@ -148,7 +152,7 @@ patterns</A>&nbsp;&nbsp; </FONT>
 border=0 width="12" height="12">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; from clearly documented 
 <FONT color=#ff0000>component libraries and <A 
 href="doc/html/OOanalysis.htm#patternLanguage">pattern 
-libraries/languages</A>
+libraries and pattern languages</A>
 <a target="_blank" href="http://www.designmatrix.com/pl/anatomy.html">*)</a></FONT>.</P>
 <P>The productivity of the software development process will be increased 
 considerably in this way, and the costs of software maintenance and continuous 
