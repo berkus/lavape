@@ -179,12 +179,13 @@
 			</section>
 			<section ref="html/ObjectLifeCycle.htm" title="Stages in the life of Lava objects">
 				<keyword ref="html/ObjectLifeCycle.htm#initializer">constructor</keyword>
+				<keyword ref="html/ObjectLifeCycle.htm#creation">initialization; initializer</keyword>
 				<keyword ref="html/ObjectLifeCycle.htm#creation">object</keyword>
 				<keyword ref="html/ObjectLifeCycle.htm#creation">new</keyword>
 				<keyword ref="html/ObjectLifeCycle.htm">life-time</keyword>
 			</section>
 			<section ref="html/IniChecks.htm" title="Comprehensive initialization checks">
-				<keyword ref="html/ObjectLifeCycle.htm">initialization checks</keyword>
+				<keyword ref="html/IniChecks.htm">initialization checks</keyword>
 				<section ref="html/UnfinishedObjects.htm" title="Unfinished/closed/quarantined objects">
   				<keyword ref="html/UnfinishedObjects.htm">unfinished objects</keyword>
   				<keyword ref="html/UnfinishedObjects.htm">closed objects</keyword>
