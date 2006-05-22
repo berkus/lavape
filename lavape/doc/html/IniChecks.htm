@@ -375,5 +375,65 @@ expressions  which finally provides an alternative expression that
 yields a non-optional value.</p>
 
 
+<h3>Initialization in <font color="#FF0000"><i>Lava</i></font> compared to
+<font color="#FF0000"><i>C++</i></font> / <font color="#FF0000"><i>Java</i></font> 
+/ <font color="#FF0000"><i>C#</i></font></h3>
+<p>The <b>constructor</b> notions of <b><font color="#FF0000"><i>C++</i></font></b> 
+/ <b><font color="#FF0000"><i>Java</i></font></b> / <font color="#FF0000"><b><i>
+C# </i></b></font>can only guarantee that an object is <b>initialized anyhow</b>: 
+Its member variables are set to default values (numbers to 0 or 0.0, etc.) if a 
+more meaningful value isn't assigned explicitly. In most cases this won't 
+prevent the application from crashing or, even worse, from silently delivering 
+faulty results. Null-pointer exceptions that could indicate an error at the 
+earliest possible time are rather prevented in this way.</p>
+<p>In contrast to this, <font color="#FF0000"><i><b>Lava</b></i></font> informs 
+the programmer already at programming time if there an initializer is missing or 
+an existing initializer fails to initialize all mandatory member variables. Note 
+that the distinction between optional and mandatory variables of
+<font color="#FF0000"><i><b>Lava</b></i></font> is essential here.</p>
+<p>The <b>definite assignment checks</b> of <b><font color="#FF0000"><i>Java</i></font></b> 
+and <font color="#FF0000"><i><b>C#</b></i></font>, like those of
+<font color="#FF0000"><b><i>Lava</i></b></font> (see above), ensure that a local 
+variable is assigned before it is used. But the absence of the 
+optional/mandatory distinction and of a clear distinction between input and 
+output parameters makes it impossible to have a greater benefit from the 
+analytical capabilities of the compiler. E.g., look at the following little
+<font color="#FF0000"><i><b>Java</b></i></font> program:</p>
+
+<blockquote>
+<pre><font color="#0000FF">public class</font> Hello {
+  <font color="#0000FF">public static</font> void main(String[] args) {
+    A a, a2;
+		
+    a = <font color="#0000FF">new</font> A();
+    a2 = a.func();
+    System.out.println(a2.toString());
+  }
+}
+
+<font color="#0000FF">class</font> A {
+  <font color="#0000FF">public</font> int x, y;
+
+  <font color="#0000FF">public</font> A func() {
+    <font color="#0000FF">return</font> null;
+  };
+};
+</pre>
+</blockquote>
+<p>&quot;a2 = a.func();&quot; assigns the <font color="#FF0000"><i><b>Java</b></i></font> 
+null object to a2; so &quot;a2.toString()&quot; in the next line will trigger a 
+NullPointerException at run time. But the <font color="#FF0000"><i><b>Java</b></i></font> 
+compiler doesn't recognize and report this error.</p>
+<p>In contrast to this, <font color="#FF0000"><i><b>LavaPE</b></i></font> will 
+allow the assignment of <font color="#0000ff"><b>&Oslash; </b></font>(null) to 
+an output parameter of a function only if the corresponding formal parameter is 
+declared <b>optional</b>. As a consequence, the assignment &quot;a2
+<font color="#0000FF"><b>&lt;==</b></font> a.func()&quot; in the main program would be 
+rejected at programming time since the assignment target a2 is mandatory. If a2 
+were declared optional instead, then &quot;a2.toString()&quot; would now be rejected since 
+the use of the optional variable a2 isn't secured by an <font color="#0000FF">
+<b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font> statement or
+<font color="#0000FF"><b><a href="whatsThis/IfdefElse.htm">else</a></b></font> 
+expression here.</p>
 </body>
 </html>
