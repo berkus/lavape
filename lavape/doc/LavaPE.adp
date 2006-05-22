@@ -186,6 +186,8 @@
 			</section>
 			<section ref="html/IniChecks.htm" title="Comprehensive initialization checks">
 				<keyword ref="html/IniChecks.htm">initialization checks</keyword>
+				<keyword ref="html/IniChecks.htm">mandatory variable</keyword>
+				<keyword ref="html/IniChecks.htm">optional variable</keyword>
 				<section ref="html/UnfinishedObjects.htm" title="Unfinished/closed/quarantined objects">
   				<keyword ref="html/UnfinishedObjects.htm">unfinished objects</keyword>
   				<keyword ref="html/UnfinishedObjects.htm">closed objects</keyword>

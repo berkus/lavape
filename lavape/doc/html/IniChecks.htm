@@ -355,17 +355,19 @@ own risk and should be avoided without reliable knowledge about the
 function's implementation.)</p>
 
 
-<h3>Preventing <b><font color="#0000FF">Ø</font></b>-to-mandatory assignments</h3>
+<h3><a name="optional"></a>Preventing <b><font color="#0000FF">Ø</font></b>-to-mandatory assignments</h3>
 
 
-<p>In <font color="#FF0000"><i><b>Lava</b></i></font>, an expression that yields an optional result (i.e.,
+<p>In <font color="#FF0000"><i><b>Lava</b></i></font>, an expression that yields an 
+<a href="dialogs/MemVarBox.htm#mandatory">optional</a> result (i.e.,
 one that may assume the special value <font color="#0000ff"><b>&Oslash;</b></font>),
 cannot be unconditionally assigned to a 
 <a href="dialogs/MemVarBox.htm#mandatory">mandatory</a> variable in <font color="#ff0000"><b><i>Lava</i></b></font>,
 but you must either enclose the assignment in the <font color="#0000FF"><b>then</b></font> 
-clause of an <font color="#0000ff"><b>ifdef</b></font>
+clause of an <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font>
 statement (which tests whether the optional variable in the
-<font color="#0000FF"><b>ifdef</b></font>-condition has a non-null value), or you must use an <font color="#0000ff"><b>else</b></font>
+<font color="#0000FF"><b>ifdef</b></font>-condition has a non-null value), or you must use an <font color="#0000ff"><b>
+<a href="whatsThis/IfdefElse.htm#elseExpr">else</a></b></font>
 expression or a chain of <font color="#0000ff"><b>else</b></font>
 expressions  which finally provides an alternative expression that
 yields a non-optional value.</p>
