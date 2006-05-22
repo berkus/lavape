@@ -34,19 +34,32 @@
 initialization checks</strong></h2>
 
 
-<p>Inadvertent use of uninitialized data frequently causes
-programs to crash in a way that is hard and time-consuming to
-disentangle, which in turn gives rise to immense costs. The attempt to
+<p><b>Inadvertent use of uninitialized data or propagation of null values (<font color="#0000FF">Ø</font>) 
+to <a href="dialogs/MemVarBox.htm#mandatory">mandatory</a> variables</b> frequently causes
+programs to crash in ways that are hard and time-consuming to
+disentangle, and this gives rise to immense costs in turn. The attempt to
 prevent such situations has therefore been a constitutive design goal
 of the <i><font color="#ff0000"><b>Lava</b></font></i>
 development. </p>
 
 
-<p>Our goal was to prevent missing initialization and use of
-undefined values by <b>static checks</b> (i.e. at
-programming time) wherever possible . However, this required a major
-revision of the expressive means for executable code, in comparison
-with more traditional wide-spread programming languages. In particular,
+<p>More precisely, our goal was to prevent missing initialization and 
+inadvertent use of null values by <b>static checks (i.e., at
+programming time)</b> wherever possible. The <font color="#FF0000"><i><b>Lava</b></i></font> 
+releases prior to 0.9 didn't fully achieve this. The introduction of the 
+(admittedly still somewhat experimental) notion of <b>
+<a href="UnfinishedObjects.htm">closed objects</a></b> together with new 
+expressive means (the <font color="#0000FF"><b>ifdef</b></font> conditional 
+statement and the <font color="#0000FF"><b>else</b></font> expression) in 
+release 0.9 have changed <font color="#FF0000"><i><b>Lava</b></i></font> now 
+into an object-oriented programming language (the first?) that <b>completely 
+prevents missing initialization and inadvertent use of null values by static 
+checks, i.e., at programming time</b>.</p>
+
+
+<p>This could be achieved only by a major
+revision of the expressive means for executable code, as compared to more traditional wide-spread 
+procedural and object-oriented programming languages. In particular,
 we have</p>
 
 
@@ -60,43 +73,37 @@ bounded quantifiers,</li>
 
   <li>replaced the traditional view of program variables as
 "reusable data containers" by a "<a href="SingleAssigLogSem.htm">single-assignment</a>"
-view of variable usage, and</li>
+  (or &quot;computed constant&quot;) view of variable usage, and</li>
 
 
   <li>eliminated parameter passing "by reference" in favor of an
 unambiguous distinction between input and output parameters of methods.</li>
 
 
-  <li>Moreover, an expression that yields an optional result (i.e.,
-one that may assume the special value <font color="#0000ff"><b>&Oslash;</b></font>),
-cannot be unconditionally assigned to a mandatory variable in <font color="#ff0000"><b><i>Lava</i></b></font>,
-but you must either enclose the assignment in an <font color="#0000ff"><b>ifdef</b></font>
-statement (which tests whether the optional variable in the
-ifdef-condition has a non-null value), or you must use an <font color="#0000ff"><b>else</b></font>
-expression or a chain of <font color="#0000ff"><b>else</b></font>
-expressions (which finally provides an alternative expression that
-yields a non-optional value).</li>
+  <li>Moreover, we have introduced specific expressive means (the
+  <font color="#0000FF"><b>ifdef</b></font> conditional statement and the
+  <font color="#0000FF"><b>else</b></font> expression) that allow us to prevent 
+  inadvertent <font color="#0000ff"><b>&Oslash;</b></font>-to-mandatory 
+  assignments (see below).</li>
 
 
   <li>In cases where objects point to each other it is unavoidable that 
-  initializers of &quot;parent&quot; objects pass references to not yet completely 
+  initializers of &quot;parent&quot; objects pass references to &quot;self&quot; or other not yet completely 
   initialized objects to initializers of child objects (which will then use 
-  these references to point to the parent object). This passing of unfinished 
+  these references to point to the parent (or grandparent or other unfinished) object). This passing of unfinished 
   objects as parameters, however, has to be secured against inadvertent access 
   to not yet initialized sub-objects. For details see the dedicated section on
-  <a href="UnfinishedObjects.htm">unfinished objects</a>.<br>
-  <br>
-  This is the most recent, and admittedly, perhaps the most experimental measure 
-  of the <font color="#FF0000"><i><b>Lava</b></i></font> project to <b>
-  completely prevent access to uninitialized objects by purely static checks, 
-  i.e., already at programming time</b>.</li>
+  <b>
+  <a href="UnfinishedObjects.htm">unfinished objects</a></b>.</li>
 
 
 </ul>
 
 
-<p>More precisely, missing initialization and use of undefined
-values have to be prevented with respect to</p>
+<h3>Missing initialization</h3>
+
+
+<p>Missing initialization has to be prevented with respect to</p>
 
 
 <ol>
@@ -147,7 +154,7 @@ performs a static check on all the <i><font color="#ff0000"><b>Lava</b></font></
 code that is currently being presented in any open Window.</p>
 
 
-<h3>1. Local variables</h3>
+<h4>1. Local variables</h4>
 
 
 <p>Local variables may be introduced in several different ways,
@@ -201,7 +208,7 @@ always displayed bold and red initially, marking an error, since there
 has not yet been assigned a value to it. </p>
 
 
-<h3>2. Member variables</h3>
+<h4>2. Member variables</h4>
 
 
 <p>In order to guarantee that all non-optional member variables
@@ -300,7 +307,7 @@ method or initializer if you cannot assign a value to every
 non-optional output parameter. (Checked at programming time.)</p>
 
 
-<h3>3. Output parameters</h3>
+<h4>3. Output parameters</h4>
 
 
 <p>First<font color="#ff0000"><b><i> </i></b></font>note that <font color="#ff0000"><i><b>Lava</b></i></font><b> </b>doesn't support parameter passing "by reference". In <i> <font color="#ff0000"><b>Lava</b></font></i><b>,</b>
@@ -346,6 +353,22 @@ then a null-pointer-exception will be thrown in turn, or you use the
 output although its value may be meaningless in this case: that's your
 own risk and should be avoided without reliable knowledge about the
 function's implementation.)</p>
+
+
+<h3>Preventing <b><font color="#0000FF">Ø</font></b>-to-mandatory assignments</h3>
+
+
+<p>In <font color="#FF0000"><i><b>Lava</b></i></font>, an expression that yields an optional result (i.e.,
+one that may assume the special value <font color="#0000ff"><b>&Oslash;</b></font>),
+cannot be unconditionally assigned to a 
+<a href="dialogs/MemVarBox.htm#mandatory">mandatory</a> variable in <font color="#ff0000"><b><i>Lava</i></b></font>,
+but you must either enclose the assignment in the <font color="#0000FF"><b>then</b></font> 
+clause of an <font color="#0000ff"><b>ifdef</b></font>
+statement (which tests whether the optional variable in the
+<font color="#0000FF"><b>ifdef</b></font>-condition has a non-null value), or you must use an <font color="#0000ff"><b>else</b></font>
+expression or a chain of <font color="#0000ff"><b>else</b></font>
+expressions  which finally provides an alternative expression that
+yields a non-optional value.</p>
 
 
 </body>

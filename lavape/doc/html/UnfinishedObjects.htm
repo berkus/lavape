@@ -50,11 +50,11 @@ These long-distance dependencies will make it rather confusing and unclear
 frequently, in which state of initialization an object is at a certain point in 
 a program and thereby increases the danger of inadvertent access to not yet initialized 
 members considerably.</p>
-<p>We consider this absence of a stringent and statically checked initialization 
-discipline as a major source of run time errors and as a serious obstacle on the 
+<p>We consider this <b>absence of a stringent and statically checked initialization 
+discipline</b> as a major source of run time errors and as a serious obstacle on the 
 way to more comprehensible and maintainable programs. The latter goals can be 
-reached only if we strictly avoid long-distance dependencies and strive for more 
-&quot;locally comprehensible&quot; programs.</p>
+reached only if we strictly <b>avoid long-distance effects and dependencies</b> and strive for more 
+<b>&quot;locally comprehensible&quot; programs</b>.</p>
 <p>In <font color="#FF0000"><i><b>Lava</b></i></font>, the basic idea on how to 
 solve the problem of improper use of still unfinished objects is to provide a 
 specific attribute <b>&quot;closed&quot;</b> that can be added to the declaration of 
