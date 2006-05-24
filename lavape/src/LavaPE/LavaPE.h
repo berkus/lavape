@@ -92,6 +92,10 @@ public:
   void OnUpdateSaveAll(QAction* action);
   void saveSettings();
   QString InitWebBrowser ();
+
+public slots:
+  void on_worksocket_disconnected();
+
 private:
     Q_OBJECT;
 };

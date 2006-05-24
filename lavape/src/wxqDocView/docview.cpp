@@ -159,10 +159,6 @@ void wxApp::onGuiThreadAwake() {
   inUpdateUI = false;
 }
 
-void wxApp::on_worksocket_disconnected() {
-  quit();
-}
-
 static bool cmdLineEvaluated=false;
 
 void wxApp::onIdle()

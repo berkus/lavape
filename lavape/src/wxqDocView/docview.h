@@ -107,7 +107,6 @@ public slots:
     void about();
     void onGuiThreadAwake();
     void onIdle();
-    void on_worksocket_disconnected();
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;

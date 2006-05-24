@@ -600,3 +600,8 @@ void CLavaApp::LearningLava()
 
         qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
 }
+
+void CLavaApp::on_worksocket_disconnected() {
+  if (!appExit && !debugThread.listenSocket)
+    qApp->exit(0);
+}

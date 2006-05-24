@@ -803,6 +803,10 @@ void CLavaPEApp::OnUpdateSaveAll(QAction* action)
   action->setEnabled(wxDocManager::GetDocumentManager()->GetOpenDocCount());
 }
 
+void CLavaPEApp::on_worksocket_disconnected() {
+  if (!appExit && debugThread.startedFromLava)
+    qApp->exit(0);
+}
 
 CLavaPEApp::~CLavaPEApp()
 {

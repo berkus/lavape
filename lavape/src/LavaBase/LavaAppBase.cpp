@@ -1062,6 +1062,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   }
   else
     initialDir = startFileName;
+/*
 #ifndef __GNUC__
   OPENFILENAME ofn;                    // common dialog box structure
   char szFile[260], cfilter[500]; // buffer for filename
@@ -1087,7 +1088,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   ofn.lpstrFile = szFile;
   ofn.nMaxFile = sizeof(szFile);
   ofn.lpstrFilter = cfilter;
-  ofn.lpstrTitle = caption.toAscii();
+  ofn.lpstrTitle = qPrintable(caption);
   ofn.lpstrFileTitle = 0;
   ofn.nMaxFileTitle = 0;
   if ((filter2 != QString::null) && (currentFilter == exten2))
@@ -1109,7 +1110,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   return resultName;
 
 #else
-
+*/
   QFileDialog *fd = new QFileDialog(parent);
 	QStringList filters;
 
@@ -1147,7 +1148,7 @@ QString L_GetOpenFileName(const QString& startFileName,
 				      caption,
 				      (QString*)&filter,
 				      false );*/
-#endif
+//#endif
 }
 
 QStringList L_GetOpenFileNames(const QString& startFileName,
