@@ -102,7 +102,7 @@ unambiguous distinction between input and output parameters of methods.</li>
 </ul>
 
 
-<h3>Missing initialization</h3>
+<h3>A) Missing initialization</h3>
 
 
 <p>Missing initialization has to be prevented with respect to</p>
@@ -357,7 +357,7 @@ own risk and should be avoided without reliable knowledge about the
 function's implementation.)</p>
 
 
-<h3><a name="optional"></a>Preventing <b><font color="#0000FF">Ø</font></b>-to-mandatory assignments</h3>
+<h3><a name="optional"></a>B) Preventing <b><font color="#0000FF">Ø</font></b>-to-mandatory assignments</h3>
 
 
 <p>In <font color="#FF0000"><i><b>Lava</b></i></font>, an expression that yields an 
@@ -375,22 +375,12 @@ expressions  which finally provides an alternative expression that
 yields a non-optional value.</p>
 
 
+<hr>
+
+
 <h3>Initialization in <font color="#FF0000"><i>Lava</i></font> compared to
 <font color="#FF0000"><i>C++</i></font> / <font color="#FF0000"><i>Java</i></font> 
 / <font color="#FF0000"><i>C#</i></font></h3>
-<p>The <b>constructor</b> notions of <b><font color="#FF0000"><i>C++</i></font></b> 
-/ <b><font color="#FF0000"><i>Java</i></font></b> / <font color="#FF0000"><b><i>
-C# </i></b></font>can only guarantee that an object is <b>initialized anyhow</b>: 
-Its member variables are set to default values (numbers to 0 or 0.0, etc.) if a 
-more meaningful value isn't assigned explicitly. In most cases this won't 
-prevent the application from crashing or, even worse, from silently delivering 
-faulty results. Null-pointer exceptions that could indicate an error at the 
-earliest possible time are rather prevented in this way.</p>
-<p>In contrast to this, <font color="#FF0000"><i><b>Lava</b></i></font> informs 
-the programmer already at programming time if there an initializer is missing or 
-an existing initializer fails to initialize all mandatory member variables. Note 
-that the distinction between optional and mandatory variables of
-<font color="#FF0000"><i><b>Lava</b></i></font> is essential here.</p>
 <p>The <b>definite assignment checks</b> of <b><font color="#FF0000"><i>Java</i></font></b> 
 and <font color="#FF0000"><i><b>C#</b></i></font>, like those of
 <font color="#FF0000"><b><i>Lava</i></b></font> (see above), ensure that a local 
@@ -435,5 +425,22 @@ the use of the optional variable a2 isn't secured by an <font color="#0000FF">
 <b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font> statement or
 <font color="#0000FF"><b><a href="whatsThis/IfdefElse.htm">else</a></b></font> 
 expression here.</p>
+<p>The <b>constructor</b> notions of <b><font color="#FF0000"><i>C++</i></font></b> 
+/ <b><font color="#FF0000"><i>Java</i></font></b> / <font color="#FF0000"><b><i>
+C# </i></b></font>can only guarantee that an object is <b>initialized anyhow</b>: 
+Its member variables are set to default values (numbers to 0 or 0.0, etc.) if a 
+more meaningful value isn't assigned explicitly. In most cases this won't 
+prevent the application from crashing or, even worse, from silently delivering 
+faulty results.</p>
+<p>In contrast to this, <font color="#FF0000"><i><b>Lava</b></i></font> informs 
+the programmer already at programming time if an initializer is missing or 
+an existing initializer fails to initialize all mandatory member variables. The 
+enforced distinction<font color="#FF0000"><b><i> </i></b></font>between optional 
+and mandatory variables is of crucial importance in this context.</p>
+<p>Moreover, <font color="#FF0000"><i><b>Lava</b></i></font> provides an 
+additional way to prevent meaningless/faulty object initialization: You can add
+<b>&quot;<a href="DBC.htm">invariants</a>&quot;</b> to class interfaces and class implementations, i.e., logical 
+conditions that must hold true for newly created objects of the respective class 
+(and also after any non-read-only method has been applied to such an object).</p>
 </body>
 </html>
