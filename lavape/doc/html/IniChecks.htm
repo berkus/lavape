@@ -427,20 +427,39 @@ the use of the optional variable a2 isn't secured by an <font color="#0000FF">
 expression here.</p>
 <p>The <b>constructor</b> notions of <b><font color="#FF0000"><i>C++</i></font></b> 
 / <b><font color="#FF0000"><i>Java</i></font></b> / <font color="#FF0000"><b><i>
-C# </i></b></font>can only guarantee that an object is <b>initialized anyhow</b>: 
-Its member variables are set to default values (numbers to 0 or 0.0, etc.) if a 
+C# </i></b></font>can only guarantee that an object is initialized <b>anyhow</b>: 
+Its member variables are set to default values (numbers to 0 or 0.0, reference 
+types to <i>null</i>, etc.) if a 
 more meaningful value isn't assigned explicitly. In most cases this won't 
-prevent the application from crashing or, even worse, from silently delivering 
+prevent the application from crashing, or, even worse, from silently delivering 
 faulty results.</p>
 <p>In contrast to this, <font color="#FF0000"><i><b>Lava</b></i></font> informs 
 the programmer already at programming time if an initializer is missing or 
 an existing initializer fails to initialize all mandatory member variables. The 
-enforced distinction<font color="#FF0000"><b><i> </i></b></font>between optional 
+enforced distinction between optional 
 and mandatory variables is of crucial importance in this context.</p>
 <p>Moreover, <font color="#FF0000"><i><b>Lava</b></i></font> provides an 
 additional way to prevent meaningless/faulty object initialization: You can add
-<b>&quot;<a href="DBC.htm">invariants</a>&quot;</b> to class interfaces and class implementations, i.e., logical 
+<b>&quot;<a href="DBC.htm#LavaAA">invariants</a>&quot;</b> to class interfaces and class implementations, i.e., logical 
 conditions that must hold true for newly created objects of the respective class 
 (and also after any non-read-only method has been applied to such an object).</p>
+<hr>
+<p><b>Summary:</b> The most fundamental differences between
+<font color="#FF0000"><i><b>Lava</b></i></font> and other languages w.r.t 
+initialization are: </p>
+<ol>
+  <li><font color="#FF0000"><i><b>Lava</b></i></font> enforces <b>complete</b> 
+  initialization of objects <b>within</b> their respective initializers.</li>
+  <li><font color="#FF0000"><i><b>Lava</b></i></font> provides a way to <b>
+  safely deal with still unfinished objects</b> in the initialization phase.</li>
+  <li><font color="#FF0000"><i><b>Lava</b></i></font> makes sure that <b>
+  optional-to-mandatory assignments are always secured</b> by specific 
+  constructs <b><a href="whatsThis/IfdefElse.htm">ifdef</a></b> and <b>
+  <a href="whatsThis/IfdefElse.htm">else</a></b>.</li>
+</ol>
+<p><b>This stringent and seamless initialization discipline of
+<font color="#FF0000"><i>Lava</i></font> completely and reliably prevents all 
+kinds of inadvertent access to uninitialized variables or null objects by purely 
+static checks, i.e. already at programming time.</b></p>
 </body>
 </html>

@@ -101,23 +101,23 @@
       </li>
     </ol>
     <p align="left">
-      <font color="#FF0000"><i><b>Lava</b></i></font> pre/postconditions and 
-      invariants are checked at run time according to the following rules:</p>
+      <font color="#FF0000"><i><b><a name="LavaAA"></a>Lava</b></i></font> <b>pre/postconditions and 
+      invariants</b> are checked at run time according to the following rules:</p>
       <ul>
         <li>
     <p align="left">
-      Preconditions are checked immediately before entry to the corresponding 
+      <b>Preconditions</b> are checked immediately before entry to the corresponding 
       method to which they are attached. The method body is skipped if an 
       exception occurs in the precondition.</p>
         </li>
         <li>
     <p align="left">
-      Postconditions are checked immediately after the body of the method has 
+      <b>Postconditions</b> are checked immediately after the body of the method has 
       been left (if no exception has been thrown by the method body.</p>
         </li>
         <li>
     <p align="left">
-      Invariants (including all invariants &quot;inherited&quot; by a class from its 
+      <b>Invariants</b> (including all invariants &quot;inherited&quot; by a class from its 
       direct and indirect base classes) are checked on object creation when the new object leaves the
       <font color="#0000FF"><b>new</b></font> expression, and on entry/exit 
       to/from every public non-read-only method; for read-only methods only on 
