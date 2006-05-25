@@ -76,6 +76,7 @@ else
   OSCAT = __UNIX__
   LN = ln -s
 endif
+endif
 
 CC = g++
 

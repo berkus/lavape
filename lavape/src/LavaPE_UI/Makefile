@@ -7,7 +7,7 @@ SUBPRO=disco wxqDocView LavaBase
 
 CPP_INCLUDES = -I. -I../disco -I../LavaBase -I../LavaBase/Generated -I../wxqDocView -IGenerated
 
-CPP_FLAGS = -DLAVAPEUI_EXPORT
+CPP_FLAGS = -DLAVAPEUI_EXPORT -DNEEDS_INT_DEFINED
 
 include ../common.mk
 
