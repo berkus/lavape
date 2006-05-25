@@ -5185,6 +5185,24 @@ bool ElseExpression::Check (CheckData &ckd)
   opd1 = (Expression*)expr1.ptr;
   opd2 = (Expression*)expr2.ptr;
   ok &= opd1->Check(ckd);
+
+  if (ok && !opd1->IsOptional(ckd)) {
+    SetError(ckd,&ERR_ElseExprObsolete);
+    ERROREXIT
+  }
+
+  if (opd1->IsIfStmExpr()) {
+    ((CondExpression*)opd1)->targetDecl = targetDecl;
+    ((CondExpression*)opd1)->targetCtx = targetCtx;
+    ((CondExpression*)opd1)->targetCat = targetCat;
+    ((CondExpression*)opd1)->callObjCat = callObjCat;
+  }
+  if (opd2->IsIfStmExpr()) {
+    ((CondExpression*)opd2)->targetDecl = targetDecl;
+    ((CondExpression*)opd2)->targetCtx = targetCtx;
+    ((CondExpression*)opd2)->targetCat = targetCat;
+    ((CondExpression*)opd2)->callObjCat = callObjCat;
+  }
   ok &= opd2->Check(ckd);
   if (IsPH(opd1) || !opd1->IsOptional(ckd) || IsPH(opd2) || !opd2->IsOptional(ckd))
     flags.EXCL(isOptionalExpr);
@@ -5194,12 +5212,6 @@ bool ElseExpression::Check (CheckData &ckd)
   if (!targetDecl)
     return true;
 
-  if (opd1->IsIfStmExpr()) {
-    ((CondExpression*)opd1)->targetDecl = targetDecl;
-    ((CondExpression*)opd1)->targetCtx = targetCtx;
-    ((CondExpression*)opd1)->targetCat = targetCat;
-    ((CondExpression*)opd1)->callObjCat = callObjCat;
-  }
   if (!opd1->IsIfStmExpr()) {
     ckd.tempCtx = ckd.lpc;
     opd1->ExprGetFVType(ckd,currentBranchType,cat,ctxFlags);
@@ -5228,12 +5240,6 @@ bool ElseExpression::Check (CheckData &ckd)
       opd1->targetCat = targetCat;
   }
 
-  if (opd2->IsIfStmExpr()) {
-    ((CondExpression*)opd2)->targetDecl = targetDecl;
-    ((CondExpression*)opd2)->targetCtx = targetCtx;
-    ((CondExpression*)opd2)->targetCat = targetCat;
-    ((CondExpression*)opd2)->callObjCat = callObjCat;
-  }
   if (!opd2->IsIfStmExpr()) {
     ckd.tempCtx = ckd.lpc;
     opd2->ExprGetFVType(ckd,currentBranchType,cat,ctxFlags);
@@ -5260,11 +5266,6 @@ bool ElseExpression::Check (CheckData &ckd)
     }
     if (NoPH(opd1))
       opd2->targetCat = targetCat;
-  }
-
-  if (ok && !opd1->IsOptional(ckd)) {
-    opd1->SetError(ckd,&ERR_ElseExprObsolete);
-    ERROREXIT
   }
 
   EXIT

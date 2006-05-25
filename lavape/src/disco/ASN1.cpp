@@ -278,10 +278,10 @@ void ASN1::getHeader (destinationType dT,
           break;
 
         case buffer:
-    if (s.l == s.m)
-      if (s.l < 100) s.Expand(100);
-      else s.Expand(s.l);
-    s[s.l++] = (char)inChar;
+          if (s.l == s.m)
+            if (s.l < 100) s.Expand(100);
+            else s.Expand(s.l);
+          s[s.l++] = (char)inChar;
           break;
 
         case none:
