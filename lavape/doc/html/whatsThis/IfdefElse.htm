@@ -17,8 +17,9 @@
   <p>The <font color="#FF0000"><i><b>Lava</b></i></font> <font color="#0000FF">
   <b>ifdef</b></font> 
   branching statement, like the <font color="#FF0000"><i><b>Lava</b></i></font>
-  <font color="#0000FF"><b>else</b></font> expression (see below), can (and 
-  must) be used to secure assignments to
+  <font color="#0000FF"><b>else</b></font> expression (see below), can  be used 
+  (and <font color="#FF0000"><i><b>LavaPE</b></i></font> <b>enforces</b> their 
+  use!) to secure assignments to
   <a href="../dialogs/MemVarBox.htm#mandatory">mandatory</a> variables if the 
   assignment source is an <a href="../dialogs/MemVarBox.htm#mandatory">optional</a> 
   variable. Example:</p>
@@ -32,7 +33,7 @@
   <font color="#FF00FF">i1</font>
 <font color="#FF00FF"><b>then</b></font>
   <font color="#0000FF"><b>set</b></font> o1 <font color="#0000FF"><b>&lt;==</b></font> <font color="#FF00FF">i1
-  </font><i><font color="#009933">this <a href="../IniChecks.htm#optional">optional-to-mandatory</a> assignment would be rejected by LavaPE
+  </font><i><font color="#009933">this <a href="../IniChecks.htm#optional">optional-to-mandatory</a> assignment would be rejected by </font><font color="#FF0000"><b>LavaPE</b></font><font color="#009933">
   if it were not secured by ifdef</font></i>
 <font color="#FF00FF"><b>else</b></font>
   <font color="#0000FF"><b>set</b></font> o1 <font color="#0000FF"><b>&lt;==</b></font> i2
