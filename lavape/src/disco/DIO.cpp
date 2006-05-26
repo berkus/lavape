@@ -55,8 +55,8 @@ void IOCLASS::OpenOutput (const char *filename)
 void IOCLASS::CloseInput ()
 
 {
-//  if (CurrentInFile->fileref > 0)
-  delete CurrentInFile;
+  if (CurrentInFile->file.handle() > 0)
+    delete CurrentInFile;
   CurrentInFile = StdIn;
   Done = true;
 }
@@ -65,8 +65,10 @@ void IOCLASS::CloseInput ()
 void IOCLASS::CloseOutput ()
 
 {
-//  if (CurrentOutFile->fileref > 2)
-  delete CurrentOutFile;
+  if (CurrentOutFile->file.handle() > 2)
+    delete CurrentOutFile;
+  else
+    CurrentOutFile->Flush();
   CurrentOutFile = StdOut;
   Done = true;
 }

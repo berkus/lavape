@@ -140,7 +140,7 @@ else
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../bin/,$(addsuffix .dll,$(SUBPRO)))
-	$(CC) -g -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) -g -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
 #	$(CC) -g -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../bin -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
@@ -183,7 +183,7 @@ impex = -X $(DLL)
 endif
 
 %.h %G.cpp: %.ph
-	../../bin/LPC -I. -I../LavaBase $(impex) $<
+	../../bin/LPC $(impex) -I. -I../LavaBase $<
 
 %.cpp: %.qrc
 	$(QTDIR)/bin/rcc -o $@ $<

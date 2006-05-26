@@ -29,7 +29,7 @@
 
 
 
-int main (unsigned argc, char **argv)
+int main (int argc, char **argv)
 {
   Arguments.ArgCount = argc;
   Arguments.ArgTable = argv;

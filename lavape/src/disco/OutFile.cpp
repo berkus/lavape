@@ -64,8 +64,8 @@ OutFile::OutFile (const unsigned fref)
 {
   if (!file.open(fref,QIODevice::WriteOnly))
 		Done = false;
-		else 
-			Done = true;
+	else 
+		Done = true;
   Buffer = new char[BufferSize];
   BufPos = 0;
   Size = BufferSize;
@@ -208,7 +208,8 @@ void OutFile::Flush ()
       Done = false;
       return;
     }
-      
+
+    file.flush();
     if (result == BytesToWrite) BufPos = 0;
     else BufPos = result;
     

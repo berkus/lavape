@@ -28,8 +28,8 @@
 
 
 InFile::InFile (const DString& filename)
-{
-	file.setFileName(filename.c);
+{	
+	file.setFileName(QString(filename.c));
   Buffer = 0;
   if (filename.Length() == 0) {
     Done = false;
@@ -49,7 +49,7 @@ InFile::InFile (const DString& filename)
 
 InFile::InFile (const unsigned fref)
 {
-  if (!file.open(fref,QIODevice::ReadOnly))
+	if (!file.open(fref,QIODevice::ReadOnly))
     Done = false;
 	else
   	Done = true;

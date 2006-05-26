@@ -81,19 +81,19 @@ static char slash='/';
 /////////////////////////////////////////////////////////////////////////////
 // CLavaPEApp
 int main( int argc, char ** argv ) {
-  CLavaPEApp ap(argc,argv);
-  ap.m_appWindow = new CLavaMainFrame();
+  CLavaPEApp app(argc,argv);
+  app.m_appWindow = new CLavaMainFrame();
 
- // QMessageBox::information(ap.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok)
+ // QMessageBox::information(app.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok)
 
-  if (ap.m_appWindow->OnCreate())
-    ap.m_appWindow->showMaximized();
+  if (app.m_appWindow->OnCreate())
+    app.m_appWindow->showMaximized();
   else
     return 1;
 
 //  threadStg()->setLocalData(new CThreadData(0));
 
-  int res = ap.exec();
+  int res = app.exec();
   return res;
 }
 
