@@ -124,6 +124,7 @@ public:
     virtual ~wxDocument();
 
     bool deleting;
+    QList<wxView*> m_documentViews;
 
     // accessors
     void SetFilename(const QString& filename, bool notifyViews = FALSE);
@@ -179,9 +180,9 @@ public:
     virtual bool RemoveView(wxView *view);
     QList<wxView*>& GetViews() const { return (QList<wxView*>&) m_documentViews; }
     wxView *GetFirstView() const;
-    POSITION GetFirstViewPos();
-    wxView* GetNextView(POSITION& pos);
-    void ViewPosRelease(POSITION pos);
+    //POSITION GetFirstViewPos();
+    //wxView* GetNextView(POSITION& pos);
+    //void ViewPosRelease(POSITION& pos);
 
     virtual void UpdateAllViews(wxView *sender = (wxView *) NULL, unsigned param = 0, QObject *hint = (QObject *) NULL);
 
@@ -202,7 +203,6 @@ public:
 
 protected:
     QList<wxMDIChildFrame*> m_docChildFrames;
-    QList<wxView*>       m_documentViews;
     QString              m_documentFile; //all links are resolved
     QString              m_userFilename; //no link resolved
     QString              m_documentTitle, m_oldTitle; //the used name
@@ -352,6 +352,7 @@ class WXDLLEXPORT wxDocManager : public QObject //wxEvtHandler
 public:
     wxDocManager(long flags = wxDEFAULT_DOCMAN_FLAGS);
     virtual ~wxDocManager();
+    QList<wxDocument*> m_docs;
 
 public:
     // Handlers for UI update commands
@@ -410,9 +411,9 @@ public:
 
     virtual QList<wxDocument*>& GetDocuments() const { return (QList<wxDocument*>&) m_docs; }
 
-    POSITION GetFirstDocPos();
-    wxDocument* GetNextDoc(POSITION& pos);
-    void DocPosRelease(POSITION pos);
+    //POSITION GetFirstDocPos();
+    //wxDocument* GetNextDoc(POSITION& pos);
+    //void DocPosRelease(POSITION pos);
     wxDocument* FindOpenDocument(const QString& path);//all links resolved
 
     // Make a default document name
@@ -450,7 +451,6 @@ protected:
     long              m_flags;
     int               m_defaultDocumentNameCounter;
     int               m_maxDocsOpen;
-    QList<wxDocument*>     m_docs;
     QList<wxDocTemplate*>  m_templates;
     wxView*           m_activeView;
     QString          m_lastDirectory;

@@ -964,9 +964,9 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
       }
       else {
         wxView* tview;
-        POSITION pos = ((CLavaBaseDoc*)fromDoc)->GetFirstViewPos();
-        while (pos) {
-          tview = ((CLavaBaseDoc*)fromDoc)->GetNextView(pos);
+        int pos;
+        for (pos = 0; pos < fromDoc->m_documentViews.size(); pos++) {
+          tview = fromDoc->m_documentViews[pos];
           delete tview->GetParentFrame(); //->DestroyWindow();
         }
       }

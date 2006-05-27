@@ -297,6 +297,7 @@ wxView *wxDocument::GetFirstView() const
   return m_documentViews.first();
 }
 
+/*
 POSITION wxDocument::GetFirstViewPos()
 {
   if (m_documentViews.isEmpty())
@@ -304,6 +305,7 @@ POSITION wxDocument::GetFirstViewPos()
   QList<wxView*>::iterator* iter = new QList<wxView*>::iterator(m_documentViews.begin());
   return (POSITION)iter;
 }
+
 
 wxView* wxDocument::GetNextView(POSITION& pos)
 {
@@ -319,13 +321,15 @@ wxView* wxDocument::GetNextView(POSITION& pos)
   return view;
 }
 
-void wxDocument::ViewPosRelease(POSITION pos)
+void wxDocument::ViewPosRelease(POSITION& pos)
 {
   if (pos) {
-    QList<wxView*>::iterator iter = *(QList<wxView*>::iterator*)pos;
-    m_documentViews.erase(iter);
+    QList<wxView*>::iterator* iter = (QList<wxView*>::iterator*)pos;
+    delete iter;
+//   m_documentViews.erase(iter);
   }
 }
+*/
 
 bool wxDocument::OnNewDocument()
 {
@@ -580,12 +584,9 @@ void wxDocument::OnChangedViewList()
 
 void wxDocument::UpdateAllViews(wxView *sender, unsigned param, QObject *hint)
 {
-  wxView *view;
-  POSITION pos = GetFirstViewPos();
-  while (pos) {
-    view = GetNextView(pos);
-    view->OnUpdate(sender, param, hint);
-  }
+  int pos;
+  for (pos = 0; pos < m_documentViews.size(); pos++)
+    m_documentViews[pos]->OnUpdate(sender, param, hint);
 }
 
 void wxDocument::SetTitle(const QString& title)
@@ -1028,7 +1029,7 @@ wxView *wxDocManager::GetActiveView()
   return 0;
 }
 
-
+/*
 POSITION wxDocManager::GetFirstDocPos()
 {
   if (m_docs.isEmpty())
@@ -1057,13 +1058,13 @@ void wxDocManager::DocPosRelease(POSITION pos)
     QList<wxDocument*>::iterator iter = *(QList<wxDocument*>::iterator*)pos;
     m_docs.erase(iter);
   }
-}
+}*/
 
 wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
 {
   int i, n = 0;
   wxDocument *doc, *newDoc;
-  POSITION pos;
+  int pos;
   wxDocTemplate *temp, **templates = new wxDocTemplate *[m_templates.count()];
 
   for (i = 0; i < m_templates.count(); i++) {
@@ -1134,9 +1135,11 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
   delete[] templates;
   if (temp) {
     //is doc allready open?
-    pos = GetFirstDocPos();
+    /*pos = GetFirstDocPos();
     while (pos) {
-      doc = GetNextDoc(pos);
+      doc = GetNextDoc(pos);*/
+    for (pos = 0; pos < m_docs.size(); pos++) {
+      doc = m_docs[pos];
       if (doc && (fn == doc->GetFilename())) { //filename comp
         doc->GetFirstView()->GetParentFrame()->Activate();
         m_fileHistory->SetFirstInHistory(path2);
@@ -1155,9 +1158,9 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
 wxDocument *wxDocManager::FindOpenDocument(const QString& path)
 {
   wxDocument *doc;
-  POSITION pos = GetFirstDocPos();
-  while (pos) {
-    doc = GetNextDoc(pos);
+  int pos;
+  for (pos = 0; pos < m_docs.size(); pos++) {
+    doc = m_docs[pos];
     if (doc && (path == doc->GetFilename())) { //filename comp
       m_fileHistory->SetFirstInHistory(doc->GetUserFilename());
       return doc;

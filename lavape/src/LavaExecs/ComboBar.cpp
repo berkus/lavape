@@ -33,17 +33,17 @@
 int SelEndOKToStr(int pos, QComboBox* cbox, QString* editStr, TID* exID)
 {
   QVariant var;
-
-  *editStr = cbox->itemText(pos);
-  if (!editStr->isNull()) {
-    if (exID) {
-      var = cbox->itemData(pos);
-      *exID = var.value<CComboBoxItem*>()->itemData();
+  if (pos > 0) {
+    *editStr = cbox->itemText(pos);
+    if (!editStr->isNull()) {
+      if (exID) {
+        var = cbox->itemData(pos);
+        *exID = var.value<CComboBoxItem*>()->itemData();
+      }
     }
+    else
+      pos = -1;
   }
-  else
-    pos = -1;
-
   return pos;
 }
 
@@ -51,8 +51,21 @@ int SelEndOKToStr(int pos, QComboBox* cbox, QString* editStr, TID* exID)
 void ResetComboItems(QComboBox* box)
 {
   int pos, c = box->count();
-  for (pos = 1; pos < c; pos++)
+  CComboBoxItem* data1;
+  CFieldsItem* data2;
+  CStatFuncItem* data3;
+  for (pos = 1; pos < c; pos++) {
+    data1 = box->itemData(1).value<CComboBoxItem*>();
+    data2 = box->itemData(1).value<CFieldsItem*>();
+    data3 = box->itemData(1).value<CStatFuncItem*>();
     box->removeItem(1);
+    if (data1)
+      delete data1;
+    if (data2)
+      delete data2;
+    if (data3)
+      delete data3;
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -165,6 +178,31 @@ CComboBar::CComboBar(LavaDECL* execDecl, CPEBaseDoc *doc, QWidget* parent)
   connect (IDC_NewFunc, SIGNAL(clicked()), this, SLOT(OnNewFunc()));
   connect (IDC_NewPFunc, SIGNAL(clicked()), this, SLOT(OnNewPFunc()));
 
+}
+
+CComboBar::~CComboBar()
+{
+  ResetComboItems(m_TypesCtrl);
+  ResetComboItems (m_SetTypesCtrl);  
+  //ResetComboItems (m_SignalsCtrl);   
+  ResetComboItems (m_BasicTypesCtrl);  
+  ResetComboItems (m_EnumsCtrl);
+  ResetComboItems (m_NewCtrl); 
+  ResetComboItems (m_SNewCtrl);
+  ResetComboItems (m_ObjectsCtrl);
+  ResetComboItems (m_SetObjectsCtrl);
+  ResetComboItems (m_AttachCtrl);
+  ResetComboItems (m_CallIntCtrl);
+  ResetComboItems (m_CompoObjIntCtrl);
+  //dynamic boxes
+  ResetComboItems (m_ClassFuncsCtrl);
+  ResetComboItems (m_VFuncsCtrl);
+  ResetComboItems (m_SubObjectsCtrl);
+  ResetComboItems (m_CompaObjectsCtrl);
+  ResetComboItems (m_BaseInisCtrl); 
+  ResetComboItems (m_StaticFuncsCtrl);
+  ResetComboItems (m_CompaTypesCtrl);  
+  ResetComboItems (m_CompaBTypesCtrl);
 }
 
 void CComboBar::OnUpdate(LavaDECL *execDecl, bool externalHint)
@@ -773,6 +811,7 @@ void CComboBar::RemoveLocals()
   QVariant var;
   CHE *firstID;
   TIDType idtype;
+  CFieldsItem *data;
 
   m_ObjectsCtrl = IDC_ComboObjects;
   m_SetObjectsCtrl = IDC_ComboSetObjects;
@@ -780,11 +819,12 @@ void CComboBar::RemoveLocals()
   int cnt = m_ObjectsCtrl->count();
   while ( pos < cnt) {
     var = m_ObjectsCtrl->itemData(pos);
-    CFieldsItem *data = var.value<CFieldsItem*>();
+    data = var.value<CFieldsItem*>();
     firstID = (CHE*)data->IDs.first;
     myDoc->IDTable.GetVar(((TDOD*)firstID->data)->ID, idtype);
     if ((idtype == localID) || (idtype == noID)) {
       m_ObjectsCtrl->removeItem(pos);
+      delete data;
       cnt--;
     }
     else
@@ -794,11 +834,12 @@ void CComboBar::RemoveLocals()
   cnt = m_SetObjectsCtrl->count();
   while ( pos < cnt) {
     var = m_SetObjectsCtrl->itemData(pos);
-    CFieldsItem *data = var.value<CFieldsItem*>();
+    data = var.value<CFieldsItem*>();
     firstID = (CHE*)data->IDs.first;
     if (firstID) {
       if ((idtype == localID) || (idtype == noID)) {
         m_SetObjectsCtrl->removeItem(pos);
+        delete data;
         cnt--;
       }
       else
@@ -1209,7 +1250,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
                || ((!forInput || forCopy)
                               && compatibleTypes(ckd, decl, compContext, fmvType, bContext)) )) {
             ndata = new CFieldsItem(data);
-            m_CompaObjectsCtrl->addItem(m_ObjectsCtrl->itemText(pos),ndata);//sort#
+            m_CompaObjectsCtrl->addItem(m_ObjectsCtrl->itemText(pos),QVariant::fromValue(ndata));//sort#
             showObjs = true;
           }
         }
@@ -2001,16 +2042,13 @@ void CExecTypes::ExecDefs (LavaDECL ** pelDef, int incl)
     }
     item = new CComboBoxItem(TID(elDef->OwnID, incl));
     combo->addItem(QString(Label.c),QVariant::fromValue(item));//sort#
-    delete item;
     if (combo2) {
       item = new CComboBoxItem(item->itemData());
       combo2->addItem(QString(Label.c),QVariant::fromValue(item));//sort#
-      delete item;
     }
     if (combo3) {
       item = new CComboBoxItem(item->itemData());
       combo3->addItem(QString(Label.c),QVariant::fromValue(item));//sort#
-      delete item;
     }
   }
 }
@@ -2110,8 +2148,10 @@ void CExecFields::AddToBox(LavaDECL** pdecl, DString& name, QComboBox* fieldList
     fdata = fieldList->itemData(pos).value<CFieldsItem*>();
     found = SameField(fdata->IDs, data->IDs, replace);
     if (!found) {
-      if (replace)
+      if (replace) {
         fieldList->removeItem(pos);
+        delete fdata;
+      }
       else {
         if (!fdata->withClass) {
           name.Delete(name.l - (*pdecl)->LocalName.l, (*pdecl)->LocalName.l);

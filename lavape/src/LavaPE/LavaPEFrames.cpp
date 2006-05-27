@@ -889,7 +889,7 @@ void CLavaMainFrame::on_delAction_triggered()
 }
 
 
-void CLavaMainFrame::deleteOp()
+void CLavaMainFrame::on_deleteAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)

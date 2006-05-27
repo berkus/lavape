@@ -74,7 +74,7 @@ class LAVAEXECS_DLL CComboBar : public QWidget, public Ui_ComboBarDlg
 public:
   CComboBar();   // standard constructor
   CComboBar(LavaDECL* execDecl, CPEBaseDoc* doc, QWidget* parent);  
-  ~CComboBar() {}
+  ~CComboBar(); 
 
   LavaDECL *ExecDECL;
   LavaDECL *myDECL; //parent of exec

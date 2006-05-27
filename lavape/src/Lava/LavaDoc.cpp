@@ -877,9 +877,8 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
 bool CLavaDoc::IsModified() 
 {
   if (isObject ) {
-	  POSITION pos = GetFirstViewPos();
-    if (pos) {
-	    CLavaGUIView *pView = (CLavaGUIView *)GetNextView(pos);
+    if (m_documentViews.size()) {
+	    CLavaGUIView *pView = (CLavaGUIView *)m_documentViews[0];
       pView->NoteLastModified();
     }
   }

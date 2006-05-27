@@ -1959,7 +1959,7 @@ void CLavaPEView::OnDelete()
   CHEEnumSelId *delEl, *newEl;
 
   if (GetDocument()->changeNothing)
-    return;
+   return;
   item = (CTreeItem*)Tree->currentItem();
   if (!item || (item == Tree->RootItem))
     return;

@@ -1441,14 +1441,15 @@ bool CLavaPEDoc::collectPattern(LavaDECL *decl, const TIDs& paramIDs, const TIDs
 
 void CLavaPEDoc::ConcernExecs(CLavaPEHint* hint)
 {
+  int pos;
+
   TDeclType defType = ((LavaDECL*)hint->CommandData1)->DeclType;
   if ((hint->com != CPECommand_Insert) || ((defType == IAttr) || (defType == OAttr))) {
     CLavaBaseView* view;
-    POSITION pos = GetFirstViewPos();
     CheckData chd;
     chd.concernExecs = true;
-    while (pos) {
-      view = (CLavaBaseView*)GetNextView(pos);
+    for (pos = 0; pos < m_documentViews.size(); pos++) {
+      view = (CLavaBaseView*)m_documentViews[pos];
       if (view->inherits("CExecView")) {
         chd.document = this;
         chd.myDECL = ((CExecView*)view)->myDECL;
@@ -1715,33 +1716,30 @@ void CLavaPEDoc::ExecViewPrivToPub(LavaDECL* func, int delID)
   //1.PrivToPub: func is the new public func impl, func->Supports.first contains id of the old private func impl
   //2.PubToPriv: func is the new private func, func->RefID contains id of the old public func impl
   //             
-  POSITION pos = GetFirstViewPos();
+  int pos;
   bool active=false;
   wxView *view;
   TID oldID = TID(delID,0);
-  while (pos) {
-    view = (CLavaBaseView*)GetNextView(pos);
+  for (pos = 0; pos < m_documentViews.size(); pos++) {
+    view = (CLavaBaseView*)m_documentViews[pos];
     active = view->inherits("CExecView") && (((CExecView*)view)->myID == oldID);
     if (active)
       ((CExecView*)view)->myID = TID(func->OwnID,0);
   }
-  ViewPosRelease(pos);
 }
 
 wxDocument* CLavaPEDoc::FindOpenDoc(const DString& fn)
 {
-  POSITION pos; 
-  wxDocManager* mana = wxDocManager::GetDocumentManager();
-  pos = mana->GetFirstDocPos();
+  int pos; 
   CLavaPEDoc* doc;
   DString absName;
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+  wxDocManager* mana = wxDocManager::GetDocumentManager();
+  for (pos = 0; pos < mana->m_docs.size(); pos++) {
+    doc = (CLavaPEDoc*)mana->m_docs[pos];
     if (doc != this) {
       absName  = doc->IDTable.IDTab[0]->FileName;
       AbsPathName(absName, doc->IDTable.DocDir);
       if (SameFile(absName, fn)) {
-        mana->DocPosRelease(pos);
         return doc;
       }
     }
@@ -3184,7 +3182,7 @@ void CLavaPEDoc::OnTotalCheck()
   DString absName, absName2, messStr, nstr;
   CLavaPEDoc *doc;
   wxDocManager* mana = wxDocManager::GetDocumentManager();
-  POSITION pos = 0;
+  int pos;
 
   CExecChecks* ch = new CExecChecks(this);
   delete ch;
@@ -3199,11 +3197,15 @@ void CLavaPEDoc::OnTotalCheck()
       absName  = IDTable.IDTab[ii]->FileName;
       AbsPathName(absName, IDTable.DocDir);
       absName2.Reset(0);
-      pos = mana->GetFirstDocPos();
+      /*pos = mana->GetFirstDocPos();
       while (pos && !SameFile(absName, absName2)) {
-        doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+        doc = (CLavaPEDoc*)mana->GetNextDoc(pos);*/
+      for (pos = 0; pos < mana->m_docs.size(); pos++) {
+        doc = (CLavaPEDoc*)mana->m_docs[pos];
         absName2  = doc->IDTable.IDTab[0]->FileName;
         AbsPathName(absName2, doc->IDTable.DocDir);
+        if (SameFile(absName, absName2))
+          pos = mana->m_docs.size();
       }
       if (SameFile(absName, absName2)) 
         doc->openInTotalCheck = false;
@@ -3240,9 +3242,8 @@ void CLavaPEDoc::OnTotalCheck()
   }
   QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->applicationName(), messStr.c,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
 
-  pos = mana->GetFirstDocPos();
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+  for (pos = 0; pos < mana->m_docs.size(); pos++) {
+    doc = (CLavaPEDoc*)mana->m_docs[pos];
     doc->checkedInTotalCheck = false;
     if (doc->openInTotalCheck)
       doc->OnCloseDocument();
@@ -3269,12 +3270,13 @@ bool CLavaPEDoc::OpenExecView(LavaDECL* eDECL)
   CLavaBaseView *view;
   wxMDIChildFrame *execChild;
 //  LavaDECL *eDECL = (LavaDECL*)execChe->data;
-  POSITION pos = GetFirstViewPos();
-  while (pos && !active) {
-    view = (CLavaBaseView*)GetNextView(pos);
+  int pos; // = GetFirstViewPos();
+  for (pos= 0; pos < m_documentViews.size(); pos++) {
+    view = (CLavaBaseView*)m_documentViews[pos];
     active = view->inherits("CExecView") && (((CExecView*)view)->myDECL == eDECL);
+    if (active)
+      pos = m_documentViews.size();
   }
-  ViewPosRelease(pos);
   if (active)
     execChild = view->GetParentFrame();
   else {
@@ -3303,13 +3305,14 @@ bool CLavaPEDoc::OpenGUIView(LavaDECL** pdecl)
   bool active=false;
   CLavaBaseView *view;
   wxMDIChildFrame *formChild;
-  POSITION pos = GetFirstViewPos();
-  while (pos && !active) {
-    view = (CLavaBaseView*)GetNextView(pos);
+  int pos;
+  for (pos = 0; pos < m_documentViews.size(); pos++) {
+    view = (CLavaBaseView*)m_documentViews[pos];
     active = !view->inherits("CTreeView") && !view->inherits("CExecView")
          && (((CLavaPEView*)((CFormFrame*)view->GetParentFrame())->viewR)->myDECL == *pdecl);
+    if (active) 
+      pos = m_documentViews.size();
   }
-  ViewPosRelease(pos);
   if (active) 
     formChild = view->GetParentFrame();
   else {
@@ -3331,17 +3334,19 @@ bool CLavaPEDoc::OpenGUIView(LavaDECL** pdecl)
 
 bool CLavaPEDoc::OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate)
 { 
-  POSITION pos = GetFirstViewPos();
+  int pos;
   CLavaBaseView* view;
   bool active=FALSE; 
   //CRect rr;
   CLavaPEHint * hint;
 
-  while (pos && !active) {
-    view = (CLavaBaseView*)GetNextView(pos);
+  //while (pos && !active) {
+  for (pos = 0; pos < m_documentViews.size(); pos++) {
+    view = (CLavaBaseView*)m_documentViews[pos]; //GetNextView(pos);
     active = view->inherits("CVTView") && (((CVTView*)view)->myDECL == *pdecl);
+    if (active)
+      pos = m_documentViews.size();
   }
-  ViewPosRelease(pos);
   if (active) {
     if (!autoUpdate)
       ((CTreeFrame*)view->GetParentFrame())->CalcSplitters(true); //make it visible
@@ -3360,10 +3365,8 @@ bool CLavaPEDoc::OpenVTView(LavaDECL** pdecl, unsigned long autoUpdate)
 
 bool CLavaPEDoc::OpenWizardView(CLavaBaseView* formView, LavaDECL** pdecl/*, unsigned long autoUpdate*/)
 { 
-//  POSITION pos = GetFirstViewPos();
   CLavaBaseView* view;
   bool active=FALSE; 
-  //CRect rr;
   CLavaPEHint * hint;
 
   view = ((CFormFrame*)formView->GetParentFrame())->wizardView; 
@@ -3592,24 +3595,28 @@ void CLavaPEDoc::SetFindText(LavaDECL* inDecl, CFindData& fw)//const DString& ab
 
 void CLavaPEDoc::SetLastHints(bool fromDragDrop, bool otherDocs)
 {  //finish of drag and drop and change include file from InclView
-  POSITION pos; 
+  int pos; 
   DString str0;
   CExecSetImpls *impls;
   CLavaPEDoc* doc;
 
   wxDocManager* mana = wxDocManager::GetDocumentManager(); 
-  pos = mana->GetFirstDocPos();
+  /*pos = mana->GetFirstDocPos();
   while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);*/
+  for (pos = 0; pos < mana->m_docs.size(); pos++) {
+    doc = (CLavaPEDoc*)mana->m_docs[pos];
     if (doc->hasHint) {
       doc->SetLastHint(false);
       if (otherDocs)
         doc->UpdateOtherDocs(this, str0, 0, false);
     }
   } 
-  pos = mana->GetFirstDocPos();
+  /*pos = mana->GetFirstDocPos();
   while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);*/
+  for (pos = 0; pos < mana->m_docs.size(); pos++) {
+    doc = (CLavaPEDoc*)mana->m_docs[pos];
     if (doc->hasHint || doc->drawView) {
       doc->hasHint = false;
       if (fromDragDrop) {
@@ -3836,7 +3843,7 @@ bool CLavaPEDoc::TrueReference(LavaDECL* decl, int refCase, const TID& refTid)
 void CLavaPEDoc::UpdateMoveInDocs(const DString& clipDocFn)
 {
   CHESimpleSyntax* cheSyn;
-  POSITION pos; 
+  int pos; 
   DString absDropFn, *str;//, str0, absName, absName2, dragFn;
   int dragIncl = -1, dropIncl = -1;
   LavaDECL* oldTopDECL, *newTopDECL;
@@ -3850,9 +3857,8 @@ void CLavaPEDoc::UpdateMoveInDocs(const DString& clipDocFn)
   firstLast.INCL(multiDocHint);
   this->hasHint = true;
   wxDocManager* mana = wxDocManager::GetDocumentManager();
-  pos = mana->GetFirstDocPos();
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+  for (pos = 0; pos < mana->m_docs.size(); pos++) {
+    doc = (CLavaPEDoc*)mana->m_docs[pos];
     dragIncl = -1;
     dropIncl = -1;
     //dropFn = absName;
@@ -3926,7 +3932,7 @@ void CLavaPEDoc::UpdateOtherDocs(wxDocument* skipOther, DString& inclFile, int n
   DString absDropFn, str, relInclFile; //,absName;
   CHAINX chain;
   CHE* che;
-  POSITION pos; 
+  int pos; 
   bool isNew;
   CExecSetImpls *impls;
   wxDocManager* mana = wxDocManager::GetDocumentManager() ;
@@ -3934,15 +3940,12 @@ void CLavaPEDoc::UpdateOtherDocs(wxDocument* skipOther, DString& inclFile, int n
   absDropFn = IDTable.IDTab[0]->FileName;
   AbsPathName(absDropFn, IDTable.DocDir);
 
-  pos = mana->GetFirstDocPos();
   NSTLavaDECL topDef;
   DString oldTopName;
   if (skipOther && !((CLavaPEView*)((CLavaPEDoc*)skipOther)->UndoMem.DrawTree))
     flag.INCL(noDrawHint);
-  while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
-    //dropFn = absName;
-    //RelPathName(dropFn, doc->IDTable.DocDir);
+  for (pos = 0; pos < mana->m_docs.size(); pos++) {
+    doc = (CLavaPEDoc*)mana->m_docs[pos];
     if (inclFile.l) {
       relInclFile = inclFile;
       RelPathName(relInclFile, doc->IDTable.DocDir);

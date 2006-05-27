@@ -40,6 +40,7 @@ public:
   CComboBoxItem(/*char* text,*/ const TID& id) {/*setText(QString(text));*/ ID = id;}
   CComboBoxItem(/*const DString& text,*/ unsigned* flags) {/*setText(QString(text.c));*/ Flags = flags;}
   CComboBoxItem() {}
+
   TID itemData() {return ID;}
   unsigned* flags() {return Flags;}
 protected:

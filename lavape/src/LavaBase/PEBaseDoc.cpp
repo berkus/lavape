@@ -1035,19 +1035,17 @@ bool CPEBaseDoc::OnCloseDocument()
 void CPEBaseDoc::OnDestroyMainView(CLavaBaseView* mview)
 {
 	if (wxTheApp->deletingMainFrame) return;
-
-  POSITION pos = GetFirstViewPos();
   CLavaBaseView* tview;
 //  OnSaveModified();
-  while (pos ) {
-    tview = (CLavaBaseView*)GetNextView(pos);
+  int pos = 0;
+  while (pos < m_documentViews.size() ) {
+    tview = (CLavaBaseView*)m_documentViews[pos];
     if ((tview != mview) && (tview->GetParentFrame() != mview->GetParentFrame())) {
-      //SaveModified();
       delete tview->GetParentFrame();
-      //tview->GetParentFrame()->DestroyWindow();
-      ViewPosRelease(pos);
-      pos = GetFirstViewPos();
+      pos = 0;
     }
+    else
+      pos++;
  }
 }
 

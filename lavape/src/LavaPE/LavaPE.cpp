@@ -460,7 +460,7 @@ void CLavaPEApp::OnEditRedo()
 void CLavaPEApp::OnChooseTreeFont()
 {
   CLavaPEDoc* doc;
-  POSITION posD, posV;
+  int posD, posV;
   wxView *view;
   QFont lf;
   wxDocManager *dm;
@@ -474,12 +474,14 @@ void CLavaPEApp::OnChooseTreeFont()
     LBaseData.m_lfDefTreeFont = lf.toString();
 
     dm = wxDocManager::GetDocumentManager();
-    posD = dm->GetFirstDocPos();
-    while (posD) {
-      doc = (CLavaPEDoc*)/*pTemplate*/dm->GetNextDoc(posD);
-      posV = doc->GetFirstViewPos();
-      while (posV) {
-        view = doc->GetNextView(posV);
+    //posD = dm->GetFirstDocPos();
+    //while (posD) {
+    for (posD = 0; posD < dm->m_docs.size(); posD++) {
+      doc = (CLavaPEDoc*)dm->m_docs[posD];
+      //posV = doc->GetFirstViewPos();
+      //while (posV) {
+      for (posV = 0; posV < doc->m_documentViews.size(); posV++) {
+        view = doc->m_documentViews[posV];
         if (view->inherits("CLavaPEView")
             || view->inherits("CVTView")
             || view->inherits("CWizardView")
@@ -497,7 +499,7 @@ void CLavaPEApp::OnChooseTreeFont()
 void CLavaPEApp::OnChooseExecFont()
 {
   CLavaPEDoc* doc;
-  POSITION posD, posV;
+  int posD, posV;
   wxView *view;
   QFont lf;
   wxDocManager *dm;
@@ -511,12 +513,18 @@ void CLavaPEApp::OnChooseExecFont()
     LBaseData.m_lfDefExecFont = lf.toString();
 
     dm = wxDocManager::GetDocumentManager();
+    /*
     posD = dm->GetFirstDocPos();
     while (posD) {
-      doc = (CLavaPEDoc*)/*pTemplate*/dm->GetNextDoc(posD);
+      doc = (CLavaPEDoc*)dm->GetNextDoc(posD);
       posV = doc->GetFirstViewPos();
       while (posV) {
         view = doc->GetNextView(posV);
+    */
+    for (posD = 0; posD < dm->m_docs.size(); posD++) {
+      doc = (CLavaPEDoc*)dm->m_docs[posD];
+      for (posV = 0; posV < doc->m_documentViews.size(); posV++) {
+        view = doc->m_documentViews[posV];
         if (view->inherits("CExecView"))
           ((CExecView*)view)->sv->setFont(LBaseData.m_ExecFont);
       }
@@ -529,7 +537,7 @@ void CLavaPEApp::OnChooseExecFont()
 void CLavaPEApp::OnChooseFormFont(int font_case)
 {
   CLavaPEDoc* doc;
-  POSITION posD, posV;
+  int posD, posV;
   wxView *view;
   QFont lf;
   wxDocManager *dm;
@@ -553,12 +561,17 @@ void CLavaPEApp::OnChooseFormFont(int font_case)
       }*/
 
       dm = wxDocManager::GetDocumentManager();
+      /*
       posD = dm->GetFirstDocPos();
       while (posD) {
         doc = (CLavaPEDoc*)dm->GetNextDoc(posD);
         posV = doc->GetFirstViewPos();
         while (posV) {
-          view = doc->GetNextView(posV);
+          view = doc->GetNextView(posV);*/
+      for (posD = 0; posD < dm->m_docs.size(); posD++) {
+        doc = (CLavaPEDoc*)dm->m_docs[posD];
+        for (posV = 0; posV < doc->m_documentViews.size(); posV++) {
+          view = doc->m_documentViews[posV];
           if (view->inherits("CLavaGUIView")) {
             view->setFont(LBaseData.m_FormFont);
             ((CLavaGUIView*)view)->OnChoosefont();
@@ -577,12 +590,16 @@ void CLavaPEApp::OnChooseFormFont(int font_case)
       LBaseData.m_lfDefFormLabelFont = lf.toString();
 
       dm = wxDocManager::GetDocumentManager();
-      posD = dm->GetFirstDocPos();
-      while (posD) {
-        doc = (CLavaPEDoc*)dm->GetNextDoc(posD);
-        posV = doc->GetFirstViewPos();
-        while (posV) {
-          view = doc->GetNextView(posV);
+      //posD = dm->GetFirstDocPos();
+      //while (posD) {
+      //  doc = (CLavaPEDoc*)dm->GetNextDoc(posD);
+        //posV = doc->GetFirstViewPos();
+        //while (posV) {
+          //((view = doc->GetNextView(posV);
+      for (posD = 0; posD < dm->m_docs.size(); posD++) {
+        doc = (CLavaPEDoc*)dm->m_docs[posD];
+        for (posV = 0; posV < doc->m_documentViews.size(); posV++) {
+          view = doc->m_documentViews[posV];
           if (view->inherits("CLavaGUIView"))
             ((CLavaGUIView*)view)->setNewLabelFont();//LBaseData.m_FormLabelFont);
         }
@@ -735,20 +752,15 @@ bool CLavaPEApp::DoSaveAll()
 {
   bool ret = true;
   CLavaPEDoc* doc;
-  POSITION pos = wxDocManager::GetDocumentManager()->GetFirstDocPos();
-  while (pos) {
-    doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetNextDoc(pos);
-    if (doc->IsModified())
-      ret = ret && doc->Save();
-  }
+  int pos;
   /*
-  pos = wxDocManager::GetDocumentManager()->GetFirstDocPos();
   while (pos) {
-    doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetNextDoc(pos);
+    doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->GetNextDoc(pos);*/
+  for (pos = 0; pos < wxDocManager::GetDocumentManager()->m_docs.size(); pos++) {
+    doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->m_docs[pos];
     if (doc->IsModified())
       ret = ret && doc->Save();
   }
-  */
   return ret;
 }
 
@@ -1177,7 +1189,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
   bool popUp = false, activateMainView = false;
   CLavaBaseView *view;
   CTreeItem *item, *itemOld;
-  POSITION pos;
+  int pos;
 
   mySynDef = ((CLavaPEDoc*)fromDoc)->mySynDef;
   if (id.nINCL > 0) {
@@ -1196,29 +1208,25 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
     if (openExec && (((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data)->DeclDescType == ExecDesc))
       return doc->OpenExecView((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data);
     else {
-      pos = doc->GetFirstViewPos();
-      view = (CLavaBaseView*)doc->GetNextView(pos); //find the appropriate view
+      //pos = doc->GetFirstViewPos();
+      view = (CLavaBaseView*)doc->m_documentViews[0]; //GetNextView(pos); //find the appropriate view
       if (declsel->DeclType == FormDef)
         formDECL = declsel->ParentDECL;
       else
         if (declsel->ParentDECL->DeclType == FormDef)
           formDECL = declsel->ParentDECL->ParentDECL;
-      while ( pos
-           && ( !view->inherits("CLavaPEView")
-               || !((CLavaPEView*)view)->myInclView && !formDECL
-               || ((CLavaPEView*)view)->myInclView && formDECL
-               || !(!formDECL && declsel->isInSubTree(((CLavaPEView*)view)->myDECL)
-                    || (formDECL == ((CLavaPEView*)view)->myDECL)) ))
-           view = (CLavaBaseView*)doc->GetNextView(pos);
-      doc->ViewPosRelease(pos);
-
-      if (!view ||  !view->inherits("CLavaPEView")
-            || !((CLavaPEView*)view)->myInclView && !formDECL
-            || ((CLavaPEView*)view)->myInclView && formDECL
-            || !(!formDECL && declsel->isInSubTree(((CLavaPEView*)view)->myDECL)
-                    || (formDECL == ((CLavaPEView*)view)->myDECL))) {
+      for (pos = 0; (pos < doc->m_documentViews.size())
+                   && ( !doc->m_documentViews[pos]->inherits("CLavaPEView")
+                       || !((CLavaPEView*)doc->m_documentViews[pos])->myInclView && !formDECL
+                       || ((CLavaPEView*)doc->m_documentViews[pos])->myInclView && formDECL
+                       || !(!formDECL && declsel->isInSubTree(((CLavaPEView*)doc->m_documentViews[pos])->myDECL)
+                            || (formDECL == ((CLavaPEView*)doc->m_documentViews[pos])->myDECL)) );
+           pos++);
+           
+      if (pos < doc->m_documentViews.size())
+        view = (CLavaBaseView*)doc->m_documentViews[pos];
+      else
         view = doc->MainView; //find the documents main view
-      }
       if (view) {
         popUp = (view == doc->MainView) && formDECL;
         if (wxDocManager::GetDocumentManager()->GetActiveView() == view)
@@ -1275,7 +1283,7 @@ bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& f
   CHESimpleSyntax* cheSyn;
   CLavaPEDoc* doc;
   DString  fromAbsName; //fromRelName, relInclFile;
-  POSITION pos;
+  int pos;
   TID fromID;
   DString allNames = komma;
 
@@ -1314,9 +1322,12 @@ bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& f
     AbsPathName(fromAbsName, ((CLavaPEDoc*)fromDoc)->IDTable.DocDir);
   }
   wxDocManager* mana = wxDocManager::GetDocumentManager();
+  /*
   pos = mana->GetFirstDocPos();
   while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);*/
+  for (pos = 0; pos < mana->m_docs.size(); pos++) {
+    doc = (CLavaPEDoc*)mana->m_docs[pos];
     if (fw.index)
       doc->FindReferences(allNames, fw);
     else {
@@ -1350,7 +1361,7 @@ bool CLavaPEBrowse::FindImpl(wxDocument* fromDoc, LavaDECL* decl, wxDocument*& i
   CHESimpleSyntax* cheSyn;
   CLavaPEDoc* doc;
   DString implAbsName, fromAbsName; //fromRelName, relInclFile;
-  POSITION pos;
+  int pos;
   TID fromID, toID;
   int funcnID;
   TIDType type;
@@ -1383,9 +1394,12 @@ bool CLavaPEBrowse::FindImpl(wxDocument* fromDoc, LavaDECL* decl, wxDocument*& i
     AbsPathName(fromAbsName, ((CLavaPEDoc*)fromDoc)->IDTable.DocDir);
     //implementation and interface in different documents?
     wxDocManager* mana = wxDocManager::GetDocumentManager();
+    /*
     pos = mana->GetFirstDocPos();
     while (pos) {
-      doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+      doc = (CLavaPEDoc*)mana->GetNextDoc(pos);*/
+    for (pos = 0; pos < mana->m_docs.size(); pos++) {
+      doc = (CLavaPEDoc*)mana->m_docs[pos];
       if (doc != fromDoc) {
         //fromRelName = fromAbsName;
         //RelPathName(fromRelName, doc->IDTable.DocDir);
@@ -1407,7 +1421,6 @@ bool CLavaPEBrowse::FindImpl(wxDocument* fromDoc, LavaDECL* decl, wxDocument*& i
             else
               implDoc = doc;
             p_implDecl = (LavaDECL**)((CLavaPEDoc*)implDoc)->IDTable.GetVar(TID(toID.nID, 0), type);
-            mana->DocPosRelease(pos);
             return true;
           }
         }//cheSyn
@@ -1422,7 +1435,7 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
   CHESimpleSyntax* cheSyn;
   CLavaPEDoc* doc;
   DString fromAbsName; //,fromRelName, relInclFile;
-  POSITION pos;
+  int pos;
   TID fromID, toID;
   int funcnID;
   LavaDECL *fromDecl, *implDecl;
@@ -1478,9 +1491,12 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
   AbsPathName(fromAbsName, ((CLavaPEDoc*)fromDoc)->IDTable.DocDir);
   //implementation and interface in different documents?
   wxDocManager* mana = wxDocManager::GetDocumentManager();
+  /*
   pos = mana->GetFirstDocPos();
   while (pos) {
-    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+    doc = (CLavaPEDoc*)mana->GetNextDoc(pos);*/
+  for (pos = 0; pos < mana->m_docs.size(); pos++) {
+    doc = (CLavaPEDoc*)mana->m_docs[pos];
     if (doc != fromDoc) {
       //fromRelName = fromAbsName;
       //RelPathName(fromRelName, doc->IDTable.DocDir);
@@ -1507,7 +1523,6 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
           }
           else
             implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID);
-          mana->DocPosRelease(pos);
           return true;
         }
       }

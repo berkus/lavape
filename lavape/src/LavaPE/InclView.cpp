@@ -268,7 +268,7 @@ void CInclView::OnEditSel()
   CHESimpleSyntax *che, *newChe, *cheSyn;
   DString newAbsName, oldAbsName, newRelName, oldRelName, docAbsName;
   CLavaPEDoc *doc, *nDoc;
-  POSITION pos, prevPos; 
+  int pos;//, prevPos; 
   //wxDocTemplate* pTemplate;
   SynFlags firstlast;
   bool multi = false;
@@ -293,10 +293,11 @@ void CInclView::OnEditSel()
           AbsPathName(oldAbsName, GetDocument()->IDTable.DocDir);
           ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = true;
           wxDocManager* mana = wxDocManager::GetDocumentManager(); 
-          pos = mana->GetFirstDocPos();
-          while (pos) {
-            prevPos = pos;
-            doc = (CLavaPEDoc*)mana->GetNextDoc(pos);
+          //pos = mana->GetFirstDocPos();
+          //while (pos) {
+          for (pos = 0; pos < mana->m_docs.size(); pos++) {
+            //prevPos = pos;
+            doc = (CLavaPEDoc*)mana->m_docs[pos];
             oldRelName = oldAbsName;
             RelPathName(oldRelName, doc->IDTable.DocDir);
             if (doc == GetDocument()) {

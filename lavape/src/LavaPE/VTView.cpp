@@ -114,6 +114,7 @@ void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
     myDECL = (LavaDECL*)((CLavaPEHint*)pHint)->CommandData1;
     myMainView = (CLavaPEView*)((CLavaPEHint*)pHint)->CommandData2;
     myID = TID(myDECL->OwnID, 0);
+    bb = GetDocument()->IDTable.GetDECL(myID) != 0;
   }
   if (!myDECL)
     return;

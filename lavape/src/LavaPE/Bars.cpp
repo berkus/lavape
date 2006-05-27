@@ -327,7 +327,7 @@ void CUtilityView::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
   CHEStackData *cheData;
   LavaDECL *funcDecl;
   TID tid;
-  POSITION pos;
+  int pos;
   wxView *view;
   QString qfn;
   DString fn;
@@ -342,9 +342,10 @@ void CUtilityView::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
       AbsPathName(fn, ((CLavaPEDoc*)doc)->IDTable.DocDir);
       qfn = QString(fn.c);
       stopDoc = 0;
-      pos = wxTheApp->m_docManager->GetFirstDocPos();
-      while (pos) {
-        stopDoc = (CLavaPEDoc*)wxTheApp->m_docManager->GetNextDoc(pos);
+      //pos = wxTheApp->m_docManager->GetFirstDocPos();
+      //while (pos) {
+      for (pos = 0; pos < wxTheApp->m_docManager->m_docs.size(); pos++) {
+        stopDoc = (CLavaPEDoc*)wxTheApp->m_docManager->m_docs[pos];
         if (stopDoc && (qfn == stopDoc->GetFilename()))
           pos = 0;
         else
@@ -358,12 +359,11 @@ void CUtilityView::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
     if (stopDoc) {
       stopExecDECL = stopDoc->GetExecDECL(funcDecl, cheData->data.ExecType, false,false);
       if (stopExecDECL) {
-        pos = stopDoc->GetFirstViewPos();
         view = 0;
-        while (pos) {
-          view = (CLavaBaseView*)stopDoc->GetNextView(pos);
+        for (pos = 0; pos < stopDoc->m_documentViews.size(); pos++) {
+          view = (CLavaBaseView*)stopDoc->m_documentViews[pos];
           if (view->inherits("CExecView") && (((CExecView*)view)->myDECL == stopExecDECL))
-            pos =0;
+            pos = stopDoc->m_documentViews.size();
           else
             view = 0;
         }
@@ -384,7 +384,7 @@ void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
   LavaDECL *funcDecl;
   CSearchData sData;
   TID tid;
-  POSITION pos;
+  int pos;
   wxView *view;
   QString qfn;
   DString fn;
@@ -400,9 +400,10 @@ void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
         qfn = QString(fn.c);
         if (cheDataAct) {
           stopDoc = 0;
-          pos = wxTheApp->m_docManager->GetFirstDocPos();
-          while (pos) {
-            stopDoc = (CLavaPEDoc*)wxTheApp->m_docManager->GetNextDoc(pos);
+          //pos = wxTheApp->m_docManager->GetFirstDocPos();
+          //while (pos) {
+          for (pos = 0; pos < wxTheApp->m_docManager->m_docs.size(); pos++) {
+            stopDoc = (CLavaPEDoc*)wxTheApp->m_docManager->m_docs[pos];
             if (stopDoc && (qfn == stopDoc->GetFilename()))
               pos = 0;
             else
@@ -422,12 +423,11 @@ void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
           sData.synObjectID = cheData->data.SynObjID;
           if (cheDataAct) { //= not the actual stack position
             sData.execView = 0;
-            pos = stopDoc->GetFirstViewPos();
-            while (pos) {
-              view = (CLavaBaseView*)stopDoc->GetNextView(pos);
+            for (pos = 0; pos < stopDoc->m_documentViews.size(); pos++) {
+              view = (CLavaBaseView*)stopDoc->m_documentViews[pos];
               if (view->inherits("CExecView") && (((CExecView*)view)->myDECL == stopExecDECL)) {
                 sData.execView = view;
-                break;
+                pos = stopDoc->m_documentViews.size();
               }
             }
           }

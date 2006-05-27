@@ -397,7 +397,7 @@ void CLavaPEDebugThread::checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc)
 void CLavaPEDebugThread::clearBrkPnts()
 //remember: this function is called only from main thread
 {
-  POSITION docPos, viewPos;
+  int docPos, viewPos;
   CHEProgPoint *chePP;
   CLavaBaseView *view;
   wxDocument* doc;
@@ -434,13 +434,10 @@ void CLavaPEDebugThread::clearBrkPnts()
         ((SynObject*)sData.synObj)->workFlags.EXCL(isBrkPnt);
       }
     }
-
-  docPos = wxTheApp->m_docManager->GetFirstDocPos();
-  while (docPos) {
-    doc = wxTheApp->m_docManager->GetNextDoc(docPos);
-    viewPos = doc->GetFirstViewPos();
-    while (viewPos) {
-      view = (CLavaBaseView*)doc->GetNextView(viewPos);
+  for (docPos = 0; docPos < wxTheApp->m_docManager->m_docs.size(); docPos++) {
+    doc = wxTheApp->m_docManager->m_docs[docPos];
+    for (viewPos = 0; viewPos < doc->m_documentViews.size(); viewPos++) {
+      view = (CLavaBaseView*)doc->m_documentViews[viewPos];
       if (view->inherits("CExecView"))
         ((CExecView*)view)->redCtl->update();
     }

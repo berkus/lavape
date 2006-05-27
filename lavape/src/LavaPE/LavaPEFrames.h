@@ -193,9 +193,9 @@ public slots:
 */
     virtual void on_insAction_triggered();
     virtual void on_delAction_triggered();
+    virtual void on_deleteAction_triggered();
     virtual void on_genLinkedHtmlAction_triggered();
     virtual void on_genSingleHtmlAction_triggered();
-    virtual void deleteOp();
 
 // Exec handlers (tool buttons):
     virtual void on_DbgAction_triggered();

@@ -244,8 +244,7 @@ void MyListView::ResetSelections()
 void MyListView::keyPressEvent(QKeyEvent *ev)
 {
   if ((ev->key() == Qt::Key_Delete // 0x2e DEL key
-   || ev->key() == Qt::Key_Backspace)) // 0x08 BACKSPACE key
-
+  || ev->key() == Qt::Key_Backspace)) // 0x08 BACKSPACE key
     lavaView->OnDelete();
   else if ((ev->key() == Qt::Key_Return) && !((CTreeItem*)currentItem())->inRename)
     lavaView->OnVkreturn();

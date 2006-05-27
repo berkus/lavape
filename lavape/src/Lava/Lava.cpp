@@ -425,9 +425,9 @@ bool CLavaApp::DoSaveAll()
 {
   bool ret = true;
   CLavaDoc* doc;
-  POSITION pos = wxDocManager::GetDocumentManager()->GetFirstDocPos();
-  while (pos) {
-    doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->GetNextDoc(pos);
+  int pos;
+  for (pos = 0; pos < wxDocManager::GetDocumentManager()->m_docs.size(); pos++) {
+    doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->m_docs[pos];
     if ((((CLavaApp*)wxTheApp)->pLavaLdocTemplate == doc->GetDocumentTemplate())
         && doc->IsModified())
       ret = ret && doc->Save();
@@ -484,7 +484,7 @@ int CLavaApp::ExitInstance()
 void CLavaApp::OnChooseFormFont(int font_case)
 {
   CLavaDoc* doc;
-  POSITION posD, posV;
+  int posV, posD;
   wxView *view;
   QFont lf;
   wxDocManager *dm;
@@ -502,12 +502,10 @@ void CLavaApp::OnChooseFormFont(int font_case)
         LBaseData.m_lfDefFormLabelFont = LBaseData.m_lfDefFormFont;
       }
       dm = wxDocManager::GetDocumentManager();
-      posD = dm->GetFirstDocPos();
-      while (posD) {
-        doc = (CLavaDoc*)dm->GetNextDoc(posD);
-        posV = doc->GetFirstViewPos();
-        while (posV) {
-          view = doc->GetNextView(posV);
+      for (posD = 0; posD < dm->m_docs.size(); posD++) {
+        doc = (CLavaDoc*)dm->m_docs[posD];
+        for (posV = 0; posV < doc->m_documentViews.size(); posV++) {
+          view = doc->m_documentViews[posV];
           if (view->inherits("CLavaGUIView")) {
             view->setFont(LBaseData.m_FormFont);
             ((CLavaGUIView*)view)->OnChoosefont();
@@ -526,12 +524,10 @@ void CLavaApp::OnChooseFormFont(int font_case)
       LBaseData.m_lfDefFormLabelFont = lf.toString();
 
       dm = wxDocManager::GetDocumentManager();
-      posD = dm->GetFirstDocPos();
-      while (posD) {
-        doc = (CLavaDoc*)dm->GetNextDoc(posD);
-        posV = doc->GetFirstViewPos();
-        while (posV) {
-          view = doc->GetNextView(posV);
+      for (posD = 0; posD < dm->m_docs.size(); posD++) {
+        doc = (CLavaDoc*)dm->m_docs[posD];
+        for (posV = 0; (posV < doc->m_documentViews.size()); posV++) {
+          view = doc->m_documentViews[posV]; //GetNextView(pos);
           if (view->inherits("CLavaGUIView"))
             ((CLavaGUIView*)view)->setNewLabelFont();
         }
