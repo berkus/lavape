@@ -37,7 +37,8 @@
     and a &quot;CreateAccount&quot; method of &quot;Bank&quot;. </P>
     
     <P>You can successively add details (member variables, formal parameters,
-    further interfaces, partial implementations of functions) just as they enter
+    further interfaces, partial implementations of functions) just as they come 
+    into
     your head.</P>
     
     <P>You need not interrupt your flow of thoughts and switch to a completely
@@ -46,7 +47,7 @@
     CreateAccount method should have an input parameter of type
     &quot;Customer&quot; and an output parameter of type &quot;Account&quot;.
     You may stay within the same language all the time and add, remove, and
-    change details as they enter your mind.</P>
+    change details just as they cross your mind.</P>
     
     <P><font color="#FF0000"><b><i>Lava</i></b></font> provides <b>automatic
     updates of all existing references</b> if you change the arrangement of
@@ -61,14 +62,13 @@
     <p>It <i>is</i> expensive, however, to move <i>member variables or functions</i>
     from one interface to another one, since they must then be referenced
     through other (containing) variables, and the parameters of the functions
-    will have to be adapted to the new situation. This cannot easily performed
-    by an automatic update of references but will require manual changes at all
+    will have to be adapted to the new environment. This cannot easily be performed
+    by an <i>automatic</i> update of references but will require <i>manual</i> changes at all
     affected places.</p>
     <p>Therefore it is very important to arrive at a stable assignment of member
-    variables and functions to containing interfaces <i>as early as possible</i>.
-    In our opinion this is a strong argument in favor of a true <i>object-oriented
-    analysis</i> and an <b>incremental single-language approach (like <font color="#FF0000"><i>Lava</i></font>)
-    to OO analysis, design and implementation</b>.</p>
+    variables and functions to containing interfaces <i>as early as possible</i>. 
+    In our opinion this is a strong argument in favor of using an <b>incremental single-language approach  like <font color="#FF0000"><i>Lava</i></font> 
+    in OO analysis, design and implementation</b>.</p>
     <p><b><i><font color="#FF0000">Lava</font></i></b> provides particular
     support for the design phase by providing a specialization/override notion
     for <i>families</i> of related interfaces that refer to each other and that
