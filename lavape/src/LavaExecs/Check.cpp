@@ -628,7 +628,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     if (parm->NullAdmissible(ckd))
       return true;
     else { // "nothing" admissible?
-      parm->SetError(ckd,&ERR_NotOptional);
+      parm->SetError(ckd,&ERR_Optional);
       return false;
     }
   actDecl = ckd.document->GetType(actTypeDecl);
@@ -1418,7 +1418,12 @@ bool MultipleOp::Check (CheckData &ckd)
       if (opd->IsOptional(ckd)
       && !formInParmDecl->TypeFlags.Contains(isOptional)
       && !opd->IsDefChecked(ckd)) {
-        ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
+        ((SynObject*)opd)->SetError(ckd,&ERR_Optional);
+        ok = false;
+      }
+      if (opd->IsClosed(ckd)
+      && !formInParmDecl->TypeFlags.Contains(closed)) {
+        ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
         ok = false;
       }
 #ifdef INTERPRETER
@@ -2290,7 +2295,12 @@ bool FailStatement::Check (CheckData &ckd)
 
   if (((SynObject*)exception.ptr)->IsOptional(ckd)
   && !((SynObject*)exception.ptr)->IsDefChecked(ckd)) {
-    ((SynObject*)exception.ptr)->SetError(ckd,&ERR_NotOptional);
+    ((SynObject*)exception.ptr)->SetError(ckd,&ERR_Optional);
+    ok = false;
+  }
+
+  if (((SynObject*)exception.ptr)->IsClosed(ckd)) {
+    ((SynObject*)exception.ptr)->SetError(ckd,&ERR_Closed);
     ok = false;
   }
 /*
@@ -2445,7 +2455,7 @@ bool UnaryOp::Check (CheckData &ckd)
 
   if (opd->IsOptional(ckd)
   && (opd->primaryToken != ObjRef_T || !opd->IsDefChecked(ckd))) {
-    opd->SetError(ckd,&ERR_NotOptional);
+    opd->SetError(ckd,&ERR_Optional);
     ok = false;
   }
   declOp1 = ckd.document->GetTypeAndContext(declOp1,ckd.tempCtx);
@@ -2660,10 +2670,11 @@ bool BinaryOp::Check (CheckData &ckd)
   }*/
 
   ok &= opd1ok = opd1->Check(ckd);
+
   if (opd1->IsOptional(ckd)
   && (primaryToken != Equal_T && primaryToken != NotEqual_T)
   && (opd1->primaryToken != ObjRef_T || !opd1->IsDefChecked(ckd))) {
-    ((SynObject*)opd1)->SetError(ckd,&ERR_NotOptional);
+    ((SynObject*)opd1)->SetError(ckd,&ERR_Optional);
     ok = false;
   }
 
@@ -2677,7 +2688,7 @@ bool BinaryOp::Check (CheckData &ckd)
     if (opd2->NullAdmissible(ckd)) // "nothing" admissible?
       opd2IsNull = true;
     else {
-      opd2->SetError(ckd,&ERR_NotOptional);
+      opd2->SetError(ckd,&ERR_Optional);
       ERROREXIT
     }
   if (!opd2IsNull && ctxFlags2.bits)
@@ -2779,7 +2790,12 @@ bool BinaryOp::Check (CheckData &ckd)
   if (opd2->IsOptional(ckd)
   && !formParmDecl->TypeFlags.Contains(isOptional)
   && !opd2->IsDefChecked(ckd)) {
-    ((SynObject*)opd2)->SetError(ckd,&ERR_NotOptional);
+    ((SynObject*)opd2)->SetError(ckd,&ERR_Optional);
+    ok = false;
+  }
+  if (opd2->IsClosed(ckd)
+  && !formParmDecl->TypeFlags.Contains(closed)) {
+    ((SynObject*)opd2)->SetError(ckd,&ERR_Closed);
     ok = false;
   }
 
@@ -3724,7 +3740,7 @@ bool Assignment::Check (CheckData &ckd)
 
   ok &= targObj->Check(ckd);
   // important for NullAdmissible check on exprValue:
-  // check tarObj first (so targetObj/isOptionalExpr flag is updated)
+  // check targObj first (so targObj/isOptionalExpr flag is updated)
 
   ckd.tempCtx = ckd.lpc;
   targObj->ExprGetFVType(ckd,declTarget,catTarget,ctxFlags);
@@ -3743,10 +3759,16 @@ bool Assignment::Check (CheckData &ckd)
   if (!ok)
     ERROREXIT
 
+  if (!targObj->IsClosed(ckd)
+  && ((SynObject*)exprValue.ptr)->IsClosed(ckd)) {
+    ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_Closed);
+    ok = false;
+  }
+
   if (((SynObject*)exprValue.ptr)->IsOptional(ckd)
   && !targObj->IsOptional(ckd)
   && !((SynObject*)exprValue.ptr)->IsDefChecked(ckd)) {
-    ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_NotOptional);
+    ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_Optional);
     ok = false;
   }
 
@@ -4162,7 +4184,7 @@ bool FuncExpression::Check (CheckData &ckd)
     ok &= callExpr->Check(ckd);
     if (callExpr->IsOptional(ckd)
     && (callExpr->primaryToken != ObjRef_T || !callExpr->IsDefChecked(ckd))) {
-      ((SynObject*)callExpr)->SetError(ckd,&ERR_NotOptional);
+      ((SynObject*)callExpr)->SetError(ckd,&ERR_Optional);
       ok = false;
     }
   }
@@ -4351,7 +4373,12 @@ bool FuncExpression::Check (CheckData &ckd)
       if (opd->IsOptional(ckd)
       && !formInParmDecl->TypeFlags.Contains(isOptional)
       && !opd->IsDefChecked(ckd)) {
-        ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
+        ((SynObject*)opd)->SetError(ckd,&ERR_Optional);
+        ok = false;
+      }
+      if (((SynObject*)((Parameter*)opd)->parameter.ptr)->IsClosed(ckd)
+      && !formInParmDecl->TypeFlags.Contains(closed)) {
+        ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
         ok = false;
       }
 #ifdef INTERPRETER
@@ -4445,7 +4472,12 @@ bool FuncStatement::Check (CheckData &ckd)
         formOutParmDecl = (LavaDECL*)chpFormOut->data;
         if (formOutParmDecl->TypeFlags.Contains(isOptional)
         && !opd->IsOptional(ckd)) {
-          ((SynObject*)opd)->SetError(ckd,&ERR_NotOptional);
+          ((SynObject*)opd)->SetError(ckd,&ERR_Optional);
+          ok = false;
+        }
+        if (formOutParmDecl->TypeFlags.Contains(closed)
+        && !opd->IsClosed(ckd)) {
+          ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
           ok = false;
         }
 #ifdef INTERPRETER
@@ -5096,7 +5128,7 @@ bool IfExpression::Check (CheckData &ckd)
         if (((SynObject*)opd->thenPart.ptr)->NullAdmissible(ckd)) // "nothing" admissible?
           continue;
         else {
-          ((SynObject*)opd->thenPart.ptr)->SetError(ckd,&ERR_NotOptional);
+          ((SynObject*)opd->thenPart.ptr)->SetError(ckd,&ERR_Optional);
           ok = false;
           continue;
         }
@@ -5134,7 +5166,7 @@ bool IfExpression::Check (CheckData &ckd)
         if (((SynObject*)elsePart.ptr)->NullAdmissible(ckd)) // "nothing" admissible?
           return true;
         else {
-          ((SynObject*)elsePart.ptr)->SetError(ckd,&ERR_NotOptional);
+          ((SynObject*)elsePart.ptr)->SetError(ckd,&ERR_Optional);
           ERROREXIT
         }
       }
@@ -5219,7 +5251,7 @@ bool ElseExpression::Check (CheckData &ckd)
       if (opd1->NullAdmissible(ckd)) // "nothing" admissible?
         return true;
       else {
-        opd1->SetError(ckd,&ERR_NotOptional);
+        opd1->SetError(ckd,&ERR_Optional);
         ERROREXIT
       }
     }
@@ -5247,7 +5279,7 @@ bool ElseExpression::Check (CheckData &ckd)
       if (opd2->NullAdmissible(ckd)) // "nothing" admissible?
         return true;
       else {
-        opd2->SetError(ckd,&ERR_NotOptional);
+        opd2->SetError(ckd,&ERR_Optional);
         ERROREXIT
       }
     }
@@ -6261,7 +6293,7 @@ bool CopyStatement::Check (CheckData &ckd)
   if (source->IsOptional(ckd)
   && !target->IsOptional(ckd)
   && !source->IsDefChecked(ckd)) {
-    source->SetError(ckd,&ERR_NotOptional);
+    source->SetError(ckd,&ERR_Optional);
     ok = false;
   }
 

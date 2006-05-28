@@ -2679,10 +2679,13 @@
     <iconset resource="../LavaPE_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/Q6_opaque.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Toggle closed object</string>
+    <string>Toggle closed variable</string>
+   </property>
+   <property name="iconText" >
+    <string>Toggle closed variable</string>
    </property>
    <property name="toolTip" >
-    <string>Toggle closed object</string>
+    <string>Toggle closed variable</string>
    </property>
    <property name="whatsThis" >
     <string>Potentially incomplete, not yet fully initialized object; member access is still disabled therefore</string>

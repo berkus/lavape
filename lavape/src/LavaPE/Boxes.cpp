@@ -3149,11 +3149,9 @@ void CIOBox::on_Substitutable_clicked()
   UpdateData(false);
 }
 
-/*
-void on_Closed_clicked()
+void CIOBox::on_Closed_clicked()
 {
 }
-*/
 
 void CIOBox::on_ID_OK_clicked() 
 {

@@ -427,6 +427,7 @@ public:
   bool NullAdmissible (CheckData &ckd);
   bool ExpressionSelected (CHETokenNode *currentSelection);
   virtual bool IsOptional(CheckData &ckd) { return flags.Contains(isOptionalExpr); }
+  virtual bool IsClosed(CheckData &ckd) { return flags.Contains(isClosed); }
   bool HasOptionalParts ();
   bool IsDefChecked(CheckData &ckd);
   virtual ROContext ReadOnlyContext();

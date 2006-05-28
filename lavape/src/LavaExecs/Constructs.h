@@ -629,6 +629,10 @@ class SynObject : public SynObjectBase {
   {
     return flags.Contains(isOptionalExpr);
   }
+  virtual bool IsClosed(CheckData &ckd)
+  {
+    return flags.Contains(isClosed);
+  }
   bool HasOptionalParts();
   bool IsDefChecked(CheckData &ckd);
   virtual ROContext ReadOnlyContext();

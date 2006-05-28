@@ -4108,12 +4108,14 @@ bool CExecView::EditOK()
       str = editCtl->text();
       if (editToken == VarName_T) {
         synObj = new VarNameV(str.toAscii());
-        if (text->currentSynObj->primaryToken == VarName_T)
+        if (text->currentSynObj->primaryToken == VarName_T) {
           ((VarName*)synObj)->varID = ((VarName*)text->currentSynObj)->varID;
-        if (text->currentSynObj->parentObject
-        && text->currentSynObj->parentObject->parentObject
-        && text->currentSynObj->parentObject->parentObject->IsDeclare())
-          synObj->flags.INCL(isDeclareVar);
+          ((VarName*)synObj)->flags = ((VarName*)text->currentSynObj)->flags;
+        }
+        //if (text->currentSynObj->parentObject
+        //&& text->currentSynObj->parentObject->parentObject
+        //&& text->currentSynObj->parentObject->parentObject->IsDeclare())
+        //  synObj->flags.INCL(isDeclareVar);
         PutInsHint(synObj);
       }
       else {
