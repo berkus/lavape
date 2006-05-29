@@ -2026,6 +2026,13 @@ bool SelfVar::Check (CheckData &ckd)
       ckd.lpc.ContextFlags.INCL(staticContext);
     else
       ckd.lpc.ContextFlags.EXCL(staticContext);
+    if (!execDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+    && !execDECL->ParentDECL->TypeFlags.Contains(isStatic)) // normal virtual function
+      if (execDECL->ParentDECL->TypeFlags.Contains(closed))
+        flags.INCL(isClosed); // self is closed
+      else
+        flags.EXCL(isClosed); // self isn't closed
+      
   }
   else {
     ckd.selfTypeDECL = execDECL->ParentDECL;
@@ -4245,6 +4252,11 @@ bool FuncExpression::Check (CheckData &ckd)
       funcDecl = ckd.document->IDTable.GetDECL(funcTid);
       if (!funcDecl)
         ERROREXIT
+      if (callExpr->IsClosed(ckd)
+      && !funcDecl->SecondTFlags.Contains(closed)) {
+        ((SynObject*)function.ptr)->SetError(ckd,&ERR_SelfNotClosed);
+        ok = false;
+      }
       if (primaryToken == signal_T
         && !funcDecl->SecondTFlags.Contains(isLavaSignal)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoSignal);
