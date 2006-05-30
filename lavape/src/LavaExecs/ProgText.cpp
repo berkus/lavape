@@ -145,7 +145,11 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
       currentToken->data.str = ((VarName*)currentSynObj)->varName.c;
     break;
   case TDOD_T:
-    currentToken->data.str = ((TDOD*)currentSynObj)->name.c;
+    if (currentSynObj->parentObject->parentObject->primaryToken == FormParm_T
+    && currentSynObj->parentObject->flags.Contains(isClosed))
+      currentToken->data.str = QString("(") + ((TDOD*)currentSynObj)->name.c + QString(")");
+    else
+      currentToken->data.str = ((TDOD*)currentSynObj)->name.c;
     break;
   case Const_T:
     currentToken->data.str = ((Constant*)currentSynObj)->str.c;

@@ -30,7 +30,7 @@
     formal parameter type. (Cf. the <i><a href="../PatternSamples.htm">ModelManyViews</a></i>
     and <i><a href="../PatternSamples.htm">CarMeeting</a></i> samples.)</P>
     
-    <h3>&quot;Closed&quot; object</h3>
+    <h3><a name="closed"></a>&quot;Closed&quot; object</h3>
     
     <P>If checked, then this means that the actual parameter may be in a not yet 
     fully initialized state. Although an object may be passed as an input or 
@@ -65,7 +65,9 @@
     
     <P>The mode of a function parameter may be <I><a name="mandatory"></a></I><b>mandatory</b> (default) or
     <b>optional</b>. If optional, the parameter may assume the special <I>null
-      value</I> <font color="#0000FF"><b>&Oslash;</b></font> (&quot;undefined&quot;).</P>
+      value</I> <font color="#0000FF"><b>&Oslash;</b></font> (&quot;undefined&quot;). 
+    Note that all combinations of mandatory/optional and
+    <a href="../UnfinishedObjects.htm">closed/non-closed</a> are possible</P>
     <hr>
     
     <h3>Note:</h3>

@@ -431,7 +431,6 @@ public slots:
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
     virtual void on_ID_HELP_clicked();
-    virtual void on_Closed_clicked();
 private:
   Q_OBJECT
 

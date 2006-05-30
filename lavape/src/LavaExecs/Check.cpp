@@ -1422,7 +1422,7 @@ bool MultipleOp::Check (CheckData &ckd)
         ok = false;
       }
       if (opd->IsClosed(ckd)
-      && !formInParmDecl->TypeFlags.Contains(closed)) {
+      && !formInParmDecl->SecondTFlags.Contains(closed)) {
         ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
         ok = false;
       }
@@ -1702,6 +1702,8 @@ static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRe
 #else
   newParmRef->formParm.ptr = objRef = new ObjReferenceV(tdodc,"");
 #endif
+  if (decl->SecondTFlags.Contains(closed))
+    ((SynObject*)newParmRef->formParm.ptr)->flags.INCL(isClosed);
   ((TDOD*)((CHE*)objRef->refIDs.first)->data)->parentObject = objRef;
   objRef->parentObject = newParmRef;
   objRef->flags.INCL(ioFlag);
@@ -2028,7 +2030,7 @@ bool SelfVar::Check (CheckData &ckd)
       ckd.lpc.ContextFlags.EXCL(staticContext);
     if (!execDECL->ParentDECL->TypeFlags.Contains(isInitializer)
     && !execDECL->ParentDECL->TypeFlags.Contains(isStatic)) // normal virtual function
-      if (execDECL->ParentDECL->TypeFlags.Contains(closed))
+      if (execDECL->ParentDECL->SecondTFlags.Contains(closed))
         flags.INCL(isClosed); // self is closed
       else
         flags.EXCL(isClosed); // self isn't closed
@@ -2801,7 +2803,7 @@ bool BinaryOp::Check (CheckData &ckd)
     ok = false;
   }
   if (opd2->IsClosed(ckd)
-  && !formParmDecl->TypeFlags.Contains(closed)) {
+  && !formParmDecl->SecondTFlags.Contains(closed)) {
     ((SynObject*)opd2)->SetError(ckd,&ERR_Closed);
     ok = false;
   }
@@ -4389,7 +4391,7 @@ bool FuncExpression::Check (CheckData &ckd)
         ok = false;
       }
       if (((SynObject*)((Parameter*)opd)->parameter.ptr)->IsClosed(ckd)
-      && !formInParmDecl->TypeFlags.Contains(closed)) {
+      && !formInParmDecl->SecondTFlags.Contains(closed)) {
         ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
         ok = false;
       }
@@ -4487,7 +4489,7 @@ bool FuncStatement::Check (CheckData &ckd)
           ((SynObject*)opd)->SetError(ckd,&ERR_Optional);
           ok = false;
         }
-        if (formOutParmDecl->TypeFlags.Contains(closed)
+        if (formOutParmDecl->SecondTFlags.Contains(closed)
         && !opd->IsClosed(ckd)) {
           ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
           ok = false;

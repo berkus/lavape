@@ -184,7 +184,7 @@
 				<keyword ref="html/ObjectLifeCycle.htm#creation">new</keyword>
 				<keyword ref="html/ObjectLifeCycle.htm">life-time</keyword>
 			</section>
-			<section ref="html/IniChecks.htm" title="Comprehensive initialization checks">
+			<section ref="html/IniChecks.htm" title="Complete initialization checks">
 				<keyword ref="html/IniChecks.htm">initialization checks</keyword>
 				<keyword ref="html/IniChecks.htm">mandatory variable</keyword>
 				<keyword ref="html/IniChecks.htm">optional variable</keyword>
