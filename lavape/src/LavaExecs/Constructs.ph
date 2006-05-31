@@ -888,6 +888,7 @@ public:
   TargetType-- kindOfTarget;  // for output parameters: field/property/array elem.
 
   virtual bool IsOptional (CheckData &ckd) { return ((SynObject*)parameter.ptr)->IsOptional(ckd); };
+  virtual bool IsClosed (CheckData &ckd) { return ((SynObject*)parameter.ptr)->IsClosed(ckd); };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);

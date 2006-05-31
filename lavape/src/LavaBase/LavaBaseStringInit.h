@@ -41,6 +41,7 @@ extern LAVABASE_DLL QString ERR_UndefinedSetElemType;
 extern LAVABASE_DLL QString ERR_InadmissibleThrow;
 extern LAVABASE_DLL QString ERR_ArrOperatorUndefined;
 extern LAVABASE_DLL QString ERR_TempUnfinished;
+extern LAVABASE_DLL QString ERR_SelfClosed;
 extern LAVABASE_DLL QString ERR_SelfUnfinished;
 extern LAVABASE_DLL QString ERR_ExInIfCond;
 extern LAVABASE_DLL QString ERR_NotYetImplemented;

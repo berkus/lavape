@@ -67,6 +67,7 @@ QString ERR_UndefinedSetElemType;
 QString ERR_InadmissibleThrow;
 QString ERR_ArrOperatorUndefined;
 QString ERR_TempUnfinished;
+QString ERR_SelfClosed;
 QString ERR_SelfUnfinished;
 QString ERR_ExInIfCond;
 QString ERR_NotYetImplemented;
@@ -325,7 +326,7 @@ void LavaBaseStringInit() {
   ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
   ERR_Optional  = QObject::tr("An expression whose value is mandatory (= always non-null) is expected here");
   ERR_Closed  = QObject::tr("A possibly unfinished object may be assigned only to a \"closed\" variable");
-  ERR_SelfNotClosed  = QObject::tr("Call object is \"closed\" while \"self\" of function isn't");
+  ERR_SelfNotClosed  = QObject::tr("If the call object is \"closed\" then \"self\" of function must be \"closed\", too");
   ERR_ElseExprObsolete  = QObject::tr("Else-expression superfluous: first operand is already mandatory");
   ERR_SuperfluousMandatory  = QObject::tr("superfluous mandatory variable in ifdef condition");
   ERR_AssigToLocal  = QObject::tr("Single-assignment violation: forbidden assignment to initialized local variable");
@@ -355,6 +356,7 @@ void LavaBaseStringInit() {
   ERR_InadmissibleThrow  = QObject::tr("The exception specification of the current function is empty or doesn\'t contain this exception type");
   ERR_ArrOperatorUndefined  = QObject::tr("No array access operator defined");
   ERR_TempUnfinished  = QObject::tr("""temp"" must not be passed as a parameter (unless to initializers) since it counts as ""still unfinished""");
+  ERR_SelfClosed  = QObject::tr("\"self\" is closed here: member access forbidden");
   ERR_SelfUnfinished  = QObject::tr("From within an initializer ""self"" may be passed only to initializers as a parameter");
   ERR_One_must_remain  = QObject::tr("At least one such item must remain!");
   ERR_No_input  = QObject::tr("An empty input is not allowed here");

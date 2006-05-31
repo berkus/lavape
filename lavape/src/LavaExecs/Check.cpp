@@ -947,10 +947,14 @@ bool SynObject::UpdateReference (CheckData &ckd) {
           ((TDOD*)che->data)->flags.INCL(isSubstitutable);
         else
           ((TDOD*)che->data)->flags.EXCL(isSubstitutable);
-        if (((VarName*)dw)->flags.Contains(isClosed))
+        if (((VarName*)dw)->flags.Contains(isClosed)) {
           ((TDOD*)che->data)->flags.INCL(isClosed);
-        else
+          objRef->flags.INCL(isClosed);
+        }
+        else {
           ((TDOD*)che->data)->flags.EXCL(isClosed);
+          objRef->flags.EXCL(isClosed);
+        }
         ((TDOD*)che->data)->parentObject = objRef;
         ((VarName*)dw)->ExprGetFVType(ckd,startDeclV,cat,ctxFlags);
         if (objRef->flags.Contains(isSelfVar))
@@ -1013,6 +1017,10 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         objRef->flags.EXCL(isOptionalExpr);
         ((TDOD*)che->data)->flags.EXCL(isOptionalExpr);
       }
+      if (decl->SecondTFlags.Contains(closed))
+        objRef->flags.INCL(isClosed);
+      else
+        objRef->flags.EXCL(isClosed);
       if (!VerifyObj(ckd,che,objRef->refName,objRef)) {
         objRef->flags.INCL(brokenRef);
         ok = false;
@@ -3268,6 +3276,12 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
         ok = false;
       }
     }
+  }
+  else if (flags.Contains(isSelfVar)
+  && flags.Contains(isClosed)
+  && refIDs.first != refIDs.last) {
+    ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfClosed);
+    ok = false;
   }
   else if (flags.Contains(isTempVar)
   && refIDs.first == refIDs.last

@@ -108,6 +108,18 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   addToolBar(Toolbar_6);
   Toolbar_6->show();
 
+  //insertToolBarBreak(Toolbar_3);
+  //insertToolBarBreak(Toolbar_5);
+
+  installToolButtonEvtFilters(Toolbar_1);
+  installToolButtonEvtFilters(Toolbar_2);
+  installToolButtonEvtFilters(HelpToolbar);
+  installToolButtonEvtFilters(Toolbar_3);
+  installToolButtonEvtFilters(Toolbar_4);
+  installToolButtonEvtFilters(ToolbarDbg);
+  installToolButtonEvtFilters(Toolbar_5);
+  installToolButtonEvtFilters(Toolbar_6);
+
   theActiveFrame = 0;
 
 	makeStyle(LBaseData->m_style);
@@ -203,6 +215,12 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   LBaseData->DbgBreakpointActPtr = DbgBreakpointAct;
   LBaseData->DbgClearBreakpointsActPtr = DbgClearBreakpointsAct;
   LBaseData->DbgStopActionPtr = DbgStopAction;
+}
+
+void CLavaMainFrame::installToolButtonEvtFilters(QToolBar *tb) {
+  QList<QToolButton*> buttonList = tb->findChildren<QToolButton*>();
+  for (int i=0; i<buttonList.size(); i++)
+    buttonList.at(i)->installEventFilter(this);
 }
 
 void CLavaMainFrame::makeStyle(const QString &style)
