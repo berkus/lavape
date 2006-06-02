@@ -28,8 +28,9 @@ public:
   LavaDECL *myDECL;
 
 public slots:
-  virtual void on_ID_OK_clicked() {QDialog::accept();}
-  virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
+  virtual void on_ID_OK_clicked() {ResetComboItems(GotoCombo); QDialog::accept();}
+  virtual void on_ID_CANCEL_clicked() {reject();}
+  virtual void reject() {ResetComboItems(GotoCombo); QDialog::reject();};
   virtual void on_GotoCombo_activated(int);
 private:
   Q_OBJECT

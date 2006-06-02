@@ -483,6 +483,13 @@ void CAttrBox::on_EnableName_clicked()
   UpdateData(false);  
 }
 
+void CAttrBox::reject()
+{
+  ResetComboItems(BasicTypes);
+  ResetComboItems(NamedTypes);
+  QDialog::reject();
+}
+
 void CAttrBox::on_ID_OK_clicked() 
 {
   UpdateData(true);
@@ -561,6 +568,8 @@ void CAttrBox::on_ID_OK_clicked()
   else 
     if (valkindOfRef == 1) 
       myDECL->TypeFlags.INCL(acquaintance);
+  ResetComboItems(BasicTypes);
+  ResetComboItems(NamedTypes);
   QDialog::accept();
 }
 
@@ -655,7 +664,7 @@ ValOnInit CCompSpecBox::OnInitDialog()
   EnumDel->setEnabled(false);
 //  EnumAdd->setEnabled(enabled);
   //EnumItems1->SetCurSel(-1);
-  EnumItems->setCurrentItem(0);
+  //EnumItems->setCurrentItem(0);
   SynFlags typeflag;
   CExecAllDefs * execAllPatt = new CExecAllDefs(myDoc, ExtTypes, 0, myDECL->ParentDECL,
                                                 OrigDECL, CompObjSpec, typeflag);
@@ -850,6 +859,14 @@ void CCompSpecBox::SetButtons(int sel)
 }
 
 
+void CCompSpecBox::reject()
+{
+  ResetComboItems(CompoProt);
+  ResetComboItems(ExtTypes); 
+  QDialog::reject();
+}
+
+
 void CCompSpecBox::on_ID_OK_clicked() 
 {
   UpdateData(true);
@@ -902,6 +919,8 @@ void CCompSpecBox::on_ID_OK_clicked()
     myDECL->Items.Append(enumsel);
     ipos++;
   }//while  
+  ResetComboItems(CompoProt);
+  ResetComboItems(ExtTypes); 
   QDialog::accept();
 }
 
@@ -1032,6 +1051,12 @@ void CCorrOverBox::on_NoOver_clicked()
   PossibleOvers->setEnabled(false);
 }
 
+void CCorrOverBox::reject()
+{
+  ResetComboItems(PossibleOvers); 
+  QDialog::reject();
+}
+
 void CCorrOverBox::on_ID_OK_clicked() 
 {
   int pos;
@@ -1050,6 +1075,7 @@ void CCorrOverBox::on_ID_OK_clicked()
     if (!myDECL->Supports.first)
       myDECL->SecondTFlags.EXCL(overrides);
   }
+  ResetComboItems(PossibleOvers); 
 	QDialog::accept();
 }
 
@@ -1677,7 +1703,7 @@ void CFuncBox::CalcOpBox()
 {
   TID id;
   int high, iop;
-  CComboBoxItem *listItem;
+  CComboBoxItem *comboItem;
   high = CMBOperator->count();
   if (high)
     for (iop = 1; iop < high; iop++)
@@ -1691,9 +1717,9 @@ void CFuncBox::CalcOpBox()
     id.nID = -1;
     if (!myDoc->getOperatorID(myDECL->ParentDECL, (TOperator) iop, id)
         || (id.nID == myDECL->OwnID) && (id.nINCL == 0)) {
-      listItem = new CComboBoxItem(TID(iop, 0));
-      CMBOperator->addItem(QString(LBaseData->OperatorNames [iop].c),QVariant::fromValue(listItem));
-//      CMBOperator->listBox()->insertItem(listItem);//sort
+      comboItem = new CComboBoxItem(TID(iop, 0));
+      CMBOperator->addItem(QString(LBaseData->OperatorNames [iop].c),QVariant::fromValue(comboItem));
+//      CMBOperator->listBox()->insertItem(comboItem);//sort
       if ((id.nID == myDECL->OwnID) && (id.nINCL == 0))
         CMBOperator->setCurrentIndex((int)myDECL->op);
     }
@@ -1936,6 +1962,13 @@ void CFuncBox::on_EnableName_clicked()
 }
 
 
+void CFuncBox::reject()
+{
+  ResetComboItems(CMBOperator);
+  ResetComboItems(NamedTypes); 
+  QDialog::reject();
+}
+
 void CFuncBox::on_ID_OK_clicked() 
 {
   if (myDECL->SecondTFlags.Contains(funcImpl))
@@ -2019,6 +2052,8 @@ void CFuncBox::on_ID_OK_clicked()
     if (valSynch == 2)
       myDECL->TypeFlags.INCL(execIndependent);
 
+  ResetComboItems(CMBOperator);
+  ResetComboItems(NamedTypes); 
   QDialog::accept();
 }
 
@@ -2124,6 +2159,13 @@ void CImplBox::on_ImplTypes_activated(int pos)
 
 }
 
+
+void CImplBox::reject()
+{
+  ResetComboItems(ImplTypes); 
+  QDialog::reject();
+}
+
 void CImplBox::on_ID_OK_clicked() 
 {
   LavaDECL *interfDECL, *inDECL;
@@ -2171,10 +2213,13 @@ void CImplBox::on_ID_OK_clicked()
         inDECL->TypeFlags.INCL(thisComponent);
       }
     }
+    ResetComboItems(ImplTypes); 
     QDialog::accept();
   }
-  else
+  else {
+    ResetComboItems(ImplTypes); 
     QDialog::reject();
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -2427,7 +2472,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
 //  CHETID *ncheS, *cheS;
 //  LavaDECL* decl;
   bool found=false;
-//  CComboBoxItem *listItem;
+//  CComboBoxItem *comboItem;
 
 
 //  GetDlgItem(IDC_StatIDLabel)->SetWindowText("CLSID of implementation DLL");
@@ -2464,8 +2509,8 @@ ValOnInit CInterfaceBox::OnInitDialog()
       if (cheS->data.nID >= 0) {
         decl = myDoc->IDTable.GetDECL(cheS->data);
         if (decl) {
-          listItem = new CComboBoxItem(decl->LocalName, cheS->data);
-          Inherits->insertItem(listItem);
+          comboItem = new CComboBoxItem(decl->LocalName, cheS->data);
+          Inherits->insertItem(comboItem);
           cheS = (CHETID*)cheS->successor;
         }
         else {
@@ -2588,9 +2633,9 @@ void CInterfaceBox::on_ExtTypes_activated(int pos)
   if (!pos) return;
   UpdateData(true);
   var = ExtTypes->itemData(pos);
-  CComboBoxItem *listItem = var.value<CComboBoxItem*>();
-  if (listItem) {
-    if (myDoc->IDTable.InsertBase(myDECL, myDoc->IDTable.GetDECL(listItem->itemData(), 0), ContextDECL, true)) {
+  CComboBoxItem *comboItem = var.value<CComboBoxItem*>();
+  if (comboItem) {
+    if (myDoc->IDTable.InsertBase(myDECL, myDoc->IDTable.GetDECL(comboItem->itemData(), 0), ContextDECL, true)) {
       SupportsToList();
       ResetComboItems(ExtTypes);
       CExecBase *execBase = new CExecBase(this);
@@ -2610,9 +2655,9 @@ void CInterfaceBox::on_BasicTypes_activated(int pos)
   if (!pos) return;
   UpdateData(true);
   var = BasicTypes->itemData(pos);
-  CComboBoxItem *listItem = var.value<CComboBoxItem*>();
-  if (listItem) {
-    if (myDoc->IDTable.InsertBase(myDECL, myDoc->IDTable.GetDECL(listItem->itemData(), 0), ContextDECL, true)) {
+  CComboBoxItem *comboItem = var.value<CComboBoxItem*>();
+  if (comboItem) {
+    if (myDoc->IDTable.InsertBase(myDECL, myDoc->IDTable.GetDECL(comboItem->itemData(), 0), ContextDECL, true)) {
       SupportsToList();
       ExtTypes->setCurrentIndex(0);
       UpdateData(false);
@@ -2625,9 +2670,9 @@ void CInterfaceBox::on_BasicTypes_activated(int pos)
 void CInterfaceBox::on_DelInherits_clicked() 
 {
   int pos;
-  CComboBoxItem *listItem = (CComboBoxItem*)Inherits->selectedItem();
-  if (listItem) {
-    pos = Inherits->index(listItem);
+  CComboBoxItem *comboItem = (CComboBoxItem*)Inherits->selectedItem();
+  if (comboItem) {
+    pos = Inherits->index(comboItem);
     Inherits->removeItem(pos);
   }  
 }
@@ -2687,6 +2732,15 @@ void CInterfaceBox::on_GUIStructs_activated(int pos)
     GUIStructs->setCurrentIndex(oldPos);
   }
 }
+
+void CInterfaceBox::reject()
+{
+  ResetComboItems(ExtTypes);
+  ResetComboItems(GUIStructs);
+  ResetComboItems(BasicTypes); 
+  QDialog::reject();
+}
+
 
 void CInterfaceBox::on_ID_OK_clicked() 
 {
@@ -2806,6 +2860,9 @@ void CInterfaceBox::on_ID_OK_clicked()
     }
 //  ListToChain(Inherits, &myDECL->Inherits);  //signals
   myDECL->WorkFlags.INCL(recalcVT);
+  ResetComboItems(ExtTypes);
+  ResetComboItems(GUIStructs);
+  ResetComboItems(BasicTypes); 
   QDialog::accept();
 }
 
@@ -3149,6 +3206,14 @@ void CIOBox::on_Substitutable_clicked()
   UpdateData(false);
 }
 
+
+void CIOBox::reject()
+{
+  ResetComboItems(BasicTypes);
+  ResetComboItems(NamedTypes); 
+  QDialog::reject();
+}
+
 void CIOBox::on_ID_OK_clicked() 
 {
   UpdateData(true);
@@ -3192,6 +3257,8 @@ void CIOBox::on_ID_OK_clicked()
   else
     myDECL->SecondTFlags.EXCL(closed); 
 
+  ResetComboItems(BasicTypes);
+  ResetComboItems(NamedTypes); 
   QDialog::accept();
 }
 
@@ -3287,6 +3354,12 @@ void CPackageBox::on_ExtTypes_activated(int pos)
   SelEndOKToList(ExtTypes, Extends);
 }
 
+void CPackageBox::reject()
+{
+  ResetComboItems(ExtTypes); 
+  QDialog::reject();
+}
+
 void CPackageBox::on_ID_OK_clicked() 
 {
   UpdateData(true);
@@ -3308,6 +3381,7 @@ void CPackageBox::on_ID_OK_clicked()
       return;
     }
   }
+  ResetComboItems(ExtTypes); 
   QDialog::accept();
 }
 
@@ -3404,6 +3478,13 @@ void CSetBox::on_BasicTypes_activated(int pos)
 }
 
 
+void CSetBox::reject()
+{
+  ResetComboItems(ExTypes);
+  ResetComboItems(BasicTypes); 
+  QDialog::reject();
+}
+
 void CSetBox::on_ID_OK_clicked() 
 {
   UpdateData(true);
@@ -3427,6 +3508,8 @@ void CSetBox::on_ID_OK_clicked()
     return;
   }
   myDECL->WorkFlags.INCL(recalcVT);
+  ResetComboItems(ExTypes);
+  ResetComboItems(BasicTypes); 
   QDialog::accept();
 }
 
@@ -3832,6 +3915,14 @@ void CVTypeBox::on_EnableName_clicked()
   UpdateData(false);  
 }
 
+void CVTypeBox::reject()
+{
+  ResetComboItems(NamedTypes);
+  ResetComboItems(BasicTypes);
+  QDialog::reject();
+}
+
+
 void CVTypeBox::on_ID_OK_clicked() 
 {
   UpdateData(true);
@@ -3921,6 +4012,8 @@ void CVTypeBox::on_ID_OK_clicked()
       if (valkindOfLink == 1) 
         myDECL->TypeFlags.INCL(acquaintance);
   }
+  ResetComboItems(NamedTypes);
+  ResetComboItems(BasicTypes);
   QDialog::accept();
 }
 
@@ -4122,10 +4215,10 @@ void ResetComboItems(QComboBox* box)
 bool SetSelections(QComboBox* basics, QComboBox* types, const QString& name)
 {
   int pos;
-  /*CComboBoxItem *listItem;
-  listItem = (CComboBoxItem*)basics->listBox()->findItem(name, Qt::ExactMatch | Qt::CaseSensitive);
-  if (listItem) {
-    basics->setCurrentText(listItem->text());*/
+  /*CComboBoxItem *comboItem;
+  comboItem = (CComboBoxItem*)basics->listBox()->findItem(name, Qt::ExactMatch | Qt::CaseSensitive);
+  if (comboItem) {
+    basics->setCurrentText(comboItem->text());*/
   pos = basics->findText(name, Qt::MatchExactly | Qt::MatchCaseSensitive);
   if (pos > 0) {
     basics->setCurrentIndex(pos);
@@ -4167,7 +4260,6 @@ int SelEndOKToList(QComboBox* cbox, QListWidget* list, int chpos)
   QList<QListWidgetItem*> found;
   CListBoxItem *listItem;
   QVariant var;
-  //CComboBoxItem *comboItem = cbox->listBox()->selectedItem();
   int pos = cbox->currentIndex();
   if (pos > 0) {
     found = list->findItems(cbox->currentText(),Qt::MatchExactly);
@@ -4188,8 +4280,6 @@ int SelEndOKToList(QComboBox* cbox, QListWidget* list, int chpos)
 int SelEndOKToStr(QComboBox* cbox, QString* editStr, TID* exID)
 {
   QVariant var;
-  //CComboBoxItem *comboItem = (CComboBoxItem*)cbox->listBox()->selectedItem();
-  //if (cbox->listBox()->index(comboItem) > 0)
   int pos = cbox->currentIndex();
   if (pos > 0) {
     *editStr = cbox->currentText();
@@ -4488,7 +4578,7 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
   DString lab;
   bool sameContext;
   CContext con;
-  CComboBoxItem *listItem;
+  CComboBoxItem *comboItem;
 
   if ((elDef->DeclType != Interface) && (elDef->DeclType != VirtualType))
     return;
@@ -4508,10 +4598,10 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
       lab.Insert(grthen, lab.l);
       lab.Insert(lthen, 0);
     }
-    //listItem = new CComboBoxItem(lab, TID(elDef->OwnID, elDef->inINCL));
-    //IBox->ExtTypes->listBox()->insertItem(listItem);//sort
-    listItem = new CComboBoxItem(TID(elDef->OwnID, elDef->inINCL));
-    IBox->ExtTypes->addItem(QString(lab.c), QVariant::fromValue(listItem));//sort
+    //comboItem = new CComboBoxItem(lab, TID(elDef->OwnID, elDef->inINCL));
+    //IBox->ExtTypes->listBox()->insertItem(comboItem);//sort
+    comboItem = new CComboBoxItem(TID(elDef->OwnID, elDef->inINCL));
+    IBox->ExtTypes->addItem(QString(lab.c), QVariant::fromValue(comboItem));//sort
     //sz = dc->GetTextExtent(lab.c, lab.l);
     //maxWidth = lmax(maxWidth, sz.cx);
   }
@@ -4530,7 +4620,7 @@ CExecDefs::CExecDefs(CLavaPEDoc* doc, QComboBox* combo, LavaDECL* decl)
 
 void CExecDefs::ExecDefs (LavaDECL ** pelDef, int )
 {
-  CComboBoxItem *listItem;
+  CComboBoxItem *comboItem;
 
   if ( ((*pelDef)->DeclType == Package)
       && (*pelDef)->LocalName.l
@@ -4538,10 +4628,10 @@ void CExecDefs::ExecDefs (LavaDECL ** pelDef, int )
       && !(*pelDef)->isInSubTree(myDECL)) {
     CHE* che = (CHE*)(*pelDef)->NestedDecls.first;
     if (che && (((LavaDECL*)che->data)->DeclType == VirtualType)) { 
-//      listItem = new CComboBoxItem((*pelDef)->FullName, TID((*pelDef)->OwnID, (*pelDef)->inINCL));
-//      Combo->listBox()->insertItem(listItem);//sort
-      listItem = new CComboBoxItem(TID((*pelDef)->OwnID, (*pelDef)->inINCL));
-      Combo->addItem(QString((*pelDef)->FullName.c), QVariant::fromValue(listItem));//sort
+//      comboItem = new CComboBoxItem((*pelDef)->FullName, TID((*pelDef)->OwnID, (*pelDef)->inINCL));
+//      Combo->listBox()->insertItem(comboItem);//sort
+      comboItem = new CComboBoxItem(TID((*pelDef)->OwnID, (*pelDef)->inINCL));
+      Combo->addItem(QString((*pelDef)->FullName.c), QVariant::fromValue(comboItem));//sort
     }
   }
 } 
@@ -4590,7 +4680,7 @@ void CExecAllDefs::FitBox(QComboBox* combo, int maxWidth)
 {
   QString strA, strB;
   bool nowB = false;
-  CComboBoxItem *listItemA, *listItemB;
+  CComboBoxItem *comboItemA, *comboItemB;
   LavaDECL* decl;
   int pos, posA, posB, icount = combo->count();
   QVariant var;
@@ -4598,30 +4688,30 @@ void CExecAllDefs::FitBox(QComboBox* combo, int maxWidth)
   for (pos = 2; pos < icount; pos++) {
     if (nowB) {
       var = combo->itemData(pos);
-      listItemB = var.value<CComboBoxItem*>();
+      comboItemB = var.value<CComboBoxItem*>();
       strB = combo->itemText(pos);
       posB = pos;
     }
     else {
       var = combo->itemData(pos);
-      listItemA = var.value<CComboBoxItem*>();
+      comboItemA = var.value<CComboBoxItem*>();
       strA = combo->itemText(pos);
       posA = pos;
     }
     if (strB == strA) {
-      decl = myDoc->IDTable.GetDECL(listItemA->itemData());
-      listItemA = new CComboBoxItem(listItemA->itemData());
+      decl = myDoc->IDTable.GetDECL(comboItemA->itemData());
+      comboItemA = new CComboBoxItem(comboItemA->itemData());
       combo->setItemText(posA, QString(decl->FullName.c));
-      combo->setItemData(posA, QVariant::fromValue(listItemA));
-      //combo->listBox()->changeItem(listItemA, posA);
+      combo->setItemData(posA, QVariant::fromValue(comboItemA));
+      //combo->listBox()->changeItem(comboItemA, posA);
       //sz = dc->GetTextExtent(decl->FullName.c, decl->FullName.l);
       //maxWidth = lmax(maxWidth, sz.cx);
-      decl = myDoc->IDTable.GetDECL(listItemB->itemData());
-      //listItemB = new CComboBoxItem(decl->FullName, listItemB->itemData());
-      //combo->listBox()->changeItem(listItemB, posB);
-      listItemB = new CComboBoxItem(listItemB->itemData());
+      decl = myDoc->IDTable.GetDECL(comboItemB->itemData());
+      //comboItemB = new CComboBoxItem(decl->FullName, comboItemB->itemData());
+      //combo->listBox()->changeItem(comboItemB, posB);
+      comboItemB = new CComboBoxItem(comboItemB->itemData());
       combo->setItemText(posB, QString(decl->FullName.c));
-      combo->setItemData(posB, QVariant::fromValue(listItemB));
+      combo->setItemData(posB, QVariant::fromValue(comboItemB));
       //sz = dc->GetTextExtent(decl->FullName.c, decl->FullName.l);
       //maxWidth = lmax(maxWidth, sz.cx);
     }
@@ -4646,7 +4736,7 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
   TID pID;
   bool putIt = false, sameContext;
   CContext con;
-  CComboBoxItem *listItem;
+  CComboBoxItem *comboItem;
   TDeclType elType = elDef->DeclType;
   DString lab, LocalName;
 
@@ -4723,16 +4813,16 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
       lab.Insert(grthen, lab.l);
       lab.Insert(lthen, 0);
     }
-    //listItem = new CComboBoxItem(lab, TID(elDef->OwnID, incl));
-    //Combo->listBox()->insertItem(listItem);//sort
-    listItem = new CComboBoxItem(TID(elDef->OwnID, incl));
-    Combo->addItem(QString(lab.c), QVariant::fromValue(listItem));//sort
+    //comboItem = new CComboBoxItem(lab, TID(elDef->OwnID, incl));
+    //Combo->listBox()->insertItem(comboItem);//sort
+    comboItem = new CComboBoxItem(TID(elDef->OwnID, incl));
+    Combo->addItem(QString(lab.c), QVariant::fromValue(comboItem));//sort
   }
   /*
   if (((DeclType == Interface) || (DeclType == CompObjSpec))
     && Combo2  && elDef->SecondTFlags.Contains(isEnum)) {
-    listItem = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, incl));
-    Combo2->listBox()->insertItem(listItem);//sort
+    comboItem = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, incl));
+    Combo2->listBox()->insertItem(comboItem);//sort
   }
   */
   if (elType == VirtualType) 
@@ -4742,14 +4832,14 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
      ) {
     if (ParentDECL && ParentDECL->FullName.l) {
       LocalName = ((CLavaPEApp*)wxTheApp)->LBaseData.calcRelName (elDef->FullName, ParentDECL->FullName);
-//      listItem = new CComboBoxItem(LocalName, TID(elDef->OwnID, incl));
-//      Combo2->listBox()->insertItem(listItem);//sort
-      listItem = new CComboBoxItem(TID(elDef->OwnID, incl));
-      Combo2->addItem(QString(LocalName.c), QVariant::fromValue(listItem));//sort
+//      comboItem = new CComboBoxItem(LocalName, TID(elDef->OwnID, incl));
+//      Combo2->listBox()->insertItem(comboItem);//sort
+      comboItem = new CComboBoxItem(TID(elDef->OwnID, incl));
+      Combo2->addItem(QString(LocalName.c), QVariant::fromValue(comboItem));//sort
     }
     else {
-      listItem = new CComboBoxItem(TID(elDef->OwnID, incl));
-      Combo2->addItem(QString(elDef->FullName.c), QVariant::fromValue(listItem));//sort
+      comboItem = new CComboBoxItem(TID(elDef->OwnID, incl));
+      Combo2->addItem(QString(elDef->FullName.c), QVariant::fromValue(comboItem));//sort
     }
   }
 }

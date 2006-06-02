@@ -439,24 +439,16 @@ void CLavaPEWizard::setModified(bool mod)
 
 CLavaPEWizard::~CLavaPEWizard()
 {
-  /*
   if (GenPage)
-    delete GenPage;
+    ResetComboItems(GenPage->NamedTypes);
   if (MenuPage)
-    delete MenuPage;
-  if (FontColorPage)
-    delete FontColorPage;
-  if (IOPage)
-    delete IOPage;
-  if (LitPage)
-    delete LitPage;
-  if (ChainIOPage)
-    delete ChainIOPage;
-  if (ChainLitPage)
-    delete ChainLitPage;
+    ResetComboItems(MenuPage->Menutype);
+  if (LitPage) {
+    ResetComboItems(LitPage->BoolDefault);
+    ResetComboItems(LitPage->EnumDefault);
+  }
   if (ChFormPage)
-    delete ChFormPage;
-    */
+    ResetComboItems(ChFormPage->ChElemFormTypes);
   if (FormDECL)
     delete FormDECL;
 }

@@ -166,7 +166,7 @@ void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bo
 { // defType == NoDef means all basics
   LavaDECL* decl;
   int incl;
-  CComboBoxItem *listItem;
+  CComboBoxItem *comboItem;
   if (isStd)
     incl = 0;
   else
@@ -177,9 +177,9 @@ void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bo
     if (with  || (it != B_Object)
         && ((defType == NoDef) || (decl->DeclType == defType))
         && (!skipServices || (decl->DeclType != Interface))) {
-      listItem = new CComboBoxItem(/*LBaseData->BasicNames[it],*/ TID(IDTable.BasicTypesID[it], incl));
-      cbox->addItem(QString(LBaseData->BasicNames[it]),QVariant::fromValue(listItem));
-//      delete listItem;
+      comboItem = new CComboBoxItem(/*LBaseData->BasicNames[it],*/ TID(IDTable.BasicTypesID[it], incl));
+      cbox->addItem(QString(LBaseData->BasicNames[it]),QVariant::fromValue(comboItem));
+//      delete comboItem;
     }
   }
   SortCombo(cbox);
