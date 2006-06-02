@@ -4416,6 +4416,7 @@ bool FuncExpression::Check (CheckData &ckd)
       // check act.parm/form.parm. type compatibility:
       ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
 #ifdef INTERPRETER
+      formInParmDecl = (LavaDECL*)chpFormIn->data;
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
       ckd.tempCtx = callContext;
       ((Expression*)chpActIn->data)->formVType = ckd.document->IDTable.GetDECL(formInParmDecl->RefID,formInParmDecl->inINCL);

@@ -254,7 +254,7 @@ bool MyListView::event(QEvent *ev) {
     return QWidget::event(hevWT);
   }
   else
-    return QWidget::event(ev);
+    return QTreeWidget::event(ev);
 }
 
 void MyListView::keyPressEvent(QKeyEvent *ev)
