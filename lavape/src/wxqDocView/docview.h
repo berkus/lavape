@@ -72,11 +72,14 @@ public:
     bool appExit;
     int argc;
     char **argv;
+    int timerID;
 
     virtual void saveSettings() {}
     virtual void UpdateUI() {}
     virtual void onUpdateUI();
     virtual void customEvent(QEvent *e);
+    void timerEvent(QTimerEvent *);
+
     // set/get the application name
     QString GetAppName() const
     {
@@ -106,7 +109,6 @@ public:
 public slots:
     void about();
     void onGuiThreadAwake();
-    void onIdle();
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;

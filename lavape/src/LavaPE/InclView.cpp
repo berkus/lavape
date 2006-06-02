@@ -48,6 +48,7 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
   setFont(LBaseData->m_TreeFont);
 //  new InclWhatsThis(Tree);
   Tree->setSelectionMode(QAbstractItemView::SingleSelection);
+  Tree->viewport()->installEventFilter(this);
 }
 
 CInclView::~CInclView()
@@ -413,19 +414,37 @@ void CInclView::on_whatNextAction_triggered()
   QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }
 
+bool CInclView::event(QEvent *ev) {
+  QWhatsThisClickedEvent *wtcEv;
+  QString href;
 
-/*
-InclWhatsThis::InclWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
-  listView = lv;
+  if (ev->type() == QEvent::WhatsThisClicked) {
+    wtcEv = (QWhatsThisClickedEvent*)ev;
+    href = wtcEv->href();
+    ShowPage(QString("whatsThis/")+href);
+    return true;
+  }
+  else
+    return QWidget::event(ev);
 }
-*/
-/*
-QString InclWhatsThis::text(const QPoint &point) {
-  CTreeItem *item=(CTreeItem*)listView->itemAt(point);
 
-  if (item == listView->RootItem)
+bool CInclView::eventFilter(QObject *, QEvent *ev) {
+  QHelpEvent *hev;
+
+  if (ev->type() == QEvent::WhatsThis) {
+    hev = (QHelpEvent*)ev;
+    setWhatsThis(text(hev->pos()));
+    return QWidget::event(ev);
+  }
+  else
+    return false;
+}
+
+QString CInclView::text(const QPoint &point) {
+  CTreeItem *item=(CTreeItem*)Tree->itemAt(point);
+
+  if (item == Tree->RootItem)
     return QString(QObject::tr("This is the current <b><i><font color=red>Lava</font></i></b> file; it may <a href=\"../Packages.htm#include\">include</a> other <b><i><font color=red>Lava</font></i></b> files"));
   else
     return QString(QObject::tr("This is an <a href=\"../Packages.htm#include\">included</a> <b><i><font color=red>Lava</font></i></b> file"));
 }
-*/

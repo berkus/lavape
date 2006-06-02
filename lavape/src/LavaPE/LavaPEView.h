@@ -197,6 +197,8 @@ public:
   virtual void UpdateUI();
   bool VerifyItem(CTreeItem* item, CTreeItem* topItem = 0);
   void on_whatNextAction_triggered();
+  bool eventFilter(QObject *watched, QEvent *ev);
+  QString text(const QPoint &point);
 
 protected:
   virtual void destroy();

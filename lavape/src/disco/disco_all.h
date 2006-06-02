@@ -96,6 +96,7 @@
 #include <QSignalMapper>
 #include <QAbstractSocket>
 #include <QSemaphore>
+#include <QtDebug>
 
 #include <string.h>
 //#include <stdlib.h>

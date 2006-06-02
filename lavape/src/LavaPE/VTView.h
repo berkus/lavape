@@ -78,6 +78,8 @@ public:
   void gotoDef(CTreeItem* item, bool toImpl);
   CTreeItem* BrowseTree(TID id, CTreeItem* start, int browseCase);
   virtual bool event(QEvent* ev);
+  bool eventFilter(QObject *watched, QEvent *ev);
+  QString text(const QPoint &point);
 
 
 protected:

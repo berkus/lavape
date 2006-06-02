@@ -43,6 +43,7 @@ CUtilityView::CUtilityView(QWidget *parent)
 {
   setObjectName("UtilityView");
 	QString emptyString;
+  IdlMsg = "Ready";
 	
   FindPage = new QTreeWidget(0);
 //  FindPage->setSorting(-1);

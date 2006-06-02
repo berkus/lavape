@@ -442,7 +442,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p><a href=\"IfStm.htm\">if-then-elsif-else</a> statement with optional\nelsif and else branches</p>"));
   newKwdToolbutton(tb,LBaseData->ifdefButton,"&ifdef",SLOT(ifdefStm()),
     QObject::tr("Ifdef statement"),
-    QObject::tr("<p><a href=\"IfdefStm.htm\">ifdef</a> statement: if variable != null then ...</p>"));
+    QObject::tr("<p><a href=\"IfdefElse.htm\">ifdef</a> statement: if variable != null then ...</p>"));
   newKwdToolbutton(tb,LBaseData->switchButton,"s&witch",SLOT(switchStm()),
     QObject::tr("Switch statement: \"w\""),
     QObject::tr("<p><a href=\"Switch.htm\">switch</a> statement with optional else branch</p>"));
@@ -502,7 +502,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p><a href=\"Clone.htm\">Clone</a> an existing <b><i><font color=\"red\">Lava</font></i></b> object</p>"));
   newKwdToolbutton(tb,LBaseData->elsexButton,"else-expr",SLOT(elseExpr()),
     QObject::tr("else expression"),
-    QObject::tr("<p>\"x <a href=\"ElseExpr.htm\">else</a> y\" yields x if x != null, else y</p>"));
+    QObject::tr("<p>\"x <a href=\"IfdefElse.htm\">else</a> y\" yields x if x != null, else y</p>"));
   newKwdToolbutton(tb,LBaseData->ifxButton,"if-expr",SLOT(ifExpr()),
     QObject::tr("If-then-else expression: \"x\""),
     QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>"));

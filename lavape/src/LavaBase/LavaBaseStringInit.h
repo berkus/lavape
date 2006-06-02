@@ -106,6 +106,7 @@ extern LAVABASE_DLL QString ERR_InvisibleBasictype;
 extern LAVABASE_DLL QString ERR_VirtualCircle;
 extern LAVABASE_DLL QString ERR_InvalidValOfVT;
 extern LAVABASE_DLL QString ERR_SelfUnfinishedCallObj;
+extern LAVABASE_DLL QString ERR_SelfUnfinishedParm;
 extern LAVABASE_DLL QString ERR_NoInitializer;
 extern LAVABASE_DLL QString ERR_InitializerForbidden;
 extern LAVABASE_DLL QString ERR_ExplicitInitializerCall;

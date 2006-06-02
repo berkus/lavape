@@ -210,17 +210,14 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
   Tree->setDragEnabled(true);
   Tree->setItemDelegate (new CTreeItemDelg(Tree));
   sz = size();
+  Tree->viewport()->installEventFilter(this);
 }
-
 
 void CLavaPEView::CleanListView()
 {
   delete Tree;
   Tree = new MyListView(this);
   layout->addWidget(Tree);
-//  new TreeWhatsThis(Tree);
-//  setFocusProxy(Tree);
-//  Tree->setSorting(-1);
   Tree->setColumnCount(1);
   Tree->setRootIsDecorated(true);
   Tree->header()->hide();
@@ -1210,6 +1207,9 @@ bool CLavaPEView::EnableDelete(LavaDECL* decl)
 
 bool CLavaPEView::event(QEvent *ev)
 {
+  QWhatsThisClickedEvent *wtcEv;
+  QString href;
+
   if (ev->type() == UEV_LavaPE_CalledView) {
     wxDocManager::GetDocumentManager()->SetActiveView(this);
     return true;
@@ -1239,8 +1239,14 @@ bool CLavaPEView::event(QEvent *ev)
     setSelPost((QTreeWidgetItem*)((CustomEvent*)ev)->data());
     return true;
   }
+  else if (ev->type() == QEvent::WhatsThisClicked) {
+    wtcEv = (QWhatsThisClickedEvent*)ev;
+    href = wtcEv->href();
+    ShowPage(QString("whatsThis/")+href);
+    return true;
+  }
   else
-		return wxView::event(ev);
+		return QWidget::event(ev);
 }
 
 bool CLavaPEView::ExpandItem(CTreeItem* item, int level/*=-1*/)
@@ -4438,15 +4444,14 @@ bool CLavaPEView::VerifyItem(CTreeItem* item, CTreeItem* topItem)
 
 void CLavaPEView::on_whatNextAction_triggered()
 {
-/*
-  QWhatsThis::showText(Tree->viewport()->mapToGlobal(Tree->visualItemRect(Tree->currentItem()).topLeft())+QPoint(200,20),
-    QString(QObject::tr("<p>You may <b>delete</b> this item"
+  Tree->setWhatsThis(QString(QObject::tr("<p>You may <b>delete</b> this item"
     " (DEL key or scissors button),<br>or you may <b>insert</b> another item after this one"
     " (click any enabled button on the declaration toolbar),"
-    "<br>or you may <b>view/edit the properties</b> of this item (spectacles button),"
-    "<br><a href=\"../whatNext/DeclViewWhatNext.htm\">or...</a></p>")),
-      Tree);
-      */
+    "<br>or you may <b>view/edit the properties</b> of this item (spectacles button)</p>")));
+  QCoreApplication::sendEvent(Tree,
+    new WhatNextEvent(UEV_WhatNext,
+    Tree->visualItemRect(Tree->currentItem()).topLeft(),
+    Tree->viewport()->mapToGlobal(Tree->visualItemRect(Tree->currentItem()).topLeft())));
 }
 
 //Toolbutton handler--------------------------------------------------------
@@ -5336,18 +5341,12 @@ void CLavaPEView::OnUpdateShowOptionals(QAction* action)
 
 //--------------------------------------------------------------------------
 
-/*
-TreeWhatsThis::TreeWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
-  listView = lv;
-}
-*/
-/*
-QString TreeWhatsThis::text(const QPoint &point) {
-  CTreeItem *item=(CTreeItem*)listView->itemAt(point);
+QString CLavaPEView::text(const QPoint &point) {
+  CTreeItem *item=(CTreeItem*)Tree->itemAt(point);
   CMainItemData *itd=(CMainItemData*)item->getItemData();
   LavaDECL *itemDECL;
 
-  listView->setCurAndSel(item);
+  Tree->setCurAndSel(item);
 
   switch (itd->type) {
   case TIType_DECL:
@@ -5421,4 +5420,15 @@ QString TreeWhatsThis::text(const QPoint &point) {
   }
   return QString(QObject::tr("<p>No specific help available for this declaration item</p>"));
 }
-*/
+
+bool CLavaPEView::eventFilter(QObject *, QEvent *ev) {
+  QHelpEvent *hev;
+
+  if (ev->type() == QEvent::WhatsThis) {
+    hev = (QHelpEvent*)ev;
+    setWhatsThis(text(hev->pos()));
+    return QWidget::event(ev);
+  }
+  else
+    return false;
+}

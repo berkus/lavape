@@ -36,6 +36,9 @@ public:
   bool Expanded;
   bool InitComplete;
   virtual void on_whatNextAction_triggered();
+  bool event(QEvent *ev);
+  bool eventFilter(QObject *watched, QEvent *ev);
+  QString text(const QPoint &point);
 
 protected:
   void OnUpdateDelete(QAction* action);

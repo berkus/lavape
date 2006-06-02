@@ -50,7 +50,7 @@ CVTView::CVTView(QWidget* parent, wxDocument *doc)
   activeInt = false;
   currentBrType = findTID;
   setFont(LBaseData->m_TreeFont);
-//  new VTWhatsThis(Tree);
+  Tree->viewport()->installEventFilter(this);
 }
 
 CVTView::~CVTView()
@@ -85,14 +85,27 @@ void CVTView::UpdateUI()
 
 bool CVTView::event(QEvent* ev)
 {
- if (ev->type() == UEV_LavaPE_SyncTree) {
-   CLavaPEHint* hint = (CLavaPEHint*)((CustomEvent*)ev)->data();
-   OnUpdate(myMainView, 0, hint);
-   delete hint;
- }
- else if (ev->type() == UEV_LavaPE_setSel) 
-   setSelPost((QTreeWidgetItem*)((CustomEvent*)ev)->data());
- return true;
+  QWhatsThisClickedEvent *wtcEv;
+  QString href;
+
+  if (ev->type() == UEV_LavaPE_SyncTree) {
+    CLavaPEHint* hint = (CLavaPEHint*)((CustomEvent*)ev)->data();
+    OnUpdate(myMainView, 0, hint);
+    delete hint;
+    return true;
+  }
+  else if (ev->type() == UEV_LavaPE_setSel) {
+    setSelPost((QTreeWidgetItem*)((CustomEvent*)ev)->data());
+    return true;
+  }
+  else if (ev->type() == QEvent::WhatsThisClicked) {
+    wtcEv = (QWhatsThisClickedEvent*)ev;
+    href = wtcEv->href();
+    ShowPage(QString("whatsThis/")+href);
+    return true;
+  }
+  else
+    return QWidget::event(ev);
 }
 
 
@@ -903,23 +916,18 @@ void CVTView::DisableActions()
   frame->gotoImplAction->setEnabled(false);
 }
 
-/*
-VTWhatsThis::VTWhatsThis(MyListView *lv) : WhatsThis(0,lv) {
-  listView = lv;
-}
-*/
-/*
-QString VTWhatsThis::text(const QPoint &point) {
-  CTreeItem *item=(CTreeItem*)listView->itemAt(point);
+
+QString CVTView::text(const QPoint &point) {
+  CTreeItem *item=(CTreeItem*)Tree->itemAt(point);
   CVTItemData *itd=(CVTItemData*)item->getItemData();
   LavaDECL *decl;
 
-  listView->setCurAndSel(item);
+  Tree->setCurAndSel(item);
 
   if (itd)
     switch (itd->type) {
     case TNodeType_Class:
-      decl = ((CLavaBaseDoc*)listView->lavaView->GetDocument())->IDTable.GetDECL(itd->VTEl_Tree.VTClss);
+      decl = ((CLavaBaseDoc*)Tree->lavaView->GetDocument())->IDTable.GetDECL(itd->VTEl_Tree.VTClss);
       if (decl->DeclType == Package)
         return QString(QObject::tr("<p>This is a <a href=\"../Packages.htm#packages\">package</a></p>"));
       else
@@ -927,7 +935,7 @@ QString VTWhatsThis::text(const QPoint &point) {
     case TNodeType_VT:
       return QString(QObject::tr("<p>This is a <a href=\"../PatternsFrameworks.htm#VT\">virtual type</a></p>"));
     case TNodeType_Feature:
-      decl = ((CLavaBaseDoc*)listView->lavaView->GetDocument())->IDTable.GetDECL(itd->VTEl_Tree.VTEl);
+      decl = ((CLavaBaseDoc*)Tree->lavaView->GetDocument())->IDTable.GetDECL(itd->VTEl_Tree.VTEl);
       if (decl->DeclType == Function)
         return QString(QObject::tr("<p>This is a member function of a <b><i><font color=red>Lava</font></i></b> <a href=\"../SepItfImpl.htm\">class</a></p>"));
       else if (decl->DeclType == Attr)
@@ -936,4 +944,23 @@ QString VTWhatsThis::text(const QPoint &point) {
     }
   return QString(QObject::tr("<p>No specific help available for this tree node</p>"));
 }
-*/
+
+bool CVTView::eventFilter(QObject *, QEvent *ev) {
+  QHelpEvent *hev;
+  QWhatsThisClickedEvent *wtcEv;
+  QString href;
+
+  if (ev->type() == QEvent::WhatsThis) {
+    hev = (QHelpEvent*)ev;
+    setWhatsThis(text(hev->pos()));
+    return QWidget::event(ev);
+  }
+  else if (ev->type() == QEvent::WhatsThisClicked) {
+    wtcEv = (QWhatsThisClickedEvent*)ev;
+    href = wtcEv->href();
+    ShowPage(QString("whatsThis/")+href);
+    return true;
+  }
+  else
+    return false;
+}

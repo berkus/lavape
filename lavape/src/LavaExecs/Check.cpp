@@ -633,6 +633,27 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     }
   actDecl = ckd.document->GetType(actTypeDecl);
   formDecl = (LavaDECL*)formParm->data;
+
+  if (actSynObj->IsOptional(ckd)
+  && !formDecl->TypeFlags.Contains(isOptional)
+  && !actSynObj->IsDefChecked(ckd)) {
+    actSynObj->SetError(ckd,&ERR_Optional);
+    ok &= false;
+  }
+  if (((SynObject*)((Parameter*)actSynObj)->parameter.ptr)->IsClosed(ckd)
+  && !formDecl->SecondTFlags.Contains(closed)) {
+    actSynObj->SetError(ckd,&ERR_Closed);
+    ok &= false;
+  }
+  if (parm->flags.Contains(isSelfVar)) {
+    if (parm->parentObject->parentObject->primaryToken != initializing_T
+    && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+    && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
+      ((SynObject*)((CHE*)((ObjReference*)parm)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
+      ok &= false;
+    }
+  }
+
   ckd.document->MemberTypeContext(formDecl, callContext,&ckd);
   callContext = callCtx;
   formTypeDecl = ckd.document->GetFinalMVType(formDecl->RefID,formDecl->inINCL,callContext,formCat,&ckd);
@@ -3404,8 +3425,6 @@ bool ObjReference::CallCheck (CheckData &ckd) {
         ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
         return false;
       }
-//      else
-//        return ok;
     }
 
   if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
@@ -4187,7 +4206,7 @@ bool FuncExpression::Check (CheckData &ckd)
   CHE *chpActIn, *chpFormIn, *chpFormOut;
   SynObject *opd, *actParm;
   TID objTypeTid, selfTid, funcItfTid, funcTid;
-  LavaDECL *funcItf, *funcImpl=0, *implItfDecl, *formInParmDecl;
+  LavaDECL *funcItf, *funcImpl=0, *implItfDecl;
   Expression *callExpr;
   Category cat;
   SynFlags ctxFlags;
@@ -4396,19 +4415,6 @@ bool FuncExpression::Check (CheckData &ckd)
         ok/*rc*/ &= opd->Check(ckd);
       // check act.parm/form.parm. type compatibility:
       ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
-  //  parm = (SynObject*)((Parameter*)chpActIn->data)->parameter.ptr;
-      formInParmDecl = (LavaDECL*)chpFormIn->data;
-      if (opd->IsOptional(ckd)
-      && !formInParmDecl->TypeFlags.Contains(isOptional)
-      && !opd->IsDefChecked(ckd)) {
-        ((SynObject*)opd)->SetError(ckd,&ERR_Optional);
-        ok = false;
-      }
-      if (((SynObject*)((Parameter*)opd)->parameter.ptr)->IsClosed(ckd)
-      && !formInParmDecl->SecondTFlags.Contains(closed)) {
-        ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
-        ok = false;
-      }
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
       ckd.tempCtx = callContext;

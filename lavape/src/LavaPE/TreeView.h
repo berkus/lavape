@@ -88,7 +88,9 @@ public:
   //QDrag* dragObject();
   virtual void startDrag(Qt::DropActions supportedActions);
   void editItem ( QTreeWidgetItem * item, int column = 0 );
-  
+  QString text(const QPoint &point);
+  bool event(QEvent *ev);
+
   void dragMoveEvent(QDragMoveEvent *ev);
   void dragEnterEvent(QDragEnterEvent *ev);
   void dragLeaveEvent(QDragLeaveEvent *ev);

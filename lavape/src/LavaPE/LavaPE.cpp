@@ -315,6 +315,7 @@ bool CLavaPEApp::event(QEvent *e)
     }
     m_appWindow->activateWindow();
     m_appWindow->raise();
+    return true;
   }
   else if (e->type() == UEV_LavaDebugRq) {
     if (debugThread.dbgRequest) {
@@ -332,14 +333,16 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
 
     debugThread.pContExecEvent->release();
+    return true;
   }
   else if (e->type() == UEV_LavaDebugW) {
     ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
     ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
+    return true;
   }
   else
-    wxApp::event(e);
-  return QApplication::event(e);
+    return wxApp::event(e);
+  //return QApplication::event(e);
 }
 
 QString CLavaPEApp::InitWebBrowser () {

@@ -1814,7 +1814,7 @@ public:
   virtual void Insert2Optionals (SynObject *&thenPart,SynObject *&elsePart);
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p><a href=\"IfdefStm.htm\">ifdef</a> statement with optional else branch: if variable != null then ...</p>"); }
+    return QObject::tr("<p><a href=\"IfdefElse.htm\">ifdef</a> statement with optional else branch: if variable != null then ...</p>"); }
 };
 
 class CondExpressionV : public CondExpression {
@@ -1840,7 +1840,7 @@ public:
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p>\"x <a href=\"ElseExpr.htm\">else</a> y\" yields x if x != null, else y</p>");}
+    return QObject::tr("<p>\"x <a href=\"IfdefElse.htm\">else</a> y\" yields x if x != null, else y</p>");}
 };
 
 class BranchV : public Branch {

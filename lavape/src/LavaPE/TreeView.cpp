@@ -241,6 +241,22 @@ void MyListView::ResetSelections()
      setItemSelected(list.at(ii), false);
 }
 
+bool MyListView::event(QEvent *ev) {
+  QHelpEvent *hevWT;
+  WhatNextEvent *wnev;
+  QString href;
+
+  if (ev->type() == UEV_WhatNext) {
+    wnev = (WhatNextEvent*)ev;
+    hevWT = new QHelpEvent(QEvent::WhatsThis,
+      wnev->pos+QPoint(100,18),
+      wnev->globalPos+QPoint(100,18));
+    return QWidget::event(hevWT);
+  }
+  else
+    return QWidget::event(ev);
+}
+
 void MyListView::keyPressEvent(QKeyEvent *ev)
 {
   if ((ev->key() == Qt::Key_Delete // 0x2e DEL key

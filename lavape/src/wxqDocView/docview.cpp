@@ -67,6 +67,7 @@
 #include <QFocusEvent>
 #include <QMouseEvent>
 #include <QAbstractEventDispatcher>
+#include <QtDebug>
 
 
 #if wxUSE_PRINTING_ARCHITECTURE
@@ -128,8 +129,9 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 
   SetClassName(argv[0]);
 
-  QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
-  connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(awake()),SLOT(onGuiThreadAwake()));
+//  QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
+//  connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(awake()),SLOT(onGuiThreadAwake()));
+  timerID = startTimer(0);
   appExit = false;
 }
 
@@ -157,18 +159,27 @@ void wxApp::SetAppName(const QString& name) {
 void wxApp::onGuiThreadAwake() {
   // make sure that UpdateUI is invoked only once between two wait states
   inUpdateUI = false;
+  qDebug("inUpdateUI = false\n");
 }
 
 static bool cmdLineEvaluated=false;
 
-void wxApp::onIdle()
+void wxApp::timerEvent(QTimerEvent *ev)
 {
-        // make sure that UpdateUI is invoked only once between two wait states
-        if (!inUpdateUI) {
-//    inUpdateUI = true;
-//              QApplication::postEvent(this,new CustomEvent(UEV_Idle,0));
+  // make sure that UpdateUI is invoked only once between two wait states
+  if (ev->timerId() != timerID) {
+    QObject::timerEvent(ev);
+    return;
+  }
+  else if (!inUpdateUI) {
+    inUpdateUI = true;
+    qDebug() << "timer_id:" << ev->timerId() << "inUpdateUI = true";
     onUpdateUI();
-        }
+  }
+  else {
+    inUpdateUI = false;
+    qDebug() << "timer_id:" << ev->timerId() << "inUpdateUI = false";
+  }
 }
 
 void wxApp::customEvent(QEvent *e)
@@ -186,8 +197,6 @@ void wxApp::onUpdateUI()
   if (appExit /*deletingMainFrame*/)
     return;
 
-  inUpdateUI = true;
-
   UpdateUI();
   if (m_appWindow)
     m_appWindow->UpdateUI();
@@ -199,8 +208,8 @@ void wxApp::onUpdateUI()
   }
 
   if (!cmdLineEvaluated && wxTheApp->argc > 1) {
-          cmdLineEvaluated = true;
-          wxTheApp->OpenDocumentFile(argv[1]);
+    cmdLineEvaluated = true;
+    wxTheApp->OpenDocumentFile(argv[1]);
   }
 }
 
