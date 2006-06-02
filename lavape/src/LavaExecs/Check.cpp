@@ -2063,7 +2063,7 @@ bool SelfVar::Check (CheckData &ckd)
         flags.INCL(isClosed); // self is closed
       else
         flags.EXCL(isClosed); // self isn't closed
-      
+
   }
   else {
     ckd.selfTypeDECL = execDECL->ParentDECL;
@@ -4214,7 +4214,7 @@ bool FuncExpression::Check (CheckData &ckd)
 #ifdef INTERPRETER
   unsigned nInputs, nOutputs;
   TID vTid;
-  LavaDECL *actDecl;
+  LavaDECL *actDecl, *formInParmDecl;
 #endif
 
   ENTRY
