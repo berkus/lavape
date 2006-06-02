@@ -640,7 +640,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     actSynObj->SetError(ckd,&ERR_Optional);
     ok &= false;
   }
-  if (((SynObject*)((Parameter*)actSynObj)->parameter.ptr)->IsClosed(ckd)
+  if (actSynObj->IsClosed(ckd)
   && !formDecl->SecondTFlags.Contains(closed)) {
     actSynObj->SetError(ckd,&ERR_Closed);
     ok &= false;
