@@ -302,8 +302,8 @@ bool CLavaMainFrame::OnCreate()
   fillHelpMap6(tbw6);
 */
 	m_childFrameHistory->m_menu = windowMenu;
-  LoadFileHistory();
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
+  LoadFileHistory();
   setWindowIcon(QPixmap((const char**) Lava));
   QSplitter* split = new QSplitter(this);
   m_CentralWidget = split;

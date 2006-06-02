@@ -129,9 +129,9 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 
   SetClassName(argv[0]);
 
-//  QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
+  QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
 //  connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(awake()),SLOT(onGuiThreadAwake()));
-  timerID = startTimer(0);
+  //timerID = startTimer(0);
   appExit = false;
 }
 
@@ -164,21 +164,17 @@ void wxApp::onGuiThreadAwake() {
 
 static bool cmdLineEvaluated=false;
 
-void wxApp::timerEvent(QTimerEvent *ev)
+void wxApp::onIdle()
 {
   // make sure that UpdateUI is invoked only once between two wait states
-  if (ev->timerId() != timerID) {
-    QObject::timerEvent(ev);
-    return;
-  }
-  else if (!inUpdateUI) {
+  if (!inUpdateUI) {
     inUpdateUI = true;
-    qDebug() << "timer_id:" << ev->timerId() << "inUpdateUI = true";
+    //qDebug("inUpdateUI = true");
     onUpdateUI();
   }
   else {
     inUpdateUI = false;
-    qDebug() << "timer_id:" << ev->timerId() << "inUpdateUI = false";
+    //qDebug("inUpdateUI = false");
   }
 }
 
