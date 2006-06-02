@@ -73,7 +73,7 @@ bool wxMainFrame::OnCreate()
   m_CentralWidget = CreateWorkspace(this);
   setCentralWidget(m_CentralWidget);
   LoadFileHistory();
-        completelyCreated = true;
+  completelyCreated = true;
   return true;
 }
 

@@ -302,6 +302,7 @@ bool CLavaMainFrame::OnCreate()
   fillHelpMap6(tbw6);
 */
 	m_childFrameHistory->m_menu = windowMenu;
+  LoadFileHistory();
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
   setWindowIcon(QPixmap((const char**) Lava));
   QSplitter* split = new QSplitter(this);
@@ -310,7 +311,6 @@ bool CLavaMainFrame::OnCreate()
   split->setOrientation(Qt::Vertical);
   CreateWorkspace(split);
   m_UtilityView = new CUtilityView(split);
-  LoadFileHistory();
   m_UtilityView->hide();
   Toolbar_5->hide();
   Toolbar_6->hide();
