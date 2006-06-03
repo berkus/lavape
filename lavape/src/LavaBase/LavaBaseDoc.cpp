@@ -143,6 +143,7 @@ CLavaBaseDoc::~CLavaBaseDoc()
 {
   if (ThreadList)
     delete ThreadList;
+  delete mySynDef;
 }
 
 /*

@@ -36,7 +36,7 @@ public:
 
 // Implementation
 public:
-  virtual ~CExecFrame() {}
+  virtual ~CExecFrame();
 
 protected:
   bool OnCreate(wxDocTemplate *temp, wxDocument *doc);
