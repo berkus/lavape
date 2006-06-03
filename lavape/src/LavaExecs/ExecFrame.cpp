@@ -42,14 +42,11 @@ CExecFrame::CExecFrame(QWidget *parent) : wxMDIChildFrame(parent)
 }
 
 CExecFrame::~CExecFrame() {
-  //QWidget *fw=QApplication::focusWidget();
-  //if (fw)
-  //  fw->clearFocus();
 }
 
 void CExecFrame::closeEvent(QCloseEvent *e)
 {
-  deleteLater();
+  //deleteLater();
 }
 
 void CExecFrame::InitialUpdate()

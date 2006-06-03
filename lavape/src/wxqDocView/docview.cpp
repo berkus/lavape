@@ -266,8 +266,6 @@ wxDocument::wxDocument(wxDocument *parent)
 wxDocument::~wxDocument()
 {
   deleting = true;
-  if (wxDocManager::GetDocumentManager())
-    wxDocManager::GetDocumentManager()->RemoveDocument(this);
 }
 
 bool wxDocument::Close()
@@ -280,9 +278,11 @@ bool wxDocument::Close()
 
 bool wxDocument::OnCloseDocument()
 {
+  if (wxDocManager::GetDocumentManager() && !deleting)
+    wxDocManager::GetDocumentManager()->RemoveDocument(this);
   deleting = true;
   DeleteAllChildFrames();
-  deleteLater();
+  //deleteLater();
   return true;
 }
 
@@ -291,6 +291,7 @@ bool wxDocument::OnCloseDocument()
 bool wxDocument::DeleteAllChildFrames()
 {
   while (m_docChildFrames.size())
+    //delete m_docChildFrames.takeAt(0);
     m_docChildFrames.takeAt(0)->deleteLater();
   return true;
 }
@@ -688,7 +689,7 @@ void wxView::SetDocument(wxDocument *doc)
 bool wxView::Close()
 {
   if (on_cancelButton_clicked()) {
-      deleteLater();
+      //deleteLater();
       return true;
   }
   else
@@ -933,6 +934,7 @@ void wxDocManager::OnFileClose()
   if (!doc)
     return;
   doc->Close();
+  RemoveDocument(doc);
 }
 
 void wxDocManager::OnUndo()

@@ -358,13 +358,16 @@ void wxMDIChildFrame::RemoveView(wxView *view)
     return;
 
   m_viewCount--;
-  if (!m_viewCount)
-    deleteLater();
+  //if (!m_viewCount)
+  //  deleteLater();
 }
 
 wxMDIChildFrame::~wxMDIChildFrame()
 {
   QString title;
+
+  setFocus(); // to prevent a mysterious crash on file-exit/~CExecFrame
+  clearFocus();
 
   title = windowTitle();
   if (!title.isEmpty() && title.at(title.length()-1) == '*')

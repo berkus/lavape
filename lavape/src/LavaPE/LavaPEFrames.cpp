@@ -1826,7 +1826,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 		return true;
   }
   else {
-    deleteLater();
+    //deleteLater();
     return false;
   }
 }
