@@ -701,7 +701,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -X LAVABASE -I..\disco -I. $(InputName).ph"
+						CommandLine="..\..\bin\LPC -X LAVABASE -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
@@ -882,6 +882,16 @@
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputPath)"
 						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
+						Outputs="Generated\$(InputName).h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying uic to $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)"
 						Outputs="Generated\$(InputName).h"
 					/>
 				</FileConfiguration>

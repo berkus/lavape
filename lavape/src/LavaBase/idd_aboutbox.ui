@@ -62,7 +62,7 @@
        </font>
       </property>
       <property name="text" >
-       <string>&lt;center>Lava Preview Release 0.8.4&lt;/center></string>
+       <string>&lt;center>Lava Preview Release 0.9.0&lt;/center></string>
       </property>
       <property name="textFormat" >
        <enum>Qt::RichText</enum>
@@ -87,6 +87,7 @@
       </property>
       <property name="text" >
        <string>Visit the Lava Home Page
+
 at http://lavape.sourceforge.net</string>
       </property>
       <property name="iconSize" >
@@ -151,7 +152,7 @@ at http://lavape.sourceforge.net</string>
          <string/>
         </property>
         <property name="icon" >
-         <iconset>..\LavaPE\res\TOOLBUTTONS\Q_FileOpen.xpm</iconset>
+         <iconset>../LavaPE/res/TOOLBUTTONS/Q_FileOpen.xpm</iconset>
         </property>
        </widget>
       </item>
@@ -223,3 +224,4 @@ at http://lavape.sourceforge.net</string>
  <resources/>
  <connections/>
 </ui>
+>
