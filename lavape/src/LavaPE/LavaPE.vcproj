@@ -50,7 +50,9 @@
 				PreprocessorDefinitions="WIN32;EXECVIEW"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/LavaPE.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/LavaPE.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -142,14 +144,17 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
-				AdditionalIncludeDirectories=".,.\Generated,..\wxqDocView,..\disco,..\SFLsockets,$(QTDIR)\include,..\LavaBase,..\LavaBase\Generated,..\LavaGUI,..\LavaExecs,..\LavaExecs\Generated,res,res\ToolButtons,res\TreeIcons,..\LavaPE_UI,..\LavaPE_UI\Generated"
-				PreprocessorDefinitions="WIN32;EXECVIEW;QT_DLL;QT_THREAD_SUPPORT"
+				Optimization="1"
+				AdditionalIncludeDirectories=".;.\Generated;..\wxqDocView;..\disco;..\LavaBase;..\LavaBase\Generated;..\LavaGUI;..\LavaExecs;..\LavaExecs\Generated;..\LavaExecs\res\ToolButtons;res;res\ToolButtons;res\TreeIcons;..\LavaPE_UI;..\LavaPE_UI\Generated"
+				PreprocessorDefinitions="WIN32;EXECVIEW"
 				RuntimeLibrary="2"
-				PrecompiledHeaderFile=".\Release/LavaPE.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/LavaPE_all.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -167,10 +172,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\wxqDocView\Release\wxqDocView.lib ..\LavaGUI\Release\LavaGUI.lib ..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib ..\LavaExecs\Release\LavaExecs.lib ..\SFLsockets\Release\SFLsockets.lib $(QTDIR)\librel\qtmain.lib $(QTDIR)\librel\qassistantclient.lib $(QTDIR)\librel\qt-mt$(QTR).lib wsock32.lib"
-				OutputFile=".\Release/LavaPE.exe"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaExecs.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\LavaPE_UI.lib $(QT4DIR)\lib\QtAssistantClient.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib $(QT4DIR)\lib\qtmain.lib $(QT4DIR)\lib\QtNetwork4.lib wsock32.lib"
+				OutputFile="..\..\bin\LavaPE.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../wxqDocView/Debug,$(QT4DIR)/lib"
+				IgnoreDefaultLibraryNames="libcmt.lib"
 				ProgramDatabaseFile=".\Release/LavaPE.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -420,6 +427,15 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
 						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
 						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
@@ -791,6 +807,15 @@
 						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="QtCore/qglobal.h"
+						PrecompiledHeaderFile="PCH/LavaPE_all.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="Generated\moc_Bars.cpp"
@@ -814,6 +839,8 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\Bars.h"
+						PrecompiledHeaderFile="PCH/LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -839,6 +866,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\Boxes.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -864,6 +892,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\FindRefsBox.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -889,6 +918,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\InclView.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -914,6 +944,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\LavaPE.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -939,6 +970,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\LavaPEDoc.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -964,6 +996,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\LavaPEFrames.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -989,6 +1022,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\LavaPEView.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1014,6 +1048,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\LavaPEWizard.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1039,6 +1074,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\TreeView.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1064,6 +1100,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\VTView.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1725,6 +1762,16 @@
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
 					CommandLine="$(QT4DIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
+					Outputs="Generated/$(InputName).cpp"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Applying rcc to $(InputPath)"
+					CommandLine="$(QT4DIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)"
 					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>

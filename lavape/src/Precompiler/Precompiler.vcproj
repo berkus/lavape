@@ -50,7 +50,9 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Debug/Precompiler.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/Precompiler_all.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -137,14 +139,17 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
+				Optimization="1"
 				AdditionalIncludeDirectories="..\disco"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;DISCO_IMPORT"
 				RuntimeLibrary="0"
-				PrecompiledHeaderFile=".\Release/Precompiler.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/Precompiler_all.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -161,8 +166,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Release\disco.lib $(QTDIR)\librel\qt-mt$(QTR).lib odbc32.lib odbccp32.lib"
-				OutputFile="LPC.exe"
+				AdditionalDependencies="..\..\bin\disco.lib $(QT4DIR)\lib\QtCore4.lib"
+				OutputFile="..\..\bin\LPC.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/LPC.pdb"
@@ -569,6 +574,14 @@
 						UsePrecompiledHeader="1"
 						PrecompiledHeaderThrough=""
 						PrecompiledHeaderFile="PCH\Precompiler_all.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
 			</File>

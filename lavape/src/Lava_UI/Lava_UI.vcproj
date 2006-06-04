@@ -52,14 +52,17 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
-				AdditionalIncludeDirectories=".,..\disco,..\wxqDocView,$(QTDIR)\include"
-				PreprocessorDefinitions="WIN32;QT_DLL;LAVAUI_EXPORT;QT_THREAD_SUPPORT"
-				RuntimeLibrary="0"
-				PrecompiledHeaderFile=".\Release/Lava_UI.pch"
+				Optimization="1"
+				AdditionalIncludeDirectories="Generated;.;..\LavaGUI;..\LavaBase\Generated;..\LavaBase;..\wxqDocView;..\disco"
+				PreprocessorDefinitions="WIN32;LAVAUI_EXPORT"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/Lava_UI_all.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -76,12 +79,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib ..\LavaBase\Release\LavaBase.lib $(QTDIR)\librel\qt-mt$(QTR).lib"
-				OutputFile="..\LavaPE\Release\Lava_UI.dll"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib"
+				OutputFile="..\..\bin\Lava_UI.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/Lava_UI.pdb"
-				ImportLibrary=".\Release/Lava_UI.lib"
+				ImportLibrary="..\..\bin\Lava_UI.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -153,8 +156,10 @@
 				PreprocessorDefinitions="WIN32;LAVAUI_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Debug/Lava_UI.pch"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH\Lava_UI_all.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -245,6 +250,16 @@
 				RelativePath="cmainframe.ui"
 				>
 				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying uic to $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)"
+						Outputs="Generated\$(InputName).h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
@@ -267,6 +282,16 @@
 				RelativePath=".\generated\moc_LavaMainFrameBase.cpp"
 				>
 				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderThrough="..\LavaMainFrameBase.h"
+						PrecompiledHeaderFile="PCH/Lava_UI_all.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
@@ -285,6 +310,14 @@
 			<File
 				RelativePath=".\Lava_UI_all.cpp"
 				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>

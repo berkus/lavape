@@ -52,7 +52,9 @@
 				PreprocessorDefinitions="LAVAEXECS_EXPORT;EXECVIEW;WIN32"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/LavaExecs.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/LavaExecs_all.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -142,14 +144,17 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
-				AdditionalIncludeDirectories=".,.\res\TOOLBUTTONS,.\Generated,..\disco,..\wxqDocView,..\LavaPE,..\LavaPE\Generated,..\LavaPE\res,..\LavaPE\res\TreeIcons,..\LavaPE\res\Toolbuttons,..\LavaBase,..\LavaGUI,..\LavaBase\Generated,..\LavaPE_UI,..\LavaPE_UI\Generated,$(QTDIR)\include"
-				PreprocessorDefinitions="WIN32;QT_DLL;LAVAEXECS_EXPORT;EXECVIEW;QT_THREAD_SUPPORT"
+				Optimization="1"
+				AdditionalIncludeDirectories=".;.\res\TOOLBUTTONS;.\Generated;..\disco;..\wxqDocView;..\LavaPE;..\LavaPE\Generated;..\LavaPE\res;..\LavaPE\res\TreeIcons;..\LavaPE\res\Toolbuttons;..\LavaBase;..\LavaGUI;..\LavaBase\Generated;..\LavaPE_UI;..\LavaPE_UI\Generated"
+				PreprocessorDefinitions="LAVAEXECS_EXPORT;EXECVIEW;WIN32"
 				RuntimeLibrary="2"
-				PrecompiledHeaderFile=".\Release/LavaExecs.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/LavaExecs_all.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -167,13 +172,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Release\disco.lib ..\LavaBase\Release\LavaBase.lib $(QTDIR)\librel\qt-mt$(QTR).lib wsock32.lib"
-				OutputFile="..\LavaPE\Release\LavaExecs.dll"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib"
+				OutputFile="..\..\bin\LavaExecs.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/LavaExecs.pdb"
 				SubSystem="2"
-				ImportLibrary=".\Release/LavaExecs.lib"
+				ImportLibrary="..\..\bin\LavaExecs.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -308,6 +313,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="CDPpp.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -447,6 +453,14 @@
 						UsePrecompiledHeader="1"
 						PrecompiledHeaderThrough=""
 						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
 			</File>
@@ -601,6 +615,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="CDPpp.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -650,7 +665,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
@@ -712,7 +727,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -I..\disco -I. $(InputName).ph&#x0D;&#x0A;"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
@@ -771,6 +786,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\ComboBar.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -796,6 +812,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\ExecView.h"
 					/>
 				</FileConfiguration>
 			</File>

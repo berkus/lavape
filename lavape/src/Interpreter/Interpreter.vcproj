@@ -45,14 +45,17 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
-				AdditionalIncludeDirectories=".,$(QTDIR)\include,..\disco,..\SFLsockets,..\LavaBase,..\LavaExecs,..\wxqDocView,..\LavaPE,..\LavaGUI,..\Lava_UI,..\Lava_UI\Generated"
-				PreprocessorDefinitions="QT_DLL;LAVAEXECS_EXPORT;WIN32;INTERPRETER;QT_THREAD_SUPPORT"
+				Optimization="1"
+				AdditionalIncludeDirectories="..\LavaPE;..\LavaGUI;.;..\disco;..\LavaBase\Generated;..\LavaBase;..\LavaExecs\res\TOOLBUTTONS;..\LavaExecs;..\wxqDocView;..\Lava_UI;..\Lava_UI\Generated"
+				PreprocessorDefinitions="LAVAEXECS_EXPORT;WIN32;INTERPRETER"
 				RuntimeLibrary="2"
-				PrecompiledHeaderFile=".\Release/Interpreter.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/Interpreter_all.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -69,13 +72,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Release\disco.lib ..\SFLsockets\Release\SFLsockets.lib ..\LavaBase\Release\LavaBase.lib ..\wxqDocView\Release\wxqDocView.lib $(QTDIR)\librel\qt-mt$(QTR).lib"
-				OutputFile="..\LavaPE\Release\Interpreter.dll"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib ..\..\bin\wxqDocView.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib $(QT4DIR)\lib\QtNetwork4.lib"
+				OutputFile="..\..\bin\Interpreter.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/Interpreter.pdb"
 				SubSystem="2"
-				ImportLibrary=".\Release/Interpreter.lib"
+				ImportLibrary="..\..\bin\Interpreter.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -142,7 +145,9 @@
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/Interpreter.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/Interpreter_all.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -163,7 +168,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib ..\..\bin\wxqDocView.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\QtNetworkd4.lib $(QT4DIR)\lib\Qt3Supportd4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib ..\..\bin\wxqDocView.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\QtNetworkd4.lib"
 				OutputFile="..\..\bin\Interpreter.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -268,6 +273,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="CDPpp.h"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -336,6 +342,14 @@
 			<File
 				RelativePath=".\Interpreter_all.cpp"
 				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
@@ -432,6 +446,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="CDPpp.h"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -463,6 +478,20 @@
 			<File
 				RelativePath="..\LavaExecs\Constructs.ph"
 				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="DbgThread.h"
@@ -483,6 +512,20 @@
 			<File
 				RelativePath="..\LavaExecs\Tokens.ph"
 				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>

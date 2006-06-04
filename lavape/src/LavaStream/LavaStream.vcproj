@@ -45,14 +45,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
-				AdditionalIncludeDirectories=".,.\Generated,..\disco,..\wxqDocView,..\LavaBase,..\LavaBase\Generated,$(QTDIR)\include"
-				PreprocessorDefinitions="WIN32;LAVASTREAM_EXPORTS;QT_THREAD_SUPPORT;QT_DLL"
+				Optimization="1"
+				AdditionalIncludeDirectories=".;..\LavaBase;.\Generated;..\disco;..\wxqDocView;..\LavaBase\Generated"
+				PreprocessorDefinitions="WIN32;LAVASTREAM_EXPORT"
 				RuntimeLibrary="0"
 				PrecompiledHeaderFile=".\Release/LavaStream.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -69,12 +70,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib ..\LavaBase\Release\LavaBase.lib $(QTDIR)\librel\qt-mt$(QTR).lib odbc32.lib odbccp32.lib"
-				OutputFile="..\LavaPE\Release\Components\LavaStream.dll"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtNetwork4.lib"
+				OutputFile="..\..\bin\Components\LavaStream.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/LavaStream.pdb"
-				ImportLibrary=".\Release/LavaStream.lib"
+				ImportLibrary="..\..\bin\Components\LavaStream.lib"
 				TargetMachine="1"
 			/>
 			<Tool

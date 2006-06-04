@@ -50,7 +50,9 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Debug/wxqDocView.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH\wxqDocView.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -139,14 +141,18 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
-				AdditionalIncludeDirectories="Generated,..\disco,..\SFLsockets,$(QTDIR)\include"
-				PreprocessorDefinitions="WIN32;QT_DLL;WXMAKINGDLL;__WXMSW__;INCLUDE_MENUITEM_DEF;QT_THREAD_SUPPORT"
+				Optimization="1"
+				AdditionalIncludeDirectories="Generated;..\disco"
+				PreprocessorDefinitions="WIN32;WXMAKINGDLL;__WXMSW__;INCLUDE_MENUITEM_DEF"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="0"
-				PrecompiledHeaderFile=".\Release/wxqDocView.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH\wxqDocView_all.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -163,12 +169,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Release\disco.lib $(QTDIR)\librel\qt-mt$(QTR).lib"
-				OutputFile="..\LavaPE\Release\wxqDocView.dll"
+				AdditionalDependencies="..\..\bin\disco.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib"
+				OutputFile="..\..\bin\wxqDocView.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/wxqDocView.pdb"
-				ImportLibrary=".\Release/wxqDocView.lib"
+				ImportLibrary="..\..\bin\wxqDocView.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -269,6 +275,15 @@
 						PrecompiledHeaderFile="PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderFile="PCH\wxqDocView_all.pch"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -292,6 +307,16 @@
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="moc&apos;ing $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="mdiframes.h"
@@ -303,6 +328,16 @@
 						Name="VCCustomBuildTool"
 						Description="moc&apos;ing $(InputPath)"
 						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="moc&apos;ing $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -345,6 +380,8 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories="."
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\docview.h"
+						PrecompiledHeaderFile=".\PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -370,6 +407,8 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories="."
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\mdiframes.h"
+						PrecompiledHeaderFile=".\PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
 			</File>

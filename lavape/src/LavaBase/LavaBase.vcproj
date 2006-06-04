@@ -52,7 +52,9 @@
 				PreprocessorDefinitions="WIN32;LAVABASE_EXPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/LavaBase.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/LavaBase_all.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -145,13 +147,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="4"
-				AdditionalIncludeDirectories=".,Generated,..\disco,..\SFLsockets,..\wxqDocView,..\LavaPE_UI,$(QTDIR)\include"
+				AdditionalIncludeDirectories=".;Generated;..\disco;..\wxqDocView"
 				PreprocessorDefinitions="WIN32;LAVABASE_EXPORT;QT_DLL;QT_THREAD_SUPPORT"
 				RuntimeLibrary="2"
-				PrecompiledHeaderFile=".\Release/LavaBase.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/LavaBase_all.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -168,13 +173,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib $(QTDIR)\librel\qassistantclient.lib $(QTDIR)\librel\qt-mt$(QTR).lib odbc32.lib odbccp32.lib wsock32.lib"
-				OutputFile="..\LavaPE\Release\LavaBase.dll"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib $(QT4DIR)\lib\QtAssistantClient.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib $(QT4DIR)\lib\QtNetwork4.lib"
+				OutputFile="..\..\bin\LavaBase.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="../wxqDocView/Debug,$(QT4DIR)/lib"
+				IgnoreDefaultLibraryNames="libcmt.lib"
 				ProgramDatabaseFile=".\Release/LavaBase.pdb"
 				SubSystem="2"
-				ImportLibrary=".\Release/LavaBase.lib"
+				ImportLibrary="..\..\bin\LavaBase.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -349,6 +356,14 @@
 						UsePrecompiledHeader="1"
 						PrecompiledHeaderThrough=""
 						PrecompiledHeaderFile="PCH\LavaBase_all.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
 			</File>
@@ -543,6 +558,14 @@
 						PrecompiledHeaderFile="PCH\LavaBase_all.pch"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="CDPpp.h"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -676,9 +699,10 @@
 					Name="Release|Win32"
 					>
 					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						Name="VCCustomBuildTool"
+						Description="Applying LPC to $(InputPath)"
+						CommandLine="..\..\bin\LPC -X LAVABASE -I..\disco -I. $(InputName).ph"
+						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -735,6 +759,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\AboutBox.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -760,6 +785,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\DumpView.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -785,6 +811,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\LavaAppBase.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -810,6 +837,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\LavaBaseDoc.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -835,6 +863,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\PEBaseDoc.h"
 					/>
 				</FileConfiguration>
 			</File>

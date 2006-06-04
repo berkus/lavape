@@ -49,7 +49,9 @@
 				PreprocessorDefinitions="WIN32;INTERPRETER"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\Debug/Lava.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/Lava_all.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -139,14 +141,17 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="4"
-				AdditionalIncludeDirectories="..\disco,..\LavaBase,..\wxqDocView,..\Interpreter,../SFLsockets,..\LavaExecs,..\LavaGUI,..\LavaBase\Generated,..\Lava_UI,..\Lava_UI\Generated,res,$(QTDIR)\include"
-				PreprocessorDefinitions="WIN32;INTERPRETER;QT_THREAD_SUPPORT;QT_DLL"
+				Optimization="1"
+				AdditionalIncludeDirectories="..\disco;..\LavaBase;..\wxqDocView;..\Interpreter;..\LavaExecs;..\LavaGUI;..\LavaBase\Generated;..\Lava_UI;..\Lava_UI\Generated;res"
+				PreprocessorDefinitions="WIN32;INTERPRETER"
 				RuntimeLibrary="2"
-				PrecompiledHeaderFile=".\Release/Lava.pch"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough=""
+				PrecompiledHeaderFile="PCH/Lava_all.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -163,10 +168,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\disco\Release\disco.lib ..\wxqDocView\Release\wxqDocView.lib ..\Interpreter\Release\Interpreter.lib ..\LavaBase\Release\LavaBase.lib ..\LavaGUI\Release\LavaGUI.lib $(QTDIR)\librel\qtmain.lib $(QTDIR)\librel\qassistantclient.lib $(QTDIR)\librel\qt-mt$(QTR).lib wsock32.lib"
-				OutputFile="..\LavaPE\Release\Lava.exe"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\Interpreter.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\Lava_UI.lib $(QT4DIR)\lib\QtAssistantClient.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib $(QT4DIR)\lib\qtmain.lib $(QT4DIR)\lib\QtNetwork4.lib wsock32.lib"
+				OutputFile="..\..\bin\Lava.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libcmt.lib"
 				ProgramDatabaseFile=".\Release/Lava.pdb"
 				SubSystem="2"
 				TargetMachine="1"
@@ -299,6 +305,14 @@
 						PrecompiledHeaderFile="PCH\Lava_all.pch"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="LavaDoc.cpp"
@@ -346,6 +360,22 @@
 			<File
 				RelativePath=".\Generated\Lava_resources.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="QtCore/qglobal.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="QtCore/qglobal.h"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="Generated\moc_Lava.cpp"
@@ -369,6 +399,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\Lava.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -394,6 +425,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\LavaDoc.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -419,6 +451,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
+						PrecompiledHeaderThrough="..\MainFrm.h"
 					/>
 				</FileConfiguration>
 			</File>
@@ -507,6 +540,16 @@
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
 					CommandLine="$(QT4DIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
+					Outputs="Generated/$(InputName).cpp"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Applying rcc to $(InputPath)"
+					CommandLine="$(QT4DIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)"
 					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>
