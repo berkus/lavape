@@ -2,9 +2,9 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "LavaPE"
-!define PRODUCT_VERSION "0.8.4"
+!define PRODUCT_VERSION "0.9.0"
 !define PRODUCT_PUBLISHER "The lavape project "
-!define PRODUCT_WEB_SITE "http://lavape.sf.net"
+!define PRODUCT_WEB_SITE "http://lavape.sourceforge.net/index.htm"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\LavaPE.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define HelpLink "https://sourceforge.net/tracker/?group_id=93752&atid=605431"
@@ -17,7 +17,7 @@ SetCompressor lzma
 !include "MUI.nsh"
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "lavape-0.8.4-win32-bin.exe"
+OutFile "lavape-0.9.0-win32-bin.exe"
 Var instForAll
 Var userName
 Var unInstString
@@ -34,7 +34,7 @@ InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
 ;  !define MUI_HEADERIMAGE_RIGHT
   !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
   ;!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\win.bmp" ; optional
-  !define MUI_HEADERIMAGE_BITMAP "Volcano2.bmp" ; optional
+  !define MUI_HEADERIMAGE_BITMAP "volcano2.bmp" ; optional
   !define MUI_ABORTWARNING
 
 ; MUI Settings
@@ -119,31 +119,35 @@ Section "LavaPE (required)" SEC01
   File "*.txt"
 
   SetOutPath $INSTDIR\bin
-  File "src\LavaPE\Release\*.exe"
-  File "src\LavaPE\Release\*.dll"
-  File "src\LavaPE\Release\*.lava"
+  File "bin\*.exe"
+  File "bin\*.manifest"
+  File "bin\*.dll"
+  File "bin\*.lava"
   SetFileAttributes $OUTDIR\std.lava READONLY|ARCHIVE
-  File "src\LavaPE\Release\*.htm"
-  File "src\LavaPE\Release\*.bat"
+  File "bin\*.htm"
+  File "bin\*.bat"
+  File "C:\Qt\Qt413msvc\bin\QtCore4.dll"
+  File "C:\Qt\Qt413msvc\bin\QtGui4.dll"
+  File "C:\Qt\Qt413msvc\bin\QtNetwork4.dll"
 
   SetOutPath $INSTDIR\bin\std
-  File /r "src\LavaPE\Release\std\*.*"
+  File /r "bin\std\*.*"
   
   SetOutPath $INSTDIR\bin\LavaIcons
-  File "src\LavaPE\Release\LavaIcons\*.*"
+  File "bin\LavaIcons\*.*"
   
   SetOutPath $INSTDIR\doc
-  File /r /x CVS /x _* ".\doc\*.*"
+  File /r /x .svn /x _* ".\doc\*.*"
 
   SetOutPath $INSTDIR\samples
-  File /r /x CVS ".\samples\*.*"
+  File /r /x .svn ".\samples\*.*"
 
   CreateDirectory "$INSTDIR\bin\Components"
   CreateShortCut "$INSTDIR\bin\Components\LCompoImpl.lcom.lnk" "$INSTDIR\samples\LCompoImpl.lcom"
   
   SetOutPath $INSTDIR\bin\Components
-  File "src\LavaPE\Release\Components\LavaStream.lava"
-  File "src\LavaPE\Release\Components\LavaStream.dll"
+  File "bin\Components\LavaStream.lava"
+  File "bin\Components\LavaStream.dll"
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
   SetOutPath $INSTDIR\bin ; working directory for automatic launch of LavaPE
 SectionEnd
