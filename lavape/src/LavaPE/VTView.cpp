@@ -34,7 +34,6 @@
 CVTItemData::CVTItemData(TNodeType t, CHETVElem* V, int A)
 {
   type = t;
- // VTEl = new CHETVElem;
   VTEl_Tree = V->data;
   AmbgNo = A;
 }
@@ -189,7 +188,7 @@ bool CVTView::DrawTreeAgain()
   TID TIDCl, TIDDef;
   CVTItemData * data;
   LavaDECL *ClDECL=0, *ElDECL;
-  CHETVElem *El, *ElView;
+  CHETVElem *El;
 
   bmCl = myMainView->GetPixmap(false, false, myDECL->DeclType);
   bmPP = myMainView->GetPixmap(true, true, VirtualType);
@@ -232,9 +231,7 @@ bool CVTView::DrawTreeAgain()
             labCl = DString("Virtual types");
             itemP = InsertItem(labCl.c, bmPP,topNode, TVI_FIRST);
           }
-          ElView = new CHETVElem;
-          *ElView = *El;
-          data = new CVTItemData(TNodeType_Class, ElView, 0);
+          data = new CVTItemData(TNodeType_Class, El, 0);
           if (ClDECL)
             labCl = ClDECL->FullName;
           else 
@@ -261,9 +258,7 @@ bool CVTView::DrawTreeAgain()
             else
               itemA = InsertItem(labCl.c, bmAA, topNode);
           }
-          ElView = new CHETVElem;
-          *ElView = *El;
-          data = new CVTItemData(TNodeType_Class, ElView, 0);
+          data = new CVTItemData(TNodeType_Class, El, 0);
           if (ClDECL)
             labCl = ClDECL->FullName;
           else 
@@ -276,9 +271,7 @@ bool CVTView::DrawTreeAgain()
         }
         itemCl = itemACl;
       }
-      ElView = new CHETVElem;
-      *ElView = *El;
-      data = new CVTItemData(type, ElView, 0);
+      data = new CVTItemData(type, El, 0);
       item = InsertItem(lab.c, bm, itemCl);
       if (El->data.Ambgs.first || !El->data.ok) 
         item->SetItemMask(true, false);
@@ -291,9 +284,7 @@ bool CVTView::DrawTreeAgain()
           lab += DString(" (in ");
           lab += ElDECL->ParentDECL->LocalName;
           lab += klz;
-          ElView = new CHETVElem;
-          *ElView = *El;
-          data = new CVTItemData(type, ElView, no);
+          data = new CVTItemData(type, El, no);
           item = InsertItem(lab.c, bm, itemCl);
           item->SetItemMask(true, false);
           item->setItemData(  data);
