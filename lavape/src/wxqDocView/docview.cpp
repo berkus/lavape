@@ -2400,6 +2400,8 @@ QString ResolveLinks(QFileInfo &qf)
   QString link;
   while (qf1.isSymLink()) {
     link = qf1.readLink();
+    if (link.isEmpty())
+      return link;
     qflink = QFileInfo(link);
     if (qflink.isRelative())
       abslnkName = qf1.path() + "/" + link;
