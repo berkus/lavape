@@ -369,8 +369,11 @@ bool CLavaDoc::SaveObject(CheckData& ckd, LavaObjectPtr object)
         return false;
       }
       QDataStream ar(&file);
+      file.unsetError();
       SerializeObj(ckd, ar, &object, qf.absoluteFilePath());
-      if (ar.atEnd() || (file.error() != QFile::NoError)) {
+      QFile::FileError fErr = file.error();
+      //if (ar.atEnd() || (fErr != QFile::NoError)) {
+      if (fErr != QFile::NoError) {
         QString err = file.errorString();
         file.unsetError();
         critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
