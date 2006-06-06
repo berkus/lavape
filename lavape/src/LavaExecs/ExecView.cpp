@@ -120,13 +120,16 @@ static void CopyUntil(ObjReference *oldRef,CHE *chpStop,ObjReference *newRef) {
 
 CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,"ExecView")
 {
-  initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
-        active = false;
+  initialUpdateDone = false; // indicates whether OnInitialUpdate has already been execute
+  active = false;
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
   layout->addWidget(sv);
   layout->setMargin(0);
   redCtl = sv->execCont;
+  //sv->setFocusProxy(redCtl);
+  //sv->viewport()->setFocusProxy(redCtl);
+  //setFocusProxy(redCtl);
   QPalette palette=redCtl->palette();
   palette.setColor(QPalette::Active,QPalette::Window,Qt::white);
   redCtl->setPalette(palette);
@@ -853,6 +856,8 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     externalHint = false;
     if (hint && hint->com == CPECommand_OpenExecView)
       delete hint;
+    if (active)
+      redCtl->setFocus();
   }
 }
 
@@ -6056,7 +6061,7 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
     if (Base)
       SetHelpText();
     if (!hasFocus())
-      setFocus();
+      redCtl->setFocus();
   }
   else if (!bActivate) {
     active = false;

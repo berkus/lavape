@@ -648,8 +648,9 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   if (parm->flags.Contains(isSelfVar)) {
     if (parm->parentObject->parentObject->primaryToken != initializing_T
     && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-    && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
-      ((SynObject*)((CHE*)((ObjReference*)parm)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
+    && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+    && !formDecl->SecondTFlags.Contains(closed)) {
+      ((SynObject*)((CHE*)((ObjReference*)parm)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
       ok &= false;
     }
   }
