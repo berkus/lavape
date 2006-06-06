@@ -83,6 +83,7 @@
 				OutputFile="..\..\bin\Lava_UI.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libcmt.lib"
 				ProgramDatabaseFile=".\Release/Lava_UI.pdb"
 				ImportLibrary="..\..\bin\Lava_UI.lib"
 				TargetMachine="1"
@@ -184,6 +185,7 @@
 				OutputFile="..\..\bin\Lava_UI.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libcmtd.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/Lava_UI.pdb"
 				ImportLibrary="..\..\bin\Lava_UI.lib"
@@ -255,7 +257,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
 				</FileConfiguration>
