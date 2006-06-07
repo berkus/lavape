@@ -386,6 +386,7 @@ QString CLavaPEApp::InitWebBrowser () {
 void CLavaPEApp::OnAppAbout()
 {
   CAboutBox aboutDlg(m_appWindow,"About LavaPE",true);
+  aboutDlg.setWindowFlags(aboutDlg.windowFlags() ^ Qt::WindowContextHelpButtonHint);
   aboutDlg.exec();
 }
 

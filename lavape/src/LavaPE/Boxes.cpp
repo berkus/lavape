@@ -4319,6 +4319,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
   switch (decl->DeclType) {
   case Attr:
     box = new CAttrBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     valIni = ((CAttrBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
@@ -4330,6 +4331,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
 
   case CompObjSpec:
     box = new CCompSpecBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     valIni = ((CCompSpecBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
@@ -4342,6 +4344,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
   case EnumDef:
     decl->DeclType = Interface;
     box = new CEnumBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     valIni = ((CEnumBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
@@ -4354,6 +4357,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
 
   case Function:
     box = new CFuncBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     valIni = ((CFuncBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
@@ -4366,6 +4370,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
   case IAttr:
   case OAttr:
     box = new CIOBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     valIni = ((CIOBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
@@ -4378,6 +4383,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
   case Impl:
   case CompObj:
     box = new CImplBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     valIni = ((CImplBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
@@ -4389,6 +4395,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
 
   case Initiator:
     box = new CInitBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     valIni = ((CInitBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
@@ -4400,6 +4407,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
   case Interface:
     if (decl->SecondTFlags.Contains(isSet) && isNew) {
       box = new CSetBox(decl, origDECL, doc, isNew, parent);
+      box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
       valIni = ((CSetBox*)box)->OnInitDialog();
       if (valIni == BoxContinue)
         okBox = box->exec();
@@ -4410,19 +4418,21 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
     }
     else {
       box = new CInterfaceBox(decl, origDECL, doc, isNew, parent);
-    valIni = ((CInterfaceBox*)box)->OnInitDialog();
-    if (valIni == BoxContinue)
-      okBox = box->exec();
-    else if (valIni == BoxOK)
-      okBox = QDialog::Accepted;
-    else
-      okBox = QDialog::Rejected;
+      box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
+      valIni = ((CInterfaceBox*)box)->OnInitDialog();
+      if (valIni == BoxContinue)
+        okBox = box->exec();
+      else if (valIni == BoxOK)
+        okBox = QDialog::Accepted;
+      else
+        okBox = QDialog::Rejected;
       buildSet = ((CInterfaceBox*)box)->valBuildSet;
     }
     break;
 
   case Package:
     box = new CPackageBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     valIni = ((CPackageBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
@@ -4434,6 +4444,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
 
   case VirtualType:
     box = new CVTypeBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     valIni = ((CVTypeBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
@@ -4444,6 +4455,7 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
     break;
   case FormText:
     box = new CFormTextBox(decl, parent, asFirst);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     okBox = box->exec();
     break;
   default: ;

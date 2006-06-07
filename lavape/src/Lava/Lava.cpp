@@ -438,6 +438,7 @@ bool CLavaApp::DoSaveAll()
 void CLavaApp::OnAppAbout()
 {
   CAboutBox aboutDlg(m_appWindow,"About Lava",true);
+  aboutDlg.setWindowFlags(aboutDlg.windowFlags() ^ Qt::WindowContextHelpButtonHint);
   aboutDlg.exec();
 }
 
