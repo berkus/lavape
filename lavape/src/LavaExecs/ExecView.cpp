@@ -856,8 +856,8 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     externalHint = false;
     if (hint && hint->com == CPECommand_OpenExecView)
       delete hint;
-    if (active)
-      redCtl->setFocus();
+    //if (active)
+    //  redCtl->setFocus();
   }
 }
 

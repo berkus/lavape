@@ -355,7 +355,7 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   QFont f;
 
   pb = new QPushButton(QString(text),tb);
-  pb->setWindowFlags(Qt::SubWindow);
+  //pb->setWindowFlags(Qt::SubWindow);
 
   tb->addWidget(pb);
   connect(pb,SIGNAL(clicked()),this,slotParm);
