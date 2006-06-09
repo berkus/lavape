@@ -92,7 +92,8 @@ enum VarRefContext {
   assignmentTarget,
   funcHandle,
   arrayTarget,
-  inputParam
+  inputParam,
+  funcOutput
 };
 
 enum ROContext {

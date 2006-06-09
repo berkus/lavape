@@ -2954,7 +2954,7 @@ VarRefContext ObjReference::Context () {
   && parentObject->parentObject->primaryToken == assignFS_T) {
     funcStm = (FuncStatement*)parentObject->parentObject;
     if (parentObject->containingChain == &funcStm->outputs)
-      return assignmentTarget;
+      return funcOutput;
   }
   else if (parentObject->IsFuncInvocation()) {
     funcExpr = (FuncExpression*)parentObject;
@@ -3479,7 +3479,9 @@ bool ObjReference::Check (CheckData &ckd) {
     VarRefContext vrc=Context();
     switch (vrc) {
     case assignmentTarget:
+      break;
     case copyTarget:
+    case funcOutput:
       ok1 &= AssignCheck(ckd,vrc);
       break;
 
@@ -3799,6 +3801,8 @@ bool Assignment::Check (CheckData &ckd)
   }
 
   ok &= ((SynObject*)exprValue.ptr)->Check(ckd);
+  if (targObj->primaryToken == ObjRef_T)
+    ok &= ((ObjReference*)targObj)->AssignCheck(ckd,assignmentTarget);
   if (!ok)
     ERROREXIT
 
