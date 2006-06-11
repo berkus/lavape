@@ -357,8 +357,8 @@ void LavaBaseStringInit() {
   ERR_InadmissibleThrow  = QObject::tr("The exception specification of the current function is empty or doesn\'t contain this exception type");
   ERR_ArrOperatorUndefined  = QObject::tr("No array access operator defined");
   ERR_TempUnfinished  = QObject::tr("""temp"" must not be passed as a parameter (unless to initializers) since it counts as ""still unfinished""");
-  ERR_SelfClosed  = QObject::tr("\"self\" is closed here: member access forbidden");
-ERR_SelfUnfinished  = QObject::tr("From within an initializer ""self"" may be passed only to initializers as a parameter");
+  ERR_SelfClosed  = QObject::tr("\"self\" has been declared \"closed\": member access forbidden");
+  ERR_SelfUnfinished  = QObject::tr("\"self\" may be still unfinished here: member access forbidden");
   ERR_One_must_remain  = QObject::tr("At least one such item must remain!");
   ERR_No_input  = QObject::tr("An empty input is not allowed here");
   ERR_ForceOver  = QObject::tr("Function of a base class has the force overwrite on derivation flag and must therefore be overwridden in the derivation class");

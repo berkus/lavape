@@ -1452,25 +1452,6 @@ void CLavaMainFrame::emitSignal(){
 // end of exec handlers
 /////////////////////////////////////////////
 
-/*
-void CLavaMainFrame::on_cascadeAction_triggered()
-{
-  Cascade();
-
-  int ii;
-  QWidget *window;
-  QWidgetList windows = m_workspace->windowList();
-
-  wxTheApp->isChMaximized = false;
-  m_workspace->on_cascadeAction_triggered();
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized())
-      if (window->inherits("wxMDIChildFrame"))
-        ((wxMDIChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
-  }
-}
-*/
 
 void CLavaMainFrame::on_tileVerticAction_triggered()
 {

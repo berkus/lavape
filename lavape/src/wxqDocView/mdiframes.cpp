@@ -310,7 +310,7 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
 {
  QString title=windowTitle();
 
- if (activate && !(isMinimized() && !windowMenuAction))
+ if (activate && isMinimized() && windowMenuAction)
    if (oldWindowState == Qt::WindowMaximized)
      showMaximized();
    else

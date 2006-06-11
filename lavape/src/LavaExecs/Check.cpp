@@ -3341,13 +3341,13 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
     ((CHE*)refIDs.first)->successor = secondChe;
   }
   else if (flags.Contains(isSelfVar)
-  && (CHE*)refIDs.first->successor == refIDs.last
+  && refIDs.first != refIDs.last
   && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-  && !Inherited(ckd)) {
-    if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this)) {
-      SetError(ckd,rc,refName.c);
-      return false;
-    }
+  && !Inherited(ckd)
+  && (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+      || ((SelfVar*)ckd.selfVar)->IsClosed(ckd))) {
+    ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinished);
+    return false;
   }
 
   return ok;
