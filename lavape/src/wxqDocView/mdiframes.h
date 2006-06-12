@@ -120,10 +120,11 @@ public:
   //virtual void Activate(bool activate=true,bool windowMenuAction=false);
 
 //  FRAMEFACTORY(wxMDIChildFrame)
-	Qt::WindowState oldWindowState;
+	//Qt::WindowState oldWindowState;
 
 protected:
-  virtual bool event ( QEvent * e );
+  void resizeEvent(QResizeEvent *ev);
+  bool event (QEvent * e);
   unsigned m_viewCount;
   QList<wxView*> m_viewList;
   QWidget *m_clientWindow;

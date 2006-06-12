@@ -161,7 +161,7 @@ void wxMainFrame::on_cascadeAction_triggered()
     window = windows.at(ii);
     if (!((QMainWindow*)window)->isMinimized())
       if (window->inherits("wxMDIChildFrame")) {
-        ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
+        //((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
         window->resize(sz.width()*7/10, sz.height()*7/10);
       }
   }
@@ -185,9 +185,9 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
       cc--;
       minHeight = menubar->height();
     }
-    else
-      if (window->inherits("wxMDIChildFrame"))
-        ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
+    //else
+    //  if (window->inherits("wxMDIChildFrame"))
+    //    ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
   }
   if (!cc)
     return;
@@ -218,6 +218,7 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
   QWidgetList windows = m_workspace->windowList();
 
   lastTile = 2;
+  wxTheApp->isChMaximized = false;
 
   if (!windows.count() )
     return;
@@ -228,9 +229,9 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
       cc--;
       minHeight = menubar->height();
     }
-    else
-      if (window->inherits("wxMDIChildFrame"))
-        ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
+    //else
+    //  if (window->inherits("wxMDIChildFrame"))
+    //    ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
   }
   if (!cc)
     return;
@@ -260,7 +261,7 @@ void wxMainFrame::OnCloseWindow()
 wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
     : QWidget(parent)
 {
-  resize(500,300);
+  //resize(500,300);
   ((QWorkspace*)parent)->addWindow(this);
   layout = new QVBoxLayout(this);
   setLayout(layout);
@@ -272,22 +273,26 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
   m_viewCount = 0;
   deleting = false;
   m_clientWindow = this;
-  if (wxTheApp->isChMaximized)
-    oldWindowState = Qt::WindowMaximized;
-  else
-    oldWindowState = Qt::WindowNoState;
+  //if (wxTheApp->isChMaximized)
+  //  oldWindowState = Qt::WindowMaximized;
+  //else
+  //  oldWindowState = Qt::WindowNoState;
   lastActive = 0;
   QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(QEvent::User,this));
+}
+
+void wxMDIChildFrame::resizeEvent(QResizeEvent *ev) {
 }
 
 bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   doc->AddChildFrame(this);
   m_document = doc;
-  if (oldWindowState == Qt::WindowMaximized)
-    showMaximized();
-  else
-    showNormal();
+  show();
+  //if (oldWindowState == Qt::WindowMaximized)
+  //  parentWidget()->showMaximized();
+  //else
+  //  parentWidget()->showNormal();
   return true;
 }
 
@@ -311,10 +316,11 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
  QString title=windowTitle();
 
  if (activate && isMinimized() && windowMenuAction)
-   if (oldWindowState == Qt::WindowMaximized)
-     showMaximized();
+   //if (oldWindowState == Qt::WindowMaximized)
+   if (wxTheApp->isChMaximized)
+     parentWidget()->showMaximized();
    else
-     showNormal();
+     parentWidget()->showNormal();
  if (title.length() && title.at(title.length()-1) == '*')
    title = title.left(title.length()-1);
  wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
@@ -336,20 +342,14 @@ void wxMDIChildFrame::SetTitle(QString &title)
     wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
 
-bool wxMDIChildFrame::event(QEvent * e )
+bool wxMDIChildFrame::event(QEvent *ev)
 {
-  switch (e->type()) {
-  case Qt::WindowNoState:
-    oldWindowState = Qt::WindowNoState;
-    wxTheApp->isChMaximized = false;
-    break;
-  case Qt::WindowMaximized:
-    oldWindowState = Qt::WindowMaximized;
-    wxTheApp->isChMaximized = true;
-    break;
-  default: ;
+  if (ev->type() == QEvent::WindowStateChange) {
+    //oldWindowState = ((QWindowStateChangeEvent*)ev)->oldState() & Qt::WindowMaximized ?
+    //  Qt::WindowMaximized : Qt::WindowNoState;
+    wxTheApp->isChMaximized = isMaximized();
   }
-  return QWidget::event(e);
+  return QWidget::event(ev);
 }
 
 void wxMDIChildFrame::RemoveView(wxView *view)

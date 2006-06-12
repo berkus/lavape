@@ -1803,8 +1803,9 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     list.replace(2,totalW - list.at(0) - list.at(1));
     splitter->setSizes(list);
     lastActive = viewM;
-    if  ((oldWindowState == Qt::WindowMaximized) && showIt)
-      showMaximized();
+    //if  ((oldWindowState == Qt::WindowMaximized) && showIt)
+    if  (wxTheApp->isChMaximized && showIt)
+      parentWidget()->showMaximized();
 		return true;
   }
   else {
@@ -1937,8 +1938,9 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     listH.replace(0,int(totalH * 0.3));
     listH.replace(1,int(totalH * 0.7));
     split->setSizes(listH);
-    if (oldWindowState == Qt::WindowMaximized)
-      showMaximized();
+    //if (oldWindowState == Qt::WindowMaximized)
+    if (wxTheApp->isChMaximized)
+      parentWidget()->showMaximized();
     return true;
   }
   else {
