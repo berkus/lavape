@@ -48,7 +48,8 @@ public:
 
 class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
-    //friend class WXDLLEXPORT wxMDIChildFrame;
+    friend class wxMDIChildFrame;
+    friend class wxApp;
 public:
   wxMainFrame();
   virtual ~wxMainFrame();

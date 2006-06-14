@@ -3014,7 +3014,8 @@ bool CLavaPEDoc::OnCloseDocument()
 
 void CLavaPEDoc::OnCloseLastExecView()
 {
-	if (wxTheApp->deletingMainFrame) return;
+	if (wxTheApp->deletingMainFrame)
+    return;
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->hide();
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->hide();
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->hide();

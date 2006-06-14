@@ -166,6 +166,14 @@ static bool cmdLineEvaluated=false;
 
 void wxApp::onIdle()
 {
+  if (!windowList.isEmpty()) {
+    for (int i=0; i<windowList.size(); i++)
+      if (isChMaximized)
+        windowList[i]->showMaximized();
+      else
+        windowList[i]->show();
+    windowList.clear();
+  }
   // make sure that UpdateUI is invoked only once between two wait states
   //if (!inUpdateUI) {
     inUpdateUI = true;

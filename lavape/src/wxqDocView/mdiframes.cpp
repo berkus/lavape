@@ -306,7 +306,7 @@ void wxMDIChildFrame::InitialUpdate()
 {
   for (int i=0; i<m_viewList.size(); i++) {
     m_viewList.at(i)->OnInitialUpdate();
-                m_viewList.at(i)->show();
+    m_viewList.at(i)->show();
   }
   show();
 }
@@ -315,12 +315,15 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
 {
  QString title=windowTitle();
 
- if (activate && isMinimized() && windowMenuAction)
-   //if (oldWindowState == Qt::WindowMaximized)
-   if (wxTheApp->isChMaximized)
-     parentWidget()->showMaximized();
+ if (activate)
+   if (isMinimized() && windowMenuAction)
+     if (wxTheApp->isChMaximized)
+       showMaximized();
+     else
+       showNormal();
    else
-     parentWidget()->showNormal();
+     show();
+    
  if (title.length() && title.at(title.length()-1) == '*')
    title = title.left(title.length()-1);
  wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
@@ -347,7 +350,13 @@ bool wxMDIChildFrame::event(QEvent *ev)
   if (ev->type() == QEvent::WindowStateChange) {
     //oldWindowState = ((QWindowStateChangeEvent*)ev)->oldState() & Qt::WindowMaximized ?
     //  Qt::WindowMaximized : Qt::WindowNoState;
-    wxTheApp->isChMaximized = isMaximized();
+    wxTheApp->isChMaximized = parentWidget()->isMaximized();
+  }
+  else if (ev->type() == QEvent::Close) {
+    wxTheApp->windowList = wxTheApp->m_appWindow->m_workspace->windowList();
+    wxTheApp->windowList.removeAt(wxTheApp->windowList.indexOf(this));
+    for (int i=0; i<wxTheApp->windowList.size(); i++)
+      wxTheApp->windowList[i]->hide();
   }
   return QWidget::event(ev);
 }
