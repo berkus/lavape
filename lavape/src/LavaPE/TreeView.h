@@ -40,6 +40,7 @@ public:
 
   CTreeItem(QString label, int ipix, CTreeItem* parent, CTreeItem* afterItem);
   CTreeItem(QString label, QTreeWidget* parent, CTreeItem* afterItem);
+  CTreeItem(QString label, QTreeWidget* parent);
   CTreeItem(QString label, int ipix, MyListView* parent);
 
   ~CTreeItem();

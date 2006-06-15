@@ -74,6 +74,19 @@ CTreeItem::CTreeItem(QString label, QTreeWidget* parent, CTreeItem* afterItem)
   inRename = false;
 }
 
+CTreeItem::CTreeItem(QString label, QTreeWidget* parent)
+  :QTreeWidgetItem(parent)
+{
+  delPix = false;
+  nPix = 0;
+  normalPix = 0;
+  data = 0;
+  //setHeight(16);
+  setText(0,label);
+//  setVisible(true);
+  inRename = false;
+}
+
 CTreeItem::CTreeItem (QString label, int ipix, MyListView* parent)
   :QTreeWidgetItem(parent)
 {

@@ -175,8 +175,7 @@ void CUtilityView::SetComment(const DString& text, bool toStatebar)
 
 void CUtilityView::SetFindText(const DString& text, CFindData* data)
 {
-  CTreeItem *item = new CTreeItem(text.c, FindPage, (CTreeItem*)FindPage->currentItem());
-  FindPage->setCurrentItem(item);
+  CTreeItem *item = new CTreeItem(text.c, FindPage);
   item->setItemData((TItemData*)data);
 }
 
