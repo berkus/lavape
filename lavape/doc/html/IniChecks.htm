@@ -53,9 +53,9 @@ expressive means (the <font color="#0000FF"><b>
 <a href="whatsThis/IfdefElse.htm">ifdef</a></b></font> conditional 
 statement and the <font color="#0000FF"><b>
 <a href="whatsThis/IfdefElse.htm#elseExpr">else</a></b></font> expression) in 
-release 0.9 have changed <font color="#FF0000"><i><b>Lava</b></i></font> into an object-oriented programming language (the first?) that <b>completely 
-prevents missing initialization and inadvertent use of null values by static 
-checks, i.e., at programming time</b>.</p>
+release 0.9 have changed <font color="#FF0000"><i><b>Lava</b></i></font> into an object-oriented programming language (the first?) that <b>
+completely prevents missing initialization and inadvertent use of null values 
+already at programming time, i.e., by purely static checks</b>.</p>
 
 
 <p>This could be achieved only by a major
@@ -460,5 +460,17 @@ initialization are: </p>
 <font color="#FF0000"><i>Lava</i></font> completely and reliably prevents all 
 kinds of inadvertent access to uninitialized variables or null objects by purely 
 static checks, i.e. already at programming time.</b></p>
+<p>Two further kinds of erroneous data access that can be recognized only at run 
+time remain in <font color="#FF0000"><i><b>Lava</b></i></font>:</p>
+<ol>
+  <li>You may catch an exception thrown by class method and subsequently ignore 
+  the undefined, null state of output parameters that normally would have 
+  well-defined non-null values if the exception had not occurred. Access to such 
+  an output parameter will in turn trigger a null-object exception.</li>
+  <li>If you (by mistake / prematurely) finalize/zombify objects (see the base 
+  class <i>Object </i>of all <font color="#FF0000"><i><b>Lava</b></i></font> 
+  classes) and then try to access these, a specific access-to-zombie exception 
+  will be thrown.</li>
+</ol>
 </body>
 </html>

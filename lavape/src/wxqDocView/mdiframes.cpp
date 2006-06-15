@@ -290,9 +290,9 @@ bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   m_document = doc;
   show();
   //if (oldWindowState == Qt::WindowMaximized)
-  //  parentWidget()->showMaximized();
+  //  showMaximized();
   //else
-  //  parentWidget()->showNormal();
+  //  showNormal();
   return true;
 }
 

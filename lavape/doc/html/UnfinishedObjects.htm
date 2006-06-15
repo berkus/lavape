@@ -1,131 +1,160 @@
 <!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN" "hmpro4.dtd">
-<html>
+<html lang="en-us">
 <head>
 
-
-  
   <meta http-equiv="Content-Language" content="en-us">
 
-
-  
   <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 
-
-  
   <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
 
-
-  
   <meta name="ProgId" content="FrontPage.Editor.Document">
-
-  
-
-
-  
   <title>Unfinished objects</title>
+
+
   <link rel="STYLESHEET" type="text/css" href="LavaStyles.css">
+
 </head>
 
 
 <body>
 
+<h2 align="center"><strong>Unfinished/closed/opaque/quarantined
+objects</strong></h2>
 
-<h2 align="center"><strong>Unfinished/closed/opaque/quarantined objects</strong></h2>
-
-
-<p>Assume you want to initialize two objects <i>a</i> and <i>b</i> that point to 
-each other. Then you cannot completely initialize <i>a</i> before creating <i>b,</i> 
+<p>Assume you want to initialize two objects <i>a</i>
+and <i>b</i> that point to each other. Then you cannot
+completely initialize <i>a</i> before creating <i>b,</i>
 of course, and vice versa.</p>
-<p>Other object-oriented languages, like <i><font color="#FF0000"><b>C++</b></font></i> 
-or <font color="#FF0000"><i><b>Java</b></i></font>, solve this problem simply by 
-forgoing a complete initialization discipline:</p>
-<p>A <font color="#FF0000"><i><b>C++</b></i></font> 
-or <font color="#FF0000"><i><b>Java</b></i></font> constructor need not fully 
-initialize a new object. Rather, initialization of an object may be scattered 
-over large parts and various stages of an application run in these languages. 
-These long-distance dependencies will make it rather confusing and unclear 
-frequently, in which state of initialization an object is at a certain point in 
-a program and thereby increases the danger of inadvertent access to not yet initialized 
-members considerably.</p>
-<p>We consider this <b>absence of a stringent and statically checked initialization 
-discipline</b> as a major source of run time errors and as a serious obstacle on the 
-way to more comprehensible and maintainable programs. The latter goals can be 
-reached only if we strictly <b>avoid long-distance effects and dependencies</b> and strive for more 
-<b>&quot;locally comprehensible&quot; programs</b>.</p>
-<p>In <font color="#FF0000"><i><b>Lava</b></i></font>, the basic idea on how to 
-solve the problem of improper use of still unfinished objects is to provide a 
-specific attribute <b>&quot;closed&quot;</b> that can be added to the declaration of 
-a local 
-variable, formal parameter and <i>self</i> object of methods, and to disallow  
-all references to the members of &quot;closed&quot; objects: &quot;Closed&quot; objects are in 
-this sense 
-<b>&quot;opaque&quot;</b> or <b>&quot;quarantined&quot;</b>. (<a name="closed"></a>Use the
-<img border="0" src="../images/Closed.png" width="16" height="15"> tool button 
-on the &quot;Exec switches toolbar&quot; to declare a local variable &quot;closed&quot;.)</p>
-<p>Furthermore, <font color="#FF0000"><i><b>LavaPE</b></i></font> restricts and 
-controls the propagation of such unfinished objects at programming time in order 
-to make completely clear which objects might be infected (possibly deeply nested 
-in their internal structure)&nbsp; at any place in a program with &quot;the bacillus of incomplete 
-initialization&quot; and will be treated as closed/opaque/quarantined in their entirety 
-therefore:</p>
+
+<p>Other object-oriented languages, like <i><font color="#ff0000"><b>C++</b></font></i>
+or <font color="#ff0000"><i><b>Java</b></i></font>,
+solve this problem simply by forgoing a complete initialization
+discipline:</p>
+
+<p>A <font color="#ff0000"><i><b>C++</b></i></font>
+or <font color="#ff0000"><i><b>Java</b></i></font>
+constructor need not fully initialize a new object. Rather,
+initialization of an object may be scattered over large parts and
+various stages of an application run in these languages. These
+long-distance dependencies will make it rather confusing and unclear
+frequently, in which state of initialization an object is at a certain
+point in a program and thereby increases the danger of inadvertent
+access to not yet initialized members considerably.</p>
+
+<p>We consider this <b>absence of a stringent and
+statically checked initialization discipline</b> as a major
+source of run time errors and as a serious obstacle on the way to more
+comprehensible and maintainable programs. The latter goals can be
+reached only if we strictly <b>avoid long-distance effects and
+dependencies</b> and strive for more <b>"locally
+comprehensible" programs</b>.</p>
+
+<p>In <font color="#ff0000"><i><b>Lava</b></i></font>,
+the basic idea on how to solve the problem of improper use of still
+unfinished objects is to provide a specific attribute <b>"closed"</b>
+that can be added to the declaration of a local variable, formal
+parameter and <i>self</i> object of methods, and to
+disallow all references to the members of "closed" objects: "Closed"
+objects are in this sense <b>"opaque"</b> or <b>"quarantined"</b>.
+(<a name="closed"></a>Use the
+<img src="../images/Closed.png" border="0" height="15" width="16"> tool button on the "Exec switches toolbar" to
+declare a local variable "closed".)</p>
+
+<p>Furthermore, <font color="#ff0000"><i><b>LavaPE</b></i></font>
+restricts and controls the propagation of such unfinished objects at
+programming time in order to make completely clear which objects might
+be infected (possibly deeply nested in their internal
+structure)&nbsp; at any place in a program with "the bacillus of
+incomplete initialization" and will be treated as
+closed/opaque/quarantined in their entirety therefore:</p>
+
 <ul>
-  <li>The actual origin of unfinished objects are the <i>self</i> objects in
-  <a href="ObjectLifeCycle.htm#creation">initializers</a>. At any point in the <a href="EditExec.htm#exec">exec</a>(=body) 
-  of an initializer <b> <font color="#FF0000">
-  <i>LavaPE</i></b></font> <a href="IniChecks.htm">knows</a> whether values 
-  have already been assigned to <b>all</b> mandatory members of <i>self</i> at 
-  this point. At 
-  places in the <a href="ObjectLifeCycle.htm#creation">initializer's</a>
-  <a href="EditExec.htm#exec">exec</a> where this condition is not yet 
-  fulfilled, <i>self</i> is treated as &quot;closed&quot; in the above sense. 
-  Even at places where the object has already been completely initialized we may 
-  be forced to treat the object as closed, namely if potentially unfinished 
-  objects are passed to this initializer through closed input parameters, since 
-  they may have &quot;infected&quot; the <i>self</i> object.</li>
-  <li>Any object that is already known as a potentially unfinished object can be propagated in 
-  the following ways (but, of course, only if the target has also been declared 
-  &quot;closed&quot;):<ol>
-    <li>Within an initializer you can assign closed objects to (direct, 
-    top-level) members of the <i>self</i> object. </li>
-    <li>You can assign a closed object to a non-top-level member of <i>self</i> 
-    or to a (possibly nested) member of any other object <i>x</i> if <i>self</i> or 
-    <i>x</i>, 
-    respectively, has been declared &quot;closed&quot; explicitly. (Note, 
-    however, that such an 
-    assignment is possible only if the receiving parent object is a
-    <a href="TwoObjectCategories.htm">state object</a>.)</li>
-    <li>You can assign closed objects  to closed local variables and output parameters 
-  of the current <a href="EditExec.htm#exec">exec</a>.</li>
-    <li>You can use a closed object as an (actual) input parameter to a method 
-    invocation if the corresponding formal input parameter has been declared 
-    &quot;closed&quot;.</li>
-    <li>You can use a closed object <i>x</i> to call a method <i>m</i>: <i><br>
-&nbsp;&nbsp;&nbsp;&nbsp; </i><font color="#0000FF"><b>call</b></font> x.m(...),<br>
-    provided the <i>self</i> object of <i>m</i> has been
-    <a href="dialogs/FunctionBox.htm#selfClosed">declared &quot;closed</a>&quot;.</li>
-  </ol>
+
+  <li>The actual origin of unfinished objects are the <i>self</i>
+objects in <a href="ObjectLifeCycle.htm#creation">initializers</a>.
+At any point in the <a href="EditExec.htm#exec">exec</a>(=body)
+of an initializer <b> <font color="#ff0000"> <i>LavaPE</i></font></b>
+    <a href="IniChecks.htm">knows</a> whether values
+have already been assigned to <b>all</b> mandatory members
+of <i>self</i> at this point. At places in the <a href="ObjectLifeCycle.htm#creation">initializer's</a> <a href="EditExec.htm#exec">exec</a> where this condition
+is not yet fulfilled, <i>self</i> is treated as "closed"
+in the above sense. Even at places where the object has already been
+completely initialized we may be forced to treat the object as closed,
+namely if potentially unfinished objects are passed to this initializer
+through closed input parameters, since they may have "infected" the <i>self</i>
+object.</li>
+
+  <li>Any object that is already known as a potentially
+unfinished object can be propagated in the following ways (but, of
+course, only if the target has also been declared "closed"):
+    <ol>
+
+      <li>Within an initializer you can assign closed objects to
+(direct, top-level) members of the <i>self</i> object. </li>
+
+      <li>You can assign a closed object to a non-top-level
+member of <i>self</i> or to a (possibly nested) member of
+any other object <i>x</i> if <i>self</i> or <i>x</i>,
+respectively, has been declared "closed" explicitly. (Note, however,
+that such an assignment is possible only if the receiving parent object
+is a <a href="TwoObjectCategories.htm">state object</a>.)</li>
+
+      <li>You can assign closed objects to closed local variables
+and output parameters of the current <a href="EditExec.htm#exec">exec</a>.</li>
+
+      <li>You can use a closed object as an (actual) input
+parameter to a method invocation if the corresponding formal input
+parameter has been declared "closed".</li>
+
+      <li>You can use a closed object <i>x</i> to
+call a method <i>m</i>: <i><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp; </i><font color="#0000ff"><b>call</b></font>
+x.m(...),<br>
+
+provided the <i>self</i> object of <i>m</i>
+has been <a href="dialogs/FunctionBox.htm#selfClosed">declared
+"closed</a>".</li>
+
+    </ol>
+
   </li>
+
 </ul>
-<p>These rules guarantee that unfinished objects are recognized as such and propagated only to &quot;closed&quot; 
-variables, and their members can never be referenced.</p>
-<p><b>Note also that a
-<a href="ObjectLifeCycle.htm#creation">newly created</a> object is always 
-guaranteed to be completely finished if you don't pass a closed object as an 
-actual input parameter to the object's initializer.</b></p>
-<p>Or in other words: Incompleteness can be propagated in upward direction in 
-the programs call stack only if it has been passed downward before.</p>
 
+<p>These rules guarantee that unfinished objects are recognized
+as such and propagated only to "closed" variables, and their members
+can never be referenced.</p>
 
-<p>Note that (for the sake of simplicity) the &quot;closed&quot; attribute cannot be 
-assigned to individual member variables of <font color="#FF0000"><i><b>Lava</b></i></font> 
-classes but only to local variables, function parameters and the <i>self</i> 
+<hr style="width: 100%; height: 2px;">
+<p><b>Note 1: </b>A
+<a href="ObjectLifeCycle.htm#creation">newly created</a>
+object is always guaranteed to be completely finished if you don't pass
+a closed object as an actual input parameter to the object's
+initializer.</p>
+
+<p>Or in other words: Incompleteness can be propagated in upward
+direction in the programs call stack only if it has been passed
+downward before.</p>
+
+<p><b>Note 2:</b>
+For the sake of simplicity the "closed" attribute cannot be assigned to
+individual member variables of <font color="#ff0000"><i><b>Lava</b></i></font>
+classes but only to local variables, function parameters and the <i>self</i>
 variable of functions.</p>
 
+<p><b>Note 3:</b>
+All combinations of the mandatory/optional and closed/non-closed
+attributes are possible for <a href="#closed">local
+variables</a> and
+<a href="dialogs/FuncParmBox.htm#closed">function
+parameters</a>.</p>
 
-<p>Note that all combinations of the mandatory/optional and closed/non-closed 
-attributes are possible for <a href="#closed">local variables</a> and
-<a href="dialogs/FuncParmBox.htm#closed">function parameters</a>.</p>
+<h3>See also</h3>
 
+<p><a href="IniChecks.htm">Complete
+initialization checks</a></p>
 
 </body>
 </html>

@@ -1812,7 +1812,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     lastActive = viewM;
     //if  ((oldWindowState == Qt::WindowMaximized) && showIt)
     if  (wxTheApp->isChMaximized && showIt)
-      parentWidget()->showMaximized();
+      showMaximized();
 		return true;
   }
   else {
@@ -1947,7 +1947,7 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     split->setSizes(listH);
     //if (oldWindowState == Qt::WindowMaximized)
     if (wxTheApp->isChMaximized)
-      parentWidget()->showMaximized();
+      showMaximized();
     return true;
   }
   else {
