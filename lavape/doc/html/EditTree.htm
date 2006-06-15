@@ -14,8 +14,9 @@ type=text/css rel=STYLESHEET></HEAD>
 view is associated with three specific toolbars, the <B>"tree operation 
 bar"</B>, the actual <B>"declaration bar", </B>and the<B> "details bar".</B>. 
 </P>
-<P align=left>The <B>tree operation bar</B></P>
-<P align=center><IMG src="../images/TreeTB.png" width="330" height="32"></P>
+<P align=left>The <B>tree operations toolbar</B></P>
+<P align=center>
+<IMG src="../images/TreeOps.gif" alt="Tree operations toolbar" align="middle" width="317" height="23"></P>
 <P>provides the following operations (from left to right), which partly apply to 
 a single tree node, partly to the sub-tree starting at the current selection, 
 partly to the entire declaration tree:</P>
@@ -64,8 +65,9 @@ partly to the entire declaration tree:</P>
   <LI><B><IMG alt=Run src="../images/Run.png" 
   align=absMiddle width="22" height="22"> Run</B> the current <B><I><FONT 
   color=#ff0000>Lava</FONT></I></B> program. </LI></UL>
-<P><A name=declBar></A>The <B>declaration bar</B> </P>
-<P align=center><img border="0" src="../images/DeclTB.png" width="362" height="32"></P>
+<P><A name=declBar></A>The <B>declarations toolbar</B> </P>
+<P align=center>
+<img border="0" src="../images/DeclTB.gif" alt="Declarations toolbar" align="middle" width="364" height="23"></P>
 <P>provides the following operations (from left to right):</P>
 <UL>
   <LI>
@@ -112,10 +114,13 @@ partly to the entire declaration tree:</P>
   implementation or an<B> input or output parameter of a function</B>. </LI> 
   <LI>
   <img border="0" src="../images/EnumItem.png" align="absmiddle" width="21" height="18"> Declare a 
-  new <b>enumeration item</b>.</LI></UL>
-<P><A name=detailsBar></A>The <B>details bar</B> </P>
+  new <b>enumeration item</b>.</LI> 
+  <LI>
+  <img border="0" src="../images/MakeGUI.png" align="middle" width="23" height="21">Make <b>GUI service</b> 
+  from selected interface.</LI></UL>
+<P><A name=detailsBar></A>The <B>details toolbar</B> </P>
 <P align=center>
-<img border="0" src="../images/DetailsTB.png" width="292" height="32"></P>
+<img border="0" src="../images/DetailsTB.gif" alt="Details toolbar" align="middle" width="329" height="23"></P>
 <P>provides the following operations (from left to right):</P>
 <UL>
   <LI><B>
@@ -147,16 +152,22 @@ partly to the entire declaration tree:</P>
   <LI><B>
   <IMG alt="Override feature or VT" 
   src="../images/Override.png" align=absMiddle width="22" height="18"> Override</B> the 
-  feature or virtual type selected in the override view. 
+  feature or virtual type selected in the <b><i><a href="OverrideView.htm">override view</a></i></b>. 
   <LI><B>
   <IMG alt="Open form view" src="../images/Formimpl.png" align=absMiddle width="23" height="21"> Open</B> the (WYSIWYG) <B><I><FONT color=#ff0000><A 
-  href="EditForm.htm">"form view"</A></FONT></I></B> and the "form structure 
+  href="EditForm.htm">form view</A></FONT></I></B> and the "form structure 
   tree view" associated with a "<B><I><FONT color=#ff0000>Lava</FONT></I></B> 
   GUI implementation". 
   <LI><B>
   <IMG alt="Insert text in form" src="../images/FormText.png" align=absMiddle width="20" height="18"> Insert text </B><I>between</I> the fields of a form 
   (each of which may be decorated also individually with "prefix" and "suffix" 
-  texts). </LI></UL>
+  texts). </LI> 
+  <LI>
+  <img border="0" src="../images/InsOptItem.png" align="middle" width="23" height="21">
+  <b>Insert optional item</b> in form view.</LI> 
+  <LI>
+  <img border="0" src="../images/DelOptItem.png" align="middle" width="23" height="21">
+  <b>Delete optional item</b> in form view.</LI></UL>
 <H3>Basics of declaration tree editing</H3>
 <P><B><B>Context-sensitive help</B></B></P>
 <P>Use the context-sensitive help of <I><FONT 
