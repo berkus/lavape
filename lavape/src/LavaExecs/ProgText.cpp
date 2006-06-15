@@ -130,6 +130,7 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
   CHETokenNode *newChel;
   QString str;
   SynObject *currentObj, *ancestor;
+  LavaDECL *formParmDecl;
   unsigned start=0, loc;
 
   newChel = new CHETokenNode;
@@ -155,7 +156,15 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
     currentToken->data.str = ((Constant*)currentSynObj)->str.c;
     break;
   case FuncRef_T:
-    currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
+    if (currentSynObj->parentObject->primaryToken == initializer_T
+    || currentSynObj->parentObject->primaryToken == function_T)
+      currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
+    else
+      currentToken->data.str = ((Reference*)currentSynObj)->refName.c;
+    break;
+  case parameter_T:
+    formParmDecl = document->IDTable.GetDECL(((Parameter*)currentSynObj)->formParmID,ckd.inINCL);
+    currentToken->data.str = QString(formParmDecl->LocalName.c);
     break;
   case TypeRef_T:
   case CrtblRef_T:

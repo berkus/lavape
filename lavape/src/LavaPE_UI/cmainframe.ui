@@ -222,6 +222,7 @@
    <addaction name="execInsAction" />
    <addaction name="toggleArrowsAction" />
    <addaction name="toggleInputArrowsAction" />
+   <addaction name="parmNameAction" />
    <addaction name="conflictingAssigAction" />
    <addaction name="newLineAction" />
    <addaction name="commentOutAction" />
@@ -2689,6 +2690,20 @@
    </property>
    <property name="whatsThis" >
     <string>Potentially incomplete, not yet fully initialized object; member access is still disabled therefore</string>
+   </property>
+  </action>
+  <action name="parmNameAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="icon" >
+    <iconset resource="../LavaPE_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/Q5_formParmNames.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>Show formal parameter names in function calls</string>
+   </property>
+   <property name="whatsThis" >
+    <string>Show formal parameter names in function calls</string>
    </property>
   </action>
  </widget>

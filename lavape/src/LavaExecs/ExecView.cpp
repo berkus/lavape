@@ -242,6 +242,10 @@ void CExecView::OnInitialUpdate()
     text->leftArrows = true;
   else
     text->leftArrows = false;
+  if (myDECL->TreeFlags.Contains(parmNames))
+    text->parmNames = true;
+  else
+    text->parmNames = false;
   text->currentSynObjID = 0;
   text->document = myDoc;
   text->ckd.document = myDoc;
@@ -275,7 +279,8 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
 
   if (token == Larrow_T
   || token == Rarrow_T
-        || token == NewLineSym_T) {
+  || token == NewLineSym_T) {
+    fmt.bold = true;
     fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
       fmt.italic = true;
@@ -1132,6 +1137,8 @@ void CExecView::OnChar(QKeyEvent *e)
 
       if (GetDocument()->changeNothing)
         return;
+      if (text->currentSynObj->primaryToken == parameter_T)
+        return;
       if ((Ignorable() && !inIgnore)
       && !(inBaseInits
            && text->currentSynObj->primaryToken == FuncRef_T
@@ -1938,6 +1945,11 @@ exp: // Const_T
       goto exp;
     }
 
+  case parameter_T:
+    ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
+    //redCtl->update();
+    return;
+
   default:
     if (text->currentSynObj->replacedType == Exp_T)
       goto exp;
@@ -1952,7 +1964,7 @@ exp: // Const_T
   }
 
   doubleClick = false;
-  redCtl->repaint();
+  //redCtl->repaint();
     // otherwise the MiniEdit's position would be unknown in the following code
 
   if (text->currentSelection->data.token == Exp_T
@@ -2051,6 +2063,10 @@ void CExecView::RedrawExec(SynObject *selectAt)
     text->leftArrows = true;
   else
     text->leftArrows = false;
+  if (myDECL->TreeFlags.Contains(parmNames))
+    text->parmNames = true;
+  else
+    text->parmNames = false;
   text->showComments = myDECL->TreeFlags.Contains(ShowExecComments);
 
   text->selectAt = selectAt?selectAt:selfVar;
@@ -2838,7 +2854,11 @@ void CExecView::OnEditCopy()
 {
   // TODO: Add your command handler code here
 
-  if (!EditOK()) return;
+  if (!EditOK())
+    return;
+  if (!EnableCopy())
+    return;
+
   if (clipBoardObject)
     delete clipBoardObject;
   if (text->currentSynObj->primaryToken == TDOD_T)
@@ -4329,7 +4349,6 @@ void CExecView::OnToggleArrows()
   // TODO: Add your command handler code here
 
   if (!EditOK()) return;
-  if (!EditOK()) return;
   text->leftArrows = !text->leftArrows;
   if (text->leftArrows)
     myDECL->TreeFlags.INCL(leftArrows);
@@ -5249,6 +5268,20 @@ void CExecView::OnToggleClosed()
     PutInsFlagHint(SET(isClosed,-1));
 }
 
+void CExecView::OnToggleParmNames()
+{
+  if (!EditOK()) return;
+
+  text->parmNames = !text->parmNames;
+  if (text->parmNames)
+    myDECL->TreeFlags.INCL(parmNames);
+  else
+    myDECL->TreeFlags.EXCL(parmNames);
+
+  RedrawExec(text->selectAt);
+
+}
+
 void CExecView::OnCopy()
 {
   // TODO: Code fr Befehlsbehandlungsroutine hier einfgen
@@ -5461,6 +5494,7 @@ void CExecView::UpdateUI()
   OnUpdateEvaluate(LBaseData->evaluateActionPtr);
   OnUpdateToggleSubstitutable(LBaseData->toggleSubstTypeActionPtr);
   OnUpdateToggleClosed(LBaseData->toggleClosedActionPtr);
+  OnUpdateToggleParmNames(LBaseData->parmNameActionPtr);
   OnUpdateConflict(LBaseData->conflictingAssigActionPtr);
   OnUpdateToggleCategory(LBaseData->toggleCategoryActionPtr);
   OnUpdateNextComment(LBaseData->nextCommentActionPtr);
@@ -5573,6 +5607,7 @@ void CExecView::DisableActions()
   LBaseData->evaluateActionPtr->setEnabled(false);
   LBaseData->toggleSubstTypeActionPtr->setEnabled(false);
   LBaseData->toggleClosedActionPtr->setEnabled(false);
+  LBaseData->parmNameActionPtr->setEnabled(false);
   LBaseData->conflictingAssigActionPtr->setEnabled(false);
   LBaseData->toggleCategoryActionPtr->setEnabled(false);
   LBaseData->intervalActionPtr->setEnabled(false);
@@ -5757,6 +5792,9 @@ bool CExecView::EnableCut()
     && text->currentSynObj->parentObject->parentObject->primaryToken == signal_T)
       return false;
   }
+
+  if (text->currentSynObj->primaryToken == parameter_T)
+    return false;
 
   return (IsDeletablePrimary()
     || (text->currentSynObj->IsFuncInvocation()
@@ -6254,10 +6292,26 @@ void CExecView::OnUpdateToggleArrows(QAction* action)
   action->setChecked(!myDECL->TreeFlags.Contains(leftArrows));
 }
 
+void CExecView::OnUpdateToggleParmNames(QAction* action)
+{
+  // TODO: Add your command update UI handler code here
+
+  if (GetDocument()->changeNothing) {
+    action->setEnabled(false);
+    return;
+  }
+
+  action->setEnabled(true);
+  action->setChecked(myDECL->TreeFlags.Contains(parmNames));
+}
+
 bool CExecView::EnableCopy()
 {
   if ((Ignorable() && !inIgnore)
   || !text->currentSynObj->parentObject)
+    return false;
+
+  if (text->currentSynObj->primaryToken == parameter_T)
     return false;
 
   return ((IsDeletablePrimary()

@@ -185,8 +185,9 @@ $TYPE +CDP {
     //7, 128, X0000 0080
     leftArrows,
     //8, 256, X0000 0100 in exec: assignment arrows from right to left
+    parmNames,
+    //9, 512, X0000 0200 in exec: show formal parameter names in function calls
 
-    FREE_TREEFLAG9,//, X0000 0200
     FREE_TREEFLAG10,//, X0000 0400
     FREE_TREEFLAG11,//, X0000 0800
     FREE_TREEFLAG12,//, X0000 1000

@@ -339,7 +339,7 @@ public:
 
   int insertedChars;
   bool plhSearch, htmlGen,
-       showComments, leftArrows, ignored, singleFile;
+       showComments, leftArrows, parmNames, ignored, singleFile;
 };
 
 

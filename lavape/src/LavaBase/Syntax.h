@@ -340,7 +340,7 @@ enum TreeFlag {
   MemsExpanded,
   hasEmptyOpt,
   leftArrows,
-  FREE_TREEFLAG9,
+  parmNames,
   FREE_TREEFLAG10,
   FREE_TREEFLAG11,
   FREE_TREEFLAG12,

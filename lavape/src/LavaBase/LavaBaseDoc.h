@@ -346,6 +346,7 @@ public:
   virtual void OnToggleCategory() {}
   virtual void OnToggleSubstitutable() {}
   virtual void OnToggleClosed() {}
+  virtual void OnToggleParmNames() {}
   virtual void OnCopy() {}
   virtual void OnEvaluate() {}
   virtual void OnInputArrow() {}

@@ -467,7 +467,7 @@ bool SynObject::NullAdmissible (CheckData &ckd) {
 bool SynObject::IsExpression () {
   ObjReference *parent;
 
-  if (type == Exp_T
+  if ((type == Exp_T && primaryToken != parameter_T)
   || type == enumConst_T
   || primaryToken == ObjPH_T
   || primaryToken == ObjRef_T

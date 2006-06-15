@@ -1,7 +1,7 @@
 <RCC>
-    <qresource prefix="/" />
     <qresource prefix="/LavaExecs/res/TOOLBUTTONS" >
         <file>LavaExecs/res/TOOLBUTTONS/Q5_conflict.xpm</file>
+        <file>LavaExecs/res/TOOLBUTTONS/Q5_formParmNames.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/Q5_ignore.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/Q5_inputArrow.xpm</file>
         <file>LavaExecs/res/TOOLBUTTONS/Q5_insert.xpm</file>

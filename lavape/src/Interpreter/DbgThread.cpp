@@ -217,8 +217,10 @@ void CLavaDebugThread::run() {
         break;
       put_cid->flush();
     }
-    else
+    else {
+      fin = true;
       break;
+    }
   }
   delete dbgStopData;
   dbgStopData = 0;

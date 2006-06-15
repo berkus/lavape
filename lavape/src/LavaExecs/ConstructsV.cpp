@@ -19,6 +19,7 @@
 
 #include "Constructs.h"
 #include "ExecView.h"
+#include "Check.h"
 #include "Convert.h"
 #include "DIO.h"
 #include "CHAINANY.h"
@@ -98,6 +99,9 @@
 #define DRAWCHE(CHEP,CHXP) ((SynObject*)CHEP->data)->Draw(t,(address)CHEP,CHXP,ignore)
 
 #define IsPH(PTR) ((SynObject*)PTR)->IsPlaceHolder()
+
+#define ADJUST4(nnn) \
+  nnn.nINCL = t.document->IDTable.IDTab[t.ckd.inINCL]->nINCLTrans[nnn.nINCL].nINCL
 
 
 static bool ifPart = true;
@@ -2170,6 +2174,10 @@ ParameterV::ParameterV (SynObject *param) {
 void ParameterV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   ENTRY
 
+  if (t.parmNames) {
+    t.Insert(primaryToken,true);
+    t.Insert(Colon_T);
+  }
   DRAW(parameter.ptr);
   if (!primaryTokenNode)
     primaryTokenNode = ((SynObject*)parameter.ptr)->primaryTokenNode;
@@ -2344,6 +2352,7 @@ FuncStatementV::FuncStatementV (Reference *ref) {
 void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   bool isFirst=true, visibleParms=false;
   CHE *paramPtr;
+
   ROContext roCtx=ReadOnlyContext();
   bool drawCallKeywd = (roCtx != assertion) 
     && (roCtx != roClause) 
@@ -2408,6 +2417,7 @@ void FuncStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool igno
     || inputs.first != inputs.last)
       t.Insert(Lparenth_T);
     isFirst=true;
+
     for (paramPtr = (CHE*)inputs.first;
          paramPtr;
          paramPtr = (CHE*)paramPtr->successor) {
