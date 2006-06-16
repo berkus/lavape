@@ -3808,6 +3808,7 @@ bool Assignment::Check (CheckData &ckd)
 
   if (((SynObject*)exprValue.ptr)->IsClosed(ckd)
   && !targObj->IsClosed(ckd)
+  && !ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
   && (!targObj->flags.Contains(isSelfVar)
       || ((ObjReference*)targObj)->refIDs.first->successor != ((ObjReference*)targObj)->refIDs.last)
   ) {

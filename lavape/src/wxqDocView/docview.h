@@ -70,7 +70,6 @@ public:
     bool deletingMainFrame;
     bool isChMaximized;
     bool appExit;
-    QWidgetList windowList;
 
     int argc;
     char **argv;

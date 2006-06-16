@@ -347,17 +347,10 @@ void wxMDIChildFrame::SetTitle(QString &title)
 
 bool wxMDIChildFrame::event(QEvent *ev)
 {
-  if (ev->type() == QEvent::WindowStateChange) {
-    //oldWindowState = ((QWindowStateChangeEvent*)ev)->oldState() & Qt::WindowMaximized ?
-    //  Qt::WindowMaximized : Qt::WindowNoState;
+  if (ev->type() == QEvent::WindowStateChange)
     wxTheApp->isChMaximized = parentWidget()->isMaximized();
-  }
-  else if (ev->type() == QEvent::Close) {
-    wxTheApp->windowList = wxTheApp->m_appWindow->m_workspace->windowList();
-    wxTheApp->windowList.removeAt(wxTheApp->windowList.indexOf(this));
-    for (int i=0; i<wxTheApp->windowList.size(); i++)
-      wxTheApp->windowList[i]->hide();
-  }
+  else if (ev->type() == QEvent::Close)
+    wxTheApp->m_appWindow->m_workspace->setUpdatesEnabled(false);
   return QWidget::event(ev);
 }
 
