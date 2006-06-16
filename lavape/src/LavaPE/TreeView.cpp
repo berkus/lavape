@@ -389,7 +389,10 @@ CTreeItem* MyListView::itemAtIndex(const QModelIndex& index)
 CTreeItem* MyListView::itemAbove(CTreeItem* item)
 {
   QModelIndex ind = indexAbove(indexFromItem(item));
-  return (CTreeItem*)itemFromIndex(ind);
+  if (ind.isValid())
+    return (CTreeItem*)itemFromIndex(ind);
+  else
+    return 0;
 }
 
 
