@@ -421,7 +421,7 @@ void LavaBaseStringInit() {
   ERR_EnterValue  = QObject::tr("Please enter value");
   ERR_SelectValue  = QObject::tr("Please select value");
   ERR_WrongCopyTarget  = QObject::tr("The target of a copy operation must be a state object, the ""self"" of an initializer, or ""temp""");
-  ERR_NoExecBody  = QObject::tr("Missing function or main program body");
+  ERR_NoExecBody  = QObject::tr("Function or main program body still empty");
   ERR_AssigInForeach  = QObject::tr("Potential multiple assignment in ""foreach"" construct");
   ERR_NestedVTs  = QObject::tr("Nested virtual types not allowed here");
   ERR_VTOutOfScope  = QObject::tr("Out of scope reference to virtual type");

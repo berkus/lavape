@@ -3806,8 +3806,11 @@ bool Assignment::Check (CheckData &ckd)
   if (!ok)
     ERROREXIT
 
-  if (!targObj->IsClosed(ckd)
-  && ((SynObject*)exprValue.ptr)->IsClosed(ckd)) {
+  if (((SynObject*)exprValue.ptr)->IsClosed(ckd)
+  && !targObj->IsClosed(ckd)
+  && (!targObj->flags.Contains(isSelfVar)
+      || ((ObjReference*)targObj)->refIDs.first->successor != ((ObjReference*)targObj)->refIDs.last)
+  ) {
     ((SynObject*)exprValue.ptr)->SetError(ckd,&ERR_Closed);
     ok = false;
   }
