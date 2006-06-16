@@ -151,6 +151,14 @@ variables</a> and
 <a href="dialogs/FuncParmBox.htm#closed">function
 parameters</a>.</p>
 
+<p><b>Note 4:</b> If a <font color="#FF0000"><i><b>Lava</b></i></font> class A 
+is derived from certain base classes then every initializer of A calls a base 
+class initializer for every base class before initializing its &quot;own&quot; member 
+variables. So, when the base class initializers are called, the <i>self</i> 
+variable of A is still unfinished, and therefore the respective base class 
+initializers may be invoked only if their attribute &quot;self is closed&quot; is set to 
+true.</p>
+
 <h3>See also</h3>
 
 <p><a href="IniChecks.htm">Complete
