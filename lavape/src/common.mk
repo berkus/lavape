@@ -1,11 +1,11 @@
 #SHELL=/usr/bin/env sh
 SHELL=/bin/sh
 
+DBG=
+
 ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt
 endif
-
-DBG=-g
 
 ph_files=$(wildcard *.ph)
 h_ph_files=$(ph_files:.ph=.h)
@@ -92,7 +92,7 @@ else
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
     IMPLIB = -mthreads -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
 #    IMPLIB = -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
-	  OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions
+	OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions
     OSDLLFLAGS = -shared
     OSEXECFLAGS = -fstack-check
     EXEC2 = $(EXEC).exe
@@ -110,12 +110,17 @@ else
 	  else
 		  OSCPPFLAGS = -D__$(OPSYS) $(DBG)
 		  DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
-      DLLSUFFIX = .so
+          DLLSUFFIX = .so
 		  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
 		  OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
 		  EXEC2 = $(EXEC)
-		  QtS = _debug
-		  ACL = _debug
+          ifneq ($(DBG),)
+		    QtS = _debug
+		    ACL = _debug
+		  else
+		    QtS =
+		    ACL =
+		  endif
 	  endif
   endif
 endif

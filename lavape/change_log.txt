@@ -1,29 +1,65 @@
-Change Log for Release 0.8.4
+Change Log for Release 0.9.0
 ============================
 
-New or changed features:
-=======================
+Migration to Qt4:
+================
 
-(1) We have completely rewritten the Lava "callback" support,
-    roughly after the model of the "signal/slot" concept of
-    TrollTechs Qt. This is a first step towards an extended
-		Lava GUI builder that will support also mainframe windows,
-    menus, toolbars and callbacks.
+In a big effort, the entire Lava software has been
+migrated to Trolltech's Qt4 package; all dependencies
+on Qt3 have been removed.
 
-(2) Lava is more portable now. It can be built on the Windows XP,
-    Linux, FreeBSD, Solaris (sparc station and x86, g++),
-    and Mac OS X.2 platforms. It has been tested, so far,
-    on Windows XP, Linux and FreeBSD. Please tell us if it runs
-    also on the other platforms (and also if not).
+Lava provides complete static initialization checks now
+=======================================================
 
-(3) You can now benefit from "precompiled headers" if you use
-    the g++ compiler (g++ release 3.4 or higher).
+By purely static checks Lava can now make sure already
+at programming time that you cannot inadvertently access
+uninitialized variables or null objects. This has been
+achieved by two new measures: 1. By the new "closed"
+attribute for local variables, for the "self" variable
+and for input/output parameters of functions/initializers
+which prohibits any access to the member variables of
+still unfinished objects during their initialization phase,
+2. by introducing more strict static checks of optional-to-
+mandatory assignments and two related new constructs:
 
+Checking optional-to-mandatory assignments:
+==========================================
 
-(4) For the Windows platform we have migrated to the
-    NullSoft Install System (NSIS).
+As a further step towards complete variable
+initialization checks LavaPE now enforces already
+at programming time that optional variables and
+expressions have a non-null value if the latter is
+assigned to a mandatory variable.
 
+The new LavaPE release accepts such an assignment
+only
 
-(5) We have added a method "zombifyRec" (zombify recursively)
-    to class "Object" as a further aid for deactivating whole
-    collections of objects containing circular forward references.
+a) if the source of the assignment is an (optional)
+variable that is checked by an "ifdef" conditional
+statement and if the assigment is contained in the
+"then" clause of the "ifdef" statement, or
+
+b) if the source of the assignment is an "else"
+expression "x else y" where at least one of x or y
+is mandatory.
+
+"x else y" checks (at run time) whether x is null;
+if yes then the "else" expression yields y, if no then the
+expression yields x.
+
+TOC/index of the online help have been migrated to JavaScript
+=============================================================
+
+You can view the Lava online help either in Qt assistant by
+invoking it from the LavaPE/Lava help menu or by context-
+sensitive help (what's this button with lijnks in help text).
+
+As an alternative (but without the search function of the
+Qt assistant version) you can open doc/index.htm in any
+web browser. The table of contents and the index had been based
+on Java so far, which didn't work to our satisfaction.
+Now it is based on JavaScript, which seems to work better.
+
+This version can also be accessed from the Lava home page
+(http://lavape.sf.net/index.htm) by clicking the (very big
+and bold) "Lava Online Documentation" link.
