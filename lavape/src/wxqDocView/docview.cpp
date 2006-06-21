@@ -163,14 +163,28 @@ void wxApp::onGuiThreadAwake() {
 }
 
 static bool cmdLineEvaluated=false;
+static int cnt=0;
+static bool corrected=false;
 
 void wxApp::onIdle()
 {
+  QWidget *actMDIChild=m_appWindow->m_workspace->activeWindow();
+  qDebug() << "onIdle, cnt=" << ++cnt << "actChild=" << actMDIChild;
   // make sure that UpdateUI is invoked only once between two wait states
+  if (corrected)
+    corrected = false;
+  else {
     inUpdateUI = true;
     onUpdateUI();
 
+    QWidget *newActMDIChild=m_appWindow->m_workspace->activeWindow();
+    if (newActMDIChild != actMDIChild) {
+      m_appWindow->m_workspace->setUpdatesEnabled(false);
+      m_appWindow->m_workspace->setActiveWindow(actMDIChild);
+      corrected = true;
+    }
     m_appWindow->m_workspace->setUpdatesEnabled(true);
+  }
 }
 
 void wxApp::customEvent(QEvent *e)

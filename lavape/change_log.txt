@@ -63,3 +63,13 @@ Now it is based on JavaScript, which seems to work better.
 This version can also be accessed from the Lava home page
 (http://lavape.sf.net/index.htm) by clicking the (very big
 and bold) "Lava Online Documentation" link.
+
+"p:v"-button shows formal parameter names in function calls
+===========================================================
+
+Sometimes you would like to know the formal parameter names
+("p") in a function call in addition to the actual parameter
+values ("v"), since they should/would provide some information
+on the meaning of the parameters. The new "p:v" button on the
+exec switches toolbar now allows you to show/hide formal
+parameter designators in function calls.
