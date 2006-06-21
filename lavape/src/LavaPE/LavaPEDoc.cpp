@@ -2363,6 +2363,7 @@ void CLavaPEDoc::MakeIniFunc(LavaDECL* ifDECL)
   fdecl->LocalName = DString("ini"); //myDECL->LocalName;
   fdecl->FullName = ifDECL->FullName + fdecl->LocalName;
   fdecl->TypeFlags += SET(isInitializer, defaultInitializer,/*isConst,*/-1);
+  fdecl->SecondTFlags.INCL(closed);
   CHE* che = NewCHE(fdecl);
   ifDECL->NestedDecls.Prepend(che);
 }

@@ -1538,8 +1538,8 @@ ValOnInit CFuncBox::OnInitDialog()
       StaticFunc->setChecked(false);
       Signal->setEnabled(false);
       Signal->setChecked(false);
-      Closed->setEnabled(false);
-      Closed->setChecked(false);
+      //Closed->setEnabled(false);
+      //Closed->setChecked(false);
     }
     else
       Initializer->setChecked(false);
@@ -1687,7 +1687,7 @@ ValOnInit CFuncBox::OnInitDialog()
 //      BasicTypes->setEnabled(false);
     }
     if (myDECL->SecondTFlags.Contains(closed)) {
-      Initializer->setEnabled(false);
+      //Initializer->setEnabled(false);
       StaticFunc->setEnabled(false);
       Closed->setChecked(true);
     }
@@ -1731,7 +1731,7 @@ void CFuncBox::on_Closed_clicked()
 {
   if (Closed->isChecked()) {
     StaticFunc->setEnabled(false);
-    Initializer->setEnabled(false);
+    //Initializer->setEnabled(false);
   }
   else {
     StaticFunc->setEnabled(true);
@@ -1849,7 +1849,7 @@ void CFuncBox::on_Initializer_clicked()
     myDECL->TypeFlags.EXCL(isAbstract);
     Abstract->setChecked(false);
     Abstract->setEnabled(false);
-    Closed->setEnabled(false);
+    //Closed->setEnabled(false);
     Signal->setEnabled(false);
     Signal->setChecked(false);
   }
@@ -1859,7 +1859,7 @@ void CFuncBox::on_Initializer_clicked()
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     ConstFunc->setEnabled(true); 
     Protected->setEnabled(true);
-    Closed->setEnabled(true);
+    //Closed->setEnabled(true);
     Signal->setEnabled(true);
   }
   myDECL->TypeFlags.EXCL(isConst);
