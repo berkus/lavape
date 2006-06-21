@@ -169,7 +169,7 @@ static bool corrected=false;
 void wxApp::onIdle()
 {
   QWidget *actMDIChild=m_appWindow->m_workspace->activeWindow();
-  qDebug() << "onIdle, cnt=" << ++cnt << "actChild=" << actMDIChild;
+//  qDebug() << "onIdle, cnt=" << ++cnt << "actChild=" << actMDIChild;
   // make sure that UpdateUI is invoked only once between two wait states
   if (corrected)
     corrected = false;
