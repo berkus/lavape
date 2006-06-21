@@ -3,9 +3,9 @@
 <head>
 
   <meta http-equiv="Content-Language" content="en-us">
-
-
   <title>Editing the declaration tree view</title>
+
+
   <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 
   <meta content="Klaus D. G&uuml;nther" name="Author">
@@ -15,71 +15,68 @@
   <meta name="ProgId" content="FrontPage.Editor.Document">
 
   <link href="LavaStyles.css" type="text/css" rel="STYLESHEET">
+
 </head>
+
 
 <body>
 
 <h2 align="center">Editing the declaration tree</h2>
 
-<p align="left">The <b><i><font color="#ff0000">LavaPE</font></i></b> declaration 
-view is associated with three specific toolbars, the <b>"tree operations 
-bar"</b>, the actual <b>"declarations bar", </b>and the<b> "details bar".</b>. 
-</p>
+<p align="left">The <b><i><font color="#ff0000">LavaPE</font></i></b>
+declaration view is associated with three specific toolbars, the <b>"tree
+operations bar"</b>, the actual <b>"declarations bar", </b>and
+the<b> "details bar".</b>. </p>
 
 <p align="left">The <b>tree operations toolbar</b></p>
 
 <p align="center">
-<img src="../images/TreeOps.gif" alt="Tree operations toolbar" align="middle" height="23" width="317"></p>
+<img src="/opt/lavape/doc/images/TreeOps.gif" alt="Tree operations toolbar" align="middle" height="23" width="317"></p>
 
-<p>provides the following operations (from left to right), which partly apply to 
-a single tree node, partly to the sub-tree starting at the current selection, 
-partly to the entire declaration tree:</p>
+<p>provides the following operations (from left to right), which
+partly apply to a single tree node, partly to the sub-tree starting at
+the current selection, partly to the entire declaration tree:</p>
 
 <ul>
 
-  <li><b>
-  <img alt="Expand" src="../images/Expand.png" align="middle" height="20" width="21"> Expand/open</b> the whole sub-tree starting at the current 
-  selection. 
-  </li>
-  <li><b>
-  <img alt="Contract" src="../images/Contract.png" align="middle" height="21" width="20"> Contract</b> the selected sub-tree. 
-  </li>
-  <li><b>
-  <img alt="Show/hide empty optionals" src="../images/Optionals.png" align="middle" height="21" width="25"> Show/hide</b> the 
-  <b>empty optional</b> direct sub-nodes of the current node. 
-  </li>
-  <li><b>
-  <img alt="Show/hide optionals in subtree" src="../images/OptionalsSubtree.png" align="middle" height="18" width="45"> Show/hide empty 
-  optional elements within the entire sub-tree</b> starting at the current 
-  selection. 
-  </li>
-  <li>
-  <img alt="Show/hide utility window" src="../images/UtilWindow.png" align="middle" height="20" width="24"> Open/close the 
-  (tabbed) <b>utility window</b> (used particularly for displaying error 
-  messages and comments). 
-  </li>
-  <li>
-  <img alt="../images/Comments on/off in exec view" src="../images/Comments.png" align="middle" height="22" width="44"> Go to the 
-  <b>next/preceding comment</b> in the declaration tree. 
-  </li>
-  <li>
-  <img alt="Errors" src="../images/Errors.png" align="middle" height="23" width="48"> Go to the <b>next/preceding error</b> in the declaration 
-  tree. 
-  </li>
-  <li><b>
-  <img alt="Complete check" src="../images/Check.png" align="middle" height="22" width="24"> Check</b> the entire <b><i><font color="#ff0000">Lava</font></i></b> program file, including all execs, for 
-  errors. (This is done automatically when opening a <b><i><font color="#ff0000">Lava</font></i></b> program file, but not on every individual 
-  tree editing operation. In the latter case only the declarations are checked 
-  again.) 
-  </li>
-  <li>
-  <img alt="" src="../images/CheckIncludes.png" align="middle" border="0" height="24" hspace="0" width="22">&nbsp;<strong>Check</strong> this and all included 
-  files.
-  </li>
-  <li><b><img alt="Run" src="../images/Run.png" align="middle" height="22" width="22"> Run</b> the current <b><i><font color="#ff0000">Lava</font></i></b> program. </li>
+  <li><b> <img alt="Expand" src="../images/Expand.png" align="middle" height="20" width="21"> Expand/open</b> the whole sub-tree
+starting at the current selection. </li>
+
+  <li><b> <img alt="Contract" src="../images/Contract.png" align="middle" height="21" width="20"> Contract</b> the selected sub-tree. </li>
+
+  <li><b> <img alt="Show/hide empty optionals" src="../images/Optionals.png" align="middle" height="21" width="25"> Show/hide</b> the <b>empty optional</b>
+direct sub-nodes of the current node. </li>
+
+  <li><b> <img alt="Show/hide optionals in subtree" src="../images/OptionalsSubtree.png" align="middle" height="18" width="45"> Show/hide empty optional
+elements within the entire sub-tree</b> starting at the current
+selection. </li>
+
+  <li> <img alt="Show/hide utility window" src="../images/UtilWindow.png" align="middle" height="20" width="24"> Open/close the (tabbed) <b>utility window</b>
+(used particularly for displaying error messages and comments). </li>
+
+  <li> <img alt="../images/Comments on/off in exec view" src="../images/Comments.png" align="middle" height="22" width="44"> Go to the <b>next/preceding comment</b>
+in the declaration tree. </li>
+
+  <li> <img alt="Errors" src="../images/Errors.png" align="middle" height="23" width="48"> Go to
+the <b>next/preceding error</b> in the declaration tree. </li>
+
+  <li><b> <img alt="Complete check" src="../images/Check.png" align="middle" height="22" width="24"> Check</b> the entire <b><i><font color="#ff0000">Lava</font></i></b>
+program file, including all execs, for errors. (This is done
+automatically when opening a <b><i><font color="#ff0000">Lava</font></i></b>
+program file, but not on every individual tree editing operation. In
+the latter case only the declarations are checked again.) </li>
+
+  <li> <img alt="" src="../images/CheckIncludes.png" align="middle" border="0" height="24" hspace="0" width="22">&nbsp;<strong>Check</strong> this
+and all included files. </li>
+
+  <li><b><img alt="Run" src="../images/Run.png" align="middle" height="22" width="22"> Run</b>
+the current <b><i><font color="#ff0000">Lava</font></i></b>
+program. </li>
+
 </ul>
 
-<p><a name="declBar"></a>The <b>declarations toolbar</b> </p>
+<p><a name="declBar"></a>The <b>declarations
+toolbar</b> </p>
 
 <p align="center">
 <img src="../images/DeclTB.gif" alt="Declarations toolbar" align="middle" border="0" height="23" width="364"></p>
@@ -88,60 +85,54 @@ partly to the entire declaration tree:</p>
 
 <ul>
 
-  <li>
-  <img alt="Include file" src="../images/Include.png" align="middle" height="19" width="21"> Specify a new <b>"include file"</b> for the current 
-  <b><i><font color="#ff0000">Lava</font></i></b> file, which will appear then in 
-  the "include view" left of the tree view window. 
+  <li> <img alt="Include file" src="../images/Include.png" align="middle" height="19" width="21"> Specify a new <b>"include file"</b>
+for the current <b><i><font color="#ff0000">Lava</font></i></b>
+file, which will appear then in the "include view" left of the tree
+view window. </li>
+
+  <li> <img alt="Package" src="../images/Package.png" align="middle" height="20" width="21"> Declare
+a new <b>package</b>, </li>
+
+  <li> <img alt="Initiator" src="../images/Initiator.png" align="middle" height="19" width="20"> Declare a new <b>initiator</b>, </li>
+
+  <li> <img alt="Interface" src="../images/NewItf.png" align="middle" height="22" width="23"> Declare
+a new <b>interface</b>, </li>
+
+  <li> <img alt="Implementation" src="../images/NewImpl.png" align="middle" height="23" width="25"> Declare a new <b>implementation</b>,
   </li>
-  <li>
-  <img alt="Package" src="../images/Package.png" align="middle" height="20" width="21"> Declare a new <b>package</b>, 
-  </li>
-  <li>
-  <img alt="Initiator" src="../images/Initiator.png" align="middle" height="19" width="20"> Declare a new <b>initiator</b>, 
-  </li>
-  <li>
-  <img alt="Interface" src="../images/NewItf.png" align="middle" height="22" width="23"> Declare a new <b>interface</b>, 
-  </li>
-  <li>
-  <img alt="Implementation" src="../images/NewImpl.png" align="middle" height="23" width="25"> Declare a new <b>implementation</b>, 
-  </li>
-  <li>
-  <img alt="Component object specification" src="../images/CompObjSpec.png" align="middle" height="22" width="23"> Declare a new 
-  <b>component object specification</b>, 
-  </li>
-  <li>
-  <img alt="Component object implementation" src="../images/CompObjImpl.png" align="middle" height="22" width="21"> Declare a new 
-  <b>component object implementation</b>, 
-  </li>
-  <li>
-  <img alt="Set of objects" src="../images/Set.png" align="middle" height="21" width="24"> Declare a new <b>set</b> of objects of a certain class, 
-  </li>
-  <li>
-  <img alt="Enumeration" src="../images/Enum.png" align="middle" height="19" width="23"> Declare a new <b>enumeration</b> type, 
-  </li>
-  <li>
-  <img alt="Virtual type" src="../images/VT.png" align="middle" height="19" width="21"> Declare a new <b>virtual type</b>, 
-  </li>
-  <li>
-  <img alt="Member function" src="../images/MemberFunc.png" align="middle" height="20" width="21"> Declare a 
-  new <b>member function</b> of an interface or 
-  implementation, 
-  </li>
-  <li>
-  <img alt="Member variable" src="../images/MemberVar.png" align="middle" height="20" width="23"> Declare a 
-  new <b>member variable</b> of an interface or 
-  implementation or an<b> input or output parameter of a function</b>. </li>
- 
-  <li>
-  <img src="../images/EnumItem.png" align="middle" border="0" height="18" width="21"> Declare a 
-  new <b>enumeration item</b>.</li>
- 
-  <li>
-  <img src="../images/MakeGUI.png" align="middle" border="0" height="21" width="23">Make <b>GUI service</b> 
-  from selected interface.</li>
+
+  <li> <img alt="Component object specification" src="../images/CompObjSpec.png" align="middle" height="22" width="23"> Declare a new <b>component
+object specification</b>, </li>
+
+  <li> <img alt="Component object implementation" src="../images/CompObjImpl.png" align="middle" height="22" width="21"> Declare a new <b>component
+object implementation</b>, </li>
+
+  <li> <img alt="Set of objects" src="../images/Set.png" align="middle" height="21" width="24"> Declare a new <b>set</b> of objects
+of a certain class, </li>
+
+  <li> <img alt="Enumeration" src="../images/Enum.png" align="middle" height="19" width="23"> Declare
+a new <b>enumeration</b> type, </li>
+
+  <li> <img alt="Virtual type" src="../images/VT.png" align="middle" height="19" width="21"> Declare
+a new <b>virtual type</b>, </li>
+
+  <li> <img alt="Member function" src="../images/MemberFunc.png" align="middle" height="20" width="21"> Declare a new <b>member function</b>
+of an interface or implementation, </li>
+
+  <li> <img alt="Member variable" src="../images/MemberVar.png" align="middle" height="20" width="23"> Declare a new <b>member variable</b>
+of an interface or implementation or an<b> input or output
+parameter of a function</b>. </li>
+
+  <li> <img src="../images/EnumItem.png" align="middle" border="0" height="18" width="21"> Declare a
+new <b>enumeration item</b>.</li>
+
+  <li> <img src="../images/MakeGUI.png" align="middle" border="0" height="21" width="23">Make <b>GUI
+service</b> from selected interface.</li>
+
 </ul>
 
-<p><a name="detailsBar"></a>The <b>details toolbar</b> </p>
+<p><a name="detailsBar"></a>The <b>details
+toolbar</b> </p>
 
 <p align="center">
 <img src="../images/DetailsTB.gif" alt="Details toolbar" align="middle" border="0" height="23" width="329"></p>
@@ -150,194 +141,191 @@ partly to the entire declaration tree:</p>
 
 <ul>
 
-  <li><b>
-  <img alt="Open property sheet" src="../images/Spectacles.png" align="middle" height="20" width="22"> Open</b> the <b>property sheet</b> of the selected 
-  <b><i><font color="#ff0000">Lava</font></i></b> entity or open the selected 
-  <b><i><a href="EditExec.htm">exec or invariant</a></i></b> for editing. 
-  </li>
-  <li>
-  <img alt="Attach/edit comment" src="../images/Comment.png" align="middle" height="21" width="22"> Attach/edit a <b>comment</b> to the selected 
-  <b><i><font color="#ff0000">Lava</font></i></b> entity. 
-  </li>
-  <li><b>
-  <img alt="Go to declaration" src="../images/GoToDecl.png" align="middle" height="21" width="22"> Jump</b> to the <b>declaration</b> of the selected 
-  <b><i><font color="#ff0000">Lava</font></i></b> entity. 
-  </li>
-  <li>
-  <img src="../images/GoToImpl.png" align="middle" border="0" height="23" width="25"> <b>G<span lang="de">o</span> to 
-  implementation</b> (of selected function or interface).</li>
-  <li><b>
-  <img alt="Return to reference" src="../images/ReturnToRef.png" align="middle" height="21" width="23"> Return</b> to the 
-  original <b><i><font color="#ff0000">Lava</font></i></b> entity (after "jump to 
-  declaration"). 
-  </li>
-  <li>
-  <img src="../images/FindReferences.png" align="middle" border="0" height="24" width="24"> <b>Find references</b> to selected symbol in all open or included
-  <font color="#ff0000"><i><b>Lava</b></i></font> files. (Double-click a list 
-  entry to see the place where the corresponding symbol is referenced.)</li>
-  <li>
-  <img src="../images/FindSymbolByName.png" border="0" height="23" width="24"> <b>
-  <a name="find SymbolByName"></a>Find symbol by name.</b></li>
-  <li><b>
-  <img alt="Open override view" src="../images/Derive.png" align="middle" height="16" width="22"> Open the "override view" </b>in order to 
-  override/specialize the features or virtual types of the selected interface or 
-  package. 
-  </li>
-  <li><b>
-  <img alt="Override feature or VT" src="../images/Override.png" align="middle" height="18" width="22"> Override</b> the 
-  feature or virtual type selected in the <b><i><a href="OverrideView.htm">override view</a></i></b>. 
-  </li>
-  <li><b>
-  <img alt="Open form view" src="../images/Formimpl.png" align="middle" height="21" width="23"> Open</b> the (WYSIWYG) <b><i><font color="#ff0000"><a href="EditForm.htm">form view</a></font></i></b> and the "form structure 
-  tree view" associated with a "<b><i><font color="#ff0000">Lava</font></i></b> 
-  GUI implementation". 
-  </li>
-  <li><b>
-  <img alt="Insert text in form" src="../images/FormText.png" align="middle" height="18" width="20"> Insert text </b><i>between</i> the fields of a form 
-  (each of which may be decorated also individually with "prefix" and "suffix" 
-  texts). </li>
- 
-  <li>
-  <img src="../images/InsOptItem.png" align="middle" border="0" height="21" width="23">
-  <b>Insert optional item</b> in form view.</li>
- 
-  <li>
-  <img src="../images/DelOptItem.png" align="middle" border="0" height="21" width="23">
-  <b>Delete optional item</b> in form view.</li>
+  <li><b> <img alt="Open property sheet" src="../images/Spectacles.png" align="middle" height="20" width="22"> Open</b> the <b>property sheet</b>
+of the selected <b><i><font color="#ff0000">Lava</font></i></b>
+entity or open the selected <b><i><a href="EditExec.htm">exec
+or invariant</a></i></b> for editing. </li>
+
+  <li> <img alt="Attach/edit comment" src="../images/Comment.png" align="middle" height="21" width="22"> Attach/edit a <b>comment</b> to the
+selected <b><i><font color="#ff0000">Lava</font></i></b>
+entity. </li>
+
+  <li><b> <img alt="Go to declaration" src="../images/GoToDecl.png" align="middle" height="21" width="22"> Jump</b> to the <b>declaration</b>
+of the selected <b><i><font color="#ff0000">Lava</font></i></b>
+entity. </li>
+
+  <li> <img src="../images/GoToImpl.png" align="middle" border="0" height="23" width="25"> <b>G<span lang="de">o</span> to implementation</b> (of
+selected function or interface).</li>
+
+  <li><b> <img alt="Return to reference" src="../images/ReturnToRef.png" align="middle" height="21" width="23"> Return</b> to the
+original <b><i><font color="#ff0000">Lava</font></i></b>
+entity (after "jump to declaration"). </li>
+
+  <li> <img src="../images/FindReferences.png" align="middle" border="0" height="24" width="24">
+    <b>Find references</b> to selected symbol in all open
+or included <font color="#ff0000"><i><b>Lava</b></i></font>
+files. (Double-click a list entry to see the place where the
+corresponding symbol is referenced.)</li>
+
+  <li> <img src="../images/FindSymbolByName.png" border="0" height="23" width="24"> <b> <a name="find SymbolByName"></a>Find symbol by name.</b></li>
+
+  <li><b> <img alt="Open override view" src="../images/Derive.png" align="middle" height="16" width="22"> Open the "override view" </b>in order to
+override/specialize the features or virtual types of the selected
+interface or package. </li>
+
+  <li><b> <img alt="Override feature or VT" src="../images/Override.png" align="middle" height="18" width="22"> Override</b> the feature or virtual type
+selected in the <b><i><a href="OverrideView.htm">override
+view</a></i></b>. </li>
+
+  <li><b> <img alt="Open form view" src="../images/Formimpl.png" align="middle" height="21" width="23"> Open</b> the (WYSIWYG) <b><i><font color="#ff0000"><a href="EditForm.htm">form view</a></font></i></b>
+and the "form structure tree view" associated with a "<b><i><font color="#ff0000">Lava</font></i></b> GUI
+implementation". </li>
+
+  <li><b> <img alt="Insert text in form" src="../images/FormText.png" align="middle" height="18" width="20"> Insert text </b><i>between</i>
+the fields of a form (each of which may be decorated also individually
+with "prefix" and "suffix" texts). </li>
+
+  <li> <img src="../images/InsOptItem.png" align="middle" border="0" height="21" width="23">
+    <b>Insert optional item</b> in form view.</li>
+
+  <li> <img src="../images/DelOptItem.png" align="middle" border="0" height="21" width="23">
+    <b>Delete optional item</b> in form view.</li>
+
 </ul>
 
 <h3>Basics of declaration tree editing</h3>
 
 <p><b><b>Context-sensitive help</b></b></p>
 
-<p>Use the context-sensitive help of <i><font color="#ff0000"><b>LavaPE</b></font></i> to get information about individual menu 
-items and operator and keyword tool buttons: Click the context help tool button 
-<img alt="context help" src="../images/CtxHelp.png" align="middle" height="23" width="22">, drag it to the respective <i><font color="#ff0000"><b>Lava</b></font></i> tool button or menu item for which you want 
-to get an explanation and drop it there. </p>
+<p>Use the context-sensitive help of <i><font color="#ff0000"><b>LavaPE</b></font></i>
+to get information about individual menu items and operator and keyword
+tool buttons: Click the context help tool button <img alt="context help" src="../images/CtxHelp.png" align="middle" height="23" width="22">, drag
+it to the respective <i><font color="#ff0000"><b>Lava</b></font></i>
+tool button or menu item for which you want to get an explanation and
+drop it there. </p>
 
-<p><b>How to insert/delete/edit <i><font color="#ff0000">Lava</font></i> 
-entities</b></p>
+<p><b>How to insert/delete/edit <i><font color="#ff0000">Lava</font></i> entities</b></p>
 
-<p>The declaration tree consists of two alternating kinds of layers: <b>1. 
-declaration layers</b> containing the actual entity declarations, and <b>2. 
-category layers</b> that serve for the distinction between several kinds of 
-nested, subordinate declarations for some entities, for instance <b>virtual 
-types</b>, <b>nested declarations</b><i>,</i> <b>features</b>, 
-<b>execs/invariants</b>, or <b>input/output parameters</b> of functions or 
-initiators.</p>
+<p>The declaration tree consists of two alternating kinds of
+layers: <b>1. declaration layers</b> containing the actual
+entity declarations, and <b>2. category layers</b> that
+serve for the distinction between several kinds of nested, subordinate
+declarations for some entities, for instance <b>virtual types</b>,
+<b>nested declarations</b><i>,</i> <b>features</b>,
+<b>execs/invariants</b>, or <b>input/output
+parameters</b> of functions or initiators.</p>
 
-<p>If you select any tree node of the <b><i><font color="#ff0000">Lava</font></i></b> declaration view then the enabled tool buttons 
-on the declaration toolbar indicate which declarations may be <b>inserted after 
-</b>the selected declaration node or <b>below</b> the selected category node by 
-clicking these buttons. If you click the scissors 
-<img alt="scissors" src="../images/Scissors.png" align="middle" height="20" width="16"> then the selected 
-declaration is deleted (together with the entire sub-tree that may beginning at 
-this node) and copied to the clipboard. If you press the <b>DEL</b> key instead 
-of clicking the scissors 
-<img alt="scissors" src="../images/Scissors.png" align="middle" height="20" width="16"> then the declaration is 
-deleted but not written to the clipboard.</p>
+<p>If you select any tree node of the <b><i><font color="#ff0000">Lava</font></i></b>
+declaration view then the enabled tool buttons on the declaration
+toolbar indicate which declarations may be <b>inserted after </b>the
+selected declaration node or <b>below</b> the selected
+category node by clicking these buttons. If you click the scissors <img alt="scissors" src="../images/Scissors.png" align="middle" height="20" width="16"> then
+the selected declaration is deleted (together with the entire sub-tree
+that may beginning at this node) and copied to the clipboard. If you
+press the <b>DEL</b> key instead of clicking the scissors <img alt="scissors" src="../images/Scissors.png" align="middle" height="20" width="16"> then
+the declaration is deleted but not written to the clipboard.</p>
 
-<p>If you double-click the text to the right of an entity icon then the property 
-sheet of the entity is opened for editing. Alternatively you can <i>select</i> 
-the declaration node and then click the spectacles 
-<img alt="spectacles" src="../images/Spectacles.png" align="middle" height="20" width="22">to open the property 
-sheet.</p>
+<p>If you double-click the text to the right of an entity icon
+then the property sheet of the entity is opened for editing.
+Alternatively you can <i>select</i> the declaration node
+and then click the spectacles <img alt="spectacles" src="../images/Spectacles.png" align="middle" height="20" width="22">to open the property sheet.</p>
 
 <p><b>How to insert/delete optional parts</b></p>
 
-<p>You can click the "Show empty optionals" tool button 
-<img alt="{short description of image}" src="../images/ShowOpts.png" height="20" width="24"> on a 
-declaration node to toggle the visibility of its empty category nodes (having no 
-subordinate nodes). The same can be achieved for an entire sub-tree by using the 
-"Show/hide all empty optionals" buttons 
-<img alt="show all optionals" src="../images/ShowAllOpts.png" align="middle" height="22" width="47"> instead.</p>
+<p>You can click the "Show empty optionals" tool button <img alt="{short description of image}" src="../images/ShowOpts.png" height="20" width="24"> on a declaration node to
+toggle the visibility of its empty category nodes (having no
+subordinate nodes). The same can be achieved for an entire sub-tree by
+using the "Show/hide all empty optionals" buttons <img alt="show all optionals" src="../images/ShowAllOpts.png" align="middle" height="22" width="47"> instead.</p>
 
-<p><b>How to <b>insert, edi</b><b>t</b> and <b>s</b>tep through comments</b></p>
+<p><b>How to <b>insert, edi</b><b>t</b>
+and <b>s</b>tep through comments</b></p>
 
-<p>The yellow balloon 
-<img alt="{short description of image}" src="../images/Comment.png" height="21" width="22"> may be clicked to add or change a comment 
-that is associated with the currently selected tree node of the declaration 
-view. The icon of a commented tree node has a little yellow bubble on the right 
-side, for instance 
-<img alt="commented node" src="../images/classint1.png" align="middle" height="15" width="21">. The two buttons 
-<img alt="Comments" src="../images/Comments.png" align="middle" height="22" width="44"> 
-may be used to open/close the comments window and to step from comment to 
-comment in forward or backward direction. If the comments window is open and you 
-click a commented tree node then the associated comment will be shown in the 
-comments window.</p>
+<p>The yellow balloon <img alt="{short description of image}" src="../images/Comment.png" height="21" width="22">
+may be clicked to add or change a comment that is associated with the
+currently selected tree node of the declaration view. The icon of a
+commented tree node has a little yellow bubble on the right side, for
+instance <img alt="commented node" src="../images/classint1.png" align="middle" height="15" width="21">. The two buttons <img alt="Comments" src="../images/Comments.png" align="middle" height="22" width="44"> may be used to open/close the comments window
+and to step from comment to comment in forward or backward direction.
+If the comments window is open and you click a commented tree node then
+the associated comment will be shown in the comments window.</p>
 
 <p><b>Error navigation</b></p>
 
-<p>The two buttons 
-<img alt="Errors" src="../images/Errors.png" align="middle" height="23" width="48"> may be used to open/close the error window and to step from 
-error to error in forward or backward direction. The icon of an erroneous tree 
-node has a little red rectangle on the right side, for instance 
-<img alt="Error node" src="../images/classint2.png" align="middle" height="15" width="21">. </p>
+<p>The two buttons <img alt="Errors" src="../images/Errors.png" align="middle" height="23" width="48"> may be used to open/close the error window and
+to step from error to error in forward or backward direction. The icon
+of an erroneous tree node has a little red rectangle on the right side,
+for instance <img alt="Error node" src="../images/classint2.png" align="middle" height="15" width="21">. </p>
 
 <p><b>Cut/copy/paste and drag/drop</b></p>
 
-<p>Cut/copy/paste work in the usual way, using the clipboard of MS Windows. 
-Proper enabling/disabling of the corresponding buttons 
-<img alt="Cut/Copy/Paste" src="../images/CutCopyPaste.png" align="middle" height="22" width="70"> 
-combined with subsequent checks that are performed anyway after each edit 
-operation prevent inadmissible operations.</p>
+<p>Cut/copy/paste work in the usual way, using the clipboard of
+MS Windows. Proper enabling/disabling of the corresponding buttons <img alt="Cut/Copy/Paste" src="../images/CutCopyPaste.png" align="middle" height="22" width="70">
+combined with subsequent checks that are performed anyway after each
+edit operation prevent inadmissible operations.</p>
 
-<p>Drag-and-drop is also available in the declaration view. For instance you can 
-rearrange the declarations of a package, the items of an enumeration type, or 
-the features of an interface or implementation simply by drag-and-drop. To shift 
-an item to the first position on its respective tree layer you can drag-and-drop 
-it to the parent node. The <b>Shift</b> key can be used in the usual way to 
-select a sequence of contiguous items.</p>
+<p>Drag-and-drop is also available in the declaration view. For
+instance you can rearrange the declarations of a package, the items of
+an enumeration type, or the features of an interface or implementation
+simply by drag-and-drop. To shift an item to the first position on its
+respective tree layer you can drag-and-drop it to the parent node. The <b>Shift</b>
+key can be used in the usual way to select a sequence of contiguous
+items.</p>
 
-<p><b>Note that "cut" deletes a <font color="#ff0000"><i>Lava</i></font> entity 
-and a subsequent "paste" creates a new one in any case, having a new internal 
-ID, whereas the "move" mode of drag-and-drop <font color="#ff0000">retains the 
-identity</font> of the moved <font color="#ff0000"><i>Lava</i></font> entity. If 
-you drag and drop between different <i><font color="#ff0000">Lava</font></i> files 
-the all existing references to the moved <i><font color="#ff0000">Lava</font></i> 
-entity are updated accordingly, provided they are contained in a file that is 
-open <font color="#ff0000">at that moment</font> in the <font color="#ff0000"><i>Lava</i></font> declaration editor.</b></p>
+<p><b>Note that "cut" deletes a <font color="#ff0000"><i>Lava</i></font>
+entity and a subsequent "paste" creates a new one in any case, having a
+new internal ID, whereas the "move" mode of drag-and-drop <font color="#ff0000">retains the identity</font> of the
+moved <font color="#ff0000"><i>Lava</i></font>
+entity. If you drag and drop between different <i><font color="#ff0000">Lava</font></i> files the all
+existing references to the moved <i><font color="#ff0000">Lava</font></i>
+entity are updated accordingly, provided they are contained in a file
+that is open <font color="#ff0000">at that moment</font>
+in the <font color="#ff0000"><i>Lava</i></font>
+declaration editor.</b></p>
 
-<p>For drag-and-drop the default operation is <b>move</b> within the same 
-document and <b>copy</b> between different documents. Press <b>Ctrl</b> to 
-enforce <b>copy</b> and <b>Alt</b> to enforce <b>move</b> in any case. </p>
+<p>For drag-and-drop the default operation is <b>move</b>
+within the same document and <b>copy</b> between different
+documents. Press <b>Ctrl</b> to enforce <b>copy</b>
+and <b>Alt</b> to enforce <b>move</b> in any
+case. </p>
 
 <p><b><a name="undoRedo"></a>Undo/Redo</b></p>
 
-<p>Use the "Undo" and "Redo" buttons 
-<img alt="Undo/Redo" src="../images/UndoRedo.png" align="middle" height="23" width="43"> to undo or redo 
-individual edit operations in any of the <b><i><font color="#ff0000">LavaPE</font></i></b> views step by<span lang="de"> step.</span></p>
+<p>Use the "Undo" and "Redo" buttons <img alt="Undo/Redo" src="../images/UndoRedo.png" align="middle" height="23" width="43"> to undo or redo individual edit operations in
+any of the <b><i><font color="#ff0000">LavaPE</font></i></b>
+views step by<span lang="de"> step.</span></p>
 
-<p>Drag-and-drop operations 
-between different <font color="#ff0000"><i><b>Lava</b></i></font> files modify 
-these files in a single edit step. Up to <font color="#ff0000"><i><b>Lava</b></i></font> 
-release 0.6.3 undo/redo had to be applied to each of these files separately. 
-Release 0.6.4 has introduced synchronized undo/redo support for such operations: 
-You have to apply undo/redo only to one of these files to undo/redo the edit 
-step also in the other file. But note that you can undo/redo edit steps only in 
-strictly reverse order. So if you have applied further edit steps to one or both 
-of these files then you have to undo/redo these before you can undo/redo the 
-drag-and-drop operation between the files, or else you have to resort to manual 
+<p>Drag-and-drop operations between different <font color="#ff0000"><i><b>Lava</b></i></font>
+files modify these files in a single edit step. Up to <font color="#ff0000"><i><b>Lava</b></i></font>
+release 0.6.3 undo/redo had to be applied to each of these files
+separately. Release 0.6.4 has introduced synchronized undo/redo support
+for such operations: You have to apply undo/redo only to one of these
+files to undo/redo the edit step also in the other file. But note that
+you can undo/redo edit steps only in strictly reverse order. So if you
+have applied further edit steps to one or both of these files then you
+have to undo/redo these before you can undo/redo the drag-and-drop
+operation between the files, or else you have to resort to manual
 "forward" repair steps.</p>
 
 <p><b>Go to declaration / return to reference</b></p>
 
-<p>If the declaration of a <b><i><font color="#ff0000">Lava</font></i></b> entity 
-references another <b><font color="#ff0000"><i>Lava</i></font></b> entity then you 
-can double-click the icon left of the actual declaration to jump to the 
-referenced entity's declaration. Alternatively you can select the respective 
-declaration node and click the "Go to declaration" button 
-<img alt="go to declaration" src="../images/GoToDecl.png" align="middle" height="21" width="22">. 
-If the selected declaration references <i>more than one</i> other entity then a 
-small combo box is popped up from which you can select where to go.</p>
+<p>If the declaration of a <b><i><font color="#ff0000">Lava</font></i></b> entity
+references another <b><font color="#ff0000"><i>Lava</i></font></b>
+entity then you can double-click the icon left of the actual
+declaration to jump to the referenced entity's declaration.
+Alternatively you can select the respective declaration node and click
+the "Go to declaration" button <img alt="go to declaration" src="../images/GoToDecl.png" align="middle" height="21" width="22">. If the selected declaration references <i>more
+than one</i> other entity then a small combo box is popped up
+from which you can select where to go.</p>
 
-<p>Use the "Return to reference" button 
-<img alt="return to reference" src="../images/ReturnToRef.png" align="middle" height="21" width="23"> to follow the sequence 
-of such "Go to declaration" operations in backward direction (= back to the 
-locations from where you came). Both operations may jump forth and back between 
-exec and declaration views and even between different ("included") <b><i><font color="#ff0000">Lava</font></i></b> documents. </p>
+<p>Use the "Return to reference" button <img alt="return to reference" src="../images/ReturnToRef.png" align="middle" height="21" width="23"> to
+follow the sequence of such "Go to declaration" operations in backward
+direction (= back to the locations from where you came). Both
+operations may jump forth and back between exec and declaration views
+and even between different ("included") <b><i><font color="#ff0000">Lava</font></i></b>
+documents. </p>
 
-<p><b>See also <a href="OverrideView.htm">override 
+<p><b>See also <a href="OverrideView.htm">override
 view</a>.</b></p>
+
 </body>
 </html>
