@@ -135,8 +135,11 @@ variable QMAKESPEC=win32-g++. Add %QTDIR%\bin to your PATH
 environment variable.
 
 Then open a DOS command window, cd to the Qt4 install
-directory and execute the configure.exe program, and,
-after successful configuration, the "nmake" command.
+directory and execute
+   configure -qt-gif
+and, after successful configuration, the 
+   nmake
+command.
 
 (Hint: During the Qt4 build process the MSYS and cygwin
 bin directories should not be in your PATH.)
@@ -173,8 +176,8 @@ window from the "Tools" menu of VC++.
 
 Execute the "installpatch..." script.
 
-Execute "qconfigure msvc2005". This will completely install
-the "unofficial" Qt4-VC++ version.
+Execute "qconfigure msvc2005 -qt-gif". This will completely
+install the "unofficial" Qt4-VC++ version.
 
 Open "Tools"-->"Options..." in VC++, select "Projects and Solutions"
 --> "VC++ directories"--> "Include files". Add the primary

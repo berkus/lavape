@@ -1910,9 +1910,8 @@ bool SignalX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldE
   rcvDict = &runTimeData->receiverDict;
   if (rcvDict->contains(signalDecl)) {
     rcvListPtr = (*rcvDict)[signalDecl];
-    for (QList<Receiver*>::iterator it=rcvListPtr->begin();
-         it != rcvListPtr->end();) {
-      receiverEntry = *it;
+    for (int i=0; i<rcvListPtr->size(); i++) {
+      receiverEntry = rcvListPtr->at(i);
       receiverEntry->callCallback(ckd,stackFrame,oldExprLevel,(SynObjectBase*)sCall.ptr);
     }
   }

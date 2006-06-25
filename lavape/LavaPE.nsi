@@ -129,6 +129,10 @@ Section "LavaPE (required)" SEC01
   File "C:\Qt\Qt413msvc\bin\QtCore4.dll"
   File "C:\Qt\Qt413msvc\bin\QtGui4.dll"
   File "C:\Qt\Qt413msvc\bin\QtNetwork4.dll"
+  File "C:\Qt\Qt413msvc\bin\QtXml4.dll"
+  File "C:\Qt\Qt413msvc\plugins\imageformats\qgif1.dll"
+  File "C:\Qt\Qt413msvc\plugins\imageformats\qjpeg1.dll"
+  File "C:\Qt\Qt413msvc\plugins\imageformats\qmng1.dll"
 
   SetOutPath $INSTDIR\bin\std
   File /r "bin\std\*.*"
