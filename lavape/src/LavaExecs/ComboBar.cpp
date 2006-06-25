@@ -33,12 +33,19 @@
 int SelEndOKToStr(int pos, QComboBox* cbox, QString* editStr, TID* exID)
 {
   QVariant var;
+  CComboBoxItem* item;
+
   if (pos > 0) {
     *editStr = cbox->itemText(pos);
     if (!editStr->isNull()) {
       if (exID) {
         var = cbox->itemData(pos);
-        *exID = var.value<CComboBoxItem*>()->itemData();
+        item = var.value<CComboBoxItem*>();
+        if (!item)
+          item = var.value<CStatFuncItem*>();
+        if (!item)
+          item = var.value<CFieldsItem*>();
+        *exID = item->itemData();
       }
     }
     else
@@ -1766,6 +1773,8 @@ bool CComboBar::IsInBox(QComboBox* combo, const DString& name, int id, int incl,
   for (pos = 1; (pos < cnt) && !inBox; pos++) {
     var = combo->itemData(pos);
     item = var.value<CComboBoxItem*>();
+    if (!item)
+      item = var.value<CStatFuncItem*>();
     if ((item->itemData().nID == id) && (item->itemData().nINCL == incl))
       inBox = true;
     else {
