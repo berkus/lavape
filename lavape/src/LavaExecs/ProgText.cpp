@@ -157,6 +157,7 @@ void CProgText::Insert (TToken token,bool isPrimToken,bool isOptl) {
     break;
   case FuncRef_T:
     if (currentSynObj->parentObject->primaryToken == initializer_T
+    || currentSynObj->parentObject->primaryToken == dftInitializer_T
     || currentSynObj->parentObject->primaryToken == function_T)
       currentToken->data.str = ((Reference*)currentSynObj)->refDecl->FullName.c;
     else
