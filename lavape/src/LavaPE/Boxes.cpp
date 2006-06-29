@@ -174,6 +174,7 @@ ValOnInit CAttrBox::OnInitDialog()
         baseDECL = myDoc->IDTable.GetDECL(cheS->data);
         if (!baseDECL) {
           CCorrOverBox * box = new CCorrOverBox(myDECL, myDoc, parentWidget());
+          box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
           if (box->OnInitDialog() == BoxContinue) {
             if (box->exec() != QDialog::Accepted) 
               return BoxCancel;  //QDialog::reject();
@@ -1597,6 +1598,7 @@ ValOnInit CFuncBox::OnInitDialog()
         baseDECL = myDoc->IDTable.GetDECL(cheS->data);
         if (!baseDECL) {
           CCorrOverBox * box = new CCorrOverBox(myDECL, myDoc, parentWidget());
+          box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
           if (box->OnInitDialog() == BoxContinue) {
             if (box->exec() != QDialog::Accepted) 
               return BoxCancel;  
@@ -3599,6 +3601,7 @@ ValOnInit CVTypeBox::OnInitDialog()
       decl = myDoc->IDTable.GetDECL(che->data);
       if (!decl) {
         CCorrOverBox * box = new CCorrOverBox(myDECL, myDoc, parentWidget());
+        box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
         if (box->OnInitDialog() == BoxContinue) {
           if (box->exec() != QDialog::Accepted) 
             return BoxCancel;  //QDialog::reject();

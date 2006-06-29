@@ -282,6 +282,7 @@ void CInclView::OnEditSel()
       newChe->data = che->data;
       newChe->data.notFound = false;
       CIncludeBox* box = new CIncludeBox(GetDocument(), newChe, che, this);
+      box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
       if (box->exec() == QDialog::Accepted) {
         firstlast.INCL(firstHint);
         hint = new CLavaPEHint(CPECommand_ChangeInclude, GetDocument(), firstlast, (DWORD) newChe, 0, (DWORD)che->predecessor);

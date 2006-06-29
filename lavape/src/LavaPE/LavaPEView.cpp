@@ -1803,6 +1803,7 @@ void CLavaPEView::Gotodef(CTreeItem* item)
             || (DECL->Inherits.first != DECL->Inherits.last)) {
          //select ID
           box = new CGotoBox(DECL, GetDocument(), this);
+          box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
           if (box->exec() == QDialog::Accepted)
             id = box->SelID;
           else
@@ -2681,6 +2682,7 @@ void CLavaPEView::OnEditSelItem(CTreeItem* item, bool clickedOnIcon)
     if (isonwhat == isOnFormProps) {
       if (decl->DeclType == FormText) {
         CFormTextBox* fbox = new CFormTextBox(decl, this);
+        fbox->setWindowFlags(fbox->windowFlags() ^ Qt::WindowContextHelpButtonHint);
         okBox = fbox->exec();
         delete fbox;
       }

@@ -229,6 +229,7 @@ void CLavaPEDoc::AutoCorr(LavaDECL* decl)
         newDECL = NewLavaDECL();
         *newDECL = *decl;
         CCorrOverBox * box = new CCorrOverBox(newDECL, this, MainView);
+        box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
         if (box->OnInitDialog() == BoxContinue) {
           if (box->exec() != QDialog::Accepted) {
             delete newDECL;

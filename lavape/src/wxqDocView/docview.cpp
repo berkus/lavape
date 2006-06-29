@@ -183,8 +183,8 @@ void wxApp::onIdle()
       m_appWindow->m_workspace->setActiveWindow(actMDIChild);
       corrected = true;
     }
-    m_appWindow->m_workspace->setUpdatesEnabled(true);
   }
+  m_appWindow->m_workspace->setUpdatesEnabled(true);
 }
 
 void wxApp::customEvent(QEvent *e)

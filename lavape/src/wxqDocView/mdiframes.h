@@ -73,6 +73,9 @@ public:
   void TileVertic(QMenuBar *menubar, int& lastTile);
   void TileHoriz(QMenuBar *menubar, int& lastTile);
   virtual void helpContents(){}
+  virtual QWorkspace* Workspace() {
+    return m_workspace;
+  }
 
 protected:
   virtual QWorkspace* CreateWorkspace(QWidget* parent);

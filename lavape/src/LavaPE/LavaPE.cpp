@@ -1294,6 +1294,7 @@ bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& f
   if (fw.index) {//by name
     fw.FWhere = findInIncl;
     CFindByNameBox* box = new CFindByNameBox(&fw, wxTheApp->m_appWindow);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     if ((box->exec() != QDialog::Accepted) || !fw.searchName.l) {
       delete box;
       return false;
@@ -1302,6 +1303,7 @@ bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& f
   }
   else {
     CFindRefsBox* box = new CFindRefsBox(decl, (fw.FWhere == findInThisView), &fw, wxTheApp->m_appWindow);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     if (box->exec() != QDialog::Accepted) {
       delete box;
       return false;

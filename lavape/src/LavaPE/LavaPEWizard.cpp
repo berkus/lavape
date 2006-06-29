@@ -118,6 +118,7 @@ void CWizardView::SetFont(const QFont& font)
     pageI = wizard->currentIndex();
     delete wizard;
     wizard = new CLavaPEWizard(synEl, FormDECL, this, guibox);
+    wizard->setWindowFlags(wizard->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     wizard->setFont(font);
     wizard->setModified(mod);
     myScrv->MaxBottomRight = wizard->rect();
@@ -152,6 +153,7 @@ void CWizardView::customEvent(QEvent *ev0)
     delayedID = 0;
     if (!wizard) {
       wizard = new CLavaPEWizard(synEl, 0, this, guibox);
+      wizard->setWindowFlags(wizard->windowFlags() ^ Qt::WindowContextHelpButtonHint);
       myScrv->MaxBottomRight = wizard->rect();
       Resize();
       myScrv->horizontalScrollBar()->setValue(0);
@@ -253,6 +255,7 @@ void CWizardView::Reset()
     pageI = wizard->currentIndex();
     delete wizard;
     wizard = new CLavaPEWizard(synEl, 0, this, guibox);
+    wizard->setWindowFlags(wizard->windowFlags() ^ Qt::WindowContextHelpButtonHint);
     myScrv->MaxBottomRight = wizard->rect();
     Resize();
     myScrv->horizontalScrollBar()->setValue(0);
