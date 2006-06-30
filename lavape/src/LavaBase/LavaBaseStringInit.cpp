@@ -431,7 +431,7 @@ void LavaBaseStringInit() {
   ERR_InvisibleBasictype  = QObject::tr("Overridden type is invisible (= hidden in an implementation or opaque package)");
   ERR_VirtualCircle  = QObject::tr("Circular self-reference of virtual type");
   ERR_InvalidValOfVT  = QObject::tr("Virtual type has invalid value");
-  ERR_SelfUnfinishedCallObj  = QObject::tr("""self"" must be completely initialized before its methods may be called");
+  ERR_SelfUnfinishedCallObj  = QObject::tr("""self"" must be completely initialized before its methods may be called, or the method must have the \"self is closed\" attribute");
   ERR_SelfUnfinishedParm  = QObject::tr("\"self\" is not yet completely initialized here, receiving formal parameter must be \"closed\"");
   ERR_NoInitializer  = QObject::tr("This isn't an initializer");
   ERR_InitializerForbidden = QObject::tr("Initializer not allowed here");

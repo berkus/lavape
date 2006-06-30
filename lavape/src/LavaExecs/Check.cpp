@@ -3416,25 +3416,26 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   if (!parentObject->IsFuncInvocation())
     return ok;
 
+  if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
+    return ok;
+
+
+  decl = ckd.document->IDTable.GetDECL(((Reference*)funcExpr->function.ptr)->refID,ckd.inINCL);
+  if (!decl || flags.Contains(brokenRef))
+    return ok;
+
   if (refIDs.first == refIDs.last)
     if (flags.Contains(isTempVar))
       return true;
     else if (flags.Contains(isSelfVar)) {
-      if (parentObject->parentObject->primaryToken != initializing_T
-      && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-      && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
+      if (ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+      && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+      && !decl->SecondTFlags.Contains(closed)
+      ) {
         ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
         return false;
       }
     }
-
-  if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
-    return ok;
-
-  decl = ckd.document->IDTable.GetDECL(((Reference*)funcExpr->function.ptr)->refID,ckd.inINCL);
-
-  if (!decl|| flags.Contains(brokenRef))
-    return ok;
 
   if (!decl->TypeFlags.Contains(isConst))
     if (ReadOnlyContext() != noROContext
@@ -4296,8 +4297,10 @@ bool FuncExpression::Check (CheckData &ckd)
       funcDecl = ckd.document->IDTable.GetDECL(funcTid);
       if (!funcDecl)
         ERROREXIT
-      if (callExpr->IsClosed(ckd)
-      && !funcDecl->SecondTFlags.Contains(closed)) {
+      if (!funcDecl->SecondTFlags.Contains(closed)
+      && (callExpr->IsClosed(ckd)
+         || (parentObject->primaryToken == initializing_T
+            && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)))) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_SelfNotClosed);
         ok = false;
       }

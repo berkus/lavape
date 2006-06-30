@@ -1964,14 +1964,19 @@ exp: // Const_T
   }
 
   doubleClick = false;
-  //redCtl->repaint();
-    // otherwise the MiniEdit's position would be unknown in the following code
 
   if (text->currentSelection->data.token == Exp_T
   || text->currentSelection->data.token == ExpOpt_T
-  || text->currentSelection->data.token == Const_T)
+  || text->currentSelection->data.token == Const_T) {
+    wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
+    redCtl->repaint();
+      // otherwise the MiniEdit's position would be unknown in the following code
     OnConst();
-  else {
+    wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
+  }
+  else if (text->currentSynObj->type == VarPH_T) {
+    wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
+    redCtl->repaint();
     if (!editCtl)
       editCtl = new MiniEdit(redCtl);
     editCtl->setGeometry(text->currentSelection->data.rect);
@@ -1986,6 +1991,7 @@ exp: // Const_T
     if (text->currentSynObj->IsPlaceHolder())
       editCtl->selectAll();
     editCtlVisible = true;
+    wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
   }
 }
 
