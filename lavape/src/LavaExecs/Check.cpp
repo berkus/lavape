@@ -1323,7 +1323,7 @@ void MultipleOp::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, S
 bool MultipleOp::Check (CheckData &ckd)
 {
   CHE *chp, *chpActIn, *chpFormIn, *chpFormOut, *branchStm, *precedingBranch;
-  SynObject *opd, *opd1;
+  Expression *opd, *opd1;
   TID tidOp1, tidOperatorFunc, tidOutparm1;
   LavaDECL *declOp1, *formInParmDecl;
   Category cat, callObjCat;
@@ -1351,7 +1351,7 @@ bool MultipleOp::Check (CheckData &ckd)
       if (chp != (CHE*)operands.first)
         ((RefTable*)ckd.refTable)->NewBranch(branchStm,precedingBranch);
     }
-    opd = (SynObject*)chp->data;
+    opd = (Expression*)chp->data;
     if (isStm || !opd->IsIfStmExpr()) {
       ok &= opd->Check(ckd);
       if (chp == (CHE*)operands.first)
@@ -1367,7 +1367,7 @@ bool MultipleOp::Check (CheckData &ckd)
 
   if (isStm) return ok;
 
-  opd1 = (SynObject*)((CHE*)operands.first)->data;
+  opd1 = (Expression*)((CHE*)operands.first)->data;
 
   if (IsPH(opd1))
     ERROREXIT
@@ -1379,6 +1379,8 @@ bool MultipleOp::Check (CheckData &ckd)
 
   if (!opd1ok)
     ERROREXIT
+  
+  ok &= opd1->CallCheck(ckd);
 
   ckd.tempCtx = ckd.lpc;
   opd1->ExprGetFVType(ckd,declOp1,cat,ctxFlags);
@@ -1443,7 +1445,7 @@ bool MultipleOp::Check (CheckData &ckd)
   //if (!((SynObject*)chpActIn->data)->IsIfStmExpr()) {
       if (chpActIn->predecessor)
         compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
-      opd = (SynObject*)chpActIn->data;
+      opd = (Expression*)chpActIn->data;
       formInParmDecl = (LavaDECL*)chpFormIn->data;
       if (opd->IsOptional(ckd)
       && !formInParmDecl->TypeFlags.Contains(isOptional)
@@ -3406,21 +3408,22 @@ bool ObjReference::ArrayTargetCheck (CheckData &ckd) {
 }
 
 bool ObjReference::CallCheck (CheckData &ckd) {
-  FuncExpression *funcExpr=(FuncExpression*)parentObject;
+  Expression *funcExpr=(Expression*)parentObject;
   TID tid;
   LavaDECL *decl;
   bool ok=true;
 
   ok = ReadCheck(ckd);
 
-  if (!parentObject->IsFuncInvocation())
-    return ok;
+  //if (!parentObject->IsFuncInvocation())
+  //  return ok;
 
-  if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
-    return ok;
+  //if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
+  //  return ok;
 
 
-  decl = ckd.document->IDTable.GetDECL(((Reference*)funcExpr->function.ptr)->refID,ckd.inINCL);
+  //decl = ckd.document->IDTable.GetDECL(((Reference*)funcExpr->function.ptr)->refID,ckd.inINCL);
+  decl = funcExpr->FuncDecl(ckd);
   if (!decl || flags.Contains(brokenRef))
     return ok;
 
@@ -3430,8 +3433,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
     else if (flags.Contains(isSelfVar)) {
       if (ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
       && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-      && !decl->SecondTFlags.Contains(closed)
-      ) {
+      && !decl->SecondTFlags.Contains(closed) ) {
         ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
         return false;
       }
@@ -3491,7 +3493,7 @@ bool ObjReference::Check (CheckData &ckd) {
       break;
 
     case funcHandle:
-      ok1 &= CallCheck(ckd);
+      //ok1 &= CallCheck(ckd);
       break;
 
     case arrayTarget:
@@ -4297,33 +4299,34 @@ bool FuncExpression::Check (CheckData &ckd)
       funcDecl = ckd.document->IDTable.GetDECL(funcTid);
       if (!funcDecl)
         ERROREXIT
-      if (!funcDecl->SecondTFlags.Contains(closed)
-      && (callExpr->IsClosed(ckd)
-         || (parentObject->primaryToken == initializing_T
-            && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)))) {
-        ((SynObject*)function.ptr)->SetError(ckd,&ERR_SelfNotClosed);
-        ok = false;
-      }
+      ok &= callExpr->CallCheck(ckd);
+      //if (!funcDecl->SecondTFlags.Contains(closed)
+      //&& (callExpr->IsClosed(ckd)
+      //   || (parentObject->primaryToken == initializing_T
+      //      && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)))) {
+      //  ((SynObject*)function.ptr)->SetError(ckd,&ERR_SelfNotClosed);
+      //  ok &= false;
+      //}
       if (primaryToken == signal_T
         && !funcDecl->SecondTFlags.Contains(isLavaSignal)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoSignal);
-        ok = false;
+        ok &= false;
       }
       if (flags.Contains(staticCall)
       && !funcDecl->TypeFlags.Contains(isInitializer)
       && !(callExpr->flags.Contains(isSelfVar)
           && ((ObjReference*)callExpr)->refIDs.first == ((ObjReference*)callExpr)->refIDs.last)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoInitializer);
-        ok = false;
+        ok &= false;
       }
       if (funcDecl->TypeFlags.Contains(isStatic)) {
         ((SynObject*)handle.ptr)->SetError(ckd,&ERR_CallObjInStatic);
-        ok = false;
+        ok &= false;
       }
       if (funcDecl->TypeFlags.Contains(isInitializer)
       && !flags.Contains(staticCall)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_ExplicitInitializerCall);
-        ok = false;
+        ok &= false;
       }
       funcItf = funcDecl->ParentDECL;
       if (funcItf->DeclType == Impl) {
@@ -4333,24 +4336,24 @@ bool FuncExpression::Check (CheckData &ckd)
       funcItfTid = OWNID(funcItf);
       if (!ckd.document->IDTable.IsAn(objTypeTid,0,funcItfTid,0)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_MissingFuncDecl);
-        ok = false;
+        ok &= false;
       }
       if (funcDecl->TypeFlags.Contains(isProtected))
         if (ckd.selfTypeDECL->DeclType == Initiator) {
           ((SynObject*)function.ptr)->SetError(ckd,&ERR_Protected);
-          ok = false;
+          ok &= false;
         }
         else {
           implItfDecl = ckd.document->IDTable.GetDECL(((CHETID*)ckd.selfTypeDECL->Supports.first)->data,ckd.inINCL);
           if (!ckd.document->IDTable.IsAn(OWNID(objTypeDecl),0,OWNID(implItfDecl),0)) {
             ((SynObject*)function.ptr)->SetError(ckd,&ERR_Protected);
-            ok = false;
+            ok &= false;
           }
         }
       else if (funcImpl) {
         if (funcImpl != ckd.selfTypeDECL) {
           ((SynObject*)function.ptr)->SetError(ckd,&ERR_Private);
-          ok = false;
+          ok &= false;
         }
       }
     }

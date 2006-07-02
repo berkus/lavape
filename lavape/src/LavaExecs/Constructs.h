@@ -44,6 +44,7 @@
 #include <QList>
 #include <QHash>
 #include "LavaBaseDoc.h"
+#include "LavaBaseStringInit.h"
 #include "SynIDTable.h"
 #include "wx_obj.h"
 
@@ -830,6 +831,15 @@ class Expression : public SynObject {
   virtual bool IsPlaceHolder()
   {
     return false;
+  }
+  virtual bool CallCheck(CheckData &ckd)
+  {
+    SetError(ckd,&ERR_CallCheck_NYI);
+    return false;
+  }
+  virtual LavaDECL *FuncDecl(CheckData &ckd)
+  {
+    return 0;
   }
 
   Expression () {}
@@ -1628,6 +1638,10 @@ class MultipleOp : public Operation {
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+  LavaDECL *FuncDecl(CheckData &ckd)
+  {
+    return ckd.document->IDTable.GetDECL(opFunctionID,ckd.inINCL);
+  }
 
   virtual void CopyData (AnyType *from) {
     *this = *(MultipleOp*)from;
@@ -1958,6 +1972,10 @@ class FuncExpression : public Expression {
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+  virtual LavaDECL *FuncDecl(CheckData &ckd)
+  {
+    return ckd.document->IDTable.GetDECL(((Reference *)function.ptr)->refID,ckd.inINCL);
+  }
 
   FuncExpression () {}
 

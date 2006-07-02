@@ -271,6 +271,7 @@ QString ERR_NoImplForAbstract;
 QString ERR_LocalOrOutputVarInOld;
 QString ERR_OneLibName;
 QString ERR_CompObjIntfNotFound;
+QString ERR_CallCheck_NYI;
 
 void LavaBaseStringInit() {
   IDS_LAVACOM_FILE  = QObject::tr("Lava component file (*.lcom) defining the type of a lava component object");
@@ -506,4 +507,5 @@ void LavaBaseStringInit() {
   ERR_LocalOrOutputVarInOld = QObject::tr("Local and output variables not allowed in \"old\" expression");
   ERR_OneLibName = QObject::tr("Only set the name of the library implementing the component");
   ERR_CompObjIntfNotFound = QObject::tr("Supported component object interface not found");
+  ERR_CallCheck_NYI = QObject::tr("Call check not yet implemented");
 }

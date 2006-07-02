@@ -32,6 +32,7 @@ $INCLUDE "Syntax.ph"
 #include <QList>
 #include <QHash>
 #include "LavaBaseDoc.h"
+#include "LavaBaseStringInit.h"
 #include "SynIDTable.h"
 #include "wx_obj.h"
 
@@ -520,6 +521,13 @@ public:
   Category-- targetCat;
 
   virtual bool IsPlaceHolder () { return false; }
+  virtual bool CallCheck (CheckData &ckd) {
+    SetError(ckd,&ERR_CallCheck_NYI);
+    return false;
+  }
+  virtual LavaDECL* FuncDecl (CheckData &ckd) {
+    return 0;
+  }
 };
 
 class Operation : public Expression {
@@ -831,6 +839,9 @@ public:
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+  LavaDECL* FuncDecl (CheckData &ckd) {
+    return ckd.document->IDTable.GetDECL(opFunctionID,ckd.inINCL);
+  }
 };
 
 class SemicolonOp : public MultipleOp {
@@ -915,6 +926,9 @@ public:
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
+  virtual LavaDECL* FuncDecl (CheckData &ckd) {
+    return ckd.document->IDTable.GetDECL(((Reference*)function.ptr)->refID,ckd.inINCL);
+  }
 };
 
 class FuncStatement : public FuncExpression {
