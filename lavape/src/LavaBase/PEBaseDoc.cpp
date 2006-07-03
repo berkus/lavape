@@ -356,7 +356,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
           && (((LavaDECL*)((CHE*)elDECL->NestedDecls.last)->data)->DeclType == ExecDef))
           elDECL->NestedDecls.Delete(elDECL->NestedDecls.last);
         
-        if (!hint->CommandData5 && (hintDECL->DeclType == DragDef)
+        if ((viewHint->com != CPECommand_Move)/*!hint->CommandData5*/ && (hintDECL->DeclType == DragDef)
           && !hint->FirstLast.Contains(multiDocHint)
           && !elDECL->WorkFlags.Contains(fromPrivToPub)) { //not drag-drop, no pattern: paste or only drop
           if (elDECL->SecondTFlags.Contains(funcImpl)) {

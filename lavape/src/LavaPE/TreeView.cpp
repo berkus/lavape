@@ -343,7 +343,10 @@ void MyListView::dragMoveEvent(QDragMoveEvent *ev)
   if (Qt::ShiftModifier == ev->keyboardModifiers())
     ev->setDropAction(Qt::MoveAction);
   else
-    ev->setDropAction(Qt::CopyAction);
+    if (Qt::ControlModifier == ev->keyboardModifiers())
+      ev->setDropAction(Qt::CopyAction);
+    else
+      ev->setDropAction(Qt::MoveAction);
   QAbstractItemView::dragMoveEvent(ev);
   lavaView->OnDragOver(ev);
 }
@@ -353,7 +356,10 @@ void MyListView::dragEnterEvent(QDragEnterEvent *ev)
   if (Qt::ShiftModifier == ev->keyboardModifiers())
     ev->setDropAction(Qt::MoveAction);
   else
-    ev->setDropAction(Qt::CopyAction);
+    if (Qt::ControlModifier == ev->keyboardModifiers())
+      ev->setDropAction(Qt::CopyAction);
+    else
+      ev->setDropAction(Qt::MoveAction);
   lavaView->OnDragEnter(ev);
 }
 
@@ -368,7 +374,10 @@ void MyListView::dropEvent(QDropEvent* ev)
   if (Qt::ShiftModifier == ev->keyboardModifiers())
     ev->setDropAction(Qt::MoveAction);
   else
-    ev->setDropAction(Qt::CopyAction);
+    if (Qt::ControlModifier == ev->keyboardModifiers())
+      ev->setDropAction(Qt::CopyAction);
+    else
+      ev->setDropAction(Qt::MoveAction);
   lavaView->OnDrop(ev);
   stopAutoScroll();
   setState(NoState);
