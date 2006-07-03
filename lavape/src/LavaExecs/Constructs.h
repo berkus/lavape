@@ -1640,7 +1640,7 @@ class MultipleOp : public Operation {
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   LavaDECL *FuncDecl(CheckData &ckd)
   {
-    return ckd.document->IDTable.GetDECL(opFunctionID,ckd.inINCL);
+    return funcDecl;
   }
 
   virtual void CopyData (AnyType *from) {
@@ -1974,7 +1974,7 @@ class FuncExpression : public Expression {
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual LavaDECL *FuncDecl(CheckData &ckd)
   {
-    return ckd.document->IDTable.GetDECL(((Reference *)function.ptr)->refID,ckd.inINCL);
+    return funcDecl;
   }
 
   FuncExpression () {}

@@ -1379,8 +1379,6 @@ bool MultipleOp::Check (CheckData &ckd)
 
   if (!opd1ok)
     ERROREXIT
-  
-  ok &= opd1->CallCheck(ckd);
 
   ckd.tempCtx = ckd.lpc;
   opd1->ExprGetFVType(ckd,declOp1,cat,ctxFlags);
@@ -1415,9 +1413,16 @@ bool MultipleOp::Check (CheckData &ckd)
     SetError(ckd,&ERR_OperatorUndefined);
     ERROREXIT
   }
-  else
+  else {
     opFunctionID = tidOperatorFunc;
+    funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc);
+    if (!funcDecl)
+      SetError(ckd,&ERR_OperatorUndefined);
+      ERROREXIT
+  }
 #endif
+  
+  ok &= opd1->CallCheck(ckd);
 
   chpActIn = (CHE*)operands.first;
   chpFormIn = GetFirstInput(&ckd.document->IDTable,tidOperatorFunc);
@@ -3427,6 +3432,16 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   if (!decl || flags.Contains(brokenRef))
     return ok;
 
+  if (!decl->SecondTFlags.Contains(closed))
+    if (IsClosed(ckd)) {
+      SetError(ckd,&ERR_CallObjClosed);
+      ok &= false;
+    }
+    else if (parentObject->parentObject->primaryToken == initializing_T // base initializer call
+         && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
+      SetError(ckd,&ERR_SelfNotClosed);
+      ok &= false;
+    }
   if (refIDs.first == refIDs.last)
     if (flags.Contains(isTempVar))
       return true;
@@ -4300,13 +4315,6 @@ bool FuncExpression::Check (CheckData &ckd)
       if (!funcDecl)
         ERROREXIT
       ok &= callExpr->CallCheck(ckd);
-      //if (!funcDecl->SecondTFlags.Contains(closed)
-      //&& (callExpr->IsClosed(ckd)
-      //   || (parentObject->primaryToken == initializing_T
-      //      && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)))) {
-      //  ((SynObject*)function.ptr)->SetError(ckd,&ERR_SelfNotClosed);
-      //  ok &= false;
-      //}
       if (primaryToken == signal_T
         && !funcDecl->SecondTFlags.Contains(isLavaSignal)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoSignal);
