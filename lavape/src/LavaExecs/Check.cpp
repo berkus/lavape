@@ -869,7 +869,6 @@ CHE *GetFirstOutput(LavaDECL *funcDecl)
     return 0;
 }
 
-
 CHE *GetFirstOutput(TIDTable *idt, const TID &tid)
 {
   CHE *chpParam;
@@ -1416,9 +1415,10 @@ bool MultipleOp::Check (CheckData &ckd)
   else {
     opFunctionID = tidOperatorFunc;
     funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc);
-    if (!funcDecl)
+    if (!funcDecl) {
       SetError(ckd,&ERR_OperatorUndefined);
       ERROREXIT
+    }
   }
 #endif
   
@@ -3420,14 +3420,6 @@ bool ObjReference::CallCheck (CheckData &ckd) {
 
   ok = ReadCheck(ckd);
 
-  //if (!parentObject->IsFuncInvocation())
-  //  return ok;
-
-  //if (((Reference*)funcExpr->function.ptr)->IsPlaceHolder())
-  //  return ok;
-
-
-  //decl = ckd.document->IDTable.GetDECL(((Reference*)funcExpr->function.ptr)->refID,ckd.inINCL);
   decl = funcExpr->FuncDecl(ckd);
   if (!decl || flags.Contains(brokenRef))
     return ok;
@@ -3438,21 +3430,19 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       ok &= false;
     }
     else if (parentObject->parentObject->primaryToken == initializing_T // base initializer call
-         && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
+    && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
       SetError(ckd,&ERR_SelfNotClosed);
       ok &= false;
     }
-  if (refIDs.first == refIDs.last)
-    if (flags.Contains(isTempVar))
-      return true;
-    else if (flags.Contains(isSelfVar)) {
-      if (ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-      && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-      && !decl->SecondTFlags.Contains(closed) ) {
-        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
-        return false;
-      }
+    else if (flags.Contains(isSelfVar)
+    && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+    && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
+      ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
+      return false;
     }
+
+  if (flags.Contains(isTempVar) && refIDs.first == refIDs.last)
+    return true;
 
   if (!decl->TypeFlags.Contains(isConst))
     if (ReadOnlyContext() != noROContext
@@ -4250,7 +4240,8 @@ bool FuncExpression::Check (CheckData &ckd)
 
   callExpr = (Expression*)handle.ptr;
   if (callExpr) {
-    ok &= callExpr->Check(ckd);
+    if (!callExpr->Check(ckd))
+      ERROREXIT
     if (callExpr->IsOptional(ckd)
     && (callExpr->primaryToken != ObjRef_T || !callExpr->IsDefChecked(ckd))) {
       ((SynObject*)callExpr)->SetError(ckd,&ERR_Optional);
@@ -4408,7 +4399,7 @@ bool FuncExpression::Check (CheckData &ckd)
 
   chpFormIn = GetFirstInput(&ckd.document->IDTable,funcTid);
   chpFormOut = GetFirstOutput(&ckd.document->IDTable,funcTid);
-  if (parentObject->primaryToken == assignFX_T) {
+  if (primaryToken == assignFX_T) {
     if (!chpFormOut
     || (chpFormOut->successor
         && ((LavaDECL*)((CHE*)chpFormOut->successor)->data)->DeclType == OAttr)) {
@@ -4481,6 +4472,37 @@ bool FuncExpression::Check (CheckData &ckd)
 #endif
 
   EXIT
+}
+
+bool FuncExpression::CallCheck (CheckData &ckd) {
+  Expression *funcExpr=(Expression*)parentObject;
+    // not this but the containing expression, which may also be an operator expression
+
+  TID tid;
+  LavaDECL *decl;
+  bool ok=true;
+
+  decl = funcExpr->FuncDecl(ckd);
+  if (!decl || flags.Contains(brokenRef))
+    return ok;
+
+  if (!decl->SecondTFlags.Contains(closed))
+    if (IsClosed(ckd)) {
+      SetError(ckd,&ERR_CallObjClosed);
+      ok &= false;
+    }
+
+  if (!decl->TypeFlags.Contains(isConst))
+    if (ReadOnlyContext() != noROContext) {
+      funcExpr->SetError(ckd,&ERR_NonROCallInROClause);
+      return false;
+    }
+    else if (!((LavaDECL*)GetFirstOutput(decl)->data)->TypeFlags.Contains(stateObject)) {
+      SetError(ckd,&ERR_ImmutableCallObj);
+      return false;
+    }
+
+  return ok;
 }
 
 bool FuncStatement::Check (CheckData &ckd)

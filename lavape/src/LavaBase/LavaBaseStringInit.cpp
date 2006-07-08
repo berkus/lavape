@@ -273,6 +273,7 @@ QString ERR_LocalOrOutputVarInOld;
 QString ERR_OneLibName;
 QString ERR_CompObjIntfNotFound;
 QString ERR_CallCheck_NYI;
+QString ERR_ISO_NYI;
 
 void LavaBaseStringInit() {
   IDS_LAVACOM_FILE  = QObject::tr("Lava component file (*.lcom) defining the type of a lava component object");
@@ -332,7 +333,7 @@ void LavaBaseStringInit() {
   ERR_CallObjClosed  = QObject::tr("Call object is \"closed\", so the function must have the \"self is closed\" attribute");
   ERR_SelfClosed  = QObject::tr("\"self\" has been declared \"closed\": member access forbidden");
   ERR_SelfUnfinished  = QObject::tr("\"self\" may be still unfinished here: member access forbidden");
-  ERR_SelfNotClosed  = QObject::tr("Call object still incomplete, so the called function must have the \"self is closed\" attribute");
+  ERR_SelfNotClosed  = QObject::tr("Call object still incomplete here, so the called function must have the \"self is closed\" attribute");
   ERR_SelfUnfinishedCallObj  = QObject::tr("""self"" must be completely initialized before its methods may be called, or the method must have the \"self is closed\" attribute");
   ERR_SelfUnfinishedParm  = QObject::tr("\"self\" is not yet completely initialized here, so the receiving formal parameter must be \"closed\"");
   ERR_ElseExprObsolete  = QObject::tr("Else-expression superfluous: first operand is already mandatory");
@@ -510,4 +511,5 @@ void LavaBaseStringInit() {
   ERR_OneLibName = QObject::tr("Only set the name of the library implementing the component");
   ERR_CompObjIntfNotFound = QObject::tr("Supported component object interface not found");
   ERR_CallCheck_NYI = QObject::tr("Call check not yet implemented");
+  ERR_ISO_NYI = QObject::tr("\"IsStateObject\" not yet implemented");
 }
