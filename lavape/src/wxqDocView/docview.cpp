@@ -831,7 +831,7 @@ wxMDIChildFrame *wxDocTemplate::CreateChildFrame(wxDocument *doc)
   QWidget *mw = wxTheApp->m_appWindow;
   QWidget * clw = ((wxMainFrame*)mw)->GetClientWindow();
   wxMDIChildFrame *frame = (wxMDIChildFrame *)m_frameClassInfo(clw);
-
+  frame->parentWidget()->resize(600, 400);
   if (frame->OnCreate(this,doc)) {
     return frame;
   }
