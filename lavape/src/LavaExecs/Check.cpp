@@ -1458,11 +1458,6 @@ bool MultipleOp::Check (CheckData &ckd)
         ((SynObject*)opd)->SetError(ckd,&ERR_Optional);
         ok = false;
       }
-      if (opd->IsClosed(ckd)
-      && !formInParmDecl->SecondTFlags.Contains(closed)) {
-        ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
-        ok = false;
-      }
 #ifdef INTERPRETER
       ((SynObject*)chpActIn->data)->ExprGetFVType(ckd,actDecl,cat,ctxFlags);
       actDecl = ckd.document->GetType(actDecl);
@@ -4474,7 +4469,7 @@ bool FuncExpression::Check (CheckData &ckd)
   EXIT
 }
 
-bool FuncExpression::CallCheck (CheckData &ckd) {
+bool Expression::CallCheck (CheckData &ckd) {
   Expression *funcExpr=(Expression*)parentObject;
     // not this but the containing expression, which may also be an operator expression
 

@@ -521,16 +521,9 @@ public:
   Category-- targetCat;
 
   virtual bool IsPlaceHolder () { return false; }
-  virtual bool CallCheck (CheckData &ckd) {
-    SetError(ckd,&ERR_CallCheck_NYI);
-    return false;
-  }
+  virtual bool CallCheck (CheckData &ckd);
   virtual LavaDECL* FuncDecl (CheckData &ckd) {
     return 0;
-  }
-  virtual bool IsStateObject (CheckData &ckd) {
-    SetError(ckd,&ERR_ISO_NYI);
-    return true;
   }
 };
 
@@ -929,7 +922,6 @@ public:
   virtual bool IsFuncInvocation () { return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual bool CallCheck (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
   virtual LavaDECL* FuncDecl (CheckData &ckd) {
     return funcDecl; //ckd.document->IDTable.GetDECL(((Reference*)function.ptr)->refID,ckd.inINCL);
