@@ -2749,7 +2749,7 @@ void CExecView::OnDelete ()
   else if (text->currentSynObj->primaryToken == ifdef_T
   && ((text->currentSelection->data.token == then_T
       || text->currentSelection->data.token == else_T
-      || text->currentSynObj->NestedOptClause(optClause))
+      || (optClause && text->currentSynObj->NestedOptClause(optClause)))
       && (!((IfdefStatement*)text->currentSynObj)->thenPart.ptr
           || !((IfdefStatement*)text->currentSynObj)->elsePart.ptr)))
       reject = true;
