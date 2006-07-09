@@ -865,7 +865,8 @@ bool IfStatement::NestedOptClause (SynObject *optClause) {
 }
 
 bool IfdefStatement::NestedOptClause (SynObject *optClause) {
-  if (optClause->whereInParent == (address)&elsePart.ptr)
+  if (optClause->whereInParent == (address)&thenPart.ptr
+  || optClause->whereInParent == (address)&elsePart.ptr)
     return true;
   else
     return false;

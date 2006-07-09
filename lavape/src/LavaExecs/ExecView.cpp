@@ -2672,7 +2672,7 @@ void CExecView::OnDelete ()
   // TODO: Add your command handler code here
   bool reject=false;
   CHAINX *chx;
-  SynObject *oldCurrentSynObj = text->currentSynObj, *synObj, *optClause;
+  SynObject *oldCurrentSynObj = text->currentSynObj, *synObj, *optClause=0;
   ObjReference *oldRef, *newRef;
   Run *runStm;
   NewExpression *newExp;
@@ -2684,7 +2684,7 @@ void CExecView::OnDelete ()
   if (GetDocument()->changeNothing)
     return;
 
-        text->currentSynObjID = 0;
+  text->currentSynObjID = 0;
 
   if (text->currentSelection->data.token == Comment_T) {
     TComment *pCmt = new TCommentV;
@@ -2714,6 +2714,12 @@ void CExecView::OnDelete ()
     else if (text->currentSynObj->primaryToken == parameter_T)
       text->currentSynObj = text->currentSynObj->parentObject;
   }
+  else if (text->currentSynObj->parentObject->NestedOptClause(text->currentSynObj)
+  && text->currentSynObj->parentObject->primaryToken == ifdef_T) {
+    optClause = text->currentSynObj;
+    text->currentSynObj = text->currentSynObj->parentObject;
+  }
+
   else if (text->currentSynObj->primaryToken == TDOD_T) {
     if ((CHE*)text->currentSynObj->whereInParent == chx->first)
       text->currentSynObj = text->currentSynObj->parentObject;
@@ -2742,7 +2748,8 @@ void CExecView::OnDelete ()
   }
   else if (text->currentSynObj->primaryToken == ifdef_T
   && ((text->currentSelection->data.token == then_T
-      || text->currentSelection->data.token == else_T)
+      || text->currentSelection->data.token == else_T
+      || text->currentSynObj->NestedOptClause(optClause))
       && (!((IfdefStatement*)text->currentSynObj)->thenPart.ptr
           || !((IfdefStatement*)text->currentSynObj)->elsePart.ptr)))
       reject = true;
@@ -2753,7 +2760,7 @@ void CExecView::OnDelete ()
     return;
   }
 
-  if (text->currentSelection->data.OptionalClauseToken(optClause)) {
+  if (optClause/*ifdef-then/else case*/ || text->currentSelection->data.OptionalClauseToken(optClause)) {
     text->currentSynObj = optClause;
     PutDelNestedHint(SET(firstHint,lastHint,-1));
     return;
