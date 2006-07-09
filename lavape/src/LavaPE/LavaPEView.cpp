@@ -2580,7 +2580,7 @@ void CLavaPEView::OnDropPost(void* act)
         }
         if ((clipDefType == DragIO) || (clipDefType == DragEnum) )
           GetDocument()->ConcernForms(hint);
-        if (clipDefType == DragIO)
+        if ((clipDefType == DragIO) || (clipDefType == DragFeatureF) && (com == CPECommand_Insert))
           if (d4)
             GetDocument()->ConcernImpls(hint, *(LavaDECL**)d4);
           else
