@@ -3273,32 +3273,19 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   QString *rc=0;
   CHE *secondChe;
   bool ok=true;
-  Expression *expr;
-  FuncExpression *funcExpr;
-  Operation *op;
+  LavaDECL *formParmDecl;
 
   if (flags.Contains(isSelfVar)
   && refIDs.first == refIDs.last
   && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
   && parentObject->primaryToken == parameter_T) {
-    expr = (Expression*)parentObject->parentObject;
-    if (expr->IsFuncInvocation()) {
-      funcExpr = (FuncExpression*)expr;
-      if (!funcExpr->funcDecl)
-        return ok;
-      if (!funcExpr->funcDecl->TypeFlags.Contains(isInitializer)) {
-        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinished);
-        ok = false;
-      }
-    }
-    else if (expr->IsMultOp() || expr->IsBinaryOp()) {
-      op = (Operation*)expr;
-      if (!op->funcDecl)
-        return ok;
-      if (!op->funcDecl->TypeFlags.Contains(isInitializer)) {
-        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinished);
-        ok = false;
-      }
+    formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
+    if (!formParmDecl)
+      return ok;
+    if (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+    && !formParmDecl->SecondTFlags.Contains(closed)) {
+      ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
+      ok = false;
     }
   }
   else if (flags.Contains(isSelfVar)
@@ -3306,29 +3293,6 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   && refIDs.first != refIDs.last) {
     ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfClosed);
     ok = false;
-  }
-  else if (flags.Contains(isTempVar)
-  && refIDs.first == refIDs.last
-  && parentObject->primaryToken == parameter_T) {
-    expr = (Expression*)parentObject->parentObject;
-    if (expr->IsFuncInvocation()) {
-      funcExpr = (FuncExpression*)expr;
-      if (!funcExpr->funcDecl)
-        return ok;
-      if (!funcExpr->funcDecl->TypeFlags.Contains(isInitializer)) {
-        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_TempUnfinished);
-        ok = false;
-      }
-    }
-    else if (expr->IsMultOp() || expr->IsBinaryOp()) {
-      op = (Operation*)expr;
-      if (!op->funcDecl)
-        return ok;
-      if (!op->funcDecl->TypeFlags.Contains(isInitializer)) {
-        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_TempUnfinished);
-        ok = false;
-      }
-    }
   }
 
   if (flags.Contains(isDeclareVar)
