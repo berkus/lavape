@@ -369,7 +369,7 @@ wxMDIChildFrame::~wxMDIChildFrame()
   QString title;
 
   if (isVisible())
-    setFocus();    // to prevent a mysterious crash on file-exit/~CExecFrame
+    setFocus();  // to prevent a mysterious crash on file-exit/~CExecFrame
   clearFocus();
 
   title = windowTitle();
