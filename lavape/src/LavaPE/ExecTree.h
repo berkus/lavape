@@ -26,6 +26,7 @@ public:
   bool isOnSkip;
   bool FinalUpdate;
   bool useAutoBox;
+  bool noItems;
   CLavaPEDoc* Doc;
   int checkLevel;
   

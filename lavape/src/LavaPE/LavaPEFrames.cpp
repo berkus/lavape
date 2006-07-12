@@ -1766,6 +1766,8 @@ CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent)
 {
   viewR = 0;
   showIt = !((CLavaPEApp*)wxTheApp)->inTotalCheck;
+  if (!showIt)
+    hide();
 }
 
 bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)

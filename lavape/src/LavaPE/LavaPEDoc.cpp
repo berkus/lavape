@@ -3186,6 +3186,7 @@ void CLavaPEDoc::OnTotalCheck()
   CLavaPEDoc *doc;
   wxDocManager* mana = wxDocManager::GetDocumentManager();
   int pos;
+  bool isNewDoc;
 
   CExecChecks* ch = new CExecChecks(this);
   delete ch;
@@ -3210,17 +3211,16 @@ void CLavaPEDoc::OnTotalCheck()
         if (SameFile(absName, absName2))
           pos = mana->m_docs.size();
       }
-      if (SameFile(absName, absName2)) 
-        doc->openInTotalCheck = false;
-      else {
-        doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(absName.c);
-        if (doc)
-          doc->openInTotalCheck = true;
-      }
+      doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocumentN(absName.c, isNewDoc);
+      if (isNewDoc)
+        doc->openInTotalCheck = true;
       if (doc && !doc->checkedInTotalCheck) {
+        CExecTree* ct = new CExecTree((CLavaPEView*)doc->MainView, false, false);
+        ct->Travers->AllDefs(false);
         CExecChecks* ch = new CExecChecks(doc);
         doc->checkedInTotalCheck = true;
         delete ch;
+        delete ct;
         if (doc->nErrors || doc->nPlaceholders) {
           nErrBoxShown++;
           //if (!doc->openInTotalCheck) 
@@ -3248,8 +3248,10 @@ void CLavaPEDoc::OnTotalCheck()
   for (pos = 0; pos < mana->m_docs.size(); pos++) {
     doc = (CLavaPEDoc*)mana->m_docs[pos];
     doc->checkedInTotalCheck = false;
-    if (doc->openInTotalCheck)
+    if (doc->openInTotalCheck) {
       doc->OnCloseDocument();
+      pos--;
+    }
   }
   ((CLavaPEApp*)wxTheApp)->inTotalCheck = false;
   mana->SetActiveView(actView, true);

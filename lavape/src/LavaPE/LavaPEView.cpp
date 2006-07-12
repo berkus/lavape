@@ -1154,6 +1154,8 @@ void CLavaPEView::DrawTree(LavaDECL ** pDECL, bool inUndoRedo, bool finalUpdate,
   drawTree = false;
   GetDocument()->UpdateNo++;
   delete execTree;
+  if (!Tree->RootItem)
+    return;
   if (finalUpdate) {
     lastCurrent = 0;
     ExpandTree();

@@ -52,6 +52,7 @@ CExecTree::CExecTree(CLavaPEView *tree, bool autoBox, bool finalUpdate, int chec
   ActLevel = 0;
   skipLevel = 10000;
   downAwaited = false;
+  noItems = false;
   FinalUpdate = finalUpdate;
   useAutoBox = autoBox;
   Doc->hasErrorsInTree = false;
@@ -59,6 +60,8 @@ CExecTree::CExecTree(CLavaPEView *tree, bool autoBox, bool finalUpdate, int chec
 
 bool CExecTree::CalcPos(int level)
 {
+  if (noItems)
+    return true;
   if (skipLevel <= level) {
     isOnSkip = true;
     return false; //auslassen
@@ -488,6 +491,12 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
       cheS = (CHETID*)cheS->successor;
     }
   }
+  if (noItems) {
+    if (elDef->DECLError1.first || elDef->DECLError2.first)
+      Doc->hasErrorsInTree = true;
+    return;
+  }
+
   CTreeItem* parent = 0;
   if (ParItem)
     if (elDef->DeclType == VirtualType)
@@ -649,6 +658,10 @@ void CExecTree::MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** p
         ActItem = (CTreeItem*)parent->child(0);
       else
         ActItem = (CTreeItem*)viewTree->Tree->RootItem;
+    if (!ActItem) {
+      noItems = true;
+      return;
+    }
     ActItem->setText(0, QString(label.c));
     ActItem->setPixmapIndex(bm);
     //ActItem->setPixmap(0, *bm);
@@ -746,10 +759,13 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     new CLavaError(&elDef->DECLError1, errCode);
   if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract))
     elDef->TypeFlags.EXCL(isAbstract);
-  parent = getSectionNode(ParItem, elDef->DeclType);
+  if (!noItems) 
+    parent = getSectionNode(ParItem, elDef->DeclType);
   if ((elDef->DeclDescType == Undefined)  && (elDef->LocalName.l == 0)) {
-    bm = GetPixmap(false, true, BasicDef);
-    lab = DString("Literal");
+    if (!noItems) {
+      bm = GetPixmap(false, true, BasicDef);
+      lab = DString("Literal");
+    }
   }
   else {
     if (elDef->ParentDECL->DeclType != FormDef) {
@@ -864,18 +880,21 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     }
     else
       new CLavaError(&elDef->DECLError1, &ERR_NoRefType);
-    bm = GetPixmap(false, true, defType, flags);
+    if (!noItems) 
+      bm = GetPixmap(false, true, defType, flags);
     if ((elDef->DECLError1.first || elDef->DECLError2.first))
       Doc->hasErrorsInTree = true;
   }
-  MakeItem(lab, bm, parent, pelDef);
+  if (!noItems) 
+    MakeItem(lab, bm, parent, pelDef);
 }
 
 void CExecTree::ExecFText(LavaDECL ** pelDef, int level)
 {
   int bm;
   DString lab;
-
+  if (noItems) 
+    return;
   (*pelDef)->DECLError1.Destroy();
   if ((*pelDef)->LocalName.l == 0)
     (*pelDef)->LocalName = DString("_Text");
@@ -955,9 +974,11 @@ void CExecTree::ExecFormDef(LavaDECL ** pelDef, int level)
       lab += DString("??");
       new CLavaError(&elDef->DECLError1, &ERR_NoRefType);
     }
-    bm = GetPixmap(false, false, FormDef);
-    parent = getSectionNode(ParItem, FormDef);
-    MakeItem(lab, bm, parent, pelDef);
+    if (!noItems) {
+      bm = GetPixmap(false, false, FormDef);
+      parent = getSectionNode(ParItem, FormDef);
+      MakeItem(lab, bm, parent, pelDef);
+    }
     if (elDef->DECLError1.first || elDef->DECLError2.first) {
       Doc->hasErrorsInTree = true;
       new CLavaError(&elDef->ParentDECL->DECLError1, &ERR_ErrInForm);
@@ -972,10 +993,11 @@ void CExecTree::ExecFormDef(LavaDECL ** pelDef, int level)
       elDef->DECLError2.first = 0;
       elDef->DECLError2.last = 0;
     }
-    if (elDef->ParentDECL->DECLError1.first || elDef->ParentDECL->DECLError2.first)
-      ((CLavaPEDoc*)Doc)->SetTreeItemImage(elDef->ParentDECL, true);
-    else
-      ((CLavaPEDoc*)Doc)->SetTreeItemImage(elDef->ParentDECL, false);
+    if (!noItems)
+      if (elDef->ParentDECL->DECLError1.first || elDef->ParentDECL->DECLError2.first)
+        ((CLavaPEDoc*)Doc)->SetTreeItemImage(elDef->ParentDECL, true);
+      else
+        ((CLavaPEDoc*)Doc)->SetTreeItemImage(elDef->ParentDECL, false);
 
   }
 }
@@ -983,6 +1005,9 @@ void CExecTree::ExecFormDef(LavaDECL ** pelDef, int level)
 void CExecTree::ExecExec(LavaDECL ** pelDef, int level)
 {
   int bm;
+
+  if (noItems)
+    return;
   LavaDECL *elDef = *pelDef;
   SynFlags flag;
   if (elDef->Exec.ptr) {
@@ -1016,6 +1041,8 @@ void CExecTree::ExecExec(LavaDECL ** pelDef, int level)
 
 void CExecTree::ExecStruct(LavaDECL** pinEl, DString fieldID)
 {
+  if (noItems)
+    return;
   if (!isOnSkip) {
     downAwaited = true;
     if (!(*pinEl)->NestedDecls.first
@@ -1033,6 +1060,8 @@ void CExecTree::ExecEnum(LavaDECL** pinEl, DString fieldID)
   CMainItemData * data, *parData;
   bool exp = false;
 
+  if (noItems)
+    return;
   if (skipLevel <= ActLevel+2) {
     isOnSkip = true;
     return;
@@ -1063,6 +1092,8 @@ void CExecTree::ExecEnum(LavaDECL** pinEl, DString fieldID)
 
 void CExecTree::ExecEnumItem(CHEEnumSelId * enumsel, int level)
 {
+  if (noItems)
+    return;
   if (!CalcPos(level))
     return;
   int bm = enumselBM;//QPixmapCache::find("l_enumsel");

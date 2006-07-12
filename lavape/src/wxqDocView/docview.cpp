@@ -1185,6 +1185,22 @@ wxDocument *wxDocManager::FindOpenDocument(const QString& path)
   return CreateDocument(path, wxDOC_SILENT);
 }
 
+wxDocument *wxDocManager::FindOpenDocumentN(const QString& path, bool& isNew)
+{
+  wxDocument *doc;
+  int pos;
+  for (pos = 0; pos < m_docs.size(); pos++) {
+    doc = m_docs[pos];
+    if (doc && (path == doc->GetFilename())) { //filename comp
+      m_fileHistory->SetFirstInHistory(doc->GetUserFilename());
+      isNew = false;
+      return doc;
+    }
+  }
+  isNew = true;
+  return CreateDocument(path, wxDOC_SILENT);
+}
+
 bool wxDocManager::CreateView(wxDocument *doc)
 {
   int i, n =0;

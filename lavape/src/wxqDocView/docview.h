@@ -419,6 +419,7 @@ public:
     //wxDocument* GetNextDoc(POSITION& pos);
     //void DocPosRelease(POSITION pos);
     wxDocument* FindOpenDocument(const QString& path);//all links resolved
+    wxDocument* FindOpenDocumentN(const QString& path, bool& isNew);
 
     // Make a default document name
     virtual bool MakeDefaultName(QString& buf);
