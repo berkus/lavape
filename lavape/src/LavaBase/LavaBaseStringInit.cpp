@@ -274,6 +274,7 @@ QString ERR_OneLibName;
 QString ERR_CompObjIntfNotFound;
 QString ERR_CallCheck_NYI;
 QString ERR_ISO_NYI;
+QString ERR_clone_copy_inp_closed;
 
 void LavaBaseStringInit() {
   IDS_LAVACOM_FILE  = QObject::tr("Lava component file (*.lcom) defining the type of a lava component object");
@@ -512,4 +513,5 @@ void LavaBaseStringInit() {
   ERR_CompObjIntfNotFound = QObject::tr("Supported component object interface not found");
   ERR_CallCheck_NYI = QObject::tr("Call check not yet implemented");
   ERR_ISO_NYI = QObject::tr("\"IsStateObject\" not yet implemented");
+  ERR_clone_copy_inp_closed = QObject::tr("Input parameter of clone/copy must not be \"closed\"");
 }

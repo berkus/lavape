@@ -6289,6 +6289,11 @@ bool CloneExpression::Check (CheckData &ckd)
 
   ENTRY
   ok &= ((SynObject*)fromObj.ptr)->Check(ckd);
+  if (!IsPH(fromObj.ptr)
+    && ((SynObject*)fromObj.ptr)->IsClosed(ckd)) {
+      ((SynObject*)fromObj.ptr)->SetError(ckd,&ERR_clone_copy_inp_closed);
+      ok = false;
+  }
   if (varName.ptr)
     ok &= ((SynObject*)varName.ptr)->Check(ckd);
 
@@ -6339,6 +6344,11 @@ bool CopyStatement::Check (CheckData &ckd)
   }
 
   ok &= source->Check(ckd);
+  if (!IsPH(fromObj.ptr)
+    && ((SynObject*)fromObj.ptr)->IsClosed(ckd)) {
+      ((SynObject*)fromObj.ptr)->SetError(ckd,&ERR_clone_copy_inp_closed);
+      ok = false;
+  }
   ok &= target->Check(ckd);
   if (!ok)
     ERROREXIT

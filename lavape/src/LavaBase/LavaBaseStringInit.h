@@ -248,6 +248,7 @@ extern LAVABASE_DLL QString ERR_OneLibName;
 extern LAVABASE_DLL QString ERR_CompObjIntfNotFound;
 extern LAVABASE_DLL QString ERR_CallCheck_NYI;
 extern LAVABASE_DLL QString ERR_ISO_NYI;
+extern LAVABASE_DLL QString ERR_clone_copy_inp_closed;
 
 extern void LavaBaseStringInit();
 
