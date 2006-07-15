@@ -38,16 +38,22 @@ CLavaGUIFrame::CLavaGUIFrame(QWidget *parent) : wxMDIChildFrame(parent)
 
 bool CLavaGUIFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
-  if (wxMDIChildFrame::OnCreate(temp, doc)) {
-		setWindowIcon(QIcon(QPixmap((const char**) Lava)));
-		resize(500,300);
-    if (LBaseData->inRuntime)
+  doc->AddChildFrame(this);
+  m_document = doc;
+	setWindowIcon(QIcon(QPixmap((const char**) Lava)));
+	resize(500,300);
+  myDoc = (CLavaBaseDoc*)doc;
+  if (LBaseData->inRuntime)
+    if (myDoc->isObject) {
+      myView = new CLavaGUIView(this, myDoc);
+      layout->addWidget(myView);
+      layout->setMargin(0);
+      show();
+    }
+    else
       hide();
-    myDoc = (CLavaBaseDoc*)doc;
-		return true;
-	}
-	else
-		return false;
+	return true;
+
 }
 
 void CLavaGUIFrame::InitialUpdate()

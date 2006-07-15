@@ -31,6 +31,7 @@ $INCLUDE "Syntax.ph"
 #include "qpainter.h"
 #include <QList>
 #include <QHash>
+#include "LavaAppBase.h"
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
 #include "SynIDTable.h"
@@ -429,7 +430,11 @@ public:
   bool NullAdmissible (CheckData &ckd);
   bool ExpressionSelected (CHETokenNode *currentSelection);
   virtual bool IsOptional(CheckData &ckd) { return flags.Contains(isOptionalExpr); }
-  virtual bool IsClosed(CheckData &ckd) { return flags.Contains(isClosed); }
+  virtual bool IsClosed(CheckData &ckd) {
+//    if (!IsPlaceHolder())
+//    qFatal("IsClosed not yet implemented");
+    return false;
+  }
   bool HasOptionalParts ();
   bool IsDefChecked(CheckData &ckd);
   virtual ROContext ReadOnlyContext();
@@ -587,6 +592,7 @@ public:
   bool operator== (ObjReference &objRef);
   virtual bool IsPlaceHolder () { return false; }
   virtual bool IsOptional (CheckData &ckd);
+  virtual bool IsClosed(CheckData &ckd);
   bool InConstituent (CheckData &ckd);
   bool Inherited (CheckData &ckd);
   bool OutOfScope (CheckData &ckd);
@@ -920,6 +926,7 @@ public:
   SynFlags-- myCtxFlags;
 
   virtual bool IsFuncInvocation () { return true; }
+  virtual bool IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);

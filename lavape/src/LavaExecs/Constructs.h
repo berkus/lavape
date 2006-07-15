@@ -43,6 +43,7 @@
 #include "qpainter.h"
 #include <QList>
 #include <QHash>
+#include "LavaAppBase.h"
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
 #include "SynIDTable.h"
@@ -633,7 +634,7 @@ class SynObject : public SynObjectBase {
   }
   virtual bool IsClosed(CheckData &ckd)
   {
-    return flags.Contains(isClosed);
+    return false;
   }
   bool HasOptionalParts();
   bool IsDefChecked(CheckData &ckd);
@@ -981,6 +982,7 @@ class ObjReference : public Expression {
     return false;
   }
   virtual bool IsOptional(CheckData &ckd);
+  virtual bool IsClosed(CheckData &ckd);
   bool InConstituent(CheckData &ckd);
   bool Inherited(CheckData &ckd);
   bool OutOfScope(CheckData &ckd);
@@ -1965,6 +1967,7 @@ class FuncExpression : public Expression {
   {
     return true;
   }
+  virtual bool IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);

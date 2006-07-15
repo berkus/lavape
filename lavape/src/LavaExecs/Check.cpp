@@ -3289,6 +3289,19 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
     }
   }
   else if (flags.Contains(isSelfVar)
+  && refIDs.first == refIDs.last
+  && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+  && parentObject->primaryToken == assign_T) {
+    formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
+    if (!formParmDecl)
+      return ok;
+    if (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+    && !formParmDecl->SecondTFlags.Contains(closed)) {
+      ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
+      ok = false;
+    }
+  }
+  else if (flags.Contains(isSelfVar)
   && flags.Contains(isClosed)
   && refIDs.first != refIDs.last) {
     ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfClosed);
@@ -3418,6 +3431,12 @@ bool ObjReference::CallCheck (CheckData &ckd) {
     }
 
   return ok;
+}
+
+bool ObjReference::IsClosed(CheckData &ckd) {
+  if (flags.Contains(isClosed))
+    return true;
+  return false;
 }
 
 bool ObjReference::Check (CheckData &ckd) {
@@ -4431,6 +4450,13 @@ bool FuncExpression::Check (CheckData &ckd)
 #endif
 
   EXIT
+}
+
+bool FuncExpression::IsClosed(CheckData &ckd) {
+  CHE *outp=GetFirstOutput(funcDecl);
+  if (outp && !((LavaDECL*)outp->data)->SecondTFlags.Contains(closed))
+    return true;
+  return false;
 }
 
 bool Expression::CallCheck (CheckData &ckd) {

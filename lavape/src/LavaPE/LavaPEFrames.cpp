@@ -1950,6 +1950,8 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
     //if (oldWindowState == Qt::WindowMaximized)
     if (wxTheApp->isChMaximized)
       showMaximized();
+    else
+      show();
     return true;
   }
   else {
