@@ -1,4 +1,4 @@
-/* LavaPE -- Lava Programming Environment
+xxx/* LavaPE -- Lava Programming Environment
    Copyright (C) 2002 Fraunhofer-Gesellschaft
 	 (http://www.sit.fraunhofer.de/english/)
 
