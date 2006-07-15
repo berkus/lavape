@@ -834,7 +834,7 @@ class Expression : public SynObject {
     return false;
   }
   virtual bool CallCheck(CheckData &ckd);
-  virtual LavaDECL *FuncDecl(CheckData &ckd)
+  virtual LavaDECL *FuncDecl()
   {
     return 0;
   }
@@ -1361,6 +1361,10 @@ class UnaryOp : public Operation {
     return true;
   }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
+  LavaDECL *FuncDecl()
+  {
+    return funcDecl;
+  }
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 
@@ -1600,6 +1604,10 @@ class BinaryOp : public Operation {
     return true;
   }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
+  LavaDECL *FuncDecl()
+  {
+    return funcDecl;
+  }
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 
@@ -1636,7 +1644,7 @@ class MultipleOp : public Operation {
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
-  LavaDECL *FuncDecl(CheckData &ckd)
+  LavaDECL *FuncDecl()
   {
     return funcDecl;
   }
@@ -1971,7 +1979,7 @@ class FuncExpression : public Expression {
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
-  virtual LavaDECL *FuncDecl(CheckData &ckd)
+  virtual LavaDECL *FuncDecl()
   {
     return funcDecl;
   }

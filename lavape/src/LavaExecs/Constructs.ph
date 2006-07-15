@@ -527,7 +527,7 @@ public:
 
   virtual bool IsPlaceHolder () { return false; }
   virtual bool CallCheck (CheckData &ckd);
-  virtual LavaDECL* FuncDecl (CheckData &ckd) {
+  virtual LavaDECL* FuncDecl () {
     return 0;
   }
 };
@@ -755,6 +755,9 @@ public:
 
   virtual bool IsUnaryOp () { return true; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  LavaDECL* FuncDecl () {
+    return funcDecl;
+  }
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
@@ -826,6 +829,9 @@ public:
 
   virtual bool IsBinaryOp () { return true; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
+  LavaDECL* FuncDecl () {
+    return funcDecl;
+  }
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
 };
@@ -842,8 +848,8 @@ public:
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
-  LavaDECL* FuncDecl (CheckData &ckd) {
-    return funcDecl; //ckd.document->IDTable.GetDECL(opFunctionID,ckd.inINCL);
+  LavaDECL* FuncDecl () {
+    return funcDecl;
   }
 };
 
@@ -930,7 +936,7 @@ public:
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);
-  virtual LavaDECL* FuncDecl (CheckData &ckd) {
+  virtual LavaDECL* FuncDecl () {
     return funcDecl; //ckd.document->IDTable.GetDECL(((Reference*)function.ptr)->refID,ckd.inINCL);
   }
 };

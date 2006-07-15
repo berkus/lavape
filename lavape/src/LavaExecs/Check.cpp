@@ -2515,7 +2515,6 @@ bool UnaryOp::Check (CheckData &ckd)
 #ifdef INTERPRETER
     if (tidOperatorFunc.nID == -1)
       SetError(ckd,&ERR_UnaryOpUndefined);
-    funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc,ckd.inINCL);
     if (!funcDecl)
       SetError(ckd,&ERR_UnaryOpUndefined);
     formDecl = (LavaDECL*)chpFormOut->data;
@@ -2530,6 +2529,7 @@ bool UnaryOp::Check (CheckData &ckd)
     else
       opFunctionID = tidOperatorFunc;
 #endif
+    funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc,ckd.inINCL);
   }
   EXIT
 }
@@ -2753,7 +2753,6 @@ bool BinaryOp::Check (CheckData &ckd)
   ADJUST4(tidOperatorFunc);
   if (tidOperatorFunc.nID == -1)
     SetError(ckd,&ERR_OperatorUndefined);
-  funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc);
   if (!funcDecl)
     SetError(ckd,&ERR_OperatorUndefined);
   funcSectionNumber = ckd.document->GetMemsSectionNumber(ckd, declFuncClass,funcDecl);
@@ -2767,6 +2766,7 @@ bool BinaryOp::Check (CheckData &ckd)
   else
     opFunctionID = tidOperatorFunc;
 #endif
+  funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc);
 
   if (opd2IsNull || IsPH(opd2) || !declOp2)
     EXIT
@@ -3392,7 +3392,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
 
   ok = ReadCheck(ckd);
 
-  decl = funcExpr->FuncDecl(ckd);
+  decl = funcExpr->FuncDecl();
   if (!decl || flags.Contains(brokenRef))
     return ok;
 
@@ -4467,7 +4467,7 @@ bool Expression::CallCheck (CheckData &ckd) {
   LavaDECL *decl;
   bool ok=true;
 
-  decl = funcExpr->FuncDecl(ckd);
+  decl = funcExpr->FuncDecl();
   if (!decl || flags.Contains(brokenRef))
     return ok;
 
@@ -4483,7 +4483,7 @@ bool Expression::CallCheck (CheckData &ckd) {
       return false;
     }
     else {
-      CHE *outp=GetFirstOutput(decl);
+      CHE *outp=GetFirstOutput(FuncDecl());
       if (outp && !((LavaDECL*)outp->data)->TypeFlags.Contains(stateObject)) {
         SetError(ckd,&ERR_ImmutableCallObj);
         return false;
