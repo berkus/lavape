@@ -4454,7 +4454,7 @@ bool FuncExpression::Check (CheckData &ckd)
 
 bool FuncExpression::IsClosed(CheckData &ckd) {
   CHE *outp=GetFirstOutput(funcDecl);
-  if (outp && !((LavaDECL*)outp->data)->SecondTFlags.Contains(closed))
+  if (outp && ((LavaDECL*)outp->data)->SecondTFlags.Contains(closed))
     return true;
   return false;
 }
@@ -4473,7 +4473,7 @@ bool Expression::CallCheck (CheckData &ckd) {
 
   if (!decl->SecondTFlags.Contains(closed))
     if (IsClosed(ckd)) {
-      SetError(ckd,&ERR_CallObjClosed);
+      funcExpr->SetError(ckd,&ERR_CallObjClosed);
       ok &= false;
     }
 
