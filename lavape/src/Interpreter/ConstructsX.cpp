@@ -3554,13 +3554,13 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
       goto ret;
     }
     if (object) {
-      if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
-      && !inActParm->flags.Contains(unfinishedAllowed)) {
-        // unfinished objects may be passed only to input parms of initializers
-        inActParm->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
-        newStackFrame[pos++] = object;
-        goto ret;
-      }
+      //if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
+      //&& !inActParm->flags.Contains(unfinishedAllowed)) {
+      //  // unfinished objects may be passed only to input parms of initializers
+      //  inActParm->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
+      //  newStackFrame[pos++] = object;
+      //  goto ret;
+      //}
       if (inActParm->formVType->DeclType == VirtualType) {
         if (objRef)
           newStackFrame[pos++] = ((CLavaProgram*)ckd.document)->CastVInObj(ckd, object, callCtx, newStackFrame[SFH][0][0].classDECL, inActParm->formVType, inActParm->vSectionNumber, inActParm->isOuter);

@@ -513,5 +513,5 @@ void LavaBaseStringInit() {
   ERR_CompObjIntfNotFound = QObject::tr("Supported component object interface not found");
   ERR_CallCheck_NYI = QObject::tr("Call check not yet implemented");
   ERR_ISO_NYI = QObject::tr("\"IsStateObject\" not yet implemented");
-  ERR_clone_copy_inp_closed = QObject::tr("Input parameter of clone/copy must not be \"closed\"");
+  ERR_clone_copy_inp_closed = QObject::tr("\"Closed\" objects cannot be cloned/copied");
 }
