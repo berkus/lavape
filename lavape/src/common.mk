@@ -1,7 +1,7 @@
 #SHELL=/usr/bin/env sh
 SHELL=/bin/sh
 
-DBG=
+DBG=-g
 
 ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt
@@ -84,7 +84,7 @@ ifeq ($(OPSYS),Darwin)
   DLLPREFIX = lib
   DLLSUFFIX = .dylib
   OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
-  OSCPPFLAGS = -D__$(OPSYS) $(DBG)
+  OSCPPFLAGS = -D__$(OPSYS)
   CC = c++
 else
   ifeq ($(OPSYS),MINGW32)
@@ -106,9 +106,9 @@ else
   else
     DLLPREFIX = lib
 	  ifeq ($(OPSYS),SunOS)
-		  OSCPPFLAGS = -fPIC -D__$(OPSYS) $(DBG)
+		  OSCPPFLAGS = -fPIC -D__$(OPSYS)
 	  else
-		  OSCPPFLAGS = -D__$(OPSYS) $(DBG)
+		  OSCPPFLAGS = -D__$(OPSYS)
 		  DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
           DLLSUFFIX = .so
 		  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
@@ -139,29 +139,29 @@ this: ../../bin/$(DLLNAME)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
   endif
 else
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../bin/,$(addsuffix .dll,$(SUBPRO)))
-	$(CC) -g -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
-#	$(CC) -g -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../bin -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+#	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../bin -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
-	$(CC) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   endif
 endif
 
 .cpp.o:
-	$(CC) -c -pipe -MMD $(PCH_WARN) -D$(OSCAT) -D$(OPSYS) -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(OSCPPFLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
+	$(CC) -c $(DBG) -pipe -MMD $(PCH_WARN) -D$(OSCAT) -D$(OPSYS) -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(OSCPPFLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
 .c.o:
-	$(CC) -c -pipe -MMD $(PCH_WARN) $(OSCPPFLAGS) -D$(OSCAT) -D$(OPSYS) $(CPP_FLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
+	$(CC) -c $(DBG) -pipe -MMD $(PCH_WARN) $(OSCPPFLAGS) -D$(OSCAT) -D$(OPSYS) $(CPP_FLAGS) $(PCH_INCL) $(ALL_CPP_INCLUDES) -o $@ $<
 
 PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files) $(h_ph_files)
-	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c -pipe -MMD -Winvalid-pch -D$(OSCAT) -D$(OPSYS) -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(OSCPPFLAGS) $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
+	if [ ! -e PCH ] ; then mkdir PCH; fi; $(CC) -c $(DBG) -pipe -MMD -Winvalid-pch -D$(OSCAT) -D$(OPSYS) -DQT_THREAD_SUPPORT $(CPP_FLAGS) $(OSCPPFLAGS) $(ALL_CPP_INCLUDES) -o $@ $(PRJ)_all.h
 
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's

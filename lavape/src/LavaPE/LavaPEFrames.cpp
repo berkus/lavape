@@ -302,7 +302,7 @@ bool CLavaMainFrame::OnCreate()
   tbw6 = new ToolbarWhatsThis(Toolbar_6);
   fillHelpMap6(tbw6);
 */
-	m_childFrameHistory->m_menu = windowMenu;
+  m_childFrameHistory->m_menu = windowMenu;
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
   LoadFileHistory();
   setWindowIcon(QPixmap((const char**) Lava));
