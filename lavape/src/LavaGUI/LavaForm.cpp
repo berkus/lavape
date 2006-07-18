@@ -117,7 +117,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
   if (newObj) {
     ((SynFlags*)((*resultObjPtr)+1))->INCL(useDefaults);
 //    ((SynFlags*)((*resultObjPtr)+1))->INCL(notFromSource);
-    ((SynFlags*)((*resultObjPtr)+1))->INCL(finished);
+    //((SynFlags*)((*resultObjPtr)+1))->INCL(finished);
   }
   return true;
 }

@@ -628,7 +628,7 @@ extern LAVABASE_DLL bool isPartOf(const DString& qname, const DString& ancestorN
 
 enum ObjectStateFlag {
    sectEstablished,
-   finished,        //global object flag (in object+1)
+   //finished,        //global object flag (in object+1)
    stateObjFlag,
    useDefaults,     //used in LavaGUI
    insertedItem,    //used in LavaGUI

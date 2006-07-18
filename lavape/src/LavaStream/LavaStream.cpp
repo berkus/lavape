@@ -48,10 +48,10 @@ QString ERR_OpenOutFailed(QObject::tr("Open for output failed for file "));
 
 #define OBJALLOC(RESULT, CKD, DECL, ST) {\
   RESULT = AllocateObject(CKD, DECL, ST);\
-  ((SynFlags*)(RESULT+1))->INCL(finished); \
   if (!RESULT && !CKD.exceptionThrown) \
     throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
 }
+  //((SynFlags*)(RESULT+1))->INCL(finished); \
 
 
 #define OPENIN(CKD, OBJ) {\
@@ -311,7 +311,7 @@ bool DNewFuncInOut(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr urlObj = ((RunTimeData*)*(obj-LOH))->urlObj;
   QString fileName =  *(QString*)(urlObj+LSH);
   LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
-  ((SynFlags*)(modeObj+1))->INCL(finished);
+  //((SynFlags*)(modeObj+1))->INCL(finished);
   *(bool*)(modeObj+LSH) = false;
   *(LavaVariablePtr)(stack[SFH]+LSH) = modeObj;
   new(stack[SFH]+LSH+1) QFile(fileName);

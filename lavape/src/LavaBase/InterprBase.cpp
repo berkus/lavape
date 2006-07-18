@@ -416,7 +416,7 @@ LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specD
     if (ckd.exceptionThrown)
       return 0;
 
-    ((SynFlags*)(object+1))->INCL(finished);
+    //((SynFlags*)(object+1))->INCL(finished);
 
     secn = ckd.document->GetSectionNumber(ckd, specDECL->RuntimeDECL->RelatedDECL, classDECL);
     return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
@@ -428,7 +428,7 @@ LavaObjectPtr CreateObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* specD
     if (ckd.exceptionThrown)
       return 0;
 
-    ((SynFlags*)(object+1))->INCL(finished);
+    //((SynFlags*)(object+1))->INCL(finished);
 
     secn = ckd.document->GetSectionNumber(ckd, specDECL, classDECL);
     object = (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
@@ -470,7 +470,7 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
       ckd.document->LavaError(ckd, true, specDECL, &ERR_IncompatibleCategory, 0);
       return 0;
     }
-    ((SynFlags*)(object+1))->INCL(finished);
+    //((SynFlags*)(object+1))->INCL(finished);
     secn = ckd.document->GetSectionNumber(ckd, specDECL->RuntimeDECL->RelatedDECL, classDECL);
     return (LavaObjectPtr)(object - (*object)[0].sectionOffset + (*object)[secn].sectionOffset);
 
@@ -1186,7 +1186,7 @@ bool CHWException::SetLavaException(CheckData& ckd)
   ckd.lastException = AllocateObject(ckd, ckd.document->DECLTab[B_HWException], false);
   if (!ckd.lastException)
     return false;
-  ((SynFlags*)(ckd.lastException+1))->INCL(finished);
+  //((SynFlags*)(ckd.lastException+1))->INCL(finished);
   for (ii = 0; (ii < ckd.lastException[0][0].nSections) && (ckd.lastException[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
   ckd.lastException = ckd.lastException + ckd.lastException[0][ii].sectionOffset;
   codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_HWException]->NestedDecls.first->successor)->data, false);
@@ -1232,7 +1232,7 @@ bool CRuntimeException::SetLavaException(CheckData& ckd)
   ckd.lastException = AllocateObject(ckd, ckd.document->DECLTab[B_RTException], false);
   if (!ckd.lastException)
     return false;
-  ((SynFlags*)(ckd.lastException+1))->INCL(finished);
+  //((SynFlags*)(ckd.lastException+1))->INCL(finished);
   for (ii = 0; (ii < ckd.lastException[0][0].nSections) && (ckd.lastException[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
   ckd.lastException = ckd.lastException + ckd.lastException[0][ii].sectionOffset;
   strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString], false);
@@ -1262,7 +1262,7 @@ bool SetLavaException(CheckData& ckd, int code, const QString& mess)
     ckd.exceptionThrown = true;
     return false;
   }
-  ((SynFlags*)(ex+1))->INCL(finished);
+  //((SynFlags*)(ex+1))->INCL(finished);
   int ii;
   for (ii = 0; (ii < ex[0][0].nSections) && (ex[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
   ex = ex + ex[0][ii].sectionOffset;

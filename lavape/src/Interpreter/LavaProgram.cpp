@@ -2473,7 +2473,7 @@ bool ShowFuncFillIn(CheckData& ckd, LavaVariablePtr stack)
   else {
     if (ex)
       throw *ex;
-    ((SynFlags*)(stack[SFH+2]+1))->INCL(finished);
+    //((SynFlags*)(stack[SFH+2]+1))->INCL(finished);
     return true;
   }
 }

@@ -392,8 +392,8 @@ $TYPE +CDP {
     //23, X0080 0000, used in LavaGUI: pop up after rebuilding the form
     formVTOK,
     //24, X0100 0000, used at runtime
-	newTreeNode,
-	//25, X0200 0000, used in updates
+	  newTreeNode,
+	  //25, X0200 0000, used in updates
     fromPubToPriv
     //26, X0400 0000, used in refactoring: public to private
   };

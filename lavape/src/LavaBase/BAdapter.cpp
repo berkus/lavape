@@ -43,10 +43,10 @@ using namespace std;
 
 #define OBJALLOC(RESULT, CKD, DECL, ST) {\
   RESULT = AllocateObject(CKD, DECL, ST);\
-	((SynFlags*)(RESULT+1))->INCL(finished); \
   if (!RESULT && !CKD.exceptionThrown)\
     throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
 }
+	//((SynFlags*)(RESULT+1))->INCL(finished); \
 
 #ifdef WIN32
 #define TEST_AND_THROW \

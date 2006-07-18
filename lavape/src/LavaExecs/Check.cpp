@@ -2753,6 +2753,7 @@ bool BinaryOp::Check (CheckData &ckd)
   ADJUST4(tidOperatorFunc);
   if (tidOperatorFunc.nID == -1)
     SetError(ckd,&ERR_OperatorUndefined);
+  funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc);
   if (!funcDecl)
     SetError(ckd,&ERR_OperatorUndefined);
   funcSectionNumber = ckd.document->GetMemsSectionNumber(ckd, declFuncClass,funcDecl);
@@ -2765,8 +2766,10 @@ bool BinaryOp::Check (CheckData &ckd)
   }
   else
     opFunctionID = tidOperatorFunc;
-#endif
   funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc);
+  if (!funcDecl)
+    SetError(ckd,&ERR_OperatorUndefined);
+#endif
 
   if (opd2IsNull || IsPH(opd2) || !declOp2)
     EXIT

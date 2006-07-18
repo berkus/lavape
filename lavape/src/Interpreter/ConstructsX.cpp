@@ -804,7 +804,7 @@ bool AssertionData::EvalOldExpressions (CheckData &ckd, RTAssDataDict &rtadDict,
       DFC(obj);
       if (!ok)
         return false;
-      ((SynFlags*)(stackFrame[oldExprLevel]+1))->INCL(finished);
+      //((SynFlags*)(stackFrame[oldExprLevel]+1))->INCL(finished);
     }
     oldExprLevel--;
     oep->iOldExpr = iOldExpr++;
@@ -1314,7 +1314,7 @@ bool FailStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
       ((SynObject*)exception.ptr)->SetRTError(ckd,&ERR_NullException,stackFrame,"throw statement: exception object =0");
       return false;
     }
-    ((SynFlags*)(object+1))->INCL(finished);
+    //((SynFlags*)(object+1))->INCL(finished);
     for (ii = 0; (ii < object[0][0].nSections) && (object[0][ii].classDECL != ckd.document->DECLTab[B_Exception]); ii++);
     ckd.callStack = DebugStop(ckd,stackFrame,"Exception thrown by \"throw\" statement");
     ckd.lastException = object + object[0][ii].sectionOffset;
@@ -1576,7 +1576,7 @@ LavaObjectPtr EvalExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
       SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
     return (LavaObjectPtr)-1;
   }
-  ((SynFlags*)(trueObj+1))->INCL(finished);
+  //((SynFlags*)(trueObj+1))->INCL(finished);
   *(bool*)(trueObj+LSH) = ((SynObject*)operand.ptr)->Execute(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown)
     return (LavaObjectPtr)-1;
@@ -1595,7 +1595,7 @@ bool EvalStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
       SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
     return false;
   }
-  ((SynFlags*)(trueObj+1))->INCL(finished);
+  //((SynFlags*)(trueObj+1))->INCL(finished);
   *(bool*)(trueObj+LSH) = true;
   object = ((SynObject*)operand.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown) {
@@ -1964,13 +1964,13 @@ bool Receiver::callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned
       goto ret;
     }
     if (object) {
-      if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
-      && !inActParm->flags.Contains(unfinishedAllowed)) {
-        // unfinished objects may be passed only to input parms of initializers
-        inActParm->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
-        newStackFrame[pos++] = object;
-        goto ret;
-      }
+      //if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
+      //&& !inActParm->flags.Contains(unfinishedAllowed)) {
+      //  // unfinished objects may be passed only to input parms of initializers
+      //  inActParm->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
+      //  newStackFrame[pos++] = object;
+      //  goto ret;
+      //}
       if (inActParm->formVType->DeclType == VirtualType) {
         newStackFrame[pos++] = ((CLavaProgram*)ckd.document)->CastVInObj(ckd, object, callbackCall->callCtx, newStackFrame[SFH][0][0].classDECL, inActParm->formVType, inActParm->vSectionNumber, inActParm->isOuter);
         if (ckd.exceptionThrown) {
@@ -2409,7 +2409,7 @@ static bool Enumerate (SynObject *callObj, CheckData &ckd, LavaVariablePtr stack
         DFC(elemObj);
         break;
       }
-      ((SynFlags*)(enumBaseObj+1))->INCL(finished);
+      //((SynFlags*)(enumBaseObj+1))->INCL(finished);
       *(int*)(enumBaseObj+LSH) = ii++;
       NewQString((QString*)(enumBaseObj+LSH+1),enumId->c);
       stackFrame[((VarName*)cheVar->data)->stackPos] = elemObj; // set element
@@ -2664,16 +2664,16 @@ fieldCase:
         DFC(*var)
 
     if (object) {
-      if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
-      && !flags.Contains(unfinishedAllowed)) {
-        if (source)
-          source->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
-        else
-          SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
-        DFC(object);
-        return false;
-      } // an unfinished object may be assigned only to a reverse link self.revLink
-        // within an initializer
+      //if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
+      //&& !flags.Contains(unfinishedAllowed)) {
+      //  if (source)
+      //    source->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
+      //  else
+      //    SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
+      //  DFC(object);
+      //  return false;
+      //} // an unfinished object may be assigned only to a reverse link self.revLink
+      //  // within an initializer
 
       if (refIDs.first != refIDs.last) {
         lastDOD = (TDOD*)((CHE*)refIDs.last)->data;
@@ -2927,7 +2927,7 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       return (LavaObjectPtr)-1;
     }
 
-    ((SynFlags*)(value+1))->INCL(finished);
+    //((SynFlags*)(value+1))->INCL(finished);
 
     switch (constType) {
     case Char:
@@ -3030,7 +3030,7 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
       return (LavaObjectPtr)-1;
     }
-    ((SynFlags*)(value+1))->INCL(finished);
+    //((SynFlags*)(value+1))->INCL(finished);
     *(bool*)(value+LSH) = boolValue;
     IFC(value); // for permanent ref from BoolConst
     // is released only when syntax is released
@@ -3055,7 +3055,7 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
       return (LavaObjectPtr)-1;
     }
-    ((SynFlags*)(value+1))->INCL(finished);
+    //((SynFlags*)(value+1))->INCL(finished);
     enumBaseObj = CastEnumType(ckd, value);
     if (ckd.exceptionThrown)
       return (LavaObjectPtr)-1;
@@ -3125,7 +3125,7 @@ LavaObjectPtr CloneExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackF
       return (LavaObjectPtr)-1;
     }
   }
-  ((SynFlags*)(copyOfObj+1))->INCL(finished);
+  //((SynFlags*)(copyOfObj+1))->INCL(finished);
   return copyOfObj;
 }
 
@@ -3166,7 +3166,7 @@ bool CopyStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
     return false;
   }
   if (nullTarget) {
-    ((SynFlags*)(copyOfObj+1))->INCL(finished);
+    //((SynFlags*)(copyOfObj+1))->INCL(finished);
     ok = ((ObjReferenceX*)ontoObj.ptr)->assign((ExpressionX*)fromObj.ptr,
            copyOfObj,
            kindOfTarget,
@@ -3200,7 +3200,7 @@ LavaObjectPtr EnumItemX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
     DFC(value);
     return (LavaObjectPtr)-1;
   }
-  ((SynFlags*)(enumBaseObj+1))->INCL(finished);
+  //((SynFlags*)(enumBaseObj+1))->INCL(finished);
   index = ((Expression*)itemNo.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown)
     return (LavaObjectPtr)-1;
@@ -3249,8 +3249,8 @@ LavaObjectPtr ExtendExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stack
   }
   if (obj)
     DRC(obj);
-  if (copyOfObj)
-    ((SynFlags*)(copyOfObj+1))->INCL(finished);
+  //if (copyOfObj)
+  //  ((SynFlags*)(copyOfObj+1))->INCL(finished);
 //  if (!ok)
 //    return (LavaObjectPtr)-1;
   return copyOfObj;
@@ -3420,7 +3420,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
       }
     }
 
-    ((SynFlags*)(object+1))->INCL(finished);
+    //((SynFlags*)(object+1))->INCL(finished);
   }
 
   ckd.currentStackLevel = oldStackLevel;
@@ -3751,13 +3751,13 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
       goto ret;
     }
     if (object) {
-      if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
-      && !actParm->flags.Contains(unfinishedAllowed)) {
-        // unfinished objects may be passed only to input parms of initializers
-        actParm->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
-        newStackFrame[pos++] = object;
-        goto ret;
-      }
+      //if (!((SynFlags*)(object-(*object)->sectionOffset+1))->Contains(finished)
+      //&& !actParm->flags.Contains(unfinishedAllowed)) {
+      //  // unfinished objects may be passed only to input parms of initializers
+      //  actParm->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
+      //  newStackFrame[pos++] = object;
+      //  goto ret;
+      //}
       if (actParm->formVType->DeclType == VirtualType)
         if (objRef)
           newStackFrame[pos++] = ((CLavaProgram*)ckd.document)->CastVInObj(ckd, object, callCtx, newStackFrame[SFH][0][0].classDECL, actParm->formVType, actParm->vSectionNumber, actParm->isOuter);
@@ -3897,7 +3897,7 @@ LavaVariablePtr ObjReferenceX::GetMemberVarPtr(CheckData &ckd, LavaVariablePtr s
   TDOD *dod;
   int sectIndex;
   unsigned frameSize, frameSizeBytes;
-  bool parentUnfinished=false;
+  //bool parentUnfinished=false;
 
   if (!DODs->successor) {
     if (memObj && ((SynFlags*)(memObj-(*memObj)->sectionOffset+1))->Contains(zombified)) {
@@ -3916,12 +3916,12 @@ LavaVariablePtr ObjReferenceX::GetMemberVarPtr(CheckData &ckd, LavaVariablePtr s
         ((TDOD*)oldCheo->data)->SetRTError(ckd,&ERR_ZombieAccess,stackFrame);
         return 0;
       }
-      if (parentUnfinished) {
-        ((TDOD*)oldCheo->data)->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
-        return 0;
-      }
-      if (parent && !((SynFlags*)(parent+1))->Contains(finished))
-        parentUnfinished = true;
+      //if (parentUnfinished) {
+      //  ((TDOD*)oldCheo->data)->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
+      //  return 0;
+      //}
+      //if (parent && !((SynFlags*)(parent+1))->Contains(finished))
+      //  parentUnfinished = true;
 
       parent = memObj;
       sectIndex = dod->sectionNumber + fieldDECL->SectionInfo2;
@@ -4039,7 +4039,7 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
   unsigned frameSize, frameSizeBytes;
   TDOD* dod=(TDOD*)cheo->data;
   SynObjectBase *mySelfVar=ckd.selfVar;
-  bool parentUnfinished=false;
+  //bool parentUnfinished=false;
 
   efType = ((TDOD*)DODs->data)->eType;
   parent = 0;
@@ -4051,12 +4051,12 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
         ((TDOD*)oldCheo->data)->SetRTError(ckd,&ERR_ZombieAccess,stackFrame);
         return 0;
       }
-      if (parentUnfinished) {
-        ((TDOD*)oldCheo->data)->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
-        return 0;
-      }
-      if (parent && !((SynFlags*)(parent+1))->Contains(finished))
-        parentUnfinished = true;
+      //if (parentUnfinished) {
+      //  ((TDOD*)oldCheo->data)->SetRTError(ckd,&ERR_UnfinishedObject,stackFrame);
+      //  return 0;
+      //}
+      //if (parent && !((SynFlags*)(parent+1))->Contains(finished))
+      //  parentUnfinished = true;
 
       parent = memObj;
       sectIndex = dod->sectionNumber + fieldDECL->SectionInfo2;
