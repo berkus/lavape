@@ -2743,7 +2743,12 @@ void CLavaPEView::OnInitialUpdate()
   }
   else {
     ((CTreeFrame*)GetParentFrame())->SetModified(false);
+    GetDocument()->changeInUpdate = false;
     OnUpdate(NULL, CHLV_fit, 0);
+    if (GetDocument()->changeInUpdate) {
+      GetDocument()->changeInUpdate = false;
+      GetDocument()->modified = true;
+    }
     if (GetDocument()->modified) {
       QMessageBox::critical(this, qApp->applicationName(), "This Lava file was modified by automatically generated corrections after opening",QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       GetDocument()->Modify(true);

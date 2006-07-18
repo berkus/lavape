@@ -28,7 +28,7 @@ public:
   bool hasHint;
   bool drawView;
   bool changeInUpdate;
-
+  int changedDocs; 
   void AutoCorr(LavaDECL* decl);
   int AutoCorrBox(QString* errID);
   bool CheckForm(LavaDECL* formDECL, int checkLevel);

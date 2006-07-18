@@ -1110,6 +1110,7 @@ bool CLavaPEDoc::CheckOverInOut(LavaDECL* funcDECL, int checkLevel)
   LavaDECL *IODECL, *OverFunc;
   CHETID *cheID, *cheOverID;
   CHAINX chain;
+  bool catErr, changed = false, found;
   
   if (!funcDECL->SecondTFlags.Contains(overrides))
     return false;
@@ -1139,7 +1140,6 @@ bool CLavaPEDoc::CheckOverInOut(LavaDECL* funcDECL, int checkLevel)
     else
       return false;
   }
-  bool catErr, changed = false, found;
   /*
   if (funcDECL->TypeFlags.Contains(inheritsBody))
     if (OverFunc->TypeFlags.Contains(isNative))
@@ -3070,6 +3070,8 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
   DString str0, str, newTopName, *toINCL = 0, fn(qPrintable(filename));
 	QString fName(filename);
   int readResult;
+  QString mess;
+  DString nstr;
 
   //LBaseData->lastFileOpen = QString(fn.c);
   isStd = SameFile(fn.c, qPrintable(StdLava));
@@ -3099,7 +3101,14 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
     AddSyntax(mySynDef, filename, errEx);  //Add include files/patterns
     if (errEx)
       return false;
+    changedDocs = 0;
     UpdateOtherDocs(0, str0, 0, false); 
+    if (changedDocs) {
+      Convert.IntToString(nPlaceholders, nstr);
+      mess = nstr.c;
+      mess += " documents have been corrected and made consistent automatically";
+      QMessageBox::information(wxTheApp->m_appWindow,qApp->applicationName(),mess,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+    }
     //CExecChecks* ch = new CExecChecks(this, true);
     IDTable.SetImplIDs(false);
     //delete ch;
@@ -4004,6 +4013,10 @@ void CLavaPEDoc::UpdateOtherDocs(wxDocument* skipOther, DString& inclFile, int n
           delete impls;
           doc->UpdateAllViews(NULL, CHLV_showError, hint);
           if (doc->changeInUpdate) {
+            if (!doc->modified)
+              changedDocs++;
+            doc->Modify(true);
+            doc->modified = true;
             che = NewCHE((AnyType*)doc);
             chain.Append(che);
             doc->changeInUpdate = false;
