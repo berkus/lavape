@@ -2515,6 +2515,7 @@ bool UnaryOp::Check (CheckData &ckd)
 #ifdef INTERPRETER
     if (tidOperatorFunc.nID == -1)
       SetError(ckd,&ERR_UnaryOpUndefined);
+    funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc,ckd.inINCL);
     if (!funcDecl)
       SetError(ckd,&ERR_UnaryOpUndefined);
     formDecl = (LavaDECL*)chpFormOut->data;
@@ -2528,8 +2529,10 @@ bool UnaryOp::Check (CheckData &ckd)
     }
     else
       opFunctionID = tidOperatorFunc;
-#endif
     funcDecl = ckd.document->IDTable.GetDECL(tidOperatorFunc,ckd.inINCL);
+    if (!funcDecl)
+      SetError(ckd,&ERR_UnaryOpUndefined);
+#endif
   }
   EXIT
 }
