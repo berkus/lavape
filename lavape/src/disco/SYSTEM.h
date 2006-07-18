@@ -1,6 +1,13 @@
 #ifndef __SYSTEM
 #define __SYSTEM
 
+
+#ifdef _DEBUG
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+#endif
+
 #include <limits.h>
 #include <ctype.h>
 #include <stddef.h>

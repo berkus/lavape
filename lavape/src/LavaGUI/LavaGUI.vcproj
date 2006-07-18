@@ -144,7 +144,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;..\disco;..\LavaBase\Generated;..\LavaBase;..\LavaPE\res;..\wxqDocView"
-				PreprocessorDefinitions="WIN32;EXECVIEW;LAVAGUI_EXPORT"
+				PreprocessorDefinitions="_DEBUG;WIN32;EXECVIEW;LAVAGUI_EXPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"

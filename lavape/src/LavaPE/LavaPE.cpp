@@ -44,7 +44,7 @@
 #include "VTView.h"
 #include "SynIO.h"
 #include "LavaPEStringInit.h"
-#include "MACROS.h"
+#include "SYSTEM.h"
 #include "ASN1File.h"
 
 #include "qdir.h"
@@ -83,6 +83,10 @@ static char slash='/';
 int main( int argc, char ** argv ) {
   CLavaPEApp app(argc,argv);
   app.m_appWindow = new CLavaMainFrame();
+
+#ifdef _DEBUG
+  _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
 
  // QMessageBox::information(app.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok)
 

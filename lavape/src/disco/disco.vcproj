@@ -47,7 +47,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\wxqDocView"
-				PreprocessorDefinitions="WIN32;DISCO_EXPORT"
+				PreprocessorDefinitions="_DEBUG;WIN32;DISCO_EXPORT"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"

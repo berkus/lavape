@@ -49,7 +49,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".;.\res\TOOLBUTTONS;.\Generated;..\disco;..\wxqDocView;..\LavaPE;..\LavaPE\Generated;..\LavaPE\res;..\LavaPE\res\TreeIcons;..\LavaPE\res\Toolbuttons;..\LavaBase;..\LavaGUI;..\LavaBase\Generated;..\LavaPE_UI;..\LavaPE_UI\Generated"
-				PreprocessorDefinitions="LAVAEXECS_EXPORT;EXECVIEW;WIN32"
+				PreprocessorDefinitions="_DEBUG;LAVAEXECS_EXPORT;EXECVIEW;WIN32"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -665,7 +665,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>
@@ -727,7 +727,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying LPC to $(InputPath)"
-						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph"
+						CommandLine="..\..\bin\LPC -I..\LavaBase -I. $(InputName).ph&#x0D;&#x0A;"
 						Outputs="$(InputName).h;$(InputName)G.cpp"
 					/>
 				</FileConfiguration>

@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\disco;..\LavaBase;..\wxqDocView;..\Interpreter;..\LavaExecs;..\LavaGUI;..\LavaBase\Generated;..\Lava_UI;..\Lava_UI\Generated;res"
-				PreprocessorDefinitions="WIN32;INTERPRETER"
+				PreprocessorDefinitions="_DEBUG;WIN32;INTERPRETER"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -549,7 +549,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QT4DIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)"
+					CommandLine="$(QT4DIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
 					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>

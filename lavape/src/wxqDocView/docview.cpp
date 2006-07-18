@@ -291,7 +291,7 @@ bool wxDocument::OnCloseDocument()
     wxDocManager::GetDocumentManager()->RemoveDocument(this);
   deleting = true;
   DeleteAllChildFrames();
-  //deleteLater();
+  deleteLater();
   return true;
 }
 

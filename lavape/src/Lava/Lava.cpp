@@ -20,7 +20,7 @@
 //#include "prelude.h"
 //#include "sflsock.h"
 #include "Lava.h"
-//#include "ASN1File.h"
+#include "SYSTEM.h"
 #include "CDPpp.h"
 #include "AboutBox.h"
 #include "LavaAppBase.h"
@@ -73,7 +73,11 @@ int main( int argc, char ** argv ) {
   QString componentPath;
   QByteArray myPath;
 
-//  DebugBreak();
+#ifdef _DEBUG
+  _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
+
+  //  DebugBreak();
 
   myPath = qgetenv("PATH");
   componentPath = myPath;
