@@ -25,7 +25,7 @@ class LAVABASE_DLL SynIOCLASS {
 public:
 
   void INIT ();
-
+  void EXIT ();
 
   bool Done;
   bool Silent;

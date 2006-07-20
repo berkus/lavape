@@ -143,7 +143,7 @@ wxApp::~wxApp() {
 //  settings.beginGroup(GetSettingsPath());
   m_docManager->FileHistorySave(settings);
   delete m_docManager;
-//  delete m_appWindow;
+  delete m_appWindow;
 }
 
 void wxApp::SetVendorName(const QString& name) {

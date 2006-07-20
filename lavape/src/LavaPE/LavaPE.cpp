@@ -86,6 +86,7 @@ int main( int argc, char ** argv ) {
 
 #ifdef _DEBUG
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+  //_CrtSetBreakAlloc(60222);
 #endif
 
  // QMessageBox::information(app.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok)
@@ -336,7 +337,7 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
     ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
 
-    debugThread.pContExecEvent->release();
+    debugThread.pContExecEvent.release();
     return true;
   }
   else if (e->type() == UEV_LavaDebugW) {
@@ -839,7 +840,7 @@ CLavaPEApp::~CLavaPEApp()
   debugThread.dbgRequest = 0;
   if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();
-  debugThread.pContExecEvent->release();
+  debugThread.pContExecEvent.release();
   debugThread.wait();
 }
 
@@ -872,7 +873,10 @@ void CLavaPEApp::saveSettings()
 int CLavaPEApp::ExitInstance()
 {
   saveSettings();
-  delete [] TOKENSTR;
+  //delete [] TOKENSTR;
+  hashTable.clear();
+  SynIO.EXIT();
+
   return 0;
 }
 

@@ -343,9 +343,7 @@ void IOCLASS::INIT ()
   if (__INITIALIZED) return;
   __INITIALIZED = true;
 
-
   Done = true;
-
 
   StdIn = new InFile(0);
   CurrentInFile = StdIn;
@@ -354,4 +352,11 @@ void IOCLASS::INIT ()
   CurrentOutFile = StdOut;
 
   StdErr = new OutFile(2);
+}
+
+void IOCLASS::EXIT ()
+{
+  delete StdIn;
+  delete StdOut;
+  delete StdErr;
 }

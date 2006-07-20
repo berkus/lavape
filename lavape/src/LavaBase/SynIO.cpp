@@ -187,6 +187,12 @@ void SynIOCLASS::INIT ()
 
   Silent = false;
   Done = true;
+}
 
+void SynIOCLASS::EXIT ()
+{
+  //CDPpp.INIT();
+  //ASN1pp.INIT();
+  IO.EXIT();
 }
 

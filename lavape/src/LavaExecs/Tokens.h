@@ -278,7 +278,8 @@ extern void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr,
                        bool baseCDP=false);
 
 
-extern LAVAEXECS_DLL QString *TOKENSTR;
+
+extern LAVAEXECS_DLL QString TOKENSTR[];
 extern unsigned priority[EndOfOperators];
 
 
@@ -289,15 +290,16 @@ struct THTEntry {
   TToken index;
 };
 
-#define hashPrime 499
+//#define hashPrime 499
+//
+//struct THashTable {
+//  TEntryPtr firstEntry, lastEntry;
+//};
 
-struct THashTable {
-  TEntryPtr firstEntry, lastEntry;
-};
+//extern THashTable hashTable[hashPrime];
+extern LAVAEXECS_DLL QHash<QString,unsigned> hashTable;
 
-extern THashTable hashTable[hashPrime];
-
-extern unsigned HashCode (const char * const s);
+//extern unsigned HashCode (const char * const s);
 
 extern LAVAEXECS_DLL void Tokens_INIT ();
 

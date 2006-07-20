@@ -16,7 +16,7 @@ class DISCO_DLL IOCLASS {
 
 public:
   void INIT ();
-  
+  void EXIT ();
   
   bool Done;
   

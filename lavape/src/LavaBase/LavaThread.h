@@ -28,13 +28,13 @@ public:
 class LAVABASE_DLL CLavaThread : public QThread
 {
 public:
-  CLavaThread() { pContExecEvent = new CEventEx(); }
+  CLavaThread() { /*pContExecEvent = new CEventEx();*/ }
   CLavaThread(CLavaBaseDoc *d);
   ~CLavaThread();
 
 	CLavaBaseDoc *myDoc;
 
-  CEventEx *pContExecEvent;
+  CEventEx pContExecEvent;
 
   virtual unsigned ExecuteLava(CLavaBaseDoc *doc){
     return 0;

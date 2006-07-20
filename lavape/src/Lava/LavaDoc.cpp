@@ -292,7 +292,7 @@ void CLavaDoc::customEvent(QEvent *ev0)
 
   if (ev->type() == UEV_OpenObject) 
     oop->obj = OpenObject(*oop->ckdPtr,oop->urlObj);
-  oop->thr->pContExecEvent->release();
+  oop->thr->pContExecEvent.release();
 }
 
 LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj) 

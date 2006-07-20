@@ -66,8 +66,8 @@ CLavaDebugThread::CLavaDebugThread() {
   pContDebugEvent = new CEventEx();
   if (pContDebugEvent->available())
     pContDebugEvent->acquire();
-  if (pContExecEvent->available())
-    pContExecEvent->acquire();
+  if (pContExecEvent.available())
+    pContExecEvent.acquire();
 }
 
 
@@ -194,7 +194,7 @@ void CLavaDebugThread::run() {
             dbgStopData->ParamChain.Destroy();
           }
         }
-        pContExecEvent->release();    //continue ExecuteLava
+        pContExecEvent.release();    //continue ExecuteLava
         pContDebugEvent->acquire();  //DebugThread wait for next stop with new dbgStopData
         if (!varAction) {
           fin = true;

@@ -683,13 +683,13 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
     if (rc == QMessageBox::Yes) {
       if (debug && !ckd.document->debugOn) {
         ((CLavaDebugThread*)LBaseData->debugThread)->wait();
-        if (((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent->available())
-          ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent->acquire();
+        if (((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent.available())
+          ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent.acquire();
         ((CLavaDebugThread*)LBaseData->debugThread)->start();
       }
       else
         ((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent->release(); //debug thread continue
-      ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent->acquire();   //execution thread wait
+      ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent.acquire();   //execution thread wait
     }
     else
       if (rc == QMessageBox::NoAll) {
@@ -1201,6 +1201,10 @@ ret2:
     currentStackDepth--;
   ckd.currentStackLevel = oldStackLevel;
   ckd.immediateReturn = false;
+  for (QHash<AssertionData*,RTAssertionData*>::iterator i=rtadDict.begin(); i!=rtadDict.end(); i++)
+    delete i.value();
+  //for (QHash<InvarData*,LavaDECL*>::iterator i=rtidDict.begin(); i!=rtidDict.end(); i++)
+  //  delete i.value();
   RETURN(ok)
 }
 

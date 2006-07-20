@@ -75,6 +75,7 @@ int main( int argc, char ** argv ) {
 
 #ifdef _DEBUG
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+  //_CrtSetBreakAlloc(60222);
 #endif
 
   //  DebugBreak();
@@ -294,8 +295,8 @@ bool CLavaApp::event(QEvent *e)
     if (thr && !thr->isFinished()) {
       thr->terminate();
       thr->wait();
-      delete thr;
     }
+    delete thr;
     delete (CLavaPEHint*)pHint;
     if (doc)
       doc->OnCloseDocument();
@@ -308,17 +309,17 @@ bool CLavaApp::event(QEvent *e)
     case 0:
       mbp->result =   QMessageBox::critical(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-      mbp->thr->pContExecEvent->release();
+      mbp->thr->pContExecEvent.release();
       break;
     case 1:
       mbp->result =   QMessageBox::information(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-      mbp->thr->pContExecEvent->release();
+      mbp->thr->pContExecEvent.release();
       break;
     case 2:
       mbp->result =   QMessageBox::question(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-      mbp->thr->pContExecEvent->release();
+      mbp->thr->pContExecEvent.release();
       break;
     }
     break;
@@ -333,11 +334,11 @@ bool CLavaApp::event(QEvent *e)
     if (pHint->CommandData5) {
       thr = (CLavaThread*)((CLavaPEHint*)((CustomEvent*)e)->data())->CommandData5;
       if (result == QDialog::Rejected) {
-        if (!thr->pContExecEvent->ex)
+        if (!thr->pContExecEvent.ex)
           ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
-          thr->pContExecEvent->ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+          thr->pContExecEvent.ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
       }
-      thr->pContExecEvent->release();
+      thr->pContExecEvent.release();
     }
     delete (CLavaPEHint*)((CustomEvent*)e)->data();
     break;
@@ -347,7 +348,7 @@ bool CLavaApp::event(QEvent *e)
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
     delete dumpdata->doc->DumpFrame;
     dumpdata->doc->DumpFrame = 0;
-    ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->pContExecEvent->release();
+    ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->pContExecEvent.release();
     delete (DumpEventData*)((CustomEvent*)e)->data();
     break;
   case UEV_PMDumpOff:
@@ -476,10 +477,13 @@ void CLavaApp::saveSettings()
 int CLavaApp::ExitInstance()
 {
   saveSettings();
-  delete [] TOKENSTR;
+  //delete [] TOKENSTR;
+  hashTable.clear();
+  SynIO.EXIT();
+
   if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();
-//  debugThread.pContExecEvent->release();
+//  debugThread.pContExecEvent.release();
 //  debugThread.pContDebugEvent->release();
   debugThread.wait();
   return 0;

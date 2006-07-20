@@ -248,13 +248,13 @@ void CLavaPEDebugThread::run() {
     CDPDbgMessage(GET, get_cid, (address)dbgReceived.newReceived);
     if (get_cid->Done) {
       interpreterWaits = true;
-      if (pContExecEvent->available())
-        pContExecEvent->acquire();
+      if (pContExecEvent.available())
+        pContExecEvent.acquire();
 
 		  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
       if (wxTheApp->appExit)
         break;
-      pContExecEvent->acquire();
+      pContExecEvent.acquire();
       if (!dbgRequest)
         break;
       if (dbgRequest->Command == Dbg_Continue)

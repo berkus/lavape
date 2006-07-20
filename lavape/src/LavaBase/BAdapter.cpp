@@ -40,6 +40,9 @@
 
 using namespace std;
 
+#undef new
+#define new1(ADDR) new(ADDR)
+
 
 #define OBJALLOC(RESULT, CKD, DECL, ST) {\
   RESULT = AllocateObject(CKD, DECL, ST);\
@@ -61,7 +64,7 @@ using namespace std;
 
 void NewQString(QString* pstr, const char* str)
 {
-  new(pstr) QString(str);
+  new1(pstr) QString(str);
 }
 
 TAdapterFunc* StdAdapterTab [Identifier];
@@ -200,10 +203,10 @@ bool ObjectDontSave(CheckData& ckd, LavaVariablePtr stack)
 bool ObjectDump(CheckData& ckd, LavaVariablePtr stack)
 {
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
-  //currentThread->pContExecEvent->lastException = 0;
+  //currentThread->pContExecEvent.lastException = 0;
   DumpEventData* data = new DumpEventData(ckd.document, stack, currentThread);
 	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaDump,(void*)data));
-  currentThread->pContExecEvent->acquire();
+  currentThread->pContExecEvent.acquire();
   ckd.document->DumpFrame = 0;
   return true;
 }
@@ -290,7 +293,7 @@ bool BsetString(CheckData& ckd, LavaVariablePtr stack)
 {
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
   QString str = QString("%1").arg(*(ulong*)(stack[SFH]+LSH), sizeof(unsigned) * 8,2);
-  new(stack[SFH+1]+LSH) QString(str);
+  new1(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -348,7 +351,7 @@ bool BoolString(CheckData& ckd, LavaVariablePtr stack)
     str = QString("true");
   else
     str = QString("false");
-  new(stack[SFH+1]+LSH) QString(str);
+  new1(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -375,7 +378,7 @@ bool CharString(CheckData& ckd, LavaVariablePtr stack)
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
   QString str;
   str = *(char*)(stack[SFH]+LSH);
-  new(stack[SFH+1]+LSH) QString(str);
+  new1(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -480,7 +483,7 @@ bool IntString(CheckData& ckd, LavaVariablePtr stack)
 //  register char* str = new char [33];
   QString str = QString("%1").arg(*(int*)(stack[SFH]+LSH));
 //  _itoa(*(int*)(stack[SFH]+LSH), str, 10) ;
-  new(stack[SFH+1]+LSH) QString(str);
+  new1(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -583,7 +586,7 @@ bool FloatString(CheckData& ckd, LavaVariablePtr stack)
   OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[VLString], false)
   QString str = QString::number(*(float*)(stack[SFH]+LSH));
 //  sprintf(buf,"%g",*(float*)(stack[SFH]+LSH));//  QString str = QString(buf);
-  new(stack[SFH+1]+LSH) QString(str);
+  new1(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -684,28 +687,28 @@ bool DoubleString(CheckData& ckd, LavaVariablePtr stack)
   QString str = QString::number(*(double*)(stack[SFH]+LSH));
 //  sprintf(buf,"%g",*(double*)(stack[SFH]+LSH));
 //  QString str = QString(buf);
-  new(stack[SFH+1]+LSH) QString(str);
+  new1(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
 // String adapter functions
 bool StringNewFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  new((stack[SFH])+LSH) QString();
+  new1((stack[SFH])+LSH) QString();
   return true;
 }
 
 bool StringCopy(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   if ((QString*)(stack[SFH]+LSH))
-    new(stack[SFH+1]+LSH) QString(*(QString*)(stack[SFH]+LSH));
+    new1(stack[SFH+1]+LSH) QString(*(QString*)(stack[SFH]+LSH));
   return true;
 }
 
 bool HStringCopy(LavaObjectPtr s0, LavaObjectPtr s1)
 {
   if ((QString*)(s1+LSH)) {
-    new(s0+LSH) QString(*(QString*)(s1+LSH));
+    new1(s0+LSH) QString(*(QString*)(s1+LSH));
     return true;
   }
   return false;
@@ -797,7 +800,7 @@ bool HEnumSetVal(CheckData& ckd, LavaObjectPtr obj, unsigned num)
       enumSel = (CHEEnumSelId*)enumSel->successor;
     if (enumSel) {
       *(unsigned*)(totalObj + totalObj[0][ee].sectionOffset + LSH) = num;
-      new(totalObj + totalObj[0][ee].sectionOffset + LSH + 1) QString(enumSel->data.Id.c);
+      new1(totalObj + totalObj[0][ee].sectionOffset + LSH + 1) QString(enumSel->data.Id.c);
       return true;
     }
   }
@@ -812,10 +815,10 @@ bool EnumNewFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
   for (ii = 0; (ii < totalObj[0][0].nSections) && (totalObj[0][ii].classDECL->DeclDescType != EnumType); ii++);
   if (ii < totalObj[0][0].nSections) {
     enumDesc = (TEnumDescription*)totalObj[0][ii].classDECL->EnumDesc.ptr;
-    new(stack[SFH]+LSH+1) QString(((CHEEnumSelId*)enumDesc->EnumField.Items.first)->data.Id.c);
+    new1(stack[SFH]+LSH+1) QString(((CHEEnumSelId*)enumDesc->EnumField.Items.first)->data.Id.c);
   }
   else
-    new(stack[SFH]+LSH+1) QString("");
+    new1(stack[SFH]+LSH+1) QString("");
   return true;
 }
 
@@ -823,7 +826,7 @@ bool EnumCopy(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
   *(int*)(stack[SFH+1]+LSH) = *(int*)(stack[SFH]+LSH);
   if ((QString*)(stack[SFH]+LSH+1))
-    new(stack[SFH+1]+LSH+1) QString(*(QString*)(stack[SFH]+LSH+1));
+    new1(stack[SFH+1]+LSH+1) QString(*(QString*)(stack[SFH]+LSH+1));
   return true;
 }
 
@@ -902,7 +905,7 @@ bool EnumCommentFunc(CheckData& ckd, LavaVariablePtr stack)
 //Set
 bool SetNewFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  new((CHAINX*)(stack[SFH]+LSH)) CHAINX();
+  new1((CHAINX*)(stack[SFH]+LSH)) CHAINX();
   return true;
 }
 
@@ -915,7 +918,7 @@ bool SetCopy(CheckData& ckd, LavaVariablePtr stack)
 
   chainL = (CHAINX*)(stack[SFH]+LSH);
   if (chainL) {
-    new(stack[SFH+1]+LSH) CHAINX();
+    new1(stack[SFH+1]+LSH) CHAINX();
     chainR = (CHAINX*)(stack[SFH+1]+LSH);
     if (((SynFlags*)stack[SFH]+1)->Contains(stateObjFlag))
       ((SynFlags*)stack[SFH+1]+1)->INCL(stateObjFlag);
@@ -1456,7 +1459,7 @@ bool ChainPrev(CheckData& ckd, LavaVariablePtr stack)
 //Che adapter functions
 bool CheNewFunc(CheckData& /*ckd*/, LavaVariablePtr stack)
 {
-  new((CHE*)(stack[SFH]+LSH)) CHE();
+  new1((CHE*)(stack[SFH]+LSH)) CHE();
   return true;
 }
 

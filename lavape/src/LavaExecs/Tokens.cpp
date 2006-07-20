@@ -34,12 +34,13 @@ const unsigned MaxString = 1000;
 
 static bool __INITstarted=false;
 
-QString *TOKENSTR;
+QString TOKENSTR[NoToken+1];
 
 static TToken iToken=TToken(0);
 
 
-THashTable hashTable[hashPrime];
+//THashTable hashTable[hashPrime];
+QHash<QString,unsigned> hashTable;
 
 unsigned priority[] = {
   1,2,2,2,2,3,
@@ -52,28 +53,29 @@ unsigned priority[] = {
 
 /************************************************************************/
 
-unsigned HashCode (const char * const s)
-
-{
-  unsigned hc, i;
-
-  hc = 0;
-  for (i = 0; ; i++) {
-    if (s[i] == '\0') return (hc % hashPrime);
-    hc += s[i];
-  }
-}
+//unsigned HashCode (const char * const s)
+//
+//{
+//  unsigned hc, i;
+//
+//  hc = 0;
+//  for (i = 0; ; i++) {
+//    if (s[i] == '\0') return (hc % hashPrime);
+//    hc += s[i];
+//  }
+//}
 
 
 static void ATO (QString s)
 
 {
-  TEntryPtr currentEntry, succEntry, newEntry;
-  unsigned hc;
+  //TEntryPtr currentEntry, succEntry, newEntry;
+  //unsigned hc;
 
 //  strcpy(TOKENSTR[iToken],s);
   TOKENSTR[iToken] = s;
-
+  hashTable[s] = iToken;
+/*
   newEntry = new THTEntry;
   newEntry->index = iToken;
   newEntry->nextEntry = 0;
@@ -82,7 +84,7 @@ static void ATO (QString s)
   for ( currentEntry = hashTable[hc].firstEntry;
         currentEntry;
         currentEntry = currentEntry->nextEntry) {
-          if (qstrcmp(TOKENSTR[currentEntry->index].toAscii(),s.toAscii())==-1)
+    if (qstrcmp(TOKENSTR[currentEntry->index].toAscii(),s.toAscii())==-1)
       break;
   }
   if (currentEntry) {
@@ -98,8 +100,9 @@ static void ATO (QString s)
     if (!hashTable[hc].lastEntry)
       hashTable[hc].lastEntry = newEntry;
   }
+*/
   if (iToken < NoToken)
-  iToken = TToken(iToken+1);
+    iToken = TToken(iToken+1);
 
 }
 
@@ -111,18 +114,20 @@ static void ATO (QString s)
 
 void Tokens_INIT ()
 {
-  unsigned i;
+  //unsigned i;
 
   if (__INITstarted) return;
   __INITstarted = true;
 
 
-  for (i = 0; i <= hashPrime-1; i++) {
-    hashTable[i].firstEntry = 0;
-    hashTable[i].lastEntry = 0;
-  }
+  hashTable.clear();
 
-  TOKENSTR = new QString[NoToken+1];
+  //for (i = 0; i <= hashPrime-1; i++) {
+  //  hashTable[i].firstEntry = 0;
+  //  hashTable[i].lastEntry = 0;
+  //}
+
+  //TOKENSTR = new QString[NoToken+1];
 
   iToken = (TToken)0;
 

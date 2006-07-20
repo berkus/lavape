@@ -33,6 +33,8 @@
 #include "LavaAppBase.h"
 #include "LavaStream.h"
 
+#undef new
+#define new1(ADDR) new(ADDR)
 
 static QString inStrT("TextIStream");
 static QString outStrT("TextOStream");
@@ -122,7 +124,7 @@ bool TGetString(CheckData& ckd, LavaVariablePtr stack)
   OPENIN(ckd,object);
   QString str;
   (*(QTextStream*)(object+LSH+1+szQFile)) >> str;
-  new(stack[SFH+1]+LSH) QString(str);
+  new1(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -141,7 +143,7 @@ bool TReadTotal(CheckData& ckd, LavaVariablePtr stack)
   OPENIN(ckd,object);
   QString str;
   str = (*(QTextStream*)(object+LSH+1+szQFile)).readAll();
-  new(stack[SFH+1]+LSH) QString(str);
+  new1(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -198,8 +200,8 @@ bool TNewFuncInOut(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr modeObj = AllocateObject(ckd, ckd.document->DECLTab[B_Bool], false);
   *(bool*)(modeObj+LSH) = false;
   *(LavaVariablePtr)(stack[SFH]+LSH) = modeObj;
-  new(stack[SFH]+LSH+1) QFile(fileName);
-  new(stack[SFH]+LSH+1+szQFile) QTextStream((QFile*)(stack[SFH]+LSH+1));
+  new1(stack[SFH]+LSH+1) QFile(fileName);
+  new1(stack[SFH]+LSH+1+szQFile) QTextStream((QFile*)(stack[SFH]+LSH+1));
   return true;
 }
 
@@ -250,7 +252,7 @@ bool DGetString(CheckData& ckd, LavaVariablePtr stack)
   OPENIN(ckd,object);
   QString str;
   (*(QDataStream*)(object+LSH+1+szQFile)) >> str;
-  new(stack[SFH+1]+LSH) QString(str);
+  new1(stack[SFH+1]+LSH) QString(str);
   return true;
 }
 
@@ -314,8 +316,8 @@ bool DNewFuncInOut(CheckData& ckd, LavaVariablePtr stack)
   //((SynFlags*)(modeObj+1))->INCL(finished);
   *(bool*)(modeObj+LSH) = false;
   *(LavaVariablePtr)(stack[SFH]+LSH) = modeObj;
-  new(stack[SFH]+LSH+1) QFile(fileName);
-  new(stack[SFH]+LSH+1+szQFile) QDataStream((QFile*)(stack[SFH]+LSH+1));
+  new1(stack[SFH]+LSH+1) QFile(fileName);
+  new1(stack[SFH]+LSH+1+szQFile) QDataStream((QFile*)(stack[SFH]+LSH+1));
   return true;
 }
 

@@ -948,8 +948,8 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
       if (((CLavaBaseDoc*)fromDoc)->ThreadList) {
         thrL = ((CLavaBaseDoc*)fromDoc)->ThreadList;
         for (int i=0; i<thrL->size(); i++) {
-          if (thrL->at(i)->pContExecEvent)
-            thrL->at(i)->pContExecEvent->release();
+          //if (thrL->at(i)->pContExecEvent)
+            thrL->at(i)->pContExecEvent.release();
         }
         return;
       }
@@ -980,8 +980,8 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
     if (((CLavaBaseDoc*)fromDoc)->ThreadList) {
       thrL = ((CLavaBaseDoc*)fromDoc)->ThreadList;
       for (int i=0; i<thrL->size(); i++) {
-				if ((thrL->at(i) != curThr) && thrL->at(i)->pContExecEvent)
-          thrL->at(i)->pContExecEvent->release();
+				if ((thrL->at(i) != curThr)/* && thrL->at(i)->pContExecEvent*/)
+          thrL->at(i)->pContExecEvent.release();
       }
 		}
 		if (err)
@@ -1000,9 +1000,9 @@ int critical(QWidget *parent, const QString &caption,
   CMsgBoxParams params(
 		currentThread,0,parent,caption,text,button0,button1,button2);
 
-//  currentThread->pContExecEvent->lastException = 0;
+//  currentThread->pContExecEvent.lastException = 0;
 	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaMsgBox,&params));
-  currentThread->pContExecEvent->acquire();
+  currentThread->pContExecEvent.acquire();
 	return params.result;
 }
 
@@ -1017,9 +1017,9 @@ int information(QWidget *parent, const QString &caption,
   CMsgBoxParams params(
 		currentThread,1,parent,caption,text,button0,button1,button2);
 
-//  currentThread->pContExecEvent->lastException = 0;
+//  currentThread->pContExecEvent.lastException = 0;
 	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaMsgBox,&params));
-  currentThread->pContExecEvent->acquire();
+  currentThread->pContExecEvent.acquire();
 	return params.result;
 }
 
@@ -1034,9 +1034,9 @@ int question(QWidget *parent, const QString &caption,
   CMsgBoxParams params(
 		currentThread,2,parent,caption,text,button0,button1,button2);
 
-//  currentThread->pContExecEvent->lastException = 0;
+//  currentThread->pContExecEvent.lastException = 0;
 	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaMsgBox,&params));
-  currentThread->pContExecEvent->acquire();
+  currentThread->pContExecEvent.acquire();
 	return params.result;
 }
 

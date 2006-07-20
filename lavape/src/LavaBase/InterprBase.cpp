@@ -453,7 +453,7 @@ LavaObjectPtr AttachLavaObject(CheckData &ckd, LavaObjectPtr urlObj, LavaDECL* s
   case PROT_LAVA:
 //    object = ckd.document->OpenObject(ckd, urlObj);
 		QApplication::postEvent(ckd.document,new CustomEvent(UEV_OpenObject,&oop));
-    currentThread->pContExecEvent->acquire();
+    currentThread->pContExecEvent.acquire();
 		object = oop.obj;
 		
     if (!object)

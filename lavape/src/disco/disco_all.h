@@ -98,6 +98,8 @@
 #include <QSemaphore>
 #include <QtDebug>
 
+#include "SYSTEM.h"
+
 #include <string.h>
 //#include <stdlib.h>
 #include <time.h>
@@ -126,7 +128,6 @@
 #include "PMDump.h"
 #include "SETpp.h"
 #include "STR.h"
-#include "SYSTEM.h"
 #include "TextFile.h"
 #include "UNIX.h"
 #include "wx_obj.h"
