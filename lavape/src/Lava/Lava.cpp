@@ -34,7 +34,7 @@
 #include "LavaDoc.h"
 #include "LavaGUIView.h"
 #include "Tokens.h"
-#include "wb_obj.h"
+#include "wx_obj.h"
 
 #include "qclipboard.h"
 #include "qfiledialog.h"

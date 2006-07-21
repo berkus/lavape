@@ -46,7 +46,7 @@
 #include "LavaPEStringInit.h"
 #include "SYSTEM.h"
 #include "ASN1File.h"
-#include "wb_obj.h"
+#include "wx_obj.h"
 
 #include "qdir.h"
 #include "qfont.h"
@@ -1236,7 +1236,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
                        || !(!formDECL && declsel->isInSubTree(((CLavaPEView*)doc->m_documentViews[pos])->myDECL)
                             || (formDECL == ((CLavaPEView*)doc->m_documentViews[pos])->myDECL)) );
            pos++);
-           
+
       if (pos < doc->m_documentViews.size())
         view = (CLavaBaseView*)doc->m_documentViews[pos];
       else
