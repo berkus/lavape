@@ -34,6 +34,8 @@
 #include "LavaDoc.h"
 #include "LavaGUIView.h"
 #include "Tokens.h"
+#include "wb_obj.h"
+
 #include "qclipboard.h"
 #include "qfiledialog.h"
 #include "qfontdialog.h"
@@ -480,6 +482,8 @@ int CLavaApp::ExitInstance()
   //delete [] TOKENSTR;
   hashTable.clear();
   SynIO.EXIT();
+  delete classDict;
+
 
   if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();

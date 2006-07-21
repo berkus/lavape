@@ -46,6 +46,7 @@
 #include "LavaPEStringInit.h"
 #include "SYSTEM.h"
 #include "ASN1File.h"
+#include "wb_obj.h"
 
 #include "qdir.h"
 #include "qfont.h"
@@ -876,6 +877,7 @@ int CLavaPEApp::ExitInstance()
   //delete [] TOKENSTR;
   hashTable.clear();
   SynIO.EXIT();
+  delete classDict;
 
   return 0;
 }

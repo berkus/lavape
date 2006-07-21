@@ -48,7 +48,7 @@
 // Hand-coded IMPLEMENT... macro for wxObject (define static data)
 wxClassInfo wxObject::classwxObject("wxObject", NULL, NULL, sizeof(wxObject), NULL);
 
-static QHash<QString,wxClassInfo*> *classDict=0;
+QHash<QString,wxClassInfo*> *classDict=0;
 
 
 // Useful buffer, initialized in wxCommonInit

@@ -290,8 +290,8 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
   int lObject = LOH + GetObjectLength(classDECL);
   object = new CSectionDesc* [lObject];
   if (!object) {
-//    if (!ckd.exceptionThrown) //auf Wunsch von Dieter keine exception
-//      ckd.document->LavaError(ckd, true, classDECL, &ERR_AllocObjectFailed, 0);
+    if (!ckd.exceptionThrown)
+      ckd.document->LavaError(ckd, true, classDECL, &ERR_AllocObjectFailed, 0);
     ckd.selfVar = mySelfVar;
     return 0;
   }

@@ -126,6 +126,8 @@ class DISCO_DLL wxObject
   inline int UnRef(void) { refCount --; return refCount; }
 };
 
+extern DISCO_DLL QHash<QString,wxClassInfo*> *classDict;
+
 #endif // IN_CPROTO
 #endif // wx_objh
 
