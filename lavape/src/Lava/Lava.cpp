@@ -232,7 +232,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
 #endif
   StdLavaLog = ExeDir + "/std.lava";
   QFileInfo qf = QFileInfo(StdLavaLog);
-        StdLava = ResolveLinks(qf);
+  StdLava = ResolveLinks(qf);
   Tokens_INIT();
 }
 
@@ -246,7 +246,7 @@ QString CLavaApp::InitWebBrowser () {
   HKEY hkey=0;
   DWORD valType=0, dataSize=100;
   BYTE data[100];
-        char *datap=(char*)&data[0];
+  char *datap=(char*)&data[0];
   LONG rc=0;
   unsigned pos=0;
 
@@ -267,7 +267,7 @@ QString CLavaApp::InitWebBrowser () {
     if (pos = str.indexOf(' ',1))
       prog = str.mid(0,pos);
     else
-                        prog = str;
+      prog = str;
   }
 #else
         prog = "firefox";
