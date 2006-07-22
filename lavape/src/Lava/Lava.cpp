@@ -112,8 +112,8 @@ int main( int argc, char ** argv ) {
 
   int res = ap.exec();
 
-  if (allocatedObjects)
-    qDebug("\n\nMemory leak: %x orphaned Lava object(s)\n\n",allocatedObjects);
+  if (numAllocObjects)
+    qDebug("\n\nMemory leak: %x orphaned Lava object(s)\n\n",numAllocObjects);
 
   return res;
 }
@@ -478,6 +478,12 @@ void CLavaApp::saveSettings()
 
 int CLavaApp::ExitInstance()
 {
+  wxView *view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view && view->inherits("CLavaGUIView"))
+    ((CLavaGUIView*)view)->NoteLastModified();
+  if (numAllocObjects) {
+    QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  }
   saveSettings();
   //delete [] TOKENSTR;
   hashTable.clear();

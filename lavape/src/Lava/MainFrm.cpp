@@ -201,12 +201,6 @@ void CLavaMainFrame::on_helpAboutAction_triggered()
 
 void CLavaMainFrame::on_fileExitAction_triggered()
 {
-  wxView *view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  if (view && view->inherits("CLavaGUIView"))
-    ((CLavaGUIView*)view)->NoteLastModified();
-    if (allocatedObjects) {
-      QMessageBox::critical(this, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(allocatedObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-    }
   OnFileExit();
 }
 

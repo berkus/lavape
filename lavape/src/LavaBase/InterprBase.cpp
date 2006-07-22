@@ -41,7 +41,6 @@
 
 
 bool INC_FWD_CNT(CheckData &ckd, LavaObjectPtr object) {
-  //(*(((unsigned short *)(object - (*object)->sectionOffset))-1))++;
   register unsigned short fwdCnt;
 
   object = object - (*object)->sectionOffset;
@@ -79,8 +78,9 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
     *(((unsigned short *)object)-1) = --fwdCnt;
     return true;
   }
-  
-////////////////////////////////////////////////////////////////// finalize:
+
+////////////////////////////////////////////////////////////////
+// finalize:
 
 
   fDesc = &(*(object + object[0][object[0][0].nSections-1].sectionOffset))->funcDesc[1]; 
@@ -104,7 +104,8 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
       return false;
     }
 
-////////////////////////////////////////////////////////////////// delete object:
+////////////////////////////////////////////////////////////////
+// delete object:
 
   fwdCnt = *(((unsigned short *)object)-1);
   *(((unsigned short *)object)-1) = --fwdCnt;
@@ -112,7 +113,7 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
 
   if (!fwdCnt && !revCnt) { // both counts are 0
     delete [] (object-LOH);
-    allocatedObjects--;
+    numAllocObjects--;
     return true;
   }
 
@@ -136,7 +137,7 @@ bool DEC_REV_CNT (CheckData &ckd, LavaObjectPtr object) {
   *(((unsigned short *)object)-2) = --revCnt;
   if (!fwdCnt && !revCnt && ((SynFlags*)(object+1))->Contains(releaseFinished)) {
     delete [] (object-LOH);
-    allocatedObjects--;
+    numAllocObjects--;
   }
   return true;
 }
@@ -245,7 +246,7 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) 
     ((SynFlags*)(object+1))->INCL(releaseFinished);
   if (!*(((unsigned short *)object)-2)) {
     delete [] (object-LOH);
-    allocatedObjects--;
+    numAllocObjects--;
   }
   return true;
 }
@@ -295,6 +296,8 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
     ckd.selfVar = mySelfVar;
     return 0;
   }
+  allocatedObjects.append(object);
+
   for (ii = 0; ii < lObject; ii++)
     *(object + ii) = 0;
   object = object + LOH;
@@ -328,7 +331,7 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
     }
   }
   (*(((unsigned short *)(object - (*object)->sectionOffset))-1))++;
-  allocatedObjects++;
+  numAllocObjects++;
   ckd.selfVar = mySelfVar;
   return object;
 }

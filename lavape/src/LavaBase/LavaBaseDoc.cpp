@@ -36,7 +36,8 @@
 
 #pragma hdrstop
 
-int allocatedObjects=0;
+int numAllocObjects=0;
+QList<LavaObjectPtr> allocatedObjects;
 
 DebugStep nextDebugStep=noStep;
 

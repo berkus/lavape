@@ -27,10 +27,7 @@
 #define FPE_INTDIV FPE_FLTDIV
 #endif
 
-extern LAVABASE_DLL int allocatedObjects;
-
 struct CheckData;
-
 
 enum ContextFlag {
   staticContext,
@@ -52,6 +49,9 @@ class CSectionDesc;
 typedef LAVABASE_DLL CSectionDesc **LavaObjectPtr;
 
 typedef LAVABASE_DLL LavaObjectPtr *LavaVariablePtr;
+
+extern LAVABASE_DLL int numAllocObjects;
+extern LAVABASE_DLL QList<LavaObjectPtr> allocatedObjects;
 
 
 class LAVABASE_DLL ASN1tofromAr: public ASN1

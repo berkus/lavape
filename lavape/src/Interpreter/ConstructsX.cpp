@@ -2206,7 +2206,7 @@ bool SwitchStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsi
 
   caseExpr = ((Expression*)caseExpression.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown) {
-//    DFC(caseExpr);
+    DFC(caseExpr);
     return false;
   }
 
@@ -2945,7 +2945,7 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       if (errno == ERANGE) {
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
         IFC(value); // for permanent ref from Constant
-        allocatedObjects--;
+        numAllocObjects--;
         return (LavaObjectPtr)-1;
       }
       break;
@@ -2956,7 +2956,7 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       if (errno == ERANGE) {
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
         IFC(value); // for permanent ref from Constant
-        allocatedObjects--;
+        numAllocObjects--;
         return (LavaObjectPtr)-1;
       }
       break;
@@ -2987,9 +2987,9 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       break;
     }
     IFC(value); // for permanent ref from Constant
-    allocatedObjects--;
+    numAllocObjects--;
     // constants aren't counted as allocated objects
-    // and released only when syntax is released
+    // and released only when the program syntax (AST) is released
   }
   return value; 
 }
@@ -3038,7 +3038,7 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     *(bool*)(value+LSH) = boolValue;
     IFC(value); // for permanent ref from BoolConst
     // is released only when syntax is released
-    allocatedObjects--;
+    numAllocObjects--;
   }
   return value; 
 }
@@ -3067,7 +3067,7 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     NewQString((QString*)(enumBaseObj+LSH+1),Id.c);
     IFC(value); // for permanent ref from EnumConst
     // is released only when syntax is released
-    allocatedObjects--;
+    numAllocObjects--;
   }
   return value; 
 }
