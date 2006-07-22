@@ -5,6 +5,7 @@
 #include "LavaProgram.h"
 #include "Constructs.h"
 #include "qdatastream.h"
+#include <QList>
 
 #ifdef WIN32
   #include "qt_windows.h"

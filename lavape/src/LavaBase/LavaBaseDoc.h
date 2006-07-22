@@ -50,9 +50,6 @@ typedef LAVABASE_DLL CSectionDesc **LavaObjectPtr;
 
 typedef LAVABASE_DLL LavaObjectPtr *LavaVariablePtr;
 
-extern LAVABASE_DLL int numAllocObjects;
-extern LAVABASE_DLL QList<LavaObjectPtr> allocatedObjects;
-
 
 class LAVABASE_DLL ASN1tofromAr: public ASN1
 { public:
@@ -145,6 +142,8 @@ public:
   CThreadList *ThreadList;
   QWidget* DumpFrame;
   QWidget* LavaDialog;
+  int numAllocObjects;
+  QList<LavaObjectPtr> allocatedObjects;
 
   CHESimpleSyntax* AddSyntax(SynDef *syntaxIncl, const QString& fn, bool& errEx, int hint=0);
   bool AllowThrowType(LavaDECL* decl, TID throwID, int inINCL);

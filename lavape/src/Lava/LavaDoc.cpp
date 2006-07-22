@@ -58,11 +58,15 @@ CLavaDoc::CLavaDoc()
   Redraw = true;
   firstStore = true;
   newLdoc = false;
+  numAllocObjects = 0;
 }
 
 CLavaDoc::~CLavaDoc()
 {
-  if (startedFromLavaPE) 
+ if (numAllocObjects) {
+   QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+}
+ if (startedFromLavaPE) 
     qApp->exit(0);
   else
     if ((!((wxApp*)qApp)->appExit) && debugOn && (this == ((CLavaApp*)wxTheApp)->debugThread.myDoc)) {

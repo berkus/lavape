@@ -112,8 +112,9 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
   revCnt = *(((unsigned short *)object)-2);
 
   if (!fwdCnt && !revCnt) { // both counts are 0
+    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
     delete [] (object-LOH);
-    numAllocObjects--;
     return true;
   }
 
@@ -136,8 +137,9 @@ bool DEC_REV_CNT (CheckData &ckd, LavaObjectPtr object) {
 
   *(((unsigned short *)object)-2) = --revCnt;
   if (!fwdCnt && !revCnt && ((SynFlags*)(object+1))->Contains(releaseFinished)) {
+    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
     delete [] (object-LOH);
-    numAllocObjects--;
   }
   return true;
 }
@@ -245,8 +247,9 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) 
   if (!*(((unsigned short *)object)-1))
     ((SynFlags*)(object+1))->INCL(releaseFinished);
   if (!*(((unsigned short *)object)-2)) {
+    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
     delete [] (object-LOH);
-    numAllocObjects--;
   }
   return true;
 }
@@ -296,11 +299,12 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
     ckd.selfVar = mySelfVar;
     return 0;
   }
-  allocatedObjects.append(object);
 
   for (ii = 0; ii < lObject; ii++)
     *(object + ii) = 0;
   object = object + LOH;
+  ckd.document->allocatedObjects.append(object);
+
   if (urlObj) {
     if (!*(object-LOH)) *(LavaVariablePtr)(object-LOH) = (LavaObjectPtr)new RunTimeData;
     ((RunTimeData*)*(object-LOH))->urlObj = urlObj;
@@ -331,7 +335,7 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
     }
   }
   (*(((unsigned short *)(object - (*object)->sectionOffset))-1))++;
-  numAllocObjects++;
+  ((CLavaBaseDoc*)ckd.document)->numAllocObjects++;
   ckd.selfVar = mySelfVar;
   return object;
 }

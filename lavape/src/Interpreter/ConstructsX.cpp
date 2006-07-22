@@ -2086,6 +2086,8 @@ bool IfdefStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsig
         RETURN(((SynObject*)elsePart.ptr)->Execute(ckd,stackFrame,oldExprLevel))
       else
         return true;
+    else
+      DFC(result);
   }
 
   if (thenPart.ptr)
@@ -2945,7 +2947,8 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       if (errno == ERANGE) {
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
         IFC(value); // for permanent ref from Constant
-        numAllocObjects--;
+        ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+        ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
         return (LavaObjectPtr)-1;
       }
       break;
@@ -2956,7 +2959,8 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       if (errno == ERANGE) {
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
         IFC(value); // for permanent ref from Constant
-        numAllocObjects--;
+        ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+        ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
         return (LavaObjectPtr)-1;
       }
       break;
@@ -2987,7 +2991,8 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
       break;
     }
     IFC(value); // for permanent ref from Constant
-    numAllocObjects--;
+    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
     // constants aren't counted as allocated objects
     // and released only when the program syntax (AST) is released
   }
@@ -3038,7 +3043,8 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     *(bool*)(value+LSH) = boolValue;
     IFC(value); // for permanent ref from BoolConst
     // is released only when syntax is released
-    numAllocObjects--;
+    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
   }
   return value; 
 }
@@ -3067,7 +3073,8 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     NewQString((QString*)(enumBaseObj+LSH+1),Id.c);
     IFC(value); // for permanent ref from EnumConst
     // is released only when syntax is released
-    numAllocObjects--;
+    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
   }
   return value; 
 }
