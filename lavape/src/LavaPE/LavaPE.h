@@ -66,7 +66,7 @@ public:
 
   public:
   virtual bool event(QEvent *e);
-  virtual int ExitInstance();
+  virtual int OnAppExit();
   virtual void OpenDocumentFile(const QString& lpszFileName);
   virtual void HtmlHelp();
   virtual void EditingLavaProgs();

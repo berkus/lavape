@@ -832,7 +832,7 @@ void CLavaPEApp::on_worksocket_disconnected() {
 
 CLavaPEApp::~CLavaPEApp()
 {
-  ExitInstance();
+  OnAppExit();
   FindList.Destroy();
   for (int i = 0; LavaIcons[i] != 0; i++)
     delete LavaIcons[i];
@@ -871,7 +871,7 @@ void CLavaPEApp::saveSettings()
   settings.endGroup();
 }
 
-int CLavaPEApp::ExitInstance()
+int CLavaPEApp::OnAppExit()
 {
   saveSettings();
   //delete [] TOKENSTR;

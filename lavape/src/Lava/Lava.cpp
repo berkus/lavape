@@ -476,7 +476,7 @@ void CLavaApp::saveSettings()
   settings.endGroup();
 }
 
-int CLavaApp::ExitInstance()
+int CLavaApp::OnAppExit()
 {
   wxView *view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view && view->inherits("CLavaGUIView"))

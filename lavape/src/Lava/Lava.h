@@ -19,7 +19,7 @@ class CLavaApp : public wxApp
 {
 public:
   CLavaApp(int argc, char ** argv);
-  ~CLavaApp() { ExitInstance(); }
+  ~CLavaApp() { OnAppExit(); }
 
   wxDocTemplate *pLavaTaskTemplate, *pLavaLdocTemplate, *pLavaLcomTemplate;
   CLavaBaseData LBaseData;
@@ -42,7 +42,7 @@ public:
   void OnFileOpen();
   void OnFileNew(); 
   void OnAppAbout();
-  virtual int ExitInstance();
+  virtual int OnAppExit();
   void OnChooseFormFont(int font_case);
   void OnChooseGlobalFont();
   void saveSettings();
