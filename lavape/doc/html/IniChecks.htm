@@ -4,32 +4,43 @@
 
 
 
+
+  
   
   
   <meta http-equiv="Content-Language" content="en-us">
 
 
 
+
+  
   
   
   <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 
 
 
+
+  
   
   
   <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
 
 
 
+
+  
   
   
   <meta name="ProgId" content="FrontPage.Editor.Document">
 
 
+
   
 
 
+  
+  
   
   
   
@@ -42,8 +53,10 @@
 
 
 
+
 <h2 align="center"><strong>Complete
-initialization checks</strong></h2>
+static initialization checks</strong></h2>
+
 
 
 
@@ -54,6 +67,7 @@ disentangle, and this gives rise to immense costs in turn. The attempt to
 prevent such situations has therefore been a constitutive design goal
 of the <i><font color="#ff0000"><b>Lava</b></font></i>
 development. </p>
+
 
 
 
@@ -74,6 +88,7 @@ already at programming time, i.e., by purely static checks</b>.</p>
 
 
 
+
 <p>This could be achieved only by a major
 revision of the expressive means for executable code, as compared to more traditional wide-spread 
 procedural and object-oriented programming languages. In particular,
@@ -81,7 +96,9 @@ we have</p>
 
 
 
+
 <ul>
+
 
 
 
@@ -91,9 +108,11 @@ bounded quantifiers,</li>
 
 
 
+
   <li>replaced the traditional view of program variables as
 "reusable data containers" by a "<a href="SingleAssigLogSem.htm">single-assignment</a>"
   (or "computed constant") view of variable usage, and</li>
+
 
 
 
@@ -102,11 +121,13 @@ unambiguous distinction between input and output parameters of methods.</li>
 
 
 
+
   <li>Moreover, we have introduced specific expressive means (the
   <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font> conditional statement and the
   <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm#elseExpr">else</a></b></font> expression) that allow us to prevent 
   inadvertent <font color="#0000ff"><b>&Oslash;</b></font>-to-mandatory 
   assignments (see below).</li>
+
 
 
 
@@ -121,7 +142,9 @@ unambiguous distinction between input and output parameters of methods.</li>
 
 
 
+
 </ul>
+
 
 
 
@@ -129,7 +152,9 @@ unambiguous distinction between input and output parameters of methods.</li>
 
 
 
+
 <p>Missing initialization has to be prevented with respect to</p>
+
 
 
 
@@ -137,7 +162,9 @@ unambiguous distinction between input and output parameters of methods.</li>
 
 
 
+
   <li><b>local</b> variables,</li>
+
 
 
 
@@ -145,11 +172,14 @@ unambiguous distinction between input and output parameters of methods.</li>
 
 
 
+
   <li><b>Output parameters</b> of function calls.</li>
 
 
 
+
 </ol>
+
 
 
 
@@ -162,9 +192,11 @@ applications.)</p>
 
 
 
+
 <p>Before you proceed, you should have understood how <font color="#ff0000"> <i><b>Lava</b></i></font>
 <a href="RepetComputSamples.htm">replaces traditional loop
 constructs</a> and that this implies:</p>
+
 
 
 
@@ -175,6 +207,7 @@ variable by following the containing program branch in upward direction
 (unless the variable is an input variable and therefore a value is
 assigned to it already <i>outside</i> this
 function).&nbsp;</b></p>
+
 
 
 
@@ -190,7 +223,9 @@ code that is currently being presented in any open Window.</p>
 
 
 
+
 <h4>1. Local variables</h4>
+
 
 
 
@@ -199,7 +234,9 @@ i.e., by several constructs:</p>
 
 
 
+
 <ul>
+
 
 
 
@@ -208,13 +245,16 @@ i.e., by several constructs:</p>
 
 
 
+
   <li><font color="#0000ff"><b>foreach</b></font>
 (universal quantifier ranging over some finite set of objects),</li>
 
 
 
+
   <li><font color="#0000ff"><b>exists</b></font>
 (existential quantifier ranging over some finite set of objects),</li>
+
 
 
 
@@ -225,8 +265,10 @@ select expression),</li>
 
 
 
+
   <li><font color="#0000ff"><b>type</b></font> (branches over the run time type 
   of an expression value),</li>
+
 
 
 
@@ -235,13 +277,16 @@ select expression),</li>
 
 
 
+
 </ul>
+
 
 
 
 <p>which all assign completely initialized objects to the respective local variables that
 they introduce, except for the declare construct. So we need to
 consider only <i> declared</i> variables.</p>
+
 
 
 
@@ -256,7 +301,9 @@ has not yet been assigned a value to it. </p>
 
 
 
+
 <h4>2. Member variables</h4>
+
 
 
 
@@ -267,7 +314,9 @@ enforces an unusually stringent initialization discipline<span lang="de">:</span
 
 
 
+
 <ol>
+
 
 
 
@@ -278,6 +327,7 @@ associated with the new object's class.</li>
 
 
 
+
   <li><font color="#ff0000"><i><b>LavaPE</b></i></font>
 makes sure (by purely static checks) that <b>every initializer assigns a
 value to every non-optional member variable of this class in each of
@@ -285,10 +335,12 @@ its branches</b>.</li>
 
 
 
+
   <li>You can modify these values within the (optional) <font color="#800080"><b>but</b></font> clause
 of the <font color="#0000ff"><b>new</b></font>
 expression and in this way <i> customize</i> the object
 before its completion.</li>
+
 
 
 
@@ -301,7 +353,9 @@ clause) as an input parameter to any function.<br>
 
 
 
+
     <br>
+
 
 
 
@@ -311,7 +365,9 @@ first.</li>
 
 
 
+
 </ol>
+
 
 
 
@@ -320,11 +376,14 @@ by such a strict bottom-up construction discipline:<i> </i></p>
 
 
 
+
 <p><i>From within an initializer</i></p>
 
 
 
+
 <ul>
+
 
 
 
@@ -336,6 +395,7 @@ this case.</li>
 
 
 
+
   <li>you may pass a (not yet completely initialized) <i>self</i>
 object as an input parameter to <i>another initializer</i>:
 This is inevitably needed if you would like to establish a "backward" <a href="PointersRefCounts.htm">pointer</a> from a member
@@ -343,7 +403,9 @@ object to its containing parent object.</li>
 
 
 
+
 </ul>
+
 
 
 
@@ -351,6 +413,7 @@ object to its containing parent object.</li>
 point" of the function body the check follows the respective branch in
 upward direction and makes sure that a value is assigned to every
 non-optional output parameter in this branch.</p>
+
 
 
 
@@ -362,9 +425,11 @@ that is to be thrown.</p>
 
 
 
+
 <p>If a function has output parameters (see below) then it must
 not be left without throwing an exception (checked at programming
 time). This applies also to initializers of classes.</p>
+
 
 
 
@@ -375,7 +440,9 @@ non-optional output parameter. (Checked at programming time.)</p>
 
 
 
+
 <h4>3. Output parameters</h4>
+
 
 
 
@@ -389,10 +456,12 @@ programming time (= statically).</p>
 
 
 
+
 <p>This is an essential prerequisite for all kinds of <font color="#ff0000"> <i><b>Lava</b></i></font>&nbsp;
 initialization checks since only then you can also cover those cases
 where a variable is initialized by being an actual output parameter of
 a function call.</p>
+
 
 
 
@@ -402,9 +471,11 @@ address" and never "by value" (= copied)). </p>
 
 
 
+
 <p>Much like the member initialization checks (see above), the initialization 
 checks for output parameters are performed at all return points of the function 
 body.</p>
+
 
 
 
@@ -415,10 +486,12 @@ parameter. (Checked at programming time.)</p>
 
 
 
+
 <p>In this way <font color="#ff0000"><i><b>Lava</b></i></font>
 makes sure that undefined outputs cannot be used <b>inadvertently </b>by the caller of a failing function but only if the resulting exception
 is caught and the respective output parameters are used nevertheless
 thereafter. </p>
+
 
 
 
@@ -431,7 +504,9 @@ function's implementation.)</p>
 
 
 
+
 <h3><a name="optional"></a>B) Preventing <b><font color="#0000ff">&Oslash;</font></b>-to-mandatory assignments</h3>
+
 
 
 
@@ -451,6 +526,7 @@ yields a non-optional value.</p>
 
 
 
+
 <p>Cf. the
 <a target="_blank" href="http://nice.sourceforge.net/manual.html#optionTypes">
 option types</a> of the <font color="#ff0000"><i><b>
@@ -465,12 +541,14 @@ them.</p>
 
 
 
+
 <hr>
 
 
 <h3>Initialization in <font color="#ff0000"><i>Lava</i></font> compared to
 <font color="#ff0000"><i>C++</i></font> / <font color="#ff0000"><i>Java</i></font> 
 / <font color="#ff0000"><i>C#</i></font></h3>
+
 
 <p>The <b>definite assignment checks</b> of <b><font color="#ff0000"><i>Java</i></font></b> 
 and <font color="#ff0000"><i><b>C#</b></i></font>, like those of
@@ -482,15 +560,20 @@ analytical capabilities of the compiler. E.g., look at the following little
 <font color="#ff0000"><i><b>Java</b></i></font> program:</p>
 
 
+
 <blockquote>
+  
   <pre><font color="#0000ff">public class</font> Hello {<br>  <font color="#0000ff">public static</font> void main(String[] args) {<br>    A a, a2;<br>		<br>    a = <font color="#0000ff">new</font> A();<br>    a2 = a.func();<br>    System.out.println(a2.toString());<br>  }<br>}<br><br><font color="#0000ff">class</font> A {<br>  <font color="#0000ff">public</font> int x, y;<br><br>  <font color="#0000ff">public</font> A func() {<br>    <font color="#0000ff">return</font> null;<br>  };<br>};<br></pre>
 
+
 </blockquote>
+
 
 <p>"a2 = a.func();" assigns the <font color="#ff0000"><i><b>Java</b></i></font> 
 null object to a2; so "a2.toString()" in the next line will trigger a 
 NullPointerException at run time. But the <font color="#ff0000"><i><b>Java</b></i></font> 
 compiler doesn't recognize and report this error.</p>
+
 
 <p>In contrast to this, <font color="#ff0000"><i><b>LavaPE</b></i></font> will 
 allow the assignment of <font color="#0000ff"><b>&Oslash; </b></font>(null) to 
@@ -504,6 +587,7 @@ the use of the optional variable a2 isn't secured by an <font color="#0000ff">
 <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">else</a></b></font> 
 expression here.</p>
 
+
 <p>The <b>constructor</b> notions of <b><font color="#ff0000"><i>C++</i></font></b> 
 / <b><font color="#ff0000"><i>Java</i></font></b> / <font color="#ff0000"><b><i>
 C# </i></b></font>can only guarantee that an object is initialized <b>anyhow</b>: 
@@ -513,11 +597,13 @@ more meaningful value isn't assigned explicitly. In most cases this won't
 prevent the application from crashing, or, even worse, from silently delivering 
 faulty results.</p>
 
+
 <p>In contrast to this, <font color="#ff0000"><i><b>Lava</b></i></font> informs 
 the programmer already at programming time if an initializer is missing or 
 an existing initializer fails to initialize all mandatory member variables. The 
 enforced distinction between optional 
 and mandatory variables is of crucial importance in this context.</p>
+
 
 <p>Moreover, <font color="#ff0000"><i><b>Lava</b></i></font> provides an 
 additional way to prevent meaningless/faulty object initialization: You can add
@@ -525,47 +611,60 @@ additional way to prevent meaningless/faulty object initialization: You can add
 conditions that must hold true for newly created objects of the respective class 
 (and also after any non-read-only method has been applied to such an object).</p>
 
+
 <hr>
 <p><b>Summary:</b> The most fundamental differences between
 <font color="#ff0000"><i><b>Lava</b></i></font> and other languages w.r.t 
 initialization are: </p>
 
+
 <ol>
+
 
   <li><font color="#ff0000"><i><b>Lava</b></i></font> enforces <b>complete</b> 
   initialization of objects <b>within</b> their respective initializers.</li>
 
+
   <li><font color="#ff0000"><i><b>Lava</b></i></font> provides a way to <b>
   safely deal with still unfinished objects</b> in the initialization phase.</li>
+
 
   <li><font color="#ff0000"><i><b>Lava</b></i></font> makes sure that <b>
   optional-to-mandatory assignments are always secured</b> by specific 
   constructs <b><a href="whatsThis/IfdefElse.htm">ifdef</a></b> and <b>
   <a href="whatsThis/IfdefElse.htm">else</a></b>.</li>
 
+
 </ol>
+
 
 <p><b>This stringent and seamless initialization discipline of
 <font color="#ff0000"><i>Lava</i></font> completely and reliably prevents all 
 kinds of inadvertent access to uninitialized variables or null objects by purely 
 static checks, i.e. already at programming time.</b></p>
 
+
 <p>Two further kinds of erroneous data access that can be recognized only at run 
 time remain in <font color="#ff0000"><i><b>Lava</b></i></font>:</p>
 
+
 <ol>
+
 
   <li>You may catch an exception thrown by class method and subsequently ignore 
   the undefined, null state of output parameters that normally would have 
   well-defined non-null values if the exception had not occurred. Access to such 
   an output parameter will in turn trigger a null-object exception.</li>
 
+
   <li>If you (by mistake / prematurely) finalize/zombify objects (see the base 
   class <i>Object </i>of all <font color="#ff0000"><i><b>Lava</b></i></font> 
   classes) and then try to access these, a specific access-to-zombie exception 
   will be thrown.</li>
 
+
 </ol>
+
 
 </body>
 </html>
