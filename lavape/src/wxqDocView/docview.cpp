@@ -877,8 +877,8 @@ bool wxDocManager::Clear(bool force)
 {
   wxDocument *doc;
 
-  for (int i=0; i<m_docs.size(); i++) {
-    doc = m_docs.takeAt(i);
+  while (m_docs.size()) {
+    doc = m_docs.takeAt(0);
     if (!doc->Close() && !force)
         return false;
 //    delete doc;
