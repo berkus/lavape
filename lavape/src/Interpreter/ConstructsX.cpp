@@ -1203,8 +1203,8 @@ ret2:
   ckd.immediateReturn = false;
   for (QHash<AssertionData*,RTAssertionData*>::iterator i=rtadDict.begin(); i!=rtadDict.end(); i++)
     delete i.value();
-  //for (QHash<InvarData*,LavaDECL*>::iterator i=rtidDict.begin(); i!=rtidDict.end(); i++)
-  //  delete i.value();
+  for (QHash<InvarData*,LavaDECL*>::iterator i=rtidDict.begin(); i!=rtidDict.end(); i++)
+    delete i.value();
   RETURN(ok)
 }
 
