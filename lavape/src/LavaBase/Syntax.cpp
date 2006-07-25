@@ -33,7 +33,7 @@ CLavaError::CLavaError(CHAINX* errors, QString* ids, DString *text, bool autoC)
   showAutoCorrBox = autoC;
   if (text)
     textParam = *text;
-  che = new CHE(this);
+  che = new CHE((AnyType*)this);
   errors->Append(che);
 }
 

@@ -97,6 +97,23 @@ void CDPTOperator (PutGetFlag pgf, ASN1* cid, address varAddr,
   else *vp = (TOperator)cid->FGETunsigned();
 } // END OF CDPTOperator
 
+
+IMPLEMENT_DYNAMIC_CLASS(CLavaError,NULL)
+
+
+void CDPCLavaError (PutGetFlag pgf, ASN1* cid, address varAddr,
+                    bool baseCDP)
+
+{
+  CLavaError *vp = (CLavaError*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    vp->textParam.CDP(pgf,cid);
+    CDPpp.CVTbool(pgf,cid,vp->showAutoCorrBox);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPCLavaError
+
 ChainAnyElem* NewCHETVElem ()
 { return (ChainAnyElem*)(new CHETVElem); }
 
@@ -150,23 +167,6 @@ void CDPTVElems (PutGetFlag pgf, ASN1* cid, address varAddr,
     CDPTCTVElem(pgf,cid,(address)&vp->VElems);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTVElems
-
-
-IMPLEMENT_DYNAMIC_CLASS(CLavaError,NULL)
-
-
-void CDPCLavaError (PutGetFlag pgf, ASN1* cid, address varAddr,
-                    bool baseCDP)
-
-{
-  CLavaError *vp = (CLavaError*)varAddr;
-  if (cid->Skip()) return;
-
-  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    vp->textParam.CDP(pgf,cid);
-    CDPpp.CVTbool(pgf,cid,vp->showAutoCorrBox);
-  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
-} // END OF CDPCLavaError
 
 
 void CDPTEmphasis (PutGetFlag pgf, ASN1* cid, address varAddr,

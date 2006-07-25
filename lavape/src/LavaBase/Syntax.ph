@@ -39,22 +39,22 @@ $TYPE +CDP {
 
 
   struct TID {
-  int nINCL;//the number of the included syntax in the document referencing this object
-  int nID;  //the OwnID of the referenced object
- 
+    int nINCL;//the number of the included syntax in the document referencing this object
+    int nID;  //the OwnID of the referenced object
+   
     inline bool operator == (const TID& id2) const
-  { 
+    { 
       return ((nID == id2.nID) && (nINCL == id2.nINCL));
-  }
+    }
 
     inline bool operator != (const TID& id2) const
-  { 
+    { 
       return ((nID != id2.nID) || (nINCL != id2.nINCL));
-  }
+    }
 
-  TID() {nINCL=0; nID=-1;}
-  TID(int id, int incl)  {nID=id; nINCL=incl;}
- };
+    TID() {nINCL=0; nID=-1;}
+    TID(int id, int incl)  {nID=id; nINCL=incl;}
+  };
 
   typedef CHAINANY<TID> TIDs;
   typedef SET SynFlags;
@@ -84,6 +84,15 @@ $TYPE +CDP {
   OP_arraySet, 
   OP_high
   };
+
+  class CLavaError {
+  public:
+    QString* IDS;
+    STRING textParam;
+    bool showAutoCorrBox;
+    CLavaError() {showAutoCorrBox=false;}
+    CLavaError(CHAINX* errors, QString* ids, DString *text=0, bool autoC = false);
+  };
   
   class TVElem {
     TVElem() {ok=true; updateNo=0; TypeFlags = SETpp(); op = OP_noOp; ElDECL=0; ClssDECL=0; }
@@ -105,16 +114,6 @@ $TYPE +CDP {
     int UpdateNo; //LavaPE:the update state,
                   //Lava: =0: not maked, > 0: maked, ok, <0: maked, not ok
   TCTVElem VElems;
-  };
-
-  class CLavaError {
-  public:
-    QString* IDS;
-    STRING textParam;
-    bool showAutoCorrBox;
-    CLavaError() {showAutoCorrBox=false;}
-    CLavaError(CHAINX* errors, QString* ids, DString *text=0, bool autoC = false);
-
   };
 
   enum TEmphasis {
@@ -501,8 +500,6 @@ $TYPE +CDP {
    };
 
 }
-
-
 
 struct TAnnotation;
 

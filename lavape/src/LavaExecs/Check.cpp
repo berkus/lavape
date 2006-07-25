@@ -198,7 +198,7 @@ QString SynObject::LocationOfConstruct () {
 void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
 {
   SynObject *synObj=this;
-  DString dFileName = ckd.document->GetAbsSynFileName();
+  DString dFileName = ckd.document->GetAbsSynFileName(), dsTextParam(textParam);
   QString cFileName(dFileName.c), cExecName;
   QString msg, msgText;
 
@@ -237,7 +237,7 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
     throw CNotSupportedException();
 #else
   if (((SelfVar*)ckd.selfVar)->execView)
-    new CLavaError(&synObj->errorChain,errorCode,new DString(textParam));
+    new CLavaError(&synObj->errorChain,errorCode,&dsTextParam);
   ckd.nErrors++;
   synObj->lastError = errorCode;
 #endif

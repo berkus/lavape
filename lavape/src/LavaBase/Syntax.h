@@ -163,6 +163,34 @@ enum TOperator {
 extern LAVABASE_DLL void CDPTOperator (PutGetFlag pgf, ASN1* cid, address varAddr,
                                        bool baseCDP=false);
 
+class LAVABASE_DLL CLavaError : public DObject  {
+  DECLARE_DYNAMIC_CLASS(CLavaError)
+
+
+  public:
+  QString *IDS;
+  STRING textParam;
+  bool showAutoCorrBox;
+
+  CLavaError()
+  {
+    showAutoCorrBox=false;
+  }
+
+  CLavaError(CHAINX *errors,QString *ids,DString *text=0,bool autoC=false);
+
+  virtual void CopyData (AnyType *from) {
+    *this = *(CLavaError*)from;
+  }
+
+  friend LAVABASE_DLL void CDPCLavaError (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                          bool baseCDP=false);
+
+  virtual void CDP (PutGetFlag pgf, ASN1* cid,
+                    bool baseCDP=false)
+  { CDPCLavaError(pgf,cid,(address)this,baseCDP); }
+};
+
 class LAVABASE_DLL TVElem : public DObject  {
   DECLARE_DYNAMIC_CLASS(TVElem)
 
@@ -234,34 +262,6 @@ class LAVABASE_DLL TVElems : public DObject  {
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
   { CDPTVElems(pgf,cid,(address)this,baseCDP); }
-};
-
-class LAVABASE_DLL CLavaError : public DObject  {
-  DECLARE_DYNAMIC_CLASS(CLavaError)
-
-
-  public:
-  QString *IDS;
-  STRING textParam;
-  bool showAutoCorrBox;
-
-  CLavaError()
-  {
-    showAutoCorrBox=false;
-  }
-
-  CLavaError(CHAINX *errors,QString *ids,DString *text=0,bool autoC=false);
-
-  virtual void CopyData (AnyType *from) {
-    *this = *(CLavaError*)from;
-  }
-
-  friend LAVABASE_DLL void CDPCLavaError (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                          bool baseCDP=false);
-
-  virtual void CDP (PutGetFlag pgf, ASN1* cid,
-                    bool baseCDP=false)
-  { CDPCLavaError(pgf,cid,(address)this,baseCDP); }
 };
 
 enum TEmphasis {
@@ -518,8 +518,6 @@ enum IterFlag {
 
 extern LAVABASE_DLL void CDPIterFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
                                       bool baseCDP=false);
-
-
 
 
 struct TAnnotation;
