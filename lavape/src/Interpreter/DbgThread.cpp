@@ -63,18 +63,16 @@ CLavaDebugThread::CLavaDebugThread() {
   listenSocket = 0;
   workSocket = 0;
   debugOn = false;
-  pContDebugEvent = new CEventEx();
-  if (pContDebugEvent->available())
-    pContDebugEvent->acquire();
-  if (pContExecEvent.available())
-    pContExecEvent.acquire();
+  //pContDebugEvent.acquire();
+  //if (pContExecEvent.available())
+  //  pContExecEvent.acquire();
 }
 
 
 void CLavaDebugThread::initData(CLavaBaseDoc* d, CLavaExecThread *execThr) {
   if (!dbgStopData) {
     myDoc = d;
-    myExecThread = execThr;
+    m_execThread = execThr;
     dbgStopData = new DbgStopData;
     varAction = new LocalDebugVar(dbgStopData, myDoc);
   }
@@ -87,9 +85,9 @@ CLavaDebugThread::~CLavaDebugThread()
   dbgStopData = 0;
   if (varAction) delete varAction;
   varAction = 0;
-  pContDebugEvent->release(); 
+  pContDebugEvent.release(); 
   wait();
-  delete pContDebugEvent;
+  //delete pContDebugEvent;
 }
 
 
@@ -148,7 +146,7 @@ void CLavaDebugThread::run() {
   connect(workSocket,SIGNAL(disconnected()),wxTheApp,SLOT(on_worksocket_disconnected()));
 
   if (debugOn) 
-    pContDebugEvent->acquire();  //DebugThread wait until ExecuteLava has finished initialisation
+    pContDebugEvent.acquire();  //DebugThread wait until ExecuteLava has finished initialisation
   else {
     varAction->run();
     addCalleeParams();
@@ -195,7 +193,7 @@ void CLavaDebugThread::run() {
           }
         }
         pContExecEvent.release();    //continue ExecuteLava
-        pContDebugEvent->acquire();  //DebugThread wait for next stop with new dbgStopData
+        pContDebugEvent.acquire();  //DebugThread wait for next stop with new dbgStopData
         if (!varAction) {
           fin = true;
           break;
@@ -240,7 +238,7 @@ void CLavaDebugThread::run() {
   }
   LBaseData->debugOn = false;
   debugOn = false;
-  CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)myExecThread);
+  CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)m_execThread);
   QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
 }
 

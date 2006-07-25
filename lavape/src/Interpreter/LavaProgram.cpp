@@ -55,7 +55,7 @@
   nnn.nINCL = IDTable.IDTab[decl->inINCL]->nINCLTrans[nnn.nINCL].nINCL
 
 
-CLavaProgram::CLavaProgram()
+CLavaProgram::CLavaProgram() : m_execThread(this)
 {
 }
 
@@ -2241,7 +2241,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 
   CoInitialize(0);
 #endif
-  ((CLavaDebugThread*)LBaseData->debugThread)->myExecThread = this;
+  ((CLavaDebugThread*)LBaseData->debugThread)->m_execThread = this;
 //  QThread::setTerminationEnabled();
   ckd.document = (CLavaProgram*)doc;
   LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)ckd.document->mySynDef->SynDefTree.first)->data.TopDef.ptr;
@@ -2290,7 +2290,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
           newStackFrame[pos] = 0;
         if (LBaseData->debugOn) {
           doc->debugOn = true;
-          ((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent->release(); 
+          ((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent.release(); 
           //debug thread continue, now initialisation is finished 
           ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent.acquire(); 
           //execution thread wait until debug thread has received first message from LavaPE

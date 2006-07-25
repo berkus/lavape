@@ -7,11 +7,19 @@
 #include "wx_obj.h"
 
 
+class LAVAEXECS_DLL CLavaExecThread : public CLavaThread {
+public:
+  CLavaExecThread(CLavaBaseDoc *d) : CLavaThread(d){};
+
+  unsigned ExecuteLava(CLavaBaseDoc *doc);
+  void run();
+};
+
 class LAVAEXECS_DLL CLavaProgram : public CLavaBaseDoc
 {
 
 public:
-  //DString PathName;
+  CLavaExecThread m_execThread;
 
 protected: // Nur aus Serialisierung erzeugen
   CLavaProgram();
@@ -54,14 +62,6 @@ public:
 
   virtual void LavaError(CheckData& ckd, bool setEx, LavaDECL *decl, QString *nresourceID, LavaDECL* refDECL = 0);
   void HCatch(CheckData& ckd);
-};
-
-class LAVAEXECS_DLL CLavaExecThread : public CLavaThread {
-public:
-  CLavaExecThread(CLavaBaseDoc *d) : CLavaThread(d){};
-
-  unsigned ExecuteLava(CLavaBaseDoc *doc);
-  void run();
 };
 
 extern LAVAEXECS_DLL bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack);

@@ -274,7 +274,7 @@ QString CLavaApp::InitWebBrowser () {
 
 bool CLavaApp::event(QEvent *e)
 {
-  CLavaDoc *doc;
+  CLavaProgram *doc;
   CMsgBoxParams *mbp;
   CLavaPEHint *pHint;
   CLavaThread *thr;
@@ -284,18 +284,13 @@ bool CLavaApp::event(QEvent *e)
 
   switch (e->type()) {
   case UEV_LavaStart:
-    thr = new CLavaExecThread((CLavaDoc*)((CustomEvent*)e)->data());
-    thr->start();
+    doc = (CLavaProgram*)((CustomEvent*)e)->data();
+    doc->m_execThread.start();
     break;
   case UEV_LavaEnd:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
-    doc = (CLavaDoc*)pHint->fromDoc;
-    thr = (CLavaThread*)pHint->CommandData1;
-    if (thr && !thr->isFinished()) {
-      thr->terminate();
-      thr->wait();
-    }
-    delete thr;
+    doc = (CLavaProgram*)pHint->fromDoc;
+    doc->m_execThread.wait();
     delete (CLavaPEHint*)pHint;
     if (doc)
       doc->OnCloseDocument();
@@ -487,7 +482,7 @@ int CLavaApp::OnAppExit()
   if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();
 //  debugThread.pContExecEvent.release();
-//  debugThread.pContDebugEvent->release();
+//  debugThread.pContDebugEvent.release();
   debugThread.wait();
   return 0;
 }

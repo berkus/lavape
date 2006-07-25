@@ -34,11 +34,11 @@ public:
   QString remoteIPAddress;
   quint16 remotePort;
 
-  CLavaExecThread *myExecThread;
+  CLavaExecThread *m_execThread;
   DbgStopData* dbgStopData;
   LocalDebugVar *varAction;
   bool debugOn;
-  CEventEx *pContDebugEvent;
+  CEventEx pContDebugEvent;
   DbgContType actContType;
   CHAINANY /*ProgPoint*/ brkPnts;
   DbgMessage mSend, mReceive;

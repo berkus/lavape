@@ -688,7 +688,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
         ((CLavaDebugThread*)LBaseData->debugThread)->start();
       }
       else
-        ((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent->release(); //debug thread continue
+        ((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent.release(); //debug thread continue
       ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent.acquire();   //execution thread wait
     }
     else
