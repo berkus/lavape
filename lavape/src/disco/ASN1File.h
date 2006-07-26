@@ -138,6 +138,8 @@ public:
 
   void flush ();
 
+  void waitForBytesWritten();
+
   void putChar (const unsigned char&);
 
   void getChar (unsigned char&) {}

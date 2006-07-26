@@ -6,17 +6,18 @@
 #include "qthreadstorage.h"
 //Added by qt3to4:
 #include <QList>
-#include <QSemaphore>
+#include <QWaitCondition>
+#include <QMutex>
 
 
 class CLavaBaseDoc;
 class CSectionDesc;
 class CRuntimeException;
 
-class LAVABASE_DLL CEventEx : public QSemaphore
+class LAVABASE_DLL CWaitCond : public QWaitCondition
 {
 public:
-  CEventEx() : QSemaphore(1) {
+  CWaitCond() {
 		lastException = 0; 
 		ex = 0; 
 //		lock();
@@ -28,17 +29,26 @@ public:
 class LAVABASE_DLL CLavaThread : public QThread
 {
 public:
-  CLavaThread() { /*pContExecEvent = new CEventEx();*/ }
+  CLavaThread() {
+  }
+
   CLavaThread(CLavaBaseDoc *d);
   ~CLavaThread();
 
 	CLavaBaseDoc *myDoc;
 
-  CEventEx pContExecEvent;
+  virtual void suspend() {
+    myMutex.tryLock(); // actually we don't need this mutex
+    myWaitCond.wait(&myMutex);
+  }
 
-  virtual unsigned ExecuteLava(CLavaBaseDoc *doc){
-    return 0;
-  };
+  virtual void resume() {
+    myWaitCond.wakeOne();
+  }
+
+  CWaitCond myWaitCond;
+  QMutex myMutex;
+
 
 //	static CLavaThread *currentThread();
   virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc) {return false;}

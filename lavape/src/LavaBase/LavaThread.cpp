@@ -29,7 +29,6 @@
 CLavaThread::CLavaThread(CLavaBaseDoc* docu)
 {
 	myDoc = docu;
-  //pContExecEvent = new CEventEx();
 
   if (!myDoc->ThreadList)
 		myDoc->ThreadList = new CThreadList;
@@ -37,7 +36,6 @@ CLavaThread::CLavaThread(CLavaBaseDoc* docu)
 
 CLavaThread::~CLavaThread()
 {
-  //delete pContExecEvent;
 }
 
 CThreadData::CThreadData(CLavaThread *thr)

@@ -152,7 +152,7 @@ bool CLavaProgram::OnOpenProgram(const QString lpszPathName, bool imiExec, bool 
     return false;
 //  wxDocManager::GetDocumentManager()->AddFileToHistory(fName);
   if (imiExec) {
-    QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaStart, (void*)this));
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaStart, (void*)this));
 
   }
   return true;
@@ -2222,7 +2222,6 @@ void sigEnable() {
 
 void CLavaExecThread::run() {
   myDoc->ThreadList->append(this);
-  pContExecEvent.acquire();
 	ExecuteLava(myDoc);
 }
 
@@ -2242,7 +2241,6 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
   CoInitialize(0);
 #endif
   ((CLavaDebugThread*)LBaseData->debugThread)->m_execThread = this;
-//  QThread::setTerminationEnabled();
   ckd.document = (CLavaProgram*)doc;
   LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)ckd.document->mySynDef->SynDefTree.first)->data.TopDef.ptr;
   CHE* che;
@@ -2289,11 +2287,11 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
         for (pos=0;pos<frameSize;pos++)
           newStackFrame[pos] = 0;
         if (LBaseData->debugOn) {
-          doc->debugOn = true;
-          ((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent.release(); 
-          //debug thread continue, now initialisation is finished 
-          ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent.acquire(); 
-          //execution thread wait until debug thread has received first message from LavaPE
+          ((CLavaDebugThread*)LBaseData->debugThread)->start();
+          //((CLavaDebugThread*)LBaseData->debugThread)->resume();
+            //debug thread start, now initialisation is finished
+          suspend(); 
+            //execution thread wait until debug thread has received first message from LavaPE
         }
         if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel)) {
           if (!ckd.exceptionThrown)
@@ -2311,7 +2309,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
           ((CLavaProgram*)ckd.document)->HCatch(ckd);
 stop:     ckd.document->throwError = false;
           CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
-          QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+          QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
 //          ckd.document->LavaEnd(true);
           return 0;
         }
@@ -2340,7 +2338,7 @@ stop:     ckd.document->throwError = false;
         critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
-					QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+					QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
         }
         return 0;
       }
@@ -2349,7 +2347,7 @@ stop:     ckd.document->throwError = false;
         critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
           CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
-					QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+					QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
         }
         return 0;
       }
@@ -2364,7 +2362,7 @@ stop:     ckd.document->throwError = false;
       }
       information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(msg)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
-      QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
       return 1;
     }
     else {
@@ -2388,20 +2386,20 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
   CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, (DWORD)&stack[SFH], (DWORD)&stack[SFH+1], (DWORD)&stack[SFH+2], (DWORD)frozen, (DWORD)currentThread, (DWORD)fromFillIn);
   if (currentThread != wxTheApp->mainThread) {
-    currentThread->pContExecEvent.lastException = 0;
-	  QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaShow,(void*)hint));
-    currentThread->pContExecEvent.acquire();
-    if (currentThread->pContExecEvent.lastException) {
+    currentThread->myWaitCond.lastException = 0;
+	  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaShow,(void*)hint));
+    currentThread->suspend();
+    if (currentThread->myWaitCond.lastException) {
       if (ckd.lastException)
         DEC_FWD_CNT(ckd, ckd.lastException);
-      ckd.lastException = currentThread->pContExecEvent.lastException;
-      currentThread->pContExecEvent.lastException = 0;
+      ckd.lastException = currentThread->myWaitCond.lastException;
+      currentThread->myWaitCond.lastException = 0;
       ckd.exceptionThrown = true;
     }
     else 
-      if (currentThread->pContExecEvent.ex) {
-        ex = currentThread->pContExecEvent.ex;
-        currentThread->pContExecEvent.ex = 0;
+      if (currentThread->myWaitCond.ex) {
+        ex = currentThread->myWaitCond.ex;
+        currentThread->myWaitCond.ex = 0;
       }
   }
   else {

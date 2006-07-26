@@ -3004,7 +3004,7 @@ bool CLavaPEDoc::OnCloseDocument()
       delete ((CLavaPEApp*)wxTheApp)->debugThread.workSocket;
       ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->setDebugData(0, this);
       ((CLavaPEApp*)wxTheApp)->debugThread.myDoc = 0;
-      ((CLavaPEApp*)wxTheApp)->debugThread.pContExecEvent.release();
+      ((CLavaPEApp*)wxTheApp)->debugThread.resume();
     }
     else
       ((CLavaPEApp*)wxTheApp)->debugThread.cleanBrkPoints(this);
@@ -3184,7 +3184,7 @@ void CLavaPEDoc::OnDebugLava()
 
 void CLavaPEDoc::interpreterExited () {
   delete ((CLavaPEApp*)wxTheApp)->debugThread.workSocket;
-  ((CLavaPEApp*)qApp)->debugThread.pContExecEvent.release();
+  ((CLavaPEApp*)qApp)->debugThread.resume();
 }
 
 //check all included documents

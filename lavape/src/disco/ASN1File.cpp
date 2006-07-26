@@ -274,7 +274,6 @@ ASN1InSock::~ASN1InSock ()
 
 
 void ASN1OutSock::flush ()
-
 {
   int rc;
 
@@ -285,6 +284,11 @@ void ASN1OutSock::flush ()
     bufferPos = 0;
   }
 } // END OF ~ASN1OutFile
+
+void ASN1OutSock::waitForBytesWritten () {
+  flush();
+  fildes->waitForBytesWritten(-1);
+}
 
 ASN1OutSock::~ASN1OutSock ()
 
@@ -304,7 +308,6 @@ void ASN1OutSock::putChar (const unsigned char& c)
   int rc;
 
   if (bufferPos == bufferSize) {
-    fildes->waitForBytesWritten(-1);
     rc = fildes->write(bufferPtr,bufferSize);
     if ((rc < 0) || (rc != (int)bufferSize)) {
       error("putChar: write_TCP");

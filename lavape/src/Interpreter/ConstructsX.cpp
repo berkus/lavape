@@ -681,21 +681,17 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
     else
       rc = QMessageBox::Yes;
     if (rc == QMessageBox::Yes) {
-      if (debug && !ckd.document->debugOn) {
-        ((CLavaDebugThread*)LBaseData->debugThread)->wait();
-        if (((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent.available())
-          ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent.acquire();
+      if (debug && !ckd.document->debugOn)
         ((CLavaDebugThread*)LBaseData->debugThread)->start();
-      }
       else
-        ((CLavaDebugThread*)LBaseData->debugThread)->pContDebugEvent.release(); //debug thread continue
-      ((CLavaDebugThread*)LBaseData->debugThread)->pContExecEvent.acquire();   //execution thread wait
+        ((CLavaDebugThread*)LBaseData->debugThread)->resume(); //debug thread continue
+      ((CLavaThread*)QThread::currentThread())->suspend();   //execution thread wait
     }
     else
       if (rc == QMessageBox::NoAll) {
         LBaseData->m_pmDumps = false;
         LBaseData->m_strPmDumps = "false";
-        QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_PMDumpOff,0));
+        QApplication::postEvent(wxTheApp, new CustomEvent(UEV_PMDumpOff,0));
       }
   }
   return msg;

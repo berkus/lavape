@@ -97,8 +97,6 @@ int main( int argc, char ** argv ) {
   else
     return 1;
 
-//  threadStg()->setLocalData(new CThreadData(0));
-
   int res = app.exec();
   return res;
 }
@@ -338,7 +336,7 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
     ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
 
-    debugThread.pContExecEvent.release();
+    debugThread.resume();
     return true;
   }
   else if (e->type() == UEV_LavaDebugW) {
@@ -348,7 +346,6 @@ bool CLavaPEApp::event(QEvent *e)
   }
   else
     return wxApp::event(e);
-  //return QApplication::event(e);
 }
 
 QString CLavaPEApp::InitWebBrowser () {
@@ -688,8 +685,6 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
   if (argc > 2) {
     ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = argv[2];
     ((CLavaPEApp*)qApp)->debugThread.remotePort = (quint16)QString(argv[3]).toUShort();
-
-    //QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),"LavaPE: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     ((CLavaPEApp*)qApp)->debugThread.start();
   }
 }
@@ -841,8 +836,8 @@ CLavaPEApp::~CLavaPEApp()
   debugThread.dbgRequest = 0;
   if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();
-  debugThread.pContExecEvent.release();
-  debugThread.wait();
+  //debugThread.resume();
+  //debugThread.wait();
 }
 
 void CLavaPEApp::saveSettings()

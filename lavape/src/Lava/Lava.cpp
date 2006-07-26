@@ -45,6 +45,7 @@
 #include "qprocess.h"
 #include <stdlib.h>
 #include <QTextStream>
+#include <QtTest/QtTest>
 
 #ifndef WIN32
 #include <locale.h>
@@ -80,7 +81,9 @@ int main( int argc, char ** argv ) {
   //_CrtSetBreakAlloc(60222);
 #endif
 
-  //  DebugBreak();
+  qWarning("DebugBreak");
+  //QTest::qSleep(20000);
+  //__debugbreak();
 
   myPath = qgetenv("PATH");
   componentPath = myPath;
@@ -100,15 +103,13 @@ int main( int argc, char ** argv ) {
 
   ap.m_appWindow = new CLavaMainFrame;
 
- // QMessageBox::information(ap.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok);
-
   if (ap.m_appWindow->OnCreate()) {
     ap.m_appWindow->show();
   }
   else
     return 1;
 
-//  threadStg()->setLocalData(new CThreadData(0));
+  //QMessageBox::information(ap.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok);
 
   int res = ap.exec();
 
@@ -290,7 +291,6 @@ bool CLavaApp::event(QEvent *e)
   case UEV_LavaEnd:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     doc = (CLavaProgram*)pHint->fromDoc;
-    doc->m_execThread.wait();
     delete (CLavaPEHint*)pHint;
     if (doc)
       doc->OnCloseDocument();
@@ -303,17 +303,17 @@ bool CLavaApp::event(QEvent *e)
     case 0:
       mbp->result =   QMessageBox::critical(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-      mbp->thr->pContExecEvent.release();
+      mbp->thr->resume();
       break;
     case 1:
       mbp->result =   QMessageBox::information(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-      mbp->thr->pContExecEvent.release();
+      mbp->thr->resume();
       break;
     case 2:
       mbp->result =   QMessageBox::question(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-      mbp->thr->pContExecEvent.release();
+      mbp->thr->resume();
       break;
     }
     break;
@@ -328,11 +328,11 @@ bool CLavaApp::event(QEvent *e)
     if (pHint->CommandData5) {
       thr = (CLavaThread*)((CLavaPEHint*)((CustomEvent*)e)->data())->CommandData5;
       if (result == QDialog::Rejected) {
-        if (!thr->pContExecEvent.ex)
+        if (!thr->myWaitCond.ex)
           ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
-          thr->pContExecEvent.ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+          thr->myWaitCond.ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
       }
-      thr->pContExecEvent.release();
+      thr->resume();
     }
     delete (CLavaPEHint*)((CustomEvent*)e)->data();
     break;
@@ -342,7 +342,7 @@ bool CLavaApp::event(QEvent *e)
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
     delete dumpdata->doc->DumpFrame;
     dumpdata->doc->DumpFrame = 0;
-    ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->pContExecEvent.release();
+    ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->resume();
     delete (DumpEventData*)((CustomEvent*)e)->data();
     break;
   case UEV_PMDumpOff:
@@ -398,10 +398,10 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
     LBaseData.debugOn = true;
     doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
     doc->startedFromLavaPE = true;
+    doc->debugOn = true;
     ((CLavaMainFrame*)m_appWindow)->fileOpenAction->setEnabled(false);
     ((CLavaMainFrame*)m_appWindow)->fileNewAction->setEnabled(false);
     debugThread.initData(doc,0);
-    debugThread.start();
   }
   else {
     doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
@@ -481,9 +481,7 @@ int CLavaApp::OnAppExit()
 
   if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();
-//  debugThread.pContExecEvent.release();
-//  debugThread.pContDebugEvent.release();
-  debugThread.wait();
+  //debugThread.wait();
   return 0;
 }
 

@@ -334,7 +334,6 @@ class LAVABASE_DLL  CLavaBaseData : public QObject
 public:
   CLavaBaseData() {
     setObjectName("LavaBaseData");
-    newNum = 0;
     declareButton = 0;
     ContData = 0;
     debugOn = false;
@@ -357,11 +356,8 @@ public:
   SynObjectBase *tempBrkPoint;
   QSize ptMaxSize;
   QString lastFileOpen;
-  QString WndPane;
-  QString WndPopup;
   QString ldocFileExt;
   QString lcomFileExt;
-  int newNum;
   int stdUpdate;
 
   bool m_saveEveryChange;

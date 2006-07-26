@@ -184,7 +184,9 @@ void CLavaPEDebugThread::run() {
 		  return;
 	  }
 
-    ok = listenSocket->waitForNewConnection(5000,&timedOut);
+    ok = listenSocket->waitForNewConnection(30000,&timedOut);
+    if (!ok)
+      qApp->exit(1);
     workSocket = listenSocket->nextPendingConnection();
   }
   else {
@@ -221,8 +223,8 @@ void CLavaPEDebugThread::run() {
     if (dbgRequest->ContData.ptr)
       ((DbgContData*)dbgRequest->ContData.ptr)->ContType = dbg_Cont;
     CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
+    put_cid->waitForBytesWritten();
     if (put_cid->Done) {
-      put_cid->flush();
       ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
       ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
     }
@@ -244,26 +246,22 @@ void CLavaPEDebugThread::run() {
       delete dbgReceived.lastReceived;
     dbgReceived.lastReceived = dbgReceived.newReceived;
     dbgReceived.newReceived = new DbgMessage;
-		//QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugW,(void*)0));
     CDPDbgMessage(GET, get_cid, (address)dbgReceived.newReceived);
     if (get_cid->Done) {
       interpreterWaits = true;
-      if (pContExecEvent.available())
-        pContExecEvent.acquire();
-
 		  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
       if (wxTheApp->appExit)
         break;
-      pContExecEvent.acquire();
+      suspend();
       if (!dbgRequest)
         break;
       if (dbgRequest->Command == Dbg_Continue)
         checkBrkPnts1();
 
       CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
+      put_cid->waitForBytesWritten();
       if (!put_cid->Done)
         break;
-      put_cid->flush();
 
       if (dbgRequest->Command == Dbg_Continue)
         checkBrkPnts2();

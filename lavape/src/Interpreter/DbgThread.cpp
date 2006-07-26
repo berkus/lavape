@@ -63,9 +63,6 @@ CLavaDebugThread::CLavaDebugThread() {
   listenSocket = 0;
   workSocket = 0;
   debugOn = false;
-  //pContDebugEvent.acquire();
-  //if (pContExecEvent.available())
-  //  pContExecEvent.acquire();
 }
 
 
@@ -85,9 +82,8 @@ CLavaDebugThread::~CLavaDebugThread()
   dbgStopData = 0;
   if (varAction) delete varAction;
   varAction = 0;
-  pContDebugEvent.release(); 
-  wait();
-  //delete pContDebugEvent;
+  resume(); 
+  //wait();
 }
 
 
@@ -145,14 +141,12 @@ void CLavaDebugThread::run() {
 
   connect(workSocket,SIGNAL(disconnected()),wxTheApp,SLOT(on_worksocket_disconnected()));
 
-  if (debugOn) 
-    pContDebugEvent.acquire();  //DebugThread wait until ExecuteLava has finished initialisation
-  else {
+  if (!debugOn) {
     varAction->run();
     addCalleeParams();
     mSend.SetSendData(Dbg_StopData, dbgStopData);
     CDPDbgMessage(PUT, put_cid, (address)&mSend);
-    put_cid->flush();
+    put_cid->waitForBytesWritten();
     myDoc->debugOn = true;
   }
   LBaseData->debugOn = true;
@@ -192,8 +186,10 @@ void CLavaDebugThread::run() {
             dbgStopData->ParamChain.Destroy();
           }
         }
-        pContExecEvent.release();    //continue ExecuteLava
-        pContDebugEvent.acquire();  //DebugThread wait for next stop with new dbgStopData
+
+        m_execThread->resume();    //continue ExecuteLava
+        suspend();  //DebugThread wait for next stop with new dbgStopData
+
         if (!varAction) {
           fin = true;
           break;
@@ -211,9 +207,9 @@ void CLavaDebugThread::run() {
       if (fin)
         break;
       CDPDbgMessage(PUT, put_cid, (address)&mSend);
+      put_cid->waitForBytesWritten();
       if (!put_cid->Done) 
         break;
-      put_cid->flush();
     }
     else {
       fin = true;
@@ -239,7 +235,7 @@ void CLavaDebugThread::run() {
   LBaseData->debugOn = false;
   debugOn = false;
   CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)m_execThread);
-  QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
 }
 
 void CLavaDebugThread::setBrkPnts()

@@ -203,10 +203,9 @@ bool ObjectDontSave(CheckData& ckd, LavaVariablePtr stack)
 bool ObjectDump(CheckData& ckd, LavaVariablePtr stack)
 {
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
-  //currentThread->pContExecEvent.lastException = 0;
   DumpEventData* data = new DumpEventData(ckd.document, stack, currentThread);
-	QApplication::postEvent(LBaseData->theApp, new CustomEvent(UEV_LavaDump,(void*)data));
-  currentThread->pContExecEvent.acquire();
+	QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaDump,(void*)data));
+  currentThread->suspend();
   ckd.document->DumpFrame = 0;
   return true;
 }

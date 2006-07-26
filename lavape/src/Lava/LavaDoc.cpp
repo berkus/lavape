@@ -72,7 +72,7 @@ CLavaDoc::~CLavaDoc()
   else
     if ((!((wxApp*)qApp)->appExit) && debugOn && (this == ((CLavaApp*)wxTheApp)->debugThread.myDoc)) {
       ((CLavaApp*)wxTheApp)->debugThread.myDoc = 0;
-      ((CLavaApp*)wxTheApp)->debugThread.pContDebugEvent.release();
+      ((CLavaApp*)wxTheApp)->debugThread.resume();
     }
 }
 
@@ -297,7 +297,7 @@ void CLavaDoc::customEvent(QEvent *ev0)
 
   if (ev->type() == UEV_OpenObject) 
     oop->obj = OpenObject(*oop->ckdPtr,oop->urlObj);
-  oop->thr->pContExecEvent.release();
+  oop->thr->resume();
 }
 
 LavaObjectPtr CLavaDoc::OpenObject(CheckData& ckd, LavaObjectPtr urlObj) 

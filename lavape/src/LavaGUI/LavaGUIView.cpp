@@ -170,9 +170,9 @@ void LavaGUIDialog::OnOK()
   if (myGUIProg) {
     myGUIProg->NoteLastModified();
     if (myGUIProg->LavaForm.OnOK( myGUIProg->Root)) {
-      if (myThread/* && myThread->pContExecEvent*/) {
-        myThread->pContExecEvent.lastException = myGUIProg->ckd.lastException;
-        myThread->pContExecEvent.ex = myGUIProg->ex;
+      if (myThread) {
+        myThread->myWaitCond.lastException = myGUIProg->ckd.lastException;
+        myThread->myWaitCond.ex = myGUIProg->ex;
         myGUIProg->ckd.lastException = 0;
         myGUIProg->ckd.exceptionThrown = false;
       }
@@ -189,9 +189,9 @@ void LavaGUIDialog::OnCancel()
       DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
       *ResultDPtr = 0;
     }
-    if (myThread/* && myThread->pContExecEvent*/) {
-      myThread->pContExecEvent.lastException = myGUIProg->ckd.lastException;
-      myThread->pContExecEvent.ex = myGUIProg->ex;
+    if (myThread) {
+      myThread->myWaitCond.lastException = myGUIProg->ckd.lastException;
+      myThread->myWaitCond.ex = myGUIProg->ex;
       myGUIProg->ckd.lastException = 0;
       myGUIProg->ckd.exceptionThrown = false;
     }

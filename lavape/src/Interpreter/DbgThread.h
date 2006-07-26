@@ -38,7 +38,6 @@ public:
   DbgStopData* dbgStopData;
   LocalDebugVar *varAction;
   bool debugOn;
-  CEventEx pContDebugEvent;
   DbgContType actContType;
   CHAINANY /*ProgPoint*/ brkPnts;
   DbgMessage mSend, mReceive;
