@@ -63,6 +63,7 @@ CLavaDebugThread::CLavaDebugThread() {
   listenSocket = 0;
   workSocket = 0;
   debugOn = false;
+  startedFromLavaPE = false;
 }
 
 
@@ -224,14 +225,15 @@ void CLavaDebugThread::run() {
   mSend.Destroy();
   mReceive.Destroy();
   brkPnts.Destroy();
+  //delete workSocket;
   delete put_cid;
   delete get_cid;
-  delete workSocket;
   workSocket = 0;
   if (listenSocket) {
     delete listenSocket;
     listenSocket = 0;
   }
+  myMutex.unlock();
   LBaseData->debugOn = false;
   debugOn = false;
   //CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)m_execThread);

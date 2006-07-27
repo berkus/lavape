@@ -56,6 +56,7 @@ void CLavaPEDebugThread::reset(bool final)
   if (put_cid)
     delete put_cid;
   put_cid= 0;
+  myMutex.unlock();
   if (!final) {
     if (myDoc) {
       myDoc->debugOn = false;

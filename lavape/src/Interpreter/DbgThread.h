@@ -34,6 +34,7 @@ public:
   QString remoteIPAddress;
   quint16 remotePort;
 
+  bool startedFromLavaPE;
   CLavaExecThread *m_execThread;
   DbgStopData* dbgStopData;
   LocalDebugVar *varAction;

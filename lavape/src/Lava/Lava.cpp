@@ -140,7 +140,6 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   LBaseData.actHint = 0;
   LBaseData.Init(0, 0);
   LBaseData.debugThread = &debugThread;
-
   settings.beginGroup("generalSettings");
   LBaseData.m_strCheckPreconditions = settings.value(szCheckPreconditions,QVariant("true")).toString();
   if (LBaseData.m_strCheckPreconditions == "true")
@@ -395,7 +394,6 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
     debugThread.debugOn = true;
     LBaseData.debugOn = true;
     doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
-    doc->startedFromLavaPE = true;
     doc->debugOn = true;
     ((CLavaMainFrame*)m_appWindow)->fileOpenAction->setEnabled(false);
     ((CLavaMainFrame*)m_appWindow)->fileNewAction->setEnabled(false);
@@ -601,6 +599,6 @@ void CLavaApp::LearningLava()
 }
 
 void CLavaApp::on_worksocket_disconnected() {
-  if (!appExit && !debugThread.listenSocket)
+  if (!appExit && debugThread.startedFromLavaPE)
     qApp->exit(0);
 }
