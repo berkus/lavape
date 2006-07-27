@@ -2078,6 +2078,7 @@ wxHistory::~wxHistory()
     for (i = 0; i < m_historyN; i++)
         delete m_actions[i];
     delete [] m_actions;
+    delete m_signalMapper;
 
 }
 

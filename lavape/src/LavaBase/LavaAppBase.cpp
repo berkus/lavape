@@ -1009,8 +1009,8 @@ int information(QWidget *parent, const QString &caption,
 		int button0, int button1, int button2) {
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
 
-	if (currentThread == wxTheApp->mainThread) // mainThread!
-		return QMessageBox::information(parent,caption,text,button0,button1,button2);
+  if (currentThread == wxTheApp->mainThread) // mainThread!
+    return QMessageBox::information(parent,caption,text,button0,button1,button2);
 
   CMsgBoxParams params(
 		currentThread,1,parent,caption,text,button0,button1,button2);
