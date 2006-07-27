@@ -87,7 +87,7 @@ int main( int argc, char ** argv ) {
 
 #ifdef _DEBUG
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-  //_CrtSetBreakAlloc(60222);
+  //_CrtSetBreakAlloc(38892);
 #endif
 
  // QMessageBox::information(app.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok)
@@ -837,7 +837,7 @@ CLavaPEApp::~CLavaPEApp()
   if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();
   //debugThread.resume();
-  debugThread.wait();
+  //debugThread.wait();
 }
 
 void CLavaPEApp::saveSettings()

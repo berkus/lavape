@@ -120,6 +120,7 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
   this->argc = argc;
   this->argv = argv;
   m_appName = argv[0];
+  mainThread = QThread::currentThread();
 
   //// Create a document manager
   m_docManager = new wxDocManager;
@@ -868,8 +869,8 @@ wxDocManager::wxDocManager(long flags)
 wxDocManager::~wxDocManager()
 {
     Clear();
-    //if (m_fileHistory)
-    //    delete m_fileHistory;
+    if (m_fileHistory)
+        delete m_fileHistory;
     sm_docManager = (wxDocManager*) NULL;
 }
 
@@ -2062,24 +2063,23 @@ void wxCommandProcessor::ClearCommands()
 
 wxHistory::wxHistory(QObject *receiver, int maxItems)
 {
-    m_maxHistItems = maxItems;
-    m_historyN = 0;
-    m_history = new DString*[m_maxHistItems];
-    m_actions = new QAction*[m_maxHistItems];
-    m_signalMapper=new QSignalMapper(this);
+  m_maxHistItems = maxItems;
+  m_historyN = 0;
+  m_history = new DString*[m_maxHistItems];
+  m_actions = new QAction*[m_maxHistItems];
+  for (int i = 0; i < m_maxHistItems; i++)
+    m_actions[i] = 0;
+  m_signalMapper=new QSignalMapper(this);
 }
 
 wxHistory::~wxHistory()
 {
-    int i;
-    for (i = 0; i < m_historyN; i++)
-        delete m_history[i];
-    delete [] m_history;
-    for (i = 0; i < m_historyN; i++)
-        delete m_actions[i];
-    delete [] m_actions;
-    delete m_signalMapper;
-
+  int i;
+  for (i = 0; i < m_historyN; i++)
+      delete m_history[i];
+  delete [] m_history;
+  delete [] m_actions;
+  delete m_signalMapper;
 }
 
 // File history management
@@ -2095,24 +2095,24 @@ void wxHistory::SetFirstInHistory(const QString& file)
 
 void wxHistory::SetFirstInHistory(int histFileIndex)
 {
-    DString *s;
-    int i;
+  DString *s;
+  int i;
 
-    if (histFileIndex == 0)
-        return;
+  if (histFileIndex == 0)
+    return;
 
-    s = m_history[histFileIndex];
+  s = m_history[histFileIndex];
 
-    for (i = histFileIndex-1; i >= 0; i--)
-        m_history[i+1] = m_history[i];
+  for (i = histFileIndex-1; i >= 0; i--)
+    m_history[i+1] = m_history[i];
 
-    m_history[0] = s;
+  m_history[0] = s;
 
-    for (i = 0; i <= histFileIndex; i++) {
-        QString buf;
-        buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
-        m_actions[i]->setText(buf);
-    }
+  for (i = 0; i <= histFileIndex; i++) {
+    QString buf;
+    buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
+    m_actions[i]->setText(buf);
+  }
 }
 
 void wxHistory::AddToHistory(DString *item, QObject *receiver)
@@ -2174,14 +2174,14 @@ DString *wxHistory::GetHistoryItem(int i) const
 
 void wxHistory::RemoveItemFromHistory(QString name)
 {
-        int i;
+  int i;
 
-        for (i=0; i<m_historyN; i++)
-                if (name == m_history[i]->c) {
-                        RemoveItemFromHistory(i);
-                        return;
-                }
-        return;
+  for (i=0; i<m_historyN; i++)
+    if (name == m_history[i]->c) {
+      RemoveItemFromHistory(i);
+      return;
+    }
+  return;
 }
 
 void wxHistory::RemoveItemFromHistory(int i)
@@ -2210,6 +2210,7 @@ void wxHistory::RemoveItemFromHistory(int i)
         // delete the last menu item which is unused now
         m_menu->removeAction(m_actions[m_historyN - 1]);
 				delete m_actions[m_historyN - 1];
+        m_actions[m_historyN - 1] = 0;
 
         // delete the last separator too if no more files are left
         if ( m_historyN == 1 )
@@ -2231,12 +2232,7 @@ void wxHistory::OnChangeOfWindowTitle(QString &oldName, QString &newName)
 
   for (i=0; i<m_historyN; i++)
     if (oldName == m_history[i]->c) {
-      m_history[i]->Destroy();
-      m_history[i]->c = str.c;
-      m_history[i]->l = str.l;
-      m_history[i]->m = str.m;
-      str.c = 0;
-      str.l = 0;
+      *m_history[i] = str;
       m_actions[i]->setText(newName);
       return;
     }
