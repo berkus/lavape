@@ -270,9 +270,6 @@ void CLavaPEDebugThread::run() {
     else
       break;
   }
-//  if (dbgReceived.lastReceived) {
-//    delete dbgReceived.lastReceived;
-//  }
   if (dbgReceived.newReceived) {
     delete dbgReceived.newReceived;
     dbgReceived.newReceived = 0;

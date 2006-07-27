@@ -837,7 +837,7 @@ CLavaPEApp::~CLavaPEApp()
   if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
     debugThread.workSocket->abort();
   //debugThread.resume();
-  //debugThread.wait();
+  debugThread.wait();
 }
 
 void CLavaPEApp::saveSettings()

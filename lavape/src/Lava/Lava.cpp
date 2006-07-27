@@ -81,9 +81,7 @@ int main( int argc, char ** argv ) {
   //_CrtSetBreakAlloc(60222);
 #endif
 
-  qWarning("DebugBreak");
   //QTest::qSleep(20000);
-  //__debugbreak();
 
   myPath = qgetenv("PATH");
   componentPath = myPath;

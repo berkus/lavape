@@ -142,8 +142,8 @@ wxApp::~wxApp() {
 //  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
 //  settings.beginGroup(GetSettingsPath());
   m_docManager->FileHistorySave(settings);
-  delete m_docManager;
   delete m_appWindow;
+  delete m_docManager;
 }
 
 void wxApp::SetVendorName(const QString& name) {
@@ -868,8 +868,8 @@ wxDocManager::wxDocManager(long flags)
 wxDocManager::~wxDocManager()
 {
     Clear();
-    if (m_fileHistory)
-        delete m_fileHistory;
+    //if (m_fileHistory)
+    //    delete m_fileHistory;
     sm_docManager = (wxDocManager*) NULL;
 }
 
