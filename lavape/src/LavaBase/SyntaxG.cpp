@@ -873,6 +873,42 @@ void CDPChObjRq (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPChObjRq
 
 
+IMPLEMENT_DYNAMIC_CLASS(DbgMessage0,NULL)
+
+
+void CDPDbgMessage0 (PutGetFlag pgf, ASN1* cid, address varAddr,
+                     bool baseCDP)
+
+{
+  DbgMessage0 *vp = (DbgMessage0*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPDbgCommand(pgf,cid,(address)&vp->Command);
+    if (cid->Skip()) return;
+    switch (vp->Command) {
+    case Dbg_StopData:
+    case Dbg_Stack:
+      vp->DbgData.CDP(pgf,cid);
+      break;
+    case Dbg_MemberData:
+      vp->ObjData.CDP(pgf,cid);
+      break;
+    case Dbg_MemberDataRq:
+      vp->ObjNr.CDP(pgf,cid,CDPChObjRq);
+      CDPpp.CVTbool(pgf,cid,vp->fromParams);
+      break;
+    case Dbg_StackRq:
+      CDPpp.CVTint(pgf,cid,vp->CallStackLevel);
+      break;
+    case Dbg_Continue:
+      vp->ContData.CDP(pgf,cid);
+      break;
+    }
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPDbgMessage0
+
+
 IMPLEMENT_DYNAMIC_CLASS(DbgMessage,NULL)
 
 

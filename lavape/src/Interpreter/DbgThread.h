@@ -41,7 +41,7 @@ public:
   bool debugOn;
   DbgContType actContType;
   CHAINANY /*ProgPoint*/ brkPnts;
-  DbgMessage mSend, mReceive;
+  DbgMessage0 mSend, mReceive;
 
 protected:
 	void run();

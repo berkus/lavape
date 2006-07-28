@@ -952,7 +952,7 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
 
     typedef CHAINANY <int> ChObjRq;
 
-    struct DbgMessage {
+    struct DbgMessage0 {
         CASE DbgCommand Command OF
         Dbg_StopData, Dbg_Stack:
             NESTEDANY0 <DbgStopData> DbgData; //Lava to LavaPE
@@ -979,8 +979,8 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
           ObjData.ptr = obj; 
          }
 
-        DbgMessage(DbgCommand com) {Command = com;}
-        DbgMessage() {}
+        DbgMessage0(DbgCommand com) {Command = com;}
+        DbgMessage0() {}
 
         void Destroy() {
          DbgData.ptr = 0;
@@ -988,6 +988,27 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
          ObjNr.Destroy();
          ContData.Destroy();
         }
+    };
+
+    struct DbgMessage {
+        CASE DbgCommand Command OF
+        Dbg_StopData, Dbg_Stack:
+            NESTEDANY <DbgStopData> DbgData; //Lava to LavaPE
+        | Dbg_MemberData:
+            NESTEDANY0 <DDItemData> ObjData; //Lava to LavaPE
+        | Dbg_MemberDataRq:
+            NESTED <ChObjRq> ObjNr;           //LavaPE to Lava
+            bool fromParams;
+        | Dbg_StackRq:
+            int CallStackLevel;               //LavaPE to Lava
+        | Dbg_Continue:
+            NESTEDANY <DbgContData> ContData; //LavaPE to Lava
+        ELSE
+        END;
+
+
+        DbgMessage(DbgCommand com) {Command = com;}
+        DbgMessage() {}
     };
 
 }

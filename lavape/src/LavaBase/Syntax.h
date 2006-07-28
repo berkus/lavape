@@ -1446,8 +1446,8 @@ struct LAVABASE_DLL NSTChObjRq : NST0ChObjRq {
 extern LAVABASE_DLL void CDPChObjRq (PutGetFlag pgf, ASN1* cid, address varAddr,
                                      bool baseCDP=false);
 
-struct LAVABASE_DLL DbgMessage : public DObject  {
-  DECLARE_DYNAMIC_CLASS(DbgMessage)
+struct LAVABASE_DLL DbgMessage0 : public DObject  {
+  DECLARE_DYNAMIC_CLASS(DbgMessage0)
 
   /*  CASE */ DbgCommand Command; /* OF */
 
@@ -1482,12 +1482,12 @@ struct LAVABASE_DLL DbgMessage : public DObject  {
     ObjData.ptr=obj;
   }
 
-  DbgMessage(DbgCommand com)
+  DbgMessage0(DbgCommand com)
   {
     Command=com;
   }
 
-  DbgMessage()
+  DbgMessage0()
   {
   }
   void Destroy()
@@ -1496,6 +1496,52 @@ struct LAVABASE_DLL DbgMessage : public DObject  {
     ObjData.ptr=0;
     ObjNr.Destroy();
     ContData.Destroy();
+  }
+
+  virtual void CopyData (AnyType *from) {
+    *this = *(DbgMessage0*)from;
+  }
+
+  friend LAVABASE_DLL void CDPDbgMessage0 (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                           bool baseCDP=false);
+
+  virtual void CDP (PutGetFlag pgf, ASN1* cid,
+                    bool baseCDP=false)
+  { CDPDbgMessage0(pgf,cid,(address)this,baseCDP); }
+};
+
+struct LAVABASE_DLL DbgMessage : public DObject  {
+  DECLARE_DYNAMIC_CLASS(DbgMessage)
+
+  /*  CASE */ DbgCommand Command; /* OF */
+
+  //    Dbg_StopData,Dbg_Stack:
+          NESTEDANY/*DbgStopData*/ DbgData;
+
+  //  | Dbg_MemberData:
+          NESTEDANY0/*DDItemData*/ ObjData;
+
+  //  | Dbg_MemberDataRq:
+          NSTChObjRq ObjNr;
+          bool fromParams;
+
+  //  | Dbg_StackRq:
+          int CallStackLevel;
+
+  //  | Dbg_Continue:
+          NESTEDANY/*DbgContData*/ ContData;
+
+  //  ELSE
+
+  //  END
+
+  DbgMessage(DbgCommand com)
+  {
+    Command=com;
+  }
+
+  DbgMessage()
+  {
   }
 
   virtual void CopyData (AnyType *from) {

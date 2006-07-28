@@ -146,7 +146,7 @@ void CLavaDebugThread::run() {
     varAction->run();
     addCalleeParams();
     mSend.SetSendData(Dbg_StopData, dbgStopData);
-    CDPDbgMessage(PUT, put_cid, (address)&mSend);
+    CDPDbgMessage0(PUT, put_cid, (address)&mSend);
     put_cid->waitForBytesWritten();
     myDoc->debugOn = true;
   }
@@ -154,7 +154,7 @@ void CLavaDebugThread::run() {
     startedFromLavaPE = true;
   LBaseData->debugOn = true;
   while (true) {
-   	CDPDbgMessage(GET,get_cid,(address)&mReceive);
+   	CDPDbgMessage0(GET,get_cid,(address)&mReceive);
     if (get_cid->Done) {
       
       switch (mReceive.Command) {
@@ -209,7 +209,7 @@ void CLavaDebugThread::run() {
       }
       if (fin)
         break;
-      CDPDbgMessage(PUT, put_cid, (address)&mSend);
+      CDPDbgMessage0(PUT, put_cid, (address)&mSend);
       put_cid->waitForBytesWritten();
       if (!put_cid->Done) 
         break;
