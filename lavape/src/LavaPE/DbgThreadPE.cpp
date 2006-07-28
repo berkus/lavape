@@ -56,7 +56,12 @@ void CLavaPEDebugThread::reset(bool final)
   if (put_cid)
     delete put_cid;
   put_cid= 0;
-  if (!final) {
+  if (final) {
+    if (dbgReceived.lastReceived)
+      delete dbgReceived.lastReceived;
+    dbgReceived.lastReceived = 0;
+  }
+  else {
     if (myDoc) {
       myDoc->debugOn = false;
       ((CPEBaseDoc*)myDoc)->changeNothing = false;
