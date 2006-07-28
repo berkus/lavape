@@ -150,6 +150,8 @@ void CLavaDebugThread::run() {
     put_cid->waitForBytesWritten();
     myDoc->debugOn = true;
   }
+  else
+    startedFromLavaPE = true;
   LBaseData->debugOn = true;
   while (true) {
    	CDPDbgMessage(GET,get_cid,(address)&mReceive);

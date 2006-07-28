@@ -56,7 +56,6 @@ void CLavaPEDebugThread::reset(bool final)
   if (put_cid)
     delete put_cid;
   put_cid= 0;
-  myMutex.unlock();
   if (!final) {
     if (myDoc) {
       myDoc->debugOn = false;
@@ -275,6 +274,7 @@ void CLavaPEDebugThread::run() {
     delete dbgReceived.newReceived;
     dbgReceived.newReceived = 0;
   }
+  myMutex.unlock();
   reset(false);
   if (!((wxApp*)qApp)->appExit && startedFromLava)
     qApp->exit(0);
