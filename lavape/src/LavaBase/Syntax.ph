@@ -41,14 +41,14 @@ $TYPE +CDP {
   struct TID {
     int nINCL;//the number of the included syntax in the document referencing this object
     int nID;  //the OwnID of the referenced object
-   
+
     inline bool operator == (const TID& id2) const
-    { 
+    {
       return ((nID == id2.nID) && (nINCL == id2.nINCL));
     }
 
     inline bool operator != (const TID& id2) const
-    { 
+    {
       return ((nID != id2.nID) || (nINCL != id2.nINCL));
     }
 
@@ -59,7 +59,7 @@ $TYPE +CDP {
   typedef CHAINANY<TID> TIDs;
   typedef SET SynFlags;
 
-  
+
   enum TOperator {
     OP_noOp,
   OP_equal,
@@ -68,20 +68,20 @@ $TYPE +CDP {
   OP_greaterthen,
   OP_lessequal,
   OP_greaterequal,
-  OP_plus, 
-  OP_minus, 
-  OP_mult, 
-  OP_div, 
-  OP_mod, 
-  OP_bwAnd, 
-  OP_bwOr, 
+  OP_plus,
+  OP_minus,
+  OP_mult,
+  OP_div,
+  OP_mod,
+  OP_bwAnd,
+  OP_bwOr,
   OP_bwXor,
-  OP_invert, 
-  OP_lshift, 
-  OP_rshift, 
+  OP_invert,
+  OP_lshift,
+  OP_rshift,
 	OP_fis,
-  OP_arrayGet, 
-  OP_arraySet, 
+  OP_arrayGet,
+  OP_arraySet,
   OP_high
   };
 
@@ -93,7 +93,7 @@ $TYPE +CDP {
     CLavaError() {showAutoCorrBox=false;}
     CLavaError(CHAINX* errors, QString* ids, DString *text=0, bool autoC = false);
   };
-  
+
   class TVElem {
     TVElem() {ok=true; updateNo=0; TypeFlags = SETpp(); op = OP_noOp; ElDECL=0; ClssDECL=0; }
     int updateNo; //the update state
@@ -166,21 +166,21 @@ $TYPE +CDP {
   };
 
   enum TreeFlag {
-    isExpanded,    
+    isExpanded,
     //0, 1, X0000 0001
-    ItemsExpanded, 
+    ItemsExpanded,
     //1, 2, X0000 0002
-    ParaExpanded,  
+    ParaExpanded,
     //2, 4, X0000 0004
-    InExpanded,    
+    InExpanded,
     //3, 8, X0000 0008
-    OutExpanded,   
+    OutExpanded,
     //4, 16, X0000 0010
-    DefsExpanded,  
+    DefsExpanded,
     //5, 32, X0000 0020
-    MemsExpanded,  
+    MemsExpanded,
     //6, 64, X0000 0040
-    hasEmptyOpt,    
+    hasEmptyOpt,
     //7, 128, X0000 0080
     leftArrows,
     //8, 256, X0000 0100 in exec: assignment arrows from right to left
@@ -196,34 +196,34 @@ $TYPE +CDP {
     FREE_TREEFLAG16,//, X0001 0000
     FREE_TREEFLAG17,//, X0002 0000
     dragOverrides,  //overrides on clipboard
-    //18//, X0004 0000,  
+    //18//, X0004 0000,
     mixedDrag,
     //19//, X0008 0000
-    dragVT,   //VirtualType on clipboard 
+    dragVT,   //VirtualType on clipboard
     //20//, X0010 0000
-    dragInt,  //Interface on clipboard 
+    dragInt,  //Interface on clipboard
     //21//, X0020 0000
-    dragImpl,  //Implementation on clipboard 
+    dragImpl,  //Implementation on clipboard
     //22//, X0040 0000
-    dragIni,      //Initiator on clipboard 
+    dragIni,      //Initiator on clipboard
     //23//, X0080 0000
-    dragFuncDef,  //Function on clipboard 
+    dragFuncDef,  //Function on clipboard
     //24//, X0100 0000
-    dragFuncImpl, //Function on clipboard 
+    dragFuncImpl, //Function on clipboard
     //25//, X0200 0000
-    dragPack, //Package on clipboard 
+    dragPack, //Package on clipboard
     //26//, X0400 0000
-    dragCompo,//Component on clipboard 
+    dragCompo,//Component on clipboard
     //27//, X0800 0000
-    dragCOS,  //CompObjSpec on clipboard 
+    dragCOS,  //CompObjSpec on clipboard
     //28//, X1000 0000
-    dragCO,   //CompObj on clipboard 
+    dragCO,   //CompObj on clipboard
     //29//, X2000 0000
     dragInput, //input (from initiator) on clipboard
     //30//, X4000 0000
     ShowExecComments
     //31//, X8000 0000
-  };  
+  };
 
 
   enum TypeFlag {
@@ -241,12 +241,12 @@ $TYPE +CDP {
     // 5/ X0000 0020, protected attr/function or opaque namespace
     isPlaceholder,
     // 6/, X0000 0040, an attribute defines a placeHolder
-    isConst, 
+    isConst,
     // 7/128, X0000 0080,  //const function or property
-    thisCompoForm, 
+    thisCompoForm,
     // 8/256, X0000 0100, the internal interface of the component objects GUI
     isAbstract,
-    // 9/512, X0000 0200, abstract function (always virtual abstract) 
+    // 9/512, X0000 0200, abstract function (always virtual abstract)
     //        or abstract pattern parameter or non-creatable interface
     forceOverride, //
     //10  1024, X0000 0400 override function if class is extended
@@ -256,7 +256,7 @@ $TYPE +CDP {
     //12/4096, X0000 1000, set property function in a service implementation, the RefID is the ID of the property
     isAnyCategory,
     //13/8192, X0000 2000, indefinite object category (stateObject or valueObject)
-    constituent, 
+    constituent,
     //14/16384, X0000 4000 an attribute defines a down link
     acquaintance,
     //15/32768, X0000 8000 an attribute defines a  'follow on copy link'
@@ -269,24 +269,24 @@ $TYPE +CDP {
     isGUI,
     //19, X0008 0000/ form service, interface and implementation
     // and its (not removable/changeable) input and output
-    sameAsSelf, 
+    sameAsSelf,
     //20, X0010 0000 IO parameter has same category as "self"
     isNative,
     //21, X0020 0000         Function or interface has native implementation
     defaultInitializer,
     //22, X0040 0000         Default initializer
-    isTransaction, 
+    isTransaction,
     //23, X0080 0000 Function or initiator is transaction
     execConcurrent,
     //24, X0100 0000 Concurrent function or initiator
     execIndependent,
     //25, X0200 0000 Independent function or initiator
     copyOnAccess,
-    //26, X0400 0000 
+    //26, X0400 0000
     consumable,
     //27, X0800 0000
     stateObject,  //attribute references a state object
-    //28, X1000 0000 
+    //28, X1000 0000
     hasSetGet,    //attribute has set and get functions
     //29, X2000 0000
     definesObjCat, //pattern parameter defines object category
@@ -308,7 +308,7 @@ $TYPE +CDP {
 	  FREE_FLAG7, //X0000 0080
 	hasClosedInput,
 	//8,X0000 0100, function has closed input
-    enableName, 
+    enableName,
     //9,X0000 0200, 512, overriding function, virtual type or member does not inherit the name of the overridden
     overrides,
     //10,X0000 0400, 1024 member or function overrides member or function of extended interface
@@ -317,8 +317,8 @@ $TYPE +CDP {
     inComponent,
     //12, X0000 1000, 4096 Used only in clipboard-data for drag/drop and paste:
     //    All Attr-, IAttr- and OAttr-types are structures or component interfaces
-    isEnum, 
-    //13, X0000 2000, 8192 the LavaDECL defines an Enumeration or an interface which extends an Enumeration 
+    isEnum,
+    //13, X0000 2000, 8192 the LavaDECL defines an Enumeration or an interface which extends an Enumeration
     isSet,
     //14, X0000 4000, 16384 the LavaDECL defines a set or an interface which extends a set
     //    or is the set element virtual type
@@ -339,7 +339,7 @@ $TYPE +CDP {
     //    or is the exception enumeration virtual type
     FREE_FLAG21
 	};
-	  
+
   enum WorkFlag {
     isPattern,
     //0, X0000 0001, the Package or Interface has pattern parameter
@@ -467,9 +467,9 @@ $TYPE +CDP {
     DontSign,
     /* 9, Don't sign this field or sub-form*/
     trueValue,
-    // 10, atomic field has true value   
+    // 10, atomic field has true value
 	setViewBorder,
-	// 11 
+	// 11
 	firstUseOfFrame
 	// 12
     };
@@ -480,7 +480,7 @@ $TYPE +CDP {
     IteratedItem,
     /* 1, used in FormNodes to mark items of iterations */
     FixedCount,
-    /* 2, for iterations and optional elements only: the terminal user 
+    /* 2, for iterations and optional elements only: the terminal user
        must not change the number of elements */
     NoEllipsis,
     /* 3, for iterations only: the ellipsis field is suppressed so that
@@ -565,18 +565,18 @@ $TYPE +CDP {
   EnumSelId() {selItem = false;}
  };
 
- 
- 
+
+
   enum TDeclType {
 
    // Any change in TDeclType must take care of the following rules:
    // NoDef is always the first,
    // followed by all types which are structures (have StructDesc as DeclDescType), the last is FormDef,
-   // followed by other types which are not structures, 
+   // followed by other types which are not structures,
    // but values which are realy used in LavaDECL and .lava files
    // after these there may be technical values used only in programs
 
-    NoDef, 
+    NoDef,
     Interface,
     Impl,
     Initiator,
@@ -604,7 +604,7 @@ $TYPE +CDP {
     DragIO,       // input- or output items in drag and drop or copy and paste
     DragEnum,     // enum items in drag and drop or copy and paste
     DragFText,     // FormText in drag and drop or copy and paste
-    UnDef,   //only used as return value 
+    UnDef,   //only used as return value
     IsDef,   //only used as arg of GenHTML
     SetDef,  //only used as arg
     EnumDef  //only used as arg
@@ -623,7 +623,7 @@ $TYPE +CDP {
   ExecDesc,
   //DefDesc,
     //SetType,
-  UnknownDDT 
+  UnknownDDT
   };
 
 
@@ -641,7 +641,7 @@ $TYPE +CDP {
      0 = no decimal point */
     unsigned DecPoint; //also used as default array length
   };
-  
+
   enum AnnoExType {anno_Color, anno_Pixmap, anno_TextColor, anno_PBColor};
 
   struct TAnnoEx {
@@ -661,8 +661,8 @@ $TYPE +CDP {
 
     TAnnoEx() {RgbBackValid = false; RgbForeValid = false;}
   };
-  
-    
+
+
   struct TAnnotation {
     LavaDECL--* myDECL;  //up-pointer
 
@@ -733,7 +733,7 @@ $TYPE +CDP {
     int OwnID;           // OwnID is the own TypeID
     int-CDP inINCL;      // inINCL is used for table management, it indicates the simplesyntax index where decl stands
     LavaDECL-- *ParentDECL; //the upper LavaDECL from which this is available
-    TVElems-CDP VElems;        //Virtual table used in interfaces 
+    TVElems-CDP VElems;        //Virtual table used in interfaces
     TBasicType-CDP fromBType;  //used in std.lava to indicate the coresponding basic type
 
     NESTED<TAnnotation> Annotation;
@@ -751,7 +751,7 @@ $TYPE +CDP {
                  //IAttr and OAttr: (0-based) pos of the IAttr/OAttr in IAttrs and OAttrs
     int nOutput; //function: (1-based)  count of outputs
 		             //component specification: case of component protocol
-    TSupports Supports;  // extended/implemented interfaces, 
+    TSupports Supports;  // extended/implemented interfaces,
                          // extended/overwritten/implemeted functions,
                          // implemented service property (the set and get function)
                          // overwritten member/overwritten in/out-parameter
@@ -760,7 +760,7 @@ $TYPE +CDP {
     CASE TDeclDescType DeclDescType OF
       BasicType:
          TBasicType BType;
-    || EnumType:  //EnumType erhält NestedDecls
+    || EnumType:  //EnumType erhï¿½t NestedDecls
         NESTEDANY<TEnumDescription> EnumDesc;
 
     || StructDesc:
@@ -768,7 +768,7 @@ $TYPE +CDP {
 
     | LiteralString:
         STRING LitStr;
-    
+
     | ExecDesc:
       NESTEDANY<SynObjectBase> Exec;
 
@@ -795,24 +795,24 @@ $TYPE +CDP {
     int-CDP nSection;    //used at run time only:
                   //   interfaces, namespaces: (1 based) count of sections of class/namespace
                   //   native functions: (0-based) pos in native function table
-    int-CDP SectionInfo1; 
+    int-CDP SectionInfo1;
                   //at LavaPE-time: holds the top of a topleft of a popupshell
-                  //at run time:  
+                  //at run time:
                   // functions, attributes, pattern params: (0-based) pos in section
                   // IAttr and OAttr (0-based) pos in IAttr-section/OAttr-section
                   // implementations and interfaces: (1-based) count of functions in own section
-    int-CDP SectionInfo2; //used 
+    int-CDP SectionInfo2; //used
                   //at LavaPE-time:  holds the left of a topleft of a popupshell
                   // functions, attributes, virtual types: (0-based) index of section containing this function or attribute or virtual type
-                  // implementations and interfaces: (1-based) count of attributes in own section 
+                  // implementations and interfaces: (1-based) count of attributes in own section
                   // -> length of section in object = SectionInfo2 +2
-    int-CDP SectionInfo3; 
+    int-CDP SectionInfo3;
                   //used at run time only:
-                  // interfaces and namespaces: (1-based) count of virtual types in own section 
-        
+                  // interfaces and namespaces: (1-based) count of virtual types in own section
+
     LavaDECL();
     ~LavaDECL();
-    
+
     //void DeleteContents();
 
     bool isInSubTree(LavaDECL * ancestor);
@@ -824,13 +824,13 @@ $TYPE +CDP {
     int GetAppendPos(TDeclType declType);
 };
 
-  
+
   struct TEnumDescription {
   LavaDECL EnumField, //BasicType, Enumeration
                  MenuTree;  // only in Forms used
 
   };
-  
+
   struct TIteration {
     TBoundRel BoundType;
     unsigned Bound;
@@ -876,7 +876,7 @@ $TYPE +CDP {
 
 // debug communication data:
 
-enum DbgCommand {  Dbg_Nothing, 
+enum DbgCommand {  Dbg_Nothing,
                    Dbg_Continue,     //LavaPE to Lava
                    Dbg_StopData,     //Lava to LavaPE
                    Dbg_MemberDataRq, //LavaPE to Lava
@@ -955,7 +955,7 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
     struct DbgMessage0 {
         CASE DbgCommand Command OF
         Dbg_StopData, Dbg_Stack:
-            NESTEDANY0 <DbgStopData> DbgData; //Lava to LavaPE
+            NESTEDANY <DbgStopData> DbgData; //Lava to LavaPE
         | Dbg_MemberData:
             NESTEDANY0 <DDItemData> ObjData; //Lava to LavaPE
         | Dbg_MemberDataRq:
@@ -969,14 +969,14 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
         END;
 
         void SetSendData(DbgCommand command, DbgStopData* data) //Lava to LavaPE
-        {Command = command; 
+        {Command = command;
          DbgData.ptr = 0;
-         DbgData.ptr = data; 
+         DbgData.ptr = data;
          }
 
         void SetSendData(DDItemData* obj) //Lava to LavaPE
-        { Command = Dbg_MemberData; 
-          ObjData.ptr = obj; 
+        { Command = Dbg_MemberData;
+          ObjData.ptr = obj;
          }
 
         DbgMessage0(DbgCommand com) {Command = com;}
@@ -1018,10 +1018,10 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
 
 struct CHEFormNode;
 
-class LAVABASE_DLL CContext 
+class LAVABASE_DLL CContext
 {
 public:
-  SynFlags ContextFlags;  
+  SynFlags ContextFlags;
   LavaDECL* iContext;
   LavaDECL* oContext;
   CContext() {iContext = 0; oContext = 0;}
@@ -1037,7 +1037,7 @@ $TYPE {
     CHEFormNode *up; //, *fieldNode;
     bool poppedUp;   //, correct, modified;
   };
- 
+
   typedef address SigNodePtr;
 
   struct FormNode {
@@ -1058,8 +1058,8 @@ $TYPE {
     CHAINANY0<SigNodePtr>-- SigNodes;
     SynFlags BasicFlags, IoSigFlags, IterFlags;
     STRING StringValue;  //String
-    bool Atomic; 
-    TBasicType BType; 
+    bool Atomic;
+    TBasicType BType;
     unsigned D;  //Enumeration
     int I;       //Integer
     bool B;      //B_Bool
