@@ -276,6 +276,14 @@ void CLavaPEDebugThread::run() {
   }
   myMutex.unlock();
   reset(false);
+  if (workSocket) {
+    delete workSocket;
+    workSocket = 0;
+  }
+  if (listenSocket) {
+    delete listenSocket;
+    listenSocket = 0;
+  }
   if (!((wxApp*)qApp)->appExit && startedFromLava)
     qApp->exit(0);
 }

@@ -267,7 +267,7 @@ ASN1InSock::~ASN1InSock ()
 
 {
   if (bufferPtr) {
-    fildes->abort();
+//    fildes->close();
     delete [] bufferPtr;
   }
 } // END OF ~ASN1InFile
@@ -296,7 +296,7 @@ ASN1OutSock::~ASN1OutSock ()
   flush();
 
   if (bufferPtr) {
-    fildes->abort();
+//    fildes->close();
     delete [] bufferPtr;
   }
 } // END OF ~ASN1OutFile
