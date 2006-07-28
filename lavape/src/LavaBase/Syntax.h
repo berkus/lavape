@@ -1452,7 +1452,7 @@ struct LAVABASE_DLL DbgMessage0 : public DObject  {
   /*  CASE */ DbgCommand Command; /* OF */
 
   //    Dbg_StopData,Dbg_Stack:
-          NESTEDANY0/*DbgStopData*/ DbgData;
+          NESTEDANY/*DbgStopData*/ DbgData;
 
   //  | Dbg_MemberData:
           NESTEDANY0/*DDItemData*/ ObjData;
@@ -1562,10 +1562,10 @@ struct LAVABASE_DLL DbgMessage : public DObject  {
 
 struct CHEFormNode;
 
-class LAVABASE_DLL CContext 
+class LAVABASE_DLL CContext
 {
 public:
-  SynFlags ContextFlags;  
+  SynFlags ContextFlags;
   LavaDECL* iContext;
   LavaDECL* oContext;
   CContext() {iContext = 0; oContext = 0;}

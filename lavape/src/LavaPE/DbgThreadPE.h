@@ -60,7 +60,7 @@ protected:
   void checkBrkPnts0();
   void checkBrkPnts1();
   void checkBrkPnts2();
-	void run();
+  void run();
 }; 
 
 #endif

@@ -325,6 +325,10 @@ void ASN1InSock::getChar (unsigned char& c)
   bool ok;
 
   if (bufferPos == (unsigned)charsRead) {
+    if (fildes->state() != QAbstractSocket::ConnectedState) {
+      error("getChar: UNIX.read_TCP, socket is not connected");
+      return;
+    }
     fildes->waitForReadyRead(-1);
     ok = charsRead = fildes->read(bufferPtr,bufferSize);
     if (!ok || charsRead <= 0) {
