@@ -235,7 +235,7 @@ void CLavaDebugThread::run() {
     delete listenSocket;
     listenSocket = 0;
   }
-  myMutex.unlock();
+  //myMutex.unlock();
   LBaseData->debugOn = false;
   debugOn = false;
   //CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)m_execThread);

@@ -1151,10 +1151,6 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
   }
   delete[] templates;
   if (temp) {
-    //is doc allready open?
-    /*pos = GetFirstDocPos();
-    while (pos) {
-      doc = GetNextDoc(pos);*/
     for (pos = 0; pos < m_docs.size(); pos++) {
       doc = m_docs[pos];
       if (doc && (fn == doc->GetFilename())) { //filename comp
