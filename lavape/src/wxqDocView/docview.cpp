@@ -1161,7 +1161,7 @@ wxDocument *wxDocManager::CreateDocument(const QString& path, long flags)
     }
     newDoc = temp->CreateDocument(path2);
     if (newDoc) {
-                        newDoc->SetDocumentSaved();
+      newDoc->SetDocumentSaved();
       return newDoc;
     }
   }

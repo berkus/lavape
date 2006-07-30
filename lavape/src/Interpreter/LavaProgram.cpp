@@ -2288,7 +2288,6 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
           newStackFrame[pos] = 0;
         if (LBaseData->debugOn) {
           ((CLavaDebugThread*)LBaseData->debugThread)->start();
-          //((CLavaDebugThread*)LBaseData->debugThread)->resume();
             //debug thread start, now initialisation is finished
           suspend(); 
             //execution thread wait until debug thread has received first message from LavaPE
