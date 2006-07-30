@@ -264,6 +264,8 @@ void CLavaPEDebugThread::run() {
         checkBrkPnts1();
 
       CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
+      if (!put_cid)
+        break;
       put_cid->waitForBytesWritten();
       if (!put_cid->Done)
         break;

@@ -301,7 +301,8 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
 bool CLavaPEApp::event(QEvent *e)
 {
 
-  if (e->type() == UEV_LavaDebug) {
+  switch (e->type()) {
+  case UEV_LavaDebug:
     ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((CustomEvent*)e)->data(), debugThread.myDoc);
     LBaseData.enableBreakpoints = true;
     if (((CustomEvent*)e)->data()) {
@@ -320,8 +321,7 @@ bool CLavaPEApp::event(QEvent *e)
     m_appWindow->activateWindow();
     m_appWindow->raise();
     return true;
-  }
-  else if (e->type() == UEV_LavaDebugRq) {
+  case UEV_LavaDebugRq:
     if (debugThread.dbgRequest) {
       delete debugThread.dbgRequest;
       debugThread.dbgRequest = 0;
@@ -338,14 +338,13 @@ bool CLavaPEApp::event(QEvent *e)
 
     debugThread.resume();
     return true;
-  }
-  else if (e->type() == UEV_LavaDebugW) {
+  case UEV_LavaDebugW:
     ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
     ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
     return true;
-  }
-  else
+  default:
     return wxApp::event(e);
+  }
 }
 
 QString CLavaPEApp::InitWebBrowser () {
