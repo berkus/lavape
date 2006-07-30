@@ -53,13 +53,13 @@
   if (classDecl->DeclType == Impl) \
     classDecl = myDoc->IDTable.GetDECL(((CHETID*)classDecl->Supports.first)->data, classDecl->inINCL); \
   if (classDecl->DeclType == Interface) \
-    myDoc->CheckImpl(ckd, classDecl); 
+    myDoc->CheckImpl(ckd, classDecl);
 
 
 
 CLavaDebugThread::CLavaDebugThread() {
-  dbgStopData=0; 
-  varAction=0; 
+  dbgStopData=0;
+  varAction=0;
   listenSocket = 0;
   workSocket = 0;
   debugOn = false;
@@ -77,13 +77,13 @@ void CLavaDebugThread::initData(CLavaBaseDoc* d, CLavaExecThread *execThr) {
 }
 
 
-CLavaDebugThread::~CLavaDebugThread() 
+CLavaDebugThread::~CLavaDebugThread()
 {
   if (dbgStopData) delete dbgStopData;
   dbgStopData = 0;
   if (varAction) delete varAction;
   varAction = 0;
-  resume(); 
+  resume();
   wait();
 }
 
@@ -93,10 +93,10 @@ void CLavaDebugThread::run() {
   ASN1InSock *get_cid;
   ASN1OutSock *put_cid;
 	QString lavapePath, buf;
-  quint16 locPort; 
+  quint16 locPort;
   DDItemData * oid;
   bool fin = false;
-  
+
   if (debugOn) {
     workSocket = new QTcpSocket;
     workSocket->connectToHost(remoteIPAddress,remotePort);
@@ -109,7 +109,7 @@ void CLavaDebugThread::run() {
 #else
     lavapePath = ExeDir + "/LavaPE";
 #endif
-	
+
     if (!listenSocket) {
       listenSocket = new QTcpServer;
       listenSocket->listen();
@@ -140,7 +140,7 @@ void CLavaDebugThread::run() {
     qApp->exit(1);
   }
 
-  connect(workSocket,SIGNAL(disconnected()),wxTheApp,SLOT(on_worksocket_disconnected()));
+//connect(workSocket,SIGNAL(disconnected()),wxTheApp,SLOT(on_worksocket_disconnected()));
 
   if (!debugOn) {
     varAction->run();
@@ -156,9 +156,9 @@ void CLavaDebugThread::run() {
   while (true) {
    	CDPDbgMessage0(GET,get_cid,(address)&mReceive);
     if (get_cid->Done) {
-      
+
       switch (mReceive.Command) {
-      case Dbg_Exit: 
+      case Dbg_Exit:
         fin = true;
         break;
       case Dbg_StackRq:
@@ -197,12 +197,12 @@ void CLavaDebugThread::run() {
           fin = true;
           break;
         }
-        if (dbgStopData->StackChain.first) {      
+        if (dbgStopData->StackChain.first) {
           varAction->run();
           addCalleeParams();
           mSend.SetSendData(Dbg_StopData, dbgStopData);
         }
-        else 
+        else
           fin = true;
         break;
       default:;
@@ -211,7 +211,7 @@ void CLavaDebugThread::run() {
         break;
       CDPDbgMessage0(PUT, put_cid, (address)&mSend);
       put_cid->waitForBytesWritten();
-      if (!put_cid->Done) 
+      if (!put_cid->Done)
         break;
     }
     else {
@@ -223,7 +223,7 @@ void CLavaDebugThread::run() {
   dbgStopData = 0;
   delete varAction;
   varAction=0;
-   
+
   mSend.Destroy();
   mReceive.Destroy();
   brkPnts.Destroy();
@@ -255,7 +255,7 @@ void CLavaDebugThread::setBrkPnts()
     actContType = ((DbgContData*)mReceive.ContData.ptr)->ContType;
     if (((DbgContData*)mReceive.ContData.ptr)->ClearBrkPnts) {
       for (chePP = (CHEProgPoint*)brkPnts.first;
-                 chePP; chePP = (CHEProgPoint*)chePP->successor) 
+                 chePP; chePP = (CHEProgPoint*)chePP->successor)
         ((SynObject*)chePP->data.SynObj)->workFlags.EXCL(isBrkPnt);
       brkPnts.Destroy();
     }
@@ -303,7 +303,7 @@ void CLavaDebugThread::setBrkPnts()
     }
     if (brkPnts.last)
       brkPnts.last->successor = ((DbgContData*)mReceive.ContData.ptr)->BrkPnts.first;
-    else   
+    else
       brkPnts.first = ((DbgContData*)mReceive.ContData.ptr)->BrkPnts.first;
     brkPnts.last =  ((DbgContData*)mReceive.ContData.ptr)->BrkPnts.last;
     ((DbgContData*)mReceive.ContData.ptr)->BrkPnts.first = 0;
@@ -352,7 +352,7 @@ void CLavaDebugThread::addCalleeParams()
   int highPos, ii, stpos = SFH+1;
 
   if (dbgStopData->stopReason == Stop_NextFunc
-  || dbgStopData->stopReason == Stop_NextOp) 
+  || dbgStopData->stopReason == Stop_NextOp)
     highPos = dbgStopData->CalleeFunc->nInput;
   else if (dbgStopData->stopReason == Stop_StepOut
   || dbgStopData->stopReason == Stop_Exception) {

@@ -213,7 +213,7 @@ void CLavaPEDebugThread::run() {
     qApp->exit(1);
   }
 
-  connect(workSocket,SIGNAL(disconnected()),wxTheApp,SLOT(on_worksocket_disconnected()));
+//  connect(workSocket,SIGNAL(disconnected()),wxTheApp,SLOT(on_worksocket_disconnected()));
 
   dbgRequest = 0;
   if (myDoc->debugOn) {
