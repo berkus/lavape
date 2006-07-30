@@ -1161,7 +1161,8 @@ void CExecView::OnChar(QKeyEvent *e)
       currentSynObj = text->currentSynObj;
       parent = currentSynObj->parentObject;
       if (parent && parent->primaryToken == ObjRef_T
-      && ((ObjReference*)parent)->refIDs.first == ((ObjReference*)parent)->refIDs.last) {
+      && ((ObjReference*)parent)->refIDs.first == ((ObjReference*)parent)->refIDs.last
+      && !currentSynObj->comment.ptr) {
         currentSynObj = parent;
         parent = currentSynObj->parentObject;
       }
@@ -6848,7 +6849,7 @@ void CExecView::UpdateErrMsg (QString &helpMsg) {
   if (errorObj->lastError
   && (text->currentSelection == text->currentSynObj->primaryTokenNode
       || text->currentSelection->data.token == Rbracket_T)) {
-    myDoc->SetPEError(errorObj->errorChain,nextError);
+    myDoc->SetPEError(errorObj->errorChain,true/*nextError*/);
     errorMsg = *((CLavaError*)((CHE*)errorObj->errorChain.first)->data)->IDS;
     errorMsg = QString(((CLavaError*)((CHE*)errorObj->errorChain.first)->data)->textParam.c) + errorMsg;
     statusBar->showMessage(errorMsg);
