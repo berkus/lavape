@@ -278,9 +278,13 @@ void ASN1OutSock::flush ()
   int rc;
 
   if (openForOutput && (bufferPos > 0)) {
+    if (!fildes) {
+      error("~ASN1OutSock: flush_TCP");
+      return;
+    }
     rc = fildes->write(bufferPtr,bufferPos);
     if ((rc < 0) || (rc != (int)bufferPos))
-      error("~ASN1OutSock: write_TCP");
+      error("~ASN1OutSock: flush_TCP");
     bufferPos = 0;
   }
 } // END OF ~ASN1OutFile
