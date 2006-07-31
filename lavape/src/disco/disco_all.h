@@ -95,7 +95,7 @@
 #include <QTextCursor>
 #include <QSignalMapper>
 #include <QAbstractSocket>
-#include <QWaitCondition>
+#include <QSemaphore>
 #include <QMutex>
 #include <QtDebug>
 #include <QtTest/QtTest>

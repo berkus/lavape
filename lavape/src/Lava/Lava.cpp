@@ -325,9 +325,9 @@ bool CLavaApp::event(QEvent *e)
     if (pHint->CommandData5) {
       thr = (CLavaThread*)((CLavaPEHint*)((CustomEvent*)e)->data())->CommandData5;
       if (result == QDialog::Rejected) {
-        if (!thr->myWaitCond.ex)
+        if (!thr->mySemaphore.ex)
           ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
-          thr->myWaitCond.ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+          thr->mySemaphore.ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
       }
       thr->resume();
     }

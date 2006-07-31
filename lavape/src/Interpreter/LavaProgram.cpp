@@ -2385,20 +2385,20 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
   CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, (DWORD)&stack[SFH], (DWORD)&stack[SFH+1], (DWORD)&stack[SFH+2], (DWORD)frozen, (DWORD)currentThread, (DWORD)fromFillIn);
   if (currentThread != wxTheApp->mainThread) {
-    currentThread->myWaitCond.lastException = 0;
+    currentThread->mySemaphore.lastException = 0;
 	  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaShow,(void*)hint));
     currentThread->suspend();
-    if (currentThread->myWaitCond.lastException) {
+    if (currentThread->mySemaphore.lastException) {
       if (ckd.lastException)
         DEC_FWD_CNT(ckd, ckd.lastException);
-      ckd.lastException = currentThread->myWaitCond.lastException;
-      currentThread->myWaitCond.lastException = 0;
+      ckd.lastException = currentThread->mySemaphore.lastException;
+      currentThread->mySemaphore.lastException = 0;
       ckd.exceptionThrown = true;
     }
     else 
-      if (currentThread->myWaitCond.ex) {
-        ex = currentThread->myWaitCond.ex;
-        currentThread->myWaitCond.ex = 0;
+      if (currentThread->mySemaphore.ex) {
+        ex = currentThread->mySemaphore.ex;
+        currentThread->mySemaphore.ex = 0;
       }
   }
   else {

@@ -281,7 +281,6 @@ void CLavaPEDebugThread::run() {
     delete dbgReceived.newReceived;
     dbgReceived.newReceived = 0;
   }
-  //myMutex.unlock();
   reset(false);
   if (!wxTheApp->appExit && startedFromLava)
     qApp->exit(0);

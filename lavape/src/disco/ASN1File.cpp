@@ -308,6 +308,10 @@ void ASN1OutSock::putChar (const unsigned char& c)
   int rc;
 
   if (bufferPos == bufferSize) {
+    if (fildes->state() != QAbstractSocket::ConnectedState) {
+      error("putChar: UNIX.read_TCP, socket is not connected");
+      return;
+    }
     rc = fildes->write(bufferPtr,bufferSize);
     if ((rc < 0) || (rc != (int)bufferSize)) {
       error("putChar: write_TCP");

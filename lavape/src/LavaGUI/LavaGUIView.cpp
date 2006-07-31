@@ -171,8 +171,8 @@ void LavaGUIDialog::OnOK()
     myGUIProg->NoteLastModified();
     if (myGUIProg->LavaForm.OnOK( myGUIProg->Root)) {
       if (myThread) {
-        myThread->myWaitCond.lastException = myGUIProg->ckd.lastException;
-        myThread->myWaitCond.ex = myGUIProg->ex;
+        myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
+        myThread->mySemaphore.ex = myGUIProg->ex;
         myGUIProg->ckd.lastException = 0;
         myGUIProg->ckd.exceptionThrown = false;
       }
@@ -190,8 +190,8 @@ void LavaGUIDialog::OnCancel()
       *ResultDPtr = 0;
     }
     if (myThread) {
-      myThread->myWaitCond.lastException = myGUIProg->ckd.lastException;
-      myThread->myWaitCond.ex = myGUIProg->ex;
+      myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
+      myThread->mySemaphore.ex = myGUIProg->ex;
       myGUIProg->ckd.lastException = 0;
       myGUIProg->ckd.exceptionThrown = false;
     }

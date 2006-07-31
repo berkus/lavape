@@ -6,7 +6,7 @@
 #include "qthreadstorage.h"
 //Added by qt3to4:
 #include <QList>
-#include <QWaitCondition>
+#include <QSemaphore>
 #include <QMutex>
 
 
@@ -14,13 +14,12 @@ class CLavaBaseDoc;
 class CSectionDesc;
 class CRuntimeException;
 
-class LAVABASE_DLL CWaitCond : public QWaitCondition
+class LAVABASE_DLL CSemaphore : public QSemaphore
 {
 public:
-  CWaitCond() {
+  CSemaphore() : QSemaphore(1) {
 		lastException = 0; 
 		ex = 0; 
-//		lock();
 	}
   CSectionDesc **lastException;
   CRuntimeException* ex;
@@ -30,6 +29,7 @@ class LAVABASE_DLL CLavaThread : public QThread
 {
 public:
   CLavaThread() {
+    mySemaphore.acquire();
   }
 
   CLavaThread(CLavaBaseDoc *d);
@@ -38,16 +38,14 @@ public:
 	CLavaBaseDoc *myDoc;
 
   virtual void suspend() {
-    myMutex.tryLock(); // actually we don't need this mutex
-    myWaitCond.wait(&myMutex);
+    mySemaphore.acquire();
   }
 
   virtual void resume() {
-    myWaitCond.wakeOne();
+    mySemaphore.release();
   }
 
-  CWaitCond myWaitCond;
-  QMutex myMutex;
+  CSemaphore mySemaphore;
 
 
 //	static CLavaThread *currentThread();
