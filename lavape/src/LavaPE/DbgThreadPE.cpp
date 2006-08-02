@@ -331,7 +331,7 @@ void CLavaPEDebugThread::adjustBrkPnts(CHAINANY* brkPntsChain)
         chePP->data.Skipped = true;
       else {
         chePP->data.Skipped = false;
-        if (chePP->data.Activate && chePP->data.FuncDoc) {
+        if (/*chePP->data.Activate &&*/ chePP->data.FuncDoc) {
           funcDecl = ((CLavaBaseDoc*)chePP->data.FuncDoc)->IDTable.GetDECL(0, chePP->data.FuncID.nID);
           execDecl = ((CLavaBaseDoc*)chePP->data.FuncDoc)->GetExecDECL(funcDecl, chePP->data.ExecType, false,false);
           if (execDecl) {
@@ -340,7 +340,10 @@ void CLavaPEDebugThread::adjustBrkPnts(CHAINANY* brkPntsChain)
             sData.nextFreeID = 0;
             sData.finished = false;
             ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&((CLavaBaseDoc*)chePP->data.FuncDoc)->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
-            ((SynObject*)sData.synObj)->workFlags.INCL(isBrkPnt);
+            if (chePP->data.Activate)
+              ((SynObject*)sData.synObj)->workFlags.INCL(isBrkPnt);
+            else
+              ((SynObject*)sData.synObj)->workFlags.EXCL(isBrkPnt);
             //chePP->data.SynObj = sData.synObj;
           }
         }
