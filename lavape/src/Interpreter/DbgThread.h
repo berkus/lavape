@@ -31,6 +31,9 @@ public:
   void initData(CLavaBaseDoc* d, CLavaExecThread *execThr);
   QTcpServer *listenSocket;
   QTcpSocket *workSocket;
+  ASN1InSock *get_cid;
+  ASN1OutSock *put_cid;
+
   QString remoteIPAddress;
   quint16 remotePort;
 

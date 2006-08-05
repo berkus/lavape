@@ -72,7 +72,9 @@ CLavaDoc::~CLavaDoc()
   else
     if ((!((wxApp*)qApp)->appExit) && debugOn && (this == ((CLavaApp*)wxTheApp)->debugThread.myDoc)) {
       ((CLavaApp*)wxTheApp)->debugThread.myDoc = 0;
+      ((CLavaApp*)wxTheApp)->debugThread.get_cid->Done = false;
       ((CLavaApp*)wxTheApp)->debugThread.resume();
+      ((CLavaApp*)wxTheApp)->debugThread.wait();
     }
 }
 

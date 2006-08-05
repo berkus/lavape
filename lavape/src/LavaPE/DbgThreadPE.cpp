@@ -235,7 +235,6 @@ void CLavaPEDebugThread::run() {
     }
     else {
       reset(false);
-      //((CLavaPEApp*)qApp)->interpreter.kill();
       return;
     }
     startedFromLava = false;

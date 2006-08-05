@@ -3001,10 +3001,12 @@ bool CLavaPEDoc::OnCloseDocument()
         ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived->DbgData.ptr, this);
       if (((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived) 
         ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived->DbgData.ptr, this);
-      delete ((CLavaPEApp*)wxTheApp)->debugThread.workSocket;
+      //((CLavaPEApp*)wxTheApp)->debugThread.workSocket->abort();
       ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->setDebugData(0, this);
       ((CLavaPEApp*)wxTheApp)->debugThread.myDoc = 0;
+      ((CLavaPEApp*)wxTheApp)->debugThread.get_cid->Done = false;
       ((CLavaPEApp*)wxTheApp)->debugThread.resume();
+      ((CLavaPEApp*)wxTheApp)->debugThread.wait();
     }
     else
       ((CLavaPEApp*)wxTheApp)->debugThread.cleanBrkPoints(this);

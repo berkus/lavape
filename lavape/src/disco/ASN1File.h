@@ -86,7 +86,6 @@ private:
   void error (QString msgText);
 };
 
-
 class DISCO_DLL ASN1InSock : public virtual ASN1 {
 
 public:

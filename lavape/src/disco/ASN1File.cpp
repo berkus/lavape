@@ -337,7 +337,13 @@ void ASN1InSock::getChar (unsigned char& c)
       error("getChar: UNIX.read_TCP, socket is not connected");
       return;
     }
-    fildes->waitForReadyRead(-1);
+    while (Done)
+      if (!fildes->waitForReadyRead(500)) {
+        if (!Done)
+          return;
+      }
+      else
+        break;
     ok = charsRead = fildes->read(bufferPtr,bufferSize);
     if (!ok || charsRead <= 0) {
       error("getChar: UNIX.read_TCP");

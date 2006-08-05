@@ -90,8 +90,6 @@ CLavaDebugThread::~CLavaDebugThread()
 
 void CLavaDebugThread::run() {
 
-  ASN1InSock *get_cid;
-  ASN1OutSock *put_cid;
 	QString lavapePath, buf;
   quint16 locPort;
   DDItemData * oid;
@@ -153,10 +151,10 @@ void CLavaDebugThread::run() {
   else
     startedFromLavaPE = true;
   LBaseData->debugOn = true;
+
   while (true) {
    	CDPDbgMessage0(GET,get_cid,(address)&mReceive);
     if (get_cid->Done) {
-
       switch (mReceive.Command) {
       case Dbg_Exit:
         fin = true;
