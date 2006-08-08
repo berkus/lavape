@@ -292,7 +292,7 @@ bool wxDocument::OnCloseDocument()
     wxDocManager::GetDocumentManager()->RemoveDocument(this);
   deleting = true;
   DeleteAllChildFrames();
-  deleteLater();
+  //deleteLater();
   return true;
 }
 
@@ -302,7 +302,7 @@ bool wxDocument::DeleteAllChildFrames()
 {
   while (m_docChildFrames.size())
     //delete m_docChildFrames.takeAt(0);
-    m_docChildFrames.takeAt(0)->deleteLater();
+    delete m_docChildFrames.takeAt(0);//->deleteLater();
   return true;
 }
 
@@ -667,11 +667,11 @@ wxMDIChildFrame *wxView::CalcParentFrame()
 
 wxView::~wxView()
 {
-    deleting = true;
-    wxDocManager::GetDocumentManager()->SetActiveView(this, false);
-    m_viewFrame->RemoveView(this);
-    if (!m_viewDocument->deleting)
-      m_viewDocument->RemoveView(this);
+  deleting = true;
+  wxDocManager::GetDocumentManager()->SetActiveView(this, false);
+  m_viewFrame->RemoveView(this);
+  if (!m_viewDocument->deleting)
+    m_viewDocument->RemoveView(this);
 }
 
 

@@ -634,7 +634,7 @@ VarListView::VarListView(QWidget *parent, CUtilityView* bar, bool forParams)
   setFocusPolicy(Qt::StrongFocus);
 //  setSorting(-1);
   setColumnCount(3);
-  connect(this, SIGNAL(itemExpanded (QTreeWidgetItem*)), this, SLOT(expandedItem(QTreeWidgetItem*)));
+  connect(this,SIGNAL(itemExpanded (QTreeWidgetItem*)), this, SLOT(expandedItem(QTreeWidgetItem*)));
  if (forParams)
     setHeaderLabels(QStringList() << "vfunc.params. (type[/RT type])" << "address" << "value");
  else

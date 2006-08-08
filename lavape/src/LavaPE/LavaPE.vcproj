@@ -74,7 +74,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaExecs.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\LavaPE_UI.lib $(QT4DIR)\lib\QtAssistantClientd.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\qtmaind.lib $(QT4DIR)\lib\QtNetworkd4.lib wsock32.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaExecs.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\LavaPE_UI.lib $(QT4DIR)\lib\QtAssistantClientd.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\qtmaind.lib $(QT4DIR)\lib\QtNetworkd4.lib $(QT4DIR)\lib\QtTestd4.lib wsock32.lib"
 				OutputFile="..\..\bin\LavaPE.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -651,6 +651,16 @@
 			<File
 				RelativePath="DbgThreadPE.h"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="ExecTree.h"
@@ -867,6 +877,19 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\Boxes.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\generated\moc_DbgThreadPE.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="..\DbgThreadPE.h"
+						PrecompiledHeaderFile="PCH/LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 			</File>

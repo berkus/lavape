@@ -206,7 +206,7 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   show();
   setTabChangesFocus(true);
   document()->setModified(false);
-  //connect(this, SIGNAL(textChanged()), this, SLOT(OnChange()));
+  //connect(this,SIGNAL(textChanged()), this, SLOT(OnChange()));
 }
 
 void CMultiLineEdit::focusInEvent(QFocusEvent *ev)

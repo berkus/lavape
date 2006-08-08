@@ -336,15 +336,16 @@ public:
     setObjectName("LavaBaseData");
     declareButton = 0;
     ContData = 0;
-    debugOn = false;
-    tempBrkPoint = 0;}
+    debugger = 0;
+    tempBrkPoint = 0;
+  }
 
   void Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate);
   ~CLavaBaseData();
 
   wxApp *theApp;
-  CLavaThread* debugThread;
-  bool debugOn;
+  CLavaDbgBase* debugger;
+  //bool debugOn;
   DbgContData* ContData;  //used in LavaPE
   unsigned long /*HCURSOR*/ ArrowCurser;
   bool inMultiDocUpdate; //open document in multi document update

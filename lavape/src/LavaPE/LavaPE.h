@@ -55,7 +55,7 @@ public:
   CLavaBaseData LBaseData;
 //  QString CMDLine;
   QProcess interpreter;
-  CLavaPEDebugThread debugThread;
+  CLavaPEDebugger debugger;
   //CLavaPEPMdumpThread pmDumpThread;
 
   bool DoSaveAll();
@@ -93,11 +93,7 @@ public:
   void saveSettings();
   QString InitWebBrowser ();
 
-public slots:
-  void on_worksocket_disconnected();
-
-private:
-    Q_OBJECT;
+  Q_OBJECT;
 };
 
 extern QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QString& caption, bool existing);

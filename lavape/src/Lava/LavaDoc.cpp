@@ -67,14 +67,14 @@ CLavaDoc::~CLavaDoc()
    QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   }
   //int sz = allocatedObjects.size();
-  if (((CLavaApp*)wxTheApp)->debugThread.startedFromLavaPE) 
+  if (((CLavaApp*)wxTheApp)->debugger.startedFromLavaPE) 
     qApp->exit(0);
   else
-    if ((!((wxApp*)qApp)->appExit) && debugOn && (this == ((CLavaApp*)wxTheApp)->debugThread.myDoc)) {
-      ((CLavaApp*)wxTheApp)->debugThread.myDoc = 0;
-      ((CLavaApp*)wxTheApp)->debugThread.get_cid->Done = false;
-      ((CLavaApp*)wxTheApp)->debugThread.resume();
-      ((CLavaApp*)wxTheApp)->debugThread.wait();
+    if ((!((wxApp*)qApp)->appExit) && debugOn && (this == ((CLavaApp*)wxTheApp)->debugger.myDoc)) {
+      ((CLavaApp*)wxTheApp)->debugger.myDoc = 0;
+      ((CLavaApp*)wxTheApp)->debugger.get_cid->Done = false;
+      //((CLavaApp*)wxTheApp)->debugger.resume();
+      //((CLavaApp*)wxTheApp)->debugger.wait();
     }
 }
 

@@ -46,7 +46,7 @@
     oldSynObjectID = synObjectID; \
     synObjectID = ++((CSearchData*)searchData)->nextFreeID; \
     if (workFlags.Contains(isBrkPnt)) \
-      if (!LBaseData->debugThread->checkExecBrkPnts(oldSynObjectID,synObjectID,\
+      if (!LBaseData->debugger->checkExecBrkPnts(oldSynObjectID,synObjectID,\
       ((CSearchData*)searchData)->execDECL->ParentDECL->OwnID,\
       ((CSearchData*)searchData)->execDECL->DeclType,\
       (CLavaBaseDoc*)((CSearchData*)searchData)->doc))\

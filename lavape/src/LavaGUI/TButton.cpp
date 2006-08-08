@@ -65,7 +65,7 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
   }
     //setPaletteForegroundColor(parent->colorGroup().foreground());
   show();
-  connect(this, SIGNAL(clicked()), this, SLOT(OnClicked()));
+  connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
 }
 
 
@@ -126,7 +126,7 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
       || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
   setEnabled(false);
   show();
-  connect(this, SIGNAL(clicked()), this, SLOT(OnClicked()));
+  connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
 }
 
 
@@ -155,7 +155,7 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
       || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
   setEnabled(false);
   show();
-  connect(this, SIGNAL(clicked()), this, SLOT(OnClicked()));
+  connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
 }
 
 
@@ -201,7 +201,7 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
       || !myFormNode->data.IoSigFlags.Contains(UnprotectedUser)
           && !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
-  connect(this, SIGNAL(clicked()), this, SLOT(OnClicked()));
+  connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
   show();
 }
 
@@ -302,7 +302,7 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
   }
     //setPaletteForegroundColor(parent->colorGroup().foreground());
   show();
-  connect(this, SIGNAL(clicked()), this, SLOT(OnClicked()));
+  connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
 }
 
 

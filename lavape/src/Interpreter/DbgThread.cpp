@@ -57,17 +57,16 @@
 
 
 
-CLavaDebugThread::CLavaDebugThread() {
+CLavaDebugger::CLavaDebugger() {
   dbgStopData=0;
   varAction=0;
   listenSocket = 0;
   workSocket = 0;
-  debugOn = false;
   startedFromLavaPE = false;
 }
 
 
-void CLavaDebugThread::initData(CLavaBaseDoc* d, CLavaExecThread *execThr) {
+void CLavaDebugger::initData(CLavaBaseDoc* d, CLavaExecThread *execThr) {
   if (!dbgStopData) {
     myDoc = d;
     m_execThread = execThr;
@@ -77,19 +76,210 @@ void CLavaDebugThread::initData(CLavaBaseDoc* d, CLavaExecThread *execThr) {
 }
 
 
-CLavaDebugThread::~CLavaDebugThread()
+CLavaDebugger::~CLavaDebugger()
 {
-  if (dbgStopData) delete dbgStopData;
-  dbgStopData = 0;
-  if (varAction) delete varAction;
-  varAction = 0;
-  resume();
-  wait();
+  if (dbgStopData) {
+    delete dbgStopData;
+    dbgStopData = 0;
+  }
+  if (varAction) {
+    delete varAction;
+    varAction = 0;
+  }
 }
 
+void CLavaDebugger::customEvent(QEvent *ev) {
+  switch (ev->type()) {
+  case UEV_Start:
+     start();
+     break;
+  case UEV_Send:
+     send();
+     break;
+  case UEV_Stop:
+     stop();
+     break;
+  default: ;
+  }
+}
 
-void CLavaDebugThread::run() {
+void CLavaDebugger::start() {
+	QString lavapePath, buf;
+  quint16 locPort;
 
+  if (startedFromLavaPE) {
+    workSocket = new QTcpSocket;
+    connect(workSocket,SIGNAL(disconnected()),SLOT(disconnected()));
+    connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
+    connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
+    workSocket->connectToHost(remoteIPAddress,remotePort);
+    connected();
+  }
+
+  else { //PMDump
+#ifdef WIN32
+    lavapePath = ExeDir + "/LavaPE.exe";
+#else
+    lavapePath = ExeDir + "/LavaPE";
+#endif
+
+    if (!listenSocket) {
+      listenSocket = new QTcpServer(this);
+      connect(listenSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error()));
+      connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
+      listenSocket->listen();
+    }
+
+    locPort = listenSocket->serverPort();
+    QString host_addr = "127.0.0.1";
+	  QStringList args;
+	  args << myDoc->GetFilename() << host_addr << QString("%1").arg(locPort);
+    if (!QProcess::startDetached(lavapePath,args)) {
+      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
+		  return;
+	  }
+  }
+}
+
+void CLavaDebugger::connectToClient() {
+  workSocket = listenSocket->nextPendingConnection();
+  connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error()));
+  connect(workSocket,SIGNAL(disconnected()),SLOT(disconnected()));
+  connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
+  connected();
+}
+
+void CLavaDebugger::connected() {
+  isRunning = true;
+
+  put_cid = new ASN1OutSock (workSocket);
+  if (!put_cid->Done) {
+    delete put_cid;
+    qApp->exit(1);
+  }
+
+  get_cid = new ASN1InSock (workSocket);
+  if (!get_cid->Done) {
+    delete get_cid;
+    qApp->exit(1);
+  }
+
+  if (!startedFromLavaPE) {
+    varAction->run();
+    addCalleeParams();
+    mSend.SetSendData(Dbg_StopData, dbgStopData);
+    CDPDbgMessage0(PUT, put_cid, (address)&mSend);
+    put_cid->flush();
+    //myDoc->debugOn = true;
+  }
+
+  LBaseData->debugger->isRunning = true;
+  //receive();
+}
+
+void CLavaDebugger::receive() {
+  DDItemData *oid;
+
+  if (!get_cid->bytesAvailable())
+    return;
+
+ 	CDPDbgMessage0(GET,get_cid,(address)&mReceive);
+  if (get_cid->Done) {
+    switch (mReceive.Command) {
+    case Dbg_Exit:
+      stop();
+      break;
+    case Dbg_StackRq:
+      dbgStopData->ObjectChain.Destroy();
+      dbgStopData->ParamChain.Destroy();
+      dbgStopData->ActStackLevel = mReceive.CallStackLevel;
+      varAction->run();
+      if (!dbgStopData->ActStackLevel)
+        addCalleeParams();
+      mSend.SetSendData(Dbg_Stack, dbgStopData);
+      break;
+    case Dbg_MemberDataRq:
+      if (mReceive.fromParams)
+        oid = DebugItem::openObj((CHE*)dbgStopData->ParamChain.first, (CHEint*)mReceive.ObjNr.ptr->first);
+      else
+        oid = DebugItem::openObj((CHE*)dbgStopData->ObjectChain.first, (CHEint*)mReceive.ObjNr.ptr->first);
+      mSend.SetSendData(oid);
+      mReceive.ObjNr.Destroy();
+      break;
+    case Dbg_Continue:
+      if (varAction) {
+        setBrkPnts();
+        if (dbgStopData) {
+          dbgStopData->ActStackLevel = 0;  //reset dbgStopData
+          dbgStopData->CalleeStack = 0;
+          dbgStopData->StackChain.Destroy();
+          dbgStopData->ObjectChain.Destroy();
+          dbgStopData->ParamChain.Destroy();
+        }
+      }
+
+      m_execThread->resume();    //continue ExecuteLava
+    default:;
+    }
+  }
+  else
+    stop();
+}
+
+void CLavaDebugger::send() {
+  if (!varAction)
+    stop();
+  if (dbgStopData->StackChain.first) {
+    varAction->run();
+    addCalleeParams();
+    mSend.SetSendData(Dbg_StopData, dbgStopData);
+  }
+  else
+    stop();
+
+  CDPDbgMessage0(PUT, put_cid, (address)&mSend);
+  put_cid->flush();
+  if (!put_cid->Done)
+    stop();
+}
+
+void CLavaDebugger::error(QAbstractSocket::SocketError socketError) {
+  stop();
+}
+
+void CLavaDebugger::disconnected() {
+  stop();
+}
+
+void CLavaDebugger::stop() {
+  if (!isRunning)
+    return;
+  isRunning = false;
+  if (dbgStopData) {
+    delete dbgStopData;
+    dbgStopData = 0;
+  }
+  if (varAction) {
+    delete varAction;
+    varAction=0;
+  }
+
+  mSend.Destroy();
+  mReceive.Destroy();
+  brkPnts.Destroy();
+  //if (workSocket->isOpen())
+  //  workSocket->abort();
+  //delete workSocket;
+  workSocket = 0;
+  //listenSocket->close();
+  //if (listenSocket)
+  //delete listenSocket;
+  listenSocket = 0;
+  delete put_cid;
+  delete get_cid;
+}
+/*
+void CLavaDebugger::run() {
 	QString lavapePath, buf;
   quint16 locPort;
   DDItemData * oid;
@@ -130,15 +320,12 @@ void CLavaDebugThread::run() {
     delete put_cid;
     qApp->exit(1);
   }
-//  put_cid = out_cid;
 
   get_cid = new ASN1InSock (workSocket);
   if (!get_cid->Done) {
     delete get_cid;
     qApp->exit(1);
   }
-
-//connect(workSocket,SIGNAL(disconnected()),wxTheApp,SLOT(on_worksocket_disconnected()));
 
   if (!debugOn) {
     varAction->run();
@@ -150,7 +337,7 @@ void CLavaDebugThread::run() {
   }
   else
     startedFromLavaPE = true;
-  LBaseData->debugOn = true;
+  LBaseData->debugger->isRunning = true;
 
   while (true) {
    	CDPDbgMessage0(GET,get_cid,(address)&mReceive);
@@ -233,15 +420,15 @@ void CLavaDebugThread::run() {
     delete listenSocket;
     listenSocket = 0;
   }
-  LBaseData->debugOn = false;
+  LBaseData->debugger->isRunning = false;
   debugOn = false;
   if (myDoc)
     myDoc->debugOn = false;
   CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)m_execThread);
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
 }
-
-void CLavaDebugThread::setBrkPnts()
+*/
+void CLavaDebugger::setBrkPnts()
 {
   CHEProgPoint *chePP, *chePPnew, *rmPP;
   LavaDECL *funcDecl, *execDecl, *classDecl;
@@ -340,7 +527,7 @@ void CLavaDebugThread::setBrkPnts()
 
 }
 
-void CLavaDebugThread::addCalleeParams()
+void CLavaDebugger::addCalleeParams()
 {
   if (!dbgStopData->CalleeStack || !dbgStopData->CalleeFunc)
     return;

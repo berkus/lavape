@@ -62,6 +62,7 @@
 
 #include "AboutBox.h"
 #include "QtAssistant/qassistantclient.h"
+#include <QtTest/QtTest>
 
 #pragma hdrstop
 
@@ -90,7 +91,7 @@ int main( int argc, char ** argv ) {
   //_CrtSetBreakAlloc(38892);
 #endif
 
- // QMessageBox::information(app.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok)
+  //QTest::qSleep(20000);
 
   if (app.m_appWindow->OnCreate())
     app.m_appWindow->showMaximized();
@@ -130,7 +131,7 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   inTotalCheck = false;;
   LBaseData.theApp = this;
   LBaseData.inRuntime = false;
-  LBaseData.debugThread = &debugThread;
+  LBaseData.debugger = &debugger;
   clipboard()->clear();
 
 
@@ -303,7 +304,7 @@ bool CLavaPEApp::event(QEvent *e)
 
   switch (e->type()) {
   case UEV_LavaDebug:
-    ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((CustomEvent*)e)->data(), debugThread.myDoc);
+    ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((CustomEvent*)e)->data(), debugger.myDoc);
     LBaseData.enableBreakpoints = true;
     if (((CustomEvent*)e)->data()) {
       ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
@@ -322,11 +323,11 @@ bool CLavaPEApp::event(QEvent *e)
     m_appWindow->raise();
     return true;
   case UEV_LavaDebugRq:
-    if (debugThread.dbgRequest) {
-      delete debugThread.dbgRequest;
-      debugThread.dbgRequest = 0;
+    if (debugger.dbgRequest) {
+      delete debugger.dbgRequest;
+      debugger.dbgRequest = 0;
     }
-    debugThread.dbgRequest = (DbgMessage*)((CustomEvent*)e)->data();
+    debugger.dbgRequest = (DbgMessage*)((CustomEvent*)e)->data();
 //    ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(false);
 //    ((CLavaMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(false);
     LBaseData.enableBreakpoints = false;
@@ -336,7 +337,7 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
     ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
 
-    debugThread.resume();
+    debugger.send();
     return true;
   case UEV_LavaDebugW:
     ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
@@ -680,11 +681,11 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
   QString driveLetter = QString(name[0].toUpper());
   name.replace(0,1,driveLetter);
 #endif
-  ((CLavaPEApp*)qApp)->debugThread.myDoc = (CLavaBaseDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+  ((CLavaPEApp*)qApp)->debugger.myDoc = (CLavaBaseDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
   if (argc > 2) {
-    ((CLavaPEApp*)qApp)->debugThread.remoteIPAddress = argv[2];
-    ((CLavaPEApp*)qApp)->debugThread.remotePort = (quint16)QString(argv[3]).toUShort();
-    ((CLavaPEApp*)qApp)->debugThread.start();
+    ((CLavaPEApp*)qApp)->debugger.remoteIPAddress = argv[2];
+    ((CLavaPEApp*)qApp)->debugger.remotePort = (quint16)QString(argv[3]).toUShort();
+    ((CLavaPEApp*)qApp)->debugger.start();
   }
 }
 
@@ -819,11 +820,6 @@ void CLavaPEApp::OnUpdateSaveAll(QAction* action)
   action->setEnabled(wxDocManager::GetDocumentManager()->GetOpenDocCount());
 }
 
-void CLavaPEApp::on_worksocket_disconnected() {
-  if (!appExit && debugThread.startedFromLava)
-    qApp->exit(0);
-}
-
 CLavaPEApp::~CLavaPEApp()
 {
   OnAppExit();
@@ -832,11 +828,11 @@ CLavaPEApp::~CLavaPEApp()
     delete LavaIcons[i];
   for (int i = 0; LavaPixmaps[i] != 0; i++)
     delete LavaPixmaps[i];
-  debugThread.dbgRequest = 0;
-  if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
-    debugThread.workSocket->abort();
-  //debugThread.resume();
-  //debugThread.wait();
+  debugger.dbgRequest = 0;
+  if (debugger.workSocket && debugger.workSocket->state() != QAbstractSocket::UnconnectedState)
+    debugger.workSocket->abort();
+  //debugger.resume();
+  //debugger.wait();
 }
 
 void CLavaPEApp::saveSettings()

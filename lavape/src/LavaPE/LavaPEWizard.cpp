@@ -94,9 +94,9 @@ CWizardView::CWizardView(QWidget* parent, wxDocument* doc)
   qvl->addWidget(qhbox);
   qvl->addWidget(myScrv);
   guibox = myScrv->qvbox; 
-  connect (applyButton, SIGNAL(clicked()), this, SLOT(Apply()));
-  connect (resetButton, SIGNAL(clicked()), this, SLOT(Reset()));
-  connect (helpButton, SIGNAL(clicked()), this, SLOT(Help()));
+  connect (applyButton,SIGNAL(clicked()), this, SLOT(Apply()));
+  connect (resetButton,SIGNAL(clicked()), this, SLOT(Reset()));
+  connect (helpButton,SIGNAL(clicked()), this, SLOT(Help()));
   wizard = 0;
   postedPage = 0;
   delayedID = 0;
@@ -304,7 +304,7 @@ CLavaPEWizard::CLavaPEWizard(LavaDECL ** p_origDECL, LavaDECL* formDECL, CWizard
   AddPages();
   resize(minimumSizeHint());
   show();
-  connect (this, SIGNAL(currentChanged(int)), this, SLOT(OnSetActive(int)));
+  connect (this,SIGNAL(currentChanged(int)), this, SLOT(OnSetActive(int)));
   modified = false;
   myView->applyButton->setEnabled(false);
   myView->resetButton->setEnabled(false);

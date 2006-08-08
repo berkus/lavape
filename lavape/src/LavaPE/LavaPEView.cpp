@@ -1150,7 +1150,7 @@ void CLavaPEView::DrawTree(LavaDECL ** pDECL, bool inUndoRedo, bool finalUpdate,
   execTree->Travers->FillOut = (pDECL == 0);
   execTree->Travers->DownTree(pDECL,0,str);
   //if (drawTree)
-  //  ((CLavaPEApp*)wxTheApp)->debugThread.checkAndSetBrkPnts(GetDocument());
+  //  ((CLavaPEApp*)wxTheApp)->debugger.checkAndSetBrkPnts(GetDocument());
   drawTree = false;
   GetDocument()->UpdateNo++;
   delete execTree;
@@ -2757,7 +2757,7 @@ void CLavaPEView::OnInitialUpdate()
     delete ch;
     if (GetDocument()->nErrors || GetDocument()->nPlaceholders)
       GetDocument()->ShowErrorBox(true);
-    ((CLavaPEApp*)wxTheApp)->debugThread.restoreBrkPoints(GetDocument());
+    ((CLavaPEApp*)wxTheApp)->debugger.restoreBrkPoints(GetDocument());
   }
   sz = size();
 }

@@ -2995,21 +2995,21 @@ void CLavaPEDoc::OnCheck()
 bool CLavaPEDoc::OnCloseDocument() 
 {
   if (!((wxApp*)qApp)->appExit ) {
-    if (debugOn && ((CLavaPEApp*)wxTheApp)->debugThread.isRunning()) {
-      ((CLavaPEApp*)wxTheApp)->debugThread.cleanBrkPoints(this);
-      if (((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived) 
-        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.lastReceived->DbgData.ptr, this);
-      if (((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived) 
-        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugThread.dbgReceived.newReceived->DbgData.ptr, this);
-      //((CLavaPEApp*)wxTheApp)->debugThread.workSocket->abort();
+    if (debugOn && ((CLavaPEApp*)wxTheApp)->debugger.isRunning) {
+      ((CLavaPEApp*)wxTheApp)->debugger.cleanBrkPoints(this);
+      if (((CLavaPEApp*)wxTheApp)->debugger.dbgReceived.lastReceived) 
+        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugger.dbgReceived.lastReceived->DbgData.ptr, this);
+      if (((CLavaPEApp*)wxTheApp)->debugger.dbgReceived.newReceived) 
+        ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugger.dbgReceived.newReceived->DbgData.ptr, this);
+      //((CLavaPEApp*)wxTheApp)->debugger.workSocket->abort();
       ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->setDebugData(0, this);
-      ((CLavaPEApp*)wxTheApp)->debugThread.myDoc = 0;
-      ((CLavaPEApp*)wxTheApp)->debugThread.get_cid->Done = false;
-      ((CLavaPEApp*)wxTheApp)->debugThread.resume();
-      ((CLavaPEApp*)wxTheApp)->debugThread.wait();
+      ((CLavaPEApp*)wxTheApp)->debugger.myDoc = 0;
+      ((CLavaPEApp*)wxTheApp)->debugger.get_cid->Done = false;
+      //((CLavaPEApp*)wxTheApp)->debugger.resume();
+      ((CLavaPEApp*)wxTheApp)->debugger.stop();
     }
     else
-      ((CLavaPEApp*)wxTheApp)->debugThread.cleanBrkPoints(this);
+      ((CLavaPEApp*)wxTheApp)->debugger.cleanBrkPoints(this);
     if (((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->stopDoc == this)
       ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->stopDoc = 0;
   }
@@ -3179,14 +3179,14 @@ void CLavaPEDoc::OnDebugLava()
   debugOn = true;
   changeNothing = true;
 
-  ((CLavaPEApp*)qApp)->debugThread.myDoc = this;
-  ((CLavaPEApp*)qApp)->debugThread.adjustBrkPnts();
-  ((CLavaPEApp*)qApp)->debugThread.start();
+  ((CLavaPEApp*)qApp)->debugger.myDoc = this;
+  ((CLavaPEApp*)qApp)->debugger.adjustBrkPnts();
+  ((CLavaPEApp*)qApp)->debugger.start();
 }
 
 void CLavaPEDoc::interpreterExited () {
-  delete ((CLavaPEApp*)wxTheApp)->debugThread.workSocket;
-  ((CLavaPEApp*)qApp)->debugThread.resume();
+  delete ((CLavaPEApp*)wxTheApp)->debugger.workSocket;
+  ((CLavaPEApp*)qApp)->debugger.stop();
 }
 
 //check all included documents

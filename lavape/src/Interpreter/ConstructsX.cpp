@@ -64,7 +64,7 @@
   bool caught=false; \
   unsigned newOldExprLevel=FRAMESIZE-1, fSizeBytes = FRAMESIZE<<2;\
   DebugStep oldDebugStep=nextDebugStep; \
-  if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
+  if (LBaseData->debugger->isRunning && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
     nextDebugStep = noStep; \
   if (primaryToken == ObjRef_T) /* set-function */ \
     NEWSTACK[0] = (LavaObjectPtr)parentObject; \
@@ -100,7 +100,7 @@
   __asm {\
     sub esp, fSizeBytes}\
   }\
-  if (LBaseData->debugOn && !caught) {\
+  if (LBaseData->debugger->isRunning && !caught) {\
     if (nextDebugStep == noStep) {\
       stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
       if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
@@ -123,7 +123,7 @@
   bool caught=false; \
   unsigned newOldExprLevel=FRAMESIZE-1; \
   DebugStep oldDebugStep=nextDebugStep; \
-  if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
+  if (LBaseData->debugger->isRunning && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
     nextDebugStep = noStep; \
   if (primaryToken == ObjRef_T) /* set-function */ \
     NEWSTACK[0] = (LavaObjectPtr)parentObject; \
@@ -157,7 +157,7 @@
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
-  if (LBaseData->debugOn && !caught) {\
+  if (LBaseData->debugger->isRunning && !caught) {\
     if (nextDebugStep == noStep) {\
       stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
       if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
@@ -180,7 +180,7 @@
   bool caught=false; \
   unsigned newOldExprLevel=FRAMESIZE-1;\
   DebugStep oldDebugStep=nextDebugStep; \
-  if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
+  if (LBaseData->debugger->isRunning && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
     nextDebugStep = noStep; \
   if (primaryToken == ObjRef_T) \
     NEWSTACK[0] = (LavaObjectPtr)parentObject; \
@@ -216,7 +216,7 @@
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
-  if (LBaseData->debugOn && !caught) {\
+  if (LBaseData->debugger->isRunning && !caught) {\
     if (nextDebugStep == noStep) {\
       stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
       if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
@@ -242,7 +242,7 @@
   QString myExMessage; \
   unsigned fSizeBytes = FRAMESIZE<<2;\
   DebugStep oldDebugStep=nextDebugStep; \
-  if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
+  if (LBaseData->debugger->isRunning && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
     nextDebugStep = noStep; \
   if (primaryToken == ObjRef_T) \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)parentObject; \
@@ -288,7 +288,7 @@
   __asm {\
     sub esp, fSizeBytes}\
   }\
-  if (LBaseData->debugOn && !caught) {\
+  if (LBaseData->debugger->isRunning && !caught) {\
     if (nextDebugStep == noStep) {\
       stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
       if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
@@ -311,7 +311,7 @@
   bool caught=false; \
   QString myExMessage; \
   DebugStep oldDebugStep=nextDebugStep; \
-  if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
+  if (LBaseData->debugger->isRunning && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
     nextDebugStep = noStep; \
   if (primaryToken == ObjRef_T) \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)parentObject; \
@@ -353,7 +353,7 @@
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
-  if (LBaseData->debugOn && !caught) {\
+  if (LBaseData->debugger->isRunning && !caught) {\
     if (nextDebugStep == noStep) {\
       stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
       if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
@@ -375,7 +375,7 @@
 #define NATIVE_FCALL(CKD, FUNC, NEWSTACK, FRAMESIZE, RESULT, SYNOBJ)  {\
   bool caught=false; \
   DebugStep oldDebugStep=nextDebugStep; \
-  if (LBaseData->debugOn && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
+  if (LBaseData->debugger->isRunning && (nextDebugStep == nextStm || nextDebugStep == nextFunc)) \
     nextDebugStep = noStep; \
   if (primaryToken == ObjRef_T) \
     NEWSTACK[0] = CKD.stackFrame[0] = (LavaObjectPtr)parentObject; \
@@ -424,7 +424,7 @@
     if (ex.SetLavaException(CKD)) caught = true;\
     else throw;\
   }\
-  if (LBaseData->debugOn && !caught) { \
+  if (LBaseData->debugger->isRunning && !caught) { \
     if (nextDebugStep == noStep) {\
       stackFrame[2] = (LavaObjectPtr)((unsigned)stackFrame[2] | ((unsigned)NEWSTACK[2] & 2)); \
       if (!((unsigned)NEWSTACK[2] & 2) && (oldDebugStep == nextStm || oldDebugStep == nextFunc)) \
@@ -446,7 +446,7 @@
 
 #define STOP_AT_STM(CKD, STACK, RC) { \
   if (flags.Contains(ignoreSynObj)) return RC; \
-  if (LBaseData->debugOn) \
+  if (LBaseData->debugger->isRunning) \
     if (type == Stm_T) \
       if ((nextDebugStep == nextStm || nextDebugStep == stepInto) \
       && (primaryToken != assignFS_T \
@@ -457,19 +457,19 @@
         DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); }}
 
 #define STOP_AT_BPT(CKD, STACK) { \
-  if (LBaseData->debugOn) \
+  if (LBaseData->debugger->isRunning) \
     if (workFlags.Contains(isBrkPnt) || workFlags.Contains(isTempPoint)) \
       DebugStop(CKD,STACK,QString::null,Stop_BreakPoint); } \
 
 #define STOP_AT_OP(CKD, STACK) { \
-  if (LBaseData->debugOn) \
+  if (LBaseData->debugger->isRunning) \
     if (nextDebugStep == nextFunc) \
       DebugStop(CKD,STACK,QString::null,Stop_NextOp,newStackFrame,((Operation*)this)->funcDecl); \
     else if (workFlags.Contains(isBrkPnt) || workFlags.Contains(isTempPoint)) \
       DebugStop(CKD,STACK,QString::null,Stop_NextOp,newStackFrame,((Operation*)this)->funcDecl);}
 
 #define STOP_AT_FUNC(CKD, STACK,SYNOBJ) { \
-  if (LBaseData->debugOn) \
+  if (LBaseData->debugger->isRunning) \
     if ((nextDebugStep == nextFunc) \
       && (primaryToken != assignFS_T \
           || parentObject->primaryToken != new_T \
@@ -485,14 +485,15 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
   LavaVariablePtr stack=stopStack;
   QString cFileName, cSynObjName, msg, path, pmMsg;
   unsigned inINCL;
-  bool debug=true, isEx = excMsg.length() != 0;
+  bool debug, isEx = excMsg.length() != 0;
   CHEStackData* stData;
   int rc;
   DebugStep ds=nextDebugStep;
 
-  debug = ckd.document->debugOn || LBaseData->m_pmDumps && !((CLavaDebugThread*)LBaseData->debugThread)->isRunning();
-  if (debug && !ckd.document->debugOn) 
-    ((CLavaDebugThread*)LBaseData->debugThread)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
+  debug = ckd.document->debugOn || LBaseData->m_pmDumps;
+  if (debug && !LBaseData->debugger->isRunning) 
+    ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
+
   if (debug) {
     stopStack[2] = (LavaObjectPtr)((unsigned)stopStack[2] | 2);
       // set flag: breakpoint encountered
@@ -519,10 +520,10 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
     stData->data.SynObjID = synObj->synObjectID;
     stData->data.Stack = (CSecTabBase***)stopStack;
     stData->data.SynObj = synObj;
-    ((CLavaDebugThread*)LBaseData->debugThread)->dbgStopData->stopReason = stopReason;
-    ((CLavaDebugThread*)LBaseData->debugThread)->dbgStopData->CalleeStack = (CSecTabBase***)calleeStack;
-    ((CLavaDebugThread*)LBaseData->debugThread)->dbgStopData->CalleeFunc = calleeFunc;
-    ((CLavaDebugThread*)LBaseData->debugThread)->dbgStopData->StackChain.Append(stData);
+    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->stopReason = stopReason;
+    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->CalleeStack = (CSecTabBase***)calleeStack;
+    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->CalleeFunc = calleeFunc;
+    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
   }
 
   if (isEx)
@@ -577,7 +578,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
           stData->data.SynObjID = synObj->synObjectID;
           stData->data.Stack = (CSecTabBase ***)stack[1];
           stData->data.SynObj = synObj;
-          ((CLavaDebugThread*)LBaseData->debugThread)->dbgStopData->StackChain.Append(stData);
+          ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
         }
       }
       stack = (LavaVariablePtr)stack[1];
@@ -668,7 +669,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
     msg = msg + path;
   if (debug) {
     if (isEx) 
-      if (debug && !ckd.document->debugOn) {
+      if (!ckd.document->debugOn) {
         pmMsg = excMsg + "\n\n" + msg + "\n\nDebug this exception?\n\nClick \"No to all\" to disable debugging perpetually";
         rc = information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg.toAscii()),QMessageBox::Yes|QMessageBox::Default,QMessageBox::No,QMessageBox::NoAll);
     
@@ -681,10 +682,10 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
     else
       rc = QMessageBox::Yes;
     if (rc == QMessageBox::Yes) {
-      if (debug && !ckd.document->debugOn)
-        ((CLavaDebugThread*)LBaseData->debugThread)->start();
+      if (!LBaseData->debugger->isRunning)
+        QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
       else
-        ((CLavaDebugThread*)LBaseData->debugThread)->resume(); //debug thread continue
+        QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
       ((CLavaThread*)QThread::currentThread())->suspend();   //execution thread wait
     }
     else

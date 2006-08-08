@@ -350,8 +350,7 @@ LavaDumpFrame::LavaDumpFrame( QWidget* parent, DumpEventData* data)
   }
 
 
-  connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
-//  fromThread = data->currentThread;
+  connect(okButton,SIGNAL(clicked()),SLOT(OnOK()));
   returned = false;
   show();
 }
@@ -539,7 +538,7 @@ DumpListView::DumpListView(QWidget *parent,CLavaBaseDoc* doc, LavaObjectPtr obje
   }
   else
     label = varName;
-  connect(this, SIGNAL(itemExpanded (QTreeWidgetItem*)), this, SLOT(expandedItem(QTreeWidgetItem*)));
+  connect(this,SIGNAL(itemExpanded (QTreeWidgetItem*)),SLOT(expandedItem(QTreeWidgetItem*)));
   rootItem = new DumpItem(new DDMakeClass, this, myDoc, object, label);
   setItemExpanded(rootItem, true);
 }

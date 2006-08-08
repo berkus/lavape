@@ -26,9 +26,8 @@ public:
   DString SyntaxToOpen;
   DString NameToStore;
 
-  CLavaDebugThread debugThread;
+  CLavaDebugger debugger;
 
-//  QString CMDLine;
   public:
   bool event(QEvent *e);
   virtual void OpenDocumentFile(const QString& lpszFileName);
@@ -48,10 +47,6 @@ public:
   void saveSettings();
   QString InitWebBrowser ();
 
-  public slots:
-    void on_worksocket_disconnected();
-
-private:
   Q_OBJECT;
 };
 

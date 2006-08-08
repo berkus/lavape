@@ -285,6 +285,7 @@ void ASN1OutSock::flush ()
     rc = fildes->write(bufferPtr,bufferPos);
     if ((rc < 0) || (rc != (int)bufferPos))
       error("~ASN1OutSock: flush_TCP");
+    fildes->flush();
     bufferPos = 0;
   }
 } // END OF ~ASN1OutFile
@@ -326,6 +327,9 @@ void ASN1OutSock::putChar (const unsigned char& c)
   bufferPtr[bufferPos++] = c;
 } // END OF putChar
 
+int ASN1InSock::bytesAvailable() const {
+  return fildes->bytesAvailable();
+}
 
 void ASN1InSock::getChar (unsigned char& c)
 
@@ -333,17 +337,22 @@ void ASN1InSock::getChar (unsigned char& c)
   bool ok;
 
   if (bufferPos == (unsigned)charsRead) {
-    if (fildes->state() != QAbstractSocket::ConnectedState) {
-      error("getChar: UNIX.read_TCP, socket is not connected");
-      return;
-    }
-    while (Done)
-      if (!fildes->waitForReadyRead(500)) {
-        if (!Done)
-          return;
-      }
-      else
-        break;
+    //if (fildes->state() != QAbstractSocket::ConnectedState) {
+    //  error("getChar: UNIX.read_TCP, socket is not connected");
+    //  return;
+    //}
+    //while (Done) {
+    //  if (fildes->state() != QAbstractSocket::ConnectedState) {
+    //    error("getChar: UNIX.read_TCP, socket is not connected");
+    //    return;
+    //  }
+    //  if (!fildes->waitForReadyRead(500) || !Done) {
+    //    error("getChar: UNIX.read_TCP, waitForReadyRead reports an error");
+    //    return;
+    //  }
+    //  else
+    //    break;
+    //}
     ok = charsRead = fildes->read(bufferPtr,bufferSize);
     if (!ok || charsRead <= 0) {
       error("getChar: UNIX.read_TCP");

@@ -22,12 +22,13 @@ public:
   CHEStackData* cheAct;
 };
 
-class LAVAEXECS_DLL CLavaDebugThread : public CLavaThread
+class LAVAEXECS_DLL CLavaDebugger : public CLavaDbgBase
 {
 public:
-  CLavaDebugThread();
-  ~CLavaDebugThread();
+  CLavaDebugger();
+  ~CLavaDebugger();
 
+  virtual void customEvent(QEvent *ev);
   void initData(CLavaBaseDoc* d, CLavaExecThread *execThr);
   QTcpServer *listenSocket;
   QTcpSocket *workSocket;
@@ -39,17 +40,29 @@ public:
 
   bool startedFromLavaPE;
   CLavaExecThread *m_execThread;
+
+  DbgContType actContType;
   DbgStopData* dbgStopData;
   LocalDebugVar *varAction;
-  bool debugOn;
-  DbgContType actContType;
   CHAINANY /*ProgPoint*/ brkPnts;
   DbgMessage0 mSend, mReceive;
 
+public slots:
+  void start();
+  void connectToClient();
+  void connected();
+  void receive();
+  void send();
+  void error(QAbstractSocket::SocketError socketError);
+  void disconnected();
+  void stop();
+
 protected:
-	void run();
+	//void run();
   void setBrkPnts();
   void addCalleeParams();
+
+  Q_OBJECT
 }; 
 
 #endif

@@ -69,7 +69,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
       || !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
   ((QListView*)view())->setResizeMode(QListView::Adjust);
-  connect(this, SIGNAL(activated(int)), this, SLOT(OnSelendok(int)));
+  connect(this,SIGNAL(activated(int)), this, SLOT(OnSelendok(int)));
   if (myFormNode->data.IterFlags.Contains(Optional)) {
     myMenu = new QMenu(this);
     myMenu->addAction(LBaseData->delActionPtr);//DelAction);

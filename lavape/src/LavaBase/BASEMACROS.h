@@ -71,6 +71,9 @@
 #define UEV_LavaPE_setSel (QEvent::Type)(QEvent::User+16)
 #define UEV_WhatNext (QEvent::Type)(QEvent::User+17)
 #define UEV_PMDumpOff (QEvent::Type)(QEvent::User+18)
+#define UEV_Start (QEvent::Type)(QEvent::User+19)
+#define UEV_Send (QEvent::Type)(QEvent::User+20)
+#define UEV_Stop (QEvent::Type)(QEvent::User+21)
 
 #define IFC(OBJ) {if (!INC_FWD_CNT(ckd,OBJ)) return false;}
 #define IRC(OBJ) {if (!INC_REV_CNT(ckd,OBJ)) return false;}

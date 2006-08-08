@@ -139,7 +139,7 @@ CLavaApp::CLavaApp(int argc, char ** argv )
   clipboard()->clear();
   LBaseData.actHint = 0;
   LBaseData.Init(0, 0);
-  LBaseData.debugThread = &debugThread;
+  LBaseData.debugger = &debugger;
   settings.beginGroup("generalSettings");
   LBaseData.m_strCheckPreconditions = settings.value(szCheckPreconditions,QVariant("true")).toString();
   if (LBaseData.m_strCheckPreconditions == "true")
@@ -289,8 +289,12 @@ bool CLavaApp::event(QEvent *e)
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     doc = (CLavaProgram*)pHint->fromDoc;
     delete (CLavaPEHint*)pHint;
-    if (doc)
+    if (((CLavaDebugger*)LBaseData.debugger)->workSocket)
+      QApplication::postEvent(LBaseData.debugger, new CustomEvent(UEV_Stop,0));
+    if (doc) {
       doc->OnCloseDocument();
+      delete doc;
+    }
     return true;
   case UEV_LavaMsgBox:
     m_appWindow->activateWindow();
@@ -386,18 +390,15 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
     return;
   LBaseData.lastFileOpen = name;
   if (argc > 2) {
-    debugThread.remoteIPAddress = argv[2];
+    debugger.remoteIPAddress = argv[2];
     port = QString(argv[3]);
-    debugThread.remotePort = (quint16)port.toUShort();
+    debugger.remotePort = (quint16)port.toUShort();
 
-    //QMessageBox::critical(/*qApp->*/mainWidget(),qApp->name(),"Lava Interpreter: Debug support not yet fully implemented" ,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-    debugThread.debugOn = true;
-    LBaseData.debugOn = true;
     doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
     doc->debugOn = true;
     ((CLavaMainFrame*)m_appWindow)->fileOpenAction->setEnabled(false);
     ((CLavaMainFrame*)m_appWindow)->fileNewAction->setEnabled(false);
-    debugThread.initData(doc,0);
+    debugger.startedFromLavaPE = true;
   }
   else {
     doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
@@ -475,9 +476,9 @@ int CLavaApp::OnAppExit()
   SynIO.EXIT();
   delete classDict;
 
-  if (debugThread.workSocket && debugThread.workSocket->state() != QAbstractSocket::UnconnectedState)
-    debugThread.workSocket->abort();
-  //debugThread.wait();
+  if (debugger.workSocket && debugger.workSocket->state() != QAbstractSocket::UnconnectedState)
+    debugger.workSocket->abort();
+  //debugger.wait();
   return 0;
 }
 
@@ -596,9 +597,4 @@ void CLavaApp::LearningLava()
         }
 
         qacl->showPage(ExeDir + "/../doc/html/LavaBySamples.htm");
-}
-
-void CLavaApp::on_worksocket_disconnected() {
-  if (!appExit && debugThread.startedFromLavaPE)
-    qApp->exit(0);
 }

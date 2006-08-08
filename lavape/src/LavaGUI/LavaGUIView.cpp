@@ -103,9 +103,9 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
   hbl->addWidget(resetButton);
   hbl->addWidget(cancelButton);
   resize(700,500);
-  connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
-  connect(resetButton, SIGNAL(clicked()), this, SLOT(OnReset()));
-  connect(cancelButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
+  connect(okButton,SIGNAL(clicked()),SLOT(OnOK()));
+  connect(resetButton,SIGNAL(clicked()),SLOT(OnReset()));
+  connect(cancelButton,SIGNAL(clicked()),SLOT(OnCancel()));
   qvbox = myScrv->qvbox;
   myDoc = (CLavaBaseDoc*)pHint->fromDoc;
   if (myDoc->mySynDef) {
@@ -350,8 +350,8 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
     QPushButton* resetButton = new QPushButton("Reset", hb);
     hbl->addWidget(okButton);
     hbl->addWidget(resetButton);
-    connect(okButton, SIGNAL(clicked()), this, SLOT(OnOK()));
-    connect(resetButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
+    connect(okButton,SIGNAL(clicked()),SLOT(OnOK()));
+    connect(resetButton,SIGNAL(clicked()),SLOT(OnCancel()));
   }
   qvbox = myScrv->qvbox;
   myDECL = 0;

@@ -86,7 +86,7 @@ wxMainFrame::~wxMainFrame()
 QWorkspace* wxMainFrame::CreateWorkspace(QWidget* parent)
 {
   m_workspace = new QWorkspace(parent);
-  connect(m_workspace , SIGNAL(windowActivated(QWidget*)), SLOT(windowActivated(QWidget*)));
+  connect(m_workspace ,SIGNAL(windowActivated(QWidget*)), SLOT(windowActivated(QWidget*)));
   return m_workspace;
 }
 

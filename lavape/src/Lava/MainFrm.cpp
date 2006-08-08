@@ -49,7 +49,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   QActionGroup *ag = new QActionGroup( this);
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
-  connect( styleMapper, SIGNAL( mapped(const QString&) ), this, SLOT( makeStyle(const QString&) ) );
+  connect( styleMapper,SIGNAL( mapped(const QString&) ),SLOT( makeStyle(const QString&) ) );
 
   QStringList list = QStyleFactory::keys();
   list.sort();
@@ -58,7 +58,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
 		QString styleStr = *it;
 		QAction *a = new QAction( styleStr,ag);
     a->setCheckable(true);
-		connect( a, SIGNAL(triggered()), styleMapper, SLOT(map()));
+    QObject::connect(a,SIGNAL(triggered()),styleMapper,SLOT(map()));
 		styleMapper->setMapping(a,a->text() );
 		if (LBaseData->m_style == styleStr)
 		  a->setChecked(true);
@@ -75,10 +75,10 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   LBaseData->editCopyActionPtr = editCopyAction;
   LBaseData->editCutActionPtr = editCutAction;
   LBaseData->editPasteActionPtr = editPasteAction;
-  connect( toggleCategoryAction, SIGNAL( triggered() ), this, SLOT( on_toggleCategoryAction_triggered() ) );
-  connect( editUndoAction, SIGNAL( triggered() ), this, SLOT( on_editUndoAction_triggered() ) );
-  connect( insAction, SIGNAL( triggered() ), this, SLOT( on_insAction_triggered() ) );
-  connect( delAction, SIGNAL( triggered() ), this, SLOT( on_delAction_triggered() ) );
+  connect( toggleCategoryAction,SIGNAL( triggered() ),SLOT( on_toggleCategoryAction_triggered() ) );
+  connect( editUndoAction,SIGNAL( triggered() ),SLOT( on_editUndoAction_triggered() ) );
+  connect( insAction,SIGNAL( triggered() ),SLOT( on_insAction_triggered() ) );
+  connect( delAction,SIGNAL( triggered() ),SLOT( on_delAction_triggered() ) );
   setWindowIcon(QPixmap((const char**) Lava));
   lastTile = 0;
 }

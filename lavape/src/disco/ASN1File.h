@@ -104,6 +104,8 @@ public:
 
   void getChar (unsigned char&);
 
+  int bytesAvailable() const;
+
   void errorExitProc ();
 
 

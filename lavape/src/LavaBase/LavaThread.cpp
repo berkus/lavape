@@ -28,18 +28,16 @@
 
 CLavaThread::CLavaThread(CLavaBaseDoc* docu)
 {
-  mySemaphore.acquire();
 	myDoc = docu;
-
+  mySemaphore.acquire();
   if (!myDoc->ThreadList)
 		myDoc->ThreadList = new CThreadList;
 }
 
-CLavaThread::~CLavaThread()
+CLavaDbgBase::CLavaDbgBase(CLavaBaseDoc* docu)
 {
-}
-
-CThreadData::CThreadData(CLavaThread *thr)
-{
-  threadPtr = thr;
+	myDoc = docu;
+  isRunning = false;
+  if (!myDoc->ThreadList)
+		myDoc->ThreadList = new CThreadList;
 }

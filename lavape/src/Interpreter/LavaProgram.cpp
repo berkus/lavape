@@ -2240,7 +2240,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 
   CoInitialize(0);
 #endif
-  ((CLavaDebugThread*)LBaseData->debugThread)->m_execThread = this;
+  ((CLavaDebugger*)LBaseData->debugger)->m_execThread = this;
   ckd.document = (CLavaProgram*)doc;
   LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)ckd.document->mySynDef->SynDefTree.first)->data.TopDef.ptr;
   CHE* che;
@@ -2286,8 +2286,9 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 #endif
         for (pos=0;pos<frameSize;pos++)
           newStackFrame[pos] = 0;
-        if (LBaseData->debugOn) {
-          ((CLavaDebugThread*)LBaseData->debugThread)->start();
+        if (LBaseData->debugger->isRunning) {
+          //((CLavaDebugger*)LBaseData->debugger)->start();
+          QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
             //debug thread start, now initialisation is finished
           suspend(); 
             //execution thread wait until debug thread has received first message from LavaPE

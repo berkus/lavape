@@ -31,9 +31,7 @@ public:
   CLavaThread() {
     mySemaphore.acquire();
   }
-
   CLavaThread(CLavaBaseDoc *d);
-  ~CLavaThread();
 
 	CLavaBaseDoc *myDoc;
 
@@ -48,22 +46,23 @@ public:
   CSemaphore mySemaphore;
 
 
-//	static CLavaThread *currentThread();
-  virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc) {return false;}
-  virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc) {}
+  //virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc) {return false;}
+  //virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc) {}
   void run(){};
 }; 
 
-class LAVABASE_DLL CThreadData {
+class LAVABASE_DLL CLavaDbgBase : public QObject {
 public:
-	CThreadData(CLavaThread *thr);
-	
-	CLavaThread *threadPtr;
-};
+  CLavaDbgBase(){ isRunning = false; };
+  CLavaDbgBase(CLavaBaseDoc *d);
 
-//template class LAVABASE_DLL QThreadStorage<class CThreadData *>;
+	CLavaBaseDoc *myDoc;
+  bool isRunning;
 
-//extern LAVABASE_DLL QThreadStorage<CThreadData*>* threadStg();
+  virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc) {return false;}
+  virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc) {}
+  Q_OBJECT
+}; 
 
 typedef QList<CLavaThread*> CThreadList;
 

@@ -885,7 +885,7 @@ void CExecView::OnChar(QKeyEvent *e)
   ctrlPressed = (state & Qt::ControlModifier);
   SynObject *currentSynObj, *parent/*, *ocl*/;
 
-  if (LBaseData->debugOn)
+  if (LBaseData->debugger->isRunning)
     switch (key) {
     case Qt::Key_Tab:
       if (state & Qt::ShiftModifier) // Shift key down ==> BACKTAB
@@ -1283,7 +1283,7 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
   clicked = true;
   if (EditOK()) {
     text->NewSel(&pos);
-    if (!LBaseData->debugOn
+    if (!LBaseData->debugger->isRunning
     && text->newSelection == text->currentSelection
     && (text->currentSelection->data.synObject->primaryToken == VarPH_T
         || (text->currentSelection->data.synObject->primaryToken == Exp_T
@@ -1307,7 +1307,7 @@ void CExecView::OnLButtonDblClk(QMouseEvent *e)
 {
   // TODO: Add your message handler code here and/or call default
 
-  if (LBaseData->debugOn) return;
+  if (LBaseData->debugger->isRunning) return;
 
   doubleClick = true;
   OnLButtonDown(e);
@@ -6954,7 +6954,7 @@ void CExecView::on_DbgRunToSelAct_triggered() {
   pp->FuncDocDir = myDoc->IDTable.DocDir;
   pp->FuncDoc = (address)myDoc;
   pp->FuncID.nID = myID.nID;
-  pp->FuncID.nINCL = LBaseData->debugThread->myDoc->IDTable.GetINCL(pp->FuncDocName,pp->FuncDocDir);
+  pp->FuncID.nINCL = LBaseData->debugger->myDoc->IDTable.GetINCL(pp->FuncDocName,pp->FuncDocDir);
   if (pp->FuncID.nINCL < 0) {
     LBaseData->ContData->RunToPnt.Destroy();
     QMessageBox::critical(this,qApp->applicationName(),"This run-to-selection is not part of the debugged lava program",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
@@ -6974,7 +6974,7 @@ void CExecView::OnUpdateDbgStart(QAction* action) {
   //     che && (((LavaDECL*)che->data)->DeclType == VirtualType);
   //     che = (CHE*) che->successor);
   //action->setEnabled(che && (((LavaDECL*)che->data)->DeclType == Initiator));
-  if (LBaseData->debugOn) {
+  if (LBaseData->debugger->isRunning) {
     action->setEnabled(LBaseData->enableBreakpoints);
     return;
   }
@@ -7012,11 +7012,11 @@ void CExecView::OnUpdateDbgBreakpoint(QAction* action)
     && !text->currentSynObj->IsConstant()
     && !(text->currentSynObj->primaryToken == declare_T)
     && !(text->currentSynObj->primaryToken == Semicolon_T)
-    && (LBaseData->enableBreakpoints || !LBaseData->debugOn));
+    && (LBaseData->enableBreakpoints || !LBaseData->debugger->isRunning));
 }
 
 void CExecView::OnUpdateDbgClearBreakpoints(QAction* action) {
-  action->setEnabled(LBaseData->enableBreakpoints || !LBaseData->debugOn);
+  action->setEnabled(LBaseData->enableBreakpoints || !LBaseData->debugger->isRunning);
 }
 
 void CExecView::OnUpdateDbgStop(QAction* action) {

@@ -647,6 +647,16 @@
 			<File
 				RelativePath="LavaThread.h"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="PEBaseDoc.h"
@@ -838,6 +848,18 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\LavaBaseDoc.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\generated\moc_LavaThread.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="..\LavaThread.h"
 					/>
 				</FileConfiguration>
 			</File>

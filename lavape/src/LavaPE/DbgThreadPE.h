@@ -23,10 +23,10 @@ public:
   DbgMessage *newReceived;
 };
 
-class CLavaPEDebugThread : public CLavaThread
+class CLavaPEDebugger : public CLavaDbgBase
 {
 public:
-  CLavaPEDebugThread() {
+  CLavaPEDebugger() {
     dbgRequest=0;
     get_cid=0;
     put_cid=0;
@@ -53,14 +53,25 @@ public:
   void restoreBrkPoints(CLavaBaseDoc* openedDoc);
   virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc);
   virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc);
-  ~CLavaPEDebugThread() {reset(true);}
+  ~CLavaPEDebugger() {reset(true);}
   void reset(bool final);
+
+public slots:
+  void start();
+  void connectToClient();
+  void connected();
+  void receive();
+  void send();
+  void error(QAbstractSocket::SocketError socketError);
+  void disconnected();
+  void stop();
 
 protected:
   void checkBrkPnts0();
   void checkBrkPnts1();
   void checkBrkPnts2();
-  void run();
+
+  Q_OBJECT
 }; 
 
 #endif

@@ -130,7 +130,7 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   QActionGroup *ag = new QActionGroup( this);
   ag->setExclusive( TRUE );
   QSignalMapper *styleMapper = new QSignalMapper( this );
-  connect( styleMapper, SIGNAL( mapped(const QString&) ), this, SLOT( makeStyle(const QString&) ) );
+  connect( styleMapper,SIGNAL( mapped(const QString&) ),SLOT( makeStyle(const QString&) ) );
 
   QStringList list = QStyleFactory::keys();
   list.sort();
@@ -139,7 +139,7 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
 		QString styleStr = *it;
 		QAction *a = new QAction( styleStr,ag);
     a->setCheckable(true);
-		connect( a, SIGNAL( triggered() ), styleMapper, SLOT(map()) );
+		QObject::connect( a,SIGNAL( triggered() ), styleMapper, SLOT(map()) );
 		styleMapper->setMapping(a,a->text() );
 		if (LBaseData->m_style == styleStr)
 		  a->setChecked(true);
@@ -359,7 +359,7 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   //pb->setWindowFlags(Qt::SubWindow);
 
   tb->addWidget(pb);
-  connect(pb,SIGNAL(clicked()),this,slotParm);
+  connect(pb,SIGNAL(clicked()),slotParm);
   f = pb->font();
   f.setBold(true);
   pb->setFont(f);
@@ -380,7 +380,7 @@ void CLavaMainFrame::newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,
   QFont f;
 
   pb = new QPushButton(QString(text),tb);
-  connect(pb,SIGNAL(clicked()),this,slotParm);
+  connect(pb,SIGNAL(clicked()),slotParm);
   f = pb->font();
   f.setBold(true);
   pb->setFont(f);
@@ -926,7 +926,7 @@ void CLavaMainFrame::on_overrideAction_triggered()
 
 void CLavaMainFrame::on_DbgAction_triggered()
 {
-  if (((CLavaPEDebugThread*)LBaseData->debugThread)->isRunning()) {
+  if (((CLavaPEDebugger*)LBaseData->debugger)->isRunning) {
     DbgMessage* mess = new DbgMessage(Dbg_Continue);
     QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
   }
@@ -942,7 +942,7 @@ void CLavaMainFrame::on_DbgClearBreakpointsAct_triggered()
   if (!LBaseData->ContData)
     LBaseData->ContData = new DbgContData;
   LBaseData->ContData->ClearBrkPnts = true;
-  ((CLavaPEDebugThread*)LBaseData->debugThread)->clearBrkPnts();
+  ((CLavaPEDebugger*)LBaseData->debugger)->clearBrkPnts();
 }
 
 void CLavaMainFrame::on_DbgBreakpointAct_triggered()
@@ -990,13 +990,13 @@ void CLavaMainFrame::on_DbgStepoutAct_triggered()
 
 void CLavaMainFrame::on_DbgStopAction_triggered()
 {
-  if (((CLavaPEDebugThread*)LBaseData->debugThread)->interpreterWaits) {
+  if (((CLavaPEDebugger*)LBaseData->debugger)->interpreterWaits) {
     DbgMessage* mess = new DbgMessage(Dbg_Exit);
     QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
   }
   else
-    if  (((CLavaPEDebugThread*)LBaseData->debugThread)->startedFromLava)
-      delete ((CLavaPEDebugThread*)LBaseData->debugThread)->workSocket;
+    if  (((CLavaPEDebugger*)LBaseData->debugger)->startedFromLava)
+      delete ((CLavaPEDebugger*)LBaseData->debugger)->workSocket;
     else
       ((CLavaPEApp*)qApp)->interpreter.kill();
 }

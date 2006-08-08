@@ -106,8 +106,8 @@ CLavaGUIPopupD::CLavaGUIPopupD(QWidget* parent, CGUIProgBase *guiPr, CHEFormNode
   qvbl->addWidget(hb);
   hbl->addWidget(okButton);
 //  hbl->addWidget(cancelButton);
-  connect(okButton, SIGNAL(clicked()), this, SLOT(on_cancelButton_clicked()));
-//  connect(cancelButton, SIGNAL(clicked()), this, SLOT(OnCancel()));
+  connect(okButton,SIGNAL(clicked()),SLOT(on_cancelButton_clicked()));
+//  connect(cancelButton,SIGNAL(clicked()),SLOT(OnCancel()));
   hide();
 }
 
