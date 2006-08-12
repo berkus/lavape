@@ -170,7 +170,7 @@ void CExecView::OnCloseExec()
   if (myDoc->mySynDef)
     ((SelfVar*)text->ckd.selfVar)->execView = 0;
   destroying = true;
-  if (!ExecCount && ((wxApp*)qApp)->m_appWindow)
+  if (!ExecCount && wxTheApp->m_appWindow)
     myDoc->OnCloseLastExecView();
   if (myDoc->mySynDef // document is not yet closed
   && ((SelfVar*)myDECL->Exec.ptr)->IsEmptyExec()

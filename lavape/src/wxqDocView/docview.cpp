@@ -276,6 +276,17 @@ wxDocument::wxDocument(wxDocument *parent)
 wxDocument::~wxDocument()
 {
   deleting = true;
+  DeleteAllChildFrames();
+  wxDocManager::GetDocumentManager()->RemoveDocument(this);
+}
+
+void wxDocument::customEvent(QEvent *ev) {
+  switch (ev->type()) {
+  case UEV_Close:
+    Close();
+    break;
+  default: ;
+  }
 }
 
 bool wxDocument::Close()
@@ -288,11 +299,9 @@ bool wxDocument::Close()
 
 bool wxDocument::OnCloseDocument()
 {
-  if (wxDocManager::GetDocumentManager() && !deleting)
-    wxDocManager::GetDocumentManager()->RemoveDocument(this);
-  deleting = true;
-  DeleteAllChildFrames();
-  //deleteLater();
+  //if (wxDocManager::GetDocumentManager() && !deleting)
+  //  wxDocManager::GetDocumentManager()->RemoveDocument(this);
+  deleteLater();
   return true;
 }
 
@@ -301,8 +310,7 @@ bool wxDocument::OnCloseDocument()
 bool wxDocument::DeleteAllChildFrames()
 {
   while (m_docChildFrames.size())
-    //delete m_docChildFrames.takeAt(0);
-    delete m_docChildFrames.takeAt(0);//->deleteLater();
+    delete m_docChildFrames.takeAt(0);
   return true;
 }
 
@@ -571,6 +579,7 @@ bool wxDocument::AddView(wxView *view)
 }
 
 bool wxDocument::RemoveView(wxView *view)
+// Called from ~wxView
 {
     m_documentViews.removeAt(m_documentViews.indexOf(view));
     OnChangedViewList();
@@ -581,7 +590,9 @@ void wxDocument::AddChildFrame(wxMDIChildFrame *chf) {
   m_docChildFrames.append(chf);
 }
 
-void wxDocument::RemoveChildFrame(wxMDIChildFrame *chf) {
+void wxDocument::RemoveChildFrame(wxMDIChildFrame *chf)
+// Called from ~wxMDIChildFrame
+{
   m_docChildFrames.removeAt(m_docChildFrames.indexOf(chf));
 }
 
@@ -640,9 +651,9 @@ wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QWidget(par
 
   m_viewDocument = doc;
   m_viewFrame = CalcParentFrame();
+  m_viewFrame->AddView(this);
   if (parent->inherits("QMainWindow"))
     ((QMainWindow*)parent)->setCentralWidget(this);
-  m_viewFrame->AddView(this);
 }
 
 void wxView::mousePressEvent ( QMouseEvent * e )
@@ -669,9 +680,8 @@ wxView::~wxView()
 {
   deleting = true;
   wxDocManager::GetDocumentManager()->SetActiveView(this, false);
-  m_viewFrame->RemoveView(this);
-  if (!m_viewDocument->deleting)
-    m_viewDocument->RemoveView(this);
+  //m_viewFrame->RemoveView(this); // at this time the frame and its m_viewList has already been destroyed
+  m_viewDocument->RemoveView(this);
 }
 
 
@@ -944,7 +954,7 @@ void wxDocManager::OnFileClose()
   if (!doc)
     return;
   doc->Close();
-  RemoveDocument(doc);
+  //RemoveDocument(doc);
 }
 
 void wxDocManager::OnUndo()
@@ -1593,6 +1603,7 @@ void wxDocManager::AddDocument(wxDocument *doc)
 }
 
 void wxDocManager::RemoveDocument(wxDocument *doc)
+// Called from ~wxDocument
 {
   m_docs.removeAt(m_docs.indexOf(doc));
 }
@@ -1616,442 +1627,6 @@ void wxDocManager::SetActiveView(wxView *view, bool activate)
 }
 
 
-/*
-void wxDocManager::OnPrint(wxCommandEvent& WXUNUSED(event))
-{
-#if wxUSE_PRINTING_ARCHITECTURE
-    wxView *view = GetCurrentView();
-    if (!view)
-        return;
-
-    wxPrintout *printout = view->OnCreatePrintout();
-    if (printout)
-    {
-        wxPrinter printer;
-        printer.Print(view->GetFrame(), printout, true);
-
-        delete printout;
-    }
-#endif // wxUSE_PRINTING_ARCHITECTURE
-}
-
-
-void wxDocManager::OnPrintSetup(wxCommandEvent& WXUNUSED(event))
-{
-#if wxUSE_PRINTING_ARCHITECTURE
-    QWidget *parentWin = qApp->GetTopWindow();
-    wxView *view = GetCurrentView();
-    if (view)
-        parentWin = view->GetFrame();
-
-    wxPrintDialogData data;
-
-    wxPrintDialog printerDialog(parentWin, &data);
-    printerDialog.GetPrintDialogData().SetSetupDialog(true);
-    printerDialog.ShowModal();
-#endif // wxUSE_PRINTING_ARCHITECTURE
-}
-
-void wxDocManager::OnPreview(wxCommandEvent& WXUNUSED(event))
-{
-#if wxUSE_PRINTING_ARCHITECTURE
-    wxView *view = GetCurrentView();
-    if (!view)
-        return;
-
-    wxPrintout *printout = view->OnCreatePrintout();
-    if (printout)
-    {
-        // Pass two printout objects: for preview, and possible printing.
-        wxPrintPreviewBase *preview = (wxPrintPreviewBase *) NULL;
-        preview = new wxPrintPreview(printout, view->OnCreatePrintout());
-
-        wxPreviewFrame *frame = new wxPreviewFrame(preview, (QMainWindow *)qApp->GetTopWindow(), tr("Print Preview"),
-                wxPoint(100, 100), wxSize(600, 650));
-        frame->Centre(wxBOTH);
-        frame->Initialize();
-        frame->Show(true);
-    }
-#endif // wxUSE_PRINTING_ARCHITECTURE
-}
-*/
-// ----------------------------------------------------------------------------
-// Default document child frame
-// ----------------------------------------------------------------------------
-/*
-wxDocChildFrame::wxDocChildFrame(QWidget *parent)
-               : QMainWindow(parent)
-{
-    m_childDocument = doc;
-    m_childView = view;
-    if (view)
-        view->SetFrame(this);
-}
-
-wxDocChildFrame::~wxDocChildFrame()
-{
-}
-
-
-void wxDocChildFrame::OnActivate(bool activate)
-{
-//    QMainWindow::OnActivate();
-
-    if (m_childView)
-        m_childView->Activate(activate); //???
-}
-
-void wxDocChildFrame::OnCloseWindow()
-{
-    if (m_childView)
-    {
-        bool ans = true;//false;
-    }
-}
-*/
-// ----------------------------------------------------------------------------
-// Default parent frame
-// ----------------------------------------------------------------------------
-/*
-wxDocParentFrame::wxDocParentFrame(wxDocManager *manager,
-                                   QMainWindow *frame,
-                                   wxWindowID id,
-                                   const QString& title,
-                                   const QPoint& pos,
-                                   const QSize& size,
-                                   long style,
-                                   const QString& name)
-//                : QMainWindow(frame,name)
-{
-    m_docManager = manager;
-}
-
-void wxDocParentFrame::OnExit()
-{
-    close();
-}
-
-void wxDocParentFrame::OnMRUFile(unsigned histFileIndex)
-{
-//    int n = event.GetId() - wxID_FILE1;  // the index in MRU list
-    QString filename(m_docManager->GetHistoryFile(histFileIndex));
-    if ( !filename.isEmpty() )
-    {
-        // verify that the file exists before doing anything else
-        QFileInfo fi(filename);
-        if ( fi.exists() )
-        {
-            // try to open it
-            (void)m_docManager->CreateDocument(filename, wxDOC_SILENT);
-        }
-        else
-        {
-            // remove the bogus filename from the MRU list and notify the user
-            // about it
-            m_docManager->RemoveFileFromHistory(histFileIndex);
-
-            QString msg;
-            msg.sprintf(tr("The file '%s' doesn't exist and couldn't be opened.\nIt has been also removed from the MRU files list."),
-                filename);
-            QMessageBox::information(
-              wxTheApp->m_appWindow,qApp->name(),msg,
-              QMessageBox::Ok | QMessageBox::Default,
-              0,
-              0);
-        }
-    }
-}
-
-// Define the behaviour for the frame closing
-// - must delete all frames except for the main one.
-void wxDocParentFrame::OnCloseWindow()
-{
-    if (m_docManager->Clear(true))
-    {
-        this->close(true);
-    }
-}
-*/
-
-#if wxUSE_PRINTING_ARCHITECTURE
-
-wxDocPrintout::wxDocPrintout(wxView *view, const QString& title)
-             : wxPrintout(title)
-{
-    m_printoutView = view;
-}
-
-bool wxDocPrintout::OnPrintPage(int WXUNUSED(page))
-{
-    wxDC *dc = GetDC();
-
-    // Get the logical pixels per inch of screen and printer
-    int ppiScreenX, ppiScreenY;
-    GetPPIScreen(&ppiScreenX, &ppiScreenY);
-    int ppiPrinterX, ppiPrinterY;
-    GetPPIPrinter(&ppiPrinterX, &ppiPrinterY);
-
-    // This scales the DC so that the printout roughly represents the
-    // the screen scaling. The text point size _should_ be the right size
-    // but in fact is too small for some reason. This is a detail that will
-    // need to be addressed at some point but can be fudged for the
-    // moment.
-    float scale = (float)((float)ppiPrinterX/(float)ppiScreenX);
-
-    // Now we have to check in case our real page size is reduced
-    // (e.g. because we're drawing to a print preview memory DC)
-    int pageWidth, pageHeight;
-    int w, h;
-    dc->GetSize(&w, &h);
-    GetPageSizePixels(&pageWidth, &pageHeight);
-
-    // If printer pageWidth == current DC width, then this doesn't
-    // change. But w might be the preview bitmap width, so scale down.
-    float overallScale = scale * (float)(w/(float)pageWidth);
-    dc->SetUserScale(overallScale, overallScale);
-
-    if (m_printoutView)
-    {
-        m_printoutView->OnDraw(dc);
-    }
-    return true;
-}
-
-bool wxDocPrintout::HasPage(int pageNum)
-{
-    return (pageNum == 1);
-}
-
-bool wxDocPrintout::OnBeginDocument(int startPage, int endPage)
-{
-    if (!wxPrintout::OnBeginDocument(startPage, endPage))
-        return false;
-
-    return true;
-}
-
-void wxDocPrintout::GetPageInfo(int *minPage, int *maxPage, int *selPageFrom, int *selPageTo)
-{
-    *minPage = 1;
-    *maxPage = 1;
-    *selPageFrom = 1;
-    *selPageTo = 1;
-}
-
-#endif // wxUSE_PRINTING_ARCHITECTURE
-
-// ----------------------------------------------------------------------------
-// Command processing framework
-// ----------------------------------------------------------------------------
-/*
-wxCommand::wxCommand(bool canUndoIt, const QString& name)
-{
-    m_canUndo = canUndoIt;
-    m_commandName = name;
-}
-
-wxCommand::~wxCommand()
-{
-}
-
-// Command processor
-wxCommandProcessor::wxCommandProcessor(int maxCommands)
-: m_currentCommand(QList<wxCommand*>::iterator(m_commands))
-{
-    m_maxNoCommands = maxCommands;
-    m_commandEditMenu = (QMenu *) NULL;
-}
-
-wxCommandProcessor::~wxCommandProcessor()
-{
-    ClearCommands();
-}
-
-// Pass a command to the processor. The processor calls Do();
-// if successful, is appended to the command history unless
-// storeIt is false.
-bool wxCommandProcessor::Submit(wxCommand *command, bool storeIt)
-{
-  bool success = command->Do();
-
-  if (success && storeIt)
-  {
-    if (m_commands.count() == m_maxNoCommands)
-    {
-      delete m_commands.first();
-      m_commands.removeFirst();
-    }
-
-    // Correct a bug: we must chop off the current 'branch'
-    // so that we're at the end of the command list.
-    if (!m_currentCommand.hasNext())
-      ClearCommands();
-    else {
-      while (m_currentCommand.hasNext()) {
-        delete m_currentCommand.next();
-        m_currentCommand.remove();
-      }
-    }
-
-    m_commands.append(command);
-    m_currentCommand.toBack();
-    m_currentCommand.previous();
-    SetMenuStrings();
-  }
-  return success;
-}
-
-bool wxCommandProcessor::Undo()
-{
-    if (m_currentCommand.hasNext())
-    {
-        wxCommand *command = m_currentCommand.next();
-        if (command->CanUndo())
-        {
-            bool success = command->Undo();
-            if (success)
-            {
-                m_currentCommand.previous();
-                SetMenuStrings();
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-bool wxCommandProcessor::Redo()
-{
-    wxCommand *redoCommand = (wxCommand *) NULL;
-//    wxNode *redoNode = (wxNode *) NULL;
-    if (m_currentCommand && m_commands.next())
-    {
-        redoCommand = m_commands.next();
-    }
-    else
-    {
-        if (m_commands.count() > 0)
-        {
-            redoCommand = m_commands.first();
-        }
-    }
-
-    if (redoCommand)
-    {
-        bool success = redoCommand->Do();
-        if (success)
-        {
-            SetMenuStrings();
-            return true;
-        }
-    }
-    return false;
-}
-
-bool wxCommandProcessor::CanUndo() const
-{
-    if (m_currentCommand)
-        return ((wxCommand *)m_currentCommand)->CanUndo();
-    return false;
-}
-
-bool wxCommandProcessor::CanRedo() const
-{
-    if (m_currentCommand && (m_currentCommand->Next() == (wxNode*) NULL))
-        return false;
-
-    if ((m_currentCommand != (wxNode*) NULL) && (m_currentCommand->Next() != (wxNode*) NULL))
-        return true;
-
-    if ((m_currentCommand == (wxNode*) NULL) && (m_commands.count() > 0))
-        return true;
-
-    if (m_commands.count() == 1)
-      return false;
-    if (m_commands.count() > 1)
-        return true;
-    if (!m_currentCommand && m_commands.count() > 0)
-        return true;
-    return false;
-}
-
-void wxCommandProcessor::Initialize()
-{
-    m_currentCommand = m_commands.last();
-    SetMenuStrings();
-}
-
-void wxCommandProcessor::SetMenuStrings()
-{
-    if (m_commandEditMenu)
-    {
-        QString buf;
-        if (m_currentCommand)
-        {
-            wxCommand *command = m_currentCommand;
-            QString commandName(command->GetName());
-            if (commandName == QString("")) commandName = tr("Unnamed command");
-            bool canUndo = command->CanUndo();
-            if (canUndo)
-                buf = QString(tr("&Undo ")) + commandName;
-            else
-                buf = QString(tr("Can't &Undo ")) + commandName;
-
-            m_commandEditMenu->changeItem(wxID_UNDO, buf);
-            m_commandEditMenu->setItemEnabled(wxID_UNDO, canUndo);
-
-            // We can redo, if we're not at the end of the history.
-            wxCommand *redoCommand = m_commands.next();
-            if (redoCommand)
-            {
-                QString redoCommandName(redoCommand->GetName());
-                if (redoCommandName == QString("")) redoCommandName = tr("Unnamed command");
-                buf = QString(tr("&Redo ")) + redoCommandName;
-                m_commandEditMenu->changeItem(wxID_REDO, buf);
-                m_commandEditMenu->setItemEnabled(wxID_REDO, true);
-            }
-            else
-            {
-                m_commandEditMenu->changeItem(wxID_REDO, tr("&Redo"));
-                m_commandEditMenu->setItemEnabled(wxID_REDO, false);
-            }
-        }
-        else
-        {
-            m_commandEditMenu->changeItem(wxID_UNDO, tr("&Undo"));
-            m_commandEditMenu->setItemEnabled(wxID_UNDO, false);
-
-            if (!m_commands.count())
-            {
-                m_commandEditMenu->changeItem(wxID_REDO, tr("&Redo"));
-                m_commandEditMenu->setItemEnabled(wxID_REDO, false);
-            }
-            else
-            {
-                // currentCommand is NULL but there are commands: this means that
-                // we've undone to the start of the list, but can redo the first.
-                wxCommand *redoCommand = (wxCommand *)m_commands.first();
-                QString redoCommandName(redoCommand->GetName());
-                if (redoCommandName == QString("")) redoCommandName = tr("Unnamed command");
-                buf = QString(tr("&Redo ")) + redoCommandName;
-                m_commandEditMenu->changeItem(wxID_REDO, buf);
-                m_commandEditMenu->setItemEnabled(wxID_REDO, true);
-            }
-        }
-    }
-}
-
-void wxCommandProcessor::ClearCommands()
-{
-    wxCommand *command = m_commands.first();
-    while (command)
-    {
-        m_commands.remove();
-        command = m_commands.first();
-    }
-    m_currentCommand = 0;
-}
-*/
 // ----------------------------------------------------------------------------
 // File history processor
 // ----------------------------------------------------------------------------

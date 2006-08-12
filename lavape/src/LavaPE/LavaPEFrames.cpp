@@ -1818,7 +1818,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 		return true;
   }
   else {
-    //deleteLater();
+    deleteLater();
     return false;
   }
 }
@@ -1839,8 +1839,7 @@ CTreeFrame::~CTreeFrame()
 
 void CTreeFrame::closeEvent(QCloseEvent *e)
 {
-	if (viewM->GetDocument()->Close())
-		QWidget::closeEvent(e);
+  QApplication::postEvent(viewM->GetDocument(),new CustomEvent(UEV_Close,(void*)this));
 }
 
 void CTreeFrame::Activate(bool activate, bool windowMenuAction)

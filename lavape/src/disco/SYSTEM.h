@@ -134,6 +134,30 @@ extern "C" DISCO_DLL void bcopy (const unsigned char* const,unsigned char*,unsig
         (unsigned char*)&toVariable, \
         sizeof(toVariable));
 
+// User defined events:
+#define UEV_Idle (QEvent::Type)QEvent::User
+#define UEV_LavaEnd (QEvent::Type)(QEvent::User+1)
+#define UEV_LavaShow (QEvent::Type)(QEvent::User+2)
+#define UEV_LavaPE_SyncTree (QEvent::Type)(QEvent::User+3)
+#define UEV_LavaPE_CalledView (QEvent::Type)(QEvent::User+4)
+#define UEV_LavaMsgBox (QEvent::Type)(QEvent::User+5)
+#define UEV_LavaPE_SyncForm (QEvent::Type)(QEvent::User+7)
+#define UEV_LavaPE_SetLastHint (QEvent::Type)(QEvent::User+8)
+#define UEV_OpenObject (QEvent::Type)(QEvent::User+9)
+#define UEV_LavaPE_OnDrop (QEvent::Type)(QEvent::User+10)
+#define UEV_LavaDump (QEvent::Type)(QEvent::User+11)
+#define UEV_LavaStart (QEvent::Type)(QEvent::User+12)
+#define UEV_LavaDebug (QEvent::Type)(QEvent::User+13)
+#define UEV_LavaDebugRq (QEvent::Type)(QEvent::User+14)
+#define UEV_LavaDebugW (QEvent::Type)(QEvent::User+15)
+#define UEV_LavaPE_setSel (QEvent::Type)(QEvent::User+16)
+#define UEV_WhatNext (QEvent::Type)(QEvent::User+17)
+#define UEV_PMDumpOff (QEvent::Type)(QEvent::User+18)
+#define UEV_Start (QEvent::Type)(QEvent::User+19)
+#define UEV_Send (QEvent::Type)(QEvent::User+20)
+#define UEV_Stop (QEvent::Type)(QEvent::User+21)
+#define UEV_Close (QEvent::Type)(QEvent::User+22)
+
 class DISCO_DLL CustomEvent : public  QEvent {
 public:
   CustomEvent(int type, void *data = 0):QEvent(static_cast<QEvent::Type>(type)) {

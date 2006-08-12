@@ -369,7 +369,6 @@ void LavaDumpFrame::closeEvent(QCloseEvent *e)
 {
   if (!returned) {
     returned = true;
-    //(*fromThread->pContExecEvent)--;
   }
   QWidget::closeEvent(e);
 }
@@ -379,7 +378,6 @@ void LavaDumpFrame::OnOK()
   if (!returned) {
     returned = true;
     QApplication::postEvent(this, new QCloseEvent());
-    //(*fromThread->pContExecEvent)--;
   }
   QDialog::accept();
 }

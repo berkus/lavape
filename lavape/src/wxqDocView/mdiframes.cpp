@@ -253,11 +253,6 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
   }
 }
 
-void wxMainFrame::OnCloseWindow()
-{
-    destroy();
-}
-
 wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
     : QWidget(parent)
 {
@@ -270,13 +265,8 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
 
   QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
   resize(sz.width()*7/10, sz.height()*7/10);
-  m_viewCount = 0;
   deleting = false;
   m_clientWindow = this;
-  //if (wxTheApp->isChMaximized)
-  //  oldWindowState = Qt::WindowMaximized;
-  //else
-  //  oldWindowState = Qt::WindowNoState;
   lastActive = 0;
   QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(QEvent::User,this));
 }
@@ -299,7 +289,6 @@ bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 void wxMDIChildFrame::AddView(wxView *view)
 {
   m_viewList.append(view);
-  m_viewCount++;
 }
 
 void wxMDIChildFrame::InitialUpdate()
@@ -327,11 +316,11 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
  if (title.length() && title.at(title.length()-1) == '*')
    title = title.left(title.length()-1);
  wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
- if (activate && m_viewCount)
+ if (activate)
    if (lastActive)
-     wxDocManager::GetDocumentManager()->SetActiveView(lastActive, activate);
+     wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
    else
-     wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),activate);
+     wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),true);
 }
 
 void wxMDIChildFrame::SetTitle(QString &title)
@@ -355,29 +344,29 @@ bool wxMDIChildFrame::event(QEvent *ev)
 }
 
 void wxMDIChildFrame::RemoveView(wxView *view)
+// Called from ~wxView
 {
-  if (deleting)
-    return;
-
-  m_viewCount--;
-  //if (!m_viewCount)
-  //  deleteLater();
+  if (view == lastActive)
+    lastActive = 0;
+  int sz = m_viewList.size();
+  int ind = m_viewList.indexOf(view);
+  if (ind >= 0 && ind < sz)
+    m_viewList.removeAt(ind);
 }
 
 wxMDIChildFrame::~wxMDIChildFrame()
 {
   QString title;
 
-  if (isVisible())
-    setFocus();  // to prevent a mysterious crash on file-exit/~CExecFrame
-  clearFocus();
+  //if (isVisible())
+  //  setFocus();  // to prevent a mysterious crash on file-exit/~CExecFrame
+  //clearFocus();
 
   title = windowTitle();
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   deleting = true;
-  if (!m_document->deleting)
-    m_document->RemoveChildFrame(this);
+  m_document->RemoveChildFrame(this);
   if (!wxTheApp->deletingMainFrame)
     wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
 }

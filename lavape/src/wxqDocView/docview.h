@@ -145,6 +145,8 @@ public:
     bool GetDocumentSaved() const { return m_savedYet; }
     void SetDocumentSaved(bool saved = true) { m_savedYet = saved; }
 
+    virtual void customEvent(QEvent *ev);
+
     virtual bool Close();
     virtual bool Save();
     virtual bool SaveAs();

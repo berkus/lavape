@@ -267,14 +267,14 @@ void CLavaDebugger::stop() {
   mSend.Destroy();
   mReceive.Destroy();
   brkPnts.Destroy();
-  //if (workSocket->isOpen())
-  //  workSocket->abort();
-  //delete workSocket;
+  workSocket->close();
+  delete workSocket;
   workSocket = 0;
-  //listenSocket->close();
-  //if (listenSocket)
-  //delete listenSocket;
-  listenSocket = 0;
+  if (listenSocket) {
+    listenSocket->close();
+    delete listenSocket;
+    listenSocket = 0;
+  }
   delete put_cid;
   delete get_cid;
 }

@@ -67,7 +67,6 @@ public:
   void closeEvent (QCloseEvent*);
   void OnMRUFile(int histFileIndex);
   void OnMRUWindow(int histWindowIndex);
-  void OnCloseWindow();
   void LoadFileHistory();
 	wxHistory *GetWindowHistory () { return m_childFrameHistory; }
   void TileVertic(QMenuBar *menubar, int& lastTile);
@@ -129,7 +128,6 @@ public:
 protected:
   void resizeEvent(QResizeEvent *ev);
   bool event (QEvent * e);
-  unsigned m_viewCount;
   QList<wxView*> m_viewList;
   QWidget *m_clientWindow;
   wxView* lastActive;

@@ -19,9 +19,6 @@
 #include "qobject.h"
 
 
-#define UEV_Idle (QEvent::Type)QEvent::User
-// User+0 is reserved for UEV_Idle; cf LavaAppBase.h
-
 
 // ----------------------------------------------------------------------------
 // compiler and OS identification
