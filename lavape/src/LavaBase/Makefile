@@ -1,6 +1,6 @@
 PRJ = LavaBase
 
-MOCABLES=AboutBox.h LavaAppBase.h LavaBaseDoc.h PEBaseDoc.h DumpView.h
+MOCABLES=AboutBox.h LavaAppBase.h LavaBaseDoc.h PEBaseDoc.h DumpView.h LavaThread.h
 
 DLL = LAVABASE
 EXEC = LavaBase.so
