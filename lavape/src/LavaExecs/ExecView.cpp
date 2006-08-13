@@ -171,7 +171,7 @@ void CExecView::OnCloseExec()
     ((SelfVar*)text->ckd.selfVar)->execView = 0;
   destroying = true;
   if (!ExecCount && wxTheApp->m_appWindow)
-    myDoc->OnCloseLastExecView();
+    wxTheApp->OnCloseLastExecView();
   if (myDoc->mySynDef // document is not yet closed
   && ((SelfVar*)myDECL->Exec.ptr)->IsEmptyExec()
   && (((SelfVar*)myDECL->Exec.ptr)->primaryToken == invariant_T

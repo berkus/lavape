@@ -18,7 +18,7 @@
 
 
 #include "mdiframes.h"
-#include "DbgThread.h"
+#include "Debugger.h"
 #include "ASN1File.h"
 #include "CDPpp.h"
 #include "Syntax.h"

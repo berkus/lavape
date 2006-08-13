@@ -872,6 +872,15 @@ int CLavaPEApp::OnAppExit()
   return 0;
 }
 
+void CLavaPEApp::OnCloseLastExecView()
+{
+	if (deletingMainFrame)
+    return;
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->hide();
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->hide();
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->hide();
+}
+
 int CLavaPEBrowse::findAnyForm(LavaDECL * decl, TID& refID, SynDef *lavaCode)
 {
   LavaDECL *defPDECL = ((TIDTable*)lavaCode->IDTable)->GetDECL(refID, decl->inINCL);

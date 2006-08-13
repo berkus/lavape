@@ -101,7 +101,7 @@ public:
     void SetVendorName(const QString& name);
     virtual void OpenDocumentFile (const QString& name) { return;}
     virtual wxView *activeView();
-
+    virtual void OnCloseLastExecView() {}
     QTimer *idleTimer;
     wxDocManager* m_docManager;
     wxMainFrame *m_appWindow;

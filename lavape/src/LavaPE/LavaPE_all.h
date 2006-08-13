@@ -11,7 +11,7 @@
 
 #include "Bars.h"
 #include "Boxes.h"
-#include "DbgThreadPE.h"
+#include "DebuggerPE.h"
 #include "ExecTree.h"
 #include "FindRefsBox.h"
 #include "InclView.h"

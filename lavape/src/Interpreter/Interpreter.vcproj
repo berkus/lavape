@@ -317,15 +317,14 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="DbgThread.cpp"
+				RelativePath=".\Debugger.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -333,10 +332,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough=""
 						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
@@ -496,7 +491,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="DbgThread.h"
+				RelativePath=".\Debugger.h"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -544,14 +539,24 @@
 			Name="Generated"
 			>
 			<File
-				RelativePath=".\generated\moc_DbgThread.cpp"
+				RelativePath=".\generated\moc_Debugger.cpp"
 				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="..\Debugger.h"
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
+					/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						PrecompiledHeaderThrough="..\DbgThread.h"
+						PrecompiledHeaderThrough="..\Debugger.h"
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 			</File>

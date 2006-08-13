@@ -268,17 +268,13 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="DbgThreadPE.cpp"
+				RelativePath=".\DebuggerPE.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough=""
 						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
@@ -287,8 +283,7 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
+						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -649,7 +644,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="DbgThreadPE.h"
+				RelativePath=".\DebuggerPE.h"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -657,7 +652,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -881,14 +876,23 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\generated\moc_DbgThreadPE.cpp"
+				RelativePath=".\generated\moc_DebuggerPE.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						PrecompiledHeaderThrough="..\DbgThreadPE.h"
+						PrecompiledHeaderThrough="..\DebuggerPE.h"
+						PrecompiledHeaderFile="PCH/LavaPE_all.pch"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="..\DebuggerPE.h"
 						PrecompiledHeaderFile="PCH/LavaPE_all.pch"
 					/>
 				</FileConfiguration>

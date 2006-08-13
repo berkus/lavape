@@ -9,7 +9,7 @@
 
 #include "Check.h"
 #include "Constructs.h"
-#include "DbgThread.h"
+#include "Debugger.h"
 #include "LavaProgram.h"
 #include "Tokens.h"
 

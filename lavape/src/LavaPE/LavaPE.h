@@ -7,7 +7,7 @@
 //#include "LavaPEFrames.h"
 #include "ChString.h"
 #include "LavaAppBase.h"
-#include "DbgThreadPE.h"
+#include "DebuggerPE.h"
 #include "ExecUpdate.h"
 //#include "prelude.h"
 #include <QTcpSocket>
@@ -92,6 +92,7 @@ public:
   void OnUpdateSaveAll(QAction* action);
   void saveSettings();
   QString InitWebBrowser ();
+  void OnCloseLastExecView();
 
   Q_OBJECT;
 };

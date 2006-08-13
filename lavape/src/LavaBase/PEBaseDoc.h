@@ -89,7 +89,6 @@ public:
   virtual CHE* GetExecChe(LavaDECL* parentDecl,TDeclType type,bool makeIt=true) {return 0;}
   virtual CHE* SetExecChe(LavaDECL* parentDecl,LavaDECL* execDecl) {return 0;}
   virtual bool OpenExecView(LavaDECL* execDECL) {return false;}
-  virtual void OnCloseLastExecView() {}
   virtual void SetExecFindText(CSearchData& /*sData*/) {}
   virtual void SetPEError(const CHAINX& /*ErrChain*/, bool /*andShow*/) {}
   virtual void ResetError() {}

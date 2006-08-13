@@ -20,7 +20,7 @@
 #include "Constructs.h"
 #include "LavaMainFrameBase.h"
 #include "Check.h"
-#include "DbgThread.h"
+#include "Debugger.h"
 #include "BAdapter.h"
 #include "LavaAppBase.h"
 #include "LavaBaseDoc.h"

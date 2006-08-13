@@ -3016,15 +3016,6 @@ bool CLavaPEDoc::OnCloseDocument()
   return CPEBaseDoc::OnCloseDocument();
 }
 
-void CLavaPEDoc::OnCloseLastExecView()
-{
-	if (wxTheApp->deletingMainFrame)
-    return;
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_5->hide();
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_6->hide();
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->Toolbar_7->hide();
-}
-
 bool CLavaPEDoc::OnEmptyDoc(const QString& Name)
 {
   bool bb;

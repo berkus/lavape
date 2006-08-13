@@ -7,7 +7,7 @@
 #include "docview.h"
 #include "docview.h"
 #include "qstring.h"
-#include "DbgThread.h"
+#include "Debugger.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

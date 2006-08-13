@@ -64,7 +64,6 @@ public:
   virtual void Modify(bool bModified);
   void OnCheck();
   bool OnCloseDocument();
-  virtual void OnCloseLastExecView();
   virtual bool OnNewDocument();
   virtual bool OnOpenDocument(const QString& filename);
   void OnRunLava();

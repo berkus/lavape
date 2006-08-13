@@ -23,7 +23,7 @@
 #include "SynIDTable.h"
 #include "LavaBaseDoc.h"
 #include "LavaBaseStringInit.h"
-#include "DbgThread.h"
+#include "Debugger.h"
 #include "Constructs.h"
 #include "BAdapter.h"
 #include "LavaGUIView.h"

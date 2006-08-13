@@ -4,7 +4,7 @@
 #include "SylTraversal.h"
 #include "TreeView.h"
 #include "DumpView.h"
-#include "DbgThreadPE.h"
+#include "DebuggerPE.h"
 #include "Resource.h"
 #include "Syntax.h"
 #include "wxExport.h"
