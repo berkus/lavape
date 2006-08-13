@@ -1,6 +1,6 @@
 PRJ = LavaPE
 
-MOCABLES=Bars.h Boxes.h DbgThreadPE.h FindRefsBox.h LavaPE.h LavaPEFrames.h LavaPEView.h LavaPEDoc.h InclView.h TreeView.h VTView.h LavaPEWizard.h
+MOCABLES=Bars.h Boxes.h DebuggerPE.h FindRefsBox.h LavaPE.h LavaPEFrames.h LavaPEView.h LavaPEDoc.h InclView.h TreeView.h VTView.h LavaPEWizard.h
 
 EXEC = LavaPE
 
