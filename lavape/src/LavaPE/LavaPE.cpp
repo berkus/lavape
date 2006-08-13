@@ -88,7 +88,7 @@ int main( int argc, char ** argv ) {
 
 #ifdef _DEBUG
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-  //_CrtSetBreakAlloc(38892);
+  //_CrtSetBreakAlloc(206362);
 #endif
 
   //QTest::qSleep(20000);
@@ -824,15 +824,11 @@ CLavaPEApp::~CLavaPEApp()
 {
   OnAppExit();
   FindList.Destroy();
+
   for (int i = 0; LavaIcons[i] != 0; i++)
     delete LavaIcons[i];
   for (int i = 0; LavaPixmaps[i] != 0; i++)
     delete LavaPixmaps[i];
-  debugger.dbgRequest = 0;
-  if (debugger.workSocket && debugger.workSocket->state() != QAbstractSocket::UnconnectedState)
-    debugger.workSocket->abort();
-  //debugger.resume();
-  //debugger.wait();
 }
 
 void CLavaPEApp::saveSettings()

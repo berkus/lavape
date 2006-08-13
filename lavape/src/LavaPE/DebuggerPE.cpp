@@ -57,8 +57,8 @@ void CLavaPEDebugger::reset(bool final)
     delete put_cid;
   put_cid= 0;
   if (final) {
-    if (dbgReceived.lastReceived)
-      delete dbgReceived.lastReceived;
+    if (dbgReceived.newReceived)
+      delete dbgReceived.newReceived;
     dbgReceived.lastReceived = 0;
   }
   else {

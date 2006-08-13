@@ -53,7 +53,9 @@ public:
   void restoreBrkPoints(CLavaBaseDoc* openedDoc);
   virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc);
   virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc);
-  ~CLavaPEDebugger() {reset(true);}
+  ~CLavaPEDebugger() {
+    reset(true);
+  }
   void reset(bool final);
 
 public slots:
