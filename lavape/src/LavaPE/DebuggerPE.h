@@ -15,7 +15,7 @@
 #include "qobject.h"
 #include "qstring.h"
 
-class DbgMessages 
+class DbgMessages
 {
 public:
   DbgMessages() {lastReceived = 0; newReceived = 0;}
@@ -64,7 +64,7 @@ public slots:
   void connected();
   void receive();
   void send();
-  void error(QAbstractSocket::SocketError socketError);
+  void error(QAbstractSocket::SocketError);
   void disconnected();
   void stop();
 
@@ -74,6 +74,6 @@ protected:
   void checkBrkPnts2();
 
   Q_OBJECT
-}; 
+};
 
 #endif

@@ -190,7 +190,7 @@ void CLavaPEDebugger::start() {
   }
   else {
     workSocket = new QTcpSocket;
-    connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error()));
+    connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
     //connect(workSocket,SIGNAL(connected()),SLOT(connected()));
     connect(workSocket,SIGNAL(disconnected()),SLOT(disconnected()));
     connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
@@ -203,7 +203,7 @@ void CLavaPEDebugger::connectToClient() {
   workSocket = listenSocket->nextPendingConnection();
   connect(workSocket,SIGNAL(disconnected()),SLOT(disconnected()));
   connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
-  connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error()));
+  connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
   connected();
 }
 
