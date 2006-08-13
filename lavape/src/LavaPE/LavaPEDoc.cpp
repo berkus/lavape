@@ -3174,11 +3174,11 @@ void CLavaPEDoc::OnDebugLava()
   ((CLavaPEApp*)qApp)->debugger.adjustBrkPnts();
   ((CLavaPEApp*)qApp)->debugger.start();
 }
-
-void CLavaPEDoc::interpreterExited () {
-  delete ((CLavaPEApp*)wxTheApp)->debugger.workSocket;
-  ((CLavaPEApp*)qApp)->debugger.stop();
-}
+//
+//void CLavaPEDoc::interpreterExited () {
+//  delete ((CLavaPEApp*)wxTheApp)->debugger.workSocket;
+//  ((CLavaPEApp*)qApp)->debugger.stop();
+//}
 
 //check all included documents
 void CLavaPEDoc::OnTotalCheck() 

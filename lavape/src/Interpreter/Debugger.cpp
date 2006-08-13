@@ -267,167 +267,18 @@ void CLavaDebugger::stop() {
   mSend.Destroy();
   mReceive.Destroy();
   brkPnts.Destroy();
-  workSocket->close();
-  delete workSocket;
+  workSocket->disconnectFromHost();
+  //delete workSocket;
   workSocket = 0;
   if (listenSocket) {
     listenSocket->close();
-    delete listenSocket;
+    //delete listenSocket;
     listenSocket = 0;
   }
   delete put_cid;
   delete get_cid;
 }
-/*
-void CLavaDebugger::run() {
-	QString lavapePath, buf;
-  quint16 locPort;
-  DDItemData * oid;
-  bool fin = false;
 
-  if (debugOn) {
-    workSocket = new QTcpSocket;
-    workSocket->connectToHost(remoteIPAddress,remotePort);
-    workSocket->waitForConnected();
-  }
-  else { //PMDump
-
-#ifdef WIN32
-    lavapePath = ExeDir + "/LavaPE.exe";
-#else
-    lavapePath = ExeDir + "/LavaPE";
-#endif
-
-    if (!listenSocket) {
-      listenSocket = new QTcpServer;
-      listenSocket->listen();
-    }
-
-    locPort = listenSocket->serverPort();
-    QString host_addr = "127.0.0.1";
-	  QStringList args;
-	  args << myDoc->GetFilename() << host_addr << QString("%1").arg(locPort);
-    if (!QProcess::startDetached(lavapePath,args)) {
-      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
-		  return;
-	  }
-    listenSocket->waitForNewConnection(5000);
-    workSocket = listenSocket->nextPendingConnection();
-  }
-
-  put_cid = new ASN1OutSock (workSocket);
-  if (!put_cid->Done) {
-    delete put_cid;
-    qApp->exit(1);
-  }
-
-  get_cid = new ASN1InSock (workSocket);
-  if (!get_cid->Done) {
-    delete get_cid;
-    qApp->exit(1);
-  }
-
-  if (!debugOn) {
-    varAction->run();
-    addCalleeParams();
-    mSend.SetSendData(Dbg_StopData, dbgStopData);
-    CDPDbgMessage0(PUT, put_cid, (address)&mSend);
-    put_cid->waitForBytesWritten();
-    myDoc->debugOn = true;
-  }
-  else
-    startedFromLavaPE = true;
-  LBaseData->debugger->isRunning = true;
-
-  while (true) {
-   	CDPDbgMessage0(GET,get_cid,(address)&mReceive);
-    if (get_cid->Done) {
-      switch (mReceive.Command) {
-      case Dbg_Exit:
-        fin = true;
-        break;
-      case Dbg_StackRq:
-        dbgStopData->ObjectChain.Destroy();
-        dbgStopData->ParamChain.Destroy();
-        dbgStopData->ActStackLevel = mReceive.CallStackLevel;
-        varAction->run();
-        if (!dbgStopData->ActStackLevel)
-          addCalleeParams();
-        mSend.SetSendData(Dbg_Stack, dbgStopData);
-        break;
-      case Dbg_MemberDataRq:
-        if (mReceive.fromParams)
-          oid = DebugItem::openObj((CHE*)dbgStopData->ParamChain.first, (CHEint*)mReceive.ObjNr.ptr->first);
-        else
-          oid = DebugItem::openObj((CHE*)dbgStopData->ObjectChain.first, (CHEint*)mReceive.ObjNr.ptr->first);
-        mSend.SetSendData(oid);
-        mReceive.ObjNr.Destroy();
-        break;
-      case Dbg_Continue:
-        if (varAction) {
-          setBrkPnts();
-          if (dbgStopData) {
-            dbgStopData->ActStackLevel = 0;  //reset dbgStopData
-            dbgStopData->CalleeStack = 0;
-            dbgStopData->StackChain.Destroy();
-            dbgStopData->ObjectChain.Destroy();
-            dbgStopData->ParamChain.Destroy();
-          }
-        }
-
-        m_execThread->resume();    //continue ExecuteLava
-        suspend();  //DebugThread wait for next stop with new dbgStopData
-
-        if (!varAction) {
-          fin = true;
-          break;
-        }
-        if (dbgStopData->StackChain.first) {
-          varAction->run();
-          addCalleeParams();
-          mSend.SetSendData(Dbg_StopData, dbgStopData);
-        }
-        else
-          fin = true;
-        break;
-      default:;
-      }
-      if (fin)
-        break;
-      CDPDbgMessage0(PUT, put_cid, (address)&mSend);
-      put_cid->waitForBytesWritten();
-      if (!put_cid->Done)
-        break;
-    }
-    else {
-      fin = true;
-      break;
-    }
-  }
-  delete dbgStopData;
-  dbgStopData = 0;
-  delete varAction;
-  varAction=0;
-
-  mSend.Destroy();
-  mReceive.Destroy();
-  brkPnts.Destroy();
-  //delete workSocket;
-  delete put_cid;
-  delete get_cid;
-  workSocket = 0;
-  if (listenSocket) {
-    delete listenSocket;
-    listenSocket = 0;
-  }
-  LBaseData->debugger->isRunning = false;
-  debugOn = false;
-  if (myDoc)
-    myDoc->debugOn = false;
-  CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, myDoc, (const unsigned long)3,(const unsigned long)m_execThread);
-  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
-}
-*/
 void CLavaDebugger::setBrkPnts()
 {
   CHEProgPoint *chePP, *chePPnew, *rmPP;

@@ -108,11 +108,11 @@ protected:
   bool openInTotalCheck;
   void ShrinkCollectDECL(LavaDECL* decl);
 
-public slots:
-  void interpreterExited();
+//public slots:
+//  void interpreterExited();
 
-private:
-    Q_OBJECT;
+//private:
+//    Q_OBJECT;
 };
 
 

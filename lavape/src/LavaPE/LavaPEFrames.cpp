@@ -990,15 +990,15 @@ void CLavaMainFrame::on_DbgStepoutAct_triggered()
 
 void CLavaMainFrame::on_DbgStopAction_triggered()
 {
-  if (((CLavaPEDebugger*)LBaseData->debugger)->interpreterWaits) {
-    DbgMessage* mess = new DbgMessage(Dbg_Exit);
-    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
-  }
-  else
-    if  (((CLavaPEDebugger*)LBaseData->debugger)->startedFromLava)
-      delete ((CLavaPEDebugger*)LBaseData->debugger)->workSocket;
-    else
-      ((CLavaPEApp*)qApp)->interpreter.kill();
+  //if (((CLavaPEDebugger*)LBaseData->debugger)->interpreterWaits) {
+  //  DbgMessage* mess = new DbgMessage(Dbg_Exit);
+  //  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
+  //}
+  //else
+    //if  (((CLavaPEDebugger*)LBaseData->debugger)->startedFromLava)
+      ((CLavaPEDebugger*)LBaseData->debugger)->workSocket->abort();
+    //else
+    //  ((CLavaPEApp*)qApp)->interpreter.kill();
 }
 
 void CLavaMainFrame::on_DbgRunToSelAct_triggered()

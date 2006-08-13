@@ -2286,8 +2286,8 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 #endif
         for (pos=0;pos<frameSize;pos++)
           newStackFrame[pos] = 0;
-        if (LBaseData->debugger->isRunning) {
-          //((CLavaDebugger*)LBaseData->debugger)->start();
+        if (!LBaseData->debugger->isRunning) {
+         ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
           QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
             //debug thread start, now initialisation is finished
           suspend(); 

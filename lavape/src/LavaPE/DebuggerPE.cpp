@@ -177,13 +177,13 @@ void CLavaPEDebugger::start() {
     if (!listenSocket) {
       listenSocket = new QTcpServer(this);
       connect(listenSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error()));
+      connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
       listenSocket->listen();
     }
     locPort = listenSocket->serverPort();
     QString host_addr = "127.0.0.1";
     QStringList args;
 	  args << lavaFile << host_addr << QString("%1").arg(locPort);
-    connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
     if (!QProcess::startDetached(interpreterPath,args)) {
       QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed,QMessageBox::Ok,0,0);
 		  return;
@@ -202,6 +202,7 @@ void CLavaPEDebugger::start() {
 
 void CLavaPEDebugger::connectToClient() {
   workSocket = listenSocket->nextPendingConnection();
+  connect(workSocket,SIGNAL(disconnected()),SLOT(disconnected()));
   connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
   connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error()));
   connected();
@@ -300,126 +301,6 @@ void CLavaPEDebugger::stop() {
   if (!wxTheApp->appExit && startedFromLava)
     qApp->exit(0);
 }
-/*
-void CLavaPEDebugger::run() {
-	QString interpreterPath, lavaFile = myDoc->GetFilename();
-  quint16 locPort;
-  bool ok, timedOut=false;
-
-#ifdef WIN32
-    interpreterPath = ExeDir + "/Lava.exe";
-#else
-    interpreterPath = ExeDir + "/Lava";
-#endif
-
-  if (myDoc->debugOn) {
-    if (!listenSocket) {
-      listenSocket = new QTcpServer;
-      listenSocket->listen();
-    }
-    locPort = listenSocket->serverPort();
-    QString host_addr = "127.0.0.1";
-    QStringList args;
-	  args << lavaFile << host_addr << QString("%1").arg(locPort);
-    if (!QProcess::startDetached(interpreterPath,args)) {
-      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed,QMessageBox::Ok,0,0);
-		  return;
-	  }
-
-    ok = listenSocket->waitForNewConnection(30000,&timedOut);
-    if (!ok)
-      qApp->exit(1);
-    workSocket = listenSocket->nextPendingConnection();
-  }
-  else {
-    workSocket = new QTcpSocket;
-    workSocket->connectToHost(remoteIPAddress,remotePort);
-    workSocket->waitForConnected();
-  }
-
-  put_cid = new ASN1OutSock (workSocket);
-  if (!put_cid->Done) {
-    delete put_cid;
-    qApp->exit(1);
-  }
-//  put_cid = out_cid;
-
-  get_cid = new ASN1InSock (workSocket);
-  if (!get_cid->Done) {
-    delete get_cid;
-    qApp->exit(1);
-  }
-
-  dbgRequest = 0;
-  if (myDoc->debugOn) {
-    dbgRequest = new DbgMessage(Dbg_Continue);
-    checkBrkPnts1();
-    checkBrkPnts0();
-    checkBrkPnts2();
-    if (!dbgRequest->ContData.ptr)
-      dbgRequest->ContData.ptr = new DbgContData;
-    ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = brkPnts.first;
-    ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = brkPnts.last;
-    if (dbgRequest->ContData.ptr)
-      ((DbgContData*)dbgRequest->ContData.ptr)->ContType = dbg_Cont;
-    CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
-    put_cid->waitForBytesWritten();
-    if (put_cid->Done) {
-      ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
-      ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
-    }
-    else {
-      reset(false);
-      return;
-    }
-    startedFromLava = false;
-  }
-  else {
-    startedFromLava = true;
-    myDoc->debugOn = true;
-    ((CPEBaseDoc*)myDoc)->changeNothing = true;
-  }
-  LBaseData->debugger->isRunning = true;
-  while (true) {
-    if (dbgReceived.lastReceived)
-      delete dbgReceived.lastReceived;
-    dbgReceived.lastReceived = dbgReceived.newReceived;
-    dbgReceived.newReceived = new DbgMessage;
-    CDPDbgMessage(GET, get_cid, (address)dbgReceived.newReceived);
-    if (get_cid->Done) {
-      interpreterWaits = true;
-		  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
-      if (wxTheApp->appExit)
-        break;
-      suspend();
-      if (!dbgRequest)
-        break;
-      if (dbgRequest->Command == Dbg_Continue)
-        checkBrkPnts1();
-
-      CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
-      if (!put_cid)
-        break;
-      put_cid->waitForBytesWritten();
-      if (!put_cid->Done)
-        break;
-
-      if (dbgRequest->Command == Dbg_Continue)
-        checkBrkPnts2();
-      interpreterWaits = false;
-    }
-    else
-      break;
-  }
-  if (dbgReceived.newReceived) {
-    delete dbgReceived.newReceived;
-    dbgReceived.newReceived = 0;
-  }
-  reset(false);
-  if (!wxTheApp->appExit && startedFromLava)
-    qApp->exit(0);
-}
-*/
 
 void CLavaPEDebugger::adjustBrkPnts()
 {
@@ -427,7 +308,6 @@ void CLavaPEDebugger::adjustBrkPnts()
   if (LBaseData->ContData && LBaseData->ContData->BrkPnts.first)
     adjustBrkPnts(&LBaseData->ContData->BrkPnts);
 }
-
 
 void CLavaPEDebugger::adjustBrkPnts(CHAINANY* brkPntsChain)
 //remember: this function is called only from main thread

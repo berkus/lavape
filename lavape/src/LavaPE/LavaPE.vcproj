@@ -652,7 +652,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
+						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -715,9 +715,9 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
-						Outputs="Generated\moc_$(InputName).cpp"
+						Description=""
+						CommandLine=""
+						Outputs=""
 					/>
 				</FileConfiguration>
 			</File>
@@ -972,32 +972,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\LavaPE.h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Generated\moc_LavaPEDoc.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=".."
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough="..\LavaPEDoc.h"
-						PrecompiledHeaderFile="PCH\LavaPE_all.pch"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						PrecompiledHeaderThrough="..\LavaPEDoc.h"
 					/>
 				</FileConfiguration>
 			</File>

@@ -290,7 +290,8 @@ bool CLavaApp::event(QEvent *e)
     doc = (CLavaProgram*)pHint->fromDoc;
     delete (CLavaPEHint*)pHint;
     if (((CLavaDebugger*)LBaseData.debugger)->workSocket)
-      QApplication::postEvent(LBaseData.debugger, new CustomEvent(UEV_Stop,0));
+      ((CLavaDebugger*)LBaseData.debugger)->stop();
+      //QApplication::postEvent(LBaseData.debugger, new CustomEvent(UEV_Stop,0));
     if (doc) {
       doc->OnCloseDocument();
       delete doc;
@@ -476,9 +477,8 @@ int CLavaApp::OnAppExit()
   SynIO.EXIT();
   delete classDict;
 
-  if (debugger.workSocket && debugger.workSocket->state() != QAbstractSocket::UnconnectedState)
-    debugger.workSocket->abort();
-  //debugger.wait();
+  //if (debugger.workSocket && debugger.workSocket->state() != QAbstractSocket::UnconnectedState)
+  //  debugger.workSocket->abort();
   return 0;
 }
 
