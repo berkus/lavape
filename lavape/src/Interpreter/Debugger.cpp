@@ -125,7 +125,6 @@ void CLavaDebugger::start() {
 
     if (!listenSocket) {
       listenSocket = new QTcpServer(this);
-      connect(listenSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error()));
       connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
       listenSocket->listen();
     }
