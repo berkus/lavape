@@ -172,7 +172,7 @@ void CExecView::OnCloseExec()
   destroying = true;
   if (!ExecCount && wxTheApp->m_appWindow)
     wxTheApp->OnCloseLastExecView();
-  if (myDoc->mySynDef // document is not yet closed
+  if (!myDoc->deleting //&& myDoc->mySynDef // document is not yet closed
   && ((SelfVar*)myDECL->Exec.ptr)->IsEmptyExec()
   && (((SelfVar*)myDECL->Exec.ptr)->primaryToken == invariant_T
       || ((SelfVar*)myDECL->Exec.ptr)->primaryToken == require_T
