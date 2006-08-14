@@ -54,8 +54,7 @@ public slots:
   void receive();
   void send();
   void error(QAbstractSocket::SocketError socketError);
-  void disconnected();
-  void stop();
+  void stop(DbgExitReason reason=otherError);
 
 protected:
 	//void run();

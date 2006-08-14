@@ -28,6 +28,7 @@
 
 CLavaThread::CLavaThread(CLavaBaseDoc* docu)
 {
+  abort = false;
 	myDoc = docu;
   mySemaphore.acquire();
   if (!myDoc->ThreadList)

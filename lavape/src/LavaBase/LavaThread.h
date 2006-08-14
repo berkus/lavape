@@ -14,6 +14,10 @@ class CLavaBaseDoc;
 class CSectionDesc;
 class CRuntimeException;
 
+class LAVABASE_DLL CExecAbort
+{
+};
+
 class LAVABASE_DLL CSemaphore : public QSemaphore
 {
 public:
@@ -29,14 +33,21 @@ class LAVABASE_DLL CLavaThread : public QThread
 {
 public:
   CLavaThread() {
+    abort = false;
     mySemaphore.acquire();
   }
   CLavaThread(CLavaBaseDoc *d);
 
 	CLavaBaseDoc *myDoc;
+  bool abort;
 
   virtual void suspend() {
     mySemaphore.acquire();
+    if (abort) {
+      abort = false;
+      //mySemaphore.release();
+      throw CExecAbort();
+    }
   }
 
   virtual void resume() {
@@ -50,6 +61,12 @@ public:
   //virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc) {}
   void run(){};
 }; 
+
+enum DbgExitReason {
+  normalEnd,
+  disconnected,
+  otherError
+};
 
 class LAVABASE_DLL CLavaDbgBase : public QObject {
 public:

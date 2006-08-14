@@ -45,7 +45,12 @@
 
 void CLavaPEDebugger::reset(bool final)
 {
-  LBaseData->debugger->isRunning = false;
+  if (isRunning && !startedFromLava) {
+    isRunning = false;
+    workSocket->abort();
+  }
+  else
+    isRunning = false;
   if (dbgRequest) {
     delete dbgRequest;
     dbgRequest = 0;
@@ -192,7 +197,6 @@ void CLavaPEDebugger::start() {
     workSocket = new QTcpSocket;
     connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
     //connect(workSocket,SIGNAL(connected()),SLOT(connected()));
-    connect(workSocket,SIGNAL(disconnected()),SLOT(disconnected()));
     connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
     workSocket->connectToHost(remoteIPAddress,remotePort);
     connected();
@@ -201,7 +205,6 @@ void CLavaPEDebugger::start() {
 
 void CLavaPEDebugger::connectToClient() {
   workSocket = listenSocket->nextPendingConnection();
-  connect(workSocket,SIGNAL(disconnected()),SLOT(disconnected()));
   connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
   connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
   connected();
@@ -284,11 +287,13 @@ void CLavaPEDebugger::send() {
 }
 
 void CLavaPEDebugger::error(QAbstractSocket::SocketError socketError) {
-  stop();
-}
-
-void CLavaPEDebugger::disconnected() {
-  stop();
+  if (socketError == QAbstractSocket::RemoteHostClosedError) {
+    isRunning = false;
+    stop();
+  }
+  else {
+    qDebug() << "+++ socket error: " << workSocket->errorString();
+  }
 }
 
 void CLavaPEDebugger::stop() {

@@ -289,10 +289,10 @@ bool CLavaApp::event(QEvent *e)
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     doc = (CLavaProgram*)pHint->fromDoc;
     delete (CLavaPEHint*)pHint;
-    if (((CLavaDebugger*)LBaseData.debugger)->workSocket)
-      ((CLavaDebugger*)LBaseData.debugger)->stop();
-      //QApplication::postEvent(LBaseData.debugger, new CustomEvent(UEV_Stop,0));
+    if (((CLavaDebugger*)LBaseData.debugger)->isRunning)
+      ((CLavaDebugger*)LBaseData.debugger)->stop(normalEnd);
     if (doc) {
+      doc->m_execThread.wait();
       doc->OnCloseDocument();
       delete doc;
     }

@@ -2286,13 +2286,13 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 #endif
         for (pos=0;pos<frameSize;pos++)
           newStackFrame[pos] = 0;
-        if (!LBaseData->debugger->isRunning) {
-         ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
-          QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
-            //debug thread start, now initialisation is finished
-          suspend(); 
-            //execution thread wait until debug thread has received first message from LavaPE
-        }
+        //if (!LBaseData->debugger->isRunning) {
+        // ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
+        //  QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
+        //    //debug thread start, now initialisation is finished
+        //  suspend(); 
+        //    //execution thread wait until debug thread has received first message from LavaPE
+        //}
         if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel)) {
           if (!ckd.exceptionThrown)
             ((SelfVarX*)topDECL->Exec.ptr)->SetRTError(ckd, &ERR_ExecutionFailed,newStackFrame);
@@ -2331,6 +2331,13 @@ stop:     ckd.document->throwError = false;
           ((CLavaProgram*)ckd.document)->HCatch(ckd);
         ckd.document->throwError = false;
         LavaEnd(ckd.document, true);
+        return 0;
+      }
+      catch(CExecAbort) {
+        // For other exception types, notify user here.
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Lava program has been aborted due to LavaPE termination"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+				QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
         return 0;
       }
       catch(CException) {

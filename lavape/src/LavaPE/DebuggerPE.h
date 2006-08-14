@@ -65,7 +65,6 @@ public slots:
   void receive();
   void send();
   void error(QAbstractSocket::SocketError);
-  void disconnected();
   void stop();
 
 protected:

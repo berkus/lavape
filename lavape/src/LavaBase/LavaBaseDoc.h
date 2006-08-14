@@ -67,52 +67,6 @@ class LAVABASE_DLL ASN1tofromAr: public ASN1
    QString FileName;
 };
 
-class LAVABASE_DLL CException
-{
-};
-
-class LAVABASE_DLL CUserException : public CException
-{
-};
-
-class LAVABASE_DLL CNotSupportedException : public CException
-{
-};
-
-class LAVABASE_DLL CRuntimeException
-{
-public:
-  CRuntimeException() {code = 0; message = "";}
-  CRuntimeException(int co, const QString *mess) {code = co; message = *mess;}
-  CRuntimeException(int co, QString *err_code);
-  bool SetLavaException(CheckData& ckd);
-  ~CRuntimeException() {}
-  int code;
-  QString message;
-};
-
-class LAVABASE_DLL CHWException
-{
-public:
-  CHWException(){};
-#ifdef WIN32
-    CHWException(unsigned n);
-#else
-    CHWException(int sig_num, siginfo_t *info);
-#endif
-    bool SetLavaException(CheckData& ckd);
-    ~CHWException() {}
-    unsigned codeHW;
-    unsigned lavaCode;
-    QString message;
-};
-
-class LAVABASE_DLL CFPException : public CHWException
-{
-public:
-    CFPException(bool isQuietNaN);
-};
-
 
 class LAVABASE_DLL CLavaBaseDoc : public wxDocument
 {
@@ -728,6 +682,52 @@ public:
 
   QHash<LavaDECL*,ReceiverList*> receiverDict;  // key = LavaDECL *signalDecl
   QHash<LavaDECL*,CallbackList*> callbackDict;  // key = LavaDECL *signalDecl
+};
+
+class LAVABASE_DLL CException
+{
+};
+
+class LAVABASE_DLL CUserException : public CException
+{
+};
+
+class LAVABASE_DLL CNotSupportedException : public CException
+{
+};
+
+class LAVABASE_DLL CRuntimeException
+{
+public:
+  CRuntimeException() {code = 0; message = "";}
+  CRuntimeException(int co, const QString *mess) {code = co; message = *mess;}
+  CRuntimeException(int co, QString *err_code);
+  bool SetLavaException(CheckData& ckd);
+  ~CRuntimeException() {}
+  int code;
+  QString message;
+};
+
+class LAVABASE_DLL CHWException
+{
+public:
+  CHWException(){};
+#ifdef WIN32
+    CHWException(unsigned n);
+#else
+    CHWException(int sig_num, siginfo_t *info);
+#endif
+    bool SetLavaException(CheckData& ckd);
+    ~CHWException() {}
+    unsigned codeHW;
+    unsigned lavaCode;
+    QString message;
+};
+
+class LAVABASE_DLL CFPException : public CHWException
+{
+public:
+    CFPException(bool isQuietNaN);
 };
 
 #endif
