@@ -289,7 +289,7 @@ bool CLavaApp::event(QEvent *e)
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     doc = (CLavaProgram*)pHint->fromDoc;
     delete (CLavaPEHint*)pHint;
-    if (((CLavaDebugger*)LBaseData.debugger)->isRunning)
+    if (((CLavaDebugger*)LBaseData.debugger)->isConnected)
       ((CLavaDebugger*)LBaseData.debugger)->stop(normalEnd);
     if (doc) {
       doc->m_execThread.wait();
@@ -305,16 +305,19 @@ bool CLavaApp::event(QEvent *e)
     case 0:
       mbp->result =   QMessageBox::critical(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+      mbp->thr->waitingForUI = false;
       mbp->thr->resume();
       break;
     case 1:
       mbp->result =   QMessageBox::information(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+      mbp->thr->waitingForUI = false;
       mbp->thr->resume();
       break;
     case 2:
       mbp->result =   QMessageBox::question(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+      mbp->thr->waitingForUI = false;
       mbp->thr->resume();
       break;
     }
@@ -334,6 +337,7 @@ bool CLavaApp::event(QEvent *e)
           ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
           thr->mySemaphore.ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
       }
+      thr->waitingForUI = false;
       thr->resume();
     }
     delete (CLavaPEHint*)((CustomEvent*)e)->data();
@@ -344,6 +348,7 @@ bool CLavaApp::event(QEvent *e)
     ((QDialog*)dumpdata->doc->DumpFrame)->exec();
     delete dumpdata->doc->DumpFrame;
     dumpdata->doc->DumpFrame = 0;
+    ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->waitingForUI = false;
     ((DumpEventData*)((CustomEvent*)e)->data())->currentThread->resume();
     delete (DumpEventData*)((CustomEvent*)e)->data();
     break;

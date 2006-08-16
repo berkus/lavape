@@ -43,14 +43,140 @@
 #pragma hdrstop
 
 
-void CLavaPEDebugger::reset(bool final)
-{
-  if (isRunning && !startedFromLava) {
-    isRunning = false;
-    workSocket->abort();
+void CLavaPEDebugger::start() {
+	QString interpreterPath, lavaFile = myDoc->GetFilename();
+  quint16 locPort;
+
+#ifdef WIN32
+    interpreterPath = ExeDir + "/Lava.exe";
+#else
+    interpreterPath = ExeDir + "/Lava";
+#endif
+
+  if (myDoc->debugOn) {
+    if (!listenSocket) {
+      listenSocket = new QTcpServer(this);
+      connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
+      listenSocket->listen();
+    }
+    locPort = listenSocket->serverPort();
+    QString host_addr = "127.0.0.1";
+    QStringList args;
+	  args << lavaFile << host_addr << QString("%1").arg(locPort);
+    if (!QProcess::startDetached(interpreterPath,args)) {
+      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed,QMessageBox::Ok,0,0);
+		  return;
+	  }
+  }
+  else {
+    workSocket = new QTcpSocket;
+    connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
+    connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
+    workSocket->connectToHost(remoteIPAddress,remotePort);
+    connected();
+  }
+}
+
+void CLavaPEDebugger::connectToClient() {
+  workSocket = listenSocket->nextPendingConnection();
+  connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
+  connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
+  connected();
+}
+
+void CLavaPEDebugger::connected() {
+  isConnected = true;
+
+  put_cid = new ASN1OutSock (workSocket);
+  if (!put_cid->Done) {
+    stop(otherError);
+    return;
+  }
+
+  get_cid = new ASN1InSock (workSocket);
+  if (!get_cid->Done) {
+    stop(otherError);
+    return;
+  }
+
+  dbgRequest = 0;
+  if (myDoc->debugOn) {
+    dbgRequest = new DbgMessage(Dbg_Continue);
+    checkBrkPnts1();
+    checkBrkPnts0();
+    checkBrkPnts2();
+    if (!dbgRequest->ContData.ptr)
+      dbgRequest->ContData.ptr = new DbgContData;
+    ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = brkPnts.first;
+    ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = brkPnts.last;
+    if (dbgRequest->ContData.ptr)
+      ((DbgContData*)dbgRequest->ContData.ptr)->ContType = dbg_Cont;
+    CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
+    put_cid->flush();
+    if (put_cid->Done) {
+      ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
+      ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
+    }
+    else {
+      stop(otherError);
+      return;
+    }
+    startedFromLava = false;
+  }
+  else {
+    startedFromLava = true;
+    myDoc->debugOn = true;
+    ((CPEBaseDoc*)myDoc)->changeNothing = true;
+  }
+}
+
+void CLavaPEDebugger::receive() {
+  if (!get_cid->bytesAvailable())
+    return;
+  if (dbgReceived.lastReceived)
+    delete dbgReceived.lastReceived;
+  dbgReceived.lastReceived = dbgReceived.newReceived;
+  dbgReceived.newReceived = new DbgMessage;
+  CDPDbgMessage(GET, get_cid, (address)dbgReceived.newReceived);
+  if (get_cid->Done) {
+	  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
+    return;
   }
   else
-    isRunning = false;
+    stop();
+}
+
+void CLavaPEDebugger::send() {
+  if (dbgRequest->Command == Dbg_Continue)
+    checkBrkPnts1();
+
+  CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
+  put_cid->flush();
+  if (!put_cid->Done)
+    stop();
+
+  if (dbgRequest->Command == Dbg_Continue)
+    checkBrkPnts2();
+}
+
+void CLavaPEDebugger::error(QAbstractSocket::SocketError socketError) {
+  if (socketError == QAbstractSocket::RemoteHostClosedError)
+    stop(disconnected);
+  else {
+    qDebug() << "+++ socket error: " << workSocket->errorString();
+    stop(otherError); // other error
+  }
+}
+
+void CLavaPEDebugger::stop(DbgExitReason reason) {
+  if (!isConnected)
+    return;
+  isConnected = false;
+
+  if (dbgReceived.newReceived) {
+    delete dbgReceived.newReceived;
+    dbgReceived.newReceived = 0;
+  }
   if (dbgRequest) {
     delete dbgRequest;
     dbgRequest = 0;
@@ -61,24 +187,21 @@ void CLavaPEDebugger::reset(bool final)
   if (put_cid)
     delete put_cid;
   put_cid= 0;
-  if (final) {
-    if (dbgReceived.newReceived)
-      delete dbgReceived.newReceived;
-    dbgReceived.lastReceived = 0;
+
+  if (reason != disconnected)
+    workSocket->disconnectFromHost();
+  workSocket = 0;
+
+  if (myDoc) {
+    myDoc->debugOn = false;
+    ((CPEBaseDoc*)myDoc)->changeNothing = false;
   }
-  else {
-    if (myDoc) {
-      myDoc->debugOn = false;
-      ((CPEBaseDoc*)myDoc)->changeNothing = false;
-      LBaseData->enableBreakpoints = true;
-    }
-    interpreterWaits = false;
-    if (dbgReceived.lastReceived)
-	    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
-    else
-	    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)0));
-  }
+  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)0));
+
+  if (startedFromLava)
+    qApp->exit(0);
 }
+
 
 void CLavaPEDebugger::checkBrkPnts0()
 {
@@ -166,144 +289,6 @@ void CLavaPEDebugger::checkBrkPnts2()
 
   ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
   ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
-}
-
-void CLavaPEDebugger::start() {
-	QString interpreterPath, lavaFile = myDoc->GetFilename();
-  quint16 locPort;
-
-#ifdef WIN32
-    interpreterPath = ExeDir + "/Lava.exe";
-#else
-    interpreterPath = ExeDir + "/Lava";
-#endif
-
-  if (myDoc->debugOn) {
-    if (!listenSocket) {
-      listenSocket = new QTcpServer(this);
-      connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
-      listenSocket->listen();
-    }
-    locPort = listenSocket->serverPort();
-    QString host_addr = "127.0.0.1";
-    QStringList args;
-	  args << lavaFile << host_addr << QString("%1").arg(locPort);
-    if (!QProcess::startDetached(interpreterPath,args)) {
-      QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaStartFailed,QMessageBox::Ok,0,0);
-		  return;
-	  }
-  }
-  else {
-    workSocket = new QTcpSocket;
-    connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
-    //connect(workSocket,SIGNAL(connected()),SLOT(connected()));
-    connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
-    workSocket->connectToHost(remoteIPAddress,remotePort);
-    connected();
-  }
-}
-
-void CLavaPEDebugger::connectToClient() {
-  workSocket = listenSocket->nextPendingConnection();
-  connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
-  connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
-  connected();
-}
-
-void CLavaPEDebugger::connected() {
-  isRunning = true;
-  put_cid = new ASN1OutSock (workSocket);
-  if (!put_cid->Done) {
-    delete put_cid;
-    qApp->exit(1);
-  }
-
-  get_cid = new ASN1InSock (workSocket);
-  if (!get_cid->Done) {
-    delete get_cid;
-    qApp->exit(1);
-  }
-  dbgRequest = 0;
-  if (myDoc->debugOn) {
-    dbgRequest = new DbgMessage(Dbg_Continue);
-    checkBrkPnts1();
-    checkBrkPnts0();
-    checkBrkPnts2();
-    if (!dbgRequest->ContData.ptr)
-      dbgRequest->ContData.ptr = new DbgContData;
-    ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = brkPnts.first;
-    ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = brkPnts.last;
-    if (dbgRequest->ContData.ptr)
-      ((DbgContData*)dbgRequest->ContData.ptr)->ContType = dbg_Cont;
-    CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
-    put_cid->flush();
-    if (put_cid->Done) {
-      ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
-      ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
-    }
-    else {
-      reset(false);
-      return;
-    }
-    startedFromLava = false;
-  }
-  else {
-    startedFromLava = true;
-    myDoc->debugOn = true;
-    ((CPEBaseDoc*)myDoc)->changeNothing = true;
-  }
-  LBaseData->debugger->isRunning = true;
-}
-
-void CLavaPEDebugger::receive() {
-  if (!get_cid->bytesAvailable())
-    return;
-  if (dbgReceived.lastReceived)
-    delete dbgReceived.lastReceived;
-  dbgReceived.lastReceived = dbgReceived.newReceived;
-  dbgReceived.newReceived = new DbgMessage;
-  CDPDbgMessage(GET, get_cid, (address)dbgReceived.newReceived);
-  if (get_cid->Done) {
-    interpreterWaits = true;
-	  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
-    return;
-  }
-  else
-    stop();
-}
-
-void CLavaPEDebugger::send() {
-  if (dbgRequest->Command == Dbg_Continue)
-    checkBrkPnts1();
-
-  CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
-  put_cid->flush();
-  if (!put_cid->Done)
-    stop();
-
-  if (dbgRequest->Command == Dbg_Continue)
-    checkBrkPnts2();
-  interpreterWaits = false;
-}
-
-void CLavaPEDebugger::error(QAbstractSocket::SocketError socketError) {
-  if (socketError == QAbstractSocket::RemoteHostClosedError) {
-    isRunning = false;
-    stop();
-  }
-  else {
-    qDebug() << "+++ socket error: " << workSocket->errorString();
-  }
-}
-
-void CLavaPEDebugger::stop() {
-  if (dbgReceived.newReceived) {
-    delete dbgReceived.newReceived;
-    dbgReceived.newReceived = 0;
-  }
-  reset(false);
-  if (!wxTheApp->appExit && startedFromLava)
-    qApp->exit(0);
 }
 
 void CLavaPEDebugger::adjustBrkPnts()

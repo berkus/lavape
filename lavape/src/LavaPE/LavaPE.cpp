@@ -305,20 +305,6 @@ bool CLavaPEApp::event(QEvent *e)
   switch (e->type()) {
   case UEV_LavaDebug:
     ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((CustomEvent*)e)->data(), debugger.myDoc);
-    LBaseData.enableBreakpoints = true;
-    if (((CustomEvent*)e)->data()) {
-      ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
-      ((CLavaMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(true);
-      ((CLavaMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(true);
-      ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(true);
-      ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(true);
-    }
-    else {
-      ((CLavaMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
-      ((CLavaMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
-      ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
-      ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
-    }
     m_appWindow->activateWindow();
     m_appWindow->raise();
     return true;
@@ -328,14 +314,11 @@ bool CLavaPEApp::event(QEvent *e)
       debugger.dbgRequest = 0;
     }
     debugger.dbgRequest = (DbgMessage*)((CustomEvent*)e)->data();
-//    ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(false);
-//    ((CLavaMainFrame*)m_appWindow)->DbgRunToSelAct->setEnabled(false);
-    LBaseData.enableBreakpoints = false;
-    ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(false);
-    ((CLavaMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
-    ((CLavaMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
-    ((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
-    ((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
+    //((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(false);
+    //((CLavaMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
+    //((CLavaMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
+    //((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
+    //((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
 
     debugger.send();
     return true;

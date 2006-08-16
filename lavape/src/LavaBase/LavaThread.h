@@ -34,24 +34,25 @@ class LAVABASE_DLL CLavaThread : public QThread
 public:
   CLavaThread() {
     abort = false;
+    waitingForUI = false;
     mySemaphore.acquire();
   }
   CLavaThread(CLavaBaseDoc *d);
 
 	CLavaBaseDoc *myDoc;
-  bool abort;
+  bool abort, waitingForUI;
 
   virtual void suspend() {
     mySemaphore.acquire();
     if (abort) {
       abort = false;
-      //mySemaphore.release();
       throw CExecAbort();
     }
   }
 
   virtual void resume() {
-    mySemaphore.release();
+    if (!waitingForUI)
+      mySemaphore.release();
   }
 
   CSemaphore mySemaphore;
@@ -70,11 +71,11 @@ enum DbgExitReason {
 
 class LAVABASE_DLL CLavaDbgBase : public QObject {
 public:
-  CLavaDbgBase(){ isRunning = false; };
+  CLavaDbgBase(){ isConnected = false; };
   CLavaDbgBase(CLavaBaseDoc *d);
 
 	CLavaBaseDoc *myDoc;
-  bool isRunning;
+  bool isConnected;
 
   virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc) {return false;}
   virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc) {}

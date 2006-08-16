@@ -147,15 +147,19 @@ void CLavaDebugger::connectToClient() {
 }
 
 void CLavaDebugger::connected() {
-  isRunning = true;
+  isConnected = true;
 
   put_cid = new ASN1OutSock (workSocket);
-  if (!put_cid->Done)
+  if (!put_cid->Done) {
     stop(otherError);
+    return;
+  }
 
   get_cid = new ASN1InSock (workSocket);
-  if (!get_cid->Done)
+  if (!get_cid->Done) {
     stop(otherError);
+    return;
+  }
 
   if (!startedFromLavaPE) {
     varAction->run();
@@ -163,11 +167,11 @@ void CLavaDebugger::connected() {
     mSend.SetSendData(Dbg_StopData, dbgStopData);
     CDPDbgMessage0(PUT, put_cid, (address)&mSend);
     put_cid->flush();
-    //myDoc->debugOn = true;
+    if (!put_cid->Done) {
+      stop(otherError);
+      return;
+    }
   }
-
-  LBaseData->debugger->isRunning = true;
-  //receive();
 }
 
 void CLavaDebugger::receive() {
@@ -190,6 +194,7 @@ void CLavaDebugger::receive() {
       if (!dbgStopData->ActStackLevel)
         addCalleeParams();
       mSend.SetSendData(Dbg_Stack, dbgStopData);
+      send();
       break;
     case Dbg_MemberDataRq:
       if (mReceive.fromParams)
@@ -198,6 +203,7 @@ void CLavaDebugger::receive() {
         oid = DebugItem::openObj((CHE*)dbgStopData->ObjectChain.first, (CHEint*)mReceive.ObjNr.ptr->first);
       mSend.SetSendData(oid);
       mReceive.ObjNr.Destroy();
+      send();
       break;
     case Dbg_Continue:
       if (varAction) {
@@ -210,8 +216,8 @@ void CLavaDebugger::receive() {
           dbgStopData->ParamChain.Destroy();
         }
       }
-
       m_execThread->resume();    //continue ExecuteLava
+      break;
     default:;
     }
   }
@@ -220,16 +226,20 @@ void CLavaDebugger::receive() {
 }
 
 void CLavaDebugger::send() {
-  if (!varAction)
+  if (!varAction) {
     stop(otherError);
+    return;
+  }
   if (dbgStopData->StackChain.first) {
     varAction->run();
     addCalleeParams();
     mSend.SetSendData(Dbg_StopData, dbgStopData);
   }
-  else
+  else  {
     stop(otherError);
-
+    return;
+  }
+ 
   CDPDbgMessage0(PUT, put_cid, (address)&mSend);
   put_cid->flush();
   if (!put_cid->Done)
@@ -246,9 +256,10 @@ void CLavaDebugger::error(QAbstractSocket::SocketError socketError) {
 }
 
 void CLavaDebugger::stop(DbgExitReason reason) {
-  if (!isRunning)
+  if (!isConnected)
     return;
-  isRunning = false;
+  isConnected = false;
+
   if (dbgStopData) {
     delete dbgStopData;
     dbgStopData = 0;
@@ -261,12 +272,16 @@ void CLavaDebugger::stop(DbgExitReason reason) {
   mSend.Destroy();
   mReceive.Destroy();
   brkPnts.Destroy();
-  delete put_cid;
-  delete get_cid;
+
+  if (get_cid)
+    delete get_cid;
+  get_cid= 0;
+  if (put_cid)
+    delete put_cid;
+  put_cid= 0;
 
   if (reason != disconnected)
     workSocket->disconnectFromHost();
-  //delete workSocket;
   workSocket = 0;
 
   if (reason != normalEnd) {

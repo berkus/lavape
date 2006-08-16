@@ -2286,13 +2286,13 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 #endif
         for (pos=0;pos<frameSize;pos++)
           newStackFrame[pos] = 0;
-        //if (!LBaseData->debugger->isRunning) {
-        // ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
-        //  QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
-        //    //debug thread start, now initialisation is finished
-        //  suspend(); 
-        //    //execution thread wait until debug thread has received first message from LavaPE
-        //}
+        if (doc->debugOn) {
+         ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
+          QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
+            //debug thread start, now initialisation is finished
+          suspend(); 
+            //execution thread wait until debug thread has received first message from LavaPE
+        }
         if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel)) {
           if (!ckd.exceptionThrown)
             ((SelfVarX*)topDECL->Exec.ptr)->SetRTError(ckd, &ERR_ExecutionFailed,newStackFrame);
@@ -2394,6 +2394,7 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
   CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, (DWORD)&stack[SFH], (DWORD)&stack[SFH+1], (DWORD)&stack[SFH+2], (DWORD)frozen, (DWORD)currentThread, (DWORD)fromFillIn);
   if (currentThread != wxTheApp->mainThread) {
     currentThread->mySemaphore.lastException = 0;
+    currentThread->waitingForUI = true;
 	  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaShow,(void*)hint));
     currentThread->suspend();
     if (currentThread->mySemaphore.lastException) {

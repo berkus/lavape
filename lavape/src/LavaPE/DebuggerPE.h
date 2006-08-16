@@ -1,5 +1,5 @@
-#ifndef __DbgThread
-#define __DbgThread
+#ifndef __DEBUGGERPE
+#define __DEBUGGERPE
 
 
 #include "LavaAppBase.h"
@@ -30,7 +30,6 @@ public:
     dbgRequest=0;
     get_cid=0;
     put_cid=0;
-    interpreterWaits = false;
     myDoc=0;
     listenSocket = 0;
     workSocket = 0;
@@ -44,7 +43,6 @@ public:
   DbgMessage* dbgRequest;
   DbgMessages dbgReceived;
   CHAINANY brkPnts;
-  bool interpreterWaits;
   bool startedFromLava;
   void clearBrkPnts();
   void adjustBrkPnts();
@@ -53,10 +51,6 @@ public:
   void restoreBrkPoints(CLavaBaseDoc* openedDoc);
   virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc);
   virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc);
-  ~CLavaPEDebugger() {
-    reset(true);
-  }
-  void reset(bool final);
 
 public slots:
   void start();
@@ -65,7 +59,7 @@ public slots:
   void receive();
   void send();
   void error(QAbstractSocket::SocketError);
-  void stop();
+  void stop(DbgExitReason reason=otherError);
 
 protected:
   void checkBrkPnts0();

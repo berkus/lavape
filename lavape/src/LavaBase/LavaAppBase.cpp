@@ -891,7 +891,6 @@ void CLavaBaseData::Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate)
   maxb=((unsigned)Identifier);
   actHint = 0;
   inMultiDocUpdate = false;
-  enableBreakpoints = false;
   if (Browser)
     Browser->LastBrowseContext = 0;
   LBaseData = this;
@@ -1014,7 +1013,8 @@ int information(QWidget *parent, const QString &caption,
 
   CMsgBoxParams params(
 		currentThread,1,parent,caption,text,button0,button1,button2);
-
+  
+  currentThread->waitingForUI = true;
 	QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->suspend();
 	return params.result;

@@ -107,12 +107,6 @@ protected:
   void OnUpdateFilePrint(QAction* action);
   bool openInTotalCheck;
   void ShrinkCollectDECL(LavaDECL* decl);
-
-//public slots:
-//  void interpreterExited();
-
-//private:
-//    Q_OBJECT;
 };
 
 

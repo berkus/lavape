@@ -1,5 +1,5 @@
-#ifndef __DBTHREAD
-#define __DBTHREAD
+#ifndef __DEBUGGER
+#define __DEBUGGER
 
 #include "Constructs.h"
 #include "LavaAppBase.h"       // Hauptsymbole

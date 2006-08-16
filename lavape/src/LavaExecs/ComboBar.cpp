@@ -466,7 +466,7 @@ void CComboBar::OnSelendokBasicTypes(int pos)
       m_StaticFuncsCtrl->removeItem(0);
       m_StaticFuncsCtrl->insertItem(0,tr(" (Signals) "));
       m_StaticFuncsCtrl->setCurrentIndex(0);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_StaticFuncsCtrl->setEnabled(true);
       RightCombo = IDC_BasicTypes;
       ThirdCombo = IDC_StaticFuncs;
@@ -483,7 +483,7 @@ void CComboBar::OnSelendokBasicTypes(int pos)
       m_StaticFuncsCtrl->removeItem(0);
       m_StaticFuncsCtrl->insertItem(0,tr(" (Handler) "));
       m_StaticFuncsCtrl->setCurrentIndex(0);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_StaticFuncsCtrl->setEnabled(true);
       RightCombo = IDC_BasicTypes;
       ThirdCombo = IDC_StaticFuncs;
@@ -517,7 +517,7 @@ void CComboBar::OnSelendokCompaBTypes(int pos)
       m_StaticFuncsCtrl->removeItem(0);
       m_StaticFuncsCtrl->insertItem(0,tr(" (Signals) "));
       m_StaticFuncsCtrl->setCurrentIndex(0);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_StaticFuncsCtrl->setEnabled(true);
       RightCombo = IDC_BasicTypes;
       ThirdCombo = IDC_StaticFuncs;
@@ -534,7 +534,7 @@ void CComboBar::OnSelendokCompaBTypes(int pos)
       m_StaticFuncsCtrl->removeItem(0);
       m_StaticFuncsCtrl->insertItem(0,tr(" (Handler) "));
       m_StaticFuncsCtrl->setCurrentIndex(0);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_StaticFuncsCtrl->setEnabled(true);
       RightCombo = IDC_BasicTypes;
       ThirdCombo = IDC_StaticFuncs;
@@ -568,7 +568,7 @@ void CComboBar::OnSelendokComboTypes(int pos)
       m_StaticFuncsCtrl->removeItem(0);
       m_StaticFuncsCtrl->insertItem(0,tr(" (Signals) "));
       m_StaticFuncsCtrl->setCurrentIndex(0);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_StaticFuncsCtrl->setEnabled(true);
       RightCombo = IDC_BasicTypes;
       ThirdCombo = IDC_StaticFuncs;
@@ -585,7 +585,7 @@ void CComboBar::OnSelendokComboTypes(int pos)
       m_StaticFuncsCtrl->removeItem(0);
       m_StaticFuncsCtrl->insertItem(0,tr(" (Handler) "));
       m_StaticFuncsCtrl->setCurrentIndex(0);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_StaticFuncsCtrl->setEnabled(true);
       RightCombo = IDC_BasicTypes;
       ThirdCombo = IDC_StaticFuncs;
@@ -619,7 +619,7 @@ void CComboBar::OnSelendokCompaTypes(int pos)
       m_StaticFuncsCtrl->removeItem(0);
       m_StaticFuncsCtrl->insertItem(0,tr(" (Signals) "));
       m_StaticFuncsCtrl->setCurrentIndex(0);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_StaticFuncsCtrl->setEnabled(true);
       RightCombo = IDC_BasicTypes;
       ThirdCombo = IDC_StaticFuncs;
@@ -636,7 +636,7 @@ void CComboBar::OnSelendokCompaTypes(int pos)
       m_StaticFuncsCtrl->removeItem(0);
       m_StaticFuncsCtrl->insertItem(0,tr(" (Handler) "));
       m_StaticFuncsCtrl->setCurrentIndex(0);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_StaticFuncsCtrl->setEnabled(true);
       RightCombo = IDC_BasicTypes;
       ThirdCombo = IDC_StaticFuncs;
@@ -945,14 +945,14 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_ObjectsCtrl->show();
         if (!VisibleList[v_Objects])
           m_ObjectsCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_ObjectsCtrl->setEnabled(true);
         LeftCombo = IDC_ComboObjects;
         if (what == objEnumCombo) {
           m_EnumsCtrl->show();
           if (!VisibleList[v_Enums])
             m_EnumsCtrl->setCurrentIndex(0);
-          if (!LBaseData->debugger->isRunning)
+          if (!LBaseData->debugger->isConnected)
             m_EnumsCtrl->setEnabled(true);
           RightCombo = IDC_ComboEnums;
           m_ButtonEnum->show();
@@ -971,7 +971,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_SetObjectsCtrl->show();
         if (!VisibleList[v_SetObjects])
           m_SetObjectsCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_SetObjectsCtrl->setEnabled(true);
         LeftCombo = IDC_ComboSetObjects;
         m_EnumsCtrl->hide();
@@ -985,13 +985,13 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_SetObjectsCtrl->show();
         if (!VisibleList[v_SetObjects])
           m_SetObjectsCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_SetObjectsCtrl->setEnabled(true);
         LeftCombo = IDC_ComboSetObjects;
         m_EnumsCtrl->show();
         if (!VisibleList[v_Enums])
           m_EnumsCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_EnumsCtrl->setEnabled(true);
         RightCombo = IDC_ComboEnums;
         m_ButtonEnum->hide();
@@ -1001,13 +1001,13 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_TypesCtrl->show();
         if (!VisibleList[v_Types])
           m_TypesCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_TypesCtrl->setEnabled(true);
         LeftCombo = IDC_ComboTypes;
         m_BasicTypesCtrl->show();
         if (!VisibleList[v_BasicTypes])
           m_BasicTypesCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_BasicTypesCtrl->setEnabled(true);
         RightCombo = IDC_BasicTypes;
         break;
@@ -1015,7 +1015,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_SetTypesCtrl->show();
         if (!VisibleList[v_SetTypes])
           m_SetTypesCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_SetTypesCtrl->setEnabled(true);
         LeftCombo = IDC_ComboSetTypes;
         break;
@@ -1024,7 +1024,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_SignalsCtrl->show();
         if (!VisibleList[v_Signals])
           m_SignalsCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_SignalsCtrl->setEnabled(true);
         LeftCombo = IDC_COMBOSignals;
         break;
@@ -1033,7 +1033,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_NewCtrl->show();
         if (!VisibleList[v_New])
           m_NewCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_NewCtrl->setEnabled(true);
         LeftCombo = IDC_ComboNew;
         break;
@@ -1041,13 +1041,13 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_NewCtrl->show();
         if (!VisibleList[v_New])
           m_NewCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_NewCtrl->setEnabled(true);
         LeftCombo = IDC_ComboNew;
         m_SNewCtrl->show();
         if (!VisibleList[v_SNew])
           m_SNewCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_SNewCtrl->setEnabled(true);
         RightCombo = IDC_ComboSNew;
         break;
@@ -1055,7 +1055,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_AttachCtrl->show();
         if (!VisibleList[v_Attach])
           m_AttachCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_AttachCtrl->setEnabled(true);
         LeftCombo = IDC_ComboAttach;
         break;
@@ -1063,7 +1063,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_CompoObjIntCtrl->show();
         if (VisibleList[v_CompoObjInt])
           m_CompoObjIntCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_CompoObjIntCtrl->setEnabled(true);
         LeftCombo = IDC_CompoInterf;
         break;
@@ -1071,7 +1071,7 @@ void CComboBar::ShowCombos(TShowCombo what, TID* pID)
         m_CallIntCtrl->show();
         if (!VisibleList[v_CallInt])
           m_CallIntCtrl->setCurrentIndex(0);
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
           m_CallIntCtrl->setEnabled(true);
         LeftCombo = IDC_COMBOCall;
         break;
@@ -1305,7 +1305,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
     m_CompaObjectsCtrl->setCurrentIndex(0);
     if (showObjs) {
 //      m_CompaObjectsCtrl->SetDroppedWidth(maxW+6);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_CompaObjectsCtrl->setEnabled(true);
       LeftCombo = IDC_ComboCompObjects;
     }
@@ -1317,7 +1317,7 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
       m_EnumsCtrl->show();
       m_EnumsCtrl->setEnabled(false);
       m_ButtonEnum->show();
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
         m_ButtonEnum->setEnabled(true);
     }
 		else if (showEnumCombo) {
@@ -1325,12 +1325,12 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
 			m_EnumsCtrl->show();
 			if (!VisibleList[v_Enums])
 				m_EnumsCtrl->setCurrentIndex(0);
-      if (!LBaseData->debugger->isRunning)
+      if (!LBaseData->debugger->isConnected)
 			  m_EnumsCtrl->setEnabled(true);
 			RightCombo = IDC_ComboEnums;
 			m_ButtonEnum->show();
 			if (m_EnumsCtrl->currentIndex()) {
-        if (!LBaseData->debugger->isRunning)
+        if (!LBaseData->debugger->isConnected)
 				  m_ButtonEnum->setEnabled(true);
 				EnumsEnable = true;
 			}
@@ -1403,7 +1403,7 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
     m_CompaTypesCtrl->show();
     m_CompaTypesCtrl->setCurrentIndex(0);
     //m_CompaTypesCtrl->SetDroppedWidth(maxW+6);
-    if (!LBaseData->debugger->isRunning)
+    if (!LBaseData->debugger->isConnected)
       m_CompaTypesCtrl->setEnabled(true);
     LeftCombo = IDC_CompaTypes;
   }
@@ -1413,7 +1413,7 @@ void CComboBar::ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &c
     m_CompaBTypesCtrl->show();
     m_CompaBTypesCtrl->setCurrentIndex(0);
     //m_CompaBTypesCtrl->SetDroppedWidth(maxBW+6);
-    if (!LBaseData->debugger->isRunning)
+    if (!LBaseData->debugger->isConnected)
       m_CompaBTypesCtrl->setEnabled(true);
     RightCombo = IDC_CompaBTypes;
   }
@@ -1465,7 +1465,7 @@ void CComboBar::ShowSubObjects(LavaDECL* decl, const CContext &context)
     SetCombos(true, true);
     m_SubObjectsCtrl->show();
     m_SubObjectsCtrl->setCurrentIndex(0);
-    if (!LBaseData->debugger->isRunning)
+    if (!LBaseData->debugger->isConnected)
       m_SubObjectsCtrl->setEnabled(true);
     LeftCombo = IDC_ComboSubObjects;
   }
@@ -1500,7 +1500,7 @@ void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface
   SortCombo(m_BaseInisCtrl);
   m_BaseInisCtrl->show();
   m_BaseInisCtrl->setCurrentIndex(0);
-  if (!LBaseData->debugger->isRunning)
+  if (!LBaseData->debugger->isConnected)
     m_BaseInisCtrl->setEnabled(true);
   LeftCombo = IDC_ComboBaseInis;
   lastCombo = invalidateLast;
@@ -1613,7 +1613,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
   SortCombo(funcBox);
   funcBox->show();
   funcBox->setCurrentIndex(0);
-  if (!LBaseData->debugger->isRunning)
+  if (!LBaseData->debugger->isConnected)
     funcBox->setEnabled(true);
   m_NewFunc = IDC_NewFunc;
   m_NewPFunc = IDC_NewPFunc;
@@ -1636,7 +1636,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
   if (signalDecl || !withStatic)
     m_ClassFuncsCtrl->setEnabled(false);
   else {
-    if (!LBaseData->debugger->isRunning)
+    if (!LBaseData->debugger->isConnected)
       m_ClassFuncsCtrl->setEnabled(true);
     RightCombo = IDC_ComboClassFuncs;
   }
@@ -1652,13 +1652,13 @@ void CComboBar::ShowStaticFuncs(CheckData &ckd)
   m_TypesCtrl->show();
 //  if (!VisibleList[v_Types])
   m_TypesCtrl->setCurrentIndex(0);
-  if (!LBaseData->debugger->isRunning)
+  if (!LBaseData->debugger->isConnected)
     m_TypesCtrl->setEnabled(true);
   LeftCombo = IDC_ComboTypes;
   m_BasicTypesCtrl->show();
 //  if (!VisibleList[v_Types])
   m_BasicTypesCtrl->setCurrentIndex(0);
-  if (!LBaseData->debugger->isRunning)
+  if (!LBaseData->debugger->isConnected)
     m_BasicTypesCtrl->setEnabled(true);
   RightCombo = IDC_BasicTypes;
   m_StaticFuncsCtrl->show();
@@ -1678,12 +1678,12 @@ void CComboBar::ShowSignalFuncs(CheckData &ckd)
   lastCkd = ckd;
   m_TypesCtrl->show();
   m_TypesCtrl->setCurrentIndex(0);
-  if (!LBaseData->debugger->isRunning)
+  if (!LBaseData->debugger->isConnected)
     m_TypesCtrl->setEnabled(true);
   LeftCombo = IDC_ComboTypes;
   m_BasicTypesCtrl->show();
   m_BasicTypesCtrl->setCurrentIndex(0);
-  if (!LBaseData->debugger->isRunning)
+  if (!LBaseData->debugger->isConnected)
     m_BasicTypesCtrl->setEnabled(true);
   RightCombo = IDC_BasicTypes;
   m_StaticFuncsCtrl->removeItem(0);
@@ -1702,12 +1702,12 @@ void CComboBar::ShowSlotFuncs(CheckData &ckd, LavaDECL* signalDecl)
   lastCkd = ckd;
   m_TypesCtrl->show();
   m_TypesCtrl->setCurrentIndex(0);
-  if (!LBaseData->debugger->isRunning)
+  if (!LBaseData->debugger->isConnected)
     m_TypesCtrl->setEnabled(true);
   LeftCombo = IDC_ComboTypes;
   m_BasicTypesCtrl->show();
   m_BasicTypesCtrl->setCurrentIndex(0);
-  if (!LBaseData->debugger->isRunning)
+  if (!LBaseData->debugger->isConnected)
     m_BasicTypesCtrl->setEnabled(true);
   RightCombo = IDC_BasicTypes;
   m_StaticFuncsCtrl->removeItem(0);
@@ -1750,7 +1750,7 @@ void CComboBar::showIFFuncs()
   m_StaticFuncsCtrl->removeItem(0);
   m_StaticFuncsCtrl->insertItem(0,tr(" (Static functions) "));
   m_StaticFuncsCtrl->setCurrentIndex(0);
-  if (!LBaseData->debugger->isRunning)
+  if (!LBaseData->debugger->isConnected)
     m_StaticFuncsCtrl->setEnabled(true);
   RightCombo = IDC_BasicTypes;
   ThirdCombo = IDC_StaticFuncs;

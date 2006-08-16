@@ -705,7 +705,7 @@ StackListView::StackListView(QWidget *parent, CUtilityView* bar)
   setSelectionMode(QAbstractItemView::SingleSelection);
   allDrawn = false;
   connect(this,SIGNAL(itemClicked(QTreeWidgetItem*, int)), SLOT(itemClicked(QTreeWidgetItem*, int)));
-  connect(this,SIGNAL(itemSelectionChanged()), SLOT(selChanged()));
+  //connect(this,SIGNAL(itemSelectionChanged()), SLOT(selChanged()));
 }
 
 void StackListView::itemClicked(QTreeWidgetItem *item, int)

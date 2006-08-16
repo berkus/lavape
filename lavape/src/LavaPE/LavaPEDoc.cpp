@@ -2995,7 +2995,7 @@ void CLavaPEDoc::OnCheck()
 bool CLavaPEDoc::OnCloseDocument() 
 {
   if (!((wxApp*)qApp)->appExit ) {
-    if (debugOn && ((CLavaPEApp*)wxTheApp)->debugger.isRunning) {
+    if (debugOn && ((CLavaPEApp*)wxTheApp)->debugger.isConnected) {
       ((CLavaPEApp*)wxTheApp)->debugger.cleanBrkPoints(this);
       if (((CLavaPEApp*)wxTheApp)->debugger.dbgReceived.lastReceived) 
         ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)((CLavaPEApp*)wxTheApp)->debugger.dbgReceived.lastReceived->DbgData.ptr, this);
@@ -3174,11 +3174,6 @@ void CLavaPEDoc::OnDebugLava()
   ((CLavaPEApp*)qApp)->debugger.adjustBrkPnts();
   ((CLavaPEApp*)qApp)->debugger.start();
 }
-//
-//void CLavaPEDoc::interpreterExited () {
-//  delete ((CLavaPEApp*)wxTheApp)->debugger.workSocket;
-//  ((CLavaPEApp*)qApp)->debugger.stop();
-//}
 
 //check all included documents
 void CLavaPEDoc::OnTotalCheck() 

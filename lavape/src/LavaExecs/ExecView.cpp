@@ -885,7 +885,7 @@ void CExecView::OnChar(QKeyEvent *e)
   ctrlPressed = (state & Qt::ControlModifier);
   SynObject *currentSynObj, *parent/*, *ocl*/;
 
-  if (LBaseData->debugger->isRunning)
+  if (LBaseData->debugger->isConnected)
     switch (key) {
     case Qt::Key_Tab:
       if (state & Qt::ShiftModifier) // Shift key down ==> BACKTAB
@@ -1283,7 +1283,7 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
   clicked = true;
   if (EditOK()) {
     text->NewSel(&pos);
-    if (!LBaseData->debugger->isRunning
+    if (!LBaseData->debugger->isConnected
     && text->newSelection == text->currentSelection
     && (text->currentSelection->data.synObject->primaryToken == VarPH_T
         || (text->currentSelection->data.synObject->primaryToken == Exp_T
@@ -1307,7 +1307,7 @@ void CExecView::OnLButtonDblClk(QMouseEvent *e)
 {
   // TODO: Add your message handler code here and/or call default
 
-  if (LBaseData->debugger->isRunning) return;
+  if (LBaseData->debugger->isConnected) return;
 
   doubleClick = true;
   OnLButtonDown(e);
@@ -6968,40 +6968,30 @@ void CExecView::on_DbgRunToSelAct_triggered() {
 void CExecView::OnUpdateDbgStart(QAction* action) {
   if (!myDoc->mySynDef)
     return;
-  //LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)myDoc->mySynDef->SynDefTree.first)->data.TopDef.ptr;
-  //CHE* che;
-  //for (che = (CHE*)topDECL->NestedDecls.first;
-  //     che && (((LavaDECL*)che->data)->DeclType == VirtualType);
-  //     che = (CHE*) che->successor);
-  //action->setEnabled(che && (((LavaDECL*)che->data)->DeclType == Initiator));
-  if (LBaseData->debugger->isRunning) {
-    action->setEnabled(LBaseData->enableBreakpoints);
-    return;
-  }
-  ((CPEBaseDoc*)myDoc)->OnUpdateRunLava(action);
+  action->setEnabled(true);
 }
 
 void CExecView::OnUpdateDbgStepNext(QAction* action) {
-  action->setEnabled(LBaseData->enableBreakpoints);
+  action->setEnabled(LBaseData->debugger->isConnected);
 }
 
 void CExecView::OnUpdateDbgStepNextFunction(QAction* action) {
-  action->setEnabled(LBaseData->enableBreakpoints);
+  action->setEnabled(LBaseData->debugger->isConnected);
 }
 
 void CExecView::OnUpdateDbgStepinto(QAction* action) {
-  action->setEnabled(LBaseData->enableBreakpoints);
+  action->setEnabled(LBaseData->debugger->isConnected);
 }
 
 void CExecView::OnUpdateDbgStepout(QAction* action) {
-  action->setEnabled(LBaseData->enableBreakpoints);
+  action->setEnabled(LBaseData->debugger->isConnected);
 }
 
 void CExecView::OnUpdateDbgRunToSel(QAction* action)
 {
   action->setEnabled(!Taboo(true)
     && text->currentSynObj->IsExecutable()
-    && LBaseData->enableBreakpoints);
+    && LBaseData->debugger->isConnected);
 }
 
 void CExecView::OnUpdateDbgBreakpoint(QAction* action)
@@ -7011,16 +7001,15 @@ void CExecView::OnUpdateDbgBreakpoint(QAction* action)
     && !text->currentSynObj->IsPlaceHolder()
     && !text->currentSynObj->IsConstant()
     && !(text->currentSynObj->primaryToken == declare_T)
-    && !(text->currentSynObj->primaryToken == Semicolon_T)
-    && (LBaseData->enableBreakpoints || !LBaseData->debugger->isRunning));
+    && !(text->currentSynObj->primaryToken == Semicolon_T));
 }
 
 void CExecView::OnUpdateDbgClearBreakpoints(QAction* action) {
-  action->setEnabled(LBaseData->enableBreakpoints || !LBaseData->debugger->isRunning);
+  action->setEnabled(true);
 }
 
 void CExecView::OnUpdateDbgStop(QAction* action) {
-  action->setEnabled(LBaseData->enableBreakpoints);
+  action->setEnabled(LBaseData->debugger->isConnected);
 }
 
 void CComment::on_okButton_clicked()

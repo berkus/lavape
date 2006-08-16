@@ -349,7 +349,7 @@ public:
   DbgContData* ContData;  //used in LavaPE
   unsigned long /*HCURSOR*/ ArrowCurser;
   bool inMultiDocUpdate; //open document in multi document update
-  bool inRuntime, enableBreakpoints;
+  bool inRuntime;
   CLavaPEHint* actHint;
   CMultiUndoMem MultiUndoMem;
   CPEBaseBrowse *Browser;

@@ -204,7 +204,8 @@ bool ObjectDump(CheckData& ckd, LavaVariablePtr stack)
 {
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
   DumpEventData* data = new DumpEventData(ckd.document, stack, currentThread);
-	QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaDump,(void*)data));
+  currentThread->waitingForUI = true;
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaDump,(void*)data));
   currentThread->suspend();
   ckd.document->DumpFrame = 0;
   return true;

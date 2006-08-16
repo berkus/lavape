@@ -926,7 +926,7 @@ void CLavaMainFrame::on_overrideAction_triggered()
 
 void CLavaMainFrame::on_DbgAction_triggered()
 {
-  if (((CLavaPEDebugger*)LBaseData->debugger)->isRunning) {
+  if (((CLavaPEDebugger*)LBaseData->debugger)->isConnected) {
     DbgMessage* mess = new DbgMessage(Dbg_Continue);
     QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
   }
@@ -990,15 +990,7 @@ void CLavaMainFrame::on_DbgStepoutAct_triggered()
 
 void CLavaMainFrame::on_DbgStopAction_triggered()
 {
-  //if (((CLavaPEDebugger*)LBaseData->debugger)->interpreterWaits) {
-  //  DbgMessage* mess = new DbgMessage(Dbg_Exit);
-  //  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebugRq,(void*)mess));
-  //}
-  //else
-    //if  (((CLavaPEDebugger*)LBaseData->debugger)->startedFromLava)
-      ((CLavaPEDebugger*)LBaseData->debugger)->workSocket->abort();
-    //else
-    //  ((CLavaPEApp*)qApp)->interpreter.kill();
+  ((CLavaPEDebugger*)LBaseData->debugger)->stop(otherError);
 }
 
 void CLavaMainFrame::on_DbgRunToSelAct_triggered()
