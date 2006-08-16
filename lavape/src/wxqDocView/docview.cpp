@@ -140,10 +140,8 @@ wxApp::~wxApp() {
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
   appExit = true;
-//  settings.setPath(wxTheApp->GetVendorName(),wxTheApp->GetAppName(),QSettings::UserScope);
-//  settings.beginGroup(GetSettingsPath());
   m_docManager->FileHistorySave(settings);
-  delete m_appWindow;
+  //delete m_appWindow;
   delete m_docManager;
 }
 
@@ -892,7 +890,7 @@ bool wxDocManager::Clear(bool force)
     doc = m_docs.takeAt(0);
     if (!doc->Close() && !force)
         return false;
-//    delete doc;
+    delete doc;
 
     // Implicitly deletes the document when the last
     // view is removed (deleted)

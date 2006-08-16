@@ -196,10 +196,11 @@ void CLavaPEDebugger::stop(DbgExitReason reason) {
     myDoc->debugOn = false;
     ((CPEBaseDoc*)myDoc)->changeNothing = false;
   }
-  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)0));
 
   if (startedFromLava)
     qApp->exit(0);
+  else
+    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)0));
 }
 
 
