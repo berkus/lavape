@@ -56,7 +56,7 @@ class LAVABASE_DLL ASN1tofromAr: public ASN1
    ASN1tofromAr(QDataStream* ar, const QString& file) {Ar = ar; FileName = file; };
    ASN1tofromAr(QDataStream* ar, const DString& file) {Ar = ar; FileName = file.c; };
    ASN1tofromAr(QDataStream* ar) {Ar = ar; actPos = 0; actLen = 0;};
-  
+
   virtual void putChar (const unsigned char&);
   virtual void getChar (unsigned char&);
    void GETCString (QString* s);
@@ -202,9 +202,9 @@ public:
   virtual void OnShowOverridables() {}
   virtual void OnShowGUIview() {}
   virtual void OnMakeGUI() {}
-  virtual void OnNewLitStr() {}  
-  virtual void OnInsertOpt() {}  
-  virtual void OnDeleteOpt() {}  
+  virtual void OnNewLitStr() {}
+  virtual void OnInsertOpt() {}
+  virtual void OnDeleteOpt() {}
   virtual void OnOK() {}
   virtual void OnCancel() {}
 	virtual void OnTogglestate() {}
@@ -376,7 +376,7 @@ struct LAVABASE_DLL CheckData {
   QString *errorCode;
   unsigned iArg;
   Category callObjCat;
-  bool stateObj, iniCheck, concernExecs, criticalScope, handleOpd, 
+  bool stateObj, iniCheck, concernExecs, criticalScope, handleOpd,
        inQuant, inInitialUpdate, immediateReturn, exceptionThrown;
   SET flags;
 };
@@ -413,7 +413,7 @@ public:
   ~DumpEventData() {}
 };
 
-typedef LAVABASE_DLL bool (*TAdapterFunc)(CheckData&, LavaVariablePtr);  
+typedef LAVABASE_DLL bool (*TAdapterFunc)(CheckData&, LavaVariablePtr);
 
 
 class LAVABASE_DLL CVFuncDesc {
@@ -451,7 +451,7 @@ public:
   int delta;           // like function table delta
   bool isparamRef;           // true if referenced type is also virtual type
         // remember: the RefID-DECL is the RuntimeDECL in paramDECL
-  LavaDECL *fValue;  //final value of paramDECL    
+  LavaDECL *fValue;  //final value of paramDECL
 /*
   struct {
     bool outerParam; // if isparamRef
@@ -478,8 +478,8 @@ class LAVABASE_DLL CSectionDesc : public CSecTabBase {
   // main section comes first, base sections follow, ==> first offset
   // = main section offset
 public:
-  LavaDECL* implDECL;          
-  LavaDECL* classDECL;  //or packageDECL        
+  LavaDECL* implDECL;
+  LavaDECL* classDECL;  //or packageDECL
   int sectionOffset;       // offset of this section in the entire object
   CVFuncDesc *funcDesc;    // pointer to the first virtual function of this section
   CVAttrDesc *attrDesc;    // pointer to the first attribute description of this section
@@ -487,7 +487,7 @@ public:
   LavaDECL* innerContext;  //package or interface of inner virtual types
   LavaDECL* outerContext;  //package or interface of outer virtual types
   int nSections;           // number of sections belonging to this class
-  SynFlags SectionFlags; 
+  SynFlags SectionFlags;
   TAdapterFunc* adapterTab;
   CSectionDesc();
   virtual void Destroy();
@@ -500,7 +500,7 @@ public:
 		urlObj = uobj;
 		thr = t;
 	}
-	
+
 	LavaObjectPtr obj, urlObj;
 	CheckData *ckdPtr;
 	CLavaThread *thr;
@@ -564,7 +564,7 @@ enum HWerrorCodes {
 extern LAVABASE_DLL bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly);
 extern LAVABASE_DLL bool SetLavaException(CheckData& ckd, int code, const QString& mess);
 //extern LAVABASE_DLL bool SetLavaException(CheckData& ckd, int code, QString *strCode);
-  
+
 extern LAVABASE_DLL void AbsPathName(DString& fn, const DString& dirName);
 extern LAVABASE_DLL void RelPathName(DString& fn, const DString& dirName);
 extern LAVABASE_DLL void CalcDirName(DString& dirName);
@@ -608,11 +608,6 @@ extern LAVABASE_DLL LavaObjectPtr CastSetType(CheckData& ckd, LavaObjectPtr setT
 extern LAVABASE_DLL LavaObjectPtr CastArrayType(CheckData& ckd, LavaObjectPtr arrayTypeObjPtr);
 extern LAVABASE_DLL void ToggleObjectCat(LavaObjectPtr obj);
 /////////////////////////////////////////////////////////////////////////////
-
-#ifndef WIN32
-extern LAVABASE_DLL jmp_buf contOnHWexception;
-extern LAVABASE_DLL CHWException hwException ;
-#endif
 
 enum DebugStep {
   nextStm,
@@ -729,5 +724,10 @@ class LAVABASE_DLL CFPException : public CHWException
 public:
     CFPException(bool isQuietNaN);
 };
+
+#ifndef WIN32
+extern LAVABASE_DLL jmp_buf contOnHWexception;
+extern LAVABASE_DLL CHWException hwException;
+#endif
 
 #endif
