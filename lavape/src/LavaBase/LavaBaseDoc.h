@@ -611,7 +611,7 @@ extern LAVABASE_DLL void ToggleObjectCat(LavaObjectPtr obj);
 
 #ifndef WIN32
 extern LAVABASE_DLL jmp_buf contOnHWexception;
-extern LAVABASE_DLL CHWException hwException;
+extern LAVABASE_DLL CHWException hwException ;
 #endif
 
 enum DebugStep {
