@@ -979,8 +979,8 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
           ObjData.ptr = obj;
          }
 
-        DbgMessage0(DbgCommand com) {Command = com;}
-        DbgMessage0() {}
+        DbgMessage0(DbgCommand com) { Command = com; }
+        DbgMessage0() { Command = Dbg_Nothing; }
 
         void Destroy() {
          DbgData.ptr = 0;

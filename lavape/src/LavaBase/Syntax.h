@@ -1489,6 +1489,7 @@ struct LAVABASE_DLL DbgMessage0 : public DObject  {
 
   DbgMessage0()
   {
+    Command=Dbg_Nothing;
   }
   void Destroy()
   {

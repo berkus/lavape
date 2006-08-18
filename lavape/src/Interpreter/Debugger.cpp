@@ -226,18 +226,20 @@ void CLavaDebugger::receive() {
 }
 
 void CLavaDebugger::send() {
-  if (!varAction) {
-    stop(otherError);
-    return;
-  }
-  if (dbgStopData->StackChain.first) {
-    varAction->run();
-    addCalleeParams();
-    mSend.SetSendData(Dbg_StopData, dbgStopData);
-  }
-  else  {
-    stop(otherError);
-    return;
+  if (mReceive.Command == Dbg_Continue) {
+    if (!varAction) {
+      stop(otherError);
+      return;
+    }
+    if (dbgStopData->StackChain.first) {
+      varAction->run();
+      addCalleeParams();
+      mSend.SetSendData(Dbg_StopData, dbgStopData);
+    }
+    else  {
+      stop(otherError);
+      return;
+    }
   }
  
   CDPDbgMessage0(PUT, put_cid, (address)&mSend);
