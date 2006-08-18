@@ -36,6 +36,7 @@ dirs:
 	if [ ! -e bin ] ; then mkdir bin; fi; \
 	if [ ! -e lib ] ; then mkdir lib; fi; \
 	cd src/Lava; if [ ! -e Generated ]; then mkdir Generated; fi ; \
+	cd ../Interpreter; if [ ! -e Generated ]; then mkdir Generated; fi ; \
 	cd ../LavaBase; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaExecs; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../LavaGUI; if [ ! -e Generated ]; then mkdir Generated; fi; \
@@ -81,7 +82,7 @@ build:
 	&& cd ../LavaPE && $(MAKE) \
 	&& cd ../Lava && $(MAKE)
 
-bin_dist: 
+bin_dist:
 	if [ ! -e lavape ] ; then mkdir lavape; fi; cp *.txt lavape; \
 	cd lavape; if [ ! -e bin ] ; then mkdir bin; fi; \
 	if [ ! -e doc ] ; then mkdir doc; fi; \
@@ -105,7 +106,7 @@ bin_dist:
 	if [ ! -e LavaStream.lava ]; then ln -s ../../samples/LavaStream.lava .; fi; \
 	if [ ! -e libLavaStream.so ]; then ln -s ../../lib/libLavaStream.so .; fi; \
 	cd ../..; cp ../lib/*.so lib; \
-	cp $(QTDIR)/lib/libQtCore.so $(QTDIR)/lib/libQtGui.so $(QTDIR)/lib/libQtNetwork.so lib lib; \
+	cp $(QTDIR)/lib/libQtCore.so $(QTDIR)/lib/libQtGui.so $(QTDIR)/lib/libQtNetwork.so $(QTDIR)/lib/libQtXml.so lib; \
 	cp $(QTDIR)/bin/assistant bin; \
 	cd ..; tar cjf /windows/D/lavape-0.9.0-linux-bin.tar.bz2 lavape; ls -l /windows/D/lavape-*; rm -rf lavape
 

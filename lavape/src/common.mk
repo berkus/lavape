@@ -1,7 +1,7 @@
 SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
 
-DBG=-g
+DBG=
 
 ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt
@@ -188,7 +188,7 @@ impex = -X $(DLL)
 endif
 
 %.h %G.cpp: %.ph
-	../../bin/LPC $(impex) -I. -I../LavaBase $<
+	../../bin/LPC.exe $(impex) -I. -I../LavaBase $<
 
 %.cpp: %.qrc
 	$(QTDIR)/bin/rcc -o $@ $<
