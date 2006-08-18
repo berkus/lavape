@@ -60,13 +60,15 @@ static initialization checks</strong></h2>
 
 
 
-<p><b>Inadvertent use of uninitialized data or propagation of null values (<font color="#0000ff">&Oslash;</font>) 
-to <a href="dialogs/MemVarBox.htm#mandatory">mandatory</a> variables</b> frequently causes
+<p>Inadvertent use of uninitialized variables or propagation of null values (<font color="#0000ff">&Oslash;</font>) 
+to <a href="dialogs/MemVarBox.htm#mandatory">mandatory</a> variables frequently 
+cause
 programs to crash in ways that are hard and time-consuming to
 disentangle, and this gives rise to immense costs in turn. The attempt to
 prevent such situations has therefore been a constitutive design goal
-of the <i><font color="#ff0000"><b>Lava</b></font></i>
-development. </p>
+of the <i><font color="#ff0000"><b>Lava</b></font></i> development (see also
+<a href="FAQLavaOrientation.htm">Principal orientation of <i><b>
+<font color="#FF0000">Lava</font></b></i></a>).</p>
 
 
 
@@ -89,10 +91,27 @@ already at programming time, i.e., by purely static checks</b>.</p>
 
 
 
-<p>This could be achieved only by a major
-revision of the expressive means for executable code, as compared to more traditional wide-spread 
-procedural and object-oriented programming languages. In particular,
-we have</p>
+<p>This could be achieved only </p>
+
+
+
+
+<ol type="A">
+  <li>by imposing a much more stringent discipline on <font color="#FF0000"><i>
+  <b>Lava</b></i></font> programs as to <b>where</b> the mandatory member 
+  variables of <font color="#FF0000"><i><b>Lava</b></i></font> objects are 
+  initialized: they <b>must</b> be initialized in the body of an initializer 
+  method of the respective <font color="#FF0000"><i><b>Lava</b></i></font> 
+  class, and</li>
+  <li>by a major revision of the expressive means for executable code, as 
+  compared to more traditional wide-spread procedural and object-oriented 
+  programming languages. </li>
+</ol>
+
+
+
+
+<p align="left">In particular, we have</p>
 
 
 
@@ -552,8 +571,9 @@ them.</p>
 
 <p>The <b>definite assignment checks</b> of <b><font color="#ff0000"><i>Java</i></font></b> 
 and <font color="#ff0000"><i><b>C#</b></i></font>, like those of
-<font color="#ff0000"><b><i>Lava</i></b></font> (see above), ensure that a local 
-variable is assigned before it is used. But the absence of the 
+<font color="#ff0000"><b><i>Lava</i></b></font> (see above), ensure merely that
+<b>local 
+variables</b> are assigned before they are used. But the absence of the 
 optional/mandatory distinction and of a clear distinction between input and 
 output parameters makes it impossible to have a greater benefit from the 
 analytical capabilities of the compiler. E.g., look at the following little
@@ -612,7 +632,81 @@ conditions that must hold true for newly created objects of the respective class
 (and also after any non-read-only method has been applied to such an object).</p>
 
 
+<p>The &quot;merciless&quot; object initialization discipline of <font color="#FF0000"><i>
+<b>Lava</b></i></font> (&quot;objects must be explicitly and completely and solely 
+initialized within initializers&quot;) has another highly desirable and beneficial 
+consequence that is perhaps even more important as the complete prevention of 
+hard to trace run time crashes due to missing (or meaningless automatic) 
+initialization:</p>
+
+
+<p><b>Initialization of&nbsp; object member variables cannot be scattered any 
+longer in obscure, arbitrary, and inextricable ways over large portions of code.</b></p>
+
+
+<p>This makes it much easier to quickly locate the place where a value is 
+assigned to a member or other variable, and thus to understand the data flow and 
+the entire structure of applications: an enormous advantage that cannot be 
+overestimated.</p>
+
+
+<p>In some cases this may, indeed, force the programmer to redesign the class 
+structure of the respective application. E.g., it may be necessary to subdivide 
+objects into parts corresponding to several very different stages of the 
+application run.</p>
+
+
+<p><b>Example:</b></p>
+
+
+<p>Consider a tree structure of actual application 
+data objects which perhaps is completely constructed in a first stage of the 
+application. A corresponding widget tree for an external GUI representation 
+might be completely constructed in a second stage, before it is possible to 
+compute the  sizes and positions (i.e., a layout tree) for the widget tree 
+in a final third stage.</p>
+
+
+<p>In a traditional language without stringent initialization discipline you 
+would perhaps combine all these three pieces of information (actual application 
+data + widget data + layout data) or at least the last two  
+(widget + layout data) in a single object. But you would still need those three 
+stages to successively complete the object structure. The constructor used in 
+the initial object creation would produce only a very incomplete, preliminary 
+object, and solely the programmer would have to make sure that the still 
+uninitialized member variables aren't&nbsp; referenced prematurely.</p>
+
+
+<p>In <font color="#FF0000"><i><b>Lava</b></i></font> this wouldn't work, except 
+perhaps if you declare all those member variables that are to be initialized 
+during the second and third stage to be &quot;<a href="dialogs/MemVarBox.htm#mandatory">optional</a>&quot;, 
+although they are not really optional. This would not only be an abuse of the 
+&quot;optional&quot; notion but would entail the rather unpleasant &quot;penalty&quot; that you 
+would have to protect all references to those (not really optional) variables by
+<font color="#0000FF"><b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font> 
+or <font color="#0000FF"><b><a href="whatsThis/IfdefElse.htm">else</a></b></font> 
+constructs.</p>
+
+
+<p>The only appropriate <i><font color="#FF0000"><b>Lava</b></font></i> solution 
+would be to separate the application data from the widget data and the latter 
+from the layout data, and to construct an application object tree in the first 
+stage, then a widget tree in the second stage, and finally a layout object tree.</p>
+
+
+<p>This would by no means be a disadvantage, but quite to the contrary: We 
+expect that he stringent object initialization discipline of
+<font color="#FF0000"><i><b>Lava</b></i></font> will in many cases lead to a 
+very desirable and potentially advantageous<b> separation of concerns</b>, for 
+instance in our example, if you intend to present the same application objects 
+in two or more different views either by different widgets, or the same widget 
+tree according to different layout strategies, say, e.g., in one view as a left 
+to right tree and in another view as a top to bottom tree.</p>
+
+
 <hr>
+
+
 <p><b>Summary:</b> The most fundamental differences between
 <font color="#ff0000"><i><b>Lava</b></i></font> and other languages w.r.t 
 initialization are: </p>
@@ -664,6 +758,11 @@ time remain in <font color="#ff0000"><i><b>Lava</b></i></font>:</p>
 
 
 </ol>
+
+
+<h3>See also</h3>
+<p><a href="FAQLavaOrientation.htm">Principal orientation of <i><b>
+<font color="#FF0000">Lava</font></b></i></a></p>
 
 
 </body>
