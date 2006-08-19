@@ -51,7 +51,7 @@ public:
   }
 
   virtual void resume() {
-    if (!waitingForUI)
+    if (!waitingForUI && !mySemaphore.available())
       mySemaphore.release();
   }
 

@@ -141,7 +141,7 @@ wxApp::~wxApp() {
 
   appExit = true;
   m_docManager->FileHistorySave(settings);
-  //delete m_appWindow;
+  delete m_appWindow;
   delete m_docManager;
 }
 

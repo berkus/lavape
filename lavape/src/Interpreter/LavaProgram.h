@@ -10,6 +10,14 @@
 class LAVAEXECS_DLL CLavaExecThread : public CLavaThread {
 public:
   CLavaExecThread(CLavaBaseDoc *d) : CLavaThread(d){};
+  ~CLavaExecThread() {
+    if (isRunning()) {
+      abort = true;
+      resume();
+      terminate();
+      wait();
+    }
+  }
 
   unsigned ExecuteLava(CLavaBaseDoc *doc);
   void run();
