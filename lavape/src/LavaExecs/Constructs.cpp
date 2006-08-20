@@ -565,8 +565,8 @@ bool TokenNode::OptionalClauseToken (SynObject *&optClause) {
     return true;
   case where_T:
     if (synObject->primaryToken == foreach_T
-    && ((Exists*)synObject)->updateStatement.ptr) {
-      optClause = (SynObject*)((QuantStmOrExp*)synObject)->statement.ptr;
+    && ((Exists*)synObject)->secondaryClause.ptr) {
+      optClause = (SynObject*)((QuantStmOrExp*)synObject)->primaryClause.ptr;
       return true;
     }
     break;
@@ -592,15 +592,18 @@ bool TokenNode::OptionalClauseToken (SynObject *&optClause) {
     return true;
   case do_T:
     if (synObject->primaryToken == exists_T) {
-      optClause = (SynObject*)((Exists*)synObject)->updateStatement.ptr;
+      optClause = (SynObject*)((Exists*)synObject)->secondaryClause.ptr;
       return true;
     }
     else if (synObject->primaryToken == foreach_T
-    && ((Exists*)synObject)->statement.ptr) {
-      optClause = (SynObject*)((Exists*)synObject)->updateStatement.ptr;
+    && ((Exists*)synObject)->primaryClause.ptr) {
+      optClause = (SynObject*)((Exists*)synObject)->secondaryClause.ptr;
       return true;
     }
     break;
+  case initialize_T:
+    optClause = (SynObject*)((Declare*)synObject)->secondaryClause.ptr;
+    return true;
   case ExpOpt_T:
     optClause = synObject;
     return true;
@@ -614,6 +617,7 @@ bool SynObject::HasOptionalParts ()
   switch (primaryToken) {
   case attach_T:
   case clone_T:
+  case declare_T:
   case exists_T:
   case fail_T:
   case foreach_T:
@@ -851,7 +855,7 @@ bool MultipleOp::IsReadOnlyClause(SynObject *) {
 bool QuantStmOrExp::IsReadOnlyClause(SynObject *synObj) {
   if (IsDeclare())
     return false;
-  if (synObj->whereInParent == (address)&statement.ptr)
+  if (synObj->whereInParent == (address)&primaryClause.ptr)
     return true;
   else
     return false;
@@ -967,19 +971,26 @@ bool CloneExpression::NestedOptClause (SynObject *optClause) {
 
 bool Exists::NestedOptClause (SynObject *optClause) {
   if (primaryToken == exists_T)
-    if (optClause->whereInParent == (address)&updateStatement.ptr)
+    if (optClause->whereInParent == (address)&secondaryClause.ptr)
       return true;
     else
       return false;
   else // foreachStm
-    if (optClause->whereInParent == (address)&statement.ptr
-    && updateStatement.ptr)
+    if (optClause->whereInParent == (address)&primaryClause.ptr
+    && secondaryClause.ptr)
       return true;
-    else if (optClause->whereInParent == (address)&updateStatement.ptr
-    && statement.ptr)
+    else if (optClause->whereInParent == (address)&secondaryClause.ptr
+    && primaryClause.ptr)
       return true;
     else
       return false;
+}
+
+bool Declare::NestedOptClause (SynObject *optClause) {
+  if (optClause->whereInParent == (address)&secondaryClause.ptr)
+    return true;
+  else
+    return false;
 }
 
 #ifdef INTERPRETER

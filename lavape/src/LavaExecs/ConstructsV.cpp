@@ -1356,7 +1356,7 @@ SelectExpressionV::SelectExpressionV (bool) {
   primaryToken = select_T;
   quant = new QuantifierV(true);
   quantifiers.Append(NewCHE(quant));
-  statement.ptr = new SynObjectV(Stm_T);
+  primaryClause.ptr = new SynObjectV(Stm_T);
   addObject.ptr = new SynObjectV(Exp_T);
   resultSet.ptr = new SynObjectV(Exp_T);
 }
@@ -1383,7 +1383,7 @@ void SelectExpressionV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool i
 
   t.Insert(where_T);
   NLincIndent(t);
-  DRAW(statement.ptr);
+  DRAW(primaryClause.ptr);
   NLdecIndent(t);
 
   t.Insert(add_T);
@@ -1406,18 +1406,18 @@ ExistsV::ExistsV (bool withUpd) {
   primaryToken = exists_T;
   quant = new QuantifierV(true);
   quantifiers.Append(NewCHE(quant));
-  statement.ptr = new SynObjectV(Stm_T);
+  primaryClause.ptr = new SynObjectV(Stm_T);
   if (withUpd)
-    updateStatement.ptr = new SynObjectV(Stm_T);
+    secondaryClause.ptr = new SynObjectV(Stm_T);
 }
 
 SynObject *ExistsV::InsertOptionals () {
   SynObject *insObj;
 
-  if (!updateStatement.ptr) {
+  if (!secondaryClause.ptr) {
     insObj = new SynObjectV(Stm_T);
     insObj->parentObject = this;
-    insObj->whereInParent = (address)&updateStatement.ptr;
+    insObj->whereInParent = (address)&secondaryClause.ptr;
     return insObj;
   }
   else
@@ -1444,39 +1444,21 @@ void ExistsV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   }
 
   NLdecIndent(t);
-  if (updateStatement.ptr)
+  if (secondaryClause.ptr)
     t.Insert(where_T);
   else
     t.Insert(with_T);
   NLincIndent(t);
-  DRAW(statement.ptr);
+  DRAW(primaryClause.ptr);
 
-  if (updateStatement.ptr) {
+  if (secondaryClause.ptr) {
     NLdecIndent(t);
     t.Insert(do_T,false,true);
     NLincIndent(t);
-    DRAW(updateStatement.ptr);
+    DRAW(secondaryClause.ptr);
   }
-/*
-  if (primaryToken == exists_T
-  && parentObject && parentObject->primaryToken == elsif_T) {
-    if (parentObject->parentObject->primaryToken == if_T) {
-      if (whereInParent == (address)&((IfThen*)parentObject)->ifCondition.ptr) {
-        t.indLen -= 2;
-        endex = false;
-      }
-    }
-    else
-      if (whereInParent == (address)&((IfxThen*)parentObject)->ifCondition.ptr) {
-        t.indLen -= 2;
-        endex = false;
-      }
-  }
-*/
-//  if (endex) {
-    NLdecIndent(t);
-    t.Insert(ENDexists_T);
-//  }
+  NLdecIndent(t);
+  t.Insert(ENDexists_T);
   EXIT
 }
 
@@ -1488,7 +1470,7 @@ DeclareV::DeclareV (bool) {
   primaryToken = declare_T;
   quant = new QuantifierV(false);
   quantifiers.Append(NewCHE(quant));
-  statement.ptr = new SynObjectV(Stm_T);
+  primaryClause.ptr = new SynObjectV(Stm_T);
 }
 
 void DeclareV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
@@ -1511,9 +1493,15 @@ void DeclareV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
   }
 
   NLdecIndent(t);
+  if (secondaryClause.ptr) {
+    t.Insert(initialize_T,false,true);
+    NLincIndent(t);
+    DRAW(secondaryClause.ptr);
+    NLdecIndent(t);
+  }
   t.Insert(do_T);
   NLincIndent(t);
-  DRAW(statement.ptr);
+  DRAW(primaryClause.ptr);
 
   NLdecIndent(t);
   t.Insert(ENDdeclare_T);
@@ -1528,9 +1516,9 @@ ForeachV::ForeachV (bool withUpd) {
   primaryToken = foreach_T;
   quant = new QuantifierV(true);
   quantifiers.Append(NewCHE(quant));
-  statement.ptr = new SynObjectV(Stm_T);
+  primaryClause.ptr = new SynObjectV(Stm_T);
   if (withUpd)
-    updateStatement.ptr = new SynObjectV(Stm_T);
+    secondaryClause.ptr = new SynObjectV(Stm_T);
 }
 
 void ForeachV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
@@ -1552,9 +1540,9 @@ void ForeachV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
     DRAWCHE(quantPtr,&quantifiers);
   }
 
-  if (statement.ptr) {
+  if (primaryClause.ptr) {
     NLdecIndent(t);
-    if (updateStatement.ptr)
+    if (secondaryClause.ptr)
       t.Insert(where_T,false,true);
     else {
       t.Insert(holds_T);
@@ -1563,17 +1551,17 @@ void ForeachV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
       t.Insert(Colon_T);
     }
     NLincIndent(t);
-    DRAW(statement.ptr);
+    DRAW(primaryClause.ptr);
   }
 
-  if (updateStatement.ptr) {
+  if (secondaryClause.ptr) {
     NLdecIndent(t);
-    if (statement.ptr)
+    if (primaryClause.ptr)
       t.Insert(do_T,false,true);
     else
       t.Insert(do_T,false,false);
     NLincIndent(t);
-    DRAW(updateStatement.ptr);
+    DRAW(secondaryClause.ptr);
   }
 
   NLdecIndent(t);

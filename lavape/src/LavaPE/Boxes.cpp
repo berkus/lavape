@@ -2324,6 +2324,7 @@ void CInitBox::UpdateData(bool getData)
     switch (valSynch) {
     case 0:
       Synch->setChecked(true);
+      break;
     default:
       Concurrent->setChecked(true);
     }

@@ -1279,7 +1279,7 @@ public:
 class QuantStmOrExp : public Expression {
 public:
   CHAINX/*Quantifier*/ quantifiers;
-  NESTEDANY<Expression> statement;
+  NESTEDANY<Expression> primaryClause;
   unsigned-- nQuantVars;
 
   virtual bool IsExists () { return false; }
@@ -1291,12 +1291,14 @@ public:
 
 class Declare : public QuantStmOrExp {
 public:
+  NESTEDANY<Expression> secondaryClause;
+  virtual bool NestedOptClause (SynObject *optClause);
   virtual bool IsDeclare () { return true; }
 };
 
 class Exists : public QuantStmOrExp {
 public:
-  NESTEDANY<Expression> updateStatement;
+  NESTEDANY<Expression> secondaryClause;
 
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool IsExists () { return true; }

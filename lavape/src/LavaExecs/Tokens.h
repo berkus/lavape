@@ -101,7 +101,7 @@ enum TToken {
   FutureEND7,
   ENDclone_T,
   ENDdeclare_T,
-  ENDdelete_T,
+  FutureEND8,
   ENDexists_T,
   ENDforeach_T,
   ENDif_T,
@@ -109,7 +109,7 @@ enum TToken {
   ENDnew_T,
   ENDselect_T,
   ENDswitch_T,
-  FutureEND8,
+  FutureEND9,
   ENDtry_T,
   ENDtypeof_T,
   ENDifdef_T,
@@ -160,7 +160,7 @@ enum TToken {
   invariant_T,
   copy_T,
   declare_T,
-  delete_T,
+  initialize_T,
   dftInitializer_T,
   div_T,
   do_T,
@@ -276,6 +276,7 @@ enum TToken {
 
 extern void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr,
                        bool baseCDP=false);
+
 
 
 extern LAVAEXECS_DLL QString TOKENSTR[];

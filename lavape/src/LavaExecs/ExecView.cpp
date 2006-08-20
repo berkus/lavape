@@ -3550,13 +3550,14 @@ void CExecView::OnRshift()
 void CExecView::OnShowOptionals()
 {
   SynObject *delObj=0, *insObj=0, *thenPart=0, *elsePart=0, *branch=0, *orgunit=0, *oid=0, *iid=0,
-            *statement=0, *updateStatement=0;
+            *statement=0, *secondaryClause=0;
   CHAINX *chx;
   CHE *outParm;
   unsigned nOpt=0;
   bool isNewClause, isCompObjSpec=false, isFirst=true, hasOpt=false, singleParm;
   AttachObject *attachObject;
   Foreach *foreachStm;
+  Declare *declareStm;
   Exists *existsStm;
   TryStatement *tryStm;
   Quantifier *quant;
@@ -3659,23 +3660,23 @@ void CExecView::OnShowOptionals()
   }
   else if (text->currentSynObj->primaryToken == foreach_T) {
     foreachStm = (Foreach*)text->currentSynObj;
-    if (!foreachStm->statement.ptr) nOpt++;
-    if (!foreachStm->updateStatement.ptr) nOpt++;
-    if (!foreachStm->statement.ptr) {
+    if (!foreachStm->primaryClause.ptr) nOpt++;
+    if (!foreachStm->secondaryClause.ptr) nOpt++;
+    if (!foreachStm->primaryClause.ptr) {
       insObj = new SynObjectV(Stm_T);
       text->currentSynObj = insObj;
       insObj->parentObject = foreachStm;
-      insObj->whereInParent = (address)&foreachStm->statement.ptr;
+      insObj->whereInParent = (address)&foreachStm->primaryClause.ptr;
       if (nOpt > 1)
         PutInsHint(insObj,SET(firstHint,-1));
       else
         PutInsHint(insObj,SET(firstHint,lastHint,-1));
     }
-    if (!foreachStm->updateStatement.ptr) {
+    if (!foreachStm->secondaryClause.ptr) {
       insObj = new SynObjectV(Stm_T);
       text->currentSynObj = insObj;
       insObj->parentObject = foreachStm;
-      insObj->whereInParent = (address)&foreachStm->updateStatement.ptr;
+      insObj->whereInParent = (address)&foreachStm->secondaryClause.ptr;
       if (nOpt > 1)
         PutInsHint(insObj,SET(lastHint,-1));
       else
@@ -3684,11 +3685,21 @@ void CExecView::OnShowOptionals()
   }
   else if (text->currentSynObj->primaryToken == exists_T) {
     existsStm = (Exists*)text->currentSynObj;
-    if (!existsStm->updateStatement.ptr) {
+    if (!existsStm->secondaryClause.ptr) {
       insObj = new SynObjectV(Stm_T);
       text->currentSynObj = insObj;
       insObj->parentObject = existsStm;
-      insObj->whereInParent = (address)&existsStm->updateStatement.ptr;
+      insObj->whereInParent = (address)&existsStm->secondaryClause.ptr;
+      PutInsHint(insObj,SET(firstHint,lastHint,-1));
+    }
+  }
+  else if (text->currentSynObj->primaryToken == declare_T) {
+    declareStm = (Declare*)text->currentSynObj;
+    if (!declareStm->secondaryClause.ptr) {
+      insObj = new SynObjectV(Stm_T);
+      text->currentSynObj = insObj;
+      insObj->parentObject = declareStm;
+      insObj->whereInParent = (address)&declareStm->secondaryClause.ptr;
       PutInsHint(insObj,SET(firstHint,lastHint,-1));
     }
   }

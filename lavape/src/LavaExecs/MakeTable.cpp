@@ -783,12 +783,12 @@ void QuantStmOrExp::MakeTable (address table,int inINCL,SynObjectBase *parent,TT
     MTBLCHE (chp,&quantifiers);
   }
 
-  if (statement.ptr)
-    MTBL (statement.ptr);
+  if (primaryClause.ptr)
+    MTBL (primaryClause.ptr);
 
   if (IsExists()
-  && ((Exists*)this)->updateStatement.ptr)
-    MTBL (((Exists*)this)->updateStatement.ptr);
+  && ((Exists*)this)->secondaryClause.ptr)
+    MTBL (((Exists*)this)->secondaryClause.ptr);
 }
 
 void SelectExpression::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)

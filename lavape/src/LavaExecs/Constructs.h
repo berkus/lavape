@@ -32,7 +32,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
+
 #include "Syntax.h"
+
 
 #include "qwidget.h"
 #include <QScrollArea>
@@ -2807,7 +2809,7 @@ class QuantStmOrExp : public Expression {
 
   public:
   CHAINX quantifiers;
-  NESTEDANY/*Expression*/ statement;
+  NESTEDANY/*Expression*/ primaryClause;
   unsigned nQuantVars;
   virtual bool IsExists()
   {
@@ -2837,6 +2839,8 @@ class Declare : public QuantStmOrExp {
 
 
   public:
+  NESTEDANY/*Expression*/ secondaryClause;
+  virtual bool NestedOptClause(SynObject *optClause);
   virtual bool IsDeclare()
   {
     return true;
@@ -2861,7 +2865,7 @@ class Exists : public QuantStmOrExp {
 
 
   public:
-  NESTEDANY/*Expression*/ updateStatement;
+  NESTEDANY/*Expression*/ secondaryClause;
   virtual bool NestedOptClause(SynObject *optClause);
   virtual bool IsExists()
   {

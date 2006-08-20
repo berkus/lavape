@@ -2306,7 +2306,7 @@ bool DeclareX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
         i++)
     stackFrame[i] = 0;
   ckd.currentStackLevel += nQuantVars;
-  result = ((SynObject*)statement.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+  result = ((SynObject*)primaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
   for ( i = stackLevel;
         i < stackLevel+nQuantVars;
         i++)
@@ -2484,12 +2484,12 @@ bool ExistsX::Recursion (CheckData &ckd, LavaVariablePtr stackFrame, unsigned ol
       ok = Enumerate(this,ckd,stackFrame,oldExprLevel,cheQuant,cheVar2);
     }
     else
-      if (updateStatement.ptr) {
-        if (((SynObject*)statement.ptr)->Execute(ckd,stackFrame,oldExprLevel))
-          ok = ((SynObject*)updateStatement.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+      if (secondaryClause.ptr) {
+        if (((SynObject*)primaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel))
+          ok = ((SynObject*)secondaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
       }
       else
-        ok = ((SynObject*)statement.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+        ok = ((SynObject*)primaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
   }
   return ok;
 }
@@ -2529,15 +2529,15 @@ bool ForeachX::Recursion (CheckData &ckd, LavaVariablePtr stackFrame, unsigned o
       ok = Enumerate(this,ckd,stackFrame,oldExprLevel,cheQuant,cheVar2);
     }
     else
-      if (statement.ptr)
-        if (updateStatement.ptr) {
-          if (((SynObject*)statement.ptr)->Execute(ckd,stackFrame,oldExprLevel))
-            ok = ((SynObject*)updateStatement.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+      if (primaryClause.ptr)
+        if (secondaryClause.ptr) {
+          if (((SynObject*)primaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel))
+            ok = ((SynObject*)secondaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
         }
         else
-          ok = ((SynObject*)statement.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+          ok = ((SynObject*)primaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
       else
-        ok = ((SynObject*)updateStatement.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+        ok = ((SynObject*)secondaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
   }
   return ok;
 }
@@ -2579,7 +2579,7 @@ bool SelectExpressionX::Recursion (CheckData &ckd, LavaVariablePtr stackFrame, u
       ok = Enumerate(this,ckd,stackFrame,oldExprLevel,cheQuant,cheVar2,rSet);
     }
     else
-      if (((SynObject*)statement.ptr)->Execute(ckd,stackFrame,oldExprLevel)) { // add resultObj to rSet
+      if (((SynObject*)primaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel)) { // add resultObj to rSet
         resultObj = ((Expression*)addObject.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
         frameSize = 8;
 #ifdef __GNUC__

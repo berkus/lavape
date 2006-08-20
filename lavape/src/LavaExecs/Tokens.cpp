@@ -202,7 +202,7 @@ void Tokens_INIT ()
   ATO("#connect");
   ATO("#clone");
   ATO("#declare");
-  ATO("#delete");
+  ATO("?");
   ATO("#exists");
   ATO("#foreach");
   ATO("#if");
@@ -266,7 +266,7 @@ void Tokens_INIT ()
   ATO("invariant");
   ATO("copy");
   ATO("declare");
-  ATO("delete");
+  ATO("initialize");
   ATO("default initializer");
   ATO("div");
   ATO("do");
@@ -321,7 +321,7 @@ void Tokens_INIT ()
   ATO("uuid");
   ATO("view");
   ATO("where");
-  ATO("once");
+  ATO("with");
 
   ATO("item");
   ATO("requires");

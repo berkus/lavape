@@ -5999,7 +5999,7 @@ bool QuantStmOrExp::Check (CheckData &ckd)
 
   ENTRY
 /*  if ((IsDeclare()
-      || ((Exists*)this)->updateStatement.ptr)
+      || ((Exists*)this)->secondaryClause.ptr)
   && InReadOnlyContext()) {
     SetError(ckd,&ERR_AssignInQuery);
     ok = false;
@@ -6012,12 +6012,12 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     ok &= opd->Check(ckd);
   }
 
-  if (statement.ptr)
-    ok &= ((SynObject*)statement.ptr)->Check(ckd);
+  if (primaryClause.ptr)
+    ok &= ((SynObject*)primaryClause.ptr)->Check(ckd);
   if (primaryToken == foreach_T)
     ckd.flags.INCL(InForEach);
-  if (IsExists() && ((Exists*)this)->updateStatement.ptr)
-    ok &= ((SynObject*)((Exists*)this)->updateStatement.ptr)->Check(ckd);
+  if (IsExists() && ((Exists*)this)->secondaryClause.ptr)
+    ok &= ((SynObject*)((Exists*)this)->secondaryClause.ptr)->Check(ckd);
   if (IsDeclare())
     ok &= InitCheck(ckd);
 

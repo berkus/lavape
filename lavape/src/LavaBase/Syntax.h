@@ -19,7 +19,7 @@
 #include "qpixmap.h"
 #include "qmetatype.h"
 
-#define RELEASE  2
+#define RELEASE 3
 
 #undef VIEW
 
