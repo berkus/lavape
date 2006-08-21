@@ -4231,6 +4231,9 @@ bool FuncExpression::Check (CheckData &ckd)
       ((SynObject*)callExpr)->SetError(ckd,&ERR_Optional);
       ok = false;
     }
+    if (flags.Contains(isIniCallOrHandle)
+    && callExpr->primaryToken == ObjRef_T)
+      callExpr->flags.INCL(isIniCallOrHandle);
   }
 #ifndef INTERPRETER
   if (callExpr) {
@@ -6018,8 +6021,11 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     ckd.flags.INCL(InForEach);
   if (IsExists() && ((Exists*)this)->secondaryClause.ptr)
     ok &= ((SynObject*)((Exists*)this)->secondaryClause.ptr)->Check(ckd);
-  if (IsDeclare() && !((Declare*)this)->secondaryClause.ptr)
-    ok &= InitCheck(ckd);
+  if (IsDeclare())
+    if (((Declare*)this)->secondaryClause.ptr)
+      ok &= ((SynObject*)((Declare*)this)->secondaryClause.ptr)->Check(ckd);
+    else
+      ok &= InitCheck(ckd);
 
 #ifdef INTERPRETER
   if (primaryToken != select_T) {

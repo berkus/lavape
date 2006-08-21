@@ -288,6 +288,7 @@ BaseInitV::BaseInitV (address,SelfVar *selfVar,LavaDECL *formBase) {
   else {
     funcStm = new FuncStatementV(objRef);
     funcStm->flags.INCL(staticCall);
+    funcStm->flags.INCL(isIniCallOrHandle);
     funcStm->handle.ptr = objRef;
     objRef->parentObject = funcStm;
     initializerCall.ptr = funcStm;
@@ -1125,6 +1126,7 @@ NewExpressionV::NewExpressionV (FuncStatement *ref, bool withItf, bool withLoc) 
   primaryToken = new_T;
   varName.ptr = new VarNameV("temp");
   initializerCall.ptr = ref;
+  ref->flags.INCL(isIniCallOrHandle);
   if (withItf)
     itf.ptr = new SynObjectV(TypePH_T);
   if (withLoc) {
@@ -1471,8 +1473,14 @@ DeclareV::DeclareV (bool) {
   primaryToken = declare_T;
   quant = new QuantifierV(false);
   quantifiers.Append(NewCHE(quant));
+  ((SynObject*)quant->quantVars.first)->iniCall = funcStm;
   secondaryClause.ptr = funcStm;
   funcStm->parentObject = this;
+  funcStm->flags.INCL(isIniCallOrHandle);
+  ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
+  ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
+  ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
+  ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
   primaryClause.ptr = new SynObjectV(Stm_T);
 }
 
@@ -2321,7 +2329,6 @@ FuncStatementV::FuncStatementV (ObjReference *ref, bool out) {
   primaryToken = assignFS_T;
   handle.ptr = ref;
   function.ptr = new SynObjectV(FuncPH_T);
-  //inputs.Append(NewCHE(new ParameterV(new SynObjectV(ExpDisabled_T))));
   if (out)
     outputs.Append(NewCHE(new ParameterV(new SynObjectV(ObjDisabled_T))));
 }

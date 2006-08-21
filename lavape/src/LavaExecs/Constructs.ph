@@ -378,7 +378,8 @@ enum ExecFlags {
   free3,              //27
   isOptionalExpr,     //28
   isReverseLink,      //29
-  isClosed            //30
+  isClosed,           //30
+  isIniCallOrHandle   //31
 };
 
 enum WorkFlags {
@@ -399,7 +400,7 @@ class SynObject : public SynObjectBase {
 public:
   QWidget *execView;
   TToken primaryToken, type, replacedType;
-  SynObject-- *parentObject;
+  SynObject-- *parentObject, *iniCall;
   NESTED<TComment> comment;
   address-- whereInParent;
   CHAINX-- *containingChain;
@@ -430,15 +431,10 @@ public:
   bool NullAdmissible (CheckData &ckd);
   bool ExpressionSelected (CHETokenNode *currentSelection);
   virtual bool IsOptional(CheckData &ckd) { return flags.Contains(isOptionalExpr); }
-  virtual bool IsClosed(CheckData &ckd) {
-//    if (!IsPlaceHolder())
-//    qFatal("IsClosed not yet implemented");
-    return false;
-  }
+  virtual bool IsClosed(CheckData &ckd) { return false; }
   bool HasOptionalParts ();
   bool IsDefChecked(CheckData &ckd);
   virtual ROContext ReadOnlyContext();
-//  virtual bool InReadOnlyClause();
   virtual bool IsReadOnlyClause(SynObject *synObj) {
     return false; }
   virtual bool InOldExpression();

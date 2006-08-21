@@ -516,7 +516,8 @@ enum ExecFlags {
   free3,
   isOptionalExpr,
   isReverseLink,
-  isClosed};
+  isClosed,
+  isIniCallOrHandle};
 
 extern void CDPExecFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
                           bool baseCDP=false);
@@ -597,7 +598,7 @@ class SynObject : public SynObjectBase {
   public:
   QWidget *execView;
   TToken primaryToken, type, replacedType;
-  SynObject *parentObject;
+  SynObject *parentObject, *iniCall;
   NSTTComment comment;
   address whereInParent;
   CHAINX *containingChain;

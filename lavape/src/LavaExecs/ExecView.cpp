@@ -1992,6 +1992,7 @@ exp: // Const_T
     if (text->currentSynObj->IsPlaceHolder())
       editCtl->selectAll();
     editCtlVisible = true;
+    redCtl->update();
     wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
   }
 }
@@ -2789,6 +2790,8 @@ void CExecView::OnDelete ()
       text->currentSynObj = oldCurrentSynObj;
       return;
     }
+    else if (text->currentSynObj->flags.Contains(isIniCallOrHandle))
+      return;
     else
       PutDelHint(text->currentSynObj);
   else if (text->currentSynObj->primaryToken == FuncRef_T) {
@@ -2816,16 +2819,15 @@ void CExecView::OnDelete ()
       PutInsHint(runStm);
     }
     else if (text->currentSynObj->parentObject->primaryToken == new_T
-    && (!((NewExpression*)text->currentSynObj->parentObject)->butStatement.ptr
-        || text->currentSynObj->whereInParent
-          != (address)&((NewExpression*)text->currentSynObj->parentObject)->butStatement.ptr)) {
+      && text->currentSynObj->flags.Contains(isIniCallOrHandle)) {
       text->currentSynObj = text->currentSynObj->parentObject;
       newExp = new NewExpressionV(true);
       PutInsHint(newExp);
     }
     else {
-      if (text->currentSynObj->parentObject->primaryToken != declare_T
-      || text->currentSynObj->whereInParent != (address)&((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr)
+      //if (text->currentSynObj->parentObject->primaryToken != declare_T
+      //|| text->currentSynObj->whereInParent != (address)&((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr)
+      if (!text->currentSynObj->flags.Contains(isIniCallOrHandle))
         PutDelHint(text->currentSynObj);
     }
   else if (text->currentSynObj->primaryToken == VarName_T
@@ -5812,12 +5814,8 @@ bool CExecView::EnableCut()
     return false;
 
   if (text->currentSynObj->IsFuncInvocation()
-  && text->currentSynObj->parentObject->primaryToken == new_T)
-    return false;
-
-  if (text->currentSynObj->IsFuncInvocation()
-  && text->currentSynObj->parentObject->primaryToken == declare_T
-  && text->currentSynObj->whereInParent == (address)&((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr)
+  && text->currentSynObj->flags.Contains(isIniCallOrHandle)
+  && text->currentSynObj->parentObject->primaryToken != new_T)
     return false;
 
   if (text->currentSynObj->primaryToken == TDOD_T
