@@ -2823,8 +2823,11 @@ void CExecView::OnDelete ()
       newExp = new NewExpressionV(true);
       PutInsHint(newExp);
     }
-    else
-      PutDelHint(text->currentSynObj);
+    else {
+      if (text->currentSynObj->parentObject->primaryToken != declare_T
+      || text->currentSynObj->whereInParent != (address)&((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr)
+        PutDelHint(text->currentSynObj);
+    }
   else if (text->currentSynObj->primaryToken == VarName_T
     && text->currentSynObj->parentObject->primaryToken == run_T) {
     return;
@@ -5806,7 +5809,16 @@ bool CExecView::EnableCut()
   if (text->currentSynObj->primaryToken == VarName_T
   && (text->currentSynObj->parentObject->primaryToken == new_T
       || text->currentSynObj->parentObject->primaryToken == run_T))
-  return false;
+    return false;
+
+  if (text->currentSynObj->IsFuncInvocation()
+  && text->currentSynObj->parentObject->primaryToken == new_T)
+    return false;
+
+  if (text->currentSynObj->IsFuncInvocation()
+  && text->currentSynObj->parentObject->primaryToken == declare_T
+  && text->currentSynObj->whereInParent == (address)&((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr)
+    return false;
 
   if (text->currentSynObj->primaryToken == TDOD_T
   && text->currentSynObj->parentObject->parentObject->IsFuncInvocation()) {

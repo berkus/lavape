@@ -6018,7 +6018,7 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     ckd.flags.INCL(InForEach);
   if (IsExists() && ((Exists*)this)->secondaryClause.ptr)
     ok &= ((SynObject*)((Exists*)this)->secondaryClause.ptr)->Check(ckd);
-  if (IsDeclare())
+  if (IsDeclare() && !((Declare*)this)->secondaryClause.ptr)
     ok &= InitCheck(ckd);
 
 #ifdef INTERPRETER

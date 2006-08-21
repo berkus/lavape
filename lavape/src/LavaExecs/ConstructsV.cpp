@@ -1464,12 +1464,15 @@ void ExistsV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
 
 DeclareV::DeclareV (bool) {
   Quantifier *quant;
+  FuncStatementV *funcStm=new FuncStatementV(true,false,false);
 
   type = Stm_T;
   replacedType = type;
   primaryToken = declare_T;
   quant = new QuantifierV(false);
   quantifiers.Append(NewCHE(quant));
+  secondaryClause.ptr = funcStm;
+  funcStm->parentObject = this;
   primaryClause.ptr = new SynObjectV(Stm_T);
 }
 

@@ -786,9 +786,14 @@ void QuantStmOrExp::MakeTable (address table,int inINCL,SynObjectBase *parent,TT
   if (primaryClause.ptr)
     MTBL (primaryClause.ptr);
 
-  if (IsExists()
-  && ((Exists*)this)->secondaryClause.ptr)
-    MTBL (((Exists*)this)->secondaryClause.ptr);
+  if (IsExists()) {
+    if (((Exists*)this)->secondaryClause.ptr)
+      MTBL (((Exists*)this)->secondaryClause.ptr);
+  }
+  else if (IsDeclare()) {
+    if (((Declare*)this)->secondaryClause.ptr)
+      MTBL (((Declare*)this)->secondaryClause.ptr);
+  }
 }
 
 void SelectExpression::MakeTable (address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData)
