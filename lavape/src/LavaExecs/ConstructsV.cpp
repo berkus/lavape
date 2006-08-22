@@ -1467,6 +1467,7 @@ void ExistsV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
 DeclareV::DeclareV (bool) {
   Quantifier *quant;
   FuncStatementV *funcStm=new FuncStatementV(true,false,false);
+  SynObject *stm;
 
   type = Stm_T;
   replacedType = type;
@@ -1481,7 +1482,9 @@ DeclareV::DeclareV (bool) {
   ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
   ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
   ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
-  primaryClause.ptr = new SynObjectV(Stm_T);
+  stm = new SynObjectV(Stm_T);
+  stm->parentObject = this;
+  primaryClause.ptr = stm;
 }
 
 void DeclareV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {

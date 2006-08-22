@@ -1221,11 +1221,6 @@ void CExecView::OnChar(QKeyEvent *e)
         break;
       if (EnableInsert()) {
         OnInsert();
-        if (text->currentSelection->data.token == VarPH_T) {
-          doubleClick = true;
-          Select();
-          doubleClick = false;
-        }
       }
       else if (text->currentSynObj->IsStatement())
         OnAnd();
@@ -2337,6 +2332,9 @@ void CExecView::PutInsMultOpHint(SynObject *multOp) {
   nextHint = 0;
 }
 
+void CExecView::PutIniCall(SynObject *varItem, SynObject *newVarItem) {
+}
+
 void CExecView::PutChgCommentHint(TComment *pCmt) {
   nextHint = new CLavaPEHint(
     CPECommand_Exec,
@@ -3089,6 +3087,11 @@ void CExecView::OnInsert()
     InsertBefore();
   else
     InsertAfter();
+  if (text->currentSelection->data.token == VarPH_T) {
+    doubleClick = true;
+    Select();
+    doubleClick = false;
+  }
 }
 
 void CExecView::OnInsertBefore()
@@ -3101,7 +3104,7 @@ void CExecView::OnInsertBefore()
 void CExecView::InsertAfter()
 {
   // TODO: Add your command handler code here
-  SynObject *insObj;
+  SynObject *insObj, *varItem, *newVarItem;
   Quantifier *qf;
   CHAINX *chx;
   CHE *che, *newChe;
@@ -3210,13 +3213,22 @@ quantCase:
     if (!EditOK())
       return;
     che = (CHE*)text->currentSynObj->whereInParent;
-    chx = text->currentSynObj->containingChain;
+    varItem = text->currentSynObj;
+    chx = varItem->containingChain;
     text->currentSynObj = text->currentSynObj->parentObject;
-    newChe = NewCHE(new SynObjectV(VarPH_T));
+    newVarItem = new SynObjectV(VarPH_T);
+    newChe = NewCHE(newVarItem);
     qf = (Quantifier*)text->currentSynObj;
-    PutInsChainHint(newChe,
-      chx,
-      che);
+    newVarItem->parentObject = qf;
+    newVarItem->whereInParent = (address)newChe;
+    if (text->currentSynObj->parentObject->IsDeclare()
+    && ((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr) {
+      //PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
+      PutInsChainHint(newChe,chx,che);
+      PutIniCall(varItem,newVarItem);
+    }
+    else
+      PutInsChainHint(newChe,chx,che);
     return;
 
   default:
@@ -6351,12 +6363,15 @@ bool CExecView::EnableCopy()
 
   return ((IsDeletablePrimary()
     && text->currentSynObj->primaryToken != quant_T
+    && text->currentSynObj->primaryToken != VarName_T
+    && text->currentSynObj->primaryToken != VarPH_T
     && (text->currentSynObj->primaryToken != TDOD_T
         || ((CHE*)text->currentSynObj->whereInParent)->predecessor == 0)
     && !( text->currentSynObj->parentObject->IsSelfVar()
           && text->currentSynObj->whereInParent == (address)&((SelfVar*)text->currentSynObj->parentObject)->execName.ptr))
     || (text->currentSynObj->containingChain
-        //&& text->currentSynObj->primaryToken != quant_T
+        && text->currentSynObj->primaryToken != VarName_T
+        && text->currentSynObj->primaryToken != VarPH_T
         && text->currentSynObj->primaryToken != TDOD_T)
     || (text->currentSynObj->parentObject
         && text->currentSynObj->parentObject->IsFuncInvocation()));
