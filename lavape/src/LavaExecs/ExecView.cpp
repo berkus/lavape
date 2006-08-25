@@ -120,7 +120,7 @@ static void CopyUntil(ObjReference *oldRef,CHE *chpStop,ObjReference *newRef) {
 
 CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,"ExecView")
 {
-  initialUpdateDone = false; // indicates whether OnInitialUpdate has already been execute
+  initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
   active = false;
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
@@ -2346,25 +2346,29 @@ void CExecView::PutIniCall(SynObject *varItem, SynObject *newVarItem, bool after
   ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
   ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
   if (after)
-    if (chx) {
-      funcStm->containingChain = chx;
+    if (chx)
+      PutInsChainHint(newChe,chx,che,SET());
+    else {
+      multOp = new SemicolonOpV;
       text->currentSynObj = varItem->iniCall;
+      PutInsMultOpHint(multOp);
+      chx = &multOp->operands;
+      PutInsChainHint(newChe,chx,(CHE*)multOp->operands.first,SET());
+   }
+  else
+    if (chx) {
+      che = (CHE*)((CHE*)varItem->iniCall->whereInParent)->predecessor;
       PutInsChainHint(newChe,chx,che,SET());
     }
     else {
       multOp = new SemicolonOpV;
       text->currentSynObj = varItem->iniCall;
       PutInsMultOpHint(multOp);
-      text->currentSynObj = multOp;
+      chx = &multOp->operands;
       PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,SET());
-   }
-  else
-    if (chx) {
-      PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
     }
-    else {
-    }
-    text->currentSynObj = currentSynObj;
+  funcStm->containingChain = chx;
+  text->currentSynObj = currentSynObj;
 }
 
 void CExecView::PutChgCommentHint(TComment *pCmt) {
@@ -3260,6 +3264,7 @@ quantCase:
     }
     else
       PutInsChainHint(newChe,chx,che);
+    text->selectAt = newVarItem;
     return;
 
   default:
@@ -3287,7 +3292,7 @@ deflt:
 void CExecView::InsertBefore()
 {
   // TODO: Add your command handler code here
-  SynObject *insObj;
+  SynObject *insObj, *varItem, *newVarItem;
   Quantifier *qf;
   CHAINX *chx;
   CHE *che, *newChe;
@@ -3402,13 +3407,22 @@ quantCase:
       return;
     che = (CHE*)text->currentSynObj->whereInParent;
     che = (CHE*)che->predecessor;
-    chx = text->currentSynObj->containingChain;
+    varItem = text->currentSynObj;
+    chx = varItem->containingChain;
     text->currentSynObj = text->currentSynObj->parentObject;
-    newChe = NewCHE(new SynObjectV(VarPH_T));
+    newVarItem = new SynObjectV(VarPH_T);
+    newChe = NewCHE(newVarItem);
     qf = (Quantifier*)text->currentSynObj;
-    PutInsChainHint(newChe,
-      chx,
-      che);
+    newVarItem->parentObject = qf;
+    newVarItem->whereInParent = (address)newChe;
+    if (text->currentSynObj->parentObject->IsDeclare()
+    && ((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr) {
+      PutIniCall(varItem,newVarItem,false);
+      PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
+    }
+    else
+      PutInsChainHint(newChe,chx,che);
+    text->selectAt = newVarItem;
     return;
 
   default:
@@ -5557,10 +5571,7 @@ void CExecView::OnInsertEnum (QString &itemName, TID &typeID)
 
 void CExecView::UpdateUI()
 {
-  if (!initialUpdateDone)
-    return;
-
-  if (editCtlVisible)
+  if (editCtlVisible || !initialUpdateDone)
     return;
 
   OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
