@@ -117,7 +117,7 @@ public:
   void PutInsHint(SynObject *insObj, SET firstLastHint=SET(firstHint,lastHint,-1), bool putHint=false);
   void PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLastHint=SET(firstHint,lastHint,-1));
   void PutInsMultOpHint(SynObject *multOp);
-  void PutIniCall(SynObject *varItem, SynObject *newVarItem);
+  void PutIniCall(SynObject *varItem, SynObject *newVarItem, bool after);
   void PutChgCommentHint(TComment *pCmt);
   void PutChgOpHint(TToken token);
   void PutDelHint(SynObject *delObj, SET firstLastHint=SET(firstHint,lastHint,-1));

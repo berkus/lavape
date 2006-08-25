@@ -1474,9 +1474,9 @@ DeclareV::DeclareV (bool) {
   primaryToken = declare_T;
   quant = new QuantifierV(false);
   quantifiers.Append(NewCHE(quant));
-  ((SynObject*)quant->quantVars.first)->iniCall = funcStm;
   secondaryClause.ptr = funcStm;
   funcStm->parentObject = this;
+  funcStm->whereInParent = (address)&secondaryClause.ptr;
   funcStm->flags.INCL(isIniCallOrHandle);
   ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
   ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;

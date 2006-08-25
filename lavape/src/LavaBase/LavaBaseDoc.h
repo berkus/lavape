@@ -353,6 +353,7 @@ struct LAVABASE_DLL CheckData {
     inQuant = false;
     inInitialUpdate = false;
     immediateReturn = false;
+    precedingIniCall = 0;
   };
 
   CLavaBaseDoc *document;
@@ -379,6 +380,8 @@ struct LAVABASE_DLL CheckData {
   bool stateObj, iniCheck, concernExecs, criticalScope, handleOpd,
        inQuant, inInitialUpdate, immediateReturn, exceptionThrown;
   SET flags;
+  SynObjectBase *firstIniCall;
+  CHE *precedingIniCall;
 };
 
 

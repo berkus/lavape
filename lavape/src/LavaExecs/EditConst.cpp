@@ -38,8 +38,8 @@ extern void *focusWindow;
 extern bool isExecView;
 
 
-MiniEdit::MiniEdit(ExecContents *execCnt) : QLineEdit("MiniEdit",execCnt) {  
-  execView = execCnt->execView;
+MiniEdit::MiniEdit(ExecContents *execCont) : QLineEdit("MiniEdit",execCont) {  
+  execView = execCont->execView;
   returnPressed = false;
 }
 

@@ -5865,10 +5865,13 @@ bool Quantifier::Check (CheckData &ckd)
 {
   CHE *chp;
   VarName *opd;
+  SynObject *opdPH;
   TID tidElemType;
   LavaDECL *declSetType;
   Category elemCat, typeCat;
   SynFlags ctxFlags;
+  bool isDclWithIni=parentObject->IsDeclare() && ((Declare*)parentObject)->secondaryClause.ptr;
+  CHE *cic;
 #ifdef INTERPRETER
   unsigned nQuantVars=0;
   bool isSetQuant=NoPH(set.ptr)
@@ -5886,8 +5889,25 @@ bool Quantifier::Check (CheckData &ckd)
   for (chp = (CHE*)quantVars.first;
        chp;
        chp = (CHE*)chp->successor) {
-    opd = (VarName*)chp->data;
-    ok &= opd->Check(ckd);
+    opdPH = (SynObject*)chp->data;
+    if (IsPH(opdPH))
+      opd = 0;
+    else
+      opd = (VarName*)opdPH;
+    ok &= opdPH->Check(ckd);
+    if (isDclWithIni) {
+      if (ckd.precedingIniCall) {
+        cic = (CHE*)ckd.precedingIniCall->successor;
+        opdPH->iniCall = (SynObject*)cic->data;
+        ckd.precedingIniCall = cic;
+      }
+      else if (((SynObject*)ckd.firstIniCall)->parentObject->primaryToken == Semicolon_T) {
+        opdPH->iniCall = (SynObject*)((CHE*)((SynObject*)ckd.firstIniCall)->whereInParent)->data;
+        ckd.precedingIniCall = (CHE*)((SynObject*)ckd.firstIniCall)->whereInParent;
+      }
+      else
+        opdPH->iniCall = (SynObject*)ckd.firstIniCall;
+    }
 
 #ifdef INTERPRETER
     if (isSetQuant) {
@@ -5995,6 +6015,7 @@ bool QuantStmOrExp::Check (CheckData &ckd)
   CHE *chp;
   SynObject *opd;
   SET oldFlags=ckd.flags;
+  bool isDeclareWithIni=IsDeclare() && ((Declare*)this)->secondaryClause.ptr;
 #ifdef INTERPRETER
   unsigned oldStackLevel=ckd.currentStackLevel;
   nQuantVars = 0;
@@ -6008,6 +6029,13 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     ok = false;
   }*/
 
+  if (isDeclareWithIni) {
+    ckd.precedingIniCall = 0;
+    if (((SynObject*)((Declare*)this)->secondaryClause.ptr)->IsFuncInvocation())
+      ckd.firstIniCall = (SynObject*)((Declare*)this)->secondaryClause.ptr;
+    else
+      ckd.firstIniCall = (SynObject*)((CHE*)((SemicolonOp*)((Declare*)this)->secondaryClause.ptr)->operands.first)->data;
+  }
   for (chp = (CHE*)quantifiers.first;
        chp;
        chp = (CHE*)chp->successor) {

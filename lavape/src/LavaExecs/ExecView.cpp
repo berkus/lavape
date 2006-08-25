@@ -1965,14 +1965,14 @@ exp: // Const_T
   || text->currentSelection->data.token == ExpOpt_T
   || text->currentSelection->data.token == Const_T) {
     wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
-    redCtl->repaint();
+    //redCtl->repaint();
       // otherwise the MiniEdit's position would be unknown in the following code
     OnConst();
     wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
   }
   else if (text->currentSynObj->type == VarPH_T) {
     wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
-    redCtl->repaint();
+    //redCtl->repaint();
     if (!editCtl)
       editCtl = new MiniEdit(redCtl);
     editCtl->setGeometry(text->currentSelection->data.rect);
@@ -1987,7 +1987,7 @@ exp: // Const_T
     if (text->currentSynObj->IsPlaceHolder())
       editCtl->selectAll();
     editCtlVisible = true;
-    redCtl->update();
+    //redCtl->update();
     wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
   }
 }
@@ -2332,7 +2332,39 @@ void CExecView::PutInsMultOpHint(SynObject *multOp) {
   nextHint = 0;
 }
 
-void CExecView::PutIniCall(SynObject *varItem, SynObject *newVarItem) {
+void CExecView::PutIniCall(SynObject *varItem, SynObject *newVarItem, bool after) {
+  CHAINX *chx=varItem->iniCall->containingChain;
+  CHE *che=(CHE*)varItem->iniCall->whereInParent, *newChe;
+  FuncStatement *funcStm=new FuncStatementV(true);
+  MultipleOp *multOp;
+  SynObject *currentSynObj=varItem;
+
+  newChe = NewCHE(funcStm);
+  funcStm->whereInParent = (address)newChe;
+  ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
+  ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
+  ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
+  ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
+  if (after)
+    if (chx) {
+      funcStm->containingChain = chx;
+      text->currentSynObj = varItem->iniCall;
+      PutInsChainHint(newChe,chx,che,SET());
+    }
+    else {
+      multOp = new SemicolonOpV;
+      text->currentSynObj = varItem->iniCall;
+      PutInsMultOpHint(multOp);
+      text->currentSynObj = multOp;
+      PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,SET());
+   }
+  else
+    if (chx) {
+      PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
+    }
+    else {
+    }
+    text->currentSynObj = currentSynObj;
 }
 
 void CExecView::PutChgCommentHint(TComment *pCmt) {
@@ -3223,9 +3255,8 @@ quantCase:
     newVarItem->whereInParent = (address)newChe;
     if (text->currentSynObj->parentObject->IsDeclare()
     && ((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr) {
-      //PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
-      PutInsChainHint(newChe,chx,che);
-      PutIniCall(varItem,newVarItem);
+      PutIniCall(varItem,newVarItem,true);
+      PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
     }
     else
       PutInsChainHint(newChe,chx,che);
