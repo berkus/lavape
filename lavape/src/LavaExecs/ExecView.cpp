@@ -5558,7 +5558,10 @@ void CExecView::OnInsertEnum (QString &itemName, TID &typeID)
 void CExecView::UpdateUI()
 {
   if (!initialUpdateDone)
-          return;
+    return;
+
+  if (editCtlVisible)
+    return;
 
   OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
   OnUpdateHandle(LBaseData->handleActionPtr);
