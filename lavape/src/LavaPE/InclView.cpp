@@ -402,7 +402,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
       frame->m_UtilityView->ResetError(); 
       if (!Tree->hasFocus())
         Tree->setFocus();
-//      Tree->currentItem()->repaint();
+      wxTheApp->updateUI();
     }
     else 
       DisableActions();

@@ -339,7 +339,7 @@ bool wxMDIChildFrame::event(QEvent *ev)
   if (ev->type() == QEvent::WindowStateChange)
     wxTheApp->isChMaximized = parentWidget()->isMaximized();
   else if (ev->type() == QEvent::Close)
-    wxTheApp->m_appWindow->m_workspace->setUpdatesEnabled(false);
+    ;//wxTheApp->m_appWindow->m_workspace->setUpdatesEnabled(false);
   return QWidget::event(ev);
 }
 

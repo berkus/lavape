@@ -48,6 +48,7 @@ protected:
 public:
   bool OnCreate();
   void OnCloseExec();
+  bool event(QEvent *ev);
   void focusInEvent(QFocusEvent *ev);
   void focusOutEvent(QFocusEvent *ev);
   void UpdateUI();
@@ -358,7 +359,7 @@ struct Format {
   QFont font;
 };
 
-class ExecContents : public QWidget {
+class LAVAEXECS_DLL ExecContents : public QWidget {
 public:
   ExecContents (MyScrollView *sv);
   ~ExecContents () {
@@ -373,11 +374,12 @@ public:
   int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent,
   widthOfBlank, contentsWidth, contentsHeight, miniEditRightEdge;
   QPixmap *debugStop, *debugStopGreen, *breakPoint;
-  bool inDebugStop, inBreakPoint, innermostStop;
+  bool inDebugStop, inBreakPoint, innermostStop, painted;
   CHETokenNode *debugStopToken;
   CHETokenNode *callerStopToken;
   StopReason stopReason;
 
+  void update();
   bool event(QEvent *ev);
   void keyPressEvent (QKeyEvent *e);
   QString text(const QPoint &point);

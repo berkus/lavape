@@ -127,9 +127,9 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   layout->addWidget(sv);
   layout->setMargin(0);
   redCtl = sv->execCont;
-  //sv->setFocusProxy(redCtl);
-  //sv->viewport()->setFocusProxy(redCtl);
-  //setFocusProxy(redCtl);
+  sv->setFocusProxy(redCtl);
+  sv->viewport()->setFocusProxy(redCtl);
+  setFocusProxy(redCtl);
   QPalette palette=redCtl->palette();
   palette.setColor(QPalette::Active,QPalette::Window,Qt::white);
   redCtl->setPalette(palette);
@@ -139,7 +139,8 @@ CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,
   destroying = false;
   Base = 0;
   myDoc = 0;
-  redCtl->update();
+  editCtlVisible = false;
+  //redCtl->update();
 }
 
 CExecView::~CExecView()
@@ -206,7 +207,6 @@ void CExecView::OnInitialUpdate()
   myExecCategory = myDECL->DeclType;
   statusBar = wxTheApp->m_appWindow->statusBar();
   myID = TID(myDECL->ParentDECL->OwnID, 0);
-  editCtlVisible = false;
   forcePrimTokenSelect = false;
   clicked = false;
   insertBefore = false;
@@ -521,6 +521,11 @@ bool ExecContents::event(QEvent *ev) {
     ShowPage(QString("whatsThis/")+href);
     return true;
   }
+  else if (ev->type() == QEvent::FocusIn) {
+    if (execView->editCtlVisible)
+      execView->editCtl->setFocus();
+    return QWidget::event(ev);
+  }
   else
     return QWidget::event(ev);
 }
@@ -535,13 +540,17 @@ QString ExecContents::text(const QPoint &point) {
   return QString(tr("No specific help available here"));
 }
 
+static int nPaint=1;
+
 void ExecContents::paintEvent (QPaintEvent *ev)
 {
+  //if (painted)
+  //  return;
+
   QPainter p(this);
 
   CHETokenNode *currentToken;
   bool inSelection=false, debugStopOccurred=false;
-//  QRect vr=visibleRect(), vr_vpt=viewport()->visibleRect(), gmt=viewport()->geometry(), cr=childrenRect();
   QPen myPen(Qt::NoPen);
   QFontMetrics *fm;
   BreakPointList bpl;
@@ -555,12 +564,9 @@ void ExecContents::paintEvent (QPaintEvent *ev)
 
   contentsWidth = 0;
   contentsHeight = 0;
-//  p.eraseRect(0,0,contentsWidth,contentsHeight);
   fmt.font = font();
   fm = new QFontMetrics(fontMetrics());//fmp;
   QFontInfo fi(fmt.font);
-//  int ps = fi.pixelSize();
-//  QString fam = fi.family();
   currentX = LEFTMARGIN;
   currentY = fm->ascent();
 
@@ -679,6 +685,11 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     execView->autoScroll = false;
   }
   delete fm;
+  painted = true;
+
+  if (execView->editCtlVisible) {
+    qDebug() << "end of paint exec: show MiniEdit" << nPaint++;
+  }
 }
 
 void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
@@ -861,8 +872,8 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     externalHint = false;
     if (hint && hint->com == CPECommand_OpenExecView)
       delete hint;
-    if (active)
-      redCtl->setFocus();
+    //if (active)
+    //  redCtl->setFocus();
   }
 }
 
@@ -875,6 +886,11 @@ void MyScrollView::focusInEvent(QFocusEvent *ev) {
 
 void ExecContents::keyPressEvent (QKeyEvent *e) {
   execView->OnChar(e);
+}
+
+void ExecContents::update () {
+  painted = false;
+  QWidget::update();
 }
 
 void CExecView::OnChar(QKeyEvent *e)
@@ -1264,6 +1280,7 @@ ExecContents::ExecContents (MyScrollView *sv) {
   debugStopToken = 0;
   callerStopToken = 0;
   miniEditRightEdge = 0;
+  painted = false;
   resize(100,100);
 }
 
@@ -1292,7 +1309,7 @@ void CExecView::OnLButtonDown(QMouseEvent *e)
       doubleClick = true;
     }
     Select();
-    redCtl->update();
+    //redCtl->update();
   }
   doubleClick = false;
   clicked = false;
@@ -1363,6 +1380,9 @@ void CExecView::Select (SynObject *selObj)
   }
   else
     text->Select();
+  if (active)
+    redCtl->setFocus();
+  wxTheApp->updateUI();
 
 //      wxDocManager::GetDocumentManager()->SetActiveView(this);
         // important: text->Select first
@@ -1381,7 +1401,7 @@ void CExecView::Select (SynObject *selObj)
   inForeach = ocUpd.inForeach;
 
   SetHelpText();
-  redCtl->update();
+  //redCtl->update();
 
   if (text->currentSelection->data.token == Comment_T) {
     if (!EditOK() || !clicked) return;
@@ -1417,6 +1437,7 @@ void CExecView::Select (SynObject *selObj)
       delete pComment;
 
     }
+    redCtl->update();
     return;
   }
 
@@ -1964,14 +1985,14 @@ exp: // Const_T
   if (text->currentSelection->data.token == Exp_T
   || text->currentSelection->data.token == ExpOpt_T
   || text->currentSelection->data.token == Const_T) {
-    wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
+    //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
     //redCtl->repaint();
       // otherwise the MiniEdit's position would be unknown in the following code
     OnConst();
-    wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
+    //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
   }
   else if (text->currentSynObj->type == VarPH_T) {
-    wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
+    //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
     //redCtl->repaint();
     if (!editCtl)
       editCtl = new MiniEdit(redCtl);
@@ -1982,13 +2003,16 @@ exp: // Const_T
     int r=text->currentSelection->data.rect.right();
     redCtl->contentsWidth = qMax(redCtl->contentsWidth,r);
     editCtl->setCursorPosition(str.length());
-    editCtl->setFocus();
+    //QApplication::postEvent(this,new CustomEvent(UEV_ShowMiniEdit,0));
     editCtl->show();
+    //qDebug() << "show MiniEdit";
+    editCtl->setFocus();
     if (text->currentSynObj->IsPlaceHolder())
       editCtl->selectAll();
+    //editCtl->update();
     editCtlVisible = true;
-    //redCtl->update();
-    wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
+    redCtl->update();
+    //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
   }
 }
 
@@ -2061,7 +2085,7 @@ void CExecView::RedrawExec(SynObject *selectAt)
   text->tokenChain.Destroy();
   text->INIT();
   replacedObj = 0;
-  redCtl->setUpdatesEnabled(false);
+  //redCtl->setUpdatesEnabled(false);
   if (myDECL->TreeFlags.Contains(leftArrows))
     text->leftArrows = true;
   else
@@ -2087,8 +2111,8 @@ void CExecView::RedrawExec(SynObject *selectAt)
   if (execReplaced)
     execReplaced = false;
 
-  redCtl->update();
-  redCtl->setUpdatesEnabled(true);
+  //redCtl->update();
+  //redCtl->setUpdatesEnabled(true);
 }
 
 
@@ -2891,6 +2915,12 @@ void CExecView::OnDelete ()
     text->selectAt = text->currentSynObj->parentObject->parentObject;
     PutInsFlagHint(SET(ignoreSynObj,-1));
   }
+  else if (text->currentSynObj->type == VarPH_T
+  && text->currentSynObj->parentObject->parentObject->IsDeclare()
+  && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr) {
+    PutDelHint(text->currentSynObj,SET(firstHint,-1));
+    PutDelHint(text->currentSynObj->iniCall,SET(lastHint,-1));
+  }
   else
     PutDelHint(text->currentSynObj);
 }
@@ -3123,11 +3153,11 @@ void CExecView::OnInsert()
     InsertBefore();
   else
     InsertAfter();
-  if (text->currentSelection->data.token == VarPH_T) {
-    doubleClick = true;
-    Select();
-    doubleClick = false;
-  }
+  //if (text->currentSelection->data.token == VarPH_T) {
+  //  doubleClick = true;
+  //  Select();
+    //doubleClick = false;
+  //}
 }
 
 void CExecView::OnInsertBefore()
@@ -3257,6 +3287,8 @@ quantCase:
     qf = (Quantifier*)text->currentSynObj;
     newVarItem->parentObject = qf;
     newVarItem->whereInParent = (address)newChe;
+    text->selectAt = newVarItem;
+    //doubleClick = true;
     if (text->currentSynObj->parentObject->IsDeclare()
     && ((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr) {
       PutIniCall(varItem,newVarItem,true);
@@ -3264,7 +3296,6 @@ quantCase:
     }
     else
       PutInsChainHint(newChe,chx,che);
-    text->selectAt = newVarItem;
     return;
 
   default:
@@ -4206,13 +4237,13 @@ bool CExecView::EditOK()
     if (rc == noChange) {
       editCtl->hide();
       editCtlVisible = false;
-      sv->setFocus();
+      redCtl->setFocus();
       return true;
     }
     else if (rc == correct) {
       editCtl->hide();
       editCtlVisible = false;
-      sv->setFocus();
+      redCtl->setFocus();
       if (escapePressed || !editCtl->isModified())
         return true;
       editCtl->setModified(false);
@@ -5081,7 +5112,7 @@ void CExecView::OnNextError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-        redCtl->update();
+        //redCtl->update();
         return;
       }
     }
@@ -5095,7 +5126,7 @@ void CExecView::OnNextError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-        redCtl->update();
+        //redCtl->update();
         return;
       }
     }
@@ -5132,7 +5163,7 @@ void CExecView::OnPrevError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-        redCtl->update();
+        //redCtl->update();
         return;
       }
     }
@@ -5146,7 +5177,7 @@ void CExecView::OnPrevError()
           && !currToken->data.flags.Contains(isDisabled))) {
         nextError = true;
         Select(currToken->data.synObject);
-        redCtl->update();
+        //redCtl->update();
         return;
       }
     }
@@ -5165,9 +5196,9 @@ void CExecView::OnNextComment()
   for (currToken = (CHETokenNode*)startToken->successor ; currToken; currToken = (CHETokenNode*)currToken->successor) {
     if (currToken->data.token == Comment_T) {
       text->newSelection = currToken;
-      text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-      redCtl->update();
+      text->Select();
+      //redCtl->update();
       return;
     }
   }
@@ -5177,9 +5208,9 @@ void CExecView::OnNextComment()
         currToken = (CHETokenNode*)currToken->successor) {
     if (currToken->data.token == Comment_T) {
       text->newSelection = currToken;
-      text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-      redCtl->update();
+      text->Select();
+      //redCtl->update();
       return;
     }
   }
@@ -5195,9 +5226,9 @@ void CExecView::OnPrevComment()
   for (currToken = (CHETokenNode*)startToken->predecessor; currToken; currToken = (CHETokenNode*)currToken->predecessor) {
     if (currToken->data.token == Comment_T) {
       text->newSelection = currToken;
-      text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-      redCtl->update();
+      text->Select();
+      //redCtl->update();
       return;
     }
   }
@@ -5207,9 +5238,9 @@ void CExecView::OnPrevComment()
        currToken = (CHETokenNode*)currToken->predecessor) {
     if (currToken->data.token == Comment_T) {
       text->newSelection = currToken;
-      text->Select();
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
-      redCtl->update();
+      text->Select();
+      //redCtl->update();
       return;
     }
   }
@@ -5409,6 +5440,20 @@ void CExecView::OnInputArrow()
     PutInsFlagHint(SET(inputArrow,-1));
 }
 
+bool CExecView::event(QEvent *ev) {
+  if (ev->type() == UEV_ShowMiniEdit) {
+    editCtl->show();
+    qDebug() << "show MiniEdit-Event";
+    editCtl->setFocus();
+    if (text->currentSynObj->IsPlaceHolder())
+      editCtl->selectAll();
+    editCtlVisible = true;
+    return true;
+  }
+  else
+    return CLavaBaseView::event(ev);
+}
+
 void CExecView::focusInEvent(QFocusEvent *ev)
 {
 //!!!  CTextEdit::focusInEvent(ev);
@@ -5416,7 +5461,7 @@ void CExecView::focusInEvent(QFocusEvent *ev)
   // TODO: Add your message handler code here
   focusWindow = (void*)this;
   isExecView = true;
-  sv->setFocus();
+  redCtl->setFocus();
 }
 
 void CExecView::focusOutEvent(QFocusEvent *ev)
@@ -6190,8 +6235,8 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
     active = true;
     if (Base)
       SetHelpText();
-    if (!hasFocus())
-      redCtl->setFocus();
+    redCtl->setFocus();
+    wxTheApp->updateUI();
   }
   else if (!bActivate) {
     active = false;

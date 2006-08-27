@@ -1414,8 +1414,7 @@ void CDPDeclare (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPQuantStmOrExp(pgf,cid,(address)(QuantStmOrExp*)vp,true);
-    if (cid->Release > 2)
-      vp->secondaryClause.CDP(pgf,cid);
+    vp->secondaryClause.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPDeclare
 

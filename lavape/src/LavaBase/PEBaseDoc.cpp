@@ -717,7 +717,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
   SynFlags firstLast;
   bool move, localMove = false, inclDel=false, bb, otherDocs = true;
 
-  wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
+  //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
 
   if (undo) {
     hint = UndoMem.UndoFromMem(pos);

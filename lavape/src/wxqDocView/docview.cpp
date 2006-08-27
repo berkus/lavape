@@ -130,9 +130,7 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 
   SetClassName(argv[0]);
 
-  QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(onIdle()));
-  //connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(awake()),SLOT(onGuiThreadAwake()));
-  //timerID = startTimer(0);
+  //QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(updateUI()));
   appExit = false;
 }
 
@@ -165,25 +163,27 @@ static bool cmdLineEvaluated=false;
 static int cnt=0;
 static bool corrected=false;
 
-void wxApp::onIdle()
+void wxApp::updateUI()
 {
   QWidget *actMDIChild=m_appWindow->m_workspace->activeWindow();
-//  qDebug() << "onIdle, cnt=" << ++cnt << "actChild=" << actMDIChild;
+//  qDebug() << "updateUI, cnt=" << ++cnt << "actChild=" << actMDIChild;
   // make sure that UpdateUI is invoked only once between two wait states
-  if (corrected)
-    corrected = false;
-  else {
+  //if (corrected)
+  //  corrected = false;
+  //else {
     inUpdateUI = true;
+    //m_appWindow->setUpdatesEnabled(false);
     onUpdateUI();
 
     QWidget *newActMDIChild=m_appWindow->m_workspace->activeWindow();
     if (newActMDIChild != actMDIChild) {
-      m_appWindow->m_workspace->setUpdatesEnabled(false);
+      //m_appWindow->m_workspace->setUpdatesEnabled(false);
       m_appWindow->m_workspace->setActiveWindow(actMDIChild);
-      corrected = true;
     }
-  }
-  m_appWindow->m_workspace->setUpdatesEnabled(true);
+    corrected = true;
+  //}
+  //m_appWindow->setUpdatesEnabled(true);
+  //m_appWindow->m_workspace->setUpdatesEnabled(true);
 }
 
 void wxApp::customEvent(QEvent *e)
@@ -724,6 +724,7 @@ void wxView::OnActivateView(bool activate, wxView *deactiveView)
 {
   if (activate)
     setFocus();
+  wxTheApp->updateUI();
 }
 
 bool wxView::on_cancelButton_clicked()

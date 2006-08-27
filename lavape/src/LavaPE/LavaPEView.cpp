@@ -3297,8 +3297,10 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
     if (!m_hitemDrag)
       DeleteDragChain();
   }
-  if (m_hitemDrop)
+  if (m_hitemDrop) {
+    wxTheApp->updateUI();
     return;
+  }
 //  ParItemSel = 0;
   ItemSel = (CTreeItem*)selItem;
   if (ItemSel) {
@@ -3361,6 +3363,7 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
   else
     ItemSel = 0;
   lastCurrent = (CTreeItem*)selItem;
+  wxTheApp->updateUI();
 }
 
 void CLavaPEView::OnShowSpecialView(TDeclType exprType)
