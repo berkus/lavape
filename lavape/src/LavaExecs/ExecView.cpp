@@ -1380,7 +1380,7 @@ void CExecView::Select (SynObject *selObj)
     text->Select();
   if (active) {
     redCtl->setFocus();
-    wxTheApp->updateGUI();
+    wxTheApp->updateButtonsMenus();
   }
 
   autoScroll = true;
@@ -6232,7 +6232,7 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
     if (Base)
       SetHelpText();
     redCtl->setFocus();
-    wxTheApp->updateGUI();
+    wxTheApp->updateButtonsMenus();
   }
   else if (!bActivate) {
     active = false;

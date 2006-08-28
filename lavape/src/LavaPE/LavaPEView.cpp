@@ -3301,7 +3301,7 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
       DeleteDragChain();
   }
   if (m_hitemDrop) {
-    wxTheApp->updateGUI();
+    wxTheApp->updateButtonsMenus();
     return;
   }
 //  ParItemSel = 0;
@@ -3367,7 +3367,7 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
     ItemSel = 0;
   lastCurrent = (CTreeItem*)selItem;
   if (active)
-    wxTheApp->updateGUI();
+    wxTheApp->updateButtonsMenus();
 }
 
 void CLavaPEView::OnShowSpecialView(TDeclType exprType)

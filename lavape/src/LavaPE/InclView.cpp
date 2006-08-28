@@ -403,7 +403,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
       frame->m_UtilityView->ResetError(); 
       if (!Tree->hasFocus())
         Tree->setFocus();
-      wxTheApp->updateGUI();
+      wxTheApp->updateButtonsMenus();
     }
     else {
       active = false;

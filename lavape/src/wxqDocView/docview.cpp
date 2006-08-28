@@ -130,7 +130,7 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 
   SetClassName(argv[0]);
 
-  //QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(updateGUI()));
+  //QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(updateButtonsMenus()));
   appExit = false;
 }
 
@@ -162,7 +162,7 @@ void wxApp::onGuiThreadAwake() {
 static bool cmdLineEvaluated=false;
 static int cnt=0;
 
-void wxApp::updateGUI()
+void wxApp::updateButtonsMenus()
 {
   QWidget *actMDIChild=m_appWindow->m_workspace->activeWindow();
     inUpdateUI = true;
@@ -712,7 +712,7 @@ void wxView::OnActivateView(bool activate, wxView *deactiveView)
   if (activate) {
     active = true;
     setFocus();
-    wxTheApp->updateGUI();
+    wxTheApp->updateButtonsMenus();
   }
   else
     active = false;

@@ -437,7 +437,7 @@ void CLavaPEApp::OnPopcontext()
     backView->OnActivateView();
   else
     backView->ActivateView(true);
-  wxTheApp->updateGUI();
+  wxTheApp->updateButtonsMenus();
 }
 
 void CLavaPEApp::OnEditRedo()

@@ -869,7 +869,7 @@ void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
         if (!myGUIProg->focNode->data.FIP.widget->hasFocus())
           myGUIProg->focNode->data.FIP.widget->setFocus();
       clipboard_text_notEmpty = !QApplication::clipboard()->text().isEmpty();
-      wxTheApp->updateGUI();
+      wxTheApp->updateButtonsMenus();
     }
     else {
       active = false;

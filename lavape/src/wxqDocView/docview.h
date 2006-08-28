@@ -77,7 +77,7 @@ public:
 
     virtual void saveSettings() {}
     virtual void UpdateUI() {}
-    void updateGUI();
+    void updateButtonsMenus();
     virtual void onUpdateUI();
     virtual void customEvent(QEvent *e);
     //void timerEvent(QTimerEvent *);
