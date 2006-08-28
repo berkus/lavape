@@ -130,7 +130,7 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 
   SetClassName(argv[0]);
 
-  //QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(updateUI()));
+  //QApplication::connect((const QObject*)QAbstractEventDispatcher::instance(),SIGNAL(aboutToBlock()),this,SLOT(updateGUI()));
   appExit = false;
 }
 
@@ -161,40 +161,24 @@ void wxApp::onGuiThreadAwake() {
 
 static bool cmdLineEvaluated=false;
 static int cnt=0;
-static bool corrected=false;
 
-void wxApp::updateUI()
+void wxApp::updateGUI()
 {
   QWidget *actMDIChild=m_appWindow->m_workspace->activeWindow();
-//  qDebug() << "updateUI, cnt=" << ++cnt << "actChild=" << actMDIChild;
-  // make sure that UpdateUI is invoked only once between two wait states
-  //if (corrected)
-  //  corrected = false;
-  //else {
     inUpdateUI = true;
-    //m_appWindow->setUpdatesEnabled(false);
     onUpdateUI();
 
     QWidget *newActMDIChild=m_appWindow->m_workspace->activeWindow();
-    if (newActMDIChild != actMDIChild) {
-      //m_appWindow->m_workspace->setUpdatesEnabled(false);
+    if (newActMDIChild != actMDIChild)
       m_appWindow->m_workspace->setActiveWindow(actMDIChild);
-    }
-    corrected = true;
-  //}
-  //m_appWindow->setUpdatesEnabled(true);
-  //m_appWindow->m_workspace->setUpdatesEnabled(true);
 }
 
 void wxApp::customEvent(QEvent *e)
 {
-//      if (e->type() == UEV_Idle)
-//              onUpdateUI();
 }
 
 void wxApp::onUpdateUI()
 {
-//  QAction* act;
   QWidget *focView;
   char **argv=qApp->argv();
 
@@ -642,6 +626,7 @@ void wxDocument::SetFilename(const QString& filename, bool notifyViews)
 wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QWidget(parent)
 {
   setObjectName(QString(name));
+  active = false;
   deleting = false;
   layout = new QHBoxLayout(this);
   layout->setMargin(0);
@@ -716,15 +701,21 @@ bool wxView::Close()
 
 void wxView::ActivateView(bool activate)
 {
+  if (activate)
+    active = true;
   GetParentFrame()->NotifyActive(this);
   GetParentFrame()->Activate(activate);
 }
 
 void wxView::OnActivateView(bool activate, wxView *deactiveView)
 {
-  if (activate)
+  if (activate) {
+    active = true;
     setFocus();
-  wxTheApp->updateUI();
+    wxTheApp->updateGUI();
+  }
+  else
+    active = false;
 }
 
 bool wxView::on_cancelButton_clicked()

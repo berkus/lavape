@@ -397,15 +397,18 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
   if (GetDocument()->mySynDef) {
     CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
     if (bActivate) {
+      active = true;
       frame->newIncludeAction->setEnabled(!GetDocument()->changeNothing);
       frame->m_UtilityView->SetComment(str0, true);
       frame->m_UtilityView->ResetError(); 
       if (!Tree->hasFocus())
         Tree->setFocus();
-      wxTheApp->updateUI();
+      wxTheApp->updateGUI();
     }
-    else 
+    else {
+      active = false;
       DisableActions();
+    }
   }
 }
 

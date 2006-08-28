@@ -72,7 +72,7 @@ public:
         CComboBar *m_ComboBar;
 
   bool editCtlVisible, insertBefore, on_editCutAction_triggered, doubleClick,
-       clicked, escapePressed, active, forcePrimTokenSelect, deletePending,
+       clicked, escapePressed, forcePrimTokenSelect, deletePending,
        inIgnore, inExecHeader, inFormParms, inBaseInits,
        inParameter, inForeach, externalHint, execReplaced, nextError,
        destroying, autoScroll, makeSelectionVisible, errMsgUpdated, initialUpdateDone;

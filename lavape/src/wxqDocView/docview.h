@@ -77,6 +77,7 @@ public:
 
     virtual void saveSettings() {}
     virtual void UpdateUI() {}
+    void updateGUI();
     virtual void onUpdateUI();
     virtual void customEvent(QEvent *e);
     //void timerEvent(QTimerEvent *);
@@ -85,9 +86,9 @@ public:
     QString GetAppName() const
     {
       if ( !m_appName.length() )
-            return m_className;
-        else
-            return m_appName;
+        return m_className;
+      else
+        return m_appName;
     }
     void SetAppName(const QString& name);
     QString GetSettingsPath() { return m_settingsPath; }
@@ -110,7 +111,6 @@ public:
 public slots:
     void about();
     void onGuiThreadAwake();
-    void updateUI();
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
@@ -231,7 +231,7 @@ public:
     virtual bool OnCreate() { return true; };
     virtual void OnInitialUpdate() {}
     virtual ~wxView();
-    bool deleting;
+    bool active, deleting;
     QHBoxLayout *layout;
 
     virtual void UpdateUI() {}

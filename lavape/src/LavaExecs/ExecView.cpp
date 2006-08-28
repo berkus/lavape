@@ -121,7 +121,6 @@ static void CopyUntil(ObjReference *oldRef,CHE *chpStop,ObjReference *newRef) {
 CExecView::CExecView(QWidget *parent,wxDocument *doc): CLavaBaseView(parent,doc,"ExecView")
 {
   initialUpdateDone = false; // indicates whether OnInitialUpdate has already been executed
-  active = false;
   makeSelectionVisible = false;
   sv = new MyScrollView(this);
   layout->addWidget(sv);
@@ -264,7 +263,6 @@ void CExecView::OnInitialUpdate()
   selfVar->concernExecs = false;
   selfVar->execView= this;
   text->ckd.inInitialUpdate = true;
-  active = true;
   OnUpdate((wxView*)pHint->CommandData2, 0, pHint);
   sv->setFocusProxy(redCtl);
   text->ckd.inInitialUpdate = false;
@@ -1380,12 +1378,10 @@ void CExecView::Select (SynObject *selObj)
   }
   else
     text->Select();
-  if (active)
+  if (active) {
     redCtl->setFocus();
-  wxTheApp->updateUI();
-
-//      wxDocManager::GetDocumentManager()->SetActiveView(this);
-        // important: text->Select first
+    wxTheApp->updateGUI();
+  }
 
   autoScroll = true;
   makeSelectionVisible = true;
@@ -6236,7 +6232,7 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
     if (Base)
       SetHelpText();
     redCtl->setFocus();
-    wxTheApp->updateUI();
+    wxTheApp->updateGUI();
   }
   else if (!bActivate) {
     active = false;
