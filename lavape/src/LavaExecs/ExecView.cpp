@@ -2439,9 +2439,9 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
     nextHint = new CLavaPEHint(
       CPECommand_Exec,
       myDoc,
-      delMult ? SET(firstHint,-1) : firstLastHint,
+      delMult ? firstLastHint-SET(lastHint,-1) : firstLastHint,
       (DWORD)myDECL,
-      (DWORD)text->currentSynObj->parentObject, // parent,
+      (DWORD)delObj->parentObject, // parent,
       (DWORD)DelChain,
       (DWORD)che,
       (DWORD)chx,
@@ -2456,8 +2456,8 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
         (DWORD)text->currentSynObj->parentObject->parentObject,
         (DWORD)DelMult,
         (DWORD)delObj->parentObject,
-        (DWORD)text->currentSynObj->parentObject->containingChain,
-        (DWORD)text->currentSynObj->parentObject->whereInParent);
+        (DWORD)delObj->parentObject->containingChain,
+        (DWORD)delObj->parentObject->whereInParent);
       myDoc->UndoMem.AddToMem(nextHint);
     }
   }
