@@ -81,7 +81,7 @@ int SynIOCLASS::ReadSynDef (const QString& fileName, SynDef *&syntax, ASN1* strg
   }
   Done = true;
   syntax = new SynDef;
-	DString fName;
+  DString fName;
   CDPSTRING(GET, pcid, (address)&fName);
   CDPint(GET,pcid,(address)&syntax->Release);
   pcid->Release = syntax->Release;

@@ -278,7 +278,6 @@ extern void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr,
                        bool baseCDP=false);
 
 
-
 extern LAVAEXECS_DLL QString TOKENSTR[];
 extern unsigned priority[EndOfOperators];
 

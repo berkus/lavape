@@ -2,7 +2,7 @@ SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
 
 #to build a debug version set DBG=-g
-DBG=
+DBG=-g
 
 ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt
@@ -189,7 +189,7 @@ impex = -X $(DLL)
 endif
 
 %.h %G.cpp: %.ph
-	../../bin/LPC.exe $(impex) -I. -I../LavaBase $<
+	../../bin/LPC $(impex) -I. -I../LavaBase $<
 
 %.cpp: %.qrc
 	$(QTDIR)/bin/rcc -o $@ $<
