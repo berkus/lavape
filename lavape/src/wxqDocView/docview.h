@@ -110,11 +110,9 @@ public:
 
 public slots:
     void about();
-    void onGuiThreadAwake();
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
-    bool inUpdateUI;
 
     Q_OBJECT
 };

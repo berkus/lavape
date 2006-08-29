@@ -400,7 +400,7 @@ void CLavaGUIView::UpdateUI()
   OnUpdateEditCopy(LBaseData->editCopyActionPtr);
   OnUpdateEditCut(LBaseData->editCutActionPtr);
   if (LBaseData->updateCancelActionPtr) {
-          OnUpdateTogglestate(LBaseData->toggleCatActionPtr);
+    OnUpdateTogglestate(LBaseData->toggleCatActionPtr);
     OnUpdateCancel(LBaseData->updateCancelActionPtr);
     //OnUpdateOk(LBaseData->okActionPtr);
   }

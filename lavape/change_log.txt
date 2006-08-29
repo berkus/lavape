@@ -73,3 +73,11 @@ values ("v"), since they should/would provide some information
 on the meaning of the parameters. The new "p:v" button on the
 exec switches toolbar now allows you to show/hide formal
 parameter designators in function calls.
+
+Debugger implementation is signal-driven now
+============================================
+
+The debugger threads in Lava and LavaPE have been abandoned
+and replaced with a signa-driven implementation, which is
+more robust in case of kill and crash events that may
+occur on both processes. 

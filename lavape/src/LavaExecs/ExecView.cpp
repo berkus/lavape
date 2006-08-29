@@ -1378,10 +1378,6 @@ void CExecView::Select (SynObject *selObj)
   }
   else
     text->Select();
-  if (active) {
-    redCtl->setFocus();
-    wxTheApp->updateButtonsMenus();
-  }
 
   autoScroll = true;
   makeSelectionVisible = true;
@@ -1395,6 +1391,11 @@ void CExecView::Select (SynObject *selObj)
   inIgnore = ocUpd.inIgnore;
   inParameter = ocUpd.inParameter;
   inForeach = ocUpd.inForeach;
+
+  if (active) {
+    redCtl->setFocus();
+    wxTheApp->updateButtonsMenus();
+  }
 
   SetHelpText();
   //redCtl->update();

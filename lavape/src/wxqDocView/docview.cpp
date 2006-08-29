@@ -124,7 +124,6 @@ wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
 
   //// Create a document manager
   m_docManager = new wxDocManager;
-  inUpdateUI = false;
   deletingMainFrame = false;
   isChMaximized = true;
 
@@ -153,24 +152,17 @@ void wxApp::SetAppName(const QString& name) {
   m_settingsPath += "/" + name;
 }
 
-void wxApp::onGuiThreadAwake() {
-  // make sure that UpdateUI is invoked only once between two wait states
-  inUpdateUI = false;
-  qDebug("inUpdateUI = false\n");
-}
-
 static bool cmdLineEvaluated=false;
 static int cnt=0;
 
 void wxApp::updateButtonsMenus()
 {
   QWidget *actMDIChild=m_appWindow->m_workspace->activeWindow();
-    inUpdateUI = true;
-    onUpdateUI();
+  onUpdateUI();
 
-    QWidget *newActMDIChild=m_appWindow->m_workspace->activeWindow();
-    if (newActMDIChild != actMDIChild)
-      m_appWindow->m_workspace->setActiveWindow(actMDIChild);
+  QWidget *newActMDIChild=m_appWindow->m_workspace->activeWindow();
+  if (newActMDIChild != actMDIChild)
+    m_appWindow->m_workspace->setActiveWindow(actMDIChild);
 }
 
 void wxApp::customEvent(QEvent *e)

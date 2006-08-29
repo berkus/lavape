@@ -107,7 +107,7 @@ int main( int argc, char ** argv ) {
   else
     return 1;
 
-  //QMessageBox::information(ap.m_appWindow,"Debug-Break!","Debug-Break!",QMessageBox::Ok);
+  ap.updateButtonsMenus();
 
   int res = ap.exec();
 

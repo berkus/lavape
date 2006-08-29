@@ -1880,13 +1880,16 @@
     <iconset resource="../LavaPE_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/Q6_vFuncCall.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Virtual function call</string>
+    <string>Call a virtual function</string>
    </property>
    <property name="iconText" >
-    <string>Virtual function call</string>
+    <string>Call a virtual function</string>
+   </property>
+   <property name="toolTip" >
+    <string>Call a virtual function</string>
    </property>
    <property name="whatsThis" >
-    <string>Virtual function call</string>
+    <string>Call a virtual function</string>
    </property>
   </action>
   <action name="staticCallAction" >
@@ -1894,13 +1897,16 @@
     <iconset resource="../LavaPE_resources.qrc" >:/LavaExecs/res/TOOLBUTTONS/LavaExecs/res/TOOLBUTTONS/Q6_staticCall.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Static function call</string>
+    <string>Call a static function</string>
    </property>
    <property name="iconText" >
-    <string>Static function call</string>
+    <string>Call a static function</string>
+   </property>
+   <property name="toolTip" >
+    <string>Call a static function</string>
    </property>
    <property name="whatsThis" >
-    <string>Static function call</string>
+    <string>Call a static function</string>
    </property>
   </action>
   <action name="trueAction" >
