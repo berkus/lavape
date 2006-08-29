@@ -134,6 +134,7 @@ CLavaBaseDoc::CLavaBaseDoc()
   DocObjects[2] = 0;
   ThreadList = 0;
   DumpFrame=0;
+  LavaDialog = 0;
 }
 
 CLavaBaseDoc::~CLavaBaseDoc()
