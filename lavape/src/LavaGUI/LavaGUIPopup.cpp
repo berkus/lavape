@@ -68,7 +68,7 @@ CLavaGUIPopup::~CLavaGUIPopup()
     return;
   CHEFormNode* subNode;
   if (hasFocNode(myFormNode)) 
-    GUIProg->focNode = 0;
+    GUIProg->setFocNode(0);
   for (subNode = (CHEFormNode*)myFormNode->data.SubTree.first;
       subNode;
       subNode = (CHEFormNode*)subNode->successor)
@@ -143,7 +143,7 @@ CLavaGUIPopupD::~CLavaGUIPopupD()
     return;
   CHEFormNode* subNode;
   if (hasFocNode(myFormNode)) 
-    GUIProg->focNode = 0;
+    GUIProg->setFocNode(0);
   for (subNode = (CHEFormNode*)myFormNode->data.SubTree.first;
       subNode;
       subNode = (CHEFormNode*)subNode->successor)

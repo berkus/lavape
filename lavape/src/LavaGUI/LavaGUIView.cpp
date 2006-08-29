@@ -586,7 +586,7 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
       LastBrowseNode = myGUIProg->LavaForm.BrowseForm(myGUIProg->Root, selDECL);
       if (LastBrowseNode) {
         if (LastBrowseNode->data.FIP.widget && LastBrowseNode->data.FIP.widget->inherits("CFormWid")) {
-          //myGUIProg->focNode = myGUIProg->TreeSrch.NextUnprotected (LastBrowseNode, LastBrowseNode);
+          //myGUIProg->setFocNode(myGUIProg->TreeSrch.NextUnprotected (LastBrowseNode, LastBrowseNode));
           ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShape(QFrame::Box );
           ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(QFrame::Plain);
 

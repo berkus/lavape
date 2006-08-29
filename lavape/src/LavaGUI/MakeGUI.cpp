@@ -1060,7 +1060,7 @@ bool MakeGUICLASS::setFocus (unsigned pos, CHEFormNode* trpn)
       }
       else {
         GUIProg->CurPos = 0;
-        GUIProg->focNode = 0;
+        GUIProg->setFocNode(0);
         widV = 0;
       }
     else
@@ -1137,7 +1137,7 @@ bool MakeGUICLASS::setFocus (unsigned pos, CHEFormNode* trpn)
         SetFocus( widV, widN);
         GUIProg->CurPos = 0;
         GUIProg->butNode = trpn;
-        GUIProg->focNode = button;
+        GUIProg->setFocNode(button);
         GUIProg->CurPTR = button;
         if (butt0)
           ((CRadioButton*)butt0->data.FIP.widget)->setChecked(false);
@@ -1153,7 +1153,7 @@ bool MakeGUICLASS::setFocus (unsigned pos, CHEFormNode* trpn)
           widN = (QWidget*)((CHEFormNode*)trpn->data.SubTree.first)->data.FIP.widget;
         if (widN && (widV != widN)) {
           SetFocus( widV, widN);
-          GUIProg->focNode = trpn;
+          GUIProg->setFocNode(trpn);
           GUIProg->CurPTR = trpn;
           GUIProg->editNode = 0;
           GUIProg->butNode = 0;
@@ -1187,7 +1187,7 @@ bool MakeGUICLASS::setFocus (unsigned pos, CHEFormNode* trpn)
           || (trpn->data.IoSigFlags.Contains(Signature)
                && trpn->data.IoSigFlags.Contains(Flag_INPUT))
           || trpn->data.BasicFlags.Contains(PopUp)) {
-        GUIProg->focNode = trpn;
+        GUIProg->setFocNode(trpn);
         GUIProg->CurPTR = trpn;
 //        GUIProg->editNode = 0;
         GUIProg->butNode = 0;

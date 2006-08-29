@@ -113,7 +113,7 @@ void CTComboBox::mousePressEvent(QMouseEvent* ev)
     QComboBox::mousePressEvent(ev);
     GUIProg->editNode = 0;
     GUIProg->butNode = 0;
-    GUIProg->focNode = myFormNode;
+    GUIProg->setFocNode(myFormNode);
     GUIProg->SyncTree(myFormNode);
   }
 }
@@ -122,7 +122,7 @@ void CTComboBox::OnSelendok(int sel)
 {
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
-  GUIProg->focNode = myFormNode;
+  GUIProg->setFocNode(myFormNode);
 
   if (!GUIProg->FrozenObject && sel >= 0) {
     myFormNode->data.StringValue = STRING(qPrintable(currentText()));
@@ -139,7 +139,7 @@ void CTComboBox::focusInEvent(QFocusEvent *ev)
   //((CGUIProg*)GUIProg)->OnSetFocususerData;
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
-  GUIProg->focNode = myFormNode;
+  GUIProg->setFocNode(myFormNode);
   GUIProg->ScrollIntoFrame(this);
   QComboBox::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);

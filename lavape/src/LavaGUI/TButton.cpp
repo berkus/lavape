@@ -74,7 +74,7 @@ void CToggleButton::focusInEvent(QFocusEvent *ev)
   //bool ch = isChecked();
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
-  GUIProg->focNode = myFormNode;
+  GUIProg->setFocNode(myFormNode);
   GUIProg->CurPTR = myFormNode;
   GUIProg->ScrollIntoFrame(this);
   //setChecked(ch);
@@ -87,7 +87,7 @@ void CToggleButton::OnClicked()
   GUIProg->NoteLastModified();
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
-  GUIProg->focNode = myFormNode;
+  GUIProg->setFocNode(myFormNode);
   GUIProg->CurPTR = myFormNode;
   GUIProg->SyncTree(myFormNode);
 
@@ -211,12 +211,12 @@ void CPushButton::focusInEvent(QFocusEvent *ev)
   //((CGUIProg*)GUIProg)->OnSetFocususerData;
   GUIProg->editNode = 0;
   if (DISCOButtonType == isPush) {
-    GUIProg->focNode = myFormNode;
+    GUIProg->setFocNode(myFormNode);
     GUIProg->butNode = myFormNode;
   }
   else {
     GUIProg->butNode = 0;
-    GUIProg->focNode = myFormNode;
+    GUIProg->setFocNode(myFormNode);
   }
   GUIProg->CurPTR = myFormNode;
   GUIProg->ScrollIntoFrame(this);
@@ -230,12 +230,12 @@ void CPushButton::OnClicked()
   GUIProg->NoteLastModified();
   GUIProg->editNode = 0;
   if (DISCOButtonType == isPush) {
-    GUIProg->focNode = myFormNode;
+    GUIProg->setFocNode(myFormNode);
     GUIProg->butNode = myFormNode;
   }
   else {
     GUIProg->butNode = 0;
-    GUIProg->focNode = myFormNode;
+    GUIProg->setFocNode(myFormNode);
   }
   GUIProg->CurPTR = myFormNode;
   GUIProg->SyncTree(myFormNode);
@@ -309,7 +309,7 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
 void CRadioButton::OnClicked() 
 {
   GUIProg->editNode = 0;
-  GUIProg->focNode = myFormNode;
+  GUIProg->setFocNode(myFormNode);
   GUIProg->butNode = myFormNode;
   GUIProg->CurPTR = myFormNode;
   int ii;
@@ -334,7 +334,7 @@ void CRadioButton::focusInEvent(QFocusEvent *ev)
 {
   if (ev->reason() != Qt::MouseFocusReason) {
     GUIProg->editNode = 0;
-    GUIProg->focNode = myFormNode;
+    GUIProg->setFocNode(myFormNode);
     GUIProg->butNode = myFormNode;
     GUIProg->CurPTR = myFormNode;
     GUIProg->ScrollIntoFrame(this);

@@ -98,7 +98,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
 
 void CTEdit::focusInEvent(QFocusEvent *ev)
 {
-  GUIProg->focNode = myFormNode;
+  GUIProg->setFocNode(myFormNode);
   GUIProg->editNode = myFormNode;
   GUIProg->CurPTR = myFormNode;
   GUIProg->butNode = 0;
@@ -211,7 +211,7 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
 
 void CMultiLineEdit::focusInEvent(QFocusEvent *ev)
 {
-  GUIProg->focNode = myFormNode;
+  GUIProg->setFocNode(myFormNode);
   GUIProg->editNode = myFormNode;
   GUIProg->CurPTR = myFormNode;
   GUIProg->butNode = 0;

@@ -63,7 +63,7 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
       QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return;
   }
-  GUIProg->focNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode);
+  GUIProg->setFocNode(((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode));
   GUIProg->CurPTR = GUIProg->focNode;
   popupNode = InPopupShell(optNode);
   if (popupNode)
@@ -86,7 +86,7 @@ void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
   if (fNode->data.BasicFlags.Contains(Groupbox))
     elliNode->data.BasicFlags.INCL(Groupbox);
   elliNode->data.FIP.up = parNode;
-  GUIProg->focNode = 0;
+  GUIProg->setFocNode(0);
   GUIProg->CurPTR = elliNode;
   if (fNode->data.FIP.popupShell) {
     delete fNode->data.FIP.popupShell;
@@ -186,7 +186,7 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
   }
   ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
   ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, insertedNode); 
-  GUIProg->focNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode);
+  GUIProg->setFocNode(((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode));
   if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
     delete insertedNode;
     if (!LBaseData->inRuntime) 
@@ -249,7 +249,7 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
         return;
       }
     }
-    GUIProg->focNode = 0;
+    GUIProg->setFocNode(0);
     GUIProg->newFocus = 0;
     if (delNode->successor)
       GUIProg->CurPTR = (CHEFormNode*)delNode->successor;

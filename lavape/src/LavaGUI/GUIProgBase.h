@@ -104,7 +104,7 @@ public:
   LavaDECL* selDECL;
 
   unsigned  popUps, CurPos;
-  CHEFormNode* butNode, *focNode, *CurPTR, *FocusPopup, *editNode;
+  CHEFormNode *butNode, *focNode, *CurPTR, *FocusPopup, *editNode;
   bool refresh;
   unsigned Warning;
   bool allowIncompleteForms;
@@ -114,6 +114,7 @@ public:
   bool inSynchTree;
   virtual void SyncTree(CHEFormNode *node) {}
   virtual void NoteLastModified() {}
+  virtual void setFocNode(CHEFormNode*);
 };
 
 

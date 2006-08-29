@@ -257,3 +257,8 @@ void CGUIMet::ScrollIntoFrame(QWidget *win)
     ((GUIVBox*)parentWin)->View->ensureVisible(rect.left(), rect.top());
 }
 
+void CGUIProgBase::setFocNode(CHEFormNode *fnode) {
+  focNode = fnode;
+  //if (fnode)
+  wxTheApp->updateButtonsMenus();
+}

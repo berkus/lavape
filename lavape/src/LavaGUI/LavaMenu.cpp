@@ -123,7 +123,7 @@ void CLavaMenu::OnSetFocus(QWidget* pOldWnd)
 {
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
-  GUIProg->focNode = myFormNode;
+  GUIProg->setFocNode(myFormNode);
   GUIProg->CurPTR = myFormNode;
   GUIProg->ScrollIntoFrame(this);
   CEdit::OnSetFocus(pOldWnd);
