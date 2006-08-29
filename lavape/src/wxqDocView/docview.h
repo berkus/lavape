@@ -158,6 +158,9 @@ public:
     virtual bool OnOpenDocument(const QString& filename); //all links resolved
     virtual bool OnNewDocument();
     virtual bool OnCloseDocument();
+    virtual bool DeleteContents() {
+      return true;
+    };
 
     // Prompts for saving if about to close a modified document. Returns true
     // if ok to close the document (may have saved in the meantime, or set

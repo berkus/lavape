@@ -273,8 +273,7 @@ bool wxDocument::Close()
 
 bool wxDocument::OnCloseDocument()
 {
-  //if (wxDocManager::GetDocumentManager() && !deleting)
-  //  wxDocManager::GetDocumentManager()->RemoveDocument(this);
+  DeleteContents();
   deleteLater();
   return true;
 }
