@@ -1989,8 +1989,6 @@ exp: // Const_T
     //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(false);
   }
   else if (text->currentSynObj->type == VarPH_T) {
-    //wxTheApp->m_appWindow->Workspace()->setUpdatesEnabled(true);
-    //redCtl->repaint();
     if (!editCtl)
       editCtl = new MiniEdit(redCtl);
     editCtl->setGeometry(text->currentSelection->data.rect);
@@ -5615,7 +5613,8 @@ void CExecView::UpdateUI()
 {
   if (editCtlVisible || !initialUpdateDone)
     return;
-
+  if (editCtlVisible)
+    return;
   OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
   OnUpdateHandle(LBaseData->handleActionPtr);
   OnUpdateInputArrow(LBaseData->toggleInputArrowsActionPtr);
