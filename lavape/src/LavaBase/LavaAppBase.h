@@ -448,7 +448,7 @@ public:
   QAction* toggleClosedActionPtr;
   QAction* parmNameActionPtr;
   QAction* trueActionPtr;
-  QAction* updateCancelActionPtr;
+  QAction* updateResetActionPtr;
 
   QAction* DbgActionPtr;
   QAction* DbgStepNextActPtr;

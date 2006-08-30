@@ -149,7 +149,7 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   LBaseData->insActionPtr = insAction;
   LBaseData->delActionPtr = delAction;
   LBaseData->toggleCatActionPtr = 0;
-  LBaseData->updateCancelActionPtr = 0;
+  LBaseData->updateResetActionPtr = 0;
 
   LBaseData->additionActionPtr = additionAction;
   LBaseData->bitAndActionPtr = bitAndAction;

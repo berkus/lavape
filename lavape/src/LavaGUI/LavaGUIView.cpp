@@ -399,9 +399,9 @@ void CLavaGUIView::UpdateUI()
   OnUpdateEditPaste(LBaseData->editPasteActionPtr);
   OnUpdateEditCopy(LBaseData->editCopyActionPtr);
   OnUpdateEditCut(LBaseData->editCutActionPtr);
-  if (LBaseData->updateCancelActionPtr) {
+  if (LBaseData->updateResetActionPtr) {
     OnUpdateTogglestate(LBaseData->toggleCatActionPtr);
-    OnUpdateCancel(LBaseData->updateCancelActionPtr);
+    OnUpdateCancel(LBaseData->updateResetActionPtr);
     //OnUpdateOk(LBaseData->okActionPtr);
   }
   if (!LBaseData->inRuntime)
@@ -415,9 +415,9 @@ void CLavaGUIView::DisableActions()
   LBaseData->editCutActionPtr->setEnabled(false);
   LBaseData->editCopyActionPtr->setEnabled(false);
   LBaseData->editPasteActionPtr->setEnabled(false);
-  if (LBaseData->updateCancelActionPtr) {
+  if (LBaseData->updateResetActionPtr) {
           LBaseData->toggleCatActionPtr->setEnabled(false);
-    LBaseData->updateCancelActionPtr->setEnabled(false);
+    LBaseData->updateResetActionPtr->setEnabled(false);
     //LBaseData->okActionPtr->setEnabled(false);
   }
   if (!LBaseData->inRuntime)
@@ -664,6 +664,55 @@ void CLavaGUIView::OnOK()
     return;
   NoteLastModified();
 
+}
+
+
+void CLavaGUIView::OnReset()
+{
+  bool ok = true;;
+  if (myGUIProg) {
+    myGUIProg->NoteLastModified();
+    if (*ResultDPtr) {
+      DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
+      *ResultDPtr = 0;
+    }
+    if (myGUIProg->fromFillIn)
+      *ResultDPtr = AllocateObject(myGUIProg->ckd, (*ServicePtr)[0][0].classDECL->RelatedDECL, false);
+    if ((*ResultDPtr || !myGUIProg->fromFillIn) && !myGUIProg->ckd.exceptionThrown) {
+      if (*IniDataPtr) {
+        try {
+#ifndef WIN32
+          if (setjmp(contOnHWexception)) throw hwException;
+#endif
+          if (myGUIProg->fromFillIn)
+            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag), (*ServicePtr)[0][0].classDECL->RelatedDECL);
+          else
+            myGUIProg->ex = CopyObject(myGUIProg->ckd, IniDataPtr, ResultDPtr, ((SynFlags*)((*IniDataPtr)+1))->Contains(stateObjFlag));
+          if (myGUIProg->ex)
+            ok = false;
+          if (myGUIProg->ckd.exceptionThrown)
+            ok = false;
+        }
+        catch (CRuntimeException ex) {
+          if (!ex.SetLavaException(myGUIProg->ckd))
+            //throw;
+          ok = false;
+        }
+        catch (CHWException ex) {
+          if (!ex.SetLavaException(myGUIProg->ckd))
+            //throw;
+          ok = false;
+        }
+        ok = ok && !myGUIProg->ckd.exceptionThrown && !myGUIProg->ex;
+      }
+      if (ok && *ResultDPtr) {
+        myGUIProg->OnUpdate( myDECL, ResultDPtr);
+        myGUIProg->MakeGUI.DisplayScreen(false);
+        return;
+      }
+    }
+  }
+  OnCancel(); //return to calling program if exceptions appear}
 }
 
 

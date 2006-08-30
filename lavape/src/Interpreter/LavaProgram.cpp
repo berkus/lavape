@@ -2432,7 +2432,7 @@ bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack)
   newStackFrame[SFH] = stack[SFH];
   newStackFrame[SFH+1] = stack[SFH+1];
   newStackFrame[SFH+2] = 0;
-  CRuntimeException *ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], ((SynFlags*)(newStackFrame[SFH+1]+1))->Contains(stateObjFlag), newStackFrame[SFH][0][0].classDECL->RelatedDECL);
+  CRuntimeException *ex = CopyObject(ckd, &newStackFrame[SFH+1], &newStackFrame[SFH+2], !((SynFlags*)(newStackFrame[SFH+1]+1))->Contains(stateObjFlag), newStackFrame[SFH][0][0].classDECL->RelatedDECL);
   if (ckd.exceptionThrown)
     return false;
   if (ex)

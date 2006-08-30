@@ -154,6 +154,7 @@ protected:
 
 public slots:
   void OnOK();
+  void OnReset();
   void OnCancel();
 
 private:

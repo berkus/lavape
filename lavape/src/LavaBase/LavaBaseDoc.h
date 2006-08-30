@@ -206,6 +206,7 @@ public:
   virtual void OnInsertOpt() {}
   virtual void OnDeleteOpt() {}
   virtual void OnOK() {}
+  virtual void OnReset() {}
   virtual void OnCancel() {}
 	virtual void OnTogglestate() {}
   virtual void OnDelete() {}

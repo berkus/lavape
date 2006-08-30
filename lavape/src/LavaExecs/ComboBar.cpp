@@ -1547,7 +1547,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
         if (!elDECL->SecondTFlags.Contains(funcImpl)
             && !elDECL->TypeFlags.Contains(isStatic)
             && !elDECL->TypeFlags.Contains(isInitializer)
-            && (elDECL->op == OP_noOp)
+//            && (elDECL->op == OP_noOp)
             && (showSignals == elDECL->SecondTFlags.Contains(isLavaSignal))
             && (!signalDecl || slotFunction(ckd, elDECL, callCtx, signalDecl,signalCtx))
             && !IsInBox(funcBox,elDECL->LocalName, elDECL->OwnID, elDECL->inINCL, sameName)) {
@@ -1572,7 +1572,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
         if (!elDECL->SecondTFlags.Contains(funcImpl)
             && !elDECL->TypeFlags.Contains(isStatic)
             && !elDECL->TypeFlags.Contains(isInitializer)
-            && (elDECL->op == OP_noOp)
+//            && (elDECL->op == OP_noOp)
             && !signalDecl
             && (!elDECL->TypeFlags.Contains(isProtected) || allowProtected)) {
           //pos = m_ClassFuncsCtrl->AddString(elDECL->FullName.c);
@@ -1594,7 +1594,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
       elDECL = myDoc->IDTable.GetDECL(El->data.VTEl);
       if (elDECL && (elDECL->DeclType == Function)
           && !elDECL->TypeFlags.Contains(isInitializer)
-          && (elDECL->op == OP_noOp)
+//          && (elDECL->op == OP_noOp)
           && (!elDECL->TypeFlags.Contains(isProtected) || allowProtected)
           && (showSignals == elDECL->SecondTFlags.Contains(isLavaSignal))
           && (!signalDecl || slotFunction(ckd, elDECL, callCtx, signalDecl,signalCtx))
@@ -1830,7 +1830,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
         if ( (cheDECL->DeclType == Function)
             && !cheDECL->TypeFlags.Contains(isInitializer)
             && !cheDECL->TypeFlags.Contains(isStatic)
-            && (cheDECL->op == OP_noOp)
+//            && (cheDECL->op == OP_noOp)
             && !cheDECL->SecondTFlags.Contains(funcImpl)
             && (showSignals == cheDECL->SecondTFlags.Contains(isLavaSignal))
             && (!signalDecl || slotFunction(ckd, cheDECL, callCtx, signalDecl,signalCtx))
@@ -1858,7 +1858,8 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
         if ( (cheDECL->DeclType == Function)
              && !cheDECL->TypeFlags.Contains(isInitializer)
              && !cheDECL->TypeFlags.Contains(isStatic)
-             && (cheDECL->op == OP_noOp)) {
+//             && (cheDECL->op == OP_noOp)
+           ) {
           if (!cheDECL->TypeFlags.Contains(isAbstract)  && !cheDECL->SecondTFlags.Contains(funcImpl)) {
             if (withStatic && !signalDecl
                 && !cheDECL->TypeFlags.Contains(forceOverride)
@@ -1905,7 +1906,7 @@ void CComboBar::FuncsInSupports(CheckData &ckd, QComboBox* funcBox, LavaDECL *de
         while (El) {
           ElDECL = myDoc->IDTable.GetDECL(El->data.VTEl);
           if (ElDECL && (ElDECL->DeclType == Function)
-              && (ElDECL->op == OP_noOp)
+//              && (ElDECL->op == OP_noOp)
               && (showSignals == ElDECL->SecondTFlags.Contains(isLavaSignal))
               && (!signalDecl || slotFunction(ckd, ElDECL, callCtx, signalDecl,signalCtx))
               && (!ElDECL->TypeFlags.Contains(isProtected) || allowProtected)

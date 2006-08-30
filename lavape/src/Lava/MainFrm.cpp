@@ -71,7 +71,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   LBaseData->delActionPtr = delAction;
 //  LBaseData->okActionPtr = okAction;
   LBaseData->toggleCatActionPtr = toggleCategoryAction;
-  LBaseData->updateCancelActionPtr = editUndoAction;
+  LBaseData->updateResetActionPtr = editUndoAction;
   LBaseData->editCopyActionPtr = editCopyAction;
   LBaseData->editCutActionPtr = editCutAction;
   LBaseData->editPasteActionPtr = editPasteAction;
@@ -240,7 +240,7 @@ void CLavaMainFrame::on_editUndoAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
-    view->OnCancel();
+    view->OnReset();
 }
 
 void CLavaMainFrame::on_insAction_triggered()
