@@ -75,10 +75,10 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   LBaseData->editCopyActionPtr = editCopyAction;
   LBaseData->editCutActionPtr = editCutAction;
   LBaseData->editPasteActionPtr = editPasteAction;
-  connect( toggleCategoryAction,SIGNAL( triggered() ),SLOT( on_toggleCategoryAction_triggered() ) );
-  connect( editUndoAction,SIGNAL( triggered() ),SLOT( on_editUndoAction_triggered() ) );
-  connect( insAction,SIGNAL( triggered() ),SLOT( on_insAction_triggered() ) );
-  connect( delAction,SIGNAL( triggered() ),SLOT( on_delAction_triggered() ) );
+  //connect( toggleCategoryAction,SIGNAL( triggered() ),SLOT( on_toggleCategoryAction_triggered() ) );
+  //connect( editUndoAction,SIGNAL( triggered() ),SLOT( on_editUndoAction_triggered() ) );
+  //connect( insAction,SIGNAL( triggered() ),SLOT( on_insAction_triggered() ) );
+  //connect( delAction,SIGNAL( triggered() ),SLOT( on_delAction_triggered() ) );
   setWindowIcon(QPixmap((const char**) Lava));
   lastTile = 0;
 }
