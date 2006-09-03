@@ -1845,7 +1845,8 @@ void CFuncBox::on_Initializer_clicked()
                                 || myDECL->TypeFlags.Contains(defaultInitializer)));
   if (ini) {
     ConstFunc->setEnabled(false); 
-    Protected->setEnabled(false);
+    ConstFunc->setChecked(false); 
+    //Protected->setEnabled(false);
     StaticFunc->setEnabled(false);
     StaticFunc->setChecked(false);
     myDECL->TypeFlags.EXCL(isAbstract);
