@@ -3430,6 +3430,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       return false;
     }
     else if (!((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd)
+    && !flags.Contains(isIniCallOrHandle)
     && !flags.Contains(isSelfVar)
     && !flags.Contains(isTempVar)) {
       SetError(ckd,&ERR_ImmutableCallObj);

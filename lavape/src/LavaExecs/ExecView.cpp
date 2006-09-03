@@ -1360,14 +1360,14 @@ void CExecView::Select (SynObject *selObj)
       text->Select((SynObject*)((Parameter*)selObj)->parameter.ptr);
     }
     else if (selObj->type == elsif_T) {
-                        if (selObj->parentObject->primaryToken == if_T)
-                                text->newSelection = ((IfThen*)selObj)->thenToken;
-                        else
-                                text->newSelection = ((IfxThen*)selObj)->thenToken;
+      if (selObj->parentObject->primaryToken == if_T)
+        text->newSelection = ((IfThen*)selObj)->thenToken;
+      else
+        text->newSelection = ((IfxThen*)selObj)->thenToken;
       text->Select();
     }
     else {
-                        text->newSelection = selObj->primaryTokenNode;
+      text->newSelection = selObj->primaryTokenNode;
       text->Select(selObj);
     }
   }
@@ -1460,6 +1460,32 @@ void CExecView::Select (SynObject *selObj)
       redCtl->update();
       return;
     }
+    else if (text->currentSynObj->parentObject->parentObject
+    && text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
+    && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr
+    && (text->currentSynObj->parentObject->whereInParent == 
+       (address)&((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)) {
+      funcExpr = (FuncExpression*)text->currentSynObj->parentObject;
+      objRef = (ObjReference*)funcExpr->handle.ptr;
+      tid = TID(objRef->myFinalVType->OwnID,objRef->myFinalVType->inINCL);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassInis(tid);
+      //((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newCombo);
+      redCtl->update();
+      return;
+    }
+    else if (text->currentSynObj->parentObject->parentObject->parentObject
+    && text->currentSynObj->parentObject->parentObject->parentObject->primaryToken == declare_T
+    && ((Declare*)text->currentSynObj->parentObject->parentObject->parentObject)->secondaryClause.ptr
+    && (text->currentSynObj->parentObject->parentObject->whereInParent == 
+       (address)&((Declare*)text->currentSynObj->parentObject->parentObject->parentObject)->secondaryClause.ptr)) {
+      funcExpr = (FuncExpression*)text->currentSynObj->parentObject;
+      objRef = (ObjReference*)funcExpr->handle.ptr;
+      tid = TID(objRef->myFinalVType->OwnID,objRef->myFinalVType->inINCL);
+      ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassInis(tid);
+      //((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(newCombo);
+      redCtl->update();
+      return;
+    }
 
     if (text->currentSynObj->parentObject->primaryToken == connect_T
     || (text->currentSynObj->parentObject->parentObject
@@ -1531,7 +1557,7 @@ void CExecView::Select (SynObject *selObj)
       if (funcExpr->parentObject->primaryToken == initializing_T) { // base initializer call
         tid = ((Reference*)((BaseInit*)funcExpr->parentObject)->baseItf.ptr)->refID;
         if (tid.nID >= 0)
-          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowBaseInis(tid);
+          ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowClassInis(tid);
         else
           ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
         redCtl->update();
@@ -4224,6 +4250,12 @@ bool CExecView::EditOK()
   // TODO: Add your message handler code here and/or call default
   QString str;
   SynObject *synObj;
+  Declare *dcl;
+  FuncStatement *funcStm;
+  ObjReference *objRef;
+  VarName *varName;
+  TDOD *tdod;
+  TDODC refIDs;
   TToken token=editToken;
   VarConstCheck rc;
 
@@ -4244,16 +4276,33 @@ bool CExecView::EditOK()
       editCtl->setModified(false);
       str = editCtl->text();
       if (editToken == VarName_T) {
-        synObj = new VarNameV(str.toAscii());
+        varName = new VarNameV(str.toAscii());
+        varName->parentObject = text->currentSynObj->parentObject;
         if (text->currentSynObj->primaryToken == VarName_T) {
-          ((VarName*)synObj)->varID = ((VarName*)text->currentSynObj)->varID;
-          ((VarName*)synObj)->flags = ((VarName*)text->currentSynObj)->flags;
+          varName->varID = ((VarName*)text->currentSynObj)->varID;
+          varName->flags = text->currentSynObj->flags;
         }
-        //if (text->currentSynObj->parentObject
-        //&& text->currentSynObj->parentObject->parentObject
-        //&& text->currentSynObj->parentObject->parentObject->IsDeclare())
-        //  synObj->flags.INCL(isDeclareVar);
-        PutInsHint(synObj);
+        if (text->currentSynObj->parentObject->parentObject->IsDeclare()) {
+          dcl = (Declare*)text->currentSynObj->parentObject->parentObject;
+          if (dcl->secondaryClause.ptr) {
+            PutInsHint(varName,SET(firstHint,-1));
+            varName->MakeTable((address)&myDoc->IDTable,0,varName->parentObject,onNewID,text->currentSynObj->whereInParent,text->currentSynObj->containingChain);
+            tdod = new TDOD;
+            tdod->ID.nID = varName->varID.nID;
+            tdod->ID.nINCL = varName->varID.nINCL;
+            refIDs.Append(new CHE(tdod));
+            objRef = new ObjReferenceV(refIDs,str.toAscii());
+            funcStm = new FuncStatementV(objRef);
+            funcStm->flags.INCL(isIniCallOrHandle);
+            funcStm->flags.INCL(staticCall);
+            text->currentSynObj = text->currentSynObj->iniCall;
+            PutInsHint(funcStm,SET(lastHint,-1));
+          }
+          else
+            PutInsHint(varName);
+        }
+        else
+          PutInsHint(varName);
       }
       else {
         synObj = new ConstantV(str.toAscii());
@@ -4589,7 +4638,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
       text->currentSynObj = text->currentSynObj->parentObject;
       oldFuncStm = (FuncStatement*)text->currentSynObj;
       funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName.toAscii()));
-      if (isStaticCall) {
+      if (isStaticCall || ((FuncStatement*)text->currentSynObj)->flags.Contains(isIniCallOrHandle)) {
         funcStm->flags.INCL(staticCall);
         if (vtypeID)
           funcStm->vtypeID = *vtypeID;
@@ -4635,7 +4684,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
       }
       funcStm->replacedType = oldFuncStm->replacedType;
       funcStm->flags += oldFuncStm->flags;
-      if (!isStaticCall)
+      if (!isStaticCall && !funcStm->flags.Contains(isIniCallOrHandle))
         funcStm->flags.EXCL(staticCall);
       if (fromNew)
         PutInsHint(funcStm,SET(lastHint,-1),true);

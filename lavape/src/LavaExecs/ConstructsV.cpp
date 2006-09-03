@@ -1478,6 +1478,7 @@ DeclareV::DeclareV (bool) {
   funcStm->parentObject = this;
   funcStm->whereInParent = (address)&secondaryClause.ptr;
   funcStm->flags.INCL(isIniCallOrHandle);
+  funcStm->flags.INCL(staticCall);
   ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
   ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
   ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;

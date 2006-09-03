@@ -92,7 +92,7 @@ public:
   void ShowStaticFuncs(CheckData &ckd); 
   void ShowSignalFuncs(CheckData &ckd); 
   void ShowSlotFuncs(CheckData &ckd, LavaDECL* signalDecl); 
-  void ShowBaseInis(const TID& id);  //decl is interface or implementation
+  void ShowClassInis(const TID& id);  //decl is interface or implementation
   void ShowCompObjects(CheckData &ckd, LavaDECL *decl, const CContext &context, Category givenCat, bool forInput, bool forCopy=false); //compatible objects, iC is type
   void ShowCompaTypes(CheckData &ckd, LavaDECL *decl, const CContext &context); //compatible types
   void RemoveLocals();

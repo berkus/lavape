@@ -302,7 +302,7 @@
    </property>
    <item>
     <property name="text" >
-     <string>(Base initializers)  </string>
+     <string>(Initializers)  </string>
     </property>
    </item>
   </widget>

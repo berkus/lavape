@@ -1471,7 +1471,7 @@ void CComboBar::ShowSubObjects(LavaDECL* decl, const CContext &context)
   }
 }
 
-void CComboBar::ShowBaseInis(const TID& id) //id is interface, service interface or implementation
+void CComboBar::ShowClassInis(const TID& id) //id is interface, service interface or implementation
 {
   SetCombos(true, true);
   LavaDECL *decl, *elDECL;
