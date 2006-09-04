@@ -3193,6 +3193,9 @@ void CExecView::InsertAfter()
   // TODO: Add your command handler code here
   SynObject *insObj, *varItem, *newVarItem;
   Quantifier *qf;
+  FuncStatementV *funcStm;
+  SemicolonOp *semi;
+  Declare *dcl;
   CHAINX *chx;
   CHE *che, *newChe;
   QString str;
@@ -3290,9 +3293,34 @@ quantCase:
     che = (CHE*)text->currentSynObj->whereInParent;
     chx = text->currentSynObj->containingChain;
     text->currentSynObj = text->currentSynObj->parentObject;
-    PutInsChainHint(newChe,
-      chx,
-      che);
+    if (text->currentSynObj->primaryToken == declare_T
+    && ((Declare*)text->currentSynObj)->secondaryClause.ptr) {
+      dcl = (Declare*)text->currentSynObj;
+      PutInsChainHint(newChe,
+        chx,
+        che,SET(firstHint,-1));
+      funcStm=new FuncStatementV(true,false,false);
+      funcStm->flags.INCL(isIniCallOrHandle);
+      funcStm->flags.INCL(staticCall);
+      //funcStm->parentObject = this;
+      //funcStm->whereInParent = (address)&dcl->secondaryClause.ptr;
+      ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
+      ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
+      ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
+      ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
+      newChe = NewCHE(funcStm);
+      semi = (SemicolonOp*)dcl->secondaryClause.ptr;
+      chx = &semi->operands;
+      che = (CHE*)chx->last;
+      text->currentSynObj = semi;
+      PutInsChainHint(newChe,
+        chx,
+        che,SET(lastHint,-1));
+    }
+    else
+      PutInsChainHint(newChe,
+        chx,
+        che);
     return;
 
   case VarPH_T:
@@ -4287,7 +4315,7 @@ bool CExecView::EditOK()
           if (dcl->secondaryClause.ptr) {
             PutInsHint(varName,SET(firstHint,-1));
             varName->MakeTable((address)&myDoc->IDTable,0,varName->parentObject,onNewID,text->currentSynObj->whereInParent,text->currentSynObj->containingChain);
-            tdod = new TDOD;
+            tdod = new TDOD();
             tdod->ID.nID = varName->varID.nID;
             tdod->ID.nINCL = varName->varID.nINCL;
             refIDs.Append(new CHE(tdod));
