@@ -4321,7 +4321,6 @@ bool CExecView::EditOK()
           if (dcl->secondaryClause.ptr) {
             sel = varName;
             PutInsHint(varName,SET(firstHint,-1));
-            varName->MakeTable((address)&myDoc->IDTable,0,varName->parentObject,onNewID,text->currentSynObj->whereInParent,text->currentSynObj->containingChain);
             tdod = new TDOD();
             tdod->ID.nID = varName->varID.nID;
             tdod->ID.nINCL = varName->varID.nINCL;

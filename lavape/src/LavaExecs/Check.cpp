@@ -3765,8 +3765,8 @@ bool Assignment::Check (CheckData &ckd)
 #ifdef INTERPRETER
   TIDType idtype;
   DWORD dw;
-  CHE *pred;
-  ObjReference *objRef;
+  //CHE *pred;
+  //ObjReference *objRef;
 #endif
 
   ENTRY
@@ -3869,17 +3869,17 @@ bool Assignment::Check (CheckData &ckd)
         targObj->flags.INCL(isReverseLink);
     }
   }
-  if (targObj->primaryToken == ObjRef_T) {
-    objRef = (ObjReference*)targObj;
-    pred = (CHE*)objRef->refIDs.last->predecessor;
-    if (pred
-    && (pred == (CHE*)objRef->refIDs.first)
-    && objRef->flags.Contains(isReverseLink)
-    && objRef->flags.Contains(isSelfVar))
-      objRef->flags.INCL(unfinishedAllowed);
-    // an unfinished object may be assigned only to a reverse link self.revLink
-    // within an initializer
-  }
+  //if (targObj->primaryToken == ObjRef_T) {
+  //  objRef = (ObjReference*)targObj;
+  //  pred = (CHE*)objRef->refIDs.last->predecessor;
+  //  if (pred
+  //  && (pred == (CHE*)objRef->refIDs.first)
+  //  && objRef->flags.Contains(isReverseLink)
+  //  && objRef->flags.Contains(isSelfVar))
+  //    objRef->flags.INCL(unfinishedAllowed);
+  //  // an unfinished object may be assigned only to a reverse link self.revLink
+  //  // within an initializer
+  //}
 #endif
   EXIT
 }
@@ -4436,8 +4436,8 @@ bool FuncExpression::Check (CheckData &ckd)
         actDecl = ckd.document->GetType(actDecl);
         ((Expression*)chpActIn->data)->sectionNumber = ckd.document->GetSectionNumber(ckd, actDecl,formInParmDecl);
       }
-      if (callExpr && callExpr->flags.Contains(isDisabled)) // initializer call
-        opd->flags.INCL(unfinishedAllowed);
+      //if (callExpr && callExpr->flags.Contains(isDisabled)) // initializer call
+      //  opd->flags.INCL(unfinishedAllowed);
 #endif
       if (chpActIn)
         chpActIn = (CHE*)chpActIn->successor;

@@ -32,7 +32,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
+
 #include "Syntax.h"
+
 
 #include "qwidget.h"
 #include <QScrollArea>
@@ -508,7 +510,7 @@ enum ExecFlags {
   isSubstitutable,
   isUnknownCat,
   isInForeach,
-  unfinishedAllowed,
+  free0,
   free1,
   free2,
   free3,

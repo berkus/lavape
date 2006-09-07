@@ -372,7 +372,7 @@ enum ExecFlags {
   isSubstitutable,    //21
   isUnknownCat,       //22
   isInForeach,        //23
-  unfinishedAllowed,  //24
+  free0,              //24
   free1,              //25
   free2,              //26
   free3,              //27
