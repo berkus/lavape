@@ -4210,9 +4210,11 @@ bool FuncExpression::Check (CheckData &ckd)
   TID objTypeTid, selfTid, funcItfTid, funcTid;
   LavaDECL *funcItf, *funcImpl=0, *implItfDecl;
   Expression *callExpr;
+  ObjReference *callObj;
   Category cat;
   SynFlags ctxFlags;
   bool privateFunction=false;
+  QString *rc;
 #ifdef INTERPRETER
   unsigned nInputs, nOutputs;
   TID vTid;
@@ -4233,8 +4235,14 @@ bool FuncExpression::Check (CheckData &ckd)
       ok = false;
     }
     if (flags.Contains(isIniCallOrHandle)
-    && callExpr->primaryToken == ObjRef_T)
-      callExpr->flags.INCL(isIniCallOrHandle);
+    && callExpr->primaryToken == ObjRef_T) {
+      callObj = (ObjReference*)callExpr;
+      callObj->flags.INCL(isIniCallOrHandle);
+      if  (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,callObj)) {
+        SetError(ckd,rc);
+        return false;
+      }
+    }
   }
 #ifndef INTERPRETER
   if (callExpr) {
@@ -6044,8 +6052,6 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     ok &= opd->Check(ckd);
   }
 
-  if (primaryClause.ptr)
-    ok &= ((SynObject*)primaryClause.ptr)->Check(ckd);
   if (primaryToken == foreach_T)
     ckd.flags.INCL(InForEach);
   if (IsExists() && ((Exists*)this)->secondaryClause.ptr)
@@ -6055,6 +6061,8 @@ bool QuantStmOrExp::Check (CheckData &ckd)
       ok &= ((SynObject*)((Declare*)this)->secondaryClause.ptr)->Check(ckd);
     else
       ok &= InitCheck(ckd);
+  if (primaryClause.ptr)
+    ok &= ((SynObject*)primaryClause.ptr)->Check(ckd);
 
 #ifdef INTERPRETER
   if (primaryToken != select_T) {
