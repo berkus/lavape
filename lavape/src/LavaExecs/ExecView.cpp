@@ -2753,6 +2753,7 @@ void CExecView::OnDelete ()
   // TODO: Add your command handler code here
   bool reject=false;
   CHAINX *chx;
+  CHE *chp;
   SynObject *oldCurrentSynObj = text->currentSynObj, *synObj, *optClause=0;
   ObjReference *oldRef, *newRef;
   Run *runStm;
@@ -2939,6 +2940,11 @@ void CExecView::OnDelete ()
   else if (text->currentSynObj->type == VarPH_T
   && text->currentSynObj->parentObject->parentObject->IsDeclare()
   && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr) {
+    chp = (CHE*)text->currentSynObj->whereInParent;
+    if (chp->predecessor)
+      text->selectAt = (SynObject*)((CHE*)chp->predecessor)->data;
+    else
+      text->selectAt = (SynObject*)((CHE*)chp->successor)->data;
     PutDelHint(text->currentSynObj,SET(firstHint,-1));
     PutDelHint(text->currentSynObj->iniCall,SET(lastHint,-1));
   }
@@ -4277,7 +4283,7 @@ bool CExecView::EditOK()
 {
   // TODO: Add your message handler code here and/or call default
   QString str;
-  SynObject *synObj;
+  SynObject *synObj, *sel;
   Declare *dcl;
   FuncStatement *funcStm;
   ObjReference *objRef;
@@ -4313,6 +4319,7 @@ bool CExecView::EditOK()
         if (text->currentSynObj->parentObject->parentObject->IsDeclare()) {
           dcl = (Declare*)text->currentSynObj->parentObject->parentObject;
           if (dcl->secondaryClause.ptr) {
+            sel = varName;
             PutInsHint(varName,SET(firstHint,-1));
             varName->MakeTable((address)&myDoc->IDTable,0,varName->parentObject,onNewID,text->currentSynObj->whereInParent,text->currentSynObj->containingChain);
             tdod = new TDOD();
@@ -4324,6 +4331,7 @@ bool CExecView::EditOK()
             funcStm->flags.INCL(isIniCallOrHandle);
             funcStm->flags.INCL(staticCall);
             text->currentSynObj = text->currentSynObj->iniCall;
+            text->selectAt = sel;
             PutInsHint(funcStm,SET(lastHint,-1));
           }
           else
