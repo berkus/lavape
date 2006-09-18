@@ -296,13 +296,14 @@ public:
   CRefTableEntries refTableEntries;
 
   QString *AssignCheck (CheckData &ckd, ObjReference *objRef);
-  QString *ReadCheck (CheckData &ckd, ObjReference *objRef);
+  QString *ReadCheck (CheckData &ckd, ObjReference *objRef,CWriteAccess *&writeAcc);
   QString *findMatchingAccess (CheckData &ckd,
                           CHE *&chp,
                           CVarDesc *refEntry,
                           bool nestedCall,
                           bool &isAssigned,
-                          ObjReference *objRef);
+                          ObjReference *objRef,
+                          CWriteAccess *&writeAcc);
   void findObjRef (CheckData &ckd,
                    CObjRefTable &orTbl,
                    CVarDesc *oldVarDesc,

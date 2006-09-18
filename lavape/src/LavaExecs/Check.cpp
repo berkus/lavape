@@ -341,12 +341,12 @@ QString *RefTable::findMatchingAccess (
       CVarDesc *refEntry,
       bool nestedCall,
       bool &isAssigned,
-      ObjReference *objRef) {
+      ObjReference *objRef,
+      CWriteAccess *&writeAcc) {
 
   QString *errorCode=ckd.iniCheck?&ERR_NotYetInitialized:0;
   unsigned totalBranches=1, iniBranches=0;
   bool alreadyIni=false, iniInBrStm;
-  CWriteAccess *writeAcc;
   CVarDesc *currVarDesc;
 
   do {
@@ -392,7 +392,7 @@ QString *RefTable::findMatchingAccess (
       if (((CRefEntry*)chp->data)->IsBranchStm())
         continue;
       chp = (CHE*)chp->predecessor;
-      if (errorCode = findMatchingAccess(ckd,chp,refEntry,true,iniInBrStm,objRef))
+      if (errorCode = findMatchingAccess(ckd,chp,refEntry,true,iniInBrStm,objRef,writeAcc))
         return errorCode;
       if (ckd.iniCheck)
         if (iniInBrStm)
@@ -444,17 +444,18 @@ QString *RefTable::AssignCheck (CheckData &ckd, ObjReference *objRef) {
   CVarDesc *newEntry;
   CHE *chp;
   bool isAssigned;
+  CWriteAccess *wacc=0;
 
   ckd.iniCheck = false;
   findObjRef(ckd,objRefTable,0,newEntry,(CHE*)objRef->refIDs.first);
   chp = (CHE*)refTableEntries.last->predecessor;
   if (chp)
-    errorCode = findMatchingAccess(ckd,chp,newEntry,false,isAssigned,objRef);
+    errorCode = findMatchingAccess(ckd,chp,newEntry,false,isAssigned,objRef,wacc);
   newEntry->writeAccess = true;
   return errorCode;
 }
 
-QString *RefTable::ReadCheck (CheckData &ckd, ObjReference *objRef) {
+QString *RefTable::ReadCheck (CheckData &ckd, ObjReference *objRef,CWriteAccess *&writeAcc) {
   QString *errorCode=0;
   CVarDesc *entryFound=0;
   CHE *chp;
@@ -467,7 +468,7 @@ QString *RefTable::ReadCheck (CheckData &ckd, ObjReference *objRef) {
   if (!entryFound)
     errorCode = &ERR_NotYetInitialized;
   else
-    errorCode = findMatchingAccess(ckd,chp,entryFound,false,isAssigned,objRef);
+    errorCode = findMatchingAccess(ckd,chp,entryFound,false,isAssigned,objRef,writeAcc);
   return errorCode;
 }
 
@@ -1931,6 +1932,7 @@ bool SelfVar::InitCheck (CheckData &ckd, bool inSelfCheck) {
   CHE *chp;
   DString varName;
   QString *rc;
+  CWriteAccess *wacc=0;
   bool ok=true;
 
   implDECL = ckd.myDECL->ParentDECL->ParentDECL;
@@ -1955,7 +1957,7 @@ bool SelfVar::InitCheck (CheckData &ckd, bool inSelfCheck) {
     && !((LavaDECL*)chp->data)->TypeFlags.Contains(isPlaceholder)
     && !((LavaDECL*)chp->data)->SecondTFlags.Contains(overrides)) {
       ((TDOD*)((CHE*)selfMember.refIDs.last)->data)->ID = TID(((LavaDECL*)chp->data)->OwnID, ((CHETID*)implDECL->Supports.first)->data.nINCL);
-      if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,&selfMember)) {
+      if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,&selfMember,wacc)) {
         varName = DString("self.") + ((LavaDECL*)chp->data)->LocalName;
         if (inSelfCheck)
           SetError(ckd,&ERR_MissingInitialization,varName.c);
@@ -1970,7 +1972,7 @@ bool SelfVar::InitCheck (CheckData &ckd, bool inSelfCheck) {
     && !((LavaDECL*)chp->data)->TypeFlags.Contains(isOptional)
     && !((LavaDECL*)chp->data)->TypeFlags.Contains(isPlaceholder)) {
       ((TDOD*)((CHE*)selfMember.refIDs.last)->data)->ID = TID(((LavaDECL*)chp->data)->OwnID,0);
-      if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,&selfMember)) {
+      if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,&selfMember,wacc)) {
         varName = DString("self.") + ((LavaDECL*)chp->data)->LocalName;
         if (inSelfCheck)
           SetError(ckd,&ERR_MissingInitialization,varName.c);
@@ -3069,6 +3071,7 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
   QString *rc;
   bool ok=true;
   ROContext roContext=ReadOnlyContext();
+  CWriteAccess *wacc=0;
 
   if (flags.Contains(isLocalVar)
   && flags.Contains(isInForeach)) {
@@ -3155,7 +3158,7 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
         || flags.Contains(isOutputVar)) {
           secondChe = (CHE*)((CHE*)refIDs.first)->successor;
           ((CHE*)refIDs.first)->successor = 0;
-          if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this)) {
+          if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this,wacc)) {
             ((TDOD*)((CHE*)refIDs.first)->data)->SetError(ckd,rc,((TDOD*)((CHE*)refIDs.first)->data)->name.c);
             ((CHE*)refIDs.first)->successor = secondChe;
             return false;
@@ -3273,6 +3276,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   CHE *secondChe;
   bool ok=true;
   LavaDECL *formParmDecl;
+  CWriteAccess *wacc=0;
 
   if (flags.Contains(isSelfVar)
   && refIDs.first == refIDs.last
@@ -3311,10 +3315,19 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   || (flags.Contains(isOutputVar) && ckd.myDECL->DeclType != Ensure)) {
     secondChe = (CHE*)((CHE*)refIDs.first)->successor;
     ((CHE*)refIDs.first)->successor = 0;
-    if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this)) {
+    if (rc = ((RefTable*)ckd.refTable)->ReadCheck(ckd,this,wacc)) {
       ((TDOD*)((CHE*)refIDs.first)->data)->SetError(ckd,rc,((TDOD*)((CHE*)refIDs.first)->data)->name.c);
       ((CHE*)refIDs.first)->successor = secondChe;
       return false;
+    }
+    else if (wacc && wacc->isClosedQuantVar && parentObject->primaryToken == parameter_T) {
+      formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
+      if (!formParmDecl)
+        return ok;
+      if (!formParmDecl->SecondTFlags.Contains(closed)) {
+        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_Closed);
+        ok = false;
+      }
     }
     ((CHE*)refIDs.first)->successor = secondChe;
   }
@@ -3441,9 +3454,10 @@ bool ObjReference::IsClosed(CheckData &ckd) {
 
 bool ObjReference::Check (CheckData &ckd) {
   bool ok1=true;
+  CWriteAccess *wacc=0;
 
   if (parentObject->primaryToken == FormParm_T) {
-    if (((RefTable*)ckd.refTable)->ReadCheck(ckd,this)) {
+    if (((RefTable*)ckd.refTable)->ReadCheck(ckd,this,wacc)) {
       if (ckd.succeed) {
         SetError(ckd,&ERR_MissingInitialization,refName.c);
         ((SynObject*)ckd.succeed)->SetError(ckd,&ERR_NotYetInitialized,refName.c);
