@@ -341,8 +341,7 @@ QString *RefTable::findMatchingAccess (
       CVarDesc *refEntry,
       bool nestedCall,
       bool &isAssigned,
-      ObjReference *objRef,
-      bool backward) {
+      ObjReference *objRef) {
 
   QString *errorCode=ckd.iniCheck?&ERR_NotYetInitialized:0;
   unsigned totalBranches=1, iniBranches=0;
@@ -367,7 +366,7 @@ QString *RefTable::findMatchingAccess (
               return 0;
         }
         else {
-          if (writeAcc->varDesc == refEntry) {
+          if (writeAcc->varDesc == refEntry && !writeAcc->isClosedQuantVar) {
             objRef->conflictingAssig = writeAcc->objRef;
             return &ERR_SingleAssViol;
           }
@@ -392,10 +391,7 @@ QString *RefTable::findMatchingAccess (
 
       if (((CRefEntry*)chp->data)->IsBranchStm())
         continue;
-      if (backward)
-        chp = (CHE*)chp->predecessor;
-      else
-        chp = (CHE*)chp->successor;
+      chp = (CHE*)chp->predecessor;
       if (errorCode = findMatchingAccess(ckd,chp,refEntry,true,iniInBrStm,objRef))
         return errorCode;
       if (ckd.iniCheck)
@@ -434,10 +430,7 @@ QString *RefTable::findMatchingAccess (
       else
         chp = ((CBranch*)chp->data)->branchStm;
     }
-    if (backward)
-      chp = (CHE*)chp->predecessor;
-    else
-      chp = (CHE*)chp->successor;
+    chp = (CHE*)chp->predecessor;
   } while (chp);
 
   if (ckd.iniCheck && !alreadyIni)
@@ -3297,7 +3290,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   else if (flags.Contains(isSelfVar)
   && refIDs.first == refIDs.last
   && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-  && parentObject->primaryToken == assign_T) {
+  && parentObject->primaryToken == parameter_T) {
     formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
     if (!formParmDecl)
       return ok;
@@ -4239,7 +4232,7 @@ bool FuncExpression::Check (CheckData &ckd)
       callObj = (ObjReference*)callExpr;
       callObj->flags.INCL(isIniCallOrHandle);
       if  (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,callObj)) {
-        SetError(ckd,rc);
+        callObj->SetError(ckd,rc);
         return false;
       }
     }
@@ -5870,17 +5863,21 @@ bool IntegerInterval::Check (CheckData &ckd)
   EXIT
 }
 
-bool Quantifier::Check (CheckData &ckd)
+bool Quantifier::Check(CheckData &ckd)
 {
   CHE *chp;
   VarName *opd;
   SynObject *opdPH;
+  ObjReference *objRef;
+  QString *rc;
+  TDODC refIDs;
   TID tidElemType;
+  TDOD *tdod;
   LavaDECL *declSetType;
   Category elemCat, typeCat;
   SynFlags ctxFlags;
   bool isDclWithIni=parentObject->IsDeclare() && ((Declare*)parentObject)->secondaryClause.ptr;
-  CHE *cic;
+  CHE *cic, *newChe;
 #ifdef INTERPRETER
   unsigned nQuantVars=0;
   bool isSetQuant=NoPH(set.ptr)
@@ -5916,9 +5913,26 @@ bool Quantifier::Check (CheckData &ckd)
       }
       else
         opdPH->iniCall = (SynObject*)ckd.firstIniCall;
+      if (opd) {
+        tdod = new TDOD();
+        tdod->name = opd->varName;
+        tdod->ID = opd->varID;
+        newChe = new CHE(tdod);
+        refIDs.Destroy();
+        refIDs.Append(newChe);
+        objRef = new ObjReference(refIDs,opd->varName.c);
+        ((TDOD*)((CHE*)objRef->refIDs.first)->data)->parentObject = objRef;
+        if  (rc = ((RefTable*)ckd.refTable)->AssignCheck(ckd,objRef)) {
+          SetError(ckd,rc);
+          ok = false;
+        }
+        ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
+      }
     }
 
 #ifdef INTERPRETER
+    if (!ok)
+      ERROREXIT
     if (isSetQuant) {
       opd->stackPos = ckd.currentStackLevel + nQuantVars;
       nQuantVars += 2;

@@ -386,9 +386,11 @@ class CWriteAccess : public CRefEntry {
 
   CWriteAccess()
   {
+    isClosedQuantVar=false;
   }
   ObjReference *objRef;
   CVarDesc *varDesc;
+  bool isClosedQuantVar;
   virtual bool IsWriteAccess()
   {
     return true;
@@ -438,8 +440,7 @@ public:
                           CVarDesc *refEntry,
                           bool nestedCall,
                           bool &isAssigned,
-                          ObjReference *objRef,
-                          bool backward=true);
+                          ObjReference *objRef);
   void findObjRef (CheckData &ckd,
                    CObjRefTable &orTbl,
                    CVarDesc *oldVarDesc,
@@ -513,7 +514,7 @@ enum ExecFlags {
   free0,
   free1,
   free2,
-  free3,
+  isIniClauseVar,
   isOptionalExpr,
   isReverseLink,
   isClosed,
