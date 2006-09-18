@@ -2976,6 +2976,7 @@ void CExecView::OnEditCopy()
   else
     clipBoardObject = (SynObject*)text->currentSynObj->Clone();
   clipBoardDoc = myDoc;
+  wxTheApp->updateButtonsMenus();
 }
 
 void CExecView::OnEditCut()
