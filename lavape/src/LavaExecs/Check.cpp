@@ -6085,11 +6085,15 @@ bool QuantStmOrExp::Check (CheckData &ckd)
   if (IsExists() && ((Exists*)this)->secondaryClause.ptr)
     ok &= ((SynObject*)((Exists*)this)->secondaryClause.ptr)->Check(ckd);
   if (IsDeclare())
-    if (((Declare*)this)->secondaryClause.ptr)
+    if (((Declare*)this)->secondaryClause.ptr) {
       ok &= ((SynObject*)((Declare*)this)->secondaryClause.ptr)->Check(ckd);
-    else
+      ok &= ((SynObject*)primaryClause.ptr)->Check(ckd);
+    }
+    else {
+      ok &= ((SynObject*)primaryClause.ptr)->Check(ckd);
       ok &= InitCheck(ckd);
-  if (primaryClause.ptr)
+    }
+  else if (primaryClause.ptr)
     ok &= ((SynObject*)primaryClause.ptr)->Check(ckd);
 
 #ifdef INTERPRETER
