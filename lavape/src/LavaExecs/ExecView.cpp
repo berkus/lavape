@@ -545,6 +545,8 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   //if (painted)
   //  return;
 
+  //lastPaintEvent = *ev;
+
   QPainter p(this);
 
   CHETokenNode *currentToken;
@@ -6477,7 +6479,7 @@ void CExecView::OnUpdateNewLine(QAction* action)
   }
 
   startToken = text->currentSynObj->startToken;
-  predToken = (CHETokenNode*)text->currentSynObj->startToken->predecessor;
+  predToken = (CHETokenNode*)startToken->predecessor;
   if (!predToken) {
     action->setEnabled(false);
     return;

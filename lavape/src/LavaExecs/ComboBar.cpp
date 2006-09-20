@@ -873,7 +873,7 @@ void CComboBar::AddLocal(const TID& id, const DString& name, const TID& typeID, 
   accuIDs.Append(che);
   data->IDs = accuIDs;
   m_ObjectsCtrl->addItem(QString(name.c),QVariant::fromValue(data));//sort#
-  SortCombo(m_ObjectsCtrl);
+  //SortCombo(m_ObjectsCtrl);
   CContext con = tdod->context;
   if (typeID.nID >= 0) {
     accuName = name;
@@ -886,7 +886,7 @@ void CComboBar::AddLocal(const TID& id, const DString& name, const TID& typeID, 
         data->QName = name;
         data->IDs = accuIDs;
         m_SetObjectsCtrl->addItem(QString(name.c),QVariant::fromValue(data));//sort#
-        SortCombo(m_SetObjectsCtrl);
+        //SortCombo(m_SetObjectsCtrl);
         m_SetObjectsCtrl->setCurrentIndex(0);
 
       }

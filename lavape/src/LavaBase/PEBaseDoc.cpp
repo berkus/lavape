@@ -38,6 +38,7 @@
 #include "qdir.h"
 #include "UNIX.h"
 #include <QComboBox>
+#include <QSortFilterProxyModel>
 
 #pragma hdrstop
 
@@ -1069,15 +1070,19 @@ bool CPEBaseDoc::OnSaveModified()
   return true;
 }
 
-void SortCombo(QComboBox* lbox)
+void SortCombo(QComboBox* combobox)
 {
-  QVariant itemData0=lbox->itemData(0);
-  QString itemText0=lbox->itemText(0);
+  QVariant itemData0=combobox->itemData(0);
+  QString itemText0=combobox->itemText(0);
 
-  lbox->removeItem(0);// remove headline item
-  QAbstractItemModel *mod=lbox->model();
-  mod->sort(/*column*/0);
-  lbox->insertItem(0,itemText0,itemData0); // re-insert headline item
+  //combobox->removeItem(0);// remove headline item
+  //QAbstractItemView *view = combobox->view();
+  //QAbstractItemModel *sourceModel = combobox->model();
+  //QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(combobox);
+  //proxyModel->setSourceModel(sourceModel);
+  //view->setModel(proxyModel);
+  //proxyModel->sort(0,Qt::AscendingOrder);
+  //combobox->insertItem(0,itemText0,itemData0); // re-insert headline item
 }
 
 /*

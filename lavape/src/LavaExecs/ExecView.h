@@ -370,6 +370,7 @@ public:
 
   CExecView *execView;
 	MyScrollView *sv;
+
   Format fmt;
   int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent,
   widthOfBlank, contentsWidth, contentsHeight, miniEditRightEdge;

@@ -99,7 +99,7 @@
 #include <QMutex>
 #include <QtDebug>
 #include <QtTest/QtTest>
-
+#include <QSortFilterProxyModel>
 
 #include "SYSTEM.h"
 
