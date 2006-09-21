@@ -2090,7 +2090,7 @@ CExecFields::CExecFields(CComboBar* bar, LavaDECL* startDECL, const CContext &co
   if (startIDs)
     accuIDs = *startIDs;
   OnType(startDECL, accuName, accuIDs, typeIDs, con);
-  SetWidth(FieldList, maxW);
+  //SetWidth(FieldList, maxW);
   SortCombo(Bar->m_SetObjectsCtrl);
   Bar->m_SetObjectsCtrl->setCurrentIndex(0);
   if (subO) {
