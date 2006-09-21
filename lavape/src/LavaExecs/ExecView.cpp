@@ -542,10 +542,8 @@ static int nPaint=1;
 
 void ExecContents::paintEvent (QPaintEvent *ev)
 {
-  //if (painted)
-  //  return;
-
-  //lastPaintEvent = *ev;
+  if (wxTheApp->isChMaximized)
+    sv->viewport()->repaint(); // to enforce an update of the viewport size
 
   QPainter p(this);
 
@@ -685,7 +683,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     execView->autoScroll = false;
   }
   delete fm;
-  painted = true;
 
   if (execView->editCtlVisible) {
     qDebug() << "end of paint exec: show MiniEdit" << nPaint++;
@@ -886,11 +883,6 @@ void MyScrollView::focusInEvent(QFocusEvent *ev) {
 
 void ExecContents::keyPressEvent (QKeyEvent *e) {
   execView->OnChar(e);
-}
-
-void ExecContents::update () {
-  painted = false;
-  QWidget::update();
 }
 
 void CExecView::OnChar(QKeyEvent *e)
@@ -1280,7 +1272,6 @@ ExecContents::ExecContents (MyScrollView *sv) {
   debugStopToken = 0;
   callerStopToken = 0;
   miniEditRightEdge = 0;
-  painted = false;
   resize(100,100);
 }
 

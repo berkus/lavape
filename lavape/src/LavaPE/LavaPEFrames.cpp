@@ -1583,7 +1583,7 @@ bool CLavaMainFrame::eventFilter(QObject *obj,QEvent *ev) {
 
 void CLavaMainFrame::on_showUtilWindowAction_triggered()
 {
-  bool updEnabled;
+  //bool updEnabled;
 
   if (UtilitiesHidden) {
     if ((m_UtilityView->ActTab == tabError) && !m_UtilityView->CommentEmpty && m_UtilityView->ErrorEmpty )
@@ -1596,17 +1596,17 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
   else {
     m_UtilityView->hide();
     LastUtilitiesState = (int)m_UtilityView->ActTab;
-    //wxDocManager::GetDocumentManager()->GetActiveDocument()->UpdateAllViews(0,0,0);
     if (wxTheApp->isChMaximized && wxTheApp->activeView()->inherits("CExecView")) {
       CExecView *ev = (CExecView*)wxTheApp->activeView();
-      ExecContents *ec = ev->redCtl;
-      updEnabled = ev->updatesEnabled();
-      if (!updEnabled)
-        ev->setUpdatesEnabled(true);
-      QPaintEvent pe(QRect(0,0,10000,10000));
-      QApplication::postEvent(ec,&pe);
-      if (!updEnabled)
-        ev->setUpdatesEnabled(false);
+      ev->redCtl->update();
+    //  ExecContents *ec = ev->redCtl;
+    //  updEnabled = ev->updatesEnabled();
+    //  if (!updEnabled)
+    //    ev->setUpdatesEnabled(true);
+    //  QPaintEvent pe(QRect(0,0,10000,10000));
+    //  QApplication::postEvent(ec,&pe);
+    //  if (!updEnabled)
+    //    ev->setUpdatesEnabled(false);
     }
   }
   UtilitiesHidden = !UtilitiesHidden;
