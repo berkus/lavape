@@ -352,11 +352,11 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
           elDECL->TypeFlags.EXCL(isNative);
           elDECL->TypeFlags.EXCL(defaultInitializer);
         }
-        if ((elDECL->DeclType == Function) && (decl4->DeclType == Interface) 
+        if ((elDECL->DeclType == Function) && (decl4->DeclType == Interface)
           && elDECL->NestedDecls.last
           && (((LavaDECL*)((CHE*)elDECL->NestedDecls.last)->data)->DeclType == ExecDef))
           elDECL->NestedDecls.Delete(elDECL->NestedDecls.last);
-        
+
         if ((viewHint->com != CPECommand_Move)/*!hint->CommandData5*/ && (hintDECL->DeclType == DragDef)
           && !hint->FirstLast.Contains(multiDocHint)
           && !elDECL->WorkFlags.Contains(fromPrivToPub)) { //not drag-drop, no pattern: paste or only drop
@@ -1079,10 +1079,10 @@ void SortCombo(QComboBox* combobox)
   QAbstractItemView *view = combobox->view();
   QAbstractItemModel *sourceModel = combobox->model();
   QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(combobox);
-  proxyModel->setFilterKeyColumn(0);
   proxyModel->setSourceModel(sourceModel);
-  view->setModel(proxyModel);
-  proxyModel->sort(0,Qt::AscendingOrder);
+  sourceModel->setParent(proxyModel);
+  combobox->setModel(proxyModel);
+  sourceModel->sort(0);
   //combobox->insertItem(0,itemText0,itemData0); // re-insert headline item
 }
 
