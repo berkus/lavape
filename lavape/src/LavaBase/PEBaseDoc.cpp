@@ -1077,12 +1077,12 @@ void SortCombo(QComboBox* combobox)
 
   //combobox->removeItem(0);// remove headline item
   //QAbstractItemView *view = combobox->view();
-  QAbstractItemModel *sourceModel = combobox->model();
-  QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(combobox);
-  sourceModel->setParent(proxyModel);
-  proxyModel->setSourceModel(sourceModel);
-  combobox->setModel(proxyModel);
-  proxyModel->sort(0,Qt::AscendingOrder);
+  //QAbstractItemModel *sourceModel = combobox->model();
+  //QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(combobox);
+  //sourceModel->setParent(proxyModel);
+  //proxyModel->setSourceModel(sourceModel);
+  //combobox->setModel(proxyModel);
+  //proxyModel->sort(0,Qt::AscendingOrder);
   //view->setModel(proxyModel);
   //combobox->setCurrentIndex(0);
   //combobox->insertItem(0,itemText0,itemData0); // re-insert headline item
