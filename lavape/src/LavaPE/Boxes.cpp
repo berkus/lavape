@@ -963,7 +963,7 @@ ValOnInit CCorrOverBox::OnInitDialog()
     if (vtDecl->ParentDECL != myDECL->ParentDECL)
       if (PossibleOver(vtDecl)) {
         item = new CComboBoxItem(TID(vtDecl->OwnID, vtDecl->inINCL));
-        PossibleOvers->addItem(QString(vtDecl->FullName.c),QVariant::fromValue(item));
+        addItemAlpha(PossibleOvers, QString(vtDecl->FullName.c),QVariant::fromValue(item));
       }
   }
   if (PossibleOvers->count() > 1) {
@@ -973,7 +973,7 @@ ValOnInit CCorrOverBox::OnInitDialog()
     PossibleOvers->setEnabled(false);
     NewOver->setEnabled(false);
   }
-  SortCombo(PossibleOvers);
+  //SortCombo(PossibleOvers);
   PossibleOvers->setCurrentIndex(0);
   return BoxContinue;
 }
@@ -1720,13 +1720,13 @@ void CFuncBox::CalcOpBox()
     if (!myDoc->getOperatorID(myDECL->ParentDECL, (TOperator) iop, id)
         || (id.nID == myDECL->OwnID) && (id.nINCL == 0)) {
       comboItem = new CComboBoxItem(TID(iop, 0));
-      CMBOperator->addItem(QString(LBaseData->OperatorNames [iop].c),QVariant::fromValue(comboItem));
+      addItemAlpha(CMBOperator, QString(LBaseData->OperatorNames [iop].c),QVariant::fromValue(comboItem));
 //      CMBOperator->listBox()->insertItem(comboItem);//sort
       if ((id.nID == myDECL->OwnID) && (id.nINCL == 0))
         CMBOperator->setCurrentIndex((int)myDECL->op);
     }
   }
-  SortCombo(CMBOperator);
+  //SortCombo(CMBOperator);
 }
 
 void CFuncBox::on_Closed_clicked()
@@ -2926,19 +2926,19 @@ void CIOBox::BaseClassesToCombo(LavaDECL *decl)
       if (baseDECL) {
         if (baseDECL->fromBType == NonBasic) {
           item = new CComboBoxItem(TID(baseDECL->OwnID, baseDECL->inINCL));
-      NamedTypes->addItem(QString(baseDECL->FullName.c),QVariant::fromValue(item));
+          addItemAlpha(NamedTypes, QString(baseDECL->FullName.c),QVariant::fromValue(item));
 //          NamedTypes->listBox()->insertItem(item);//sort
         }     
         else 
           item = new CComboBoxItem(/*((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[baseDECL->fromBType],*/ TID(baseDECL->OwnID, 1));
-          BasicTypes->addItem(QString(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[baseDECL->fromBType]), QVariant::fromValue(item));//sort
+          addItemAlpha(BasicTypes, QString(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[baseDECL->fromBType]), QVariant::fromValue(item));//sort
       }
       id1 = El->data.VTClss;
     }
     El = (CHETVElem*)El->successor;
   }
-  SortCombo(BasicTypes);
-  SortCombo(NamedTypes);
+  //SortCombo(BasicTypes);
+  //SortCombo(NamedTypes);
   //NamedTypes->SetDroppedWidth(maxWidth+6);
 }
 
@@ -4499,7 +4499,7 @@ CExecExtensions::CExecExtensions(CLavaPEDoc* doc, QComboBox* combo, QComboBox* b
   //dc->SelectObject (font);
   TabTravers = new CTabTraversal(this, myDoc->mySynDef);
   TabTravers->Run(true, true);
-  SortCombo(Combo);
+  //SortCombo(Combo);
   //Combo->SetDroppedWidth(maxWidth+6);
 }
 
@@ -4532,7 +4532,7 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
           //item = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, elDef->inINCL));
           //Combo->listBox()->insertItem(item);//sort
           item = new CComboBoxItem(TID(elDef->OwnID, elDef->inINCL));
-          Combo->addItem(QString(elDef->FullName.c), QVariant::fromValue(item));//sort
+          addItemAlpha(Combo, QString(elDef->FullName.c), QVariant::fromValue(item));//sort
         }
       }
       else {
@@ -4545,7 +4545,7 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
 //          item = new CComboBoxItem(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it], TID(elDef->OwnID, incl));
 //          Combo->listBox()->insertItem(item);//sort
           item = new CComboBoxItem(TID(elDef->OwnID, incl));
-          Combo->addItem(QString(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it]), QVariant::fromValue(item));//sort
+          addItemAlpha(Combo, QString(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it]), QVariant::fromValue(item));//sort
         }
       }
     }
@@ -4561,7 +4561,7 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
           //item = new CComboBoxItem(elDef->FullName, TID(elDef->OwnID, elDef->inINCL));
           //Combo->listBox()->insertItem(item);//sort
             item = new CComboBoxItem(TID(elDef->OwnID, elDef->inINCL));
-            Combo->addItem(QString(elDef->FullName.c), QVariant::fromValue(item));//sort
+            addItemAlpha(Combo, QString(elDef->FullName.c), QVariant::fromValue(item));//sort
           }
         }
         else {
@@ -4573,7 +4573,7 @@ void CExecExtensions::ExecDefs (LavaDECL ** pelDef, int )
 //          item = new CComboBoxItem(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it], TID(elDef->OwnID, incl));
 //          Combo->listBox()->insertItem(item);//sort
           item = new CComboBoxItem(TID(elDef->OwnID, incl));
-          Combo->addItem(QString(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it]), QVariant::fromValue(item));//sort
+          addItemAlpha(Combo, QString(((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[it]), QVariant::fromValue(item));//sort
         }
       }
 }
@@ -4584,7 +4584,7 @@ CExecBase::CExecBase(CInterfaceBox* box)
   IBox = box;
   TabTravers = new CTabTraversal(this, IBox->myDoc->mySynDef);
   TabTravers->Run(true, true);
-  SortCombo(IBox->ExtTypes);
+  //SortCombo(IBox->ExtTypes);
 }
 
 void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
@@ -4618,7 +4618,7 @@ void CExecBase::ExecDefs(LavaDECL ** pelDef, int level)
     //comboItem = new CComboBoxItem(lab, TID(elDef->OwnID, elDef->inINCL));
     //IBox->ExtTypes->listBox()->insertItem(comboItem);//sort
     comboItem = new CComboBoxItem(TID(elDef->OwnID, elDef->inINCL));
-    IBox->ExtTypes->addItem(QString(lab.c), QVariant::fromValue(comboItem));//sort
+    addItemAlpha(IBox->ExtTypes, QString(lab.c), QVariant::fromValue(comboItem));//sort
     //sz = dc->GetTextExtent(lab.c, lab.l);
     //maxWidth = lmax(maxWidth, sz.cx);
   }
@@ -4631,7 +4631,7 @@ CExecDefs::CExecDefs(CLavaPEDoc* doc, QComboBox* combo, LavaDECL* decl)
   myDoc = doc;
   TabTravers = new CTabTraversal(this, myDoc->mySynDef);
   TabTravers->Run(true, true);
-  SortCombo(Combo);
+  //SortCombo(Combo);
 }
 
 
@@ -4648,7 +4648,7 @@ void CExecDefs::ExecDefs (LavaDECL ** pelDef, int )
 //      comboItem = new CComboBoxItem((*pelDef)->FullName, TID((*pelDef)->OwnID, (*pelDef)->inINCL));
 //      Combo->listBox()->insertItem(comboItem);//sort
       comboItem = new CComboBoxItem(TID((*pelDef)->OwnID, (*pelDef)->inINCL));
-      Combo->addItem(QString((*pelDef)->FullName.c), QVariant::fromValue(comboItem));//sort
+      addItemAlpha(Combo, QString((*pelDef)->FullName.c), QVariant::fromValue(comboItem));//sort
     }
   }
 } 
@@ -4734,7 +4734,7 @@ void CExecAllDefs::FitBox(QComboBox* combo, int maxWidth)
     }
     nowB = !nowB;
   }
-  SortCombo(combo);
+  //SortCombo(combo);
   combo->setCurrentIndex(0);
   //if (maxWidth)
   //  list->SetDroppedWidth(maxWidth+6);
@@ -4833,7 +4833,7 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
     //comboItem = new CComboBoxItem(lab, TID(elDef->OwnID, incl));
     //Combo->listBox()->insertItem(comboItem);//sort
     comboItem = new CComboBoxItem(TID(elDef->OwnID, incl));
-    Combo->addItem(QString(lab.c), QVariant::fromValue(comboItem));//sort
+    addItemAlpha(Combo, QString(lab.c), QVariant::fromValue(comboItem));//sort
   }
   /*
   if (((DeclType == Interface) || (DeclType == CompObjSpec))
@@ -4852,11 +4852,11 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
 //      comboItem = new CComboBoxItem(LocalName, TID(elDef->OwnID, incl));
 //      Combo2->listBox()->insertItem(comboItem);//sort
       comboItem = new CComboBoxItem(TID(elDef->OwnID, incl));
-      Combo2->addItem(QString(LocalName.c), QVariant::fromValue(comboItem));//sort
+      addItemAlpha(Combo2, QString(LocalName.c), QVariant::fromValue(comboItem));//sort
     }
     else {
       comboItem = new CComboBoxItem(TID(elDef->OwnID, incl));
-      Combo2->addItem(QString(elDef->FullName.c), QVariant::fromValue(comboItem));//sort
+      addItemAlpha(Combo2, QString(elDef->FullName.c), QVariant::fromValue(comboItem));//sort
     }
   }
 }

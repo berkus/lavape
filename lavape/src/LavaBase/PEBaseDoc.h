@@ -109,5 +109,6 @@ private:
 };
 
 extern LAVABASE_DLL void SortCombo(QComboBox* lbox);
+extern LAVABASE_DLL int addItemAlpha(QComboBox* combobox, const QString& text, const QVariant& userData);
 
 #endif

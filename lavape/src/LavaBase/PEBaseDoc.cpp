@@ -179,11 +179,11 @@ void  CPEBaseDoc::MakeBasicBox(QComboBox* cbox, TDeclType defType, bool with, bo
         && ((defType == NoDef) || (decl->DeclType == defType))
         && (!skipServices || (decl->DeclType != Interface))) {
       comboItem = new CComboBoxItem(/*LBaseData->BasicNames[it],*/ TID(IDTable.BasicTypesID[it], incl));
-      cbox->addItem(QString(LBaseData->BasicNames[it]),QVariant::fromValue(comboItem));
+      addItemAlpha(cbox, QString(LBaseData->BasicNames[it]),QVariant::fromValue(comboItem));
 //      delete comboItem;
     }
   }
-  SortCombo(cbox);
+  //SortCombo(cbox);
   cbox->setCurrentIndex(0);
 }
 
@@ -1068,6 +1068,20 @@ bool CPEBaseDoc::OnSaveModified()
       return false;
   }
   return true;
+}
+
+int addItemAlpha(QComboBox* combobox, const QString& text, const QVariant& userData)
+{
+  int pos, mpos;
+
+  mpos = combobox->count();
+  pos = 1;
+  if (mpos > 1) {
+    while ((pos < mpos) && (text.compare(combobox->itemText(pos)) > 0))
+      pos++;
+  }
+  combobox->insertItem(pos, text, userData);
+  return pos;
 }
 
 void SortCombo(QComboBox* combobox)

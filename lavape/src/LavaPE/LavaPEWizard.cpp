@@ -3102,7 +3102,7 @@ CExecLike::CExecLike(CLavaPEDoc* doc, QComboBox* list, LavaDECL * Ldecl, LavaDEC
   FormDECL = form;
   TabTravers = new CTabTraversal(this, myDoc->mySynDef);
   TabTravers->Run(true, true);
-  SortCombo(List);
+  //SortCombo(List);
 
 }
 
@@ -3133,7 +3133,7 @@ void CExecLike::ExecFormDef(LavaDECL ** pelDef, int incl)
     if (!myDoc->IDTable.EQEQ((*pelDef)->RefID, (*pelDef)->inINCL, TID(myDECL->OwnID,myDECL->inINCL), 0))
       return;
   CComboBoxItem *item = new CComboBoxItem(TID((*pelDef)->OwnID, incl));
-  List->addItem(QString((*pelDef)->ParentDECL->FullName.c),QVariant::fromValue(item)); //sort
+  addItemAlpha(List, QString((*pelDef)->ParentDECL->FullName.c),QVariant::fromValue(item)); //sort
 }
 
 void CExecLike::ExecDefs (LavaDECL ** pelDef, int incl)
@@ -3149,6 +3149,6 @@ void CExecLike::ExecDefs (LavaDECL ** pelDef, int incl)
        || (myDECL->DeclType == FormDef)
           &&  myDoc->IDTable.EQEQ(id, elDef->inINCL, myDECL->RefID, myDECL->inINCL)) {
     CComboBoxItem *item = new CComboBoxItem(TID(elDef->OwnID, incl));
-    List->addItem(QString(elDef->FullName.c), QVariant::fromValue(item));
+    addItemAlpha(List, QString(elDef->FullName.c), QVariant::fromValue(item));
   }
 }
