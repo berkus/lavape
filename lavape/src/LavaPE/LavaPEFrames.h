@@ -48,7 +48,7 @@ public:
 
   bool OnCreate();
 	virtual void UpdateUI();
-  CUtilityView  * m_UtilityView;
+  CUtilityView  *m_UtilityView;
   bool UtilitiesHidden;
   int LastUtilitiesState; //-1:hidden, else: ActTab of m_UtilityView
 //  void ShowUtilitiesTab(UtilityTabs tab);

@@ -1589,15 +1589,18 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
       m_UtilityView->SetTab(tabComment);
     else if ((m_UtilityView->ActTab == tabComment) && m_UtilityView->CommentEmpty && !m_UtilityView->ErrorEmpty)
       m_UtilityView->SetTab(tabError);
+    m_UtilityView->setCurrentIndex(m_UtilityView->ActTab);
+    m_UtilityView->update();
     m_UtilityView->show();
     LastUtilitiesState = -1;
+    UtilitiesHidden = false;//!UtilitiesHidden;
   }
   else {
     m_UtilityView->hide();
     LastUtilitiesState = (int)m_UtilityView->ActTab;
-    if (wxTheApp->isChMaximized && wxTheApp->activeView()->inherits("CExecView")) {
-      CExecView *ev = (CExecView*)wxTheApp->activeView();
-      ev->redCtl->update();
+    //if (wxTheApp->isChMaximized && wxTheApp->activeView()->inherits("CExecView")) {
+    //  CExecView *ev = (CExecView*)wxTheApp->activeView();
+    //  ev->redCtl->update();
     //  ExecContents *ec = ev->redCtl;
     //  updEnabled = ev->updatesEnabled();
     //  if (!updEnabled)
@@ -1606,9 +1609,9 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
     //  QApplication::postEvent(ec,&pe);
     //  if (!updEnabled)
     //    ev->setUpdatesEnabled(false);
-    }
+    //}
+    UtilitiesHidden = true;//!UtilitiesHidden;
   }
-  UtilitiesHidden = !UtilitiesHidden;
 }
 
 void CLavaMainFrame::OnUpdateshowUtil(QAction* action)

@@ -542,9 +542,6 @@ static int nPaint=1;
 
 void ExecContents::paintEvent (QPaintEvent *ev)
 {
-  if (wxTheApp->isChMaximized)
-    sv->viewport()->repaint(); // to enforce an update of the viewport size
-
   QPainter p(this);
 
   CHETokenNode *currentToken;
@@ -652,10 +649,10 @@ void ExecContents::paintEvent (QPaintEvent *ev)
 
   p.setBrush(QColor(210,210,210));
   p.setPen(myPen);
-  contentsHeight = qMax(contentsHeight,sv->viewport()->height());
+  contentsHeight = qMax(contentsHeight,3000);//sv->viewport()->height());
   contentsWidth = qMax(contentsWidth,miniEditRightEdge);
   resize(contentsWidth,contentsHeight);
-  p.drawRect(0,0,15,contentsHeight>=sv->viewport()->height()?contentsHeight:sv->viewport()->height());
+  p.drawRect(0,0,15,contentsHeight);
 
   for ( it = bpl.begin(); it != bpl.end(); ++it )
    p.drawPixmap(0,*it+(fm->ascent()>14?fm->ascent()-14:0),*breakPoint);
@@ -683,10 +680,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     execView->autoScroll = false;
   }
   delete fm;
-
-  if (execView->editCtlVisible) {
-    qDebug() << "end of paint exec: show MiniEdit" << nPaint++;
-  }
 }
 
 void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
@@ -1272,6 +1265,7 @@ ExecContents::ExecContents (MyScrollView *sv) {
   debugStopToken = 0;
   callerStopToken = 0;
   miniEditRightEdge = 0;
+  repaintAppWindow = true;
   resize(100,100);
 }
 

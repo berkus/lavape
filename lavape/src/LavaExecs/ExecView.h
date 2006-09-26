@@ -375,7 +375,7 @@ public:
   int currentX, currentY, debugStopY, callerStopY, breakPointY, widthOfIndent,
   widthOfBlank, contentsWidth, contentsHeight, miniEditRightEdge;
   QPixmap *debugStop, *debugStopGreen, *breakPoint;
-  bool inDebugStop, inBreakPoint, innermostStop;
+  bool inDebugStop, inBreakPoint, innermostStop, repaintAppWindow;
   CHETokenNode *debugStopToken;
   CHETokenNode *callerStopToken;
   StopReason stopReason;
