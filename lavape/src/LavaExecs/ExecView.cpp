@@ -2314,7 +2314,7 @@ void CExecView::PutDelFlagHint(SET delFlags, SET firstLastHint) {
     myDoc->UpdateDoc(this, false);
 }
 
-void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint, bool putHint) {
+void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint) {
   nextHint = new CLavaPEHint(
     CPECommand_Exec,
     myDoc,
@@ -2327,14 +2327,8 @@ void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint, bool putHint) {
     (DWORD)text->currentSynObj->whereInParent);
 
   myDoc->UndoMem.AddToMem(nextHint);
-  if (firstLastHint.Contains(lastHint)) {
-    if (putHint)
-      myDoc->UpdateDoc(this, false,nextHint);
-    else
-      myDoc->UpdateDoc(this, false);
-  }
+  myDoc->UpdateDoc(this,false,nextHint);
 }
-
 
 void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLastHint) {
   nextHint = new CLavaPEHint(
@@ -2447,32 +2441,69 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
        && (chx->first != chx->last || delObj->primaryToken == catch_T))
       || delObj->IsPlaceHolder())) {
     che = (CHE*)delObj->whereInParent;
-    bool delMult
-      = (delObj->parentObject->IsMultOp()
-      && chx->first->successor == chx->last) ? true : false;
-    nextHint = new CLavaPEHint(
-      CPECommand_Exec,
-      myDoc,
-      delMult ? firstLastHint-SET(lastHint,-1) : firstLastHint,
-      (DWORD)myDECL,
-      (DWORD)delObj->parentObject, // parent,
-      (DWORD)DelChain,
-      (DWORD)che,
-      (DWORD)chx,
-      (DWORD)che->predecessor);
-    myDoc->UndoMem.AddToMem(nextHint);
-    if (delMult) {
+
+    if (delObj->primaryToken == quant_T
+    && delObj->parentObject->primaryToken == declare_T
+    && ((Declare*)delObj->parentObject)->secondaryClause.ptr) {
       nextHint = new CLavaPEHint(
         CPECommand_Exec,
         myDoc,
-        SET(lastHint,-1),
+        firstLastHint-SET(lastHint,-1),
         (DWORD)myDECL,
-        (DWORD)text->currentSynObj->parentObject->parentObject,
-        (DWORD)DelMult,
-        (DWORD)delObj->parentObject,
-        (DWORD)delObj->parentObject->containingChain,
-        (DWORD)delObj->parentObject->whereInParent);
+        (DWORD)delObj->parentObject, // parent,
+        (DWORD)DelChain,
+        (DWORD)che,
+        (DWORD)chx,
+        (DWORD)che->predecessor);
       myDoc->UndoMem.AddToMem(nextHint);
+      Quantifier *quant = (Quantifier*)delObj;
+      for (CHE *cheVn=(CHE*)quant->quantVars.first; cheVn; cheVn=(CHE*)cheVn->successor) {
+        SynObject *iniCall = ((SynObject*)cheVn->data)->iniCall;
+        che = (CHE*)iniCall->whereInParent;
+        chx = iniCall->containingChain;
+        nextHint = new CLavaPEHint(
+          CPECommand_Exec,
+          myDoc,
+          cheVn->successor?SET():SET(lastHint,-1),
+          (DWORD)myDECL,
+          (DWORD)iniCall->parentObject, // parent,
+          (DWORD)DelChain,
+          (DWORD)che,
+          (DWORD)chx,
+          (DWORD)che->predecessor);
+        myDoc->UndoMem.AddToMem(nextHint);
+      }
+      myDoc->UpdateDoc(this, false);
+      return;
+    }
+    else {
+      bool delMult
+        = (delObj->parentObject->IsMultOp()
+        && chx->first->successor == chx->last) ? true : false;
+      nextHint = new CLavaPEHint(
+        CPECommand_Exec,
+        myDoc,
+        delMult ? firstLastHint-SET(lastHint,-1) : firstLastHint,
+        (DWORD)myDECL,
+        (DWORD)delObj->parentObject, // parent,
+        (DWORD)DelChain,
+        (DWORD)che,
+        (DWORD)chx,
+        (DWORD)che->predecessor);
+      myDoc->UndoMem.AddToMem(nextHint);
+      if (delMult) {
+        nextHint = new CLavaPEHint(
+          CPECommand_Exec,
+          myDoc,
+          SET(lastHint,-1),
+          (DWORD)myDECL,
+          (DWORD)text->currentSynObj->parentObject->parentObject,
+          (DWORD)DelMult,
+          (DWORD)delObj->parentObject,
+          (DWORD)delObj->parentObject->containingChain,
+          (DWORD)delObj->parentObject->whereInParent);
+        myDoc->UndoMem.AddToMem(nextHint);
+      }
     }
   }
   else {
@@ -4659,7 +4690,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
       if (!isStaticCall)
         funcExpr->flags.EXCL(staticCall);
       if (fromNew)
-        PutInsHint(funcExpr,SET(lastHint,-1),true);
+        PutInsHint(funcExpr,SET(lastHint,-1));
       else
         PutInsHint(funcExpr);
     }
@@ -4716,7 +4747,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
       if (!isStaticCall && !funcStm->flags.Contains(isIniCallOrHandle))
         funcStm->flags.EXCL(staticCall);
       if (fromNew)
-        PutInsHint(funcStm,SET(lastHint,-1),true);
+        PutInsHint(funcStm,SET(lastHint,-1));
       else
         PutInsHint(funcStm);
     }

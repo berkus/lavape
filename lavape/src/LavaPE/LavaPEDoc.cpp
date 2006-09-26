@@ -1447,16 +1447,16 @@ void CLavaPEDoc::ConcernExecs(CLavaPEHint* hint)
   TDeclType defType = ((LavaDECL*)hint->CommandData1)->DeclType;
   if ((hint->com != CPECommand_Insert) || ((defType == IAttr) || (defType == OAttr))) {
     CLavaBaseView* view;
-    CheckData chd;
-    chd.concernExecs = true;
+    CheckData ckd;
+    ckd.concernExecs = true;
     for (pos = 0; pos < m_documentViews.size(); pos++) {
       view = (CLavaBaseView*)m_documentViews[pos];
       if (view->inherits("CExecView")) {
-        chd.document = this;
-        chd.myDECL = ((CExecView*)view)->myDECL;
-        chd.execView = view;
-        chd.hint = hint;
-        ((SynObject*)chd.myDECL->Exec.ptr)->Check(chd);
+        ckd.document = this;
+        ckd.myDECL = ((CExecView*)view)->myDECL;
+        ckd.execView = view;
+        ckd.hint = hint;
+        ((SynObject*)ckd.myDECL->Exec.ptr)->Check(ckd);
       }
     }
   }

@@ -356,12 +356,11 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   QFont f;
 
   pb = new QPushButton(QString(text),tb);
-  //pb->setWindowFlags(Qt::SubWindow);
 
   tb->addWidget(pb);
   connect(pb,SIGNAL(clicked()),slotParm);
   f = pb->font();
-  f.setBold(true);
+  //f.setBold(true);
   pb->setFont(f);
 
   pb->setFlat(true);
