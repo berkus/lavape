@@ -1618,9 +1618,8 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
   m_NewFunc = IDC_NewFunc;
   m_NewPFunc = IDC_NewPFunc;
   m_NewFunc->show();
-  //m_NewFunc->setEnabled(true);
+  m_NewFunc->setEnabled(true);
   m_NewPFunc->show();
-  //m_NewPFunc->setEnabled(true);
   NewFuncShow = true;
   NewFuncEnable = true;
   if (FuncParentDecl->DeclType == Impl)
@@ -1630,6 +1629,7 @@ void CComboBar::showClassFuncs(CheckData &ckd, QComboBox* funcBox, LavaDECL* dec
       NewPFuncEnable = true;
     else
       NewPFuncEnable = false;
+  m_NewPFunc->setEnabled(NewPFuncEnable);
   LeftCombo = IDC_ComboFuncs;
   m_ClassFuncsCtrl->show();
   m_ClassFuncsCtrl->setCurrentIndex(0);
