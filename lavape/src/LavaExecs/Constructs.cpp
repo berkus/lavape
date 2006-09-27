@@ -488,6 +488,7 @@ bool SynObject::ExpressionSelected (CHETokenNode *currentSelection) {
   if (IsExpression()
   && !currentSelection->data.OptionalClauseToken(optClause)
   && !IsAssigTarget()
+  && !parentObject->flags.Contains(isIniCallOrHandle)
   && !(primaryToken == TDOD_T && parentObject->parentObject->primaryToken == ifdef_T)
   && !(parentObject->primaryToken == ObjRef_T && parentObject->flags.Contains(isDisabled)))
     return true;
@@ -523,7 +524,8 @@ bool SynObject::IsStatement () {
     || parentObject->primaryToken == run_T
     || (primaryToken == assignFS_T
         && (parentObject->primaryToken == connect_T
-            || parentObject->primaryToken == signal_T)))
+            || parentObject->primaryToken == signal_T
+            || flags.Contains(isIniCallOrHandle))))
       return false;
     else
       return true;
@@ -537,6 +539,7 @@ bool SynObject::IsStatement () {
         && (parentObject->parentObject->primaryToken == connect_T
             || parentObject->parentObject->primaryToken == signal_T))
     || parentObject->primaryToken == connect_T
+    || parentObject->flags.Contains(isIniCallOrHandle)
     || parentObject->primaryToken == disconnect_T
     || parentObject->parentObject->primaryToken == new_T
     || parentObject->parentObject->primaryToken == run_T

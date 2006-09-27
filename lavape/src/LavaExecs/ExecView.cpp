@@ -263,10 +263,10 @@ void CExecView::OnInitialUpdate()
   selfVar->concernExecs = false;
   selfVar->execView= this;
   text->ckd.inInitialUpdate = true;
+  initialUpdateDone = true;
   OnUpdate((wxView*)pHint->CommandData2, 0, pHint);
   sv->setFocusProxy(redCtl);
   text->ckd.inInitialUpdate = false;
-  initialUpdateDone = true;
 }
 
 void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
@@ -309,7 +309,7 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     }
   }
   else if (token == Comment_T) {
-    fmt.italic = true;
+    //fmt.italic = true;
     fmt.color = QColor("#009000"); // green
   }
   else if (TOKENSTR[token][0].isLetter()
@@ -5716,8 +5716,6 @@ void CExecView::UpdateUI()
 {
   if (editCtlVisible || !initialUpdateDone)
     return;
-  if (editCtlVisible)
-    return;
   OnUpdateOptLocalVar(LBaseData->optLocalVarActionPtr);
   OnUpdateHandle(LBaseData->handleActionPtr);
   OnUpdateInputArrow(LBaseData->toggleInputArrowsActionPtr);
@@ -6335,7 +6333,8 @@ void CExecView::OnActivateView(bool bActivate, wxView *deactiveView)
     if (Base)
       SetHelpText();
     redCtl->setFocus();
-    wxTheApp->updateButtonsMenus();
+    if (initialUpdateDone)
+      wxTheApp->updateButtonsMenus();
   }
   else if (!bActivate) {
     active = false;
