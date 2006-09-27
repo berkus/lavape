@@ -118,8 +118,11 @@ CLavaPEApp::CLavaPEApp(int argc, char ** argv )
   SetAppName("LavaPE");
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
 
+#ifdef WIN32
   QApplication::setFont(QFont("Helvetica", 10));
-
+#else
+  QApplication::setFont(QFont("Adobe Helvetica", 12));
+#endif
   LBaseData.stdUpdate = 0;
   //stop here and set stdUpdate = 1 to allow updates in std.lava
 
