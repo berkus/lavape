@@ -4220,7 +4220,7 @@ bool FuncExpression::Check (CheckData &ckd)
   ObjReference *callObj;
   Category cat;
   SynFlags ctxFlags;
-  bool privateFunction=false;
+  bool privateFunction=false, checkUnfinishedInputs=false;
   QString *rc;
 #ifdef INTERPRETER
   unsigned nInputs, nOutputs;
@@ -4249,6 +4249,7 @@ bool FuncExpression::Check (CheckData &ckd)
         callObj->SetError(ckd,rc);
         return false;
       }
+      checkUnfinishedInputs = true;
     }
   }
 #ifndef INTERPRETER
@@ -4309,6 +4310,8 @@ bool FuncExpression::Check (CheckData &ckd)
       if (!funcDecl)
         ERROREXIT
       ok &= callExpr->CallCheck(ckd);
+      if (checkUnfinishedInputs && funcDecl->SecondTFlags.Contains(hasClosedInput))
+        ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
       if (primaryToken == signal_T
         && !funcDecl->SecondTFlags.Contains(isLavaSignal)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoSignal);

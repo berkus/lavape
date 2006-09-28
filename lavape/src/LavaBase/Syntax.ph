@@ -306,8 +306,8 @@ $TYPE +CDP {
 	  FREE_FLAG5, //X0000 0020
 	  FREE_FLAG6, //X0000 0040
 	  FREE_FLAG7, //X0000 0080
-	hasClosedInput,
-	//8,X0000 0100, function has closed input
+	  hasClosedInput,
+    //8,X0000 0100, function has closed input
     enableName,
     //9,X0000 0200, 512, overriding function, virtual type or member does not inherit the name of the overridden
     overrides,
