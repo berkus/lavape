@@ -5296,7 +5296,7 @@ void CExecView::OnNextComment()
       text->newSelection = currToken;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       text->Select();
-      //redCtl->update();
+      redCtl->update();
       return;
     }
   }
@@ -5308,7 +5308,7 @@ void CExecView::OnNextComment()
       text->newSelection = currToken;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       text->Select();
-      //redCtl->update();
+      redCtl->update();
       return;
     }
   }
@@ -5326,7 +5326,7 @@ void CExecView::OnPrevComment()
       text->newSelection = currToken;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       text->Select();
-      //redCtl->update();
+      redCtl->update();
       return;
     }
   }
@@ -5338,7 +5338,7 @@ void CExecView::OnPrevComment()
       text->newSelection = currToken;
       ((CExecFrame*)GetParentFrame())->m_ComboBar->ShowCombos(disableCombo);
       text->Select();
-      //redCtl->update();
+      redCtl->update();
       return;
     }
   }
