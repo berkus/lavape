@@ -4310,8 +4310,13 @@ bool FuncExpression::Check (CheckData &ckd)
       if (!funcDecl)
         ERROREXIT
       ok &= callExpr->CallCheck(ckd);
-      if (checkUnfinishedInputs && funcDecl->SecondTFlags.Contains(hasClosedInput))
-        ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
+      if (checkUnfinishedInputs
+      && funcDecl->SecondTFlags.Contains(hasClosedInput)
+      && flags.Contains(isIniCallOrHandle))
+        if (parentObject->primaryToken == new_T)
+          ((SynObject*)handle.ptr)->flags.INCL(isClosed);
+        else
+          ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
       if (primaryToken == signal_T
         && !funcDecl->SecondTFlags.Contains(isLavaSignal)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoSignal);
@@ -6351,6 +6356,10 @@ bool NewExpression::Check (CheckData &ckd)
 #endif
 
   EXIT
+}
+
+bool NewExpression::IsClosed(CheckData &ckd) {
+  return ((ObjReference*)((FuncStatement*)initializerCall.ptr)->handle.ptr)->flags.Contains(isClosed);
 }
 
 void CloneExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {

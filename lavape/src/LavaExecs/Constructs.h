@@ -2537,6 +2537,7 @@ class NewExpression : public AttachObject {
   NESTEDANY/*Expression*/ butStatement;
   bool errorInInitializer;
   virtual bool NestedOptClause(SynObject *optClause);
+  virtual bool IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void MakeTable(address table,int inINCL,SynObjectBase *parent,TTableUpdate update,address where,CHAINX *chxp,address searchData=0);

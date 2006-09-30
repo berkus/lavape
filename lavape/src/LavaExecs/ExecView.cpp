@@ -5300,7 +5300,6 @@ void CExecView::OnNextComment()
       return;
     }
   }
-//  QMessageBox::critical(this, qApp->name(), "No (more) comments found", QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   for ( currToken = (CHETokenNode*)text->tokenChain.first;
         currToken != startToken;
         currToken = (CHETokenNode*)currToken->successor) {
