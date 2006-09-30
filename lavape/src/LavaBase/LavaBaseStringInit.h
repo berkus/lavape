@@ -63,6 +63,7 @@ extern LAVABASE_DLL QString ERR_SingleAssViol;
 extern LAVABASE_DLL QString ERR_PrevDescAssig;
 extern LAVABASE_DLL QString ERR_Optional;
 extern LAVABASE_DLL QString ERR_Closed;
+extern LAVABASE_DLL QString ERR_ShouldBeClosed;
 extern LAVABASE_DLL QString ERR_SelfClosed;
 extern LAVABASE_DLL QString ERR_CallObjClosed;
 extern LAVABASE_DLL QString ERR_SelfNotClosed;

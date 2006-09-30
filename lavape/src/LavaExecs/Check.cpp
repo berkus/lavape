@@ -4312,11 +4312,16 @@ bool FuncExpression::Check (CheckData &ckd)
       ok &= callExpr->CallCheck(ckd);
       if (checkUnfinishedInputs
       && funcDecl->SecondTFlags.Contains(hasClosedInput)
-      && flags.Contains(isIniCallOrHandle))
-        if (parentObject->primaryToken == new_T)
-          ((SynObject*)handle.ptr)->flags.INCL(isClosed);
-        else
+      && flags.Contains(isIniCallOrHandle)) {
+        if (parentObject->primaryToken != new_T) {
           ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
+          if (!((SynObject*)handle.ptr)->flags.Contains(isClosed)) {
+            ((SynObject*)handle.ptr)->SetError(ckd,&ERR_ShouldBeClosed);
+            ok &= false;
+          }
+        }
+        ((SynObject*)handle.ptr)->flags.INCL(isClosed);
+      }
       if (primaryToken == signal_T
         && !funcDecl->SecondTFlags.Contains(isLavaSignal)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoSignal);
