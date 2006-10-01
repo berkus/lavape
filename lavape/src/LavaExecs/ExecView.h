@@ -74,7 +74,7 @@ public:
   bool editCtlVisible, insertBefore, on_editCutAction_triggered, doubleClick,
        clicked, escapePressed, forcePrimTokenSelect, deletePending,
        inIgnore, inExecHeader, inFormParms, inBaseInits,
-       inParameter, inForeach, externalHint, execReplaced, nextError,
+       inParameter, inForeach, externalHint, nextError,
        destroying, autoScroll, makeSelectionVisible, errMsgUpdated, initialUpdateDone;
   TToken editToken;
   SelfVar *selfVar;

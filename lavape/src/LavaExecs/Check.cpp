@@ -282,9 +282,9 @@ void RefTable::findObjRef (CheckData &ckd,
   TID tid;
   CHE *chp;
 
+  tid = ((TDOD*)che->data)->ID;
+  ADJUST4(tid);
   for (cheTbl = (CHECVarDesc*)oRefTbl.first; cheTbl; cheTbl = (CHECVarDesc*)cheTbl->successor) {
-    tid = ((TDOD*)che->data)->ID;
-    ADJUST4(tid);
     if (cheTbl->data.varID == tid) break;
   }
 
@@ -3320,13 +3320,16 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
       ((CHE*)refIDs.first)->successor = secondChe;
       return false;
     }
-    else if (wacc && wacc->isClosedQuantVar && parentObject->primaryToken == parameter_T) {
-      formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
-      if (!formParmDecl)
-        return ok;
-      if (!formParmDecl->SecondTFlags.Contains(closed)) {
-        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_Closed);
-        ok = false;
+    else {
+      ((CHE*)refIDs.first)->successor = secondChe;
+      if (wacc && wacc->isClosedQuantVar && parentObject->primaryToken == parameter_T) {
+        formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
+        if (!formParmDecl)
+          return ok;
+        if (!formParmDecl->SecondTFlags.Contains(closed)) {
+          ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_Closed);
+          ok = false;
+        }
       }
     }
     ((CHE*)refIDs.first)->successor = secondChe;
@@ -4220,7 +4223,7 @@ bool FuncExpression::Check (CheckData &ckd)
   ObjReference *callObj;
   Category cat;
   SynFlags ctxFlags;
-  bool privateFunction=false, checkUnfinishedInputs=false;
+  bool privateFunction=false, checkUnfinishedInputs=false, hasClosedActParm=false;
   QString *rc;
 #ifdef INTERPRETER
   unsigned nInputs, nOutputs;
@@ -4310,18 +4313,6 @@ bool FuncExpression::Check (CheckData &ckd)
       if (!funcDecl)
         ERROREXIT
       ok &= callExpr->CallCheck(ckd);
-      if (checkUnfinishedInputs
-      && funcDecl->SecondTFlags.Contains(hasClosedInput)
-      && flags.Contains(isIniCallOrHandle)) {
-        if (parentObject->primaryToken != new_T) {
-          ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
-          if (!((SynObject*)handle.ptr)->flags.Contains(isClosed)) {
-            ((SynObject*)handle.ptr)->SetError(ckd,&ERR_ShouldBeClosed);
-            ok &= false;
-          }
-        }
-        ((SynObject*)handle.ptr)->flags.INCL(isClosed);
-      }
       if (primaryToken == signal_T
         && !funcDecl->SecondTFlags.Contains(isLavaSignal)) {
         ((SynObject*)function.ptr)->SetError(ckd,&ERR_NoSignal);
@@ -4443,6 +4434,7 @@ bool FuncExpression::Check (CheckData &ckd)
         (opd->primaryToken==parameter_T?(SynObject*)((Parameter*)opd)->parameter.ptr : opd);
       if (!actParm->IsIfStmExpr())
         ok/*rc*/ &= opd->Check(ckd);
+      hasClosedActParm = opd->IsClosed(ckd)?true:hasClosedActParm;
       // check act.parm/form.parm. type compatibility:
       ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
 #ifdef INTERPRETER
@@ -4475,6 +4467,20 @@ bool FuncExpression::Check (CheckData &ckd)
       PutDelChainHint(ckd,this,&inputs,chpActIn);
 #endif
   }
+  if (checkUnfinishedInputs
+  //&& funcDecl->SecondTFlags.Contains(hasClosedInput)
+  && hasClosedActParm
+  && flags.Contains(isIniCallOrHandle)) {
+    if (parentObject->primaryToken != new_T) {
+      ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
+      if (!((SynObject*)handle.ptr)->flags.Contains(isClosed)) {
+        ((SynObject*)handle.ptr)->SetError(ckd,&ERR_ShouldBeClosed);
+        ok &= false;
+      }
+    }
+    ((SynObject*)handle.ptr)->flags.INCL(isClosed);
+  }
+
 #ifdef INTERPRETER
   nInputs = ((Reference*)function.ptr)->refDecl->nInput;
   nParams = nInputs + nOutputs + 1;

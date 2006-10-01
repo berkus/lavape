@@ -214,7 +214,6 @@ void CExecView::OnInitialUpdate()
   multHint = 0;
   editCtl = 0;
   tempNo = 0;
-  execReplaced = false;
   externalHint = false;
   nextError = false;
   deletePending = false;
@@ -649,13 +648,13 @@ void ExecContents::paintEvent (QPaintEvent *ev)
 
   p.setBrush(QColor(210,210,210));
   p.setPen(myPen);
-  contentsHeight = qMax(contentsHeight,3000);//sv->viewport()->height());
+  contentsHeight = qMax(contentsHeight,sv->viewport()->height());
   contentsWidth = qMax(contentsWidth,miniEditRightEdge);
   resize(contentsWidth,contentsHeight);
   p.drawRect(0,0,15,contentsHeight);
 
   for ( it = bpl.begin(); it != bpl.end(); ++it )
-   p.drawPixmap(0,*it+(fm->ascent()>14?fm->ascent()-14:0),*breakPoint);
+    p.drawPixmap(0,*it+(fm->ascent()>14?fm->ascent()-14:0),*breakPoint);
 
   if (debugStopToken)
     p.drawPixmap(0,debugStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStop);
@@ -741,7 +740,6 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
       if (myNewDECL) {
         myNewDECL = myDoc->GetExecDECL(myNewDECL,myExecCategory,false,false);
         if (myNewDECL != myDECL) {
-          execReplaced = true;
           myDECL = myNewDECL;
           text->INIT();
           Base->Browser->LastBrowseContext->RemoveView(this);
@@ -814,7 +812,6 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
       if (myNewDECL) {
         myNewDECL = myDoc->GetExecDECL(myNewDECL,myExecCategory,false,false);
         if (myNewDECL && (myNewDECL != myDECL)) {
-          execReplaced = true;
           myDECL = myNewDECL;
           text->INIT();
           Base->Browser->LastBrowseContext->RemoveView(this);
@@ -2113,13 +2110,11 @@ void CExecView::RedrawExec(SynObject *selectAt)
     sData.synObjectID = text->currentSynObjID;
     sData.execView = this;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSelect, 0,0, (address)&sData);
+    redCtl->update();
   }
   else
     Select();
-  if (execReplaced)
-    execReplaced = false;
 
-  //redCtl->update();
   //redCtl->setUpdatesEnabled(true);
 }
 

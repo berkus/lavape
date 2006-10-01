@@ -2695,7 +2695,7 @@
     <string>Toggle closed variable</string>
    </property>
    <property name="whatsThis" >
-    <string>Potentially incomplete, not yet fully initialized object; member access is still disabled therefore</string>
+    <string>The value of this variable is a potentially unfinished, not yet fully initialized object; access to data members is still disabled therefore</string>
    </property>
   </action>
   <action name="parmNameAction" >

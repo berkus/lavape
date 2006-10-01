@@ -332,8 +332,8 @@ void LavaBaseStringInit() {
   ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
   ERR_Optional  = QObject::tr("An expression whose value is mandatory (= always non-null) is expected here");
   ERR_Closed  = QObject::tr("A possibly unfinished object may be assigned only to a \"closed\" variable or formal parameter");
-  ERR_ShouldBeClosed  = QObject::tr("Initialized variable must be declared \"closed\" since initializer has \"closed\" inputs");
-  ERR_CallObjClosed  = QObject::tr("Call object is \"closed\", so the function must have the \"self is closed\" attribute");
+  ERR_ShouldBeClosed  = QObject::tr("Initialized variable must be declared \"closed\" since initializer has \"closed\" actual input parameters");
+  ERR_CallObjClosed  = QObject::tr("This call object is \"closed\", so the function must have the \"self is closed\" attribute");
   ERR_SelfClosed  = QObject::tr("\"self\" has been declared \"closed\": member access forbidden");
   ERR_SelfUnfinished  = QObject::tr("\"self\" may be still unfinished here: member access forbidden");
   ERR_SelfNotClosed  = QObject::tr("Call object still incomplete here, so the called function must have the \"self is closed\" attribute");
