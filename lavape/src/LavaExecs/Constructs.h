@@ -796,6 +796,7 @@ struct TDOD : public SynObject {
   {
     return false;
   }
+  virtual bool IsClosed(CheckData &ckd);
   bool IsStateObject(CheckData &ckd);
   virtual bool IsExecutable()
   {

@@ -1935,6 +1935,7 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
         CMainItemData clipData;
         defTypeSpicked = clipData.Spick(ar, treeflagsSpicked, secondtflagsSpicked);
       }
+      wxTheApp->updateButtonsMenus();
     }
     else {
       active = false;

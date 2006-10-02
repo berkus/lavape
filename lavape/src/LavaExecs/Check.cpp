@@ -964,7 +964,8 @@ bool SynObject::UpdateReference (CheckData &ckd) {
           ((TDOD*)che->data)->flags.EXCL(isSubstitutable);
         if (((VarName*)dw)->flags.Contains(isClosed)) {
           ((TDOD*)che->data)->flags.INCL(isClosed);
-          objRef->flags.INCL(isClosed);
+          if (objRef->refIDs.first == objRef->refIDs.last)
+            objRef->flags.INCL(isClosed);
         }
         else {
           ((TDOD*)che->data)->flags.EXCL(isClosed);
@@ -3322,14 +3323,20 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
     }
     else {
       ((CHE*)refIDs.first)->successor = secondChe;
-      if (wacc && wacc->isClosedQuantVar && parentObject->primaryToken == parameter_T) {
-        formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
-        if (!formParmDecl)
-          return ok;
-        if (!formParmDecl->SecondTFlags.Contains(closed)) {
-          ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_Closed);
-          ok = false;
-        }
+      if (refIDs.first == refIDs.last) {
+        //if (wacc && wacc->isClosedQuantVar && parentObject->primaryToken == parameter_T) {
+        //  formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
+        //  if (!formParmDecl)
+        //    return ok;
+        //  if (!formParmDecl->SecondTFlags.Contains(closed)) {
+        //    ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_Closed);
+        //    ok = false;
+        //  }
+        //}
+      }
+      else if (((SynObject*)((CHE*)refIDs.first)->data)->IsClosed(ckd)) {
+        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ObjUnfinished);
+        ok = false;
       }
     }
     ((CHE*)refIDs.first)->successor = secondChe;
@@ -3412,7 +3419,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
     return ok;
 
   if (!decl->SecondTFlags.Contains(closed))
-    if (IsClosed(ckd)) {
+    if (!flags.Contains(isIniCallOrHandle) && IsClosed(ckd)) {
       SetError(ckd,&ERR_CallObjClosed);
       ok &= false;
     }
@@ -3511,6 +3518,10 @@ bool ObjReference::Check (CheckData &ckd) {
   }
 
   return ok1;
+}
+
+bool TDOD::IsClosed (CheckData &ckd) {
+  return flags.Contains(isClosed);
 }
 
 bool TDOD::IsStateObject (CheckData &ckd)

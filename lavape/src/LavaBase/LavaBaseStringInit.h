@@ -68,6 +68,7 @@ extern LAVABASE_DLL QString ERR_SelfClosed;
 extern LAVABASE_DLL QString ERR_CallObjClosed;
 extern LAVABASE_DLL QString ERR_SelfNotClosed;
 extern LAVABASE_DLL QString ERR_SelfUnfinished;
+extern LAVABASE_DLL QString ERR_ObjUnfinished;
 extern LAVABASE_DLL QString ERR_TempUnfinished;
 extern LAVABASE_DLL QString ERR_UnfinishedObject;
 extern LAVABASE_DLL QString ERR_SelfUnfinishedCallObj;
