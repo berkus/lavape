@@ -55,6 +55,7 @@ wxMainFrame::wxMainFrame() : QMainWindow()
 {
   wxDocManager *docMan=wxDocManager::GetDocumentManager();
 
+  m_workspace = 0;
   QStatusBar *stb=new QStatusBar(this);
   completelyCreated = false;
 

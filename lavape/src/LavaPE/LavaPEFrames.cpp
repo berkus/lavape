@@ -277,8 +277,9 @@ void CLavaMainFrame::makeStyle(const QString &style)
   }
   fillHelpToolbar(HelpToolbar);
 
-  if (theActiveFrame && QString(theActiveFrame->objectName()) != "ExecFrame")
-    CExecView::DisableKwdButtons();
+  wxTheApp->updateButtonsMenus();
+  //if (theActiveFrame && QString(theActiveFrame->objectName()) != "ExecFrame")
+  //  CExecView::DisableKwdButtons();
 }
 
 CLavaMainFrame::~CLavaMainFrame()

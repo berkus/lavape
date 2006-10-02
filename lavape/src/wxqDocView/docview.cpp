@@ -157,6 +157,8 @@ static int cnt=0;
 
 void wxApp::updateButtonsMenus()
 {
+  if (!m_appWindow->m_workspace)
+    return;
   QWidget *actMDIChild=m_appWindow->m_workspace->activeWindow();
   onUpdateUI();
 
