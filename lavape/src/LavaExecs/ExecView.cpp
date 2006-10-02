@@ -554,8 +554,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     return;
   p.setBackgroundMode(Qt::OpaqueMode);
 
-//  viewport()->setUpdatesEnabled(false);
-
   contentsWidth = 0;
   contentsHeight = 0;
   fmt.font = font();
@@ -660,8 +658,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
     p.drawPixmap(0,debugStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStop);
   if (callerStopToken)
     p.drawPixmap(0,callerStopY+(fm->ascent()>14?fm->ascent()-14:0),*debugStopGreen);
-
-//  redCtl->setUpdatesEnabled(true);
 
   if (execView->makeSelectionVisible) {
     execView->makeSelectionVisible = false;
