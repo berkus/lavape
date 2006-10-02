@@ -5368,7 +5368,6 @@ bool CExecView::ConflictSelected()
 
 void CExecView::OnToggleCategory()
 {
-  // TODO: Code fr Befehlsbehandlungsroutine hier einfgen
   if (!EditOK()) return;
 
   if (text->currentSynObj->flags.Contains(isVariable)) {
@@ -5377,14 +5376,26 @@ void CExecView::OnToggleCategory()
       PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
       PutInsFlagHint(SET(isSameAsSelf,-1),SET(lastHint,-1));
     }
+    else if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
+    && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
+      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
+    else if (text->currentSynObj->parentObject->primaryToken == new_T)
+      PutDelFlagHint(SET(isVariable,-1),SET(firstHint,lastHint,-1));
     else {
       PutDelFlagHint(SET(isVariable,-1),SET(firstHint,-1));
       PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
     }
   }
   else if (text->currentSynObj->flags.Contains(isSameAsSelf)) {
-    PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,-1));
-    PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+    if (text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
+    && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)
+      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
+    else if (text->currentSynObj->parentObject->primaryToken == new_T)
+      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,lastHint,-1));
+    else {
+      PutDelFlagHint(SET(isSameAsSelf,-1),SET(firstHint,-1));
+      PutInsFlagHint(SET(isUnknownCat,-1),SET(lastHint,-1));
+    }
   }
   else if (text->currentSynObj->flags.Contains(isUnknownCat))
     PutDelFlagHint(SET(isUnknownCat,-1));
