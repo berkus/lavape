@@ -1416,7 +1416,7 @@ bool MultipleOp::Check (CheckData &ckd)
     }
   }
 #endif
-  
+
   ok &= opd1->CallCheck(ckd);
 
   chpActIn = (CHE*)operands.first;
@@ -5971,6 +5971,7 @@ bool Quantifier::Check(CheckData &ckd)
           ok = false;
         }
         ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
+        delete objRef;
       }
     }
 
