@@ -158,13 +158,13 @@ void Tokens_INIT ()
   ATO(">>");
   ATO("[]");
 
-/*#ifdef WIN32
-  ATO(QChar(0x2190));
-  ATO(QChar(0x2192));
-#else*/
+#ifdef WIN32
+  ATO(QChar(0xAC));
+  ATO(QChar(0xAE));
+#else
   ATO(" <== ");
   ATO(" ==> ");
-//#endif
+#endif
   ATO(".");
 
   ATO("(");
