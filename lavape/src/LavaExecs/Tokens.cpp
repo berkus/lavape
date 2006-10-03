@@ -161,10 +161,14 @@ void Tokens_INIT ()
 #ifdef WIN32
   ATO(QChar(0xAC));
   ATO(QChar(0xAE));
+#elif Linux
+  ATO(QChar(0x21D0));
+  ATO(QChar(0x21D2));
 #else
   ATO(" <== ");
   ATO(" ==> ");
 #endif
+
   ATO(".");
 
   ATO("(");

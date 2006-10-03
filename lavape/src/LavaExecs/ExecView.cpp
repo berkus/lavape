@@ -276,8 +276,10 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
 
   if (token == Larrow_T
   || token == Rarrow_T) {
+#if defined(WIN32) || defined(Linux)
     fmt.font.setFamily(fmt.symbolFamily);
     fmt.symbolFont = true;
+#endif
     fmt.bold = true;
     fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
