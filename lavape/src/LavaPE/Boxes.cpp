@@ -127,7 +127,8 @@ ValOnInit CAttrBox::OnInitDialog()
     ValueObject->setChecked(true);
     myDoc->MakeBasicBox(BasicTypes, NoDef, true, TypeFlags.Contains(constituent));
     execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
-    BasicTypes->setCurrentIndex((int)(VLString));
+    //BasicTypes->setCurrentIndex((int)(VLString));
+    BasicTypes->setCurrentIndex(BasicTypes->findText("String"));
     //BasicTypes->setItemText(BasicTypes->currentIndex(),((CLavaPEApp*)wxTheApp)->LBaseData.BasicNames[(int)(VLString)]);
     if (SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID) > 0) {
       myDECL->DeclDescType = BasicType;
@@ -2962,7 +2963,8 @@ ValOnInit CIOBox::OnInitDialog()
     myDECL->TypeFlags.INCL(trueObjCat);
     myDoc->MakeBasicBox(BasicTypes, NoDef, true);
     execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Attr, TypeFlags);
-    BasicTypes->setCurrentIndex((int)(VLString));
+    //BasicTypes->setCurrentIndex((int)(VLString));
+    BasicTypes->setCurrentIndex(BasicTypes->findText("String"));
     int num = SelEndOKToStr(BasicTypes, &valNewTypeType, &myDECL->RefID);
     if (num > 0) {
       myDECL->DeclDescType = BasicType;
