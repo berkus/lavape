@@ -357,6 +357,8 @@ struct Format {
   bool bold, italic;
   QColor color;
   QFont font;
+  bool symbolFont;
+  QString fontFamily, symbolFamily;
 };
 
 class LAVAEXECS_DLL ExecContents : public QWidget {

@@ -275,8 +275,22 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
   fmt.italic = false;
 
   if (token == Larrow_T
-  || token == Rarrow_T
-  || token == NewLineSym_T) {
+  || token == Rarrow_T) {
+    fmt.font.setFamily(fmt.symbolFamily);
+    fmt.symbolFont = true;
+    fmt.bold = true;
+    fmt.color = QColor("#0000FF"); // blue
+    if (currToken->data.flags.Contains(ignoreSynObj)) {
+      fmt.italic = true;
+      fmt.color = QColor("#FF0000"); // red
+    }
+    else if (currToken == currToken->data.synObject->primaryTokenNode
+    && currToken->data.synObject->lastError) {
+      fmt.color = QColor("#FF0000"); // red
+      fmt.bold = true; //fmt.dwEffects = cfe_bold;
+    }
+  }
+  else if (token == NewLineSym_T) {
     fmt.bold = true;
     fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
@@ -489,6 +503,10 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
     contentsHeight = qMax(contentsHeight,currentY+fm->descent());
   }
   delete fm;
+  if (fmt.symbolFont) {
+    fmt.font.setFamily(fmt.fontFamily);
+    fmt.symbolFont = false;
+  }
 }
 
 typedef QList<int> BreakPointList;
@@ -541,6 +559,7 @@ static int nPaint=1;
 
 void ExecContents::paintEvent (QPaintEvent *ev)
 {
+  fmt.fontFamily = fmt.font.family();
   QPainter p(this);
 
   CHETokenNode *currentToken;
@@ -1259,6 +1278,8 @@ ExecContents::ExecContents (MyScrollView *sv) {
   callerStopToken = 0;
   miniEditRightEdge = 0;
   repaintAppWindow = true;
+  fmt.symbolFamily = "Symbol";
+  fmt.symbolFont = false;
   resize(100,100);
 }
 
@@ -1443,7 +1464,7 @@ void CExecView::Select (SynObject *selObj)
     else if (text->currentSynObj->parentObject->parentObject
     && text->currentSynObj->parentObject->parentObject->primaryToken == declare_T
     && ((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr
-    && (text->currentSynObj->parentObject->whereInParent == 
+    && (text->currentSynObj->parentObject->whereInParent ==
        (address)&((Declare*)text->currentSynObj->parentObject->parentObject)->secondaryClause.ptr)) {
       funcExpr = (FuncExpression*)text->currentSynObj->parentObject;
       objRef = (ObjReference*)funcExpr->handle.ptr;
@@ -1456,7 +1477,7 @@ void CExecView::Select (SynObject *selObj)
     else if (text->currentSynObj->parentObject->parentObject->parentObject
     && text->currentSynObj->parentObject->parentObject->parentObject->primaryToken == declare_T
     && ((Declare*)text->currentSynObj->parentObject->parentObject->parentObject)->secondaryClause.ptr
-    && (text->currentSynObj->parentObject->parentObject->whereInParent == 
+    && (text->currentSynObj->parentObject->parentObject->whereInParent ==
        (address)&((Declare*)text->currentSynObj->parentObject->parentObject->parentObject)->secondaryClause.ptr)) {
       funcExpr = (FuncExpression*)text->currentSynObj->parentObject;
       objRef = (ObjReference*)funcExpr->handle.ptr;
