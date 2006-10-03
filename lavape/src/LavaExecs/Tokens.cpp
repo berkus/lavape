@@ -159,8 +159,10 @@ void Tokens_INIT ()
   ATO("[]");
 
 #ifdef WIN32
-  ATO(QChar(0xAC));
-  ATO(QChar(0xAE));
+  //ATO(QChar(0xDF)); // normal arrows (Wingdings)
+  //ATO(QChar(0xE0));
+  ATO(QChar(0xE7)); // fat arrows (Wingdings)
+  ATO(QChar(0xE8));
 #elif Linux
   ATO(QChar(0x21D0));
   ATO(QChar(0x21D2));

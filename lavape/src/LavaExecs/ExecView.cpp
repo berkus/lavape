@@ -1280,7 +1280,11 @@ ExecContents::ExecContents (MyScrollView *sv) {
   callerStopToken = 0;
   miniEditRightEdge = 0;
   repaintAppWindow = true;
+#ifdef WIN32
+  fmt.symbolFamily = "Wingdings";
+#else
   fmt.symbolFamily = "Symbol";
+#endif
   fmt.symbolFont = false;
   resize(100,100);
 }
