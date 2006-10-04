@@ -172,7 +172,6 @@ void Tokens_INIT ()
 #endif
 
   ATO(".");
-
   ATO("(");
   ATO(")");
 

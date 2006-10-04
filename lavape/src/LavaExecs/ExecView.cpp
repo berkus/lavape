@@ -280,7 +280,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     fmt.font.setFamily(fmt.symbolFamily);
     fmt.symbolFont = true;
 #endif
+#ifndef WIN32
     fmt.bold = true;
+#endif
     fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
       fmt.italic = true;
