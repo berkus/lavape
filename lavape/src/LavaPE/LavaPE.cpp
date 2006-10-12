@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #endif
+#include <stdlib.h>
 #include <errno.h>
 
 //#include <prelude.h>
@@ -345,7 +346,7 @@ QString CLavaPEApp::InitWebBrowser () {
   HKEY hkey=0;
   DWORD valType=0, dataSize=100;
   BYTE data[100];
-        char *datap=(char*)&data[0];
+  char *datap=(char*)&data[0];
   LONG rc=0;
   unsigned pos=0;
 
@@ -366,12 +367,12 @@ QString CLavaPEApp::InitWebBrowser () {
     if (pos = str.indexOf(' ',1))
       prog = str.mid(0,pos);
     else
-                        prog = str;
+      prog = str;
   }
 #else
-        prog = "firefox";
+  prog = "firefox";
 #endif
-        return prog;
+  return prog;
 }
 
 void CLavaPEApp::OnAppAbout()

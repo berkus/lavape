@@ -75,7 +75,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib $(QT4DIR)\lib\QtAssistantClientd.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\QtNetworkd4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib $(QT4DIR)\lib\QtAssistantClientd4.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\QtNetworkd4.lib"
 				OutputFile="..\..\bin\LavaBase.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -173,7 +173,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib $(QT4DIR)\lib\QtAssistantClient.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib $(QT4DIR)\lib\QtNetwork4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib $(QT4DIR)\lib\QtAssistantClient4.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib $(QT4DIR)\lib\QtNetwork4.lib"
 				OutputFile="..\..\bin\LavaBase.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -653,7 +653,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
+						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
