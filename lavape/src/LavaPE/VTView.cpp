@@ -345,7 +345,7 @@ void CVTView::destroy()
   if (((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext)
     ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext->RemoveView(this);
   DeleteItemData(0);
-  CTreeView::destroy(); 
+  //CTreeView::destroy(); 
 }
 
 void CVTView::OnGotoImpl()

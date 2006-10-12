@@ -850,7 +850,7 @@ void CLavaPEView::destroy()
     GetDocument()->OnDestroyMainView(this);
     GetDocument()->MainView = 0;
   }
-  CTreeView::destroy();
+  //CTreeView::destroy();
 }
 
 
