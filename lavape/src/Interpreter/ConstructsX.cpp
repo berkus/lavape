@@ -491,7 +491,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
   DebugStep ds=nextDebugStep;
 
   debug = ckd.document->debugOn || LBaseData->m_pmDumps;
-  if (debug && !((CLavaDebugger*)LBaseData->debugger)->dbgStopData) 
+  if (debug && !((CLavaDebugger*)LBaseData->debugger)->dbgStopData)
     ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
 
   if (debug) {
@@ -668,11 +668,11 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
   if (isEx)
     msg = msg + path;
   if (debug) {
-    if (isEx) 
+    if (isEx)
       if (!ckd.document->debugOn) {
         pmMsg = excMsg + "\n\n" + msg + "\n\nDebug this exception?\n\nClick \"No to all\" to disable debugging perpetually";
         rc = information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg.toAscii()),QMessageBox::Yes|QMessageBox::Default,QMessageBox::No,QMessageBox::NoAll);
-    
+
       }
       else {
         rc = QMessageBox::Yes;
@@ -795,7 +795,7 @@ bool AssertionData::EvalOldExpressions (CheckData &ckd, RTAssDataDict &rtadDict,
       ok = !ex && !ckd.exceptionThrown;
       if (ex) {
         ex->message = ex->message + ((SelfVar*)ckd.selfVar)->DebugStop(ckd,stackFrame,ex->message);
-        if (ex->SetLavaException(ckd)) 
+        if (ex->SetLavaException(ckd))
           delete ex;
       }
       DFC(obj);
@@ -809,7 +809,7 @@ bool AssertionData::EvalOldExpressions (CheckData &ckd, RTAssDataDict &rtadDict,
 
   for (i=0; i<overridden.size(); i++) {
 		adp = overridden.at(i);
-    if (rtadDict.find(adp))
+    if (rtadDict.find(adp) != rtadDict.end())
       continue;
     ok = adp->EvalOldExpressions(ckd,rtadDict,stackFrame,oldExprLevel);
     if (!ok)
@@ -892,13 +892,13 @@ bool AssertionData::EvalPreConditions (CheckData &ckd, RTAssDataDict &rtadDict, 
           continue;
       }
     }
-    else 
+    else
       rtadDict.insert(adp,new RTAssertionData(oldExprLevel));
     ok = adp->EvalPreConditions(ckd,rtadDict,stackFrame,this,thisOk);
     if (ckd.exceptionThrown)
       return false;
   }
-  
+
   return true;
 }
 
@@ -985,7 +985,7 @@ bool AssertionData::EvalPostConditions (CheckData &ckd, RTAssDataDict &rtadDict,
       return false;
     rtadDict.find(this).value()->ensureChecked = true;
   }
-  
+
   return true;
 }
 
@@ -1045,7 +1045,7 @@ bool InvarData::EvalInvariants (CheckData &ckd, RTInvDataDict &rtidDict, LavaVar
     if (!ok)
       return false;
   }
-  
+
   return true;
 }
 
@@ -1372,10 +1372,10 @@ LavaObjectPtr UnaryOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, un
   newStackFrame[SFH+1] = 0;
 
   STOP_AT_OP(ckd,stackFrame)
-  
-  if (fDesc->isNative) 
+
+  if (fDesc->isNative)
     NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(SynObject*)0)
-  else 
+  else
     FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
 
   DFC(object);
@@ -1408,21 +1408,21 @@ bool BinaryOpX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned ol
   object = opd->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown) {
     if (object)
-      DFC(object); 
+      DFC(object);
     return false;
   }
   opd2 = (Expression*)operand2.ptr;
   object2 = opd2->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown) {
     if (object2)
-      DFC(object2); 
+      DFC(object2);
     return false;
   }
   if (!object)
     if ((primaryToken != Equal_T && primaryToken != NotEqual_T) || object2) {
       SetRTError(ckd,&ERR_NullCallObject,stackFrame,"BinaryOpX::Execute");
       if (object2)
-        DFC(object2); 
+        DFC(object2);
       return false;
     }
     else
@@ -1456,9 +1456,9 @@ bool BinaryOpX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned ol
 
   STOP_AT_OP(ckd,stackFrame)
 
-  if (fDesc->isNative) 
+  if (fDesc->isNative)
     NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(SynObject*)0)
-  else 
+  else
     FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
 
   if (newStackFrame[SFH+1])
@@ -1532,11 +1532,11 @@ LavaObjectPtr MultipleOpX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame,
 
     STOP_AT_OP(ckd,stackFrame)
 
-    if (fDesc->isNative) 
+    if (fDesc->isNative)
       NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(SynObject*)0)
-    else 
+    else
       FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(SynObject*)0)
-    
+
     if (newStackFrame[SFH+1])
       DFC(newStackFrame[SFH+1]);  // release input parameter
 ret0:
@@ -1570,7 +1570,7 @@ ret:
 
 LavaObjectPtr EvalExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   LavaObjectPtr trueObj;
-  
+
   trueObj = AllocateObject(ckd,ckd.document->DECLTab[B_Bool],flags.Contains(isVariable));
   if (!trueObj) {
     if (!ckd.exceptionThrown)
@@ -1996,7 +1996,7 @@ bool Receiver::callCallback(CheckData &ckd, LavaVariablePtr stackFrame, unsigned
     ckd.stateObj = stateObj;
     NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(Reference*)signalCall->function.ptr)
   }
-  else 
+  else
     FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(Reference*)signalCall->function.ptr)
 
 ret:
@@ -2004,7 +2004,7 @@ ret:
     if (newStackFrame[pos])
       DFC(newStackFrame[pos]);  // release input parameters
 //  if (callObj)
-//  DFC(callObj); 
+//  DFC(callObj);
     // don't release self since there wasn't an explicit call expression here
 #ifdef __GNUC__
 	delete [] newStackFrame;
@@ -2134,7 +2134,7 @@ bool TryStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigne
   ckd.currentStackLevel--;
 	return false;
 }
- 
+
 LavaObjectPtr IfExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   CHE *opd;
   LavaObjectPtr result=(LavaObjectPtr)-1;
@@ -2165,7 +2165,7 @@ LavaObjectPtr IfExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
     sectionNumber = ckd.document->GetSectionNumber(ckd, ((Expression*)elsePart.ptr)->finalType,targetDecl);
   return result;
 }
- 
+
 LavaObjectPtr ElseExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) {
   LavaObjectPtr result;
 
@@ -2298,7 +2298,7 @@ bool DeclareX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
   unsigned i;
   bool result;
   unsigned stackLevel = ckd.currentStackLevel;
-  
+
 //  STOP_AT_STM(ckd, stackFrame, true)
 
   for ( i = stackLevel;
@@ -2439,7 +2439,7 @@ static bool Enumerate (SynObject *callObj, CheckData &ckd, LavaVariablePtr stack
         secN = ckd.document->GetSectionNumber(ckd, elemObj[0][0].classDECL, quant->typeDecl, false);
         if (ckd.exceptionThrown)
           return false;
-        if ( secN >= 0) 
+        if ( secN >= 0)
           elemObj = CASTOBJECT(elemObj,secN);
         else
           continue;
@@ -2499,7 +2499,7 @@ bool ExistsX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldE
   CHE *cheQuant, *cheVar;
   Quantifier *quant;
   bool ok;
-  
+
   STOP_AT_STM(ckd, stackFrame, true)
 
   ckd.currentStackLevel += nQuantVars;
@@ -2546,7 +2546,7 @@ bool ForeachX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
   CHE *cheQuant, *cheVar;
   Quantifier *quant;
   bool ok;
-  
+
   STOP_AT_STM(ckd, stackFrame, true)
 
   ckd.currentStackLevel += nQuantVars;
@@ -2614,7 +2614,7 @@ LavaObjectPtr SelectExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stack
   CHE *cheQuant, *cheVar;
   Quantifier *quant;
   LavaObjectPtr rSet=0;
-  
+
   STOP_AT_BPT(ckd,stackFrame)
 
   ckd.currentStackLevel += nQuantVars;
@@ -2695,7 +2695,7 @@ fieldCase:
     else
       *var = 0;
     break;
- 
+
   case property: // call set_property function
     propertyInfo = GetPropertyInfo(ckd,stackFrame,stackPos,setExec,oldExprLevel);
     if (setExec && setExec->Exec.ptr == ckd.selfVar) goto fieldCase;
@@ -2714,7 +2714,7 @@ fieldCase:
     }
 #endif
     newStackFrame[SFH] = propertyInfo; // set self
-    IFC(newStackFrame[SFH]); 
+    IFC(newStackFrame[SFH]);
     if (object) {
       if (refIDs.first != refIDs.last) {
         lastDOD = (TDOD*)((CHE*)refIDs.last)->data;
@@ -2785,9 +2785,9 @@ fieldCase:
     else
       newStackFrame[SFH+2] = 0;
 
-    if (fDesc->isNative) 
+    if (fDesc->isNative)
       NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,6,ok,(SynObject*)0)
-    else 
+    else
       FCALL(ckd,((SynObject*)fDesc->funcExec->Exec.ptr),newStackFrame,6,ok,(SynObject*)0)
 
     if (newStackFrame[SFH+2])
@@ -2867,9 +2867,9 @@ LavaObjectPtr ArrayAtIndexX::Evaluate (CheckData &ckd, LavaVariablePtr stackFram
   else
     newStackFrame[SFH+1] = 0;
   newStackFrame[SFH+2] = 0;
-  if (fDesc->isNative) 
+  if (fDesc->isNative)
     NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,20,ok,(SynObject*)0)
-  else 
+  else
     FCALL(ckd,((SynObject*)fDesc->funcExec->Exec.ptr),newStackFrame,5,ok,(SynObject*)0)
   if (ok) {
     object = newStackFrame[SFH+2];
@@ -2993,7 +2993,7 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
     // constants aren't counted as allocated objects
     // and released only when the program syntax (AST) is released
   }
-  return value; 
+  return value;
 }
 
 ConstantX::~ConstantX () {
@@ -3043,7 +3043,7 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
   }
-  return value; 
+  return value;
 }
 
 BoolConstX::~BoolConstX () {
@@ -3073,7 +3073,7 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
   }
-  return value; 
+  return value;
 }
 
 EnumConstX::~EnumConstX () {
@@ -3102,21 +3102,21 @@ LavaObjectPtr CloneExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackF
 
   STOP_AT_BPT(ckd,stackFrame)
 
-  obj = ((ObjReferenceX*)fromObj.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);  
+  obj = ((ObjReferenceX*)fromObj.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown)
     return (LavaObjectPtr)-1;
   ex = CopyObject(ckd,&obj,&copyOfObj,obj?((SynFlags*)(obj+1))->Contains(stateObjFlag):true/*ckd.stateObj*/);
   ckd.selfVar = mySelfVar;
   if (ex) {
     ex->message = ex->message + DebugStop(ckd,stackFrame,ex->message);
-    if (ex->SetLavaException(ckd)) 
+    if (ex->SetLavaException(ckd))
       delete ex;
   }
   if (obj)
     DFC(obj);
   if (ckd.exceptionThrown)
     return (LavaObjectPtr)-1;
-  
+
   stackFrame[((VarName*)varName.ptr)->stackPos] = copyOfObj;
 
   if (butStatement.ptr) {
@@ -3144,11 +3144,11 @@ bool CopyStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
   SynObjectBase *mySelfVar=ckd.selfVar;
 
   STOP_AT_STM(ckd, stackFrame, true)
- 
-  obj = ((ExpressionX*)fromObj.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);  
+
+  obj = ((ExpressionX*)fromObj.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown)
     return false;
-  copyOfObj = ((ObjReferenceX*)ontoObj.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);  
+  copyOfObj = ((ObjReferenceX*)ontoObj.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown) {
     if (obj)
       DFC(obj);
@@ -3163,7 +3163,7 @@ bool CopyStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
   ok = !ex && !ckd.exceptionThrown;
   if (ex) {
     ex->message = ex->message + DebugStop(ckd,stackFrame,ex->message);
-    if (ex->SetLavaException(ckd)) 
+    if (ex->SetLavaException(ckd))
       delete ex;
   }
   if (obj)
@@ -3242,7 +3242,7 @@ LavaObjectPtr ExtendExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stack
   SynObjectBase *mySelfVar=ckd.selfVar;
   CRuntimeException *ex;
 
-  obj = ((ObjReferenceX*)extendObj.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);  
+  obj = ((ObjReferenceX*)extendObj.ptr)->Evaluate(ckd,stackFrame,oldExprLevel);
   if (ckd.exceptionThrown)
     return (LavaObjectPtr)-1;
   ex = CopyObject(ckd,&obj,&copyOfObj,false,extendTypeDecl);
@@ -3251,7 +3251,7 @@ LavaObjectPtr ExtendExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stack
     return (LavaObjectPtr)-1;
   if (ex) {
     ex->message = ex->message + DebugStop(ckd,stackFrame,ex->message);
-    if (ex->SetLavaException(ckd)) 
+    if (ex->SetLavaException(ckd))
       delete ex;
     return (LavaObjectPtr)-1;
   }
@@ -3323,7 +3323,7 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
       return (LavaObjectPtr)-1;
     }
-  
+
     ckd.currentStackLevel++;
     stackFrame[((VarName*)varName.ptr)->stackPos] = object;
 
@@ -3495,7 +3495,7 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
         funcSect = &((CSectionDesc*)(*callObj)->classDECL->SectionTabPtr)[funcDecl->SectionInfo2];
       }
       fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
-/*      if (funcDecl->TypeFlags.Contains(isNative)) 
+/*      if (funcDecl->TypeFlags.Contains(isNative))
         frameSize = funcDecl->nInput + funcDecl->nOutput + 1 + SFH;
       else*/
         frameSize = fDesc->stackFrameSize;
@@ -3513,7 +3513,7 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
     else {
       funcSect = &(*callObj)[funcSectionNumber + funcDecl->SectionInfo2];
       fDesc = &funcSect->funcDesc[funcDecl->SectionInfo1];
-/*      if (funcDecl->TypeFlags.Contains(isNative)) 
+/*      if (funcDecl->TypeFlags.Contains(isNative))
         frameSize = funcDecl->nInput + funcDecl->nOutput + 1 + SFH;
       else*/
         frameSize = fDesc->stackFrameSize;
@@ -3531,7 +3531,7 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
     }
   }
   else {
-    if (funcDecl->TypeFlags.Contains(isNative)) 
+    if (funcDecl->TypeFlags.Contains(isNative))
       frameSize = funcDecl->nInput + funcDecl->nOutput + 1 + SFH;
     else {
       staticExec = (SelfVar*)funcDecl->RuntimeDECL->Exec.ptr;
@@ -3598,7 +3598,7 @@ bool FuncStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
       ckd.stateObj = stateObj;
       NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
-    else 
+    else
       FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
   else
     if (funcDecl->TypeFlags.Contains(isNative)) {
@@ -3641,7 +3641,7 @@ ret:
     if (newStackFrame[pos])
       DFC(newStackFrame[pos]);  // release input parameters
   if (callObj)
-    DFC(callObj); 
+    DFC(callObj);
     // release self after input parameters since it might be needed for releasing
     // the inputs in case "set.Remove(#elem)"; see CheDecFunc in BAdapter.cpp
 #ifdef __GNUC__
@@ -3728,7 +3728,7 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
     }
   }
   else {
-    if (funcDecl->TypeFlags.Contains(isNative)) 
+    if (funcDecl->TypeFlags.Contains(isNative))
       frameSize = funcDecl->nInput + funcDecl->nOutput + 1 + SFH;
     else {
       staticExec = (SelfVar*)funcDecl->RuntimeDECL->Exec.ptr;
@@ -3786,7 +3786,7 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
       ckd.stateObj = stateObj;
       NATIVE_FCALL(ckd,(*fDesc->funcPtr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
     }
-    else 
+    else
       FCALL(ckd,((SelfVar*)fDesc->funcExec->Exec.ptr),newStackFrame,frameSize,ok,(Reference*)function.ptr)
   else
     if (funcDecl->TypeFlags.Contains(isNative)) {
@@ -4011,11 +4011,11 @@ LavaVariablePtr ObjReferenceX::GetMemberVarPtr(CheckData &ckd, LavaVariablePtr s
 
 LavaObjectPtr ObjReferenceX::GetMemberObjPtr(CheckData &ckd, LavaVariablePtr stackFrame, unsigned stackPos, unsigned oldExprLevel)
 {
-  LavaVariablePtr var; 
+  LavaVariablePtr var;
   LavaObjectPtr obj;
   CHE *DODs=(CHE*)refIDs.first, *last;
   TDOD* lastdod;
-  
+
   if (!(var = GetMemberVarPtr(ckd, stackFrame, stackPos,oldExprLevel)))
     return 0;
 
@@ -4135,7 +4135,7 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
           }
         }
       }
-      else {  
+      else {
         memObj = *memObjPtr;
         if (memObj && dod->vType->DeclType == VirtualType) {
           memObj = ((CLavaProgram*)ckd.document)->CastVObj(ckd, memObj, dod->eType);
@@ -4151,11 +4151,11 @@ LavaObjectPtr ObjReferenceX::GetPropertyInfo(CheckData &ckd, LavaVariablePtr sta
     }
   }
   fieldDECL = dod->fieldDecl;
-  sectIndex = dod->sectionNumber + fieldDECL->SectionInfo2; 
+  sectIndex = dod->sectionNumber + fieldDECL->SectionInfo2;
   attrSect = &(*memObj)[sectIndex];
   aDesc = &((CVAttrDesc*)attrSect->attrDesc)[fieldDECL->SectionInfo1];
   setExec = aDesc->setExec; //return call-object casted to setExec-type
-  memObj = memObj - (*memObj)->sectionOffset 
+  memObj = memObj - (*memObj)->sectionOffset
                        + (*(memObj - (*memObj)->sectionOffset))[aDesc->delta].sectionOffset;
   return memObj;
 }
