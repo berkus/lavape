@@ -117,7 +117,7 @@ else
 		  EXEC2 = $(EXEC)
       ifneq ($(DBG),)
 		    QtS = _debug
-		    ACL = _debug
+		    ACL =
 		  else
 		    QtS =
 		    ACL =
