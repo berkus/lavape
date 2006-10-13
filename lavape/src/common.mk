@@ -1,9 +1,8 @@
-QTREL=4.2.0
 SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
 
 #to build a debug version set DBG=-g
-DBG=
+DBG=-g
 
 ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt
@@ -117,8 +116,8 @@ else
 		  OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
 		  EXEC2 = $(EXEC)
       ifneq ($(DBG),)
-		    QtS = .so.$(QTREL).debug
-		    ACL = .so.$(QTREL).debug
+		    QtS = _debug
+		    ACL = _debug
 		  else
 		    QtS =
 		    ACL =
