@@ -366,7 +366,7 @@ QString *RefTable::findMatchingAccess (
               return 0;
         }
         else {
-          if (writeAcc->varDesc == refEntry && !writeAcc->isClosedQuantVar) {
+          if (writeAcc->varDesc == refEntry && writeAcc->closedVarLevel == 0) {
             objRef->conflictingAssig = writeAcc->objRef;
             return &ERR_SingleAssViol;
           }
@@ -3456,10 +3456,10 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   return ok;
 }
 
-bool ObjReference::IsClosed(CheckData &ckd) {
-  if (flags.Contains(isClosed))
-    return true;
-  return false;
+unsigned ObjReference::IsClosed(CheckData &ckd) {
+  //if (flags.Contains(isClosed))
+  //  return true;
+  return closedLevel;
 }
 
 bool ObjReference::Check (CheckData &ckd) {
@@ -3520,9 +3520,9 @@ bool ObjReference::Check (CheckData &ckd) {
   return ok1;
 }
 
-bool TDOD::IsClosed (CheckData &ckd) {
-  return flags.Contains(isClosed);
-}
+//unsigned TDOD::IsClosed (CheckData &ckd) {
+//  return flags.Contains(isClosed);
+//}
 
 bool TDOD::IsStateObject (CheckData &ckd)
 {
@@ -4234,7 +4234,7 @@ bool FuncExpression::Check (CheckData &ckd)
   ObjReference *callObj;
   Category cat;
   SynFlags ctxFlags;
-  bool privateFunction=false, checkUnfinishedInputs=false, hasClosedActParm=false;
+  bool privateFunction=false, checkUnfinishedInputs=false;
   QString *rc;
 #ifdef INTERPRETER
   unsigned nInputs, nOutputs;
@@ -4436,6 +4436,7 @@ bool FuncExpression::Check (CheckData &ckd)
     callContext.ContextFlags = myCtxFlags;
   if (parentObject->primaryToken != connect_T) {
     chpActIn = (CHE*)inputs.first;
+	closedLevel = 0;
     while (chpFormIn) {
       // locate act. parm. and reposition it if necessary:
       reposition(ckd,this,true,&inputs,chpFormIn,chpActIn);
@@ -4444,8 +4445,8 @@ bool FuncExpression::Check (CheckData &ckd)
       actParm =
         (opd->primaryToken==parameter_T?(SynObject*)((Parameter*)opd)->parameter.ptr : opd);
       if (!actParm->IsIfStmExpr())
-        ok/*rc*/ &= opd->Check(ckd);
-      hasClosedActParm = opd->IsClosed(ckd)?true:hasClosedActParm;
+        ok &= opd->Check(ckd);
+      closedLevel = qMax(opd->IsClosed(ckd),closedLevel);
       // check act.parm/form.parm. type compatibility:
       ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
 #ifdef INTERPRETER
@@ -4479,11 +4480,10 @@ bool FuncExpression::Check (CheckData &ckd)
 #endif
   }
   if (checkUnfinishedInputs
-  //&& funcDecl->SecondTFlags.Contains(hasClosedInput)
-  && hasClosedActParm
+  && closedLevel
   && flags.Contains(isIniCallOrHandle)) {
     if (parentObject->primaryToken != new_T) {
-      ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
+      ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->closedVarLevel =closedLevel;
       if (!((SynObject*)handle.ptr)->flags.Contains(isClosed)) {
         ((SynObject*)handle.ptr)->SetError(ckd,&ERR_ShouldBeClosed);
         ok &= false;
@@ -4507,11 +4507,11 @@ bool FuncExpression::Check (CheckData &ckd)
   EXIT
 }
 
-bool FuncExpression::IsClosed(CheckData &ckd) {
-  CHE *outp=GetFirstOutput(funcDecl);
-  if (outp && ((LavaDECL*)outp->data)->SecondTFlags.Contains(closed))
-    return true;
-  return false;
+unsigned FuncExpression::IsClosed(CheckData &ckd) {
+  //CHE *outp=GetFirstOutput(funcDecl);
+  //if (outp && ((LavaDECL*)outp->data)->SecondTFlags.Contains(closed))
+  //  return UINT_MAX;
+  return closedLevel;
 }
 
 bool Expression::CallCheck (CheckData &ckd) {
@@ -5970,7 +5970,7 @@ bool Quantifier::Check(CheckData &ckd)
           SetError(ckd,rc);
           ok = false;
         }
-        ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->isClosedQuantVar = true;
+        ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->closedVarLevel = -1;
         delete objRef;
       }
     }
@@ -6381,8 +6381,8 @@ bool NewExpression::Check (CheckData &ckd)
   EXIT
 }
 
-bool NewExpression::IsClosed(CheckData &ckd) {
-  return ((ObjReference*)((FuncStatement*)initializerCall.ptr)->handle.ptr)->flags.Contains(isClosed);
+unsigned NewExpression::IsClosed(CheckData &ckd) {
+  return ((ObjReference*)((FuncStatement*)initializerCall.ptr)->handle.ptr)->closedLevel;
 }
 
 void CloneExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {

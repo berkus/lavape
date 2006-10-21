@@ -70,11 +70,13 @@ Read lavape/INSTALL.txt for the details
 and pre-requisites of a successfull
 installation. (In particular, you need
 to have GNU gcc/make and the developer version
-of TrollTech/Qt4 (4.1.3 or later, with GIF support
-if possible, or else you won't be able to see the
-gif images contained in the Lava online help)
-on your Linux box; install them from your Linux
-distribution CDs if necessary.
+of TrollTech/Qt4.
+
+Qt-4.1.4 is OK, Qt-4.2.0 contains a bug
+that prevents Lava from working properly. GIF support
+is required (configure option -qt-gif), or else you won't
+be able to see the gif images contained in the Lava
+online help.
 
 If Qt isn't installed in /usr/lib/qt you have to
 provide an environment variable QTDIR that points
@@ -109,7 +111,6 @@ Lava/LavaPE.
 But let us also know if you could successfully
 install and use LavaPE. So far, we could not test Lava
 on all platforms where we can build it successfully.
-(Btw: We use always the most recent Qt release.)
 
 
 How to build Lava/LavaPE on Windows from the source tarball
@@ -118,7 +119,7 @@ How to build Lava/LavaPE on Windows from the source tarball
 Currently this requires that you have installed either
 the MinGW/MSYS software (see www.mingw.org) and the official
 OpenSource version of TrollTech's Qt4 for Windows, or the free
-MS VC++ 2005 Express IDE and the modified, inofficial
+MS VC++ 2005 Express IDE and the modified, unofficial
 OpenSource version of TrollTech's Qt4 for Windows.
 
 Windows/MinGW:
@@ -133,6 +134,12 @@ Unpack Qt4, set the environment variable QTDIR=
 <Qt4 install directory> and set environment
 variable QMAKESPEC=win32-g++. Add %QTDIR%\bin to your PATH
 environment variable.
+
+(Qt-4.1.4 is OK, Qt-4.2.0 contains a bug
+that prevents Lava from working properly. GIF support
+is required (configure option -qt-gif), or else you won't
+be able to see the gif images contained in the Lava
+online help.)
 
 Then open a DOS command window, cd to the Qt4 install
 directory and execute
@@ -160,8 +167,15 @@ Windows/VC++ 2005 Express:
 Get the Qt4 OpenSource version for Windows from TrollTech
 and VC++ 2005 Express from Microsoft. Install VC++.
 
-Unpack Qt4 to a directory of your choice. Set QTDIR and
-PATH as in the MinGW case. QMAKESPEC need not be defined.
+(Qt-4.1.4 is OK, Qt-4.2.0 contains a bug
+that prevents Lava from working properly. GIF support
+is required (qconfigure option -qt-gif), or else you won't
+be able to see the gif images contained in the Lava
+online help.)
+
+Unpack Qt4 to a directory of your choice. Set QT4DIR
+(not QTDIR!!!) and PATH as in the MinGW case.
+QMAKESPEC need not be defined.
 
 Get the "Unofficial patches for Qt4" from the Q../Free
 project at SourceForge (formerly qt-win):
@@ -170,6 +184,12 @@ project at SourceForge (formerly qt-win):
 
 Unpack the contents of this zip file to the Qt4 install
 directory.
+
+Install also the Microsoft Platform SDK (the core  + internet
+components suffice) as described by the Q../Free project.
+
+Modify the VC\VCProjectDefaults\corewin_express.vsprops file
+of VS 2005 as described by the Q../Free project.
 
 Launch VC++ and open the "Visual Studio 2005 Command Prompt"
 window from the "Tools" menu of VC++.
@@ -181,12 +201,14 @@ install the "unofficial" Qt4-VC++ version.
 
 Open "Tools"-->"Options..." in VC++, select "Projects and Solutions"
 --> "VC++ directories"--> "Include files". Add the primary
-Qt include directories:
+Qt include directories
 
 $(QTDIR)\Include
 $(QTDIR)\Include\QtCore
 $(QTDIR)\Include\QtGui
 $(QTDIR)\Include\QtNetwork
+
+and similarly for the library files.
 
 Open the "LavaPE.sln" file from the lavape\src directory
 in VC++. Execute "Build solution" from the "Build" menu.

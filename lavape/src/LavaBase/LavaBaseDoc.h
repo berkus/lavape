@@ -347,6 +347,8 @@ struct LAVABASE_DLL CheckData {
     errorCode = 0;
     iArg = 0;
     inINCL = 0;
+	checkClosedParmLevel = false;
+	maxClosedParmLevel = 0;
     stateObj = false;
     concernExecs = false;
     criticalScope = false;
@@ -374,12 +376,14 @@ struct LAVABASE_DLL CheckData {
     stackFrameSize,
     nPlaceholders,
     nErrors,
-    inINCL;
+    inINCL,
+	iArg;
+  int maxClosedParmLevel;
   QString *errorCode;
-  unsigned iArg;
   Category callObjCat;
   bool stateObj, iniCheck, concernExecs, criticalScope, handleOpd,
-       inQuant, inInitialUpdate, immediateReturn, exceptionThrown;
+       inQuant, inInitialUpdate, immediateReturn, exceptionThrown,
+	   checkClosedParmLevel;
   SET flags;
   SynObjectBase *firstIniCall;
   CHE *precedingIniCall;
