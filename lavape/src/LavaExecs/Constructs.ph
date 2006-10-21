@@ -269,7 +269,7 @@ public:
 
   ObjReference *objRef;
   CVarDesc *varDesc;
-  int closedVarLevel;
+  unsigned closedVarLevel;
 
   virtual bool IsWriteAccess () { return true; }
   bool Contains (ObjReference *objRef);
