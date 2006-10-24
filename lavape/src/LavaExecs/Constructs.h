@@ -827,6 +827,11 @@ class Expression : public SynObject {
 
 
   public:
+
+  Expression()
+  {
+    closedLevel=0;
+  }
   LavaDECL *formVType, *finalType;
   int sectionNumber;
   int vSectionNumber;
@@ -842,8 +847,6 @@ class Expression : public SynObject {
   {
     return 0;
   }
-
-  Expression () {}
 
   virtual void CopyData (AnyType *from) {
     *this = *(Expression*)from;

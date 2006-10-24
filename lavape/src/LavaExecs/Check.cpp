@@ -5970,7 +5970,7 @@ bool Quantifier::Check(CheckData &ckd)
           SetError(ckd,rc);
           ok = false;
         }
-        ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->closedVarLevel = -1;
+        ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->closedVarLevel = UINT_MAX;
         delete objRef;
       }
     }

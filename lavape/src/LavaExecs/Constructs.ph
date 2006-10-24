@@ -519,6 +519,11 @@ typedef CHAINX/*TDOD*/ TDODC;
 
 class Expression : public SynObject {
 public:
+
+  Expression () {
+    closedLevel = 0;
+  }
+  
   LavaDECL-- *formVType, *finalType;
   int-- sectionNumber; // section number of formal parameter type in the type of actual parameter
   int-- vSectionNumber; //section number where FMVT is defined (in analogy to funcSectionNumber)
