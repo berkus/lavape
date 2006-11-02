@@ -474,7 +474,7 @@ public:
   bool SameExec (LavaDECL *decl);
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   bool UpdateReference (CheckData &ckd);
   virtual SynObject *InsertOptionals () { return 0; }
   virtual void Insert2Optionals (SynObject *&elsePart, SynObject *&branch, CHAINX *&chx) {}
@@ -512,7 +512,7 @@ struct TDOD : public SynObject {
   virtual bool IsExecutable() { return false; }
   bool accessTypeOK (SynFlags accessFlags);
   bool ReplaceWithLocalParm(CheckData &ckd, LavaDECL *funcDecl,TDeclType declType);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 typedef CHAINX/*TDOD*/ TDODC;
@@ -561,7 +561,7 @@ public:
   virtual bool IsPlaceHolder () { return false; }
   virtual bool IsExecutable();
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
 };
 
@@ -577,7 +577,7 @@ public:
 
   virtual bool IsConstant () { return true; };
   virtual bool IsEditableConstant () { return false; };
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   virtual bool Check (CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
 };
@@ -611,7 +611,7 @@ public:
   virtual bool ArrayTargetCheck (CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class VarName : public Expression {
@@ -626,7 +626,7 @@ public:
   virtual bool IsPlaceHolder () { return false; }
   virtual bool IsExecutable() { return false; }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class FormParm : public Expression {
@@ -638,7 +638,7 @@ public:
   NESTEDANY<ObjReference> formParm;
   TID formParmID;
 
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 }--;
 
 class FormParms : public Expression {
@@ -649,7 +649,7 @@ public:
   CHAINX/*FormParm*/ inputs, outputs;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 }--;
 
 class BaseInit : public Expression {
@@ -660,7 +660,7 @@ public:
   NESTEDANY<Reference>-- baseItf2; //for virtual base classes
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class SelfVar : public VarName {
@@ -691,7 +691,7 @@ public:
   bool InitCheck (CheckData &ckd, bool inSelfCheck=true);
   bool InputCheck (CheckData &ckd);
   bool OutputCheck (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class Constant : public Expression {
@@ -742,7 +742,7 @@ public:
   NESTEDANY<Expression> exception;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   bool IsThrow() { return true; }
 };
 
@@ -753,7 +753,7 @@ public:
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class UnaryOp : public Operation {
@@ -766,7 +766,7 @@ public:
     return funcDecl;
   }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class EvalExpression : public UnaryOp {
@@ -776,7 +776,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj) { return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class EvalStatement : public EvalExpression {
@@ -793,7 +793,7 @@ public:
   virtual bool IsPlaceHolder () { return false; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class InvertOp : public UnaryOp {
@@ -804,7 +804,7 @@ class HandleOp : public Expression {
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class OrdOp : public UnaryOp {
@@ -818,7 +818,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj) {
     return true; }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class InSetStatement : public Expression {
@@ -827,7 +827,7 @@ public:
 
   virtual bool IsInSetStm () { return true; };
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class BinaryOp : public Operation {
@@ -840,7 +840,7 @@ public:
     return funcDecl;
   }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class MultipleOp : public Operation {
@@ -854,7 +854,7 @@ public:
   virtual bool IsMultOp () { return true; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   LavaDECL* FuncDecl () {
     return funcDecl;
   }
@@ -906,7 +906,7 @@ public:
   TargetType-- kindOfTarget;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class Parameter : public Expression {
@@ -919,7 +919,7 @@ public:
   virtual unsigned IsClosed (CheckData &ckd) { return ((SynObject*)parameter.ptr)->IsClosed(ckd); };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class FuncExpression : public Expression {
@@ -942,7 +942,7 @@ public:
   virtual unsigned IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   virtual LavaDECL* FuncDecl () {
     return funcDecl; //ckd.document->IDTable.GetDECL(((Reference*)function.ptr)->refID,ckd.inINCL);
   }
@@ -956,7 +956,7 @@ public:
   FuncStatement (Reference *ref);
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 struct Connect : public Expression {
@@ -967,7 +967,7 @@ public:
   NESTEDANY<FuncStatement> callback;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 struct Disconnect : public Expression {
@@ -978,7 +978,7 @@ public:
   NESTEDANY<Reference> callbackFunction;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class Signal : public Expression {
@@ -986,7 +986,7 @@ public:
   NESTEDANY<Expression> sCall;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class AssertStatement : public Expression {
@@ -994,7 +994,7 @@ public:
   NESTEDANY<Expression> statement;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   virtual bool IsReadOnlyClause(SynObject *synObj) {
     return true; }
 };
@@ -1008,7 +1008,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class IfStatement : public Expression {
@@ -1019,7 +1019,7 @@ public:
   virtual bool IsIfStmExpr () {return true; }
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class IfxThen : public Expression {
@@ -1031,7 +1031,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class IfdefStatement : public Expression {
@@ -1044,7 +1044,7 @@ public:
   virtual bool IsIfStmExpr () {return true; }
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class CondExpression : public Expression {
@@ -1067,7 +1067,7 @@ public:
   virtual bool IsIfStmExpr () {return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class ElseExpression : public CondExpression {
@@ -1079,7 +1079,7 @@ public:
   virtual bool IsIfStmExpr () {return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class Branch : public Expression {
@@ -1088,7 +1088,7 @@ public:
   NESTEDANY<Expression> thenPart;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool IsExecutable() { return false; }
 };
@@ -1101,7 +1101,7 @@ public:
 
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class CatchClause : public Expression {
@@ -1112,7 +1112,7 @@ public:
   LavaDECL-- *typeDecl;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool IsExecutable() { return false; }
 };
@@ -1125,7 +1125,7 @@ public:
 
 //  virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class TypeBranch : public Expression {
@@ -1137,7 +1137,7 @@ public:
 //  int-- sectionNumber;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool IsExecutable() { return false; }
 };
@@ -1152,7 +1152,7 @@ public:
 
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class AttachObject : public Expression {
@@ -1165,7 +1165,7 @@ public:
 
   virtual bool NestedOptClause (SynObject *optClause);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
   virtual bool Check (CheckData &ckd);
 };
 
@@ -1180,7 +1180,7 @@ public:
   virtual unsigned IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class CloneExpression : public Expression {
@@ -1193,7 +1193,7 @@ class CloneExpression : public Expression {
   virtual bool NestedOptClause (SynObject *optClause);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class CopyStatement : public Expression {
@@ -1204,7 +1204,7 @@ class CopyStatement : public Expression {
 
   virtual bool IsOptional (CheckData &ckd) { return ((SynObject*)fromObj.ptr)->IsOptional(ckd); };
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class EnumItem : public Expression {
@@ -1214,7 +1214,7 @@ public:
 
   void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class ExtendExpression : public Expression {
@@ -1225,7 +1225,7 @@ public:
 
   void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class Run : public Expression {
@@ -1236,7 +1236,7 @@ public:
   unsigned-- nParams;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class QueryItf : public Expression {
@@ -1246,7 +1246,7 @@ public:
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class GetUUID : public Expression {
@@ -1255,7 +1255,7 @@ public:
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class IntegerInterval : public SynObject {
@@ -1266,7 +1266,7 @@ public:
   virtual bool IsIntIntv () { return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class Quantifier : public SynObject {
@@ -1281,7 +1281,7 @@ public:
   bool IsRepeatableClause (CHAINX *&chx);
   virtual bool IsExecutable() { return false; }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class QuantStmOrExp : public Expression {
@@ -1294,7 +1294,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool Check (CheckData &ckd);
   virtual bool InitCheck (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 class Declare : public QuantStmOrExp {
@@ -1321,7 +1321,7 @@ public:
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor visitor);
+  virtual void Accept (Visitor &visitor);
 };
 
 };  //  end of the TYPE macro

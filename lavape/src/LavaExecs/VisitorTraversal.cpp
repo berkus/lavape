@@ -38,19 +38,19 @@
   if (visitor.finished) return;}
 
 
-void SynObject::Accept(Visitor visitor) {
+void SynObject::Accept(Visitor &visitor) {
   visitor.Eval(this);
 
   visitor.VisitSynObject(this);
 }
 
-void EnumConst::Accept(Visitor visitor) {
+void EnumConst::Accept(Visitor &visitor) {
   visitor.Eval(this);
 
   visitor.VisitSynObject(this);
 }
 
-void Parameter::Accept(Visitor visitor)
+void Parameter::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(parameter.ptr);
@@ -58,7 +58,7 @@ void Parameter::Accept(Visitor visitor)
   visitor.VisitParameter(this);
 }
 
-void FormParms::Accept(Visitor visitor)
+void FormParms::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -76,26 +76,26 @@ void FormParms::Accept(Visitor visitor)
   visitor.VisitFormParms(this);
 }
 
-void FormParm::Accept(Visitor visitor) {
+void FormParm::Accept(Visitor &visitor) {
   visitor.Eval(this);
   ACCEPT(formParm.ptr);
 
   visitor.VisitFormParm(this);
 }
 
-void Reference::Accept(Visitor visitor) {
+void Reference::Accept(Visitor &visitor) {
   visitor.Eval(this);
 
   visitor.VisitReference(this);
 }
 
-void TDOD::Accept(Visitor visitor) {
+void TDOD::Accept(Visitor &visitor) {
   visitor.Eval(this);
 
   visitor.VisitTDOD(this);
 }
 
-void ObjReference::Accept(Visitor visitor) {
+void ObjReference::Accept(Visitor &visitor) {
   CHE *chp;
 
   visitor.Eval(this);
@@ -108,7 +108,7 @@ void ObjReference::Accept(Visitor visitor) {
 }
 
 
-void MultipleOp::Accept(Visitor visitor)
+void MultipleOp::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -122,7 +122,7 @@ void MultipleOp::Accept(Visitor visitor)
   visitor.VisitMultipleOp(this);
 }
 
-void BaseInit::Accept(Visitor visitor)
+void BaseInit::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(baseItf.ptr);
@@ -132,7 +132,7 @@ void BaseInit::Accept(Visitor visitor)
   visitor.VisitBaseInit(this);
 }
 
-void SelfVar::Accept(Visitor visitor)
+void SelfVar::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -152,7 +152,7 @@ void SelfVar::Accept(Visitor visitor)
   visitor.VisitSelfVar(this);
 }
 
-void HandleOp::Accept(Visitor visitor)
+void HandleOp::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(operand.ptr);
@@ -160,7 +160,7 @@ void HandleOp::Accept(Visitor visitor)
   visitor.VisitHandleOp(this);
 }
 
-void FailStatement::Accept(Visitor visitor)
+void FailStatement::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   if ((SynObject*)exception.ptr)
@@ -169,7 +169,7 @@ void FailStatement::Accept(Visitor visitor)
   visitor.VisitFailStatement(this);
 }
 
-void OldExpression::Accept(Visitor visitor)
+void OldExpression::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(paramExpr.ptr);
@@ -177,7 +177,7 @@ void OldExpression::Accept(Visitor visitor)
   visitor.VisitOldExpression(this);
 }
 
-void UnaryOp::Accept(Visitor visitor)
+void UnaryOp::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   if ((SynObject*)operand.ptr) // in MinusOp ptr==0 possible
@@ -186,7 +186,7 @@ void UnaryOp::Accept(Visitor visitor)
   visitor.VisitUnaryOp(this);
 }
 
-void LogicalNot::Accept(Visitor visitor)
+void LogicalNot::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(operand.ptr);
@@ -194,7 +194,7 @@ void LogicalNot::Accept(Visitor visitor)
   visitor.VisitLogicalNot(this);
 }
 
-void EvalExpression::Accept(Visitor visitor)
+void EvalExpression::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(operand.ptr);
@@ -202,7 +202,7 @@ void EvalExpression::Accept(Visitor visitor)
   visitor.VisitEvalExpression(this);
 }
 
-void InSetStatement::Accept(Visitor visitor)
+void InSetStatement::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(operand1.ptr);
@@ -211,7 +211,7 @@ void InSetStatement::Accept(Visitor visitor)
   visitor.VisitInSetStatement(this);
 }
 
-void BinaryOp::Accept(Visitor visitor)
+void BinaryOp::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(operand1.ptr);
@@ -220,14 +220,14 @@ void BinaryOp::Accept(Visitor visitor)
   visitor.VisitBinaryOp(this);
 }
 
-void VarName::Accept(Visitor visitor)
+void VarName::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
 
   visitor.VisitVarName(this);
 }
 
-void Assignment::Accept(Visitor visitor)
+void Assignment::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(targetObj.ptr);
@@ -236,7 +236,7 @@ void Assignment::Accept(Visitor visitor)
   visitor.VisitAssignment(this);
 }
 
-void ArrayAtIndex::Accept(Visitor visitor)
+void ArrayAtIndex::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(arrayObj.ptr);
@@ -245,7 +245,7 @@ void ArrayAtIndex::Accept(Visitor visitor)
   visitor.VisitArrayAtIndex(this);
 }
 
-void FuncExpression::Accept(Visitor visitor)
+void FuncExpression::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -263,7 +263,7 @@ void FuncExpression::Accept(Visitor visitor)
   visitor.VisitFuncExpression(this);
 }
 
-void FuncStatement::Accept(Visitor visitor)
+void FuncStatement::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -277,7 +277,7 @@ void FuncStatement::Accept(Visitor visitor)
   visitor.VisitFuncStatement(this);
 }
 
-void Signal::Accept(Visitor visitor)
+void Signal::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(sCall.ptr);
@@ -285,7 +285,7 @@ void Signal::Accept(Visitor visitor)
   visitor.VisitSignal(this);
 }
 
-void Connect::Accept(Visitor visitor)
+void Connect::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   if (signalSender.ptr)
@@ -298,7 +298,7 @@ void Connect::Accept(Visitor visitor)
   visitor.VisitConnect(this);
 }
 
-void Disconnect::Accept(Visitor visitor)
+void Disconnect::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(signalSender.ptr);
@@ -309,7 +309,7 @@ void Disconnect::Accept(Visitor visitor)
   visitor.VisitDisconnect(this);
 }
 
-void IfThen::Accept(Visitor visitor)
+void IfThen::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(ifCondition.ptr);
@@ -318,7 +318,7 @@ void IfThen::Accept(Visitor visitor)
   visitor.VisitIfThen(this);
 }
 
-void IfStatement::Accept(Visitor visitor)
+void IfStatement::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -334,7 +334,7 @@ void IfStatement::Accept(Visitor visitor)
   visitor.VisitIfStatement(this);
 }
 
-void IfxThen::Accept(Visitor visitor)
+void IfxThen::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(ifCondition.ptr);
@@ -343,7 +343,7 @@ void IfxThen::Accept(Visitor visitor)
   visitor.VisitIfxThen(this);
 }
 
-void IfdefStatement::Accept(Visitor visitor)
+void IfdefStatement::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
 
@@ -362,7 +362,7 @@ void IfdefStatement::Accept(Visitor visitor)
   visitor.VisitIfdefStatement(this);
 }
 
-void IfExpression::Accept(Visitor visitor)
+void IfExpression::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -378,7 +378,7 @@ void IfExpression::Accept(Visitor visitor)
   visitor.VisitIfExpression(this);
 }
 
-void ElseExpression::Accept(Visitor visitor)
+void ElseExpression::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(expr1.ptr);
@@ -387,7 +387,7 @@ void ElseExpression::Accept(Visitor visitor)
   visitor.VisitElseExpression(this);
 }
 
-void TypeBranch::Accept(Visitor visitor)
+void TypeBranch::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(exprType.ptr);
@@ -399,7 +399,7 @@ void TypeBranch::Accept(Visitor visitor)
   visitor.VisitTypeBranch(this);
 }
 
-void Branch::Accept(Visitor visitor)
+void Branch::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -415,7 +415,7 @@ void Branch::Accept(Visitor visitor)
   visitor.VisitBranch(this);
 }
 
-void SwitchStatement::Accept(Visitor visitor)
+void SwitchStatement::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -432,7 +432,7 @@ void SwitchStatement::Accept(Visitor visitor)
   visitor.VisitSwitchStatement(this);
 }
 
-void CatchClause::Accept(Visitor visitor)
+void CatchClause::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(exprType.ptr);
@@ -443,7 +443,7 @@ void CatchClause::Accept(Visitor visitor)
   visitor.VisitCatchClause(this);
 }
 
-void TryStatement::Accept(Visitor visitor)
+void TryStatement::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -457,7 +457,7 @@ void TryStatement::Accept(Visitor visitor)
   visitor.VisitTryStatement(this);
 }
 
-void TypeSwitchStatement::Accept(Visitor visitor)
+void TypeSwitchStatement::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -474,7 +474,7 @@ void TypeSwitchStatement::Accept(Visitor visitor)
   visitor.VisitTypeSwitchStatement(this);
 }
 
-void AssertStatement::Accept(Visitor visitor)
+void AssertStatement::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(statement.ptr);
@@ -482,7 +482,7 @@ void AssertStatement::Accept(Visitor visitor)
   visitor.VisitAssertStatement(this);
 }
 
-void AttachObject::Accept(Visitor visitor)
+void AttachObject::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   if (objType.ptr)
@@ -495,7 +495,7 @@ void AttachObject::Accept(Visitor visitor)
   visitor.VisitAttachObject(this);
 }
 
-void Run::Accept(Visitor visitor)
+void Run::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -509,7 +509,7 @@ void Run::Accept(Visitor visitor)
   visitor.VisitRun(this);
 }
 
-void QueryItf::Accept(Visitor visitor)
+void QueryItf::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(itf.ptr);
@@ -518,7 +518,7 @@ void QueryItf::Accept(Visitor visitor)
   visitor.VisitQueryItf(this);
 }
 
-void GetUUID::Accept(Visitor visitor)
+void GetUUID::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(itf.ptr);
@@ -526,7 +526,7 @@ void GetUUID::Accept(Visitor visitor)
   visitor.VisitGetUUID(this);
 }
 
-void IntegerInterval::Accept(Visitor visitor)
+void IntegerInterval::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(from.ptr);
@@ -535,7 +535,7 @@ void IntegerInterval::Accept(Visitor visitor)
   visitor.VisitIntegerInterval(this);
 }
 
-void Quantifier::Accept(Visitor visitor)
+void Quantifier::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -553,7 +553,7 @@ void Quantifier::Accept(Visitor visitor)
   visitor.VisitQuantifier(this);
 }
 
-void QuantStmOrExp::Accept(Visitor visitor)
+void QuantStmOrExp::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -578,7 +578,7 @@ void QuantStmOrExp::Accept(Visitor visitor)
   visitor.VisitQuantStmOrExp(this);
 }
 
-void SelectExpression::Accept(Visitor visitor)
+void SelectExpression::Accept(Visitor &visitor)
 {
   CHE *chp;
 
@@ -597,7 +597,7 @@ void SelectExpression::Accept(Visitor visitor)
   visitor.VisitSelectExpression(this);
 }
 
-void NewExpression::Accept(Visitor visitor)
+void NewExpression::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   if (objType.ptr)
@@ -617,7 +617,7 @@ void NewExpression::Accept(Visitor visitor)
   visitor.VisitNewExpression(this);
 }
 
-void CloneExpression::Accept(Visitor visitor)
+void CloneExpression::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(varName.ptr);
@@ -628,7 +628,7 @@ void CloneExpression::Accept(Visitor visitor)
   visitor.VisitCloneExpression(this);
 }
 
-void CopyStatement::Accept(Visitor visitor)
+void CopyStatement::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(fromObj.ptr);
@@ -637,7 +637,7 @@ void CopyStatement::Accept(Visitor visitor)
   visitor.VisitCopyStatement(this);
 }
 
-void EnumItem::Accept(Visitor visitor)
+void EnumItem::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(itemNo.ptr);
@@ -646,7 +646,7 @@ void EnumItem::Accept(Visitor visitor)
   visitor.VisitEnumItem(this);
 }
 
-void ExtendExpression::Accept(Visitor visitor)
+void ExtendExpression::Accept(Visitor &visitor)
 {
   visitor.Eval(this);
   ACCEPT(extendObj.ptr);
