@@ -569,6 +569,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\TableVisitor.cpp"
+				>
+			</File>
+			<File
 				RelativePath="Tokens.cpp"
 				>
 				<FileConfiguration
@@ -618,6 +622,10 @@
 						PrecompiledHeaderThrough="CDPpp.h"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\VisitorTraversal.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
