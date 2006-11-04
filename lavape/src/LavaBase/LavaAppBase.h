@@ -491,7 +491,7 @@ public:
     nextFreeID = 0;
     synObj = 0;
     debugStop = false;
-    finished = false;
+    //finished = false;
   }
 
   //DString fileName;
@@ -504,7 +504,7 @@ public:
   DString constructNesting;
   wxDocument *doc;
   CFindData findRefs;
-  bool debugStop,innermostStop, finished;
+  bool debugStop,innermostStop/*, finished*/;
   StopReason stopReason;
 };
 

@@ -211,7 +211,7 @@ void CUtilityView::OnDblclk(QTreeWidgetItem* item, int col)
           sData.synObjectID = data->refCase;
           doc->OpenExecView(execDecl);
           sData.execView = wxDocManager::GetDocumentManager()->GetActiveView();
-          sData.finished = false;
+          // sData.finished = false;
           ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)execDecl, onSelect, 0,0, (address)&sData);
         }
       }
@@ -443,7 +443,7 @@ void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
                 sData.innermostStop = true;
               else
                 sData.innermostStop = false;
-              sData.finished = false;
+              // sData.finished = false;
               ((SynObjectBase*)stopExecDECL->Exec.ptr)->MakeTable((address)&stopDoc->IDTable, 0, (SynObjectBase*)stopExecDECL, onSelect, 0,0, (address)&sData);
               ((CExecView*)sData.execView)->sv->viewport()->update();
               ((CExecView*)sData.execView)->sv->execCont->innermostStop = sData.innermostStop;

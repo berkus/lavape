@@ -310,7 +310,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
         ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
         sData.doc = ckdl.document;
         sData.nextFreeID = 0;
-        sData.finished = false;
+        // sData.finished = false;
         ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
       }
       catch(CUserException) {
@@ -335,7 +335,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
         ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
         sData.doc = ckdl.document;
         sData.nextFreeID = 0;
-        sData.finished = false;
+        // sData.finished = false;
         ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
       }
       catch(CUserException) {
@@ -460,7 +460,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
           ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
           sData.doc = ckdl.document;
           sData.nextFreeID = 0;
-          sData.finished = false;
+          // sData.finished = false;
           ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
         }
         catch(CUserException) {
@@ -499,7 +499,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
               sData.nextFreeID = 0;
               sData.doc = ckdl.document;
               sData.nextFreeID = 0;
-              sData.finished = false;
+              // sData.finished = false;
               ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
             }
             catch(CUserException) {
@@ -2269,7 +2269,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
         sData.nextFreeID = 0;
         sData.doc = ckd.document;
         sData.nextFreeID = 0;
-        sData.finished = false;
+        // sData.finished = false;
         ((SynObject*)topDECL->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
         topDECL->WorkFlags.INCL(runTimeOK);
 

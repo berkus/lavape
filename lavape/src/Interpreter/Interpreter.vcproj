@@ -384,29 +384,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\LavaExecs\MakeTable.cpp"
+				RelativePath="..\LavaExecs\TableVisitor.cpp"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough=""
-						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\LavaExecs\Tokens.cpp"
@@ -459,6 +438,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="..\LavaExecs\VisitorTraversal.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -499,7 +482,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
+						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>

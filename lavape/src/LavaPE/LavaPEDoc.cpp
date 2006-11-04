@@ -1691,7 +1691,7 @@ void CLavaPEDoc::DownFind(LavaDECL* decl, CFindData& fw)
           sData.execDECL = (LavaDECL*)inCheEl->data;
           sData.doc = this;
           sData.findRefs = fw;
-          sData.finished = false;
+          // sData.finished = false;
           ((SynObjectBase*)((LavaDECL*)inCheEl->data)->Exec.ptr)->MakeTable((address)&IDTable, ((LavaDECL*)inCheEl->data)->inINCL, (SynObjectBase*)inCheEl->data, onSearch, 0,0, (address)&sData);
         }
       }

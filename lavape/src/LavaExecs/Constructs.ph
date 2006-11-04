@@ -474,7 +474,8 @@ public:
   bool SameExec (LavaDECL *decl);
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void MakeTable(address table, int inINCL, SynObjectBase* parent, TTableUpdate update, address where=0, CHAINX *chx=0, address searchData=0);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   bool UpdateReference (CheckData &ckd);
   virtual SynObject *InsertOptionals () { return 0; }
   virtual void Insert2Optionals (SynObject *&elsePart, SynObject *&branch, CHAINX *&chx) {}
@@ -512,7 +513,7 @@ struct TDOD : public SynObject {
   virtual bool IsExecutable() { return false; }
   bool accessTypeOK (SynFlags accessFlags);
   bool ReplaceWithLocalParm(CheckData &ckd, LavaDECL *funcDecl,TDeclType declType);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 typedef CHAINX/*TDOD*/ TDODC;
@@ -561,7 +562,7 @@ public:
   virtual bool IsPlaceHolder () { return false; }
   virtual bool IsExecutable();
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
 };
 
@@ -577,7 +578,7 @@ public:
 
   virtual bool IsConstant () { return true; };
   virtual bool IsEditableConstant () { return false; };
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual bool Check (CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
 };
@@ -611,7 +612,7 @@ public:
   virtual bool ArrayTargetCheck (CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class VarName : public Expression {
@@ -626,7 +627,7 @@ public:
   virtual bool IsPlaceHolder () { return false; }
   virtual bool IsExecutable() { return false; }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class FormParm : public Expression {
@@ -638,7 +639,7 @@ public:
   NESTEDANY<ObjReference> formParm;
   TID formParmID;
 
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 }--;
 
 class FormParms : public Expression {
@@ -649,7 +650,7 @@ public:
   CHAINX/*FormParm*/ inputs, outputs;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 }--;
 
 class BaseInit : public Expression {
@@ -660,7 +661,7 @@ public:
   NESTEDANY<Reference>-- baseItf2; //for virtual base classes
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class SelfVar : public VarName {
@@ -691,7 +692,7 @@ public:
   bool InitCheck (CheckData &ckd, bool inSelfCheck=true);
   bool InputCheck (CheckData &ckd);
   bool OutputCheck (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class Constant : public Expression {
@@ -742,7 +743,7 @@ public:
   NESTEDANY<Expression> exception;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   bool IsThrow() { return true; }
 };
 
@@ -753,7 +754,7 @@ public:
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class UnaryOp : public Operation {
@@ -766,7 +767,7 @@ public:
     return funcDecl;
   }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class EvalExpression : public UnaryOp {
@@ -776,7 +777,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj) { return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class EvalStatement : public EvalExpression {
@@ -793,7 +794,7 @@ public:
   virtual bool IsPlaceHolder () { return false; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class InvertOp : public UnaryOp {
@@ -804,7 +805,7 @@ class HandleOp : public Expression {
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class OrdOp : public UnaryOp {
@@ -818,7 +819,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj) {
     return true; }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class InSetStatement : public Expression {
@@ -827,7 +828,7 @@ public:
 
   virtual bool IsInSetStm () { return true; };
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class BinaryOp : public Operation {
@@ -840,7 +841,7 @@ public:
     return funcDecl;
   }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class MultipleOp : public Operation {
@@ -854,7 +855,7 @@ public:
   virtual bool IsMultOp () { return true; };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   LavaDECL* FuncDecl () {
     return funcDecl;
   }
@@ -906,7 +907,7 @@ public:
   TargetType-- kindOfTarget;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class Parameter : public Expression {
@@ -919,7 +920,7 @@ public:
   virtual unsigned IsClosed (CheckData &ckd) { return ((SynObject*)parameter.ptr)->IsClosed(ckd); };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class FuncExpression : public Expression {
@@ -942,7 +943,7 @@ public:
   virtual unsigned IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual LavaDECL* FuncDecl () {
     return funcDecl; //ckd.document->IDTable.GetDECL(((Reference*)function.ptr)->refID,ckd.inINCL);
   }
@@ -956,7 +957,7 @@ public:
   FuncStatement (Reference *ref);
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 struct Connect : public Expression {
@@ -967,7 +968,7 @@ public:
   NESTEDANY<FuncStatement> callback;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 struct Disconnect : public Expression {
@@ -978,7 +979,7 @@ public:
   NESTEDANY<Reference> callbackFunction;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class Signal : public Expression {
@@ -986,7 +987,7 @@ public:
   NESTEDANY<Expression> sCall;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class AssertStatement : public Expression {
@@ -994,7 +995,7 @@ public:
   NESTEDANY<Expression> statement;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual bool IsReadOnlyClause(SynObject *synObj) {
     return true; }
 };
@@ -1008,7 +1009,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class IfStatement : public Expression {
@@ -1019,7 +1020,7 @@ public:
   virtual bool IsIfStmExpr () {return true; }
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class IfxThen : public Expression {
@@ -1031,7 +1032,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class IfdefStatement : public Expression {
@@ -1044,7 +1045,7 @@ public:
   virtual bool IsIfStmExpr () {return true; }
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class CondExpression : public Expression {
@@ -1067,7 +1068,7 @@ public:
   virtual bool IsIfStmExpr () {return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class ElseExpression : public CondExpression {
@@ -1079,7 +1080,7 @@ public:
   virtual bool IsIfStmExpr () {return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class Branch : public Expression {
@@ -1088,7 +1089,7 @@ public:
   NESTEDANY<Expression> thenPart;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool IsExecutable() { return false; }
 };
@@ -1101,7 +1102,7 @@ public:
 
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class CatchClause : public Expression {
@@ -1112,7 +1113,7 @@ public:
   LavaDECL-- *typeDecl;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool IsExecutable() { return false; }
 };
@@ -1125,7 +1126,7 @@ public:
 
 //  virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class TypeBranch : public Expression {
@@ -1137,7 +1138,7 @@ public:
 //  int-- sectionNumber;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual bool IsRepeatableClause (CHAINX *&chx);
   virtual bool IsExecutable() { return false; }
 };
@@ -1152,7 +1153,7 @@ public:
 
   virtual bool NestedOptClause (SynObject *optClause);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class AttachObject : public Expression {
@@ -1165,7 +1166,7 @@ public:
 
   virtual bool NestedOptClause (SynObject *optClause);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual bool Check (CheckData &ckd);
 };
 
@@ -1180,7 +1181,7 @@ public:
   virtual unsigned IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class CloneExpression : public Expression {
@@ -1193,7 +1194,7 @@ class CloneExpression : public Expression {
   virtual bool NestedOptClause (SynObject *optClause);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class CopyStatement : public Expression {
@@ -1204,7 +1205,7 @@ class CopyStatement : public Expression {
 
   virtual bool IsOptional (CheckData &ckd) { return ((SynObject*)fromObj.ptr)->IsOptional(ckd); };
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class EnumItem : public Expression {
@@ -1214,7 +1215,7 @@ public:
 
   void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class ExtendExpression : public Expression {
@@ -1225,7 +1226,7 @@ public:
 
   void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class Run : public Expression {
@@ -1236,7 +1237,7 @@ public:
   unsigned-- nParams;
 
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class QueryItf : public Expression {
@@ -1246,7 +1247,7 @@ public:
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class GetUUID : public Expression {
@@ -1255,7 +1256,7 @@ public:
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class IntegerInterval : public SynObject {
@@ -1266,7 +1267,7 @@ public:
   virtual bool IsIntIntv () { return true; }
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class Quantifier : public SynObject {
@@ -1281,7 +1282,7 @@ public:
   bool IsRepeatableClause (CHAINX *&chx);
   virtual bool IsExecutable() { return false; }
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class QuantStmOrExp : public Expression {
@@ -1294,7 +1295,7 @@ public:
   virtual bool IsReadOnlyClause(SynObject *synObj);
   virtual bool Check (CheckData &ckd);
   virtual bool InitCheck (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class Declare : public QuantStmOrExp {
@@ -1321,7 +1322,7 @@ public:
 
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor);
+  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 };  //  end of the TYPE macro
@@ -2647,91 +2648,90 @@ public:
   bool finished;
   
   Visitor () {
-	finished = false;
+	  finished = false;
   }
-  virtual void Eval (SynObject *self) {}
-  virtual void Adjust (SynObject *obj,address where,CHAINX *chxp) {}
+  virtual void Eval (SynObject *self,SynObject *parent,address where,CHAINX *chxp) {}
   
-  virtual void VisitSynObject (SynObject *obj) {}
-  virtual void VisitExpression (Expression *obj) {}
-  virtual void VisitOperation (Operation *obj) {}
-  virtual void VisitReference (Reference *obj) {}
-  virtual void VisitEnumConst (EnumConst *obj) {}
-  virtual void VisitObjReference (ObjReference *obj) {}
-  virtual void VisitTDOD (TDOD *obj) {}
-  virtual void VisitVarName (VarName *obj) {}
-  virtual void VisitFormParm (FormParm *obj) {}
-  virtual void VisitFormParms (FormParms *obj) {}
-  virtual void VisitBaseInit (BaseInit *obj) {}
-  virtual void VisitSelfVar (SelfVar *obj) {}
-  virtual void VisitConstant (Constant *obj) {}
-  virtual void VisitBoolConst (BoolConst *obj) {}
-  virtual void VisitNullConst (NullConst *obj) {}
-  virtual void VisitSucceedStatement (SucceedStatement *obj) {}
-  virtual void VisitFailStatement (FailStatement *obj) {}
-  virtual void VisitOldExpression (OldExpression *obj) {}
-  virtual void VisitUnaryOp (UnaryOp *obj) {}
-  virtual void VisitEvalExpression (EvalExpression *obj) {}
-  virtual void VisitEvalStatement (EvalStatement *obj) {}
-  virtual void VisitArrayAtIndex (ArrayAtIndex *obj) {}
-  virtual void VisitInvertOp (InvertOp *obj) {}
-  virtual void VisitHandleOp (HandleOp *obj) {}
-  virtual void VisitOrdOp (OrdOp *obj) {}
-  virtual void VisitMinusOp (MinusOp *obj) {}
-  virtual void VisitLogicalNot (LogicalNot *obj) {}
-  virtual void VisitInSetStatement (InSetStatement *obj) {}
-  virtual void VisitBinaryOp (BinaryOp *obj) {}
-  virtual void VisitMultipleOp (MultipleOp *obj) {}
-  virtual void VisitSemicolonOp (SemicolonOp *obj) {}
-  virtual void VisitAndOp (AndOp *obj) {}
-  virtual void VisitOrOp (OrOp *obj) {}
-  virtual void VisitXorOp (XorOp *obj) {}
-  virtual void VisitBitAndOp (BitAndOp *obj) {}
-  virtual void VisitBitOrOp (BitOrOp *obj) {}
-  virtual void VisitBitXorOp (BitXorOp *obj) {}
-  virtual void VisitDivideOp (DivideOp *obj) {}
-  virtual void VisitModulusOp (ModulusOp *obj) {}
-  virtual void VisitLshiftOp (LshiftOp *obj) {}
-  virtual void VisitRshiftOp (RshiftOp *obj) {}
-  virtual void VisitPlusOp (PlusOp *obj) {}
-  virtual void VisitMultOp (MultOp *obj) {}
-  virtual void VisitAssignment (Assignment *obj) {}
-  virtual void VisitParameter (Parameter *obj) {}
-  virtual void VisitFuncExpression (FuncExpression *obj) {}
-  virtual void VisitFuncStatement (FuncStatement *obj) {}
-  virtual void VisitSignal (Signal *obj) {}
-  virtual void VisitConnect (Connect *obj) {}
-  virtual void VisitDisconnect (Disconnect *obj) {}
-  virtual void VisitAssertStatement (AssertStatement *obj) {}
-  virtual void VisitIfThen (IfThen *obj) {}
-  virtual void VisitIfStatement (IfStatement *obj) {}
-  virtual void VisitIfxThen (IfxThen *obj) {}
-  virtual void VisitIfdefStatement (IfdefStatement *obj) {}
-  virtual void VisitCondExpression (CondExpression *obj) {}
-  virtual void VisitIfExpression (IfExpression *obj) {}
-  virtual void VisitElseExpression (ElseExpression *obj) {}
-  virtual void VisitBranch (Branch *obj) {}
-  virtual void VisitSwitchStatement (SwitchStatement *obj) {}
-  virtual void VisitCatchClause (CatchClause *obj) {}
-  virtual void VisitTryStatement (TryStatement *obj) {}
-  virtual void VisitTypeBranch (TypeBranch *obj) {}
-  virtual void VisitTypeSwitchStatement (TypeSwitchStatement *obj) {}
-  virtual void VisitAttachObject (AttachObject *obj) {}
-  virtual void VisitNewExpression (NewExpression *obj) {}
-  virtual void VisitCloneExpression (CloneExpression *obj) {}
-  virtual void VisitCopyStatement (CopyStatement *obj) {}
-  virtual void VisitEnumItem (EnumItem *obj) {}
-  virtual void VisitExtendExpression (ExtendExpression *obj) {}
-  virtual void VisitRun (Run *obj) {}
-  virtual void VisitQueryItf (QueryItf *obj) {}
-  virtual void VisitGetUUID (GetUUID *obj) {}
-  virtual void VisitIntegerInterval (IntegerInterval *obj) {}
-  virtual void VisitQuantifier (Quantifier *obj) {}
-  virtual void VisitQuantStmOrExp (QuantStmOrExp *obj) {}
-  virtual void VisitDeclare (Declare *obj) {}
-  virtual void VisitExists (Exists *obj) {}
-  virtual void VisitForeach (Foreach *obj) {}
-  virtual void VisitSelectExpression (SelectExpression *obj) {}
+  virtual void VisitSynObject (SynObject *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitExpression (Expression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitOperation (Operation *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitReference (Reference *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitEnumConst (EnumConst *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitObjReference (ObjReference *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitTDOD (TDOD *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitVarName (VarName *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitFormParm (FormParm *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitFormParms (FormParms *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitBaseInit (BaseInit *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitSelfVar (SelfVar *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitConstant (Constant *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitBoolConst (BoolConst *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitNullConst (NullConst *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitSucceedStatement (SucceedStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitFailStatement (FailStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitOldExpression (OldExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitUnaryOp (UnaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitEvalExpression (EvalExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitEvalStatement (EvalStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitInvertOp (InvertOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitHandleOp (HandleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitOrdOp (OrdOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitMinusOp (MinusOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitLogicalNot (LogicalNot *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitInSetStatement (InSetStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitBinaryOp (BinaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitSemicolonOp (SemicolonOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitAndOp (AndOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitOrOp (OrOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitXorOp (XorOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitBitAndOp (BitAndOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitBitOrOp (BitOrOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitBitXorOp (BitXorOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitDivideOp (DivideOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitModulusOp (ModulusOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitLshiftOp (LshiftOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitRshiftOp (RshiftOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitPlusOp (PlusOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitMultOp (MultOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitAssignment (Assignment *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitParameter (Parameter *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitFuncExpression (FuncExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitFuncStatement (FuncStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitSignal (Signal *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitConnect (Connect *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitDisconnect (Disconnect *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitAssertStatement (AssertStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitIfThen (IfThen *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitIfStatement (IfStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitIfxThen (IfxThen *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitIfdefStatement (IfdefStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitCondExpression (CondExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitIfExpression (IfExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitElseExpression (ElseExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitBranch (Branch *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitSwitchStatement (SwitchStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitCatchClause (CatchClause *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitTryStatement (TryStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitTypeBranch (TypeBranch *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitTypeSwitchStatement (TypeSwitchStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitAttachObject (AttachObject *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitNewExpression (NewExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitCloneExpression (CloneExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitCopyStatement (CopyStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitEnumItem (EnumItem *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitExtendExpression (ExtendExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitRun (Run *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitQueryItf (QueryItf *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitGetUUID (GetUUID *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitIntegerInterval (IntegerInterval *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitQuantifier (Quantifier *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitQuantStmOrExp (QuantStmOrExp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitDeclare (Declare *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitExists (Exists *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitForeach (Foreach *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitSelectExpression (SelectExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
 };
 
 class TableVisitor : public Visitor {
@@ -2744,26 +2744,31 @@ public:
   CHAINX *chxp;
   address searchData;
   
-  virtual void Eval (SynObject *self);
+  TableVisitor (
+	    address table,
+	    int inINCL,
+	    TTableUpdate update,
+	    address searchData) {
+	  this->table = table;
+	  this->inINCL = inINCL;
+	  this->update = update;
+	  this->searchData = searchData;
+	}
+	
+  virtual void Eval (SynObject *self,SynObject *parent,address where,CHAINX *chxp);
   
-  virtual void Adjust (SynObject *obj,address w,CHAINX *c) {
-    parent = obj;
-    where = w;
-    chxp = c;
-  }
-  
-  virtual void VisitEnumConst (EnumConst *obj);
-  virtual void VisitParameter (Parameter *obj);
-  virtual void VisitFormParm (FormParm *obj);
-  virtual void VisitReference (Reference *obj);
-  virtual void VisitTDOD (TDOD *obj);
-  virtual void VisitObjReference (ObjReference *obj);
-  virtual void VisitSelfVar (SelfVar *obj);
-  virtual void VisitUnaryOp (UnaryOp *obj);
-  virtual void VisitBinaryOp (BinaryOp *obj);
-  virtual void VisitMultipleOp (MultipleOp *obj);
-  virtual void VisitVarName (VarName *obj);
-  virtual void VisitArrayAtIndex (ArrayAtIndex *obj) {}
+  virtual void VisitEnumConst (EnumConst *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitParameter (Parameter *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitFormParm (FormParm *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitReference (Reference *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitTDOD (TDOD *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitObjReference (ObjReference *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitSelfVar (SelfVar *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitUnaryOp (UnaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitBinaryOp (BinaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitVarName (VarName *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 #endif

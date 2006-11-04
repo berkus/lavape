@@ -30,124 +30,125 @@
 //static int inINCL;
 
 
-void TableVisitor::Eval (SynObject *synObj) {
+void TableVisitor::Eval (SynObject *obj,SynObject *parent,address where,CHAINX *chxp) {
 #ifdef INTERPRETER
-  synObj->parentObject = parent;
-  synObj->whereInParent = where;
-  synObj->containingChain = chxp;
-  if (update == onSetSynOID) synObjectID = ++((CSearchData*)searchData)->nextFreeID;
+  obj->parentObject = parent;
+  obj->whereInParent = where;
+  obj->containingChain = chxp;
+  if (update == onSetSynOID) obj->synObjectID = ++((CSearchData*)searchData)->nextFreeID;
   if (update == onGetAddress
-  && synObjectID == ((CSearchData*)searchData)->synObjectID) {
-    ((CSearchData*)searchData)->synObj = synObj;
-    ((CSearchData*)searchData)->finished = true;
+  && obj->synObjectID == ((CSearchData*)searchData)->synObjectID) {
+    ((CSearchData*)searchData)->synObj = obj;
+    //((CSearchData*)searchData)->finished = true;
+    finished = true;
     return;
   } 
 #else
   unsigned oldSynObjectID;
   if (update == onSetSynOID) {
-    oldSynObjectID = synObj->synObjectID;
-    synObj->synObjectID = ++((CSearchData*)searchData)->nextFreeID;
-    if (synObj->workFlags.Contains(isBrkPnt))
-      if (!LBaseData->debugger->checkExecBrkPnts(oldSynObjectID,synObj->synObjectID,
+    oldSynObjectID = obj->synObjectID;
+    obj->synObjectID = ++((CSearchData*)searchData)->nextFreeID;
+    if (obj->workFlags.Contains(isBrkPnt))
+      if (!LBaseData->debugger->checkExecBrkPnts(oldSynObjectID,obj->synObjectID,
          ((CSearchData*)searchData)->execDECL->ParentDECL->OwnID,
          ((CSearchData*)searchData)->execDECL->DeclType,
          (CLavaBaseDoc*)((CSearchData*)searchData)->doc))
-        synObj->workFlags.EXCL(isBrkPnt); }
+        obj->workFlags.EXCL(isBrkPnt); }
   else if (update == onSelect) { 
-    if (synObj->synObjectID == ((CSearchData*)searchData)->synObjectID) { 
+    if (obj->synObjectID == ((CSearchData*)searchData)->synObjectID) { 
       if (((CSearchData*)searchData)->debugStop) { 
         ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->stopReason = ((CSearchData*)searchData)->stopReason;
         if (((CSearchData*)searchData)->innermostStop)
-          if (synObj->primaryToken == assignFS_T)
-            ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->debugStopToken = synObj->startToken;
+          if (obj->primaryToken == assignFS_T)
+            ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->debugStopToken = obj->startToken;
           else
-            ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->debugStopToken = synObj->primaryTokenNode;
+            ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->debugStopToken = obj->primaryTokenNode;
         else
-          if (synObj->primaryToken == assignFS_T)
-            if (synObj->startToken)
-              ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->callerStopToken = synObj->startToken; 
+          if (obj->primaryToken == assignFS_T)
+            if (obj->startToken)
+              ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->callerStopToken = obj->startToken; 
             else /*new with hidden dft ini call */
-              ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->callerStopToken = synObj->parentObject->primaryTokenNode;
+              ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->callerStopToken = obj->parentObject->primaryTokenNode;
           else
-            ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->callerStopToken = synObj->primaryTokenNode;
+            ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->callerStopToken = obj->primaryTokenNode;
         ((CExecView*)((CSearchData*)searchData)->execView)->autoScroll = true;
         ((CExecView*)((CSearchData*)searchData)->execView)->redCtl->update();
       }
       else
-        ((CExecView*)((CSearchData*)searchData)->execView)->Select(synObj);
-      ((CSearchData*)searchData)->finished = true;
+        ((CExecView*)((CSearchData*)searchData)->execView)->Select(obj);
+      //((CSearchData*)searchData)->finished = true;
       finished = true;
       return;
     }
   }
   else if (update == onGetAddress) {
-    synObj->synObjectID = ++((CSearchData*)searchData)->nextFreeID;
-    if (synObj->synObjectID == ((CSearchData*)searchData)->synObjectID) {
-      ((CSearchData*)searchData)->synObj = synObj;
-      ((CSearchData*)searchData)->finished = true;
+    obj->synObjectID = ++((CSearchData*)searchData)->nextFreeID;
+    if (obj->synObjectID == ((CSearchData*)searchData)->synObjectID) {
+      ((CSearchData*)searchData)->synObj = obj;
+      //((CSearchData*)searchData)->finished = true;
       finished = true;
       return; }
   }
-  synObj->parentObject = parent;
-  synObj->whereInParent = where;
-  synObj->containingChain = chxp;
+  obj->parentObject = parent;
+  obj->whereInParent = where;
+  obj->containingChain = chxp;
 #endif
 }
 
-void TableVisitor::VisitEnumConst (EnumConst *obj) {
+void TableVisitor::VisitEnumConst (EnumConst *obj,SynObject *parent,address where,CHAINX *chxp) {
   
 #ifndef INTERPRETER
   switch (update) {
   case onSearch:
-    if (refID == ((CSearchData*)searchData)->findRefs.refTid
-    && Id == ((CSearchData*)searchData)->findRefs.enumID) {
-      ((CSearchData*)searchData)->synObjectID = synObjectID;
-      ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
+    if (obj->refID == ((CSearchData*)searchData)->findRefs.refTid
+    && obj->Id == ((CSearchData*)searchData)->findRefs.enumID) {
+      ((CSearchData*)searchData)->synObjectID = obj->synObjectID;
+      ((CSearchData*)searchData)->constructNesting = qPrintable(obj->LocationOfConstruct());
       ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
     }
     break;
   case onCopy:
-    ((TIDTable*)table)->ChangeFromTab(refID);
+    ((TIDTable*)table)->ChangeFromTab(obj->refID);
     break;
   case onMove:
-    ((TIDTable*)table)->ChangeRefToClipID(refID);
+    ((TIDTable*)table)->ChangeRefToClipID(obj->refID);
     break;
   }
 #endif
 }
 
-void TableVisitor::VisitParameter (Parameter *obj)
+void TableVisitor::VisitParameter (Parameter *obj,SynObject *parent,address where,CHAINX *chxp)
 {
   if (update == onCopy)
-    ((TIDTable*)table)->ChangeFromTab(formParmID);
+    ((TIDTable*)table)->ChangeFromTab(obj->formParmID);
   else if (update == onMove)
-    ((TIDTable*)table)->ChangeRefToClipID(formParmID);
+    ((TIDTable*)table)->ChangeRefToClipID(obj->formParmID);
 }
 
-void TableVisitor::VisitFormParm (FormParm *obj) {
+void TableVisitor::VisitFormParm (FormParm *obj,SynObject *parent,address where,CHAINX *chxp) {
   if (update == onCopy)
-    ((TIDTable*)table)->ChangeFromTab(formParmID);
+    ((TIDTable*)table)->ChangeFromTab(obj->formParmID);
   else if (update == onMove)
-    ((TIDTable*)table)->ChangeRefToClipID(formParmID);
+    ((TIDTable*)table)->ChangeRefToClipID(obj->formParmID);
 }
 
-void TableVisitor::VisitReference (Reference *obj) {
+void TableVisitor::VisitReference (Reference *obj,SynObject *parent,address where,CHAINX *chxp) {
   switch (update) {
   case onCopy:
-    ((TIDTable*)table)->ChangeFromTab(refID);
+    ((TIDTable*)table)->ChangeFromTab(obj->refID);
     break;
   case onMove:
-    ((TIDTable*)table)->ChangeRefToClipID(refID);
+    ((TIDTable*)table)->ChangeRefToClipID(obj->refID);
     break;
   case onDeleteID:
-    LBaseData->Browser->LastBrowseContext->RemoveSynObj(this);
+    LBaseData->Browser->LastBrowseContext->RemoveSynObj(obj);
     break;
 #ifndef INTERPRETER
   case onSearch:
-    if (refID == ((CSearchData*)searchData)->findRefs.refTid
+    if (obj->refID == ((CSearchData*)searchData)->findRefs.refTid
     && ((CSearchData*)searchData)->findRefs.enumID.l == 0) {
-      ((CSearchData*)searchData)->synObjectID = synObjectID;
-      ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
+      ((CSearchData*)searchData)->synObjectID = obj->synObjectID;
+      ((CSearchData*)searchData)->constructNesting = qPrintable(obj->LocationOfConstruct());
       ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
     }
     break;
@@ -156,17 +157,17 @@ void TableVisitor::VisitReference (Reference *obj) {
   }
 }
 
-void TableVisitor::VisitTDOD (TDOD *obj) {
+void TableVisitor::VisitTDOD (TDOD *obj,SynObject *parent,address where,CHAINX *chxp) {
   switch (update) {
   case onDeleteID:
-    LBaseData->Browser->LastBrowseContext->RemoveSynObj(this);
+    LBaseData->Browser->LastBrowseContext->RemoveSynObj(obj);
     break;
 #ifndef INTERPRETER
   case onSearch:
-    if (ID == ((CSearchData*)searchData)->findRefs.refTid
-    && accessTypeOK(((CSearchData*)searchData)->findRefs.FindRefFlags)) {
-      ((CSearchData*)searchData)->synObjectID = synObjectID;
-      ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
+    if (obj->ID == ((CSearchData*)searchData)->findRefs.refTid
+    && obj->accessTypeOK(((CSearchData*)searchData)->findRefs.FindRefFlags)) {
+      ((CSearchData*)searchData)->synObjectID = obj->synObjectID;
+      ((CSearchData*)searchData)->constructNesting = qPrintable(obj->LocationOfConstruct());
       ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
     }
     break;
@@ -175,92 +176,88 @@ void TableVisitor::VisitTDOD (TDOD *obj) {
   }
 }
 
-void TableVisitor::VisitObjReference (ObjReference *obj) {
+void TableVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,address where,CHAINX *chxp) {
   CHE *chp;
 
   switch (update) {
   case onAddID:
   case onNewID:
-    for ( chp = (CHE*)refIDs.first;
+    for ( chp = (CHE*)obj->refIDs.first;
           chp;
           chp = (CHE*)chp->successor) {
-      ((TDOD*)chp->data)->parentObject = this;
-      MTBLCHE (chp,&refIDs);
+      ((TDOD*)chp->data)->parentObject = obj;
     }
     break;
   case onCopy:
-    for ( chp = (CHE*)refIDs.first;
+    for ( chp = (CHE*)obj->refIDs.first;
           chp;
           chp = (CHE*)chp->successor) {
       ((TIDTable*)table)->ChangeFromTab(((TDOD*)chp->data)->ID);
-      MTBLCHE (chp,&refIDs);
     }
     break;
   case onMove:
-    for ( chp = (CHE*)refIDs.first;
+    for ( chp = (CHE*)obj->refIDs.first;
           chp;
           chp = (CHE*)chp->successor) {
       ((TIDTable*)table)->ChangeRefToClipID(((TDOD*)chp->data)->ID);
-      ((TDOD*)chp->data)->parentObject = this;
-      MTBLCHE (chp,&refIDs);
+      ((TDOD*)chp->data)->parentObject = obj;
     }
     break;
   default:
-    for ( chp = (CHE*)refIDs.first;
+    for ( chp = (CHE*)obj->refIDs.first;
           chp;
           chp = (CHE*)chp->successor) {
-      ((TDOD*)chp->data)->parentObject = this;
-      MTBLCHE (chp,&refIDs);
+      ((TDOD*)chp->data)->parentObject = obj;
     }
   }
 }
 
 
-void TableVisitor::VisitMultipleOp (MultipleOp *obj)
+void TableVisitor::VisitMultipleOp (MultipleOp *obj,SynObject *parent,address where,CHAINX *chxp)
 {
-  CHE *chp;
-
   if (update == onCopy)
-    ((TIDTable*)table)->ChangeFromTab(opFunctionID);
+    ((TIDTable*)table)->ChangeFromTab(obj->opFunctionID);
   else if (update == onMove)
-    ((TIDTable*)table)->ChangeRefToClipID(opFunctionID);
+    ((TIDTable*)table)->ChangeRefToClipID(obj->opFunctionID);
 }
 
-void TableVisitor::VisitSelfVar (SelfVar *obj)
+void TableVisitor::VisitSelfVar (SelfVar *obj,SynObject *parent,address where,CHAINX *chxp)
 {
-  CHE *chp;
   LavaDECL *decl, *declName;
   CSearchData sData;
+
   if (searchData)
     sData = *(CSearchData*)searchData;
 
-  execDECL = (LavaDECL*)parent;
+  obj->execDECL = (LavaDECL*)parent;
 
-  if (!checked
+  if (!obj->checked
   && ((update == onSearch && inINCL)
       || update == onGetAddress
       || update == onSetSynOID)) {
-    if (update == onSearch)
-      MakeTable(table,inINCL,parent,onAddID,(address)this,0,(address)&sData);
+    if (update == onSearch) {
+      TableVisitor vis(table,inINCL,onAddID,(address)&sData);
+      obj->Accept(vis,parent,where,chxp);
+    }
     CheckData ckd;
-    ckd.myDECL = execDECL; 
-    ckd.inINCL = inINCL;
+    ckd.myDECL = obj->execDECL; 
+    ckd.inINCL = obj->inINCL;
     ckd.document = (CLavaBaseDoc*)((CSearchData*)searchData)->doc;
-    Check(ckd); // only to insert identifiers of references and formal parameters
+    obj->Check(ckd); // only to insert identifiers of references and formal parameters
   }
 
   if (update != onCopy) // since execName is recalculated below on onNewID
-    MTBL (execName.ptr);
+    VisitReference((Reference*)obj->execName.ptr);
   switch (update) {
   case onTypeID:
-    decl = execDECL->ParentDECL;
+    decl = obj->execDECL->ParentDECL;
     if (decl->DeclType == Function) {
       decl = decl->ParentDECL;
       if (decl)
         switch (decl->DeclType) {
         case Impl:
         case Interface:
-          typeID = TID(decl->OwnID,0);
+          obj->typeID = TID(decl->OwnID,0);
           break;
         default: ;
         }
@@ -268,109 +265,108 @@ void TableVisitor::VisitSelfVar (SelfVar *obj)
     return;
   default: ;
   }
-  if (primaryToken != initiator_T) // function/initializer or invariant
-    if (update == onCopy
-      || update == onMove) {
-      if (update == onMove)
-        TableVisitor::VisitVarName (table,inINCL,parent,update,(address)&execDECL->Exec.ptr,0,searchData);
-      if (execDECL->ParentDECL->DeclType == Interface) //invariant
-        typeID = TID(execDECL->ParentDECL->OwnID,0);
+  if (obj->primaryToken != initiator_T) // function/initializer or invariant
+    if (update == onCopy || update == onMove) {
+      if (update == onMove) {
+        TableVisitor vis(table,inINCL,update,searchData);
+        vis.VisitVarName(obj);
+      }
+      if (obj->execDECL->ParentDECL->DeclType == Interface) //invariant
+        obj->typeID = TID(obj->execDECL->ParentDECL->OwnID,0);
       else // function/initializer
-        if (execDECL->ParentDECL->ParentDECL)
-          typeID = TID(execDECL->ParentDECL->ParentDECL->OwnID,0);
+        if (obj->execDECL->ParentDECL->ParentDECL)
+          obj->typeID = TID(obj->execDECL->ParentDECL->ParentDECL->OwnID,0);
     }
-    else
-      TableVisitor::VisitVarName (table,inINCL,parent,update,(address)&execDECL->Exec.ptr,0,searchData);
+    else {
+      TableVisitor vis(table,inINCL,update,searchData);
+      vis.VisitVarName(obj);
+    }
+  obj->whereInParent = 0;
+  obj->containingChain = 0;
+  obj->parentObject = 0;
+  obj->concernExecs = false;
 
-  whereInParent = 0;
-  containingChain = 0;
-  parentObject = 0;
-  concernExecs = false;
 
-
-  ((SynObject*)execName.ptr)->parentObject = this;
+  ((SynObject*)obj->execName.ptr)->parentObject = obj;
   if (update == onNewID) {
-    decl = execDECL->ParentDECL;
+    decl = obj->execDECL->ParentDECL;
     declName = decl;
-    ((Reference*)execName.ptr)->refID = TID(declName->OwnID,0);
+    ((Reference*)obj->execName.ptr)->refID = TID(declName->OwnID,0);
     if (decl->DeclType == Function)
       decl = decl->ParentDECL;
     if (decl)
       switch (decl->DeclType) {
       case Impl:
       case Interface:
-        typeID = TID(decl->OwnID,0);
+        obj->typeID = TID(decl->OwnID,0);
         break;
       default: ;
       }
   }
 }
 
-void TableVisitor::VisitUnaryOp (UnaryOp *obj)
+void TableVisitor::VisitUnaryOp (UnaryOp *obj,SynObject *parent,address where,CHAINX *chxp)
 {
   if (update == onCopy)
-    ((TIDTable*)table)->ChangeFromTab(opFunctionID);
+    ((TIDTable*)table)->ChangeFromTab(obj->opFunctionID);
   else if (update == onMove)
-    ((TIDTable*)table)->ChangeRefToClipID(opFunctionID);
-
-  if ((SynObject*)operand.ptr) // in MinusOp ptr==0 possible
-    MTBL (operand.ptr);
+    ((TIDTable*)table)->ChangeRefToClipID(obj->opFunctionID);
 }
 
-void TableVisitor::VisitBinaryOp (BinaryOp *obj)
+void TableVisitor::VisitBinaryOp (BinaryOp *obj,SynObject *parent,address where,CHAINX *chxp)
 {
   if (update == onCopy)
-    ((TIDTable*)table)->ChangeFromTab(opFunctionID);
+    ((TIDTable*)table)->ChangeFromTab(obj->opFunctionID);
   else if (update == onMove)
-    ((TIDTable*)table)->ChangeRefToClipID(opFunctionID);
+    ((TIDTable*)table)->ChangeRefToClipID(obj->opFunctionID);
 }
 
-void TableVisitor::VisitVarName (VarName *obj)
+void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CHAINX *chxp)
 {
   switch (update) {
   case onUndoDeleteID:
-    if (varID.nID != -1)
-      ((TIDTable*)table)->UndoDeleteLocalID(varID.nID);
+    if (obj->varID.nID != -1)
+      ((TIDTable*)table)->UndoDeleteLocalID(obj->varID.nID);
     break;
   case onDeleteID:
-    if (varID.nID != -1)
-      ((TIDTable*)table)->DeleteID(varID.nID);
-    LBaseData->Browser->LastBrowseContext->RemoveSynObj(this);
+    if (obj->varID.nID != -1)
+      ((TIDTable*)table)->DeleteID(obj->varID.nID);
+    LBaseData->Browser->LastBrowseContext->RemoveSynObj(obj);
     break;
   case onAddID:
-    ((TIDTable*)table)->AddLocalID((DWORD)this,varID.nID,inINCL);
+    ((TIDTable*)table)->AddLocalID((DWORD)obj,obj->varID.nID,inINCL);
     break;
   case onNewID:
-    if (varID.nINCL == -1) // set in ExecView or below to avoid duplicate assignment of an ID
-      varID.nINCL = 0;
+    if (obj->varID.nINCL == -1) // set in ExecView or below to avoid duplicate assignment of an ID
+      obj->varID.nINCL = 0;
     else
-     ((TIDTable*)table)->NewLocalID((DWORD)this,varID.nID);
+     ((TIDTable*)table)->NewLocalID((DWORD)obj,obj->varID.nID);
     break;
   case onConstrCopy:
-     ((TIDTable*)table)->NewLocalID((DWORD)this,varID.nID,true);
-      varID.nINCL = -1;  // cf. case onNewID
+     ((TIDTable*)table)->NewLocalID((DWORD)this,obj->varID.nID,true);
+      obj->varID.nINCL = -1;  // cf. case onNewID
     break;
   case onChange:
   case onUndoChange:
   //case onMove:
-    ((TIDTable*)table)->ChangeLocalID((DWORD)this,varID.nID);
+    ((TIDTable*)table)->ChangeLocalID((DWORD)obj,obj->varID.nID);
     break;
 #ifndef INTERPRETER
   case onSearch:
     if (!((CSearchData*)searchData)->findRefs.index) {
-      if (varID == ((CSearchData*)searchData)->findRefs.refTid) {
-        ((CSearchData*)searchData)->synObjectID = synObjectID;
-        ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
+      if (obj->varID == ((CSearchData*)searchData)->findRefs.refTid) {
+        ((CSearchData*)searchData)->synObjectID = obj->synObjectID;
+        ((CSearchData*)searchData)->constructNesting = qPrintable(obj->LocationOfConstruct());
         ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
       }
     }
     else { //  search symbol by name
-      if (!IsSelfVar()
-      && varName.StringMatch(((CSearchData*)searchData)->findRefs.searchName,
+      if (!obj->IsSelfVar()
+      && obj->varName.StringMatch(((CSearchData*)searchData)->findRefs.searchName,
             ((CSearchData*)searchData)->findRefs.FindRefFlags.Contains(matchCase),
             ((CSearchData*)searchData)->findRefs.FindRefFlags.Contains(wholeWord))) {
-        ((CSearchData*)searchData)->synObjectID = synObjectID;
-        ((CSearchData*)searchData)->constructNesting = qPrintable(LocationOfConstruct());
+        ((CSearchData*)searchData)->synObjectID = obj->synObjectID;
+        ((CSearchData*)searchData)->constructNesting = qPrintable(obj->LocationOfConstruct());
         ((CPEBaseDoc*)((CSearchData*)searchData)->doc)->SetExecFindText(*(CSearchData*)searchData);
       }
     }
@@ -380,10 +376,10 @@ void TableVisitor::VisitVarName (VarName *obj)
   }
 }
 
-void TableVisitor::VisitArrayAtIndex (ArrayAtIndex *obj)
+void TableVisitor::VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent,address where,CHAINX *chxp)
 {
   if (update == onCopy)
-    ((TIDTable*)table)->ChangeFromTab(opFunctionID);
+    ((TIDTable*)table)->ChangeFromTab(obj->opFunctionID);
   else if (update == onMove)
-    ((TIDTable*)table)->ChangeRefToClipID(opFunctionID);
+    ((TIDTable*)table)->ChangeRefToClipID(obj->opFunctionID);
 }

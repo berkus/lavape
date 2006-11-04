@@ -782,6 +782,11 @@ bool SynObject::InOldExpression () {
   return false;
 }
 
+void SynObject::MakeTable(address table, int inINCL, SynObjectBase* parent, TTableUpdate update, address where, CHAINX *chx, address searchData) {
+  TableVisitor vis(table,inINCL,update,searchData);
+  Accept(vis,(SynObject*)parent,where,chx);
+}
+
 FormParm::FormParm (bool) {
   type = Exp_T;
   primaryToken = FormParm_T;

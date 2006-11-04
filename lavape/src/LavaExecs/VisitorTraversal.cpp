@@ -26,43 +26,44 @@
 
 #pragma hdrstop
 
+#define ENTRY \
+  visitor.Eval(this,parent,where,chxp);\
+  if (visitor.finished) return;
 
 #define ACCEPT(WHERE) \
-	{visitor.Adjust((SynObject*)this,(address)&WHERE,0);\
-  ((SynObject*)WHERE)->Accept(visitor);\
+  {((SynObject*)WHERE)->Accept(visitor,(SynObject*)this,(address)&WHERE,0);\
   if (visitor.finished) return;}
 
 #define ACC_CHE(CHEP,CHXP) \
-	{visitor.Adjust((SynObject*)this,(address)CHEP,CHXP);\
-  ((SynObject*)CHEP->data)->Accept(visitor);\
+  {((SynObject*)CHEP->data)->Accept(visitor,(SynObject*)this,(address)CHEP,CHXP);\
   if (visitor.finished) return;}
 
 
-void SynObject::Accept(Visitor &visitor) {
-  visitor.Eval(this);
+void SynObject::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp) {
+  ENTRY
 
-  visitor.VisitSynObject(this);
+  visitor.VisitSynObject(this,parent,where,chxp);
 }
 
-void EnumConst::Accept(Visitor &visitor) {
-  visitor.Eval(this);
+void EnumConst::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp) {
+  ENTRY
 
-  visitor.VisitSynObject(this);
+  visitor.VisitSynObject(this,parent,where,chxp);
 }
 
-void Parameter::Accept(Visitor &visitor)
+void Parameter::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(parameter.ptr);
 
-  visitor.VisitParameter(this);
+  visitor.VisitParameter(this,parent,where,chxp);
 }
 
-void FormParms::Accept(Visitor &visitor)
+void FormParms::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
 
   for (chp = (CHE*)inputs.first;
        chp;
@@ -73,70 +74,70 @@ void FormParms::Accept(Visitor &visitor)
        chp = (CHE*)chp->successor)
     ACC_CHE(chp,&outputs);
 
-  visitor.VisitFormParms(this);
+  visitor.VisitFormParms(this,parent,where,chxp);
 }
 
-void FormParm::Accept(Visitor &visitor) {
-  visitor.Eval(this);
+void FormParm::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp) {
+  ENTRY
   ACCEPT(formParm.ptr);
 
-  visitor.VisitFormParm(this);
+  visitor.VisitFormParm(this,parent,where,chxp);
 }
 
-void Reference::Accept(Visitor &visitor) {
-  visitor.Eval(this);
+void Reference::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp) {
+  ENTRY
 
-  visitor.VisitReference(this);
+  visitor.VisitReference(this,parent,where,chxp);
 }
 
-void TDOD::Accept(Visitor &visitor) {
-  visitor.Eval(this);
+void TDOD::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp) {
+  ENTRY
 
-  visitor.VisitTDOD(this);
+  visitor.VisitTDOD(this,parent,where,chxp);
 }
 
-void ObjReference::Accept(Visitor &visitor) {
+void ObjReference::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp) {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   for ( chp = (CHE*)refIDs.first;
         chp;
         chp = (CHE*)chp->successor)
     ACC_CHE(chp,&refIDs);
 
-  visitor.VisitObjReference(this);
+  visitor.VisitObjReference(this,parent,where,chxp);
 }
 
 
-void MultipleOp::Accept(Visitor &visitor)
+void MultipleOp::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
 
   for (chp = (CHE*)operands.first;
        chp;
        chp = (CHE*)chp->successor)
     ACC_CHE(chp,&operands);
 
-  visitor.VisitMultipleOp(this);
+  visitor.VisitMultipleOp(this,parent,where,chxp);
 }
 
-void BaseInit::Accept(Visitor &visitor)
+void BaseInit::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(baseItf.ptr);
   if (initializerCall.ptr)
     ACCEPT(initializerCall.ptr);
 
-  visitor.VisitBaseInit(this);
+  visitor.VisitBaseInit(this,parent,where,chxp);
 }
 
-void SelfVar::Accept(Visitor &visitor)
+void SelfVar::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(execName.ptr);
 
   if (formParms.ptr)
@@ -149,107 +150,107 @@ void SelfVar::Accept(Visitor &visitor)
 
   ACCEPT(body.ptr);
 
-  visitor.VisitSelfVar(this);
+  visitor.VisitSelfVar(this,parent,where,chxp);
 }
 
-void HandleOp::Accept(Visitor &visitor)
+void HandleOp::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(operand.ptr);
 
-  visitor.VisitHandleOp(this);
+  visitor.VisitHandleOp(this,parent,where,chxp);
 }
 
-void FailStatement::Accept(Visitor &visitor)
+void FailStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   if ((SynObject*)exception.ptr)
     ACCEPT(exception.ptr);
 
-  visitor.VisitFailStatement(this);
+  visitor.VisitFailStatement(this,parent,where,chxp);
 }
 
-void OldExpression::Accept(Visitor &visitor)
+void OldExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(paramExpr.ptr);
 
-  visitor.VisitOldExpression(this);
+  visitor.VisitOldExpression(this,parent,where,chxp);
 }
 
-void UnaryOp::Accept(Visitor &visitor)
+void UnaryOp::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   if ((SynObject*)operand.ptr) // in MinusOp ptr==0 possible
     ACCEPT(operand.ptr);
 
-  visitor.VisitUnaryOp(this);
+  visitor.VisitUnaryOp(this,parent,where,chxp);
 }
 
-void LogicalNot::Accept(Visitor &visitor)
+void LogicalNot::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(operand.ptr);
 
-  visitor.VisitLogicalNot(this);
+  visitor.VisitLogicalNot(this,parent,where,chxp);
 }
 
-void EvalExpression::Accept(Visitor &visitor)
+void EvalExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(operand.ptr);
 
-  visitor.VisitEvalExpression(this);
+  visitor.VisitEvalExpression(this,parent,where,chxp);
 }
 
-void InSetStatement::Accept(Visitor &visitor)
+void InSetStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(operand1.ptr);
   ACCEPT(operand2.ptr);
 
-  visitor.VisitInSetStatement(this);
+  visitor.VisitInSetStatement(this,parent,where,chxp);
 }
 
-void BinaryOp::Accept(Visitor &visitor)
+void BinaryOp::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(operand1.ptr);
   ACCEPT(operand2.ptr);
 
-  visitor.VisitBinaryOp(this);
+  visitor.VisitBinaryOp(this,parent,where,chxp);
 }
 
-void VarName::Accept(Visitor &visitor)
+void VarName::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
 
-  visitor.VisitVarName(this);
+  visitor.VisitVarName(this,parent,where,chxp);
 }
 
-void Assignment::Accept(Visitor &visitor)
+void Assignment::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(targetObj.ptr);
   ACCEPT(exprValue.ptr);
 
-  visitor.VisitAssignment(this);
+  visitor.VisitAssignment(this,parent,where,chxp);
 }
 
-void ArrayAtIndex::Accept(Visitor &visitor)
+void ArrayAtIndex::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(arrayObj.ptr);
   ACCEPT(arrayIndex.ptr);
 
-  visitor.VisitArrayAtIndex(this);
+  visitor.VisitArrayAtIndex(this,parent,where,chxp);
 }
 
-void FuncExpression::Accept(Visitor &visitor)
+void FuncExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   for (chp = (CHE*)inputs.first;
        chp;
        chp = (CHE*)chp->successor)
@@ -260,10 +261,10 @@ void FuncExpression::Accept(Visitor &visitor)
   if (function.ptr)
     ACCEPT(function.ptr);
 
-  visitor.VisitFuncExpression(this);
+  visitor.VisitFuncExpression(this,parent,where,chxp);
 }
 
-void FuncStatement::Accept(Visitor &visitor)
+void FuncStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
@@ -274,20 +275,20 @@ void FuncStatement::Accept(Visitor &visitor)
        chp = (CHE*)chp->successor)
     ACC_CHE(chp,&outputs);
 
-  visitor.VisitFuncStatement(this);
+  visitor.VisitFuncStatement(this,parent,where,chxp);
 }
 
-void Signal::Accept(Visitor &visitor)
+void Signal::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(sCall.ptr);
 
-  visitor.VisitSignal(this);
+  visitor.VisitSignal(this,parent,where,chxp);
 }
 
-void Connect::Accept(Visitor &visitor)
+void Connect::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   if (signalSender.ptr)
     ACCEPT(signalSender.ptr)
   else
@@ -295,34 +296,34 @@ void Connect::Accept(Visitor &visitor)
   ACCEPT(signalFunction.ptr);
   ACCEPT(callback.ptr);
 
-  visitor.VisitConnect(this);
+  visitor.VisitConnect(this,parent,where,chxp);
 }
 
-void Disconnect::Accept(Visitor &visitor)
+void Disconnect::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(signalSender.ptr);
   ACCEPT(signalFunction.ptr);
   ACCEPT(signalReceiver.ptr);
   ACCEPT(callbackFunction.ptr);
 
-  visitor.VisitDisconnect(this);
+  visitor.VisitDisconnect(this,parent,where,chxp);
 }
 
-void IfThen::Accept(Visitor &visitor)
+void IfThen::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(ifCondition.ptr);
   ACCEPT(thenPart.ptr);
 
-  visitor.VisitIfThen(this);
+  visitor.VisitIfThen(this,parent,where,chxp);
 }
 
-void IfStatement::Accept(Visitor &visitor)
+void IfStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   for (chp = (CHE*)ifThens.first;
        chp;
        chp = (CHE*)chp->successor)
@@ -331,21 +332,21 @@ void IfStatement::Accept(Visitor &visitor)
   if (elsePart.ptr)
     ACCEPT(elsePart.ptr);
 
-  visitor.VisitIfStatement(this);
+  visitor.VisitIfStatement(this,parent,where,chxp);
 }
 
-void IfxThen::Accept(Visitor &visitor)
+void IfxThen::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(ifCondition.ptr);
   ACCEPT(thenPart.ptr);
 
-  visitor.VisitIfxThen(this);
+  visitor.VisitIfxThen(this,parent,where,chxp);
 }
 
-void IfdefStatement::Accept(Visitor &visitor)
+void IfdefStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
 
   CHE *chp;
 
@@ -359,14 +360,14 @@ void IfdefStatement::Accept(Visitor &visitor)
   if (elsePart.ptr)
     ACCEPT(elsePart.ptr);
 
-  visitor.VisitIfdefStatement(this);
+  visitor.VisitIfdefStatement(this,parent,where,chxp);
 }
 
-void IfExpression::Accept(Visitor &visitor)
+void IfExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   for (chp = (CHE*)ifThens.first;
        chp;
        chp = (CHE*)chp->successor)
@@ -375,35 +376,35 @@ void IfExpression::Accept(Visitor &visitor)
   if (elsePart.ptr)
     ACCEPT(elsePart.ptr);
 
-  visitor.VisitIfExpression(this);
+  visitor.VisitIfExpression(this,parent,where,chxp);
 }
 
-void ElseExpression::Accept(Visitor &visitor)
+void ElseExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(expr1.ptr);
   ACCEPT(expr2.ptr);
 
-  visitor.VisitElseExpression(this);
+  visitor.VisitElseExpression(this,parent,where,chxp);
 }
 
-void TypeBranch::Accept(Visitor &visitor)
+void TypeBranch::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(exprType.ptr);
   ACCEPT(varName.ptr);
 
   if (thenPart.ptr)
     ACCEPT(thenPart.ptr);
 
-  visitor.VisitTypeBranch(this);
+  visitor.VisitTypeBranch(this,parent,where,chxp);
 }
 
-void Branch::Accept(Visitor &visitor)
+void Branch::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   for ( chp = (CHE*)caseLabels.first;
         chp;
         chp = (CHE*)chp->successor)
@@ -412,14 +413,14 @@ void Branch::Accept(Visitor &visitor)
   if (thenPart.ptr)
     ACCEPT(thenPart.ptr);
 
-  visitor.VisitBranch(this);
+  visitor.VisitBranch(this,parent,where,chxp);
 }
 
-void SwitchStatement::Accept(Visitor &visitor)
+void SwitchStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(caseExpression.ptr);
   for (chp = (CHE*)branches.first;
        chp;
@@ -429,39 +430,39 @@ void SwitchStatement::Accept(Visitor &visitor)
   if (elsePart.ptr)
     ACCEPT(elsePart.ptr);
 
-  visitor.VisitSwitchStatement(this);
+  visitor.VisitSwitchStatement(this,parent,where,chxp);
 }
 
-void CatchClause::Accept(Visitor &visitor)
+void CatchClause::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(exprType.ptr);
   ACCEPT(varName.ptr);
   if (catchClause.ptr)
     ACCEPT(catchClause.ptr);
 
-  visitor.VisitCatchClause(this);
+  visitor.VisitCatchClause(this,parent,where,chxp);
 }
 
-void TryStatement::Accept(Visitor &visitor)
+void TryStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(tryStatement.ptr);
   for (chp = (CHE*)catchClauses.first;
        chp;
        chp = (CHE*)chp->successor)
     ACC_CHE(chp,&catchClauses);
 
-  visitor.VisitTryStatement(this);
+  visitor.VisitTryStatement(this,parent,where,chxp);
 }
 
-void TypeSwitchStatement::Accept(Visitor &visitor)
+void TypeSwitchStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(caseExpression.ptr);
   for (chp = (CHE*)branches.first;
        chp;
@@ -471,20 +472,20 @@ void TypeSwitchStatement::Accept(Visitor &visitor)
   if (elsePart.ptr)
     ACCEPT(elsePart.ptr);
 
-  visitor.VisitTypeSwitchStatement(this);
+  visitor.VisitTypeSwitchStatement(this,parent,where,chxp);
 }
 
-void AssertStatement::Accept(Visitor &visitor)
+void AssertStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(statement.ptr);
 
-  visitor.VisitAssertStatement(this);
+  visitor.VisitAssertStatement(this,parent,where,chxp);
 }
 
-void AttachObject::Accept(Visitor &visitor)
+void AttachObject::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   if (objType.ptr)
     ACCEPT(objType.ptr);
   if (itf.ptr) // itf: because of Run/NewExpression
@@ -492,54 +493,54 @@ void AttachObject::Accept(Visitor &visitor)
   if (url.ptr)
     ACCEPT(url.ptr);
 
-  visitor.VisitAttachObject(this);
+  visitor.VisitAttachObject(this,parent,where,chxp);
 }
 
-void Run::Accept(Visitor &visitor)
+void Run::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(initiator.ptr);
   for (chp = (CHE*)inputs.first;
        chp;
        chp = (CHE*)chp->successor)
     ACC_CHE(chp,&inputs);
 
-  visitor.VisitRun(this);
+  visitor.VisitRun(this,parent,where,chxp);
 }
 
-void QueryItf::Accept(Visitor &visitor)
+void QueryItf::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(itf.ptr);
   ACCEPT(givenObj.ptr);
 
-  visitor.VisitQueryItf(this);
+  visitor.VisitQueryItf(this,parent,where,chxp);
 }
 
-void GetUUID::Accept(Visitor &visitor)
+void GetUUID::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(itf.ptr);
 
-  visitor.VisitGetUUID(this);
+  visitor.VisitGetUUID(this,parent,where,chxp);
 }
 
-void IntegerInterval::Accept(Visitor &visitor)
+void IntegerInterval::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(from.ptr);
   ACCEPT(to.ptr);
 
-  visitor.VisitIntegerInterval(this);
+  visitor.VisitIntegerInterval(this,parent,where,chxp);
 }
 
-void Quantifier::Accept(Visitor &visitor)
+void Quantifier::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   if (elemType.ptr)
     ACCEPT(elemType.ptr);
   for (chp = (CHE*)quantVars.first;
@@ -550,14 +551,14 @@ void Quantifier::Accept(Visitor &visitor)
   if (set.ptr)
     ACCEPT(set.ptr);
 
-  visitor.VisitQuantifier(this);
+  visitor.VisitQuantifier(this,parent,where,chxp);
 }
 
-void QuantStmOrExp::Accept(Visitor &visitor)
+void QuantStmOrExp::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   for (chp = (CHE*)quantifiers.first;
        chp;
        chp = (CHE*)chp->successor)
@@ -575,14 +576,14 @@ void QuantStmOrExp::Accept(Visitor &visitor)
       ACCEPT(((Declare*)this)->secondaryClause.ptr);
   }
 
-  visitor.VisitQuantStmOrExp(this);
+  visitor.VisitQuantStmOrExp(this,parent,where,chxp);
 }
 
-void SelectExpression::Accept(Visitor &visitor)
+void SelectExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   CHE *chp;
 
-  visitor.Eval(this);
+  ENTRY
   for (chp = (CHE*)quantifiers.first;
        chp;
        chp = (CHE*)chp->successor)
@@ -594,12 +595,12 @@ void SelectExpression::Accept(Visitor &visitor)
   ACCEPT(addObject.ptr);
   ACCEPT(resultSet.ptr);
 
-  visitor.VisitSelectExpression(this);
+  visitor.VisitSelectExpression(this,parent,where,chxp);
 }
 
-void NewExpression::Accept(Visitor &visitor)
+void NewExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   if (objType.ptr)
     ACCEPT(objType.ptr);
   if (itf.ptr)
@@ -614,43 +615,43 @@ void NewExpression::Accept(Visitor &visitor)
   if (butStatement.ptr)
     ACCEPT(butStatement.ptr);
 
-  visitor.VisitNewExpression(this);
+  visitor.VisitNewExpression(this,parent,where,chxp);
 }
 
-void CloneExpression::Accept(Visitor &visitor)
+void CloneExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(varName.ptr);
   ACCEPT(fromObj.ptr);
   if (butStatement.ptr)
     ACCEPT(butStatement.ptr);
 
-  visitor.VisitCloneExpression(this);
+  visitor.VisitCloneExpression(this,parent,where,chxp);
 }
 
-void CopyStatement::Accept(Visitor &visitor)
+void CopyStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(fromObj.ptr);
   ACCEPT(ontoObj.ptr);
 
-  visitor.VisitCopyStatement(this);
+  visitor.VisitCopyStatement(this,parent,where,chxp);
 }
 
-void EnumItem::Accept(Visitor &visitor)
+void EnumItem::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(itemNo.ptr);
   ACCEPT(enumType.ptr);
 
-  visitor.VisitEnumItem(this);
+  visitor.VisitEnumItem(this,parent,where,chxp);
 }
 
-void ExtendExpression::Accept(Visitor &visitor)
+void ExtendExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
-  visitor.Eval(this);
+  ENTRY
   ACCEPT(extendObj.ptr);
   ACCEPT(extendType.ptr);
 
-  visitor.VisitExtendExpression(this);
+  visitor.VisitExtendExpression(this,parent,where,chxp);
 }

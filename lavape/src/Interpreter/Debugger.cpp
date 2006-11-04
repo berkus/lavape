@@ -325,7 +325,7 @@ void CLavaDebugger::setBrkPnts()
           sData.synObjectID = chePPnew->data.SynObjID;
           sData.doc = myDoc;
           sData.nextFreeID = 0;
-          sData.finished = false;
+          // sData.finished = false;
           ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
           ((SynObject*)sData.synObj)->workFlags.INCL(isBrkPnt);
           chePPnew->data.SynObj = sData.synObj;
@@ -372,7 +372,7 @@ void CLavaDebugger::setBrkPnts()
         sData.synObjectID = ((DbgContData*)mReceive.ContData.ptr)->RunToPnt.ptr->SynObjID;
         sData.doc = myDoc;
         sData.nextFreeID = 0;
-        sData.finished = false;
+        // sData.finished = false;
         ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
         LBaseData->tempBrkPoint = sData.synObj;
         ((SynObject*)sData.synObj)->workFlags.INCL(isTempPoint);

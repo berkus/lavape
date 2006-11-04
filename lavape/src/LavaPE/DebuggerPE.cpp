@@ -319,7 +319,7 @@ void CLavaPEDebugger::adjustBrkPnts(CHAINANY* brkPntsChain)
           sData.synObjectID = chePP->data.SynObjID;
           sData.doc = (CLavaBaseDoc*)chePP->data.FuncDoc;
           sData.nextFreeID = 0;
-          sData.finished = false;
+          // sData.finished = false;
           ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&((CLavaBaseDoc*)chePP->data.FuncDoc)->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
           if (sData.synObj)
             ((SynObject*)sData.synObj)->workFlags.EXCL(isBrkPnt);
@@ -343,7 +343,7 @@ void CLavaPEDebugger::adjustBrkPnts(CHAINANY* brkPntsChain)
             sData.synObjectID = chePP->data.SynObjID;
             sData.doc = (CLavaBaseDoc*)chePP->data.FuncDoc;
             sData.nextFreeID = 0;
-            sData.finished = false;
+            // sData.finished = false;
             ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&((CLavaBaseDoc*)chePP->data.FuncDoc)->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
             if (chePP->data.Activate)
               ((SynObject*)sData.synObj)->workFlags.INCL(isBrkPnt);
@@ -374,7 +374,7 @@ void CLavaPEDebugger::checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc)
         sData.synObjectID = chePP->data.SynObjID;
         sData.doc = (CLavaBaseDoc*)chePP->data.FuncDoc;
         sData.nextFreeID = 0;
-        sData.finished = false;
+        // sData.finished = false;
         ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&((CLavaBaseDoc*)chePP->data.FuncDoc)->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
         if (sData.synObj)
           ((SynObject*)sData.synObj)->workFlags.INCL(isBrkPnt);
@@ -393,7 +393,7 @@ void CLavaPEDebugger::checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc)
         sData.synObjectID = chePP->data.SynObjID;
         sData.doc = (CLavaBaseDoc*)chePP->data.FuncDoc;
         sData.nextFreeID = 0;
-        sData.finished = false;
+        // sData.finished = false;
         ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&((CLavaBaseDoc*)chePP->data.FuncDoc)->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
         if (sData.synObj)
           ((SynObject*)sData.synObj)->workFlags.INCL(isBrkPnt);
@@ -424,7 +424,7 @@ void CLavaPEDebugger::clearBrkPnts()
           sData.synObjectID = chePP->data.SynObjID;
           sData.doc = (CLavaBaseDoc*)chePP->data.FuncDoc;
           sData.nextFreeID = 0;
-          sData.finished = false;
+          // sData.finished = false;
           ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&((CLavaBaseDoc*)chePP->data.FuncDoc)->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
           ((SynObject*)sData.synObj)->workFlags.EXCL(isBrkPnt);
         }
@@ -439,7 +439,7 @@ void CLavaPEDebugger::clearBrkPnts()
         sData.synObjectID = chePP->data.SynObjID;
         sData.doc = (CLavaBaseDoc*)chePP->data.FuncDoc;
         sData.nextFreeID = 0;
-        sData.finished = false;
+        // sData.finished = false;
         ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&((CLavaBaseDoc*)chePP->data.FuncDoc)->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
         ((SynObject*)sData.synObj)->workFlags.EXCL(isBrkPnt);
       }
@@ -501,7 +501,7 @@ void CLavaPEDebugger::restoreBrkPoints(CLavaBaseDoc* openedDoc)
           sData.synObjectID = chePP->data.SynObjID;
           sData.doc = openedDoc;
           sData.nextFreeID = 0;
-          sData.finished = false;
+          // sData.finished = false;
           ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&openedDoc->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
           //chePP->data.SynObj = sData.synObj;
           ((SynObject*)sData.synObj)->workFlags.INCL(isBrkPnt);
@@ -520,7 +520,7 @@ void CLavaPEDebugger::restoreBrkPoints(CLavaBaseDoc* openedDoc)
         sData.synObjectID = chePP->data.SynObjID;
         sData.doc = openedDoc;
         sData.nextFreeID = 0;
-        sData.finished = false;
+        // sData.finished = false;
         ((SynObjectBase*)execDecl->Exec.ptr)->MakeTable((address)&openedDoc->IDTable, 0, (SynObjectBase*)execDecl, onGetAddress, 0,0, (address)&sData);
         //chePP->data.SynObj = sData.synObj;
         ((SynObject*)sData.synObj)->workFlags.INCL(isBrkPnt);
