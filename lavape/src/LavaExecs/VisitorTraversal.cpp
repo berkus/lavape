@@ -268,7 +268,7 @@ void FuncStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAI
 {
   CHE *chp;
 
-  FuncExpression::Accept(visitor);
+  FuncExpression::Accept(visitor,parent,where,chxp);
 
   for (chp = (CHE*)outputs.first;
        chp;
