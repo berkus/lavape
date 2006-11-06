@@ -963,7 +963,7 @@ void CExecView::OnChar(QKeyEvent *e)
       if (EnableInsert()) {
         OnInsert();
         if (text->currentSelection->data.token == VarPH_T
-                          || text->currentSelection->data.token == Exp_T) {
+        || text->currentSelection->data.token == Exp_T) {
           doubleClick = true;
           Select();
           doubleClick = false;
@@ -4368,6 +4368,7 @@ bool CExecView::EditOK()
             funcStm = new FuncStatementV(objRef);
             funcStm->flags.INCL(isIniCallOrHandle);
             funcStm->flags.INCL(staticCall);
+            funcStm->varName = varName;
             text->currentSynObj = text->currentSynObj->iniCall;
             text->selectAt = sel;
             PutInsHint(funcStm,SET(lastHint,-1));

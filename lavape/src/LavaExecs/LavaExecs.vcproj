@@ -242,6 +242,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\ClosedLevelVisitor.cpp"
+				>
+			</File>
+			<File
 				RelativePath="ComboBar.cpp"
 				>
 				<FileConfiguration

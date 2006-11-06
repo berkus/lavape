@@ -32,7 +32,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
+
 #include "Syntax.h"
+
 
 #include "qwidget.h"
 #include <QScrollArea>
@@ -832,12 +834,12 @@ class Expression : public SynObject {
   {
     closedLevel=0;
   }
+  unsigned closedLevel;
   LavaDECL *formVType, *finalType;
   int sectionNumber;
   int vSectionNumber;
   bool isOuter;
   Category targetCat;
-  unsigned closedLevel;
   virtual bool IsPlaceHolder()
   {
     return false;
@@ -2011,6 +2013,7 @@ class FuncStatement : public FuncExpression {
 
   public:
   CHAINX outputs;
+  VarName *varName;
 
   FuncStatement()
   {
@@ -4379,6 +4382,22 @@ public:
   virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitVarName (VarName *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+};
+
+class ClosedLevelVisitor : public Visitor {
+public:
+  unsigned maxClosedLevel;
+
+  ClosedLevelVisitor () {
+    maxClosedLevel = 0;
+	}
+	  
+  virtual void VisitParameter (Parameter *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitObjReference (ObjReference *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitUnaryOp (UnaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitBinaryOp (BinaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitFuncExpression (FuncExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 #endif

@@ -526,12 +526,12 @@ public:
     closedLevel = 0;
   }
   
+  unsigned-- closedLevel;
   LavaDECL-- *formVType, *finalType;
   int-- sectionNumber; // section number of formal parameter type in the type of actual parameter
   int-- vSectionNumber; //section number where FMVT is defined (in analogy to funcSectionNumber)
   bool-- isOuter;  //virtual type(formVType) of formal parameter is in the outer virtual type table of call object
   Category-- targetCat;
-  unsigned-- closedLevel;
 
   virtual bool IsPlaceHolder () { return false; }
   virtual bool CallCheck (CheckData &ckd);
@@ -952,6 +952,7 @@ public:
 class FuncStatement : public FuncExpression {
 public:
   CHAINX/*Parameter*/ outputs;
+  VarName-- *varName; // reverse link to var decl in ini-clauses of declare
 
   FuncStatement (){};
   FuncStatement (Reference *ref);
@@ -2769,6 +2770,22 @@ public:
   virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitVarName (VarName *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+};
+
+class ClosedLevelVisitor : public Visitor {
+public:
+  unsigned maxClosedLevel;
+
+  ClosedLevelVisitor () {
+    maxClosedLevel = 0;
+	}
+	  
+  virtual void VisitParameter (Parameter *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitObjReference (ObjReference *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitUnaryOp (UnaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitBinaryOp (BinaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitFuncExpression (FuncExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 #endif
