@@ -3456,7 +3456,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
   return ok;
 }
 
-unsigned ObjReference::IsClosed(CheckData &ckd) {
+int ObjReference::IsClosed(CheckData &ckd) {
   //if (flags.Contains(isClosed))
   //  return true;
   return closedLevel;
@@ -4507,7 +4507,7 @@ bool FuncExpression::Check (CheckData &ckd)
   EXIT
 }
 
-unsigned FuncExpression::IsClosed(CheckData &ckd) {
+int FuncExpression::IsClosed(CheckData &ckd) {
   //CHE *outp=GetFirstOutput(funcDecl);
   //if (outp && ((LavaDECL*)outp->data)->SecondTFlags.Contains(closed))
   //  return UINT_MAX;
@@ -6381,7 +6381,7 @@ bool NewExpression::Check (CheckData &ckd)
   EXIT
 }
 
-unsigned NewExpression::IsClosed(CheckData &ckd) {
+int NewExpression::IsClosed(CheckData &ckd) {
   return ((ObjReference*)((FuncStatement*)initializerCall.ptr)->handle.ptr)->closedLevel;
 }
 

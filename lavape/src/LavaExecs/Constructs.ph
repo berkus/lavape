@@ -435,7 +435,7 @@ public:
   bool NullAdmissible (CheckData &ckd);
   bool ExpressionSelected (CHETokenNode *currentSelection);
   virtual bool IsOptional(CheckData &ckd) { return flags.Contains(isOptionalExpr); }
-  virtual unsigned IsClosed(CheckData &ckd) { return 0; }
+  virtual int IsClosed(CheckData &ckd) { return 0; }
   bool HasOptionalParts ();
   bool IsDefChecked(CheckData &ckd);
   virtual ROContext ReadOnlyContext();
@@ -508,7 +508,6 @@ struct TDOD : public SynObject {
 
   TDOD(); // required for InitCheck in Interpreter
   virtual bool IsPlaceHolder () { return false; };
-//  virtual unsigned IsClosed (CheckData &ckd);
   bool IsStateObject (CheckData &ckd);
   virtual bool IsExecutable() { return false; }
   bool accessTypeOK (SynFlags accessFlags);
@@ -526,7 +525,7 @@ public:
     closedLevel = 0;
   }
   
-  unsigned-- closedLevel;
+  int-- closedLevel;
   LavaDECL-- *formVType, *finalType;
   int-- sectionNumber; // section number of formal parameter type in the type of actual parameter
   int-- vSectionNumber; //section number where FMVT is defined (in analogy to funcSectionNumber)
@@ -600,7 +599,7 @@ public:
   bool operator== (ObjReference &objRef);
   virtual bool IsPlaceHolder () { return false; }
   virtual bool IsOptional (CheckData &ckd);
-  virtual unsigned IsClosed(CheckData &ckd);
+  virtual int IsClosed(CheckData &ckd);
   bool InConstituent (CheckData &ckd);
   bool Inherited (CheckData &ckd);
   bool OutOfScope (CheckData &ckd);
@@ -917,7 +916,7 @@ public:
   TargetType-- kindOfTarget;  // for output parameters: field/property/array elem.
 
   virtual bool IsOptional (CheckData &ckd) { return ((SynObject*)parameter.ptr)->IsOptional(ckd); };
-  virtual unsigned IsClosed (CheckData &ckd) { return ((SynObject*)parameter.ptr)->IsClosed(ckd); };
+  virtual int IsClosed (CheckData &ckd) { return ((SynObject*)parameter.ptr)->IsClosed(ckd); };
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -940,7 +939,7 @@ public:
   SynFlags-- myCtxFlags;
 
   virtual bool IsFuncInvocation () { return true; }
-  virtual unsigned IsClosed(CheckData &ckd);
+  virtual int IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -1179,7 +1178,7 @@ public:
   bool-- errorInInitializer;
 
   virtual bool NestedOptClause (SynObject *optClause);
-  virtual unsigned IsClosed(CheckData &ckd);
+  virtual int IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags);
   virtual bool Check (CheckData &ckd);
   virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -2774,7 +2773,7 @@ public:
 
 class ClosedLevelVisitor : public Visitor {
 public:
-  unsigned maxClosedLevel;
+  int maxClosedLevel;
 
   ClosedLevelVisitor () {
     maxClosedLevel = 0;
@@ -2786,6 +2785,15 @@ public:
   virtual void VisitBinaryOp (BinaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitFuncExpression (FuncExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitOldExpression (OldExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitEvalExpression (EvalExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitIfExpression (IfExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitElseExpression (ElseExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitNewExpression (NewExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitCloneExpression (CloneExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitExtendExpression (ExtendExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitSelectExpression (SelectExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 #endif

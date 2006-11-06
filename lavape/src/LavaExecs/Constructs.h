@@ -636,7 +636,7 @@ class SynObject : public SynObjectBase {
   {
     return flags.Contains(isOptionalExpr);
   }
-  virtual unsigned IsClosed(CheckData &ckd)
+  virtual int IsClosed(CheckData &ckd)
   {
     return 0;
   }
@@ -834,7 +834,7 @@ class Expression : public SynObject {
   {
     closedLevel=0;
   }
-  unsigned closedLevel;
+  int closedLevel;
   LavaDECL *formVType, *finalType;
   int sectionNumber;
   int vSectionNumber;
@@ -991,7 +991,7 @@ class ObjReference : public Expression {
     return false;
   }
   virtual bool IsOptional(CheckData &ckd);
-  virtual unsigned IsClosed(CheckData &ckd);
+  virtual int IsClosed(CheckData &ckd);
   bool InConstituent(CheckData &ckd);
   bool Inherited(CheckData &ckd);
   bool OutOfScope(CheckData &ckd);
@@ -1941,7 +1941,7 @@ class Parameter : public Expression {
   {
     return((SynObject *)parameter.ptr)->IsOptional(ckd);
   }
-  virtual unsigned IsClosed(CheckData &ckd)
+  virtual int IsClosed(CheckData &ckd)
   {
     return((SynObject *)parameter.ptr)->IsClosed(ckd);
   }
@@ -1984,7 +1984,7 @@ class FuncExpression : public Expression {
   {
     return true;
   }
-  virtual unsigned IsClosed(CheckData &ckd);
+  virtual int IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void Accept(Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -2544,7 +2544,7 @@ class NewExpression : public AttachObject {
   NESTEDANY/*Expression*/ butStatement;
   bool errorInInitializer;
   virtual bool NestedOptClause(SynObject *optClause);
-  virtual unsigned IsClosed(CheckData &ckd);
+  virtual int IsClosed(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void Accept(Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -4386,7 +4386,7 @@ public:
 
 class ClosedLevelVisitor : public Visitor {
 public:
-  unsigned maxClosedLevel;
+  int maxClosedLevel;
 
   ClosedLevelVisitor () {
     maxClosedLevel = 0;
@@ -4398,6 +4398,15 @@ public:
   virtual void VisitBinaryOp (BinaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitFuncExpression (FuncExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitOldExpression (OldExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitEvalExpression (EvalExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitIfExpression (IfExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitElseExpression (ElseExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitNewExpression (NewExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitCloneExpression (CloneExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitExtendExpression (ExtendExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitSelectExpression (SelectExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 #endif

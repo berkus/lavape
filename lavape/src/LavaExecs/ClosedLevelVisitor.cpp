@@ -27,27 +27,47 @@
 #pragma hdrstop
 
 
-
-void ClosedLevelVisitor::VisitParameter (Parameter *obj,SynObject *parent,address where,CHAINX *chxp)
-{
+void ClosedLevelVisitor::VisitParameter (Parameter *obj,SynObject *parent,address where,CHAINX *chxp) {
 }
 
-void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,address where,CHAINX *chxp)
-{
+void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,address where,CHAINX *chxp) {
 }
 
-void ClosedLevelVisitor::VisitUnaryOp (UnaryOp *obj,SynObject *parent,address where,CHAINX *chxp)
-{
+void ClosedLevelVisitor::VisitUnaryOp (UnaryOp *obj,SynObject *parent,address where,CHAINX *chxp) {
 }
 
-void ClosedLevelVisitor::VisitBinaryOp (BinaryOp *obj,SynObject *parent,address where,CHAINX *chxp)
-{
+void ClosedLevelVisitor::VisitBinaryOp (BinaryOp *obj,SynObject *parent,address where,CHAINX *chxp) {
 }
 
-void ClosedLevelVisitor::VisitMultipleOp (MultipleOp *obj,SynObject *parent,address where,CHAINX *chxp)
-{
+void ClosedLevelVisitor::VisitMultipleOp (MultipleOp *obj,SynObject *parent,address where,CHAINX *chxp) {
 }
 
-void ClosedLevelVisitor::VisitFuncExpression (FuncExpression *obj,SynObject *parent,address where,CHAINX *chxp)
-{
+void ClosedLevelVisitor::VisitFuncExpression (FuncExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
+}
+
+void ClosedLevelVisitor::VisitOldExpression (OldExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
+}
+
+void ClosedLevelVisitor::VisitEvalExpression (EvalExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
+}
+
+void ClosedLevelVisitor::VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent,address where,CHAINX *chxp) {
+}
+
+void ClosedLevelVisitor::VisitIfExpression (IfExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
+}
+
+void ClosedLevelVisitor::VisitElseExpression (ElseExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
+}
+
+void ClosedLevelVisitor::VisitNewExpression (NewExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
+}
+
+void ClosedLevelVisitor::VisitCloneExpression (CloneExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
+}
+
+void ClosedLevelVisitor::VisitExtendExpression (ExtendExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
+}
+
+void ClosedLevelVisitor::VisitSelectExpression (SelectExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
 }
