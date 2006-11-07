@@ -636,7 +636,7 @@ class SynObject : public SynObjectBase {
   {
     return flags.Contains(isOptionalExpr);
   }
-  virtual int IsClosed(CheckData &ckd)
+  virtual int ClosedLevel(CheckData &ckd)
   {
     return 0;
   }
@@ -991,7 +991,7 @@ class ObjReference : public Expression {
     return false;
   }
   virtual bool IsOptional(CheckData &ckd);
-  virtual int IsClosed(CheckData &ckd);
+  virtual int ClosedLevel(CheckData &ckd);
   bool InConstituent(CheckData &ckd);
   bool Inherited(CheckData &ckd);
   bool OutOfScope(CheckData &ckd);
@@ -1941,9 +1941,9 @@ class Parameter : public Expression {
   {
     return((SynObject *)parameter.ptr)->IsOptional(ckd);
   }
-  virtual int IsClosed(CheckData &ckd)
+  virtual int ClosedLevel(CheckData &ckd)
   {
-    return((SynObject *)parameter.ptr)->IsClosed(ckd);
+    return((SynObject *)parameter.ptr)->ClosedLevel(ckd);
   }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
@@ -1984,7 +1984,7 @@ class FuncExpression : public Expression {
   {
     return true;
   }
-  virtual int IsClosed(CheckData &ckd);
+  virtual int ClosedLevel(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void Accept(Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -2544,7 +2544,7 @@ class NewExpression : public AttachObject {
   NESTEDANY/*Expression*/ butStatement;
   bool errorInInitializer;
   virtual bool NestedOptClause(SynObject *optClause);
-  virtual int IsClosed(CheckData &ckd);
+  virtual int ClosedLevel(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void Accept(Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -4386,10 +4386,10 @@ public:
 
 class ClosedLevelVisitor : public Visitor {
 public:
-  int maxClosedLevel;
+  CLavaBaseDoc *document;
 
-  ClosedLevelVisitor () {
-    maxClosedLevel = 0;
+  ClosedLevelVisitor (CLavaBaseDoc *doc) {
+    document = doc;
 	}
 	  
   virtual void VisitParameter (Parameter *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);

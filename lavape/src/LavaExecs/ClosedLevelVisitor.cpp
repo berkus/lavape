@@ -28,9 +28,28 @@
 
 
 void ClosedLevelVisitor::VisitParameter (Parameter *obj,SynObject *parent,address where,CHAINX *chxp) {
+  obj->closedLevel = ((Expression*)obj->parameter.ptr)->closedLevel;
 }
 
 void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,address where,CHAINX *chxp) {
+  DWORD dw;
+  TIDType idtype;
+  VarName *vn;
+
+  if (obj->refIDs.first == obj->refIDs.last) {
+    dw = document->IDTable.GetVar(((TDOD*)((CHE*)obj->refIDs.first)->data)->ID,idtype);
+    if (!dw) return;
+    else if (idtype == localID) {
+      vn = (VarName*)dw;
+      if (vn->parentObject->parentObject->IsDeclare()
+      && ((Declare*)vn->parentObject->parentObject)->secondaryClause.ptr) {
+      }
+      else {
+      }
+    }
+  }
+  else
+    obj->closedLevel = 0;
 }
 
 void ClosedLevelVisitor::VisitUnaryOp (UnaryOp *obj,SynObject *parent,address where,CHAINX *chxp) {

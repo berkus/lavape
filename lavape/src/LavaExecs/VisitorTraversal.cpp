@@ -137,7 +137,7 @@ void SelfVar::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *ch
 {
   CHE *chp;
 
-  ENTRY
+  //ENTRY
   ACCEPT(execName.ptr);
 
   if (formParms.ptr)
