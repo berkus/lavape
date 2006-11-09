@@ -46,11 +46,41 @@ dirs:
 	cd ../wxqDocView; if [ ! -e Generated ]; then mkdir Generated; fi; \
 	cd ../..
 
-links: \
+ifeq ($(OPSYS),MINGW32)
+  ITPF = src/Interpreter/Constructs.ph \
+  src/Interpreter/Constructs.cpp \
+  src/Interpreter/Check.cpp \
+  src/Interpreter/Check.h \
+  src/Interpreter/Tokens.ph \
+  src/Interpreter/Tokens.cpp \
+  src/Interpreter/VisitorTraversal.cpp \
+  src/Interpreter/TableVisitor.cpp \
+  src/Interpreter/ClosedLevelVisitor.cpp
+endif
+
+links: $(ITPF) \
 	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
 	bin/assistant
 
+src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
+	$(LN) $< $@
+src/Interpreter/Constructs.cpp: src/LavaExecs/Constructs.cpp
+	$(LN) $< $@
+src/Interpreter/Check.cpp: src/LavaExecs/Check.cpp
+	$(LN) $< $@
+src/Interpreter/Check.h: src/LavaExecs/Check.h
+	$(LN) $< $@
+src/Interpreter/Tokens.ph: src/LavaExecs/Tokens.ph
+	$(LN) $< $@
+src/Interpreter/Tokens.cpp: src/LavaExecs/Tokens.cpp
+	$(LN) $< $@
+src/Interpreter/VisitorTraversal.cpp: src/LavaExecs/VisitorTraversal.cpp
+	$(LN) $< $@
+src/Interpreter/TableVisitor.cpp: src/LavaExecs/TableVisitor.cpp
+	$(LN) $< $@
+src/Interpreter/ClosedLevelVisitor.cpp: src/LavaExecs/ClosedLevelVisitor.cpp
+	$(LN) $< $@
 bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
 	rm -f $@; $(LN) $< $@
 bin/Components/LavaStream.lava: samples/LavaStream.lava
