@@ -1,6 +1,14 @@
 <ui version="4.0" >
  <class>CMainFrame</class>
  <widget class="QMainWindow" name="CMainFrame" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>539</width>
+    <height>213</height>
+   </rect>
+  </property>
   <property name="windowTitle" >
    <string>Lava Interpreter</string>
   </property>
@@ -65,7 +73,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>640</width>
+     <width>539</width>
      <height>19</height>
     </rect>
    </property>
