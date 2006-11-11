@@ -241,6 +241,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\LavaExecs\ClosedLevelVisitor.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\LavaExecs\Constructs.cpp"
 				>
 				<FileConfiguration
