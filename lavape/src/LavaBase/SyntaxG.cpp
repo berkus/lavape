@@ -611,8 +611,8 @@ void CDPTEnumDescription (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPLavaDECL(pgf,cid,&vp->EnumField,false);
-    CDPLavaDECL(pgf,cid,&vp->MenuTree,false);
+    CDPLavaDECL(pgf,cid,&vp->EnumField);
+    CDPLavaDECL(pgf,cid,&vp->MenuTree);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTEnumDescription
 

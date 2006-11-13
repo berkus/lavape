@@ -86,7 +86,7 @@ ifeq ($(OPSYS),Darwin)
   DLLPREFIX = lib
   DLLSUFFIX = .dylib
   OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
-  OSCPPFLAGS = -D__$(OPSYS) -fno-strict-aliasing
+  OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
   CC = c++
 else
   ifeq ($(OPSYS),MINGW32)
@@ -94,7 +94,7 @@ else
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
     IMPLIB = -mthreads -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
 #    IMPLIB = -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
-	  OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions -fno-strict-aliasing
+	  OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions -ffriend-injection
     OSDLLFLAGS = -shared
     OSEXECFLAGS = -fstack-check
     EXEC2 = $(EXEC).exe
@@ -110,7 +110,7 @@ else
 	  ifeq ($(OPSYS),SunOS)
 		  OSCPPFLAGS = -fPIC -D__$(OPSYS) -fno-strict-aliasing
 	  else
-		  OSCPPFLAGS = -D__$(OPSYS) -fno-strict-aliasing
+		  OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
 		  DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
       DLLSUFFIX = .so
 		  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTUX)/lib

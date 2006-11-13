@@ -896,9 +896,6 @@ struct LAVABASE_DLL NSTTAnnotation : NST0TAnnotation {
   virtual ~NSTTAnnotation () { Destroy(); }
 };
 
-extern LAVABASE_DLL void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                        bool baseCDP);
-
 struct LAVABASE_DLL LavaDECL : public DObject  {
   DECLARE_DYNAMIC_CLASS(LavaDECL)
 
@@ -968,6 +965,9 @@ struct LAVABASE_DLL LavaDECL : public DObject  {
   virtual void CopyData (AnyType *from) {
     *this = *(LavaDECL*)from;
   }
+
+  friend LAVABASE_DLL void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP=false);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
