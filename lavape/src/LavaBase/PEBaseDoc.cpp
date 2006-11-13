@@ -146,7 +146,7 @@ CLavaBaseData* CPEBaseDoc::GetLBaseData()
 void CPEBaseDoc::IncludeHint(const QString& fullfn, CHESimpleSyntax* cheSyn)
 {
   QString* pfn = new QString(fullfn);
-  CLavaPEHint *newHint = new CLavaPEHint(CPECommand_Include, this, (const unsigned long)0, (DWORD) cheSyn, (DWORD)pfn, (DWORD)cheSyn->predecessor);
+  CLavaPEHint *newHint = new CLavaPEHint(CPECommand_Include, this, (const unsigned long)0,  cheSyn, pfn, cheSyn->predecessor);
   UndoMem.AddToMem(newHint);
 }
 
@@ -237,7 +237,7 @@ bool CPEBaseDoc::Step(CLavaPEHint* hint, LavaDECL* parDECL, CHE*& relElem)
     ipos--;
   }
   if (!relElem) {
-    hint->CommandData3 = (int)hint->CommandData3 - ipos;
+    hint->CommandData3 = (void*)(((int)hint->CommandData3) - ipos);
     if (cheElLast)
       relElem = (CHE*)cheElLast->predecessor;
   }
@@ -267,7 +267,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
       com = CPECommand_Insert;
     if (hint->CommandData2)
       str2 = new DString(*(DString*)hint->CommandData2);
-    viewHint = new CLavaPEHint(com, this, hint->FirstLast, hint->CommandData1, (DWORD)str2, hint->CommandData3,0,0,0,0,hint->CommandData8);
+    viewHint = new CLavaPEHint(com, this, hint->FirstLast, hint->CommandData1, str2, hint->CommandData3,0,0,0,0,hint->CommandData8);
   }
 
   if (hint->CommandData4)
@@ -389,9 +389,9 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
               ((LavaDECL*)cheElDef->data)->WorkFlags.EXCL(fromPrivToPub);
           }
         }
-        newHint = new CLavaPEHint(CPECommand_Insert, this, firstlast, (DWORD)elDECL,
-                                  (DWORD)str2, (DWORD)pos, hint->CommandData4);
-        newHint->CommandData9 = (DWORD)cheHint;
+        newHint = new CLavaPEHint(CPECommand_Insert, this, firstlast, elDECL,
+                                  str2, (void*)pos, hint->CommandData4);
+        newHint->CommandData9 = cheHint;
         lastDefType = elDECL->DeclType;
         cheNext = (CHE*)cheHint->successor;
         cheElDef = (CHE*)hintDECL->NestedDecls.Uncouple(cheHint);
@@ -458,7 +458,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
       newHint = hint;
       if (!undo && !redo) {
         cheElDef = NewCHE((LavaDECL*)newHint->CommandData1);
-        newHint->CommandData9 = (DWORD)cheElDef;
+        newHint->CommandData9 = cheElDef;
       }
       else {
         cheElDef = (CHE*)newHint->CommandData9;
@@ -539,7 +539,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
           }
       }
       if (newHint->CommandData8)
-        ExecViewPrivToPub(*pNewDecl,newHint->CommandData8);
+        ExecViewPrivToPub(*pNewDecl,(int)newHint->CommandData8);
     }
   }//insert
   else {    // CPECommand_Delete:
@@ -580,23 +580,23 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
                   && ((elDECL->DeclType == IAttr) || (elDECL->DeclType == OAttr)))
                 pos = 1;
           }
-        newHint = new CLavaPEHint(CPECommand_Delete, this, firstlast, (DWORD)elDECL,
-                                  (DWORD)str2, (DWORD)pos, hint->CommandData4);
+        newHint = new CLavaPEHint(CPECommand_Delete, this, firstlast, elDECL,
+                                  str2, (void*)pos, hint->CommandData4);
         Step(newHint, parEl, relElem);
         while (relElem //delete von nicht aufeinender folgenden Elementen
           && (((LavaDECL*)relElem->data)->OwnID != elDECL->OwnID)) {
           pos++;
           relElem = (CHE*)relElem->successor;
         }
-        newHint->CommandData3 = (DWORD)pos; //korrigiere pos
+        newHint->CommandData3 = (void*)pos; //korrigiere pos
         UndoMem.AddToMem(newHint);
         elRemoved = (CHE*)parEl->NestedDecls.Uncouple(relElem);
         if (elRemoved) {
           if (firstlast.Contains(firstHint) || ((LavaDECL*)elRemoved->data)->WorkFlags.Contains(selAfter))
             SetSelectDECL(elRemoved);
           ((LavaDECL*)elRemoved->data)->WorkFlags.EXCL(selAfter);
-          newHint->CommandData1 = (DWORD)elRemoved->data;
-          newHint->CommandData9 = (DWORD)elRemoved;
+          newHint->CommandData1 = elRemoved->data;
+          newHint->CommandData9 = elRemoved;
           IDTable.DeleteID(((LavaDECL*)elRemoved->data)->OwnID);
           if (((LavaDECL*)elRemoved->data)->DeclType == VirtualType)
             ((LavaDECL*)elRemoved->data)->ParentDECL->WorkFlags.INCL(recalcVT);
@@ -615,8 +615,8 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
         if (hint->FirstLast.Contains(firstHint) || ((LavaDECL*)elRemoved->data)->WorkFlags.Contains(selAfter))
           SetSelectDECL(elRemoved);
         ((LavaDECL*)elRemoved->data)->WorkFlags.EXCL(selAfter);
-        hint->CommandData1 = (DWORD)elRemoved->data;
-        hint->CommandData9 = (DWORD)elRemoved;
+        hint->CommandData1 = elRemoved->data;
+        hint->CommandData9 = elRemoved;
         IDTable.DeleteID(hintDECL->OwnID);
         if ((hintDECL->DeclType == VirtualType) || (hintDECL->DeclType == Function) ||  (hintDECL->DeclType == Attr) )
           hintDECL->ParentDECL->WorkFlags.INCL(recalcVT);
@@ -703,7 +703,7 @@ void  CPEBaseDoc::ChangeDECL(CLavaPEHint* hint, bool undo)
     ((LavaDECL*)hint->CommandData1)->WorkFlags.INCL(selAfter);
   else
     ((LavaDECL*)hint->CommandData1)->WorkFlags.EXCL(selAfter);
-  hint->CommandData1 = (DWORD)oldDECL;
+  hint->CommandData1 = oldDECL;
 }
 
 
@@ -754,7 +754,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
         ptr = ((LavaDECL*)hint->CommandData1)->DECLComment.ptr;
         ((LavaDECL*)hint->CommandData1)->DECLComment.ptr = (TDECLComment*)hint->CommandData2;
       }
-      hint->CommandData2 = (DWORD)ptr;
+      hint->CommandData2 = ptr;
       break;
     case CPECommand_Exec:
       if (LBaseData->ExecUpdate) {
@@ -808,7 +808,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
           inclDel = false;
           AbsPathName(inclFile, IDTable.DocDir);
           QString inclFile_q = inclFile.c;
-          hint->CommandData1 = (DWORD)IncludeSyntax(inclFile_q, bb, 2);
+          hint->CommandData1 = IncludeSyntax(inclFile_q, bb, 2);
           if (!hint->CommandData1)
             return false;
           che1 = (CHESimpleSyntax*)hint->CommandData1;
@@ -827,7 +827,7 @@ bool CPEBaseDoc::UpdateDoc(CLavaBaseView *, bool undo, CLavaPEHint *doHint, bool
 
       if (!SameFile(che1->data.SyntaxName, IDTable.DocDir, che2->data.SyntaxName, IDTable.DocDir)) {
         che2 = (CHESimpleSyntax*)mySynDef->SynDefTree.Uncouple(((CHESimpleSyntax*)hint->CommandData3)->successor);
-        hint->CommandData1 = (DWORD)che2;
+        hint->CommandData1 = che2;
         mySynDef->SynDefTree.Insert((CHESimpleSyntax*)che2->predecessor, che1);
         inclFile = che1->data.SyntaxName;
         newINCL = che1->data.nINCL;
@@ -976,7 +976,7 @@ bool CPEBaseDoc::OnSaveDocument(const QString& lpszPathName)
   }
   if (isnew) {
     pNewName = new DString(IDTable.DocName);
-    hint = new CLavaPEHint(CPECommand_Change, this, (const unsigned long)3, 0, (DWORD)pNewName, 0, 0);
+    hint = new CLavaPEHint(CPECommand_Change, this, (SynFlags)3, 0, pNewName, 0, 0);
     IDTable.IDTab[0]->FileName = relFn;
     UpdateDoc(0, false, hint);
     delete hint;

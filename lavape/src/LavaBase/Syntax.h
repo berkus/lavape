@@ -53,7 +53,7 @@ struct LAVABASE_DLL TSigRef : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTSigRef(pgf,cid,(address)this,baseCDP); }
+  { CDPTSigRef(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL TSigDef : public DObject  {
@@ -73,7 +73,7 @@ struct LAVABASE_DLL TSigDef : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTSigDef(pgf,cid,(address)this,baseCDP); }
+  { CDPTSigDef(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL TID : public DObject  {
@@ -111,7 +111,7 @@ struct LAVABASE_DLL TID : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTID(pgf,cid,(address)this,baseCDP); }
+  { CDPTID(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL CHETID : ChainAnyElem {
@@ -188,7 +188,7 @@ class LAVABASE_DLL CLavaError : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPCLavaError(pgf,cid,(address)this,baseCDP); }
+  { CDPCLavaError(pgf,cid,this,baseCDP); }
 };
 
 class LAVABASE_DLL TVElem : public DObject  {
@@ -224,7 +224,7 @@ class LAVABASE_DLL TVElem : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTVElem(pgf,cid,(address)this,baseCDP); }
+  { CDPTVElem(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL CHETVElem : ChainAnyElem {
@@ -261,7 +261,7 @@ class LAVABASE_DLL TVElems : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTVElems(pgf,cid,(address)this,baseCDP); }
+  { CDPTVElems(pgf,cid,this,baseCDP); }
 };
 
 enum TEmphasis {
@@ -585,7 +585,7 @@ struct LAVABASE_DLL TDECLComment : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTDECLComment(pgf,cid,(address)this,baseCDP); }
+  { CDPTDECLComment(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL NST0TDECLComment {
@@ -654,7 +654,7 @@ struct LAVABASE_DLL EnumSelId : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPEnumSelId(pgf,cid,(address)this,baseCDP); }
+  { CDPEnumSelId(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL CHEEnumSelId : ChainAnyElem {
@@ -743,7 +743,7 @@ struct LAVABASE_DLL TLength : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTLength(pgf,cid,(address)this,baseCDP); }
+  { CDPTLength(pgf,cid,this,baseCDP); }
 };
 
 enum AnnoExType {
@@ -788,7 +788,7 @@ struct LAVABASE_DLL TAnnoEx : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTAnnoEx(pgf,cid,(address)this,baseCDP); }
+  { CDPTAnnoEx(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL CHETAnnoEx : ChainAnyElem {
@@ -857,7 +857,7 @@ struct LAVABASE_DLL TAnnotation : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTAnnotation(pgf,cid,(address)this,baseCDP); }
+  { CDPTAnnotation(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL NST0TAnnotation {
@@ -895,6 +895,9 @@ struct LAVABASE_DLL NSTTAnnotation : NST0TAnnotation {
 
   virtual ~NSTTAnnotation () { Destroy(); }
 };
+
+extern LAVABASE_DLL void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr,
+                                        bool baseCDP);
 
 struct LAVABASE_DLL LavaDECL : public DObject  {
   DECLARE_DYNAMIC_CLASS(LavaDECL)
@@ -966,12 +969,9 @@ struct LAVABASE_DLL LavaDECL : public DObject  {
     *this = *(LavaDECL*)from;
   }
 
-  friend LAVABASE_DLL void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                        bool baseCDP=false);
-
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPLavaDECL(pgf,cid,(address)this,baseCDP); }
+  { CDPLavaDECL(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL NST0LavaDECL {
@@ -1026,7 +1026,7 @@ struct LAVABASE_DLL TEnumDescription : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTEnumDescription(pgf,cid,(address)this,baseCDP); }
+  { CDPTEnumDescription(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL TIteration : public DObject  {
@@ -1047,7 +1047,7 @@ struct LAVABASE_DLL TIteration : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTIteration(pgf,cid,(address)this,baseCDP); }
+  { CDPTIteration(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL SimpleSyntax : public DObject  {
@@ -1078,7 +1078,7 @@ struct LAVABASE_DLL SimpleSyntax : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPSimpleSyntax(pgf,cid,(address)this,baseCDP); }
+  { CDPSimpleSyntax(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL CHESimpleSyntax : ChainAnyElem {
@@ -1125,7 +1125,7 @@ struct LAVABASE_DLL ClipSimpleSyntax : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPClipSimpleSyntax(pgf,cid,(address)this,baseCDP); }
+  { CDPClipSimpleSyntax(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL CHEClipSimpleSyntax : ChainAnyElem {
@@ -1166,7 +1166,7 @@ struct LAVABASE_DLL SynObjectBase : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPSynObjectBase(pgf,cid,(address)this,baseCDP); }
+  { CDPSynObjectBase(pgf,cid,this,baseCDP); }
 };
 
 enum DbgCommand {
@@ -1232,7 +1232,7 @@ struct LAVABASE_DLL DDItemData : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDDItemData(pgf,cid,(address)this,baseCDP); }
+  { CDPDDItemData(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL StackData : public DObject  {
@@ -1255,7 +1255,7 @@ struct LAVABASE_DLL StackData : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPStackData(pgf,cid,(address)this,baseCDP); }
+  { CDPStackData(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL CHEStackData : ChainAnyElem {
@@ -1299,7 +1299,7 @@ struct LAVABASE_DLL ProgPoint : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPProgPoint(pgf,cid,(address)this,baseCDP); }
+  { CDPProgPoint(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL CHEProgPoint : ChainAnyElem {
@@ -1377,7 +1377,7 @@ struct LAVABASE_DLL DbgStopData : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDbgStopData(pgf,cid,(address)this,baseCDP); }
+  { CDPDbgStopData(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL DbgContData : public DObject  {
@@ -1402,7 +1402,7 @@ struct LAVABASE_DLL DbgContData : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDbgContData(pgf,cid,(address)this,baseCDP); }
+  { CDPDbgContData(pgf,cid,this,baseCDP); }
 };
 
 typedef CHAINANY/*int*/ ChObjRq;
@@ -1508,7 +1508,7 @@ struct LAVABASE_DLL DbgMessage0 : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDbgMessage0(pgf,cid,(address)this,baseCDP); }
+  { CDPDbgMessage0(pgf,cid,this,baseCDP); }
 };
 
 struct LAVABASE_DLL DbgMessage : public DObject  {
@@ -1554,7 +1554,7 @@ struct LAVABASE_DLL DbgMessage : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDbgMessage(pgf,cid,(address)this,baseCDP); }
+  { CDPDbgMessage(pgf,cid,this,baseCDP); }
 };
 
 

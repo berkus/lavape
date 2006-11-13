@@ -40,7 +40,7 @@ CVTItemData::CVTItemData(TNodeType t, CHETVElem* V, int A)
 
 CVTView::CVTView(QWidget* parent, wxDocument *doc)
 : CTreeView(parent, doc, "VTView")
-{  
+{
   myMainView = 0;
   myDECL = 0;
   CollectDECL = 0;
@@ -64,7 +64,7 @@ CLavaPEDoc* CVTView::GetDocument() // non-debug version is inline
   return (CLavaPEDoc*)m_viewDocument;
 }
 
-bool CVTView::OnCreate() 
+bool CVTView::OnCreate()
 {
 //  connect(Tree,SIGNAL(itemSelectionChanged()), SLOT(OnSelchanged()));
   connect(Tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT    (OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
@@ -116,7 +116,7 @@ void CVTView::OnInitialUpdate()
 }
 
 
-void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint) 
+void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
 {
   if (!pHint && (undoRedo != 3) && (undoRedo < CHLV_noCheck))
     return;
@@ -132,7 +132,7 @@ void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
     return;
   if (!bb) {
     myDECL = GetDocument()->IDTable.GetDECL(myID);
-    if (myDECL) 
+    if (myDECL)
       bb = true;
     else {
       DeleteItemData(0);
@@ -171,7 +171,7 @@ void CVTView::OnUpdate(wxView* , unsigned undoRedo, QObject* pHint)
     else {
       myDECL = 0;
     }
-    if (pHint && (((CLavaPEHint*)pHint)->com == CPECommand_OpenSelView) 
+    if (pHint && (((CLavaPEHint*)pHint)->com == CPECommand_OpenSelView)
               && !((CLavaPEHint*)pHint)->CommandData3)
       ((CTreeFrame*)GetParentFrame())->CalcSplitters(true);
   }
@@ -199,10 +199,10 @@ bool CVTView::DrawTreeAgain()
   lastCurrent = 0;
   if (myDECL->DeclType == Package)
     lab = DString("Virtual types of ") + myDECL->FullName;
-  else  
+  else
     lab = DString("VTs and features of ") + myDECL->FullName;
   topNode = InsertItem(lab.c, overRidesBM,/*QPixmapCache::find("l_overwrit"),*/ TVI_ROOT,TVI_FIRST);
-  if (myDECL->DeclType == Package) 
+  if (myDECL->DeclType == Package)
     itemP = topNode;
   El = (CHETVElem*)myDECL->VElems.VElems.first;
   while (El) {
@@ -234,13 +234,13 @@ bool CVTView::DrawTreeAgain()
           data = new CVTItemData(TNodeType_Class, El, 0);
           if (ClDECL)
             labCl = ClDECL->FullName;
-          else 
+          else
             if (El->data.VTClss.nINCL)
               return true;
             else
               labCl = "??";
           itemPCl = InsertItem(labCl.c, bmCl, itemP);
-          itemPCl->setItemData( data); 
+          itemPCl->setItemData( data);
         }
         itemCl = itemPCl;
       }
@@ -261,7 +261,7 @@ bool CVTView::DrawTreeAgain()
           data = new CVTItemData(TNodeType_Class, El, 0);
           if (ClDECL)
             labCl = ClDECL->FullName;
-          else 
+          else
             if (El->data.VTClss.nINCL)
               return true;
             else
@@ -273,9 +273,9 @@ bool CVTView::DrawTreeAgain()
       }
       data = new CVTItemData(type, El, 0);
       item = InsertItem(lab.c, bm, itemCl);
-      if (El->data.Ambgs.first || !El->data.ok) 
+      if (El->data.Ambgs.first || !El->data.ok)
         item->SetItemMask(true, false);
-      item->setItemData(  data); 
+      item->setItemData(  data);
       cheID = (CHETID*)El->data.Ambgs.first;
       while (cheID) {
         ElDECL = GetDocument()->IDTable.GetDECL(cheID->data);
@@ -313,7 +313,7 @@ void CVTView::DeleteItemData(CTreeItem* parent)
     if (parent != Tree->RootItem) {
       CVTItemData * itd = (CVTItemData*)parent->getItemData();
       parent->setItemData(0);
-      if (itd) 
+      if (itd)
         delete itd;
     }
     CTreeItem* item = (CTreeItem*)parent->child(0);
@@ -340,22 +340,22 @@ void CVTView::ExpandItem(CTreeItem* item, int level)
 
 }
 
-void CVTView::destroy() 
+void CVTView::destroy()
 {
   if (((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext)
     ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext->RemoveView(this);
   DeleteItemData(0);
-  //CTreeView::destroy(); 
+  //CTreeView::destroy();
 }
 
 void CVTView::OnGotoImpl()
 {
   gotoDef((CTreeItem*)Tree->currentItem(), true);
- 
+
 }
 
 
-void CVTView::OnGotoDecl() 
+void CVTView::OnGotoDecl()
 {
   gotoDef((CTreeItem*)Tree->currentItem(), false);
 }
@@ -379,7 +379,7 @@ void CVTView::gotoDef(CTreeItem* item, bool toImpl)
         bCase = findInterfaceFeatures;
       ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = new CBrowseContext(this, GetDocument()->IDTable.GetDECL(itd->VTEl_Tree.VTClss), (int)bCase);//, (CTreeItem*)item->parent());//GetParentItem(item));
       if (toImpl) {
-        if (!LBaseData->Browser->GotoImpl(GetDocument(), itd->VTEl_Tree.VTClss)) 
+        if (!LBaseData->Browser->GotoImpl(GetDocument(), itd->VTEl_Tree.VTClss))
           QMessageBox::critical(this, qApp->applicationName(),ERR_NoClassImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       }
       else
@@ -391,7 +391,7 @@ void CVTView::gotoDef(CTreeItem* item, bool toImpl)
         id = itd->VTEl_Tree.VTEl;
       else {
         cheID = (CHETID*)itd->VTEl_Tree.Ambgs.first;
-        for (ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++) 
+        for (ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++)
           cheID = (CHETID*)cheID->successor;
         if (cheID)
           id = cheID->data;
@@ -399,8 +399,8 @@ void CVTView::gotoDef(CTreeItem* item, bool toImpl)
       decl = GetDocument()->IDTable.GetDECL(id);
       ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext = new CBrowseContext(this, decl);//, (CTreeItem*)item->parent());//GetParentItem(item));
       if (toImpl) {
-        if (!LBaseData->Browser->GotoImpl(GetDocument(), decl)) 
-          if (decl->TypeFlags.Contains(isAbstract) || decl->TypeFlags.Contains(isNative)) 
+        if (!LBaseData->Browser->GotoImpl(GetDocument(), decl))
+          if (decl->TypeFlags.Contains(isAbstract) || decl->TypeFlags.Contains(isNative))
             QMessageBox::information(this, qApp->applicationName(),ERR_NoImplForAbstract,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
           else
             QMessageBox::critical(this, qApp->applicationName(),ERR_NoFuncImpl,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
@@ -432,7 +432,7 @@ CTreeItem* CVTView::BrowseTree(TID id, CTreeItem* start, int browseCase)
           elId = itd->VTEl_Tree.VTEl;
         else {
           CHETID* cheID = (CHETID*)itd->VTEl_Tree.Ambgs.first;
-          for (int ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++) 
+          for (int ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++)
             cheID = (CHETID*)cheID->successor;
           if (cheID)
             elId = cheID->data;
@@ -464,7 +464,7 @@ CTreeItem* CVTView::BrowseTree(TID id, CTreeItem* start, int browseCase)
             elId = itd->VTEl_Tree.VTEl;
           else {
             CHETID* cheID = (CHETID*)itd->VTEl_Tree.Ambgs.first;
-            for (int ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++) 
+            for (int ii =1; (cheID != 0) && (ii<itd->AmbgNo); ii++)
               cheID = (CHETID*)cheID->successor;
             if (cheID)
               elId = cheID->data;
@@ -486,7 +486,7 @@ CTreeItem* CVTView::BrowseTree(TID id, CTreeItem* start, int browseCase)
 
 }
 
-void CVTView::OnUpdateGotoImpl(QAction* action) 
+void CVTView::OnUpdateGotoImpl(QAction* action)
 {
   CVTItemData * itd;
   LavaDECL* decl;
@@ -506,7 +506,7 @@ void CVTView::OnUpdateGotoImpl(QAction* action)
     action->setEnabled(false);
 }
 
-void CVTView::OnUpdateGotodef(QAction* action) 
+void CVTView::OnUpdateGotodef(QAction* action)
 {
   CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (item) {
@@ -518,7 +518,7 @@ void CVTView::OnUpdateGotodef(QAction* action)
 }
 
 /*
-void CVTView::OnDblclk(QListViewItem* item, const QPoint&, int) 
+void CVTView::OnDblclk(QListViewItem* item, const QPoint&, int)
 {
   gotoDef((CTreeItem*)item);
 }
@@ -565,13 +565,13 @@ bool CVTView::EnableOverride(CTreeItem* item)
   return false;
 }
 
-void CVTView::OnUpdateOverride(QAction* action) 
-{  
+void CVTView::OnUpdateOverride(QAction* action)
+{
   action->setEnabled(!multiSelectCanceled && (!GetDocument()->changeNothing) &&
         EnableOverride((CTreeItem*)Tree->currentItem()));
 }
 
-void CVTView::OnOverride() 
+void CVTView::OnOverride()
 {
   OnOverrideI((CTreeItem*)(CTreeItem*)Tree->currentItem());
 }
@@ -611,7 +611,7 @@ void CVTView::OnOverrideI(CTreeItem* item)
   TIDType type;
   CHE* che;
   DString *str2;
-  DWORD d4;
+  void *d4;
   int pos;
   CLavaPEHint *hintConcern, *hint;
 
@@ -638,7 +638,7 @@ void CVTView::OnOverrideI(CTreeItem* item)
       while (che) {
         elDECL = (LavaDECL*)che->data;
         if (elDECL->WorkFlags.Contains(checkmark)) {
-          if ((elDECL->DeclType == Attr) || (elDECL->DeclType == Function)) 
+          if ((elDECL->DeclType == Attr) || (elDECL->DeclType == Function))
             myDECL->TreeFlags.INCL(MemsExpanded);
           else
             if (elDECL->DeclType == VirtualType)
@@ -671,7 +671,7 @@ void CVTView::OnOverrideI(CTreeItem* item)
           if (elDECL->DeclType == Interface)
             elDECL->fromBType = NonBasic;
         }
-          
+
         che = (CHE*)che->successor;
       }
       currentBaseID = itd->VTEl_Tree.VTBaseEl;
@@ -680,13 +680,13 @@ void CVTView::OnOverrideI(CTreeItem* item)
       OverDECL->ResetCheckmarks();
       myDECL->TreeFlags.INCL(isExpanded);
       str2 = new DString(myDECL->FullName);
-      d4 = GetDocument()->IDTable.GetVar(myID, type);
+      d4 = (void*)GetDocument()->IDTable.GetVar(myID, type);
       pos = 10000;
-      hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, (DWORD) decl, (DWORD)str2, (DWORD)pos, d4);
+      hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1,  decl, str2, (void*)pos, d4);
       if (myDECL->DeclType != Package)
         GetDocument()->IDTable.SetPatternStart(parentDECL->OwnID, myDECL->OwnID);
       GetDocument()->UpdateDoc(this, false, hint);
-      hintConcern = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)0, (DWORD) myDECL, 0, 0, d4);
+      hintConcern = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)0,  myDECL, 0, 0, d4);
       GetDocument()->ConcernForms(hintConcern);
       GetDocument()->ConcernImpls(hintConcern, *(LavaDECL**)d4);
       GetDocument()->ConcernExecs(hint);
@@ -708,12 +708,12 @@ void CVTView::OnOverrideI(CTreeItem* item)
         *decl = *OverDECL;
         PrepareDECL(decl, itd);
       }
-      d4 = GetDocument()->IDTable.GetVar(myID, type);
+      d4 = (void*)GetDocument()->IDTable.GetVar(myID, type);
       str2 = new DString(myDECL->FullName);
       pos = myDECL->GetAppendPos(decl->DeclType);
       currentBaseID = itd->VTEl_Tree.VTBaseEl;
       currentBrType = findBaseTID;
-      hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, (DWORD) decl, (DWORD)str2, (DWORD)pos, d4);
+      hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1,  decl, str2, (void*)pos, d4);
       if (!CollectDECL)
         GetDocument()->UndoMem.AddToMem(hint);
       GetDocument()->UpdateDoc(this, false, hint);
@@ -759,7 +759,7 @@ void CVTView::SetVTError(CTreeItem* item)
       ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetErrorOnUtil(ErrChain);
     }
   }
-  else 
+  else
     ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->ResetError();
 }
 
@@ -810,7 +810,7 @@ void CVTView::setSelPost(QTreeWidgetItem* selItem)
 }
 
 
-void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*) 
+void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
 {
   bool ok = true;
   CTreeItem *itemOver = lastCurrent;// *selItem = (CTreeItem*)Tree->currentItem();
@@ -827,9 +827,9 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
       if (Tree->withShift) {
         while (itemOver && (itemOver != selItem)) {
           itemOver = (CTreeItem*)itemOver->nextSibling();//Tree->GetNextSiblingItem(itemOver);
-          if (itemOver && !AddToExChain(itemOver)) 
+          if (itemOver && !AddToExChain(itemOver))
             itemOver = 0;
-          
+
         }
         if (!itemOver || !CollectDECL->NestedDecls.first || (itemOver != selItem)) {
           multiSelectCanceled = true;
@@ -863,7 +863,7 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
     }
   }
   else {
-    if (!itemOver) 
+    if (!itemOver)
       DeleteExChain(false);
   }
   lastCurrent = (CTreeItem*)selItem;
@@ -886,7 +886,7 @@ void CVTView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem*)
     wxTheApp->updateButtonsMenus();
 }
 
-void CVTView::OnActivateView(bool bActivate, wxView *deactiveView) 
+void CVTView::OnActivateView(bool bActivate, wxView *deactiveView)
 {
   CTreeItem* sel;
   if (GetDocument()->mySynDef)

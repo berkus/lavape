@@ -23,20 +23,20 @@ public:
 
   DString ()
   { l = 0; m = 0; c = 0; }
-  
+
   DString (const DString& str) { init(str); }
 
   DString& operator= (const DString& str);
   /* Assigns (= copies the contents of) str to *this */
-  
+
   DString (const unsigned maxLen);
-  
+
   DString (const char * const s);
   // '\0' terminates s
-  
+
   DString (const unsigned char * const s);
   // '\0' terminates s
-  
+
   DString (const char * const s, const unsigned length);
   // explicit length specification for s
 
@@ -45,7 +45,7 @@ public:
 
   virtual void Destroy ()
   { if (c) delete [] c; l = 0; m = 0; c = 0; }
-  
+
   inline unsigned Length () const { return l; }
 
   inline unsigned MaxLength () const { return m; }
@@ -79,7 +79,7 @@ public:
 
   DString& operator+= (const DString& app);
   /* *this = concatenation of *this and app */
-  
+
   friend DISCO_DLL DString operator+ (const DString& str1,
            const DString& str2);
   /* result = concatenation of str1 and str2 */
@@ -90,7 +90,7 @@ public:
   /* Returns true if *this contains substr (but not before "start")
      together with the location of the first character of substr in
      *this, else returns false */
-  bool DString::ContainsNoCase (const DString& substr,
+  bool ContainsNoCase (const DString& substr,
                             const unsigned start,
                             unsigned& location) const;
 
@@ -139,13 +139,13 @@ public:
      the current length is set := 0. */
 
   virtual ~DString () { Destroy(); }
-  
+
 };
 
 
 inline DISCO_DLL bool operator== (const DString& str1,
              const DString& str2)
-{ 
+{
   if (Compare(str1,str2) == 0) return true;
   else return false;
 }
@@ -153,7 +153,7 @@ inline DISCO_DLL bool operator== (const DString& str1,
 
 inline DISCO_DLL bool operator!= (const DString& str1,
            const DString& str2)
-{ 
+{
   if (Compare(str1,str2) != 0) return true;
   else return false;
 }
@@ -169,7 +169,7 @@ inline DISCO_DLL bool operator< (const DString& str1,
 
 inline DISCO_DLL bool operator<= (const DString& str1,
              const DString& str2)
-{ 
+{
   if (Compare(str1,str2) <= 0) return true;
   else return false;
 }
@@ -177,7 +177,7 @@ inline DISCO_DLL bool operator<= (const DString& str1,
 
 inline DISCO_DLL bool operator> (const DString& str1,
           const DString& str2)
-{ 
+{
   if (Compare(str1,str2) > 0) return true;
   else return false;
 }
@@ -185,7 +185,7 @@ inline DISCO_DLL bool operator> (const DString& str1,
 
 inline DISCO_DLL bool operator>= (const DString& str1,
              const DString& str2)
-{   
+{
   if (Compare(str1,str2) >= 0) return true;
   else return false;
 }
@@ -201,14 +201,14 @@ protected:
 public:
 
   Bitstring () : DString() {}
-    
+
   Bitstring (const Bitstring& str) : DString() { init(str); }
 
   Bitstring& operator= (const Bitstring& str)
   { copy(str); return *this; }
-  
+
   Bitstring (const unsigned maxLen);
- 
+
   virtual ~Bitstring() { Destroy(); }
 
 };

@@ -673,11 +673,11 @@ void CExecTree::MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** p
         && (itd->type != TIType_Ensure)
         && (itd->type != TIType_Exec)
         && (itd->type != TIType_EnumItems))
-        itd->synEl = (DWORD)pelDef;
+        itd->synEl = pelDef;
     }
   }
   elDef->WorkFlags.EXCL(newTreeNode);
-  itd = new CMainItemData(TIType_DECL,  (unsigned long) pelDef, elDef->TreeFlags.Contains(isExpanded));
+  itd = new CMainItemData(TIType_DECL,  pelDef, elDef->TreeFlags.Contains(isExpanded));
   ActItem->setItemData(itd);
   bool labelEditEnable = !Doc->changeNothing
                          && (elDef->DeclType != Impl)
@@ -759,7 +759,7 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     new CLavaError(&elDef->DECLError1, errCode);
   if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract))
     elDef->TypeFlags.EXCL(isAbstract);
-  if (!noItems) 
+  if (!noItems)
     parent = getSectionNode(ParItem, elDef->DeclType);
   if ((elDef->DeclDescType == Undefined)  && (elDef->LocalName.l == 0)) {
     if (!noItems) {
@@ -880,12 +880,12 @@ void CExecTree::ExecMember(LavaDECL ** pelDef, int level)
     }
     else
       new CLavaError(&elDef->DECLError1, &ERR_NoRefType);
-    if (!noItems) 
+    if (!noItems)
       bm = GetPixmap(false, true, defType, flags);
     if ((elDef->DECLError1.first || elDef->DECLError2.first))
       Doc->hasErrorsInTree = true;
   }
-  if (!noItems) 
+  if (!noItems)
     MakeItem(lab, bm, parent, pelDef);
 }
 
@@ -893,7 +893,7 @@ void CExecTree::ExecFText(LavaDECL ** pelDef, int level)
 {
   int bm;
   DString lab;
-  if (noItems) 
+  if (noItems)
     return;
   (*pelDef)->DECLError1.Destroy();
   if ((*pelDef)->LocalName.l == 0)
@@ -1085,7 +1085,7 @@ void CExecTree::ExecEnum(LavaDECL** pinEl, DString fieldID)
   CMainItemData * dd = new CMainItemData(TIType_EnumItems, parData->synEl, (*(LavaDECL**)parData->synEl)->TreeFlags.Contains(ItemsExpanded));
   item->setItemData( dd);
   if (exp)
-    viewTree->ExpandItem(ActItem, 1); 
+    viewTree->ExpandItem(ActItem, 1);
   if (!CalcPos(ActLevel))
     return;
 }
@@ -1103,7 +1103,7 @@ void CExecTree::ExecEnumItem(CHEEnumSelId * enumsel, int level)
 //    viewTree->SetItemState( ActItem, INDEXTOOVERLAYMASK(1), TVIS_OVERLAYMASK );
   ActItem->SetItemMask(false,  enumsel->data.DECLComment.ptr && enumsel->data.DECLComment.ptr->Comment.l);
 
-  CMainItemData *itd = new CMainItemData(TIType_CHEEnumSel, (unsigned long) enumsel);
+  CMainItemData *itd = new CMainItemData(TIType_CHEEnumSel, enumsel);
   ActItem->setRenameEnabled(0, true);
   ActItem->setItemData( itd);
   ActItem->setFlags(ActItem->flags() | Qt::ItemIsDragEnabled);
@@ -1146,7 +1146,7 @@ void CExecImpls::ExecDefs(LavaDECL ** pelDef, int level)
   CLavaPEHint *newHint = 0;
   DString *pStr;
   SynFlags firstlast;
-  DWORD d7=0;
+  void *d7=0;
 
   if (Hint->FirstLast.Contains(multiDocHint))
     firstlast.INCL(multiDocHint);
@@ -1159,9 +1159,9 @@ void CExecImpls::ExecDefs(LavaDECL ** pelDef, int level)
         pStr = new DString((*pelDef)->FullName);
         if (newDECL->WorkFlags.Contains(newTreeNode)) {
           newDECL->WorkFlags.EXCL(newTreeNode);
-          d7 = 1;
+          d7 = (void*)1;
         }
-        newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, (DWORD)newDECL, (DWORD)pStr, 0, (DWORD)pelDef,0,0,d7);
+        newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, newDECL, pStr, 0, pelDef,0,0,d7);
         ((CPEBaseDoc*)Hint->fromDoc)->UndoMem.AddToMem(newHint);
         ((CPEBaseDoc*)Hint->fromDoc)->UpdateDoc(NULL, false, newHint);
       }
@@ -1219,7 +1219,7 @@ void CExecOverrides::ExecDefs(LavaDECL ** pelDef, int )
       *newDECL = *(*pelDef);
       if (((CLavaPEDoc*)Hint->fromDoc)->CheckOverInOut(newDECL, CHLV_inUpdateHigh/*CHLV_fit*/)) {
         pStr = new DString((*pelDef)->FullName);
-        NewHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, (DWORD)newDECL, (DWORD)pStr, 0, (DWORD)pelDef);
+        NewHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, newDECL, pStr, 0, pelDef);
         ((CPEBaseDoc*)Hint->fromDoc)->UndoMem.AddToMem(NewHint);
         ((CPEBaseDoc*)Hint->fromDoc)->UpdateDoc(NULL, false, NewHint);
         ((CLavaPEDoc*)Hint->fromDoc)->ConcernImpls(NewHint, *pelDef);
@@ -1242,7 +1242,7 @@ void CExecOverrides::ExecDefs(LavaDECL ** pelDef, int )
       *newDECL = *(*pelDef);
       (*pelDef)->TypeFlags = typeFlags;
       pStr = new DString((*pelDef)->FullName);
-      NewHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, (DWORD)newDECL, (DWORD)pStr, 0, (DWORD)pelDef);
+      NewHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, newDECL, pStr, 0, pelDef);
       ((CPEBaseDoc*)Hint->fromDoc)->UndoMem.AddToMem(NewHint);
       ((CPEBaseDoc*)Hint->fromDoc)->UpdateDoc(NULL, false, NewHint);
       ((CLavaPEDoc*)Hint->fromDoc)->ConcernImpls(NewHint, *pelDef);
@@ -1298,7 +1298,7 @@ void CExecOverrides::ExecMember(LavaDECL ** pelDef, int )
           newDECL->TypeFlags.EXCL(isAbstract);
       }
       pStr = new DString((*pelDef)->FullName);
-      NewHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, (DWORD)newDECL, (DWORD)pStr, 0, (DWORD)pelDef);
+      NewHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, newDECL, pStr, 0, pelDef);
       ((CPEBaseDoc*)Hint->fromDoc)->UndoMem.AddToMem(NewHint);
       ((CPEBaseDoc*)Hint->fromDoc)->UpdateDoc(NULL, false, NewHint);
       ((CLavaPEDoc*)Hint->fromDoc)->ConcernImpls(NewHint, *pelDef);
@@ -1315,7 +1315,7 @@ void CExecOverrides::ExecMember(LavaDECL ** pelDef, int )
       *newDECL = *(*pelDef);
       (*pelDef)->TypeFlags = typeFlags;
       pStr = new DString((*pelDef)->FullName);
-      NewHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, (DWORD)newDECL, (DWORD)pStr, 0, (DWORD)pelDef);
+      NewHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, newDECL, pStr, 0, pelDef);
       ((CPEBaseDoc*)Hint->fromDoc)->UndoMem.AddToMem(NewHint);
       ((CPEBaseDoc*)Hint->fromDoc)->UpdateDoc(NULL, false, NewHint);
       ((CLavaPEDoc*)Hint->fromDoc)->ConcernImpls(NewHint, *pelDef);
@@ -1382,7 +1382,7 @@ void CExecForms::ExecFormDef(LavaDECL ** pelDef, int )
         pos = GetPos(*pelDef);
         if (pos <0)
           return;
-        newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, false, (DWORD)*pelDef, (DWORD)pStr, pos, (DWORD)Travers->parent_p_DECL);
+        newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, false, *pelDef, pStr, pos, Travers->parent_p_DECL);
         Travers->elRemoved = true;
         */
         break;
@@ -1392,7 +1392,7 @@ void CExecForms::ExecFormDef(LavaDECL ** pelDef, int )
         *decl = *(*pelDef);
         if (((CLavaPEDoc*)Hint->fromDoc)->CheckForm(decl, CHLV_inUpdateHigh/*CHLV_fit*/)) {
           pStr = new DString((*pelDef)->FullName);
-          newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, (DWORD)decl, (DWORD)pStr, 0, (DWORD)pelDef);
+          newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, decl, pStr, 0, pelDef);
         }
         else
           delete decl;
@@ -1431,7 +1431,7 @@ void CExecForms::ExecFormDef(LavaDECL ** pelDef, int )
           return;
 //        pos = GetPosinForm(hintDECL);
         pStr = new DString((*pelDef)->FullName);
-        newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, firstlast, (DWORD)decl, (DWORD)pStr, pos, (DWORD)pelDef, Hint->CommandData5);
+        newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, firstlast, decl, pStr, (void*)pos, pelDef, Hint->CommandData5);
         break;
 
       case CPECommand_Insert:
@@ -1468,7 +1468,7 @@ void CExecForms::ExecFormDef(LavaDECL ** pelDef, int )
           ((CLavaPEApp*)wxTheApp)->Browser.HasDefaultForm(decl, *(LavaDECL**)Hint->CommandData4, Travers->mySynDef );
         pos = GetPosinForm(hintDECL);
         pStr = new DString((*pelDef)->FullName);
-        newHint = new CLavaPEHint(CPECommand_Insert, Hint->fromDoc, firstlast, (DWORD)decl, (DWORD)pStr, pos, (DWORD)pelDef, Hint->CommandData5);
+        newHint = new CLavaPEHint(CPECommand_Insert, Hint->fromDoc, firstlast, decl, pStr, (void*)pos, pelDef, Hint->CommandData5);
         break;
 
       case CPECommand_Change:
@@ -1527,12 +1527,12 @@ void CExecForms::ExecFormDef(LavaDECL ** pelDef, int )
           decl->LocalName =  hintDECL->LocalName;
           if ((decl->DeclDescType == BasicType) || (defType == BasicDef) || (defType == VirtualType) || (decl->DeclDescType == EnumType))
             ((CLavaPEApp*)wxTheApp)->Browser.HasDefaultForm((LavaDECL*)decl, hintDECL, Travers->mySynDef );
-          newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, (DWORD)decl, (DWORD)pStr, 0, (DWORD)&elChe->data);
+          newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, firstlast, decl, pStr, 0, &elChe->data);
         }
         else {
           pos = GetPosinForm((LavaDECL*)elChe->data);
           pStr = new DString((*pelDef)->FullName);
-          newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, firstlast, (DWORD)elChe->data, (DWORD)pStr, pos, (DWORD)pelDef, Hint->CommandData5);
+          newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, firstlast, elChe->data, pStr, (void*)pos, pelDef, Hint->CommandData5);
         }
         break;
 
@@ -1552,7 +1552,7 @@ void CExecForms::ExecFormDef(LavaDECL ** pelDef, int )
         pos = GetPos(*pelDef);
         if (pos <0)
           return;
-        newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, false, (DWORD)*pelDef, (DWORD)pStr, pos, (DWORD)Travers->parent_p_DECL, Hint->CommandData5);
+        newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, false, *pelDef, pStr, pos, Travers->parent_p_DECL, Hint->CommandData5);
         Travers->elRemoved = true;
        break;
 
@@ -1564,8 +1564,8 @@ void CExecForms::ExecFormDef(LavaDECL ** pelDef, int )
           pos = GetPos(*pelDef);
           if (pos <0)
             return;
-          newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, false, (DWORD)*pelDef,
-                                    (DWORD)pStr, pos, (DWORD)Travers->parent_p_DECL);
+          newHint = new CLavaPEHint(CPECommand_Delete, Hint->fromDoc, false, *pelDef,
+                                    pStr, pos, Travers->parent_p_DECL);
           Travers->elRemoved = true;
         }
         else {
@@ -1573,8 +1573,8 @@ void CExecForms::ExecFormDef(LavaDECL ** pelDef, int )
             decl = NewLavaDECL();
             *decl = **pelDef;
             pStr = new DString((*pelDef)->FullName);
-            newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, false, (DWORD)decl,
-                                     (DWORD)pStr, pos, (DWORD)pelDef);
+            newHint = new CLavaPEHint(CPECommand_Change, Hint->fromDoc, false, decl,
+                                     pStr, pos, pelDef);
           }
           else
             return;

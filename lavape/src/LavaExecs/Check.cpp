@@ -80,12 +80,12 @@ static void PutInsChainHint (CheckData &ckd,SynObject *func,CHAINX *chx,CHE *new
     CPECommand_Exec,
     ckd.document,
     SET(impliedExecHint,-1),
-    (DWORD)ckd.myDECL,
-    (DWORD)func,
-    (DWORD)InsChain,
-    (DWORD)newChe,
-    (DWORD)chx,
-    (DWORD)pred);
+    ckd.myDECL,
+    func,
+    (void*)InsChain,
+    newChe,
+    chx,
+    pred);
   if (ckd.concernExecs) {
     ((CPEBaseDoc*)ckd.document)->UndoMem.AddToMem(hint);
     ((CPEBaseDoc*)ckd.document)->UpdateDoc(0,false,hint);
@@ -101,12 +101,12 @@ static void PutDelChainHint (CheckData &ckd,SynObject *func,CHAINX *chx,CHE *che
     CPECommand_Exec,
     ckd.document,
     SET(impliedExecHint,-1),
-    (DWORD)ckd.myDECL,
-    (DWORD)func,
-    (DWORD)DelChain,
-    (DWORD)che,
-    (DWORD)chx,
-    (DWORD)che->predecessor);
+    ckd.myDECL,
+    func,
+    (void*)DelChain,
+    che,
+    chx,
+    che->predecessor);
   if (ckd.concernExecs) {
     ((CPEBaseDoc*)ckd.document)->UndoMem.AddToMem(hint);
     ((CPEBaseDoc*)ckd.document)->UpdateDoc(0,false,hint);

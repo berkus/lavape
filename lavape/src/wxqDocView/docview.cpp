@@ -114,7 +114,7 @@ void Trap()
 
 WXDLLEXPORT_DATA(wxApp*) wxTheApp;
 
-wxApp::wxApp(int & argc, char ** argv) : QApplication(argc,argv)
+wxApp::wxApp(int &argc, char **argv) : QApplication(argc,argv)
 {
   wxTheApp = this;
   this->argc = argc;

@@ -35,7 +35,8 @@
 #define _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES 1
 
 
-typedef unsigned char *address;
+typedef void *address;
+typedef unsigned char *UCP;
 typedef unsigned char byte;
 //typedef unsigned word;
 typedef unsigned long       DWORD;
@@ -57,24 +58,24 @@ enum PutGetFlag {PUT,GET,DontPUT};
 
 class DISCO_DLL SET {
 public:
-  
+
   unsigned long int bits;
 
 
   SET () {bits = 0;};
   SET (int arg1/* = -1*/, ...);
- 
+
   SET (const unsigned long b) { bits = b; }
 
 
   inline void INCL (const unsigned member) {bits |= (1<<member);}
 
   inline void EXCL (const unsigned member) {bits &= ~(1<<member);}
-  
+
   inline unsigned long BITS () const { return bits; }
 
   inline bool Contains (const unsigned member) const
-  { 
+  {
     return (bits & (1<<member) ? true : false);
   }
 

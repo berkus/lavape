@@ -75,9 +75,9 @@ static void GetSpace(TAnnotation** p_anno, unsigned m_tab, unsigned m_space, uns
 
 }
 
-CWizardView::CWizardView(QWidget* parent, wxDocument* doc) 
+CWizardView::CWizardView(QWidget* parent, wxDocument* doc)
   : CLavaBaseView(parent,doc, "WizardView")
-{ 
+{
   //setFont(LBaseData->m_TreeFont);
   QWidget* qvbox = new QWidget(this);
   layout->addWidget(qvbox);
@@ -93,7 +93,7 @@ CWizardView::CWizardView(QWidget* parent, wxDocument* doc)
   myScrv = new GUIScrollView(this, false);
   qvl->addWidget(qhbox);
   qvl->addWidget(myScrv);
-  guibox = myScrv->qvbox; 
+  guibox = myScrv->qvbox;
   connect (applyButton,SIGNAL(clicked()), this, SLOT(Apply()));
   connect (resetButton,SIGNAL(clicked()), this, SLOT(Reset()));
   connect (helpButton,SIGNAL(clicked()), this, SLOT(Help()));
@@ -238,7 +238,7 @@ void CWizardView::Help()
 	QString path(ExeDir);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
-	
+
 	if (!qacl) {
 		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
 		qacl->setArguments(args);
@@ -271,7 +271,7 @@ void CWizardView::Reset()
 
 
 CLavaPEWizard::CLavaPEWizard(LavaDECL ** p_origDECL, LavaDECL* formDECL, CWizardView* view, QWidget* parent)
-  :QTabWidget(parent) 
+  :QTabWidget(parent)
 {
   setObjectName("LavaPEWizard");
   isActive = false;
@@ -319,7 +319,7 @@ CLavaPEHint* CLavaPEWizard::ApplyHint()
                               ((CLavaPEApp*)wxTheApp)->Browser.GetBasicType(myDoc->mySynDef, FormDECL);
   DString *name = new DString(OrigDECL->FullName);  //bisheriger Name
 
-  return new CLavaPEHint(CPECommand_Change, myDoc, (const unsigned long)1, (DWORD)FormDECL, (DWORD)name, 0, (unsigned long)synEl);
+  return new CLavaPEHint(CPECommand_Change, myDoc, (const unsigned long)1, FormDECL, name, 0, synEl);
 }
 
 
@@ -390,17 +390,17 @@ void CLavaPEWizard::AddPages()
         || (FormDECL->BType ==  Integer) || (FormDECL->BType ==  Float)
         || (FormDECL->BType ==  Double)  || (FormDECL->BType ==  VLString)) {
       IOPage = new CIOPage(this, FormDECL, false);
-      sz =IOPage->size(); 
+      sz =IOPage->size();
       //IOPage->setMinimumSize(sz);
       addTab(IOPage, "IO+Layout");
       if ((FormDECL->DeclType == Attr) || (FormDECL->DeclType == VirtualType)) {
         LitPage = new CLiteralsPage(this, FormDECL, false);
-        sz = LitPage->size(); 
+        sz = LitPage->size();
         //LitPage->setMinimumSize(sz);
         addTab(LitPage, "Content");
       }
       FontColorPage = new CFontColorPage(this, FormDECL);
-      sz =FontColorPage->size(); 
+      sz =FontColorPage->size();
       //FontColorPage->setMinimumSize(sz);
       addTab(FontColorPage, "Font+Color");
       if (FormDECL->DeclDescType == EnumType) {
@@ -409,7 +409,7 @@ void CLavaPEWizard::AddPages()
         addTab(MenuPage, "Menu or button");
       }
       if (FormDECL->DeclType == VirtualType) {
-        if ((FormDECL->SecondTFlags.Contains(isArray) || FormDECL->SecondTFlags.Contains(isSet)) 
+        if ((FormDECL->SecondTFlags.Contains(isArray) || FormDECL->SecondTFlags.Contains(isSet))
               && FormDECL->Annotation.ptr->IterOrig.ptr
               && ((TIteration*)FormDECL->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr) {
           ChFormPage = new CChainFormPage(this);
@@ -501,7 +501,7 @@ CChainFormPage::CChainFormPage(CLavaPEWizard* wizard)
   LavaDECL *formDecl, *classDecl;
   TAnnotation* anno;
   bool noElli, isAr;
-  
+
   setupUi(this);
   modify = true;
   m_ElemSel = "";
@@ -558,7 +558,7 @@ CChainFormPage::CChainFormPage(CLavaPEWizard* wizard)
     CHEEl->DeclType = PatternDef; //not VirtualType
     myWizard->FormDECL->DeclDescType = classDecl->DeclDescType;
     myWizard->FormDECL->BType = classDecl->BType;
-    myWizard->FormDECL->DeclType = classDecl->DeclType; 
+    myWizard->FormDECL->DeclType = classDecl->DeclType;
     CHEEl->RefID = TID(classDecl->RefID.nID, myWizard->myDoc->IDTable.IDTab[classDecl->inINCL]->nINCLTrans[classDecl->RefID.nINCL].nINCL);
     CHEEl->Annotation.ptr = new TAnnotation;
     CHEEl->Annotation.ptr->FA.ptr = new TAnnotation;
@@ -566,7 +566,7 @@ CChainFormPage::CChainFormPage(CLavaPEWizard* wizard)
   }
   for (formDecl = CHEEl;
        formDecl && (formDecl->DeclDescType != BasicType)
-            && ((formDecl->DeclType == VirtualType) || (formDecl->DeclType == PatternDef)); 
+            && ((formDecl->DeclType == VirtualType) || (formDecl->DeclType == PatternDef));
        formDecl = myWizard->myDoc->IDTable.GetDECL(formDecl->RefID, formDecl->inINCL));
   if (formDecl) {
     if (formDecl->DeclDescType == BasicType) {
@@ -578,8 +578,8 @@ CChainFormPage::CChainFormPage(CLavaPEWizard* wizard)
     else {
       if (formDecl->DeclType == FormDef)
         m_ChFormElemStr = QString(formDecl->ParentDECL->LocalName.c);
-      else 
-          m_ChFormElemStr = QString(formDecl->LocalName.c); 
+      else
+          m_ChFormElemStr = QString(formDecl->LocalName.c);
       CExecLike * execLike = new CExecLike(myWizard->myDoc, ChElemFormTypes, formDecl);
       delete execLike;
     }
@@ -593,7 +593,7 @@ CChainFormPage::CChainFormPage(CLavaPEWizard* wizard)
 }
 
 
-void CChainFormPage::on_ChElemFormTypes_activated(int) 
+void CChainFormPage::on_ChElemFormTypes_activated(int)
 {
   UpdateData(true);
   if (SelEndOKToStr(ChElemFormTypes, &m_ChFormElemStr, &CHEEl->RefID) > 0) {
@@ -603,7 +603,7 @@ void CChainFormPage::on_ChElemFormTypes_activated(int)
   }
 }
 
-void CChainFormPage::on_ConstChain_clicked() 
+void CChainFormPage::on_ConstChain_clicked()
 {
   TAnnotation* anno =  (TAnnotation*)myWizard->FormDECL->Annotation.ptr->FA.ptr;
   if (ConstChain->isChecked()) {
@@ -617,10 +617,10 @@ void CChainFormPage::on_ConstChain_clicked()
   EDITDelButton->setEnabled(!anno->IterFlags.Contains(NoEllipsis));
   EditInsertButton->setEnabled(!anno->IterFlags.Contains(NoEllipsis));
   myWizard->setModified(true);
-  
+
 }
 
-void CChainFormPage::on_HasButtons_clicked() 
+void CChainFormPage::on_HasButtons_clicked()
 {
   TAnnotation* anno =  (TAnnotation*)myWizard->FormDECL->Annotation.ptr->FA.ptr;
   bool has = (HasButtons->isChecked());
@@ -654,7 +654,7 @@ void CChainFormPage::on_DefaultLength_valueChanged( int )
   myWizard->setModified(modify);
 }
 
-bool CChainFormPage::OnApply() 
+bool CChainFormPage::OnApply()
 {
   int il, dl;
   UpdateData(true);
@@ -677,7 +677,7 @@ bool CChainFormPage::OnApply()
   if (myWizard->VFormDECL->SecondTFlags.Contains(isArray))
     myWizard->FormDECL->Annotation.ptr->Length.DecPoint = m_Len;
   myWizard->FormDECL->RefID = CHEEl->RefID;
-  return true;  
+  return true;
 }
 
 void CFormTextPage::UpdateData(bool getData)
@@ -700,7 +700,7 @@ void CFormTextPage::UpdateData(bool getData)
 }
 
 
-CFormTextPage::CFormTextPage(LavaDECL * litEl, CLavaPEWizard *wizard)  
+CFormTextPage::CFormTextPage(LavaDECL * litEl, CLavaPEWizard *wizard)
   : Ui_FormtextPage()
 {
   setupUi(this);
@@ -764,7 +764,7 @@ void CFormTextPage::on_defaultFont_clicked()
     fontName->hide();
     fontName->setText(QString::null);
     fontButton->hide();
-  }  
+  }
   else {
     fontButton->show();
   }
@@ -844,7 +844,7 @@ void CFormTextPage::on_VertSpace_valueChanged( int )
   myWizard->setModified(modify);
 }
 
-void CFormTextPage::OnApply() 
+void CFormTextPage::OnApply()
 {
   UpdateData(true);
   if (!myDecl->LocalName.l)
@@ -877,7 +877,7 @@ void CFormTextBox::UpdateData(bool getData)
 }
 
 
-CFormTextBox::CFormTextBox(LavaDECL * litEl, QWidget* pParent, bool asFirst)  
+CFormTextBox::CFormTextBox(LavaDECL * litEl, QWidget* pParent, bool asFirst)
   : Ui_IDD_LiteralItem()
 {
   setupUi(this);
@@ -915,7 +915,7 @@ CFormTextBox::CFormTextBox(LavaDECL * litEl, QWidget* pParent, bool asFirst)
 }
 
 
-void CFormTextBox::on_ID_OK_clicked() 
+void CFormTextBox::on_ID_OK_clicked()
 {
   UpdateData(true);
   if (!myDecl->LocalName.l)
@@ -946,12 +946,12 @@ void CGeneralPage::UpdateData(bool getData)
   }
 }
 
-CGeneralPage::CGeneralPage(CLavaPEWizard *wizard) 
+CGeneralPage::CGeneralPage(CLavaPEWizard *wizard)
 : Ui_IDD_GeneralPage()
 {
   DString dstr;
   LavaDECL *classDecl, *decl=0;
-  
+
   setupUi(this);
   myWizard = wizard;
   //m_NewName = QString(myWizard->FormDECL->LocalName.c);
@@ -968,13 +968,13 @@ CGeneralPage::CGeneralPage(CLavaPEWizard *wizard)
     delete execLike;
   }
   int listItem = NamedTypes->findText(m_NewType);
-  if (listItem) 
+  if (listItem)
     NamedTypes->setItemText(NamedTypes->currentIndex(),NamedTypes->itemText(listItem));
-  
+
   UpdateData(false);
 }
 
-void CGeneralPage::on_NamedTypes_activated(int) 
+void CGeneralPage::on_NamedTypes_activated(int)
 {
   UpdateData(true);
   if (SelEndOKToStr(NamedTypes, &m_NewType, &myWizard->FormDECL->RefID) > 0) {
@@ -1054,7 +1054,7 @@ bool ColorSetting::on_defaultForeground_clicked()
     }
     return true;
   }
-  else 
+  else
     colorButtonF->show();
   return false;
 }
@@ -1072,7 +1072,7 @@ bool ColorSetting::on_defaultBackground_clicked()
     }
     return true;
   }
-  else 
+  else
     colorButtonB->show();
   return false;
 }
@@ -1160,7 +1160,7 @@ CFontColorPage::CFontColorPage(CLavaPEWizard *wizard, LavaDECL *formDECL)
     fontButtonT->hide();
     defaultFontT->setChecked(true);
   }
-  
+
   colorSetting.Init(anno_Color, FormDECL, defaultBackground, defaultForeground,
                     colorButtonB, colorButtonF, ForeColor, BackColor);
   if (FormDECL->DeclType == FormDef) {
@@ -1195,7 +1195,7 @@ void CFontColorPage::on_defaultFontL_clicked()
     fontNameL->setText(QString::null);
     fontButtonL->hide();
     myWizard->setModified(true);
-  }  
+  }
   else {
     fontButtonL->show();
   }
@@ -1230,7 +1230,7 @@ void CFontColorPage::on_defaultFontT_clicked()
     fontNameT->setText(QString::null);
     fontButtonT->hide();
     myWizard->setModified(true);
-  }  
+  }
   else {
     fontButtonT->show();
   }
@@ -1365,7 +1365,7 @@ void CIOPage::UpdateData(bool getData)
     m_FramespaceItem = DVSpaceSPIN->value();
     m_FLength = ColsSPIN->value();
     m_Rows = RowsSPIN->value();
-  
+
   }
   else {
     modify = false;
@@ -1446,9 +1446,9 @@ void CIOPage::SetProps()
   TBasicType etype;
   bool atomic;
 
-  if (myWizard->FormDECL->DeclDescType == EnumType) 
+  if (myWizard->FormDECL->DeclDescType == EnumType)
     inEl = &((TEnumDescription*)FormDECL->EnumDesc.ptr)->EnumField;
-  else 
+  else
     inEl = FormDECL;
   anno = (TAnnotation*)inEl->Annotation.ptr->FA.ptr;
   if (myWizard->FormDECL->TypeFlags.Contains(isPlaceholder)) {
@@ -1501,31 +1501,31 @@ void CIOPage::SetProps()
 
 void CIOPage::GetProps()
 {
-  LavaDECL *inEl; 
+  LavaDECL *inEl;
   TAnnotation * anno, **p_anno;
   TBasicType etype;
   bool atomic;
 
   if (!FormDECL->Annotation.ptr)
     FormDECL->Annotation.ptr = new TAnnotation;
-  if (FormDECL->DeclDescType == EnumType) 
+  if (FormDECL->DeclDescType == EnumType)
     inEl = &((TEnumDescription*)FormDECL->EnumDesc.ptr)->EnumField;
-  else 
+  else
     inEl = FormDECL;
   p_anno = (TAnnotation**)&inEl->Annotation.ptr->FA.ptr;
-  if (!(*p_anno)) 
+  if (!(*p_anno))
     *p_anno = new TAnnotation;
   anno = *p_anno;
   if (v_isPopupW)
     anno->BasicFlags.INCL(PopUp);
-  else 
+  else
     anno->BasicFlags.EXCL(PopUp);
   if (groupbox->isChecked())
     anno->BasicFlags.INCL(Groupbox);
-  else 
+  else
     anno->BasicFlags.EXCL(Groupbox);
-  GetSpace(&FormDECL->Annotation.ptr, m_Tab, m_Space, m_Frmspace); 
-  if (v_noEcho) 
+  GetSpace(&FormDECL->Annotation.ptr, m_Tab, m_Space, m_Frmspace);
+  if (v_noEcho)
     anno->Emphasis = NoEcho;
   else
     anno->Emphasis = Low;
@@ -1545,7 +1545,7 @@ void CIOPage::GetProps()
         inEl->Annotation.ptr->IoSigFlags.INCL(DONTPUT);
     }
   }
-  GetSpace(p_anno, m_TabItem, m_SpaceItem, m_FramespaceItem); 
+  GetSpace(p_anno, m_TabItem, m_SpaceItem, m_FramespaceItem);
   etype = ((CLavaPEApp*)wxTheApp)->Browser.GetBasicType(myWizard->myDoc->mySynDef, inEl);
   atomic = (etype == B_Bool) || (etype == Char) || (etype ==  Integer) || (etype ==  Float) || (etype ==  Double) || (etype ==  VLString);
   if (atomic) {
@@ -1561,7 +1561,7 @@ void CIOPage::GetProps()
 }
 
 
-void CIOPage::on_isInput_clicked() 
+void CIOPage::on_isInput_clicked()
 {
   if (isInput->isChecked()) {
     UseDefault->setChecked(0);
@@ -1578,7 +1578,7 @@ void CIOPage::on_isInput_clicked()
   myWizard->setModified(true);
 }
 
-void CIOPage::on_isOutput_clicked() 
+void CIOPage::on_isOutput_clicked()
 {
   if (isOutput->isChecked())  {
     UseDefault->setChecked(0);
@@ -1596,7 +1596,7 @@ void CIOPage::on_isOutput_clicked()
 
 }
 
-void CIOPage::on_NoFIO_clicked() 
+void CIOPage::on_NoFIO_clicked()
 {
   if (NoFIO->isChecked()) {
     isInput->setChecked(0);
@@ -1618,7 +1618,7 @@ void CIOPage::on_NoFIO_clicked()
   myWizard->setModified(true);
 }
 
-void CIOPage::on_UseDefault_clicked() 
+void CIOPage::on_UseDefault_clicked()
 {
   if (UseDefault->isChecked()) {
     isInput->setChecked(0);
@@ -1632,7 +1632,7 @@ void CIOPage::on_UseDefault_clicked()
   myWizard->setModified(true);
 }
 
-void CIOPage::on_Popupw_clicked() 
+void CIOPage::on_Popupw_clicked()
 {
   TDeclDescType dtype = ((CLavaPEApp*)wxTheApp)->Browser.GetExprType(myWizard->myDoc->mySynDef,  FormDECL);
   ColsSPIN->setEnabled(dtype == BasicType);
@@ -1640,7 +1640,7 @@ void CIOPage::on_Popupw_clicked()
   myWizard->setModified(true);
 }
 
-void CIOPage::on_MultiLine_clicked() 
+void CIOPage::on_MultiLine_clicked()
 {
   v_MultiLine = !v_MultiLine;
   RowsSPIN->setEnabled(v_MultiLine);
@@ -1698,7 +1698,7 @@ void CIOPage::on_groupbox_clicked()
   myWizard->setModified(modify);
 }
 
-bool CIOPage::OnApply() 
+bool CIOPage::OnApply()
 {
   UpdateData(true);
   GetProps();
@@ -1806,7 +1806,7 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
       }
     }
     enumsel = (CHEEnumSelId*)enumEl->Items.first;
-    while (enumsel) {   
+    while (enumsel) {
       cbitem = new CComboBoxItem(tid0);
       EnumDefault->addItem(QString(enumsel->data.Id.c),QVariant::fromValue(item));
       enumsel = (CHEEnumSelId*)enumsel->successor;
@@ -1849,7 +1849,7 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
             }
           }
           else if (inEl->BType == Char) {
-            if (anno->IoSigFlags.Contains(trueValue)) 
+            if (anno->IoSigFlags.Contains(trueValue))
               str = anno->StringValue.c; //Defaultwert
             Default->setMaxLength(1);
             str = anno->StringValue.c;
@@ -1876,7 +1876,7 @@ void CLiteralsPage::SetProps() //Element vom Typ FieldDesc
   }
 }
 
-void CLiteralsPage::GetProps() 
+void CLiteralsPage::GetProps()
 {
   LavaDECL *inEl, *litEl, *litEl1;
   TAnnotation** p_anno;
@@ -1884,9 +1884,9 @@ void CLiteralsPage::GetProps()
   TBasicType etype;
   bool atomic;
 
-  if (FormDECL->DeclDescType == EnumType) 
+  if (FormDECL->DeclDescType == EnumType)
     inEl = &((TEnumDescription*)FormDECL->EnumDesc.ptr)->EnumField;
-  else 
+  else
     inEl = FormDECL;
   p_anno = (TAnnotation**)&inEl->Annotation.ptr->FA.ptr;
   etype = ((CLavaPEApp*)wxTheApp)->Browser.GetBasicType(myWizard->myDoc->mySynDef, inEl);
@@ -1941,7 +1941,7 @@ void CLiteralsPage::GetProps()
         }
         if  (litEl)
           litEl->Annotation.ptr->BasicFlags.INCL(Toggle);
-      } 
+      }
       else  if ((inEl->BType == VLString) || (inEl->BType == Char)) {
         (*p_anno)->BType = VLString;
         (*p_anno)->StringValue = STRING(qPrintable(v_Default));
@@ -1976,7 +1976,7 @@ void CLiteralsPage::GetProps()
 }
 
 
-bool CLiteralsPage::OnAdd(ChainAny0* chain, QListWidget* list/*, int transpos*/) 
+bool CLiteralsPage::OnAdd(ChainAny0* chain, QListWidget* list/*, int transpos*/)
 {
   int ins = list->currentRow();
   LavaDECL* Decl = NewLavaDECL();
@@ -2008,7 +2008,7 @@ bool CLiteralsPage::OnAdd(ChainAny0* chain, QListWidget* list/*, int transpos*/)
   return false;
 }
 
-void CLiteralsPage::on_ADDPre_clicked() 
+void CLiteralsPage::on_ADDPre_clicked()
 {
   if (OnAdd(&FormDECL->Annotation.ptr->Prefixes, Prefixe)) {
     DELETEPre->setEnabled(true);
@@ -2016,7 +2016,7 @@ void CLiteralsPage::on_ADDPre_clicked()
   }
 }
 
-void CLiteralsPage::on_ADDSuf_clicked() 
+void CLiteralsPage::on_ADDSuf_clicked()
 {
   if (OnAdd(&FormDECL->Annotation.ptr->Suffixes, Suffixe/*, sufTranspos*/)) {
     DELETESuf->setEnabled(true);
@@ -2024,7 +2024,7 @@ void CLiteralsPage::on_ADDSuf_clicked()
   }
 }
 
-void CLiteralsPage::on_DELETEPre_clicked() 
+void CLiteralsPage::on_DELETEPre_clicked()
 {
   int idel = Prefixe->currentRow();
   if (idel >= 0) {
@@ -2039,7 +2039,7 @@ void CLiteralsPage::on_DELETEPre_clicked()
   }
 }
 
-void CLiteralsPage::on_DELETESuf_clicked() 
+void CLiteralsPage::on_DELETESuf_clicked()
 {
   int idel = Suffixe->currentRow();
   if (idel >= 0) {
@@ -2087,7 +2087,7 @@ bool CLiteralsPage::OnEdit(ChainAny0 * chain, QListWidget* list/*, int transpos*
   return false;
 }
 
-void CLiteralsPage::on_EDITPre_clicked() 
+void CLiteralsPage::on_EDITPre_clicked()
 {
   if (OnEdit(&FormDECL->Annotation.ptr->Prefixes, Prefixe)) {
     DELETEPre->setEnabled(true);
@@ -2099,7 +2099,7 @@ void CLiteralsPage::on_EDITPre_clicked()
   }
 }
 
-void CLiteralsPage::on_EDITSuf_clicked() 
+void CLiteralsPage::on_EDITSuf_clicked()
 {
   if (OnEdit(&FormDECL->Annotation.ptr->Suffixes, Suffixe/*, sufTranspos*/)) {
     DELETESuf->setEnabled(true);
@@ -2114,7 +2114,7 @@ void CLiteralsPage::on_EDITSuf_clicked()
 
 void CLiteralsPage::on_Prefixe_itemDoubleClicked( QListWidgetItem * )
 {
-  on_EDITPre_clicked(); 
+  on_EDITPre_clicked();
 }
 
 
@@ -2123,7 +2123,7 @@ void CLiteralsPage::on_Suffixe_itemDoubleClicked( QListWidgetItem *)
   on_EDITSuf_clicked();
 }
 
-void CLiteralsPage::on_Prefixe_currentItemChanged(QListWidgetItem* current, QListWidgetItem * previous) 
+void CLiteralsPage::on_Prefixe_currentItemChanged(QListWidgetItem* current, QListWidgetItem * previous)
 {
   if (Prefixe->currentItem()) {
     DELETEPre->setEnabled(true);
@@ -2135,7 +2135,7 @@ void CLiteralsPage::on_Prefixe_currentItemChanged(QListWidgetItem* current, QLis
   }
 }
 
-void CLiteralsPage::on_Suffixe_currentItemChanged(QListWidgetItem* current, QListWidgetItem * previous) 
+void CLiteralsPage::on_Suffixe_currentItemChanged(QListWidgetItem* current, QListWidgetItem * previous)
 {
   if (Suffixe->currentItem()) {
     DELETESuf->setEnabled(true);
@@ -2162,9 +2162,9 @@ void CLiteralsPage::on_BoolDefault_activated(int )
   myWizard->setModified(true);
 }
 
-bool CLiteralsPage::OnSetActive() 
+bool CLiteralsPage::OnSetActive()
 {
-  enabled = ((FormDECL->DeclType == Attr) 
+  enabled = ((FormDECL->DeclType == Attr)
     || (FormDECL->DeclType == PatternDef)
     || (FormDECL->DeclType == VirtualType));
   ADDSuf->setEnabled(enabled);
@@ -2184,7 +2184,7 @@ bool CLiteralsPage::OnSetActive()
 
 
 /*
-void CLiteralsPage::OnLButtonDown(QMouseEvent *) 
+void CLiteralsPage::OnLButtonDown(QMouseEvent *)
 {
   Prefixe->setCurrentRow(-1);
   Suffixe->setCurrentRow(-1);
@@ -2195,7 +2195,7 @@ void CLiteralsPage::OnLButtonDown(QMouseEvent *)
 }
 */
 
-bool CLiteralsPage::OnApply() 
+bool CLiteralsPage::OnApply()
 {
   UpdateData(true);
   GetProps();
@@ -2221,7 +2221,7 @@ void CLiteralItem::UpdateData(bool getData)
 }
 
 
-CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, QListWidget *litList, LavaDECL * litEl)  
+CLiteralItem::CLiteralItem(CLiteralsPage *page, bool isNew, int ipos, QListWidget *litList, LavaDECL * litEl)
   : Ui_IDD_LiteralItem()
 {
   setupUi(this);
@@ -2273,7 +2273,7 @@ void CLiteralItem::on_defaultFont_clicked()
     fontName->hide();
     fontName->setText(QString::null);
     fontButton->hide();
-  }  
+  }
   else {
     fontButton->show();
   }
@@ -2319,7 +2319,7 @@ void CLiteralItem::on_colorButtonB_clicked()
 }
 
 
-void CLiteralItem::on_ID_OK_clicked() 
+void CLiteralItem::on_ID_OK_clicked()
 {
   UpdateData(true);
   TID tid0;
@@ -2386,7 +2386,7 @@ CMenuPage::CMenuPage(CLavaPEWizard *wizard)
 }
 
 
-void CMenuPage::SetBProps() 
+void CMenuPage::SetBProps()
 {
   CHE *litEl = (CHE*)myWizard->FormDECL->Annotation.ptr->Prefixes.last;
   v_LeftLabel = (litEl && ((LavaDECL*)litEl->data)->Annotation.ptr->BasicFlags.Contains(Toggle));
@@ -2396,7 +2396,7 @@ void CMenuPage::SetBProps()
     v_ToggleLabel = QString(((LavaDECL*)litEl->data)->LitStr.c);
 }
 
-void CMenuPage::GetBProps() 
+void CMenuPage::GetBProps()
 {
   DString label = DString(qPrintable(v_ToggleLabel));
   CHE *litElL = (CHE *)myWizard->FormDECL->Annotation.ptr->Prefixes.last;
@@ -2439,7 +2439,7 @@ void CMenuPage::GetBProps()
 }
 
 
-void CMenuPage::SetEProps() 
+void CMenuPage::SetEProps()
 {
   DString *labe, *labpix, *labb;
   CHE *inDefEl;
@@ -2464,7 +2464,7 @@ void CMenuPage::SetEProps()
     enumAnno = new TAnnotation;
     ((TEnumDescription*)myWizard->FormDECL->EnumDesc.ptr)->EnumField.Annotation.ptr = enumAnno;
   }
-  if (!(TAnnotation*)enumAnno->FA.ptr) 
+  if (!(TAnnotation*)enumAnno->FA.ptr)
     enumAnno->FA.ptr = new TAnnotation;
   enumAnno = (TAnnotation*)enumAnno->FA.ptr;
   if (anno->BasicFlags.Contains(ButtonMenu)) {
@@ -2489,7 +2489,7 @@ void CMenuPage::SetEProps()
   while (enumsel || inDefEl) {   //Menuprops zu actElem fuellen
     mflags = new unsigned[4];
     mflags[0] = 0;
-    if (enumsel && (enumsel->data.SelectionCode.l == 0) 
+    if (enumsel && (enumsel->data.SelectionCode.l == 0)
       && !((LavaDECL*)inDefEl->data)->Annotation.ptr->BasicFlags.Contains(hasPixmap))
       mflags[0] = 2;
     else {
@@ -2516,7 +2516,7 @@ void CMenuPage::SetEProps()
 //      *labs = enumsel->data.SelectionCode;
       enumsel = (CHEEnumSelId*)enumsel->successor;
     }
-    if (mflags[0] != 2) {  //not -FIO, 0,1,3 
+    if (mflags[0] != 2) {  //not -FIO, 0,1,3
       Q_ASSERT(inDefEl);
       ininDefEl = (CHE*)((LavaDECL*)inDefEl->data)->Annotation.ptr->Prefixes.first;
       if (mflags[0] == 0) {
@@ -2548,7 +2548,7 @@ void CMenuPage::GetEProps()
   CHE *ininDefEl;
   LavaDECL *inEl;
   CHEEnumSelId * enumsel=0;
-  unsigned *mflags; 
+  unsigned *mflags;
   int ipos = 0, maxi;
   QString qs;
 
@@ -2558,7 +2558,7 @@ void CMenuPage::GetEProps()
   anno->BasicFlags.EXCL(PopUpMenu);
   TAnnotation* enumAnno = (TAnnotation*)((TEnumDescription*)myWizard->FormDECL->EnumDesc.ptr)->EnumField.Annotation.ptr->FA.ptr;
   enumAnno->IoSigFlags.INCL(Enter);
-  switch ((EMenuType)v_Menutype) { 
+  switch ((EMenuType)v_Menutype) {
     case isBMenu:
       anno->BasicFlags.INCL(ButtonMenu);
       break;
@@ -2587,7 +2587,7 @@ void CMenuPage::GetEProps()
         enumsel = (CHEEnumSelId*)inEl->Items.first;
       else
         enumsel = (CHEEnumSelId*)enumsel->successor;
-    } 
+    }
     if (mflags[0] != 2) {  //not -FIO
       LavaDECL* Decl = NewLavaDECL();
       Decl->Annotation.ptr = new TAnnotation;
@@ -2651,7 +2651,7 @@ void CMenuPage::GetEProps()
 }//GetProps
 
 
-void CMenuPage::on_Menuitems_currentItemChanged (QListWidgetItem* , QListWidgetItem*) 
+void CMenuPage::on_Menuitems_currentItemChanged (QListWidgetItem* , QListWidgetItem*)
 {
   int ss = Menuitems->currentRow();
   LButtonText->setCurrentRow(ss);
@@ -2659,7 +2659,7 @@ void CMenuPage::on_Menuitems_currentItemChanged (QListWidgetItem* , QListWidgetI
   SetButtons(ss);
 }
 
-void CMenuPage::on_LButtonText_currentItemChanged(QListWidgetItem* , QListWidgetItem *) 
+void CMenuPage::on_LButtonText_currentItemChanged(QListWidgetItem* , QListWidgetItem *)
 {
   int ss = LButtonText->currentRow();
   Menuitems->setCurrentRow(ss);
@@ -2690,7 +2690,7 @@ void CMenuPage::SetButtons(int sel)
 }
 
 
-bool CMenuPage::OnSetActive() 
+bool CMenuPage::OnSetActive()
 {
   LeftLabel->setEnabled(isBool);
   ToggleLabel->setEnabled(isBool);
@@ -2707,7 +2707,7 @@ bool CMenuPage::OnSetActive()
   return true;
 }
 
-void CMenuPage::on_AddButton_clicked() 
+void CMenuPage::on_AddButton_clicked()
 {
   int ss = Menuitems->currentRow();
   if (ss < 0)
@@ -2728,7 +2728,7 @@ void CMenuPage::on_AddButton_clicked()
     EditButton->setEnabled(true);
     myWizard->setModified(true);
     myWizard->myView->PostApplyHint();
-  } 
+  }
   delete MItem;
   //delete [] mflags;
 }
@@ -2746,7 +2746,7 @@ void CMenuPage::on_EditButton_clicked()
   pT = Pixmap->item(ss)->text();
   unsigned  *mflags;
   mflags = ((CComboBoxItem*)Menuitems->item(ss))->flags();
-  CMenuItem* cm = new CMenuItem(this, false, ss, iT, bT, pT, mflags);   
+  CMenuItem* cm = new CMenuItem(this, false, ss, iT, bT, pT, mflags);
   if (cm->exec() == QDialog::Accepted) {
     myWizard->setModified(true);
     myWizard->myView->PostApplyHint();
@@ -2755,7 +2755,7 @@ void CMenuPage::on_EditButton_clicked()
 }
 
 
-void CMenuPage::on_DeleteButton_clicked() 
+void CMenuPage::on_DeleteButton_clicked()
 {
   int ss = Menuitems->currentRow();
   if (ss >= 0) {
@@ -2763,7 +2763,7 @@ void CMenuPage::on_DeleteButton_clicked()
     if (mflags[0] == 3) {
       delete Menuitems->takeItem(ss);
       delete LButtonText->takeItem(ss);
-      if (ss) 
+      if (ss)
         ss = ss-1;
       Menuitems->setCurrentRow(ss);
       mflags = ((CComboBoxItem*)Menuitems->item(ss))->flags();
@@ -2771,11 +2771,11 @@ void CMenuPage::on_DeleteButton_clicked()
       EditButton->setEnabled(true);
       myWizard->setModified(true);
     }
-  } 
+  }
 }
 
 /*
-void CMenuPage::OnLButtonDown(QMouseEvent *) 
+void CMenuPage::OnLButtonDown(QMouseEvent *)
 {
   LButtonText->setCurrentRow(-1);
   Menuitems->setCurrentRow(-1);
@@ -2784,9 +2784,9 @@ void CMenuPage::OnLButtonDown(QMouseEvent *)
 
 }*/
 
-void CMenuPage::on_Menutype_activated(int current) 
+void CMenuPage::on_Menutype_activated(int current)
 {
-  int oldType = v_Menutype; 
+  int oldType = v_Menutype;
   v_Menutype = current;
   SetDefaults((EMenuType)v_Menutype, (EMenuType)oldType);
   AddButton->setEnabled(isEnumera && (v_Menutype != int(isOMenu)));
@@ -2807,7 +2807,7 @@ void CMenuPage::SetDefaults(EMenuType newMenuT, EMenuType oldMenuT)
       if (oldMenuT == isNoMenu) {
         iT = Menuitems->item(ss)->text();
         rr = LButtonText->item(ss)->text().length();
-        if (rr == 0) 
+        if (rr == 0)
           delete LButtonText->takeItem(ss);
         if ((rr == 0) || (rr < 0)) {
           item = new CListItem(iT, tid0);
@@ -2836,7 +2836,7 @@ void CMenuPage::on_LeftLabel_clicked()
 }
 
 
-bool CMenuPage::OnApply() 
+bool CMenuPage::OnApply()
 {
   UpdateData(true);
   if (isEnumera)
@@ -2844,7 +2844,7 @@ bool CMenuPage::OnApply()
   else
     if (isBool)
       GetBProps();
-  return true;  
+  return true;
 }
 
 
@@ -2883,7 +2883,7 @@ void CMenuItem::UpdateData(bool getData)
   }
 }
 
- 
+
 CMenuItem::CMenuItem(CMenuPage* mpage, bool isNew, int ipos,
                      QString enumsel, QString btext, QString stext,
                      unsigned *itemData)
@@ -2938,25 +2938,25 @@ void CMenuItem::EnableTextWindows()
 }
 
 
-void CMenuItem::on_noButton_clicked(bool) 
+void CMenuItem::on_noButton_clicked(bool)
 {
     UpdateData(true);
     EnableTextWindows();
 }
 
-void CMenuItem::on_NoFIO_clicked(bool) 
+void CMenuItem::on_NoFIO_clicked(bool)
 {
     UpdateData(true);
     EnableTextWindows();
 }
 
-void CMenuItem::on_isButton_clicked(bool) 
+void CMenuItem::on_isButton_clicked(bool)
 {
     UpdateData(true);
     EnableTextWindows();
 }
 
-void CMenuItem::on_isMenuText_clicked(bool) 
+void CMenuItem::on_isMenuText_clicked(bool)
 {
     UpdateData(true);
     EnableTextWindows();
@@ -2982,7 +2982,7 @@ void CMenuItem::on_button_browse_clicked()
   }
 }
 
-void CMenuItem::on_ID_OK_clicked() 
+void CMenuItem::on_ID_OK_clicked()
 {
   CListItem *item;
   UpdateData(true);
@@ -3081,7 +3081,7 @@ CSupportPage::CSupportPage(CLavaPEWizard* wizard)
 
 
 /*
-bool CSupportPage::OnApply() 
+bool CSupportPage::OnApply()
 {
   UpdateData(true);
   ListToChain(Supports, &myWizard->FormDECL->Supports);
@@ -3089,12 +3089,12 @@ bool CSupportPage::OnApply()
 }
 */
 
-  
+
 CExecLike::CExecLike(CLavaPEDoc* doc, QComboBox* list, LavaDECL * Ldecl, LavaDECL* form)
 {
   myDoc = doc;
   myDECL = Ldecl; //class or form
-  if (myDECL->DeclType == FormDef) 
+  if (myDECL->DeclType == FormDef)
     ContextDECL = myDoc->IDTable.GetDECL(myDECL->RefID, myDECL->inINCL);
   else
     ContextDECL = myDECL;
@@ -3115,7 +3115,7 @@ bool CExecLike::CheckSupports(LavaDECL *basedecl, LavaDECL *FormDECL)
   cheID = (CHETID*)base->Supports.first; //!
   while (cheID) {
     base = myDoc->IDTable.GetFinalDef(cheID->data, FormDECL->inINCL);
-    if (base->TypeFlags.Contains(isGUI)) 
+    if (base->TypeFlags.Contains(isGUI))
       return  myDoc->IDTable.EQEQ(basedecl->RefID, basedecl->inINCL, base->RefID, base->inINCL);
     cheID = (CHETID*)cheID->successor;
   }
@@ -3126,7 +3126,7 @@ bool CExecLike::CheckSupports(LavaDECL *basedecl, LavaDECL *FormDECL)
 void CExecLike::ExecFormDef(LavaDECL ** pelDef, int incl)
 {
   if (myDoc->IDTable.EQEQ((*pelDef)->RefID, (*pelDef)->inINCL, myDECL->RefID, myDECL->inINCL)) {
-    if (FormDECL && !CheckSupports(*pelDef, FormDECL)) 
+    if (FormDECL && !CheckSupports(*pelDef, FormDECL))
       return;
   }
   else

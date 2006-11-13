@@ -51,13 +51,13 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
 
   if (toBeDrawn
   && !insMult
-  && !(undo && (InsertMode)hint->CommandData3 == InsMult)
-  && !(!undo && (InsertMode)hint->CommandData3 == DelMult))
+  && !(undo && hint->CommandData3 == (void*)InsMult)
+  && !(!undo && hint->CommandData3 == (void*)DelMult))
     multipleUpdates = true;
   insMult = false;
 
   if (undo)
-    switch ((InsertMode)hint->CommandData3) {
+    switch ((InsertMode)(unsigned)hint->CommandData3) {
     case InsNested:
       goto insNested;
 
@@ -94,7 +94,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
           replacedObj = multOp;
           toBeDrawn = synObj;
         }
-      hint->CommandData3 = DelMult;
+      hint->CommandData3 = (void*)DelMult;
       break;
 
     case InsChain:
@@ -110,8 +110,8 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
         che = (CHE*)chx->first;
       chx->Uncouple(che);
       ((SynObject*)che->data)->MakeTable((address)&((CPEBaseDoc*)doc)->IDTable,0,oldObj,onDeleteID,(address)che,chx);
-      hint->CommandData3 = DelChain;
-      hint->CommandData4 = (DWORD)che;
+      hint->CommandData3 = (void*)DelChain;
+      hint->CommandData4 = che;
       break;
 
     case DelNested:
@@ -131,7 +131,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
 
       toBeDrawn = synObj->parentObject;
       replacedObj = synObj->parentObject;
-      hint->CommandData3 = ReDelNested;
+      hint->CommandData3 = (void*)ReDelNested;
       break;
 
     case ReDelNested:
@@ -151,7 +151,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
 
       toBeDrawn = synObj->parentObject;
       replacedObj = synObj->parentObject;
-      hint->CommandData3 = DelNested;
+      hint->CommandData3 = (void*)DelNested;
       break;
 
     case DelMult:
@@ -184,7 +184,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
         replacedObj = synObj;
         toBeDrawn = multOp;
       }
-      hint->CommandData3 = InsMult;
+      hint->CommandData3 = (void*)InsMult;
       break;
 
     case DelChain:
@@ -193,7 +193,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
       che = (CHE*)hint->CommandData6;
       newChe = (CHE*)hint->CommandData4;
       chx->Insert(che,newChe);
-      hint->CommandData3 = InsChain;
+      hint->CommandData3 = (void*)InsChain;
       ((SynObject*)newChe->data)->MakeTable((address)&((CPEBaseDoc*)doc)->IDTable,0,synObj,onUndoDeleteID,(address)newChe,chx);
       if (!replacedObj) {
         replacedObj = synObj;
@@ -203,7 +203,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
 
     case InsFlags:
       synObj = (SynObject*)hint->CommandData2;
-      flagBits = hint->CommandData4;
+      flagBits = (unsigned)hint->CommandData4;
       flags = SET(flagBits);
       if (flags.Contains(newLine)) {
         parent = synObj->parentObject;
@@ -226,7 +226,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
         toBeDrawn = synObj;
       }
       synObj->flags -= flags;
-      hint->CommandData3 = DelFlags;
+      hint->CommandData3 = (void*)DelFlags;
       break;
 
     case PlusMinus:
@@ -234,7 +234,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
 
     case DelFlags:
       synObj = (SynObject*)hint->CommandData2;
-      flagBits = hint->CommandData4;
+      flagBits = (unsigned)hint->CommandData4;
       flags = SET(flagBits);
       if (flags.Contains(newLine)) {
         parent = synObj->parentObject;
@@ -257,7 +257,7 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
         toBeDrawn = synObj;
       }
       synObj->flags += flags;
-      hint->CommandData3 = InsFlags;
+      hint->CommandData3 = (void*)InsFlags;
       break;
 
     case ChgComment:
@@ -270,22 +270,22 @@ bool CExecUpdate::ChangeExec(CLavaPEHint *hint, wxDocument *doc, bool undo) {
         synObj->comment.ptr = 0;
         if (pCmt) delete pCmt;
       }
-      hint->CommandData4 = (DWORD)oldCmt;
+      hint->CommandData4 = oldCmt;
       replacedObj = synObj;
       toBeDrawn = synObj;
       break;
 
     case ChgOp:
       synObj = (SynObject*)hint->CommandData2;
-      newToken = (TToken)hint->CommandData4;
-      hint->CommandData4 = (DWORD)synObj->primaryToken;
+      newToken = (TToken)(unsigned)hint->CommandData4;
+      hint->CommandData4 = (void*)synObj->primaryToken;
       synObj->primaryToken = newToken;
       replacedObj = synObj;
       toBeDrawn = synObj;
       break;
     }
   else
-    switch ((InsertMode)hint->CommandData3) {
+    switch ((InsertMode)(unsigned)hint->CommandData3) {
     case InsNested:
 insNested:
       chx = (CHAINX*)hint->CommandData5;
@@ -293,13 +293,13 @@ insNested:
       if (chx) {
         che = (CHE*)hint->CommandData6;
         oldObj = (SynObject*)che->data;
-        hint->CommandData4 = (DWORD)oldObj;
+        hint->CommandData4 = oldObj;
         che->data = synObj;
       }
       else {
         ptr = (SynObject**)hint->CommandData6;
         oldObj = *ptr;
-        hint->CommandData4 = (DWORD)oldObj;
+        hint->CommandData4 = oldObj;
         *ptr = synObj;
       }
       if (synObj) {
@@ -485,14 +485,14 @@ insNested:
       synObj = (SynObject*)hint->CommandData2; // parent
       replacedObj = synObj;
       toBeDrawn = synObj;
-      hint->CommandData6 = (DWORD)che->predecessor;
+      hint->CommandData6 = che->predecessor;
       ((SynObject*)che->data)->MakeTable((address)&((CPEBaseDoc*)doc)->IDTable,0,synObj,onDeleteID,(address)che,chx);
       chx->Uncouple(che);
       break;
 
     case InsFlags:
       synObj = (SynObject*)hint->CommandData2;
-      flagBits = hint->CommandData4;
+      flagBits = (unsigned)hint->CommandData4;
       flags = SET(flagBits);
       if (flags.Contains(newLine)) {
         parent = synObj->parentObject;
@@ -531,9 +531,9 @@ plusMinus:
           minusOpd->whereInParent = synObj->whereInParent;
           minusOpd->containingChain = chx;
           ((MinusOp*)synObj)->operand.ptr = 0;
-          hint->CommandData5 = (DWORD)synObj;
+          hint->CommandData5 = synObj;
           oldObj = minusOpd->parentObject;
-          hint->CommandData4 = (DWORD)minusOpd;
+          hint->CommandData4 = minusOpd;
         }
         else {
           if (hint->CommandData5)
@@ -549,8 +549,8 @@ plusMinus:
           synObj->containingChain = 0;
           newMinusOp->containingChain = chx;
           oldObj = newMinusOp->parentObject;
-          hint->CommandData4 = (DWORD)newMinusOp;
-          hint->CommandData5 = (DWORD)0;
+          hint->CommandData4 = newMinusOp;
+          hint->CommandData5 = (void*)0;
         }
       }
       else {
@@ -563,9 +563,9 @@ plusMinus:
           minusOpd->whereInParent = synObj->whereInParent;
           minusOpd->containingChain = chx;
           ((MinusOp*)synObj)->operand.ptr = 0;
-          hint->CommandData5 = (DWORD)synObj;
+          hint->CommandData5 = synObj;
           oldObj = minusOpd->parentObject;
-          hint->CommandData4 = (DWORD)minusOpd;
+          hint->CommandData4 = minusOpd;
         }
         else {
           if (hint->CommandData5)
@@ -581,8 +581,8 @@ plusMinus:
           synObj->containingChain = 0;
           newMinusOp->containingChain = 0;
           oldObj = newMinusOp->parentObject;
-          hint->CommandData4 = (DWORD)newMinusOp;
-          hint->CommandData5 = (DWORD)0;
+          hint->CommandData4 = newMinusOp;
+          hint->CommandData5 = (void*)0;
         }
       }
       replacedObj = oldObj;
@@ -591,7 +591,7 @@ plusMinus:
 
     case DelFlags:
       synObj = (SynObject*)hint->CommandData2;
-      flagBits = hint->CommandData4;
+      flagBits = (unsigned)hint->CommandData4;
       flags = SET(flagBits);
       if (flags.Contains(newLine)) {
         parent = synObj->parentObject;
@@ -626,15 +626,15 @@ plusMinus:
         synObj->comment.ptr = 0;
         if (pCmt) delete pCmt;
       }
-      hint->CommandData4 = (DWORD)oldCmt;
+      hint->CommandData4 = oldCmt;
       replacedObj = synObj;
       toBeDrawn = synObj;
       break;
 
     case ChgOp:
       synObj = (SynObject*)hint->CommandData2;
-      newToken = (TToken)hint->CommandData4;
-      hint->CommandData4 = (DWORD)synObj->primaryToken;
+      newToken = (TToken)(unsigned)hint->CommandData4;
+      hint->CommandData4 = (void*)synObj->primaryToken;
       synObj->primaryToken = newToken;
       replacedObj = synObj;
       toBeDrawn = synObj;
@@ -649,7 +649,7 @@ void CExecUpdate::DeleteHint(CLavaPEHint *hint) {
   CHE *che;
   TComment *pCmt;
 
-  switch ((InsertMode)hint->CommandData3) {
+  switch ((InsertMode)(unsigned)hint->CommandData3) {
   case InsFlags:
   case DelFlags:
   case DelNested:

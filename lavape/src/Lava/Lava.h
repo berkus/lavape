@@ -12,13 +12,13 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // CLavaApp:
-// Siehe Lava.cpp für die Implementierung dieser Klasse
+// Siehe Lava.cpp fr die Implementierung dieser Klasse
 //
 
 class CLavaApp : public wxApp
 {
 public:
-  CLavaApp(int argc, char ** argv);
+  CLavaApp(int &argc, char ** argv);
   ~CLavaApp() { OnAppExit(); }
 
   wxDocTemplate *pLavaTaskTemplate, *pLavaLdocTemplate, *pLavaLcomTemplate;
@@ -39,7 +39,7 @@ public:
 
 public:
   void OnFileOpen();
-  void OnFileNew(); 
+  void OnFileNew();
   void OnAppAbout();
   virtual int OnAppExit();
   void OnChooseFormFont(int font_case);

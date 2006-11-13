@@ -3,7 +3,7 @@
 
 
 #include "SYSTEM.h"
- 
+
 #include "wx_obj.h"
 #include "DString.h"
 #include "SynIO.h"
@@ -37,46 +37,46 @@
   LavaPE Commands for operation  | Commanddata and meaning in the direction
                                |  Views to Document               |  Document to View| Undo queue
   ---------------------------------------------------------------------------------------------
-  1. Open view operations (no undo facility):                      
+  1. Open view operations (no undo facility):
 
   CPECommand_OpenFormView,  |  CommandData1: always the related LavaDECL    | not in Queue
   CPECommand_OpenWizardView,|  CommandData2: always the CDEView* mainView
-  CPECommand_OpenSelView,   |  
+  CPECommand_OpenSelView,   |
 
   --------------------------------------------------------------------------
   CPECommand_OpenExecView,  |  CommandData1: always the related CHE*
                             |  CommandData2: always the CDEView* mainView
-    
-      
+
+
 -----------------------------------------------------------------------------------------------
-                               |                                 
+                               |
   2. Include lava file operations (with undo facility):
 
-  CPECommand_Include,        |  CommandData1: CHESimpleSyntax*,  the included simple syntax    
-                               |  CommandData2: DString* full path syntax name          
+  CPECommand_Include,        |  CommandData1: CHESimpleSyntax*,  the included simple syntax
+                               |  CommandData2: DString* full path syntax name
                                |  CommandData3: CHESimpleSyntax*, position in the SynDefTree
                                 | CommandData4: DString* full path usersName
-  CPECommand_Exclude,        |  CommandData1: CHESimpleSyntax* , the deleted simple syntax     
-                               |  CommandData2: DString* full path syntax name       
+  CPECommand_Exclude,        |  CommandData1: CHESimpleSyntax* , the deleted simple syntax
+                               |  CommandData2: DString* full path syntax name
                                |  CommandData3: CHESimpleSyntax*, position in the SynDefTree
-  CPECommand_ChangeInclude,  |  CommandData1: CHESimpleSyntax* , the new/old simple syntax     
-                               |  CommandData2: unused       
+  CPECommand_ChangeInclude,  |  CommandData1: CHESimpleSyntax* , the new/old simple syntax
+                               |  CommandData2: unused
                                |  CommandData3: CHESimpleSyntax*, position in the SynDefTree
 -----------------------------------------------------------------------------------------------
                                |
   3. Operations on syntax via tree view (with undo facility):
 
-    One complete operation is composed of one or more operation commands, the first 
+    One complete operation is composed of one or more operation commands, the first
     one has the 'First' flag.
 
     Doing of a complete operation will start with the first operation command.
     Undoing of a complete operation will start with the last operation command.
-  
+
     You only can copy, paste, cut, drag, drop, delete or insert a pattern, an exec,
     a member (or CaseConstruct), an input member or output member.
-  
+
                                |
-  CPECommand_Insert,         |   always CommandData1: new LavaDECL*, 
+  CPECommand_Insert,         |   always CommandData1: new LavaDECL*,
   and                          |
   CPECommand_Move            |          CommandData2: name of (drop-)parent DECL if exists
                                |          CommandData3: position in the chain of (drop-)parent DECL
@@ -86,31 +86,31 @@
                                |          CommandData7: Full path name of Clip-document from clipboard operation or drag and drop
                                |          CommandData8: drag and drop operations refac case
                                |          CommandData9: the CHE* from which CommandData1 is the data, set only in UpdateDoc
-                             
-  CPECommand_Delete,         |   always CommandData1: old LavaDECL*  
-                               |          CommandData2: name of parent DECL if exists 
+
+  CPECommand_Delete,         |   always CommandData1: old LavaDECL*
+                               |          CommandData2: name of parent DECL if exists
                                |          CommandData3: position in the chain of parent DECL
                                |          CommandData4: LavaDECL** of parentDECL
                                |          CommandData5: dropParent, if drag from drag and drop in the same document
                                |          CommandData8: drag and drop operations refac case
                                |          CommandData9: the CHE* from which CommandData1 is the data, set only in UpdateDoc
-                                   
-  CPECommand_Change,         | CommandData1: new LavaDECL*  |  CommandData1.old LavaDECL*   
-                               | CommandData2: old name of the DECL |  CommandData2.new name of the DECL
-                               | CommandData4: the LavaDECL** of the changed element  
-                               | CommandData5: new enum item Id, in case of enum items labeledit 
-                               | CommandData6: old enum item Id, in case of enum items labeledit 
-                               | CommandData7: if != 0: draw the tree, because the change has new tree-nodes
-                                      
-  CPECommand_Exec,     | 
-                               |   
-                               |  
-                               | 
 
-  CPECommand_Comment         | CommandData1: LavaDECL* or CHEEnumSelId*     
+  CPECommand_Change,         | CommandData1: new LavaDECL*  |  CommandData1.old LavaDECL*
+                               | CommandData2: old name of the DECL |  CommandData2.new name of the DECL
+                               | CommandData4: the LavaDECL** of the changed element
+                               | CommandData5: new enum item Id, in case of enum items labeledit
+                               | CommandData6: old enum item Id, in case of enum items labeledit
+                               | CommandData7: if != 0: draw the tree, because the change has new tree-nodes
+
+  CPECommand_Exec,     |
+                               |
+                               |
+                               |
+
+  CPECommand_Comment         | CommandData1: LavaDECL* or CHEEnumSelId*
                                | CommandData2: new TDECLComment*    | old TDECLComment*
-                               | CommandData3: = EnumDef-DECL if CommandData1 is CHEEnumSelId*, else =0   
-                               |  
+                               | CommandData3: = EnumDef-DECL if CommandData1 is CHEEnumSelId*, else =0
+                               |
 
 
 ------------------------------------------------------------------------------------------
@@ -119,10 +119,10 @@
 
 
 enum CPECommand {
-  CPECommand_OpenFormView, 
+  CPECommand_OpenFormView,
   CPECommand_OpenExecView,
   CPECommand_OpenSelView,
-  CPECommand_OpenWizardView, 
+  CPECommand_OpenWizardView,
   CPECommand_Include,
   CPECommand_Exclude,
   CPECommand_ChangeInclude,
@@ -146,27 +146,27 @@ public:
   CPECommand com;
   wxDocument* fromDoc;
   SynFlags FirstLast; //first-last indication of a range of commands which are part of one update
-  DWORD CommandData1;
-  DWORD CommandData2;
-  DWORD CommandData3;
-  DWORD CommandData4;
-  DWORD CommandData5;
-  DWORD CommandData6;
-  DWORD CommandData7;
-  DWORD CommandData8; 
-  DWORD CommandData9; 
+  void *CommandData1;
+  void *CommandData2;
+  void *CommandData3;
+  void *CommandData4;
+  void *CommandData5;
+  void *CommandData6;
+  void *CommandData7;
+  void *CommandData8;
+  void *CommandData9;
 
   CLavaPEHint(CPECommand cc,
-             wxDocument* fromdoc, 
-             SynFlags first, 
-             DWORD commandData1=0,  
-             DWORD commandData2=0,
-             DWORD commandData3=0, 
-             DWORD commandData4=0, 
-             DWORD commandData5=0, 
-             DWORD commandData6=0, 
-             DWORD commandData7=0, 
-             DWORD commandData8=0);
+             wxDocument* fromdoc,
+             SynFlags first,
+             void *commandData1=0,
+             void *commandData2=0,
+             void *commandData3=0,
+             void *commandData4=0,
+             void *commandData5=0,
+             void *commandData6=0,
+             void *commandData7=0,
+             void *commandData8=0);
 
   ~CLavaPEHint();
   void Destroy(bool inRedo);
@@ -197,7 +197,7 @@ public:
   TID id;
   TID parentID;
   int type; //only used in VTView
-  
+
   CBrowseContext(wxView* view, SynObjectBase* synObj);
   CBrowseContext(wxView* view, LavaDECL* decl, int t=0);
   CBrowseContext(wxView* view, CHEFormNode* node);
@@ -226,7 +226,7 @@ public:
   int index; //=0: reference in declaration tree,
              //=1: reference in exec,
              //=2: name in declaration tree,
-             //=3: name in exec 
+             //=3: name in exec
   SynFlags FindRefFlags;
   TFindWhere FWhere;
   DString fname; //file
@@ -279,10 +279,10 @@ public:
   CLavaPEHint* UndoFromMem(int& pos); //called by LavaPEDoc
   CLavaPEHint* RedoFromMem(int& pos); //called by LavaPEDoc
   void SetCom8();
-  void OnEditUndo(); 
+  void OnEditUndo();
   void OnUpdateEditUndo(QAction *action);
   bool EnableUndo();
-  void OnEditRedo(); 
+  void OnEditRedo();
   void OnUpdateEditRedo(QAction *action);
   CUndoMem();
   ~CUndoMem();
@@ -430,7 +430,7 @@ public:
   QAction* nextErrorActionPtr;
   QAction* notEqualActionPtr;
   QAction* nullActionPtr;
-//  QAction* okActionPtr;        
+//  QAction* okActionPtr;
 	QAction* optLocalVarActionPtr;
 	QAction* ordActionPtr;
   QAction* prevCommentActionPtr;
@@ -460,7 +460,7 @@ public:
   QAction* DbgBreakpointActPtr;
   QAction* DbgStopActionPtr;
 
-  QPushButton 
+  QPushButton
     *declareButton, *existsButton, *foreachButton,
     *selectButton, *elInSetButton, *ifButton, *ifdefButton,
     *ifxButton, *elsexButton, *switchButton, *typeSwitchButton,

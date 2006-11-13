@@ -165,7 +165,7 @@ void CLavaDebugger::connected() {
     varAction->run();
     addCalleeParams();
     mSend.SetSendData(Dbg_StopData, dbgStopData);
-    CDPDbgMessage0(PUT, put_cid, (address)&mSend);
+    CDPDbgMessage0(PUT, put_cid, &mSend);
     put_cid->flush();
     if (!put_cid->Done) {
       stop(otherError);
@@ -180,7 +180,7 @@ void CLavaDebugger::receive() {
   if (!get_cid->bytesAvailable())
     return;
 
- 	CDPDbgMessage0(GET,get_cid,(address)&mReceive);
+ 	CDPDbgMessage0(GET,get_cid,&mReceive);
   if (get_cid->Done) {
     switch (mReceive.Command) {
     case Dbg_Exit:
@@ -241,8 +241,8 @@ void CLavaDebugger::send() {
       return;
     }
   }
- 
-  CDPDbgMessage0(PUT, put_cid, (address)&mSend);
+
+  CDPDbgMessage0(PUT, put_cid, &mSend);
   put_cid->flush();
   if (!put_cid->Done)
     stop(otherError);

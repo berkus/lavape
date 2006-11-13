@@ -20,6 +20,7 @@
 #include "Atoms.h"
 #include <string.h>
 #include "qbytearray.h"
+#include "DString.h"
 
 #pragma hdrstop
 
@@ -106,13 +107,15 @@ bool IsReservedWord ()
   const char * const substrPtr=&StringBuffer[StringBufferPos];
   unsigned hc;
   int result;
+  DString substr=DString(substrPtr), strBufPos;
 
   hc = hashCode(substrPtr);
   currentEntry = hashTable[hc].firstEntry;
   for (;;) {
     if (currentEntry == 0)
       break;
-    result = Compare(substrPtr,ATOMSTR[currentEntry->index]);
+    strBufPos = DString(ATOMSTR[currentEntry->index]);
+    result = Compare(substr,strBufPos);
     if (result <= 0)
       break;
     currentEntry = currentEntry->nextEntry;
@@ -134,7 +137,7 @@ bool IsReservedWord ()
 void Atoms_INIT ()
 {
   unsigned i;
-  
+
   if (__INITstarted) return;
   __INITstarted = true;
 
@@ -289,7 +292,7 @@ void Atoms_INIT ()
   ATO("VERTICAL");
   ATO("VRULES");
   ATO("YEAR");
-  
+
 // small initial letter:
   ATO("address");
   ATO("asm");
@@ -342,7 +345,7 @@ void Atoms_INIT ()
   ATO("while");
   ATO("word");
   ATO("EORW"); /* dummy */
-  
+
   ATO("identifier");
   ATO("charConst");
   ATO("stringConst");
@@ -350,7 +353,7 @@ void Atoms_INIT ()
   ATO("octalConst");
   ATO("hexConst");
   ATO("floatConst");
-  
+
   ATO("!");
   ATO("%");
   ATO("^");
@@ -375,7 +378,7 @@ void Atoms_INIT ()
   ATO(",");
   ATO(".");
   ATO("/");
-  
+
   ATO("->");
   ATO("++");
   ATO("--");
@@ -401,7 +404,7 @@ void Atoms_INIT ()
   ATO("|=");
   ATO("::");
   ATO("::*");
- 
+
   ATO("$");
   ATO("#");
   ATO("end-of-file");

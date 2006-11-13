@@ -84,8 +84,9 @@ static char slash='/';
 /////////////////////////////////////////////////////////////////////////////
 // CLavaPEApp
 int main( int argc, char ** argv ) {
-  CLavaPEApp app(argc,argv);
-  app.m_appWindow = new CLavaMainFrame();
+  int ac=argc;
+  CLavaPEApp app(ac,argv);
+//  app.m_appWindow = new CLavaMainFrame();
 
 #ifdef _DEBUG
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
@@ -93,12 +94,12 @@ int main( int argc, char ** argv ) {
 #endif
 
   //QTest::qSleep(20000);
-
+/*
   if (app.m_appWindow->OnCreate())
     app.m_appWindow->showMaximized();
   else
     return 1;
-
+*/
   int res = app.exec();
   return res;
 }
@@ -112,7 +113,7 @@ int xerrBM = 32;
 int xerrcomBM = 33;
 
 
-CLavaPEApp::CLavaPEApp(int argc, char ** argv )
+CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 :wxApp(argc, argv )
 {
   SetVendorName("Fraunhofer-SIT");

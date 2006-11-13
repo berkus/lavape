@@ -73,10 +73,10 @@ void CDPSynObject (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPSynObjectBase(pgf,cid,(address)(SynObjectBase*)vp,true);
-    CDPTToken(pgf,cid,(address)&vp->primaryToken);
-    CDPTToken(pgf,cid,(address)&vp->type);
-    CDPTToken(pgf,cid,(address)&vp->replacedType);
+    CDPSynObjectBase(pgf,cid,vp,true);
+    CDPTToken(pgf,cid,&vp->primaryToken);
+    CDPTToken(pgf,cid,&vp->type);
+    CDPTToken(pgf,cid,&vp->replacedType);
     vp->comment.CDP(pgf,cid,CDPTComment);
     vp->flags.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -94,8 +94,8 @@ void CDPTDOD (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPSynObject(pgf,cid,(address)(SynObject*)vp,true);
-    CDPTID(pgf,cid,(address)&vp->ID);
+    CDPSynObject(pgf,cid,vp,true);
+    CDPTID(pgf,cid,&vp->ID);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTDOD
 
@@ -122,7 +122,7 @@ void CDPExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPSynObject(pgf,cid,(address)(SynObject*)vp,true);
+    CDPSynObject(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPExpression
 
@@ -138,8 +138,8 @@ void CDPOperation (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
-    CDPTID(pgf,cid,(address)&vp->opFunctionID);
+    CDPExpression(pgf,cid,vp,true);
+    CDPTID(pgf,cid,&vp->opFunctionID);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPOperation
 
@@ -155,8 +155,8 @@ void CDPReference (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPSynObject(pgf,cid,(address)(SynObject*)vp,true);
-    CDPTID(pgf,cid,(address)&vp->refID);
+    CDPSynObject(pgf,cid,vp,true);
+    CDPTID(pgf,cid,&vp->refID);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPReference
 
@@ -172,8 +172,8 @@ void CDPEnumConst (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
-    CDPTID(pgf,cid,(address)&vp->refID);
+    CDPExpression(pgf,cid,vp,true);
+    CDPTID(pgf,cid,&vp->refID);
     vp->Id.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPEnumConst
@@ -190,8 +190,8 @@ void CDPObjReference (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
-    CDPTDODC(pgf,cid,(address)&vp->refIDs);
+    CDPExpression(pgf,cid,vp,true);
+    CDPTDODC(pgf,cid,&vp->refIDs);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPObjReference
 
@@ -207,9 +207,9 @@ void CDPVarName (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->varName.CDP(pgf,cid);
-    CDPTID(pgf,cid,(address)&vp->varID);
+    CDPTID(pgf,cid,&vp->varID);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPVarName
 
@@ -225,10 +225,10 @@ void CDPFormParm (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->parmType.CDP(pgf,cid);
     vp->formParm.CDP(pgf,cid);
-    CDPTID(pgf,cid,(address)&vp->formParmID);
+    CDPTID(pgf,cid,&vp->formParmID);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPFormParm
 
@@ -244,7 +244,7 @@ void CDPFormParms (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->inputs.CDP(pgf,cid);
     vp->outputs.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -262,7 +262,7 @@ void CDPBaseInit (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->baseItf.CDP(pgf,cid);
     vp->initializerCall.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -280,8 +280,8 @@ void CDPSelfVar (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPVarName(pgf,cid,(address)(VarName*)vp,true);
-    CDPTID(pgf,cid,(address)&vp->typeID);
+    CDPVarName(pgf,cid,vp,true);
+    CDPTID(pgf,cid,&vp->typeID);
     vp->execName.CDP(pgf,cid);
     vp->baseInitCalls.CDP(pgf,cid);
     vp->body.CDP(pgf,cid);
@@ -300,8 +300,8 @@ void CDPConstant (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
-    CDPTBasicType(pgf,cid,(address)&vp->constType);
+    CDPExpression(pgf,cid,vp,true);
+    CDPTBasicType(pgf,cid,&vp->constType);
     vp->str.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPConstant
@@ -318,7 +318,7 @@ void CDPBoolConst (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     CDPpp.CVTbool(pgf,cid,vp->boolValue);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPBoolConst
@@ -335,7 +335,7 @@ void CDPNullConst (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPNullConst
 
@@ -351,7 +351,7 @@ void CDPSucceedStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPSucceedStatement
 
@@ -367,7 +367,7 @@ void CDPFailStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->exception.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPFailStatement
@@ -384,7 +384,7 @@ void CDPOldExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->paramExpr.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPOldExpression
@@ -401,7 +401,7 @@ void CDPUnaryOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPOperation(pgf,cid,(address)(Operation*)vp,true);
+    CDPOperation(pgf,cid,vp,true);
     vp->operand.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPUnaryOp
@@ -418,7 +418,7 @@ void CDPEvalExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPUnaryOp(pgf,cid,(address)(UnaryOp*)vp,true);
+    CDPUnaryOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPEvalExpression
 
@@ -434,7 +434,7 @@ void CDPEvalStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPEvalExpression(pgf,cid,(address)(EvalExpression*)vp,true);
+    CDPEvalExpression(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPEvalStatement
 
@@ -450,7 +450,7 @@ void CDPArrayAtIndex (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPOperation(pgf,cid,(address)(Operation*)vp,true);
+    CDPOperation(pgf,cid,vp,true);
     vp->arrayObj.CDP(pgf,cid);
     vp->arrayIndex.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -468,7 +468,7 @@ void CDPInvertOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPUnaryOp(pgf,cid,(address)(UnaryOp*)vp,true);
+    CDPUnaryOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPInvertOp
 
@@ -484,7 +484,7 @@ void CDPHandleOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->operand.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPHandleOp
@@ -501,7 +501,7 @@ void CDPOrdOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPUnaryOp(pgf,cid,(address)(UnaryOp*)vp,true);
+    CDPUnaryOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPOrdOp
 
@@ -517,7 +517,7 @@ void CDPMinusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPUnaryOp(pgf,cid,(address)(UnaryOp*)vp,true);
+    CDPUnaryOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPMinusOp
 
@@ -533,7 +533,7 @@ void CDPLogicalNot (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPUnaryOp(pgf,cid,(address)(UnaryOp*)vp,true);
+    CDPUnaryOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPLogicalNot
 
@@ -549,7 +549,7 @@ void CDPInSetStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->operand1.CDP(pgf,cid);
     vp->operand2.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -567,7 +567,7 @@ void CDPBinaryOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPOperation(pgf,cid,(address)(Operation*)vp,true);
+    CDPOperation(pgf,cid,vp,true);
     vp->operand1.CDP(pgf,cid);
     vp->operand2.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -585,7 +585,7 @@ void CDPMultipleOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPOperation(pgf,cid,(address)(Operation*)vp,true);
+    CDPOperation(pgf,cid,vp,true);
     vp->operands.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPMultipleOp
@@ -602,7 +602,7 @@ void CDPSemicolonOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPSemicolonOp
 
@@ -618,7 +618,7 @@ void CDPAndOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPAndOp
 
@@ -634,7 +634,7 @@ void CDPOrOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPOrOp
 
@@ -650,7 +650,7 @@ void CDPXorOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPXorOp
 
@@ -666,7 +666,7 @@ void CDPBitAndOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPBitAndOp
 
@@ -682,7 +682,7 @@ void CDPBitOrOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPBitOrOp
 
@@ -698,7 +698,7 @@ void CDPBitXorOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPBitXorOp
 
@@ -714,7 +714,7 @@ void CDPDivideOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPDivideOp
 
@@ -730,7 +730,7 @@ void CDPModulusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPModulusOp
 
@@ -746,7 +746,7 @@ void CDPLshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPLshiftOp
 
@@ -762,7 +762,7 @@ void CDPRshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPRshiftOp
 
@@ -778,7 +778,7 @@ void CDPPlusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPPlusOp
 
@@ -794,7 +794,7 @@ void CDPMultOp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPMultipleOp(pgf,cid,(address)(MultipleOp*)vp,true);
+    CDPMultipleOp(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPMultOp
 
@@ -810,7 +810,7 @@ void CDPAssignment (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->targetObj.CDP(pgf,cid);
     vp->exprValue.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -828,9 +828,9 @@ void CDPParameter (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->parameter.CDP(pgf,cid);
-    CDPTID(pgf,cid,(address)&vp->formParmID);
+    CDPTID(pgf,cid,&vp->formParmID);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPParameter
 
@@ -846,11 +846,11 @@ void CDPFuncExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->inputs.CDP(pgf,cid);
     vp->function.CDP(pgf,cid);
     vp->handle.CDP(pgf,cid);
-    CDPTID(pgf,cid,(address)&vp->vtypeID);
+    CDPTID(pgf,cid,&vp->vtypeID);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPFuncExpression
 
@@ -866,7 +866,7 @@ void CDPFuncStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPFuncExpression(pgf,cid,(address)(FuncExpression*)vp,true);
+    CDPFuncExpression(pgf,cid,vp,true);
     vp->outputs.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPFuncStatement
@@ -883,7 +883,7 @@ void CDPConnect (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->signalSender.CDP(pgf,cid);
     vp->signalSenderClass.CDP(pgf,cid);
     vp->signalFunction.CDP(pgf,cid);
@@ -903,7 +903,7 @@ void CDPDisconnect (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->signalSender.CDP(pgf,cid);
     vp->signalFunction.CDP(pgf,cid);
     vp->signalReceiver.CDP(pgf,cid);
@@ -923,7 +923,7 @@ void CDPSignal (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->sCall.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPSignal
@@ -940,7 +940,7 @@ void CDPAssertStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->statement.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPAssertStatement
@@ -957,7 +957,7 @@ void CDPIfThen (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->ifCondition.CDP(pgf,cid);
     vp->thenPart.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -975,7 +975,7 @@ void CDPIfStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->ifThens.CDP(pgf,cid);
     vp->elsePart.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -993,7 +993,7 @@ void CDPIfxThen (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->ifCondition.CDP(pgf,cid);
     vp->thenPart.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1011,7 +1011,7 @@ void CDPIfdefStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->ifCondition.CDP(pgf,cid);
     vp->thenPart.CDP(pgf,cid);
     vp->elsePart.CDP(pgf,cid);
@@ -1030,7 +1030,7 @@ void CDPCondExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPCondExpression
 
@@ -1046,7 +1046,7 @@ void CDPIfExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPCondExpression(pgf,cid,(address)(CondExpression*)vp,true);
+    CDPCondExpression(pgf,cid,vp,true);
     vp->ifThens.CDP(pgf,cid);
     vp->elsePart.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1064,7 +1064,7 @@ void CDPElseExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPCondExpression(pgf,cid,(address)(CondExpression*)vp,true);
+    CDPCondExpression(pgf,cid,vp,true);
     vp->expr1.CDP(pgf,cid);
     vp->expr2.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1082,7 +1082,7 @@ void CDPBranch (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->caseLabels.CDP(pgf,cid);
     vp->thenPart.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1100,7 +1100,7 @@ void CDPSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->caseExpression.CDP(pgf,cid);
     vp->branches.CDP(pgf,cid);
     vp->elsePart.CDP(pgf,cid);
@@ -1119,7 +1119,7 @@ void CDPCatchClause (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->exprType.CDP(pgf,cid);
     vp->varName.CDP(pgf,cid);
     vp->catchClause.CDP(pgf,cid);
@@ -1138,7 +1138,7 @@ void CDPTryStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->tryStatement.CDP(pgf,cid);
     vp->catchClauses.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1156,7 +1156,7 @@ void CDPTypeBranch (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->exprType.CDP(pgf,cid);
     vp->varName.CDP(pgf,cid);
     vp->thenPart.CDP(pgf,cid);
@@ -1175,7 +1175,7 @@ void CDPTypeSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->caseExpression.CDP(pgf,cid);
     vp->branches.CDP(pgf,cid);
     vp->elsePart.CDP(pgf,cid);
@@ -1194,7 +1194,7 @@ void CDPAttachObject (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->objType.CDP(pgf,cid);
     vp->itf.CDP(pgf,cid);
     vp->url.CDP(pgf,cid);
@@ -1213,7 +1213,7 @@ void CDPNewExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPAttachObject(pgf,cid,(address)(AttachObject*)vp,true);
+    CDPAttachObject(pgf,cid,vp,true);
     vp->varName.CDP(pgf,cid);
     vp->initializerCall.CDP(pgf,cid);
     vp->butStatement.CDP(pgf,cid);
@@ -1232,7 +1232,7 @@ void CDPCloneExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->varName.CDP(pgf,cid);
     vp->fromObj.CDP(pgf,cid);
     vp->butStatement.CDP(pgf,cid);
@@ -1251,7 +1251,7 @@ void CDPCopyStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->fromObj.CDP(pgf,cid);
     vp->ontoObj.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1269,7 +1269,7 @@ void CDPEnumItem (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->itemNo.CDP(pgf,cid);
     vp->enumType.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1287,7 +1287,7 @@ void CDPExtendExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->extendObj.CDP(pgf,cid);
     vp->extendType.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1305,7 +1305,7 @@ void CDPRun (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->initiator.CDP(pgf,cid);
     vp->inputs.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1323,7 +1323,7 @@ void CDPQueryItf (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->itf.CDP(pgf,cid);
     vp->givenObj.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1341,7 +1341,7 @@ void CDPGetUUID (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->itf.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPGetUUID
@@ -1358,7 +1358,7 @@ void CDPIntegerInterval (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPSynObject(pgf,cid,(address)(SynObject*)vp,true);
+    CDPSynObject(pgf,cid,vp,true);
     vp->from.CDP(pgf,cid);
     vp->to.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1376,7 +1376,7 @@ void CDPQuantifier (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPSynObject(pgf,cid,(address)(SynObject*)vp,true);
+    CDPSynObject(pgf,cid,vp,true);
     vp->elemType.CDP(pgf,cid);
     vp->quantVars.CDP(pgf,cid);
     vp->set.CDP(pgf,cid);
@@ -1395,7 +1395,7 @@ void CDPQuantStmOrExp (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExpression(pgf,cid,(address)(Expression*)vp,true);
+    CDPExpression(pgf,cid,vp,true);
     vp->quantifiers.CDP(pgf,cid);
     vp->primaryClause.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -1413,7 +1413,7 @@ void CDPDeclare (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPQuantStmOrExp(pgf,cid,(address)(QuantStmOrExp*)vp,true);
+    CDPQuantStmOrExp(pgf,cid,vp,true);
     vp->secondaryClause.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPDeclare
@@ -1430,7 +1430,7 @@ void CDPExists (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPQuantStmOrExp(pgf,cid,(address)(QuantStmOrExp*)vp,true);
+    CDPQuantStmOrExp(pgf,cid,vp,true);
     vp->secondaryClause.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPExists
@@ -1447,7 +1447,7 @@ void CDPForeach (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPExists(pgf,cid,(address)(Exists*)vp,true);
+    CDPExists(pgf,cid,vp,true);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPForeach
 
@@ -1463,7 +1463,7 @@ void CDPSelectExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPQuantStmOrExp(pgf,cid,(address)(QuantStmOrExp*)vp,true);
+    CDPQuantStmOrExp(pgf,cid,vp,true);
     vp->addObject.CDP(pgf,cid);
     vp->resultSet.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);

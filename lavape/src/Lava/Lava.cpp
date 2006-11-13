@@ -118,7 +118,7 @@ int main( int argc, char ** argv ) {
 /////////////////////////////////////////////////////////////////////////////
 // CLavaApp Konstruktion
 
-CLavaApp::CLavaApp(int argc, char ** argv )
+CLavaApp::CLavaApp(int &argc, char ** argv )
 :wxApp(argc, argv )
 {
 #ifndef WIN32

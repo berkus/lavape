@@ -111,7 +111,7 @@ void CLavaPEDebugger::connected() {
     ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = brkPnts.last;
     if (dbgRequest->ContData.ptr)
       ((DbgContData*)dbgRequest->ContData.ptr)->ContType = dbg_Cont;
-    CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
+    CDPDbgMessage(PUT, put_cid, dbgRequest);
     put_cid->flush();
     if (put_cid->Done) {
       ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
@@ -137,7 +137,7 @@ void CLavaPEDebugger::receive() {
     delete dbgReceived.lastReceived;
   dbgReceived.lastReceived = dbgReceived.newReceived;
   dbgReceived.newReceived = new DbgMessage;
-  CDPDbgMessage(GET, get_cid, (address)dbgReceived.newReceived);
+  CDPDbgMessage(GET, get_cid, dbgReceived.newReceived);
   if (get_cid->Done) {
 	  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
     return;
@@ -150,7 +150,7 @@ void CLavaPEDebugger::send() {
   if (dbgRequest->Command == Dbg_Continue)
     checkBrkPnts1();
 
-  CDPDbgMessage(PUT, put_cid, (address)dbgRequest);
+  CDPDbgMessage(PUT, put_cid, dbgRequest);
   put_cid->flush();
   if (!put_cid->Done)
     stop();

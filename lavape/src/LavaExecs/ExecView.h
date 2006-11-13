@@ -53,7 +53,7 @@ public:
   void focusOutEvent(QFocusEvent *ev);
   void UpdateUI();
 
-  CPEBaseDoc* CExecView::GetDocument()
+  CPEBaseDoc* GetDocument()
      { return (CPEBaseDoc*)m_viewDocument; }
 
   VIEWFACTORY(CExecView);

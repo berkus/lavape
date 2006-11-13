@@ -32,9 +32,7 @@
 #include "STR.h"
 
 #include "Tokens.h"
-
 #include "Syntax.h"
-
 
 #include "qwidget.h"
 #include <QScrollArea>
@@ -555,7 +553,7 @@ class TComment : public DObject  {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTComment(pgf,cid,(address)this,baseCDP); }
+  { CDPTComment(pgf,cid,this,baseCDP); }
 };
 
 struct NST0TComment {
@@ -776,7 +774,7 @@ class SynObject : public SynObjectBase {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPSynObject(pgf,cid,(address)this,baseCDP); }
+  { CDPSynObject(pgf,cid,this,baseCDP); }
 };
 
 struct TDOD : public SynObject {
@@ -816,7 +814,7 @@ struct TDOD : public SynObject {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTDOD(pgf,cid,(address)this,baseCDP); }
+  { CDPTDOD(pgf,cid,this,baseCDP); }
 };
 
 typedef CHAINX TDODC;
@@ -859,7 +857,7 @@ class Expression : public SynObject {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPExpression(pgf,cid,this,baseCDP); }
 };
 
 class Operation : public Expression {
@@ -887,7 +885,7 @@ class Operation : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPOperation(pgf,cid,(address)this,baseCDP); }
+  { CDPOperation(pgf,cid,this,baseCDP); }
 };
 
 class Reference : public SynObject {
@@ -922,7 +920,7 @@ class Reference : public SynObject {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPReference(pgf,cid,(address)this,baseCDP); }
+  { CDPReference(pgf,cid,this,baseCDP); }
 };
 
 class EnumConst : public Expression {
@@ -960,7 +958,7 @@ class EnumConst : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPEnumConst(pgf,cid,(address)this,baseCDP); }
+  { CDPEnumConst(pgf,cid,this,baseCDP); }
 };
 
 class ObjReference : public Expression {
@@ -1014,7 +1012,7 @@ class ObjReference : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPObjReference(pgf,cid,(address)this,baseCDP); }
+  { CDPObjReference(pgf,cid,this,baseCDP); }
 };
 
 class VarName : public Expression {
@@ -1050,7 +1048,7 @@ class VarName : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPVarName(pgf,cid,(address)this,baseCDP); }
+  { CDPVarName(pgf,cid,this,baseCDP); }
 };
 
 class FormParm : public Expression {
@@ -1078,7 +1076,7 @@ class FormParm : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPFormParm(pgf,cid,(address)this,baseCDP); }
+  { CDPFormParm(pgf,cid,this,baseCDP); }
 };
 
 class FormParms : public Expression {
@@ -1105,7 +1103,7 @@ class FormParms : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPFormParms(pgf,cid,(address)this,baseCDP); }
+  { CDPFormParms(pgf,cid,this,baseCDP); }
 };
 
 class BaseInit : public Expression {
@@ -1131,7 +1129,7 @@ class BaseInit : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPBaseInit(pgf,cid,(address)this,baseCDP); }
+  { CDPBaseInit(pgf,cid,this,baseCDP); }
 };
 
 class SelfVar : public VarName {
@@ -1180,7 +1178,7 @@ class SelfVar : public VarName {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPSelfVar(pgf,cid,(address)this,baseCDP); }
+  { CDPSelfVar(pgf,cid,this,baseCDP); }
 };
 
 class Constant : public Expression {
@@ -1217,7 +1215,7 @@ class Constant : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPConstant(pgf,cid,(address)this,baseCDP); }
+  { CDPConstant(pgf,cid,this,baseCDP); }
 };
 
 class BoolConst : public Expression {
@@ -1253,7 +1251,7 @@ class BoolConst : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPBoolConst(pgf,cid,(address)this,baseCDP); }
+  { CDPBoolConst(pgf,cid,this,baseCDP); }
 };
 
 class NullConst : public Expression {
@@ -1283,7 +1281,7 @@ class NullConst : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPNullConst(pgf,cid,(address)this,baseCDP); }
+  { CDPNullConst(pgf,cid,this,baseCDP); }
 };
 
 class SucceedStatement : public Expression {
@@ -1304,7 +1302,7 @@ class SucceedStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPSucceedStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPSucceedStatement(pgf,cid,this,baseCDP); }
 };
 
 class FailStatement : public Expression {
@@ -1331,7 +1329,7 @@ class FailStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPFailStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPFailStatement(pgf,cid,this,baseCDP); }
 };
 
 class OldExpression : public Expression {
@@ -1356,7 +1354,7 @@ class OldExpression : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPOldExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPOldExpression(pgf,cid,this,baseCDP); }
 };
 
 class UnaryOp : public Operation {
@@ -1388,7 +1386,7 @@ class UnaryOp : public Operation {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPUnaryOp(pgf,cid,(address)this,baseCDP); }
+  { CDPUnaryOp(pgf,cid,this,baseCDP); }
 };
 
 class EvalExpression : public UnaryOp {
@@ -1419,7 +1417,7 @@ class EvalExpression : public UnaryOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPEvalExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPEvalExpression(pgf,cid,this,baseCDP); }
 };
 
 class EvalStatement : public EvalExpression {
@@ -1440,7 +1438,7 @@ class EvalStatement : public EvalExpression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPEvalStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPEvalStatement(pgf,cid,this,baseCDP); }
 };
 
 class ArrayAtIndex : public Operation {
@@ -1470,7 +1468,7 @@ class ArrayAtIndex : public Operation {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPArrayAtIndex(pgf,cid,(address)this,baseCDP); }
+  { CDPArrayAtIndex(pgf,cid,this,baseCDP); }
 };
 
 class InvertOp : public UnaryOp {
@@ -1488,7 +1486,7 @@ class InvertOp : public UnaryOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPInvertOp(pgf,cid,(address)this,baseCDP); }
+  { CDPInvertOp(pgf,cid,this,baseCDP); }
 };
 
 class HandleOp : public Expression {
@@ -1510,7 +1508,7 @@ class HandleOp : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPHandleOp(pgf,cid,(address)this,baseCDP); }
+  { CDPHandleOp(pgf,cid,this,baseCDP); }
 };
 
 class OrdOp : public UnaryOp {
@@ -1528,7 +1526,7 @@ class OrdOp : public UnaryOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPOrdOp(pgf,cid,(address)this,baseCDP); }
+  { CDPOrdOp(pgf,cid,this,baseCDP); }
 };
 
 class MinusOp : public UnaryOp {
@@ -1546,7 +1544,7 @@ class MinusOp : public UnaryOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPMinusOp(pgf,cid,(address)this,baseCDP); }
+  { CDPMinusOp(pgf,cid,this,baseCDP); }
 };
 
 class LogicalNot : public UnaryOp {
@@ -1572,7 +1570,7 @@ class LogicalNot : public UnaryOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPLogicalNot(pgf,cid,(address)this,baseCDP); }
+  { CDPLogicalNot(pgf,cid,this,baseCDP); }
 };
 
 class InSetStatement : public Expression {
@@ -1599,7 +1597,7 @@ class InSetStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPInSetStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPInSetStatement(pgf,cid,this,baseCDP); }
 };
 
 class BinaryOp : public Operation {
@@ -1631,7 +1629,7 @@ class BinaryOp : public Operation {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPBinaryOp(pgf,cid,(address)this,baseCDP); }
+  { CDPBinaryOp(pgf,cid,this,baseCDP); }
 };
 
 class MultipleOp : public Operation {
@@ -1667,7 +1665,7 @@ class MultipleOp : public Operation {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPMultipleOp(pgf,cid,(address)this,baseCDP); }
+  { CDPMultipleOp(pgf,cid,this,baseCDP); }
 };
 
 class SemicolonOp : public MultipleOp {
@@ -1685,7 +1683,7 @@ class SemicolonOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPSemicolonOp(pgf,cid,(address)this,baseCDP); }
+  { CDPSemicolonOp(pgf,cid,this,baseCDP); }
 };
 
 class AndOp : public MultipleOp {
@@ -1703,7 +1701,7 @@ class AndOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPAndOp(pgf,cid,(address)this,baseCDP); }
+  { CDPAndOp(pgf,cid,this,baseCDP); }
 };
 
 class OrOp : public MultipleOp {
@@ -1721,7 +1719,7 @@ class OrOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPOrOp(pgf,cid,(address)this,baseCDP); }
+  { CDPOrOp(pgf,cid,this,baseCDP); }
 };
 
 class XorOp : public MultipleOp {
@@ -1739,7 +1737,7 @@ class XorOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPXorOp(pgf,cid,(address)this,baseCDP); }
+  { CDPXorOp(pgf,cid,this,baseCDP); }
 };
 
 class BitAndOp : public MultipleOp {
@@ -1757,7 +1755,7 @@ class BitAndOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPBitAndOp(pgf,cid,(address)this,baseCDP); }
+  { CDPBitAndOp(pgf,cid,this,baseCDP); }
 };
 
 class BitOrOp : public MultipleOp {
@@ -1775,7 +1773,7 @@ class BitOrOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPBitOrOp(pgf,cid,(address)this,baseCDP); }
+  { CDPBitOrOp(pgf,cid,this,baseCDP); }
 };
 
 class BitXorOp : public MultipleOp {
@@ -1793,7 +1791,7 @@ class BitXorOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPBitXorOp(pgf,cid,(address)this,baseCDP); }
+  { CDPBitXorOp(pgf,cid,this,baseCDP); }
 };
 
 class DivideOp : public MultipleOp {
@@ -1811,7 +1809,7 @@ class DivideOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDivideOp(pgf,cid,(address)this,baseCDP); }
+  { CDPDivideOp(pgf,cid,this,baseCDP); }
 };
 
 class ModulusOp : public MultipleOp {
@@ -1829,7 +1827,7 @@ class ModulusOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPModulusOp(pgf,cid,(address)this,baseCDP); }
+  { CDPModulusOp(pgf,cid,this,baseCDP); }
 };
 
 class LshiftOp : public MultipleOp {
@@ -1847,7 +1845,7 @@ class LshiftOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPLshiftOp(pgf,cid,(address)this,baseCDP); }
+  { CDPLshiftOp(pgf,cid,this,baseCDP); }
 };
 
 class RshiftOp : public MultipleOp {
@@ -1865,7 +1863,7 @@ class RshiftOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPRshiftOp(pgf,cid,(address)this,baseCDP); }
+  { CDPRshiftOp(pgf,cid,this,baseCDP); }
 };
 
 class PlusOp : public MultipleOp {
@@ -1883,7 +1881,7 @@ class PlusOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPPlusOp(pgf,cid,(address)this,baseCDP); }
+  { CDPPlusOp(pgf,cid,this,baseCDP); }
 };
 
 class MultOp : public MultipleOp {
@@ -1901,7 +1899,7 @@ class MultOp : public MultipleOp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPMultOp(pgf,cid,(address)this,baseCDP); }
+  { CDPMultOp(pgf,cid,this,baseCDP); }
 };
 
 class Assignment : public Expression {
@@ -1926,7 +1924,7 @@ class Assignment : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPAssignment(pgf,cid,(address)this,baseCDP); }
+  { CDPAssignment(pgf,cid,this,baseCDP); }
 };
 
 class Parameter : public Expression {
@@ -1960,7 +1958,7 @@ class Parameter : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPParameter(pgf,cid,(address)this,baseCDP); }
+  { CDPParameter(pgf,cid,this,baseCDP); }
 };
 
 class FuncExpression : public Expression {
@@ -2004,7 +2002,7 @@ class FuncExpression : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPFuncExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPFuncExpression(pgf,cid,this,baseCDP); }
 };
 
 class FuncStatement : public FuncExpression {
@@ -2032,7 +2030,7 @@ class FuncStatement : public FuncExpression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPFuncStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPFuncStatement(pgf,cid,this,baseCDP); }
 };
 
 struct Connect : public Expression {
@@ -2058,7 +2056,7 @@ struct Connect : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPConnect(pgf,cid,(address)this,baseCDP); }
+  { CDPConnect(pgf,cid,this,baseCDP); }
 };
 
 struct Disconnect : public Expression {
@@ -2084,7 +2082,7 @@ struct Disconnect : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDisconnect(pgf,cid,(address)this,baseCDP); }
+  { CDPDisconnect(pgf,cid,this,baseCDP); }
 };
 
 class Signal : public Expression {
@@ -2107,7 +2105,7 @@ class Signal : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPSignal(pgf,cid,(address)this,baseCDP); }
+  { CDPSignal(pgf,cid,this,baseCDP); }
 };
 
 class AssertStatement : public Expression {
@@ -2134,7 +2132,7 @@ class AssertStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPAssertStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPAssertStatement(pgf,cid,this,baseCDP); }
 };
 
 class IfThen : public Expression {
@@ -2161,7 +2159,7 @@ class IfThen : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPIfThen(pgf,cid,(address)this,baseCDP); }
+  { CDPIfThen(pgf,cid,this,baseCDP); }
 };
 
 class IfStatement : public Expression {
@@ -2190,7 +2188,7 @@ class IfStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPIfStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPIfStatement(pgf,cid,this,baseCDP); }
 };
 
 class IfxThen : public Expression {
@@ -2217,7 +2215,7 @@ class IfxThen : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPIfxThen(pgf,cid,(address)this,baseCDP); }
+  { CDPIfxThen(pgf,cid,this,baseCDP); }
 };
 
 class IfdefStatement : public Expression {
@@ -2248,7 +2246,7 @@ class IfdefStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPIfdefStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPIfdefStatement(pgf,cid,this,baseCDP); }
 };
 
 class CondExpression : public Expression {
@@ -2272,7 +2270,7 @@ class CondExpression : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPCondExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPCondExpression(pgf,cid,this,baseCDP); }
 };
 
 class IfExpression : public CondExpression {
@@ -2303,7 +2301,7 @@ class IfExpression : public CondExpression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPIfExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPIfExpression(pgf,cid,this,baseCDP); }
 };
 
 class ElseExpression : public CondExpression {
@@ -2333,7 +2331,7 @@ class ElseExpression : public CondExpression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPElseExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPElseExpression(pgf,cid,this,baseCDP); }
 };
 
 class Branch : public Expression {
@@ -2362,7 +2360,7 @@ class Branch : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPBranch(pgf,cid,(address)this,baseCDP); }
+  { CDPBranch(pgf,cid,this,baseCDP); }
 };
 
 class SwitchStatement : public Expression {
@@ -2388,7 +2386,7 @@ class SwitchStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPSwitchStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPSwitchStatement(pgf,cid,this,baseCDP); }
 };
 
 class CatchClause : public Expression {
@@ -2419,7 +2417,7 @@ class CatchClause : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPCatchClause(pgf,cid,(address)this,baseCDP); }
+  { CDPCatchClause(pgf,cid,this,baseCDP); }
 };
 
 class TryStatement : public Expression {
@@ -2443,7 +2441,7 @@ class TryStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTryStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPTryStatement(pgf,cid,this,baseCDP); }
 };
 
 class TypeBranch : public Expression {
@@ -2474,7 +2472,7 @@ class TypeBranch : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTypeBranch(pgf,cid,(address)this,baseCDP); }
+  { CDPTypeBranch(pgf,cid,this,baseCDP); }
 };
 
 class TypeSwitchStatement : public Expression {
@@ -2502,7 +2500,7 @@ class TypeSwitchStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPTypeSwitchStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPTypeSwitchStatement(pgf,cid,this,baseCDP); }
 };
 
 class AttachObject : public Expression {
@@ -2531,7 +2529,7 @@ class AttachObject : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPAttachObject(pgf,cid,(address)this,baseCDP); }
+  { CDPAttachObject(pgf,cid,this,baseCDP); }
 };
 
 class NewExpression : public AttachObject {
@@ -2560,7 +2558,7 @@ class NewExpression : public AttachObject {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPNewExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPNewExpression(pgf,cid,this,baseCDP); }
 };
 
 class CloneExpression : public Expression {
@@ -2590,7 +2588,7 @@ class CloneExpression : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPCloneExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPCloneExpression(pgf,cid,this,baseCDP); }
 };
 
 class CopyStatement : public Expression {
@@ -2618,7 +2616,7 @@ class CopyStatement : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPCopyStatement(pgf,cid,(address)this,baseCDP); }
+  { CDPCopyStatement(pgf,cid,this,baseCDP); }
 };
 
 class EnumItem : public Expression {
@@ -2643,7 +2641,7 @@ class EnumItem : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPEnumItem(pgf,cid,(address)this,baseCDP); }
+  { CDPEnumItem(pgf,cid,this,baseCDP); }
 };
 
 class ExtendExpression : public Expression {
@@ -2669,7 +2667,7 @@ class ExtendExpression : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPExtendExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPExtendExpression(pgf,cid,this,baseCDP); }
 };
 
 class Run : public Expression {
@@ -2695,7 +2693,7 @@ class Run : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPRun(pgf,cid,(address)this,baseCDP); }
+  { CDPRun(pgf,cid,this,baseCDP); }
 };
 
 class QueryItf : public Expression {
@@ -2720,7 +2718,7 @@ class QueryItf : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPQueryItf(pgf,cid,(address)this,baseCDP); }
+  { CDPQueryItf(pgf,cid,this,baseCDP); }
 };
 
 class GetUUID : public Expression {
@@ -2744,7 +2742,7 @@ class GetUUID : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPGetUUID(pgf,cid,(address)this,baseCDP); }
+  { CDPGetUUID(pgf,cid,this,baseCDP); }
 };
 
 class IntegerInterval : public SynObject {
@@ -2776,7 +2774,7 @@ class IntegerInterval : public SynObject {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPIntegerInterval(pgf,cid,(address)this,baseCDP); }
+  { CDPIntegerInterval(pgf,cid,this,baseCDP); }
 };
 
 class Quantifier : public SynObject {
@@ -2811,7 +2809,7 @@ class Quantifier : public SynObject {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPQuantifier(pgf,cid,(address)this,baseCDP); }
+  { CDPQuantifier(pgf,cid,this,baseCDP); }
 };
 
 class QuantStmOrExp : public Expression {
@@ -2842,7 +2840,7 @@ class QuantStmOrExp : public Expression {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPQuantStmOrExp(pgf,cid,(address)this,baseCDP); }
+  { CDPQuantStmOrExp(pgf,cid,this,baseCDP); }
 };
 
 class Declare : public QuantStmOrExp {
@@ -2868,7 +2866,7 @@ class Declare : public QuantStmOrExp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPDeclare(pgf,cid,(address)this,baseCDP); }
+  { CDPDeclare(pgf,cid,this,baseCDP); }
 };
 
 class Exists : public QuantStmOrExp {
@@ -2894,7 +2892,7 @@ class Exists : public QuantStmOrExp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPExists(pgf,cid,(address)this,baseCDP); }
+  { CDPExists(pgf,cid,this,baseCDP); }
 };
 
 class Foreach : public Exists {
@@ -2912,7 +2910,7 @@ class Foreach : public Exists {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPForeach(pgf,cid,(address)this,baseCDP); }
+  { CDPForeach(pgf,cid,this,baseCDP); }
 };
 
 class SelectExpression : public QuantStmOrExp {
@@ -2936,7 +2934,7 @@ class SelectExpression : public QuantStmOrExp {
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
-  { CDPSelectExpression(pgf,cid,(address)this,baseCDP); }
+  { CDPSelectExpression(pgf,cid,this,baseCDP); }
 };
 ;  //  end of the TYPE macro
 

@@ -75,12 +75,12 @@ static wxDocument *clipBoardDoc;
 
 static unsigned ExecCount=0;
 static CExecView *lastDebugStopExec=0;
-
+/*
 void dummy_func () {
         ASN1 *cid=new ASN1;
         CDPTDOD(PUT,cid,0,true);
 }
-
+*/
 /////////////////////////////////////////////////////////////////////////////
 // CExecView
 
@@ -729,7 +729,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
         return;
       if (hint->FirstLast.Contains(firstHint)) {
         if (!hint->FirstLast.Contains(lastHint)) // nur firstHint
-          if ((InsertMode)hint->CommandData3 == InsMult) { // cannot be undo
+          if (hint->CommandData3 == (void*)InsMult) { // cannot be undo
             multHint = hint;
             return;
           }
@@ -2058,7 +2058,7 @@ void CExecView::SetSelectAt (CLavaPEHint *hint) {
   MultipleOp *multOp;
 
   text->selectAfter = text->selectAt;
-  switch ((InsertMode)hint->CommandData3) {
+  switch ((InsertMode)(unsigned)hint->CommandData3) {
   case InsMult:
     if (text->selectAt) break;
     multOp = (MultipleOp*)hint->CommandData4;
@@ -2270,10 +2270,10 @@ void CExecView::PutInsFlagHint(SET insFlags, SET firstLastHint) {
     CPECommand_Exec,
     myDoc,
     firstLastHint,
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj,
-    (DWORD)InsFlags,
-    (DWORD)insFlags.bits);
+    myDECL,
+    text->currentSynObj,
+    (void*)InsFlags,
+    (void*)insFlags.bits);
 
   myDoc->UndoMem.AddToMem(nextHint);
   if (firstLastHint.Contains(lastHint))
@@ -2288,11 +2288,11 @@ void CExecView::PutPlusMinusHint() {
     CPECommand_Exec,
     myDoc,
     SET(firstHint,lastHint,-1),
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj->parentObject,
-    (DWORD)PlusMinus,
-    (DWORD)text->currentSynObj,
-    (DWORD)0);
+    myDECL,
+    text->currentSynObj->parentObject,
+    (void*)PlusMinus,
+    text->currentSynObj,
+    0);
 
   myDoc->UndoMem.AddToMem(nextHint);
   myDoc->UpdateDoc(this, false);
@@ -2304,8 +2304,8 @@ void CExecView::PutArrowHint() {
     CPECommand_Exec,
     myDoc,
     SET(firstHint,lastHint,-1),
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj,
+    myDECL,
+    text->currentSynObj,
     (DWORD)ToggleArrows);
 
   myDoc->UndoMem.AddToMem(nextHint);
@@ -2318,10 +2318,10 @@ void CExecView::PutDelFlagHint(SET delFlags, SET firstLastHint) {
     CPECommand_Exec,
     myDoc,
     firstLastHint,
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj,
-    (DWORD)DelFlags,
-    (DWORD)delFlags.bits);
+    myDECL,
+    text->currentSynObj,
+    (void*)DelFlags,
+    (void*)delFlags.bits);
 
   myDoc->UndoMem.AddToMem(nextHint);
   if (firstLastHint.Contains(lastHint))
@@ -2333,12 +2333,12 @@ void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint) {
     CPECommand_Exec,
     myDoc,
     firstLastHint,
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj->parentObject,
-    (DWORD)InsNested,
-    (DWORD)insObj,
-    (DWORD)text->currentSynObj->containingChain,
-    (DWORD)text->currentSynObj->whereInParent);
+    myDECL,
+    text->currentSynObj->parentObject,
+    (void*)InsNested,
+    insObj,
+    text->currentSynObj->containingChain,
+    text->currentSynObj->whereInParent);
 
   myDoc->UndoMem.AddToMem(nextHint);
   myDoc->UpdateDoc(this,false,nextHint);
@@ -2349,12 +2349,12 @@ void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLas
     CPECommand_Exec,
     myDoc,
     firstLastHint,
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj,
-    (DWORD)InsChain,
-    (DWORD)newChe,
-    (DWORD)chain,
-    (DWORD)pred);
+    myDECL,
+    text->currentSynObj,
+    (void*)InsChain,
+    newChe,
+   chain,
+    pred);
 
   myDoc->UndoMem.AddToMem(nextHint);
   if (firstLastHint.Contains(lastHint))
@@ -2367,12 +2367,12 @@ void CExecView::PutInsMultOpHint(SynObject *multOp) {
     CPECommand_Exec,
     myDoc,
     SET(firstHint,-1),
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj->parentObject,
-    (DWORD)InsMult,
-    (DWORD)multOp,
-    (DWORD)text->currentSynObj->containingChain,
-    (DWORD)text->currentSynObj->whereInParent);
+    myDECL,
+    text->currentSynObj->parentObject,
+    (void*)InsMult,
+    multOp,
+    text->currentSynObj->containingChain,
+    text->currentSynObj->whereInParent);
 
   myDoc->UndoMem.AddToMem(nextHint);
   nextHint = 0;
@@ -2422,10 +2422,10 @@ void CExecView::PutChgCommentHint(TComment *pCmt) {
     CPECommand_Exec,
     myDoc,
     SET(firstHint,lastHint,-1),
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj,
-    (DWORD)ChgComment,
-    (DWORD)pCmt);
+    myDECL,
+    text->currentSynObj,
+    (void*)ChgComment,
+    pCmt);
 
   myDoc->UndoMem.AddToMem(nextHint);
   myDoc->UpdateDoc(this, false);
@@ -2436,10 +2436,10 @@ void CExecView::PutChgOpHint(TToken token) {
     CPECommand_Exec,
     myDoc,
     SET(firstHint,lastHint,-1),
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj,
-    (DWORD)ChgOp,
-    (DWORD)token);
+    myDECL,
+    text->currentSynObj,
+    (void*)ChgOp,
+    (void*)token);
 
   myDoc->UndoMem.AddToMem(nextHint);
   myDoc->UpdateDoc(this, false);
@@ -2463,12 +2463,12 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
         CPECommand_Exec,
         myDoc,
         firstLastHint-SET(lastHint,-1),
-        (DWORD)myDECL,
-        (DWORD)delObj->parentObject, // parent,
-        (DWORD)DelChain,
-        (DWORD)che,
-        (DWORD)chx,
-        (DWORD)che->predecessor);
+        myDECL,
+        delObj->parentObject, // parent,
+        (void*)DelChain,
+        che,
+        chx,
+        che->predecessor);
       myDoc->UndoMem.AddToMem(nextHint);
       Quantifier *quant = (Quantifier*)delObj;
       for (CHE *cheVn=(CHE*)quant->quantVars.first; cheVn; cheVn=(CHE*)cheVn->successor) {
@@ -2479,12 +2479,12 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
           CPECommand_Exec,
           myDoc,
           cheVn->successor?SET():SET(lastHint,-1),
-          (DWORD)myDECL,
-          (DWORD)iniCall->parentObject, // parent,
-          (DWORD)DelChain,
-          (DWORD)che,
-          (DWORD)chx,
-          (DWORD)che->predecessor);
+          myDECL,
+          iniCall->parentObject, // parent,
+          (void*)DelChain,
+          che,
+          chx,
+          che->predecessor);
         myDoc->UndoMem.AddToMem(nextHint);
       }
       myDoc->UpdateDoc(this, false);
@@ -2498,24 +2498,24 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
         CPECommand_Exec,
         myDoc,
         delMult ? firstLastHint-SET(lastHint,-1) : firstLastHint,
-        (DWORD)myDECL,
-        (DWORD)delObj->parentObject, // parent,
-        (DWORD)DelChain,
-        (DWORD)che,
-        (DWORD)chx,
-        (DWORD)che->predecessor);
+        myDECL,
+        delObj->parentObject, // parent,
+        (void*)DelChain,
+        che,
+        chx,
+        che->predecessor);
       myDoc->UndoMem.AddToMem(nextHint);
       if (delMult) {
         nextHint = new CLavaPEHint(
           CPECommand_Exec,
           myDoc,
           SET(lastHint,-1),
-          (DWORD)myDECL,
-          (DWORD)text->currentSynObj->parentObject->parentObject,
-          (DWORD)DelMult,
-          (DWORD)delObj->parentObject,
-          (DWORD)delObj->parentObject->containingChain,
-          (DWORD)delObj->parentObject->whereInParent);
+          myDECL,
+          text->currentSynObj->parentObject->parentObject,
+          (void*)DelMult,
+          delObj->parentObject,
+          delObj->parentObject->containingChain,
+          delObj->parentObject->whereInParent);
         myDoc->UndoMem.AddToMem(nextHint);
       }
     }
@@ -2531,12 +2531,12 @@ void CExecView::PutDelHint(SynObject *delObj, SET firstLastHint) {
       CPECommand_Exec,
       myDoc,
       3UL,
-      (DWORD)myDECL,
-      (DWORD)text->currentSynObj->parentObject,
+      myDECL,
+      text->currentSynObj->parentObject,
       (DWORD)InsNested,
-      (DWORD)placeHdr,
-      (DWORD)text->currentSynObj->containingChain,
-      (DWORD)text->currentSynObj->whereInParent);
+      placeHdr,
+      text->currentSynObj->containingChain,
+      text->currentSynObj->whereInParent);
     myDoc->UndoMem.AddToMem(nextHint);
   }
 
@@ -2549,12 +2549,12 @@ void CExecView::PutDelNestedHint(SET firstLastHint) {
     CPECommand_Exec,
     myDoc,
     firstLastHint,
-    (DWORD)myDECL,
-    (DWORD)text->currentSynObj->parentObject,
-    (DWORD)DelNested,
-    (DWORD)text->currentSynObj,
-    (DWORD)text->currentSynObj->containingChain,
-    (DWORD)text->currentSynObj->whereInParent);
+    myDECL,
+    text->currentSynObj->parentObject,
+    (void*)DelNested,
+    text->currentSynObj,
+    text->currentSynObj->containingChain,
+    text->currentSynObj->whereInParent);
 
   myDoc->UndoMem.AddToMem(nextHint);
   if (firstLastHint.Contains(lastHint))

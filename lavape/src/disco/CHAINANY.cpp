@@ -32,13 +32,13 @@ void CHAINANY0::CDP (PutGetFlag pgf, ASN1* cid,
 
 {
   ChainAnyElem *elem, *predecessor;
-  
+
   if (cid->Skip()) return;
-  
+
   if (pgf == PUT) {
     cid->PutSEQUENCE();
     for (elem = first; elem; elem = elem->successor)
-      cdp(pgf,cid,(address)elem+sizeof(ChainAnyElem),false);
+      cdp(pgf,cid,(UCP)elem+sizeof(ChainAnyElem),false);
     cid->PutEOC();
   }
   else {
@@ -47,7 +47,7 @@ void CHAINANY0::CDP (PutGetFlag pgf, ASN1* cid,
     cid->GetSEQUENCE();
     cid->WrongElemStop(true);
     if (cid->Skip()) return;
-    
+
     if (!cid->WrongElem())
       for (elem = first; !cid->Skip(); elem = elem->successor) {
         cid->WrongElemStop(false);
@@ -58,7 +58,7 @@ void CHAINANY0::CDP (PutGetFlag pgf, ASN1* cid,
           elem = (ChainAnyElem*)allocNewElem();
           Append(elem);
         }
-        cdp(pgf,cid,(address)elem+sizeof(ChainAnyElem),false);
+        cdp(pgf,cid,(UCP)elem+sizeof(ChainAnyElem),false);
         predecessor = elem;
       }
     Cut(predecessor);
@@ -84,7 +84,7 @@ void CHAINX::DestroyKeepElems()
 
 {
   CHE *elem, *next;
-  
+
   for (elem = (CHE*)first; elem; elem = (CHE*)next) {
     next = (CHE*)elem->successor;
     elem->data = 0;
@@ -97,13 +97,13 @@ void CHAINX::DestroyKeepElems()
 void CHAINX::CDP (PutGetFlag pgf, ASN1* cid, bool)
 
 {
-  
+
   CHE *elem, *predecessor;
   DString className;
   wxClassInfo *cli;
-  
+
   if (cid->Skip()) return;
-  
+
   if (pgf == PUT) {
     cid->PutSEQUENCE();
     for (elem = (CHE*)first; elem; elem = (CHE*)elem->successor) {
@@ -118,7 +118,7 @@ void CHAINX::CDP (PutGetFlag pgf, ASN1* cid, bool)
   else {
     predecessor = 0;
     cid->GetSEQUENCE();
-    
+
     for (elem = (CHE*)first; !cid->Skip(); elem = (CHE*)elem->successor) {
       cid->WrongElemStop(false);
       cid->GetEOC();

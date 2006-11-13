@@ -193,7 +193,7 @@ void CDPchar (PutGetFlag pgf,
 
 void CDPbyte (PutGetFlag pgf,
               ASN1 *cid,
-              address a,
+              unsigned char *a,
         bool)
 {
   if (pgf == PUT)
@@ -272,7 +272,7 @@ void CDPARBITRARY (PutGetFlag pgf,
        bool)
 {
   ARBITRARY *vp=(ARBITRARY *)a;
-  
+
   vp->CDP(pgf,cid);
 }
 
@@ -283,7 +283,7 @@ void CDPBYTES (PutGetFlag pgf,
          bool)
 {
   BYTES *vp=(BYTES *)a;
-  
+
   vp->CDP(pgf,cid);
 }
 

@@ -113,10 +113,10 @@ void IntCodeCLASS::Push (SyntacticType sT)
   if (IncludeLevel) treeNodePtr->Flags.INCL(Included);
   appendToStack();
 }
- 
- 
+
+
 void IntCodeCLASS::Interpose (SyntacticType sT)
- 
+
 {
   if (PCerrors.Recovery) return;
   /* create and initialize new tree node */
@@ -133,20 +133,20 @@ void IntCodeCLASS::Interpose (SyntacticType sT)
   stack[iStack-1]->Down = treeNodePtr;
   stack[iStack] = treeNodePtr;
 }
- 
- 
+
+
 void IntCodeCLASS::InterposeDontPop (SyntacticType sT)
- 
+
 {
   if (PCerrors.Recovery) return;
   if (!(stack[iStack]->Atomic || stack[iStack]->Down)) {
     Push(sT);
     return;
   }
-  
+
   if (iStack+1 >= stackSize)
     PCerrors.InternalError(StackOverflow);
-    
+
   /* create and initialize new tree node */
   treeNodePtr = new TreeNode;
   treeNodePtr->Atomic = false;
@@ -324,9 +324,10 @@ unsigned IntCodeCLASS::hashCode (char *s)
 /************************************************************************/
 
 void IntCodeCLASS::LookUpType (TStringBufferPos id,
-                               TypeTablePtr& entryFound)
+                                TypeTablePtr& entryFound)
 {
   AtomPtr idPtr = &StringBuffer[id], entryIdPtr;
+  DString idPtrStr=DString(idPtr), entryIdPtrStr;
 
   hc = hashCode(idPtr);
   entryFound = hashTable[hc].firstEntry;
@@ -334,7 +335,8 @@ void IntCodeCLASS::LookUpType (TStringBufferPos id,
     if (entryFound == 0)
       break;
     entryIdPtr = &StringBuffer[entryFound->id];
-    if (Compare(idPtr,entryIdPtr) == 0)
+    entryIdPtrStr = DString(entryIdPtr);
+    if (Compare(idPtrStr,entryIdPtrStr) == 0)
       break;
     entryFound = entryFound->nextEntry;
   }
@@ -374,14 +376,14 @@ void IntCodeCLASS::TypeDef ()
   unsigned loc;
 
   if (PCerrors.Recovery) return;
-  
+
   if (CDPfromEntry)
     for (;CDPfromEntry->CDPfrom;
           CDPfromEntry = CDPfromEntry->CDPfrom);
   if (SIGfromEntry)
     for (;SIGfromEntry->SIGfrom;
           SIGfromEntry = SIGfromEntry->SIGfrom);
-        
+
   LookUpType(CurrentDefType->StringBufferPos,entryFound);
   if (!entryFound) {
     appendType(newEntry);
@@ -400,7 +402,7 @@ void IntCodeCLASS::TypeDef ()
     newEntry->typeIndex = typeInd;
     newEntry->indexLevel = indexLevel;
     newEntry->isForm = IsForm;
-    
+
     if (CmdParms.CurrentIncludeFile.l > 0) {
       newEntry->module = CmdParms.CurrentIncludeFile;
       while (newEntry->module.Contains(slash,0,loc))
@@ -408,7 +410,7 @@ void IntCodeCLASS::TypeDef ()
       newEntry->module.Contains(".",0,loc);
       newEntry->module = newEntry->module.Substr(0,loc);
     }
-    
+
     newEntry->typeSpecifier = CurrentTypeSpecifier;
     newEntry->declarator = CurrentDeclarator;
     newEntry->attributes = attributes;
@@ -432,7 +434,7 @@ void IntCodeCLASS::TypeDef ()
     entryFound->typeIndex = typeInd;
     entryFound->indexLevel = indexLevel;
     entryFound->isForm = IsForm;
-    
+
     if (CmdParms.CurrentIncludeFile.l > 0) {
       entryFound->module = CmdParms.CurrentIncludeFile;
       while (entryFound->module.Contains(slash,0,loc))
@@ -442,7 +444,7 @@ void IntCodeCLASS::TypeDef ()
     }
     else
       entryFound->module.Destroy();
-    
+
     entryFound->CDPfrom = CDPfromEntry;
     entryFound->SIGfrom = SIGfromEntry;
     entryFound->typeSpecifier = CurrentTypeSpecifier;
@@ -454,7 +456,7 @@ void IntCodeCLASS::TypeDef ()
   CDPfromEntry = 0;
   SIGfromEntry = 0;
   HasConstructor = false;
-  
+
   generatedProcs = procGenAttributes*attributes;
   if (generatedProcs.Contains(HasCDP))
     GlobalProperties.Flags.INCL(CDPgen);
@@ -464,7 +466,7 @@ void IntCodeCLASS::TypeDef ()
     GlobalProperties.Flags.INCL(SIGNgen);
     GlobalProperties.Flags.INCL(CDPgen);
   }
-  
+
   if ((GlobalProperties.Flags * SET(CDPgen,FIOgen,SIGNgen) != SET())
       && !IncludeLevel)
     FunctionsAreToBeGenerated = true;
@@ -499,7 +501,7 @@ void IntCodeCLASS::TypeRef (FlagSet& attrib)
   }
   else
     attrib = DefaultAttributes;
-  
+
   attrib -= SET(INPUTIC,OUTPUTIC,DONTPUTIC,-1);
 }
 
@@ -539,7 +541,7 @@ void IntCodeCLASS::CheckTypeDefined (bool noAlibi,
 
     if (CurrentTypeEntry->refModes.Contains(ChainAnyRef)
         && IncludeLevel)
-      CurrentTypeEntry->refModes.INCL(ChainAnyRefElseWhere);      
+      CurrentTypeEntry->refModes.INCL(ChainAnyRefElseWhere);
     if (CurrentTypeEntry->refModes.Contains(NestedAnyRef)
         && IncludeLevel)
       CurrentTypeEntry->refModes.INCL(NestedAnyRefElseWhere);
@@ -567,7 +569,7 @@ void IntCodeCLASS::CheckTypeDefined (bool noAlibi,
       CurrentTypeEntry->SIGfrom = 0;
       if (CurrentTypeEntry->refModes.Contains(ChainAnyRef)
           && IncludeLevel)
-        CurrentTypeEntry->refModes.INCL(ChainAnyRefElseWhere);      
+        CurrentTypeEntry->refModes.INCL(ChainAnyRefElseWhere);
       if (CurrentTypeEntry->refModes.Contains(NestedAnyRef)
           && IncludeLevel)
         CurrentTypeEntry->refModes.INCL(NestedAnyRefElseWhere);
@@ -591,9 +593,9 @@ void IntCodeCLASS::CheckTypeDefined (bool noAlibi,
       }
       goto ret;
     }
-  
+
   if (IncludeLevel) goto ret;
-  
+
   if ((CurrentTypeEntry->refModes.Contains(ChainAnyRef)
        && !CurrentTypeEntry->refModes.Contains(ChainAnyRefElseWhere))
       || (CurrentTypeEntry->refModes.Contains(NestedAnyRef)
@@ -648,7 +650,7 @@ void IntCodeCLASS::PrepareProcDcls ()
        * SET(ChainAnyRef,NestedAnyRef,Nested0Ref,NestedRef)
        == SET(-1)))
     return;
-  
+
   chp = new CHETypeTablePtr;
   chp->data = CurrentTypeEntry;
   ProcTypes.Append(chp);
@@ -669,7 +671,7 @@ void IntCodeCLASS::FindEndOfReferenceChain (TreeNodePtr startNode,
   bool isLast1;
 
   if (PCerrors.Recovery) return;
-  
+
   if ((startNode->SynType == STsimpleType)
       && (startNode->Down->Atom == IdentifierA)) {
     isLast = false;
@@ -699,13 +701,13 @@ void IntCodeCLASS::FindEndOfReferenceChain (TreeNodePtr startNode,
 /**********************************************************************/
 
 void IntCodeCLASS::INIT ()
-{  
+{
   if (__INITstarted) return;
   __INITstarted = true;
 
   Atoms_INIT();
   PCerrors.INIT();
-  
+
   IncludeLevel = 0;
   FunctionsAreToBeGenerated = false;
   HasConstructor = false;

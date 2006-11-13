@@ -63,7 +63,7 @@ class WXDLLEXPORT wxMainFrame;
 class WXDLLEXPORT wxApp : public QApplication
 {
 public:
-    wxApp(int & argc, char ** argv);
+    wxApp(int &argc, char ** argv);
     virtual ~wxApp();
 
     QThread *mainThread;

@@ -86,7 +86,7 @@ ifeq ($(OPSYS),Darwin)
   DLLPREFIX = lib
   DLLSUFFIX = .dylib
   OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
-  OSCPPFLAGS = -D__$(OPSYS)
+  OSCPPFLAGS = -D__$(OPSYS) -fno-strict-aliasing
   CC = c++
 else
   ifeq ($(OPSYS),MINGW32)
@@ -94,30 +94,30 @@ else
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
     IMPLIB = -mthreads -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
 #    IMPLIB = -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
-	  OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions
+	  OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions -fno-strict-aliasing
     OSDLLFLAGS = -shared
     OSEXECFLAGS = -fstack-check
     EXEC2 = $(EXEC).exe
     ifneq ($(DBG),)
-      QtS = 4
-      ACL = d
+      QtS =
+      ACL =
     else
-      QtS = 4
+      QtS =
       ACL =
     endif
   else
     DLLPREFIX = lib
 	  ifeq ($(OPSYS),SunOS)
-		  OSCPPFLAGS = -fPIC -D__$(OPSYS)
+		  OSCPPFLAGS = -fPIC -D__$(OPSYS) -fno-strict-aliasing
 	  else
-		  OSCPPFLAGS = -D__$(OPSYS)
+		  OSCPPFLAGS = -D__$(OPSYS) -fno-strict-aliasing
 		  DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
       DLLSUFFIX = .so
 		  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTUX)/lib
 		  OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTUX)/lib
 		  EXEC2 = $(EXEC)
       ifneq ($(DBG),)
-		    QtS = _debug
+		    QtS =
 		    ACL =
 		  else
 		    QtS =
@@ -148,7 +148,7 @@ else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../bin/,$(addsuffix .dll,$(SUBPRO)))
 	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) -L../../lib -L$(QTUX)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
-#	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../bin -L$(QTUX)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+#$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../bin -L$(QTUX)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))

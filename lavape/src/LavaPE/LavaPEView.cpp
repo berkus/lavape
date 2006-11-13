@@ -29,6 +29,7 @@
 #include "DString.h"
 #include "Comment.h"
 #include "SynIO.h"
+#include "Syntax.h"
 #include "LavaPEWizard.h"
 #include "Boxes.h"
 #include "FindRefsBox.h"
@@ -98,8 +99,8 @@ void CMainItemData::Serialize(QDataStream& ar)
     ar << docPathName->c;
     ASN1tofromAr* cid = new ASN1tofromAr(&ar);
     cid->Release = RELEASE;
-    CDPLavaDECL(PUT, cid, (address)synEl, false);
-    CDPClipSyntaxDefinition(PUT, cid, (address)ClipTree, false);
+    CDPLavaDECL(PUT, cid, synEl, false);
+    CDPClipSyntaxDefinition(PUT, cid, ClipTree, false);
     delete cid;
   }
   else {
@@ -112,12 +113,12 @@ void CMainItemData::Serialize(QDataStream& ar)
     ar >> wt;
     ar >> str;
     docPathName = new DString(str);
-    synEl = (unsigned long) NewLavaDECL();
+    synEl =  NewLavaDECL();
     ASN1tofromAr* cid = new ASN1tofromAr(&ar);
     cid->Release = RELEASE;
-    CDPLavaDECL(GET, cid, (address)synEl, false);
+    CDPLavaDECL(GET, cid, synEl, false);
     ClipTree = new SyntaxDefinition;
-    CDPClipSyntaxDefinition(GET, cid, (address)ClipTree, false);
+    CDPClipSyntaxDefinition(GET, cid, ClipTree, false);
     delete cid;
   }
 }
@@ -646,7 +647,7 @@ CLavaPEHint* CLavaPEView::ChangeEnum(LavaDECL* clipDECL, CTreeItem* item, bool c
   DString* str2 = new DString((*poldDECL)->FullName);
   newDECL->WorkFlags.INCL(selEnum);
   newDECL->TreeFlags.INCL(ItemsExpanded);
-  return new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)3, (DWORD)newDECL, (DWORD)str2, 0, (DWORD)poldDECL);
+  return new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)3, newDECL, str2, 0, poldDECL);
 
 }
 
@@ -725,7 +726,7 @@ void CLavaPEView::CorrVT_BaseToEx(LavaDECL *dropParent, LavaDECL *dragParent, La
   }
   str2 = new DString(newmDecl->FullName);  //bisheriger Name
   FIRSTLAST(mDoc, firstlast);
-  hint = new CLavaPEHint(CPECommand_Change, mDoc, firstlast, (DWORD)newmDecl, (DWORD)str2, 0, (DWORD)p_mDecl);
+  hint = new CLavaPEHint(CPECommand_Change, mDoc, firstlast, newmDecl, str2, 0, p_mDecl);
   mDoc->UndoMem.AddToMem(hint);
   mDoc->UpdateDoc(this, false, hint);
 }
@@ -795,7 +796,7 @@ void CLavaPEView::CorrVT_ExToBase(LavaDECL *dragParent, LavaDECL *dropParent, La
     }
 
   str2 = new DString(newmDecl->FullName);
-  mHint = new CLavaPEHint(CPECommand_Change, mDoc, firstlast, (DWORD)newmDecl, (DWORD)str2, 0, (DWORD)p_mDecl);
+  mHint = new CLavaPEHint(CPECommand_Change, mDoc, firstlast, newmDecl, str2, 0, p_mDecl);
   cheHint = new CHE;
   cheHint->data = (DObject*)mHint;
   cheHint->successor = vtHints;
@@ -905,7 +906,7 @@ bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
 
   flags.INCL(emptyPM);
   itd = (CMainItemData*)parent->getItemData();
-  DWORD synEl = itd->synEl;
+  void *synEl = itd->synEl;
   TDeclType parentType = (*(LavaDECL**)itd->synEl)->DeclType;
   if ((parentType > FormDef) || (parentType == FormDef) && myInclView)
     return false;
@@ -1515,7 +1516,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
 //  }
 //  else
 //    parentType = Package;
-  DWORD synEl = data->synEl;
+  void *synEl = data->synEl;
   CTreeItem* node = (CTreeItem*)parent->child(0);
   if (node)
     if (!ContainTab[parentType] [ncase])
@@ -1843,7 +1844,7 @@ void CLavaPEView::IOnEditCopy()
       QByteArray ba;
 			QDataStream ar(&ba,QIODevice::WriteOnly);
       CMainItemData clipData(data->type, 0);
-      clipData.synEl = (unsigned long) NewLavaDECL();  //the Clipdata synEl is LavaDECL*
+      clipData.synEl =  NewLavaDECL();  //the Clipdata synEl is LavaDECL*
       if (!CollectDECL) {
         CollectDECL = NewLavaDECL();
         CollectDECL->DeclType = NoDef;
@@ -1964,7 +1965,7 @@ void CLavaPEView::OnDelete()
 {
   CTreeItem *item, *par;
   CMainItemData *data, *parData;
-  DWORD d4;
+  void *d4;
   DString *str2;
   CLavaPEHint *hint;
   LavaDECL *cutDECL, *newDECL;
@@ -2000,7 +2001,7 @@ void CLavaPEView::OnDelete()
         str2 = 0;
         if (CollectDECL->FullName.l)
           str2 = new DString(CollectDECL->FullName);
-        hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), (const unsigned long)1, (DWORD)CollectDECL, (DWORD)str2, (DWORD)CollectPos, d4, 0);
+        hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), (SynFlags)1, CollectDECL, str2, (void*)CollectPos, d4);
         GetDocument()->UpdateDoc(this, false, hint);
         if (myInclView) {
           GetDocument()->ConcernForms(hint);
@@ -2039,7 +2040,7 @@ void CLavaPEView::OnDelete()
           else
             pos = GetPos(item, 0);
         }
-        hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), (const unsigned long)1, (DWORD)cutDECL, (DWORD)str2, (DWORD)pos, d4/*, (DWORD)dropParent*/);
+        hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), (const unsigned long)1, cutDECL, str2, (void*)pos, d4/*, dropParent*/);
         GetDocument()->UndoMem.AddToMem(hint);
         GetDocument()->UpdateDoc(this, false, hint);
         if (myInclView) {
@@ -2076,7 +2077,7 @@ void CLavaPEView::OnDelete()
           str2 = new DString((*(LavaDECL**)parData->synEl)->FullName);
           newDECL->WorkFlags.INCL(selEnum);
           newDECL->TreeFlags.INCL(ItemsExpanded);
-          hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)1, (DWORD)newDECL, (DWORD)str2, 0, parData->synEl);
+          hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)1, newDECL, str2, 0, parData->synEl);
           GetDocument()->UndoMem.AddToMem(hint);
           GetDocument()->UpdateDoc(this, false, hint);
           GetDocument()->ConcernForms(hint);
@@ -2137,7 +2138,7 @@ QDrag*  CLavaPEView::OnDragBegin()
   QDataStream ar(&ba,QIODevice::WriteOnly);
   //Clipdata  = new CMainItemData(ddrag->type, 0);
   clipdata.type = ddrag->type;
-  clipdata.synEl = (unsigned long) NewLavaDECL();  //the Clipdata synEl is LavaDECL*
+  clipdata.synEl = NewLavaDECL();  //the Clipdata synEl is LavaDECL*
   clipdata.ClipTree = &GetDocument()->mySynDef->SynDefTree;
   *(LavaDECL*)clipdata.synEl = *declDrag;
   clipdata.docPathName = new DString(GetDocument()->GetAbsSynFileName());
@@ -2407,7 +2408,7 @@ void CLavaPEView::OnDropPost(void* act)
   TIDType idType;
   CHE *che, *vtHints = 0;
   SynFlags firstlast;
-  DWORD d4;
+  void *d4;
   CLavaPEHint* hint=0, *delHint=0;
   CPECommand com;
   int pos;
@@ -2495,7 +2496,7 @@ void CLavaPEView::OnDropPost(void* act)
             if (action == Qt::MoveAction) {
               d4 = ((CMainItemData*)itemDragParent->getItemData())->synEl;
               if (GetDocument()->hasHint)
-                d4 = GetDocument()->IDTable.GetVar(TID((*(LavaDECL**)d4)->OwnID,0),idType);
+                d4 = (void*)GetDocument()->IDTable.GetVar(TID((*(LavaDECL**)d4)->OwnID,0),idType);
               if (CollectDECL->FullName.l)
                 str2 = new DString(CollectDECL->FullName);
               else
@@ -2503,7 +2504,7 @@ void CLavaPEView::OnDropPost(void* act)
               FIRSTLAST(GetDocument(), firstlast);
               if (mdh)
                 firstlast.INCL(multiDocHint);
-              hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), firstlast, (DWORD)/*dragView->*/CollectDECL, (DWORD)str2, (DWORD)/*dragView->*/CollectPos, d4, (DWORD)dropDECL->ParentDECL,0,0, (DWORD)RefacCase);
+              hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), firstlast, /*dragView->*/CollectDECL, str2, /*dragView->*/(void*)CollectPos, d4, dropDECL->ParentDECL,0,0, (void*)RefacCase);
               GetDocument()->UpdateDoc(this, false, hint);
               //drawTree = true;
               //DrawTree(p_myDECL, false, false);
@@ -2539,7 +2540,7 @@ void CLavaPEView::OnDropPost(void* act)
             d4 = ((CMainItemData*)m_hitemDrop->getItemData())->synEl;
           }
           if (GetDocument()->hasHint)
-            d4 = GetDocument()->IDTable.GetVar(TID((*(LavaDECL**)d4)->OwnID,0),idType);
+            d4 = (void*)GetDocument()->IDTable.GetVar(TID((*(LavaDECL**)d4)->OwnID,0),idType);
           if ((*(LavaDECL**)d4)->FullName.l) {
             str2 = new DString( (*(LavaDECL**)d4)->FullName);
             declClip->FullName = *str2;
@@ -2552,17 +2553,17 @@ void CLavaPEView::OnDropPost(void* act)
             com = CPECommand_Move;
           else
             com = CPECommand_Insert;
-          DWORD d6 = 0;
+          void *d6 = 0;
           if (!canDrag || mdh)
-            d6 = (DWORD)Clipdata->ClipTree;
+            d6 = Clipdata->ClipTree;
           if (!canDrag && (action == Qt::MoveAction) || mdh) {
             firstlast.INCL(multiDocHint);
             if (RefacCase == noRefac)
               ((CLavaPEApp*)wxTheApp)->LBaseData.MultiUndoMem.StartMultiDocUpdate();
           }
           FIRSTLAST(GetDocument(), firstlast);
-          hint = new CLavaPEHint(com, GetDocument(), firstlast, (DWORD)declClip, (DWORD)str2, (DWORD)pos, d4, (DWORD)dragParent,
-                                d6, (DWORD)Clipdata->docPathName, (DWORD)RefacCase);
+          hint = new CLavaPEHint(com, GetDocument(), firstlast, declClip, str2, (void*)pos, d4, dragParent,
+                                d6, Clipdata->docPathName, (void*)RefacCase);
           delHint = hint;
           Clipdata->ClipTree = 0;
         }
@@ -2713,7 +2714,7 @@ void CLavaPEView::OnEditSelItem(CTreeItem* item, bool clickedOnIcon)
                                   ((CLavaPEApp*)wxTheApp)->Browser.GetBasicType(GetDocument()->mySynDef, decl);
       name = new DString(itdDECL->FullName);  //bisheriger Name
 
-      hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)1, (DWORD)decl, (DWORD)name, 0, itd->synEl);
+      hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)1, decl, name, 0, itd->synEl);
       GetDocument()->UndoMem.AddToMem(hint);
       GetDocument()->UpdateDoc(this, false, hint);
       if (myInclView) {
@@ -2776,7 +2777,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
   LavaDECL *decl, *parDECL, *refDECL = 0, *parentT, *setDECL; //*inEl
   CLavaPEHint *hint, *Sethint;
   CHE *cheIOEl, *che;
-  DWORD d4 = 0;
+  void *d4 = 0;
   DString *str2 = 0, newName, *setStr2;
   int pos;
   TID setID;
@@ -2941,7 +2942,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
 
   if ((data->type == TIType_Exec) || (data->type == TIType_Ensure) || (data->type == TIType_Require)) {
     if (iDECL) {
-      hint = new CLavaPEHint(CPECommand_Exec, GetDocument(), first, (DWORD)decl);
+      hint = new CLavaPEHint(CPECommand_Exec, GetDocument(), first, decl);
       GetDocument()->UndoMem.AddToMem(hint);
     }
     else {
@@ -3060,7 +3061,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
     str2 = new DString((*(LavaDECL**)ppdata->synEl)->FullName);
   parDECL = *(LavaDECL**)ppdata->synEl;
   decl->ParentDECL = parDECL;
-  hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), first, (DWORD) decl, (DWORD)str2, (DWORD)pos, d4/*, (DWORD)dragParent, (DWORD)clipTree, (DWORD)docPathName*/);
+  hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), first,  decl, str2, (void*)pos, d4/*, dragParent, clipTree, docPathName*/);
   GetDocument()->UndoMem.AddToMem(hint);
   GetDocument()->UpdateDoc(this, false, hint);
   if (buildSet) {
@@ -3069,7 +3070,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
       che = (CHE*)che->successor;
     if (che) {
       if (decl->DeclType == Interface) {
-        d4 = (DWORD)&che->data;
+        d4 = &che->data;
         pos = 0;
         parentT = decl;
       }
@@ -3087,7 +3088,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
       setDECL->TreeFlags.INCL(ParaExpanded);
       pos++;
       setStr2 = new DString(decl->FullName);
-      Sethint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)0, (DWORD) setDECL, (DWORD)setStr2, (DWORD)pos, d4);
+      Sethint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)0,  setDECL, setStr2, (void*)pos, d4);
       GetDocument()->UndoMem.AddToMem(Sethint);
       GetDocument()->UpdateDoc(this, false, Sethint);
     }
@@ -3625,7 +3626,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
   wxDocument *dragImplDoc=0, *dropImplDoc=0;
   CMainItemData *itemData;
   SynFlags firstlast;
-  DWORD d6;
+  void *d6;
   TIDType idType;
   QString mess;
   bool makeMess  = false;
@@ -3733,7 +3734,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
             dropDECL->WorkFlags.INCL(skipOnDeleteID);
             str2 = new DString(dropParent->FullName);
             FIRSTLAST(GetDocument(), firstlast);
-            hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), firstlast, (DWORD)dropDECL, (DWORD)str2, (DWORD)del_pos, (DWORD)del_d4, (DWORD)dropParent,0,0);
+            hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), firstlast, dropDECL, str2, (void*)del_pos, del_d4, dropParent,0,0);
             GetDocument()->UndoMem.AddToMem(hint);
             GetDocument()->UpdateDoc(this, false, hint);
             for (ioElImpl = (CHE*)dropDECL->NestedDecls.first;
@@ -3806,7 +3807,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
       implDECL->FullName.Reset(0);
     }
     FIRSTLAST(DragDoc, firstlast);
-    hintCol = new CLavaPEHint(CPECommand_Insert, DragDoc, firstlast, (DWORD)implDECL, (DWORD)str2, pos, (DWORD)d4, 0, (DWORD)Clipdata->ClipTree, (DWORD)Clipdata->docPathName, (DWORD)RefacCase);
+    hintCol = new CLavaPEHint(CPECommand_Insert, DragDoc, firstlast, implDECL, str2, (void*)pos, d4, 0, Clipdata->ClipTree, Clipdata->docPathName, (void*)RefacCase);
     DragDoc->UpdateDoc(dragView, false, hintCol);
     break;
   case baseToEx:
@@ -3898,21 +3899,21 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
         d4 = pDragImplDecl;
         str2 = new DString((*pDragImplDecl)->FullName);
         FIRSTLAST(dragImplDoc, firstlast);
-        hint = new CLavaPEHint(CPECommand_Delete, dragImplDoc, firstlast, (DWORD)((CLavaPEView*)((CLavaPEDoc*)dragImplDoc)->DragView)->CollectDECL, (DWORD)str2, (DWORD)pos, (DWORD)d4, (DWORD)pDropImplDecl,0,0, (DWORD)RefacCase);
+        hint = new CLavaPEHint(CPECommand_Delete, dragImplDoc, firstlast, ((CLavaPEView*)((CLavaPEDoc*)dragImplDoc)->DragView)->CollectDECL, str2, (void*)pos, d4, pDropImplDecl,0,0, (void*)RefacCase);
         ((CLavaPEDoc*)dragImplDoc)->UpdateDoc(this, false, hint);
         delete hint;
         d6 = 0;
       }
       else
-        d6 = (DWORD)&((CLavaPEDoc*)dragImplDoc)->mySynDef->SynDefTree;
+        d6 = &((CLavaPEDoc*)dragImplDoc)->mySynDef->SynDefTree;
 
       pos = GetPos(0, 0);
       d4 = pDropImplDecl;
       str2 = new DString((*pDropImplDecl)->FullName);
       docName = new DString(((CLavaPEDoc*)dragImplDoc)->GetAbsSynFileName());
       FIRSTLAST(dropImplDoc, firstlast);
-      hint = new CLavaPEHint(CPECommand_Move, dropImplDoc, firstlast, (DWORD)implDECL,
-                 (DWORD)str2, (DWORD)pos, (DWORD)d4, (DWORD)*pDragImplDecl, d6, (DWORD)docName, (DWORD)RefacCase);
+      hint = new CLavaPEHint(CPECommand_Move, dropImplDoc, firstlast, implDECL,
+                 str2, (void*)pos, d4, *pDragImplDecl, d6, docName, (void*)RefacCase);
       ((CLavaPEDoc*)dropImplDoc)->UpdateDoc(this, false, hint);
       delete hint;
       delete implDECL;
@@ -4100,7 +4101,7 @@ void CLavaPEView::RenameOk(QLineEdit* editor, CTreeItem *item)
               decl->FullName = decl->LocalName;
             name = new DString(labelDECL->FullName);  //bisheriger Name
             ppDECL = decl->ParentDECL;
-            hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (unsigned long)1, (DWORD)decl, (DWORD)name, 0, itd->synEl);
+            hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (unsigned long)1, decl, name, 0, itd->synEl);
           }
         }
         else {
@@ -4132,7 +4133,7 @@ void CLavaPEView::RenameOk(QLineEdit* editor, CTreeItem *item)
                 relEl->data.Id = lab;
                 ppDECL = decl->ParentDECL;
                 name = new DString((*(LavaDECL**)pdata->synEl)->FullName);  //bisheriger Name
-                hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (unsigned long)1, (DWORD)decl, (DWORD)name, 0, pdata->synEl, (DWORD)newLab, (DWORD)oldLab);
+                hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (unsigned long)1, decl, name, 0, pdata->synEl, newLab, oldLab);
               }
             }
           }//new label
@@ -4152,7 +4153,7 @@ void CLavaPEView::RenameOk(QLineEdit* editor, CTreeItem *item)
       name = new DString((*(LavaDECL**)itd->synEl)->FullName);  //bisheriger Name
       if (name->l) {
         ppDECL = 0;
-        hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (unsigned long)1, (DWORD)decl, (DWORD)name, 0, itd->synEl);
+        hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (unsigned long)1, decl, name, 0, itd->synEl);
       }
     }
     else {
@@ -4492,7 +4493,7 @@ void CLavaPEView::OnComment()
 {
   CTreeItem *pItem, *item = (CTreeItem*)Tree->currentItem();
   TDECLComment* ptrComment=0, *ptr = 0;
-  DWORD d1, d3 = 0;
+  void *d1, *d3 = 0;
   CComment *pComment;
   CMainItemData* data;
   bool hasC, hasErr = false;
@@ -4507,7 +4508,7 @@ void CLavaPEView::OnComment()
 
     if (data->type == TIType_DECL) {
       ptrComment = (*(LavaDECL**)data->synEl)->DECLComment.ptr;
-      d1 = (DWORD)*(LavaDECL**)data->synEl;
+      d1 = *(LavaDECL**)data->synEl;
       hasErr = ((LavaDECL*)d1)->DECLError1.first || ((LavaDECL*)d1)->DECLError2.first;
     }
     else
@@ -4517,7 +4518,7 @@ void CLavaPEView::OnComment()
         pItem = (CTreeItem*)item->parent();
         pItem = (CTreeItem*)pItem->parent();
         pItem = (CTreeItem*)pItem->parent();
-        d3 = (DWORD)*(LavaDECL**)((CMainItemData*)item->getItemData())->synEl;
+        d3 = *(LavaDECL**)((CMainItemData*)item->getItemData())->synEl;
       }
       else
         if ((data->type == TIType_Require) || (data->type == TIType_Ensure) || (data->type == TIType_Exec)) {
@@ -4527,7 +4528,7 @@ void CLavaPEView::OnComment()
             hasC = decl->Exec.ptr != 0;
           if (hasC) {
             ptrComment = decl->DECLComment.ptr;
-            d1 = (DWORD)decl;
+            d1 = decl;
           }
           else
             return;
@@ -4556,7 +4557,7 @@ void CLavaPEView::OnComment()
           ptr->PrintFlags.EXCL(trailingComment);
         ptr->Comment = STRING(qPrintable(pComment->text->toPlainText()));
       }
-      hint = new CLavaPEHint(CPECommand_Comment, GetDocument(), (const unsigned long)3, d1, (DWORD)ptr, d3);
+      hint = new CLavaPEHint(CPECommand_Comment, GetDocument(), (const unsigned long)3, d1, ptr, d3);
       GetDocument()->UndoMem.AddToMem(hint);
       GetDocument()->UpdateDoc(this, false, hint);
      // if (!hasErr)
@@ -4615,11 +4616,11 @@ void CLavaPEView::OnEditCut()
   else {
     CTreeItem* pItem = (CTreeItem*)item->parent();
     if (pItem) {
-      DWORD d4 = ((CMainItemData*)pItem->getItemData())->synEl;
+      void *d4 = ((CMainItemData*)pItem->getItemData())->synEl;
       DString* str2 = 0;
       if (CollectDECL->FullName.l)
         str2 = new DString(CollectDECL->FullName);
-      hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), (const unsigned long)1, (DWORD)CollectDECL, (DWORD)str2, (DWORD)pos, d4, 0);
+      hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), (const unsigned long)1, CollectDECL, str2, (void*)pos, d4, 0);
       GetDocument()->UpdateDoc(this, false, hint);
       if (myInclView) {
         GetDocument()->ConcernForms(hint);
@@ -4648,7 +4649,7 @@ void CLavaPEView::OnEditPaste()
   CHE* che;
   CLavaPEHint *hint;
   DString *str2;
-  DWORD d4;
+  void *d4;
 
   if (GetDocument()->changeNothing)
     return;
@@ -4715,7 +4716,7 @@ void CLavaPEView::OnEditPaste()
           str2 = 0;
           declClip->FullName.Reset(0);
         }
-        hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, (DWORD)declClip, (DWORD)str2, pos, d4, 0, (DWORD)clipdata.ClipTree, (DWORD)clipdata.docPathName);
+        hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), (const unsigned long)1, declClip, str2, (void*)pos, d4, 0, clipdata.ClipTree, clipdata.docPathName);
         GetDocument()->UpdateDoc(this, false, hint);
         clipdata.synEl = 0;
         clipdata.ClipTree = 0;
@@ -4919,7 +4920,7 @@ void CLavaPEView::OnNewEnumItem()
     str = new DString((*(LavaDECL**)parData->synEl)->FullName);
     newDECL->WorkFlags.INCL(selEnum);
     newDECL->TreeFlags.INCL(ItemsExpanded);
-    hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)1, (DWORD)newDECL, (DWORD)str, 0, parData->synEl);
+    hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)1, newDECL, str, 0, parData->synEl);
     GetDocument()->UndoMem.AddToMem(hint);
     GetDocument()->UpdateDoc(this, false, hint);
     GetDocument()->ConcernForms(hint);

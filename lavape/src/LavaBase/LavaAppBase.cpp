@@ -47,9 +47,9 @@ QAssistantClient *qacl=0;
 
 
 CLavaPEHint::CLavaPEHint(CPECommand cc, wxDocument* fromdoc, SynFlags first,
-                       DWORD commandData1, DWORD commandData2,
-                       DWORD commandData3, DWORD commandData4,
-                       DWORD commandData5, DWORD commandData6, DWORD commandData7, DWORD commandData8)
+                       void * commandData1, void * commandData2,
+                       void * commandData3, void * commandData4,
+                       void * commandData5, void * commandData6, void * commandData7, void * commandData8)
 {
   setObjectName("LavaPEHint");
   com = cc;
@@ -328,8 +328,8 @@ void CUndoMem::SetCom8()
       && (UndoMemory[posDel]->com == CPECommand_Delete)
       && (((LavaDECL*)UndoMemory[posDel]->CommandData1)->DeclType == Function)
       && (((LavaDECL*)UndoMemory[posDel]->CommandData1)->ParentDECL->DeclType == Impl)) {
-    UndoMemory[posDel]->CommandData8 = (DWORD)((LavaDECL*)UndoMemory[posIns]->CommandData1)->OwnID;
-    UndoMemory[posIns]->CommandData8 = (DWORD)((LavaDECL*)UndoMemory[posDel]->CommandData1)->OwnID;
+    UndoMemory[posDel]->CommandData8 = (void *)((LavaDECL*)UndoMemory[posIns]->CommandData1)->OwnID;
+    UndoMemory[posIns]->CommandData8 = (void *)((LavaDECL*)UndoMemory[posDel]->CommandData1)->OwnID;
     ((CPEBaseDoc*)UndoMemory[posDel]->fromDoc)->ExecViewPrivToPub((LavaDECL*)UndoMemory[posIns]->CommandData1,(int)UndoMemory[posIns]->CommandData8);
     posDel--;
     posIns--;
@@ -973,7 +973,7 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
   else {
     bool err = ((CLavaBaseDoc*)fromDoc)->throwError;
     ((CLavaBaseDoc*)fromDoc)->throwError = false;
-    CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, fromDoc, (const unsigned long)3,(const unsigned long)curThr);
+    CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, fromDoc, (const unsigned long)3,curThr);
 		QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
     if (((CLavaBaseDoc*)fromDoc)->ThreadList) {
       thrL = ((CLavaBaseDoc*)fromDoc)->ThreadList;
@@ -1013,7 +1013,7 @@ int information(QWidget *parent, const QString &caption,
 
   CMsgBoxParams params(
 		currentThread,1,parent,caption,text,button0,button1,button2);
-  
+
   currentThread->waitingForUI = true;
 	QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaMsgBox,&params));
   currentThread->suspend();

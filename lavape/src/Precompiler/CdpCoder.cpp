@@ -49,7 +49,7 @@ void CdpCoderCLASS::CDProcGeneration ()
 {
   unsigned savedIndent;
   TreeNodePtr node, nodeBase;
-  
+
   if (IntCode.DclsAreCoded) {
     if (IntCode.CurrentTypeEntry->procGenAttributes.Contains(HasCDP)
         //&& IntCode.CurrentTypeEntry->attributes.Contains(HasCDP)
@@ -94,7 +94,7 @@ void CdpCoderCLASS::CDProcGeneration ()
         restoreIndent(savedIndent);
         code("{ CDP");
         codeVariable(IntCode.CurrentTypeEntry->id);
-        codeNl("(pgf,cid,(address)this,baseCDP); }");
+        codeNl("(pgf,cid,this,baseCDP); }");
         break;
       default:
         if (!IntCode.GlobalProperties.Flags.Contains(IncludeFile))
@@ -102,7 +102,7 @@ void CdpCoderCLASS::CDProcGeneration ()
       }
 
     }
-    
+
     switch (IntCode.CurrentTypeEntry->typeSpecifier->SynType) {
     case STclass:
     case STstruct:
@@ -110,7 +110,7 @@ void CdpCoderCLASS::CDProcGeneration ()
     }
     return;
   }
-  
+
 impl:
 
   switch (IntCode.CurrentTypeEntry->typeSpecifier->SynType) {
@@ -124,7 +124,7 @@ impl:
       codeVariable(IntCode.CurrentTypeEntry->id);
       code(",");
       node = IntCode.CurrentTypeEntry->typeSpecifier;
-      node = node->Down->Right;  
+      node = node->Down->Right;
       if (node->SynType == STbaseVariant) node = node->Right;
       if (node->SynType == STbaseList) {
         node = node->Down;
@@ -172,22 +172,22 @@ impl:
         codeNl("bool)");
     }
     restoreIndent(savedIndent);
-  
+
     designator = "vp";
-   
+
     writeLn();
     codeNl("{");
     incIndent();
     codeVariable(IntCode.CurrentTypeEntry->id);
     code(" *vp = (");
     codeVariable(IntCode.CurrentTypeEntry->id);
-    codeNl("*)varAddr;");    
+    codeNl("*)varAddr;");
     codeNl("if (cid->Skip()) return;");
     writeLn();
-  
+
     CdpDataType(IntCode.CurrentTypeEntry->typeSpecifier,
                 IntCode.CurrentTypeEntry->declarator);
-  
+
     decIndent();
     code("} // END OF CDP");
     codeVariable(IntCode.CurrentTypeEntry->id);
@@ -201,12 +201,12 @@ void CdpCoderCLASS::declareCDPsOfVariants(TypeTablePtr currentTypeEntry)
 {
   CHETypeTablePtr *variantType;
   unsigned savedIndent;
-  
+
   for (variantType = (CHETypeTablePtr*)currentTypeEntry->variantTypes.first;
        variantType;
        variantType = (CHETypeTablePtr*)variantType->successor) {
     currentTypeEntry = variantType->data;
-    
+
     if (currentTypeEntry->procGenAttributes.Contains(HasCDP)
         //&& currentTypeEntry->attributes.Contains(HasCDP)
         && !currentTypeEntry->CDPfrom) {
@@ -234,7 +234,7 @@ void CdpCoderCLASS::CdpDataType (TreeNodePtr typeSpecifier,
     codeNl("CDPpp.SKIP(PUT,cid);");
     return;
   }
-  
+
   if (declarator
       && ( (declarator->Atomic && declarator->Atom != IdentifierA)
            || ( !declarator->Atomic
@@ -244,7 +244,7 @@ void CdpCoderCLASS::CdpDataType (TreeNodePtr typeSpecifier,
          )
      )
     return;
-  
+
   altTag(typeSpecifier);
 
   if (declarator
@@ -256,7 +256,7 @@ void CdpCoderCLASS::CdpDataType (TreeNodePtr typeSpecifier,
     cdpArrayType(typeSpecifier,declarator->Right);
     return;
   }
-  
+
   switch (typeSpecifier->SynType) {
 
   case STclass:
@@ -318,7 +318,7 @@ void CdpCoderCLASS::altTag (TreeNodePtr node)
 
   asn1Anno = IntCode.FindAnnos(node,STasn1Annotation);
   if (asn1Anno == 0) return;
-  
+
   code("cid->AltTag(");
   asn1Anno = asn1Anno->Down;
   if (asn1Anno->Atom == IntConst)
@@ -366,7 +366,7 @@ void CdpCoderCLASS::cdpStructType (TreeNodePtr node)
   incIndent();
   if (node->Atomic) {
     node = node->Right;
-    if (!IntCode.ScopeNestingLevel) {  
+    if (!IntCode.ScopeNestingLevel) {
       if (node->SynType == STbaseVariant) node = node->Right;
       if (node->SynType == STbaseList) {
         cdpBaseList(node->Down);
@@ -374,7 +374,7 @@ void CdpCoderCLASS::cdpStructType (TreeNodePtr node)
       }
     }
   }
-  
+
   if (node) {
     IntCode.ScopeNestingLevel++;
     cdpMemberList(node->Down);
@@ -394,7 +394,7 @@ void CdpCoderCLASS::cdpBaseList (TreeNodePtr node)
 
 {
   TreeNodePtr nodeBase, className;
-  
+
   for (; node; node = node->Right) {
     nodeBase = node->Down;
     if (nodeBase->Atomic)
@@ -408,9 +408,9 @@ void CdpCoderCLASS::cdpBaseList (TreeNodePtr node)
     codeAtom(className);
     code("(");
     code(pgf);
-    code(",cid,(address)(");
-    TypCoder.CompleteClassName(nodeBase->Down);
-    codeNl("*)vp,true);");
+    codeNl(",cid,vp,true);");
+//    TypCoder.CompleteClassName(nodeBase->Down);
+//    codeNl("*)vp,true);");
   }
 }
 
@@ -419,7 +419,7 @@ void CdpCoderCLASS::cdpMemberList (TreeNodePtr node)
 
 {
   if (node->Atomic && (node->Atom == NoAtom)) return;
-  
+
   for (; node; node = node->Right) {
     for (; node && node->Atomic; node = node->Right) ;
       // skip access specs
@@ -432,7 +432,7 @@ void CdpCoderCLASS::cdpMemberDeclaration (TreeNodePtr node)
 
 {
   if (!node->Flags.Contains(HasCDP)) return;
-  
+
   switch (node->SynType) {
   case STrecordCase:
     cdpRecordCase(node->Down);
@@ -453,16 +453,16 @@ void CdpCoderCLASS::cdpMemberDeclarator (TreeNodePtr node)
 {
   TreeNodePtr node1;
   unsigned savedDesLength;
-  
+
   if (node->Atomic) return;
-  
+
   switch (node->SynType) {
   case STfieldId:
     node1 = node->Down;
     for (; node1 && (node1->Atom != IdentifierA); node1 = node1->Right);
     savedDesLength = designator.l;
     appendIdToDesignator(node1->StringBufferPos);
-    if (node->Right) 
+    if (node->Right)
       cdpArrayType(IntCode.CurrentTypeSpecifier,node->Right);
     else
       CdpDataType(IntCode.CurrentTypeSpecifier,node1);
@@ -481,7 +481,7 @@ void CdpCoderCLASS::cdpRecordCase (TreeNodePtr node)
 {
   unsigned savedDesLength;
   TreeNodePtr tagFieldId;
-  
+
   tagFieldId = node->Down->Right->Down;
   while (tagFieldId->Atom != IdentifierA)
     tagFieldId = tagFieldId->Right;
@@ -566,7 +566,7 @@ void CdpCoderCLASS::cdpSimpleType (TreeNodePtr node)
 
 {
   TypeTablePtr entryFound;
-  
+
   if (node->Atom == IdentifierA) {
     code("CDP");
     IntCode.LookUpType(node->StringBufferPos,entryFound);
@@ -576,7 +576,7 @@ void CdpCoderCLASS::cdpSimpleType (TreeNodePtr node)
       codeAtom(node);
     code("(");
     code(pgf);
-    code(",cid,(address)");
+    code(",cid,");
     if (designator.l > 2) code("&");
   }
   else {
@@ -674,7 +674,7 @@ void CdpCoderCLASS::cdpChainNestedType (TreeNodePtr node)
   code("CDP(");
   code(pgf);
   code(",cid");
-    
+
   switch (node->SynType) {
   case STchainAny:
   case STchainAny0:
@@ -761,7 +761,7 @@ void CdpCoderCLASS::TypeName (TreeNodePtr node, bool cdpName)
 
 {
   TypeTablePtr entryFound;
-  
+
   switch (node->SynType) {
   case STsimpleType:
     if (cdpName && (node->Down->Atom == IdentifierA)) {
@@ -774,31 +774,31 @@ void CdpCoderCLASS::TypeName (TreeNodePtr node, bool cdpName)
     else
       codeAtom(node->Down);
     break;
-    
+
   default:
     switch (node->SynType) {
     case STarbitrary:
       code("ARBITRARY");
       break;
-  
+
     case STbytes:
       code("BYTES");
       break;
-  
+
     case STbitmap:
     case STstring:
     case STstring0:
       code("STRING");
       break;
-  
+
     case STbitstring:
       code("BITSTRING");
       break;
-  
+
     case STset:
       code("SET");
       break;
-  
+
     case STsignature:
       code("SigCerts");
     }

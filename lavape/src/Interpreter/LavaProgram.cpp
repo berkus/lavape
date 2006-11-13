@@ -66,8 +66,8 @@ CLavaProgram::~CLavaProgram()
 
 bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool putErr)
 {
-  int readResult; 
-  QString *errCode; 
+  int readResult;
+  QString *errCode;
   LavaDECL *errDECL=0;
   bool errEx;
   QString str;
@@ -101,17 +101,17 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
         if (!putErr) {
           str += ", corrupt lava program syntax";
           str += "\n  ";
-          str += "\nPerhaps different lava versions?"; 
+          str += "\nPerhaps different lava versions?";
           str += "\n  ";
         }
       }
       else {
         str = QString("Cannot read file '") + fn + ", corrupt lava program syntax";
         str += "\n  ";
-        str += "\nPerhaps different lava versions?"; 
+        str += "\nPerhaps different lava versions?";
         str += "\n  ";
       }
-      if (putErr || reDef) 
+      if (putErr || reDef)
 //        AfxMessageBox(str.c, MB_OK+MB_ICONSTOP);
         critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(qPrintable(str)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     }
@@ -119,9 +119,9 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
       if (reDef) {
         str = QString("Lava component file '") + fn + "' not found";
         str += "\n  ";
-        str += "\nDo you want to retry loading the lava document using another file name (*.lcom)?"; 
+        str += "\nDo you want to retry loading the lava document using another file name (*.lcom)?";
         str += "\n  ";
-//        if (AfxMessageBox(str.c, MB_RETRYCANCEL|MB_ICONQUESTION) == IDRETRY) 
+//        if (AfxMessageBox(str.c, MB_RETRYCANCEL|MB_ICONQUESTION) == IDRETRY)
 				if (question(wxTheApp->m_appWindow,qApp->applicationName(),tr(qPrintable(str)),QMessageBox::Retry,QMessageBox::Cancel,0)==QMessageBox::Retry)
           return SelectLcom(false);
       }
@@ -138,12 +138,12 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
 }
 
 
-bool CLavaProgram::OnOpenProgram(const QString lpszPathName, bool imiExec, bool reDef, bool putErr) 
+bool CLavaProgram::OnOpenProgram(const QString lpszPathName, bool imiExec, bool reDef, bool putErr)
 {
   bool synOk=true;
   QString fName=PathName.c;
 
-  if (!mySynDef) 
+  if (!mySynDef)
     if (lpszPathName.length())
       synOk = LoadSyntax(lpszPathName, mySynDef, reDef, putErr); //mySynDef from lava file
     else
@@ -229,14 +229,14 @@ bool CLavaProgram::CheckNamesp(CheckData& ckd, LavaDECL* nspDECL)
 
 bool CLavaProgram::CheckContext(CheckData& ckd, const CContext& con)
 {
-  if (con.oContext) 
+  if (con.oContext)
     if (con.oContext->DeclType == Package)
       CheckNamesp(ckd, con.oContext);
     else
       CheckImpl(ckd, con.oContext);
   if (ckd.exceptionThrown)
     return false;
-  if (con.iContext) 
+  if (con.iContext)
     if (con.iContext->DeclType == Package)
       CheckNamesp(ckd, con.iContext);
     else
@@ -349,7 +349,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
       }
     }
   }
-  
+
   cheClass = (CHE*)classDECL->NestedDecls.first;
   int nNative = LAH;  //length of adapter table header
   while (cheClass) {
@@ -378,14 +378,14 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
       cheImplEl = (CHE*)implDECL->NestedDecls.first;
       if (cheImplEl)
         implElDecl = (LavaDECL*)cheImplEl->data;
-      while (cheImplEl && ((implElDecl->DeclType != Function) 
+      while (cheImplEl && ((implElDecl->DeclType != Function)
              || !implElDecl->SecondTFlags.Contains(funcImpl)
              || !IDTable.EQEQ(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL, TID(classElDecl->OwnID, classElDecl->inINCL), 0) )) {
         cheImplEl = (CHE*)cheImplEl->successor;
         if (cheImplEl)
           implElDecl = (LavaDECL*)cheImplEl->data;
       }
-      if (cheImplEl) { 
+      if (cheImplEl) {
         if (!CheckFuncImpl(ckd, implElDecl, classElDecl))
           return false;
         implElDecl->WorkFlags.INCL(checkmark);
@@ -399,13 +399,13 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
   }
   if (! CheckSetAndGets(ckd, implDECL, classDECL))
     return false;
-  if (implDECL->DeclType == Impl) { 
+  if (implDECL->DeclType == Impl) {
     for (cheImplEl = (CHE*)implDECL->NestedDecls.first; cheImplEl; cheImplEl = (CHE*)cheImplEl->successor) {
       implElDecl = (LavaDECL*)cheImplEl->data;
-      if (implElDecl->WorkFlags.Contains(checkmark)) 
+      if (implElDecl->WorkFlags.Contains(checkmark))
         implElDecl->WorkFlags.EXCL(checkmark);
-      else 
-        if ((implElDecl->DeclType == Function) 
+      else
+        if ((implElDecl->DeclType == Function)
           && implElDecl->SecondTFlags.Contains(funcImpl)) {
           if (implElDecl->TypeFlags.Contains(isPropGet) || implElDecl->TypeFlags.Contains(isPropSet)) {
             classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
@@ -416,7 +416,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
             LavaError(ckd, true, implElDecl, &ERR_MissingItfFuncDecl);
           return false;
         }
-      if ((implElDecl->DeclType == Function) 
+      if ((implElDecl->DeclType == Function)
            && !implElDecl->TypeFlags.Contains(isAbstract)
            && !implElDecl->TypeFlags.Contains(isNative)) {
         implElDecl->RuntimeDECL = (LavaDECL*)((CHE*)implElDecl->NestedDecls.last)->data;
@@ -440,7 +440,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
   }
   if (!MakeSectionTable(ckd, classDECL))
     return false;
-  // remember: all function exec checks must be done after construction of 
+  // remember: all function exec checks must be done after construction of
   // the section table
   CSectionDesc* secTab = (CSectionDesc*)implDECL->SectionTabPtr;
   for (elChe = (CHE*)classDECL->NestedDecls.first; elChe; elChe = (CHE*)elChe->successor) {
@@ -555,7 +555,7 @@ bool CLavaProgram::CheckFuncImpl(CheckData& ckd, LavaDECL* funcDECL, LavaDECL* c
     implIOEl = (LavaDECL*)cheimplIOEl->data;
     classIOEl = (LavaDECL*)checlassIOEl->data;
     if ((implIOEl->DeclType != classIOEl->DeclType)
-        || !IDTable.EQEQ(((CHETID*)implIOEl->Supports.first)->data, implIOEl->inINCL, TID(classIOEl->OwnID, classIOEl->inINCL), 0) 
+        || !IDTable.EQEQ(((CHETID*)implIOEl->Supports.first)->data, implIOEl->inINCL, TID(classIOEl->OwnID, classIOEl->inINCL), 0)
         || !IDTable.EQEQ(implIOEl->RefID, implIOEl->inINCL, classIOEl->RefID, classIOEl->inINCL)) {
       LavaError(ckd, true, funcDECL, &ERR_funcImpl);
       return false;
@@ -596,10 +596,10 @@ bool CLavaProgram::CheckSetAndGets(CheckData& ckd, LavaDECL* implDECL, LavaDECL*
       cheImpl = 0;
     }
   }
-  while (El || cheI) { 
+  while (El || cheI) {
     if (El) {
       ifaceElDecl = IDTable.GetDECL(El->data.VTEl);
-      toImpl = ifaceElDecl && (ifaceElDecl->DeclType == Attr) 
+      toImpl = ifaceElDecl && (ifaceElDecl->DeclType == Attr)
                && ifaceElDecl->TypeFlags.Contains(isAbstract)
                && ifaceElDecl->TypeFlags.Contains(hasSetGet);
     }
@@ -648,7 +648,7 @@ bool CLavaProgram::CheckOneSetGet(CheckData& ckd, TypeFlag setgetflag, LavaDECL*
     return false;
   }
   LavaDECL *setGet = (LavaDECL*)cheSetGet->data;
-  while (cheSetGet && ( (setGet->DeclType != Function) 
+  while (cheSetGet && ( (setGet->DeclType != Function)
          || !setGet->TypeFlags.Contains(setgetflag)
          || !IDTable.EQEQ(((CHETID*)setGet->Supports.first)->data, setGet->inINCL, TID(propDecl->OwnID, propDecl->inINCL), 0))) {
     cheSetGet = (CHE*)cheSetGet->successor;
@@ -663,7 +663,7 @@ bool CLavaProgram::CheckOneSetGet(CheckData& ckd, TypeFlag setgetflag, LavaDECL*
   if (setgetflag == isPropGet)
     dt = OAttr;
   else
-    dt = IAttr; 
+    dt = IAttr;
   LavaDECL* ioDECL;
   bool ok = false;
   for (cheio = (CHE*)setGet->NestedDecls.first; cheio && !ok; cheio = (CHE*)cheio->successor) {
@@ -724,7 +724,7 @@ bool CLavaProgram::CheckFuncInOut(CheckData& ckd, LavaDECL* funcDECL)
       && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)
       && (((LavaDECL*)cheOverIO->data)->DeclDescType != ExecDesc)) {
       IODECL = (LavaDECL*)cheIO->data;
-      if ((IODECL->DeclType != ((LavaDECL*)cheOverIO->data)->DeclType) 
+      if ((IODECL->DeclType != ((LavaDECL*)cheOverIO->data)->DeclType)
         || !OverriddenMatch(IODECL, false, &ckd)) {
         LavaError(ckd, true, IODECL, &ERR_IOParams);
         return false;
@@ -768,7 +768,7 @@ bool CLavaProgram::CheckForm(CheckData& ckd, LavaDECL* formDECL, int)
   formDECL->RelatedDECL = classDECL;
   formDECL->ParentDECL->RuntimeDECL = IDTable.GetDECL(((CHETID*)formDECL->ParentDECL->Supports.first)->data, formDECL->inINCL);
   if (!formDECL->ParentDECL->RuntimeDECL) {
-    LavaError(ckd, true, formDECL->ParentDECL, &ERR_NoClassImpl); 
+    LavaError(ckd, true, formDECL->ParentDECL, &ERR_NoClassImpl);
     return false;
   }
   formDECL->ParentDECL->RelatedDECL = classDECL;
@@ -798,15 +798,15 @@ bool CLavaProgram::CheckForm(CheckData& ckd, LavaDECL* formDECL, int)
         }
         tid = ((CHETID*)formElDecl->Supports.first)->data;
         ADJUST(tid, formElDecl);
-        while (checlassEl  
+        while (checlassEl
             && (TID(classElDecl->OwnID, classElDecl->inINCL) != tid)) {
             checlassEl = (CHE*)checlassEl->successor;
-            if (checlassEl) 
+            if (checlassEl)
               classElDecl = (LavaDECL*)checlassEl->data;
         }
         if (checlassEl
           && ((classElDecl->DeclType == Attr) && classElDecl->TypeFlags.Contains(constituent)
-              || (classElDecl->DeclType == VirtualType) && classElDecl->SecondTFlags.Contains(isSet) 
+              || (classElDecl->DeclType == VirtualType) && classElDecl->SecondTFlags.Contains(isSet)
               || (classElDecl->DeclType == VirtualType) && classElDecl->SecondTFlags.Contains(isArray) )) {
           formElDecl->RelatedDECL = classElDecl;
           formElDecl->RuntimeDECL = IDTable.GetDECL(formElDecl->RefID, formElDecl->inINCL);
@@ -835,7 +835,7 @@ bool CLavaProgram::CheckMenu(CheckData& ckd, LavaDECL* formDECL, LavaDECL* class
   CHE* inDefElform = (CHE*)((TEnumDescription*)formDECL->EnumDesc.ptr)->MenuTree.NestedDecls.first;
   CHEEnumSelId* enumselClass = (CHEEnumSelId*)inElClass->Items.first;
   CHEEnumSelId* enumselForm = (CHEEnumSelId*)inElForm->Items.first;
-  while (enumselClass) { 
+  while (enumselClass) {
     if (inDefElform && (((LavaDECL*)inDefElform->data)->LocalName == enumselClass->data.Id)) {
       inDefElform = (CHE*)inDefElform->successor;
       enumselClass = (CHEEnumSelId*)enumselClass->successor;
@@ -899,7 +899,7 @@ bool CLavaProgram::AddVElems(CheckData& ckd, LavaDECL *classDECL, LavaDECL* base
     }
     else {
       ElC = El;
-      for (lastEl = El; lastEl && (lastEl->data.VTClss == addElem->data.VTClss); 
+      for (lastEl = El; lastEl && (lastEl->data.VTClss == addElem->data.VTClss);
            lastEl = (CHETVElem*)lastEl->successor);
       //is it or is an extension allready in the table?
       while (El && !IDTable.IsAn(El->data.VTEl, 0, addElem->data.VTEl, 0))
@@ -916,7 +916,7 @@ bool CLavaProgram::AddVElems(CheckData& ckd, LavaDECL *classDECL, LavaDECL* base
           else
             El = (CHETVElem*)El->successor;
         if (El) {
-          El->data.VTEl = addElem->data.VTEl; 
+          El->data.VTEl = addElem->data.VTEl;
           El->data.op = addElem->data.op;
           El->data.ElDECL = addElem->data.ElDECL;
         }
@@ -926,7 +926,7 @@ bool CLavaProgram::AddVElems(CheckData& ckd, LavaDECL *classDECL, LavaDECL* base
           if (El) { //same pos in VT
             if (!IDTable.Overrides(El->data.VTEl, 0, addElem->data.VTEl, 0, classDECL)) {
               if (IDTable.Overrides(addElem->data.VTEl, 0, El->data.VTEl, 0, classDECL)) {
-                El->data.VTEl = addElem->data.VTEl; 
+                El->data.VTEl = addElem->data.VTEl;
                 El->data.TypeFlags = addElem->data.TypeFlags;
                 El->data.op = addElem->data.op;
                 El->data.ok = addElem->data.ok;
@@ -958,7 +958,7 @@ int CLavaProgram::GetMemsSectionNumber(CheckData& ckd, LavaDECL *classDECL, Lava
   return GetSectionNumber(ckd, classDECL, memDECL->ParentDECL, putErr);
 }
 
-int CLavaProgram::GetSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL* baseDECL, bool putErr) 
+int CLavaProgram::GetSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL* baseDECL, bool putErr)
 {
   if (classDECL) {
     if (classDECL->DeclType == Impl )
@@ -981,16 +981,16 @@ int CLavaProgram::GetSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL
     return -1;
   int nsec, prim_nsec = 0;
   int nSections = ((CSectionDesc*)classDECL->SectionTabPtr)[0].nSections;
-  for (nsec = 0; 
-       (nsec < nSections) 
-      && ( ((CSectionDesc*)classDECL->SectionTabPtr)[nsec].classDECL != baseDECL); 
+  for (nsec = 0;
+       (nsec < nSections)
+      && ( ((CSectionDesc*)classDECL->SectionTabPtr)[nsec].classDECL != baseDECL);
       nsec++)
     if (((CSectionDesc*)classDECL->SectionTabPtr)[nsec].SectionFlags.Contains(SectPrimary))
       prim_nsec++;
 
   if (nsec < nSections)
     return nsec;
-  else 
+  else
     if (!baseDECL)
       return prim_nsec-1;
     else {
@@ -1001,7 +1001,7 @@ int CLavaProgram::GetSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL
     }
 }
 
-int CLavaProgram::getSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL* baseDECL) 
+int CLavaProgram::getSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL* baseDECL)
 {
   if (!classDECL ) {
     LavaError(ckd, true, classDECL, &ERR_InVTofBaseIF);
@@ -1011,13 +1011,13 @@ int CLavaProgram::getSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL
     return -1;
   int nsec;
   int nSections = ((CSectionDesc*)classDECL->SectionTabPtr)[0].nSections;
-  for (nsec = 0; 
-       (nsec < nSections) 
-      && ( ((CSectionDesc*)classDECL->SectionTabPtr)[nsec].classDECL != baseDECL); 
+  for (nsec = 0;
+       (nsec < nSections)
+      && ( ((CSectionDesc*)classDECL->SectionTabPtr)[nsec].classDECL != baseDECL);
       nsec++);
   if (nsec < nSections)
     return nsec;
-  else 
+  else
     LavaError(ckd, true, classDECL, &ERR_NotBaseIF, baseDECL);
   return -1;
 }
@@ -1085,14 +1085,14 @@ LavaObjectPtr CLavaProgram::CastVInObj(CheckData& ckd, LavaObjectPtr obj, const 
       secN_casted = getSectionNumber(ckd, castedCtx.oContext, call_tab[secN_call].classDECL);
       if (ckd.exceptionThrown)
         return 0;
-      fvalCasted = casted_tab[secN_casted].vtypeDesc[VT_f->SectionInfo1].fValue;  
+      fvalCasted = casted_tab[secN_casted].vtypeDesc[VT_f->SectionInfo1].fValue;
     }
     else {
       casted_tab = (CSectionDesc*)castedCtx.iContext->SectionTabPtr;
       secN_casted = getSectionNumber(ckd, castedCtx.iContext, call_tab[secN_call].classDECL);
       if (ckd.exceptionThrown)
         return 0;
-      fvalCasted = casted_tab[secN_casted].vtypeDesc[VT_f->SectionInfo1].fValue;  
+      fvalCasted = casted_tab[secN_casted].vtypeDesc[VT_f->SectionInfo1].fValue;
     }
   }
 
@@ -1116,7 +1116,7 @@ int CLavaProgram::GetVStatCallSecN(CheckData& ckd, LavaObjectPtr lowObj, const C
   LavaObjectPtr highObj = lowObj - (*lowObj)->sectionOffset;
   if (outer)
     lowConTab = (CSectionDesc*)lowCtx.oContext->SectionTabPtr;
-  else 
+  else
     lowConTab = (CSectionDesc*)lowCtx.iContext->SectionTabPtr;
   if (outer)
     if (!lowCtx.iContext && (*highObj)[0].innerContext)
@@ -1145,11 +1145,11 @@ LavaObjectPtr CLavaProgram::CastVOutObj(CheckData& ckd, LavaObjectPtr obj, const
   secN_call = v0 + VT_f->SectionInfo2; /*v0 = GetVTSectionNumber(callCtx, ET_call, outer)*/
   if (outer && callCtx.oContext || !outer && !callCtx.iContext) {
     call_tab = (CSectionDesc*)callCtx.oContext->SectionTabPtr;
-    fvalCall = call_tab[secN_call].vtypeDesc[VT_f->SectionInfo1].fValue;  
+    fvalCall = call_tab[secN_call].vtypeDesc[VT_f->SectionInfo1].fValue;
   }
   else {
     call_tab = (CSectionDesc*)callCtx.iContext->SectionTabPtr;
-    fvalCall = call_tab[secN_call].vtypeDesc[VT_f->SectionInfo1].fValue;  
+    fvalCall = call_tab[secN_call].vtypeDesc[VT_f->SectionInfo1].fValue;
   }
 
   if (!fvalCall)
@@ -1183,7 +1183,7 @@ bool CLavaProgram::MakeFormVT(LavaDECL *decl, CheckData* pckd)
   if (decl->WorkFlags.Contains(formVTOK))
     return true;
   CHETID* cheID = (CHETID*)decl->Supports.first; //id of basic gui interface
-  if (decl->DeclType == FormDef) {  
+  if (decl->DeclType == FormDef) {
     while (cheID) {
       baseFDECL = IDTable.GetDECL(cheID->data, decl->inINCL);
       if (!baseFDECL) {
@@ -1210,7 +1210,7 @@ bool CLavaProgram::MakeFormVT(LavaDECL *decl, CheckData* pckd)
           if (!El) {
             El = new CHETVElem;
             El->data.VTClss = Elbase->data.VTClss;
-            El->data.VTEl = Elbase->data.VTEl; 
+            El->data.VTEl = Elbase->data.VTEl;
             decl->VElems.VElems.Append(El);
           }
         }
@@ -1228,7 +1228,7 @@ bool CLavaProgram::MakeFormVT(LavaDECL *decl, CheckData* pckd)
   }
   El = new CHETVElem;
   El->data.VTClss = TID( decl->OwnID, decl->inINCL);
-  El->data.VTEl = TID( classDECL->OwnID, classDECL->inINCL); 
+  El->data.VTEl = TID( classDECL->OwnID, classDECL->inINCL);
   decl->VElems.VElems.Append(El);
   decl->WorkFlags.INCL(formVTOK);
   return true;
@@ -1242,7 +1242,7 @@ bool CLavaProgram::AddVBase(CheckData& ckd, LavaDECL* decl, LavaDECL* conDECL )
   if (!decl)
     return false;
   CHETID *cheID = (CHETID*)decl->Supports.first;
-  while (cheID) { 
+  while (cheID) {
     IFace = IDTable.GetDECL(cheID->data, decl->inINCL);
     if (IFace && (IFace->DeclType == VirtualType)) {
       IFace = IDTable.GetFinalBasicType(cheID->data, decl->inINCL, conDECL);
@@ -1282,7 +1282,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
     return false;
   if (classDECL->WorkFlags.Contains(runTimeOK))  //=CheckImpl, MakeVElems, MakeSectionTable ok
     return true;
-  if (classDECL->VElems.UpdateNo == -1) 
+  if (classDECL->VElems.UpdateNo == -1)
     return false;  //prevents circle calls of MakeVElems
   if (classDECL->VElems.UpdateNo == 1)
     return true;
@@ -1306,7 +1306,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
     }
     if (!MakeVElems(baseDECL, pckd) || !AddVElems(*pckd, classDECL, baseDECL))
       return false;
-  }  
+  }
   if (!AddVBase(*pckd, classDECL, classDECL))
     return false;
   for (cheDecl = (CHE*)classDECL->NestedDecls.first; cheDecl; cheDecl = (CHE*)cheDecl->successor) {
@@ -1375,13 +1375,13 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
             LavaError(*pckd, true, ElDECL, &ERR_Broken_ref);
             return false;
           }
-          if ((ElDECL->DeclType == VirtualType) 
+          if ((ElDECL->DeclType == VirtualType)
             && (errID = TestValOfVirtual(ElDECL, ElDECL->RuntimeDECL))) {
             LavaError(*pckd, true, classDECL, errID);
             return false;
           }
           else
-            if ((ElDECL->DeclType == Attr) 
+            if ((ElDECL->DeclType == Attr)
               && (errID = TypeForMem(ElDECL, ElDECL->RuntimeDECL, pckd))) {
               LavaError(*pckd, true, ElDECL, errID, ElDECL->RuntimeDECL);
               return false;
@@ -1404,7 +1404,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
   TCTVElem vElems;
   for (cheDecl = (CHE*)classDECL->NestedDecls.first; cheDecl; cheDecl = (CHE*)cheDecl->successor) {
     ElDECL = (LavaDECL*)cheDecl->data;
-    if ( (  ( ElDECL->DeclType == VirtualType) 
+    if ( (  ( ElDECL->DeclType == VirtualType)
          || ( ElDECL->DeclType == Function) && !ElDECL->TypeFlags.Contains(isStatic)
          || ( ElDECL->DeclType == Attr))
          && !ElDECL->Supports.first) {
@@ -1474,7 +1474,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
       LavaError(*pckd, true, classDECL, errID, baseDECL);
       return false;
     }
-  }  
+  }
 
   for (cheDecl = (CHE*)classDECL->NestedDecls.first; cheDecl; cheDecl = (CHE*)cheDecl->successor) {
     ElDECL = (LavaDECL*)cheDecl->data;
@@ -1490,7 +1490,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
           return false;
         }
       }
-      else 
+      else
         if ((ElDECL->DeclType == Attr)
           && (errID = TypeForMem(ElDECL, ElDECL->RuntimeDECL, pckd))) {
           LavaError(*pckd, true, ElDECL, errID, ElDECL->RuntimeDECL);
@@ -1530,7 +1530,7 @@ bool CLavaProgram::AttachPrivatElems(CheckData& ckd, LavaDECL* classDECL)
         else {
           ElDECL->RuntimeDECL = IDTable.GetDECL(ElDECL->RefID, ElDECL->inINCL);
           if (!ElDECL->RuntimeDECL) {
-            LavaError(ckd, true, ElDECL, &ERR_Broken_ref); 
+            LavaError(ckd, true, ElDECL, &ERR_Broken_ref);
             return false;
           }
           if (errID = TypeForMem(ElDECL, ElDECL->RuntimeDECL, &ckd)) {
@@ -1539,9 +1539,9 @@ bool CLavaProgram::AttachPrivatElems(CheckData& ckd, LavaDECL* classDECL)
           }
         }
       }
-    }  
+    }
   }
-  for (El = (CHETVElem*)classDECL->VElems.VElems.first; 
+  for (El = (CHETVElem*)classDECL->VElems.VElems.first;
        El && El->successor && (classDECL == ((CHETVElem*)El->successor)->data.ClssDECL);
        El = (CHETVElem*)El->successor);
   if (vElems.first) {
@@ -1549,11 +1549,11 @@ bool CLavaProgram::AttachPrivatElems(CheckData& ckd, LavaDECL* classDECL)
       if (El->data.ClssDECL == classDECL) {
         vElems.last->successor = El->successor;
         El->successor = vElems.first;
-        if (classDECL->VElems.VElems.last == El) 
+        if (classDECL->VElems.VElems.last == El)
           classDECL->VElems.VElems.last = vElems.last;
       }
       else {
-        vElems.last->successor = classDECL->VElems.VElems.first; 
+        vElems.last->successor = classDECL->VElems.VElems.first;
         classDECL->VElems.VElems.first = vElems.first;
       }
 
@@ -1586,7 +1586,7 @@ bool CLavaProgram::CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNam
   if (classDECL->DeclType == Package) {
     if (fromNameSp)
       ifrom = 1;
-    else 
+    else
       ifrom = 0;
     for (ii = ifrom;  ii < classDECL->nSection; ii++) {
       if (!CheckNamesp(ckd, ((CSectionDesc*)classDECL->SectionTabPtr)[ii].classDECL))
@@ -1631,16 +1631,16 @@ bool CLavaProgram::CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNam
   classDECL->SectionInfo3 = 0;
   for (cheDecl = (CHE*)classDECL->NestedDecls.first; cheDecl; cheDecl = (CHE*)cheDecl->successor) {
     ElDECL = (LavaDECL*)cheDecl->data;
-    if ( (  ( ElDECL->DeclType == VirtualType) 
+    if ( (  ( ElDECL->DeclType == VirtualType)
          || ( ElDECL->DeclType == Function) && !ElDECL->TypeFlags.Contains(isStatic)
          || ( ElDECL->DeclType == Attr))
          && !ElDECL->Supports.first) {
       if (ElDECL->DeclType == Function)
         classDECL->SectionInfo1++;
       else
-        if (ElDECL->DeclType == VirtualType) 
+        if (ElDECL->DeclType == VirtualType)
           classDECL->SectionInfo3++;
-        else 
+        else
           classDECL->SectionInfo2++;
     }
   }
@@ -1650,12 +1650,12 @@ bool CLavaProgram::CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNam
       ElDECL = (LavaDECL*)cheDecl->data;
       if ( (  (ElDECL->DeclType == Function)
            || (ElDECL->DeclType == Attr))
-          && !ElDECL->Supports.first) 
+          && !ElDECL->Supports.first)
         if (ElDECL->DeclType == Function)
           classDECL->SectionInfo1++;
-        else 
+        else
           classDECL->SectionInfo2++;
-    }  
+    }
   }
   return true;
 }
@@ -1719,15 +1719,15 @@ bool CLavaProgram::AddVirtualBase(CheckData& ckd, LavaDECL *classDECL, LavaDECL*
           secTab[posS] = baseTab[ii];
           secTab[posS].funcDesc = 0;
           secTab[posS].attrDesc = 0;
-          secTab[posS].vtypeDesc = 0; 
-          secTab[posS].outerContext = 0; 
-          secTab[posS].innerContext = 0; 
+          secTab[posS].vtypeDesc = 0;
+          secTab[posS].outerContext = 0;
+          secTab[posS].innerContext = 0;
           posS++;
-        }     
+        }
         posSect = posS;
       }
     }
-    else 
+    else
       if (!AddVirtualBase(ckd, vbaseDECL, conDECL, posSect))
         return false;
   }
@@ -1776,20 +1776,20 @@ bool CLavaProgram::AllocSectionTable(CheckData& ckd, LavaDECL *classDECL)
       secTab[posSect] = baseTab[ii];
       secTab[posSect].funcDesc = 0;
       secTab[posSect].attrDesc = 0;
-      secTab[posSect].vtypeDesc = 0; 
-      secTab[posSect].outerContext = 0; 
-      secTab[posSect].innerContext = 0; 
+      secTab[posSect].vtypeDesc = 0;
+      secTab[posSect].outerContext = 0;
+      secTab[posSect].innerContext = 0;
       posSect++;
     }
     if (!AddVirtualBase(ckd, baseDECL, classDECL, posSect))
       return false;
   }
-  
+
   for (posSect = 1; posSect < secTab[0].nSections; posSect++) {
     for (ii = 0;
          (ii < posSect) && (secTab[ii].classDECL != secTab[posSect].classDECL);
          ii++);
-    if (ii == posSect) 
+    if (ii == posSect)
       secTab[posSect].SectionFlags.INCL(SectPrimary);
     else
       secTab[posSect].SectionFlags.EXCL(SectPrimary);
@@ -1816,22 +1816,22 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
   bool outerParam;
   TAdapterFunc* funcAdapter=0;
   CVTypeDesc *pd;
-  CVFuncDesc *fd;    
-  CVAttrDesc *ad;    
+  CVFuncDesc *fd;
+  CVAttrDesc *ad;
 
   secTab = (CSectionDesc*)classDECL->SectionTabPtr;
   implDECL = classDECL->RuntimeDECL;
   inINCL = classDECL->inINCL;
   totalInfo1 = classDECL->SectionInfo1;
-  totalInfo2 = classDECL->SectionInfo2; 
-  totalInfo3 = classDECL->SectionInfo3; 
+  totalInfo2 = classDECL->SectionInfo2;
+  totalInfo3 = classDECL->SectionInfo3;
 
   //fill in section table and calculate length of function-, attr- and param table
 
   for (posSect = 0; posSect < classDECL->nSection; posSect++) {
     baseTab = (CSectionDesc*)secTab[posSect].classDECL->SectionTabPtr;
     secTab[posSect] = baseTab[0];
-    for (inii = 1; 
+    for (inii = 1;
          (inii < posSect)  && (secTab[inii].implDECL != baseTab[0].implDECL);
          inii++);
     if (inii == posSect) {
@@ -1844,11 +1844,11 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
     secTab[0].funcDesc = new CVFuncDescX [totalInfo1];
   else
     secTab[0].funcDesc = 0;
-  if (totalInfo2) 
+  if (totalInfo2)
     secTab[0].attrDesc = new CVAttrDesc [totalInfo2];
   else
     secTab[0].attrDesc = 0;
-  if (totalInfo3) 
+  if (totalInfo3)
     secTab[0].vtypeDesc = new CVTypeDesc [totalInfo3];
   else
     secTab[0].vtypeDesc = 0;
@@ -1859,7 +1859,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
     secTab[0].outerContext = con.oContext; //((CSectionDesc*)con.oContext->SectionTabPtr)->vtypeDesc;
   // fill in function and attr tab
   El = (CHETVElem*)classDECL->VElems.VElems.last;
-  if (El) 
+  if (El)
     TIDCl = El->data.VTClss;
   posSect = 0;
   for (posSect = 0; posSect < secTab[0].nSections; posSect++) {
@@ -1896,7 +1896,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
       for (El = (CHETVElem*)classDECL->VElems.VElems.first;
            El && (secTab[posSect].implDECL != El->data.ClssDECL)
               && (secTab[posSect].implDECL != El->data.ClssDECL->RuntimeDECL);
-           El = (CHETVElem*)El->successor); 
+           El = (CHETVElem*)El->successor);
       if (El) {
         //section not empty
         TIDCl = El->data.VTClss;
@@ -1943,7 +1943,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
             }
             else
               fd->delta = posSect;
-            if (implDECL == ElImpl) { 
+            if (implDECL == ElImpl) {
               //is the function part of the implementation of this section table
               ElDECL->SectionInfo1 = posFunc-posFuncSect;
               ElDECL->SectionInfo2 = posSect;
@@ -1956,7 +1956,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
           }
           else {//Attr
             if (ElDECL->DeclType == Attr) {
-              if (!secTab[posSect].attrDesc) 
+              if (!secTab[posSect].attrDesc)
                 secTab[posSect].attrDesc = &secTab[0].attrDesc[posAttrSect];
               ad = &secTab[0].attrDesc[posAttr];
               ad->attrDECL = ElDECL;
@@ -1990,7 +1990,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
               offset++;
             }
             else { //VirtualType
-              if (!secTab[posSect].vtypeDesc) 
+              if (!secTab[posSect].vtypeDesc)
                 secTab[posSect].vtypeDesc = &secTab[0].vtypeDesc[posParamSect];
               pd = &secTab[0].vtypeDesc[posParam];
               pd->paramDECL = ElDECL;
@@ -2011,12 +2011,12 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
                 ElDECL->SectionInfo1 = posParam-posParamSect;
                 ElDECL->SectionInfo2 = posSect;
               }
-              if (!pd->isparamRef) 
+              if (!pd->isparamRef)
                 pd->fValue = ElDECL->RuntimeDECL;
               posParam++;
             }
           }
-          El = (CHETVElem*)El->successor; 
+          El = (CHETVElem*)El->successor;
         }
       }
       offset += LSH; //CSectionDesc pointer + object section flag
@@ -2041,7 +2041,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
               return false;
             outerParam = (posParamSect < 0);
           }
-          if (outerParam) 
+          if (outerParam)
             posParamSect = GetMemsSectionNumber(ckd, con.oContext, ElDECL);
           if (posParamSect < 0) {
             LavaError(ckd, true, ElDECL, &ERR_VTOutOfScope);
@@ -2053,7 +2053,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
           posParam = ElDECL->SectionInfo1;
           if (outerParam)
             valueTab = (CSectionDesc*)con.oContext->SectionTabPtr;
-          else 
+          else
             valueTab = (CSectionDesc*)classDECL->SectionTabPtr;
           pd->fValue = valueTab[posParamSect].vtypeDesc[posParam].fValue;
         }
@@ -2290,7 +2290,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
          ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
           QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
             //debug thread start, now initialisation is finished
-          suspend(); 
+          suspend();
             //execution thread wait until debug thread has received first message from LavaPE
         }
         if (!((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel)) {
@@ -2308,7 +2308,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
           }
           ((CLavaProgram*)ckd.document)->HCatch(ckd);
 stop:     ckd.document->throwError = false;
-          CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+          CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
           QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
 //          ckd.document->LavaEnd(true);
           return 0;
@@ -2336,7 +2336,7 @@ stop:     ckd.document->throwError = false;
       catch(CExecAbort) {
         // For other exception types, notify user here.
         critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Lava program has been aborted due to LavaPE termination"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
-        CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+        CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
 				QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
         return 0;
       }
@@ -2344,7 +2344,7 @@ stop:     ckd.document->throwError = false;
         // For other exception types, notify user here.
         critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
-          CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+          CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
 					QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
         }
         return 0;
@@ -2353,7 +2353,7 @@ stop:     ckd.document->throwError = false;
         // For stack overflow, notify user here.
         critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         if (ckd.document->throwError) {
-          CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+          CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
 					QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
         }
         return 0;
@@ -2368,7 +2368,7 @@ stop:     ckd.document->throwError = false;
 #endif
       }
       information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(msg)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
-      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,(const unsigned long)QThread::currentThread());
+      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
       QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
       return 1;
     }
@@ -2391,7 +2391,7 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
 {
   CRuntimeException* ex=0;
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
-  CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, (DWORD)&stack[SFH], (DWORD)&stack[SFH+1], (DWORD)&stack[SFH+2], (DWORD)frozen, (DWORD)currentThread, (DWORD)fromFillIn);
+  CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, &stack[SFH], &stack[SFH+1], &stack[SFH+2], (void*)frozen, currentThread, (void*)fromFillIn);
   if (currentThread != wxTheApp->mainThread) {
     currentThread->mySemaphore.lastException = 0;
     currentThread->waitingForUI = true;
@@ -2404,14 +2404,14 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
       currentThread->mySemaphore.lastException = 0;
       ckd.exceptionThrown = true;
     }
-    else 
+    else
       if (currentThread->mySemaphore.ex) {
         ex = currentThread->mySemaphore.ex;
         currentThread->mySemaphore.ex = 0;
       }
   }
   else {
-    ((CLavaBaseDoc*)hint->fromDoc)->LavaDialog = new LavaGUIDialog(wxTheApp->m_appWindow, hint); 
+    ((CLavaBaseDoc*)hint->fromDoc)->LavaDialog = new LavaGUIDialog(wxTheApp->m_appWindow, hint);
     if (((QDialog*)((CLavaBaseDoc*)hint->fromDoc)->LavaDialog)->exec() != QDialog::Accepted)
       ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
   }

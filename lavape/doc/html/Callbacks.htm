@@ -1,146 +1,229 @@
-<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN"
- "hmpro4.dtd">
+<!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN" "hmpro4.dtd">
+<html>
+<head>
 
-<HTML>
+    
+  <meta http-equiv="Content-Language" content="en-us">
+
+    
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+    
+  <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+
+    
+  <meta name="ProgId" content="FrontPage.Editor.Document">
+
+    
+    
+  <title>Callbacks</title>
+  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css">
+</head>
+
+
+
   
-  <HEAD>
-    <meta http-equiv="Content-Language" content="en-us">
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-    <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 5.0">
-    <meta name="ProgId" content="FrontPage.Editor.Document">
-    <TITLE>Callbacks</TITLE>
-    <LINK REL="STYLESHEET" TYPE="text/css" HREF="LavaStyles.css">
-  </HEAD>
-  
-  <BODY>
+  <body>
+
     
-    <H2 ALIGN="center">The <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-    callback concept</H2>
     
-    <P>Presently there does not exist a common understanding on how to support
-      <B>event/signal notification</B> <b>(callbacks)</b> in modern object-oriented
-      programming languages.</P>
+<h2 align="center">The <b><i><font color="#ff0000">Lava</font></i></b>
+    callback concept</h2>
+
     
-    <P>In the course of the <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
-      development <B><I><FONT COLOR="#FF0000">Sun Microsystems</FONT></I></B>
+    
+<p>Presently there does not exist a common understanding on how to support
+      <b>event/signal notification</b> <b>(callbacks)</b> in modern object-oriented
+      programming languages.</p>
+
+    
+    
+<p>In the course of the <b><i><font color="#ff0000">Java</font></i></b>
+      development <b><i><font color="#ff0000">Sun Microsystems</font></i></b>
       has replaced the original event handling concept by a new philosophy based
-      on <b>event listeners, adapter classes</b>, and <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
-      language extensions introducing <b>anonymous and inner classes</b>.</P>
+      on <b>event listeners, adapter classes</b>, and <b><i><font color="#ff0000">Java</font></i></b>
+      language extensions introducing <b>anonymous and inner classes</b>.</p>
+
     
-    <P>
-      <B><I><FONT COLOR="#FF0000">Microsoft</FONT></I></B> has made (and
-      withdrawn) a proposal for an own callback-specific <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> 
-    language extension (&quot;delegates&quot;), and has then provided a more comprehensive
+    
+<p>
+      <b><i><font color="#ff0000">Microsoft</font></i></b> has made (and
+      withdrawn) a proposal for an own callback-specific <b><i><font color="#ff0000">Java</font></i></b> 
+    language extension ("delegates"), and has then provided a more comprehensive
       <b>delegate</b> or <b> <i>callable 
-    entity</i> </b>notion in <font color="#FF0000"><i><b>C#</b></i></font>.</P>
+    entity</i> </b>notion in <font color="#ff0000"><i><b>C#</b></i></font>.</p>
+
     
-    <P>The problem is primarily to find a truly object-oriented and type-safe 
-    way to associate arbitrary <b>&quot;client data&quot;</b>, provided by
+    
+<p>The problem is primarily to find a truly object-oriented and type-safe 
+    way to associate arbitrary <b>"client data"</b>, provided by
       the envisaged callback receiver, with the event/signal sender object 
-    (&quot;server&quot;) without requiring
-      the signal sender&nbsp; to &quot;know&quot; the type and structure of the client data.</P>
+    ("server") without requiring
+      the signal sender&nbsp; to "know" the type and structure of the client data.</p>
+
     
-    <P>We felt that the present <B><I><FONT COLOR="#FF0000">Java</FONT></I></B> 
-    and <font color="#FF0000"><i><b>C#</b></i></font>
+    
+<p>We felt that the present <b><i><font color="#ff0000">Java</font></i></b> 
+    and <font color="#ff0000"><i><b>C#</b></i></font>
       solutions are too complex and indirect and lack the desirable intuitive 
-    simplicity and clarity. In contrast to the former, <b>the </b> <font color="#FF0000">
+    simplicity and clarity. In contrast to the former, <b>the </b> <font color="#ff0000">
     <i><b>Lava</b></i></font><b> solution doesn't require the introduction of 
     additional types of entities</b> (like <i>delegates</i> or <i>inner classes</i>) 
     but is solely based on three specific executable statements:
-    <font color="#0000FF"><b>connect</b></font>, <font color="#0000FF"><b>
-    disconnect</b></font> and <font color="#0000FF"><b>signal</b></font>.</P>
+    <font color="#0000ff"><b>connect</b></font>, <font color="#0000ff"><b>
+    disconnect</b></font> and <font color="#0000ff"><b>signal</b></font>.</p>
+
     
-    <P>The 
+    
+<p>The 
     principal idea has been taken over from the
     <a target="_blank" href="http://doc.trolltech.com/4.0/signalsandslots.html">
     signal/slot concept</a> in <i><b>
     <a target="_blank" href="http://www.trolltech.com">TrollTech's</a>
-    <a target="_blank" href="http://www.trolltech.com/products/qt/index.html">Qt toolkit</a></b></i>, 
-    and has been modified<span lang="de"> and </span>adapted to the conceptual setting of the <font color="#FF0000">
-    <b><i>Lava</i></b></font> language:</P>
+    <a target="_blank" href="http://www.trolltech.com/products/qt">Qt toolkit</a></b></i>, 
+    and has been modified<span lang="de"> and </span>adapted to the conceptual setting of the <font color="#ff0000">
+    <b><i>Lava</i></b></font> language:</p>
+
     
-    <P>In the signal sender class a signal (that can be emitted by an object of 
+    
+<p>In the signal sender class a signal (that can be emitted by an object of 
     this class) is declared as a member function without output parameters, 
-    having the special &quot;signal&quot; attribute. A <b>signal function</b> doesn't have an 
-    implementation. An object of a class having signals may explicitly emit a signal  using the <font color="#0000FF">
-    <b>signal</b></font> statement (instead of a normal function <font color="#0000FF">
+    having the special "signal" attribute. A <b>signal function</b> doesn't have an 
+    implementation. An object of a class having signals may explicitly emit a signal  using the <font color="#0000ff">
+    <b>signal</b></font> statement (instead of a normal function <font color="#0000ff">
     <b>call</b></font> statement), with actual parameters, say <i>parm1</i>, <i>
-    parm2</i>, ... :</P>
+    parm2</i>, ... :</p>
+
     
-    <div align="center">
-      <center>
-      <table border="1" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" 
-      id="AutoNumber3" cellpadding="5" bgcolor="#FFFFFF">
-        <tr>
-          <td width="100%" align="center"><font face="Courier New"><font color="#0000FF"><b>
+    
+<div align="center">
+      
+<center>
+      
+<table style="border-collapse: collapse;" id="AutoNumber3" bgcolor="#ffffff" border="1" bordercolor="#111111" cellpadding="5" cellspacing="0">
+
+        <tbody>
+    <tr>
+
+          <td align="center" width="100%"><font face="Courier New"><font color="#0000ff"><b>
       signal</b></font> self.<b>sigFunc</b> (parm1,parm2,...)</font></td>
+
         </tr>
-      </table>
+
+      
+  </tbody>
+</table>
+
       </center>
+
     </div>
+
     
-    <P>Note that an object (<i>self</i> in the example) can only <i>itself</i> emit a 
+    
+<p>Note that an object (<i>self</i> in the example) can only <i>itself</i> emit a 
     signal; it cannot force <i>another</i> object to emit a signal, except, of 
     course, if the class of the other object exports a method having this effect 
-    (like the <i>sendSignal</i> function in our <A HREF="CallbackSample.htm">callback sample</A>).</P>
+    (like the <i>sendSignal</i> function in our <a href="CallbackSample.htm">callback sample</a>).</p>
+
     
-    <P>You can use the <font color="#0000FF"><b>connect</b></font> statement to 
+    
+<p>You can use the <font color="#0000ff"><b>connect</b></font> statement to 
     specify to which handler objects and handler methods a signal is to be 
-    transmitted:</P>
+    transmitted:</p>
+
     
-    <div align="center">
-      <center>
-      <table border="1" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber3" cellpadding="5" bgcolor="#FFFFFF">
-        <tr>
-          <td width="100%" align="center"><font face="Courier New"><font color="#0000FF"><b>
+    
+<div align="center">
+      
+<center>
+      
+<table style="border-collapse: collapse;" id="AutoNumber3" bgcolor="#ffffff" border="1" bordercolor="#111111" cellpadding="5" cellspacing="0">
+
+        <tbody>
+    <tr>
+
+          <td align="center" width="100%"><font face="Courier New"><font color="#0000ff"><b>
           connect</b></font> sigSender.<b>sigFunc</b> to handlerObj.<b>hdlFunc</b></font></td>
+
         </tr>
-      </table>
+
+      
+  </tbody>
+</table>
+
       </center>
+
     </div>
+
     
-    <P>You may connect the same signal sender / signal function to several 
+    
+<p>You may connect the same signal sender / signal function to several 
     handler objects / handler functions. When the sender emits this signal, then 
     all handlers will be invoked in the order of the corresponding
-    <font color="#0000FF"><b>connect</b></font>s</P>
+    <font color="#0000ff"><b>connect</b></font>s</p>
+
     
-    <P>Transmitting a signal to a handler object <i>handlerObj</i> having a 
+    
+<p>Transmitting a signal to a handler object <i>handlerObj</i> having a 
     handler method <i>hdlFunc</i> means that the handler function is invoked 
     with that handler object as call object, and the actual parameters are taken 
     from the signal statement, just as if the following function call would be 
-    performed in place of the signal function call:</P>
+    performed in place of the signal function call:</p>
+
     
-    <div align="center">
-      <center>
-      <table border="1" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber2" bgcolor="#FFFFFF" cellpadding="5">
-        <tr>
-          <td width="100%" align="center"><font face="Courier New"><font color="#0000FF"><b>
+    
+<div align="center">
+      
+<center>
+      
+<table style="border-collapse: collapse;" id="AutoNumber2" bgcolor="#ffffff" border="1" bordercolor="#111111" cellpadding="5" cellspacing="0">
+
+        <tbody>
+    <tr>
+
+          <td align="center" width="100%"><font face="Courier New"><font color="#0000ff"><b>
           call</b></font> handlerObj.<b>hdlFunc</b>(parm1,parm2,...)</font></td>
+
         </tr>
-      </table>
+
+      
+  </tbody>
+</table>
+
       </center>
+
     </div>
+
     
-    <P>This requires that the handler function must have the same number of 
+    
+<p>This requires that the handler function must have the same number of 
     input (and no output) parameters, and the formal parameters of the signal 
     function must be assignment compatible to the corresponding formal 
-    parameters of the handler function.</P>
+    parameters of the handler function.</p>
+
     
-    <P>Moreover, if the call objects or the formal parameters of the functions 
-    occurring in the <font color="#0000FF"><b>connect</b></font> statement 
+    
+<p>Moreover, if the call objects or the formal parameters of the functions 
+    occurring in the <font color="#0000ff"><b>connect</b></font> statement 
     depend on <a href="PatternsFrameworks.htm#VT">virtual types</a>, then
-    <font color="#FF0000"><i><b>LavaPE</b></i></font> will reject the
-    <font color="#0000FF"><b>connect</b></font> if <i>sigSender</i> and <i>
+    <font color="#ff0000"><i><b>LavaPE</b></i></font> will reject the
+    <font color="#0000ff"><b>connect</b></font> if <i>sigSender</i> and <i>
     handlerObj</i> don't belong to the same
     <a href="PatternsFrameworks.htm#patternContext">pattern context</a> and thus 
-    don't apply the same interpretation to the involved virtual types.</P>
+    don't apply the same interpretation to the involved virtual types.</p>
+
     
-    <P>The envisaged extension of the <font color="#FF0000"><i><b>Lava</b></i></font> 
+    
+<p>The envisaged extension of the <font color="#ff0000"><i><b>Lava</b></i></font> 
     GUI support requires that you can also specify a signal sender class only in 
-    the <font color="#0000FF"><b>connect</b></font> statement, rather than a 
+    the <font color="#0000ff"><b>connect</b></font> statement, rather than a 
     concrete signal sender object (to be explained after the GUI support 
-    extension.)</P>
+    extension.)</p>
+
     
-    <P><b>See also our <A HREF="CallbackSample.htm">callback sample</A>.</b></P>
-  </BODY>
-</HTML>
+    
+<p><b>See also our <a href="CallbackSample.htm">callback sample</a>.</b></p>
+
+  
+</body>
+</html>

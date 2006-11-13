@@ -47,7 +47,7 @@ public:
 class CLavaPEApp : public wxApp
 {
 public:
-  CLavaPEApp(int argc, char ** argv);
+  CLavaPEApp(int &argc, char ** argv);
   ~CLavaPEApp();
   wxDocTemplate *pLavaTemplate, *pFormTemplate, *pExecTemplate, *pLComTemplate;
   CLavaPEBrowse Browser;

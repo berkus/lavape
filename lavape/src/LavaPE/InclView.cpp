@@ -80,8 +80,8 @@ void CInclView::UpdateUI()
 }
 
 
-void CInclView::OnInitialUpdate() 
-{  
+void CInclView::OnInitialUpdate()
+{
   CLavaPEDoc* pDoc = GetDocument();
   if (pDoc && pDoc->mySynDef) {
     Expanded = true;
@@ -93,7 +93,7 @@ void CInclView::OnInitialUpdate()
   }
 }
 
-void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint) 
+void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
 {
   CTreeItem* parent, *item;
   DString lab;
@@ -107,7 +107,7 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
      && ( ((CLavaPEHint*)pHint)->com != CPECommand_ChangeInclude)
      && ( ((CLavaPEHint*)pHint)->com != CPECommand_FromOtherDoc)
      && ( ( ((CLavaPEHint*)pHint)->com != CPECommand_Change)
-          || ((CLavaPEHint*)pHint)->CommandData1 )) 
+          || ((CLavaPEHint*)pHint)->CommandData1 ))
     return;
   parent = (CTreeItem*)Tree->RootItem;
   if (parent) {
@@ -152,7 +152,7 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
 }
 
 
-void CInclView::OnNewInclude() 
+void CInclView::OnNewInclude()
 {
   QString strFilter, fileExt, title;
   DString *pfn, *pUsers, openfilename;
@@ -167,31 +167,31 @@ void CInclView::OnNewInclude()
   if (fileNames.isEmpty())
     return;
   for ( ii = 0; ii < fileNames.count(); ii++) {
-    LBaseData->lastFileOpen = fileNames[ii]; 
+    LBaseData->lastFileOpen = fileNames[ii];
     finfo.setFile(LBaseData->lastFileOpen);
     openfilename = qPrintable(ResolveLinks(finfo));
     pfn = new DString(openfilename);
     pUsers = new DString(qPrintable(LBaseData->lastFileOpen));
     //RelPathName(rpfn, GetDocument()->IDTable.DocDir);
     for (cheSyn = (CHESimpleSyntax*)GetDocument()->mySynDef->SynDefTree.first;
-         cheSyn && !SameFile(cheSyn->data.SyntaxName, GetDocument()->IDTable.DocDir,openfilename); 
+         cheSyn && !SameFile(cheSyn->data.SyntaxName, GetDocument()->IDTable.DocDir,openfilename);
             //is the mySynDef really new?
          cheSyn = (CHESimpleSyntax*)cheSyn->successor);
     if (!cheSyn || !cheSyn->data.TopDef.ptr) {
-      hint = new CLavaPEHint(CPECommand_Include, GetDocument(), firstLast, (DWORD) cheSyn, (DWORD)pfn, (DWORD)GetDocument()->mySynDef->SynDefTree.last, (DWORD)pUsers);
+      hint = new CLavaPEHint(CPECommand_Include, GetDocument(), firstLast,  cheSyn, pfn, GetDocument()->mySynDef->SynDefTree.last, pUsers);
       GetDocument()->UndoMem.AddToMem(hint);
       if (GetDocument()->UpdateDoc(this, FALSE, hint))
         firstLast = 0;
     }
     else
       if (firstLast == 1)
-        QMessageBox::critical(this, qApp->applicationName(),IDP_AlreadyIncluded,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton); 
+        QMessageBox::critical(this, qApp->applicationName(),IDP_AlreadyIncluded,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
  }
  if (!firstLast)
    GetDocument()->SetLastHint();
 }
 
-void CInclView::OnDelete() 
+void CInclView::OnDelete()
 {
   int in;
   QString errStr;
@@ -200,7 +200,7 @@ void CInclView::OnDelete()
   CTreeItem* item = (CTreeItem*)Tree->currentItem();
   if (item && (item != Tree->RootItem)) {
     CHESimpleSyntax* cheSyn = (CHESimpleSyntax*)item->getItemData();
-    if (cheSyn->data.nINCL == 1) { 
+    if (cheSyn->data.nINCL == 1) {
       QMessageBox::critical(this, qApp->applicationName(),ERR_StdNotRemovable, QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
       return;
     }
@@ -212,7 +212,7 @@ void CInclView::OnDelete()
     }
     else {
       DString *pfn = new DString(cheSyn->data.SyntaxName);
-      CLavaPEHint* hint = new CLavaPEHint(CPECommand_Exclude, GetDocument(), (const unsigned long)3, (DWORD)cheSyn, (DWORD)pfn, (DWORD)cheSyn->predecessor);
+      CLavaPEHint* hint = new CLavaPEHint(CPECommand_Exclude, GetDocument(), (const unsigned long)3, cheSyn, pfn, cheSyn->predecessor);
       GetDocument()->UndoMem.AddToMem(hint);
       GetDocument()->UpdateDoc(this, FALSE);
     }
@@ -220,7 +220,7 @@ void CInclView::OnDelete()
 }
 
 
-void CInclView::OnDblclk( QTreeWidgetItem * item, int col ) 
+void CInclView::OnDblclk( QTreeWidgetItem * item, int col )
 {
  //CTreeItem* item = (CTreeItem*)Tree->itemAtIndex(index);
  if (item && (item != Tree->RootItem)) {
@@ -255,7 +255,7 @@ void CInclView::customEvent(QEvent *ev0)
   }
 }
 
-void CInclView::OnUpdateDelete(QAction* action) 
+void CInclView::OnUpdateDelete(QAction* action)
 {
   CTreeItem* item = (CTreeItem*)Tree->currentItem();
   action->setEnabled((!GetDocument()->changeNothing) &&
@@ -263,13 +263,13 @@ void CInclView::OnUpdateDelete(QAction* action)
 //                 && !((CHESimpleSyntax*) item->getItemData())->data.Inherited);
 }
 
-void CInclView::OnEditSel() 
+void CInclView::OnEditSel()
 {
   CLavaPEHint* hint;
   CHESimpleSyntax *che, *newChe, *cheSyn;
   DString newAbsName, oldAbsName, newRelName, oldRelName, docAbsName;
   CLavaPEDoc *doc, *nDoc;
-  int pos;//, prevPos; 
+  int pos;//, prevPos;
   //wxDocTemplate* pTemplate;
   SynFlags firstlast;
   bool multi = false;
@@ -285,7 +285,7 @@ void CInclView::OnEditSel()
       box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
       if (box->exec() == QDialog::Accepted) {
         firstlast.INCL(firstHint);
-        hint = new CLavaPEHint(CPECommand_ChangeInclude, GetDocument(), firstlast, (DWORD) newChe, 0, (DWORD)che->predecessor);
+        hint = new CLavaPEHint(CPECommand_ChangeInclude, GetDocument(), firstlast,  newChe, 0, che->predecessor);
         if (newChe->data.UsersName != che->data.UsersName) {
           //find all open docs and included files which include the changed file
           //if any then make a multi doc hint
@@ -294,7 +294,7 @@ void CInclView::OnEditSel()
           oldAbsName = che->data.SyntaxName;
           AbsPathName(oldAbsName, GetDocument()->IDTable.DocDir);
           ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = true;
-          wxDocManager* mana = wxDocManager::GetDocumentManager(); 
+          wxDocManager* mana = wxDocManager::GetDocumentManager();
           //pos = mana->GetFirstDocPos();
           //while (pos) {
           for (pos = 0; pos < mana->m_docs.size(); pos++) {
@@ -336,7 +336,7 @@ void CInclView::OnEditSel()
                       multi = true;
                       ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = true;
                     }
-                    hint = new CLavaPEHint(CPECommand_ChangeInclude, doc, firstlast, (DWORD) newChe, 0, (DWORD)cheSyn->predecessor);
+                    hint = new CLavaPEHint(CPECommand_ChangeInclude, doc, firstlast,  newChe, 0, cheSyn->predecessor);
                     doc->hasHint = true;
                     doc->UndoMem.AddToMem(hint);
                     doc->UpdateDoc(this, FALSE, hint);
@@ -355,7 +355,7 @@ void CInclView::OnEditSel()
           }
         }
         ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = false;
-        if (multi) 
+        if (multi)
           GetDocument()->SetLastHints(false, false);
         else {
           GetDocument()->UndoMem.AddToMem(hint);
@@ -370,7 +370,7 @@ void CInclView::OnEditSel()
   }
 }
 
-void CInclView::OnUpdateEditSel(QAction* action) 
+void CInclView::OnUpdateEditSel(QAction* action)
 {
   CTreeItem* item = (CTreeItem*)Tree->currentItem();
   bool enable = (item && (item != Tree->RootItem));
@@ -382,7 +382,7 @@ void CInclView::OnUpdateEditSel(QAction* action)
 }
 
 /*
-void CInclView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CInclView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
   if (nChar == VK_DELETE)
     OnDelete();
@@ -391,7 +391,7 @@ void CInclView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 }
 */
 
-void CInclView::OnActivateView(bool bActivate, wxView *deactiveView) 
+void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
 {
   DString str0;
   if (GetDocument()->mySynDef) {
@@ -400,7 +400,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
       active = true;
       frame->newIncludeAction->setEnabled(!GetDocument()->changeNothing);
       frame->m_UtilityView->SetComment(str0, true);
-      frame->m_UtilityView->ResetError(); 
+      frame->m_UtilityView->ResetError();
       if (!Tree->hasFocus())
         Tree->setFocus();
       wxTheApp->updateButtonsMenus();
@@ -413,7 +413,7 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
 }
 
 
-void CInclView::on_whatNextAction_triggered() 
+void CInclView::on_whatNextAction_triggered()
 {
   QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("\"What next?\" help not yet available for the include view"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
 }

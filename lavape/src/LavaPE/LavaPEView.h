@@ -75,10 +75,10 @@ private:
 class CMainItemData : public TItemData {
 public:
   CMainItemData() { docPathName = 0; synEl = 0; ClipTree = 0;}
-  CMainItemData(TIType tt, unsigned long synel, bool exp = false)
+  CMainItemData(TIType tt, void *synel, bool exp = false)
        {type = tt; synEl = synel; toExpand = exp; docPathName = 0; ClipTree = 0;}
   TIType type;
-  unsigned long synEl;
+  /*unsigned long*/ void *synEl;
   bool toExpand;
   DString *docPathName;
   SyntaxDefinition* ClipTree; //only for clipboard and drag and drop operation
@@ -189,7 +189,7 @@ public:
   virtual void RenameCancel(CTreeItem* item);
   virtual void RenameOk(QLineEdit* editor, CTreeItem* item);
   virtual void RenameStart(QLineEdit* editor, CTreeItem* item);
- 
+
 //  void SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask, bool inPattern);
   void setSelPost(QTreeWidgetItem* selItem);
   void SetErrAndCom(CTreeItem* item);
@@ -275,7 +275,7 @@ public:
   void OnShowOverridables();//
 //  void OnShowPattern();
 
-public slots: 
+public slots:
   void OnDblclk( QTreeWidgetItem* item, int col);//QTreeWidgetItem* onItem, const QPoint&, int);
   void OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* );
   void OnRclick(QTreeWidgetItem* item);
