@@ -131,12 +131,12 @@ void CDPTVElem (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPpp.CVTint(pgf,cid,vp->updateNo);
     CDPpp.CVTbool(pgf,cid,vp->ok);
-    CDPSynFlags(pgf,cid,&vp->TypeFlags);
-    CDPTID(pgf,cid,&vp->VTEl);
-    CDPTID(pgf,cid,&vp->VTBaseEl);
-    CDPTID(pgf,cid,&vp->VTClss);
-    CDPTIDs(pgf,cid,&vp->Ambgs);
-    CDPTOperator(pgf,cid,&vp->op);
+    CDPSynFlags(pgf,cid,&vp->TypeFlags,false);
+    CDPTID(pgf,cid,&vp->VTEl,false);
+    CDPTID(pgf,cid,&vp->VTBaseEl,false);
+    CDPTID(pgf,cid,&vp->VTClss,false);
+    CDPTIDs(pgf,cid,&vp->Ambgs,false);
+    CDPTOperator(pgf,cid,&vp->op,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTVElem
 
@@ -164,7 +164,7 @@ void CDPTVElems (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPpp.CVTint(pgf,cid,vp->UpdateNo);
-    CDPTCTVElem(pgf,cid,&vp->VElems);
+    CDPTCTVElem(pgf,cid,&vp->VElems,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTVElems
 
@@ -353,7 +353,7 @@ void CDPTDECLComment (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     vp->Comment.CDP(pgf,cid);
-    CDPSynFlags(pgf,cid,&vp->PrintFlags);
+    CDPSynFlags(pgf,cid,&vp->PrintFlags,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTDECLComment
 
@@ -439,8 +439,8 @@ void CDPTLength (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPpp.CVTunsigned(pgf,cid,vp->Field);
     CDPpp.CVTunsigned(pgf,cid,vp->Data);
-    CDPTBoundRel(pgf,cid,&vp->FieldBoundRel);
-    CDPTBoundRel(pgf,cid,&vp->DataBoundRel);
+    CDPTBoundRel(pgf,cid,&vp->FieldBoundRel,false);
+    CDPTBoundRel(pgf,cid,&vp->DataBoundRel,false);
     CDPpp.CVTunsigned(pgf,cid,vp->DecPoint);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTLength
@@ -472,7 +472,7 @@ void CDPTAnnoEx (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPAnnoExType(pgf,cid,&vp->exType);
+    CDPAnnoExType(pgf,cid,&vp->exType,false);
     if (cid->Skip()) return;
     switch (vp->exType) {
     case anno_Color:
@@ -513,24 +513,24 @@ void CDPTAnnotation (PutGetFlag pgf, ASN1* cid, address varAddr,
     vp->PopupNode.CDP(pgf,cid);
     vp->MenuDECL.CDP(pgf,cid);
     vp->IterOrig.CDP(pgf,cid);
-    CDPSynFlags(pgf,cid,&vp->BasicFlags);
-    CDPSynFlags(pgf,cid,&vp->IoSigFlags);
-    CDPSynFlags(pgf,cid,&vp->IterFlags);
+    CDPSynFlags(pgf,cid,&vp->BasicFlags,false);
+    CDPSynFlags(pgf,cid,&vp->IoSigFlags,false);
+    CDPSynFlags(pgf,cid,&vp->IterFlags,false);
     vp->WidgetName.CDP(pgf,cid);
-    CDPTLength(pgf,cid,&vp->Length);
-    CDPTSigDef(pgf,cid,&vp->SigDef);
+    CDPTLength(pgf,cid,&vp->Length,false);
+    CDPTSigDef(pgf,cid,&vp->SigDef,false);
     vp->AnnoEx.CDP(pgf,cid,CDPTAnnoEx,NewCHETAnnoEx);
-    CDPTEmphasis(pgf,cid,&vp->Emphasis);
+    CDPTEmphasis(pgf,cid,&vp->Emphasis,false);
     CDPpp.CVTunsigned(pgf,cid,vp->Space);
     CDPpp.CVTint(pgf,cid,vp->TabPosition);
     CDPpp.CVTint(pgf,cid,vp->FrameSpacing);
-    CDPTIndentation(pgf,cid,&vp->IndType);
+    CDPTIndentation(pgf,cid,&vp->IndType,false);
     CDPpp.CVTint(pgf,cid,vp->Indentation);
-    CDPTJustification(pgf,cid,&vp->JustType);
-    CDPTAlignment(pgf,cid,&vp->Alignment);
-    CDPTBox(pgf,cid,&vp->Box);
+    CDPTJustification(pgf,cid,&vp->JustType,false);
+    CDPTAlignment(pgf,cid,&vp->Alignment,false);
+    CDPTBox(pgf,cid,&vp->Box,false);
     vp->StringValue.CDP(pgf,cid);
-    CDPTBasicType(pgf,cid,&vp->BType);
+    CDPTBasicType(pgf,cid,&vp->BType,false);
     if (cid->Skip()) return;
     switch (vp->BType) {
     case B_Bool:
@@ -566,24 +566,24 @@ void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     vp->LocalName.CDP(pgf,cid);
     vp->DECLComment.CDP(pgf,cid,CDPTDECLComment);
-    CDPSynFlags(pgf,cid,&vp->TreeFlags);
+    CDPSynFlags(pgf,cid,&vp->TreeFlags,false);
     CDPpp.CVTint(pgf,cid,vp->OwnID);
     vp->Annotation.CDP(pgf,cid,CDPTAnnotation);
-    CDPSynFlags(pgf,cid,&vp->TypeFlags);
-    CDPSynFlags(pgf,cid,&vp->SecondTFlags);
-    CDPTID(pgf,cid,&vp->RefID);
-    CDPTDeclType(pgf,cid,&vp->DeclType);
-    CDPTOperator(pgf,cid,&vp->op);
+    CDPSynFlags(pgf,cid,&vp->TypeFlags,false);
+    CDPSynFlags(pgf,cid,&vp->SecondTFlags,false);
+    CDPTID(pgf,cid,&vp->RefID,false);
+    CDPTDeclType(pgf,cid,&vp->DeclType,false);
+    CDPTOperator(pgf,cid,&vp->op,false);
     CDPpp.CVTint(pgf,cid,vp->nInput);
     CDPpp.CVTint(pgf,cid,vp->nOutput);
-    CDPTSupports(pgf,cid,&vp->Supports);
-    CDPTSupports(pgf,cid,&vp->Inherits);
+    CDPTSupports(pgf,cid,&vp->Supports,false);
+    CDPTSupports(pgf,cid,&vp->Inherits,false);
     vp->Items.CDP(pgf,cid,CDPEnumSelId,NewCHEEnumSelId);
-    CDPTDeclDescType(pgf,cid,&vp->DeclDescType);
+    CDPTDeclDescType(pgf,cid,&vp->DeclDescType,false);
     if (cid->Skip()) return;
     switch (vp->DeclDescType) {
     case BasicType:
-      CDPTBasicType(pgf,cid,&vp->BType);
+      CDPTBasicType(pgf,cid,&vp->BType,false);
       break;
     case EnumType:
       vp->EnumDesc.CDP(pgf,cid);
@@ -611,8 +611,8 @@ void CDPTEnumDescription (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPLavaDECL(pgf,cid,&vp->EnumField);
-    CDPLavaDECL(pgf,cid,&vp->MenuTree);
+    CDPLavaDECL(pgf,cid,&vp->EnumField,false);
+    CDPLavaDECL(pgf,cid,&vp->MenuTree,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTEnumDescription
 
@@ -628,7 +628,7 @@ void CDPTIteration (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPTBoundRel(pgf,cid,&vp->BoundType);
+    CDPTBoundRel(pgf,cid,&vp->BoundType,false);
     CDPpp.CVTunsigned(pgf,cid,vp->Bound);
     vp->IteratedExpr.CDP(pgf,cid,CDPLavaDECL);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -786,8 +786,8 @@ void CDPStackData (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPpp.CVTint(pgf,cid,vp->SynObjID);
-    CDPTDeclType(pgf,cid,&vp->ExecType);
-    CDPTID(pgf,cid,&vp->FuncID);
+    CDPTDeclType(pgf,cid,&vp->ExecType,false);
+    CDPTID(pgf,cid,&vp->FuncID,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPStackData
 
@@ -811,8 +811,8 @@ void CDPProgPoint (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPpp.CVTint(pgf,cid,vp->SynObjID);
-    CDPTDeclType(pgf,cid,&vp->ExecType);
-    CDPTID(pgf,cid,&vp->FuncID);
+    CDPTDeclType(pgf,cid,&vp->ExecType,false);
+    CDPTID(pgf,cid,&vp->FuncID,false);
     CDPpp.CVTbool(pgf,cid,vp->Activate);
     CDPpp.CVTbool(pgf,cid,vp->Skipped);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -830,7 +830,7 @@ void CDPDbgStopData (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPStopReason(pgf,cid,&vp->stopReason);
+    CDPStopReason(pgf,cid,&vp->stopReason,false);
     CDPpp.CVTint(pgf,cid,vp->ActStackLevel);
     vp->StackChain.CDP(pgf,cid,CDPStackData,NewCHEStackData);
     vp->ObjectChain.CDP(pgf,cid);
@@ -852,7 +852,7 @@ void CDPDbgContData (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPpp.CVTbool(pgf,cid,vp->ClearBrkPnts);
     vp->BrkPnts.CDP(pgf,cid,CDPProgPoint,NewCHEProgPoint);
-    CDPDbgContType(pgf,cid,&vp->ContType);
+    CDPDbgContType(pgf,cid,&vp->ContType,false);
     vp->RunToPnt.CDP(pgf,cid,CDPProgPoint);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPDbgContData
@@ -884,7 +884,7 @@ void CDPDbgMessage0 (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPDbgCommand(pgf,cid,&vp->Command);
+    CDPDbgCommand(pgf,cid,&vp->Command,false);
     if (cid->Skip()) return;
     switch (vp->Command) {
     case Dbg_StopData:
@@ -920,7 +920,7 @@ void CDPDbgMessage (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (cid->Skip()) return;
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
-    CDPDbgCommand(pgf,cid,&vp->Command);
+    CDPDbgCommand(pgf,cid,&vp->Command,false);
     if (cid->Skip()) return;
     switch (vp->Command) {
     case Dbg_StopData:

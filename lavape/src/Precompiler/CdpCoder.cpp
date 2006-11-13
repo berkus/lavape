@@ -77,10 +77,9 @@ void CdpCoderCLASS::CDProcGeneration ()
       code("void CDP");
       codeVariable(IntCode.CurrentTypeEntry->id);
       code(" (");
-      indentHere(savedIndent);
-      codeNl("PutGetFlag pgf, ASN1* cid, address varAddr,");
-      codeNl("bool baseCDP=false);");
-      restoreIndent(savedIndent);
+//      indentHere(savedIndent);
+      codeNl("PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);");
+//      restoreIndent(savedIndent);
 
       switch (IntCode.CurrentTypeEntry->typeSpecifier->SynType) {
       case STclass:
@@ -588,7 +587,10 @@ void CdpCoderCLASS::cdpSimpleType (TreeNodePtr node)
     if (designator.l == 2) code("*");
   }
   code(designator);
-  codeNl(");");
+  if (node->Atom == IdentifierA)
+    codeNl(",false);");
+  else
+    codeNl(");");
 }
 
 

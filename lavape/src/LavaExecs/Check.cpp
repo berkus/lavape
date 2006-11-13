@@ -5947,15 +5947,15 @@ bool Quantifier::Check(CheckData &ckd)
     if (isDclWithIni) {
       if (ckd.precedingIniCall) {
         cic = (CHE*)ckd.precedingIniCall->successor;
-        opdPH->iniCall = (SynObject*)cic->data;
+        opdPH->iniCall = (FuncStatement*)cic->data;
         ckd.precedingIniCall = cic;
       }
       else if (((SynObject*)ckd.firstIniCall)->parentObject->primaryToken == Semicolon_T) {
-        opdPH->iniCall = (SynObject*)((CHE*)((SynObject*)ckd.firstIniCall)->whereInParent)->data;
+        opdPH->iniCall = (FuncStatement*)((CHE*)((SynObject*)ckd.firstIniCall)->whereInParent)->data;
         ckd.precedingIniCall = (CHE*)((SynObject*)ckd.firstIniCall)->whereInParent;
       }
       else
-        opdPH->iniCall = (SynObject*)ckd.firstIniCall;
+        opdPH->iniCall = (FuncStatement*)ckd.firstIniCall;
       if (opd) {
         tdod = new TDOD();
         tdod->name = opd->varName;
@@ -6080,9 +6080,10 @@ bool QuantStmOrExp::InitCheck (CheckData &ckd)
 bool QuantStmOrExp::Check (CheckData &ckd)
 {
   CHE *chp;
-  SynObject *opd;
+  SynObject *opd, *secClause;
   SET oldFlags=ckd.flags;
   bool isDeclareWithIni=IsDeclare() && ((Declare*)this)->secondaryClause.ptr;
+  ClosedLevelVisitor clv(ckd.document);
 #ifdef INTERPRETER
   unsigned oldStackLevel=ckd.currentStackLevel;
   nQuantVars = 0;
@@ -6116,7 +6117,9 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     ok &= ((SynObject*)((Exists*)this)->secondaryClause.ptr)->Check(ckd);
   if (IsDeclare())
     if (((Declare*)this)->secondaryClause.ptr) {
-      ok &= ((SynObject*)((Declare*)this)->secondaryClause.ptr)->Check(ckd);
+      secClause = (SynObject*)((Declare*)this)->secondaryClause.ptr;
+      secClause->Accept(clv);
+      ok &= secClause->Check(ckd);
       ok &= ((SynObject*)primaryClause.ptr)->Check(ckd);
     }
     else {

@@ -251,13 +251,16 @@ void FuncExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHA
   CHE *chp;
 
   ENTRY
+
   for (chp = (CHE*)inputs.first;
        chp;
        chp = (CHE*)chp->successor)
     ACC_CHE(chp,&inputs);
-
+// inputs must be processed before handle since closedLevel of handle
+// depends on closedLevel of actual inputs
   if (handle.ptr)
     ACCEPT(handle.ptr);
+
   if (function.ptr)
     ACCEPT(function.ptr);
 

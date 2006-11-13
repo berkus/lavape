@@ -48,8 +48,7 @@ struct LAVABASE_DLL TSigRef : public DObject  {
     *this = *(TSigRef*)from;
   }
 
-  friend LAVABASE_DLL void CDPTSigRef (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTSigRef (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -68,8 +67,7 @@ struct LAVABASE_DLL TSigDef : public DObject  {
     *this = *(TSigDef*)from;
   }
 
-  friend LAVABASE_DLL void CDPTSigDef (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTSigDef (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -106,8 +104,7 @@ struct LAVABASE_DLL TID : public DObject  {
     *this = *(TID*)from;
   }
 
-  friend LAVABASE_DLL void CDPTID (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                   bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTID (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -128,13 +125,11 @@ extern LAVABASE_DLL ChainAnyElem* NewCHETID ();
 
 typedef CHAINANY/*TID*/ TIDs;
 
-extern LAVABASE_DLL void CDPTIDs (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+extern LAVABASE_DLL void CDPTIDs (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 typedef SETpp SynFlags;
 
-extern LAVABASE_DLL void CDPSynFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                      bool baseCDP=false);
+extern LAVABASE_DLL void CDPSynFlags (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum TOperator {
   OP_noOp,
@@ -160,8 +155,7 @@ enum TOperator {
   OP_arraySet,
   OP_high};
 
-extern LAVABASE_DLL void CDPTOperator (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+extern LAVABASE_DLL void CDPTOperator (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 class LAVABASE_DLL CLavaError : public DObject  {
   DECLARE_DYNAMIC_CLASS(CLavaError)
@@ -183,8 +177,7 @@ class LAVABASE_DLL CLavaError : public DObject  {
     *this = *(CLavaError*)from;
   }
 
-  friend LAVABASE_DLL void CDPCLavaError (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                          bool baseCDP=false);
+  friend LAVABASE_DLL void CDPCLavaError (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -219,8 +212,7 @@ class LAVABASE_DLL TVElem : public DObject  {
     *this = *(TVElem*)from;
   }
 
-  friend LAVABASE_DLL void CDPTVElem (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                      bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTVElem (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -241,8 +233,7 @@ extern LAVABASE_DLL ChainAnyElem* NewCHETVElem ();
 
 typedef CHAINANY/*TVElem*/ TCTVElem;
 
-extern LAVABASE_DLL void CDPTCTVElem (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                      bool baseCDP=false);
+extern LAVABASE_DLL void CDPTCTVElem (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 class LAVABASE_DLL TVElems : public DObject  {
   DECLARE_DYNAMIC_CLASS(TVElems)
@@ -256,8 +247,7 @@ class LAVABASE_DLL TVElems : public DObject  {
     *this = *(TVElems*)from;
   }
 
-  friend LAVABASE_DLL void CDPTVElems (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTVElems (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -269,23 +259,20 @@ enum TEmphasis {
   Low,
   NoEcho};
 
-extern LAVABASE_DLL void CDPTEmphasis (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+extern LAVABASE_DLL void CDPTEmphasis (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum TIndentation {
   RelIndent,
   AbsIndent};
 
-extern LAVABASE_DLL void CDPTIndentation (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                          bool baseCDP=false);
+extern LAVABASE_DLL void CDPTIndentation (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum TJustification {
   LeftJustified,
   Centered,
   RightJustified};
 
-extern LAVABASE_DLL void CDPTJustification (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                            bool baseCDP=false);
+extern LAVABASE_DLL void CDPTJustification (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum TAlignment {
   UnAligned,
@@ -293,8 +280,7 @@ enum TAlignment {
   CenterAligned,
   RightAligned};
 
-extern LAVABASE_DLL void CDPTAlignment (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                        bool baseCDP=false);
+extern LAVABASE_DLL void CDPTAlignment (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum TBox {
   NoRules,
@@ -303,8 +289,7 @@ enum TBox {
   FullBox,
   FocusBox};
 
-extern LAVABASE_DLL void CDPTBox (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+extern LAVABASE_DLL void CDPTBox (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum TBasicType {
   NonBasic,
@@ -327,8 +312,7 @@ enum TBasicType {
   B_RTException,
   Identifier};
 
-extern LAVABASE_DLL void CDPTBasicType (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                        bool baseCDP=false);
+extern LAVABASE_DLL void CDPTBasicType (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum TreeFlag {
   isExpanded,
@@ -364,8 +348,7 @@ enum TreeFlag {
   dragInput,
   ShowExecComments};
 
-extern LAVABASE_DLL void CDPTreeFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                      bool baseCDP=false);
+extern LAVABASE_DLL void CDPTreeFlag (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum TypeFlag {
   isOptional,
@@ -401,8 +384,7 @@ enum TypeFlag {
   definesObjCat,
   trueObjCat};
 
-extern LAVABASE_DLL void CDPTypeFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                      bool baseCDP=false);
+extern LAVABASE_DLL void CDPTypeFlag (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum SecondTFlag {
   isLavaSignal,
@@ -428,8 +410,7 @@ enum SecondTFlag {
   isException,
   FREE_FLAG21};
 
-extern LAVABASE_DLL void CDPSecondTFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                         bool baseCDP=false);
+extern LAVABASE_DLL void CDPSecondTFlag (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum WorkFlag {
   isPattern,
@@ -460,8 +441,7 @@ enum WorkFlag {
   newTreeNode,
   fromPubToPriv};
 
-extern LAVABASE_DLL void CDPWorkFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                      bool baseCDP=false);
+extern LAVABASE_DLL void CDPWorkFlag (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum BasicFlag {
   Atomic,
@@ -485,8 +465,7 @@ enum BasicFlag {
   hasPixmap,
   beforeBaseType};
 
-extern LAVABASE_DLL void CDPBasicFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+extern LAVABASE_DLL void CDPBasicFlag (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum IoSigFlag {
   UnprotectedUser,
@@ -503,8 +482,7 @@ enum IoSigFlag {
   setViewBorder,
   firstUseOfFrame};
 
-extern LAVABASE_DLL void CDPIoSigFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+extern LAVABASE_DLL void CDPIoSigFlag (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum IterFlag {
   Optional,
@@ -516,8 +494,7 @@ enum IterFlag {
   InsertAfter,
   Ellipsis};
 
-extern LAVABASE_DLL void CDPIterFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                      bool baseCDP=false);
+extern LAVABASE_DLL void CDPIterFlag (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 
 struct TAnnotation;
@@ -565,8 +542,7 @@ enum PrintFlag {
   inLineComment,
   trailingComment};
 
-extern LAVABASE_DLL void CDPPrintFlag (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+extern LAVABASE_DLL void CDPPrintFlag (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 struct LAVABASE_DLL TDECLComment : public DObject  {
   DECLARE_DYNAMIC_CLASS(TDECLComment)
@@ -580,8 +556,7 @@ struct LAVABASE_DLL TDECLComment : public DObject  {
     *this = *(TDECLComment*)from;
   }
 
-  friend LAVABASE_DLL void CDPTDECLComment (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                            bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTDECLComment (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -630,8 +605,7 @@ enum TBoundRel {
   LE,
   LG};
 
-extern LAVABASE_DLL void CDPTBoundRel (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+extern LAVABASE_DLL void CDPTBoundRel (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 struct LAVABASE_DLL EnumSelId : public DObject  {
   DECLARE_DYNAMIC_CLASS(EnumSelId)
@@ -649,8 +623,7 @@ struct LAVABASE_DLL EnumSelId : public DObject  {
     *this = *(EnumSelId*)from;
   }
 
-  friend LAVABASE_DLL void CDPEnumSelId (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                         bool baseCDP=false);
+  friend LAVABASE_DLL void CDPEnumSelId (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -703,8 +676,7 @@ enum TDeclType {
   SetDef,
   EnumDef};
 
-extern LAVABASE_DLL void CDPTDeclType (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+extern LAVABASE_DLL void CDPTDeclType (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum TDeclDescType {
   BasicType,
@@ -716,13 +688,11 @@ enum TDeclDescType {
   ExecDesc,
   UnknownDDT};
 
-extern LAVABASE_DLL void CDPTDeclDescType (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                           bool baseCDP=false);
+extern LAVABASE_DLL void CDPTDeclDescType (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 typedef CHAINANY/*TID*/ TSupports;
 
-extern LAVABASE_DLL void CDPTSupports (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+extern LAVABASE_DLL void CDPTSupports (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 struct LAVABASE_DLL TLength : public DObject  {
   DECLARE_DYNAMIC_CLASS(TLength)
@@ -738,8 +708,7 @@ struct LAVABASE_DLL TLength : public DObject  {
     *this = *(TLength*)from;
   }
 
-  friend LAVABASE_DLL void CDPTLength (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTLength (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -752,8 +721,7 @@ enum AnnoExType {
   anno_TextColor,
   anno_PBColor};
 
-extern LAVABASE_DLL void CDPAnnoExType (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                        bool baseCDP=false);
+extern LAVABASE_DLL void CDPAnnoExType (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 struct LAVABASE_DLL TAnnoEx : public DObject  {
   DECLARE_DYNAMIC_CLASS(TAnnoEx)
@@ -783,8 +751,7 @@ struct LAVABASE_DLL TAnnoEx : public DObject  {
     *this = *(TAnnoEx*)from;
   }
 
-  friend LAVABASE_DLL void CDPTAnnoEx (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                       bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTAnnoEx (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -852,8 +819,7 @@ struct LAVABASE_DLL TAnnotation : public DObject  {
     *this = *(TAnnotation*)from;
   }
 
-  friend LAVABASE_DLL void CDPTAnnotation (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                           bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTAnnotation (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -966,8 +932,7 @@ struct LAVABASE_DLL LavaDECL : public DObject  {
     *this = *(LavaDECL*)from;
   }
 
-  friend LAVABASE_DLL void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                        bool baseCDP=false);
+  friend LAVABASE_DLL void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1021,8 +986,7 @@ struct LAVABASE_DLL TEnumDescription : public DObject  {
     *this = *(TEnumDescription*)from;
   }
 
-  friend LAVABASE_DLL void CDPTEnumDescription (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                                bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTEnumDescription (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1042,8 +1006,7 @@ struct LAVABASE_DLL TIteration : public DObject  {
     *this = *(TIteration*)from;
   }
 
-  friend LAVABASE_DLL void CDPTIteration (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                          bool baseCDP=false);
+  friend LAVABASE_DLL void CDPTIteration (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1073,8 +1036,7 @@ struct LAVABASE_DLL SimpleSyntax : public DObject  {
     *this = *(SimpleSyntax*)from;
   }
 
-  friend LAVABASE_DLL void CDPSimpleSyntax (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                            bool baseCDP=false);
+  friend LAVABASE_DLL void CDPSimpleSyntax (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1095,8 +1057,7 @@ extern LAVABASE_DLL ChainAnyElem* NewCHESimpleSyntax ();
 
 typedef CHAINANY/*SimpleSyntax*/ SyntaxDefinition;
 
-extern LAVABASE_DLL void CDPSyntaxDefinition (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                              bool baseCDP=false);
+extern LAVABASE_DLL void CDPSyntaxDefinition (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 struct LAVABASE_DLL ClipSimpleSyntax : public DObject  {
   DECLARE_DYNAMIC_CLASS(ClipSimpleSyntax)
@@ -1120,8 +1081,7 @@ struct LAVABASE_DLL ClipSimpleSyntax : public DObject  {
     *this = *(ClipSimpleSyntax*)from;
   }
 
-  friend LAVABASE_DLL void CDPClipSimpleSyntax (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                                bool baseCDP=false);
+  friend LAVABASE_DLL void CDPClipSimpleSyntax (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1142,8 +1102,7 @@ extern LAVABASE_DLL ChainAnyElem* NewCHEClipSimpleSyntax ();
 
 typedef CHAINANY/*ClipSimpleSyntax*/ ClipSyntaxDefinition;
 
-extern LAVABASE_DLL void CDPClipSyntaxDefinition (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                                  bool baseCDP=false);
+extern LAVABASE_DLL void CDPClipSyntaxDefinition (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 struct LAVABASE_DLL SynObjectBase : public DObject  {
   DECLARE_DYNAMIC_CLASS(SynObjectBase)
@@ -1161,8 +1120,7 @@ struct LAVABASE_DLL SynObjectBase : public DObject  {
     *this = *(SynObjectBase*)from;
   }
 
-  friend LAVABASE_DLL void CDPSynObjectBase (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                             bool baseCDP=false);
+  friend LAVABASE_DLL void CDPSynObjectBase (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1179,8 +1137,7 @@ enum DbgCommand {
   Dbg_Stack,
   Dbg_Exit};
 
-extern LAVABASE_DLL void CDPDbgCommand (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                        bool baseCDP=false);
+extern LAVABASE_DLL void CDPDbgCommand (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum StopReason {
   Stop_BreakPoint,
@@ -1191,8 +1148,7 @@ enum StopReason {
   Stop_StepOut,
   Stop_Exception};
 
-extern LAVABASE_DLL void CDPStopReason (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                        bool baseCDP=false);
+extern LAVABASE_DLL void CDPStopReason (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum DbgContType {
   dbg_Cont,
@@ -1202,8 +1158,7 @@ enum DbgContType {
   dbg_StepInto,
   dbg_RunTo};
 
-extern LAVABASE_DLL void CDPDbgContType (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                         bool baseCDP=false);
+extern LAVABASE_DLL void CDPDbgContType (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 struct LAVABASE_DLL DDItemData : public DObject  {
   DECLARE_DYNAMIC_CLASS(DDItemData)
@@ -1227,8 +1182,7 @@ struct LAVABASE_DLL DDItemData : public DObject  {
     *this = *(DDItemData*)from;
   }
 
-  friend LAVABASE_DLL void CDPDDItemData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                          bool baseCDP=false);
+  friend LAVABASE_DLL void CDPDDItemData (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1250,8 +1204,7 @@ struct LAVABASE_DLL StackData : public DObject  {
     *this = *(StackData*)from;
   }
 
-  friend LAVABASE_DLL void CDPStackData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                         bool baseCDP=false);
+  friend LAVABASE_DLL void CDPStackData (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1294,8 +1247,7 @@ struct LAVABASE_DLL ProgPoint : public DObject  {
     *this = *(ProgPoint*)from;
   }
 
-  friend LAVABASE_DLL void CDPProgPoint (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                         bool baseCDP=false);
+  friend LAVABASE_DLL void CDPProgPoint (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1372,8 +1324,7 @@ struct LAVABASE_DLL DbgStopData : public DObject  {
     *this = *(DbgStopData*)from;
   }
 
-  friend LAVABASE_DLL void CDPDbgStopData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                           bool baseCDP=false);
+  friend LAVABASE_DLL void CDPDbgStopData (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1397,8 +1348,7 @@ struct LAVABASE_DLL DbgContData : public DObject  {
     *this = *(DbgContData*)from;
   }
 
-  friend LAVABASE_DLL void CDPDbgContData (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                           bool baseCDP=false);
+  friend LAVABASE_DLL void CDPDbgContData (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1443,8 +1393,7 @@ struct LAVABASE_DLL NSTChObjRq : NST0ChObjRq {
   virtual ~NSTChObjRq () { Destroy(); }
 };
 
-extern LAVABASE_DLL void CDPChObjRq (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                     bool baseCDP=false);
+extern LAVABASE_DLL void CDPChObjRq (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 struct LAVABASE_DLL DbgMessage0 : public DObject  {
   DECLARE_DYNAMIC_CLASS(DbgMessage0)
@@ -1503,8 +1452,7 @@ struct LAVABASE_DLL DbgMessage0 : public DObject  {
     *this = *(DbgMessage0*)from;
   }
 
-  friend LAVABASE_DLL void CDPDbgMessage0 (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                           bool baseCDP=false);
+  friend LAVABASE_DLL void CDPDbgMessage0 (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1549,8 +1497,7 @@ struct LAVABASE_DLL DbgMessage : public DObject  {
     *this = *(DbgMessage*)from;
   }
 
-  friend LAVABASE_DLL void CDPDbgMessage (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                          bool baseCDP=false);
+  friend LAVABASE_DLL void CDPDbgMessage (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)

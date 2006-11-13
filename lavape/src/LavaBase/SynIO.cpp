@@ -85,7 +85,7 @@ int SynIOCLASS::ReadSynDef (const QString& fileName, SynDef *&syntax, ASN1* strg
   CDPSTRING(GET, pcid, (address)&fName);
   CDPint(GET,pcid,(address)&syntax->Release);
   pcid->Release = syntax->Release;
-  CDPSyntaxDefinition(GET,pcid,(address)&syntax->SynDefTree);
+  CDPSyntaxDefinition(GET,pcid,(address)&syntax->SynDefTree,false);
   CDPint(GET,pcid,(address)&syntax->FreeID);
   CDPint(GET,pcid,(address)&syntax->FreeINCL);
   fromOldStyle = false;
@@ -156,7 +156,7 @@ bool SynIOCLASS::WriteSynDef (const QString& fileName,
   Done = true;
   pcid->Release = release;
   CDPint(PUT,pcid,(address)&release);
-  CDPSyntaxDefinition(PUT,pcid,(address)&synDef);
+  CDPSyntaxDefinition(PUT,pcid,(address)&synDef,false);
   CDPint(PUT,pcid,(address)&freeID);
   CDPint(PUT,pcid,(address)&freeINCL);
   if (!strgCid)

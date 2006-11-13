@@ -470,7 +470,7 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
             sectionPtr = ObjTab[iTab] - (*ObjTab[iTab])->sectionOffset + (*ObjTab[iTab])[iSect].sectionOffset;
             if (isObject && firstStore && (iTab == 1))
               ((SynFlags*)(sectionPtr+1))->INCL(stateObjFlag);
-            CDPSynFlags(PUT, cid, (address)(sectionPtr+1)); //(*cid->Ar) << *(DWORD*)(sectionPtr+1); //section flags
+            CDPSynFlags(PUT, cid, (address)(sectionPtr+1),false); //(*cid->Ar) << *(DWORD*)(sectionPtr+1); //section flags
             lmem = LSH;
             if ((*sectionPtr)->classDECL->TypeFlags.Contains(isNative)) { //native section content
               funcAdapter = GetAdapterTable(ckd, (*sectionPtr)->classDECL,0);
@@ -742,7 +742,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
       cid->GETint(id.nID); //(*cid->Ar) >> id.nID;
       while (id.nID != -1) {// all objects
         cid->GETint(id.nINCL); //(*cid->Ar) >> id.nINCL;
-        CDPSynFlags(GET, cid, (address)&secFlag); //(*cid->Ar) >> secFlag.bits;
+        CDPSynFlags(GET, cid, (address)&secFlag,false); //(*cid->Ar) >> secFlag.bits;
         implDECL = IDTable.GetDECL(id, objINCL);
         if (!implDECL) {
           ObjectPathName = synName;
@@ -779,7 +779,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
             secClassDECL = ((CSectionDesc*)classDECL->SectionTabPtr)[iSect].classDECL;
             sectionPtr = objPtr - (objPtr[0])[0].sectionOffset + (objPtr[0])[iSect].sectionOffset;
             if (iSect)
-              CDPSynFlags(GET, cid, (address)(sectionPtr+1)); //(*cid->Ar) >> *(DWORD*)(sectionPtr+1);
+              CDPSynFlags(GET, cid, (address)(sectionPtr+1),false); //(*cid->Ar) >> *(DWORD*)(sectionPtr+1);
             else
                *(sectionPtr+1) = (CSectionDesc*)secFlag.bits;
             if ((secClassDECL->DeclDescType == EnumType) && !enumDesc)

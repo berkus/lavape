@@ -243,6 +243,15 @@
 			<File
 				RelativePath="..\LavaExecs\ClosedLevelVisitor.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="2"
+						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\LavaExecs\Constructs.cpp"

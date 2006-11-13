@@ -110,6 +110,7 @@ class SynObject;
 class ObjReference;
 class VarName;
 class SelfVar;
+class FuncStatement;
 class Visitor;
 
 
@@ -404,7 +405,8 @@ class SynObject : public SynObjectBase {
 public:
   QWidget *execView;
   TToken primaryToken, type, replacedType;
-  SynObject-- *parentObject, *iniCall;
+  SynObject-- *parentObject;
+  FuncStatement-- *iniCall;
   NESTED<TComment> comment;
   address-- whereInParent;
   CHAINX-- *containingChain;

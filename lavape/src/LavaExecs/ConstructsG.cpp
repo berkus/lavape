@@ -74,9 +74,9 @@ void CDPSynObject (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPSynObjectBase(pgf,cid,vp,true);
-    CDPTToken(pgf,cid,&vp->primaryToken);
-    CDPTToken(pgf,cid,&vp->type);
-    CDPTToken(pgf,cid,&vp->replacedType);
+    CDPTToken(pgf,cid,&vp->primaryToken,false);
+    CDPTToken(pgf,cid,&vp->type,false);
+    CDPTToken(pgf,cid,&vp->replacedType,false);
     vp->comment.CDP(pgf,cid,CDPTComment);
     vp->flags.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
@@ -95,7 +95,7 @@ void CDPTDOD (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPSynObject(pgf,cid,vp,true);
-    CDPTID(pgf,cid,&vp->ID);
+    CDPTID(pgf,cid,&vp->ID,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTDOD
 
@@ -139,7 +139,7 @@ void CDPOperation (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,vp,true);
-    CDPTID(pgf,cid,&vp->opFunctionID);
+    CDPTID(pgf,cid,&vp->opFunctionID,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPOperation
 
@@ -156,7 +156,7 @@ void CDPReference (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPSynObject(pgf,cid,vp,true);
-    CDPTID(pgf,cid,&vp->refID);
+    CDPTID(pgf,cid,&vp->refID,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPReference
 
@@ -173,7 +173,7 @@ void CDPEnumConst (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,vp,true);
-    CDPTID(pgf,cid,&vp->refID);
+    CDPTID(pgf,cid,&vp->refID,false);
     vp->Id.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPEnumConst
@@ -191,7 +191,7 @@ void CDPObjReference (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,vp,true);
-    CDPTDODC(pgf,cid,&vp->refIDs);
+    CDPTDODC(pgf,cid,&vp->refIDs,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPObjReference
 
@@ -209,7 +209,7 @@ void CDPVarName (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,vp,true);
     vp->varName.CDP(pgf,cid);
-    CDPTID(pgf,cid,&vp->varID);
+    CDPTID(pgf,cid,&vp->varID,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPVarName
 
@@ -228,7 +228,7 @@ void CDPFormParm (PutGetFlag pgf, ASN1* cid, address varAddr,
     CDPExpression(pgf,cid,vp,true);
     vp->parmType.CDP(pgf,cid);
     vp->formParm.CDP(pgf,cid);
-    CDPTID(pgf,cid,&vp->formParmID);
+    CDPTID(pgf,cid,&vp->formParmID,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPFormParm
 
@@ -281,7 +281,7 @@ void CDPSelfVar (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPVarName(pgf,cid,vp,true);
-    CDPTID(pgf,cid,&vp->typeID);
+    CDPTID(pgf,cid,&vp->typeID,false);
     vp->execName.CDP(pgf,cid);
     vp->baseInitCalls.CDP(pgf,cid);
     vp->body.CDP(pgf,cid);
@@ -301,7 +301,7 @@ void CDPConstant (PutGetFlag pgf, ASN1* cid, address varAddr,
 
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,vp,true);
-    CDPTBasicType(pgf,cid,&vp->constType);
+    CDPTBasicType(pgf,cid,&vp->constType,false);
     vp->str.CDP(pgf,cid);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPConstant
@@ -830,7 +830,7 @@ void CDPParameter (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
     CDPExpression(pgf,cid,vp,true);
     vp->parameter.CDP(pgf,cid);
-    CDPTID(pgf,cid,&vp->formParmID);
+    CDPTID(pgf,cid,&vp->formParmID,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPParameter
 
@@ -850,7 +850,7 @@ void CDPFuncExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
     vp->inputs.CDP(pgf,cid);
     vp->function.CDP(pgf,cid);
     vp->handle.CDP(pgf,cid);
-    CDPTID(pgf,cid,&vp->vtypeID);
+    CDPTID(pgf,cid,&vp->vtypeID,false);
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPFuncExpression
 

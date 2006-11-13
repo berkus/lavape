@@ -35,14 +35,29 @@ void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,
   DWORD dw;
   TIDType idtype;
   VarName *vn;
+  FuncStatement *iniCall;
+  CHE *chp;
+  int maxLevel=-1;
 
-  if (obj->refIDs.first == obj->refIDs.last) {
+  if (obj->parentObject->primaryToken == assignFS_T) {// is call object
+    iniCall = (FuncStatement*)obj->parentObject;
+    for (chp = (CHE*)iniCall->inputs.first;
+         chp;
+         chp = (CHE*)chp->successor) {
+      maxLevel = qMax(maxLevel,((Expression*)chp->data)->closedLevel);
+    }
+    obj->closedLevel = iniCall->closedLevel = maxLevel;
+  }
+  else if (obj->refIDs.first == obj->refIDs.last) {
     dw = document->IDTable.GetVar(((TDOD*)((CHE*)obj->refIDs.first)->data)->ID,idtype);
     if (!dw) return;
     else if (idtype == localID) {
       vn = (VarName*)dw;
       if (vn->parentObject->parentObject->IsDeclare()
       && ((Declare*)vn->parentObject->parentObject)->secondaryClause.ptr) {
+        if (vn->closedLevel == -1) {
+          iniCall = vn->iniCall;
+        }
       }
       else {
       }

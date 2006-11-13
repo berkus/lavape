@@ -274,8 +274,7 @@ enum TToken {
   LshiftHTML,
   NoToken};
 
-extern void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr,
-                       bool baseCDP=false);
+extern void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 
 

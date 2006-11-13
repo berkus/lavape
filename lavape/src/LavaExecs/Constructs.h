@@ -122,6 +122,7 @@ class SynObject;
 class ObjReference;
 class VarName;
 class SelfVar;
+class FuncStatement;
 class Visitor;
 
 
@@ -522,15 +523,13 @@ enum ExecFlags {
   isClosed,
   isIniCallOrHandle};
 
-extern void CDPExecFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+extern void CDPExecFlags (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 enum WorkFlags {
   isBrkPnt,
   isTempPoint};
 
-extern void CDPWorkFlags (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+extern void CDPWorkFlags (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 class TComment : public DObject  {
   DECLARE_DYNAMIC_CLASS(TComment)
@@ -550,8 +549,7 @@ class TComment : public DObject  {
     *this = *(TComment*)from;
   }
 
-  friend void CDPTComment (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPTComment (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -601,7 +599,8 @@ class SynObject : public SynObjectBase {
   public:
   QWidget *execView;
   TToken primaryToken, type, replacedType;
-  SynObject *parentObject, *iniCall;
+  SynObject *parentObject;
+  FuncStatement *iniCall;
   NSTTComment comment;
   address whereInParent;
   CHAINX *containingChain;
@@ -771,8 +770,7 @@ class SynObject : public SynObjectBase {
     *this = *(SynObject*)from;
   }
 
-  friend void CDPSynObject (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend void CDPSynObject (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -811,8 +809,7 @@ struct TDOD : public SynObject {
     *this = *(TDOD*)from;
   }
 
-  friend void CDPTDOD (PutGetFlag pgf, ASN1* cid, address varAddr,
-                       bool baseCDP=false);
+  friend void CDPTDOD (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -821,8 +818,7 @@ struct TDOD : public SynObject {
 
 typedef CHAINX TDODC;
 
-extern void CDPTDODC (PutGetFlag pgf, ASN1* cid, address varAddr,
-                      bool baseCDP=false);
+extern void CDPTDODC (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 class Expression : public SynObject {
   DECLARE_DYNAMIC_CLASS(Expression)
@@ -854,8 +850,7 @@ class Expression : public SynObject {
     *this = *(Expression*)from;
   }
 
-  friend void CDPExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend void CDPExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -882,8 +877,7 @@ class Operation : public Expression {
     *this = *(Operation*)from;
   }
 
-  friend void CDPOperation (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend void CDPOperation (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -917,8 +911,7 @@ class Reference : public SynObject {
     *this = *(Reference*)from;
   }
 
-  friend void CDPReference (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend void CDPReference (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -955,8 +948,7 @@ class EnumConst : public Expression {
     *this = *(EnumConst*)from;
   }
 
-  friend void CDPEnumConst (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend void CDPEnumConst (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1009,8 +1001,7 @@ class ObjReference : public Expression {
     *this = *(ObjReference*)from;
   }
 
-  friend void CDPObjReference (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend void CDPObjReference (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1045,8 +1036,7 @@ class VarName : public Expression {
     *this = *(VarName*)from;
   }
 
-  friend void CDPVarName (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPVarName (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1073,8 +1063,7 @@ class FormParm : public Expression {
     *this = *(FormParm*)from;
   }
 
-  friend void CDPFormParm (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPFormParm (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1100,8 +1089,7 @@ class FormParms : public Expression {
     *this = *(FormParms*)from;
   }
 
-  friend void CDPFormParms (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend void CDPFormParms (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1126,8 +1114,7 @@ class BaseInit : public Expression {
     *this = *(BaseInit*)from;
   }
 
-  friend void CDPBaseInit (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPBaseInit (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1175,8 +1162,7 @@ class SelfVar : public VarName {
     *this = *(SelfVar*)from;
   }
 
-  friend void CDPSelfVar (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPSelfVar (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1212,8 +1198,7 @@ class Constant : public Expression {
     *this = *(Constant*)from;
   }
 
-  friend void CDPConstant (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPConstant (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1248,8 +1233,7 @@ class BoolConst : public Expression {
     *this = *(BoolConst*)from;
   }
 
-  friend void CDPBoolConst (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend void CDPBoolConst (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1278,8 +1262,7 @@ class NullConst : public Expression {
     *this = *(NullConst*)from;
   }
 
-  friend void CDPNullConst (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend void CDPNullConst (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1299,8 +1282,7 @@ class SucceedStatement : public Expression {
     *this = *(SucceedStatement*)from;
   }
 
-  friend void CDPSucceedStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                   bool baseCDP=false);
+  friend void CDPSucceedStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1326,8 +1308,7 @@ class FailStatement : public Expression {
     *this = *(FailStatement*)from;
   }
 
-  friend void CDPFailStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend void CDPFailStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1351,8 +1332,7 @@ class OldExpression : public Expression {
     *this = *(OldExpression*)from;
   }
 
-  friend void CDPOldExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend void CDPOldExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1383,8 +1363,7 @@ class UnaryOp : public Operation {
     *this = *(UnaryOp*)from;
   }
 
-  friend void CDPUnaryOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPUnaryOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1414,8 +1393,7 @@ class EvalExpression : public UnaryOp {
     *this = *(EvalExpression*)from;
   }
 
-  friend void CDPEvalExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend void CDPEvalExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1435,8 +1413,7 @@ class EvalStatement : public EvalExpression {
     *this = *(EvalStatement*)from;
   }
 
-  friend void CDPEvalStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend void CDPEvalStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1465,8 +1442,7 @@ class ArrayAtIndex : public Operation {
     *this = *(ArrayAtIndex*)from;
   }
 
-  friend void CDPArrayAtIndex (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend void CDPArrayAtIndex (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1483,8 +1459,7 @@ class InvertOp : public UnaryOp {
     *this = *(InvertOp*)from;
   }
 
-  friend void CDPInvertOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPInvertOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1505,8 +1480,7 @@ class HandleOp : public Expression {
     *this = *(HandleOp*)from;
   }
 
-  friend void CDPHandleOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPHandleOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1523,8 +1497,7 @@ class OrdOp : public UnaryOp {
     *this = *(OrdOp*)from;
   }
 
-  friend void CDPOrdOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                        bool baseCDP=false);
+  friend void CDPOrdOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1541,8 +1514,7 @@ class MinusOp : public UnaryOp {
     *this = *(MinusOp*)from;
   }
 
-  friend void CDPMinusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPMinusOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1567,8 +1539,7 @@ class LogicalNot : public UnaryOp {
     *this = *(LogicalNot*)from;
   }
 
-  friend void CDPLogicalNot (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend void CDPLogicalNot (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1594,8 +1565,7 @@ class InSetStatement : public Expression {
     *this = *(InSetStatement*)from;
   }
 
-  friend void CDPInSetStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend void CDPInSetStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1626,8 +1596,7 @@ class BinaryOp : public Operation {
     *this = *(BinaryOp*)from;
   }
 
-  friend void CDPBinaryOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPBinaryOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1662,8 +1631,7 @@ class MultipleOp : public Operation {
     *this = *(MultipleOp*)from;
   }
 
-  friend void CDPMultipleOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend void CDPMultipleOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1680,8 +1648,7 @@ class SemicolonOp : public MultipleOp {
     *this = *(SemicolonOp*)from;
   }
 
-  friend void CDPSemicolonOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                              bool baseCDP=false);
+  friend void CDPSemicolonOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1698,8 +1665,7 @@ class AndOp : public MultipleOp {
     *this = *(AndOp*)from;
   }
 
-  friend void CDPAndOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                        bool baseCDP=false);
+  friend void CDPAndOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1716,8 +1682,7 @@ class OrOp : public MultipleOp {
     *this = *(OrOp*)from;
   }
 
-  friend void CDPOrOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                       bool baseCDP=false);
+  friend void CDPOrOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1734,8 +1699,7 @@ class XorOp : public MultipleOp {
     *this = *(XorOp*)from;
   }
 
-  friend void CDPXorOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                        bool baseCDP=false);
+  friend void CDPXorOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1752,8 +1716,7 @@ class BitAndOp : public MultipleOp {
     *this = *(BitAndOp*)from;
   }
 
-  friend void CDPBitAndOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPBitAndOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1770,8 +1733,7 @@ class BitOrOp : public MultipleOp {
     *this = *(BitOrOp*)from;
   }
 
-  friend void CDPBitOrOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPBitOrOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1788,8 +1750,7 @@ class BitXorOp : public MultipleOp {
     *this = *(BitXorOp*)from;
   }
 
-  friend void CDPBitXorOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPBitXorOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1806,8 +1767,7 @@ class DivideOp : public MultipleOp {
     *this = *(DivideOp*)from;
   }
 
-  friend void CDPDivideOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPDivideOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1824,8 +1784,7 @@ class ModulusOp : public MultipleOp {
     *this = *(ModulusOp*)from;
   }
 
-  friend void CDPModulusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend void CDPModulusOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1842,8 +1801,7 @@ class LshiftOp : public MultipleOp {
     *this = *(LshiftOp*)from;
   }
 
-  friend void CDPLshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPLshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1860,8 +1818,7 @@ class RshiftOp : public MultipleOp {
     *this = *(RshiftOp*)from;
   }
 
-  friend void CDPRshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPRshiftOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1878,8 +1835,7 @@ class PlusOp : public MultipleOp {
     *this = *(PlusOp*)from;
   }
 
-  friend void CDPPlusOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend void CDPPlusOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1896,8 +1852,7 @@ class MultOp : public MultipleOp {
     *this = *(MultOp*)from;
   }
 
-  friend void CDPMultOp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend void CDPMultOp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1921,8 +1876,7 @@ class Assignment : public Expression {
     *this = *(Assignment*)from;
   }
 
-  friend void CDPAssignment (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend void CDPAssignment (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1955,8 +1909,7 @@ class Parameter : public Expression {
     *this = *(Parameter*)from;
   }
 
-  friend void CDPParameter (PutGetFlag pgf, ASN1* cid, address varAddr,
-                            bool baseCDP=false);
+  friend void CDPParameter (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -1999,8 +1952,7 @@ class FuncExpression : public Expression {
     *this = *(FuncExpression*)from;
   }
 
-  friend void CDPFuncExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend void CDPFuncExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2027,8 +1979,7 @@ class FuncStatement : public FuncExpression {
     *this = *(FuncStatement*)from;
   }
 
-  friend void CDPFuncStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend void CDPFuncStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2053,8 +2004,7 @@ struct Connect : public Expression {
     *this = *(Connect*)from;
   }
 
-  friend void CDPConnect (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPConnect (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2079,8 +2029,7 @@ struct Disconnect : public Expression {
     *this = *(Disconnect*)from;
   }
 
-  friend void CDPDisconnect (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend void CDPDisconnect (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2102,8 +2051,7 @@ class Signal : public Expression {
     *this = *(Signal*)from;
   }
 
-  friend void CDPSignal (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend void CDPSignal (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2129,8 +2077,7 @@ class AssertStatement : public Expression {
     *this = *(AssertStatement*)from;
   }
 
-  friend void CDPAssertStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+  friend void CDPAssertStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2156,8 +2103,7 @@ class IfThen : public Expression {
     *this = *(IfThen*)from;
   }
 
-  friend void CDPIfThen (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend void CDPIfThen (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2185,8 +2131,7 @@ class IfStatement : public Expression {
     *this = *(IfStatement*)from;
   }
 
-  friend void CDPIfStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                              bool baseCDP=false);
+  friend void CDPIfStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2212,8 +2157,7 @@ class IfxThen : public Expression {
     *this = *(IfxThen*)from;
   }
 
-  friend void CDPIfxThen (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPIfxThen (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2243,8 +2187,7 @@ class IfdefStatement : public Expression {
     *this = *(IfdefStatement*)from;
   }
 
-  friend void CDPIfdefStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend void CDPIfdefStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2267,8 +2210,7 @@ class CondExpression : public Expression {
     *this = *(CondExpression*)from;
   }
 
-  friend void CDPCondExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend void CDPCondExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2298,8 +2240,7 @@ class IfExpression : public CondExpression {
     *this = *(IfExpression*)from;
   }
 
-  friend void CDPIfExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend void CDPIfExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2328,8 +2269,7 @@ class ElseExpression : public CondExpression {
     *this = *(ElseExpression*)from;
   }
 
-  friend void CDPElseExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                 bool baseCDP=false);
+  friend void CDPElseExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2357,8 +2297,7 @@ class Branch : public Expression {
     *this = *(Branch*)from;
   }
 
-  friend void CDPBranch (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend void CDPBranch (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2383,8 +2322,7 @@ class SwitchStatement : public Expression {
     *this = *(SwitchStatement*)from;
   }
 
-  friend void CDPSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+  friend void CDPSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2414,8 +2352,7 @@ class CatchClause : public Expression {
     *this = *(CatchClause*)from;
   }
 
-  friend void CDPCatchClause (PutGetFlag pgf, ASN1* cid, address varAddr,
-                              bool baseCDP=false);
+  friend void CDPCatchClause (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2438,8 +2375,7 @@ class TryStatement : public Expression {
     *this = *(TryStatement*)from;
   }
 
-  friend void CDPTryStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend void CDPTryStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2469,8 +2405,7 @@ class TypeBranch : public Expression {
     *this = *(TypeBranch*)from;
   }
 
-  friend void CDPTypeBranch (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend void CDPTypeBranch (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2497,8 +2432,7 @@ class TypeSwitchStatement : public Expression {
     *this = *(TypeSwitchStatement*)from;
   }
 
-  friend void CDPTypeSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                      bool baseCDP=false);
+  friend void CDPTypeSwitchStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2526,8 +2460,7 @@ class AttachObject : public Expression {
     *this = *(AttachObject*)from;
   }
 
-  friend void CDPAttachObject (PutGetFlag pgf, ASN1* cid, address varAddr,
-                               bool baseCDP=false);
+  friend void CDPAttachObject (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2555,8 +2488,7 @@ class NewExpression : public AttachObject {
     *this = *(NewExpression*)from;
   }
 
-  friend void CDPNewExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend void CDPNewExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2585,8 +2517,7 @@ class CloneExpression : public Expression {
     *this = *(CloneExpression*)from;
   }
 
-  friend void CDPCloneExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+  friend void CDPCloneExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2613,8 +2544,7 @@ class CopyStatement : public Expression {
     *this = *(CopyStatement*)from;
   }
 
-  friend void CDPCopyStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend void CDPCopyStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2638,8 +2568,7 @@ class EnumItem : public Expression {
     *this = *(EnumItem*)from;
   }
 
-  friend void CDPEnumItem (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPEnumItem (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2664,8 +2593,7 @@ class ExtendExpression : public Expression {
     *this = *(ExtendExpression*)from;
   }
 
-  friend void CDPExtendExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                   bool baseCDP=false);
+  friend void CDPExtendExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2690,8 +2618,7 @@ class Run : public Expression {
     *this = *(Run*)from;
   }
 
-  friend void CDPRun (PutGetFlag pgf, ASN1* cid, address varAddr,
-                      bool baseCDP=false);
+  friend void CDPRun (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2715,8 +2642,7 @@ class QueryItf : public Expression {
     *this = *(QueryItf*)from;
   }
 
-  friend void CDPQueryItf (PutGetFlag pgf, ASN1* cid, address varAddr,
-                           bool baseCDP=false);
+  friend void CDPQueryItf (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2739,8 +2665,7 @@ class GetUUID : public Expression {
     *this = *(GetUUID*)from;
   }
 
-  friend void CDPGetUUID (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPGetUUID (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2771,8 +2696,7 @@ class IntegerInterval : public SynObject {
     *this = *(IntegerInterval*)from;
   }
 
-  friend void CDPIntegerInterval (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                  bool baseCDP=false);
+  friend void CDPIntegerInterval (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2806,8 +2730,7 @@ class Quantifier : public SynObject {
     *this = *(Quantifier*)from;
   }
 
-  friend void CDPQuantifier (PutGetFlag pgf, ASN1* cid, address varAddr,
-                             bool baseCDP=false);
+  friend void CDPQuantifier (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2837,8 +2760,7 @@ class QuantStmOrExp : public Expression {
     *this = *(QuantStmOrExp*)from;
   }
 
-  friend void CDPQuantStmOrExp (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                bool baseCDP=false);
+  friend void CDPQuantStmOrExp (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2863,8 +2785,7 @@ class Declare : public QuantStmOrExp {
     *this = *(Declare*)from;
   }
 
-  friend void CDPDeclare (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPDeclare (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2889,8 +2810,7 @@ class Exists : public QuantStmOrExp {
     *this = *(Exists*)from;
   }
 
-  friend void CDPExists (PutGetFlag pgf, ASN1* cid, address varAddr,
-                         bool baseCDP=false);
+  friend void CDPExists (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2907,8 +2827,7 @@ class Foreach : public Exists {
     *this = *(Foreach*)from;
   }
 
-  friend void CDPForeach (PutGetFlag pgf, ASN1* cid, address varAddr,
-                          bool baseCDP=false);
+  friend void CDPForeach (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
@@ -2931,8 +2850,7 @@ class SelectExpression : public QuantStmOrExp {
     *this = *(SelectExpression*)from;
   }
 
-  friend void CDPSelectExpression (PutGetFlag pgf, ASN1* cid, address varAddr,
-                                   bool baseCDP=false);
+  friend void CDPSelectExpression (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
   virtual void CDP (PutGetFlag pgf, ASN1* cid,
                     bool baseCDP=false)
