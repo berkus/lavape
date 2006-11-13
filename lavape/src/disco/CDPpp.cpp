@@ -193,13 +193,13 @@ void CDPchar (PutGetFlag pgf,
 
 void CDPbyte (PutGetFlag pgf,
               ASN1 *cid,
-              unsigned char *a,
-        bool)
+              address a,
+              bool)
 {
   if (pgf == PUT)
-    cid->PUTbyte(*a);
+    cid->PUTbyte(*(unsigned char*)a);
   else
-    cid->GETbyte(*a);
+    cid->GETbyte(*(unsigned char*)a);
 }
 
 
