@@ -86,6 +86,7 @@ void CLavaPEDebugger::connectToClient() {
 
 void CLavaPEDebugger::connected() {
   isConnected = true;
+  wxTheApp->updateButtonsMenus();
 
   put_cid = new ASN1OutSock (workSocket);
   if (!put_cid->Done) {

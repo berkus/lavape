@@ -381,12 +381,12 @@ wxMDIChildFrame::~wxMDIChildFrame()
     case PM_ToolBarItemMargin:\
     case PM_ToolBarItemSpacing:\
       px = 0; break;\
-    case PM_ToolBarIconSize:\
-      px = 16; break;\
     default: break;\
   }\
   return px;\
 }
+    //case PM_ToolBarIconSize:\
+    //  px = 25; break;\
 
 #ifdef WIN32
 MYSTYLEIMP(WindowsXP)
