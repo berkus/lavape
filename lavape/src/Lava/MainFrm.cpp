@@ -106,6 +106,8 @@ void CLavaMainFrame::makeStyle(const QString &style)
       QApplication::setStyle(new MyMotifStyle);
     else if (style == "Plastique")
       QApplication::setStyle(new MyPlastiqueStyle);
+    else if (style == "Cleanlooks")
+      QApplication::setStyle(new MyCleanlooksStyle);
     else
 	    QApplication::setStyle(style);
   /*

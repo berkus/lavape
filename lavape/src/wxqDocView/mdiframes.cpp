@@ -313,7 +313,7 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
        showNormal();
    else
      show();
-    
+
  if (title.length() && title.at(title.length()-1) == '*')
    title = title.left(title.length()-1);
  wxTheApp->m_appWindow->GetWindowHistory()->SetFirstInHistory(title);
@@ -391,8 +391,11 @@ wxMDIChildFrame::~wxMDIChildFrame()
 #ifdef WIN32
 MYSTYLEIMP(WindowsXP)
 #endif
-
+#ifdef Darwin
+MYSTYLEIMP(Mac)
+#endif
 MYSTYLEIMP(Windows)
 MYSTYLEIMP(Plastique)
 MYSTYLEIMP(CDE)
 MYSTYLEIMP(Motif)
+MYSTYLEIMP(Cleanlooks)
