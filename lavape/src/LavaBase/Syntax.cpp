@@ -69,7 +69,7 @@ LavaDECL::~LavaDECL() {
     delete [] SectionTabPtr;
 	}
   if (runTimeData)
-    delete runTimeData;
+    delete (RunTimeData*)runTimeData;
 }
 
 LavaDECL::LavaDECL() {
@@ -86,13 +86,13 @@ LavaDECL::LavaDECL() {
   nOutput = -1; //LB_ERR;
   op = OP_noOp;
   VElems.UpdateNo = 0;
-  RuntimeDECL = 0;  
+  RuntimeDECL = 0;
   RelatedDECL = 0;
   runTimeData = 0;
   SectionTabPtr = 0;   //used at run time in implementations
   SectionInfo1 = -1;
   SectionInfo2 = -1;
-}   
+}
 
 void LavaDECL::ResetCheckmarks()
 {
@@ -117,7 +117,7 @@ void LavaDECL::CompleteFullName()
 
 bool LavaDECL::isInSubTree(LavaDECL * ancestor)
 {
-  LavaDECL* upDECL = this; 
+  LavaDECL* upDECL = this;
   while (upDECL && (upDECL != ancestor))
     upDECL = upDECL->ParentDECL;
   return (upDECL != 0);
@@ -127,7 +127,7 @@ bool LavaDECL::isInSubTree(LavaDECL * ancestor)
 
 bool LavaDECL::usableIn(LavaDECL * decl)
 {
-  LavaDECL* decl1 = this; 
+  LavaDECL* decl1 = this;
   if (decl1->DeclType == FormDef)
     decl1 = decl1->ParentDECL->ParentDECL;
   while (decl1 && (decl1->DeclType != Impl)
@@ -145,7 +145,7 @@ int LavaDECL::GetAppendPos(TDeclType declType)
   int pos;
   switch (declType) {
   case VirtualType:
-    pos = 1; 
+    pos = 1;
     for (che = (CHE*)NestedDecls.first;
          che && (((LavaDECL*)che->data)->DeclType == VirtualType);
          che = (CHE*)che->successor)
@@ -220,7 +220,7 @@ int LavaDECL::GetAppendPos(TDeclType declType)
 /*
 bool LavaDECL::usableInA(LavaDECL * decl)
 {
-  LavaDECL* decl1 = this; 
+  LavaDECL* decl1 = this;
   if (decl1->DeclType == FormDef)
     decl1 = decl1->ParentDECL->ParentDECL;
   if (decl1->DeclType == VirtualType)
@@ -240,7 +240,7 @@ bool LavaDECL::usableInA(LavaDECL * decl)
 void LavaDECL::DeleteContents() {
   FullName.Destroy();
   Annotation.Destroy();
-  switch (DeclDescType) { 
+  switch (DeclDescType) {
     case BasicType:
       if (BType == Enumeration)
         Items.Destroy();
@@ -262,7 +262,7 @@ void LavaDECL::DeleteContents() {
   }
 }
 */
-    
+
 TAnnotation::TAnnotation()
 {
   myDECL = 0;

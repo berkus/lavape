@@ -32,7 +32,7 @@
 #include <QMotifStyle>
 #include <QCDEStyle>
 #include <QPlastiqueStyle>
-#include <QCleanlooksStyle>
+//#include <QCleanlooksStyle>
 #ifdef Darwin
 #include <QMacStyle>
 #endif
@@ -154,7 +154,7 @@ MYSTYLE(Mac)
 MYSTYLE(Windows)
 MYSTYLE(Plastique)
 MYSTYLE(Motif)
-MYSTYLE(Cleanlooks)
+//MYSTYLE(Cleanlooks)
 MYSTYLE(CDE)
 
 #endif
