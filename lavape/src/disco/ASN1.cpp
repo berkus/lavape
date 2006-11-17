@@ -55,7 +55,6 @@ static DString dummy;
 
 
 ASN1::ASN1 ()
-
 { 
   HeaderTrace = false;
   Silent = false;
@@ -75,7 +74,6 @@ ASN1::ASN1 ()
 
 
 ASN1::~ASN1 ()
-
 {
   stackPtr tos, tosNew;
 
@@ -92,15 +90,15 @@ ASN1::~ASN1 ()
 
 void ASN1::error (ErrCode errCode,
                   char *callingProcedure)
-
 {
-  QString errMsg=QString("Error in input file:\n\nDetails:\n+++++ ")+QString(callingProcedure)+QString(": ")+QString(ASN1Emsg[errCode].c);
   if ((errCode == WrongElRep)
       && !wrongElemStop) {
     wrongElem = true;
     previewed = true;
     return;
   }
+
+  QString errMsg=QString("Error in input file:\n\nDetails:\n+++++ ")+QString(callingProcedure)+QString(": ")+QString(ASN1Emsg[errCode].c);
   if (!Silent) {
     qDebug(qPrintable(errMsg));
     QMessageBox::critical(0,"Lava/LavaPE",errMsg,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
@@ -117,7 +115,6 @@ void ASN1::getHeader (destinationType dT,
 /* needed only internally by GetHeader/CopyElement/GetElement:
    copies header bytes also to destination as a side effect if
    destination # NIL, else to DString s, beginning at position s[s.l] */
-
 {
   unsigned i, k, lenlen;
   stackPtr oldSP;
@@ -311,7 +308,6 @@ void ASN1::getHeader (destinationType dT,
 
 
 void ASN1::putHeader (Header& header)
-
 {
   unsigned n, len, outCard;
   int i;
@@ -371,7 +367,6 @@ void ASN1::popUp (unsigned contentsLength)
    element, i.e., perform a "pop-up" operation on the element stack;
    the length of the popped element is added to "ContentsBytesRead"
    of the father element */
-
 {
   stackPtr oldSP;
 
@@ -426,7 +421,6 @@ bool ASN1::tagOK (TClass asn1Class, unsigned id)
 
 
 long int ASN1::convLongInteger (const DString& s)
-
 {
   long unsigned card=0;
   unsigned i, signChars;
@@ -447,7 +441,6 @@ long int ASN1::convLongInteger (const DString& s)
 
 
 int ASN1::convInteger (const DString& s)
-
 {
   unsigned card=0;
   unsigned i, signChars;
@@ -472,7 +465,6 @@ void ASN1::getString (TClass asn1Class,
           DString& s,
           bool& eoc,
           unsigned& unusedBits)
-
 {
   bool eoc1;
   bool empty;
@@ -528,14 +520,12 @@ void ASN1::getString (TClass asn1Class,
 
 
 void ASN1::SetSkip (const bool onOff)
-
 {
   skip = onOff;
 }
 
 
 void ASN1::WrongElemStop (const bool onOff)
-
 {
   if (skip) return;
   wrongElemStop = onOff;
@@ -543,7 +533,6 @@ void ASN1::WrongElemStop (const bool onOff)
 
 
 bool ASN1::WrongElem ()
-
 {
   if (skip) return true;
   return wrongElem;
@@ -551,7 +540,6 @@ bool ASN1::WrongElem ()
 
 
 bool ASN1::TagFieldValid ()
-
 {
   if (skip) return true;
   return (nestedCASEs == 1);
@@ -559,7 +547,6 @@ bool ASN1::TagFieldValid ()
 
 
 void ASN1::INCnestedCASEs ()
-
 {
   if (skip) return;
   nestedCASEs++;
@@ -567,7 +554,6 @@ void ASN1::INCnestedCASEs ()
 
 
 void ASN1::DECnestedCASEs ()
-
 {
   if (skip) return;
   nestedCASEs--;
@@ -575,28 +561,24 @@ void ASN1::DECnestedCASEs ()
 
 
 void ASN1::putChar (const unsigned char&)
-
 {
   Halt.HaltPMD();
 }
 
 
 void ASN1::getChar (unsigned char&)
-
 {
   Halt.HaltPMD();
 }
 
 
 void ASN1::errorExitProc ()
-
 {
   Halt.HaltPMD();
 }
 
 
 void ASN1::CallErrorExit ()
-
 {
   errorExitProc();
   /* should not return normally */
@@ -659,7 +641,6 @@ void ASN1::GetElement (DString& s,
 void ASN1::GetEOElem ()
 /* reads all concluding EOCs of the current ASN.1 element on the
    highest level; reports an error if a non-EOC element is encountered */
-
 {
   if (skip) return;
   while (topOfStack) {
@@ -670,7 +651,6 @@ void ASN1::GetEOElem ()
 
 
 void ASN1::SkipElement (bool& eoc)
-
 {
   bool empty;
   HdrPtr hdrPtr;
@@ -796,7 +776,6 @@ void ASN1::SkipContents (bool& empty)
 void ASN1::SkipObject ()
 /* skips the remainder of the current ASN.1 object;
    has no effect if called "between" two objects */
-
 {
   bool empty;
 
@@ -810,7 +789,6 @@ void ASN1::SkipObject ()
 
 void ASN1::CopyContents (ASN1 *destination,
                          bool& empty)
-
 {
   bool eoc;
   unsigned i;
@@ -857,7 +835,6 @@ void ASN1::CopyContents (ASN1 *destination,
 
 
 void ASN1::PutHeader (Header& header)
-
 {
   Header altHeader;
 
@@ -888,7 +865,6 @@ void ASN1::PutBytes (const DString& s)
 /* copies the first sLength bytes from array s to destination; the
    programmer is himself responsible for the correct structure of the
    resulting ASN.1 stream */
-
 {
   if (skip) return;
   for (unsigned i = 0; i < s.l;)
@@ -897,7 +873,6 @@ void ASN1::PutBytes (const DString& s)
 
 
 void ASN1::PrintHeader ()
-
 {
   QString msg;
 
@@ -953,7 +928,6 @@ void ASN1::PrintHeader ()
 
 
 void ASN1::GetSEQUENCE ()
-
 {
   HdrPtr hdrPtr;
 
@@ -973,7 +947,6 @@ void ASN1::GetSEQUENCE ()
 
 
 void ASN1::GetSETTYPE ()
-
 {
   HdrPtr hdrPtr;
 
@@ -993,7 +966,6 @@ void ASN1::GetSETTYPE ()
 
 
 void ASN1::GetEOC ()
-
 {
   HdrPtr hdrPtr;
 
@@ -1019,7 +991,6 @@ void ASN1::GetEOC ()
 
 
 bool ASN1::EOC ()
-
 {
   if (skip) return true;
   return (topOfStack->header.Class == Universal)
@@ -1030,7 +1001,6 @@ bool ASN1::EOC ()
 
 
 void ASN1::GetNULL ()
-
 {
   HdrPtr hdrPtr;
 
@@ -1054,7 +1024,6 @@ void ASN1::GetNULL ()
 
 void ASN1::PutSEQUENCE ()
 /* is used by the pre-processor to begin a new record or array */
-
 {
   unsigned char outChar;
 
@@ -1071,7 +1040,6 @@ void ASN1::PutSEQUENCE ()
 
 void ASN1::PutSETTYPE ()
 /* is used by the pre-processor to begin a new record or array */
-
 {
   unsigned char outChar;
 
@@ -1089,7 +1057,6 @@ void ASN1::PutSETTYPE ()
 void ASN1::PutEOC ()
 /* "put end of contents element; is called in order to
    mark the end of a constructor element of indefinite length */
-
 {
   unsigned char outChar;
 
@@ -1102,7 +1069,6 @@ void ASN1::PutEOC ()
 
 
 void ASN1::PutNULL ()
-
 {
   unsigned char outChar;
 
@@ -1120,7 +1086,6 @@ void ASN1::PutNULL ()
 void ASN1::AltTag (TClass asn1Class,
                    unsigned id,
                    bool impl)
-
 {
   if (altTag) return;
   altTag = true;
@@ -1131,7 +1096,6 @@ void ASN1::AltTag (TClass asn1Class,
 
 
 void ASN1::PutOptionalAbsent ()
-
 {
   if (skip) return;
   if (!altTag)
@@ -1142,7 +1106,6 @@ void ASN1::PutOptionalAbsent ()
 
 
 bool ASN1::GotOptional ()
-
 {
   HdrPtr hdrPtr;
 
@@ -1173,7 +1136,6 @@ bool ASN1::GotOptional ()
 
 
 void ASN1::GETunsigned (unsigned& x)
-
 {
   int y;
 
@@ -1186,7 +1148,6 @@ void ASN1::GETunsigned (unsigned& x)
 
 
 void ASN1::GETunsigned (long unsigned& x)
-
 {
   long int y;
 
@@ -1199,7 +1160,6 @@ void ASN1::GETunsigned (long unsigned& x)
 
 
 unsigned ASN1::FGETunsigned ()
-
 {
   unsigned card;
 
@@ -1210,7 +1170,6 @@ unsigned ASN1::FGETunsigned ()
 
 
 void ASN1::GETint (long int& x)
-
 {
   HdrPtr hdrPtr;
   bool empty;
@@ -1238,7 +1197,6 @@ void ASN1::GETint (long int& x)
 
 
 void ASN1::GETint (int& x)
-
 {
   HdrPtr hdrPtr;
   bool empty;
@@ -1266,7 +1224,6 @@ void ASN1::GETint (int& x)
 
 
 int ASN1::FGETint ()
-
 {
   long int i;
 
@@ -1277,7 +1234,6 @@ int ASN1::FGETint ()
 
 
 void ASN1::GETfloat (float& x)
-
 {
   HdrPtr hdrPtr;
   bool empty;
@@ -1317,7 +1273,6 @@ void ASN1::GETfloat (float& x)
 
 
 void ASN1::GETdouble (double& x)
-
 {
   HdrPtr hdrPtr;
   bool empty;
@@ -1357,7 +1312,6 @@ void ASN1::GETdouble (double& x)
 
 
 void ASN1::GETboolean (bool& b)
-
 {
   HdrPtr hdrPtr;
   bool empty;
@@ -1390,7 +1344,6 @@ void ASN1::GETboolean (bool& b)
 
 
 void ASN1::GETset (SET& x)
-
 {
   long unsigned bits;
 
@@ -1401,7 +1354,6 @@ void ASN1::GETset (SET& x)
 
 
 void ASN1::GETbyte (unsigned char& c)
-
 {
   HdrPtr hdrPtr;
   QString msg;
@@ -1447,7 +1399,6 @@ void ASN1::GETbytes (DString& s)
 
 
 void ASN1::GETbits (Bitstring& s)
-
 {
   bool eoc;
   unsigned unusedBits, nBits;
@@ -1467,7 +1418,6 @@ void ASN1::GETbits (Bitstring& s)
 
 
 void ASN1::GETchar (char& c)
-
 {
   HdrPtr hdrPtr;
   bool empty;
@@ -1492,7 +1442,6 @@ void ASN1::GETchar (char& c)
 
 
 void ASN1::GETstring (DString& s)
-
 {
   bool eoc;
   unsigned i, unusedBits;
@@ -1512,7 +1461,6 @@ void ASN1::GETstring (DString& s)
 
 
 void ASN1::PUTunsigned (const long unsigned x)
-
 {
   if (skip) return;
   PUTint(x);
@@ -1520,7 +1468,6 @@ void ASN1::PUTunsigned (const long unsigned x)
 
 
 void ASN1::PUTint (const long int x)
-
 {
   unsigned char signChar, sign;
   bool putSignChar;
@@ -1568,7 +1515,6 @@ void ASN1::PUTint (const long int x)
 
 
 void ASN1::PUTfloat (const float x)
-
 {
   Header header;
   unsigned char /*outChar,*/ *floatChar=(unsigned char *)&x;
@@ -1592,7 +1538,6 @@ void ASN1::PUTfloat (const float x)
 
 
 void ASN1::PUTdouble (const double x)
-
 {
   Header header;
   unsigned char /*outChar,*/ *floatChar=(unsigned char *)&x;
@@ -1616,7 +1561,6 @@ void ASN1::PUTdouble (const double x)
 
 
 void ASN1::PUTboolean (const bool b)
-
 {
   Header header;
 
@@ -1634,7 +1578,6 @@ void ASN1::PUTboolean (const bool b)
 
 
 void ASN1::PUTset (const SET& x)
-
 {
   if (skip) return;
   PUTint((int)x.BITS());
@@ -1642,7 +1585,6 @@ void ASN1::PUTset (const SET& x)
 
 
 void ASN1::PUTbyte (const unsigned char c)
-
 {
   Header header;
 
@@ -1701,7 +1643,6 @@ void ASN1::PUTbits (const Bitstring& s)
 
 
 void ASN1::PUTchar (const char c)
-
 {
   Header header;
   unsigned char outChar;
@@ -1721,7 +1662,6 @@ void ASN1::PUTchar (const char c)
 
 
 void ASN1::PUTstring (const DString& s)
-
 {
   Header header;
   unsigned char outChar;
@@ -1745,7 +1685,6 @@ void ASN1::PUTstring (const DString& s)
 
 
 QString ASN1::toHex (QString sIn)
-
 {
   QChar ch;
   unsigned char uch;
@@ -1764,4 +1703,3 @@ QString ASN1::toHex (QString sIn)
   }
   return sOut;
 }
-

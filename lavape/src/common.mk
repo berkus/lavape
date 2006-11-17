@@ -94,16 +94,16 @@ else
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
     IMPLIB = -mthreads -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
 #    IMPLIB = -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
-	  OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions -ffriend-injection
+	  OSCPPFLAGS = -D__$(OPSYS) $(DBG) -frtti -fexceptions
     OSDLLFLAGS = -shared
     OSEXECFLAGS = -fstack-check
     EXEC2 = $(EXEC).exe
     ifneq ($(DBG),)
-      QtS =
-      ACL =
+      QtS = 4
+      ACL = 4
     else
-      QtS =
-      ACL =
+      QtS = 4
+      ACL = 4
     endif
   else
     DLLPREFIX = lib
@@ -137,7 +137,7 @@ ifeq ($(suffix $(EXEC)),.so)
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(DLLNAME)
 ../../bin/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTUX)/lib  -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTUX)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
