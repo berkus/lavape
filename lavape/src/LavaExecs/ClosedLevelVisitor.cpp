@@ -35,18 +35,18 @@ void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,
   DWORD dw;
   TIDType idtype;
   VarName *vn;
-  FuncStatement *iniCall;
+  FuncExpression *funcCall;
   CHE *chp;
   int maxLevel=-1;
 
-  if (obj->parentObject->primaryToken == assignFS_T) {// is call object
-    iniCall = (FuncStatement*)obj->parentObject;
-    for (chp = (CHE*)iniCall->inputs.first;
+  if (obj->parentObject->IsFuncInvocation()) {// is call object of ini call or func expression/stm
+    funcCall = (FuncExpression*)obj->parentObject;
+    for (chp = (CHE*)funcCall->inputs.first;
          chp;
          chp = (CHE*)chp->successor) {
       maxLevel = qMax(maxLevel,((Expression*)chp->data)->closedLevel);
     }
-    obj->closedLevel = iniCall->closedLevel = maxLevel;
+    obj->closedLevel = funcCall->closedLevel = maxLevel;
   }
   else if (obj->refIDs.first == obj->refIDs.last) {
     dw = document->IDTable.GetVar(((TDOD*)((CHE*)obj->refIDs.first)->data)->ID,idtype);
@@ -56,7 +56,7 @@ void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,
       if (vn->parentObject->parentObject->IsDeclare()
       && ((Declare*)vn->parentObject->parentObject)->secondaryClause.ptr) {
         if (vn->closedLevel == -1) {
-          iniCall = vn->iniCall;
+          funcCall = vn->iniCall;
         }
       }
       else {
