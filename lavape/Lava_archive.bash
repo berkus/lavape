@@ -34,10 +34,11 @@ tar -c -j \
 --exclude='*.iss' \
 --exclude='*.nsi' \
 --exclude='.[#,a-z,A-Z]*' \
--f /windows/D/lavape-0.9.$1-src.tar.bz2 lavape
+-f lavape/lavape-0.9.$1-src.tar.bz2 lavape
+ls -l lavape/lavape-0.9.$1-src.tar.bz2
 cd /opt/lavape/bin
 mv LavaPE.exe LavaPE
 mv Lava.exe Lava
 mv LPC.exe LPC
 mv assistant.exe assistant
-ls -l /windows/D/lavape-0.9.$1-src.tar.bz2
+
