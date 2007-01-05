@@ -30,6 +30,7 @@ class  LAVAGUI_DLL CGUIMet : public QObject
   QScrollArea* scrView;
   CHEFormNode* DelNode;
   CHEFormNode* InsertNode;
+  CHEFormNode* ActNode;
   CLavaBaseDoc *myDoc;
   LavaDECL *myDECL;
   int FrozenObject;
@@ -115,6 +116,8 @@ public:
   virtual void SyncTree(CHEFormNode *node) {}
   virtual void NoteLastModified() {}
   virtual void setFocNode(CHEFormNode*);
+  void setHandler(CHEFormNode* formNode);
+
 };
 
 

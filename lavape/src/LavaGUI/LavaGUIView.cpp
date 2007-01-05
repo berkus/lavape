@@ -314,12 +314,15 @@ void LavaGUIDialog::OnInsertOpt()
 void LavaGUIDialog::OnUpdateInsertopt(QAction* action)
 {
   if (myGUIProg) {
+    /*
     if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
       && myGUIProg->focNode->data.FIP.widget
         && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
         && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
       QWidget* insertWindow = myGUIProg->focNode->data.FIP.frameWidget;
       myGUIProg->InsertNode = myGUIProg->focNode;
+      */
+      QWidget* insertWindow = 0;
       while (myGUIProg->InsertNode && (insertWindow != this)) {// && (insertWindow != frm)) {
         insertWindow = myGUIProg->InsertNode->data.FIP.frameWidget;
         if (myGUIProg->InsertNode->data.IterFlags.Contains(IteratedItem)
@@ -329,7 +332,8 @@ void LavaGUIDialog::OnUpdateInsertopt(QAction* action)
         }
         myGUIProg->InsertNode = myGUIProg->InsertNode->data.FIP.up;
       }
-    }
+    //}
+    action->setEnabled(false);
     myGUIProg->InsertNode = 0;
   }
   action->setEnabled(false);
@@ -396,6 +400,7 @@ void CLavaGUIView::UpdateUI()
 {
   OnUpdateInsertopt(LBaseData->insActionPtr);
   OnUpdateDeleteopt(LBaseData->delActionPtr);
+  OnUpdateNewFunc(LBaseData->newFuncActionPtr);
   OnUpdateEditPaste(LBaseData->editPasteActionPtr);
   OnUpdateEditCopy(LBaseData->editCopyActionPtr);
   OnUpdateEditCut(LBaseData->editCutActionPtr);
@@ -772,6 +777,9 @@ void CLavaGUIView::OnDeleteOpt()
 
 void CLavaGUIView::OnUpdateDeleteopt(QAction* action)
 {
+  if (myGUIProg)
+    myGUIProg->OnUpdateDeleteopt(action);
+  /*
   if (myGUIProg && myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
       && myGUIProg->focNode->data.FIP.widget
       && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
@@ -792,6 +800,7 @@ void CLavaGUIView::OnUpdateDeleteopt(QAction* action)
   if (myGUIProg)
     myGUIProg->DelNode = 0;
   action->setEnabled(false);
+  */
 }
 
 
@@ -807,13 +816,16 @@ void CLavaGUIView::OnInsertOpt()
 
 void CLavaGUIView::OnUpdateInsertopt(QAction* action)
 {
-  if (myGUIProg) {
-    if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
+  if (myGUIProg) 
+    myGUIProg->OnUpdateInsertopt(action);
+    /*{
+   if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
       && myGUIProg->focNode->data.FIP.widget
         && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
         && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
       QWidget* insertWindow = myGUIProg->focNode->data.FIP.frameWidget;
       myGUIProg->InsertNode = myGUIProg->focNode;
+      QWidget* insertWindow = 0;
       while (myGUIProg->InsertNode && (insertWindow != this)) {// && (insertWindow != frm)) {
         insertWindow = myGUIProg->InsertNode->data.FIP.frameWidget;
         if (myGUIProg->InsertNode->data.IterFlags.Contains(IteratedItem)
@@ -824,11 +836,23 @@ void CLavaGUIView::OnUpdateInsertopt(QAction* action)
         myGUIProg->InsertNode = myGUIProg->InsertNode->data.FIP.up;
       }
     }
+    action->setEnabled(false);
     myGUIProg->InsertNode = 0;
   }
-  action->setEnabled(false);
+  action->setEnabled(false);*/
 }
 
+
+void CLavaGUIView::OnNewfunction()
+{
+  
+}
+
+void CLavaGUIView::OnUpdateNewFunc(QAction* action)
+{
+  if (myGUIProg) 
+    myGUIProg->OnUpdateInsertopt(action);
+}
 
 void CLavaGUIView::OnTogglestate()
 {

@@ -17,11 +17,11 @@ public:
   ~LavaFormCLASS() {}
   void INIT (CGUIProgBase *guiPr);
   void MakeForm (LavaDECL* decl, LavaVariablePtr resultPtr, CHEFormNode *&empForm);
-  void PartialForm ( LavaDECL* FormDecl, CHEFormNode *&fNode);
+  void PartialForm ( LavaDECL* FormDecl, CHEFormNode *&fNode, bool allowHandler);
 
   bool AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, bool emptyOpt = false);
   void AllocFNode (CHEFormNode *&formNode, LavaDECL *syn, LavaVariablePtr resultObjPtr);
-  void CreateEllipsis (CHEFormNode *&fNode, LavaDECL *syn);
+  void CreateEllipsis (CHEFormNode *&fNode, LavaDECL *syn, bool allowHandler);
   void DeleteForm (CHEFormNode *formNode);
   void DeletePopups(CHEFormNode *object_first);
   void DeleteWindows(CHEFormNode *object_first, bool redraw, bool finalRelease=false);
@@ -61,6 +61,7 @@ private:
                     SynFlags defaultIOflags,
                     CHEFormNode *&resultFNode,
                     bool nowField, 
+                    bool allowHandler,
                     TIDs *classChain
                     );
   void exprList ( CHE *DECLCHptrAny,
@@ -71,11 +72,13 @@ private:
                  SynFlags defaultIOflags,
                  CHEFormNode *resultFNode,
                  bool nowField,
+                 bool allowHandler,
                  TIDs *classChain
                  );
   bool IterForm(CHEFormNode* resultFNode,
                 LavaDECL* FormDecl,
                 SynFlags& defaultIOflags,
+                bool allowHandler,
                 TIDs *classChain
                 );
 

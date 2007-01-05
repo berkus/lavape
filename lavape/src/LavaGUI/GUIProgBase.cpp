@@ -262,3 +262,45 @@ void CGUIProgBase::setFocNode(CHEFormNode *fnode) {
   //if (fnode)
   wxTheApp->updateButtonsMenus();
 }
+
+
+void CGUIProgBase::setHandler(CHEFormNode* formNode)
+{
+  CHEFormNode* node;
+  CHETID *cheTID, *cheTID2;
+  CHETIDs *tidsChe;
+  CHE *che;
+  formNode->data.handlerSearched = true;
+  node = formNode;
+  while (node) {
+    if (formNode->data.FIP.up->data.FormSyntax->DeclType == Attr) {
+      cheTID = new CHETID;
+      cheTID->data  = TID(node->data.FormSyntax->OwnID, node->data.FormSyntax->inINCL);
+      formNode->data.myName.Append(cheTID);
+    }
+    else if (node->data.FormSyntax->DeclType == FormDef) {
+      //suche Handler in diesem Formular
+      che = (CHE*)node->data.FormSyntax->ParentDECL->NestedDecls.first;
+      while (che) { //all handler
+        if (((LavaDECL*)che->data)->SecondTFlags.Contains(isHandler)) {
+          for (tidsChe = (CHETIDs*)((LavaDECL*)che->data)->HandlerClients.first;
+               tidsChe; tidsChe = (CHETIDs*)tidsChe->successor) { //all member-chains
+            cheTID2 = (CHETID*)tidsChe->data.first;
+            cheTID = (CHETID*)formNode->data.myName.first;
+            while (cheTID && cheTID2 && (cheTID->data == cheTID2->data)) {
+              cheTID2 = (CHETID*)cheTID2->successor; 
+              cheTID = (CHETID*)cheTID->successor;
+            }
+            if (!cheTID && !cheTID2) {
+              cheTID = new CHETID;
+              cheTID->data = TID(((LavaDECL*)che->data)->OwnID, ((LavaDECL*)che->data)->inINCL);
+              formNode->data.myHandler.Append(cheTID);
+            }
+          }
+        } //if is handler
+        che = (CHE*)che->successor;
+      }
+    }
+    node = node->data.FIP.up;
+  }
+}

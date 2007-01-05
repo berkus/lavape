@@ -299,7 +299,8 @@ $TYPE +CDP {
 	enum SecondTFlag {
 	  isLavaSignal,
       //0,X0000 0001, function is Signal
-	  FREE_FLAG1, //X0000 0002
+	  isHandler, 
+    //X0000 0002, function is handler function
 	  FREE_FLAG2, //X0000 0004
 	  FREE_FLAG3, //X0000 0008
 	  FREE_FLAG4, //X0000 0010
@@ -760,7 +761,7 @@ $TYPE +CDP {
     CASE TDeclDescType DeclDescType OF
       BasicType:
          TBasicType BType;
-    || EnumType:  //EnumType erh�t NestedDecls
+    || EnumType:  //EnumType has also NestedDecls
         NESTEDANY<TEnumDescription> EnumDesc;
 
     || StructDesc:
@@ -775,6 +776,7 @@ $TYPE +CDP {
      ELSE
 
       END;
+    CHAINANY <TIDs>-- HandlerClients;
     TIDs-CDP ImplIDs;         //  LavaPE only
     //run time infos
     LavaDECL--* RuntimeDECL;  // used at run time:
@@ -1055,6 +1057,12 @@ $TYPE {
     QColor ColorB;
     QColor ColorF;
     STRING WidgetName;
+    bool allowOwnHandler;
+    bool allowChainHandler;
+    CHEFormNode *myHandlerNode;
+    bool handlerSearched;
+    TIDs myHandler;
+    TIDs myName;
     CHAINANY0<SigNodePtr>-- SigNodes;
     SynFlags BasicFlags, IoSigFlags, IterFlags;
     STRING StringValue;  //String
@@ -1071,7 +1079,11 @@ $TYPE {
     CSecTabBase** HandleObjPtr;   //LavaObjectPtr
     CHAINANY<FormNode> SubTree;
   FormNode () { ResultVarPtr = 0; HandleObjPtr = 0; EnumField = 0;
-                ownLFont=mainFont; ownTFont=mainFont; Pixmap = 0; ColorBValid = false; ColorFValid = false;}
+                ownLFont=mainFont; ownTFont=mainFont; Pixmap = 0;
+                allowOwnHandler = false;
+                allowChainHandler = false;
+                handlerSearched = false; myHandlerNode = 0;
+                ColorBValid = false; ColorFValid = false;}
   ~FormNode();
   unsigned GetLengthField();
   unsigned GetLengthDecPoint();

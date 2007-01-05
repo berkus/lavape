@@ -40,6 +40,7 @@ public:
   void AddItem(const DString& label, CHEFormNode* data);
   virtual void focusInEvent(QFocusEvent *ev);
   void mousePressEvent(QMouseEvent* ev);
+  void focusOutEvent(QFocusEvent *ev);
   //virtual bool event(QEvent* ev);
 
 public slots:

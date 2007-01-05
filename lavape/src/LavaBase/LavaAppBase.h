@@ -425,6 +425,7 @@ public:
   QAction* lessThanActionPtr;
   QAction* modulusActionPtr;
   QAction* multiplicationActionPtr;
+  QAction* newFuncActionPtr;
   QAction* newLineActionPtr;
   QAction* nextCommentActionPtr;
   QAction* nextErrorActionPtr;

@@ -39,6 +39,7 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
   setObjectName("ToggleButton");
   DISCOButtonType = isToggle;
   myFormNode = data;
+  myMenu = 0;
   GUIProg = guiPr;
   QStyleOptionButton qsob=QStyleOptionButton();
 
@@ -64,6 +65,21 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
     setPalette(p);
   }
     //setPaletteForegroundColor(parent->colorGroup().foreground());
+  QWidget* par = parent;
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (par) {
+    myMenu = ((CFormWid*)par)->myMenu;
+    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+  }
+  if (myFormNode->data.allowOwnHandler) {
+    if (!LBaseData->inRuntime) {
+      if (!myMenu)
+        myMenu = new QMenu(this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
+    }
+    myFormNode->data.myHandlerNode = myFormNode;
+  }
   show();
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
 }
@@ -75,11 +91,18 @@ void CToggleButton::focusInEvent(QFocusEvent *ev)
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
   GUIProg->setFocNode(myFormNode);
+  GUIProg->ActNode = myFormNode;
   GUIProg->CurPTR = myFormNode;
   GUIProg->ScrollIntoFrame(this);
   //setChecked(ch);
   QCheckBox::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
+}
+
+void CToggleButton::focusOutEvent(QFocusEvent *ev) 
+{
+  //GUIProg->setFocNode(0);
+  QCheckBox::focusOutEvent(ev);
 }
 
 void CToggleButton::OnClicked() 
@@ -99,6 +122,15 @@ void CToggleButton::OnClicked()
   myFormNode->data.IoSigFlags.INCL(trueValue);
 }
 
+void CToggleButton::contextMenuEvent(QContextMenuEvent * e) 
+{
+  GUIProg->ActNode = myFormNode;
+  ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
+  ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
+  ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+  if (myMenu) 
+    myMenu->popup(e->globalPos());
+}
 
 CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, 
           const char* lpszWindowName , const QString& label, QWidget* radioBox, unsigned num)
@@ -111,6 +143,7 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   GUIProg = guiPr;
   DISCOButtonType = isPush;
   IterNode = 0;
+  myMenu = 0;
   Radio = radioBox;
   EnumNode = (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first;
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
@@ -124,7 +157,17 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   //setGeometry(bord,bord, size.width(), size.height());
   if (GUIProg->FrozenObject || ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
       || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
-  setEnabled(false);
+    setEnabled(false);
+  QWidget* par = parent;
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (par) {
+    myMenu = ((CFormWid*)par)->myMenu;
+    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+  }
+  if (myFormNode->data.FIP.up->data.IterFlags.Contains(Optional)
+    && myFormNode->data.allowOwnHandler)
+    myFormNode->data.myHandlerNode = myFormNode;
   show();
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
 }
@@ -142,6 +185,7 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
   DISCOButtonType = isPush;
   IterNode = 0;
   Radio = radioBox;
+  myMenu = 0;
   EnumNode = (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first;
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   GUIProg->SetColor(this, myFormNode, QPalette::Button, QPalette::ButtonText);
@@ -153,7 +197,17 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
   setGeometry(bord,bord, size.width() + iw1 + iw2 + myFormNode->data.Pixmap->width(), size.height() + iw1 + iw2);
   if (GUIProg->FrozenObject || ((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(DONTPUT)
       || !((CFormWid*)Radio)->myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
-  setEnabled(false);
+    setEnabled(false);
+  QWidget* par = parent;
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (par) {
+    myMenu = ((CFormWid*)par)->myMenu;
+    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+  }
+  if (myFormNode->data.FIP.up->data.IterFlags.Contains(Optional)
+    && myFormNode->data.allowOwnHandler)
+    myFormNode->data.myHandlerNode = myFormNode;
   show();
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
 }
@@ -169,6 +223,8 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   Cmnd = cmnd;
   Radio = 0;
   IterNode = 0;
+  EnumNode = 0;
+  myMenu = 0;
   myFormNode = data;
   GUIProg = guiPr;
   if ((Cmnd == INSERT) || (Cmnd == DELETEWin)) {
@@ -192,15 +248,26 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   int iw1 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_ButtonMargin, &qsob, this);
   int iw2 = ((wxApp*)wxTheApp)->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &qsob, this)*2;
   setGeometry(bord,bord, size.width() + iw1 + iw2, size.height() + iw1 + iw2);
-  /*
-  QRect r = qApp->style().subRect(QStyle::SR_PushButtonContents, this);
-  size = qApp->style().sizeFromContents(QStyle::CT_PushButton, this, size);
-  setGeometry(bord, bord, size.width(), size.height());
-  */
   if (myFormNode->data.IoSigFlags.Contains(DONTPUT)
       || !myFormNode->data.IoSigFlags.Contains(UnprotectedUser)
           && !myFormNode->data.IoSigFlags.Contains(Flag_INPUT))
     setEnabled(false);
+  QWidget* par = parent;
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (par) {
+    myMenu = ((CFormWid*)par)->myMenu;
+    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+  }
+  if (myFormNode->data.IterFlags.Contains(Optional)
+    && myFormNode->data.allowOwnHandler) {
+    myFormNode->data.myHandlerNode = myFormNode;
+    if (!LBaseData->inRuntime) {
+      if (!myMenu)
+        myMenu = new QMenu("Lava", this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
+    }
+  }
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
   show();
 }
@@ -218,10 +285,17 @@ void CPushButton::focusInEvent(QFocusEvent *ev)
     GUIProg->butNode = 0;
     GUIProg->setFocNode(myFormNode);
   }
+  GUIProg->ActNode = myFormNode;
   GUIProg->CurPTR = myFormNode;
   GUIProg->ScrollIntoFrame(this);
   QPushButton::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
+}
+
+void CPushButton::focusOutEvent(QFocusEvent *ev) 
+{
+  //GUIProg->setFocNode(0);
+  QPushButton::focusOutEvent(ev);
 }
 
 void CPushButton::OnClicked() 
@@ -229,14 +303,11 @@ void CPushButton::OnClicked()
 //  CHEFormNode *iter;
   GUIProg->NoteLastModified();
   GUIProg->editNode = 0;
-  if (DISCOButtonType == isPush) {
-    GUIProg->setFocNode(myFormNode);
+  GUIProg->setFocNode(myFormNode);
+  if (DISCOButtonType == isPush) 
     GUIProg->butNode = myFormNode;
-  }
-  else {
+  else 
     GUIProg->butNode = 0;
-    GUIProg->setFocNode(myFormNode);
-  }
   GUIProg->CurPTR = myFormNode;
   GUIProg->SyncTree(myFormNode);
   switch (DISCOButtonType) {
@@ -263,6 +334,15 @@ void CPushButton::OnClicked()
   }
 }
 
+void CPushButton::contextMenuEvent(QContextMenuEvent * e) 
+{
+  GUIProg->ActNode = myFormNode;
+  ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
+  ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
+  ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+  if (myMenu) 
+    myMenu->popup(e->globalPos());
+}
 
 CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, const char* lpszWindowName,
              const QString& label, QWidget* radioBox, unsigned num)
@@ -275,6 +355,7 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
   myFormNode = data;
   GUIProg = guiPr;
   Radio = radioBox;
+  myMenu = 0;
   setFocusPolicy(Qt::StrongFocus);
   setChecked(false);
   EnumNode = (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first;
@@ -301,6 +382,22 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
     setPalette(p);
   }
     //setPaletteForegroundColor(parent->colorGroup().foreground());
+  QWidget* par = parent;
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (par) {
+    myMenu = ((CFormWid*)par)->myMenu;
+    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+  }
+  /*
+  if (myFormNode->data.allowOwnHandler) {
+    if (!LBaseData->inRuntime) {
+      if (!myMenu)
+        myMenu = new QMenu(this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
+    }
+    myFormNode->data.myHandlerNode = EnumNode;
+  } */  
   show();
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
 }
@@ -330,9 +427,19 @@ void CRadioButton::OnClicked()
 }
 
 
+void CRadioButton::contextMenuEvent(QContextMenuEvent * e) {
+  GUIProg->ActNode = myFormNode;
+  ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
+  ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
+  ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+  if (myMenu) 
+    myMenu->popup(e->globalPos());
+}
+
 void CRadioButton::focusInEvent(QFocusEvent *ev) 
 {
   if (ev->reason() != Qt::MouseFocusReason) {
+    GUIProg->ActNode = myFormNode;
     GUIProg->editNode = 0;
     GUIProg->setFocNode(myFormNode);
     GUIProg->butNode = myFormNode;
@@ -343,4 +450,10 @@ void CRadioButton::focusInEvent(QFocusEvent *ev)
   }
   else
     QRadioButton::focusInEvent(ev);
+}
+
+void CRadioButton::focusOutEvent(QFocusEvent *ev) 
+{
+  //GUIProg->setFocNode(0);
+  QRadioButton::focusOutEvent(ev);
 }

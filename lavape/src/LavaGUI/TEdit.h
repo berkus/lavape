@@ -55,6 +55,7 @@ public:
   bool inError;
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
+  virtual void contextMenuEvent(QContextMenuEvent * e);
   virtual QMenu* createStandardContextMenu();
   //virtual bool event(QEvent* ev);
 /*public slots:

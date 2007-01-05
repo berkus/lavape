@@ -29,6 +29,7 @@ public:
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;
   CHEFormNode* iterData;
+  //CHEFormNode* myHandlerNode;
   SynFlags IterFlags;
   QColor ForegroundColor;
 

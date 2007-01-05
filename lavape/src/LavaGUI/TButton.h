@@ -8,6 +8,7 @@
 #include "qcheckbox.h"
 #include "qevent.h"
 //Added by qt3to4:
+#include <QMenu>
 #include <QFocusEvent>
 
 
@@ -26,7 +27,10 @@ public:
   CHEFormNode* EnumNode;
   QWidget * Radio;  //radioBox
   TDISCOButtonType DISCOButtonType;
+  QMenu* myMenu;
   void focusInEvent(QFocusEvent *ev);
+  virtual void contextMenuEvent(QContextMenuEvent * e);
+  void focusOutEvent(QFocusEvent *ev);
 public slots:
   void OnClicked();
 private:
@@ -43,6 +47,8 @@ public:
   virtual ~CPushButton() {}
 
   void focusInEvent(QFocusEvent *ev);
+  virtual void contextMenuEvent(QContextMenuEvent * e);
+  void focusOutEvent(QFocusEvent *ev);
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;
   CHEFormNode* EnumNode;
@@ -50,6 +56,7 @@ public:
   unsigned Cmnd;
   QWidget * Radio;  //radioBox
   TDISCOButtonType DISCOButtonType;
+  QMenu* myMenu;
 public slots:
   void OnClicked();
 private:
@@ -73,6 +80,9 @@ public:
   QWidget * Radio;  //radioBox
   TDISCOButtonType DISCOButtonType;
   virtual void focusInEvent(QFocusEvent *ev);
+  virtual void contextMenuEvent(QContextMenuEvent * e);
+  void focusOutEvent(QFocusEvent *ev);
+  QMenu* myMenu;
 public slots:
   void OnClicked();
 private:

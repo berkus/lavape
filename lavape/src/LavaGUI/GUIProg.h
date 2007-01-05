@@ -36,6 +36,9 @@ public:
   void RedrawForm();
   bool Redraw;
   void OnModified();
+  void OnUpdateInsertopt(QAction* action);
+  void OnUpdateDeleteopt(QAction* action);
+  void OnUpdateNewFunc(QAction* action);
   virtual void SyncTree(CHEFormNode *node);
   virtual void NoteLastModified();
   CGUIProg();

@@ -125,6 +125,18 @@ extern LAVABASE_DLL ChainAnyElem* NewCHETID ();
 
 typedef CHAINANY/*TID*/ TIDs;
 
+struct LAVABASE_DLL CHETIDs : ChainAnyElem {
+  TIDs data;
+
+  ChainAnyElem* Clone ()
+  { return new CHETIDs(*this); }
+
+  void CopyData (ChainAnyElem* from)
+  { this->data = ((CHETIDs*)from)->data; }
+};
+
+extern LAVABASE_DLL ChainAnyElem* NewCHETIDs ();
+
 extern LAVABASE_DLL void CDPTIDs (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
 typedef SETpp SynFlags;
@@ -388,7 +400,7 @@ extern LAVABASE_DLL void CDPTypeFlag (PutGetFlag pgf, ASN1* cid, address varAddr
 
 enum SecondTFlag {
   isLavaSignal,
-  FREE_FLAG1,
+  isHandler,
   FREE_FLAG2,
   FREE_FLAG3,
   FREE_FLAG4,
@@ -908,6 +920,7 @@ struct LAVABASE_DLL LavaDECL : public DObject  {
   //  ELSE
 
   //  END
+  CHAINANY/*TIDs*/ HandlerClients;
   TIDs ImplIDs;
   LavaDECL *RuntimeDECL;
   LavaDECL *RelatedDECL;
@@ -1568,6 +1581,12 @@ struct LAVABASE_DLL FormNode : public AnyType  {
   QColor ColorB;
   QColor ColorF;
   STRING WidgetName;
+  bool allowOwnHandler;
+  bool allowChainHandler;
+  CHEFormNode *myHandlerNode;
+  bool handlerSearched;
+  TIDs myHandler;
+  TIDs myName;
   CHAINANY0/*SigNodePtr*/ SigNodes;
   SynFlags BasicFlags, IoSigFlags, IterFlags;
   STRING StringValue;
@@ -1591,6 +1610,10 @@ struct LAVABASE_DLL FormNode : public AnyType  {
     ownLFont=mainFont;
     ownTFont=mainFont;
     Pixmap=0;
+    allowOwnHandler=false;
+    allowChainHandler=false;
+    handlerSearched=false;
+    myHandlerNode=0;
     ColorBValid=false;
     ColorFValid=false;
   }

@@ -44,11 +44,12 @@ CTEdit::~CTEdit()
 
 
 CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
-               QWidget* parentWidget, const char* name, QSize size,  bool withEcho)
-:QLineEdit(parentWidget)
+               QWidget* parent, const char* name, QSize size,  bool withEcho)
+:QLineEdit(parent)
 {
   myFormNode = data;
   GUIProg = guiPr;
+  myMenu = 0;
   CaretP.setX(0);
   CaretP.setY(0);
   inError = false;
@@ -57,8 +58,8 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
       setReadOnly(true);
       if (!myFormNode->data.ColorBValid) {
         QPalette p = palette();
-        p.setColor(QPalette::Active, QPalette::Base, parentWidget->palette().color(QPalette::Active, QPalette::Window));
-        p.setColor(QPalette::Inactive, QPalette::Base, parentWidget->palette().color(QPalette::Active, QPalette::Window));
+        p.setColor(QPalette::Active, QPalette::Base, parent->palette().color(QPalette::Active, QPalette::Window));
+        p.setColor(QPalette::Inactive, QPalette::Base, parent->palette().color(QPalette::Active, QPalette::Window));
         //setPaletteBackgroundColor(parentWidget->paletteBackgroundColor());
         setPalette(p);
       }
@@ -75,30 +76,44 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   if (myFormNode->data.BType == Integer)
     setValidator(new QIntValidator(INT_MIN, INT_MAX, this)); //style = style | ES_NUMBER;
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
-  //if (GUIProg->Font)
-  //  setFont(*GUIProg->Font);
   setContentsMargins(0,0,0,0);
+  QWidget* par = parentWidget();
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (!LBaseData->inRuntime) 
+    if (myFormNode->data.allowOwnHandler) {
+      if (!myMenu)
+        myMenu = new QMenu("Lava", this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
+      myFormNode->data.myHandlerNode = myFormNode;
+    } 
+    else if (par)
+      myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   if (myFormNode->data.IterFlags.Contains(Optional)) {
-    myMenu = new QMenu("Lava object", this);
+    if (!myMenu)
+      if (LBaseData->inRuntime)
+        myMenu = new QMenu("Lava object", this);
+      else
+        myMenu = new QMenu("Lava", this);
     myMenu->addAction(LBaseData->delActionPtr);//DelAction);
     myMenu->addAction(LBaseData->insActionPtr);//InsAction);
     LBaseData->insActionPtr->setEnabled(false);
-    //myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
-    //myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
-    //myMenu->setItemEnabled(IDM_ITER_INSERT, false);
   }
-  int bord = GUIProg->GetLineWidth(parentWidget);
+  
+  int bord = GUIProg->GetLineWidth(parent);
   size = GUIProg->CalcTextRect(size.width(), 1, font());
-//???  size.setFixedWidth(size.width());
-//???  size.setFixedHeight(size.height());
+
   setGeometry(bord,bord, size.width(), minimumSizeHint().height());
   setModified(false);
+  if (!myFormNode->data.handlerSearched)
+    GUIProg->setHandler(myFormNode);
   show();
 }
 
 void CTEdit::focusInEvent(QFocusEvent *ev)
 {
   GUIProg->setFocNode(myFormNode);
+  GUIProg->ActNode = myFormNode;
   GUIProg->editNode = myFormNode;
   GUIProg->CurPTR = myFormNode;
   GUIProg->butNode = 0;
@@ -107,6 +122,10 @@ void CTEdit::focusInEvent(QFocusEvent *ev)
     setCursorPosition(int(GUIProg->ErrPos));
   QLineEdit::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
+  if (!LBaseData->inRuntime) {
+    //show handler,
+    //if ( myFormNode->data.allowOwnHandler) activate handler action
+  }
 }
 
 void CTEdit::focusOutEvent(QFocusEvent *ev)
@@ -114,44 +133,46 @@ void CTEdit::focusOutEvent(QFocusEvent *ev)
   if (isModified()) {
     myFormNode->data.StringValue = STRING(qPrintable(text()));
     if (LBaseData->inRuntime) {
+      if (myFormNode->data.myHandler.first) {
+        //call handler: myFormNode->data.myHandler.last->data
+      }
       inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
       if (inError)
         setCursorPosition(int(GUIProg->ErrPos));
-      else
+      else {
         myFormNode->data.IoSigFlags.INCL(trueValue);
+      }
       setModified(false);
     }
   }
+  //GUIProg->setFocNode(0);
   QLineEdit::focusOutEvent(ev);
 }
 
-/*
-bool CTEdit::event(QEvent* ev)
+void CTEdit::contextMenuEvent(QContextMenuEvent * e) 
 {
-  if (ev->type() == UEV_LavaGUIInsDel) {
-    if (myFormNode->data.IterFlags.Contains(Optional))
-      ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
-    return true;
-  }
-  else
-    return QLineEdit::event(ev);
-}*/
-
-void CTEdit::contextMenuEvent(QContextMenuEvent * e) {
+  GUIProg->ActNode = myFormNode;
   QMenu *pm = createStandardContextMenu();
   QWidget* par = parentWidget();
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (((CFormWid*)par)->iterData && ((CFormWid*)par)->myMenu) {
+    ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
     pm->addSeparator();
     pm->addMenu(((CFormWid*)par)->myMenu);
   }
   else {
-    if (myFormNode->data.IterFlags.Contains(Optional)) {
+    if (myMenu) { //myFormNode->data.IterFlags.Contains(Optional)) {
+      ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
       pm->addSeparator();
       pm->addMenu(myMenu);
     }
   }
+  GUIProg->ActNode = myFormNode;
   pm->exec(e->globalPos());
   //delete pm;
 }
@@ -169,6 +190,7 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
 {
   myFormNode = data;
   GUIProg = guiPr;
+  myMenu = 0;
   if (myFormNode->data.IoSigFlags.Contains(DONTPUT))
     setDisabled(true);
   else  if (!myFormNode->data.IoSigFlags.Contains(Flag_INPUT) || GUIProg->FrozenObject)
@@ -179,24 +201,32 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   GUIProg->SetColor(this, myFormNode, QPalette::Base, QPalette::Text);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
+  QWidget* par = parentWidget;
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (par) {
+    myMenu = ((CFormWid*)par)->myMenu;
+    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+  }
+  if (myFormNode->data.allowOwnHandler) {
+    if (!LBaseData->inRuntime) {
+      if (!myMenu)
+        myMenu = new QMenu("Lava", this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
+    }
+    myFormNode->data.myHandlerNode = myFormNode;
+  }  
   if (myFormNode->data.IterFlags.Contains(Optional)) {
-    myMenu = new QMenu(this);
+    if (!myMenu)
+      if (LBaseData->inRuntime)
+        myMenu = new QMenu("Lava object", this);
+      else
+        myMenu = new QMenu("Lava", this);
     myMenu->addAction(LBaseData->delActionPtr);//DelAction);
     myMenu->addAction(LBaseData->insActionPtr);//InsAction);
     LBaseData->insActionPtr->setEnabled(false);
-    /*
-    QAction *DelAction= new QAction("Delete optional",this);
-    myMenu->addAction(DelAction);
-    connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
-    QAction *InsAction= new QAction("Insert optional",this);
-    myMenu->addAction(InsAction);
-    connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
-    InsAction->setEnabled(false);
-    */
-    //myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
-    //myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
-    //myMenu->setItemEnabled(IDM_ITER_INSERT, false);
   }
+ 
   setContentsMargins(0, 0, 0, 0);
   int bord = GUIProg->GetLineWidth(parentWidget);
   size = GUIProg->CalcTextRect(size.width(), size.height(), font());
@@ -212,6 +242,7 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
 void CMultiLineEdit::focusInEvent(QFocusEvent *ev)
 {
   GUIProg->setFocNode(myFormNode);
+  GUIProg->ActNode = myFormNode;
   GUIProg->editNode = myFormNode;
   GUIProg->CurPTR = myFormNode;
   GUIProg->butNode = 0;
@@ -237,9 +268,35 @@ void CMultiLineEdit::focusOutEvent(QFocusEvent *ev)
 
     }
   }
+  //GUIProg->setFocNode(0);
   QTextEdit::focusOutEvent(ev);
 }
 
+
+void CMultiLineEdit::contextMenuEvent(QContextMenuEvent * e) 
+{
+  GUIProg->ActNode = myFormNode;
+  ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
+  ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
+  ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+  QMenu *pm = createStandardContextMenu();
+  QWidget* par = parentWidget();
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (((CFormWid*)par)->iterData && ((CFormWid*)par)->myMenu) {
+    pm->addSeparator();
+    pm->addMenu(((CFormWid*)par)->myMenu);
+  }
+  else {
+    if (myMenu) { //myFormNode->data.IterFlags.Contains(Optional)) {
+      pm->addSeparator();
+      pm->addMenu(myMenu);
+    }
+  }
+  GUIProg->ActNode = myFormNode;
+  pm->exec(e->globalPos());
+  //delete pm;
+}
 
 /*
 bool CMultiLineEdit::event(QEvent* ev)

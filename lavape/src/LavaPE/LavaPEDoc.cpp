@@ -2138,7 +2138,7 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
 //always returns the GUIinterface.
 {
   LavaDECL *GUIinterface=0, *GUIimpl=0, *interdecl, *attrdecl,
-             *newAttrdecl, *FormDecl, *posDECL=0;
+             *newAttrdecl, *FormDecl, *posDECL=0, *inDecl;
   QString valNewName;
   DString *name;
   int startpos = pos, implPos;
@@ -2246,6 +2246,10 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
         if (IDTable.GetDECL(((LavaDECL*)elChe->data)->RefID)->DeclType != FormDef)
           if (!((CLavaPEApp*)wxTheApp)->Browser.findAnyForm((LavaDECL*)elChe->data, ((LavaDECL*)elChe->data)->RefID, mySynDef))
             MakeGUI((LavaDECL*)elChe->data, pparent, pos, posDECL);
+          if (((LavaDECL*)elChe->data)->DeclType == VirtualType) {
+            inDecl = ((TIteration*)((LavaDECL*)elChe->data)->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr;
+            inDecl->RefID = ((LavaDECL*)elChe->data)->RefID;
+          }
 
       }
     }

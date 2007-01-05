@@ -43,6 +43,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   CHEEnumSelId *enumSel;
   myFormNode = data;
   GUIProg = guiPr;
+  myMenu = 0;
   QStyleOptionComboBox qsob=QStyleOptionComboBox();
 
 
@@ -75,19 +76,22 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
     myMenu->addAction(LBaseData->delActionPtr);//DelAction);
     myMenu->addAction(LBaseData->insActionPtr);//InsAction);
     LBaseData->insActionPtr->setEnabled(false);
-    /*
-    QAction *DelAction= new QAction("Delete optional",this);
-    myMenu->addAction(DelAction);
-    connect(DelAction,SIGNAL(triggered()),this,SLOT(DelActivated));
-    QAction *InsAction= new QAction("Insert optional",this);
-    myMenu->addAction(InsAction);
-    connect(InsAction,SIGNAL(triggered()),this,SLOT(InsActivated));
-    InsAction->setEnabled(false);
-    */
-    //myMenu->insertItem("Delete optional", this, SLOT(DelActivated()),0, IDM_ITER_DEL);
-    //myMenu->insertItem("Insert optional", this, SLOT(InsActivated()),0, IDM_ITER_INSERT);
   }
-
+  QWidget* par = pParentWnd;
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (par) {
+    myMenu = ((CFormWid*)par)->myMenu;
+    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+  }
+  if (myFormNode->data.allowOwnHandler) {
+    if (!LBaseData->inRuntime) {
+      if (!myMenu)
+        myMenu = new QMenu(this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
+    }
+    myFormNode->data.myHandlerNode = myFormNode;
+  }   
   show();
 }
 
@@ -105,10 +109,21 @@ CTComboBox::~CTComboBox()
 {
 }
 
+void CTComboBox::focusOutEvent(QFocusEvent *ev) 
+{
+  //GUIProg->setFocNode(0);
+  QComboBox::focusOutEvent(ev);
+}
+
 void CTComboBox::mousePressEvent(QMouseEvent* ev)
 {
-  if ((ev->button() == Qt::RightButton) && myMenu) 
+  GUIProg->ActNode = myFormNode;
+  if ((ev->button() == Qt::RightButton) && myMenu) {
+    ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
     myMenu->popup(ev->globalPos());//QPoint(ev->x(), ev->y()));
+  }
   else {
     QComboBox::mousePressEvent(ev);
     GUIProg->editNode = 0;
@@ -140,6 +155,7 @@ void CTComboBox::focusInEvent(QFocusEvent *ev)
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
   GUIProg->setFocNode(myFormNode);
+  GUIProg->ActNode = myFormNode;
   GUIProg->ScrollIntoFrame(this);
   QComboBox::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);

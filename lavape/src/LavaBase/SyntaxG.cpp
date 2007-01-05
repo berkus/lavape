@@ -63,6 +63,9 @@ void CDPTID (PutGetFlag pgf, ASN1* cid, address varAddr,
   if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPTID
 
+ChainAnyElem* NewCHETIDs ()
+{ return (ChainAnyElem*)(new CHETIDs); }
+
 
 void CDPTIDs (PutGetFlag pgf, ASN1* cid, address varAddr,
               bool)

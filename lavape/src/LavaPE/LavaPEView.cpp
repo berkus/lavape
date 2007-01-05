@@ -1941,6 +1941,8 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
     else {
       active = false;
       DisableActions();
+      SetErrAndCom(0);
+
     }
   }
 }
@@ -3489,13 +3491,14 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
       }
     }
     CTreeView::OnUpdate(pSender, undoRedoCheck, pHint);
-    if ( hint && (hint->com != CPECommand_Comment)
+    if ( hint /*&& (hint->com != CPECommand_Comment)*/
               && ( (undoRedoCheck == 1) && hint->FirstLast.Contains(firstHint)
                  || (undoRedoCheck != 1) && hint->FirstLast.Contains(lastHint))
           || (undoRedoCheck == 3) || (undoRedoCheck >= CHLV_noCheck) ) {
       myDECL->DECLError2.Destroy();
       drawTree = drawTree || GetDocument()->UndoMem.DrawTree;
       DrawTree(GetDocument()->GetFormpDECL(myDECL), inUndoRedo);
+      Tree->viewport()->update();
       if (!drawTree) {
         CTreeItem* item = (CTreeItem*)Tree->currentItem();
         if (item) {
@@ -4260,6 +4263,10 @@ void CLavaPEView::SetErrAndCom(CTreeItem* item)
       bar->SetComment(str0, true);
       bar->ResetError();
     }
+  }
+  else {
+    bar->SetComment(str0, true);
+    bar->ResetError();
   }
 }
 

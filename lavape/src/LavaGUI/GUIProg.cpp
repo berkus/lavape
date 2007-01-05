@@ -239,3 +239,43 @@ void CGUIProg::OnSetFocus(CHEFormNode* trp0)
       }
     }
 }
+
+void CGUIProg::OnUpdateInsertopt(QAction* action)
+{
+ QWidget* insertWindow = 0;
+ InsertNode = ActNode;
+ while (InsertNode && (insertWindow != ViewWin)) {// && (insertWindow != frm)) {
+    insertWindow = InsertNode->data.FIP.frameWidget;
+    if (InsertNode->data.IterFlags.Contains(IteratedItem)
+        && !InsertNode->data.IterFlags.Contains(FixedCount)) {
+      action->setEnabled(true);
+      return;
+    }
+    InsertNode = InsertNode->data.FIP.up;
+  }
+  action->setEnabled(false);
+  InsertNode = 0;
+}
+
+void CGUIProg::OnUpdateDeleteopt(QAction* action)
+{
+  QWidget* delWindow = 0;
+  DelNode = ActNode;
+  while (DelNode && (delWindow != ViewWin)) {
+    delWindow = DelNode->data.FIP.frameWidget;
+    if (DelNode->data.IterFlags.Contains(Optional)
+        || DelNode->data.IterFlags.Contains(IteratedItem)
+           && !DelNode->data.IterFlags.Contains(FixedCount)) {
+      action->setEnabled(true);
+      return;
+    }
+    DelNode = DelNode->data.FIP.up;
+  }
+  DelNode = 0;
+  action->setEnabled(false);
+}
+
+void CGUIProg::OnUpdateNewFunc(QAction* action)
+{
+  action->setEnabled(!LBaseData->inRuntime && ActNode && ActNode->data.myHandlerNode);
+}
