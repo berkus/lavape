@@ -6101,7 +6101,7 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     ckd.precedingIniCall = 0;
     if (((SynObject*)((Declare*)this)->secondaryClause.ptr)->IsFuncInvocation())
       ckd.firstIniCall = (SynObject*)((Declare*)this)->secondaryClause.ptr;
-    else
+    else // semicolon op.
       ckd.firstIniCall = (SynObject*)((CHE*)((SemicolonOp*)((Declare*)this)->secondaryClause.ptr)->operands.first)->data;
   }
   for (chp = (CHE*)quantifiers.first;
