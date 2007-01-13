@@ -19,7 +19,7 @@
 #include "qpixmap.h"
 #include "qmetatype.h"
 
-#define RELEASE 3
+#define RELEASE 4
 
 #undef VIEW
 
@@ -920,6 +920,7 @@ struct LAVABASE_DLL LavaDECL : public DObject  {
   //  ELSE
 
   //  END
+  int GUISignaltype;
   CHAINANY/*TIDs*/ HandlerClients;
   TIDs ImplIDs;
   LavaDECL *RuntimeDECL;
@@ -1586,6 +1587,8 @@ struct LAVABASE_DLL FormNode : public AnyType  {
   CHEFormNode *myHandlerNode;
   bool handlerSearched;
   TIDs myHandler;
+  LavaDECL *HandlerDECL;
+  CSecTabBase **GUIService;
   TIDs myName;
   CHAINANY0/*SigNodePtr*/ SigNodes;
   SynFlags BasicFlags, IoSigFlags, IterFlags;

@@ -113,6 +113,7 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
     myGUIProg->Create(myDoc, this);
     myGUIProg->SetFont(&LBaseData->m_FormFont);
     ServicePtr = (LavaVariablePtr)pHint->CommandData1;
+    myGUIProg->ServicePtr = ServicePtr;
     IniDataPtr = (LavaVariablePtr)pHint->CommandData2;
     ResultDPtr = (LavaVariablePtr)pHint->CommandData3;
     myDECL = (*ServicePtr)[0]->implDECL;
@@ -458,6 +459,7 @@ void CLavaGUIView::OnInitialUpdate()
       if (LBaseData->inRuntime && GetDocument()->isObject && GetDocument()->DocObjects[2]) {
         GetParentFrame()->showMaximized();
         ServicePtr = &GetDocument()->DocObjects[0];
+        myGUIProg->ServicePtr = ServicePtr;
         IniDataPtr = &GetDocument()->DocObjects[1];
         ResultDPtr = &GetDocument()->DocObjects[2];
         if (*ResultDPtr)
@@ -483,6 +485,7 @@ void CLavaGUIView::OnInitialUpdate()
       MessToStatusbar();
       myGUIProg->Create(GetDocument(), this);
       ServicePtr = &GetDocument()->DocObjects[0];
+      myGUIProg->ServicePtr = ServicePtr;
       IniDataPtr = &GetDocument()->DocObjects[1];
       ResultDPtr = &GetDocument()->DocObjects[2];
       if (*ResultDPtr)
@@ -845,13 +848,24 @@ void CLavaGUIView::OnUpdateInsertopt(QAction* action)
 
 void CLavaGUIView::OnNewfunction()
 {
-  
+  LavaDECL* decl;
+  CHETIDs* cheTIDs;
+  if (myGUIProg->ActNode && myGUIProg->ActNode->data.myHandlerNode) {
+    decl = NewLavaDECL();
+    decl->DeclType = Function;
+    decl->SecondTFlags.INCL(isHandler);
+    decl->ParentDECL = myDECL;
+    cheTIDs = new CHETIDs();
+    cheTIDs->data = myGUIProg->ActNode->data.myName;
+    decl->HandlerClients.Append(cheTIDs);
+    QApplication::postEvent(myTree, new CustomEvent(UEV_NewHandler, (void*)decl));
+  }
 }
 
 void CLavaGUIView::OnUpdateNewFunc(QAction* action)
 {
-  if (myGUIProg) 
-    myGUIProg->OnUpdateInsertopt(action);
+  if (myGUIProg && !LBaseData->inRuntime) 
+    myGUIProg->OnUpdateNewFunc(action);
 }
 
 void CLavaGUIView::OnTogglestate()

@@ -19,7 +19,7 @@
 #include "qpixmap.h"
 #include "qmetatype.h"
 
-#define RELEASE 3
+#define RELEASE 4
 
 #undef VIEW
 
@@ -776,8 +776,9 @@ $TYPE +CDP {
      ELSE
 
       END;
-    CHAINANY <TIDs>-- HandlerClients;
-    TIDs-CDP ImplIDs;         //  LavaPE only
+    int GUISignaltype;   //0=value changed, 1=chain insert; 2=chain delete
+    CHAINANY <TIDs> HandlerClients;
+    TIDs --ImplIDs;         //  LavaPE only
     //run time infos
     LavaDECL--* RuntimeDECL;  // used at run time:
                                  // Interface, component specification: implementation decl,
@@ -1062,6 +1063,8 @@ $TYPE {
     CHEFormNode *myHandlerNode;
     bool handlerSearched;
     TIDs myHandler;
+    LavaDECL* HandlerDECL;
+    CSecTabBase** GUIService;
     TIDs myName;
     CHAINANY0<SigNodePtr>-- SigNodes;
     SynFlags BasicFlags, IoSigFlags, IterFlags;

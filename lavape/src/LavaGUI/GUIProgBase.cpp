@@ -303,4 +303,12 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
     }
     node = node->data.FIP.up;
   }
+  if (LBaseData->inRuntime) 
+    if (formNode->data.myHandler.last) {
+      formNode->data.HandlerDECL = myDoc->IDTable.GetDECL(((CHETID*)formNode->data.myHandler.last)->data);
+      if (formNode->data.HandlerDECL->ParentDECL == myDECL)
+        formNode->data.GUIService = *(CSecTabBase***)ServicePtr;
+      else
+        formNode->data.GUIService = (CSecTabBase**)AllocateObject(ckd, formNode->data.HandlerDECL->ParentDECL, formNode->data.HandlerDECL->ParentDECL->TypeFlags.Contains(stateObject));
+    }
 }

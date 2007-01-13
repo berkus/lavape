@@ -26,7 +26,6 @@ public:
   MakeGUICLASS MakeGUI;
   TreeSrchCLASS TreeSrch;
   //QWidget* ParentWin;
-  CheckData ckd;
   CRuntimeException *ex;
 
   void Create(CLavaBaseDoc* doc, QWidget* view);

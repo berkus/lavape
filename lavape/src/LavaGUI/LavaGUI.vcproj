@@ -670,10 +670,6 @@
 			Filter="h;hpp;hxx;hm;inl;fi;fd"
 			>
 			<File
-				RelativePath="..\LavaPE\Boxes.h"
-				>
-			</File>
-			<File
 				RelativePath="CmdExec.h"
 				>
 			</File>

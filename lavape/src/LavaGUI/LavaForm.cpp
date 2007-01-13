@@ -1023,6 +1023,7 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
               resultFNode->data.BasicFlags.EXCL(PopUpMenu);
             }
             else {
+              ((LavaDECL*)FormDecl->Annotation.ptr->MenuDECL.ptr)->ParentDECL = parDECL;
               ((LavaDECL*)FormDecl->Annotation.ptr->MenuDECL.ptr)->WorkFlags.INCL(selEnum);
               ((LavaDECL*)FormDecl->Annotation.ptr->MenuDECL.ptr)->WorkFlags.INCL(runTimeOK);
             }

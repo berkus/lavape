@@ -43,6 +43,7 @@ public:
   void InsertIterItem (CHEFormNode* fNode);
   void DeleteIterItem (CHEFormNode* fNode);
 //  bool ChangeAtomicObject(LavaVariablePtr resultVarPtr);
+  bool EditHandlerCall(CHEFormNode* formNode, STRING newStr);
   bool ConvertAndStore (CHEFormNode* trp);
   bool Toggl (CHEFormNode* trp);
   void SelectButton (CHEFormNode* button, CHEFormNode*& trp);

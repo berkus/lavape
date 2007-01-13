@@ -1357,8 +1357,525 @@ void CEnumItem::on_ID_OK_clicked()
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Dialogfeld CFuncBox 
+// Dialogfeld CHandlerBox 
 
+CHandlerBox::CHandlerBox(QWidget* pParent)   
+  : QDialog(pParent)
+{
+}
+
+CHandlerBox::CHandlerBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew, QWidget* pParent) 
+  : QDialog(pParent)
+{
+  setupUi(this);
+  myDECL = decl;
+  myDoc = doc;
+  onNew = isNew;
+  OrigDECL = origDECL;
+  second = false;
+}
+
+
+void CHandlerBox::UpdateData(bool getData)
+{
+  if (getData) {
+    valNewName = NewName->text();
+
+  }
+  else {
+    NewName->setText(valNewName);
+
+  }
+}
+
+ValOnInit CHandlerBox::OnInitDialog()
+{ 
+  CHE* cheIO;
+  CHETIDs *cheTIDs;
+  SynFlags typeflag;
+  LavaDECL *decl,  *baseDECL;
+  CHETID *ncheS, *cheS;
+  CListBoxItem *listItem;
+  QString nameText;
+
+  if (myDoc->changeNothing) {
+    ID_OK->setEnabled(false);
+    ID_OK->setDefault( false );
+    ID_CANCEL->setDefault( true );
+  }
+
+  if (!second) {
+    CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Function, typeflag);
+    delete execAllPatt;
+  }
+  if ((myDECL->ParentDECL->DeclType == Impl)
+    || myDECL->TypeFlags.Contains(isGUI) ) {
+    //|| myDECL->ParentDECL->TypeFlags.Contains(isComponent) ) {
+    Native->setEnabled(false);
+    Abstract->setEnabled(false);
+    if (myDECL->ParentDECL->DeclType == Impl) {
+      Protected->setEnabled(false);
+      if (myDECL->SecondTFlags.Contains(funcImpl))
+        Closed->setEnabled(false);
+    }
+  }
+  else {
+    Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
+    Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
+  }
+  cheTIDs = (CHETIDs*)myDECL->HandlerClients.first;
+  while (cheTIDs) {
+    cheS = (CHETID*)cheTIDs->data.first;
+    while (cheS) {
+      nameText += QString(".");
+      decl = myDoc->IDTable.GetDECL(cheS->data);
+      if (decl)
+        nameText += QString(decl->LocalName.c);
+      else { /*error, messagebox */}
+      cheS = (CHETID*)cheS->successor;
+    }
+    listItem = new CListBoxItem(nameText, cheTIDs->data);
+    FieldList->addItem(listItem);
+    cheTIDs = (CHETIDs*)cheTIDs->successor;
+  }
+  if (onNew) {
+    hasParams = 0;
+    if (myDECL->ParentDECL->TypeFlags.Contains(isNative)) {
+      myDECL->TypeFlags.INCL(isNative);
+      Native->setChecked(true);
+    }
+    myDECL->TypeFlags.INCL(isConst);
+    ConstFunc->setChecked(true);
+  }  
+  else {
+    valNewName = QString(myDECL->LocalName.c);
+    cheIO = (CHE*)myDECL->NestedDecls.first;
+    hasParams = cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc);
+    hasOutput = false;
+    while (cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
+      hasOutput = hasOutput || (((LavaDECL*)cheIO->data)->DeclType == OAttr);
+      if (((LavaDECL*)cheIO->data)->TypeFlags.Contains(sameAsSelf)) {
+        StaticFunc->setEnabled(false);
+        cheIO = 0;
+      }
+      else
+        cheIO = (CHE*)cheIO->successor;
+    }
+    hasOutput = hasOutput || myDECL->Inherits.first;
+
+    if (myDECL->SecondTFlags.Contains(isLavaSignal)) {
+      Signal->setChecked(true);
+      StaticFunc->setEnabled(false);
+      Protected->setEnabled(false);
+      Abstract->setEnabled(false);
+      EnforceOver->setEnabled(false);
+      ConstFunc->setEnabled(false);
+    }
+    else
+      Signal->setChecked(false);
+    if (!myDECL->ParentDECL->TypeFlags.Contains(isAbstract)) 
+      myDECL->TypeFlags.EXCL(isAbstract);
+    if (myDECL->TypeFlags.Contains(isAbstract)) {
+      Abstract->setChecked(true);
+      StaticFunc->setEnabled(false);
+      StaticFunc->setChecked(false);
+    }
+    else
+      Abstract->setChecked(false);
+    if (myDECL->TypeFlags.Contains(isStatic)) {
+      StaticFunc->setChecked(true);
+      Protected->setEnabled(false);
+      Abstract->setEnabled(false);
+      EnforceOver->setEnabled(false);
+      ConstFunc->setEnabled(false);
+      Closed->setEnabled(false);
+      Closed->setChecked(false);
+    }
+    else
+      StaticFunc->setChecked(false);
+    if (myDECL->TypeFlags.Contains(isProtected)) {
+      Protected->setChecked(true);
+      StaticFunc->setEnabled(false);
+      StaticFunc->setChecked(false);
+    }
+    else
+      Protected->setChecked(false);
+    if (myDECL->TypeFlags.Contains(forceOverride)) {
+      EnforceOver->setChecked(true);
+      StaticFunc->setEnabled(false);
+      StaticFunc->setChecked(false);
+    }
+    else
+      EnforceOver->setChecked(false);
+    ConstFunc->setChecked(myDECL->TypeFlags.Contains(isConst));
+    if (myDECL->TypeFlags.Contains(isInitializer)) {
+      ConstFunc->setEnabled(true); 
+      Protected->setEnabled(false);
+      myDECL->TypeFlags.EXCL(isAbstract);
+      Abstract->setChecked(false);
+      Abstract->setEnabled(false);
+      StaticFunc->setEnabled(false);
+      StaticFunc->setChecked(false);
+      Signal->setEnabled(false);
+      Signal->setChecked(false);
+      //Closed->setEnabled(false);
+      //Closed->setChecked(false);
+    }
+    Native->setChecked(myDECL->TypeFlags.Contains(isNative));
+    //Transaction->setChecked(myDECL->TypeFlags.Contains(isTransaction));
+
+    if (hasOutput) {
+      Signal->setEnabled(false);
+    }
+    cheS = (CHETID*)myDECL->Inherits.first;
+    while (cheS) {
+      if (myDoc->AllowThrowType(myDECL, cheS->data, 0)) {
+        decl = myDoc->IDTable.GetDECL(cheS->data);
+        if (decl && decl->SecondTFlags.Contains(isException)) {
+          listItem = new CListBoxItem(decl->LocalName, cheS->data);
+          Inherits->addItem(listItem);
+          cheS = (CHETID*)cheS->successor;
+        }
+        else {
+          ncheS = (CHETID*)cheS->successor;
+          myDECL->Inherits.Uncouple(cheS);
+          delete cheS;
+          cheS = ncheS;
+          if (myDoc->AutoCorrBox(&ERR_NoFiredIF) != QDialog::Accepted)  {
+            return BoxCancel; //QDialog::reject();
+          }
+        }
+      }
+      else {
+        ncheS = (CHETID*)cheS->successor;
+        myDECL->Inherits.Uncouple(cheS);
+        delete cheS;
+        cheS = ncheS;
+        if (myDoc->AutoCorrBox(&ERR_OverThrow)  != QDialog::Accepted) {
+          return BoxCancel; //QDialog::reject();
+        }
+      }
+    }
+    if (myDECL->SecondTFlags.Contains(overrides)) {
+      cheS = (CHETID*)myDECL->Supports.first;
+      while (cheS) {
+        baseDECL = myDoc->IDTable.GetDECL(cheS->data);
+        if (!baseDECL) {
+          CCorrOverBox * box = new CCorrOverBox(myDECL, myDoc, parentWidget());
+          box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
+          if (box->OnInitDialog() == BoxContinue) {
+            if (box->exec() != QDialog::Accepted) 
+              return BoxCancel;  
+            return BoxOK; 
+          }
+          else
+            return BoxCancel;
+        }
+        else
+          if (baseDECL->TypeFlags.Contains(isStatic)) {
+            if (myDoc->AutoCorrBox(&ERR_OverriddenStatic) != QDialog::Accepted) {
+              return BoxCancel; //QDialog::reject();
+            }
+            myDECL->Supports.Destroy();
+            cheS = 0;
+          }
+          else
+            cheS = (CHETID*)cheS->successor;
+      }
+      if (!myDECL->Supports.first) 
+        myDECL->SecondTFlags.EXCL(overrides);
+    }
+    if (myDECL->SecondTFlags.Contains(overrides)) {
+      baseDECL = myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data);
+      ConstFunc->setEnabled(!baseDECL->TypeFlags.Contains(isConst)); 
+      Protected->setEnabled(baseDECL->TypeFlags.Contains(isProtected));
+      StaticFunc->setEnabled(false);
+      RMOverrides->setEnabled(true);
+      EnableName->setEnabled(true);
+      Closed->setEnabled(false);
+      Signal->setEnabled(false);
+      if (myDECL->SecondTFlags.Contains(enableName)) {
+        EnableName->setChecked(true);
+        NewName->setEnabled(true);
+      }
+      else {
+        EnableName->setChecked(false);
+        NewName->setEnabled(false);
+      }
+    }
+    if (myDECL->SecondTFlags.Contains(funcImpl)) {
+      decl = myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data);
+      if (!decl ) {
+        myDECL->SecondTFlags.EXCL(funcImpl);
+        myDECL->TypeFlags.EXCL(isProtected);
+        myDECL->Supports.Destroy();
+        if (myDoc->AutoCorrBox(&ERR_MissingItfFuncDecl) != QDialog::Accepted) {
+          OrigDECL->WorkFlags.INCL(allowDEL);
+          return BoxCancel; //QDialog::reject();
+        }
+      }
+      else 
+        if ((decl->DeclType == Attr) && !decl->TypeFlags.Contains(hasSetGet)) {
+          myDECL->SecondTFlags.EXCL(funcImpl);
+          myDECL->Supports.Destroy();
+          if (myDoc->AutoCorrBox(&ERR_NoSetGetMember)  != QDialog::Accepted) {
+            OrigDECL->WorkFlags.INCL(allowDEL);
+            return BoxCancel; //QDialog::reject();
+          }
+        }
+    }
+    if (myDECL->SecondTFlags.Contains(funcImpl)
+          || myDECL->TypeFlags.Contains(isGUI)) {
+      ConstFunc->setEnabled(false);
+      NewName->setEnabled(false);
+      Signal->setEnabled(false);
+      Protected->setEnabled(false);
+      EnforceOver->setEnabled(false);
+      DelInherits->setEnabled(false);
+      NamedTypes->setEnabled(false);
+      Inherits->setEnabled(false);
+    }
+    if (myDECL->SecondTFlags.Contains(closed)) {
+      //Initializer->setEnabled(false);
+      StaticFunc->setEnabled(false);
+      Closed->setChecked(true);
+    }
+    else
+      Closed->setChecked(false);
+  }
+  UpdateData(false); 
+  NewName->setFocus();
+  return BoxContinue;
+}
+
+void CHandlerBox::on_EventType_activated( int )
+{
+
+}
+
+void CHandlerBox::on_FieldRemove_clicked()
+{
+
+}
+
+void CHandlerBox::on_Closed_clicked()
+{
+  if (Closed->isChecked()) {
+    StaticFunc->setEnabled(false);
+  }
+  else {
+    StaticFunc->setEnabled(true);
+  }
+}
+
+void CHandlerBox::on_RMOverrides_clicked() 
+{
+  UpdateData(true);
+  RMOverrides->setEnabled(false);
+  myDECL->Supports.Destroy();
+  myDECL->SecondTFlags.EXCL(overrides);  
+  second = true;
+  ConstFunc->setEnabled(true);
+  Protected->setEnabled(true);
+  DelInherits->setEnabled(true);
+  NamedTypes->setEnabled(true);
+  Inherits->setEnabled(true);
+  Closed->setEnabled(true);
+  Signal->setEnabled(true);
+//  BasicTypes->setEnabled(true);
+  OnInitDialog();
+}
+
+void CHandlerBox::on_DelInherits_clicked() 
+{
+  int pos = Inherits->currentRow();
+  if (pos >= 0)
+    delete Inherits->takeItem(pos); 
+}
+
+  
+void CHandlerBox::on_NamedTypes_activated(int pos) 
+{
+  if (!pos) return;
+  SelEndOKToList(NamedTypes, Inherits); 
+}
+
+void CHandlerBox::on_StaticFunc_clicked() 
+{
+  UpdateData(true);
+  if (StaticFunc->isChecked()) {
+    Protected->setChecked(false);
+    Abstract->setChecked(false);
+    EnforceOver->setChecked(false);
+    ConstFunc->setChecked(false);
+    Protected->setEnabled(false);
+    Abstract->setEnabled(false);
+    EnforceOver->setEnabled(false);
+    myDECL->TypeFlags.INCL(isConst); 
+    ConstFunc->setChecked(true);
+    ConstFunc->setEnabled(false);
+    Closed->setEnabled(false);
+  }
+  else {
+    Protected->setEnabled(true);
+    Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
+    EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
+    ConstFunc->setEnabled(true);
+    Closed->setEnabled(true);
+  }
+  UpdateData(false);
+}
+
+void CHandlerBox::on_Abstract_clicked() 
+{
+  UpdateData(true);
+  if (Abstract->isChecked()) {
+    Native->setChecked(false);
+    Native->setEnabled(false);
+    StaticFunc->setEnabled(false);
+    StaticFunc->setChecked(false);
+  }
+  else {
+    Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
+//    InheritsBody->setEnabled(myDECL->SecondTFlags.Contains(overrides));
+  }
+  UpdateData(false);
+}
+
+void CHandlerBox::on_Native_clicked() 
+{
+  UpdateData(true);
+  if (Native->isChecked()) {
+    Abstract->setChecked(false);
+    Abstract->setEnabled(false); 
+  }
+  else
+    Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));  
+  UpdateData(false);
+}
+
+void CHandlerBox::on_Signal_clicked()
+{
+  if (Signal->isChecked()) {
+    ConstFunc->setChecked(true); 
+    ConstFunc->setEnabled(false);
+    myDECL->TypeFlags.INCL(isConst); 
+    Protected->setChecked(true);
+    Protected->setEnabled(false);
+    Abstract->setChecked(false);
+    Abstract->setEnabled(false);
+    StaticFunc->setChecked(false);
+    StaticFunc->setEnabled(false); 
+    Native->setChecked(true);
+    Native->setEnabled(false);
+    EnforceOver->setChecked(false);
+    EnforceOver->setEnabled(false);
+  }
+  else {
+    ConstFunc->setEnabled(true);
+    Protected->setEnabled(true);
+    Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
+    StaticFunc->setEnabled(true); 
+    Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
+    Native->setChecked(myDECL->ParentDECL->TypeFlags.Contains(isNative));
+    EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
+  }
+}
+
+void CHandlerBox::on_EnableName_clicked() 
+{
+  UpdateData(true);
+  if (EnableName->isChecked()) 
+    NewName->setEnabled(true);
+  else {
+    valNewName = QString(myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)->LocalName.c);
+    NewName->setEnabled(false);
+  }
+  UpdateData(false);
+}
+
+
+void CHandlerBox::reject()
+{
+  ResetComboItems(NamedTypes); 
+  QDialog::reject();
+}
+
+void CHandlerBox::on_ID_OK_clicked() 
+{
+  if (myDECL->SecondTFlags.Contains(funcImpl))
+    if ( myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)) {
+      QDialog::reject();
+      return;
+    }
+    else {
+      myDECL->SecondTFlags.EXCL(funcImpl);
+      myDECL->TypeFlags.EXCL(isProtected);
+      myDECL->Supports.Destroy();
+    }
+  UpdateData(true);
+  if (EnableName->isChecked()) 
+    myDECL->SecondTFlags.INCL(enableName);
+  else
+    myDECL->SecondTFlags.EXCL(enableName);
+  if (!myDECL->SecondTFlags.Contains(overrides) || myDECL->SecondTFlags.Contains(enableName)) {
+    if (myDECL->op == OP_noOp) {
+      QString* ids = CheckNewName(valNewName, myDECL, myDoc);
+      if (ids) {
+        QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+        NewName->setFocus();
+        //NewName->SetSel(0, -1);
+        return;
+      }
+    }
+    if (myDECL->op != OP_noOp)
+      myDoc->MakeOperator(myDECL);
+  }
+  ListToChain(Inherits, &myDECL->Inherits);  //fires
+  if (Native->isChecked())
+    myDECL->TypeFlags.INCL(isNative); 
+  else
+    myDECL->TypeFlags.EXCL(isNative); 
+  if (!myDECL->TypeFlags.Contains(isNative) && (myDECL->ParentDECL->DeclType == Impl) )
+    myDoc->GetExecDECL(myDECL, ExecDef);
+  if (!myDECL->Supports.first) 
+    myDECL->SecondTFlags.EXCL(overrides);
+  if (Abstract->isChecked())
+    myDECL->TypeFlags.INCL(isAbstract); 
+  else
+    myDECL->TypeFlags.EXCL(isAbstract);
+  if (StaticFunc->isChecked())
+    myDECL->TypeFlags.INCL(isStatic);
+  else
+    myDECL->TypeFlags.EXCL(isStatic);
+  if (Protected->isChecked())
+    myDECL->TypeFlags.INCL(isProtected);
+  else
+    myDECL->TypeFlags.EXCL(isProtected);
+  if (EnforceOver->isChecked())
+    myDECL->TypeFlags.INCL(forceOverride);
+  else
+    myDECL->TypeFlags.EXCL(forceOverride);
+  if (ConstFunc->isChecked())
+    myDECL->TypeFlags.INCL(isConst); 
+  else
+    myDECL->TypeFlags.EXCL(isConst); 
+  if (Signal->isChecked())
+    myDECL->SecondTFlags.INCL(isLavaSignal); 
+  else
+    myDECL->SecondTFlags.EXCL(isLavaSignal); 
+  if (Closed->isChecked())
+    myDECL->SecondTFlags.INCL(closed); 
+  else
+    myDECL->SecondTFlags.EXCL(closed); 
+  ResetComboItems(NamedTypes); 
+  QDialog::accept();
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Dialogfeld CFuncBox 
 
 CFuncBox::CFuncBox(QWidget* parent /*=NULL*/)
   : QDialog(parent)
@@ -4363,9 +4880,16 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
     break;
 
   case Function:
-    box = new CFuncBox(decl, origDECL, doc, isNew, parent);
-    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
-    valIni = ((CFuncBox*)box)->OnInitDialog();
+    if (decl->SecondTFlags.Contains(isHandler)) {
+      box = new CHandlerBox(decl, origDECL, doc, isNew, parent);
+      box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
+      valIni = ((CHandlerBox*)box)->OnInitDialog();
+    }
+    else {
+      box = new CFuncBox(decl, origDECL, doc, isNew, parent);
+      box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
+      valIni = ((CFuncBox*)box)->OnInitDialog();
+    }
     if (valIni == BoxContinue)
       okBox = box->exec();
     else if (valIni == BoxOK)

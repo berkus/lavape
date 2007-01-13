@@ -42,6 +42,7 @@ CGUIProg::CGUIProg() : CGUIProgBase()
   butNode = 0;
   editNode = 0;
   focNode = 0;
+  ActNode = 0;
   CurPTR = 0;
   FocusPopup = 0;
   popUps = 0;
@@ -55,6 +56,8 @@ CGUIProg::CGUIProg() : CGUIProgBase()
   FrozenObject = 0;
   fromFillIn = 0;
   Redraw = false;
+  ServicePtr = 0;
+
 }
 
 void CGUIProg::Create(CLavaBaseDoc* doc, QWidget* view)
@@ -91,6 +94,7 @@ void CGUIProg::OnUpdate( LavaDECL* decl, LavaVariablePtr resultPtr)
   editNode = 0;
   butNode = 0;
   focNode = 0;
+  ActNode = 0;
   CurPTR = 0;
   FocusPopup = 0;
   popUps = 0;
@@ -277,5 +281,6 @@ void CGUIProg::OnUpdateDeleteopt(QAction* action)
 
 void CGUIProg::OnUpdateNewFunc(QAction* action)
 {
-  action->setEnabled(!LBaseData->inRuntime && ActNode && ActNode->data.myHandlerNode);
+  action->setEnabled(!LBaseData->inRuntime && ActNode
+                     && ActNode->data.myHandlerNode);
 }

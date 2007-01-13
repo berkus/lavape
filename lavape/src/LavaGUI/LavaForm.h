@@ -34,6 +34,7 @@ public:
   LavaDECL* GetFinalIterType(LavaDECL* decl);
   CHEFormNode* BrowseForm(CHEFormNode *formNode, LavaDECL* formDECL);
   LavaVariablePtr NewLavaVarPtr(LavaObjectPtr val);
+  bool setDefaultValue (CHEFormNode *resultFNode);
 
   bool Silent;
   bool emptyInsertion;
@@ -53,7 +54,6 @@ private:
   LavaDECL *currentIteration;
 
   TAnnotation *inheritAnnotation (LavaDECL *DECLptr);
-  bool setDefaultValue (CHEFormNode *resultFNode);
 
   void partialForm (LavaDECL* parDECL, //for supporting the inherited classes 
                     LavaDECL* FormDecl, /*pure input*/

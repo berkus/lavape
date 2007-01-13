@@ -136,17 +136,31 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
     if (par) 
       iterData = ((CFormWid*)par)->iterData;
   }
-
+  if (myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+    && (myFormNode->data.FormSyntax->DeclType == PatternDef) ) {
+    myFormNode->data.myHandlerNode = myFormNode->data.FIP.up->data.myHandlerNode;
+    myFormNode->data.allowOwnHandler = myFormNode->data.FIP.up->data.allowOwnHandler;
+  }
   if ( myFormNode->data.allowOwnHandler
-    && (myFormNode->data.FormSyntax->SecondTFlags.Contains(isChain)
+    && (myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
       || myFormNode->data.BasicFlags.Contains(ButtonMenu))) {
     if (!LBaseData->inRuntime) {
       if (!myMenu)
         myMenu = new QMenu("Lava", this);
       myMenu->addAction(LBaseData->newFuncActionPtr);
+      if (myFormNode->data.FormSyntax->DeclType != PatternDef)
+        myFormNode->data.myHandlerNode = myFormNode;
     }
-    myFormNode->data.myHandlerNode = myFormNode;
   }
+  else
+    if (!myFormNode->data.allowOwnHandler
+       && myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet))
+      myFormNode->data.myHandlerNode = 0;
+
+  if ( myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+       && !myFormNode->data.handlerSearched)
+    GUIProg->setHandler(myFormNode);
+
   ForegroundColor = palette().windowText().color();
 }
  

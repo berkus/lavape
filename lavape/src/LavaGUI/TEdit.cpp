@@ -105,8 +105,9 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
 
   setGeometry(bord,bord, size.width(), minimumSizeHint().height());
   setModified(false);
-  if (!myFormNode->data.handlerSearched)
+  if (!myFormNode->data.handlerSearched) {
     GUIProg->setHandler(myFormNode);
+  }
   show();
 }
 
@@ -131,16 +132,20 @@ void CTEdit::focusInEvent(QFocusEvent *ev)
 void CTEdit::focusOutEvent(QFocusEvent *ev)
 {
   if (isModified()) {
-    myFormNode->data.StringValue = STRING(qPrintable(text()));
     if (LBaseData->inRuntime) {
       if (myFormNode->data.myHandler.first) {
-        //call handler: myFormNode->data.myHandler.last->data
-      }
-      inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
-      if (inError)
-        setCursorPosition(int(GUIProg->ErrPos));
-      else {
+        ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(text())));
         myFormNode->data.IoSigFlags.INCL(trueValue);
+        setText(myFormNode->data.StringValue.c);
+      }
+      else {
+        myFormNode->data.StringValue = STRING(qPrintable(text()));
+        inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
+        if (inError)
+          setCursorPosition(int(GUIProg->ErrPos));
+        else {
+          myFormNode->data.IoSigFlags.INCL(trueValue);
+        }
       }
       setModified(false);
     }

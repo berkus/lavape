@@ -78,7 +78,8 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
     LBaseData->insActionPtr->setEnabled(false);
   }
   QWidget* par = pParentWnd;
-  while (par && !par->inherits("CFormWid"))
+  while (par && (!par->inherits("CFormWid") 
+    || (((CFormWid*)par)->myFormNode->data.FormSyntax->OwnID < 0)))
     par = par->parentWidget();
   if (par) {
     myMenu = ((CFormWid*)par)->myMenu;
@@ -92,6 +93,8 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
     }
     myFormNode->data.myHandlerNode = myFormNode;
   }   
+  if (par && !myFormNode->data.handlerSearched)
+    GUIProg->setHandler(((CFormWid*)par)->myFormNode);
   show();
 }
 

@@ -23,6 +23,7 @@
 #include "CmdExec.h"
 #include "MakeGUI.h"
 #include "BAdapter.h"
+#include "LavaBaseDoc.h"
 #include "qmessagebox.h"
 #include "LavaBaseStringInit.h"
 #include "TButton.h"
@@ -161,6 +162,7 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
       newStackFrame[SFH+2] = newStackFrame[SFH+2] + newStackFrame[SFH+2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
       if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
         return;
+      /*
       ((CGUIProg*)GUIProg)->ex = HSetInsertBefore(((CGUIProg*)GUIProg)->ckd, newStackFrame);
       ((SynFlags*)(newStackFrame[SFH+2]+1))->INCL(insertedItem);
       if (((CGUIProg*)GUIProg)->ex)
@@ -168,6 +170,7 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
       handle = newStackFrame[SFH+3];
       DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)insertedNode->data.ResultVarPtr); //decr from AllocateObject after putting into chain
       ((CGUIProg*)GUIProg)->OnModified();
+      */
     }
     else {
       //error
@@ -192,6 +195,15 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
     if (!LBaseData->inRuntime) 
       QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty chain element",  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return;
+  }
+  if (LBaseData->inRuntime) {
+      ((CGUIProg*)GUIProg)->ex = HSetInsertBefore(((CGUIProg*)GUIProg)->ckd, newStackFrame);
+      ((SynFlags*)(newStackFrame[SFH+2]+1))->INCL(insertedItem);
+      if (((CGUIProg*)GUIProg)->ex)
+        return;
+      handle = newStackFrame[SFH+3];
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)insertedNode->data.ResultVarPtr); //decr from AllocateObject after putting into chain
+      ((CGUIProg*)GUIProg)->OnModified();
   }
   insertedNode->data.HandleObjPtr = (CSecTabBase**)handle;
   parNode->data.SubTree.Insert(beforeNode->predecessor, insertedNode);
@@ -269,6 +281,44 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
     delete delNode; 
   }
 } // END OF DeleteIterItem
+
+bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
+{
+  LavaObjectPtr StackFrame[SFH+3];
+  CVFuncDesc *fDesc;
+  CSectionDesc *funcSect;
+  bool ok;
+
+  STRING oldStr = fNode->data.StringValue;
+  LavaVariablePtr rPtr = (LavaVariablePtr)fNode->data.ResultVarPtr;
+
+  StackFrame[SFH] = (LavaObjectPtr)fNode->data.GUIService;
+  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(fNode->data.FormSyntax, &StackFrame[SFH+1]))
+    return false;
+  fNode->data.ResultVarPtr = (CSecTabBase***)&StackFrame[SFH+1];
+  ConvertAndStore(fNode);
+  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(fNode->data.FormSyntax, &StackFrame[SFH+2]))
+    return false;
+  fNode->data.ResultVarPtr = (CSecTabBase***)&StackFrame[SFH+2];
+  fNode->data.StringValue = newStr;
+  ConvertAndStore(fNode);
+  funcSect = &(*StackFrame[SFH])[0];
+  fDesc = &funcSect->funcDesc[fNode->data.HandlerDECL->SectionInfo1];
+
+  if (fDesc->isNative)
+    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, StackFrame);
+  else
+    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, StackFrame);
+  if (!ok) {
+    ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)fNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
+    return false;
+  }
+
+  fNode->data.ResultVarPtr = (CSecTabBase***)rPtr;
+  *fNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+3];
+  ((CGUIProg*)GUIProg)->LavaForm.setDefaultValue(fNode);
+  return true;
+}
 
 bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
 {

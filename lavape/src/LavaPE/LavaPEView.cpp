@@ -1242,6 +1242,10 @@ bool CLavaPEView::event(QEvent *ev)
     setSelPost((QTreeWidgetItem*)((CustomEvent*)ev)->data());
     return true;
   }
+  else if (ev->type() == UEV_NewHandler) {
+    OnInsert(Function, (LavaDECL*)((CustomEvent*)ev)->data());
+    return true;
+  }
   else if (ev->type() == QEvent::WhatsThisClicked) {
     wtcEv = (QWhatsThisClickedEvent*)ev;
     href = wtcEv->href();
@@ -2775,7 +2779,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
   CMainItemData *data, *ppdata;
   CTreeItem *par, *ppar, *collNode = NULL, *item;
   SynFlags first = (const unsigned long)1;
-  bool asChild, asSibling, callBox = false, isOnNew;
+  bool asChild, asSibling, isOnNew, isHandlerFunc;
   LavaDECL *decl, *parDECL, *refDECL = 0, *parentT, *setDECL; //*inEl
   CLavaPEHint *hint, *Sethint;
   CHE *cheIOEl, *che;
@@ -2784,7 +2788,11 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
   int pos;
   TID setID;
 
-  item = (CTreeItem*)Tree->currentItem();
+  isHandlerFunc = iDECL && iDECL->SecondTFlags.Contains(isHandler);
+  if (isHandlerFunc && iDECL) 
+    item = getSectionNode(Tree->RootItem, Function);
+  else
+    item = (CTreeItem*)Tree->currentItem();
   if (!item) {
     QMessageBox::critical(this, qApp->applicationName(),IDP_NoInsertionPos,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
@@ -2793,7 +2801,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
     QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
-  if (!myInclView && (eType != FormText)) {
+  if (!myInclView && (eType != FormText) && !isHandlerFunc) {
     QMessageBox::critical(this, qApp->applicationName(),IDP_NoFieldInsertion,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
     return false;
   }
@@ -2910,7 +2918,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
 
   ppar= (CTreeItem*)par->parent();
   ppdata = (CMainItemData*)ppar->getItemData();
-
+  
   if (iDECL  && decl->SecondTFlags.Contains(funcImpl) /*&& !dragParent*/) {
     // a function implementation or it's IO-members cannot be inserted in this way
     decl->SecondTFlags.EXCL(funcImpl);
@@ -2978,7 +2986,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
   if (!myInclView || (ppar != Tree->RootItem)
        && (ppar->parent() != Tree->RootItem)) {
     decl->FullName = (*(LavaDECL**)ppdata->synEl)->FullName;
-    if (iDECL) {
+    if (!isHandlerFunc && iDECL) {
       decl->FullName += ddppkt;
       decl->FullName += iDECL->LocalName;
     }
@@ -2988,7 +2996,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
       decl->FullName = decl->LocalName;
     }
   }
-  if (iDECL && !decl->SecondTFlags.Contains(funcImpl)) {
+  if (iDECL && !decl->SecondTFlags.Contains(funcImpl) && !isHandlerFunc) {
     isOnNew = false;
   }
   else {
@@ -3037,7 +3045,7 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
     }
   }
   bool buildSet=false;
-  if (!iDECL || callBox) {
+  if (!iDECL || isHandlerFunc) {
     int okBox = CallBox(decl, 0, GetDocument(), isOnNew, buildSet, this, asChild);
     if (okBox == QDialog::Accepted) {
       if (decl->Annotation.ptr && decl->Annotation.ptr->FA.ptr)
@@ -3059,10 +3067,21 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
   else
     pos = GetPos(0, item);
   d4 = ppdata->synEl;
-  if ((*(LavaDECL**)ppdata->synEl)->FullName.l)
-    str2 = new DString((*(LavaDECL**)ppdata->synEl)->FullName);
   parDECL = *(LavaDECL**)ppdata->synEl;
+  if (isHandlerFunc) {
+    parDECL = parDECL->ParentDECL;
+    TIDType tt;
+    d4 = (void*)GetDocument()->IDTable.GetVar(TID(parDECL->OwnID, parDECL->inINCL), tt);
+    /*
+    CHE* che = (CHE*)parDECL->ParentDECL->NestedDecls.first;
+    while (che && (che->data != parDECL))
+      che = (CHE*)che->successor;
+    if (che)
+      d4 = &(che->data);*/
+  }
   decl->ParentDECL = parDECL;
+  if (decl->ParentDECL->FullName.l)
+    str2 = new DString(decl->ParentDECL->FullName);
   hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), first,  decl, str2, (void*)pos, d4/*, dragParent, clipTree, docPathName*/);
   GetDocument()->UndoMem.AddToMem(hint);
   GetDocument()->UpdateDoc(this, false, hint);

@@ -19,6 +19,7 @@
 #include "idd_enumitem.h"
 #include "idd_interfacebox.h"
 #include "idd_initbox.h"
+#include "idd_handlerbox.h"
 #include "idd_funcbox.h"
 #include "idd_implbox.h"
 #include "idd_includebox.h"
@@ -36,15 +37,17 @@ public:
   CListBoxItem(const QString& txt, const TID& id):QListWidgetItem(txt) { setText(txt); ID = id;}
   CListBoxItem(const DString& text, const TID& id):QListWidgetItem(QString(text.c)) {setText(QString(text.c)); ID = id;}
   CListBoxItem(const QString& text, unsigned* flags):QListWidgetItem(text) {setText(text); Flags = flags;}
+  CListBoxItem(const QString& text, const TIDs& tids):QListWidgetItem(text) {setText(text); IDs = tids;}
   CListBoxItem() {}
   TID itemData() {return ID;}
   unsigned* flags() {return Flags;}
-  //void setItemText(const QString &txt) {setText(txt);  myText = txt; }
-  //QString text() { return myText; }
+  TIDs tids() {return IDs;}
+
 protected:
   TID ID;
+  TIDs IDs;
   unsigned* Flags;
-  //QString myText;
+
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -220,7 +223,47 @@ private:
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Dialogfeld CFuncBox 
+// Dialogfeld CHandlerBox 
+
+class CHandlerBox : public QDialog, public Ui_IDD_HandlerBox
+{
+public:
+  CHandlerBox(QWidget* pParent = NULL);   // Standardkonstruktor
+  CHandlerBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  ValOnInit OnInitDialog();
+  void UpdateData(bool getData);
+  LavaDECL* myDECL;
+  CLavaPEDoc *myDoc;
+  bool onNew;
+  LavaDECL * OrigDECL;
+  TID exID;
+  bool hasOutput;
+  bool hasParams;
+  bool second;
+
+  QString valNewName;
+
+public slots:
+    virtual void on_EnableName_clicked();
+    virtual void on_DelInherits_clicked();
+    virtual void on_NamedTypes_activated( int );
+    virtual void on_EventType_activated( int );
+    virtual void on_FieldRemove_clicked();
+    virtual void on_Abstract_clicked();
+    virtual void on_Native_clicked();
+    virtual void on_Signal_clicked();
+    virtual void on_RMOverrides_clicked();
+    virtual void on_StaticFunc_clicked();
+    virtual void on_Closed_clicked();
+    virtual void on_ID_OK_clicked();
+    virtual void on_ID_CANCEL_clicked() {reject();}
+    virtual void reject();
+    //virtual void on_ID_HELP_clicked();
+
+private:
+  Q_OBJECT
+};
+
 
 class CFuncBox : public QDialog, public Ui_IDD_FuncBox
 {
