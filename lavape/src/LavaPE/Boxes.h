@@ -19,7 +19,6 @@
 #include "idd_enumitem.h"
 #include "idd_interfacebox.h"
 #include "idd_initbox.h"
-#include "idd_handlerbox.h"
 #include "idd_funcbox.h"
 #include "idd_implbox.h"
 #include "idd_includebox.h"
@@ -58,7 +57,7 @@ class CAttrBox : public QDialog, public Ui_IDD_AttrBox
 // Construction
 public:
   CAttrBox(QWidget* pParent = NULL);   // standard constructor
-  CAttrBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CAttrBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
 
@@ -90,21 +89,21 @@ public slots:
     virtual void on_Substitutable_clicked();
     virtual void on_ValueObject_clicked() {}
 
- 
+
 private:
   Q_OBJECT
 };
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Dialogfeld CCompSpecBox 
+// Dialogfeld CCompSpecBox
 
 class CCompSpecBox : public QDialog, public Ui_IDD_CompSpecBox
 {
 // Konstruktion
 public:
   CCompSpecBox(QWidget* pParent = NULL);   // Standardkonstruktor
-  CCompSpecBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CCompSpecBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   void UpdateData(bool getData);
   ValOnInit OnInitDialog();
 
@@ -169,7 +168,7 @@ class CEnumBox : public QDialog, public Ui_IDD_EnumBox
 // Construction
 public:
   CEnumBox(QWidget* pParent);
-  CEnumBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CEnumBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ~CEnumBox();
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
@@ -183,7 +182,7 @@ public:
   bool  valBuildSet;
 
  void SetButtons(int sel);
-  
+
 public slots:
     virtual void on_EnumAdd_clicked();
     virtual void on_EnumEdit_clicked();
@@ -212,7 +211,7 @@ public:
   QString StartText;
   ChainAny0* Items;
   bool isID;
-  
+
 public slots:
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {QDialog::reject();}
@@ -224,13 +223,13 @@ private:
 
 /*
 ///////////////////////////////////////////////////////////////////////////
-// Dialogfeld CHandlerBox 
+// Dialogfeld CHandlerBox
 
 class CHandlerBox : public QDialog, public Ui_IDD_HandlerBox
 {
 public:
   CHandlerBox(QWidget* pParent = NULL);   // Standardkonstruktor
-  CHandlerBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CHandlerBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
   LavaDECL* myDECL;
@@ -271,7 +270,7 @@ class CFuncBox : public QDialog, public Ui_IDD_FuncBox
 {
 public:
   CFuncBox(QWidget* pParent = NULL);   // Standardkonstruktor
-  CFuncBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CFuncBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
   int checkHandlerIO();
@@ -325,7 +324,7 @@ class CImplBox : public QDialog, public Ui_IDD_ImplBox
 {
 public:
   CImplBox(QWidget* pParent = NULL);   // standard constructor
-  CImplBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CImplBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
   LavaDECL* myDECL;
@@ -350,7 +349,7 @@ private:
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Dialogfeld CIncludeBox 
+// Dialogfeld CIncludeBox
 
 class CIncludeBox : public QDialog, public Ui_IDD_IncludeBox
 {
@@ -367,7 +366,7 @@ public:
   QString valFullPathName;
 
 
-  
+
 public slots:
     virtual void on_OtherPath_clicked();
     virtual void on_ID_OK_clicked();
@@ -386,7 +385,7 @@ class CInitBox : public QDialog, public Ui_IDD_InitBox
 {
 public:
   CInitBox(QWidget* pParent = NULL);   // standard constructor
-  CInitBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CInitBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
 
@@ -417,7 +416,7 @@ class CInterfaceBox : public QDialog, public Ui_IDD_InterfaceBox
 {
 public:
   CInterfaceBox(QWidget* pParent = NULL);   // standard constructor
-  CInterfaceBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CInterfaceBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
   void SupportsToList();
@@ -464,7 +463,7 @@ class CIOBox : public QDialog, public Ui_IDD_IOBox
 {
 public:
   CIOBox(QWidget* pParent = NULL);   // standard constructor
-  CIOBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CIOBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
   void BaseClassesToCombo(LavaDECL *decl);
@@ -501,7 +500,7 @@ class CPackageBox : public QDialog, public Ui_IDD_PackageBox
 {
 public:
   CPackageBox(QWidget* parent = NULL);   // standard constructor
-  CPackageBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* parent = NULL); 
+  CPackageBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* parent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
 
@@ -534,10 +533,10 @@ class CSetBox : public QDialog, public Ui_IDD_SetBox
 // Construction
 public:
   CSetBox(QWidget* pParent = NULL);   // standard constructor
-  CSetBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CSetBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
- 
+
   LavaDECL* myDECL;
   LavaDECL* InEl;
   CLavaPEDoc *myDoc;
@@ -568,7 +567,7 @@ class CVTypeBox : public QDialog, public Ui_IDD_VTypeBox
 {
 public:
   CVTypeBox(QWidget* pParent = NULL);   // standard constructor
-  CVTypeBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
+  CVTypeBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
 
@@ -618,7 +617,7 @@ extern int SelEndOKToStr(QComboBox* cbox, QString* editStr, TID* exID);
 
 
 extern int CallBox( LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
-            bool& buildSet, QWidget* parent, bool asFirst=false); 
+            bool& buildSet, QWidget* parent, bool asFirst=false);
 
 class CExecExtensions: public CExec
 {
