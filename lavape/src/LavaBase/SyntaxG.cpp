@@ -605,7 +605,7 @@ void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr,
       CDPpp.CVTint(pgf,cid,vp->GUISignaltype);
       vp->HandlerClients.CDP(pgf,cid,CDPTIDs,NewCHETIDs);
     }
-  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+    if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPLavaDECL
 
 
