@@ -599,13 +599,9 @@ void CDPLavaDECL (PutGetFlag pgf, ASN1* cid, address varAddr,
       vp->Exec.CDP(pgf,cid);
       break;
     }
-    if (cid->Release < 4)
-      vp->GUISignaltype = 0;
-    else {
-      CDPpp.CVTint(pgf,cid,vp->GUISignaltype);
-      vp->HandlerClients.CDP(pgf,cid,CDPTIDs,NewCHETIDs);
-    }
-    if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+    CDPpp.CVTint(pgf,cid,vp->GUISignaltype);
+    vp->HandlerClients.CDP(pgf,cid,CDPTIDs,NewCHETIDs);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
 } // END OF CDPLavaDECL
 
 

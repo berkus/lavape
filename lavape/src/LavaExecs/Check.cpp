@@ -6090,12 +6090,6 @@ bool QuantStmOrExp::Check (CheckData &ckd)
 #endif
 
   ENTRY
-/*  if ((IsDeclare()
-      || ((Exists*)this)->secondaryClause.ptr)
-  && InReadOnlyContext()) {
-    SetError(ckd,&ERR_AssignInQuery);
-    ok = false;
-  }*/
 
   if (isDeclareWithIni) {
     ckd.precedingIniCall = 0;
