@@ -347,6 +347,7 @@ public:
   int widthPrev;
   bool OnCreate(wxDocTemplate *temp, wxDocument *doc);
   virtual void InitialUpdate();
+  virtual void closeEvent(QCloseEvent *e);
   virtual ~CFormFrame();
   void CalcSplitters();
 private:

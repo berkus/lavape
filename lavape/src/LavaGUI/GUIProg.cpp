@@ -122,6 +122,24 @@ void CGUIProg::NoteLastModified()
 void CGUIProg::SyncTree(CHEFormNode *node)
 {
   CHEFormNode *upNode;
+  TIDs *handlerChain = new TIDs;
+  CHETID *chetid, *cheCop;
+  handlerChain = new TIDs;
+  *handlerChain = node->data.myHandler;
+  upNode = node->data.FIP.up;
+  while (upNode) {
+    if (upNode->data.myHandler.last && (!handlerChain->last
+        || (((CHETID*)upNode->data.myHandler.last)->data != ((CHETID*)handlerChain->last)->data))) {
+      chetid = (CHETID*)upNode->data.myHandler.first;
+      while (chetid) {
+        cheCop = new CHETID;
+        cheCop->data = chetid->data;
+        handlerChain->Append(cheCop);
+        chetid = (CHETID*)chetid->successor;
+      }
+    }
+    upNode = upNode->data.FIP.up;
+  }
   if (!LBaseData->inRuntime && !inSynchTree && !((CLavaGUIFrame*)((CLavaGUIView*)ViewWin)->GetParentFrame())->onClose)
     if (!inSyncForm) {
       if (((CLavaGUIView*)ViewWin)->LastBrowseNode)
@@ -132,13 +150,18 @@ void CGUIProg::SyncTree(CHEFormNode *node)
         upNode = upNode->data.FIP.up);
       if (upNode) {
         inSynchTree = true;
-        CustomEvent syncev(UEV_LavaPE_SyncTree, (void*)upNode->data.FormSyntax);
+        CustomEvent syncev(UEV_LavaPE_SyncTree,(void*)new CSyncData(upNode->data.FormSyntax, handlerChain));
         if (!QApplication::sendEvent(((CLavaGUIView*)ViewWin)->myTree, &syncev ))
           inSynchTree = false;
       }
     }
     else
       QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree,new CustomEvent(UEV_LavaPE_CalledView));
+  else
+    if (!inSyncForm && !LBaseData->inRuntime && !((CLavaGUIFrame*)((CLavaGUIView*)ViewWin)->GetParentFrame())->onClose) {
+      CustomEvent* syncev1 = new CustomEvent(UEV_LavaPE_SyncTree,(void*)new CSyncData(0, handlerChain));
+      QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree, syncev1);
+    }
 }
 
 

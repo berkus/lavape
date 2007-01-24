@@ -98,5 +98,6 @@
 #include "PX_errtab.xpm"
 #include "PX_findtab.xpm"
 #include "PX_debugTab.xpm"
+#include "PX_functab.xpm"
 
 #endif

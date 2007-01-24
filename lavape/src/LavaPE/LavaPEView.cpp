@@ -1212,23 +1212,32 @@ bool CLavaPEView::event(QEvent *ev)
 {
   QWhatsThisClickedEvent *wtcEv;
   QString href;
+  CSyncData* data;
+  CTreeItem* item;
 
   if (ev->type() == UEV_LavaPE_CalledView) {
     wxDocManager::GetDocumentManager()->SetActiveView(this);
     return true;
   }
   else if (ev->type() == UEV_LavaPE_SyncTree) {
-    CTreeItem* item = BrowseTree((LavaDECL*)((CustomEvent*)ev)->data(), (CTreeItem*)Tree->RootItem);
-    if (item && (item != (CTreeItem*)Tree->currentItem())) {
-      inSync = true;
-      Tree->setCurAndSel(item);
-      Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
-//      Tree->ensureItemVisible(item);
-      QApplication::postEvent(myFormView, new CustomEvent(UEV_LavaPE_CalledView));
-      return true;
+    data = (CSyncData*)((CustomEvent*)ev)->data();
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetHandler(data->HandlerIDs, GetDocument());
+    if (data->FormSyntax) {
+      item = BrowseTree(data->FormSyntax, (CTreeItem*)Tree->RootItem);
+      if (item) {
+        if (item != (CTreeItem*)Tree->currentItem()) {
+          inSync = true;
+          Tree->setCurAndSel(item);
+          Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );
+          QApplication::postEvent(myFormView, new CustomEvent(UEV_LavaPE_CalledView));
+          return true;
+        }
+        return false;
+      }
+      else
+        return false;
     }
-    else
-      return false;
+    return true;
   }
   else if (ev->type() == UEV_LavaPE_SetLastHint) {
     GetDocument()->SetLastHint();
@@ -1243,7 +1252,7 @@ bool CLavaPEView::event(QEvent *ev)
     return true;
   }
   else if (ev->type() == UEV_NewHandler) {
-    OnInsert(Function, (LavaDECL*)((CustomEvent*)ev)->data());
+    myMainView->OnInsert(Function, (LavaDECL*)((CustomEvent*)ev)->data());
     return true;
   }
   else if (ev->type() == QEvent::WhatsThisClicked) {
@@ -2789,8 +2798,10 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
   TID setID;
 
   isHandlerFunc = iDECL && iDECL->SecondTFlags.Contains(isHandler);
-  if (isHandlerFunc && iDECL) 
-    item = getSectionNode(Tree->RootItem, Function);
+  if (isHandlerFunc && iDECL) {
+    item = BrowseTree(iDECL->ParentDECL, Tree->RootItem);
+    item = getSectionNode(item, Function);
+  }
   else
     item = (CTreeItem*)Tree->currentItem();
   if (!item) {
@@ -3068,23 +3079,14 @@ bool CLavaPEView::OnInsert(TDeclType eType, LavaDECL *iDECL)
     pos = GetPos(0, item);
   d4 = ppdata->synEl;
   parDECL = *(LavaDECL**)ppdata->synEl;
-  if (isHandlerFunc) {
-    parDECL = parDECL->ParentDECL;
-    TIDType tt;
-    d4 = (void*)GetDocument()->IDTable.GetVar(TID(parDECL->OwnID, parDECL->inINCL), tt);
-    /*
-    CHE* che = (CHE*)parDECL->ParentDECL->NestedDecls.first;
-    while (che && (che->data != parDECL))
-      che = (CHE*)che->successor;
-    if (che)
-      d4 = &(che->data);*/
-  }
   decl->ParentDECL = parDECL;
   if (decl->ParentDECL->FullName.l)
     str2 = new DString(decl->ParentDECL->FullName);
   hint = new CLavaPEHint(CPECommand_Insert, GetDocument(), first,  decl, str2, (void*)pos, d4/*, dragParent, clipTree, docPathName*/);
   GetDocument()->UndoMem.AddToMem(hint);
   GetDocument()->UpdateDoc(this, false, hint);
+  if (isHandlerFunc)
+    ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->AddHandler(decl, GetDocument());
   if (buildSet) {
     che = (CHE*)parDECL->NestedDecls.first;
     while (che && ( (LavaDECL*)che->data != decl))
@@ -3373,8 +3375,8 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
         if ((DataSel->type == TIType_DECL))
           GetDocument()->OpenWizardView(this, (LavaDECL**)DataSel->synEl/*, (unsigned long)1*/);
         if (!inSync && myFormView && (DataSel->type == TIType_DECL)) {
-          //if (ItemSel != Tree->child(0))
             ((CLavaGUIView*)myFormView)->SyncForm(*(LavaDECL**)DataSel->synEl);
+            ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->DeleteAllPageItems(tabHandler);
         }
         else
           inSync = false;
@@ -3523,6 +3525,7 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
         if (item) {
           QApplication::postEvent(myFormView, new CustomEvent(UEV_LavaPE_SyncForm, (void*)*(LavaDECL**)((CMainItemData*)item->getItemData())->synEl));
           GetDocument()->OpenWizardView(this, (LavaDECL**)((CMainItemData*)item->getItemData())->synEl/*, (unsigned long)1*/);
+          ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->DeleteAllPageItems(tabHandler);
         }
       }
     }

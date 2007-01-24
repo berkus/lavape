@@ -72,7 +72,7 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
     myMenu = ((CFormWid*)par)->myMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
-  if (myFormNode->data.allowOwnHandler) {
+  if (myFormNode->data.allowOwnHandler && isEnabled()) {
     if (!LBaseData->inRuntime) {
       if (!myMenu)
         myMenu = new QMenu(this);
@@ -80,7 +80,7 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
       myFormNode->data.myHandlerNode = myFormNode;
     }
   }
-  if (!myFormNode->data.handlerSearched)
+  if (!myFormNode->data.handlerSearched && isEnabled())
     GUIProg->setHandler(myFormNode);
   show();
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
@@ -168,9 +168,9 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
   if (myFormNode->data.FIP.up->data.IterFlags.Contains(Optional)
-    && myFormNode->data.allowOwnHandler)
+    && myFormNode->data.allowOwnHandler  && isEnabled())
     myFormNode->data.myHandlerNode = myFormNode;
-  if (!myFormNode->data.handlerSearched)
+  if (!myFormNode->data.handlerSearched && isEnabled())
     GUIProg->setHandler(myFormNode);
   show();
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
@@ -210,9 +210,9 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
   if (myFormNode->data.FIP.up->data.IterFlags.Contains(Optional)
-    && myFormNode->data.allowOwnHandler)
+    && myFormNode->data.allowOwnHandler && isEnabled())
     myFormNode->data.myHandlerNode = myFormNode;
-  if (!myFormNode->data.handlerSearched)
+  if (!myFormNode->data.handlerSearched && isEnabled())
     GUIProg->setHandler(myFormNode);
   show();
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
@@ -265,7 +265,7 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
     myMenu = ((CFormWid*)par)->myMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
-  if (isElli && myFormNode->data.allowOwnHandler) {
+  if (isElli && myFormNode->data.allowOwnHandler && isEnabled()) {
     myFormNode->data.myHandlerNode = myFormNode;
     if (!LBaseData->inRuntime) {
       if (!myMenu)
@@ -273,7 +273,7 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
       myMenu->addAction(LBaseData->newFuncActionPtr);
     }
   }
-  if (!myFormNode->data.handlerSearched)
+  if (!myFormNode->data.handlerSearched && isEnabled())
     GUIProg->setHandler(myFormNode);
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));
   show();
@@ -396,16 +396,7 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
     myMenu = ((CFormWid*)par)->myMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
-  /*
-  if (myFormNode->data.allowOwnHandler) {
-    if (!LBaseData->inRuntime) {
-      if (!myMenu)
-        myMenu = new QMenu(this);
-      myMenu->addAction(LBaseData->newFuncActionPtr);
-    }
-    myFormNode->data.myHandlerNode = EnumNode;
-  } */  
-  if (!myFormNode->data.handlerSearched)
+  if (!myFormNode->data.handlerSearched && isEnabled())
     GUIProg->setHandler(myFormNode);
   show();
   connect(this,SIGNAL(clicked()),SLOT(OnClicked()));

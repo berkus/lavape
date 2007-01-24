@@ -1482,7 +1482,8 @@ void CExecView::Select (SynObject *selObj)
       redCtl->update();
       return;
     }
-    else if (text->currentSynObj->parentObject->parentObject->parentObject
+    else if (text->currentSynObj->parentObject->parentObject
+    && text->currentSynObj->parentObject->parentObject->parentObject
     && text->currentSynObj->parentObject->parentObject->parentObject->primaryToken == declare_T
     && ((Declare*)text->currentSynObj->parentObject->parentObject->parentObject)->secondaryClause.ptr
     && (text->currentSynObj->parentObject->parentObject->whereInParent ==

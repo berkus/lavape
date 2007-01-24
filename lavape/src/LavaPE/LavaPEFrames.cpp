@@ -1906,6 +1906,12 @@ CFormFrame::CFormFrame(QWidget* parent):CLavaGUIFrame(parent)
   viewR = 0;
   widthPrev = 0;
 }
+void CFormFrame::closeEvent(QCloseEvent *ev)
+{
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->DeleteAllPageItems(tabHandler);
+  CLavaGUIFrame::closeEvent(ev);
+}
+
 
 CFormFrame::~CFormFrame()
 {
@@ -1983,50 +1989,3 @@ void CFormFrame::InitialUpdate()
 void CFormFrame::CalcSplitters()
 {
 }
-/*
-QString ToolbarWhatsThis::text(const QPoint &point) {
-  QToolButton *button;
-
-  button = (QToolButton*)toolbar->childAt(point.x(),point.y());
-  if (!button)
-    return QString::null;
-  return helpTextMap[button->textLabel()];
-}
-
-void CLavaMainFrame::fillHelpMap1(ToolbarWhatsThis *tbw) {
-}
-
-void CLavaMainFrame::fillHelpMap2(ToolbarWhatsThis *tbw) {
-}
-
-void CLavaMainFrame::fillHelpMap3(ToolbarWhatsThis *tbw) {
-  tbw->helpTextMap["include"] = QString("<p><a href=\"../Packages.htm#include\">Include</a>"
-    " another <font color=\"red\"><b><i>Lava</i></b></font> file</p>");
-  tbw->helpTextMap["package"] = QString("<p>Create a new <a href=\"../Packages.htm#packages\">package</a>"
-    " (= group of declarations/implementations that belong closely together)</p>");
-  tbw->helpTextMap["initiator"] = QString("<p>Create a new <a href=\"../Packages.htm#initiator\">main program</a>"
-    " (= <font color=\"red\"><b><i>Lava</i></b></font> main program)</p>");
-  tbw->helpTextMap["interface"] = QString("<p>Create a new <a href=\"../SepItfImpl.htm\">interface</a>"
-    " (= the public part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>");
-  tbw->helpTextMap["implementation"] = QString("<p>Create a new <a href=\"../SepItfImpl.htm\">implementation</a></p>"
-    " (= the private part of a <font color=\"red\"><b><i>Lava</i></b></font> class)</p>");
-  tbw->helpTextMap["COS"] = QString("<p>Create a new <a href=\"../Components.htm\">component object</a> specification</p>");
-  tbw->helpTextMap["COI"] = QString("<p>Create a new <a href=\"../Components.htm\">component object</a> implementation</p>");
-  tbw->helpTextMap["set"] = QString("<p>Create a new finite <a href=\"SetChain.htm\">set</a> of <font color=\"red\"><b><i>Lava</i></b></font> objects</p>");
-  tbw->helpTextMap["enumeration"] = QString("<p>Create a new <a href=\"Enumeration.htm\">enumeration type</a></p>");
-  tbw->helpTextMap["enumItem"] = QString("<p>Add a new <a href=\"Enumeration.htm\">enumerated item</a> to the current enumeration</p>");
-  tbw->helpTextMap["VT"] = QString("<p>Add a new <a href=\"../PatternsFrameworks.htm\">virtual type</a> to an interface or package</p>");
-  tbw->helpTextMap["function"] = QString("<p>Add a new virtual or static <a href=\"../dialogs/FunctionBox.htm\">member function</a> to the current interface or implementation</p>");
-  tbw->helpTextMap["memberVariable"] = QString("<p>Add a new <a href=\"../dialogs/MemVarBox.htm\">member variable</a> to the current interface or implementation</p>");
-  tbw->helpTextMap["makeGUI"] = QString("<p>Generate a <a href=\"../EditForm.htm#GUI\">GUI service interface</a> from the selected interface</p>");
-}
-
-void CLavaMainFrame::fillHelpMap4(ToolbarWhatsThis *tbw) {
-}
-
-void CLavaMainFrame::fillHelpMap5(ToolbarWhatsThis *tbw) {
-}
-
-void CLavaMainFrame::fillHelpMap6(ToolbarWhatsThis *tbw) {
-}
-*/

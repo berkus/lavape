@@ -6,6 +6,7 @@
 #include "DumpView.h"
 #include "DebuggerPE.h"
 #include "Resource.h"
+#include "LavaBaseDoc.h"
 #include "Syntax.h"
 #include "wxExport.h"
 //#include "q3combobox.h"
@@ -20,7 +21,7 @@
 #include <QTreeWidgetItem>
 
 
-enum UtilityTabs { /*tabBuild,*/ tabComment, tabError, tabFind, tabDebug };
+enum UtilityTabs { /*tabBuild,*/ tabComment, tabError, tabFind, tabHandler, tabDebug };
 
 class CUtilityView;
 
@@ -96,13 +97,15 @@ public:
   QString IdlMsg;
   bool ErrorEmpty;
   bool CommentEmpty;
-  void DeleteAllFindItems();
+  void DeleteAllPageItems(UtilityTabs tab);
   void ResetError();
   void SetErrorOnUtil(LavaDECL* decl);
   void SetErrorOnUtil(const CHAINX& ErrChain);
   void setError(const CHAINX& ErrChain, QString * strA);
   void SetComment(const DString& str, bool toStatebar = false);
   void SetFindText(const DString& text, CFindData* data);
+  void SetHandler(TIDs* handlerIDs, CLavaBaseDoc* doc);
+  void AddHandler(LavaDECL* func, CLavaBaseDoc* doc);
   void SetTab(UtilityTabs tab);
   void setDebugData(DbgMessages* message, CLavaBaseDoc* doc);
   void showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc);
@@ -119,6 +122,7 @@ public:
 protected:
   bool eventFilter(QObject *watched,QEvent *ev);
   QTreeWidget* FindPage;
+  QTreeWidget* HandlerPage;
   QTextEdit* CommentPage;
   QTextEdit* ErrorPage;
   QFrame *DebugPage;

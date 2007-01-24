@@ -243,7 +243,6 @@ void ChainAny0::Destroy()
   last = 0;
 }
 
-
 void CHE0::CopyData (ChainAnyElem *c)
 
 {

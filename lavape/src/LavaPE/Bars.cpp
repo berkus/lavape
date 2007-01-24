@@ -46,16 +46,19 @@ CUtilityView::CUtilityView(QWidget *parent)
   IdlMsg = "Ready";
 	
   FindPage = new QTreeWidget(0);
-//  FindPage->setSorting(-1);
   FindPage->setColumnCount(1);
-  //FindPage->addColumn(emptyString);
   FindPage->setRootIsDecorated(false);
-//  FindPage->header()->hide();
   FindPage->setSelectionMode(QAbstractItemView::SingleSelection);//Extended); 
+  HandlerPage = new QTreeWidget(0);
+  HandlerPage->setColumnCount(3);
+  HandlerPage->setRootIsDecorated(false);
+  HandlerPage->setSelectionMode(QAbstractItemView::SingleSelection);
+  CTreeItem* item = new CTreeItem(QString("Handler"), 0);
+  item->setText(1, "Event type");
+  item->setText(2, "Defined for");
+  HandlerPage->setHeaderItem(item);
   CommentPage = new QTextEdit(0);
   CommentPage->setReadOnly(true);
-//  QTextEdit *CommentPage2 = new QTextEdit(this);
-//  CommentPage2->setReadOnly(true);
   ErrorPage = new QTextEdit(0);
   ErrorPage->setReadOnly(true);
   DebugPage = new QFrame(0);
@@ -79,10 +82,12 @@ CUtilityView::CUtilityView(QWidget *parent)
   QIcon icoErr = QIcon(QPixmap((const char**)PX_errtab));
   QIcon icoCom = QIcon(QPixmap((const char**)PX_commentt));
   QIcon icoDebug = QIcon(QPixmap((const char**)PX_debugTab));
+  QIcon icoHandler = QIcon(QPixmap((const char**)PX_functab));
   setTabPosition(QTabWidget::South);
   addTab (CommentPage, icoCom, "Comment" ); 
   addTab (ErrorPage, icoErr, "Error" ); 
   addTab (FindPage, icoFind, "Find" ); 
+  addTab (HandlerPage, icoHandler, "Handler" ); 
   addTab (DebugPage, icoDebug, "Debug" ); 
   QSize sz = tabBar()->size();
   tabBar()->resize(sz.width(), 16);
@@ -90,6 +95,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   setCurrentIndex((int)ActTab);
   connect(this,SIGNAL(currentChanged(int)), SLOT(OnTabChange(int)));
   connect(FindPage,SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int  )), SLOT(OnDblclk(QTreeWidgetItem*, int)));
+  connect(HandlerPage,SIGNAL( itemDoubleClicked ( QTreeWidgetItem *, int  )), SLOT(OnDblclk(QTreeWidgetItem*, int)));
   ErrorEmpty = true;
   CommentEmpty = true;
   firstDebug = true;
@@ -99,7 +105,8 @@ CUtilityView::CUtilityView(QWidget *parent)
 
 CUtilityView::~CUtilityView()
 {
-  DeleteAllFindItems();
+  DeleteAllPageItems(tabFind);
+  DeleteAllPageItems(tabHandler);
 }
 
 
@@ -178,6 +185,140 @@ void CUtilityView::SetFindText(const DString& text, CFindData* data)
   CTreeItem *item = new CTreeItem(text.c, FindPage);
   item->setItemData((TItemData*)data);
 }
+void CUtilityView::AddHandler(LavaDECL* func, CLavaBaseDoc* doc)
+{
+  CTreeItem *item;
+  LavaDECL *decl;
+  CHETIDs *cheTIDs;
+  QString label1, label2;
+  CHETID *cheS;
+  CFindData *data, *dataCont;
+  item = new CTreeItem(func->FullName.c, HandlerPage);
+  data = new CFindData();
+  data->refCase = 4;
+  data->nID = func->OwnID;
+  data->refTid.nID = data->nID;
+  data->refTid.nINCL = 0;
+  data->fname = doc->IDTable.IDTab[func->inINCL]->FileName;
+  AbsPathName(data->fname, doc->IDTable.DocDir);
+  item->setItemData((TItemData*)data);
+  if (func->GUISignaltype == ValueChanged)
+    label1 = QString("New Value");
+  else if (func->GUISignaltype == EventInsert)
+    label1 = QString("Insert chain element");
+  else if (func->GUISignaltype == EventDelete)
+    label1 = QString("Delete chain element");
+  item->setText(1, label1);
+
+  cheTIDs = (CHETIDs*)func->HandlerClients.first;
+  while (cheTIDs) {
+    label2.clear(); 
+    cheS = (CHETID*)cheTIDs->data.first;
+    label2 += QString(func->ParentDECL->FullName.c);
+    if (cheS)
+      label2 += "::";
+    while (cheS) {
+      decl = doc->IDTable.GetDECL(cheS->data);
+      if (decl)
+        label2 += QString(decl->LocalName.c);
+      else { /*error, messagebox */}
+      cheS = (CHETID*)cheS->successor;
+      if (cheS)
+        label2 += QString(".");
+    }
+    item->setText(2, label2);
+    cheTIDs = (CHETIDs*)cheTIDs->successor;
+    if (cheTIDs) {
+      item = new CTreeItem(func->FullName.c, HandlerPage);
+      item->setText(1, label1);
+      dataCont = new CFindData();
+      dataCont = data;
+      item->setItemData((TItemData*)dataCont);
+    }
+  }
+  HandlerPage->resizeColumnToContents(0);
+  HandlerPage->resizeColumnToContents(1);
+  HandlerPage->resizeColumnToContents(2);
+  if (HandlerPage->columnWidth(0) < 30)
+    HandlerPage->setColumnWidth(0, 30);
+  if (HandlerPage->columnWidth(1) < 30)
+    HandlerPage->setColumnWidth(1, 30);
+  if (HandlerPage->columnWidth(2) < 30)
+    HandlerPage->setColumnWidth(2, 30);
+  SetTab(tabHandler);
+}
+
+
+void CUtilityView::SetHandler(TIDs* handlerIDs, CLavaBaseDoc* doc)
+{
+  CTreeItem *item;
+  LavaDECL *func, *decl;
+  CHETIDs *cheTIDs;
+  QString label1, label2;
+  CHETID *cheS, *che = (CHETID*)handlerIDs->first;
+  CFindData *data, *dataCont;
+  DeleteAllPageItems(tabHandler);
+  while (che) {
+    func = doc->IDTable.GetDECL(che->data);
+    item = new CTreeItem(func->FullName.c, HandlerPage);
+    data = new CFindData();
+    data->refCase = 4;
+    data->nID = func->OwnID;
+    data->refTid.nID = data->nID;
+    data->refTid.nINCL = 0;
+    data->fname = doc->IDTable.IDTab[func->inINCL]->FileName;
+    AbsPathName(data->fname, doc->IDTable.DocDir);
+    item->setItemData((TItemData*)data);
+    if (func->GUISignaltype == ValueChanged)
+      label1 = QString("New Value");
+    else if (func->GUISignaltype == EventInsert)
+      label1 = QString("Insert chain element");
+    else if (func->GUISignaltype == EventDelete)
+      label1 = QString("Delete chain element");
+    item->setText(1, label1);
+
+    cheTIDs = (CHETIDs*)func->HandlerClients.first;
+    while (cheTIDs) {
+      cheS = (CHETID*)cheTIDs->data.first;
+      label2.clear(); 
+      label2 = QString(func->ParentDECL->FullName.c);
+      if (cheS)
+        label2 += "::";
+      while (cheS) {
+        decl = doc->IDTable.GetDECL(cheS->data);
+        if (decl)
+          label2 += QString(decl->LocalName.c);
+        else { /*error, messagebox */}
+        cheS = (CHETID*)cheS->successor;
+        if (cheS)
+          label2 += QString(".");
+      }
+      item->setText(2, label2);
+      cheTIDs = (CHETIDs*)cheTIDs->successor;
+      if (cheTIDs) {
+        item = new CTreeItem(func->FullName.c, HandlerPage);
+        item->setText(1, label1);
+        dataCont = new CFindData();
+        dataCont = data;
+        item->setItemData((TItemData*)dataCont);
+      }
+    }
+    che = (CHETID*)che->successor;
+  }
+  if (handlerIDs->first) {
+    HandlerPage->resizeColumnToContents(0);
+    HandlerPage->resizeColumnToContents(1);
+    HandlerPage->resizeColumnToContents(2);
+    if (HandlerPage->columnWidth(0) < 30)
+      HandlerPage->setColumnWidth(0, 30);
+    if (HandlerPage->columnWidth(1) < 30)
+      HandlerPage->setColumnWidth(1, 30);
+    if (HandlerPage->columnWidth(2) < 30)
+      HandlerPage->setColumnWidth(2, 30);
+    SetTab(tabHandler);
+  }
+  delete handlerIDs;
+}
 
 void CUtilityView::OnDblclk(QTreeWidgetItem* item, int col)
 {
@@ -190,7 +331,7 @@ void CUtilityView::OnDblclk(QTreeWidgetItem* item, int col)
 
   data = (CFindData*)((CTreeItem*)item)->getItemData();
   doc = (CLavaPEDoc*)wxDocManager::GetDocumentManager()->FindOpenDocument(data->fname.c);
-  if (doc) {
+  if (doc && data) {
     decl = doc->IDTable.GetDECL(0, data->nID);
     if (decl) {
       if (!data->index) {
@@ -220,20 +361,27 @@ void CUtilityView::OnDblclk(QTreeWidgetItem* item, int col)
 }
 
 
-void CUtilityView::DeleteAllFindItems()
+void CUtilityView::DeleteAllPageItems(UtilityTabs tab)
 {
   CTreeItem* item;
   CFindData * itd;
+  QTreeWidget* page = 0;
   int ii=0;
-  for (item = (CTreeItem*)FindPage->topLevelItem(ii); //firstChild();
-       item;
-       item = (CTreeItem*)item->nextSibling()) {
-    ii++;
-    itd = (CFindData*)item->getItemData();
-    if (itd)
-      delete itd;
+  if (tab == tabFind)
+    page = FindPage;
+  else if (tab == tabHandler)
+    page = HandlerPage;
+  if (page) {
+    for (item = (CTreeItem*)page->topLevelItem(ii);
+         item;
+         item = (CTreeItem*)item->nextSibling()) {
+      ii++;
+      itd = (CFindData*)item->getItemData();
+      if (itd)
+        delete itd;
+    }
+    page->clear();
   }
-  FindPage->clear();
 }
 
 void CUtilityView::SetTab(UtilityTabs tab)
@@ -262,6 +410,10 @@ void CUtilityView::OnTabChange(int)
   ActTab = (UtilityTabs)currentIndex();
   if (ActTab == tabFind) {
     FindPage->show();
+    setUpdatesEnabled(true);
+  }  
+  if (ActTab == tabHandler) {
+    HandlerPage->show();
     setUpdatesEnabled(true);
   }
 }

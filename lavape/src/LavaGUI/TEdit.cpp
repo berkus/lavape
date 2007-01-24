@@ -81,7 +81,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (!LBaseData->inRuntime) 
-    if (myFormNode->data.allowOwnHandler) {
+    if (myFormNode->data.allowOwnHandler && !isReadOnly() && isEnabled()) {
       if (!myMenu)
         myMenu = new QMenu("Lava", this);
       myMenu->addAction(LBaseData->newFuncActionPtr);
@@ -105,7 +105,7 @@ CTEdit::CTEdit(CGUIProgBase *guiPr, CHEFormNode* data,
 
   setGeometry(bord,bord, size.width(), minimumSizeHint().height());
   setModified(false);
-  if (!myFormNode->data.handlerSearched) {
+  if (!myFormNode->data.handlerSearched && !isReadOnly() && isEnabled()) {
     GUIProg->setHandler(myFormNode);
   }
   show();
@@ -123,10 +123,6 @@ void CTEdit::focusInEvent(QFocusEvent *ev)
     setCursorPosition(int(GUIProg->ErrPos));
   QLineEdit::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
-  if (!LBaseData->inRuntime) {
-    //show handler,
-    //if ( myFormNode->data.allowOwnHandler) activate handler action
-  }
 }
 
 void CTEdit::focusOutEvent(QFocusEvent *ev)
@@ -206,21 +202,7 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   GUIProg->SetColor(this, myFormNode, QPalette::Base, QPalette::Text);
   //if (GUIProg->Font)
   //  setFont(*GUIProg->Font);
-  QWidget* par = parentWidget;
-  while (par && !par->inherits("CFormWid"))
-    par = par->parentWidget();
-  if (par) {
-    myMenu = ((CFormWid*)par)->myMenu;
-    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
-  }
-  if (myFormNode->data.allowOwnHandler) {
-    if (!LBaseData->inRuntime) {
-      if (!myMenu)
-        myMenu = new QMenu("Lava", this);
-      myMenu->addAction(LBaseData->newFuncActionPtr);
-    }
-    myFormNode->data.myHandlerNode = myFormNode;
-  }  
+
   if (myFormNode->data.IterFlags.Contains(Optional)) {
     if (!myMenu)
       if (LBaseData->inRuntime)
@@ -231,7 +213,21 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
     myMenu->addAction(LBaseData->insActionPtr);//InsAction);
     LBaseData->insActionPtr->setEnabled(false);
   }
- 
+  QWidget* par = parentWidget;
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (par) {
+    myMenu = ((CFormWid*)par)->myMenu;
+    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+  }
+  if (myFormNode->data.allowOwnHandler && !isReadOnly() && isEnabled()) {
+    if (!LBaseData->inRuntime) {
+      if (!myMenu)
+        myMenu = new QMenu("Lava", this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
+    }
+    myFormNode->data.myHandlerNode = myFormNode;
+  }   
   setContentsMargins(0, 0, 0, 0);
   int bord = GUIProg->GetLineWidth(parentWidget);
   size = GUIProg->CalcTextRect(size.width(), size.height(), font());
@@ -241,7 +237,9 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   show();
   setTabChangesFocus(true);
   document()->setModified(false);
-  //connect(this,SIGNAL(textChanged()), this, SLOT(OnChange()));
+  if (!myFormNode->data.handlerSearched && !isReadOnly() && isEnabled()) {
+    GUIProg->setHandler(myFormNode);
+  }  //connect(this,SIGNAL(textChanged()), this, SLOT(OnChange()));
 }
 
 void CMultiLineEdit::focusInEvent(QFocusEvent *ev)
@@ -261,15 +259,18 @@ void CMultiLineEdit::focusInEvent(QFocusEvent *ev)
 void CMultiLineEdit::focusOutEvent(QFocusEvent *ev)
 {
   if (document()->isModified()) {
-    myFormNode->data.StringValue = STRING(qPrintable(document()->toPlainText()));
     if (LBaseData->inRuntime) {
-      inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
-      //if (inError)
-      //  SetSel(int(GUIProg->ErrPos), int(GUIProg->ErrPos));
-      //else
+      if (myFormNode->data.myHandler.first) {
+        ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(document()->toPlainText())));
         myFormNode->data.IoSigFlags.INCL(trueValue);
-//      changed = false;
+        setPlainText(myFormNode->data.StringValue.c);
+      }
+      else {
+        myFormNode->data.StringValue = STRING(qPrintable(document()->toPlainText()));
+        inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
+        myFormNode->data.IoSigFlags.INCL(trueValue);
         document()->setModified(false);
+      }
 
     }
   }

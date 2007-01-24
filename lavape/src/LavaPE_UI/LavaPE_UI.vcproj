@@ -599,20 +599,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\idd_handlerbox.ui"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)"
-						Outputs="Generated\$(InputName).h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="idd_implbox.ui"
 				>
 				<FileConfiguration

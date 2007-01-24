@@ -46,7 +46,7 @@ void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,
          chp = (CHE*)chp->successor) {
       maxLevel = qMax(maxLevel,((Expression*)chp->data)->closedLevel);
     }
-    if (obj->!flags.Contains(isIniCallOrHandle) {
+    if (!obj->flags.Contains(isIniCallOrHandle)) {
       maxLevel = qMax(maxLevel,((Expression*)chp->data)->closedLevel);
     }
     obj->closedLevel = funcCall->closedLevel = maxLevel;

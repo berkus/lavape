@@ -25,6 +25,7 @@
 #include "LavaPEStringInit.h"
 #include "ComboBar.h"
 #include "LavaPEWizard.h"
+#include "GUIProgBase.h"
 #include "mdiframes.h"
 
 #include "qlineedit.h"
@@ -1356,7 +1357,8 @@ void CEnumItem::on_ID_OK_clicked()
 }
 
 
-/////////////////////////////////////////////////////////////////////////////
+/*
+///////////////////////////////////////////////////////////////////////////
 // Dialogfeld CHandlerBox 
 
 CHandlerBox::CHandlerBox(QWidget* pParent)   
@@ -1426,17 +1428,38 @@ ValOnInit CHandlerBox::OnInitDialog()
   cheTIDs = (CHETIDs*)myDECL->HandlerClients.first;
   while (cheTIDs) {
     cheS = (CHETID*)cheTIDs->data.first;
-    while (cheS) {
-      nameText += QString(".");
-      decl = myDoc->IDTable.GetDECL(cheS->data);
-      if (decl)
-        nameText += QString(decl->LocalName.c);
-      else { /*error, messagebox */}
-      cheS = (CHETID*)cheS->successor;
+    if (!cheS) {
+      nameText = "all fields of type ";
+      nameText += QString(myDECL->ParentDECL->FullName.c);
     }
+    else
+      nameText.clear();
+      while (cheS) {
+        decl = myDoc->IDTable.GetDECL(cheS->data);
+        if (decl)
+          nameText += QString(decl->LocalName.c);
+        else { }
+        cheS = (CHETID*)cheS->successor;
+        if (cheS)
+          nameText += QString(".");
+      }
     listItem = new CListBoxItem(nameText, cheTIDs->data);
     FieldList->addItem(listItem);
     cheTIDs = (CHETIDs*)cheTIDs->successor;
+  }
+  if (((CHETIDs*)myDECL->HandlerClients.first)->data.last) 
+    decl = myDoc->IDTable.GetDECL(((CHETID*)((CHETIDs*)myDECL->HandlerClients.first)->data.last)->data);
+  else 
+    decl = myDECL->ParentDECL;
+  FieldTypeDECL = myDoc->IDTable.GetDECL(decl->RefID, decl->inINCL);
+  if (FieldTypeDECL->TypeFlags.Contains(isGUI) || FieldTypeDECL->DeclType == FormDef)
+    FieldTypeDECL = myDoc->IDTable.GetDECL(FieldTypeDECL->RefID, FieldTypeDECL->inINCL);
+  if (FieldTypeDECL->SecondTFlags.Contains(isSet)) {
+    EventType->addItem(QString("Insert"));
+    EventType->addItem(QString("Delete"));
+  }
+  else {
+    EventType->addItem(QString("New value"));
   }
   if (onNew) {
     hasParams = 0;
@@ -1446,6 +1469,7 @@ ValOnInit CHandlerBox::OnInitDialog()
     }
     myDECL->TypeFlags.INCL(isConst);
     ConstFunc->setChecked(true);
+    EventType->setCurrentIndex(0);
   }  
   else {
     valNewName = QString(myDECL->LocalName.c);
@@ -1462,7 +1486,11 @@ ValOnInit CHandlerBox::OnInitDialog()
         cheIO = (CHE*)cheIO->successor;
     }
     hasOutput = hasOutput || myDECL->Inherits.first;
-
+    if ((myDECL->GUISignaltype == EventDelete) || (myDECL->GUISignaltype == EventInsert))
+      EventType->setCurrentIndex(myDECL->GUISignaltype-1);
+    else
+      EventType->setCurrentIndex(myDECL->GUISignaltype);
+    EventType->setEnabled(false);
     if (myDECL->SecondTFlags.Contains(isLavaSignal)) {
       Signal->setChecked(true);
       StaticFunc->setEnabled(false);
@@ -1655,6 +1683,9 @@ void CHandlerBox::on_EventType_activated( int )
 
 void CHandlerBox::on_FieldRemove_clicked()
 {
+  int pos = FieldList->currentRow();
+  if (pos >= 0)
+    delete FieldList->takeItem(pos);
 
 }
 
@@ -1803,7 +1834,8 @@ void CHandlerBox::reject()
 
 void CHandlerBox::on_ID_OK_clicked() 
 {
-  if (myDECL->SecondTFlags.Contains(funcImpl))
+ LavaDECL *IOEl, *IOEl2; 
+ if (myDECL->SecondTFlags.Contains(funcImpl))
     if ( myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)) {
       QDialog::reject();
       return;
@@ -1813,23 +1845,132 @@ void CHandlerBox::on_ID_OK_clicked()
       myDECL->TypeFlags.EXCL(isProtected);
       myDECL->Supports.Destroy();
     }
+   myDECL->GUISignaltype = EventType->currentIndex();
+   if (FieldTypeDECL->SecondTFlags.Contains(isSet)) 
+     myDECL->GUISignaltype += 1;
+   if (myDECL->GUISignaltype < 1) {
+     QMessageBox::critical(this, qApp->applicationName(), IDP_NoTypeSel, QMessageBox::Ok,0,0);
+     EventType->setFocus();
+     return;
+   }
+   if (onNew) {
+    if (myDECL->GUISignaltype == EventDelete) {
+      IOEl = NewLavaDECL();
+      IOEl->TypeFlags.INCL(trueObjCat);
+      IOEl->DeclType = IAttr;
+      IOEl->LocalName = STRING("delHandle");
+      IOEl->DeclDescType = BasicType;
+      IOEl->BType = B_Che;
+      IOEl->inINCL = 0;
+      IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Che], 1);
+      myDECL->NestedDecls.Append(NewCHE(IOEl));
+      IOEl = NewLavaDECL();
+      IOEl->TypeFlags.INCL(trueObjCat);
+      IOEl->DeclType = OAttr;
+      IOEl->LocalName = STRING("delete");
+      IOEl->DeclDescType = BasicType;
+      IOEl->BType = B_Bool;
+      IOEl->inINCL = 0;
+      IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Bool], 1);
+      myDECL->NestedDecls.Append(NewCHE(IOEl));
+    }
+    else if (myDECL->GUISignaltype == EventInsert) {
+      IOEl = NewLavaDECL();
+      IOEl->TypeFlags.INCL(trueObjCat);
+      IOEl->LocalName = STRING("afterHandle");
+      IOEl->DeclType = IAttr;
+      IOEl->DeclDescType = BasicType;
+      IOEl->BType = B_Che;
+      IOEl->inINCL = 0;
+      IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Che], 1);
+      myDECL->NestedDecls.Append(NewCHE(IOEl));
+      IOEl = NewLavaDECL();
+      IOEl->TypeFlags.INCL(trueObjCat);
+      IOEl->DeclType = IAttr;
+      IOEl->LocalName = STRING("defaultElem");
+      if (FieldTypeDECL->fromBType == NonBasic)
+        IOEl->DeclDescType = NamedType;
+      else
+        IOEl->DeclDescType = BasicType;
+      IOEl->BType = FieldTypeDECL->fromBType;
+      IOEl->inINCL = 0;
+      myDoc->IDTable.GetParamRefID(FieldTypeDECL, IOEl->RefID, isSet);
+      myDECL->NestedDecls.Append(NewCHE(IOEl));
+      IOEl2 = NewLavaDECL();
+      IOEl2->TypeFlags.INCL(trueObjCat);
+      IOEl2->LocalName = STRING("insert");
+      IOEl2->DeclType = OAttr;
+      IOEl2->DeclDescType = BasicType;
+      IOEl2->BType = B_Bool;
+      IOEl2->inINCL = 0;
+      IOEl2->RefID = TID(myDoc->IDTable.BasicTypesID[B_Bool], 1);
+      myDECL->NestedDecls.Append(NewCHE(IOEl2));
+      IOEl2 = NewLavaDECL();
+      IOEl2->TypeFlags.INCL(trueObjCat);
+      IOEl2->TypeFlags.INCL(isOptional);
+      IOEl2->DeclType = OAttr;
+      IOEl2->LocalName = STRING("insertElem");
+      if (FieldTypeDECL->fromBType == NonBasic)
+        IOEl2->DeclDescType = NamedType;
+      else
+        IOEl2->DeclDescType = BasicType;
+      IOEl2->BType = FieldTypeDECL->fromBType;
+      IOEl2->inINCL = 0;
+      IOEl2->RefID = IOEl->RefID;
+      myDECL->NestedDecls.Append(NewCHE(IOEl2));
+    }
+    else if (myDECL->GUISignaltype == ValueChanged) {
+      IOEl = NewLavaDECL();
+      IOEl->TypeFlags.INCL(trueObjCat);
+      IOEl->DeclType = IAttr;
+      IOEl->LocalName = STRING("oldValue");
+      if (FieldTypeDECL->fromBType == NonBasic)
+        IOEl->DeclDescType = NamedType;
+      else
+        IOEl->DeclDescType = BasicType;
+      IOEl->BType = FieldTypeDECL->fromBType;
+      IOEl->inINCL = 0;
+      IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+      myDECL->NestedDecls.Append(NewCHE(IOEl));
+      IOEl = NewLavaDECL();
+      IOEl->TypeFlags.INCL(trueObjCat);
+      IOEl->DeclType = IAttr;
+      IOEl->LocalName = STRING("enteredValue");
+      if (FieldTypeDECL->fromBType == NonBasic)
+        IOEl->DeclDescType = NamedType;
+      else
+        IOEl->DeclDescType = BasicType;
+      IOEl->BType = FieldTypeDECL->fromBType;
+      IOEl->inINCL = 0;
+      IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+      myDECL->NestedDecls.Append(NewCHE(IOEl));
+      IOEl = NewLavaDECL();
+      IOEl->TypeFlags.INCL(trueObjCat);
+      IOEl->TypeFlags.INCL(isOptional);
+      IOEl->DeclType = OAttr;
+      IOEl->LocalName = STRING("newValue");
+      if (FieldTypeDECL->fromBType == NonBasic)
+        IOEl->DeclDescType = NamedType;
+      else
+        IOEl->DeclDescType = BasicType;
+      IOEl->BType = FieldTypeDECL->fromBType;
+      IOEl->inINCL = 0;
+      IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+      myDECL->NestedDecls.Append(NewCHE(IOEl));
+    }
+  }//onNew
   UpdateData(true);
   if (EnableName->isChecked()) 
     myDECL->SecondTFlags.INCL(enableName);
   else
     myDECL->SecondTFlags.EXCL(enableName);
   if (!myDECL->SecondTFlags.Contains(overrides) || myDECL->SecondTFlags.Contains(enableName)) {
-    if (myDECL->op == OP_noOp) {
-      QString* ids = CheckNewName(valNewName, myDECL, myDoc);
-      if (ids) {
-        QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
-        NewName->setFocus();
-        //NewName->SetSel(0, -1);
-        return;
-      }
+    QString* ids = CheckNewName(valNewName, myDECL, myDoc);
+    if (ids) {
+      QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
+      NewName->setFocus();
+      return;
     }
-    if (myDECL->op != OP_noOp)
-      myDoc->MakeOperator(myDECL);
   }
   ListToChain(Inherits, &myDECL->Inherits);  //fires
   if (Native->isChecked())
@@ -1871,7 +2012,7 @@ void CHandlerBox::on_ID_OK_clicked()
   ResetComboItems(NamedTypes); 
   QDialog::accept();
 }
-
+*/
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1921,11 +2062,14 @@ void CFuncBox::UpdateData(bool getData)
 }
 
 ValOnInit CFuncBox::OnInitDialog()
-{ CHE* cheIO;
+{ 
+  CHE* cheIO;
   SynFlags typeflag;
   LavaDECL *decl,  *baseDECL;
   CHETID *ncheS, *cheS;
   CListBoxItem *listItem;
+  CHETIDs *cheTIDs;
+  QString nameText;
 
   if (myDoc->changeNothing) {
     ID_OK->setEnabled(false);
@@ -1953,6 +2097,55 @@ ValOnInit CFuncBox::OnInitDialog()
     Abstract->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isAbstract));
     Native->setEnabled(myDECL->ParentDECL->TypeFlags.Contains(isNative));
   }
+  if (myDECL->SecondTFlags.Contains(isHandler)) {
+    CHECKOp->setChecked(false);
+    CHECKOp->setEnabled(false);
+    Initializer->setChecked(false);
+    Initializer->setEnabled(false);
+    Synch->setChecked(true);
+    Concurrent->setChecked(false);
+    Independent->setChecked(false);
+    Synch->setEnabled(false);
+    Concurrent->setEnabled(false);
+    Independent->setEnabled(false);
+    CHECKHandler->setChecked(true);
+    cheTIDs = (CHETIDs*)myDECL->HandlerClients.first;
+    while (cheTIDs) {
+      cheS = (CHETID*)cheTIDs->data.first;
+      if (!cheS) {
+        nameText = "all fields of type ";
+        nameText += QString(myDECL->ParentDECL->FullName.c);
+      }
+      else
+        nameText.clear();
+        while (cheS) {
+          decl = myDoc->IDTable.GetDECL(cheS->data);
+          if (decl)
+            nameText += QString(decl->LocalName.c);
+          else { /*error, messagebox */}
+          cheS = (CHETID*)cheS->successor;
+          if (cheS)
+            nameText += QString(".");
+        }
+      listItem = new CListBoxItem(nameText, cheTIDs->data);
+      FieldList->addItem(listItem);
+      cheTIDs = (CHETIDs*)cheTIDs->successor;
+    }
+    if (((CHETIDs*)myDECL->HandlerClients.first)->data.last) 
+      decl = myDoc->IDTable.GetDECL(((CHETID*)((CHETIDs*)myDECL->HandlerClients.first)->data.last)->data);
+    else 
+      decl = myDECL->ParentDECL;
+    FieldTypeDECL = myDoc->IDTable.GetDECL(decl->RefID, decl->inINCL);
+    if (FieldTypeDECL->TypeFlags.Contains(isGUI) || FieldTypeDECL->DeclType == FormDef)
+      FieldTypeDECL = myDoc->IDTable.GetDECL(FieldTypeDECL->RefID, FieldTypeDECL->inINCL);
+    if (FieldTypeDECL->SecondTFlags.Contains(isSet)) {
+      EventType->addItem(QString("Insert"));
+      EventType->addItem(QString("Delete"));
+    }
+    else {
+      EventType->addItem(QString("New value"));
+    }
+  }
   if (onNew) {
     hasParams = 0;
     valSynch = 0;
@@ -1962,19 +2155,14 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     myDECL->TypeFlags.INCL(isConst);
     ConstFunc->setChecked(true);
-    /*
-    else
-      if (myDECL->ParentDECL->TypeFlags.Contains(isAbstract)) {
-        myDECL->TypeFlags.INCL(isAbstract);
-        Abstract->setChecked(true);
-      }
-    */
+    EventType->setCurrentIndex(0);
+
     if ((myDECL->ParentDECL->DeclType == Interface)
          || (myDECL->ParentDECL->DeclType == Impl) ) {
       CHECKOp->setEnabled(true);
       CalcOpBox();
     }
-//    InheritsBody->setEnabled(false);
+    CHECKHandler->setEnabled(false);
   }  
   else {
     valNewName = QString(myDECL->LocalName.c);
@@ -2213,10 +2401,105 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     else
       Closed->setChecked(false);
+    if (myDECL->SecondTFlags.Contains(isHandler)) {
+      CHECKHandler->setEnabled(true);
+      if ((myDECL->GUISignaltype == EventDelete) || (myDECL->GUISignaltype == EventInsert))
+        EventType->setCurrentIndex(myDECL->GUISignaltype-1);
+      else
+        EventType->setCurrentIndex(myDECL->GUISignaltype);
+      EventType->setEnabled(false);
+    }
+    else {
+      if (!myDECL->SecondTFlags.Contains(funcImpl)
+           && myDECL->ParentDECL->TypeFlags.Contains(isGUI)) {
+        int type = checkHandlerIO();
+        if (type >= 0) {
+          if (type == 2)
+            EventType->addItem("Insert");
+          else if (type == 3)
+            EventType->addItem("Delete");
+          else
+            EventType->addItem("New value");
+          EventType->setEnabled(true);
+          CHECKHandler->setEnabled(true);
+        }
+        else
+          CHECKHandler->setEnabled(false);
+      }
+      else
+        CHECKHandler->setEnabled(false);
+    }
   }
+  CHECKHandler->setChecked(myDECL->SecondTFlags.Contains(isHandler));
+  EventType->setEnabled(myDECL->SecondTFlags.Contains(isHandler) && !myDECL->SecondTFlags.Contains(funcImpl));
+  FieldList->setEnabled(myDECL->SecondTFlags.Contains(isHandler) && !myDECL->SecondTFlags.Contains(funcImpl));
+  FieldRemove->setEnabled(myDECL->SecondTFlags.Contains(isHandler));
+
   UpdateData(false); 
   NewName->setFocus();
   return BoxContinue;
+}
+
+int CFuncBox::checkHandlerIO()
+{
+  TID refID;
+  LavaDECL *chain;
+
+  CHE* cheIO1 = (CHE*)myDECL->NestedDecls.first;
+  if (!cheIO1)
+    return -1;
+  CHE* cheIO2 = (CHE*)cheIO1->successor;
+  if (!cheIO2)
+    return -1;
+  if ((((LavaDECL*)cheIO1->data)->DeclType != IAttr)
+    || (((LavaDECL*)cheIO2->data)->DeclType != IAttr))
+    return -1;
+  CHE* cheIO3 = (CHE*)cheIO2->successor;
+  if (!cheIO3)
+    return -1;
+  CHE* cheIO4 = (CHE*)cheIO3->successor;
+  if (cheIO4 && (((LavaDECL*)cheIO4->data)->DeclType != ExecDef)) {
+    CHE* cheIO5 = (CHE*)cheIO4->successor;
+    if (!cheIO5 || (((LavaDECL*)cheIO3->data)->DeclType != IAttr)
+      || (((LavaDECL*)cheIO4->data)->DeclType != OAttr)
+      || (((LavaDECL*)cheIO5->data)->DeclType != OAttr))
+      return -1;
+    if (cheIO5->successor 
+        && (((LavaDECL*)((CHE*)cheIO5->successor)->data)->DeclType != ExecDef))
+        return -1;
+    chain = myDoc->IDTable.GetDECL(((LavaDECL*)cheIO1->data)->RefID);
+    if (!chain->SecondTFlags.Contains(isSet))
+      return -1;
+    if (((LavaDECL*)cheIO2->data)->BType != B_Che)
+      return -1;
+    if (((LavaDECL*)cheIO4->data)->BType != B_Bool)
+      return -1;
+    myDoc->IDTable.GetParamRefID(chain, refID, isSet);
+    if ((((LavaDECL*)cheIO3->data)->RefID == refID) 
+      && (((LavaDECL*)cheIO5->data)->RefID == refID))
+      return 2; //Insert
+    else
+      return -1;
+  }
+  else {
+    if (((LavaDECL*)cheIO3->data)->DeclType != OAttr)
+      return -1;
+    if ((((LavaDECL*)cheIO1->data)->RefID == ((LavaDECL*)cheIO2->data)->RefID)
+      && (((LavaDECL*)cheIO1->data)->RefID == ((LavaDECL*)cheIO3->data)->RefID))
+      return 1; //New Value
+    else {
+      if (((LavaDECL*)cheIO2->data)->BType != B_Che)
+        return -1;
+      if (((LavaDECL*)cheIO3->data)->BType != B_Bool)
+        return -1;
+      chain = myDoc->IDTable.GetDECL(((LavaDECL*)cheIO1->data)->RefID);
+      if (chain->SecondTFlags.Contains(isSet))
+        return 3; //Delete
+      else
+        return -1;
+    }
+  }
+  return -1;
 }
 
 void CFuncBox::CalcOpBox()
@@ -2245,6 +2528,47 @@ void CFuncBox::CalcOpBox()
     }
   }
   //SortCombo(CMBOperator);
+}
+
+void CFuncBox::on_CHECKHandler_clicked()
+{
+  if (CHECKHandler->isChecked()) {
+    CHECKOp->setChecked(false);
+    CHECKOp->setEnabled(false);
+    Initializer->setChecked(false);
+    Initializer->setEnabled(false);
+    Synch->setChecked(true);
+    Concurrent->setChecked(false);
+    Independent->setChecked(false);
+    Synch->setEnabled(false);
+    Concurrent->setEnabled(false);
+    Independent->setEnabled(false);
+    EventType->setEnabled(true);
+    FieldList->setEnabled(true);
+    FieldRemove->setEnabled(true);
+  }
+  else {
+    CHECKOp->setEnabled(true);
+    Initializer->setEnabled(true);
+    Synch->setEnabled(true);
+    Concurrent->setEnabled(true);
+    Independent->setEnabled(true);
+    EventType->setEnabled(false);
+    FieldList->setEnabled(false);
+    FieldRemove->setEnabled(false);
+  }
+}
+
+void CFuncBox::on_EventType_activated( int )
+{
+
+}
+
+void CFuncBox::on_FieldRemove_clicked()
+{
+  int pos = FieldList->currentRow();
+  if (pos >= 0)
+    delete FieldList->takeItem(pos);
 }
 
 void CFuncBox::on_Closed_clicked()
@@ -2490,8 +2814,136 @@ void CFuncBox::reject()
   QDialog::reject();
 }
 
+void CFuncBox::makeHandler()
+{
+  LavaDECL *IOEl, *IOEl2; 
+  if (myDECL->GUISignaltype == EventDelete) {
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->LocalName = STRING("chain");
+    IOEl->DeclType = IAttr;
+    IOEl->DeclDescType = NamedType;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->DeclType = IAttr;
+    IOEl->LocalName = STRING("delHandle");
+    IOEl->DeclDescType = BasicType;
+    IOEl->BType = B_Che;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Che], 1);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->DeclType = OAttr;
+    IOEl->LocalName = STRING("delete");
+    IOEl->DeclDescType = BasicType;
+    IOEl->BType = B_Bool;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Bool], 1);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+  }
+  else if (myDECL->GUISignaltype == EventInsert) {
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->LocalName = STRING("chain");
+    IOEl->DeclType = IAttr;
+    IOEl->DeclDescType = NamedType;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->LocalName = STRING("afterHandle");
+    IOEl->DeclType = IAttr;
+    IOEl->DeclDescType = BasicType;
+    IOEl->BType = B_Che;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Che], 1);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->DeclType = IAttr;
+    IOEl->LocalName = STRING("defaultElem");
+    if (FieldTypeDECL->fromBType == NonBasic)
+      IOEl->DeclDescType = NamedType;
+    else
+      IOEl->DeclDescType = BasicType;
+    IOEl->BType = FieldTypeDECL->fromBType;
+    IOEl->inINCL = 0;
+    myDoc->IDTable.GetParamRefID(FieldTypeDECL, IOEl->RefID, isSet);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+    IOEl2 = NewLavaDECL();
+    IOEl2->TypeFlags.INCL(trueObjCat);
+    IOEl2->LocalName = STRING("insert");
+    IOEl2->DeclType = OAttr;
+    IOEl2->DeclDescType = BasicType;
+    IOEl2->BType = B_Bool;
+    IOEl2->inINCL = 0;
+    IOEl2->RefID = TID(myDoc->IDTable.BasicTypesID[B_Bool], 1);
+    myDECL->NestedDecls.Append(NewCHE(IOEl2));
+    IOEl2 = NewLavaDECL();
+    IOEl2->TypeFlags.INCL(trueObjCat);
+    IOEl2->TypeFlags.INCL(isOptional);
+    IOEl2->DeclType = OAttr;
+    IOEl2->LocalName = STRING("insertElem");
+    if (FieldTypeDECL->fromBType == NonBasic)
+      IOEl2->DeclDescType = NamedType;
+    else
+      IOEl2->DeclDescType = BasicType;
+    IOEl2->BType = FieldTypeDECL->fromBType;
+    IOEl2->inINCL = 0;
+    IOEl2->RefID = IOEl->RefID;
+    myDECL->NestedDecls.Append(NewCHE(IOEl2));
+  }
+  else if (myDECL->GUISignaltype == ValueChanged) {
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->DeclType = IAttr;
+    IOEl->LocalName = STRING("oldValue");
+    if (FieldTypeDECL->fromBType == NonBasic)
+      IOEl->DeclDescType = NamedType;
+    else
+      IOEl->DeclDescType = BasicType;
+    IOEl->BType = FieldTypeDECL->fromBType;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->DeclType = IAttr;
+    IOEl->LocalName = STRING("enteredValue");
+    if (FieldTypeDECL->fromBType == NonBasic)
+      IOEl->DeclDescType = NamedType;
+    else
+      IOEl->DeclDescType = BasicType;
+    IOEl->BType = FieldTypeDECL->fromBType;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->TypeFlags.INCL(isOptional);
+    IOEl->DeclType = OAttr;
+    IOEl->LocalName = STRING("newValue");
+    if (FieldTypeDECL->fromBType == NonBasic)
+      IOEl->DeclDescType = NamedType;
+    else
+      IOEl->DeclDescType = BasicType;
+    IOEl->BType = FieldTypeDECL->fromBType;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+  }
+}
+
 void CFuncBox::on_ID_OK_clicked() 
 {
+
   if (myDECL->SecondTFlags.Contains(funcImpl))
     if ( myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)) {
       QDialog::reject();
@@ -2524,6 +2976,19 @@ void CFuncBox::on_ID_OK_clicked()
     if (myDECL->op != OP_noOp)
       myDoc->MakeOperator(myDECL);
   }
+  if (myDECL->SecondTFlags.Contains(isHandler)) {
+    myDECL->GUISignaltype = EventType->currentIndex();
+    if (FieldTypeDECL->SecondTFlags.Contains(isSet)) 
+      myDECL->GUISignaltype += 1;
+    if (myDECL->GUISignaltype < 1) {
+      QMessageBox::critical(this, qApp->applicationName(), IDP_NoTypeSel, QMessageBox::Ok,0,0);
+      EventType->setFocus();
+      return;
+    }
+    if (onNew)
+      makeHandler();
+  }
+
   ListToChain(Inherits, &myDECL->Inherits);  //fires
   if (Native->isChecked())
     myDECL->TypeFlags.INCL(isNative); 
@@ -4880,16 +5345,17 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
     break;
 
   case Function:
+    /*
     if (decl->SecondTFlags.Contains(isHandler)) {
       box = new CHandlerBox(decl, origDECL, doc, isNew, parent);
       box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
       valIni = ((CHandlerBox*)box)->OnInitDialog();
     }
-    else {
+    else {*/
       box = new CFuncBox(decl, origDECL, doc, isNew, parent);
       box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
       valIni = ((CFuncBox*)box)->OnInitDialog();
-    }
+    //}
     if (valIni == BoxContinue)
       okBox = box->exec();
     else if (valIni == BoxOK)

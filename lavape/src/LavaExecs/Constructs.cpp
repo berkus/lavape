@@ -1,5 +1,5 @@
 /* LavaPE -- Lava Programming Environment
-   Copyright (C) 2002 Fraunhofer-Gesellschaft
+   Copyright  2002 Fraunhofer-Gesellschaft
 	 (http://www.sit.fraunhofer.de/english/)
 
    This program is free software; you can redistribute it and/or modify

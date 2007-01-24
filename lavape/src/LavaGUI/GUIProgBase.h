@@ -20,6 +20,9 @@
 #define LAVAGUI_DLL
 #endif
 
+#define ValueChanged 1
+#define EventInsert 2
+#define EventDelete 3
 
 
 class  LAVAGUI_DLL CGUIMet : public QObject
@@ -94,6 +97,15 @@ enum ErrorCodes {
   PressButton,         //30
   IOError,
 
+};
+
+class LAVAGUI_DLL CSyncData {
+public:
+  LavaDECL* FormSyntax;
+  TIDs* HandlerIDs;
+  CSyncData() {}
+  CSyncData(LavaDECL* formSyntax, TIDs* handlerIDs) 
+  {FormSyntax = formSyntax; HandlerIDs = handlerIDs;}
 };
 
 class   LAVAGUI_DLL CGUIProgBase : public CGUIMet {

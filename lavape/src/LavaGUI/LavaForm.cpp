@@ -28,6 +28,7 @@
 #include "qmessagebox.h"
 //Added by qt3to4:
 #include <QPixmap>
+#include "qpixmapcache.h"
 #include "LavaBaseStringInit.h"
 #include "LavaGUIView.h"
 #include "qdir.h"
@@ -152,8 +153,8 @@ void LavaFormCLASS::AllocFNode (CHEFormNode *&formNode,
   if (syn && syn->Annotation.ptr) {
     CHETAnnoEx* ex = syn->Annotation.ptr->GetAnnoEx(anno_Pixmap);
     if (ex && ex->data.xpmFile.l) {
-      QDir qdir(((TIDTable*)((CGUIProg*)GUIProg)->mySynDef->IDTable)->DocDir.c);
-      QFileInfo qf(qdir, ex->data.xpmFile.c);
+      QDir qdir(QString(((TIDTable*)((CGUIProg*)GUIProg)->mySynDef->IDTable)->DocDir.c));
+      QFileInfo qf(qdir, QString(ex->data.xpmFile.c));
       formNode->data.Pixmap = new QPixmap(qf.absoluteFilePath());
     }
     if (syn->Annotation.ptr->String1.l && formNode->data.LFont.fromString(syn->Annotation.ptr->String1.c))

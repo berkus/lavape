@@ -281,6 +281,9 @@ void LavaGUIDialog::OnDeleteOpt()
 
 void LavaGUIDialog::OnUpdateDeleteopt(QAction* action)
 {
+  if (myGUIProg)
+    myGUIProg->OnUpdateDeleteopt(action);
+  /*
   if (myGUIProg && myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
       && myGUIProg->focNode->data.FIP.widget
       && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
@@ -300,7 +303,7 @@ void LavaGUIDialog::OnUpdateDeleteopt(QAction* action)
   }
   if (myGUIProg)
     myGUIProg->DelNode = 0;
-  action->setEnabled(false);
+  action->setEnabled(false);*/
 }
 
 
@@ -314,15 +317,17 @@ void LavaGUIDialog::OnInsertOpt()
 
 void LavaGUIDialog::OnUpdateInsertopt(QAction* action)
 {
-  if (myGUIProg) {
-    /*
+  if (myGUIProg) 
+    myGUIProg->OnUpdateInsertopt(action);
+/*  if (myGUIProg) {
+    
     if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
       && myGUIProg->focNode->data.FIP.widget
         && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
         && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
       QWidget* insertWindow = myGUIProg->focNode->data.FIP.frameWidget;
       myGUIProg->InsertNode = myGUIProg->focNode;
-      */
+      
       QWidget* insertWindow = 0;
       while (myGUIProg->InsertNode && (insertWindow != this)) {// && (insertWindow != frm)) {
         insertWindow = myGUIProg->InsertNode->data.FIP.frameWidget;
@@ -337,7 +342,7 @@ void LavaGUIDialog::OnUpdateInsertopt(QAction* action)
     action->setEnabled(false);
     myGUIProg->InsertNode = 0;
   }
-  action->setEnabled(false);
+  action->setEnabled(false);*/
 }
 
 
@@ -856,7 +861,7 @@ void CLavaGUIView::OnNewfunction()
     decl->SecondTFlags.INCL(isHandler);
     decl->ParentDECL = myDECL;
     cheTIDs = new CHETIDs();
-    cheTIDs->data = myGUIProg->ActNode->data.myName;
+    cheTIDs->data = myGUIProg->ActNode->data.myHandlerNode->data.myName;
     decl->HandlerClients.Append(cheTIDs);
     QApplication::postEvent(myTree, new CustomEvent(UEV_NewHandler, (void*)decl));
   }

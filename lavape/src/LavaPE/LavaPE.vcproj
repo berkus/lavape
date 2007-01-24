@@ -1660,6 +1660,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\res\TreeIcons\PX_functab.xpm"
+					>
+				</File>
+				<File
 					RelativePath="res\TreeIcons\PX_function.xpm"
 					>
 				</File>

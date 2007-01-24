@@ -1305,7 +1305,7 @@ bool CLavaPEBrowse::OnFindRefs(wxDocument* fromDoc, LavaDECL* decl, CFindData& f
     }
     delete box;
   }
-  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->DeleteAllFindItems();
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->DeleteAllPageItems(tabFind);
   ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetTab(tabFind);
   if (!fw.index) {
     if (!decl || (fw.FWhere == findInThisView))

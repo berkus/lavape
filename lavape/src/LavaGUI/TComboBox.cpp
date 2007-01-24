@@ -85,7 +85,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
     myMenu = ((CFormWid*)par)->myMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
-  if (myFormNode->data.allowOwnHandler) {
+  if (myFormNode->data.allowOwnHandler && isEnabled()) {
     if (!LBaseData->inRuntime) {
       if (!myMenu)
         myMenu = new QMenu(this);
@@ -93,7 +93,7 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
     }
     myFormNode->data.myHandlerNode = myFormNode;
   }   
-  if (par && !myFormNode->data.handlerSearched)
+  if (par && !myFormNode->data.handlerSearched && isEnabled())
     GUIProg->setHandler(((CFormWid*)par)->myFormNode);
   show();
 }

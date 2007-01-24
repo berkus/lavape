@@ -270,13 +270,16 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
   CHETID *cheTID, *cheTID2;
   CHETIDs *tidsChe;
   CHE *che;
+  LavaDECL *formSyn = 0;
   formNode->data.handlerSearched = true;
   node = formNode;
   while (node) {
-    if (formNode->data.FIP.up->data.FormSyntax->DeclType == Attr) {
+    if ((node->data.FormSyntax->DeclType == Attr) 
+        && (formSyn != node->data.FormSyntax )){
+      formSyn = node->data.FormSyntax;
       cheTID = new CHETID;
       cheTID->data  = TID(node->data.FormSyntax->OwnID, node->data.FormSyntax->inINCL);
-      formNode->data.myName.Append(cheTID);
+      formNode->data.myName.Prepend(cheTID);
     }
     else if (node->data.FormSyntax->DeclType == FormDef) {
       //suche Handler in diesem Formular

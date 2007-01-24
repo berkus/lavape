@@ -222,7 +222,8 @@ private:
 };
 
 
-/////////////////////////////////////////////////////////////////////////////
+/*
+///////////////////////////////////////////////////////////////////////////
 // Dialogfeld CHandlerBox 
 
 class CHandlerBox : public QDialog, public Ui_IDD_HandlerBox
@@ -233,6 +234,7 @@ public:
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
   LavaDECL* myDECL;
+  LavaDECL* FieldTypeDECL;
   CLavaPEDoc *myDoc;
   bool onNew;
   LavaDECL * OrigDECL;
@@ -263,7 +265,7 @@ public slots:
 private:
   Q_OBJECT
 };
-
+*/
 
 class CFuncBox : public QDialog, public Ui_IDD_FuncBox
 {
@@ -272,7 +274,10 @@ public:
   CFuncBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL); 
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
+  int checkHandlerIO();
+  void makeHandler();
   LavaDECL* myDECL;
+  LavaDECL* FieldTypeDECL;
   CLavaPEDoc *myDoc;
   bool onNew;
   LavaDECL * OrigDECL;
@@ -291,6 +296,7 @@ public slots:
     virtual void on_NamedTypes_activated( int );
     virtual void on_CMBOperator_activated( int );
     virtual void on_CHECKOp_clicked();
+    virtual void on_CHECKHandler_clicked();
     virtual void on_Abstract_clicked();
     virtual void on_Native_clicked();
     virtual void on_Signal_clicked();
@@ -302,6 +308,8 @@ public slots:
     virtual void reject();
     virtual void on_ID_HELP_clicked();
     virtual void on_Closed_clicked();
+    virtual void on_EventType_activated( int );
+    virtual void on_FieldRemove_clicked();
 
 private:
   Q_OBJECT
