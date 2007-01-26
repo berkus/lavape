@@ -486,6 +486,14 @@ void AssertStatement::Accept(Visitor &visitor,SynObject *parent,address where,CH
   visitor.VisitAssertStatement(this,parent,where,chxp);
 }
 
+void IgnoreStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
+{
+  ENTRY
+  //ACCEPT(statement.ptr);
+
+  visitor.VisitIgnoreStatement(this,parent,where,chxp);
+}
+
 void AttachObject::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
   ENTRY

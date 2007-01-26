@@ -200,10 +200,10 @@ public:
   void OnEvaluate();
   void OnInputArrow();
   void OnHandle();
-        void OnOptLocalVar();
-        void OnTrue();
-        void OnFalse();
-        void OnOrd();
+  void OnOptLocalVar();
+  void OnTrue();
+  void OnFalse();
+  void OnOrd();
 
 // keyword bar:
   void OnDeclare();
@@ -219,13 +219,14 @@ public:
   void OnTypeSwitch();
   void OnAnd();
   void OnOr();
-        void OnTryStatement();
+  void OnTryStatement();
   void OnXor();
   void OnNot();
   void OnAssert();
-        void OnSucceed();
-        void OnFail();
-        void OnOld();
+  void OnIgnoreStm();
+  void OnSucceed();
+  void OnFail();
+  void OnOld();
   void OnCall();
   void OnAssign();
   void OnCreateObject();
@@ -233,21 +234,19 @@ public:
   void OnCopy();
   void OnAttach();
   void OnQueryItf();
-        void OnQua();
-        void OnItem();
+  void OnQua();
+  void OnItem();
   void OnConnect();
   void OnDisconnect();
   void OnEmitSignal();
-
-
 
 //  LRESULT OnCalledView(WPARAM, LPARAM lparam);
 //  void OnSetFocus(QWidget* pOldWnd);
 //  void OnKillFocus(QWidget* pNewWnd);
   void OnChar(QKeyEvent *e);
 
-        void OnUpdateOrd(QAction* action);
-        void OnUpdateOptLocalVar(QAction* action);
+  void OnUpdateOrd(QAction* action);
+  void OnUpdateOptLocalVar(QAction* action);
   void OnUpdateHandle(QAction* action);
   void OnUpdateInputArrow(QAction* action);
   void OnUpdateEditSel(QAction* action);
@@ -322,6 +321,7 @@ public:
   void OnUpdateItem(QPushButton *pb);
   void OnUpdateCopy(QPushButton *pb);
   void OnUpdateAssert(QPushButton *pb);
+  void OnUpdateIgnoreButton(QPushButton *pb);
   void OnUpdateCreate(QPushButton *pb);
   void OnUpdateOld(QPushButton *pb);
   void OnUpdateExists(QPushButton *pb);

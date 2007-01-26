@@ -248,7 +248,7 @@ enum TToken {
   Callee_T,
   Comment_T,
   CompObj_T,
-  FuturePLH1,
+  ignore_T,
   Const_T,
   CrtblDisabled_T,
   CrtblPH_T,

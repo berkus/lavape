@@ -32,7 +32,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
+
 #include "Syntax.h"
+
 
 #include "qwidget.h"
 #include <QScrollArea>
@@ -2082,6 +2084,32 @@ class AssertStatement : public Expression {
   { CDPAssertStatement(pgf,cid,this,baseCDP); }
 };
 
+class IgnoreStatement : public Expression {
+  DECLARE_DYNAMIC_CLASS(IgnoreStatement)
+
+
+  public:
+  CHAINX igVars;
+  virtual bool Check(CheckData &ckd);
+  virtual void Accept(Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual bool IsReadOnlyClause(SynObject *synObj)
+  {
+    return true;
+  }
+
+  IgnoreStatement () {}
+
+  virtual void CopyData (AnyType *from) {
+    *this = *(IgnoreStatement*)from;
+  }
+
+  friend void CDPIgnoreStatement (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
+
+  virtual void CDP (PutGetFlag pgf, ASN1* cid,
+                    bool baseCDP=false)
+  { CDPIgnoreStatement(pgf,cid,this,baseCDP); }
+};
+
 class IfThen : public Expression {
   DECLARE_DYNAMIC_CLASS(IfThen)
 
@@ -3342,6 +3370,16 @@ public:
     " and throws a specific exception in case of violation</p>"); }
 };
 
+class IgnoreStatementV : public IgnoreStatement {
+public:
+  IgnoreStatementV () {}
+  IgnoreStatementV (bool);
+
+  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
+  virtual QString whatsThisText() {
+    return QObject::tr("<p>Ignore a mandatory input parameter</p>");}
+};
+
 class IfThenV : public IfThen {
 public:
   IfThenV () {}
@@ -3978,6 +4016,13 @@ public:
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
+class IgnoreStatementX : public IgnoreStatement {
+public:
+  IgnoreStatementX() {}
+
+  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) { return true; };
+};
+
 class IfThenX : public IfThen {
 public:
   IfThenX() {}
@@ -4232,6 +4277,7 @@ public:
   virtual void VisitConnect (Connect *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitDisconnect (Disconnect *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitAssertStatement (AssertStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitIfThen (IfThen *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitIfStatement (IfStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitIfxThen (IfxThen *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}

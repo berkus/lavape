@@ -5653,6 +5653,21 @@ bool AssertStatement::Check (CheckData &ckd)
   EXIT
 }
 
+bool IgnoreStatement::Check (CheckData &ckd)
+{
+  CHE *chp;
+  SynObject *opd;
+
+  ENTRY
+  for (chp = (CHE*)igVars.first;
+       chp;
+       chp = (CHE*)chp->successor) {
+    opd = (SynObject*)chp->data;
+    ok &= opd->Check(ckd);
+  }
+  EXIT
+}
+
 void AttachObject::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   ((SynObject*)itf.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
 #ifdef INTERPRETER

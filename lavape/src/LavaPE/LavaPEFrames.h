@@ -266,6 +266,7 @@ public slots:
     virtual void xor_stm();
     virtual void not_stm();
     virtual void assert_stm();
+    virtual void ignore_stm();
     virtual void try_stm();
     virtual void succeed();
     virtual void throwEx();

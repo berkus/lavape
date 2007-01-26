@@ -946,6 +946,23 @@ void CDPAssertStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
 } // END OF CDPAssertStatement
 
 
+IMPLEMENT_DYNAMIC_CLASS(IgnoreStatement,Expression)
+
+
+void CDPIgnoreStatement (PutGetFlag pgf, ASN1* cid, address varAddr,
+                         bool baseCDP)
+
+{
+  IgnoreStatement *vp = (IgnoreStatement*)varAddr;
+  if (cid->Skip()) return;
+
+  if (!baseCDP) CDPpp.CVTSEQUENCE(pgf,cid);
+    CDPExpression(pgf,cid,vp,true);
+    vp->igVars.CDP(pgf,cid);
+  if (!baseCDP) CDPpp.CVTEOC(pgf,cid);
+} // END OF CDPIgnoreStatement
+
+
 IMPLEMENT_DYNAMIC_CLASS(IfThen,Expression)
 
 

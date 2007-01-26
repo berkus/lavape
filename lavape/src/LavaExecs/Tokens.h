@@ -236,7 +236,7 @@ enum TToken {
   Callee_T,
   Comment_T,
   CompObj_T,
-  FuturePLH1,
+  ignore_T,
   Const_T,
   CrtblDisabled_T,
   CrtblPH_T,
@@ -275,6 +275,7 @@ enum TToken {
   NoToken};
 
 extern void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
+
 
 
 extern LAVAEXECS_DLL QString TOKENSTR[];

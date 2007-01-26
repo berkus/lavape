@@ -351,7 +351,7 @@ void Tokens_INIT ()
   ATO("<callee>");
   ATO("<comment>");
   ATO("<comp_obj>");
-  ATO("?");
+  ATO("ignore");
   ATO("<const>");
   ATO("<creatable>");
   ATO("<creatable>");

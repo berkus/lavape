@@ -466,7 +466,7 @@ public:
     *selectButton, *elInSetButton, *ifButton, *ifdefButton,
     *ifxButton, *elsexButton, *switchButton, *typeSwitchButton,
     *andButton, *orButton,
-    *xorButton, *notButton, *assertButton,
+    *xorButton, *notButton, *assertButton, *ignoreButton,
     *tryButton, *succeedButton, *failButton, *runButton,
     *setButton, *newButton, *oldButton, *cloneButton,
     *copyButton, *attachButton, *qryItfButton,

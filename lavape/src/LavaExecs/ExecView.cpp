@@ -5204,6 +5204,15 @@ void CExecView::OnAssert()
   InsertOrReplace(assertStm);
 }
 
+void CExecView::OnIgnoreStm()
+{
+  // TODO: Code fr Befehlsbehandlungsroutine hier einfgen
+
+  if (!EditOK()) return;
+  IgnoreStatement *ignoreStm = new IgnoreStatementV(true);
+  InsertOrReplace(ignoreStm);
+}
+
 void CExecView::OnNextError()
 {
   // TODO: Code fr Befehlsbehandlungsroutine hier einfgen
@@ -5834,6 +5843,7 @@ void CExecView::UpdateUI()
   OnUpdateXor(LBaseData->xorButton);
   OnUpdateNot(LBaseData->notButton);
   OnUpdateAssert(LBaseData->assertButton);
+  OnUpdateIgnoreButton(LBaseData->ignoreButton);
   OnUpdateTry(LBaseData->tryButton);
   OnUpdateSucceed(LBaseData->succeedButton);
   OnUpdateFail(LBaseData->failButton);
@@ -5855,8 +5865,8 @@ void CExecView::UpdateUI()
 void CExecView::DisableActions()
 {
 
-        if (!myDoc || !myDoc->mySynDef)
-                return;
+  if (!myDoc || !myDoc->mySynDef)
+    return;
 
   //CLavaMainFrame* frame = (CLavaMainFrame*)wxTheApp->m_appWindow;
 
@@ -5943,9 +5953,10 @@ void CExecView::DisableKwdButtons() {
   LBaseData->xorButton->setEnabled(false);
   LBaseData->notButton->setEnabled(false);
   LBaseData->assertButton->setEnabled(false);
-        LBaseData->tryButton->setEnabled(false);
-        LBaseData->succeedButton->setEnabled(false);
-        LBaseData->failButton->setEnabled(false);
+  LBaseData->ignoreButton->setEnabled(false);
+  LBaseData->tryButton->setEnabled(false);
+  LBaseData->succeedButton->setEnabled(false);
+  LBaseData->failButton->setEnabled(false);
   LBaseData->runButton->setEnabled(false);
   LBaseData->setButton->setEnabled(false);
   LBaseData->newButton->setEnabled(false);
@@ -6304,6 +6315,13 @@ void CExecView::OnUpdatePrevError(QAction* action)
 }
 
 void CExecView::OnUpdateAssert(QPushButton *pb)
+{
+  // TODO: Code fr die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflche hier einfgen
+
+  pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
+}
+
+void CExecView::OnUpdateIgnoreButton(QPushButton *pb)
 {
   // TODO: Code fr die Befehlsbehandlungsroutine zum Aktualisieren der Benutzeroberflche hier einfgen
 

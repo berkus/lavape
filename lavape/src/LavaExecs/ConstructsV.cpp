@@ -907,6 +907,35 @@ void AssertStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ig
   EXIT
 }
 
+IgnoreStatementV::IgnoreStatementV (bool) {
+  type = Stm_T;
+  replacedType = type;
+  primaryToken = ignore_T;
+  igVars.Append(NewCHE(new SynObjectV(ObjPH_T)));
+}
+
+void IgnoreStatementV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
+  bool isFirst=true;
+  CHE *varPtr;
+
+  ENTRY
+  t.Insert(primaryToken,true);
+  t.Blank();
+
+  for (varPtr = (CHE*)igVars.first;
+       varPtr;
+       varPtr = (CHE*)varPtr->successor) {
+    if (!isFirst) {
+      t.Insert(Comma_T,false);
+      t.Blank();
+    }
+    else
+      isFirst = false;
+    DRAWCHE(varPtr,&igVars);
+  }
+  EXIT
+}
+
 AttachObjectV::AttachObjectV (bool) {
   type = Exp_T;
   //type = attach_T;

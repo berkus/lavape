@@ -290,6 +290,7 @@ public:
   virtual void OnExists() {}
   virtual void OnCreateObject() {}
   virtual void OnAssert() {}
+  virtual void OnIgnoreStm() {}
 //  virtual void OnNextError() {}
 //  virtual void OnPrevError() {}
 //  virtual void OnNextComment() {}

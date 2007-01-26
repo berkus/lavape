@@ -471,7 +471,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
     " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
     " and throws a specific exception in case of violation</p>"));
-  newKwdToolbutton(tb,LBaseData->assertButton,"ignore",SLOT(assert_stm()),
+  newKwdToolbutton(tb,LBaseData->ignoreButton,"ignore",SLOT(ignore_stm()),
     QObject::tr("Ignore a mandatory input parameter"),
     QObject::tr("<p>Ignore a mandatory input parameter</p>"));
   newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
@@ -1356,6 +1356,12 @@ void CLavaMainFrame::assert_stm(){
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
   if (view)
     view->OnAssert();
+}
+
+void CLavaMainFrame::ignore_stm(){
+  CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
+  if (view)
+    view->OnIgnoreStm();
 }
 
 void CLavaMainFrame::try_stm(){
