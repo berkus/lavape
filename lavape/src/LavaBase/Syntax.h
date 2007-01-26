@@ -1615,6 +1615,7 @@ struct LAVABASE_DLL FormNode : public AnyType  {
     Pixmap=0;
     allowOwnHandler=false;
     allowChainHandler=false;
+    GUIService=0;
     handlerSearched=false;
     myHandlerNode=0;
     ColorBValid=false;

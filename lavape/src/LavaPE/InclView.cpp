@@ -44,6 +44,7 @@ CInclView::CInclView(QWidget* parent, wxDocument *doc)
 : CTreeView(parent, doc, "InclView")
 {
   InitComplete = false;
+  connect(Tree,SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), SLOT(OnSelchanged(QTreeWidgetItem*, QTreeWidgetItem*)));
   connect(Tree,SIGNAL(itemDoubleClicked( QTreeWidgetItem *, int  )), SLOT(OnDblclk( QTreeWidgetItem *, int  )));
   setFont(LBaseData->m_TreeFont);
 //  new InclWhatsThis(Tree);
@@ -412,6 +413,14 @@ void CInclView::OnActivateView(bool bActivate, wxView *deactiveView)
   }
 }
 
+void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
+{
+  if (!selItem)
+    return;
+  if (!Tree->isItemSelected(selItem)) 
+    return;
+  wxTheApp->updateButtonsMenus();
+}
 
 void CInclView::on_whatNextAction_triggered()
 {

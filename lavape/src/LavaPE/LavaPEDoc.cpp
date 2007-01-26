@@ -3245,13 +3245,14 @@ void CLavaPEDoc::OnTotalCheck()
     }
   }
   QMessageBox::critical(wxDocManager::GetDocumentManager()->GetActiveView(), qApp->applicationName(), messStr.c,  QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
-
+  int maxpos = mana->m_docs.size();
   for (pos = 0; pos < mana->m_docs.size(); pos++) {
     doc = (CLavaPEDoc*)mana->m_docs[pos];
     doc->checkedInTotalCheck = false;
     if (doc->openInTotalCheck) {
-      doc->OnCloseDocument();
-      pos--;
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaPE_CloseDoc, (void*)doc));
+      //doc->OnCloseDocument();
+      //pos--;
     }
   }
   ((CLavaPEApp*)wxTheApp)->inTotalCheck = false;

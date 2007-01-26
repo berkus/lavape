@@ -332,6 +332,9 @@ bool CLavaPEApp::event(QEvent *e)
     ((CLavaMainFrame*)m_appWindow)->DbgBreakpointAct->setEnabled(true);
     ((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(true);
     return true;
+  case UEV_LavaPE_CloseDoc:
+    ((CLavaPEDoc*)((CustomEvent*)e)->data())->OnCloseDocument();
+    return true;
   default:
     return wxApp::event(e);
   }

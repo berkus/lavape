@@ -150,11 +150,14 @@ void LavaFormCLASS::AllocFNode (CHEFormNode *&formNode,
   formNode->data.FIP.visible = 0;
   formNode->data.FIP.poppedUp = false;
   formNode->data.FIP.up = 0;
+  QString dd = QString(((TIDTable*)((CGUIProg*)GUIProg)->mySynDef->IDTable)->DocDir.c);
+  QString xf;
   if (syn && syn->Annotation.ptr) {
     CHETAnnoEx* ex = syn->Annotation.ptr->GetAnnoEx(anno_Pixmap);
     if (ex && ex->data.xpmFile.l) {
-      QDir qdir(QString(((TIDTable*)((CGUIProg*)GUIProg)->mySynDef->IDTable)->DocDir.c));
-      QFileInfo qf(qdir, QString(ex->data.xpmFile.c));
+      QDir qdir(dd);//QString(((TIDTable*)((CGUIProg*)GUIProg)->mySynDef->IDTable)->DocDir.c));
+      xf = QString(ex->data.xpmFile.c);
+      QFileInfo qf(qdir, xf);//QString(ex->data.xpmFile.c));
       formNode->data.Pixmap = new QPixmap(qf.absoluteFilePath());
     }
     if (syn->Annotation.ptr->String1.l && formNode->data.LFont.fromString(syn->Annotation.ptr->String1.c))
@@ -1559,6 +1562,8 @@ void LavaFormCLASS::DeleteForm (CHEFormNode *formNode)
   if (formNode->successor) {
     delete (CHEFormNode*)formNode->successor;
     formNode->successor = 0;
+  }
+    formNode->data.GUIService = 0;
   }
   delete formNode;
 } // END OF DeleteForm

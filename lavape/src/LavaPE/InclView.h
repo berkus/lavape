@@ -46,6 +46,7 @@ protected:
 
 public slots:
   void OnDblclk(QTreeWidgetItem* item, int col);
+  void OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* );
   //void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 private:
     Q_OBJECT;

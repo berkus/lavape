@@ -341,26 +341,60 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
 
 bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
 {
-  LavaObjectPtr StackFrame[SFH+3];
+  LavaVariablePtr	StackFrame;
   CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
   bool ok;
 
+  funcSect = &(*(LavaObjectPtr)fNode->data.GUIService)[0];
+  fDesc = &funcSect->funcDesc[fNode->data.HandlerDECL->SectionInfo1];
+  int fsize = fDesc->stackFrameSize;
+  int fsizeBytes = fsize<<2;
+
+#ifndef __GNUC__
+    __asm {
+      sub esp, fsizeBytes
+      mov StackFrame, esp
+    }
+#else
+		StackFrame = new LavaObjectPtr[fsize];
+#endif
   STRING oldStr = fNode->data.StringValue;
   LavaVariablePtr rPtr = (LavaVariablePtr)fNode->data.ResultVarPtr;
-
+  StackFrame[0] = 0;
+  StackFrame[1] = 0;
+  StackFrame[2] = 0;
+  StackFrame[SFH+1] = 0;
+  StackFrame[SFH+2] = 0;
   StackFrame[SFH] = (LavaObjectPtr)fNode->data.GUIService;
-  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(fNode->data.FormSyntax, &StackFrame[SFH+1]))
+  /*
+  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(fNode->data.FormSyntax, &StackFrame[SFH+1])) {
+#ifndef __GNUC__
+    __asm {
+      add esp, fsizeBytes
+    }
+#else
+	  delete [] StackFrame;
+#endif
     return false;
+  }
   fNode->data.ResultVarPtr = (CSecTabBase***)&StackFrame[SFH+1];
   ConvertAndStore(fNode);
-  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(fNode->data.FormSyntax, &StackFrame[SFH+2]))
+  */
+  StackFrame[SFH+1] = *(LavaVariablePtr)fNode->data.ResultVarPtr;
+  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(fNode->data.FormSyntax, &StackFrame[SFH+2])) {
+#ifndef __GNUC__
+    __asm {
+      add esp, fsizeBytes
+    }
+#else
+	  delete [] StackFrame;
+#endif
     return false;
+  }
   fNode->data.ResultVarPtr = (CSecTabBase***)&StackFrame[SFH+2];
   fNode->data.StringValue = newStr;
   ConvertAndStore(fNode);
-  funcSect = &(*StackFrame[SFH])[0];
-  fDesc = &funcSect->funcDesc[fNode->data.HandlerDECL->SectionInfo1];
   StackFrame[SFH+3] = 0;
   if (fDesc->isNative)
     ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, StackFrame);
@@ -368,16 +402,36 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
     ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, StackFrame);
   if (!ok) {
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)fNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
+#ifndef __GNUC__
+    __asm {
+      add esp, fsizeBytes
+    }
+#else
+	  delete [] StackFrame;
+#endif
     return false;
   }
 
   fNode->data.ResultVarPtr = (CSecTabBase***)rPtr;
-  if (StackFrame[SFH+3]) 
+  DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, *rPtr);
+  if (StackFrame[SFH+3]) {
     *fNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+3];
-  else
+    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
+  }
+  else {
     *fNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+2];
+    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+3]);
+  }
   ((CGUIProg*)GUIProg)->LavaForm.setDefaultValue(fNode);
-  return true;
+
+#ifndef __GNUC__
+    __asm {
+      add esp, fsizeBytes
+    }
+#else
+	  delete [] StackFrame;
+#endif
+    return true;
 }
 
 bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)

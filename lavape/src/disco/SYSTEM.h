@@ -160,6 +160,7 @@ extern "C" DISCO_DLL void bcopy (const unsigned char* const,unsigned char*,unsig
 #define UEV_Close (QEvent::Type)(QEvent::User+22)
 #define UEV_ShowMiniEdit (QEvent::Type)(QEvent::User+23)
 #define UEV_NewHandler (QEvent::Type)(QEvent::User+24)
+#define UEV_LavaPE_CloseDoc (QEvent::Type)(QEvent::User+25)
 
 class DISCO_DLL CustomEvent : public  QEvent {
 public:

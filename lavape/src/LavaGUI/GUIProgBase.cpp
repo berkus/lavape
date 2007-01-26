@@ -267,10 +267,10 @@ void CGUIProgBase::setFocNode(CHEFormNode *fnode) {
 void CGUIProgBase::setHandler(CHEFormNode* formNode)
 {
   CHEFormNode* node;
-  CHETID *cheTID, *cheTID2;
-  CHETIDs *tidsChe;
+  CHETID *cheTID=0, *cheTID2=0;
+  CHETIDs *tidsChe=0;
   CHE *che;
-  LavaDECL *formSyn = 0;
+  LavaDECL *formSyn = 0, *classDECL;
   formNode->data.handlerSearched = true;
   node = formNode;
   while (node) {
@@ -290,7 +290,8 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
                tidsChe; tidsChe = (CHETIDs*)tidsChe->successor) { //all member-chains
             cheTID2 = (CHETID*)tidsChe->data.first;
             cheTID = (CHETID*)formNode->data.myName.first;
-            while (cheTID && cheTID2 && (cheTID->data == cheTID2->data)) {
+            while (cheTID && cheTID2 
+              && (cheTID->data == TID(cheTID2->data.nID,myDoc->IDTable.IDTab[((LavaDECL*)che->data)->inINCL]->nINCLTrans[cheTID2->data.nINCL].nINCL))) {
               cheTID2 = (CHETID*)cheTID2->successor; 
               cheTID = (CHETID*)cheTID->successor;
             }
@@ -311,7 +312,11 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
       formNode->data.HandlerDECL = myDoc->IDTable.GetDECL(((CHETID*)formNode->data.myHandler.last)->data);
       if (formNode->data.HandlerDECL->ParentDECL == myDECL)
         formNode->data.GUIService = *(CSecTabBase***)ServicePtr;
-      else
-        formNode->data.GUIService = (CSecTabBase**)AllocateObject(ckd, formNode->data.HandlerDECL->ParentDECL, formNode->data.HandlerDECL->ParentDECL->TypeFlags.Contains(stateObject));
+      else {
+        classDECL = formNode->data.HandlerDECL->ParentDECL;
+        if (classDECL->DeclType == Impl)
+          classDECL = myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
+        formNode->data.GUIService = (CSecTabBase**)AllocateObject(ckd, classDECL, true);
+      }
     }
 }

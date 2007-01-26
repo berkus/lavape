@@ -1903,7 +1903,7 @@ bool CLavaProgram::MakeSectionTable(CheckData& ckd, LavaDECL* classDECL)
         while (El &&  (TIDCl == El->data.VTClss)) {
           ElDECL = El->data.ElDECL;
           parentDECL = ElDECL->ParentDECL;
-          if (parentDECL->RuntimeDECL)
+          if (parentDECL->RuntimeDECL && (parentDECL->DeclType != Impl))
             ElImpl = parentDECL->RuntimeDECL;
           else
             ElImpl = parentDECL;

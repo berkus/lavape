@@ -1084,7 +1084,7 @@ $TYPE {
   FormNode () { ResultVarPtr = 0; HandleObjPtr = 0; EnumField = 0;
                 ownLFont=mainFont; ownTFont=mainFont; Pixmap = 0;
                 allowOwnHandler = false;
-                allowChainHandler = false;
+                allowChainHandler = false; GUIService = 0;
                 handlerSearched = false; myHandlerNode = 0;
                 ColorBValid = false; ColorFValid = false;}
   ~FormNode();

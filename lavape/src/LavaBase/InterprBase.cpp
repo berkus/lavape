@@ -382,7 +382,6 @@ bool CallDefaultInit(CheckData &ckd, LavaObjectPtr object)
 #ifndef __GNUC__
     __asm {
       add esp, fsizeBytes
-      mov newStackFrame, esp
     }
 #else
 	  delete [] newStackFrame;
