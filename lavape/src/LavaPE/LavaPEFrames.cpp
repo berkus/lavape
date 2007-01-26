@@ -471,6 +471,9 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p>An <a href=\"Assert.htm\">embedded assertion</a> is embedded anywhwere in executable code"
     " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
     " and throws a specific exception in case of violation</p>"));
+  newKwdToolbutton(tb,LBaseData->assertButton,"ignore",SLOT(assert_stm()),
+    QObject::tr("Ignore a mandatory input parameter"),
+    QObject::tr("<p>Ignore a mandatory input parameter</p>"));
   newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
     QObject::tr("Try a statement, catch exceptions: \"y\""),
     QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
