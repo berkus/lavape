@@ -406,7 +406,6 @@ void CLavaGUIView::UpdateUI()
 {
   OnUpdateInsertopt(LBaseData->insActionPtr);
   OnUpdateDeleteopt(LBaseData->delActionPtr);
-  OnUpdateNewFunc(LBaseData->newFuncActionPtr);
   OnUpdateEditPaste(LBaseData->editPasteActionPtr);
   OnUpdateEditCopy(LBaseData->editCopyActionPtr);
   OnUpdateEditCut(LBaseData->editCutActionPtr);
@@ -415,8 +414,10 @@ void CLavaGUIView::UpdateUI()
     OnUpdateCancel(LBaseData->updateResetActionPtr);
     //OnUpdateOk(LBaseData->okActionPtr);
   }
-  if (!LBaseData->inRuntime)
+  if (!LBaseData->inRuntime) {
     OnUpdateGotodef(LBaseData->gotoDeclActionPtr);
+    OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+  }
 }
 
 void CLavaGUIView::DisableActions()

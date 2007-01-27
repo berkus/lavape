@@ -1063,7 +1063,6 @@ $TYPE {
     CHEFormNode *myHandlerNode;
     bool handlerSearched;
     TIDs myHandler;
-    LavaDECL* HandlerDECL;
     CSecTabBase** GUIService;
     TIDs myName;
     CHAINANY0<SigNodePtr>-- SigNodes;

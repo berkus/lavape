@@ -177,7 +177,8 @@ void CFormWid::mousePressEvent(QMouseEvent* ev)
   GUIProg->ActNode = myFormNode;
   ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
   ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-  ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+  if (!LBaseData->inRuntime) 
+    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
   if (myMenu) 
     myMenu->popup(ev->globalPos());//QPoint(ev->x(), ev->y()));
   else

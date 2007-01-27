@@ -1587,7 +1587,6 @@ struct LAVABASE_DLL FormNode : public AnyType  {
   CHEFormNode *myHandlerNode;
   bool handlerSearched;
   TIDs myHandler;
-  LavaDECL *HandlerDECL;
   CSecTabBase **GUIService;
   TIDs myName;
   CHAINANY0/*SigNodePtr*/ SigNodes;

@@ -2157,6 +2157,8 @@ ValOnInit CFuncBox::OnInitDialog()
     ConstFunc->setChecked(true);
     EventType->setCurrentIndex(0);
 
+    EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
+
     if ((myDECL->ParentDECL->DeclType == Interface)
          || (myDECL->ParentDECL->DeclType == Impl) ) {
       CHECKOp->setEnabled(true);
@@ -2169,6 +2171,7 @@ ValOnInit CFuncBox::OnInitDialog()
     cheIO = (CHE*)myDECL->NestedDecls.first;
     hasParams = cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc);
     hasOutput = false;
+    EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
     while (cheIO && (((LavaDECL*)cheIO->data)->DeclDescType != ExecDesc)) {
       hasOutput = hasOutput || (((LavaDECL*)cheIO->data)->DeclType == OAttr);
       if (((LavaDECL*)cheIO->data)->TypeFlags.Contains(sameAsSelf)) {

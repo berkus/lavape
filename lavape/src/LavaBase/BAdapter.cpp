@@ -1141,7 +1141,7 @@ bool SetCount(CheckData& ckd, LavaVariablePtr stack)
       for (che = (CHE*)((CHAINX*)(stack[SFH]+LSH))->first;
            che;
            che = (CHE*)che->successor)
-        if (EqualObjects(ckd,objPtr,(LavaObjectPtr)che->data,0))
+        if (!EqualObjects(ckd,objPtr,(LavaObjectPtr)che->data,0))
           num++;
     }
     else

@@ -270,7 +270,8 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
   CHETID *cheTID=0, *cheTID2=0;
   CHETIDs *tidsChe=0;
   CHE *che;
-  LavaDECL *formSyn = 0, *classDECL;
+  LavaDECL *formSyn = 0, *classDECL, *handlerDECL;
+
   formNode->data.handlerSearched = true;
   node = formNode;
   while (node) {
@@ -309,11 +310,11 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
   }
   if (LBaseData->inRuntime) 
     if (formNode->data.myHandler.last) {
-      formNode->data.HandlerDECL = myDoc->IDTable.GetDECL(((CHETID*)formNode->data.myHandler.last)->data);
-      if (formNode->data.HandlerDECL->ParentDECL == myDECL)
+      handlerDECL = myDoc->IDTable.GetDECL(((CHETID*)formNode->data.myHandler.last)->data);
+      if (handlerDECL->ParentDECL == myDECL)
         formNode->data.GUIService = *(CSecTabBase***)ServicePtr;
       else {
-        classDECL = formNode->data.HandlerDECL->ParentDECL;
+        classDECL = handlerDECL->ParentDECL;
         if (classDECL->DeclType == Impl)
           classDECL = myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
         formNode->data.GUIService = (CSecTabBase**)AllocateObject(ckd, classDECL, true);

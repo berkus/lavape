@@ -124,7 +124,8 @@ void CTComboBox::mousePressEvent(QMouseEvent* ev)
   if ((ev->button() == Qt::RightButton) && myMenu) {
     ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
     ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+    if (!LBaseData->inRuntime)
+      ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
     myMenu->popup(ev->globalPos());//QPoint(ev->x(), ev->y()));
   }
   else {

@@ -129,8 +129,8 @@ void CTEdit::focusOutEvent(QFocusEvent *ev)
 {
   if (isModified()) {
     if (LBaseData->inRuntime) {
-      if (myFormNode->data.myHandler.first) {
-        ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(text())));
+      if (myFormNode->data.myHandler.first 
+        && ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(text())))) {
         myFormNode->data.IoSigFlags.INCL(trueValue);
         setText(myFormNode->data.StringValue.c);
       }
@@ -160,7 +160,8 @@ void CTEdit::contextMenuEvent(QContextMenuEvent * e)
   if (((CFormWid*)par)->iterData && ((CFormWid*)par)->myMenu) {
     ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
     ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+    if (!LBaseData->inRuntime) 
+      ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
     pm->addSeparator();
     pm->addMenu(((CFormWid*)par)->myMenu);
   }
@@ -168,7 +169,8 @@ void CTEdit::contextMenuEvent(QContextMenuEvent * e)
     if (myMenu) { //myFormNode->data.IterFlags.Contains(Optional)) {
       ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
       ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-      ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+      if (!LBaseData->inRuntime)
+        ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
       pm->addSeparator();
       pm->addMenu(myMenu);
     }
@@ -284,7 +286,8 @@ void CMultiLineEdit::contextMenuEvent(QContextMenuEvent * e)
   GUIProg->ActNode = myFormNode;
   ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
   ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-  ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+  if (!LBaseData->inRuntime)
+    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
   QMenu *pm = createStandardContextMenu();
   QWidget* par = parentWidget();
   while (par && !par->inherits("CFormWid"))
