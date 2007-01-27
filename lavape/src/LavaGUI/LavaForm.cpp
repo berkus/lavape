@@ -1563,8 +1563,6 @@ void LavaFormCLASS::DeleteForm (CHEFormNode *formNode)
     delete (CHEFormNode*)formNode->successor;
     formNode->successor = 0;
   }
-    formNode->data.GUIService = 0;
-  }
   delete formNode;
 } // END OF DeleteForm
 
