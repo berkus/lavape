@@ -383,3 +383,7 @@ void TableVisitor::VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent,addres
   else if (update == onMove)
     ((TIDTable*)table)->ChangeRefToClipID(obj->opFunctionID);
 }
+
+void TableVisitor::VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent,address where,CHAINX *chxp)
+{
+}

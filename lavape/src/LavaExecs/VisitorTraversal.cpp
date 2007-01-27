@@ -488,8 +488,13 @@ void AssertStatement::Accept(Visitor &visitor,SynObject *parent,address where,CH
 
 void IgnoreStatement::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)
 {
+  CHE *chp;
+
   ENTRY
-  //ACCEPT(statement.ptr);
+  for (chp = (CHE*)igVars.first;
+       chp;
+       chp = (CHE*)chp->successor)
+    ACC_CHE(chp,&igVars);
 
   visitor.VisitIgnoreStatement(this,parent,where,chxp);
 }

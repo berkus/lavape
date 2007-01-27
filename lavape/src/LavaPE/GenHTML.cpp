@@ -608,9 +608,7 @@ static void PutCategory(TDeclType myCategory,TDeclType &parentCategory, bool &fi
 
 
 void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstChild) 
-{
-  // TODO: Code für Befehlsbehandlungsroutine hier einfügen
-  
+{  
   CHE *chp=0;
   TDeclType localCategory=NoDef, myCategory;
   bool isFirst=true, firstChild=true, isEnum=false;
