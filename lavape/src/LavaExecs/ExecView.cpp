@@ -6286,9 +6286,16 @@ void CExecView::OnUpdateIgnoreButton(QToolButton *pb)
     return;
   }
   if (!text->currentSynObj->parentObject->parentObject) {
-    pb->setEnabled(true);
-    return;
+    if (text->currentSynObj->primaryToken == Stm_T || insertBefore) {
+      pb->setEnabled(true);
+      return;
+    }
+    else {
+      pb->setEnabled(false);
+      return;
+    }
   }
+
   if (text->currentSynObj->parentObject->parentObject->parentObject) {
     pb->setEnabled(false);
     return;
