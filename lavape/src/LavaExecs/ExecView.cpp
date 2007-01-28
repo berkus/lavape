@@ -6280,11 +6280,27 @@ void CExecView::OnUpdateIgnoreButton(QToolButton *pb)
 {
   CHAINX *chain;
   CHE *chp;
+  bool hasMandInput=false;
 
-  if (Taboo()) {
+  chp = GetFirstInput(myDECL->ParentDECL);
+  if (!chp) {
     pb->setEnabled(false);
     return;
   }
+
+  for (; chp; chp = (CHE*)chp->successor) {
+    if (((LavaDECL*)chp->data)->DeclType == IAttr
+    && !((LavaDECL*)chp->data)->TypeFlags.Contains(isOptional)) {
+      hasMandInput = true;
+      break;
+    }
+  };
+
+  if (!hasMandInput || Taboo()) {
+    pb->setEnabled(false);
+    return;
+  }
+
   if (!text->currentSynObj->parentObject->parentObject) {
     if (text->currentSynObj->primaryToken == Stm_T || insertBefore) {
       pb->setEnabled(true);
