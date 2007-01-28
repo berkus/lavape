@@ -6087,7 +6087,7 @@ void CExecView::OnUpdateNewPFunc()
     bar->IDC_NewPFunc->hide();
 }
 
-void CExecView::OnUpdateAnd(QPushButton *pb)
+void CExecView::OnUpdateAnd(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6115,14 +6115,14 @@ void CExecView::OnUpdateBitXor(QAction* action)
   action->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateClone(QPushButton *pb)
+void CExecView::OnUpdateClone(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateSelect(QPushButton *pb)
+void CExecView::OnUpdateSelect(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6209,7 +6209,7 @@ void CExecView::OnUpdateEvaluate(QAction* action)
 
 }
 
-void CExecView::OnUpdateCopy(QPushButton *pb)
+void CExecView::OnUpdateCopy(QToolButton *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
     && text->currentSynObj->ReadOnlyContext() != roClause);
@@ -6271,12 +6271,12 @@ void CExecView::OnUpdatePrevError(QAction* action)
   action->setEnabled(true);
 }
 
-void CExecView::OnUpdateAssert(QPushButton *pb)
+void CExecView::OnUpdateAssert(QToolButton *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateIgnoreButton(QPushButton *pb)
+void CExecView::OnUpdateIgnoreButton(QToolButton *pb)
 {
   CHAINX *chain;
   CHE *chp;
@@ -6320,12 +6320,12 @@ void CExecView::OnUpdateIgnoreButton(QPushButton *pb)
   }
 }
 
-void CExecView::OnUpdateCreate(QPushButton *pb)
+void CExecView::OnUpdateCreate(QToolButton *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateOld(QPushButton *pb)
+void CExecView::OnUpdateOld(QToolButton *pb)
 {
   pb->setEnabled(!Taboo()
     && !text->currentSynObj->InOldExpression()
@@ -6335,14 +6335,14 @@ void CExecView::OnUpdateOld(QPushButton *pb)
             && myDECL->ParentDECL->DeclType == Function)));
 }
 
-void CExecView::OnUpdateCall(QPushButton *pb)
+void CExecView::OnUpdateCall(QToolButton *pb)
 {
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
     && text->currentSynObj->ReadOnlyContext() != roClause);
 }
 /*
-void CExecView::OnUpdateUuid(QPushButton *pb)
+void CExecView::OnUpdateUuid(QToolButton *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
@@ -6386,47 +6386,47 @@ void CExecView::OnUpdateInterval(QAction* action)
     || text->currentSynObj->primaryToken == SetPH_T);
 }
 
-void CExecView::OnUpdateExists(QPushButton *pb)
+void CExecView::OnUpdateExists(QToolButton *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateTypeSwitch(QPushButton *pb)
+void CExecView::OnUpdateTypeSwitch(QToolButton *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateConnect(QPushButton *pb)
+void CExecView::OnUpdateConnect(QToolButton *pb)
 {
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateDisconnect(QPushButton *pb)
+void CExecView::OnUpdateDisconnect(QToolButton *pb)
 {
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateEmitSignal(QPushButton *pb)
+void CExecView::OnUpdateEmitSignal(QToolButton *pb)
 {
   pb->setEnabled(!Taboo()
     && text->currentSynObj->StatementSelected(text->currentSelection)
     && selfVar->primaryToken != initiator_T);
 }
 
-void CExecView::OnUpdateAssign(QPushButton *pb)
+void CExecView::OnUpdateAssign(QToolButton *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection)
     && text->currentSynObj->ReadOnlyContext() != roClause);
 }
 
-void CExecView::OnUpdateAttach(QPushButton *pb)
+void CExecView::OnUpdateAttach(QToolButton *pb)
 {
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateQueryItf(QPushButton *pb)
+void CExecView::OnUpdateQueryItf(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6457,7 +6457,7 @@ void CExecView::OnUpdateIgnore(QAction* action)
   action->setChecked(ig);
 }
 
-void CExecView::OnUpdateFail(QPushButton *pb)
+void CExecView::OnUpdateFail(QToolButton *pb)
 {
         // TODO: Add your command update UI handler code here
 
@@ -6466,14 +6466,14 @@ void CExecView::OnUpdateFail(QPushButton *pb)
     /*&& !text->currentSynObj->InReadOnlyContext()*/);
 }
 
-void CExecView::OnUpdateQua(QPushButton *pb)
+void CExecView::OnUpdateQua(QToolButton *pb)
 {
         // TODO: Add your command update UI handler code here
 
   pb->setEnabled(!Taboo() && text->currentSynObj->ExpressionSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateItem(QPushButton *pb)
+void CExecView::OnUpdateItem(QToolButton *pb)
 {
         // TODO: Add your command update UI handler code here
 
@@ -6610,7 +6610,7 @@ bool CExecView::EnablePaste()
   return true;
 }
 
-void CExecView::OnUpdateTry(QPushButton *pb)
+void CExecView::OnUpdateTry(QToolButton *pb)
 {
         // TODO: Add your command update UI handler code here
 
@@ -6618,7 +6618,7 @@ void CExecView::OnUpdateTry(QPushButton *pb)
     && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateSucceed(QPushButton *pb)
+void CExecView::OnUpdateSucceed(QToolButton *pb)
 {
         // TODO: Add your command update UI handler code here
 
@@ -6668,7 +6668,7 @@ void CExecView::OnUpdateEq(QAction* action)
   action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateDeclare(QPushButton *pb)
+void CExecView::OnUpdateDeclare(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6688,7 +6688,7 @@ void CExecView::OnUpdateFalse(QAction* action)
         || text->currentSynObj->parentObject->primaryToken == ifx_T));
 }
 
-void CExecView::OnUpdateForeach(QPushButton *pb)
+void CExecView::OnUpdateForeach(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6709,21 +6709,21 @@ void CExecView::OnUpdateGt(QAction* action)
   action->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateIf(QPushButton *pb)
+void CExecView::OnUpdateIf(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateIfdef(QPushButton *pb)
+void CExecView::OnUpdateIfdef(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
   pb->setEnabled(!Taboo() && text->currentSynObj->StatementSelected(text->currentSelection));
 }
 
-void CExecView::OnUpdateIfExpr(QPushButton *pb)
+void CExecView::OnUpdateIfExpr(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
   SynObject *synObj=
@@ -6740,7 +6740,7 @@ void CExecView::OnUpdateIfExpr(QPushButton *pb)
         || synObj->whereInParent != (address)&((FuncExpression*)synObj->parentObject)->handle.ptr));
 }
 
-void CExecView::OnUpdateElseExpr(QPushButton *pb)
+void CExecView::OnUpdateElseExpr(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
   SynObject *synObj=
@@ -6757,7 +6757,7 @@ void CExecView::OnUpdateElseExpr(QPushButton *pb)
         || synObj->whereInParent != (address)&((FuncExpression*)synObj->parentObject)->handle.ptr));
 }
 
-void CExecView::OnUpdateIn(QPushButton *pb)
+void CExecView::OnUpdateIn(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6945,7 +6945,7 @@ void CExecView::OnUpdateShowComments(QAction* action)
   action->setChecked(text->showComments);
 }
 
-void CExecView::OnUpdateNot(QPushButton *pb)
+void CExecView::OnUpdateNot(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -6964,7 +6964,7 @@ void CExecView::OnUpdateNull(QAction* action)
            && text->currentSynObj->parentObject->primaryToken == disconnect_T)));
 }
 
-void CExecView::OnUpdateOr(QPushButton *pb)
+void CExecView::OnUpdateOr(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -7050,7 +7050,7 @@ void CExecView::OnUpdateShowOptionals(QAction* action)
   }
 }
 
-void CExecView::OnUpdateSwitch(QPushButton *pb)
+void CExecView::OnUpdateSwitch(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 
@@ -7069,7 +7069,7 @@ void CExecView::OnUpdateTrue(QAction* action)
         || text->currentSynObj->parentObject->primaryToken == ifx_T));
 }
 
-void CExecView::OnUpdateXor(QPushButton *pb)
+void CExecView::OnUpdateXor(QToolButton *pb)
 {
   // TODO: Add your command update UI handler code here
 

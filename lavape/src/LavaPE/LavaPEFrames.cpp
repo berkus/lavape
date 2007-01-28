@@ -355,11 +355,12 @@ void CLavaMainFrame::UpdateUI()
     runAction->setEnabled(false);
 }
 
-void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip,QString whatsThis)
+void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QToolButton *&pb,char *text,char *slotParm,QString tooltip,QString whatsThis)
 {
   QFont f;
 
-  pb = new QPushButton(QString(text),tb);
+  pb = new QToolButton(tb);
+  pb->setText(QString(text));
 
   tb->addWidget(pb);
   connect(pb,SIGNAL(clicked()),slotParm);
@@ -367,8 +368,7 @@ void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,c
   f.setBold(true);
   pb->setFont(f);
 
-  pb->setFlat(true);
-  pb->setAutoDefault(false);
+  pb->setToolButtonStyle(Qt::ToolButtonTextOnly);
   pb->setMinimumHeight(pb->fontInfo().pixelSize());
   pb->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::MinimumExpanding);
   if (!tooltip.isEmpty())

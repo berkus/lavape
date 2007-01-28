@@ -55,7 +55,7 @@ public:
   void helpContents() { on_helpContentsAction_triggered(); }
   void fillKwdToolbar(QToolBar *tb);
   void fillHelpToolbar(QToolBar *tb);
-  void newKwdToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
+  void newKwdToolbutton(QToolBar *tb,QToolButton *&pb,char *text,char *slotParm,QString tooltip=QString::null,QString whatsThis=QString::null);
   void newHelpToolbutton(QToolBar *tb,QPushButton *&pb,char *text,char *slotParm,char *tooltip=0,char *whatsThis=0);
   void installToolButtonEvtFilters(QToolBar *tb);
 	void customEvent(QEvent *ev);

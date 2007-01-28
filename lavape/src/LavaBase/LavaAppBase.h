@@ -21,7 +21,6 @@
 #include "qwidget.h"
 #include "qstring.h"
 #include "qfileinfo.h"
-#include "qpushbutton.h"
 #include "qtoolbutton.h"
 #include "QtAssistant/qassistantclient.h"
 #include "qwhatsthis.h"
@@ -461,7 +460,7 @@ public:
   QAction* DbgBreakpointActPtr;
   QAction* DbgStopActionPtr;
 
-  QPushButton
+  QToolButton
     *declareButton, *existsButton, *foreachButton,
     *selectButton, *elInSetButton, *ifButton, *ifdefButton,
     *ifxButton, *elsexButton, *switchButton, *typeSwitchButton,
