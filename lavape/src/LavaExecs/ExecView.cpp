@@ -3232,6 +3232,7 @@ void CExecView::OnInsertBefore()
   // TODO: Add your command handler code here
 
   insertBefore = !insertBefore;
+  wxTheApp->updateButtonsMenus();
 }
 
 void CExecView::InsertAfter()
@@ -6302,7 +6303,15 @@ void CExecView::OnUpdateIgnoreButton(QToolButton *pb)
   }
 
   if (!text->currentSynObj->parentObject->parentObject) {
-    if (text->currentSynObj->primaryToken == Stm_T || insertBefore) {
+    if (text->currentSynObj->primaryToken == Stm_T) {
+      pb->setEnabled(true);
+      return;
+    }
+    else if (text->currentSynObj->primaryToken == ignore_T) {
+      pb->setEnabled(false);
+      return;
+    }
+    else if (insertBefore) {
       pb->setEnabled(true);
       return;
     }
@@ -6328,12 +6337,15 @@ void CExecView::OnUpdateIgnoreButton(QToolButton *pb)
     return;
   }
 
-  if (((SynObject*)chp->data)->primaryToken == Stm_T) {
+  if (text->currentSynObj->primaryToken == Stm_T) {
     pb->setEnabled(true);
     return;
   }
-
-  if (insertBefore) {
+  else if (text->currentSynObj->primaryToken == ignore_T) {
+    pb->setEnabled(false);
+    return;
+  }
+  else if (insertBefore) {
     pb->setEnabled(true);
     return;
   }
