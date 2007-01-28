@@ -265,7 +265,7 @@ void LavaGUIDialog::NewTitle(LavaDECL *decl, const DString& lavaName)
   if (!oldTitle.isEmpty() && newTitle != oldTitle)
     wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
-
+ 
 
 void LavaGUIDialog::OnDeleteOpt()
 {
@@ -309,9 +309,9 @@ void LavaGUIDialog::OnUpdateDeleteopt(QAction* action)
 
 void LavaGUIDialog::OnInsertOpt()
 {
-  if (myGUIProg && myGUIProg->InsertNode) {
+  /*if (myGUIProg && myGUIProg->InsertNode) {
     myGUIProg->CmdExec.InsertIterItem(myGUIProg->InsertNode);
-  }
+  }*/
 }
 
 

@@ -25,11 +25,12 @@
 #include "DString.h"
 #include "GUIProgBase.h"
 #include "Syntax.h"
+#include "qobject.h"
 
 
-class CmdExecCLASS {
+class CmdExecCLASS  : public QObject {
 public:
-
+  
   void INIT (CGUIProgBase *guiPr);
   CGUIProgBase *GUIProg;
 /*
@@ -53,6 +54,16 @@ public:
   CHEFormNode* GetOptNode(CHEFormNode* fNode);
   CHEFormNode* GetIterNode(CHEFormNode* fNode);
   CHEFormNode* InPopupShell(CHEFormNode* node);
+ 
+  virtual bool event(QEvent* ev);
+
+private: 
+  CHEFormNode* insertedNode;
+  CHEFormNode* beforeNode;
+  CHEFormNode* parNode;
+
+private:
+  Q_OBJECT
 
 };
 

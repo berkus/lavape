@@ -125,7 +125,7 @@ CHEFormNode* CmdExecCLASS::GetIterNode(CHEFormNode* fNode)
 
 void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
 {
-  CHEFormNode *popupNode, *beforeNode, *chainNode, *parNode, *insertedNode;
+  CHEFormNode *chainNode;// *beforeNode,  *parNode, *insertedNode; *popupNode;
   LavaObjectPtr newStackFrame[SFH+7], handle = 0;
   LavaDECL *iterSyn, *formSyn;
   bool insertIt;
@@ -215,8 +215,10 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
   }//inRunTime
   else
     insertIt = true;
+
   if (insertIt) {
-    GUIProg->setFocNode(((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode));
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_INSERT));
+    /*GUIProg->setFocNode(((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode));
     parNode->data.SubTree.Insert(beforeNode->predecessor, insertedNode);
     insertedNode->data.FIP.up = parNode; 
     insertedNode->data.IterFlags.INCL(IteratedItem);
@@ -231,12 +233,46 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
       ((CGUIProg*)GUIProg)->RedrawForm();
     if (GUIProg->focNode)
       ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);     
-    ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(insertedNode,false);
+    ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(insertedNode,false);*/
   }
   else
     DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+2]);
 
 }
+
+bool CmdExecCLASS::event(QEvent* ev)
+{
+  CHEFormNode *popupNode;
+
+  if (ev->type() == UEV_LavaGUIInsDel) {
+    if ((int)((CustomEvent*)ev)->data() == IDM_ITER_INSERT) {
+      GUIProg->setFocNode(((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode));
+      parNode->data.SubTree.Insert(beforeNode->predecessor, insertedNode);
+      insertedNode->data.FIP.up = parNode; 
+      insertedNode->data.IterFlags.INCL(IteratedItem);
+      GUIProg->CurPTR = GUIProg->focNode;
+      popupNode = InPopupShell(insertedNode);
+      if (popupNode) {
+        ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
+        if (!GUIProg->focNode)
+          popupNode->data.FIP.popupShell->raise();
+      }
+      else
+        ((CGUIProg*)GUIProg)->RedrawForm();
+      if (GUIProg->focNode)
+        ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);     
+      ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(insertedNode,false);
+    }
+    else if ((int)((CustomEvent*)ev)->data() == IDM_ITER_DEL) {
+    }
+    else if ((int)((CustomEvent*)ev)->data() == ID_INSERTOPT) {
+    }
+    else if ((int)((CustomEvent*)ev)->data() == ID_DELETEOPT) {
+    }
+  }
+  return true;
+}
+
 
 void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
 {

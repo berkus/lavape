@@ -35,11 +35,12 @@ public:
   void RedrawForm();
   bool Redraw;
   void OnModified();
-  void OnUpdateInsertopt(QAction* action);
-  void OnUpdateDeleteopt(QAction* action);
+  bool OnUpdateInsertopt(QAction* action);
+  bool OnUpdateDeleteopt(QAction* action);
   void OnUpdateNewFunc(QAction* action);
   virtual void SyncTree(CHEFormNode *node);
   virtual void NoteLastModified();
+  void ExecuteAction(QAction* action);
   CGUIProg();
   ~CGUIProg();
 

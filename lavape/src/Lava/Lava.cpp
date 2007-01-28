@@ -355,6 +355,14 @@ bool CLavaApp::event(QEvent *e)
   case UEV_PMDumpOff:
     ((CMainFrame*)wxTheApp->m_appWindow)->pmDumpAction->setChecked(false);
     break;
+  case UEV_LavaGUIInsDel: 
+    if ( ((CLavaMainFrame*)wxTheApp->m_appWindow)->docModal 
+      && ((CLavaMainFrame*)wxTheApp->m_appWindow)->docModal->LavaDialog ) 
+      //QApplication::postEvent(&((LavaGUIDialog*)((CLavaMainFrame*)wxTheApp->m_appWindow)->docModal->LavaDialog)->myGUIProg->CmdExec, e);
+      ((LavaGUIDialog*)((CLavaMainFrame*)wxTheApp->m_appWindow)->docModal->LavaDialog)->myGUIProg->CmdExec.event( e);
+    break;
+  
+
   default:
     wxApp::event(e);
   }

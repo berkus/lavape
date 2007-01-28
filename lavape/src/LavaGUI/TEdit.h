@@ -24,6 +24,10 @@ public:
   CHEFormNode* myFormNode;
   QPoint CaretP;
   QMenu* myMenu;
+  QMenu *StdMenu;
+  bool enableInsert;
+  bool enableDelete;
+  bool enableFunc;
   bool inError;
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);

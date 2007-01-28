@@ -672,6 +672,16 @@
 			<File
 				RelativePath="CmdExec.h"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputPath)"
+						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="Conv.h"
@@ -905,6 +915,19 @@
 		<Filter
 			Name="Generated"
 			>
+			<File
+				RelativePath=".\generated\moc_CmdExec.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="..\CmdExec.h"
+						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
+					/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath="Generated\moc_FormWid.cpp"
 				>

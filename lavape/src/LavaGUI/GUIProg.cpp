@@ -267,7 +267,7 @@ void CGUIProg::OnSetFocus(CHEFormNode* trp0)
     }
 }
 
-void CGUIProg::OnUpdateInsertopt(QAction* action)
+bool CGUIProg::OnUpdateInsertopt(QAction* action)
 {
  QWidget* insertWindow = 0;
  InsertNode = ActNode;
@@ -276,15 +276,16 @@ void CGUIProg::OnUpdateInsertopt(QAction* action)
     if (InsertNode->data.IterFlags.Contains(IteratedItem)
         && !InsertNode->data.IterFlags.Contains(FixedCount)) {
       action->setEnabled(true);
-      return;
+      return true;
     }
     InsertNode = InsertNode->data.FIP.up;
   }
   action->setEnabled(false);
   InsertNode = 0;
+  return false;
 }
 
-void CGUIProg::OnUpdateDeleteopt(QAction* action)
+bool CGUIProg::OnUpdateDeleteopt(QAction* action)
 {
   QWidget* delWindow = 0;
   DelNode = ActNode;
@@ -294,16 +295,34 @@ void CGUIProg::OnUpdateDeleteopt(QAction* action)
         || DelNode->data.IterFlags.Contains(IteratedItem)
            && !DelNode->data.IterFlags.Contains(FixedCount)) {
       action->setEnabled(true);
-      return;
+      return true;
     }
     DelNode = DelNode->data.FIP.up;
   }
   DelNode = 0;
   action->setEnabled(false);
+  return false;
 }
 
 void CGUIProg::OnUpdateNewFunc(QAction* action)
 {
   action->setEnabled(!LBaseData->inRuntime && ActNode
                      && ActNode->data.myHandlerNode);
+}
+
+void CGUIProg::ExecuteAction(QAction* action)
+{
+  if (action == LBaseData->insActionPtr) {
+    if (InsertNode)
+      CmdExec.InsertIterItem(InsertNode);
+  }
+  else if (action == LBaseData->delActionPtr) {
+    if (DelNode) {
+      if (DelNode->data.IterFlags.Contains(Optional))
+       CmdExec.DeleteOptionalItem(DelNode);
+      else
+        CmdExec.DeleteIterItem(DelNode);
+      DelNode = 0;
+    }
+  }
 }
