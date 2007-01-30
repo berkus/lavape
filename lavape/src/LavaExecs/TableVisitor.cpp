@@ -135,7 +135,8 @@ void TableVisitor::VisitFormParm (FormParm *obj,SynObject *parent,address where,
 void TableVisitor::VisitReference (Reference *obj,SynObject *parent,address where,CHAINX *chxp) {
   switch (update) {
   case onCopy:
-    ((TIDTable*)table)->ChangeFromTab(obj->refID);
+    if (obj->parentObject->parentObject)
+      ((TIDTable*)table)->ChangeFromTab(obj->refID);
     break;
   case onMove:
     ((TIDTable*)table)->ChangeRefToClipID(obj->refID);
@@ -246,8 +247,6 @@ void TableVisitor::VisitSelfVar (SelfVar *obj,SynObject *parent,address where,CH
     obj->Check(ckd); // only to insert identifiers of references and formal parameters
   }
 
-  if (update != onCopy) // since execName is recalculated below on onNewID
-    VisitReference((Reference*)obj->execName.ptr);
   switch (update) {
   case onTypeID:
     decl = obj->execDECL->ParentDECL;
@@ -285,7 +284,6 @@ void TableVisitor::VisitSelfVar (SelfVar *obj,SynObject *parent,address where,CH
   obj->containingChain = 0;
   obj->parentObject = 0;
   obj->concernExecs = false;
-
 
   ((SynObject*)obj->execName.ptr)->parentObject = obj;
   if (update == onNewID) {
