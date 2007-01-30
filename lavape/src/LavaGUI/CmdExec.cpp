@@ -46,7 +46,6 @@ CHEFormNode* CmdExecCLASS::GetOptNode(CHEFormNode* fNode)
 
 void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
 {
-  CHEFormNode *optNode, *popupNode;
   LavaDECL *formSyn;
 
   optNode = fNode->data.FIP.up;
@@ -64,49 +63,25 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
       QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
     return;
   }
-  GUIProg->setFocNode(((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode));
-  GUIProg->CurPTR = GUIProg->focNode;
-  popupNode = InPopupShell(optNode);
-  if (popupNode)
-    ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
-  else
-    ((CGUIProg*)GUIProg)->RedrawForm();
-  ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);     
+  optNode->data.IterFlags.INCL(Optional);
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)ID_INSERTOPT));
+
 }
 
 void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
-{
-  CHEFormNode *popupNode, *parNode = fNode->data.FIP.up;
-  fNode = (CHEFormNode*)parNode->data.SubTree.Uncouple(fNode); 
+{ 
+  LavaDECL* formSyn;
 
-  CHEFormNode* elliNode = 0;
-
-  LavaDECL* formSyn = parNode->data.FormSyntax;
+  parNode = fNode->data.FIP.up;
+  delNode = (CHEFormNode*)parNode->data.SubTree.Uncouple(fNode); 
+  elliNode = 0;
+  formSyn = parNode->data.FormSyntax;
   ((CGUIProg*)GUIProg)->LavaForm.CreateEllipsis(elliNode,formSyn, parNode->data.allowOwnHandler);
-  parNode->data.SubTree.Insert(fNode->predecessor, elliNode);
-  if (fNode->data.BasicFlags.Contains(Groupbox))
+  parNode->data.SubTree.Insert(delNode->predecessor, elliNode);
+  if (delNode->data.BasicFlags.Contains(Groupbox))
     elliNode->data.BasicFlags.INCL(Groupbox);
   elliNode->data.FIP.up = parNode;
-  GUIProg->setFocNode(0);
-  GUIProg->CurPTR = elliNode;
-  if (fNode->data.FIP.popupShell) {
-    delete fNode->data.FIP.popupShell;
-    fNode->data.FIP.popupShell = 0;
-    fNode->data.FIP.poppedUp = false;
-  }
-  popupNode = InPopupShell(elliNode);
-  if (popupNode)
-    ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
-  else
-    ((CGUIProg*)GUIProg)->RedrawForm();
-  ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(elliNode);     
-  ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(elliNode,false);
-  if (LBaseData->inRuntime) {
-    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)fNode->data.ResultVarPtr);
-    *fNode->data.ResultVarPtr = 0;
-    ((CGUIProg*)GUIProg)->OnModified();
-  }
-  delete fNode;
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)ID_DELETEOPT));
 }
 
 CHEFormNode* CmdExecCLASS::GetIterNode(CHEFormNode* fNode)
@@ -216,67 +191,16 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
   else
     insertIt = true;
 
-  if (insertIt) {
+  if (insertIt) 
     QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_INSERT));
-    /*GUIProg->setFocNode(((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode));
-    parNode->data.SubTree.Insert(beforeNode->predecessor, insertedNode);
-    insertedNode->data.FIP.up = parNode; 
-    insertedNode->data.IterFlags.INCL(IteratedItem);
-    GUIProg->CurPTR = GUIProg->focNode;
-    popupNode = InPopupShell(insertedNode);
-    if (popupNode) {
-      ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
-      if (!GUIProg->focNode)
-        popupNode->data.FIP.popupShell->raise();
-    }
-    else
-      ((CGUIProg*)GUIProg)->RedrawForm();
-    if (GUIProg->focNode)
-      ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);     
-    ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(insertedNode,false);*/
-  }
   else
     DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+2]);
 
 }
 
-bool CmdExecCLASS::event(QEvent* ev)
-{
-  CHEFormNode *popupNode;
-
-  if (ev->type() == UEV_LavaGUIInsDel) {
-    if ((int)((CustomEvent*)ev)->data() == IDM_ITER_INSERT) {
-      GUIProg->setFocNode(((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode));
-      parNode->data.SubTree.Insert(beforeNode->predecessor, insertedNode);
-      insertedNode->data.FIP.up = parNode; 
-      insertedNode->data.IterFlags.INCL(IteratedItem);
-      GUIProg->CurPTR = GUIProg->focNode;
-      popupNode = InPopupShell(insertedNode);
-      if (popupNode) {
-        ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
-        if (!GUIProg->focNode)
-          popupNode->data.FIP.popupShell->raise();
-      }
-      else
-        ((CGUIProg*)GUIProg)->RedrawForm();
-      if (GUIProg->focNode)
-        ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);     
-      ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(insertedNode,false);
-    }
-    else if ((int)((CustomEvent*)ev)->data() == IDM_ITER_DEL) {
-    }
-    else if ((int)((CustomEvent*)ev)->data() == ID_INSERTOPT) {
-    }
-    else if ((int)((CustomEvent*)ev)->data() == ID_DELETEOPT) {
-    }
-  }
-  return true;
-}
-
-
 void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
 {
-  CHEFormNode *popupNode, *delNode,  *chainNode;
+  CHEFormNode *chainNode;
   LavaObjectPtr newStackFrame[SFH+3];
 
   if (fNode->data.IterFlags.Contains(Ellipsis))
@@ -323,27 +247,98 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
     else
       delNode = (CHEFormNode*)delNode->data.FIP.up->data.SubTree.Uncouple(delNode);
   }
-  if (delNode) {
-    GUIProg->setFocNode(0);
-    GUIProg->newFocus = 0;
-    GUIProg->ActNode = 0;
-    if (delNode->successor)
-      GUIProg->CurPTR = (CHEFormNode*)delNode->successor;
-    else
-      GUIProg->CurPTR = (CHEFormNode*)delNode->predecessor;
-    popupNode = InPopupShell(GUIProg->CurPTR);
-    if (popupNode) {
-      delNode->successor = 0;
-      ((CGUIProg*)GUIProg)->LavaForm.DeleteWindows(delNode, false);
-      ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
-    }
-    else
-      ((CGUIProg*)GUIProg)->RedrawForm();
-    ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->CurPTR);     
-    ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(GUIProg->CurPTR,false);
-    delete delNode; 
-  }
+  if (delNode) 
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
 } // END OF DeleteIterItem
+
+
+bool CmdExecCLASS::Event(QEvent* ev)
+{
+  CHEFormNode *popupNode;
+
+  if (ev->type() == UEV_LavaGUIInsDel) {
+    if ((int)((CustomEvent*)ev)->data() == IDM_ITER_INSERT) {
+      GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode);
+      GUIProg->setFocNode(GUIProg->ActNode);
+      parNode->data.SubTree.Insert(beforeNode->predecessor, insertedNode);
+      insertedNode->data.FIP.up = parNode; 
+      insertedNode->data.IterFlags.INCL(IteratedItem);
+      GUIProg->CurPTR = GUIProg->focNode;
+      popupNode = InPopupShell(insertedNode);
+      if (popupNode) {
+        ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
+        if (!GUIProg->focNode)
+          popupNode->data.FIP.popupShell->raise();
+      }
+      else
+        ((CGUIProg*)GUIProg)->RedrawForm();
+      if (GUIProg->focNode)
+        ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);     
+      ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(insertedNode,false);
+    }
+    else if ((int)((CustomEvent*)ev)->data() == IDM_ITER_DEL) {
+      GUIProg->setFocNode(0);
+      GUIProg->newFocus = 0;
+      GUIProg->ActNode = 0;
+      if (delNode->successor)
+        GUIProg->CurPTR = (CHEFormNode*)delNode->successor;
+      else
+        GUIProg->CurPTR = (CHEFormNode*)delNode->predecessor;
+      popupNode = InPopupShell(GUIProg->CurPTR);
+      if (popupNode) {
+        delNode->successor = 0;
+        ((CGUIProg*)GUIProg)->LavaForm.DeleteWindows(delNode, false);
+        ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
+      }
+      else
+        ((CGUIProg*)GUIProg)->RedrawForm();
+      ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->CurPTR);     
+      ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(GUIProg->CurPTR,false);
+      delete delNode; 
+    }
+
+    else if ((int)((CustomEvent*)ev)->data() == ID_INSERTOPT) {
+      GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode);
+      GUIProg->setFocNode(GUIProg->ActNode);
+      GUIProg->CurPTR = GUIProg->focNode;
+      popupNode = InPopupShell(optNode);
+      GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode);
+      GUIProg->setFocNode(GUIProg->ActNode);
+      GUIProg->CurPTR = GUIProg->focNode;
+      popupNode = InPopupShell(optNode);
+      if (popupNode)
+        ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
+      else
+        ((CGUIProg*)GUIProg)->RedrawForm();
+      ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);
+    }
+
+    else if ((int)((CustomEvent*)ev)->data() == ID_DELETEOPT) {
+      GUIProg->ActNode = 0;
+      GUIProg->setFocNode(0);
+      GUIProg->CurPTR = elliNode;
+      if (delNode->data.FIP.popupShell) {
+        delete delNode->data.FIP.popupShell;
+        delNode->data.FIP.popupShell = 0;
+        delNode->data.FIP.poppedUp = false;
+      }
+      popupNode = InPopupShell(elliNode);
+      if (popupNode)
+        ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
+      else
+        ((CGUIProg*)GUIProg)->RedrawForm();
+      ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(elliNode);     
+      ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(elliNode,false);
+      if (LBaseData->inRuntime) {
+        DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)delNode->data.ResultVarPtr);
+        *delNode->data.ResultVarPtr = 0;
+        ((CGUIProg*)GUIProg)->OnModified();
+      } 
+      delete delNode;
+    }
+  }
+  return true;
+}
 
 bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr StackFrame, int eventType)
 {
@@ -351,9 +346,10 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
   CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
   LavaVariablePtr newStackFrame;
+  LavaObjectPtr obj;
   int fsizeBytes, fsize;
   CHETID *cheTID;
-  LavaDECL* handlerDECL;
+  LavaDECL* handlerDECL, *classDECL;
 
   for (cheTID = (CHETID*)chainNode->data.myHandler.last;
     cheTID && (GUIProg->myDoc->IDTable.GetDECL(cheTID->data)->GUISignaltype != eventType);
@@ -362,6 +358,18 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
   if (!cheTID)
     return true;
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheTID->data);
+  if (!chainNode->data.GUIService) {
+    if (handlerDECL->ParentDECL == GUIProg->myDECL)
+      chainNode->data.GUIService = *(CSecTabBase***)GUIProg->ServicePtr;
+    else {
+      classDECL = handlerDECL->ParentDECL;
+      if (classDECL->DeclType == Impl)
+        classDECL = GUIProg->myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
+      chainNode->data.GUIService = (CSecTabBase**)AllocateObject(GUIProg->ckd, classDECL, true);
+      obj = (LavaObjectPtr)chainNode->data.GUIService;
+      GUIProg->allocatedObjects.append(obj);
+    }
+  }
   funcSect = &(*(LavaObjectPtr)chainNode->data.GUIService)[0];
   fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
   fsize = fDesc->stackFrameSize;
@@ -418,11 +426,12 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
 bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
 {
   LavaVariablePtr	StackFrame;
+  LavaObjectPtr obj;
   CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
   bool ok;
   CHETID *cheTID;
-  LavaDECL* handlerDECL;
+  LavaDECL* handlerDECL, *classDECL;
 
   for (cheTID = (CHETID*)fNode->data.myHandler.last;
     cheTID && (GUIProg->myDoc->IDTable.GetDECL(cheTID->data)->GUISignaltype != ValueChanged);
@@ -431,6 +440,19 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   if (!cheTID)
     return false;
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(((CHETID*)fNode->data.myHandler.last)->data);
+  if (!fNode->data.GUIService) {
+    if (handlerDECL->ParentDECL == GUIProg->myDECL)
+      fNode->data.GUIService = *(CSecTabBase***)GUIProg->ServicePtr;
+    else {
+      classDECL = handlerDECL->ParentDECL;
+      if (classDECL->DeclType == Impl)
+        classDECL = GUIProg->myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
+      fNode->data.GUIService = (CSecTabBase**)AllocateObject(GUIProg->ckd, classDECL, true);
+      obj = (LavaObjectPtr)fNode->data.GUIService;
+      GUIProg->allocatedObjects.append(obj);
+    }
+  }
+
   funcSect = &(*(LavaObjectPtr)fNode->data.GUIService)[0];
   fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
   int fsize = fDesc->stackFrameSize;

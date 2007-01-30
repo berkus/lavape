@@ -43,7 +43,8 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
   CHEEnumSelId *enumSel;
   myFormNode = data;
   GUIProg = guiPr;
-  myMenu = 0;
+  hasMenu = false;
+  hasFuncMenu = false;
   QStyleOptionComboBox qsob=QStyleOptionComboBox();
 
 
@@ -71,26 +72,21 @@ CTComboBox::CTComboBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentW
     setEnabled(false);
   ((QListView*)view())->setResizeMode(QListView::Adjust);
   connect(this,SIGNAL(activated(int)), this, SLOT(OnSelendok(int)));
-  if (myFormNode->data.IterFlags.Contains(Optional)) {
-    myMenu = new QMenu(this);
-    myMenu->addAction(LBaseData->delActionPtr);//DelAction);
-    myMenu->addAction(LBaseData->insActionPtr);//InsAction);
-    LBaseData->insActionPtr->setEnabled(false);
-  }
   QWidget* par = pParentWnd;
   while (par && (!par->inherits("CFormWid") 
     || (((CFormWid*)par)->myFormNode->data.FormSyntax->OwnID < 0)))
     par = par->parentWidget();
   if (par) {
-    myMenu = ((CFormWid*)par)->myMenu;
+    hasMenu = ((CFormWid*)par)->hasMenu;
+    hasFuncMenu = ((CFormWid*)par)->hasFuncMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
+  if (myFormNode->data.IterFlags.Contains(Optional)
+      || ((CFormWid*)par)->iterData && ((CFormWid*)par)->hasMenu)
+    hasMenu = true;
   if (myFormNode->data.allowOwnHandler && isEnabled()) {
-    if (!LBaseData->inRuntime) {
-      if (!myMenu)
-        myMenu = new QMenu(this);
-      myMenu->addAction(LBaseData->newFuncActionPtr);
-    }
+    if (!LBaseData->inRuntime) 
+      hasFuncMenu = true;
     myFormNode->data.myHandlerNode = myFormNode;
   }   
   if (par && !myFormNode->data.handlerSearched && isEnabled())
@@ -120,13 +116,30 @@ void CTComboBox::focusOutEvent(QFocusEvent *ev)
 
 void CTComboBox::mousePressEvent(QMouseEvent* ev)
 {
+  QMenu *myMenu = 0;
+  QAction* action;
+
   GUIProg->ActNode = myFormNode;
-  if ((ev->button() == Qt::RightButton) && myMenu) {
-    ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-    if (!LBaseData->inRuntime)
+  if ((ev->button() == Qt::RightButton) && (hasMenu || hasFuncMenu)) {
+    if (hasMenu) {
+      myMenu = new QMenu("Lava object", this);
+      myMenu->addAction(GUIProg->insActionPtr);
+      myMenu->addAction(GUIProg->delActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(GUIProg->delActionPtr);
+    }
+    if (!LBaseData->inRuntime && hasFuncMenu) {
+      if (!myMenu)
+        myMenu = new QMenu("Lava", this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
       ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
-    myMenu->popup(ev->globalPos());//QPoint(ev->x(), ev->y()));
+    }
+    if (myMenu) {
+      action = myMenu->exec(ev->globalPos());
+      delete myMenu;
+      if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
+        ((CGUIProg*)GUIProg)->ExecuteAction(action);
+    }
   }
   else {
     QComboBox::mousePressEvent(ev);
@@ -165,21 +178,5 @@ void CTComboBox::focusInEvent(QFocusEvent *ev)
   GUIProg->SyncTree(myFormNode);
 }
 
-/*
-bool CTComboBox::event(QEvent* ev)
-{
-  if (ev->type() == UEV_LavaGUIInsDel) {
-    if (myFormNode->data.IterFlags.Contains(Optional))
-      ((CGUIProg*)GUIProg)->CmdExec.DeleteOptionalItem(myFormNode);
-    return true;
-  }
-  else 
-    return QComboBox::event(ev);
-}*/
 
-/*
-void CTComboBox::DelActivated()
-{
-  QApplication::postEvent(this, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
-}*/
 

@@ -168,8 +168,13 @@ void LavaGUIDialog::closeEvent(QCloseEvent *e)
 
 void LavaGUIDialog::OnOK()
 {
+  LavaObjectPtr obj;
   if (myGUIProg) {
     myGUIProg->NoteLastModified();
+    while (myGUIProg->allocatedObjects.size()) {
+      obj = myGUIProg->allocatedObjects.takeFirst();
+      DEC_FWD_CNT(myGUIProg->ckd,obj);
+    }
     if (myGUIProg->LavaForm.OnOK( myGUIProg->Root)) {
       if (myThread) {
         myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
@@ -184,11 +189,16 @@ void LavaGUIDialog::OnOK()
 
 void LavaGUIDialog::OnCancel()
 {
+  LavaObjectPtr obj;
   if (myGUIProg) {
     myGUIProg->NoteLastModified();
     if (*ResultDPtr) {
       DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
       *ResultDPtr = 0;
+      while (myGUIProg->allocatedObjects.count()) {
+        obj = myGUIProg->allocatedObjects.takeFirst();
+        DEC_FWD_CNT(myGUIProg->ckd,obj);
+      }
     }
     if (myThread) {
       myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
@@ -283,69 +293,19 @@ void LavaGUIDialog::OnUpdateDeleteopt(QAction* action)
 {
   if (myGUIProg)
     myGUIProg->OnUpdateDeleteopt(action);
-  /*
-  if (myGUIProg && myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
-      && myGUIProg->focNode->data.FIP.widget
-      && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
-      && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
-    QWidget* delWindow = myGUIProg->focNode->data.FIP.frameWidget;
-    myGUIProg->DelNode = myGUIProg->focNode;
-    while (myGUIProg->DelNode && (delWindow != this)) {// && (delWindow != frm)) {
-      delWindow = myGUIProg->DelNode->data.FIP.frameWidget;
-      if (myGUIProg->DelNode->data.IterFlags.Contains(Optional)
-          || myGUIProg->DelNode->data.IterFlags.Contains(IteratedItem)
-             && !myGUIProg->DelNode->data.IterFlags.Contains(FixedCount)) {
-        action->setEnabled(true);
-        return;
-      }
-      myGUIProg->DelNode = myGUIProg->DelNode->data.FIP.up;
-    }
-  }
-  if (myGUIProg)
-    myGUIProg->DelNode = 0;
-  action->setEnabled(false);*/
 }
-
 
 void LavaGUIDialog::OnInsertOpt()
 {
-  /*if (myGUIProg && myGUIProg->InsertNode) {
+  if (myGUIProg && myGUIProg->InsertNode)
     myGUIProg->CmdExec.InsertIterItem(myGUIProg->InsertNode);
-  }*/
 }
-
 
 void LavaGUIDialog::OnUpdateInsertopt(QAction* action)
 {
   if (myGUIProg) 
     myGUIProg->OnUpdateInsertopt(action);
-/*  if (myGUIProg) {
-    
-    if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
-      && myGUIProg->focNode->data.FIP.widget
-        && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
-        && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
-      QWidget* insertWindow = myGUIProg->focNode->data.FIP.frameWidget;
-      myGUIProg->InsertNode = myGUIProg->focNode;
-      
-      QWidget* insertWindow = 0;
-      while (myGUIProg->InsertNode && (insertWindow != this)) {// && (insertWindow != frm)) {
-        insertWindow = myGUIProg->InsertNode->data.FIP.frameWidget;
-        if (myGUIProg->InsertNode->data.IterFlags.Contains(IteratedItem)
-            && !myGUIProg->InsertNode->data.IterFlags.Contains(FixedCount)) {
-          action->setEnabled(true);
-          return;
-        }
-        myGUIProg->InsertNode = myGUIProg->InsertNode->data.FIP.up;
-      }
-    //}
-    action->setEnabled(false);
-    myGUIProg->InsertNode = 0;
-  }
-  action->setEnabled(false);*/
 }
-
-
 
 CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
    : CLavaBaseView(parent,doc,"LavaGUIView")
@@ -674,10 +634,14 @@ void CLavaGUIView::OnGotoDecl()
 
 void CLavaGUIView::OnOK()
 {
+  LavaObjectPtr obj;
   if (released)
     return;
   NoteLastModified();
-
+  while (myGUIProg->allocatedObjects.count()) {
+    obj = myGUIProg->allocatedObjects.takeFirst();
+    DEC_FWD_CNT(myGUIProg->ckd,obj);
+  }
 }
 
 
@@ -788,28 +752,6 @@ void CLavaGUIView::OnUpdateDeleteopt(QAction* action)
 {
   if (myGUIProg)
     myGUIProg->OnUpdateDeleteopt(action);
-  /*
-  if (myGUIProg && myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
-      && myGUIProg->focNode->data.FIP.widget
-      && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
-      && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
-    QWidget* delWindow = myGUIProg->focNode->data.FIP.frameWidget;
-    myGUIProg->DelNode = myGUIProg->focNode;
-    while (myGUIProg->DelNode && (delWindow != this)) {// && (delWindow != frm)) {
-      delWindow = myGUIProg->DelNode->data.FIP.frameWidget;
-      if (myGUIProg->DelNode->data.IterFlags.Contains(Optional)
-          || myGUIProg->DelNode->data.IterFlags.Contains(IteratedItem)
-             && !myGUIProg->DelNode->data.IterFlags.Contains(FixedCount)) {
-        action->setEnabled(true);
-        return;
-      }
-      myGUIProg->DelNode = myGUIProg->DelNode->data.FIP.up;
-    }
-  }
-  if (myGUIProg)
-    myGUIProg->DelNode = 0;
-  action->setEnabled(false);
-  */
 }
 
 
@@ -827,28 +769,6 @@ void CLavaGUIView::OnUpdateInsertopt(QAction* action)
 {
   if (myGUIProg) 
     myGUIProg->OnUpdateInsertopt(action);
-    /*{
-   if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.frameWidget
-      && myGUIProg->focNode->data.FIP.widget
-        && !myGUIProg->focNode->data.IoSigFlags.Contains(DONTPUT)
-        && myGUIProg->focNode->data.IoSigFlags.Contains(Flag_INPUT)) {
-      QWidget* insertWindow = myGUIProg->focNode->data.FIP.frameWidget;
-      myGUIProg->InsertNode = myGUIProg->focNode;
-      QWidget* insertWindow = 0;
-      while (myGUIProg->InsertNode && (insertWindow != this)) {// && (insertWindow != frm)) {
-        insertWindow = myGUIProg->InsertNode->data.FIP.frameWidget;
-        if (myGUIProg->InsertNode->data.IterFlags.Contains(IteratedItem)
-            && !myGUIProg->InsertNode->data.IterFlags.Contains(FixedCount)) {
-          action->setEnabled(true);
-          return;
-        }
-        myGUIProg->InsertNode = myGUIProg->InsertNode->data.FIP.up;
-      }
-    }
-    action->setEnabled(false);
-    myGUIProg->InsertNode = 0;
-  }
-  action->setEnabled(false);*/
 }
 
 
@@ -903,33 +823,6 @@ void CLavaGUIView::OnModified()
 
 bool CLavaGUIView::OnKill()
 {
-  if (released)
-    return true;
-  /*
-  if (myGUIProg && LBaseData->inRuntime && !GetDocument()->isObject) {
-    if (ResultDPtr && *ResultDPtr) {
-      if (QMessageBox::question(
-            wxTheApp->m_appWindow,qApp->name(),"Do you really want to abort this Lava program?",
-            QMessageBox::Yes,
-            QMessageBox::No) == QMessageBox::Yes) {
-
-        //DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
-        //*ResultDPtr = 0;
-
-        if (myThread && myThread->pContExecEvent) {
-          if (!myGUIProg->ckd.lastException)
-            SetLavaException(myGUIProg->ckd, CanceledForm_ex, ERR_CanceledForm);
-          myThread->pContExecEvent.lastException = myGUIProg->ckd.lastException;
-          myGUIProg->ckd.lastException = 0;
-          myGUIProg->ckd.exceptionThrown = false;
-          released = true;
-          (*myThread->pContExecEvent)--;
-        }
-      }
-      return false;
-    }
-  }
-  */
   return true;
 }
 

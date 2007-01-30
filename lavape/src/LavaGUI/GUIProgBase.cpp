@@ -270,7 +270,7 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
   CHETID *cheTID=0, *cheTID2=0;
   CHETIDs *tidsChe=0;
   CHE *che;
-  LavaDECL *formSyn = 0, *classDECL, *handlerDECL;
+  LavaDECL *formSyn = 0;
 
   formNode->data.handlerSearched = true;
   node = formNode;
@@ -308,16 +308,4 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
     }
     node = node->data.FIP.up;
   }
-  if (LBaseData->inRuntime) 
-    if (formNode->data.myHandler.last) {
-      handlerDECL = myDoc->IDTable.GetDECL(((CHETID*)formNode->data.myHandler.last)->data);
-      if (handlerDECL->ParentDECL == myDECL)
-        formNode->data.GUIService = *(CSecTabBase***)ServicePtr;
-      else {
-        classDECL = handlerDECL->ParentDECL;
-        if (classDECL->DeclType == Impl)
-          classDECL = myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
-        formNode->data.GUIService = (CSecTabBase**)AllocateObject(ckd, classDECL, true);
-      }
-    }
 }

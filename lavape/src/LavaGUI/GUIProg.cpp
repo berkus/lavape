@@ -28,6 +28,7 @@
 #include "mdiframes.h"
 
 #include <QScrollBar>
+#include <QAction>
 
 //Added by qt3to4:
 
@@ -57,7 +58,6 @@ CGUIProg::CGUIProg() : CGUIProgBase()
   fromFillIn = 0;
   Redraw = false;
   ServicePtr = 0;
-
 }
 
 void CGUIProg::Create(CLavaBaseDoc* doc, QWidget* view)
@@ -79,6 +79,8 @@ void CGUIProg::Create(CLavaBaseDoc* doc, QWidget* view)
   else
     scrView = ((LavaGUIDialog*)view)->scrollView();
   CGUIProgBase::Create();
+  delActionPtr = new QAction(LBaseData->delActionPtr->icon(), LBaseData->delActionPtr->text(),LBaseData->delActionPtr->parent());
+  insActionPtr = new QAction(LBaseData->insActionPtr->icon(), LBaseData->insActionPtr->text(),LBaseData->insActionPtr->parent());
 }
 
 void CGUIProg::OnUpdate( LavaDECL* decl, LavaVariablePtr resultPtr)
@@ -312,11 +314,11 @@ void CGUIProg::OnUpdateNewFunc(QAction* action)
 
 void CGUIProg::ExecuteAction(QAction* action)
 {
-  if (action == LBaseData->insActionPtr) {
+  if (action == insActionPtr) {
     if (InsertNode)
       CmdExec.InsertIterItem(InsertNode);
   }
-  else if (action == LBaseData->delActionPtr) {
+  else if (action == delActionPtr) {
     if (DelNode) {
       if (DelNode->data.IterFlags.Contains(Optional))
        CmdExec.DeleteOptionalItem(DelNode);

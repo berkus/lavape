@@ -168,9 +168,9 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       ) {
       pred = (CHEFormNode*)chFrmNd->predecessor;
       if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
-        ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(pred->data.StringValue.c, context.currentFrame);
+        ((CFormWid*)context.currentFrame)->BGroup = new CLavaGroupBox(GUIProg, chFrmNd, pred->data.StringValue.c, context.currentFrame);
       else
-        ((CFormWid*)context.currentFrame)->BGroup = new QGroupBox(context.currentFrame);
+        ((CFormWid*)context.currentFrame)->BGroup = new CLavaGroupBox(GUIProg, chFrmNd, context.currentFrame);
       QPalette palette;
       palette.setColor(QPalette::Active,QPalette::WindowText, context.currentFrame->palette().windowText().color());
       ((CFormWid*)context.currentFrame)->BGroup->setPalette(palette);
@@ -258,9 +258,9 @@ void MakeGUICLASS::makeWidget (CHEFormNode* chFrmNd,
       if (chFrmNd->data.BasicFlags.Contains(Groupbox)) {
         pred = (CHEFormNode*)chFrmNd->predecessor;
         if (pred && pred->data.FormSyntax->DeclDescType == LiteralString)
-          ((CFormWid*)newWidget)->BGroup = new QGroupBox(pred->data.StringValue.c, newWidget);
+          ((CFormWid*)newWidget)->BGroup = new CLavaGroupBox(GUIProg, chFrmNd, pred->data.StringValue.c, newWidget);
         else
-          ((CFormWid*)newWidget)->BGroup = new QGroupBox(newWidget);
+          ((CFormWid*)newWidget)->BGroup = new CLavaGroupBox(GUIProg, chFrmNd, newWidget);
         QPalette palette;
         palette.setColor(QPalette::Active,QPalette::WindowText, newWidget->palette().windowText().color());
         ((CFormWid*)newWidget)->BGroup->setPalette(palette);

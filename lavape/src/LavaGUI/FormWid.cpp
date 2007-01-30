@@ -39,8 +39,6 @@
 
 CFormWid::~CFormWid()
 {
-//  if (origMenu)
-//    delete myMenu;
 }
 
 CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
@@ -48,13 +46,14 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
                 :QFrame(parent)
 {
   nRadio = 0;
-  myMenu = 0;
+  hasMenu = false;
+  hasFuncMenu = false;
   iterData = 0;
   BGroup = 0;
   GUIProg = guiPr;
-  origMenu = false;
   usedInFormNode = false;
   myFormNode = (CHEFormNode*)data;
+  setEnabled(true);
   setAutoFillBackground(true);
   GUIProg->SetColor(this, myFormNode, QPalette::Window, QPalette::WindowText);
   if (border) { //the FIP.widget 
@@ -109,7 +108,8 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (par) {
-    myMenu = ((CFormWid*)par)->myMenu;
+    hasMenu = ((CFormWid*)par)->hasMenu;
+    hasFuncMenu = ((CFormWid*)par)->hasFuncMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
   if (IterFlags.BITS()
@@ -117,20 +117,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
       && !myFormNode->data.IoSigFlags.Contains(DONTPUT)
       && myFormNode->data.IoSigFlags.Contains(Flag_INPUT)) {
     iterData = myFormNode;
-
-    if (!myMenu)
-      myMenu = new QMenu("Lava object", this);
-
-    origMenu = true;
-    if (IterFlags.Contains(IteratedItem)) {
-      myMenu->addAction(LBaseData->delActionPtr);//DelAction);
-      myMenu->addAction(LBaseData->insActionPtr);//InsAction);
-    }
-    else {
-      myMenu->addAction(LBaseData->delActionPtr);//DelAction);
-      myMenu->addAction(LBaseData->insActionPtr);//InsAction);
-      LBaseData->insActionPtr->setEnabled(false);
-    }
+    hasMenu = true;
   }
   else {
     if (par) 
@@ -145,9 +132,7 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
     && (myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
       || myFormNode->data.BasicFlags.Contains(ButtonMenu))) {
     if (!LBaseData->inRuntime) {
-      if (!myMenu)
-        myMenu = new QMenu("Lava", this);
-      myMenu->addAction(LBaseData->newFuncActionPtr);
+      hasFuncMenu = true;
       if (myFormNode->data.FormSyntax->DeclType != PatternDef)
         myFormNode->data.myHandlerNode = myFormNode;
     }
@@ -174,13 +159,29 @@ void CFormWid::AddRadio(QPushButton* radio)
 
 void CFormWid::mousePressEvent(QMouseEvent* ev) 
 {
+  QAction* action;
+  QMenu* myMenu = 0;
+
   GUIProg->ActNode = myFormNode;
-  ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
-  ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-  if (!LBaseData->inRuntime) 
-    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
-  if (myMenu) 
-    myMenu->popup(ev->globalPos());//QPoint(ev->x(), ev->y()));
+  if (hasMenu || hasFuncMenu) {
+    if (hasMenu) { 
+      myMenu = new QMenu("Lava object", this);
+      myMenu->addAction(GUIProg->delActionPtr);//DelAction);
+      myMenu->addAction(GUIProg->insActionPtr);//InsAction);
+      ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(GUIProg->delActionPtr);
+    }
+    if (!LBaseData->inRuntime && hasFuncMenu) {
+      if (!myMenu)
+        myMenu = new QMenu("Lava", this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+    }
+    action = myMenu->exec(ev->globalPos());
+    delete myMenu;
+    if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
+      ((CGUIProg*)GUIProg)->ExecuteAction(action);
+  }
   else
     if (GUIProg->isView && 
       (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
@@ -193,5 +194,101 @@ bool CFormWid::event(QEvent* ev)
   if ((ev->type() == QEvent::Enter) && GUIProg->isView)
     ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
   return QFrame::event(ev);
+}
+
+
+CLavaGroupBox::CLavaGroupBox(CGUIProgBase *guiPr, CHEFormNode* data, QString label, QWidget* pParentWnd)
+: QGroupBox(label, pParentWnd)
+{
+  InitGroupBox(guiPr, data);
+}
+
+CLavaGroupBox::CLavaGroupBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentWnd)
+: QGroupBox(pParentWnd)
+{
+  InitGroupBox(guiPr, data);
+}
+
+void CLavaGroupBox::InitGroupBox(CGUIProgBase *guiPr, CHEFormNode* data)
+{
+  QWidget* par;
+
+  hasMenu = false;
+  hasFuncMenu = false;
+  GUIProg = guiPr;
+  myFormNode = (CHEFormNode*)data;
+  show();
+  par = parentWidget();
+  while (par && !par->inherits("CFormWid"))
+    par = par->parentWidget();
+  if (par) {
+    hasMenu = ((CFormWid*)par)->hasMenu;
+    hasFuncMenu = ((CFormWid*)par)->hasFuncMenu;
+    myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+  }
+  hasMenu = myFormNode->data.IterFlags.BITS()
+      && !myFormNode->data.IterFlags.Contains(FixedCount)
+      && !myFormNode->data.IoSigFlags.Contains(DONTPUT)
+      && myFormNode->data.IoSigFlags.Contains(Flag_INPUT);
+  if (myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+    && (myFormNode->data.FormSyntax->DeclType == PatternDef) ) {
+    myFormNode->data.myHandlerNode = myFormNode->data.FIP.up->data.myHandlerNode;
+    myFormNode->data.allowOwnHandler = myFormNode->data.FIP.up->data.allowOwnHandler;
+  }
+  if ( myFormNode->data.allowOwnHandler
+    && (myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+      || myFormNode->data.BasicFlags.Contains(ButtonMenu))) {
+    if (!LBaseData->inRuntime) {
+      hasFuncMenu = true;
+      if (myFormNode->data.FormSyntax->DeclType != PatternDef)
+        myFormNode->data.myHandlerNode = myFormNode;
+    }
+  }
+  else
+    if (!myFormNode->data.allowOwnHandler
+       && myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet))
+      myFormNode->data.myHandlerNode = 0;
+
+  if ( myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+       && !myFormNode->data.handlerSearched)
+    GUIProg->setHandler(myFormNode);
+}
+
+void CLavaGroupBox::mousePressEvent(QMouseEvent* ev)
+{
+  QAction* action;
+  QMenu* myMenu = 0;
+
+  GUIProg->ActNode = myFormNode;
+  if (hasMenu || hasFuncMenu) {
+    if (hasMenu) { 
+      myMenu = new QMenu("Lava object", this);
+      myMenu->addAction(GUIProg->delActionPtr);//DelAction);
+      myMenu->addAction(GUIProg->insActionPtr);//InsAction);
+      ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(GUIProg->delActionPtr);
+    }
+    if (!LBaseData->inRuntime && hasFuncMenu) {
+      if (!myMenu)
+        myMenu = new QMenu("Lava", this);
+      myMenu->addAction(LBaseData->newFuncActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+    }
+    action = myMenu->exec(ev->globalPos());
+    delete myMenu;
+    if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
+      ((CGUIProg*)GUIProg)->ExecuteAction(action);
+  }
+  else
+    if (GUIProg->isView && 
+      (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
+      wxDocManager::GetDocumentManager()->SetActiveView((wxView*)GUIProg->ViewWin);
+}
+
+bool CLavaGroupBox::event(QEvent* ev)
+{
+  if ((ev->type() == QEvent::Enter) && GUIProg->isView)
+    ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
+  return QGroupBox::event(ev);
 }
 

@@ -39,7 +39,8 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
   setObjectName("ToggleButton");
   DISCOButtonType = isToggle;
   myFormNode = data;
-  myMenu = 0;
+  hasMenu = false;
+  hasFuncMenu = false;
   GUIProg = guiPr;
   QStyleOptionButton qsob=QStyleOptionButton();
 
@@ -69,14 +70,13 @@ CToggleButton::CToggleButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pa
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (par) {
-    myMenu = ((CFormWid*)par)->myMenu;
+    hasMenu = ((CFormWid*)par)->hasMenu;
+    hasFuncMenu = ((CFormWid*)par)->hasFuncMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
   if (myFormNode->data.allowOwnHandler && isEnabled()) {
     if (!LBaseData->inRuntime) {
-      if (!myMenu)
-        myMenu = new QMenu(this);
-      myMenu->addAction(LBaseData->newFuncActionPtr);
+      hasFuncMenu = true;
       myFormNode->data.myHandlerNode = myFormNode;
     }
   }
@@ -112,6 +112,7 @@ void CToggleButton::OnClicked()
   GUIProg->NoteLastModified();
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
+  GUIProg->ActNode = myFormNode;
   GUIProg->setFocNode(myFormNode);
   GUIProg->CurPTR = myFormNode;
   GUIProg->SyncTree(myFormNode);
@@ -126,13 +127,28 @@ void CToggleButton::OnClicked()
 
 void CToggleButton::contextMenuEvent(QContextMenuEvent * e) 
 {
+  QMenu *myMenu = 0;
+  QAction* action;
   GUIProg->ActNode = myFormNode;
-  ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
-  ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-  if (!LBaseData->inRuntime)
+  if (hasMenu) {
+    myMenu = new QMenu("Lava object", this);
+    myMenu->addAction(GUIProg->insActionPtr);
+    myMenu->addAction(GUIProg->delActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(GUIProg->delActionPtr);
+  }
+  if (!LBaseData->inRuntime && hasFuncMenu) {
+    if (!myMenu)
+      myMenu = new QMenu("Lava", this);
+    myMenu->addAction(LBaseData->newFuncActionPtr);
     ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
-  if (myMenu) 
-    myMenu->popup(e->globalPos());
+  }
+  if (myMenu) {
+    action = myMenu->exec(e->globalPos());
+    delete myMenu;
+    if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
+      ((CGUIProg*)GUIProg)->ExecuteAction(action);
+  }
 }
 
 CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, 
@@ -146,7 +162,8 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   GUIProg = guiPr;
   DISCOButtonType = isPush;
   IterNode = 0;
-  myMenu = 0;
+  hasMenu = false;
+  hasFuncMenu = false;
   Radio = radioBox;
   EnumNode = (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first;
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
@@ -165,7 +182,8 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (par) {
-    myMenu = ((CFormWid*)par)->myMenu;
+    hasMenu = ((CFormWid*)par)->hasMenu;
+    hasFuncMenu = ((CFormWid*)par)->hasFuncMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
   if (myFormNode->data.FIP.up->data.IterFlags.Contains(Optional)
@@ -190,7 +208,8 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
   DISCOButtonType = isPush;
   IterNode = 0;
   Radio = radioBox;
-  myMenu = 0;
+  hasMenu = false;
+  hasFuncMenu = false;
   EnumNode = (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first;
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   GUIProg->SetColor(this, myFormNode, QPalette::Button, QPalette::ButtonText);
@@ -207,7 +226,8 @@ CPushButton::CPushButton(bool withPix, CGUIProgBase *guiPr, CHEFormNode* data, Q
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (par) {
-    myMenu = ((CFormWid*)par)->myMenu;
+    hasMenu = ((CFormWid*)par)->hasMenu;
+    hasFuncMenu = ((CFormWid*)par)->hasFuncMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
   if (myFormNode->data.FIP.up->data.IterFlags.Contains(Optional)
@@ -231,7 +251,8 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   Radio = 0;
   IterNode = 0;
   EnumNode = 0;
-  myMenu = 0;
+  hasMenu = false;
+  hasFuncMenu = false;
   myFormNode = data;
   GUIProg = guiPr;
   if ((Cmnd == INSERT) || (Cmnd == DELETEWin)) {
@@ -263,16 +284,14 @@ CPushButton::CPushButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (par) {
-    myMenu = ((CFormWid*)par)->myMenu;
+    hasMenu = ((CFormWid*)par)->hasMenu;
+    hasFuncMenu = ((CFormWid*)par)->hasFuncMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
   if (isElli && myFormNode->data.allowOwnHandler && isEnabled()) {
     myFormNode->data.myHandlerNode = myFormNode;
-    if (!LBaseData->inRuntime) {
-      if (!myMenu)
-        myMenu = new QMenu("Lava", this);
-      myMenu->addAction(LBaseData->newFuncActionPtr);
-    }
+    if (!LBaseData->inRuntime)
+      hasFuncMenu = true;
   }
   if (!myFormNode->data.handlerSearched && isEnabled())
     GUIProg->setHandler(myFormNode);
@@ -285,6 +304,7 @@ void CPushButton::focusInEvent(QFocusEvent *ev)
 {
   //((CGUIProg*)GUIProg)->OnSetFocususerData;
   GUIProg->editNode = 0;
+  GUIProg->ActNode = myFormNode;
   if (DISCOButtonType == isPush) {
     GUIProg->setFocNode(myFormNode);
     GUIProg->butNode = myFormNode;
@@ -310,8 +330,10 @@ void CPushButton::OnClicked()
 {
 //  CHEFormNode *iter;
   GUIProg->NoteLastModified();
+  GUIProg->ActNode = myFormNode;
   GUIProg->editNode = 0;
   GUIProg->setFocNode(myFormNode);
+  GUIProg->ActNode = myFormNode;
   if (DISCOButtonType == isPush) 
     GUIProg->butNode = myFormNode;
   else 
@@ -344,13 +366,28 @@ void CPushButton::OnClicked()
 
 void CPushButton::contextMenuEvent(QContextMenuEvent * e) 
 {
+  QMenu *myMenu = 0;
+  QAction* action;
   GUIProg->ActNode = myFormNode;
-  ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
-  ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-  if (!LBaseData->inRuntime)
+  if (hasMenu) {
+    myMenu = new QMenu("Lava object", this);
+    myMenu->addAction(GUIProg->insActionPtr);
+    myMenu->addAction(GUIProg->delActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(GUIProg->delActionPtr);
+  }
+  if (!LBaseData->inRuntime && hasFuncMenu) {
+    if (!myMenu)
+      myMenu = new QMenu("Lava", this);
+    myMenu->addAction(LBaseData->newFuncActionPtr);
     ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
-  if (myMenu) 
-    myMenu->popup(e->globalPos());
+  }
+  if (myMenu) {
+    action = myMenu->exec(e->globalPos());
+    delete myMenu;
+    if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
+      ((CGUIProg*)GUIProg)->ExecuteAction(action);
+  }
 }
 
 CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* parent, const char* lpszWindowName,
@@ -364,7 +401,8 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
   myFormNode = data;
   GUIProg = guiPr;
   Radio = radioBox;
-  myMenu = 0;
+  hasMenu = false;
+  hasFuncMenu = false;
   setFocusPolicy(Qt::StrongFocus);
   setChecked(false);
   EnumNode = (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first;
@@ -395,7 +433,8 @@ CRadioButton::CRadioButton(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pare
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (par) {
-    myMenu = ((CFormWid*)par)->myMenu;
+    hasMenu = ((CFormWid*)par)->hasMenu;
+    hasFuncMenu = ((CFormWid*)par)->hasFuncMenu;
     myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
   }
   if (!myFormNode->data.handlerSearched && isEnabled())
@@ -410,6 +449,7 @@ void CRadioButton::OnClicked()
   GUIProg->editNode = 0;
   GUIProg->setFocNode(myFormNode);
   GUIProg->butNode = myFormNode;
+  GUIProg->ActNode = myFormNode;
   GUIProg->CurPTR = myFormNode;
   int ii;
   for (ii = 0; ii < ((CFormWid*)Radio)->nRadio; ii++) {
@@ -429,14 +469,30 @@ void CRadioButton::OnClicked()
 }
 
 
-void CRadioButton::contextMenuEvent(QContextMenuEvent * e) {
+void CRadioButton::contextMenuEvent(QContextMenuEvent * e)
+{
+  QMenu *myMenu = 0;
+  QAction* action;
   GUIProg->ActNode = myFormNode;
-  ((CGUIProg*)GUIProg)->OnUpdateInsertopt(LBaseData->insActionPtr);
-  ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(LBaseData->delActionPtr);
-  if (!LBaseData->inRuntime)
+  if (hasMenu) {
+    myMenu = new QMenu("Lava object", this);
+    myMenu->addAction(GUIProg->insActionPtr);
+    myMenu->addAction(GUIProg->delActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(GUIProg->delActionPtr);
+  }
+  if (!LBaseData->inRuntime && hasFuncMenu) {
+    if (!myMenu)
+      myMenu = new QMenu("Lava", this);
+    myMenu->addAction(LBaseData->newFuncActionPtr);
     ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
-  if (myMenu) 
-    myMenu->popup(e->globalPos());
+  }
+  if (myMenu) {
+    action = myMenu->exec(e->globalPos());
+    delete myMenu;
+    if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
+      ((CGUIProg*)GUIProg)->ExecuteAction(action);
+  }
 }
 
 void CRadioButton::focusInEvent(QFocusEvent *ev) 

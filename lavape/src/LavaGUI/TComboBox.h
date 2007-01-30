@@ -35,7 +35,8 @@ public:
   bool isEnter;
   CHEFormNode* myFormNode;
   DString DefaultSel;
-  QMenu* myMenu;
+  bool hasMenu;
+  bool hasFuncMenu;
 
   void AddItem(const DString& label, CHEFormNode* data);
   virtual void focusInEvent(QFocusEvent *ev);

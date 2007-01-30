@@ -55,12 +55,15 @@ public:
   CHEFormNode* GetIterNode(CHEFormNode* fNode);
   CHEFormNode* InPopupShell(CHEFormNode* node);
  
-  virtual bool event(QEvent* ev);
+  virtual bool Event(QEvent* ev);
 
 private: 
   CHEFormNode* insertedNode;
+  CHEFormNode* delNode;
   CHEFormNode* beforeNode;
   CHEFormNode* parNode;
+  CHEFormNode* elliNode;
+  CHEFormNode* optNode;
 
 private:
   Q_OBJECT

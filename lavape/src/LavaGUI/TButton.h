@@ -27,7 +27,8 @@ public:
   CHEFormNode* EnumNode;
   QWidget * Radio;  //radioBox
   TDISCOButtonType DISCOButtonType;
-  QMenu* myMenu;
+  bool hasMenu;
+  bool hasFuncMenu;
   void focusInEvent(QFocusEvent *ev);
   virtual void contextMenuEvent(QContextMenuEvent * e);
   void focusOutEvent(QFocusEvent *ev);
@@ -56,7 +57,8 @@ public:
   unsigned Cmnd;
   QWidget * Radio;  //radioBox
   TDISCOButtonType DISCOButtonType;
-  QMenu* myMenu;
+  bool hasMenu;
+  bool hasFuncMenu;
 public slots:
   void OnClicked();
 private:
@@ -82,7 +84,8 @@ public:
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void contextMenuEvent(QContextMenuEvent * e);
   void focusOutEvent(QFocusEvent *ev);
-  QMenu* myMenu;
+  bool hasMenu;
+  bool hasFuncMenu;
 public slots:
   void OnClicked();
 private:

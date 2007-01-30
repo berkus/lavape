@@ -371,6 +371,7 @@ void TIDTable::CopiedToDoc(LavaDECL ** pnewDECL)
 {
   LavaDECL *decl = *pnewDECL;
   CHETID *che;
+  CHETIDs *cheTIDs;
 //  if (decl->WorkFlags.Contains(skipOnCopy))
 //    return;
 //  if (!decl->WorkFlags.Contains(fromPubToPriv))
@@ -386,6 +387,10 @@ void TIDTable::CopiedToDoc(LavaDECL ** pnewDECL)
     decl->WorkFlags.EXCL(SupportsReady);
   for (che = (CHETID*)decl->Inherits.first; che; che = (CHETID*)che->successor)
     ChangeFromTab(che->data);
+  for (cheTIDs = (CHETIDs*)decl->HandlerClients.first; cheTIDs; cheTIDs = (CHETIDs*)cheTIDs->successor) {
+    for (che = (CHETID*)cheTIDs->data.first; che; che = (CHETID*)che->successor) 
+      ChangeFromTab(che->data);
+  }
   if ((decl->DeclType == VirtualType)
     && decl->ParentDECL
     && (decl->ParentDECL->DeclType == FormDef)
@@ -418,12 +423,8 @@ void TIDTable::ChangeRefToClipID(TID& id)
 void TIDTable::ChangeRefsToClipIDs(LavaDECL *decl)
 {
   CHETID *che;
-  /*
-  if (decl->OwnID >= 0) {
-    IDTab[0]->SimpleIDTab[decl->OwnID]->pDECL = pnewDECL;
-    IDTab[0]->SimpleIDTab[decl->OwnID]->idType = globalID;
-  }
-  */
+  CHETIDs *cheTIDs;
+
   ChangeRefToClipID(decl->RefID);
   if (!decl->WorkFlags.Contains(fromPrivToPub) && !decl->WorkFlags.Contains(SupportsReady))
     for (che = (CHETID*)decl->Supports.first; che; che = (CHETID*)che->successor)
@@ -432,6 +433,10 @@ void TIDTable::ChangeRefsToClipIDs(LavaDECL *decl)
     decl->WorkFlags.EXCL(SupportsReady);
   for (che = (CHETID*)decl->Inherits.first; che; che = (CHETID*)che->successor)
     ChangeRefToClipID(che->data);
+  for (cheTIDs = (CHETIDs*)decl->HandlerClients.first; cheTIDs; cheTIDs = (CHETIDs*)cheTIDs->successor) {
+    for (che = (CHETID*)cheTIDs->data.first; che; che = (CHETID*)che->successor) 
+     ChangeRefToClipID(che->data);
+  }
   if ((decl->DeclType == VirtualType) && (decl->ParentDECL->DeclType == FormDef)
     && decl->Annotation.ptr
     && decl->Annotation.ptr->IterOrig.ptr
@@ -538,7 +543,6 @@ void TIDTable::UndoDeleteLocalID(int delID)
 {
   if (delID>=0)
     IDTab[0]->UndoDeleteLocalID(delID);
-  //Down(*IDTab[0]->SimpleIDTab[delID]->pDECL, -2);
 }
 
 
@@ -1119,7 +1123,8 @@ void TIDTable::Down(LavaDECL *elDef, TTableUpdate onWhat, int nINCL)
         }
         inEl->inINCL = nINCL;
         if (!nINCL || LBaseData->inRuntime || (onWhat == onMove)) {
-          if (( (onWhat != onNewID) && (onWhat != onCopy) || !elDef->WorkFlags.Contains(skipOnCopy))
+          if (( (onWhat != onNewID) && (onWhat != onCopy)
+                || !elDef->WorkFlags.Contains(skipOnCopy))
             && ((onWhat != onDeleteID) || !elDef->WorkFlags.Contains(skipOnDeleteID))) {
             if ((onWhat == onChange) && elDef->WorkFlags.Contains(skipOnCopy))
               execOnWhat = onMove;

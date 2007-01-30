@@ -23,19 +23,15 @@ public:
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;
   QPoint CaretP;
-  QMenu* myMenu;
-  QMenu *StdMenu;
   bool enableInsert;
   bool enableDelete;
   bool enableFunc;
+  bool hasMenu;
+  bool hasFuncMenu;
   bool inError;
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
   virtual void contextMenuEvent(QContextMenuEvent * e);
-  //virtual bool event(QEvent* ev);
-/*
-public slots:
-  void DelActivated();*/
 
 private:
   Q_OBJECT
@@ -55,15 +51,16 @@ public:
   CGUIProgBase *GUIProg;
   CHEFormNode* myFormNode;
   QPoint CaretP;
-  QMenu* myMenu;
+  bool enableInsert;
+  bool enableDelete;
+  bool enableFunc;
+  bool hasMenu;
+  bool hasFuncMenu;
   bool inError;
   virtual void focusInEvent(QFocusEvent *ev);
   virtual void focusOutEvent(QFocusEvent *ev);
   virtual void contextMenuEvent(QContextMenuEvent * e);
-  virtual QMenu* createStandardContextMenu();
-  //virtual bool event(QEvent* ev);
-/*public slots:
-  void DelActivated();*/
+  //virtual QMenu* createStandardContextMenu();
 
 private:
   Q_OBJECT

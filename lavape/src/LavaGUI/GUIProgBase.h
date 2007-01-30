@@ -9,6 +9,8 @@
 #include "qsize.h"
 #include "qwidget.h"
 #include "qscrollarea.h"
+#include "qlist.h"
+#include <QAction>
 
 #ifdef WIN32
 #ifdef LAVAGUI_EXPORT
@@ -49,6 +51,9 @@ class  LAVAGUI_DLL CGUIMet : public QObject
 
   QWidget* oldFocus;
   QWidget* newFocus;
+  QAction* delActionPtr;
+  QAction* insActionPtr;
+  QList<LavaObjectPtr> allocatedObjects; //GUI-service objects
 
   CGUIMet() {}
   ~CGUIMet();

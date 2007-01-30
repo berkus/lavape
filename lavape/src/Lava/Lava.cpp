@@ -353,13 +353,12 @@ bool CLavaApp::event(QEvent *e)
     delete (DumpEventData*)((CustomEvent*)e)->data();
     break;
   case UEV_PMDumpOff:
-    ((CMainFrame*)wxTheApp->m_appWindow)->pmDumpAction->setChecked(false);
+    ((CMainFrame*)m_appWindow)->pmDumpAction->setChecked(false);
     break;
   case UEV_LavaGUIInsDel: 
-    if ( ((CLavaMainFrame*)wxTheApp->m_appWindow)->docModal 
-      && ((CLavaMainFrame*)wxTheApp->m_appWindow)->docModal->LavaDialog ) 
-      //QApplication::postEvent(&((LavaGUIDialog*)((CLavaMainFrame*)wxTheApp->m_appWindow)->docModal->LavaDialog)->myGUIProg->CmdExec, e);
-      ((LavaGUIDialog*)((CLavaMainFrame*)wxTheApp->m_appWindow)->docModal->LavaDialog)->myGUIProg->CmdExec.event( e);
+    if ( ((CLavaMainFrame*)m_appWindow)->docModal 
+      && ((CLavaMainFrame*)m_appWindow)->docModal->LavaDialog ) 
+      ((LavaGUIDialog*)((CLavaMainFrame*)m_appWindow)->docModal->LavaDialog)->myGUIProg->CmdExec.Event( e);
     break;
   
 

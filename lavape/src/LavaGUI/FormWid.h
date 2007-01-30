@@ -12,10 +12,11 @@
 #include <QEvent>
 #include <QMenu>
 #include <QPushButton>
-
+#include "qgroupbox.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CFormWid window
+class CLavaGroupBox;
 
 class CFormWid : public QFrame//QWidget
 {
@@ -36,17 +37,37 @@ public:
  //the FormWidget may be used as a (radio) button menu box
   int nRadio;
   QPushButton *Radio [100];
-  QGroupBox *BGroup;
+  CLavaGroupBox *BGroup;
 
   void AddRadio(QPushButton* radio);
 
   //the FormWidget may be a chain element widget which has a popup menu
-  QMenu* myMenu;
-  bool origMenu;
+  //QMenu* myMenu;
+  bool hasMenu;
+  bool hasFuncMenu;
   bool usedInFormNode;
-/*public slots:
-  void InsActivated();
-  void DelActivated();*/
+
+private:
+  Q_OBJECT
+
+};
+
+class CLavaGroupBox : public QGroupBox
+{
+public:
+  CLavaGroupBox(CGUIProgBase *guiPr, CHEFormNode* data, QString label, QWidget* pParentWnd); 
+  CLavaGroupBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentWnd); 
+  void mousePressEvent(QMouseEvent* ev);
+  virtual bool event(QEvent* ev);
+  void InitGroupBox(CGUIProgBase *guiPr, CHEFormNode* data);
+  virtual ~CLavaGroupBox() {}
+
+  CGUIProgBase *GUIProg;
+  CHEFormNode* myFormNode;
+  SynFlags IterFlags;
+  bool hasMenu;
+  bool hasFuncMenu;
+
 private:
   Q_OBJECT
 
