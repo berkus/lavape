@@ -1832,7 +1832,7 @@ public:
 
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
   virtual QString whatsThisText() {
-    return QObject::tr("<p>Consciously ignore the listed mandatory input parameters. (They would have to be used otherwise!)</p>");}
+    return QObject::tr("<p>Ignore a mandatory input parameter</p>");}
 };
 
 class IfThenV : public IfThen {
@@ -2799,7 +2799,6 @@ public:
   virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitVarName (VarName *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
-  virtual void VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class ClosedLevelVisitor : public Visitor {
