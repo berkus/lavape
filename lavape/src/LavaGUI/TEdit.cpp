@@ -160,32 +160,44 @@ void CTEdit::contextMenuEvent(QContextMenuEvent * e)
 {
   QMenu* StdMenu = createStandardContextMenu();
   QMenu* myMenu = 0;
+  QString menuLabel;
 
+  if (LBaseData->inRuntime)
+    menuLabel = "Lava object";
+  else
+    menuLabel = "Lava";  
   GUIProg->ActNode = myFormNode;
   if (hasMenu || hasFuncMenu) {
     if (hasMenu) { 
-      myMenu = new QMenu("Lava object", this);
+      myMenu = new QMenu(menuLabel, this);
       myMenu->addAction(GUIProg->delActionPtr);//DelAction);
       myMenu->addAction(GUIProg->insActionPtr);//InsAction);
     }
     if (!LBaseData->inRuntime && hasFuncMenu) {
       if (!myMenu)
-        myMenu = new QMenu("Lava", this);
-      myMenu->addAction(LBaseData->newFuncActionPtr);
+        myMenu = new QMenu(menuLabel, this);
+      myMenu->addAction(GUIProg->newHandlerActionPtr);
+      myMenu->addAction(GUIProg->attachHandlerActionPtr);
     }
     StdMenu->addSeparator();
     StdMenu->addMenu(myMenu);
     GUIProg->insActionPtr->setEnabled(enableInsert);
     GUIProg->delActionPtr->setEnabled(enableDelete);
-    if (!LBaseData->inRuntime)
-      LBaseData->newFuncActionPtr->setEnabled(enableFunc);
+    if (!LBaseData->inRuntime) {
+      GUIProg->newHandlerActionPtr->setEnabled(enableFunc);
+      ((CGUIProg*)GUIProg)->OnUpdateAttachHandler(GUIProg->attachHandlerActionPtr);
+    }
   }
   QAction* action = StdMenu->exec(e->globalPos());
   delete StdMenu;
   if (myMenu)
     delete myMenu;
   if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
-    ((CGUIProg*)GUIProg)->ExecuteAction(action);
+    ((CGUIProg*)GUIProg)->ExecuteChainAction(action);
+  else if (action == GUIProg->newHandlerActionPtr)
+    ((CGUIProg*)GUIProg)->OnNewHandler();
+  else if (action == GUIProg->attachHandlerActionPtr)
+    ((CGUIProg*)GUIProg)->OnAttachHandler();
 }
 
 
@@ -283,23 +295,26 @@ void CMultiLineEdit::contextMenuEvent(QContextMenuEvent * e)
   QMenu* StdMenu = createStandardContextMenu();
   QMenu* myMenu = 0;
   QWidget *par= parentWidget();
+  QString menuLabel;
 
+  if (LBaseData->inRuntime)
+    menuLabel = "Lava object";
+  else
+    menuLabel = "Lava";
   GUIProg->ActNode = myFormNode;
   while (par && !par->inherits("CFormWid"))
     par = par->parentWidget();
   if (!LBaseData->inRuntime) 
     if (myFormNode->data.allowOwnHandler && !isReadOnly() && isEnabled()) {
       if (!myMenu)
-        myMenu = new QMenu("Lava", this);
-      myMenu->addAction(LBaseData->newFuncActionPtr);
+        myMenu = new QMenu(menuLabel, this);
+      myMenu->addAction(GUIProg->newHandlerActionPtr);
+      myMenu->addAction(GUIProg->attachHandlerActionPtr);
     } 
   if (myFormNode->data.IterFlags.Contains(Optional)
       || ((CFormWid*)par)->iterData && ((CFormWid*)par)->hasMenu) {
     if (!myMenu)
-      if (LBaseData->inRuntime)
-        myMenu = new QMenu("Lava object", this);
-      else
-        myMenu = new QMenu("Lava", this);
+      myMenu = new QMenu(menuLabel, this);
     myMenu->addAction(GUIProg->delActionPtr);//DelAction);
     myMenu->addAction(GUIProg->insActionPtr);//InsAction);
     StdMenu->addSeparator();
@@ -307,35 +322,24 @@ void CMultiLineEdit::contextMenuEvent(QContextMenuEvent * e)
   }
   GUIProg->insActionPtr->setEnabled(enableInsert);
   GUIProg->delActionPtr->setEnabled(enableDelete);
-  if (!LBaseData->inRuntime)
-    LBaseData->newFuncActionPtr->setEnabled(enableFunc);
+  if (!LBaseData->inRuntime) {
+    GUIProg->newHandlerActionPtr->setEnabled(enableFunc);
+    ((CGUIProg*)GUIProg)->OnUpdateAttachHandler(GUIProg->attachHandlerActionPtr);
+  }
+  if (myMenu) {
+    StdMenu->addSeparator();
+    StdMenu->addMenu(myMenu);
+  }
   QAction* action = StdMenu->exec(e->globalPos());
   delete StdMenu;
   if (myMenu)
     delete myMenu;
   if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
-    ((CGUIProg*)GUIProg)->ExecuteAction(action);
+    ((CGUIProg*)GUIProg)->ExecuteChainAction(action);
+  else if (action == GUIProg->newHandlerActionPtr)
+    ((CGUIProg*)GUIProg)->OnNewHandler();
+  else if (action == GUIProg->attachHandlerActionPtr)
+    ((CGUIProg*)GUIProg)->OnAttachHandler();
 }
-
-/*
-QMenu* CMultiLineEdit::createStandardContextMenu()
-{
-  QMenu* pm = QTextEdit::createStandardContextMenu();
-  QWidget* par = parentWidget();
-  while (par && !par->inherits("CFormWid"))
-    par = parentWidget();
-  if (((CFormWid*)par)->iterData && ((CFormWid*)par)->myMenu) {
-    pm->addSeparator();
-    pm->addMenu(((CFormWid*)par)->myMenu)->setText("Iteration");
-  }
-  else {
-    if (myFormNode->data.IterFlags.Contains(Optional)) {
-      pm->addSeparator();
-      pm->addMenu(myMenu)->setText("Lava object");
-    }
-  }
-  return pm;
-}
-*/
 
 

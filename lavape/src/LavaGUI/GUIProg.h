@@ -37,10 +37,13 @@ public:
   void OnModified();
   bool OnUpdateInsertopt(QAction* action);
   bool OnUpdateDeleteopt(QAction* action);
-  void OnUpdateNewFunc(QAction* action);
+  void OnUpdateNewHandler(QAction* action);
+  void OnUpdateAttachHandler(QAction* action);
   virtual void SyncTree(CHEFormNode *node);
   virtual void NoteLastModified();
-  void ExecuteAction(QAction* action);
+  void ExecuteChainAction(QAction* action);
+  void OnNewHandler();
+  void OnAttachHandler();
   CGUIProg();
   ~CGUIProg();
 

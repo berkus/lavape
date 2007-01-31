@@ -221,7 +221,8 @@ void CLavaPEDoc::AutoCorr(LavaDECL* decl)
   QString cstr;
   CHE *cheEl, *cheIOEl, *che = (CHE*)decl->DECLError1.first;
   CHETID *cheTID, *ncheTID;
-  bool lfuncImpl;
+  CHETIDs *cheTIDs, *ncheTIDs;
+  bool lfuncImpl, hasErr;
   while (che) {
     if (((CLavaError*)che->data)->showAutoCorrBox) {
       ((CLavaError*)che->data)->showAutoCorrBox = false;
@@ -316,7 +317,24 @@ void CLavaPEDoc::AutoCorr(LavaDECL* decl)
               else
                 cheTID = (CHETID*)cheTID->successor;
             }
-          }
+            hasErr = false;
+            cheTIDs = (CHETIDs*)newDECL->HandlerClients.first;
+            while (cheTIDs) {
+              cheTID = (CHETID*)cheTIDs->data.first;
+              while (cheTID && !hasErr) {
+                hasErr = !IDTable.GetDECL(cheTID->data, newDECL->inINCL);
+                cheTID = (CHETID*)cheTID->successor;
+              }
+              if (hasErr) {
+                ncheTIDs = (CHETIDs*)cheTIDs->successor;
+                newDECL->Inherits.Uncouple(cheTIDs);
+                delete cheTIDs;
+                cheTIDs = ncheTIDs;
+              }
+              else
+                cheTIDs = (CHETIDs*)cheTIDs->successor;
+            }        
+          }                 
         }
       }
       for (cheEl = (CHE*)decl->ParentDECL->NestedDecls.first;
@@ -859,24 +877,6 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
       if (checkLevel == CHLV_fit) {
         changed = true;
         UpdateNo++;
-        /*
-        if (implElDecl->SecondTFlags.Contains(funcImpl) ) {
-          if (implElDecl->TypeFlags.Contains(isPropGet) || implElDecl->TypeFlags.Contains(isPropSet)) {
-            classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
-            if (classElDecl && !classElDecl->TypeFlags.Contains(hasSetGet))
-              new CLavaError(&implElDecl->DECLError2, &ERR_NoSetGetMember);
-            else
-              new CLavaError(&implElDecl->DECLError2, &ERR_MissingItfFuncDecl);
-          }
-          else {
-            classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
-            if (classElDecl)
-              new CLavaError(&implElDecl->DECLError2, &ERR_NoImplForAbstract);
-            else
-              new CLavaError(&implElDecl->DECLError2, &ERR_MissingItfFuncDecl);
-          }
-        }
-        */
         implElDecl->SecondTFlags.EXCL(funcImpl);
         implElDecl->SecondTFlags.EXCL(closed);
         implElDecl->TypeFlags.EXCL(isProtected);
@@ -920,17 +920,6 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
                 new CLavaError(&implElDecl->DECLError2, &ERR_MissingItfFuncDecl);
           }
         }
-
-        /*
-        if (implElDecl->TypeFlags.Contains(isPropGet) || implElDecl->TypeFlags.Contains(isPropSet)) {
-          classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
-          if (classElDecl)
-              new CLavaError(&implElDecl->DECLError1, &ERR_NoSetGetMember);
-        }
-        else
-          if (checkLevel == CHLV_showError)
-            new CLavaError(&implElDecl->DECLError1, &ERR_MissingFuncDecl);
-        */
     }
     cheImplEl = (CHE*)cheImplEl->successor;
   }
@@ -1582,6 +1571,7 @@ void CLavaPEDoc::DownFind(LavaDECL* decl, CFindData& fw)
 {
   CHE *inCheEl;
   CHETID *che;
+  CHETIDs *cheTIDs;
   CSearchData sData;
   CHEEnumSelId *enumsel;
   LavaDECL *fDecl;
@@ -1656,6 +1646,14 @@ void CLavaPEDoc::DownFind(LavaDECL* decl, CFindData& fw)
             fw.refCase = 2;
             SetFindText(decl, fw);
           }
+        for (cheTIDs = (CHETIDs*)decl->HandlerClients.first; cheTIDs;
+             cheTIDs = (CHETIDs*)cheTIDs->successor) {
+          for (che = (CHETID*)cheTIDs->data.first; che; che = (CHETID*)che->successor)
+            if (che->data == fw.refTid) {
+              fw.refCase = 3;
+              SetFindText(decl, fw);
+            }
+        }
         if ((decl->DeclType == VirtualType) && (decl->ParentDECL->DeclType == FormDef)
             && decl->Annotation.ptr
             && decl->Annotation.ptr->IterOrig.ptr
@@ -3588,7 +3586,10 @@ void CLavaPEDoc::SetFindText(LavaDECL* inDecl, CFindData& fw)//const DString& ab
        barText += DString("Signaled type in interface");
     break;
   case 3:
-    barText += DString("Form of set element type");
+    if (inDecl->DeclType == Function)
+      barText += DString("Handler client in handler function");
+    else
+      barText += DString("Form of set element type");
     break;
   case 5:
     //data->enumID = enumID;
@@ -3813,6 +3814,7 @@ void CLavaPEDoc::ShrinkCollectDECL(LavaDECL* decl)
 bool CLavaPEDoc::TrueReference(LavaDECL* decl, int refCase, const TID& refTid)
 {
   CHETID *che;
+  CHETIDs *cheTIDs;
 
   switch (refCase) {
   case 0:  //RefID
@@ -3829,7 +3831,7 @@ bool CLavaPEDoc::TrueReference(LavaDECL* decl, int refCase, const TID& refTid)
     if (che)
       return true;
     break;
-  case 3: //Chain element in form
+  case 3: //Chain element in form or handler client
     if ((decl->DeclType == VirtualType) && (decl->ParentDECL->DeclType == FormDef)
       && decl->Annotation.ptr
       && decl->Annotation.ptr->IterOrig.ptr
@@ -3838,6 +3840,12 @@ bool CLavaPEDoc::TrueReference(LavaDECL* decl, int refCase, const TID& refTid)
       if (CHEEl->RefID == refTid)
         return true;
     }
+    else if (decl->DeclType == Function)
+      for (cheTIDs = (CHETIDs*)decl->HandlerClients.first; cheTIDs; cheTIDs = (CHETIDs*)cheTIDs->successor) {
+        for (che = (CHETID*)cheTIDs->data.first; che && (che->data != refTid); che = (CHETID*)che->successor);
+        if (che)
+          return true;
+      }
     break;
   case 4:  //Own id
   case 5:  //enumID in own id

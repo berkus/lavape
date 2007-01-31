@@ -53,6 +53,8 @@ class  LAVAGUI_DLL CGUIMet : public QObject
   QWidget* newFocus;
   QAction* delActionPtr;
   QAction* insActionPtr;
+  QAction* newHandlerActionPtr;
+  QAction* attachHandlerActionPtr;
   QList<LavaObjectPtr> allocatedObjects; //GUI-service objects
 
   CGUIMet() {}
@@ -111,6 +113,15 @@ public:
   CSyncData() {}
   CSyncData(LavaDECL* formSyntax, TIDs* handlerIDs) 
   {FormSyntax = formSyntax; HandlerIDs = handlerIDs;}
+};
+
+class LAVAGUI_DLL CAttachData {
+public:
+  LavaDECL* GUIService;
+  TIDs ClientIDs;
+  CAttachData() {}
+  CAttachData(LavaDECL* guiService, TIDs clientIDs) 
+  {GUIService = guiService; ClientIDs = clientIDs;}
 };
 
 class   LAVAGUI_DLL CGUIProgBase : public CGUIMet {

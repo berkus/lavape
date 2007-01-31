@@ -24,6 +24,7 @@
 #include "DIO.h"
 #include "Syntax.h"
 #include "GUIProg.h"
+#include "GUIProgBase.h"
 #include "LavaForm.h"
 #include "qmessagebox.h"
 //Added by qt3to4:

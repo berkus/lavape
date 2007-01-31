@@ -3779,6 +3779,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
   case privToPublic:
     implDECL = NewLavaDECL();
     *implDECL = *clipDECL;
+    clipDECL->HandlerClients.Destroy();
     implDECL->WorkFlags.INCL(fromPrivToPub);
     implEl = (CHE*)implDECL->NestedDecls.first;
     for (clipEl = (CHE*)clipDECL->NestedDecls.first; clipEl;

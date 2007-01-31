@@ -47,6 +47,7 @@ CUtilityView::CUtilityView(QWidget *parent)
 	
   FindPage = new QTreeWidget(0);
   FindPage->setColumnCount(1);
+  FindPage->header()->hide();
   FindPage->setRootIsDecorated(false);
   FindPage->setSelectionMode(QAbstractItemView::SingleSelection);//Extended); 
   HandlerPage = new QTreeWidget(0);

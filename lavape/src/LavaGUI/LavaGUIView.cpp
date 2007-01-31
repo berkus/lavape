@@ -376,7 +376,7 @@ void CLavaGUIView::UpdateUI()
   }
   if (!LBaseData->inRuntime) {
     OnUpdateGotodef(LBaseData->gotoDeclActionPtr);
-    OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+    //OnUpdateNewFunc(LBaseData->newFuncActionPtr);
   }
 }
 
@@ -764,34 +764,10 @@ void CLavaGUIView::OnInsertOpt()
   }
 }
 
-
 void CLavaGUIView::OnUpdateInsertopt(QAction* action)
 {
   if (myGUIProg) 
     myGUIProg->OnUpdateInsertopt(action);
-}
-
-
-void CLavaGUIView::OnNewfunction()
-{
-  LavaDECL* decl;
-  CHETIDs* cheTIDs;
-  if (myGUIProg->ActNode && myGUIProg->ActNode->data.myHandlerNode) {
-    decl = NewLavaDECL();
-    decl->DeclType = Function;
-    decl->SecondTFlags.INCL(isHandler);
-    decl->ParentDECL = myDECL;
-    cheTIDs = new CHETIDs();
-    cheTIDs->data = myGUIProg->ActNode->data.myHandlerNode->data.myName;
-    decl->HandlerClients.Append(cheTIDs);
-    QApplication::postEvent(myTree, new CustomEvent(UEV_NewHandler, (void*)decl));
-  }
-}
-
-void CLavaGUIView::OnUpdateNewFunc(QAction* action)
-{
-  if (myGUIProg && !LBaseData->inRuntime) 
-    myGUIProg->OnUpdateNewFunc(action);
 }
 
 void CLavaGUIView::OnTogglestate()

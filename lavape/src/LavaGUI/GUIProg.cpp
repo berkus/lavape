@@ -79,8 +79,10 @@ void CGUIProg::Create(CLavaBaseDoc* doc, QWidget* view)
   else
     scrView = ((LavaGUIDialog*)view)->scrollView();
   CGUIProgBase::Create();
-  delActionPtr = new QAction(LBaseData->delActionPtr->icon(), LBaseData->delActionPtr->text(),LBaseData->delActionPtr->parent());
-  insActionPtr = new QAction(LBaseData->insActionPtr->icon(), LBaseData->insActionPtr->text(),LBaseData->insActionPtr->parent());
+  delActionPtr = new QAction(/*LBaseData->delActionPtr->icon(),*/ LBaseData->delActionPtr->text(),LBaseData->delActionPtr->parent());
+  insActionPtr = new QAction(/*LBaseData->insActionPtr->icon(),*/ LBaseData->insActionPtr->text(),LBaseData->insActionPtr->parent());
+  newHandlerActionPtr = new QAction(QString("New handler"), LBaseData->insActionPtr->parent());
+  attachHandlerActionPtr = new QAction(QString("Attach existing handler"), LBaseData->insActionPtr->parent());
 }
 
 void CGUIProg::OnUpdate( LavaDECL* decl, LavaVariablePtr resultPtr)
@@ -306,13 +308,19 @@ bool CGUIProg::OnUpdateDeleteopt(QAction* action)
   return false;
 }
 
-void CGUIProg::OnUpdateNewFunc(QAction* action)
+void CGUIProg::OnUpdateNewHandler(QAction* action)
 {
   action->setEnabled(!LBaseData->inRuntime && ActNode
                      && ActNode->data.myHandlerNode);
 }
 
-void CGUIProg::ExecuteAction(QAction* action)
+void CGUIProg::OnUpdateAttachHandler(QAction* action)
+{
+  action->setEnabled(!LBaseData->inRuntime && ActNode
+                     && ActNode->data.myHandlerNode);
+}
+
+void CGUIProg::ExecuteChainAction(QAction* action)
 {
   if (action == insActionPtr) {
     if (InsertNode)
@@ -326,5 +334,29 @@ void CGUIProg::ExecuteAction(QAction* action)
         CmdExec.DeleteIterItem(DelNode);
       DelNode = 0;
     }
+  }
+}
+
+void CGUIProg::OnNewHandler()
+{
+  LavaDECL* decl;
+  CHETIDs* cheTIDs;
+  if (ActNode && ActNode->data.myHandlerNode) {
+    decl = NewLavaDECL();
+    decl->DeclType = Function;
+    decl->SecondTFlags.INCL(isHandler);
+    decl->ParentDECL = myDECL;
+    cheTIDs = new CHETIDs();
+    cheTIDs->data = ActNode->data.myHandlerNode->data.myName;
+    decl->HandlerClients.Append(cheTIDs);
+    QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree, new CustomEvent(UEV_NewHandler, (void*)decl));
+  }
+}
+
+void CGUIProg::OnAttachHandler()
+{
+  if (ActNode && ActNode->data.myHandlerNode) {
+    CAttachData* data = new CAttachData(myDECL, ActNode->data.myHandlerNode->data.myName);
+    QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree,new CustomEvent(UEV_AttachHandler, (void*)data));
   }
 }

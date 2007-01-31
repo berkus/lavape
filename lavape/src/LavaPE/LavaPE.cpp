@@ -307,7 +307,7 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 
 bool CLavaPEApp::event(QEvent *e)
 {
-
+  wxView *actView;
   switch (e->type()) {
   case UEV_LavaDebug:
     ((CLavaMainFrame*)m_appWindow)->m_UtilityView->setDebugData((DbgMessages*)((CustomEvent*)e)->data(), debugger.myDoc);
@@ -335,7 +335,12 @@ bool CLavaPEApp::event(QEvent *e)
   case UEV_LavaPE_CloseDoc:
     ((CLavaPEDoc*)((CustomEvent*)e)->data())->OnCloseDocument();
     return true;
-  default:
+  case UEV_LavaGUIInsDel:
+    actView = wxDocManager::GetDocumentManager()->GetActiveView();
+    if ( actView->inherits("CLavaGUIView") ) 
+      ((CLavaGUIView*)actView)->myGUIProg->CmdExec.Event( e);
+    return true;
+   default:
     return wxApp::event(e);
   }
 }

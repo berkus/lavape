@@ -12,6 +12,7 @@
 #include "qobject.h"
 #include "qstring.h"
 
+#include "idd_attachhandler.h"
 #include "idd_attrbox.h"
 #include "idd_compspecbox.h"
 #include "idd_corroverbox.h"
@@ -47,6 +48,22 @@ protected:
   TIDs IDs;
   unsigned* Flags;
 
+};
+
+class CAttachHandler : QDialog, public Ui_idd_attachhandler
+{
+public:
+  CAttachHandler(QWidget* pParent = NULL); 
+  CAttachHandler(LavaDECL* guiService, TIDs client, QWidget* pParent = NULL); 
+ 
+
+public slots:
+  virtual void on_ID_OK_clicked();
+  virtual void on_ID_CANCEL_clicked();
+  virtual void on_EventTypes_activated( int );
+
+private:
+  Q_OBJECT
 };
 
 /////////////////////////////////////////////////////////////////////////////

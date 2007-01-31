@@ -257,6 +257,8 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
   CheckData ckdl;
   CSearchData sData;
   CHE* elChe, *execChe;
+  CHETID *cheTID;
+  CHETIDs *cheTIDs;
 
   if (!classDECL)
     return false;
@@ -423,6 +425,20 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
         if (implElDecl->RuntimeDECL->DeclType != ExecDef) {
           LavaError(ckd, true, classDECL, &ERR_MissingExec);
           return false;
+        }
+      }
+      if (implElDecl->DeclType == Function) {
+        cheTIDs = (CHETIDs*)implElDecl->HandlerClients.first;
+        while (cheTIDs) {
+          cheTID = (CHETID*)cheTIDs->data.first;
+          while (cheTID) {
+            if (!IDTable.GetDECL(cheTID->data, implElDecl->inINCL)) {
+              LavaError(ckd, true, implElDecl, &ERR_Broken_ref_in_HC);
+              return false;
+            }
+            cheTID = (CHETID*)cheTID->successor;
+          }
+          cheTIDs = (CHETIDs*)cheTIDs->successor;
         }
       }
     }

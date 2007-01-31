@@ -135,9 +135,9 @@ public:
   void OnEditCut();
   void OnEditPaste();
   void OnGotoDecl();
-  void OnNewfunction();
+  //void OnNewHandler();
 
-  void OnUpdateNewFunc(QAction* action);
+  //void OnUpdateNewHandler(QAction* action);
   void OnUpdateGotodef(QAction* action);
 	void OnUpdateTogglestate(QAction* action);
   void OnUpdateEditPaste(QAction* action);

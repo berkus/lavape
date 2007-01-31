@@ -129,9 +129,15 @@ void CToggleButton::contextMenuEvent(QContextMenuEvent * e)
 {
   QMenu *myMenu = 0;
   QAction* action;
+  QString menuLabel;
+
+  if (LBaseData->inRuntime)
+    menuLabel = "Lava object";
+  else
+    menuLabel = "Lava";
   GUIProg->ActNode = myFormNode;
   if (hasMenu) {
-    myMenu = new QMenu("Lava object", this);
+    myMenu = new QMenu(menuLabel, this);
     myMenu->addAction(GUIProg->insActionPtr);
     myMenu->addAction(GUIProg->delActionPtr);
     ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
@@ -139,15 +145,21 @@ void CToggleButton::contextMenuEvent(QContextMenuEvent * e)
   }
   if (!LBaseData->inRuntime && hasFuncMenu) {
     if (!myMenu)
-      myMenu = new QMenu("Lava", this);
-    myMenu->addAction(LBaseData->newFuncActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+      myMenu = new QMenu(menuLabel, this);
+    myMenu->addAction(GUIProg->newHandlerActionPtr);
+    myMenu->addAction(GUIProg->attachHandlerActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateNewHandler(GUIProg->newHandlerActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateAttachHandler(GUIProg->attachHandlerActionPtr);
   }
   if (myMenu) {
     action = myMenu->exec(e->globalPos());
     delete myMenu;
     if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
-      ((CGUIProg*)GUIProg)->ExecuteAction(action);
+      ((CGUIProg*)GUIProg)->ExecuteChainAction(action);
+    else if (action == GUIProg->newHandlerActionPtr)
+      ((CGUIProg*)GUIProg)->OnNewHandler();
+    else if (action == GUIProg->attachHandlerActionPtr)
+      ((CGUIProg*)GUIProg)->OnAttachHandler();
   }
 }
 
@@ -369,8 +381,14 @@ void CPushButton::contextMenuEvent(QContextMenuEvent * e)
   QMenu *myMenu = 0;
   QAction* action;
   GUIProg->ActNode = myFormNode;
+  QString menuLabel;
+
+  if (LBaseData->inRuntime)
+    menuLabel = "Lava object";
+  else
+    menuLabel = "Lava";
   if (hasMenu) {
-    myMenu = new QMenu("Lava object", this);
+    myMenu = new QMenu(menuLabel, this);
     myMenu->addAction(GUIProg->insActionPtr);
     myMenu->addAction(GUIProg->delActionPtr);
     ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
@@ -378,15 +396,21 @@ void CPushButton::contextMenuEvent(QContextMenuEvent * e)
   }
   if (!LBaseData->inRuntime && hasFuncMenu) {
     if (!myMenu)
-      myMenu = new QMenu("Lava", this);
-    myMenu->addAction(LBaseData->newFuncActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+      myMenu = new QMenu(menuLabel, this);
+    myMenu->addAction(GUIProg->newHandlerActionPtr);
+    myMenu->addAction(GUIProg->attachHandlerActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateNewHandler(GUIProg->newHandlerActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateAttachHandler(GUIProg->attachHandlerActionPtr);
   }
   if (myMenu) {
     action = myMenu->exec(e->globalPos());
     delete myMenu;
     if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
-      ((CGUIProg*)GUIProg)->ExecuteAction(action);
+      ((CGUIProg*)GUIProg)->ExecuteChainAction(action);
+    else if (action == GUIProg->newHandlerActionPtr)
+      ((CGUIProg*)GUIProg)->OnNewHandler();
+    else if (action == GUIProg->attachHandlerActionPtr)
+      ((CGUIProg*)GUIProg)->OnAttachHandler();
   }
 }
 
@@ -473,9 +497,15 @@ void CRadioButton::contextMenuEvent(QContextMenuEvent * e)
 {
   QMenu *myMenu = 0;
   QAction* action;
+  QString menuLabel;
+
+  if (LBaseData->inRuntime)
+    menuLabel = "Lava object";
+  else
+    menuLabel = "Lava";
   GUIProg->ActNode = myFormNode;
   if (hasMenu) {
-    myMenu = new QMenu("Lava object", this);
+    myMenu = new QMenu(menuLabel, this);
     myMenu->addAction(GUIProg->insActionPtr);
     myMenu->addAction(GUIProg->delActionPtr);
     ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
@@ -483,15 +513,21 @@ void CRadioButton::contextMenuEvent(QContextMenuEvent * e)
   }
   if (!LBaseData->inRuntime && hasFuncMenu) {
     if (!myMenu)
-      myMenu = new QMenu("Lava", this);
-    myMenu->addAction(LBaseData->newFuncActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateNewFunc(LBaseData->newFuncActionPtr);
+      myMenu = new QMenu(menuLabel, this);
+    myMenu->addAction(GUIProg->newHandlerActionPtr);
+    myMenu->addAction(GUIProg->attachHandlerActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateNewHandler(GUIProg->newHandlerActionPtr);
+    ((CGUIProg*)GUIProg)->OnUpdateAttachHandler(GUIProg->attachHandlerActionPtr);
   }
   if (myMenu) {
     action = myMenu->exec(e->globalPos());
     delete myMenu;
     if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
-      ((CGUIProg*)GUIProg)->ExecuteAction(action);
+      ((CGUIProg*)GUIProg)->ExecuteChainAction(action);
+    else if (action == GUIProg->newHandlerActionPtr)
+      ((CGUIProg*)GUIProg)->OnNewHandler();
+    else if (action == GUIProg->attachHandlerActionPtr)
+      ((CGUIProg*)GUIProg)->OnAttachHandler();
   }
 }
 

@@ -130,11 +130,12 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
   int bm=0;
   DString lName, lab1, lab = elDef->LocalName;
   QString cstr;
-  bool catErr;
+  bool hasErr;
   TID IOid;
   SynFlags typeFlags;
   TreeFlag secNode = DefsExpanded;
-  CHETID *cheImpl, *nextImpl;
+  CHETID *cheImpl, *nextImpl, *cheTID;
+  CHETIDs *cheTIDs;
 
   if (FinalUpdate) {
     elDef->DECLError1.Destroy();
@@ -156,8 +157,8 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
         new CLavaError(&elDef->DECLError1, errCode);
     }
     typeFlags = elDef->TypeFlags;
-    Doc->GetCategoryFlags(elDef, catErr);
-    if (catErr)
+    Doc->GetCategoryFlags(elDef, hasErr);
+    if (hasErr)
       new CLavaError(&elDef->DECLError1, &ERR_IncompatibleCategory);
     if ((typeFlags != elDef->TypeFlags) && (checkLevel != CHLV_fit)) {
       elDef->TypeFlags = typeFlags;
@@ -328,7 +329,18 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
       lab = lab + lab1;
     }
     secNode = MemsExpanded;
-
+    hasErr = false;
+    cheTIDs = (CHETIDs*)elDef->HandlerClients.first;
+    while (cheTIDs && !hasErr) {
+      cheTID = (CHETID*)cheTIDs->data.first;
+      while (cheTID && !hasErr) {
+        hasErr = !Doc->IDTable.GetDECL(cheTID->data, elDef->inINCL);
+        if (hasErr)
+          new CLavaError(&elDef->DECLError1, &ERR_Broken_ref_in_HC);
+        cheTID = (CHETID*)cheTID->successor;
+      }
+      cheTIDs = (CHETIDs*)cheTIDs->successor;
+    }
     break;
   case Impl:
     elDef->WorkFlags.EXCL(hasDefaultIni);
