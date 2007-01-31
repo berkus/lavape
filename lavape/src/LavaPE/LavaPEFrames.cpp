@@ -467,8 +467,10 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     " (in contrast to <a href=\"../DBC.htm\">attached assertions</a>)"
     " and throws a specific exception in case of violation</p>"));
   newKwdToolbutton(tb,LBaseData->ignoreButton,"ignore",SLOT(ignore_stm()),
-    QObject::tr("Consciously ignore certain mandatory input parameters"),
-    QObject::tr("<p>Consciously ignore certain mandatory input parameters. (They would have to be used otherwise!)</p>"));
+    QObject::tr("Consciously ignore certain mandatory input parameters (must be the first statement!)"),
+    QObject::tr("<p>Consciously ignore certain mandatory input parameters "
+    "(which would have to be used otherwise!). </p>"
+    "\"ignore\" must be the first statement after the function header"));
   newKwdToolbutton(tb,LBaseData->tryButton,"tr&y",SLOT(try_stm()),
     QObject::tr("Try a statement, catch exceptions: \"y\""),
     QObject::tr("<p><a href=\"Try.htm\">Try</a> a statement, catch exceptions</p>"));
