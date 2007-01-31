@@ -106,17 +106,10 @@ void CLavaMainFrame::makeStyle(const QString &style)
       QApplication::setStyle(new MyMotifStyle);
     else if (style == "Plastique")
       QApplication::setStyle(new MyPlastiqueStyle);
-//    else if (style == "Cleanlooks")
-//      QApplication::setStyle(new MyCleanlooksStyle);
+    else if (style == "Cleanlooks")
+      QApplication::setStyle(new MyCleanlooksStyle);
     else
 	    QApplication::setStyle(style);
-  /*
-	  if(style == "Motif" || style == "MotifPlus") {
-	    QPalette p( QColor( 192, 192, 192 ) );
-	    qApp->setPalette( p, TRUE );
-	    qApp->setFont( LBaseData->m_GlobalFont, TRUE );
-	  }
-  */
 	  if (completelyCreated)
 		  repaint();
   }

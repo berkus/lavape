@@ -5657,6 +5657,7 @@ bool IgnoreStatement::Check (CheckData &ckd)
 {
   CHE *chp;
   SynObject *opd;
+  ObjReference *obj;
 
   ENTRY
   for (chp = (CHE*)igVars.first;
@@ -5664,6 +5665,17 @@ bool IgnoreStatement::Check (CheckData &ckd)
        chp = (CHE*)chp->successor) {
     opd = (SynObject*)chp->data;
     ok &= opd->Check(ckd);
+    if (opd->primaryToken == ObjRef_T) {
+      obj = (ObjReference*)opd;
+      if (obj->refIDs.first != obj->refIDs.last) {
+        obj->SetError(ckd,&ERR_IgnoreInputsOnly);
+        ERROREXIT
+      }
+      if (((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->TypeFlags.Contains(isOptional)) {
+        obj->SetError(ckd,&ERR_IgnoreMandatoryOnly);
+        ERROREXIT
+      }
+    }
   }
   EXIT
 }

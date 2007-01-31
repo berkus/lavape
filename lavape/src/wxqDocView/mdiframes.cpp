@@ -385,8 +385,9 @@ wxMDIChildFrame::~wxMDIChildFrame()
   }\
   return px;\
 }
+    //case PM_ToolBarFrameWidth:\
     //case PM_ToolBarIconSize:\
-    //  px = 25; break;\
+    //  px = 16; break;\
 
 #ifdef WIN32
 MYSTYLEIMP(WindowsXP)
@@ -398,4 +399,4 @@ MYSTYLEIMP(Windows)
 MYSTYLEIMP(Plastique)
 MYSTYLEIMP(CDE)
 MYSTYLEIMP(Motif)
-//MYSTYLEIMP(Cleanlooks)
+MYSTYLEIMP(Cleanlooks)

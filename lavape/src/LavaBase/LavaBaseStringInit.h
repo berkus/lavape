@@ -251,7 +251,8 @@ extern LAVABASE_DLL QString ERR_CompObjIntfNotFound;
 extern LAVABASE_DLL QString ERR_CallCheck_NYI;
 extern LAVABASE_DLL QString ERR_ISO_NYI;
 extern LAVABASE_DLL QString ERR_clone_copy_inp_closed;
-
+extern LAVABASE_DLL QString ERR_IgnoreInputsOnly;
+extern LAVABASE_DLL QString ERR_IgnoreMandatoryOnly;
 extern void LavaBaseStringInit();
 
 #endif
