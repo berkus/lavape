@@ -1002,16 +1002,6 @@ public:
     return true; }
 };
 
-class IgnoreStatement : public Expression {
-public:
-  CHAINX/*ObjReference*/ igVars;
-
-  virtual bool Check (CheckData &ckd);
-  virtual void Accept (Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
-  virtual bool IsReadOnlyClause(SynObject *synObj) {
-    return true; }
-};
-
 class IfThen : public Expression {
 public:
   NESTEDANY<Expression> ifCondition;
@@ -1825,16 +1815,6 @@ public:
     " and throws a specific exception in case of violation</p>"); }
 };
 
-class IgnoreStatementV : public IgnoreStatement {
-public:
-  IgnoreStatementV () {}
-  IgnoreStatementV (bool);
-
-  virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored);
-  virtual QString whatsThisText() {
-    return QObject::tr("<p>Ignore a mandatory input parameter</p>");}
-};
-
 class IfThenV : public IfThen {
 public:
   IfThenV () {}
@@ -2471,13 +2451,6 @@ public:
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
 };
 
-class IgnoreStatementX : public IgnoreStatement {
-public:
-  IgnoreStatementX() {}
-
-  virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel) { return true; };
-};
-
 class IfThenX : public IfThen {
 public:
   IfThenX() {}
@@ -2732,7 +2705,6 @@ public:
   virtual void VisitConnect (Connect *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitDisconnect (Disconnect *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitAssertStatement (AssertStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
-  virtual void VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitIfThen (IfThen *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitIfStatement (IfStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitIfxThen (IfxThen *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
@@ -2762,6 +2734,7 @@ public:
   virtual void VisitExists (Exists *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitForeach (Foreach *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitSelectExpression (SelectExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
+  virtual void VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
 };
 
 class TableVisitor : public Visitor {
