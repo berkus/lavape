@@ -277,12 +277,9 @@ QString ERR_CompObjIntfNotFound;
 QString ERR_CallCheck_NYI;
 QString ERR_ISO_NYI;
 QString ERR_clone_copy_inp_closed;
-<<<<<<< .mine
 QString ERR_Broken_ref_in_HC;
-=======
 QString ERR_IgnoreInputsOnly;
 QString ERR_IgnoreMandatoryOnly;
->>>>>>> .r857
 
 void LavaBaseStringInit() {
   IDS_LAVACOM_FILE  = QObject::tr("Lava component file (*.lcom) defining the type of a lava component object");
@@ -524,10 +521,7 @@ void LavaBaseStringInit() {
   ERR_CallCheck_NYI = QObject::tr("Call check not yet implemented");
   ERR_ISO_NYI = QObject::tr("\"IsStateObject\" not yet implemented");
   ERR_clone_copy_inp_closed = QObject::tr("\"Closed\" objects cannot be cloned/copied");
-<<<<<<< .mine
   ERR_Broken_ref_in_HC = QObject::tr("Broken reference in handler clients");
-=======
   ERR_IgnoreMandatoryOnly = QObject::tr("Only *mandatory* inputs may be ignored (and must be ignored if not used)");
   ERR_IgnoreInputsOnly = QObject::tr("Only input parameters may be ignored (and must be ignored if mandatory but not used)");
->>>>>>> .r857
 }
