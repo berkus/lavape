@@ -1020,8 +1020,12 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         ERROREXIT
       }
       if (decl->DeclType == IAttr) {
-        //parmDecl = ckd.document->IDTable.GetDECL(tdod->ID,ckd.inINCL);
-        decl->WorkFlags.INCL(isReferenced);
+        if (decl->WorkFlags.Contains(isIgnored)) {
+          tdod->SetError(ckd,&ERR_RefToIgnored);
+          ERROREXIT
+        }
+        else
+          decl->WorkFlags.INCL(isReferenced);
       }
       objRef->refName.Reset(0);
       if (decl->TypeFlags.Contains(isOptional)) {
@@ -1761,6 +1765,7 @@ bool FormParms::Check (CheckData &ckd)
     tdod = (TDOD*)((CHE*)((ObjReference*)((FormParm*)chpParmRef->data)->formParm.ptr)->refIDs.first)->data;
     parmDecl = ckd.document->IDTable.GetDECL(tdod->ID,ckd.inINCL);
     parmDecl->WorkFlags.EXCL(isReferenced);
+    parmDecl->WorkFlags.EXCL(isIgnored);
     chpParmDef = (CHE*)chpParmDef->successor;
   }
 //#endif
@@ -5675,6 +5680,8 @@ bool IgnoreStatement::Check (CheckData &ckd)
         obj->SetError(ckd,&ERR_IgnoreMandatoryOnly);
         ERROREXIT
       }
+      else
+        ((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->WorkFlags.INCL(isIgnored);
     }
   }
   EXIT
@@ -6405,7 +6412,10 @@ bool NewExpression::Check (CheckData &ckd)
 }
 
 int NewExpression::ClosedLevel(CheckData &ckd) {
-  return ((ObjReference*)((FuncStatement*)initializerCall.ptr)->handle.ptr)->closedLevel;
+  if (initializerCall.ptr)
+    return ((ObjReference*)((FuncStatement*)initializerCall.ptr)->handle.ptr)->closedLevel;
+  else
+    return 0;
 }
 
 void CloneExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {

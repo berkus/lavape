@@ -451,7 +451,8 @@ enum WorkFlag {
   poppedUp,
   formVTOK,
   newTreeNode,
-  fromPubToPriv};
+  fromPubToPriv,
+  isIgnored};
 
 extern LAVABASE_DLL void CDPWorkFlag (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
 
@@ -1615,7 +1616,6 @@ struct LAVABASE_DLL FormNode : public AnyType  {
     Pixmap=0;
     allowOwnHandler=false;
     allowChainHandler=false;
-    GUIService=0;
     handlerSearched=false;
     myHandlerNode=0;
     ColorBValid=false;

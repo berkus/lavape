@@ -210,7 +210,6 @@ QString ERR_ldocNotStored;
 QString ERR_ExactlyOneLcom;
 QString ERR_AllocObjectFailed;
 QString ERR_ImmutableArray;
-//QString ERR_ThrowInInitiator;
 QString ERR_ForceOver;
 QString ERR_IsntEnum;
 QString ERR_AssigToMultiArray;
@@ -280,6 +279,7 @@ QString ERR_clone_copy_inp_closed;
 QString ERR_Broken_ref_in_HC;
 QString ERR_IgnoreInputsOnly;
 QString ERR_IgnoreMandatoryOnly;
+QString ERR_RefToIgnored;
 
 void LavaBaseStringInit() {
   IDS_LAVACOM_FILE  = QObject::tr("Lava component file (*.lcom) defining the type of a lava component object");
@@ -524,4 +524,5 @@ void LavaBaseStringInit() {
   ERR_Broken_ref_in_HC = QObject::tr("Broken reference in handler clients");
   ERR_IgnoreMandatoryOnly = QObject::tr("Only *mandatory* inputs may be ignored (and must be ignored if not used)");
   ERR_IgnoreInputsOnly = QObject::tr("Only input parameters may be ignored (and must be ignored if mandatory but not used)");
+  ERR_RefToIgnored = QObject::tr("Expressly ignored mandatory input parameters must not be referenced");
 }

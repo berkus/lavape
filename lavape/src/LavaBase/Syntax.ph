@@ -394,8 +394,10 @@ $TYPE +CDP {
     //24, X0100 0000, used at runtime
 	  newTreeNode,
 	  //25, X0200 0000, used in updates
-    fromPubToPriv
+    fromPubToPriv,
     //26, X0400 0000, used in refactoring: public to private
+    isIgnored
+    //27, X0800 0000, mandatory input parameter is ignored
   };
 
   enum BasicFlag {
@@ -1084,7 +1086,7 @@ $TYPE {
   FormNode () { ResultVarPtr = 0; HandleObjPtr = 0; EnumField = 0;
                 ownLFont=mainFont; ownTFont=mainFont; Pixmap = 0;
                 allowOwnHandler = false;
-                allowChainHandler = false; GUIService = 0;
+                allowChainHandler = false;
                 handlerSearched = false; myHandlerNode = 0;
                 ColorBValid = false; ColorFValid = false;}
   ~FormNode();

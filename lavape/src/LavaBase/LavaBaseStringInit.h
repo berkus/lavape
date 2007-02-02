@@ -254,6 +254,7 @@ extern LAVABASE_DLL QString ERR_clone_copy_inp_closed;
 extern LAVABASE_DLL QString ERR_Broken_ref_in_HC;
 extern LAVABASE_DLL QString ERR_IgnoreInputsOnly;
 extern LAVABASE_DLL QString ERR_IgnoreMandatoryOnly;
+extern LAVABASE_DLL QString ERR_RefToIgnored;
 
 extern void LavaBaseStringInit();
 
