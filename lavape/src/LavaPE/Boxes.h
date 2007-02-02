@@ -50,17 +50,25 @@ protected:
 
 };
 
-class CAttachHandler : QDialog, public Ui_idd_attachhandler
+class CAttachHandler : public QDialog, public Ui_idd_attachhandler
 {
 public:
   CAttachHandler(QWidget* pParent = NULL); 
-  CAttachHandler(LavaDECL* guiService, TIDs client, QWidget* pParent = NULL); 
- 
+  CAttachHandler(LavaDECL* guiService, TIDs client, LavaDECL* attachedFunc, CLavaPEDoc* doc, QWidget* pParent = NULL); 
+  ValOnInit OnInitDialog();
+
+  LavaDECL *GUIService;
+  TIDs Client;
+  LavaDECL *AttachedFunc;
+  LavaDECL *ClientType;
+  LavaDECL *ClientMem;
+  LavaDECL *SelectedFunc;
+  CLavaPEDoc* myDoc;
 
 public slots:
   virtual void on_ID_OK_clicked();
-  virtual void on_ID_CANCEL_clicked();
-  virtual void on_EventTypes_activated( int );
+  virtual void on_ID_CANCEL_clicked() {reject();}
+  virtual void on_HandlerList_activated(int );
 
 private:
   Q_OBJECT
@@ -290,7 +298,6 @@ public:
   CFuncBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew = false, QWidget* pParent = NULL);
   ValOnInit OnInitDialog();
   void UpdateData(bool getData);
-  int checkHandlerIO();
   void makeHandler();
   LavaDECL* myDECL;
   LavaDECL* FieldTypeDECL;

@@ -111,6 +111,7 @@ public:
   virtual bool CheckImpl(CheckData& callingCkd, LavaDECL* /*classDECL*/, LavaDECL* specDECL=0) {return false;}
   QString* CheckScope(LavaDECL* elDef); //returns error code
   QString* CommonContext(LavaDECL* paramDECL);
+  int CheckHandlerIO(LavaDECL* funcDECL, LavaDECL* ClientType);
 
   virtual void DelSyntax(CHESimpleSyntax* delSyn) {}
   QString* ExtensionAllowed(LavaDECL* decl, LavaDECL* baseDECL, CheckData* pckd);

@@ -874,6 +874,9 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
       implElDecl->WorkFlags.EXCL(checkmark);
     }
     else {
+      if ((implElDecl->DeclType == Function) && implElDecl->SecondTFlags.Contains(isHandler))
+        if (CheckHandlerIO(implElDecl, 0) < 0)
+          new CLavaError(&implElDecl->DECLError2, &ERR_NoHandlerIO);
       if (checkLevel == CHLV_fit) {
         changed = true;
         UpdateNo++;
@@ -1091,7 +1094,6 @@ bool CLavaPEDoc::CheckMenu(LavaDECL* formDECL, LavaDECL* classDECL)
   return changed;
 }
 
-
 bool CLavaPEDoc::CheckOverInOut(LavaDECL* funcDECL, int checkLevel)
 {
   SynFlags typeFlags;
@@ -1129,13 +1131,7 @@ bool CLavaPEDoc::CheckOverInOut(LavaDECL* funcDECL, int checkLevel)
     else
       return false;
   }
-  /*
-  if (funcDECL->TypeFlags.Contains(inheritsBody))
-    if (OverFunc->TypeFlags.Contains(isNative))
-      funcDECL->TypeFlags.INCL(isNative);
-    else
-      funcDECL->TypeFlags.EXCL(isNative);
-  */
+  
   if (!funcDECL->ParentDECL->TypeFlags.Contains(isAbstract))
     funcDECL->TypeFlags.EXCL(isAbstract);
   if (funcDECL->DeclType == Attr) {

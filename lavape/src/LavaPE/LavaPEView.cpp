@@ -214,6 +214,33 @@ CLavaPEView::CLavaPEView(QWidget* parent, wxDocument *doc)
   Tree->viewport()->installEventFilter(this);
 }
 
+void CLavaPEView::AttachHandler(CAttachData* attachData)
+{
+  LavaDECL **p_funcDECL, *funcDECL = NewLavaDECL();
+  CLavaPEHint *hint;
+  TIDType type;
+
+  CAttachHandler *box = new CAttachHandler(attachData->GUIService, attachData->ClientIDs, funcDECL, GetDocument());
+  box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
+  if (box->OnInitDialog() != BoxContinue) {
+    delete box;
+    delete funcDECL;
+    return;
+  }
+  if ((box->exec() != QDialog::Accepted) || (funcDECL->OwnID < 0)) {
+    delete box;
+    delete funcDECL;
+    return;
+  }
+  delete box;
+  p_funcDECL = (LavaDECL**)GetDocument()->IDTable.GetVar(TID(funcDECL->OwnID, 0),type, 0);
+  DString* name = new DString(funcDECL->FullName);
+  hint = new CLavaPEHint(CPECommand_Change, GetDocument(), (const unsigned long)3, funcDECL, name, 0, p_funcDECL);
+  GetDocument()->UndoMem.AddToMem(hint);
+  GetDocument()->UpdateDoc(this, false, hint);
+  ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->AddHandler(funcDECL, GetDocument());
+}
+
 void CLavaPEView::CleanListView()
 {
   delete Tree;
@@ -1253,6 +1280,10 @@ bool CLavaPEView::event(QEvent *ev)
   }
   else if (ev->type() == UEV_NewHandler) {
     myMainView->OnInsert(Function, (LavaDECL*)((CustomEvent*)ev)->data());
+    return true;
+  }
+  else if (ev->type() == UEV_AttachHandler) {
+    myMainView->AttachHandler((CAttachData*)((CustomEvent*)ev)->data());
     return true;
   }
   else if (ev->type() == QEvent::WhatsThisClicked) {
@@ -2707,12 +2738,6 @@ void CLavaPEView::OnEditSelItem(CTreeItem* item, bool clickedOnIcon)
         fbox->setWindowFlags(fbox->windowFlags() ^ Qt::WindowContextHelpButtonHint);
         okBox = fbox->exec();
         delete fbox;
-      }
-      else {
-       // CLavaPEWizard* dtwz = new CLavaPEWizard(GetDocument(), (LavaDECL**)itd->synEl/*itdDECL*/, "LavaPE Wizard", isonwhat, decl, this);
-       // okBox = dtwz->exec();
-       // delete dtwz;
-       // okBox = QDialog::Rejected;
       }
     }
     else {

@@ -216,17 +216,20 @@ void CUtilityView::AddHandler(LavaDECL* func, CLavaBaseDoc* doc)
     label2.clear(); 
     cheS = (CHETID*)cheTIDs->data.first;
     label2 += QString(func->ParentDECL->FullName.c);
-    if (cheS)
+    if (cheS) {
       label2 += "::";
-    while (cheS) {
-      decl = doc->IDTable.GetDECL(cheS->data);
-      if (decl)
-        label2 += QString(decl->LocalName.c);
-      else { /*error, messagebox */}
-      cheS = (CHETID*)cheS->successor;
-      if (cheS)
-        label2 += QString(".");
+      while (cheS) {
+        decl = doc->IDTable.GetDECL(cheS->data);
+        if (decl)
+          label2 += QString(decl->LocalName.c);
+        else { /*error, messagebox */}
+        cheS = (CHETID*)cheS->successor;
+        if (cheS)
+          label2 += QString(".");
+      }
     }
+    else
+      label2 = "Attached to this form ";
     item->setText(2, label2);
     cheTIDs = (CHETIDs*)cheTIDs->successor;
     if (cheTIDs) {
@@ -283,17 +286,20 @@ void CUtilityView::SetHandler(TIDs* handlerIDs, CLavaBaseDoc* doc)
       cheS = (CHETID*)cheTIDs->data.first;
       label2.clear(); 
       label2 = QString(func->ParentDECL->FullName.c);
-      if (cheS)
+      if (cheS) {
         label2 += "::";
-      while (cheS) {
-        decl = doc->IDTable.GetDECL(cheS->data);
-        if (decl)
-          label2 += QString(decl->LocalName.c);
-        else { /*error, messagebox */}
-        cheS = (CHETID*)cheS->successor;
-        if (cheS)
-          label2 += QString(".");
+        while (cheS) {
+          decl = doc->IDTable.GetDECL(cheS->data);
+          if (decl)
+            label2 += QString(decl->LocalName.c);
+          else { /*error, messagebox */}
+          cheS = (CHETID*)cheS->successor;
+          if (cheS)
+            label2 += QString(".");
+        }
       }
+      else
+        label2 = "Attached to this form";
       item->setText(2, label2);
       cheTIDs = (CHETIDs*)cheTIDs->successor;
       if (cheTIDs) {

@@ -427,7 +427,8 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
           return false;
         }
       }
-      if (implElDecl->DeclType == Function) {
+      if ((implElDecl->DeclType == Function)
+           && implElDecl->SecondTFlags.Contains(isHandler)) {
         cheTIDs = (CHETIDs*)implElDecl->HandlerClients.first;
         while (cheTIDs) {
           cheTID = (CHETID*)cheTIDs->data.first;
@@ -440,6 +441,8 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
           }
           cheTIDs = (CHETIDs*)cheTIDs->successor;
         }
+        if (CheckHandlerIO(implElDecl, 0) < 0)
+          new CLavaError(&implElDecl->DECLError2, &ERR_NoHandlerIO);
       }
     }
   }

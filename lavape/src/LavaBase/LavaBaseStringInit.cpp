@@ -277,6 +277,7 @@ QString ERR_CallCheck_NYI;
 QString ERR_ISO_NYI;
 QString ERR_clone_copy_inp_closed;
 QString ERR_Broken_ref_in_HC;
+QString ERR_NoHandlerIO;
 QString ERR_IgnoreInputsOnly;
 QString ERR_IgnoreMandatoryOnly;
 QString ERR_RefToIgnored;
@@ -522,6 +523,7 @@ void LavaBaseStringInit() {
   ERR_ISO_NYI = QObject::tr("\"IsStateObject\" not yet implemented");
   ERR_clone_copy_inp_closed = QObject::tr("\"Closed\" objects cannot be cloned/copied");
   ERR_Broken_ref_in_HC = QObject::tr("Broken reference in handler clients");
+  ERR_NoHandlerIO = QObject::tr("Inconsistency in function parameter versus handler type or versus handler clients");
   ERR_IgnoreMandatoryOnly = QObject::tr("Only *mandatory* inputs may be ignored (and must be ignored if not used)");
   ERR_IgnoreInputsOnly = QObject::tr("Only input parameters may be ignored (and must be ignored if mandatory but not used)");
   ERR_RefToIgnored = QObject::tr("Expressly ignored mandatory input parameters must not be referenced");

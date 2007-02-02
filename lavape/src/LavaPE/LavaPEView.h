@@ -189,7 +189,7 @@ public:
   virtual void RenameCancel(CTreeItem* item);
   virtual void RenameOk(QLineEdit* editor, CTreeItem* item);
   virtual void RenameStart(QLineEdit* editor, CTreeItem* item);
-
+  void AttachHandler(CAttachData* attachData);
 //  void SetAllStates(CTreeItem* item1, unsigned nState, unsigned nStateMask, bool inPattern);
   void setSelPost(QTreeWidgetItem* selItem);
   void SetErrAndCom(CTreeItem* item);

@@ -49,26 +49,83 @@ CAttachHandler::CAttachHandler(QWidget* pParent)
 
 }
 
-CAttachHandler::CAttachHandler(LavaDECL* guiService, TIDs client, QWidget* pParent) 
+CAttachHandler::CAttachHandler(LavaDECL* guiService, TIDs client, LavaDECL* attachedFunc, CLavaPEDoc* doc, QWidget* pParent) 
  : QDialog(pParent)
 {
+  setupUi(this);
+  GUIService = guiService;
+  Client = client;
+  AttachedFunc = attachedFunc;
+  myDoc = doc;
+  SelectedFunc = 0;
+}
 
+ValOnInit CAttachHandler::OnInitDialog()
+{
+  CHE* che;
+  CComboBoxItem *comboItem;
+
+  ClientMem = myDoc->IDTable.GetDECL(((CHETID*)Client.last)->data);
+  ClientType = myDoc->IDTable.GetDECL(ClientMem->RefID, ClientMem->inINCL);
+  if (ClientType->TypeFlags.Contains(isGUI) || ClientType->DeclType == FormDef)
+    ClientType = myDoc->IDTable.GetDECL(ClientType->RefID, ClientType->inINCL);
+  for (che = (CHE*)GUIService->NestedDecls.first; che; che = (CHE*)che->successor) {
+    if ((((LavaDECL*)che->data)->DeclType == Function)
+      && ((LavaDECL*)che->data)->SecondTFlags.Contains(isHandler)
+      && (myDoc->CheckHandlerIO((LavaDECL*)che->data, ClientType) >= 0)) {
+      comboItem = new CComboBoxItem(TID(((LavaDECL*)che->data)->OwnID, 0));
+      addItemAlpha(HandlerList, QString(((LavaDECL*)che->data)->LocalName.c), QVariant::fromValue(comboItem));//sort
+    }
+  }
+  if (!HandlerList->count()) {
+    //messagebox machen
+    return BoxCancel;
+  }
+  ID_OK->setEnabled(false);
+  return BoxContinue;
+;
+}
+
+void CAttachHandler::on_HandlerList_activated(int)
+{
+  QVariant var;
+  TID funcID;
+
+  int pos = HandlerList->currentIndex();
+
+  if (pos > 0) {
+    var = HandlerList->itemData(pos);
+    funcID = var.value<CComboBoxItem*>()->itemData();
+    SelectedFunc = myDoc->IDTable.GetDECL(funcID);
+    if (SelectedFunc->GUISignaltype == 1)
+      EventType->setText("New value");
+    else if( SelectedFunc->GUISignaltype == 2)
+      EventType->setText("Insert");
+    else if( SelectedFunc->GUISignaltype == 3)
+      EventType->setText("Delete");
+    ID_OK->setEnabled(true);
+  }
+  else {
+    EventType->setText("");
+    SelectedFunc = 0;
+    ID_OK->setEnabled(false);
+  }
 }
 
 void CAttachHandler::on_ID_OK_clicked()
 {
+  CHETIDs *che;
+  if (SelectedFunc) {
+    *AttachedFunc = *SelectedFunc;
+    che = new CHETIDs;
+    che->data = Client;
+    AttachedFunc->HandlerClients.Append(che);
+  }
+  QDialog::accept();
 
 }
 
-void CAttachHandler::on_ID_CANCEL_clicked()
-{
 
-}
-
-void CAttachHandler::on_EventTypes_activated( int )
-{
-
-}
 
 /////////////////////////////////////////////////////////////////////////////
 // CAttrBox dialog
@@ -1481,7 +1538,7 @@ ValOnInit CFuncBox::OnInitDialog()
     while (cheTIDs) {
       cheS = (CHETID*)cheTIDs->data.first;
       if (!cheS) {
-        nameText = "all fields of type ";
+        nameText = "Attached to this form ";
         nameText += QString(myDECL->ParentDECL->FullName.c);
       }
       else
@@ -1783,7 +1840,7 @@ ValOnInit CFuncBox::OnInitDialog()
     else {
       if (!myDECL->SecondTFlags.Contains(funcImpl)
            && myDECL->ParentDECL->TypeFlags.Contains(isGUI)) {
-        int type = checkHandlerIO();
+        int type = myDoc->CheckHandlerIO(myDECL, 0);
         if (type >= 0) {
           if (type == 2)
             EventType->addItem("Insert");
@@ -1809,68 +1866,6 @@ ValOnInit CFuncBox::OnInitDialog()
   UpdateData(false); 
   NewName->setFocus();
   return BoxContinue;
-}
-
-int CFuncBox::checkHandlerIO()
-{
-  TID refID;
-  LavaDECL *chain;
-
-  CHE* cheIO1 = (CHE*)myDECL->NestedDecls.first;
-  if (!cheIO1)
-    return -1;
-  CHE* cheIO2 = (CHE*)cheIO1->successor;
-  if (!cheIO2)
-    return -1;
-  if ((((LavaDECL*)cheIO1->data)->DeclType != IAttr)
-    || (((LavaDECL*)cheIO2->data)->DeclType != IAttr))
-    return -1;
-  CHE* cheIO3 = (CHE*)cheIO2->successor;
-  if (!cheIO3)
-    return -1;
-  CHE* cheIO4 = (CHE*)cheIO3->successor;
-  if (cheIO4 && (((LavaDECL*)cheIO4->data)->DeclType != ExecDef)) {
-    CHE* cheIO5 = (CHE*)cheIO4->successor;
-    if (!cheIO5 || (((LavaDECL*)cheIO3->data)->DeclType != IAttr)
-      || (((LavaDECL*)cheIO4->data)->DeclType != OAttr)
-      || (((LavaDECL*)cheIO5->data)->DeclType != OAttr))
-      return -1;
-    if (cheIO5->successor 
-        && (((LavaDECL*)((CHE*)cheIO5->successor)->data)->DeclType != ExecDef))
-        return -1;
-    chain = myDoc->IDTable.GetDECL(((LavaDECL*)cheIO1->data)->RefID);
-    if (!chain->SecondTFlags.Contains(isSet))
-      return -1;
-    if (((LavaDECL*)cheIO2->data)->BType != B_Che)
-      return -1;
-    if (((LavaDECL*)cheIO4->data)->BType != B_Bool)
-      return -1;
-    myDoc->IDTable.GetParamRefID(chain, refID, isSet);
-    if ((((LavaDECL*)cheIO3->data)->RefID == refID) 
-      && (((LavaDECL*)cheIO5->data)->RefID == refID))
-      return 2; //Insert
-    else
-      return -1;
-  }
-  else {
-    if (((LavaDECL*)cheIO3->data)->DeclType != OAttr)
-      return -1;
-    if ((((LavaDECL*)cheIO1->data)->RefID == ((LavaDECL*)cheIO2->data)->RefID)
-      && (((LavaDECL*)cheIO1->data)->RefID == ((LavaDECL*)cheIO3->data)->RefID))
-      return 1; //New Value
-    else {
-      if (((LavaDECL*)cheIO2->data)->BType != B_Che)
-        return -1;
-      if (((LavaDECL*)cheIO3->data)->BType != B_Bool)
-        return -1;
-      chain = myDoc->IDTable.GetDECL(((LavaDECL*)cheIO1->data)->RefID);
-      if (chain->SecondTFlags.Contains(isSet))
-        return 3; //Delete
-      else
-        return -1;
-    }
-  }
-  return -1;
 }
 
 void CFuncBox::CalcOpBox()
@@ -4693,17 +4688,9 @@ int CallBox(LavaDECL* decl, LavaDECL * origDECL, CLavaPEDoc* doc, bool isNew,
     break;
 
   case Function:
-    /*
-    if (decl->SecondTFlags.Contains(isHandler)) {
-      box = new CHandlerBox(decl, origDECL, doc, isNew, parent);
-      box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
-      valIni = ((CHandlerBox*)box)->OnInitDialog();
-    }
-    else {*/
-      box = new CFuncBox(decl, origDECL, doc, isNew, parent);
-      box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
-      valIni = ((CFuncBox*)box)->OnInitDialog();
-    //}
+    box = new CFuncBox(decl, origDECL, doc, isNew, parent);
+    box->setWindowFlags(box->windowFlags() ^ Qt::WindowContextHelpButtonHint);
+    valIni = ((CFuncBox*)box)->OnInitDialog();
     if (valIni == BoxContinue)
       okBox = box->exec();
     else if (valIni == BoxOK)

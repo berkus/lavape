@@ -1366,6 +1366,92 @@ LavaDECL* CLavaBaseDoc::FindInSupports(const DString& name, LavaDECL *self, Lava
 }  
 
 
+int CLavaBaseDoc::CheckHandlerIO(LavaDECL* funcDECL, LavaDECL* ClientType)
+{
+  TID refID, clientTypeID;
+  LavaDECL *memDECL, *typeDECL = 0, *decl;
+  CHETIDs *cheTIDs;
+
+  cheTIDs = (CHETIDs*)funcDECL->HandlerClients.first;
+  if (!cheTIDs)
+    return -1;
+  if (cheTIDs->data.last) {
+    while (cheTIDs) {
+      memDECL = IDTable.GetDECL(((CHETID*)cheTIDs->data.last)->data, funcDECL->inINCL);
+      decl = IDTable.GetDECL(memDECL->RefID, memDECL->inINCL);
+      if (typeDECL) {
+        if (typeDECL != decl)
+          return -1;
+      }
+      else
+        typeDECL = decl;
+      cheTIDs = (CHETIDs*)cheTIDs->successor;
+    }
+  }
+  else
+    typeDECL = IDTable.GetDECL(funcDECL->ParentDECL->RefID, funcDECL->inINCL);
+
+  if (ClientType && (ClientType != typeDECL))
+    return -1;
+  clientTypeID = TID(typeDECL->OwnID, typeDECL->inINCL);
+  CHE* cheIO1 = (CHE*)funcDECL->NestedDecls.first;
+  if (!cheIO1)
+    return -1;
+  CHE* cheIO2 = (CHE*)cheIO1->successor;
+  if (!cheIO2)
+    return -1;
+  if ((((LavaDECL*)cheIO1->data)->DeclType != IAttr)
+    || (((LavaDECL*)cheIO2->data)->DeclType != IAttr))
+    return -1;
+  CHE* cheIO3 = (CHE*)cheIO2->successor;
+  if (!cheIO3)
+    return -1;
+  CHE* cheIO4 = (CHE*)cheIO3->successor;
+  if (cheIO4 && (((LavaDECL*)cheIO4->data)->DeclType != ExecDef)) {
+    CHE* cheIO5 = (CHE*)cheIO4->successor;
+    if (!cheIO5 || (((LavaDECL*)cheIO3->data)->DeclType != IAttr)
+      || (((LavaDECL*)cheIO4->data)->DeclType != OAttr)
+      || (((LavaDECL*)cheIO5->data)->DeclType != OAttr))
+      return -1;
+    if (cheIO5->successor 
+        && (((LavaDECL*)((CHE*)cheIO5->successor)->data)->DeclType != ExecDef))
+        return -1;
+    if (!typeDECL->SecondTFlags.Contains(isSet)
+      || !IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+      return -1;
+    if (((LavaDECL*)cheIO2->data)->BType != B_Che)
+      return -1;
+    if (((LavaDECL*)cheIO4->data)->BType != B_Bool)
+      return -1;
+    IDTable.GetParamRefID(typeDECL, refID, isSet);
+    if (IDTable.EQEQ(((LavaDECL*)cheIO3->data)->RefID, funcDECL->inINCL, refID, 0) 
+      && (((LavaDECL*)cheIO5->data)->RefID == ((LavaDECL*)cheIO3->data)->RefID))
+      return 2; //Insert
+    else
+      return -1;
+  }
+  else {
+    if (((LavaDECL*)cheIO3->data)->DeclType != OAttr)
+      return -1;
+    if ((((LavaDECL*)cheIO1->data)->RefID == ((LavaDECL*)cheIO2->data)->RefID)
+      && (((LavaDECL*)cheIO1->data)->RefID == ((LavaDECL*)cheIO3->data)->RefID)
+      && IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+      return 1; //New Value
+    else {
+      if (((LavaDECL*)cheIO2->data)->BType != B_Che)
+        return -1;
+      if (((LavaDECL*)cheIO3->data)->BType != B_Bool)
+        return -1;
+      if (typeDECL->SecondTFlags.Contains(isSet) && 
+        IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+        return 3; //Delete
+      else
+        return -1;
+    }
+  }
+  return -1;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CLavaBaseDoc diagnostics
 
