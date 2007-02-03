@@ -229,7 +229,7 @@ void CUtilityView::AddHandler(LavaDECL* func, CLavaBaseDoc* doc)
       }
     }
     else
-      label2 = "Attached to this form ";
+      label2 = "Attached to the form ";
     item->setText(2, label2);
     cheTIDs = (CHETIDs*)cheTIDs->successor;
     if (cheTIDs) {
@@ -299,7 +299,7 @@ void CUtilityView::SetHandler(TIDs* handlerIDs, CLavaBaseDoc* doc)
         }
       }
       else
-        label2 = "Attached to this form";
+        label2 = "Attached to the form";
       item->setText(2, label2);
       cheTIDs = (CHETIDs*)cheTIDs->successor;
       if (cheTIDs) {

@@ -58,6 +58,7 @@ CGUIProg::CGUIProg() : CGUIProgBase()
   fromFillIn = 0;
   Redraw = false;
   ServicePtr = 0;
+  inNewHandler = false;
 }
 
 void CGUIProg::Create(CLavaBaseDoc* doc, QWidget* view)
@@ -349,6 +350,7 @@ void CGUIProg::OnNewHandler()
     cheTIDs = new CHETIDs();
     cheTIDs->data = ActNode->data.myHandlerNode->data.myName;
     decl->HandlerClients.Append(cheTIDs);
+    inNewHandler = true;
     QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree, new CustomEvent(UEV_NewHandler, (void*)decl));
   }
 }
@@ -357,6 +359,7 @@ void CGUIProg::OnAttachHandler()
 {
   if (ActNode && ActNode->data.myHandlerNode) {
     CAttachData* data = new CAttachData(myDECL, ActNode->data.myHandlerNode->data.myName);
+    inNewHandler = true;
     QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree,new CustomEvent(UEV_AttachHandler, (void*)data));
   }
 }

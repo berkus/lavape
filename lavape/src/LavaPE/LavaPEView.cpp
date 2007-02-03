@@ -1280,10 +1280,12 @@ bool CLavaPEView::event(QEvent *ev)
   }
   else if (ev->type() == UEV_NewHandler) {
     myMainView->OnInsert(Function, (LavaDECL*)((CustomEvent*)ev)->data());
+    myFormView->myGUIProg->inNewHandler = false;
     return true;
   }
   else if (ev->type() == UEV_AttachHandler) {
     myMainView->AttachHandler((CAttachData*)((CustomEvent*)ev)->data());
+    myFormView->myGUIProg->inNewHandler = false;
     return true;
   }
   else if (ev->type() == QEvent::WhatsThisClicked) {
@@ -3547,7 +3549,7 @@ void CLavaPEView::OnUpdate(wxView* pSender, unsigned undoRedoCheck, QObject* pHi
       Tree->viewport()->update();
       if (!drawTree) {
         CTreeItem* item = (CTreeItem*)Tree->currentItem();
-        if (item) {
+        if (item && !myFormView->myGUIProg->inNewHandler) {
           QApplication::postEvent(myFormView, new CustomEvent(UEV_LavaPE_SyncForm, (void*)*(LavaDECL**)((CMainItemData*)item->getItemData())->synEl));
           GetDocument()->OpenWizardView(this, (LavaDECL**)((CMainItemData*)item->getItemData())->synEl/*, (unsigned long)1*/);
           ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->DeleteAllPageItems(tabHandler);

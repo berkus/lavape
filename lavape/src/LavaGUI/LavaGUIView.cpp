@@ -473,6 +473,9 @@ void CLavaGUIView::OnInitialUpdate()
 void CLavaGUIView::OnUpdate(wxView* , unsigned undoRedoCheck, QObject* pHint)
 {
   //GetParentFrame()->show();
+  //if (myGUIProg->inNewHandler)
+  //  return;
+
   inUpdate = true;
   CLavaPEHint* Hint = (CLavaPEHint*)pHint;
   if (Hint

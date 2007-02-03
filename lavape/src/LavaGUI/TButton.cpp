@@ -528,6 +528,7 @@ void CRadioButton::contextMenuEvent(QContextMenuEvent * e)
       ((CGUIProg*)GUIProg)->OnNewHandler();
     else if (action == GUIProg->attachHandlerActionPtr)
       ((CGUIProg*)GUIProg)->OnAttachHandler();
+    GUIProg->setHandler(myFormNode);
   }
 }
 

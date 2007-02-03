@@ -27,6 +27,7 @@ public:
   TreeSrchCLASS TreeSrch;
   //QWidget* ParentWin;
   CRuntimeException *ex;
+  bool inNewHandler;
 
   void Create(CLavaBaseDoc* doc, QWidget* view);
   void OnUpdate( LavaDECL* decl, LavaVariablePtr resultPtr);

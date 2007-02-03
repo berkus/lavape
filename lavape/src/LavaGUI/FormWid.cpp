@@ -142,7 +142,8 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
        && myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet))
       myFormNode->data.myHandlerNode = 0;
 
-  if ( myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+  if (( myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+    || myFormNode->data.BasicFlags.Contains(ButtonMenu))
        && !myFormNode->data.handlerSearched)
     GUIProg->setHandler(myFormNode);
 
@@ -157,7 +158,7 @@ void CFormWid::AddRadio(QPushButton* radio)
 }
 
 
-void CFormWid::mousePressEvent(QMouseEvent* ev) 
+void CFormWid::contextMenuEvent(QContextMenuEvent* ev) 
 {
   QAction* action;
   QMenu* myMenu = 0;
@@ -185,7 +186,9 @@ void CFormWid::mousePressEvent(QMouseEvent* ev)
       ((CGUIProg*)GUIProg)->OnUpdateAttachHandler(GUIProg->attachHandlerActionPtr);
     }
     action = myMenu->exec(ev->globalPos());
+    ev->accept();
     delete myMenu;
+    myMenu = 0;
     if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
       ((CGUIProg*)GUIProg)->ExecuteChainAction(action);
     else if (action == GUIProg->newHandlerActionPtr)
@@ -266,7 +269,7 @@ void CLavaGroupBox::InitGroupBox(CGUIProgBase *guiPr, CHEFormNode* data)
     GUIProg->setHandler(myFormNode);
 }
 
-void CLavaGroupBox::mousePressEvent(QMouseEvent* ev)
+void CLavaGroupBox::contextMenuEvent(QContextMenuEvent* ev)
 {
   QAction* action;
   QMenu* myMenu = 0;

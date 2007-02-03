@@ -23,7 +23,7 @@ class CFormWid : public QFrame//QWidget
 public:
   CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
            QWidget* pParentWnd, int border, const char* lpszWindowName); //Creates a 2x2 pane
-  void mousePressEvent(QMouseEvent* ev);
+  void contextMenuEvent(QContextMenuEvent* ev);
   virtual bool event(QEvent* ev);
 
   virtual ~CFormWid();
@@ -57,7 +57,7 @@ class CLavaGroupBox : public QGroupBox
 public:
   CLavaGroupBox(CGUIProgBase *guiPr, CHEFormNode* data, QString label, QWidget* pParentWnd); 
   CLavaGroupBox(CGUIProgBase *guiPr, CHEFormNode* data, QWidget* pParentWnd); 
-  void mousePressEvent(QMouseEvent* ev);
+  void contextMenuEvent(QContextMenuEvent* ev);
   virtual bool event(QEvent* ev);
   void InitGroupBox(CGUIProgBase *guiPr, CHEFormNode* data);
   virtual ~CLavaGroupBox() {}
