@@ -1610,17 +1610,12 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
     LastUtilitiesState = (int)m_UtilityView->ActTab;
     //if (wxTheApp->isChMaximized && wxTheApp->activeView()->inherits("CExecView")) {
     //  CExecView *ev = (CExecView*)wxTheApp->activeView();
+    //  ev->redCtl->setUpdatesEnabled(false);
+    //  m_UtilityView->hide();
+    //  ev->redCtl->setUpdatesEnabled(true);
     //  ev->redCtl->update();
-    //  ExecContents *ec = ev->redCtl;
-    //  updEnabled = ev->updatesEnabled();
-    //  if (!updEnabled)
-    //    ev->setUpdatesEnabled(true);
-    //  QPaintEvent pe(QRect(0,0,10000,10000));
-    //  QApplication::postEvent(ec,&pe);
-    //  if (!updEnabled)
-    //    ev->setUpdatesEnabled(false);
     //}
-    UtilitiesHidden = true;//!UtilitiesHidden;
+    UtilitiesHidden = true;
   }
 }
 

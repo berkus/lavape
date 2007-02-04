@@ -669,7 +669,8 @@ void ExecContents::paintEvent (QPaintEvent *ev)
 
   p.setBrush(QColor(210,210,210));
   p.setPen(myPen);
-  contentsHeight = qMax(contentsHeight,sv->viewport()->height());
+  //contentsHeight = qMax(contentsHeight,sv->viewport()->height());
+  contentsHeight = qMax(contentsHeight,sv->height());
   contentsWidth = qMax(contentsWidth,miniEditRightEdge);
   resize(contentsWidth,contentsHeight);
   p.drawRect(0,0,15,contentsHeight);
