@@ -1748,10 +1748,6 @@ bool FormParms::Check (CheckData &ckd)
 {
   SelfVar *selfVar=(SelfVar*)parentObject;
   CHE *chpParmRef, *chpParmDef;
-//#ifndef INTERPRETER
-  TDOD *tdod;
-  LavaDECL *parmDecl;
-//#endif
   TID rID=((Reference*)selfVar->execName.ptr)->refID;
 
   ENTRY
@@ -1761,11 +1757,9 @@ bool FormParms::Check (CheckData &ckd)
   chpParmDef = GetFirstInput(&ckd.document->IDTable,rID);
   while (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == IAttr) {
     // locate old parm. and reposition it if necessary:
+    ((LavaDECL*)chpParmDef->data)->WorkFlags.EXCL(isReferenced);
+    ((LavaDECL*)chpParmDef->data)->WorkFlags.EXCL(isIgnored);
     harmonize(ckd,inputs,chpParmDef,chpParmRef,isInputVar);
-    tdod = (TDOD*)((CHE*)((ObjReference*)((FormParm*)chpParmRef->data)->formParm.ptr)->refIDs.first)->data;
-    parmDecl = ckd.document->IDTable.GetDECL(tdod->ID,ckd.inINCL);
-    parmDecl->WorkFlags.EXCL(isReferenced);
-    parmDecl->WorkFlags.EXCL(isIgnored);
     chpParmDef = (CHE*)chpParmDef->successor;
   }
 //#endif
