@@ -281,6 +281,7 @@ QString ERR_NoHandlerIO;
 QString ERR_IgnoreInputsOnly;
 QString ERR_IgnoreMandatoryOnly;
 QString ERR_RefToIgnored;
+QString ERR_AlreadyIgnored;
 
 void LavaBaseStringInit() {
   IDS_LAVACOM_FILE  = QObject::tr("Lava component file (*.lcom) defining the type of a lava component object");
@@ -527,4 +528,5 @@ void LavaBaseStringInit() {
   ERR_IgnoreMandatoryOnly = QObject::tr("Only *mandatory* inputs may be ignored (and must be ignored if not used)");
   ERR_IgnoreInputsOnly = QObject::tr("Only input parameters may be ignored (and must be ignored if mandatory but not used)");
   ERR_RefToIgnored = QObject::tr("Expressly ignored mandatory input parameters must not be referenced");
+  ERR_AlreadyIgnored = QObject::tr("Is already ignored!");
 }

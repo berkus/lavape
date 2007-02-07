@@ -256,6 +256,7 @@ extern LAVABASE_DLL QString ERR_NoHandlerIO;
 extern LAVABASE_DLL QString ERR_IgnoreInputsOnly;
 extern LAVABASE_DLL QString ERR_IgnoreMandatoryOnly;
 extern LAVABASE_DLL QString ERR_RefToIgnored;
+extern LAVABASE_DLL QString ERR_AlreadyIgnored;
 
 extern void LavaBaseStringInit();
 

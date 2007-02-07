@@ -1020,12 +1020,13 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         ERROREXIT
       }
       if (decl->DeclType == IAttr) {
-        if (decl->WorkFlags.Contains(isIgnored)) {
+        if (decl->WorkFlags.Contains(isIgnored)
+        && parentObject->primaryToken != ignore_T) {
           tdod->SetError(ckd,&ERR_RefToIgnored);
-          ERROREXIT
+          //ERROREXIT
         }
-        else
-          decl->WorkFlags.INCL(isReferenced);
+        //else
+        decl->WorkFlags.INCL(isReferenced);
       }
       objRef->refName.Reset(0);
       if (decl->TypeFlags.Contains(isOptional)) {
@@ -5654,9 +5655,9 @@ bool AssertStatement::Check (CheckData &ckd)
 
 bool IgnoreStatement::Check (CheckData &ckd)
 {
-  CHE *chp;
-  SynObject *opd;
-  ObjReference *obj;
+  CHE *chp, *prevChp;
+  SynObject *opd, *opd1;
+  ObjReference *obj, *prevObj;
 
   ENTRY
   for (chp = (CHE*)igVars.first;
@@ -5674,8 +5675,22 @@ bool IgnoreStatement::Check (CheckData &ckd)
         obj->SetError(ckd,&ERR_IgnoreMandatoryOnly);
         ERROREXIT
       }
-      else
-        ((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->WorkFlags.INCL(isIgnored);
+      for (prevChp = (CHE*)igVars.first;
+           prevChp != chp;
+           prevChp = (CHE*)chp->successor) {
+        opd1 = (SynObject*)prevChp->data;
+        if (opd1->primaryToken == ObjRef_T) {
+          prevObj = (ObjReference*)opd1;
+          if (prevObj->refIDs.first == prevObj->refIDs.last
+            && ((TDOD*)((CHE*)prevObj->refIDs.first)->data)->ID == ((TDOD*)((CHE*)obj->refIDs.first)->data)->ID) {
+            obj->SetError(ckd,&ERR_AlreadyIgnored);
+            ok = false;
+            break;
+          }
+        }
+      }
+
+      ((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->WorkFlags.INCL(isIgnored);
     }
   }
   EXIT

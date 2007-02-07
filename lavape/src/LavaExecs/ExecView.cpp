@@ -4958,7 +4958,6 @@ void CExecView::OnInsertObjRef (QString &refName, TDODC &refIDs, bool append)
   ObjReference *newRef, *oldRef;
   CHE *chp;
   CHAINX *chx;
-  const char *name=refName.toAscii();
 
   if (append) {
     chx = text->currentSynObj->containingChain;
@@ -4980,7 +4979,7 @@ void CExecView::OnInsertObjRef (QString &refName, TDODC &refIDs, bool append)
     text->currentSynObj = text->currentSynObj->parentObject;
   }
   else {
-    newRef = new ObjReferenceV(refIDs,name);
+    newRef = new ObjReferenceV(refIDs,qPrintable(refName));
     if (text->currentSynObj->type == TDOD_T)
       text->currentSynObj = text->currentSynObj->parentObject;
     newRef->replacedType = text->currentSynObj->type;

@@ -739,6 +739,9 @@ void Draw (MultipleOp *self,CProgTextBase &t,address where,CHAINX *chxp,bool ign
           else if (!self->primaryTokenNode)
             self->primaryTokenNode = ((SynObject*)pred->data)->primaryTokenNode;
         }
+      if (isFirst && opd1->primaryToken == ignore_T)
+				t.NewLine();
+
       isFirst = false;
     }
     DRAWCHE(opdPtr,&self->operands);
