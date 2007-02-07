@@ -722,7 +722,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
         code("')\"");
       }
     }
-    else if (pnode->TypeFlags.Contains(isGUI)) {
+    else if (pnode->SecondTFlags.Contains(isGUI)) {
       code("<IMG SRC=\"LavaIcons/formint.png\"");
       if (chp) {
         code(" ALT=\"\" TITLE=\"click to hide/show details\" STYLE=\"cursor:pointer\" ONCLICK=\"toggleDisplay('S");
@@ -757,7 +757,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     else if (pnode->DeclDescType == EnumType)
       code("<B>enumeration</B>");
     else {
-      if (pnode->TypeFlags.Contains(isGUI)) {
+      if (pnode->SecondTFlags.Contains(isGUI)) {
         code("<B>GUI service for </B>");
         PutLink(&GetDocument()->IDTable,pnode->RefID,singleFile);
       }
@@ -864,7 +864,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     code("\"></A>");
     PutComment(pnode0,false,false);
     chp = (CHE*)pnode->NestedDecls.first;
-    if (pnode->TypeFlags.Contains(isGUI))
+    if (pnode->SecondTFlags.Contains(isGUI))
       code("<IMG SRC=\"LavaIcons/formimpl.png\"");
     else
       code("<IMG SRC=\"LavaIcons/classimpl.png\"");
@@ -876,7 +876,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     code(">\n");
     PutComment(pnode0,false,true);
     code("<B>implementation of ");
-    if (pnode->TypeFlags.Contains(isGUI))
+    if (pnode->SecondTFlags.Contains(isGUI))
       code("GUI service </B>");
     else
       code("</B>");
@@ -891,7 +891,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     }
     PutComment(pnode0,true,true);
     PutComment(pnode0,true,false);
-    if (chp && (!pnode->TypeFlags.Contains(isGUI) || chp->successor)) {
+    if (chp && (!pnode->SecondTFlags.Contains(isGUI) || chp->successor)) {
       codeDIVid(pnode->OwnID);
       while (chp) {
         GenHTML((LavaDECL*)chp->data,localCategory,firstChild);
@@ -931,7 +931,7 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     break;
 
   case FormDef:
-/*    if (pnode->ParentDECL->TypeFlags.Contains(isGUI))
+/*    if (pnode->ParentDECL->SecondTFlags.Contains(isGUI))
       break;
     myCategory = IsDef;
     PutCategory(myCategory,parentCategory,fstChild);

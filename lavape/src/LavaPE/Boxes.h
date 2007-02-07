@@ -455,7 +455,7 @@ public:
   QString valNewName;
   QString valIfaceID;
   QString valGUIStruct;
-  bool  valIsGUI;
+  //bool  valIsGUI;
   bool  valBuildSet;
   int   valKindOfInterface;
 
@@ -468,8 +468,8 @@ public slots:
     virtual void on_IsComponent_clicked();
     virtual void on_NonCreatable_clicked();
     virtual void on_Creatable_clicked();
-    virtual void on_IsGUI_clicked();
-    virtual void on_GUIStructs_activated( int );
+    //virtual void on_IsGUI_clicked();
+    //virtual void on_GUIStructs_activated( int );
     virtual void on_ID_OK_clicked();
     virtual void on_ID_CANCEL_clicked() {reject();}
     virtual void reject();

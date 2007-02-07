@@ -56,7 +56,7 @@ public:
   virtual bool MakeFormVT(LavaDECL *decl, CheckData* pckd = 0);
   virtual int MakeFunc(LavaDECL* decl, bool otherDoc, QWidget* parent);
   LavaDECL* MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, LavaDECL* guiInterface=0);
-  void MakeGUIFuncs(LavaDECL* guiInterface);
+  //void MakeGUIFuncs(LavaDECL* guiInterface);
   void MakeIniFunc(LavaDECL* ifDECL);
   void MakeOperator(LavaDECL* opDecl);
   LavaDECL* MakeSet(const TID& setID, LavaDECL* decl=0);

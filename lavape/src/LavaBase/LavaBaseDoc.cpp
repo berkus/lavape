@@ -791,7 +791,7 @@ QString* CLavaBaseDoc::CheckScope(LavaDECL* elDef)
   if (!elDef)
     return 0;
   if ((elDef->DeclType == VirtualType)
-      || (elDef->DeclType == Interface) && elDef->TypeFlags.Contains(isGUI)
+      || (elDef->DeclType == Interface) && elDef->SecondTFlags.Contains(isGUI)
       || (elDef->DeclType == Attr)
       || (elDef->DeclType == IAttr)
       || (elDef->DeclType == OAttr)) {
@@ -986,7 +986,7 @@ QString* CLavaBaseDoc::TypeForMem(LavaDECL* memdecl, LavaDECL* typeDECL, CheckDa
       return &ERR_VTOutOfScope;
   }
   else {
-    if (memdecl->TypeFlags.Contains(isGUI))
+    if (memdecl->SecondTFlags.Contains(isGUI))
       return 0;
     if (IDTable.lowerOContext(par, typeDECL, sameContext))
       if (IDTable.isValOfVirtual(typeDECL))
@@ -1378,7 +1378,13 @@ int CLavaBaseDoc::CheckHandlerIO(LavaDECL* funcDECL, LavaDECL* ClientType)
   if (cheTIDs->data.last) {
     while (cheTIDs) {
       memDECL = IDTable.GetDECL(((CHETID*)cheTIDs->data.last)->data, funcDECL->inINCL);
+      if (!memDECL)
+        return -1;
       decl = IDTable.GetDECL(memDECL->RefID, memDECL->inINCL);
+      if (!decl)
+        return -1;
+      if (decl->SecondTFlags.Contains(isGUI) || decl->DeclType == FormDef)
+        decl = IDTable.GetDECL(decl->RefID, decl->inINCL);
       if (typeDECL) {
         if (typeDECL != decl)
           return -1;
@@ -1391,7 +1397,7 @@ int CLavaBaseDoc::CheckHandlerIO(LavaDECL* funcDECL, LavaDECL* ClientType)
   else
     typeDECL = IDTable.GetDECL(funcDECL->ParentDECL->RefID, funcDECL->inINCL);
 
-  if (ClientType && (ClientType != typeDECL))
+  if (!typeDECL || (ClientType && (ClientType != typeDECL)))
     return -1;
   clientTypeID = TID(typeDECL->OwnID, typeDECL->inINCL);
   CHE* cheIO1 = (CHE*)funcDECL->NestedDecls.first;

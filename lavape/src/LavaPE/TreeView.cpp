@@ -196,7 +196,7 @@ void CTreeItem::setDropEnabled(bool enable)
   if (enable)
     setFlags(flags() | Qt::ItemIsDropEnabled);
   else
-    setFlags(flags() ^ Qt::ItemIsDropEnabled);
+    setFlags(flags() & ~Qt::ItemIsDropEnabled);
 }
 
 
@@ -205,7 +205,7 @@ void CTreeItem::setRenameEnabled(int col, bool enable)
   if (enable)
     setFlags(flags() | Qt::ItemIsEditable);
   else
-    setFlags(flags() ^ Qt::ItemIsEditable);
+    setFlags(flags() & ~Qt::ItemIsEditable);
 }
 
 bool CTreeItem::renameEnabled(int col)

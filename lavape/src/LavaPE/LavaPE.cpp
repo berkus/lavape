@@ -883,7 +883,7 @@ int CLavaPEBrowse::findAnyForm(LavaDECL * decl, TID& refID, SynDef *lavaCode)
   TID id;
   int rr = 0;
   if (defPDECL && ((defPDECL->DeclType == Interface))) {
-    if (defPDECL->TypeFlags.Contains(isGUI))
+    if (defPDECL->SecondTFlags.Contains(isGUI))
       return 1;
     id = TID(defPDECL->OwnID,0);
     //use any form if available
@@ -1447,7 +1447,7 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
   int pos;
   TID fromID, toID;
   int funcnID;
-  LavaDECL *fromDecl, *implDecl;
+  LavaDECL *fromDecl, *implDECL;
 
   if (decl->DeclType == Initiator) {
     if (decl->inINCL > 0) {
@@ -1458,9 +1458,9 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
     else
       doc = (CLavaPEDoc*)fromDoc;
     if (doc) {
-      implDecl = doc->IDTable.GetDECL(0,decl->OwnID);
-      if (implDecl) {
-        ((CLavaPEDoc*)doc)->OpenExecView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
+      implDECL = doc->IDTable.GetDECL(0,decl->OwnID);
+      if (implDECL) {
+        ((CLavaPEDoc*)doc)->OpenExecView((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data);
         return true;
       }
     }
@@ -1483,17 +1483,17 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
   if (toID.nID >= 0) {
     fromDecl = ((CLavaPEDoc*)fromDoc)->IDTable.GetDECL(fromID);
     if (funcnID > 0) {
-      implDecl = ((CLavaPEDoc*)fromDoc)->IDTable.GetDECL(toID);
-      if (implDecl->TypeFlags.Contains(isPropSet) || implDecl->TypeFlags.Contains(isPropGet))
-        implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID);
+      implDECL = ((CLavaPEDoc*)fromDoc)->IDTable.GetDECL(toID);
+      if (implDECL->TypeFlags.Contains(isPropSet) || implDECL->TypeFlags.Contains(isPropGet))
+        implDECL = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID);
       else
         if (toID.nINCL)
-          implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID, 0, true);
+          implDECL = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID, 0, true);
         else
-          ((CLavaPEDoc*)fromDoc)->OpenExecView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
+          ((CLavaPEDoc*)fromDoc)->OpenExecView((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data);
     }
     else
-      implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID);
+      implDECL = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(fromDoc, toID);
     return true;
   }
   fromAbsName = ((CLavaPEDoc*)fromDoc)->IDTable.IDTab[decl->inINCL]->FileName;
@@ -1521,17 +1521,17 @@ bool CLavaPEBrowse::GotoImpl(wxDocument* fromDoc, LavaDECL* decl)
         if (toID.nID >= 0) {
           fromDecl = doc->IDTable.GetDECL(fromID);
           if (funcnID > 0) {
-            implDecl = doc->IDTable.GetDECL(toID);
-            if (implDecl->TypeFlags.Contains(isPropGet) || implDecl->TypeFlags.Contains(isPropGet))
-              implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID);
+            implDECL = doc->IDTable.GetDECL(toID);
+            if (implDECL->TypeFlags.Contains(isPropGet) || implDECL->TypeFlags.Contains(isPropGet))
+              implDECL = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID);
             else
               if (toID.nINCL)
-                implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID, 0, true);
+                implDECL = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID, 0, true);
               else
-                doc->OpenExecView((LavaDECL*)((CHE*)implDecl->NestedDecls.last)->data);
+                doc->OpenExecView((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data);
           }
           else
-            implDecl = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID);
+            implDECL = ((CLavaPEApp*)wxTheApp)->Browser.BrowseDECL(doc, toID);
           return true;
         }
       }

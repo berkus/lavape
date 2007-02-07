@@ -498,7 +498,7 @@ void CChainFormPage::UpdateData(bool getData)
 CChainFormPage::CChainFormPage(CLavaPEWizard* wizard)
  : Ui_IDD_ChainFormPage()
 {
-  LavaDECL *formDecl, *classDecl;
+  LavaDECL *formDECL, *classDECL;
   TAnnotation* anno;
   bool noElli, isAr;
 
@@ -545,42 +545,42 @@ CChainFormPage::CChainFormPage(CLavaPEWizard* wizard)
     CHEEl = ((TIteration*)myWizard->FormDECL->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr;
   else
     return;
-  classDecl = myWizard->myDoc->IDTable.GetDECL(((CHETID*)myWizard->FormDECL->Supports.first)->data, myWizard->FormDECL->inINCL);
-  QString* err = myWizard->myDoc->CheckFormEl(myWizard->FormDECL, classDecl);
+  classDECL = myWizard->myDoc->IDTable.GetDECL(((CHETID*)myWizard->FormDECL->Supports.first)->data, myWizard->FormDECL->inINCL);
+  QString* err = myWizard->myDoc->CheckFormEl(myWizard->FormDECL, classDECL);
   if (err && (err != &ERR_InvisibleType)) {
-    formDecl = classDecl;
+    formDECL = classDECL;
     ((TIteration*)myWizard->FormDECL->Annotation.ptr->IterOrig.ptr)->IteratedExpr.Destroy();
     CHEEl = NewLavaDECL();
     ((TIteration*)myWizard->FormDECL->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr = CHEEl;
-    CHEEl->DeclDescType = classDecl->DeclDescType;
-    CHEEl->BType = classDecl->BType;
-    CHEEl->SecondTFlags = classDecl->SecondTFlags;
+    CHEEl->DeclDescType = classDECL->DeclDescType;
+    CHEEl->BType = classDECL->BType;
+    CHEEl->SecondTFlags = classDECL->SecondTFlags;
     CHEEl->DeclType = PatternDef; //not VirtualType
-    myWizard->FormDECL->DeclDescType = classDecl->DeclDescType;
-    myWizard->FormDECL->BType = classDecl->BType;
-    myWizard->FormDECL->DeclType = classDecl->DeclType;
-    CHEEl->RefID = TID(classDecl->RefID.nID, myWizard->myDoc->IDTable.IDTab[classDecl->inINCL]->nINCLTrans[classDecl->RefID.nINCL].nINCL);
+    myWizard->FormDECL->DeclDescType = classDECL->DeclDescType;
+    myWizard->FormDECL->BType = classDECL->BType;
+    myWizard->FormDECL->DeclType = classDECL->DeclType;
+    CHEEl->RefID = TID(classDECL->RefID.nID, myWizard->myDoc->IDTable.IDTab[classDECL->inINCL]->nINCLTrans[classDECL->RefID.nINCL].nINCL);
     CHEEl->Annotation.ptr = new TAnnotation;
     CHEEl->Annotation.ptr->FA.ptr = new TAnnotation;
     CHEEl->Annotation.ptr->FrameSpacing = 1;
   }
-  for (formDecl = CHEEl;
-       formDecl && (formDecl->DeclDescType != BasicType)
-            && ((formDecl->DeclType == VirtualType) || (formDecl->DeclType == PatternDef));
-       formDecl = myWizard->myDoc->IDTable.GetDECL(formDecl->RefID, formDecl->inINCL));
-  if (formDecl) {
-    if (formDecl->DeclDescType == BasicType) {
+  for (formDECL = CHEEl;
+       formDECL && (formDECL->DeclDescType != BasicType)
+            && ((formDECL->DeclType == VirtualType) || (formDECL->DeclType == PatternDef));
+       formDECL = myWizard->myDoc->IDTable.GetDECL(formDECL->RefID, formDECL->inINCL));
+  if (formDECL) {
+    if (formDECL->DeclDescType == BasicType) {
       CHEEl->DeclDescType = BasicType;
-      CHEEl->BType = formDecl->BType;
-      CHEEl->RefID = formDecl->RefID;
+      CHEEl->BType = formDECL->BType;
+      CHEEl->RefID = formDECL->RefID;
       m_ChFormElemStr = QString(myWizard->myDoc->GetTypeLabel(CHEEl, false).c);
     }
     else {
-      if (formDecl->DeclType == FormDef)
-        m_ChFormElemStr = QString(formDecl->ParentDECL->LocalName.c);
+      if (formDECL->DeclType == FormDef)
+        m_ChFormElemStr = QString(formDECL->ParentDECL->LocalName.c);
       else
-          m_ChFormElemStr = QString(formDecl->LocalName.c);
-      CExecLike * execLike = new CExecLike(myWizard->myDoc, ChElemFormTypes, formDecl);
+          m_ChFormElemStr = QString(formDECL->LocalName.c);
+      CExecLike * execLike = new CExecLike(myWizard->myDoc, ChElemFormTypes, formDECL);
       delete execLike;
     }
   }
@@ -950,7 +950,7 @@ CGeneralPage::CGeneralPage(CLavaPEWizard *wizard)
 : Ui_IDD_GeneralPage()
 {
   DString dstr;
-  LavaDECL *classDecl, *decl=0;
+  LavaDECL *classDECL, *decl=0;
 
   setupUi(this);
   myWizard = wizard;
@@ -958,9 +958,9 @@ CGeneralPage::CGeneralPage(CLavaPEWizard *wizard)
   NewName->setText(myWizard->FormDECL->LocalName.c);
   dstr = myWizard->myDoc->GetTypeLabel(myWizard->FormDECL, false);
   m_NewType = QString(dstr.c);
-  classDecl = myWizard->myDoc->IDTable.GetDECL(((CHETID*)myWizard->FormDECL->Supports.first)->data, myWizard->FormDECL->inINCL);
-  if (classDecl)
-    decl = myWizard->myDoc->IDTable.GetDECL(classDecl->RefID, classDecl->inINCL);
+  classDECL = myWizard->myDoc->IDTable.GetDECL(((CHETID*)myWizard->FormDECL->Supports.first)->data, myWizard->FormDECL->inINCL);
+  if (classDECL)
+    decl = myWizard->myDoc->IDTable.GetDECL(classDECL->RefID, classDECL->inINCL);
 
   if (decl) {
     for (; decl && (decl->DeclType == VirtualType); decl = myWizard->myDoc->IDTable.GetDECL(decl->RefID, decl->inINCL));
@@ -3053,20 +3053,20 @@ CSupportPage::CSupportPage(CLavaPEWizard* wizard)
   myWizard = wizard;
   Name->setText(myWizard->FormDECL->LocalName.c);
   //v_Name = QString(myWizard->FormDECL->LocalName.c);
-  LavaDECL *classDecl, *fclassDECL/*, *baseClassDECL*/, *basefDECL;
+  LavaDECL *classDECL, *fclassDECL/*, *baseClassDECL*/, *basefDECL;
   CHETID *cheS;
   TIDTable *IDTab = &myWizard->myDoc->IDTable;
-  classDecl = myWizard->myDoc->IDTable.GetDECL(myWizard->FormDECL->RefID);
-  if (classDecl) {
-    //v_FormClass = QString(classDecl->LocalName.c);
-    FormsClass->setText(classDecl->LocalName.c);
+  classDECL = myWizard->myDoc->IDTable.GetDECL(myWizard->FormDECL->RefID);
+  if (classDECL) {
+    //v_FormClass = QString(classDECL->LocalName.c);
+    FormsClass->setText(classDECL->LocalName.c);
     cheS = (CHETID*)myWizard->FormDECL->ParentDECL->Supports.first;
     fclassDECL = IDTab->GetDECL(cheS->data);
     if (fclassDECL) {
       cheS = (CHETID*)fclassDECL->Supports.first;
       while (cheS) {//!!
         basefDECL = IDTab->GetFinalDef(cheS->data, fclassDECL->inINCL);
-        if (basefDECL && basefDECL->TypeFlags.Contains(isGUI)) {
+        if (basefDECL && basefDECL->SecondTFlags.Contains(isGUI) && (basefDECL->fromBType == NonBasic)) {
           if (IDTab->IsAnc(myWizard->FormDECL->RefID, 0, basefDECL->RefID, basefDECL->inINCL)) {
             item = new CListItem(basefDECL->LocalName, TID(basefDECL->OwnID, basefDECL->inINCL));
             Supports->addItem(item);
@@ -3115,7 +3115,7 @@ bool CExecLike::CheckSupports(LavaDECL *basedecl, LavaDECL *FormDECL)
   cheID = (CHETID*)base->Supports.first; //!
   while (cheID) {
     base = myDoc->IDTable.GetFinalDef(cheID->data, FormDECL->inINCL);
-    if (base->TypeFlags.Contains(isGUI))
+    if (base->SecondTFlags.Contains(isGUI) && (base->fromBType == NonBasic))
       return  myDoc->IDTable.EQEQ(basedecl->RefID, basedecl->inINCL, base->RefID, base->inINCL);
     cheID = (CHETID*)cheID->successor;
   }

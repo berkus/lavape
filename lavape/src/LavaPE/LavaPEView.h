@@ -57,7 +57,7 @@ enum TisOnWhat {  //CLavaPEWizard creation cause
   isOnFormProps
 };
 
-enum PMFlag {emptyPM, invariantPM};
+enum PMFlag {emptyPM, invariantPM, GUIPM, SetPM};
 
 
 class LavaSource: public QMimeData//Q3StoredDrag

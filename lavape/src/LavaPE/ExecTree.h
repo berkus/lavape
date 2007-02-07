@@ -41,6 +41,9 @@ public:
   void ExecEnum    (LavaDECL** inEl, DString name);
   void ExecEnumItem(CHEEnumSelId * enumsel, int level);
   void ExecStruct(LavaDECL ** pinEl, DString fieldID);
+  void ExecVT(LavaDECL *elDef, DString* lab);
+  void ExecFunc(LavaDECL *elDef, DString* lab);
+  void ExecInterface(LavaDECL *elDef, DString* lab);
   void AddExtends(LavaDECL* elDef, DString* lab);
   bool CalcPos(int level);
   void MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** pelDef);

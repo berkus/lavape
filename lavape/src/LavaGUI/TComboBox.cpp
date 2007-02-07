@@ -114,43 +114,48 @@ void CTComboBox::focusOutEvent(QFocusEvent *ev)
   QComboBox::focusOutEvent(ev);
 }
 
-void CTComboBox::contextMenuEvent(QContextMenuEvent* ev)
+void CTComboBox::mousePressEvent(QMouseEvent* ev)
 {
   QMenu *myMenu = 0;
   QAction* action;
   QString menuLabel;
-
-  if (LBaseData->inRuntime)
-    menuLabel = "Lava object";
-  else
-    menuLabel = "Lava";
-  GUIProg->ActNode = myFormNode;
-  if (hasMenu) {
-    myMenu = new QMenu(menuLabel, this);
-    myMenu->addAction(GUIProg->insActionPtr);
-    myMenu->addAction(GUIProg->delActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(GUIProg->delActionPtr);
-  }
-  if (!LBaseData->inRuntime && hasFuncMenu) {
-    if (!myMenu)
+  
+  if ((ev->type() == QEvent::MouseButtonPress) && (ev->button() == Qt::RightButton)) {
+    if (LBaseData->inRuntime)
+      menuLabel = "Lava object";
+    else
+      menuLabel = "Lava";
+    GUIProg->ActNode = myFormNode;
+    if (hasMenu) {
       myMenu = new QMenu(menuLabel, this);
-    myMenu->addAction(GUIProg->newHandlerActionPtr);
-    myMenu->addAction(GUIProg->attachHandlerActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateNewHandler(GUIProg->newHandlerActionPtr);
-    ((CGUIProg*)GUIProg)->OnUpdateAttachHandler(GUIProg->attachHandlerActionPtr);
+      myMenu->addAction(GUIProg->insActionPtr);
+      myMenu->addAction(GUIProg->delActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateInsertopt(GUIProg->insActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateDeleteopt(GUIProg->delActionPtr);
+    }
+    if (!LBaseData->inRuntime && hasFuncMenu) {
+      if (!myMenu)
+        myMenu = new QMenu(menuLabel, this);
+      myMenu->addAction(GUIProg->newHandlerActionPtr);
+      myMenu->addAction(GUIProg->attachHandlerActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateNewHandler(GUIProg->newHandlerActionPtr);
+      ((CGUIProg*)GUIProg)->OnUpdateAttachHandler(GUIProg->attachHandlerActionPtr);
+    }
+    if (myMenu) {
+      action = myMenu->exec(ev->globalPos());
+      delete myMenu;
+      if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
+        ((CGUIProg*)GUIProg)->ExecuteChainAction(action);
+      else if (action == GUIProg->newHandlerActionPtr)
+        ((CGUIProg*)GUIProg)->OnNewHandler();
+      else if (action == GUIProg->attachHandlerActionPtr)
+        ((CGUIProg*)GUIProg)->OnAttachHandler();
+    }
   }
-  if (myMenu) {
-    action = myMenu->exec(ev->globalPos());
-    delete myMenu;
-    if ((action == GUIProg->insActionPtr) || (action == GUIProg->delActionPtr))
-      ((CGUIProg*)GUIProg)->ExecuteChainAction(action);
-    else if (action == GUIProg->newHandlerActionPtr)
-      ((CGUIProg*)GUIProg)->OnNewHandler();
-    else if (action == GUIProg->attachHandlerActionPtr)
-      ((CGUIProg*)GUIProg)->OnAttachHandler();
-  }
-}
+  else
+    if (GUIProg->isView && 
+      (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
+      wxDocManager::GetDocumentManager()->SetActiveView((wxView*)GUIProg->ViewWin);}
 
 void CTComboBox::OnSelendok(int sel) 
 {

@@ -47,13 +47,13 @@
 
 #define CHECKIMPL(FUNCDECL) \
   if (FUNCDECL->DeclType == Function) \
-    classDecl = FUNCDECL->ParentDECL; \
+    classDECL = FUNCDECL->ParentDECL; \
   else \
-    classDecl = FUNCDECL; \
-  if (classDecl->DeclType == Impl) \
-    classDecl = myDoc->IDTable.GetDECL(((CHETID*)classDecl->Supports.first)->data, classDecl->inINCL); \
-  if (classDecl->DeclType == Interface) \
-    myDoc->CheckImpl(ckd, classDecl);
+    classDECL = FUNCDECL; \
+  if (classDECL->DeclType == Impl) \
+    classDECL = myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL); \
+  if (classDECL->DeclType == Interface) \
+    myDoc->CheckImpl(ckd, classDECL);
 
 
 
@@ -301,7 +301,7 @@ void CLavaDebugger::stop(DbgExitReason reason) {
 void CLavaDebugger::setBrkPnts()
 {
   CHEProgPoint *chePP, *chePPnew, *rmPP;
-  LavaDECL *funcDecl, *execDecl, *classDecl;
+  LavaDECL *funcDecl, *execDecl, *classDECL;
   CSearchData sData;
   CheckData ckd;
 

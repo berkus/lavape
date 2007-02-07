@@ -36,7 +36,7 @@ protected: // Nur aus Serialisierung erzeugen
   bool CheckNamesp(CheckData& ckd, LavaDECL* nspDECL);
   bool CheckContext(CheckData& ckd, const CContext& con);
   bool CheckFuncImpl(CheckData& ckd, LavaDECL* funcDECL, LavaDECL* classFuncDECL);
-  bool CheckSetAndGets(CheckData& ckd, LavaDECL* implDECL, LavaDECL* classDecl);
+  bool CheckSetAndGets(CheckData& ckd, LavaDECL* implDECL, LavaDECL* classDECL);
   bool CheckOneSetGet(CheckData& ckd, TypeFlag setgetflag, LavaDECL* implDECL, LavaDECL* propDecl);
   bool CheckVElems(CheckData& ckd, LavaDECL *classDECL, bool fromNsp, DWORD /*TAdapterFunc**/ funcAdapter, LavaDECL* specDECL);
   bool AddVElems(CheckData& ckd, LavaDECL *classDECL, LavaDECL* baseDECL);
@@ -72,8 +72,10 @@ public:
   void HCatch(CheckData& ckd);
 };
 
-extern LAVAEXECS_DLL bool ShowFuncEdit(CheckData& ckd, LavaVariablePtr stack);
-extern LAVAEXECS_DLL bool ShowFuncFillIn(CheckData& ckd, LavaVariablePtr stack);
+extern LAVAEXECS_DLL bool GUIEdit(CheckData& ckd, LavaVariablePtr stack);
+extern LAVAEXECS_DLL bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack);
+extern LAVAEXECS_DLL bool GUIData(CheckData& ckd, LavaVariablePtr stack);
+
 extern LAVAEXECS_DLL unsigned ExecuteLava(CLavaBaseDoc *doc );
 
 extern LAVAEXECS_DLL void sigEnable();

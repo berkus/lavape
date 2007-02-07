@@ -128,14 +128,9 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
   LavaDECL *decl, *decl2, *elDef = *pelDef;
   QString* errCode;
   int bm=0;
-  DString lName, lab1, lab = elDef->LocalName;
-  QString cstr;
-  bool hasErr;
-  TID IOid;
-  SynFlags typeFlags;
-  TreeFlag secNode = DefsExpanded;
-  CHETID *cheImpl, *nextImpl, *cheTID;
-  CHETIDs *cheTIDs;
+  DString lab1, lab = elDef->LocalName;
+  SynFlags PMFlags;
+  CHETID *cheImpl, *nextImpl;
 
   if (FinalUpdate) {
     elDef->DECLError1.Destroy();
@@ -150,197 +145,12 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
   switch (elDef->DeclType) {
 
   case VirtualType:
-    if (elDef->ParentDECL->DeclType != FormDef) {
-      elDef->WorkFlags.INCL(isPartOfPattern);
-      errCode = Doc->CheckScope(elDef);
-      if (errCode)
-        new CLavaError(&elDef->DECLError1, errCode);
-    }
-    typeFlags = elDef->TypeFlags;
-    Doc->GetCategoryFlags(elDef, hasErr);
-    if (hasErr)
-      new CLavaError(&elDef->DECLError1, &ERR_IncompatibleCategory);
-    if ((typeFlags != elDef->TypeFlags) && (checkLevel != CHLV_fit)) {
-      elDef->TypeFlags = typeFlags;
-      new CLavaError(&elDef->DECLError1, &ERR_OverriddenDiffs);
-    }
-    if (elDef->TypeFlags.Contains(isAbstract)) {
-      if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract)
-          && (elDef->ParentDECL->DeclType != Package))
-        new CLavaError(&elDef->DECLError1, &ERR_NoAbstract);
-      if (elDef->TypeFlags.Contains(stateObject))
-        lab += DString("~");
-      else if (elDef->TypeFlags.Contains(isAnyCategory))
-        lab += DString("*");
-    }
-    else {
-      lab += DString(" = ");
-      if (elDef->TypeFlags.Contains(substitutable))
-        lab += DString("{");
-      if (elDef->TypeFlags.Contains(stateObject))
-        lab += DString("~");
-      else if (elDef->TypeFlags.Contains(isAnyCategory))
-        lab += DString("*");
-      if (elDef->DeclDescType == NamedType) {
-        decl2 = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
-        if (decl2) {
-          lab += Doc->GetTypeLabel(elDef, true);
-          if (errCode = Doc->TestValOfVirtual(elDef, decl2))
-            new CLavaError(&elDef->DECLError1, errCode);
-        }
-        else {
-          lab += DString("??");
-          new CLavaError(&elDef->DECLError1, &ERR_NoRefType);
-        }
-      }
-      else
-        lab += Doc->GetTypeLabel(elDef, true);
-      if (elDef->TypeFlags.Contains(substitutable))
-        lab += DString("}");
-    }
-    if (errCode = Doc->CommonContext(elDef))
-      new CLavaError(&elDef->DECLError1, errCode);
-    secNode = ParaExpanded;
+    ExecVT(elDef, &lab);
+
     break;
   case Function:
-    if (checkLevel != CHLV_noCheck) {
-      errCode = Doc->CheckException(elDef, 0);
-      if (errCode)
-        new CLavaError(&elDef->DECLError1, errCode);
-    }
-    decl = elDef;
-    if (decl->Supports.first && (decl->DeclType == Function))
-      if (elDef->ParentDECL->DeclType == Impl)
-        decl = Doc->IDTable.GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL);
-      else
-        while (decl && decl->Supports.first && (decl->DeclType == Function))
-          decl = Doc->IDTable.GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL);
-    if (decl) {
-      if (decl != elDef) {
-        TID id1 = TID(elDef->ParentDECL->OwnID, 0);
-        TID id2 = TID(decl->ParentDECL->OwnID, decl->inINCL);
-        if (Doc->IDTable.IsAn(id1,0,id2,0)) {
-          if (elDef->TypeFlags.Contains(isPropGet) || elDef->TypeFlags.Contains(isPropSet)) {
-            if (elDef->TypeFlags.Contains(isPropGet))
-              elDef->LocalName = DString("Get_") + decl->LocalName;
-            else
-              elDef->LocalName = DString("Set_") + decl->LocalName;
-            if (!decl->TypeFlags.Contains(hasSetGet))
-              new CLavaError(&elDef->DECLError1, &ERR_NoSetGetMember);
+    ExecFunc(elDef, &lab);
 
-            IOid = TID(((LavaDECL*)((CHE*)elDef->NestedDecls.first)->data)->OwnID, 0);
-            ((CLavaPEApp*)wxTheApp)->ExecUpdate.MakeSetGet(Doc, Doc->GetExecDECL(*pelDef,ExecDef,true,false),
-                                           ((CHETID*)elDef->Supports.first)->data, IOid);
-          }
-          else {
-            if (!elDef->SecondTFlags.Contains(enableName))
-              elDef->LocalName = decl->LocalName;
-            elDef->op = decl->op;
-          }
-          if (lab != elDef->LocalName) {
-            lab = elDef->LocalName;
-            Doc->changeInUpdate = true;
-          }
-          elDef->FullName = elDef->ParentDECL->FullName + ddppkt + elDef->LocalName;
-        }
-        else
-          if (elDef->SecondTFlags.Contains(overrides))
-            new CLavaError(&elDef->DECLError1, &ERR_NoOverridden);
-          else
-            new CLavaError(&elDef->DECLError1, &ERR_MissingFuncDecl);
-
-      }
-    }
-    if (elDef->SecondTFlags.Contains(funcImpl)) {
-      if (elDef->TypeFlags.Contains(isProtected))
-        lab1 += DString("protected ");
-      if (elDef->TypeFlags.Contains(isStatic))
-        lab1 += DString("static ");
-      else {
-        if (elDef->TypeFlags.Contains(isConst))
-          lab1 += DString("read-only ");
-        if (elDef->SecondTFlags.Contains(closed))
-          lab1 += DString("closed-self ");
-        if (elDef->TypeFlags.Contains(defaultInitializer))
-          lab1 += DString("default ");
-        if (elDef->TypeFlags.Contains(isInitializer))
-          lab1 += DString("initializer ");
-      }
-      if (elDef->TypeFlags.Contains(isPropGet))
-        lab1 += DString("attribute get function");
-      else
-        if (elDef->TypeFlags.Contains(isPropSet))
-          lab1 += DString("attribute set function");
-        else
-          if (elDef->op == OP_noOp)
-            lab1 += DString("function");
-      decl = Doc->IDTable.GetDECL(((CHETID*)elDef->Supports.first)->data, elDef->inINCL);
-      if (decl && decl->TypeFlags.Contains(isAbstract))
-        new CLavaError(&elDef->DECLError1, &ERR_ImplOfAbstract, 0, useAutoBox);
-      if (decl && decl->TypeFlags.Contains(isNative))
-        new CLavaError(&elDef->DECLError1, &ERR_NoImplForAbstract, 0, useAutoBox);
-    }
-    else {
-      if (checkLevel != CHLV_noCheck) {
-        bool changed = Doc->CheckOverInOut(elDef, checkLevel);
-        Doc->changeInUpdate = Doc->changeInUpdate || changed;
-      }
-      if (elDef->SecondTFlags.Contains(isLavaSignal))
-        lab1 += DString("signal");
-      else {
-        if (elDef->TypeFlags.Contains(isNative))
-          lab1 += DString("native ");
-        if (elDef->TypeFlags.Contains(isAbstract)) {
-          lab1 += DString("abstract ");
-          if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract))
-            new CLavaError(&elDef->DECLError1, &ERR_NoAbstract, 0, useAutoBox);
-        }
-        if (elDef->TypeFlags.Contains(isProtected))
-          lab1 += DString("protected ");
-        if (elDef->ParentDECL->DeclType == Impl)
-          lab1 += DString("private ");
-        if (elDef->TypeFlags.Contains(isStatic))
-          lab1 += DString("static ");
-        else {
-          if (elDef->TypeFlags.Contains(isConst))
-            lab1 += DString("read-only ");
-          if (elDef->SecondTFlags.Contains(closed))
-            lab1 += DString("closed-self ");
-        }
-        if (elDef->TypeFlags.Contains(defaultInitializer)) {
-          if ((elDef->ParentDECL->DeclType == Interface)
-              && elDef->ParentDECL->WorkFlags.Contains(hasDefaultIni))
-            new CLavaError(&elDef->DECLError1, &ERR_SecondDefaultIni);
-          elDef->ParentDECL->WorkFlags.INCL(hasDefaultIni);
-          lab1 += DString("default ");
-        }
-        if (elDef->TypeFlags.Contains(isInitializer))
-          lab1 += DString("initializer ");
-        if (elDef->op == OP_noOp)
-          lab1 += DString("function");
-      }
-    }
-    if (lab1.l) {
-      if (elDef->op == OP_noOp)
-        lab += DString(" := ");
-      else
-        lab += DString(" : ");
-      lab1[0] -= 'a'-'A';
-      lab = lab + lab1;
-    }
-    secNode = MemsExpanded;
-    hasErr = false;
-    cheTIDs = (CHETIDs*)elDef->HandlerClients.first;
-    while (cheTIDs && !hasErr) {
-      cheTID = (CHETID*)cheTIDs->data.first;
-      while (cheTID && !hasErr) {
-        hasErr = !Doc->IDTable.GetDECL(cheTID->data, elDef->inINCL);
-        if (hasErr)
-          new CLavaError(&elDef->DECLError1, &ERR_Broken_ref_in_HC);
-        cheTID = (CHETID*)cheTID->successor;
-      }
-      cheTIDs = (CHETIDs*)cheTIDs->successor;
-    }
     break;
   case Impl:
     elDef->WorkFlags.EXCL(hasDefaultIni);
@@ -349,7 +159,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
       new CLavaError(&elDef->DECLError1, errCode);
     if (checkLevel != CHLV_noCheck)
       Doc->CheckImpl(elDef, checkLevel);
-    if (elDef->TypeFlags.Contains(isGUI))
+    if (elDef->SecondTFlags.Contains(isGUI))
       lab = DString("GUI service implementation of ");
     else
       lab = DString("Implementation of ");
@@ -373,59 +183,7 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
     }
     break;
   case Interface:
-    elDef->WorkFlags.EXCL(hasDefaultIni);
-    if (elDef->NestedDecls.first
-      && (((LavaDECL*)((CHE*)elDef->NestedDecls.first)->data)->DeclType == VirtualType))
-      elDef->WorkFlags.INCL(isPattern);
-    else
-      elDef->WorkFlags.EXCL(isPattern);
-    if (elDef->ParentDECL->WorkFlags.Contains(isPartOfPattern) || elDef->ParentDECL->WorkFlags.Contains(isPattern))
-      elDef->WorkFlags.INCL(isPartOfPattern);
-    else
-      elDef->WorkFlags.EXCL(isPartOfPattern);
-    errCode = Doc->CheckScope(elDef);
-    if (errCode)
-      new CLavaError(&elDef->DECLError1, errCode);
-    if (elDef->WorkFlags.Contains(recalcVT)
-         || (checkLevel == CHLV_fit)) {
-      if (Doc->MakeVElems(elDef) )
-        elDef->WorkFlags.EXCL(recalcVT);
-      else
-        elDef->WorkFlags.INCL(recalcVT);
-    }
-    if (!elDef->WorkFlags.Contains(isPattern) && !Doc->okPattern(elDef))
-      new CLavaError(&elDef->DECLError1, &ERR_CommonContext);
-    lab += DString(" := ");
-    if (elDef->TypeFlags.Contains(isNative))
-      lab1 = DString("native ");
-    if (elDef->TypeFlags.Contains(isAbstract))
-      lab1 += DString("non-creatable ");
-    if (elDef->TypeFlags.Contains(thisComponent))
-      lab1 += DString("component assembly interface");
-    else
-      if (elDef->TypeFlags.Contains(isComponent))
-        lab1 += DString("component object interface");
-      else
-        if (elDef->TypeFlags.Contains(isGUI)) {
-          if (!Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL))
-            new CLavaError(&elDef->DECLError1, &ERR_NoIFforForm);
-          lab1 += DString("GUI service");
-        }
-        else
-          lab1 += DString("interface");
-    if (lab1[0] >= 'a')
-      lab1[0] -= 'a'-'A';
-    lab = lab + lab1;
-    cheImpl = (CHETID*)elDef->ImplIDs.first;
-    while (cheImpl) {
-      decl = Doc->IDTable.GetDECL(cheImpl->data);
-      nextImpl = (CHETID*)cheImpl->successor;
-      if (!decl)
-        elDef->ImplIDs.Delete(cheImpl);
-      cheImpl = nextImpl;
-    }
-    if (elDef->ImplIDs.first != elDef->ImplIDs.last)
-      new CLavaError(&elDef->DECLError1, &ERR_SecondImpl);
+    ExecInterface(elDef, &lab);
     break;
   case CompObjSpec:
     errCode = Doc->CheckScope(elDef);
@@ -519,11 +277,291 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
       else
         parent = getSectionNode(ParItem, Interface);
   if (!bm) {
-    bm = GetPixmap(false, false, elDef->DeclType, elDef->TypeFlags);
+    if (elDef->SecondTFlags.Contains(isGUI) &&
+      ((elDef->DeclType == Interface) || (elDef->DeclType == Impl)))
+      PMFlags.INCL(GUIPM);
+    else if (elDef->SecondTFlags.Contains(isSet) && (elDef->DeclType == Interface))
+      PMFlags.INCL(SetPM);
+    bm = GetPixmap(false, false, elDef->DeclType, PMFlags);
     if (elDef->DECLError1.first || elDef->DECLError2.first)
       Doc->hasErrorsInTree = true;
   }
   MakeItem(lab, bm, parent, pelDef);
+}
+
+void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
+{
+  LavaDECL *decl2;
+  QString* errCode;
+  int bm=0;
+  DString lab1;
+  bool hasErr;
+  SynFlags typeFlags;
+
+  if (elDef->ParentDECL->DeclType != FormDef) {
+    elDef->WorkFlags.INCL(isPartOfPattern);
+    errCode = Doc->CheckScope(elDef);
+    if (errCode)
+      new CLavaError(&elDef->DECLError1, errCode);
+  }
+  typeFlags = elDef->TypeFlags;
+  Doc->GetCategoryFlags(elDef, hasErr);
+  if (hasErr)
+    new CLavaError(&elDef->DECLError1, &ERR_IncompatibleCategory);
+  if ((typeFlags != elDef->TypeFlags) && (checkLevel != CHLV_fit)) {
+    elDef->TypeFlags = typeFlags;
+    new CLavaError(&elDef->DECLError1, &ERR_OverriddenDiffs);
+  }
+  if (elDef->TypeFlags.Contains(isAbstract)) {
+    if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract)
+        && (elDef->ParentDECL->DeclType != Package))
+      new CLavaError(&elDef->DECLError1, &ERR_NoAbstract);
+    if (elDef->TypeFlags.Contains(stateObject))
+      *lab += DString("~");
+    else if (elDef->TypeFlags.Contains(isAnyCategory))
+      *lab += DString("*");
+  }
+  else {
+    *lab += DString(" = ");
+    if (elDef->TypeFlags.Contains(substitutable))
+      *lab += DString("{");
+    if (elDef->TypeFlags.Contains(stateObject))
+      *lab += DString("~");
+    else if (elDef->TypeFlags.Contains(isAnyCategory))
+      *lab += DString("*");
+    if (elDef->DeclDescType == NamedType) {
+      decl2 = Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
+      if (decl2) {
+        *lab += Doc->GetTypeLabel(elDef, true);
+        if (errCode = Doc->TestValOfVirtual(elDef, decl2))
+          new CLavaError(&elDef->DECLError1, errCode);
+      }
+      else {
+        *lab += DString("??");
+        new CLavaError(&elDef->DECLError1, &ERR_NoRefType);
+      }
+    }
+    else
+      *lab += Doc->GetTypeLabel(elDef, true);
+    if (elDef->TypeFlags.Contains(substitutable))
+      *lab += DString("}");
+  }
+  if (errCode = Doc->CommonContext(elDef))
+    new CLavaError(&elDef->DECLError1, errCode);
+}
+
+void CExecTree::ExecFunc(LavaDECL *elDef, DString* lab)
+{
+  LavaDECL *decl;
+  QString* errCode;
+  DString lab1;
+  bool hasErr;
+  TID IOid;
+  CHETID *cheTID;
+  CHETIDs *cheTIDs;
+ 
+  if (checkLevel != CHLV_noCheck) {
+    errCode = Doc->CheckException(elDef, 0);
+    if (errCode)
+      new CLavaError(&elDef->DECLError1, errCode);
+  }
+  decl = elDef;
+  if (decl->Supports.first && (decl->DeclType == Function))
+    if (elDef->ParentDECL->DeclType == Impl)
+      decl = Doc->IDTable.GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL);
+    else
+      while (decl && decl->Supports.first && (decl->DeclType == Function))
+        decl = Doc->IDTable.GetDECL(((CHETID*)decl->Supports.first)->data, decl->inINCL);
+  if (decl) {
+    if (decl != elDef) {
+      TID id1 = TID(elDef->ParentDECL->OwnID, 0);
+      TID id2 = TID(decl->ParentDECL->OwnID, decl->inINCL);
+      if (Doc->IDTable.IsAn(id1,0,id2,0)) {
+        if (elDef->TypeFlags.Contains(isPropGet) || elDef->TypeFlags.Contains(isPropSet)) {
+          if (elDef->TypeFlags.Contains(isPropGet))
+            elDef->LocalName = DString("Get_") + decl->LocalName;
+          else
+            elDef->LocalName = DString("Set_") + decl->LocalName;
+          if (!decl->TypeFlags.Contains(hasSetGet))
+            new CLavaError(&elDef->DECLError1, &ERR_NoSetGetMember);
+
+          IOid = TID(((LavaDECL*)((CHE*)elDef->NestedDecls.first)->data)->OwnID, 0);
+          ((CLavaPEApp*)wxTheApp)->ExecUpdate.MakeSetGet(Doc, Doc->GetExecDECL(elDef,ExecDef,true,false),
+                                         ((CHETID*)elDef->Supports.first)->data, IOid);
+        }
+        else {
+          if (!elDef->SecondTFlags.Contains(enableName))
+            elDef->LocalName = decl->LocalName;
+          elDef->op = decl->op;
+        }
+        if (*lab != elDef->LocalName) {
+          *lab = elDef->LocalName;
+          Doc->changeInUpdate = true;
+        }
+        elDef->FullName = elDef->ParentDECL->FullName + ddppkt + elDef->LocalName;
+      }
+      else
+        if (elDef->SecondTFlags.Contains(overrides))
+          new CLavaError(&elDef->DECLError1, &ERR_NoOverridden);
+        else
+          new CLavaError(&elDef->DECLError1, &ERR_MissingFuncDecl);
+
+    }
+  }
+  if (elDef->SecondTFlags.Contains(funcImpl)) {
+    if (elDef->TypeFlags.Contains(isProtected))
+      lab1 += DString("protected ");
+    if (elDef->TypeFlags.Contains(isStatic))
+      lab1 += DString("static ");
+    else {
+      if (elDef->TypeFlags.Contains(isConst))
+        lab1 += DString("read-only ");
+      if (elDef->SecondTFlags.Contains(closed))
+        lab1 += DString("closed-self ");
+      if (elDef->TypeFlags.Contains(defaultInitializer))
+        lab1 += DString("default ");
+      if (elDef->TypeFlags.Contains(isInitializer))
+        lab1 += DString("initializer ");
+    }
+    if (elDef->TypeFlags.Contains(isPropGet))
+      lab1 += DString("attribute get function");
+    else
+      if (elDef->TypeFlags.Contains(isPropSet))
+        lab1 += DString("attribute set function");
+      else
+        if (elDef->op == OP_noOp)
+          lab1 += DString("function");
+    decl = Doc->IDTable.GetDECL(((CHETID*)elDef->Supports.first)->data, elDef->inINCL);
+    if (decl && decl->TypeFlags.Contains(isAbstract))
+      new CLavaError(&elDef->DECLError1, &ERR_ImplOfAbstract, 0, useAutoBox);
+    if (decl && decl->TypeFlags.Contains(isNative))
+      new CLavaError(&elDef->DECLError1, &ERR_NoImplForAbstract, 0, useAutoBox);
+  }
+  else {
+    if (checkLevel != CHLV_noCheck) {
+      bool changed = Doc->CheckOverInOut(elDef, checkLevel);
+      Doc->changeInUpdate = Doc->changeInUpdate || changed;
+    }
+    if (elDef->SecondTFlags.Contains(isLavaSignal))
+      lab1 += DString("signal");
+    else {
+      if (elDef->TypeFlags.Contains(isNative))
+        lab1 += DString("native ");
+      if (elDef->TypeFlags.Contains(isAbstract)) {
+        lab1 += DString("abstract ");
+        if (!elDef->ParentDECL->TypeFlags.Contains(isAbstract))
+          new CLavaError(&elDef->DECLError1, &ERR_NoAbstract, 0, useAutoBox);
+      }
+      if (elDef->TypeFlags.Contains(isProtected))
+        lab1 += DString("protected ");
+      if (elDef->ParentDECL->DeclType == Impl)
+        lab1 += DString("private ");
+      if (elDef->TypeFlags.Contains(isStatic))
+        lab1 += DString("static ");
+      else {
+        if (elDef->TypeFlags.Contains(isConst))
+          lab1 += DString("read-only ");
+        if (elDef->SecondTFlags.Contains(closed))
+          lab1 += DString("closed-self ");
+      }
+      if (elDef->TypeFlags.Contains(defaultInitializer)) {
+        if ((elDef->ParentDECL->DeclType == Interface)
+            && elDef->ParentDECL->WorkFlags.Contains(hasDefaultIni))
+          new CLavaError(&elDef->DECLError1, &ERR_SecondDefaultIni);
+        elDef->ParentDECL->WorkFlags.INCL(hasDefaultIni);
+        lab1 += DString("default ");
+      }
+      if (elDef->TypeFlags.Contains(isInitializer))
+        lab1 += DString("initializer ");
+      if (elDef->op == OP_noOp)
+        lab1 += DString("function");
+    }
+  }
+  if (lab1.l) {
+    if (elDef->op == OP_noOp)
+      *lab += DString(" := ");
+    else
+      *lab += DString(" : ");
+    lab1[0] -= 'a'-'A';
+    *lab = *lab + lab1;
+  }
+  hasErr = false;
+  cheTIDs = (CHETIDs*)elDef->HandlerClients.first;
+  while (cheTIDs && !hasErr) {
+    cheTID = (CHETID*)cheTIDs->data.first;
+    while (cheTID && !hasErr) {
+      hasErr = !Doc->IDTable.GetDECL(cheTID->data, elDef->inINCL);
+      if (hasErr)
+        new CLavaError(&elDef->DECLError1, &ERR_Broken_ref_in_HC);
+      cheTID = (CHETID*)cheTID->successor;
+    }
+    cheTIDs = (CHETIDs*)cheTIDs->successor;
+  }
+}
+
+void CExecTree::ExecInterface(LavaDECL *elDef, DString* lab)
+{
+  LavaDECL *decl;
+  QString* errCode;
+  DString lab1;
+  CHETID *cheImpl, *nextImpl;
+
+  if (elDef->SecondTFlags.Contains(isGUI) && (elDef->RefID.nID >= 0 )
+       && !Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL))
+    new CLavaError(&elDef->DECLError1, &ERR_NoIFforForm);
+  elDef->WorkFlags.EXCL(hasDefaultIni);
+  if (elDef->NestedDecls.first
+    && (((LavaDECL*)((CHE*)elDef->NestedDecls.first)->data)->DeclType == VirtualType))
+    elDef->WorkFlags.INCL(isPattern);
+  else
+    elDef->WorkFlags.EXCL(isPattern);
+  if (elDef->ParentDECL->WorkFlags.Contains(isPartOfPattern) || elDef->ParentDECL->WorkFlags.Contains(isPattern))
+    elDef->WorkFlags.INCL(isPartOfPattern);
+  else
+    elDef->WorkFlags.EXCL(isPartOfPattern);
+  errCode = Doc->CheckScope(elDef);
+  if (errCode)
+    new CLavaError(&elDef->DECLError1, errCode);
+  if (elDef->WorkFlags.Contains(recalcVT)
+       || (checkLevel == CHLV_fit)) {
+    if (Doc->MakeVElems(elDef) )
+      elDef->WorkFlags.EXCL(recalcVT);
+    else
+      elDef->WorkFlags.INCL(recalcVT);
+  }
+  if (!elDef->WorkFlags.Contains(isPattern) && !Doc->okPattern(elDef))
+    new CLavaError(&elDef->DECLError1, &ERR_CommonContext);
+  *lab += DString(" := ");
+  if (elDef->TypeFlags.Contains(isNative))
+    lab1 = DString("native ");
+  if (elDef->TypeFlags.Contains(isAbstract))
+    lab1 += DString("non-creatable ");
+  if (elDef->TypeFlags.Contains(thisComponent))
+    lab1 += DString("component assembly interface");
+  else
+    if (elDef->TypeFlags.Contains(isComponent))
+      lab1 += DString("component object interface");
+    else
+      if (elDef->SecondTFlags.Contains(isGUI) && (elDef->fromBType == NonBasic)) {
+        if (!Doc->IDTable.GetDECL(elDef->RefID, elDef->inINCL))
+          new CLavaError(&elDef->DECLError1, &ERR_NoIFforForm);
+        lab1 += DString("GUI service");
+      }
+      else
+        lab1 += DString("interface");
+  if (lab1[0] >= 'a')
+    lab1[0] -= 'a'-'A';
+  *lab = *lab + lab1;
+  cheImpl = (CHETID*)elDef->ImplIDs.first;
+  while (cheImpl) {
+    decl = Doc->IDTable.GetDECL(cheImpl->data);
+    nextImpl = (CHETID*)cheImpl->successor;
+    if (!decl)
+      elDef->ImplIDs.Delete(cheImpl);
+    cheImpl = nextImpl;
+  }
+  if (elDef->ImplIDs.first != elDef->ImplIDs.last)
+    new CLavaError(&elDef->DECLError1, &ERR_SecondImpl);
 }
 
 
@@ -602,8 +640,8 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
           else
             *lab += pp->FullName;
         if ((elDef->DeclType == Interface)
-            && elDef->TypeFlags.Contains(isGUI)
-            && pp->TypeFlags.Contains(isGUI))
+            && elDef->SecondTFlags.Contains(isGUI)
+            && pp->SecondTFlags.Contains(isGUI))
           if (!Doc->IDTable.GetDECL(pp->RefID, pp->inINCL))
             new CLavaError(&elDef->DECLError1, &ERR_NoBaseFormIF);
         if ((elDef->DeclType == Interface) && (errID = Doc->ExtensionAllowed(elDef, pp, 0)))
@@ -623,8 +661,8 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
           if ((elDef->DeclType == Interface) && (errID = Doc->ExtensionAllowed(elDef, pp, 0)))
             new CLavaError(&elDef->DECLError1, errID);
           if ((elDef->DeclType == Interface)
-              && elDef->TypeFlags.Contains(isGUI)
-              && pp->TypeFlags.Contains(isGUI))
+              && elDef->SecondTFlags.Contains(isGUI)
+              && pp->SecondTFlags.Contains(isGUI))
             if (!Doc->IDTable.GetDECL(pp->RefID, elDef->inINCL))
               new CLavaError(&elDef->DECLError1, &ERR_NoBaseFormIF);
           *lab = *lab + DString(", ");
@@ -710,7 +748,7 @@ void CExecTree::MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** p
     if (enableDrag)
       ActItem->setFlags(ActItem->flags() | Qt::ItemIsDragEnabled);
     else
-      ActItem->setFlags(ActItem->flags() ^ Qt::ItemIsDragEnabled);
+      ActItem->setFlags(ActItem->flags() & ~Qt::ItemIsDragEnabled);
 //    ActItem->setDragEnabled(enableDrag); Qt::ItemIsDragEnabled
 
   if (elDef->WorkFlags.Contains(selAfter)) {
@@ -940,7 +978,6 @@ void CExecTree::ExecOut(LavaDECL ** pelDef, int level)
 void CExecTree::ExecFormDef(LavaDECL ** pelDef, int level)
 {
   LavaDECL *pp, *elDef = *pelDef;
-  QString cstr;
   DString lab;
   int bm;
   CMainItemData* data;
@@ -1641,6 +1678,7 @@ CExecChecks::CExecChecks(CLavaPEDoc* doc, bool inopen)
   inOpen = inopen;
   Travers = new CSylTraversal(this, doc->mySynDef);
   Travers->AllDefs(false);
+  ((CLavaPEView*)Doc->MainView)->Tree->update();
 }
 
 

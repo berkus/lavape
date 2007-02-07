@@ -876,6 +876,10 @@ void TIDTable::FillBasicTypesID(CHESimpleSyntax* stdSyntax, bool isstd)
         ((LavaDECL*)((CHE*)elDECL->NestedDecls.first)->data)->SecondTFlags.INCL(isArray);
         elDECL->SecondTFlags.INCL(isArray);
       }
+      else if (elDECL->fromBType == B_GUI) {
+        ((LavaDECL*)((CHE*)elDECL->NestedDecls.first)->data)->SecondTFlags.INCL(isGUI);
+        elDECL->SecondTFlags.INCL(isGUI);
+      }
       else if ((elDECL->fromBType == B_Exception)
             || (elDECL->fromBType == B_HWException)
             || (elDECL->fromBType == B_RTException)) {
@@ -1083,6 +1087,10 @@ void TIDTable::Down(LavaDECL *elDef, TTableUpdate onWhat, int nINCL)
           if (inEl->DeclType == VirtualType) {
             elDef->WorkFlags.INCL(isPattern);
             inEl->WorkFlags.INCL(isPartOfPattern);
+          }
+          if ((mySynDef->Release < 5) && inEl->TypeFlags.Contains(oldIsGUI)) {
+            inEl->SecondTFlags.INCL(isGUI);
+            //inEl->TypeFlags.EXCL(oldIsGUI);
           }
           if ((inEl->DeclType == Interface)
             && (elDef->WorkFlags.Contains(isPartOfPattern) || elDef->WorkFlags.Contains(isPattern)))

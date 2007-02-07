@@ -19,7 +19,7 @@
 #include "qpixmap.h"
 #include "qmetatype.h"
 
-#define RELEASE 4
+#define RELEASE 5
 
 #undef VIEW
 
@@ -322,6 +322,7 @@ enum TBasicType {
   B_Exception,
   B_HWException,
   B_RTException,
+  B_GUI,
   Identifier};
 
 extern LAVABASE_DLL void CDPTBasicType (PutGetFlag pgf, ASN1* cid, address varAddr, bool baseCDP);
@@ -382,7 +383,7 @@ enum TypeFlag {
   isInitializer,
   isPersistent,
   isGUIEdit,
-  isGUI,
+  oldIsGUI,
   sameAsSelf,
   isNative,
   defaultInitializer,
@@ -401,7 +402,7 @@ extern LAVABASE_DLL void CDPTypeFlag (PutGetFlag pgf, ASN1* cid, address varAddr
 enum SecondTFlag {
   isLavaSignal,
   isHandler,
-  FREE_FLAG2,
+  isGUI,
   FREE_FLAG3,
   FREE_FLAG4,
   FREE_FLAG5,
@@ -1615,7 +1616,9 @@ struct LAVABASE_DLL FormNode : public AnyType  {
     ownTFont=mainFont;
     Pixmap=0;
     allowOwnHandler=false;
+    GUIService=0;
     allowChainHandler=false;
+    HandlerDECL=0;
     handlerSearched=false;
     myHandlerNode=0;
     ColorBValid=false;

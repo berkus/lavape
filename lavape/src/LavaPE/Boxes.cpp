@@ -1493,8 +1493,8 @@ ValOnInit CFuncBox::OnInitDialog()
   LavaDECL *decl,  *baseDECL;
   CHETID *ncheS, *cheS;
   CListBoxItem *listItem;
-  CHETIDs *cheTIDs;
-  QString nameText;
+  CHETIDs *cheTIDs, *ncheTIDs = 0;
+  QString nameText, cstr;
 
   if (myDoc->changeNothing) {
     ID_OK->setEnabled(false);
@@ -1506,8 +1506,8 @@ ValOnInit CFuncBox::OnInitDialog()
     CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL, Function, typeflag);
     delete execAllPatt;
   }
-  if ((myDECL->ParentDECL->DeclType == Impl)
-    || myDECL->TypeFlags.Contains(isGUI) ) {
+  if (myDECL->ParentDECL->DeclType == Impl) {
+   // || myDECL->TypeFlags.Contains(isGUI) ) {
     //|| myDECL->ParentDECL->TypeFlags.Contains(isComponent) ) {
     Native->setEnabled(false);
     Abstract->setEnabled(false);
@@ -1547,21 +1547,39 @@ ValOnInit CFuncBox::OnInitDialog()
           decl = myDoc->IDTable.GetDECL(cheS->data);
           if (decl)
             nameText += QString(decl->LocalName.c);
-          else { /*error, messagebox */}
-          cheS = (CHETID*)cheS->successor;
+          else { 
+            nameText += "???";
+            cstr = "Broken reference in handler client.\n"
+             "Click \"yes\" to remove this client.";
+            if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Cancel)
+              nameText += "???";
+            else {
+              ncheTIDs = (CHETIDs*)cheTIDs->successor;
+              myDECL->HandlerClients.Delete(cheTIDs);
+            }
+          }
+          if (ncheTIDs)
+            cheS = 0;
+          else
+            cheS = (CHETID*)cheS->successor;
           if (cheS)
             nameText += QString(".");
         }
       listItem = new CListBoxItem(nameText, cheTIDs->data);
       FieldList->addItem(listItem);
-      cheTIDs = (CHETIDs*)cheTIDs->successor;
+      if (ncheTIDs) {
+        cheTIDs = ncheTIDs;
+        ncheTIDs = 0;
+      }
+      else
+        cheTIDs = (CHETIDs*)cheTIDs->successor;
     }
     if (((CHETIDs*)myDECL->HandlerClients.first)->data.last) 
       decl = myDoc->IDTable.GetDECL(((CHETID*)((CHETIDs*)myDECL->HandlerClients.first)->data.last)->data);
     else 
       decl = myDECL->ParentDECL;
     FieldTypeDECL = myDoc->IDTable.GetDECL(decl->RefID, decl->inINCL);
-    if (FieldTypeDECL->TypeFlags.Contains(isGUI) || FieldTypeDECL->DeclType == FormDef)
+    if (FieldTypeDECL->SecondTFlags.Contains(isGUI) || FieldTypeDECL->DeclType == FormDef)
       FieldTypeDECL = myDoc->IDTable.GetDECL(FieldTypeDECL->RefID, FieldTypeDECL->inINCL);
     if (FieldTypeDECL->SecondTFlags.Contains(isSet)) {
       EventType->addItem(QString("Insert"));
@@ -1583,6 +1601,7 @@ ValOnInit CFuncBox::OnInitDialog()
     EventType->setCurrentIndex(0);
 
     EnforceOver->setEnabled(myDECL->ParentDECL->DeclType == Interface);
+    EnforceOver->setChecked(myDECL->ParentDECL->DeclType == Impl);
 
     if ((myDECL->ParentDECL->DeclType == Interface)
          || (myDECL->ParentDECL->DeclType == Impl) ) {
@@ -1664,8 +1683,8 @@ ValOnInit CFuncBox::OnInitDialog()
                                     || myDECL->TypeFlags.Contains(defaultInitializer)));
       if (myDECL->TypeFlags.Contains(defaultInitializer)) 
         DefaultIni->setChecked(true);
-      if (myDECL->TypeFlags.Contains(isGUI)) 
-        Initializer->setEnabled(false);
+      //if (myDECL->TypeFlags.Contains(isGUI)) 
+       // Initializer->setEnabled(false);
       myDECL->TypeFlags.EXCL(isAbstract);
       Abstract->setChecked(false);
       Abstract->setEnabled(false);
@@ -1781,7 +1800,7 @@ ValOnInit CFuncBox::OnInitDialog()
         myDECL->TypeFlags.EXCL(isPropGet);
         myDECL->TypeFlags.EXCL(isPropSet);
         myDECL->Supports.Destroy();
-        if (myDoc->AutoCorrBox(&ERR_MissingItfFuncDecl) != QDialog::Accepted) {
+        if (myDoc->AutoCorrBox(&ERR_MissingItfFuncDecl) != QMessageBox::Ok) {
           OrigDECL->WorkFlags.INCL(allowDEL);
           return BoxCancel; //QDialog::reject();
         }
@@ -1792,14 +1811,14 @@ ValOnInit CFuncBox::OnInitDialog()
           myDECL->TypeFlags.EXCL(isPropGet);
           myDECL->TypeFlags.EXCL(isPropSet);
           myDECL->Supports.Destroy();
-          if (myDoc->AutoCorrBox(&ERR_NoSetGetMember)  != QDialog::Accepted) {
+          if (myDoc->AutoCorrBox(&ERR_NoSetGetMember)  != QMessageBox::Ok) {
             OrigDECL->WorkFlags.INCL(allowDEL);
             return BoxCancel; //QDialog::reject();
           }
         }
     }
-    if (myDECL->SecondTFlags.Contains(funcImpl)
-          || myDECL->TypeFlags.Contains(isGUI)) {
+    if (myDECL->SecondTFlags.Contains(funcImpl)) {
+          //|| myDECL->TypeFlags.Contains(isGUI)) {
       ConstFunc->setEnabled(false);
       NewName->setEnabled(false);
       Signal->setEnabled(false);
@@ -1815,7 +1834,7 @@ ValOnInit CFuncBox::OnInitDialog()
       Independent->setEnabled(false);
     }
     if (myDECL->SecondTFlags.Contains(funcImpl)
-        || myDECL->TypeFlags.Contains(isGUI)
+        //|| myDECL->TypeFlags.Contains(isGUI)
         || myDECL->SecondTFlags.Contains(overrides)) {
       Initializer->setEnabled(false);
       CHECKOp->setEnabled(false);
@@ -1839,7 +1858,7 @@ ValOnInit CFuncBox::OnInitDialog()
     }
     else {
       if (!myDECL->SecondTFlags.Contains(funcImpl)
-           && myDECL->ParentDECL->TypeFlags.Contains(isGUI)) {
+           && myDECL->ParentDECL->SecondTFlags.Contains(isGUI)) {
         int type = myDoc->CheckHandlerIO(myDECL, 0);
         if (type >= 0) {
           if (type == 2)
@@ -2454,6 +2473,7 @@ ValOnInit CImplBox::OnInitDialog()
   }
 
   if (!onNew) {
+    ID_OK->setEnabled(false);
     LavaDECL* decl;
     CHETID *cheS = (CHETID*)myDECL->Supports.first; //implements
     if (cheS) {
@@ -2523,6 +2543,7 @@ void CImplBox::on_ID_OK_clicked()
   LavaDECL *interfDECL, *inDECL;
   CHE *Che;
   CHETID* cheID;
+  TID paramID;
   
   UpdateData(true);
   if (!myDECL->Supports.first) {
@@ -2537,13 +2558,15 @@ void CImplBox::on_ID_OK_clicked()
       myDECL->TypeFlags.INCL(isAbstract);
     else
       myDECL->TypeFlags.EXCL(isAbstract);
-    if (interfDECL->TypeFlags.Contains(isGUI)) {
-      myDECL->TypeFlags.INCL(isGUI);
-      myDECL->RefID.nID = interfDECL->RefID.nID;
-      myDECL->RefID.nINCL = myDoc->IDTable.IDTab[interfDECL->inINCL]->nINCLTrans[interfDECL->RefID.nINCL].nINCL;
+    if (interfDECL->SecondTFlags.Contains(isGUI)) {
+      myDoc->IDTable.GetParamID(interfDECL, paramID, isGUI);
+      if (paramID.nID >= 0) {
+        myDECL->SecondTFlags.INCL(isGUI);
+        myDECL->RefID = paramID;
+      }
     }
     else {
-      myDECL->TypeFlags.EXCL(isGUI);
+      myDECL->SecondTFlags.EXCL(isGUI);
       myDECL->RefID.nID = -1;
     }
     if (myDECL->DeclType == Impl)  
@@ -2770,7 +2793,7 @@ CInterfaceBox::CInterfaceBox(LavaDECL* mydecl, LavaDECL * origDECL, CLavaPEDoc* 
   valNewName = QString("");
   valIfaceID = QString("");
   valBuildSet = false;
-  valIsGUI = false;
+  //valIsGUI = false;
   valKindOfInterface =0;
   myDECL = mydecl;
   myDoc = doc;
@@ -2788,7 +2811,7 @@ void CInterfaceBox::UpdateData(bool getData)
     valNewName = NewName->text();
     valIfaceID = InterfaceID->text();
     valBuildSet = BuildSet->isChecked();
-    valIsGUI = IsGUI->isChecked();
+    //valIsGUI = IsGUI->isChecked();
     if (Creatable->isChecked())
       valKindOfInterface = 0;
     else if (NonCreatable->isChecked())
@@ -2800,7 +2823,7 @@ void CInterfaceBox::UpdateData(bool getData)
     NewName->setText(valNewName);
     InterfaceID->setText(valIfaceID);
     BuildSet->setChecked(valBuildSet);
-    IsGUI->setChecked(valIsGUI);
+    //IsGUI->setChecked(valIsGUI);
     switch (valKindOfInterface) {
     case 0:
       Creatable->setChecked(true);
@@ -2818,7 +2841,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
 {
   DString str;
   CContext context;
-  int pos, icount;
+//  int pos, icount;
   QString * err;
   CExecAllDefs * execAllPatt;
   QVariant var;
@@ -2837,11 +2860,11 @@ ValOnInit CInterfaceBox::OnInitDialog()
   }
   if (onNew) {
     myDoc->IDTable.GetPattern(myDECL, context);
-    IsGUI->setEnabled(!context.oContext);
+    //IsGUI->setEnabled(!context.oContext);
     Native->setChecked(false);
   }
   else {
-    IsGUI->setEnabled(false);
+    //IsGUI->setEnabled(false);
     valNewName = QString(myDECL->LocalName.c);
     err = myDoc->IDTable.CleanSupports(myDECL, ContextDECL);
     if (err == &ERR_NoBaseIF) {
@@ -2871,11 +2894,12 @@ ValOnInit CInterfaceBox::OnInitDialog()
         valKindOfInterface = 1;
   }
   myDoc->MakeBasicBox(BasicTypes, myDECL->DeclType, false);
-  execAllPatt = new CExecAllDefs(myDoc, ExtTypes, GUIStructs, 
+  execAllPatt = new CExecAllDefs(myDoc, ExtTypes, 0, //GUIStructs, 
                         myDECL->ParentDECL, OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   delete execAllPatt;
   BasicTypes->setCurrentIndex(0);
   ExtTypes->setCurrentIndex(0);
+  /*
   TID id;
   if (!onNew && myDECL->TypeFlags.Contains(isGUI)) {
     valIsGUI = true; 
@@ -2893,6 +2917,7 @@ ValOnInit CInterfaceBox::OnInitDialog()
     if (pos <= icount)
       GUIStructs->setCurrentIndex(pos-1);
   }
+  */
   NewName->setFocus();
   UpdateData(false);
   return BoxContinue;
@@ -3022,9 +3047,8 @@ void CInterfaceBox::on_IsComponent_clicked()
   else 
     myDECL->TypeFlags.EXCL(isComponent);
   ResetComboItems(ExtTypes);
-  CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, ExtTypes,
-                 GUIStructs, myDECL->ParentDECL,
-                 OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
+  CExecAllDefs *execAllPatt = new CExecAllDefs(myDoc, ExtTypes, 0,
+                myDECL->ParentDECL, OrigDECL, myDECL->DeclType, myDECL->TypeFlags);
   ExtTypes->setCurrentIndex(0);
   InterfaceID->setEnabled(true);
   //Native->setChecked(false);
@@ -3044,6 +3068,7 @@ void CInterfaceBox::on_Creatable_clicked()
   Native->setEnabled(true);
 }
 
+/*
 void CInterfaceBox::on_IsGUI_clicked() 
 {
   UpdateData(true);
@@ -3061,12 +3086,12 @@ void CInterfaceBox::on_GUIStructs_activated(int pos)
     oldPos = GUIStructs->findText(valGUIStruct, Qt::MatchExactly | Qt::MatchCaseSensitive );
     GUIStructs->setCurrentIndex(oldPos);
   }
-}
+}*/
 
 void CInterfaceBox::reject()
 {
   ResetComboItems(ExtTypes);
-  ResetComboItems(GUIStructs);
+//  ResetComboItems(GUIStructs);
   ResetComboItems(BasicTypes); 
   QDialog::reject();
 }
@@ -3079,7 +3104,7 @@ void CInterfaceBox::on_ID_OK_clicked()
   LavaDECL *suDECL;
   CHETID* cheS;
   bool extendsSet = false, extendsArray = false, extendsChain = false,
-    extendsException = false, extendsEnum = false;
+    extendsException = false, extendsEnum = false, extendsGUI = false;
 
   if (ids) {
     QMessageBox::critical(this,qApp->applicationName(),*ids,QMessageBox::Ok,0,0);
@@ -3117,6 +3142,7 @@ void CInterfaceBox::on_ID_OK_clicked()
     }
   }
   if (onNew) {
+    /*
     if (valIsGUI) {
       if (exID.nID >= 0) {
         myDECL->RefID = exID;
@@ -3128,6 +3154,7 @@ void CInterfaceBox::on_ID_OK_clicked()
         return;
       }
     }
+    */
     if (!myDECL->TypeFlags.Contains(isComponent))
       myDoc->MakeIniFunc(myDECL);
   }
@@ -3139,6 +3166,7 @@ void CInterfaceBox::on_ID_OK_clicked()
       if (suDECL) {
         extendsSet = extendsSet || suDECL->SecondTFlags.Contains(isSet);
         extendsArray = extendsArray || suDECL->SecondTFlags.Contains(isArray);
+        extendsGUI = extendsGUI || suDECL->SecondTFlags.Contains(isGUI);
         extendsChain = extendsChain || suDECL->SecondTFlags.Contains(isChain);
         extendsException = extendsException || suDECL->SecondTFlags.Contains(isException);
         extendsEnum = extendsEnum || suDECL->SecondTFlags.Contains(isEnum);
@@ -3163,6 +3191,10 @@ void CInterfaceBox::on_ID_OK_clicked()
       myDECL->SecondTFlags.INCL(isArray);
     else
       myDECL->SecondTFlags.EXCL(isArray);
+    if (extendsGUI)
+      myDECL->SecondTFlags.INCL(isGUI);
+    else
+      myDECL->SecondTFlags.EXCL(isGUI);
     if (extendsException)
       myDECL->SecondTFlags.INCL(isException);
     else
@@ -3191,7 +3223,7 @@ void CInterfaceBox::on_ID_OK_clicked()
 //  ListToChain(Inherits, &myDECL->Inherits);  //signals
   myDECL->WorkFlags.INCL(recalcVT);
   ResetComboItems(ExtTypes);
-  ResetComboItems(GUIStructs);
+//  ResetComboItems(GUIStructs);
   ResetComboItems(BasicTypes); 
   QDialog::accept();
 }
@@ -3271,7 +3303,7 @@ void CIOBox::BaseClassesToCombo(LavaDECL *decl)
 ValOnInit CIOBox::OnInitDialog()
 { 
   CExecAllDefs * execAllPatt=0;
-  LavaDECL* typeDECL, *baseDECL;
+  LavaDECL *baseDECL;
   CHETID* che;
   bool catErr, callBox;
   DString dstr;
@@ -3357,6 +3389,7 @@ ValOnInit CIOBox::OnInitDialog()
           AnyCategory->setChecked(false);
         }
       }
+      /*
     if (myDECL->TypeFlags.Contains(isGUI)) {
       if (myDECL->DeclType == IAttr) {
         typeDECL = myDoc->IDTable.GetDECL(myDECL->ParentDECL->ParentDECL->RefID, myDECL->inINCL);
@@ -3368,7 +3401,7 @@ ValOnInit CIOBox::OnInitDialog()
         BasicTypes->setEnabled(false);
       }
     }
-    else {
+    else {*/
       che = (CHETID*)myDECL->Supports.first;
       if (myDECL->SecondTFlags.Contains(overrides)) {
         if (OrigDECL->DECLError1.first) {
@@ -3405,7 +3438,7 @@ ValOnInit CIOBox::OnInitDialog()
         execAllPatt = new CExecAllDefs(myDoc, NamedTypes, 0, myDECL->ParentDECL, OrigDECL,
                                      Attr, TypeFlags);
       }
-    }
+    //}
     dstr = myDoc->GetTypeLabel(myDECL, false);
     valNewTypeType = QString(dstr.c);
   }
@@ -3415,7 +3448,7 @@ ValOnInit CIOBox::OnInitDialog()
     delete execAllPatt;
   SetSelections(BasicTypes, NamedTypes, valNewTypeType);
   //SetSelections();  
-  if (myDECL->SecondTFlags.Contains(funcImpl) || myDECL->TypeFlags.Contains(isGUI)) {
+  if (myDECL->SecondTFlags.Contains(funcImpl)) { // || myDECL->TypeFlags.Contains(isGUI)) {
     NewTypeType->setEnabled(false);
     NewName->setEnabled(false);
     NamedTypes->setEnabled(false);
@@ -3431,10 +3464,10 @@ ValOnInit CIOBox::OnInitDialog()
   Closed->setChecked(myDECL->SecondTFlags.Contains(closed));
   if (myDECL->SecondTFlags.Contains(funcImpl)
       || (myDECL->ParentDECL->DeclType != Function)
-      || myDECL->TypeFlags.Contains(isGUI)
+      //|| myDECL->TypeFlags.Contains(isGUI)
       || myDECL->ParentDECL->TypeFlags.Contains(isInitializer))
     SameAsSelf->setEnabled(false);
-  if (myDECL->SecondTFlags.Contains(overrides) || myDECL->TypeFlags.Contains(isGUI)) 
+  if (myDECL->SecondTFlags.Contains(overrides))// || myDECL->TypeFlags.Contains(isGUI)) 
     Substitutable->setEnabled(false);
 
   UpdateData(false);
@@ -4259,7 +4292,7 @@ void CVTypeBox::on_ID_OK_clicked()
 {
   UpdateData(true);
   bool extendsSet = false, extendsArray = false, extendsException = false, extendsChain = false,
-     extendsEnum = false;
+     extendsEnum = false, extendsGUI=false;
   LavaDECL* suDECL;
   CHETID* cheS;
 
@@ -4314,6 +4347,7 @@ void CVTypeBox::on_ID_OK_clicked()
         extendsArray = extendsArray || suDECL->SecondTFlags.Contains(isArray);
         extendsException = extendsException || suDECL->SecondTFlags.Contains(isException);
         extendsChain = extendsChain || suDECL->SecondTFlags.Contains(isChain);
+        extendsGUI = extendsGUI || suDECL->SecondTFlags.Contains(isGUI);
       }
       cheS = (CHETID*)cheS->successor;
     }
@@ -4325,6 +4359,12 @@ void CVTypeBox::on_ID_OK_clicked()
       myDECL->SecondTFlags.INCL(isArray);
     else
       myDECL->SecondTFlags.EXCL(isArray);
+    if (extendsGUI) {
+      myDECL->SecondTFlags.INCL(isGUI);
+      myDECL->ParentDECL->RefID = myDECL->RefID;
+    }
+    else
+      myDECL->SecondTFlags.EXCL(isGUI);
     if (extendsException)
       myDECL->SecondTFlags.INCL(isException);
     else
@@ -5172,7 +5212,7 @@ void CExecAllDefs::ExecDefs (LavaDECL ** pelDef, int incl)
   if (elType == VirtualType) 
     decl = myDoc->IDTable.GetDECL(elDef->RefID, elDef->inINCL);
   if (Combo2 && //List3 && 
-       (elType == Interface) && !elDef->TypeFlags.Contains(isGUI)
+       (elType == Interface) && !elDef->SecondTFlags.Contains(isGUI)
      ) {
     if (ParentDECL && ParentDECL->FullName.l) {
       LocalName = ((CLavaPEApp*)wxTheApp)->LBaseData.calcRelName (elDef->FullName, ParentDECL->FullName);

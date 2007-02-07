@@ -19,7 +19,7 @@
 #include "qpixmap.h"
 #include "qmetatype.h"
 
-#define RELEASE 4
+#define RELEASE 5
 
 #undef VIEW
 
@@ -162,6 +162,7 @@ $TYPE +CDP {
 		B_Exception,
 		B_HWException,
 		B_RTException,
+    B_GUI,
     Identifier //this must be the last
   };
 
@@ -266,9 +267,8 @@ $TYPE +CDP {
     //17/, X0002 0000 persistent component
     isGUIEdit,
     //18/, X0004 0000 the edit show function
-    isGUI,
-    //19, X0008 0000/ form service, interface and implementation
-    // and its (not removable/changeable) input and output
+    oldIsGUI,
+    //19, X0008 0000/ now free flag
     sameAsSelf,
     //20, X0010 0000 IO parameter has same category as "self"
     isNative,
@@ -301,7 +301,9 @@ $TYPE +CDP {
       //0,X0000 0001, function is Signal
 	  isHandler, 
     //X0000 0002, function is handler function
-	  FREE_FLAG2, //X0000 0004
+	  isGUI, //X0000 0004
+    //19, X0008 0000/ form service, interface and implementation
+    // and its (not removable/changeable) input and output
 	  FREE_FLAG3, //X0000 0008
 	  FREE_FLAG4, //X0000 0010
 	  FREE_FLAG5, //X0000 0020
@@ -1085,8 +1087,8 @@ $TYPE {
     CHAINANY<FormNode> SubTree;
   FormNode () { ResultVarPtr = 0; HandleObjPtr = 0; EnumField = 0;
                 ownLFont=mainFont; ownTFont=mainFont; Pixmap = 0;
-                allowOwnHandler = false;
-                allowChainHandler = false;
+                allowOwnHandler = false; GUIService = 0;
+                allowChainHandler = false; HandlerDECL = 0;
                 handlerSearched = false; myHandlerNode = 0;
                 ColorBValid = false; ColorFValid = false;}
   ~FormNode();

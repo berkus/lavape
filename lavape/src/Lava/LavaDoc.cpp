@@ -978,7 +978,7 @@ bool CLavaDoc::ExecuteLavaObject()
         classDECL = (LavaDECL*)che->data;
         for (che = (CHE*)((LavaDECL*)cheCompo->data)->NestedDecls.first;
              che && ((((LavaDECL*)che->data)->DeclType != Interface)
-                    || !((LavaDECL*)che->data)->TypeFlags.Contains(isGUI)
+                    || !((LavaDECL*)che->data)->SecondTFlags.Contains(isGUI)
                     || !IDTable.EQEQ(((LavaDECL*)che->data)->RefID, classDECL->inINCL, TID(classDECL->OwnID, classDECL->inINCL), 0)); 
              che = (CHE*)che->successor);
         if (che)

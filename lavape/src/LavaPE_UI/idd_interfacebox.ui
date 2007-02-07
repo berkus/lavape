@@ -1,7 +1,4 @@
 <ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
  <class>IDD_InterfaceBox</class>
  <widget class="QDialog" name="IDD_InterfaceBox" >
   <property name="geometry" >
@@ -23,7 +20,7 @@
   <property name="windowTitle" >
    <string>Interface</string>
   </property>
-  <widget class="QWidget" name="" >
+  <widget class="QWidget" name="layoutWidget" >
    <property name="geometry" >
     <rect>
      <x>10</x>
@@ -154,7 +151,7 @@
         <property name="title" >
          <string>Kind of interface</string>
         </property>
-        <widget class="QWidget" name="" >
+        <widget class="QWidget" name="layoutWidget" >
          <property name="geometry" >
           <rect>
            <x>10</x>
@@ -252,41 +249,6 @@
             <property name="text" >
              <string>Native</string>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="IsGUI" >
-            <property name="focusPolicy" >
-             <enum>Qt::StrongFocus</enum>
-            </property>
-            <property name="text" >
-             <string>GUI service</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="Label_IDC_STATGUI1" >
-            <property name="focusPolicy" >
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="text" >
-             <string>&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;/head>&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg; font-size:8.25pt; font-weight:400; font-style:normal; text-decoration:none;">&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:8pt;">Select the interface to be shown&lt;/span>&lt;/p>&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;">as a form by this GUI service:&lt;/p>&lt;/body>&lt;/html></string>
-            </property>
-            <property name="alignment" >
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="GUIStructs" >
-            <property name="enabled" >
-             <bool>false</bool>
-            </property>
-            <item>
-             <property name="text" >
-              <string>(Select interface)</string>
-             </property>
-            </item>
            </widget>
           </item>
          </layout>
@@ -498,7 +460,6 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
  <tabstops>
   <tabstop>NewName</tabstop>
   <tabstop>Creatable</tabstop>
@@ -509,8 +470,6 @@
   <tabstop>BasicTypes</tabstop>
   <tabstop>ExtTypes</tabstop>
   <tabstop>BuildSet</tabstop>
-  <tabstop>IsGUI</tabstop>
-  <tabstop>GUIStructs</tabstop>
  </tabstops>
  <resources/>
  <connections/>

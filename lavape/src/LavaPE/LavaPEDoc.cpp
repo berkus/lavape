@@ -382,7 +382,7 @@ int CLavaPEDoc::AutoCorrBox(QString* errID)
 
 bool CLavaPEDoc::CheckForm(LavaDECL* formDECL, int checkLevel)
 {
-  LavaDECL *classElDecl, *formElDecl, *fclassDECL, *basefDECL, *baseClassDECL, *classDECL;
+  LavaDECL *classElDECL, *formElDECL, *fclassDECL, *basefDECL, *baseClassDECL, *classDECL;
   CHE *cheformEl, *cheTextEl, *checlassEl;
   CHETID *cheS, *cheF, *cheID;
   TID inID, fsupID;
@@ -408,7 +408,8 @@ bool CLavaPEDoc::CheckForm(LavaDECL* formDECL, int checkLevel)
   cheS = (CHETID*)fclassDECL->Supports.first;
   while (cheS) { //!
     basefDECL = IDTable.GetFinalDef(cheS->data, fclassDECL->inINCL);
-    if (basefDECL && basefDECL->TypeFlags.Contains(isGUI)) {
+    if (basefDECL && (basefDECL->fromBType == NonBasic)
+      && basefDECL->SecondTFlags.Contains(isGUI)) {
       baseClassDECL = IDTable.GetDECL(basefDECL->RefID, basefDECL->inINCL);
       if (!baseClassDECL) {
         new CLavaError(&formDECL->DECLError1, &ERR_NoBaseFormIF);
@@ -441,11 +442,11 @@ bool CLavaPEDoc::CheckForm(LavaDECL* formDECL, int checkLevel)
       if (cheIDform->data == cheIDclass->data)
       found = IDTable.EQEQ(cheIDform->data, formDECL->inINCL, cheIDclass->data, classDECL->inINCL);
       if (!found) {
-        formElDecl = IDTable.GetDECL(cheIDform->data, formDECL->inINCL);
-        found = formElDecl
-                && (formElDecl->DeclType == FormDef)
-                && IDTable.EQEQ(formElDecl->RefID, formElDecl->inINCL, cheIDclass->data, classDECL->inINCL)
-                && IDTable.IsAn(fID, 0, ((CHETID*)formElDecl->ParentDECL->Supports.first)->data, formElDecl->inINCL);
+        formElDECL = IDTable.GetDECL(cheIDform->data, formDECL->inINCL);
+        found = formElDECL
+                && (formElDECL->DeclType == FormDef)
+                && IDTable.EQEQ(formElDECL->RefID, formElDECL->inINCL, cheIDclass->data, classDECL->inINCL)
+                && IDTable.IsAn(fID, 0, ((CHETID*)formElDECL->ParentDECL->Supports.first)->data, formElDECL->inINCL);
       }
       if (found) {
         changed = changed || (idChain.first != cheIDform);
@@ -482,27 +483,27 @@ bool CLavaPEDoc::CheckForm(LavaDECL* formDECL, int checkLevel)
       changed = CheckMenu(formDECL, classDECL);
   checlassEl = (CHE*)classDECL->NestedDecls.first;
   if (checlassEl)
-    classElDecl = (LavaDECL*)checlassEl->data;
+    classElDECL = (LavaDECL*)checlassEl->data;
   while (checlassEl) {
-    if (classElDecl->TypeFlags.Contains(constituent)
-       && (     (classElDecl->DeclType == Attr)
-             || ((classElDecl->DeclType == VirtualType)
-                    && (   classElDecl->SecondTFlags.Contains(isSet)
-                        || classElDecl->SecondTFlags.Contains(isArray)
+    if (classElDECL->TypeFlags.Contains(constituent)
+       && (     (classElDECL->DeclType == Attr)
+             || ((classElDECL->DeclType == VirtualType)
+                    && (   classElDECL->SecondTFlags.Contains(isSet)
+                        || classElDECL->SecondTFlags.Contains(isArray)
                        ))
           )  ) {
-      inID = TID(classElDecl->OwnID, classElDecl->inINCL);
+      inID = TID(classElDECL->OwnID, classElDECL->inINCL);
       cheformEl = (CHE*)chain.first;
       found = false;
       while (cheformEl && !found) {
-        formElDecl = (LavaDECL*)cheformEl->data;
-        if (formElDecl->Supports.first) {
-          fsupID = ((CHETID*)formElDecl->Supports.first)->data;
+        formElDECL = (LavaDECL*)cheformEl->data;
+        if (formElDECL->Supports.first) {
+          fsupID = ((CHETID*)formElDECL->Supports.first)->data;
           fsupID.nINCL = IDTable.IDTab[formDECL->inINCL]->nINCLTrans[fsupID.nINCL].nINCL;
           found = (fsupID == inID);
         }
         if (!found) {
-          if (formElDecl->DeclType == FormText) {
+          if (formElDECL->DeclType == FormText) {
             cheTextEl = cheformEl;
             cheformEl = (CHE*)cheformEl->successor;
             cheTextEl = (CHE*)chain.Uncouple(cheTextEl);
@@ -516,16 +517,16 @@ bool CLavaPEDoc::CheckForm(LavaDECL* formDECL, int checkLevel)
         changed = changed || (chain.first != cheformEl);
         cheformEl = (CHE*)chain.Uncouple(cheformEl);
         formDECL->NestedDecls.Append(cheformEl);
-        typeFlags = classElDecl->TypeFlags;
+        typeFlags = classElDECL->TypeFlags;
 //        typeFlags.EXCL(Overrides);
-        if (typeFlags != formElDecl->TypeFlags) {
-          formElDecl->TypeFlags = typeFlags;
+        if (typeFlags != formElDECL->TypeFlags) {
+          formElDECL->TypeFlags = typeFlags;
           changed = true;
         }
-//      if (formElDecl->DeclDescType == NamedType) {
-          err = CheckFormEl(formElDecl, classElDecl);
+//      if (formElDECL->DeclDescType == NamedType) {
+          err = CheckFormEl(formElDECL, classElDECL);
           if (err) {
-            new CLavaError(&formElDecl->DECLError2, err);
+            new CLavaError(&formElDECL->DECLError2, err);
             new CLavaError(&formDECL->DECLError1, err);
           }
 //      }
@@ -534,27 +535,27 @@ bool CLavaPEDoc::CheckForm(LavaDECL* formDECL, int checkLevel)
         if (!formDECL->inINCL) {
           changed = true;
           UpdateNo++;
-          formElDecl = NewLavaDECL();
-          *formElDecl = *classElDecl;
-          formElDecl->DECLComment.Destroy();
-          formElDecl->RefID.nINCL = IDTable.IDTab[classElDecl->inINCL]->nINCLTrans[classElDecl->RefID.nINCL].nINCL;
-          cheformEl = NewCHE(formElDecl);
+          formElDECL = NewLavaDECL();
+          *formElDECL = *classElDECL;
+          formElDECL->DECLComment.Destroy();
+          formElDECL->RefID.nINCL = IDTable.IDTab[classElDECL->inINCL]->nINCLTrans[classElDECL->RefID.nINCL].nINCL;
+          cheformEl = NewCHE(formElDECL);
           formDECL->NestedDecls.Append(cheformEl);
-          formElDecl->ParentDECL = formDECL;
+          formElDECL->ParentDECL = formDECL;
           if (checkLevel >= CHLV_inUpdateLow) {
             cheID = new CHETID;
-            cheID->data = TID(classElDecl->OwnID, classElDecl->inINCL);
-            formElDecl->SecondTFlags.EXCL(overrides);
-            formElDecl->WorkFlags.EXCL(selAfter);
-            formElDecl->Supports.Destroy();
-            formElDecl->Supports.Append(cheID);  //implements
-            formElDecl->inINCL = 0;
-            formElDecl->OwnID = -1;
-            ((CLavaPEApp*)wxTheApp)->Browser.HasDefaultForm(formElDecl, classElDecl, mySynDef);
+            cheID->data = TID(classElDECL->OwnID, classElDECL->inINCL);
+            formElDECL->SecondTFlags.EXCL(overrides);
+            formElDECL->WorkFlags.EXCL(selAfter);
+            formElDECL->Supports.Destroy();
+            formElDECL->Supports.Append(cheID);  //implements
+            formElDECL->inINCL = 0;
+            formElDECL->OwnID = -1;
+            ((CLavaPEApp*)wxTheApp)->Browser.HasDefaultForm(formElDECL, classElDECL, mySynDef);
             if (checkLevel > CHLV_inUpdateLow) {
               UpdateNo++;
               IDTable.NewID((LavaDECL**)&cheformEl->data);
-              formElDecl->WorkFlags.INCL(newTreeNode);
+              formElDECL->WorkFlags.INCL(newTreeNode);
             }
             if (checkLevel > CHLV_inUpdateHigh)
               modified = true;
@@ -565,13 +566,13 @@ bool CLavaPEDoc::CheckForm(LavaDECL* formDECL, int checkLevel)
     }
     checlassEl = (CHE*)checlassEl->successor;
     if (checlassEl)
-      classElDecl = (LavaDECL*)checlassEl->data;
+      classElDECL = (LavaDECL*)checlassEl->data;
 
   }
   cheformEl = (CHE*)chain.first;
   while (cheformEl) {
-    formElDecl = (LavaDECL*)cheformEl->data;
-    if (formElDecl->DeclType == FormText) {
+    formElDECL = (LavaDECL*)cheformEl->data;
+    if (formElDECL->DeclType == FormText) {
       cheTextEl = cheformEl;
       cheformEl = (CHE*)cheformEl->successor;
       cheTextEl = (CHE*)chain.Uncouple(cheTextEl);
@@ -732,118 +733,119 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
   CHE *cheImplEl, *cheIOEl, *cheI=0, *che, *afterElem = 0;
   TID fID, supID;
   bool toImpl, changed = false, fchanged, found, hasForm = false;
-  LavaDECL *implElDecl, *classElDecl, *classDecl, *formDecl;
+  LavaDECL *implElDECL, *classElDECL, *classDECL, *formDECL;
+  QString cstr;
 
   CHETID* cheIDI = (CHETID*)implDECL->Supports.first;
   if (!cheIDI)
     return false;
-  classDecl = IDTable.GetDECL(cheIDI->data, implDECL->inINCL);
-  if (!classDecl) {
+  classDECL = IDTable.GetDECL(cheIDI->data, implDECL->inINCL);
+  if (!classDECL) {
     new CLavaError(&implDECL->DECLError1, &ERR_NoImplClass);
     return false;
   }
-  if (classDecl->LocalName != implDECL->LocalName) {
+  if (classDECL->LocalName != implDECL->LocalName) {
     changed = true;
-    implDECL->LocalName = classDecl->LocalName;
+    implDECL->LocalName = classDECL->LocalName;
   }
   SynFlags typeFlag = implDECL->TypeFlags;
-  if (classDecl->SecondTFlags.Contains(isChain))
+  if (classDECL->SecondTFlags.Contains(isChain))
     implDECL->SecondTFlags.INCL(isChain);
   else
     implDECL->SecondTFlags.EXCL(isChain);
-  if (classDecl->SecondTFlags.Contains(isEnum))
+  if (classDECL->SecondTFlags.Contains(isEnum))
     implDECL->SecondTFlags.INCL(isEnum);
   else
     implDECL->SecondTFlags.EXCL(isEnum);
-  if (classDecl->TypeFlags.Contains(isAbstract))
+  if (classDECL->TypeFlags.Contains(isAbstract))
     implDECL->TypeFlags.INCL(isAbstract);
   else
     implDECL->TypeFlags.EXCL(isAbstract);
-  if (classDecl->SecondTFlags.Contains(isSet))
+  if (classDECL->SecondTFlags.Contains(isSet))
     implDECL->SecondTFlags.INCL(isSet);
   else
     implDECL->SecondTFlags.EXCL(isSet);
-  if (classDecl->SecondTFlags.Contains(isArray))
+  if (classDECL->SecondTFlags.Contains(isArray))
     implDECL->SecondTFlags.INCL(isArray);
   else
     implDECL->SecondTFlags.EXCL(isArray);
-  if (classDecl->SecondTFlags.Contains(isException))
+  if (classDECL->SecondTFlags.Contains(isGUI))
+    implDECL->SecondTFlags.INCL(isGUI);
+  else
+    implDECL->SecondTFlags.EXCL(isGUI);
+  if (classDECL->SecondTFlags.Contains(isException))
     implDECL->SecondTFlags.INCL(isException);
   else
     implDECL->SecondTFlags.EXCL(isException);
-  if (classDecl->TypeFlags.Contains(isGUI))
-    implDECL->TypeFlags.INCL(isGUI);
-  else
-    implDECL->TypeFlags.EXCL(isGUI);
   changed = changed || (typeFlag != implDECL->TypeFlags);
 
-  cheI = (CHE*)classDecl->NestedDecls.first;
+  cheI = (CHE*)classDECL->NestedDecls.first;
   while (cheI) {
-    classElDecl = (LavaDECL*)cheI->data;
-    toImpl = classElDecl && (classElDecl->DeclType == Function)
-             && !classElDecl->TypeFlags.Contains(isAbstract)
-             && !classElDecl->TypeFlags.Contains(isNative);
+    classElDECL = (LavaDECL*)cheI->data;
+    toImpl = classElDECL && (classElDECL->DeclType == Function)
+             && !classElDECL->TypeFlags.Contains(isAbstract)
+             && !classElDECL->TypeFlags.Contains(isNative);
     if (toImpl) {
-      fID = TID(classElDecl->OwnID, classElDecl->inINCL);
+      fID = TID(classElDECL->OwnID, classElDECL->inINCL);
       cheImplEl = (CHE*)implDECL->NestedDecls.first;
       found = false;
       if (cheImplEl)
-        implElDecl = (LavaDECL*)cheImplEl->data;
+        implElDECL = (LavaDECL*)cheImplEl->data;
       while (cheImplEl && !found) {
-        if ((implElDecl->DeclType == Function)
-             && implElDecl->Supports.first
-             && implElDecl->SecondTFlags.Contains(funcImpl)) {
-          supID = ((CHETID*)implElDecl->Supports.first)->data;
+        if ((implElDECL->DeclType == Function)
+             && implElDECL->Supports.first
+             && implElDECL->SecondTFlags.Contains(funcImpl)) {
+          supID = ((CHETID*)implElDECL->Supports.first)->data;
           supID.nINCL = IDTable.IDTab[implDECL->inINCL]->nINCLTrans[supID.nINCL].nINCL;
           found = (supID == fID);
         }
         if (!found) {
           cheImplEl = (CHE*)cheImplEl->successor;
           if (cheImplEl)
-            implElDecl = (LavaDECL*)cheImplEl->data;
+            implElDECL = (LavaDECL*)cheImplEl->data;
         }
       }
       if (!cheImplEl) { //function not found, then make it
         changed = true;
         UpdateNo++;
-        implElDecl = NewLavaDECL();
-        *implElDecl = *classElDecl;
-        cheIOEl = (CHE*)implElDecl->NestedDecls.first;
+        implElDECL = NewLavaDECL();
+        *implElDECL = *classElDECL;
+        cheIOEl = (CHE*)implElDECL->NestedDecls.first;
         while (cheIOEl) {
           if ((((LavaDECL*)cheIOEl->data)->DeclType == Require) || (((LavaDECL*)cheIOEl->data)->DeclType == Ensure)) {
             che = (CHE*)cheIOEl->successor;
-            implElDecl->NestedDecls.Delete(cheIOEl);
+            implElDECL->NestedDecls.Delete(cheIOEl);
             cheIOEl = che;
           }
           else
             cheIOEl = (CHE*)cheIOEl->successor;
         }
 
-        implElDecl->SecondTFlags.INCL(funcImpl);
-        implElDecl->DECLComment.Destroy();
+        implElDECL->SecondTFlags.INCL(funcImpl);
+        implElDECL->DECLComment.Destroy();
         CHETID* cheID = new CHETID;
         cheID->data = fID;
-        implElDecl->Supports.Destroy();
-        implElDecl->Supports.Append(cheID);  //implements
-        implElDecl->inINCL = 0; //must stay before CheckFuncImpl
-        CheckFuncImpl(implElDecl, CHLV_inUpdateLow, fchanged);
-//        implElDecl->inINCL = 0;
-        implElDecl->OwnID = -1;
-        implElDecl->RefID.nINCL = IDTable.IDTab[classElDecl->inINCL]->nINCLTrans[classElDecl->RefID.nINCL].nINCL;
-        implElDecl->WorkFlags.INCL(checkmark);
-        implElDecl->WorkFlags.EXCL(selAfter);
-        implElDecl->SecondTFlags.EXCL(overrides);
-        cheImplEl = NewCHE(implElDecl);
+        implElDECL->Supports.Destroy();
+        implElDECL->Supports.Append(cheID);  //implements
+        implElDECL->inINCL = 0; //must stay before CheckFuncImpl
+        CheckFuncImpl(implElDECL, CHLV_inUpdateLow, fchanged);
+//        implElDECL->inINCL = 0;
+        implElDECL->OwnID = -1;
+        implElDECL->RefID.nINCL = IDTable.IDTab[classElDECL->inINCL]->nINCLTrans[classElDECL->RefID.nINCL].nINCL;
+        implElDECL->WorkFlags.INCL(checkmark);
+        implElDECL->WorkFlags.EXCL(selAfter);
+        implElDECL->SecondTFlags.EXCL(overrides);
+        cheImplEl = NewCHE(implElDECL);
         if (implDECL->NestedDecls.last && ((LavaDECL*)((CHE*)implDECL->NestedDecls.last)->data)->DeclDescType == ExecDesc)
           implDECL->NestedDecls.Insert(implDECL->NestedDecls.last->predecessor, cheImplEl);
         else
           implDECL->NestedDecls.Append(cheImplEl);
-        GetExecDECL(implElDecl,ExecDef);
-        implElDecl->ParentDECL = implDECL;
+        GetExecDECL(implElDECL,ExecDef);
+        implElDECL->ParentDECL = implDECL;
         if (checkLevel > CHLV_inUpdateLow) {
           UpdateNo++;
           IDTable.NewID((LavaDECL**)&cheImplEl->data);
-          implElDecl->WorkFlags.INCL(newTreeNode);
+          implElDECL->WorkFlags.INCL(newTreeNode);
         }
         if (checkLevel > CHLV_inUpdateHigh)
           modified = true;
@@ -853,44 +855,49 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
       else  {
         fchanged = false;
         if (CheckFuncImpl((LavaDECL*)cheImplEl->data, checkLevel, fchanged))
-          implElDecl->WorkFlags.INCL(checkmark);
+          implElDECL->WorkFlags.INCL(checkmark);
         changed = changed || fchanged;
       }
     }
     cheI = (CHE*)cheI->successor;
   }
-  bool sgs = MakeSetAndGets(implDECL, classDecl, checkLevel);
+  bool sgs = MakeSetAndGets(implDECL, classDECL, checkLevel);
     //set and get functions
   changed = changed || sgs;
-  //fchanged = checkImpls(implDECL, classDecl, checkLevel);
+  //fchanged = checkImpls(implDECL, classDECL, checkLevel);
 
   changed = changed || fchanged;
 
+  if (implDECL->SecondTFlags.Contains(isGUI)
+    && !IDTable.GetDECL(classDECL->RefID, classDECL->inINCL)) {
+    new CLavaError(&implDECL->DECLError1, &ERR_NoIFforForm);
+    return false;
+  }
   cheImplEl = (CHE*)implDECL->NestedDecls.first;
   while (cheImplEl) {
-    implElDecl = (LavaDECL*)cheImplEl->data;
-    if ((implElDecl->DeclType != Function)
-      || implElDecl->WorkFlags.Contains(checkmark) ) {
-      implElDecl->WorkFlags.EXCL(checkmark);
+    implElDECL = (LavaDECL*)cheImplEl->data;
+    if ((implElDECL->DeclType != Function)
+      || implElDECL->WorkFlags.Contains(checkmark) ) {
+      implElDECL->WorkFlags.EXCL(checkmark);
     }
     else {
-      if ((implElDecl->DeclType == Function) && implElDecl->SecondTFlags.Contains(isHandler))
-        if (CheckHandlerIO(implElDecl, 0) < 0)
-          new CLavaError(&implElDecl->DECLError2, &ERR_NoHandlerIO);
+      if ((implElDECL->DeclType == Function) && implElDECL->SecondTFlags.Contains(isHandler))
+        if (CheckHandlerIO(implElDECL, 0) < 0)
+          new CLavaError(&implElDECL->DECLError2, &ERR_NoHandlerIO);
       if (checkLevel == CHLV_fit) {
         changed = true;
         UpdateNo++;
-        implElDecl->SecondTFlags.EXCL(funcImpl);
-        implElDecl->SecondTFlags.EXCL(closed);
-        implElDecl->TypeFlags.EXCL(isProtected);
-        implElDecl->TypeFlags.EXCL(isPropGet);
-        implElDecl->TypeFlags.EXCL(isPropSet);
-        implElDecl->TypeFlags.EXCL(isInitializer);
-        implElDecl->TypeFlags.EXCL(defaultInitializer);
-        implElDecl->Supports.Destroy();
-        if (implElDecl->op != OP_noOp) {
-          implElDecl->LocalName = DString("leaved_from_operator_") + LBaseData->OpFuncNames[((LavaDECL*)cheImplEl->data)->op];
-          implElDecl->op = OP_noOp;
+        implElDECL->SecondTFlags.EXCL(funcImpl);
+        implElDECL->SecondTFlags.EXCL(closed);
+        implElDECL->TypeFlags.EXCL(isProtected);
+        implElDECL->TypeFlags.EXCL(isPropGet);
+        implElDECL->TypeFlags.EXCL(isPropSet);
+        implElDECL->TypeFlags.EXCL(isInitializer);
+        implElDECL->TypeFlags.EXCL(defaultInitializer);
+        implElDECL->Supports.Destroy();
+        if (implElDECL->op != OP_noOp) {
+          implElDECL->LocalName = DString("leaved_from_operator_") + LBaseData->OpFuncNames[((LavaDECL*)cheImplEl->data)->op];
+          implElDECL->op = OP_noOp;
         }
         cheIOEl = (CHE*)((LavaDECL*)cheImplEl->data)->NestedDecls.first;
         while (cheIOEl) {
@@ -903,30 +910,36 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         }
       }
       else
-        if (implElDecl->SecondTFlags.Contains(funcImpl) ) {
-          if (implElDecl->TypeFlags.Contains(isPropGet) || implElDecl->TypeFlags.Contains(isPropSet)) {
-            classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
-            if (classElDecl && !classElDecl->TypeFlags.Contains(hasSetGet))
-              new CLavaError(&implElDecl->DECLError2, &ERR_NoSetGetMember);
+        if (implElDECL->SecondTFlags.Contains(funcImpl) ) {
+          if (implElDECL->TypeFlags.Contains(isPropGet) || implElDECL->TypeFlags.Contains(isPropSet)) {
+            classElDECL = IDTable.GetDECL(((CHETID*)implElDECL->Supports.first)->data, implElDECL->inINCL);
+            if (classElDECL && !classElDECL->TypeFlags.Contains(hasSetGet))
+              new CLavaError(&implElDECL->DECLError2, &ERR_NoSetGetMember);
             else
               if (checkLevel == CHLV_showError)
-                new CLavaError(&implElDecl->DECLError2, &ERR_MissingItfFuncDecl);
+                new CLavaError(&implElDECL->DECLError2, &ERR_MissingItfFuncDecl);
           }
           else {
-            classElDecl = IDTable.GetDECL(((CHETID*)implElDecl->Supports.first)->data, implElDecl->inINCL);
-            if (classElDecl) {
+            classElDECL = IDTable.GetDECL(((CHETID*)implElDECL->Supports.first)->data, implElDECL->inINCL);
+            if (classElDECL) {
               if (checkLevel == CHLV_showError)
-                new CLavaError(&implElDecl->DECLError2, &ERR_NoImplForAbstract);
+                new CLavaError(&implElDECL->DECLError2, &ERR_NoImplForAbstract);
             }
             else
               if (checkLevel == CHLV_showError)
-                new CLavaError(&implElDecl->DECLError2, &ERR_MissingItfFuncDecl);
+                new CLavaError(&implElDECL->DECLError2, &ERR_MissingItfFuncDecl);
           }
         }
     }
     cheImplEl = (CHE*)cheImplEl->successor;
   }
-  if (implDECL->TypeFlags.Contains(isGUI)) {
+  if (implDECL->SecondTFlags.Contains(isGUI)) {
+    //fID.nID = -1;
+    //IDTable.GetParamID(classDECL, fID, isGUI);
+    if (classDECL->RefID.nID < 0) {
+      implDECL->SecondTFlags.EXCL(isGUI);
+      return true;
+    }
     cheImplEl = (CHE*)implDECL->NestedDecls.first;
     while (cheImplEl && !hasForm) {
       if (((LavaDECL*)cheImplEl->data)->DeclType == VirtualType)
@@ -935,19 +948,33 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         hasForm = ((LavaDECL*)cheImplEl->data)->DeclType == FormDef;
       cheImplEl = (CHE*)cheImplEl->successor;
     }
+    if (hasForm && !IDTable.EQEQ(implDECL->RefID, implDECL->inINCL, classDECL->RefID, classDECL->inINCL)) {
+      cstr = "DATATYPE of GUI-interface differs from DATATYPE in form declaration of GUI-implementation.\n"
+             "Click \"yes\" to replace the form declaration.";
+      if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Cancel) {
+        if (checkLevel == CHLV_showError) 
+          new CLavaError(&implDECL->DECLError1, &ERR_CorruptForm2);
+        return true;
+      }
+      implDECL->NestedDecls.Delete(afterElem->successor);
+      hasForm = false;
+      changed = true;
+    }
     if (!hasForm) {
+      implDECL->OwnID = classDECL->OwnID;
+      implDECL->RefID.nINCL = IDTable.IDTab[classDECL->inINCL]->nINCLTrans[classDECL->RefID.nINCL].nINCL;
       if (checkLevel >= CHLV_inUpdateLow) {
         changed = true;
         UpdateNo++;
-        formDecl = NewLavaDECL();
+        formDECL = NewLavaDECL();
         if (IDTable.GetDECL(implDECL->RefID, implDECL->inINCL)) {
-          formDecl->DeclType = FormDef;
-          formDecl->ParentDECL = implDECL;
-          formDecl->LocalName = implDECL->LocalName + DString("_UI");
-          formDecl->FullName = implDECL->FullName + pkt + formDecl->LocalName;
-          formDecl->RefID = implDECL->RefID;
-          CheckForm(formDecl, CHLV_inUpdateLow);
-          che = NewCHE(formDecl);
+          formDECL->DeclType = FormDef;
+          formDECL->ParentDECL = implDECL;
+          formDECL->LocalName = implDECL->LocalName + DString("_UI");
+          formDECL->FullName = implDECL->FullName + pkt + formDECL->LocalName;
+          formDECL->RefID = implDECL->RefID;
+          CheckForm(formDECL, CHLV_inUpdateLow);
+          che = NewCHE(formDECL);
           implDECL->NestedDecls.Insert(afterElem, che);
         }
         else {
@@ -2039,7 +2066,7 @@ bool CLavaPEDoc::MakeFormVT(LavaDECL *decl, CheckData* )
       guibaseDECL = IDTable.GetDECL(cheID->data, decl->inINCL);
       if (!guibaseDECL)
         return false;
-      if (guibaseDECL->TypeFlags.Contains(isGUI)) {
+      if (guibaseDECL->SecondTFlags.Contains(isGUI) && (guibaseDECL->fromBType == NonBasic)) {
         PbaseFDECL = GetFormpDECL(guibaseDECL);
         if (PbaseFDECL && *PbaseFDECL) {
           ok = MakeFormVT(*PbaseFDECL);
@@ -2146,7 +2173,7 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
   if (!startpos)
     firstlast.INCL(firstHint);
   if (relDECL->DeclType == Interface) {
-    if (relDECL->TypeFlags.Contains(isGUI))
+    if (relDECL->SecondTFlags.Contains(isGUI))
       return relDECL;
     if (isStd || (relDECL->inINCL == 1))
       return 0;
@@ -2197,7 +2224,7 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
   GUIimpl->FullName = GUIinterface->FullName;
   GUIimpl->LocalName = GUIinterface->LocalName;
   GUIinterface->ParentDECL->TreeFlags.INCL(DefsExpanded);
-  MakeGUIFuncs(GUIinterface);
+//  MakeGUIFuncs(GUIinterface);
 
   name = new DString(GUIinterface->FullName);
   hint = new CLavaPEHint(CPECommand_Insert, this, firstlast,  GUIinterface,
@@ -2209,11 +2236,11 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
   cheID = new CHETID;
   cheID->data = TID(GUIinterface->OwnID, GUIinterface->inINCL);
   GUIimpl->Supports.Append(cheID);
-  GUIimpl->TypeFlags.INCL(isGUI);
+  GUIimpl->SecondTFlags.INCL(isGUI);
   for (cheID = (CHETID*)interdecl->Supports.first;
        cheID; cheID = (CHETID*)cheID->successor) {
     FormDecl = IDTable.GetDECL(cheID->data, interdecl->inINCL);
-    if (!FormDecl->TypeFlags.Contains(isGUI)) {
+    if (!FormDecl->SecondTFlags.Contains(isGUI)) {
       CFindLikeForm *fLike = new CFindLikeForm(mySynDef, cheID->data, interdecl->inINCL, GUIinterface);
       if (fLike->pdecl && *fLike->pdecl)
         FormDecl = IDTable.GetDECL(((CHETID*)(*fLike->pdecl)->ParentDECL->Supports.first)->data,(*fLike->pdecl)->inINCL);
@@ -2287,7 +2314,7 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
   return GUIinterface;
 }
 
-
+/*
 void CLavaPEDoc::MakeGUIFuncs(LavaDECL* guiInterface)
 {
   LavaDECL *interdecl, *fdecl, *IOdecl;
@@ -2352,6 +2379,7 @@ void CLavaPEDoc::MakeGUIFuncs(LavaDECL* guiInterface)
 
   guiInterface->TypeFlags.INCL(isGUI);
 }
+*/
 
 void CLavaPEDoc::MakeIniFunc(LavaDECL* ifDECL)
 {
@@ -2693,15 +2721,15 @@ LavaDECL* CLavaPEDoc::MakeSet(const TID& setID, LavaDECL* decl)
   return setDECL;
 }
 
-bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int checkLevel)
+bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDECL, int checkLevel)
 {
   LavaDECL *ifaceElDecl, *newimplElDecl;
   CHE *cheImplEl, *cheI=0, *cheImpl=0;
   bool toImpl, changed = false;
-  CHETVElem *El = (CHETVElem*)classDecl->VElems.VElems.first;
+  CHETVElem *El = (CHETVElem*)classDECL->VElems.VElems.first;
   cheImpl = (CHE*)implDECL->NestedDecls.first;
   if (!El) {
-    cheI = (CHE*)classDecl->NestedDecls.first;
+    cheI = (CHE*)classDECL->NestedDecls.first;
     if (!cheI) {
       cheI = cheImpl;
       cheImpl = 0;
@@ -2759,7 +2787,7 @@ bool CLavaPEDoc::MakeSetAndGets(LavaDECL* implDECL, LavaDECL* classDecl, int che
     if (El) {
       El = (CHETVElem*)El->successor;
       if (!El) {
-        cheI = (CHE*)classDecl->NestedDecls.first;
+        cheI = (CHE*)classDECL->NestedDecls.first;
         if (!cheI) {
           cheI = cheImpl;
           cheImpl = 0;
@@ -2886,9 +2914,10 @@ bool CLavaPEDoc::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
       }
     }
     else
-      if (( elDecl->DeclType == Function) && elDecl->TypeFlags.Contains(isGUI)) {
+      
+      if (( elDecl->DeclType == Function) && elDecl->SecondTFlags.Contains(isGUI)) {
         for (El = (CHETVElem*)classDECL->VElems.VElems.first;
-             El && !El->data.TypeFlags.Contains(isGUI);
+             El && !El->data.TypeFlags.Contains(oldIsGUI);
              El = (CHETVElem*)El->successor);
         if (El) {
           if (El->data.TypeFlags.Contains(isGUIEdit))
@@ -2903,6 +2932,7 @@ bool CLavaPEDoc::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
           El->data.ok = true;
         }
       }
+      
     if (isNSp && (elDecl->DeclType != VirtualType))
       cheDecl = 0;
     else
@@ -2915,7 +2945,7 @@ bool CLavaPEDoc::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
         || ( elDecl->DeclType == Function) && !elDecl->TypeFlags.Contains(isStatic)
         || ( elDecl->DeclType == Attr))
         && !elDecl->Supports.first
-        && (GUInew || !elDecl->TypeFlags.Contains(isGUI))
+        && (GUInew || !elDecl->TypeFlags.Contains(oldIsGUI))
         && (GUInewE || !elDecl->TypeFlags.Contains(isGUIEdit))) {
       El = new CHETVElem;
       El->data.VTClss = declID;
@@ -3499,6 +3529,7 @@ void CLavaPEDoc::SetExecItemImage(LavaDECL* execDECL, bool empty, bool hasErrors
   if (item) {
     item->setPixmapIndex(bm);
     item->SetItemMask(hasErrors, hasCom);
+    item->treeWidget()->update();
 //    item->repaint();
   }
 }
@@ -3674,7 +3705,7 @@ void CLavaPEDoc::SetNameText(LavaDECL* inDecl, CFindData& fw)//const DString& ab
       putIt = true;
       break;
     case Interface:
-      if (inDecl->TypeFlags.Contains(isGUI))
+      if (inDecl->SecondTFlags.Contains(isGUI))
         barText += DString("GUI service interface ");
       else
         barText += DString("Interface ");

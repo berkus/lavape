@@ -87,8 +87,9 @@ static TAdapterFunc ArrayAdapter[LAH + 4];
 static TAdapterFunc ExceptionAdapter[LAH + 3];
 static TAdapterFunc HW_L_ExceptionAdapter[LAH ];
 static TAdapterFunc LinkAdapter[LAH ];
+/*static*/ TAdapterFunc GUIAdapter[LAH + 3];
 
-static TAdapterFunc ServiceAdapter[LAH ];
+//static TAdapterFunc ServiceAdapter[LAH ];
 
 bool DefaultEq(CheckData& /*ckd*/, LavaVariablePtr /*stack*/)
 {
@@ -1979,9 +1980,20 @@ void MakeStdAdapter()
   HW_L_ExceptionAdapter[1] = 0;
   HW_L_ExceptionAdapter[2] = DefaultEq;
   HW_L_ExceptionAdapter[3] = 0;
-  HW_L_ExceptionAdapter[4] = 0;
-  HW_L_ExceptionAdapter[5] = 0;
-  HW_L_ExceptionAdapter[6] = 0;
+  HW_L_ExceptionAdapter[4] = 0;  
+  HW_L_ExceptionAdapter[5] = 0;  
+  HW_L_ExceptionAdapter[6] = 0; 
+
+  GUIAdapter[0] = 0;
+  GUIAdapter[1] = 0;
+  GUIAdapter[2] = 0; 
+  GUIAdapter[3] = 0;
+  GUIAdapter[4] = 0;
+  GUIAdapter[5] = 0; 
+  GUIAdapter[6] = 0;
+  //GUIAdapter[LAH] = &GUIData; implemented in LavaProgram
+  //GUIAdapter[LAH+1] = &GUIEdit; implemented in LavaProgram
+  //GUIAdapter[LAH+2] = &GUIFillOut; implemented in LavaProgram
 
   StdAdapterTab[B_Object]     = &ObjectAdapter[0];
   StdAdapterTab[Bitset]       = &BitsetAdapter[0];
@@ -2000,5 +2012,6 @@ void MakeStdAdapter()
   StdAdapterTab[B_Exception]  = &ExceptionAdapter[0];
   StdAdapterTab[B_HWException]= &HW_L_ExceptionAdapter[0];
   StdAdapterTab[B_RTException] = &HW_L_ExceptionAdapter[0];
+  StdAdapterTab[B_GUI] = &GUIAdapter[0];
 
 }

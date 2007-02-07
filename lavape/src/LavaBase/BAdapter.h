@@ -9,6 +9,7 @@ adapterPos_refCount, adapterPos_DD};
 typedef LAVABASE_DLL TAdapterFunc* (*FP)();
 
 extern LAVABASE_DLL TAdapterFunc* StdAdapterTab [];
+extern LAVABASE_DLL TAdapterFunc GUIAdapter[];
 
 //extern LAVABASE_DLL LavaDECL* DECLTab [];
 extern LAVABASE_DLL void NewQString(QString* pstr, const char* str);

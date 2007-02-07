@@ -1444,12 +1444,12 @@ int CLavaPEView::GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const 
     else
       return 3;//((CLavaPEApp*)wxTheApp)->LavaIcons[3];
   case Impl:
-    if (flag.Contains(isGUI))
+    if (flag.Contains(GUIPM))
       return 30;//((CLavaPEApp*)wxTheApp)->LavaIcons[30];
     else
       return 4;//((CLavaPEApp*)wxTheApp)->LavaIcons[4];
   case Interface:
-    if (flag.Contains(isSet))
+    if (flag.Contains(SetPM))
       if (isAttr)
         return 29;//((CLavaPEApp*)wxTheApp)->LavaIcons[29];
       else
@@ -1458,7 +1458,7 @@ int CLavaPEView::GetPixmap(bool isParent, bool isAttr, TDeclType deftype, const 
       if (isAttr)
         return 5;//((CLavaPEApp*)wxTheApp)->LavaIcons[5];
       else
-        if (flag.Contains(isGUI))
+        if (flag.Contains(GUIPM))
           return 13;//((CLavaPEApp*)wxTheApp)->LavaIcons[13];
         else
           return 6;//((CLavaPEApp*)wxTheApp)->LavaIcons[6];
@@ -2463,193 +2463,193 @@ void CLavaPEView::OnDropPost(void* act)
   CMainItemData* itemDat;
   Qt::DropAction action = (Qt::DropAction)(int)act;
 
-      declClip =  (LavaDECL*)Clipdata->synEl;
-      clipDefType = declClip->DeclType;
-      fn = GetDocument()->GetAbsSynFileName();
-      canDrag = (fn == *Clipdata->docPathName);
-      if (canDrag) {
-        //dragView = (CLavaPEView*)GetDocument()->DragView;
-        itemDragParent = (CTreeItem*)/*dragView->*/m_hitemDrag->parent();
-        if (//(this == dragView) &&
-          ((m_hitemDrop == m_hitemDrag)
-          || (CollectPos == 1) && (m_hitemDrop == itemDragParent)
-          || (m_hitemDrop == GetPrevSiblingItem(m_hitemDrag) ))) {
-          m_hitemDrop = 0;
-          m_hitemDrag = 0;
-          if (CollectDECL)
-            DeleteDragChain();
-          return;
+  declClip =  (LavaDECL*)Clipdata->synEl;
+  clipDefType = declClip->DeclType;
+  fn = GetDocument()->GetAbsSynFileName();
+  canDrag = (fn == *Clipdata->docPathName);
+  if (canDrag) {
+    //dragView = (CLavaPEView*)GetDocument()->DragView;
+    itemDragParent = (CTreeItem*)/*dragView->*/m_hitemDrag->parent();
+    if (//(this == dragView) &&
+      ((m_hitemDrop == m_hitemDrag)
+      || (CollectPos == 1) && (m_hitemDrop == itemDragParent)
+      || (m_hitemDrop == GetPrevSiblingItem(m_hitemDrag) ))) {
+      m_hitemDrop = 0;
+      m_hitemDrag = 0;
+      if (CollectDECL)
+        DeleteDragChain();
+      return;
+    }
+    dragParent = /**dragView->*/*pDeclDragP;
+  }
+  else
+    if (!canDrag)
+      declClip->inINCL = 10000;
+  ddrop = (CMainItemData*)m_hitemDrop->getItemData();
+  dropType = ddrop->type;
+  canDrop = true;
+  dropDECL = *(LavaDECL**)ddrop->synEl;
+  if (RefacCase == noRefac)  {
+    pasteType = CanPaste(clipDefType, declClip->TreeFlags, declClip->SecondTFlags, m_hitemDrop);
+    if (pasteType != TIType_NoType) {
+      if ((clipDefType == DragIO) || (clipDefType == DragFeature) ) {
+        TDeclType elType;
+        switch (pasteType) {
+        case TIType_Features:
+          elType = Attr;
+          break;
+        case TIType_Input:
+          elType = IAttr;
+          break;
+        case TIType_Output:
+          elType = OAttr;
+          break;
+        default: ;
         }
-        dragParent = /**dragView->*/*pDeclDragP;
-      }
-      else
-        if (!canDrag)
-          declClip->inINCL = 10000;
-      ddrop = (CMainItemData*)m_hitemDrop->getItemData();
-      dropType = ddrop->type;
-      canDrop = true;
-      dropDECL = *(LavaDECL**)ddrop->synEl;
-      if (RefacCase == noRefac)  {
-        pasteType = CanPaste(clipDefType, declClip->TreeFlags, declClip->SecondTFlags, m_hitemDrop);
-        if (pasteType != TIType_NoType) {
-          if ((clipDefType == DragIO) || (clipDefType == DragFeature) ) {
-            TDeclType elType;
-            switch (pasteType) {
-            case TIType_Features:
-              elType = Attr;
-              break;
-            case TIType_Input:
-              elType = IAttr;
-              break;
-            case TIType_Output:
-              elType = OAttr;
-              break;
-            default: ;
-            }
-            che = (CHE*)declClip->NestedDecls.first;
-            while (che) {
-              if ((((LavaDECL*)che->data)->DeclType != Attr) && (elType == Attr))
-                ((LavaDECL*)che->data)->TypeFlags = SET(acquaintance, -1);
-              ((LavaDECL*)che->data)->DeclType = elType;
-              che = (CHE*)che->successor;
-            }
-          }
+        che = (CHE*)declClip->NestedDecls.first;
+        while (che) {
+          if ((((LavaDECL*)che->data)->DeclType != Attr) && (elType == Attr))
+            ((LavaDECL*)che->data)->TypeFlags = SET(acquaintance, -1);
+          ((LavaDECL*)che->data)->DeclType = elType;
+          che = (CHE*)che->successor;
         }
       }
-      else {
-        if (action == Qt::MoveAction)
-          canDrop = Refac(dropDECL, mdh, vtHints);
-      }
+    }
+  }
+  else {
+    if (action == Qt::MoveAction)
+      canDrop = Refac(dropDECL, mdh, vtHints);
+  }
 
-      if (canDrag && canDrop) {
-        if (CollectDECL) {
-          if (CollectDECL->DeclType == DragEnum) {
-            hint = ChangeEnum(CollectDECL, m_hitemDrop, action == Qt::MoveAction, true);
-            GetDocument()->hasHint = true;
-            Clipdata->docPathName = 0;
-            m_hitemDrag = 0;
-            if (hint) {
-              hint->FirstLast.EXCL(lastHint);
-              GetDocument()->UndoMem.AddToMem(hint);
-              GetDocument()->UpdateDoc(this, false, hint);
-              GetDocument()->ConcernForms(hint);
-              GetDocument()->ConcernExecs(hint);
-              m_hitemDrop = 0;
-              GetDocument()->SetLastHint();
-            }
-            ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = false;
-            return;
-          }
-          else {
-            if (action == Qt::MoveAction) {
-              d4 = ((CMainItemData*)itemDragParent->getItemData())->synEl;
-              if (GetDocument()->hasHint)
-                d4 = (void*)GetDocument()->IDTable.GetVar(TID((*(LavaDECL**)d4)->OwnID,0),idType);
-              if (CollectDECL->FullName.l)
-                str2 = new DString(CollectDECL->FullName);
-              else
-                str2 = 0;
-              FIRSTLAST(GetDocument(), firstlast);
-              if (mdh)
-                firstlast.INCL(multiDocHint);
-              hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), firstlast, /*dragView->*/CollectDECL, str2, /*dragView->*/(void*)CollectPos, d4, dropDECL->ParentDECL,0,0, (void*)RefacCase);
-              GetDocument()->UpdateDoc(this, false, hint);
-              //drawTree = true;
-              //DrawTree(p_myDECL, false, false);
-              GetDocument()->UpdateNo++; //the virtual tables are calculated in DrawTree
-              hasDragged = true;
-              delete hint; //??
-            }
-          }
-        }
-      }//canDrag && canDrop
-      if (canDrop) {
-        if (clipDefType == DragEnum) {
-          hint = ChangeEnum(declClip, m_hitemDrop, false, true);
+  if (canDrag && canDrop) {
+    if (CollectDECL) {
+      if (CollectDECL->DeclType == DragEnum) {
+        hint = ChangeEnum(CollectDECL, m_hitemDrop, action == Qt::MoveAction, true);
+        GetDocument()->hasHint = true;
+        Clipdata->docPathName = 0;
+        m_hitemDrag = 0;
+        if (hint) {
           hint->FirstLast.EXCL(lastHint);
           GetDocument()->UndoMem.AddToMem(hint);
+          GetDocument()->UpdateDoc(this, false, hint);
+          GetDocument()->ConcernForms(hint);
+          GetDocument()->ConcernExecs(hint);
+          m_hitemDrop = 0;
+          GetDocument()->SetLastHint();
         }
-        else {
-          if (dropType == TIType_DECL) {
-            pos = GetPos(0, m_hitemDrop);
-            itemDropP = (CTreeItem*)m_hitemDrop->parent();
-            if (hasDragged && (itemDropP == itemDragParent)) {
-              if (pos > CollectPos) {
-                for (che = (CHE*)declClip->NestedDecls.first; che; che = (CHE*)che->successor)
-                  pos--;
-              }
-            }
-            itemDat = (CMainItemData*)itemDropP->getItemData();
-            d4 = itemDat->synEl;
-          }
-          else {
-            //as child inserted
-            pos = GetPos(0, 0);
-            d4 = ((CMainItemData*)m_hitemDrop->getItemData())->synEl;
-          }
+        ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = false;
+        return;
+      }
+      else {
+        if (action == Qt::MoveAction) {
+          d4 = ((CMainItemData*)itemDragParent->getItemData())->synEl;
           if (GetDocument()->hasHint)
             d4 = (void*)GetDocument()->IDTable.GetVar(TID((*(LavaDECL**)d4)->OwnID,0),idType);
-          if ((*(LavaDECL**)d4)->FullName.l) {
-            str2 = new DString( (*(LavaDECL**)d4)->FullName);
-            declClip->FullName = *str2;
-          }
-          else {
+          if (CollectDECL->FullName.l)
+            str2 = new DString(CollectDECL->FullName);
+          else
             str2 = 0;
-            declClip->FullName.Reset(0);
-          }
-          if (action == Qt::MoveAction)
-            com = CPECommand_Move;
-          else
-            com = CPECommand_Insert;
-          void *d6 = 0;
-          if (!canDrag || mdh)
-            d6 = Clipdata->ClipTree;
-          if (!canDrag && (action == Qt::MoveAction) || mdh) {
-            firstlast.INCL(multiDocHint);
-            if (RefacCase == noRefac)
-              ((CLavaPEApp*)wxTheApp)->LBaseData.MultiUndoMem.StartMultiDocUpdate();
-          }
           FIRSTLAST(GetDocument(), firstlast);
-          hint = new CLavaPEHint(com, GetDocument(), firstlast, declClip, str2, (void*)pos, d4, dragParent,
-                                d6, Clipdata->docPathName, (void*)RefacCase);
-          delHint = hint;
-          Clipdata->ClipTree = 0;
+          if (mdh)
+            firstlast.INCL(multiDocHint);
+          hint = new CLavaPEHint(CPECommand_Delete, GetDocument(), firstlast, /*dragView->*/CollectDECL, str2, /*dragView->*/(void*)CollectPos, d4, dropDECL->ParentDECL,0,0, (void*)RefacCase);
+          GetDocument()->UpdateDoc(this, false, hint);
+          //drawTree = true;
+          //DrawTree(p_myDECL, false, false);
+          GetDocument()->UpdateNo++; //the virtual tables are calculated in DrawTree
+          hasDragged = true;
+          delete hint; //??
         }
-        Clipdata->docPathName = 0;
-        if (canDrag)
-          m_hitemDrag = 0;
-        m_hitemDrop = 0;
-        GetDocument()->UpdateDoc(this, false, hint);
-        while(vtHints) {
-          hint = (CLavaPEHint*)vtHints->data;
-          if (DragDoc != GetDocument())
-            GetDocument()->IDTable.ChangeIDFromTab(((CHETID*)((LavaDECL*)hint->CommandData1)->Supports.first)->data.nID);
-          FIRSTLAST(hint->fromDoc, firstlast);
-          hint->FirstLast = firstlast;
-          ((CLavaPEDoc*)hint->fromDoc)->UndoMem.AddToMem(hint);
-          ((CLavaPEDoc*)hint->fromDoc)->UpdateDoc(this, false, hint);
-          che = (CHE*)vtHints->successor;
-          vtHints->data = 0;
-          delete vtHints;
-          vtHints = che;
+      }
+    }
+  }//canDrag && canDrop
+  if (canDrop) {
+    if (clipDefType == DragEnum) {
+      hint = ChangeEnum(declClip, m_hitemDrop, false, true);
+      hint->FirstLast.EXCL(lastHint);
+      GetDocument()->UndoMem.AddToMem(hint);
+    }
+    else {
+      if (dropType == TIType_DECL) {
+        pos = GetPos(0, m_hitemDrop);
+        itemDropP = (CTreeItem*)m_hitemDrop->parent();
+        if (hasDragged && (itemDropP == itemDragParent)) {
+          if (pos > CollectPos) {
+            for (che = (CHE*)declClip->NestedDecls.first; che; che = (CHE*)che->successor)
+              pos--;
+          }
         }
-        if ((clipDefType == DragIO) || (clipDefType == DragEnum) )
-          GetDocument()->ConcernForms(hint);
-        if ((clipDefType == DragIO) || (clipDefType == DragFeatureF) && (com == CPECommand_Insert))
-          if (d4)
-            GetDocument()->ConcernImpls(hint, *(LavaDECL**)d4);
-          else
-            GetDocument()->ConcernImpls(hint, 0);
-        GetDocument()->ConcernExecs(hint);
-        if (RefacCase == publicToPriv)
-          GetDocument()->SetCom8();
-        if (RefacCase == privToPublic)
-          DragDoc->SetCom8();
-        GetDocument()->SetLastHints(true, (action == Qt::MoveAction) || !hasDragged
-                              || (RefacCase != privToPublic) && (RefacCase != noRefac));
-        if (delHint)
-          delete delHint;
-      }//canDrop
+        itemDat = (CMainItemData*)itemDropP->getItemData();
+        d4 = itemDat->synEl;
+      }
+      else {
+        //as child inserted
+        pos = GetPos(0, 0);
+        d4 = ((CMainItemData*)m_hitemDrop->getItemData())->synEl;
+      }
+      if (GetDocument()->hasHint)
+        d4 = (void*)GetDocument()->IDTable.GetVar(TID((*(LavaDECL**)d4)->OwnID,0),idType);
+      if ((*(LavaDECL**)d4)->FullName.l) {
+        str2 = new DString( (*(LavaDECL**)d4)->FullName);
+        declClip->FullName = *str2;
+      }
+      else {
+        str2 = 0;
+        declClip->FullName.Reset(0);
+      }
+      if (action == Qt::MoveAction)
+        com = CPECommand_Move;
+      else
+        com = CPECommand_Insert;
+      void *d6 = 0;
+      if (!canDrag || mdh)
+        d6 = Clipdata->ClipTree;
+      if (!canDrag && (action == Qt::MoveAction) || mdh) {
+        firstlast.INCL(multiDocHint);
+        if (RefacCase == noRefac)
+          ((CLavaPEApp*)wxTheApp)->LBaseData.MultiUndoMem.StartMultiDocUpdate();
+      }
+      FIRSTLAST(GetDocument(), firstlast);
+      hint = new CLavaPEHint(com, GetDocument(), firstlast, declClip, str2, (void*)pos, d4, dragParent,
+                            d6, Clipdata->docPathName, (void*)RefacCase);
+      delHint = hint;
+      Clipdata->ClipTree = 0;
+    }
+    Clipdata->docPathName = 0;
+    if (canDrag)
+      m_hitemDrag = 0;
+    m_hitemDrop = 0;
+    GetDocument()->UpdateDoc(this, false, hint);
+    while(vtHints) {
+      hint = (CLavaPEHint*)vtHints->data;
+      if (DragDoc != GetDocument())
+        GetDocument()->IDTable.ChangeIDFromTab(((CHETID*)((LavaDECL*)hint->CommandData1)->Supports.first)->data.nID);
+      FIRSTLAST(hint->fromDoc, firstlast);
+      hint->FirstLast = firstlast;
+      ((CLavaPEDoc*)hint->fromDoc)->UndoMem.AddToMem(hint);
+      ((CLavaPEDoc*)hint->fromDoc)->UpdateDoc(this, false, hint);
+      che = (CHE*)vtHints->successor;
+      vtHints->data = 0;
+      delete vtHints;
+      vtHints = che;
+    }
+    if ((clipDefType == DragIO) || (clipDefType == DragEnum) )
+      GetDocument()->ConcernForms(hint);
+    if ((clipDefType == DragIO) || (clipDefType == DragFeatureF) && (com == CPECommand_Insert))
+      if (d4)
+        GetDocument()->ConcernImpls(hint, *(LavaDECL**)d4);
+      else
+        GetDocument()->ConcernImpls(hint, 0);
+    GetDocument()->ConcernExecs(hint);
+    if (RefacCase == publicToPriv)
+      GetDocument()->SetCom8();
+    if (RefacCase == privToPublic)
+      DragDoc->SetCom8();
+    GetDocument()->SetLastHints(true, (action == Qt::MoveAction) || !hasDragged
+                          || (RefacCase != privToPublic) && (RefacCase != noRefac));
+    if (delHint)
+      delete delHint;
+  }//canDrop
 //--    }
 //--  }
   ((CLavaPEApp*)wxTheApp)->LBaseData.inMultiDocUpdate = false;
@@ -3446,7 +3446,7 @@ void CLavaPEView::OnShowSpecialView(TDeclType exprType)
   else {
     if ((itd->type == TIType_DECL)
         && (((*(LavaDECL**)itd->synEl)->DeclType == Impl)
-       && (*(LavaDECL**)itd->synEl)->TypeFlags.Contains(isGUI)
+       && (*(LavaDECL**)itd->synEl)->SecondTFlags.Contains(isGUI)
           || ((*(LavaDECL**)itd->synEl)->DeclType == FormDef)))
         hasView = GetDocument()->OpenGUIView((LavaDECL**)itd->synEl);
   }
@@ -3782,6 +3782,7 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
             clipElDECL->TypeFlags.EXCL(isNative);
             clipElDECL->TypeFlags.EXCL(defaultInitializer);
             */
+            clipElDECL->TypeFlags.INCL(forceOverride);
             clipElDECL->WorkFlags.INCL(skipOnCopy);
             dropDECL->WorkFlags.INCL(skipOnDeleteID);
             str2 = new DString(dropParent->FullName);
@@ -5280,8 +5281,8 @@ void CLavaPEView::OnUpdateMakeGUI(QAction* action)
     }
     if (DECL && (DECL->DeclType == Interface)
           && !DECL->TypeFlags.Contains(isAbstract)
-          && (!DECL->TypeFlags.Contains(isGUI)
-              || DECL->DeclType == FormDef)) {
+          /*&& (!DECL->TypeFlags.Contains(isGUI)
+              || (DECL->DeclType == FormDef)*/) {
       GetDocument()->IDTable.GetPattern(DECL, context);
       action->setEnabled(!context.oContext || (context.oContext == DECL));
       return;
@@ -5399,7 +5400,7 @@ void CLavaPEView::OnUpdateShowformview(QAction* action)
   else
     enable = (DataSel->type == TIType_DECL)
                  && ((*(LavaDECL**)DataSel->synEl)->DeclType == Impl)
-                 && (*(LavaDECL**)DataSel->synEl)->TypeFlags.Contains(isGUI);
+                 && (*(LavaDECL**)DataSel->synEl)->SecondTFlags.Contains(isGUI);
   action->setEnabled(enable);
 }
 
@@ -5434,7 +5435,7 @@ QString CLavaPEView::text(const QPoint &point) {
       return QString(QObject::tr("<p>This is a <a href=\"../Packages.htm#initiator\">main program</a>"
         " (= <font color=\"red\"><b><i>Lava</i></b></font> main program)</p>"));
     case Interface:
-      if (itemDECL->TypeFlags.Contains(isGUI))
+      if (itemDECL->SecondTFlags.Contains(isGUI))
         return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> interface "
           "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> interface</p>"));
       else if (itemDECL->SecondTFlags.Contains(isChain)
@@ -5449,7 +5450,7 @@ QString CLavaPEView::text(const QPoint &point) {
       return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> implementation "
         "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> interface</p>"));
     case Impl:
-      if (itemDECL->TypeFlags.Contains(isGUI))
+      if (itemDECL->SecondTFlags.Contains(isGUI))
         return QString(QObject::tr("<p>This is a <a href=\"../EditForm.htm#GUI\">GUI service</a> implementation "
           "generated from a regular <font color=\"red\"><b><i>Lava</i></b></font> interface</p>"));
       else

@@ -348,7 +348,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
           elDECL->SecondTFlags.EXCL(funcImpl);
           elDECL->TypeFlags.EXCL(isProtected);
           elDECL->TypeFlags.EXCL(isAbstract);
-          elDECL->TypeFlags.EXCL(forceOverride);
+          //elDECL->TypeFlags.EXCL(forceOverride);
           elDECL->TypeFlags.EXCL(isNative);
           elDECL->TypeFlags.EXCL(defaultInitializer);
         }
