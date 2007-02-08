@@ -48,7 +48,7 @@ void SynObject::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *
 void EnumConst::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp) {
   ENTRY
 
-  visitor.VisitSynObject(this,parent,where,chxp);
+  visitor.VisitEnumConst(this,parent,where,chxp);
 }
 
 void Parameter::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp)

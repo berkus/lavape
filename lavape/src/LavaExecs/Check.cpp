@@ -5669,15 +5669,17 @@ bool IgnoreStatement::Check (CheckData &ckd)
       obj = (ObjReference*)opd;
       if (obj->refIDs.first != obj->refIDs.last) {
         obj->SetError(ckd,&ERR_IgnoreInputsOnly);
-        ERROREXIT
+        ok = false;
+        continue;
       }
       if (((TDOD*)((CHE*)obj->refIDs.first)->data)->fieldDecl->TypeFlags.Contains(isOptional)) {
         obj->SetError(ckd,&ERR_IgnoreMandatoryOnly);
-        ERROREXIT
+        ok = false;
+        continue;
       }
       for (prevChp = (CHE*)igVars.first;
-           prevChp != chp;
-           prevChp = (CHE*)chp->successor) {
+           prevChp && prevChp != chp;
+           prevChp = (CHE*)prevChp->successor) {
         opd1 = (SynObject*)prevChp->data;
         if (opd1->primaryToken == ObjRef_T) {
           prevObj = (ObjReference*)opd1;
