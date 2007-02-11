@@ -92,8 +92,8 @@ public:
     }
     void SetAppName(const QString& name);
     QString GetSettingsPath() { return m_settingsPath; }
-    QString GetLastFileOpen() { return lastFileOpen;}
-    void SetLastFileOpen(QString& lfo);
+    QString GetLastFileOpen();
+    void SetLastFileOpen(QString &lfo);
         // set/get the app class name
     QString GetClassName() const { return m_className; }
     void SetClassName(const QString& name) { m_className = name; }
@@ -108,13 +108,14 @@ public:
     wxDocManager* m_docManager;
     wxMainFrame *m_appWindow;
 //    QSettings *settings;
+    QString lastFileOpen; //last file open from history or file dialog
 
 public slots:
     void about();
 
 private:
     QString m_vendorName, m_appName, m_className, m_settingsPath;
-    QString lastFileOpen; //last file open from history or file dialog
+
 
     Q_OBJECT
 };

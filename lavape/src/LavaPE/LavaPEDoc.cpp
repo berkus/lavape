@@ -3123,7 +3123,6 @@ bool CLavaPEDoc::OnOpenDocument(const QString& filename)
   QString mess;
   DString nstr;
 
-//  LBaseData->lastFileOpen = QString(fn.c);
   isStd = SameFile(fn.c, qPrintable(StdLava));
   CalcNames(filename);
   readResult = ReadSynDef(filename, mySynDef);

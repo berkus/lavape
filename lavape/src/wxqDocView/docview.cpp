@@ -199,11 +199,16 @@ wxView *wxApp::activeView() {
   return wxDocManager::GetDocumentManager()->GetActiveView();
 }
 
-void wxApp::SetLastFileOpen(QString& lfo)
+void wxApp::SetLastFileOpen(QString &lfo)
 {
   lastFileOpen = lfo;
+  saveSettings();
 }
 
+QString wxApp::GetLastFileOpen()
+{
+  return lastFileOpen;
+}
 
 void wxMainFrame::histFile(int i) {
   OnMRUFile(i);

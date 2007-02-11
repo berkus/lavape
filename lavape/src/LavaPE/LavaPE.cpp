@@ -76,6 +76,7 @@ static QString szTreeFont = "TreeFont";
 static QString szGlobalFont = "GlobalFont";
 static QString favoriteBrowser = "MyBrowser";
 static QString gui_style = "Style";
+static QString lfOpen = "/LastFileOpen";
 
 static char slash='/';
 
@@ -115,6 +116,8 @@ int xerrcomBM = 33;
 CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 :wxApp(argc, argv )
 {
+  QString lfo;
+
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
   QSettings settings(QSettings::NativeFormat,QSettings::UserScope,wxTheApp->GetVendorName(),wxTheApp->GetAppName());
@@ -184,6 +187,8 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   settings.beginGroup("otherSettings");
   LBaseData.m_myWebBrowser = settings.value(favoriteBrowser).toString();
   LBaseData.m_style = settings.value(gui_style).toString();
+  lfo=QString(settings.value(lfOpen).toString());
+  wxTheApp->lastFileOpen = lfo;
   settings.endGroup();
 #ifndef WIN32
   if (LBaseData.m_myWebBrowser.isEmpty())
@@ -670,10 +675,10 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 {
   QString name;
   QDir cwd;
-        name = cwd.absoluteFilePath(lpszFileName);
-        name = cwd.cleanPath(name);
-        if (!name.contains('.'))
-                return;
+  name = cwd.absoluteFilePath(lpszFileName);
+  name = cwd.cleanPath(name);
+  if (!name.contains('.'))
+    return;
   wxTheApp->SetLastFileOpen(name);
 #ifdef WIN32
   QString driveLetter = QString(name[0].toUpper());
@@ -852,6 +857,7 @@ void CLavaPEApp::saveSettings()
   settings.beginGroup("otherSettings");
   settings.setValue(favoriteBrowser,LBaseData.m_myWebBrowser);
   settings.setValue(gui_style,LBaseData.m_style);
+  settings.setValue(lfOpen,wxTheApp->GetLastFileOpen());
   settings.endGroup();
 }
 

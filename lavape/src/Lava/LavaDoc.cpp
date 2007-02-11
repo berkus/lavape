@@ -511,7 +511,6 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
                     ObjTab[ActTab] = (*memPtr) - iCast;
                     ActTab++;
                   }
-
                 }
                 else {
                   iStore = 0; //store 0 if member=0
