@@ -330,6 +330,9 @@ void CPushButton::focusInEvent(QFocusEvent *ev)
   GUIProg->ScrollIntoFrame(this);
   QPushButton::focusInEvent(ev);
   GUIProg->SyncTree(myFormNode);
+  if (GUIProg->isView && 
+    (wxDocManager::GetDocumentManager()->GetActiveView() != GUIProg->ViewWin))
+    wxDocManager::GetDocumentManager()->SetActiveView((wxView*)GUIProg->ViewWin);
 }
 
 void CPushButton::focusOutEvent(QFocusEvent *ev) 

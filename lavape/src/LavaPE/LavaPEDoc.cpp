@@ -731,10 +731,9 @@ bool CLavaPEDoc::CheckFuncImpl(LavaDECL* funcDECL, int checkLevel, bool& changed
 bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
 {
   CHE *cheImplEl, *cheIOEl, *cheI=0, *che, *afterElem = 0;
-  TID fID, supID;
+  TID fID, supID, dataID;
   bool toImpl, changed = false, fchanged, found, hasForm = false;
-  LavaDECL *implElDECL, *classElDECL, *classDECL, *formDECL;
-  QString cstr;
+  LavaDECL *implElDECL, *classElDECL, *classDECL, *formDECL, *dataDECL;
 
   CHETID* cheIDI = (CHETID*)implDECL->Supports.first;
   if (!cheIDI)
@@ -867,11 +866,18 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
   //fchanged = checkImpls(implDECL, classDECL, checkLevel);
 
   changed = changed || fchanged;
-
+/*
   if (implDECL->SecondTFlags.Contains(isGUI)
     && !IDTable.GetDECL(classDECL->RefID, classDECL->inINCL)) {
     new CLavaError(&implDECL->DECLError1, &ERR_NoIFforForm);
     return false;
+  }*/
+  if (implDECL->SecondTFlags.Contains(isGUI)) {
+    dataID = GetGUIDataTypeID(classDECL);
+    if (!IDTable.GetDECL(dataID)) {
+      new CLavaError(&implDECL->DECLError1, &ERR_NoIFforForm);
+      return false;
+    }
   }
   cheImplEl = (CHE*)implDECL->NestedDecls.first;
   while (cheImplEl) {
@@ -934,9 +940,7 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
     cheImplEl = (CHE*)cheImplEl->successor;
   }
   if (implDECL->SecondTFlags.Contains(isGUI)) {
-    //fID.nID = -1;
-    //IDTable.GetParamID(classDECL, fID, isGUI);
-    if (classDECL->RefID.nID < 0) {
+    if (!classDECL->SecondTFlags.Contains(isGUI)) {
       implDECL->SecondTFlags.EXCL(isGUI);
       return true;
     }
@@ -948,21 +952,21 @@ bool CLavaPEDoc::CheckImpl(LavaDECL* implDECL, int checkLevel)
         hasForm = ((LavaDECL*)cheImplEl->data)->DeclType == FormDef;
       cheImplEl = (CHE*)cheImplEl->successor;
     }
-    if (hasForm && !IDTable.EQEQ(implDECL->RefID, implDECL->inINCL, classDECL->RefID, classDECL->inINCL)) {
-      cstr = "DATATYPE of GUI-interface differs from DATATYPE in form declaration of GUI-implementation.\n"
-             "Click \"yes\" to replace the form declaration.";
-      if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Cancel) {
-        if (checkLevel == CHLV_showError) 
-          new CLavaError(&implDECL->DECLError1, &ERR_CorruptForm2);
-        return true;
-      }
-      implDECL->NestedDecls.Delete(afterElem->successor);
-      hasForm = false;
-      changed = true;
+   if (hasForm && 
+      !IDTable.EQEQ(implDECL->RefID, implDECL->inINCL, dataID, 0)) {
+      //cstr = "DATATYPE of GUI-interface differs from DATATYPE in form declaration of GUI-implementation.\n"
+      //       "Click \"yes\" to replace the form declaration.";
+      //if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Cancel) {
+      //if (checkLevel == CHLV_showError) 
+      new CLavaError(&implDECL->DECLError1, &ERR_CorruptForm2);
+      return changed;
+      //}
+      //implDECL->NestedDecls.Delete(afterElem->successor);
+      //hasForm = false;
+      //changed = true;
     }
     if (!hasForm) {
-      implDECL->OwnID = classDECL->OwnID;
-      implDECL->RefID.nINCL = IDTable.IDTab[classDECL->inINCL]->nINCLTrans[classDECL->RefID.nINCL].nINCL;
+      implDECL->RefID = dataID;
       if (checkLevel >= CHLV_inUpdateLow) {
         changed = true;
         UpdateNo++;
@@ -2159,7 +2163,7 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
 //always returns the GUIinterface.
 {
   LavaDECL *GUIinterface=0, *GUIimpl=0, *interdecl, *attrdecl,
-             *newAttrdecl, *FormDecl, *posDECL=0, *inDecl;
+             *newAttrdecl, *FormDecl, *posDECL=0, *inDecl, *dataVT, *baseVT;
   QString valNewName;
   DString *name;
   int startpos = pos, implPos;
@@ -2167,6 +2171,7 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
   CHE *elChe;
   CHETID *cheID, *cheFID;
   SynFlags firstlast;
+  TID pID;
 
   if (posdecl)
     posDECL = posdecl;
@@ -2201,12 +2206,36 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
   }
   GUIinterface = NewLavaDECL();
   GUIinterface->DeclType = Interface;
+  GUIinterface->SecondTFlags.INCL(isGUI);
   GUIinterface->DeclDescType = StructDesc;
+  GUIinterface->inINCL = 0;
+  GUIinterface->fromBType = NonBasic;
+  cheID = new CHETID;
+  cheID->data.nID = IDTable.BasicTypesID[B_GUI];
+  cheID->data.nINCL = (isStd?0:1);
+  GUIinterface->Supports.Append(cheID);
+  GUIinterface->RefID = TID(interdecl->OwnID, interdecl->inINCL);
+  GUIinterface->ParentDECL = posDECL->ParentDECL;
+  dataVT = NewLavaDECL();
+  cheID = new CHETID;
+  IDTable.GetParamID(GUIinterface, cheID->data, isGUI);
+  baseVT = IDTable.GetDECL(cheID->data);
+  *dataVT = *baseVT;
+  dataVT->inINCL = 0;
+  dataVT->Supports.Append(cheID);
+  dataVT->ParentDECL = GUIinterface;
+  dataVT->RefID = GUIinterface->RefID;
+  dataVT->TypeFlags.EXCL(isAbstract);
+  dataVT->TypeFlags.INCL(constituent);
+  dataVT->SecondTFlags.INCL(overrides);
+  dataVT->WorkFlags.EXCL(selAfter);
+  elChe = NewCHE(dataVT);
+  GUIinterface->NestedDecls.Prepend(elChe);
+
   GUIimpl = NewLavaDECL();
   GUIimpl->DeclType = Impl;
   GUIimpl->DeclDescType = StructDesc;
-  GUIinterface->RefID = TID(interdecl->OwnID, interdecl->inINCL);
-  GUIinterface->ParentDECL = posDECL->ParentDECL;
+  GUIimpl->SecondTFlags.INCL(isGUI);
   if (!startpos) {
     elChe = (CHE*)posDECL->ParentDECL->NestedDecls.first;
     pos = 2;

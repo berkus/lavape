@@ -663,7 +663,10 @@ void MakeGUICLASS::AtomicWidget (CHEFormNode* chFrmNd,
       }
     }
     else if (makingMenu == beforeExplanText) {
-      enumNode = (CHEFormNode*)((CHEFormNode*)chFrmNd->predecessor)->data.FIP.up->data.FIP.up->predecessor;
+      if (chFrmNd->predecessor)
+        enumNode = (CHEFormNode*)((CHEFormNode*)chFrmNd->predecessor)->data.FIP.up->data.FIP.up->predecessor;
+      else      
+        enumNode = (CHEFormNode*)chFrmNd->data.FIP.up->data.FIP.up->predecessor;
       enterFlag = (enumNode->data.IoSigFlags.Contains(Enter)
                     || enumNode->data.IoSigFlags.Contains(EnterAsIs))
                   /*&& enumNode->data.IoSigFlags.Contains(UnprotectedUser)*/;

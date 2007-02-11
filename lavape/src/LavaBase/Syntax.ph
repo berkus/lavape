@@ -302,7 +302,7 @@ $TYPE +CDP {
 	  isHandler, 
     //X0000 0002, function is handler function
 	  isGUI, //X0000 0004
-    //19, X0008 0000/ form service, interface and implementation
+    //2, X0000 0004/ form service, interface and implementation
     // and its (not removable/changeable) input and output
 	  FREE_FLAG3, //X0000 0008
 	  FREE_FLAG4, //X0000 0010

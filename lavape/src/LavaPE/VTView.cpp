@@ -214,7 +214,7 @@ bool CVTView::DrawTreeAgain()
     }
     ElDECL = GetDocument()->IDTable.GetDECL(El->data.VTEl);
     if (ElDECL && !ElDECL->TypeFlags.Contains(isInitializer)
-               && !ElDECL->SecondTFlags.Contains(isGUI)
+               && !ElDECL->TypeFlags.Contains(oldIsGUI)
                && !ElDECL->SecondTFlags.Contains(isLavaSignal)) {
       TIDDef = TID(ElDECL->ParentDECL->OwnID, ElDECL->inINCL);
       lab = ElDECL->LocalName;

@@ -878,7 +878,9 @@ void TIDTable::FillBasicTypesID(CHESimpleSyntax* stdSyntax, bool isstd)
       }
       else if (elDECL->fromBType == B_GUI) {
         ((LavaDECL*)((CHE*)elDECL->NestedDecls.first)->data)->SecondTFlags.INCL(isGUI);
+        ((LavaDECL*)((CHE*)elDECL->NestedDecls.first)->data)->SecondTFlags.EXCL(oldIsGUI);
         elDECL->SecondTFlags.INCL(isGUI);
+        elDECL->SecondTFlags.EXCL(oldIsGUI);
       }
       else if ((elDECL->fromBType == B_Exception)
             || (elDECL->fromBType == B_HWException)

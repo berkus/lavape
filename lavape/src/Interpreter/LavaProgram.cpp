@@ -256,15 +256,15 @@ bool CLavaProgram::CheckContext(CheckData& ckd, const CContext& con)
 bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* specDECL)
 {
   LavaDECL *classElDECL, *implElDECL, *implDECL = classDECL->RuntimeDECL, *execDECL;;
-  CHE *cheImplEl, *cheClass=0;
+  CHE *cheImplEl, *cheClass=0, *elChe, *execChe;
   bool toImpl;
   TAdapterFunc* funcAdapter=0;
   CContext con;
   CheckData ckdl;
   CSearchData sData;
-  CHE* elChe, *execChe;
   CHETID *cheTID;
   CHETIDs *cheTIDs;
+  TID dataID;
 
   if (!classDECL)
     return false;
@@ -452,9 +452,9 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
       }
     }
   }
-  if (implDECL->SecondTFlags.Contains(isGUI)) {
-    //IDTable.GetParamID(classDECL, fID, isGUI);
-    if (!IDTable.EQEQ(implDECL->RefID, implDECL->inINCL, classDECL->RefID, classDECL->inINCL)) {
+  if ((implDECL != classDECL) && implDECL->SecondTFlags.Contains(isGUI)) {
+    dataID = GetGUIDataTypeID(classDECL);   
+    if (!IDTable.EQEQ(implDECL->RefID, implDECL->inINCL, dataID, 0)) {
       LavaError(ckd, true, implDECL, &ERR_CorruptForm2);
       return false;
     }

@@ -2581,7 +2581,7 @@ void CMenuPage::GetEProps()
   ((TEnumDescription*)myWizard->FormDECL->EnumDesc.ptr)->MenuTree.NestedDecls.Destroy();
   maxi = qMax(Menuitems->count(), LButtonText->count());
   while (ipos < maxi) {
-   mflags = ((CComboBoxItem*)Menuitems->item(ipos))->flags();
+    mflags = ((CListItem*)Menuitems->item(ipos))->flags();
     if (mflags[0] != 3) { //not static MenuText
       if (!enumsel)
         enumsel = (CHEEnumSelId*)inEl->Items.first;
@@ -2683,7 +2683,7 @@ void CMenuPage::SetButtons(int sel)
     EditButton->setEnabled(false);
   }
   else {
-    unsigned *mflags = ((CComboBoxItem*)Menuitems->item(sel))->flags();
+    unsigned *mflags = ((CListItem*)Menuitems->item(sel))->flags();
     DeleteButton->setEnabled(mflags[0] == 3);
     EditButton->setEnabled(true);
   }
@@ -2723,7 +2723,7 @@ void CMenuPage::on_AddButton_clicked()
   if (MItem->exec() == QDialog::Accepted) {
     LButtonText->setCurrentRow(ss);
     Menuitems->setCurrentRow(ss);
-    unsigned *mflags1 = ((CComboBoxItem*)Menuitems->item(ss))->flags();
+    unsigned *mflags1 = ((CListItem*)Menuitems->item(ss))->flags();
     DeleteButton->setEnabled(mflags1[0] == 3);
     EditButton->setEnabled(true);
     myWizard->setModified(true);
@@ -2745,7 +2745,7 @@ void CMenuPage::on_EditButton_clicked()
   bT = LButtonText->item(ss)->text();
   pT = Pixmap->item(ss)->text();
   unsigned  *mflags;
-  mflags = ((CComboBoxItem*)Menuitems->item(ss))->flags();
+  mflags = ((CListItem*)Menuitems->item(ss))->flags();
   CMenuItem* cm = new CMenuItem(this, false, ss, iT, bT, pT, mflags);
   if (cm->exec() == QDialog::Accepted) {
     myWizard->setModified(true);
@@ -2759,14 +2759,14 @@ void CMenuPage::on_DeleteButton_clicked()
 {
   int ss = Menuitems->currentRow();
   if (ss >= 0) {
-    unsigned *mflags = ((CComboBoxItem*)Menuitems->item(ss))->flags();
+    unsigned *mflags = ((CListItem*)Menuitems->item(ss))->flags();
     if (mflags[0] == 3) {
       delete Menuitems->takeItem(ss);
       delete LButtonText->takeItem(ss);
       if (ss)
         ss = ss-1;
       Menuitems->setCurrentRow(ss);
-      mflags = ((CComboBoxItem*)Menuitems->item(ss))->flags();
+      mflags = ((CListItem*)Menuitems->item(ss))->flags();
       DeleteButton->setEnabled(mflags[0] == 3);
       EditButton->setEnabled(true);
       myWizard->setModified(true);
@@ -2799,10 +2799,12 @@ void CMenuPage::SetDefaults(EMenuType newMenuT, EMenuType oldMenuT)
   if ((newMenuT != isNoMenu)  && (oldMenuT == isNoMenu)
        || (newMenuT == isOMenu) && (oldMenuT != isOMenu)) {
     int cc = Menuitems->count();
-    int rr;
+    int rr = 0;
     CListItem* item;
     TID tid0;
     QString iT, bT, pT;
+    if (newMenuT == isOMenu)
+      LButtonText->clear();
     for (int ss = cc-1; ss >= 0; ss--) {
       if (oldMenuT == isNoMenu) {
         iT = Menuitems->item(ss)->text();
@@ -2815,7 +2817,7 @@ void CMenuPage::SetDefaults(EMenuType newMenuT, EMenuType oldMenuT)
         }
       }
       if ((newMenuT == isOMenu) && (Menuitems->item(ss)->text().length() > 0)) {
-        bT = LButtonText->item(ss)->text();
+        bT = Menuitems->item(ss)->text();
         if ((rr == 0) || (rr < 0)) {
           item = new CListItem(bT, tid0);
           LButtonText->insertItem(ss-1,item);

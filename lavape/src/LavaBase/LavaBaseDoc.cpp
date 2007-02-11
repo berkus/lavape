@@ -1007,30 +1007,36 @@ QString* CLavaBaseDoc::TestValOfVirtual(LavaDECL* vdecl, LavaDECL* valDECL)
   //note: this function can be called with the virtual type-DECL or the ParentDECL of the virtual type instead
   CContext con;
   bool sameContext;
+  LavaDECL *par, *val;
+
   if (!vdecl || !valDECL)
     return 0;
-  IDTable.GetPattern(valDECL, con);
-  LavaDECL *par;
-  if (!valDECL->usableIn(vdecl))
+  if (valDECL->DeclType == FormDef)
+    val = IDTable.GetDECL(((CHETID*)valDECL->ParentDECL->Supports.first)->data, valDECL->inINCL);
+  else
+    val = valDECL;
+  IDTable.GetPattern(val, con);
+  if (!val->usableIn(vdecl))
     return &ERR_InvisibleType;
   if (vdecl->DeclType == VirtualType) {
-//    if (vdecl->TypeFlags.Contains(substitutable) && !IDTable.otherOContext(vdecl, valDECL))
-//      return &ERR_SubstInContext;
     par = vdecl->ParentDECL;
   }
   else
     par = vdecl;
-  if (valDECL->DeclType == VirtualType)
-    if (IDTable.lowerOContext(par, valDECL, sameContext) && sameContext)
+  if (par->DeclType == FormDef)
+    par = IDTable.GetDECL(((CHETID*)par->ParentDECL->Supports.first)->data, par->inINCL);
+
+  if (val->DeclType == VirtualType)
+    if (IDTable.lowerOContext(par, val, sameContext) && sameContext)
       return 0;
     else
       return &ERR_WrongContext;
   else  {
-//    hparm = IDTable.isValOfOtherVirtual(valDECL);
-    if (!con.oContext || (con.oContext == valDECL))
+//    hparm = IDTable.isValOfOtherVirtual(val);
+    if (!con.oContext || (con.oContext == val))
       return 0;
-    if (IDTable.lowerOContext(par, valDECL, sameContext) )
-      if (IDTable.isValOfOtherVirtual(valDECL, vdecl))
+    if (IDTable.lowerOContext(par, val, sameContext) )
+      if (IDTable.isValOfOtherVirtual(val, vdecl))
         return &ERR_DoubleVal;
       else
         return 0;
@@ -1292,6 +1298,23 @@ LavaDECL** CLavaBaseDoc::GetFormpDECL(LavaDECL* decl)
   return 0;
 }
 
+TID CLavaBaseDoc::GetGUIDataTypeID(LavaDECL* GUIclass)
+{
+  TID dataID;
+  LavaDECL *paramDECL;
+
+  IDTable.GetParamID(GUIclass, dataID, isGUI);
+  if (dataID.nID < 0) {
+    dataID.nID = GUIclass->RefID.nID; 
+    dataID.nINCL = IDTable.IDTab[GUIclass->inINCL]->nINCLTrans[GUIclass->RefID.nINCL].nINCL;
+  }
+  else {
+    paramDECL = IDTable.GetDECL(dataID,0);
+    dataID.nID = paramDECL->RefID.nID;
+    dataID.nINCL = IDTable.IDTab[paramDECL->inINCL]->nINCLTrans[paramDECL->RefID.nINCL].nINCL;
+  }
+  return dataID;
+}
 
 LavaDECL* CLavaBaseDoc::FindInSupports(const DString& name, LavaDECL *self, LavaDECL * decl, bool down, bool onTop)
 {

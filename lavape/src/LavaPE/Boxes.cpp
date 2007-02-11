@@ -2461,8 +2461,11 @@ ValOnInit CImplBox::OnInitDialog()
 {
   DString strINCL, strID;
   CExecAllDefs * execAllPatt;
+  LavaDECL *classDECL;
+  QString cstr;
+  CHE *che;
   int pos, icount;
-  TID id;
+  TID id, dataID;
   bool ex=false;
   QVariant var;
 
@@ -2474,13 +2477,12 @@ ValOnInit CImplBox::OnInitDialog()
 
   if (!onNew) {
     ID_OK->setEnabled(false);
-    LavaDECL* decl;
     CHETID *cheS = (CHETID*)myDECL->Supports.first; //implements
     if (cheS) {
       if (cheS->data.nID >= 0) {
-        decl = myDoc->IDTable.GetDECL(cheS->data);
-        if (decl) 
-          valImplSel = QString(decl->LocalName.c); 
+        classDECL = myDoc->IDTable.GetDECL(cheS->data);
+        if (classDECL) 
+          valImplSel = QString(classDECL->LocalName.c); 
         else {
           QMessageBox::critical(this, qApp->applicationName(), ERR_NoImplIF,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
           valImplSel = QString("??: ");
@@ -2502,13 +2504,26 @@ ValOnInit CImplBox::OnInitDialog()
     for (pos=1; (pos < icount) && !ex; pos++) {
       var = ImplTypes->itemData(pos);
       id = var.value<CComboBoxItem*>()->itemData();
-//      id = ((CComboBoxItem*)ImplTypes->listBox()->item(pos))->itemData();
       if (id == ((CHETID*)myDECL->Supports.first)->data)
         ex = true;
     }
     if (pos < icount)
       ImplTypes->setCurrentIndex(pos-1);
     ImplTypes->setEnabled(false);
+    if (myDECL->SecondTFlags.Contains(isGUI)) {
+      dataID = myDoc->GetGUIDataTypeID(classDECL);      
+      if (dataID != myDECL->RefID) {  
+        cstr = "DATATYPE of GUI-interface differs from DATATYPE in form declaration of GUI-implementation.\n"
+               "Click \"yes\" to replace the form declaration.";
+        if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Yes) {
+          che = (CHE*)myDECL->NestedDecls.first;
+          while (che && ((LavaDECL*)che->data)->DeclType != FormDef)
+            che = (CHE*)che->successor;
+          if (che) 
+            myDECL->NestedDecls.Delete(che); //the new form will be constructed in CheckImpl
+        }
+      }
+    }
   }
   delete execAllPatt;
   UpdateData(false);
@@ -2559,11 +2574,10 @@ void CImplBox::on_ID_OK_clicked()
     else
       myDECL->TypeFlags.EXCL(isAbstract);
     if (interfDECL->SecondTFlags.Contains(isGUI)) {
+      myDECL->SecondTFlags.INCL(isGUI);
       myDoc->IDTable.GetParamID(interfDECL, paramID, isGUI);
-      if (paramID.nID >= 0) {
-        myDECL->SecondTFlags.INCL(isGUI);
+      if (paramID.nID >= 0) 
         myDECL->RefID = paramID;
-      }
     }
     else {
       myDECL->SecondTFlags.EXCL(isGUI);
@@ -3209,9 +3223,8 @@ void CInterfaceBox::on_ID_OK_clicked()
       myDECL->SecondTFlags.EXCL(isEnum);
   }
   else 
-    if (/*!myDECL->TypeFlags.Contains(isComponent)
-        && */(!myDoc->isStd || (myDECL->fromBType != B_Object)
-                          && (myDECL->fromBType != NonBasic))) {
+    if ((!myDoc->isStd 
+      || (myDECL->fromBType != B_Object) && (myDECL->fromBType != NonBasic))) {
       cheS = new CHETID;
         cheS->data.nID = myDoc->IDTable.BasicTypesID[B_Object];
       if (myDoc->isStd)

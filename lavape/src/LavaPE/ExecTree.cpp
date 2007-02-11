@@ -304,6 +304,9 @@ void CExecTree::ExecVT(LavaDECL *elDef, DString* lab)
     if (errCode)
       new CLavaError(&elDef->DECLError1, errCode);
   }
+  else
+    if (elDef->SecondTFlags.Contains(isGUI))
+      elDef->ParentDECL->RefID = elDef->RefID;
   typeFlags = elDef->TypeFlags;
   Doc->GetCategoryFlags(elDef, hasErr);
   if (hasErr)
@@ -641,7 +644,8 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
             *lab += pp->FullName;
         if ((elDef->DeclType == Interface)
             && elDef->SecondTFlags.Contains(isGUI)
-            && pp->SecondTFlags.Contains(isGUI))
+            && pp->SecondTFlags.Contains(isGUI)
+            && (pp->fromBType == NonBasic))
           if (!Doc->IDTable.GetDECL(pp->RefID, pp->inINCL))
             new CLavaError(&elDef->DECLError1, &ERR_NoBaseFormIF);
         if ((elDef->DeclType == Interface) && (errID = Doc->ExtensionAllowed(elDef, pp, 0)))
@@ -662,7 +666,8 @@ void CExecTree::AddExtends(LavaDECL* elDef, DString* lab)
             new CLavaError(&elDef->DECLError1, errID);
           if ((elDef->DeclType == Interface)
               && elDef->SecondTFlags.Contains(isGUI)
-              && pp->SecondTFlags.Contains(isGUI))
+              && pp->SecondTFlags.Contains(isGUI)
+              && (pp->fromBType == NonBasic))
             if (!Doc->IDTable.GetDECL(pp->RefID, elDef->inINCL))
               new CLavaError(&elDef->DECLError1, &ERR_NoBaseFormIF);
           *lab = *lab + DString(", ");

@@ -5400,7 +5400,8 @@ void CLavaPEView::OnUpdateShowformview(QAction* action)
   else
     enable = (DataSel->type == TIType_DECL)
                  && ((*(LavaDECL**)DataSel->synEl)->DeclType == Impl)
-                 && (*(LavaDECL**)DataSel->synEl)->SecondTFlags.Contains(isGUI);
+                 && (*(LavaDECL**)DataSel->synEl)->SecondTFlags.Contains(isGUI)
+                 && ((*(LavaDECL**)DataSel->synEl)->RefID.nID >= 0);
   action->setEnabled(enable);
 }
 

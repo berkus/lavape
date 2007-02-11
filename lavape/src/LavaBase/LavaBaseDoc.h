@@ -124,6 +124,7 @@ public:
   LavaDECL* GetFinalMVType(const TID& id, int inINCL, CContext &context, Category &cat, CheckData* pckd);
   LavaDECL* GetFinalMTypeAndContext(const TID& id, int inINCL, CContext &context, CheckData* pckd);
   LavaDECL** GetFormpDECL(LavaDECL* decl);
+  TID GetGUIDataTypeID(LavaDECL* GUIclass);
   TID GetMappedVType(TID paramID, CContext &context, CheckData* pckd);
   virtual int GetMemsSectionNumber(CheckData& ckd, LavaDECL* /*classDECL*/, LavaDECL* /*memDECL*/, bool putErr=true) {return -1;}
   virtual bool GetOperatorID(LavaDECL* , TOperator , TID& ) {return false;}

@@ -341,8 +341,11 @@ CLavaGUIView::CLavaGUIView(QWidget *parent,wxDocument *doc)
 
 CLavaGUIView::~CLavaGUIView()
 {
-  if (!wxTheApp->deletingMainFrame)
+  if (!wxTheApp->deletingMainFrame) {
     DisableActions();
+    if (LBaseData->Browser->LastBrowseContext)
+      LBaseData->Browser->LastBrowseContext->RemoveView(this);
+  }
   if (myGUIProg) {
     if (!wxTheApp->appExit)
       myGUIProg->LavaForm.DeletePopups(myGUIProg->Root);

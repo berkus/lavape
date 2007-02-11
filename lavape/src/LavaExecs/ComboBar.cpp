@@ -1273,14 +1273,15 @@ void CComboBar::ShowCompObjects(CheckData &ckd, LavaDECL* decl, const CContext &
       enumDecl = decl;
     if (enumDecl && (enumDecl->DeclDescType == EnumType)) {
       int ind = m_EnumsCtrl->findText(QString(enumDecl->FullName.c));
-      if (ind >= 0) {
-        m_EnumsCtrl->setItemText(m_EnumsCtrl->currentIndex(),QString(enumDecl->FullName.c));
+      if (ind > 0) { //(ind >= 0) {
+        //m_EnumsCtrl->setItemText(m_EnumsCtrl->currentIndex(),QString(enumDecl->FullName.c));
+        m_EnumsCtrl->setCurrentIndex(ind); //m_EnumsCtrl->currentIndex(),QString(enumDecl->FullName.c));
         lastSelStr = enumDecl->FullName.c;
       }
       else {
         ind = m_EnumsCtrl->findText(QString(enumDecl->LocalName.c));
-        if (ind >= 0) {
-          m_EnumsCtrl->setItemText(m_EnumsCtrl->currentIndex(),QString(enumDecl->LocalName.c));
+        if (ind > 0) { //(ind >= 0) {
+          m_EnumsCtrl->setCurrentIndex(ind); //m_EnumsCtrl->setItemText(m_EnumsCtrl->currentIndex(),QString(enumDecl->LocalName.c));
           lastSelStr = enumDecl->LocalName.c;
         }
       }
