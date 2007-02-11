@@ -343,7 +343,7 @@ CLavaGUIView::~CLavaGUIView()
 {
   if (!wxTheApp->deletingMainFrame) {
     DisableActions();
-    if (LBaseData->Browser->LastBrowseContext)
+    if (!LBaseData->inRuntime && LBaseData->Browser->LastBrowseContext)
       LBaseData->Browser->LastBrowseContext->RemoveView(this);
   }
   if (myGUIProg) {
