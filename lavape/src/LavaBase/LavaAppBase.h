@@ -355,7 +355,7 @@ public:
   CBaseExecUpdate *ExecUpdate;
   SynObjectBase *tempBrkPoint;
   QSize ptMaxSize;
-  QString lastFileOpen;
+  //QString lastFileOpen;
   QString ldocFileExt;
   QString lcomFileExt;
   int stdUpdate;

@@ -340,13 +340,14 @@ void CVTView::ExpandItem(CTreeItem* item, int level)
 
 }
 
+/*
 void CVTView::destroy()
 {
   if (((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext)
     ((CLavaPEApp*)wxTheApp)->Browser.LastBrowseContext->RemoveView(this);
   DeleteItemData(0);
   //CTreeView::destroy();
-}
+}*/
 
 void CVTView::OnGotoImpl()
 {

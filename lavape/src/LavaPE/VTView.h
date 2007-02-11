@@ -84,7 +84,7 @@ public:
 
 protected:
   virtual ~CVTView();
-  virtual void destroy();
+  //virtual void destroy();
 
   void OnUpdateGotodef(QAction* action);
   void OnUpdateGotoImpl(QAction* action);

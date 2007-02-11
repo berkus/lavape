@@ -381,7 +381,7 @@ QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QStr
 
 void CLavaApp::OnFileOpen()
 {
-  QString fileName = lavaFileDialog(LBaseData.lastFileOpen, m_appWindow, "Select a file to open", true);
+  QString fileName = lavaFileDialog(wxTheApp->GetLastFileOpen(), m_appWindow, "Select a file to open", true);
   if (fileName.isEmpty())
     return;
 #ifdef WIN32
@@ -401,7 +401,7 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
   name = QDir::cleanPath(name);
   if (!name.contains('.'))
     return;
-  LBaseData.lastFileOpen = name;
+  wxTheApp->SetLastFileOpen(name);
   if (argc > 2) {
     debugger.remoteIPAddress = argv[2];
     port = QString(argv[3]);

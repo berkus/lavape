@@ -135,7 +135,7 @@ void wxMainFrame::OnMRUFile(int histFileIndex)
                                 delete file;
         return;
     }
-
+    wxTheApp->SetLastFileOpen(*file);
     if (!wxDocManager::GetDocumentManager()->CreateDocument(*file, wxDOC_SILENT))
         wxDocManager::GetDocumentManager()->RemoveFileFromHistory(histFileIndex);
         delete file;

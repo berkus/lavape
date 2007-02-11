@@ -114,7 +114,7 @@ bool CLavaDoc::OnEmptyObj(const DString& lcomName, const DString& linkName)
 
 bool CLavaDoc::SelectLcom(bool emptyDoc)
 {
-  QString iniFile, fileName = LBaseData->lastFileOpen;
+  QString iniFile, fileName = wxTheApp->GetLastFileOpen();
   QFileInfo qf = QFileInfo(fileName);
   DString linkName;
   DString dir;
@@ -141,7 +141,7 @@ bool CLavaDoc::SelectLcom(bool emptyDoc)
     qf.setFile(fileName);
     fileName = qf.absoluteFilePath();
     qf.setFile(fileName);
-    LBaseData->lastFileOpen = fileName;
+    wxTheApp->SetLastFileOpen(fileName);
     QString fn = ResolveLinks(qf);
     PathName = DString(qPrintable(fn));
     if (qf.absolutePath() + "/" == ExeDir + ComponentLinkDir) 

@@ -656,7 +656,7 @@ void CLavaPEApp::OnChooseGlobalFont()
 
 void CLavaPEApp::OnFileOpen()
 {
-  QString fileName = lavaFileDialog(LBaseData.lastFileOpen, m_appWindow, "Select a file to open", true);
+  QString fileName = lavaFileDialog(wxTheApp->GetLastFileOpen(), m_appWindow, "Select a file to open", true);
   if (fileName.isEmpty())
     return;
 #ifdef WIN32
@@ -674,7 +674,7 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
         name = cwd.cleanPath(name);
         if (!name.contains('.'))
                 return;
-  LBaseData.lastFileOpen = name;
+  wxTheApp->SetLastFileOpen(name);
 #ifdef WIN32
   QString driveLetter = QString(name[0].toUpper());
   name.replace(0,1,driveLetter);
