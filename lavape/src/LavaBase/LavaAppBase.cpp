@@ -204,6 +204,8 @@ void CUndoMem::AddToMem(CLavaPEHint* hint)
 
   }
   ((CPEBaseDoc*)hint->fromDoc)->modified = false;
+  OnUpdateEditUndo(LBaseData->editUndoActionPtr);
+  OnUpdateEditRedo(LBaseData->editRedoActionPtr);
 }
 
 
@@ -222,8 +224,11 @@ CLavaPEHint* CUndoMem::DoFromMem(int& pos)
       return NULL;  //finished
     else
       pos++;
-  if (UndoMemory[pos])
+  if (UndoMemory[pos]) {
+    OnUpdateEditUndo(LBaseData->editUndoActionPtr);
+    OnUpdateEditRedo(LBaseData->editRedoActionPtr);
     return UndoMemory[pos];
+  }
   else
     return NULL;
 }
@@ -250,6 +255,8 @@ CLavaPEHint* CUndoMem::UndoFromMem(int& pos)
                  || (UndoMemory[pos]->com == CPECommand_Delete)
                  || (UndoMemory[pos]->com == CPECommand_Move)
                  || ((UndoMemory[pos]->com == CPECommand_Change) && UndoMemory[pos]->CommandData7);
+      OnUpdateEditUndo(LBaseData->editUndoActionPtr);
+      OnUpdateEditRedo(LBaseData->editRedoActionPtr);
       return UndoMemory[pos];
     }
     else
@@ -283,6 +290,8 @@ CLavaPEHint* CUndoMem::RedoFromMem(int& pos)
                || (RedoMemory[pos]->com == CPECommand_Delete)
                || (RedoMemory[pos]->com == CPECommand_Move)
                || (RedoMemory[pos]->com == CPECommand_Change && RedoMemory[pos]->CommandData7);
+    OnUpdateEditUndo(LBaseData->editUndoActionPtr);
+    OnUpdateEditRedo(LBaseData->editRedoActionPtr);
     return RedoMemory[pos];
   }
   else
@@ -303,6 +312,8 @@ void  CUndoMem::CleanUndoMem()
     delete RedoMemory[redoMemPosition];
   }
   redoMemPosition = 0;
+  OnUpdateEditUndo(LBaseData->editUndoActionPtr);
+  OnUpdateEditRedo(LBaseData->editRedoActionPtr);
 }
 
 void CUndoMem::SetCom8()
@@ -359,6 +370,8 @@ void CUndoMem::OnEditUndo()
       LBaseData->MultiUndoMem.Undo(UndoMemory[undoMemPosition -1]);
     else
       ((CPEBaseDoc*)UndoMemory[undoMemPosition-1]->fromDoc)->Undo();
+  OnUpdateEditUndo(LBaseData->editUndoActionPtr);
+  OnUpdateEditRedo(LBaseData->editRedoActionPtr);
 }
 
 void CUndoMem::OnUpdateEditUndo(QAction *action)
@@ -378,6 +391,8 @@ void CUndoMem::OnEditRedo()
       LBaseData->MultiUndoMem.Redo(RedoMemory[redoMemPosition-1]);
     else
       ((CPEBaseDoc*)RedoMemory[redoMemPosition-1]->fromDoc)->Undo(TRUE);
+  OnUpdateEditUndo(LBaseData->editUndoActionPtr);
+  OnUpdateEditRedo(LBaseData->editRedoActionPtr);
 }
 
 void CUndoMem::OnUpdateEditRedo(QAction *action)
