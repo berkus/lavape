@@ -76,7 +76,7 @@ static QString szTreeFont = "TreeFont";
 static QString szGlobalFont = "GlobalFont";
 static QString favoriteBrowser = "MyBrowser";
 static QString gui_style = "Style";
-static QString lfOpen = "/LastFileOpen";
+static QString lfOpen = "LastFileOpen";
 
 static char slash='/';
 

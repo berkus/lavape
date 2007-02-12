@@ -54,15 +54,15 @@
 #pragma hdrstop
 
 
-static QString szCheckPreconditions = "/CheckPreconditions";
-static QString szCheckPostconditions = "/CheckPostconditions";
-static QString szCheckInvariants = "/CheckInvariants";
-static QString szPmDumps = "/PmDumps";
-static QString szFormFont = "/FormFont";
-static QString szFormLabelFont = "/FormLabelFont";
-static QString szGlobalFont = "/GlobalFont";
-static QString favoriteBrowser = "/MyBrowser";
-static QString gui_style = "/Style";
+static QString szCheckPreconditions = "CheckPreconditions";
+static QString szCheckPostconditions = "CheckPostconditions";
+static QString szCheckInvariants = "CheckInvariants";
+static QString szPmDumps = "PmDumps";
+static QString szFormFont = "FormFont";
+static QString szFormLabelFont = "FormLabelFont";
+static QString szGlobalFont = "GlobalFont";
+static QString favoriteBrowser = "MyBrowser";
+static QString gui_style = "Style";
 static QString lfOpen = "LastFileOpen";
 
 static char slash='/';
