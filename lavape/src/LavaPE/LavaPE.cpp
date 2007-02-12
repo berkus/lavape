@@ -116,6 +116,7 @@ int xerrcomBM = 33;
 CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 :wxApp(argc, argv )
 {
+  bool b1=false;
   QString lfo;
 
   SetVendorName("Fraunhofer-SIT");

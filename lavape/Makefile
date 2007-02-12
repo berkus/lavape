@@ -140,6 +140,6 @@ bin_dist:
 	cd ..; tar cjf /windows/D/lavape-0.9.0-linux-bin.tar.bz2 lavape; ls -l /windows/D/lavape-*; rm -rf lavape
 
 
+clean: cleanall
 distclean: cleanall
-
 

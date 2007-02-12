@@ -3254,6 +3254,7 @@ void CExecView::InsertAfter()
   || text->currentSelection->data.token == Equal_T)
   && text->currentSynObj->primaryToken == TypeRef_T)
     text->currentSelection = text->currentSynObj->primaryTokenNode;
+
   switch (text->currentSelection->data.token) {
   case elsif_T:
   case then_T:

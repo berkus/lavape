@@ -1,8 +1,8 @@
 SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
 
-#to build a debug version set DBG=-g
-DBG=-g
+#to build a debug version set DBG=-ggdb
+DBG=-ggdb
 
 ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt
@@ -206,13 +206,13 @@ endif
 	cd $(LAVADIR)/src/$(basename $@) && $(MAKE) this
 
 %.cln:
-	cd $(LAVADIR)/src/$(basename $@) && $(MAKE) clean
+	cd $(LAVADIR)/src/$(basename $@) && $(MAKE) dirclean
 
-clean:
+dirclean:	
 	rm -rf *.o *.d PCH/*.gch PCH/*.d $(gen_files) Generated/*.cpp Generated/*.h Generated/*.o Generated/*.d
-#	rm -rf *.o *.d Generated/*.o Generated/*.d *.d Generated/*.cpp Generated/*.h $(gen_files)
 
-cleanall: $(clean_subpro) clean
+
+cleanall: dirclean $(clean_subpro)
 
 
 # Include the generated dependency files if they exist already
