@@ -308,6 +308,8 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
               cheTID = new CHETID;
               cheTID->data = TID(((LavaDECL*)che->data)->OwnID, ((LavaDECL*)che->data)->inINCL);
               formNode->data.myHandler.Append(cheTID);
+              if (LBaseData->inRuntime)
+                formNode->data.myHandlerNode = node;
             }
           }
         } //if is handler

@@ -327,12 +327,12 @@ bool CLavaApp::event(QEvent *e)
     break;
   case UEV_LavaShow:
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
-    ((CLavaMainFrame*)m_appWindow)->docModal = (CLavaDoc*)pHint->fromDoc;
-    ((CLavaDoc*)pHint->fromDoc)->LavaDialog = new LavaGUIDialog(m_appWindow, pHint);
-    result = ((QDialog*)((CLavaDoc*)pHint->fromDoc)->LavaDialog)->exec();
-    delete ((CLavaDoc*)pHint->fromDoc)->LavaDialog;
-    ((CLavaMainFrame*)m_appWindow)->docModal = 0;
-    ((CLavaDoc*)pHint->fromDoc)->LavaDialog = 0;
+    LBaseData.docModal = pHint->fromDoc;
+    ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog = new LavaGUIDialog(m_appWindow, pHint);
+    result = ((QDialog*)((CLavaDoc*)LBaseData.docModal)->ActLavaDialog)->exec();
+    delete ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog;
+    ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog = 0;
+    LBaseData.docModal = 0;
     if (pHint->CommandData5) {
       thr = (CLavaThread*)((CLavaPEHint*)((CustomEvent*)e)->data())->CommandData5;
       if (result == QDialog::Rejected) {
@@ -359,9 +359,9 @@ bool CLavaApp::event(QEvent *e)
     ((CMainFrame*)m_appWindow)->pmDumpAction->setChecked(false);
     break;
   case UEV_LavaGUIInsDel: 
-    if ( ((CLavaMainFrame*)m_appWindow)->docModal 
-      && ((CLavaMainFrame*)m_appWindow)->docModal->LavaDialog ) 
-      ((LavaGUIDialog*)((CLavaMainFrame*)m_appWindow)->docModal->LavaDialog)->myGUIProg->CmdExec.Event( e);
+    if ( LBaseData.docModal 
+      && ((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog ) 
+      ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog)->myGUIProg->CmdExec.Event( e);
     break;
   
 

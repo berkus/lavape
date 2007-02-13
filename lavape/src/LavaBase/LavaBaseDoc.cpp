@@ -134,7 +134,7 @@ CLavaBaseDoc::CLavaBaseDoc()
   DocObjects[2] = 0;
   ThreadList = 0;
   DumpFrame=0;
-  LavaDialog = 0;
+  ActLavaDialog = 0;
 }
 
 CLavaBaseDoc::~CLavaBaseDoc()
@@ -1051,7 +1051,7 @@ bool CLavaBaseDoc::IsCDerivation(LavaDECL *decl, LavaDECL *baseDecl, CheckData* 
   LavaDECL* elDECL;
   CHETVElem *ElBase, *El;
 
-  if (!decl || !baseDecl)
+  if (!decl || !baseDecl || (decl == baseDecl))
     return true;
   if (!MakeVElems(decl, pckd))
     return false;

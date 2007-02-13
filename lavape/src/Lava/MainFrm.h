@@ -14,7 +14,7 @@ public:
   virtual void UpdateUI();
   int lastTile;
   virtual void customEvent(QEvent *ev);
-  CLavaDoc* docModal;
+  //CLavaDoc* docModal;
 
 public slots:
   virtual void on_helpContentsAction_triggered();

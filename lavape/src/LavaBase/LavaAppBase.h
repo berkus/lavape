@@ -344,6 +344,7 @@ public:
 
   wxApp *theApp;
   CLavaDbgBase* debugger;
+  wxDocument* docModal;
   //bool debugOn;
   DbgContData* ContData;  //used in LavaPE
   unsigned long /*HCURSOR*/ ArrowCurser;

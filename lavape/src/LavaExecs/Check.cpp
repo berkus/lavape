@@ -545,6 +545,7 @@ bool compatibleContext(CheckData &ckd, LavaDECL* decl2, const CContext &context1
 bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, LavaDECL *decl2, const CContext &context2)
 {
   //decl1 right hand side
+  LavaDECL *decl22;
   if (!decl1 || !decl2)
     return true;
   SynFlags ctxFlags1 = context1.ContextFlags;
@@ -574,8 +575,15 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
       ckd.errorCode = &ERR_IncompWithTargetVT;
       if (decl1 == decl2)
         return compatibleContext(ckd, decl2, context1, context2);
-      else
-        return false;
+      else {
+        decl22 = ckd.document->IDTable.GetDECL(decl2->RefID,decl2->inINCL);
+        if (!compatibleTypes(ckd, decl1, context1, decl22, context2))
+          return false;
+        decl1 =  ckd.document->IDTable.GetDECL(decl1->RefID,decl1->inINCL);
+        if (!compatibleTypes(ckd, decl1, context1, decl2, context2))
+          return false;
+        return true;
+      }
     }
     else {
       if (decl2->DeclType == VirtualType) {

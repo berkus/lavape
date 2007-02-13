@@ -39,7 +39,7 @@
 
 CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
 {
-  docModal = 0;
+  LBaseData->docModal = 0;
   setObjectName("LavaMainFrame");
   setupUi(this); // populate this main frame
 
@@ -128,8 +128,8 @@ void CLavaMainFrame::UpdateUI()
   fileSaveAction->setEnabled(enable);
   fileSaveAsAction->setEnabled(enable);
   fileSaveAllAction->setEnabled(enable);
-  if (docModal && docModal->LavaDialog)
-    ((LavaGUIDialog*)docModal->LavaDialog)->UpdateUI();
+  if (LBaseData->docModal && ((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog)
+    ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog)->UpdateUI();
 }
 
 void CLavaMainFrame::customEvent(QEvent *ev0){
@@ -240,8 +240,8 @@ void CLavaMainFrame::on_editUndoAction_triggered()
 
 void CLavaMainFrame::on_insAction_triggered()
 {
-  if (docModal && docModal->LavaDialog)
-    ((LavaGUIDialog*)docModal->LavaDialog)->OnInsertOpt();
+  if (LBaseData->docModal && ((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog)
+    ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog)->OnInsertOpt();
   else {
     CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
     if (view)
@@ -251,8 +251,8 @@ void CLavaMainFrame::on_insAction_triggered()
 
 void CLavaMainFrame::on_delAction_triggered()
 {
-  if (docModal && docModal->LavaDialog)
-    ((LavaGUIDialog*)docModal->LavaDialog)->OnDeleteOpt();
+  if (LBaseData->docModal && ((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog)
+    ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog)->OnDeleteOpt();
   else {
     CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
     if (view)

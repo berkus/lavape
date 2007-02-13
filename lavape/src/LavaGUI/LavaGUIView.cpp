@@ -116,6 +116,7 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
     myGUIProg->ServicePtr = ServicePtr;
     IniDataPtr = (LavaVariablePtr)pHint->CommandData2;
     ResultDPtr = (LavaVariablePtr)pHint->CommandData3;
+    HGUISetData(myGUIProg->ckd, *ServicePtr, ResultDPtr, this);
     myDECL = (*ServicePtr)[0]->implDECL;
     NewTitle(myDECL, myDoc->IDTable.DocName);
     myID = TID(myDECL->OwnID, 0);
@@ -176,6 +177,7 @@ void LavaGUIDialog::OnOK()
       DEC_FWD_CNT(myGUIProg->ckd,obj);
     }
     if (myGUIProg->LavaForm.OnOK( myGUIProg->Root)) {
+      HGUISetUnused(myGUIProg->ckd, *ServicePtr);
       if (myThread) {
         myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
         myThread->mySemaphore.ex = myGUIProg->ex;
@@ -207,6 +209,7 @@ void LavaGUIDialog::OnCancel()
       myGUIProg->ckd.exceptionThrown = false;
     }
   }
+  HGUISetUnused(myGUIProg->ckd, *ServicePtr);
   QDialog::reject();
 }
 
@@ -347,8 +350,11 @@ CLavaGUIView::~CLavaGUIView()
       LBaseData->Browser->LastBrowseContext->RemoveView(this);
   }
   if (myGUIProg) {
-    if (!wxTheApp->appExit)
+    if (!wxTheApp->appExit) {
       myGUIProg->LavaForm.DeletePopups(myGUIProg->Root);
+      if (LBaseData->inRuntime)
+        HGUISetUnused(myGUIProg->ckd, *ServicePtr);
+    }
     delete myGUIProg;
   }
   if (!wxTheApp->appExit) {
@@ -431,6 +437,7 @@ void CLavaGUIView::OnInitialUpdate()
         myGUIProg->ServicePtr = ServicePtr;
         IniDataPtr = &GetDocument()->DocObjects[1];
         ResultDPtr = &GetDocument()->DocObjects[2];
+        HGUISetData(myGUIProg->ckd, *ServicePtr, ResultDPtr, 0);
         if (*ResultDPtr)
           CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
         myGUIProg->FrozenObject = 0;
@@ -446,7 +453,7 @@ void CLavaGUIView::OnInitialUpdate()
       }
     }
   }
-  else {
+  else {// new .ldoc
     if (LBaseData->inRuntime && GetDocument()->isObject) {
       GetParentFrame()->showMaximized();
       GetDocument()->SelectLcom(true);
@@ -459,6 +466,7 @@ void CLavaGUIView::OnInitialUpdate()
       ResultDPtr = &GetDocument()->DocObjects[2];
       if (*ResultDPtr)
         CurrentCategory = ((SynFlags*)((*ResultDPtr)+1))->Contains(stateObjFlag);
+      HGUISetData(myGUIProg->ckd, *ServicePtr, ResultDPtr, 0);
       myGUIProg->FrozenObject = 0;
       myGUIProg->fromFillIn = 1;
       myDECL = (*ServicePtr)[0][0].implDECL;

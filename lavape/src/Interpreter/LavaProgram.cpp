@@ -216,7 +216,7 @@ void CLavaProgram::InitBAdapter()
   if (!DECLTab[B_GUI])
     LavaError(ckd, false, 0, &ERR_inStd);
   MakeStdAdapter();
-  GUIAdapter[LAH] = &GUIData; 
+  //GUIAdapter[LAH] = &GUIData; 
   GUIAdapter[LAH+1] = &GUIEdit; 
   GUIAdapter[LAH+2] = &GUIFillOut; 
 }
@@ -1479,7 +1479,7 @@ bool CLavaProgram::MakeVElems(LavaDECL *classDECL, CheckData* pckd)
       }
     }
     if (ElDECL->TypeFlags.Contains(forceOverride)
-      && (ElDECL->ParentDECL != classDECL)) {
+      && (ElDECL->ParentDECL->DeclType == Interface) && (ElDECL->ParentDECL != classDECL)) {
       LavaError(*pckd, true, classDECL, &ERR_ForceOver, ElDECL);
       return false;
     }
@@ -2440,10 +2440,23 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
         currentThread->mySemaphore.ex = 0;
       }
   }
-  else {
-    ((CLavaBaseDoc*)hint->fromDoc)->LavaDialog = new LavaGUIDialog(wxTheApp->m_appWindow, hint);
-    if (((QDialog*)((CLavaBaseDoc*)hint->fromDoc)->LavaDialog)->exec() != QDialog::Accepted)
+  else { //call from handler
+    LavaObjectPtr callingService = 0;
+    if (ckd.document->ActLavaDialog)
+      callingService = *((LavaGUIDialog*)ckd.document->ActLavaDialog)->ServicePtr;
+    if (!callingService[0][0].classDECL->SecondTFlags.Contains(isGUI))
+      return new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+    LBaseData->docModal = ckd.document;
+    ckd.document->ActLavaDialog = new LavaGUIDialog(wxTheApp->m_appWindow, hint);
+    if (((QDialog*)ckd.document->ActLavaDialog)->exec() != QDialog::Accepted)
       ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+    if (callingService)
+      ckd.document->ActLavaDialog = HGUIGetDialog(ckd, callingService);
+    else {
+      ckd.document->ActLavaDialog = 0;
+      LBaseData->docModal = 0;
+    }
+
   }
 
   if (ckd.document->throwError) {
@@ -2519,18 +2532,3 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
   }
 }
 
-bool GUIData(CheckData& ckd, LavaVariablePtr stack)
-{
-  LavaObjectPtr servObj;
-  servObj = stack[SFH] - stack[SFH][0][0].sectionOffset;
-  if (ckd.document->LavaDialog
-       && (*((LavaGUIDialog*)ckd.document->LavaDialog)->ServicePtr == servObj))
-    stack[SFH+1] = *((LavaGUIDialog*)ckd.document->LavaDialog)->ResultDPtr;
-  else {
-    CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-    if (view && view->inherits("CLavaGUIView")
-         && (*((CLavaGUIView*)view)->ServicePtr == stack[SFH]))
-      stack[SFH+1] = *((CLavaGUIView*)view)->ResultDPtr;
-  }
-  return true;
-}

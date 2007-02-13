@@ -1751,6 +1751,47 @@ bool ExceptionCallStack(CheckData& ckd, LavaVariablePtr stack)
   return true;
 }
 
+void HGUISetData(CheckData& ckd, LavaObjectPtr guiService, LavaVariablePtr dataPtr, QWidget* dialog)
+{
+  if (!guiService)
+    return;
+  *(LavaVariablePtr*)(guiService+LSH) = dataPtr;
+  *(QWidget**)(guiService+LSH+1) = dialog;
+}
+
+void HGUISetUnused(CheckData& ckd, LavaObjectPtr guiService)
+{
+  if (!guiService)
+    return;
+  *(QWidget**)(guiService+LSH+1) = 0;
+  *(LavaVariablePtr*)(guiService+LSH) = 0;
+}
+
+QWidget* HGUIGetDialog(CheckData& ckd, LavaObjectPtr guiService)
+{
+  if (!guiService)
+    return 0;
+  return *(QWidget**)(guiService+LSH+1);
+}
+
+bool GUIData(CheckData& ckd, LavaVariablePtr stack)
+{
+  int ii;
+  LavaObjectPtr dataObj = *(LavaVariablePtr)(stack[SFH] + LSH);
+  if (!dataObj)
+    return false; 
+  LavaDECL *dataType = stack[SFH][0][0].implDECL->RelatedDECL;
+  dataObj = dataObj - dataObj[0][0].sectionOffset;
+  for (ii = 0; (ii < dataObj[0][0].nSections) && (dataObj[0][ii].classDECL != dataType); ii++);
+  if (ii < dataObj[0][0].nSections) {
+    stack[SFH+1] = dataObj + dataObj[0][ii].sectionOffset;
+    return true;
+  }
+  else
+    return false;
+}
+
+
 /*
 bool ExceptionDecFunc(CheckData& ckd, LavaVariablePtr stack)
 {
@@ -1984,14 +2025,15 @@ void MakeStdAdapter()
   HW_L_ExceptionAdapter[5] = 0;  
   HW_L_ExceptionAdapter[6] = 0; 
 
-  GUIAdapter[0] = 0;
+  //GUI+LSH: LavavariablePtr to data object GUI+LSH+1:  LavaGUIDialog*
+  GUIAdapter[0] = (TAdapterFunc)((sizeof(LavaObjectPtr)+3)/4 + 1); //LavavariablePtr to data object and LavaGUIDialog*
   GUIAdapter[1] = 0;
   GUIAdapter[2] = 0; 
   GUIAdapter[3] = 0;
   GUIAdapter[4] = 0;
   GUIAdapter[5] = 0; 
   GUIAdapter[6] = 0;
-  //GUIAdapter[LAH] = &GUIData; implemented in LavaProgram
+  GUIAdapter[LAH] = &GUIData; 
   //GUIAdapter[LAH+1] = &GUIEdit; implemented in LavaProgram
   //GUIAdapter[LAH+2] = &GUIFillOut; implemented in LavaProgram
 
@@ -2012,6 +2054,6 @@ void MakeStdAdapter()
   StdAdapterTab[B_Exception]  = &ExceptionAdapter[0];
   StdAdapterTab[B_HWException]= &HW_L_ExceptionAdapter[0];
   StdAdapterTab[B_RTException] = &HW_L_ExceptionAdapter[0];
-  StdAdapterTab[B_GUI] = &GUIAdapter[0];
+  StdAdapterTab[B_GUI]        = &GUIAdapter[0];
 
 }

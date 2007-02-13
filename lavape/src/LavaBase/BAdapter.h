@@ -29,6 +29,10 @@ extern LAVABASE_DLL LavaObjectPtr HArrayGetEl(LavaObjectPtr array, int pos);
 extern LAVABASE_DLL bool HArraySetEl(CheckData& ckd, LavaObjectPtr array, LavaObjectPtr elem, int pos);
 extern LAVABASE_DLL bool HArrayUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& isNew);
 extern LAVABASE_DLL void HArrayOneLevelCopy(CheckData& ckd, LavaObjectPtr sourceSectionPtr, LavaObjectPtr resultSectionPtr);
+extern LAVABASE_DLL bool GUIData(CheckData& ckd, LavaVariablePtr stack);
+extern LAVABASE_DLL void HGUISetData(CheckData& ckd, LavaObjectPtr guiService, LavaVariablePtr dataPtr, QWidget* dialog);
+extern LAVABASE_DLL void HGUISetUnused(CheckData& ckd, LavaObjectPtr guiService);
+extern LAVABASE_DLL QWidget* HGUIGetDialog(CheckData& ckd, LavaObjectPtr guiService);
 
 extern LAVABASE_DLL bool StringNewFunc(CheckData& ckd, LavaVariablePtr stack);
 extern LAVABASE_DLL bool StringDecFunc(CheckData& ckd, LavaVariablePtr stack);

@@ -92,9 +92,9 @@ public:
                                //         [2] = show result 0bject
 //  DString ObjName;  //Runtime: name of object file
   wxView *RuntimeView; //used from *.ldoc only
+  QWidget* ActLavaDialog;
   CThreadList *ThreadList;
   QWidget* DumpFrame;
-  QWidget* LavaDialog;
   int numAllocObjects;
   QList<LavaObjectPtr> allocatedObjects;
 

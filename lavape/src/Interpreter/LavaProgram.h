@@ -74,7 +74,6 @@ public:
 
 extern LAVAEXECS_DLL bool GUIEdit(CheckData& ckd, LavaVariablePtr stack);
 extern LAVAEXECS_DLL bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack);
-extern LAVAEXECS_DLL bool GUIData(CheckData& ckd, LavaVariablePtr stack);
 
 extern LAVAEXECS_DLL unsigned ExecuteLava(CLavaBaseDoc *doc );
 
