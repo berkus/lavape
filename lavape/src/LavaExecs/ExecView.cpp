@@ -2395,7 +2395,7 @@ void CExecView::PutIniCall(SynObject *varItem, SynObject *newVarItem, bool after
   ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
   if (after)
     if (chx)
-      PutInsChainHint(newChe,chx,che,SET());
+      PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
     else {
       multOp = new SemicolonOpV;
       text->currentSynObj = varItem->iniCall;
@@ -2406,7 +2406,7 @@ void CExecView::PutIniCall(SynObject *varItem, SynObject *newVarItem, bool after
   else
     if (chx) {
       che = (CHE*)((CHE*)varItem->iniCall->whereInParent)->predecessor;
-      PutInsChainHint(newChe,chx,che,SET());
+      PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
     }
     else {
       multOp = new SemicolonOpV;
@@ -3358,13 +3358,17 @@ quantCase:
       ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
       ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
       newChe = NewCHE(funcStm);
-      semi = (SemicolonOp*)dcl->secondaryClause.ptr;
-      chx = &semi->operands;
-      che = (CHE*)chx->last;
-      text->currentSynObj = semi;
-      PutInsChainHint(newChe,
-        chx,
-        che,SET(lastHint,-1));
+      if (((SynObject*)dcl->secondaryClause.ptr)->IsFuncInvocation()) {
+      }
+      else {
+        semi = (SemicolonOp*)dcl->secondaryClause.ptr;
+        chx = &semi->operands;
+        che = (CHE*)chx->last;
+        text->currentSynObj = semi;
+        PutInsChainHint(newChe,
+          chx,
+          che,SET(lastHint,-1));
+      }
     }
     else
       PutInsChainHint(newChe,
