@@ -1249,6 +1249,7 @@ bool CLavaPEView::event(QEvent *ev)
   else if (ev->type() == UEV_LavaPE_SyncTree) {
     data = (CSyncData*)((CustomEvent*)ev)->data();
     ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetHandler(data->HandlerIDs, GetDocument());
+    delete data->HandlerIDs;
     if (data->FormSyntax) {
       item = BrowseTree(data->FormSyntax, (CTreeItem*)Tree->RootItem);
       if (item) {
@@ -3642,19 +3643,21 @@ bool CLavaPEView::PutEC(CTreeItem* item, bool onErr)
       errDECL = GetExecDECL(item);
     if (errDECL) {
       if (onErr && (errDECL->DECLError1.first || errDECL->DECLError2.first)) {
-        Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
-        Tree->setCurAndSel(item);
         CheckAutoCorr(errDECL);
         ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetErrorOnUtil(errDECL);
         ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetTab(tabError);
+        QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_setSel, (void*)item));
+        //Tree->setCurAndSel(item);
+        //Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
         return true;
       }
       else
         if (!onErr && errDECL->DECLComment.ptr) {
           ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetComment(errDECL->DECLComment.ptr->Comment, !errDECL->DECLError1.first && !errDECL->DECLError2.first);
           ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetTab(tabComment);
-          Tree->setCurAndSel(item);
-          Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
+          QApplication::postEvent(this, new CustomEvent(UEV_LavaPE_setSel, (void*)item));
+          //Tree->setCurAndSel(item);
+          //Tree->scrollToItem(item, QAbstractItemView::EnsureVisible );//ensureItemVisible(item);
           return true;
         }
     }

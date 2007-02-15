@@ -28,6 +28,7 @@ public:
   virtual bool SelectLcom(bool emptyDoc);
 	virtual void customEvent(QEvent *e);
   virtual bool SaveAs();
+  virtual bool DeleteContents() ;
 
 protected:
   void SerializeObj(CheckData& ckd, QDataStream& ar, LavaVariablePtr pObject, const QString& ldocName );

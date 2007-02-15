@@ -61,6 +61,21 @@ CLavaDoc::CLavaDoc()
   numAllocObjects = 0;
 }
 
+bool CLavaDoc::DeleteContents() 
+{
+  CheckData ckd;
+  LavaObjectPtr obj;
+
+  ckd.document = this;
+  if (RuntimeView && ((CLavaGUIView*)RuntimeView)->myGUIProg) {
+    while (((CLavaGUIView*)RuntimeView)->myGUIProg->allocatedObjects.size()) {
+      obj = ((CLavaGUIView*)RuntimeView)->myGUIProg->allocatedObjects.takeFirst();
+      DEC_FWD_CNT(ckd,obj);
+    }
+  }
+  return CLavaBaseDoc::DeleteContents(); 
+}
+
 CLavaDoc::~CLavaDoc()
 {
  if (numAllocObjects) {

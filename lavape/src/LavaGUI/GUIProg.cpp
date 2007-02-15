@@ -127,8 +127,9 @@ void CGUIProg::NoteLastModified()
 void CGUIProg::SyncTree(CHEFormNode *node)
 {
   CHEFormNode *upNode;
-  TIDs *handlerChain = new TIDs;
+  TIDs *handlerChain;
   CHETID *chetid, *cheCop;
+
   handlerChain = new TIDs;
   *handlerChain = node->data.myHandler;
   upNode = node->data.FIP.up;

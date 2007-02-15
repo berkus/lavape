@@ -2419,6 +2419,7 @@ stop:     ckd.document->throwError = false;
 
 CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
 {
+  wxView *actView;
   CRuntimeException* ex=0;
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
   CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, &stack[SFH], &stack[SFH+1], &stack[SFH+2], (void*)frozen, currentThread, (void*)fromFillIn);
@@ -2444,7 +2445,14 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
     LavaObjectPtr callingService = 0;
     if (ckd.document->ActLavaDialog)
       callingService = *((LavaGUIDialog*)ckd.document->ActLavaDialog)->ServicePtr;
-    if (!callingService[0][0].classDECL->SecondTFlags.Contains(isGUI))
+    /*else {
+      actView = wxDocManager::GetDocumentManager()->GetActiveView();
+      if ( actView && actView->inherits("CLavaGUIView")) 
+        callingService = *((CLavaGUIView*)actView)->ServicePtr;
+      else
+        return new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+    }*/
+    if (callingService && !callingService[0][0].classDECL->SecondTFlags.Contains(isGUI))
       return new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
     LBaseData->docModal = ckd.document;
     ckd.document->ActLavaDialog = new LavaGUIDialog(wxTheApp->m_appWindow, hint);

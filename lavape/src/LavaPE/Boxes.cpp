@@ -2249,6 +2249,7 @@ void CFuncBox::makeHandler()
     IOEl->BType = B_Che;
     IOEl->inINCL = 0;
     IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Che], 1);
+    IOEl->TypeFlags.INCL(isOptional);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
     IOEl = NewLavaDECL();
     IOEl->TypeFlags.INCL(trueObjCat);
@@ -2998,18 +2999,24 @@ void CInterfaceBox::on_DelSupport_clicked()
 void CInterfaceBox::on_ExtTypes_activated(int pos) 
 {
   QVariant var;
+  LavaDECL *baseDECL;
 
   if (!pos) return;
   UpdateData(true);
   var = ExtTypes->itemData(pos);
   CComboBoxItem *comboItem = var.value<CComboBoxItem*>();
   if (comboItem) {
-    if (myDoc->IDTable.InsertBase(myDECL, myDoc->IDTable.GetDECL(comboItem->itemData(), 0), ContextDECL, true)) {
+    baseDECL = myDoc->IDTable.GetDECL(comboItem->itemData());
+    if (myDoc->IDTable.InsertBase(myDECL, baseDECL, ContextDECL, true)) {
       SupportsToList();
       ResetComboItems(ExtTypes);
       CExecBase *execBase = new CExecBase(this);
       delete execBase;
       BasicTypes->setCurrentIndex(0);
+      if (baseDECL->SecondTFlags.Contains(isSet)) {
+        BuildSet->setChecked(false);
+        BuildSet->setEnabled(false);
+      }
       UpdateData(false);
     }
   }

@@ -448,8 +448,16 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
       if (classDECL->DeclType == Impl)
         classDECL = GUIProg->myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
       fNode->data.GUIService = (CSecTabBase**)AllocateObject(GUIProg->ckd, classDECL, true);
-      obj = (LavaObjectPtr)fNode->data.GUIService;
-      GUIProg->allocatedObjects.append(obj);
+      if (fNode->data.GUIService
+        && CallDefaultInit(((CGUIProg*)GUIProg)->ckd, (LavaObjectPtr)fNode->data.GUIService)) {
+        obj = (LavaObjectPtr)fNode->data.GUIService;
+        GUIProg->allocatedObjects.append(obj);
+      }
+      else {
+        if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
+          ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
+        return false;
+      }
     }
   }
 

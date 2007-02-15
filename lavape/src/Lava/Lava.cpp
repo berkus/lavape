@@ -78,7 +78,7 @@ int main( int argc, char ** argv ) {
   QByteArray myPath;
 
 #ifdef _DEBUG
-  //_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+  _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
   //_CrtSetBreakAlloc(60222);
 #endif
 
@@ -276,6 +276,7 @@ QString CLavaApp::InitWebBrowser () {
 bool CLavaApp::event(QEvent *e)
 {
   CLavaProgram *doc;
+  wxView *actView;
   CMsgBoxParams *mbp;
   CLavaPEHint *pHint;
   CLavaThread *thr;
@@ -329,12 +330,18 @@ bool CLavaApp::event(QEvent *e)
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     LBaseData.docModal = pHint->fromDoc;
     ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog = new LavaGUIDialog(m_appWindow, pHint);
-    result = ((QDialog*)((CLavaDoc*)LBaseData.docModal)->ActLavaDialog)->exec();
+    if (pHint->CommandData5)
+      thr = (CLavaThread*)((CLavaPEHint*)((CustomEvent*)e)->data())->CommandData5;
+    else
+      thr = 0;
+    if (!thr || !thr->mySemaphore.lastException && !thr->mySemaphore.ex) 
+      result = ((QDialog*)((CLavaDoc*)LBaseData.docModal)->ActLavaDialog)->exec();
+    else
+      result = QDialog::Rejected;
     delete ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog;
     ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog = 0;
     LBaseData.docModal = 0;
-    if (pHint->CommandData5) {
-      thr = (CLavaThread*)((CLavaPEHint*)((CustomEvent*)e)->data())->CommandData5;
+    if (thr) {
       if (result == QDialog::Rejected) {
         if (!thr->mySemaphore.ex)
           ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
@@ -362,6 +369,11 @@ bool CLavaApp::event(QEvent *e)
     if ( LBaseData.docModal 
       && ((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog ) 
       ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog)->myGUIProg->CmdExec.Event( e);
+    else {
+      actView = wxDocManager::GetDocumentManager()->GetActiveView();
+      if (actView && actView->inherits("CLavaGUIView") ) 
+        ((CLavaGUIView*)actView)->myGUIProg->CmdExec.Event( e);
+    }
     break;
   
 

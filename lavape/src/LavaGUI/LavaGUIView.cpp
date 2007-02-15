@@ -87,6 +87,8 @@ void GUIScrollView::/*viewportR*/resizeEvent(QResizeEvent* ev)
 LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
 : QDialog(parent)
 {
+  LavaObjectPtr obj;
+
   setObjectName("LavaGUIDialog");
   setModal(true);
   returned = false;
@@ -125,6 +127,24 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
     myGUIProg->fromFillIn = (int)pHint->CommandData6;
     myGUIProg->myDECL = myDECL;
     myGUIProg->OnUpdate( myDECL, ResultDPtr);
+    if (myGUIProg->ckd.exceptionThrown || myGUIProg->ex) {
+      if (*ResultDPtr) {
+        DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
+        *ResultDPtr = 0;
+        while (myGUIProg->allocatedObjects.count()) {
+          obj = myGUIProg->allocatedObjects.takeFirst();
+          DEC_FWD_CNT(myGUIProg->ckd,obj);
+        }
+      }
+      if (myThread) {
+        myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
+        myThread->mySemaphore.ex = myGUIProg->ex;
+        myGUIProg->ckd.lastException = 0;
+        myGUIProg->ckd.exceptionThrown = false;
+      }
+      HGUISetUnused(myGUIProg->ckd, *ServicePtr);
+      return ;
+    }
     myGUIProg->MakeGUI.DisplayScreen(false);
   }
   //myScrv->show();
@@ -188,6 +208,7 @@ void LavaGUIDialog::OnOK()
     }
   }
 }
+
 
 void LavaGUIDialog::OnCancel()
 {

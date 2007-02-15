@@ -3137,6 +3137,10 @@ bool ObjReference::AssignCheck (CheckData &ckd,VarRefContext vrc) {
   }
   else { // path a.b. ...
     dw = ckd.document->IDTable.GetVar(((TDOD*)((CHE*)refIDs.last)->data)->ID,idtype,ckd.inINCL);
+    if (!dw) {
+      ((TDOD*)((CHE*)refIDs.last)->data)->SetError(ckd,&ERR_Broken_ref);
+      return false;
+    }
     decl = *(LavaDECL**)dw;
     if (roContext == assertion
     && !flags.Contains(isDeclareVar)) {

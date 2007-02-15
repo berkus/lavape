@@ -3801,7 +3801,7 @@ LavaObjectPtr FuncExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
   }
 
   object = newStackFrame[pos];
-  if (formVType->DeclType == VirtualType) {
+  if (object && formVType->DeclType == VirtualType) {
     object = ((CLavaProgram*)ckd.document)->CastVOutObj(ckd, object, callCtx, formVType, vSectionNumber, isOuter);
     if (ckd.exceptionThrown)
       object = 0;

@@ -2216,6 +2216,7 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
   GUIinterface->Supports.Append(cheID);
   GUIinterface->RefID = TID(interdecl->OwnID, interdecl->inINCL);
   GUIinterface->ParentDECL = posDECL->ParentDECL;
+  MakeIniFunc(GUIinterface);
   dataVT = NewLavaDECL();
   cheID = new CHETID;
   IDTable.GetParamID(GUIinterface, cheID->data, isGUI);
@@ -2231,6 +2232,7 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
   dataVT->WorkFlags.EXCL(selAfter);
   elChe = NewCHE(dataVT);
   GUIinterface->NestedDecls.Prepend(elChe);
+
 
   GUIimpl = NewLavaDECL();
   GUIimpl->DeclType = Impl;
@@ -2325,7 +2327,6 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
       newAttrdecl = NewLavaDECL();
       *newAttrdecl = *attrdecl;
       newAttrdecl->RefID = TID(FormDecl->OwnID, 0);
-     // hier hint fr ge�dertes attr
       for (elChe = (CHE*)attrdecl->ParentDECL->NestedDecls.first;
            elChe && ((LavaDECL*)elChe->data != attrdecl);
            elChe = (CHE*)elChe->successor);
@@ -2343,72 +2344,6 @@ LavaDECL* CLavaPEDoc::MakeGUI(LavaDECL* relDECL, LavaDECL** pparent, int& pos, L
   return GUIinterface;
 }
 
-/*
-void CLavaPEDoc::MakeGUIFuncs(LavaDECL* guiInterface)
-{
-  LavaDECL *interdecl, *fdecl, *IOdecl;
-  CHE *elChe;
-
-  interdecl = IDTable.GetDECL(guiInterface->RefID);
-  if (interdecl->TypeFlags.Contains(thisComponent))
-    guiInterface->TypeFlags.INCL(thisCompoForm);
-
-  fdecl = NewLavaDECL();
-  fdecl->DeclType = Function;
-  fdecl->DeclDescType = StructDesc;
-  fdecl->ParentDECL = guiInterface;
-  fdecl->LocalName = DString("FillOut");
-  fdecl->FullName = guiInterface->FullName + fdecl->LocalName;
-  fdecl->TypeFlags += SET(isGUI, isNative, isConst,-1);
-  elChe = NewCHE(fdecl);
-  guiInterface->NestedDecls.Append(elChe);
-
-  IOdecl = NewLavaDECL();
-  IOdecl->DeclType = IAttr;
-  IOdecl->DeclDescType = NamedType;
-  IOdecl->ParentDECL = fdecl;
-  IOdecl->LocalName = DString("UI_in");
-  IOdecl->FullName = fdecl->FullName + IOdecl->LocalName;
-  IOdecl->RefID = guiInterface->RefID;
-  IOdecl->TypeFlags += SET(isGUI, trueObjCat, isOptional,-1);
-  elChe = NewCHE(IOdecl);
-  fdecl->NestedDecls.Append(elChe);
-
-  IOdecl = NewLavaDECL();
-  IOdecl->DeclType = OAttr;
-  IOdecl->DeclDescType = NamedType;
-  IOdecl->ParentDECL = fdecl;
-  IOdecl->LocalName = DString("UI_out");
-  IOdecl->FullName = fdecl->FullName + IOdecl->LocalName;
-  IOdecl->RefID = guiInterface->RefID;
-  IOdecl->TypeFlags += SET(isGUI, trueObjCat,-1);
-  elChe = NewCHE(IOdecl);
-  fdecl->NestedDecls.Append(elChe);
-
-  fdecl = NewLavaDECL();
-  fdecl->DeclType = Function;
-  fdecl->DeclDescType = StructDesc;
-  fdecl->ParentDECL = guiInterface;
-  fdecl->LocalName = DString("Edit");
-  fdecl->FullName = guiInterface->FullName + fdecl->LocalName;
-  fdecl->TypeFlags += SET(isGUI, isGUIEdit, isNative,-1);
-  elChe = NewCHE(fdecl);
-  guiInterface->NestedDecls.Append(elChe);
-
-  IOdecl = NewLavaDECL();
-  IOdecl->DeclType = IAttr;
-  IOdecl->DeclDescType = NamedType;
-  IOdecl->ParentDECL = fdecl;
-  IOdecl->LocalName = DString("UI_in");
-  IOdecl->FullName = fdecl->FullName + IOdecl->LocalName;
-  IOdecl->RefID = guiInterface->RefID;
-  IOdecl->TypeFlags += SET(isGUI, stateObject, trueObjCat,-1);
-  elChe = NewCHE(IOdecl);
-  fdecl->NestedDecls.Append(elChe);
-
-  guiInterface->TypeFlags.INCL(isGUI);
-}
-*/
 
 void CLavaPEDoc::MakeIniFunc(LavaDECL* ifDECL)
 {
