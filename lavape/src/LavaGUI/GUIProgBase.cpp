@@ -270,7 +270,8 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
   CHETID *cheTID=0, *cheTID2=0;
   CHETIDs *tidsChe=0;
   CHE *che;
-  LavaDECL *formSyn = 0;
+  CHETVElem *cheV;
+  LavaDECL *formSyn = 0, *form;
   bool setHNode;
 
   formNode->data.handlerSearched = true;
@@ -292,28 +293,33 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
     }
     else if (node->data.FormSyntax->DeclType == FormDef) {
       //suche Handler in diesem Formular
-      che = (CHE*)node->data.FormSyntax->ParentDECL->NestedDecls.first;
-      while (che) { //all handler
-        if (((LavaDECL*)che->data)->SecondTFlags.Contains(isHandler)) {
-          for (tidsChe = (CHETIDs*)((LavaDECL*)che->data)->HandlerClients.first;
-               tidsChe; tidsChe = (CHETIDs*)tidsChe->successor) { //all member-chains
-            cheTID2 = (CHETID*)tidsChe->data.first;
-            cheTID = (CHETID*)formNode->data.myName.first;
-            while (cheTID && cheTID2 
-              && (cheTID->data == TID(cheTID2->data.nID,myDoc->IDTable.IDTab[((LavaDECL*)che->data)->inINCL]->nINCLTrans[cheTID2->data.nINCL].nINCL))) {
-              cheTID2 = (CHETID*)cheTID2->successor; 
-              cheTID = (CHETID*)cheTID->successor;
+      cheV = (CHETVElem*)node->data.FormSyntax->VElems.VElems.first;//FormVT
+      while (cheV) {
+        form = myDoc->IDTable.GetDECL(cheV->data.VTClss);
+        che = (CHE*)form->ParentDECL->NestedDecls.first;
+        while (che) { //all handler
+          if (((LavaDECL*)che->data)->SecondTFlags.Contains(isHandler)) {
+            for (tidsChe = (CHETIDs*)((LavaDECL*)che->data)->HandlerClients.first;
+                 tidsChe; tidsChe = (CHETIDs*)tidsChe->successor) { //all member-chains
+              cheTID2 = (CHETID*)tidsChe->data.first;
+              cheTID = (CHETID*)formNode->data.myName.first;
+              while (cheTID && cheTID2 
+                && (cheTID->data == TID(cheTID2->data.nID,myDoc->IDTable.IDTab[((LavaDECL*)che->data)->inINCL]->nINCLTrans[cheTID2->data.nINCL].nINCL))) {
+                cheTID2 = (CHETID*)cheTID2->successor; 
+                cheTID = (CHETID*)cheTID->successor;
+              }
+              if (!cheTID && !cheTID2) {
+                cheTID = new CHETID;
+                cheTID->data = TID(((LavaDECL*)che->data)->OwnID, ((LavaDECL*)che->data)->inINCL);
+                formNode->data.myHandler.Append(cheTID);
+                if (LBaseData->inRuntime)
+                  formNode->data.myHandlerNode = node;
+              }
             }
-            if (!cheTID && !cheTID2) {
-              cheTID = new CHETID;
-              cheTID->data = TID(((LavaDECL*)che->data)->OwnID, ((LavaDECL*)che->data)->inINCL);
-              formNode->data.myHandler.Append(cheTID);
-              if (LBaseData->inRuntime)
-                formNode->data.myHandlerNode = node;
-            }
-          }
-        } //if is handler
-        che = (CHE*)che->successor;
+          } //if is handler
+          che = (CHE*)che->successor;
+        }
+        cheV = (CHETVElem*)cheV->successor;
       }
     }
     node = node->data.FIP.up;

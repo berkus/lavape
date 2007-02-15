@@ -2561,6 +2561,7 @@ void CMenuPage::GetEProps()
   switch ((EMenuType)v_Menutype) {
     case isBMenu:
       anno->BasicFlags.INCL(ButtonMenu);
+      anno->BasicFlags.EXCL(RadioButtons);
       break;
     case isRMenu:
       anno->BasicFlags.INCL(ButtonMenu);
@@ -2931,6 +2932,7 @@ void CMenuItem::EnableTextWindows()
   Buttontext->setEnabled(m_flags == 0);
   StaticText->setEnabled(m_flags == 3);
   Pixmap->setEnabled(menuPage->v_Menutype == isBMenu);
+  button_browse->setEnabled(menuPage->v_Menutype == isBMenu);
   /*
   if (m_flags != 0)
     m_Buttontext = QString("");

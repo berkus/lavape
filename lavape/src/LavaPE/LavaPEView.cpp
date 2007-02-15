@@ -1249,7 +1249,7 @@ bool CLavaPEView::event(QEvent *ev)
   else if (ev->type() == UEV_LavaPE_SyncTree) {
     data = (CSyncData*)((CustomEvent*)ev)->data();
     ((CLavaMainFrame*)wxTheApp->m_appWindow)->m_UtilityView->SetHandler(data->HandlerIDs, GetDocument());
-    delete data->HandlerIDs;
+    //delete data->HandlerIDs;
     if (data->FormSyntax) {
       item = BrowseTree(data->FormSyntax, (CTreeItem*)Tree->RootItem);
       if (item) {

@@ -130,6 +130,9 @@ void CGUIProg::SyncTree(CHEFormNode *node)
   TIDs *handlerChain;
   CHETID *chetid, *cheCop;
 
+  
+  if (LBaseData->inRuntime)
+    return;
   handlerChain = new TIDs;
   *handlerChain = node->data.myHandler;
   upNode = node->data.FIP.up;
@@ -146,13 +149,13 @@ void CGUIProg::SyncTree(CHEFormNode *node)
     }
     upNode = upNode->data.FIP.up;
   }
-  if (!LBaseData->inRuntime && !inSynchTree && !((CLavaGUIFrame*)((CLavaGUIView*)ViewWin)->GetParentFrame())->onClose)
+  if (!inSynchTree && !((CLavaGUIFrame*)((CLavaGUIView*)ViewWin)->GetParentFrame())->onClose)
     if (!inSyncForm) {
       if (((CLavaGUIView*)ViewWin)->LastBrowseNode)
         ((CLavaGUIView*)ViewWin)->resetLastBrowseNode();
       for (upNode = node; upNode && !upNode->data.FormSyntax->ParentDECL;upNode = upNode->data.FIP.up);
       for (;
-        upNode && upNode->data.FormSyntax->ParentDECL && (upNode->data.FormSyntax->ParentDECL->ParentDECL != myDECL);
+        upNode && upNode->data.FormSyntax->ParentDECL && (upNode->data.FormSyntax->ParentDECL != myDECL)&& (upNode->data.FormSyntax->ParentDECL->ParentDECL != myDECL);
         upNode = upNode->data.FIP.up);
       if (upNode) {
         inSynchTree = true;
@@ -160,14 +163,20 @@ void CGUIProg::SyncTree(CHEFormNode *node)
         if (!QApplication::sendEvent(((CLavaGUIView*)ViewWin)->myTree, &syncev ))
           inSynchTree = false;
       }
+      else
+        delete handlerChain;
     }
-    else
+    else {
       QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree,new CustomEvent(UEV_LavaPE_CalledView));
+      delete handlerChain;
+    }
   else
-    if (!inSyncForm && !LBaseData->inRuntime && !((CLavaGUIFrame*)((CLavaGUIView*)ViewWin)->GetParentFrame())->onClose) {
+    if (!inSyncForm && !((CLavaGUIFrame*)((CLavaGUIView*)ViewWin)->GetParentFrame())->onClose) {
       CustomEvent* syncev1 = new CustomEvent(UEV_LavaPE_SyncTree,(void*)new CSyncData(0, handlerChain));
       QApplication::postEvent(((CLavaGUIView*)ViewWin)->myTree, syncev1);
     }
+    else
+      delete handlerChain;
 }
 
 

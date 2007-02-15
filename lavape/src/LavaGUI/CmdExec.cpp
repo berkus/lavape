@@ -405,13 +405,16 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
   else {
     if (eventType == EventInsert) {
       ok = *(bool*)(newStackFrame[SFH+4]+LSH);
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+4]);
       if (ok && newStackFrame[SFH+5]) {
         DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
         StackFrame[SFH+2] = newStackFrame[SFH+5];
       }
     }
-    else
+    else {
       ok = *(bool*)(newStackFrame[SFH+3]+LSH);
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+3]);
+    }
   }
 #ifndef __GNUC__
   __asm {
