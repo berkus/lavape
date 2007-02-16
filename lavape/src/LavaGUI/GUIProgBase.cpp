@@ -298,7 +298,8 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
         form = myDoc->IDTable.GetDECL(cheV->data.VTClss);
         che = (CHE*)form->ParentDECL->NestedDecls.first;
         while (che) { //all handler
-          if (((LavaDECL*)che->data)->SecondTFlags.Contains(isHandler)) {
+          if (((LavaDECL*)che->data)->SecondTFlags.Contains(isHandler)
+            && ((form == node->data.FormSyntax) || !((LavaDECL*)che->data)->SecondTFlags.Contains(forceOverride))) {
             for (tidsChe = (CHETIDs*)((LavaDECL*)che->data)->HandlerClients.first;
                  tidsChe; tidsChe = (CHETIDs*)tidsChe->successor) { //all member-chains
               cheTID2 = (CHETID*)tidsChe->data.first;
