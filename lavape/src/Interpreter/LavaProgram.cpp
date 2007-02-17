@@ -2419,7 +2419,7 @@ stop:     ckd.document->throwError = false;
 
 CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
 {
-  wxView *actView;
+//  wxView *actView;
   CRuntimeException* ex=0;
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
   CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, &stack[SFH], &stack[SFH+1], &stack[SFH+2], (void*)frozen, currentThread, (void*)fromFillIn);
