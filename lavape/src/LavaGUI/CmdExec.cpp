@@ -252,7 +252,7 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
 } // END OF DeleteIterItem
 
 
-bool CmdExecCLASS::Event(QEvent* ev)
+bool CmdExecCLASS::GUIEvent(QEvent* ev)
 {
   CHEFormNode *popupNode;
 

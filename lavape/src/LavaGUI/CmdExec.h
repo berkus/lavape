@@ -28,7 +28,7 @@
 #include "qobject.h"
 
 
-class CmdExecCLASS  : public QObject {
+class CmdExecCLASS  /*: public QObject*/ {
 public:
   
   void INIT (CGUIProgBase *guiPr);
@@ -55,7 +55,7 @@ public:
   CHEFormNode* GetIterNode(CHEFormNode* fNode);
   CHEFormNode* InPopupShell(CHEFormNode* node);
  
-  virtual bool Event(QEvent* ev);
+  virtual bool GUIEvent(QEvent* ev);
 
 private: 
   CHEFormNode* insertedNode;
@@ -65,8 +65,8 @@ private:
   CHEFormNode* elliNode;
   CHEFormNode* optNode;
 
-private:
-  Q_OBJECT
+//private:
+//  Q_OBJECT
 
 };
 

@@ -1,6 +1,6 @@
 PRJ = LavaGUI
 
-MOCABLES = CmdExec.h FormWid.h LavaGUIFrame.h LavaGUIPopup.h LavaGUIView.h LavaMenu.h TButton.h TComboBox.h TEdit.h TStatic.h
+MOCABLES = FormWid.h LavaGUIFrame.h LavaGUIPopup.h LavaGUIView.h LavaMenu.h TButton.h TComboBox.h TEdit.h TStatic.h
 
 EXEC = LavaGUI.so
 SUBPRO=disco wxqDocView LavaBase
