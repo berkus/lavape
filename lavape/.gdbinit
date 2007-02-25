@@ -8,17 +8,11 @@
 # Disable printing of static members. Qt has too many, it clutters the output
 set print static-members off
 
-define printqstring
+define qs
     printqstringdata $arg0.d
 end
-document printqstring
-  Prints the contents of a QString
-end
-define qs
-    printq4stringdata $arg0.d
-end
 document qs
-  Prints the contents of a Qt QString
+  Prints the contents of a QString
 end
 
 define printqstringdata
@@ -35,22 +29,6 @@ document printqstringdata
   shows {d = 0xdeadbeef} for a QString, i.e. the qstringdata address
   instead of the QString object itself.
   printqstring $s and printqstringdata $s.d are equivalent.
-end
-
-define printq4stringdata
-    set $i=0
-    set $d = $arg0
-    while $i < $d->size
-        printf "%c", (char)($d->data[$i++] & 0xff)
-    end
-    printf "\n"
-end
-document printq4stringdata
-  Prints the contents of a Qt4 QString::Data
-  This is useful when the output of another command (e.g. printqmap)
-  shows {d = 0xdeadbeef} for a QString, i.e. the qstringdata address
-  instead of the QString object itself.
-  printq4string $s and printq4stringdata $s.d are equivalent.
 end
 
 define printqstring_utf8
@@ -77,43 +55,12 @@ document printqstring_utf8
   Nice if you run your debug session in a utf8 enabled terminal.
 end
 
-define printq4string_utf8
-   set $i=0
-   set $s = $arg0
-   while $i < $s.d->size
-     set $uc = (unsigned short) $s.d->data[$i++]
-     if ( $uc < 0x80 )
-       printf "%c", (unsigned char)($uc & 0x7f)
-     else
-       if ( $uc < 0x0800 )
-         printf "%c", (unsigned char)(0xc0 | ($uc >> 6))
-       else
-         printf "%c", (unsigned char)(0xe0 | ($uc >> 12)
-         printf "%c", (unsigned char)(0x80 | (($uc > 6) &0x3f)
-       end
-       printf "%c", (unsigned char)(0x80 | ((uchar) $uc & 0x3f))
-     end
-   end
-   printf "\n"
-end
-document printq4string_utf8
-  Prints the contents of a QString encoded in utf8. 
-  Nice if you run your debug session in a utf8 enabled terminal.
-end
-
 define printqcstring
     print $arg0.shd.data
     print $arg0.shd.len
 end
 document printqcstring
   Prints the contents of a QCString (char * data, then length)
-end
-
-define printq4bytearray
-    print $arg0->d->data
-end
-document printq4bytearray
-  Prints the contents of a Qt4 QByteArray (when it contains a string)
 end
 
 define printqfont
@@ -134,35 +81,15 @@ document printqcolor
   Usage: 'printqcolor <QColor col>
 end
 
-define printqmemarray
-    # Maybe we could find it out the type by parsing "whatis $arg0"?
-    set $arr = $arg0
-    set $sz = sizeof($arg1)
-    set $len = $arr->shd->len / $sz
-    output $len
-    printf " items in the array\n"
-    set $i = 0
-    while $i < $len
-       # print "%s[%d] = %s\n", $arr, $i, *($arg1 *)(($arr->vec)[$i])
-       print *($arg1 *)(($arr->shd->data) + ($i * $sz))
-       set $i++
-    end
-end
-document printqmemarray
-  Prints the contents of a QMemArray. Pass the type as second argument.
-end
-
 define printqptrvector
     # Maybe we could find it out the type by parsing "whatis $arg0"?
     set $arr = $arg0
     set $len = $arr->len
-    output $len
-    printf " items in the vector\n"
     set $i = 0
     while $i < $len
        # print "%s[%d] = %s\n", $arr, $i, *($arg1 *)(($arr->vec)[$i])
        print *($arg1 *)(($arr->vec)[$i])
-       set $i++
+       $i++
     end
 end
 document printqptrvector
@@ -226,23 +153,6 @@ document _qmapiterator_inc
   Increment a qmap iterator (internal method, used by printqmap)
 end
 
-define printqptrlist
-    set $list = $arg0
-    set $len = $list.numNodes
-    output $len
-    printf " items in the list\n"
-    set $it = $list.firstNode
-    while $it != 0
-        output $it->data
-        printf "\n"
-        set $it = $it->next
-    end
-end
-document printqptrlist
-  Prints the contents of a QPtrList.
-  Usage: printqptrlist mylist
-end
-
 define printqvaluelist
     set $list = $arg0
     set $len = $list.sh->nodes
@@ -276,50 +186,4 @@ end
 document printqstringlist
   Prints the contents of a QStringList.
   Usage: printqstringlist mylist
-end
-
-define printqregion
-    printqmemarray $arg0.rects() QRect
-end
-document printqregion
-  Prints the rectangles that make up a QRegion. Needs a running process.
-  Usage: printqregion myregion
-end
-
-# Bad implementation, requires a running process.
-# Needs to be refined, i.e. figuring out the right void* pointers casts.
-# Simon says: each Node contains the d pointer of the QString.
-define printq4stringlist
-    # This is ugly, but we need to avoid conflicts with printq4string's own vars...
-    set $q4sl_i = 0
-    set $q4sl_d = & $arg0
-    set $q4sl_sz = $q4sl_d->size()
-    while $q4sl_i < $q4sl_sz
-        output $q4sl_i
-        printf " "
-        printq4string $q4sl_d->at($q4sl_i++)
-    end
-end
-document printq4stringlist
-  Prints the contents of a Qt4 QStringList.
-  Usage: printq4stringlist mylist
-end
-
-define identifyq4object
-    set $obj=$arg0
-    set $objectName=((QObjectPrivate *)($obj->d_ptr))->objectName
-    printf " name:"
-    printq4string $objectName
-    printf " class:"
-    # this requires a process, though
-    print $obj->metaObject()->className()
-end
-
-# You print QString's too often to type the long name :-)
-define qs4
-  printq4string $arg0
-end
-
-define qs3
-  printqstring $arg0
 end
