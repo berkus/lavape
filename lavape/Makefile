@@ -3,7 +3,8 @@ export LAVADIR
 ASSISTANT=$(shell which assistant)
 export ASSISTANT
 
-all: dirs links Precompiler LavaStream build
+all: dirs links build
+#all: dirs links Precompiler LavaStream build
 
 SUBPRO=disco Precompiler wxqDocView LavaBase LavaPE_UI LavaExecs LavaGUI LavaPE Lava_UI Interpreter LavaStream Lava
 
@@ -27,8 +28,10 @@ LavaPE:
 	cd src/LavaPE; $(MAKE)
 Lava_UI:
 	cd src/Lava_UI; $(MAKE)
-Interpreter: interpreter_links
+Interpreter:
 	cd src/Interpreter; $(MAKE)
+LavaStream:
+	cd src/LavaStream; $(MAKE)
 Lava:
 	cd src/Lava; $(MAKE)
 
@@ -106,10 +109,10 @@ bin/assistant:
 	if [ .$(ASSISTANT) != . ] ; then $(LN) $(ASSISTANT) $@ ; \
 	else echo ; echo ++++ error: Lava online help works only if Qt assistant is in your PATH!; echo ; exit 1; fi
 
-build:
-	cd src/Precompiler && $(MAKE) \
-	&& cd ../LavaPE && $(MAKE) \
-	&& cd ../Lava && $(MAKE)
+build:  $(SUBPRO)
+#	cd src/disco && $(MAKE) \
+#	&& cd ../LavaPE && $(MAKE) \
+#	&& cd ../Lava && $(MAKE)
 
 bin_dist:
 	if [ ! -e lavape ] ; then mkdir lavape; fi; cp *.txt lavape; \
