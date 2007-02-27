@@ -132,27 +132,27 @@ ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QT)/include -I$(QT)/include/Qt -I$(QT)/in
 
 asscli=-lqassistantclient
 
-rec_make: $(make_subpro) this
+#rec_make: $(make_subpro) this
 
 ifeq ($(suffix $(EXEC)),.so)
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(DLLNAME)
 ../../bin/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QT)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L$(QT)/lib -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QT)/lib  -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L$(QT)/lib -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
   endif
 else
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(EXEC2)
-../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../bin/,$(addsuffix .dll,$(SUBPRO)))
+../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
 	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) -L../../lib -L$(QT)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
-#$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../bin -L$(QT)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+#$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QT)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
-../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
+../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
 	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QT)/lib -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   endif
 endif
