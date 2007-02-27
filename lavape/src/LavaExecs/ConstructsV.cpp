@@ -1638,11 +1638,17 @@ void IntegerIntervalV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ig
 }
 
 QuantifierV::QuantifierV (bool withSet) {
+  SynObject *newVar=new SynObjectV(VarPH_T);
+  CHE *che=NewCHE(newVar);
+
+  newVar->parentObject = this;
+  newVar->whereInParent = (address)che;
+  newVar->containingChain = (CHAINX*)&quantVars;
   type = quant_T;
   replacedType = type;
   primaryToken = quant_T;
   elemType.ptr = new SynObjectV(TypePH_T);
-  quantVars.Append(NewCHE(new SynObjectV(VarPH_T)));
+  quantVars.Append(che);
   if (withSet)
     set.ptr = new SynObjectV(SetPH_T);
 }
