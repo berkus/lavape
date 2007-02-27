@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib $(QT4DIR)\lib\QtCored4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib $(QTDIR)\lib\QtCored4.lib"
 				OutputFile="..\..\bin\LPC.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -166,7 +166,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib $(QT4DIR)\lib\QtCore4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib $(QTDIR)\lib\QtCore4.lib"
 				OutputFile="..\..\bin\LPC.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

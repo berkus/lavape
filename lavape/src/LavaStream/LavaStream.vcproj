@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtNetwork4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaBase.lib $(QTDIR)\lib\QtCore4.lib $(QTDIR)\lib\QtNetwork4.lib"
 				OutputFile="..\..\bin\Components\LavaStream.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -163,7 +163,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtNetworkd4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaBase.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtNetworkd4.lib"
 				OutputFile="..\..\bin\Components\LavaStream.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

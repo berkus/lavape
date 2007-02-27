@@ -28,7 +28,7 @@
 #include "qobject.h"
 
 
-class CmdExecCLASS  /*: public QObject*/ {
+class LAVAGUI_DLL CmdExecCLASS  /*: public QObject*/ {
 public:
   
   void INIT (CGUIProgBase *guiPr);

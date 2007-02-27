@@ -1498,7 +1498,7 @@ void ExistsV::Draw (CProgTextBase &t,address where,CHAINX *chxp,bool ignored) {
 
 DeclareV::DeclareV (bool) {
   Quantifier *quant;
-  FuncStatementV *funcStm=new FuncStatementV(true,false,false);
+  //FuncStatementV *funcStm=new FuncStatementV(true,false,false);
   SynObject *stm;
 
   type = Stm_T;
@@ -1509,6 +1509,7 @@ DeclareV::DeclareV (bool) {
   //secondaryClause.ptr = funcStm;
   //funcStm->parentObject = this;
   //funcStm->whereInParent = (address)&secondaryClause.ptr;
+  //funcStm->containingChain = 0;
   //funcStm->flags.INCL(isIniCallOrHandle);
   //funcStm->flags.INCL(staticCall);
   //((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;

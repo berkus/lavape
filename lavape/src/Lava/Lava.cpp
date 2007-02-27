@@ -368,11 +368,11 @@ bool CLavaApp::event(QEvent *e)
   case UEV_LavaGUIInsDel: 
     if ( LBaseData.docModal 
       && ((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog ) 
-      ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog)->myGUIProg->CmdExec.Event( e);
+      ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog)->myGUIProg->CmdExec.GUIEvent( e);
     else {
       actView = wxDocManager::GetDocumentManager()->GetActiveView();
       if (actView && actView->inherits("CLavaGUIView") ) 
-        ((CLavaGUIView*)actView)->myGUIProg->CmdExec.Event( e);
+        ((CLavaGUIView*)actView)->myGUIProg->CmdExec.GUIEvent( e);
     }
     break;
   

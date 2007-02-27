@@ -2364,11 +2364,11 @@ void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLas
 }
 
 
-void CExecView::PutInsMultOpHint(SynObject *multOp) {
+void CExecView::PutInsMultOpHint(SynObject *multOp, SET firstLastHint) {
   nextHint = new CLavaPEHint(
     CPECommand_Exec,
     myDoc,
-    SET(firstHint,-1),
+    firstLastHint,
     myDECL,
     text->currentSynObj->parentObject,
     (void*)InsMult,
@@ -2380,42 +2380,48 @@ void CExecView::PutInsMultOpHint(SynObject *multOp) {
   nextHint = 0;
 }
 
-void CExecView::PutIniCall(SynObject *varItem, SynObject *newVarItem, bool after) {
-  CHAINX *chx=varItem->iniCall->containingChain;
-  CHE *che=(CHE*)varItem->iniCall->whereInParent, *newChe;
-  FuncStatement *funcStm=new FuncStatementV(true);
+void CExecView::PutIniCall(SynObject *currVarItem, bool after) {
+  FuncStatement *funcStm=new FuncStatementV(true), *precIniCall=currVarItem->iniCall;
   MultipleOp *multOp;
-  SynObject *currentSynObj=varItem;
-
-  newChe = NewCHE(funcStm);
-  funcStm->whereInParent = (address)newChe;
+  SynObject *currentSynObj=text->currentSynObj;
+  
   ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
   ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
   ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
   ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
-  if (after)
-    if (chx)
-      PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
-    else {
-      multOp = new SemicolonOpV;
-      text->currentSynObj = varItem->iniCall;
-      PutInsMultOpHint(multOp);
-      chx = &multOp->operands;
-      PutInsChainHint(newChe,chx,(CHE*)multOp->operands.first,SET());
-   }
-  else
-    if (chx) {
-      che = (CHE*)((CHE*)varItem->iniCall->whereInParent)->predecessor;
-      PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
-    }
-    else {
-      multOp = new SemicolonOpV;
-      text->currentSynObj = varItem->iniCall;
-      PutInsMultOpHint(multOp);
-      chx = &multOp->operands;
-      PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,SET());
-    }
-  funcStm->containingChain = chx;
+
+  if (precIniCall) {
+    CHAINX *chx=precIniCall->containingChain;
+    CHE *che=(CHE*)precIniCall->whereInParent, *newChe;
+
+    newChe = NewCHE(funcStm);
+    funcStm->whereInParent = (address)newChe;
+    if (after)
+      if (chx)
+        PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
+      else {
+        multOp = new SemicolonOpV;
+        text->currentSynObj = currVarItem->iniCall;
+        PutInsMultOpHint(multOp,SET());
+        chx = &multOp->operands;
+        PutInsChainHint(newChe,chx,(CHE*)multOp->operands.first,SET(lastHint,-1));
+     }
+    else
+      if (chx) {
+        che = (CHE*)((CHE*)currVarItem->iniCall->whereInParent)->predecessor;
+        PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
+      }
+      else {
+        multOp = new SemicolonOpV;
+        text->currentSynObj = currVarItem->iniCall;
+        PutInsMultOpHint(multOp,SET());
+        chx = &multOp->operands;
+        PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,SET(lastHint,-1));
+      }
+    funcStm->containingChain = chx;
+  }
+  else {
+  }
   text->currentSynObj = currentSynObj;
 }
 
@@ -3239,10 +3245,8 @@ void CExecView::OnInsertBefore()
 void CExecView::InsertAfter()
 {
   // TODO: Add your command handler code here
-  SynObject *insObj, *varItem, *newVarItem;
+  SynObject *insObj, *currVarItem, *newVarItem;
   Quantifier *qf;
-  FuncStatementV *funcStm;
-  SemicolonOp *semi;
   Declare *dcl;
   CHAINX *chx;
   CHE *che, *newChe;
@@ -3337,43 +3341,20 @@ void CExecView::InsertAfter()
   case from_T:
   case in_T:
 quantCase:
-    insObj = new QuantifierV(withSet);
-    newChe = NewCHE(insObj);
+    qf = new QuantifierV(withSet);
+    newChe = NewCHE(qf);
     che = (CHE*)text->currentSynObj->whereInParent;
     chx = text->currentSynObj->containingChain;
     text->currentSynObj = text->currentSynObj->parentObject;
     if (text->currentSynObj->primaryToken == declare_T
     && ((Declare*)text->currentSynObj)->secondaryClause.ptr) {
       dcl = (Declare*)text->currentSynObj;
-      PutInsChainHint(newChe,
-        chx,
-        che,SET(firstHint,-1));
-      funcStm=new FuncStatementV(true,false,false);
-      funcStm->flags.INCL(isIniCallOrHandle);
-      funcStm->flags.INCL(staticCall);
-      //funcStm->parentObject = this;
-      //funcStm->whereInParent = (address)&dcl->secondaryClause.ptr;
-      ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
-      ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
-      ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
-      ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
-      newChe = NewCHE(funcStm);
-      if (((SynObject*)dcl->secondaryClause.ptr)->IsFuncInvocation()) {
-      }
-      else {
-        semi = (SemicolonOp*)dcl->secondaryClause.ptr;
-        chx = &semi->operands;
-        che = (CHE*)chx->last;
-        text->currentSynObj = semi;
-        PutInsChainHint(newChe,
-          chx,
-          che,SET(lastHint,-1));
-      }
+      PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
+	    currVarItem = (SynObject*)((CHE*)qf->quantVars.first)->data;
+      PutIniCall(currVarItem,true);
     }
     else
-      PutInsChainHint(newChe,
-        chx,
-        che);
+      PutInsChainHint(newChe,chx,che);
     return;
 
   case VarPH_T:
@@ -3381,20 +3362,21 @@ quantCase:
     if (!EditOK())
       return;
     che = (CHE*)text->currentSynObj->whereInParent;
-    varItem = text->currentSynObj;
-    chx = varItem->containingChain;
+    currVarItem = text->currentSynObj;
+    chx = currVarItem->containingChain;
     text->currentSynObj = text->currentSynObj->parentObject;
     newVarItem = new SynObjectV(VarPH_T);
     newChe = NewCHE(newVarItem);
     qf = (Quantifier*)text->currentSynObj;
     newVarItem->parentObject = qf;
     newVarItem->whereInParent = (address)newChe;
+	newVarItem->containingChain = &qf->quantVars;
     text->selectAt = newVarItem;
     //doubleClick = true;
     if (text->currentSynObj->parentObject->IsDeclare()
     && ((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr) {
-      PutIniCall(varItem,newVarItem,true);
-      PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
+      PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
+      PutIniCall(currVarItem,true);
     }
     else
       PutInsChainHint(newChe,chx,che);
@@ -3425,8 +3407,9 @@ deflt:
 void CExecView::InsertBefore()
 {
   // TODO: Add your command handler code here
-  SynObject *insObj, *varItem, *newVarItem;
+  SynObject *insObj, *currVarItem, *newVarItem;
   Quantifier *qf;
+  Declare *dcl;
   CHAINX *chx;
   CHE *che, *newChe;
   QString str;
@@ -3523,15 +3506,21 @@ void CExecView::InsertBefore()
   case from_T:
   case in_T:
 quantCase:
-    insObj = new QuantifierV(withSet);
-    newChe = NewCHE(insObj);
+    qf = new QuantifierV(withSet);
+    newChe = NewCHE(qf);
     che = (CHE*)text->currentSynObj->whereInParent;
     che = (CHE*)che->predecessor;
     chx = text->currentSynObj->containingChain;
     text->currentSynObj = text->currentSynObj->parentObject;
-    PutInsChainHint(newChe,
-      chx,
-      che);
+    if (text->currentSynObj->primaryToken == declare_T
+    && ((Declare*)text->currentSynObj)->secondaryClause.ptr) {
+      dcl = (Declare*)text->currentSynObj;
+      PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
+	    currVarItem = (SynObject*)((CHE*)qf->quantVars.first)->data;
+      PutIniCall(currVarItem,false);
+    }
+    else
+      PutInsChainHint(newChe,chx,che);
     return;
 
   case VarPH_T:
@@ -3540,8 +3529,8 @@ quantCase:
       return;
     che = (CHE*)text->currentSynObj->whereInParent;
     che = (CHE*)che->predecessor;
-    varItem = text->currentSynObj;
-    chx = varItem->containingChain;
+    currVarItem = text->currentSynObj;
+    chx = currVarItem->containingChain;
     text->currentSynObj = text->currentSynObj->parentObject;
     newVarItem = new SynObjectV(VarPH_T);
     newChe = NewCHE(newVarItem);
@@ -3550,8 +3539,8 @@ quantCase:
     newVarItem->whereInParent = (address)newChe;
     if (text->currentSynObj->parentObject->IsDeclare()
     && ((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr) {
-      PutIniCall(varItem,newVarItem,false);
-      PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
+      PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
+      PutIniCall(currVarItem,false);
     }
     else
       PutInsChainHint(newChe,chx,che);
@@ -3890,13 +3879,8 @@ void CExecView::OnShowOptionals()
   }
   else if (text->currentSynObj->primaryToken == declare_T) {
     declareStm = (Declare*)text->currentSynObj;
-    if (!declareStm->secondaryClause.ptr) {
-      insObj = new SynObjectV(Stm_T);
-      text->currentSynObj = insObj;
-      insObj->parentObject = declareStm;
-      insObj->whereInParent = (address)&declareStm->secondaryClause.ptr;
-      PutInsHint(insObj,SET(firstHint,lastHint,-1));
-    }
+    if (!declareStm->secondaryClause.ptr)
+		RestoreIniCalls();
   }
   else if (text->currentSynObj->primaryToken == try_T) {
     tryStm = (TryStatement*)text->currentSynObj;
@@ -3997,6 +3981,22 @@ void CExecView::OnShowOptionals()
       }
     }
   }
+}
+
+void CExecView::RestoreIniCalls() {
+  Declare *declareStm = (Declare*)text->currentSynObj;
+  CHE *chpq, *chpv;
+
+  for (chpq = (CHE*)declareStm->quantifiers.first;
+       chpq;
+       chpq = (CHE*)chpq->successor) {
+    for (chpv = (CHE*)((Quantifier*)chpq->data)->quantVars.first;
+         chpv;
+         chpv = (CHE*)chpv->successor) {
+      PutIniCall((SynObject*)chpv->data,true);
+    }
+  }
+
 }
 
 bool CExecView::EnableGotoDecl()

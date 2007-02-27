@@ -173,8 +173,8 @@ is required (qconfigure option -qt-gif), or else you won't
 be able to see the gif images contained in the Lava
 online help.)
 
-Unpack Qt4 to a directory of your choice. Set QT4DIR
-(not QTDIR!!!) and PATH as in the MinGW case.
+Unpack Qt4 to a directory of your choice. Set QTDIR
+and PATH as in the MinGW case.
 QMAKESPEC need not be defined.
 
 Get the "Unofficial patches for Qt4" from the Q../Free

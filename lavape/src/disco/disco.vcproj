@@ -74,7 +74,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\QtNetworkd4.lib"
+				AdditionalDependencies="$(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\QtNetworkd4.lib"
 				OutputFile="..\..\bin\disco.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -170,7 +170,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib $(QT4DIR)\lib\QtNetwork4.lib"
+				AdditionalDependencies="$(QTDIR)\lib\QtCore4.lib $(QTDIR)\lib\QtGui4.lib $(QTDIR)\lib\QtNetwork4.lib"
 				OutputFile="..\..\bin\disco.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

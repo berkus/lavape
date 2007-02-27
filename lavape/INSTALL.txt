@@ -130,9 +130,9 @@ MinGW, or you can download and install MinGW separately
 from www.mingw.org and download the pure Qt4 version without
 MinGW.
 
-Unpack Qt4, set the environment variable QTDIR=
+Unpack Qt4, set the environment variable QTMINGW=
 <Qt4 install directory> and set environment
-variable QMAKESPEC=win32-g++. Add %QTDIR%\bin to your PATH
+variable QMAKESPEC=win32-g++. Add %QTMINGW%\bin to your PATH
 environment variable.
 
 (Qt-4.1.4 is OK, Qt-4.2.0 contains a bug
@@ -155,7 +155,7 @@ Unpack the Lava source package lavape-<release>-src.tar.bz2
 to a directory of your choice. Add the MSYS\1.0\bin
 directory to your PATH. Then open the MSYS command
 window. Cd to the Lava install directory and execute
-a "mingw32-make" command. This will build the entire
+a "make" command. This will build the entire
 Lava software and install the LavaPE.exe and Lava.exe
 executables in the lavape/bin directory.
 
@@ -173,8 +173,8 @@ is required (qconfigure option -qt-gif), or else you won't
 be able to see the gif images contained in the Lava
 online help.)
 
-Unpack Qt4 to a directory of your choice. Set QT4DIR
-(not QTDIR!!!) and PATH as in the MinGW case.
+Unpack Qt4 to a directory of your choice. Set QTDIR
+and PATH as in the MinGW case.
 QMAKESPEC need not be defined.
 
 Get the "Unofficial patches for Qt4" from the Q../Free

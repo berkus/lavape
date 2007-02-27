@@ -76,7 +76,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib"
 				OutputFile="..\..\bin\LavaExecs.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -172,7 +172,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\LavaBase.lib $(QTDIR)\lib\QtCore4.lib $(QTDIR)\lib\QtGui4.lib"
 				OutputFile="..\..\bin\LavaExecs.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -624,7 +624,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -674,7 +674,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -1015,7 +1015,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
 				</FileConfiguration>
@@ -1029,7 +1029,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Applying uic to $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
 				</FileConfiguration>

@@ -113,12 +113,12 @@ public:
   bool Ignorable ();
   bool Taboo (bool isEnableBreakpoints=false);
   void OnConst();
-  void PutInsFlagHint(SET insFlags, SET firstLasthint=SET(firstHint,lastHint,-1));
+  void PutInsFlagHint(SET insFlags, SET firstLastHint=SET(firstHint,lastHint,-1));
   void PutDelFlagHint(SET insFlags, SET firstLastHint=SET(firstHint,lastHint,-1));
   void PutInsHint(SynObject *insObj, SET firstLastHint=SET(firstHint,lastHint,-1));
   void PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred, SET firstLastHint=SET(firstHint,lastHint,-1));
-  void PutInsMultOpHint(SynObject *multOp);
-  void PutIniCall(SynObject *varItem, SynObject *newVarItem, bool after);
+  void PutInsMultOpHint(SynObject *multOp, SET firstLastHint=SET(firstHint,-1));
+  void PutIniCall(SynObject *varItem, bool after);
   void PutChgCommentHint(TComment *pCmt);
   void PutChgOpHint(TToken token);
   void PutDelHint(SynObject *delObj, SET firstLastHint=SET(firstHint,lastHint,-1));
@@ -130,8 +130,7 @@ public:
   void InsMultOp (TToken primaryToken, MultipleOp *multOp);
   void InsertAfter();
   void InsertBefore();
-//  void PrintPageHeader(CDC* pDC, CPrintInfo* pInfo,const QString& strHeader);
-//  void OnKeyPressed(WPARAM wParam, LPARAM lParam);
+  void RestoreIniCalls();
   bool EnableCopy();
   bool EnableCut();
   bool EnablePaste();

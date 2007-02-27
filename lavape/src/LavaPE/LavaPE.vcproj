@@ -74,11 +74,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaExecs.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\LavaPE_UI.lib $(QT4DIR)\lib\QtAssistantClientd4.lib $(QT4DIR)\lib\QtCored4.lib $(QT4DIR)\lib\QtGuid4.lib $(QT4DIR)\lib\qtmaind.lib $(QT4DIR)\lib\QtNetworkd4.lib $(QT4DIR)\lib\QtTestd4.lib wsock32.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaExecs.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\LavaPE_UI.lib $(QTDIR)\lib\QtAssistantClientd4.lib $(QTDIR)\lib\QtCored4.lib $(QTDIR)\lib\QtGuid4.lib $(QTDIR)\lib\qtmaind.lib $(QTDIR)\lib\QtNetworkd4.lib $(QTDIR)\lib\QtTestd4.lib wsock32.lib"
 				OutputFile="..\..\bin\LavaPE.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="../wxqDocView/Debug,$(QT4DIR)/lib"
+				AdditionalLibraryDirectories="../wxqDocView/Debug,$(QTDIR)/lib"
 				IgnoreDefaultLibraryNames="libcmtd.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/LavaPE.pdb"
@@ -172,11 +172,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaExecs.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\LavaPE_UI.lib $(QT4DIR)\lib\QtAssistantClient4.lib $(QT4DIR)\lib\QtCore4.lib $(QT4DIR)\lib\QtGui4.lib $(QT4DIR)\lib\qtmain.lib $(QT4DIR)\lib\QtNetwork4.lib wsock32.lib"
+				AdditionalDependencies="..\..\bin\disco.lib ..\..\bin\wxqDocView.lib ..\..\bin\LavaExecs.lib ..\..\bin\LavaBase.lib ..\..\bin\LavaGUI.lib ..\..\bin\LavaPE_UI.lib $(QTDIR)\lib\QtAssistantClient4.lib $(QTDIR)\lib\QtCore4.lib $(QTDIR)\lib\QtGui4.lib $(QTDIR)\lib\qtmain.lib $(QTDIR)\lib\QtNetwork4.lib wsock32.lib"
 				OutputFile="..\..\bin\LavaPE.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="../wxqDocView/Debug,$(QT4DIR)/lib"
+				AdditionalLibraryDirectories="../wxqDocView/Debug,$(QTDIR)/lib"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				ProgramDatabaseFile=".\Release/LavaPE.pdb"
 				SubSystem="2"
@@ -624,7 +624,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -638,7 +638,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -652,7 +652,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -670,7 +670,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -684,7 +684,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -698,7 +698,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -730,7 +730,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -748,7 +748,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -762,7 +762,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -776,7 +776,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -790,7 +790,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputPath)"
-						CommandLine="$(QT4DIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -1766,7 +1766,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QT4DIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
 					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>
@@ -1776,7 +1776,7 @@
 				<Tool
 					Name="VCCustomBuildTool"
 					Description="Applying rcc to $(InputPath)"
-					CommandLine="$(QT4DIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
+					CommandLine="$(QTDIR)\bin\rcc.exe -o Generated/$(InputName).cpp $(InputPath)&#x0D;&#x0A;"
 					Outputs="Generated/$(InputName).cpp"
 				/>
 			</FileConfiguration>

@@ -48,6 +48,7 @@
 #include "SYSTEM.h"
 #include "ASN1File.h"
 #include "wx_obj.h"
+#include "CmdExec.h"
 
 #include "qdir.h"
 #include "qfont.h"
@@ -344,7 +345,7 @@ bool CLavaPEApp::event(QEvent *e)
   case UEV_LavaGUIInsDel:
     actView = wxDocManager::GetDocumentManager()->GetActiveView();
     if ( actView->inherits("CLavaGUIView") ) 
-      ((CLavaGUIView*)actView)->myGUIProg->CmdExec.Event( e);
+      ((CLavaGUIView*)actView)->myGUIProg->CmdExec.GUIEvent( e);
     return true;
    default:
     return wxApp::event(e);
