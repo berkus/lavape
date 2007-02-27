@@ -69,7 +69,9 @@ ifeq ($(OPSYS),MINGW32_NT-5.1)
   OPSYS = MINGW32
   OSCAT = WIN32
   LN = cp
+  QT = $QTMINGW
 else
+QT = $QTDIR
 ifeq ($(OPSYS),Darwin)
   OSCAT = __UNIX__
   LN = ln -s
@@ -112,8 +114,8 @@ else
 		  OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
 		  DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
       DLLSUFFIX = .so
-		  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
-		  OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QTDIR)/lib
+		  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) $(RPATH)$(LAVADIR)/lib $(RPATH)$(QT)/lib
+		  OSEXECFLAGS = -fstack-check $(RPATH)$(LAVADIR)/lib $(RPATH)$(QT)/lib
 		  EXEC2 = $(EXEC)
       ifneq ($(DBG),)
 		    QtS =
@@ -126,7 +128,7 @@ else
   endif
 endif
 
-ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QTDIR)/include -I$(QTDIR)/include/Qt -I$(QTDIR)/include/QtCore -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/QtNetwork
+ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QT)/include -I$(QT)/include/Qt -I$(QT)/include/QtCore -I$(QT)/include/QtGui -I$(QT)/include/QtNetwork
 
 asscli=-lqassistantclient
 
@@ -136,22 +138,22 @@ ifeq ($(suffix $(EXEC)),.so)
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(DLLNAME)
 ../../bin/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QT)/lib  -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QTDIR)/lib  -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) -L../../lib -L$(QT)/lib  -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(addprefix -l,$(SUBPRO)) $(OSLIBFLAGS)
   endif
 else
   ifeq ($(OPSYS),MINGW32)
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../bin/,$(addsuffix .dll,$(SUBPRO)))
-	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) -L../../lib -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
-#$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../bin -L$(QTDIR)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) -L../../lib -L$(QT)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+#$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../bin -L$(QT)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files) $(addprefix ../../lib/,$(addprefix lib,$(addsuffix $(DLLSUFFIX),$(SUBPRO))))
-	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QTDIR)/lib -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QT)/lib -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   endif
 endif
 
@@ -167,21 +169,21 @@ PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files) $(h_ph_files)
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
 Generated/%.h: %.ui
-	$(QTDIR)/bin/uic $< -o $@
+	$(QT)/bin/uic $< -o $@
 #	( grep -q -e 'UI version=\"[0-9]\+\.0\"' $< || \
 #	  sed -i -e 's/\(UI version=\"[0-9]\+\.\)[0-9]\+"/\10\"/' $<; ); \
 #  export LD_LIBRARY_PATH=/usr/X11R6/bin;
 #Generated/%.cpp: %.ui
 #	( grep -q -e 'UI version=\"[0-9]\+\.0\"' $< || \
 #	  sed -i -e 's/\(UI version=\"[0-9]\+\.\)[0-9]\+"/\10\"/' $< ); \
-#  $(QTDIR)/bin/uic -impl $*.h $< -o $@; \
+#  $(QT)/bin/uic -impl $*.h $< -o $@; \
 #  sed -i -e 's/static const unsigned char const/static const unsigned char/' $@
 
 #MOC rule
 moc_%.cpp: %.h
-	$(QTDIR)/bin/moc $< -o $@
+	$(QT)/bin/moc $< -o $@
 Generated/moc_%.cpp: %.h
-	$(QTDIR)/bin/moc $< -o $@
+	$(QT)/bin/moc $< -o $@
 
 #LPC rule:
 ifneq ($(DLL),)
@@ -192,7 +194,7 @@ endif
 	../../bin/LPC $(impex) -I. -I../LavaBase $<
 
 %.cpp: %.qrc
-	$(QTDIR)/bin/rcc -o $@ $<
+	$(QT)/bin/rcc -o $@ $<
 
 ifeq ($(suffix $(EXEC)),)
 run:
