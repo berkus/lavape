@@ -71,7 +71,7 @@ ifeq ($(OPSYS),MINGW32_NT-5.1)
   LN = cp
   QT = $QTMINGW
 else
-QT = $QTDIR
+QT = $(QTDIR)
 ifeq ($(OPSYS),Darwin)
   OSCAT = __UNIX__
   LN = ln -s
