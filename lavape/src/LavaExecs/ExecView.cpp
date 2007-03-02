@@ -1362,7 +1362,7 @@ void CExecView::Select (SynObject *selObj)
   SynFlags ctxFlags;
   bool isSigFunc;
 
-  if (selObj) {
+ if (selObj) {
     if (selObj->InHiddenIniClause(text->ckd,typeRef)) {
       text->Select(typeRef);
     }
@@ -2330,7 +2330,7 @@ void CExecView::PutDelFlagHint(SET delFlags, SET firstLastHint) {
     myDoc->UpdateDoc(this, false);
 }
 
-void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint) {
+void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint, bool now) {
   nextHint = new CLavaPEHint(
     CPECommand_Exec,
     myDoc,
@@ -2342,8 +2342,12 @@ void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint) {
     text->currentSynObj->containingChain,
     text->currentSynObj->whereInParent);
 
-  myDoc->UndoMem.AddToMem(nextHint);
-  myDoc->UpdateDoc(this,false,nextHint);
+  if (now)
+    myDoc->UpdateDoc(this,false,nextHint);
+  else {
+    if (firstLastHint.Contains(lastHint))
+      myDoc->UpdateDoc(this,false,nextHint);
+  }
 }
 
 void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLastHint) {
@@ -2355,7 +2359,7 @@ void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLas
     text->currentSynObj,
     (void*)InsChain,
     newChe,
-   chain,
+    chain,
     pred);
 
   myDoc->UndoMem.AddToMem(nextHint);
@@ -2380,64 +2384,115 @@ void CExecView::PutInsMultOpHint(SynObject *multOp, SET firstLastHint) {
   nextHint = 0;
 }
 
-void CExecView::PutIniCall(SynObject *currVarItem, bool after) {
-  FuncStatement *funcStm=new FuncStatementV(true), *precIniCall;
+void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall) {
+  FuncStatement *funcStm, *precIniCall=0;
   MultipleOp *multOp;
+  VarName *varName;
+  ObjReference *varRef;
+  TDOD *tdod;
+  TDODC refIDs;
+  Declare *dcl=(Declare*)currVarItem->parentObject->parentObject;
   SynObject *currentSynObj=text->currentSynObj;
-  CHE *che, *newChe;
+  CHE *che, *newChe, *precV, *precQ;
   CHAINX *chx;
 
-  if (currVarItem) {
+  if (((CHE*)currVarItem->whereInParent)->predecessor
+  || ((CHE*)currVarItem->parentObject->whereInParent)->predecessor) {
+    if (((CHE*)currVarItem->whereInParent)->predecessor) {
+      precV = (CHE*)((CHE*)currVarItem->whereInParent)->predecessor;
+    }
+    else if (((CHE*)currVarItem->parentObject->whereInParent)->predecessor) {
+      precQ = (CHE*)((CHE*)currVarItem->parentObject->whereInParent)->predecessor;
+      precV = (CHE*)((Quantifier*)precQ->data)->quantVars.last;
+    }
+    precIniCall = ((SynObject*)precV->data)->iniCall;
+  }
+
+  if (!precIniCall) {
+    if (currVarItem->IsPlaceHolder()) {
+      funcStm = new FuncStatementV(true);
+      ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
+      ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
+      ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
+      ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
+      funcStm->varName = currVarItem;
+    }
+    else {
+      varName = (VarName*)currVarItem;
+      tdod = new TDOD();
+      tdod->ID.nID = varName->varID.nID;
+      tdod->ID.nINCL = varName->varID.nINCL;
+      refIDs.Append(new CHE(tdod));
+      varRef = new ObjReferenceV(refIDs,varName->varName.c);
+      funcStm = new FuncStatementV(varRef);
+      varRef->parentObject = funcStm;
+      funcStm->flags.INCL(isIniCallOrHandle);
+      funcStm->flags.INCL(staticCall);
+      funcStm->varName = varName;
+    }
+    text->currentSynObj = funcStm;
+    funcStm->parentObject = dcl;
+    funcStm->whereInParent = &dcl->secondaryClause.ptr;
+    PutInsHint(funcStm);
+    return;
+  }
+
+  if (currVarItem->IsPlaceHolder()) {
+    funcStm = new FuncStatementV(true);
+    funcStm->flags.INCL(isIniCallOrHandle);
+    funcStm->flags.INCL(staticCall);
     ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
     ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
     ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
     ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
-    precIniCall=currVarItem->iniCall;
-    chx=precIniCall->containingChain;
-    che=(CHE*)precIniCall->whereInParent;
-    newChe = NewCHE(funcStm);
-    funcStm->whereInParent = (address)newChe;
-    if (after)
-      if (chx)
-        PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
-      else {
-        multOp = new SemicolonOpV;
-        text->currentSynObj = currVarItem->iniCall;
-        PutInsMultOpHint(multOp,SET());
-        chx = &multOp->operands;
-        PutInsChainHint(newChe,chx,(CHE*)multOp->operands.first,SET(lastHint,-1));
-     }
-    else
-      if (chx) {
-        che = (CHE*)((CHE*)currVarItem->iniCall->whereInParent)->predecessor;
-        PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
-      }
-      else {
-        multOp = new SemicolonOpV;
-        text->currentSynObj = currVarItem->iniCall;
-        PutInsMultOpHint(multOp,SET());
-        chx = &multOp->operands;
-        PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,SET(lastHint,-1));
-      }
+    funcStm->varName = currVarItem;
+  }
+  else {
+    varName = (VarName*)currVarItem;
+    tdod = new TDOD();
+    tdod->ID.nID = varName->varID.nID;
+    tdod->ID.nINCL = varName->varID.nINCL;
+    refIDs.Append(new CHE(tdod));
+    varRef = new ObjReferenceV(refIDs,varName->varName.c);
+    funcStm = new FuncStatementV(varRef);
+    funcStm->flags.INCL(isIniCallOrHandle);
+    funcStm->flags.INCL(staticCall);
+    funcStm->varName = varName;
+  }
+  //text->currentSynObj = precIniCall;
+
+  chx=precIniCall->containingChain;
+  che=(CHE*)precIniCall->whereInParent;
+  newChe = NewCHE(funcStm);
+  funcStm->whereInParent = (address)newChe;
+  if (after)
+    if (chx)
+      PutInsChainHint(newChe,chx,che,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
+    else {
+      multOp = new SemicolonOpV;
+      text->currentSynObj = precIniCall;
+      PutInsMultOpHint(multOp,SET());
+      chx = &multOp->operands;
+      text->currentSynObj = multOp;
+      PutInsChainHint(newChe,chx,(CHE*)multOp->operands.first,SET(lastHint,-1));
+   }
+  else {
+    if (chx) {
+      che = (CHE*)((CHE*)currVarItem->iniCall->whereInParent)->predecessor;
+      PutInsChainHint(newChe,chx,che,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
+    }
+    else {
+      multOp = new SemicolonOpV;
+      text->currentSynObj = currVarItem->iniCall;
+      PutInsMultOpHint(multOp,SET());
+      chx = &multOp->operands;
+      text->currentSynObj = multOp;
+      PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
+    }
     funcStm->containingChain = chx;
   }
-  else { // first quant. var., "after" is true
-    //dcl = (Declare*)text->currentSynObj->parentObject->parentObject;
-    //PutInsHint(varName,SET(firstHint,-1));
-    //tdod = new TDOD();
-    //tdod->ID.nID = varName->varID.nID;
-    //tdod->ID.nINCL = varName->varID.nINCL;
-    //refIDs.Append(new CHE(tdod));
-    //objRef = new ObjReferenceV(refIDs,str.toAscii());
-    //funcStm = new FuncStatementV(objRef);
-    //funcStm->flags.INCL(isIniCallOrHandle);
-    //funcStm->flags.INCL(staticCall);
-    //funcStm->varName = varName;
-    //text->currentSynObj = text->currentSynObj->iniCall;
-    //text->selectAt = varName;
-    //PutInsHint(funcStm,SET(lastHint,-1));
-  }
-  text->currentSynObj = currentSynObj;
+
+  //text->currentSynObj = currentSynObj;
 }
 
 void CExecView::PutChgCommentHint(TComment *pCmt) {
@@ -3366,7 +3421,7 @@ quantCase:
       dcl = (Declare*)text->currentSynObj;
       PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
 	    newVarItem = (SynObject*)((CHE*)qf->quantVars.first)->data;
-      PutIniCall(newVarItem,true);
+      PutIniCall(newVarItem);
     }
     else
       PutInsChainHint(newChe,chx,che);
@@ -3386,11 +3441,13 @@ quantCase:
     newVarItem->parentObject = qf;
     newVarItem->whereInParent = (address)newChe;
 	  newVarItem->containingChain = &qf->quantVars;
+    newChe->predecessor = (CHE*)currVarItem->whereInParent;
+    //:needed in PutIniCall though PutInsChainHint isn't executed immediately
     text->selectAt = newVarItem;
     if (text->currentSynObj->parentObject->IsDeclare()
     && ((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr) {
       PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
-      PutIniCall(newVarItem,true);
+      PutIniCall(newVarItem);
     }
     else
       PutInsChainHint(newChe,chx,che);
@@ -4001,7 +4058,6 @@ void CExecView::OnShowOptionals()
 void CExecView::RestoreIniCalls() {
   Declare *declareStm = (Declare*)text->currentSynObj;
   CHE *chpq, *chpv;
-  SynObject *currentSynObj=text->currentSynObj;
 
   for (chpq = (CHE*)declareStm->quantifiers.first;
        chpq;
@@ -4010,10 +4066,9 @@ void CExecView::RestoreIniCalls() {
          chpv;
          chpv = (CHE*)chpv->successor) {
       text->currentSynObj = (Quantifier*)chpq->data;
-      PutIniCall((SynObject*)chpv->data,true);
+      PutIniCall((SynObject*)chpv->data,true,true);
     }
   }
-  text->currentSynObj = currentSynObj;
 }
 
 bool CExecView::EnableGotoDecl()
@@ -4349,11 +4404,7 @@ bool CExecView::EditOK()
   QString str;
   SynObject *synObj;
   Declare *dcl;
-  FuncStatement *funcStm;
-  ObjReference *objRef;
   VarName *varName;
-  TDOD *tdod;
-  TDODC refIDs;
   TToken token=editToken;
   VarConstCheck rc;
 
@@ -4383,19 +4434,10 @@ bool CExecView::EditOK()
         if (text->currentSynObj->parentObject->parentObject->IsDeclare()) {
           dcl = (Declare*)text->currentSynObj->parentObject->parentObject;
           if (dcl->secondaryClause.ptr) {
-            PutInsHint(varName,SET(firstHint,-1));
-            tdod = new TDOD();
-            tdod->ID.nID = varName->varID.nID;
-            tdod->ID.nINCL = varName->varID.nINCL;
-            refIDs.Append(new CHE(tdod));
-            objRef = new ObjReferenceV(refIDs,str.toAscii());
-            funcStm = new FuncStatementV(objRef);
-            funcStm->flags.INCL(isIniCallOrHandle);
-            funcStm->flags.INCL(staticCall);
-            funcStm->varName = varName;
-            text->currentSynObj = text->currentSynObj->iniCall;
-            text->selectAt = varName;
-            PutInsHint(funcStm,SET(lastHint,-1));
+            PutInsHint(varName,SET(firstHint,-1),true);
+            //varName->whereInParent = text->currentSynObj->whereInParent;
+            //: needed by PutIniCall
+            PutIniCall(varName);
           }
           else
             PutInsHint(varName);

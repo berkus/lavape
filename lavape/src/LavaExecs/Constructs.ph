@@ -953,7 +953,7 @@ public:
 class FuncStatement : public FuncExpression {
 public:
   CHAINX/*Parameter*/ outputs;
-  VarName-- *varName; // reverse link to var decl in ini-clauses of declare
+  SynObject-- *varName; // reverse link to var[PH] decl from ini-clauses of declare
 
   FuncStatement (){};
   FuncStatement (Reference *ref);

@@ -115,15 +115,14 @@ public:
   void OnConst();
   void PutInsFlagHint(SET insFlags, SET firstLastHint=SET(firstHint,lastHint,-1));
   void PutDelFlagHint(SET insFlags, SET firstLastHint=SET(firstHint,lastHint,-1));
-  void PutInsHint(SynObject *insObj, SET firstLastHint=SET(firstHint,lastHint,-1));
+  void PutInsHint(SynObject *insObj, SET firstLastHint=SET(firstHint,lastHint,-1), bool now=false);
   void PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred, SET firstLastHint=SET(firstHint,lastHint,-1));
   void PutInsMultOpHint(SynObject *multOp, SET firstLastHint=SET(firstHint,-1));
-  void PutIniCall(SynObject *varItem, bool after);
+  void PutIniCall(SynObject *varItem, bool after=true, bool onlyIniCall=false);
   void PutChgCommentHint(TComment *pCmt);
   void PutChgOpHint(TToken token);
   void PutDelHint(SynObject *delObj, SET firstLastHint=SET(firstHint,lastHint,-1));
   void PutDelNestedHint(SET firstLastHint);
-//  void PutArrowHint();
   void PutPlusMinusHint();
   void InsertOrReplace (SynObject *insObj);
   void InsMultChain (SynObject *insObj);

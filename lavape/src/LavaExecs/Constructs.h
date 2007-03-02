@@ -1965,7 +1965,7 @@ class FuncStatement : public FuncExpression {
 
   public:
   CHAINX outputs;
-  VarName *varName;
+  SynObject *varName;
 
   FuncStatement()
   {
