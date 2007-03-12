@@ -2384,7 +2384,7 @@ void CExecView::PutInsMultOpHint(SynObject *multOp, SET firstLastHint) {
   nextHint = 0;
 }
 
-void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall) {
+void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall, bool replace) {
   FuncStatement *funcStm, *precIniCall=0;
   MultipleOp *multOp;
   VarName *varName;
@@ -2396,6 +2396,7 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall)
   CHE *che, *newChe, *precV, *precQ;
   CHAINX *chx;
 
+  // exists a preceding ini call?
   if (((CHE*)currVarItem->whereInParent)->predecessor
   || ((CHE*)currVarItem->parentObject->whereInParent)->predecessor) {
     if (((CHE*)currVarItem->whereInParent)->predecessor) {
@@ -2408,35 +2409,7 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall)
     precIniCall = ((SynObject*)precV->data)->iniCall;
   }
 
-  if (!precIniCall) {
-    if (currVarItem->IsPlaceHolder()) {
-      funcStm = new FuncStatementV(true);
-      ((SynObject*)funcStm->handle.ptr)->primaryToken = ExpDisabled_T;
-      ((SynObject*)funcStm->handle.ptr)->type = ExpDisabled_T;
-      ((SynObject*)funcStm->handle.ptr)->replacedType = ExpDisabled_T;
-      ((SynObject*)funcStm->handle.ptr)->flags.INCL(isDisabled);
-      funcStm->varName = currVarItem;
-    }
-    else {
-      varName = (VarName*)currVarItem;
-      tdod = new TDOD();
-      tdod->ID.nID = varName->varID.nID;
-      tdod->ID.nINCL = varName->varID.nINCL;
-      refIDs.Append(new CHE(tdod));
-      varRef = new ObjReferenceV(refIDs,varName->varName.c);
-      funcStm = new FuncStatementV(varRef);
-      varRef->parentObject = funcStm;
-      funcStm->flags.INCL(isIniCallOrHandle);
-      funcStm->flags.INCL(staticCall);
-      funcStm->varName = varName;
-    }
-    text->currentSynObj = funcStm;
-    funcStm->parentObject = dcl;
-    funcStm->whereInParent = &dcl->secondaryClause.ptr;
-    PutInsHint(funcStm);
-    return;
-  }
-
+  // build the ini call
   if (currVarItem->IsPlaceHolder()) {
     funcStm = new FuncStatementV(true);
     funcStm->flags.INCL(isIniCallOrHandle);
@@ -2455,12 +2428,19 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall)
     refIDs.Append(new CHE(tdod));
     varRef = new ObjReferenceV(refIDs,varName->varName.c);
     funcStm = new FuncStatementV(varRef);
+    varRef->parentObject = funcStm;
     funcStm->flags.INCL(isIniCallOrHandle);
     funcStm->flags.INCL(staticCall);
     funcStm->varName = varName;
   }
-  //text->currentSynObj = precIniCall;
 
+    text->currentSynObj = funcStm;
+    funcStm->parentObject = dcl;
+    funcStm->whereInParent = &dcl->secondaryClause.ptr;
+    PutInsHint(funcStm);
+    return;
+
+  // insert new or replace existing ini call 
   chx=precIniCall->containingChain;
   che=(CHE*)precIniCall->whereInParent;
   newChe = NewCHE(funcStm);
@@ -2491,8 +2471,6 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall)
     }
     funcStm->containingChain = chx;
   }
-
-  //text->currentSynObj = currentSynObj;
 }
 
 void CExecView::PutChgCommentHint(TComment *pCmt) {
@@ -4435,9 +4413,7 @@ bool CExecView::EditOK()
           dcl = (Declare*)text->currentSynObj->parentObject->parentObject;
           if (dcl->secondaryClause.ptr) {
             PutInsHint(varName,SET(firstHint,-1),true);
-            //varName->whereInParent = text->currentSynObj->whereInParent;
-            //: needed by PutIniCall
-            PutIniCall(varName);
+            PutIniCall(varName,true,false,true);
           }
           else
             PutInsHint(varName);
