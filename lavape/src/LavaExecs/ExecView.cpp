@@ -2342,12 +2342,9 @@ void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint, bool now) {
     text->currentSynObj->containingChain,
     text->currentSynObj->whereInParent);
 
-  if (now)
+  myDoc->UndoMem.AddToMem(nextHint);
+  if (now || firstLastHint.Contains(lastHint))
     myDoc->UpdateDoc(this,false,nextHint);
-  else {
-    if (firstLastHint.Contains(lastHint))
-      myDoc->UpdateDoc(this,false,nextHint);
-  }
 }
 
 void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLastHint) {
@@ -2395,19 +2392,21 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall,
   SynObject *currentSynObj=text->currentSynObj;
   CHE *che, *newChe, *precV, *precQ;
   CHAINX *chx;
+  bool isFirst=false;
 
   // exists a preceding ini call?
-  if (((CHE*)currVarItem->whereInParent)->predecessor
-  || ((CHE*)currVarItem->parentObject->whereInParent)->predecessor) {
-    if (((CHE*)currVarItem->whereInParent)->predecessor) {
-      precV = (CHE*)((CHE*)currVarItem->whereInParent)->predecessor;
-    }
-    else if (((CHE*)currVarItem->parentObject->whereInParent)->predecessor) {
-      precQ = (CHE*)((CHE*)currVarItem->parentObject->whereInParent)->predecessor;
-      precV = (CHE*)((Quantifier*)precQ->data)->quantVars.last;
-    }
+  if (((CHE*)currVarItem->whereInParent)->predecessor) {
+    precV = (CHE*)((CHE*)currVarItem->whereInParent)->predecessor;
     precIniCall = ((SynObject*)precV->data)->iniCall;
   }
+  else if (((CHE*)currVarItem->parentObject->whereInParent)->predecessor) {
+    precQ = (CHE*)((CHE*)currVarItem->parentObject->whereInParent)->predecessor;
+    precV = (CHE*)((Quantifier*)precQ->data)->quantVars.last;
+    precIniCall = ((SynObject*)precV->data)->iniCall;
+  }
+  else if (!((CHE*)currVarItem->whereInParent)->successor
+  && !((CHE*)currVarItem->parentObject->whereInParent)->successor)
+    isFirst = true;
 
   // build the ini call
   if (currVarItem->IsPlaceHolder()) {
@@ -2434,42 +2433,50 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall,
     funcStm->varName = varName;
   }
 
+  if (isFirst) {
     text->currentSynObj = funcStm;
     funcStm->parentObject = dcl;
+    funcStm->containingChain = 0;
     funcStm->whereInParent = &dcl->secondaryClause.ptr;
     PutInsHint(funcStm);
-    return;
-
-  // insert new or replace existing ini call 
-  chx=precIniCall->containingChain;
-  che=(CHE*)precIniCall->whereInParent;
-  newChe = NewCHE(funcStm);
-  funcStm->whereInParent = (address)newChe;
-  if (after)
-    if (chx)
-      PutInsChainHint(newChe,chx,che,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
+  }
+  else { // insert new or replace existing ini call 
+    chx=precIniCall->containingChain;
+    che=(CHE*)precIniCall->whereInParent;
+    newChe = NewCHE(funcStm);
+    funcStm->whereInParent = (address)newChe;
+    if (after)
+      if (chx) {
+        if (replace) {
+          PutDelHint(text->currentSynObj,SET(firstHint,-1));
+          PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
+        }
+        else
+          PutInsChainHint(newChe,chx,che,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
+      }
+      else {
+        multOp = new SemicolonOpV;
+        text->currentSynObj = precIniCall;
+        PutInsMultOpHint(multOp,SET());
+        chx = &multOp->operands;
+        text->currentSynObj = multOp;
+        PutInsChainHint(newChe,chx,(CHE*)multOp->operands.first,SET(lastHint,-1));
+     }
     else {
-      multOp = new SemicolonOpV;
-      text->currentSynObj = precIniCall;
-      PutInsMultOpHint(multOp,SET());
-      chx = &multOp->operands;
-      text->currentSynObj = multOp;
-      PutInsChainHint(newChe,chx,(CHE*)multOp->operands.first,SET(lastHint,-1));
-   }
-  else {
-    if (chx) {
-      che = (CHE*)((CHE*)currVarItem->iniCall->whereInParent)->predecessor;
-      PutInsChainHint(newChe,chx,che,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
+      if (chx) {
+        che = (CHE*)((CHE*)currVarItem->iniCall->whereInParent)->predecessor;
+        PutInsChainHint(newChe,chx,che,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
+      }
+      else {
+        multOp = new SemicolonOpV;
+        text->currentSynObj = currVarItem->iniCall;
+        PutInsMultOpHint(multOp,SET());
+        chx = &multOp->operands;
+        text->currentSynObj = multOp;
+        PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
+      }
+      funcStm->containingChain = chx;
     }
-    else {
-      multOp = new SemicolonOpV;
-      text->currentSynObj = currVarItem->iniCall;
-      PutInsMultOpHint(multOp,SET());
-      chx = &multOp->operands;
-      text->currentSynObj = multOp;
-      PutInsChainHint(newChe,&multOp->operands,(CHE*)multOp->operands.first,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
-    }
-    funcStm->containingChain = chx;
   }
 }
 
@@ -3930,7 +3937,7 @@ void CExecView::OnShowOptionals()
   else if (text->currentSynObj->primaryToken == declare_T) {
     declareStm = (Declare*)text->currentSynObj;
     if (!declareStm->secondaryClause.ptr)
-		RestoreIniCalls();
+  		RestoreIniCalls();
   }
   else if (text->currentSynObj->primaryToken == try_T) {
     tryStm = (TryStatement*)text->currentSynObj;
