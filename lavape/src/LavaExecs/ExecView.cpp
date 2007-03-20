@@ -2448,8 +2448,8 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall,
     if (after)
       if (chx) {
         if (replace) {
-          PutDelHint(text->currentSynObj,SET(firstHint,-1));
-          PutInsChainHint(newChe,chx,che,SET(lastHint,-1));
+          text->currentSynObj = (SynObject*)((CHE*)((CHE*)precIniCall->whereInParent)->successor)->data;
+          PutInsHint(funcStm,SET(lastHint,-1));
         }
         else
           PutInsChainHint(newChe,chx,che,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
