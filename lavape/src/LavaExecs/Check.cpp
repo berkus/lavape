@@ -6140,7 +6140,6 @@ bool QuantStmOrExp::Check (CheckData &ckd)
   SynObject *opd, *secClause;
   SET oldFlags=ckd.flags;
   bool isDeclareWithIni=IsDeclare() && ((Declare*)this)->secondaryClause.ptr;
-  ClosedLevelVisitor clv(ckd.document);
 #ifdef INTERPRETER
   unsigned oldStackLevel=ckd.currentStackLevel;
   nQuantVars = 0;
@@ -6168,6 +6167,7 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     ok &= ((SynObject*)((Exists*)this)->secondaryClause.ptr)->Check(ckd);
   if (IsDeclare())
     if (((Declare*)this)->secondaryClause.ptr) {
+      ClosedLevelVisitor clv(ckd.document);
       secClause = (SynObject*)((Declare*)this)->secondaryClause.ptr;
       secClause->Accept(clv);
       ok &= secClause->Check(ckd);
