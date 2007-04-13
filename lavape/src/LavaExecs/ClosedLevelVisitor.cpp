@@ -81,17 +81,30 @@ void ClosedLevelVisitor::VisitMultipleOp (MultipleOp *obj,SynObject *parent,addr
 
 void ClosedLevelVisitor::VisitFuncExpression (FuncExpression *obj,SynObject *parent,address where,CHAINX *chxp) {
   CHE *chp;
-  int maxLevel=-1;
+  int maxLevel;
 
-  if (obj->handle.ptr)
-    obj->closedLevel = ((Expression*)obj->handle.ptr)->closedLevel;
-  else {
-    for (chp = (CHE*)obj->inputs.first;
-         chp;
-         chp = (CHE*)chp->successor) {
-      maxLevel = qMax(maxLevel,((Expression*)chp->data)->closedLevel);
-    }
+  maxLevel = ((Expression*)obj->handle.ptr)->closedLevel;
+
+  for (chp = (CHE*)obj->inputs.first;
+       chp;
+       chp = (CHE*)chp->successor) {
+    maxLevel = qMax(maxLevel,((Expression*)chp->data)->closedLevel);
   }
+  obj->closedLevel = maxLevel;
+}
+
+void ClosedLevelVisitor::VisitFuncStatement (FuncStatement *obj,SynObject *parent,address where,CHAINX *chxp) {
+  CHE *chp;
+  int maxLevel;
+
+  maxLevel = ((Expression*)obj->handle.ptr)->closedLevel;
+
+  for (chp = (CHE*)obj->inputs.first;
+       chp;
+       chp = (CHE*)chp->successor) {
+    maxLevel = qMax(maxLevel,((Expression*)chp->data)->closedLevel);
+  }
+  obj->closedLevel = maxLevel;
 }
 
 void ClosedLevelVisitor::VisitOldExpression (OldExpression *obj,SynObject *parent,address where,CHAINX *chxp) {

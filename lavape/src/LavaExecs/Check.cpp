@@ -6165,11 +6165,35 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     ckd.flags.INCL(InForEach);
   if (IsExists() && ((Exists*)this)->secondaryClause.ptr)
     ok &= ((SynObject*)((Exists*)this)->secondaryClause.ptr)->Check(ckd);
+
+  secClause = (SynObject*)((Declare*)this)->secondaryClause.ptr;
+
+  int iniOrd = 1;
   if (IsDeclare())
-    if (((Declare*)this)->secondaryClause.ptr) {
-      ClosedLevelVisitor clv(ckd.document);
-      secClause = (SynObject*)((Declare*)this)->secondaryClause.ptr;
-      secClause->Accept(clv);
+    if (secClause) {
+      if (secClause->IsFuncInvocation()) {
+        if (!IsPH(((FuncStatement*)secClause)->varName)) {
+          ((FuncStatement*)chp->data)->closedLevel = iniOrd; // still undefined
+          ((VarName*)((FuncStatement*)chp->data)->varName)->closedLevel = iniOrd; // still undefined
+          ((VarName*)((FuncStatement*)chp->data)->varName)->iniOrder = iniOrd++; // still undefined
+          ClosedLevelVisitor clv(ckd.document,(FuncStatement*)secClause);
+          secClause->Accept(clv);
+          ((VarName*)((FuncStatement*)secClause)->varName)->closedLevel = clv.maxClosedLevel;
+        }
+        else
+          iniOrd++;
+      }
+      else {
+        for (chp=(CHE*)((SemicolonOp*)secClause)->operands.first;
+             chp;
+             chp=(CHE*)chp->successor) { // compute closedLevel for all ini vars
+          ClosedLevelVisitor clv(ckd.document,(FuncStatement*)chp->data);
+          if (!IsPH(((FuncStatement*)chp->data)->varName)) {
+            ((FuncStatement*)chp->data)->Accept(clv);
+            ((VarName*)((FuncStatement*)chp->data)->varName)->closedLevel = clv.maxClosedLevel;
+          }
+        }
+      }
       ok &= secClause->Check(ckd);
       ok &= ((SynObject*)primaryClause.ptr)->Check(ckd);
     }

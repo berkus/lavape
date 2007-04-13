@@ -1016,7 +1016,8 @@ class VarName : public Expression {
   STRING varName;
   TID varID;
   VarName *nextLocal;
-  unsigned stackPos;
+  unsigned stackPos, iniOrder;
+  int closedLevel;
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   Reference *TypeRef();
   virtual bool IsPlaceHolder()
@@ -4350,10 +4351,12 @@ public:
 class ClosedLevelVisitor : public Visitor {
 public:
   CLavaBaseDoc *document;
+  int maxClosedLevel;
 
-  ClosedLevelVisitor (CLavaBaseDoc *doc) {
+  ClosedLevelVisitor (CLavaBaseDoc *doc, FuncStatement *iniCall) {
     document = doc;
-	}
+    maxClosedLevel = 0;
+  }
 	  
   virtual void VisitParameter (Parameter *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitObjReference (ObjReference *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -4361,6 +4364,7 @@ public:
   virtual void VisitBinaryOp (BinaryOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitFuncExpression (FuncExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  virtual void VisitFuncStatement (FuncStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitOldExpression (OldExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitEvalExpression (EvalExpression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
