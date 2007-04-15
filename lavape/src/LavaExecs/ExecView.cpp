@@ -4764,6 +4764,7 @@ void CExecView::OnInsertRef (QString &refName, TID &refID, bool isStaticCall, TI
       funcStm = new FuncStatementV(new ReferenceV(FuncPH_T,refID,refName.toAscii()));
       if (isStaticCall || ((FuncStatement*)text->currentSynObj)->flags.Contains(isIniCallOrHandle)) {
         funcStm->flags.INCL(staticCall);
+        funcStm->varName = oldFuncStm->varName;
         if (vtypeID)
           funcStm->vtypeID = *vtypeID;
       }

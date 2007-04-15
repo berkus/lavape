@@ -97,6 +97,9 @@ void ClosedLevelVisitor::VisitFuncStatement (FuncStatement *obj,SynObject *paren
   CHE *chp;
   int maxLevel;
 
+  if (!obj->flags.Contains(isIniCallOrHandle))
+    return;
+
   maxLevel = ((Expression*)obj->handle.ptr)->closedLevel;
 
   for (chp = (CHE*)obj->inputs.first;

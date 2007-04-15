@@ -6173,9 +6173,9 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     if (secClause) {
       if (secClause->IsFuncInvocation()) {
         if (!IsPH(((FuncStatement*)secClause)->varName)) {
-          ((FuncStatement*)chp->data)->closedLevel = iniOrd; // still undefined
-          ((VarName*)((FuncStatement*)chp->data)->varName)->closedLevel = iniOrd; // still undefined
-          ((VarName*)((FuncStatement*)chp->data)->varName)->iniOrder = iniOrd++; // still undefined
+          ((VarName*)((FuncStatement*)secClause)->varName)->iniOrder = 1;
+          ((VarName*)((FuncStatement*)secClause)->varName)->closedLevel = 1;
+
           ClosedLevelVisitor clv(ckd.document,(FuncStatement*)secClause);
           secClause->Accept(clv);
           ((VarName*)((FuncStatement*)secClause)->varName)->closedLevel = clv.maxClosedLevel;
@@ -6187,11 +6187,16 @@ bool QuantStmOrExp::Check (CheckData &ckd)
         for (chp=(CHE*)((SemicolonOp*)secClause)->operands.first;
              chp;
              chp=(CHE*)chp->successor) { // compute closedLevel for all ini vars
-          ClosedLevelVisitor clv(ckd.document,(FuncStatement*)chp->data);
           if (!IsPH(((FuncStatement*)chp->data)->varName)) {
+            ((VarName*)((FuncStatement*)chp->data)->varName)->iniOrder = iniOrd;
+            ((VarName*)((FuncStatement*)chp->data)->varName)->closedLevel = iniOrd++;
+
+            ClosedLevelVisitor clv(ckd.document,(FuncStatement*)chp->data);
             ((FuncStatement*)chp->data)->Accept(clv);
             ((VarName*)((FuncStatement*)chp->data)->varName)->closedLevel = clv.maxClosedLevel;
           }
+          else
+            iniOrd++;
         }
       }
       ok &= secClause->Check(ckd);
