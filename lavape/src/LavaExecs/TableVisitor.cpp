@@ -213,7 +213,6 @@ void TableVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,addres
   }
 }
 
-
 void TableVisitor::VisitMultipleOp (MultipleOp *obj,SynObject *parent,address where,CHAINX *chxp)
 {
   if (update == onCopy)
@@ -319,8 +318,66 @@ void TableVisitor::VisitBinaryOp (BinaryOp *obj,SynObject *parent,address where,
     ((TIDTable*)table)->ChangeRefToClipID(obj->opFunctionID);
 }
 
+void TableVisitor::VisitSynObject (SynObject *obj,SynObject *parent,address where,CHAINX *chxp)
+{
+  if (obj->primaryToken != VarPH_T || obj->parentObject->primaryToken != quant_T)
+    return;
+
+  Quantifier *quant=(Quantifier*)obj->parentObject;
+  Declare *dclStm=(Declare*)quant->parentObject;
+
+  if (update == onAddID) {
+    if (dclStm->IsDeclare()
+    && dclStm->secondaryClause.ptr
+    && obj->whereInParent == quant->quantVars.first
+    && quant->whereInParent == dclStm->quantifiers.first)
+      if (((SynObject*)dclStm->secondaryClause.ptr)->IsFuncInvocation()) {
+        currIniCall = (FuncStatement*)dclStm->secondaryClause.ptr;
+        currIniCallChp = 0;
+      }
+      else {
+        currIniCallChp = (CHE*)((SemicolonOp*)dclStm->secondaryClause.ptr)->operands.first;
+        currIniCall = (FuncStatement*)currIniCallChp->data;
+      }
+
+    obj->iniCall = currIniCall;
+    currIniCall->varName = obj;
+    if (currIniCallChp) {
+      currIniCallChp = (CHE*)currIniCallChp->successor;
+      if (currIniCallChp)
+        currIniCall = (FuncStatement*)currIniCallChp->data;
+    }
+  }
+}
+
 void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CHAINX *chxp)
 {
+  Quantifier *quant=(Quantifier*)obj->parentObject;
+  Declare *dclStm=(Declare*)quant->parentObject;
+
+  if (update == onAddID) {
+    if (dclStm->IsDeclare()
+    && dclStm->secondaryClause.ptr
+    && obj->whereInParent == quant->quantVars.first
+    && quant->whereInParent == dclStm->quantifiers.first)
+      if (((SynObject*)dclStm->secondaryClause.ptr)->IsFuncInvocation()) {
+        currIniCall = (FuncStatement*)dclStm->secondaryClause.ptr;
+        currIniCallChp = 0;
+      }
+      else {
+        currIniCallChp = (CHE*)((SemicolonOp*)dclStm->secondaryClause.ptr)->operands.first;
+        currIniCall = (FuncStatement*)currIniCallChp->data;
+      }
+
+    obj->iniCall = currIniCall;
+    currIniCall->varName = obj;
+    if (currIniCallChp) {
+      currIniCallChp = (CHE*)currIniCallChp->successor;
+      if (currIniCallChp)
+        currIniCall = (FuncStatement*)currIniCallChp->data;
+    }
+  }
+
   switch (update) {
   case onUndoDeleteID:
     if (obj->varID.nID != -1)
@@ -381,7 +438,7 @@ void TableVisitor::VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent,addres
   else if (update == onMove)
     ((TIDTable*)table)->ChangeRefToClipID(obj->opFunctionID);
 }
-
-void TableVisitor::VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent,address where,CHAINX *chxp)
-{
-}
+//
+//void TableVisitor::VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent,address where,CHAINX *chxp)
+//{
+//}

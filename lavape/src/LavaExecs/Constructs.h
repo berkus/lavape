@@ -4315,6 +4315,8 @@ public:
   address table;
   int inINCL;
   SynObject *parent;
+  FuncStatement *currIniCall;
+  CHE *currIniCallChp;
   TTableUpdate update;
   address where;
   CHAINX *chxp;
@@ -4333,6 +4335,7 @@ public:
 	
   virtual void Eval (SynObject *self,SynObject *parent,address where,CHAINX *chxp);
   
+  virtual void VisitSynObject (SynObject *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitEnumConst (EnumConst *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitParameter (Parameter *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitFormParm (FormParm *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -4345,7 +4348,7 @@ public:
   virtual void VisitMultipleOp (MultipleOp *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitVarName (VarName *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
   virtual void VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
-  virtual void VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
+  //virtual void VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);
 };
 
 class ClosedLevelVisitor : public Visitor {
