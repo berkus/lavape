@@ -616,9 +616,9 @@ bool compatibleTypes(CheckData &ckd, LavaDECL *decl1, const CContext &context1, 
 
 bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext &callCtx, Category callObjCat)
 {
-  SynObject *actSynObj=(SynObject*)actParm->data;
-  SynObject *parm=(actSynObj->primaryToken==parameter_T?
-    (SynObject*)((Parameter*)actSynObj)->parameter.ptr : actSynObj);
+  Expression *actSynObj=(Expression*)actParm->data;
+  Expression *parm=(actSynObj->primaryToken==parameter_T?
+    (Expression*)((Parameter*)actSynObj)->parameter.ptr : actSynObj);
   LavaDECL *actTypeDecl, *actDecl, *formDecl, *formTypeDecl;
   bool ok=true;
   Category actCat, formCat;
@@ -642,7 +642,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     actSynObj->SetError(ckd,&ERR_Optional);
     ok &= false;
   }
-  if (actSynObj->ClosedLevel(ckd)
+  if (actSynObj->closedLevel
   && !formDecl->SecondTFlags.Contains(closed)) {
     actSynObj->SetError(ckd,&ERR_Closed);
     ok &= false;
@@ -2343,7 +2343,7 @@ bool FailStatement::Check (CheckData &ckd)
     ok = false;
   }
 
-  if (((SynObject*)exception.ptr)->ClosedLevel(ckd)) {
+  if (((Expression*)exception.ptr)->closedLevel) {
     ((SynObject*)exception.ptr)->SetError(ckd,&ERR_Closed);
     ok = false;
   }
@@ -2843,7 +2843,7 @@ bool BinaryOp::Check (CheckData &ckd)
     ((SynObject*)opd2)->SetError(ckd,&ERR_Optional);
     ok = false;
   }
-  if (opd2->ClosedLevel(ckd)
+  if (opd2->closedLevel
   && !formParmDecl->SecondTFlags.Contains(closed)) {
     ((SynObject*)opd2)->SetError(ckd,&ERR_Closed);
     ok = false;
@@ -3345,7 +3345,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
         //  }
         //}
       }
-      else if (((SynObject*)((CHE*)refIDs.first)->data)->ClosedLevel(ckd)) {
+      else if (((Expression*)((CHE*)refIDs.first)->data)->closedLevel) {
         ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ObjUnfinished);
         ok = false;
       }
@@ -3357,7 +3357,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
   && !Inherited(ckd)
   && (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-      || ((SelfVar*)ckd.selfVar)->ClosedLevel(ckd))) {
+      || ((SelfVar*)ckd.selfVar)->closedLevel)) {
     ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinished);
     return false;
   }
@@ -3430,7 +3430,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
     return ok;
 
   if (!decl->SecondTFlags.Contains(closed))
-    if (!flags.Contains(isIniCallOrHandle) && ClosedLevel(ckd)) {
+    if (!flags.Contains(isIniCallOrHandle) && closedLevel) {
       SetError(ckd,&ERR_CallObjClosed);
       ok &= false;
     }
@@ -3465,12 +3465,6 @@ bool ObjReference::CallCheck (CheckData &ckd) {
     }
 
   return ok;
-}
-
-int ObjReference::ClosedLevel(CheckData &ckd) {
-  //if (flags.Contains(isClosed))
-  //  return true;
-  return closedLevel;
 }
 
 bool ObjReference::Check (CheckData &ckd) {
@@ -3530,10 +3524,6 @@ bool ObjReference::Check (CheckData &ckd) {
 
   return ok1;
 }
-
-//unsigned TDOD::ClosedLevel (CheckData &ckd) {
-//  return flags.Contains(isClosed);
-//}
 
 bool TDOD::IsStateObject (CheckData &ckd)
 {
@@ -3793,7 +3783,7 @@ bool Assignment::Check (CheckData &ckd)
   Category catSource, catTarget;
   CContext sourceCtx, targetCtx;
   SynFlags ctxFlags;
-  SynObject *targObj=(SynObject*)targetObj.ptr;
+  Expression *targObj=(Expression*)targetObj.ptr;
 #ifdef INTERPRETER
   TIDType idtype;
   DWORD dw;
@@ -3831,8 +3821,8 @@ bool Assignment::Check (CheckData &ckd)
   if (!ok)
     ERROREXIT
 
-  if (((SynObject*)exprValue.ptr)->ClosedLevel(ckd)
-  && !targObj->ClosedLevel(ckd)
+  if (((Expression*)exprValue.ptr)->closedLevel
+  && !targObj->closedLevel
   && !ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
   && (!targObj->flags.Contains(isSelfVar)
       || ((ObjReference*)targObj)->refIDs.first->successor != ((ObjReference*)targObj)->refIDs.last)
@@ -4238,7 +4228,7 @@ void FuncExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &ca
 bool FuncExpression::Check (CheckData &ckd)
 {
   CHE *chpActIn, *chpFormIn, *chpFormOut;
-  SynObject *opd, *actParm;
+  Expression *opd, *actParm;
   TID objTypeTid, selfTid, funcItfTid, funcTid;
   LavaDECL *funcItf, *funcImpl=0, *implItfDecl;
   Expression *callExpr;
@@ -4451,13 +4441,13 @@ bool FuncExpression::Check (CheckData &ckd)
     while (chpFormIn) {
       // locate act. parm. and reposition it if necessary:
       reposition(ckd,this,true,&inputs,chpFormIn,chpActIn);
-      opd = (SynObject*)chpActIn->data;
+      opd = (Expression*)chpActIn->data;
       // check act. parm.:
       actParm =
-        (opd->primaryToken==parameter_T?(SynObject*)((Parameter*)opd)->parameter.ptr : opd);
+        (opd->primaryToken==parameter_T?(Expression*)((Parameter*)opd)->parameter.ptr : opd);
       if (!actParm->IsIfStmExpr())
         ok &= opd->Check(ckd);
-      closedLevel = qMax(opd->ClosedLevel(ckd),closedLevel);
+      closedLevel = qMax(opd->closedLevel,closedLevel);
       // check act.parm/form.parm. type compatibility:
       ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);
 #ifdef INTERPRETER
@@ -4518,13 +4508,6 @@ bool FuncExpression::Check (CheckData &ckd)
   EXIT
 }
 
-int FuncExpression::ClosedLevel(CheckData &ckd) {
-  //CHE *outp=GetFirstOutput(funcDecl);
-  //if (outp && ((LavaDECL*)outp->data)->SecondTFlags.Contains(closed))
-  //  return UINT_MAX;
-  return closedLevel;
-}
-
 bool Expression::CallCheck (CheckData &ckd) {
   Expression *funcExpr=(Expression*)parentObject;
     // not this but the containing expression, which may also be an operator expression
@@ -4538,7 +4521,7 @@ bool Expression::CallCheck (CheckData &ckd) {
     return ok;
 
   if (!decl->SecondTFlags.Contains(closed))
-    if (ClosedLevel(ckd)) {
+    if (closedLevel) {
       funcExpr->SetError(ckd,&ERR_CallObjClosed);
       ok &= false;
     }
@@ -4610,7 +4593,7 @@ bool FuncStatement::Check (CheckData &ckd)
           ok = false;
         }
         if (formOutParmDecl->SecondTFlags.Contains(closed)
-        && !opd->ClosedLevel(ckd)) {
+        && !opd->closedLevel) {
           ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
           ok = false;
         }
@@ -5998,8 +5981,10 @@ bool Quantifier::Check(CheckData &ckd)
     opdPH = (SynObject*)chp->data;
     if (IsPH(opdPH))
       opd = 0;
-    else
+    else {
       opd = (VarName*)opdPH;
+      opd->closedLevel = -1;
+    }
     ok &= opdPH->Check(ckd);
     if (isDclWithIni) {
       if (ckd.precedingIniCall) {
@@ -6168,35 +6153,24 @@ bool QuantStmOrExp::Check (CheckData &ckd)
 
   secClause = (SynObject*)((Declare*)this)->secondaryClause.ptr;
 
-  int iniOrd = 1;
   if (IsDeclare())
     if (secClause) {
       if (secClause->IsFuncInvocation()) {
         if (!IsPH(((FuncStatement*)secClause)->varName)) {
-          ((VarName*)((FuncStatement*)secClause)->varName)->iniOrder = 1;
-          ((VarName*)((FuncStatement*)secClause)->varName)->closedLevel = 1;
-
-          ClosedLevelVisitor clv(ckd.document,(FuncStatement*)secClause);
+          ClosedLevelVisitor clv(ckd.document,(VarName*)((FuncStatement*)secClause)->varName,0);
           secClause->Accept(clv);
           ((VarName*)((FuncStatement*)secClause)->varName)->closedLevel = clv.maxClosedLevel;
         }
-        else
-          iniOrd++;
       }
       else {
         for (chp=(CHE*)((SemicolonOp*)secClause)->operands.first;
              chp;
              chp=(CHE*)chp->successor) { // compute closedLevel for all ini vars
           if (!IsPH(((FuncStatement*)chp->data)->varName)) {
-            ((VarName*)((FuncStatement*)chp->data)->varName)->iniOrder = iniOrd;
-            ((VarName*)((FuncStatement*)chp->data)->varName)->closedLevel = iniOrd++;
-
-            ClosedLevelVisitor clv(ckd.document,(FuncStatement*)chp->data);
+            ClosedLevelVisitor clv(ckd.document,(VarName*)((FuncStatement*)chp->data)->varName,0);
             ((FuncStatement*)chp->data)->Accept(clv);
             ((VarName*)((FuncStatement*)chp->data)->varName)->closedLevel = clv.maxClosedLevel;
           }
-          else
-            iniOrd++;
         }
       }
       ok &= secClause->Check(ckd);
@@ -6463,13 +6437,6 @@ bool NewExpression::Check (CheckData &ckd)
   EXIT
 }
 
-int NewExpression::ClosedLevel(CheckData &ckd) {
-  if (initializerCall.ptr)
-    return ((ObjReference*)((FuncStatement*)initializerCall.ptr)->handle.ptr)->closedLevel;
-  else
-    return 0;
-}
-
 void CloneExpression::ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) {
   ((SynObject*)fromObj.ptr)->ExprGetFVType(ckd,decl,cat,ctxFlags);
 #ifdef INTERPRETER
@@ -6491,7 +6458,7 @@ bool CloneExpression::Check (CheckData &ckd)
   ENTRY
   ok &= ((SynObject*)fromObj.ptr)->Check(ckd);
   if (!IsPH(fromObj.ptr)
-    && ((SynObject*)fromObj.ptr)->ClosedLevel(ckd)) {
+    && ((Expression*)fromObj.ptr)->closedLevel) {
       ((SynObject*)fromObj.ptr)->SetError(ckd,&ERR_clone_copy_inp_closed);
       ok = false;
   }
@@ -6546,7 +6513,7 @@ bool CopyStatement::Check (CheckData &ckd)
 
   ok &= source->Check(ckd);
   if (!IsPH(fromObj.ptr)
-    && ((SynObject*)fromObj.ptr)->ClosedLevel(ckd)) {
+    && ((Expression*)fromObj.ptr)->closedLevel) {
       ((SynObject*)fromObj.ptr)->SetError(ckd,&ERR_clone_copy_inp_closed);
       ok = false;
   }

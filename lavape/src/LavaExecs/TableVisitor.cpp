@@ -330,7 +330,8 @@ void TableVisitor::VisitSynObject (SynObject *obj,SynObject *parent,address wher
     if (dclStm->IsDeclare()
     && dclStm->secondaryClause.ptr
     && obj->whereInParent == quant->quantVars.first
-    && quant->whereInParent == dclStm->quantifiers.first)
+    && quant->whereInParent == dclStm->quantifiers.first) {
+      currIniOrder = 1;
       if (((SynObject*)dclStm->secondaryClause.ptr)->IsFuncInvocation()) {
         currIniCall = (FuncStatement*)dclStm->secondaryClause.ptr;
         currIniCallChp = 0;
@@ -339,9 +340,11 @@ void TableVisitor::VisitSynObject (SynObject *obj,SynObject *parent,address wher
         currIniCallChp = (CHE*)((SemicolonOp*)dclStm->secondaryClause.ptr)->operands.first;
         currIniCall = (FuncStatement*)currIniCallChp->data;
       }
+    }
 
     obj->iniCall = currIniCall;
     currIniCall->varName = obj;
+    currIniOrder++;
     if (currIniCallChp) {
       currIniCallChp = (CHE*)currIniCallChp->successor;
       if (currIniCallChp)
@@ -359,7 +362,8 @@ void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CH
     if (dclStm->IsDeclare()
     && dclStm->secondaryClause.ptr
     && obj->whereInParent == quant->quantVars.first
-    && quant->whereInParent == dclStm->quantifiers.first)
+    && quant->whereInParent == dclStm->quantifiers.first) {
+      currIniOrder = 1;
       if (((SynObject*)dclStm->secondaryClause.ptr)->IsFuncInvocation()) {
         currIniCall = (FuncStatement*)dclStm->secondaryClause.ptr;
         currIniCallChp = 0;
@@ -368,9 +372,11 @@ void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CH
         currIniCallChp = (CHE*)((SemicolonOp*)dclStm->secondaryClause.ptr)->operands.first;
         currIniCall = (FuncStatement*)currIniCallChp->data;
       }
+    }
 
     obj->iniCall = currIniCall;
     currIniCall->varName = obj;
+    obj->iniOrder = currIniOrder++;
     if (currIniCallChp) {
       currIniCallChp = (CHE*)currIniCallChp->successor;
       if (currIniCallChp)
@@ -438,7 +444,3 @@ void TableVisitor::VisitArrayAtIndex (ArrayAtIndex *obj,SynObject *parent,addres
   else if (update == onMove)
     ((TIDTable*)table)->ChangeRefToClipID(obj->opFunctionID);
 }
-//
-//void TableVisitor::VisitIgnoreStatement (IgnoreStatement *obj,SynObject *parent,address where,CHAINX *chxp)
-//{
-//}

@@ -252,7 +252,7 @@ void FuncExpression::Accept(Visitor &visitor,SynObject *parent,address where,CHA
 
   ENTRY
 
-  if (handle.ptr)
+  if (handle.ptr && visitor.evalHandle(this))
     ACCEPT(handle.ptr);
 
   for (chp = (CHE*)inputs.first;

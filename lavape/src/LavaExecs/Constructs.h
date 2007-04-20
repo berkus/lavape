@@ -635,10 +635,6 @@ class SynObject : public SynObjectBase {
   {
     return flags.Contains(isOptionalExpr);
   }
-  virtual int ClosedLevel(CheckData &ckd)
-  {
-    return 0;
-  }
   bool HasOptionalParts();
   bool IsDefChecked(CheckData &ckd);
   virtual ROContext ReadOnlyContext();
@@ -983,7 +979,6 @@ class ObjReference : public Expression {
     return false;
   }
   virtual bool IsOptional(CheckData &ckd);
-  virtual int ClosedLevel(CheckData &ckd);
   bool InConstituent(CheckData &ckd);
   bool Inherited(CheckData &ckd);
   bool OutOfScope(CheckData &ckd);
@@ -1017,7 +1012,6 @@ class VarName : public Expression {
   TID varID;
   VarName *nextLocal;
   unsigned stackPos, iniOrder;
-  int closedLevel;
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   Reference *TypeRef();
   virtual bool IsPlaceHolder()
@@ -1896,10 +1890,6 @@ class Parameter : public Expression {
   {
     return((SynObject *)parameter.ptr)->IsOptional(ckd);
   }
-  virtual int ClosedLevel(CheckData &ckd)
-  {
-    return((SynObject *)parameter.ptr)->ClosedLevel(ckd);
-  }
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void Accept(Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -1938,7 +1928,6 @@ class FuncExpression : public Expression {
   {
     return true;
   }
-  virtual int ClosedLevel(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void Accept(Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -2504,7 +2493,6 @@ class NewExpression : public AttachObject {
   NESTEDANY/*Expression*/ butStatement;
   bool errorInInitializer;
   virtual bool NestedOptClause(SynObject *optClause);
-  virtual int ClosedLevel(CheckData &ckd);
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   virtual bool Check(CheckData &ckd);
   virtual void Accept(Visitor &visitor,SynObject *parent=0,address where=0,CHAINX *chxp=0);
@@ -4225,8 +4213,13 @@ public:
   Visitor () {
 	  finished = false;
   }
-  virtual void Eval (SynObject *self,SynObject *parent,address where,CHAINX *chxp) {}
   
+  virtual void Eval (SynObject *self,SynObject *parent,address where,CHAINX *chxp) {}
+
+  virtual bool evalHandle(FuncExpression *fs) {
+	return true;
+  }
+
   virtual void VisitSynObject (SynObject *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitExpression (Expression *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
   virtual void VisitOperation (Operation *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0) {}
@@ -4317,6 +4310,7 @@ public:
   SynObject *parent;
   FuncStatement *currIniCall;
   CHE *currIniCallChp;
+  unsigned currIniOrder;
   TTableUpdate update;
   address where;
   CHAINX *chxp;
@@ -4355,10 +4349,24 @@ class ClosedLevelVisitor : public Visitor {
 public:
   CLavaBaseDoc *document;
   int maxClosedLevel;
+  VarName *currIniVar;
+  ClosedLevelVisitor *predecessor;
 
-  ClosedLevelVisitor (CLavaBaseDoc *doc, FuncStatement *iniCall) {
+  ClosedLevelVisitor (CLavaBaseDoc *doc, VarName *iniVar, ClosedLevelVisitor *pred) {
     document = doc;
-    maxClosedLevel = 0;
+    maxClosedLevel = iniVar->iniOrder;
+    currIniVar = iniVar;
+    predecessor = pred;
+  }
+  
+  bool evalHandle(FuncExpression *fs) {
+    return !fs->flags.Contains(isIniCallOrHandle);
+  }
+
+  bool inRecursion (VarName *vn) {
+    if (vn == currIniVar) return true;
+    if (predecessor && predecessor->inRecursion(vn)) return true;
+    return false;
   }
 	  
   virtual void VisitParameter (Parameter *obj,SynObject *parent=0,address where=0,CHAINX *chxp=0);

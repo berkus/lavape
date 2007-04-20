@@ -35,39 +35,30 @@ void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,
   DWORD dw;
   TIDType idtype;
   VarName *vn;
-  FuncExpression *funcCall;
-  CHE *chp;
   int maxLevel=-1;
 
-  if (obj->parentObject->IsFuncInvocation()) {// is call object of ini call or func expression/stm
-    funcCall = (FuncExpression*)obj->parentObject;
-    for (chp = (CHE*)funcCall->inputs.first;
-         chp;
-         chp = (CHE*)chp->successor) {
-      maxLevel = qMax(maxLevel,((Expression*)chp->data)->closedLevel);
-    }
-    if (!obj->flags.Contains(isIniCallOrHandle)) {
-      maxLevel = qMax(maxLevel,obj->closedLevel);
-    }
-    obj->closedLevel = maxLevel;
-  }
-  else if (obj->refIDs.first == obj->refIDs.last) {
+  obj->closedLevel = 0;
+  if (obj->refIDs.first == obj->refIDs.last) {
     dw = document->IDTable.GetVar(((TDOD*)((CHE*)obj->refIDs.first)->data)->ID,idtype);
     if (!dw) return;
-    else if (idtype == localID) {
+    if (idtype == localID) {
       vn = (VarName*)dw;
       if (vn->parentObject->parentObject->IsDeclare()
       && ((Declare*)vn->parentObject->parentObject)->secondaryClause.ptr) {
-        if (vn->closedLevel == -1) {
-          funcCall = vn->iniCall;
+        if (inRecursion(vn)) // stop recursion
+          return;
+        else if (vn->closedLevel == -1) { // CL still unknown, go into recursion
+          ClosedLevelVisitor clv(document,vn,this);
+          vn->iniCall->Accept(clv);
+          vn->closedLevel = clv.maxClosedLevel;
         }
+        else // CL is known already
+          return;
       }
       else {
       }
     }
   }
-  else
-    obj->closedLevel = 0;
 }
 
 void ClosedLevelVisitor::VisitUnaryOp (UnaryOp *obj,SynObject *parent,address where,CHAINX *chxp) {
