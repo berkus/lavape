@@ -2782,10 +2782,12 @@ public:
 	    int inINCL,
 	    TTableUpdate update,
 	    address searchData) {
-	  this->table = table;
-	  this->inINCL = inINCL;
-	  this->update = update;
-	  this->searchData = searchData;
+  this->table = table;
+  this->inINCL = inINCL;
+  this->update = update;
+  this->searchData = searchData;
+  currIniCallChp = 0;
+  currIniCall = 0;
 	}
 	
   virtual void Eval (SynObject *self,SynObject *parent,address where,CHAINX *chxp);

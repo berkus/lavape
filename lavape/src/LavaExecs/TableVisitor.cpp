@@ -356,10 +356,12 @@ void TableVisitor::VisitSynObject (SynObject *obj,SynObject *parent,address wher
 void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CHAINX *chxp)
 {
   Quantifier *quant=(Quantifier*)obj->parentObject;
-  Declare *dclStm=(Declare*)quant->parentObject;
+  Declare *dclStm=0;
 
   if (update == onAddID) {
-    if (dclStm->IsDeclare()
+    if (quant && quant->primaryToken == quant_T)
+      dclStm = (Declare*)quant->parentObject;
+    if (dclStm && dclStm->IsDeclare()
     && dclStm->secondaryClause.ptr
     && obj->whereInParent == quant->quantVars.first
     && quant->whereInParent == dclStm->quantifiers.first) {
@@ -372,11 +374,11 @@ void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CH
         currIniCallChp = (CHE*)((SemicolonOp*)dclStm->secondaryClause.ptr)->operands.first;
         currIniCall = (FuncStatement*)currIniCallChp->data;
       }
+      obj->iniCall = currIniCall;
+      currIniCall->varName = obj;
+      obj->iniOrder = currIniOrder++;
     }
 
-    obj->iniCall = currIniCall;
-    currIniCall->varName = obj;
-    obj->iniOrder = currIniOrder++;
     if (currIniCallChp) {
       currIniCallChp = (CHE*)currIniCallChp->successor;
       if (currIniCallChp)
