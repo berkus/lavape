@@ -3345,10 +3345,11 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
         //  }
         //}
       }
-      else if (((Expression*)((CHE*)refIDs.first)->data)->closedLevel) {
-        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ObjUnfinished);
-        ok = false;
-      }
+      else 
+        if (closedLevel) {
+          ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ObjUnfinished);
+          ok = false;
+        }
     }
     ((CHE*)refIDs.first)->successor = secondChe;
   }

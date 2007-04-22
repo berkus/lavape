@@ -362,27 +362,27 @@ void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CH
     if (quant && quant->primaryToken == quant_T)
       dclStm = (Declare*)quant->parentObject;
     if (dclStm && dclStm->IsDeclare()
-    && dclStm->secondaryClause.ptr
-    && obj->whereInParent == quant->quantVars.first
-    && quant->whereInParent == dclStm->quantifiers.first) {
-      currIniOrder = 1;
-      if (((SynObject*)dclStm->secondaryClause.ptr)->IsFuncInvocation()) {
-        currIniCall = (FuncStatement*)dclStm->secondaryClause.ptr;
-        currIniCallChp = 0;
-      }
-      else {
-        currIniCallChp = (CHE*)((SemicolonOp*)dclStm->secondaryClause.ptr)->operands.first;
-        currIniCall = (FuncStatement*)currIniCallChp->data;
+    && dclStm->secondaryClause.ptr) {
+      if (obj->whereInParent == quant->quantVars.first
+      && quant->whereInParent == dclStm->quantifiers.first) {
+        currIniOrder = 1;
+        if (((SynObject*)dclStm->secondaryClause.ptr)->IsFuncInvocation()) {
+          currIniCall = (FuncStatement*)dclStm->secondaryClause.ptr;
+          currIniCallChp = 0;
+        }
+        else {
+          currIniCallChp = (CHE*)((SemicolonOp*)dclStm->secondaryClause.ptr)->operands.first;
+          currIniCall = (FuncStatement*)currIniCallChp->data;
+        }
       }
       obj->iniCall = currIniCall;
       currIniCall->varName = obj;
       obj->iniOrder = currIniOrder++;
-    }
-
-    if (currIniCallChp) {
-      currIniCallChp = (CHE*)currIniCallChp->successor;
-      if (currIniCallChp)
-        currIniCall = (FuncStatement*)currIniCallChp->data;
+      if (currIniCallChp) {
+        currIniCallChp = (CHE*)currIniCallChp->successor;
+        if (currIniCallChp)
+          currIniCall = (FuncStatement*)currIniCallChp->data;
+      }
     }
   }
 
