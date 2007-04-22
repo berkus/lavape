@@ -6166,7 +6166,8 @@ bool QuantStmOrExp::Check (CheckData &ckd)
         for (chp=(CHE*)((SemicolonOp*)secClause)->operands.first;
              chp;
              chp=(CHE*)chp->successor) { // compute closedLevel for all ini vars
-          if (!IsPH(((FuncStatement*)chp->data)->varName)) {
+          if (!IsPH(((FuncStatement*)chp->data)->varName)
+          && ((Expression*)((FuncStatement*)chp->data)->varName)->closedLevel == -1) {
             ClosedLevelVisitor clv(ckd.document,(VarName*)((FuncStatement*)chp->data)->varName,0);
             ((FuncStatement*)chp->data)->Accept(clv);
             ((VarName*)((FuncStatement*)chp->data)->varName)->closedLevel = clv.maxClosedLevel;
