@@ -29,7 +29,10 @@
 #include <stdio.h>
 #include <limits>
 #include <math.h>
+
+#ifdef WIN32
 #include <process.h>
+#endif
 
 #ifndef WIN32
 #include <unistd.h>

@@ -10,8 +10,10 @@
 #include "setup.h"
 #include <QEvent>
 
+#ifdef WIN32
 #include <shlobj.h>
 #include <windows.h>
 #include <winbase.h>
+#endif
 
 #endif
