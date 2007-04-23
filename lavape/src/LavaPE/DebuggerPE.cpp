@@ -24,6 +24,15 @@
 #include "ExecView.h"
 #include "Constructs.h"
 
+#include <errno.h>
+//#include <prelude.h>
+#include <QTcpSocket>
+#include "MACROS.h"
+#include "ASN1File.h"
+//Added by qt3to4:
+
+#pragma hdrstop
+
 #ifdef WIN32
 #include <windows.h>
 #include <winreg.h>
@@ -32,15 +41,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #endif
-#include <errno.h>
-
-//#include <prelude.h>
-#include <QTcpSocket>
-#include "MACROS.h"
-#include "ASN1File.h"
-//Added by qt3to4:
-
-#pragma hdrstop
 
 
 void CLavaPEDebugger::start() {

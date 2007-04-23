@@ -70,10 +70,10 @@
 #include <QtDebug>
 
 
-#if wxUSE_PRINTING_ARCHITECTURE
-  #include "prntbase.h"
-  #include "wx/printdlg.h"
-#endif
+//#if wxUSE_PRINTING_ARCHITECTURE
+//  #include "prntbase.h"
+//  #include "wx/printdlg.h"
+//#endif
 
 #include <stdio.h>
 #include <string.h>

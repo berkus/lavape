@@ -9,6 +9,23 @@
 #include "LavaGUI_all.h"
 #include "LavaExecs_all.h"
 
+#include "ExecView.h"
+#include "ComboBar.h"
+#include "GUIProgBase.h"
+#include "qbuttongroup.h"
+#include "Constructs.h"
+#include "LavaPEMainFrameBase.h"
+#ifndef WIN32
+#include <unistd.h>
+#endif
+#include "ExecFrame.h"
+#include "CmdExec.h"
+#include "AboutBox.h"
+#include "setup.h"
+#include "qtreewidget.h"
+#include "qfontinfo.h"
+#include <QActionGroup>
+
 #include "Bars.h"
 #include "Boxes.h"
 #include "DebuggerPE.h"

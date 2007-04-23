@@ -22,6 +22,8 @@
 
 #include "ComboBarDlg.h"
 #include "Comment.h"
+#include "cmainframe.h"
+#include "BASEMACROS.h"
 
 #endif
 

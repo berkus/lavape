@@ -117,11 +117,11 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
     Tree->RootItem = 0;
   }
   doc = GetDocument();
-  parent = InsertItem(doc->IDTable.IDTab[0]->FileName.c, bm, TVI_ROOT);
+  parent = InsertItem(doc->IDTable.IDTab[0]->FileName.c, bm, MY_TVI_ROOT);
     //TVIF_TEXT | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_STATE,
     //                                doc->IDTable.IDTab[0]->FileName.c,
     //                               bm, bm, TVIS_EXPANDED, TVIS_EXPANDED,
-    //                                0, TVI_ROOT, TVI_LAST);
+    //                                0, MY_TVI_ROOT, MY_TVI_LAST);
   cheSyn = (CHESimpleSyntax*)doc->mySynDef->SynDefTree.first;
   parent->setItemData( (TItemData*)cheSyn);
   if (cheSyn)
@@ -130,7 +130,7 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
     lab = cheSyn->data.UsersName;
     if (cheSyn->data.LocalTopName.l)
       lab = lab + DString(" used as ") + cheSyn->data.LocalTopName;
-    item = InsertItem(lab.c, bm, parent, TVI_LAST);
+    item = InsertItem(lab.c, bm, parent, MY_TVI_LAST);
     item->setItemData( (TItemData*)cheSyn );
     if (cheSyn->data.notFound) {
       item->SetItemMask(true, false);

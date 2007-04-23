@@ -8,6 +8,14 @@
 #include "LavaGUI_all.h"
 #include "Interpreter_all.h"
 
+#include "AboutBox.h"
+#include "LavaGUIFrame.h"
+#include "LavaGUIView.h"
+#include "LavaGUIFrame.h"
+#include "MakeGUI.h"
+
+#include <QActionGroup>
+
 #include "LavaDoc.h"
 #include "Lava.h"
 #include "MainFrm.h"

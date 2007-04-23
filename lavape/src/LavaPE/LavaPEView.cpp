@@ -923,7 +923,7 @@ void CLavaPEView::DisableActions()
 
 bool CLavaPEView::DrawEmptyOpt(CTreeItem* parent, bool down)
 {
-  CTreeItem *pitem, *collItem, *declItem, *gp, *item = TVI_FIRST;
+  CTreeItem *pitem, *collItem, *declItem, *gp, *item = MY_TVI_FIRST;
   CMainItemData *itd, *dataD;
   TIType  ptype = TIType_NoType;
   TDeclType gpt = Impl;
@@ -1683,10 +1683,10 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
           if (afterItem) {
             afterData = (CMainItemData*)afterItem->getItemData();
             if (afterData->type != TIType_EnumItems)
-              afterItem = TVI_FIRST;
+              afterItem = MY_TVI_FIRST;
           }
           else
-            afterItem = TVI_FIRST;
+            afterItem = MY_TVI_FIRST;
           data = new CMainItemData(TIType_VTypes, synEl, (*(LavaDECL**)synEl)->TreeFlags.Contains(ParaExpanded));
           bm = GetPixmap(true, true, ncase);
           node = InsertItem("Virtual types", bm, parent, afterItem);
@@ -1708,7 +1708,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
             afterItem = naItem;
           else
             if (!afterItem)
-              afterItem = TVI_FIRST;
+              afterItem = MY_TVI_FIRST;
           data = new CMainItemData(TIType_Input, synEl, (*(LavaDECL**)synEl)->TreeFlags.Contains(InExpanded));
           bm = GetPixmap(true, true, ncase);
           node = InsertItem("Inputs", bm, parent, afterItem);
@@ -1731,7 +1731,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
             afterItem = naItem;
           else
             if (!afterItem)
-              afterItem = TVI_FIRST;
+              afterItem = MY_TVI_FIRST;
           data = new CMainItemData(TIType_Output, synEl, (*(LavaDECL**)synEl)->TreeFlags.Contains(OutExpanded));
           bm = GetPixmap(true, true, ncase);
           node = InsertItem("Outputs", bm, parent, afterItem);
@@ -1740,7 +1740,7 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
         case Attr:
         case Function:
         case FormText:
-          afterItem = TVI_FIRST;
+          afterItem = MY_TVI_FIRST;
           naItem = (CTreeItem*)parent->child(0);
           while (naItem) {
             afterData = (CMainItemData*)naItem->getItemData();
@@ -1759,14 +1759,14 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
         case Require:
           data = new CMainItemData(TIType_Require, synEl);
           bm = GetPixmap(true,true,Require,flags);
-          node = InsertItem("Require" ,bm, parent, TVI_LAST);
+          node = InsertItem("Require" ,bm, parent, MY_TVI_LAST);
           node->setItemData(  data);
           break;
 
         case Ensure:
           data = new CMainItemData(TIType_Ensure, synEl);
           bm = GetPixmap(true,true,Ensure,flags);
-          node = InsertItem("Ensure" ,bm, parent, TVI_LAST);
+          node = InsertItem("Ensure" ,bm, parent, MY_TVI_LAST);
           node->setItemData(  data);
           break;
 
@@ -1775,13 +1775,13 @@ CTreeItem* CLavaPEView::getSectionNode(CTreeItem* parent, TDeclType ncase)
           if ((parentType == Interface) || (parentType == Impl))
             flags.INCL(invariantPM);
           bm = GetPixmap(true,true,ExecDef,flags);
-          node = InsertItem(ExecLabel.c ,bm, parent, TVI_LAST);
+          node = InsertItem(ExecLabel.c ,bm, parent, MY_TVI_LAST);
           node->setItemData(  data);
           break;
 
         default:
           naItem = (CTreeItem*)parent->child(0);
-          afterItem = TVI_FIRST;
+          afterItem = MY_TVI_FIRST;
           naItem = (CTreeItem*)parent->child(0);
           while (naItem) {
             afterData = (CMainItemData*)naItem->getItemData();

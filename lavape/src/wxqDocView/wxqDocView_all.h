@@ -8,5 +8,10 @@
 #include "wxExport.h"
 #include "defs.h"
 #include "setup.h"
+#include <QEvent>
+
+#include <shlobj.h>
+#include <windows.h>
+#include <winbase.h>
 
 #endif

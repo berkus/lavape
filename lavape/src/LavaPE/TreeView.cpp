@@ -478,12 +478,12 @@ CTreeItem* CTreeView::HitTest(QPoint qp)
 
 CTreeItem* CTreeView::InsertItem(QString label, int nPix, CTreeItem* parent, CTreeItem* afterItem)
 {
-  if (parent == TVI_ROOT)
+  if (parent == MY_TVI_ROOT)
     return new CTreeItem(label, nPix, Tree);
   else {
-    if (afterItem == TVI_FIRST)
+    if (afterItem == MY_TVI_FIRST)
       return new CTreeItem(label, nPix, parent, 0);
-    else if (afterItem == TVI_LAST) {
+    else if (afterItem == MY_TVI_LAST) {
       afterItem = (CTreeItem*)parent->child(parent->childCount()-1);
       /*
       for (afterItem = (CTreeItem*)parent->child(0); afterItem && afterItem->nextSibling(); afterItem = (CTreeItem*)afterItem->nextSibling());

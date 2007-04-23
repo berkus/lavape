@@ -77,9 +77,11 @@
 #include "qworkspace.h"
 
 #include <QByteArray>
+#include <QComboBox>
 #include <QHBoxLayout>
 #include <QFocusEvent>
 #include <QMenu>
+#include <QWhatsThis>
 #include <QMouseEvent>
 #include <QResizeEvent>
 #include <QCloseEvent>
@@ -108,6 +110,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <signal.h>
+#include <sys/stat.h>
 
 #include "AnyType.h"
 #include "ASN1File.h"

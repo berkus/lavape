@@ -701,9 +701,9 @@ void CExecTree::MakeItem(DString& label, int bm, CTreeItem* parent, LavaDECL** p
       ActItem = viewTree->InsertItem(label.c, bm, parent, ActItem);
     else
       if (parent)
-        ActItem = viewTree->InsertItem(label.c, bm, parent, TVI_FIRST);
+        ActItem = viewTree->InsertItem(label.c, bm, parent, MY_TVI_FIRST);
       else
-        ActItem = viewTree->InsertItem(label.c, bm, TVI_ROOT, 0);
+        ActItem = viewTree->InsertItem(label.c, bm, MY_TVI_ROOT, 0);
   }
   else {
     if (ActItem)
@@ -1135,7 +1135,7 @@ void CExecTree::ExecEnum(LavaDECL** pinEl, DString fieldID)
     else
       exp = true;
   }
-  item = viewTree->InsertItem("Enumeration", bm, ActItem, TVI_FIRST);
+  item = viewTree->InsertItem("Enumeration", bm, ActItem, MY_TVI_FIRST);
   CMainItemData * dd = new CMainItemData(TIType_EnumItems, parData->synEl, (*(LavaDECL**)parData->synEl)->TreeFlags.Contains(ItemsExpanded));
   item->setItemData( dd);
   if (exp)

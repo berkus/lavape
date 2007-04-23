@@ -39,9 +39,9 @@
 #include "qpushbutton.h"
 //#include "q3vbox.h"
 #include "qlayout.h"
-#include "Lava.xpm"
 
 #pragma hdrstop
+#include "Lava.xpm"
 
 
 /////////////////////////////////////////////////////////////////////////////

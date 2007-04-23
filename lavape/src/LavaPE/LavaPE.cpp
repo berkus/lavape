@@ -20,14 +20,6 @@
 #include "MACROS.h"
 #include "LavaPE.h"
 
-#ifdef WIN32
-#include <windows.h>
-#include <winreg.h>
-#include <process.h>
-#else
-#include <stdio.h>
-#include <unistd.h>
-#endif
 #include <stdlib.h>
 #include <errno.h>
 
@@ -68,6 +60,14 @@
 
 #pragma hdrstop
 
+#ifdef WIN32
+#include <windows.h>
+#include <winreg.h>
+#include <process.h>
+#else
+#include <stdio.h>
+#include <unistd.h>
+#endif
 
 static QString szSaveEveryChange = "SaveEveryChange";
 static QString szExecFont = "ExecFont";

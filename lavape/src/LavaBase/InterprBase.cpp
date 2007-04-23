@@ -29,6 +29,9 @@
 #include "qstring.h"
 #include "qlibrary.h"
 //Added by qt3to4:
+
+#pragma hdrstop
+
 #ifdef WIN32
 #include <windows.h>
 #else
@@ -36,8 +39,6 @@
 #include <string.h>
 #include <unistd.h>
 #endif
-
-#pragma hdrstop
 
 
 bool INC_FWD_CNT(CheckData &ckd, LavaObjectPtr object) {

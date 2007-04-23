@@ -26,7 +26,7 @@
 #include "SylTraversal.h"
 #include "LavaThread.h"
 #include "SynIO.h"
-#include "mdiframes.h"
+//#include "mdiframes.h"
 
 #include "qobject.h"
 #include "qstring.h"

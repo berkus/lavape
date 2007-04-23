@@ -23,5 +23,7 @@
 #include "TypCoder.h"
 #include "XParser.h"
 
+#include "qbytearray.h"
+
 #endif
 

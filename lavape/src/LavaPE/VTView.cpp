@@ -201,7 +201,7 @@ bool CVTView::DrawTreeAgain()
     lab = DString("Virtual types of ") + myDECL->FullName;
   else
     lab = DString("VTs and features of ") + myDECL->FullName;
-  topNode = InsertItem(lab.c, overRidesBM,/*QPixmapCache::find("l_overwrit"),*/ TVI_ROOT,TVI_FIRST);
+  topNode = InsertItem(lab.c, overRidesBM,/*QPixmapCache::find("l_overwrit"),*/ MY_TVI_ROOT,MY_TVI_FIRST);
   if (myDECL->DeclType == Package)
     itemP = topNode;
   El = (CHETVElem*)myDECL->VElems.VElems.first;
@@ -229,7 +229,7 @@ bool CVTView::DrawTreeAgain()
         if (!itemPCl) {
           if (!itemP) {
             labCl = DString("Virtual types");
-            itemP = InsertItem(labCl.c, bmPP,topNode, TVI_FIRST);
+            itemP = InsertItem(labCl.c, bmPP,topNode, MY_TVI_FIRST);
           }
           data = new CVTItemData(TNodeType_Class, El, 0);
           if (ClDECL)

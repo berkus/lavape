@@ -10,6 +10,7 @@
 //Added by qt3to4:
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QItemDelegate>
 #include <QMouseEvent>
 #include <QDragEnterEvent>
 #include <QDragLeaveEvent>
@@ -18,9 +19,9 @@
 #include <QKeyEvent>
 #include <QDropEvent>
 
-#define TVI_ROOT                ((CTreeItem*)0xFFFF0000)
-#define TVI_FIRST               ((CTreeItem*)0xFFFF0001)
-#define TVI_LAST                ((CTreeItem*)0xFFFF0002)
+#define MY_TVI_ROOT                ((CTreeItem*)0xFFFF0000)
+#define MY_TVI_FIRST               ((CTreeItem*)0xFFFF0001)
+#define MY_TVI_LAST                ((CTreeItem*)0xFFFF0002)
 
 class CTreeView;
 class MyListView;
@@ -126,7 +127,7 @@ public:
   MyListView *Tree;
   CTreeItem* GetPrevSiblingItem(CTreeItem* item);
 //  CTreeItem* HitTest(QPoint qp);
-  CTreeItem* InsertItem(QString label, int nPix, CTreeItem* parent, CTreeItem* afterItem=TVI_LAST);
+  CTreeItem* InsertItem(QString label, int nPix, CTreeItem* parent, CTreeItem* afterItem=MY_TVI_LAST);
   virtual QDrag* OnDragBegin() {return 0;}
   virtual void OnDelete() {}
   virtual void RenameStart(QLineEdit* editor, CTreeItem* item) {}

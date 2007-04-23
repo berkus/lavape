@@ -24,5 +24,17 @@
 #include "TreeSrch.h"
 #include "TStatic.h"
 
+#include "BAdapter.h"
+#include "LavaBaseStringInit.h"
+#include "LavaAppBase.h"
+#include "DumpView.h"
+#include "SylTraversal.h"
+//#include "Lava.xpm"
+
+#include <QPixmap>
+#include <QStyleOptionButton>
+#include <QListView>
+#include <QLabel>
+
 #endif
 

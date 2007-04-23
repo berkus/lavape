@@ -22,10 +22,18 @@
 #include "SafeInt.h"
 #include "SynIO.h"
 #include "Syntax.h"
+
+#include "mdiframes.h"
+
 #include <float.h>
 #include <stdio.h>
 #include <limits>
 #include <math.h>
+#include <process.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
 
 #endif
 

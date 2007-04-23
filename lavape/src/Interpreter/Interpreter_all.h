@@ -12,9 +12,22 @@
 #include "Debugger.h"
 #include "LavaProgram.h"
 #include "Tokens.h"
+#include "LavaMainFrameBase.h"
+#include "LavaThread.h"
+#include "SafeInt.h"
+
+#ifndef INTERPRETER
+#include "ExecView.h"
+#endif
+#ifndef WIN32
+#include <setjmp.h>
+#endif
 
 #ifdef __MINGW32
 #include <excpt.h>
+#endif
+#ifndef WIN32
+#include <unistd.h>
 #endif
 
 #endif
