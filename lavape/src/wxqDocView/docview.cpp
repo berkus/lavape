@@ -79,7 +79,7 @@
 #include <string.h>
 #include <signal.h>
 
-#ifdef WIN32
+#ifdef MINGW32
 #include <shlobj.h>
 #include <windows.h>
 #include <winbase.h>

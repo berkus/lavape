@@ -30,8 +30,10 @@
 #include <limits>
 #include <math.h>
 
-#ifdef WIN32
+#ifndef __GNUC__
 #include <process.h>
+#include <windows.h>
+#include <shlobj.h>
 #endif
 
 #ifndef WIN32
