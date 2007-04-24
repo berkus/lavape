@@ -9,6 +9,8 @@
 
 #include "CDPpp.h"
 
+#pragma hdrstop
+
 
 IMPLEMENT_DYNAMIC_CLASS(TSigRef,NULL)
 

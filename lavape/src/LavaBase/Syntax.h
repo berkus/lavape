@@ -35,6 +35,8 @@ struct LavaDECL;
 #include "SETpp.h"
 #include "STR.h"
 
+#pragma hdrstop
+
 
 struct LAVABASE_DLL TSigRef : public DObject  {
   DECLARE_DYNAMIC_CLASS(TSigRef)

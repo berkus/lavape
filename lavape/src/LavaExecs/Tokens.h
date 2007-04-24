@@ -43,6 +43,8 @@ extern const unsigned MaxString;
 
 #include "ASN1pp.h"
 
+#pragma hdrstop
+
 
 enum TToken {
   Semicolon_T,

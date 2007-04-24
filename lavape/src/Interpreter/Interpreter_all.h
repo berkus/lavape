@@ -7,9 +7,8 @@
 #include "LavaGUI_all.h"
 #include "Lava_UI_all.h"
 
-#include "Check.h"
 #include "Constructs.h"
-//#include "ExecView.h"
+#include "Check.h"
 #include "Debugger.h"
 #include "LavaProgram.h"
 #include "Tokens.h"

@@ -9,6 +9,8 @@
 
 #include "CDPpp.h"
 
+#pragma hdrstop
+
 
 void CDPTToken (PutGetFlag pgf, ASN1* cid, address varAddr,
                 bool)

@@ -5,10 +5,8 @@
 #include "wxqDocView_all.h"
 #include "LavaBase_all.h"
 
-//#ifndef INTERPRETER
 #include "ExecView.h"
 #include <QPixmap>
-//#endif
 
 #include "Check.h"
 #include "ComboBar.h"

@@ -35,6 +35,8 @@
 
 #include "Syntax.h"
 
+#pragma hdrstop
+
 
 #include "qwidget.h"
 #include <QScrollArea>

@@ -141,6 +141,8 @@ void CoderCLASS::Coder ()
     if (modGen) fixedImports(); /* ASN1, ASN1pp ... */
 
     imports(topLevelNode); /* user programmed imports */
+    writeLn();
+    codeNl("#pragma hdrstop");
     
     if (modGen) {
       if (!(IntCode.GlobalProperties.Flags.Contains(IncludeFile)

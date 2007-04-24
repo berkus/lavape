@@ -9,6 +9,8 @@
 
 #include "CDPpp.h"
 
+#pragma hdrstop
+
 ChainAnyElem* NewCHETokenNode ()
 { return (ChainAnyElem*)(new CHETokenNode); }
 
