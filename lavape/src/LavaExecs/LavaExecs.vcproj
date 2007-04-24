@@ -304,9 +304,9 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough="CDPpp.h"
-						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
+						UsePrecompiledHeader="0"
+						PrecompiledHeaderThrough=""
+						PrecompiledHeaderFile=""
 					/>
 				</FileConfiguration>
 				<FileConfiguration

@@ -17,15 +17,9 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#include "Check.h"
 #include "qstring.h"
-#include "Constructs.h"
 
 #include "PEBaseDoc.h"
-#ifndef INTERPRETER
-#include "ExecUpdate.h"
-#include "ExecView.h"
-#endif
 
 #include "LavaBaseStringInit.h"
 #include "Convert.h"
@@ -34,6 +28,14 @@
 #include <qtoolbar.h>
 
 #pragma hdrstop
+
+#include "Check.h"
+#include "Constructs.h"
+
+#ifndef INTERPRETER
+#include "ExecUpdate.h"
+#include "ExecView.h"
+#endif
 
 
 #define ENTRY \

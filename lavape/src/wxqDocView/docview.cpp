@@ -79,13 +79,13 @@
 #include <string.h>
 #include <signal.h>
 
+#pragma hdrstop
+
 #ifdef MINGW32
 #include <shlobj.h>
 #include <windows.h>
 #include <winbase.h>
 #endif
-
-#pragma hdrstop
 
 QString wxEmptyString;
 

@@ -33,6 +33,9 @@
 #include <float.h>
 #include <stdlib.h>
 #include <errno.h>
+
+#pragma hdrstop
+
 #ifndef WIN32
 #include <setjmp.h>
 #endif
@@ -40,7 +43,6 @@
 #include <excpt.h>
 #endif
 
-#pragma hdrstop
 
 #ifdef __MINGW32
  inline

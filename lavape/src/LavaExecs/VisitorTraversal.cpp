@@ -17,14 +17,15 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#include "Constructs.h"
-#ifndef INTERPRETER
-#include "ExecView.h"
-#endif
 #include "LavaAppBase.h"
 #include "PEBaseDoc.h"
 
 #pragma hdrstop
+
+#include "Constructs.h"
+#ifndef INTERPRETER
+#include "ExecView.h"
+#endif
 
 #define ENTRY \
   visitor.Eval(this,parent,where,chxp);\

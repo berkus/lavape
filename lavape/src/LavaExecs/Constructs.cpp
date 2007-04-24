@@ -17,14 +17,6 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#include "Constructs.h"
-#ifdef INTERPRETER
-#include "Check.h"
-#else
-#include "ExecView.h"
-//Added by qt3to4:
-#include <QPixmap>
-#endif
 #include "wx_obj.h"
 #include "LavaBaseDoc.h"
 #include "Convert.h"
@@ -36,6 +28,18 @@
 #include <QWhatsThis>
 
 #pragma hdrstop
+
+#include "Constructs.h"
+
+#ifdef INTERPRETER
+#include "Check.h"
+#else
+#include "ExecView.h"
+//Added by qt3to4:
+#include <QPixmap>
+#endif
+
+
 #include "Q6_null.xpm"
 
 #define ADJUST(nnn,decl) \

@@ -26,13 +26,16 @@
 #include "Debugger.h"
 #include "Constructs.h"
 #include "BAdapter.h"
-#include "LavaGUIView.h"
 #include "mdiframes.h"
 
 
 #include "qstring.h"
 #include "qmessagebox.h"
 //Added by qt3to4:
+
+#pragma hdrstop
+
+#include "LavaGUIView.h"
 
 #ifdef __MINGW32
 #elif WIN32
@@ -47,8 +50,6 @@
 #include <fenv.h>
 #endif
 #endif
-
-#pragma hdrstop
 
 
 #define ADJUST(nnn,decl) \

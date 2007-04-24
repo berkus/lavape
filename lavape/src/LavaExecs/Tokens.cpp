@@ -18,12 +18,13 @@
 
 
 #include "Tokens.h"
-#include "Constructs.h"
 //#include "TokenNode.h"
 #include "SYSTEM.h"
 #include <string.h>
 
 #pragma hdrstop
+
+#include "Constructs.h"
 
 
 const unsigned MaxLenToken = 20;

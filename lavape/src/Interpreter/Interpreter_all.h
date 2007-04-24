@@ -9,6 +9,7 @@
 
 #include "Check.h"
 #include "Constructs.h"
+//#include "ExecView.h"
 #include "Debugger.h"
 #include "LavaProgram.h"
 #include "Tokens.h"
@@ -16,9 +17,6 @@
 #include "LavaThread.h"
 #include "SafeInt.h"
 
-#ifndef INTERPRETER
-#include "ExecView.h"
-#endif
 #ifndef WIN32
 #include <setjmp.h>
 #endif
