@@ -157,6 +157,7 @@
 				<keyword ref="html/PatternsFrameworks.htm">patterns/frameworks</keyword>
 				<keyword ref="html/PatternsFrameworks.htm">Eiffel</keyword>
 				<keyword ref="html/PatternsFrameworks.htm">virtual types</keyword>
+        <keyword ref="html/PatternsFrameworks.htm">VTs</keyword>
 				<keyword ref="html/PatternsFrameworks.htm">specialization, collective</keyword>
 				<keyword ref="html/PatternsFrameworks.htm">pattern parameters</keyword>
 				<keyword ref="html/PatternsFrameworks.htm">frameworks</keyword>
