@@ -6647,6 +6647,9 @@ bool CExecView::EnableCopy()
   if (text->currentSynObj->primaryToken == parameter_T)
     return false;
 
+  if (text->currentSelection->data.token == initialize_T)
+    return false;
+
   return ((IsDeletablePrimary()
     && text->currentSynObj->primaryToken != quant_T
     && text->currentSynObj->primaryToken != VarName_T
@@ -6686,6 +6689,10 @@ bool CExecView::EnablePaste()
         && text->currentSynObj->type != ObjPH_T))
       return false;
   }
+  else if (text->currentSynObj->flags.Contains(isIniCallOrHandle))
+    return false;
+  else if (text->currentSelection->data.token == initialize_T)
+    return false;
   else if (text->currentSynObj->type != clipBoardObject->type)
     return false;
 
