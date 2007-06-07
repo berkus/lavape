@@ -407,7 +407,7 @@ void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CH
      ((TIDTable*)table)->NewLocalID((DWORD)obj,obj->varID.nID);
     break;
   case onConstrCopy:
-     ((TIDTable*)table)->NewLocalID((DWORD)this,obj->varID.nID,true);
+     ((TIDTable*)table)->NewLocalID((DWORD)obj,obj->varID.nID,true);
       obj->varID.nINCL = -1;  // cf. case onNewID
     break;
   case onChange:
