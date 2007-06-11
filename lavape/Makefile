@@ -1,6 +1,6 @@
 LAVADIR=$(shell pwd)
 export LAVADIR
-ASSISTANT=$(shell which assistant)
+ASSISTANT=$(QTDIR)/bin/assistant
 export ASSISTANT
 
 all: dirs links build
@@ -62,7 +62,11 @@ ITPF = src/Interpreter/Constructs.ph \
 links: $(ITPF) \
 	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
-	bin/assistant
+	bin/assistant \
+	lib/libQtCore.so \
+	lib/libQtGui.so \
+	lib/libQtNetwork.so \
+	lib/libQtXml.so
 
 src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
 	cd src/Interpreter; $(LN) ../LavaExecs/Constructs.ph .
@@ -87,6 +91,19 @@ bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
 	rm -f $@; $(LN) $< $@
 bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; $(LN) $< $@
+bin/assistant:
+	rm -f $@; \
+	if [ .$(QTDIR) != . ] ; then $(LN) $(QTDIR)/bin/assistant $@ ; \
+	else echo ; echo ++++ error: Lava online help works only if QTDIR is defined!; echo ; exit 1; fi
+
+lib/libQtCore.so: $(QTDIR)/lib/libQtCore.so
+	rm -f $@; $(LN) $< $@
+lib/libQtGui.so: $(QTDIR)/lib/libQtGui.so
+	rm -f $@; $(LN) $< $@
+lib/libQtNetwork.so: $(QTDIR)/lib/libQtNetwork.so
+	rm -f $@; $(LN) $< $@
+lib/libQtXml.so: $(QTDIR)/lib/libQtXml.so
+	rm -f $@; $(LN) $< $@
 
 LavaStream: bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX)
 
@@ -104,17 +121,13 @@ endif
 
 bin/cp_icons_std: src/LavaPE/Debug/cp_icons_std
 	rm -f $@; $(LN) ../$< $@
-bin/assistant:
-	rm -f $@; \
-	if [ .$(ASSISTANT) != . ] ; then $(LN) $(ASSISTANT) $@ ; \
-	else echo ; echo ++++ error: Lava online help works only if Qt assistant is in your PATH!; echo ; exit 1; fi
 
 build:  $(SUBPRO)
 #	cd src/disco && $(MAKE) \
 #	&& cd ../LavaPE && $(MAKE) \
 #	&& cd ../Lava && $(MAKE)
 
-bin_dist:
+bindist:
 	if [ ! -e lavape ] ; then mkdir lavape; fi; cp *.txt lavape; \
 	cd lavape; if [ ! -e bin ] ; then mkdir bin; fi; \
 	if [ ! -e doc ] ; then mkdir doc; fi; \
@@ -125,8 +138,9 @@ bin_dist:
 	cp ../samples/*.l* samples; \
 	cd bin; if [ ! -e LavaIcons ] ; then mkdir LavaIcons; fi; \
 	if [ ! -e std ] ; then mkdir std; fi; \
-	cd ../../bin; cp LavaPE Lava ../lavape/bin; \
-	cp LavaIcons/* ../lavape/bin/LavaIcons; cp std/* ../lavape/bin/std; \
+	cd ../../bin; cp LavaPE Lava ../lavape/bin; cp $(QTDIR)/bin/assistant ../lavape/bin; \
+	cd ../lavape/bin; strip LavaPE Lava assistant; \
+	cd ../../bin; cp LavaIcons/* ../lavape/bin/LavaIcons; cp std/* ../lavape/bin/std; \
 	cd ../lavape; \
 	cp ../bin/*.htm bin; cp ../bin/*.lava bin; \
 	cp ../bin/cp_icons_std bin; \
@@ -139,10 +153,16 @@ bin_dist:
 	if [ ! -e libLavaStream.so ]; then ln -s ../../lib/libLavaStream.so .; fi; \
 	cd ../..; cp ../lib/*.so lib; \
 	cp $(QTDIR)/lib/libQtCore.so $(QTDIR)/lib/libQtGui.so $(QTDIR)/lib/libQtNetwork.so $(QTDIR)/lib/libQtXml.so lib; \
-	cp $(QTDIR)/bin/assistant bin; \
-	cd ..; tar cjf /windows/D/lavape-0.9.0-linux-bin.tar.bz2 lavape; ls -l /windows/D/lavape-*; rm -rf lavape
+	cd lib; strip *.so; \
+	cd ../..; tar cjf /windows/D/lavape-0.9.0-linux-bin.tar.bz2 lavape; ls -l /windows/D/lavape-*; #rm -rf lavape
 
 
-clean: cleanall
-distclean: cleanall
+clean: cleanall binclean libclean
+distclean: cleanall binclean libclean
+
+binclean:
+	cd bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX)
+
+libclean:
+	cd lib; rm -f *$(DLLSUFFIX)
 

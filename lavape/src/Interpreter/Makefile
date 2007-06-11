@@ -3,7 +3,8 @@ PRJ = Interpreter
 MOCABLES=Debugger.h
 
 EXEC = Interpreter.so
-SUBPRO=disco wxqDocView LavaBase LavaGUI Lava_UI LavaPE_UI LavaExecs
+SUBPRO=disco wxqDocView LavaBase LavaGUI Lava_UI
+# LavaPE_UI LavaExecs
 
 DLL = LAVAEXECS
 
