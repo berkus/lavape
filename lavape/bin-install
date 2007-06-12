@@ -1,14 +1,16 @@
 #!/bin/sh
 #
-rm -f bin/lavape bin/lava
-echo "#!/bin/bash">bin/lavape
-PWD=`pwd`
-echo -n "export LD_LIBRARY_PATH=$PWD">>bin/lavape
-echo '/lib:$LD_LIBRARY_PATH'>>bin/lavape
-echo "$PWD/bin/LavaPE">>bin/lavape
-chmod a+x bin/lavape
-echo "#!/bin/bash">bin/lava
-echo -n "export LD_LIBRARY_PATH=$PWD">>bin/lava
-echo '/lib:$LD_LIBRARY_PATH'>>bin/lava
-echo "$PWD/bin/Lava">>bin/lava
-chmod a+x bin/lava
+rm -f lavape lava
+echo "#!/bin/bash">lavape
+LAVADIR=`pwd`
+echo "export LAVADIR=$LAVADIR">>lavape
+echo "export LD_LIBRARY_PATH=$LAVADIR/lib:/usr/lib:/lib">>lavape
+echo "cd $LAVADIR/bin">>lavape
+echo "./LavaPE">>lavape
+chmod a+x lavape
+
+echo "export LAVADIR=$LAVADIR">>lava
+echo "export LD_LIBRARY_PATH=$LAVADIR/lib:/usr/lib:/lib">>lava
+echo "cd $LAVADIR/bin">>lava
+echo "./Lava">>lava
+chmod a+x lava

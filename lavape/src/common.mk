@@ -114,8 +114,8 @@ else
 		  OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
 		  DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
       DLLSUFFIX = .so
-		  OSDLLFLAGS = -shared $(SONAME)lib$(EXEC) -z nodefaultlib -L../../lib -L/usr/lib -L/lib
-		  OSEXECFLAGS = -fstack-check -z nodefaultlib -L../../lib -L/usr/lib -L/lib
+		  OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) -L../../lib -L$(QT)/lib
+		  OSEXECFLAGS = -fstack-check -z nodefaultlib -L../../lib -L$(QT)/lib
 		  EXEC2 = $(EXEC)
       ifneq ($(DBG),)
 		    QtS =
