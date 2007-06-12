@@ -28,9 +28,6 @@
 #include "Constructs.h"
 
 
-//static int inINCL;
-
-
 void TableVisitor::Eval (SynObject *obj,SynObject *parent,address where,CHAINX *chxp) {
 #ifdef INTERPRETER
   obj->parentObject = parent;

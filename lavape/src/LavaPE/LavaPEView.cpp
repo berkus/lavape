@@ -3302,8 +3302,8 @@ void CLavaPEView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
 //  QTreeWidgetItem* selItem = Tree->currentItem();
   if (!selItem)
     return;
-  if (!Tree->isItemSelected(selItem)) //selItem->isSelected())
-    return;
+  //if (!Tree->isItemSelected(selItem)) //selItem->isSelected())
+  //  return;
   if (lastCurrent && (Tree->withControl && !Tree->withShift || Tree->withShift && !Tree->withControl)) {
     if (!CollectDECL) {
       CanDelete = true;
