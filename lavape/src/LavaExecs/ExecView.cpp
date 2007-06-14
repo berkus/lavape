@@ -5871,13 +5871,13 @@ void CExecView::UpdateUI()
   OnUpdateOld(LBaseData->oldButton);
   OnUpdateClone(LBaseData->cloneButton);
   OnUpdateCopy(LBaseData->copyButton);
-  OnUpdateAttach(LBaseData->attachButton);
-  OnUpdateQueryItf(LBaseData->qryItfButton);
   OnUpdateQua(LBaseData->scaleButton);
-  OnUpdateItem(LBaseData->itemButton);
   OnUpdateConnect(LBaseData->connectButton);
   OnUpdateDisconnect(LBaseData->disconnectButton);
   OnUpdateEmitSignal(LBaseData->emitButton);
+  OnUpdateItem(LBaseData->itemButton);
+  OnUpdateAttach(LBaseData->attachButton);
+  OnUpdateQueryItf(LBaseData->qryItfButton);
 }
 
 void CExecView::DisableActions()
@@ -5981,13 +5981,13 @@ void CExecView::DisableKwdButtons() {
   LBaseData->oldButton->setEnabled(false);
   LBaseData->cloneButton->setEnabled(false);
   LBaseData->copyButton->setEnabled(false);
-  LBaseData->attachButton->setEnabled(false);
-  LBaseData->qryItfButton->setEnabled(false);
-        LBaseData->scaleButton->setEnabled(false);
-        LBaseData->itemButton->setEnabled(false);
+  LBaseData->scaleButton->setEnabled(false);
   LBaseData->connectButton->setEnabled(false);
   LBaseData->disconnectButton->setEnabled(false);
   LBaseData->emitButton->setEnabled(false);
+  LBaseData->itemButton->setEnabled(false);
+  LBaseData->attachButton->setEnabled(false);
+  LBaseData->qryItfButton->setEnabled(false);
 }
 
 
