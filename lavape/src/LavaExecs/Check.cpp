@@ -3508,7 +3508,13 @@ bool ObjReference::Check (CheckData &ckd) {
       break;
 
     case funcHandle:
-      //ok1 &= CallCheck(ckd);
+      if (flags.Contains(isIniCallOrHandle)) {
+        ROContext roContext=ReadOnlyContext();
+        if (roContext == roClause) {
+          SetError(ckd,&ERR_AssignInROClause);
+          return false;
+        }
+      }
       break;
 
     case arrayTarget:
