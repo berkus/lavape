@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="8,00"
 	Name="disco"
 	ProjectGUID="{5EC4E4E1-7851-45F7-AE0B-A2BE02E0BBE7}"
 	RootNamespace="disco"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -84,8 +83,6 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/disco.pdb"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="..\..\bin\disco.lib"
 				TargetMachine="1"
 			/>
@@ -108,6 +105,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -176,8 +176,6 @@
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/disco.pdb"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="..\..\bin\disco.lib"
 				TargetMachine="1"
 			/>
@@ -200,6 +198,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
