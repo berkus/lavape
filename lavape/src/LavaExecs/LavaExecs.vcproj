@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="8,00"
 	Name="LavaExecs"
 	ProjectGUID="{6BE40600-7F8F-4DCE-A9E8-694823E69077}"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -84,8 +83,6 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/LavaExecs.pdb"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="..\..\bin\LavaExecs.lib"
 				TargetMachine="1"
 			/>
@@ -108,6 +105,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -178,8 +178,6 @@
 				SuppressStartupBanner="true"
 				ProgramDatabaseFile=".\Release/LavaExecs.pdb"
 				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				ImportLibrary="..\..\bin\LavaExecs.lib"
 				TargetMachine="1"
 			/>
@@ -202,6 +200,9 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -305,7 +306,7 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough=""
+						PrecompiledHeaderThrough="CDPpp.h"
 						PrecompiledHeaderFile="PCH\LavaExecs_all.pch"
 					/>
 				</FileConfiguration>
