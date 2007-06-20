@@ -1,7 +1,15 @@
 LAVADIR=$(shell pwd)
 export LAVADIR
+
+ifeq ($(QTDIR),)
+QTDIR=/usr/lib/qt
+endif
+
 ASSISTANT=$(QTDIR)/bin/assistant
 export ASSISTANT
+
+LD_LIBRARY_PATH=$(QTDIR)/lib:$(LAVADIR)/lib:/usr/lib:/lib
+export LD_LIBRARY_PATH
 
 all: dirs links build
 #all: dirs links Precompiler LavaStream build
@@ -151,7 +159,7 @@ bindist:
 	if [ ! -e LavaStream.lava ]; then ln -s ../../samples/LavaStream.lava .; fi; \
 	if [ ! -e libLavaStream.so ]; then ln -s ../../lib/libLavaStream.so .; fi; \
 	cd ../..; cp ../lib/*.so lib; \
-	cp $(QTDIR)/lib/libQtCore.so.4 $(QTDIR)/lib/libQtGui.so.4 $(QTDIR)/lib/libQtNetwork.so.4 $(QTDIR)/lib/libQtXml.so.4 $(QTDIR)/lib/libQtDBus.so.4 $(QTDIR)/lib/libQtAssistantClient.so.4 lib; \
+	cp $(QTDIR)/lib/libQtCore.so.4 $(QTDIR)/lib/libQtGui.so.4 $(QTDIR)/lib/libQtNetwork.so.4 $(QTDIR)/lib/libQtXml.so.4 $(QTDIR)/lib/libQtAssistantClient.so.4 lib; \
 	cd lib; strip *.so*; \
 	cd ../..; tar cjf /windows/D/lavape-0.9.0-linux-bin.tar.bz2 lavape; ls -l /windows/D/lavape-*; #rm -rf lavape
 
