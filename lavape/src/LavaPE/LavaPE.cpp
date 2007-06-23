@@ -861,6 +861,7 @@ void CLavaPEApp::saveSettings()
   settings.setValue(gui_style,LBaseData.m_style);
   settings.setValue(lfOpen,wxTheApp->GetLastFileOpen());
   settings.endGroup();
+  settings.sync();
 }
 
 int CLavaPEApp::OnAppExit()
