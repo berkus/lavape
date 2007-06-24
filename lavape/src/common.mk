@@ -2,7 +2,7 @@ SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
 
 #to build a debug version set DBG=-ggdb
-DBG=-g
+DBG=-gstabs+
 
 ifeq ($(QTDIR),)
 QTDIR=/usr/lib/qt
