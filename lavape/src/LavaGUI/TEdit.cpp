@@ -222,14 +222,17 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   myFormNode->data.ownTFont = GUIProg->SetTFont(this, myFormNode);
   GUIProg->SetColor(this, myFormNode, QPalette::Base, QPalette::Text);
 
+  par = parentWidget;
   if (myFormNode->data.allowOwnHandler && !isReadOnly() && isEnabled()) 
     myFormNode->data.myHandlerNode = myFormNode;
   else {
-    par = parentWidget;
+//    par = parentWidget;
     while (par && !par->inherits("CFormWid"))
       par = par->parentWidget();
     if (par) 
       myFormNode->data.myHandlerNode = ((CFormWid*)par)->myFormNode->data.myHandlerNode;
+    else
+      par = parentWidget;
   }
   GUIProg->ActNode = myFormNode;
   if (((CFormWid*)par)->iterData) {
