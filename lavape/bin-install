@@ -6,11 +6,13 @@ LAVADIR=`pwd`
 echo "export LAVADIR=$LAVADIR">>lavape
 echo "export LD_LIBRARY_PATH=$LAVADIR/lib:/usr/lib:/lib">>lavape
 echo "cd $LAVADIR/bin">>lavape
+echo "if [ -x $(which chcon) ]; then chcon -t texrel_shlib_t ../lib/*.so 2>>/dev/null; fi">>lavape
 echo "./LavaPE">>lavape
 chmod a+x lavape
 
 echo "export LAVADIR=$LAVADIR">>lava
 echo "export LD_LIBRARY_PATH=$LAVADIR/lib:/usr/lib:/lib">>lava
 echo "cd $LAVADIR/bin">>lava
+echo "if [ -x $(which chcon) ]; then chcon -t texrel_shlib_t ../lib/*.so 2>>/dev/null; fi">>lava
 echo "./Lava">>lava
 chmod a+x lava
