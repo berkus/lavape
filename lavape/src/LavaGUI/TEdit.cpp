@@ -226,7 +226,6 @@ CMultiLineEdit::CMultiLineEdit(CGUIProgBase *guiPr, CHEFormNode* data,
   if (myFormNode->data.allowOwnHandler && !isReadOnly() && isEnabled()) 
     myFormNode->data.myHandlerNode = myFormNode;
   else {
-//    par = parentWidget;
     while (par && !par->inherits("CFormWid"))
       par = par->parentWidget();
     if (par) 
