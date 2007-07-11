@@ -4,8 +4,11 @@ SHELL=/usr/bin/env sh
 #to build a debug version set DBG=-ggdb
 DBG=-gstabs+
 
-ifeq ($(QTDIR),)
-QTDIR=/usr/lib/qt
+ifneq ($(QTDIR),)
+  QINCL = $(QTDIR)/include
+  QLIBS = $(QTDIR)/lib
+  QTOOLS=$(QTDIR)/bin
+  QASS = $(QTOOLS)/assistant
 endif
 
 ph_files=$(wildcard *.ph)
@@ -69,9 +72,7 @@ ifeq ($(OPSYS),MINGW32_NT-5.1)
   OPSYS = MINGW32
   OSCAT = WIN32
   LN = cp
-  QT = $(QTMINGW)
 else
-QT = $(QTDIR)
 ifeq ($(OPSYS),Darwin)
   OSCAT = __UNIX__
   LN = ln -s
@@ -108,27 +109,27 @@ else
     endif
   else
     DLLPREFIX = lib
-	  ifeq ($(OPSYS),SunOS)
-		  OSCPPFLAGS = -fPIC -D__$(OPSYS) -fno-strict-aliasing
-	  else
-		  OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
-		  DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
+    ifeq ($(OPSYS),SunOS)
+      OSCPPFLAGS = -fPIC -D__$(OPSYS) -fno-strict-aliasing
+    else
+      OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
+      DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
       DLLSUFFIX = .so
-		  OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) -L../../lib -L$(QT)/lib
-		  OSEXECFLAGS = -fstack-check -z nodefaultlib -L../../lib -L$(QT)/lib
-		  EXEC2 = $(EXEC)
+      OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) -L../../lib -L$(QLIBS)
+      OSEXECFLAGS = -fstack-check -z nodefaultlib -L../../lib -L$(QT)/lib
+      EXEC2 = $(EXEC)
       ifneq ($(DBG),)
-		    QtS =
-		    ACL =
-		  else
-		    QtS =
-		    ACL =
-		  endif
-	  endif
+        QtS =
+        ACL =
+      else
+        QtS =
+        ACL =
+      endif
+    endif
   endif
 endif
 
-ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QT)/include -I$(QT)/include/Qt -I$(QT)/include/QtCore -I$(QT)/include/QtGui -I$(QT)/include/QtNetwork
+ALL_CPP_INCLUDES = $(CPP_INCLUDES) -I$(QINCL) -I$(QINCL)/QtCore -I$(QINCL)/QtNetwork -I$(QINCL)/QtGui
 
 asscli=-lqassistantclient
 

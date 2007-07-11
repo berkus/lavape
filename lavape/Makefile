@@ -1,10 +1,6 @@
 LAVADIR=$(shell pwd)
 export LAVADIR
 
-ifeq ($(QTDIR),)
-QTDIR=/usr/lib/qt
-endif
-
 ASSISTANT=$(QTDIR)/bin/assistant
 export ASSISTANT
 
