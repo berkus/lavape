@@ -49,7 +49,7 @@ class DISCO_DLL wxClassInfo
    // called from wx_main.cc
    wxClassInfo *baseInfo1;
    wxClassInfo *baseInfo2;
-   wxClassInfo(char *cName, char *baseName1, char *baseName2, int sz, wxObjectConstructorFn fn);
+   wxClassInfo(const char *cName, const char *baseName1, const char *baseName2, int sz, wxObjectConstructorFn fn);
 
    wxObject *CreateObject(void);
    inline QString GetClassName(void) { return className; }

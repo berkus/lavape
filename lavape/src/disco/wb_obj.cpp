@@ -77,7 +77,7 @@ wxObject::~wxObject(void)
  * Class info: provides run-time class type information.
  */
  
-wxClassInfo::wxClassInfo(char *cName, char *baseName1, char *baseName2, int sz, wxObjectConstructorFn constr)
+wxClassInfo::wxClassInfo(const char *cName, const char *baseName1, const char *baseName2, int sz, wxObjectConstructorFn constr)
 {
   if (!classDict)
     classDict = new QHash<QString,wxClassInfo*>();

@@ -32,11 +32,9 @@
 #include "STR.h"
 
 #include "Tokens.h"
-
 #include "Syntax.h"
 
 #pragma hdrstop
-
 
 #include "qwidget.h"
 #include <QScrollArea>

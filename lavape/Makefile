@@ -1,9 +1,6 @@
 LAVADIR=$(shell pwd)
 export LAVADIR
 
-ASSISTANT=$(QTDIR)/bin/assistant
-export ASSISTANT
-
 LD_LIBRARY_PATH=$(QTDIR)/lib:$(LAVADIR)/lib:/usr/lib:/lib
 export LD_LIBRARY_PATH
 
@@ -94,8 +91,8 @@ bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; $(LN) $< $@
 bin/assistant:
 	rm -f $@; \
-	if [ .$(QTDIR) != . ] ; then $(LN) $(QTDIR)/bin/assistant $@ ; \
-	else echo ; echo ++++ error: Lava online help works only if QTDIR is defined!; echo ; exit 1; fi
+	$(LN) $(QASSISTANT) $@ 
+#	else echo ; echo ++++ error: Lava online help works only if QTDIR is defined!; echo ; exit 1; fi
 
 lib/libQtCore.so: $(QTDIR)/lib/libQtCore.so.4
 	rm -f $@; $(LN) $< $@
@@ -164,8 +161,8 @@ clean: cleanall binclean libclean
 distclean: cleanall binclean libclean
 
 binclean:
-	cd bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX)
+	cd $(LAVADIR)/bin; rm -f LavaPE$(EXESUFFIX) Lava$(EXESUFFIX) LPC$(EXESUFFIX)
 
 libclean:
-	cd lib; rm -f *$(DLLSUFFIX)
+	cd $(LAVADIR)/lib; rm -f *$(DLLSUFFIX)
 

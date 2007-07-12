@@ -440,7 +440,7 @@ public:
 protected:
 
   void error (ErrCode errCode,
-              char *callingProcedure);
+              const char *callingProcedure);
 
 
   void getHeader (destinationType dT,

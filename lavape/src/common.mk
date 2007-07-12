@@ -6,9 +6,9 @@ DBG=-gstabs+
 
 ifneq ($(QTDIR),)
   QINCL = $(QTDIR)/include
-  QLIBS = $(QTDIR)/lib
+  QLIB = $(QTDIR)/lib
   QTOOLS=$(QTDIR)/bin
-  QASS = $(QTOOLS)/assistant
+  QASSISTANT = $(QTOOLS)/assistant
 endif
 
 ph_files=$(wildcard *.ph)
@@ -115,8 +115,8 @@ else
       OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
       DLLNAME = lib$(addsuffix .so,$(basename $(EXEC)))
       DLLSUFFIX = .so
-      OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) -L../../lib -L$(QLIBS)
-      OSEXECFLAGS = -fstack-check -z nodefaultlib -L../../lib -L$(QT)/lib
+      OSDLLFLAGS = -shared -z nodefaultlib $(SONAME)lib$(EXEC) -L../../lib -L$(QLIB)
+      OSEXECFLAGS = -fstack-check -z nodefaultlib -L../../lib -L$(QLIB)
       EXEC2 = $(EXEC)
       ifneq ($(DBG),)
         QtS =
@@ -150,7 +150,7 @@ else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
 	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) $(addprefix -l,$(SUBPRO)) -lmingw32 -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
-#$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QT)/lib $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+#$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QLIB) $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
@@ -170,21 +170,21 @@ PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files) $(h_ph_files)
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
 Generated/%.h: %.ui
-	$(QT)/bin/uic $< -o $@
+	$(QTOOLS)/uic $< -o $@
 #	( grep -q -e 'UI version=\"[0-9]\+\.0\"' $< || \
 #	  sed -i -e 's/\(UI version=\"[0-9]\+\.\)[0-9]\+"/\10\"/' $<; ); \
 #  export LD_LIBRARY_PATH=/usr/X11R6/bin;
 #Generated/%.cpp: %.ui
 #	( grep -q -e 'UI version=\"[0-9]\+\.0\"' $< || \
 #	  sed -i -e 's/\(UI version=\"[0-9]\+\.\)[0-9]\+"/\10\"/' $< ); \
-#  $(QT)/bin/uic -impl $*.h $< -o $@; \
+#  $(QTOOLS)/bin/uic -impl $*.h $< -o $@; \
 #  sed -i -e 's/static const unsigned char const/static const unsigned char/' $@
 
 #MOC rule
 moc_%.cpp: %.h
-	$(QT)/bin/moc $< -o $@
+	$(QTOOLS)/moc $< -o $@
 Generated/moc_%.cpp: %.h
-	$(QT)/bin/moc $< -o $@
+	$(QTOOLS)/moc $< -o $@
 
 #LPC rule:
 ifneq ($(DLL),)
@@ -195,7 +195,7 @@ endif
 	../../bin/LPC $(impex) -I. -I../LavaBase $<
 
 %.cpp: %.qrc
-	$(QT)/bin/rcc -o $@ $<
+	$(QTOOLS)/rcc -o $@ $<
 
 ifeq ($(suffix $(EXEC)),)
 run:

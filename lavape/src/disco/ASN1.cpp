@@ -89,7 +89,7 @@ ASN1::~ASN1 ()
 
 
 void ASN1::error (ErrCode errCode,
-                  char *callingProcedure)
+                  const char *callingProcedure)
 {
   if ((errCode == WrongElRep)
       && !wrongElemStop) {

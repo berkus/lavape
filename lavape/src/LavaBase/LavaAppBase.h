@@ -473,7 +473,7 @@ public:
 
   QAction *myWhatsThisAction;
 
-  char* BasicNames[30];
+  const char* BasicNames[30];
   DString OperatorNames [OP_high];
   DString OpFuncNames [OP_high];
   int maxb;
