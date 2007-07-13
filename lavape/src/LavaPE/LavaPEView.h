@@ -106,7 +106,7 @@ public:
   bool DropPosted;
   bool CanDelete;
   bool clipboard_lava_notEmpty;
-  char* m_nIDClipFormat;
+  const char* m_nIDClipFormat;
 
   CLavaGUIView* myFormView;  //myFormView != 0 :  -> FormView
   CLavaPEDoc* DragDoc;    //defined in drop-view

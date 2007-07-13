@@ -79,7 +79,7 @@ static QString favoriteBrowser = "MyBrowser";
 static QString gui_style = "Style";
 static QString lfOpen = "LastFileOpen";
 
-static char slash='/';
+static const char slash='/';
 
 
 

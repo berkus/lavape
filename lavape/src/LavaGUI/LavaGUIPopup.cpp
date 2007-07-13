@@ -21,7 +21,7 @@
 
 
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+static const char THIS_FILE[] = __FILE__;
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -350,7 +350,7 @@ void CLavaMainFrame::UpdateUI()
     runAction->setEnabled(false);
 }
 
-void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QToolButton *&pb,char *text,char *slotParm,QString tooltip,QString whatsThis)
+void CLavaMainFrame::newKwdToolbutton(QToolBar *tb,QToolButton *&pb,const char *text,const char *slotParm,QString tooltip,QString whatsThis)
 {
   QFont f;
 
