@@ -1,5 +1,5 @@
 /* XPM */
-static char * Q6_opaque_xpm[] = {
+static const char * Q6_opaque_xpm[] = {
 "16 15 2 1",
 " 	c None",
 ".	c #0000FF",

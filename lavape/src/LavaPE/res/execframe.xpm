@@ -1,5 +1,5 @@
 /* XPM */
-static char *execframe[] = {
+static const char *execframe[] = {
 /* width height num_colors chars_per_pixel */
 "    16    16       16            1",
 /* colors */

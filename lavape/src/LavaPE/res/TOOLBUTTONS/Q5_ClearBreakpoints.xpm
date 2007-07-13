@@ -1,5 +1,5 @@
 /* XPM */
-static char * Q5_ClearBreakpoints_xpm[] = {
+static const char * Q5_ClearBreakpoints_xpm[] = {
 "16 16 5 1",
 " 	c None",
 ".	c #0000FF",

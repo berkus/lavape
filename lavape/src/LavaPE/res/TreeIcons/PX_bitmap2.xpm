@@ -1,5 +1,5 @@
 /* XPM */
-static char *PX_bitmap2[] = {
+static const char *PX_bitmap2[] = {
 /* width height num_colors chars_per_pixel */
 "    24    15        17             1",
 /* colors */

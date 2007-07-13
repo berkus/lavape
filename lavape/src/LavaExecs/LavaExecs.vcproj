@@ -853,6 +853,18 @@
 					>
 				</File>
 				<File
+					RelativePath=".\res\TOOLBUTTONS\breakPoint.xpm"
+					>
+				</File>
+				<File
+					RelativePath=".\res\TOOLBUTTONS\debugStop.xpm"
+					>
+				</File>
+				<File
+					RelativePath=".\res\TOOLBUTTONS\debugStopGreen.xpm"
+					>
+				</File>
+				<File
 					RelativePath="res\TOOLBUTTONS\Q5_conflict.xpm"
 					>
 				</File>
