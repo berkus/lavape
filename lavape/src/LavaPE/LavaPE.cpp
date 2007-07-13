@@ -100,6 +100,7 @@ int main(int argc, char ** argv ) {
     app.m_appWindow->showMaximized();
   else
     return 1;
+  app.updateButtonsMenus();
 
   int res = app.exec();
   return res;
