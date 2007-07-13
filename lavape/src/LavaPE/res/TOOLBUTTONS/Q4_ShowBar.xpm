@@ -1,5 +1,5 @@
 /* XPM */
-static char *Q4_ShowBar[] = {
+static const char *Q4_ShowBar[] = {
 /* width height num_colors chars_per_pixel */
 "    16    15       16            1",
 /* colors */

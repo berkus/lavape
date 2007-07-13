@@ -1,5 +1,5 @@
 /* XPM */
-static char *Q5_newLine[] = {
+static const char *Q5_newLine[] = {
 /* width height num_colors chars_per_pixel */
 "    16    15       16            1",
 /* colors */

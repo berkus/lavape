@@ -1,5 +1,5 @@
 /* XPM */
-static char *PX_commentt[] = {
+static const char *PX_commentt[] = {
 /* width height num_colors chars_per_pixel */
 "    16    14       16            1",
 /* colors */

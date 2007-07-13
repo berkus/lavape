@@ -1,5 +1,5 @@
 /* XPM */
-static char *Q2_Override[] = {
+static const char *Q2_Override[] = {
 /* width height num_colors chars_per_pixel */
 "    16    15       16            1",
 /* colors */

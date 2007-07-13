@@ -1,5 +1,5 @@
 /* XPM */
-static char *PX_formAt[] = {
+static const char *PX_formAt[] = {
 /* width height num_colors chars_per_pixel */
 "    21    15        17             1",
 /* colors */

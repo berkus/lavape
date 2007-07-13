@@ -1,5 +1,5 @@
 /* XPM */
-static char *Q_State.Value[] = {
+static const char *Q_State.Value[] = {
 /* width height num_colors chars_per_pixel */
 "    16    15       16            1",
 /* colors */

@@ -1,5 +1,5 @@
 /* XPM */
-static char *PX_undefine[] = {
+static const char *PX_undefine[] = {
 /* width height num_colors chars_per_pixel */
 "    21    15       16            1",
 /* colors */

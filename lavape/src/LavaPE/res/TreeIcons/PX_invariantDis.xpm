@@ -1,5 +1,5 @@
 /* XPM */
-static char *PX_invariantDis[] = {
+static const char *PX_invariantDis[] = {
 "21 15 6 1",
 "  c #FFFFFF",
 "a c #BFBFBF",

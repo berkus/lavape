@@ -1,5 +1,5 @@
 /* XPM */
-static char * Q2_MakeGUI_xpm[] = {
+static const char * Q2_MakeGUI_xpm[] = {
 "16 15 5 1",
 " 	c None",
 ".	c #FFFF00",

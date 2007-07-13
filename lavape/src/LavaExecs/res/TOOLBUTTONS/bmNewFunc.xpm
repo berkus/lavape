@@ -1,5 +1,5 @@
 /* XPM */
-static char *bmNewFunc[] = {
+static const char *bmNewFunc[] = {
 /* width height num_colors chars_per_pixel */
 "    18    16       16            1",
 /* colors */

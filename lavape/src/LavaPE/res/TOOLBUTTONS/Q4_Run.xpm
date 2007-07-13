@@ -1,5 +1,5 @@
 /* XPM */
-static char * Q4_Run_xpm[] = {
+static const char * Q4_Run_xpm[] = {
 "16 15 3 1",
 " 	c None",
 ".	c #0000FF",

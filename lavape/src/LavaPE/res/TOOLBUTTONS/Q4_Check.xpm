@@ -1,5 +1,5 @@
 /* XPM */
-static char *Q4_Check[] = {
+static const char *Q4_Check[] = {
 /* width height num_colors chars_per_pixel */
 "    16    15       16            1",
 /* colors */

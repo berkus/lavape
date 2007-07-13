@@ -1,5 +1,5 @@
 /* XPM */
-static char *Q_Paste[] = {
+static const char *Q_Paste[] = {
 /* width height num_colors chars_per_pixel */
 "    16    15       16            1",
 /* colors */

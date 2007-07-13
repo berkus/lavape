@@ -1,5 +1,5 @@
 /* XPM */
-static char *Q_TileVert[] = {
+static const char *Q_TileVert[] = {
 /* width height num_colors chars_per_pixel */
 "    16    15       16            1",
 /* colors */

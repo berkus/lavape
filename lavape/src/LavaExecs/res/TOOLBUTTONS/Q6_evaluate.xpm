@@ -1,5 +1,5 @@
 /* XPM */
-static char *Q6_evaluate[] = {
+static const char *Q6_evaluate[] = {
 /* width height num_colors chars_per_pixel */
 "    16    15       16            1",
 /* colors */

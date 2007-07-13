@@ -1,5 +1,5 @@
 /* XPM */
-static char *Q4_NextComment[] = {
+static const char *Q4_NextComment[] = {
 /* width height num_colors chars_per_pixel */
 "    16    15       16            1",
 /* colors */

@@ -1,5 +1,5 @@
 /* XPM */
-static char *PX_xcommask[] = {
+static const char *PX_xcommask[] = {
 /* width height num_colors chars_per_pixel */
 "    21    15       16            1",
 /* colors */
@@ -36,7 +36,7 @@ static char *PX_xcommask[] = {
 "mmmmmmmmmmmmmmmmgiiig",
 "mmmmmmmmmmmmmmmmmgggm"
 };
-static char *PX_xnomask[] = {
+static const char *PX_xnomask[] = {
 /* width height num_colors chars_per_pixel */
 "    21    15       16            1",
 /* colors */

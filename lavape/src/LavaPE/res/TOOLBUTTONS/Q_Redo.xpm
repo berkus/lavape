@@ -1,5 +1,5 @@
 /* XPM */
-static char * Q_Redo_xpm[] = {
+static const char * Q_Redo_xpm[] = {
 "16 15 3 1",
 " 	c None",
 ".	c #808080",

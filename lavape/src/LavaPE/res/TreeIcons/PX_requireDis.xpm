@@ -1,5 +1,5 @@
 /* XPM */
-static char *PX_requireDis[] = {
+static const char *PX_requireDis[] = {
 "21 15 3 1",
 "s c #A0A0A0",
 "  c #FFFFFF",
