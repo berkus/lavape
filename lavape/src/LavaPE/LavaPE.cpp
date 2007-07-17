@@ -323,6 +323,8 @@ bool CLavaPEApp::event(QEvent *e)
     m_appWindow->raise();
     return true;
   case UEV_LavaDebugRq:
+    if (!debugger.isConnected)
+      return true;
     if (debugger.dbgRequest) {
       delete debugger.dbgRequest;
       debugger.dbgRequest = 0;
