@@ -4,11 +4,20 @@ SHELL=/usr/bin/env sh
 #to build a debug version set DBG=-ggdb
 DBG=-gstabs+
 
-ifneq ($(QTDIR),)
-  QINCL = $(QTDIR)/include
-  QLIB = $(QTDIR)/lib
-  QTOOLS=$(QTDIR)/bin
-  QASSISTANT = $(QTOOLS)/assistant
+ifeq ($(QTDIR),)
+  QTDIR = /usr/lib/qt
+endif
+
+export
+
+QINCL = $(QTDIR)/include
+QLIB = $(QTDIR)/lib
+QTOOLS = $(QTDIR)/bin
+
+QASSISTANT = $(shell $(LAVADIR)/findassistant)
+
+ifeq ($(QASSISTANT),)
+  $(error Qt assistant couldn't be found!)
 endif
 
 ph_files=$(wildcard *.ph)

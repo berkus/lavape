@@ -1,8 +1,14 @@
-LAVADIR=$(shell pwd)
-export LAVADIR
+export SHELL=/usr/bin/bash
+$(warning $(SHELL))
 
-LD_LIBRARY_PATH=$(QTDIR)/lib:$(LAVADIR)/lib:/usr/lib:/lib
-export LD_LIBRARY_PATH
+export LAVADIR=$(shell pwd)
+
+ifeq ($(LD_LIBRARY_PATH),)
+  $(error LD_LIBRARY_PATH must be defined!)
+endif
+ifeq ($(QTDIR),)
+  $(error QTDIR must be defined!)
+endif
 
 all: dirs links build
 #all: dirs links Precompiler LavaStream build
