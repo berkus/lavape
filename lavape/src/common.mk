@@ -14,7 +14,11 @@ QINCL = $(QTDIR)/include
 QLIB = $(QTDIR)/lib
 QTOOLS = $(QTDIR)/bin
 
-QASSISTANT = $(shell $(LAVADIR)/findassistant)
+ifneq ($(QTDIR)/bin/assistant,)
+  QASSISTANT = $(QTDIR)/bin/assistant
+else
+  QASSISTANT = `which assistant`
+endif
 
 ifeq ($(QASSISTANT),)
   $(error Qt assistant couldn't be found!)

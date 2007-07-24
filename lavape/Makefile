@@ -1,5 +1,5 @@
-export SHELL=/usr/bin/bash
-$(warning $(SHELL))
+export SHELL=/bin/sh
+#$(warning $(SHELL))
 
 export LAVADIR=$(shell pwd)
 
