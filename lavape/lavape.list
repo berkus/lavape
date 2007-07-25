@@ -6,69 +6,68 @@
 %description Advanced experimental OO programming with structure editors
 %version 0.9.0 090
 
-d 755 root sys /lavape -
-f 644 root sys /lavape/bin-install bin-install
-f 644 root sys /lavape/volcano2.bmp volcano2.bmp
+%requires libqt4-core libqt4-gui libqt4-sql /usr/bin/assistant
+%postinstall bin-install
 
-f 644 root sys lavape/LavaPE.nsi LavaPE.nsi
-f 644 root sys lavape *.txt
+d 755 root sys /usr/local/lavape -
+f 644 root sys /usr/local/lavape/bin-install bin-install
+f 644 root sys /usr/local/lavape/volcano2.bmp volcano2.bmp
+f 644 root sys /usr/local/lavape *.txt
 
-d 755 root sys lavape/samples -
-f 644 root sys lavape/samples samples/*.lava
-f 644 root sys lavape/samples samples/*.ldoc
-f 644 root sys lavape/samples samples/*.xpm
-f 644 root sys lavape/samples/LCompoImpl.lcom samples/LCompoImpl.lcom
+d 755 root sys /usr/local/lavape/samples -
+f 644 root sys /usr/local/lavape/samples samples/*.lava
+f 644 root sys /usr/local/lavape/samples samples/*.ldoc
+f 644 root sys /usr/local/lavape/samples samples/*.xpm
+f 644 root sys /usr/local/lavape/samples/LCompoImpl.lcom samples/LCompoImpl.lcom
 
-d 755 root sys lavape/lib -
-f 755 root sys lavape/lib lib/*.so
+d 755 root sys /usr/local/lavape/lib -
+f 755 root sys /usr/local/lavape/lib lib/*.so
 
-d 755 root sys lavape/bin -
-f 644 root sys lavape/bin bin/*
+d 755 root sys /usr/local/lavape/bin -
+f 644 root sys /usr/local/lavape/bin bin/*
 
-d 755 root sys lavape/bin/std -
-f 644 root sys lavape/bin/std bin/std/*.htm
+d 755 root sys /usr/local/lavape/bin/std -
+f 644 root sys /usr/local/lavape/bin/std bin/std/*.htm
 
-l 777 root sys lavape/bin/assistant /usr/bin/assistant
+l 777 root sys /usr/local/lavape/bin/assistant /usr/bin/assistant
 
-d 755 root sys lavape/bin/Components -
-l 777 root sys lavape/bin/Components/LavaStream.lava samples/LavaStream.lava
-l 777 root sys lavape/bin/Components/libLavaStream.so lib/libLavaStream.so
-l 777 root sys lavape/bin/Components/LCompoImpl.lcom.lnk samples/LCompoImpl.lcom
+d 755 root sys /usr/local/lavape/bin/Components -
+l 777 root sys /usr/local/lavape/bin/Components/LavaStream.lava ../../samples/LavaStream.lava
+l 777 root sys /usr/local/lavape/bin/Components/libLavaStream.so ../../lib/libLavaStream.so
+l 777 root sys /usr/local/lavape/bin/Components/LCompoImpl.lcom.lnk ../../samples/LCompoImpl.lcom
 
-d 755 root sys lavape/bin/LavaIcons -
-f 644 root sys lavape/bin/LavaIcons bin/LavaIcons/*.js
-f 644 root sys lavape/bin/LavaIcons bin/LavaIcons/*.png
-f 644 root sys lavape/bin/LavaIcons bin/LavaIcons/*.css
+d 755 root sys /usr/local/lavape/bin/LavaIcons -
+f 644 root sys /usr/local/lavape/bin/LavaIcons bin/LavaIcons/*.js
+f 644 root sys /usr/local/lavape/bin/LavaIcons bin/LavaIcons/*.png
+f 644 root sys /usr/local/lavape/bin/LavaIcons bin/LavaIcons/*.css
 
-f 644 root sys lavape/Makefile Makefile
+d 755 root sys /usr/local/lavape/doc -
+f 644 root sys /usr/local/lavape/doc doc/*.htm
+f 644 root sys /usr/local/lavape/doc doc/*.js
+f 644 root sys /usr/local/lavape/doc doc/*.txt
+f 644 root sys /usr/local/lavape/doc doc/*.xpm
+f 644 root sys /usr/local/lavape/doc/LavaPE.adp doc/LavaPE.adp
 
-d 755 root sys lavape/doc -
-f 644 root sys lavape/doc doc/*.htm
-f 644 root sys lavape/doc doc/*.js
-f 644 root sys lavape/doc doc/*.txt
-f 644 root sys lavape/doc doc/*.xpm
-f 644 root sys lavape/doc/LavaPE.adp doc/LavaPE.adp
+d 755 root sys /usr/local/lavape/doc/images -
+f 644 root sys /usr/local/lavape/doc/images doc/images/*.png
+f 644 root sys /usr/local/lavape/doc/images doc/images/*.gif
+f 644 root sys /usr/local/lavape/doc/images doc/images/*.jpg
 
-d 755 root sys lavape/doc/images -
-f 644 root sys lavape/doc/images doc/images/*.png
-f 644 root sys lavape/doc/images doc/images/*.gif
-f 644 root sys lavape/doc/images doc/images/*.jpg
+d 755 root sys /usr/local/lavape/doc/html -
+f 644 root sys /usr/local/lavape/doc/html doc/html/*.htm
+f 644 root sys /usr/local/lavape/doc/html doc/html/*.css
+f 644 root sys /usr/local/lavape/doc/html doc/html/*.jpg
 
-d 755 root sys lavape/doc/html -
-f 644 root sys lavape/doc/html doc/html/*.htm
-f 644 root sys lavape/doc/html doc/html/*.css
-f 644 root sys lavape/doc/html doc/html/*.jpg
+d 755 root sys /usr/local/lavape/doc/html/dialogs -
+f 644 root sys /usr/local/lavape/doc/html/dialogs doc/html/dialogs/*.htm
 
-d 755 root sys lavape/doc/html/dialogs -
-f 644 root sys lavape/doc/html/dialogs doc/html/dialogs/*.htm
+d 755 root sys /usr/local/lavape/doc/html/whatNext -
+f 644 root sys /usr/local/lavape/doc/html/whatNext doc/html/whatNext/*.htm
 
-d 755 root sys lavape/doc/html/whatNext -
-f 644 root sys lavape/doc/html/whatNext doc/html/whatNext/*.htm
+d 755 root sys /usr/local/lavape/doc/html/commands -
+f 644 root sys /usr/local/lavape/doc/html/commands doc/html/commands/*.htm
 
-d 755 root sys lavape/doc/html/commands -
-f 644 root sys lavape/doc/html/commands doc/html/commands/*.htm
-
-d 755 root sys lavape/doc/html/whatsThis -
-f 644 root sys lavape/doc/html/whatsThis doc/html/whatsThis/*.htm
+d 755 root sys /usr/local/lavape/doc/html/whatsThis -
+f 644 root sys /usr/local/lavape/doc/html/whatsThis doc/html/whatsThis/*.htm
 
 
