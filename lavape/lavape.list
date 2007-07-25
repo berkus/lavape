@@ -24,7 +24,11 @@ d 755 root sys /usr/local/lavape/lib -
 f 755 root sys /usr/local/lavape/lib lib/*.so
 
 d 755 root sys /usr/local/lavape/bin -
-f 644 root sys /usr/local/lavape/bin bin/*
+f 644 root sys /usr/local/lavape/bin bin/*.htm
+f 644 root sys /usr/local/lavape/bin bin/*.lava
+f 644 root sys /usr/local/lavape/bin/LavaPE bin/LavaPE
+f 644 root sys /usr/local/lavape/bin/Lava bin/Lava
+f 644 root sys /usr/local/lavape/bin/cp_icons_std bin/cp_icons_std
 
 d 755 root sys /usr/local/lavape/bin/std -
 f 644 root sys /usr/local/lavape/bin/std bin/std/*.htm
