@@ -6,7 +6,10 @@
 # macro definition to gdb, tabs are interpreted as completion.
 
 # Disable printing of static members. Qt has too many, it clutters the output
-set print static-members off
+#set print static-members off
+set print pretty on
+set print object on
+set print vtbl on
 
 define qs
     printqstringdata $arg0.d
@@ -187,3 +190,4 @@ document printqstringlist
   Prints the contents of a QStringList.
   Usage: printqstringlist mylist
 end
+
