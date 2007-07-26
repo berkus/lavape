@@ -69,8 +69,12 @@ ITPF = src/Interpreter/Constructs.ph \
 links: $(ITPF) \
 	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
-	bin/assistant
-
+	bin/assistant \
+	lib/libQtCore.so.4 \
+	lib/libQtGui.so.4 \
+	lib/libQtNetwork.so.4 \
+	lib/libQtXml.so.4 \
+	lib/libQtAssistantClient.so.4
 
 src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
 	cd src/Interpreter; $(LN) ../LavaExecs/Constructs.ph .
@@ -100,15 +104,15 @@ bin/assistant:
 	$(LN) $(QASSISTANT) $@ 
 #	else echo ; echo ++++ error: Lava online help works only if QTDIR is defined!; echo ; exit 1; fi
 
-lib/libQtCore.so: $(QTDIR)/lib/libQtCore.so.4
+lib/libQtCore.so.4: $(QTDIR)/lib/libQtCore.so.4
 	rm -f $@; $(LN) $< $@
-lib/libQtGui.so: $(QTDIR)/lib/libQtGui.so.4
+lib/libQtGui.so.4: $(QTDIR)/lib/libQtGui.so.4
 	rm -f $@; $(LN) $< $@
-lib/libQtNetwork.so: $(QTDIR)/lib/libQtNetwork.so.4
+lib/libQtNetwork.so.4: $(QTDIR)/lib/libQtNetwork.so.4
 	rm -f $@; $(LN) $< $@
-lib/libQtXml.so: $(QTDIR)/lib/libQtXml.so.4
+lib/libQtXml.so.4: $(QTDIR)/lib/libQtXml.so.4
 	rm -f $@; $(LN) $< $@
-lib/libQtAssistantClient.so: $(QTDIR)/lib/libQtAssistantClient.so.4
+lib/libQtAssistantClient.so.4: $(QTDIR)/lib/libQtAssistantClient.so.4
 	rm -f $@; $(LN) $< $@
 
 LavaStream: bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX)

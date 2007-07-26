@@ -11,7 +11,8 @@
 #%requires libqt4-sql
 #%requires /usr/bin/assistant
 
-%postinstall /usr/local/lavape/bin-install
+%postinstall cd /usr/local/lavape;/usr/local/lavape/bin-install
+%postremove cd /usr/local/lavape;rm -f lava*
 
 d 755 root sys /usr/local/lavape -
 f 755 root sys /usr/local/lavape/bin-install bin-install
@@ -38,7 +39,7 @@ f 755 root sys /usr/local/lavape/bin/cp_icons_std bin/cp_icons_std
 d 755 root sys /usr/local/lavape/bin/std -
 f 644 root sys /usr/local/lavape/bin/std bin/std/*.htm
 
-l 777 root sys /usr/local/lavape/bin/assistant /usr/bin/assistant
+#l 777 root sys /usr/local/lavape/bin/assistant /usr/bin/assistant
 
 d 755 root sys /usr/local/lavape/bin/Components -
 l 777 root sys /usr/local/lavape/bin/Components/LavaStream.lava ../../samples/LavaStream.lava
