@@ -6,11 +6,15 @@
 %description Advanced experimental OO programming with structure editors
 %version 0.9.0 090
 
-%requires libqt4-core libqt4-gui libqt4-sql /usr/bin/assistant
-%postinstall bin-install
+#%requires libqt4-core
+#%requires libqt4-gui
+#%requires libqt4-sql
+#%requires /usr/bin/assistant
+
+%postinstall /usr/local/lavape/bin-install
 
 d 755 root sys /usr/local/lavape -
-f 644 root sys /usr/local/lavape/bin-install bin-install
+f 755 root sys /usr/local/lavape/bin-install bin-install
 f 644 root sys /usr/local/lavape/volcano2.bmp volcano2.bmp
 f 644 root sys /usr/local/lavape *.txt
 
@@ -21,14 +25,15 @@ f 644 root sys /usr/local/lavape/samples samples/*.xpm
 f 644 root sys /usr/local/lavape/samples/LCompoImpl.lcom samples/LCompoImpl.lcom
 
 d 755 root sys /usr/local/lavape/lib -
-f 755 root sys /usr/local/lavape/lib lib/*.so
+f 755 root sys /usr/local/lavape/lib lib/*.so*
 
 d 755 root sys /usr/local/lavape/bin -
 f 644 root sys /usr/local/lavape/bin bin/*.htm
 f 644 root sys /usr/local/lavape/bin bin/*.lava
-f 644 root sys /usr/local/lavape/bin/LavaPE bin/LavaPE
-f 644 root sys /usr/local/lavape/bin/Lava bin/Lava
-f 644 root sys /usr/local/lavape/bin/cp_icons_std bin/cp_icons_std
+f 755 root sys /usr/local/lavape/bin/LavaPE bin/LavaPE
+f 755 root sys /usr/local/lavape/bin/Lava bin/Lava
+f 755 root sys /usr/local/lavape/bin/assistant bin/assistant
+f 755 root sys /usr/local/lavape/bin/cp_icons_std bin/cp_icons_std
 
 d 755 root sys /usr/local/lavape/bin/std -
 f 644 root sys /usr/local/lavape/bin/std bin/std/*.htm
