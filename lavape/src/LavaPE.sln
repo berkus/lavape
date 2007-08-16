@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C++ Express 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Interpreter", "Interpreter\Interpreter.vcproj", "{FC1477D2-8467-4AEE-9741-A83A8DEBFCF0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5EC4E4E1-7851-45F7-AE0B-A2BE02E0BBE7} = {5EC4E4E1-7851-45F7-AE0B-A2BE02E0BBE7}
