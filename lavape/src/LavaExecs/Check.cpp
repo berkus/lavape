@@ -3399,6 +3399,12 @@ bool ObjReference::Inherited (CheckData &ckd) {
   return true;
 }
 
+VarName *ObjReference::PrimaryVar (CheckData &ckd) {
+  TIDType idtype;
+
+  return (VarName*)ckd.document->IDTable.GetVar(((TDOD*)((CHE*)refIDs.first)->data)->ID,idtype,ckd.inINCL);
+}
+
 bool ObjReference::ArrayTargetCheck (CheckData &ckd) {
   if (((TDOD*)((CHE*)refIDs.last)->data)->IsStateObject(ckd))
     return true;
@@ -4246,6 +4252,7 @@ bool FuncExpression::Check (CheckData &ckd)
   SynFlags ctxFlags;
   bool privateFunction=false, checkUnfinishedInputs=false;
   QString *rc;
+  VarName *vn;
 #ifdef INTERPRETER
   unsigned nInputs, nOutputs;
   TID vTid;
@@ -4454,8 +4461,12 @@ bool FuncExpression::Check (CheckData &ckd)
       // check act. parm.:
       actParm =
         (opd->primaryToken==parameter_T?(Expression*)((Parameter*)opd)->parameter.ptr : opd);
-      if (!actParm->IsIfStmExpr())
+      if (!actParm->IsIfStmExpr()) {
         ok &= opd->Check(ckd);
+        if (((SynObject*)((Parameter*)opd)->parameter.ptr)->primaryToken == ObjRef_T && ok) {
+          vn = ((ObjReference*)((Parameter*)opd)->parameter.ptr)->PrimaryVar(ckd);
+        }
+      }
       closedLevel = qMax(opd->closedLevel,closedLevel);
       // check act.parm/form.parm. type compatibility:
       ok &= compatibleInput(ckd,chpActIn,chpFormIn,callContext,callObjCat);

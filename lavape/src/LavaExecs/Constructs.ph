@@ -603,6 +603,7 @@ public:
   bool InConstituent (CheckData &ckd);
   bool Inherited (CheckData &ckd);
   bool OutOfScope (CheckData &ckd);
+  VarName *PrimaryVar (CheckData &ckd);
   virtual VarRefContext Context ();
   virtual bool AssignCheck (CheckData &ckd,VarRefContext cty);
   virtual bool CopyCheck (CheckData &ckd);
