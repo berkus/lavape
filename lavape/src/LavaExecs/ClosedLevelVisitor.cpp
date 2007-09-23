@@ -54,6 +54,7 @@ void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,
           vn->iniCall->Accept(clv);
           vn->closedLevel = clv.maxClosedLevel;
           maxClosedLevel = qMax(clv.maxClosedLevel,maxClosedLevel);
+          obj->closedLevel = vn->closedLevel;
         }
         else // CL is known already
           return;
