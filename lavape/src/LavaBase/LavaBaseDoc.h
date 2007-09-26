@@ -356,6 +356,7 @@ struct LAVABASE_DLL CheckData {
     handleOpd = false;
     inQuant = false;
     inInitialUpdate = false;
+    inIniClause = false;
     immediateReturn = false;
     precedingIniCall = 0;
   };
@@ -382,8 +383,8 @@ struct LAVABASE_DLL CheckData {
   QString *errorCode;
   Category callObjCat;
   bool stateObj, iniCheck, concernExecs, criticalScope, handleOpd,
-       inQuant, inInitialUpdate, immediateReturn, exceptionThrown,
-	   checkClosedParmLevel;
+       inQuant, inInitialUpdate, inIniClause, immediateReturn, exceptionThrown,
+	     checkClosedParmLevel;
   SET flags;
   SynObjectBase *firstIniCall;
   CHE *precedingIniCall;

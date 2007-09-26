@@ -6216,7 +6216,9 @@ bool QuantStmOrExp::Check (CheckData &ckd)
           }
         }
       }
+      ckd.inIniClause = true;
       ok &= secClause->Check(ckd);
+      ckd.inIniClause = false;
       ok &= ((SynObject*)primaryClause.ptr)->Check(ckd);
     }
     else {
