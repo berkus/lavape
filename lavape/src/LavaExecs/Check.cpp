@@ -3318,10 +3318,11 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
       ok = false;
     }
   }
-  else if (flags.Contains(isSelfVar)
-  && flags.Contains(isClosed)
+  else if 
+    //(flags.Contains(isSelfVar) && 
+  (flags.Contains(isClosed)
   && refIDs.first != refIDs.last) {
-    ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfClosed);
+    ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ClosedVar);
     ok = false;
   }
 
@@ -3349,7 +3350,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
       }
       else 
         if (ClosedLevel(ckd)) {
-          ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ObjUnfinished);
+          ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ClosedVar);
           ok = false;
         }
     }
