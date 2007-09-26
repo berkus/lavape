@@ -37,9 +37,7 @@ void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,
   DWORD dw;
   TIDType idtype;
   VarName *vn;
-  int maxLevel=-1;
 
-  obj->closedLevel = 0;
   if (obj->refIDs.first == obj->refIDs.last) {
     dw = document->IDTable.GetVar(((TDOD*)((CHE*)obj->refIDs.first)->data)->ID,idtype);
     if (!dw) return;
@@ -54,7 +52,6 @@ void ClosedLevelVisitor::VisitObjReference (ObjReference *obj,SynObject *parent,
           vn->iniCall->Accept(clv);
           vn->closedLevel = clv.maxClosedLevel;
           maxClosedLevel = qMax(clv.maxClosedLevel,maxClosedLevel);
-          obj->closedLevel = vn->closedLevel;
         }
         else // CL is known already
           return;

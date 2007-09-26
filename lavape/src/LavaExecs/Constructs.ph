@@ -527,6 +527,9 @@ public:
   }
   
   int-- closedLevel;
+  
+  int ClosedLevel(CheckData &ckd);
+  
   LavaDECL-- *formVType, *finalType;
   int-- sectionNumber; // section number of formal parameter type in the type of actual parameter
   int-- vSectionNumber; //section number where FMVT is defined (in analogy to funcSectionNumber)

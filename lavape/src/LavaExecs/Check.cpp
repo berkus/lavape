@@ -644,7 +644,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     actSynObj->SetError(ckd,&ERR_Optional);
     ok &= false;
   }
-  if (actSynObj->closedLevel
+  if (actSynObj->ClosedLevel(ckd)
   && !formDecl->SecondTFlags.Contains(closed)) {
     actSynObj->SetError(ckd,&ERR_Closed);
     ok &= false;
@@ -2345,7 +2345,7 @@ bool FailStatement::Check (CheckData &ckd)
     ok = false;
   }
 
-  if (((Expression*)exception.ptr)->closedLevel) {
+  if (((Expression*)exception.ptr)->ClosedLevel(ckd)) {
     ((SynObject*)exception.ptr)->SetError(ckd,&ERR_Closed);
     ok = false;
   }
@@ -2845,7 +2845,7 @@ bool BinaryOp::Check (CheckData &ckd)
     ((SynObject*)opd2)->SetError(ckd,&ERR_Optional);
     ok = false;
   }
-  if (opd2->closedLevel
+  if (opd2->ClosedLevel(ckd)
   && !formParmDecl->SecondTFlags.Contains(closed)) {
     ((SynObject*)opd2)->SetError(ckd,&ERR_Closed);
     ok = false;
@@ -3348,7 +3348,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
         //}
       }
       else 
-        if (closedLevel) {
+        if (ClosedLevel(ckd)) {
           ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ObjUnfinished);
           ok = false;
         }
@@ -3360,7 +3360,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
   && !Inherited(ckd)
   && (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-      || ((SelfVar*)ckd.selfVar)->closedLevel)) {
+      || ((SelfVar*)ckd.selfVar)->ClosedLevel(ckd))) {
     ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinished);
     return false;
   }
@@ -3439,7 +3439,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
     return ok;
 
   if (!decl->SecondTFlags.Contains(closed))
-    if (!flags.Contains(isIniCallOrHandle) && closedLevel) {
+    if (!flags.Contains(isIniCallOrHandle) && ClosedLevel(ckd)) {
       SetError(ckd,&ERR_CallObjClosed);
       ok &= false;
     }
@@ -3836,8 +3836,8 @@ bool Assignment::Check (CheckData &ckd)
   if (!ok)
     ERROREXIT
 
-  if (((Expression*)exprValue.ptr)->closedLevel
-  && !targObj->closedLevel
+  if (((Expression*)exprValue.ptr)->ClosedLevel(ckd)
+  && !targObj->ClosedLevel(ckd)
   && !ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
   && (!targObj->flags.Contains(isSelfVar)
       || ((ObjReference*)targObj)->refIDs.first->successor != ((ObjReference*)targObj)->refIDs.last)
@@ -4541,7 +4541,7 @@ bool Expression::CallCheck (CheckData &ckd) {
     return ok;
 
   if (!decl->SecondTFlags.Contains(closed))
-    if (closedLevel) {
+    if (ClosedLevel(ckd)) {
       funcExpr->SetError(ckd,&ERR_CallObjClosed);
       ok &= false;
     }
@@ -4560,6 +4560,39 @@ bool Expression::CallCheck (CheckData &ckd) {
     }
 
   return ok;
+}
+
+int Expression::ClosedLevel(CheckData &ckd) {
+/* Required since for ObjReferences the closedLevel may
+  involve recursion and therefore may be still unknown
+  during the closedLevel computation stage of the
+  containing initialize clause */
+
+  DWORD dw;
+  TIDType idtype;
+  VarName *vn;
+  ObjReference *obj;
+  Expression *expr=this;
+
+  if (primaryToken == parameter_T)
+    expr = (Expression*)((Parameter*)this)->parameter.ptr;
+  if (expr->primaryToken == ObjRef_T) {
+    obj = (ObjReference*)expr;
+    if (obj->refIDs.first == obj->refIDs.last) {
+      dw = ckd.document->IDTable.GetVar(((TDOD*)((CHE*)obj->refIDs.first)->data)->ID,idtype);
+      if (!dw) return 0;
+      if (idtype == localID) {
+        vn = (VarName*)dw;
+        return vn->closedLevel;
+      }
+      else
+        return 0;
+    }
+    else
+      return 0;
+  }
+  else
+    return closedLevel;
 }
 
 bool FuncStatement::Check (CheckData &ckd)
@@ -4613,7 +4646,7 @@ bool FuncStatement::Check (CheckData &ckd)
           ok = false;
         }
         if (formOutParmDecl->SecondTFlags.Contains(closed)
-        && !opd->closedLevel) {
+        && !opd->ClosedLevel(ckd)) {
           ((SynObject*)opd)->SetError(ckd,&ERR_Closed);
           ok = false;
         }
@@ -6479,7 +6512,7 @@ bool CloneExpression::Check (CheckData &ckd)
   ENTRY
   ok &= ((SynObject*)fromObj.ptr)->Check(ckd);
   if (!IsPH(fromObj.ptr)
-    && ((Expression*)fromObj.ptr)->closedLevel) {
+    && ((Expression*)fromObj.ptr)->ClosedLevel(ckd)) {
       ((SynObject*)fromObj.ptr)->SetError(ckd,&ERR_clone_copy_inp_closed);
       ok = false;
   }
@@ -6534,7 +6567,7 @@ bool CopyStatement::Check (CheckData &ckd)
 
   ok &= source->Check(ckd);
   if (!IsPH(fromObj.ptr)
-    && ((Expression*)fromObj.ptr)->closedLevel) {
+    && ((Expression*)fromObj.ptr)->ClosedLevel(ckd)) {
       ((SynObject*)fromObj.ptr)->SetError(ckd,&ERR_clone_copy_inp_closed);
       ok = false;
   }
