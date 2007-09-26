@@ -339,7 +339,7 @@ void LavaBaseStringInit() {
   ERR_Closed  = QObject::tr("A (possibly) not yet fully initialized object may be assigned only to a \"closed\" variable or formal parameter");
   ERR_ShouldBeClosed  = QObject::tr(" Variable to be initialized must be declared \"closed\" since initializer has \"closed\" actual input parameter(s)");
   ERR_CallObjClosed  = QObject::tr("This call object is \"closed\", so the function must have the \"self is closed\" attribute");
-  ERR_ClosedVar  = QObject::tr("\"Closed\" variable: member access forbidden");
+  ERR_ClosedVar  = QObject::tr("\"Closed\" variable: access to member variables forbidden");
   ERR_SelfUnfinished  = QObject::tr("\"self\" may be still unfinished here: member access forbidden");
   ERR_SelfNotClosed  = QObject::tr("Call object still incomplete here, so the called function must have the \"self is closed\" attribute");
   ERR_SelfUnfinishedCallObj  = QObject::tr("""self"" must be completely initialized before its methods may be called, or the method must have the \"self is closed\" attribute");

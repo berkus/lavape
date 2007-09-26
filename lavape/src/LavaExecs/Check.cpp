@@ -3337,22 +3337,10 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
     }
     else {
       ((CHE*)refIDs.first)->successor = secondChe;
-      if (refIDs.first == refIDs.last) {
-        //if (wacc && wacc->isClosedQuantVar && parentObject->primaryToken == parameter_T) {
-        //  formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
-        //  if (!formParmDecl)
-        //    return ok;
-        //  if (!formParmDecl->SecondTFlags.Contains(closed)) {
-        //    ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_Closed);
-        //    ok = false;
-        //  }
-        //}
+      if (refIDs.first != refIDs.last && ClosedLevel(ckd)) {
+        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ClosedVar);
+        ok = false;
       }
-      else 
-        if (ClosedLevel(ckd)) {
-          ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ClosedVar);
-          ok = false;
-        }
     }
     ((CHE*)refIDs.first)->successor = secondChe;
   }
