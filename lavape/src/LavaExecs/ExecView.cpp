@@ -5540,11 +5540,14 @@ void CExecView::OnToggleClosed()
 {
   if (!EditOK()) return;
 
-  if (text->currentSynObj->flags.Contains(isClosed)) {
+  if (((SynObject*)text->currentSynObj)->flags.Contains(isClosed)) {
     PutDelFlagHint(SET(isClosed,-1));
+    ((Expression*)text->currentSynObj)->closedLevel = INT_MAX;
   }
-  else
+  else {
     PutInsFlagHint(SET(isClosed,-1));
+    ((Expression*)text->currentSynObj)->closedLevel = 0;
+  }
 }
 
 void CExecView::OnToggleParmNames()

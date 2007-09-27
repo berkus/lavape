@@ -17,6 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
+#include <limits.h>
 #include "qstring.h"
 
 #include "PEBaseDoc.h"
@@ -971,15 +972,8 @@ bool SynObject::UpdateReference (CheckData &ckd) {
           ((TDOD*)che->data)->flags.INCL(isSubstitutable);
         else
           ((TDOD*)che->data)->flags.EXCL(isSubstitutable);
-        if (((VarName*)dw)->flags.Contains(isClosed)) {
-          ((TDOD*)che->data)->flags.INCL(isClosed);
-          if (objRef->refIDs.first == objRef->refIDs.last)
-            objRef->flags.INCL(isClosed);
-        }
-        else {
-          ((TDOD*)che->data)->flags.EXCL(isClosed);
-          objRef->flags.EXCL(isClosed);
-        }
+        if (objRef->refIDs.first == objRef->refIDs.last)
+          objRef->closedLevel = ((VarName*)dw)->ClosedLevel(ckd);
         ((TDOD*)che->data)->parentObject = objRef;
         ((VarName*)dw)->ExprGetFVType(ckd,startDeclV,cat,ctxFlags);
         if (objRef->flags.Contains(isSelfVar))
@@ -1008,10 +1002,7 @@ bool SynObject::UpdateReference (CheckData &ckd) {
             objRef->flags.INCL(isSubstitutable);
           else
             objRef->flags.EXCL(isSubstitutable);
-          if (((VarName*)dw)->flags.Contains(isClosed))
-            objRef->flags.INCL(isClosed);
-          else
-            objRef->flags.EXCL(isClosed);
+          objRef->closedLevel = ((VarName*)dw)->ClosedLevel(ckd);
         }
         che = (CHE*)che->successor;
         if (che)
@@ -1048,9 +1039,9 @@ bool SynObject::UpdateReference (CheckData &ckd) {
         ((TDOD*)che->data)->flags.EXCL(isOptionalExpr);
       }
       if (decl->SecondTFlags.Contains(closed))
-        objRef->flags.INCL(isClosed);
+        objRef->closedLevel = INT_MAX;
       else
-        objRef->flags.EXCL(isClosed);
+        objRef->closedLevel = 0;
       if (!VerifyObj(ckd,che,objRef->refName,objRef)) {
         objRef->flags.INCL(brokenRef);
         ok = false;
@@ -2068,9 +2059,9 @@ bool SelfVar::Check (CheckData &ckd)
     if (!execDECL->ParentDECL->TypeFlags.Contains(isInitializer)
     && !execDECL->ParentDECL->TypeFlags.Contains(isStatic)) // normal virtual function
       if (execDECL->ParentDECL->SecondTFlags.Contains(closed))
-        flags.INCL(isClosed); // self is closed
+        closedLevel = INT_MAX; // self is closed
       else
-        flags.EXCL(isClosed); // self isn't closed
+        closedLevel = 0; // self isn't closed
 
   }
   else {
@@ -3320,8 +3311,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   }
   else if 
     //(flags.Contains(isSelfVar) && 
-  (flags.Contains(isClosed)
-  && refIDs.first != refIDs.last) {
+  (ClosedLevel(ckd) && refIDs.first != refIDs.last) {
     ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ClosedVar);
     ok = false;
   }
@@ -3693,12 +3683,16 @@ Reference *VarName::TypeRef ()
 bool VarName::Check (CheckData &ckd)
 {
   ENTRY
-  if (primaryToken == VarName_T) {
-  }
-#ifdef INTERPRETER
-  else
-    SetError(ckd,&ERR_Placeholder);
-#endif
+  //if (primaryToken == VarName_T) {
+    if (flags.Contains(isClosed))
+      closedLevel = INT_MAX;
+    else
+      closedLevel = 0;
+//  }
+//#ifdef INTERPRETER
+//  else
+//    SetError(ckd,&ERR_Placeholder);
+//#endif
   EXIT
 }
 
@@ -4494,12 +4488,12 @@ bool FuncExpression::Check (CheckData &ckd)
   && flags.Contains(isIniCallOrHandle)) {
     if (parentObject->primaryToken != new_T) {
       ((CWriteAccess*)((CHE*)((RefTable*)ckd.refTable)->refTableEntries.last)->data)->closedVarLevel =closedLevel;
-      if (!((SynObject*)handle.ptr)->flags.Contains(isClosed)) {
+      if (!((Expression*)handle.ptr)->ClosedLevel(ckd)) {
         ((SynObject*)handle.ptr)->SetError(ckd,&ERR_ShouldBeClosed);
         ok &= false;
       }
     }
-    ((SynObject*)handle.ptr)->flags.INCL(isClosed);
+    ((Expression*)handle.ptr)->closedLevel = INT_MAX;
   }
 
 #ifdef INTERPRETER
