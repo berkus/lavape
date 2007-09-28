@@ -3311,7 +3311,7 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   }
   else if 
     //(flags.Contains(isSelfVar) && 
-  (ClosedLevel(ckd) && refIDs.first != refIDs.last) {
+  (ClosedLevel(ckd,true) && refIDs.first != refIDs.last) {
     ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ClosedVar);
     ok = false;
   }
@@ -3686,8 +3686,8 @@ bool VarName::Check (CheckData &ckd)
   //if (primaryToken == VarName_T) {
     if (flags.Contains(isClosed))
       closedLevel = INT_MAX;
-    else
-      closedLevel = 0;
+    //else
+    //  closedLevel = 0;
 //  }
 //#ifdef INTERPRETER
 //  else
@@ -4545,7 +4545,7 @@ bool Expression::CallCheck (CheckData &ckd) {
   return ok;
 }
 
-int Expression::ClosedLevel(CheckData &ckd) {
+int Expression::ClosedLevel(CheckData &ckd, bool ofBaseVar) {
 /* Required since for ObjReferences the closedLevel may
   involve recursion and therefore may be still unknown
   during the closedLevel computation stage of the
@@ -4561,15 +4561,32 @@ int Expression::ClosedLevel(CheckData &ckd) {
     expr = (Expression*)((Parameter*)this)->parameter.ptr;
   if (expr->primaryToken == ObjRef_T) {
     obj = (ObjReference*)expr;
+    dw = ckd.document->IDTable.GetVar(((TDOD*)((CHE*)obj->refIDs.first)->data)->ID,idtype);
+    if (!dw) return 0;
+    vn = (VarName*)dw;
+
     if (obj->refIDs.first == obj->refIDs.last) {
-      dw = ckd.document->IDTable.GetVar(((TDOD*)((CHE*)obj->refIDs.first)->data)->ID,idtype);
-      if (!dw) return 0;
       if (idtype == localID) {
-        vn = (VarName*)dw;
-        return vn->closedLevel;
+        if (vn->closedLevel == INT_MAX)
+          return INT_MAX;
+        else if (ckd.inIniClause)
+          return vn->closedLevel;
+        else
+          return 0;
       }
       else
-        return 0;
+        return vn->closedLevel;
+    }
+    else if (ofBaseVar) {
+      if (ckd.inIniClause)
+        return vn->closedLevel;
+      else if (idtype == localID)
+        if (vn->closedLevel == INT_MAX)
+          return INT_MAX;
+        else
+          return 0;
+      else
+        return vn->closedLevel;
     }
     else
       return 0;
@@ -4577,6 +4594,7 @@ int Expression::ClosedLevel(CheckData &ckd) {
   else
     return closedLevel;
 }
+    
 
 bool FuncStatement::Check (CheckData &ckd)
 {
@@ -6019,7 +6037,8 @@ bool Quantifier::Check(CheckData &ckd)
       opd = 0;
     else {
       opd = (VarName*)opdPH;
-      opd->closedLevel = -1;
+      if (isDclWithIni)
+        opd->closedLevel = -1;
     }
     ok &= opdPH->Check(ckd);
     if (isDclWithIni) {

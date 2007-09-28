@@ -1363,12 +1363,10 @@ void CExecView::Select (SynObject *selObj)
   bool isSigFunc;
 
  if (selObj) {
-    if (selObj->InHiddenIniClause(text->ckd,typeRef)) {
+    if (selObj->InHiddenIniClause(text->ckd,typeRef))
       text->Select(typeRef);
-    }
-    else if (selObj->primaryToken == parameter_T) {
+    else if (selObj->primaryToken == parameter_T)
       text->Select((SynObject*)((Parameter*)selObj)->parameter.ptr);
-    }
     else if (selObj->type == elsif_T) {
       if (selObj->parentObject->primaryToken == if_T)
         text->newSelection = ((IfThen*)selObj)->thenToken;
@@ -2360,8 +2358,8 @@ void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLas
     pred);
 
   myDoc->UndoMem.AddToMem(nextHint);
-  if (firstLastHint.Contains(lastHint))
-    myDoc->UpdateDoc(this, false);
+  //if (firstLastHint.Contains(lastHint))
+    myDoc->UpdateDoc(this, false, nextHint);
 }
 
 
@@ -3282,11 +3280,6 @@ void CExecView::OnInsert()
     InsertBefore();
   else
     InsertAfter();
-  //if (text->currentSelection->data.token == VarPH_T) {
-  //  doubleClick = true;
-  //  Select();
-    //doubleClick = false;
-  //}
 }
 
 void CExecView::OnInsertBefore()

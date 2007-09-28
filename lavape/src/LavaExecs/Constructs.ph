@@ -528,7 +528,7 @@ public:
   
   int-- closedLevel;
   
-  int ClosedLevel(CheckData &ckd);
+  int ClosedLevel(CheckData &ckd, bool ofBaseVar=false);
   
   LavaDECL-- *formVType, *finalType;
   int-- sectionNumber; // section number of formal parameter type in the type of actual parameter

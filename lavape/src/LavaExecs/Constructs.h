@@ -829,7 +829,7 @@ class Expression : public SynObject {
     closedLevel=0;
   }
   int closedLevel;
-  int ClosedLevel(CheckData &ckd);
+  int ClosedLevel(CheckData &ckd,bool ofBaseVar=false);
   LavaDECL *formVType, *finalType;
   int sectionNumber;
   int vSectionNumber;
