@@ -3433,6 +3433,11 @@ quantCase:
 
   default:
 deflt:
+    if (text->currentSynObj->primaryToken = quant_T) {
+      if (text->currentSynObj->parentObject->primaryToken == declare_T)
+        withSet = false;
+      goto quantCase;
+    }
     if (text->currentSynObj->parentObject
     && text->currentSynObj->parentObject->IsFuncInvocation()
     && !text->currentSynObj->containingChain)
@@ -3599,6 +3604,11 @@ quantCase:
 
   default:
 deflt:
+    if (text->currentSynObj->primaryToken = quant_T) {
+      if (text->currentSynObj->parentObject->primaryToken == declare_T)
+        withSet = false;
+      goto quantCase;
+    }
     if (text->currentSynObj->parentObject
     && text->currentSynObj->parentObject->IsFuncInvocation()
     && !text->currentSynObj->containingChain)
@@ -6887,6 +6897,7 @@ bool CExecView::EnableInsert()
             && text->currentSynObj->primaryToken == quant_T)
         || text->currentSelection->data.token == case_T
         || text->currentSelection->data.token == caseType_T)
+    || (text->currentSynObj->primaryToken == quant_T)
     || ((text->currentSelection->data.token == TypePH_T
         || text->currentSelection->data.token == TypePHopt_T
         || text->currentSelection->data.token == TypeRef_T
