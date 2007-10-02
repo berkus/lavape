@@ -6014,7 +6014,7 @@ bool Quantifier::Check(CheckData &ckd)
   Category elemCat, typeCat;
   SynFlags ctxFlags;
   bool isDclWithIni=parentObject->IsDeclare() && ((Declare*)parentObject)->secondaryClause.ptr;
-  CHE *cic, *newChe;
+  CHE *currIC, *newChe;
 #ifdef INTERPRETER
   unsigned nQuantVars=0;
   bool isSetQuant=NoPH(set.ptr)
@@ -6043,9 +6043,9 @@ bool Quantifier::Check(CheckData &ckd)
     ok &= opdPH->Check(ckd);
     if (isDclWithIni) {
       if (ckd.precedingIniCall) {
-        cic = (CHE*)ckd.precedingIniCall->successor;
-        opdPH->iniCall = (FuncStatement*)cic->data;
-        ckd.precedingIniCall = cic;
+        currIC = (CHE*)ckd.precedingIniCall->successor;
+        opdPH->iniCall = (FuncStatement*)currIC->data;
+        ckd.precedingIniCall = currIC;
       }
       else if (((SynObject*)ckd.firstIniCall)->parentObject->primaryToken == Semicolon_T) {
         opdPH->iniCall = (FuncStatement*)((CHE*)((SynObject*)ckd.firstIniCall)->whereInParent)->data;
@@ -6053,6 +6053,7 @@ bool Quantifier::Check(CheckData &ckd)
       }
       else
         opdPH->iniCall = (FuncStatement*)ckd.firstIniCall;
+
       if (opd) {
         tdod = new TDOD();
         tdod->name = opd->varName;

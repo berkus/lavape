@@ -2380,7 +2380,7 @@ void CExecView::PutInsMultOpHint(SynObject *multOp, SET firstLastHint) {
 }
 
 void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall, bool replace) {
-  FuncStatement *funcStm, *precIniCall=0;
+  FuncStatement *funcStm, *precIniCall=0, *succIniCall;
   MultipleOp *multOp;
   VarName *varName;
   ObjReference *varRef;
@@ -2403,8 +2403,10 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall,
     precIniCall = ((SynObject*)precV->data)->iniCall;
   }
   else if (!((CHE*)currVarItem->whereInParent)->successor
-  && !((CHE*)currVarItem->parentObject->whereInParent)->successor)
+  && !((CHE*)currVarItem->parentObject->whereInParent)->successor) {
     isFirst = true;
+    chx = 0;
+  }
 
   // build the ini call
   if (currVarItem->IsPlaceHolder()) {
@@ -2438,9 +2440,24 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall,
     funcStm->whereInParent = &dcl->secondaryClause.ptr;
     PutInsHint(funcStm);
   }
-  else { // insert new or replace existing ini call 
-    chx=precIniCall->containingChain;
-    che=(CHE*)precIniCall->whereInParent;
+  else { // insert new or replace existing ini call
+    if (precIniCall) {
+      chx=precIniCall->containingChain;
+      che=(CHE*)precIniCall->whereInParent;
+    }
+    else if (((CHE*)currVarItem->whereInParent)->successor) {
+      che = (CHE*)((CHE*)currVarItem->whereInParent)->successor;
+      succIniCall = ((VarName*)che->data)->iniCall;
+      chx=succIniCall->containingChain;
+      che = 0;
+    }
+    else {
+      che = (CHE*)((CHE*)currVarItem->parentObject->whereInParent)->successor;
+      succIniCall = ((VarName*)((CHE*)((Quantifier*)che->data)->quantVars.first)->data)->iniCall;
+      chx=succIniCall->containingChain;
+      che = 0;
+    }
+
     newChe = NewCHE(funcStm);
     funcStm->whereInParent = (address)newChe;
     if (after)
@@ -2461,10 +2478,8 @@ void CExecView::PutIniCall(SynObject *currVarItem, bool after, bool onlyIniCall,
         PutInsChainHint(newChe,chx,(CHE*)multOp->operands.first,SET(lastHint,-1));
      }
     else {
-      if (chx) {
-        che = (CHE*)((CHE*)currVarItem->iniCall->whereInParent)->predecessor;
+      if (chx)
         PutInsChainHint(newChe,chx,che,onlyIniCall?SET(firstHint,lastHint,-1):SET(lastHint,-1));
-      }
       else {
         multOp = new SemicolonOpV;
         text->currentSynObj = currVarItem->iniCall;
