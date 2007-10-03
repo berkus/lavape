@@ -2328,7 +2328,7 @@ void CExecView::PutDelFlagHint(SET delFlags, SET firstLastHint) {
     myDoc->UpdateDoc(this, false);
 }
 
-void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint, bool now) {
+void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint) {
   nextHint = new CLavaPEHint(
     CPECommand_Exec,
     myDoc,
@@ -2341,7 +2341,7 @@ void CExecView::PutInsHint(SynObject *insObj, SET firstLastHint, bool now) {
     text->currentSynObj->whereInParent);
 
   myDoc->UndoMem.AddToMem(nextHint);
-  if (now || firstLastHint.Contains(lastHint))
+  //if (firstLastHint.Contains(lastHint))
     myDoc->UpdateDoc(this,false,nextHint);
 }
 
@@ -2359,7 +2359,7 @@ void CExecView::PutInsChainHint(CHE *newChe,CHAINX *chain,CHE *pred,SET firstLas
 
   myDoc->UndoMem.AddToMem(nextHint);
   //if (firstLastHint.Contains(lastHint))
-    myDoc->UpdateDoc(this, false, nextHint);
+    myDoc->UpdateDoc(this,false,nextHint);
 }
 
 
@@ -2376,6 +2376,7 @@ void CExecView::PutInsMultOpHint(SynObject *multOp, SET firstLastHint) {
     text->currentSynObj->whereInParent);
 
   myDoc->UndoMem.AddToMem(nextHint);
+  myDoc->UpdateDoc(this,false,nextHint);
   nextHint = 0;
 }
 
@@ -3431,11 +3432,11 @@ quantCase:
     newVarItem = new SynObjectV(VarPH_T);
     newChe = NewCHE(newVarItem);
     qf = (Quantifier*)text->currentSynObj;
-    newVarItem->parentObject = qf;
-    newVarItem->whereInParent = (address)newChe;
-	  newVarItem->containingChain = &qf->quantVars;
-    newChe->predecessor = (CHE*)currVarItem->whereInParent;
-    //:needed in PutIniCall though PutInsChainHint isn't executed immediately
+   // newVarItem->parentObject = qf;
+   // newVarItem->whereInParent = (address)newChe;
+	  //newVarItem->containingChain = &qf->quantVars;
+   // newChe->predecessor = (CHE*)currVarItem->whereInParent;
+    //:needed in PutIniCall although PutInsChainHint isn't executed immediately
     text->selectAt = newVarItem;
     if (text->currentSynObj->parentObject->IsDeclare()
     && ((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr) {
@@ -3604,9 +3605,10 @@ quantCase:
     newVarItem = new SynObjectV(VarPH_T);
     newChe = NewCHE(newVarItem);
     qf = (Quantifier*)text->currentSynObj;
-    newVarItem->parentObject = qf;
-    newVarItem->whereInParent = (address)newChe;
-    newVarItem->containingChain = (CHAINX*)chx;
+    //newVarItem->parentObject = qf;
+    //newVarItem->whereInParent = (address)newChe;
+    //newVarItem->containingChain = (CHAINX*)chx;
+    ////:needed in PutIniCall although PutInsChainHint isn't executed immediately
     if (text->currentSynObj->parentObject->IsDeclare()
     && ((Declare*)text->currentSynObj->parentObject)->secondaryClause.ptr) {
       PutInsChainHint(newChe,chx,che,SET(firstHint,-1));
@@ -4429,7 +4431,6 @@ bool CExecView::EditOK()
       str = editCtl->text();
       if (editToken == VarName_T) {
         varName = new VarNameV(str.toAscii());
-        varName->parentObject = text->currentSynObj->parentObject;
         if (text->currentSynObj->primaryToken == VarName_T) {
           varName->varID = ((VarName*)text->currentSynObj)->varID;
           varName->flags = text->currentSynObj->flags;
@@ -4437,7 +4438,7 @@ bool CExecView::EditOK()
         if (text->currentSynObj->parentObject->parentObject->IsDeclare()) {
           dcl = (Declare*)text->currentSynObj->parentObject->parentObject;
           if (dcl->secondaryClause.ptr) {
-            PutInsHint(varName,SET(firstHint,-1),true);
+            PutInsHint(varName,SET(firstHint,-1));
             PutIniCall(varName,true,false,true);
           }
           else
