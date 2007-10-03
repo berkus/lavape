@@ -4554,6 +4554,7 @@ int Expression::ClosedLevel(CheckData &ckd, bool ofBaseVar) {
   DWORD dw;
   TIDType idtype;
   VarName *vn;
+  LavaDECL *decl;
   ObjReference *obj;
   Expression *expr=this;
 
@@ -4574,19 +4575,28 @@ int Expression::ClosedLevel(CheckData &ckd, bool ofBaseVar) {
         else
           return 0;
       }
-      else
-        return vn->closedLevel;
+      else {
+        decl = *(LavaDECL**)dw;
+        if (decl->SecondTFlags.Contains(closed))
+          return INT_MAX;
+        else
+          return 0;
+      }
     }
     else if (ofBaseVar) {
       if (ckd.inIniClause)
         return vn->closedLevel;
       else if (idtype == localID)
         if (vn->closedLevel == INT_MAX)
-          return INT_MAX;
+          return vn->closedLevel;
         else
           return 0;
       else
-        return vn->closedLevel;
+        decl = *(LavaDECL**)dw;
+        if (decl->SecondTFlags.Contains(closed))
+          return INT_MAX;
+        else
+          return 0;
     }
     else
       return 0;
