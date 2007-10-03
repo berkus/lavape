@@ -357,6 +357,7 @@ struct LAVABASE_DLL CheckData {
     inQuant = false;
     inInitialUpdate = false;
     inIniClause = false;
+    iniVar = 0;
     immediateReturn = false;
     precedingIniCall = 0;
   };
@@ -366,7 +367,7 @@ struct LAVABASE_DLL CheckData {
   CVAttrDesc *attrDesc;
   LavaObjectPtr lastException, stackFrame[3];
   QString callStack;
-  SynObjectBase /*SelfVar*/ *selfVar, /*SuccStatement*/*succeed;
+  SynObjectBase *selfVar, *succeed, *iniVar;
   CContext lpc;          //vorher *execIC, *execOC
   CContext tempCtx;  //vorher *iC, *oC
   wxView *execView;
@@ -375,11 +376,12 @@ struct LAVABASE_DLL CheckData {
   void *refTable; // actually of type Constructs.ph::RefTable*
   unsigned
     currentStackLevel,
+    currVarIndex,
     stackFrameSize,
     nPlaceholders,
     nErrors,
     inINCL,
-	iArg;
+	  iArg;
   QString *errorCode;
   Category callObjCat;
   bool stateObj, iniCheck, concernExecs, criticalScope, handleOpd,

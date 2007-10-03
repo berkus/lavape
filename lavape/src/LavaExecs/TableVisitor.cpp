@@ -329,7 +329,7 @@ void TableVisitor::VisitSynObject (SynObject *obj,SynObject *parent,address wher
     && dclStm->secondaryClause.ptr
     && obj->whereInParent == quant->quantVars.first
     && quant->whereInParent == dclStm->quantifiers.first) {
-      currIniOrder = 1;
+      //currIniOrder = 1;
       if (((SynObject*)dclStm->secondaryClause.ptr)->IsFuncInvocation()) {
         currIniCall = (FuncStatement*)dclStm->secondaryClause.ptr;
         currIniCallChp = 0;
@@ -342,7 +342,7 @@ void TableVisitor::VisitSynObject (SynObject *obj,SynObject *parent,address wher
 
     obj->iniCall = currIniCall;
     currIniCall->varName = obj;
-    currIniOrder++;
+    //currIniOrder++;
     if (currIniCallChp) {
       currIniCallChp = (CHE*)currIniCallChp->successor;
       if (currIniCallChp)
@@ -363,7 +363,7 @@ void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CH
     && dclStm->secondaryClause.ptr) {
       if (obj->whereInParent == quant->quantVars.first
       && quant->whereInParent == dclStm->quantifiers.first) {
-        currIniOrder = 1;
+        //currIniOrder = 1;
         if (((SynObject*)dclStm->secondaryClause.ptr)->IsFuncInvocation()) {
           currIniCall = (FuncStatement*)dclStm->secondaryClause.ptr;
           currIniCallChp = 0;
@@ -375,7 +375,7 @@ void TableVisitor::VisitVarName (VarName *obj,SynObject *parent,address where,CH
       }
       obj->iniCall = currIniCall;
       currIniCall->varName = obj;
-      obj->iniOrder = currIniOrder++;
+      //obj->iniOrder = currIniOrder++;
       if (currIniCallChp) {
         currIniCallChp = (CHE*)currIniCallChp->successor;
         if (currIniCallChp)

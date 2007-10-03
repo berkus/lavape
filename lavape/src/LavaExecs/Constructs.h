@@ -1015,7 +1015,7 @@ class VarName : public Expression {
   STRING varName;
   TID varID;
   VarName *nextLocal;
-  unsigned stackPos, iniOrder;
+  unsigned stackPos, varIndex;
   virtual void ExprGetFVType(CheckData &ckd,LavaDECL *&decl,Category &cat,SynFlags &ctxFlags);
   Reference *TypeRef();
   virtual bool IsPlaceHolder()
@@ -4314,7 +4314,7 @@ public:
   SynObject *parent;
   FuncStatement *currIniCall;
   CHE *currIniCallChp;
-  unsigned currIniOrder;
+//  unsigned currIniOrder;
   TTableUpdate update;
   address where;
   CHAINX *chxp;
@@ -4325,13 +4325,13 @@ public:
 	    int inINCL,
 	    TTableUpdate update,
 	    address searchData) {
-  this->table = table;
-  this->inINCL = inINCL;
-  this->update = update;
-  this->searchData = searchData;
-  currIniCallChp = 0;
-  currIniCall = 0;
-	}
+    this->table = table;
+    this->inINCL = inINCL;
+    this->update = update;
+    this->searchData = searchData;
+//    currIniCallChp = 0;
+//    currIniCall = 0;
+  }
 	
   virtual void Eval (SynObject *self,SynObject *parent,address where,CHAINX *chxp);
   
@@ -4360,7 +4360,7 @@ public:
 
   ClosedLevelVisitor (CLavaBaseDoc *doc, VarName *iniVar, ClosedLevelVisitor *pred) {
     document = doc;
-    maxClosedLevel = iniVar->iniOrder;
+    maxClosedLevel = iniVar->varIndex;
     currIniVar = iniVar;
     predecessor = pred;
   }

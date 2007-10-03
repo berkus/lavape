@@ -627,6 +627,7 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
   Category actCat, formCat;
   CContext callContext=callCtx;
   SynFlags ctxFlags;
+  int closedLevel;
 
   parm->ExprGetFVType(ckd,actTypeDecl,actCat,ctxFlags);
   if (actTypeDecl == (LavaDECL*)-1)
@@ -645,11 +646,20 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
     actSynObj->SetError(ckd,&ERR_Optional);
     ok &= false;
   }
-  if (actSynObj->ClosedLevel(ckd)
-  && !formDecl->SecondTFlags.Contains(closed)) {
-    actSynObj->SetError(ckd,&ERR_Closed);
-    ok &= false;
-  }
+
+  closedLevel = actSynObj->ClosedLevel(ckd);
+  if (closedLevel && !formDecl->SecondTFlags.Contains(closed))
+    if (ckd.inIniClause) {
+      if (closedLevel >= (int)((VarName*)ckd.iniVar)->varIndex) {
+        actSynObj->SetError(ckd,&ERR_Closed);
+        ok &= false;
+      }
+    }
+    else {
+      actSynObj->SetError(ckd,&ERR_Closed);
+      ok &= false;
+    }
+
   if (parm->flags.Contains(isSelfVar)) {
     if (parm->parentObject->parentObject->primaryToken != initializing_T
     && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
@@ -3693,6 +3703,7 @@ bool VarName::Check (CheckData &ckd)
 //  else
 //    SetError(ckd,&ERR_Placeholder);
 //#endif
+  varIndex = ckd.currVarIndex++;
   EXIT
 }
 
@@ -4626,6 +4637,13 @@ bool FuncStatement::Check (CheckData &ckd)
 #endif
 
   ENTRY
+
+  if (ckd.inIniClause
+  && flags.Contains(isIniCallOrHandle)
+  && (parentObject->primaryToken == declare_T
+      || (parentObject->primaryToken == Semicolon_T
+          && parentObject->parentObject->primaryToken == declare_T)))
+    ckd.iniVar = varName; // for compatibleInput/closed check
 
   oldError1 = oldError;
   ok &= FuncExpression::Check(ckd);
@@ -6205,6 +6223,8 @@ bool QuantStmOrExp::Check (CheckData &ckd)
     else // semicolon op.
       ckd.firstIniCall = (SynObject*)((CHE*)((SemicolonOp*)((Declare*)this)->secondaryClause.ptr)->operands.first)->data;
   }
+
+  ckd.currVarIndex = 1;
   for (chp = (CHE*)quantifiers.first;
        chp;
        chp = (CHE*)chp->successor) {
