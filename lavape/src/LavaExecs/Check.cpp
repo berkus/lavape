@@ -2066,12 +2066,17 @@ bool SelfVar::Check (CheckData &ckd)
       ckd.lpc.ContextFlags.INCL(staticContext);
     else
       ckd.lpc.ContextFlags.EXCL(staticContext);
-    if (!execDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-    && !execDECL->ParentDECL->TypeFlags.Contains(isStatic)) // normal virtual function
-      if (execDECL->ParentDECL->SecondTFlags.Contains(closed))
+
+    closedLevel = 0; // self isn't closed
+    if (execDECL->ParentDECL->TypeFlags.Contains(isInitializer)) {
+      if (execDECL->ParentDECL->SecondTFlags.Contains(hasClosedInput))
         closedLevel = INT_MAX; // self is closed
-      else
-        closedLevel = 0; // self isn't closed
+    }
+    else {
+      if (!execDECL->ParentDECL->TypeFlags.Contains(isStatic) // normal virtual function
+      && execDECL->ParentDECL->SecondTFlags.Contains(closed))
+        closedLevel = INT_MAX; // self is closed
+    }
 
   }
   else {
