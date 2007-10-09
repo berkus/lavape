@@ -117,6 +117,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
+			DeleteExtensionsOnClean="*.obj;*.dll;*.ilk;*.tlb;*.tli;*.tlh;*.tmp;*.rsp;*.pgc;*.pgd;*.meta;$(TargetPath)"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -232,7 +233,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
+						PreprocessorDefinitions="INTERPRETER"
 						UsePrecompiledHeader="2"
 						PrecompiledHeaderThrough=""
 						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
@@ -321,7 +322,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
+						PreprocessorDefinitions="INTERPRETER"
 						UsePrecompiledHeader="2"
 						PrecompiledHeaderThrough=""
 						PrecompiledHeaderFile="PCH\Interpreter_all.pch"

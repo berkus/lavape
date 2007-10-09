@@ -2300,15 +2300,47 @@ bool DeclareX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
   unsigned i;
   bool result;
   unsigned stackLevel = ckd.currentStackLevel;
+  CHE *chpQuant, *chpVar;
+  LavaObjectPtr object;
 
 //  STOP_AT_STM(ckd, stackFrame, true)
 
-  for ( i = stackLevel;
-        i < stackLevel+nQuantVars;
-        i++)
-    stackFrame[i] = 0;
+  if ((SynObject*)secondaryClause.ptr) {
+    i = stackLevel;
+    for (chpQuant = (CHE*)quantifiers.first;
+         chpQuant;
+         chpQuant = (CHE*)chpQuant->successor) {
+      for (chpVar = (CHE*)((Quantifier*)chpQuant->data)->quantVars.first;
+          chpVar;
+          chpVar = (CHE*)chpVar->successor) {
+            object = AllocateObject(ckd,((Quantifier*)chpQuant->data)->typeDecl,((Reference*)((Quantifier*)chpQuant->data)->elemType.ptr)->flags.Contains(isVariable));
+        if (!object) {
+          if (!ckd.exceptionThrown)
+            SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+          return false;
+        }
+        stackFrame[i++] = object;
+      }
+    }
+  }
+  else 
+    for ( i = stackLevel;
+          i < stackLevel+nQuantVars;
+          i++)
+      stackFrame[i] = 0;
+
   ckd.currentStackLevel += nQuantVars;
+
+  if ((SynObject*)secondaryClause.ptr) {
+    result = ((SynObject*)secondaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+    if (!result) {
+      if (!ckd.exceptionThrown)
+        SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+      return false;
+    }
+  }
   result = ((SynObject*)primaryClause.ptr)->Execute(ckd,stackFrame,oldExprLevel);
+
   for ( i = stackLevel;
         i < stackLevel+nQuantVars;
         i++)

@@ -6047,6 +6047,7 @@ bool Quantifier::Check(CheckData &ckd)
   bool isDclWithIni=parentObject->IsDeclare() && ((Declare*)parentObject)->secondaryClause.ptr;
   CHE *currIC, *newChe;
 #ifdef INTERPRETER
+  Category cat;
   unsigned nQuantVars=0;
   bool isSetQuant=NoPH(set.ptr)
     && !((SynObject*)set.ptr)->IsIntIntv()
@@ -6118,6 +6119,11 @@ bool Quantifier::Check(CheckData &ckd)
 #ifdef INTERPRETER
   ckd.currentStackLevel += nQuantVars;
   ((QuantStmOrExp*)parentObject)->nQuantVars += nQuantVars;
+
+  if (isDclWithIni) {
+    ((SynObject*)elemType.ptr)->ExprGetFVType(ckd,typeDecl,cat,ctxFlags);
+    typeDecl = ckd.document->GetType(typeDecl);
+  }
 #endif
 
   if (NoPH(set.ptr)) {
