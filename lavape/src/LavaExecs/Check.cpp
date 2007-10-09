@@ -3298,37 +3298,39 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
   LavaDECL *formParmDecl;
   CWriteAccess *wacc=0;
 
-  if (flags.Contains(isSelfVar)
-  && refIDs.first == refIDs.last
-  && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-  && parentObject->primaryToken == parameter_T) {
-    formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
-    if (!formParmDecl)
-      return ok;
-    if (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-    && !formParmDecl->SecondTFlags.Contains(closed)) {
-      ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
-      ok = false;
+  if (flags.Contains(isSelfVar)) {
+    if (refIDs.first == refIDs.last
+    && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+    && parentObject->primaryToken == parameter_T) {
+      formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
+      if (!formParmDecl)
+        return ok;
+      if (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+      && !formParmDecl->SecondTFlags.Contains(closed)) {
+        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
+        return false;
+      }
     }
-  }
-  else if (flags.Contains(isSelfVar)
-  && refIDs.first == refIDs.last
-  && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-  && parentObject->primaryToken == parameter_T) {
-    formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
-    if (!formParmDecl)
-      return ok;
-    if (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-    && !formParmDecl->SecondTFlags.Contains(closed)) {
-      ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
-      ok = false;
+    else if (refIDs.first == refIDs.last
+    && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+    && parentObject->primaryToken == parameter_T) {
+      formParmDecl = ckd.document->IDTable.GetDECL(((Parameter*)parentObject)->formParmID,ckd.inINCL);
+      if (!formParmDecl)
+        return ok;
+      if (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+      && !formParmDecl->SecondTFlags.Contains(closed)) {
+        ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
+        return false;
+      }
     }
-  }
-  else if 
-    //(flags.Contains(isSelfVar) && 
-  (ClosedLevel(ckd,true) && refIDs.first != refIDs.last) {
-    ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ClosedVar);
-    ok = false;
+    else if (refIDs.first != refIDs.last
+    && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+    && !Inherited(ckd)
+    && (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+        || ((SelfVar*)ckd.selfVar)->ClosedLevel(ckd))) {
+      ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinished);
+      return false;
+    }
   }
 
   if (flags.Contains(isDeclareVar)
@@ -3344,22 +3346,18 @@ bool ObjReference::ReadCheck (CheckData &ckd) {
       ((CHE*)refIDs.first)->successor = secondChe;
       if (refIDs.first != refIDs.last && ClosedLevel(ckd)) {
         ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ClosedVar);
-        ok = false;
+        return false;
       }
     }
     ((CHE*)refIDs.first)->successor = secondChe;
   }
-  else if (flags.Contains(isSelfVar)
-  && refIDs.first != refIDs.last
-  && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-  && !Inherited(ckd)
-  && (!((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-      || ((SelfVar*)ckd.selfVar)->ClosedLevel(ckd))) {
-    ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinished);
+    
+  if (ClosedLevel(ckd,true) && refIDs.first != refIDs.last) {
+    ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_ClosedVar);
     return false;
   }
 
-  return ok;
+  return true;
 }
 
 bool ObjReference::Inherited (CheckData &ckd) {
