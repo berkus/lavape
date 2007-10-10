@@ -171,7 +171,7 @@ int GetObjectLength(LavaDECL* typeDECL)
 }
 
 
-bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) {
+bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
   CSectionDesc* secTab;
   LavaObjectPtr sectionPtr, callPtr, newStackFrame[SFH+1];
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
@@ -231,12 +231,12 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly) 
           if (sectionPtr[lmem])
             if (attrDECL->TypeFlags.Contains(constituent)
             || attrDECL->TypeFlags.Contains(acquaintance)) {
-              if (constituentsOnly) {
+              if (aquaintancesToo)
+                forceZombify(ckd,(LavaObjectPtr)sectionPtr[lmem],aquaintancesToo);
+              else {
                 if (attrDECL->TypeFlags.Contains(constituent))
-                  forceZombify(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly);
+                  forceZombify(ckd,(LavaObjectPtr)sectionPtr[lmem],aquaintancesToo);
               }
-              else
-                forceZombify(ckd,(LavaObjectPtr)sectionPtr[lmem],constituentsOnly);
             }
             else
               forceDRC(ckd,(LavaObjectPtr)sectionPtr[lmem]);

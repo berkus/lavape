@@ -572,7 +572,7 @@ enum HWerrorCodes {
   other_hardware_ex
 };
 
-extern LAVABASE_DLL bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool constituentsOnly);
+extern LAVABASE_DLL bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo);
 extern LAVABASE_DLL bool SetLavaException(CheckData& ckd, int code, const QString& mess);
 //extern LAVABASE_DLL bool SetLavaException(CheckData& ckd, int code, QString *strCode);
 
