@@ -190,6 +190,7 @@ QString ERR_SlotTooFewArgs;
 QString ERR_IncompatibleCategory;
 QString ERR_SetIsFrozenValObj;
 QString ERR_EnumIntvType;
+QString ERR_NonCreatable;
 QString ERR_AbstractInherited;
 QString ERR_IncompAbstractVT;
 QString ERR_CallExprRequired;
@@ -328,6 +329,7 @@ void LavaBaseStringInit() {
   ERR_IncompatibleCategory  = QObject::tr("Incompatible object category");
   ERR_SetIsFrozenValObj  = QObject::tr("Forbidden insertion: result set is a frozen value object");
   ERR_EnumIntvType  = QObject::tr("Type restriction not allowed for enumerated and interval sets");
+  ERR_NonCreatable  = QObject::tr("\"declare\" with \"initialize\" clause requires a \"creatable\" class here");
   ERR_AbstractInherited  = QObject::tr(": Creatable interface inherits this abstract feature or virtual type ");
   ERR_IncompAbstractVT  = QObject::tr("Assignment source has incompatible abstract virtual type");
   ERR_CallExprRequired  = QObject::tr("This function is no longer static; a call expression is required");

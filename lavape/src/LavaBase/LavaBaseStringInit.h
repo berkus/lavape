@@ -165,6 +165,7 @@ extern LAVABASE_DLL QString ERR_SlotTooFewArgs;
 extern LAVABASE_DLL QString ERR_IncompatibleCategory;
 extern LAVABASE_DLL QString ERR_SetIsFrozenValObj;
 extern LAVABASE_DLL QString ERR_EnumIntvType;
+extern LAVABASE_DLL QString ERR_NonCreatable;
 extern LAVABASE_DLL QString ERR_AbstractInherited;
 extern LAVABASE_DLL QString ERR_IncompAbstractVT;
 extern LAVABASE_DLL QString ERR_CallExprRequired;

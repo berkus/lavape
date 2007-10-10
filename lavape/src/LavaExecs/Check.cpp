@@ -6044,10 +6044,10 @@ bool Quantifier::Check(CheckData &ckd)
   LavaDECL *declSetType;
   Category elemCat, typeCat;
   SynFlags ctxFlags;
+  Category cat;
   bool isDclWithIni=parentObject->IsDeclare() && ((Declare*)parentObject)->secondaryClause.ptr;
   CHE *currIC, *newChe;
 #ifdef INTERPRETER
-  Category cat;
   unsigned nQuantVars=0;
   bool isSetQuant=NoPH(set.ptr)
     && !((SynObject*)set.ptr)->IsIntIntv()
@@ -6119,12 +6119,16 @@ bool Quantifier::Check(CheckData &ckd)
 #ifdef INTERPRETER
   ckd.currentStackLevel += nQuantVars;
   ((QuantStmOrExp*)parentObject)->nQuantVars += nQuantVars;
+#endif
 
-  if (isDclWithIni) {
+  if (ok && isDclWithIni) {
     ((SynObject*)elemType.ptr)->ExprGetFVType(ckd,typeDecl,cat,ctxFlags);
     typeDecl = ckd.document->GetType(typeDecl);
+    if (typeDecl->TypeFlags.Contains(isAbstract)) {
+      ((SynObject*)elemType.ptr)->SetError(ckd,&ERR_NonCreatable);
+      ok = false;
+    }
   }
-#endif
 
   if (NoPH(set.ptr)) {
     ((SynObject*)set.ptr)->ExprGetFVType(ckd,declSetType,elemCat,ctxFlags);
