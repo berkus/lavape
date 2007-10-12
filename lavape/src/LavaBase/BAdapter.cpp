@@ -155,7 +155,7 @@ bool ObjectFinalize(CheckData& ckd, LavaVariablePtr stack)
 
 bool ObjectZombifyRec(CheckData& ckd, LavaVariablePtr stack)
 {
-  (*(((unsigned short *)stack[SFH])-1))++;
+  //(*(((unsigned short *)stack[SFH])-1))++;
   forceZombify(ckd,stack[SFH],*(bool*)(stack[SFH+1]+LSH));
   return true;
 }

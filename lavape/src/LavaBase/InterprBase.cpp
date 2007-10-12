@@ -244,13 +244,14 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
       }
     }
   }
-  (*(((unsigned short *)object)-1))--;
-  if (!*(((unsigned short *)object)-1))
+  //(*(((unsigned short *)object)-1))--;
+  if (!*(((unsigned short *)object)-1)) {
     ((SynFlags*)(object+1))->INCL(releaseFinished);
-  if (!*(((unsigned short *)object)-2)) {
-    ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-    ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
-    delete [] (object-LOH);
+    if (!*(((unsigned short *)object)-2)) {
+      ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+      ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
+      delete [] (object-LOH);
+    }
   }
   return true;
 }
