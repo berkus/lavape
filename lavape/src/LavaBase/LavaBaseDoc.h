@@ -20,7 +20,7 @@
 #include <signal.h>
 #endif
 
-
+#define ALLOCOBJLIST
 
 #ifdef __Darwin
 #define FPE_INTOVF FPE_FLTOVF
@@ -96,8 +96,9 @@ public:
   CThreadList *ThreadList;
   QWidget* DumpFrame;
   int numAllocObjects;
+#ifdef ALLOCOBJLIST
   QList<LavaObjectPtr> allocatedObjects;
-
+#endif
   CHESimpleSyntax* AddSyntax(SynDef *syntaxIncl, const QString& fn, bool& errEx, int hint=0);
   bool AllowThrowType(LavaDECL* decl, TID throwID, int inINCL);
   CHESimpleSyntax* AttachSyntax(CheckData& ckd, QString& fn); //Runtime include

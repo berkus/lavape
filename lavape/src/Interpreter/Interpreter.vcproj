@@ -256,27 +256,6 @@
 			<File
 				RelativePath="..\LavaExecs\Constructs.cpp"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="2"
-						PrecompiledHeaderThrough=""
-						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\LavaExecs\ConstructsG.cpp"
@@ -485,6 +464,10 @@
 						Name="VCCustomBuildTool"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\ConstructsX.h"
+				>
 			</File>
 			<File
 				RelativePath=".\Debugger.h"

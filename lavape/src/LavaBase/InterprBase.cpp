@@ -114,7 +114,9 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
 
   if (!fwdCnt && !revCnt) { // both counts are 0
     ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+#ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
+#endif
     delete [] (object-LOH);
     return true;
   }
@@ -139,7 +141,9 @@ bool DEC_REV_CNT (CheckData &ckd, LavaObjectPtr object) {
   *(((unsigned short *)object)-2) = --revCnt;
   if (!fwdCnt && !revCnt && ((SynFlags*)(object+1))->Contains(releaseFinished)) {
     ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+#ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
+#endif
     delete [] (object-LOH);
   }
   return true;
@@ -183,7 +187,8 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
 
   if (!((SynFlags*)(object + 1))->Contains(zombified)) {
     ((SynFlags*)(object + 1))->INCL(zombified);
-	  // call the object's finalize method
+
+	  // call the object's finalize method before its member objects are decremented
     fDesc = &(*(object + object[0][object[0][0].nSections-1].sectionOffset))->funcDesc[1]; 
     callPtr = object + (*object)[fDesc->delta].sectionOffset;
     newStackFrame[0] = 0;
@@ -249,7 +254,9 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
     ((SynFlags*)(object+1))->INCL(releaseFinished);
     if (!*(((unsigned short *)object)-2)) {
       ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+#ifdef ALLOCOBJLIST
       ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
+#endif
       delete [] (object-LOH);
     }
   }
@@ -305,7 +312,9 @@ LavaObjectPtr AllocateObject(CheckData &ckd, LavaDECL* classDECL, bool stateObj,
   for (ii = 0; ii < lObject; ii++)
     *(object + ii) = 0;
   object = object + LOH;
+#ifdef ALLOCOBJLIST
   ckd.document->allocatedObjects.append(object);
+#endif
 
   if (urlObj) {
     if (!*(object-LOH)) *(LavaVariablePtr)(object-LOH) = (LavaObjectPtr)new RunTimeData;

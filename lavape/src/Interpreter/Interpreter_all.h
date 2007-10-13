@@ -8,6 +8,7 @@
 #include "Lava_UI_all.h"
 
 #include "Constructs.h"
+#include "ConstructsX.h"
 #include "Check.h"
 #include "Debugger.h"
 #include "LavaProgram.h"

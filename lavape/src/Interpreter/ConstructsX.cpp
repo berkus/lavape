@@ -17,7 +17,7 @@
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 
-#include "Constructs.h"
+#include "ConstructsX.h"
 #include "LavaMainFrameBase.h"
 #include "Check.h"
 #include "Debugger.h"
@@ -2979,7 +2979,9 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
         IFC(value); // for permanent ref from Constant
         ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+#ifdef ALLOCOBJLIST
         ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+#endif
         return (LavaObjectPtr)-1;
       }
       break;
@@ -2991,7 +2993,9 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
         SetRTError(ckd,&ERR_IntegerRange,stackFrame,"ConstantX::Evaluate");
         IFC(value); // for permanent ref from Constant
         ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+#ifdef ALLOCOBJLIST
         ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+#endif
         return (LavaObjectPtr)-1;
       }
       break;
@@ -3023,7 +3027,9 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
     }
     IFC(value); // for permanent ref from Constant
     ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+#ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+#endif
     // constants aren't counted as allocated objects
     // and released only when the program syntax (AST) is released
   }
@@ -3075,7 +3081,9 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     IFC(value); // for permanent ref from BoolConst
     // is released only when syntax is released
     ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+#ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+#endif
   }
   return value;
 }
@@ -3105,7 +3113,9 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     IFC(value); // for permanent ref from EnumConst
     // is released only when syntax is released
     ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+#ifdef ALLOCOBJLIST
     ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(value));
+#endif
   }
   return value;
 }

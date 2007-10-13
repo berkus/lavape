@@ -20,7 +20,7 @@
 #include <QFocusEvent>
 #include <QKeyEvent>
 #include <QScrollArea>
-#include "Constructs.h"
+#include "ConstructsV.h"
 #include "docview.h"
 #include "mdiframes.h"
 #include "LavaAppBase.h"

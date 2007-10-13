@@ -25,6 +25,7 @@
 #include "LavaBaseStringInit.h"
 #include "Debugger.h"
 #include "Constructs.h"
+#include "ConstructsX.h"
 #include "BAdapter.h"
 #include "mdiframes.h"
 
