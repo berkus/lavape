@@ -220,7 +220,11 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
         lmem = LSH;
         if (secClassDECL->TypeFlags.Contains(isNative)) { //native base class
           funcAdapter = GetAdapterTable(ckd, secClassDECL, classDECL);
-          if (funcAdapter && funcAdapter[5]) { // section has release function
+          if (!*(((unsigned short *)object)-1)
+          && !*(((unsigned short *)object)-2)
+          && funcAdapter
+          && funcAdapter[5]) {
+          // section/base class has release function; call it
             newStackFrame[0] = 0;
             newStackFrame[1] = 0;
             newStackFrame[2] = 0;
@@ -231,7 +235,7 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
             lmem = (int)(unsigned)funcAdapter[0] + LSH;
         }
         llast = LSH + secClassDECL->SectionInfo2;
-        for (/*ll = LSH*/; lmem < llast; lmem++) {
+        for (; lmem < llast; lmem++) {
           attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
           if (sectionPtr[lmem])
             if (attrDECL->TypeFlags.Contains(constituent)
