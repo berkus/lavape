@@ -150,18 +150,17 @@ bool DEC_REV_CNT (CheckData &ckd, LavaObjectPtr object) {
 }
 
 
-void forceDRC (CheckData &ckd, LavaObjectPtr object) {
-  register unsigned short fwdCnt;
-  register unsigned short revCnt;
-
-  object = object - (*object)->sectionOffset;
-  fwdCnt = *(((unsigned short *)object)-1);
-  revCnt = *(((unsigned short *)object)-2);
-  if (!revCnt)
-    return;
-
-  *(((unsigned short *)object)-2) = --revCnt;
-}
+//void forceDRC (CheckData &ckd, LavaObjectPtr object) {
+//  register unsigned short fwdCnt;
+//  register unsigned short revCnt;
+//
+//  object = object - (*object)->sectionOffset;
+//  revCnt = *(((unsigned short *)object)-2);
+//  if (!revCnt)
+//    return;
+//
+//  *(((unsigned short *)object)-2) = --revCnt;
+//}
 
 
 int GetObjectLength(LavaDECL* typeDECL)
@@ -177,7 +176,7 @@ int GetObjectLength(LavaDECL* typeDECL)
 
 bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
   CSectionDesc* secTab;
-  LavaObjectPtr sectionPtr, callPtr, newStackFrame[SFH+1];
+  LavaObjectPtr sectionPtr, callPtr, newStackFrame[SFH+1], member;
   LavaDECL *classDECL, *secClassDECL, *attrDECL;
   TAdapterFunc *funcAdapter;
   int ii, lmem, llast;
@@ -237,33 +236,36 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
         llast = LSH + secClassDECL->SectionInfo2;
         for (; lmem < llast; lmem++) {
           attrDECL = ((CSectionDesc*)secClassDECL->SectionTabPtr)[0].attrDesc[lmem-LSH].attrDECL;
-          if (sectionPtr[lmem])
-            if (attrDECL->TypeFlags.Contains(constituent)
-            || attrDECL->TypeFlags.Contains(acquaintance)) {
-              if (aquaintancesToo)
-                forceZombify(ckd,(LavaObjectPtr)sectionPtr[lmem],aquaintancesToo);
-              else {
-                if (attrDECL->TypeFlags.Contains(constituent))
-                  forceZombify(ckd,(LavaObjectPtr)sectionPtr[lmem],aquaintancesToo);
+          member = (LavaObjectPtr)sectionPtr[lmem];
+          if (member) {
+            if (attrDECL->TypeFlags.Contains(constituent)) {
+              forceZombify(ckd,member,aquaintancesToo);
+              DFC(member);
+            }
+            else if (attrDECL->TypeFlags.Contains(acquaintance)) {
+              if (aquaintancesToo) {
+                forceZombify(ckd,member,aquaintancesToo);
+                DFC(member);
               }
             }
-            else
-              forceDRC(ckd,(LavaObjectPtr)sectionPtr[lmem]);
+            else // reverse link
+              DRC(member);
+          }
         }
       }
     }
   }
-  //(*(((unsigned short *)object)-1))--;
-  if (!*(((unsigned short *)object)-1)) {
-    ((SynFlags*)(object+1))->INCL(releaseFinished);
-    if (!*(((unsigned short *)object)-2)) {
-      ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-#ifdef ALLOCOBJLIST
-      ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
-#endif
-      delete [] (object-LOH);
-    }
-  }
+
+//  if (!*(((unsigned short *)object)-1)) {
+//    ((SynFlags*)(object+1))->INCL(releaseFinished);
+//    if (!*(((unsigned short *)object)-2)) {
+//      ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
+//#ifdef ALLOCOBJLIST
+//      ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
+//#endif
+//      delete [] (object-LOH);
+//    }
+//  }
   return true;
 }
 
