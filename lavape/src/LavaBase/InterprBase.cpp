@@ -187,7 +187,7 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
   if (!((SynFlags*)(object + 1))->Contains(zombified)) {
     ((SynFlags*)(object + 1))->INCL(zombified);
 
-	  // call the object's finalize method before its member objects are decremented
+	// call the object's finalize method before its member objects are decremented
     fDesc = &(*(object + object[0][object[0][0].nSections-1].sectionOffset))->funcDesc[1]; 
     callPtr = object + (*object)[fDesc->delta].sectionOffset;
     newStackFrame[0] = 0;
@@ -256,16 +256,6 @@ bool forceZombify (CheckData &ckd, LavaObjectPtr object, bool aquaintancesToo) {
     }
   }
 
-//  if (!*(((unsigned short *)object)-1)) {
-//    ((SynFlags*)(object+1))->INCL(releaseFinished);
-//    if (!*(((unsigned short *)object)-2)) {
-//      ((CLavaBaseDoc*)ckd.document)->numAllocObjects--;
-//#ifdef ALLOCOBJLIST
-//      ((CLavaBaseDoc*)ckd.document)->allocatedObjects.removeAt(((CLavaBaseDoc*)ckd.document)->allocatedObjects.indexOf(object));
-//#endif
-//      delete [] (object-LOH);
-//    }
-//  }
   return true;
 }
 
