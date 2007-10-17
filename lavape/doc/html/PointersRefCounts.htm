@@ -24,12 +24,12 @@
     by &quot;mark and sweep&quot; is a rather inelegant sledge-hammer
       method. It causes quite noticeable bursts of garbage collection 
     (GC) &nbsp;activities
-      to interrupt the normal computation process from time to time, possibly
+      that interrupt the normal computation process from time to time, possibly
       even in the midst of time-critical transactions. More 
     sophisticated GC procedures, however, require much more implementation effort. Reference counts 
     are easier to implement and promise
       to provide a more smooth storage management style by releasing storage
-      occupied by objects at the earliest possible moment.</P>
+      occupied by objects <b>at the earliest possible moment</b>.</P>
     
     <P>A second, less emotional argument in favor of reference counts: If you
       pass an object <I>by reference</I> across a component border then you
@@ -91,18 +91,18 @@
       at most, if at all, be
       reached via reverse links from now on, then it is 
     automatically and irreversibly transformed
-      into a <b>&quot;zombie&quot;</b> object, and the reference counts of all its <b>constituent</b> objects are
-      decremented by 1 (recursively!). This will, under the 
-      above-mentioned conditions, cause all reverse
-      links pointing to this object to disappear. If not, then any subsequent
-      attempt to access such a zombie (via a reverse link) causes a specific
-      exception to be thrown.</P>
+      into a <b>&quot;zombie&quot;</b> object. Any attempt to access this object will 
+    result in a specific exception.</P>
+    
+    <P> If the &quot;zombified&quot; object has forward (constituent or aquaintance) links 
+    to other objects then the corresponding forward/reverse counts of these 
+    objects are decremented by 1.</P>
     
     <P>In addition, <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> provides a 
     basic method <b><i>finalize</i></b> of class <i>Object</i>, which 
     marks the object as a zombie 
     <i>immediately</i> and which
-      (recursively) releases all its references.</P>
+      again releases all directly linked objects.</P>
     
     <P>&nbsp;<i>Object::finalize</i> can be used</P>
     <OL>
@@ -110,22 +110,22 @@
         reference structures containing closed cycles of forward links (&quot;dangling pointers&quot;
         cannot occur even in this case!),<BR>
          </LI>
-      <LI>to forcibly and immediately terminate the validity/usability of an
-        object, for instance if a bank account is closed.</LI>
+      <LI>to forcibly and immediately terminate the validity/usability of an 
+      object, for instance if a bank account is closed. This enables a safe and 
+      clean semantics of &quot;closing&quot; an object.</LI>
     </OL>
     
-    <P>As a further aid for releasing whole collections of objects that are 
+    <P>As a further, still stronger aid for releasing whole collections of objects that are 
     linked together by potentially circular forward (= constituent or 
-    acquaintance) links, class <i>Object</i> provides a method <i>zombifyRec</i> 
-    with a boolean parameter <i>aquaintancesToo</i> which recursively finalizes 
-    and zombifies an object and all its constituents (and acquaintances, if <i>
-    aquaintancesToo</i> is true), irrespective of their reference counts.</P>
+    acquaintance) links, class <i>Object</i> provides a method <i>finalizeRec</i> 
+    with a boolean parameter <i>aquaintancesToo</i> which recursively finalizes/zombifies an object and all its constituents (and acquaintances, if <i>
+    aquaintancesToo</i> is true), <b>irrespective</b> of their reference counts.</P>
     
     <P>Note, however, that <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      objects are not <I>destroyed</I> before both the normal <i>and</i> the reverse
+      objects are not <I>destroyed</I> before both the normal <b>and</b> the reverse
       reference count are 0. This can be achieved only by proper usage of the
       three reference types and, in exceptional cases, the <i>Object::finalize</i>
-    and <i>Object::zombifyRec </i>
+    and <i>Object::finalizeRec </i>
     methods. </P>
     
     <P>So <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> guarantees the
