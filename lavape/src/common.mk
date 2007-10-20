@@ -4,10 +4,6 @@ SHELL=/usr/bin/env sh
 #to build a debug version set DBG=-ggdb
 DBG=-gstabs+
 
-ifeq ($(QTDIR),)
-  QTDIR = /usr/lib/qt
-endif
-
 export
 
 QINCL = $(QTDIR)/include
@@ -17,7 +13,7 @@ QTOOLS = $(QTDIR)/bin
 #ifneq ($(QTDIR)/bin/assistant,)
   QASSISTANT = $(LAVADIR)/bin/assistant
 #else
-#  QASSISTANT = `which assistant`
+  QASSISTANT = `which assistant`
 #endif
 
 ifeq ($(QASSISTANT),)

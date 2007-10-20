@@ -7,7 +7,7 @@ ifeq ($(LD_LIBRARY_PATH),)
   $(error LD_LIBRARY_PATH must be defined!)
 endif
 ifeq ($(QTDIR),)
-  $(error QTDIR must be defined!)
+QTDIR = /usr
 endif
 
 all: dirs links build
