@@ -6,8 +6,27 @@ export LAVADIR=$(shell pwd)
 ifeq ($(LD_LIBRARY_PATH),)
   $(error LD_LIBRARY_PATH must be defined!)
 endif
-ifeq ($(QTDIR),)
-QTDIR = /usr
+
+ifneq ($(QTDIR),)
+  QINCL = $(QTDIR)/include
+  QLIB = $(QTDIR)/lib
+  QBIN = $(QTDIR)/bin
+  QASSISTANT = $(QBIN)/assistant
+else
+  ifeq ($(QINCL),)
+    QINCL = /usr/include
+  endif
+  ifeq ($(QLIB),)
+    QLIB = /usr/lib
+  endif
+  ifeq ($(QBIN),)
+    QBIN = /usr/bin
+  endif
+  QASSISTANT = $(QBIN)/assistant
+endif
+
+ifeq ($(QASSISTANT),)
+  $(error Qt assistant couldn't be found!)
 endif
 
 all: dirs links build
@@ -104,15 +123,15 @@ bin/assistant:
 	$(LN) $(QASSISTANT) $@ 
 #	else echo ; echo ++++ error: Lava online help works only if QTDIR is defined!; echo ; exit 1; fi
 
-lib/libQtCore.so.4: $(QTDIR)/lib/libQtCore.so.4
+lib/libQtCore.so.4: $(QLIB)/libQtCore.so.4
 	rm -f $@; $(LN) $< $@
-lib/libQtGui.so.4: $(QTDIR)/lib/libQtGui.so.4
+lib/libQtGui.so.4: $(QLIB)/libQtGui.so.4
 	rm -f $@; $(LN) $< $@
-lib/libQtNetwork.so.4: $(QTDIR)/lib/libQtNetwork.so.4
+lib/libQtNetwork.so.4: $(QLIB)/libQtNetwork.so.4
 	rm -f $@; $(LN) $< $@
-lib/libQtXml.so.4: $(QTDIR)/lib/libQtXml.so.4
+lib/libQtXml.so.4: $(QLIB)/libQtXml.so.4
 	rm -f $@; $(LN) $< $@
-lib/libQtAssistantClient.so.4: $(QTDIR)/lib/libQtAssistantClient.so.4
+lib/libQtAssistantClient.so.4: $(QLIB)/libQtAssistantClient.so.4
 	rm -f $@; $(LN) $< $@
 
 LavaStream: bin/Components/$(DLLPREFIX)LavaStream$(DLLSUFFIX)

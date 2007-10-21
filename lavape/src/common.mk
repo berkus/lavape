@@ -6,20 +6,6 @@ DBG=-gstabs+
 
 export
 
-QINCL = $(QTDIR)/include
-QLIB = $(QTDIR)/lib
-QTOOLS = $(QTDIR)/bin
-
-#ifneq ($(QTDIR)/bin/assistant,)
-  QASSISTANT = $(LAVADIR)/bin/assistant
-#else
-  QASSISTANT = `which assistant`
-#endif
-
-ifeq ($(QASSISTANT),)
-  $(error Qt assistant couldn't be found!)
-endif
-
 ph_files=$(wildcard *.ph)
 h_ph_files=$(ph_files:.ph=.h)
 cpp_ph_files=$(ph_files:.ph=G.cpp)
@@ -179,21 +165,21 @@ PCH/$(PRJ)_all.h.gch: $(PRJ)_all.h $(h_ui_files) $(h_ph_files)
 # UIC rules; use "sed" to change minor version of ui files to "0":
 # prevents error messages from older Qt3 UIC's
 Generated/%.h: %.ui
-	$(QTOOLS)/uic $< -o $@
+	$(QBIN)/uic $< -o $@
 #	( grep -q -e 'UI version=\"[0-9]\+\.0\"' $< || \
 #	  sed -i -e 's/\(UI version=\"[0-9]\+\.\)[0-9]\+"/\10\"/' $<; ); \
 #  export LD_LIBRARY_PATH=/usr/X11R6/bin;
 #Generated/%.cpp: %.ui
 #	( grep -q -e 'UI version=\"[0-9]\+\.0\"' $< || \
 #	  sed -i -e 's/\(UI version=\"[0-9]\+\.\)[0-9]\+"/\10\"/' $< ); \
-#  $(QTOOLS)/bin/uic -impl $*.h $< -o $@; \
+#  $(QBIN)/bin/uic -impl $*.h $< -o $@; \
 #  sed -i -e 's/static const unsigned char const/static const unsigned char/' $@
 
 #MOC rule
 moc_%.cpp: %.h
-	$(QTOOLS)/moc $< -o $@
+	$(QBIN)/moc $< -o $@
 Generated/moc_%.cpp: %.h
-	$(QTOOLS)/moc $< -o $@
+	$(QBIN)/moc $< -o $@
 
 #LPC rule:
 ifneq ($(DLL),)
@@ -204,7 +190,7 @@ endif
 	../../bin/LPC $(impex) -I. -I../LavaBase $<
 
 %.cpp: %.qrc
-	$(QTOOLS)/rcc -o $@ $<
+	$(QBIN)/rcc -o $@ $<
 
 ifeq ($(suffix $(EXEC)),)
 run:
