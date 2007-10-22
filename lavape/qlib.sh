@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 
 if [ $QTDIR ]; then
-  if [ $QTDIR/include/QtCore ]; then
+  if [ -e $QTDIR/include/QtCore ]; then
     echo $QTDIR/lib
     exit
   fi
