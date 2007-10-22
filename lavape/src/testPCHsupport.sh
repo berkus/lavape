@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 
-if [ $PCH. = 0. ]; then
-  echo no
+if [ -n $PCH ]; then
+  echo yes
   exit
 fi
 

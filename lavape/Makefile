@@ -3,31 +3,20 @@ export SHELL=/bin/sh
 
 export LAVADIR=$(shell pwd)
 
-ifeq ($(LD_LIBRARY_PATH),)
-  $(error LD_LIBRARY_PATH must be defined!)
-endif
+#ifeq ($(LD_LIBRARY_PATH),)
+#  $(error LD_LIBRARY_PATH must be defined!)
+#endif
 
-ifneq ($(QTDIR),)
-  QINCL = $(QTDIR)/include
-  QLIB = $(QTDIR)/lib
-  QBIN = $(QTDIR)/bin
-  QASSISTANT = $(QBIN)/assistant
-else
-  ifeq ($(QINCL),)
-    QINCL = /usr/include
-  endif
-  ifeq ($(QLIB),)
-    QLIB = /usr/lib
-  endif
-  ifeq ($(QBIN),)
-    QBIN = /usr/bin
-  endif
-  QASSISTANT = $(QBIN)/assistant
+QBIN = $(shell ./qbin.sh)
+ifeq ($(QBIN),)
+  $(error Qt tools/executables couldn't be found!)
 endif
+QINCL = $(shell ./qincl.sh)
+QLIB = $(shell ./qlib.sh)
+QSUFF = $(shell ./qsuff.sh)
 
-ifeq ($(QASSISTANT),)
-  $(error Qt assistant couldn't be found!)
-endif
+export LD_LIBRARY_PATH=$(LAVADIR)/lib:$(QLIB):/usr/lib:/lib
+
 
 all: dirs links build
 #all: dirs links Precompiler LavaStream build
@@ -88,12 +77,12 @@ ITPF = src/Interpreter/Constructs.ph \
 links: $(ITPF) \
 	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
-	bin/assistant \
-	lib/libQtCore.so.4 \
-	lib/libQtGui.so.4 \
-	lib/libQtNetwork.so.4 \
-	lib/libQtXml.so.4 \
-	lib/libQtAssistantClient.so.4
+	bin/assistant
+#	lib/libQtCore.so.4 \
+#	lib/libQtGui.so.4 \
+#	lib/libQtNetwork.so.4 \
+#	lib/libQtXml.so.4 \
+#	lib/libQtAssistantClient.so.4
 
 src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
 	cd src/Interpreter; $(LN) ../LavaExecs/Constructs.ph .
@@ -120,8 +109,7 @@ bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; $(LN) $< $@
 bin/assistant:
 	rm -f $@; \
-	$(LN) $(QASSISTANT) $@ 
-#	else echo ; echo ++++ error: Lava online help works only if QTDIR is defined!; echo ; exit 1; fi
+	$(LN) $(QBIN)/assistant$(SUFF) $@ 
 
 lib/libQtCore.so.4: $(QLIB)/libQtCore.so.4
 	rm -f $@; $(LN) $< $@
@@ -181,7 +169,7 @@ bindist:
 	if [ ! -e LavaStream.lava ]; then ln -s ../../samples/LavaStream.lava .; fi; \
 	if [ ! -e libLavaStream.so ]; then ln -s ../../lib/libLavaStream.so .; fi; \
 	cd ../..; cp ../lib/*.so lib; \
-	cp $(QTDIR)/lib/libQtCore.so.4 $(QTDIR)/lib/libQtGui.so.4 $(QTDIR)/lib/libQtNetwork.so.4 $(QTDIR)/lib/libQtXml.so.4 $(QTDIR)/lib/libQtAssistantClient.so.4 lib; \
+	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 lib; \
 	cd lib; strip *.so*; \
 	cd ../..; tar cjf /windows/D/lavape-0.9.0-linux-bin.tar.bz2 lavape; ls -l /windows/D/lavape-*; rm -rf lavape
 
