@@ -761,7 +761,7 @@ ValOnInit CCompSpecBox::OnInitDialog()
   NewName->setFocus();
   
   return BoxContinue;  // return true unless you set the focus to a control
-                // EXCEPTION: OCX-Eigenschaftenseiten sollten false zurückgeben
+                // EXCEPTION: OCX-Eigenschaftenseiten sollten false zurï¿½ckgeben
 }
 
 void CCompSpecBox::on_DelSupport_clicked() 
@@ -4413,7 +4413,7 @@ void CVTypeBox::on_ID_OK_clicked()
 
 void CAttrBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4427,7 +4427,7 @@ void CAttrBox::on_ID_HELP_clicked()
 
 void CCompSpecBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4441,7 +4441,7 @@ void CCompSpecBox::on_ID_HELP_clicked()
 
 void CEnumBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4455,7 +4455,7 @@ void CEnumBox::on_ID_HELP_clicked()
 
 void CEnumItem::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4469,7 +4469,7 @@ void CEnumItem::on_ID_HELP_clicked()
 
 void CFuncBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4483,7 +4483,7 @@ void CFuncBox::on_ID_HELP_clicked()
 
 void CImplBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4497,7 +4497,7 @@ void CImplBox::on_ID_HELP_clicked()
 
 void CIncludeBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4511,7 +4511,7 @@ void CIncludeBox::on_ID_HELP_clicked()
 
 void CInitBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4525,7 +4525,7 @@ void CInitBox::on_ID_HELP_clicked()
 
 void CInterfaceBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4539,7 +4539,7 @@ void CInterfaceBox::on_ID_HELP_clicked()
 
 void CIOBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4553,7 +4553,7 @@ void CIOBox::on_ID_HELP_clicked()
 
 void CPackageBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4567,7 +4567,7 @@ void CPackageBox::on_ID_HELP_clicked()
 
 void CSetBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
@@ -4581,7 +4581,7 @@ void CSetBox::on_ID_HELP_clicked()
 
 void CVTypeBox::on_ID_HELP_clicked()
 {
-	QString path(ExeDir);
+	QString path(ExeDir+"/assistant");
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 	
