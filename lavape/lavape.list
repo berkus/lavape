@@ -3,7 +3,7 @@
 %vendor Klaus D. Günther
 %license GPL.txt
 %readme release_notes.txt
-%description Advanced experimental OO programming with structure editors
+%description Advanced experimental OO programming language+environment based on structure editors
 %version 0.9.0 090
 
 %ifdef suse
@@ -17,7 +17,6 @@
 
 d 755 root sys /usr/local/lavape -
 #f 755 root sys /usr/local/lavape/bin-install bin-install
-#f 644 root sys /usr/local/lavape/volcano2.bmp volcano2.bmp
 f 644 root sys /usr/local/lavape *.txt
 
 d 755 root sys /usr/local/lavape/samples -
