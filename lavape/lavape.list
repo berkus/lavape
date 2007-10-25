@@ -10,6 +10,10 @@
 %requires libqt4
 %requires libqt4-devel-doc
 %requires libqt4-x11
+%elseifdef kubuntu
+%requires libqt4-core
+%requires libqt4-dev
+%requires libqt4-gui
 %endif
 
 #%postinstall cd /usr/local/lavape;/usr/local/lavape/bin-install
@@ -36,10 +40,10 @@ f 755 root sys /usr/local/lavape/lib/libLavaStream.so lib/libLavaStream.so
 f 755 root sys /usr/local/lavape/lib/libLava_UI.so lib/libLava_UI.so
 f 755 root sys /usr/local/lavape/lib/libwxqDocView.so lib/libwxqDocView.so
 
-%ifdef suse
+#%ifdef suse
 l 777 root sys /usr/local/lavape/bin/assistant /usr/bin/assistant
 l 777 root sys /usr/local/lavape/lib /usr/lib/libQt*.so
-%endif
+#%endif
 
 d 755 root sys /usr/local/lavape/bin -
 f 644 root sys /usr/local/lavape/bin bin/*.htm
