@@ -24,5 +24,7 @@
 #include "cmainframe.h"
 #include "BASEMACROS.h"
 
+#include "MACROS.h"
+
 #endif
 

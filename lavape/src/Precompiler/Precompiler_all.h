@@ -22,6 +22,9 @@
 #include "SigCoder.h"
 #include "TypCoder.h"
 #include "XParser.h"
+#include"Convert.h"
+#include"MachDep.h"
+#include"STR.h"
 
 #include "qbytearray.h"
 

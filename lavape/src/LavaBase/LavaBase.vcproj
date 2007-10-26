@@ -4,6 +4,7 @@
 	Version="9,00"
 	Name="LavaBase"
 	ProjectGUID="{8A27EB26-44C3-4B70-BEE7-AA21C6DD713A}"
+	RootNamespace="LavaBase"
 	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
@@ -858,6 +859,15 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
+						PrecompiledHeaderThrough="..\LavaThread.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
 						PrecompiledHeaderThrough="..\LavaThread.h"
 					/>
 				</FileConfiguration>

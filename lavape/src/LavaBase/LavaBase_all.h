@@ -16,12 +16,18 @@
 #include "LavaThread.h"
 #include "BASEMACROS.h"
 #include "PEBaseDoc.h"
-//#include "SafeInt.h"
 #include "SylTraversal.h"
 #include "SynIDTable.h"
 #include "SafeInt.h"
 #include "SynIO.h"
 #include "Syntax.h"
+
+#include "UNIX.h"
+#include "ASN1File.h"
+#include "CDPpp.h"
+#include "DIO.h"
+#include "Convert.h"
+#include "MachDep.h"
 
 #include "mdiframes.h"
 

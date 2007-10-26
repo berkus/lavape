@@ -789,10 +789,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="UNIX.h"
-				>
-			</File>
-			<File
 				RelativePath="wb_obj.cpp"
 				>
 				<FileConfiguration
@@ -928,6 +924,10 @@
 			</File>
 			<File
 				RelativePath="TextFile.h"
+				>
+			</File>
+			<File
+				RelativePath="UNIX.h"
 				>
 			</File>
 			<File

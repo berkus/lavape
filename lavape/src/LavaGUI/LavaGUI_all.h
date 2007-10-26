@@ -29,7 +29,8 @@
 #include "LavaAppBase.h"
 #include "DumpView.h"
 #include "SylTraversal.h"
-//#include "Lava.xpm"
+
+#include "MACROS.h"
 
 #include <QPixmap>
 #include <QStyleOptionButton>
