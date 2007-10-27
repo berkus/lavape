@@ -844,7 +844,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\Bars.h"
-						PrecompiledHeaderFile="PCH/LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -892,7 +891,6 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						PrecompiledHeaderThrough="..\DebuggerPE.h"
-						PrecompiledHeaderFile="PCH/LavaPE_all.pch"
 					/>
 				</FileConfiguration>
 			</File>

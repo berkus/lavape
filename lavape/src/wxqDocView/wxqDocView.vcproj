@@ -380,7 +380,6 @@
 						AdditionalIncludeDirectories="."
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\docview.h"
-						PrecompiledHeaderFile=".\PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
 			</File>
@@ -407,7 +406,6 @@
 						AdditionalIncludeDirectories="."
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\mdiframes.h"
-						PrecompiledHeaderFile=".\PCH\wxqDocView_all.pch"
 					/>
 				</FileConfiguration>
 			</File>

@@ -50,7 +50,6 @@
 				AdditionalIncludeDirectories=".;..\LavaBase;.\Generated;..\disco;..\wxqDocView;..\LavaBase\Generated"
 				PreprocessorDefinitions="WIN32;LAVASTREAM_EXPORT"
 				RuntimeLibrary="0"
-				PrecompiledHeaderFile=".\Release/LavaStream.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"

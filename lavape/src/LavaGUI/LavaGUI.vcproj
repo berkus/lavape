@@ -925,7 +925,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\FormWid.h"
-						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -952,7 +951,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\LavaGUIFrame.h"
-						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -979,7 +977,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\LavaGUIPopup.h"
-						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1006,7 +1003,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\LavaGUIView.h"
-						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1033,7 +1029,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\LavaMenu.h"
-						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1060,7 +1055,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\TButton.h"
-						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1087,7 +1081,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\TComboBox.h"
-						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1114,7 +1107,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\TEdit.h"
-						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1141,7 +1133,6 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""
 						PrecompiledHeaderThrough="..\TStatic.h"
-						PrecompiledHeaderFile="PCH/LavaGUI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration

@@ -289,7 +289,6 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="2"
 						PrecompiledHeaderThrough="..\LavaMainFrameBase.h"
-						PrecompiledHeaderFile="PCH/Lava_UI_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration

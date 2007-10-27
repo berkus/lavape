@@ -526,7 +526,6 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						PrecompiledHeaderThrough="..\Debugger.h"
-						PrecompiledHeaderFile="PCH\Interpreter_all.pch"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
