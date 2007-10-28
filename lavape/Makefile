@@ -76,8 +76,8 @@ ITPF = src/Interpreter/Constructs.ph \
 
 links: $(ITPF) \
 	bin/Components/LCompoImpl.lcom.lnk \
-	bin/Components/LavaStream.lava \
-	bin/assistant
+	bin/Components/LavaStream.lava
+#	bin/assistant
 #	lib/libQtCore.so.4 \
 #	lib/libQtGui.so.4 \
 #	lib/libQtNetwork.so.4 \
