@@ -1,224 +1,94 @@
 <!DOCTYPE HTML PUBLIC "-//SoftQuad//DTD HoTMetaL PRO 4.0::19971010::extensions to HTML 4.0//EN" "hmpro4.dtd">
-<html lang="en-us">
-<head>
+<html lang="en-us"><head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document"><title>Initialization checks</title>
 
-
-
-
-  
-  
-  
-  <meta http-equiv="Content-Language" content="en-us">
-
-
-
-
-  
-  
-  
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-
-
-
-
-  
-  
-  
-  <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
-
-
-
-
-  
-  
-  
-  <meta name="ProgId" content="FrontPage.Editor.Document">
-
-
-
-  
-
-
-  
-  
-  
-  
-  
-  <title>Initialization checks</title>
-  <link rel="STYLESHEET" type="text/css" href="LavaStyles.css">
+<link rel="STYLESHEET" type="text/css" href="LavaStyles.css">
 </head>
 
-
 <body>
-
-
-
-
 <h2 align="center"><strong>Complete
 static initialization checks</strong></h2>
-
-
-
-
-<p>Inadvertent use of uninitialized variables or propagation of null values (<font color="#0000ff">&Oslash;</font>) 
-to <a href="dialogs/MemVarBox.htm#mandatory">mandatory</a> variables frequently 
-cause
+<p>Inadvertent use of uninitialized variables or propagation of
+null values (<font color="#0000ff">Ø</font>) to <a href="dialogs/MemVarBox.htm#mandatory">mandatory</a>
+variables frequently cause
 programs to crash in ways that are hard and time-consuming to
-disentangle, and this gives rise to immense costs in turn. The attempt to
+disentangle, and this gives rise to immense costs in turn. The attempt
+to
 prevent such situations has therefore been a constitutive design goal
-of the <i><font color="#ff0000"><b>Lava</b></font></i> development (see also
+of the <i><font color="#ff0000"><b>Lava</b></font></i>
+development (see also
 <a href="FAQLavaOrientation.htm">Principal orientation of <i><b>
-<font color="#FF0000">Lava</font></b></i></a>).</p>
-
-
-
-
-<p>More precisely, our goal was to prevent missing initialization and 
-inadvertent use of null values by <b>static checks (i.e., at
-programming time)</b> wherever possible. The <font color="#ff0000"><i><b>Lava</b></i></font> 
-releases prior to 0.9 didn't fully achieve this. The introduction of the 
-notion of <b>
-<a href="UnfinishedObjects.htm">closed objects</a></b> together with new 
-expressive means (the <font color="#0000ff"><b>
-<a href="whatsThis/IfdefElse.htm">ifdef</a></b></font> conditional 
-statement and the <font color="#0000ff"><b>
-<a href="whatsThis/IfdefElse.htm#elseExpr">else</a></b></font> expression) in 
-release 0.9 have changed <font color="#ff0000"><i><b>Lava</b></i></font> into an object-oriented programming language (the first 
-one?) that <b>
-completely prevents missing initialization and inadvertent use of null values 
-already at programming time, i.e., by purely static checks</b>.</p>
-
-
-
-
+<font color="#ff0000">Lava</font></b></i></a>).</p>
+<p>More precisely, our goal was to prevent missing initialization
+and inadvertent use of null values by <b>static checks (i.e., at
+programming time)</b> wherever possible. The <font color="#ff0000"><i><b>Lava</b></i></font>
+releases prior to 0.9 didn't fully achieve this. The introduction of
+the notion of <b>
+<a href="UnfinishedObjects.htm">closed objects</a></b>
+together with new expressive means (the <font color="#0000ff"><b>
+<a href="whatsThis/IfdefElse.htm">ifdef</a></b></font>
+conditional statement and the <font color="#0000ff"><b>
+<a href="whatsThis/IfdefElse.htm#elseExpr">else</a></b></font>
+expression) in release 0.9 have changed <font color="#ff0000"><i><b>Lava</b></i></font>
+into an object-oriented programming language (the first one?) that <b>
+completely prevents missing initialization and inadvertent use of null
+values already at programming time, i.e., by purely static checks</b>.</p>
 <p>This could be achieved only </p>
-
-
-
-
 <ol type="A">
-  <li>by imposing a much more stringent discipline on <font color="#FF0000"><i>
-  <b>Lava</b></i></font> programs as to <b>where</b> the mandatory member 
-  variables of <font color="#FF0000"><i><b>Lava</b></i></font> objects are 
-  initialized: they <b>must</b> be initialized in the body of an initializer 
-  method of the respective <font color="#FF0000"><i><b>Lava</b></i></font> 
-  class, and</li>
-  <li>by a major revision of the expressive means for executable code, as 
-  compared to more traditional wide-spread procedural and object-oriented 
-  programming languages. </li>
+<li>by imposing a much more stringent discipline on <font color="#ff0000"><i> <b>Lava</b></i></font>
+programs as to <b>where</b> the mandatory member variables
+of <font color="#ff0000"><i><b>Lava</b></i></font>
+objects are initialized: they <b>must</b> be initialized
+in the body of an initializer method of the respective <font color="#ff0000"><i><b>Lava</b></i></font>
+class, and</li>
+<li>by a major revision of the expressive means for executable
+code, as compared to more traditional wide-spread procedural and
+object-oriented programming languages. </li>
 </ol>
-
-
-
-
 <p align="left">In particular, we have</p>
-
-
-
-
 <ul>
-
-
-
-
-  <li><a href="RepetComputSamples.htm">replaced
+<li><a href="RepetComputSamples.htm">replaced
 traditional loop constructs</a> by recursive function calls and
 bounded quantifiers,</li>
-
-
-
-
-  <li>replaced the traditional view of program variables as
+<li>replaced the traditional view of program variables as
 "reusable data containers" by a "<a href="SingleAssigLogSem.htm">single-assignment</a>"
-  (or "computed constant") view of variable usage, and</li>
-
-
-
-
-  <li>eliminated parameter passing "by reference" in favor of an
+(or "computed constant") view of variable usage, and</li>
+<li>eliminated parameter passing "by reference" in favor of an
 unambiguous distinction between input and output parameters of methods.</li>
-
-
-
-
-  <li>Moreover, we have introduced specific expressive means (the
-  <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font> conditional statement and the
-  <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm#elseExpr">else</a></b></font> expression) that allow us to prevent 
-  inadvertent <font color="#0000ff"><b>&Oslash;</b></font>-to-mandatory 
-  assignments (see below).</li>
-
-
-
-
-  <li>In cases where objects point to each other it is unavoidable that 
-  initializers of "parent" objects pass references to "self" or other not yet completely 
-  initialized objects to initializers of child objects (which will then use 
-  these references to point to the parent (or grandparent or other unfinished) object). This passing of unfinished 
-  objects as parameters, however, has to be secured against inadvertent access 
-  to not yet initialized sub-objects. For details see the dedicated section on
-  <b>
-  <a href="UnfinishedObjects.htm">unfinished objects</a></b>.</li>
-
-
-
-
+<li>Moreover, we have introduced specific expressive means (the
+<font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font>
+conditional statement and the <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm#elseExpr">else</a></b></font>
+expression) that allow us to prevent inadvertent <font color="#0000ff"><b>Ø</b></font>-to-mandatory
+assignments (see below).</li>
+<li>In cases where objects point to each other it is
+unavoidable that initializers of "parent" objects pass references to
+"self" or other not yet completely initialized objects to initializers
+of child objects (which will then use these references to point to the
+parent (or grandparent or other unfinished) object). This passing of
+unfinished objects as parameters, however, has to be secured against
+inadvertent access to not yet initialized sub-objects. For details see
+the dedicated section on <b> <a href="UnfinishedObjects.htm">unfinished
+objects</a></b>.</li>
 </ul>
-
-
-
-
 <h3>A) Missing initialization</h3>
-
-
-
-
 <p>Missing initialization has to be prevented with respect to</p>
-
-
-
-
 <ol>
-
-
-
-
-  <li><b>local</b> variables,</li>
-
-
-
-
-  <li><b>member </b>variables of classes, and</li>
-
-
-
-
-  <li><b>Output parameters</b> of function calls.</li>
-
-
-
-
+<li><b>local</b> variables,</li>
+<li><b>member </b>variables of classes, and</li>
+<li><b>Output parameters</b> of function calls.</li>
 </ol>
-
-
-
-
 <p>(Note that <i>global variables</i> have been
 abolished anyway in <font color="#ff0000"><i><b>Lava</b></i></font>
 in favor of a purely local, explicit data flow, in order to facilitate
-the analysis and comprehension of data flow in complex programs and to avoid the 
-obfuscating and confusing effects of "far-distance dependencies" within complex 
-applications.)</p>
-
-
-
-
+the analysis and comprehension of data flow in complex programs and to
+avoid the obfuscating and confusing effects of "far-distance
+dependencies" within complex applications.)</p>
 <p>Before you proceed, you should have understood how <font color="#ff0000"> <i><b>Lava</b></i></font>
 <a href="RepetComputSamples.htm">replaces traditional loop
 constructs</a> and that this implies:</p>
-
-
-
-
 <p><b><span lang="de">F</span>or every
 read access to a <font color="#ff0000"><i>Lava</i></font>
 variable you can easily find the origin of the current value of this
@@ -226,10 +96,6 @@ variable by following the containing program branch in upward direction
 (unless the variable is an input variable and therefore a value is
 assigned to it already <i>outside</i> this
 function).&nbsp;</b></p>
-
-
-
-
 <p>Now let's return to the three kinds of initialization
 problems. Note that <i><font color="#ff0000"><b>LavaPE
 </b></font></i>1. <a href="EditExec.htm">
@@ -239,76 +105,30 @@ every single editing step in the <font color="#ff0000"><i><b>LavaPE</b></i></fon
 structure editors <font color="#ff0000"><i><b>LavaPE</b></i></font>
 performs a static check on all the <i><font color="#ff0000"><b>Lava</b></font></i>
 code that is currently being presented in any open Window.</p>
-
-
-
-
 <h4>1. Local variables</h4>
-
-
-
-
 <p>Local variables may be introduced in several different ways,
 i.e., by several constructs:</p>
-
-
-
-
 <ul>
-
-
-
-
-  <li><font color="#0000ff"><b>declare</b></font>
+<li><font color="#0000ff"><b>declare</b></font>
 (just declares new local variables in the usual sense),</li>
-
-
-
-
-  <li><font color="#0000ff"><b>foreach</b></font>
+<li><font color="#0000ff"><b>foreach</b></font>
 (universal quantifier ranging over some finite set of objects),</li>
-
-
-
-
-  <li><font color="#0000ff"><b>exists</b></font>
+<li><font color="#0000ff"><b>exists</b></font>
 (existential quantifier ranging over some finite set of objects),</li>
-
-
-
-
-  <li><font color="#0000ff"><b>select</b></font>
+<li><font color="#0000ff"><b>select</b></font>
 (<font color="#ff0000"><i><b>Lava</b></i></font>
 counterpart of the <font color="#ff0000"><i><b>SQL</b></i></font>
 select expression),</li>
-
-
-
-
-  <li><font color="#0000ff"><b>type</b></font> (branches over the run time type 
-  of an expression value),</li>
-
-
-
-
-  <li><font color="#0000ff"><b>try ... catch</b></font> (branches over the type 
-  of an <a href="ExceptionSamples.htm">exception</a> object.</li>
-
-
-
-
+<li><font color="#0000ff"><b>type</b></font>
+(branches over the run time type of an expression value),</li>
+<li><font color="#0000ff"><b>try ... catch</b></font>
+(branches over the type of an <a href="ExceptionSamples.htm">exception</a>
+object.</li>
 </ul>
-
-
-
-
-<p>which all assign completely initialized objects to the respective local variables that
+<p>which all assign completely initialized objects to the
+respective local variables that
 they introduce, except for the declare construct. So we need to
 consider only <i> declared</i> variables.</p>
-
-
-
-
 <p>For every read access to a <i>declared</i> local
 variable <font color="#ff0000"><i><b>LavaPE</b></i></font>
 checks (statically, = at programming time) if a value is assigned to
@@ -317,457 +137,297 @@ program&nbsp; branch and reports an error otherwise. A somewhat
 unusual consequence of this is that a newly declared local variable is
 always displayed bold and red initially, marking an error, since there
 has not yet been assigned a value to it. </p>
-
-
-
-
 <h4>2. Member variables</h4>
-
-
-
-
 <p>In order to guarantee that all non-optional member variables
 of <font color="#ff0000"><i><b>Lava</b></i></font>
 objects are properly initialized, <font color="#ff0000"><i><b>Lava</b></i></font>
 enforces an unusually stringent initialization discipline<span lang="de">:</span></p>
-
-
-
-
 <ol>
-
-
-
-
-  <li>New <font color="#ff0000"><i><b>Lava</b></i></font>
+<li>New <font color="#ff0000"><i><b>Lava</b></i></font>
 objects are created using the <font color="#0000ff"><b>new</b></font>
 expression, which requires the specification of an "initializer"
 associated with the new object's class.</li>
-
-
-
-
-  <li><font color="#ff0000"><i><b>LavaPE</b></i></font>
-makes sure (by purely static checks) that <b>every initializer assigns a
+<li><font color="#ff0000"><i><b>LavaPE</b></i></font>
+makes sure (by purely static checks) that <b>every initializer
+assigns a
 value to every non-optional member variable of this class in each of
 its branches</b>.</li>
-
-
-
-
-  <li>You can modify these values within the (optional) <font color="#800080"><b>but</b></font> clause
+<li>You can modify these values within the (optional) <font color="#800080"><b>but</b></font> clause
 of the <font color="#0000ff"><b>new</b></font>
 expression and in this way <i> customize</i> the object
 before its completion.</li>
-
-
-
-
-  <li>When a new object leaves the <font color="#0000ff"><b>new</b></font>
+<li>When a new object leaves the <font color="#0000ff"><b>new</b></font>
 construct <font color="#ff0000"><i><b>Lava</b></i></font>
 marks it as <i> finished</i>. <font color="#ff0000"><i><b>Lava</b></i></font>
 makes sure (by run time checks) that you cannot pass an unfinished
 object (from within an initializer or a <font color="#800080"><b>but</b></font>
 clause) as an input parameter to any function.<br>
-
-
-
-
-    <br>
-
-
-
-
+<br>
 This enforces essentially a <b>strict bottom-up construction of
 new objects from member objects</b> that have to be constructed
 first.</li>
-
-
-
-
 </ol>
-
-
-
-
 <p>Two concessions will (to some degree) soften the "pain" caused
 by such a strict bottom-up construction discipline:<i> </i></p>
-
-
-
-
 <p><i>From within an initializer</i></p>
-
-
-
-
 <ul>
-
-
-
-
-  <li>you may use <i>self</i>&nbsp; for calling
+<li>you may use <i>self</i>&nbsp; for calling
 a method of self's class: self.method(...), after all non-optional
 members of <i>self</i> have been initialized, although the
 new object has not yet been marked as <i>finished</i> in
 this case.</li>
-
-
-
-
-  <li>you may pass a (not yet completely initialized) <i>self</i>
+<li>you may pass a (not yet completely initialized) <i>self</i>
 object as an input parameter to <i>another initializer</i>:
 This is inevitably needed if you would like to establish a "backward" <a href="PointersRefCounts.htm">pointer</a> from a member
 object to its containing parent object.</li>
-
-
-
-
 </ul>
-
-
-
-
 <p>In more detail, point 2 above means that from every "return
 point" of the function body the check follows the respective branch in
 upward direction and makes sure that a value is assigned to every
 non-optional output parameter in this branch.</p>
-
-
-
-
 <p>A "return point" may be the end of the function body or a <a target="_blank" href="whatsThis/FailSucceed.htm"><font color="#0000ff"><b>succeed</b></font></a>
 or <a href="whatsThis/FailSucceed.htm"><font color="#0000ff"><b>fail/throw</b></font></a>
 statement. The <a href="whatsThis/FailSucceed.htm"><font color="#0000ff"><b>throw</b></font></a>
 statement specifies an expression whose value designates an exception
 that is to be thrown.</p>
-
-
-
-
 <p>If a function has output parameters (see below) then it must
 not be left without throwing an exception (checked at programming
 time). This applies also to initializers of classes.</p>
-
-
-
-
 <p>An exception-throwing <a href="whatsThis/FailSucceed.htm"><font color="#0000ff"><b>throw</b></font></a>
 statement is the <i>only</i> way to exit from a class
 method or initializer if you cannot assign a value to every
 non-optional output parameter. (Checked at programming time.)</p>
-
-
-
-
 <h4>3. Output parameters</h4>
-
-
-
-
-<p>First<font color="#ff0000"><b><i> </i></b></font>note that <font color="#ff0000"><i><b>Lava</b></i></font><b> </b>doesn't support parameter passing "by reference". In <i> <font color="#ff0000"><b>Lava</b></font></i><b>,</b>
+<p>First<font color="#ff0000"><b><i> </i></b></font>note
+that <font color="#ff0000"><i><b>Lava</b></i></font><b>
+</b>doesn't support parameter passing "by reference". In <i>
+<font color="#ff0000"><b>Lava</b></font></i><b>,</b>
 function parameters are either input or output parameters. For
 reference parameters it wouldn't be clear whether or not the function
 assigns a value to them, whereas a <font color="#ff0000"><i><b>Lava</b></i></font>&nbsp;
 function <b>must</b> assign a value to <b>every</b>
 non-optional output parameter, and this is checked already at
 programming time (= statically).</p>
-
-
-
-
 <p>This is an essential prerequisite for all kinds of <font color="#ff0000"> <i><b>Lava</b></i></font>&nbsp;
 initialization checks since only then you can also cover those cases
 where a variable is initialized by being an actual output parameter of
 a function call.</p>
-
-
-
-
-<p>(Note: Though function parameters aren't passed "by reference" in
-<font color="#ff0000"><i><b>Lava</b></i></font>, they are yet passed "by 
-address" and never "by value" (= copied)). </p>
-
-
-
-
-<p>Much like the member initialization checks (see above), the initialization 
-checks for output parameters are performed at all return points of the function 
-body.</p>
-
-
-
-
+<p>(Note: Though function parameters aren't passed "by reference"
+in
+<font color="#ff0000"><i><b>Lava</b></i></font>,
+they are yet passed "by address" and never "by value" (= copied)). </p>
+<p>Much like the member initialization checks (see above), the
+initialization checks for output parameters are performed at all return
+points of the function body.</p>
 <p>An exception-throwing <a href="whatsThis/FailSucceed.htm"><font color="#0000ff"><b>throw</b></font></a>
-statement is  the <i>only</i> way to exit from a
+statement is the <i>only</i> way to exit from a
 function if you cannot assign a value to every non-optional output
 parameter. (Checked at programming time.)</p>
-
-
-
-
 <p>In this way <font color="#ff0000"><i><b>Lava</b></i></font>
-makes sure that undefined outputs cannot be used <b>inadvertently </b>by the caller of a failing function but only if the resulting exception
+makes sure that undefined outputs cannot be used <b>inadvertently
+</b>by the caller of a failing function but only if the resulting
+exception
 is caught and the respective output parameters are used nevertheless
 thereafter. </p>
-
-
-
-
 <p>(The worst thing that may happen then is that such an output
-is <font color="#0000ff"><b>&Oslash;</b></font>:
+is <font color="#0000ff"><b>Ø</b></font>:
 then a null-pointer-exception will be thrown in turn, or you use the
 output although its value may be meaningless in this case: that's your
 own risk and should be avoided without reliable knowledge about the
 function's implementation.)</p>
-
-
-
-
-<h3><a name="optional"></a>B) Preventing <b><font color="#0000ff">&Oslash;</font></b>-to-mandatory assignments</h3>
-
-
-
-
-<p>In <font color="#ff0000"><i><b>Lava</b></i></font>, an expression that yields an 
-<a href="dialogs/MemVarBox.htm#mandatory">optional</a> result (i.e.,
-one that may assume the special value <font color="#0000ff"><b>&Oslash;</b></font>),
-cannot be unconditionally assigned to a 
-<a href="dialogs/MemVarBox.htm#mandatory">mandatory</a> variable in <font color="#ff0000"><b><i>Lava</i></b></font>,
-but you must either enclose the assignment in the <font color="#0000ff"><b>then</b></font> 
-clause of an <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font>
+<h3><a name="optional"></a>B) Preventing <b><font color="#0000ff">Ø</font></b>-to-mandatory
+assignments</h3>
+<p>In <font color="#ff0000"><i><b>Lava</b></i></font>,
+an expression that yields an <a href="dialogs/MemVarBox.htm#mandatory">optional</a>
+result (i.e.,
+one that may assume the special value <font color="#0000ff"><b>Ø</b></font>),
+cannot be unconditionally assigned to a <a href="dialogs/MemVarBox.htm#mandatory">mandatory</a>
+variable in <font color="#ff0000"><b><i>Lava</i></b></font>,
+but you must either enclose the assignment in the <font color="#0000ff"><b>then</b></font> clause
+of an <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font>
 statement (which tests whether the optional variable in the
-<font color="#0000ff"><b>ifdef</b></font>-condition has a non-null value), or you must use an <font color="#0000ff"><b>
+<font color="#0000ff"><b>ifdef</b></font>-condition
+has a non-null value), or you must use an <font color="#0000ff"><b>
 <a href="whatsThis/IfdefElse.htm#elseExpr">else</a></b></font>
 expression or a chain of <font color="#0000ff"><b>else</b></font>
-expressions  which finally provides an alternative expression that
+expressions which finally provides an alternative expression that
 yields a non-optional value.</p>
-
-
-
-
 <p>Cf. the
-<a target="_blank" href="http://nice.sourceforge.net/manual.html#optionTypes">
-option types</a> of the <font color="#ff0000"><i><b>
-<a target="_blank" href="http://nice.sourceforge.net/">Nice</a></b></i></font> 
-language, a <font color="#ff0000"><i><b>Java</b></i></font> derivative. Note: In
-<font color="#ff0000"><i><b>Lava</b></i></font> we prefer to assign the <i>
-optional</i> attribute to <i>variables</i> rather than <i>types</i>, since <i>
-types</i> actually are <i>object types</i>, and <i>objects</i> aren't <i>
-optional</i>, but <i>variables </i>may be <i>optional</i>, which means that the 
-special <i>null</i> value (<font color="#0000ff">&Oslash;</font>) may be assigned to 
-them.</p>
-
-
-
-
+<a target="_blank" href="http://nice.sourceforge.net/manual.html#optionTypes">option
+types</a> of the <font color="#ff0000"><i><b>
+<a target="_blank" href="http://nice.sourceforge.net/">Nice</a></b></i></font>
+language, a <font color="#ff0000"><i><b>Java</b></i></font>
+derivative. Note: In
+<font color="#ff0000"><i><b>Lava</b></i></font>
+we prefer to assign the <i>
+optional</i> attribute to <i>variables</i> rather
+than <i>types</i>, since <i>
+types</i> actually are <i>object types</i>, and <i>objects</i>
+aren't <i>
+optional</i>, but <i>variables </i>may be <i>optional</i>,
+which means that the special <i>null</i> value (<font color="#0000ff">Ø</font>) may be assigned to them.</p>
 <hr>
-
-
-<h3>Initialization in <font color="#ff0000"><i>Lava</i></font> compared to
-<font color="#ff0000"><i>C++</i></font> / <font color="#ff0000"><i>Java</i></font> 
+<h3>Initialization in <font color="#ff0000"><i>Lava</i></font>
+compared to
+<font color="#ff0000"><i>C++</i></font>
+/ <font color="#ff0000"><i>Java</i></font>
 / <font color="#ff0000"><i>C#</i></font></h3>
-
-
-<p>The <b>definite assignment checks</b> of <b><font color="#ff0000"><i>Java</i></font></b> 
-and <font color="#ff0000"><i><b>C#</b></i></font>, like those of
-<font color="#ff0000"><b><i>Lava</i></b></font> (see above), ensure merely that
-<b>local 
-variables</b> are assigned before they are used. But the absence of the 
-optional/mandatory distinction and of a clear distinction between input and 
-output parameters makes it impossible to have a greater benefit from the 
-analytical capabilities of the compiler. E.g., look at the following little
-<font color="#ff0000"><i><b>Java</b></i></font> program:</p>
-
-
-
+<p>The <b>definite assignment checks</b> of <b><font color="#ff0000"><i>Java</i></font></b>
+and <font color="#ff0000"><i><b>C#</b></i></font>,
+like those of
+<font color="#ff0000"><b><i>Lava</i></b></font>
+(see above), ensure merely that
+<b>local variables</b> are assigned before they are used.
+But the absence of the optional/mandatory distinction and of a clear
+distinction between input and output parameters makes it impossible to
+have a greater benefit from the analytical capabilities of the
+compiler. E.g., look at the following little
+<font color="#ff0000"><i><b>Java</b></i></font>
+program:</p>
 <blockquote>
-  
-  <pre><font color="#0000ff">public class</font> Hello {<br>  <font color="#0000ff">public static</font> void main(String[] args) {<br>    A a, a2;<br>		<br>    a = <font color="#0000ff">new</font> A();<br>    a2 = a.func();<br>    System.out.println(a2.toString());<br>  }<br>}<br><br><font color="#0000ff">class</font> A {<br>  <font color="#0000ff">public</font> int x, y;<br><br>  <font color="#0000ff">public</font> A func() {<br>    <font color="#0000ff">return</font> null;<br>  };<br>};<br></pre>
-
-
+<pre><font color="#0000ff">public class</font> Hello {<br> <font color="#0000ff">public static</font> void main(String[] args) {<br> A a, a2;<br>	<br> a = <font color="#0000ff">new</font> A();<br> a2 = a.func();<br> System.out.println(a2.toString());<br> }<br>}<br><br><font color="#0000ff">class</font> A {<br> <font color="#0000ff">public</font> int x, y;<br><br> <font color="#0000ff">public</font> A func() {<br> <font color="#0000ff">return</font> null;<br> };<br>};<br></pre>
 </blockquote>
-
-
-<p>"a2 = a.func();" assigns the <font color="#ff0000"><i><b>Java</b></i></font> 
-null object to a2; so "a2.toString()" in the next line will trigger a 
-NullPointerException at run time. But the <font color="#ff0000"><i><b>Java</b></i></font> 
+<p>"a2 = a.func();" assigns the <font color="#ff0000"><i><b>Java</b></i></font>
+null object to a2; so "a2.toString()" in the next line will trigger a
+NullPointerException at run time. But the <font color="#ff0000"><i><b>Java</b></i></font>
 compiler doesn't recognize and report this error.</p>
-
-
-<p>In contrast to this, <font color="#ff0000"><i><b>LavaPE</b></i></font> will 
-allow the assignment of <font color="#0000ff"><b>&Oslash; </b></font>(null) to 
-an output parameter of a function only if the corresponding formal parameter is 
-declared <b>optional</b>. As a consequence, the assignment "a2
-<font color="#0000ff"><b>&lt;==</b></font> a.func()" in the main program would be 
-rejected at programming time since the assignment target a2 is mandatory. If a2 
-were declared optional instead, then "a2.toString()" would now be rejected since 
-the use of the optional variable a2 isn't secured by an <font color="#0000ff">
-<b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font> statement or
-<font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">else</a></b></font> 
+<p>In contrast to this, <font color="#ff0000"><i><b>LavaPE</b></i></font>
+will allow the assignment of <font color="#0000ff"><b>Ø
+</b></font>(null) to an output parameter of a function only
+if the corresponding formal parameter is declared <b>optional</b>.
+As a consequence, the assignment "a2
+<font color="#0000ff"><b>&lt;==</b></font>
+a.func()" in the main program would be rejected at programming time
+since the assignment target a2 is mandatory. If a2 were declared
+optional instead, then "a2.toString()" would now be rejected since the
+use of the optional variable a2 isn't secured by an <font color="#0000ff">
+<b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font>
+statement or
+<font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">else</a></b></font>
 expression here.</p>
-
-
-<p>The <b>constructor</b> notions of <b><font color="#ff0000"><i>C++</i></font></b> 
-/ <b><font color="#ff0000"><i>Java</i></font></b> / <font color="#ff0000"><b><i>
-C# </i></b></font>can only guarantee that an object is initialized <b>anyhow</b>: 
-Its member variables are set to default values (numbers to 0 or 0.0, reference 
-types to <i>null</i>, etc.) if a 
-more meaningful value isn't assigned explicitly. In most cases this won't 
-prevent the application from crashing, or, even worse, from silently delivering 
-faulty results.</p>
-
-
-<p>In contrast to this, <font color="#ff0000"><i><b>Lava</b></i></font> informs 
-the programmer already at programming time if an initializer is missing or 
-an existing initializer fails to initialize all mandatory member variables. The 
-enforced distinction between optional 
-and mandatory variables is of crucial importance in this context.</p>
-
-
-<p>Moreover, <font color="#ff0000"><i><b>Lava</b></i></font> provides an 
-additional way to prevent meaningless/faulty object initialization: You can add
-<b>"<a href="DBC.htm#LavaAA">invariants</a>"</b> to class interfaces and class implementations, i.e., logical 
-conditions that must hold true for newly created objects of the respective class 
-(and also after any non-read-only method has been applied to such an object).</p>
-
-
-<p>The &quot;merciless&quot; object initialization discipline of <font color="#FF0000"><i>
-<b>Lava</b></i></font> (&quot;objects must be explicitly and completely and solely 
-initialized within initializers&quot;) has another highly desirable and beneficial 
-consequence that is perhaps even more important as the complete prevention of 
-hard to trace run time crashes due to missing (or meaningless automatic) 
-initialization:</p>
-
-
-<p><b>Initialization of&nbsp; object member variables cannot be scattered any 
-longer in obscure, arbitrary, and inextricable ways over large portions of code.</b></p>
-
-
-<p>This makes it much easier to quickly locate the place where a value is 
-assigned to a member or other variable, and thus to understand the data flow and 
-the entire structure of applications: an enormous advantage that cannot be 
-overestimated.</p>
-
-
-<p>In some cases this may, indeed, force the programmer to redesign the class 
-structure of the respective application. E.g., it may be necessary to subdivide 
-objects into parts corresponding to several very different stages of the 
-application run.</p>
-
-
+<p>The <b>constructor</b> notions of <b><font color="#ff0000"><i>C++</i></font></b>
+/ <b><font color="#ff0000"><i>Java</i></font></b>
+/ <font color="#ff0000"><b><i>
+C# </i></b></font>can only guarantee that an object
+is initialized <b>anyhow</b>: Its member variables are set
+to default values (numbers to 0 or 0.0, reference types to <i>null</i>,
+etc.) if a more meaningful value isn't assigned explicitly. In most
+cases this won't prevent the application from crashing, or, even worse,
+from silently delivering faulty results.</p>
+<p>In contrast to this, <font color="#ff0000"><i><b>Lava</b></i></font>
+informs the programmer already at programming time if an initializer is
+missing or an existing initializer fails to initialize all mandatory
+member variables. The enforced distinction between optional and
+mandatory variables is of crucial importance in this context.</p>
+<p>Moreover, <font color="#ff0000"><i><b>Lava</b></i></font>
+provides an additional way to prevent meaningless/faulty object
+initialization: You can add
+<b>"<a href="DBC.htm#LavaAA">invariants</a>"</b>
+to class interfaces and class implementations, i.e., logical conditions
+that must hold true for newly created objects of the respective class
+(and also after any non-read-only method has been applied to such an
+object).</p>
+<p>The "merciless" object initialization discipline of <font color="#ff0000"><i>
+<b>Lava</b></i></font> ("objects must be
+explicitly and completely and solely initialized within initializers")
+has another highly desirable and beneficial consequence that is perhaps
+even more important as the complete prevention of hard to trace run
+time crashes due to missing (or meaningless automatic) initialization:</p>
+<p><b>Initialization of&nbsp; object member variables
+cannot be scattered any longer in obscure, arbitrary, and inextricable
+ways over large portions of code.</b></p>
+<p>This makes it much easier to quickly locate the place where a
+value is assigned to a member or other variable, and thus to understand
+the data flow and the entire structure of applications: an enormous
+advantage that cannot be overestimated.</p>
+<p>In some cases this may, indeed, force the programmer to
+redesign the class structure of the respective application. E.g., it
+may be necessary to subdivide objects into parts corresponding to
+several very different stages of the application run.</p>
 <p><b>Example:</b></p>
-
-
-<p>Consider a tree structure of actual application 
-data objects which perhaps is completely constructed in a first stage of the 
-application. A corresponding widget tree for an external GUI representation 
-might be completely constructed in a second stage, before it is possible to 
-compute the  sizes and positions (i.e., a layout tree) for the widget tree 
-in a final third stage.</p>
-
-
-<p>In a traditional language without stringent initialization discipline you 
-would perhaps combine all these three pieces of information (actual application 
-data + widget data + layout data) or at least the last two  
-(widget + layout data) in a single object. But you would still need those three 
-stages to successively complete the object structure. The constructor used in 
-the initial object creation would produce only a very incomplete, preliminary 
-object, and solely the programmer would have to make sure that the still 
-uninitialized member variables aren't&nbsp; referenced prematurely.</p>
-
-
-<p>In <font color="#FF0000"><i><b>Lava</b></i></font> this wouldn't work, except 
-perhaps if you declare all those member variables that are to be initialized 
-during the second and third stage to be &quot;<a href="dialogs/MemVarBox.htm#mandatory">optional</a>&quot;, 
-although they are not really optional. This would not only be an abuse of the 
-&quot;optional&quot; notion but would entail the rather unpleasant &quot;penalty&quot; that you 
-would have to protect all references to those (not really optional) variables by
-<font color="#0000FF"><b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font> 
-or <font color="#0000FF"><b><a href="whatsThis/IfdefElse.htm">else</a></b></font> 
+<p>Consider a tree structure of actual application data objects
+which perhaps is completely constructed in a first stage of the
+application. A corresponding widget tree for an external GUI
+representation might be completely constructed in a second stage,
+before it is possible to compute the sizes and positions (i.e., a
+layout tree) for the widget tree in a final third stage.</p>
+<p>In a traditional language without stringent initialization
+discipline you would perhaps combine all these three pieces of
+information (actual application data + widget data + layout data) or at
+least the last two (widget + layout data) in a single object. But you
+would still need those three stages to successively complete the object
+structure. The constructor used in the initial object creation would
+produce only a very incomplete, preliminary object, and solely the
+programmer would have to make sure that the still uninitialized member
+variables aren't&nbsp; referenced prematurely.</p>
+<p>In <font color="#ff0000"><i><b>Lava</b></i></font>
+this wouldn't work, except perhaps if you declare all those member
+variables that are to be initialized during the second and third stage
+to be "<a href="dialogs/MemVarBox.htm#mandatory">optional</a>",
+although they are not really optional. This would not only be an abuse
+of the "optional" notion but would entail the rather unpleasant
+"penalty" that you would have to protect all references to those (not
+really optional) variables by
+<font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">ifdef</a></b></font>
+or <font color="#0000ff"><b><a href="whatsThis/IfdefElse.htm">else</a></b></font>
 constructs.</p>
+<p>The only appropriate <i><font color="#ff0000"><b>Lava</b></font></i>
+solution would be to separate the application data from the widget data
+and the latter from the layout data, and to construct an application
+object tree in the first stage, then a widget tree in the second stage,
+and finally a layout object tree.</p>
+<p>This would by no means be a disadvantage, but quite to the
+contrary: We expect that he stringent object initialization discipline
+of
+<font color="#ff0000"><i><b>Lava</b></i></font>
+will in many cases lead to a very desirable and potentially advantageous<b>
+separation of concerns</b>, for instance in our example, if you
+intend to present the same application objects in two or more different
+views either by different widgets, or the same widget tree according to
+different layout strategies, say, e.g., in one view as a left to right
+tree and in another view as a top to bottom tree.</p>
+<p></p>
+<hr style="color: black; background-color: black; height: 3px;" noshade="noshade">
 
-
-<p>The only appropriate <i><font color="#FF0000"><b>Lava</b></font></i> solution 
-would be to separate the application data from the widget data and the latter 
-from the layout data, and to construct an application object tree in the first 
-stage, then a widget tree in the second stage, and finally a layout object tree.</p>
-
-
-<p>This would by no means be a disadvantage, but quite to the contrary: We 
-expect that he stringent object initialization discipline of
-<font color="#FF0000"><i><b>Lava</b></i></font> will in many cases lead to a 
-very desirable and potentially advantageous<b> separation of concerns</b>, for 
-instance in our example, if you intend to present the same application objects 
-in two or more different views either by different widgets, or the same widget 
-tree according to different layout strategies, say, e.g., in one view as a left 
-to right tree and in another view as a top to bottom tree.</p>
-
-
-<hr>
-
-
-<p><b>Summary:</b> The most fundamental differences between
-<font color="#ff0000"><i><b>Lava</b></i></font> and other languages w.r.t 
-initialization are: </p>
-
-
+<h2 align="center"><strong>Summary</strong></h2>
+<p>The most fundamental differences between
+<font color="#ff0000"><i><b>Lava</b></i></font>
+and other languages w.r.t initialization are: </p>
 <ol>
-
-
-  <li><font color="#ff0000"><i><b>Lava</b></i></font> enforces <b>complete</b> 
-  initialization of objects <b>within</b> their respective initializers.</li>
-
-
-  <li><font color="#ff0000"><i><b>Lava</b></i></font> provides a way to <b>
-  safely deal with still unfinished objects</b> in the initialization phase.</li>
-
-
-  <li><font color="#ff0000"><i><b>Lava</b></i></font> makes sure that <b>
-  optional-to-mandatory assignments are always secured</b> by specific 
-  constructs <b><a href="whatsThis/IfdefElse.htm">ifdef</a></b> and <b>
-  <a href="whatsThis/IfdefElse.htm">else</a></b>.</li>
-
-
+<li><font color="#ff0000"><i><b>Lava</b></i></font>
+enforces <b>complete</b> initialization of objects <b>within</b>
+their respective initializers.</li>
+<li><font color="#ff0000"><i><b>Lava</b></i></font>
+provides a way to <b> safely deal with still unfinished objects</b>
+in the initialization phase.</li>
+<li><font color="#ff0000"><i><b>Lava</b></i></font>
+makes sure that <b> optional-to-mandatory assignments are always
+secured</b> by specific constructs <b><a href="whatsThis/IfdefElse.htm">ifdef</a></b> and
+<b> <a href="whatsThis/IfdefElse.htm">else</a></b>.</li>
 </ol>
-
-
-<p><b>This stringent and seamless initialization discipline of
-<font color="#ff0000"><i>Lava</i></font> completely and reliably prevents all 
-kinds of inadvertent access to uninitialized variables or null objects by purely 
-static checks, i.e. already at programming time.</b></p>
-
-
-<p>Two further kinds of erroneous data access that can be recognized only at run 
-time remain in <font color="#ff0000"><i><b>Lava</b></i></font>:</p>
-
-
+<p><b>This stringent and seamless initialization discipline
+of
+<font color="#ff0000"><i>Lava</i></font>
+completely and reliably prevents all kinds of inadvertent access to
+uninitialized variables or null objects by purely static checks, i.e.
+already at programming time.</b></p>
+<p>Two further kinds of erroneous data access that can be
+recognized only at run time remain in <font color="#ff0000"><i><b>Lava</b></i></font>:</p>
 <ol>
-
-
-  <li>You may catch an exception thrown by class method and subsequently ignore 
-  the undefined, null state of output parameters that normally would have 
-  well-defined non-null values if the exception had not occurred. Access to such 
-  an output parameter will in turn trigger a null-object exception.</li>
-
-
-  <li>If you (by mistake / prematurely) finalize/zombify objects (see the base 
-  class <i>Object </i>of all <font color="#ff0000"><i><b>Lava</b></i></font> 
-  classes) and then try to access these, a specific access-to-zombie exception 
-  will be thrown.</li>
-
-
+<li>You may catch an exception thrown by class method and
+subsequently ignore the undefined, null state of output parameters that
+normally would have well-defined non-null values if the exception had
+not occurred. Access to such an output parameter will in turn trigger a
+null-object exception.</li>
+<li>If you (by mistake / prematurely) finalize/zombify objects
+(see the base class <i>Object </i>of all <font color="#ff0000"><i><b>Lava</b></i></font>
+classes) and then try to access these, a specific access-to-zombie
+exception will be thrown.</li>
 </ol>
-
-
 <h3>See also</h3>
-
-
-<p><strong style="font-weight: 400"><a href="UnfinishedObjects.htm">Unfinished/closed/opaque/quarantined
+<p><strong style="font-weight: 400;"><a href="UnfinishedObjects.htm">Unfinished/closed/opaque/quarantined
 objects</a></strong></p>
-<p><a href="FAQLavaOrientation.htm">Principal orientation of <i><b>
-<font color="#FF0000">Lava</font></b></i></a></p>
-
-
-</body>
-</html>
+<p><a href="FAQLavaOrientation.htm">Principal
+orientation of <i><b>
+<font color="#ff0000">Lava</font></b></i></a></p>
+</body></html>
