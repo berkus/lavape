@@ -77,12 +77,12 @@ ITPF = src/Interpreter/Constructs.ph \
 links: $(ITPF) \
 	bin/Components/LCompoImpl.lcom.lnk \
 	bin/Components/LavaStream.lava \
-	bin/assistant \
-	lib/libQtCore.so.4 \
-	lib/libQtGui.so.4 \
-	lib/libQtNetwork.so.4 \
-	lib/libQtXml.so.4 \
-	lib/libQtAssistantClient.so.4
+	bin/assistant
+#	lib/libQtCore.so.4 \
+#	lib/libQtGui.so.4 \
+#	lib/libQtNetwork.so.4 \
+#	lib/libQtXml.so.4 \
+#	lib/libQtAssistantClient.so.4
 
 src/Interpreter/Constructs.ph: src/LavaExecs/Constructs.ph
 	cd src/Interpreter; $(LN) ../LavaExecs/Constructs.ph .
