@@ -153,9 +153,13 @@ of the Lava Programming Environment in lavape/bin thereafter:
 "LavaPE", "Lava", and "LPC". (The Lava Precompiler "LPC" is needed
 only during the build process.)
 
-Launch "LavaPE", consult the Online Help, open some sample
-programs from the lavape/samples directory and enjoy the
-unique structure editing features of LavaPE.
+Go to the lavape/bin directory, launch "./LavaPE", consult the
+Online Help, open some sample programs from the lavape/samples
+directory and enjoy the unique structure editing features of LavaPE.
+
+You can run the Lava interpreter "Lava" either by executing "./Lava"
+in the lavape/bin directory or from LavaPE by clicking the
+"running man" toolbutton.
 
 We'd appreciate very much if you would inform
 us (e-mail: guenthk@users.sourceforge.net)

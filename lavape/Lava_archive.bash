@@ -3,7 +3,7 @@ cd /opt/lavape/bin
 mv LavaPE LavaPE.exe
 mv Lava Lava.exe
 mv LPC LPC.exe
-mv assistant assistant.exe
+
 cd /opt
 tar -c -j \
 --exclude=lib \
@@ -24,6 +24,7 @@ tar -c -j \
 --exclude=*.bz2 \
 --exclude=*.gz \
 --exclude=*.proj \
+--exclude=linux* \
 --exclude='*~' \
 --exclude='*.o' \
 --exclude='*.so' \
@@ -40,5 +41,4 @@ cd /opt/lavape/bin
 mv LavaPE.exe LavaPE
 mv Lava.exe Lava
 mv LPC.exe LPC
-mv assistant.exe assistant
 
