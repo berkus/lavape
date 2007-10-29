@@ -1,8 +1,66 @@
-Release notes for lavape-0.9.0
+I) Change log
+
+II) Lava Installation HowTo
+
+
+I) Change Log for Release 0.9.0
 ==============================
 
-Installation of Lava/LavaPE
-===========================
+Migration to Qt4:
+================
+
+In a big effort, the entire Lava software has been
+migrated to Trolltech's Qt4 package; all dependencies
+on Qt3 have been removed.
+
+Lava provides complete static initialization checks now
+=======================================================
+
+By purely static checks Lava can now make sure already
+at programming time that you cannot inadvertently access
+uninitialized variables or null objects. This has been
+achieved by three new measures:
+
+1. By the new "closed" attribute for local variables,
+   for the "self" variable and for input/output parameters
+   of functions/initializers, which prohibits any access
+   to the member variables of still unfinished objects
+   during their initialization phase,
+
+2. by the new "initialize" clause of the "declare" statement
+   which allows you to collectively initialize several local
+   variables in the presence of mutual references,
+   
+3. by introducing more strict static checks of optional-to-
+   mandatory assignments together with two related new
+   constructs: The "ifdef" statement and the "else" expression.
+
+Checking optional-to-mandatory assignments:
+==========================================
+
+LavaPE now enforces already at programming time that optional
+variables and expressions have non-null values if they are
+assigned to mandatory variables.
+
+The new LavaPE release accepts such an assignment only
+
+a) if the source of the assignment is an (optional)
+   variable that is checked by an "ifdef" conditional
+   statement and if the assigment is contained in the
+   "then" clause of the "ifdef" statement, or
+
+b) if the source of the assignment is an "else"
+   expression "x else y" where at least one of x or y
+   is mandatory.
+
+"x else y" checks (at run time) whether x is null;
+if yes then the "else" expression yields y, if no then the
+expression yields x.
+
+
+
+II)Installation of Lava/LavaPE
+==============================
 
 
 How to install the binary release of LavaPE on Windows
@@ -12,42 +70,51 @@ Simply launch the downloaded lavape-<rel>-win32-bin.exe file and
 follow the instructions of the installer.
 
 
-How to install the LavaPE binary release for Linux
-==================================================
+How to install the LavaPE binary release for OpenSUSE 10.3
+==========================================================
 
-Download the compressed tar file of the
-LavaPE source distribution and store it
-in the parent directory of the envisaged
-lavape installation directory.
+Download the lavape-<rel>-suse.rpm package and execute
 
-Uncompress it using the command
+   sudo rpm -i lavape-<rel>-suse.rpm
 
-   tar xjvf lavape-<release>-linux-bin.tar.bz2
+in the usual way. The "LavaPE" and "Lava" executables
+will be installed in /usr/local/bin. An additional
+installation directory /usr/local/lavape with "samples" and "doc"
+subdirectories will be installed as well.
 
-or, if your UNIX-tar command doesn't support
-the "j" option:
 
-   bunzip2 lavape-<release>-linux-bin.tar.bz2
-   tar xf lavape-<release>-linux-bin.tar
+How to install the LavaPE binary release for [K]ubuntu 7.10
+===========================================================
 
-Then just execute the install script:
+Download the lavape-<rel>-ubuntu.deb package and execute
 
-   cd lavape
-   ./install
+   sudo dpkg -i lavape-<rel>-ubuntu.deb
 
-This script generates two program launch scripts
-"lavape" and "lava" in lavape/bin which you can use
-then to launch the Lava Programming Environment or
-the Lava Interpreter.
+in the usual way. The "LavaPE" and "Lava" executables
+will be installed in /usr/local/bin. An additional
+installation directory /usr/local/lavape with "samples" and "doc"
+subdirectories will be installed as well.
+
+
+How to install the LavaPE binary release for Fedora 8
+=====================================================
+
+Download the lavape-<rel>-fedora.rpm package and execute
+
+   sudo rpm -i lavape-<rel>-fedora.rpm
+
+in the usual way. The "LavaPE" and "Lava" executables
+will be installed in /usr/local/bin. An additional
+installation directory /usr/local/lavape with "samples" and "doc"
+subdirectories will be installed as well.
 
 
 How to install LavaPE from the source distribution on UNIX
 ==========================================================
 
-Download the compressed tar file of the
-LavaPE source distribution and store it
-in the parent directory of the envisaged
-lavape installation directory.
+Download the compressed tar file lavape-<release>-src.tar.bz2
+of the LavaPE source distribution and store it in the parent
+directory of the envisaged lavape installation directory.
 
 Uncompress it using the command
 
@@ -59,40 +126,35 @@ the "j" option:
    bunzip2 lavape-<release>-src.tar.bz2
    tar xf lavape-<release>-src.tar
 
-Read lavape/INSTALL.txt for the details
-and pre-requisites of a successfull
-installation. (In particular, you need
-to have GNU gcc/make and the developer version
+You need to have GNU gcc/make and the developer version
 of TrollTech/Qt4.
 
-Qt-4.1.4 is OK, Qt-4.2.0 contains a bug
-that prevents Lava from working properly. GIF support
-is required (configure option -qt-gif), or else you won't
-be able to see the gif images contained in the Lava
-online help.
+Either you may download Qt4 from
+http://trolltech.com/developer/downloads/qt/x11 and
+build it yourself. In this case you must set the
+environment variable QTDIR to point to the Qt-<release>
+directory that is created by the build process,
+before you build Lava/LavaPE from the sources.
 
-If Qt isn't installed in /usr/lib/qt you have to
-provide an environment variable QTDIR that points
-to the Qt4 installation directory. (Alternatively
-you may also make /usr/lib/qt a symbolic link
-that points to the Qt4 installation directory.)
+Or the software package manager of your Linux distribution
+offers you the possibility to download and install the
+Qt4 developer package(s). The Lava build process will then
+try to locate the Qt4 include files, libraries and
+utility programs automatically. (See the qbin.sh, qincl.sh,
+qlib.sh, and qsuff.sh shell procedures.)
 
 Then build the LavaPE executables as follows:
 
    cd lavape
    make
 
-This will take quite a while.
-You will find the executables
-of the Lava Programming Environment
-in lavape/bin thereafter:
-"LavaPE", "Lava", and "LPC".
-(The Lava Precompiler "LPC" is needed
+This will take quite a while. You will find the executables
+of the Lava Programming Environment in lavape/bin thereafter:
+"LavaPE", "Lava", and "LPC". (The Lava Precompiler "LPC" is needed
 only during the build process.)
 
-Launch "LavaPE", consult the Online Help,
-open some sample programs from the
-lavape/samples directory and enjoy the
+Launch "LavaPE", consult the Online Help, open some sample
+programs from the lavape/samples directory and enjoy the
 unique structure editing features of LavaPE.
 
 We'd appreciate very much if you would inform
@@ -105,68 +167,3 @@ But let us also know if you could successfully
 install and use LavaPE. So far, we could not test Lava
 on all platforms where we can build it successfully.
 
-
-How to build Lava/LavaPE on Windows from the source tarball
-===========================================================
-
-Currently this requires that you have installed either
-the MinGW/MSYS software (see www.mingw.org) and the official
-OpenSource version of TrollTech's Qt4 for Windows, or the free
-MS VC++ 2005 Express IDE and the modified, unofficial
-OpenSource version of TrollTech's Qt4 for Windows.
-
-
-Windows/VC++ 2005 Express:
-=========================
-
-Get the Qt4 OpenSource version for Windows from TrollTech
-and VC++ 2005 Express from Microsoft. Install VC++.
-
-(Qt-4.1.4 is OK, Qt-4.2.0 contains a bug
-that prevents Lava from working properly. GIF support
-is required (qconfigure option -qt-gif), or else you won't
-be able to see the gif images contained in the Lava
-online help.)
-
-Unpack Qt4 to a directory of your choice. Set QTDIR
-and PATH as in the MinGW case.
-QMAKESPEC need not be defined.
-
-Get the "Unofficial patches for Qt4" from the Q../Free
-project at SourceForge (formerly qt-win):
-
-  https://sourceforge.net/project/showfiles.php?group_id=49109
-
-Unpack the contents of this zip file to the Qt4 install
-directory.
-
-Install also the Microsoft Platform SDK (the core  + internet
-components suffice) as described by the Q../Free project.
-
-Modify the VC\VCProjectDefaults\corewin_express.vsprops file
-of VS 2005 as described by the Q../Free project.
-
-Launch VC++ and open the "Visual Studio 2005 Command Prompt"
-window from the "Tools" menu of VC++.
-
-Execute the "installpatch..." script.
-
-Execute "qconfigure msvc2005 -qt-gif". This will completely
-install the "unofficial" Qt4-VC++ version.
-
-Open "Tools"-->"Options..." in VC++, select "Projects and Solutions"
---> "VC++ directories"--> "Include files". Add the primary
-Qt include directories
-
-$(QTDIR)\Include
-$(QTDIR)\Include\QtCore
-$(QTDIR)\Include\QtGui
-$(QTDIR)\Include\QtNetwork
-
-and similarly for the library files.
-
-Open the "LavaPE.sln" file from the lavape\src directory
-in VC++. Execute "Build solution" from the "Build" menu.
-
-This will build the Lava software and install the Lava
-executables in the <lavape>\bin directory.
