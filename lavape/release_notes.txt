@@ -4,13 +4,6 @@ Release notes for lavape-0.9.0
 Installation of Lava/LavaPE
 ===========================
 
-(Note that it may be easier and cheaper to
-keep your Lava installation up-to-date
-by checking it out and updating it from
-our SourceForge SVN repository, which
-always reflects the current state of the
-Lava software development.)
-
 
 How to install the binary release of LavaPE on Windows
 ======================================================

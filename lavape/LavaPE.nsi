@@ -125,6 +125,7 @@ Section "LavaPE (required)" SEC01
   SetFileAttributes $OUTDIR\std.lava READONLY|ARCHIVE
   File "bin\*.htm"
   File "bin\*.bat"
+  File "C:\Qt\Qt432msvc\bin\assistant.exe"
   File "C:\Qt\Qt432msvc\bin\QtAssistantClient4.dll"
   File "C:\Qt\Qt432msvc\bin\QtCore4.dll"
   File "C:\Qt\Qt432msvc\bin\QtGui4.dll"
