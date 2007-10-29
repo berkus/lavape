@@ -326,7 +326,7 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     }
   }
   else if (token == Comment_T) {
-    //fmt.italic = true;
+    fmt.italic = true;
     fmt.color = QColor("#009000"); // green
   }
   else if (TOKENSTR[token][0].isLetter()
