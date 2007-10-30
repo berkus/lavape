@@ -1608,12 +1608,12 @@ void CLavaMainFrame::on_showUtilWindowAction_triggered()
   else {
     m_UtilityView->hide();
     LastUtilitiesState = (int)m_UtilityView->ActTab;
-    if (/*wxTheApp->isChMaximized && */wxTheApp->activeView()->inherits("CExecView")) {
-      CExecView *ev = (CExecView*)wxTheApp->activeView();
-      ev->redCtl->update();
+    //if (/*wxTheApp->isChMaximized && */wxTheApp->activeView()->inherits("CExecView")) {
+    //  CExecView *ev = (CExecView*)wxTheApp->activeView();
+    //  ev->redCtl->update();
       //ev->redCtl->setUpdatesEnabled(false);
       //ev->redCtl->setUpdatesEnabled(true);
-    }
+    //}
     wxTheApp->updateButtonsMenus();
     UtilitiesHidden = true;
   }

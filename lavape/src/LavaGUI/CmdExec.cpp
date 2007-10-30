@@ -50,6 +50,7 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
 
   optNode = fNode->data.FIP.up;
   formSyn = optNode->data.FormSyntax;
+  GUIProg->focNode = 0;
   optNode->data.SubTree.Destroy();
   if (LBaseData->inRuntime) {
     if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(formSyn, (LavaVariablePtr)optNode->data.ResultVarPtr))
@@ -81,6 +82,7 @@ void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
   if (delNode->data.BasicFlags.Contains(Groupbox))
     elliNode->data.BasicFlags.INCL(Groupbox);
   elliNode->data.FIP.up = parNode;
+  parNode->data.IterFlags.EXCL(Optional);
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)ID_DELETEOPT));
 }
 
