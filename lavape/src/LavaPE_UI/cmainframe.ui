@@ -1137,16 +1137,16 @@
     <iconset resource="../LavaPE_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q3_NewInterface.xpm</iconset>
    </property>
    <property name="text" >
-    <string>New interface...</string>
+    <string>New class...</string>
    </property>
    <property name="iconText" >
-    <string>interface</string>
+    <string>class</string>
    </property>
    <property name="toolTip" >
-    <string>New interface...</string>
+    <string>New class...</string>
    </property>
    <property name="whatsThis" >
-    <string>&lt;p>Create a new &lt;a href="../SepItfImpl.htm">interface&lt;/a> (= the public part of a &lt;font color="red">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> class)&lt;/p></string>
+    <string>&lt;p>Create a new &lt;a href="../SepItfImpl.htm">class&lt;/a> (= the public part of a &lt;font color="red">&lt;b>&lt;i>Lava&lt;/i>&lt;/b>&lt;/font> class)&lt;/p></string>
    </property>
   </action>
   <action name="newImplAction" >
@@ -1266,7 +1266,7 @@
     <string>New virtual type...</string>
    </property>
    <property name="whatsThis" >
-    <string>&lt;p>Add a new &lt;a href="../PatternsFrameworks.htm">virtual type&lt;/a> to an interface or package&lt;/p></string>
+    <string>&lt;p>Add a new &lt;a href="../PatternsFrameworks.htm">virtual type&lt;/a> to a class or package&lt;/p></string>
    </property>
   </action>
   <action name="newFuncAction" >
@@ -1286,7 +1286,7 @@
     <string>New member function...</string>
    </property>
    <property name="whatsThis" >
-    <string>&lt;p>Add a new virtual or static &lt;a href="../dialogs/FunctionBox.htm">member function&lt;/a> to the current interface or implementation&lt;/p></string>
+    <string>&lt;p>Add a new virtual or static &lt;a href="../dialogs/FunctionBox.htm">member function&lt;/a> to the current class or implementation&lt;/p></string>
    </property>
   </action>
   <action name="newMemVarAction" >
@@ -1306,7 +1306,7 @@
     <string>New member variable or function parameter...</string>
    </property>
    <property name="whatsThis" >
-    <string>&lt;p>Add a new &lt;a href="../dialogs/MemVarBox.htm">member variable&lt;/a> or &lt;a href="../dialogs/FuncParmBox.htm">function parameter&lt;/a> to the current interface or implementation&lt;/p></string>
+    <string>&lt;p>Add a new &lt;a href="../dialogs/MemVarBox.htm">member variable&lt;/a> or &lt;a href="../dialogs/FuncParmBox.htm">function parameter&lt;/a> to the current class or implementation&lt;/p></string>
    </property>
   </action>
   <action name="newEnumItemAction" >
@@ -2452,16 +2452,16 @@
     <iconset resource="../LavaPE_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q2_MakeGUI.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Make GUI-service for selected interface</string>
+    <string>Make GUI-service for selected class</string>
    </property>
    <property name="iconText" >
     <string>makeGUI</string>
    </property>
    <property name="toolTip" >
-    <string>Make GUI-service for selected interface</string>
+    <string>Make GUI-service for selected class</string>
    </property>
    <property name="whatsThis" >
-    <string>&lt;p>Generate a &lt;a href="../EditForm.htm#GUI">GUI service interface&lt;/a> from the selected interface&lt;/p></string>
+    <string>&lt;p>Generate a &lt;a href="../EditForm.htm#GUI">GUI service class&lt;/a> from the selected class&lt;/p></string>
    </property>
   </action>
   <action name="DbgAction" >

@@ -68,7 +68,7 @@
       <widget class="QComboBox" name="ImplTypes" >
        <item>
         <property name="text" >
-         <string>(Select interface to be implemented)</string>
+         <string>(Select class to be implemented)</string>
         </property>
        </item>
       </widget>

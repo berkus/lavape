@@ -13,7 +13,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Overridden feature or virtual type not found in base interface </string>
+   <string>Overridden feature or virtual type not found in base class </string>
   </property>
   <layout class="QVBoxLayout" >
    <property name="margin" >

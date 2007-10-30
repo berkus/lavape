@@ -85,7 +85,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text" >
-        <string>Source interface</string>
+        <string>Source class</string>
        </property>
        <property name="alignment" >
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -111,7 +111,7 @@
     <widget class="QComboBox" name="ExTypes" >
      <item>
       <property name="text" >
-       <string>(Select the source interface)</string>
+       <string>(Select the source class)</string>
       </property>
      </item>
     </widget>

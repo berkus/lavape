@@ -551,7 +551,7 @@ void CExecTree::ExecInterface(LavaDECL *elDef, DString* lab)
         lab1 += DString("GUI service");
       }
       else
-        lab1 += DString("interface");
+        lab1 += DString("class");
   if (lab1[0] >= 'a')
     lab1[0] -= 'a'-'A';
   *lab = *lab + lab1;
