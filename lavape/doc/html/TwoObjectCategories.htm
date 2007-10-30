@@ -69,22 +69,22 @@
       <B><I><FONT COLOR="#FF0000">Eiffel</FONT></I></B> or <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>.
       Several variables may point to the same object. The <B>data type</B> of a
       <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variable v is described
-      by a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> interface, say A.
+      by a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class, say A.
       The value of a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variable
-      may be any object that supports A (or an interface derived from A) and
+      may be any object that supports A (or an class derived from A) and
       that has the category specified for v.</P>
     
-    <P>The same <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> interface
+    <P>The same <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class
       may be used to declare variables of either category : state or value. The
       <B>category</B> is specified as part of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       variable declarations. If a variable is declared to be of the &quot;state
       object&quot; category then a &quot;~&quot; (tilde) precedes the name of
-      the interface that specifies the data type of the variable.</P>
+      the class that specifies the data type of the variable.</P>
     
     <P>A variable may be </P>
     <UL>
-      <LI>a member variable of an interface or implementation,</LI>
-      <LI>or an input/output parameter of a member function of an interface or
+      <LI>a member variable of a class or implementation,</LI>
+      <LI>or an input/output parameter of a member function of a class or
         of an <a href="Packages.htm#initiator"> initiator</a> (~ kind of <I>main program</I> of an application or
         thread),</LI>
       <LI>or a local variable that is declared within an <I>exec</I> (=

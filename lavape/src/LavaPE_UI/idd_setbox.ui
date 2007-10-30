@@ -112,7 +112,7 @@
          <widget class="QComboBox" name="BasicTypes" >
           <item>
            <property name="text" >
-            <string>(Basic types)</string>
+            <string>(Basic classes)</string>
            </property>
           </item>
          </widget>
@@ -121,7 +121,7 @@
          <widget class="QComboBox" name="ExTypes" >
           <item>
            <property name="text" >
-            <string>(Other types)</string>
+            <string>(Other classes)</string>
            </property>
           </item>
          </widget>

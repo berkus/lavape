@@ -29,7 +29,7 @@
     <P>In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> variables may be
       declared </P>
     <OL>
-      <LI>as member variables of interfaces or implementations using the
+      <LI>as member variables of classes or implementations using the
         <A HREF="EditTree.htm">declaration view</A> of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>,</LI>
       <LI>as input or output parameters of functions or initiators using the
         <A HREF="EditTree.htm">declaration view</A> of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>,</LI>
@@ -53,14 +53,14 @@
       have to declare the <B>type</B> (for instance &quot;Integer&quot;) and
       the <B>object category</B>  (<a href="TwoObjectCategories.htm">state or value
     object</a>) of variables. The type
-      must be either a concrete interface or a <A HREF="PatternsFrameworks.htm">&quot;virtual
+      must be either a concrete class or a <A HREF="PatternsFrameworks.htm">&quot;virtual
         type&quot;</A> which has been declared as a &quot;pattern parameter&quot;
-      of a containing interface or package. If the type of a variable is virtual then
+      of a containing class or package. If the type of a variable is virtual then
       this virtual type (or one of its ancestors in the inheritance path) may be
       declared responsible for the determination of the object category.&nbsp;</P>
 
     <P ALIGN="left"> A tilde
-      &quot;~&quot; precedes the interface name in the declaration of state
+      &quot;~&quot; precedes the class name in the declaration of state
       objects and this way indicates that new values may be assigned to their
     immediate member variables again and again.</P>
 
@@ -97,35 +97,35 @@
       experiment to enforce more discipline and to prevent overly chaotic
       program structures concerning these aspects. </P>
     
-    <P><B>Initialization</B> belongs to the duties of an <B>interface
+    <P><B>Initialization</B> belongs to the duties of a c<B>lass
       provider</B>. Its purpose is to bring a new object into a state where all
       its non-optional member variables have admissible values such that the
-      methods of the interface may be safely applied to the new object.</P>
+      methods of the class may be safely applied to the new object.</P>
     
     <P><B>Customization</B> (in the <B><FONT COLOR="#0000FF">but</FONT></B>
       clauses of <B><FONT COLOR="#0000FF">new</FONT></B> and <B><FONT COLOR="#0000FF">clone</FONT></B>
-      expressions) gives the <B>interface client</B> an opportunity to modify
+      expressions) gives the <B>class client</B> an opportunity to modify
       the initialized new object in a client-specific way in cases where the
-      initilizers offered by the interface provider do not completely meet the
+      initilizers offered by the class provider do not completely meet the
       client's requirements.</P>
     
     <P>Here a summary of the pertinent <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
       rules:</P>
     <OL>
       <LI><a name="initializer"></a>Every <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> 
-      interface must have at least one <b>&quot;initializer&quot;</b> function 
+      class must have at least one <b>&quot;initializer&quot;</b> function 
       (roughly corresponding to a <b>constructor</b> in <b><i>
       <font color="#FF0000">C++</font></i></b> or <b><i><font color="#FF0000">
       Java</font></i></b>). You must always specify an <I>initializer</I>
-        (rather than a creatable interface) for the <B><FONT COLOR="#0000FF">new</FONT></B>
+        (rather than a creatable class) for the <B><FONT COLOR="#0000FF">new</FONT></B>
         expression.</LI>
-      <LI>An interface may have a <b>&quot;default initializer&quot;</b> without
+      <LI>A class may have a <b>&quot;default initializer&quot;</b> without
         parameters (which will then be omitted from the new expression).</LI>
-      <LI>Initializers must first call an initializer for every base class of
-        their associated interface</LI>
-      <LI>and must then explicitly assign a value to every non-optional member
-        of the interface</LI>
-      <LI>before they may apply other member functions of their interface to
+      <LI>Initializers must first call an initializer for every base class of 
+      their associated class</LI>
+      <LI>and must then explicitly assign a value to every non-optional member 
+      of the class</LI>
+      <LI>before they may apply other member functions of their class to
         their <I>self</I> object.</LI>
       <LI>A new object may be passed as a parameter to a function or initiator
         only after it has left this entire construction hoarding &quot;<B><FONT COLOR="#0000FF">new</FONT></B>

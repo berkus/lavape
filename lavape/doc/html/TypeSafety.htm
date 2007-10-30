@@ -109,16 +109,16 @@
     <P>If vt<SUB>1</SUB> is a virtual type of pattern P1 and vt<SUB>2</SUB>
       overrides it in pattern P2 then vt<SUB>2</SUB> is said to be &quot;p-derived&quot;
       from vt<SUB>1</SUB>. Likewise, if the value of vt<SUB>1</SUB> is a
-      concrete interface A1 and A2 is the corresponding derived interface in P2
+      concrete class A1 and A2 is the corresponding derived class in P2
       then A2 is said to be p-derived from A1.&nbsp; We speak of a
       pattern-induced derivation or p-derivation in this case.</P>
 
     <P><B><A NAME="c-derived"></A>Classic derivation:</B></P>
 
     <P>In all other cases, particularly in the absence of virtual types, or in
-      the case of interface derivations within the same pattern,&nbsp; we speak
+      the case of class derivations within the same pattern,&nbsp; we speak
       off &quot;classic&quot;, or class, or c-derivations.&nbsp; (A single
-      interface is also considered to be c-derived from itself.)</P>
+      class is also considered to be c-derived from itself.)</P>
 
     <H3><B>3. Static vs. effective types, pattern contexts</B></H3>
 
@@ -158,7 +158,7 @@
       code is defined as follows:</P>
     <UL>
       <LI>If expr is a constant then ST(expr) is the obvious standard built-in
-        interface:<BR>
+        class:<BR>
         <BR>
         Examples: ST(&quot;abc&quot;) = String, ST(1.23) = Float, ST(123) =
         Integer. </LI>
@@ -173,7 +173,7 @@
         declared type of the respective member (the type of c in this case).
       </LI>
       <LI>If expr is the &quot;self&quot; variable (corresponding to &quot;this&quot;
-        in Java/C++) then ST(expr) is the interface to which self refers
+        in Java/C++) then ST(expr) is the class to which self refers
         statically. </LI>
     </UL>
 
@@ -205,13 +205,13 @@
 
     <P><FONT SIZE="1"></FONT></P>
 
-    <P>The LPC of an interface ITF or of an initiator INI is the pattern that
+    <P>The LPC of a class ITF or of an initiator INI is the pattern that
       contains the declaration of ITF or INI (and possibly comprises ITF), or it
       is the &quot;empty&quot; context NULLPC if ITF or INI is not contained in
       any pattern).</P>
 
     <P>The LPC of any piece of executable code that is contained in a member
-      function or invariant of an interface ITF is the pattern that contains
+      function or invariant of a class ITF is the pattern that contains
       (and possibly comprises) the declaration of ITF (or the &quot;empty&quot;
       context NULLPC if ITF is not contained in any pattern).</P>
 
@@ -282,7 +282,7 @@
     <BLOCKQUOTE>
 
       <P><B>(F1)</B> var is a formal parameter of a <I>member function</I> of
-        some interface ITF<BR>
+        some class ITF<BR>
         or of a <I>local function</I> of the implementation of ITF<BR>
         and its declared type ST(var) is contained in LPC(ITF).</P>
 
@@ -707,7 +707,7 @@
         object having virtual type fields before you can declare the types of
         further variables of your actual application. </LI>
       <LI>We preferred to maintain the strict traditional view on &quot;type
-        conformance&quot; (type = interface describing the mandatory attributes
+        conformance&quot; (type = class describing the mandatory attributes
         and methods that may be applied to <I>every</I> object conforming to
         that type), while other proposals, for instance <A HREF="#TT">[16]</A>,
         seem to allow assignments from List[Car] to List[Vehicle]; cf.

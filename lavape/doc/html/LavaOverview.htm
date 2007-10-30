@@ -39,17 +39,15 @@
       <BR>
         
       <LI><B>... provides <A HREF="SepItfImpl.htm">strict separation</A> of
-        &quot;interfaces&quot; (with &quot;multiple inheritance&quot; and &quot;<a href="SepItfImpl.htm#virtualBaseClasses">shared
-        base interfaces</a>&quot;) and &quot;implementations&quot; (each of which
+        &quot;class interfaces&quot;, or short: &quot;classes&quot; (with &quot;multiple inheritance&quot; and &quot;<a href="SepItfImpl.htm#virtualBaseClasses">shared 
+      base classes</a>&quot;) and &quot;class implementations&quot;, or short: 
+      &quot;implementations&quot; (each of which
         <a href="SepItfImpl.htm#implements">
-        implements</a> exactly one interface). Only interfaces can be used to
+        implements</a> exactly one class interface). Only class interfaces can be used to
         specify the types of variables. In contrast to <font color="#FF0000"><i>Java</i></font>
         interfaces, <i><font color="#FF0000">Lava</font></i> interfaces can be
         implemented separately and these implementations are inherited then by
-        the implementations of derived interfaces. The term &quot;class&quot; is
-        used (more informally) in <font color="#FF0000"><i>Lava</i></font> for
-        an interface together with an associated implementation.
-        </B></LI><br>
+        the implementations of derived classes.</B><br>
       <BR>
       <LI><B>... provides a clean distinction between
         <A HREF="TwoObjectCategories.htm">variable state and immutable value
@@ -68,7 +66,7 @@
       and recommends this as the preferred programming discipline of the
       <font color="#FF0000"><i>Lava</i></font> programmer.</b></LI><BR><BR>       
       <LI><B>... supports <A HREF="PatternsFrameworks.htm">design patterns /
-          frameworks</A> by a conception of &quot;packages and interfaces with virtual type parameters&quot; and &quot;specialization/derivation&quot;
+          frameworks</A> by a conception of &quot;packages and classes with virtual type parameters&quot; and &quot;specialization/derivation&quot;
         thereof. (The <font color="#FF0000"><i>Lava</i></font> &quot;virtual
         type&quot; notion is different from the virtual type notion <a href="TypeSafety.htm#relatedWork"> being
         discussed</a> in the context of the envisaged <i><font color="#FF0000">Java</font></i>
@@ -106,7 +104,7 @@
         auxiliary constructs like the anonymous, inner, and adapter classes of
         <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>.</B></LI><br><BR>
       <LI><B>... automatically generates a customizable <A HREF="EditForm.htm">default
-        form representation</A> for any given interface on demand. A
+        form representation</A> for any given class on demand. A
         fundamental requirement of RAD support (RAD = rapid application
         development) is fulfilled in this way.</B></LI><BR><BR>
       <LI><B>... has an <A HREF="Interpreter.htm">object-oriented interpreter</A>
@@ -117,12 +115,12 @@
         virtual machine&quot; are not required.</B></LI><BR><BR>
       <LI><B>... is intended to be <A HREF="OrganizationAwareness.htm">organization-aware</A>
         (which means support of hierarchical namespaces of organizational units
-        (OUs), support of their to-do lists, their data and interface access
+        (OUs), support of their to-do lists, their data and class access
         rights, their data ownership, their right to perform all or some
         functions of other OUs. (&quot;For further study&quot;.)</B></LI><BR><BR>
       <LI><B>... is intended to be <A HREF="Security.htm">security-aware</A>
         by having an inherent conception of preventive and defensive security (=
-        support of interface access rights and encryption/digital signatures,
+        support of class access rights and encryption/digital signatures,
         respectively; &quot;For further study&quot;).</B></LI><BR><BR>
     </UL>
     <p><b>See also:</b></p>

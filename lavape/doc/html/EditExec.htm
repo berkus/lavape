@@ -51,13 +51,14 @@ must be associated with executable code:</P>
 <UL>
   <LI><B>Initiators</B>, which serve as autonomous "<b><font color="#0000FF">main</font></b> programs" or "top level 
   threads" in <i><b><font color="#FF0000">Lava</font></b></i>. They must have an executable body, or short: an <b>&quot;exec&quot;</b> 
-  (which starts with the keyword &quot;<b><font color="#0000FF">main</font></b>&quot;).<LI><B>Member functions</B> of interfaces and implementations, which must have 
+  (which starts with the keyword &quot;<b><font color="#0000FF">main</font></b>&quot;).<LI><B>Member functions</B> of 
+  classes and implementations, which must have 
   an <b>exec</b>, too (except if they are declared to be &quot;abstract&quot;, i.e., their 
-  implementation is deferred to a derived class). A member function of an interface is automatically included in 
-  all implementations of that interface, but its exec occurs only in the 
-  implementation, not in the interface. 
+  implementation is deferred to a derived class). A member function of a class is automatically included in 
+  all implementations of that class, but its exec occurs only in the 
+  implementation, not in the class. 
   <LI><B></a><a name="constraint" href="DBC.htm">attached assertions
-          </a> </B>(invariants attached to interfaces and 
+          </a> </B>(invariants attached to classes and 
           implementations, pre- and postconditions attached to functions).</LI></UL>
 <P>In the <B><I><FONT color=#ff0000>LavaPE</FONT></I></B> tree view, execs and 
 invariants are associated with a specific little icon 

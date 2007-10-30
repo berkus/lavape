@@ -27,7 +27,7 @@
     
     <H3>Topic </H3>
     
-    <p>Interfaces and packages with type parameters (&quot;<a href="PatternsFrameworks.htm#VT">virtual
+    <p>Classes and packages with type parameters (&quot;<a href="PatternsFrameworks.htm#VT">virtual
     types</a>&quot;), <a href="TypeSafety.htm#substitutableType">substitutable types</a>. </p>
     
     <H3>Overview </H3>
@@ -63,13 +63,12 @@
     
     <p><b>ModelManyViews:</b> </p>
     
-    <p>Look at the declaration of member variable <i>vList</i> of interface <i>Model</i>.
+    <p>Look at the declaration of member variable <i>vList</i> of class <i>Model</i>.
     It is of type <i>ViewList</i>, whose declaration is nested into that of <i>Model</i>.
     <i>ViewList</i> defines a heterogeneous list whose elements may be of any
     type that is <a href="TypeSafety.htm#c-derived">c- or p-derived</a> from <i>View</i>.&nbsp; </p>
     
-    <p>Look at the declaration of member function <i>registerView</i> of
-    interface <i>Model</i>. Its only input parameter is of (substitutable) type
+    <p>Look at the declaration of member function <i>registerView</i> of class <i>Model</i>. Its only input parameter is of (substitutable) type
     {~View} and thus accepts all kinds of views whose types are <a href="TypeSafety.htm#c-derived">c-
     or p-derived</a> from <i>View</i>. Look into the implementation of
     registerView and see how the respective view is added to <i>Model</i>'s <i>ViewList</i>
@@ -77,7 +76,7 @@
     
     <p><b>CarMeeting:</b> </p>
     
-    <p>Look at the declaration of member function <i>meet</i> of interface <i>Meeting</i>.
+    <p>Look at the declaration of member function <i>meet</i> of class <i>Meeting</i>.
     The type of its first input parameter is substitutable. Look into the exec
     of initiator <i>meetingDemo</i> and read the comments. Look into the
     implementation of function <i>meet</i> and read the comments. </p>

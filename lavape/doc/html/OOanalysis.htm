@@ -24,7 +24,7 @@
     
     <ul>
       <li>You can start by defining just a few object classes (= <font color="#FF0000"><b><i>Lava
-        </i></b></font>interfaces) having a few primary methods. </li>
+        </i></b></font>classes) having a few primary methods. </li>
       <li>You need not yet assign attributes (= member variables) to the object
         classes, </li>
       <li>and you need not (but may) declare formal parameters for the methods. </li>
@@ -33,11 +33,11 @@
     new account&quot;, which would typically be established in the requirements
     analysis phase of a new project, can be imitated quite easily and naturally
     in <font color="#FF0000"><b><i>Lava </i></b></font>by declaring three
-    interfaces &quot;Bank&quot;, &quot;Customer&quot; and &quot;Account&quot;
+    classes &quot;Bank&quot;, &quot;Customer&quot; and &quot;Account&quot;
     and a &quot;CreateAccount&quot; method of &quot;Bank&quot;. </P>
     
     <P>You can successively add details (member variables, formal parameters,
-    further interfaces, partial implementations of functions) just as they come 
+    further classes, partial implementations of functions) just as they come 
     into
     your head.</P>
     
@@ -60,18 +60,18 @@
     projects.</P>
     
     <p>It <i>is</i> expensive, however, to move <i>member variables or functions</i>
-    from one interface to another one, since they must then be referenced
+    from one class to another one, since they must then be referenced
     through other (containing) variables, and the parameters of the functions
     will have to be adapted to the new environment. This cannot easily be performed
     by an <i>automatic</i> update of references but will require <i>manual</i> changes at all
     affected places.</p>
-    <p>Therefore it is very important to arrive at a stable assignment of member
-    variables and functions to containing interfaces <i>as early as possible</i>. 
+    <p>Therefore it is very important to arrive at a stable assignment of member 
+    variables and functions to containing classes <i>as early as possible</i>. 
     In our opinion this is a strong argument in favor of using an <b>incremental single-language approach  like <font color="#FF0000"><i>Lava</i></font> 
     in OO analysis, design and implementation</b>.</p>
     <p><b><i><font color="#FF0000">Lava</font></i></b> provides particular
     support for the design phase by providing a specialization/override notion
-    for <i>families</i> of related interfaces that refer to each other and that
+    for <i>families</i> of related classes that refer to each other and that
     have overridable type parameters (<a href="PatternsFrameworks.htm">patterns
     / virtual
     types </a>). They are particularly suited to represent

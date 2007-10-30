@@ -70,7 +70,7 @@
       <li> <font color="#FF0000"><i><b>Lava</b></i></font>
         enforces a <a href="ObjectLifeCycle.htm"><b> strict initialization discipline</b></a> on object creation. All
         mandatory member variables of an object must be initialized within a
-        proper initializer function of the respective (creatable) interface.
+        proper initializer function of the respective (creatable) class.
         They can be further customized within the <b><font color="#0000FF">but</font></b>-clause
         of the <font color="#0000FF"><b>new</b></font> construct. Member
         variables of value objects cannot be changed any more after leaving the <font color="#0000FF"><b>new</b></font>
@@ -85,7 +85,7 @@
         &quot;undefined&quot;.)</li>
       <li> The <a href="PatternsFrameworks.htm">overridable type parameters</a>
         of <font color="#FF0000"><i><b>Lava</b></i></font>
-        packages and interfaces facilitate the composition of large applications
+        packages and classes facilitate the composition of large applications
         and components from rather small <b> reusable design patterns</b>. They render explicit type casts
         superfluous and elevate <font color="#FF0000"><i><b>Lava</b></i></font>
         programs to a new level of static type-safety in this way.&nbsp;</li>
@@ -101,7 +101,7 @@
         classes of a class than to edit the generated program text in order to revise the
         set of capabilities to be supported by the application or component.</li>
       <li> Furthermore, multiple inheritance allows us to <b> <a name="smallInterfaces"></a> decompose a large
-        interface into many small ones</b>, whose implementations may then be
+        class into many small ones</b>, whose implementations may then be
         provided separately, even in separate files. (By comparison, recall: If
         a <b><i><font color="#FF0000">Java</font></i></b> class implements many
         interfaces then the implementations of all member functions of all those

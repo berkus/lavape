@@ -19,23 +19,23 @@
     
     <P>The point-and-click philosophy of <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B>
       implies in particular that a few mouse-clicks suffice to produce a default
-      form representation from a given interface declaration. This automatic
+      form representation from a given class declaration. This automatic
       mapping is governed by the following simple principles some of which have
       not yet been implemented (NYI) so far, however:</P>
     <UL>
-      <LI><B>Member variables</B> of the interface are mapped to the <B>data
+      <LI><B>Member variables</B> of the class are mapped to the <B>data
         fields</B> of the form.</LI>
       <LI>The <B>identifiers</B> of variables are used as <B>explanatory text
         to the left of the data field</B> unless you specify alternative
         texts/positions.</LI>
-      <LI>If the type of a member variable is again a user-defined interface
+      <LI>If the type of a member variable is again a user-defined class
         then this member variable is represented by a nested form (<B>&quot;group
         box&quot;</B>) or possibly also by a <B>pop-up form</B>, provided you
         have generated a form representation for this member type previously.</LI>
       <LI><B>Member functions</B> are represented by <B>tool buttons</B> or
         <B>menu items</B> that trigger the member functions if they are
         clicked/selected from the menu (NYI).</LI>
-      <LI>The member functions of <B>inherited interfaces</B> (<B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
+      <LI>The member functions of <B>inherited classes</B> (<B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
         supports multiple inheritance!) are placed in separate <B>toolbars</B>
         or <B>menus</B> of their own (NYI).</LI>
     </UL>
@@ -61,26 +61,26 @@
         sub-form are positioned relative to this containing <b>sub-form box</b>.</LI>
     </UL>
     
-    <H3><a name="GUI"></a>GUI service interfaces and implementations:<br>
+    <H3><a name="GUI"></a>GUI service classes and implementations:<br>
     How to generate and edit forms</H3>
     
-    <P>To generate a form representation <I>F_XY</I> of an existing interface
-      <I>XY</I> you simply create a &quot;GUI-interface&quot; <I>F_XY</I> and
+    <P>To generate a form representation <I>F_XY</I> of an existing class
+      <I>XY</I> you simply create a &quot;GUI-class&quot; <I>F_XY</I> and
       a corresponding implementation:</P>
     <OL>
-      <LI>Click the <B>&quot;New interface&quot;</B> button
+      <LI>Click the <B>&quot;New class&quot;</B> button
         <IMG SRC="../images/NewItf.png" ALT="new interface" ALIGN="ABSMIDDLE" width="23" height="22">
         on the <A HREF="EditTree.htm#declBar">declaration toolbar</A>: The
-        property sheet for the new interface opens. Fill in the name <I>F_XY</I>
+        property sheet for the new class opens. Fill in the name <I>F_XY</I>
         in the name field of the property sheet, check the <B>&quot;GUI
-        interface&quot; check-box</B>, and select the interface XY from the
-        combo-box below this check-box. After clicking &quot;OK&quot; the <B>new
-        GUI interface</B> appears as a new node in the declaration tree, having
+        class&quot; check-box</B>, and select the class XY from the
+        combo-box below this check-box. After clicking &quot;OK&quot; the <B>new 
+      GUI class</B> appears as a new node in the declaration tree, having
         a specific icon 
       <IMG SRC="../images/formint.png" ALT="GUI service" ALIGN="middle" width="21" height="15">.</LI>
       <LI>Click the <B>&quot;New implementation&quot;</B> button: The (very
         small) implementation property sheet pops up and requests you to select
-        the interface to be implemented. Select <I>F_XY</I> from the combo-box.
+        the class to be implemented. Select <I>F_XY</I> from the combo-box.
         The new implementation node appears in the declaration tree, having a
         specific icon 
       <IMG SRC="../images/Formimpl.png" ALT="Open form view" ALIGN="ABSMIDDLE" width="23" height="21">.</LI>
@@ -119,12 +119,12 @@
         implemented.</LI>
       <LI>It should be possible to add <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
         <A HREF="Callbacks.htm">callback functions</A> to a GUI
-        interface/implementation and to direct user interface events to these.</LI>
+        class/implementation and to direct user class events to these.</LI>
     </OL>
     
     <H3>How to present/fill out a form</H3>
     
-    <P>Every GUI interface contains two member functions <b>FillOut </b>and<b> 
+    <P>Every GUI class contains two member functions <b>FillOut </b>and<b> 
     Edit</b> that can be
       called in order to present the form representation <I>F_XY</I> of an
       object <I>xy</I> of type <I>XY</I>. Before you can call&nbsp; <b>FillOut

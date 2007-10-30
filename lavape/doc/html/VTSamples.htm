@@ -74,7 +74,7 @@ href="TypeSafety.htm#TT">[16]</A>, it shows again the advantage of making
 virtual types non-substitutable by default: We need not view the virtual type 
 "elemType" as a special, type-valued <I>member variable</I> of "Queue" objects 
 but we can introduce virtual types in a more static way as <I>type</I> 
-<I>parameters</I> of interfaces and packages. </P>
+<I>parameters</I> of classes and packages. </P>
 <P><b>Visitor:</b></P>
 <P>The Visitor sample illustrates a special case of the well-known 
 &quot;Visitor&quot; pattern of <a href="TypeSafety.htm#GOF">[8]</a> and also a special 
@@ -85,7 +85,7 @@ case of <a href="RepetComputSamples.htm">indirect tree recursion</a>.</P>
 <br>
 Note in particular the "<A href="PatternsFrameworks.htm#covariant">covariant 
 specialization</A>" of the only input parameter of function <I>registerView</I> 
-of interface <I>Model</I>.&nbsp; </P>
+of class <I>Model</I>.&nbsp; </P>
 <P>Note how this is exploited in the exec of the initiator <I>ModelViewDemo</I> 
 to pass a view object of the derived type <I>DrawFW::View</I> to this 
 function.&nbsp; </P>
@@ -98,18 +98,18 @@ covariant specialization of the VT <I>&lt;model&gt;</I>).&nbsp; </P>
 <P><B><A name=queueOfPoint></A>QueueOfPoint:<br>
 </B>
 <br>
-Note the two versions of interface <I>X</I>: One belongs to pattern 
-<I>Queue</I> (an interface having a VT <I>elemType</I>), the other is declared 
+Note the two versions of class <I>X</I>: One belongs to pattern 
+<I>Queue</I> (a class having a VT <I>elemType</I>), the other is declared 
 outside <I>Queue</I>. Both have a member function <I>f</I> with almost identical 
 implementations. Look at these:</P>
 <P>The difference between the implementations of the two versions of <I>f </I>is 
 that one of them belongs to pattern <I>Queue,</I> and one doesn't. The former 
 <B>has to</B> use the virtual type <I>&lt;Queue::elemType&gt;</I> of 
 <I>Queue</I> to declare the local variable <I>p</I>, the latter <B>cannot</B> 
-use this but <B>must</B> use the concrete interface <I>Point</I> to declare 
+use this but <B>must</B> use the concrete class <I>Point</I> to declare 
 <I>p</I>. The reasons are:</P>
 <OL>
-  <LI>If an interface <I>A</I> is the value of a virtual type <I>V</I> then 
+  <LI>If a class <I>A</I> is the value of a virtual type <I>V</I> then 
   <I>A</I> cannot be referenced directly at any place where <I>V</I> is visible. 
   It can only be referenced indirectly by references to <I>V</I> in these 
   places. If A1 is derived from A within the same pattern, then A1 cannot be 

@@ -21,28 +21,29 @@
     different <font color="#FF0000"><i>Lava</i></font> files):</b></P>
     
     <ul>
-      <li><b>a (public)&nbsp; <font color="#FF0000">interface</font>
+      <li><b>a (public)&nbsp; <font color="#FF0000">class interface</font>
     and&nbsp;</b></li>
-      <li><b> a (private, encapsulated, opaque) <font color="#FF0000">implementation</font>.</b></li>
+      <li><b> a (private, encapsulated, opaque) <font color="#FF0000">class implementation</font>.</b></li>
     </ul>
     
-    <p>The interface contains the exported features (<b>member variables</b>/attributes and member
+    <p>The <b>class interface</b> (or short: <b>class</b>) contains the exported features (<b>member variables</b>/attributes and member
     functions/methods) of the class that can be referenced from anywhere (unless they
-    are <a href="ProtectedFriend.htm#protected">protected</a>). Interfaces support <b>multiple
+    are <a href="ProtectedFriend.htm#protected">protected</a>). Class interfaces support <b>multiple
     inheritance</b> (with <a href="#virtualBaseClasses"> shared base classes</a>),
-    i.e., an interface may be derived from several other base interfaces.</p>
+    i.e., a class may be derived from several other base classes.</p>
     <p>The implementation contains the &quot;private&quot; features of the class
     (which cannot be referenced from the &quot;outside world&quot;) and the
     implementations of all non-abstract functions that are explicitly enumerated in the
-    interface.</p>
-    <p><a name="implInheritance"></a><b>Methods/Member functions</b> that are inherited from base interfaces and that are not
-    overridden in the current interface have to be implemented in the
-    implementations of those base interfaces and need not be re-implemented in
+    class interface.</p>
+    <p><a name="implInheritance"></a><b>Methods/Member functions</b> that are inherited from base 
+    classes and that are not
+    overridden in the current class have to be implemented in the
+    implementations of those base classes and need not be re-implemented in
     the implementation in question. In this (and only this) sense <b>implementations
-    are inherited (or better: taken over)</b> from base interfaces in <b><i><font color="#FF0000">Lava</font></i></b>,
+    are inherited (or better: taken over)</b> from base classes in <b><i><font color="#FF0000">Lava</font></i></b>,
     quite in contrast to the semantics of the &quot;implements&quot; clauses in <font color="#FF0000"><i><b>Java</b></i></font>
     classes, which force you to implement <i>all</i> functions (including the
-    inherited base interface functions) in the class containing the
+    inherited base class functions) in the class containing the
     &quot;implements&quot; clause. (See also <a href="#objectCreation">object
     creation</a> below.)</p>
     
@@ -51,9 +52,9 @@
       based on <B>&quot;abstract data types&quot;</B>, had already achieved a
       clean syntactic separation of <I>&quot;interfaces/definitions&quot;</I>
       and <I>&quot;implementations&quot;</I> according to the important <b>&quot;principle
-      of information hiding&quot;</b>. The same interface could be implemented
+      of information hiding&quot;</b>. The same class could be implemented
       in several alternative ways, and an implementation could be changed
-      without affecting the users of the interface, particularly without any
+      without affecting the users of the class, particularly without any
       need to recompile the dependent program modules.</P>
     
     <P>Strict separation of interfaces and implementations as well as the
@@ -80,6 +81,7 @@
         interface. So you could speak of a <font color="#FF0000"><i><b>Java</b></i></font> 
       interface as being a purely <b>behavioral view</b> of a class that 
       implements the interface, whereas a <font color="#FF0000"><i><b>Lava</b></i></font> 
+      class 
       interface is just <b>the public (implementation-independent) part of a 
       class</b>.</LI>
       <LI>You <I>need not use</I> <B><I><FONT COLOR="#FF0000">Java</FONT></I></B>
@@ -122,26 +124,25 @@
       certainly be unacceptable to hide their data members behind access
       functions.</P>
     
-    <P>Notwithstanding, access to a data member xy of a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      interface may be <I>implemented</I> by proper <b>Set and Get functions</b>
+    <P>Notwithstanding, access to a data member xy of a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> 
+    class may be <I>implemented</I> by proper <b>Set and Get functions</b>
       that are invoked <I>implicitly</I> on read and assignment access to this
-      data member. In a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      interface you can specify this as an optional property of a data member,
+      data member. In a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class you can specify this as an optional property of a data member,
       but the corresponding Set/Get functions will appear only in the <I>implementation</I>
-      of the interface.</P>
+      of the class.</P>
     
     <P>Unlike <FONT COLOR="#FF0000"><I><STRONG>Java</STRONG></I></FONT>
       classes, a <FONT COLOR="#FF0000"><I><B>Lava</B>
     </I></FONT>
-      implementation implements exactly one interface (and thus has the same
-      name as the interface). <FONT COLOR="#FF0000"><I><B>Lava</B>
+      implementation implements exactly one class (and thus has the same
+      name as the class). <FONT COLOR="#FF0000"><I><B>Lava</B>
     </I></FONT>
       implementations serve <i>only</i> for implementing their
-      corresponding interfaces, and they do not inherit from other
+      corresponding classes, and they do not inherit from other
       implementations.&nbsp;</P>
     
-    <P><b><a name="implements"></a>Meaning of &quot;implements&quot;:</b> If interface <i>B</i> extends
-    interfaces <i>A<sub>1</sub>, ..., A<sub>n</sub></i> then an implementation
+    <P><b><a name="implements"></a>Meaning of &quot;implements&quot;:</b> If 
+    class <i>B</i> extends classes <i>A<sub>1</sub>, ..., A<sub>n</sub></i> then an implementation
     of <i>B</i> provides implementations of those non-abstract member functions
     of <i>B</i> that are listed explicitly in the declaration of <i>B</i>, i.e.,
     that override member functions of <i>A<sub>1</sub>, ..., A<sub>n</sub></i>
@@ -151,19 +152,18 @@
     
     <h3><b><a name="objectCreation"></a>O</b><b>bject creation</b></h3>
     
-    <P>An interface <i>A</i>
+    <P>A class <i>A</i>
     may be marked as being &quot;creatable&quot;.
       Then it may be used in &quot;<B><FONT COLOR="#0000FF">new</FONT></B>&quot;
       operations to specify the type of the objects to be created. It is the job
       of the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> run time system
       to find an implementation of <i>A</i>, as well as implementations of all
-    direct or indirect base interfaces of <i>A</i>. The (&quot;public&quot;)
-    features (member variables and member functions) of all those interfaces and
+    direct or indirect base classes of <i>A</i>. The (&quot;public&quot;)
+    features (member variables and member functions) of all those classes and
     the (&quot;private&quot;) features of all those implementations are combined
     and make up the implementation of the new object of type <i>A</i>.</P>
     
-    <P>The search process for an implementation corresponding to a given
-    interface <i>A</i> proceeds <a href="Packages.htm#implSearch">as follows</a>: At first the <b><i><font color="#FF0000">Lava</font></i></b>
+    <P>The search process for an implementation corresponding to a given class <i>A</i> proceeds <a href="Packages.htm#implSearch">as follows</a>: At first the <b><i><font color="#FF0000">Lava</font></i></b>
     interpreter searches the current file containing the &quot;<b><font color="#0000FF">new</font></b>&quot;
     expression. If an implementation of <i>A</i> isn't found there then all 
     directly or indirectly included files are searched in the same way for an 
@@ -171,26 +171,24 @@
     
     <P>Note that the &quot;local&quot; features of an implementation, that are
     declared only within this implementation and that are not exported through
-    the corresponding interface, cannot be referenced from anywhere outside this
+    the corresponding class interface, cannot be referenced from anywhere outside this
     implementation. In particular, <b>an implementation cannot use local
     features of other implementations</b> that are &quot;ingredients&quot; of
     the same object: Implementations may only reference their own (private)
-    features and features that are exported through interfaces. (The latter
+    features and features that are exported through class interfaces. (The latter
     features may be declared <a href="ProtectedFriend.htm"><b>protected</b></a>,
     however, which means that they may be referenced <i>only</i> by
-    implementations corresponding to interfaces that extend the interface
+    implementations of classes that extend the class
     containing the protected feature.)</P>
     
-    <h3>Classes in <font color="#FF0000"><i>Lava</i></font></h3>
+    <h3>Interfaces in <font color="#FF0000"><i>Lava</i></font></h3>
     
-    <P>Because of this close relation between implementations and the interfaces
+    <P>Because of this close relation between implementations and the class interfaces
     that they implement we use the term <b><a name="classNotion"></a>&quot;class&quot;</b>
-    in <b><i><font color="#FF0000"> Lava</font></i></b> in a more informal way 
-    to refer to this pair consisting of an interface and its associated 
-    implementation. Cf. the section &quot;<a href="Packages.htm#implSearch">How
-    <font color="#FF0000"><i>Lava</i></font> locates implementations of 
-    interfaces</a>&quot; to understand how different implementations may be associated with
-    the same interface.</P>
+    in <b><i><font color="#FF0000"> Lava</font></i></b> just as a synonym for 
+    &quot;class interface&quot;.Cf. the section &quot;<a href="Packages.htm#implSearch">How
+    <font color="#FF0000"><i>Lava</i></font> locates implementations of classes</a>&quot; to understand how different implementations may be associated with
+    the same class.</P>
     
     <P>The <b><i><font color="#FF0000">Java</font></i></b> notions of
     &quot;interface&quot;, &quot;class&quot;, &quot;implements&quot; and
@@ -199,9 +197,9 @@
     declare the types of variables, and a <b><i><font color="#FF0000">Java</font></i></b>
     class may implement any number of interfaces. We believe that all this is
     more confusing as helpful for programmers. In contrast to this, <font color="#FF0000"><i><b>Lava</b></i></font>
-    provides an inheritance notion only for interfaces, types of <font color="#FF0000"><i><b>Lava</b></i></font>
-    variables can be declared only with interfaces, and a <font color="#FF0000"><i><b>Lava</b></i></font>
-    implementation implements exactly one interface and doesn't serve any other
+    provides an inheritance notion only for class interfaces (= classes), types of <font color="#FF0000"><i><b>Lava</b></i></font>
+    variables can be declared only with classes, and a <font color="#FF0000"><i><b>Lava</b></i></font>
+    implementation implements exactly one class interface and doesn't serve any other
     purpose.</P>
     
     <h3>Shared base classes</h3>
@@ -209,16 +207,16 @@
     <P><B><I><FONT COLOR="#FF0000"><a name="virtualBaseClasses"></a>Lava</FONT></I></B> supports <B>multiple
       inheritance with shared base classes</B>, where &quot;shared base class&quot; is used in the sense of
     the &quot;virtual base classes&quot; of <FONT COLOR="#FF0000"><I><B>C++</B></I></FONT>:
-      If a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> interface A
-      inherits the same base interface B several times on several inheritance
+      If a <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> class A
+      inherits the same base class B several times on several inheritance
       paths then an object of type A contains only one base object of type B.</P>
     
     <P>Note that <b>&quot;virtual base class&quot;</b>  means something different
     in <font color="#FF0000"><i><b>Lava</b></i></font> than in <b><i>
     <font color="#FF0000">C++</font></i></b>: <b><i><font color="#FF0000">Lava</font></i></b> allows you
     to specify a <a href="PatternsFrameworks.htm#VT">virtual type</a> as a base
-    interface of a new interface, and these are called &quot;virtual base
-    interfaces&quot;. Cf. our <a href="VirtualBaseSamples.htm">virtual base samples</a>.
+    class of a new class, and these are called &quot;virtual base
+    classes&quot;. Cf. our <a href="VirtualBaseSamples.htm">virtual base samples</a>.
     <font color="#FF0000"><i><b>Lava</b></i></font> virtual base classes provide 
     one particular way to implement <b>mixins</b> in <font color="#FF0000"><i>
     <b>Lava</b></i></font> (see below).</P>

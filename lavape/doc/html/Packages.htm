@@ -57,9 +57,11 @@
     </P>
     <P>
       This complete containment even of a huge package in a single <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> file is greatly facilitated by the fact that implementations can be <A HREF= 
-      "SepItfImpl.htm">separated</A> from interfaces and stored in separate files in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> whereas the bodies of <B><I><FONT COLOR="#FF0000">
-      Java</FONT></I></B> member functions have to be included in their respective class declarations. In this way you can have a combination of pure package and interface declaration files and
-      perhaps many separate implementation files in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, where every implementation file might perhaps contain the implementation of only one interface.
+      "SepItfImpl.htm">separated</A> from class interfaces and stored in separate files in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> whereas the bodies of <B><I><FONT COLOR="#FF0000">
+      Java</FONT></I></B> member functions have to be included in their respective class declarations. In this way you can have a combination of pure package and 
+      class declaration files and
+      perhaps many separate implementation files in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, where every implementation file might perhaps contain the implementation of only one 
+      class.
     </P>
     <P>
       You can declare a package to be <B><A NAME="opaque"></A><A HREF="ProtectedFriend.htm">opaque</A></B> to prevent access to the contained declarations from the "outside world". In this way you
@@ -102,20 +104,23 @@
       COLOR="#FF0000">Lava</FONT></I></B> program may (recursively) launch any number of subordinate initiators and thus consist of a collection of concurrently executing threads.
     </P>
     <H3>
-      <A NAME="implSearch"></A>How <FONT COLOR="#FF0000"><I>Lava</I></FONT> locates implementations of interfaces
+      <A NAME="implSearch"></A>How <FONT COLOR="#FF0000"><I>Lava</I></FONT> 
+      locates implementations of classes
     </H3>
     <P>
       First note that <A HREF="commands/NewImplementation.htm">implementations</A> cannot and need never be referenced expressly in <FONT COLOR="#FF0000"><B><I>Lava</I></B></FONT> but only
       implicitly:
     </P>
     <P>
-      If C is a "<A HREF="SepItfImpl.htm#objectCreation">creatable</A>" <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> <A HREF="SepItfImpl.htm">interface</A> and a new object of type <I>C</I> is to
+      If C is a "<A HREF="SepItfImpl.htm#objectCreation">creatable</A>" <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> <A HREF="SepItfImpl.htm">
+      class</A> and a new object of type <I>C</I> is to
       be created then the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> interpreter searches the current file and all directly or indirectly included files for an implementation of <I>C</I>. As
-      soon as an implementation <I>Imp</I> of <I>C</I> is found a (transient) pointer to <I>Imp</I> is stored in the internal representation of the interface <I>C</I>, with the effect that this same
+      soon as an implementation <I>Imp</I> of <I>C</I> is found a (transient) pointer to <I>Imp</I> 
+      is stored in the internal representation of the class <I>C</I>, with the effect that this same
       implementation <I>Imp</I> of <I>C</I> is used throughout the entire run of this application.
     </P>
     <P>
-      So you have to make sure that for every interface that doesn't consist solely of abstract functions a suitable file containing the desired implementation is included anywhere in such a way that
+      So you have to make sure that for every class that doesn't consist solely of abstract functions a suitable file containing the desired implementation is included anywhere in such a way that
       this implementation will be found at run time by searching the "include tree".
     </P>
     <P>
@@ -123,7 +128,9 @@
       consisting of more than two files occur. The implementation search process reads every included file at most once.
     </P>
     <P>
-      Because <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> strictly separates interfaces and implementations you can even have several different implementations of the same interface. They should
+      Because <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> strictly separates 
+      class interfaces and implementations you can even have several different implementations of the same 
+      class. They should
       be contained in different <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> files since otherwise only the first of them (in "tree search order") will be found. In such a case it is obvious to
       use special "implementation include files" that don't contain anything else but include directives for implementation files. These "implementation include files" would in turn be included by
       the actual <FONT COLOR="#FF0000"><I><B>Lava</B></I></FONT> program files and would in this way control the proper selection of implementation variants. You could then provide a number of

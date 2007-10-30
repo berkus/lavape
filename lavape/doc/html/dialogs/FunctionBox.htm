@@ -25,7 +25,7 @@
     <H3>Enable renaming</H3>
     
     <p>You may change the names of functions, member variables and virtual types
-    when you override them in a derived interface or pattern (for instance in
+    when you override them in a derived class or pattern (for instance in
     order to resolve name collisions in cases of multiple inheritance). They
     inherit the names of the base versions by default (and their name is changed
     accordingly if the inherited base name is changed).&nbsp;</p>
@@ -52,7 +52,7 @@
     
     <P>A <A HREF="../ProtectedFriend.htm">protected</A> function can be
       invoked only from functions contained in the implementation of this or a
-      derived interface.</P>
+      derived class.</P>
     
     <H3><a name="readOnly"></a>Read-only</H3>
     
@@ -64,14 +64,13 @@
     
     <h3><a name="static"></a>Static</h3>
     
-    <P>An interface may have static member functions. These are invoked without
+    <P>A class may have static member functions. These are invoked without
     call expression and have no <i>self </i>/ <i>this</i> variable.
     Interfaces with static member functions are used primarily if you want to
     add further functions to an existing type T of objects without
     extending T. Example: Mathematical functions that can be applied to
     Integers/Floats/Doubles but that are not contained in the
-    Integer/Float/Double interfaces: You may declare then, for instance, an
-    interface &quot;Math&quot; containing static functions &quot;sin&quot;,
+    Integer/Float/Double interfaces: You may declare then, for instance, a class &quot;Math&quot; containing static functions &quot;sin&quot;,
     &quot;cos&quot;, &quot;exp&quot;, &quot;log&quot;, etc. that accept
     &quot;Float x&quot; as input parameter and you can invoke these in the usual
     form &quot;sin(x)&quot;, rather than &quot;x.sin()&quot;, &quot;log(x)&quot;,
@@ -88,10 +87,10 @@
     
     <P>To call a function statically means that you circumvent the usual virtual
     function call (&quot;late binding&quot;) mechanism but you specify precisely
-    which version of the function from which interface shall be called. If <I>f</I> is a member <I>function</I> of <I>A</I> then<I> f</I>
+    which version of the function from which class shall be called. If <I>f</I> is a member <I>function</I> of <I>A</I> then<I> f</I>
       can be <B><I>called</I></B> <I><B>statically</B></I> only from derived
-      classes in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, i.e., from
-      functions that are declared in a derived interface <I>B</I> of <I>A</I>
+      classes in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>, i.e., from 
+    functions that are declared in a derived class <I>B</I> of <I>A</I>
       or in the implementation thereof. So if functions are declared in <I>A</I>
       and overridden in <I>B</I> then clients of <I>B</I> are forced to use the
       overridden version; they are not allowed to statically call the base
@@ -99,17 +98,17 @@
     
     <H3>Initializer</H3>
     
-    <P>Every interface (except for component object interfaces) must have at
+    <P>Every class (except for component object interfaces) must have at
       least one <A HREF="../ObjectLifeCycle.htm#creation">initializer</A>
       function. Initializers are used to bring newly created objects into a
       state where all their non-optional member variables have a non-null value.
       Member functions may be invoked for a new object only after this state has
       been reached. <I>Base initializers</I> are called automatically for every
-      base interface at the beginning of the body of any initializer in order to
+      base class at the beginning of the body of any initializer in order to
       properly initialize the base parts of the current object.</P>
     
     <P>In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> you must always
-      specify an <I>initializer</I> (rather than a creatable interface) when
+      specify an <I>initializer</I> (rather than a creatable class) when
       using a <B><FONT COLOR="#0000FF">new</FONT></B> expression to create a
       new object.</P>
     
@@ -122,10 +121,10 @@
     <H3>Abstract</H3>
     
     <P>An abstract function is not implemented in the implementation of the
-      containing interface. Its implementation is deferred to a derived
-      interface. Interfaces containing abstract functions cannot be creatable;
+      containing class. Its implementation is deferred to a derived
+      class. Interfaces containing abstract functions cannot be creatable;
     therefore the &quot;abstract&quot; check-box is disabled if the function
-    belongs to a creatable interface.</P>
+    belongs to a creatable class.</P>
     
     <H3><a name="selfClosed"></a><i>Self </i>&nbsp;is closed</H3>
     
@@ -179,12 +178,12 @@
     <H3>Remove overrides</H3>
     
     <P>Transforms an overridden function into a non-overridden function, as if it
-      had been newly declared in the containing interface.</P>
+      had been newly declared in the containing class.</P>
     
     <H3><a name="forceOverride"></a>Callable only from this VT context</H3>
     
     
-<P>The function together with its containing interface must always be 
+<P>The function together with its containing class must always be 
 <a href="../OverrideView.htm">overridden</a> when the containing pattern is derived. Thus it cannot 
   be called with a <I>self</I> object of a more 
 <a href="../TypeSafety.htm#p-derived">p-derived</a> run-time type, and static calls are forbidden 

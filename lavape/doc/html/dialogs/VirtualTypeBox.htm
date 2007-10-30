@@ -26,7 +26,7 @@
     <H3>Enable renaming</H3>
     
     <p>You may change the names of functions, member variables and virtual types
-    when you override them in a derived interface or pattern (for instance in
+    when you override them in a derived class or pattern (for instance in
     order to resolve name collisions in cases of multiple inheritance). They
     inherit the names of the base versions by default (and their name is changed
     accordingly if the inherited base name is changed). Check this check-box if
@@ -37,8 +37,8 @@
     
     <P>If a virtual type is not abstract then you must specify an existing type
       as its value. This may be a concrete type or may again be virtual and may
-      be selected from the combo-boxes &quot;Basic interfaces&quot; and &quot;Other
-      interfaces&quot;. &quot;Basic interfaces&quot; lists all interfaces whose
+      be selected from the combo-boxes &quot;Basic classes&quot; and &quot;Other
+      classes&quot;. &quot;Basic classes&quot; lists all interfaces whose
       declaration is contained in the basic include file <I>std.lava</I>. </P>
     <HR>
     
@@ -58,7 +58,7 @@
     <H3>Abstract</H3>
     
     <P>A virtual type (pattern parameter) of a package or of a
-      <A HREF="InterfaceBox.htm#creatable">non-creatable</A> interface may be
+      <A HREF="InterfaceBox.htm#creatable">non-creatable</A> class may be
       abstract. I.e., the specification of a value type for this pattern
       parameter is deferred to a derived pattern. For an abstract virtual type
       you may also defer the decision upon the

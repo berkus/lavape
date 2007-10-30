@@ -33,13 +33,13 @@
     <P>The analogous effect can be achieved also for
       <A HREF="Packages.htm#packages">packages</A> by declaring them to be <B>opaque</B>.
       Within an implementation or opaque package <I>IP</I> you can derive
-      interfaces from &quot;outer&quot; base interfaces or declare new
-      interfaces and <B>share these within <I>IP</I> without making them
+      classes from &quot;outer&quot; base classes or declare new
+      classes and <B>share these within <I>IP</I> without making them
       visible to the outside world</B>. </P>
     
-    <P>Implementations of these new interfaces may be even located in separate
+    <P>Implementations of these new classes may be even located in separate
       <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> files but nevertheless
-      have the same scope (visibility domain) as the interfaces they implement.
+      have the same scope (visibility domain) as the classes they implement.
       The accessibility of <I>implementations</I> at run time is not restricted by these
       <I>&quot;opaque&quot;</I> specifiers. (Note that implementations need
       never be referenced expressly in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>.)</P>
@@ -50,7 +50,7 @@
     
     <H3><A NAME="protected"></A>Protected</H3>
     
-    <P>If an interface <I>A</I> has a feature (= member variable or member
+    <P>If a class <I>A</I> has a feature (= member variable or member
       function) <I>f </I>and interface <I>B</I> is derived from <I>A</I> then
       in some cases you would like to prevent users of <I>B</I> to directly
       access <I>f</I>. By analogy to the <B><I><FONT COLOR="#FF0000">C++</FONT></I></B>

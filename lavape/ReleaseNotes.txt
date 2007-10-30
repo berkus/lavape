@@ -75,7 +75,7 @@ How to install the LavaPE binary release for OpenSUSE 10.3
 
 Download the lavape-<rel>-suse.rpm package and execute
 
-   sudo rpm -i lavape-<rel>-suse.rpm
+   sudo rpm -i lavape-<rel>-suse-<rel>.rpm
 
 in the usual way. The "LavaPE" and "Lava" executables
 will be installed in /usr/local/bin. An additional
@@ -88,7 +88,7 @@ How to install the LavaPE binary release for [K]ubuntu 7.10
 
 Download the lavape-<rel>-ubuntu.deb package and execute
 
-   sudo dpkg -i lavape-<rel>-ubuntu.deb
+   sudo dpkg -i lavape-<rel>-ubuntu-<rel>.deb
 
 in the usual way. The "LavaPE" and "Lava" executables
 will be installed in /usr/local/bin. An additional
@@ -101,7 +101,7 @@ How to install the LavaPE binary release for Fedora 8
 
 Download the lavape-<rel>-fedora.rpm package and execute
 
-   sudo rpm -i lavape-<rel>-fedora.rpm
+   sudo rpm -i lavape-<rel>-fedora-<rel>.rpm
 
 in the usual way. The "LavaPE" and "Lava" executables
 will be installed in /usr/local/bin. An additional

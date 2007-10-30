@@ -57,29 +57,29 @@
     <P>For the design of <b><i><font color="#FF0000"> Lava</font></i></b> we have drawn the following conclusions from this
     situation and from the fact that we have a <a href="Packages.htm#packages">package</a>
     notion in <b><i><font color="#FF0000">Lava</font></i></b> anyway that allows
-    us to form groups of related interfaces or other declarations:</P>
+    us to form groups of related classes or other declarations:</P>
     <ol>
       <font FACE="TIMES" SIZE="2">
       <li> <b><i><font color="#FF0000"> Lava</font></i></b>  introduces patterns
-        as packages or interfaces with named type parameters (<b>&quot;pattern
+        as packages or classes with named type parameters (<b>&quot;pattern
         parameters&quot;</b> or <b><a name="VT"></a>&quot;virtual types&quot;</b>, short: <b>VT</b>). 
-      Packages/interfaces with VTs are called <b>&quot;patterns&quot; </b>since 
+      Packages/classes with VTs are called <b>&quot;patterns&quot; </b>since 
       they are used to provide concrete implementations of design patterns in
       <font color="#FF0000"><i><b>Lava</b></i></font>.</li>
       <li>The value of a VT may designate a <b><i><font color="#FF0000"> Lava</font></i></b> 
-        interface or another VT defined on this same level. A VT of an interface
-        may in particular designate its containing interface and serve as a <b><i><font color="#FF0000"> Lava</font></i></b> 
+      class or another VT defined on this same level. A VT of a class
+        may in particular designate its containing class and serve as a <b><i><font color="#FF0000"> Lava</font></i></b> 
         substitute for the ThisType or MyType of other VT proposals.</li>
       <li><a name="derivedPattern"></a>A virtual type may also be <b>&quot;abstract&quot;</b>. Then its value
         is &quot;void&quot;; a non-void value may be assigned when overriding
         the abstract VT in a <b> derived pattern</b>.</li>
-      <li>A VT <i> v</i> of a package/interface P1 may be <b> overridden</b> in a <b> derived
-        package/interface</b>  P2 by assigning a new value <i> nv</i> to it, which has to be
-        derived from the value of <i> v</i> in the base package/interface (except if
+      <li>A VT <i> v</i> of a package/class P1 may be <b> overridden</b> in a <b> 
+      derived package/class</b>  P2 by assigning a new value <i> nv</i> to it, which has to be
+        derived from the value of <i> v</i> in the base package/class (except if
         <i> v</i>
         is abstract there). To override v you select&nbsp; it in the <a href="OverrideView.htm">override
         view</a> of P2 and proceed as described in the pertinent section.</li>
-      <li>If an interface <i>A</i> is declared within a pattern <i>P</i> then it can be extended
+      <li>If a class <i>A</i> is declared within a pattern <i>P</i> then it can be extended
         only within <i>P</i> or within patterns derived from P.&nbsp;<br>
         <br>
         (This condition could possibly be weakened, but that would complicate
@@ -87,20 +87,20 @@
         programmers. The present wording just reflects the fact that the values
         of the VTs that may be referenced in A or its extension are defined only
         within P or patterns derived from P.)&nbsp;</li>
-      <li>Interfaces from more derived patterns cannot be used in base patterns.</li>
+      <li>Classes from more derived patterns cannot be used in base patterns.</li>
       <li>VTs may be used to declare the types of local and member variables as
         well as of function arguments :
         Their actual, concrete&nbsp; types depend on the respective <b>&quot;pattern
         context&quot; </b>(see 10. below) then&nbsp; <b>(</b><a name="covariant"></a><b>&quot;covariant specialization&quot;)</b>.</li>
       <li><a name="VTvisibility"></a>The <b>&quot;visibility&quot; of VTs</b> is restricted in the
-        following way: They are visible in the containing package or interface
-        where they are introduced. If they are visible in an interface <i> A</i> then
+        following way: They are visible in the containing package or class
+        where they are introduced. If they are visible in a class <i> A</i> then
         also in every nested declaration and in every implementation of <i>A</i>. If
-        they are visible in an interface or package <i> P</i> then also in every
-        interface/package derived from <i> P</i> unless they are overridden there.
-        Interfaces declared in a pattern <i> P'</i> that is derived from <i> P</i> cannot be
+        they are visible in a class or package <i> P</i> then also in every
+        class/package derived from <i> P</i> unless they are overridden there.
+        Classes declared in a pattern <i> P'</i> that is derived from <i> P</i> cannot be
         referenced in <i>P</i>.</li>
-      <li><a name="VTandNonVT"></a>If an interface <i> A</i> is the value of a virtual type <i> V</i> then
+      <li><a name="VTandNonVT"></a>If a class <i> A</i> is the value of a virtual type <i> V</i> then
         <i> A</i> cannot be
         referenced directly at any place where <i> V</i> is visible. It can only be
         referenced indirectly by references to <i> V</i> in these places. If A1
@@ -109,7 +109,7 @@
         sample</a>.)</li>
       <li><a name="patternContext"></a><b><i><font color="#FF0000">Lava</font></i></b> 
         restricts the ways in which pattern declarations may be nested: There
-        may be only <b>two nested layers</b> of packages or interfaces
+        may be only <b>two nested layers</b> of packages or classes
         containing virtual types. (The VT implementation costs would be
         considerably higher if nesting of VT layers to any depth would be
         allowed.) The lower layer is called the <b>&quot;inner
@@ -119,7 +119,7 @@
         declaration&quot; designates the <i>combination</i> of the inner and
         outer pattern context.&nbsp;</li>
       <li> <b><i><font color="#FF0000"> Lava</font></i></b>  supports <b>multiple
-        inheritance</b> not only on the interface level but also on the package
+        inheritance</b> not only on the class level but also on the package
         level: A package may be derived from one or several other packages. Non-overridden virtual types
         from immediate or indirect base patterns are inherited and visible also
         in the derived pattern.</li>
@@ -145,62 +145,62 @@
         pointer to its associated VFT, but additionally also a pointer to an
         associated VTT. Like the VFT, the proper VTT is determined on object creation,
         roughly spoken as the &quot;pattern context&quot; of its implementation,
-        and this is in turn the pattern context of the interface that the latter
+        and this is in turn the pattern context of the class that the latter
         implements.</P>
     
-    <P>Generally, we use the term <b>type</b> for a <i> concrete interface</i> or a <i> virtual type / pattern
+    <P>Generally, we use the term <b>type</b> for a <i> concrete class</i> or a <i> virtual type / pattern
     parameter</i> in the sense
     explained above. (Both may be referenced as types of variables in <font color="#FF0000"><i><b>Lava</b></i></font>
     programs.)</P>
     
     <P>A type is called a <b><a name="multiform"></a>multiform type</b> if it
     is either a
-    virtual type or an interface that is declared within a pattern. The
+    virtual type or a class that is declared within a pattern. The
     meaning of a multiform type may depend on the pattern context where it is used.
     We use &quot;uniform&quot; as a synonym for &quot;non-multiform&quot;.</P>
     
     <font SIZE="1">
     <p ALIGN="JUSTIFY">Virtual types may be referenced anywhere (on any nesting
-    level) within their &quot;owner&quot; package or interface, but also in
-    implementations of interfaces belonging to that scope. (These
+    level) within their &quot;owner&quot; package or class, but also in
+    implementations of classes belonging to that scope. (These
     implementations may be located even outside this scope.)</p>
     <p ALIGN="JUSTIFY">Summary: A <font color="#FF0000"><i><b>Lava</b></i></font> pattern is just a quite normal package or
-    interface declaration, having virtual types.</p>
+    class declaration, having virtual types.</p>
     </font>
     
     <H3>2. Representation and specialization of patterns in <B><I><FONT COLOR="#FF0000">LavaPE</FONT></I></B></H3>
     
     <P>In the <A HREF="EditTree.htm"><B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> declaration
         view</A> a pattern is just a quite normal <A HREF="Packages.htm">package</A>
-      or <A HREF="SepItfImpl.htm">interface</A> declaration, having virtual
+      or <A HREF="SepItfImpl.htm">class</A> declaration, having virtual
       types (VT). <a name="VTvalue"></a>  A virtual type vt has a name and a
-    value VAL(vt). The value may be an interface (having the name of the virtual
+    value VAL(vt). The value may be a class (having the name of the virtual
     type) or the name of another VT. (The term <a name="bound"></a>&quot;bound&quot;
     is also used in the literature for the value of a VT.)</P>
     
     <p ALIGN="JUSTIFY">A virtual type may also be &quot;abstract&quot;. Then its
     value is &quot;empty&quot;; a non-empty value may be assigned when
     overriding the abstract VT in a derived pattern.</p>
-    <p ALIGN="JUSTIFY">A VT is called &quot;final&quot; if its value is an
-    interface. This interface cannot be referenced then as a normal interface
+    <p ALIGN="JUSTIFY">A VT is called &quot;final&quot; if its value is a
+    class. This class cannot be referenced then as a normal class
     within the containing pattern; its name rather denotes the VT whose value it
-    is. Outside the pattern, it denotes just the interface.</p>
-    <p ALIGN="JUSTIFY">Moreover, interfaces (and virtual types anyway) of a
+    is. Outside the pattern, it denotes just the class.</p>
+    <p ALIGN="JUSTIFY">Moreover, classes (and virtual types anyway) of a
     derived pattern P cannot be referenced in base patterns of P.</p>
     
     <P> A VT has a <I>name</I> and a <I>value</I>. The value may be
-      (the name of) an interface or of another VT. A virtual type may also be
+      (the name of) a class or of another VT. A virtual type may also be
     &quot;abstract&quot;. Then its value is &quot;empty&quot;; a non-empty value
     may be assigned when overriding the abstract VT in a derived pattern.</P>
     
-    <P>Generally, package and interface
+    <P>Generally, package and class
       declarations may be <a name="nesting"></a><b> nested to any depth</b> in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-      (but interface declarations cannot contain nested package declarations).&nbsp;For
-    packages and interfaces with virtual types the above-mentioned <a href="#patternContext">restrictions</a>
+      (but class declarations cannot contain nested package declarations).&nbsp;For
+    packages and classes with virtual types the above-mentioned <a href="#patternContext">restrictions</a>
     apply, however.</P>
     
     <P>Specialization of patterns makes use of the same <A HREF="OverrideView.htm"><I><FONT COLOR="#FF0000"><b>Lava</b></FONT></I>
-        override view</A> that is also used for quite normal interface
+        override view</A> that is also used for quite normal class
     derivation.</P>
     
     <h3>3. Static type-safety of <b><i><font color="#FF0000">Lava</font></i>, related work</b></h3>
