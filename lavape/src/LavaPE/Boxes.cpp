@@ -1582,7 +1582,7 @@ ValOnInit CFuncBox::OnInitDialog()
     if (FieldTypeDECL->SecondTFlags.Contains(isGUI) || FieldTypeDECL->DeclType == FormDef)
       FieldTypeDECL = myDoc->IDTable.GetDECL(FieldTypeDECL->RefID, FieldTypeDECL->inINCL);
     if (FieldTypeDECL->SecondTFlags.Contains(isSet)
-		/*|| decl->TypeFlags.Contains(isOptional)*/) {
+		|| (myDECL->GUISignaltype == 1)) {
       EventType->addItem(QString("Insert"));
       EventType->addItem(QString("Delete"));
     }

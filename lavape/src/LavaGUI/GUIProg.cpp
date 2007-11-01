@@ -357,6 +357,15 @@ void CGUIProg::OnNewHandler()
     decl->DeclType = Function;
     decl->SecondTFlags.INCL(isHandler);
     decl->ParentDECL = myDECL;
+	if (ActNode->data.IterFlags.Contains(isOptional)
+		&& (ActNode->data.FIP.widget->inherits("CPushButton")
+		&& (((CPushButton*)ActNode->data.FIP.widget)->DISCOButtonType == isElli)
+		  || ActNode->data.myHandlerNode->data.FIP.widget->inherits("CFormWid")
+		  || ActNode->data.myHandlerNode->data.FIP.widget->inherits("CFormWid"))
+		)
+	  decl->GUISignaltype = 1;
+	else
+	  decl->GUISignaltype = 0;
     cheTIDs = new CHETIDs();
     cheTIDs->data = ActNode->data.myHandlerNode->data.myName;
     decl->HandlerClients.Append(cheTIDs);
