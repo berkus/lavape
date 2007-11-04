@@ -4266,7 +4266,7 @@ bool FuncExpression::Check (CheckData &ckd)
       ERROREXIT
     if (callExpr->IsOptional(ckd)
     && (callExpr->primaryToken != ObjRef_T || !callExpr->IsDefChecked(ckd))) {
-      ((SynObject*)callExpr)->SetError(ckd,&ERR_Optional);
+      ((SynObject*)callExpr)->SetError(ckd,&ERR_IfdefMissing);
       ok = false;
     }
     if (flags.Contains(isIniCallOrHandle)
@@ -6791,7 +6791,7 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
   TIDType itype;
   DString strINCL, strID;
   bool ok=true, setErr = false;
-  CHE *cheo = DODs;
+  CHE *cheo = DODs, *cheoSucc;
   TDOD* dod = (TDOD*)cheo->data;
   int fldInType=-2;
 
@@ -6862,8 +6862,18 @@ bool VerifyObj(CheckData &ckd, CHE* DODs, DString& name, ObjReference *parent, L
       vv = ckd.document->IDTable.GetVar(dod->ID, itype,ckd.inINCL);
       if (itype == globalID) {
         fieldDECL = *(LavaDECL**)vv;
-        if (fieldDECL->TypeFlags.Contains(isOptional))
+        if (fieldDECL->TypeFlags.Contains(isOptional)) {
           dod->flags.INCL(isOptionalExpr);
+          if (cheo->successor) {
+            cheoSucc = (CHE*)cheo->successor;
+            cheo->successor = 0;
+            if (!parent->IsDefChecked(ckd)) {
+              ((TDOD*)cheo->data)->SetError(ckd,&ERR_IfdefMissing);
+              ok = false;
+            }
+            cheo->successor = cheoSucc;
+          }
+        }
         else
           dod->flags.EXCL(isOptionalExpr);
         if (fieldDECL->DeclType == Attr) {

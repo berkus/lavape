@@ -88,6 +88,7 @@ QString ERR_NoMemberFunction;
 QString ERR_SingleAssViol;
 QString ERR_PrevDescAssig;
 QString ERR_Optional;
+QString ERR_IfdefMissing;
 QString ERR_Closed;
 QString ERR_ShouldBeClosed;
 QString ERR_ClosedVar;
@@ -337,7 +338,8 @@ void LavaBaseStringInit() {
   ERR_CorruptObject  = QObject::tr("Cannot read lava object with this lava component program");
   ERR_AbstrMemType  = QObject::tr("Do not use an abstract type for a member or formal parameter in a creatable interface");
   ERR_PrevDescAssig  = QObject::tr("Forbidden replacement of an ancestor after assignment to one of its ""descendants"" (= recursive constituents/acquaintances)");
-  ERR_Optional  = QObject::tr("An expression whose value is mandatory (= always non-null) is expected here");
+  ERR_IfdefMissing  = QObject::tr("Access to member of optional variable isn't secured by ifdef statement");
+  ERR_Optional  = QObject::tr("An expression whose value is mandatory (= always non-null) is expected here. \"ifdef\" statement or \"else\" expression missing?");
   ERR_Closed  = QObject::tr("A (possibly) not yet fully initialized object may be assigned only to a \"closed\" variable or formal parameter");
   ERR_ShouldBeClosed  = QObject::tr(" Variable to be initialized must be declared \"closed\" since initializer has \"closed\" actual input parameter(s)");
   ERR_CallObjClosed  = QObject::tr("This call object is \"closed\", so the function must have the \"self is closed\" attribute");
