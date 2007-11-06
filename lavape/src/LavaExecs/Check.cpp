@@ -5498,7 +5498,7 @@ bool ElseExpression::Check (CheckData &ckd)
       opd2->SetError(ckd,&ERR_IncompatibleCategory);
       ok = false;
     }
-    if (NoPH(opd1))
+    if (NoPH(opd1) && NoPH(opd2))
       opd2->targetCat = targetCat;
   }
 
