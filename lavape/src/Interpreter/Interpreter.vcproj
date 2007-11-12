@@ -78,6 +78,7 @@
 				OutputFile="..\..\bin\Interpreter.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				GenerateManifest="true"
 				ProgramDatabaseFile=".\Release/Interpreter.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -473,11 +474,21 @@
 				RelativePath=".\Debugger.h"
 				>
 				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputPath)"
+						Description="Moc&apos;ing $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>

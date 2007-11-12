@@ -4,6 +4,7 @@
 	Version="9,00"
 	Name="LavaPE_UI"
 	ProjectGUID="{ECF9A21B-4105-4881-98B5-37C8B8A689D2}"
+	RootNamespace="LavaPE_UI"
 	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
@@ -77,6 +78,7 @@
 				OutputFile="..\..\bin\LavaPE_UI.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				GenerateManifest="true"
 				ProgramDatabaseFile=".\Release/LavaPE_UI.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -221,7 +223,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -231,7 +233,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -241,11 +243,21 @@
 				RelativePath=".\idd_attachhandler.ui"
 				>
 				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Applying uic to $(InputFileName)"
+						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
+						Outputs="Generated\$(InputName).h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)."
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -259,7 +271,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -269,7 +281,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -283,7 +295,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -293,7 +305,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -307,7 +319,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -317,7 +329,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -331,7 +343,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -341,7 +353,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -355,7 +367,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -365,7 +377,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -379,7 +391,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -389,7 +401,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -403,7 +415,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -413,7 +425,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -427,7 +439,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -437,7 +449,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -451,7 +463,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -461,7 +473,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -475,7 +487,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -485,7 +497,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -499,7 +511,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -509,7 +521,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -523,7 +535,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -533,7 +545,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -547,7 +559,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -557,7 +569,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -571,7 +583,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -581,7 +593,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -595,7 +607,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -605,7 +617,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -619,7 +631,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -629,7 +641,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -643,7 +655,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -653,7 +665,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -667,7 +679,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -677,7 +689,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -691,7 +703,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -701,7 +713,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -715,7 +727,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -725,7 +737,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -739,7 +751,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -749,7 +761,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -763,7 +775,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -773,7 +785,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -787,7 +799,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -797,7 +809,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -811,7 +823,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -821,7 +833,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -835,7 +847,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -845,7 +857,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -859,7 +871,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -869,7 +881,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -883,7 +895,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -893,7 +905,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -907,7 +919,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -917,7 +929,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -931,7 +943,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -941,7 +953,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -1447,11 +1459,21 @@
 				RelativePath=".\LavaPEMainFrameBase.h"
 				>
 				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputPath)"
+						Description="Moc&apos;ing $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>

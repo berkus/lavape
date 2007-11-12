@@ -84,6 +84,7 @@
 				OutputFile="..\..\bin\Lava_UI.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				GenerateManifest="true"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				ProgramDatabaseFile=".\Release/Lava_UI.pdb"
 				RandomizedBaseAddress="1"
@@ -232,11 +233,22 @@
 				RelativePath=".\LavaMainFrameBase.h"
 				>
 				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)"
+						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
+						AdditionalDependencies=""
+						Outputs="Generated\moc_$(InputName).cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputPath)"
+						Description="Moc&apos;ing $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
@@ -255,7 +267,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>
@@ -265,7 +277,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Applying uic to $(InputPath)"
+						Description="Applying uic to $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\uic.exe -o Generated\$(InputName).h $(InputPath)&#x0D;&#x0A;"
 						Outputs="Generated\$(InputName).h"
 					/>

@@ -170,6 +170,7 @@
 				OutputFile="..\..\bin\LPC.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				GenerateManifest="true"
 				ProgramDatabaseFile=".\Release/LPC.pdb"
 				SubSystem="1"
 				RandomizedBaseAddress="1"

@@ -120,24 +120,28 @@ Section "LavaPE (required)" SEC01
 
   SetOutPath $INSTDIR\bin
   File "bin\*.exe"
+;  File src\LavaPE\Release\*.manifest
+;  File src\Lava\Release\*.manifest
+;  File src\Precompiler\Release\*.manifest
   File "bin\*.dll"
   File "bin\*.lava"
   SetFileAttributes $OUTDIR\std.lava READONLY|ARCHIVE
   File "bin\*.htm"
   File "bin\*.bat"
-  File "C:\Qt\Qt432msvc\bin\assistant.exe"
-  File "C:\Qt\Qt432msvc\bin\QtAssistantClient4.dll"
-  File "C:\Qt\Qt432msvc\bin\QtCore4.dll"
-  File "C:\Qt\Qt432msvc\bin\QtGui4.dll"
-  File "C:\Qt\Qt432msvc\bin\QtNetwork4.dll"
-  File "C:\Qt\Qt432msvc\bin\QtXml4.dll"
-;  File "C:\Qt\Qt432msvc\bin\QtSvg4.dll"
+  File "C:\Qt4\Qt432msvc\bin\assistant.exe"
+  File "C:\Qt4\Qt432msvc\bin\assistant.exe.manifest"
+  File "C:\Qt4\Qt432msvc\bin\QtAssistantClient4.dll"
+  File "C:\Qt4\Qt432msvc\bin\QtCore4.dll"
+  File "C:\Qt4\Qt432msvc\bin\QtGui4.dll"
+  File "C:\Qt4\Qt432msvc\bin\QtNetwork4.dll"
+  File "C:\Qt4\Qt432msvc\bin\QtXml4.dll"
+;  File "C:\Qt4\Qt432msvc\bin\QtSvg4.dll"
 
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qgif4.dll"
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qtiff4.dll"
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qjpeg4.dll"
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qmng4.dll"
-;  File "C:\Qt\Qt432msvc\plugins\imageformats\qsvg4.dll"
+;  File "C:\Qt4\Qt432msvc\plugins\imageformats\qgif4.dll"
+;  File "C:\Qt4\Qt432msvc\plugins\imageformats\qtiff4.dll"
+;  File "C:\Qt4\Qt432msvc\plugins\imageformats\qjpeg4.dll"
+;  File "C:\Qt4\Qt432msvc\plugins\imageformats\qmng4.dll"
+;  File "C:\Qt4\Qt432msvc\plugins\imageformats\qsvg4.dll"
 
   SetOutPath $INSTDIR\bin\std
   File /r "bin\std\*.*"
@@ -215,7 +219,7 @@ Section -Post
 
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "The entire Lava software, including the required components from TrollTech's Qt toolkit, Lava sample programs, and HTML online help files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "The entire Lava software, including the required components from TrollTech's Qt4 toolkit, Lava sample programs, and HTML online help files"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 

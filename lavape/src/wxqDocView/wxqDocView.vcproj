@@ -173,6 +173,7 @@
 				OutputFile="..\..\bin\wxqDocView.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				GenerateManifest="true"
 				ProgramDatabaseFile=".\Release/wxqDocView.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -301,7 +302,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="moc&apos;ing $(InputPath)"
+						Description="moc&apos;ing $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
@@ -311,7 +312,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="moc&apos;ing $(InputPath)"
+						Description="moc&apos;ing $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
@@ -325,7 +326,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="moc&apos;ing $(InputPath)"
+						Description="moc&apos;ing $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>
@@ -335,7 +336,7 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="moc&apos;ing $(InputPath)"
+						Description="moc&apos;ing $(InputFileName)"
 						CommandLine="$(QTDIR)\bin\moc.exe $(InputPath) -o Generated\moc_$(InputName).cpp&#x0D;&#x0A;"
 						Outputs="Generated\moc_$(InputName).cpp"
 					/>

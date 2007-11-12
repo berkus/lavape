@@ -176,6 +176,7 @@
 				OutputFile="..\..\bin\disco.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				GenerateManifest="true"
 				ProgramDatabaseFile=".\Release/disco.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"

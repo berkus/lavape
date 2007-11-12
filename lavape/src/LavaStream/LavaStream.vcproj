@@ -74,6 +74,7 @@
 				OutputFile="..\..\bin\Components\LavaStream.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				GenerateManifest="true"
 				ProgramDatabaseFile=".\Release/LavaStream.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
