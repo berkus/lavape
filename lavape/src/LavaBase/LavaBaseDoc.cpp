@@ -1389,12 +1389,18 @@ LavaDECL* CLavaBaseDoc::FindInSupports(const DString& name, LavaDECL *self, Lava
 }  
 
 
-int CLavaBaseDoc::CheckHandlerIO(LavaDECL* funcDECL, LavaDECL* ClientType)
+int CLavaBaseDoc::CheckHandlerIO(LavaDECL* funcDECL, LavaDECL* ClientMem)
 {
   TID refID, clientTypeID;
-  LavaDECL *memDECL, *typeDECL = 0, *decl;
+  LavaDECL *memDECL, *clientType=0, *memsClientType=0, *decl;
   CHETIDs *cheTIDs;
+  CHE *cheIO1=0, *cheIO2=0, *cheIO3=0, *cheIO4=0, *cheIO5=0;
 
+  if (ClientMem) {
+    memsClientType = IDTable.GetDECL(ClientMem->RefID, ClientMem->inINCL);
+    if (memsClientType->TypeFlags.Contains(isGUI) || memsClientType->DeclType == FormDef)
+      memsClientType = IDTable.GetDECL(memsClientType->RefID, memsClientType->inINCL);
+  }
   cheTIDs = (CHETIDs*)funcDECL->HandlerClients.first;
   if (!cheTIDs)
     return -1;
@@ -1408,77 +1414,131 @@ int CLavaBaseDoc::CheckHandlerIO(LavaDECL* funcDECL, LavaDECL* ClientType)
         return -1;
       if (decl->SecondTFlags.Contains(isGUI) || decl->DeclType == FormDef)
         decl = IDTable.GetDECL(decl->RefID, decl->inINCL);
-      if (typeDECL) {
-        if (typeDECL != decl)
+      if (clientType) {
+        if (clientType != decl)
           return -1;
       }
       else
-        typeDECL = decl;
+        clientType = decl;
       cheTIDs = (CHETIDs*)cheTIDs->successor;
     }
   }
   else
-    typeDECL = IDTable.GetDECL(funcDECL->ParentDECL->RefID, funcDECL->inINCL);
+    clientType = IDTable.GetDECL(funcDECL->ParentDECL->RefID, funcDECL->inINCL);
 
-  if (!typeDECL || (ClientType && (ClientType != typeDECL)))
+  if (!clientType || (memsClientType && (memsClientType != clientType)))
     return -1;
-  clientTypeID = TID(typeDECL->OwnID, typeDECL->inINCL);
-  CHE* cheIO1 = (CHE*)funcDECL->NestedDecls.first;
+  clientTypeID = TID(clientType->OwnID, clientType->inINCL);
+  cheIO1 = (CHE*)funcDECL->NestedDecls.first;
   if (!cheIO1)
     return -1;
-  CHE* cheIO2 = (CHE*)cheIO1->successor;
+  if (((LavaDECL*)cheIO1->data)->DeclType != IAttr)
+    return -1;
+  cheIO2 = (CHE*)cheIO1->successor;
   if (!cheIO2)
     return -1;
-  if ((((LavaDECL*)cheIO1->data)->DeclType != IAttr)
-    || (((LavaDECL*)cheIO2->data)->DeclType != IAttr))
-    return -1;
-  CHE* cheIO3 = (CHE*)cheIO2->successor;
-  if (!cheIO3)
-    return -1;
-  CHE* cheIO4 = (CHE*)cheIO3->successor;
-  if (cheIO4 && (((LavaDECL*)cheIO4->data)->DeclType != ExecDef)) {
-    CHE* cheIO5 = (CHE*)cheIO4->successor;
-    if (!cheIO5 || (((LavaDECL*)cheIO3->data)->DeclType != IAttr)
-      || (((LavaDECL*)cheIO4->data)->DeclType != OAttr)
-      || (((LavaDECL*)cheIO5->data)->DeclType != OAttr))
-      return -1;
-    if (cheIO5->successor 
-        && (((LavaDECL*)((CHE*)cheIO5->successor)->data)->DeclType != ExecDef))
+  cheIO3 = (CHE*)cheIO2->successor;
+  if (cheIO3)
+    cheIO4 = (CHE*)cheIO3->successor;
+  switch (funcDECL->GUISignaltype) {
+    case Ev_ValueChanged:
+      if (clientType && (clientType->fromBType != B_Bool)
+                     && (clientType->fromBType != Char)
+                     && (clientType->fromBType != Integer)
+                     && (clientType->fromBType != Float)
+                     && (clientType->fromBType != Double)
+                     && (clientType->fromBType != VLString)
+                     && ((clientType->fromBType != NonBasic) || !clientType->SecondTFlags.Contains(isEnum)))
         return -1;
-    if (!typeDECL->SecondTFlags.Contains(isSet)
-      || !IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
-      return -1;
-    if (((LavaDECL*)cheIO2->data)->BType != B_Che)
-      return -1;
-    if (((LavaDECL*)cheIO4->data)->BType != B_Bool)
-      return -1;
-    IDTable.GetParamRefID(typeDECL, refID, isSet);
-    if (IDTable.EQEQ(((LavaDECL*)cheIO3->data)->RefID, funcDECL->inINCL, refID, 0) 
-      && (((LavaDECL*)cheIO5->data)->RefID == ((LavaDECL*)cheIO3->data)->RefID))
-      return 2; //Insert
-    else
-      return -1;
-  }
-  else {
-    if (((LavaDECL*)cheIO3->data)->DeclType != OAttr)
-      return -1;
-    if ((((LavaDECL*)cheIO1->data)->RefID == ((LavaDECL*)cheIO2->data)->RefID)
-      && (((LavaDECL*)cheIO1->data)->RefID == ((LavaDECL*)cheIO3->data)->RefID)
-      && IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
-      return 1; //New Value
-    else {
+      if (((LavaDECL*)cheIO2->data)->DeclType != IAttr)
+        return -1;
+      if (!cheIO3 || (((LavaDECL*)cheIO3->data)->DeclType != OAttr))
+        return -1;
+      if (cheIO4  && (((LavaDECL*)cheIO4->data)->DeclType != ExecDef))
+          return -1;
+      if (!IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+        return -1;
+      if (!IDTable.EQEQ(((LavaDECL*)cheIO2->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+        return -1;
+      if (!IDTable.EQEQ(((LavaDECL*)cheIO3->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+        return -1;
+      break;
+
+    case Ev_ChainInsert:
+      if (clientType && !clientType->SecondTFlags.Contains(isSet))
+        return -1;
+      if (((LavaDECL*)cheIO2->data)->DeclType != IAttr)
+        return -1;
+      if (!cheIO3 || (((LavaDECL*)cheIO3->data)->DeclType != IAttr))
+        return -1;
+      if (!cheIO4 || (((LavaDECL*)cheIO4->data)->DeclType != OAttr))
+        return -1;
+      cheIO5 = (CHE*)cheIO4->successor;
+      if (!cheIO5 || (((LavaDECL*)cheIO5->data)->DeclType != OAttr))
+        return -1;
+      if (cheIO5->successor 
+          && (((LavaDECL*)((CHE*)cheIO5->successor)->data)->DeclType != ExecDef))
+          return -1;
+      if (!IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+        return -1;
+      if (((LavaDECL*)cheIO2->data)->BType != B_Che)
+        return -1;
+      IDTable.GetParamRefID(clientType, refID, isSet);
+      if (!IDTable.EQEQ(((LavaDECL*)cheIO3->data)->RefID, funcDECL->inINCL, refID, 0) )
+        return -1;
+      if (((LavaDECL*)cheIO4->data)->BType != B_Bool)
+        return -1;
+      if (((LavaDECL*)cheIO5->data)->RefID != ((LavaDECL*)cheIO3->data)->RefID)
+        return -1;
+      break;
+    case Ev_ChainDelete:
+      if (clientType && !clientType->SecondTFlags.Contains(isSet))
+        return -1;
+      if (((LavaDECL*)cheIO2->data)->DeclType != IAttr)
+        return -1;
+      if (!cheIO3 || (((LavaDECL*)cheIO3->data)->DeclType != OAttr))
+        return -1;
+      if (cheIO4  && (((LavaDECL*)cheIO4->data)->DeclType != ExecDef))
+          return -1;
+      if (!IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+        return -1;    
       if (((LavaDECL*)cheIO2->data)->BType != B_Che)
         return -1;
       if (((LavaDECL*)cheIO3->data)->BType != B_Bool)
         return -1;
-      if (typeDECL->SecondTFlags.Contains(isSet) && 
-        IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
-        return 3; //Delete
-      else
+      break;
+    case Ev_OptInsert:
+      if (ClientMem && !ClientMem->TypeFlags.Contains(isOptional))
         return -1;
-    }
+      if (((LavaDECL*)cheIO2->data)->DeclType != OAttr)
+        return -1;
+      if (!cheIO3 || (((LavaDECL*)cheIO3->data)->DeclType != OAttr))
+        return -1;
+      if (cheIO4  && (((LavaDECL*)cheIO4->data)->DeclType != ExecDef))
+        return -1;
+      if (!IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+        return -1;
+      if (((LavaDECL*)cheIO2->data)->BType != B_Bool)
+        return -1;
+      if (!IDTable.EQEQ(((LavaDECL*)cheIO3->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+        return -1;
+      break;
+    case Ev_OptDelete:
+      if (ClientMem && !ClientMem->TypeFlags.Contains(isOptional))
+        return -1;
+      if (((LavaDECL*)cheIO2->data)->DeclType != OAttr)
+        return -1;
+      if (cheIO3  && (((LavaDECL*)cheIO3->data)->DeclType != ExecDef))
+        return -1;
+      if (!IDTable.EQEQ(((LavaDECL*)cheIO1->data)->RefID, funcDECL->inINCL, clientTypeID, 0))
+        return -1;
+      if (((LavaDECL*)cheIO2->data)->BType != B_Bool)
+        return -1;
+      break;
+    default: return -1;
+
   }
-  return -1;
+  return funcDECL->GUISignaltype;
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -393,7 +393,8 @@ void MakeGUICLASS::makeWidgets (CHEFormNode* chFrmNd,
       if (!chFrmNd->data.BasicFlags.Contains(BlankSelCode)) {
         makeWidget(chFrmNd,parentWidget,parentWidgetName,context);
         if (chFrmNd->data.BasicFlags.Contains(PopUp)
-          && (chFrmNd->data.FIP.poppedUp || chFrmNd->data.FormSyntax->WorkFlags.Contains(poppedUp)))
+          //&& (chFrmNd->data.FIP.poppedUp || chFrmNd->data.FormSyntax->WorkFlags.Contains(poppedUp)))
+          && chFrmNd->data.FormSyntax->WorkFlags.Contains(poppedUp))
           Popup(chFrmNd,true,false);
       }
       break;

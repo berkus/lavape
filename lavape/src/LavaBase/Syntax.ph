@@ -25,6 +25,13 @@
 
 struct LavaDECL;
 
+
+#define Ev_ValueChanged 1
+#define Ev_ChainInsert 2
+#define Ev_ChainDelete 3
+#define Ev_OptInsert 4
+#define Ev_OptDelete 5
+
 $TYPE +CDP {
 
   struct TSigRef {
@@ -1046,6 +1053,13 @@ $TYPE {
   };
 
   typedef address SigNodePtr;
+  
+  struct HandlerInfo {
+    CHEFormNode *HandlerNode;
+    TID HandlerID;
+  };
+  
+  typedef CHAINANY<HandlerInfo> HandlerInfos;
 
   struct FormNode {
     Field FIP;
@@ -1066,7 +1080,7 @@ $TYPE {
     bool allowChainHandler;
     CHEFormNode *myHandlerNode;
     bool handlerSearched;
-    TIDs myHandler;
+    CHAINANY<HandlerInfo> myHandler;
     LavaDECL* HandlerDECL;
     CSecTabBase** GUIService;
     TIDs myName;

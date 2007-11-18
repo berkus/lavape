@@ -127,24 +127,24 @@ void CGUIProg::NoteLastModified()
 void CGUIProg::SyncTree(CHEFormNode *node)
 {
   CHEFormNode *upNode;
-  TIDs *handlerChain;
-  CHETID *chetid, *cheCop;
+  HandlerInfos *handlerChain;
+  CHEHandlerInfo *chehand, *cheCop;
 
   
   if (LBaseData->inRuntime)
     return;
-  handlerChain = new TIDs;
+  handlerChain = new HandlerInfos;
   *handlerChain = node->data.myHandler;
   upNode = node->data.FIP.up;
   while (upNode) {
     if (upNode->data.myHandler.last && (!handlerChain->last
-        || (((CHETID*)upNode->data.myHandler.last)->data != ((CHETID*)handlerChain->last)->data))) {
-      chetid = (CHETID*)upNode->data.myHandler.first;
-      while (chetid) {
-        cheCop = new CHETID;
-        cheCop->data = chetid->data;
+        || (((CHEHandlerInfo*)upNode->data.myHandler.last)->data.HandlerID != ((CHEHandlerInfo*)handlerChain->last)->data.HandlerID))) {
+      chehand = (CHEHandlerInfo*)upNode->data.myHandler.first;
+      while (chehand) {
+        cheCop = new CHEHandlerInfo;
+        cheCop->data = chehand->data;
         handlerChain->Append(cheCop);
-        chetid = (CHETID*)chetid->successor;
+        chehand = (CHEHandlerInfo*)chehand->successor;
       }
     }
     upNode = upNode->data.FIP.up;
@@ -363,7 +363,7 @@ void CGUIProg::OnNewHandler()
 		  || ActNode->data.myHandlerNode->data.FIP.widget->inherits("CFormWid")
 		  || ActNode->data.myHandlerNode->data.FIP.widget->inherits("CFormWid"))
 		)
-	  decl->GUISignaltype = 1;
+	  decl->GUISignaltype = Ev_OptInsert;
 	else
 	  decl->GUISignaltype = 0;
     cheTIDs = new CHETIDs();

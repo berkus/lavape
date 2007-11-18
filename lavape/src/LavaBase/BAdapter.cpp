@@ -78,7 +78,7 @@ static TAdapterFunc CharAdapter[LAH + 1];
 static TAdapterFunc IntAdapter[LAH + 12];
 static TAdapterFunc FloatAdapter[LAH + 11];
 static TAdapterFunc DoubleAdapter[LAH + 11];
-static TAdapterFunc StringAdapter[LAH + 3];
+static TAdapterFunc StringAdapter[LAH + 4];
 static TAdapterFunc EnumAdapter[LAH +4];
 static TAdapterFunc SetAdapter[LAH + 6];
 static TAdapterFunc ChainAdapter[LAH + 7];
@@ -765,6 +765,7 @@ bool StringBox(CheckData& ckd, LavaVariablePtr stack)
       QMessageBox::Ok | QMessageBox::Default,
       0,
       0);
+  /*
   else
     rc = information(
       parent,qApp->applicationName(),"     ",
@@ -779,8 +780,28 @@ bool StringBox(CheckData& ckd, LavaVariablePtr stack)
 			QMessageBox::No,
 			0) == QMessageBox::Yes)
       return false;
+      */
   return true;
 }
+
+bool StringQuestionBox(CheckData& ckd, LavaVariablePtr stack)
+{
+  QWidget *parent=wxTheApp->m_appWindow;
+
+  wxTheApp->m_appWindow->activateWindow();
+  OBJALLOC(stack[SFH+1], ckd, ckd.document->DECLTab[B_Bool], false)
+  int rc=Qt::NoButton;
+  if ((QString*)(stack[SFH]+LSH)) {
+		*(bool*)(stack[SFH+1]+LSH) = question(
+			parent,qApp->applicationName(),*(QString*)(stack[SFH]+LSH),
+			QMessageBox::Yes | QMessageBox::Default,
+			QMessageBox::No,
+			0) == QMessageBox::Yes;
+      return true;
+  }
+  return false;
+}
+
 
 
 //Enumeration
@@ -1940,6 +1961,7 @@ void MakeStdAdapter()
   StringAdapter[6] = 0;
   StringAdapter[LAH]   = StringPlus;
   StringAdapter[LAH+1] = StringBox;
+  StringAdapter[LAH+2] = StringQuestionBox;
 
 //remember: enumeration section contains after the number of item the string of the item name
   EnumAdapter[0] = (TAdapterFunc)(1 + (sizeof(QString)+3)/4);

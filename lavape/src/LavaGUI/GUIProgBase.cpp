@@ -271,6 +271,7 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
   CHETIDs *tidsChe=0;
   CHE *che;
   CHETVElem *cheV;
+  CHEHandlerInfo *cheHandler;
   LavaDECL *formSyn = 0, *form;
   bool setHNode;
 
@@ -310,9 +311,10 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
                 cheTID = (CHETID*)cheTID->successor;
               }
               if (!cheTID && !cheTID2) {
-                cheTID = new CHETID;
-                cheTID->data = TID(((LavaDECL*)che->data)->OwnID, ((LavaDECL*)che->data)->inINCL);
-                formNode->data.myHandler.Append(cheTID);
+                cheHandler = new CHEHandlerInfo;
+                cheHandler->data.HandlerID = TID(((LavaDECL*)che->data)->OwnID, ((LavaDECL*)che->data)->inINCL);
+                cheHandler->data.HandlerNode = node;
+                formNode->data.myHandler.Append(cheHandler);
                 if (LBaseData->inRuntime)
                   formNode->data.myHandlerNode = node;
               }

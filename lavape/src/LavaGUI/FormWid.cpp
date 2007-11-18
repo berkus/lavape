@@ -128,8 +128,9 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
     myFormNode->data.myHandlerNode = myFormNode->data.FIP.up->data.myHandlerNode;
     myFormNode->data.allowOwnHandler = myFormNode->data.FIP.up->data.allowOwnHandler;
   }
-  else if (myFormNode->data.IterFlags.Contains(isOptional)
-	  && (!par || !((CFormWid*)par)->myFormNode->data.IterFlags.Contains(isOptional))) {
+  else if (myFormNode->data.FormSyntax->TypeFlags.Contains(isOptional)
+	  && (!par || !((CFormWid*)par)->myFormNode->data.FormSyntax->TypeFlags.Contains(isOptional))
+	  && (myFormNode->data.FormSyntax->DeclType == Attr)) {
     myFormNode->data.myHandlerNode = myFormNode;
     myFormNode->data.allowOwnHandler = true;
     if (!LBaseData->inRuntime)
@@ -149,8 +150,9 @@ CFormWid::CFormWid(CGUIProgBase *guiPr, CHEFormNode* data,
        && myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet))
       myFormNode->data.myHandlerNode = 0;
 
-  if (( myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
-    || myFormNode->data.BasicFlags.Contains(ButtonMenu))
+  if ((myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+    || myFormNode->data.BasicFlags.Contains(ButtonMenu)
+	  || myFormNode->data.FormSyntax->TypeFlags.Contains(isOptional))
        && !myFormNode->data.handlerSearched)
     GUIProg->setHandler(myFormNode);
 
@@ -257,8 +259,9 @@ void CLavaGroupBox::InitGroupBox(CGUIProgBase *guiPr, CHEFormNode* data)
     myFormNode->data.myHandlerNode = myFormNode->data.FIP.up->data.myHandlerNode;
     myFormNode->data.allowOwnHandler = myFormNode->data.FIP.up->data.allowOwnHandler;
   }
-  else if (myFormNode->data.IterFlags.Contains(isOptional)
-	  && (!par || !((CFormWid*)par)->myFormNode->data.IterFlags.Contains(isOptional))) {
+  else if (myFormNode->data.FormSyntax->TypeFlags.Contains(isOptional)
+	  && (!par || !((CFormWid*)par)->myFormNode->data.FormSyntax->TypeFlags.Contains(isOptional))
+	  && (myFormNode->data.FormSyntax->DeclType == Attr)) {
     myFormNode->data.myHandlerNode = myFormNode;
     myFormNode->data.allowOwnHandler = true;
     if (!LBaseData->inRuntime)
@@ -278,7 +281,9 @@ void CLavaGroupBox::InitGroupBox(CGUIProgBase *guiPr, CHEFormNode* data)
        && myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet))
       myFormNode->data.myHandlerNode = 0;
 
-  if ( myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+  if (( myFormNode->data.FormSyntax->SecondTFlags.Contains(isSet)
+      || myFormNode->data.BasicFlags.Contains(ButtonMenu)
+    	|| myFormNode->data.FormSyntax->TypeFlags.Contains(isOptional))
        && !myFormNode->data.handlerSearched)
     GUIProg->setHandler(myFormNode);
 }

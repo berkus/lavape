@@ -44,6 +44,8 @@ public:
   void InsertIterItem (CHEFormNode* fNode);
   void DeleteIterItem (CHEFormNode* fNode);
 //  bool ChangeAtomicObject(LavaVariablePtr resultVarPtr);
+  CHEHandlerInfo* GetHandler(CHEFormNode* fNode, int eventType);
+  bool OptHandlerCall(CHEFormNode* optNode, int eventType);
   bool ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr StackFrame, int eventType);
   bool EditHandlerCall(CHEFormNode* formNode, STRING newStr);
   bool ConvertAndStore (CHEFormNode* trp);

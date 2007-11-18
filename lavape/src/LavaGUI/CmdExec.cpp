@@ -50,13 +50,17 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
 
   optNode = fNode->data.FIP.up;
   formSyn = optNode->data.FormSyntax;
-  GUIProg->focNode = 0;
-  optNode->data.SubTree.Destroy();
   if (LBaseData->inRuntime) {
     if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(formSyn, (LavaVariablePtr)optNode->data.ResultVarPtr))
       return;
-    ((CGUIProg*)GUIProg)->OnModified();
+    if (optNode->data.myHandler.first)
+      if (OptHandlerCall(optNode, Ev_OptInsert))
+        ((CGUIProg*)GUIProg)->OnModified();
+      else
+        return;
   }
+  GUIProg->focNode = 0;
+  optNode->data.SubTree.Destroy();
   ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
   ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, optNode, optNode->data.allowOwnHandler); 
   if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
@@ -74,6 +78,14 @@ void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
   LavaDECL* formSyn;
 
   parNode = fNode->data.FIP.up;
+  if (LBaseData->inRuntime) {
+    if (parNode->data.myHandler.first) {
+      if (OptHandlerCall(parNode, Ev_OptDelete))
+        ((CGUIProg*)GUIProg)->OnModified();
+      else
+        return;
+    }
+  }
   delNode = (CHEFormNode*)parNode->data.SubTree.Uncouple(fNode); 
   elliNode = 0;
   formSyn = parNode->data.FormSyntax;
@@ -159,7 +171,7 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
   }
   if (LBaseData->inRuntime) {
     if (chainNode->data.myHandler.first)
-      if (ChainHandlerCall(chainNode, newStackFrame, EventInsert)) {
+      if (ChainHandlerCall(chainNode, newStackFrame, Ev_ChainInsert)) {
         *insertedNode->data.ResultVarPtr = (CSecTabBase**)newStackFrame[SFH+2];
         newStackFrame[SFH+2] = newStackFrame[SFH+2] + newStackFrame[SFH+2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
         insertIt = true;
@@ -226,7 +238,7 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
         newStackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
         newStackFrame[SFH+2] = 0;
         if (!chainNode->data.myHandler.first
-            || ChainHandlerCall(chainNode, newStackFrame, EventDelete )) {
+            || ChainHandlerCall(chainNode, newStackFrame, Ev_ChainDelete )) {
           if (GUIProg->fromFillIn) {
             newStackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
             newStackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
@@ -342,37 +354,126 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
   return true;
 }
 
+CHEHandlerInfo* CmdExecCLASS::GetHandler(CHEFormNode* fNode, int eventType)
+{
+  LavaObjectPtr obj = 0;
+  CHEHandlerInfo *cheHandler;
+  LavaDECL *handlerDECL, *classDECL;
+
+  for (cheHandler = (CHEHandlerInfo*)fNode->data.myHandler.last;
+    cheHandler && (GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID)->GUISignaltype != eventType);
+    cheHandler = (CHEHandlerInfo*)cheHandler->predecessor
+  );
+  if (!cheHandler)
+    return 0;
+  handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
+  if (!cheHandler->data.HandlerNode->data.GUIService) {
+    if (handlerDECL->ParentDECL == GUIProg->myDECL)
+      cheHandler->data.HandlerNode->data.GUIService = *((CSecTabBase***)GUIProg->ServicePtr);
+    else {
+      classDECL = handlerDECL->ParentDECL;
+      if (classDECL->DeclType == Impl)
+        classDECL = GUIProg->myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
+      obj = AllocateObject(GUIProg->ckd, classDECL, true);
+      if (obj && CallDefaultInit(((CGUIProg*)GUIProg)->ckd, obj)) {
+        GUIProg->allocatedObjects.append(obj);
+        cheHandler->data.HandlerNode->data.GUIService = (CSecTabBase**)obj;
+      }
+      else {
+        if (obj)
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, obj);
+        if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
+          ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
+        return 0;
+      }
+    }
+  }
+  return cheHandler;
+}
+
+bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
+{
+  bool ok;
+  CVFuncDesc *fDesc;
+  CSectionDesc *funcSect;
+  LavaVariablePtr StackFrame;
+  int fsizeBytes, fsize;
+  LavaDECL* handlerDECL;
+
+  CHEHandlerInfo* cheHandler = GetHandler(optNode, eventType);
+  if (!cheHandler)
+    return true;
+  handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
+  funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
+  fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
+  fsize = fDesc->stackFrameSize;
+  fsizeBytes = fsize<<2;
+
+#ifndef __GNUC__
+    __asm {
+      sub esp, fsizeBytes
+      mov StackFrame, esp
+    }
+#else
+		StackFrame = new LavaObjectPtr[fsize];
+#endif
+  LavaVariablePtr rPtr = (LavaVariablePtr)optNode->data.ResultVarPtr;
+  StackFrame[0] = 0;
+  StackFrame[1] = 0;
+  StackFrame[2] = 0;
+  StackFrame[SFH+1] = 0;
+  StackFrame[SFH+2] = 0;
+  StackFrame[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
+  StackFrame[SFH+1] = *(LavaVariablePtr)optNode->data.ResultVarPtr;
+  StackFrame[SFH+2] = 0;
+  StackFrame[SFH+3] = 0;
+  if (fDesc->isNative)
+    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, StackFrame);
+  else
+    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, StackFrame);
+  if (!ok) 
+    ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
+  else {
+    ok = *(bool*)(StackFrame[SFH+2]+LSH);
+    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
+    if (eventType == Ev_OptInsert) {
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+1]);
+      if (ok && StackFrame[SFH+3]) 
+        *optNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+3];
+      else
+        ok = false;
+    }
+  }
+#ifndef __GNUC__
+    __asm {
+      add esp, fsizeBytes
+    }
+#else
+	  delete [] StackFrame;
+#endif
+    /*
+  if (eventType == Ev_OptInsert) {
+    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+1]);
+    optNode->data.ResultVarPtr = (CSecTabBase***)&StackFrame[SFH+3];
+  }*/
+  return ok;
+}
+
 bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr StackFrame, int eventType)
 {
   bool ok;
   CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
   LavaVariablePtr newStackFrame;
-  LavaObjectPtr obj;
   int fsizeBytes, fsize;
-  CHETID *cheTID;
-  LavaDECL* handlerDECL, *classDECL;
+  LavaDECL* handlerDECL;
 
-  for (cheTID = (CHETID*)chainNode->data.myHandler.last;
-    cheTID && (GUIProg->myDoc->IDTable.GetDECL(cheTID->data)->GUISignaltype != eventType);
-    cheTID = (CHETID*)cheTID->predecessor
-  );
-  if (!cheTID)
+  CHEHandlerInfo* cheHandler = GetHandler(chainNode, eventType);
+  if (!cheHandler)
     return true;
-  handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheTID->data);
-  if (!chainNode->data.GUIService) {
-    if (handlerDECL->ParentDECL == GUIProg->myDECL)
-      chainNode->data.GUIService = *(CSecTabBase***)GUIProg->ServicePtr;
-    else {
-      classDECL = handlerDECL->ParentDECL;
-      if (classDECL->DeclType == Impl)
-        classDECL = GUIProg->myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
-      chainNode->data.GUIService = (CSecTabBase**)AllocateObject(GUIProg->ckd, classDECL, true);
-      obj = (LavaObjectPtr)chainNode->data.GUIService;
-      GUIProg->allocatedObjects.append(obj);
-    }
-  }
-  funcSect = &(*(LavaObjectPtr)chainNode->data.GUIService)[0];
+  handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
+
+  funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
   fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
   fsize = fDesc->stackFrameSize;
   fsizeBytes = fsize<<2;
@@ -387,11 +488,11 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
   newStackFrame[0] = 0;
   newStackFrame[1] = 0;
   newStackFrame[2] = 0;
-  newStackFrame[SFH] = (LavaObjectPtr)chainNode->data.GUIService;
+  newStackFrame[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
   newStackFrame[SFH+1] = StackFrame[SFH]; //chain
   newStackFrame[SFH+1] = (LavaObjectPtr)((newStackFrame[SFH+1])-(*(newStackFrame[SFH+1]))->sectionOffset);
   newStackFrame[SFH+2] = StackFrame[SFH+1]; //handle
-  if (eventType == EventInsert) {
+  if (eventType == Ev_ChainInsert) {
     newStackFrame[SFH+3] = StackFrame[SFH+2];//newElem
     newStackFrame[SFH+4] = 0;
     newStackFrame[SFH+5] = 0;
@@ -403,9 +504,9 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
   else
     ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, newStackFrame);
   if (!ok) 
-    ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)chainNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
+    ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
   else {
-    if (eventType == EventInsert) {
+    if (eventType == Ev_ChainInsert) {
       ok = *(bool*)(newStackFrame[SFH+4]+LSH);
       DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+4]);
       if (ok && newStackFrame[SFH+5]) {
@@ -431,42 +532,17 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
 bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
 {
   LavaVariablePtr	StackFrame;
-  LavaObjectPtr obj;
   CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
   bool ok;
-  CHETID *cheTID;
-  LavaDECL* handlerDECL, *classDECL;
+  LavaDECL* handlerDECL;
 
-  for (cheTID = (CHETID*)fNode->data.myHandler.last;
-    cheTID && (GUIProg->myDoc->IDTable.GetDECL(cheTID->data)->GUISignaltype != ValueChanged);
-    cheTID = (CHETID*)cheTID->predecessor
-  );
-  if (!cheTID)
+  CHEHandlerInfo* cheHandler = GetHandler(fNode, Ev_ValueChanged);
+  if (!cheHandler)
     return false;
-  handlerDECL = GUIProg->myDoc->IDTable.GetDECL(((CHETID*)fNode->data.myHandler.last)->data);
-  if (!fNode->data.GUIService) {
-    if (handlerDECL->ParentDECL == GUIProg->myDECL)
-      fNode->data.GUIService = *(CSecTabBase***)GUIProg->ServicePtr;
-    else {
-      classDECL = handlerDECL->ParentDECL;
-      if (classDECL->DeclType == Impl)
-        classDECL = GUIProg->myDoc->IDTable.GetDECL(((CHETID*)classDECL->Supports.first)->data, classDECL->inINCL);
-      fNode->data.GUIService = (CSecTabBase**)AllocateObject(GUIProg->ckd, classDECL, true);
-      if (fNode->data.GUIService
-        && CallDefaultInit(((CGUIProg*)GUIProg)->ckd, (LavaObjectPtr)fNode->data.GUIService)) {
-        obj = (LavaObjectPtr)fNode->data.GUIService;
-        GUIProg->allocatedObjects.append(obj);
-      }
-      else {
-        if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-          ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-        return false;
-      }
-    }
-  }
+  handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
 
-  funcSect = &(*(LavaObjectPtr)fNode->data.GUIService)[0];
+  funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
   fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
   int fsize = fDesc->stackFrameSize;
   int fsizeBytes = fsize<<2;
@@ -486,7 +562,7 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   StackFrame[2] = 0;
   StackFrame[SFH+1] = 0;
   StackFrame[SFH+2] = 0;
-  StackFrame[SFH] = (LavaObjectPtr)fNode->data.GUIService;
+  StackFrame[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
   /*
   if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(fNode->data.FormSyntax, &StackFrame[SFH+1])) {
 #ifndef __GNUC__
@@ -521,7 +597,7 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   else
     ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, StackFrame);
   if (!ok) {
-    ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)fNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
+    ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
 #ifndef __GNUC__
     __asm {
       add esp, fsizeBytes

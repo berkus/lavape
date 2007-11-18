@@ -56,7 +56,7 @@ CUtilityView::CUtilityView(QWidget *parent)
   HandlerPage->setSelectionMode(QAbstractItemView::SingleSelection);
   CTreeItem* item = new CTreeItem(QString("Handler"), 0);
   item->setText(1, "Event type");
-  item->setText(2, "Defined for");
+  item->setText(2, "Client");
   HandlerPage->setHeaderItem(item);
   CommentPage = new QTextEdit(0);
   CommentPage->setReadOnly(true);
@@ -193,7 +193,7 @@ void CUtilityView::AddHandler(LavaDECL* func, CLavaBaseDoc* doc)
   CHETIDs *cheTIDs;
   QString label1, label2;
   CHETID *cheS;
-  CFindData *data, *dataCont;
+  CFindData *data;//, *dataCont;
   item = new CTreeItem(func->FullName.c, HandlerPage);
   data = new CFindData();
   data->refCase = 4;
@@ -203,89 +203,24 @@ void CUtilityView::AddHandler(LavaDECL* func, CLavaBaseDoc* doc)
   data->fname = doc->IDTable.IDTab[func->inINCL]->FileName;
   AbsPathName(data->fname, doc->IDTable.DocDir);
   item->setItemData((TItemData*)data);
-  if (func->GUISignaltype == ValueChanged)
+  if (func->GUISignaltype == Ev_ValueChanged)
     label1 = QString("New Value");
-  else if (func->GUISignaltype == EventInsert)
+  else if (func->GUISignaltype == Ev_ChainInsert)
     label1 = QString("Insert chain element");
-  else if (func->GUISignaltype == EventDelete)
+  else if (func->GUISignaltype == Ev_ChainDelete)
     label1 = QString("Delete chain element");
+  else if (func->GUISignaltype == Ev_OptInsert)
+    label1 = QString("Insert optional element");
+  else if (func->GUISignaltype == Ev_OptDelete)
+    label1 = QString("Delete optional element");
   item->setText(1, label1);
 
   cheTIDs = (CHETIDs*)func->HandlerClients.first;
-  while (cheTIDs) {
+  if (cheTIDs) {
     label2.clear(); 
-    cheS = (CHETID*)cheTIDs->data.first;
-    label2 += QString(func->ParentDECL->FullName.c);
-    if (cheS) {
-      label2 += "::";
-      while (cheS) {
-        decl = doc->IDTable.GetDECL(cheS->data);
-        if (decl)
-          label2 += QString(decl->LocalName.c);
-        else { /*error, messagebox */}
-        cheS = (CHETID*)cheS->successor;
-        if (cheS)
-          label2 += QString(".");
-      }
-    }
-    else
-      label2 = "Attached to the form ";
-    item->setText(2, label2);
-    cheTIDs = (CHETIDs*)cheTIDs->successor;
-    if (cheTIDs) {
-      item = new CTreeItem(func->FullName.c, HandlerPage);
-      item->setText(1, label1);
-      dataCont = new CFindData();
-      dataCont = data;
-      item->setItemData((TItemData*)dataCont);
-    }
-  }
-  HandlerPage->resizeColumnToContents(0);
-  HandlerPage->resizeColumnToContents(1);
-  HandlerPage->resizeColumnToContents(2);
-  if (HandlerPage->columnWidth(0) < 30)
-    HandlerPage->setColumnWidth(0, 30);
-  if (HandlerPage->columnWidth(1) < 30)
-    HandlerPage->setColumnWidth(1, 30);
-  if (HandlerPage->columnWidth(2) < 30)
-    HandlerPage->setColumnWidth(2, 30);
-  SetTab(tabHandler);
-}
-
-
-void CUtilityView::SetHandler(TIDs* handlerIDs, CLavaBaseDoc* doc)
-{
-  CTreeItem *item;
-  LavaDECL *func, *decl;
-  CHETIDs *cheTIDs;
-  QString label1, label2;
-  CHETID *cheS, *che = (CHETID*)handlerIDs->first;
-  CFindData *data, *dataCont;
-  DeleteAllPageItems(tabHandler);
-  while (che) {
-    func = doc->IDTable.GetDECL(che->data);
-    item = new CTreeItem(func->FullName.c, HandlerPage);
-    data = new CFindData();
-    data->refCase = 4;
-    data->nID = func->OwnID;
-    data->refTid.nID = data->nID;
-    data->refTid.nINCL = 0;
-    data->fname = doc->IDTable.IDTab[func->inINCL]->FileName;
-    AbsPathName(data->fname, doc->IDTable.DocDir);
-    item->setItemData((TItemData*)data);
-    if (func->GUISignaltype == ValueChanged)
-      label1 = QString("New Value");
-    else if (func->GUISignaltype == EventInsert)
-      label1 = QString("Insert chain element");
-    else if (func->GUISignaltype == EventDelete)
-      label1 = QString("Delete chain element");
-    item->setText(1, label1);
-
-    cheTIDs = (CHETIDs*)func->HandlerClients.first;
     while (cheTIDs) {
       cheS = (CHETID*)cheTIDs->data.first;
-      label2.clear(); 
-      label2 = QString(func->ParentDECL->FullName.c);
+      label2 += QString(func->ParentDECL->FullName.c);
       if (cheS) {
         label2 += "::";
         while (cheS) {
@@ -299,20 +234,106 @@ void CUtilityView::SetHandler(TIDs* handlerIDs, CLavaBaseDoc* doc)
         }
       }
       else
-        label2 = "Attached to the form";
-      item->setText(2, label2);
+        label2 += QString("Attached to the form ");
       cheTIDs = (CHETIDs*)cheTIDs->successor;
       if (cheTIDs) {
-        item = new CTreeItem(func->FullName.c, HandlerPage);
-        item->setText(1, label1);
-        dataCont = new CFindData();
-        dataCont = data;
-        item->setItemData((TItemData*)dataCont);
+        //item = new CTreeItem(func->FullName.c, HandlerPage);
+        //item->setText(1, label1);
+        //dataCont = new CFindData();
+        //dataCont = data;
+        //item->setItemData((TItemData*)dataCont);
+        label2 += QString(", ");
       }
-    }
-    che = (CHETID*)che->successor;
+    }//while cheTIDs
+  }//if cheTIDs
+  else
+    label2 = "no client attached";
+  item->setText(2, label2);
+  HandlerPage->resizeColumnToContents(0);
+  HandlerPage->resizeColumnToContents(1);
+  HandlerPage->resizeColumnToContents(2);
+  if (HandlerPage->columnWidth(0) < 30)
+    HandlerPage->setColumnWidth(0, 30);
+  if (HandlerPage->columnWidth(1) < 30)
+    HandlerPage->setColumnWidth(1, 30);
+  if (HandlerPage->columnWidth(2) < 30)
+    HandlerPage->setColumnWidth(2, 30);
+  SetTab(tabHandler);
+}
+
+
+void CUtilityView::SetHandler(HandlerInfos* handlerInfos, CLavaBaseDoc* doc)
+{
+  CTreeItem *item;
+  LavaDECL *func, *decl;
+  CHETIDs *cheTIDs;
+  CHETID *cheS;
+  QString label1, label2;
+  CHEHandlerInfo *cheHand = (CHEHandlerInfo*)handlerInfos->first;
+  CFindData *data;//, *dataCont;
+
+  DeleteAllPageItems(tabHandler);
+  while (cheHand) {
+    func = doc->IDTable.GetDECL(cheHand->data.HandlerID);
+    item = new CTreeItem(func->FullName.c, HandlerPage);
+    data = new CFindData();
+    data->refCase = 4;
+    data->nID = func->OwnID;
+    data->refTid.nID = data->nID;
+    data->refTid.nINCL = 0;
+    data->fname = doc->IDTable.IDTab[func->inINCL]->FileName;
+    AbsPathName(data->fname, doc->IDTable.DocDir);
+    item->setItemData((TItemData*)data);
+    if (func->GUISignaltype == Ev_ValueChanged)
+      label1 = QString("New Value");
+    else if (func->GUISignaltype == Ev_ChainInsert)
+      label1 = QString("Insert chain element");
+    else if (func->GUISignaltype == Ev_ChainDelete)
+      label1 = QString("Delete chain element");
+    else if (func->GUISignaltype == Ev_OptInsert)
+      label1 = QString("Insert optinal element");
+    else if (func->GUISignaltype == Ev_OptDelete)
+      label1 = QString("Delete optinal element");
+    item->setText(1, label1);
+
+    cheTIDs = (CHETIDs*)func->HandlerClients.first;
+    label2.clear(); 
+    if (cheTIDs) {
+      while (cheTIDs) {
+        cheS = (CHETID*)cheTIDs->data.first;
+        label2 += QString(func->ParentDECL->FullName.c);
+        if (cheS) {
+          label2 += "::";
+          while (cheS) {
+            decl = doc->IDTable.GetDECL(cheS->data);
+            if (decl)
+              label2 += QString(decl->LocalName.c);
+            else { /*error, messagebox */}
+            cheS = (CHETID*)cheS->successor;
+            if (cheS)
+              label2 += QString(".");
+          }//while cheS
+        }//if cheS
+        else
+          label2 += QString("Attached to the form");
+        cheTIDs = (CHETIDs*)cheTIDs->successor;
+        if (cheTIDs) {
+          //item = new CTreeItem(func->FullName.c, HandlerPage);
+          //item->setText(1, label1);
+          //dataCont = new CFindData();
+          //dataCont = data;
+          //item->setItemData((TItemData*)dataCont);
+          label2 += QString(", ");
+        }
+      }//while cheTIDs
+    }//if cheTIDs
+    else
+      label2 = "no client attached";
+    item->setText(2, label2);
+    cheHand = (CHEHandlerInfo*)cheHand->successor;
   }
-  if (handlerIDs->first) {
+
+  if (handlerInfos->first) {
     HandlerPage->resizeColumnToContents(0);
     HandlerPage->resizeColumnToContents(1);
     HandlerPage->resizeColumnToContents(2);
@@ -324,7 +345,7 @@ void CUtilityView::SetHandler(TIDs* handlerIDs, CLavaBaseDoc* doc)
       HandlerPage->setColumnWidth(2, 30);
     SetTab(tabHandler);
   }
-  delete handlerIDs;
+  delete handlerInfos;
 }
 
 void CUtilityView::OnDblclk(QTreeWidgetItem* item, int col)

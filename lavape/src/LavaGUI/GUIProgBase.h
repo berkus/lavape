@@ -22,10 +22,6 @@
 #define LAVAGUI_DLL
 #endif
 
-#define ValueChanged 1
-#define EventInsert 2
-#define EventDelete 3
-
 
 class  LAVAGUI_DLL CGUIMet : public QObject
 { public:

@@ -25,7 +25,6 @@
 #include "LavaPEStringInit.h"
 #include "ComboBar.h"
 #include "LavaPEWizard.h"
-#include "GUIProgBase.h"
 #include "mdiframes.h"
 
 #include "qlineedit.h"
@@ -66,13 +65,13 @@ ValOnInit CAttachHandler::OnInitDialog()
   CComboBoxItem *comboItem;
 
   ClientMem = myDoc->IDTable.GetDECL(((CHETID*)Client.last)->data);
-  ClientType = myDoc->IDTable.GetDECL(ClientMem->RefID, ClientMem->inINCL);
-  if (ClientType->TypeFlags.Contains(isGUI) || ClientType->DeclType == FormDef)
-    ClientType = myDoc->IDTable.GetDECL(ClientType->RefID, ClientType->inINCL);
+  //ClientType = myDoc->IDTable.GetDECL(ClientMem->RefID, ClientMem->inINCL);
+  //if (ClientType->TypeFlags.Contains(isGUI) || ClientType->DeclType == FormDef)
+  //  ClientType = myDoc->IDTable.GetDECL(ClientType->RefID, ClientType->inINCL);
   for (che = (CHE*)GUIService->NestedDecls.first; che; che = (CHE*)che->successor) {
     if ((((LavaDECL*)che->data)->DeclType == Function)
       && ((LavaDECL*)che->data)->SecondTFlags.Contains(isHandler)
-      && (myDoc->CheckHandlerIO((LavaDECL*)che->data, ClientType) >= 0)) {
+      && (myDoc->CheckHandlerIO((LavaDECL*)che->data, ClientMem) >= 0)) {
       comboItem = new CComboBoxItem(TID(((LavaDECL*)che->data)->OwnID, 0));
       addItemAlpha(HandlerList, QString(((LavaDECL*)che->data)->LocalName.c), QVariant::fromValue(comboItem));//sort
     }
@@ -97,12 +96,16 @@ void CAttachHandler::on_HandlerList_activated(int)
     var = HandlerList->itemData(pos);
     funcID = var.value<CComboBoxItem*>()->itemData();
     SelectedFunc = myDoc->IDTable.GetDECL(funcID);
-    if (SelectedFunc->GUISignaltype == 1)
+    if (SelectedFunc->GUISignaltype == Ev_ValueChanged)
       EventType->setText("New value");
-    else if( SelectedFunc->GUISignaltype == 2)
-      EventType->setText("Insert");
-    else if( SelectedFunc->GUISignaltype == 3)
-      EventType->setText("Delete");
+    else if( SelectedFunc->GUISignaltype == Ev_ChainInsert)
+      EventType->setText("Insert chain element");
+    else if( SelectedFunc->GUISignaltype == Ev_ChainDelete)
+      EventType->setText("Delete chain element");
+    else if( SelectedFunc->GUISignaltype == Ev_OptInsert)
+      EventType->setText("Insert optional");
+    else if( SelectedFunc->GUISignaltype == Ev_OptDelete)
+      EventType->setText("Delete optional");
     ID_OK->setEnabled(true);
   }
   else {
@@ -1581,11 +1584,16 @@ ValOnInit CFuncBox::OnInitDialog()
     FieldTypeDECL = myDoc->IDTable.GetDECL(decl->RefID, decl->inINCL);
     if (FieldTypeDECL->SecondTFlags.Contains(isGUI) || FieldTypeDECL->DeclType == FormDef)
       FieldTypeDECL = myDoc->IDTable.GetDECL(FieldTypeDECL->RefID, FieldTypeDECL->inINCL);
-    if (FieldTypeDECL->SecondTFlags.Contains(isSet)
-		|| (myDECL->GUISignaltype == 1)) {
-      EventType->addItem(QString("Insert"));
-      EventType->addItem(QString("Delete"));
-    }
+		if (myDECL->GUISignaltype >= Ev_OptInsert) {
+			EventType->addItem(QString("Insert optional"));
+			EventType->addItem(QString("Delete optional"));
+		}
+		else if (FieldTypeDECL->SecondTFlags.Contains(isSet)) {
+			EventType->addItem(QString("Insert chain element"));
+			EventType->addItem(QString("Delete chain element"));
+			if (myDECL->GUISignaltype == 0)
+				myDECL->GUISignaltype = Ev_ChainInsert;
+		}
     else {
       EventType->addItem(QString("New value"));
     }
@@ -1851,8 +1859,10 @@ ValOnInit CFuncBox::OnInitDialog()
       Closed->setChecked(false);
     if (myDECL->SecondTFlags.Contains(isHandler)) {
       CHECKHandler->setEnabled(true);
-      if ((myDECL->GUISignaltype == EventDelete) || (myDECL->GUISignaltype == EventInsert))
+      if ((myDECL->GUISignaltype == Ev_ChainDelete) || (myDECL->GUISignaltype == Ev_ChainInsert))
         EventType->setCurrentIndex(myDECL->GUISignaltype-1);
+      if ((myDECL->GUISignaltype == Ev_OptDelete) || (myDECL->GUISignaltype == Ev_OptInsert))
+        EventType->setCurrentIndex(myDECL->GUISignaltype-3);
       else
         EventType->setCurrentIndex(myDECL->GUISignaltype);
       EventType->setEnabled(false);
@@ -2203,7 +2213,7 @@ void CFuncBox::reject()
 void CFuncBox::makeHandler()
 {
   LavaDECL *IOEl, *IOEl2; 
-  if (myDECL->GUISignaltype == EventDelete) {
+  if (myDECL->GUISignaltype == Ev_ChainDelete) {
     IOEl = NewLavaDECL();
     IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->LocalName = STRING("chain");
@@ -2232,7 +2242,7 @@ void CFuncBox::makeHandler()
     IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Bool], 1);
     myDECL->NestedDecls.Append(NewCHE(IOEl));
   }
-  else if (myDECL->GUISignaltype == EventInsert) {
+  else if (myDECL->GUISignaltype == Ev_ChainInsert) {
     IOEl = NewLavaDECL();
     IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->LocalName = STRING("chain");
@@ -2287,7 +2297,68 @@ void CFuncBox::makeHandler()
     IOEl2->RefID = IOEl->RefID;
     myDECL->NestedDecls.Append(NewCHE(IOEl2));
   }
-  else if (myDECL->GUISignaltype == ValueChanged) {
+	else if (myDECL->GUISignaltype == Ev_OptInsert) {
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->DeclType = IAttr;
+    IOEl->LocalName = STRING("defaultOpt");
+    if (FieldTypeDECL->fromBType == NonBasic)
+      IOEl->DeclDescType = NamedType;
+    else
+      IOEl->DeclDescType = BasicType;
+    IOEl->BType = FieldTypeDECL->fromBType;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->LocalName = STRING("insert");
+    IOEl->DeclType = OAttr;
+    IOEl->DeclDescType = BasicType;
+    IOEl->BType = B_Bool;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Bool], 1);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->TypeFlags.INCL(isOptional);
+    IOEl->DeclType = OAttr;
+    IOEl->LocalName = STRING("insertOpt");
+    if (FieldTypeDECL->fromBType == NonBasic)
+      IOEl->DeclDescType = NamedType;
+    else
+      IOEl->DeclDescType = BasicType;
+    IOEl->BType = FieldTypeDECL->fromBType;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+  }
+	else if (myDECL->GUISignaltype == Ev_OptDelete) {
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->DeclType = IAttr;
+    IOEl->LocalName = STRING("delOpt");
+    if (FieldTypeDECL->fromBType == NonBasic)
+      IOEl->DeclDescType = NamedType;
+    else
+      IOEl->DeclDescType = BasicType;
+    IOEl->BType = FieldTypeDECL->fromBType;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(FieldTypeDECL->OwnID, FieldTypeDECL->inINCL);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+    IOEl = NewLavaDECL();
+    IOEl->TypeFlags.INCL(trueObjCat);
+    IOEl->LocalName = STRING("delete");
+    IOEl->DeclType = OAttr;
+    IOEl->DeclDescType = BasicType;
+    IOEl->BType = B_Bool;
+    IOEl->inINCL = 0;
+    IOEl->RefID = TID(myDoc->IDTable.BasicTypesID[B_Bool], 1);
+    myDECL->NestedDecls.Append(NewCHE(IOEl));
+    IOEl = NewLavaDECL();
+  }
+  else if (myDECL->GUISignaltype == Ev_ValueChanged) {
     IOEl = NewLavaDECL();
     IOEl->TypeFlags.INCL(trueObjCat);
     IOEl->DeclType = IAttr;
@@ -2330,7 +2401,6 @@ void CFuncBox::makeHandler()
 
 void CFuncBox::on_ID_OK_clicked() 
 {
-
   if (myDECL->SecondTFlags.Contains(funcImpl))
     if ( myDoc->IDTable.GetDECL(((CHETID*)myDECL->Supports.first)->data)) {
       QDialog::reject();
@@ -2364,9 +2434,12 @@ void CFuncBox::on_ID_OK_clicked()
       myDoc->MakeOperator(myDECL);
   }
   if (myDECL->SecondTFlags.Contains(isHandler)) {
-    myDECL->GUISignaltype = EventType->currentIndex();
-    if (FieldTypeDECL->SecondTFlags.Contains(isSet)) 
-      myDECL->GUISignaltype += 1;
+	  if (myDECL->GUISignaltype >= Ev_OptInsert)
+      myDECL->GUISignaltype = EventType->currentIndex()+3;
+    else if (myDECL->GUISignaltype >= Ev_ChainInsert) 
+      myDECL->GUISignaltype = EventType->currentIndex()+1;
+    else
+      myDECL->GUISignaltype = EventType->currentIndex();
     if (myDECL->GUISignaltype < 1) {
       QMessageBox::critical(this, qApp->applicationName(), IDP_NoTypeSel, QMessageBox::Ok,0,0);
       EventType->setFocus();

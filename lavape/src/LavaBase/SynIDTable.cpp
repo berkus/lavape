@@ -58,12 +58,13 @@ TSimpleTable::~TSimpleTable()
 void TSimpleTable::AddID(LavaDECL ** pdecl)
 {
   if ((*pdecl)->OwnID >= maxID) {
+    int oldMaxID = maxID;
     for (; (*pdecl)->OwnID >= maxID; maxID += 1000);
     TIDEntry **idTab = new  TIDEntry* [maxID];
     int i1;
-    for (i1=0; i1<freeID; i1++)
+    for (i1=0; i1<oldMaxID; i1++)
       idTab[i1] = SimpleIDTab[i1];
-    for (i1 = freeID; i1< maxID; i1++)
+    for (i1 = oldMaxID; i1< maxID; i1++)
       idTab[i1] = new TIDEntry;
     delete [] SimpleIDTab;
     SimpleIDTab = idTab;

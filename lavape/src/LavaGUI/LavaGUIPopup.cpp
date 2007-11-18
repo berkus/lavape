@@ -114,6 +114,7 @@ CLavaGUIPopupD::CLavaGUIPopupD(QWidget* parent, CGUIProgBase *guiPr, CHEFormNode
 void CLavaGUIPopupD::on_cancelButton_clicked()
 {
   myFormNode->data.FormSyntax->WorkFlags.EXCL(poppedUp);
+  hide();
   QDialog::accept();
 
 }
