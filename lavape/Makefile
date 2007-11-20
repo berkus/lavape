@@ -76,8 +76,8 @@ ITPF = src/Interpreter/Constructs.ph \
 
 links: $(ITPF) \
 	bin/Components/LCompoImpl.lcom.lnk \
-	bin/Components/LavaStream.lava
-#	bin/assistant
+	bin/Components/LavaStream.lava \
+	bin/assistant
 #	lib/libQtCore.so.4 \
 #	lib/libQtGui.so.4 \
 #	lib/libQtNetwork.so.4 \
@@ -108,8 +108,12 @@ bin/Components/LCompoImpl.lcom.lnk: samples/LCompoImpl.lcom
 bin/Components/LavaStream.lava: samples/LavaStream.lava
 	rm -f $@; $(LN) $< $@
 bin/assistant:
+ifeq ($(OPSYS),Darwin)
 	rm -f $@; \
-	$(LN) $(QBIN)/assistant$(SUFF) $@ 
+	$(LN) $(QBIN)/assistant.app/Contents/MacOS/assistant $@
+else
+	$(LN) $(QBIN)/assistant$(SUFF) $@
+endif
 
 lib/libQtCore.so.4: $(QLIB)/libQtCore.so.4
 	rm -f $@; $(LN) $< $@
