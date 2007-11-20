@@ -2,7 +2,8 @@ SHELL=/usr/bin/env sh
 #SHELL=/bin/sh
 
 #to build a debug version set DBG=-ggdb
-DBG=-gstabs+
+#DBG=-gstabs+
+DBG = -g
 
 export
 
@@ -82,8 +83,15 @@ CC = g++
 ifeq ($(OPSYS),Darwin)
   DLLPREFIX = lib
   DLLSUFFIX = .dylib
-  OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL
-  OSCPPFLAGS = -D__$(OPSYS) -ffriend-injection
+  DLLNAME = lib$(addsuffix .dylib,$(basename $(EXEC)))
+#  OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL -L$(QTDIR)/lib
+  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names -F$(QTDIR)/lib -L../../lib
+  OSEXECFLAGS = -fstack-check -header-pad_max_install_names -F$(QTDIR)/lib -L../../lib
+  OSCPPFLAGS = -D__$(OPSYS)
+  ifneq ($(DBG),)
+    QtS = ,debug
+  endif
+  EXEC2 = $(EXEC)
   CC = c++
 else
   ifeq ($(OPSYS),MINGW32)
@@ -91,7 +99,7 @@ else
     DLLNAME = $(addsuffix .dll,$(basename $(EXEC)))
     IMPLIB = -mthreads -Wl,--out-implib,../../lib/lib$(addsuffix .a,$(basename $(EXEC)))
 #    IMPLIB = -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,--out-implib,../../bin/lib$(addsuffix .a,$(basename $(EXEC)))
-	OSCPPFLAGS = -D__$(OPSYS) -frtti -fexceptions
+	  OSCPPFLAGS = -D__$(OPSYS) -frtti -fexceptions
     OSDLLFLAGS = -shared
     OSEXECFLAGS = -fstack-check
     EXEC2 = $(EXEC).exe
@@ -136,9 +144,15 @@ this: ../../bin/$(DLLNAME)
 ../../bin/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
 	$(CC) -o ../../bin/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(ACL) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
   else
+  ifeq ($(OPSYS),Darwin)
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) -Wl,-install_name,@executable_path/../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -framework QtAssistant$(QtS) -framework QtCore$(QtS) -framework QtGui$(QtS) -framework QtNetwork$(QtS) $(OSLIBFLAGS)
+  else
+this: ../../lib/$(DLLNAME)
+../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -lQtAssistantClient(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
+  endif
   endif
 else
   ifeq ($(OPSYS),MINGW32)
@@ -147,9 +161,15 @@ this: ../../bin/$(EXEC2)
 	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mwindows  $(all_o_files) $(addprefix -l,$(SUBPRO)) -lmingw32 -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
 #$(CC) $(DBG) -o ../../bin/$(EXEC2) $(OSEXECFLAGS) -mthreads -mwindows -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-subsystem,windows $(all_o_files) -L../../lib $(addprefix -l,$(SUBPRO)) -L$(QLIB) $(addprefix -l,$(SUBPRO)) -lmingw32 -lqtmain -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
   else
+  ifeq ($(OPSYS),Darwin)
+this: ../../bin/$(EXEC2)
+../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
+	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) $(addprefix -l,$(SUBPRO)) -framework QtAssistant$(QtS) -framework QtCore$(QtS) -framework QtGui$(QtS) -framework QtNetwork$(QtS) $(OSLIBFLAGS)
+  else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
 	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) $(OSLIBFLAGS)
+  endif
   endif
 endif
 

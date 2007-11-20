@@ -120,6 +120,9 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 {
   bool b1=false;
   QString lfo;
+  
+  LBaseData.stdUpdate = 0;
+  //stop here and set stdUpdate = 1 to allow updates in std.lava
 
   SetVendorName("Fraunhofer-SIT");
   SetAppName("LavaPE");
@@ -130,8 +133,6 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
 #else
   QApplication::setFont(QFont("Adobe Helvetica", 12));
 #endif
-  LBaseData.stdUpdate = 0;
-  //stop here and set stdUpdate = 1 to allow updates in std.lava
 
   Browser.LastBrowseContext = 0;
   LBaseData.Init(&Browser, &ExecUpdate);
@@ -700,7 +701,7 @@ void CLavaPEApp::OpenDocumentFile(const QString& lpszFileName)
 
 void CLavaPEApp::HtmlHelp()
 {
-  QString path("assistant");
+  QString path("");
   QStringList args;
 
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
@@ -714,7 +715,7 @@ void CLavaPEApp::HtmlHelp()
 
 void CLavaPEApp::EditingLavaProgs()
 {
-  QString path("assistant");
+  QString path("/usr/local/Trolltech/Qt-4.3.2/bin/assistant.app/Contents/MacOS/assistant");
   QStringList args;
   args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 

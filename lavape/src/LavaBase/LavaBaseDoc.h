@@ -22,10 +22,10 @@
 
 #define ALLOCOBJLIST
 
-#ifdef __Darwin
-#define FPE_INTOVF FPE_FLTOVF
-#define FPE_INTDIV FPE_FLTDIV
-#endif
+//#ifdef __Darwin
+//#define FPE_INTOVF FPE_FLTOVF
+//#define FPE_INTDIV FPE_FLTDIV
+//#endif
 
 struct CheckData;
 
