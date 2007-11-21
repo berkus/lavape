@@ -2270,7 +2270,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 #elif WIN32
   unsigned frameSizeBytes;
 
-  CoInitialize(0);
+  //CoInitialize(0);
 #endif
   ((CLavaDebugger*)LBaseData->debugger)->m_execThread = this;
   ckd.document = (CLavaProgram*)doc;
