@@ -10,6 +10,7 @@
 class LAVAEXECS_DLL CLavaExecThread : public CLavaThread {
 public:
   CLavaExecThread(CLavaBaseDoc *d) : CLavaThread(d){};
+
   ~CLavaExecThread() {
     if (isRunning()) {
       abort = true;
@@ -20,6 +21,26 @@ public:
   }
 
   unsigned ExecuteLava(CLavaBaseDoc *doc);
+  void run();
+};
+
+class LAVAEXECS_DLL CHandlerThread : public CLavaThread {
+public:
+  LavaDECL *handlerExec;
+
+  CHandlerThread(CLavaBaseDoc *d, LavaDECL *hdlExec) : CLavaThread(d){
+    handlerExec = hdlExec;
+  };
+
+  ~CHandlerThread() {
+    if (isRunning()) {
+      abort = true;
+      resume();
+      terminate();
+      wait();
+    }
+  }
+
   void run();
 };
 

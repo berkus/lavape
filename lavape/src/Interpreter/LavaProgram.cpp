@@ -2254,7 +2254,7 @@ void sigEnable() {
 
 void CLavaExecThread::run() {
   myDoc->ThreadList->append(this);
-	ExecuteLava(myDoc);
+  ExecuteLava(myDoc);
 }
 
 unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
@@ -2417,6 +2417,12 @@ stop:     ckd.document->throwError = false;
     LavaEnd(ckd.document, true);  //07.05.2002
     return 0;
   }
+}
+
+
+void CHandlerThread::run() {
+  myDoc->ThreadList->append(this);
+  //ExecuteLava(myDoc);
 }
 
 CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
