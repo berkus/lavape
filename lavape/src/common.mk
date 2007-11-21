@@ -151,7 +151,7 @@ this: ../../lib/$(DLLNAME)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -lQtAssistantClient(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -lQtAssistantClient$(QtS) -lQtCore$(QtS) -lQtGui$(QtS) -lQtNetwork$(QtS) -mt $(OSLIBFLAGS)
   endif
   endif
 else
