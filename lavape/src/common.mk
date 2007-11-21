@@ -85,12 +85,12 @@ ifeq ($(OPSYS),Darwin)
   DLLSUFFIX = .dylib
   DLLNAME = lib$(addsuffix .dylib,$(basename $(EXEC)))
 #  OSDLLFLAGS = -undefined suppress -flat_namespace -dynamiclib -single_module -framework Carbon -framework QuickTime -lz -framework OpenGL -framework AGL -L$(QTDIR)/lib
-  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names -F$(QTDIR)/lib -L../../lib
-  OSEXECFLAGS = -fstack-check -header-pad_max_install_names -F$(QTDIR)/lib -L../../lib
+  OSDLLFLAGS = -dynamiclib -header-pad_max_install_names -L../../lib
+  OSEXECFLAGS = -fstack-check -header-pad_max_install_names -L../../lib
   OSCPPFLAGS = -D__$(OPSYS)
-  ifneq ($(DBG),)
-    QtS = ,debug
-  endif
+#  ifneq ($(DBG),)
+#    QtS = debug
+#  endif
   EXEC2 = $(EXEC)
   CC = c++
 else
@@ -147,7 +147,7 @@ this: ../../bin/$(DLLNAME)
   ifeq ($(OPSYS),Darwin)
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../lib/$(DLLNAME) -Wl,-install_name,@executable_path/../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -framework QtAssistant$(QtS) -framework QtCore$(QtS) -framework QtGui$(QtS) -framework QtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../lib/$(DLLNAME) -Wl,-install_name,@executable_path/../lib/$(DLLNAME) $(IMPLIB) $(OSDLLFLAGS) $(all_o_files) $(addprefix -l,$(SUBPRO)) -F$(QTDIR)/lib -framework QtAssistant -framework QtCore -framework QtGui -framework QtNetwork $(OSLIBFLAGS)
   else
 this: ../../lib/$(DLLNAME)
 ../../lib/$(DLLNAME): $(LINKS) $(gen_files) $(PCH_TARGET) $(all_o_files)
@@ -164,7 +164,7 @@ this: ../../bin/$(EXEC2)
   ifeq ($(OPSYS),Darwin)
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
-	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) $(addprefix -l,$(SUBPRO)) -framework QtAssistant$(QtS) -framework QtCore$(QtS) -framework QtGui$(QtS) -framework QtNetwork$(QtS) $(OSLIBFLAGS)
+	$(CC) $(DBG) -o ../../bin/$(EXEC2) $(all_o_files) $(OSEXECFLAGS) $(addprefix -l,$(SUBPRO)) -F$(QTDIR)/lib -framework QtAssistant -framework QtCore -framework QtGui -framework QtNetwork $(OSLIBFLAGS)
   else
 this: ../../bin/$(EXEC2)
 ../../bin/$(EXEC2): $(gen_files) $(PCH_TARGET) $(all_o_files)
