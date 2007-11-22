@@ -8,6 +8,7 @@
 #define IDR_GUIBAR                      138
 #define ID_INSERTOPT                    32780
 #define ID_DELETEOPT                    32781
+#define ID_EDITVALUE                    32782
 #define ID_TOGGLESTATE                  32796
 #define ID_CHOOSEFONT                   32870
 

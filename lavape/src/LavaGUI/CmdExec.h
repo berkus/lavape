@@ -60,12 +60,20 @@ public:
   virtual bool GUIEvent(QEvent* ev);
 
 private: 
+  LavaDECL *formSyn;
+  CHEFormNode *chainNode;
   CHEFormNode* insertedNode;
   CHEFormNode* delNode;
+  LavaObjectPtr handle;
   CHEFormNode* beforeNode;
   CHEFormNode* parNode;
   CHEFormNode* elliNode;
   CHEFormNode* optNode;
+  CHEFormNode* editNode;
+  LavaVariablePtr editPtr;
+  LavaObjectPtr StackFrame[SFH+7]; 
+  LavaVariablePtr HandlerStack;
+  int LastEvent;
 
 //private:
 //  Q_OBJECT

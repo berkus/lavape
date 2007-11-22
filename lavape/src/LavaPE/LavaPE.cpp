@@ -346,7 +346,7 @@ bool CLavaPEApp::event(QEvent *e)
   case UEV_LavaPE_CloseDoc:
     ((CLavaPEDoc*)((CustomEvent*)e)->data())->OnCloseDocument();
     return true;
-  case UEV_LavaGUIInsDel:
+  case UEV_LavaGUIEvent:
     actView = wxDocManager::GetDocumentManager()->GetActiveView();
     if ( actView->inherits("CLavaGUIView") ) 
       ((CLavaGUIView*)actView)->myGUIProg->CmdExec.GUIEvent( e);

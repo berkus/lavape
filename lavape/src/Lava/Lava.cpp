@@ -365,7 +365,7 @@ bool CLavaApp::event(QEvent *e)
   case UEV_PMDumpOff:
     ((CMainFrame*)m_appWindow)->pmDumpAction->setChecked(false);
     break;
-  case UEV_LavaGUIInsDel: 
+  case UEV_LavaGUIEvent: 
     if ( LBaseData.docModal 
       && ((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog ) 
       ((LavaGUIDialog*)((CLavaBaseDoc*)LBaseData.docModal)->ActLavaDialog)->myGUIProg->CmdExec.GUIEvent( e);

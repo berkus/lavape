@@ -137,8 +137,9 @@ void CTEdit::focusOutEvent(QFocusEvent *ev)
     if (LBaseData->inRuntime) {
       if (myFormNode->data.myHandler.first 
         && ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(text())))) {
-        myFormNode->data.IoSigFlags.INCL(trueValue);
-        setText(myFormNode->data.StringValue.c);
+        //myFormNode->data.IoSigFlags.INCL(trueValue);
+        //setText(myFormNode->data.StringValue.c);
+          return;
       }
       else {
         myFormNode->data.StringValue = STRING(qPrintable(text()));
@@ -273,10 +274,11 @@ void CMultiLineEdit::focusOutEvent(QFocusEvent *ev)
 {
   if (document()->isModified()) {
     if (LBaseData->inRuntime) {
-      if (myFormNode->data.myHandler.first) {
-        ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(document()->toPlainText())));
-        myFormNode->data.IoSigFlags.INCL(trueValue);
-        setPlainText(myFormNode->data.StringValue.c);
+      if (myFormNode->data.myHandler.first
+        && ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(document()->toPlainText())))) {
+          return;
+        //myFormNode->data.IoSigFlags.INCL(trueValue);
+        //setPlainText(myFormNode->data.StringValue.c);
       }
       else {
         myFormNode->data.StringValue = STRING(qPrintable(document()->toPlainText()));

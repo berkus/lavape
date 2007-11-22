@@ -46,19 +46,24 @@ CHEFormNode* CmdExecCLASS::GetOptNode(CHEFormNode* fNode)
 
 void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
 {
-  LavaDECL *formSyn;
+  //LavaDECL *formSyn;
 
   optNode = fNode->data.FIP.up;
   formSyn = optNode->data.FormSyntax;
+  LastEvent = ID_INSERTOPT;
   if (LBaseData->inRuntime) {
     if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(formSyn, (LavaVariablePtr)optNode->data.ResultVarPtr))
       return;
-    if (optNode->data.myHandler.first)
+    if (optNode->data.myHandler.first) {
       if (OptHandlerCall(optNode, Ev_OptInsert))
         ((CGUIProg*)GUIProg)->OnModified();
       else
-        return;
+        QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+    }
   }
+  else
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+  /*
   GUIProg->focNode = 0;
   optNode->data.SubTree.Destroy();
   ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
@@ -69,23 +74,29 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
     return;
   }
   optNode->data.IterFlags.INCL(Optional);
-  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)ID_INSERTOPT));
+  LastEvent = ID_INSERTOPT;
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));*/
 
 }
 
 void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
 { 
-  LavaDECL* formSyn;
+  //LavaDECL* formSyn;
 
-  parNode = fNode->data.FIP.up;
+  optNode = fNode;
+  parNode = optNode->data.FIP.up;
+  LastEvent = ID_DELETEOPT;
   if (LBaseData->inRuntime) {
     if (parNode->data.myHandler.first) {
       if (OptHandlerCall(parNode, Ev_OptDelete))
         ((CGUIProg*)GUIProg)->OnModified();
       else
-        return;
+        QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
     }
   }
+  else
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+  /*
   delNode = (CHEFormNode*)parNode->data.SubTree.Uncouple(fNode); 
   elliNode = 0;
   formSyn = parNode->data.FormSyntax;
@@ -95,7 +106,8 @@ void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
     elliNode->data.BasicFlags.INCL(Groupbox);
   elliNode->data.FIP.up = parNode;
   parNode->data.IterFlags.EXCL(Optional);
-  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)ID_DELETEOPT));
+  LastEvent = ID_DELETEOPT;
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));*/
 }
 
 CHEFormNode* CmdExecCLASS::GetIterNode(CHEFormNode* fNode)
@@ -114,10 +126,9 @@ CHEFormNode* CmdExecCLASS::GetIterNode(CHEFormNode* fNode)
 
 void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
 {
-  CHEFormNode *chainNode;// *beforeNode,  *parNode, *insertedNode; *popupNode;
-  LavaObjectPtr newStackFrame[SFH+7], handle = 0;
-  LavaDECL *iterSyn, *formSyn;
-  bool insertIt;
+  //CHEFormNode *chainNode;
+  //LavaObjectPtr HandlerStack[SFH+7], handle = 0;
+  LavaDECL *iterSyn;//, *formSyn;
 
   parNode = fNode->data.FIP.up;
   if (fNode->data.IterFlags.Contains(Ellipsis))
@@ -140,17 +151,17 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
       insertedNode->data.ResultVarPtr = (CSecTabBase ***)((CGUIProg*)GUIProg)->LavaForm.NewLavaVarPtr(0);
       if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(formSyn, (LavaVariablePtr)insertedNode->data.ResultVarPtr))
         return;
-      newStackFrame[0] = 0;
-      newStackFrame[1] = 0;
-      newStackFrame[2] = 0; //chain object
-      newStackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr; //chain object
+      StackFrame[0] = 0;
+      StackFrame[1] = 0;
+      StackFrame[2] = 0; //chain object
+      StackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr; //chain object
       if (beforeNode->data.ResultVarPtr)
-        newStackFrame[SFH+1] = (LavaObjectPtr)beforeNode->data.HandleObjPtr; //before handle
+        StackFrame[SFH+1] = (LavaObjectPtr)beforeNode->data.HandleObjPtr; //before handle
       else
-        newStackFrame[SFH+1] =  0;
-      newStackFrame[SFH+2] = *(LavaVariablePtr)insertedNode->data.ResultVarPtr; //new data
-      newStackFrame[SFH+3] = 0;
-      newStackFrame[SFH+4] = 0;
+        StackFrame[SFH+1] =  0;
+      StackFrame[SFH+2] = *(LavaVariablePtr)insertedNode->data.ResultVarPtr; //new data
+      StackFrame[SFH+3] = 0;
+      StackFrame[SFH+4] = 0;
       if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
         return;
     }
@@ -169,53 +180,23 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
       formSyn = iterSyn;
     }
   }
+  LastEvent = IDM_ITER_INSERT;
   if (LBaseData->inRuntime) {
-    if (chainNode->data.myHandler.first)
-      if (ChainHandlerCall(chainNode, newStackFrame, Ev_ChainInsert)) {
-        *insertedNode->data.ResultVarPtr = (CSecTabBase**)newStackFrame[SFH+2];
-        newStackFrame[SFH+2] = newStackFrame[SFH+2] + newStackFrame[SFH+2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
-        insertIt = true;
-      }
-      else
-        insertIt = false;
-    else {
-      newStackFrame[SFH+2] = newStackFrame[SFH+2] + newStackFrame[SFH+2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
-      insertIt = true;
+    if (chainNode->data.myHandler.first) {
+      if (!ChainHandlerCall(chainNode, StackFrame, Ev_ChainInsert))
+        QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
     }
+    else
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
   }
-  ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
-  ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, insertedNode, false); 
-  if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
-    delete insertedNode;
-    if (!LBaseData->inRuntime) 
-      QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty chain element",  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
-    return;
-  }
-
-  if (LBaseData->inRuntime && insertIt) {
-    ((CGUIProg*)GUIProg)->ex = HSetInsertBefore(((CGUIProg*)GUIProg)->ckd, newStackFrame);
-      ((SynFlags*)(newStackFrame[SFH+2]+1))->INCL(insertedItem);
-      if (((CGUIProg*)GUIProg)->ex)
-        return;
-      handle = newStackFrame[SFH+3];
-      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)insertedNode->data.ResultVarPtr); //decr from AllocateObject after putting into chain
-      ((CGUIProg*)GUIProg)->OnModified();
-    insertedNode->data.HandleObjPtr = (CSecTabBase**)handle;
-  }//inRunTime
   else
-    insertIt = true;
-
-  if (insertIt) 
-    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_INSERT));
-  else
-    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+2]);
-
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
 }
 
 void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
 {
-  CHEFormNode *chainNode;
-  LavaObjectPtr newStackFrame[SFH+3];
+  //CHEFormNode *chainNode;
+  //LavaObjectPtr StackFrame[SFH+3];
 
   if (fNode->data.IterFlags.Contains(Ellipsis))
     delNode = (CHEFormNode*)fNode->predecessor;
@@ -225,24 +206,45 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
     else
       delNode = fNode;
   if (delNode) {
+    LastEvent = IDM_ITER_DEL;
     if (LBaseData->inRuntime) {
       //to do: remove chain elem from object
       chainNode = delNode->data.FIP.up;
       while (chainNode && !chainNode->data.ResultVarPtr)
         chainNode = chainNode->data.FIP.up;
       if (chainNode) {
-        newStackFrame[0] = 0;
-        newStackFrame[1] = 0;
-        newStackFrame[2] = 0;
-        newStackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
-        newStackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
-        newStackFrame[SFH+2] = 0;
+        StackFrame[0] = 0;
+        StackFrame[1] = 0;
+        StackFrame[2] = 0;
+        StackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
+        StackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
+        StackFrame[SFH+2] = 0;
+        if (chainNode->data.myHandler.first) {
+          if (!ChainHandlerCall(chainNode, StackFrame, Ev_ChainDelete ))
+            QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+        }
+        else
+          QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+      }
+      else {
+        GUIProg->myDoc->LavaError(((CGUIProg*)GUIProg)->ckd, true, delNode->data.FormSyntax, &ERR_ErrInForm,0);
+        return;
+      }
+    }//inRuntime
+    else 
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+  }
+}
+
+
+
+/*
         if (!chainNode->data.myHandler.first
-            || ChainHandlerCall(chainNode, newStackFrame, Ev_ChainDelete )) {
+            || ChainHandlerCall(chainNode, StackFrame, Ev_ChainDelete )) {
           if (GUIProg->fromFillIn) {
-            newStackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
-            newStackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
-            if (!SetRemove(((CGUIProg*)GUIProg)->ckd, newStackFrame))
+            StackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
+            StackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
+            if (!SetRemove(((CGUIProg*)GUIProg)->ckd, StackFrame))
               return;
           }
           else
@@ -258,20 +260,70 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
         return;
       }
     }//inRuntime
-    else
-      delNode = (CHEFormNode*)delNode->data.FIP.up->data.SubTree.Uncouple(delNode);
+    else {
+        delNode = (CHEFormNode*)delNode->data.FIP.up->data.SubTree.Uncouple(delNode);
+        QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+    }
   }
+  LastEvent = IDM_ITER_DEL;
   if (delNode) 
-    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIInsDel,(void*)IDM_ITER_DEL));
-} // END OF DeleteIterItem
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+}*/ // END OF DeleteIterItem
 
 
 bool CmdExecCLASS::GUIEvent(QEvent* ev)
 {
   CHEFormNode *popupNode;
+  bool doIt;
 
-  if (ev->type() == UEV_LavaGUIInsDel) {
-    if ((int)((CustomEvent*)ev)->data() == IDM_ITER_INSERT) {
+  if (ev->type() == UEV_LavaGUIEvent) {
+
+    if (LastEvent == IDM_ITER_INSERT) {
+
+      if (LBaseData->inRuntime) {
+        if (HandlerStack) {
+          doIt = *(bool*)(HandlerStack[SFH+4]+LSH);
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+4]);
+          if (!doIt) {
+            if (HandlerStack[SFH+5])
+              DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+5]);
+            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
+            *insertedNode->data.ResultVarPtr = 0;
+            delete insertedNode;
+            insertedNode = 0;
+ 	          delete [] HandlerStack;
+            HandlerStack = 0;
+            return true;
+          }
+          if (HandlerStack[SFH+5]) {
+            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
+            StackFrame[SFH+2] = HandlerStack[SFH+5];
+            *insertedNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+2];
+          }
+          delete [] HandlerStack;
+          HandlerStack = 0;
+        }
+        StackFrame[SFH+2] = StackFrame[SFH+2] + StackFrame[SFH+2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
+      }
+      ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
+      ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, insertedNode, false); 
+      if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
+        delete insertedNode;
+        insertedNode = 0;
+        if (!LBaseData->inRuntime) 
+          QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty chain element",  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        return true;
+      }
+      if (LBaseData->inRuntime) {
+        ((CGUIProg*)GUIProg)->ex = HSetInsertBefore(((CGUIProg*)GUIProg)->ckd, StackFrame);
+        ((SynFlags*)(StackFrame[SFH+2]+1))->INCL(insertedItem);
+        if (((CGUIProg*)GUIProg)->ex)
+          return true;
+        handle = StackFrame[SFH+3];
+        DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)insertedNode->data.ResultVarPtr); //decr from AllocateObject after putting into chain
+        ((CGUIProg*)GUIProg)->OnModified();
+        insertedNode->data.HandleObjPtr = (CSecTabBase**)handle;
+      }//inRunTime
       GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode);
       GUIProg->setFocNode(GUIProg->ActNode);
       parNode->data.SubTree.Insert(beforeNode->predecessor, insertedNode);
@@ -290,7 +342,29 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
         ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);     
       ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(insertedNode,false);
     }
-    else if ((int)((CustomEvent*)ev)->data() == IDM_ITER_DEL) {
+
+    else if (LastEvent == IDM_ITER_DEL) {
+
+      if (LBaseData->inRuntime) {
+        if (HandlerStack) {
+          doIt = *(bool*)(HandlerStack[SFH+3]+LSH);
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+3]);
+          delete [] HandlerStack;
+          HandlerStack = 0;
+          if (!doIt) 
+            return true;
+        }
+        if (GUIProg->fromFillIn) {
+          StackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
+          StackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
+          if (!SetRemove(((CGUIProg*)GUIProg)->ckd, StackFrame))
+            return true;
+        }
+        else
+          ((SynFlags*)((LavaObjectPtr)delNode->data.HandleObjPtr+1))->INCL(deletedItem);
+      }
+      delNode = (CHEFormNode*)delNode->data.FIP.up->data.SubTree.Uncouple(delNode); 
+      ((CGUIProg*)GUIProg)->OnModified();
       GUIProg->setFocNode(0);
       GUIProg->newFocus = 0;
       GUIProg->ActNode = 0;
@@ -311,7 +385,40 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
       delete delNode; 
     }
 
-    else if ((int)((CustomEvent*)ev)->data() == ID_INSERTOPT) {
+    else if (LastEvent == ID_INSERTOPT) {
+
+      if (LBaseData->inRuntime) {
+        if (HandlerStack) {
+          doIt = *(bool*)(HandlerStack[SFH+2]+LSH);
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
+          if (!doIt) {
+            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+1]);
+            *optNode->data.ResultVarPtr = 0;
+            if (HandlerStack[SFH+3])
+              DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+3]);
+ 	          delete [] HandlerStack;
+            HandlerStack = 0;
+            return true;
+          }
+          if (HandlerStack[SFH+3]) {
+            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+1]);
+            *optNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
+          }
+ 	        delete [] HandlerStack;
+          HandlerStack = 0;
+       }
+      }
+      ((CGUIProg*)GUIProg)->OnModified();
+      GUIProg->focNode = 0;
+      optNode->data.SubTree.Destroy();
+      ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
+      ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, optNode, optNode->data.allowOwnHandler); 
+      if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
+        if (!LBaseData->inRuntime) 
+          QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        return true;
+      }
+      optNode->data.IterFlags.INCL(Optional);
       GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode);
       GUIProg->setFocNode(GUIProg->ActNode);
       GUIProg->CurPTR = GUIProg->focNode;
@@ -327,7 +434,26 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
       ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);
     }
 
-    else if ((int)((CustomEvent*)ev)->data() == ID_DELETEOPT) {
+    else if (LastEvent == ID_DELETEOPT) {
+
+      if (LBaseData->inRuntime) {
+        if (HandlerStack) {
+          doIt = *(bool*)(HandlerStack[SFH+2]+LSH);
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
+ 	        delete [] HandlerStack;
+          if (!doIt)
+            return true;
+        }
+      }
+      delNode = (CHEFormNode*)parNode->data.SubTree.Uncouple(optNode); 
+      elliNode = 0;
+      formSyn = parNode->data.FormSyntax;
+      ((CGUIProg*)GUIProg)->LavaForm.CreateEllipsis(elliNode,formSyn, parNode->data.allowOwnHandler);
+      parNode->data.SubTree.Insert(delNode->predecessor, elliNode);
+      if (delNode->data.BasicFlags.Contains(Groupbox))
+        elliNode->data.BasicFlags.INCL(Groupbox);
+      elliNode->data.FIP.up = parNode;
+      parNode->data.IterFlags.EXCL(Optional);
       GUIProg->ActNode = 0;
       GUIProg->setFocNode(0);
       GUIProg->CurPTR = elliNode;
@@ -349,6 +475,33 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
         ((CGUIProg*)GUIProg)->OnModified();
       } 
       delete delNode;
+    }
+    else if (LastEvent == ID_EDITVALUE) {
+
+      if (LBaseData->inRuntime) {
+        if (HandlerStack) {
+          editNode->data.ResultVarPtr = (CSecTabBase***)editPtr;
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, *editPtr);
+          if (HandlerStack[SFH+3]) {
+            *editNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
+            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
+          }
+          else {
+            *editNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+2];
+            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+3]);
+          }
+          ((CGUIProg*)GUIProg)->LavaForm.setDefaultValue(editNode);
+	        delete [] HandlerStack;
+          HandlerStack = 0;
+          
+          editNode->data.IoSigFlags.INCL(trueValue);
+          if (editNode->data.FIP.widget->inherits("QLineEdit"))
+            ((CTEdit*)editNode->data.FIP.widget)->setText(editNode->data.StringValue.c);
+          else
+            ((CMultiLineEdit*)editNode->data.FIP.widget)->setPlainText(editNode->data.StringValue.c);
+          editNode->data.FIP.widget->setFocus();
+        }
+      }
     }
   }
   return true;
@@ -396,67 +549,52 @@ bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
   bool ok;
   CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
-  LavaVariablePtr StackFrame;
   int fsizeBytes, fsize;
   LavaDECL* handlerDECL;
 
   CHEHandlerInfo* cheHandler = GetHandler(optNode, eventType);
   if (!cheHandler)
-    return true;
+    return false;
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
   funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
   fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
   fsize = fDesc->stackFrameSize;
   fsizeBytes = fsize<<2;
-
-#ifndef __GNUC__
-    __asm {
-      sub esp, fsizeBytes
-      mov StackFrame, esp
-    }
-#else
-		StackFrame = new LavaObjectPtr[fsize];
-#endif
   LavaVariablePtr rPtr = (LavaVariablePtr)optNode->data.ResultVarPtr;
-  StackFrame[0] = 0;
-  StackFrame[1] = 0;
-  StackFrame[2] = 0;
-  StackFrame[SFH+1] = 0;
-  StackFrame[SFH+2] = 0;
-  StackFrame[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
-  StackFrame[SFH+1] = *(LavaVariablePtr)optNode->data.ResultVarPtr;
-  StackFrame[SFH+2] = 0;
-  StackFrame[SFH+3] = 0;
+	HandlerStack = new LavaObjectPtr[fsize];
+  for (int ii = 0; ii < fsize; ii++)
+    HandlerStack[ii] = 0;
+  HandlerStack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
+  HandlerStack[SFH+1] = *(LavaVariablePtr)optNode->data.ResultVarPtr;
   if (fDesc->isNative)
-    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, StackFrame);
+    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, HandlerStack);
   else
-    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, StackFrame);
+    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, HandlerStack);
   if (!ok) 
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
-  else {
-    ok = *(bool*)(StackFrame[SFH+2]+LSH);
-    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
+
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
+  return true;
+
+  /* else {
+    ok = *(bool*)(HandlerStack[SFH+2]+LSH);
+    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
     if (eventType == Ev_OptInsert) {
-      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+1]);
-      if (ok && StackFrame[SFH+3]) 
-        *optNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+3];
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+1]);
+      if (ok && HandlerStack[SFH+3]) 
+        *optNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
       else
         ok = false;
     }
   }
-#ifndef __GNUC__
-    __asm {
-      add esp, fsizeBytes
-    }
-#else
-	  delete [] StackFrame;
-#endif
+	  delete [] HandlerStack;
+
     /*
   if (eventType == Ev_OptInsert) {
     DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+1]);
     optNode->data.ResultVarPtr = (CSecTabBase***)&StackFrame[SFH+3];
-  }*/
-  return ok;
+  }
+  return ok;*/
 }
 
 bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr StackFrame, int eventType)
@@ -464,74 +602,57 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
   bool ok;
   CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
-  LavaVariablePtr newStackFrame;
   int fsizeBytes, fsize;
   LavaDECL* handlerDECL;
 
   CHEHandlerInfo* cheHandler = GetHandler(chainNode, eventType);
   if (!cheHandler)
-    return true;
+    return false;
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
-
   funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
   fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
   fsize = fDesc->stackFrameSize;
   fsizeBytes = fsize<<2;
-#ifndef __GNUC__
-  __asm {
-    sub esp, fsizeBytes
-    mov newStackFrame, esp
-  }
-#else
-	newStackFrame = new LavaObjectPtr[fsize];
-#endif
-  newStackFrame[0] = 0;
-  newStackFrame[1] = 0;
-  newStackFrame[2] = 0;
-  newStackFrame[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
-  newStackFrame[SFH+1] = StackFrame[SFH]; //chain
-  newStackFrame[SFH+1] = (LavaObjectPtr)((newStackFrame[SFH+1])-(*(newStackFrame[SFH+1]))->sectionOffset);
-  newStackFrame[SFH+2] = StackFrame[SFH+1]; //handle
+	HandlerStack = new LavaObjectPtr[fsize];
+  for (int ii = 0; ii<fsize; ii++)
+    HandlerStack[ii] = 0;
+  HandlerStack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
+  HandlerStack[SFH+1] = StackFrame[SFH]; //chain
+  HandlerStack[SFH+1] = (LavaObjectPtr)((HandlerStack[SFH+1])-(*(HandlerStack[SFH+1]))->sectionOffset);
+  HandlerStack[SFH+2] = StackFrame[SFH+1]; //handle
   if (eventType == Ev_ChainInsert) {
-    newStackFrame[SFH+3] = StackFrame[SFH+2];//newElem
-    newStackFrame[SFH+4] = 0;
-    newStackFrame[SFH+5] = 0;
+    HandlerStack[SFH+3] = StackFrame[SFH+2];//newElem
   }
-  else
-    newStackFrame[SFH+3] = 0;
   if (fDesc->isNative)
-    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, newStackFrame);
+    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, HandlerStack);
   else
-    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, newStackFrame);
+    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, HandlerStack);
   if (!ok) 
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
-  else {
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
+  /*else {
     if (eventType == Ev_ChainInsert) {
-      ok = *(bool*)(newStackFrame[SFH+4]+LSH);
-      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+4]);
-      if (ok && newStackFrame[SFH+5]) {
+      ok = *(bool*)(HandlerStack[SFH+4]+LSH);
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+4]);
+      if (ok && HandlerStack[SFH+5]) {
         DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
-        StackFrame[SFH+2] = newStackFrame[SFH+5];
+        StackFrame[SFH+2] = HandlerStack[SFH+5];
       }
     }
     else {
-      ok = *(bool*)(newStackFrame[SFH+3]+LSH);
-      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, newStackFrame[SFH+3]);
+      ok = *(bool*)(HandlerStack[SFH+3]+LSH);
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+3]);
     }
   }
-#ifndef __GNUC__
-  __asm {
-    add esp, fsizeBytes
-  }
-#else
-	delete [] newStackFrame;
-#endif
-  return ok;
+
+	delete [] HandlerStack;
+  HandlerStack = 0;
+  */
+  return true;
 }
 
 bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
 {
-  LavaVariablePtr	StackFrame;
   CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
   bool ok;
@@ -540,75 +661,43 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   CHEHandlerInfo* cheHandler = GetHandler(fNode, Ev_ValueChanged);
   if (!cheHandler)
     return false;
+  editNode = fNode;
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
-
+  LastEvent = ID_EDITVALUE;
   funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
   fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
   int fsize = fDesc->stackFrameSize;
   int fsizeBytes = fsize<<2;
+  editPtr = (LavaVariablePtr)editNode->data.ResultVarPtr;
 
-#ifndef __GNUC__
-    __asm {
-      sub esp, fsizeBytes
-      mov StackFrame, esp
-    }
-#else
-		StackFrame = new LavaObjectPtr[fsize];
-#endif
-  STRING oldStr = fNode->data.StringValue;
-  LavaVariablePtr rPtr = (LavaVariablePtr)fNode->data.ResultVarPtr;
-  StackFrame[0] = 0;
-  StackFrame[1] = 0;
-  StackFrame[2] = 0;
-  StackFrame[SFH+1] = 0;
-  StackFrame[SFH+2] = 0;
-  StackFrame[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
-  /*
-  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(fNode->data.FormSyntax, &StackFrame[SFH+1])) {
-#ifndef __GNUC__
-    __asm {
-      add esp, fsizeBytes
-    }
-#else
-	  delete [] StackFrame;
-#endif
+	HandlerStack = new LavaObjectPtr[fsize];
+  for (int ii = 0; ii < fsize; ii++)
+    HandlerStack[ii] = 0;
+  HandlerStack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
+  HandlerStack[SFH+1] = *(LavaVariablePtr)editNode->data.ResultVarPtr; //old value
+  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(editNode->data.FormSyntax, &HandlerStack[SFH+2])) {
+	  delete [] HandlerStack;
+    HandlerStack = 0;
     return false;
   }
-  fNode->data.ResultVarPtr = (CSecTabBase***)&StackFrame[SFH+1];
-  ConvertAndStore(fNode);
-  */
-  StackFrame[SFH+1] = *(LavaVariablePtr)fNode->data.ResultVarPtr;
-  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(fNode->data.FormSyntax, &StackFrame[SFH+2])) {
-#ifndef __GNUC__
-    __asm {
-      add esp, fsizeBytes
-    }
-#else
-	  delete [] StackFrame;
-#endif
-    return false;
-  }
-  fNode->data.ResultVarPtr = (CSecTabBase***)&StackFrame[SFH+2];
-  fNode->data.StringValue = newStr;
-  ConvertAndStore(fNode);
-  StackFrame[SFH+3] = 0;
+  editNode->data.ResultVarPtr = (CSecTabBase***)&HandlerStack[SFH+2];
+  editNode->data.StringValue = newStr;
+  ConvertAndStore(editNode);
   if (fDesc->isNative)
-    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, StackFrame);
+    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, HandlerStack);
   else
-    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, StackFrame);
+    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, HandlerStack);
   if (!ok) {
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
-#ifndef __GNUC__
-    __asm {
-      add esp, fsizeBytes
-    }
-#else
-	  delete [] StackFrame;
-#endif
+
+	  delete [] HandlerStack;
+    HandlerStack = 0;
     return false;
   }
-
-  fNode->data.ResultVarPtr = (CSecTabBase***)rPtr;
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
+  return true;
+  
+  /*fNode->data.ResultVarPtr = (CSecTabBase***)rPtr;
   DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, *rPtr);
   if (StackFrame[SFH+3]) {
     *fNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+3];
@@ -620,14 +709,10 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   }
   ((CGUIProg*)GUIProg)->LavaForm.setDefaultValue(fNode);
 
-#ifndef __GNUC__
-    __asm {
-      add esp, fsizeBytes
-    }
-#else
-	  delete [] StackFrame;
-#endif
-    return true;
+
+	  delete [] HandlerStack;
+    HandlerStack = 0;
+    return true;*/
 }
 
 bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
@@ -873,4 +958,6 @@ void CmdExecCLASS::SelectButton (CHEFormNode* button, CHEFormNode*& trp)
 void CmdExecCLASS::INIT (CGUIProgBase *guiPr)
 {
   GUIProg = guiPr;
+  handle = 0;
+  HandlerStack = 0;
 }
