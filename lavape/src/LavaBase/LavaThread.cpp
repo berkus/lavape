@@ -30,16 +30,16 @@ CLavaThread::CLavaThread(CLavaBaseDoc* docu)
 {
   abort = false;
   waitingForUI = false;
-	myDoc = docu;
+  myDoc = docu;
   mySemaphore.acquire();
   if (!myDoc->ThreadList)
-		myDoc->ThreadList = new CThreadList;
+    myDoc->ThreadList = new CThreadList;
 }
 
 CLavaDbgBase::CLavaDbgBase(CLavaBaseDoc* docu)
 {
-	myDoc = docu;
+  myDoc = docu;
   isConnected = false;
   if (!myDoc->ThreadList)
-		myDoc->ThreadList = new CThreadList;
+	myDoc->ThreadList = new CThreadList;
 }

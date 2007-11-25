@@ -66,7 +66,7 @@ CLavaDebugger::CLavaDebugger() {
 }
 
 
-void CLavaDebugger::initData(CLavaBaseDoc* d, CLavaExecThread *execThr) {
+void CLavaDebugger::initData(CLavaBaseDoc* d, CLavaThread *execThr) {
   if (!dbgStopData) {
     myDoc = d;
     m_execThread = execThr;

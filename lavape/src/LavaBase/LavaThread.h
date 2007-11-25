@@ -29,8 +29,7 @@ public:
   CRuntimeException* ex;
 };
 
-class LAVABASE_DLL CLavaThread : public QThread
-{
+class LAVABASE_DLL CLavaThread : public QThread {
 public:
   CLavaThread() {
     abort = false;
@@ -39,7 +38,7 @@ public:
   }
   CLavaThread(CLavaBaseDoc *d);
 
-	CLavaBaseDoc *myDoc;
+  CLavaBaseDoc *myDoc;
   bool abort, waitingForUI;
 
   virtual void suspend() {

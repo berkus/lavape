@@ -29,7 +29,7 @@ public:
   ~CLavaDebugger();
 
   virtual void customEvent(QEvent *ev);
-  void initData(CLavaBaseDoc* d, CLavaExecThread *execThr);
+  void initData(CLavaBaseDoc* d, CLavaThread *execThr);
   QTcpServer *listenSocket;
   QTcpSocket *workSocket;
   ASN1InSock *get_cid;
@@ -39,7 +39,7 @@ public:
   quint16 remotePort;
 
   bool startedFromLavaPE;
-  CLavaExecThread *m_execThread;
+  CLavaThread *m_execThread;
 
   DbgContType actContType;
   DbgStopData* dbgStopData;

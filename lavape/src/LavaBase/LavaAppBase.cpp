@@ -968,7 +968,7 @@ void LavaEnd(wxDocument* fromDoc, bool doClose)
         return;
       }
       else
-		    throw CUserException();
+		throw CUserException();
     }
     if (doClose ) {
       if (((CLavaBaseDoc*)fromDoc)->isObject ) {

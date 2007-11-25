@@ -20,16 +20,20 @@ public:
     }
   }
 
-  unsigned ExecuteLava(CLavaBaseDoc *doc);
+  unsigned ExecuteLava();
   void run();
 };
 
 class LAVAEXECS_DLL CHandlerThread : public CLavaThread {
 public:
-  LavaDECL *handlerExec;
+  CheckData *ckd_ptr;
+  CVFuncDesc *handler_fDesc;
+  LavaVariablePtr stackFrame;
 
-  CHandlerThread(CLavaBaseDoc *d, LavaDECL *hdlExec) : CLavaThread(d){
-    handlerExec = hdlExec;
+  CHandlerThread(CLavaBaseDoc *doc, CheckData *ckdp, CVFuncDesc *hdl_fDesc, LavaVariablePtr newStackFrame) : CLavaThread(doc){
+	ckd_ptr = ckdp;
+    handler_fDesc = hdl_fDesc;
+	stackFrame = newStackFrame;
   };
 
   ~CHandlerThread() {

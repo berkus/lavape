@@ -2254,10 +2254,10 @@ void sigEnable() {
 
 void CLavaExecThread::run() {
   myDoc->ThreadList->append(this);
-  ExecuteLava(myDoc);
+  ExecuteLava();
 }
 
-unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
+unsigned CLavaExecThread::ExecuteLava()
 {
   CheckData ckd;
   CSearchData sData;
@@ -2266,14 +2266,13 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
   unsigned frameSize, pos, newOldExprLevel;
   bool ok;
 
-#ifdef __MINGW32
-#elif WIN32
+#ifdef WIN32
   unsigned frameSizeBytes;
 
   //CoInitialize(0);
 #endif
   ((CLavaDebugger*)LBaseData->debugger)->m_execThread = this;
-  ckd.document = (CLavaProgram*)doc;
+  ckd.document = (CLavaProgram*)myDoc;
   LavaDECL* topDECL = (LavaDECL*)((CHESimpleSyntax*)ckd.document->mySynDef->SynDefTree.first)->data.TopDef.ptr;
   CHE* che;
   for (che = (CHE*)topDECL->NestedDecls.first;
@@ -2285,7 +2284,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
     topDECL = (LavaDECL*)((CHE*)((LavaDECL*)che->data)->NestedDecls.last)->data;
     if (topDECL && (topDECL->DeclType == ExecDef) && topDECL->Exec.ptr) {
 #ifndef __GNUC__
-      sigEnable();
+  sigEnable();
 #endif
 
       try {
@@ -2302,7 +2301,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
         sData.doc = ckd.document;
         sData.nextFreeID = 0;
         // sData.finished = false;
-        ((SynObject*)topDECL->Exec.ptr)->MakeTable((address)&doc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
+        ((SynObject*)topDECL->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
         topDECL->WorkFlags.INCL(runTimeOK);
 
         frameSize = ((SelfVar*)topDECL->Exec.ptr)->stackFrameSize;
@@ -2318,7 +2317,7 @@ unsigned CLavaExecThread::ExecuteLava(CLavaBaseDoc *doc)
 #endif
         for (pos=0;pos<frameSize;pos++)
           newStackFrame[pos] = 0;
-        if (doc->debugOn) {
+        if (myDoc->debugOn) {
          ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
           QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
             //debug thread start, now initialisation is finished
@@ -2421,8 +2420,23 @@ stop:     ckd.document->throwError = false;
 
 
 void CHandlerThread::run() {
+  CheckData ckd;
+  CSearchData sData;
+  LavaVariablePtr newStackFrame=0;
+  unsigned frameSize, pos, newOldExprLevel;
+  bool ok;
+
+#ifdef WIN32
+  unsigned frameSizeBytes;
+
+  //CoInitialize(0);
+#endif
   myDoc->ThreadList->append(this);
-  //ExecuteLava(myDoc);
+  ((CLavaDebugger*)LBaseData->debugger)->m_execThread = this;
+  ckd.document = (CLavaProgram*)myDoc;
+#ifndef __GNUC__
+  sigEnable();
+#endif
 }
 
 CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
