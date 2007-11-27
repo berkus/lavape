@@ -1776,23 +1776,35 @@ void HGUISetData(CheckData& ckd, LavaObjectPtr guiService, LavaVariablePtr dataP
 {
   if (!guiService)
     return;
-  *(LavaVariablePtr*)(guiService+LSH) = dataPtr;
-  *(QWidget**)(guiService+LSH+1) = dialog;
+  int ii;
+  LavaObjectPtr guiObject = guiService - guiService[0][0].sectionOffset;
+  for (ii = 0; (ii < guiObject[0][0].nSections) && (guiObject[0][ii].classDECL != ckd.document->DECLTab[B_GUI]); ii++);
+  guiObject = guiObject + guiObject[0][ii].sectionOffset;
+  *(LavaVariablePtr*)(guiObject+LSH) = dataPtr;
+  *(QWidget**)(guiObject+LSH+1) = dialog;
 }
 
 void HGUISetUnused(CheckData& ckd, LavaObjectPtr guiService)
 {
   if (!guiService)
     return;
-  *(QWidget**)(guiService+LSH+1) = 0;
-  *(LavaVariablePtr*)(guiService+LSH) = 0;
+  int ii;
+  LavaObjectPtr guiObject = guiService - guiService[0][0].sectionOffset;
+  for (ii = 0; (ii < guiObject[0][0].nSections) && (guiObject[0][ii].classDECL != ckd.document->DECLTab[B_GUI]); ii++);
+  guiObject = guiObject + guiObject[0][ii].sectionOffset;
+  *(QWidget**)(guiObject+LSH+1) = 0;
+  *(LavaVariablePtr*)(guiObject+LSH) = 0;
 }
 
 QWidget* HGUIGetDialog(CheckData& ckd, LavaObjectPtr guiService)
 {
   if (!guiService)
     return 0;
-  return *(QWidget**)(guiService+LSH+1);
+  int ii;
+  LavaObjectPtr guiObject = guiService - guiService[0][0].sectionOffset;
+  for (ii = 0; (ii < guiObject[0][0].nSections) && (guiObject[0][ii].classDECL != ckd.document->DECLTab[B_GUI]); ii++);
+  guiObject = guiObject + guiObject[0][ii].sectionOffset;
+  return *(QWidget**)(guiObject+LSH+1);
 }
 
 bool GUIData(CheckData& ckd, LavaVariablePtr stack)

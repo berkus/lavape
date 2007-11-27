@@ -2764,6 +2764,7 @@ void CMenuPage::on_DeleteButton_clicked()
     if (mflags[0] == 3) {
       delete Menuitems->takeItem(ss);
       delete LButtonText->takeItem(ss);
+      delete Pixmap->item(ss);
       if (ss)
         ss = ss-1;
       Menuitems->setCurrentRow(ss);
@@ -2931,7 +2932,7 @@ void CMenuItem::EnableTextWindows()
 {
   Buttontext->setEnabled(m_flags == 0);
   StaticText->setEnabled(m_flags == 3);
-  Pixmap->setEnabled(menuPage->v_Menutype == isBMenu);
+  Pixmap->setEnabled((menuPage->v_Menutype == isBMenu) && (m_flags != 3));
   button_browse->setEnabled(menuPage->v_Menutype == isBMenu);
   /*
   if (m_flags != 0)

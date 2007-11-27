@@ -312,8 +312,10 @@ void  CUndoMem::CleanUndoMem()
     delete RedoMemory[redoMemPosition];
   }
   redoMemPosition = 0;
-  OnUpdateEditUndo(LBaseData->editUndoActionPtr);
-  OnUpdateEditRedo(LBaseData->editRedoActionPtr);
+  if (!wxTheApp->deletingMainFrame) {
+    OnUpdateEditUndo(LBaseData->editUndoActionPtr);
+    OnUpdateEditRedo(LBaseData->editRedoActionPtr);
+  }
 }
 
 void CUndoMem::SetCom8()

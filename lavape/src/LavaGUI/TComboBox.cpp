@@ -165,11 +165,13 @@ void CTComboBox::OnSelendok(int sel)
   GUIProg->editNode = 0;
   GUIProg->butNode = 0;
   GUIProg->setFocNode(myFormNode);
-
   if (!GUIProg->FrozenObject && sel >= 0) {
     myFormNode->data.StringValue = STRING(qPrintable(currentText()));
     myFormNode->data.D = sel;
     if (LBaseData->inRuntime) {
+      if (myFormNode->data.myHandler.first 
+        && ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(currentText()))))
+          return;
       ((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);
       myFormNode->data.IoSigFlags.INCL(trueValue);
     }

@@ -174,7 +174,7 @@ LavaGUIDialog::~LavaGUIDialog()
 }
 
 void LavaGUIDialog::closeEvent(QCloseEvent *e)
-{
+{/*
   if (myGUIProg && ResultDPtr && *ResultDPtr) {
     if (QMessageBox::question(
           wxTheApp->m_appWindow,qApp->applicationName(),"Do you really want to cancel this Lava dialog?",
@@ -184,7 +184,7 @@ void LavaGUIDialog::closeEvent(QCloseEvent *e)
     }
     else
       return;
-  }
+  }*/
 }
 
 void LavaGUIDialog::OnOK()

@@ -46,8 +46,9 @@ public:
 //  bool ChangeAtomicObject(LavaVariablePtr resultVarPtr);
   CHEHandlerInfo* GetHandler(CHEFormNode* fNode, int eventType);
   bool OptHandlerCall(CHEFormNode* optNode, int eventType);
-  bool ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr StackFrame, int eventType);
+  bool ChainHandlerCall(LavaVariablePtr StackFrame, int eventType);
   bool EditHandlerCall(CHEFormNode* formNode, STRING newStr);
+  bool ButtonHandlerCall(CHEFormNode* buttonNode, int enumNum);
   bool ConvertAndStore (CHEFormNode* trp);
   bool Toggl (CHEFormNode* trp);
   void SelectButton (CHEFormNode* button, CHEFormNode*& trp);
@@ -60,17 +61,18 @@ public:
   virtual bool GUIEvent(QEvent* ev);
 
 private: 
-  LavaDECL *formSyn;
-  CHEFormNode *chainNode;
-  CHEFormNode* insertedNode;
-  CHEFormNode* delNode;
-  LavaObjectPtr handle;
-  CHEFormNode* beforeNode;
-  CHEFormNode* parNode;
-  CHEFormNode* elliNode;
-  CHEFormNode* optNode;
-  CHEFormNode* editNode;
-  LavaVariablePtr editPtr;
+  LavaDECL *H_FormSyn;
+  CHEFormNode *H_ChainNode;
+  CHEFormNode* H_InsertedNode;
+  CHEFormNode* H_DelNode;
+  //LavaObjectPtr H_Handle;
+  CHEFormNode* H_BeforeNode;
+  CHEFormNode* H_ParNode;
+  CHEFormNode* H_ElliNode;
+  CHEFormNode* H_OptNode;
+  CHEFormNode* H_EditNode;
+  CHEFormNode* H_ButtonNode;
+  LavaVariablePtr H_EditPtr;
   LavaObjectPtr StackFrame[SFH+7]; 
   LavaVariablePtr HandlerStack;
   int LastEvent;

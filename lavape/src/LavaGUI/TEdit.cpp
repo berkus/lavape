@@ -136,11 +136,10 @@ void CTEdit::focusOutEvent(QFocusEvent *ev)
   if (isModified()) {
     if (LBaseData->inRuntime) {
       if (myFormNode->data.myHandler.first 
-        && ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(text())))) {
+        && ((CGUIProg*)GUIProg)->CmdExec.EditHandlerCall(myFormNode, STRING(qPrintable(text()))))
         //myFormNode->data.IoSigFlags.INCL(trueValue);
         //setText(myFormNode->data.StringValue.c);
           return;
-      }
       else {
         myFormNode->data.StringValue = STRING(qPrintable(text()));
         inError = !((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(myFormNode);

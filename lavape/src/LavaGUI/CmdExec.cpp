@@ -48,14 +48,14 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
 {
   //LavaDECL *formSyn;
 
-  optNode = fNode->data.FIP.up;
-  formSyn = optNode->data.FormSyntax;
+  H_OptNode = fNode->data.FIP.up;
+  H_FormSyn = H_OptNode->data.FormSyntax;
   LastEvent = ID_INSERTOPT;
   if (LBaseData->inRuntime) {
-    if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(formSyn, (LavaVariablePtr)optNode->data.ResultVarPtr))
+    if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(H_FormSyn, (LavaVariablePtr)H_OptNode->data.ResultVarPtr))
       return;
-    if (optNode->data.myHandler.first) {
-      if (OptHandlerCall(optNode, Ev_OptInsert))
+    if (H_OptNode->data.myHandler.first) {
+      if (OptHandlerCall(H_OptNode, Ev_OptInsert))
         ((CGUIProg*)GUIProg)->OnModified();
       else
         QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
@@ -67,7 +67,7 @@ void CmdExecCLASS::InsertOptionalItem (CHEFormNode* fNode)
   GUIProg->focNode = 0;
   optNode->data.SubTree.Destroy();
   ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
-  ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, optNode, optNode->data.allowOwnHandler); 
+  ((CGUIProg*)GUIProg)->LavaForm.PartialForm(H_ElliNode, optNode, optNode->data.allowOwnHandler); 
   if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
     if (!LBaseData->inRuntime) 
       QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
@@ -83,12 +83,13 @@ void CmdExecCLASS::DeleteOptionalItem ( CHEFormNode* fNode)
 { 
   //LavaDECL* formSyn;
 
-  optNode = fNode;
-  parNode = optNode->data.FIP.up;
+  H_OptNode = fNode;
+  H_ParNode = H_OptNode->data.FIP.up;
+
   LastEvent = ID_DELETEOPT;
   if (LBaseData->inRuntime) {
-    if (parNode->data.myHandler.first) {
-      if (OptHandlerCall(parNode, Ev_OptDelete))
+    if (H_ParNode->data.myHandler.first) {
+      if (OptHandlerCall(H_ParNode, Ev_OptDelete))
         ((CGUIProg*)GUIProg)->OnModified();
       else
         QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
@@ -130,36 +131,36 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
   //LavaObjectPtr HandlerStack[SFH+7], handle = 0;
   LavaDECL *iterSyn;//, *formSyn;
 
-  parNode = fNode->data.FIP.up;
+  H_ParNode = fNode->data.FIP.up;
   if (fNode->data.IterFlags.Contains(Ellipsis))
-    beforeNode = fNode;
+    H_BeforeNode = fNode;
   else
-    if (parNode->data.IterFlags.Contains(Ellipsis)) {
-      beforeNode = parNode;
-      parNode = beforeNode->data.FIP.up;
+    if (H_ParNode->data.IterFlags.Contains(Ellipsis)) {
+      H_BeforeNode = H_ParNode;
+      H_ParNode = H_BeforeNode->data.FIP.up;
     }
     else
-      beforeNode = fNode;
-  ((CGUIProg*)GUIProg)->LavaForm.AllocFNode(insertedNode, 0,0);
-  insertedNode->data.IoSigFlags = parNode->data.IoSigFlags;
-  formSyn = beforeNode->data.FormSyntax;
+      H_BeforeNode = fNode;
+  ((CGUIProg*)GUIProg)->LavaForm.AllocFNode(H_InsertedNode, 0,0);
+  H_InsertedNode->data.IoSigFlags = H_ParNode->data.IoSigFlags;
+  H_FormSyn = H_BeforeNode->data.FormSyntax;
   if (LBaseData->inRuntime) {
-    chainNode = fNode->data.FIP.up;
-    while (chainNode && !chainNode->data.ResultVarPtr)
-      chainNode = chainNode->data.FIP.up;
-    if (chainNode) {
-      insertedNode->data.ResultVarPtr = (CSecTabBase ***)((CGUIProg*)GUIProg)->LavaForm.NewLavaVarPtr(0);
-      if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(formSyn, (LavaVariablePtr)insertedNode->data.ResultVarPtr))
+    H_ChainNode = fNode->data.FIP.up;
+    while (H_ChainNode && !H_ChainNode->data.ResultVarPtr)
+      H_ChainNode = H_ChainNode->data.FIP.up;
+    if (H_ChainNode) {
+      H_InsertedNode->data.ResultVarPtr = (CSecTabBase ***)((CGUIProg*)GUIProg)->LavaForm.NewLavaVarPtr(0);
+      if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(H_FormSyn, (LavaVariablePtr)H_InsertedNode->data.ResultVarPtr))
         return;
       StackFrame[0] = 0;
       StackFrame[1] = 0;
       StackFrame[2] = 0; //chain object
-      StackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr; //chain object
-      if (beforeNode->data.ResultVarPtr)
-        StackFrame[SFH+1] = (LavaObjectPtr)beforeNode->data.HandleObjPtr; //before handle
+      StackFrame[SFH] = *(LavaVariablePtr)H_ChainNode->data.ResultVarPtr; //chain object
+      if (H_BeforeNode->data.ResultVarPtr)
+        StackFrame[SFH+1] = (LavaObjectPtr)H_BeforeNode->data.HandleObjPtr; //before handle
       else
         StackFrame[SFH+1] =  0;
-      StackFrame[SFH+2] = *(LavaVariablePtr)insertedNode->data.ResultVarPtr; //new data
+      StackFrame[SFH+2] = *(LavaVariablePtr)H_InsertedNode->data.ResultVarPtr; //new data
       StackFrame[SFH+3] = 0;
       StackFrame[SFH+4] = 0;
       if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
@@ -167,23 +168,23 @@ void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
     }
     else {
       //error
-      GUIProg->myDoc->LavaError(((CGUIProg*)GUIProg)->ckd, true, formSyn, &ERR_ErrInForm,0);
+      GUIProg->myDoc->LavaError(((CGUIProg*)GUIProg)->ckd, true, H_FormSyn, &ERR_ErrInForm,0);
       return;
     }
   }
-  if (formSyn->DeclType != VirtualType)
-    formSyn = parNode->data.FormSyntax;
-  if (formSyn->Annotation.ptr && formSyn->Annotation.ptr->IterOrig.ptr) {
-    iterSyn = ((TIteration*)formSyn->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr;
+  if (H_FormSyn->DeclType != VirtualType)
+    H_FormSyn = H_ParNode->data.FormSyntax;
+  if (H_FormSyn->Annotation.ptr && H_FormSyn->Annotation.ptr->IterOrig.ptr) {
+    iterSyn = ((TIteration*)H_FormSyn->Annotation.ptr->IterOrig.ptr)->IteratedExpr.ptr;
     if (iterSyn) {
-      iterSyn->inINCL = formSyn->inINCL;
-      formSyn = iterSyn;
+      iterSyn->inINCL = H_FormSyn->inINCL;
+      H_FormSyn = iterSyn;
     }
   }
   LastEvent = IDM_ITER_INSERT;
   if (LBaseData->inRuntime) {
-    if (chainNode->data.myHandler.first) {
-      if (!ChainHandlerCall(chainNode, StackFrame, Ev_ChainInsert))
+    if (H_ChainNode->data.myHandler.first) {
+      if (!ChainHandlerCall(StackFrame, Ev_ChainInsert))
         QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
     }
     else
@@ -199,35 +200,35 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
   //LavaObjectPtr StackFrame[SFH+3];
 
   if (fNode->data.IterFlags.Contains(Ellipsis))
-    delNode = (CHEFormNode*)fNode->predecessor;
+    H_DelNode = (CHEFormNode*)fNode->predecessor;
   else
     if (fNode->data.FIP.up->data.IterFlags.Contains(Ellipsis))
-      delNode = (CHEFormNode*)fNode->data.FIP.up->predecessor;
+      H_DelNode = (CHEFormNode*)fNode->data.FIP.up->predecessor;
     else
-      delNode = fNode;
-  if (delNode) {
+      H_DelNode = fNode;
+  if (H_DelNode) {
     LastEvent = IDM_ITER_DEL;
     if (LBaseData->inRuntime) {
       //to do: remove chain elem from object
-      chainNode = delNode->data.FIP.up;
-      while (chainNode && !chainNode->data.ResultVarPtr)
-        chainNode = chainNode->data.FIP.up;
-      if (chainNode) {
+      H_ChainNode = H_DelNode->data.FIP.up;
+      while (H_ChainNode && !H_ChainNode->data.ResultVarPtr)
+        H_ChainNode = H_ChainNode->data.FIP.up;
+      if (H_ChainNode) {
         StackFrame[0] = 0;
         StackFrame[1] = 0;
         StackFrame[2] = 0;
-        StackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
-        StackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
+        StackFrame[SFH] = *(LavaVariablePtr)H_ChainNode->data.ResultVarPtr;
+        StackFrame[SFH+1] = (LavaObjectPtr)H_DelNode->data.HandleObjPtr;
         StackFrame[SFH+2] = 0;
-        if (chainNode->data.myHandler.first) {
-          if (!ChainHandlerCall(chainNode, StackFrame, Ev_ChainDelete ))
+        if (H_ChainNode->data.myHandler.first) {
+          if (!ChainHandlerCall(StackFrame, Ev_ChainDelete ))
             QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
         }
         else
           QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
       }
       else {
-        GUIProg->myDoc->LavaError(((CGUIProg*)GUIProg)->ckd, true, delNode->data.FormSyntax, &ERR_ErrInForm,0);
+        GUIProg->myDoc->LavaError(((CGUIProg*)GUIProg)->ckd, true, H_DelNode->data.FormSyntax, &ERR_ErrInForm,0);
         return;
       }
     }//inRuntime
@@ -274,7 +275,11 @@ void CmdExecCLASS::DeleteIterItem (CHEFormNode* fNode)
 bool CmdExecCLASS::GUIEvent(QEvent* ev)
 {
   CHEFormNode *popupNode;
-  bool doIt;
+  LavaObjectPtr handle;
+  LavaObjectPtr enumPtr;
+  CRadioButton *radioButton;
+  bool doIt, toggle = false;
+  int ii;
 
   if (ev->type() == UEV_LavaGUIEvent) {
 
@@ -288,9 +293,9 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
             if (HandlerStack[SFH+5])
               DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+5]);
             DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
-            *insertedNode->data.ResultVarPtr = 0;
-            delete insertedNode;
-            insertedNode = 0;
+            *H_InsertedNode->data.ResultVarPtr = 0;
+            delete H_InsertedNode;
+            H_InsertedNode = 0;
  	          delete [] HandlerStack;
             HandlerStack = 0;
             return true;
@@ -298,7 +303,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
           if (HandlerStack[SFH+5]) {
             DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
             StackFrame[SFH+2] = HandlerStack[SFH+5];
-            *insertedNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+2];
+            *H_InsertedNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+2];
           }
           delete [] HandlerStack;
           HandlerStack = 0;
@@ -306,10 +311,10 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
         StackFrame[SFH+2] = StackFrame[SFH+2] + StackFrame[SFH+2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
       }
       ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
-      ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, insertedNode, false); 
+      ((CGUIProg*)GUIProg)->LavaForm.PartialForm(H_FormSyn, H_InsertedNode, false); 
       if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
-        delete insertedNode;
-        insertedNode = 0;
+        delete H_InsertedNode;
+        H_InsertedNode = 0;
         if (!LBaseData->inRuntime) 
           QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty chain element",  QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         return true;
@@ -320,17 +325,17 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
         if (((CGUIProg*)GUIProg)->ex)
           return true;
         handle = StackFrame[SFH+3];
-        DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)insertedNode->data.ResultVarPtr); //decr from AllocateObject after putting into chain
+        DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)H_InsertedNode->data.ResultVarPtr); //decr from AllocateObject after putting into chain
         ((CGUIProg*)GUIProg)->OnModified();
-        insertedNode->data.HandleObjPtr = (CSecTabBase**)handle;
+        H_InsertedNode->data.HandleObjPtr = (CSecTabBase**)handle;
       }//inRunTime
-      GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (insertedNode, insertedNode);
+      GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (H_InsertedNode, H_InsertedNode);
       GUIProg->setFocNode(GUIProg->ActNode);
-      parNode->data.SubTree.Insert(beforeNode->predecessor, insertedNode);
-      insertedNode->data.FIP.up = parNode; 
-      insertedNode->data.IterFlags.INCL(IteratedItem);
+      H_ParNode->data.SubTree.Insert(H_BeforeNode->predecessor, H_InsertedNode);
+      H_InsertedNode->data.FIP.up = H_ParNode; 
+      H_InsertedNode->data.IterFlags.INCL(IteratedItem);
       GUIProg->CurPTR = GUIProg->focNode;
-      popupNode = InPopupShell(insertedNode);
+      popupNode = InPopupShell(H_InsertedNode);
       if (popupNode) {
         ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
         if (!GUIProg->focNode)
@@ -340,7 +345,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
         ((CGUIProg*)GUIProg)->RedrawForm();
       if (GUIProg->focNode)
         ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->focNode);     
-      ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(insertedNode,false);
+      ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(H_InsertedNode,false);
     }
 
     else if (LastEvent == IDM_ITER_DEL) {
@@ -355,34 +360,34 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
             return true;
         }
         if (GUIProg->fromFillIn) {
-          StackFrame[SFH] = *(LavaVariablePtr)chainNode->data.ResultVarPtr;
-          StackFrame[SFH+1] = (LavaObjectPtr)delNode->data.HandleObjPtr;
+          StackFrame[SFH] = *(LavaVariablePtr)H_ChainNode->data.ResultVarPtr;
+          StackFrame[SFH+1] = (LavaObjectPtr)H_DelNode->data.HandleObjPtr;
           if (!SetRemove(((CGUIProg*)GUIProg)->ckd, StackFrame))
             return true;
         }
         else
-          ((SynFlags*)((LavaObjectPtr)delNode->data.HandleObjPtr+1))->INCL(deletedItem);
+          ((SynFlags*)((LavaObjectPtr)H_DelNode->data.HandleObjPtr+1))->INCL(deletedItem);
       }
-      delNode = (CHEFormNode*)delNode->data.FIP.up->data.SubTree.Uncouple(delNode); 
+      H_DelNode = (CHEFormNode*)H_DelNode->data.FIP.up->data.SubTree.Uncouple(H_DelNode); 
       ((CGUIProg*)GUIProg)->OnModified();
       GUIProg->setFocNode(0);
       GUIProg->newFocus = 0;
       GUIProg->ActNode = 0;
-      if (delNode->successor)
-        GUIProg->CurPTR = (CHEFormNode*)delNode->successor;
+      if (H_DelNode->successor)
+        GUIProg->CurPTR = (CHEFormNode*)H_DelNode->successor;
       else
-        GUIProg->CurPTR = (CHEFormNode*)delNode->predecessor;
+        GUIProg->CurPTR = (CHEFormNode*)H_DelNode->predecessor;
       popupNode = InPopupShell(GUIProg->CurPTR);
       if (popupNode) {
-        delNode->successor = 0;
-        ((CGUIProg*)GUIProg)->LavaForm.DeleteWindows(delNode, false);
+        H_DelNode->successor = 0;
+        ((CGUIProg*)GUIProg)->LavaForm.DeleteWindows(H_DelNode, false);
         ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
       }
       else
         ((CGUIProg*)GUIProg)->RedrawForm();
       ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(GUIProg->CurPTR);     
       ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(GUIProg->CurPTR,false);
-      delete delNode; 
+      delete H_DelNode; 
     }
 
     else if (LastEvent == ID_INSERTOPT) {
@@ -393,7 +398,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
           DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
           if (!doIt) {
             DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+1]);
-            *optNode->data.ResultVarPtr = 0;
+            *H_OptNode->data.ResultVarPtr = 0;
             if (HandlerStack[SFH+3])
               DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+3]);
  	          delete [] HandlerStack;
@@ -402,7 +407,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
           }
           if (HandlerStack[SFH+3]) {
             DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+1]);
-            *optNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
+            *H_OptNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
           }
  	        delete [] HandlerStack;
           HandlerStack = 0;
@@ -410,23 +415,23 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
       }
       ((CGUIProg*)GUIProg)->OnModified();
       GUIProg->focNode = 0;
-      optNode->data.SubTree.Destroy();
+      H_OptNode->data.SubTree.Destroy();
       ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
-      ((CGUIProg*)GUIProg)->LavaForm.PartialForm(formSyn, optNode, optNode->data.allowOwnHandler); 
+      ((CGUIProg*)GUIProg)->LavaForm.PartialForm(H_FormSyn, H_OptNode, H_OptNode->data.allowOwnHandler); 
       if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
         if (!LBaseData->inRuntime) 
           QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         return true;
       }
-      optNode->data.IterFlags.INCL(Optional);
-      GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode);
+      H_OptNode->data.IterFlags.INCL(Optional);
+      GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (H_OptNode, H_OptNode);
       GUIProg->setFocNode(GUIProg->ActNode);
       GUIProg->CurPTR = GUIProg->focNode;
-      popupNode = InPopupShell(optNode);
-      GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (optNode, optNode);
+      popupNode = InPopupShell(H_OptNode);
+      GUIProg->ActNode = ((CGUIProg*)GUIProg)->TreeSrch.NextUnprotected (H_OptNode, H_OptNode);
       GUIProg->setFocNode(GUIProg->ActNode);
       GUIProg->CurPTR = GUIProg->focNode;
-      popupNode = InPopupShell(optNode);
+      popupNode = InPopupShell(H_OptNode);
       if (popupNode)
         ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
       else
@@ -445,64 +450,87 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
             return true;
         }
       }
-      delNode = (CHEFormNode*)parNode->data.SubTree.Uncouple(optNode); 
-      elliNode = 0;
-      formSyn = parNode->data.FormSyntax;
-      ((CGUIProg*)GUIProg)->LavaForm.CreateEllipsis(elliNode,formSyn, parNode->data.allowOwnHandler);
-      parNode->data.SubTree.Insert(delNode->predecessor, elliNode);
-      if (delNode->data.BasicFlags.Contains(Groupbox))
-        elliNode->data.BasicFlags.INCL(Groupbox);
-      elliNode->data.FIP.up = parNode;
-      parNode->data.IterFlags.EXCL(Optional);
+      H_DelNode = (CHEFormNode*)H_ParNode->data.SubTree.Uncouple(H_OptNode); 
+      H_ElliNode = 0;
+      H_FormSyn = H_ParNode->data.FormSyntax;
+      ((CGUIProg*)GUIProg)->LavaForm.CreateEllipsis(H_ElliNode,H_FormSyn, H_ParNode->data.allowOwnHandler);
+      H_ParNode->data.SubTree.Insert(H_DelNode->predecessor, H_ElliNode);
+      if (H_DelNode->data.BasicFlags.Contains(Groupbox))
+        H_ElliNode->data.BasicFlags.INCL(Groupbox);
+      H_ElliNode->data.FIP.up = H_ParNode;
+      H_ParNode->data.IterFlags.EXCL(Optional);
       GUIProg->ActNode = 0;
       GUIProg->setFocNode(0);
-      GUIProg->CurPTR = elliNode;
-      if (delNode->data.FIP.popupShell) {
-        delete delNode->data.FIP.popupShell;
-        delNode->data.FIP.popupShell = 0;
-        delNode->data.FIP.poppedUp = false;
+      GUIProg->CurPTR = H_ElliNode;
+      if (H_DelNode->data.FIP.popupShell) {
+        delete H_DelNode->data.FIP.popupShell;
+        H_DelNode->data.FIP.popupShell = 0;
+        H_DelNode->data.FIP.poppedUp = false;
       }
-      popupNode = InPopupShell(elliNode);
+      popupNode = InPopupShell(H_ElliNode);
       if (popupNode)
         ((CGUIProg*)GUIProg)->MakeGUI.Popup(popupNode,true, true, true);
       else
         ((CGUIProg*)GUIProg)->RedrawForm();
-      ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(elliNode);     
-      ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(elliNode,false);
+      ((CGUIProg*)GUIProg)->MakeGUI.CursorOnField(H_ElliNode);     
+      ((CGUIProg*)GUIProg)->MakeGUI.VisibleDeleteButton(H_ElliNode,false);
       if (LBaseData->inRuntime) {
-        DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)delNode->data.ResultVarPtr);
-        *delNode->data.ResultVarPtr = 0;
+        DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)H_DelNode->data.ResultVarPtr);
+        *H_DelNode->data.ResultVarPtr = 0;
         ((CGUIProg*)GUIProg)->OnModified();
       } 
-      delete delNode;
+      delete H_DelNode;
     }
     else if (LastEvent == ID_EDITVALUE) {
 
       if (LBaseData->inRuntime) {
         if (HandlerStack) {
-          editNode->data.ResultVarPtr = (CSecTabBase***)editPtr;
-          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, *editPtr);
+          H_EditNode->data.ResultVarPtr = (CSecTabBase***)H_EditPtr;
+          if (H_ButtonNode) {
+            toggle = H_ButtonNode->data.BType == B_Bool;
+            if (!toggle && !H_EditNode->data.EnumField)
+              H_EditNode->data.FIP.up->data.ResultVarPtr = (CSecTabBase***)H_EditPtr;
+          }
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, *H_EditPtr);
           if (HandlerStack[SFH+3]) {
-            *editNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
+            *H_EditNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
             DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
           }
           else {
-            *editNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+2];
-            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+3]);
+            *H_EditNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+2];
           }
-          ((CGUIProg*)GUIProg)->LavaForm.setDefaultValue(editNode);
+          if (!H_ButtonNode || toggle)
+            ((CGUIProg*)GUIProg)->LavaForm.setDefaultValue(H_EditNode);
 	        delete [] HandlerStack;
           HandlerStack = 0;
           
-          editNode->data.IoSigFlags.INCL(trueValue);
-          if (editNode->data.FIP.widget->inherits("QLineEdit"))
-            ((CTEdit*)editNode->data.FIP.widget)->setText(editNode->data.StringValue.c);
-          else
-            ((CMultiLineEdit*)editNode->data.FIP.widget)->setPlainText(editNode->data.StringValue.c);
-          editNode->data.FIP.widget->setFocus();
+          H_EditNode->data.IoSigFlags.INCL(trueValue);
+          
+          if (H_EditNode->data.FIP.widget && H_EditNode->data.FIP.widget->inherits("QLineEdit")) {
+            ((CTEdit*)H_EditNode->data.FIP.widget)->setText(H_EditNode->data.StringValue.c);
+            H_EditNode->data.FIP.widget->setFocus();          
+          }
+          else if (H_EditNode->data.FIP.widget && H_EditNode->data.FIP.widget->inherits("CMultiLineEdit")) {
+            ((CMultiLineEdit*)H_EditNode->data.FIP.widget)->setPlainText(H_EditNode->data.StringValue.c);
+            H_EditNode->data.FIP.widget->setFocus();          
+          }
+          else if (H_EditNode->data.FIP.widget && H_EditNode->data.FIP.widget->inherits("CTComboBox")) {
+            enumPtr = CastEnumType(((CGUIProg*)GUIProg)->ckd, *((LavaVariablePtr)H_EditNode->data.ResultVarPtr));
+            ((CTComboBox*)H_EditNode->data.FIP.widget)->setCurrentIndex(*(int*)(enumPtr+LSH));
+            H_EditNode->data.FIP.widget->setFocus();          
+          }
+          else if (H_ButtonNode && H_ButtonNode->data.FIP.widget->inherits("CRadioButton")) {
+            radioButton = (CRadioButton*)H_ButtonNode->data.FIP.widget;
+            for (ii = 0; ii < ((CFormWid*)radioButton->Radio)->nRadio; ii++) {
+              ((CFormWid*)radioButton->Radio)->Radio[ii]->setChecked((ii == H_EditNode->data.D));
+            }
+          }
+          else if (H_ButtonNode && toggle)
+            ((CToggleButton*)H_ButtonNode->data.FIP.widget)->setChecked(H_ButtonNode->data.B);
         }
       }
     }
+    H_ButtonNode = 0;
   }
   return true;
 }
@@ -597,7 +625,7 @@ bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
   return ok;*/
 }
 
-bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr StackFrame, int eventType)
+bool CmdExecCLASS::ChainHandlerCall(LavaVariablePtr StackFrame, int eventType)
 {
   bool ok;
   CVFuncDesc *fDesc;
@@ -605,7 +633,7 @@ bool CmdExecCLASS::ChainHandlerCall(CHEFormNode* chainNode, LavaVariablePtr Stac
   int fsizeBytes, fsize;
   LavaDECL* handlerDECL;
 
-  CHEHandlerInfo* cheHandler = GetHandler(chainNode, eventType);
+  CHEHandlerInfo* cheHandler = GetHandler(H_ChainNode, eventType);
   if (!cheHandler)
     return false;
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
@@ -661,28 +689,28 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   CHEHandlerInfo* cheHandler = GetHandler(fNode, Ev_ValueChanged);
   if (!cheHandler)
     return false;
-  editNode = fNode;
+  H_EditNode = fNode;
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
   LastEvent = ID_EDITVALUE;
   funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
   fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
   int fsize = fDesc->stackFrameSize;
   int fsizeBytes = fsize<<2;
-  editPtr = (LavaVariablePtr)editNode->data.ResultVarPtr;
+  H_EditPtr = (LavaVariablePtr)H_EditNode->data.ResultVarPtr;
 
 	HandlerStack = new LavaObjectPtr[fsize];
   for (int ii = 0; ii < fsize; ii++)
     HandlerStack[ii] = 0;
   HandlerStack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
-  HandlerStack[SFH+1] = *(LavaVariablePtr)editNode->data.ResultVarPtr; //old value
-  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(editNode->data.FormSyntax, &HandlerStack[SFH+2])) {
+  HandlerStack[SFH+1] = *(LavaVariablePtr)H_EditNode->data.ResultVarPtr; //old value
+  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(H_EditNode->data.FormSyntax, &HandlerStack[SFH+2])) {
 	  delete [] HandlerStack;
     HandlerStack = 0;
     return false;
   }
-  editNode->data.ResultVarPtr = (CSecTabBase***)&HandlerStack[SFH+2];
-  editNode->data.StringValue = newStr;
-  ConvertAndStore(editNode);
+  H_EditNode->data.ResultVarPtr = (CSecTabBase***)&HandlerStack[SFH+2];
+  H_EditNode->data.StringValue = newStr;
+  ConvertAndStore(H_EditNode);
   if (fDesc->isNative)
     ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, HandlerStack);
   else
@@ -714,6 +742,74 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
     HandlerStack = 0;
     return true;*/
 }
+
+bool CmdExecCLASS::ButtonHandlerCall(CHEFormNode* buttonNode, int enumNum)
+{
+  CVFuncDesc *fDesc;
+  CSectionDesc *funcSect;
+  bool ok, toggle = false;
+  LavaDECL* handlerDECL;
+
+  CHEHandlerInfo* cheHandler = GetHandler(buttonNode, Ev_ValueChanged);
+  if (!cheHandler)
+    return false;
+  H_ButtonNode = buttonNode;
+  if (buttonNode->data.FIP.widget->inherits("CToggleButton")) {
+    H_EditNode = buttonNode;
+    toggle = true;
+    ((CToggleButton*)buttonNode->data.FIP.widget)->setChecked(!((CToggleButton*)buttonNode->data.FIP.widget)->isChecked());
+  }
+  if (buttonNode->data.FIP.widget->inherits("CPushButton"))
+    H_EditNode = ((CPushButton*)buttonNode->data.FIP.widget)->EnumNode;
+  if (buttonNode->data.FIP.widget->inherits("CRadioButton"))
+    H_EditNode = ((CRadioButton*)buttonNode->data.FIP.widget)->EnumNode;
+  handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
+  LastEvent = ID_EDITVALUE;
+  if (H_EditNode->data.EnumField || toggle)
+    H_EditPtr = (LavaVariablePtr)(H_EditNode->data.ResultVarPtr);
+  else
+    H_EditPtr = (LavaVariablePtr)(H_EditNode->data.FIP.up->data.ResultVarPtr);
+
+  funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
+  fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
+  int fsize = fDesc->stackFrameSize;
+  int fsizeBytes = fsize<<2;
+	HandlerStack = new LavaObjectPtr[fsize];
+  for (int ii = 0; ii < fsize; ii++)
+    HandlerStack[ii] = 0;
+  HandlerStack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
+  HandlerStack[SFH+1] = *(LavaVariablePtr)H_EditNode->data.ResultVarPtr; //old value
+  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj((*((LavaVariablePtr)H_EditNode->data.ResultVarPtr))[0]->classDECL, &HandlerStack[SFH+2])) {
+	  delete [] HandlerStack;
+    HandlerStack = 0;
+    return false;
+  }
+  H_EditNode->data.ResultVarPtr = (CSecTabBase***)&HandlerStack[SFH+2];
+  if (toggle) 
+    H_EditNode->data.B = ((CToggleButton*)H_ButtonNode->data.FIP.widget)->isChecked();
+  else {
+    H_EditNode->data.StringValue = H_ButtonNode->data.StringValue;
+    if (!H_EditNode->data.EnumField)
+      H_EditNode->data.FIP.up->data.ResultVarPtr = (CSecTabBase***)&HandlerStack[SFH+2];
+    if (enumNum >= 0)
+      H_EditNode->data.D = enumNum;
+    ConvertAndStore(H_EditNode);
+  }
+  if (fDesc->isNative)
+    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, HandlerStack);
+  else
+    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, HandlerStack);
+  if (!ok) {
+    ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
+
+	  delete [] HandlerStack;
+    HandlerStack = 0;
+    return false;
+  }
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
+  return true;
+}
+
 
 bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
 {
@@ -958,6 +1054,7 @@ void CmdExecCLASS::SelectButton (CHEFormNode* button, CHEFormNode*& trp)
 void CmdExecCLASS::INIT (CGUIProgBase *guiPr)
 {
   GUIProg = guiPr;
-  handle = 0;
+  //handle = 0;
   HandlerStack = 0;
+  H_ButtonNode = 0;
 }

@@ -117,11 +117,18 @@ void CToggleButton::OnClicked()
   GUIProg->CurPTR = myFormNode;
   GUIProg->SyncTree(myFormNode);
 
-  myFormNode->data.B = isChecked();
   if (LBaseData->inRuntime) {
-    *(bool*)(*(myFormNode->data.ResultVarPtr)+LSH) = myFormNode->data.B;
-    ((CGUIProg*)GUIProg)->OnModified();
+    if (myFormNode->data.myHandler.first 
+      && ((CGUIProg*)GUIProg)->CmdExec.ButtonHandlerCall(myFormNode, -1)) 
+      return;
+    else {
+      myFormNode->data.B = isChecked();
+      *(bool*)(*(myFormNode->data.ResultVarPtr)+LSH) = myFormNode->data.B;
+      ((CGUIProg*)GUIProg)->OnModified();
+    }
   }
+  else
+    myFormNode->data.B = isChecked();
   myFormNode->data.IoSigFlags.INCL(trueValue);
 }
 
@@ -357,9 +364,14 @@ void CPushButton::OnClicked()
   GUIProg->SyncTree(myFormNode);
   switch (DISCOButtonType) {
     case isPush:
-      ((CGUIProg*)GUIProg)->CmdExec.HandleButtonClick(myFormNode, (CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first);
-      EnumNode->data.IoSigFlags.INCL(trueValue);
-      //GUIProg->SyncTree(myFormNode);
+      if (LBaseData->inRuntime && myFormNode->data.myHandler.first 
+        && ((CGUIProg*)GUIProg)->CmdExec.ButtonHandlerCall(myFormNode, -1))
+          return;
+      else {
+        ((CGUIProg*)GUIProg)->CmdExec.HandleButtonClick(myFormNode, EnumNode);//(CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first);
+        EnumNode->data.IoSigFlags.INCL(trueValue);
+        //GUIProg->SyncTree(myFormNode);
+      }
       break;
 
     case isElli:
@@ -481,12 +493,17 @@ void CRadioButton::OnClicked()
   int ii;
   for (ii = 0; ii < ((CFormWid*)Radio)->nRadio; ii++) {
     if (((CFormWid*)Radio)->Radio[ii] == (QPushButton*)this) {
-      setChecked(true);
-      EnumNode->data.D = ii;
-      EnumNode->data.StringValue = myFormNode->data.StringValue;
-      if (LBaseData->inRuntime) {
-        ((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore((CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first);
-        EnumNode->data.IoSigFlags.INCL(trueValue);
+      if (myFormNode->data.myHandler.first 
+        && ((CGUIProg*)GUIProg)->CmdExec.ButtonHandlerCall(myFormNode, ii))
+          return;
+      else {
+        setChecked(true);
+        EnumNode->data.D = ii;
+        EnumNode->data.StringValue = myFormNode->data.StringValue;
+        if (LBaseData->inRuntime) {
+          ((CGUIProg*)GUIProg)->CmdExec.ConvertAndStore(EnumNode);//(CHEFormNode*)((CFormWid*)Radio)->myFormNode->data.SubTree.first);
+          EnumNode->data.IoSigFlags.INCL(trueValue);
+        }
       }
     }
     else
