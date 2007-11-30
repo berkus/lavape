@@ -34,12 +34,14 @@ public:
   CLavaThread() {
     abort = false;
     waitingForUI = false;
+    handler_Call = false;
     mySemaphore.acquire();
   }
   CLavaThread(CLavaBaseDoc *d);
 
   CLavaBaseDoc *myDoc;
   bool abort, waitingForUI;
+  bool handler_Call;
 
   virtual void suspend() {
     mySemaphore.acquire();
@@ -50,7 +52,7 @@ public:
   }
 
   virtual void resume() {
-    if (!waitingForUI && !mySemaphore.available())
+    if ((handler_Call || !waitingForUI) && !mySemaphore.available())
       mySemaphore.release();
   }
 

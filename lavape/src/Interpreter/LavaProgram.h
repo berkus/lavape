@@ -22,8 +22,9 @@ public:
 
   unsigned ExecuteLava();
   void run();
-};
 
+};
+/*
 class LAVAEXECS_DLL CHandlerThread : public CLavaThread {
 public:
   CheckData *ckd_ptr;
@@ -46,7 +47,7 @@ public:
   }
 
   void run();
-};
+};*/
 
 class LAVAEXECS_DLL CLavaProgram : public CLavaBaseDoc
 {

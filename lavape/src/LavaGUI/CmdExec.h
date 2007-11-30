@@ -33,6 +33,8 @@ public:
   
   void INIT (CGUIProgBase *guiPr);
   CGUIProgBase *GUIProg;
+  LavaVariablePtr Handler_Stack;
+  CVFuncDesc* Handler_fDesc;
 /*
   bool okBType (TBasicType btype, int in);
    // converse procedure to ConvertAndStore for transmission phase.
@@ -74,7 +76,6 @@ private:
   CHEFormNode* H_ButtonNode;
   LavaVariablePtr H_EditPtr;
   LavaObjectPtr StackFrame[SFH+7]; 
-  LavaVariablePtr HandlerStack;
   int LastEvent;
 
 //private:

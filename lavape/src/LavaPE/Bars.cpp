@@ -585,7 +585,7 @@ void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
           for (pos = 0; pos < wxTheApp->m_docManager->m_docs.size(); pos++) {
             stopDoc = (CLavaPEDoc*)wxTheApp->m_docManager->m_docs[pos];
             if (stopDoc && (qfn == stopDoc->GetFilename()))
-              pos = 0;
+              pos = wxTheApp->m_docManager->m_docs.size();
             else
               stopDoc = 0;
           }

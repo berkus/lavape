@@ -128,7 +128,7 @@ CHEFormNode* CmdExecCLASS::GetIterNode(CHEFormNode* fNode)
 void CmdExecCLASS::InsertIterItem (CHEFormNode* fNode)
 {
   //CHEFormNode *chainNode;
-  //LavaObjectPtr HandlerStack[SFH+7], handle = 0;
+  //LavaObjectPtr Handler_Stack[SFH+7], handle = 0;
   LavaDECL *iterSyn;//, *formSyn;
 
   H_ParNode = fNode->data.FIP.up;
@@ -286,27 +286,27 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
     if (LastEvent == IDM_ITER_INSERT) {
 
       if (LBaseData->inRuntime) {
-        if (HandlerStack) {
-          doIt = *(bool*)(HandlerStack[SFH+4]+LSH);
-          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+4]);
+        if (Handler_Stack) {
+          doIt = *(bool*)(Handler_Stack[SFH+4]+LSH);
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+4]);
           if (!doIt) {
-            if (HandlerStack[SFH+5])
-              DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+5]);
+            if (Handler_Stack[SFH+5])
+              DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+5]);
             DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
             *H_InsertedNode->data.ResultVarPtr = 0;
             delete H_InsertedNode;
             H_InsertedNode = 0;
- 	          delete [] HandlerStack;
-            HandlerStack = 0;
+ 	          delete [] Handler_Stack;
+            Handler_Stack = 0;
             return true;
           }
-          if (HandlerStack[SFH+5]) {
+          if (Handler_Stack[SFH+5]) {
             DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
-            StackFrame[SFH+2] = HandlerStack[SFH+5];
+            StackFrame[SFH+2] = Handler_Stack[SFH+5];
             *H_InsertedNode->data.ResultVarPtr = (CSecTabBase**)StackFrame[SFH+2];
           }
-          delete [] HandlerStack;
-          HandlerStack = 0;
+          delete [] Handler_Stack;
+          Handler_Stack = 0;
         }
         StackFrame[SFH+2] = StackFrame[SFH+2] + StackFrame[SFH+2][0][((CGUIProg*)GUIProg)->myDoc->GetSectionNumber(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2][0][0].classDECL, GUIProg->myDoc->DECLTab[B_Object])].sectionOffset;
       }
@@ -351,11 +351,11 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
     else if (LastEvent == IDM_ITER_DEL) {
 
       if (LBaseData->inRuntime) {
-        if (HandlerStack) {
-          doIt = *(bool*)(HandlerStack[SFH+3]+LSH);
-          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+3]);
-          delete [] HandlerStack;
-          HandlerStack = 0;
+        if (Handler_Stack) {
+          doIt = *(bool*)(Handler_Stack[SFH+3]+LSH);
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+3]);
+          delete [] Handler_Stack;
+          Handler_Stack = 0;
           if (!doIt) 
             return true;
         }
@@ -393,24 +393,24 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
     else if (LastEvent == ID_INSERTOPT) {
 
       if (LBaseData->inRuntime) {
-        if (HandlerStack) {
-          doIt = *(bool*)(HandlerStack[SFH+2]+LSH);
-          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
+        if (Handler_Stack) {
+          doIt = *(bool*)(Handler_Stack[SFH+2]+LSH);
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+2]);
           if (!doIt) {
-            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+1]);
+            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+1]);
             *H_OptNode->data.ResultVarPtr = 0;
-            if (HandlerStack[SFH+3])
-              DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+3]);
- 	          delete [] HandlerStack;
-            HandlerStack = 0;
+            if (Handler_Stack[SFH+3])
+              DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+3]);
+ 	          delete [] Handler_Stack;
+            Handler_Stack = 0;
             return true;
           }
-          if (HandlerStack[SFH+3]) {
-            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+1]);
-            *H_OptNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
+          if (Handler_Stack[SFH+3]) {
+            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+1]);
+            *H_OptNode->data.ResultVarPtr = (CSecTabBase**)Handler_Stack[SFH+3];
           }
- 	        delete [] HandlerStack;
-          HandlerStack = 0;
+ 	        delete [] Handler_Stack;
+          Handler_Stack = 0;
        }
       }
       ((CGUIProg*)GUIProg)->OnModified();
@@ -442,10 +442,10 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
     else if (LastEvent == ID_DELETEOPT) {
 
       if (LBaseData->inRuntime) {
-        if (HandlerStack) {
-          doIt = *(bool*)(HandlerStack[SFH+2]+LSH);
-          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
- 	        delete [] HandlerStack;
+        if (Handler_Stack) {
+          doIt = *(bool*)(Handler_Stack[SFH+2]+LSH);
+          DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+2]);
+ 	        delete [] Handler_Stack;
           if (!doIt)
             return true;
         }
@@ -482,9 +482,10 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
       delete H_DelNode;
     }
     else if (LastEvent == ID_EDITVALUE) {
+      GUIProg->ViewWin->setEnabled(true);
 
       if (LBaseData->inRuntime) {
-        if (HandlerStack) {
+        if (Handler_Stack) {
           H_EditNode->data.ResultVarPtr = (CSecTabBase***)H_EditPtr;
           if (H_ButtonNode) {
             toggle = H_ButtonNode->data.BType == B_Bool;
@@ -492,17 +493,17 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
               H_EditNode->data.FIP.up->data.ResultVarPtr = (CSecTabBase***)H_EditPtr;
           }
           DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, *H_EditPtr);
-          if (HandlerStack[SFH+3]) {
-            *H_EditNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
-            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
+          if (Handler_Stack[SFH+3]) {
+            *H_EditNode->data.ResultVarPtr = (CSecTabBase**)Handler_Stack[SFH+3];
+            DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+2]);
           }
           else {
-            *H_EditNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+2];
+            *H_EditNode->data.ResultVarPtr = (CSecTabBase**)Handler_Stack[SFH+2];
           }
           if (!H_ButtonNode || toggle)
             ((CGUIProg*)GUIProg)->LavaForm.setDefaultValue(H_EditNode);
-	        delete [] HandlerStack;
-          HandlerStack = 0;
+	        delete [] Handler_Stack;
+          Handler_Stack = 0;
           
           H_EditNode->data.IoSigFlags.INCL(trueValue);
           
@@ -575,7 +576,6 @@ CHEHandlerInfo* CmdExecCLASS::GetHandler(CHEFormNode* fNode, int eventType)
 bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
 {
   bool ok;
-  CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
   int fsizeBytes, fsize;
   LavaDECL* handlerDECL;
@@ -585,19 +585,19 @@ bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
     return false;
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
   funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
-  fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
-  fsize = fDesc->stackFrameSize;
+  Handler_fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
+  fsize = Handler_fDesc->stackFrameSize;
   fsizeBytes = fsize<<2;
   LavaVariablePtr rPtr = (LavaVariablePtr)optNode->data.ResultVarPtr;
-	HandlerStack = new LavaObjectPtr[fsize];
+	Handler_Stack = new LavaObjectPtr[fsize];
   for (int ii = 0; ii < fsize; ii++)
-    HandlerStack[ii] = 0;
-  HandlerStack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
-  HandlerStack[SFH+1] = *(LavaVariablePtr)optNode->data.ResultVarPtr;
-  if (fDesc->isNative)
-    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, HandlerStack);
+    Handler_Stack[ii] = 0;
+  Handler_Stack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
+  Handler_Stack[SFH+1] = *(LavaVariablePtr)optNode->data.ResultVarPtr;
+  if (Handler_fDesc->isNative)
+    ok = (*Handler_fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   else
-    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, HandlerStack);
+    ok = Handler_fDesc->Execute((SynObjectBase*)Handler_fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   if (!ok) 
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
 
@@ -605,17 +605,17 @@ bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
   return true;
 
   /* else {
-    ok = *(bool*)(HandlerStack[SFH+2]+LSH);
-    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+2]);
+    ok = *(bool*)(Handler_Stack[SFH+2]+LSH);
+    DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+2]);
     if (eventType == Ev_OptInsert) {
-      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+1]);
-      if (ok && HandlerStack[SFH+3]) 
-        *optNode->data.ResultVarPtr = (CSecTabBase**)HandlerStack[SFH+3];
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+1]);
+      if (ok && Handler_Stack[SFH+3]) 
+        *optNode->data.ResultVarPtr = (CSecTabBase**)Handler_Stack[SFH+3];
       else
         ok = false;
     }
   }
-	  delete [] HandlerStack;
+	  delete [] Handler_Stack;
 
     /*
   if (eventType == Ev_OptInsert) {
@@ -628,7 +628,6 @@ bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
 bool CmdExecCLASS::ChainHandlerCall(LavaVariablePtr StackFrame, int eventType)
 {
   bool ok;
-  CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
   int fsizeBytes, fsize;
   LavaDECL* handlerDECL;
@@ -638,52 +637,51 @@ bool CmdExecCLASS::ChainHandlerCall(LavaVariablePtr StackFrame, int eventType)
     return false;
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
   funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
-  fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
-  fsize = fDesc->stackFrameSize;
+  Handler_fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
+  fsize = Handler_fDesc->stackFrameSize;
   fsizeBytes = fsize<<2;
-	HandlerStack = new LavaObjectPtr[fsize];
+	Handler_Stack = new LavaObjectPtr[fsize];
   for (int ii = 0; ii<fsize; ii++)
-    HandlerStack[ii] = 0;
-  HandlerStack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
-  HandlerStack[SFH+1] = StackFrame[SFH]; //chain
-  HandlerStack[SFH+1] = (LavaObjectPtr)((HandlerStack[SFH+1])-(*(HandlerStack[SFH+1]))->sectionOffset);
-  HandlerStack[SFH+2] = StackFrame[SFH+1]; //handle
+    Handler_Stack[ii] = 0;
+  Handler_Stack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
+  Handler_Stack[SFH+1] = StackFrame[SFH]; //chain
+  Handler_Stack[SFH+1] = (LavaObjectPtr)((Handler_Stack[SFH+1])-(*(Handler_Stack[SFH+1]))->sectionOffset);
+  Handler_Stack[SFH+2] = StackFrame[SFH+1]; //handle
   if (eventType == Ev_ChainInsert) {
-    HandlerStack[SFH+3] = StackFrame[SFH+2];//newElem
+    Handler_Stack[SFH+3] = StackFrame[SFH+2];//newElem
   }
-  if (fDesc->isNative)
-    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, HandlerStack);
+  if (Handler_fDesc->isNative)
+    ok = (*Handler_fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   else
-    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, HandlerStack);
+    ok = Handler_fDesc->Execute((SynObjectBase*)Handler_fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   if (!ok) 
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
   /*else {
     if (eventType == Ev_ChainInsert) {
-      ok = *(bool*)(HandlerStack[SFH+4]+LSH);
-      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+4]);
-      if (ok && HandlerStack[SFH+5]) {
+      ok = *(bool*)(Handler_Stack[SFH+4]+LSH);
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+4]);
+      if (ok && Handler_Stack[SFH+5]) {
         DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, StackFrame[SFH+2]);
-        StackFrame[SFH+2] = HandlerStack[SFH+5];
+        StackFrame[SFH+2] = Handler_Stack[SFH+5];
       }
     }
     else {
-      ok = *(bool*)(HandlerStack[SFH+3]+LSH);
-      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, HandlerStack[SFH+3]);
+      ok = *(bool*)(Handler_Stack[SFH+3]+LSH);
+      DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, Handler_Stack[SFH+3]);
     }
   }
 
-	delete [] HandlerStack;
-  HandlerStack = 0;
+	delete [] Handler_Stack;
+  Handler_Stack = 0;
   */
   return true;
 }
 
 bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
 {
-  CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
-  bool ok;
+  //bool ok;
   LavaDECL* handlerDECL;
 
   CHEHandlerInfo* cheHandler = GetHandler(fNode, Ev_ValueChanged);
@@ -693,36 +691,43 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   handlerDECL = GUIProg->myDoc->IDTable.GetDECL(cheHandler->data.HandlerID);
   LastEvent = ID_EDITVALUE;
   funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
-  fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
-  int fsize = fDesc->stackFrameSize;
+  Handler_fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
+  int fsize = Handler_fDesc->stackFrameSize;
   int fsizeBytes = fsize<<2;
   H_EditPtr = (LavaVariablePtr)H_EditNode->data.ResultVarPtr;
 
-	HandlerStack = new LavaObjectPtr[fsize];
+	Handler_Stack = new LavaObjectPtr[fsize];
   for (int ii = 0; ii < fsize; ii++)
-    HandlerStack[ii] = 0;
-  HandlerStack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
-  HandlerStack[SFH+1] = *(LavaVariablePtr)H_EditNode->data.ResultVarPtr; //old value
-  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(H_EditNode->data.FormSyntax, &HandlerStack[SFH+2])) {
-	  delete [] HandlerStack;
-    HandlerStack = 0;
+    Handler_Stack[ii] = 0;
+  Handler_Stack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
+  Handler_Stack[SFH+1] = *(LavaVariablePtr)H_EditNode->data.ResultVarPtr; //old value
+  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj(H_EditNode->data.FormSyntax, &Handler_Stack[SFH+2])) {
+	  delete [] Handler_Stack;
+    Handler_Stack = 0;
     return false;
   }
-  H_EditNode->data.ResultVarPtr = (CSecTabBase***)&HandlerStack[SFH+2];
+  H_EditNode->data.ResultVarPtr = (CSecTabBase***)&Handler_Stack[SFH+2];
   H_EditNode->data.StringValue = newStr;
   ConvertAndStore(H_EditNode);
-  if (fDesc->isNative)
-    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, HandlerStack);
+  if (!GUIProg->isView) {
+    ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->handler_Call = true;
+    ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->resume();
+  }
+  GUIProg->ViewWin->setEnabled(false);
+/*
+  if (Handler_fDesc->isNative)
+    ok = (*Handler_fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   else
-    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, HandlerStack);
+    ok = Handler_fDesc->Execute((SynObjectBase*)Handler_fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   if (!ok) {
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
 
-	  delete [] HandlerStack;
-    HandlerStack = 0;
+	  delete [] Handler_Stack;
+    Handler_Stack = 0;
     return false;
   }
-  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+  */
   return true;
   
   /*fNode->data.ResultVarPtr = (CSecTabBase***)rPtr;
@@ -738,14 +743,13 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   ((CGUIProg*)GUIProg)->LavaForm.setDefaultValue(fNode);
 
 
-	  delete [] HandlerStack;
-    HandlerStack = 0;
+	  delete [] Handler_Stack;
+    Handler_Stack = 0;
     return true;*/
 }
 
 bool CmdExecCLASS::ButtonHandlerCall(CHEFormNode* buttonNode, int enumNum)
 {
-  CVFuncDesc *fDesc;
   CSectionDesc *funcSect;
   bool ok, toggle = false;
   LavaDECL* handlerDECL;
@@ -771,39 +775,41 @@ bool CmdExecCLASS::ButtonHandlerCall(CHEFormNode* buttonNode, int enumNum)
     H_EditPtr = (LavaVariablePtr)(H_EditNode->data.FIP.up->data.ResultVarPtr);
 
   funcSect = &(*(LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0];
-  fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
-  int fsize = fDesc->stackFrameSize;
+  Handler_fDesc = &funcSect->funcDesc[handlerDECL->SectionInfo1];
+  int fsize = Handler_fDesc->stackFrameSize;
   int fsizeBytes = fsize<<2;
-	HandlerStack = new LavaObjectPtr[fsize];
+	Handler_Stack = new LavaObjectPtr[fsize];
   for (int ii = 0; ii < fsize; ii++)
-    HandlerStack[ii] = 0;
-  HandlerStack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
-  HandlerStack[SFH+1] = *(LavaVariablePtr)H_EditNode->data.ResultVarPtr; //old value
-  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj((*((LavaVariablePtr)H_EditNode->data.ResultVarPtr))[0]->classDECL, &HandlerStack[SFH+2])) {
-	  delete [] HandlerStack;
-    HandlerStack = 0;
+    Handler_Stack[ii] = 0;
+  Handler_Stack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
+  Handler_Stack[SFH+1] = *(LavaVariablePtr)H_EditNode->data.ResultVarPtr; //old value
+  if (!((CGUIProg*)GUIProg)->LavaForm.AllocResultObj((*((LavaVariablePtr)H_EditNode->data.ResultVarPtr))[0]->classDECL, &Handler_Stack[SFH+2])) {
+	  delete [] Handler_Stack;
+    Handler_Stack = 0;
+    Handler_fDesc = 0;
     return false;
   }
-  H_EditNode->data.ResultVarPtr = (CSecTabBase***)&HandlerStack[SFH+2];
+  H_EditNode->data.ResultVarPtr = (CSecTabBase***)&Handler_Stack[SFH+2];
   if (toggle) 
     H_EditNode->data.B = ((CToggleButton*)H_ButtonNode->data.FIP.widget)->isChecked();
   else {
     H_EditNode->data.StringValue = H_ButtonNode->data.StringValue;
     if (!H_EditNode->data.EnumField)
-      H_EditNode->data.FIP.up->data.ResultVarPtr = (CSecTabBase***)&HandlerStack[SFH+2];
+      H_EditNode->data.FIP.up->data.ResultVarPtr = (CSecTabBase***)&Handler_Stack[SFH+2];
     if (enumNum >= 0)
       H_EditNode->data.D = enumNum;
     ConvertAndStore(H_EditNode);
   }
-  if (fDesc->isNative)
-    ok = (*fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, HandlerStack);
+  if (Handler_fDesc->isNative)
+    ok = (*Handler_fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   else
-    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, HandlerStack);
+    ok = Handler_fDesc->Execute((SynObjectBase*)Handler_fDesc->funcExec->Exec.ptr, ((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   if (!ok) {
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
 
-	  delete [] HandlerStack;
-    HandlerStack = 0;
+	  delete [] Handler_Stack;
+    Handler_fDesc = 0;
+    Handler_Stack = 0;
     return false;
   }
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
@@ -1055,6 +1061,6 @@ void CmdExecCLASS::INIT (CGUIProgBase *guiPr)
 {
   GUIProg = guiPr;
   //handle = 0;
-  HandlerStack = 0;
+  Handler_Stack = 0;
   H_ButtonNode = 0;
 }

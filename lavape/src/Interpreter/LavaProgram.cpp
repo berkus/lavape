@@ -2419,6 +2419,7 @@ stop:     ckd.document->throwError = false;
 }
 
 
+/*
 void CHandlerThread::run() {
   CheckData ckd;
   CSearchData sData;
@@ -2437,12 +2438,17 @@ void CHandlerThread::run() {
 #ifndef __GNUC__
   sigEnable();
 #endif
-}
+}*/
 
 CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
 {
-//  wxView *actView;
+  LavaVariablePtr newStackFrame=0;
+  int frameSize, frameSizeBytes, ii;
+  bool ok;
   CRuntimeException* ex=0;
+  LavaGUIDialog* dialog;
+  CVFuncDesc *fDesc;
+
   CLavaThread *currentThread = (CLavaThread*)QThread::currentThread();
   CLavaPEHint* hint =  new CLavaPEHint(CPECommand_OpenFormView, ckd.document, (const unsigned long)3, &stack[SFH], &stack[SFH+1], &stack[SFH+2], (void*)frozen, currentThread, (void*)fromFillIn);
   if (currentThread != wxTheApp->mainThread) {
@@ -2450,6 +2456,57 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
     currentThread->waitingForUI = true;
 	  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaShow,(void*)hint));
     currentThread->suspend();
+    while (currentThread->handler_Call) {
+      currentThread->handler_Call = false;
+      dialog = (LavaGUIDialog*)((CLavaBaseDoc*)LBaseData->docModal)->ActLavaDialog;
+      fDesc = dialog->myGUIProg->CmdExec.Handler_fDesc;
+      frameSize = fDesc->stackFrameSize;
+
+#ifdef __GNUC__
+      newStackFrame = new LavaObjectPtr[frameSize];
+#else
+      frameSizeBytes = frameSize<<2;
+      __asm {
+        sub esp, frameSizeBytes
+        mov newStackFrame, esp
+      }
+#endif
+      newStackFrame[0] = stack[0];
+      newStackFrame[1] = stack[1];
+      newStackFrame[2] = stack[2];
+      for (ii = SFH; ii < frameSize; ii++) 
+        newStackFrame[ii] = dialog->myGUIProg->CmdExec.Handler_Stack[ii];
+      if (fDesc->isNative)
+        ok = (*fDesc->funcPtr)(ckd, newStackFrame);
+      else
+        ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame);
+      if (!ok) {
+#ifdef __GNUC__
+	      delete [] newStackFrame;
+#else
+        __asm {
+            add esp, frameSizeBytes
+          }
+
+#endif        
+        if (!ckd.lastException)
+          ex = new CRuntimeException(RunTimeException_ex, &ERR_RunTimeException);
+        //???
+      }
+
+#ifdef __GNUC__
+	    delete [] newStackFrame;
+#else
+      __asm {
+          add esp, frameSizeBytes
+        }
+#endif   
+      for (ii = SFH; ii < frameSize; ii++) 
+        dialog->myGUIProg->CmdExec.Handler_Stack[ii] = newStackFrame[ii];
+
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+      currentThread->suspend();
+    }
     if (currentThread->mySemaphore.lastException) {
       if (ckd.lastException)
         DEC_FWD_CNT(ckd, ckd.lastException);
@@ -2501,7 +2558,7 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
   LavaObjectPtr servObj = stack[SFH] - stack[SFH][0][0].sectionOffset;
   LavaObjectPtr newStackFrame[SFH+3];
   newStackFrame[0] = stack[0];
-  newStackFrame[1] = stack[1];
+  newStackFrame[1] = (LavaObjectPtr)stack;
   newStackFrame[2] = (LavaObjectPtr)((unsigned)stack[2] & ~2);
   newStackFrame[SFH] = servObj; //stack[SFH];
   newStackFrame[SFH+1] = stack[SFH+1];
@@ -2532,6 +2589,9 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
   CRuntimeException *ex;
   LavaObjectPtr newStackFrame[SFH+3];
 
+  newStackFrame[0] = stack[0];
+  newStackFrame[1] = (LavaObjectPtr)stack;
+  newStackFrame[2] = (LavaObjectPtr)((unsigned)stack[2] & ~2);
   if (stack[SFH+2])
     DFC( stack[SFH+2]);
   newStackFrame[SFH] = stack[SFH] - stack[SFH][0][0].sectionOffset;
