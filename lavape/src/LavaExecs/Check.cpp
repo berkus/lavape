@@ -1504,6 +1504,8 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
   SynFlags ctxFlags;
 
   ckd.criticalScope=false;
+  if (!synObj)
+    return;
   if (synObj->primaryToken == ObjRef_T
   && synObj->parentObject->primaryToken == quant_T)
     stopQuant = (Quantifier*)synObj->parentObject;

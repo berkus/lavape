@@ -2504,6 +2504,7 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
       for (ii = SFH; ii < frameSize; ii++) 
         dialog->myGUIProg->CmdExec.Handler_Stack[ii] = newStackFrame[ii];
 
+      currentThread->waitingForUI = true;
       QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
       currentThread->suspend();
     }
@@ -2557,7 +2558,7 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
 {
   LavaObjectPtr servObj = stack[SFH] - stack[SFH][0][0].sectionOffset;
   LavaObjectPtr newStackFrame[SFH+3];
-  newStackFrame[0] = stack[0];
+  newStackFrame[0] = 0;
   newStackFrame[1] = (LavaObjectPtr)stack;
   newStackFrame[2] = (LavaObjectPtr)((unsigned)stack[2] & ~2);
   newStackFrame[SFH] = servObj; //stack[SFH];
@@ -2589,7 +2590,7 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
   CRuntimeException *ex;
   LavaObjectPtr newStackFrame[SFH+3];
 
-  newStackFrame[0] = stack[0];
+  newStackFrame[0] = 0;
   newStackFrame[1] = (LavaObjectPtr)stack;
   newStackFrame[2] = (LavaObjectPtr)((unsigned)stack[2] & ~2);
   if (stack[SFH+2])

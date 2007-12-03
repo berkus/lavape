@@ -487,7 +487,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
   LavaVariablePtr stack=stopStack;
   QString cFileName, cSynObjName, msg, path, pmMsg;
   unsigned inINCL;
-  bool debug, isEx = excMsg.length() != 0;
+  bool debug, isEx = excMsg.length() != 0, lastStack = false;
   CHEStackData* stData;
   int rc;
   DebugStep ds=nextDebugStep;
@@ -575,14 +575,18 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
         stData->data.FuncID = TID(((SelfVar*)oldSynObj)->execDECL->ParentDECL->OwnID,
                                   ((SelfVar*)oldSynObj)->execDECL->ParentDECL->inINCL);
         stData->data.ExecType = ((SelfVar*)oldSynObj)->execDECL->DeclType;
-        if (synObj) {
+        if (!lastStack) {
           stData = new CHEStackData;
-          stData->data.SynObjID = synObj->synObjectID;
           stData->data.Stack = (CSecTabBase ***)stack[1];
           stData->data.SynObj = synObj;
+          if (synObj) 
+            stData->data.SynObjID = synObj->synObjectID;
+          else
+            stData->data.SynObjID = 0;
           ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
         }
       }
+
       stack = (LavaVariablePtr)stack[1];
       if (isEx) {
         switch (oldSynObj->primaryToken) {
@@ -621,7 +625,25 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
         }
       }
       if (stack) {
-        synObj = synObj->parentObject;
+        if (synObj)
+          synObj = synObj->parentObject;
+        else {
+          synObj = (SynObject*)stack[0];
+          oldSynObj = synObj;
+          //stData->data.Stack = (CSecTabBase ***)stack;
+          stack = (LavaVariablePtr)stack[1];
+          lastStack = (stack[1] == 0);
+          stData->data.FuncID = ((Reference*)synObj)->refID;
+          stData->data.ExecType = ExecDef;
+          stData = new CHEStackData;
+          stData->data.Stack = (CSecTabBase ***)stack;
+          stData->data.SynObj = synObj;
+          if (synObj) 
+            stData->data.SynObjID = synObj->synObjectID;
+          else
+            stData->data.SynObjID = 0;
+          ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
+        }
         continue;
       }
       else

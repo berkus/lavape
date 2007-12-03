@@ -575,7 +575,6 @@ CHEHandlerInfo* CmdExecCLASS::GetHandler(CHEFormNode* fNode, int eventType)
 
 bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
 {
-  bool ok;
   CSectionDesc *funcSect;
   int fsizeBytes, fsize;
   LavaDECL* handlerDECL;
@@ -594,6 +593,10 @@ bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
     Handler_Stack[ii] = 0;
   Handler_Stack[SFH] = (LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService;
   Handler_Stack[SFH+1] = *(LavaVariablePtr)optNode->data.ResultVarPtr;
+  ContinueExecThread();
+  return true;
+
+  /*
   if (Handler_fDesc->isNative)
     ok = (*Handler_fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   else
@@ -602,7 +605,7 @@ bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
 
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
-  return true;
+  */
 
   /* else {
     ok = *(bool*)(Handler_Stack[SFH+2]+LSH);
@@ -627,7 +630,6 @@ bool CmdExecCLASS::OptHandlerCall(CHEFormNode* optNode, int eventType)
 
 bool CmdExecCLASS::ChainHandlerCall(LavaVariablePtr StackFrame, int eventType)
 {
-  bool ok;
   CSectionDesc *funcSect;
   int fsizeBytes, fsize;
   LavaDECL* handlerDECL;
@@ -647,9 +649,12 @@ bool CmdExecCLASS::ChainHandlerCall(LavaVariablePtr StackFrame, int eventType)
   Handler_Stack[SFH+1] = StackFrame[SFH]; //chain
   Handler_Stack[SFH+1] = (LavaObjectPtr)((Handler_Stack[SFH+1])-(*(Handler_Stack[SFH+1]))->sectionOffset);
   Handler_Stack[SFH+2] = StackFrame[SFH+1]; //handle
-  if (eventType == Ev_ChainInsert) {
+  if (eventType == Ev_ChainInsert) 
     Handler_Stack[SFH+3] = StackFrame[SFH+2];//newElem
-  }
+  ContinueExecThread();
+  return true;
+
+  /*
   if (Handler_fDesc->isNative)
     ok = (*Handler_fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   else
@@ -657,6 +662,7 @@ bool CmdExecCLASS::ChainHandlerCall(LavaVariablePtr StackFrame, int eventType)
   if (!ok) 
     ((CGUIProg*)GUIProg)->ckd.document->LavaError(((CGUIProg*)GUIProg)->ckd, true, ((LavaObjectPtr)cheHandler->data.HandlerNode->data.GUIService)[0]->classDECL, &ERR_RunTimeException,0);
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
+  */
   /*else {
     if (eventType == Ev_ChainInsert) {
       ok = *(bool*)(Handler_Stack[SFH+4]+LSH);
@@ -675,7 +681,6 @@ bool CmdExecCLASS::ChainHandlerCall(LavaVariablePtr StackFrame, int eventType)
 	delete [] Handler_Stack;
   Handler_Stack = 0;
   */
-  return true;
 }
 
 bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
@@ -709,11 +714,9 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   H_EditNode->data.ResultVarPtr = (CSecTabBase***)&Handler_Stack[SFH+2];
   H_EditNode->data.StringValue = newStr;
   ConvertAndStore(H_EditNode);
-  if (!GUIProg->isView) {
-    ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->handler_Call = true;
-    ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->resume();
-  }
-  GUIProg->ViewWin->setEnabled(false);
+  ContinueExecThread();
+
+  return true;
 /*
   if (Handler_fDesc->isNative)
     ok = (*Handler_fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, Handler_Stack);
@@ -728,7 +731,6 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
   }
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
   */
-  return true;
   
   /*fNode->data.ResultVarPtr = (CSecTabBase***)rPtr;
   DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, *rPtr);
@@ -751,7 +753,7 @@ bool  CmdExecCLASS::EditHandlerCall(CHEFormNode* fNode, STRING newStr)
 bool CmdExecCLASS::ButtonHandlerCall(CHEFormNode* buttonNode, int enumNum)
 {
   CSectionDesc *funcSect;
-  bool ok, toggle = false;
+  bool toggle = false;
   LavaDECL* handlerDECL;
 
   CHEHandlerInfo* cheHandler = GetHandler(buttonNode, Ev_ValueChanged);
@@ -800,6 +802,9 @@ bool CmdExecCLASS::ButtonHandlerCall(CHEFormNode* buttonNode, int enumNum)
       H_EditNode->data.D = enumNum;
     ConvertAndStore(H_EditNode);
   }
+  ContinueExecThread();
+  return true;
+/*
   if (Handler_fDesc->isNative)
     ok = (*Handler_fDesc->funcPtr)(((CGUIProg*)GUIProg)->ckd, Handler_Stack);
   else
@@ -813,9 +818,24 @@ bool CmdExecCLASS::ButtonHandlerCall(CHEFormNode* buttonNode, int enumNum)
     return false;
   }
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));//entfällt, wenn thread gestartet
-  return true;
+  */
 }
 
+void CmdExecCLASS::ContinueExecThread()
+{
+  if (!GUIProg->isView) {
+    ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->waitingForUI = false;
+    ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->handler_Call = true;
+    ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->resume();
+  }
+  /*
+  else {
+    ((CLavaGUIView*)GUIProg->ViewWin)->myThread->waitingForUI = false;
+    ((CLavaGUIView*)GUIProg->ViewWin)->myThread->handler_Call = true;
+    ((CLavaGUIView*)GUIProg->ViewWin)->myThread->resume();
+  }*/
+  GUIProg->ViewWin->setEnabled(false);
+}
 
 bool CmdExecCLASS::ConvertAndStore (CHEFormNode* trp)
 {

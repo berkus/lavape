@@ -51,6 +51,7 @@ public:
   bool ChainHandlerCall(LavaVariablePtr StackFrame, int eventType);
   bool EditHandlerCall(CHEFormNode* formNode, STRING newStr);
   bool ButtonHandlerCall(CHEFormNode* buttonNode, int enumNum);
+  void ContinueExecThread();
   bool ConvertAndStore (CHEFormNode* trp);
   bool Toggl (CHEFormNode* trp);
   void SelectButton (CHEFormNode* button, CHEFormNode*& trp);

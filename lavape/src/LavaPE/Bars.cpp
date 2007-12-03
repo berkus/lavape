@@ -527,7 +527,7 @@ void CUtilityView::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
       for (pos = 0; pos < wxTheApp->m_docManager->m_docs.size(); pos++) {
         stopDoc = (CLavaPEDoc*)wxTheApp->m_docManager->m_docs[pos];
         if (stopDoc && (qfn == stopDoc->GetFilename()))
-          pos = 0;
+          pos = wxTheApp->m_docManager->m_docs.size();
         else
           stopDoc = 0;
       }
@@ -625,13 +625,13 @@ void CUtilityView::showExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
                 sData.innermostStop = false;
               // sData.finished = false;
               ((SynObjectBase*)stopExecDECL->Exec.ptr)->MakeTable((address)&stopDoc->IDTable, 0, (SynObjectBase*)stopExecDECL, onSelect, 0,0, (address)&sData);
-              ((CExecView*)sData.execView)->sv->viewport()->update();
-              ((CExecView*)sData.execView)->sv->execCont->innermostStop = sData.innermostStop;
+              ((CExecView*)sData.execView)->redCtl->update();
+              ((CExecView*)sData.execView)->redCtl->innermostStop = sData.innermostStop;
             }
             else 
-              if (((CExecView*)sData.execView)->sv->execCont->callerStopToken) {
-                ((CExecView*)sData.execView)->sv->execCont->callerStopToken = 0;
-                ((CExecView*)sData.execView)->sv->viewport()->update();
+              if (((CExecView*)sData.execView)->redCtl->callerStopToken) {
+                ((CExecView*)sData.execView)->redCtl->callerStopToken = 0;
+                ((CExecView*)sData.execView)->redCtl->update();
               }
           }
         }
@@ -896,7 +896,7 @@ void StackListView::itemClicked(QTreeWidgetItem *item, int)
 void StackListView::selChanged()
 {
   lastSelected = (CTreeItem*)currentItem();
-  if (!lastSelected)
+  if (!lastSelected)// || lastSelected->isDisabled())
     return;
   if (allDrawn) {
     DbgMessage* mess = new DbgMessage(Dbg_StackRq);
@@ -912,35 +912,42 @@ void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
   QString label;
   LavaDECL *funcDecl;
   int ii = 0;
+  bool disableIt;
 
   allDrawn = false;
   while (topLevelItem(0))
     delete takeTopLevelItem(0);
   for (chData = (CHEStackData*)data->StackChain.first; 
        chData; chData = (CHEStackData*)chData->successor) {
+    disableIt = false;
     funcDecl = doc->IDTable.GetDECL(chData->data.FuncID);
     if (funcDecl) {
       label = QString(funcDecl->FullName.c) + " (";
       switch (funcDecl->DeclType) {
       case Function:
-        switch (chData->data.ExecType) {
-        case ExecDef:
-          label = label + "function)";
-          break;
-        case Require:
-          if (funcDecl->ParentDECL->DeclType == Interface)
-            label = label + "require)";
-          else
-            label = label + "impl. require)";
-          break;
-        case Ensure:
-          if (funcDecl->ParentDECL->DeclType == Interface)
-            label = label + "ensure)";
-          else
-            label = label + "impl. ensure)";
-          break;
-        default:;
+        if (funcDecl->TypeFlags.Contains(isNative)) {
+          label = label + "native function)";
+          disableIt = true;
         }
+        else
+          switch (chData->data.ExecType) {
+          case ExecDef:
+            label = label + "function)";
+            break;
+          case Require:
+            if (funcDecl->ParentDECL->DeclType == Interface)
+              label = label + "require)";
+            else
+              label = label + "impl. require)";
+            break;
+          case Ensure:
+            if (funcDecl->ParentDECL->DeclType == Interface)
+              label = label + "ensure)";
+            else
+              label = label + "impl. ensure)";
+            break;
+          default:;
+          }
         break;
       case Interface:
         label = label + "invariant)";
@@ -955,6 +962,8 @@ void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
       }
       item = new CTreeItem(label, this, item);
       item->itemCount = ii;
+      if (disableIt)
+        item->setFlags(0);
       if (ii == data->ActStackLevel) 
         lastSelected = item;
       ii++;
