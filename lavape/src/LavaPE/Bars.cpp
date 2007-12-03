@@ -550,7 +550,7 @@ void CUtilityView::removeExecStackPos(DbgStopData* data, CLavaBaseDoc* doc)
         if (view && (((CExecView*)view)->sv->execCont->debugStopToken || ((CExecView*)view)->sv->execCont->callerStopToken) ) {
           ((CExecView*)view)->sv->execCont->debugStopToken = 0;
           ((CExecView*)view)->sv->execCont->callerStopToken = 0;
-          ((CExecView*)view)->sv->viewport()->update();
+          ((CExecView*)view)->redCtl->update();
         }
       }
     }

@@ -2419,27 +2419,6 @@ stop:     ckd.document->throwError = false;
 }
 
 
-/*
-void CHandlerThread::run() {
-  CheckData ckd;
-  CSearchData sData;
-  LavaVariablePtr newStackFrame=0;
-  unsigned frameSize, pos, newOldExprLevel;
-  bool ok;
-
-#ifdef WIN32
-  unsigned frameSizeBytes;
-
-  //CoInitialize(0);
-#endif
-  myDoc->ThreadList->append(this);
-  ((CLavaDebugger*)LBaseData->debugger)->m_execThread = this;
-  ckd.document = (CLavaProgram*)myDoc;
-#ifndef __GNUC__
-  sigEnable();
-#endif
-}*/
-
 CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
 {
   LavaVariablePtr newStackFrame=0;
@@ -2622,4 +2601,3 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
     return true;
   }
 }
-

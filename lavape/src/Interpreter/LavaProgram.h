@@ -24,30 +24,7 @@ public:
   void run();
 
 };
-/*
-class LAVAEXECS_DLL CHandlerThread : public CLavaThread {
-public:
-  CheckData *ckd_ptr;
-  CVFuncDesc *handler_fDesc;
-  LavaVariablePtr stackFrame;
 
-  CHandlerThread(CLavaBaseDoc *doc, CheckData *ckdp, CVFuncDesc *hdl_fDesc, LavaVariablePtr newStackFrame) : CLavaThread(doc){
-	ckd_ptr = ckdp;
-    handler_fDesc = hdl_fDesc;
-	stackFrame = newStackFrame;
-  };
-
-  ~CHandlerThread() {
-    if (isRunning()) {
-      abort = true;
-      resume();
-      terminate();
-      wait();
-    }
-  }
-
-  void run();
-};*/
 
 class LAVAEXECS_DLL CLavaProgram : public CLavaBaseDoc
 {
