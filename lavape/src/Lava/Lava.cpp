@@ -82,7 +82,7 @@ int main( int argc, char ** argv ) {
   //_CrtSetBreakAlloc(60222);
 #endif
 
-  QTest::qSleep(20000);
+  //QTest::qSleep(20000);
 
   myPath = qgetenv("PATH");
   componentPath = myPath;
