@@ -215,6 +215,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
   if (ev->type() == UEV_LavaGUIEvent) {
 
     if (LastEvent == IDM_ITER_INSERT) {
+      GUIProg->ViewWin->setEnabled(true);
 
       if (LBaseData->inRuntime) {
         if (Handler_Stack) {
@@ -280,6 +281,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
     }
 
     else if (LastEvent == IDM_ITER_DEL) {
+      GUIProg->ViewWin->setEnabled(true);
 
       if (LBaseData->inRuntime) {
         if (Handler_Stack) {
@@ -322,6 +324,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
     }
 
     else if (LastEvent == ID_INSERTOPT) {
+      GUIProg->ViewWin->setEnabled(true);
 
       if (LBaseData->inRuntime) {
         if (Handler_Stack) {
@@ -371,6 +374,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
     }
 
     else if (LastEvent == ID_DELETEOPT) {
+      GUIProg->ViewWin->setEnabled(true);
 
       if (LBaseData->inRuntime) {
         if (Handler_Stack) {
@@ -653,12 +657,14 @@ void CmdExecCLASS::ContinueExecThread()
     ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->handler_Call = true;
     ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->resume();
   }
-  /*
+  
   else {
-    ((CLavaGUIView*)GUIProg->ViewWin)->myThread->waitingForUI = false;
-    ((CLavaGUIView*)GUIProg->ViewWin)->myThread->handler_Call = true;
-    ((CLavaGUIView*)GUIProg->ViewWin)->myThread->resume();
-  }*/
+    GUIProg->myDoc->m_execThreadPtr->waitingForUI = false;
+    if (GUIProg->myDoc->ThreadList->isEmpty())
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaStart, (void*)GUIProg->myDoc));
+    else
+      GUIProg->myDoc->m_execThreadPtr->resume();
+  }
   GUIProg->ViewWin->setEnabled(false);
 }
 

@@ -69,7 +69,7 @@ void CLavaPEDebugger::start() {
 	  }
   }
   else {
-    workSocket = new QTcpSocket;
+    workSocket = new QTcpSocket(this);
     connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
     connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
     workSocket->connectToHost(remoteIPAddress,remotePort);

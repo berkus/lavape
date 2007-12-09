@@ -1330,7 +1330,7 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
   formDECL = IDTable->GetDECL(formEl->data.VTClss); //remember: TIDs in VElems are already adjusted
   if (formDECL != parDECL) { //form has inherited form from base class
     cheMem = (CHE*)parDECL->NestedDecls.first;
-    if (( ((LavaDECL*)cheMem->data)->DeclDescType == LiteralString) 
+    if (cheMem && ( ((LavaDECL*)cheMem->data)->DeclDescType == LiteralString) 
     && ((LavaDECL*)cheMem->data)->Annotation.ptr->BasicFlags.Contains(beforeBaseType)) {
       partialForm(0, (LavaDECL*)cheMem->data, 0, defaultIOflags, newFNode, nowField, allowHandler, classChain);
       if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex) {

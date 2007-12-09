@@ -94,6 +94,7 @@ public:
   wxView *RuntimeView; //used from *.ldoc only
   QWidget* ActLavaDialog;
   CThreadList *ThreadList;
+  CLavaThread* m_execThreadPtr;
   QWidget* DumpFrame;
   int numAllocObjects;
 #ifdef ALLOCOBJLIST

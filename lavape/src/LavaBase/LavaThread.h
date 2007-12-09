@@ -35,12 +35,13 @@ public:
     abort = false;
     waitingForUI = false;
     handler_Call = false;
+    ldocEnd = false;
     mySemaphore.acquire();
   }
   CLavaThread(CLavaBaseDoc *d);
 
   CLavaBaseDoc *myDoc;
-  bool abort, waitingForUI, handler_Call;
+  bool abort, ldocEnd, waitingForUI, handler_Call;
 
   virtual void suspend() {
     mySemaphore.acquire();

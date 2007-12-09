@@ -59,6 +59,7 @@
 
 CLavaProgram::CLavaProgram() : m_execThread(this)
 {
+  m_execThreadPtr = &m_execThread;
 }
 
 CLavaProgram::~CLavaProgram()
@@ -2257,6 +2258,7 @@ void CLavaExecThread::run() {
   ExecuteLava();
 }
 
+/*
 unsigned CLavaExecThread::ExecuteLava()
 {
   CheckData ckd;
@@ -2417,6 +2419,215 @@ stop:     ckd.document->throwError = false;
     return 0;
   }
 }
+*/
+
+unsigned CLavaExecThread::ExecuteLava()
+{
+  CheckData ckd;
+  CSearchData sData;
+  LavaVariablePtr newStackFrame=0;
+  QString msg="Normal end of application";
+  unsigned frameSize, pos, newOldExprLevel;
+  bool ok;
+  LavaDECL* topDECL;
+  CVFuncDesc *fDesc;
+
+
+#ifdef WIN32
+  unsigned frameSizeBytes;
+
+  //CoInitialize(0);
+#endif
+  ((CLavaDebugger*)LBaseData->debugger)->m_execThread = this;
+  ckd.document = (CLavaProgram*)myDoc;
+  if (!myDoc->isObject) {
+
+    topDECL = (LavaDECL*)((CHESimpleSyntax*)ckd.document->mySynDef->SynDefTree.first)->data.TopDef.ptr;
+    CHE* che;
+    for (che = (CHE*)topDECL->NestedDecls.first;
+         che && (((LavaDECL*)che->data)->DeclType == VirtualType);
+         che = (CHE*) che->successor);
+    if (!che || (((LavaDECL*)che->data)->DeclType != Initiator)
+            || !((LavaDECL*)che->data)->NestedDecls.last) {
+      critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      ckd.document->throwError = false;  //07.05.2002
+      LavaEnd(ckd.document, true);  //07.05.2002
+      return 0;
+    }
+    ((CLavaProgram*)ckd.document)->InitBAdapter();
+    topDECL = (LavaDECL*)((CHE*)((LavaDECL*)che->data)->NestedDecls.last)->data;
+    if (!topDECL || (topDECL->DeclType != ExecDef) || !topDECL->Exec.ptr) {
+      critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("No initiator in the first declaration position"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      ckd.document->throwError = false; //07.05.2002
+      LavaEnd(ckd.document, true);  //07.05.2002
+      return 0;
+    }
+  }
+
+#ifndef __GNUC__
+  sigEnable();
+#endif
+
+  try {
+#ifndef WIN32
+    if (setjmp(contOnHWexception)) throw hwException;
+#endif
+    if (!myDoc->isObject) {
+      ckd.myDECL = topDECL;
+      ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
+      if (!ok) {
+        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+        goto stop;
+      }
+      sData.nextFreeID = 0;
+      sData.doc = ckd.document;
+      sData.nextFreeID = 0;
+      // sData.finished = false;
+      ((SynObject*)topDECL->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
+      topDECL->WorkFlags.INCL(runTimeOK);
+      frameSize = ((SelfVar*)topDECL->Exec.ptr)->stackFrameSize;
+      newOldExprLevel = frameSize - 1;
+#ifdef __GNUC__
+		  newStackFrame = new LavaObjectPtr[frameSize];
+#else
+      frameSizeBytes = frameSize<<2;
+      __asm {
+        sub esp, frameSizeBytes
+        mov newStackFrame, esp
+      }
+#endif
+      for (pos=0;pos<frameSize;pos++)
+        newStackFrame[pos] = 0;
+    }//!isObject
+    if (myDoc->debugOn) {
+     ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
+      QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
+        //debug thread start, now initialisation is finished
+      suspend();
+        //execution thread wait until debug thread has received first message from LavaPE
+    }
+    if (!myDoc->isObject)
+      ok = ((SelfVarX*)topDECL->Exec.ptr)->Execute(ckd,newStackFrame,newOldExprLevel);
+    else {
+      ok = true;
+      while (ok && !ldocEnd) {
+        fDesc = ((CLavaGUIView*)myDoc->RuntimeView)->myGUIProg->CmdExec.Handler_fDesc;
+        frameSize = fDesc->stackFrameSize;
+#ifdef __GNUC__
+		    newStackFrame = new LavaObjectPtr[frameSize];
+#else
+        frameSizeBytes = frameSize<<2;
+        __asm {
+          sub esp, frameSizeBytes
+          mov newStackFrame, esp
+        }
+#endif
+        for (pos=0;pos<SFH;pos++)
+          newStackFrame[pos] = 0;
+        for (pos = SFH; pos < frameSize; pos++) 
+          newStackFrame[pos] = ((CLavaGUIView*)myDoc->RuntimeView)->myGUIProg->CmdExec.Handler_Stack[pos];
+        if (fDesc->isNative)
+          ok = (*fDesc->funcPtr)(ckd, newStackFrame);
+        else
+          ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame);
+        if (ok) {
+          for (pos = SFH; pos < frameSize; pos++) 
+            ((CLavaGUIView*)myDoc->RuntimeView)->myGUIProg->CmdExec.Handler_Stack[pos] = newStackFrame[pos];
+          if (newStackFrame) {
+#ifdef __GNUC__
+				    delete [] newStackFrame;
+#else
+            __asm {
+              add esp, frameSizeBytes
+            }
+#endif 
+          }
+          QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+          suspend();
+        }
+      }//while
+    }//isObject
+    if (!ok) {
+      if (!ckd.exceptionThrown)
+        ((SelfVarX*)topDECL->Exec.ptr)->SetRTError(ckd, &ERR_ExecutionFailed,newStackFrame);
+
+      if (newStackFrame) {
+#ifdef __GNUC__
+				delete [] newStackFrame;
+#else
+        __asm {
+          add esp, frameSizeBytes
+        }
+#endif
+      }
+      ((CLavaProgram*)ckd.document)->HCatch(ckd);
+stop: ckd.document->throwError = false;
+      CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
+      QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+//    ckd.document->LavaEnd(true);
+      return 0;
+    }//!ok
+  }//try
+  catch (CHWException ex) {
+    critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(ex.message)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    ckd.document->throwError = false;
+    LavaEnd(ckd.document, true);
+    return 0;
+  }
+  catch (CRuntimeException ex) {
+    critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(ex.message)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    ckd.document->throwError = false;
+    LavaEnd(ckd.document, true);
+    return 0;
+  }
+  catch(CUserException) {
+    if (ckd.lastException)
+      ((CLavaProgram*)ckd.document)->HCatch(ckd);
+    ckd.document->throwError = false;
+    LavaEnd(ckd.document, true);
+    return 0;
+  }
+  catch(CExecAbort) {
+    // For other exception types, notify user here.
+    critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Lava program has been aborted due to LavaPE termination"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
+		QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+    return 0;
+  }
+  catch(CException) {
+    // For other exception types, notify user here.
+    critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Unknown exception during check or execution of Lava program"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    if (ckd.document->throwError) {
+      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
+			QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+    }
+    return 0;
+  }
+  catch(int) {
+    // For stack overflow, notify user here.
+    critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Stack overflow!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    if (ckd.document->throwError) {
+      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
+			QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+    }
+    return 0;
+  }
+  if (!myDoc->isObject) {
+    if (newStackFrame) {
+#ifdef __GNUC__
+      delete [] newStackFrame;
+#else
+      __asm {
+        add esp, frameSizeBytes
+      }
+#endif
+    }
+  }
+  information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(msg)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+  CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
+  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+  return 1;
+}
 
 
 CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, bool fromFillIn)
@@ -2473,7 +2684,7 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
 #endif        
         if (!ckd.lastException)
           ex = new CRuntimeException(RunTimeException_ex, &ERR_RunTimeException);
-        return;
+        return ex;
       }
 
 

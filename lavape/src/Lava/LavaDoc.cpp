@@ -76,6 +76,19 @@ bool CLavaDoc::DeleteContents()
   return CLavaBaseDoc::DeleteContents(); 
 }
 
+
+bool CLavaDoc::OnCloseDocument()
+{
+  if (isObject && !ThreadList->isEmpty()) {
+    if (((CLavaDebugger*)LBaseData->debugger)->isConnected)
+      ((CLavaDebugger*)LBaseData->debugger)->stop(normalEnd);
+    m_execThreadPtr->ldocEnd = true;
+    m_execThreadPtr->resume();
+  }
+  return CLavaProgram::OnCloseDocument();
+}
+
+
 CLavaDoc::~CLavaDoc()
 {
  if (numAllocObjects) {

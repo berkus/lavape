@@ -86,6 +86,8 @@ CLavaDebugger::~CLavaDebugger()
     delete varAction;
     varAction = 0;
   }
+  mSend.Destroy();
+  mReceive.Destroy();
 }
 
 void CLavaDebugger::customEvent(QEvent *ev) {
@@ -108,7 +110,7 @@ void CLavaDebugger::start() {
   quint16 locPort;
 
   if (startedFromLavaPE) {
-    workSocket = new QTcpSocket;
+    workSocket = new QTcpSocket(this);
     connect(workSocket,SIGNAL(error(QAbstractSocket::SocketError)),SLOT(error(QAbstractSocket::SocketError)));
     connect(workSocket,SIGNAL(readyRead()),SLOT(receive()));
     workSocket->connectToHost(remoteIPAddress,remotePort);

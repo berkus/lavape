@@ -46,6 +46,7 @@ bool CLavaGUIFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   if (LBaseData->inRuntime)
     if (myDoc->isObject) {
       myView = new CLavaGUIView(this, myDoc);
+      myDoc->AddView(myView);
       layout->addWidget(myView);
       layout->setMargin(0);
       show();

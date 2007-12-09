@@ -31,6 +31,7 @@ CLavaThread::CLavaThread(CLavaBaseDoc* docu)
   abort = false;
   waitingForUI = false;
   handler_Call = false;
+  ldocEnd = false;
   myDoc = docu;
   mySemaphore.acquire();
   if (!myDoc->ThreadList)

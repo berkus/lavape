@@ -417,11 +417,12 @@ bool wxDocument::SaveAs()
 
 
     // Notify the views that the filename has changed
-    wxView *view = m_documentViews.first();
-    for (int i = 0; i < m_documentViews.size(); ++i) {
-        m_documentViews.at(i)->OnChangeFilename();
+    if (!m_documentViews.isEmpty()) {
+      wxView *view = m_documentViews.first();
+      for (int i = 0; i < m_documentViews.size(); ++i) {
+          m_documentViews.at(i)->OnChangeFilename();
+      }
     }
-
     SetDocumentSaved(true);
     return OnSaveDocument(m_documentFile);
 }

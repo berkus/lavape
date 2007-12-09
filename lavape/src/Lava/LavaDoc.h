@@ -23,6 +23,7 @@ public:
   virtual bool IsModified();
   virtual void Serialize(QDataStream& ar);
   virtual bool OnOpenDocument(const QString& lpszPathName); 
+  virtual bool OnCloseDocument();
   virtual bool OnNewDocument();
   virtual bool OnSaveDocument(const QString& lpszPathName);
   virtual bool SelectLcom(bool emptyDoc);
