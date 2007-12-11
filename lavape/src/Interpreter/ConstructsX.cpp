@@ -492,7 +492,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
   int rc;
   DebugStep ds=nextDebugStep;
 
-  debug = ckd.document->debugOn || LBaseData->m_pmDumps;
+  debug = ckd.document->debugOn || LBaseData->m_pmDumps && !((CLavaDebugger*)LBaseData->debugger)->m_execThread;
   if (debug && !((CLavaDebugger*)LBaseData->debugger)->dbgStopData)
     ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
 

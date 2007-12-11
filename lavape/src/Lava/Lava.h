@@ -39,6 +39,7 @@ public:
 
 public:
   void OnFileOpen();
+  void OnFileDebug();
   void OnFileNew();
   void OnAppAbout();
   virtual int OnAppExit();

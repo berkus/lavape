@@ -906,7 +906,8 @@ enum StopReason {  Stop_BreakPoint,
                    Stop_NextOp,
                    Stop_StepInto,
                    Stop_StepOut,
-                   Stop_Exception
+                   Stop_Exception,
+                   Stop_Start
                    };
 
 enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, dbg_RunTo};

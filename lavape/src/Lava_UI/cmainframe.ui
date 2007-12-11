@@ -10,9 +10,7 @@
    </rect>
   </property>
   <property name="sizePolicy" >
-   <sizepolicy>
-    <hsizetype>1</hsizetype>
-    <vsizetype>7</vsizetype>
+   <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -35,22 +33,21 @@
     <height>15</height>
    </size>
   </property>
+  <widget class="QWidget" name="centralwidget" />
   <widget class="QToolBar" name="Toolbar_1" >
    <property name="enabled" >
     <bool>true</bool>
    </property>
    <property name="sizePolicy" >
-    <sizepolicy>
-     <hsizetype>1</hsizetype>
-     <vsizetype>7</vsizetype>
+    <sizepolicy vsizetype="Expanding" hsizetype="Minimum" >
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
    <property name="minimumSize" >
     <size>
-     <width>37</width>
-     <height>25</height>
+     <width>0</width>
+     <height>0</height>
     </size>
    </property>
    <property name="maximumSize" >
@@ -63,7 +60,10 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>4</number>
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
    </attribute>
    <addaction name="fileOpenAction" />
    <addaction name="fileSaveAction" />
@@ -88,7 +88,7 @@
      <x>0</x>
      <y>0</y>
      <width>539</width>
-     <height>19</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="windowMenu" >
@@ -105,6 +105,7 @@
     </property>
     <addaction name="fileNewAction" />
     <addaction name="fileOpenAction" />
+    <addaction name="debugAction" />
     <addaction name="fileCloseAction" />
     <addaction name="fileSaveAction" />
     <addaction name="fileSaveAsAction" />
@@ -519,6 +520,14 @@
    </property>
    <property name="iconText" >
     <string>post-mortem dump support</string>
+   </property>
+  </action>
+  <action name="debugAction" >
+   <property name="icon" >
+    <iconset resource="../Lava_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TreeIcons/PX_debugTab.xpm</iconset>
+   </property>
+   <property name="text" >
+    <string>Debug...</string>
    </property>
   </action>
  </widget>

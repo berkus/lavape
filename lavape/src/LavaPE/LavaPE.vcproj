@@ -1716,6 +1716,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\res\TreeIcons\PX_debugTab.xpm"
+					>
+				</File>
+				<File
 					RelativePath="res\TreeIcons\PX_definitions.xpm"
 					>
 				</File>

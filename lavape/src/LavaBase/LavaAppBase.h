@@ -337,6 +337,7 @@ public:
     ContData = 0;
     debugger = 0;
     tempBrkPoint = 0;
+    openForDebugging = false;
   }
 
   void Init(CPEBaseBrowse *browser, CBaseExecUpdate *execUpdate);
@@ -350,6 +351,8 @@ public:
   unsigned long /*HCURSOR*/ ArrowCurser;
   bool inMultiDocUpdate; //open document in multi document update
   bool inRuntime;
+  bool openForDebugging;
+
   CLavaPEHint* actHint;
   CMultiUndoMem MultiUndoMem;
   CPEBaseBrowse *Browser;

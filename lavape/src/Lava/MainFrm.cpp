@@ -167,6 +167,11 @@ void CLavaMainFrame::on_fileOpenAction_triggered()
   ((CLavaApp*)wxTheApp)->OnFileOpen();
 }
 
+void CLavaMainFrame::on_debugAction_triggered()
+{
+  ((CLavaApp*)wxTheApp)->OnFileDebug();
+}
+
 
 void CLavaMainFrame::on_fileSaveAction_triggered()
 {

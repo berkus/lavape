@@ -137,6 +137,7 @@ CLavaApp::CLavaApp(int &argc, char ** argv )
 //  settings.beginGroup(GetSettingsPath());
   LBaseData.theApp = this;
   LBaseData.inRuntime = true;
+  LBaseData.openForDebugging = false;
   clipboard()->clear();
   LBaseData.actHint = 0;
   LBaseData.Init(0, 0);
@@ -399,6 +400,19 @@ void CLavaApp::OnFileOpen()
   QString fileName = lavaFileDialog(wxTheApp->GetLastFileOpen(), m_appWindow, "Select a file to open", true);
   if (fileName.isEmpty())
     return;
+#ifdef WIN32
+  QString driveLetter = QString(fileName[0].toUpper());
+  fileName.replace(0,1,driveLetter);
+#endif
+  OpenDocumentFile(fileName);
+}
+
+void CLavaApp::OnFileDebug()
+{
+  QString fileName = lavaFileDialog(wxTheApp->GetLastFileOpen(), m_appWindow, "Select a file to open for debugging", true);
+  if (fileName.isEmpty())
+    return;
+  LBaseData.openForDebugging = true;
 #ifdef WIN32
   QString driveLetter = QString(fileName[0].toUpper());
   fileName.replace(0,1,driveLetter);

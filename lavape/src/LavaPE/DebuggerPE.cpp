@@ -140,7 +140,8 @@ void CLavaPEDebugger::receive() {
   dbgReceived.newReceived = new DbgMessage;
   CDPDbgMessage(GET, get_cid, dbgReceived.newReceived,false);
   if (get_cid->Done) {
-	  QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
+    if (((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->stopReason != Stop_Start)
+	    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
     return;
   }
   else

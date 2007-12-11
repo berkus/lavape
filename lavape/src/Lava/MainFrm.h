@@ -26,7 +26,7 @@ public slots:
   virtual void on_pmDumpAction_triggered(bool on);
   virtual void on_fileNewAction_triggered();
   virtual void on_fileOpenAction_triggered();
-
+  virtual void on_debugAction_triggered();
   virtual void on_fileSaveAction_triggered();
   virtual void on_fileSaveAsAction_triggered();
   virtual void on_fileSaveAllAction_triggered();

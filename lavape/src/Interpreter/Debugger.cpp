@@ -164,8 +164,10 @@ void CLavaDebugger::connected() {
   }
 
   if (!startedFromLavaPE) {
-    varAction->run();
-    addCalleeParams();
+    if (dbgStopData->stopReason != Stop_Start) {
+      varAction->run();
+      addCalleeParams();
+    }
     mSend.SetSendData(Dbg_StopData, dbgStopData);
     CDPDbgMessage0(PUT, put_cid, &mSend,false);
     put_cid->flush();

@@ -203,6 +203,14 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
   QFileInfo qf = QFileInfo(fname);
   filename = qf.absoluteFilePath();
   wxDocManager::GetDocumentManager()->AddFileToHistory(filename);
+  if (LBaseData->openForDebugging) {
+    debugOn = true;
+    openForDebugging = true;
+    LBaseData->openForDebugging = false;
+    ((CLavaDebugger*)LBaseData->debugger)->initData(this, &m_execThread);
+    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->stopReason = Stop_Start;
+    QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
+  }
   if (((CLavaApp*)wxTheApp)->pLavaLdocTemplate == GetDocumentTemplate()) {
     QFile fn(filename); 
     ObjectPathName = DString(qPrintable(filename));

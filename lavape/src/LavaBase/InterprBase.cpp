@@ -67,8 +67,11 @@ bool INC_REV_CNT(CheckData &ckd, LavaObjectPtr object) {
 
 bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
   register unsigned short fwdCnt, revCnt;
-  LavaObjectPtr callPtr, /*sectionPtr,*/ newStackFrame[SFH+1];
+  LavaObjectPtr callPtr; /*sectionPtr, newStackFrame[SFH+1]*/;
   CVFuncDesc *fDesc;
+  LavaVariablePtr newStackFrame;
+  int frameSizeBytes, frameSize=SFH+1;
+  bool ok;
 
   object = object - (*object)->sectionOffset;
   fwdCnt = *(((unsigned short *)object)-1);
@@ -87,24 +90,37 @@ bool DEC_FWD_CNT (CheckData &ckd, LavaObjectPtr object) {
   fDesc = &(*(object + object[0][object[0][0].nSections-1].sectionOffset))->funcDesc[1]; 
 	  // call the object's finalize method
   callPtr = object + (*object)[fDesc->delta].sectionOffset;
+#ifdef __GNUC__
+      newStackFrame = new LavaObjectPtr[SFH+1];
+#else
+      frameSizeBytes = frameSize<<2;
+      __asm {
+        sub esp, frameSizeBytes
+        mov newStackFrame, esp
+      }
+#endif
   newStackFrame[0] = 0;
   newStackFrame[1] = 0;
   newStackFrame[2] = 0;
   newStackFrame[SFH] = callPtr;
-  if (fDesc->isNative) {
-    if (!(*fDesc->funcPtr)(ckd, newStackFrame) ) {
-      ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
-      ((SynFlags*)(object + 1))->INCL(zombified);
-      return false;
-    }
-  }
+  if (fDesc->isNative) 
+    ok = (*fDesc->funcPtr)(ckd, newStackFrame);
   else 
-    if (!fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame)) {
-      ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
-      ((SynFlags*)(object + 1))->INCL(zombified);
-      return false;
-    }
+    ok = fDesc->Execute((SynObjectBase*)fDesc->funcExec->Exec.ptr, ckd, newStackFrame);
 
+#ifdef __GNUC__
+	delete [] newStackFrame;
+#else
+  __asm {
+     add esp, frameSizeBytes
+  }
+
+#endif       
+  if (!ok) {
+    ckd.document->LavaError(ckd, true, object[0]->classDECL, &ERR_RunTimeException,0);
+    ((SynFlags*)(object + 1))->INCL(zombified);
+    return false;
+  }
 ////////////////////////////////////////////////////////////////
 // delete object:
 

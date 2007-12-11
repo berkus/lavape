@@ -17,6 +17,7 @@
         <file>LavaPE/res/TOOLBUTTONS/Q_TileHori.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</file>
-		<file>LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</file>
+        <file>LavaPE/res/TreeIcons/PX_debugTab.xpm</file>
     </qresource>
 </RCC>
