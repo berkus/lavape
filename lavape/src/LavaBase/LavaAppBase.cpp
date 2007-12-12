@@ -1146,6 +1146,7 @@ QString L_GetOpenFileName(const QString& startFileName,
   fd->selectFilter(currentFilter);
   if (fd->exec() == QDialog::Accepted ) {
     QStringList selFiles=fd->selectedFiles();
+    selFiles.replaceInStrings("\\", "/");
     fileName = selFiles.first(); //fd->selectedFile();
     delete fd;
     return fileName;
@@ -1288,21 +1289,14 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
   if (fd->exec() == QDialog::Accepted ) {
     resultNames = fd->selectedFiles();
     delete fd;
+    resultNames.replaceInStrings("\\", "/");
     return resultNames;
   }
   else {
     delete fd;
     return QStringList();
   }
-  /*
-  return QFileDialog::getOpenFileNames( initialDir,
-				      filter,
-				      parent,
-              "",
-				      caption,
-				      (QString*)&filter,
-				      false );
-              */
+ 
 #endif
 }
 
