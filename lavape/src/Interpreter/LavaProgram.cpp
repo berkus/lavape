@@ -2476,8 +2476,8 @@ stop: ckd.document->throwError = false;
       }
 #endif
     }
+    information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(msg)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
   }
-  information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(qPrintable(msg)),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
   CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
   QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
   if (myDoc->debugOn)

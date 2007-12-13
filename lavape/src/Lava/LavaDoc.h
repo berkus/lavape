@@ -38,10 +38,10 @@ protected:
   void FullTab();
   void StoreChain(ASN1tofromAr* cid, LavaObjectPtr object);
   QString* LoadChain1(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object);
-  void LoadChain2(LavaObjectPtr object);
+  void LoadChain2(CheckData& ckd, LavaObjectPtr object);
   void StoreArray(ASN1tofromAr* cid, LavaObjectPtr object);
   QString* LoadArray1(ASN1tofromAr* cid, LavaObjectPtr object);
-  void LoadArray2(LavaObjectPtr object);
+  void LoadArray2(CheckData& ckd, LavaObjectPtr object);
   bool OnEmptyObj(const DString& lcomName, const DString& linkName);
 
 public:

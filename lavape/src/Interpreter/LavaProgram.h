@@ -15,7 +15,7 @@ public:
     if (isRunning()) {
       abort = true;
       resume();
-      terminate();
+      //terminate();
       wait();
     }
   }

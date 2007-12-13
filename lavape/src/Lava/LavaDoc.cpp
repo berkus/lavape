@@ -553,7 +553,7 @@ bool CLavaDoc::Store(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr object)
                   iCast = 0;
                 }
                 long int ics = (iCast << 16) | iStore;
-                cid->PUTint(ics /*MAKELONG(iStore, iCast)*/); //(*cid->Ar) << MAKELONG(iStore, iCast); //store number of member object and section offset
+                cid->PUTint(ics); //store number of member object and section offset
               }//for (ll...
             //}//section not native
           }//primary
@@ -656,13 +656,17 @@ QString* CLavaDoc::LoadArray1(ASN1tofromAr* cid, LavaObjectPtr object)
 }
 
 
-void CLavaDoc::LoadArray2(LavaObjectPtr object)
+void CLavaDoc::LoadArray2(CheckData& ckd, LavaObjectPtr object)
 {
-  int ii, arrayLen = *(int*)(object+LSH);
+  int ii, iTab, arrayLen = *(int*)(object+LSH);
   LavaVariablePtr arPtr = *(LavaVariablePtr*)(object+LSH+1);
   for (ii = 0; ii < arrayLen; ii++)
-    if ((*(LavaVariablePtr*)(object+LSH+1))[ii])
-      arPtr[ii] = (ObjTab[(int)(signed short)LOWORD(arPtr[ii])] + HIWORD(arPtr[ii]));
+    if ((*(LavaVariablePtr*)(object+LSH+1))[ii]) {
+      iTab = (int)(signed short)LOWORD(arPtr[ii]);
+      arPtr[ii] = (ObjTab[iTab] + HIWORD(arPtr[ii]));
+      if (iTab)
+        INC_FWD_CNT(ckd, ObjTab[iTab]);
+    }
 }
 
 
@@ -688,21 +692,26 @@ QString* CLavaDoc::LoadChain1(CheckData& ckd, ASN1tofromAr* cid, LavaObjectPtr o
   return 0;
 }
 
-void CLavaDoc::LoadChain2(LavaObjectPtr object)
+void CLavaDoc::LoadChain2(CheckData& ckd, LavaObjectPtr object)
 {
   CHE* che;
+  int iTab;
   for (che = (CHE*)((CHAINX*)(object+LSH))->first; che; che = (CHE*)che->successor)
-    if (che->data)
-      che->data = (DObject*)(ObjTab[(int)(signed short)LOWORD(che->data)] + HIWORD(che->data));
+    if (che->data) {
+      iTab = (int)(signed short)LOWORD(che->data);
+      che->data = (DObject*)(ObjTab[iTab] + HIWORD(che->data));
+      if (iTab)
+        INC_FWD_CNT(ckd, ObjTab[iTab]);
+    }
 }
 
 bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
 {
-  LavaObjectPtr sectionPtr, objPtr, newStackFrame[SFH+2];
+  LavaObjectPtr sectionPtr, objPtr, newStackFrame[SFH+2], oCast;
   LavaVariablePtr memPtr;
   LavaDECL *classDECL, *implDECL, *secClassDECL;
   CHESimpleSyntax *cheSyn;
-  int iTab, iSect, ll, lmem, llast, objINCL, iEnum;
+  int iTab, iSect, ll, lmem, llast, objINCL, iEnum, iObj;
   long lon;
   TID id;
   SynFlags secFlag;
@@ -807,8 +816,11 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
         if (ActTab == MaxTab)
           FullTab();
         ObjTab[ActTab] = objPtr;
-        if (ActTab == 1)
+        if (ActTab == 1) {
           *pObject = objPtr;
+          oCast = objPtr - (objPtr[0])[0].sectionOffset;
+          INC_FWD_CNT(ckd, oCast);
+        }
         for (iSect = 0; iSect < ObjTab[ActTab][0]->nSections; iSect++) {
           if (((CSectionDesc*)classDECL->SectionTabPtr)[iSect].SectionFlags.Contains(SectPrimary)) {
             secClassDECL = ((CSectionDesc*)classDECL->SectionTabPtr)[iSect].classDECL;
@@ -860,22 +872,20 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
                   }
                 }
                 else {
-                  llast = (int)(unsigned)funcAdapter[0] + LSH;//((unsigned)(funcAdapter[0])+3)/4+2;
+                  llast = (int)(unsigned)funcAdapter[0] + LSH;
                   for (ll = LSH; ll < llast; ll++)
-                    cid->GETint(*(long int*)(sectionPtr + ll)); //(*cid->Ar) >> *(DWORD*)(sectionPtr + ll);
+                    cid->GETint(*(long int*)(sectionPtr + ll)); 
                 }
               }
               lmem = (int)(unsigned)funcAdapter[0] + LSH;
             }
-            //else {  //(##########)
-              llast = secClassDECL->SectionInfo2 + LSH;
-              for (/*ll = LSH*/; lmem < llast; lmem++) 
-                cid->GETint(*(long int*)(sectionPtr + lmem)); //(*cid->Ar) >> *(LONG*)(sectionPtr + ll);
-            //}//section not native
+            llast = secClassDECL->SectionInfo2 + LSH;
+            for (/*ll = LSH*/; lmem < llast; lmem++) 
+              cid->GETint(*(long int*)(sectionPtr + lmem)); 
           }//primary
         }//for (iSect...
         ActTab++;
-        cid->GETint(id.nID); //(*cid->Ar) >> id.nID;
+        cid->GETint(id.nID); 
       }//while
       for (iTab = 1; iTab < ActTab; iTab++) {
         classDECL = ObjTab[iTab][0]->classDECL;
@@ -888,25 +898,28 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
             if ((*sectionPtr)->classDECL->TypeFlags.Contains(isNative)) {
               if ((secClassDECL->inINCL == 1)
                    && (secClassDECL->fromBType == B_Set))
-                LoadChain2(sectionPtr);
+                LoadChain2(ckd, sectionPtr);
               else if ((secClassDECL->inINCL == 1)
                  && (secClassDECL->fromBType == B_Array))
-                LoadArray2(sectionPtr);
+                LoadArray2(ckd, sectionPtr);
               funcAdapter = GetAdapterTable(ckd, secClassDECL,0);
               if (funcAdapter)
                 lmem = (int)(unsigned)funcAdapter[0] + LSH;
             }
-            //else {  //(##########)
-              llast = secClassDECL->SectionInfo2 + LSH;
-              for (/*ll = LSH*/; lmem < llast; lmem++) {
-                memPtr = (LavaVariablePtr)(sectionPtr + lmem);
-                lon = *(long*)(LavaVariablePtr)(sectionPtr + lmem);
-                *memPtr = ObjTab[(int)(signed short)LOWORD(lon)] + HIWORD(lon);
-              }//for (lmem...
-            //}//section not native
+            llast = secClassDECL->SectionInfo2 + LSH;
+            for (/*ll = LSH*/; lmem < llast; lmem++) {
+              memPtr = (LavaVariablePtr)(sectionPtr + lmem);
+              lon = *(long*)(LavaVariablePtr)(sectionPtr + lmem);
+              iObj = (int)(signed short)LOWORD(lon);
+              *memPtr = ObjTab[iObj] + HIWORD(lon);
+              if (iObj) //d.h. object!= 0
+                INC_FWD_CNT(ckd, ObjTab[iObj]);
+            }//for (lmem...
           }//primary
         }//for (iSect...
       }
+      for (iTab = 1; iTab < ActTab; iTab++)
+        DEC_FWD_CNT(ckd, ObjTab[iTab]);
       delete [] ObjTab;
       ObjTab = 0;
       MaxTab = 0;
@@ -1066,7 +1079,7 @@ bool CLavaDoc::ExecuteLavaObject()
           HCatch(ckd);
           return false;
         }
-        CallDefaultInit(ckd, DocObjects[2]);
+        //CallDefaultInit(ckd, DocObjects[2]);
         if (ckd.exceptionThrown) {
           HCatch(ckd);
           return false;

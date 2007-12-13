@@ -294,7 +294,7 @@ bool CLavaApp::event(QEvent *e)
     pHint = (CLavaPEHint*)((CustomEvent*)e)->data();
     doc = (CLavaProgram*)pHint->fromDoc;
     delete (CLavaPEHint*)pHint;
-    if (((CLavaDebugger*)LBaseData.debugger)->isConnected)
+    if (((CLavaDebugger*)LBaseData.debugger)->isConnected && doc->debugOn)
       ((CLavaDebugger*)LBaseData.debugger)->stop(normalEnd);
     if (doc && doc->isObject && !doc->m_execThread.ldocEnd) {
       doc->m_execThread.wait();
