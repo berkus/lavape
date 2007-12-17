@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>481</width>
-    <height>384</height>
+    <width>507</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -22,7 +22,7 @@
    <item>
     <widget class="QLabel" name="Label_IDC_STATIC36" >
      <property name="sizePolicy" >
-      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+      <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -40,6 +40,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" >
+     <property name="spacing" >
+      <number>3</number>
+     </property>
      <item>
       <widget class="QLineEdit" name="NewName" >
        <property name="sizePolicy" >
@@ -72,8 +75,8 @@
        </property>
        <property name="sizeHint" >
         <size>
-         <width>81</width>
-         <height>40</height>
+         <width>95</width>
+         <height>20</height>
         </size>
        </property>
       </spacer>
@@ -121,6 +124,12 @@
        <layout class="QVBoxLayout" >
         <item>
          <widget class="QRadioButton" name="Creatable" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -131,6 +140,12 @@
         </item>
         <item>
          <widget class="QRadioButton" name="NonCreatable" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -141,6 +156,12 @@
         </item>
         <item>
          <widget class="QRadioButton" name="IsComponent" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -157,7 +178,7 @@
           <item>
            <widget class="QLabel" name="Label_IDC_StatIDLabel" >
             <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+             <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -178,6 +199,12 @@
             <property name="enabled" >
              <bool>false</bool>
             </property>
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="focusPolicy" >
              <enum>Qt::StrongFocus</enum>
             </property>
@@ -190,6 +217,12 @@
         </item>
         <item>
          <widget class="QCheckBox" name="Native" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="focusPolicy" >
            <enum>Qt::StrongFocus</enum>
           </property>
@@ -219,13 +252,13 @@
         <property name="geometry" >
          <rect>
           <x>10</x>
-          <y>24</y>
-          <width>171</width>
-          <height>61</height>
+          <y>27</y>
+          <width>201</width>
+          <height>91</height>
          </rect>
         </property>
         <property name="sizePolicy" >
-         <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+         <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -235,13 +268,13 @@
         <property name="geometry" >
          <rect>
           <x>10</x>
-          <y>100</y>
-          <width>171</width>
-          <height>25</height>
+          <y>120</y>
+          <width>201</width>
+          <height>27</height>
          </rect>
         </property>
         <property name="sizePolicy" >
-         <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+         <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -257,13 +290,13 @@
         <property name="geometry" >
          <rect>
           <x>10</x>
-          <y>140</y>
-          <width>171</width>
-          <height>80</height>
+          <y>160</y>
+          <width>221</width>
+          <height>89</height>
          </rect>
         </property>
         <property name="sizePolicy" >
-         <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+         <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -274,44 +307,48 @@
         <property name="title" >
          <string>Select classes to be extended</string>
         </property>
-        <layout class="QVBoxLayout" >
+        <widget class="QComboBox" name="BasicTypes" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>27</y>
+           <width>191</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <item>
-          <widget class="QComboBox" name="BasicTypes" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize" >
-            <size>
-             <width>0</width>
-             <height>20</height>
-            </size>
-           </property>
-           <item>
-            <property name="text" >
-             <string>(Basic classes)</string>
-            </property>
-           </item>
-          </widget>
+          <property name="text" >
+           <string>(Basic classes)</string>
+          </property>
          </item>
+        </widget>
+        <widget class="QComboBox" name="ExtTypes" >
+         <property name="geometry" >
+          <rect>
+           <x>10</x>
+           <y>56</y>
+           <width>191</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <item>
-          <widget class="QComboBox" name="ExtTypes" >
-           <property name="sizePolicy" >
-            <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <item>
-            <property name="text" >
-             <string>(Other classes)</string>
-            </property>
-           </item>
-          </widget>
+          <property name="text" >
+           <string>(Other classes)</string>
+          </property>
          </item>
-        </layout>
+        </widget>
        </widget>
       </widget>
      </item>
@@ -336,15 +373,21 @@
      </property>
      <item>
       <spacer>
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Minimum" hsizetype="MinimumExpanding" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType" >
-        <enum>QSizePolicy::Minimum</enum>
+        <enum>QSizePolicy::MinimumExpanding</enum>
        </property>
        <property name="sizeHint" >
         <size>
-         <width>180</width>
+         <width>20</width>
          <height>20</height>
         </size>
        </property>
@@ -353,16 +396,10 @@
      <item>
       <widget class="QPushButton" name="ID_OK" >
        <property name="sizePolicy" >
-        <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+        <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>1</width>
-         <height>0</height>
-        </size>
        </property>
        <property name="focusPolicy" >
         <enum>Qt::NoFocus</enum>
@@ -377,11 +414,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="ID_CANCEL" >
-       <property name="minimumSize" >
-        <size>
-         <width>1</width>
-         <height>0</height>
-        </size>
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="focusPolicy" >
         <enum>Qt::NoFocus</enum>
@@ -393,11 +430,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="ID_HELP" >
-       <property name="minimumSize" >
-        <size>
-         <width>1</width>
-         <height>0</height>
-        </size>
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="focusPolicy" >
         <enum>Qt::NoFocus</enum>

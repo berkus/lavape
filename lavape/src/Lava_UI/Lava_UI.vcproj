@@ -186,9 +186,10 @@
 				OutputFile="..\..\bin\Lava_UI.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				IgnoreDefaultLibraryNames="libcmtd.lib"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/Lava_UI.pdb"
+				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary="..\..\bin\Lava_UI.lib"
@@ -199,6 +200,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				VerboseOutput="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"

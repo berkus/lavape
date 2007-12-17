@@ -50,7 +50,7 @@
 				PreprocessorDefinitions="WIN32;DISCO_IMPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough=""
 				PrecompiledHeaderFile="PCH/Precompiler_all.pch"
@@ -81,7 +81,7 @@
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/LPC.pdb"
-				SubSystem="1"
+				SubSystem="0"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				TargetMachine="1"
@@ -91,6 +91,7 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				VerboseOutput="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"

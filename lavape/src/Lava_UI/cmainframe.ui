@@ -1,6 +1,7 @@
 <ui version="4.0" >
  <class>CMainFrame</class>
  <widget class="QMainWindow" name="CMainFrame" >
+  <widget class="QWidget" name="widget" />
   <property name="geometry" >
    <rect>
     <x>0</x>
