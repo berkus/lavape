@@ -2436,10 +2436,12 @@ stop: ckd.document->throwError = false;
     return 0;
   }
   catch(CExecAbort) {
-    // For other exception types, notify user here.
-    critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Lava program has been aborted due to LavaPE termination"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
-    CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
-		QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+    if (!myDoc->deleting) {
+      // For other exception types, notify user here.
+      critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Lava program has been aborted due to LavaPE termination"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      CLavaPEHint *hint =  new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
+		  QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
+    }
     if (myDoc->debugOn)
       ((CLavaDebugger*)LBaseData->debugger)->m_execThread = 0;
     return 0;

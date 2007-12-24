@@ -91,8 +91,9 @@ bool CLavaDoc::OnCloseDocument()
 
 CLavaDoc::~CLavaDoc()
 {
- if (numAllocObjects) {
-   QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+  deleting = true;
+  if (numAllocObjects) {
+    QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   }
   //int sz = allocatedObjects.size();
   if (((CLavaApp*)wxTheApp)->debugger.startedFromLavaPE) 
@@ -101,8 +102,6 @@ CLavaDoc::~CLavaDoc()
     if ((!((wxApp*)qApp)->appExit) && debugOn && (this == ((CLavaApp*)wxTheApp)->debugger.myDoc)) {
       ((CLavaApp*)wxTheApp)->debugger.myDoc = 0;
       ((CLavaApp*)wxTheApp)->debugger.get_cid->Done = false;
-      //((CLavaApp*)wxTheApp)->debugger.resume();
-      //((CLavaApp*)wxTheApp)->debugger.wait();
     }
 }
 
@@ -166,6 +165,7 @@ bool CLavaDoc::SelectLcom(bool emptyDoc)
               "lcom"
               );
   if (!fileName.isEmpty()) {
+    LcomFileName = fileName;
     qf.setFile(fileName);
     fileName = qf.absoluteFilePath();
     qf.setFile(fileName);
@@ -756,6 +756,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
       fn.replace(0,1,driveLetter);
 #endif
       synName = DString(qPrintable(fn));
+      LcomFileName = fn;
       if (!synName.l) {
         LObjectError(ckd, cid->FileName, dPN, &ERR_lcomNotOpened);
         return false;

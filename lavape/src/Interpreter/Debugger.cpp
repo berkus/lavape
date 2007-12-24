@@ -133,7 +133,10 @@ void CLavaDebugger::start() {
     locPort = listenSocket->serverPort();
     QString host_addr = "127.0.0.1";
 	  QStringList args;
-	  args << myDoc->GetFilename() << host_addr << QString("%1").arg(locPort);
+    if (((CLavaProgram*)myDoc)->LcomFileName.isEmpty())
+	    args << myDoc->GetFilename() << host_addr << QString("%1").arg(locPort);
+    else
+	    args << ((CLavaProgram*)myDoc)->LcomFileName << host_addr << QString("%1").arg(locPort);
     if (!QProcess::startDetached(lavapePath,args)) {
       QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
 		  return;
@@ -471,6 +474,7 @@ void LocalDebugVar::run()
 
   ckd.document = doc;
   cheAct = (CHEStackData*) dbgStopData->StackChain.GetNth(dbgStopData->ActStackLevel+1);
+  ckd.inINCL = cheAct->data.FuncID.nINCL;
   CheckLocalScope (ckd, (SynObject*)cheAct->data.SynObj);
   if (cheAct->data.ExecType == ExecDef) {
     func = doc->IDTable.GetDECL(cheAct->data.FuncID);

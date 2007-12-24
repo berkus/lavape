@@ -73,6 +73,7 @@ public:
 
   virtual void LavaError(CheckData& ckd, bool setEx, LavaDECL *decl, QString *nresourceID, LavaDECL* refDECL = 0);
   void HCatch(CheckData& ckd);
+  QString LcomFileName;
 };
 
 extern LAVAEXECS_DLL bool GUIEdit(CheckData& ckd, LavaVariablePtr stack);

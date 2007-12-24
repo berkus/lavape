@@ -135,6 +135,7 @@ CLavaBaseDoc::CLavaBaseDoc()
   ThreadList = 0;
   DumpFrame=0;
   ActLavaDialog = 0;
+  openForDebugging = false;
 }
 
 CLavaBaseDoc::~CLavaBaseDoc()
