@@ -292,7 +292,13 @@ void CLavaDebugger::stop(DbgExitReason reason) {
   if (reason != disconnected)
     workSocket->disconnectFromHost();
   workSocket = 0;
-
+  if ((reason == disconnected) && myDoc->openForDebugging) {
+    myDoc->debugOn = false;
+    myDoc->openForDebugging = false;
+    myDoc = 0;
+    m_execThread->resume();    //continue ExecuteLava
+    return;
+  }
   if (reason != normalEnd) {
     m_execThread->abort = true;
     m_execThread->resume();

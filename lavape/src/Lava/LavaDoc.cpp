@@ -99,7 +99,7 @@ CLavaDoc::~CLavaDoc()
   if (((CLavaApp*)wxTheApp)->debugger.startedFromLavaPE) 
     qApp->exit(0);
   else
-    if ((!((wxApp*)qApp)->appExit) && debugOn && (this == ((CLavaApp*)wxTheApp)->debugger.myDoc)) {
+    if ((!((wxApp*)qApp)->appExit) && debugOn && ((CLavaApp*)wxTheApp)->debugger.isConnected && (this == ((CLavaApp*)wxTheApp)->debugger.myDoc)) {
       ((CLavaApp*)wxTheApp)->debugger.myDoc = 0;
       ((CLavaApp*)wxTheApp)->debugger.get_cid->Done = false;
     }
