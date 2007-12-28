@@ -54,7 +54,7 @@ void CLavaPEDebugger::start() {
 #endif
 
   if (myDoc->debugOn) {
-    sendPending = true;
+    //sendPending = true;
     if (!listenSocket) {
       listenSocket = new QTcpServer(this);
       connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
@@ -118,6 +118,9 @@ void CLavaPEDebugger::connected() {
     if (put_cid->Done) {
       ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.first = 0;
       ((DbgContData*)dbgRequest->ContData.ptr)->BrkPnts.last = 0;
+      sendPending = false;
+      wxTheApp->updateButtonsMenus();
+
     }
     else {
       stop(otherError);
@@ -136,13 +139,15 @@ void CLavaPEDebugger::receive() {
   if (!get_cid->bytesAvailable())
     return;
   sendPending = true;
+  wxTheApp->updateButtonsMenus();
+  ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->DebugPage->setEnabled(true);
   if (dbgReceived.lastReceived)
     delete dbgReceived.lastReceived;
   dbgReceived.lastReceived = dbgReceived.newReceived;
   dbgReceived.newReceived = new DbgMessage;
   CDPDbgMessage(GET, get_cid, dbgReceived.newReceived,false);
   if (get_cid->Done) {
-    if (((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->stopReason != Stop_Start)
+    if (!dbgReceived.newReceived->DbgData.ptr || ((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->stopReason != Stop_Start)
 	    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
     return;
   }
@@ -154,6 +159,8 @@ void CLavaPEDebugger::send() {
   if (dbgRequest->Command == Dbg_Continue)
     checkBrkPnts1();
   sendPending = false;
+  wxTheApp->updateButtonsMenus();
+  ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->DebugPage->setEnabled(false);
   CDPDbgMessage(PUT, put_cid, dbgRequest,false);
   put_cid->flush();
   if (!put_cid->Done)
@@ -180,6 +187,7 @@ void CLavaPEDebugger::stop(DbgExitReason reason) {
     return;
   isConnected = false;
   sendPending = true;
+  wxTheApp->updateButtonsMenus();
 
   if (dbgReceived.newReceived) {
     delete dbgReceived.newReceived;

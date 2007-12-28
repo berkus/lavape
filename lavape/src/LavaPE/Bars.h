@@ -118,6 +118,7 @@ public:
   StackListView* StackView;
   CLavaBaseDoc* stopDoc;
   VarItem *itemToOpen;
+  QFrame *DebugPage;
 
 protected:
   bool eventFilter(QObject *watched,QEvent *ev);
@@ -125,7 +126,6 @@ protected:
   QTreeWidget* HandlerPage;
   QTextEdit* CommentPage;
   QTextEdit* ErrorPage;
-  QFrame *DebugPage;
   //QSplitter *DebugPage;
   LavaDECL *stopExecDECL;
   bool firstDebug;
