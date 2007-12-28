@@ -54,6 +54,7 @@ void CLavaPEDebugger::start() {
 #endif
 
   if (myDoc->debugOn) {
+    sendPending = true;
     if (!listenSocket) {
       listenSocket = new QTcpServer(this);
       connect(listenSocket,SIGNAL(newConnection()),SLOT(connectToClient()));
@@ -175,6 +176,7 @@ void CLavaPEDebugger::stop(DbgExitReason reason) {
   if (!isConnected)
     return;
   isConnected = false;
+  sendPending = true;
 
   if (dbgReceived.newReceived) {
     delete dbgReceived.newReceived;
