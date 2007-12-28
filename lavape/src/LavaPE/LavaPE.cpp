@@ -331,12 +331,6 @@ bool CLavaPEApp::event(QEvent *e)
       debugger.dbgRequest = 0;
     }
     debugger.dbgRequest = (DbgMessage*)((CustomEvent*)e)->data();
-    //((CLavaMainFrame*)m_appWindow)->DbgClearBreakpointsAct->setEnabled(false);
-    //((CLavaMainFrame*)m_appWindow)->DbgStepNextAct->setEnabled(false);
-    //((CLavaMainFrame*)m_appWindow)->DbgStepNextFunctionAct->setEnabled(false);
-    //((CLavaMainFrame*)m_appWindow)->DbgStepintoAct->setEnabled(false);
-    //((CLavaMainFrame*)m_appWindow)->DbgStepoutAct->setEnabled(false);
-
     debugger.send();
     return true;
   case UEV_LavaDebugW:

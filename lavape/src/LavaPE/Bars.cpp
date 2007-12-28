@@ -489,15 +489,6 @@ void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
       delete ParamView->takeTopLevelItem(0);
     while (StackView->topLevelItem(0))
       delete StackView->takeTopLevelItem(0);
-      //VarView->update();
-      //ParamView->update();
-      //StackView->update();
-/*    VarView->setColumnWidth(0, VarView->width0);
-    VarView->setColumnWidth(1, VarView->width1);
-    VarView->setColumnWidth(2, VarView->width2);
-    ParamView->setColumnWidth(0, ParamView->width0);
-    ParamView->setColumnWidth(1, ParamView->width1);
-    ParamView->setColumnWidth(2, ParamView->width2);*/
   }
 
 }

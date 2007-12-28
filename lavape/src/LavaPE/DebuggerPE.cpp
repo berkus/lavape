@@ -159,8 +159,11 @@ void CLavaPEDebugger::send() {
   if (!put_cid->Done)
     stop();
 
-  if (dbgRequest->Command == Dbg_Continue)
+  if (dbgRequest->Command == Dbg_Continue) {
     checkBrkPnts2();
+    if (dbgReceived.newReceived)
+		  ((CLavaMainFrame*)((CLavaPEApp*)wxTheApp)->m_appWindow)->m_UtilityView->removeExecStackPos((DbgStopData*)dbgReceived.newReceived->DbgData.ptr, myDoc);
+  }
 }
 
 void CLavaPEDebugger::error(QAbstractSocket::SocketError socketError) {
