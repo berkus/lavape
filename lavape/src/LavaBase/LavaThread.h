@@ -72,11 +72,12 @@ enum DbgExitReason {
 
 class LAVABASE_DLL CLavaDbgBase : public QObject {
 public:
-  CLavaDbgBase(){ isConnected = false; };
+  CLavaDbgBase(){ isConnected = false; sendPending = true;};
   CLavaDbgBase(CLavaBaseDoc *d);
 
 	CLavaBaseDoc *myDoc;
   bool isConnected;
+  bool sendPending;
 
   virtual bool checkExecBrkPnts(unsigned synObjIDold, unsigned synObjIDnew, int funcnID, TDeclType execType, CLavaBaseDoc* funcDoc) {return false;}
   virtual void checkAndSetBrkPnts(CLavaBaseDoc* updatedDoc) {}

@@ -2383,6 +2383,7 @@ unsigned CLavaExecThread::ExecuteLava()
 #endif 
           }
           QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaGUIEvent));
+          waitingForUI = true;
           suspend();
         }
       }//while

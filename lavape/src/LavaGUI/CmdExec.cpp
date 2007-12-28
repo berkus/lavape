@@ -655,6 +655,7 @@ void CmdExecCLASS::ContinueExecThread()
   if (!GUIProg->isView) {
     ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->waitingForUI = false;
     ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->handler_Call = true;
+    ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->waitingForUI = false;
     ((LavaGUIDialog*)GUIProg->ViewWin)->myThread->resume();
   }
   

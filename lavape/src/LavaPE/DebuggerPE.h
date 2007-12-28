@@ -44,6 +44,7 @@ public:
   DbgMessages dbgReceived;
   CHAINANY brkPnts;
   bool startedFromLava;
+ 
   void clearBrkPnts();
   void adjustBrkPnts();
   void adjustBrkPnts(CHAINANY* brkPntsChain);

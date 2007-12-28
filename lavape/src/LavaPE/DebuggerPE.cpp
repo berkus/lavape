@@ -134,6 +134,7 @@ void CLavaPEDebugger::connected() {
 void CLavaPEDebugger::receive() {
   if (!get_cid->bytesAvailable())
     return;
+  sendPending = true;
   if (dbgReceived.lastReceived)
     delete dbgReceived.lastReceived;
   dbgReceived.lastReceived = dbgReceived.newReceived;
@@ -151,7 +152,7 @@ void CLavaPEDebugger::receive() {
 void CLavaPEDebugger::send() {
   if (dbgRequest->Command == Dbg_Continue)
     checkBrkPnts1();
-
+  sendPending = false;
   CDPDbgMessage(PUT, put_cid, dbgRequest,false);
   put_cid->flush();
   if (!put_cid->Done)

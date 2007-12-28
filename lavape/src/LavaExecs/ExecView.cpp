@@ -7319,30 +7319,30 @@ void CExecView::on_DbgRunToSelAct_triggered() {
 void CExecView::OnUpdateDbgStart(QAction* action) {
   if (!myDoc->mySynDef)
     return;
-  action->setEnabled(true);
+  action->setEnabled(LBaseData->debugger->sendPending);
 }
 
 void CExecView::OnUpdateDbgStepNext(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected);
+  action->setEnabled(LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
 }
 
 void CExecView::OnUpdateDbgStepNextFunction(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected);
+  action->setEnabled(LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
 }
 
 void CExecView::OnUpdateDbgStepinto(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected);
+  action->setEnabled(LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
 }
 
 void CExecView::OnUpdateDbgStepout(QAction* action) {
-  action->setEnabled(LBaseData->debugger->isConnected);
+  action->setEnabled(LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
 }
 
 void CExecView::OnUpdateDbgRunToSel(QAction* action)
 {
   action->setEnabled(!Taboo(true)
     && text->currentSynObj->IsExecutable()
-    && LBaseData->debugger->isConnected);
+    && LBaseData->debugger->isConnected && LBaseData->debugger->sendPending);
 }
 
 void CExecView::OnUpdateDbgBreakpoint(QAction* action)
