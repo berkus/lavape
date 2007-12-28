@@ -1861,7 +1861,7 @@ ValOnInit CFuncBox::OnInitDialog()
       CHECKHandler->setEnabled(true);
       if ((myDECL->GUISignaltype == Ev_ChainDelete) || (myDECL->GUISignaltype == Ev_ChainInsert))
         EventType->setCurrentIndex(myDECL->GUISignaltype-1);
-      if ((myDECL->GUISignaltype == Ev_OptDelete) || (myDECL->GUISignaltype == Ev_OptInsert))
+      else if ((myDECL->GUISignaltype == Ev_OptDelete) || (myDECL->GUISignaltype == Ev_OptInsert))
         EventType->setCurrentIndex(myDECL->GUISignaltype-3);
       else
         EventType->setCurrentIndex(myDECL->GUISignaltype);
