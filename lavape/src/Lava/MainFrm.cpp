@@ -83,6 +83,21 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   lastTile = 0;
 }
 
+bool CLavaMainFrame::OnCreate() {
+  wxHistory *fileHist = wxDocManager::GetDocumentManager()->m_fileHistory;
+  DString fn;
+
+  wxMainFrame::OnCreate();
+
+  for (int i = 0; i < fileHist->m_historyN; i++)
+  {
+    fn = *fileHist->m_history[i];
+    if (fn.Substr(fn.l-5,5) == DString(".lcom"))
+      fileHist->m_actions[i]->setEnabled(false);
+  }
+  return true;
+}
+
 void CLavaMainFrame::makeStyle(const QString &style)
 {
   if (style.isEmpty()) return;

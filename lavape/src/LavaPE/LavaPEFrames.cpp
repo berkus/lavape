@@ -286,24 +286,18 @@ CLavaMainFrame::~CLavaMainFrame()
 
 bool CLavaMainFrame::OnCreate()
 {
-/*  ToolbarWhatsThis *tbw1, *tbw2, *tbw3, *tbw4, *tbw5, *tbw6;
+  wxHistory *fileHist = wxDocManager::GetDocumentManager()->m_fileHistory;
+  DString fn;
 
-  tbw1 = new ToolbarWhatsThis(Toolbar_1);
-  fillHelpMap1(tbw1);
-  tbw2 = new ToolbarWhatsThis(Toolbar_2);
-  fillHelpMap2(tbw2);
-  tbw3 = new ToolbarWhatsThis(Toolbar_3);
-  fillHelpMap3(tbw3);
-  tbw4 = new ToolbarWhatsThis(Toolbar_4);
-  fillHelpMap4(tbw4);
-  tbw5 = new ToolbarWhatsThis(Toolbar_5);
-  fillHelpMap5(tbw5);
-  tbw6 = new ToolbarWhatsThis(Toolbar_6);
-  fillHelpMap6(tbw6);
-*/
   m_childFrameHistory->m_menu = windowMenu;
-  wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
+  fileHist->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
   LoadFileHistory();
+  for (int i = 0; i < fileHist->m_historyN; i++)
+  {
+    fn = *fileHist->m_history[i];
+    if (fn.Substr(fn.l-5,5) == DString(".ldoc"))
+      fileHist->m_actions[i]->setEnabled(false);
+  }
   setWindowIcon(QPixmap((const char**) Lava));
   QSplitter* split = new QSplitter(this);
   m_CentralWidget = split;

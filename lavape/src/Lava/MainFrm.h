@@ -12,6 +12,7 @@ public:
   CLavaMainFrame();
   virtual ~CLavaMainFrame();
   virtual void UpdateUI();
+  virtual bool OnCreate();
   int lastTile;
   virtual void customEvent(QEvent *ev);
   //CLavaDoc* docModal;

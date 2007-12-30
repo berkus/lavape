@@ -1664,16 +1664,21 @@ void wxHistory::SetFirstInHistory(int histFileIndex)
 {
   DString *s;
   int i;
+  bool enabled;
 
   if (histFileIndex == 0)
     return;
 
   s = m_history[histFileIndex];
+  enabled = m_actions[histFileIndex]->isEnabled();
 
-  for (i = histFileIndex-1; i >= 0; i--)
+  for (i = histFileIndex-1; i >= 0; i--) {
     m_history[i+1] = m_history[i];
+    m_actions[i+1]->setEnabled(m_actions[i]->isEnabled());
+  }
 
   m_history[0] = s;
+  m_actions[0]->setEnabled(enabled);
 
   for (i = 0; i <= histFileIndex; i++) {
     QString buf;
@@ -1684,47 +1689,50 @@ void wxHistory::SetFirstInHistory(int histFileIndex)
 
 void wxHistory::AddToHistory(DString *item, QObject *receiver)
 {
-    int i;
-    // Check we don't already have this item
-    for (i = 0; i < m_historyN; i++)
-    {
-      if (m_history[i]->l && (*m_history[i] == *item)) {
-        SetFirstInHistory(i);
-        delete item;
-        return;
-      }
+  int i;
+  // Check we don't already have this item
+  for (i = 0; i < m_historyN; i++)
+  {
+    if (m_history[i]->l && (*m_history[i] == *item)) {
+      SetFirstInHistory(i);
+      delete item;
+      return;
     }
+  }
 
-    // Add to the item history:
-    // Move existing files (if any) down so we can insert item at beginning.
+  // Add to the item history:
+  // Move existing files (if any) down so we can insert item at beginning.
 
-    // First delete item that has popped off the end of the array (if any)
-    if (m_historyN == m_maxHistItems)
-    {
-        delete m_history[m_maxHistItems-1];
-        m_history[m_maxHistItems-1] = 0;
-    }
-    if (m_historyN < m_maxHistItems)
-    {
-        if (m_historyN == 0)
-            m_menu->addSeparator();
-        m_actions[m_historyN] = m_menu->addAction("xxx");
-        connect(m_actions[m_historyN],SIGNAL(triggered()),m_signalMapper,SLOT(map()));
-        m_signalMapper->setMapping(m_actions[m_historyN],m_historyN);
-        m_actions[m_historyN]->setStatusTip("Open this file");
-        m_historyN++;
-    }
-    // Shuffle filenames down
-    for (i = (m_historyN-1); i > 0; i--)
-        m_history[i] = m_history[i-1];
+  // First delete item that has popped off the end of the array (if any)
+  if (m_historyN == m_maxHistItems)
+  {
+      delete m_history[m_maxHistItems-1];
+      m_history[m_maxHistItems-1] = 0;
+  }
+  if (m_historyN < m_maxHistItems)
+  {
+    if (m_historyN == 0)
+        m_menu->addSeparator();
+    m_actions[m_historyN] = m_menu->addAction("xxx");
+    connect(m_actions[m_historyN],SIGNAL(triggered()),m_signalMapper,SLOT(map()));
+    m_signalMapper->setMapping(m_actions[m_historyN],m_historyN);
+    m_actions[m_historyN]->setStatusTip("Open this file");
+    m_historyN++;
+  }
+  // Shuffle filenames down
+  for (i = m_historyN-1; i > 0; i--)
+    m_history[i] = m_history[i-1];
 
-    m_history[0] = item;
+  m_history[0] = item;
 
-    for (i = 0; i < m_historyN; i++) {
-        QString buf;
-        buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
-        m_actions[i]->setText(buf);
-    }
+  for (i = 0; i < m_historyN; i++) {
+    QString buf;
+    buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
+    m_actions[i]->setText(buf);
+    if (i > 0)
+      m_actions[i]->setEnabled(m_actions[i-1]->isEnabled());
+  }
+  m_actions[0]->setEnabled(true);
 }
 
 static DString ret;
@@ -1753,43 +1761,42 @@ void wxHistory::RemoveItemFromHistory(QString name)
 
 void wxHistory::RemoveItemFromHistory(int i)
 {
-    if (i >= m_historyN) {
-       QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("invalid index in wxHistory::RemoveFileFromHistory"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
-       return;
-    }
-        // delete the element from the array (could use memmove() too...)
-        delete m_history[i];
+  if (i >= m_historyN) {
+    QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),tr("invalid index in wxHistory::RemoveFileFromHistory"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+    return;
+  }
+  // delete the element from the array (could use memmove() too...)
+  delete m_history[i];
 
-        int j;
-        for ( j = i; j < m_historyN - 1; j++ )
-        {
-            m_history[j] = m_history[j + 1];
-        }
+  int j;
+  for ( j = i; j < m_historyN - 1; j++ )
+    m_history[j] = m_history[j + 1];
 
-        // shuffle filenames up
-        QString buf;
-        for ( j = i; j < m_historyN - 1; j++ )
-        {
-            buf = s_MRUEntryFormat.arg(j+1).arg(m_history[j]->c);
-            m_actions[j]->setText(buf);
-        }
+  // shuffle filenames up
+  QString buf;
+  for ( j = i; j < m_historyN - 1; j++ )
+  {
+    buf = s_MRUEntryFormat.arg(j+1).arg(m_history[j]->c);
+    m_actions[j]->setText(buf);
+    m_actions[j]->setEnabled(m_actions[j + 1]->isEnabled());
+  }
 
-        // delete the last menu item which is unused now
-        m_menu->removeAction(m_actions[m_historyN - 1]);
-				delete m_actions[m_historyN - 1];
-        m_actions[m_historyN - 1] = 0;
+  // delete the last menu item which is unused now
+  m_menu->removeAction(m_actions[m_historyN - 1]);
+	delete m_actions[m_historyN - 1];
+  m_actions[m_historyN - 1] = 0;
 
-        // delete the last separator too if no more files are left
-        if ( m_historyN == 1 )
-        {
-            QList<QAction*> myActions = m_menu->actions();
-            QAction *menuItem = myActions.last();
-						if ( menuItem && menuItem->isSeparator()) {
-              m_menu->removeAction(menuItem);
-							delete menuItem;
-						}
-        }
-    m_historyN--;
+  // delete the last separator too if no more files are left
+  if ( m_historyN == 1 )
+  {
+      QList<QAction*> myActions = m_menu->actions();
+      QAction *menuItem = myActions.last();
+			if ( menuItem && menuItem->isSeparator()) {
+        m_menu->removeAction(menuItem);
+				delete menuItem;
+			}
+  }
+  m_historyN--;
 }
 
 void wxHistory::OnChangeOfWindowTitle(QString &oldName, QString &newName)
@@ -1805,18 +1812,6 @@ void wxHistory::OnChangeOfWindowTitle(QString &oldName, QString &newName)
     }
   return;
 }
-/*
-void wxHistory::UseMenu(QPopupMenu *menu)
-{
-    if (m_fileMenus.findRef(menu) == -1)
-        m_fileMenus.append(menu);
-}
-
-void wxHistory::RemoveMenu(QPopupMenu *menu)
-{
-    m_fileMenus.remove(menu);
-}
-*/
 
 #if wxUSE_CONFIG
 void wxHistory::Load(QSettings& config)
@@ -1857,6 +1852,7 @@ void wxHistory::Save(QSettings& config)
 void wxHistory::AddFilesToMenu()
 {
   int i;
+  QString buf;
 
   if (m_historyN > 0)
   {
@@ -1865,7 +1861,6 @@ void wxHistory::AddFilesToMenu()
     {
       if (m_history[i]->l)
       {
-        QString buf;
         buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
         m_actions[i] = m_menu->addAction(buf);
         connect(m_actions[i],SIGNAL(triggered()),m_signalMapper,SLOT(map()));
@@ -1873,30 +1868,8 @@ void wxHistory::AddFilesToMenu()
         m_actions[i]->setStatusTip("Open this file");
       }
     }
-;
   }
 }
-/*
-void wxHistory::AddFilesToMenu(QMenu* menu)
-{
-    m_menu = menu;
-    if (m_historyN > 0)
-    {
-        m_menu->addSeparator();
-        int i;
-        for (i = 0; i < m_historyN; i++)
-        {
-            if (m_history[i])
-            {
-                QString buf;
-                buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
-//                m_menu->insertItem(buf,wxTheApp,SLOT(histFile(int)),0, wxID_FILE1+i);
-//                m_menu->setItemParameter(wxID_FILE1+i,i);
-            }
-        }
-    }
-}
-*/
 
 #ifdef WIN32_
 
