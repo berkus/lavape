@@ -1725,7 +1725,7 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
 
   m_history[0] = item;
 
-  for (i = 0; i < m_historyN; i++) {
+  for (i = m_historyN-1; i > 0; i--) {
     QString buf;
     buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
     m_actions[i]->setText(buf);

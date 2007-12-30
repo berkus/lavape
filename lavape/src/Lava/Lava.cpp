@@ -390,7 +390,7 @@ QString lavaFileDialog(const QString& startFileName, QWidget* parent, const QStr
 {
 
   return L_GetOpenFileName(startFileName, parent, caption,
-          "Lava file (*.lava)", "lava", "Lava object file (*.ldoc)", "ldoc");
+          "Lava file (*.lava)", "Lava object file (*.ldoc)");
 
 
 }

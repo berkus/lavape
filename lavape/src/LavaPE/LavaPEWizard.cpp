@@ -2977,8 +2977,7 @@ void CMenuItem::on_button_browse_clicked()
                     qf.absoluteFilePath(),
                     this,
                     "Choose a pixmap file",
-                    "Pixmap (*.xpm)",
-                    "xpm"
+                    "Pixmap (*.xpm)"
                     );
   if (pix.length()) {
     DString rpfn = DString(qPrintable(pix));

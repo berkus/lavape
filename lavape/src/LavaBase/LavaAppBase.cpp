@@ -1058,96 +1058,49 @@ QString L_GetOpenFileName(const QString& startFileName,
 				      QWidget *parent,
 				      const QString& caption,
 				      const QString& filter,
-              const QString& exten,
-				      const QString& filter2,
-              const QString& exten2
+				      const QString& filter2
             )
 {
   QFileInfo qf;
-  QString fileName;
-  QString currentFilter;
-  QString initialDir;
-  if (!startFileName.isEmpty() && startFileName.at(startFileName.length()-1) !='/') {
-    qf = QFileInfo(startFileName);
-    fileName = qf.fileName();
-    QFileInfo qfresolved(ResolveLinks(qf));
-    currentFilter = qfresolved.suffix();
-    initialDir = qf.path();
-  }
-  else
-    initialDir = startFileName;
-/*
-#ifndef __GNUC__
-  OPENFILENAME ofn;                    // common dialog box structure
-  char szFile[260], cfilter[500]; // buffer for filename
-  if (fileName != QString::null)
-//    strcpy(szFile,fileName.ascii());
-    strcpy_s(szFile,260,qPrintable(fileName));
-  else
-    szFile[0] = '\0';
-  HWND hwnd = parent->winId();         // owner window
-  QString resultName = "";
-  QString filt = filter + "?*." + exten;
-  if (filter2 != QString::null) {
-    filt = filt + "?" + filter2 + "?*." + exten2;
-  }
-  filt = filt + "?All (*.*)?*.*?";
-  strcpy_s(cfilter,500,qPrintable(filt));
-  for (int ii = 0; ii< filt.length(); ii++)
-    if (cfilter[ii] == '?') cfilter[ii] = '\0';
-  // Initialize OPENFILENAME
-  ZeroMemory(&ofn, sizeof(OPENFILENAME));
-  ofn.lStructSize = sizeof(OPENFILENAME);
-  ofn.hwndOwner = hwnd;
-  ofn.lpstrFile = szFile;
-  ofn.nMaxFile = sizeof(szFile);
-  ofn.lpstrFilter = cfilter;
-  ofn.lpstrTitle = qPrintable(caption);
-  ofn.lpstrFileTitle = 0;
-  ofn.nMaxFileTitle = 0;
-  if ((filter2 != QString::null) && (currentFilter == exten2))
-      ofn.nFilterIndex = 2;
-  else
-    ofn.nFilterIndex = 1;
-  QString str = initialDir;
-  str.replace("/", "\\");
-  ofn.lpstrInitialDir = str.toAscii();
-  ofn.lpfnHook = myOFNHookProc;
-  ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_READONLY | OFN_HIDEREADONLY
-              | OFN_NODEREFERENCELINKS | OFN_ENABLEHOOK | OFN_EXPLORER | OFN_ENABLESIZING;
-  // Display the Open dialog box.
-
-  if (GetOpenFileName(&ofn)) {
-    resultName = QString(ofn.lpstrFile);
-    resultName.replace("\\", "/");
-  }
-  return resultName;
-
-#else
-*/
+  QString fileName, currentFilter, initialDir;
   QFileDialog *fd = new QFileDialog(parent);
 	QStringList filters;
 
+  qf = QFileInfo(startFileName);
+  fileName = qf.fileName();
+  QFileInfo qfresolved(ResolveLinks(qf));
+  currentFilter = qfresolved.suffix();
+  initialDir = qf.path();
+  fd->setDirectory(qf.absolutePath());
+
 	filters << filter;
-//  fd->addFilter(filter);
   if (filter2 != QString::null)
-    filters << filter2; // fd->addFilter( filter2);
+    filters << filter2; 
 	fd->setFilters(filters);
   fd->setWindowTitle(caption);
-  fd->setDirectory(qf.absolutePath());
   if (currentFilter.isEmpty())
     currentFilter = "lava";
   currentFilter = "*." + currentFilter;
-//  fd->setSelectedFilter(currentFilter);
-  fd->selectFile(startFileName);
+  if (filter2.contains(currentFilter))
+    currentFilter = filter2;
+  else
+    currentFilter = filter;
+  fd->selectFilter(currentFilter);
   fd->setFileMode( QFileDialog::ExistingFile );
   fd->setViewMode( QFileDialog::List );
-//  fd->setFilter(filter);
-  fd->selectFilter(currentFilter);
+  if (LBaseData->inRuntime) {
+   if (!fileName.contains(".lcom"))
+     fd->selectFile(fileName);
+  }
+  else {
+   if (!fileName.contains(".ldoc"))
+     fd->selectFile(fileName);
+  }
+  fd->setResolveSymlinks(false);
   if (fd->exec() == QDialog::Accepted ) {
     QStringList selFiles=fd->selectedFiles();
     selFiles.replaceInStrings("\\", "/");
-    fileName = selFiles.first(); //fd->selectedFile();
+    fileName = selFiles.first();
     delete fd;
     return fileName;
   }
@@ -1155,137 +1108,51 @@ QString L_GetOpenFileName(const QString& startFileName,
     delete fd;
     return 0;
   }
-  /*
-  return QFileDialog::getOpenFileName( initialDir,
-				      filter,
-				      parent,
-              "",
-				      caption,
-				      (QString*)&filter,
-				      false );*/
-//#endif
 }
 
 QStringList L_GetOpenFileNames(const QString& startFileName,
 				      QWidget *parent,
 				      const QString& caption,
 				      const QString& filter,
-              const QString& exten,
-				      const QString& filter2,
-              const QString& exten2
+				      const QString& filter2
             )
 {
   QStringList resultNames;
   QFileInfo qf = QFileInfo(startFileName);
   QFileInfo qfresolved(ResolveLinks(qf));
   QString currentFilter = qfresolved.suffix();
-  QString initialDir = qf.path();
+  QString fileName, initialDir = qf.path();
 
-#ifdef WIN32_
-  OPENFILENAME ofn;                    // common dialog box structure
-  char szFile[260];                    // buffer for filename
-  HWND hwnd = parent->winId();         // owner window
-  DString dir, fn;
-  int ii;
-  QString filt = filter + "?*." + exten;
-  if (filter2 != QString::null) {
-    filt = filt + "?" + filter2 + "?*." + exten2;
-  }
-  filt = filt + "?All (*.*)?*.*?";
-  char* cfilter = qPrintable(filt);
-  for (ii = 0; ii< filt.length(); ii++)
-    if (cfilter[ii] == '?') cfilter[ii] = '\0';
-  // Initialize OPENFILENAME
-  ZeroMemory(&ofn, sizeof(OPENFILENAME));
-  ofn.lStructSize = sizeof(OPENFILENAME);
-  szFile[0] = '\0';
-  ofn.hwndOwner = hwnd;
-  ofn.lpstrFile = szFile;
-  ofn.nMaxFile = sizeof(szFile);
-  ofn.lpstrFilter = cfilter;
-  ofn.lpstrTitle = caption;
-  ofn.lpstrFileTitle = 0;
-  ofn.nMaxFileTitle = 0;
-  ofn.lpstrDefExt = exten;
-  if ((filter2 != QString::null) && (currentFilter == exten2))
-    ofn.nFilterIndex = 2;
-  else
-    ofn.nFilterIndex = 1;
-  QString str = initialDir;
-  str.replace("/", "\\");
-  //str.truncate(initialDir.length()-1);
-  ofn.lpstrInitialDir = str;
-  ofn.lpfnHook = myOFNHookProc;
-  ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_READONLY | OFN_HIDEREADONLY
-              | OFN_NODEREFERENCELINKS | OFN_ENABLEHOOK | OFN_EXPLORER | OFN_ENABLESIZING
-              | OFN_ALLOWMULTISELECT;
-  // Display the Open dialog box.
-
-  if (GetOpenFileName(&ofn)) {
-    dir.Reset(256);
-    for ( ii=0; (ii<259) && ((ofn.lpstrFile[ii] != '\0')); ii++) {
-      if (ofn.lpstrFile[ii] == '\\')
-        dir[ii] = '/';
-      else
-        dir[ii] = ofn.lpstrFile[ii];
-    }
-    if ((ofn.lpstrFile[ii] == '\0') && (ofn.lpstrFile[ii+1] == '\0')) {
-      dir[ii] = '\0';
-      dir.l= ii;
-      fn = dir;
-      resultNames.append(fn.c);
-      fn.l=0; fn.c=0; fn.m=0;
-    }
-    else {
-
-      dir[ii] = '/';
-      ii ++;
-      dir[ii] = '\0';
-      dir.l= ii;
-      fn.Reset(260);
-      fn = dir;
-      int jj = dir.l;
-      for (; (ii<259) && ((ofn.lpstrFile[ii] != '\0') || (ofn.lpstrFile[ii+1] != '\0')); ii++) {
-        fn[jj] = ofn.lpstrFile[ii];
-        if (fn[jj] == '\0') {
-          fn.l = jj;
-          resultNames.append(fn.c);
-          fn.l=0; fn.c=0; fn.m=0;
-          fn.Reset(260);
-          fn = dir;
-          jj = dir.l;
-        }
-        else
-          jj++;
-      }
-      if (fn[jj] == '\0') {
-        fn.l = jj;
-        resultNames.append(fn.c);
-        fn.l=0; fn.c=0; fn.m=0;
-      }
-    }
-  }
-  return resultNames;
-
-#else
   QFileDialog *fd = new QFileDialog(parent);
 	QStringList filters;
 
 	filters << filter;
-//  fd->addFilter(filter);
   if (filter2 != QString::null)
-    filters << filter2; // fd->addFilter( filter2);
+    filters << filter2; 
+  fileName = qf.fileName();
+  currentFilter = qfresolved.suffix();
+  initialDir = qf.path();
+  fd->setDirectory(qf.absolutePath());
 	fd->setFilters(filters);
   fd->setWindowTitle(caption);
-  fd->setDirectory(qf.path());
   if (currentFilter.isEmpty())
     currentFilter = "lava";
   currentFilter = "*." + currentFilter;
-//  fd->setSelectedFilter(currentFilter);
-  fd->selectFile(startFileName);
+  if (filter2.contains(currentFilter))
+    currentFilter = filter2;
+  else
+    currentFilter = filter;
+  fd->selectFilter(currentFilter);
+  if (LBaseData->inRuntime) {
+   if (!fileName.contains(".lcom"))
+     fd->selectFile(fileName);
+  }
+  else {
+   if (!fileName.contains(".ldoc"))
+     fd->selectFile(fileName);
+  }
   fd->setFileMode( QFileDialog::ExistingFiles );
   fd->setViewMode( QFileDialog::List );
-  fd->selectFilter(filter);
   if (fd->exec() == QDialog::Accepted ) {
     resultNames = fd->selectedFiles();
     delete fd;
@@ -1296,8 +1163,6 @@ QStringList L_GetOpenFileNames(const QString& startFileName,
     delete fd;
     return QStringList();
   }
- 
-#endif
 }
 
 

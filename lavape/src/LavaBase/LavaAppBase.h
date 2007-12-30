@@ -520,17 +520,13 @@ extern LAVABASE_DLL QString L_GetOpenFileName(const QString& startFileName,
 				                                      QWidget *parent,
 				                                      const QString& caption,
 				                                      const QString& filter,
-                                              const QString& exten,
-                                              const QString& filter2=QString::null,
-                                              const QString& exten2=QString::null
+                                              const QString& filter2=QString::null
                                               );
 extern LAVABASE_DLL QStringList L_GetOpenFileNames(const QString& startFileName,
 				                                      QWidget *parent,
 				                                      const QString& caption,
 				                                      const QString& filter,
-                                              const QString& exten,
-				                                      const QString& filter2=QString::null,
-                                              const QString& exten2=QString::null
+				                                      const QString& filter2=QString::null
                                               );
 #ifdef WIN32
 extern unsigned int CALLBACK myOFNHookProc(HWND hdlg, unsigned int uiMsg,

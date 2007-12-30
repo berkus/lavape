@@ -805,7 +805,7 @@ void CCompSpecBox::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CCompSpecBox::on_EnumAdd_clicked() 
 {
-  QString iT, fileName, dir;
+  QString iT, fileName, dir, filter;
   DString linkName, dstrDir;
   int dd=0, ss;
   CListBoxItem *item;
@@ -821,12 +821,17 @@ void CCompSpecBox::on_EnumAdd_clicked()
       QMessageBox::critical(this,qApp->applicationName(),ERR_ExactlyOneLcom,QMessageBox::Ok,0,0);
     else {
       dir = ExeDir + ComponentLinkDir;
+
+#ifdef WIN32
+      filter = ("LavaCom file (*.lcom *.lcom.lnk)");
+#else
+      filter = ("LavaCom file (*.lcom)");
+#endif
       fileName = L_GetOpenFileName(
                     dir,
                     this,
                     IDS_LAVACOM_FILE,
-                    "Lava.Component (*.lcom)",
-                    "lcom"
+                    filter
                     ); 
       fileName.remove(0,dir.length());
 #ifdef WIN32
@@ -879,7 +884,7 @@ void CCompSpecBox::on_EnumDel_clicked()
 
 void CCompSpecBox::on_EnumEdit_clicked() 
 {
-  QString iT, dir, fileName;
+  QString iT, dir, fileName, filter;
   DString linkName, dstrDir;
   int dd=0, ss;
   CListBoxItem *item;
@@ -892,13 +897,15 @@ void CCompSpecBox::on_EnumEdit_clicked()
       fileName = dir + item->text();
 #ifdef WIN32
       fileName += ".lnk";
+      filter = ("LavaCom file (*.lcom *.lcom.lnk)");
+#else
+      filter = ("LavaCom file (*.lcom)");
 #endif
       fileName = L_GetOpenFileName(
                     fileName,
                     this,
                     IDS_LAVACOM_FILE,
-                    "Lava.Component (*.lcom)",
-                    "lcom"
+                    filter
                     ); 
       fileName.remove(0,dir.length());
 #ifdef WIN32
@@ -2745,8 +2752,7 @@ void CIncludeBox::on_OtherPath_clicked()
                     valFullPathName,
                     this,
                     "Choose a file to include",
-                    "Lava files (*.lava)",
-                    "lava"
+                    "Lava files (*.lava)"
                     );
   UpdateData(false);
 }

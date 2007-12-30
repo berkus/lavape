@@ -141,7 +141,7 @@ bool CLavaDoc::OnEmptyObj(const DString& lcomName, const DString& linkName)
 
 bool CLavaDoc::SelectLcom(bool emptyDoc)
 {
-  QString iniFile, fileName = wxTheApp->GetLastFileOpen();
+  QString iniFile, fn, filter, fileName = wxTheApp->GetLastFileOpen();
   QFileInfo qf = QFileInfo(fileName);
   DString linkName;
   DString dir;
@@ -156,21 +156,28 @@ bool CLavaDoc::SelectLcom(bool emptyDoc)
     iniFile = qf.absoluteFilePath();
   else
     iniFile = ExeDir + ComponentLinkDir;
-  QString filter = ("LavaCom file (*.lcom)");
+#ifdef WIN32
+  filter = ("LavaCom file (*.lcom *.lcom.lnk)");
+#else
+  filter = ("LavaCom file (*.lcom)");
+#endif
 
   fileName = L_GetOpenFileName( iniFile,
 				      ((CLavaApp*)wxTheApp)->m_appWindow,
 				      "Lava (*.lcom) file defining the type of lava component object",
-				      filter,
-              "lcom"
+				      filter
               );
   if (!fileName.isEmpty()) {
     LcomFileName = fileName;
     qf.setFile(fileName);
     fileName = qf.absoluteFilePath();
     qf.setFile(fileName);
-    wxTheApp->SetLastFileOpen(fileName);
-    QString fn = ResolveLinks(qf);
+    //wxTheApp->SetLastFileOpen(fileName);
+    //QString fn = ResolveLinks(qf);
+    if (qf.isSymLink())
+      fn = qf.symLinkTarget();
+    else
+      fn = fileName;
     PathName = DString(qPrintable(fn));
     if (qf.absolutePath() + "/" == ExeDir + ComponentLinkDir) 
       linkName = DString(qPrintable(qf.fileName()));
