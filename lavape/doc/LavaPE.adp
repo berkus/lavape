@@ -194,7 +194,10 @@
   				<keyword ref="html/UnfinishedObjects.htm">closed objects</keyword>
   				<keyword ref="html/UnfinishedObjects.htm">quarantined objects</keyword>
 				</section>
-			</section>
+				<section ref="html/MultiPhaseRecIni.htm" title="Recursive, mutual, and multi-phase initialization">
+  				<keyword ref="html/MultiPhaseRecIni.htm">initialize clause of declare</keyword>
+				</section>
+      </section>
 			<section ref="html/PointersRefCounts.htm" title="Pointers, reference counts, storage management">
 				<keyword ref="html/PointersRefCounts.htm">application-level pointers</keyword>
 				<keyword ref="html/PointersRefCounts.htm#finalize">destructor</keyword>
