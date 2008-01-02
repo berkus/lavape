@@ -1,7 +1,7 @@
 body {background:#ffffff; color:#000000; text:#000000; link:black; alink:black; vlink:black}
 a:hover {color:red; font-weight:bold; font-family: sans-serif}
 p {font-size: 10pt}
-pre {font-size: 10pt; font-style:italic; color:#009000}
+pre {font-size: 10pt}
 div {margin-left:0.7cm; font-size: 10pt}
 div.Element {margin-left:0cm; font-size: 10pt}
 div.Category {margin-left:0cm; font-size: 10pt; font-style:italic; font-size: 10pt; font-weight:bold; color:#b51806; cursor:pointer}

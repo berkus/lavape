@@ -197,12 +197,12 @@ static void printCommentLines (DString comment) {
   DString comm;
   QString str(comment.c);
 
-  code("<pre>");
+  code("<pre><I><FONT color=#009000>");
   str = str.replace('<',"&lt;");
   str = str.replace('\r',"");
   comm = qPrintable(str);
   code(comm.c);
-  code(":</pre>");
+  code(":</FONT></I></pre>");
 }
 
 

@@ -75,7 +75,7 @@ static void PutLink(TIDTable *IDTable,TID refID,bool singleFile,bool error,char 
     }
   }
 
-  if (!singleFile && linkDefined) {
+  if (/*!singleFile && */linkDefined) {
     code("<A HREF=\"");
     if (idtype == globalID) {
       if (refID.nINCL != 1) { // other Lava doc != std.lava
@@ -87,17 +87,23 @@ static void PutLink(TIDTable *IDTable,TID refID,bool singleFile,bool error,char 
         loc = 0;
         if (importedFile.Contains(":",0,loc))
           importedFile.Replace("|",loc);
-        importedFile = "../" + importedFile + "_m.htm";
+        if (singleFile)
+          importedFile = importedFile + "_1.htm";
+        else
+          importedFile = "../" + importedFile + "_m.htm";
       }
       else // std.lava
-        importedFile = "../std_m.htm";
+        if (singleFile)
+          importedFile = "std_1.htm";
+        else
+          importedFile = "../std_m.htm";
       code(importedFile.c);
     }
 
     code("#");
     IO.WriteCard(refID.nID,1);
     code("\"");
-    if (idtype == globalID)
+    if (idtype == globalID && !singleFile)
       code(" TARGET=\"frmLeft\">");
     else
       code(">");
@@ -122,7 +128,7 @@ static void PutLink(TIDTable *IDTable,TID refID,bool singleFile,bool error,char 
   if (isFuncRef || error)
     code("</B>");
 
-  if (!singleFile && linkDefined)
+  if (/*!singleFile && */linkDefined)
     code("</A>");
 }
 

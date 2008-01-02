@@ -2653,6 +2653,10 @@ void DrawExec (DString file,bool singleFile,CLavaBaseDoc *doc,LavaDECL *myDECL,S
     text.leftArrows = true;
   else
     text.leftArrows = false;
+  if (myDECL->TreeFlags.Contains(parmNames))
+    text.parmNames = true;
+  else
+    text.parmNames = false;
 
   text.document = doc;
   text.ckd.document = doc;
