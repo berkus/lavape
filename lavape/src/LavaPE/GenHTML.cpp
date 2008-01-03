@@ -757,15 +757,8 @@ void CLavaPEView::GenHTML(LavaDECL *pnode,TDeclType &parentCategory, bool &fstCh
     else if (pnode->DeclDescType == EnumType)
       code("<B>enumeration</B>");
     else {
-      if (pnode->SecondTFlags.Contains(isGUI)) {
-        code("<B>GUI service");
-        if (!myDoc->isStd) {
-          code(" for </B>");
-          PutLink(&GetDocument()->IDTable,pnode->RefID,singleFile);
-        }
-        else
-          code("</B>");
-      }
+      if (pnode->SecondTFlags.Contains(isGUI))
+        code("<B>GUI service</B>");
       else
         code("<B>interface</B>");
     }
