@@ -326,7 +326,8 @@
 				<keyword ref="html/EditExec.htm#arithExpr">parentheses in arithmetic expressions</keyword>
 			</section>
 			<section ref="html/EditForm.htm" title="Editing form specifications">
-				<keyword ref="html/EditForm.htm">forms, automatic generation</keyword>
+				<keyword ref="html/EditForm.htm">forms, semi-automatic generation</keyword>
+				<keyword ref="html/EditForm.htm">GUI, semi-automatic generation</keyword>
 			</section>
 		</section>
 		<section ref="html/DialogAndCmdHelp.htm" title="Property sheets and command help">

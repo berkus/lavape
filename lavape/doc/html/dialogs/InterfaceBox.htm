@@ -15,7 +15,7 @@
   
   <BODY>
     
-    <H2 ALIGN="CENTER">Interface property sheet</H2>
+    <H2 ALIGN="CENTER">Class interface property sheet</H2>
     
     <H3>Name</H3>
     
@@ -51,13 +51,17 @@
       link libraries (DLLs). A native class may nevertheless contain
       non-native functions .</P>
     
-    <H3><A NAME="GUIservice"></A>GUI service</H3>
+    <H3><A NAME="GUIservice"></A>GUI service classes</H3>
     
-    <P>You can mark a class as a <A HREF="../EditForm.htm">GUI service class</A> 
-    and select an existing class <I>XY</I> for which a form
-      representation is to be generated. A member function <I>Show</I> is
-      created automatically that can be used to present objects of type <I>XY</I>
-      as forms that can be filled in.</P>
+    <p>For any user-defined class C, LavaPE can semi-automatically create a GUI 
+    representation of C. This is a class that is derived from the common base 
+    class GUI (contained in std.lava) of all GUI service classes by assigning 
+    the concrete class C to the abstract virtual type DATATYPE of class GUI.</p>
+    
+    <P>LavaPE provides a <a href="../EditForm.htm">special view</a> for editing 
+    GUI specifications. It allows you to modify various representation 
+    attributes of individual atomic or composite class members and to associate 
+    handlers (callbacks) with input fields and input events.</P>
     
     <H3>Component object interface</H3>
     
