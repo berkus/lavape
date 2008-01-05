@@ -1599,6 +1599,8 @@ LavaObjectPtr EvalExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFr
   if (!trueObj) {
     if (!ckd.exceptionThrown)
       SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+    else
+      DebugStop(ckd,stackFrame,ckd.exceptionMsg);
     return (LavaObjectPtr)-1;
   }
   //((SynFlags*)(trueObj+1))->INCL(finished);
@@ -1618,6 +1620,8 @@ bool EvalStatementX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsign
   if (!trueObj) {
     if (!ckd.exceptionThrown)
       SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+    else
+      DebugStop(ckd,stackFrame,ckd.exceptionMsg);
     return false;
   }
   //((SynFlags*)(trueObj+1))->INCL(finished);
@@ -2339,6 +2343,8 @@ bool DeclareX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
         if (!object) {
           if (!ckd.exceptionThrown)
             SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+          else
+            DebugStop(ckd,stackFrame,ckd.exceptionMsg);
           return false;
         }
         stackFrame[i++] = object;
@@ -2426,6 +2432,8 @@ static bool Enumerate (SynObject *callObj, CheckData &ckd, LavaVariablePtr stack
         if (!elemObj) {
           if (!ckd.exceptionThrown)
             ((VarName*)cheVar->data)->SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+          else
+            ((VarName*)cheVar->data)->DebugStop(ckd,stackFrame,ckd.exceptionMsg);
           break;
         }
         *(int*)(elemObj+LSH) = index;
@@ -2440,6 +2448,8 @@ static bool Enumerate (SynObject *callObj, CheckData &ckd, LavaVariablePtr stack
         if (!elemObj) {
           if (!ckd.exceptionThrown)
             ((VarName*)cheVar->data)->SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+          else
+            ((VarName*)cheVar->data)->DebugStop(ckd,stackFrame,ckd.exceptionMsg);
           break;
         }
         *(int*)(elemObj+LSH) = index;
@@ -2461,6 +2471,8 @@ static bool Enumerate (SynObject *callObj, CheckData &ckd, LavaVariablePtr stack
       if (!elemObj) {
         if (!ckd.exceptionThrown)
           ((VarName*)cheVar->data)->SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+        else
+          ((VarName*)cheVar->data)->DebugStop(ckd,stackFrame,ckd.exceptionMsg);
         break;
       }
       enumBaseObj = CastEnumType(ckd, elemObj);
@@ -2983,6 +2995,8 @@ LavaObjectPtr ConstantX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
     if (!value) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+      else
+        DebugStop(ckd,stackFrame,ckd.exceptionMsg);
       return (LavaObjectPtr)-1;
     }
 
@@ -3096,6 +3110,8 @@ LavaObjectPtr BoolConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     if (!value) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+      else
+        DebugStop(ckd,stackFrame,ckd.exceptionMsg);
       return (LavaObjectPtr)-1;
     }
     //((SynFlags*)(value+1))->INCL(finished);
@@ -3124,6 +3140,8 @@ LavaObjectPtr EnumConstX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, 
     if (!value) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+      else
+        DebugStop(ckd,stackFrame,ckd.exceptionMsg);
       return (LavaObjectPtr)-1;
     }
     //((SynFlags*)(value+1))->INCL(finished);
@@ -3267,6 +3285,8 @@ LavaObjectPtr EnumItemX::Evaluate (CheckData &ckd, LavaVariablePtr stackFrame, u
   if (!value) {
     if (!ckd.exceptionThrown)
       SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+    else
+      DebugStop(ckd,stackFrame,ckd.exceptionMsg);
     return (LavaObjectPtr)-1;
   }
   enumBaseObj = CastEnumType(ckd, value);
