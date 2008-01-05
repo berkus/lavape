@@ -3379,6 +3379,8 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
     if (!object) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+      else
+        DebugStop(ckd,stackFrame,"XXXXXXX");
       return (LavaObjectPtr)-1;
     }
   }
@@ -3387,6 +3389,8 @@ LavaObjectPtr NewExpressionX::Evaluate (CheckData &ckd, LavaVariablePtr stackFra
     if (!object) {
       if (!ckd.exceptionThrown)
         SetRTError(ckd,&ERR_AllocObjectFailed,stackFrame);
+      else
+        DebugStop(ckd,stackFrame,"XXXXXXX");
       return (LavaObjectPtr)-1;
     }
 

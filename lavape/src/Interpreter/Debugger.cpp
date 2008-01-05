@@ -62,6 +62,7 @@ CLavaDebugger::CLavaDebugger() {
   varAction=0;
   listenSocket = 0;
   workSocket = 0;
+  m_execThread = 0;
   startedFromLavaPE = false;
 }
 
