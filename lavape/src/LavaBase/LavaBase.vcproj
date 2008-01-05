@@ -81,7 +81,7 @@
 				OutputFile="..\..\bin\LavaBase.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="../wxqDocView/Debug,$(QTDIR)/lib"
+				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/LavaBase.pdb"

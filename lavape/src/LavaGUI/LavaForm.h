@@ -20,7 +20,7 @@ public:
   void PartialForm ( LavaDECL* FormDecl, CHEFormNode *&fNode, bool allowHandler);
 
   bool AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, bool emptyOpt = false);
-  void AllocFNode (CHEFormNode *&formNode, LavaDECL *syn, LavaVariablePtr resultObjPtr);
+  bool AllocFNode (CHEFormNode *&formNode, LavaDECL *syn, LavaVariablePtr resultObjPtr);
   void CreateEllipsis (CHEFormNode *&fNode, LavaDECL *syn, bool allowHandler);
   void DeleteForm (CHEFormNode *formNode);
   void DeletePopups(CHEFormNode *object_first);

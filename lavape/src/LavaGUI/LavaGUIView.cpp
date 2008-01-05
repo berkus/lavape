@@ -214,7 +214,8 @@ void LavaGUIDialog::OnCancel()
 {
   LavaObjectPtr obj;
   if (myGUIProg) {
-    myGUIProg->NoteLastModified();
+    if (!myGUIProg->ex && !myGUIProg->ckd.exceptionThrown)
+      myGUIProg->NoteLastModified();
     if (*ResultDPtr) {
       DEC_FWD_CNT(myGUIProg->ckd,*ResultDPtr);
       *ResultDPtr = 0;
@@ -226,8 +227,8 @@ void LavaGUIDialog::OnCancel()
     if (myThread) {
       myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
       myThread->mySemaphore.ex = myGUIProg->ex;
-      myGUIProg->ckd.lastException = 0;
-      myGUIProg->ckd.exceptionThrown = false;
+      //myGUIProg->ckd.lastException = 0;
+      //myGUIProg->ckd.exceptionThrown = false;
     }
   }
   HGUISetUnused(myGUIProg->ckd, *ServicePtr);

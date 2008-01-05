@@ -254,7 +254,7 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
       if (LBaseData->inRuntime) {
         ((CGUIProg*)GUIProg)->ex = HSetInsertBefore(((CGUIProg*)GUIProg)->ckd, StackFrame);
         ((SynFlags*)(StackFrame[SFH+2]+1))->INCL(insertedItem);
-        if (((CGUIProg*)GUIProg)->ex)
+        if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
           return true;
         handle = StackFrame[SFH+3];
         DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd,*(LavaVariablePtr)H_InsertedNode->data.ResultVarPtr); //decr from AllocateObject after putting into chain
@@ -352,7 +352,9 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
       H_OptNode->data.SubTree.Destroy();
       ((CGUIProg*)GUIProg)->LavaForm.emptyInsertion = true;
       ((CGUIProg*)GUIProg)->LavaForm.PartialForm(H_FormSyn, H_OptNode, H_OptNode->data.allowOwnHandler); 
-      if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
+       if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
+        return true;
+     if (((CGUIProg*)GUIProg)->LavaForm.emptyInsertion) {
         if (!LBaseData->inRuntime) 
           QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), "Empty optional element",QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
         return true;
@@ -501,6 +503,8 @@ CHEHandlerInfo* CmdExecCLASS::GetHandler(CHEFormNode* fNode, int eventType)
           DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, obj);
         if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
           ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
+        if (!GUIProg->isView)\
+          ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\
         return 0;
       }
     }

@@ -39,6 +39,14 @@
 #pragma hdrstop
 
 
+#define RETURNFALSE() {\
+  if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown) \
+    ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);\
+  if (!GUIProg->isView)\
+    ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\
+  return false;\
+}
+
 bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, 
                                     LavaVariablePtr resultObjPtr, bool emptyOpt)
 {
@@ -48,73 +56,82 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
   bool newObj = !(*resultObjPtr) && !emptyOpt;
   if (!syn) {
     GUIProg->myDoc->LavaError(((CGUIProg*)GUIProg)->ckd, true, syn, &ERR_ErrInForm,0);
-    return false;
+    RETURNFALSE()  //return false;
   }
   if ((syn->DeclType == Attr) || (syn->DeclType == VirtualType) || (syn->DeclType == PatternDef)) {
     if (syn->RuntimeDECL->DeclType == FormDef) {
       if (!syn->RuntimeDECL->WorkFlags.Contains(runTimeOK))
         if (!GUIProg->myDoc->CheckForm(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL))
-          return false;
+          RETURNFALSE() //return false;
         if (newObj) {
           servDECL = syn->RuntimeDECL->ParentDECL->RuntimeDECL;
           if (!servDECL->WorkFlags.Contains(runTimeOK))
             if (!GUIProg->myDoc->CheckImpl(((CGUIProg*)GUIProg)->ckd, servDECL))
-              return false;
+              RETURNFALSE()  //return false;
           *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL->RelatedDECL, syn->TypeFlags.Contains(stateObject));
+          if (!*resultObjPtr)
+            RETURNFALSE() 
+            /*
           if (!*resultObjPtr) {
             if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
               ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
             return false;
-          }
+          }*/
           if (GUIProg->myDoc->isObject
             && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
-            return false;
+            RETURNFALSE() //return false;
         }
     }
     else
       if (newObj) {
         *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL, syn->TypeFlags.Contains(stateObject));
-        if (!*resultObjPtr) {
+        if (!*resultObjPtr) 
+          RETURNFALSE() 
+        /*{
           if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
             ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
           return false;
-        }
+        }*/
         if (GUIProg->myDoc->isObject
           && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
-          return false;
+          RETURNFALSE()  //return false;
       }
   }
   else
     if (syn->DeclType == FormDef) {
       if (!syn->WorkFlags.Contains(runTimeOK))
         if (!GUIProg->myDoc->CheckForm(((CGUIProg*)GUIProg)->ckd, syn))
-          return false;
+          RETURNFALSE()  //return false;
       if (newObj) {
         servDECL = syn->ParentDECL->RuntimeDECL;
         if (!servDECL->WorkFlags.Contains(runTimeOK))
           if (!GUIProg->myDoc->CheckImpl(((CGUIProg*)GUIProg)->ckd, servDECL))
-            return false;
+            RETURNFALSE()  //return false;
         *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RelatedDECL, false); //??
-        if (!*resultObjPtr) {
+        if (!*resultObjPtr)
+          RETURNFALSE() 
+        /*{
           if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
             ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
           return false;
-        }
+        }*/
         if (GUIProg->myDoc->isObject
           && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
-          return false;
+          RETURNFALSE()  //return false;
       }
     }
     else {
       *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn, false); //??
-      if (!*resultObjPtr) {
+      if (!*resultObjPtr) 
+        RETURNFALSE() 
+      /*{
         if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
           ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
         return false;
-      }
+      }*/
       if (GUIProg->myDoc->isObject
          && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
-        return false;
+        RETURNFALSE()  //return false;
     }
   if (newObj) {
     ((SynFlags*)((*resultObjPtr)+1))->INCL(useDefaults);
@@ -126,7 +143,7 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
 
 
 
-void LavaFormCLASS::AllocFNode (CHEFormNode *&formNode, 
+bool LavaFormCLASS::AllocFNode (CHEFormNode *&formNode, 
                                 LavaDECL *syn, 
                                 LavaVariablePtr resultObjPtr)
 
@@ -140,7 +157,8 @@ void LavaFormCLASS::AllocFNode (CHEFormNode *&formNode,
   else {
     formNode->data.ResultVarPtr = (CSecTabBase***)resultObjPtr;
     if (resultObjPtr)
-      AllocResultObj(syn, resultObjPtr, syn->TypeFlags.Contains(isOptional));
+      if (!AllocResultObj(syn, resultObjPtr, syn->TypeFlags.Contains(isOptional)))
+        return false;
   }
   formNode->data.Annotation.ptr = 0;
   formNode->data.FIP.widget = 0;
@@ -179,6 +197,7 @@ void LavaFormCLASS::AllocFNode (CHEFormNode *&formNode,
       formNode->data.ColorFValid = false;
     }
   }
+  return true;
 //  formNode->data.FIP.pred = 0;
 //  formNode->data.FIP.fieldNode = 0;
 } // END OF AllocFNode
@@ -328,7 +347,9 @@ void LavaFormCLASS::MakeForm ( LavaDECL* formDECL, LavaVariablePtr resultPtr,
   emptyForm = true;
   if (!LBaseData->inRuntime)
     ClassChain = new TIDs;
-  partialForm(DECLptr, DECLptr, resultPtr, SET(Flag_INPUT,Flag_OUTPUT,-1), newFNode, true, true, ClassChain); 
+  partialForm(DECLptr, DECLptr, resultPtr, SET(Flag_INPUT,Flag_OUTPUT,-1), newFNode, true, true, ClassChain);
+  if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
+    return;
   if (ClassChain)
     delete ClassChain;
   emptyForm = false;
@@ -387,6 +408,8 @@ void LavaFormCLASS::PartialForm (LavaDECL* FormDecl, CHEFormNode *&fNode, bool a
   if (!LBaseData->inRuntime)
     ClassChain = new TIDs;
 
+  if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
+    return ;
   if (fNode) {
     defaultIOflags = fNode->data.IoSigFlags*SET(Flag_INPUT,Flag_OUTPUT,-1);
     fNode->data.Annotation.ptr = FormDecl->Annotation.ptr;
@@ -401,6 +424,8 @@ void LavaFormCLASS::PartialForm (LavaDECL* FormDecl, CHEFormNode *&fNode, bool a
   }
 
   partialForm(FormDecl, FormDecl, (LavaVariablePtr)fNode->data.ResultVarPtr, defaultIOflags, newFNode, true, allowHandler, ClassChain);
+  if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
+    return;
   if (fNode) {
     if (FormDecl->Annotation.ptr->IterFlags.Contains(Optional)) {
       fNode->data.IterFlags.INCL(Optional);
@@ -451,7 +476,8 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
     resultFNode->data.StringValue.Destroy();
     resultFNode->data.B = false;
     if (rPtr && !(*rPtr))
-      AllocResultObj(decl, rPtr);
+      if (!AllocResultObj(decl, rPtr))
+        return false;
     if (rPtr)
      totalObj = *rPtr - (*rPtr)[0]->sectionOffset;
     if (!LBaseData->inRuntime || rPtr && ((SynFlags*)(totalObj+1))->Contains(useDefaults)) {
@@ -497,7 +523,8 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
     resultFNode->data.StringValue.Destroy();
     resultFNode->data.I = 0;
     if (rPtr && !(*rPtr))
-      AllocResultObj(decl, rPtr);
+      if (!AllocResultObj(decl, rPtr))
+        return false;
     if (rPtr)
      totalObj = *rPtr - (*rPtr)[0]->sectionOffset;
     if (!LBaseData->inRuntime || rPtr && ((SynFlags*)(totalObj+1))->Contains(useDefaults)) {
@@ -524,7 +551,8 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
   case Float:
   case Double:
     if (rPtr && !(*rPtr))
-      AllocResultObj(decl, rPtr);
+      if (!AllocResultObj(decl, rPtr))
+        return false;
     if (rPtr)
       totalObj = *rPtr - (*rPtr)[0]->sectionOffset;
     if (!LBaseData->inRuntime || rPtr && ((SynFlags*)(totalObj+1))->Contains(useDefaults)) {
@@ -573,7 +601,8 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
 
   case VLString:
     if (rPtr && !(*rPtr))
-      AllocResultObj(decl, rPtr);
+      if (!AllocResultObj(decl, rPtr))
+        return false;
     if (rPtr)
       totalObj = *rPtr - (*rPtr)[0]->sectionOffset;
     if (!LBaseData->inRuntime || rPtr && ((SynFlags*)(totalObj+1))->Contains(useDefaults)) {
@@ -604,7 +633,8 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
   case Char:
     resultFNode->data.StringValue.Destroy();
     if (rPtr && !(*rPtr))
-      AllocResultObj(decl, rPtr);
+      if (!AllocResultObj(decl, rPtr))
+        return false;
     if (rPtr)
       totalObj = *rPtr - (*rPtr)[0]->sectionOffset;
     if (!LBaseData->inRuntime || rPtr && ((SynFlags*)(totalObj+1))->Contains(useDefaults)) {
@@ -646,7 +676,8 @@ bool LavaFormCLASS::setDefaultValue (CHEFormNode *resultFNode)
         enumSyntax = resultFNode->data.FormSyntax;
 
     if (rPtr && !(*rPtr))
-      AllocResultObj(decl, rPtr);
+      if (!AllocResultObj(decl, rPtr))
+        return false;
     if (rPtr) {
       totalObj = *rPtr - (*rPtr)[0]->sectionOffset;
       enumPtr = CastEnumType(((CGUIProg*)GUIProg)->ckd, *rPtr);
@@ -769,6 +800,8 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
   bool oldEmpty;
   TAnnotation * anno;
 
+  if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
+    return ;
   anno = FormDecl->Annotation.ptr;
   if (anno) {
   }
@@ -826,7 +859,8 @@ void LavaFormCLASS::partialForm (LavaDECL* parDECL, LavaDECL* FormDecl, /*pure i
       || (finalVT->DeclDescType != NamedType)
       || anno->BasicFlags.Contains(DefaultMenu)
       || (FormDecl->DeclType == VirtualType)) {
-    AllocFNode(resultFNode, FormDecl, resultVarPtr);
+    if (!AllocFNode(resultFNode, FormDecl, resultVarPtr))
+      return;
     resultFNode->data.Annotation.ptr = anno;
     //resultFNode->data.WidgetName = FormDecl->WidgetName;
     resultFNode->data.BasicFlags = anno->BasicFlags;
@@ -1134,10 +1168,15 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
               else {
                 if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
                   ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
+                if (!GUIProg->isView)\
+                  ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\
                 return false;
               }
-              if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
-                return false;
+              if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex) {
+               if (!GUIProg->isView)\
+                ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\
+               return false;
+              }
             }
             ii++;
           }
@@ -1265,10 +1304,14 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
   int sectionNumber;
   bool isForm;
 
+  if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
+    return ;
   classDECL = IDTable->GetDECL(parDECL->RefID, parDECL->inINCL); 
   if (!classDECL) {
-    if (LBaseData->inRuntime)
+    if (LBaseData->inRuntime) {
       GUIProg->myDoc->LavaError(((CGUIProg*)GUIProg)->ckd, true, parDECL, &ERR_Broken_ref, 0);
+      return;
+    }
     else {
       msg = ERR_Broken_ref;
       msg = msg + QString(" in : ")  + QString(parDECL->FullName.c);
@@ -1325,7 +1368,8 @@ void LavaFormCLASS::memberList (LavaDECL* parDECL,
       return;
     }
   if (!classDECL->VElems.VElems.first || !LBaseData->inRuntime)
-    GUIProg->myDoc->MakeVElems(classDECL, &((CGUIProg*)GUIProg)->ckd);
+    if (!GUIProg->myDoc->MakeVElems(classDECL, &((CGUIProg*)GUIProg)->ckd))
+      return;
   formEl = (CHETVElem*)parDECL->VElems.VElems.first;
   formDECL = IDTable->GetDECL(formEl->data.VTClss); //remember: TIDs in VElems are already adjusted
   if (formDECL != parDECL) { //form has inherited form from base class

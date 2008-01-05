@@ -79,7 +79,7 @@
 				OutputFile="..\..\bin\LavaPE.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="../wxqDocView/Debug,$(QTDIR)/lib"
+				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/LavaPE.pdb"
