@@ -201,8 +201,8 @@ QString SynObject::LocationOfConstruct () {
 void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
 {
   SynObject *synObj=this;
-  DString dFileName = ckd.document->GetAbsSynFileName(), dsTextParam(textParam);
-  QString cFileName(dFileName.c), cExecName;
+  DString dFileName, dsTextParam(textParam);
+  QString cFileName, cExecName;
   QString msg, msgText;
 
   if (IsFuncInvocation())
@@ -229,11 +229,15 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
     cExecName = QString("invariant of ") + QString(ckd.myDECL->ParentDECL->FullName.c);
   else
     cExecName = ckd.myDECL->ParentDECL->FullName.c;
+
+  dFileName = ckd.document->IDTable.IDTab[ckd.myDECL->inINCL]->FileName;
+  AbsPathName(dFileName,ckd.document->IDTable.DocDir);
+  cFileName = QString(dFileName.c);
   if (synObj->type == implementation_T)
     msg = msgText + " in " + cFileName + "::" + cExecName;
-  else
+  else {
     msg = msgText + "\n\nFile: " + cFileName + "\n\nPath to erroneous construct:\n\n" + cExecName + " | " + synObj->LocationOfConstruct();
-
+  }
   if (SetLavaException(ckd, check_ex, msg))
     throw CUserException();
   else

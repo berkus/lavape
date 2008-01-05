@@ -618,7 +618,7 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
                    + "()::ensure, file " + cFileName + "\n" + path;
           break;
         default: // initiator
-          path = "\ninitiator "
+          path = "\nmain program "
                  + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
                  + ", file "
                  + cFileName + "\n" + path;
