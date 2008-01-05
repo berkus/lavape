@@ -369,7 +369,7 @@ struct LAVABASE_DLL CheckData {
   LavaDECL *myDECL, *selfTypeDECL;
   CVAttrDesc *attrDesc;
   LavaObjectPtr lastException, stackFrame[3];
-  QString callStack;
+  QString callStack, exceptionMsg;
   SynObjectBase *selfVar, *succeed, *iniVar;
   CContext lpc;          //vorher *execIC, *execOC
   CContext tempCtx;  //vorher *iC, *oC

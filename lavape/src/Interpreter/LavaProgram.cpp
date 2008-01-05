@@ -541,6 +541,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
               if (ckd.lastException)
                 DEC_FWD_CNT(ckd, ckd.lastException);
               ckd.lastException = ckdl.lastException;
+              ckd.exceptionMsg = ckdl.exceptionMsg;
               ckd.exceptionThrown = true;
               return false;
             }

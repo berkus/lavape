@@ -1288,6 +1288,7 @@ bool SetLavaException(CheckData& ckd, int code, const QString& mess)
   strObj = AllocateObject(ckd, ckd.document->DECLTab[VLString], false);
   codeObj = AllocateObject(ckd, (LavaDECL*)((CHE*)ckd.document->DECLTab[B_RTException]->NestedDecls.first->successor)->data, false);
   if (!ex || !strObj || !codeObj) {
+    ckd.exceptionMsg = ERR_SetLavaExceptionFailed;
     ckd.exceptionThrown = true;
     return false;
   }
@@ -1300,10 +1301,12 @@ bool SetLavaException(CheckData& ckd, int code, const QString& mess)
   *(LavaVariablePtr)(ckd.lastException + LSH + 1) = strObj;
   NewQString((QString*)strObj+LSH, mess.toAscii());
   if (HEnumSetVal(ckd, codeObj, code)) {
+    ckd.exceptionMsg = mess;
     ckd.exceptionThrown = true;
     return true;
   }
   else {
+    ckd.exceptionMsg = ERR_SetLavaExceptionFailed;
     ckd.exceptionThrown = true;
     return false;
   }
