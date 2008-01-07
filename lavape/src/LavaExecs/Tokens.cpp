@@ -140,7 +140,7 @@ void Tokens_INIT ()
   ATO("not");
 
   ATO("=");
-  ATO("!=");
+  ATO("\xAC=");
   ATO("<");
   ATO(">");
   ATO("<=");
@@ -154,7 +154,7 @@ void Tokens_INIT ()
   ATO("&");
   ATO("|");
   ATO("||");
-  ATO("¬");
+  ATO("\xAC");
   ATO("<<");
   ATO(">>");
   ATO("[]");

@@ -433,7 +433,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p><a href=\"Copy.htm\">Copy</a> an existing <b><i><font color=\"red\">Lava</font></i></b> object onto another object</p>"));
   newKwdToolbutton(tb,LBaseData->ifButton,"&if",SLOT(ifStm()),
     QObject::tr("If-then-else statement: \"i\""),
-    QObject::tr("<p><a href=\"IfStm.htm\">if-then-elsif-else</a> statement with optional\nelsif and else branches</p>"));
+    QObject::tr("<p><a href=\"IfStm.htm\">if-then-elsif-else</a> statement with optional\nelif and else branches</p>"));
   newKwdToolbutton(tb,LBaseData->ifdefButton,"&ifdef",SLOT(ifdefStm()),
     QObject::tr("Ifdef statement"),
     QObject::tr("<p><a href=\"IfdefElse.htm\">ifdef</a> statement: if variable != null then ...</p>"));
@@ -504,7 +504,7 @@ void CLavaMainFrame::fillKwdToolbar(QToolBar *tb)
     QObject::tr("<p>\"x <a href=\"IfdefElse.htm\">else</a> y\" yields x if x != null, else y</p>"));
   newKwdToolbutton(tb,LBaseData->ifxButton,"if-expr",SLOT(ifExpr()),
     QObject::tr("If-then-else expression: \"x\""),
-    QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelsif and else branches</p>"));
+    QObject::tr("<p><a href=\"IfExpr.htm\">if-then-elsif-else</a> conditional expression with optional\nelif and else branches</p>"));
   newKwdToolbutton(tb,LBaseData->scaleButton,"scale",SLOT(scale()),
     QObject::tr("Add a scale (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters"),
     QObject::tr("<p>Add a <a href=\"Scale.htm\">scale</a> (e.g. \"Meters\", derived from float/double) to a raw object (e.g. \"3.5\"): 3.5 Meters</p>"));

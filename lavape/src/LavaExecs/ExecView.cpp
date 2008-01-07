@@ -2911,7 +2911,8 @@ void CExecView::OnDelete ()
       text->currentSynObj = text->currentSynObj->parentObject;
   }
   else if (text->currentSynObj->parentObject->NestedOptClause(text->currentSynObj)
-  && text->currentSynObj->parentObject->primaryToken == ifdef_T) {
+  && text->currentSynObj->parentObject->primaryToken == ifdef_T
+  && IsPH(text->currentSynObj)) {
     optClause = text->currentSynObj;
     text->currentSynObj = text->currentSynObj->parentObject;
   }
