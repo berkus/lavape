@@ -5,6 +5,7 @@
 #include "BASEMACROS.h"
 #include "DString.h"
 #include "SynIO.h"
+#include "docview.h"
 #include "Syntax.h"
 #include "qobject.h"
 #include "qstring.h"
@@ -79,6 +80,12 @@ public:
   bool hasRefToClipID;
   LavaDECL* lastImpl;
   LavaDECL* catchfuncDecl;
+  TIDs implOfExToBase;
+  wxDocument* DropImplDoc;
+  bool inDragExToBase;
+  bool inDropExToBase;
+
+  bool inExToBase;
   CHAINX isAncChain;
 
   TIDTable();
@@ -145,6 +152,7 @@ public:
   void StartClipIDs(int dragINCL, int dropINCL, TIDTable* dropTable);
   void ChangeRefToClipID(TID& id);
   void ChangeRefsToClipIDs(LavaDECL* decl);
+  void ChangeRefsToClipIDsApx();
   void PrepareClipTree(SyntaxDefinition* clipTree, DString* clipDocPathName) {ClipTree = clipTree; ClipDocPathName = clipDocPathName;};
 
   void Change(LavaDECL ** pnewDECL);

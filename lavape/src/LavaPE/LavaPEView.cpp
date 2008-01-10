@@ -3867,8 +3867,8 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
     hintCol = new CLavaPEHint(CPECommand_Insert, DragDoc, firstlast, implDECL, str2, (void*)pos, d4, 0, Clipdata->ClipTree, Clipdata->docPathName, (void*)RefacCase);
     DragDoc->UpdateDoc(dragView, false, hintCol);
     break;
-  case baseToEx:
   case exToBase:
+  case baseToEx:
     for (clipEl = (CHE*)clipDECL->NestedDecls.first;
          clipEl && (
           ( ((LavaDECL*)clipEl->data)->DeclType == Function)
@@ -3968,10 +3968,23 @@ bool CLavaPEView::Refac(LavaDECL* dropDECL, bool& mdh, CHE*& vtHints)
       d4 = pDropImplDecl;
       str2 = new DString((*pDropImplDecl)->FullName);
       docName = new DString(((CLavaPEDoc*)dragImplDoc)->GetAbsSynFileName());
+      if (RefacCase == exToBase) {
+        ((CLavaPEDoc*)dropImplDoc)->IDTable.inDropExToBase = true;
+      }
       FIRSTLAST(dropImplDoc, firstlast);
       hint = new CLavaPEHint(CPECommand_Move, dropImplDoc, firstlast, implDECL,
                  str2, (void*)pos, d4, *pDragImplDecl, d6, docName, (void*)RefacCase);
       ((CLavaPEDoc*)dropImplDoc)->UpdateDoc(this, false, hint);
+      ((CLavaPEDoc*)dropImplDoc)->IDTable.ChangeTab.Destroy();
+      if (RefacCase == exToBase) {
+        ((CLavaPEDoc*)dragImplDoc)->IDTable.inDragExToBase = true;
+        ((CLavaPEDoc*)dropImplDoc)->IDTable.inDropExToBase = false;
+        ((CLavaPEDoc*)dragImplDoc)->IDTable.implOfExToBase.first = ((CLavaPEDoc*)dropImplDoc)->IDTable.implOfExToBase.first;
+        ((CLavaPEDoc*)dragImplDoc)->IDTable.implOfExToBase.last = ((CLavaPEDoc*)dropImplDoc)->IDTable.implOfExToBase.last;
+        ((CLavaPEDoc*)dragImplDoc)->IDTable.DropImplDoc = dropImplDoc;
+        ((CLavaPEDoc*)dropImplDoc)->IDTable.implOfExToBase.first = 0;
+        ((CLavaPEDoc*)dropImplDoc)->IDTable.implOfExToBase.last = 0;
+      }
       delete hint;
       delete implDECL;
       ((CLavaPEView*)((CLavaPEDoc*)dragImplDoc)->DragView)->pDeclDragP = pDragP;

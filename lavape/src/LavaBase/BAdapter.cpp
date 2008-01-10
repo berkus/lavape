@@ -46,8 +46,18 @@ using namespace std;
 
 #define OBJALLOC(RESULT, CKD, DECL, ST) {\
   RESULT = AllocateObject(CKD, DECL, ST);\
-  if (!RESULT && !CKD.exceptionThrown)\
+  if (!RESULT)\
+    if (!CKD.exceptionThrown)\
+      throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
+    else\
+      return false;\
+}
+
+#define ONELEVELCOPY(CKD, OBJ) {\
+  if (!OneLevelCopy(CKD, OBJ) && !CKD.exceptionThrown)\
     throw CRuntimeException(memory_ex ,&ERR_AllocObjectFailed);\
+  else\
+    return false;\
 }
 	//((SynFlags*)(RESULT+1))->INCL(finished); \
 
@@ -1241,7 +1251,7 @@ CRuntimeException* HSetSucc(CheckData& /*ckd*/, LavaVariablePtr stack)
     return new CRuntimeException(ElemNotInSet_ex, &ERR_ElemNotInSet);
 }
 
-void HSetOneLevelCopy(CheckData& ckd, LavaObjectPtr sourceSectionPtr, LavaObjectPtr resultSectionPtr)
+bool HSetOneLevelCopy(CheckData& ckd, LavaObjectPtr sourceSectionPtr, LavaObjectPtr resultSectionPtr)
 {
   LavaObjectPtr handle;
   CHAINX *resultChain, *sourceChain;
@@ -1260,6 +1270,7 @@ void HSetOneLevelCopy(CheckData& ckd, LavaObjectPtr sourceSectionPtr, LavaObject
       resultChain->Append((CHE*)(handle+LSH+1));
     }
   }
+  return true;
 }
 
 bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& isNew)
@@ -1277,7 +1288,7 @@ bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePt
     if (((SynFlags*)(((LavaObjectPtr)cheUpdate)-LSH))->Contains(deletedItem)) {
       if (!((SynFlags*)(((LavaObjectPtr)cheUpdate->data)+1))->Contains(insertedItem)) {
         if (!isNew && !((SynFlags*)(origObj+1))->Contains(stateObjFlag)) {
-          OneLevelCopy(ckd, origObj);
+          ONELEVELCOPY(ckd, origObj)
           isNew = true;
           chainOrig = (CHAINX*)(origObj+LSH);
           cheOrig = (CHE*)chainOrig->first;
@@ -1297,7 +1308,7 @@ bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePt
       if (((SynFlags*)(((LavaObjectPtr)cheUpdate->data)+1))->Contains(insertedItem)) {
         ((SynFlags*)(((LavaObjectPtr)cheUpdate->data)+1))->EXCL(insertedItem);
         if (!isNew && !((SynFlags*)(origObj+1))->Contains(stateObjFlag)) {
-          OneLevelCopy(ckd, origObj);
+          ONELEVELCOPY(ckd, origObj);
           isNew = true;
           chainOrig = (CHAINX*)(origObj+LSH);
           if (!iEl)
@@ -1329,7 +1340,7 @@ bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePt
         elOrig = elOrig - secOff;
         if (UpdateObject(ckd, elOrig, &elUpdate)) {
           if (!isNew && !((SynFlags*)(origObj+1))->Contains(stateObjFlag)) {
-            OneLevelCopy(ckd, origObj);
+            ONELEVELCOPY(ckd, origObj);
             isNew = true;
             chainOrig = (CHAINX*)(origObj+LSH);
             cheOrig = (CHE*)chainOrig->first;
@@ -1340,6 +1351,8 @@ bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePt
             DFC((LavaObjectPtr)cheOrig->data);
           cheOrig->data = (DObject*)(elOrig + secOff);
         }
+        if (ckd.exceptionThrown)
+          return false;
         cheUpdate = (CHE*)cheUpdate->successor;
         cheOrig = (CHE*)cheOrig->successor;
       }
@@ -1721,13 +1734,15 @@ bool HArrayUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr update
       if (UpdateObject(ckd, origElN, updateElPtr)) {
         if (!isNew && !((SynFlags*)(origObj+1))->Contains(stateObjFlag))  {
           isNew = true;
-          OneLevelCopy(ckd, origObj);
+          ONELEVELCOPY(ckd, origObj);
           origElPtr = (*(LavaVariablePtr*)(origObj+LSH+1))+ii;
         }
         if (*origElPtr)
           DEC_FWD_CNT(ckd, *origElPtr);
         *origElPtr = origElN /*+ secOff*/;
       }
+      if (ckd.exceptionThrown)
+        return false;
     }
     return isNew;
   }
@@ -1762,10 +1777,6 @@ bool ExceptionCallStack(CheckData& ckd, LavaVariablePtr stack)
 
   if (ckd.lastException) {
     OBJALLOC(strObj, ckd, ckd.document->DECLTab[VLString], false)
-    if (!strObj) {
-      ckd.exceptionThrown = true;
-      return false;
-    }
     NewQString((QString*)strObj+LSH, ckd.callStack.toAscii());
     stack[SFH+1] = strObj;
   }

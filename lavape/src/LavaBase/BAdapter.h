@@ -21,7 +21,7 @@ extern LAVABASE_DLL bool HSetFirst(CheckData& ckd, LavaVariablePtr stack);
 extern LAVABASE_DLL CRuntimeException* HSetSucc(CheckData& ckd, LavaVariablePtr stack);
 extern LAVABASE_DLL bool HSetContains(LavaObjectPtr setObj, LavaObjectPtr elemObj);
 extern LAVABASE_DLL bool HSetUpdate(CheckData& ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr, bool& isNew);
-extern LAVABASE_DLL void HSetOneLevelCopy(CheckData& ckd, LavaObjectPtr sourceSectionPtr, LavaObjectPtr resultSectionPtr);
+extern LAVABASE_DLL bool HSetOneLevelCopy(CheckData& ckd, LavaObjectPtr sourceSectionPtr, LavaObjectPtr resultSectionPtr);
 
 extern LAVABASE_DLL bool HArrayMakeLen(LavaObjectPtr array, int len);
 extern LAVABASE_DLL int HArrayGetLen(LavaObjectPtr array);

@@ -4317,14 +4317,17 @@ void CLavaPEDoc::UpdateMoveInDocs ( const DString& clipDocFn )
 		}
 		if ( ( dragIncl >= 0 ) && ( dropIncl >= 0 ) )
 		{
-			oldTopDECL = ( ( CHESimpleSyntax* ) doc->mySynDef->SynDefTree.first )->data.TopDef.ptr;
+			doc->IDTable.StartClipIDs ( dragIncl, dropIncl, &this->IDTable );
+			IDTable.StartClipIDs ( dragIncl, dropIncl, &this->IDTable );
+      if (doc->IDTable.inDragExToBase && doc->IDTable.implOfExToBase.first)
+        doc->IDTable.ChangeRefsToClipIDsApx();
+      oldTopDECL = ( ( CHESimpleSyntax* ) doc->mySynDef->SynDefTree.first )->data.TopDef.ptr;
 			newTopDECL = NewLavaDECL();
 			*newTopDECL = *oldTopDECL;
 			//Change IDs
-			doc->IDTable.StartClipIDs ( dragIncl, dropIncl, &this->IDTable );
-			IDTable.StartClipIDs ( dragIncl, dropIncl, &this->IDTable );
 			doc->IDTable.ChangeRefsToClipIDs ( newTopDECL );
-			if ( doc->IDTable.hasRefToClipID )
+
+      if ( doc->IDTable.hasRefToClipID )
 			{
 				( ( CHESimpleSyntax* ) doc->mySynDef->SynDefTree.first )->data.TopDef.ptr = newTopDECL;
 				doc->IDTable.DownChange ( & ( ( CHESimpleSyntax* ) doc->mySynDef->SynDefTree.first )->data.TopDef.ptr );

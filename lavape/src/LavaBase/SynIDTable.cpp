@@ -144,6 +144,11 @@ TIDTable::TIDTable()
   DropINCL = 0;
   lastImpl = 0;
   catchfuncDecl = 0;
+  //implOfExToBase = 0;
+  inDragExToBase = false;
+  inDropExToBase = false;
+  inExToBase = false;
+
   for (int ii = 0; ii < 30; ii++)
     BasicTypesID [ii] = -1;
 
@@ -232,6 +237,11 @@ void TIDTable::NewID(LavaDECL ** pdecl)
         AddImplID(*pdecl);
       che->data.nINCL = (*pdecl)->OwnID; //new ID
       ChangeTab.Append(che);
+      if (inDropExToBase && (*pdecl)->DeclType == Function) {
+        cheID = new CHETID;
+        cheID->data = TID((*pdecl)->OwnID, 0);
+        implOfExToBase.Append(cheID);
+      }
       if (inPattern && che->data.nID >= 0) {
         cheID = new CHETID;
         cheID->data = TID(che->data.nID, (*pdecl)->inINCL);
@@ -255,6 +265,7 @@ void TIDTable::NewID(LavaDECL ** pdecl)
         AddImplID(*pdecl);
     }
   Down(*pdecl, onNewID);
+
   if (copyStart) {
     if (ClipTree) {
       DString clipDocDir = *ClipDocPathName;
@@ -330,11 +341,25 @@ bool TIDTable::ChangeFromTab(TID& id)
   CHESimpleSyntax* clipChe;
   TID id2;
   CHETID *che = (CHETID*)ChangeTab.first;
-  if ((id.nID >= 0) && (id.nINCL == DragINCL)) {
-    for ( ;che && (che->data.nID != id.nID); che = (CHETID*)che->successor);
-    if (che) {
-      id.nID = che->data.nINCL;
-      return true;
+  if (inExToBase) {
+    if (id.nID < -1) {
+      id.nID = -id.nID;
+      if ((id.nID >= 0) && (id.nINCL == DragINCL)) {
+        for ( ;che && (che->data.nID != id.nID); che = (CHETID*)che->successor);
+        if (che) {
+          id.nID = che->data.nINCL;
+          return true;
+        }
+      }
+    }
+  }
+  else {
+    if ((id.nID >= 0) && (id.nINCL == DragINCL)) {
+      for ( ;che && (che->data.nID != id.nID); che = (CHETID*)che->successor);
+      if (che) {
+        id.nID = che->data.nINCL;
+        return true;
+      }
     }
   }
   //only in the the copied subtree:
@@ -356,8 +381,12 @@ bool TIDTable::ChangeFromTab(TID& id)
            clipChe = (CHESimpleSyntax*)clipChe->successor);
       if (clipChe && (clipChe->data.clipIncl >= 0))
         id.nINCL = clipChe->data.clipIncl;
-      else
-       id.nID = -1;
+      else {
+        if (inDropExToBase )
+          id.nID = -id.nID;
+        else
+          id.nID = -1;
+      }
     }
     else
       if ((id.nID >= 0) && (useInINCL >= 0))
@@ -448,6 +477,38 @@ void TIDTable::ChangeRefsToClipIDs(LavaDECL *decl)
   Down(decl, onMove);
 }
 
+void TIDTable::ChangeRefsToClipIDsApx()
+{
+  LavaDECL *func, **pFunc;
+  CHETID* cheID;
+  TIDType type = globalID;
+  int iDropINCL;
+  if (inDragExToBase && implOfExToBase.first) {
+    cheID = (CHETID*)implOfExToBase.first;
+    func = ((CLavaBaseDoc*)DropImplDoc)->IDTable.GetDECL(cheID->data);
+    if (func && func->Supports.first && (((CHETID*)func->Supports.first)->data.nINCL == DragINCL)) {
+      inExToBase = true;
+      DropTable->inExToBase = true;
+      for (; cheID; cheID = (CHETID*)cheID->successor) {
+        pFunc = (LavaDECL**)((CLavaBaseDoc*)DropImplDoc)->IDTable.GetVar(cheID->data, type);
+        if (*pFunc) {
+           iDropINCL = DropINCL;
+          //if (DropTable == &((CLavaBaseDoc*)DropImplDoc)->IDTable)
+          //  DropTable->CopiedToDoc(pFunc);
+          //else {
+            DropINCL = ((CLavaBaseDoc*)DropImplDoc)->IDTable.GetINCL(((CHESimpleSyntax*)DropTable->mySynDef->SynDefTree.first)->data.SyntaxName, DropTable->DocDir);
+            ChangeRefsToClipIDs(*pFunc);
+            DropINCL = iDropINCL;
+          }
+      }
+      DropTable->inExToBase = false;
+      inDragExToBase = false;
+      implOfExToBase.Destroy();
+      inExToBase = false;
+      DropImplDoc = 0;
+    }
+  }
+}
 
 void TIDTable::DownChange(LavaDECL ** pnewDECL)
 {
@@ -1037,6 +1098,7 @@ void TIDTable::AddImplID(LavaDECL* impl)
 void TIDTable::RemoveImplID(LavaDECL* impl)
 {
   CHETID *che;
+  LavaDECL* imp;
   LavaDECL *classDECL = GetDECL(((CHETID*)impl->Supports.first)->data, impl->inINCL);
   if (classDECL) {
     che = (CHETID*)classDECL->ImplIDs.first;
@@ -1044,6 +1106,18 @@ void TIDTable::RemoveImplID(LavaDECL* impl)
       che = (CHETID*)che->successor;
     if (che)
       classDECL->ImplIDs.Delete(che);
+  }
+  if (imp == lastImpl)
+    lastImpl = imp->RuntimeDECL;
+  else {
+    imp = lastImpl;
+    while (imp) {
+      if (imp->RuntimeDECL == impl) {
+        imp->RuntimeDECL = impl->RuntimeDECL;
+        imp = 0;
+      }
+      imp = imp->RuntimeDECL;
+    }
   }
 }
 

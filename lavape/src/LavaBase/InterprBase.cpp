@@ -862,7 +862,7 @@ bool EqualObjects(CheckData &ckd, LavaObjectPtr leftPtr, LavaObjectPtr rightPtr,
   return true;
 }
 
-void OneLevelCopy(CheckData &ckd, LavaObjectPtr& object)
+bool OneLevelCopy(CheckData &ckd, LavaObjectPtr& object)
 {
   int castVal = object[0][0].sectionOffset;
 
@@ -872,12 +872,12 @@ void OneLevelCopy(CheckData &ckd, LavaObjectPtr& object)
   TAdapterFunc *funcAdapter;
 
   if (!object)
-    return;
+    return true;
   sourceObjPtr = object - castVal;
   classDECL = sourceObjPtr[0][0].classDECL;
   resultObjPtr = AllocateObject(ckd, classDECL, ((SynFlags*)(sourceObjPtr+1))->Contains(stateObjFlag));
   if (!resultObjPtr)
-    return;
+    return false;
   for (ii = 0; ii < resultObjPtr[0]->nSections; ii++) {
     if (((CSectionDesc*)classDECL->SectionTabPtr)[ii].SectionFlags.Contains(SectPrimary)) {
       sourceSectionPtr = sourceObjPtr - (sourceObjPtr[0])[0].sectionOffset + (sourceObjPtr[0])[ii].sectionOffset;
@@ -916,6 +916,7 @@ void OneLevelCopy(CheckData &ckd, LavaObjectPtr& object)
   }
 //  DEC_FWD_CNT(ckd, object);
   object = resultObjPtr + castVal;
+  return true;
 }
 
 bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr updatePtr)
@@ -1022,12 +1023,15 @@ bool UpdateObject(CheckData &ckd, LavaObjectPtr& origObj, LavaVariablePtr update
             if (UpdateObject(ckd, newObject, (LavaVariablePtr)(updateSectionPtr + lmem))) {
               if (!isNew && !((SynFlags*)(origObj+1))->Contains(stateObjFlag))  {
                 isNew = true;
-                OneLevelCopy(ckd, origObj);
+                if (!OneLevelCopy(ckd, origObj))
+                  return false;
               }
               if (*(LavaVariablePtr)(origObj + secTab[ii].sectionOffset + lmem))
                 DEC_FWD_CNT(ckd, *(LavaVariablePtr)(origObj + secTab[ii].sectionOffset + lmem));
               *(LavaVariablePtr)(origObj + secTab[ii].sectionOffset + lmem) = newObject;
             }
+            if (ckd.exceptionThrown)
+              return false;
           }
         }//all members in section
       //}//not native

@@ -2634,6 +2634,8 @@ bool GUIEdit(CheckData& ckd, LavaVariablePtr stack)
     UpdateObject(ckd, newStackFrame[SFH+1], &newStackFrame[SFH+2]);
     if (newStackFrame[SFH+2])
       DFC(newStackFrame[SFH+2]);
+    if (ckd.exceptionThrown)
+      return false;
     return true;
   }
 }

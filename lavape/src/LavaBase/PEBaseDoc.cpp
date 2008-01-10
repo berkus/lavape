@@ -292,7 +292,7 @@ CLavaPEHint* CPEBaseDoc::InsDelDECL(CLavaPEHint* hint, bool undo, bool redo, boo
       else
         localMove = false;
       if ((viewHint->com != CPECommand_Move) || viewHint->CommandData6 && !localMove) {
-        if (viewHint->CommandData6)
+        if (viewHint->CommandData6 && hint->FirstLast.Contains(firstHint))
           IDTable.PrepareClipTree((SyntaxDefinition*) viewHint->CommandData6, (DString*)viewHint->CommandData7);
         IDTable.NewID(pNewDecl);
       }
