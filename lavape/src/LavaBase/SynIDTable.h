@@ -67,6 +67,7 @@ public:
   TSimpleTable **IDTab;
   SynDef * mySynDef;
   bool InCopy;
+  bool inUpdateDoc;
   int BasicTypesID [30]; //BasicTypesID[ i] is the ID of the n-th basic type,
                          //   OwnID = BasicTypesID[(int)BType]
   TIDs ChangeTab; //this is used if a decl is copied from one doc to another doc, nID: old ID, nINCL: new ID

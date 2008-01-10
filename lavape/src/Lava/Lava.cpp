@@ -296,7 +296,7 @@ bool CLavaApp::event(QEvent *e)
     delete (CLavaPEHint*)pHint;
     if (((CLavaDebugger*)LBaseData.debugger)->isConnected && doc->debugOn)
       ((CLavaDebugger*)LBaseData.debugger)->stop(normalEnd);
-    if (doc && doc->isObject && !doc->m_execThread.ldocEnd) {
+    if (doc && (!doc->isObject || !doc->m_execThread.ldocEnd)) {
       doc->m_execThread.wait();
       doc->OnCloseDocument();
       delete doc;

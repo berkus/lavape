@@ -148,6 +148,7 @@ TIDTable::TIDTable()
   inDragExToBase = false;
   inDropExToBase = false;
   inExToBase = false;
+  inUpdateDoc = false;
 
   for (int ii = 0; ii < 30; ii++)
     BasicTypesID [ii] = -1;
@@ -182,7 +183,7 @@ void TIDTable::AddID(LavaDECL ** pdecl, int incl)
   (*pdecl)->inINCL = incl;
   IDTab[incl]->AddID(pdecl);
   (*pdecl)->VElems.UpdateNo = 0;
-  if (((*pdecl)->DeclType == Impl) || ((*pdecl)->DeclType == CompObj)) {
+  if (!inUpdateDoc && (((*pdecl)->DeclType == Impl) || ((*pdecl)->DeclType == CompObj))) {
     (*pdecl)->RuntimeDECL = lastImpl;
     lastImpl = *pdecl;
   }
@@ -669,7 +670,7 @@ LavaDECL* TIDTable::GetDECL(int incl, int id, int fromIncl)
   }
   else
     inc = incl;
-  if ((inc >= 0) &&  IDTab[inc]->isValid && (id < IDTab[inc]->maxID) && (IDTab[inc]->SimpleIDTab[id]->idType == globalID))
+  if ((inc >= 0) && (inc < freeINCL) && IDTab[inc]->isValid && (id < IDTab[inc]->maxID) && (IDTab[inc]->SimpleIDTab[id]->idType == globalID))
     return *IDTab[inc]->SimpleIDTab[id]->pDECL;
   else
     return 0;
@@ -772,6 +773,7 @@ int TIDTable::AddSimpleSyntax(SynDef *isyntax, const DString& idocDir, bool relo
 
   AbsPathName(relFn, idocDir);
   RelPathName(relFn, DocDir);
+  inUpdateDoc = reload;
   for ( incl = 0;
         (incl < usedINCL)
           && (!IDTab[incl]->isValid || !SameFile(IDTab[incl]->FileName, DocDir, relFn, DocDir));
@@ -841,6 +843,7 @@ int TIDTable::AddSimpleSyntax(SynDef *isyntax, const DString& idocDir, bool relo
     IDTab[incl]->nINCLTrans[simpleSyntax->data.nINCL].FileName = relFn;
     simpleSyntax = (CHESimpleSyntax*)simpleSyntax->successor;
   }
+  inUpdateDoc = false;
   return incl;
 }
 
@@ -1091,14 +1094,14 @@ void TIDTable::AddImplID(LavaDECL* impl)
     che->data = TID(impl->OwnID, impl->inINCL);
     classDECL->ImplIDs.Append(che);
   }
-  impl->RuntimeDECL = lastImpl;
-  lastImpl = impl;
+//  impl->RuntimeDECL = lastImpl;
+//  lastImpl = impl;
 }
 
 void TIDTable::RemoveImplID(LavaDECL* impl)
 {
   CHETID *che;
-  LavaDECL* imp;
+  //LavaDECL* imp;
   LavaDECL *classDECL = GetDECL(((CHETID*)impl->Supports.first)->data, impl->inINCL);
   if (classDECL) {
     che = (CHETID*)classDECL->ImplIDs.first;
@@ -1107,8 +1110,9 @@ void TIDTable::RemoveImplID(LavaDECL* impl)
     if (che)
       classDECL->ImplIDs.Delete(che);
   }
-  if (imp == lastImpl)
-    lastImpl = imp->RuntimeDECL;
+  /*
+  if (impl == lastImpl)
+    lastImpl = impl->RuntimeDECL;
   else {
     imp = lastImpl;
     while (imp) {
@@ -1118,7 +1122,7 @@ void TIDTable::RemoveImplID(LavaDECL* impl)
       }
       imp = imp->RuntimeDECL;
     }
-  }
+  }*/
 }
 
 

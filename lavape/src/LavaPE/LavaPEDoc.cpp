@@ -1649,9 +1649,11 @@ void CLavaPEDoc::ConcernExecs ( CLavaPEHint* hint )
 			{
 				ckd.document = this;
 				ckd.myDECL = ( ( CExecView* ) view )->myDECL;
-				ckd.execView = view;
-				ckd.hint = hint;
-				( ( SynObject* ) ckd.myDECL->Exec.ptr )->Check ( ckd );
+        if (ckd.myDECL && ckd.myDECL->ParentDECL && IDTable.GetDECL(0, ckd.myDECL->ParentDECL->OwnID,0)) {
+				  ckd.execView = view;
+				  ckd.hint = hint;
+				  ( ( SynObject* ) ckd.myDECL->Exec.ptr )->Check ( ckd );
+        }
 			}
 		}
 	}
@@ -4412,29 +4414,25 @@ void CLavaPEDoc::UpdateOtherDocs ( wxDocument* skipOther, DString& inclFile, int
 					}
 				}
 			}
-			else
-			{
+			else {
 				topDef.ptr = cheSyn->data.TopDef.ptr;
 				cheSyn->data.TopDef.ptr = 0;
 				cheSyn->data.TopDef = ( ( CHESimpleSyntax* ) mySynDef->SynDefTree.first )->data.TopDef;
 				doc->IDTable.AddSimpleSyntax ( mySynDef, IDTable.DocDir, true, cheSyn );
-				if ( cheSyn->data.LocalTopName.l )
-				{
+				if ( cheSyn->data.LocalTopName.l )	{
 					oldTopName = cheSyn->data.TopDef.ptr->LocalName;
 					doc->IDTable.SetAsName ( cheSyn->data.nINCL, cheSyn->data.LocalTopName, oldTopName, cheSyn->data.TopDef.ptr );
 				}
 				doc->UpdateNo++;
 				if ( skipOther )
 					doc->drawView = true;
-				else
-				{
+				else	{
 					hint = new CLavaPEHint ( CPECommand_FromOtherDoc, doc, flag );//(const unsigned long) 0);
 					doc->changeInUpdate = false;
 					impls = new CExecSetImpls ( doc->mySynDef );
 					delete impls;
 					doc->UpdateAllViews ( NULL, CHLV_showError, hint );
-					if ( doc->changeInUpdate )
-					{
+					if ( doc->changeInUpdate )	{
 						if ( !doc->modified )
 							changedDocs++;
 						doc->Modify ( true );
