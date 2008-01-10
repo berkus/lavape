@@ -128,6 +128,19 @@ void CAttachHandler::on_ID_OK_clicked()
 
 }
 
+void CAttachHandler::on_ID_HELP_clicked() {
+	QString path("assistant");
+	QStringList args;
+	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
+	
+	if (!qacl) {
+		qacl = new QAssistantClient(path,wxTheApp->m_appWindow);
+		qacl->setArguments(args);
+	}
+
+	qacl->showPage(ExeDir + "/../doc/html/EditForm.htm");
+}
+
 
 
 /////////////////////////////////////////////////////////////////////////////

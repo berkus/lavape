@@ -68,6 +68,7 @@ public:
 public slots:
   virtual void on_ID_OK_clicked();
   virtual void on_ID_CANCEL_clicked() {reject();}
+  virtual void on_ID_HELP_clicked();
   virtual void on_HandlerList_activated(int );
 
 private:
