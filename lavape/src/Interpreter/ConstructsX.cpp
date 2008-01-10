@@ -772,7 +772,6 @@ void SynObject::SetRTError(CheckData &ckd,QString *errorCode,LavaVariablePtr sta
     code = OutFunctionFailed_ex;
   else
     code = RunTimeException_ex;
-    //thr = true;
 
   if (textParam)
     msgText = QString(textParam) + ": " + msgText;

@@ -284,6 +284,8 @@ QString ERR_IgnoreMandatoryOnly;
 QString ERR_RefToIgnored;
 QString ERR_AlreadyIgnored;
 QString ERR_SetLavaExceptionFailed;
+QString ERR_AbortQuestion;
+QString ERR_ExecutionAborted;
 
 void LavaBaseStringInit() {
   IDS_LAVACOM_FILE  = QObject::tr("Lava component file (*.lcom) defining the type of a lava component object");
@@ -533,4 +535,6 @@ void LavaBaseStringInit() {
   ERR_RefToIgnored = QObject::tr("Expressly ignored mandatory input parameters must not be referenced");
   ERR_AlreadyIgnored = QObject::tr("Is already ignored!");
   ERR_SetLavaExceptionFailed = QObject::tr("SetLavaException failed");
+  ERR_AbortQuestion = QObject::tr("Do you really want to abort this Lava program?");
+  ERR_ExecutionAborted = QObject::tr("Lava program: Execution aborted");
 }

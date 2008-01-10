@@ -767,30 +767,23 @@ bool StringBox(CheckData& ckd, LavaVariablePtr stack)
   QWidget *parent=wxTheApp->m_appWindow;
 
   wxTheApp->m_appWindow->activateWindow();
-//???  wxTheApp->m_appWindow->raise();
   int rc=Qt::NoButton;
   if ((QString*)(stack[SFH]+LSH))
     rc = information(
       parent,qApp->applicationName(),*(QString*)(stack[SFH]+LSH),
-      QMessageBox::Ok | QMessageBox::Default,
-      0,
-      0);
-  /*
-  else
-    rc = information(
-      parent,qApp->applicationName(),"     ",
-      QMessageBox::Ok | QMessageBox::Default,
-      QMessageBox::Abort,
+      QMessageBox::Ok, QMessageBox::Cancel,
       0);
 
-  if (rc == QMessageBox::Abort)
+  if (rc == QMessageBox::Cancel)
 		if (question(
-			parent,qApp->applicationName(),"Do you really want to abort this Lava program?",
+			parent,qApp->applicationName(),ERR_AbortQuestion,
 			QMessageBox::Yes | QMessageBox::Default,
 			QMessageBox::No,
-			0) == QMessageBox::Yes)
-      return false;
-      */
+      0) == QMessageBox::Yes) {
+        CRuntimeException *ex;
+        ex = new CRuntimeException(RunTimeException_ex, &ERR_ExecutionAborted);
+        throw *ex;
+    }
   return true;
 }
 
