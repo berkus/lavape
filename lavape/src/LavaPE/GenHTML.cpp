@@ -83,10 +83,6 @@ void CLavaPEView::OnGenHtmlI()
   QString iconPathTo, copyCommand, mdCommand;
   bool firstChild=true;
 
-  if (pathName.isEmpty()) {
-    QMessageBox::critical(this,qApp->applicationName(),IDP_NoTypeSel,QMessageBox::Ok,0,0);
-    return;
-  }
   QFileInfo fi(pathName);
   iconPathTo = fi.path();
   baseName = fi.baseName();

@@ -32,6 +32,7 @@ QString IDP_UndefinedTypes;
 QString IDP_AlreadyIncluded;
 QString IDP_InclInherited;
 QString IDP_NoTypeSel;
+QString IDP_NoEvTypeSel;
 QString IDP_NoElemSel;
 QString IDP_IsNoID;
 QString IDP_NoTableView;
@@ -55,7 +56,8 @@ void LavaPEStringInit() {
   IDP_UndefinedTypes = QObject::tr("There are still undefined references in use");
   IDP_AlreadyIncluded = QObject::tr("This file is already included");
   IDP_InclInherited = QObject::tr("You cannot remove this include file because it is inherited from ");
-  IDP_NoTypeSel = QObject::tr("You must select a type for the item you want to define");
+  IDP_NoTypeSel = QObject::tr("You must select a type for the new item");
+  IDP_NoEvTypeSel = QObject::tr("You must select an event type for the new handler");
   IDP_NoElemSel = QObject::tr("No selection");
   IDP_IsNoID = QObject::tr("This is not a valid identifier.");
   IDP_NoTableView = QObject::tr("No table view available for the selected item");

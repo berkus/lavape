@@ -2461,7 +2461,7 @@ void CFuncBox::on_ID_OK_clicked()
     else
       myDECL->GUISignaltype = EventType->currentIndex();
     if (myDECL->GUISignaltype < 1) {
-      QMessageBox::critical(this, qApp->applicationName(), IDP_NoTypeSel, QMessageBox::Ok,0,0);
+      QMessageBox::critical(this, qApp->applicationName(), IDP_NoEvTypeSel, QMessageBox::Ok,0,0);
       EventType->setFocus();
       return;
     }
