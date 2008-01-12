@@ -2670,9 +2670,9 @@ void CImplBox::on_ID_OK_clicked()
       myDECL->TypeFlags.EXCL(isAbstract);
     if (interfDECL->SecondTFlags.Contains(isGUI)) {
       myDECL->SecondTFlags.INCL(isGUI);
-      myDoc->IDTable.GetParamID(interfDECL, paramID, isGUI);
-      if (paramID.nID >= 0) 
-        myDECL->RefID = paramID;
+      myDECL->RefID = myDoc->GetGUIDataTypeID(interfDECL); //IDTable.GetParamID(interfDECL, paramID, isGUI);
+      //if (paramID.nID >= 0) 
+      //  myDECL->RefID = paramID;
     }
     else {
       myDECL->SecondTFlags.EXCL(isGUI);

@@ -110,7 +110,8 @@ void CGUIProg::OnUpdate( LavaDECL* decl, LavaVariablePtr resultPtr)
   allowIncompleteForms = false;
   ErrorCode = NONE;
   ErrPos = 0;
-  LavaForm.MakeForm (*myDoc->GetFormpDECL(decl), resultPtr, Root);
+  if (myDoc->GetFormpDECL(decl))
+    LavaForm.MakeForm (*myDoc->GetFormpDECL(decl), resultPtr, Root);
 }
 
 void CGUIProg::NoteLastModified()

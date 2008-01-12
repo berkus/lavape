@@ -967,31 +967,28 @@ bool CLavaPEDoc::CheckImpl ( LavaDECL* implDECL, int checkLevel )
 	    new CLavaError(&implDECL->DECLError1, &ERR_NoIFforForm);
 	    return false;
 	  }*/
-	if ( implDECL->SecondTFlags.Contains ( isGUI ) )
-	{
+	if ( implDECL->SecondTFlags.Contains ( isGUI ) ) {
 		dataID = GetGUIDataTypeID ( classDECL );
-		if ( !IDTable.GetDECL ( dataID ) )
-		{
-			new CLavaError ( &implDECL->DECLError1, &ERR_NoIFforForm );
+    classDECL->RefID = dataID;
+    implDECL->RefID.nID = dataID.nID;
+    implDECL->RefID.nINCL = IDTable.IDTab[classDECL->inINCL]->nINCLTrans[classDECL->RefID.nINCL].nINCL;
+		if ( !IDTable.GetDECL(dataID))	{
+			new CLavaError(&implDECL->DECLError1, &ERR_NoIFforForm);
 			return false;
 		}
 	}
 	cheImplEl = ( CHE* ) implDECL->NestedDecls.first;
-	while ( cheImplEl )
-	{
+	while ( cheImplEl )	{
 		implElDECL = ( LavaDECL* ) cheImplEl->data;
 		if ( ( implElDECL->DeclType != Function )
-		        || implElDECL->WorkFlags.Contains ( checkmark ) )
-		{
+		        || implElDECL->WorkFlags.Contains ( checkmark ) )	{
 			implElDECL->WorkFlags.EXCL ( checkmark );
 		}
-		else
-		{
+		else	{
 			if ( ( implElDECL->DeclType == Function ) && implElDECL->SecondTFlags.Contains ( isHandler ) )
 				if ( CheckHandlerIO ( implElDECL, 0 ) < 0 )
 					new CLavaError ( &implElDECL->DECLError2, &ERR_NoHandlerIO );
-			if ( checkLevel == CHLV_fit )
-			{
+			if ( checkLevel == CHLV_fit )	{
 				changed = true;
 				UpdateNo++;
 				implElDECL->SecondTFlags.EXCL ( funcImpl );
@@ -1046,25 +1043,22 @@ bool CLavaPEDoc::CheckImpl ( LavaDECL* implDECL, int checkLevel )
 		}
 		cheImplEl = ( CHE* ) cheImplEl->successor;
 	}
-	if ( implDECL->SecondTFlags.Contains ( isGUI ) )
-	{
-		if ( !classDECL->SecondTFlags.Contains ( isGUI ) )
-		{
-			implDECL->SecondTFlags.EXCL ( isGUI );
+	if (implDECL->SecondTFlags.Contains (isGUI))	{
+		if (!classDECL->SecondTFlags.Contains (isGUI))	{
+			implDECL->SecondTFlags.EXCL (isGUI);
 			return true;
 		}
-		cheImplEl = ( CHE* ) implDECL->NestedDecls.first;
-		while ( cheImplEl && !hasForm )
-		{
+		cheImplEl = (CHE*) implDECL->NestedDecls.first;
+		while (cheImplEl && !hasForm)	{
 			if ( ( ( LavaDECL* ) cheImplEl->data )->DeclType == VirtualType )
 				afterElem = cheImplEl;
 			else
 				hasForm = ( ( LavaDECL* ) cheImplEl->data )->DeclType == FormDef;
-			cheImplEl = ( CHE* ) cheImplEl->successor;
+      if (!hasForm)
+			  cheImplEl = ( CHE* ) cheImplEl->successor;
 		}
-		if ( hasForm &&
-		        !IDTable.EQEQ ( implDECL->RefID, implDECL->inINCL, dataID, 0 ) )
-		{
+    if ( hasForm && (((LavaDECL*)cheImplEl->data)->RefID != implDECL->RefID)) {
+      //!IDTable.EQEQ ( implDECL->RefID, implDECL->inINCL, dataID, classDECL->inINCL ) )	{
 			//cstr = "DATATYPE of GUI-interface differs from DATATYPE in form declaration of GUI-implementation.\n"
 			//       "Click \"yes\" to replace the form declaration.";
 			//if (QMessageBox::question(0,qApp->applicationName(),cstr,QMessageBox::Yes,QMessageBox::Cancel,0) == QMessageBox::Cancel) {
@@ -1076,16 +1070,13 @@ bool CLavaPEDoc::CheckImpl ( LavaDECL* implDECL, int checkLevel )
 			//hasForm = false;
 			//changed = true;
 		}
-		if ( !hasForm )
-		{
-			implDECL->RefID = dataID;
-			if ( checkLevel >= CHLV_inUpdateLow )
-			{
+		if ( !hasForm )	{
+			//implDECL->RefID = dataID;
+			if ( checkLevel >= CHLV_inUpdateLow )	{
 				changed = true;
 				UpdateNo++;
 				formDECL = NewLavaDECL();
-				if ( IDTable.GetDECL ( implDECL->RefID, implDECL->inINCL ) )
-				{
+				if ( IDTable.GetDECL ( implDECL->RefID, implDECL->inINCL ) )	{
 					formDECL->DeclType = FormDef;
 					formDECL->ParentDECL = implDECL;
 					formDECL->LocalName = implDECL->LocalName + DString ( "_UI" );
@@ -2587,21 +2578,20 @@ LavaDECL* CLavaPEDoc::MakeGUI ( LavaDECL* relDECL, LavaDECL** pparent, int& pos,
 	name = new DString ( GUIimpl->FullName );
 	elChe = ( CHE* ) posDECL->ParentDECL->NestedDecls.first;
 	implPos = 2;
-	while ( elChe && ( GUIinterface != ( LavaDECL* ) elChe->data ) )
-	{
-		if ( ( ( LavaDECL* ) elChe->data )->DeclType != VirtualType )
+	while (elChe && (GUIinterface != (LavaDECL*) elChe->data))	{
+		if (((LavaDECL*) elChe->data)->DeclType != VirtualType)
 			implPos++;
 		elChe = ( CHE* ) elChe->successor;
 	}
 	hint = new CLavaPEHint ( CPECommand_Insert, this, firstlast,  GUIimpl,
 	                         name, ( void* ) implPos, pparent );
-	UndoMem.AddToMem ( hint );
-	UpdateDoc ( 0, false, hint );
+	UndoMem.AddToMem(hint);
+	UpdateDoc (0, false, hint);
 	pos++;
 
-	if ( attrdecl )
+	if (attrdecl)
 	{
-		if ( !startpos )
+		if (!startpos)
 		{
 			newAttrdecl = NewLavaDECL();
 			*newAttrdecl = *attrdecl;
