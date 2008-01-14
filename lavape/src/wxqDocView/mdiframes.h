@@ -29,6 +29,7 @@
 #include <QTextEdit>
 #include <QWindowsStyle>
 #include <QWindowsXPStyle>
+#include <QWindowsVistaStyle>
 #include <QMotifStyle>
 #include <QCDEStyle>
 #include <QPlastiqueStyle>
@@ -147,6 +148,7 @@ public:\
 
 #ifdef WIN32
 MYSTYLE(WindowsXP)
+MYSTYLE(WindowsVista)
 #endif
 #ifdef Darwin
 MYSTYLE(Mac)

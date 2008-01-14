@@ -110,6 +110,8 @@ void CLavaMainFrame::makeStyle(const QString &style)
 #ifdef WIN32
     else if (style == "WindowsXP")
       QApplication::setStyle(new MyWindowsXPStyle);
+    else if (style == "WindowsVista")
+      QApplication::setStyle(new MyWindowsVistaStyle);
 #endif
 #ifdef Darwin
     else if (style == "Mac")

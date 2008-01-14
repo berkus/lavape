@@ -387,10 +387,11 @@ wxMDIChildFrame::~wxMDIChildFrame()
 }
     //case PM_ToolBarFrameWidth:\
     //case PM_ToolBarIconSize:\
-    //  px = 16; break;\
+    //  px = 16; break;
 
 #ifdef WIN32
 MYSTYLEIMP(WindowsXP)
+MYSTYLEIMP(WindowsVista)
 #endif
 #ifdef Darwin
 MYSTYLEIMP(Mac)
