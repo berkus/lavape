@@ -538,7 +538,7 @@ DumpListView::DumpListView(QWidget *parent,CLavaBaseDoc* doc, LavaObjectPtr obje
     label = varName;
   connect(this,SIGNAL(itemExpanded (QTreeWidgetItem*)),SLOT(expandedItem(QTreeWidgetItem*)));
   rootItem = new DumpItem(new DDMakeClass, this, myDoc, object, label);
-  setItemExpanded(rootItem, true);
+  rootItem->setExpanded(true);
 }
 
 void DumpListView::expandedItem(QTreeWidgetItem* item)

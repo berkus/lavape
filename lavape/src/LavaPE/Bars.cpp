@@ -456,7 +456,7 @@ void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
       if (itemToOpen) {
         itemToOpen->makeChildren(((DDItemData*)dbgReceived->newReceived->ObjData.ptr)->Children);
         itemToOpen->setOpen(true);
-        itemToOpen->myView->setItemSelected(itemToOpen, true);
+        itemToOpen->setSelected(true);
         itemToOpen->myView->setCurrentItem(itemToOpen);
         itemToOpen = 0;
       }
@@ -962,7 +962,7 @@ void StackListView::makeItems(DbgStopData* data, CLavaBaseDoc* doc)
 
 
   }
-  setItemSelected(lastSelected, true);
+  lastSelected->setSelected(true);
   setCurrentItem(lastSelected);
   allDrawn = true;
 }

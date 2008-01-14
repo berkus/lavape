@@ -89,7 +89,7 @@ void CInclView::OnInitialUpdate()
     OnUpdate(NULL, 0, 0);
     Tree->expandItem(Tree->RootItem);//firstChild()->setOpen(true);
     Tree->setCurrentItem(Tree->RootItem);
-    Tree->setItemSelected(Tree->RootItem, true);
+    Tree->RootItem->setSelected(true);
     InitComplete = true;
   }
 }
@@ -112,7 +112,7 @@ void CInclView::OnUpdate(wxView* pSender, unsigned lHint, QObject* pHint)
     return;
   parent = (CTreeItem*)Tree->RootItem;
   if (parent) {
-    Expanded = Tree->isItemExpanded(parent);//parent->isOpen();
+    Expanded = parent->isExpanded();//parent->isOpen();
     delete Tree->RootItem;//DGetListView()->DeleteAllItems();
     Tree->RootItem = 0;
   }

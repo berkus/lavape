@@ -552,7 +552,7 @@ bool CLavaGUIView::event(QEvent* ev)
 {
   if (ev->type() == UEV_LavaPE_CalledView) {
     wxDocManager::GetDocumentManager()->SetActiveView(this);
-    if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget)
+    if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget && (myGUIProg->focNode == myGUIProg->ActNode))
       myGUIProg->focNode->data.FIP.widget->setFocus();
     //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode);
     myGUIProg->inSynchTree = false;
@@ -595,7 +595,8 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
     if (scrollView()->MaxBottomRight.bottom()) {
       LastBrowseNode = myGUIProg->LavaForm.BrowseForm(myGUIProg->Root, selDECL);
       if (LastBrowseNode) {
-        if (LastBrowseNode->data.FIP.widget && LastBrowseNode->data.FIP.widget->inherits("CFormWid")) {
+        if (LastBrowseNode->data.FIP.widget && (LastBrowseNode->data.FIP.widget->inherits("CFormWid")
+          || LastBrowseNode->data.FIP.widget->inherits("CLavaGroupBox"))) {
           //myGUIProg->setFocNode(myGUIProg->TreeSrch.NextUnprotected (LastBrowseNode, LastBrowseNode));
           ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShape(QFrame::Box );
           ((QFrame*)LastBrowseNode->data.FIP.widget)->setFrameShadow(QFrame::Plain);
@@ -604,11 +605,8 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
           p.setColor(QPalette::Active, QPalette::WindowText, QColor("#FF0000"));
           p.setColor(QPalette::Inactive, QPalette::WindowText,QColor("#FF0000"));
           ((QFrame*)LastBrowseNode->data.FIP.widget)->setPalette(p);
-
-//     ((QFrame*)LastBrowseNode->data.FIP.widget)->setPaletteForegroundColor(QColor("#FF0000"));
-         myGUIProg->ScrollIntoFrame(LastBrowseNode->data.FIP.widget);
+          myGUIProg->ScrollIntoFrame(LastBrowseNode->data.FIP.widget);
           ((QFrame*)LastBrowseNode->data.FIP.widget)->repaint();
-          //myGUIProg->MakeGUI.CursorOnField(myGUIProg->focNode);
         }
       }
       else
@@ -864,7 +862,7 @@ void CLavaGUIView::OnActivateView(bool bActivate, wxView *deactiveView)
       else
         GetDocument()->ResetError();
       if (myGUIProg->focNode && myGUIProg->focNode->data.FIP.widget)
-        if (!myGUIProg->focNode->data.FIP.widget->hasFocus())
+        if (!myGUIProg->focNode->data.FIP.widget->hasFocus() && (LBaseData->inRuntime || (myGUIProg->focNode == myGUIProg->ActNode)))
           myGUIProg->focNode->data.FIP.widget->setFocus();
       clipboard_text_notEmpty = !QApplication::clipboard()->text().isEmpty();
       wxTheApp->updateButtonsMenus();

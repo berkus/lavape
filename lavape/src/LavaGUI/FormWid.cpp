@@ -217,6 +217,14 @@ bool CFormWid::event(QEvent* ev)
 {
   if ((ev->type() == QEvent::Enter) && GUIProg->isView)
     ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
+  else if ( !LBaseData->inRuntime && ((ev->type() == QEvent::MouseButtonPress)) && ( ((QMouseEvent*)ev)->button() == Qt::LeftButton)) {
+    ((CGUIProg*)GUIProg)->ActNode = myFormNode;
+    if (((CGUIProg*)GUIProg)->newFocus)
+      ((CGUIProg*)GUIProg)->MakeGUI.ClearFocus();
+    ((CGUIProg*)GUIProg)->SyncTree(myFormNode);
+    ev->accept();
+    return true;
+  }
   return QFrame::event(ev);
 }
 
@@ -334,6 +342,14 @@ bool CLavaGroupBox::event(QEvent* ev)
 {
   if ((ev->type() == QEvent::Enter) && GUIProg->isView)
     ((CLavaGUIView*)GUIProg->ViewWin)->MessToStatusbar();
+  else if ( !LBaseData->inRuntime && ((ev->type() == QEvent::MouseButtonPress)) && ( ((QMouseEvent*)ev)->button() == Qt::LeftButton)) {
+    ((CGUIProg*)GUIProg)->ActNode = myFormNode;
+    if (((CGUIProg*)GUIProg)->newFocus)
+      ((CGUIProg*)GUIProg)->MakeGUI.ClearFocus();
+    ((CGUIProg*)GUIProg)->SyncTree(myFormNode);
+    ev->accept();
+    return true;
+  }
   return QGroupBox::event(ev);
 }
 

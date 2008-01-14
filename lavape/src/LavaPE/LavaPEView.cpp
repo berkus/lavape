@@ -1928,7 +1928,7 @@ CMainItemData* CLavaPEView::Navigate(bool all, CTreeItem*& item, int& level)
   CTreeItem *nextItem=0, *parItem;
 
   if (item) {
-    if (all || Tree->isItemExpanded(item)) //->isOpen())
+    if (all || item->isExpanded()) //->isOpen())
       nextItem = (CTreeItem*)item->child(0);
     if (nextItem)
       level = level+1;
@@ -2279,7 +2279,7 @@ void CLavaPEView::OnDragLeave(QDragLeaveEvent* ev)
 {
 
   if (m_hitemDrop)
-    Tree->setItemSelected(m_hitemDrop, false);
+    m_hitemDrop->setSelected(false);
   m_hitemDrop = 0;
   if (Clipdata) {
     Clipdata->Destroy();
@@ -2300,7 +2300,7 @@ void CLavaPEView::OnDragOver(QDragMoveEvent* ev)
   if (ev->provides(m_nIDClipFormat) && (!GetDocument()->changeNothing)) {
     item = (CTreeItem*)Tree->itemAt(ev->pos());//(Tree->contentsToViewport(ev->pos()));
     if (m_hitemDrop && (item != m_hitemDrop))
-      Tree->setItemSelected(m_hitemDrop, false);
+      m_hitemDrop->setSelected(false);
     m_hitemDrop = item;
     if (m_hitemDrop) {
       RefacCase = noRefac;
@@ -3280,7 +3280,7 @@ void CLavaPEView::OnRclick(QTreeWidgetItem* itemHit)
 {
 
   if (itemHit) {
-    Tree->setItemSelected(itemHit, true);
+    itemHit->setSelected(true);
     //PopupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, ptAction.x, ptAction.y, this);
   }
 }

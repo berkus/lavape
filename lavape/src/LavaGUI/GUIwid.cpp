@@ -413,7 +413,8 @@ void GUIwidCLASS::SetToggleState (QWidget* widget, bool state)
 
 void GUIwidCLASS::ClearFocus ()
 {
-  GUIProg->newFocus->clearFocus();
+  if (GUIProg->newFocus)
+    GUIProg->newFocus->clearFocus();
   GUIProg->oldFocus = 0;
   GUIProg->newFocus = 0;
 }

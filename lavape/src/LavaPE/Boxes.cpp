@@ -63,17 +63,33 @@ ValOnInit CAttachHandler::OnInitDialog()
 {
   CHE* che;
   CComboBoxItem *comboItem;
+  CHETIDs *cheTIDs;
+  CHETID *cheTID, *cheTIDCl;
+  bool putIt = true;
 
-  ClientMem = myDoc->IDTable.GetDECL(((CHETID*)Client.last)->data);
-  //ClientType = myDoc->IDTable.GetDECL(ClientMem->RefID, ClientMem->inINCL);
-  //if (ClientType->TypeFlags.Contains(isGUI) || ClientType->DeclType == FormDef)
-  //  ClientType = myDoc->IDTable.GetDECL(ClientType->RefID, ClientType->inINCL);
-  for (che = (CHE*)GUIService->NestedDecls.first; che; che = (CHE*)che->successor) {
-    if ((((LavaDECL*)che->data)->DeclType == Function)
-      && ((LavaDECL*)che->data)->SecondTFlags.Contains(isHandler)
-      && (myDoc->CheckHandlerIO((LavaDECL*)che->data, ClientMem) >= 0)) {
-      comboItem = new CComboBoxItem(TID(((LavaDECL*)che->data)->OwnID, 0));
-      addItemAlpha(HandlerList, QString(((LavaDECL*)che->data)->LocalName.c), QVariant::fromValue(comboItem));//sort
+  if (Client.last) {
+    ClientMem = myDoc->IDTable.GetDECL(((CHETID*)Client.last)->data);
+    for (che = (CHE*)GUIService->NestedDecls.first; che; che = (CHE*)che->successor) {
+      if ((((LavaDECL*)che->data)->DeclType == Function)
+        && ((LavaDECL*)che->data)->SecondTFlags.Contains(isHandler)
+        && (myDoc->CheckHandlerIO((LavaDECL*)che->data, ClientMem) >= 0)) {
+        cheTIDs = (CHETIDs*)((LavaDECL*)che->data)->HandlerClients.first;
+        while (cheTIDs && putIt) {
+          cheTIDCl = (CHETID*)Client.first;
+          putIt = true;
+          for (cheTID = (CHETID*)cheTIDs->data.first; cheTID && cheTIDCl && (cheTID->data == cheTIDCl->data); cheTID = (CHETID*)cheTID->successor)
+            cheTIDCl = (CHETID*)cheTIDCl->successor;
+          if (!cheTIDCl && !cheTID) {
+            putIt = false;
+          }
+          else
+            cheTIDs = (CHETIDs*)cheTIDs->successor;
+        }
+        if (putIt) {
+          comboItem = new CComboBoxItem(TID(((LavaDECL*)che->data)->OwnID, 0));
+          addItemAlpha(HandlerList, QString(((LavaDECL*)che->data)->LocalName.c), QVariant::fromValue(comboItem));//sort
+        }
+      }
     }
   }
   if (!HandlerList->count()) {
@@ -851,7 +867,7 @@ void CCompSpecBox::on_EnumAdd_clicked()
       fileName.truncate(fileName.length()-4);
 #endif
       EnumItems->insertItem(0,fileName);
-      EnumItems->setItemSelected(EnumItems->item(0), true);
+      EnumItems->item(0)->setSelected(true);
       EnumDel->setEnabled(true);
       EnumEdit->setEnabled(true);
     }
@@ -864,7 +880,7 @@ void CCompSpecBox::on_EnumAdd_clicked()
       if (cm->exec() == QDialog::Accepted) {
         item = new CListBoxItem(iT, TID(-1,-1));
         EnumItems->insertItem(0,item);
-        EnumItems->setItemSelected(EnumItems->item(0), true);
+        EnumItems->item(0)->setSelected(true);
         EnumDel->setEnabled(true);
         EnumEdit->setEnabled(true);
       } 
@@ -876,7 +892,7 @@ void CCompSpecBox::on_EnumAdd_clicked()
     if (cm->exec() == QDialog::Accepted) {
       item = new CListBoxItem(iT, TID(-1,-1));
       EnumItems->insertItem(ss,item);
-      EnumItems->setItemSelected(EnumItems->item(ss), true);
+      EnumItems->item(ss)->setSelected(true);
       EnumDel->setEnabled(true);
       EnumEdit->setEnabled(true);
     } 
@@ -925,14 +941,14 @@ void CCompSpecBox::on_EnumEdit_clicked()
       fileName.truncate(fileName.length()-4);
 #endif
       item->setText(fileName);
-      EnumItems->setItemSelected(EnumItems->item(0), true);
+      EnumItems->item(0)->setSelected(true);
     }
     else if (myDECL->nOutput == PROT_NATIVE) {
       iT = item->text();
       CEnumItem *cm = new CEnumItem(&iT, EnumItems, 0, false, this);
       if (cm->exec() == QDialog::Accepted) {
         item->setText(iT);
-        EnumItems->setItemSelected(EnumItems->item(0), true);
+        EnumItems->item(0)->setSelected(true);
       } 
       delete cm;
     }
@@ -1221,7 +1237,7 @@ void CEnumBox::UpdateData(bool getData)
     valBuildSet = BuildSet->isChecked();
   }
   else {
-    EnumItems->setItemSelected(EnumItems->item(valItemNr), true);
+    EnumItems->item(valItemNr)->setSelected(true);
     NewName->setText(valNewName);
     BuildSet->setChecked(valBuildSet);
   }
@@ -1298,7 +1314,7 @@ void CEnumBox::on_EnumAdd_clicked()
   if (cm->exec() == QDialog::Accepted) {
     item = new CListBoxItem(iT, TID(-1,-1));
     EnumItems->insertItem(ss,item);
-    EnumItems->setItemSelected(EnumItems->item(ss), true);
+    EnumItems->item(ss)->setSelected(true);
     EnumDel->setEnabled(true);
     EnumEdit->setEnabled(true);
   } 
@@ -4749,7 +4765,7 @@ int SelEndOKToList(QComboBox* cbox, QListWidget* list, int chpos)
   if (pos > 0) {
     found = list->findItems(cbox->currentText(),Qt::MatchExactly);
     if (!found.isEmpty()) {
-      list->setItemSelected(found.first(), true);
+      found.first()->setSelected(true);
       return -1;
     }
     if (chpos >= 0) 

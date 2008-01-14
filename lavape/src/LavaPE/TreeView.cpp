@@ -235,12 +235,12 @@ void MyListView::setCurAndSel(QTreeWidgetItem* item, bool singleSel)
 {
   QTreeWidgetItem *oldi = currentItem();
   if (oldi != item) {
-    if (oldi && singleSel && isItemSelected(oldi))//oldi->isSelected())
-      setItemSelected(oldi, false);
+    if (oldi && singleSel && oldi->isSelected()) //isItemSelected(oldi))//oldi->isSelected())
+      oldi->setSelected(false);
     setCurrentItem(item);
   }
-  if (!isItemSelected(item)) //->isSelected())
-    setItemSelected(item, true);
+  if (!item->isSelected()) //isItemSelected(item)) //->isSelected())
+    item->setSelected(true);
   QSize s1 = size();
   QSize s2 = viewport()->size();
   QSize s3 = lavaView->size();
@@ -251,7 +251,7 @@ void MyListView::ResetSelections()
 {
   QList<QTreeWidgetItem *> list = selectedItems ();
   for (int ii = 0; ii < list.size(); ii++)
-     setItemSelected(list.at(ii), false);
+     list.at(ii)->setSelected(false);
 }
 
 bool MyListView::event(QEvent *ev) {
@@ -298,7 +298,7 @@ void MyListView::mouseMoveEvent(QMouseEvent *ev)
       if (item2 != item) {
         withControl = true;
         setCurrentItem(item2);
-        setItemSelected(item2, true);
+        item2->setSelected(true);
         withControl = false;
       }
     }
@@ -327,7 +327,7 @@ void MyListView::mousePressEvent(QMouseEvent *ev)
   withShift = false;
   withControl = false;
   if(!itemAt(p)) {
-    setItemSelected(currentItem(), true);
+    currentItem()->setSelected(true);
 //    ensureItemVisible(currentItem());
 //    currentItem()->repaint();
   }
