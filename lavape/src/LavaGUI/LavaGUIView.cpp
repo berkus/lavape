@@ -379,7 +379,7 @@ CLavaGUIView::~CLavaGUIView()
     }
     delete myGUIProg;
   }
-  if (!wxTheApp->appExit) {
+  if (!wxTheApp->appExit && LBaseData->inRuntime) {
     QString msg("Document is being closed");
     wxTheApp->m_appWindow->statusBar()->showMessage(msg);
   }
@@ -608,6 +608,8 @@ void CLavaGUIView::SyncForm(LavaDECL* selDECL)
           myGUIProg->ScrollIntoFrame(LastBrowseNode->data.FIP.widget);
           ((QFrame*)LastBrowseNode->data.FIP.widget)->repaint();
         }
+        if (LastBrowseNode && LastBrowseNode->data.handlerShowNode)
+          myGUIProg->SyncTree(LastBrowseNode->data.handlerShowNode, true);
       }
       else
         LastBrowseNode = 0;

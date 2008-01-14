@@ -272,8 +272,8 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
   CHE *che;
   CHETVElem *cheV;
   CHEHandlerInfo *cheHandler;
-  LavaDECL *formSyn = 0, *form;
-  bool setHNode;
+  LavaDECL *formSyn = 0, *form, *showSyn = formNode->data.FormSyntax;
+  bool setHNode, setNextAttr = (showSyn->DeclType == PatternDef) || (showSyn->DeclType == VirtualType);
 
   formNode->data.handlerSearched = true;
   node = formNode;
@@ -324,6 +324,11 @@ void CGUIProgBase::setHandler(CHEFormNode* formNode)
         }
         cheV = (CHETVElem*)cheV->successor;
       }
+    }
+    if (!node->data.handlerShowNode && (setNextAttr || (node->data.FormSyntax == showSyn))) {
+      node->data.handlerShowNode = formNode;
+      if ( node->data.FormSyntax->DeclType == Attr)
+        setNextAttr = false;
     }
     node = node->data.FIP.up;
   }

@@ -1080,6 +1080,7 @@ $TYPE {
     bool allowOwnHandler;
     bool allowChainHandler;
     CHEFormNode *myHandlerNode;
+    CHEFormNode *handlerShowNode; //only LavaPE
     bool handlerSearched;
     CHAINANY<HandlerInfo> myHandler;
     LavaDECL* HandlerDECL;
@@ -1104,7 +1105,7 @@ $TYPE {
                 ownLFont=mainFont; ownTFont=mainFont; Pixmap = 0;
                 allowOwnHandler = false; GUIService = 0;
                 allowChainHandler = false; HandlerDECL = 0;
-                handlerSearched = false; myHandlerNode = 0;
+                handlerSearched = false; myHandlerNode = 0; handlerShowNode = 0;
                 ColorBValid = false; ColorFValid = false;}
   ~FormNode();
   unsigned GetLengthField();

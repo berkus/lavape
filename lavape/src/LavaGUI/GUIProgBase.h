@@ -139,7 +139,7 @@ public:
   ErrorCodes ErrorCode;
   bool inSyncForm;
   bool inSynchTree;
-  virtual void SyncTree(CHEFormNode *node) {}
+  virtual void SyncTree(CHEFormNode *node, bool noSync = false) {}
   virtual void NoteLastModified() {}
   virtual void setFocNode(CHEFormNode*);
   void setHandler(CHEFormNode* formNode);

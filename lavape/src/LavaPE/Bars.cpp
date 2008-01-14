@@ -234,7 +234,7 @@ void CUtilityView::AddHandler(LavaDECL* func, CLavaBaseDoc* doc)
         }
       }
       else
-        label2 += QString("Attached to the form ");
+        label2 += QString(" (Attached to the form) ");
       cheTIDs = (CHETIDs*)cheTIDs->successor;
       if (cheTIDs) {
         //item = new CTreeItem(func->FullName.c, HandlerPage);
@@ -315,7 +315,7 @@ void CUtilityView::SetHandler(HandlerInfos* handlerInfos, CLavaBaseDoc* doc)
           }//while cheS
         }//if cheS
         else
-          label2 += QString("Attached to the form");
+          label2 += QString(" (Attached to the form)");
         cheTIDs = (CHETIDs*)cheTIDs->successor;
         if (cheTIDs) {
           //item = new CTreeItem(func->FullName.c, HandlerPage);

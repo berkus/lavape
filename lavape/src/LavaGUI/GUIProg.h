@@ -40,7 +40,7 @@ public:
   bool OnUpdateDeleteopt(QAction* action);
   void OnUpdateNewHandler(QAction* action);
   void OnUpdateAttachHandler(QAction* action);
-  virtual void SyncTree(CHEFormNode *node);
+  virtual void SyncTree(CHEFormNode *node, bool noSync = false);
   virtual void NoteLastModified();
   void ExecuteChainAction(QAction* action);
   void OnNewHandler();

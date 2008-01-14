@@ -1577,7 +1577,7 @@ ValOnInit CFuncBox::OnInitDialog()
     while (cheTIDs) {
       cheS = (CHETID*)cheTIDs->data.first;
       if (!cheS) {
-        nameText = "Attached to this form ";
+        nameText = " (Attached to the form) ";
         nameText += QString(myDECL->ParentDECL->FullName.c);
       }
       else
