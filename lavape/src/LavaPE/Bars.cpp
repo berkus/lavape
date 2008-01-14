@@ -291,9 +291,9 @@ void CUtilityView::SetHandler(HandlerInfos* handlerInfos, CLavaBaseDoc* doc)
     else if (func->GUISignaltype == Ev_ChainDelete)
       label1 = QString("Delete chain element");
     else if (func->GUISignaltype == Ev_OptInsert)
-      label1 = QString("Insert optinal element");
+      label1 = QString("Insert optional element");
     else if (func->GUISignaltype == Ev_OptDelete)
-      label1 = QString("Delete optinal element");
+      label1 = QString("Delete optional element");
     item->setText(1, label1);
 
     cheTIDs = (CHETIDs*)func->HandlerClients.first;

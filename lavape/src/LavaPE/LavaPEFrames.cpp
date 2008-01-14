@@ -685,8 +685,11 @@ void CLavaMainFrame::on_findRefsAction_triggered()
 void CLavaMainFrame::on_expandAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  if (view)
+  if (view) {
+    wxTheApp->setOverrideCursor(QCursor(Qt::WaitCursor));
     view->OnExpandAll();
+    wxTheApp->restoreOverrideCursor();
+  }
 }
 
 void CLavaMainFrame::on_collapseAction_triggered()
@@ -706,15 +709,21 @@ void CLavaMainFrame::on_showOptsAction_triggered()
 void CLavaMainFrame::on_showAllOptsAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  if (view)
+  if (view) {
+    wxTheApp->setOverrideCursor(QCursor(Qt::WaitCursor));
     view->OnShowAllEmptyOpt();
+    wxTheApp->restoreOverrideCursor();
+  }
 }
 
 void CLavaMainFrame::on_hideEmptyOptsAction_triggered()
 {
   CLavaBaseView* view = (CLavaBaseView*)wxDocManager::GetDocumentManager()->GetActiveView();
-  if (view)
+  if (view) {
+    wxTheApp->setOverrideCursor(QCursor(Qt::WaitCursor));
     view->OnRemoveAllEmptyOpt();
+    wxTheApp->restoreOverrideCursor();
+  }
 }
 
 void CLavaMainFrame::on_nextCommentAction_triggered()

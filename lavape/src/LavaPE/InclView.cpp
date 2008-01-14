@@ -417,7 +417,7 @@ void CInclView::OnSelchanged(QTreeWidgetItem* selItem, QTreeWidgetItem* )
 {
   if (!selItem)
     return;
-  if (!Tree->isItemSelected(selItem)) 
+  if (!selItem->isSelected()) 
     return;
   wxTheApp->updateButtonsMenus();
 }
