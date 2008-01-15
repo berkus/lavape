@@ -136,8 +136,20 @@
     system (or else default initialization, see above, will be applied to the 
     element).</p>
     
-    <p>Which GUI event handler is applied may depend on the context where the 
-    respective data element occurs:</p>
+    <p>More than one GUI event handler may be attached to the same input field, 
+    optional or chain element. Typically this is used to provide specialized 
+    behaviour in specialized contexts:</p>
+    
+    <p>For instance, assume <i>fld</i> is an input field in GUI service <i>F_XY</i> 
+    and <i>F_XY</i> is in turn used as a sub-form in GUI service <i>F_Z</i>. 
+    Then you may attach a &quot;New value&quot; handler to fld in <i>F_XY</i> and another 
+    one in <i>F_Z</i>. The latter will be used whenever <i>fld</i> is used in 
+    the <i>F_Z</i> context, the former whenever F_XY is the top level GUI 
+    service or the &quot;parent&quot; GUI service doesn't have a &quot;New value&quot; handler for 
+    fld. The <font color="#FF0000"><i><b>Lava</b></i></font> run time system 
+    will always invoke the uppermost handler in the form/sub-form hierarchy if 
+    several handlers exist for an input field, optional or chain element, i.e., 
+    the handler belonging to the most special usage context.</p>
     
     <H3>How to present/fill out a form</H3>
     

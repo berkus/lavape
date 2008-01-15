@@ -228,27 +228,26 @@ void CLavaMainFrame::installToolButtonEvtFilters(QToolBar *tb) {
 void CLavaMainFrame::makeStyle(const QString &style)
 {
   bool isVisible, firstTime=false;
-  MyWindowsStyle *winStyle;
 
   if (!style.isEmpty()) {
     LBaseData->m_style = style;
     wxTheApp->saveSettings();
     if (style == "Windows")
-      QApplication::setStyle(new MyWindowsStyle);
+      QApplication::setStyle(new QWindowsStyle);
 #ifdef WIN32
     else if (style == "WindowsXP")
-      QApplication::setStyle(new MyWindowsXPStyle);
+      QApplication::setStyle(new QWindowsXPStyle);
     else if (style == "WindowsVista")
-      QApplication::setStyle(new MyWindowsVistaStyle);
+      QApplication::setStyle(new QWindowsVistaStyle);
 #endif
 #ifdef Darwin
     else if (style == "Mac")
       QApplication::setStyle(new MyMacStyle);
 #endif
     else if (style == "CDE")
-      QApplication::setStyle(new MyCDEStyle);
+      QApplication::setStyle(new QCDEStyle);
     else if (style == "Motif")
-      QApplication::setStyle(new MyMotifStyle);
+      QApplication::setStyle(new QMotifStyle);
     else if (style == "Plastique")
       QApplication::setStyle(new MyPlastiqueStyle);
     else if (style == "Cleanlooks")
@@ -257,10 +256,9 @@ void CLavaMainFrame::makeStyle(const QString &style)
 	    QApplication::setStyle(style);
   }
   else {
-    winStyle = new MyWindowsStyle;
     LBaseData->m_style = "Windows";
     wxTheApp->saveSettings();
-    QApplication::setStyle(winStyle);
+    QApplication::setStyle(new QWindowsStyle);
   }
 
   isVisible = Toolbar_7->isVisible();

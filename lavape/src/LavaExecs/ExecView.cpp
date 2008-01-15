@@ -672,6 +672,7 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   contentsHeight = qMax(contentsHeight,sv->viewport()->height());
   contentsWidth = qMax(contentsWidth,miniEditRightEdge);
   resize(contentsWidth,contentsHeight);
+  setContentsMargins(0,0,contentsWidth-2,contentsHeight);
   p.drawRect(0,0,15,contentsHeight);
 
   for ( it = bpl.begin(); it != bpl.end(); ++it )
@@ -1288,7 +1289,7 @@ ExecContents::ExecContents (MyScrollView *sv) {
   fmt.symbolFamily = "Symbol";
 #endif
   fmt.symbolFont = false;
-  resize(100,100);
+  resize(10,10);
 }
 
 
