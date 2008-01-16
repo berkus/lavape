@@ -142,6 +142,7 @@ void CLavaDebugger::start() {
       QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
 		  return;
 	  }
+    myDoc->openForDebugging = true;
   }
   myDoc->debugOn = true;
 }
@@ -299,6 +300,7 @@ void CLavaDebugger::stop(DbgExitReason reason) {
     myDoc->openForDebugging = false;
     myDoc = 0;
     m_execThread->resume();    //continue ExecuteLava
+    m_execThread = 0;
     return;
   }
   if (reason != normalEnd) {
