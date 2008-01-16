@@ -672,7 +672,6 @@ void ExecContents::paintEvent (QPaintEvent *ev)
   contentsHeight = qMax(contentsHeight,sv->viewport()->height());
   contentsWidth = qMax(contentsWidth,miniEditRightEdge);
   resize(contentsWidth,contentsHeight);
-  setContentsMargins(0,0,contentsWidth-2,contentsHeight);
   p.drawRect(0,0,15,contentsHeight);
 
   for ( it = bpl.begin(); it != bpl.end(); ++it )
@@ -3450,7 +3449,7 @@ quantCase:
 
   default:
 deflt:
-    if (text->currentSynObj->primaryToken = quant_T) {
+    if (text->currentSynObj->primaryToken == quant_T) {
       if (text->currentSynObj->parentObject->primaryToken == declare_T)
         withSet = false;
       goto quantCase;

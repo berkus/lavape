@@ -233,21 +233,21 @@ void CLavaMainFrame::makeStyle(const QString &style)
     LBaseData->m_style = style;
     wxTheApp->saveSettings();
     if (style == "Windows")
-      QApplication::setStyle(new QWindowsStyle);
+      QApplication::setStyle(new MyWindowsStyle);
 #ifdef WIN32
     else if (style == "WindowsXP")
-      QApplication::setStyle(new QWindowsXPStyle);
+      QApplication::setStyle(new MyWindowsXPStyle);
     else if (style == "WindowsVista")
-      QApplication::setStyle(new QWindowsVistaStyle);
+      QApplication::setStyle(new MyWindowsVistaStyle);
 #endif
 #ifdef Darwin
     else if (style == "Mac")
       QApplication::setStyle(new MyMacStyle);
 #endif
     else if (style == "CDE")
-      QApplication::setStyle(new QCDEStyle);
+      QApplication::setStyle(new MyCDEStyle);
     else if (style == "Motif")
-      QApplication::setStyle(new QMotifStyle);
+      QApplication::setStyle(new MyMotifStyle);
     else if (style == "Plastique")
       QApplication::setStyle(new MyPlastiqueStyle);
     else if (style == "Cleanlooks")
@@ -258,7 +258,7 @@ void CLavaMainFrame::makeStyle(const QString &style)
   else {
     LBaseData->m_style = "Windows";
     wxTheApp->saveSettings();
-    QApplication::setStyle(new QWindowsStyle);
+    QApplication::setStyle(new MyWindowsStyle);
   }
 
   isVisible = Toolbar_7->isVisible();

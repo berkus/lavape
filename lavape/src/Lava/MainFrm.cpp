@@ -100,8 +100,6 @@ bool CLavaMainFrame::OnCreate() {
 
 void CLavaMainFrame::makeStyle(const QString &style)
 {
-  if (style.isEmpty()) return;
-
   LBaseData->m_style = style;
   wxTheApp->saveSettings();
   if (!style.isEmpty()) {
@@ -127,9 +125,14 @@ void CLavaMainFrame::makeStyle(const QString &style)
       QApplication::setStyle(new MyCleanlooksStyle);
     else
 	    QApplication::setStyle(style);
-	  if (completelyCreated)
-		  repaint();
   }
+  else {
+    LBaseData->m_style = "Windows";
+    wxTheApp->saveSettings();
+    QApplication::setStyle(new MyWindowsStyle);
+  }
+  if (completelyCreated)
+	  repaint();
 }
 
 void CLavaMainFrame::UpdateUI()
