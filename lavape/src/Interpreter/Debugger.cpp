@@ -143,6 +143,7 @@ void CLavaDebugger::start() {
 		  return;
 	  }
   }
+  myDoc->debugOn = true;
 }
 
 void CLavaDebugger::connectToClient() {
