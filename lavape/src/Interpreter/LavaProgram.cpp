@@ -2313,16 +2313,18 @@ unsigned CLavaExecThread::ExecuteLava()
 #endif
     if (!myDoc->isObject) {
       ckd.myDECL = topDECL;
-      ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
-      if (!ok) {
-        critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
-        goto stop;
-      }
       sData.nextFreeID = 0;
       sData.doc = ckd.document;
       sData.nextFreeID = 0;
       // sData.finished = false;
       ((SynObject*)topDECL->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
+      ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
+      // in case of syntax errors CUserException is thrown
+      //if (!ok) {
+      //  critical(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr("Please open this program in LavaPE and remove all static errors first!"),QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
+      //  goto stop;
+      //}
+
       topDECL->WorkFlags.INCL(runTimeOK);
       frameSize = ((SelfVar*)topDECL->Exec.ptr)->stackFrameSize;
       newOldExprLevel = frameSize - 1;

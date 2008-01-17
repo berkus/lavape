@@ -238,8 +238,13 @@ void SynObject::SetError(CheckData &ckd,QString *errorCode,char *textParam)
   else {
     msg = msgText + "\n\nFile: " + cFileName + "\n\nPath to erroneous construct:\n\n" + cExecName + " | " + synObj->LocationOfConstruct();
   }
-  if (SetLavaException(ckd, check_ex, msg))
+  if (SetLavaException(ckd, check_ex, msg)) {
+    ckd.synError = new SynErr;
+    ckd.synError->ErrID = TID(ckd.myDECL->ParentDECL->OwnID,ckd.myDECL->ParentDECL->inINCL);
+    ckd.synError->ExecType = ckd.myDECL->DeclType;
+    ckd.synError->SynObjID = synObjectID;
     throw CUserException();
+  }
   else
     throw CNotSupportedException();
 #else

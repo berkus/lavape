@@ -342,6 +342,7 @@ struct LAVABASE_DLL CheckData {
     selfVar = 0;
     succeed = 0;
     execView = 0;
+    synError = 0;
     hint = 0;
     undoRedo = 0;
     refTable = 0;
@@ -365,12 +366,15 @@ struct LAVABASE_DLL CheckData {
     precedingIniCall = 0;
   };
 
+  ~CheckData() { if (synError) delete synError; }
+
   CLavaBaseDoc *document;
   LavaDECL *myDECL, *selfTypeDECL;
   CVAttrDesc *attrDesc;
   LavaObjectPtr lastException, stackFrame[3];
   QString callStack, exceptionMsg;
   SynObjectBase *selfVar, *succeed, *iniVar;
+  SynErr *synError;
   CContext lpc;          //vorher *execIC, *execOC
   CContext tempCtx;  //vorher *iC, *oC
   wxView *execView;
