@@ -931,7 +931,14 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
       CSecTabBase-- *** Stack;
       SynObjectBase-- *SynObj;
     };
-
+    
+    struct SynErr {
+      TID ErrID;
+      int SynObjID;
+      TDeclType ExecType;
+      SynErr() {SynObjID = -1;}
+    };
+    
     struct ProgPoint {          //LavaPE to Lava
       ProgPoint() {Skipped = false; SynObj=0;FuncDoc=0;}
       int SynObjID;       // point id
@@ -951,6 +958,7 @@ enum DbgContType {dbg_Cont, dbg_Step, dbg_StepFunc, dbg_StepOut, dbg_StepInto, d
       CHAINANY <StackData> StackChain;
       CHAINX /*DDItemData*/ ObjectChain;
       CHAINX /*DDItemData*/ ParamChain;
+      NESTED <SynErr> SynErrData;
       CSecTabBase-- *** CalleeStack;
       LavaDECL-- * CalleeFunc;
       DbgStopData() {ActStackLevel=0; CalleeStack =0; CalleeFunc =0;}

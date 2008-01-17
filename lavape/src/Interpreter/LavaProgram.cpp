@@ -2540,14 +2540,11 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
         __asm {
             add esp, frameSizeBytes
           }
-
 #endif        
         if (!ckd.lastException)
           ex = new CRuntimeException(RunTimeException_ex, &ERR_RunTimeException);
         return ex;
       }
-
-
       for (ii = SFH; ii < frameSize; ii++) 
         dialog->myGUIProg->CmdExec.Handler_Stack[ii] = newStackFrame[ii];
 #ifdef __GNUC__
