@@ -528,12 +528,12 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
             ckdl.inINCL = execDECL->inINCL;
             implDECL->WorkFlags.INCL(runTimeOK);
             try {
-              ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
               sData.nextFreeID = 0;
               sData.doc = ckdl.document;
               sData.nextFreeID = 0;
               // sData.finished = false;
               ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
+              ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
             }
             catch(CUserException) {
             }
@@ -543,6 +543,8 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
               ckd.lastException = ckdl.lastException;
               ckd.exceptionMsg = QString("Static check exception:\n\n") + ckdl.exceptionMsg;
               ckd.exceptionThrown = true;
+              ckd.synError = ckdl.synError;
+              ckdl.synError = 0;
               return false;
             }
             implDECL->WorkFlags.EXCL(runTimeOK);
@@ -2405,7 +2407,8 @@ unsigned CLavaExecThread::ExecuteLava()
 #endif
       }
       ((CLavaProgram*)ckd.document)->HCatch(ckd);
-stop: ckd.document->throwError = false;
+/*stop:*/
+      ckd.document->throwError = false;
       CLavaPEHint* hint = new CLavaPEHint(CPECommand_LavaEnd, ckd.document, (const unsigned long)3,QThread::currentThread());
       QApplication::postEvent(wxTheApp, new CustomEvent(UEV_LavaEnd,(void*)hint));
 //    ckd.document->LavaEnd(true);
