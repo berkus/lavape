@@ -1221,7 +1221,7 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
   if (declsel) {
     //used only after GotoImpl means always the ExecDef
     if (openExec) {
-      execDecl = doc->GetExecDECL(decl, execType, false,false);
+      execDecl = doc->GetExecDECL(declsel, execType, false,false);
       return doc->OpenExecView(execDecl);
     }
     else {
