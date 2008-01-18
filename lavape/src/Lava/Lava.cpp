@@ -73,6 +73,7 @@ static const char slash='/';
 
 int main( int argc, char ** argv ) {
   CLavaApp ap(argc,argv);
+  wxTheApp->clipboard()->clear();
 
   QString componentPath;
   QByteArray myPath;
@@ -138,7 +139,7 @@ CLavaApp::CLavaApp(int &argc, char ** argv )
   LBaseData.theApp = this;
   LBaseData.inRuntime = true;
   LBaseData.openForDebugging = false;
-  clipboard()->clear();
+  //clipboard()->clear();
   LBaseData.actHint = 0;
   LBaseData.Init(0, 0);
   LBaseData.debugger = &debugger;

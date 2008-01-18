@@ -87,6 +87,7 @@ static const char slash='/';
 // CLavaPEApp
 int main(int argc, char ** argv ) {
   CLavaPEApp app(argc,argv);
+  wxTheApp->clipboard()->clear();
   app.m_appWindow = new CLavaMainFrame();
 
 #ifdef _DEBUG
@@ -145,7 +146,7 @@ CLavaPEApp::CLavaPEApp(int &argc, char ** argv )
   LBaseData.theApp = this;
   LBaseData.inRuntime = false;
   LBaseData.debugger = &debugger;
-  clipboard()->clear();
+  //clipboard()->clear();
 
 
   settings.beginGroup("generalSettings");
