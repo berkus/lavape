@@ -54,6 +54,8 @@ $INCLUDE "Syntax.ph"
 extern TToken OperandType (TToken primaryToken);
 extern TToken PlaceHolderType (TToken primaryToken);
 
+extern LAVAEXECS_DLL void UpdateParameters (CheckData &ckd);
+
 
 enum ContextFlags {
   InLogNot,

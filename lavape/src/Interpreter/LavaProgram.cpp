@@ -491,6 +491,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
         implDECL->WorkFlags.INCL(runTimeOK);
         try {
           ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
+          UpdateParameters(ckdl);
           sData.doc = ckdl.document;
           sData.nextFreeID = 0;
           // sData.finished = false;
@@ -528,6 +529,7 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
             ckdl.inINCL = execDECL->inINCL;
             implDECL->WorkFlags.INCL(runTimeOK);
             try {
+              UpdateParameters(ckdl);
               sData.nextFreeID = 0;
               sData.doc = ckdl.document;
               sData.nextFreeID = 0;
@@ -2319,6 +2321,7 @@ unsigned CLavaExecThread::ExecuteLava()
       sData.doc = ckd.document;
       sData.nextFreeID = 0;
       // sData.finished = false;
+      UpdateParameters(ckd);
       ((SynObject*)topDECL->Exec.ptr)->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
       ok = ((SynObject*)topDECL->Exec.ptr)->Check(ckd);
       // in case of syntax errors CUserException is thrown

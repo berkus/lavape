@@ -804,7 +804,6 @@ public:
 
 
 extern LAVAEXECS_DLL void DrawExec (DString file,bool singleFile,CLavaBaseDoc *doc,LavaDECL *myDECL,SynObject *newObj);
-extern LAVAEXECS_DLL void UpdateParameters (CheckData &ckd);
 
 
 #endif
