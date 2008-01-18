@@ -495,7 +495,8 @@ QString SynObject::DebugStop(CheckData &ckd,LavaVariablePtr stopStack,QString ex
   debug = ckd.document->debugOn || LBaseData->m_pmDumps && !((CLavaDebugger*)LBaseData->debugger)->m_execThread;
   if (debug && !((CLavaDebugger*)LBaseData->debugger)->dbgStopData)
     ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
-
+  ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->SynErrData.ptr = ckd.synError;
+  ckd.synError = 0;
   if (debug) {
     stopStack[2] = (LavaObjectPtr)((unsigned)stopStack[2] | 2);
       // set flag: breakpoint encountered

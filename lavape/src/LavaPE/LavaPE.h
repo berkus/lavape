@@ -35,7 +35,7 @@ public:
 
   virtual bool GotoImpl(wxDocument* fromDoc, LavaDECL* decl);
   bool FindImpl(wxDocument* fromDoc, LavaDECL* decl, wxDocument*& implDoc, LavaDECL**& implDECL);
-  bool GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool sendMess, DString* enumID=0,bool openExec=false);
+  bool GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool sendMess, DString* enumID=0,bool openExec=false, TDeclType execType=ExecDef);
 };
 
 

@@ -244,7 +244,7 @@ public:
   CBrowseContext *LastBrowseContext;
   void DestroyLastBrsContext(); //use this function only in case of failing browse result
 
-  virtual bool GotoDECL(wxDocument* , LavaDECL* , TID , bool /*popUp*/, DString* enumID=0, bool openExec=false) {return false;}
+  virtual bool GotoDECL(wxDocument* , LavaDECL* , TID , bool /*popUp*/, DString* enumID=0, bool openExec=false, TDeclType execType=ExecDef) {return false;}
   LavaDECL* BrowseDECL(wxDocument* doc, TID& id, DString* enumID=0, bool openExec=false);
   bool CanBrowse(LavaDECL* DECL);
 

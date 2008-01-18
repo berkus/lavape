@@ -91,7 +91,8 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
     if (errEx)   //error allready indicated
       return false;
     if (errCode = IDTable.SetImplDECLs(errDECL)) {
-      LavaError(ckd, false, errDECL, errCode);
+      ckd.document = this;
+      LavaError(ckd, true, errDECL, errCode);
       return false;
     }
     else
@@ -164,60 +165,98 @@ bool CLavaProgram::OnOpenProgram(const QString lpszPathName, bool imiExec, bool 
 void CLavaProgram::InitBAdapter()
 {
   CheckData ckd;
+  ckd.document = this;
+  QString str;
   DECLTab[B_Object ]     = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Object ], 0);
-  if (!DECLTab[B_Object ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_Object ]) {
+    str = ERR_inStd + QString(": missing basic type Object in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[Bitset ]       = IDTable.GetDECL(1, IDTable.BasicTypesID[Bitset ], 0);
-  if (!DECLTab[Bitset ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[Bitset ]) {
+    str = ERR_inStd + QString(": missing basic type Bitset in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[B_Bool ]       = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Bool ], 0);
-  if (!DECLTab[B_Bool ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_Bool ]) {
+    str = ERR_inStd + QString(": missing basic type Boolean in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[Char ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[Char ], 0);
-  if (!DECLTab[Char ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[Char ]) {
+    str = ERR_inStd + QString(": missing basic type Char in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[Integer ]      = IDTable.GetDECL(1, IDTable.BasicTypesID[Integer ], 0);
-  if (!DECLTab[Integer ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[Integer ]) {
+    str = ERR_inStd + QString(": missing basic type Integer in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[Float ]        = IDTable.GetDECL(1, IDTable.BasicTypesID[Float ], 0);
-  if (!DECLTab[Float ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[Float ]) {
+    str = ERR_inStd + QString(": missing basic type Float in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[Double ]       = IDTable.GetDECL(1, IDTable.BasicTypesID[Double ], 0);
-  if (!DECLTab[Double ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[Double ]) {
+    str = ERR_inStd + QString(": missing basic type Double in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[VLString ]     = IDTable.GetDECL(1, IDTable.BasicTypesID[VLString ], 0);
-  if (!DECLTab[VLString ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[VLString ]) {
+    str = ERR_inStd + QString(": missing basic type String in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[Enumeration ]  = IDTable.GetDECL(1, IDTable.BasicTypesID[Enumeration ], 0);
-  if (!DECLTab[Enumeration ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[Enumeration ]) {
+    str = ERR_inStd + QString(": missing basic type Enumeration in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[B_Set ]        = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Set ], 0);
-  if (!DECLTab[B_Set ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_Set ]) {
+    str = ERR_inStd + QString(": missing basic type Set in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[B_Chain ]      = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Chain ], 0);
-  if (!DECLTab[B_Chain ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_Chain ]) {
+    str = ERR_inStd + QString(": missing basic type Chain in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[B_Che ]        = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Che ], 0);
-  if (!DECLTab[B_Che ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_Che ]) {
+    str = ERR_inStd + QString(": missing basic type Handle in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[B_Array ]      = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Array ], 0);
-  if (!DECLTab[B_Array ])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_Array ]) {
+    str = ERR_inStd + QString(": missing basic type Array in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[ComponentObj ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[ComponentObj], 0);
-  if (!DECLTab[ComponentObj])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[ComponentObj]) {
+    str = ERR_inStd + QString(": missing basic type ComponentObj in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[B_Exception ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Exception], 0);
-  if (!DECLTab[B_Exception])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_Exception]) {
+    str = ERR_inStd + QString(": missing basic type Execption in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[B_HWException ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_HWException], 0);
-  if (!DECLTab[B_HWException])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_HWException]) {
+    str = ERR_inStd + QString(": missing basic type HardwareException in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[B_RTException ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_RTException], 0);
-  if (!DECLTab[B_RTException])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_RTException]) {
+    str = ERR_inStd + QString(": missing basic type RuntimeException in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   DECLTab[B_GUI ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_GUI], 0);
-  if (!DECLTab[B_GUI])
-    LavaError(ckd, false, 0, &ERR_inStd);
+  if (!DECLTab[B_GUI]) {
+    str = ERR_inStd + QString(": missing basic type GUI in std.lava");
+    LavaError(ckd, true, 0, &str);
+  }
   MakeStdAdapter();
   //GUIAdapter[LAH] = &GUIData; 
   GUIAdapter[LAH+1] = &GUIEdit; 
@@ -2160,13 +2199,17 @@ void CLavaProgram::LavaError(CheckData& ckd, bool setLavaEx, LavaDECL *decl, QSt
     code = NoPicture_ex;
   else
     code = check_ex;
-
+  if (!ckd.synError) {
+    ckd.synError = new SynErr();
+    ckd.synError->ErrID = TID(decl->OwnID, decl->inINCL);
+  }
   if (setLavaEx) {
-    if (!SetLavaException(ckd, code, msg))
+    if (!SetLavaException(ckd, code, msg) && (QThread::currentThread() != wxTheApp->mainThread))
       throw CRuntimeException(code, &msg);
   }
   else
-    throw CRuntimeException(code, &msg);
+    if ((CLavaThread*)QThread::currentThread() != wxTheApp->mainThread)
+      throw CRuntimeException(code, &msg);
   /*
   critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(msg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   throwError = true;
@@ -2566,6 +2609,8 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
       currentThread->suspend();
       currentThread = (CLavaThread*)QThread::currentThread();
     }
+    ckd.synError = currentThread->mySemaphore.synError;
+    currentThread->mySemaphore.synError = 0;
     if (currentThread->mySemaphore.lastException) {
       if (ckd.lastException)
         DEC_FWD_CNT(ckd, ckd.lastException);
@@ -2573,11 +2618,10 @@ CRuntimeException* showFunc(CheckData& ckd, LavaVariablePtr stack, bool frozen, 
       currentThread->mySemaphore.lastException = 0;
       ckd.exceptionThrown = true;
     }
-    else
-      if (currentThread->mySemaphore.ex) {
-        ex = currentThread->mySemaphore.ex;
-        currentThread->mySemaphore.ex = 0;
-      }
+    if (currentThread->mySemaphore.ex) {
+      ex = currentThread->mySemaphore.ex;
+      currentThread->mySemaphore.ex = 0;
+    }
   }
   else { //call from handler
     LavaObjectPtr callingService = 0;
@@ -2673,12 +2717,11 @@ bool GUIFillOut(CheckData& ckd, LavaVariablePtr stack)
   }
   ex = showFunc(ckd, newStackFrame, false, true);
   stack[SFH+2] = newStackFrame[SFH+2];
-  if (ckd.exceptionThrown)
-    return false;
-  else {
-    if (ex)
-      throw *ex;
-    //((SynFlags*)(stack[SFH+2]+1))->INCL(finished);
+  if (ex) {
+    throw *ex;
     return true;
   }
+  if (ckd.exceptionThrown)
+    return false;
+  return true;
 }

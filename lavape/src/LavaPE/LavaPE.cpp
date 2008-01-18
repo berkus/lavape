@@ -1197,10 +1197,10 @@ void CLavaPEBrowse::makeDefaultMenu(LavaDECL* decl)
 }//makeDefaultMenu
 
 
-bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool sendMess, DString* enumID, bool openExec)
+bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool sendMess, DString* enumID, bool openExec, TDeclType execType)
 {
   CLavaPEDoc *doc;
-  LavaDECL *declsel = 0, *formDECL = 0;
+  LavaDECL *declsel = 0, *formDECL = 0, *execDecl;
   bool popUp = false, activateMainView = false;
   CLavaBaseView *view;
   CTreeItem *item, *itemOld;
@@ -1220,8 +1220,10 @@ bool CLavaPEBrowse::GotoDECL(wxDocument* fromDoc, LavaDECL* decl, TID id, bool s
   }
   if (declsel) {
     //used only after GotoImpl means always the ExecDef
-    if (openExec && (((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data)->DeclDescType == ExecDesc))
-      return doc->OpenExecView((LavaDECL*)((CHE*)declsel->NestedDecls.last)->data);
+    if (openExec) {
+      execDecl = doc->GetExecDECL(decl, execType, false,false);
+      return doc->OpenExecView(execDecl);
+    }
     else {
       //pos = doc->GetFirstViewPos();
       view = (CLavaBaseView*)doc->m_documentViews[0]; //GetNextView(pos); //find the appropriate view

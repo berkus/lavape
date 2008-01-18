@@ -345,9 +345,10 @@ bool CLavaApp::event(QEvent *e)
     LBaseData.docModal = 0;
     if (thr) {
       if (result == QDialog::Rejected) {
-        if (!thr->mySemaphore.ex)
+        if (!thr->mySemaphore.ex) {
           ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
           thr->mySemaphore.ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+        }
       }
       thr->waitingForUI = false;
       thr->resume();

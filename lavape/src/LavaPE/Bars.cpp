@@ -449,6 +449,11 @@ void CUtilityView::OnTabChange(int)
 void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
 {
   CLavaBaseView *view=0;
+  LavaDECL* decl;
+  TID id;
+  DString *s0=0;
+  DbgStopData* dbgStData;
+  bool ok;
 
   if (dbgReceived && dbgReceived->newReceived) {
     switch (dbgReceived->newReceived->Command) {
@@ -461,10 +466,28 @@ void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
         itemToOpen = 0;
       }
       break;
-    case Dbg_StopData: 
-      StackView->makeItems((DbgStopData*)dbgReceived->newReceived->DbgData.ptr, doc);
-      if (dbgReceived->lastReceived)
-        removeExecStackPos((DbgStopData*)dbgReceived->lastReceived->DbgData.ptr, doc);
+    case Dbg_StopData:
+      dbgStData = (DbgStopData*)dbgReceived->newReceived->DbgData.ptr;
+      if (dbgStData->StackChain.first) {
+        StackView->makeItems(dbgStData, doc);
+        if (dbgReceived->lastReceived)
+          removeExecStackPos((DbgStopData*)dbgReceived->lastReceived->DbgData.ptr, doc);
+        showExecStackPos((DbgStopData*)dbgReceived->newReceived->DbgData.ptr, doc);
+        VarView->makeItems(((DbgStopData*)dbgReceived->newReceived->DbgData.ptr)->ObjectChain);
+        ParamView->makeItems(((DbgStopData*)dbgReceived->newReceived->DbgData.ptr)->ParamChain);
+      }
+      if (dbgStData->SynErrData.ptr) {
+        id = dbgStData->SynErrData.ptr->ErrID;
+        decl = ((TIDTable*)doc->mySynDef->IDTable)->GetDECL(id);
+        if (dbgStData->SynErrData.ptr->SynObjID > -1)
+          ok = (decl!=0) && ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, id, false, s0, true, dbgStData->SynErrData.ptr->ExecType);
+        else
+          ok = (decl!=0) && ((CLavaPEApp*)wxTheApp)->Browser.GotoDECL(doc, decl, id, false, s0);
+        if (!ok) {/*??*/}
+      }
+      if (!dbgStData->StackChain.first)
+        return;
+      break;
     case Dbg_Stack: 
       showExecStackPos((DbgStopData*)dbgReceived->newReceived->DbgData.ptr, doc);
       VarView->makeItems(((DbgStopData*)dbgReceived->newReceived->DbgData.ptr)->ObjectChain);

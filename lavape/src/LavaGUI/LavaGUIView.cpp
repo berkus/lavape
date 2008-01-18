@@ -138,8 +138,11 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
       }
       if (myThread) {
         myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
-        myThread->mySemaphore.ex = myGUIProg->ex;
         myGUIProg->ckd.lastException = 0;
+        myThread->mySemaphore.ex = myGUIProg->ex;
+        myGUIProg->ex = 0;
+        myThread->mySemaphore.synError = myGUIProg->ckd.synError;
+        myGUIProg->ckd.synError = 0;
         myGUIProg->ckd.exceptionThrown = false;
       }
       HGUISetUnused(myGUIProg->ckd, *ServicePtr);
@@ -202,6 +205,9 @@ void LavaGUIDialog::OnOK()
         myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
         myThread->mySemaphore.ex = myGUIProg->ex;
         myGUIProg->ckd.lastException = 0;
+        myGUIProg->ex = 0;
+        myThread->mySemaphore.synError = myGUIProg->ckd.synError;
+        myGUIProg->ckd.synError = 0;
         myGUIProg->ckd.exceptionThrown = false;
       }
       QDialog::accept();
@@ -227,6 +233,9 @@ void LavaGUIDialog::OnCancel()
     if (myThread) {
       myThread->mySemaphore.lastException = myGUIProg->ckd.lastException;
       myThread->mySemaphore.ex = myGUIProg->ex;
+      //myGUIProg->ex = 0;
+      myThread->mySemaphore.synError = myGUIProg->ckd.synError;
+      //myGUIProg->ckd.synError = 0;
       //myGUIProg->ckd.lastException = 0;
       //myGUIProg->ckd.exceptionThrown = false;
     }

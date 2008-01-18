@@ -40,7 +40,9 @@
 
 
 #define RETURNFALSE() {\
-  if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown) \
+  if (((CGUIProg*)GUIProg)->ckd.exceptionThrown) \
+    ((CGUIProg*)GUIProg)->ex = new CRuntimeException(check_ex, &((CGUIProg*)GUIProg)->ckd.exceptionMsg);\
+  else\
     ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);\
   if (!GUIProg->isView)\
     ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\

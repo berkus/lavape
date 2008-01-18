@@ -23,10 +23,12 @@ class LAVABASE_DLL CSemaphore : public QSemaphore
 public:
   CSemaphore() : QSemaphore(1) {
 		lastException = 0; 
-		ex = 0; 
+		ex = 0;
+    synError = 0;
 	}
   CSectionDesc **lastException;
   CRuntimeException* ex;
+  SynErr* synError;
 };
 
 class LAVABASE_DLL CLavaThread : public QThread {
