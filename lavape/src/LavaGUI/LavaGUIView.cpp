@@ -91,6 +91,7 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
 
   setObjectName("LavaGUIDialog");
   setModal(true);
+  inInit = true;
   returned = false;
   myScrv = new GUIScrollView(this, false);
   QWidget* hb = new QWidget(this); // horiz. box
@@ -146,12 +147,14 @@ LavaGUIDialog::LavaGUIDialog(QWidget *parent,CLavaPEHint *pHint)
         myGUIProg->ckd.exceptionThrown = false;
       }
       HGUISetUnused(myGUIProg->ckd, *ServicePtr);
+      inInit = false;
       return ;
     }
     myGUIProg->MakeGUI.DisplayScreen(false);
   }
   //myScrv->show();
   myScrv->ensureVisible(20, 1200);
+  inInit = false;
 }
 
 void LavaGUIDialog::setpropSize(QSize& scrSize)
@@ -219,6 +222,8 @@ void LavaGUIDialog::OnOK()
 void LavaGUIDialog::OnCancel()
 {
   LavaObjectPtr obj;
+  if (inInit)
+    return;
   if (myGUIProg) {
     if (!myGUIProg->ex && !myGUIProg->ckd.exceptionThrown)
       myGUIProg->NoteLastModified();
@@ -735,7 +740,7 @@ void CLavaGUIView::OnReset()
       }
     }
   }
-  OnCancel(); //return to calling program if exceptions appear}
+  OnCancel(); 
 }
 
 
@@ -756,7 +761,7 @@ void CLavaGUIView::OnCancel()
       *ResultDPtr = 0;
     }
   }
-  OnOK(); //return to calling program if exceptions appear
+  OnOK(); 
 }
 
 

@@ -72,6 +72,7 @@ public:
   LavaVariablePtr ResultDPtr;
   QVBoxLayout *qvbl;
   bool returned;
+  bool inInit;
 
   void closeEvent(QCloseEvent *e);
 

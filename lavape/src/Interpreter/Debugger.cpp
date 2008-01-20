@@ -170,7 +170,7 @@ void CLavaDebugger::connected() {
   }
 
   if (!startedFromLavaPE) {
-    if (dbgStopData->stopReason != Stop_Start) {
+    if ((dbgStopData->stopReason != Stop_Start) && dbgStopData->StackChain.first) {
       varAction->run();
       addCalleeParams();
     }
@@ -200,9 +200,11 @@ void CLavaDebugger::receive() {
       dbgStopData->ObjectChain.Destroy();
       dbgStopData->ParamChain.Destroy();
       dbgStopData->ActStackLevel = mReceive.CallStackLevel;
-      varAction->run();
-      if (!dbgStopData->ActStackLevel)
-        addCalleeParams();
+      if (dbgStopData->StackChain.first) {
+        varAction->run();
+        if (!dbgStopData->ActStackLevel)
+          addCalleeParams();
+      }
       mSend.SetSendData(Dbg_Stack, dbgStopData);
       send();
       break;

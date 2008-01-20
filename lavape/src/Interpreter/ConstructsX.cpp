@@ -497,201 +497,203 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
     ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
   ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->SynErrData.ptr = ckd.synError;
   ckd.synError = 0;
-  if (debug) {
-    stopStack[2] = (LavaObjectPtr)((unsigned)stopStack[2] | 2);
-      // set flag: breakpoint encountered
-    if (synObj->primaryToken == assignFS_T
-    && synObj->parentObject->primaryToken == new_T
-    && ((FuncStatement*)synObj)->funcDecl->TypeFlags.Contains(defaultInitializer))
-      synObj = synObj->parentObject;
-    else if (synObj->primaryToken == FuncRef_T
-    && synObj->parentObject->parentObject->primaryToken == new_T
-    && ((FuncStatement*)synObj->parentObject)->funcDecl->TypeFlags.Contains(defaultInitializer))
-      synObj = synObj->parentObject->parentObject;
-    else if (synObj->primaryToken == ObjRef_T
-    && synObj->parentObject->primaryToken == assign_T)
-      synObj = synObj->parentObject;
-    else if (synObj->primaryToken == parameter_T)
-      synObj = (SynObject*)((Parameter*)synObj)->parameter.ptr;
+  if (synObj) {
+    if (debug) {
+      stopStack[2] = (LavaObjectPtr)((unsigned)stopStack[2] | 2);
+        // set flag: breakpoint encountered
+      if (synObj->primaryToken == assignFS_T
+      && synObj->parentObject->primaryToken == new_T
+      && ((FuncStatement*)synObj)->funcDecl->TypeFlags.Contains(defaultInitializer))
+        synObj = synObj->parentObject;
+      else if (synObj->primaryToken == FuncRef_T
+      && synObj->parentObject->parentObject->primaryToken == new_T
+      && ((FuncStatement*)synObj->parentObject)->funcDecl->TypeFlags.Contains(defaultInitializer))
+        synObj = synObj->parentObject->parentObject;
+      else if (synObj->primaryToken == ObjRef_T
+      && synObj->parentObject->primaryToken == assign_T)
+        synObj = synObj->parentObject;
+      else if (synObj->primaryToken == parameter_T)
+        synObj = (SynObject*)((Parameter*)synObj)->parameter.ptr;
 
-    if (LBaseData->tempBrkPoint) {
-      ((SynObject*)LBaseData->tempBrkPoint)->workFlags.EXCL(isTempPoint);
-      LBaseData->tempBrkPoint = 0;
+      if (LBaseData->tempBrkPoint) {
+        ((SynObject*)LBaseData->tempBrkPoint)->workFlags.EXCL(isTempPoint);
+        LBaseData->tempBrkPoint = 0;
+      }
+
+      stData = new CHEStackData;
+      stData->data.SynObjID = synObj->synObjectID;
+      stData->data.Stack = (CSecTabBase***)stopStack;
+      stData->data.SynObj = synObj;
+      ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->stopReason = stopReason;
+      ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->CalleeStack = (CSecTabBase***)calleeStack;
+      ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->CalleeFunc = calleeFunc;
+      ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
     }
 
-    stData = new CHEStackData;
-    stData->data.SynObjID = synObj->synObjectID;
-    stData->data.Stack = (CSecTabBase***)stopStack;
-    stData->data.SynObj = synObj;
-    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->stopReason = stopReason;
-    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->CalleeStack = (CSecTabBase***)calleeStack;
-    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->CalleeFunc = calleeFunc;
-    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
-  }
+    if (isEx)
+      msg = QString("Call stack:\n");
 
-  if (isEx)
-    msg = QString("Call stack:\n");
-
-  do {
-    if (synObj->primaryToken == VarName_T)
-      cSynObjName = QString(((VarName*)synObj)->varName.c);
-    else if (synObj->primaryToken == TDOD_T) {
-      if (isEx)
-        cSynObjName = QString(((TDOD*)synObj)->name.c);
-      chp = (CHE*)((CHE*)synObj->whereInParent)->predecessor;
-      while (chp) {
-        synObj = (SynObject*)chp->data;
+    do {
+      if (synObj->primaryToken == VarName_T)
+        cSynObjName = QString(((VarName*)synObj)->varName.c);
+      else if (synObj->primaryToken == TDOD_T) {
         if (isEx)
-          cSynObjName = QString(((TDOD*)synObj)->name.c) + "." + cSynObjName;
-        chp = (CHE*)chp->predecessor;
-      }
-      synObj = synObj->parentObject;
-    }
-    else if (synObj->IsFuncInvocation()) {
-      if (isEx)
-        path = "| " + QString(((Reference*)((FuncExpression*)synObj)->function.ptr)->refName.c)
-             + "() " + path;
-      synObj = synObj->parentObject;
-      continue;
-    }
-    else if (synObj->type == implementation_T) { // exec SelfVar
-      oldSynObj = synObj;
-      inINCL = ((SelfVar*)synObj)->inINCL;
-      if (isEx)
-        cFileName = QString(ckd.document->IDTable.IDTab[inINCL]->FileName.c);
-
-      synObj = (SynObject*)(stack[0]);
-      if (synObj) {
-        if (synObj->primaryToken == assignFS_T
-        && synObj->parentObject->primaryToken == new_T
-        && ((FuncStatement*)synObj)->funcDecl->TypeFlags.Contains(defaultInitializer))
-          synObj = synObj->parentObject;
-        else if (synObj->primaryToken == FuncRef_T
-        && synObj->parentObject->parentObject->primaryToken == new_T
-        && ((FuncStatement*)synObj->parentObject)->funcDecl->TypeFlags.Contains(defaultInitializer))
-          synObj = synObj->parentObject->parentObject;
-      }
-
-      if (debug) {
-        stData->data.FuncID = TID(((SelfVar*)oldSynObj)->execDECL->ParentDECL->OwnID,
-                                  ((SelfVar*)oldSynObj)->execDECL->ParentDECL->inINCL);
-        stData->data.ExecType = ((SelfVar*)oldSynObj)->execDECL->DeclType;
-        if (!lastStack) {
-          stData = new CHEStackData;
-          stData->data.Stack = (CSecTabBase ***)stack[1];
-          stData->data.SynObj = synObj;
-          if (synObj) 
-            stData->data.SynObjID = synObj->synObjectID;
-          else
-            stData->data.SynObjID = 0;
-          ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
+          cSynObjName = QString(((TDOD*)synObj)->name.c);
+        chp = (CHE*)((CHE*)synObj->whereInParent)->predecessor;
+        while (chp) {
+          synObj = (SynObject*)chp->data;
+          if (isEx)
+            cSynObjName = QString(((TDOD*)synObj)->name.c) + "." + cSynObjName;
+          chp = (CHE*)chp->predecessor;
         }
+        synObj = synObj->parentObject;
       }
-
-      stack = (LavaVariablePtr)stack[1];
-      if (isEx) {
-        switch (oldSynObj->primaryToken) {
-        case invariant_T:
-          path = QString("\n| invariant of ")
-                 + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
-                 + QString(", file ") + QString(cFileName) + QString("\n") + QString(path);
-          break;
-        case function_T:
-        case initializer_T:
-        case dftInitializer_T:
-          path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
-                 + "(), file " + cFileName + "\n" + path;
-          break;
-        case require_T:
-          if (((SelfVar*)oldSynObj)->execDECL->ParentDECL->ParentDECL->DeclType == Impl)
-            path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
-                   + "()::impl_require, file " + cFileName + "\n" + path;
-          else
-            path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
-                   + "()::require, file " + cFileName + "\n" + path;
-          break;
-        case ensure_T:
-          if (((SelfVar*)oldSynObj)->execDECL->ParentDECL->ParentDECL->DeclType == Impl)
-            path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
-                   + "()::impl_ensure, file " + cFileName + "\n" + path;
-          else
-            path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
-                   + "()::ensure, file " + cFileName + "\n" + path;
-          break;
-        default: // initiator
-          path = "\nmain program "
-                 + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
-                 + ", file "
-                 + cFileName + "\n" + path;
-        }
-      }
-      if (stack) {
-        if (synObj)
-          synObj = synObj->parentObject;
-        else {
-          synObj = (SynObject*)stack[0];
-          oldSynObj = synObj;
-          //stData->data.Stack = (CSecTabBase ***)stack;
-          stack = (LavaVariablePtr)stack[1];
-          lastStack = (stack[1] == 0);
-          stData->data.FuncID = ((Reference*)synObj)->refID;
-          stData->data.ExecType = ExecDef;
-          stData = new CHEStackData;
-          stData->data.Stack = (CSecTabBase ***)stack;
-          stData->data.SynObj = synObj;
-          if (synObj) 
-            stData->data.SynObjID = synObj->synObjectID;
-          else
-            stData->data.SynObjID = 0;
-          ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
-        }
+      else if (synObj->IsFuncInvocation()) {
+        if (isEx)
+          path = "| " + QString(((Reference*)((FuncExpression*)synObj)->function.ptr)->refName.c)
+               + "() " + path;
+        synObj = synObj->parentObject;
         continue;
       }
-      else
-        break;
-    }
-    else {
-      if (isEx) {
-        if (synObj->primaryToken == ObjRef_T)
-          cSynObjName = QString(((ObjReference*)synObj)->refName.c);
-        else if (synObj->primaryToken == TypeRef_T)
-          cSynObjName = QString(((Reference*)synObj)->refName.c);
-        else if (synObj->primaryToken == Boolean_T)
-          cSynObjName = ((BoolConst*)synObj)->boolValue?QString("true"):QString("false");
-        else if (synObj->primaryToken == Const_T)
-          cSynObjName = QString(((Constant*)synObj)->str.c);
-        else if (synObj->primaryToken == enumConst_T)
-          cSynObjName = QString(((EnumConst*)synObj)->Id.c);
-        else if (synObj->primaryToken == nil_T)
-          cSynObjName = QString("nil");
-        else if (synObj->primaryToken == arrayAtIndex_T)
-          cSynObjName = QString(((ObjReference*)((ArrayAtIndex*)synObj)->arrayObj.ptr)->refName.c)
-                        + "[]";
-        else
-          cSynObjName = QString(TOKENSTR[synObj->primaryToken]);
-      }
-    }
+      else if (synObj->type == implementation_T) { // exec SelfVar
+        oldSynObj = synObj;
+        inINCL = ((SelfVar*)synObj)->inINCL;
+        if (isEx)
+          cFileName = QString(ckd.document->IDTable.IDTab[inINCL]->FileName.c);
 
-    if (stack) {
-      if (isEx) {
-        if (synObj->parentObject->primaryToken == parameter_T
-        || synObj->parentObject->IsUnaryOp()
-        || ((synObj->parentObject->IsMultOp()
-            || synObj->parentObject->IsBinaryOp())
-           && synObj->parentObject->type != Stm_T))
-          cSynObjName = QString("(") + cSynObjName + ")";
-        path = "| " + cSynObjName + " " + path;
+        synObj = (SynObject*)(stack[0]);
+        if (synObj) {
+          if (synObj->primaryToken == assignFS_T
+          && synObj->parentObject->primaryToken == new_T
+          && ((FuncStatement*)synObj)->funcDecl->TypeFlags.Contains(defaultInitializer))
+            synObj = synObj->parentObject;
+          else if (synObj->primaryToken == FuncRef_T
+          && synObj->parentObject->parentObject->primaryToken == new_T
+          && ((FuncStatement*)synObj->parentObject)->funcDecl->TypeFlags.Contains(defaultInitializer))
+            synObj = synObj->parentObject->parentObject;
+        }
+
+        if (debug) {
+          stData->data.FuncID = TID(((SelfVar*)oldSynObj)->execDECL->ParentDECL->OwnID,
+                                    ((SelfVar*)oldSynObj)->execDECL->ParentDECL->inINCL);
+          stData->data.ExecType = ((SelfVar*)oldSynObj)->execDECL->DeclType;
+          if (!lastStack) {
+            stData = new CHEStackData;
+            stData->data.Stack = (CSecTabBase ***)stack[1];
+            stData->data.SynObj = synObj;
+            if (synObj) 
+              stData->data.SynObjID = synObj->synObjectID;
+            else
+              stData->data.SynObjID = 0;
+            ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
+          }
+        }
+
+        stack = (LavaVariablePtr)stack[1];
+        if (isEx) {
+          switch (oldSynObj->primaryToken) {
+          case invariant_T:
+            path = QString("\n| invariant of ")
+                   + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                   + QString(", file ") + QString(cFileName) + QString("\n") + QString(path);
+            break;
+          case function_T:
+          case initializer_T:
+          case dftInitializer_T:
+            path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                   + "(), file " + cFileName + "\n" + path;
+            break;
+          case require_T:
+            if (((SelfVar*)oldSynObj)->execDECL->ParentDECL->ParentDECL->DeclType == Impl)
+              path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                     + "()::impl_require, file " + cFileName + "\n" + path;
+            else
+              path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                     + "()::require, file " + cFileName + "\n" + path;
+            break;
+          case ensure_T:
+            if (((SelfVar*)oldSynObj)->execDECL->ParentDECL->ParentDECL->DeclType == Impl)
+              path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                     + "()::impl_ensure, file " + cFileName + "\n" + path;
+            else
+              path = "\n| " + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                     + "()::ensure, file " + cFileName + "\n" + path;
+            break;
+          default: // initiator
+            path = "\nmain program "
+                   + QString(((SelfVar*)oldSynObj)->execDECL->FullName.c)
+                   + ", file "
+                   + cFileName + "\n" + path;
+          }
+        }
+        if (stack) {
+          if (synObj)
+            synObj = synObj->parentObject;
+          else {
+            synObj = (SynObject*)stack[0];
+            oldSynObj = synObj;
+            //stData->data.Stack = (CSecTabBase ***)stack;
+            stack = (LavaVariablePtr)stack[1];
+            lastStack = (stack[1] == 0);
+            stData->data.FuncID = ((Reference*)synObj)->refID;
+            stData->data.ExecType = ExecDef;
+            stData = new CHEStackData;
+            stData->data.Stack = (CSecTabBase ***)stack;
+            stData->data.SynObj = synObj;
+            if (synObj) 
+              stData->data.SynObjID = synObj->synObjectID;
+            else
+              stData->data.SynObjID = 0;
+            ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->StackChain.Append(stData);
+          }
+          continue;
+        }
+        else
+          break;
       }
-      if (synObj->parentObject->primaryToken == parameter_T)
+      else {
+        if (isEx) {
+          if (synObj->primaryToken == ObjRef_T)
+            cSynObjName = QString(((ObjReference*)synObj)->refName.c);
+          else if (synObj->primaryToken == TypeRef_T)
+            cSynObjName = QString(((Reference*)synObj)->refName.c);
+          else if (synObj->primaryToken == Boolean_T)
+            cSynObjName = ((BoolConst*)synObj)->boolValue?QString("true"):QString("false");
+          else if (synObj->primaryToken == Const_T)
+            cSynObjName = QString(((Constant*)synObj)->str.c);
+          else if (synObj->primaryToken == enumConst_T)
+            cSynObjName = QString(((EnumConst*)synObj)->Id.c);
+          else if (synObj->primaryToken == nil_T)
+            cSynObjName = QString("nil");
+          else if (synObj->primaryToken == arrayAtIndex_T)
+            cSynObjName = QString(((ObjReference*)((ArrayAtIndex*)synObj)->arrayObj.ptr)->refName.c)
+                          + "[]";
+          else
+            cSynObjName = QString(TOKENSTR[synObj->primaryToken]);
+        }
+      }
+
+      if (stack) {
+        if (isEx) {
+          if (synObj->parentObject->primaryToken == parameter_T
+          || synObj->parentObject->IsUnaryOp()
+          || ((synObj->parentObject->IsMultOp()
+              || synObj->parentObject->IsBinaryOp())
+             && synObj->parentObject->type != Stm_T))
+            cSynObjName = QString("(") + cSynObjName + ")";
+          path = "| " + cSynObjName + " " + path;
+        }
+        if (synObj->parentObject->primaryToken == parameter_T)
+          synObj = synObj->parentObject;
         synObj = synObj->parentObject;
-      synObj = synObj->parentObject;
-    }
-    else
-      if (isEx)
-        path = cSynObjName + path;
-  } while (stack);
-  if (isEx)
-    msg = msg + path;
+      }
+      else
+        if (isEx)
+          path = cSynObjName + path;
+    } while (stack);
+    if (isEx)
+      msg = msg + path;
+  }
   if (debug) {
     if (isEx)
       if (!ckd.document->debugOn) {
