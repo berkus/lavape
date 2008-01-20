@@ -655,7 +655,7 @@ public:
   bool matches (LavaObjectPtr rcvr, LavaDECL *cbDecl);
 
   bool IsFuncInvocation(){ return true; }
-  QString DebugStop(CheckData &ckd,LavaVariablePtr stack,QString excMsg,StopReason sr,LavaVariablePtr calleeStack,LavaDECL *calleeFunc){ return QString::null; }
+  //QString DebugStop(CheckData &ckd,SynObjectBase *rcv,LavaVariablePtr stack,QString excMsg,StopReason sr,LavaVariablePtr calleeStack,LavaDECL *calleeFunc){ return QString::null; }
 
   LavaObjectPtr receiver;
   LavaDECL *callbackDecl;

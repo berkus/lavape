@@ -51,10 +51,13 @@ $INCLUDE "Syntax.ph"
 #define LEFTMARGIN 17
 #define INDENT 3
 
+class SynObject;
+
 extern TToken OperandType (TToken primaryToken);
 extern TToken PlaceHolderType (TToken primaryToken);
 
 extern LAVAEXECS_DLL void UpdateParameters (CheckData &ckd);
+extern LAVAEXECS_DLL QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stack,QString excMsg,StopReason sr,LavaVariablePtr calleeStack,LavaDECL *calleeFunc);
 
 
 enum ContextFlags {
@@ -90,7 +93,6 @@ enum ROContext {
 };
 
 
-class SynObject;
 class ObjReference;
 class VarName;
 class SelfVar;
@@ -412,7 +414,6 @@ public:
   virtual void Draw (CProgTextBase &text,address where,CHAINX *chxp,bool ignored){}
   void SetError(CheckData &ckd,QString *error,char *textParam=0);
   void SetRTError(CheckData &ckd,QString *error,LavaVariablePtr stackFrame,const char *textParam=0);
-  QString DebugStop(CheckData &ckd,LavaVariablePtr stack,QString excMsg,StopReason sr,LavaVariablePtr calleeStack,LavaDECL *calleeFunc);
   QString LocationOfConstruct ();
   virtual void ExprGetFVType(CheckData &ckd, LavaDECL *&decl, Category &cat, SynFlags& ctxFlags) { decl = 0; cat = unknownCategory; }
   virtual bool Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned oldExprLevel);
