@@ -67,14 +67,13 @@ CLavaProgram::~CLavaProgram()
 }
 
 
-bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool putErr)
+bool CLavaProgram::LoadSyntax(CheckData& ckd, const QString& fn, SynDef*& sntx, bool reDef, bool putErr)
 {
   int readResult;
   QString *errCode;
   LavaDECL *errDECL=0;
   bool errEx;
   QString str;
-  CheckData ckd;
 
   PathName = qPrintable(fn);
   readResult = ReadSynDef(fn, sntx);
@@ -92,7 +91,7 @@ bool CLavaProgram::LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool
       return false;
     if (errCode = IDTable.SetImplDECLs(errDECL)) {
       ckd.document = this;
-      LavaError(ckd, true, errDECL, errCode);
+      LavaError(ckd, false, errDECL, errCode);
       return false;
     }
     else
@@ -146,13 +145,16 @@ bool CLavaProgram::OnOpenProgram(const QString lpszPathName, bool imiExec, bool 
 {
   bool synOk=true;
   QString fName=PathName.c;
+  CheckData ckd;
 
   if (!mySynDef)
     if (lpszPathName.length())
-      synOk = LoadSyntax(lpszPathName, mySynDef, reDef, putErr); //mySynDef from lava file
+      synOk = LoadSyntax(ckd, lpszPathName, mySynDef, reDef, putErr); //mySynDef from lava file
     else
-      synOk = LoadSyntax(fName, mySynDef, reDef, putErr); //mySynDef from lava file
-  if (!synOk || !mySynDef)
+      synOk = LoadSyntax(ckd, fName, mySynDef, reDef, putErr); //mySynDef from lava file
+  if (!synOk)
+    return true;
+  if (!mySynDef)
     return false;
 //  wxDocManager::GetDocumentManager()->AddFileToHistory(fName);
   if (imiExec) {
@@ -170,92 +172,92 @@ void CLavaProgram::InitBAdapter()
   DECLTab[B_Object ]     = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Object ], 0);
   if (!DECLTab[B_Object ]) {
     str = ERR_inStd + QString(": missing basic type Object in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[Bitset ]       = IDTable.GetDECL(1, IDTable.BasicTypesID[Bitset ], 0);
   if (!DECLTab[Bitset ]) {
     str = ERR_inStd + QString(": missing basic type Bitset in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[B_Bool ]       = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Bool ], 0);
   if (!DECLTab[B_Bool ]) {
     str = ERR_inStd + QString(": missing basic type Boolean in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[Char ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[Char ], 0);
   if (!DECLTab[Char ]) {
     str = ERR_inStd + QString(": missing basic type Char in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[Integer ]      = IDTable.GetDECL(1, IDTable.BasicTypesID[Integer ], 0);
   if (!DECLTab[Integer ]) {
     str = ERR_inStd + QString(": missing basic type Integer in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[Float ]        = IDTable.GetDECL(1, IDTable.BasicTypesID[Float ], 0);
   if (!DECLTab[Float ]) {
     str = ERR_inStd + QString(": missing basic type Float in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[Double ]       = IDTable.GetDECL(1, IDTable.BasicTypesID[Double ], 0);
   if (!DECLTab[Double ]) {
     str = ERR_inStd + QString(": missing basic type Double in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[VLString ]     = IDTable.GetDECL(1, IDTable.BasicTypesID[VLString ], 0);
   if (!DECLTab[VLString ]) {
     str = ERR_inStd + QString(": missing basic type String in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[Enumeration ]  = IDTable.GetDECL(1, IDTable.BasicTypesID[Enumeration ], 0);
   if (!DECLTab[Enumeration ]) {
     str = ERR_inStd + QString(": missing basic type Enumeration in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[B_Set ]        = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Set ], 0);
   if (!DECLTab[B_Set ]) {
     str = ERR_inStd + QString(": missing basic type Set in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[B_Chain ]      = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Chain ], 0);
   if (!DECLTab[B_Chain ]) {
     str = ERR_inStd + QString(": missing basic type Chain in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[B_Che ]        = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Che ], 0);
   if (!DECLTab[B_Che ]) {
     str = ERR_inStd + QString(": missing basic type Handle in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[B_Array ]      = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Array ], 0);
   if (!DECLTab[B_Array ]) {
     str = ERR_inStd + QString(": missing basic type Array in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[ComponentObj ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[ComponentObj], 0);
   if (!DECLTab[ComponentObj]) {
     str = ERR_inStd + QString(": missing basic type ComponentObj in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[B_Exception ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_Exception], 0);
   if (!DECLTab[B_Exception]) {
     str = ERR_inStd + QString(": missing basic type Execption in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[B_HWException ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_HWException], 0);
   if (!DECLTab[B_HWException]) {
     str = ERR_inStd + QString(": missing basic type HardwareException in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[B_RTException ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_RTException], 0);
   if (!DECLTab[B_RTException]) {
     str = ERR_inStd + QString(": missing basic type RuntimeException in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   DECLTab[B_GUI ]         = IDTable.GetDECL(1, IDTable.BasicTypesID[B_GUI], 0);
   if (!DECLTab[B_GUI]) {
     str = ERR_inStd + QString(": missing basic type GUI in std.lava");
-    LavaError(ckd, true, 0, &str);
+    LavaError(ckd, false, 0, &str);
   }
   MakeStdAdapter();
   //GUIAdapter[LAH] = &GUIData; 
@@ -2210,6 +2212,10 @@ void CLavaProgram::LavaError(CheckData& ckd, bool setLavaEx, LavaDECL *decl, QSt
   else
     if ((CLavaThread*)QThread::currentThread() != wxTheApp->mainThread)
       throw CRuntimeException(code, &msg);
+    else {
+      msg = QString("Syntax error before execution started: \n") + msg;
+      DebugStop(ckd,0,0,msg, Stop_Exception ,0,0);
+    }
   /*
   critical(wxTheApp->m_appWindow,qApp->applicationName(),tr(msg),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   throwError = true;

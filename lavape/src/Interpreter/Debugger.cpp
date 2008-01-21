@@ -218,17 +218,19 @@ void CLavaDebugger::receive() {
       send();
       break;
     case Dbg_Continue:
-      if (varAction) {
-        setBrkPnts();
-        if (dbgStopData) {
-          dbgStopData->ActStackLevel = 0;  //reset dbgStopData
-          dbgStopData->CalleeStack = 0;
-          dbgStopData->StackChain.Destroy();
-          dbgStopData->ObjectChain.Destroy();
-          dbgStopData->ParamChain.Destroy();
+      if (m_execThread) {
+        if (varAction) {
+          setBrkPnts();
+          if (dbgStopData) {
+            dbgStopData->ActStackLevel = 0;  //reset dbgStopData
+            dbgStopData->CalleeStack = 0;
+            dbgStopData->StackChain.Destroy();
+            dbgStopData->ObjectChain.Destroy();
+            dbgStopData->ParamChain.Destroy();
+          }
         }
+        m_execThread->resume();    //continue ExecuteLava
       }
-      m_execThread->resume();    //continue ExecuteLava
       break;
     default:;
     }
@@ -301,11 +303,12 @@ void CLavaDebugger::stop(DbgExitReason reason) {
     myDoc->debugOn = false;
     myDoc->openForDebugging = false;
     myDoc = 0;
-    m_execThread->resume();    //continue ExecuteLava
+    if (m_execThread)
+      m_execThread->resume();    //continue ExecuteLava
     m_execThread = 0;
     return;
   }
-  if (reason != normalEnd) {
+  if ((reason != normalEnd) && m_execThread) {
     m_execThread->abort = true;
     m_execThread->resume();
   }

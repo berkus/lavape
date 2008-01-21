@@ -782,6 +782,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
         cheSyn = AttachSyntax(ckd, fn);
         if (!cheSyn) {
           LObjectError(ckd, cid->FileName, synName.c, &ERR_lcomNotOpened);
+          DebugStop(ckd, 0,0,QString("Syntax error detected due reading Object"),Stop_Exception,0,0);
           return false;
         }
         objINCL = cheSyn->data.nINCL;

@@ -69,7 +69,7 @@ public:
   virtual bool CheckForm(CheckData& ckd, LavaDECL* formDECL, int l = 0);
   bool MakeSectionTable(CheckData& ckd, LavaDECL *implDECL);
   void InitBAdapter();
-  bool LoadSyntax(const QString& fn, SynDef*& sntx, bool reDef, bool putErr);
+  bool LoadSyntax(CheckData& ckd, const QString& fn, SynDef*& sntx, bool reDef, bool putErr);
 
   virtual void LavaError(CheckData& ckd, bool setEx, LavaDECL *decl, QString *nresourceID, LavaDECL* refDECL = 0);
   void HCatch(CheckData& ckd);

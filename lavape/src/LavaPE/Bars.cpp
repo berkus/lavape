@@ -497,6 +497,10 @@ void CUtilityView::setDebugData(DbgMessages* dbgReceived, CLavaBaseDoc* doc)
       break;
     default:;
     }
+    VarView->resizeColumnToContents(0);
+    VarView->resizeColumnToContents(1);
+    ParamView->resizeColumnToContents(0);
+    ParamView->resizeColumnToContents(1);
     SetTab(tabDebug);
   }
   else { //reset
@@ -835,22 +839,9 @@ VarListView::VarListView(QWidget *parent, CUtilityView* bar, bool forParams)
     setHeaderLabels(QStringList() << "variables (type[/RT type])" << "address" << "value");
  resizeColumnToContents(0);
  resizeColumnToContents(1);
- /*
- if (forParams)
-    addColumn("func.params. (type[/RT type])");
-  else
-    addColumn("variables (type[/RT type])");
-  addColumn("address");
-  addColumn("value");
-  */
   header()->show();
 //  setShowToolTips(true);
   setSelectionMode(QAbstractItemView::SingleSelection);
-  /*
-  width0 = columnWidth(0);
-  width1 = columnWidth(1);
-  width2 = columnWidth(2);
-  */
 }
 
 void VarListView::makeItems(const CHAINX& objChain) //DbgStopData* data)

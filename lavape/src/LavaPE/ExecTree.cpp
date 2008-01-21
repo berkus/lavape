@@ -178,7 +178,8 @@ void CExecTree::ExecDefs(LavaDECL ** pelDef, int level)
         new CLavaError(&elDef->DECLError1, &ERR_SecondImpl);
     }
     else {
-      lab += "??";
+      lab += "?? (" + elDef->FullName;
+      lab += ")";
       new CLavaError(&elDef->DECLError1, &ERR_NoImplClass);
     }
     break;

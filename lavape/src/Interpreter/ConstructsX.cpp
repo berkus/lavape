@@ -492,9 +492,12 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
   int rc;
   DebugStep ds=nextDebugStep;
 
-  debug = ckd.document->debugOn || LBaseData->m_pmDumps && !((CLavaDebugger*)LBaseData->debugger)->m_execThread;
+  debug = ckd.document->debugOn || LBaseData->m_pmDumps && !((CLavaDebugger*)LBaseData->debugger)->myDoc;//m_execThread;
   if (debug && !((CLavaDebugger*)LBaseData->debugger)->dbgStopData)
-    ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
+    if (QThread::currentThread() != wxTheApp->mainThread)
+      ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
+    else
+      ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,0);
   ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->SynErrData.ptr = ckd.synError;
   ckd.synError = 0;
   if (synObj) {
@@ -713,7 +716,8 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
         QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
       else
         QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
-      ((CLavaThread*)QThread::currentThread())->suspend();   //execution thread wait
+      if (((CLavaDebugger*)LBaseData->debugger)->m_execThread)
+        ((CLavaThread*)QThread::currentThread())->suspend();   //execution thread wait
     }
     else
       if (rc == QMessageBox::NoAll) {
