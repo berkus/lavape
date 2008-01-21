@@ -1688,8 +1688,12 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
 //#ifndef INTERPRETER
 
 void UpdateParameters (CheckData &ckd) {
-  FormParms *fp;
   SelfVar *selfVar=(SelfVar*)ckd.myDECL->Exec.ptr;
+#ifdef INTERPRETER
+  if (selfVar->formParms.ptr)
+    return;
+#endif
+  FormParms *fp;
   LavaDECL *decl=ckd.myDECL->ParentDECL;
 
   if (ckd.myDECL->DeclType == Require
