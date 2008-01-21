@@ -2480,9 +2480,10 @@ unsigned CLavaExecThread::ExecuteLava()
     return 0;
   }
   catch(CUserException) {
-    if (ckd.lastException)
+    if (ckd.lastException) {
       DebugStop(ckd,0,0,QString("Syntax error detected before execution started"),Stop_Exception,0,0);
       ((CLavaProgram*)ckd.document)->HCatch(ckd);
+    }
     ckd.document->throwError = false;
     LavaEnd(ckd.document, true);
     if (myDoc->debugOn)

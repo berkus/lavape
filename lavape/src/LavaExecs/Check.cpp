@@ -1731,6 +1731,8 @@ static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRe
 //  ADJUST(parmDefTid,decl);
 
 #ifdef INTERPRETER
+  if (chain.first)
+    return; // parms already generated in preceding UpdateParams call
   newParmRef = new FormParm(true);
   newParmRef->parmType.ptr = new Reference(TypePH_T,decl->RefID,"");
 #else
