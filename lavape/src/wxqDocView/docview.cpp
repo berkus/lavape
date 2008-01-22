@@ -1719,7 +1719,7 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
     m_historyN++;
   }
   // Shuffle filenames down
-  for (i = m_historyN; i > 0; i--)
+  for (i = m_historyN-1; i > 0; i--)
     m_history[i] = m_history[i-1];
 
   m_history[0] = item;
