@@ -503,8 +503,10 @@ CHEHandlerInfo* CmdExecCLASS::GetHandler(CHEFormNode* fNode, int eventType)
           DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, obj);
         if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
           ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-        if (!GUIProg->isView)\
-          ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\
+        if (GUIProg->isView) {
+        }
+        else
+          ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();
         return 0;
       }
     }

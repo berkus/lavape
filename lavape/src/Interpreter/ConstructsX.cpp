@@ -712,19 +712,24 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
     else
       rc = QMessageBox::Yes;
     if (rc == QMessageBox::Yes) {
-      if (!LBaseData->debugger->isConnected)
-        QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
+      if (!LBaseData->debugger->isConnected) 
+        if (((CLavaProgram*)ckd.document)->corruptSyntax)
+          QApplication::sendEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
+        else
+          QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
       else
         QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
       if (((CLavaDebugger*)LBaseData->debugger)->m_execThread)
         ((CLavaThread*)QThread::currentThread())->suspend();   //execution thread wait
     }
-    else
-      if (rc == QMessageBox::NoAll) {
+    else {
+     ((CLavaDebugger*)LBaseData->debugger)->resetData();
+     if (rc == QMessageBox::NoAll) {
         LBaseData->m_pmDumps = false;
         LBaseData->m_strPmDumps = "false";
         QApplication::postEvent(wxTheApp, new CustomEvent(UEV_PMDumpOff,0));
       }
+    }
   }
   return msg;
 }

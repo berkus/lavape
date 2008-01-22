@@ -53,6 +53,9 @@ protected: // Nur aus Serialisierung erzeugen
 
 public:
 
+  QString LcomFileName;
+  bool corruptSyntax;
+
   bool OnOpenProgram(const QString pathName, bool imiExec, bool reDef, bool putErr);
   virtual ~CLavaProgram();
   virtual bool CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* specDECL=0);
@@ -73,7 +76,6 @@ public:
 
   virtual void LavaError(CheckData& ckd, bool setEx, LavaDECL *decl, QString *nresourceID, LavaDECL* refDECL = 0);
   void HCatch(CheckData& ckd);
-  QString LcomFileName;
 };
 
 extern LAVAEXECS_DLL bool GUIEdit(CheckData& ckd, LavaVariablePtr stack);

@@ -60,6 +60,7 @@
 CLavaProgram::CLavaProgram() : m_execThread(this)
 {
   m_execThreadPtr = &m_execThread;
+  corruptSyntax = false;
 }
 
 CLavaProgram::~CLavaProgram()
@@ -91,6 +92,7 @@ bool CLavaProgram::LoadSyntax(CheckData& ckd, const QString& fn, SynDef*& sntx, 
       return false;
     if (errCode = IDTable.SetImplDECLs(errDECL)) {
       ckd.document = this;
+      corruptSyntax = true;
       LavaError(ckd, false, errDECL, errCode);
       return false;
     }
@@ -152,8 +154,9 @@ bool CLavaProgram::OnOpenProgram(const QString lpszPathName, bool imiExec, bool 
       synOk = LoadSyntax(ckd, lpszPathName, mySynDef, reDef, putErr); //mySynDef from lava file
     else
       synOk = LoadSyntax(ckd, fName, mySynDef, reDef, putErr); //mySynDef from lava file
-  if (!synOk)
-    return true;
+  if (!synOk) {
+    return false;
+  }
   if (!mySynDef)
     return false;
 //  wxDocManager::GetDocumentManager()->AddFileToHistory(fName);

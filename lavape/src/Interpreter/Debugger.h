@@ -30,6 +30,7 @@ public:
 
   virtual void customEvent(QEvent *ev);
   void initData(CLavaBaseDoc* d, CLavaThread *execThr);
+  void resetData();
   QTcpServer *listenSocket;
   QTcpSocket *workSocket;
   ASN1InSock *get_cid;

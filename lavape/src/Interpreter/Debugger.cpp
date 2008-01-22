@@ -76,9 +76,10 @@ void CLavaDebugger::initData(CLavaBaseDoc* d, CLavaThread *execThr) {
   }
 }
 
-
-CLavaDebugger::~CLavaDebugger()
+void CLavaDebugger::resetData()
 {
+  myDoc = 0;
+  m_execThread = 0;
   if (dbgStopData) {
     delete dbgStopData;
     dbgStopData = 0;
@@ -89,6 +90,22 @@ CLavaDebugger::~CLavaDebugger()
   }
   mSend.Destroy();
   mReceive.Destroy();
+}
+
+
+CLavaDebugger::~CLavaDebugger()
+{
+   resetData();
+  /*if (dbgStopData) {
+    delete dbgStopData;
+    dbgStopData = 0;
+  }
+  if (varAction) {
+    delete varAction;
+    varAction = 0;
+  }
+  mSend.Destroy();
+  mReceive.Destroy();*/
 }
 
 void CLavaDebugger::customEvent(QEvent *ev) {

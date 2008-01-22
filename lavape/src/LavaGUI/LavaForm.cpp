@@ -1170,13 +1170,13 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
               else {
                 if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
                   ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-                if (!GUIProg->isView)\
-                  ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\
+                if (!GUIProg->isView)
+                  ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();
                 return false;
               }
               if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex) {
-               if (!GUIProg->isView)\
-                ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\
+               if (!GUIProg->isView)
+                ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();
                return false;
               }
             }
