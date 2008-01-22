@@ -1709,8 +1709,7 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
       delete m_history[m_maxHistItems-1];
       m_history[m_maxHistItems-1] = 0;
   }
-  if (m_historyN < m_maxHistItems)
-  {
+  else {
     if (m_historyN == 0)
         m_menu->addSeparator();
     m_actions[m_historyN] = m_menu->addAction("xxx");
@@ -1720,12 +1719,12 @@ void wxHistory::AddToHistory(DString *item, QObject *receiver)
     m_historyN++;
   }
   // Shuffle filenames down
-  for (i = m_historyN-1; i > 0; i--)
+  for (i = m_historyN; i > 0; i--)
     m_history[i] = m_history[i-1];
 
   m_history[0] = item;
 
-  for (i = m_historyN-1; i > 0; i--) {
+  for (i = m_historyN-1; i >= 0; i--) {
     QString buf;
     buf = s_MRUEntryFormat.arg(i+1).arg(m_history[i]->c);
     m_actions[i]->setText(buf);
