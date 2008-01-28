@@ -340,18 +340,20 @@ bool CLavaApp::event(QEvent *e)
       result = ((QDialog*)((CLavaDoc*)LBaseData.docModal)->ActLavaDialog)->exec();
     else
       result = QDialog::Rejected;
-    delete ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog;
-    ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog = 0;
-    LBaseData.docModal = 0;
-    if (thr) {
-      if (result == QDialog::Rejected) {
-        if (!thr->mySemaphore.ex) {
-          ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
-          thr->mySemaphore.ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+    if (LBaseData.docModal) {
+      delete ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog;
+      ((CLavaDoc*)LBaseData.docModal)->ActLavaDialog = 0;
+      LBaseData.docModal = 0;
+      if (thr) {
+        if (result == QDialog::Rejected) {
+          if (!thr->mySemaphore.ex) {
+            ckd.document = (CLavaBaseDoc*)pHint->fromDoc;
+            thr->mySemaphore.ex = new CRuntimeException(RunTimeException_ex, &ERR_CanceledForm);
+          }
         }
+        thr->waitingForUI = false;
+        thr->resume();
       }
-      thr->waitingForUI = false;
-      thr->resume();
     }
     delete (CLavaPEHint*)((CustomEvent*)e)->data();
     break;

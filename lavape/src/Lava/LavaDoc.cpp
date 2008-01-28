@@ -85,6 +85,11 @@ bool CLavaDoc::OnCloseDocument()
     m_execThreadPtr->ldocEnd = true;
     m_execThreadPtr->resume();
   }
+  if ((LBaseData->docModal == this) && ((CLavaDoc*)LBaseData->docModal)->ActLavaDialog) {
+    ((LavaGUIDialog*)((CLavaDoc*)LBaseData->docModal)->ActLavaDialog)->reject();
+    delete ((CLavaDoc*)LBaseData->docModal)->ActLavaDialog;
+    LBaseData->docModal = 0;
+  }
   return CLavaProgram::OnCloseDocument();
 }
 
