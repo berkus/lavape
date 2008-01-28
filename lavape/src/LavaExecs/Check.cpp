@@ -3460,6 +3460,7 @@ bool ObjReference::CallCheck (CheckData &ckd) {
       ok &= false;
     }
     else if (flags.Contains(isSelfVar)
+    && refIDs.first == refIDs.last
     && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
     && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)) {
       ((SynObject*)((CHE*)refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedCallObj);
