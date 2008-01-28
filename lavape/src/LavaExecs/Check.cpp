@@ -1689,6 +1689,7 @@ void VarAction::CheckLocalScope (CheckData &ckd, SynObject *synObj)
 
 void UpdateParameters (CheckData &ckd) {
   SelfVar *selfVar=(SelfVar*)ckd.myDECL->Exec.ptr;
+  selfVar->inINCL = ckd.inINCL;
 #ifdef INTERPRETER
   if (selfVar->formParms.ptr)
     return;
@@ -1735,8 +1736,8 @@ static void harmonize (CheckData &ckd, CHAINX &chain, CHE *parmDef, CHE *&parmRe
 //  ADJUST(parmDefTid,decl);
 
 #ifdef INTERPRETER
-  if (chain.first)
-    return; // parms already generated in preceding UpdateParams call
+//  if (chain.first)
+//    return; // parms already generated in preceding UpdateParams call
   newParmRef = new FormParm(true);
   newParmRef->parmType.ptr = new Reference(TypePH_T,decl->RefID,"");
 #else
@@ -2073,6 +2074,7 @@ bool SelfVar::Check (CheckData &ckd)
   ckd.selfVar = this;
   ok &= ((SynObject*)execName.ptr)->Check(ckd);
   ckd.inINCL = ckd.myDECL->inINCL;
+  inINCL = ckd.inINCL;
   ckd.document->NextContext(execDECL, ckd.lpc);
 
   if (execDECL->ParentDECL->DeclType == Function) {
@@ -2109,7 +2111,7 @@ bool SelfVar::Check (CheckData &ckd)
 
 
 #ifdef INTERPRETER
-  inINCL = ckd.inINCL;
+  //inINCL = ckd.inINCL;
   stackPos = SFH;
   switch (execDECL->ParentDECL->DeclType) {
   case Function:

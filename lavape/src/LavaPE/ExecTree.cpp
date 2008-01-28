@@ -1697,11 +1697,13 @@ void CExecChecks::ExecExec(LavaDECL ** pelDef, int level)
     CheckData ckd;
     ckd.document = Doc;
     ckd.myDECL = *pelDef;
+    ckd.inINCL = ckd.myDECL->inINCL;
     selfVar->execDECL = *pelDef;
-    selfVar->Check(ckd);
     sData.doc = Doc;
     sData.execDECL = *pelDef;
+    UpdateParameters(ckd);
     ((SynObject*)(*pelDef)->Exec.ptr)->MakeTable((address)&Doc->IDTable, 0, (SynObjectBase*)ckd.myDECL, onSetSynOID, 0,0, (address)&sData);
+    selfVar->Check(ckd);
     Doc->nErrors += ckd.nErrors;
     Doc->nPlaceholders += ckd.nPlaceholders;
   }

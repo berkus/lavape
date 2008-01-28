@@ -544,12 +544,12 @@ bool CLavaProgram::CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* spec
         ckdl.inINCL = execDECL->inINCL;
         implDECL->WorkFlags.INCL(runTimeOK);
         try {
-          ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
           UpdateParameters(ckdl);
           sData.doc = ckdl.document;
           sData.nextFreeID = 0;
           // sData.finished = false;
           ((SynObject*)execDECL->Exec.ptr)->MakeTable((address)&ckdl.document->IDTable, 0, (SynObjectBase*)ckdl.myDECL, onSetSynOID, 0,0, (address)&sData);
+          ((SynObject*)execDECL->Exec.ptr)->Check (ckdl);
         }
         catch(CUserException) {
         }
