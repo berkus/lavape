@@ -315,7 +315,7 @@ void LavaBaseStringInit() {
   ERR_NoCompoSpec  = QObject::tr("The component specification to be implemented by this component object is missing");
   ERR_noCompoInterf  = QObject::tr("The corresponding internal  interface of this component object is missing");
   ERR_ldocIncompatible  = QObject::tr("Cannot attach lava object: type and object incompatible");
-  ERR_ldocNotOpened  = QObject::tr("Can't open Lava document (*.ldoc) file");
+  ERR_ldocNotOpened  = QObject::tr("Can't read Lava document (*.ldoc) file");
   ERR_ldocNotStored  = QObject::tr("Cannot store the lava object");
   ERR_ExactlyOneLcom  = QObject::tr("Exactly one name of a  *.lcom file or link to a *.lcom file expected");
   ERR_AllocObjectFailed  = QObject::tr("Object allocation failed");

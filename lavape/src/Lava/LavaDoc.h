@@ -21,7 +21,7 @@ public:
   virtual ~CLavaDoc();
 
   virtual bool IsModified();
-  virtual void Serialize(QDataStream& ar);
+  virtual void Serialize(CheckData& ckd, QDataStream& ar);
   virtual bool OnOpenDocument(const QString& lpszPathName); 
   virtual bool OnCloseDocument();
   virtual bool OnNewDocument();

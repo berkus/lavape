@@ -58,6 +58,7 @@ public:
 
   bool OnOpenProgram(const QString pathName, bool imiExec, bool reDef, bool putErr);
   virtual ~CLavaProgram();
+  virtual wxDocument* CreateFailed();
   virtual bool CheckImpl(CheckData& ckd, LavaDECL* classDECL, LavaDECL* specDECL=0);
   virtual int GetMemsSectionNumber(CheckData& ckd, LavaDECL *classDECL, LavaDECL* memDECL, bool putErr=true);
   virtual int GetSectionNumber(CheckData& ckd, const TID& classID, const TID& baseclassID);

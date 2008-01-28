@@ -159,9 +159,11 @@ void CLavaDebugger::start() {
       QMessageBox::critical(wxTheApp->m_appWindow,qApp->applicationName(),ERR_LavaPEStartFailed,QMessageBox::Ok,0,0);
 		  return;
 	  }
-    myDoc->openForDebugging = true;
+    //if (!((CLavaProgram*)myDoc)->corruptSyntax) 
+      myDoc->openForDebugging = true;
   }
-  myDoc->debugOn = true;
+  //if (!((CLavaProgram*)myDoc)->corruptSyntax) 
+    myDoc->debugOn = true;
 }
 
 void CLavaDebugger::connectToClient() {
@@ -275,7 +277,7 @@ void CLavaDebugger::send() {
 
   CDPDbgMessage0(PUT, put_cid, &mSend,false);
   put_cid->flush();
-  if (!put_cid->Done)
+  if (!put_cid->Done )//|| ((CLavaProgram*)myDoc)->corruptSyntax)
     stop(otherError);
 }
 
@@ -316,7 +318,7 @@ void CLavaDebugger::stop(DbgExitReason reason) {
   if (reason != disconnected)
     workSocket->disconnectFromHost();
   workSocket = 0;
-  if ((reason == disconnected) && myDoc->openForDebugging) {
+  if (myDoc && (reason == disconnected) && myDoc->openForDebugging && !((CLavaProgram*)myDoc)->corruptSyntax) {
     myDoc->debugOn = false;
     myDoc->openForDebugging = false;
     myDoc = 0;
@@ -325,11 +327,16 @@ void CLavaDebugger::stop(DbgExitReason reason) {
     m_execThread = 0;
     return;
   }
+  else
+    if (((CLavaProgram*)myDoc)->corruptSyntax) {
+      ((CLavaProgram*)myDoc)->corruptSyntax = false;
+      ((CLavaProgram*)myDoc)->CreateFailed();
+      myDoc = 0;
+    }
   if ((reason != normalEnd) && m_execThread) {
     m_execThread->abort = true;
     m_execThread->resume();
   }
-
   if (startedFromLavaPE)
     if (reason == normalEnd)
       qApp->exit(0);

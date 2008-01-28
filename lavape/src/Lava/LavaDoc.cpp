@@ -204,31 +204,27 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
   CheckData ckd;
   QString emptyName, filename;
   DString linkName;
+  bool ok;
 
+  ckd.document = this;
   if (fname.isEmpty()) 
     return OnNewDocument();
   QFileInfo qf = QFileInfo(fname);
   filename = qf.absoluteFilePath();
   wxDocManager::GetDocumentManager()->AddFileToHistory(filename);
-  if (LBaseData->openForDebugging) {
-    debugOn = true;
-    openForDebugging = true;
-    LBaseData->openForDebugging = false;
-    ((CLavaDebugger*)LBaseData->debugger)->initData(this, &m_execThread);
-    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->stopReason = Stop_Start;
-    QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
-  }
-  if (((CLavaApp*)wxTheApp)->pLavaLdocTemplate == GetDocumentTemplate()) {
+  openForDebugging = LBaseData->openForDebugging;
+  LBaseData->openForDebugging = false;
+ if (((CLavaApp*)wxTheApp)->pLavaLdocTemplate == GetDocumentTemplate()) {
     QFile fn(filename); 
     ObjectPathName = DString(qPrintable(filename));
     if( !fn.open(QIODevice::ReadOnly))
       return false;
     QDataStream ar(&fn);
-    Serialize(ar);
+    Serialize(ckd, ar);
     if (!throwError && (!ar.atEnd() || (fn.error() != QFile::NoError))) {
       QString err = fn.errorString();
       fn.unsetError();
-      critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
+      //critical(wxTheApp->m_appWindow, qApp->applicationName(), err,QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
       LObjectError(ckd, filename, emptyName, &ERR_ldocNotOpened);
       fn.close();
       return false;
@@ -242,7 +238,7 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
       //((CLavaApp*)wxTheApp)->pLavaLdocTemplate->GetDocString(emptyName, CDocTemplate::docName);
       ObjectPathName = DString(qPrintable(emptyName));   
     }
-    return ExecuteLavaObject();
+    ok = ExecuteLavaObject();
   }
   else if (((CLavaApp*)wxTheApp)->pLavaLcomTemplate == GetDocumentTemplate()) {
     SetDocumentTemplate(((CLavaApp*)wxTheApp)->pLavaLdocTemplate);
@@ -255,12 +251,20 @@ bool CLavaDoc::OnOpenDocument(const QString& fname)
       linkName = DString(qPrintable(filename));
     QString fn = ResolveLinks(qf);
     PathName = DString(qPrintable(fn));
-    return OnEmptyObj(PathName, linkName);
+    ok = OnEmptyObj(PathName, linkName);
   }
   else { //Lava task (*.lava)
     PathName = qPrintable(filename);
-    return OnOpenProgram(filename, true, false, true);
+    ok = OnOpenProgram(filename, true, false, true);
   }
+  if (ok && openForDebugging) {
+    debugOn = true;
+    LBaseData->openForDebugging = false;
+    ((CLavaDebugger*)LBaseData->debugger)->initData(this, &m_execThread);
+    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->stopReason = Stop_Start;
+    QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
+  }
+  return ok;
 }
 
 bool CLavaDoc::SaveAs()
@@ -308,7 +312,7 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
       if( !file.open(QIODevice::WriteOnly))
         return false;
       QDataStream ar(&file);
-      Serialize(ar);
+      Serialize(ckd, ar);
       if (file.error() != QFile::NoError) {
         QString err = file.errorString();
         file.unsetError();
@@ -439,11 +443,9 @@ bool CLavaDoc::SaveObject(CheckData& ckd, LavaObjectPtr object)
 }
 
 
-void CLavaDoc::Serialize(QDataStream& ar)
+void CLavaDoc::Serialize(CheckData& ckd, QDataStream& ar)
 {
   ASN1tofromAr* cid = new ASN1tofromAr(&ar, ObjectPathName);
-  CheckData ckd;
-  ckd.document = this;
   if (ar.device()->isWritable()) 
     Store(ckd, cid, DocObjects[1]);
   else 
@@ -817,7 +819,10 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
         }
         objPtr = AllocateObject(ckd, classDECL, secFlag.Contains(stateObjFlag));
         if (!objPtr) {
-          if (!ckd.exceptionThrown)
+          if (ckd.exceptionThrown) {
+            DebugStop(ckd, 0,0, QString("Syntax error detected before execution start"), Stop_Exception,0,0);
+          }
+          else
             LObjectError(ckd, cid->FileName, dPN, &ERR_CorruptObject, 2, &implDECL->FullName, &((CHETID*)implDECL->Supports.first)->data);
           return false;
         }
@@ -866,7 +871,11 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
                   && (secClassDECL->fromBType == B_Set)) {
                   if (err = LoadChain1(ckd, cid, sectionPtr)) {
                     *pObject = 0;
-                    LObjectError(ckd, cid->FileName, dPN, err, 3, &ObjTab[ActTab][0]->classDECL->FullName);
+                    if (ckd.exceptionThrown) {
+                      DebugStop(ckd, 0,0, QString("Syntax error detected before execution start"), Stop_Exception,0,0);
+                    }
+                    else
+                      LObjectError(ckd, cid->FileName, dPN, err, 3, &ObjTab[ActTab][0]->classDECL->FullName);
                     delete err;
                     return false;
                   }
@@ -1043,8 +1052,15 @@ bool CLavaDoc::ExecuteLavaObject()
       }
     }
     if (showIntfDecl)
-      if (!CheckImpl(ckd, showIntfDecl))
+      if (!CheckImpl(ckd, showIntfDecl)) {
         showIntfDecl = 0;
+        if (ckd.exceptionThrown) {
+          corruptSyntax = true;
+          DebugStop(ckd, 0, 0, QString("Syntax error detected before execution started"), Stop_Exception,0,0);
+          if (ckd.lastException)
+            DEC_FWD_CNT(ckd, ckd.lastException);
+        }
+      }
   }
   if (showIntfDecl) {
     if (!DocObjects[0]) {

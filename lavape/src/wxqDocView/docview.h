@@ -132,6 +132,7 @@ public:
     QList<wxView*> m_documentViews;
 
     // accessors
+    virtual wxDocument* CreateFailed();
     void SetFilename(const QString& filename, bool notifyViews = FALSE);
     QString GetFilename() const { return m_documentFile; }
     void SetUserFilename(const QString& filename)  {m_userFilename = filename; }

@@ -147,6 +147,7 @@ void CLavaPEDebugger::receive() {
   dbgReceived.newReceived = new DbgMessage;
   CDPDbgMessage(GET, get_cid, dbgReceived.newReceived,false);
   if (get_cid->Done) {
+    errBeforeStarted = dbgReceived.newReceived->DbgData.ptr && !((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->StackChain.first;
     if (!dbgReceived.newReceived->DbgData.ptr || ((DbgStopData*)dbgReceived.newReceived->DbgData.ptr)->stopReason != Stop_Start)
 	    QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)&dbgReceived));
     return;
@@ -213,7 +214,7 @@ void CLavaPEDebugger::stop(DbgExitReason reason) {
     ((CPEBaseDoc*)myDoc)->changeNothing = false;
   }
 
-  if (startedFromLava)
+  if (startedFromLava || errBeforeStarted)
     qApp->exit(0);
   else
     QApplication::postEvent(wxTheApp,new CustomEvent(UEV_LavaDebug,(void*)0));

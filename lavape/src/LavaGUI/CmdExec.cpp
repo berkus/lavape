@@ -253,7 +253,8 @@ bool CmdExecCLASS::GUIEvent(QEvent* ev)
       }
       if (LBaseData->inRuntime) {
         ((CGUIProg*)GUIProg)->ex = HSetInsertBefore(((CGUIProg*)GUIProg)->ckd, StackFrame);
-        ((SynFlags*)(StackFrame[SFH+2]+1))->INCL(insertedItem);
+        if ((SynFlags*)(StackFrame[SFH+2]+1))
+          ((SynFlags*)(StackFrame[SFH+2]+1))->INCL(insertedItem);
         if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex)
           return true;
         handle = StackFrame[SFH+3];
@@ -501,12 +502,13 @@ CHEHandlerInfo* CmdExecCLASS::GetHandler(CHEFormNode* fNode, int eventType)
       else {
         if (obj)
           DEC_FWD_CNT(((CGUIProg*)GUIProg)->ckd, obj);
-        if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-          ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
         if (GUIProg->isView) {
         }
-        else
+        else {
           ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();
+          if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
+            ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
+        }
         return 0;
       }
     }

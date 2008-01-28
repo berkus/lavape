@@ -40,17 +40,17 @@
 
 
 #define RETURNFALSE() {\
-  if (((CGUIProg*)GUIProg)->ckd.exceptionThrown) \
-    ((CGUIProg*)GUIProg)->ex = new CRuntimeException(check_ex, &((CGUIProg*)GUIProg)->ckd.exceptionMsg);\
-  else\
-    ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);\
-  if (!GUIProg->isView)\
+  if (!GUIProg->isView) {\
+    if (((CGUIProg*)GUIProg)->ckd.exceptionThrown) \
+      ((CGUIProg*)GUIProg)->ex = new CRuntimeException(check_ex, &((CGUIProg*)GUIProg)->ckd.exceptionMsg);\
+    else\
+      ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);\
     ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\
+  }\
   return false;\
 }
 
-bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, 
-                                    LavaVariablePtr resultObjPtr, bool emptyOpt)
+bool LavaFormCLASS::AllocResultObj(LavaDECL *syn, LavaVariablePtr resultObjPtr, bool emptyOpt)
 {
 //  LavaObjectPtr serv;
   LavaDECL *servDECL;
@@ -73,12 +73,6 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
           *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL->RelatedDECL, syn->TypeFlags.Contains(stateObject));
           if (!*resultObjPtr)
             RETURNFALSE() 
-            /*
-          if (!*resultObjPtr) {
-            if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-              ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-            return false;
-          }*/
           if (GUIProg->myDoc->isObject
             && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
             RETURNFALSE() //return false;
@@ -89,11 +83,6 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
         *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RuntimeDECL, syn->TypeFlags.Contains(stateObject));
         if (!*resultObjPtr) 
           RETURNFALSE() 
-        /*{
-          if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-            ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-          return false;
-        }*/
         if (GUIProg->myDoc->isObject
           && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
           RETURNFALSE()  //return false;
@@ -112,11 +101,6 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
         *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn->RelatedDECL, false); //??
         if (!*resultObjPtr)
           RETURNFALSE() 
-        /*{
-          if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-            ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-          return false;
-        }*/
         if (GUIProg->myDoc->isObject
           && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
           RETURNFALSE()  //return false;
@@ -126,11 +110,6 @@ bool LavaFormCLASS::AllocResultObj(LavaDECL *syn,
       *resultObjPtr = AllocateObject(((CGUIProg*)GUIProg)->ckd, syn, false); //??
       if (!*resultObjPtr) 
         RETURNFALSE() 
-      /*{
-        if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-          ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-        return false;
-      }*/
       if (GUIProg->myDoc->isObject
          && !CallDefaultInit(((CGUIProg*)GUIProg)->ckd, *resultObjPtr))
         RETURNFALSE()  //return false;
@@ -1169,14 +1148,15 @@ bool LavaFormCLASS::IterForm(CHEFormNode* resultFNode, LavaDECL* FormDecl,
               }
               else {
                 if (!((CGUIProg*)GUIProg)->ckd.exceptionThrown)
-                  ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
-                if (!GUIProg->isView)
-                  ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();
+                  if (!GUIProg->isView) {
+                    ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);
+                    ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();
+                  }
                 return false;
               }
               if (((CGUIProg*)GUIProg)->ckd.exceptionThrown || ((CGUIProg*)GUIProg)->ex) {
-               if (!GUIProg->isView)
-                ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();
+                if (!GUIProg->isView)
+                  ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();
                return false;
               }
             }
@@ -1691,7 +1671,8 @@ bool LavaFormCLASS::OnOK(CHEFormNode *object_first)
             QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), ERR_SelectValue,QMessageBox::Ok|QMessageBox::Default,Qt::NoButton);
             if (((CGUIProg*)GUIProg)->MakeGUI.setFocus(1,actFNode)) 
               if (actFNode) 
-                ((CGUIProg*)GUIProg)->MakeGUI.SetPointer((QWidget*)actFNode->data.FIP.widget, 1);           return false;
+                ((CGUIProg*)GUIProg)->MakeGUI.SetPointer((QWidget*)actFNode->data.FIP.widget, 1);
+            return false;
           }
         }
         else

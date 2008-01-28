@@ -67,6 +67,16 @@ CLavaProgram::~CLavaProgram()
 {
 }
 
+wxDocument* CLavaProgram::CreateFailed() {
+  if (!corruptSyntax || !debugOn) {
+    deleting = true;
+    DeleteAllChildFrames();
+    deleteLater();
+    return (wxDocument *) NULL;
+  }
+  else
+    return this;
+}
 
 bool CLavaProgram::LoadSyntax(CheckData& ckd, const QString& fn, SynDef*& sntx, bool reDef, bool putErr)
 {

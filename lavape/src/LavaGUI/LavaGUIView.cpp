@@ -444,6 +444,8 @@ void CLavaGUIView::DisableActions()
 
 void CLavaGUIView::OnInitialUpdate()
 {
+  LavaObjectPtr obj;
+
   CLavaPEHint *pHint = LBaseData->actHint;
   wxMDIChildFrame *pChild = (wxMDIChildFrame*)GetParentFrame();
   if (pChild && pChild->inherits("CLavaGUIFrame"))
@@ -485,7 +487,8 @@ void CLavaGUIView::OnInitialUpdate()
         MessToStatusbar();
         myGUIProg->myDECL = myDECL;
         myGUIProg->OnUpdate( myDECL, ResultDPtr);
-        myGUIProg->MakeGUI.DisplayScreen(false);
+        if (!myGUIProg->ckd.exceptionThrown && !myGUIProg->ex) 
+          myGUIProg->MakeGUI.DisplayScreen(false);
       }
     }
   }
@@ -512,7 +515,14 @@ void CLavaGUIView::OnInitialUpdate()
       LastBrowseNode = 0;
       myGUIProg->myDECL = myDECL;
       myGUIProg->OnUpdate( myDECL, ResultDPtr);
-      myGUIProg->MakeGUI.DisplayScreen(false);
+      if (!myGUIProg->ckd.exceptionThrown && !myGUIProg->ex) 
+        myGUIProg->MakeGUI.DisplayScreen(false);
+    }
+  }
+  if (myGUIProg->ckd.exceptionThrown || myGUIProg->ex) {
+    while (myGUIProg->allocatedObjects.count()) {
+      obj = myGUIProg->allocatedObjects.takeFirst();
+      DEC_FWD_CNT(myGUIProg->ckd,obj);
     }
   }
 }

@@ -268,6 +268,13 @@ wxDocument::~wxDocument()
   wxDocManager::GetDocumentManager()->RemoveDocument(this);
 }
 
+wxDocument* wxDocument::CreateFailed() {
+  deleting = true;
+  DeleteAllChildFrames();
+  deleteLater();
+  return (wxDocument *) NULL;
+}
+
 void wxDocument::customEvent(QEvent *ev) {
   switch (ev->type()) {
   case UEV_Close:
@@ -817,10 +824,8 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
       return doc;
     }
     else {
-      doc->deleting = true;
-      doc->DeleteAllChildFrames();
-      delete doc;
-      return (wxDocument *) NULL;
+      return doc->CreateFailed();
+
     }
   }
   else {

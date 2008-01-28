@@ -498,7 +498,8 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
       ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,(CLavaExecThread*)QThread::currentThread());
     else
       ((CLavaDebugger*)LBaseData->debugger)->initData(ckd.document,0);
-  ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->SynErrData.ptr = ckd.synError;
+  if (debug)
+    ((CLavaDebugger*)LBaseData->debugger)->dbgStopData->SynErrData.ptr = ckd.synError;
   ckd.synError = 0;
   if (synObj) {
     if (debug) {
@@ -699,7 +700,7 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
   }
   if (debug) {
     if (isEx)
-      if (!ckd.document->debugOn) {
+      if (!ckd.document->debugOn && !ckd.document->openForDebugging) {
         pmMsg = excMsg + "\n\n" + msg + "\n\nDebug this exception?\n\nClick \"No to all\" to disable debugging perpetually";
         rc = information(wxTheApp->m_appWindow,qApp->applicationName(),QApplication::tr(pmMsg.toAscii()),QMessageBox::Yes|QMessageBox::Default,QMessageBox::No,QMessageBox::NoAll);
 
@@ -718,7 +719,10 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
         else
           QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Start,0));
       else
-        QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
+        if (((CLavaProgram*)ckd.document)->corruptSyntax)
+          QApplication::sendEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
+        else
+          QApplication::postEvent(LBaseData->debugger, new CustomEvent(UEV_Send,0));
       if (((CLavaDebugger*)LBaseData->debugger)->m_execThread)
         ((CLavaThread*)QThread::currentThread())->suspend();   //execution thread wait
     }
