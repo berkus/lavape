@@ -860,7 +860,7 @@ bool CLavaProgram::CheckForm(CheckData& ckd, LavaDECL* formDECL, int)
   formDECL->RelatedDECL = classDECL;
   formDECL->ParentDECL->RuntimeDECL = IDTable.GetDECL(((CHETID*)formDECL->ParentDECL->Supports.first)->data, formDECL->inINCL);
   if (!formDECL->ParentDECL->RuntimeDECL) {
-    LavaError(ckd, true, formDECL->ParentDECL, &ERR_NoClassImpl);
+    LavaError(ckd, true, formDECL->ParentDECL, &ERR_NoImplClass);
     return false;
   }
   formDECL->ParentDECL->RelatedDECL = classDECL;

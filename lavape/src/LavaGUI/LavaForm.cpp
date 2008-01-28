@@ -47,6 +47,12 @@
       ((CGUIProg*)GUIProg)->ex = new CRuntimeException(memory_ex, &ERR_AllocObjectFailed);\
     ((LavaGUIDialog*)GUIProg->ViewWin)->OnCancel();\
   }\
+  else {\
+    CheckData* ckdPtr = new CheckData();\
+    *ckdPtr = ((CGUIProg*)GUIProg)->ckd;\
+    ((CGUIProg*)GUIProg)->ckd.synError = 0;\
+    QApplication::postEvent(wxTheApp, new CustomEvent(UEV_DebugStop, (void*)ckdPtr));\
+  }\
   return false;\
 }
 

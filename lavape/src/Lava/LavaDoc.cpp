@@ -772,7 +772,7 @@ bool CLavaDoc::Load(CheckData& ckd, ASN1tofromAr* cid, LavaVariablePtr pObject)
       }
       if (isObject) {
         if (!OnOpenProgram(fn, false, lcomPur, false)) {
-          LObjectError(ckd, cid->FileName, synName.c, &ERR_lcomNotOpened);
+          //LObjectError(ckd, cid->FileName, synName.c, &ERR_lcomNotOpened);
           return false;
         }
         if (!IDTable.IDTab[0]->LinkName.l)

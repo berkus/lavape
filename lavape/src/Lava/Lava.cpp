@@ -80,7 +80,7 @@ int main( int argc, char ** argv ) {
 
 #ifdef _DEBUG
   _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-  //_CrtSetBreakAlloc(67357);
+ // _CrtSetBreakAlloc(67357);
 #endif
 
   //QTest::qSleep(20000);
@@ -378,8 +378,13 @@ bool CLavaApp::event(QEvent *e)
         ((CLavaGUIView*)actView)->myGUIProg->CmdExec.GUIEvent( e);
     }
     break;
-  
-
+  case UEV_DebugStop:
+    DebugStop(*(CheckData*)((CustomEvent*)e)->data(),0,0,QString("Object allocation failed because error detected in syntax:\n")+(QString)((CheckData*)((CustomEvent*)e)->data())->exceptionMsg, Stop_Exception,0,0);
+    doc = (CLavaProgram*)((CheckData*)((CustomEvent*)e)->data())->document;
+    delete (CheckData*)((CustomEvent*)e)->data();
+    doc->OnCloseDocument();
+    delete doc;
+    break;
   default:
     wxApp::event(e);
   }
