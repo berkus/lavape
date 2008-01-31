@@ -122,10 +122,10 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
 
   theActiveFrame = 0;
 
-	makeStyle(LBaseData->m_style);
+  makeStyle(LBaseData->m_style);
 
   m_UtilityView = 0;
-	lastTile = 0;
+  lastTile = 0;
   QMenu *styleMenu = optionMenu->addMenu("Set st&yle");
   QActionGroup *ag = new QActionGroup( this);
   ag->setExclusive( TRUE );
@@ -1472,8 +1472,8 @@ void CLavaMainFrame::on_tileVerticAction_triggered()
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
 
-	wxTheApp->isChMaximized = false;
-	lastTile = 1;
+  wxTheApp->isChMaximized = false;
+  lastTile = 1;
 
   if (!windows.count() )
       return;
@@ -1518,7 +1518,7 @@ void CLavaMainFrame::on_tileHorizAction_triggered()
   QWidget *window;
   QWidgetList windows = m_workspace->windowList();
 
-	lastTile = 2;
+  lastTile = 2;
 
   if (!windows.count() )
       return;

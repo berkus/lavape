@@ -277,9 +277,13 @@ void wxMDIChildFrame::resizeEvent(QResizeEvent *ev) {
 
 bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
+  int lt=1;
+
   doc->AddChildFrame(this);
   m_document = doc;
-  show();
+  //wxTheApp->m_appWindow->GetClientWindow()->tile();//TileVertic(wxTheApp->m_appWindow->menuBar(),lt);
+  //wxTheApp->m_appWindow->update();
+  //show();
   //if (oldWindowState == Qt::WindowMaximized)
   //  showMaximized();
   //else
