@@ -88,14 +88,14 @@ bool CLavaDoc::OnCloseDocument()
   if (isObject && !ThreadList->isEmpty()) {
     if (((CLavaDebugger*)LBaseData->debugger)->isConnected)
       ((CLavaDebugger*)LBaseData->debugger)->stop(normalEnd);
-    m_execThreadPtr->ldocEnd = true;
-    m_execThreadPtr->resume();
+    m_execThread.ldocEnd = true;
+    m_execThread.resume();
   }
-  if ((LBaseData->docModal == this) && ((CLavaDoc*)LBaseData->docModal)->ActLavaDialog) {
+  /*if ((LBaseData->docModal == this) && ((CLavaDoc*)LBaseData->docModal)->ActLavaDialog) {
     ((LavaGUIDialog*)((CLavaDoc*)LBaseData->docModal)->ActLavaDialog)->reject();
     delete ((CLavaDoc*)LBaseData->docModal)->ActLavaDialog;
     LBaseData->docModal = 0;
-  }
+  }*/
   return CLavaProgram::OnCloseDocument();
 }
 

@@ -307,10 +307,12 @@ bool CLavaApp::event(QEvent *e)
     m_appWindow->activateWindow();
     m_appWindow->raise();
     mbp = (CMsgBoxParams*)((CustomEvent*)e)->data();
+    thr = mbp->thr;
     switch (mbp->funcSpec) {
     case 0:
-      mbp->result =   QMessageBox::critical(
+      result = QMessageBox::critical(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
+      if (ThreadList->
       mbp->thr->waitingForUI = false;
       mbp->thr->resume();
       break;

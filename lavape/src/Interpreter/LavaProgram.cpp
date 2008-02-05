@@ -2321,8 +2321,13 @@ void sigEnable() {
 
 
 void CLavaExecThread::run() {
+  int i;
+
   myDoc->ThreadList->append(this);
   ExecuteLava();
+  i = myDoc->ThreadList->indexOf(this);
+  if (i != -1)
+    myDoc->ThreadList->removeAt(i);
 }
 
 unsigned CLavaExecThread::ExecuteLava()
