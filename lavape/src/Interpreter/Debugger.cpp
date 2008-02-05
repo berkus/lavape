@@ -337,11 +337,12 @@ void CLavaDebugger::stop(DbgExitReason reason) {
     m_execThread->abort = true;
     m_execThread->resume();
   }
-  if (startedFromLavaPE)
+  else if (startedFromLavaPE) {
     if (reason == normalEnd)
       qApp->exit(0);
     else
       qApp->exit(1);
+  }
 }
 
 void CLavaDebugger::setBrkPnts()

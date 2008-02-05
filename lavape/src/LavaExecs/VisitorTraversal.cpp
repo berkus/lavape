@@ -80,6 +80,8 @@ void FormParms::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *
 
 void FormParm::Accept(Visitor &visitor,SynObject *parent,address where,CHAINX *chxp) {
   ENTRY
+
+  ACCEPT(parmType.ptr);
   ACCEPT(formParm.ptr);
 
   visitor.VisitFormParm(this,parent,where,chxp);

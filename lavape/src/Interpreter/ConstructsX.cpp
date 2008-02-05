@@ -510,6 +510,7 @@ QString DebugStop(CheckData &ckd,SynObject *synObj,LavaVariablePtr stopStack,QSt
       && ((FuncStatement*)synObj)->funcDecl->TypeFlags.Contains(defaultInitializer))
         synObj = synObj->parentObject;
       else if (synObj->primaryToken == FuncRef_T
+      && synObj->parentObject->parentObject
       && synObj->parentObject->parentObject->primaryToken == new_T
       && ((FuncStatement*)synObj->parentObject)->funcDecl->TypeFlags.Contains(defaultInitializer))
         synObj = synObj->parentObject->parentObject;
@@ -1201,7 +1202,7 @@ bool SelfVarX::Execute (CheckData &ckd, LavaVariablePtr stackFrame, unsigned old
 
   ok = ((SynObject*)body.ptr)->Execute(ckd,stackFrame,oldExprLevel);
   if (!ok && execDECL->DeclType == ExecDef && execDECL->ParentDECL->DeclType == Function && nOutputs)
-    SetRTError(ckd,&ERR_OutFunctionFailed,stackFrame);
+    ((SynObject*)execName.ptr)->SetRTError(ckd,&ERR_OutFunctionFailed,stackFrame);
   if (!ok || ckd.exceptionThrown)
     goto ret;
 

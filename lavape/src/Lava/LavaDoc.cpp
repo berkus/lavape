@@ -79,6 +79,12 @@ bool CLavaDoc::DeleteContents()
 
 bool CLavaDoc::OnCloseDocument()
 {
+  
+  if (this == LBaseData->docModal) {
+    delete ((CLavaDoc*)LBaseData->docModal)->ActLavaDialog;
+    ((CLavaDoc*)LBaseData->docModal)->ActLavaDialog = 0;
+    LBaseData->docModal = 0;
+  }
   if (isObject && !ThreadList->isEmpty()) {
     if (((CLavaDebugger*)LBaseData->debugger)->isConnected)
       ((CLavaDebugger*)LBaseData->debugger)->stop(normalEnd);
