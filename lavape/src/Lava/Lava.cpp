@@ -312,21 +312,29 @@ bool CLavaApp::event(QEvent *e)
     case 0:
       result = QMessageBox::critical(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-      if (ThreadList->
-      mbp->thr->waitingForUI = false;
-      mbp->thr->resume();
+      if (result != QMessageBox::NoButton) {
+        mbp->result = result;
+        mbp->thr->waitingForUI = false;
+        mbp->thr->resume();
+      }
       break;
     case 1:
-      mbp->result =   QMessageBox::information(
+      result =   QMessageBox::information(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-      mbp->thr->waitingForUI = false;
-      mbp->thr->resume();
+      if (result != QMessageBox::NoButton) {
+        mbp->result = result;
+        mbp->thr->waitingForUI = false;
+        mbp->thr->resume();
+      }
       break;
     case 2:
-      mbp->result =   QMessageBox::question(
+      result =   QMessageBox::question(
         mbp->parent,*mbp->caption,*mbp->text,mbp->button0,mbp->button1,mbp->button2);
-      mbp->thr->waitingForUI = false;
-      mbp->thr->resume();
+      if (result != QMessageBox::NoButton) {
+        mbp->result = result;
+        mbp->thr->waitingForUI = false;
+        mbp->thr->resume();
+      }
       break;
     }
     break;

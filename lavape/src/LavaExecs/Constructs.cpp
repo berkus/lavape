@@ -159,9 +159,7 @@ LavaObjectPtr SynObject::Evaluate (CheckData &ckd, LavaVariablePtr,unsigned) {
   QString cClassName = GetWxClassInfo()->className;
   QString msg = cFileName + " / " + cExecName + ": " + cClassName + " not yet implemented!";
   critical(wxTheApp->m_appWindow,qApp->applicationName(),msg,QMessageBox::Ok,0,0);
-//  AfxMessageBox(msg,MB_OK|MB_ICONSTOP);
   ckd.document->throwError = true;
-//!!!  LavaEnd(ckd.document, false);
 #endif
   return 0;
 }
@@ -174,9 +172,7 @@ bool SynObject::Execute (CheckData &ckd, LavaVariablePtr,unsigned) {
   QString cClassName = GetWxClassInfo()->className;
   QString msg = cFileName + " / " + cExecName + ": " + cClassName + " not yet implemented!";
   critical(wxTheApp->m_appWindow,qApp->applicationName(),msg,QMessageBox::Ok,0,0);
-//  AfxMessageBox(msg,MB_OK|MB_ICONSTOP);
   ckd.document->throwError = true;
-//!!!  LavaEnd(ckd.document, false);
 #endif
   return false;
 }
