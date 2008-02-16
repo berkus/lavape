@@ -302,6 +302,8 @@ bool CLavaApp::event(QEvent *e)
       doc->OnCloseDocument();
       delete doc;
     }
+    if (debugger.startedFromLavaPE)
+      qApp->exit(0);
     return true;
   case UEV_LavaMsgBox:
     m_appWindow->activateWindow();
@@ -450,7 +452,14 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
   if (!name.contains('.'))
     return;
   wxTheApp->SetLastFileOpen(name);
-  if (argc > 2) {
+  if (argc <= 2) {
+    doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+  }
+  else if (argc == 3) {
+    debugger.startedFromLavaPE = true;
+    doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
+  }
+  else if (argc > 3) {
     debugger.remoteIPAddress = argv[2];
     port = QString(argv[3]);
     debugger.remotePort = (quint16)port.toUShort();
@@ -460,9 +469,6 @@ void CLavaApp::OpenDocumentFile(const QString& lpszFileName)
     ((CLavaMainFrame*)m_appWindow)->fileOpenAction->setEnabled(false);
     ((CLavaMainFrame*)m_appWindow)->fileNewAction->setEnabled(false);
     debugger.startedFromLavaPE = true;
-  }
-  else {
-    doc = (CLavaDoc*)wxDocManager::GetDocumentManager()->CreateDocument(name,wxDOC_SILENT);
   }
 }
 

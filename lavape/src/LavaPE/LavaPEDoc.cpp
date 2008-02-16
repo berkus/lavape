@@ -3476,6 +3476,7 @@ void CLavaPEDoc::OnRunLava()
 
 	QStringList args;
 	args << lavaFile;
+  args << "startedFromLavaPE";
 	QProcess interpreter;
 
 	if ( ! ( ( CLavaPEApp* ) qApp )->interpreter.startDetached ( interpreterPath,args ) )
