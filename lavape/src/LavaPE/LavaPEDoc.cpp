@@ -3494,12 +3494,6 @@ void CLavaPEDoc::OnDebugLava()
 	        && ( QMessageBox::Cancel == QMessageBox::question ( wxTheApp->m_appWindow,qApp->applicationName(),ERR_SaveFailed,
 	                QMessageBox::Ok,QMessageBox::Cancel,0 ) ) )
 		return;
-	/*
-	  if (lavaFile.isEmpty()) {
-	    QMessageBox::question(wxTheApp->m_appWindow,qApp->applicationName(),IDP_SaveFirst,QMessageBox::Ok,0,0);
-	    return;
-	  }
-	  */
 
 	debugOn = true;
 	changeNothing = true;
