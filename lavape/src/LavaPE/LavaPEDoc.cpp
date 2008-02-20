@@ -3917,7 +3917,7 @@ void CLavaPEDoc::SetFindText ( LavaDECL* inDecl, CFindData& fw ) //const DString
 					break;
 				case Function:
 					if ( inDecl->SecondTFlags.Contains ( funcImpl ) )
-						barText += DString ( "Implementation of function" );
+						barText += DString ( "Function implementation" );
 					else
 						barText += DString ( "Overriding function" );
 					break;
@@ -3955,7 +3955,7 @@ void CLavaPEDoc::SetFindText ( LavaDECL* inDecl, CFindData& fw ) //const DString
 		case 5:
 			//data->enumID = enumID;
 		case 4:
-			barText += DString ( "Own declaration" );
+			barText += DString ( "Function declaration" );
 			break;
 		default: ;
 	}
