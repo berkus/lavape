@@ -161,8 +161,8 @@ construct <font color="#ff0000"><i><b>Lava</b></i></font>
 marks it as <i> finished</i>. <font color="#ff0000"><i><b>Lava</b></i></font>
 makes sure (by run time checks) that you cannot pass an unfinished
 object (from within an initializer or a <font color="#800080"><b>but</b></font>
-clause) as an input parameter to any function.<br>
-<br>
+clause) as an input parameter to any function.<br/>
+<br/>
 This enforces essentially a <b>strict bottom-up construction of
 new objects from member objects</b> that have to be constructed
 first.</li>
@@ -285,7 +285,7 @@ compiler. E.g., look at the following little
 <font color="#ff0000"><i><b>Java</b></i></font>
 program:</p>
 <blockquote>
-<pre><font color="#0000ff">public class</font> Hello {<br> <font color="#0000ff">public static</font> void main(String[] args) {<br> A a, a2;<br>	<br> a = <font color="#0000ff">new</font> A();<br> a2 = a.func();<br> System.out.println(a2.toString());<br> }<br>}<br><br><font color="#0000ff">class</font> A {<br> <font color="#0000ff">public</font> int x, y;<br><br> <font color="#0000ff">public</font> A func() {<br> <font color="#0000ff">return</font> null;<br> };<br>};<br></pre>
+<pre><font color="#0000ff">public class</font> Hello {<br/> <font color="#0000ff">public static</font> void main(String[] args) {<br/> A a, a2;<br/>	<br/> a = <font color="#0000ff">new</font> A();<br/> a2 = a.func();<br/> System.out.println(a2.toString());<br/> }<br/>}<br/><br/><font color="#0000ff">class</font> A {<br/> <font color="#0000ff">public</font> int x, y;<br/><br/> <font color="#0000ff">public</font> A func() {<br/> <font color="#0000ff">return</font> null;<br/> };<br/>};<br/></pre>
 </blockquote>
 <p>"a2 = a.func();" assigns the <font color="#ff0000"><i><b>Java</b></i></font>
 null object to a2; so "a2.toString()" in the next line will trigger a

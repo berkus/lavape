@@ -80,9 +80,9 @@ but we can introduce virtual types in a more static way as <I>type</I>
 &quot;Visitor&quot; pattern of <a href="TypeSafety.htm#GOF">[8]</a> and also a special 
 case of <a href="RepetComputSamples.htm">indirect tree recursion</a>.</P>
 <H3>Where to look and what to do</H3>
-<P><B>ModelView:<br>
+<P><B>ModelView:<br/>
 </B>
-<br>
+<br/>
 Note in particular the "<A href="PatternsFrameworks.htm#covariant">covariant 
 specialization</A>" of the only input parameter of function <I>registerView</I> 
 of class <I>Model</I>.&nbsp; </P>
@@ -95,9 +95,9 @@ ModelViewFW::View, since it contains member variables (<I>myModel</I>) and
 function parameters (m of initializer <I>ini</I>) that are of a more derived 
 type in pattern <I>DrawFW</I> than in <I>ModelViewFW</I> (as a consequence of 
 covariant specialization of the VT <I>&lt;model&gt;</I>).&nbsp; </P>
-<P><B><A name=queueOfPoint></A>QueueOfPoint:<br>
+<P><B><A name=queueOfPoint></A>QueueOfPoint:<br/>
 </B>
-<br>
+<br/>
 Note the two versions of class <I>X</I>: One belongs to pattern 
 <I>Queue</I> (a class having a VT <I>elemType</I>), the other is declared 
 outside <I>Queue</I>. Both have a member function <I>f</I> with almost identical 
@@ -125,9 +125,9 @@ explained in our <A href="IsSelfVirtualSample.htm">IsSelfVirtual sample</A>.</P>
 href="PatternsFrameworks.htm#patternContext">pattern context</A>. So if you are 
 outside a pattern P and outside of any pattern that is derived from P, the 
 values of P's VTs at the actual place of reference are just undefined.</P>
-<P><b><a name="visitor"></a>VirtualVisitor:<br>
+<P><b><a name="visitor"></a>VirtualVisitor:<br/>
 </b>
-<br>
+<br/>
 The <i>Visitor</i> pattern defines an abstract virtual type <i>R</i> for the 
 result of the visitor's tree evaluation function <i>evaluate</i>. The way how 
 the visitor walks through the tree is described by this <i>evaluate</i> method 

@@ -92,17 +92,17 @@
         of the containing primary object from the application's point of view.
         In the second case the target of such a pointer should be included in
         the comparison (and should be locked, together with its containing
-        parent object, as a consequence).<BR>
-         <BR>
+        parent object, as a consequence).<br/>
+         <br/>
          In <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> this problem
         doesn't occur owing to the <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
-        <A HREF="PointersRefCounts.htm#refTypes">constituent</A> notion.<BR>
+        <A HREF="PointersRefCounts.htm#refTypes">constituent</A> notion.<br/>
          </LI>
       <LI>On the other hand, you may ask whether it is necessary and justified
         indeed to always lock entire objects that are touched by a transaction,
         including all their constituents. This might unnecessarily restrict
-        potential parallelism.<BR>
-         <BR>
+        potential parallelism.<br/>
+         <br/>
         <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B> gives a negative
         answer to this question. Owing to the single-assignment nature of <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
         the body of a transaction function or initiator in <B><I><FONT COLOR="#FF0000">Lava</FONT></I></B>
@@ -112,8 +112,8 @@
     </OL>
     
     <P><B><I><FONT COLOR="#FF0000"><A NAME="transact"></A>Lava</FONT></I>
-      transaction notion:</B><BR>
-       <BR><B>If a function or initiator is declared to be a transaction then this
+      transaction notion:</B><br/>
+       <br/><B>If a function or initiator is declared to be a transaction then this
       means that its body, viewed as a complex logical statement, is to be
       rendered true as a whole at some proper instant.</B></P>
     

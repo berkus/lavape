@@ -11,14 +11,14 @@
   </HEAD>
   <BODY>
     <P ALIGN="right">
-      <FONT SIZE="1" FACE="Comic Sans MS">All things are hard before they become easy<BR>
+      <FONT SIZE="1" FACE="Comic Sans MS">All things are hard before they become easy<br/>
        (Moslik Saadi)</FONT>
     </P>
     <H2 ALIGN="center">
       <IMG SRC="../images/catThinks.gif" ALT="Rethinking pussy" WIDTH="306" HEIGHT="100">
     </H2>
     <H2 ALIGN="center">
-      Urgent problems in current programming languages that call for much rethinking<BR>
+      Urgent problems in current programming languages that call for much rethinking<br/>
     </H2>
     <H3>
       1. Programs should no longer be "written"
@@ -67,7 +67,7 @@
         multiply your money by duplicating your bank account. Moreover, a state object would in most cases have exclusive command over its internal state, which may be changed again and again, but
         only by calling the object's methods, and this state change has the nature of a <B>transaction</B> typically. State objects would provide various services grouped into one or several function
         call interfaces. In particular, <FONT COLOR="#FF0000"><STRONG><I>CORBA </I></STRONG></FONT>objects and component objects in <FONT COLOR="#FF0000"><STRONG><I>COM</I></STRONG></FONT> are
-        state/service objects. State/service objects are typically used as <EM>shared memory</EM> between concurrent applications/processes/threads.<BR>
+        state/service objects. State/service objects are typically used as <EM>shared memory</EM> between concurrent applications/processes/threads.<br/>
       </LI>
       <LI>
         A money transfer order is a <B>value object</B> or <B>structure</B>that becomes <B>"immutable"</B> after <B>"completion"</B>: A (completed) value object represents an immutable complex value.
@@ -142,7 +142,7 @@
         <B>Non-object-oriented programming style:</B> The program branches over explicit "type indicators" contained in the objects rather than calling polymorphic ("virtual") functions. This should
         be avoided wherever possible but may be justified in rare cases. We should prefer to provide a special <B><A NAME="typeSwitch"></A> "type switch"</B> statement rather than type casts for
         these cases in order to restrict its usage to just this situation and to discourage and impede bad programming style. (The latter can be hidden much easier behind type casts than behind a
-        rather big and conspicuous type switch statement, particularly if it has only one type branch that is abused as a substitute for the desired type cast.)<BR>
+        rather big and conspicuous type switch statement, particularly if it has only one type branch that is abused as a substitute for the desired type cast.)<br/>
       </LI>
       <LI>
         <B>A notion of class derivation and specialization that is too rigid and restricted :</B>
@@ -151,10 +151,10 @@
     <BLOCKQUOTE>
       <OL>
         <LI>
-          You cannot specialize parameters of methods on class derivation.<BR>
+          You cannot specialize parameters of methods on class derivation.<br/>
         </LI>
         <LI>
-          You cannot specialize data members of a class when defining a derived class.<BR>
+          You cannot specialize data members of a class when defining a derived class.<br/>
         </LI>
         <LI>
           You cannot express collective specialization of several classes that refer to each other.
@@ -170,7 +170,7 @@
       <B><A HREF="TypeCasts.htm"><I><FONT COLOR="#FF0000">Lava</FONT></I> solution</A></B>
     </P>
     <H3>
-      7. <A NAME="singleAssign"></A>Abandoning "go to" has clarified the control flow of programs,<BR>
+      7. <A NAME="singleAssign"></A>Abandoning "go to" has clarified the control flow of programs,<br/>
        "single-assignment" will clarify the data flow
     </H3>
     <P>
@@ -318,7 +318,7 @@
     <UL>
       <LI>
         <STRONG>Preventive security</STRONG> means essentially that service interfaces or individual functions of such interfaces possibly may be invoked only if proper privileges have been acquired
-        before by the invoking person, OU, or other state object. So it would be most natural to specify such privileges as part of the respective service interface specification.<BR>
+        before by the invoking person, OU, or other state object. So it would be most natural to specify such privileges as part of the respective service interface specification.<br/>
       </LI>
       <LI>
         <STRONG>Defensive security</STRONG> means to protect entire documents or selected individual parts of structured data objects by encryption or by adding digital signatures to these objects.

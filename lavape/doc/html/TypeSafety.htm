@@ -158,8 +158,8 @@
       code is defined as follows:</P>
     <UL>
       <LI>If expr is a constant then ST(expr) is the obvious standard built-in
-        class:<BR>
-        <BR>
+        class:<br/>
+        <br/>
         Examples: ST(&quot;abc&quot;) = String, ST(1.23) = Float, ST(123) =
         Integer. </LI>
       <LI>If expr is an operator or function expression then ST(expr) is the
@@ -192,9 +192,9 @@
 
     <P>FV(T) = if T is non-virtual then T else FV(VAL(T)) endif.</P>
 
-    <P>FVV(T) = if T is non-virtual then T<BR>
-      elsif VAL(T) is non-virtual then T<BR>
-      else FVV(VAL(T))<BR>
+    <P>FVV(T) = if T is non-virtual then T<br/>
+      elsif VAL(T) is non-virtual then T<br/>
+      else FVV(VAL(T))<br/>
       endif.</P>
 
     <P><B><A NAME="NULLPC"></A>NULLPC and<A NAME="LPC"></A> lexical pattern
@@ -245,19 +245,19 @@
       of a local variable var:</P>
     <BLOCKQUOTE>
 
-      <P><B>(L1)</B> ST(var) is <I>non-<A HREF="PatternsFrameworks.htm#multiform">multiform</A>.<BR>
-        <BR>
+      <P><B>(L1)</B> ST(var) is <I>non-<A HREF="PatternsFrameworks.htm#multiform">multiform</A>.<br/>
+        <br/>
         <A NAME="staticEPC"></A></I>Then <A HREF="#EPC">EPC</A>(var) =
         <A HREF="#NULLPC">NULLPC</A> (&quot;<B>EPC is static</B>&quot;).</P>
 
       <P><B>(L2) </B>ST(var) is <I>multiform</I> and contained in the
-        LPC(var).<BR>
-        <BR>
+        LPC(var).<br/>
+        <br/>
         Then if var is referenced from within a local or member function or 
-      invariant<BR>
-        then EPC(var) = <A HREF="#SELFPC">SELFPC<BR>
-          </A>else EPC(var) = LPC(var) (&quot;<B>EPC is static</B>&quot;).<BR>
-        <BR>
+      invariant<br/>
+        then EPC(var) = <A HREF="#SELFPC">SELFPC<br/>
+          </A>else EPC(var) = LPC(var) (&quot;<B>EPC is static</B>&quot;).<br/>
+        <br/>
         In particular: EPC(self) = SELFPC.</P>
 
       <P>Note: If var is a local variable of a member function having the
@@ -265,15 +265,15 @@
       this VT context&quot;</A> attribute then EPC(var) =
 
 <!--
-        and ((EPC(var) = <a href="#SELFPC">SELFPC</a> and EPC(expr) = <a href="#LPC">LPC</a>(expr))<br>
+        and ((EPC(var) = <a href="#SELFPC">SELFPC</a> and EPC(expr) = <a href="#LPC">LPC</a>(expr))<br/>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or (EPC(var) = LPC(var) and
       EPC(expr) = SELFPC))-->
 
         SELFPC = LPC(var) (&quot;<B>EPC is static</B>&quot;).</P>
 
       <P><B>(L3) </B>ST(var) is <I>multiform</I> and its declaration is not
-        contained in the LPC(var).<BR>
-        <BR>
+        contained in the LPC(var).<br/>
+        <br/>
         Then EPC(var) = NULLPC (&quot;<B>EPC is static</B>&quot;).</P></BLOCKQUOTE>
 
     <P><B>(F) </B><B>EPC of formal parameters:</B></P>
@@ -282,8 +282,8 @@
     <BLOCKQUOTE>
 
       <P><B>(F1)</B> var is a formal parameter of a <I>member function</I> of
-        some class ITF<BR>
-        or of a <I>local function</I> of the implementation of ITF<BR>
+        some class ITF<br/>
+        or of a <I>local function</I> of the implementation of ITF<br/>
         and its declared type ST(var) is contained in LPC(ITF).</P>
 
       <P>Then EPC(var) = <A HREF="#SELFPC">SELFPC</A>.</P><FONT SIZE="1"></FONT>
@@ -298,17 +298,17 @@
       only from this VT context</A>&quot; attribute then SELFPC = EPC(var) =
         LPC(var) (&quot;<B>EPC is static</B>&quot;).</P>
 
-      <P><B>(F2)</B> ST(var) is <I>not</I> contained in LPC(ITF).<BR>
-        <BR>
+      <P><B>(F2)</B> ST(var) is <I>not</I> contained in LPC(ITF).<br/>
+        <br/>
         Then EPC(var) = NULLPC (&quot;<B>EPC is static</B>&quot;).</P>
 
-      <P><B>(F3)</B> var is a formal parameter of an initiator INI<BR>
-        and its declared type ST(var) <I>is contained</I> in LPC(INI).<BR>
-        <BR>
+      <P><B>(F3)</B> var is a formal parameter of an initiator INI<br/>
+        and its declared type ST(var) <I>is contained</I> in LPC(INI).<br/>
+        <br/>
         Then EPC(var) = LPC(INI) (&quot;<B>EPC is static</B>&quot;).</P>
 
-      <P><B>(F4) </B>ST(var) <I>is not contained</I> in LPC(INI)<BR>
-        <BR>
+      <P><B>(F4) </B>ST(var) <I>is not contained</I> in LPC(INI)<br/>
+        <br/>
         Then EPC(var) = NULLPC (&quot;<B>EPC is static</B>&quot;).</P></BLOCKQUOTE>
 
     <P><B>(M) </B><B>EPC of member variables:</B></P>
@@ -320,15 +320,15 @@
       The EPC of such a variable is then defined recursively as follows:</P>
     <BLOCKQUOTE>
 
-      <P>If EPC(a<SUB>1</SUB><B>. ... .</B>a<SUB>n-1</SUB>) = NULLPC<BR>
+      <P>If EPC(a<SUB>1</SUB><B>. ... .</B>a<SUB>n-1</SUB>) = NULLPC<br/>
         then EPC(a<SUB>1</SUB><B>. ... .</B>a<SUB>n</SUB>) = LPC(ST(a<SUB>n-1</SUB>))
-        (&quot;<B>EPC is static</B>&quot;)<BR>
-        else if ST(a<SUB>n</SUB>) is contained in EPC(a<SUB>1</SUB><B>. ... .</B>a<SUB>n-1</SUB>)<BR>
+        (&quot;<B>EPC is static</B>&quot;)<br/>
+        else if ST(a<SUB>n</SUB>) is contained in EPC(a<SUB>1</SUB><B>. ... .</B>a<SUB>n-1</SUB>)<br/>
         then EPC(a<SUB>1</SUB><B>. ... .</B>a<SUB>n</SUB>) = EPC(a<SUB>1</SUB><B>.
-        ... .</B>a<SUB>n-1</SUB>),<BR>
+        ... .</B>a<SUB>n-1</SUB>),<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and EPC(a<SUB>1</SUB><B>.
         ... .</B>a<SUB>n</SUB>) <B>is</B> <B>static</B> if EPC(a<SUB>1</SUB><B>.
-        ... .</B>a<SUB>n-1</SUB>) is static<BR>
+        ... .</B>a<SUB>n-1</SUB>) is static<br/>
         else EPC(a<SUB>1</SUB><B>. ... .</B>a<SUB>n</SUB>) = NULLPC (&quot;<B>EPC
         is static</B>&quot;).</P></BLOCKQUOTE>
 
@@ -336,11 +336,11 @@
 
     <P>The function MVT maps a given virtual type vt<SUB>1</SUB> contained in
       some pattern&nbsp;dp<SUB>1</SUB> to its overridden counterpart vt<SUB>2</SUB>
-      in a pattern dp<SUB>2</SUB> that has been derived from dp1:<BR>
+      in a pattern dp<SUB>2</SUB> that has been derived from dp1:<br/>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      MVT(vt<SUB>1</SUB>,dp<SUB>2</SUB>)&nbsp; = vt<SUB>2</SUB>,<BR>
+      MVT(vt<SUB>1</SUB>,dp<SUB>2</SUB>)&nbsp; = vt<SUB>2</SUB>,<br/>
       provided that vt<SUB>1</SUB> has been overridden by vt<SUB>2</SUB> in dp<SUB>2</SUB>;
-      otherwise we have<BR>
+      otherwise we have<br/>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       MVT(vt<SUB>1</SUB>,dp<SUB>2</SUB>) = vt<SUB>1</SUB>.</P>
 
@@ -355,7 +355,7 @@
       may be an unnamed, implicit type.</P>
 
     <P>For formal reasons we define MVT also for uniform types npt and
-      arbitrary patterns p as follows:<BR>
+      arbitrary patterns p as follows:<br/>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       MVT(npt,p) = npt.</P>
 
@@ -365,7 +365,7 @@
       override mechanism automatically guarantees that</P>
     <UL>
       <LI>if&nbsp; vt<SUB>2</SUB> has also been overridden in dp (by vt<SUB>2m</SUB>,
-        say) then VAL(vt<SUB>1m</SUB>) = vt<SUB>2m<BR>
+        say) then VAL(vt<SUB>1m</SUB>) = vt<SUB>2m<br/>
         </SUB>else VAL(vt<SUB>1m</SUB>) = vt<SUB>2</SUB>. </LI>
     </UL>
 
@@ -453,28 +453,28 @@
 
     <P><B>An expression expr may be assigned to a variable var if</B> </P>
     <OL>
-      <LI>Both ST(var) and ST(expr) are non-virtual<BR>
-        <BR>
-        and ST(expr) is c-derived from ST(var)<BR>
+      <LI>Both ST(var) and ST(expr) are non-virtual<br/>
+        <br/>
+        and ST(expr) is c-derived from ST(var)<br/>
         and if both are multiform then EPC(var ) = EPC(expr), </LI>
-      <LI><B><A NAME="secondCase"></A>or</B> both&nbsp; are virtual types<BR>
-        <BR>
-        and <A HREF="#EPC">EPC</A>(var ) = EPC(expr)<BR>
-        and they are equal,&nbsp;<BR>
+      <LI><B><A NAME="secondCase"></A>or</B> both&nbsp; are virtual types<br/>
+        <br/>
+        and <A HREF="#EPC">EPC</A>(var ) = EPC(expr)<br/>
+        and they are equal,&nbsp;<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or one of them overrides the other
-        (directly or indirectly),<BR>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or one is the immediate<BR>
+        (directly or indirectly),<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or one is the immediate<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or an
-        indirect value of the other<BR>
+        indirect value of the other<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; or of an
         override of the other, </LI>
       <LI><B>or</B> one of ST(var) and ST(expr) is virtual and the other is
-        non-virtual<BR>
-        <BR>
+        non-virtual<br/>
+        <br/>
         and the EPC of the virtual side is &quot;static&quot; (see the
-        definition of EPC above)<BR>
+        definition of EPC above)<br/>
         and (if the ST of the non-virtual side is multiform then EPC(var ) =
-        EPC(expr) )<BR>
+        EPC(expr) )<br/>
         and ET(expr) is c-derived from ET(var). </LI>
     </OL>
 
@@ -511,8 +511,8 @@
 
     <P ALIGN="justify">An expression expr may be assigned to a variable var if</P>
     <OL TYPE="a">
-      <LI>ST(var) = {Tvar} is substitutable&nbsp;<BR>
-        and ST(expr) is some Texpr or {Texpr}&nbsp;<BR>
+      <LI>ST(var) = {Tvar} is substitutable&nbsp;<br/>
+        and ST(expr) is some Texpr or {Texpr}&nbsp;<br/>
         and Texpr is c-derived or p-derived from Tvar. </LI>
     </OL>
     <BLOCKQUOTE>
@@ -605,8 +605,8 @@
     <P>Since A must nevertheless conform to the assignment compatibility rules
       of section 4.1 we can distinguish the following cases:</P>
 
-    <P><B>Case 1:</B> Both ST(var) and ST(expr) are non-virtual<BR>
-      and ST(expr) is c-derived from ST(var)<BR>
+    <P><B>Case 1:</B> Both ST(var) and ST(expr) are non-virtual<br/>
+      and ST(expr) is c-derived from ST(var)<br/>
       and if both are multiform then EPC(var ) = EPC(expr). </P>
 
     <P><B>(A)</B> Assume that <I>not</I> both of ST(var) and ST(expr) are
@@ -636,8 +636,8 @@
       same replacements to the ST(var) base and retains the additional features
       of ST(expr). So ET(expr) is still c-derived from ET(var),. </P>
 
-    <P><B>Case 2:</B> Both&nbsp;ST(var) and ST(expr) are virtual<BR>
-      and EPC(var ) = EPC(expr)<BR>
+    <P><B>Case 2:</B> Both&nbsp;ST(var) and ST(expr) are virtual<br/>
+      and EPC(var ) = EPC(expr)<br/>
       and they are equal, or one of them overrides the other (directly or
       indirectly), or one is the immediate or an indirect value of the other or
       of an override of the other. </P>
@@ -667,10 +667,10 @@
       ET(var) = ET(expr),. </P>
 
     <P><B>Case 3:</B> One of ST(var) and ST(expr) is virtual and the other is
-      non-virtual<BR>
+      non-virtual<br/>
       and the EPC of the virtual side is &quot;static&quot; (see the
-      <A HREF="#EPC">definition of EPC</A> above)<BR>
-      and if the non-virtual side is multiform then EPC(var ) = EPC(expr)<BR>
+      <A HREF="#EPC">definition of EPC</A> above)<br/>
+      and if the non-virtual side is multiform then EPC(var ) = EPC(expr)<br/>
       and ET(expr) is c-derived from ET(var). </P>
 
     <P>In this case nothing remains to be proven, in fact, but what matters is
@@ -717,8 +717,8 @@
         the likewise special context of the revised event handling / callback
         concept of <FONT COLOR="#ff0000"><B><I>Java</I></B></FONT> 1.1. We
         have a different callback concept in <FONT COLOR="#ff0000"><I><B>Lava</B></I></FONT>
-        that doesn't need inner classes in the sense of <FONT COLOR="#ff0000"><I><B>Java</B></I></FONT>.<BR>
-        <BR>
+        that doesn't need inner classes in the sense of <FONT COLOR="#ff0000"><I><B>Java</B></I></FONT>.<br/>
+        <br/>
         Packages with virtual type parameters appeared to be more appropriate
         for the representation of patterns consisting of several interrelated
         classes (like model/view frameworks). </LI>
@@ -726,8 +726,8 @@
         <A HREF="PatternsFrameworks.htm#bound">virtual type's bound</A> to be &quot;closed&quot;
         (= non-overridable) in order to insert a constant or a newly created
         object into a structure that expects this object to be of the respective
-        virtual type.<BR>
-        <BR>
+        virtual type.<br/>
+        <br/>
         Example: You want to append a &quot;new String&quot; object to a
         List[String]. The List[String] pattern should nevertheless remain open
         for further specializations of the String parameter. </LI>
