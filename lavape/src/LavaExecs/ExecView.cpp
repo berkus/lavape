@@ -285,8 +285,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
 #endif
     fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      fmt.italic = true;
-      fmt.color = QColor("#FF0000"); // red
+      //fmt.italic = true;
+      //fmt.color = QColor("#FF0000"); // red
+      fmt.color = QColor("#009000"); // green
     }
     else if (currToken == currToken->data.synObject->primaryTokenNode
     && currToken->data.synObject->lastError) {
@@ -298,8 +299,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     fmt.bold = true;
     fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      fmt.italic = true;
-      fmt.color = QColor("#FF0000"); // red
+      //fmt.italic = true;
+      //fmt.color = QColor("#FF0000"); // red
+      fmt.color = QColor("#009000"); // green
     }
     else if (currToken == currToken->data.synObject->primaryTokenNode
     && currToken->data.synObject->lastError) {
@@ -316,8 +318,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     if (token == FuncRef_T)
       fmt.bold = true;
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      fmt.italic = true;
-      fmt.color = QColor("#FF0000"); // red
+      //fmt.italic = true;
+      //fmt.color = QColor("#FF0000"); // red
+      fmt.color = QColor("#009000"); // green
     }
     else if (currToken == currToken->data.synObject->primaryTokenNode
     && currToken->data.synObject->lastError) {
@@ -339,8 +342,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
     else
       fmt.color = QColor("#0000FF"); // blue
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      fmt.italic = true;
-      fmt.color = QColor("#FF0000"); // red
+      //fmt.italic = true;
+      //fmt.color = QColor("#FF0000"); // red
+      fmt.color = QColor("#009000"); // green
     }
     else if (currToken == currToken->data.synObject->primaryTokenNode
     && currToken->data.synObject->lastError) {
@@ -362,8 +366,9 @@ void ExecContents::SetTokenFormat (CHETokenNode *currToken) {
   else {
     fmt.color = QColor("#000000"); // black
     if (currToken->data.flags.Contains(ignoreSynObj)) {
-      fmt.italic = true;
-      fmt.color = QColor("#FF0000"); // red
+      //fmt.italic = true;
+      //fmt.color = QColor("#FF0000"); // red
+      fmt.color = QColor("#009000"); // green
     }
     else if (currToken->data.synObject->lastError
     && (currToken == currToken->data.synObject->primaryTokenNode
@@ -399,6 +404,10 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
   int nl_pos, old_nl_pos, cmtWidth, startY, r, g, b;
   bool firstLine=true;
   SynObject *ancestor=currentToken->data.synObject;
+
+  if (currentToken->data.flags.Contains(ignoreSynObj)
+  && !text->showComments)
+    return;
 
   SetTokenFormat(currentToken);
 
