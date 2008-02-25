@@ -235,7 +235,7 @@ void CWizardView::Apply()
 
 void CWizardView::Help()
 {
-	QString path("./assistant");
+	QString path(QASSISTANT);
 	QStringList args;
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 

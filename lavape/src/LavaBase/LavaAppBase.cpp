@@ -1214,7 +1214,7 @@ QString WhatsThis::text(const QPoint&)
 */
 void ShowPage(const QString &file) {
   QString fileName=ExeDir+QString("/../doc/html/")+QString(file);
-	QString path("./assistant");
+	QString path(QASSISTANT);
 	QStringList args;
 
 	args << "-profile" << ExeDir + "/../doc/LavaPE.adp";

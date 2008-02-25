@@ -627,7 +627,7 @@ void CLavaApp::OnChooseGlobalFont()
 
 void CLavaApp::HtmlHelp()
 {
-        QString path("./assistant");
+        QString path(QASSISTANT);
         QStringList args;
         args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
         if (!qacl) {
@@ -640,7 +640,7 @@ void CLavaApp::HtmlHelp()
 
 void CLavaApp::EditingLavaProgs()
 {
-        QString path("./assistant");
+        QString path(QASSISTANT);
         QStringList args;
         args << "-profile" << ExeDir + "/../doc/LavaPE.adp";
 

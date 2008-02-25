@@ -27,8 +27,11 @@
 
 
 #ifdef WIN32
-  #include "qt_windows.h"
-  #include "commdlg.h"
+#include "qt_windows.h"
+#include "commdlg.h"
+#define QASSISTANT "assistant"
+#else
+#define QASSISTANT "./assistant"
 #endif
 
 
