@@ -63,50 +63,27 @@ II)Installation of Lava/LavaPE
 ==============================
 
 
-How to install the binary release of LavaPE on Windows
-======================================================
+How to install the Windows binary release of LavaPE
+===================================================
 
 Simply launch the downloaded lavape-<rel>-win32-bin.exe file and
 follow the instructions of the installer.
 
 
-How to install the LavaPE binary release for OpenSUSE 10.3
-==========================================================
+How to install the Linux binary release of LavaPE
+=================================================
 
-Download the lavape-<rel>-suse.rpm package and execute
+Download the lavape-<rel>-linux-bin.tar.bz2 package, move it to
+the directory where the "lavape" installation directory is to
+reside as a subdirectory, and execute
 
-   sudo rpm -i lavape-<rel>-suse-<rel>.rpm
+   tar xjf lavape-<rel>-linux-bin.tar.bz2
 
-in the usual way. The "LavaPE" and "Lava" executables
-will be installed in /usr/local/bin. An additional
-installation directory /usr/local/lavape with "samples" and "doc"
-subdirectories will be installed as well.
+in the usual way. In lavape/bin you will find the LavaPE/Lava
+executables of the Lava Programming Environment and of the
+Lava interpreter, respectively, thereafter. Execute
 
-
-How to install the LavaPE binary release for [K]ubuntu 7.10
-===========================================================
-
-Download the lavape-<rel>-ubuntu.deb package and execute
-
-   sudo dpkg -i lavape-<rel>-ubuntu-<rel>.deb
-
-in the usual way. The "LavaPE" and "Lava" executables
-will be installed in /usr/local/bin. An additional
-installation directory /usr/local/lavape with "samples" and "doc"
-subdirectories will be installed as well.
-
-
-How to install the LavaPE binary release for Fedora 8
-=====================================================
-
-Download the lavape-<rel>-fedora.rpm package and execute
-
-   sudo rpm -i lavape-<rel>-fedora-<rel>.rpm
-
-in the usual way. The "LavaPE" and "Lava" executables
-will be installed in /usr/local/bin. An additional
-installation directory /usr/local/lavape with "samples" and "doc"
-subdirectories will be installed as well.
+   ./LavaPE  or ./Lava , resp., to launch them.
 
 
 How to install LavaPE from the source distribution on UNIX
@@ -119,12 +96,6 @@ directory of the envisaged lavape installation directory.
 Uncompress it using the command
 
    tar xjvf lavape-<release>-src.tar.bz2
-
-or, if your UNIX-tar command doesn't support
-the "j" option:
-
-   bunzip2 lavape-<release>-src.tar.bz2
-   tar xf lavape-<release>-src.tar
 
 You need to have GNU gcc/make and the developer version
 of TrollTech/Qt4.
@@ -140,8 +111,8 @@ Or the software package manager of your Linux distribution
 offers you the possibility to download and install the
 Qt4 developer package(s). The Lava build process will then
 try to locate the Qt4 include files, libraries and
-utility programs automatically. (See the qbin.sh, qincl.sh,
-qlib.sh, and qsuff.sh shell procedures.)
+utility programs automatically (using the qbin.sh, qincl.sh,
+qlib.sh, and qsuff.sh shell procedures).
 
 Then build the LavaPE executables as follows:
 

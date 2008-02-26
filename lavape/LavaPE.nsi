@@ -134,7 +134,7 @@ Section "LavaPE (required)" SEC01
   File "C:\Qt4\Qt433msvc\bin\QtCore4.dll"
   File "C:\Qt4\Qt433msvc\bin\QtGui4.dll"
   File "C:\Qt4\Qt433msvc\bin\QtNetwork4.dll"
-;  File "C:\Qt4\Qt433msvc\bin\QtXml4.dll"
+  File "C:\Qt4\Qt433msvc\bin\QtXml4.dll"
 ;  File "C:\Qt4\Qt432msvc\bin\QtSvg4.dll"
 
 ;  File "C:\Qt4\Qt432msvc\plugins\imageformats\qgif4.dll"
