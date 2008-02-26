@@ -669,15 +669,15 @@ bool compatibleInput(CheckData &ckd, CHE *actParm, CHE *formParm, const CContext
       ok &= false;
     }
 
-  if (parm->flags.Contains(isSelfVar)) {
-    if (parm->parentObject->parentObject->primaryToken != initializing_T
-    && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
-    && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
-    && !formDecl->SecondTFlags.Contains(closed)) {
-      ((SynObject*)((CHE*)((ObjReference*)parm)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
-      ok &= false;
-    }
-  }
+  //if (parm->flags.Contains(isSelfVar)) {
+  //  if (parm->parentObject->parentObject->primaryToken != initializing_T
+  //  && ckd.myDECL->ParentDECL->TypeFlags.Contains(isInitializer)
+  //  && !((SelfVar*)ckd.selfVar)->InitCheck(ckd,false)
+  //  && !formDecl->SecondTFlags.Contains(closed)) {
+  //    ((SynObject*)((CHE*)((ObjReference*)parm)->refIDs.first)->data)->SetError(ckd,&ERR_SelfUnfinishedParm);
+  //    ok &= false;
+  //  }
+  //}
 
   ckd.document->MemberTypeContext(formDecl, callContext,&ckd);
   callContext = callCtx;

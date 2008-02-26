@@ -434,8 +434,6 @@ void ExecContents::DrawToken (QPainter &p, CProgText *text, CHETokenNode *curren
     fmt.font.setItalic(false);
 
   p.setFont(fmt.font);
-//  QFontInfo fi(fmt.font);
-//  QString family = fi.family();
   fm = new QFontMetrics(p.fontMetrics());
 
   if (currentToken == ancestor->startToken)
