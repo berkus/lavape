@@ -1,0 +1,9 @@
+body { color: #000000; background: #D8DDDD; text: #000000; vlink: magenta }
+li { margin-top: 10pt }
+a:hover { color: red }
+p, ul, ol, li { font-size: 1em; margin-top: 10pt }
+p.tiny { font-size: 0.8em }
+p.fat { font-weight: bold; font-size: 1em }
+h1 { font-style: italic; font-size: 3em }
+h2 { font-size: 2em }
+h3 { font-size: 1.5em; margin-top: 15pt }

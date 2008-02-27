@@ -1,20 +1,15 @@
-I) Change log
-
-II) Lava Installation HowTo
-
-
 I) Change Log for Release 0.9.0
 ==============================
 
-Migration to Qt4:
-================
+A)Migration to Qt4:
+===================
 
 In a big effort, the entire Lava software has been
 migrated to Trolltech's Qt4 package; all dependencies
 on Qt3 have been removed.
 
-Lava provides complete static initialization checks now
-=======================================================
+B1) Lava provides complete static initialization checks now
+===========================================================
 
 By purely static checks Lava can now make sure already
 at programming time that you cannot inadvertently access
@@ -35,8 +30,8 @@ achieved by three new measures:
    mandatory assignments together with two related new
    constructs: The "ifdef" statement and the "else" expression.
 
-Checking optional-to-mandatory assignments:
-==========================================
+B2) Checking optional-to-mandatory assignments:
+===============================================
 
 LavaPE now enforces already at programming time that optional
 variables and expressions have non-null values if they are
@@ -57,6 +52,13 @@ b) if the source of the assignment is an "else"
 if yes then the "else" expression yields y, if no then the
 expression yields x.
 
+C) Getting started with GUI event handlers
+==========================================
+
+Lava allows you to assign event handlers to certain basic
+GUI events now: "new input" handlers for elementary input
+fields, "insert"/"delete" handlers for chain/array elements
+and optional data.
 
 
 II)Installation of Lava/LavaPE
