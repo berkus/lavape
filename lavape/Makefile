@@ -159,7 +159,7 @@ bindist:
 	cp ../samples/*.l* samples; \
 	cd bin; if [ ! -e LavaIcons ] ; then mkdir LavaIcons; fi; \
 	if [ ! -e std ] ; then mkdir std; fi; \
-	cd ../../bin; cp LavaPE Lava ../lavape/bin; cp $(QTDIR)/bin/assistant ../lavape/bin; \
+	cd ../../bin; cp LavaPE Lava ../lavape/bin; cp $(QBIN)/assistant ../lavape/bin; \
 	cd ../lavape/bin; strip LavaPE Lava assistant; \
 	cd ../../bin; cp LavaIcons/* ../lavape/bin/LavaIcons; cp std/* ../lavape/bin/std; \
 	cd ../lavape; \
@@ -175,7 +175,7 @@ bindist:
 	cd ../..; cp ../lib/*.so lib; \
 	cp $(QLIB)/libQtCore.so.4 $(QLIB)/libQtGui.so.4 $(QLIB)/libQtNetwork.so.4 $(QLIB)/libQtXml.so.4 $(QLIB)/libQtAssistantClient.so.4 lib; \
 	cd lib; strip *.so*; \
-	cd ../..; tar cjf /windows/D/lavape-0.9.0-linux-bin.tar.bz2 lavape; ls -l /windows/D/lavape-*; rm -rf lavape
+	cd ../..; tar cjf lavape-0.9.0-linux-bin.tar.bz2 lavape; ls -l lavape-*; rm -rf lavape
 
 
 clean: cleanall binclean libclean
