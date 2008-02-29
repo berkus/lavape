@@ -84,20 +84,21 @@ wxMainFrame::~wxMainFrame()
   delete m_childFrameHistory;
 }
 
-QWorkspace* wxMainFrame::CreateWorkspace(QWidget* parent)
+QTabWidget* wxMainFrame::CreateWorkspace(QWidget* parent)
 {
-  m_workspace = new QWorkspace(parent);
-  connect(m_workspace ,SIGNAL(windowActivated(QWidget*)), SLOT(windowActivated(QWidget*)));
+  m_workspace = new QTabWidget(parent);
+  m_workspace->setElideMode(Qt::ElideLeft);
+  m_workspace->setUsesScrollButtons(true);
+  connect(m_workspace ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   return m_workspace;
 }
 
 
-void wxMainFrame::windowActivated(QWidget* w)
+void wxMainFrame::windowActivated(int index)
 {
-  theActiveFrame = (QMainWindow*)w;
-  if (w && w->inherits("wxMDIChildFrame")) {
-    ((wxMDIChildFrame*)w)->Activate();
-  }
+  theActiveFrame = m_workspace->widget(index);
+  if (theActiveFrame && theActiveFrame->inherits("wxMDIChildFrame"))
+    ((wxMDIChildFrame*)theActiveFrame)->Activate();
 }
 
 void wxMainFrame::closeEvent (QCloseEvent*)
@@ -151,50 +152,50 @@ void wxMainFrame::OnMRUWindow(int histWindowIndex)
 
 void wxMainFrame::on_cascadeAction_triggered()
 {
-  int ii;
-  QWidget *window;
-  QWidgetList windows = m_workspace->windowList();
-  QSize sz=m_workspace->size();
+  //int ii;
+  //QWidget *window;
+  //QWidgetList windows = m_workspace->windowList();
+  //QSize sz=m_workspace->size();
 
-  m_workspace->cascade();
-  wxTheApp->isChMaximized = false;
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized())
-      if (window->inherits("wxMDIChildFrame")) {
-        //((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
-        window->resize(sz.width()*7/10, sz.height()*7/10);
-      }
-  }
+  //m_workspace->cascade();
+  //wxTheApp->isChMaximized = false;
+  //for (ii = 0; ii < int(windows.count()); ++ii ) {
+  //  window = windows.at(ii);
+  //  if (!((QMainWindow*)window)->isMinimized())
+  //    if (window->inherits("wxMDIChildFrame")) {
+  //      //((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
+  //      window->resize(sz.width()*7/10, sz.height()*7/10);
+  //    }
+  //}
 }
 
 void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
 {
-  int ii, cc = 0, x = 0, minHeight=0;
-  QWidget *window;
-  QWidgetList windows = m_workspace->windowList();
+  //int ii, cc = 0, x = 0, minHeight=0;
+  //QWidget *window;
+  //QWidgetList windows = m_workspace->windowList();
 
-  wxTheApp->isChMaximized = false;
-  lastTile = 1;
+  //wxTheApp->isChMaximized = false;
+  //lastTile = 1;
 
-  if (!windows.count() )
-    return;
-  cc = (int)windows.count();
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (((QMainWindow*)window)->isMinimized()) {
-      cc--;
-      minHeight = menubar->height();
-    }
-    //else
-    //  if (window->inherits("wxMDIChildFrame"))
-    //    ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
-  }
-  if (!cc)
-    return;
-//  if (cc > 3) {
-    m_workspace->tile();
-    return;
+  //if (!windows.count() )
+  //  return;
+  //cc = (int)windows.count();
+  //for (ii = 0; ii < int(windows.count()); ++ii ) {
+  //  window = windows.at(ii);
+  //  if (((QMainWindow*)window)->isMinimized()) {
+  //    cc--;
+  //    minHeight = menubar->height();
+  //  }
+  //  //else
+  //  //  if (window->inherits("wxMDIChildFrame"))
+  //  //    ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
+  //}
+//  if (!cc)
+//    return;
+////  if (cc > 3) {
+//    m_workspace->tile();
+//    return;
 /*  }
   allHeight = m_workspace->height() - minHeight;
   widthForEach = m_workspace->width() / cc;
@@ -214,51 +215,53 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
 
 void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
 {
-  int ii, cc = 0, y = 0, heightForEach, preferredHeight, actHeight, minHeight=0;
-  QWidget *window;
-  QWidgetList windows = m_workspace->windowList();
+  //int ii, cc = 0, y = 0, heightForEach, preferredHeight, actHeight, minHeight=0;
+  //QWidget *window;
+  //QWidgetList windows = m_workspace->windowList();
 
-  lastTile = 2;
-  wxTheApp->isChMaximized = false;
+  //lastTile = 2;
+  //wxTheApp->isChMaximized = false;
 
-  if (!windows.count() )
-    return;
-  cc = (int)windows.count();
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (((QMainWindow*)window)->isMinimized()) {
-      cc--;
-      minHeight = menubar->height();
-    }
-    //else
-    //  if (window->inherits("wxMDIChildFrame"))
-    //    ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
-  }
-  if (!cc)
-    return;
-  if (cc > 2) {
-    m_workspace->tile();
-    return;
-  }
-  heightForEach = (m_workspace->height() - minHeight) / cc;
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) {
-      preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
-      actHeight = qMax(heightForEach, preferredHeight);
-      if (window == theActiveFrame)
-        window->showNormal();
-      window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
-      y += actHeight;
-    }
-  }
+  //if (!windows.count() )
+  //  return;
+  //cc = (int)windows.count();
+  //for (ii = 0; ii < int(windows.count()); ++ii ) {
+  //  window = windows.at(ii);
+  //  if (((QMainWindow*)window)->isMinimized()) {
+  //    cc--;
+  //    minHeight = menubar->height();
+  //  }
+  //  //else
+  //  //  if (window->inherits("wxMDIChildFrame"))
+  //  //    ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
+  //}
+  //if (!cc)
+  //  return;
+  //if (cc > 2) {
+  //  m_workspace->tile();
+  //  return;
+  //}
+  //heightForEach = (m_workspace->height() - minHeight) / cc;
+  //for (ii = 0; ii < int(windows.count()); ++ii ) {
+  //  window = windows.at(ii);
+  //  if (!((QMainWindow*)window)->isMinimized()) {
+  //    preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
+  //    actHeight = qMax(heightForEach, preferredHeight);
+  //    if (window == theActiveFrame)
+  //      window->showNormal();
+  //    window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
+  //    y += actHeight;
+  //  }
+  //}
 }
 
 wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
     : QWidget(parent)
 {
-  //resize(500,300);
-  ((QWorkspace*)parent)->addWindow(this);
+  m_clientWindow = this;
+  m_tabWidget= (QTabWidget*)parent;
+  lastActive = 0;
+  m_tabWidget->addTab(this,QString());
   layout = new QVBoxLayout(this);
   setLayout(layout);
   layout->setMargin(0);
@@ -267,8 +270,6 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
   QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
   resize(sz.width()*7/10, sz.height()*7/10);
   deleting = false;
-  m_clientWindow = this;
-  lastActive = 0;
   QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(QEvent::User,this));
 }
 
@@ -278,16 +279,12 @@ void wxMDIChildFrame::resizeEvent(QResizeEvent *ev) {
 bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   int lt=1;
+  QWidget *mw = wxTheApp->m_appWindow;
+  QWidget * clw = ((wxMainFrame*)mw)->GetClientWindow();
 
   doc->AddChildFrame(this);
   m_document = doc;
-  //wxTheApp->m_appWindow->GetClientWindow()->tile();//TileVertic(wxTheApp->m_appWindow->menuBar(),lt);
-  //wxTheApp->m_appWindow->update();
-  //show();
-  //if (oldWindowState == Qt::WindowMaximized)
-  //  showMaximized();
-  //else
-  //  showNormal();
+  ((QTabWidget*)clw)->setCurrentWidget(this);
   return true;
 }
 
@@ -331,8 +328,9 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
 void wxMDIChildFrame::SetTitle(QString &title)
 {
   QString oldTitle=parentWidget()->windowTitle(), newTitle=title;
+  QTabWidget *tw=(QTabWidget*)parentWidget()->parentWidget();
 
-  setWindowTitle(title);
+  tw->setTabText(tw->indexOf(this),title);
   if (newTitle.at(newTitle.length()-1) == '*')
     newTitle = newTitle.left(newTitle.length()-1);
   if (!oldTitle.isEmpty())

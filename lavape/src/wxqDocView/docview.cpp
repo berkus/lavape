@@ -160,12 +160,13 @@ void wxApp::updateButtonsMenus()
 {
   if (!m_appWindow->m_workspace)
     return;
-  QWidget *actMDIChild=m_appWindow->m_workspace->activeWindow();
+  wxMDIChildFrame *actMDIChild = (wxMDIChildFrame*)m_appWindow->m_workspace->currentWidget();
+
   onUpdateUI();
 
-  QWidget *newActMDIChild=m_appWindow->m_workspace->activeWindow();
+  wxMDIChildFrame *newActMDIChild = (wxMDIChildFrame*)m_appWindow->m_workspace->currentWidget();
   if (newActMDIChild != actMDIChild)
-    m_appWindow->m_workspace->setActiveWindow(actMDIChild);
+    actMDIChild->m_tabWidget->setCurrentWidget(actMDIChild);
 }
 
 void wxApp::customEvent(QEvent *e)

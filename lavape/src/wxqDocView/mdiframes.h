@@ -62,7 +62,7 @@ public:
 //  wxMDIChildFrame *GetActiveChild() const;
 
   // Get the client window
-  QWorkspace *GetClientWindow() const { return m_workspace; }
+  QTabWidget *GetClientWindow() const { return m_workspace; }
 
 //  bool eventFilter(QObject *obj, QEvent *ev);
   void resizeEvent(QResizeEvent& event);
@@ -74,23 +74,23 @@ public:
   void TileVertic(QMenuBar *menubar, int& lastTile);
   void TileHoriz(QMenuBar *menubar, int& lastTile);
   virtual void helpContents(){}
-  virtual QWorkspace* Workspace() {
+  virtual QTabWidget* Workspace() {
     return m_workspace;
   }
 
 protected:
-  virtual QWorkspace* CreateWorkspace(QWidget* parent);
+  virtual QTabWidget* CreateWorkspace(QWidget* parent);
   QWidget *m_CentralWidget;
   QVBoxLayout *m_layout;
-  QWorkspace *m_workspace;
+  QTabWidget *m_workspace;
 	wxHistory *m_childFrameHistory;
-  QMainWindow *theActiveFrame;
+  QWidget *theActiveFrame;
 	bool completelyCreated;
 
 public slots:
   virtual void OnFileExit();
   void on_cascadeAction_triggered();
-  void windowActivated(QWidget*);
+  void windowActivated(int);
   void histFile(int);
   void histWindow(int);
 
@@ -123,6 +123,7 @@ public:
   wxView* GetLastActive() {return lastActive;}
   virtual void Activate(bool activate=true,bool windowMenuAction=false);
   //virtual void Activate(bool activate=true,bool windowMenuAction=false);
+  QTabWidget *m_tabWidget;
 
 //  FRAMEFACTORY(wxMDIChildFrame)
 	//Qt::WindowState oldWindowState;

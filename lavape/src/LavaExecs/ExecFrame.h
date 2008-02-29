@@ -9,7 +9,6 @@
 
 class LAVAEXECS_DLL CExecFrame : public wxMDIChildFrame
 {
-//  DECLARE_DYNCREATE(CExecFrame)
 public:
   CExecFrame(QWidget *parent);
   FRAMEFACTORY(CExecFrame)
@@ -27,12 +26,7 @@ public:
 // Operations
 public:
 
-// Overrides
-  // ClassWizard generated virtual function overrides
-  // {{AFX_VIRTUAL(CExecFrame)
   public:
-//  virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_OVERLAPPEDWINDOW, const RECT& rect = rectDefault, wxMainFrame* pParentWnd = NULL, CCreateContext* pContext = NULL);
-  //}}AFX_VIRTUAL
 
 // Implementation
 public:
