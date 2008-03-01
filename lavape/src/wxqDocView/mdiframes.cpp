@@ -390,8 +390,14 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   triggeredAction = tabMenu.exec(QCursor::pos());
 
   if (triggeredAction == closePageAction) {
-    removeTab(index);
-    delete page;
+    if (page->inherits("CTreeFrame")) {
+      page->Activate(true);
+      wxDocManager::GetDocumentManager()->OnFileClose();
+    }
+    else {
+      removeTab(index);
+      delete page;
+    }
     wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == closeFileAction) {
