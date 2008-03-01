@@ -86,7 +86,7 @@ wxMainFrame::~wxMainFrame()
 
 QTabWidget* wxMainFrame::CreateWorkspace(QWidget* parent)
 {
-  m_workspace = new QTabWidget(parent);
+  m_workspace = new MyTabWidget(parent);
   m_workspace->setElideMode(Qt::ElideLeft);
   m_workspace->setUsesScrollButtons(true);
   connect(m_workspace ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
@@ -259,7 +259,7 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
     : QWidget(parent)
 {
   m_clientWindow = this;
-  m_tabWidget= (QTabWidget*)parent;
+  m_tabWidget = (MyTabWidget*)parent;
   lastActive = 0;
   m_tabWidget->addTab(this,QString());
   layout = new QVBoxLayout(this);
@@ -360,18 +360,47 @@ wxMDIChildFrame::~wxMDIChildFrame()
 {
   QString title;
 
-  //if (isVisible())
-  //  setFocus();  // to prevent a mysterious crash on file-exit/~CExecFrame
-  //clearFocus();
-
   title = windowTitle();
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   deleting = true;
-  m_document->RemoveChildFrame(this);
+  int count = m_document->RemoveChildFrame(this);
   if (!wxTheApp->deletingMainFrame)
     wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
+  if (!count && !m_document->deleting)
+    delete m_document;
 }
+
+
+void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
+  QTabBar *tb=tabBar();
+  QPoint pt=evt->pos();
+  Qt::MouseButton mb=evt->button();
+  int index=tb->tabAt(pt);
+  wxMDIChildFrame *page=(wxMDIChildFrame*)widget(index);
+
+  if (mb != Qt::RightButton || index == -1)
+    return;
+
+  QMenu tabMenu;
+  QAction *triggeredAction;
+
+  QAction *closePageAction = tabMenu.addAction("Close this page");
+  QAction *closeFileAction = tabMenu.addAction("Close this file");
+  triggeredAction = tabMenu.exec(QCursor::pos());
+
+  if (triggeredAction == closePageAction) {
+    removeTab(index);
+    delete page;
+    wxTheApp->updateButtonsMenus();
+  }
+  else if (triggeredAction == closeFileAction) {
+    page->Activate(true);
+    wxDocManager::GetDocumentManager()->OnFileClose();
+    wxTheApp->updateButtonsMenus();
+  }
+}
+
 
 #define MYSTYLEIMP(sty)\
   int My##sty##Style::pixelMetric(PixelMetric pm, const QStyleOption *option, const QWidget *widget) const\

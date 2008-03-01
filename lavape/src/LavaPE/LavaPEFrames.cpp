@@ -1937,8 +1937,8 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   doc->AddChildFrame(this);
   m_document = doc;
   DString title = CalcTitle( (LavaDECL*)((CLavaPEApp*)wxTheApp)->LBaseData.actHint->CommandData1, ((CLavaBaseDoc*)LBaseData->actHint->fromDoc)->IDTable.DocName);
-  setWindowTitle(title.c);
-  setWindowIcon(QPixmap((const char**) Lava));
+  SetTitle(QString(title.c));
+  //setWindowIcon(QPixmap((const char**) Lava));
   myDoc = (CLavaBaseDoc*)doc;
 
   splitter = new QSplitter(this);

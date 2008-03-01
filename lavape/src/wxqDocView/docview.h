@@ -132,7 +132,7 @@ public:
     QList<wxView*> m_documentViews;
 
     // accessors
-    virtual wxDocument* CreateFailed();
+    //virtual wxDocument* CreateFailed();
     void SetFilename(const QString& filename, bool notifyViews = FALSE);
     QString GetFilename() const { return m_documentFile; }
     void SetUserFilename(const QString& filename)  {m_userFilename = filename; }
@@ -185,7 +185,7 @@ public:
     virtual void Modify(bool mod) { m_documentModified = mod; }
 
     virtual void AddChildFrame(wxMDIChildFrame *chf);
-    virtual void RemoveChildFrame(wxMDIChildFrame *chf);
+    virtual int RemoveChildFrame(wxMDIChildFrame *chf);
 
     virtual bool AddView(wxView *view);
     virtual bool RemoveView(wxView *view);

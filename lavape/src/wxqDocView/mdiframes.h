@@ -100,11 +100,19 @@ private:
   Q_OBJECT
 };
 
-/*
- * Use this instead of wxMDIChildFrame
- */
 
-class WXDLLEXPORT wxMDIChildFrame  : public QWidget
+class WXDLLEXPORT MyTabWidget : public QTabWidget {
+public:
+  MyTabWidget(QWidget *parent) : QTabWidget(parent) {}
+
+  void mousePressEvent ( QMouseEvent *evt );
+
+private:
+  Q_OBJECT
+};
+
+
+class WXDLLEXPORT wxMDIChildFrame : public QWidget
 {
 public:
   wxMDIChildFrame(QWidget *parent);
@@ -123,7 +131,7 @@ public:
   wxView* GetLastActive() {return lastActive;}
   virtual void Activate(bool activate=true,bool windowMenuAction=false);
   //virtual void Activate(bool activate=true,bool windowMenuAction=false);
-  QTabWidget *m_tabWidget;
+  MyTabWidget *m_tabWidget;
 
 //  FRAMEFACTORY(wxMDIChildFrame)
 	//Qt::WindowState oldWindowState;
@@ -140,6 +148,7 @@ protected:
 private:
   Q_OBJECT
 };
+
 
 #define MYSTYLE(sty) \
 class WXDLLEXPORT My##sty##Style : public Q##sty##Style {\

@@ -102,10 +102,10 @@ CLavaGUIFrame::~CLavaGUIFrame()
 
 DString CLavaGUIFrame::CalcTitle(LavaDECL* decl, const DString& lavaName)
 {
-  DString title = lavaName;
-  title += DString(" - ");
-  title += decl->FullName;
-  return title;
+  //DString title = lavaName;
+  //title += DString(" - ");
+  //DString title += decl->FullName;
+  return decl->FullName + ": form";
 }
 
 void CLavaGUIFrame::NewTitle(LavaDECL *decl, const DString& lavaName)

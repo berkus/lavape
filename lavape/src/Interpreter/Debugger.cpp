@@ -330,7 +330,8 @@ void CLavaDebugger::stop(DbgExitReason reason) {
   else
     if (((CLavaProgram*)myDoc)->corruptSyntax) {
       ((CLavaProgram*)myDoc)->corruptSyntax = false;
-      ((CLavaProgram*)myDoc)->CreateFailed();
+      delete myDoc;
+      //((CLavaProgram*)myDoc)->CreateFailed();
       myDoc = 0;
     }
   if ((reason != normalEnd) && m_execThread) {

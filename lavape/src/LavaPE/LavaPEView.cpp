@@ -267,7 +267,7 @@ CLavaPEView::~CLavaPEView()
 {
   delete Tree->itemDelegate();
 	setFocusProxy(0);
-  destroy();
+  //destroy();
 }
 
 

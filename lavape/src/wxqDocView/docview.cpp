@@ -266,15 +266,16 @@ wxDocument::~wxDocument()
 {
   deleting = true;
   DeleteAllChildFrames();
+  DeleteContents();
   wxDocManager::GetDocumentManager()->RemoveDocument(this);
 }
 
-wxDocument* wxDocument::CreateFailed() {
-  deleting = true;
-  DeleteAllChildFrames();
-  deleteLater();
-  return (wxDocument *) NULL;
-}
+//wxDocument* wxDocument::CreateFailed() {
+//  deleting = true;
+//  DeleteAllChildFrames();
+//  deleteLater();
+//  return (wxDocument *) NULL;
+//}
 
 void wxDocument::customEvent(QEvent *ev) {
   switch (ev->type()) {
@@ -295,8 +296,9 @@ bool wxDocument::Close()
 
 bool wxDocument::OnCloseDocument()
 {
-  DeleteContents();
-  deleteLater();
+  //DeleteContents();
+  //DeleteAllChildFrames();
+  //deleteLater();
   return true;
 }
 
@@ -586,10 +588,11 @@ void wxDocument::AddChildFrame(wxMDIChildFrame *chf) {
   m_docChildFrames.append(chf);
 }
 
-void wxDocument::RemoveChildFrame(wxMDIChildFrame *chf)
+int wxDocument::RemoveChildFrame(wxMDIChildFrame *chf)
 // Called from ~wxMDIChildFrame
 {
   m_docChildFrames.removeAt(m_docChildFrames.indexOf(chf));
+  return m_docChildFrames.count();
 }
 
 // Called after a view is added or removed.
@@ -678,7 +681,7 @@ wxView::~wxView()
   deleting = true;
   wxDocManager::GetDocumentManager()->SetActiveView(this, false);
   //m_viewFrame->RemoveView(this); // at this time the frame and its m_viewList has already been destroyed
-  m_viewDocument->RemoveView(this);
+  //m_viewDocument->RemoveView(this);
 }
 
 
@@ -825,14 +828,15 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
       return doc;
     }
     else {
-      return doc->CreateFailed();
+      delete doc;
+      return 0;
 
     }
   }
   else {
     if (wxDocManager::GetDocumentManager()->GetDocuments().indexOf(doc) != -1) {
-      doc->deleting = true;
-      doc->DeleteAllChildFrames();
+      //doc->deleting = true;
+      //doc->DeleteAllChildFrames();
       delete doc;
     }
     return (wxDocument *) NULL;
@@ -956,7 +960,7 @@ void wxDocManager::OnFileClose()
   if (!doc)
     return;
   doc->Close();
-  //RemoveDocument(doc);
+  delete doc;
 }
 
 void wxDocManager::OnUndo()
