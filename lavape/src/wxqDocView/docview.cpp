@@ -841,10 +841,10 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
 
 wxMDIChildFrame *wxDocTemplate::CreateChildFrame(wxDocument *doc)
 {
-  QWidget *mw = wxTheApp->m_appWindow;
-  QWidget * clw = ((wxMainFrame*)mw)->GetClientWindow();
-  wxMDIChildFrame *frame = (wxMDIChildFrame *)m_frameClassInfo(clw);
-  frame->parentWidget()->resize(600, 400);
+  wxMainFrame *mw = wxTheApp->m_appWindow;
+  wxMDIChildFrame *frame = (wxMDIChildFrame *)m_frameClassInfo(mw->GetClientWindow());
+  frame->m_tabWidget->setCurrentWidget(frame);
+
   if (frame->OnCreate(this,doc)) {
     return frame;
   }

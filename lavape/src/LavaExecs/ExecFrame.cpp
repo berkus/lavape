@@ -92,12 +92,9 @@ void CExecFrame::OnDestroy()
 
 DString CExecFrame::CalcTitle(LavaDECL *decl)
 {
-  DString title = ((CPEBaseDoc*)myDoc)->IDTable.DocName; //((CPEBaseDoc*)myDoc)->GetSyntaxName();
-//  if (title != decl->FullName) {
-    title += DString(" - ");
-    title += decl->FullName;
-//  }
+  DString title = decl->FullName;
   LavaDECL* parDECL = decl->ParentDECL;
+
   switch (decl->DeclType) {
   case ExecDef:
     if (parDECL->DeclType == Interface
@@ -106,6 +103,8 @@ DString CExecFrame::CalcTitle(LavaDECL *decl)
         title += "::impl";
       title += ": Invariant";
     }
+    else if (parDECL->DeclType == Initiator)
+      title += ": Main";
     else
       title += ": Exec";
     break;

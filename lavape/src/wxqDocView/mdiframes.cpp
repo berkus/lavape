@@ -278,13 +278,9 @@ void wxMDIChildFrame::resizeEvent(QResizeEvent *ev) {
 
 bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
-  int lt=1;
-  QWidget *mw = wxTheApp->m_appWindow;
-  QWidget * clw = ((wxMainFrame*)mw)->GetClientWindow();
-
   doc->AddChildFrame(this);
   m_document = doc;
-  ((QTabWidget*)clw)->setCurrentWidget(this);
+  m_tabWidget->setCurrentWidget(this);
   return true;
 }
 
@@ -307,13 +303,7 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
  QString title=windowTitle();
 
  if (activate)
-   if (isMinimized() && windowMenuAction)
-     if (wxTheApp->isChMaximized)
-       showMaximized();
-     else
-       showNormal();
-   else
-     show();
+  m_tabWidget->setCurrentWidget(this);
 
  if (title.length() && title.at(title.length()-1) == '*')
    title = title.left(title.length()-1);
@@ -321,16 +311,25 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
  if (activate)
    if (lastActive)
      wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
-   else
+   else if (!m_viewList.empty())
      wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),true);
 }
 
 void wxMDIChildFrame::SetTitle(QString &title)
 {
-  QString oldTitle=parentWidget()->windowTitle(), newTitle=title;
+  QString oldTitle=parentWidget()->windowTitle(), newTitle=title, tooltip;
   QTabWidget *tw=(QTabWidget*)parentWidget()->parentWidget();
 
-  tw->setTabText(tw->indexOf(this),title);
+  if (title.contains(": ")) {
+    tw->setTabText(tw->indexOf(this),title);
+    tooltip = m_document->GetFilename() + ", " + title;
+    tw->setTabToolTip(tw->indexOf(this),tooltip);
+  }
+  else {
+    QFileInfo fi(title);
+    tw->setTabText(tw->indexOf(this),fi.fileName());
+    tw->setTabToolTip(tw->indexOf(this),m_document->GetFilename());
+  }
   if (newTitle.at(newTitle.length()-1) == '*')
     newTitle = newTitle.left(newTitle.length()-1);
   if (!oldTitle.isEmpty())
