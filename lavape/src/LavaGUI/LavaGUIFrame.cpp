@@ -29,7 +29,7 @@
 #pragma hdrstop
 #include "Lava.xpm"
 
-CLavaGUIFrame::CLavaGUIFrame(QWidget *parent) : wxMDIChildFrame(parent)
+CLavaGUIFrame::CLavaGUIFrame(QWidget *parent) : wxChildFrame(parent)
 {
   myView = 0;
   onClose = false;

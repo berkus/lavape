@@ -96,8 +96,8 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
 void wxMainFrame::windowActivated(int index)
 {
   theActiveFrame = m_workspace->widget(index);
-  if (theActiveFrame && theActiveFrame->inherits("wxMDIChildFrame"))
-    ((wxMDIChildFrame*)theActiveFrame)->Activate();
+  if (theActiveFrame && theActiveFrame->inherits("wxChildFrame"))
+    ((wxChildFrame*)theActiveFrame)->Activate();
 }
 
 void wxMainFrame::closeEvent (QCloseEvent*)
@@ -161,8 +161,8 @@ void wxMainFrame::on_cascadeAction_triggered()
   //for (ii = 0; ii < int(windows.count()); ++ii ) {
   //  window = windows.at(ii);
   //  if (!((QMainWindow*)window)->isMinimized())
-  //    if (window->inherits("wxMDIChildFrame")) {
-  //      //((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
+  //    if (window->inherits("wxChildFrame")) {
+  //      //((wxChildFrame*)window)->oldWindowState = Qt::WindowNoState;
   //      window->resize(sz.width()*7/10, sz.height()*7/10);
   //    }
   //}
@@ -187,8 +187,8 @@ void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
   //    minHeight = menubar->height();
   //  }
   //  //else
-  //  //  if (window->inherits("wxMDIChildFrame"))
-  //  //    ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
+  //  //  if (window->inherits("wxChildFrame"))
+  //  //    ((wxChildFrame*)window)->oldWindowState = Qt::WindowNoState;
   //}
 //  if (!cc)
 //    return;
@@ -231,8 +231,8 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
   //    minHeight = menubar->height();
   //  }
   //  //else
-  //  //  if (window->inherits("wxMDIChildFrame"))
-  //  //    ((wxMDIChildFrame*)window)->oldWindowState = Qt::WindowNoState;
+  //  //  if (window->inherits("wxChildFrame"))
+  //  //    ((wxChildFrame*)window)->oldWindowState = Qt::WindowNoState;
   //}
   //if (!cc)
   //  return;
@@ -254,7 +254,22 @@ void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
   //}
 }
 
-wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
+void wxMainFrame::MoveToNewTabbedWindow(MyTabWidget *tw,int index){
+  MyTabWidget *newTW=new MyTabWidget(0);
+  newTW->setUsesScrollButtons(true);
+  QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
+  QWidget * page=tw->widget(index);
+  newTW->addTab(page,QString());
+  newTW->setTabText(0,tt);
+  newTW->setTabToolTip(0,ttt);
+  QSplitter *splitter = (QSplitter*)tw->parentWidget();
+  int splitterIndex = splitter->indexOf(tw);
+
+  splitter->insertWidget(splitterIndex+1,newTW);
+  connect(newTW ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
+}
+
+wxChildFrame::wxChildFrame(QWidget *parent)
     : QWidget(parent)
 {
   m_clientWindow = this;
@@ -272,10 +287,10 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
   QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(QEvent::User,this));
 }
 
-void wxMDIChildFrame::resizeEvent(QResizeEvent *ev) {
+void wxChildFrame::resizeEvent(QResizeEvent *ev) {
 }
 
-bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
+bool wxChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   doc->AddChildFrame(this);
   m_document = doc;
@@ -283,12 +298,12 @@ bool wxMDIChildFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   return true;
 }
 
-void wxMDIChildFrame::AddView(wxView *view)
+void wxChildFrame::AddView(wxView *view)
 {
   m_viewList.append(view);
 }
 
-void wxMDIChildFrame::InitialUpdate()
+void wxChildFrame::InitialUpdate()
 {
   for (int i=0; i<m_viewList.size(); i++) {
     m_viewList.at(i)->OnInitialUpdate();
@@ -297,7 +312,7 @@ void wxMDIChildFrame::InitialUpdate()
   show();
 }
 
-void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
+void wxChildFrame::Activate(bool activate, bool windowMenuAction)
 {
  QString title=windowTitle();
 
@@ -314,7 +329,7 @@ void wxMDIChildFrame::Activate(bool activate, bool windowMenuAction)
      wxDocManager::GetDocumentManager()->SetActiveView(m_viewList.first(),true);
 }
 
-void wxMDIChildFrame::SetTitle(QString &title)
+void wxChildFrame::SetTitle(QString &title)
 {
   QString oldTitle=parentWidget()->windowTitle(), newTitle=title, tooltip;
   QTabWidget *tw=(QTabWidget*)parentWidget()->parentWidget();
@@ -335,7 +350,7 @@ void wxMDIChildFrame::SetTitle(QString &title)
     wxTheApp->m_appWindow->GetWindowHistory()->OnChangeOfWindowTitle(oldTitle,newTitle);
 }
 
-bool wxMDIChildFrame::event(QEvent *ev)
+bool wxChildFrame::event(QEvent *ev)
 {
   if (ev->type() == QEvent::WindowStateChange)
     wxTheApp->isChMaximized = parentWidget()->isMaximized();
@@ -344,7 +359,7 @@ bool wxMDIChildFrame::event(QEvent *ev)
   return QWidget::event(ev);
 }
 
-void wxMDIChildFrame::RemoveView(wxView *view)
+void wxChildFrame::RemoveView(wxView *view)
 // Called from ~wxView
 {
   if (view == lastActive)
@@ -355,7 +370,7 @@ void wxMDIChildFrame::RemoveView(wxView *view)
     m_viewList.removeAt(ind);
 }
 
-wxMDIChildFrame::~wxMDIChildFrame()
+wxChildFrame::~wxChildFrame()
 {
   QString title;
 
@@ -375,8 +390,9 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   QTabBar *tb=tabBar();
   QPoint pt=evt->pos();
   Qt::MouseButton mb=evt->button();
-  int index=tb->tabAt(pt);
-  wxMDIChildFrame *page=(wxMDIChildFrame*)widget(index);
+  QSplitter *splitter=(QSplitter*)parentWidget();
+  int index=tb->tabAt(pt), splitterIndex=splitter->indexOf(this);
+  wxChildFrame *page=(wxChildFrame*)widget(index);
 
   if (mb != Qt::RightButton || index == -1)
     return;
@@ -386,6 +402,11 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
 
   QAction *closePageAction = tabMenu.addAction("Close this page");
   QAction *closeFileAction = tabMenu.addAction("Close this file");
+  QAction *newTabWidAction = tabMenu.addAction("Move to new tabbed window");
+
+  if (count() == 1)
+    newTabWidAction->setEnabled(false);
+
   triggeredAction = tabMenu.exec(QCursor::pos());
 
   if (triggeredAction == closePageAction) {
@@ -398,11 +419,19 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
       removeTab(index);
       delete page;
     }
+    if (count() == 0)
+      deleteLater();
     wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == closeFileAction) {
     page->Activate(true);
     wxDocManager::GetDocumentManager()->OnFileClose();
+    if (count() == 0)
+      deleteLater();
+    wxTheApp->updateButtonsMenus();
+  }
+  else if (triggeredAction == newTabWidAction) {
+    wxTheApp->m_appWindow->MoveToNewTabbedWindow(this,index);
     wxTheApp->updateButtonsMenus();
   }
 }

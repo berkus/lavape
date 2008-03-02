@@ -49,6 +49,7 @@ public:
   bool OnCreate();
 	virtual void UpdateUI();
   CUtilityView  *m_UtilityView;
+  QSplitter *m_ClientArea;
   bool UtilitiesHidden;
   int LastUtilitiesState; //-1:hidden, else: ActTab of m_UtilityView
 //  void ShowUtilitiesTab(UtilityTabs tab);
@@ -299,7 +300,7 @@ private:
 };
 
 
-class CTreeFrame : public wxMDIChildFrame
+class CTreeFrame : public wxChildFrame
 {
 public:
   CTreeFrame(QWidget *parent);

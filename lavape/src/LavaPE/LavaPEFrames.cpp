@@ -303,7 +303,7 @@ bool CLavaMainFrame::OnCreate()
   m_CentralWidget = split;
   setCentralWidget(m_CentralWidget);
   split->setOrientation(Qt::Vertical);
-  CreateWorkspace(split);
+  m_ClientArea = CreateWorkspace(split);
   m_UtilityView = new CUtilityView(split);
   m_UtilityView->hide();
   Toolbar_5->hide();
@@ -1485,8 +1485,8 @@ void CLavaMainFrame::on_tileVerticAction_triggered()
       minHeight = menubar->height();
     }
     else
-      if (window->inherits("wxMDIChildFrame"))
-        ((wxMDIChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
+      if (window->inherits("wxChildFrame"))
+        ((wxChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
   }
   if (!cc)
     return;
@@ -1530,8 +1530,8 @@ void CLavaMainFrame::on_tileHorizAction_triggered()
       minHeight = menubar->height();
     }
     else
-      if (window->inherits("wxMDIChildFrame"))
-        ((wxMDIChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
+      if (window->inherits("wxChildFrame"))
+        ((wxChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
   }
   if (!cc)
     return;
@@ -1565,7 +1565,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 		  if (title.l) {
 			  if (title[title.l-1] == '*')
 				  title = title.Substr(0,title.l-1);
-			  hw = new HistWindow(title,(wxMDIChildFrame*)ev->data());
+			  hw = new HistWindow(title,(wxChildFrame*)ev->data());
 			  m_childFrameHistory->AddToHistory(hw,this);
 		  }
     }
@@ -1778,7 +1778,7 @@ void CLavaMainFrame::on_howTo_clicked()
 }
 */
 
-CTreeFrame::CTreeFrame(QWidget* parent):wxMDIChildFrame(parent)
+CTreeFrame::CTreeFrame(QWidget* parent):wxChildFrame(parent)
 {
   viewR = 0;
   showIt = !((CLavaPEApp*)wxTheApp)->inTotalCheck;
@@ -1816,7 +1816,7 @@ bool CTreeFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
   if (viewM->OnCreate() && viewL->OnCreate() && viewR->OnCreate()) {
     doc->AddChildFrame(this);
     m_document = doc;
-    //wxMDIChildFrame::OnCreate(temp,doc);
+    //wxChildFrame::OnCreate(temp,doc);
     ((CInclView*)viewL)->myTree = (CTreeView*)viewM;
     ((CVTView*)viewR)->myMainView = (CLavaPEView*)viewM;
     ((CLavaPEView*)viewM)->myInclView = (CTreeView*)viewL;
@@ -1850,7 +1850,7 @@ void CTreeFrame::InitialUpdate()
 
 {
   if (showIt) {
-    wxMDIChildFrame::InitialUpdate();
+    wxChildFrame::InitialUpdate();
     wxDocManager::GetDocumentManager()->SetActiveView(viewM, true);
   }
 }
@@ -1868,7 +1868,7 @@ void CTreeFrame::Activate(bool activate, bool windowMenuAction)
 {
   showIt = activate && (showIt || !((CLavaPEApp*)wxTheApp)->inTotalCheck);
   if (showIt)
-    wxMDIChildFrame::Activate(showIt,windowMenuAction);
+    wxChildFrame::Activate(showIt,windowMenuAction);
   else
     hide();
 }
@@ -1932,7 +1932,7 @@ CFormFrame::~CFormFrame()
 bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 {
   QSize sz;
-  //if (!wxMDIChildFrame::OnCreate(temp, doc))
+  //if (!wxChildFrame::OnCreate(temp, doc))
   //  return false;
   doc->AddChildFrame(this);
   m_document = doc;
@@ -1992,7 +1992,7 @@ bool CFormFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 
 void CFormFrame::InitialUpdate()
 {
-  wxMDIChildFrame::InitialUpdate();
+  wxChildFrame::InitialUpdate();
   wxDocManager::GetDocumentManager()->SetActiveView(viewR, true);
 }
 

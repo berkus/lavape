@@ -3579,7 +3579,7 @@ bool CLavaPEDoc::OpenExecView (LavaDECL* eDECL)
 {
 	bool active=false;
 	CLavaBaseView *view;
-	wxMDIChildFrame *execChild;
+	wxChildFrame *execChild;
 //  LavaDECL *eDECL = (LavaDECL*)execChe->data;
 	int pos; // = GetFirstViewPos();
 	for (pos= 0; pos < m_documentViews.size(); pos++)
@@ -3618,7 +3618,7 @@ bool CLavaPEDoc::OpenGUIView (LavaDECL** pdecl)
 {
 	bool active=false;
 	CLavaBaseView *view;
-	wxMDIChildFrame *formChild;
+	wxChildFrame *formChild;
 	int pos;
 	for (pos = 0; pos < m_documentViews.size(); pos++)
 	{

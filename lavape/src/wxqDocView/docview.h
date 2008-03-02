@@ -120,7 +120,7 @@ private:
     Q_OBJECT
 };
 
-class wxMDIChildFrame;
+class wxChildFrame;
 
 class WXDLLEXPORT wxDocument : public QObject
 {
@@ -184,8 +184,8 @@ public:
         { return m_documentModified; }
     virtual void Modify(bool mod) { m_documentModified = mod; }
 
-    virtual void AddChildFrame(wxMDIChildFrame *chf);
-    virtual int RemoveChildFrame(wxMDIChildFrame *chf);
+    virtual void AddChildFrame(wxChildFrame *chf);
+    virtual int RemoveChildFrame(wxChildFrame *chf);
 
     virtual bool AddView(wxView *view);
     virtual bool RemoveView(wxView *view);
@@ -213,7 +213,7 @@ public:
 
 
 protected:
-    QList<wxMDIChildFrame*> m_docChildFrames;
+    QList<wxChildFrame*> m_docChildFrames;
     QString              m_documentFile; //all links are resolved
     QString              m_userFilename; //no link resolved
     QString              m_documentTitle, m_oldTitle; //the used name
@@ -227,7 +227,7 @@ private:
     Q_OBJECT
 };
 
-class WXDLLEXPORT wxMDIChildFrame;
+class WXDLLEXPORT wxChildFrame;
 
 class WXDLLEXPORT wxView : public QWidget
 {
@@ -248,8 +248,8 @@ public:
     QString GetViewName() const { return m_viewTypeName; }
     void SetViewName(const QString& name) { m_viewTypeName = name; };
 
-    wxMDIChildFrame *GetParentFrame() const { return m_viewFrame ; }
-//    void SetFrame(wxMDIChildFrame *frame) { m_viewFrame = frame; }
+    wxChildFrame *GetParentFrame() const { return m_viewFrame ; }
+//    void SetFrame(wxChildFrame *frame) { m_viewFrame = frame; }
     virtual void ActivateView(bool activate);
     virtual void OnActivateView(bool activate=true, wxView *deactiveView=0);
 //    virtual void OnDraw(QPainter *dc) = 0;
@@ -279,10 +279,10 @@ public:
 protected:
     wxDocument*               m_viewDocument;
     QString                   m_viewTypeName;
-    wxMDIChildFrame*       m_viewFrame;
+    wxChildFrame*       m_viewFrame;
 
 private:
-    wxMDIChildFrame *CalcParentFrame();
+    wxChildFrame *CalcParentFrame();
 
     Q_OBJECT
 };
@@ -292,7 +292,7 @@ private:
 class WXDLLEXPORT wxDocTemplate : public QObject
 {
 friend class WXDLLEXPORT wxDocManager;
-friend class WXDLLEXPORT wxMDIChildFrame;
+friend class WXDLLEXPORT wxChildFrame;
 
 public:
     // Associate document and view types. They're for identifying what view is
@@ -316,7 +316,7 @@ public:
     // view using dynamic instance construction. Override these if you need a
     // different method of construction.
     virtual wxDocument *CreateDocument(const QString& path, long flags=0); //path is the used path name (no links resolved)
-    virtual wxMDIChildFrame *CreateChildFrame(wxDocument *doc);
+    virtual wxChildFrame *CreateChildFrame(wxDocument *doc);
 
     QString GetDefaultExtension() const { return m_defaultExt; };
     QString GetDescription() const { return m_description; }

@@ -20,7 +20,7 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
-class LAVAGUI_DLL CLavaGUIFrame : public wxMDIChildFrame
+class LAVAGUI_DLL CLavaGUIFrame : public wxChildFrame
 {
 
 public:

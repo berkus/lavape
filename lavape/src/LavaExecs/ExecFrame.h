@@ -7,7 +7,7 @@
 #include "Constructs.h"
 
 
-class LAVAEXECS_DLL CExecFrame : public wxMDIChildFrame
+class LAVAEXECS_DLL CExecFrame : public wxChildFrame
 {
 public:
   CExecFrame(QWidget *parent);

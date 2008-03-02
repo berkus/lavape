@@ -160,11 +160,11 @@ void wxApp::updateButtonsMenus()
 {
   if (!m_appWindow->m_workspace)
     return;
-  //wxMDIChildFrame *actMDIChild = (wxMDIChildFrame*)m_appWindow->m_workspace->currentWidget();
+  //wxChildFrame *actMDIChild = (wxChildFrame*)m_appWindow->m_workspace->currentWidget();
 
   onUpdateUI();
 
-  //wxMDIChildFrame *newActMDIChild = (wxMDIChildFrame*)m_appWindow->m_workspace->currentWidget();
+  //wxChildFrame *newActMDIChild = (wxChildFrame*)m_appWindow->m_workspace->currentWidget();
   //if (newActMDIChild != actMDIChild)
   //newActMDIChild->m_tabWidget->setCurrentWidget(newActMDIChild);
 }
@@ -584,12 +584,12 @@ bool wxDocument::RemoveView(wxView *view)
     return true;
 }
 
-void wxDocument::AddChildFrame(wxMDIChildFrame *chf) {
+void wxDocument::AddChildFrame(wxChildFrame *chf) {
   m_docChildFrames.append(chf);
 }
 
-int wxDocument::RemoveChildFrame(wxMDIChildFrame *chf)
-// Called from ~wxMDIChildFrame
+int wxDocument::RemoveChildFrame(wxChildFrame *chf)
+// Called from ~wxChildFrame
 {
   m_docChildFrames.removeAt(m_docChildFrames.indexOf(chf));
   return m_docChildFrames.count();
@@ -666,14 +666,14 @@ void wxView::focusInEvent ( QFocusEvent * e )
   wxDocManager::GetDocumentManager()->SetActiveView(this, true);
 }
 
-wxMDIChildFrame *wxView::CalcParentFrame()
+wxChildFrame *wxView::CalcParentFrame()
 {
   QWidget *parent;
 
   for (parent = parentWidget();
-       parent && !parent->inherits("wxMDIChildFrame");
+       parent && !parent->inherits("wxChildFrame");
        parent = parent->parentWidget());
-  return (wxMDIChildFrame*)parent;
+  return (wxChildFrame*)parent;
 }
 
 wxView::~wxView()
@@ -822,7 +822,7 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
     else
       ok = doc->OnOpenDocument(fn);
     if (ok) {
-      wxMDIChildFrame* newFrame = CreateChildFrame(doc);
+      wxChildFrame* newFrame = CreateChildFrame(doc);
       newFrame->InitialUpdate();
       //newFrame->show();
       return doc;
@@ -843,10 +843,10 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
   }
 }
 
-wxMDIChildFrame *wxDocTemplate::CreateChildFrame(wxDocument *doc)
+wxChildFrame *wxDocTemplate::CreateChildFrame(wxDocument *doc)
 {
   wxMainFrame *mw = wxTheApp->m_appWindow;
-  wxMDIChildFrame *frame = (wxMDIChildFrame *)m_frameClassInfo(mw->GetClientWindow());
+  wxChildFrame *frame = (wxChildFrame *)m_frameClassInfo(mw->GetClientWindow());
   frame->m_tabWidget->setCurrentWidget(frame);
 
   if (frame->OnCreate(this,doc)) {

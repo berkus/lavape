@@ -32,7 +32,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CExecFrame construction/destruction
 
-CExecFrame::CExecFrame(QWidget *parent) : wxMDIChildFrame(parent)
+CExecFrame::CExecFrame(QWidget *parent) : wxChildFrame(parent)
 {
   // TODO: add member initialization code here
 //  m_ComboBar = 0;
@@ -51,7 +51,7 @@ void CExecFrame::closeEvent(QCloseEvent *e)
 
 void CExecFrame::InitialUpdate()
 {
-  wxMDIChildFrame::InitialUpdate();
+  wxChildFrame::InitialUpdate();
   lastActive = m_viewList.first();
   wxDocManager::GetDocumentManager()->SetActiveView(lastActive, true);
 }
@@ -77,7 +77,7 @@ bool CExecFrame::OnCreate(wxDocTemplate *temp, wxDocument *doc)
 //  m_ComboBar->show();
   setWindowIcon(QIcon(QPixmap((const char**) execframe)));
 //  NewTitle(decl);
-  return wxMDIChildFrame::OnCreate(temp,doc);
+  return wxChildFrame::OnCreate(temp,doc);
 }
 
 void CExecFrame::OnDestroy()

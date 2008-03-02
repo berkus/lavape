@@ -16,6 +16,7 @@ public:
   int lastTile;
   virtual void customEvent(QEvent *ev);
   //CLavaDoc* docModal;
+  QSplitter *m_ClientArea;
 
 public slots:
   virtual void on_helpContentsAction_triggered();

@@ -44,13 +44,24 @@
 class WXDLLEXPORT HistWindow : public DString
 {
 public:
-	HistWindow(DString caption, wxMDIChildFrame *win) : DString(caption) { window = win; }
-	wxMDIChildFrame *window;
+	HistWindow(DString caption, wxChildFrame *win) : DString(caption) { window = win; }
+	wxChildFrame *window;
+};
+
+
+class WXDLLEXPORT MyTabWidget : public QTabWidget {
+public:
+  MyTabWidget(QWidget *parent) : QTabWidget(parent) {}
+
+  void mousePressEvent ( QMouseEvent *evt );
+
+private:
+  Q_OBJECT
 };
 
 class WXDLLEXPORT wxMainFrame: public QMainWindow
 {
-    friend class wxMDIChildFrame;
+    friend class wxChildFrame;
     friend class wxApp;
 public:
   wxMainFrame();
@@ -59,7 +70,7 @@ public:
   virtual bool OnCreate();
   virtual void UpdateUI() {}
 
-//  wxMDIChildFrame *GetActiveChild() const;
+//  wxChildFrame *GetActiveChild() const;
 
   // Get the client window
   QTabWidget *GetClientWindow() const { return m_workspace; }
@@ -77,6 +88,7 @@ public:
   virtual QTabWidget* Workspace() {
     return m_workspace;
   }
+  void MoveToNewTabbedWindow(MyTabWidget *tw,int index);
 
 protected:
   virtual QSplitter *CreateWorkspace(QWidget* parent);
@@ -101,25 +113,14 @@ private:
 };
 
 
-class WXDLLEXPORT MyTabWidget : public QTabWidget {
-public:
-  MyTabWidget(QWidget *parent) : QTabWidget(parent) {}
-
-  void mousePressEvent ( QMouseEvent *evt );
-
-private:
-  Q_OBJECT
-};
-
-
-class WXDLLEXPORT wxMDIChildFrame : public QWidget
+class WXDLLEXPORT wxChildFrame : public QWidget
 {
 public:
-  wxMDIChildFrame(QWidget *parent);
+  wxChildFrame(QWidget *parent);
   virtual bool OnCreate(wxDocTemplate *temp, wxDocument *doc);
   virtual void InitialUpdate();
 
-  virtual ~wxMDIChildFrame();
+  virtual ~wxChildFrame();
 
   bool deleting;
   virtual void UpdateUI() {}
@@ -133,7 +134,7 @@ public:
   //virtual void Activate(bool activate=true,bool windowMenuAction=false);
   MyTabWidget *m_tabWidget;
 
-//  FRAMEFACTORY(wxMDIChildFrame)
+//  FRAMEFACTORY(wxChildFrame)
 	//Qt::WindowState oldWindowState;
 
 protected:
@@ -170,4 +171,4 @@ MYSTYLE(Cleanlooks)
 MYSTYLE(CDE)
 
 #endif
-    // _WX_DOCMDI_H_
+    // _WX_DOCM

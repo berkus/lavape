@@ -447,7 +447,7 @@ void CLavaGUIView::OnInitialUpdate()
   LavaObjectPtr obj;
 
   CLavaPEHint *pHint = LBaseData->actHint;
-  wxMDIChildFrame *pChild = (wxMDIChildFrame*)GetParentFrame();
+  wxChildFrame *pChild = (wxChildFrame*)GetParentFrame();
   if (pChild && pChild->inherits("CLavaGUIFrame"))
     ((CLavaGUIFrame*)pChild)->myView = this;
   GetDocument()->RuntimeView = this;

@@ -88,6 +88,7 @@ bool CLavaMainFrame::OnCreate() {
   DString fn;
 
   wxMainFrame::OnCreate();
+  m_ClientArea = (QSplitter*)m_CentralWidget;
 
   for (int i = 0; i < fileHist->m_historyN; i++)
   {
@@ -162,7 +163,7 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 		if (title.l) {
 			if (title[title.l-1] == '*')
 				title = title.Substr(0,title.l-1);
-			hw = new HistWindow(title,(wxMDIChildFrame*)ev->data());
+			hw = new HistWindow(title,(wxChildFrame*)ev->data());
 			m_childFrameHistory->AddToHistory(hw,this);
 		}
 	}
