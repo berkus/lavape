@@ -419,14 +419,14 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
       removeTab(index);
       delete page;
     }
-    if (count() == 0)
+    if (splitter->count() > 1)
       deleteLater();
     wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == closeFileAction) {
     page->Activate(true);
     wxDocManager::GetDocumentManager()->OnFileClose();
-    if (count() == 0)
+    if (splitter->count() > 1)
       deleteLater();
     wxTheApp->updateButtonsMenus();
   }
