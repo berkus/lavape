@@ -697,7 +697,6 @@ void CExecUpdate::MakeExec(LavaDECL *myDECL) {
   selfVar->parentObject = 0;
   selfVar->stackPos = SFH;
   selfVar->execDECL = myDECL;
-  selfVar->oldFormParms = 0;
   myDECL->Exec.ptr = selfVar;
 
   decl = myDECL->ParentDECL;

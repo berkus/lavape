@@ -603,7 +603,7 @@ public:
   NESTEDANY<FormParms>-- formParms;
   CHAINX/*BaseInits*/ baseInitCalls; // non-empty only in initializer execs
   NESTEDANY<Expression> body;
-  FormParms-- *oldFormParms;
+  CHETokenNode-- *oldParmsStartToken, *oldParmsEndToken;
   LavaDECL-- *execDECL, *funcDECL, *itfDECL, *selfType;
   unsigned-- nParams, nInputs, nOutputs, stackFrameSize, firstOldExprExec, inINCL;
   bool-- concernExecs, checked, isFuncBody, isInvariant;

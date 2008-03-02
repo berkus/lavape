@@ -1710,14 +1710,22 @@ void UpdateParameters (CheckData &ckd) {
     else
       selfVar->primaryToken = function_T;
 
-  selfVar->oldFormParms = (FormParms*)selfVar->formParms.ptr;
+  if (selfVar->formParms.ptr) {
+    selfVar->oldParmsStartToken = ((FormParms*)selfVar->formParms.ptr)->startToken;
+    selfVar->oldParmsEndToken = ((FormParms*)selfVar->formParms.ptr)->endToken;
+  }
+  else {
+    selfVar->oldParmsStartToken = 0;
+    selfVar->oldParmsEndToken = 0;
+  }
 #ifdef INTERPRETER
   fp = new FormParms(selfVar);
 #else
   fp = new FormParmsV(selfVar);
 #endif
+  if (selfVar->formParms.ptr)
+    delete selfVar->formParms.ptr;
   selfVar->formParms.ptr = fp;
-//  ckd.currentSynObj = selfVar;
   ((FormParms*)selfVar->formParms.ptr)->Check(ckd);
   if (!fp->inputs.first && !fp->outputs.first) {
     delete fp;
@@ -1783,7 +1791,6 @@ bool FormParms::Check (CheckData &ckd)
   ENTRY
 
   ADJUST4(rID);
-//#ifndef INTERPRETER
   chpParmDef = GetFirstInput(&ckd.document->IDTable,rID);
   while (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == IAttr) {
     // locate old parm. and reposition it if necessary:
@@ -1792,15 +1799,12 @@ bool FormParms::Check (CheckData &ckd)
     harmonize(ckd,inputs,chpParmDef,chpParmRef,isInputVar);
     chpParmDef = (CHE*)chpParmDef->successor;
   }
-//#endif
 
   chpParmDef = GetFirstOutput(&ckd.document->IDTable,rID);
-  if (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == OAttr) {
-    while (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == OAttr) {
-      // locate old parm. and reposition it if necessary:
-      harmonize(ckd,outputs,chpParmDef,chpParmRef,isOutputVar);
-      chpParmDef = (CHE*)chpParmDef->successor;
-    }
+  while (chpParmDef && ((LavaDECL*)chpParmDef->data)->DeclType == OAttr) {
+    // locate old parm. and reposition it if necessary:
+    harmonize(ckd,outputs,chpParmDef,chpParmRef,isOutputVar);
+    chpParmDef = (CHE*)chpParmDef->successor;
   }
   EXIT
 }

@@ -258,7 +258,6 @@ void CExecView::OnInitialUpdate()
 
   selfVar = (SelfVar*)myDECL->Exec.ptr;
   selfVar->formParms.ptr = 0;
-  selfVar->oldFormParms = 0;
   selfVar->concernExecs = false;
   selfVar->execView= this;
   text->ckd.inInitialUpdate = true;
@@ -878,7 +877,7 @@ void CExecView::OnUpdate(wxView*, unsigned undoRedo, QObject* pHint)
     sData.execDECL = myDECL;
     selfVar->MakeTable((address)&myDoc->IDTable, 0, (SynObjectBase*)myDECL, onSetSynOID, 0,0, (address)&sData);
     RedrawExec(text->selectAt);
-    selfVar->oldFormParms = (FormParms*)selfVar->formParms.ptr;
+    //selfVar->oldFormParms = (FormParms*)selfVar->formParms.ptr;
 
     toBeDrawn = 0;
     multipleUpdates = false;
@@ -2153,15 +2152,15 @@ void CExecView::RedrawExec(SynObject *selectAt)
 void CExecView::Redraw (SynObject *newObj) {
   CHETokenNode *delToken, *delTokenSucc, *oldStartToken, *oldEndToken,
     *newStartToken, *newEndToken;
-  SynObject *parent, *oldFormParms=selfVar->oldFormParms;
+  SynObject *parent;
   FuncExpression *funcExpr;
   bool mod=true, ignore=false;
   QString selText;
 //  int para, startOfLine, nArrows=0, len;
 
-  if (newObj && newObj->primaryToken == FormParms_T && oldFormParms) {
-    oldStartToken = oldFormParms->startToken;
-    oldEndToken = oldFormParms->endToken;
+  if (newObj && newObj->primaryToken == FormParms_T && selfVar->oldParmsStartToken) {
+    oldStartToken = selfVar->oldParmsStartToken;
+    oldEndToken = selfVar->oldParmsEndToken;
   }
   else if (replacedObj) {
     oldStartToken = replacedObj->startToken;
