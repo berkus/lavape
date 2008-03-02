@@ -70,7 +70,6 @@ wxMainFrame::wxMainFrame() : QMainWindow()
 
 bool wxMainFrame::OnCreate()
 {
-//  resize(800,600);
   m_CentralWidget = CreateWorkspace(this);
   setCentralWidget(m_CentralWidget);
   LoadFileHistory();
@@ -84,13 +83,13 @@ wxMainFrame::~wxMainFrame()
   delete m_childFrameHistory;
 }
 
-QTabWidget* wxMainFrame::CreateWorkspace(QWidget* parent)
+QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
 {
-  m_workspace = new MyTabWidget(parent);
-  m_workspace->setElideMode(Qt::ElideLeft);
+  QSplitter *split=new QSplitter(parent);
+  m_workspace = new MyTabWidget(split);
   m_workspace->setUsesScrollButtons(true);
   connect(m_workspace ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
-  return m_workspace;
+  return split;
 }
 
 
@@ -267,8 +266,8 @@ wxMDIChildFrame::wxMDIChildFrame(QWidget *parent)
   layout->setMargin(0);
   setAttribute(Qt::WA_DeleteOnClose);
 
-  QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
-  resize(sz.width()*7/10, sz.height()*7/10);
+  //QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
+  //resize(sz.width()*7/10, sz.height()*7/10);
   deleting = false;
   QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(QEvent::User,this));
 }
@@ -390,7 +389,8 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   triggeredAction = tabMenu.exec(QCursor::pos());
 
   if (triggeredAction == closePageAction) {
-    if (page->inherits("CTreeFrame")) {
+    if (page->inherits("CTreeFrame")
+    || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
       page->Activate(true);
       wxDocManager::GetDocumentManager()->OnFileClose();
     }

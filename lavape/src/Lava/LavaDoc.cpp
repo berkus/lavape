@@ -103,6 +103,7 @@ bool CLavaDoc::OnCloseDocument()
 CLavaDoc::~CLavaDoc()
 {
   deleting = true;
+  DeleteContents();
   if (numAllocObjects) {
     QMessageBox::critical(wxTheApp->m_appWindow, wxTheApp->applicationName(), QString("Memory leak: %1 orphaned Lava object(s)").arg(numAllocObjects),QMessageBox::Ok|QMessageBox::Default,QMessageBox::NoButton);
   }
@@ -298,7 +299,7 @@ bool CLavaDoc::OnSaveDocument(const QString& lpszPathName)
   ckd.document = this;
   if (isObject) {
     ObjectPathName = DString(qPrintable(lpszPathName));
-    ((CLavaGUIView*)RuntimeView)->GetParentFrame()->setWindowTitle(GetTitle());
+    ((CLavaGUIView*)RuntimeView)->GetParentFrame()->SetTitle(GetTitle());
     if (DocObjects[2]) {
       if (RuntimeView) {
         inSaveProc = true;

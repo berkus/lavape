@@ -79,7 +79,7 @@ public:
   }
 
 protected:
-  virtual QTabWidget* CreateWorkspace(QWidget* parent);
+  virtual QSplitter *CreateWorkspace(QWidget* parent);
   QWidget *m_CentralWidget;
   QVBoxLayout *m_layout;
   QTabWidget *m_workspace;

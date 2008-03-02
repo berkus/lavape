@@ -481,7 +481,7 @@ void CLavaGUIView::OnInitialUpdate()
         myGUIProg->FrozenObject = 0;
         myGUIProg->fromFillIn = 1;
         myDECL = (*ServicePtr)[0][0].implDECL;
-        ((CLavaGUIFrame*)GetParentFrame())->setWindowTitle(GetDocument()->GetTitle());
+        ((CLavaGUIFrame*)GetParentFrame())->SetTitle(GetDocument()->GetTitle());
         myID = TID(myDECL->OwnID, myDECL->inINCL);
         LastBrowseNode = 0;
         MessToStatusbar();
@@ -510,7 +510,7 @@ void CLavaGUIView::OnInitialUpdate()
       myGUIProg->fromFillIn = 1;
       myDECL = (*ServicePtr)[0][0].implDECL;
       //if (!GetDocument()->IsEmbedded())
-        ((CLavaGUIFrame*)GetParentFrame())->setWindowTitle(GetDocument()->GetTitle());
+        ((CLavaGUIFrame*)GetParentFrame())->SetTitle(GetDocument()->GetTitle());
       myID = TID(myDECL->OwnID, myDECL->inINCL);
       LastBrowseNode = 0;
       myGUIProg->myDECL = myDECL;
