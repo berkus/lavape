@@ -92,6 +92,8 @@ public:
     return m_workspace;
   }
   void MoveToNewTabbedWindow(MyTabWidget *tw,int index);
+  void MoveToNextTabbedWindow(MyTabWidget *tw,int index);
+  void MoveToPrecedingTabbedWindow(MyTabWidget *tw,int index);
 
 protected:
   virtual QSplitter *CreateWorkspace(QWidget* parent);

@@ -70,7 +70,7 @@ public:
   void fillHelpMap6(ToolbarWhatsThis *tbw);
 */
 private:
-	int	lastTile;
+	bool splitHoriz;
 
   void OnUpdateshowUtil(QAction* action);
 //  void OnUpdateViewToolbar1(QAction* action);
@@ -99,8 +99,8 @@ public slots:
     virtual void on_editingLavaProgsAction_triggered();
     virtual void on_learningLavaAction_triggered();
     virtual void on_helpAboutAction_triggered();
-    virtual void on_tileHorizAction_triggered();
-    virtual void on_tileVerticAction_triggered();
+    virtual void on_splitHorizAction_triggered();
+    virtual void on_splitVerticAction_triggered();
     virtual void on_saveEveryChangeAction_triggered(bool);
     virtual void on_viewTB1Action_triggered();
     virtual void on_viewTB2Action_triggered();

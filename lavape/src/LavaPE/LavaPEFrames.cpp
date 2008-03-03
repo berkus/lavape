@@ -108,9 +108,6 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   addToolBar(Toolbar_6);
   Toolbar_6->show();
 
-  //insertToolBarBreak(Toolbar_3);
-  //insertToolBarBreak(Toolbar_5);
-
   installToolButtonEvtFilters(Toolbar_1);
   installToolButtonEvtFilters(Toolbar_2);
   installToolButtonEvtFilters(HelpToolbar);
@@ -125,7 +122,7 @@ CLavaMainFrame::CLavaMainFrame() : CMainFrame()
   makeStyle(LBaseData->m_style);
 
   m_UtilityView = 0;
-  lastTile = 0;
+  splitHoriz = true;
   QMenu *styleMenu = optionMenu->addMenu("Set st&yle");
   QActionGroup *ag = new QActionGroup( this);
   ag->setExclusive( TRUE );
@@ -289,7 +286,7 @@ bool CLavaMainFrame::OnCreate()
   wxHistory *fileHist = wxDocManager::GetDocumentManager()->m_fileHistory;
   DString fn;
 
-  m_childFrameHistory->m_menu = windowMenu;
+  //m_childFrameHistory->m_menu = windowMenu;
   fileHist->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
   LoadFileHistory();
   for (int i = 0; i < fileHist->m_historyN; i++)
@@ -1464,94 +1461,37 @@ void CLavaMainFrame::emitSignal(){
 /////////////////////////////////////////////
 
 
-void CLavaMainFrame::on_tileVerticAction_triggered()
+void CLavaMainFrame::on_splitVerticAction_triggered()
 {
-  TileVertic(menubar, lastTile);
-  /*
-  int ii, cc = 0, x = 0, widthForEach, preferredWidth, actWidth, minHeight=0, allHeight;
-  QWidget *window;
-  QWidgetList windows = m_workspace->windowList();
-
-  wxTheApp->isChMaximized = false;
-  lastTile = 1;
-
-  if (!windows.count() )
-      return;
-  cc = (int)windows.count();
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (((QMainWindow*)window)->isMinimized()) {
-      cc--;
-      minHeight = menubar->height();
-    }
-    else
-      if (window->inherits("wxChildFrame"))
-        ((wxChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
-  }
-  if (!cc)
-    return;
-  if (cc > 3) {
-    m_workspace->tile();
-    return;
-  }
-  allHeight = m_workspace->height() - minHeight;
-  widthForEach = m_workspace->width() / cc;
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) {
-      preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
-      actWidth = qMax(widthForEach, preferredWidth);
-      window->parentWidget()->setGeometry( x, 0, actWidth, allHeight );
-      x += actWidth;
-      if (!((QMainWindow*)window)->isMaximized())
-        window->showNormal();
-    }
-  }
-  */
+  on_splitHorizAction_triggered();
+ // splitHoriz = !splitHoriz;
+	//switch (splitHoriz) {
+	//case true:
+ //   m_ClientArea ->setOrientation(Qt::Horizontal);
+	//	splitHorizAction->setChecked(true);
+	//	splitVerticAction->setChecked(false);
+	//	break;
+	//case false:
+ //   m_ClientArea ->setOrientation(Qt::Vertical);
+	//	splitHorizAction->setChecked(false);
+	//	splitVerticAction->setChecked(true);
+	//}
 }
 
-void CLavaMainFrame::on_tileHorizAction_triggered()
+void CLavaMainFrame::on_splitHorizAction_triggered()
 {
-  TileHoriz(menubar, lastTile);
-  /*
-  int ii, cc = 0, y = 0, heightForEach, preferredHeight, actHeight, minHeight=0;
-  QWidget *window;
-  QWidgetList windows = m_workspace->windowList();
-
-  lastTile = 2;
-
-  if (!windows.count() )
-      return;
-  cc = (int)windows.count();
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (((QMainWindow*)window)->isMinimized()) {
-      cc--;
-      minHeight = menubar->height();
-    }
-    else
-      if (window->inherits("wxChildFrame"))
-        ((wxChildFrame*)window)->oldWindowState = QEvent::ShowNormal;
-  }
-  if (!cc)
-    return;
-  if (cc > 3) {
-    m_workspace->tile();
-    return;
-  }
-  heightForEach = (m_workspace->height() - minHeight) / cc;
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) {
-      preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
-      actHeight = qMax(heightForEach, preferredHeight);
-      window->parentWidget()->setGeometry( 0, y, m_workspace->width(), actHeight );
-      y += actHeight;
-      if (!((QMainWindow*)window)->isMaximized())
-        window->showNormal();
-    }
-  }
-  */
+  splitHoriz = !splitHoriz;
+	switch (splitHoriz) {
+	case true:
+    m_ClientArea ->setOrientation(Qt::Horizontal);
+		splitHorizAction->setChecked(true);
+		splitVerticAction->setChecked(false);
+		break;
+	case false:
+    m_ClientArea ->setOrientation(Qt::Vertical);
+		splitHorizAction->setChecked(false);
+		splitVerticAction->setChecked(true);
+	}
 }
 
 void CLavaMainFrame::customEvent(QEvent *ev0){
@@ -1571,13 +1511,15 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
     }
   }
 	else
-		switch (lastTile) {
-		case 1:
-			on_tileVerticAction_triggered();
+    splitHoriz = !splitHoriz;
+		switch (splitHoriz) {
+		case true:
+			splitHorizAction->setChecked(true);
+			splitVerticAction->setChecked(false);
 			break;
-		case 0:
-		case 2:
-			on_tileHorizAction_triggered();
+		case false:
+			splitHorizAction->setChecked(false);
+			splitVerticAction->setChecked(true);
 		}
 }
 

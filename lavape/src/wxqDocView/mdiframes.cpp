@@ -262,7 +262,8 @@ void wxMainFrame::MoveToNewTabbedWindow(MyTabWidget *tw,int index){
   MyTabWidget *newTW=new MyTabWidget(0);
   newTW->setUsesScrollButtons(true);
   QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
-  QWidget * page=tw->widget(index);
+  QWidget *page=tw->widget(index);
+
   newTW->addTab(page,QString());
   newTW->setTabText(0,tt);
   newTW->setTabToolTip(0,ttt);
@@ -277,6 +278,36 @@ void wxMainFrame::MoveToNewTabbedWindow(MyTabWidget *tw,int index){
   connect(newTW ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
 }
 
+void wxMainFrame::MoveToNextTabbedWindow(MyTabWidget *tw,int index){
+  QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
+  QWidget *page=tw->widget(index);
+  QSplitter *splitter = (QSplitter*)tw->parentWidget();
+  int splitterIndex = splitter->indexOf(tw);
+  MyTabWidget *nextTW=(MyTabWidget*)splitter->widget(splitterIndex+1);
+
+  nextTW->insertTab(0,page,QString(tt));
+  nextTW->setTabToolTip(0,ttt);
+  nextTW->setCurrentIndex(0);
+  if (tw->count() == 0 && splitter->count() > 1)
+    tw->deleteLater();
+  wxTheApp->updateButtonsMenus();
+}
+
+void wxMainFrame::MoveToPrecedingTabbedWindow(MyTabWidget *tw,int index){
+  QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
+  QWidget *page=tw->widget(index);
+  QSplitter *splitter = (QSplitter*)tw->parentWidget();
+  int splitterIndex = splitter->indexOf(tw);
+  MyTabWidget *precTW=(MyTabWidget*)splitter->widget(splitterIndex-1);
+
+  precTW->insertTab(0,page,QString(tt));
+  precTW->setTabToolTip(0,ttt);
+  precTW->setCurrentIndex(0);
+  if (tw->count() == 0 && splitter->count() > 1)
+    tw->deleteLater();
+  wxTheApp->updateButtonsMenus();
+}
+
 wxChildFrame::wxChildFrame(QWidget *parent)
     : QWidget(parent)
 {
@@ -289,8 +320,6 @@ wxChildFrame::wxChildFrame(QWidget *parent)
   layout->setMargin(0);
   setAttribute(Qt::WA_DeleteOnClose);
 
-  //QSize sz = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow()->size();
-  //resize(sz.width()*7/10, sz.height()*7/10);
   deleting = false;
   QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(QEvent::User,this));
 }
@@ -344,13 +373,13 @@ void wxChildFrame::SetTitle(QString &title)
 
   if (title.contains(": ")) {
     tw->setTabText(tw->indexOf(this),title);
-    tooltip = m_document->GetFilename() + ", " + title + "\nNote the tab context menu!";
+    tooltip = m_document->GetFilename() + ", " + title + "\nNote the context menu on every tab!";
     tw->setTabToolTip(tw->indexOf(this),tooltip);
   }
   else {
     QFileInfo fi(title);
     tw->setTabText(tw->indexOf(this),fi.fileName());
-    tw->setTabToolTip(tw->indexOf(this),m_document->GetFilename() + "\nNote the tab context menu!");
+    tw->setTabToolTip(tw->indexOf(this),m_document->GetFilename() + "\nNote the context menu on every tab!");
   }
   if (newTitle.at(newTitle.length()-1) == '*')
     newTitle = newTitle.left(newTitle.length()-1);
@@ -362,8 +391,6 @@ bool wxChildFrame::event(QEvent *ev)
 {
   if (ev->type() == QEvent::WindowStateChange)
     wxTheApp->isChMaximized = parentWidget()->isMaximized();
-  //else if (ev->type() == QEvent::Close)
-  //  wxTheApp->m_appWindow->m_workspace->setUpdatesEnabled(false);
   return QWidget::event(ev);
 }
 
@@ -411,9 +438,15 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   QAction *closePageAction = tabMenu.addAction("Close this page");
   QAction *closeFileAction = tabMenu.addAction("Close this file");
   QAction *newTabWidAction = tabMenu.addAction("Move to new tabbed window");
+  QAction *movePageRightAction = tabMenu.addAction("Move to next tabbed window");
+  QAction *movePageLeftAction = tabMenu.addAction("Move to preceding tabbed window");
 
   if (count() == 1)
     newTabWidAction->setEnabled(false);
+  if (splitterIndex == splitter->count()-1)
+    movePageRightAction->setEnabled(false);
+  if (splitterIndex == 0)
+    movePageLeftAction->setEnabled(false);
 
   triggeredAction = tabMenu.exec(QCursor::pos());
 
@@ -439,7 +472,18 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
     wxTheApp->updateButtonsMenus();
   }
   else if (triggeredAction == newTabWidAction) {
+    page->Activate(true);
     wxTheApp->m_appWindow->MoveToNewTabbedWindow(this,index);
+    wxTheApp->updateButtonsMenus();
+  }
+  else if (triggeredAction == movePageRightAction) {
+    page->Activate(true);
+    wxTheApp->m_appWindow->MoveToNextTabbedWindow(this,index);
+    wxTheApp->updateButtonsMenus();
+  }
+  else if (triggeredAction == movePageLeftAction) {
+    page->Activate(true);
+    wxTheApp->m_appWindow->MoveToPrecedingTabbedWindow(this,index);
     wxTheApp->updateButtonsMenus();
   }
 }

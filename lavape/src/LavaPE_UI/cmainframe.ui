@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>661</width>
+    <width>1182</width>
     <height>685</height>
    </rect>
   </property>
@@ -50,9 +50,8 @@
    <addaction name="editUndoAction" />
    <addaction name="editRedoAction" />
    <addaction name="separator" />
-   <addaction name="tileHorizAction" />
-   <addaction name="tileVerticAction" />
-   <addaction name="cascadeAction" />
+   <addaction name="splitHorizAction" />
+   <addaction name="splitVerticAction" />
   </widget>
   <widget class="QToolBar" name="Toolbar_2" >
    <property name="windowTitle" >
@@ -331,7 +330,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>661</width>
+     <width>1182</width>
      <height>22</height>
     </rect>
    </property>
@@ -431,14 +430,6 @@
     <addaction name="separator" />
     <addaction name="openFormViewAction" />
    </widget>
-   <widget class="QMenu" name="windowMenu" >
-    <property name="title" >
-     <string>&amp;Window</string>
-    </property>
-    <addaction name="tileHorizAction" />
-    <addaction name="tileVerticAction" />
-    <addaction name="cascadeAction" />
-   </widget>
    <widget class="QMenu" name="optionMenu" >
     <property name="title" >
      <string>Options</string>
@@ -462,7 +453,6 @@
    <addaction name="insertMenu" />
    <addaction name="optionMenu" />
    <addaction name="viewMenu" />
-   <addaction name="windowMenu" />
    <addaction name="helpMenu" />
   </widget>
   <action name="fileNewAction" >
@@ -709,38 +699,53 @@
     <string/>
    </property>
   </action>
-  <action name="tileHorizAction" >
+  <action name="splitVerticAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
    <property name="icon" >
     <iconset resource="../LavaPE_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_TileHori.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Tile horizontal</string>
+    <string>Split vertically</string>
    </property>
    <property name="iconText" >
-    <string>Action</string>
+    <string>Split vertically</string>
    </property>
    <property name="toolTip" >
-    <string>Tile horizontal</string>
+    <string>Vertical splitter orientation</string>
+   </property>
+   <property name="statusTip" >
+    <string>Vertical splitter orientation</string>
    </property>
    <property name="whatsThis" >
-    <string>Tile horizontal</string>
+    <string>Vertical splitter orientation</string>
    </property>
   </action>
-  <action name="tileVerticAction" >
+  <action name="splitHorizAction" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked" >
+    <bool>true</bool>
+   </property>
    <property name="icon" >
     <iconset resource="../LavaPE_resources.qrc" >:/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/Q_TileVert.xpm</iconset>
    </property>
    <property name="text" >
-    <string>Tile Vertical</string>
+    <string>Split horizontally</string>
    </property>
    <property name="iconText" >
-    <string>TileVertical</string>
+    <string>Split horizontally</string>
    </property>
    <property name="toolTip" >
-    <string>Tile Vertical</string>
+    <string>Horizontal splitter orientation</string>
+   </property>
+   <property name="statusTip" >
+    <string>Horizontal splitter orientation</string>
    </property>
    <property name="whatsThis" >
-    <string>Tile Vertical</string>
+    <string>Horizontal splitter orientation</string>
    </property>
   </action>
   <action name="cascadeAction" >
