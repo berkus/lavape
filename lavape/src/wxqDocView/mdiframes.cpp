@@ -88,6 +88,10 @@ QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
   QSplitter *split=new QSplitter(parent);
   m_workspace = new MyTabWidget(split);
   m_workspace->setUsesScrollButtons(true);
+  QPushButton *close=new QPushButton(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")),QString());
+  close->setToolTip("Close current page");
+  connect(close,SIGNAL(clicked(bool)),m_workspace,SLOT(closePage(bool)));
+  m_workspace->setCornerWidget(close);
   connect(m_workspace ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
   return split;
 }
@@ -262,6 +266,10 @@ void wxMainFrame::MoveToNewTabbedWindow(MyTabWidget *tw,int index){
   newTW->addTab(page,QString());
   newTW->setTabText(0,tt);
   newTW->setTabToolTip(0,ttt);
+  QPushButton *close=new QPushButton(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")),QString());
+  close->setToolTip("Close current page");
+  connect(close,SIGNAL(clicked(bool)),newTW,SLOT(closePage(bool)));
+  newTW->setCornerWidget(close);
   QSplitter *splitter = (QSplitter*)tw->parentWidget();
   int splitterIndex = splitter->indexOf(tw);
 
@@ -336,13 +344,13 @@ void wxChildFrame::SetTitle(QString &title)
 
   if (title.contains(": ")) {
     tw->setTabText(tw->indexOf(this),title);
-    tooltip = m_document->GetFilename() + ", " + title;
+    tooltip = m_document->GetFilename() + ", " + title + "\nNote the tab context menu!";
     tw->setTabToolTip(tw->indexOf(this),tooltip);
   }
   else {
     QFileInfo fi(title);
     tw->setTabText(tw->indexOf(this),fi.fileName());
-    tw->setTabToolTip(tw->indexOf(this),m_document->GetFilename());
+    tw->setTabToolTip(tw->indexOf(this),m_document->GetFilename() + "\nNote the tab context menu!");
   }
   if (newTitle.at(newTitle.length()-1) == '*')
     newTitle = newTitle.left(newTitle.length()-1);
@@ -434,6 +442,25 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
     wxTheApp->m_appWindow->MoveToNewTabbedWindow(this,index);
     wxTheApp->updateButtonsMenus();
   }
+}
+
+void MyTabWidget::closePage(bool) {
+  wxChildFrame *page=(wxChildFrame*)currentWidget();
+  int index=currentIndex();
+  QSplitter *splitter=(QSplitter*)parentWidget();
+
+  if (page->inherits("CTreeFrame")
+  || (page->inherits("CLavaGUIFrame") && wxTheApp->inherits("CLavaApp"))) {
+    page->Activate(true);
+    wxDocManager::GetDocumentManager()->OnFileClose();
+  }
+  else {
+    removeTab(index);
+    delete page;
+  }
+  if (count() == 0 && splitter->count() > 1)
+    deleteLater();
+  wxTheApp->updateButtonsMenus();
 }
 
 

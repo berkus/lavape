@@ -114,5 +114,6 @@
         <file>LavaPE/res/TOOLBUTTONS/Q_Undo.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/Q_fileNew.xpm</file>
         <file>LavaPE/res/TOOLBUTTONS/WhatNext.xpm</file>
+        <file>LavaPE/res/TOOLBUTTONS/close.xpm</file>
     </qresource>
 </RCC>
