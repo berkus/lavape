@@ -262,11 +262,12 @@ void wxMainFrame::MoveToNewTabbedWindow(MyTabWidget *tw,int index){
   MyTabWidget *newTW=new MyTabWidget(0);
   newTW->setUsesScrollButtons(true);
   QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
-  QWidget *page=tw->widget(index);
+  wxChildFrame *page=(wxChildFrame*)tw->widget(index);
 
   newTW->addTab(page,QString());
   newTW->setTabText(0,tt);
   newTW->setTabToolTip(0,ttt);
+  page->Activate(true);
   QPushButton *close=new QPushButton(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")),QString());
   close->setToolTip("Close current page");
   connect(close,SIGNAL(clicked(bool)),newTW,SLOT(closePage(bool)));
@@ -280,7 +281,7 @@ void wxMainFrame::MoveToNewTabbedWindow(MyTabWidget *tw,int index){
 
 void wxMainFrame::MoveToNextTabbedWindow(MyTabWidget *tw,int index){
   QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
-  QWidget *page=tw->widget(index);
+  wxChildFrame *page=(wxChildFrame*)tw->widget(index);
   QSplitter *splitter = (QSplitter*)tw->parentWidget();
   int splitterIndex = splitter->indexOf(tw);
   MyTabWidget *nextTW=(MyTabWidget*)splitter->widget(splitterIndex+1);
@@ -288,6 +289,7 @@ void wxMainFrame::MoveToNextTabbedWindow(MyTabWidget *tw,int index){
   nextTW->insertTab(0,page,QString(tt));
   nextTW->setTabToolTip(0,ttt);
   nextTW->setCurrentIndex(0);
+  page->Activate(true);
   if (tw->count() == 0 && splitter->count() > 1)
     tw->deleteLater();
   wxTheApp->updateButtonsMenus();
@@ -295,7 +297,7 @@ void wxMainFrame::MoveToNextTabbedWindow(MyTabWidget *tw,int index){
 
 void wxMainFrame::MoveToPrecedingTabbedWindow(MyTabWidget *tw,int index){
   QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
-  QWidget *page=tw->widget(index);
+  wxChildFrame *page=(wxChildFrame*)tw->widget(index);
   QSplitter *splitter = (QSplitter*)tw->parentWidget();
   int splitterIndex = splitter->indexOf(tw);
   MyTabWidget *precTW=(MyTabWidget*)splitter->widget(splitterIndex-1);
@@ -303,22 +305,26 @@ void wxMainFrame::MoveToPrecedingTabbedWindow(MyTabWidget *tw,int index){
   precTW->insertTab(0,page,QString(tt));
   precTW->setTabToolTip(0,ttt);
   precTW->setCurrentIndex(0);
+  page->Activate(true);
   if (tw->count() == 0 && splitter->count() > 1)
     tw->deleteLater();
   wxTheApp->updateButtonsMenus();
 }
 
 wxChildFrame::wxChildFrame(QWidget *parent)
-    : QWidget(parent)
+    : QFrame(parent)
 {
   m_clientWindow = this;
+  
+  setFrameShape(QFrame::Box);
+  setLineWidth(2);
   m_tabWidget = (MyTabWidget*)parent;
   lastActive = 0;
   m_tabWidget->addTab(this,QString());
   layout = new QVBoxLayout(this);
   setLayout(layout);
   layout->setMargin(0);
-  setAttribute(Qt::WA_DeleteOnClose);
+  //setAttribute(Qt::WA_DeleteOnClose);
 
   deleting = false;
   QApplication::postEvent(wxTheApp->m_appWindow,new CustomEvent(QEvent::User,this));

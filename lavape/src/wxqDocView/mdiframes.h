@@ -118,7 +118,7 @@ private:
 };
 
 
-class WXDLLEXPORT wxChildFrame : public QWidget
+class WXDLLEXPORT wxChildFrame : public QFrame
 {
 public:
   wxChildFrame(QWidget *parent);
