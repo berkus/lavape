@@ -58,7 +58,7 @@ void GUIwidCLASS::CreatePopupWindow(bool isTextPopup, QWidget*& popupShell, QWid
   QWidget* parent;
   if (!popupShell) {
     if (GUIProg->isView) {
-      parent = ((wxMainFrame*)wxTheApp->m_appWindow)->GetClientWindow();
+      parent = ((wxMainFrame*)wxTheApp->m_appWindow)->GetCurrentTabWindow();
       popupShell = new CLavaGUIPopup(parent, GUIProg, data);
     }
     else {

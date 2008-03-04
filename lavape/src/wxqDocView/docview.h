@@ -228,6 +228,7 @@ private:
 };
 
 class WXDLLEXPORT wxChildFrame;
+class WXDLLEXPORT MyTabWidget;
 
 class WXDLLEXPORT wxView : public QWidget
 {
@@ -238,6 +239,7 @@ public:
     virtual ~wxView();
     bool active, deleting;
     QHBoxLayout *layout;
+    MyTabWidget *myTabWidget;
 
     virtual void UpdateUI() {}
     virtual void focusInEvent ( QFocusEvent * e );

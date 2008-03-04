@@ -76,7 +76,8 @@ public:
 //  wxChildFrame *GetActiveChild() const;
 
   // Get the client window
-  QTabWidget *GetClientWindow() const { return m_workspace; }
+  MyTabWidget *GetCurrentTabWindow() const { return m_currentTabWidget; }
+  void SetCurrentTabWindow(MyTabWidget *tw) { m_currentTabWidget = tw; }
 
 //  bool eventFilter(QObject *obj, QEvent *ev);
   void resizeEvent(QResizeEvent& event);
@@ -89,7 +90,7 @@ public:
   void TileHoriz(QMenuBar *menubar, int& lastTile);
   virtual void helpContents(){}
   virtual QTabWidget* Workspace() {
-    return m_workspace;
+    return m_currentTabWidget;
   }
   void MoveToNewTabbedWindow(MyTabWidget *tw,int index);
   void MoveToNextTabbedWindow(MyTabWidget *tw,int index);
@@ -99,10 +100,10 @@ protected:
   virtual QSplitter *CreateWorkspace(QWidget* parent);
   QWidget *m_CentralWidget;
   QVBoxLayout *m_layout;
-  QTabWidget *m_workspace;
 	wxHistory *m_childFrameHistory;
   QWidget *theActiveFrame;
 	bool completelyCreated;
+  MyTabWidget *m_currentTabWidget;
 
 public slots:
   virtual void OnFileExit();
@@ -128,6 +129,7 @@ public:
   virtual ~wxChildFrame();
 
   bool deleting;
+  void correctMyTabWidget(MyTabWidget *tw);
   virtual void UpdateUI() {}
   QWidget *GetClientWindow() const { return m_clientWindow; }
   virtual void SetTitle(QString &title);

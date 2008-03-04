@@ -1996,7 +1996,6 @@ void CLavaPEView::OnActivateView(bool bActivate, wxView *deactiveView)
 
 void CLavaPEView::OnDblclk(  QTreeWidgetItem * itemHit, int col )
 {
-  //CTreeItem* itemHit = (CTreeItem*)Tree->itemAtIndex(index);
   if (itemHit) {
     CMainItemData* data = (CMainItemData*)((CTreeItem*)itemHit)->getItemData();
     if (data->type == TIType_Exec)

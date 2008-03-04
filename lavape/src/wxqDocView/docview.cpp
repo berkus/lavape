@@ -158,13 +158,13 @@ static int cnt=0;
 
 void wxApp::updateButtonsMenus()
 {
-  if (!m_appWindow->m_workspace)
+  if (!m_appWindow->m_currentTabWidget)
     return;
-  //wxChildFrame *actMDIChild = (wxChildFrame*)m_appWindow->m_workspace->currentWidget();
+  //wxChildFrame *actMDIChild = (wxChildFrame*)m_appWindow->m_currentTabWidget->currentWidget();
 
   onUpdateUI();
 
-  //wxChildFrame *newActMDIChild = (wxChildFrame*)m_appWindow->m_workspace->currentWidget();
+  //wxChildFrame *newActMDIChild = (wxChildFrame*)m_appWindow->m_currentTabWidget->currentWidget();
   //if (newActMDIChild != actMDIChild)
   //newActMDIChild->m_tabWidget->setCurrentWidget(newActMDIChild);
 }
@@ -649,6 +649,7 @@ wxView::wxView(QWidget *parent, wxDocument *doc, const char* name) : QWidget(par
   layout->setMargin(0);
   setLayout(layout);
 
+  myTabWidget = wxTheApp->m_appWindow->GetCurrentTabWindow();
   m_viewDocument = doc;
   m_viewFrame = CalcParentFrame();
   m_viewFrame->AddView(this);
@@ -663,6 +664,7 @@ void wxView::mousePressEvent ( QMouseEvent * e )
 
 void wxView::focusInEvent ( QFocusEvent * e )
 {
+  wxTheApp->m_appWindow->SetCurrentTabWindow(myTabWidget);
   wxDocManager::GetDocumentManager()->SetActiveView(this, true);
 }
 
@@ -846,7 +848,7 @@ wxDocument *wxDocTemplate::CreateDocument(const QString& path, long flags)
 wxChildFrame *wxDocTemplate::CreateChildFrame(wxDocument *doc)
 {
   wxMainFrame *mw = wxTheApp->m_appWindow;
-  wxChildFrame *frame = (wxChildFrame *)m_frameClassInfo(mw->GetClientWindow());
+  wxChildFrame *frame = (wxChildFrame *)m_frameClassInfo(mw->GetCurrentTabWindow());
   frame->m_tabWidget->setCurrentWidget(frame);
 
   if (frame->OnCreate(this,doc)) {
