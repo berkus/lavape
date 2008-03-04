@@ -59,11 +59,16 @@ GUIScrollView::GUIScrollView(QWidget *parent, bool fromPopup)
   setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
   MaxBottomRight = QRect(0,0,0,0);
-
 }
 
+void GUIScrollView::focusInEvent(QFocusEvent *ev)
+{
+  QWidget* w = parentWidget();
+  if (w->inherits("wxView"))
+    ((wxView*)w)->focusInEvent(ev);
+}
 
-void GUIScrollView::/*viewportR*/resizeEvent(QResizeEvent* ev)
+void GUIScrollView::resizeEvent(QResizeEvent* ev)
 {
   QSize sz = MaxBottomRight.size();
   QSize evsz = ev->size();

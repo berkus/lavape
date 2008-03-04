@@ -36,6 +36,7 @@ class LAVAGUI_DLL GUIScrollView : public QScrollArea {
 public:
   GUIScrollView (QWidget *parent, bool fromPopup);
   void resizeEvent(QResizeEvent* ev);
+  virtual void focusInEvent(QFocusEvent *ev);
   GUIVBox* qvbox;
   QRect MaxBottomRight;
   

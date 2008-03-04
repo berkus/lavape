@@ -302,6 +302,10 @@ bool CLavaMainFrame::OnCreate()
   split->setOrientation(Qt::Vertical);
   m_ClientArea = CreateWorkspace(split);
   m_UtilityView = new CUtilityView(split);
+  QList<int> list=split->sizes();
+  list.replace(0,700);//int(totalW * 0.7));
+  list.replace(1,300);//int(totalW * 0.3));
+  split->setSizes(list);
   m_UtilityView->hide();
   Toolbar_5->hide();
   Toolbar_6->hide();
