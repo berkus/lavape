@@ -428,6 +428,10 @@ wxChildFrame::~wxChildFrame()
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   deleting = true;
+  for (int i = 0; i < m_viewList.size(); i++) {
+    m_document->RemoveView(m_viewList.at(i));
+    RemoveView(m_viewList.at(i));
+  }
   int count = m_document->RemoveChildFrame(this);
   if (!wxTheApp->deletingMainFrame)
     wxTheApp->m_appWindow->GetWindowHistory()->RemoveItemFromHistory(title);
