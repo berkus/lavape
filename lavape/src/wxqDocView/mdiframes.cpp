@@ -428,9 +428,9 @@ wxChildFrame::~wxChildFrame()
   if (!title.isEmpty() && title.at(title.length()-1) == '*')
     title = title.left(title.length()-1);
   deleting = true;
-  for (int i = 0; i < m_viewList.size(); i++) {
-    m_document->RemoveView(m_viewList.at(i));
-    RemoveView(m_viewList.at(i));
+  while (m_viewList.size()) {
+    m_document->RemoveView(m_viewList.at(0));
+    RemoveView(m_viewList.at(0));
   }
   int count = m_document->RemoveChildFrame(this);
   if (!wxTheApp->deletingMainFrame)
