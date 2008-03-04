@@ -65,7 +65,7 @@ CLavaMainFrame::CLavaMainFrame() : wxMainFrame()
   }
   styleMenu->addActions(ag->actions());
 
-	m_childFrameHistory->m_menu = windowMenu;
+	//m_childFrameHistory->m_menu = windowMenu;
   wxDocManager::GetDocumentManager()->m_fileHistory->m_menu = ((CLavaMainFrame*)wxTheApp->m_appWindow)->fileMenu;
   LBaseData->insActionPtr = insAction;
   LBaseData->delActionPtr = delAction;
@@ -167,15 +167,15 @@ void CLavaMainFrame::customEvent(QEvent *ev0){
 			m_childFrameHistory->AddToHistory(hw,this);
 		}
 	}
-	else
-		switch (lastTile) {
-		case 0:
-		case 1:
-			on_tileVerticAction_triggered();
-			break;
-		case 2:
-			on_tileHorizAction_triggered();
-		}
+	//else
+	//	switch (lastTile) {
+	//	case 0:
+	//	case 1:
+	//		on_tileVerticAction_triggered();
+	//		break;
+	//	case 2:
+	//		on_tileHorizAction_triggered();
+	//	}
 }
 
 void CLavaMainFrame::on_fileNewAction_triggered()
@@ -225,15 +225,6 @@ void CLavaMainFrame::on_fileExitAction_triggered()
   OnFileExit();
 }
 
-void CLavaMainFrame::on_tileVerticAction_triggered()
-{
-  TileVertic(menubar, lastTile);
-}
-
-void CLavaMainFrame::on_tileHorizAction_triggered()
-{
-  TileHoriz(menubar, lastTile);
-}
 
 CLavaMainFrame::~CLavaMainFrame()
 {

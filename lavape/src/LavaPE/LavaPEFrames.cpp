@@ -300,7 +300,7 @@ bool CLavaMainFrame::OnCreate()
   m_CentralWidget = split;
   setCentralWidget(m_CentralWidget);
   split->setOrientation(Qt::Vertical);
-  m_ClientArea = CreateWorkspace(split);
+  CreateWorkspace(split);
   m_UtilityView = new CUtilityView(split);
   QList<int> list=split->sizes();
   list.replace(0,700);//int(totalW * 0.7));
@@ -1467,23 +1467,32 @@ void CLavaMainFrame::emitSignal(){
 
 void CLavaMainFrame::on_splitVerticAction_triggered()
 {
-  on_splitHorizAction_triggered();
- // splitHoriz = !splitHoriz;
-	//switch (splitHoriz) {
-	//case true:
- //   m_ClientArea ->setOrientation(Qt::Horizontal);
-	//	splitHorizAction->setChecked(true);
-	//	splitVerticAction->setChecked(false);
-	//	break;
-	//case false:
- //   m_ClientArea ->setOrientation(Qt::Vertical);
-	//	splitHorizAction->setChecked(false);
-	//	splitVerticAction->setChecked(true);
-	//}
+  if (!splitHoriz) {
+		splitVerticAction->setChecked(true);
+    equalize();
+    return;
+  }
+  splitHoriz = !splitHoriz;
+	switch (splitHoriz) {
+	case true:
+    m_ClientArea ->setOrientation(Qt::Horizontal);
+		splitHorizAction->setChecked(true);
+		splitVerticAction->setChecked(false);
+		break;
+	case false:
+    m_ClientArea ->setOrientation(Qt::Vertical);
+		splitHorizAction->setChecked(false);
+		splitVerticAction->setChecked(true);
+	}
 }
 
 void CLavaMainFrame::on_splitHorizAction_triggered()
 {
+  if (splitHoriz) {
+		splitHorizAction->setChecked(true);
+    equalize();
+    return;
+  }
   splitHoriz = !splitHoriz;
 	switch (splitHoriz) {
 	case true:

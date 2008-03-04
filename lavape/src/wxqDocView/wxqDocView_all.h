@@ -8,6 +8,7 @@
 #include "wxExport.h"
 #include "defs.h"
 #include "setup.h"
+#include <QList>
 #include <QEvent>
 
 #ifdef MINGW32

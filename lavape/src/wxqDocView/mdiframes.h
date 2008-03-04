@@ -49,9 +49,9 @@ public:
 };
 
 
-class WXDLLEXPORT MyTabWidget : public QTabWidget {
+class WXDLLEXPORT wxTabWidget : public QTabWidget {
 public:
-  MyTabWidget(QWidget *parent) : QTabWidget(parent) {}
+  wxTabWidget(QWidget *parent) : QTabWidget(parent) {}
 
   void mousePressEvent ( QMouseEvent *evt );
 
@@ -76,8 +76,8 @@ public:
 //  wxChildFrame *GetActiveChild() const;
 
   // Get the client window
-  MyTabWidget *GetCurrentTabWindow() const { return m_currentTabWidget; }
-  void SetCurrentTabWindow(MyTabWidget *tw) { m_currentTabWidget = tw; }
+  wxTabWidget *GetCurrentTabWindow() const { return m_currentTabWidget; }
+  void SetCurrentTabWindow(wxTabWidget *tw) { m_currentTabWidget = tw; }
 
 //  bool eventFilter(QObject *obj, QEvent *ev);
   void resizeEvent(QResizeEvent& event);
@@ -86,28 +86,27 @@ public:
   void OnMRUWindow(int histWindowIndex);
   void LoadFileHistory();
 	wxHistory *GetWindowHistory () { return m_childFrameHistory; }
-  void TileVertic(QMenuBar *menubar, int& lastTile);
-  void TileHoriz(QMenuBar *menubar, int& lastTile);
   virtual void helpContents(){}
   virtual QTabWidget* Workspace() {
     return m_currentTabWidget;
   }
-  void MoveToNewTabbedWindow(MyTabWidget *tw,int index);
-  void MoveToNextTabbedWindow(MyTabWidget *tw,int index);
-  void MoveToPrecedingTabbedWindow(MyTabWidget *tw,int index);
+  void MoveToNewTabbedWindow(wxTabWidget *tw,int index);
+  void MoveToNextTabbedWindow(wxTabWidget *tw,int index);
+  void MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index);
+  void equalize();
 
 protected:
   virtual QSplitter *CreateWorkspace(QWidget* parent);
   QWidget *m_CentralWidget;
+  QSplitter *m_ClientArea;
   QVBoxLayout *m_layout;
 	wxHistory *m_childFrameHistory;
   QWidget *theActiveFrame;
 	bool completelyCreated;
-  MyTabWidget *m_currentTabWidget;
+  wxTabWidget *m_currentTabWidget;
 
 public slots:
   virtual void OnFileExit();
-  void on_cascadeAction_triggered();
   void windowActivated(int);
   void histFile(int);
   void histWindow(int);
@@ -129,7 +128,7 @@ public:
   virtual ~wxChildFrame();
 
   bool deleting;
-  void correctMyTabWidget(MyTabWidget *tw);
+  void correctMyTabWidget(wxTabWidget *tw);
   virtual void UpdateUI() {}
   QWidget *GetClientWindow() const { return m_clientWindow; }
   virtual void SetTitle(QString &title);
@@ -139,7 +138,7 @@ public:
   wxView* GetLastActive() {return lastActive;}
   virtual void Activate(bool activate=true,bool windowMenuAction=false);
   //virtual void Activate(bool activate=true,bool windowMenuAction=false);
-  MyTabWidget *m_tabWidget;
+  wxTabWidget *m_tabWidget;
 
 //  FRAMEFACTORY(wxChildFrame)
 	//Qt::WindowState oldWindowState;

@@ -16,7 +16,7 @@ public:
   int lastTile;
   virtual void customEvent(QEvent *ev);
   //CLavaDoc* docModal;
-  QSplitter *m_ClientArea;
+  //QSplitter *m_ClientArea;
 
 public slots:
   virtual void on_helpContentsAction_triggered();
@@ -47,8 +47,6 @@ public slots:
   virtual void on_setFormLabelFontAction_triggered();
 //  virtual void setFormButtonFont();
   virtual void on_setGlobalFontAction_triggered();
-  virtual void on_tileHorizAction_triggered();
-  virtual void on_tileVerticAction_triggered();
 
 private:
   Q_OBJECT

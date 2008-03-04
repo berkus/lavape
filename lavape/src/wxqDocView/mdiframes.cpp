@@ -43,6 +43,7 @@
 #include "qfile.h"
 //Added by qt3to4:
 #include <QCloseEvent>
+#include <QList>
 #include <QEvent>
 
 #pragma hdrstop
@@ -85,15 +86,16 @@ wxMainFrame::~wxMainFrame()
 
 QSplitter* wxMainFrame::CreateWorkspace(QWidget* parent)
 {
-  QSplitter *split=new QSplitter(parent);
-  m_currentTabWidget = new MyTabWidget(split);
+  m_ClientArea=new QSplitter(parent);
+  m_currentTabWidget = new wxTabWidget(m_ClientArea);
+  m_currentTabWidget->setTabShape(QTabWidget::Triangular);
   m_currentTabWidget->setUsesScrollButtons(true);
   QPushButton *close=new QPushButton(QPixmap(QString::fromUtf8(":/LavaPE/res/TOOLBUTTONS/LavaPE/res/TOOLBUTTONS/close.xpm")),QString());
   close->setToolTip("Close current page");
   connect(close,SIGNAL(clicked(bool)),m_currentTabWidget,SLOT(closePage(bool)));
   m_currentTabWidget->setCornerWidget(close);
   connect(m_currentTabWidget ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
-  return split;
+  return m_ClientArea;
 }
 
 
@@ -151,115 +153,10 @@ void wxMainFrame::OnMRUWindow(int histWindowIndex)
   hw->window->Activate(true,true);
 }
 
-
-
-void wxMainFrame::on_cascadeAction_triggered()
-{
-  //int ii;
-  //QWidget *window;
-  //QWidgetList windows = m_currentTabWidget->windowList();
-  //QSize sz=m_currentTabWidget->size();
-
-  //m_currentTabWidget->cascade();
-  //wxTheApp->isChMaximized = false;
-  //for (ii = 0; ii < int(windows.count()); ++ii ) {
-  //  window = windows.at(ii);
-  //  if (!((QMainWindow*)window)->isMinimized())
-  //    if (window->inherits("wxChildFrame")) {
-  //      //((wxChildFrame*)window)->oldWindowState = Qt::WindowNoState;
-  //      window->resize(sz.width()*7/10, sz.height()*7/10);
-  //    }
-  //}
-}
-
-void wxMainFrame::TileVertic(QMenuBar *menubar, int& lastTile)
-{
-  //int ii, cc = 0, x = 0, minHeight=0;
-  //QWidget *window;
-  //QWidgetList windows = m_currentTabWidget->windowList();
-
-  //wxTheApp->isChMaximized = false;
-  //lastTile = 1;
-
-  //if (!windows.count() )
-  //  return;
-  //cc = (int)windows.count();
-  //for (ii = 0; ii < int(windows.count()); ++ii ) {
-  //  window = windows.at(ii);
-  //  if (((QMainWindow*)window)->isMinimized()) {
-  //    cc--;
-  //    minHeight = menubar->height();
-  //  }
-  //  //else
-  //  //  if (window->inherits("wxChildFrame"))
-  //  //    ((wxChildFrame*)window)->oldWindowState = Qt::WindowNoState;
-  //}
-//  if (!cc)
-//    return;
-////  if (cc > 3) {
-//    m_currentTabWidget->tile();
-//    return;
-/*  }
-  allHeight = m_currentTabWidget->height() - minHeight;
-  widthForEach = m_currentTabWidget->width() / cc;
-  for (ii = 0; ii < int(windows.count()); ++ii ) {
-    window = windows.at(ii);
-    if (!((QMainWindow*)window)->isMinimized()) {
-      preferredWidth = window->minimumWidth()+window->parentWidget()->baseSize().width();
-      actWidth = qMax(widthForEach, preferredWidth);
-      if (window == theActiveFrame)
-        window->showNormal();
-      window->parentWidget()->resize(actWidth, allHeight );
-      window->parentWidget()->move( x, 0);
-      x += actWidth;
-    }
-  }*/
-}
-
-void wxMainFrame::TileHoriz(QMenuBar *menubar, int& lastTile)
-{
-  //int ii, cc = 0, y = 0, heightForEach, preferredHeight, actHeight, minHeight=0;
-  //QWidget *window;
-  //QWidgetList windows = m_currentTabWidget->windowList();
-
-  //lastTile = 2;
-  //wxTheApp->isChMaximized = false;
-
-  //if (!windows.count() )
-  //  return;
-  //cc = (int)windows.count();
-  //for (ii = 0; ii < int(windows.count()); ++ii ) {
-  //  window = windows.at(ii);
-  //  if (((QMainWindow*)window)->isMinimized()) {
-  //    cc--;
-  //    minHeight = menubar->height();
-  //  }
-  //  //else
-  //  //  if (window->inherits("wxChildFrame"))
-  //  //    ((wxChildFrame*)window)->oldWindowState = Qt::WindowNoState;
-  //}
-  //if (!cc)
-  //  return;
-  //if (cc > 2) {
-  //  m_currentTabWidget->tile();
-  //  return;
-  //}
-  //heightForEach = (m_currentTabWidget->height() - minHeight) / cc;
-  //for (ii = 0; ii < int(windows.count()); ++ii ) {
-  //  window = windows.at(ii);
-  //  if (!((QMainWindow*)window)->isMinimized()) {
-  //    preferredHeight = window->minimumHeight()+window->parentWidget()->baseSize().height();
-  //    actHeight = qMax(heightForEach, preferredHeight);
-  //    if (window == theActiveFrame)
-  //      window->showNormal();
-  //    window->parentWidget()->setGeometry( 0, y, m_currentTabWidget->width(), actHeight );
-  //    y += actHeight;
-  //  }
-  //}
-}
-
-void wxMainFrame::MoveToNewTabbedWindow(MyTabWidget *tw,int index){
-  MyTabWidget *newTW=new MyTabWidget(0);
+void wxMainFrame::MoveToNewTabbedWindow(wxTabWidget *tw,int index){
+  //QSplitter *split=(QSplitter*)tw->parentWidget()->parentWidget();
+  wxTabWidget *newTW=new wxTabWidget(0);
+  newTW->setTabShape(QTabWidget::Triangular);
   newTW->setUsesScrollButtons(true);
   QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
   wxChildFrame *page=(wxChildFrame*)tw->widget(index);
@@ -273,45 +170,54 @@ void wxMainFrame::MoveToNewTabbedWindow(MyTabWidget *tw,int index){
   close->setToolTip("Close current page");
   connect(close,SIGNAL(clicked(bool)),newTW,SLOT(closePage(bool)));
   newTW->setCornerWidget(close);
-  QSplitter *splitter = (QSplitter*)tw->parentWidget();
-  int splitterIndex = splitter->indexOf(tw);
+  int splitterIndex = m_ClientArea->indexOf(tw);
 
-  splitter->insertWidget(splitterIndex+1,newTW);
+  m_ClientArea->insertWidget(splitterIndex+1,newTW);
   connect(newTW ,SIGNAL(currentChanged(int)), SLOT(windowActivated(int)));
+  equalize();
 }
 
-void wxMainFrame::MoveToNextTabbedWindow(MyTabWidget *tw,int index){
+void wxMainFrame::MoveToNextTabbedWindow(wxTabWidget *tw,int index){
   QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
   wxChildFrame *page=(wxChildFrame*)tw->widget(index);
-  QSplitter *splitter = (QSplitter*)tw->parentWidget();
-  int splitterIndex = splitter->indexOf(tw);
-  MyTabWidget *nextTW=(MyTabWidget*)splitter->widget(splitterIndex+1);
+  int splitterIndex = m_ClientArea->indexOf(tw);
+  wxTabWidget *nextTW=(wxTabWidget*)m_ClientArea->widget(splitterIndex+1);
 
   nextTW->insertTab(0,page,QString(tt));
   page->correctMyTabWidget(nextTW);
   nextTW->setTabToolTip(0,ttt);
   nextTW->setCurrentIndex(0);
   page->Activate(true);
-  if (tw->count() == 0 && splitter->count() > 1)
+  if (tw->count() == 0 && m_ClientArea->count() > 1) {
+    equalize();
     tw->deleteLater();
+  }
   wxTheApp->updateButtonsMenus();
 }
 
-void wxMainFrame::MoveToPrecedingTabbedWindow(MyTabWidget *tw,int index){
+void wxMainFrame::MoveToPrecedingTabbedWindow(wxTabWidget *tw,int index){
   QString tt=tw->tabText(index), ttt=tw->tabToolTip(index);
   wxChildFrame *page=(wxChildFrame*)tw->widget(index);
-  QSplitter *splitter = (QSplitter*)tw->parentWidget();
-  int splitterIndex = splitter->indexOf(tw);
-  MyTabWidget *precTW=(MyTabWidget*)splitter->widget(splitterIndex-1);
+  int splitterIndex = m_ClientArea->indexOf(tw);
+  wxTabWidget *precTW=(wxTabWidget*)m_ClientArea->widget(splitterIndex-1);
 
   precTW->insertTab(0,page,QString(tt));
   page->correctMyTabWidget(precTW);
   precTW->setTabToolTip(0,ttt);
   precTW->setCurrentIndex(0);
   page->Activate(true);
-  if (tw->count() == 0 && splitter->count() > 1)
+  if (tw->count() == 0 && m_ClientArea->count() > 1) {
+    equalize();
     tw->deleteLater();
+  }
   wxTheApp->updateButtonsMenus();
+}
+
+void wxMainFrame::equalize() {
+  QList<int> sz;
+  for (int i=0; i<m_ClientArea->count(); i++)
+    sz.append(3000);
+  m_ClientArea->setSizes(sz);
 }
 
 wxChildFrame::wxChildFrame(QWidget *parent)
@@ -322,7 +228,7 @@ wxChildFrame::wxChildFrame(QWidget *parent)
   setLineWidth(2);
   setFrameShape(QFrame::Panel);
   setFrameShadow(QFrame::Sunken);
-  m_tabWidget = (MyTabWidget*)parent;
+  m_tabWidget = (wxTabWidget*)parent;
   lastActive = 0;
   m_tabWidget->addTab(this,QString());
   layout = new QVBoxLayout(this);
@@ -415,7 +321,7 @@ void wxChildFrame::RemoveView(wxView *view)
     m_viewList.removeAt(ind);
 }
 
-void wxChildFrame::correctMyTabWidget(MyTabWidget *tw) {
+void wxChildFrame::correctMyTabWidget(wxTabWidget *tw) {
   for (int i=0; i<m_viewList.size(); i++)
     m_viewList.at(i)->myTabWidget = tw;
 }
@@ -440,7 +346,7 @@ wxChildFrame::~wxChildFrame()
 }
 
 
-void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
+void wxTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   QTabBar *tb=tabBar();
   QPoint pt=evt->pos();
   Qt::MouseButton mb=evt->button();
@@ -507,7 +413,7 @@ void MyTabWidget::mousePressEvent ( QMouseEvent *evt ) {
   }
 }
 
-void MyTabWidget::closePage(bool) {
+void wxTabWidget::closePage(bool) {
   wxChildFrame *page=(wxChildFrame*)currentWidget();
   int index=currentIndex();
   QSplitter *splitter=(QSplitter*)parentWidget();
