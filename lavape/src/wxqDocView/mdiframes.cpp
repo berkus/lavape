@@ -316,8 +316,9 @@ wxChildFrame::wxChildFrame(QWidget *parent)
 {
   m_clientWindow = this;
   
-  setFrameShape(QFrame::Box);
   setLineWidth(2);
+  setFrameShape(QFrame::Panel);
+  setFrameShadow(QFrame::Sunken);
   m_tabWidget = (MyTabWidget*)parent;
   lastActive = 0;
   m_tabWidget->addTab(this,QString());
